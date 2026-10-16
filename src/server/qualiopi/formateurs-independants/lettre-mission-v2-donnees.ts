@@ -237,8 +237,16 @@ export function assemblerLettreV2(f: FaitsLettreV2): LettreV2Assemblee {
       jours.map((j) => ({ jour: j.date, heureDebut: j.heureDebut, heureFin: j.heureFin })),
       PARAMETRES_ARGENT_FORMATEURS,
     );
+    // V2-A-3 : le reliquat d'un tarif impair suit la mission d'un mois à l'autre.
+    let anterieures = 0;
     for (const mois of parMoisCivil(prevues)) {
-      parMoisAnnonce[mois.mois] = montantPrevuDuMoisHtCents(mois, conditions);
+      parMoisAnnonce[mois.mois] = montantPrevuDuMoisHtCents(
+        mois,
+        conditions,
+        undefined,
+        anterieures,
+      );
+      anterieures += mois.demiJournees;
     }
   } catch (err) {
     return { ok: false, motif: err instanceof Error ? err.message : "Montant illisible." };

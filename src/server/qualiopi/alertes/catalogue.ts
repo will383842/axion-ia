@@ -1572,6 +1572,19 @@ export const ALERTE_CATALOGUE: Record<string, AlerteCatalogueEntry> = {
     guichet: "direction",
   },
   /**
+   * Vérification 2, V2-A-2 — les journées animées par les intervenants d'un organisme
+   * sous-traitant : le paiement par mission ne les paie jamais en leur nom, et le
+   * circuit des organismes n'est pas livré. À traiter à la main.
+   */
+  honoraires_organisme_a_traiter: {
+    niveau: "important",
+    titre: "Journées d'un organisme sous-traitant : paiement à traiter à la main",
+    resolutionAuto: false,
+    motifSansResolutionAuto:
+      "Aucune donnée ne dit que l'organisme a été payé à la main : seule la personne qui l'a payé peut fermer l'alerte. Une demi-journée signée de plus change le message et la rouvre.",
+    guichet: "direction",
+  },
+  /**
    * 🔴 UN RELEVÉ VALIDÉ QUI N'A PAS PU SE FACTURER (2026-09-12).
    *
    * Depuis que l'émission est automatique, un relevé validé produit sa facture

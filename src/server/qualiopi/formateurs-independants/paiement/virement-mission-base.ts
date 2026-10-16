@@ -11,7 +11,8 @@ import { decryptPii } from "@/lib/pii-crypto";
 
 import { ajouterJours, jourDeColonneDate, jourParis, type JourCivil } from "../argent/dates";
 import { PARAMETRES_ARGENT_FORMATEURS } from "../argent/parametres";
-import { journeesDuFormateur } from "../argent/journees-du-formateur";
+import { desistesDeLaSession, journeesDuFormateur } from "../argent/journees-du-formateur";
+import { echeanceCalculee } from "../gardes";
 import { vigilanceExigible } from "../vigilance-seuil";
 import { lireCumulHonorairesHtCents, type ClientCumulHonoraires } from "../vigilance-seuil-lecture";
 import { derniereJourneeDuMois, OBJETS_A_DATE_FIXE } from "./echeance-autofacture";
@@ -28,7 +29,11 @@ export interface ClientVirementMission {
     findUnique(a: unknown): Promise<{ iban: string | null; ibanEmpreinte: string | null } | null>;
   };
   trainerDocument: {
-    findMany(a: unknown): Promise<Array<{ dateExpiration: Date | null; valideAt?: Date | null }>>;
+    findMany(
+      a: unknown,
+    ): Promise<
+      Array<{ dateExpiration: Date | null; dateEmission?: Date | null; valideAt?: Date | null }>
+    >;
   };
   demandeChangementFormateur: {
     count(a: unknown): Promise<number>;
@@ -52,6 +57,33 @@ export interface ClientJourneesSession {
 interface JourneesSessionLues {
   readonly jours: ReadonlyArray<{ date: Date; trainerId: string | null }>;
   readonly sessionFormateurs: ReadonlyArray<{ trainerId: string }>;
+  /** V2-A-4 : les sollicitations acceptées, de la plus récente à la plus ancienne. */
+  readonly missionsFormateur?: ReadonlyArray<{ trainerId: string; statut: string }>;
+}
+
+/**
+ * Vérification 2, V2-A-7 — le dernier jour où une attestation URSSAF vérifiée prouve
+ * quelque chose : la PLUS PROCHE de la fin saisie et de « émission + 6 mois », la règle
+ * des pièces gardées (`pieceGardeeProbante`) — une date libre (« valable jusqu'en
+ * 2099 ») ne prolonge jamais une attestation. Sans fin saisie, ou sans date
+ * d'émission, elle ne prouve rien : `null`. Avec `maintenant` (la garde du virement),
+ * une date d'émission FUTURE non plus, comme `pieceGardeeProbante` : une faute de
+ * frappe (2041 pour 2040) repousserait le plafond.
+ */
+export function finDeValiditeAttestation(
+  a: {
+    readonly dateExpiration: Date | null;
+    readonly dateEmission?: Date | null;
+  },
+  maintenant?: Date,
+): JourCivil | null {
+  if (a.dateExpiration === null) return null;
+  if (maintenant && a.dateEmission && a.dateEmission.getTime() > maintenant.getTime()) return null;
+  const calculee = echeanceCalculee("attestation_vigilance_urssaf", a.dateEmission ?? null);
+  if (calculee === null) return null;
+  const saisie = jourDeColonneDate(a.dateExpiration);
+  const plafond = jourDeColonneDate(calculee);
+  return saisie < plafond ? saisie : plafond;
 }
 
 export interface ReleveAPayer {
@@ -101,11 +133,17 @@ export async function derniereJourneeDuReleve(
         select: {
           jours: { select: { date: true, trainerId: true } },
           sessionFormateurs: { select: { trainerId: true } },
+          missionsFormateur: {
+            where: { statut: { in: ["acceptee", "accord_hors_outil", "desistee"] } },
+            orderBy: { solliciteAt: "desc" },
+            select: { trainerId: true, statut: true },
+          },
         },
       })) as JourneesSessionLues | null;
       if (s !== null) {
-        journees = journeesDuFormateur(s.jours, r.trainerId, s.sessionFormateurs).map((j) =>
-          jourDeColonneDate(j.date),
+        const desistes = desistesDeLaSession(s.missionsFormateur ?? [], s.sessionFormateurs);
+        journees = journeesDuFormateur(s.jours, r.trainerId, s.sessionFormateurs, desistes).map(
+          (j) => jourDeColonneDate(j.date),
         );
       }
     } catch {
@@ -142,7 +180,7 @@ export async function contexteVirementMission(
         statutValidation: "valide",
         archiveAt: null,
       },
-      select: { dateExpiration: true, valideAt: true },
+      select: { dateExpiration: true, dateEmission: true, valideAt: true },
     }),
     db.demandeChangementFormateur.count({
       where: { trainerId: releve.trainerId, nature: "iban", statut: "en_attente" },
@@ -161,7 +199,10 @@ export async function contexteVirementMission(
   // Délai suspendu (art. 16.7) : le jour où l'attestation qui couvre la mission a été
   // vérifiée — la plus ancienne vérification parmi celles qui la couvrent.
   const verifiees = attestations
-    .filter((a) => a.dateExpiration && jourDeColonneDate(a.dateExpiration) >= derniereJournee)
+    .filter((a) => {
+      const fin = finDeValiditeAttestation(a, maintenant);
+      return fin !== null && fin >= derniereJournee;
+    })
     .flatMap((a) => (a.valideAt ? [jourParis(a.valideAt)] : []))
     .sort();
   const verdict = gardeVirementMission({
@@ -171,10 +212,12 @@ export async function contexteVirementMission(
     aujourdhui: jourParis(maintenant),
     maintenant,
     totalTtcCents: releve.totalTtcCents,
-    // Une attestation sans date de fin ne prouve rien à une date donnée : écartée.
-    attestationsValidesJusquau: attestations.flatMap((a) =>
-      a.dateExpiration ? [jourDeColonneDate(a.dateExpiration)] : [],
-    ),
+    // Une attestation sans date de fin ne prouve rien à une date donnée : écartée ; la
+    // fin saisie est plafonnée à l'émission + 6 mois (V2-A-7).
+    attestationsValidesJusquau: attestations.flatMap((a) => {
+      const fin = finDeValiditeAttestation(a, maintenant);
+      return fin === null ? [] : [fin];
+    }),
     // Lot G1 : sous le seuil de vigilance, l'attestation n'est pas exigée pour payer.
     vigilanceExigible: exigible,
     demandeIbanEnAttente: enAttente > 0,
@@ -236,7 +279,7 @@ export async function relevesMissionEnAttenteAttestation(
           statutValidation: "valide",
           archiveAt: null,
         },
-        select: { dateExpiration: true },
+        select: { dateExpiration: true, dateEmission: true },
       }),
       lireCumulHonorairesHtCents(trainerId, { trainerStatement: db.trainerStatement }),
     ]);
@@ -250,9 +293,10 @@ export async function relevesMissionEnAttenteAttestation(
       feeLines?: Array<{ objet: string | null }>;
     }>;
     const exigible = vigilanceExigible(cumul);
-    const valables = attestations.flatMap((a) =>
-      a.dateExpiration ? [jourDeColonneDate(a.dateExpiration)] : [],
-    );
+    const valables = attestations.flatMap((a) => {
+      const fin = finDeValiditeAttestation(a);
+      return fin === null ? [] : [fin];
+    });
     const ids = new Set<string>();
     for (const r of releves) {
       if (r.echeanceAt === null) continue;

@@ -32,6 +32,8 @@ const h = vi.hoisted(() => {
     },
     emargementContresignature: { findMany: (...a: unknown[]) => m.signatures(...a) },
     revendicationPaiement: { findMany: (...a: unknown[]) => m.revendications(...a) },
+    // V2-A-2 : le passage lit toujours si le formateur intervient pour un organisme.
+    trainer: { findMany: async () => [] as unknown[] },
   };
   return { m, prisma };
 });

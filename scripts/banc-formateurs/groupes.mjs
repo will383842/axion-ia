@@ -44,7 +44,7 @@ export const GROUPES = [
   {
     id: "C",
     titre: "équipe C · argent",
-    motif: /^tests\/e2e\/formateurs\/(e(2[0-6]|36)|ec\d+)-[^/]+\.spec\.ts$/,
+    motif: /^tests\/e2e\/formateurs\/(e(2[0-6]|36)|ec\d+|v2a\d+)-[^/]+\.spec\.ts$/,
   },
   {
     id: "D",

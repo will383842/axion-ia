@@ -42,6 +42,24 @@ export function montantAnimationCents(demiJournees: number, tarifJourneeHtCents:
   return Math.floor((demiJournees * tarifJourneeHtCents) / 2);
 }
 
+/**
+ * Vérification 2, V2-A-3 — l'animation d'un mois quand la mission a déjà
+ * `anterieures` demi-journées dans les mois précédents : ⌊(a + n) × tarif / 2⌋ −
+ * ⌊a × tarif / 2⌋. Le reliquat d'un tarif impair n'est jamais perdu entre deux mois :
+ * la somme des mois est toujours ⌊total × tarif / 2⌋, le montant de la mission entière.
+ */
+export function montantAnimationDuMoisCents(
+  demiJournees: number,
+  tarifJourneeHtCents: number,
+  anterieures = 0,
+): number {
+  entierPositif("demi-journées antérieures", anterieures);
+  return (
+    montantAnimationCents(anterieures + demiJournees, tarifJourneeHtCents) -
+    montantAnimationCents(anterieures, tarifJourneeHtCents)
+  );
+}
+
 /** Déplacement : journées × forfait par journée ; un forfait au-dessus du plafond est refusé. */
 export function montantDeplacementCents(
   journeesDeplacement: number,
@@ -118,18 +136,26 @@ export interface ReleveMissionCalcule extends TotauxReleve {
   readonly dateCible: JourCivil;
 }
 
-/** Le relevé d'UN mois d'une mission, à partir des demi-journées SIGNÉES de ce mois. */
+/**
+ * Le relevé d'UN mois d'une mission, à partir des demi-journées SIGNÉES de ce mois.
+ * `anterieures` : demi-journées de la même mission dans les mois précédents (V2-A-3).
+ */
 export function calculerReleveDuMois(
   mois: MoisAnime,
   c: ConditionsMission,
   p: ParametresArgentFormateurs = PARAMETRES_ARGENT_FORMATEURS,
+  anterieures = 0,
 ): ReleveMissionCalcule {
   if (mois.demiJournees <= 0) throw new Error("aucune demi-journée signée : rien à payer");
   const lignes: LigneCalculee[] = [
     {
       objet: "animation",
       demiJournees: mois.demiJournees,
-      montantHtCents: montantAnimationCents(mois.demiJournees, c.tarifJourneeHtCents),
+      montantHtCents: montantAnimationDuMoisCents(
+        mois.demiJournees,
+        c.tarifJourneeHtCents,
+        anterieures,
+      ),
     },
   ];
   const forfait = c.forfaitDeplacementParJourHtCents ?? 0;
@@ -207,9 +233,10 @@ export function releveSansEcart(
   prevu: Pick<MoisAnime, "demiJournees" | "journees">,
   c: ConditionsMission,
   p: ParametresArgentFormateurs = PARAMETRES_ARGENT_FORMATEURS,
+  anterieures = 0,
 ): boolean {
   if (prevu.demiJournees <= 0) return false;
-  return montantPrevuDuMoisHtCents(prevu, c, p) === calcule.totalHtCents;
+  return montantPrevuDuMoisHtCents(prevu, c, p, anterieures) === calcule.totalHtCents;
 }
 
 /**
@@ -221,11 +248,13 @@ export function montantPrevuDuMoisHtCents(
   prevu: Pick<MoisAnime, "demiJournees" | "journees">,
   c: ConditionsMission,
   p: ParametresArgentFormateurs = PARAMETRES_ARGENT_FORMATEURS,
+  /** Demi-journées PRÉVUES des mois précédents de la mission (V2-A-3). */
+  anterieures = 0,
 ): number {
   if (prevu.demiJournees <= 0) return 0;
   const forfait = c.forfaitDeplacementParJourHtCents ?? 0;
   return (
-    montantAnimationCents(prevu.demiJournees, c.tarifJourneeHtCents) +
+    montantAnimationDuMoisCents(prevu.demiJournees, c.tarifJourneeHtCents, anterieures) +
     (forfait > 0 ? montantDeplacementCents(prevu.journees, forfait, p) : 0)
   );
 }

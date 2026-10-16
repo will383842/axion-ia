@@ -247,6 +247,8 @@ const CODES_ATTENDUS: string[] = [
   // qu'elle existe. Aucun délai de contestation n'a couru.
   "autofacture_non_transmise",
   "releve_formateur_echu",
+  // Vérification 2, V2-A-2 : les journées des intervenants d'un organisme, à la main.
+  "honoraires_organisme_a_traiter",
   // 🔴 2026-09-12 — depuis que l'émission est AUTOMATIQUE, un relevé validé dont
   // la facture n'a pas pu partir ne laisse plus aucune trace : personne
   // n'attend de bouton. L'alerte porte la liste COMPLÈTE des manques.
