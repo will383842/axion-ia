@@ -16,6 +16,7 @@ import { prisma } from "@/lib/prisma";
 import { aUnFichier, pieceAUnFichier } from "@/server/qualiopi/trainers/piece-competence";
 
 import { etatControle, LIBELLES_MOTIFS, type MotifControle } from "./controle-regles";
+import { libelleDateDuCv } from "./date-du-cv";
 import { versionDuContrat } from "./faits-activation";
 import {
   VERSION_MINIMALE_CONTRAT_INDEPENDANT,
@@ -38,6 +39,11 @@ export interface EcranW4 {
   readonly signeLe: Date | null;
   readonly faits: FaitsW4;
   readonly liens: ReadonlyArray<LienPiece>;
+  /**
+   * La date du CV, en clair, affichée à côté du CV pour le contresignataire : déclarée par
+   * le formateur au dépôt, ou posée en console ; `null` = aucun CV.
+   */
+  readonly dateDuCv: string | null;
   readonly lienAttestation: string | null;
   readonly formations: ReadonlyArray<{ id: string; titre: string; habilite: boolean }>;
   /** TOUTES les habilitations actives, quelle que soit la formation affichée. */
@@ -138,6 +144,7 @@ export async function lireEcranVerifierContresigner(
           contenu: { select: { trainerDocumentId: true } },
           numeroPiece: true,
           dateEmission: true,
+          dateCvDeclaree: true,
           dateExpiration: true,
         },
       },
@@ -250,6 +257,7 @@ export async function lireEcranVerifierContresigner(
     signeLe: contrat?.signatures[0]?.signeAt ?? null,
     faits,
     liens,
+    dateDuCv: cvDoc === undefined ? null : libelleDateDuCv(cvDoc, maintenant),
     lienAttestation: att === undefined ? null : lienDe(att, options),
     formations: formations.map((f) => ({ ...f, habilite: habilitees.has(f.id) })),
     habilitationsActives: [...habilitees],
