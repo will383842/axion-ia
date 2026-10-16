@@ -27,13 +27,12 @@
 // champs PII est conservee : elle ne coute rien et couvrirait un futur payload
 // plus riche.
 
-import crypto from "node:crypto";
 import { NextResponse, type NextRequest } from "next/server";
 import { z } from "zod";
 import { requireSameOrigin } from "@/lib/same-origin";
 import { prisma } from "@/lib/prisma";
 import { syncCalendlyEventToCrm } from "@/server/crm-sync";
-import { notify } from "@/server/notifications";
+import { notifyApresReponse } from "@/server/notifications/apres-reponse";
 import { checkRateLimit } from "@/lib/rate-limit";
 import { hashIp } from "@/lib/security/ip-hash";
 import { enrichCalendlyEvent } from "@/server/calendly/enrich";
@@ -113,38 +112,16 @@ const InviteePiiSchema = z.object({
  *
  * L'ancienne clé était `event.id` : l'identifiant de la ligne qu'on venait de
  * créer, donc différent à chaque appel. Le dédoublonnage du hub ne pouvait
- * jamais s'appliquer, et une route publique pouvait donc émettre autant
- * d'alertes que de lignes fabriquées.
+ * jamais s'appliquer.
  *
- * ⚠️ Le repli SANS `inviteeUri` inclut le JOUR, pas l'instant : deux
- * signalements du même rendez-vous à quelques minutes d'écart doivent tomber
- * sur la même clé. Il n'inclut pas non plus l'IP — sinon deux sources
- * différentes rapportant le même fait rouvriraient deux alertes.
- *
- * ⚠️ LA GRANULARITÉ RÉELLE N'EST PAS LA JOURNÉE : le hub applique un TTL de
- * déduplication de **300 secondes** (`server/notifications/index.ts`,
- * `dedupTtlSec ?? 300`). Inclure le jour dans la clé ne fait donc pas taire une
- * alerte pendant 24 h — il évite seulement qu'une même clé change en cours de
- * fenêtre. Deux réservations distinctes du même type, sans adresse et sans URI,
- * partagent la clé pendant ces 5 minutes : la seconde alerte est ravalée, mais
- * les deux LIGNES existent. Cas dégénéré, mesuré, assumé.
- *
- * L'adresse est hachée : une clé de déduplication traverse Redis et les
- * journaux, elle n'a pas à y porter une adresse en clair.
+ * 🔴 Décision Will 15/10 — SANS `inviteeUri`, PAS DE CLÉ. Le repli
+ * « adresse + type + jour » ravalait la réservation d'un SECOND client le même
+ * jour : sans adresse (l'embed n'en transmet aucune), la clé se réduisait à
+ * « |type|jour », commune à tous les clients du jour. Mieux vaut deux alertes
+ * pour un même rendez-vous qu'une réservation jamais annoncée.
  */
-function dedupKeyDuFait(
-  inviteeUri: string | undefined,
-  email: string | null | undefined,
-  slug: string,
-): string {
-  if (inviteeUri) return `cal-created:${inviteeUri}`;
-  const jour = new Date().toISOString().slice(0, 10);
-  const empreinte = crypto
-    .createHash("sha256")
-    .update(`${(email ?? "").toLowerCase()}|${slug}|${jour}`)
-    .digest("hex")
-    .slice(0, 32);
-  return `cal-created:${empreinte}`;
+function dedupKeyDuFait(inviteeUri: string | undefined): string | undefined {
+  return inviteeUri ? `cal-created:${inviteeUri}` : undefined;
 }
 
 export async function POST(req: NextRequest): Promise<NextResponse> {
@@ -253,27 +230,17 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   // 5. Dedup. `invitee.uri` identifie une reservation de maniere stable : c'est
   //    la cle fiable, et elle est doublee d'une contrainte UNIQUE en base (donc
   //    aucune course entre deux requetes simultanees ne peut creer un doublon).
-  //    L'ancienne heuristique (meme slug + meme IP dans les 60 s) reste en repli
-  //    pour les payloads sans URI ; elle est volontairement reservee a ce cas
-  //    car elle rejette a tort deux reservations legitimes prises coup sur coup
-  //    depuis le meme poste.
+  //
+  //    🔴 Décision Will 15/10 : PLUS de rejet « même IP + même type < 60 s »
+  //    pour les payloads sans URI. Il jetait la réservation légitime d'un
+  //    second client pris coup sur coup depuis le même poste (un salon, un
+  //    accueil). Le débit reste borné par le compteur par IP (étape 1).
   if (inviteeUri) {
     const existing = await prisma.calendlyEvent.findUnique({
       where: { inviteeUri },
       select: { id: true },
     });
     if (existing) return NextResponse.json({ ok: true, deduped: true });
-  } else {
-    const recentDup = await prisma.calendlyEvent.findFirst({
-      where: {
-        eventTypeSlug: parsed.data.eventTypeSlug,
-        capturedAt: { gte: new Date(Date.now() - 60_000) },
-        // path JSON sur _ipHash injecte dans rawPayload ci-dessous
-        rawPayload: { path: ["_ipHash"], equals: ipHash } as never,
-      },
-      select: { id: true },
-    });
-    if (recentDup) return NextResponse.json({ ok: true, deduped: true });
   }
 
   // 6. Extraction best-effort des PII. Absentes du payload Embed JS actuel
@@ -332,7 +299,8 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
         ...(parsed.data.utmMedium ? { utmMedium: parsed.data.utmMedium } : {}),
         ...(parsed.data.utmContent ? { utmContent: parsed.data.utmContent } : {}),
         ...(parsed.data.referrer ? { referrer: parsed.data.referrer } : {}),
-        // _ipHash injecté pour dedup ; consomme par la query findFirst ci-dessus
+        // _ipHash : trace de la provenance (le rejet « même IP < 60 s » est
+        // retiré le 15/10, la clé reste pour l'audit d'abus).
         rawPayload: { ...rawPayload, _ipHash: ipHash } as never,
       },
       select: { id: true },
@@ -349,7 +317,9 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   //    que de detacher la promesse) parce qu'un runtime serverless peut geler
   //    l'execution des la reponse renvoyee — une promesse orpheline y serait
   //    perdue silencieusement. Le cout est plafonne a 5 s (AbortSignal).
-  const enriched = isCalendlyApiConfigured() ? await enrichCalendlyEvent(event.id) : null;
+  const enriched = isCalendlyApiConfigured()
+    ? await enrichCalendlyEvent(event.id, { notifier: "apres-reponse" })
+    : null;
 
   // Relit les champs que l'enrichissement vient eventuellement de remplir, pour
   // que la notification porte le vrai contact plutot que « (non communique) ».
@@ -366,6 +336,8 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   // Le lieu — lien de réunion ou numéro — pour que l'alerte porte le moyen et
   // pas seulement le nom du canal.
   let lieuRdv: string | null = null;
+  // Le lien d'annulation, pour que l'alerte client le porte (décision Will 15/10).
+  let cancelUrl: string | null = null;
   // Contrat CRM (2026-10-04) : le nom lisible, le type et le besoin partent
   // TOUJOURS. Sans enrichissement, le nom reste le slug et le type provisoire.
   let nomType = parsed.data.eventTypeSlug;
@@ -385,6 +357,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
           inviteePhone: true,
           eventTypeName: true,
           typeRendezVous: true,
+          cancelUrl: true,
         },
       })
       .catch(() => null);
@@ -404,6 +377,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
       debutRdv = fresh.startTime;
       notifyPhone = fresh.inviteePhone;
       lieuRdv = fresh.location;
+      cancelUrl = fresh.cancelUrl ?? null;
     }
   }
 
@@ -492,34 +466,42 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   }
 
   // 9. Notif Telegram via hub — jamais pour un échange formateur (8 ter).
+  //    Décision Will 15/10 : un CLIENT part au salon « Clients », avec tout le
+  //    détail ; un échange apporteur reste au salon 📅 Calendly.
   if (!echangeFormateur) {
-    await notify({
-      category: "CALENDLY_INVITEE_CREATED",
-      payload: {
-        eventUri: event.id,
-        inviteeEmail: notifyEmail ?? "(non communiqué par Calendly Embed)",
-        inviteeName: notifyName ?? "(non communiqué)",
-        eventStartTime: notifyStart ?? "(voir mail Calendly)",
-        eventName: parsed.data.eventTypeSlug,
-        // Le titre de l'alerte se tire du type classé (lot L3, 2026-10-04).
-        typeRendezVous,
-        ...(besoin ? { besoin } : {}),
-        // Omis quand il n'est pas établi : l'alerte préfère se taire à affirmer.
-        ...(format === "inconnu" ? {} : { format }),
-        ...(parsed.data.pageUrl ? { pageUrl: parsed.data.pageUrl } : {}),
-        ...(parsed.data.utmSource ? { utmSource: parsed.data.utmSource } : {}),
-        ...(parsed.data.utmCampaign ? { utmCampaign: parsed.data.utmCampaign } : {}),
-        ...(enriched?.ok && enriched.answersText ? { answersText: enriched.answersText } : {}),
+    const cleDuFait = dedupKeyDuFait(inviteeUri);
+    // Après la réponse (`after`) : les relances Telegram ne retardent plus
+    // le navigateur du visiteur (relecture PR 1553).
+    notifyApresReponse(
+      {
+        category: apporteur ? "CALENDLY_INVITEE_CREATED" : "CLIENT_CALL_BOOKED",
+        payload: {
+          eventUri: event.id,
+          inviteeEmail: notifyEmail ?? "(non communiqué par Calendly Embed)",
+          inviteeName: notifyName ?? "(non communiqué)",
+          eventStartTime: notifyStart ?? "(voir mail Calendly)",
+          eventName: parsed.data.eventTypeSlug,
+          // Le titre de l'alerte se tire du type classé (lot L3, 2026-10-04).
+          typeRendezVous,
+          ...(besoin ? { besoin } : {}),
+          // Omis quand il n'est pas établi : l'alerte préfère se taire à affirmer.
+          ...(format === "inconnu" ? {} : { format }),
+          ...(lieuRdv ? { lieu: lieuRdv } : {}),
+          // 🔴 Le téléphone était lu par l'enrichissement et jamais transmis.
+          ...(notifyPhone ? { inviteePhone: notifyPhone } : {}),
+          ...(cancelUrl ? { cancelUrl } : {}),
+          ...(parsed.data.pageUrl ? { pageUrl: parsed.data.pageUrl } : {}),
+          ...(parsed.data.utmSource ? { utmSource: parsed.data.utmSource } : {}),
+          ...(parsed.data.utmCampaign ? { utmCampaign: parsed.data.utmCampaign } : {}),
+          ...(parsed.data.utmMedium ? { utmMedium: parsed.data.utmMedium } : {}),
+          ...(enriched?.ok && enriched.answersText ? { answersText: enriched.answersText } : {}),
+        },
+        // Dérivée du FAIT : l'URI d'invité quand Calendly la fournit, sinon
+        // aucune clé (cf. `dedupKeyDuFait`).
+        ...(cleDuFait ? { dedupKey: cleDuFait } : {}),
       },
-      // 🔴 La clé était `event.id` — l'identifiant de la ligne qu'on VIENT de
-      // créer, donc neuf à chaque appel. Elle ne pouvait rien dédoublonner : la
-      // route pouvait émettre autant d'alertes que de lignes fabriquées.
-      // Dérivée du FAIT désormais : la réservation identifiée par son URI
-      // d'invité quand Calendly la fournit, sinon par le triplet
-      // adresse + type + jour. Deux signalements du même rendez-vous n'émettent
-      // qu'une alerte, quel que soit le nombre de lignes créées.
-      dedupKey: dedupKeyDuFait(inviteeUri, notifyEmail, parsed.data.eventTypeSlug),
-    });
+      "calendly-client-event",
+    );
   }
 
   // 10. Couleur du format dans l'agenda Google — best-effort, jamais bloquant.

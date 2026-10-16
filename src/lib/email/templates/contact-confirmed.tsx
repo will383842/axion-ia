@@ -2,6 +2,7 @@
 
 import { Text } from "@react-email/components";
 import { EmailLayout, emailStyles } from "./_layout";
+import { PiecesJointesRecues } from "./_pieces-jointes-recues";
 import type { Locale } from "../../../../prisma/generated/client";
 
 interface Payload {
@@ -73,6 +74,7 @@ export function ContactConfirmedEmail({
       locale={locale}
     >
       <Text style={emailStyles.paragraphStyle}>{t.body}</Text>
+      <PiecesJointesRecues locale={locale} payload={payload} />
       <Text style={{ ...emailStyles.paragraphStyle, color: emailStyles.COLORS.textMuted }}>
         {t.refRow(p.submissionId)}
       </Text>

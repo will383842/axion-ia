@@ -41,7 +41,7 @@ import { useForm, useWatch, type Control } from "react-hook-form";
 import { useLocale } from "next-intl";
 import { usePathname } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { ArrowRight, Check, ChevronDown } from "lucide-react";
+import { ArrowRight, Check, ChevronDown, Paperclip } from "lucide-react";
 import { ACCENT_CLASSES, type ServiceAccent } from "@/content/services-visual";
 import {
   unifiedContactSchema,
@@ -53,7 +53,18 @@ import {
   type UnifiedContactInput,
   type UnifiedContactType,
 } from "@/lib/schemas/unified-contact-schema";
-import { submitUnifiedContactAction } from "@/features/unified-contact/actions";
+import {
+  finaliserPiecesJointesAction,
+  submitUnifiedContactAction,
+} from "@/features/unified-contact/actions";
+import {
+  ACCEPT_PIECES_JOINTES,
+  CHAMP_PIECES_ANNONCEES,
+  MESSAGES_PIECES_JOINTES,
+  TYPE_ENVOI_PIECE_JOINTE,
+  controlerListePiecesJointes,
+  tailleLisiblePieceJointe,
+} from "@/lib/contact/pieces-jointes";
 import { Link } from "@/i18n/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -131,6 +142,16 @@ const LABELS = {
       "12+": "12+ semaines",
     },
     selectNone: "Non précisé",
+    piecesLabel: "Pièces jointes (cahier des charges, devis, PDF…)",
+    piecesHint:
+      "Facultatif. Jusqu'à 3 fichiers, 25 Mo chacun, 50 Mo au total. PDF, Word, Excel, PowerPoint, ODT, TXT, CSV, PNG, JPG ou ZIP.",
+    piecesChoisir: "Choisir des fichiers",
+    piecesChanger: "Choisir d'autres fichiers",
+    piecesRetirer: "Retirer",
+    piecesRetirerAria: (nom: string) => `Retirer ${nom}`,
+    piecesNonRecues:
+      "Votre demande est bien arrivée, mais vos pièces jointes n'ont pas été reçues : envoyez-les à contact@axion-ia.com en rappelant la référence ci-dessous.",
+    piecesEnvoiAria: (nom: string) => `Envoi de ${nom}`,
     consentLead: "J'accepte que mes données servent à traiter cette demande, conformément à la ",
     consentLink: "politique de confidentialité",
     consentTail: ". Aucune revente, aucun profilage, désinscription à tout moment.",
@@ -212,6 +233,16 @@ const LABELS = {
       "12+": "12+ weeks",
     },
     selectNone: "Not specified",
+    piecesLabel: "Attachments (specifications, quote, PDF…)",
+    piecesHint:
+      "Optional. Up to 3 files, 25 MB each, 50 MB in total. PDF, Word, Excel, PowerPoint, ODT, TXT, CSV, PNG, JPG or ZIP.",
+    piecesChoisir: "Choose files",
+    piecesChanger: "Choose other files",
+    piecesRetirer: "Remove",
+    piecesRetirerAria: (nom: string) => `Remove ${nom}`,
+    piecesNonRecues:
+      "Your request arrived, but your attachments were not received: please email them to contact@axion-ia.com with the reference below.",
+    piecesEnvoiAria: (nom: string) => `Uploading ${nom}`,
     consentLead: "I agree my data is used to handle this request, per the ",
     consentLink: "privacy policy",
     consentTail: ". No resale, no profiling, one-click unsubscribe.",
@@ -425,6 +456,25 @@ function isSecondaryType(t: UnifiedContactType | undefined): boolean {
   return t !== undefined && (TYPE_GROUPS.autre as readonly UnifiedContactType[]).includes(t);
 }
 
+/**
+ * PUT d'un fichier sur son URL signée — `XMLHttpRequest` natif, pour la
+ * progression (aucune bibliothèque d'envoi : budget JS de /contact). Le type
+ * envoyé est celui que l'URL a signé ; la longueur, le navigateur la pose.
+ */
+function envoyerFichier(url: string, f: File, auProgres: (pct: number) => void): Promise<void> {
+  return new Promise((resolve, reject) => {
+    const xhr = new XMLHttpRequest();
+    xhr.open("PUT", url);
+    xhr.setRequestHeader("Content-Type", TYPE_ENVOI_PIECE_JOINTE);
+    xhr.upload.onprogress = (e) => {
+      if (e.lengthComputable) auProgres(Math.round((e.loaded / e.total) * 100));
+    };
+    xhr.onload = () => (xhr.status >= 200 && xhr.status < 300 ? resolve() : reject(xhr.status));
+    xhr.onerror = xhr.onabort = xhr.ontimeout = () => reject(0);
+    xhr.send(f);
+  });
+}
+
 function UnifiedContactFormBody({
   defaultType,
   lockType = false,
@@ -531,8 +581,47 @@ function UnifiedContactFormBody({
   const [serverError, setServerError] = React.useState<string | null>(null);
   const [submissionId, setSubmissionId] = React.useState<string | null>(null);
 
+  // Pièces jointes (2026-10-15) — champ natif, hors react-hook-form : la liste
+  // retenue vit ici, le champ n'est que le moyen de la choisir.
+  const piecesRef = React.useRef<HTMLInputElement>(null);
+  const [pieces, setPieces] = React.useState<File[]>([]);
+  const [erreurPieces, setErreurPieces] = React.useState<string | null>(null);
+  // Messages des pièces NON reçues (vide : toutes reçues, ou aucune pièce).
+  const [piecesNonRecues, setPiecesNonRecues] = React.useState<string[]>([]);
+  // Progression de l'envoi de chaque fichier (0-100), dans l'ordre de `pieces`.
+  const [progression, setProgression] = React.useState<Array<number | null>>([]);
+  // La demande est ENREGISTRÉE : seul ce drapeau ouvre l'écran de succès (un
+  // `return` sans envoi rend aussi la soumission « réussie » pour react-hook-form).
+  const [envoye, setEnvoye] = React.useState(false);
+
+  function choisirPieces(liste: File[]) {
+    setPieces(liste);
+    setErreurPieces(controlerListePiecesJointes(liste));
+  }
+
+  function retirerPiece(index: number) {
+    const reste = pieces.filter((_, i) => i !== index);
+    // Le champ natif doit montrer la même liste : `DataTransfer` la reconstruit.
+    // Sans lui (navigateur ancien), on vide le champ et la liste.
+    try {
+      const dt = new DataTransfer();
+      reste.forEach((f) => dt.items.add(f));
+      if (piecesRef.current) piecesRef.current.files = dt.files;
+      choisirPieces(reste);
+    } catch {
+      if (piecesRef.current) piecesRef.current.value = "";
+      choisirPieces([]);
+    }
+  }
+
   async function onSubmit(values: UnifiedContactInput, event?: React.BaseSyntheticEvent) {
     setServerError(null);
+    const refusPieces = controlerListePiecesJointes(pieces);
+    if (refusPieces) {
+      setErreurPieces(refusPieces);
+      piecesRef.current?.focus();
+      return;
+    }
     // Zéro friction (Will 2026-07-01) : on n'empêche PLUS l'envoi si Turnstile
     // n'a pas produit de token (bloqueur/DNS). Le serveur soft-fail le captcha
     // (honeypot + rate-limit protègent). On envoie le token s'il existe.
@@ -554,6 +643,13 @@ function UnifiedContactFormBody({
       if (effectiveSubType) fd.set("subType", effectiveSubType);
       fd.set("consent", values.consent ? "true" : "false");
       if (turnstileToken) fd.set("cf-turnstile-response", turnstileToken);
+      // Les fichiers ne partent PAS avec le formulaire : seulement leur annonce.
+      if (pieces.length > 0) {
+        fd.set(
+          CHAMP_PIECES_ANNONCEES,
+          JSON.stringify(pieces.map((f) => ({ nom: f.name, taille: f.size }))),
+        );
+      }
       reporterLeurre(fd, event?.target);
 
       const result = await submitUnifiedContactAction({ ok: false, error: "" }, fd);
@@ -563,7 +659,17 @@ function UnifiedContactFormBody({
         setServerError(message);
         throw new Error(message);
       }
+      // 🔑 La demande est enregistrée. Rien de ce qui suit ne peut la perdre :
+      // un fichier qui échoue devient « pièce non reçue ».
+      let nonRecues: string[] = [];
+      if (result.envoiPieces) {
+        nonRecues = await envoyerPieces(result.submissionId, result.envoiPieces, pieces);
+      } else if (result.piecesNonRecues) {
+        nonRecues = [t.piecesNonRecues];
+      }
+      setPiecesNonRecues(nonRecues);
       setSubmissionId(result.submissionId || null);
+      setEnvoye(true);
     } catch (err) {
       // Deploy-skew (Server Action introuvable car page chargée avant un
       // déploiement) → message « rechargez » plutôt que générique.
@@ -576,8 +682,42 @@ function UnifiedContactFormBody({
     }
   }
 
+  /**
+   * Envoie chaque fichier sur son URL (PUT direct vers le stockage, XHR natif
+   * pour la progression), puis demande au serveur de les contrôler. Ne lève
+   * jamais : rend les messages des pièces non reçues.
+   */
+  async function envoyerPieces(
+    id: string,
+    envoi: { jeton: string; envois: ReadonlyArray<{ id: string; url: string; taille: number }> },
+    fichiers: File[],
+  ): Promise<string[]> {
+    setProgression(fichiers.map(() => 0));
+    await Promise.all(
+      envoi.envois.map((e, i) => {
+        const f = fichiers[i];
+        if (!f || f.size !== e.taille) return null;
+        return envoyerFichier(e.url, f, (pct) =>
+          setProgression((p) => p.map((v, j) => (j === i ? pct : v))),
+        ).catch(() => null);
+      }),
+    );
+    let issues: ReadonlyArray<{ id: string; statut: string; message?: string }> = [];
+    try {
+      const fin = await finaliserPiecesJointesAction(id, envoi.jeton);
+      if (fin.ok) issues = fin.pieces;
+    } catch {
+      // le serveur ne répond pas : toutes les pièces sont « non reçues »
+    }
+    return fichiers.flatMap((f, i) => {
+      const issue = issues.find((p) => p.id === envoi.envois[i]?.id);
+      if (issue?.statut === "recue") return [];
+      return [issue?.message ?? MESSAGES_PIECES_JOINTES.nonRecue(f.name)];
+    });
+  }
+
   // ---- Succès ------------------------------------------------------------
-  if (isSubmitSuccessful && !serverError) {
+  if (envoye && isSubmitSuccessful && !serverError) {
     return (
       <div
         className={cn(
@@ -599,6 +739,17 @@ function UnifiedContactFormBody({
           {t.successTitle}
         </p>
         <p className="text-fg-soft mt-3 text-base leading-relaxed">{t.successBody}</p>
+        {piecesNonRecues.length > 0 ? (
+          <Alert variant="warning" className="mt-4">
+            <AlertDescription>
+              {piecesNonRecues.map((m) => (
+                <span key={m} className="block">
+                  {m}
+                </span>
+              ))}
+            </AlertDescription>
+          </Alert>
+        ) : null}
         {submissionId ? (
           <p className="text-fg-muted mt-4 text-sm">
             {t.referenceLabel} :{" "}
@@ -901,6 +1052,88 @@ function UnifiedContactFormBody({
         {errors.message ? (
           <p id="unified-msg-err" role="alert" className="text-accent-red text-xs">
             {errors.message.message}
+          </p>
+        ) : null}
+      </div>
+
+      {/* Pièces jointes — champ NATIF, facultatif, masqué en `sr-only` : le
+          contrôle fichier de Chrome ne rétrécit pas sous ~312 px (garde
+          `formulaires-mobile-first.spec.ts`). Le déclencheur est son <label>,
+          qui l'enveloppe — le focus clavier s'y voit par `focus-within`.
+          Le bloc est toujours rendu (aucun décalage au chargement) ; la liste
+          n'apparaît qu'après un choix de la personne. Le serveur revérifie
+          tout, octets compris. */}
+      <div className="grid gap-1.5">
+        <p id="unified-pieces-titre" className="text-fg text-sm leading-none font-medium">
+          {t.piecesLabel}
+        </p>
+        <p id="unified-pieces-hint" className="text-fg-muted text-[12.5px] leading-relaxed">
+          {t.piecesHint}
+        </p>
+        <label
+          htmlFor="unified-pieces"
+          className="border-border-strong bg-paper text-fg hover:border-terracotta focus-within:ring-terracotta/30 flex w-full min-w-0 cursor-pointer items-center justify-center gap-2 rounded-lg border border-dashed px-4 py-3 text-[13.5px] font-semibold transition-colors focus-within:ring-4"
+        >
+          <Paperclip aria-hidden="true" className="h-4 w-4 shrink-0" strokeWidth={2} />
+          {pieces.length > 0 ? t.piecesChanger : t.piecesChoisir}
+          <input
+            ref={piecesRef}
+            id="unified-pieces"
+            type="file"
+            // `className` AVANT tout gestionnaire : la garde mobile-first lit la
+            // balise jusqu'au premier `>`, et une flèche `=>` en porte un.
+            className="sr-only"
+            multiple
+            accept={ACCEPT_PIECES_JOINTES}
+            onChange={(e) => choisirPieces(Array.from(e.currentTarget.files ?? []))}
+            aria-labelledby="unified-pieces-titre"
+            aria-invalid={erreurPieces ? true : undefined}
+            aria-describedby={
+              erreurPieces ? "unified-pieces-hint unified-pieces-err" : "unified-pieces-hint"
+            }
+          />
+        </label>
+        {pieces.length > 0 ? (
+          <ul className="text-fg-soft space-y-1 text-[13px]">
+            {pieces.map((f, i) => (
+              <li key={`${f.name}-${i}`} className="flex items-center justify-between gap-3">
+                <span className="min-w-0 truncate">
+                  {f.name}{" "}
+                  <span className="text-fg-muted tabular-nums">
+                    · {tailleLisiblePieceJointe(f.size)}
+                  </span>
+                </span>
+                {progression[i] != null ? (
+                  <span
+                    role="progressbar"
+                    aria-label={t.piecesEnvoiAria(f.name)}
+                    aria-valuemin={0}
+                    aria-valuemax={100}
+                    aria-valuenow={progression[i] ?? 0}
+                    className="bg-border h-1.5 w-20 shrink-0 overflow-hidden rounded-full"
+                  >
+                    <span
+                      className="bg-terracotta block h-full transition-[width]"
+                      style={{ width: `${progression[i] ?? 0}%` }}
+                    />
+                  </span>
+                ) : null}
+                <button
+                  type="button"
+                  disabled={isSubmitting}
+                  onClick={() => retirerPiece(i)}
+                  aria-label={t.piecesRetirerAria(f.name)}
+                  className="text-terracotta-deep focus-visible:ring-terracotta shrink-0 rounded text-[12.5px] font-semibold underline underline-offset-2 focus-visible:ring-2 focus-visible:outline-none"
+                >
+                  {t.piecesRetirer}
+                </button>
+              </li>
+            ))}
+          </ul>
+        ) : null}
+        {erreurPieces ? (
+          <p id="unified-pieces-err" role="alert" className="text-accent-red text-xs">
+            {erreurPieces}
           </p>
         ) : null}
       </div>

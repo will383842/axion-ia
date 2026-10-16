@@ -59,7 +59,18 @@ import { deleteCv } from "@/server/careers/cv-storage";
 import { supprimerVideosCandidature } from "@/server/careers/videos-candidat";
 import { decryptPii } from "@/lib/pii-crypto";
 import { candidaturesAConserverPour } from "@/lib/rgpd-formateur-independant";
+import { nettoyerPiecesJointesContact } from "@/server/contact/pieces-jointes";
 import type { RetentionPurgeJobData } from "../types";
+
+/**
+ * Seconde tâche de cette file (2026-10-15), horaire : les pièces jointes du
+ * formulaire de contact dont l'envoi a été abandonné (reprises à 1 h, accusé
+ * différé compris) et les objets TEMPORAIRES de plus de 24 h — des fichiers
+ * jamais acceptés, qu'aucune ligne ne désigne plus. Ce n'est pas une purge de
+ * données de personnes : une pièce REÇUE a quitté le préfixe temporaire, et
+ * rien ici ne la touche. Voir `server/contact/pieces-jointes.ts`.
+ */
+export const TACHE_PIECES_JOINTES_CONTACT = "pieces-jointes-contact";
 
 const DEFAULTS = {
   generationLogs: 12,
@@ -309,8 +320,21 @@ export async function executerPurgeRetention(): Promise<void> {
   );
 }
 
+/** Aiguillage de la file : la purge quotidienne, ou la tâche horaire des pièces jointes. */
+export async function traiterTacheRetention(job: { name: string }): Promise<void> {
+  if (job.name === TACHE_PIECES_JOINTES_CONTACT) {
+    const bilan = await nettoyerPiecesJointesContact();
+    console.log(
+      `[retention-purge][pieces-jointes-contact] demandesReprises=${bilan.demandesReprises} ` +
+        `temporairesSupprimes=${bilan.temporairesSupprimes}`,
+    );
+    return;
+  }
+  await executerPurgeRetention();
+}
+
 export function startRetentionPurgeWorker(): Worker<RetentionPurgeJobData> {
-  const worker = new Worker<RetentionPurgeJobData>("retention-purge", executerPurgeRetention, {
+  const worker = new Worker<RetentionPurgeJobData>("retention-purge", traiterTacheRetention, {
     connection: getBullConnectionOrThrow(),
     concurrency: 1,
     lockDuration: 120_000,

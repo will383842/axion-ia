@@ -23,13 +23,15 @@ import { readFileSync } from "node:fs";
 import { execFileSync } from "node:child_process";
 import { describe, it, expect } from "vitest";
 import { formatNotificationPlain } from "../format";
+import { formatNotificationClient, type EvenementClient } from "../format-clients";
+import { ALL_NOTIFICATION_CATEGORIES, estCategorieClient, telegramGroupFor } from "../routing";
 import type { NotificationCategory, NotificationEvent } from "../types";
 
 // ─── 1. Le hub : rendu de chaque catégorie ──────────────────────────────────
 
 const NOM = "Marie Dupontcanari";
 const EMAIL = "marie.canari@exemple.fr";
-const TEL = "+33 6 12 34 56 78";
+const TEL = "+33 6 39 98 12 34";
 const TEXTE = "TEXTE-SAISI-CANARI";
 
 /** Ce qui ne doit JAMAIS ressortir. */
@@ -37,8 +39,8 @@ const INTERDITS = [
   "Dupontcanari",
   "canari@",
   "exemple.fr",
-  "6 12 34 56 78",
-  "612345678",
+  "6 39 98 12 34",
+  "639981234",
   "CANARI",
   "4500 €",
   "12 rue des Témoins",
@@ -168,6 +170,50 @@ const PAYLOADS: Record<NotificationCategory, Record<string, unknown>> = {
     inviteeName: NOM,
     reason: TEXTE,
   },
+  // Les catégories CLIENT (décision Will 15/10) : leur gabarit ALLÉGÉ — celui
+  // du repli, quand le salon « Clients » n'existe pas encore ou que l'envoi y
+  // échoue — ne porte rien non plus. Seul le salon dédié reçoit le détail
+  // (`format-clients.ts`, plus bas).
+  CLIENT_CALL_BOOKED: {
+    eventUri: "evt_1",
+    inviteeEmail: EMAIL,
+    inviteeName: NOM,
+    inviteePhone: TEL,
+    eventStartTime: "2026-10-12T08:00:00Z",
+    eventName: "Diagnostic IA",
+    lieu: "12 rue des Témoins, Grenoble",
+    answersText: TEXTE,
+  },
+  CLIENT_CALL_CANCELED: {
+    eventUri: "evt_1",
+    inviteeEmail: EMAIL,
+    inviteeName: NOM,
+    inviteePhone: TEL,
+    reason: TEXTE,
+    canceledBy: NOM,
+  },
+  CLIENT_CALL_RESCHEDULED: {
+    eventUri: "evt_1",
+    inviteeEmail: EMAIL,
+    inviteeName: NOM,
+    inviteePhone: TEL,
+    oldStart: "2026-10-12T08:00:00Z",
+    newStart: "2026-10-13T08:00:00Z",
+  },
+  CHATBOT_LEAD_CAPTURED: {
+    submissionId: "sub_3",
+    contactName: NOM,
+    contactEmail: EMAIL,
+    contactPhone: TEL,
+    companyName: "Exemple SARL",
+    message: TEXTE,
+  },
+  CHATBOT_ESCALATION: {
+    escalationId: "esc_1",
+    question: TEXTE,
+    contexte: TEXTE,
+    contactEmail: EMAIL,
+  },
   CALENDLY_INVITEE_RESCHEDULED: {
     eventUri: "evt_1",
     inviteeEmail: EMAIL,
@@ -233,6 +279,8 @@ const AVEC_FICHE: NotificationCategory[] = [
   "NEWSLETTER_CONFIRMED",
   "GUIDE_REQUESTED",
   "CALENDLY_INVITEE_CREATED",
+  "CLIENT_CALL_BOOKED",
+  "CHATBOT_LEAD_CAPTURED",
   "APPORTEUR_REPLIED",
 ];
 
@@ -264,6 +312,43 @@ describe("Telegram (hub) — aucune coordonnée ni texte saisi, quelle que soit 
     for (const category of AVEC_FICHE) {
       expect(rendu(category), category).toMatch(/https?:\/\/\S+\/fr\/[^/\s]+\//);
     }
+  });
+});
+
+// ─── 1 bis. L'EXCEPTION, explicite : le salon « Clients » (décision Will 15/10) ─
+
+describe("Telegram — le salon « Clients » est la SEULE exception, et elle est bornée", () => {
+  it("le gabarit complet porte nom, e-mail, téléphone et message des clients", () => {
+    const texte = formatNotificationClient({
+      category: "CONTACT_FORM_SUBMITTED",
+      payload: PAYLOADS.CONTACT_FORM_SUBMITTED,
+    } as unknown as EvenementClient);
+    expect(texte).toContain(NOM);
+    expect(texte).toContain(EMAIL);
+    expect(texte).toContain(TEL);
+    expect(texte).toContain(TEXTE);
+  });
+
+  it("🔴 seules les catégories du groupe « clients » peuvent l'emprunter", () => {
+    for (const c of ALL_NOTIFICATION_CATEGORIES) {
+      expect(estCategorieClient(c), c).toBe(telegramGroupFor(c) === "clients");
+    }
+  });
+
+  it("🔴 le détail ne part QUE vers le salon dédié — le repli reçoit le gabarit allégé", () => {
+    // Le câblage, pas seulement la définition : dans `index.ts`, le gabarit
+    // complet n'est envoyé qu'au salon résolu par `resolveSalonClients()`, et
+    // le dernier essai (repli) envoie `texteAllege`.
+    const source = readFileSync("src/server/notifications/index.ts", "utf-8");
+    const fonction = source.slice(
+      source.indexOf("async function envoyerAuSalonClients"),
+      source.indexOf("async function dispatchChannels"),
+    );
+    expect(fonction).toMatch(/const salon = resolveSalonClients\(\)/);
+    expect(fonction).toMatch(/formatNotificationClient\(event\)/);
+    expect(fonction).toMatch(/chatId: salon\.chatId/);
+    expect(fonction).toMatch(/text: texteAllege,[\s\S]*chatId: repli\.chatId/);
+    expect(source.match(/formatNotificationClient\(/g)).toHaveLength(1);
   });
 });
 

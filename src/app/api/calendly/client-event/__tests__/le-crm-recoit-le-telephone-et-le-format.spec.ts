@@ -100,9 +100,9 @@ const RESERVATION = {
 const APRES_ENRICHISSEMENT = {
   inviteeName: "Camille Prospect",
   inviteeEmail: "camille@exemple.test",
-  inviteePhone: "+33 6 12 34 56 78",
+  inviteePhone: "+33 6 39 98 12 34",
   startTime: new Date("2026-09-25T09:30:00.000Z"),
-  location: "+33 6 12 34 56 78",
+  location: "+33 6 39 98 12 34",
   rawPayload: { event: { location: { type: "outbound_call" } } },
 };
 
@@ -146,7 +146,20 @@ describe("l'événement CRM d'une réservation prise sur /appel", () => {
     expect(
       personne["phone"],
       "l'envoi part avant l'enrichissement : le CRM ne recevra jamais le numéro",
-    ).toBe("+33 6 12 34 56 78");
+    ).toBe("+33 6 39 98 12 34");
+  });
+
+  // Décision Will 15/10 : `notifyPhone` était lu et jamais transmis à l'alerte.
+  it("🔴 l'alerte du salon « Clients » porte AUSSI le téléphone et le lieu", async () => {
+    const { POST } = await import("../route");
+    await POST(requete(RESERVATION));
+    const alerte = notifyMock.mock.calls[0]?.[0] as {
+      category: string;
+      payload: Record<string, unknown>;
+    };
+    expect(alerte.category).toBe("CLIENT_CALL_BOOKED");
+    expect(alerte.payload["inviteePhone"]).toBe("+33 6 39 98 12 34");
+    expect(alerte.payload["lieu"]).toBe("+33 6 39 98 12 34");
   });
 
   it("🔴 porte le format, et DANS `payload`", async () => {

@@ -55,6 +55,9 @@ function porteurs(motif: RegExp): string[] {
 /** Les fichiers qui EXCLUENT des familles client / CRM / dossier / visio. */
 const BASCULES = [
   "src/app/api/calendly/client-event/route.ts",
+  // Salon « Clients » (décision Will 15/10) : un échange apporteur ou formateur
+  // n'y entre pas — il reste au salon 📅 Calendly.
+  "src/server/calendly/categorie-alerte.ts",
   "src/server/calendly/rappels-appel.ts",
   "src/server/crm-sync/index.ts",
   "src/server/crm-sync/reconcile.ts",

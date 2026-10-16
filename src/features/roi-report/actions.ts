@@ -27,7 +27,8 @@ import { checkRateLimit } from "@/lib/rate-limit";
 import { verifyTurnstile } from "@/lib/turnstile";
 import { encryptPii, decryptPii } from "@/lib/pii-crypto";
 import { hashIp } from "@/lib/security/ip-hash";
-import { notify } from "@/server/notifications";
+import type { NotifyInput } from "@/server/notifications";
+import { notifyApresReponse } from "@/server/notifications/apres-reponse";
 import { enqueueEmail } from "@/server/queue/queues";
 import { ENTITE_MESSAGE } from "@/lib/contact/accuse-attendu";
 import { parseLocale } from "@/lib/schemas/locale";
@@ -188,8 +189,8 @@ export async function submitRoiReportAction(
     });
 
     // ── Meilleur effort : le lead est déjà en base ──────────────────────
-    try {
-      await notify({
+    notifyApresReponse(
+      {
         category: "CONTACT_FORM_SUBMITTED",
         payload: {
           submissionId: submission.id,
@@ -198,6 +199,8 @@ export async function submitRoiReportAction(
           ...(data.companyName ? { companyName: data.companyName } : {}),
           companySize: headcountLabel,
           formType: "simulateur_roi",
+          ...(answers.sector ? { companySector: sectorLabel } : {}),
+          submittedAt: submission.submittedAt.toISOString(),
           // Le montant estimé est le premier critère de priorisation d'un
           // rappel : il doit être visible dans la notification, pas dans un
           // second clic.
@@ -205,13 +208,9 @@ export async function submitRoiReportAction(
           locale,
         },
         dedupKey: submission.id,
-      } as Parameters<typeof notify>[0]);
-    } catch (notifErr) {
-      console.error("[roi-report] notify best-effort a échoué:", notifErr);
-      Sentry.captureException(notifErr, {
-        tags: { action: "submitRoiReportAction", step: "notify" },
-      });
-    }
+      } as NotifyInput,
+      "roi-report",
+    );
 
     try {
       await enqueueEmail(
@@ -352,13 +351,15 @@ export async function attachRoiCallbackAction(
     // Meilleur effort : un lead qui accepte d'être rappelé est le plus chaud du
     // tunnel, la notification doit partir — mais son échec ne doit pas faire
     // croire au visiteur que son numéro n'a pas été pris.
-    try {
-      await notify({
+    notifyApresReponse(
+      {
         category: "CONTACT_FORM_SUBMITTED",
         payload: {
           submissionId: existing.id,
-          contactName: "—",
-          contactEmail: "—",
+          // Décision Will 15/10 : le salon « Clients » dit QUI rappeler. Le
+          // nom et l'adresse sont relus de la fiche (chiffrés au repos).
+          contactName: decryptPii(existing.contactName) || "—",
+          contactEmail: decryptPii(existing.contactEmail) || "—",
           contactPhone: telephone,
           ...(existing.companyName && existing.companyName !== "—"
             ? { companyName: existing.companyName }
@@ -367,13 +368,9 @@ export async function attachRoiCallbackAction(
           locale: "fr",
         },
         dedupKey: `${existing.id}:phone`,
-      } as Parameters<typeof notify>[0]);
-    } catch (notifErr) {
-      console.error("[roi-report] notify rappel best-effort a échoué:", notifErr);
-      Sentry.captureException(notifErr, {
-        tags: { action: "attachRoiCallbackAction", step: "notify" },
-      });
-    }
+      } as NotifyInput,
+      "roi-callback",
+    );
 
     return { ok: true };
   } catch (err) {

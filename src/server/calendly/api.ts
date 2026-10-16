@@ -43,6 +43,13 @@ const CALENDLY_API_BASE = "https://api.calendly.com";
  *  bloque jamais plus de 5 s, quitte à laisser la ligne non enrichie. */
 const TIMEOUT_MS = 5_000;
 
+/** `invitee.cancellation` de l'API Calendly v2, réduit à ce que l'alerte lit. */
+export interface AnnulationCalendly {
+  reason: string | null;
+  canceledBy: string | null;
+  cancelerType: string | null;
+}
+
 export interface CalendlyInviteeData {
   inviteeName: string | null;
   inviteeEmail: string | null;
@@ -77,6 +84,16 @@ export interface CalendlyInviteeData {
    * recevoir dans la notification, pas seulement les métadonnées du RDV.
    */
   answersText: string | null;
+  /**
+   * L'annulation telle que Calendly la rapporte (`invitee.cancellation`, API
+   * v2) : le MOTIF ÉCRIT par la personne, qui a annulé, et si c'est l'invité ou
+   * l'hôte. `null` tant que le rendez-vous n'est pas annulé.
+   *
+   * Décision Will 15/10 : l'alerte d'annulation affichait « Annulation
+   * constatée côté Calendly » alors que l'API donnait le vrai motif.
+   * Facultatif dans le type : les doubles de test d'avant ne le portent pas.
+   */
+  cancellation?: AnnulationCalendly | null;
   /**
    * Les deux objets Calendry bruts, tels que l'API vient de les rendre.
    *
@@ -342,8 +359,20 @@ export async function fetchCalendlyInvitee(
       rescheduleUrl: stringOrNull(invitee["reschedule_url"], 500),
       eventTypeName: stringOrNull(event["name"], 255),
       answersText: extractAnswersText(invitee["questions_and_answers"]),
+      cancellation: lireAnnulation(invitee["cancellation"]),
       raw: { invitee, event },
     },
+  };
+}
+
+/** `invitee.cancellation` → motif, auteur et type d'auteur ; `null` sans annulation. */
+function lireAnnulation(brut: unknown): AnnulationCalendly | null {
+  if (!brut || typeof brut !== "object") return null;
+  const c = brut as Record<string, unknown>;
+  return {
+    reason: stringOrNull(c["reason"], 2000),
+    canceledBy: stringOrNull(c["canceled_by"], 255),
+    cancelerType: stringOrNull(c["canceler_type"], 40),
   };
 }
 

@@ -9,6 +9,35 @@ export type NotificationSeverity = "info" | "warn" | "error" | "critical";
 
 export type NotificationChannel = "telegram" | "email" | "sentry" | "whatsapp";
 
+/**
+ * Ce qu'une demande de CLIENT apporte en plus de l'identité — tout ce qui permet
+ * à Will de répondre sans ouvrir la console (décision Will 15/10).
+ *
+ * Champs FACULTATIFS : chaque émetteur n'a pas la même information (le
+ * simulateur ROI n'a pas de message, le chatbot n'a pas d'UTM). Seul le salon
+ * « Clients » les affiche (`format-clients.ts`) ; les autres salons gardent le
+ * gabarit allégé du 11/10/2026.
+ */
+export interface DetailsDemandeClient {
+  /** Type de demande du formulaire unifié (`audit`, `formation`, `simulateur_roi`…). */
+  formType?: string;
+  subType?: string;
+  companySize?: string;
+  companySector?: string;
+  budgetIndicative?: string;
+  timingWeeks?: string;
+  /** Page d'où la demande est partie. */
+  pageUrl?: string;
+  utmSource?: string;
+  utmMedium?: string;
+  utmCampaign?: string;
+  utmContent?: string;
+  /** Ville déduite du référent (cookie), distincte de la ville saisie. */
+  referrerCity?: string;
+  /** Instant de la demande (ISO 8601) ; à défaut, l'heure d'envoi. */
+  submittedAt?: string;
+}
+
 export type NotificationEvent =
   // === Formulaires publics ===
   | {
@@ -28,7 +57,7 @@ export type NotificationEvent =
         message?: string;
         source?: string;
         locale: "fr" | "en";
-      };
+      } & DetailsDemandeClient;
     }
   | {
       category: "AUDIT_REQUEST_SUBMITTED";
@@ -46,7 +75,7 @@ export type NotificationEvent =
         message?: string;
         source?: string;
         locale: "fr" | "en";
-      };
+      } & DetailsDemandeClient;
     }
   | {
       category: "INTERVENTION_REQUEST_SUBMITTED";
@@ -62,7 +91,7 @@ export type NotificationEvent =
         message?: string;
         source?: string;
         locale: "fr" | "en";
-      };
+      } & DetailsDemandeClient;
     }
   | {
       category: "IMPLEMENTATION_REQUEST_SUBMITTED";
@@ -77,7 +106,7 @@ export type NotificationEvent =
         message?: string;
         source?: string;
         locale: "fr" | "en";
-      };
+      } & DetailsDemandeClient;
     }
   | {
       category: "QUOTE_REQUEST_RECEIVED";
@@ -93,7 +122,7 @@ export type NotificationEvent =
         message?: string;
         source?: string;
         locale: "fr" | "en";
-      };
+      } & DetailsDemandeClient;
     }
   // === Demandes périphériques (Form v2 2026-05-28) ===
   // 5 catégories séparées (et non MISC générique) car chacune a une routing
@@ -338,7 +367,7 @@ export type NotificationEvent =
         message?: string;
         source?: string;
         locale: "fr" | "en";
-      };
+      } & DetailsDemandeClient;
     }
   // === Newsletter ===
   | {
@@ -410,7 +439,12 @@ export type NotificationEvent =
     }
   // === Calendly (Chantier 3) ===
   | {
-      category: "CALENDLY_INVITEE_CREATED";
+      // `CLIENT_CALL_BOOKED` = même payload, catégorie SÉPARÉE (décision Will
+      // 15/10) : la réservation d'un CLIENT part au salon « Clients » avec tout
+      // le détail ; celle d'un candidat apporteur ou d'un formateur reste dans
+      // 📅 Calendly. Le choix se fait au point d'appel
+      // (`categorieAlerteCalendly`, `server/calendly/categorie-alerte.ts`).
+      category: "CALENDLY_INVITEE_CREATED" | "CLIENT_CALL_BOOKED";
       payload: {
         eventUri: string;
         inviteeEmail: string;
@@ -440,6 +474,7 @@ export type NotificationEvent =
         pageUrl?: string;
         utmSource?: string;
         utmCampaign?: string;
+        utmMedium?: string;
         /** Champs enrichis depuis l'API Calendly (2026-08-09). */
         inviteePhone?: string;
         cancelUrl?: string;
@@ -456,11 +491,23 @@ export type NotificationEvent =
       };
     }
   | {
-      category: "CALENDLY_INVITEE_CANCELED";
+      // `CLIENT_CALL_CANCELED` : même payload, pour l'annulation d'un CLIENT
+      // (décision Will 15/10, cf. `CLIENT_CALL_BOOKED`).
+      category: "CALENDLY_INVITEE_CANCELED" | "CLIENT_CALL_CANCELED";
       payload: {
         eventUri: string;
         inviteeEmail: string;
+        /**
+         * Le MOTIF ÉCRIT par la personne qui annule (`cancellation.reason` de
+         * l'API Calendly v2). Absent quand elle n'a rien écrit.
+         */
         reason?: string;
+        /** Nom de la personne qui a annulé (`cancellation.canceled_by`). */
+        canceledBy?: string;
+        /** `invitee` ou `host` (`cancellation.canceler_type`). */
+        cancelerType?: string;
+        inviteePhone?: string;
+        typeRendezVous?: string;
         // Ajoutés le 2026-08-09 : une annulation qui ne dit ni QUI ni QUAND
         // oblige à ouvrir la console pour comprendre de quel RDV il s'agit.
         inviteeName?: string;
@@ -469,7 +516,9 @@ export type NotificationEvent =
       };
     }
   | {
-      category: "CALENDLY_INVITEE_RESCHEDULED";
+      // `CLIENT_CALL_RESCHEDULED` : même payload, pour le report d'un CLIENT
+      // (décision Will 15/10, cf. `CLIENT_CALL_BOOKED`).
+      category: "CALENDLY_INVITEE_RESCHEDULED" | "CLIENT_CALL_RESCHEDULED";
       payload: {
         eventUri: string;
         inviteeEmail: string;
@@ -477,6 +526,39 @@ export type NotificationEvent =
         newStart: string;
         inviteeName?: string;
         eventName?: string;
+        inviteePhone?: string;
+        typeRendezVous?: string;
+        format?: string;
+        lieu?: string;
+        cancelUrl?: string;
+      };
+    }
+  // === Chatbot : lead capturé et question escaladée (décision Will 15/10) ===
+  // Partaient en `sendTelegram` legacy → `MONITORING_ALERT`, silencieux et
+  // noyés dans 🔔 Système. Ce sont des CLIENTS : salon « Clients ».
+  | {
+      category: "CHATBOT_LEAD_CAPTURED";
+      payload: {
+        submissionId: string;
+        contactName: string;
+        contactEmail: string;
+        contactPhone?: string;
+        companyName?: string;
+        /** Le besoin résumé dans la conversation, en entier. */
+        message?: string;
+        submittedAt?: string;
+      };
+    }
+  | {
+      category: "CHATBOT_ESCALATION";
+      payload: {
+        escalationId: string;
+        /** La question posée, en entier. */
+        question: string;
+        /** Contexte de la conversation transmis par le bot. */
+        contexte?: string;
+        contactEmail?: string;
+        submittedAt?: string;
       };
     }
   // === Réponse entrante d'un candidat apporteur (2026-09-27) ===

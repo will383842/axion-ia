@@ -3,12 +3,13 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 
 const escalationCreate = vi.fn();
-const sendTelegram = vi.fn();
+// Décision Will 15/10 : l'escalade part par `notify()` (salon « Clients »).
+const notify = vi.fn();
 const enqueueEmail = vi.fn();
 vi.mock("@/lib/prisma", () => ({
   prisma: { chatEscalation: { create: (...a: unknown[]) => escalationCreate(...a) } },
 }));
-vi.mock("@/lib/telegram", () => ({ sendTelegram: (...a: unknown[]) => sendTelegram(...a) }));
+vi.mock("@/server/notifications", () => ({ notify: (...a: unknown[]) => notify(...a) }));
 // 🔴 2026-09-12 — CE MOCK MANQUAIT, ET LE TEST NE PASSAIT QUE PAR ACCIDENT.
 //
 // `escaladerQuestion` enfile une confirmation visiteur via `enqueueEmail`, donc
@@ -33,8 +34,9 @@ import {
 const ctx = { tenantId: "t1", conversationId: "conv-1" };
 
 beforeEach(() => {
+  vi.unstubAllEnvs();
   escalationCreate.mockReset();
-  sendTelegram.mockReset();
+  notify.mockReset();
   enqueueEmail.mockReset();
   enqueueEmail.mockResolvedValue(undefined);
 });
@@ -47,8 +49,12 @@ describe("T-14 escalader_question", () => {
   });
 
   it("crée une ChatEscalation ouverte et notifie l'équipe", async () => {
+    // L'alerte part après la réponse (`after`, relecture PR 1553) : `notified`
+    // dit qu'une route Telegram existe — ici, le salon « Clients ».
+    vi.stubEnv("TELEGRAM_BOT_TOKEN", "123:abc");
+    vi.stubEnv("TELEGRAM_CHAT_ID_CLIENTS", "-100777");
     escalationCreate.mockResolvedValue({ id: "esc-1", statut: "ouverte" });
-    sendTelegram.mockResolvedValue(true);
+    notify.mockResolvedValue({ ok: true, channels: { telegram: "sent" } });
     const r = await escaladerQuestion(
       { question: "Faites-vous du conseil RGPD ?", contact_email: "jean@acme.fr" },
       ctx,
@@ -59,7 +65,16 @@ describe("T-14 escalader_question", () => {
     expect(data.conversationId).toBe("conv-1");
     expect(data.statut).toBe("ouverte");
     expect(data.contactEmail).toBe("jean@acme.fr");
-    expect(sendTelegram).toHaveBeenCalledOnce();
+    expect(notify).toHaveBeenCalledOnce();
+    // La question EN ENTIER et l'adresse : le salon « Clients » porte tout.
+    expect(notify.mock.calls[0]![0]).toMatchObject({
+      category: "CHATBOT_ESCALATION",
+      payload: {
+        escalationId: "esc-1",
+        question: "Faites-vous du conseil RGPD ?",
+        contactEmail: "jean@acme.fr",
+      },
+    });
 
     // 🔑 LA CONFIRMATION AU VISITEUR N'ÉTAIT VÉRIFIÉE PAR RIEN.
     // Le code la décrit pourtant comme « le pire endroit pour un silence » : la
@@ -73,8 +88,9 @@ describe("T-14 escalader_question", () => {
   });
 
   it("fonctionne sans contact ni Telegram configuré (fail-soft → notified=false)", async () => {
+    vi.stubEnv("TELEGRAM_BOT_TOKEN", "");
     escalationCreate.mockResolvedValue({ id: "esc-2", statut: "ouverte" });
-    sendTelegram.mockResolvedValue(false);
+    notify.mockResolvedValue({ ok: false, channels: { telegram: "skipped" } });
     const r = await escaladerQuestion({ question: "Question sans contact" }, { tenantId: "t1" });
     expect(r).toEqual({ escalationId: "esc-2", statut: "ouverte", notified: false });
     // 🔑 CONTRE-TÉMOIN de l'assertion du cas précédent. Sans lui, un
