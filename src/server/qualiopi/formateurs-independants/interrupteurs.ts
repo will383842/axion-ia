@@ -293,7 +293,8 @@ export const PREALABLES: Readonly<Record<CleInterrupteur, ReadonlyArray<Prealabl
     {
       sorte: "fait",
       fait: "version_contrat_arretee",
-      libelle: "Aucune version du contrat-cadre n'est arrêtée : le contrat ne peut pas être créé.",
+      libelle:
+        "Aucune version du contrat-cadre n'est arrêtée (v3 ou plus) : le contrat ne peut pas être créé. Faites arrêter une version par la direction avant d'allumer.",
     },
   ],
   garde_activation: [
