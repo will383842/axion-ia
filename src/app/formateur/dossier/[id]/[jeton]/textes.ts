@@ -105,12 +105,14 @@ export const TEXTES = {
     assurance_rc_pro: "Si vous en avez une.",
     diplome: "Si vous en avez.",
   },
-  codeUrssaf: "Code de sécurité",
-  codeUrssafAide: "En bas de votre attestation.",
+  codeUrssaf: "Code de sécurité (facultatif)",
+  codeUrssafAide:
+    "En bas de votre attestation. Il nous permet de la vérifier ; sans lui, vous pouvez continuer.",
   codeUrssafInvalide:
     "Ce code n'est pas lisible : recopiez les lettres et chiffres du bas de l'attestation.",
   enregistrerCode: "Enregistrer le code",
   codeEnregistre: "Code enregistré",
+  dateDuCv: "Date de votre CV (mois et année)",
   attestationPerimee:
     "Cette attestation date de plus de 6 mois. Téléchargez-en une nouvelle sur urssaf.fr : c'est immédiat.",
   depot: {

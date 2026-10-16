@@ -10,15 +10,22 @@
  *   · F21 — le numéro de déclaration d'activité « en cours » : 30 puis 60 jours après
  *     la contresignature, et une ALERTE interne à 90 jours.
  *
+ * Chaque relance déjà en file ou garée est RELUE AU DÉPART avec les mêmes règles
+ * (`email/relecture-au-depart.ts`) : interrupteurs, objet atteint, réponse, opposition.
+ *
  * Aucune règle de relance propre : le moteur commun décide (`lib/relances/campagne.ts`),
  * le passage horaire envoie (8 h - 19 h, une par personne et par jour).
  *
- * 🔴 ÉTEINT : F18 et F45 ne partent qu'avec `dossier_en_ligne` ET `relances_auto` allumés ;
- * F27 avec `lettre_auto` ; F21 comme F18. Texte validé exigé par l'adaptateur d'envoi.
+ * 🔴 ÉTEINT : F18 et F45 ne partent qu'avec `dossier_en_ligne` ET `relances_auto` allumés,
+ * F45 en plus avec `signature.nouvelle_version_contrat` (V2-P-5 : « couper, rien n'est émis
+ * ni envoyé ») ; F27 avec `lettre_auto` ; F21 comme F18. Texte validé exigé par
+ * l'adaptateur d'envoi.
  *
  * 🔑 Le lien de signature d'un contrat est émis AU MOMENT de l'envoi (`completerPayload`),
  * et seulement si le texte est validé : émettre un lien révoque le précédent, on ne le
- * fait donc jamais pour une relance qui ne part pas.
+ * fait donc jamais pour une relance qui ne part pas. Si l'envoi n'est finalement ni enfilé
+ * ni garé (file injoignable), `renoncerPayload` retire le lien neuf et rend le précédent
+ * (V2-P-6) : jamais de formateur sans lien valable.
  *
  * Module neutre (ni `server-only`, ni Next) : le passage tourne dans le worker.
  */
@@ -33,8 +40,12 @@ import { journaliser } from "@/server/journal/journaliser";
 import type { DeclarationCampagne, FaitsCampagne } from "@/server/relances/registre-campagnes";
 import { FORMATEUR_BASE_PATH } from "@/server/formateur/routes";
 
+import { interrupteurAllume } from "./interrupteur-allume";
 import { lireDrapeauEnvoi } from "./interrupteurs";
 import { lireEtatsInterrupteurs } from "./interrupteurs-etat";
+import { ndaEstEnCours } from "./nda-en-cours";
+
+export { ndaEstEnCours };
 
 const JOUR_MS = 86_400_000;
 const PLAFOND_LIGNES = 500;
@@ -193,6 +204,10 @@ export function faitsContrat(
     payload: { ...(l.prenom.trim() ? { prenom: l.prenom.trim() } : {}) },
     completerPayload: async (payload) => {
       if (!(await texteEstValide(gabarit))) return null;
+      // V2-P-5 : relu juste avant l'émission — coupée entre la lecture et l'envoi, aucun lien.
+      if (campagne === "version" && !(await interrupteurAllume("nouvelle_version_contrat"))) {
+        return null;
+      }
       const valeurs = campagne === "version" ? { valeurs: { N: "0" } } : {};
       // Le lien réel n'existe pas encore : une valeur témoin suffit à vérifier les crochets.
       const essai = { ...payload, lien: "https://lien.invalid", ...valeurs };
@@ -213,6 +228,13 @@ export function faitsContrat(
         lien: lien.data.url,
         ...(campagne === "version" ? { valeurs: { N: String(restant) } } : {}),
       };
+    },
+    // V2-P-6 : l'envoi n'a été ni enfilé ni garé — le lien neuf disparaît, le précédent
+    // (celui que le formateur a reçu) redevient valable.
+    renoncerPayload: async (payload) => {
+      const { rendreLienPrecedent } =
+        await import("@/server/qualiopi/documents/signature/lien-precedent");
+      await rendreLienPrecedent(payload.lien, "supprimer");
     },
   };
 }
@@ -349,11 +371,16 @@ export const CAMPAGNE_NOUVELLE_VERSION: DeclarationCampagne<"j7" | "j21"> = {
   // F45 relance : variante 2 (J+7) puis 3 (J+21) du gabarit ; la variante 1 est l'envoi de départ.
   variante: (etape) => (etape === "j7" ? 2 : 3),
   interrupteurs: ["dossier_en_ligne", "relances_auto"],
-  lireFaits: async (maintenant) =>
-    (await lireLignesContrat(maintenant)).flatMap((l) => {
+  // V2-P-5 : la séquence dépend AUSSI de `signature.nouvelle_version_contrat` (registre des
+  // interrupteurs de signature, hors du type des clés d'envoi) : coupée, rien n'est lu,
+  // donc rien n'est relancé ni émis.
+  lireFaits: async (maintenant) => {
+    if (!(await interrupteurAllume("nouvelle_version_contrat"))) return [];
+    return (await lireLignesContrat(maintenant)).flatMap((l) => {
       const f = faitsContrat(l, "version", maintenant);
       return f === null ? [] : [f];
-    }),
+    });
+  },
 };
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -587,10 +614,6 @@ export interface LigneNda {
   readonly adresseMorte: boolean;
   readonly opposition: boolean;
 }
-
-/** Le numéro saisi dit-il « en cours » ? (même lecture que le contrôle du registre) */
-export const ndaEstEnCours = (brut: string | null): boolean =>
-  typeof brut === "string" && /en\s*cours/i.test(brut);
 
 export function faitsNda(l: LigneNda): FaitsCampagne | null {
   const lien = lienEspace();

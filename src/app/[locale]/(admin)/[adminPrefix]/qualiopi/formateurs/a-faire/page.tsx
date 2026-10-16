@@ -13,6 +13,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 
+import { EcranPasEncoreOuvert } from "@/components/admin/qualiopi/EcranPasEncoreOuvert";
 import { AccesRefuse } from "@/components/admin/ui/AccesRefuse";
 import { AdminBadge } from "@/components/admin/ui/AdminBadge";
 import { AdminCard } from "@/components/admin/ui/AdminCard";
@@ -21,6 +22,7 @@ import { AdminPageShell } from "@/components/admin/ui/AdminPageShell";
 import { AdminStatCard } from "@/components/admin/ui/AdminStatCard";
 import { compterFormateursNav } from "@/server/qualiopi/formateurs-independants/nav-counts";
 import { gardePage } from "@/server/auth/garde-page";
+import { INTERRUPTEURS_ENTREE } from "@/server/qualiopi/formateurs-independants/interrupteurs";
 import {
   blocsAFaire,
   liensAnnexes,
@@ -48,12 +50,11 @@ export default async function AFaireMaintenantPage({ params }: PageProps) {
   const entree = await lireEtatsEntree();
   if (!entree.menu_freelance) {
     return (
-      <AdminPageShell>
-        <AdminPageHeader title="À faire maintenant" />
-        <AdminCard>
-          <p>Cet écran n&apos;est pas encore ouvert.</p>
-        </AdminCard>
-      </AdminPageShell>
+      <EcranPasEncoreOuvert
+        titre="À faire maintenant"
+        interrupteurs={[INTERRUPTEURS_ENTREE.menu_freelance.libelle]}
+        base={`/${locale}/${adminPrefix}`}
+      />
     );
   }
 
