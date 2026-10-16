@@ -267,14 +267,13 @@ export type Prealable =
   | { readonly sorte: "non_lisible"; readonly libelle: string };
 
 /** Les faits lisibles qu'un préalable peut exiger. Absent = non établi (refus). */
-export type FaitPrealable = "version_contrat_arretee";
+export type FaitPrealable = "version_contrat_arretee" | "canal_changement_compte_en_service";
 export type FaitsPrealables = Readonly<Partial<Record<FaitPrealable, boolean>>>;
 
 const exige = (cle: CleEnvoi): Prealable => ({ sorte: "interrupteur", cle });
 
-/** À remplacer par un préalable lisible quand le canal de changement de compte existera. */
 const LIBELLE_CANAL_CHANGEMENT_DE_COMPTE =
-  "Le formateur doit pouvoir demander un changement de compte bancaire depuis son espace (ce canal n'existe pas encore).";
+  "Le formateur doit pouvoir demander un changement de compte bancaire depuis son espace : « Changement de compte bancaire et d'adresse » et « Dossier en ligne » (dépôt du RIB) doivent être allumés, et les e-mails F43 (avis à l'adresse connue) et F44 (confirmation) validés.";
 
 /**
  * Préalables à l'ALLUMAGE (sortie de la position sûre). Couper n'en a aucun.
@@ -306,10 +305,18 @@ export const PREALABLES: Readonly<Record<CleInterrupteur, ReadonlyArray<Prealabl
   garde_mission: [exige("controle_registre_periodique")],
   lettre_auto: [exige("contrat_auto"), exige("textes_valides")],
   // Plan §8.10 n° 12 : sans canal pour changer de compte bancaire, le formateur ne
-  // peut pas corriger un IBAN une fois le paiement par mission en route. Le canal
-  // (demande depuis l'espace, validation par Will) n'est écrit par aucun code : tant
-  // qu'il n'existe pas, la date de passage ne peut pas être posée.
-  passage_paiement: [{ sorte: "non_lisible", libelle: LIBELLE_CANAL_CHANGEMENT_DE_COMPTE }],
+  // peut pas corriger un IBAN une fois le paiement par mission en route. Le canal est
+  // celui du lot E (`changement_coordonnees` : demande + RIB depuis l'espace, F43, 48 h,
+  // validation en console) ; le fait est lu dans les réglages (`faitsDepuisReglages`).
+  // 🔑 Un FAIT, pas un interrupteur mère : couper le canal ne remet pas la date de
+  // passage à « pas de passage » en cascade — l'argent ne change pas de régime en silence.
+  passage_paiement: [
+    {
+      sorte: "fait",
+      fait: "canal_changement_compte_en_service",
+      libelle: LIBELLE_CANAL_CHANGEMENT_DE_COMPTE,
+    },
+  ],
   communes_geo_cron: [],
   // Sans référentiel des communes, l'encadré rangerait tout le monde en « lieu inconnu ».
   proches_bloc: [exige("communes_geo_cron")],

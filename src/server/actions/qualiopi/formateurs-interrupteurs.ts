@@ -41,7 +41,8 @@ import {
   type CleInterrupteur,
   type Habilitation,
 } from "@/server/qualiopi/formateurs-independants/interrupteurs";
-import { lireFaitsPrealables } from "@/server/qualiopi/formateurs-independants/prealables-faits";
+import { PREFIXE_TEXTES_VALIDES } from "@/server/email/textes-valides";
+import { faitsPrealables } from "@/server/qualiopi/formateurs-independants/prealables-faits";
 
 export type EtatBascule = { ok: true; message: string } | { ok: false; error: string };
 
@@ -168,12 +169,14 @@ function ecrire(
 ): Promise<string[]> {
   return prisma.$transaction(async (tx) => {
     await verrouillerInterrupteurs(tx);
+    // Le canal de changement de compte (préalable de `passage_paiement`) se lit aussi
+    // dans les validations de textes (F43, F44) : relues dans la même lecture.
     const lignes = await tx.setting.findMany({
-      where: CLAUSE_LIGNES,
+      where: { OR: [...CLAUSE_LIGNES.OR, { key: { startsWith: PREFIXE_TEXTES_VALIDES } }] },
       select: { key: true, value: true },
     });
     const etats = etatsDepuisLignes(lignes);
-    const manquants = prealablesManquants(cle, valeur, etats, lireFaitsPrealables());
+    const manquants = prealablesManquants(cle, valeur, etats, faitsPrealables(lignes));
     if (manquants.length > 0) return manquants;
     const avant = etats[cle];
     await tx.setting.upsert({
