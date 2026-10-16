@@ -20,7 +20,10 @@ import {
   FENETRE_CONSTAT_JOURS,
   sessionsSansRappelJ7,
 } from "@/server/qualiopi/notifications/rappel-j7-manquant";
-import { DELAI_RELANCE_JOURS } from "@/server/qualiopi/trainers/mission-formateur";
+import {
+  DELAI_RELANCE_JOURS,
+  STATUTS_ACCORD_DONNE,
+} from "@/server/qualiopi/trainers/mission-formateur";
 import { instantRelance } from "@/server/qualiopi/trainers/delai-reponse-mission";
 import { listIndisposEntre } from "@/server/qualiopi/trainers/availability-queries";
 import {
@@ -77,7 +80,13 @@ import {
 } from "@/server/rh/remise-contrat";
 import { libellePalier } from "@/server/qualiopi/financements/relance-paliers";
 import { relevesMissionEnAttenteAttestation } from "@/server/qualiopi/formateurs-independants/paiement/virement-mission-base";
-import { lireDateBascule } from "@/server/qualiopi/formateurs-independants/paiement/lecture-passage";
+import {
+  lireDateBascule,
+  premiereJourneeSession,
+} from "@/server/qualiopi/formateurs-independants/paiement/lecture-passage";
+import { appartientAuPassage } from "@/server/qualiopi/formateurs-independants/paiement/passage-mission";
+import { jourDeColonneDate } from "@/server/qualiopi/formateurs-independants/argent/dates";
+import type { TvaRegimeHonoraires } from "@/server/qualiopi/remuneration/calcul";
 import {
   CONFORMITE_DEFAUTS,
   addMonths,
@@ -4790,7 +4799,19 @@ async function regleHonorairesOrganismeATraiter(_now: Date): Promise<AlerteCandi
       organismeSousTraitant: { select: { nom: true } },
       emargementContresignatures: {
         where: { revokedAt: null, sessionId: { not: null }, date: { gte: new Date(bascule) } },
-        select: { sessionId: true, session: { select: { numero: true } } },
+        select: {
+          sessionId: true,
+          session: {
+            select: { numero: true, dateDebut: true, jours: { select: { date: true } } },
+          },
+        },
+      },
+      // Pour le critère du passage (`appartientAuPassage`) : revendication et prix figé.
+      revendicationsPaiement: { where: { regime: "par_mission" }, select: { sessionId: true } },
+      missionsFormateur: {
+        where: { statut: { in: [...STATUTS_ACCORD_DONNE, "desistee"] } },
+        orderBy: { solliciteAt: "desc" },
+        select: { sessionId: true, tarifHtCents: true, regimeTvaFige: true },
       },
     },
     take: 200,
@@ -4800,8 +4821,35 @@ async function regleHonorairesOrganismeATraiter(_now: Date): Promise<AlerteCandi
     { numero: string; organismes: Set<string>; demiJournees: number }
   >();
   for (const t of intervenants) {
+    const parMission = new Set((t.revendicationsPaiement ?? []).map((r) => r.sessionId));
     for (const c of t.emargementContresignatures ?? []) {
       if (c.sessionId === null) continue;
+      // Point 1 de la relecture de #1552 — seulement les sessions du PASSAGE. Une
+      // session à cheval (sans prix figé) ou restée au relevé mensuel est payée par
+      // le relevé mensuel, au nom de l'intervenant : l'annoncer « à la main » ferait
+      // payer deux fois.
+      if (c.session) {
+        const jours = c.session.jours.map((j) => jourDeColonneDate(j.date)).sort();
+        // La plus récente des missions acceptées fait foi, comme au passage.
+        const m = (t.missionsFormateur ?? []).find((x) => x.sessionId === c.sessionId);
+        const auPassage = appartientAuPassage(
+          {
+            premiereJournee: premiereJourneeSession(c.session),
+            derniereJourneeSession: jours.at(-1) ?? null,
+            revendiqueParMission: parMission.has(c.sessionId),
+            conditions:
+              m && m.tarifHtCents !== null && m.regimeTvaFige !== null
+                ? {
+                    tarifJourneeHtCents: m.tarifHtCents,
+                    forfaitDeplacementParJourHtCents: 0,
+                    regimeTva: m.regimeTvaFige as TvaRegimeHonoraires,
+                  }
+                : null,
+          },
+          bascule,
+        );
+        if (!auPassage) continue;
+      }
       const e = parSession.get(c.sessionId) ?? {
         numero: c.session?.numero ?? "session",
         organismes: new Set<string>(),

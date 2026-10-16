@@ -66,13 +66,19 @@ interface JourneesSessionLues {
  * quelque chose : la PLUS PROCHE de la fin saisie et de « émission + 6 mois », la règle
  * des pièces gardées (`pieceGardeeProbante`) — une date libre (« valable jusqu'en
  * 2099 ») ne prolonge jamais une attestation. Sans fin saisie, ou sans date
- * d'émission, elle ne prouve rien : `null`.
+ * d'émission, elle ne prouve rien : `null`. Avec `maintenant` (la garde du virement),
+ * une date d'émission FUTURE non plus, comme `pieceGardeeProbante` : une faute de
+ * frappe (2041 pour 2040) repousserait le plafond.
  */
-export function finDeValiditeAttestation(a: {
-  readonly dateExpiration: Date | null;
-  readonly dateEmission?: Date | null;
-}): JourCivil | null {
+export function finDeValiditeAttestation(
+  a: {
+    readonly dateExpiration: Date | null;
+    readonly dateEmission?: Date | null;
+  },
+  maintenant?: Date,
+): JourCivil | null {
   if (a.dateExpiration === null) return null;
+  if (maintenant && a.dateEmission && a.dateEmission.getTime() > maintenant.getTime()) return null;
   const calculee = echeanceCalculee("attestation_vigilance_urssaf", a.dateEmission ?? null);
   if (calculee === null) return null;
   const saisie = jourDeColonneDate(a.dateExpiration);
@@ -194,7 +200,7 @@ export async function contexteVirementMission(
   // vérifiée — la plus ancienne vérification parmi celles qui la couvrent.
   const verifiees = attestations
     .filter((a) => {
-      const fin = finDeValiditeAttestation(a);
+      const fin = finDeValiditeAttestation(a, maintenant);
       return fin !== null && fin >= derniereJournee;
     })
     .flatMap((a) => (a.valideAt ? [jourParis(a.valideAt)] : []))
@@ -209,7 +215,7 @@ export async function contexteVirementMission(
     // Une attestation sans date de fin ne prouve rien à une date donnée : écartée ; la
     // fin saisie est plafonnée à l'émission + 6 mois (V2-A-7).
     attestationsValidesJusquau: attestations.flatMap((a) => {
-      const fin = finDeValiditeAttestation(a);
+      const fin = finDeValiditeAttestation(a, maintenant);
       return fin === null ? [] : [fin];
     }),
     // Lot G1 : sous le seuil de vigilance, l'attestation n'est pas exigée pour payer.

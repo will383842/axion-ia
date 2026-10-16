@@ -75,12 +75,14 @@ export function echeanceAutofactureMission(
   if (e.remplace && e.echeanceDuReleve !== null) return e.echeanceDuReleve;
   const depuisFacture = echeanceDepuisAutofacture(e.jourAutofacture, p);
   const aDateFixe = e.objets.some((o) => o !== null && OBJETS_A_DATE_FIXE.has(o));
-  if (aDateFixe && e.echeanceDuReleve !== null && e.echeanceDuReleve < depuisFacture) {
-    return e.echeanceDuReleve;
-  }
-  const complet = e.echeanceDuJourComplet ?? null;
-  if (complet !== null && complet < depuisFacture) return complet;
-  return depuisFacture;
+  // La plus proche des trois (relecture #1552) : facture + 30, l'échéance à date fixe
+  // quand elle s'applique, et le jour où tout était complet + 30.
+  const candidates = [
+    depuisFacture,
+    ...(aDateFixe && e.echeanceDuReleve !== null ? [e.echeanceDuReleve] : []),
+    ...(e.echeanceDuJourComplet ? [e.echeanceDuJourComplet] : []),
+  ];
+  return candidates.sort()[0]!;
 }
 
 /**

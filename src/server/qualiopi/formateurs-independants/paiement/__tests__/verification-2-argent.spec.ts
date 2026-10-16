@@ -130,6 +130,45 @@ describe("V2-A-3 — le centime du reliquat n'est jamais perdu entre deux mois",
     expect(p.aEcrire.reduce((t, m) => t + m.releve.totalHtCents, 0)).toBe(2 * 35_001);
   });
 
+  it("relecture #1552 n°2 — l'ordre de paiement ne change pas le total : 52 501, jamais 52 502", () => {
+    // Mai prévoit une journée (2 demi-journées), juin une demi-journée. Premier passage :
+    // mai n'a que son matin signé (il attend), juin passe seul. Second passage : mai complet.
+    const prevues = [
+      JOUR("2040-05-30"),
+      { jour: "2040-06-01", heureDebut: "09:00", heureFin: "12:30" },
+    ];
+    const juinMatin = { jour: "2040-06-01", demiJournee: "matin" as const };
+    const premier = planifierPassage(
+      [
+        candidat({
+          premiereJournee: "2040-05-30",
+          conditions: IMPAIR,
+          contresignatures: [{ jour: "2040-05-30", demiJournee: "matin" }, juinMatin],
+          journeesPrevues: prevues,
+        }),
+      ],
+      "2040-01-01",
+    );
+    expect(premier.aEcrire.map((m) => m.releve.mois)).toEqual(["2040-06"]);
+    const second = planifierPassage(
+      [
+        candidat({
+          premiereJournee: "2040-05-30",
+          conditions: IMPAIR,
+          contresignatures: [SIG("2040-05-30"), juinMatin],
+          journeesPrevues: prevues,
+        }),
+      ],
+      "2040-01-01",
+    );
+    const juin = premier.aEcrire[0]!.releve.totalHtCents;
+    const mai = second.aEcrire.find((m) => m.releve.mois === "2040-05")!.releve.totalHtCents;
+    // Le même juin, quel que soit l'ordre : celui du second passage concorde.
+    expect(second.aEcrire.find((m) => m.releve.mois === "2040-06")!.releve.totalHtCents).toBe(juin);
+    expect([mai, juin]).toEqual([35_001, 17_500]);
+    expect(mai + juin).toBe(Math.floor((3 * 35_001) / 2));
+  });
+
   it("sans mois antérieur, rien ne change : une demi-journée 17 500, une journée 35 001", () => {
     const [mois] = parMoisCivil(demiJourneesSignees([SIG("2040-05-30")]));
     expect(calculerReleveDuMois(mois!, IMPAIR).totalHtCents).toBe(35_001);
@@ -211,6 +250,28 @@ describe("V2-A-5 — la date limite part du jour où tout était complet", () =>
     );
   });
 
+  it("relecture #1552 n°7 — à date fixe aussi, la plus proche des trois dates", () => {
+    expect(
+      echeanceAutofactureMission({
+        jourAutofacture: "2026-12-01",
+        echeanceDuReleve: "2026-12-20",
+        remplace: false,
+        objets: ["indemnite_annulation"],
+        echeanceDuJourComplet: "2026-11-04",
+      }),
+    ).toBe("2026-11-04");
+    // Contre-témoin : l'échéance à date fixe plus proche reste gardée.
+    expect(
+      echeanceAutofactureMission({
+        jourAutofacture: "2026-12-01",
+        echeanceDuReleve: "2026-11-01",
+        remplace: false,
+        objets: ["indemnite_annulation"],
+        echeanceDuJourComplet: "2026-11-04",
+      }),
+    ).toBe("2026-11-01");
+  });
+
   it("jamais au-delà de la facture + 30 : le plus proche des deux", () => {
     expect(echeanceAutofactureMission({ ...base, echeanceDuJourComplet: "2027-01-10" })).toBe(
       "2026-12-31",
@@ -251,6 +312,29 @@ describe("V2-A-7 — l'attestation URSSAF vaut au plus émission + 6 mois", () =
         dateExpiration: new Date("2041-05-10T00:00:00Z"),
       }),
     ).toBe("2041-05-10");
+  });
+
+  it("relecture #1552 n°6 — une date d'émission FUTURE (faute de frappe) ne prouve rien", () => {
+    const maintenant = new Date("2040-10-01T10:00:00Z");
+    expect(
+      finDeValiditeAttestation(
+        {
+          dateEmission: new Date("2041-09-01T00:00:00Z"),
+          dateExpiration: new Date("2099-12-31T00:00:00Z"),
+        },
+        maintenant,
+      ),
+    ).toBeNull();
+    // Contre-témoin : émise avant « maintenant », elle garde son plafond.
+    expect(
+      finDeValiditeAttestation(
+        {
+          dateEmission: new Date("2040-09-01T00:00:00Z"),
+          dateExpiration: new Date("2099-12-31T00:00:00Z"),
+        },
+        maintenant,
+      ),
+    ).toBe("2041-03-01");
   });
 
   it("sans date d'émission ou sans fin saisie : ne prouve rien", () => {

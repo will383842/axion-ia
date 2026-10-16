@@ -259,9 +259,10 @@ export function planifierPassage(
           });
       }
     }
-    // V2-A-3 : les demi-journées des mois précédents, signées et prévues, pour que le
-    // reliquat d'un tarif impair ne se perde pas entre deux mois.
-    const signeesAvant = (m: string) => signees.filter((d) => d.jour.slice(0, 7) < m).length;
+    // V2-A-3 : les demi-journées PRÉVUES des mois précédents, pour que le reliquat d'un
+    // tarif impair ne se perde pas entre deux mois. Prévues et non signées (relecture
+    // #1552) : un mois payé est complet, ses signées sont ses prévues ; compter les
+    // signées d'un mois encore en attente ferait dépendre le total de l'ordre de paiement.
     const prevuesAvant = (m: string) => prevues.filter((d) => d.jour.slice(0, 7) < m).length;
     for (const mois of parMoisCivil(signees)) {
       const prevuDuMois: MoisAnime | undefined = prevuesParMois.get(mois.mois);
@@ -299,7 +300,7 @@ export function planifierPassage(
       }
       let releve: ReleveMissionCalcule;
       try {
-        releve = calculerReleveDuMois(mois, conditions, p, signeesAvant(mois.mois));
+        releve = calculerReleveDuMois(mois, conditions, p, prevuesAvant(mois.mois));
       } catch {
         anomalies.push({
           trainerId: c.trainerId,

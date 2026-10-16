@@ -134,7 +134,10 @@ const mockBascule = vi.hoisted(() => vi.fn(async () => null as string | null));
 vi.mock("@/server/qualiopi/formateurs-independants/paiement/virement-mission-base", () => ({
   relevesMissionEnAttenteAttestation: (...a: unknown[]) => mockEnAttenteAttestation(...(a as [])),
 }));
-vi.mock("@/server/qualiopi/formateurs-independants/paiement/lecture-passage", () => ({
+vi.mock("@/server/qualiopi/formateurs-independants/paiement/lecture-passage", async (orig) => ({
+  ...(await orig<
+    typeof import("@/server/qualiopi/formateurs-independants/paiement/lecture-passage")
+  >()),
   lireDateBascule: (...a: unknown[]) => mockBascule(...(a as [])),
 }));
 
@@ -4746,16 +4749,80 @@ describe("honoraires_organisme_a_traiter (V2-A-2)", () => {
     mockGetConfig.mockResolvedValue("");
   });
 
-  function intervenant(id: string, organisme: string, sessions: string[]) {
+  function intervenant(
+    id: string,
+    organisme: string,
+    sessions: string[],
+    jours: string[] = ["2040-02-03"],
+    extra: {
+      revendicationsPaiement?: Array<{ sessionId: string }>;
+      missionsFormateur?: Array<{
+        sessionId: string;
+        tarifHtCents: number | null;
+        regimeTvaFige: string | null;
+      }>;
+    } = {},
+  ) {
     return {
       id,
       organismeSousTraitant: { nom: organisme },
       emargementContresignatures: sessions.map((s) => ({
         sessionId: s,
-        session: { numero: `AXI-${s}` },
+        session: {
+          numero: `AXI-${s}`,
+          dateDebut: new Date(`${jours[0]}T08:00:00Z`),
+          jours: jours.map((j) => ({ date: new Date(`${j}T00:00:00Z`) })),
+        },
       })),
+      revendicationsPaiement: extra.revendicationsPaiement ?? [],
+      missionsFormateur: extra.missionsFormateur ?? [],
     };
   }
+
+  function lesIntervenants(...liste: ReturnType<typeof intervenant>[]) {
+    mp.trainer.findMany.mockImplementation(async (a: { where?: Record<string, unknown> }) =>
+      a?.where && "organismeSousTraitantId" in a.where ? liste : [],
+    );
+  }
+
+  it("TÉMOIN — session à cheval (20/12/2039 → 15/01/2040), bascule au 01/01/2040 : AUCUNE alerte (le relevé mensuel la paie)", async () => {
+    mockBascule.mockResolvedValue("2040-01-01");
+    lesIntervenants(
+      intervenant("i1", "Organisme Banc", ["s1", "s1"], ["2039-12-20", "2040-01-15"]),
+    );
+    const alertes = (await evaluerAlertes()).filter(
+      (x) => x.code === "honoraires_organisme_a_traiter",
+    );
+    expect(alertes).toHaveLength(0);
+  });
+
+  it("session commencée avant la bascule mais revendiquée par mission : l'alerte reste", async () => {
+    mockBascule.mockResolvedValue("2040-01-01");
+    lesIntervenants(
+      intervenant("i1", "Organisme Banc", ["s1"], ["2039-12-20", "2040-01-15"], {
+        revendicationsPaiement: [{ sessionId: "s1" }],
+      }),
+    );
+    const alertes = (await evaluerAlertes()).filter(
+      (x) => x.code === "honoraires_organisme_a_traiter",
+    );
+    expect(alertes).toHaveLength(1);
+  });
+
+  it("session à cheval avec une mission à prix figé : le passage la prend, l'alerte reste", async () => {
+    mockBascule.mockResolvedValue("2040-01-01");
+    lesIntervenants(
+      intervenant("i1", "Organisme Banc", ["s1"], ["2039-12-20", "2040-01-15"], {
+        missionsFormateur: [
+          { sessionId: "s1", tarifHtCents: 70000, regimeTvaFige: "assujetti_20" },
+        ],
+      }),
+    );
+    const alertes = (await evaluerAlertes()).filter(
+      (x) => x.code === "honoraires_organisme_a_traiter",
+    );
+    expect(alertes).toHaveLength(1);
+  });
 
   it("deux intervenants du même organisme sur une session : UNE alerte, à traiter à la main", async () => {
     mockBascule.mockResolvedValue("2040-01-01");
