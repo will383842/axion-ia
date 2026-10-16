@@ -144,6 +144,52 @@ describe("file WhatsApp", () => {
     else expect(errorSpy).not.toHaveBeenCalled();
   });
 
+  it("207 « Service is down » : relancé 3 fois puis échec signalé (service-down)", async () => {
+    const corps =
+      "<html><b>Message to:</b> +33XXXXXXXXX<br>Text to send: Nouveau lead<br>" +
+      "<font color='red'>Service is down (410) : Sorry for the inconvenience. There is a " +
+      "technical problem and I am working on it. The service will be back in 24-48hs</font></html>";
+    fetchMock.mockImplementation(async () => new Response(corps, { status: 207 }));
+    await sendWhatsAppRaw({ text: "Nouveau lead" });
+    await vi.runAllTimersAsync();
+    await flushWhatsAppQueue();
+    expect(fetchMock).toHaveBeenCalledTimes(3);
+    expect(errorSpy).toHaveBeenCalledOnce();
+    expect(JSON.stringify(errorSpy.mock.calls)).toContain("service-down");
+  });
+
+  it("207 sans motif connu : relancé, motif http-207", async () => {
+    fetchMock.mockImplementation(async () => new Response("Message queued", { status: 207 }));
+    await sendWhatsAppRaw({ text: "x" });
+    await vi.runAllTimersAsync();
+    await flushWhatsAppQueue();
+    expect(fetchMock).toHaveBeenCalledTimes(3);
+    expect(JSON.stringify(errorSpy.mock.calls)).toContain("http-207");
+  });
+
+  it.each(["Message not sent", "There is a Technical Problem"])(
+    "200 contenant « %s » : relancé comme une panne",
+    async (corps) => {
+      fetchMock.mockImplementation(async () => new Response(corps, { status: 200 }));
+      await sendWhatsAppRaw({ text: "x" });
+      await vi.runAllTimersAsync();
+      await flushWhatsAppQueue();
+      expect(fetchMock).toHaveBeenCalledTimes(3);
+      expect(JSON.stringify(errorSpy.mock.calls)).toContain("service-down");
+    },
+  );
+
+  it("panne puis rétablissement : envoyé sans alerte", async () => {
+    fetchMock
+      .mockResolvedValueOnce(new Response("Service is down (410)", { status: 207 }))
+      .mockResolvedValueOnce(ok());
+    await sendWhatsAppRaw({ text: "x" });
+    await vi.runAllTimersAsync();
+    await flushWhatsAppQueue();
+    expect(fetchMock).toHaveBeenCalledTimes(2);
+    expect(errorSpy).not.toHaveBeenCalled();
+  });
+
   it("refuse le 51e message (file plafonnée à 50) sans donnée personnelle", async () => {
     // Envoi bloqué : aucun message ne se termine pendant le remplissage.
     fetchMock.mockReturnValue(new Promise(() => {}));

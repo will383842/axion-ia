@@ -48,6 +48,14 @@ const MAX_ATTEMPTS = RETRY_DELAYS_MS.length + 1;
 const CALLMEBOT_ERROR_BODY =
   /^\s*(?:error(?:\s*:|\s+-\s)|apikey\s+(?:is\s+)?(?:invalid|incorrect|wrong)\b|not\s+allowed\b)/i;
 
+/**
+ * Pannes du service CallMeBot, repérées N'IMPORTE OÙ dans le corps (sans balises) : le
+ * 16/10/2026 il a répondu 207 avec « Message to: … Text to send: … Service is down (410) »
+ * — le message n'était pas parti et le début de texte ne ressemblait pas à une erreur.
+ * Échec RELANÇABLE (contrairement à une clé invalide).
+ */
+const CALLMEBOT_SERVICE_DOWN_BODY = /service\s+is\s+down|not\s+sent|technical\s+problem/i;
+
 /** Retire les balises HTML (CallMeBot enrobe parfois ses erreurs dans <html><b>…). */
 function stripHtml(body: string): string {
   return body.replace(/<[^>]*>/g, "");
@@ -94,14 +102,17 @@ async function attempt(job: Job): Promise<AttemptResult> {
     if (res.status === 429 || res.status >= 500) {
       return { retry: true, reason: `http-${res.status}` };
     }
-    if (!res.ok) return { retry: false, reason: `http-${res.status}` };
     let body = "";
     try {
-      body = await res.text();
+      body = stripHtml(await res.text());
     } catch {
-      // corps illisible : le 2xx fait foi
+      // corps illisible : le statut fait foi
     }
-    if (CALLMEBOT_ERROR_BODY.test(stripHtml(body))) return { retry: false, reason: "corps-erreur" };
+    // Erreur de clé / d'autorisation : inutile de relancer.
+    if (CALLMEBOT_ERROR_BODY.test(body)) return { retry: false, reason: "corps-erreur" };
+    if (CALLMEBOT_SERVICE_DOWN_BODY.test(body)) return { retry: true, reason: "service-down" };
+    // Seul 200 vaut succès : un 207 (ou tout autre statut) est relancé.
+    if (res.status !== 200) return { retry: true, reason: `http-${res.status}` };
     return "sent";
   } catch (err) {
     const timedOut = err instanceof Error && err.name === "AbortError";
