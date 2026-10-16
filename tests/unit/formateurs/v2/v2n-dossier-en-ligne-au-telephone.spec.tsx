@@ -62,6 +62,7 @@ function dossier(p: Partial<DossierPublic> = {}): DossierPublic {
     email: "ines.novice@example.test",
     telephone: "0600000000",
     codePostalPro: "69003",
+    adressePro: null,
     siret: null,
     siretEnregistre: false,
     nda: null,
