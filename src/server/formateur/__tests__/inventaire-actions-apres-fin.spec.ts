@@ -120,6 +120,12 @@ vi.mock("@/server/qualiopi/formateurs-independants/interrupteur-allume", () => (
 vi.mock("@/server/qualiopi/formateurs-independants/interrupteurs-envoi", () => ({
   envoiAllume: async () => true,
 }));
+// Aucun Redis dans ce test : le limiteur de débit laisse passer. Sans lui, la première
+// action qui l'appelle ouvre une connexion qui se reconnecte en boucle, et les suivantes
+// attendent au-delà du délai du test.
+vi.mock("@/lib/rate-limit", () => ({
+  checkRateLimit: async () => ({ allowed: true, count: 1, remaining: 99, resetAt: 0 }),
+}));
 vi.mock("@/server/queue/queues", () => ({
   enqueueEmail: async () => {
     etat.appels.push("enqueueEmail");
