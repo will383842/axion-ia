@@ -25,6 +25,10 @@ import { hashIp } from "@/lib/security/ip-hash";
 import { checkSiretFormat, normalizeSiret } from "@/lib/siret";
 import { controlerRegistreFormateur } from "@/server/qualiopi/formateurs-independants/controle";
 import {
+  MESSAGE_DATE_DU_CV_MANQUANTE,
+  lireMoisDuCv,
+} from "@/server/qualiopi/formateurs-independants/date-du-cv";
+import {
   deposerPiece,
   enregistrerActivite,
   enregistrerCodeUrssaf,
@@ -325,6 +329,12 @@ export async function deposerPieceAction(fd: FormData): Promise<Resultat> {
     if (!fin || fin.getTime() <= maintenant.getTime()) {
       return { ok: false, message: TEXTES.attestationPerimee };
     }
+  }
+  // Date du CV (décision du 15/10) : mois et année, obligatoires. Une date future ou de plus
+  // de 24 mois est enregistrée telle quelle : le CV reste « à vérifier » en console.
+  if (type === "cv") {
+    dateEmission = lireMoisDuCv(champ(fd, "dateCv", 7));
+    if (!dateEmission) return { ok: false, message: MESSAGE_DATE_DU_CV_MANQUANTE };
   }
 
   const octets = new Uint8Array(await fichier.arrayBuffer());

@@ -79,6 +79,17 @@ export interface EntreeJournal {
  *          build, ou si la base a refusé (fail-soft). `enqueueEmail` s'en sert pour ne
  *          refermer, sur une file injoignable, que la ligne qu'il a lui-même posée.
  */
+/** Préfixe des clés des relances de campagne formateur (`cleRelance`, registre CAMP-3). */
+export const PREFIXE_RELANCE_FORMATEUR = "fi-";
+
+/**
+ * Motif d'une ligne close par `marquerEchecMiseEnFile` : la file était injoignable, aucun
+ * job n'existe. C'est la SEULE ligne « échec » qu'un réenfilage peut remettre « en
+ * attente » (relecture de la PR #1550) : une ligne close « échec » par le worker (relais en
+ * panne après ses tentatives) garde son statut et son erreur, qui disent vrai.
+ */
+export const MOTIF_MISE_EN_FILE = "Mise en file impossible : l'e-mail n'est pas parti.";
+
 export async function journaliserEnAttente(
   entree: EntreeJournal & { cleAppelant?: boolean | undefined },
 ): Promise<string | null> {
@@ -105,8 +116,37 @@ export async function journaliserEnAttente(
       await tx.$executeRaw`SELECT pg_advisory_xact_lock(hashtext(${`email_log:${jobId}`}))`;
       const existante = await tx.emailLog.findFirst({
         where: { jobId },
-        select: { id: true },
+        select: { id: true, status: true, error: true },
       });
+      // Vérification n° 2 (V2P4) — une relance de campagne formateur (`fi-…`) dont la mise
+      // en file avait ÉCHOUÉ (file injoignable : ligne close « échec ») est réenfilée sous
+      // la même clé : sa ligne redevient « en attente » et c'est elle que le worker clora.
+      // Sans cela, le journal disait « échec » d'un e-mail en file, et le passage suivant
+      // le croyait à retenter. Les autres clés (clients, apporteurs) gardent la règle
+      // d'avant : rien n'est reposé.
+      //
+      // 🔴 Relecture de la PR #1550 — seulement une ligne close par un échec de MISE EN
+      // FILE (`MOTIF_MISE_EN_FILE`). Une ligne en échec chez le worker (relais en panne)
+      // garde la règle d'avant : son erreur reste au journal, et le worker du nouvel essai
+      // la clôt (`cloturerJournal`). La remettre « en attente » effaçait la panne, et si le
+      // job échoué était resté dans Redis, la ligne ne se fermait plus jamais.
+      if (
+        existante &&
+        existante.status === EmailLogStatus.failed &&
+        existante.error === MOTIF_MISE_EN_FILE &&
+        jobId.startsWith(PREFIXE_RELANCE_FORMATEUR)
+      ) {
+        const remise = await tx.emailLog.updateMany({
+          where: { id: existante.id, status: EmailLogStatus.failed, error: MOTIF_MISE_EN_FILE },
+          data: {
+            status: EmailLogStatus.pending,
+            attempts: 0,
+            error: null,
+            ...(entree.dueAt ? { dueAt: entree.dueAt } : {}),
+          },
+        });
+        return remise.count === 1 ? existante.id : null;
+      }
       if (existante) return null;
       const posee = await tx.emailLog.create({ data: donnees, select: { id: true } });
       return posee.id;

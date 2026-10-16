@@ -67,6 +67,12 @@ export interface FaitsCampagne {
   readonly completerPayload?: (
     payload: Record<string, unknown>,
   ) => Promise<Record<string, unknown> | null>;
+  /**
+   * V2-P-6 — appelé quand l'envoi complété n'a été ni enfilé ni garé : défait ce que
+   * `completerPayload` a émis (le lien neuf est retiré, le précédent redevient valable).
+   * Jamais de formateur sans lien de signature valable.
+   */
+  readonly renoncerPayload?: (payload: Record<string, unknown>) => Promise<void>;
 }
 
 export interface DeclarationCampagne<E extends string = string> {

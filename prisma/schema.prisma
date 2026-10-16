@@ -5760,6 +5760,9 @@ model TrainerDocument {
   fichierUrl       String?                  @map("fichier_url") @db.Text
   hashSha256       String?                  @map("hash_sha256") @db.VarChar(64)
   dateEmission     DateTime?                @map("date_emission")
+  /// Date du CV déclarée par le formateur au dépôt dans le dossier en ligne (mois et
+  /// année, le 1er du mois à minuit UTC). Null = non déclarée : CV « à vérifier ».
+  dateCvDeclaree   DateTime?                @map("date_cv_declaree")
   /// Null = pièce sans échéance (un diplôme). Sinon pilote les alertes.
   dateExpiration   DateTime?                @map("date_expiration")
   statutValidation DocumentValidationStatut @default(en_attente) @map("statut_validation")

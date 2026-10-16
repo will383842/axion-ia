@@ -54,6 +54,23 @@ export async function createFormateurMagicLink(
 }
 
 /**
+ * V2-N-5 — le lien est-il encore utilisable ? Lecture SEULE : ni `usedAt`, ni rien
+ * d'autre n'est écrit. Sert à la page « Ouvrir mon espace » (ouverture du lien, GET) :
+ * un lien déjà servi ou échu y mène droit au message d'erreur, au lieu d'un bouton qui
+ * échouerait. La consommation reste `consumeFormateurMagicLink`, au clic.
+ */
+export async function formateurMagicLinkUtilisable(token: string): Promise<boolean> {
+  const verified = await verifyMagicToken(token, { scope: "formateur_login" });
+  if (!verified.ok) return false;
+  const tokenHash = await sha256Hex(token);
+  const lien = await prisma.formateurMagicLink.findFirst({
+    where: { tokenHash, usedAt: null, expiresAt: { gt: new Date() } },
+    select: { id: true },
+  });
+  return lien !== null;
+}
+
+/**
  * Consomme un lien magique : vérifie la signature, l'expiration et l'usage
  * unique de façon atomique. Retourne le `trainerId` si valide, sinon `null`.
  *

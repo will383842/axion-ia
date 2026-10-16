@@ -504,6 +504,15 @@ export default async function ApplicationDetailPage({ params }: PageProps) {
             peutDeclarer={peutEngager(acteur.role, "habiliter_formateur")}
             resume={resumeInvitation ?? resumeInvitationFormateur(invitationFormateur)}
           />
+          {/* V2-N-6 — l'issue de l'échange (« Retenu »…) se note dans Rendez-vous : la
+              fiche n'y menait pas, il fallait savoir où chercher. */}
+          <p className="admin-meta-small mt-2">
+            L&apos;échange a eu lieu ? Notez son issue dans{" "}
+            <Link href={`/fr/${adminPrefix}/rendez-vous?vue=point`} className="admin-link">
+              Rendez-vous › À faire le point
+            </Link>
+            .
+          </p>
         </AdminCard>
       ) : null}
       {montrerFicheFormateur ? (

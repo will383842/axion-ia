@@ -37,6 +37,7 @@ import type {
   ResultatEnvoiFormateur,
 } from "@/server/qualiopi/formateurs-independants/envois";
 
+import { CLE_DEPART_RELANCE, reponsesFormateurs } from "./reponses-formateurs";
 import {
   REGISTRE_CAMPAGNES,
   cleRelance,
@@ -44,6 +45,9 @@ import {
   type DeclarationCampagne,
   type FaitsCampagne,
 } from "./registre-campagnes";
+
+// La lecture des réponses est partagée avec le filet du départ (V2-P-2).
+export { reponsesFormateurs };
 
 export const PLAFOND_ENVOIS_PAR_PASSAGE = 30;
 export const PRIORITE_RELANCE = 10;
@@ -138,49 +142,6 @@ export async function relanceesAujourdhui(
     return new Set(
       [...journal, ...corbeille].map((l) => l.entityId).filter((x): x is string => x !== null),
     );
-  } catch {
-    return null;
-  }
-}
-
-/**
- * Lot 8A — réponses humaines rangées sur la fiche (`trainerId`) ou sur la candidature d'où
- * elle vient (`Trainer.candidatureId`). Interrupteur `formateurs.reponses_formateurs` coupé :
- * aucune réponse n'est rangée, donc rien n'est lu (carte vide, comportement d'avant).
- */
-export async function reponsesFormateurs(
-  trainerIds: readonly string[],
-  depuis: Date,
-): Promise<ReadonlyMap<string, readonly Date[]> | null> {
-  const sortie = new Map<string, Date[]>();
-  if (trainerIds.length === 0) return sortie;
-  const { lireEtatsEntree } =
-    await import("@/server/qualiopi/formateurs-independants/etats-entree");
-  if (!(await lireEtatsEntree()).reponses_formateurs) return sortie;
-  const ids = [...new Set(trainerIds)];
-  try {
-    const fiches = await prisma.trainer.findMany({
-      where: { id: { in: ids }, candidatureId: { not: null } },
-      select: { id: true, candidatureId: true },
-    });
-    const parCandidature = new Map(
-      fiches.flatMap((f) => (f.candidatureId ? [[f.candidatureId, f.id] as const] : [])),
-    );
-    const lignes = await prisma.reponseEntranteFormateur.findMany({
-      where: {
-        auto: false,
-        recuLe: { gte: depuis },
-        OR: [{ trainerId: { in: ids } }, { candidatureId: { in: [...parCandidature.keys()] } }],
-      },
-      select: { trainerId: true, candidatureId: true, recuLe: true },
-    });
-    for (const l of lignes) {
-      const fiche =
-        l.trainerId ?? (l.candidatureId ? parCandidature.get(l.candidatureId) : undefined);
-      if (!fiche) continue;
-      sortie.set(fiche, [...(sortie.get(fiche) ?? []), l.recuLe]);
-    }
-    return sortie;
   } catch {
     return null;
   }
@@ -345,15 +306,29 @@ export async function passerCampagnes(
       }
       payload = complet;
     }
+    // V2-P-2 : la relance porte la date de son envoi de départ ; le filet du départ y relit
+    // la réponse du formateur avec la même borne que ce passage.
+    const depart = c.campagne.arreteeParReponseFormateur
+      ? { [CLE_DEPART_RELANCE]: departDe(c.faits).toISOString() }
+      : {};
     const r = await d.envoyer({
       gabarit: c.campagne.gabarit,
       destinataire: c.faits.destinataire,
-      payload: { ...payload, etape: variante },
+      payload: { ...payload, ...depart, etape: variante },
       entityType: c.campagne.entityType,
       entityId: c.faits.entityId,
       jobId,
       priority: PRIORITE_RELANCE,
     });
+    // V2-P-6 : rien n'est enfilé ni garé — ce que `completerPayload` a émis pour CET envoi
+    // (un lien de signature neuf, qui a révoqué le précédent) est rendu.
+    if (r !== "envoye" && r !== "en-validation" && c.faits.renoncerPayload) {
+      try {
+        await c.faits.renoncerPayload(payload);
+      } catch {
+        // Best-effort : le lien neuf reste alors le seul vivant, comme avant.
+      }
+    }
     servies.add(c.faits.personneId);
     if (r === "envoye") envoyes++;
     else if (r === "en-validation") gares++;
