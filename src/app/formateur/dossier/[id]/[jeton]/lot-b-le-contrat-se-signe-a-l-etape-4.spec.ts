@@ -159,6 +159,28 @@ describe("étape 4, contrat à signer dans le dossier", () => {
     expect(h.demander.mock.calls[0]![0]).toMatchObject({ id: T, siret: "12345678900011" });
   });
 
+  it("« Recevoir mon code » : dossier incomplet, aucun contrat n'est préparé", async () => {
+    h.lire.mockResolvedValue({ ...DOSSIER, pieces: DOSSIER.pieces.filter((p) => p.type !== "cv") });
+    const r = await demanderCodeContratAction(fd({}));
+    expect(r.ok).toBe(false);
+    expect(r.ok ? "" : r.message).toMatch(/votre CV/);
+    expect(h.demander).not.toHaveBeenCalled();
+  });
+
+  it("« Recevoir mon code » : entreprise bloquante, aucun contrat n'est préparé", async () => {
+    h.registre.mockResolvedValue({ ok: true, entreprise: { active: false } });
+    const { ECRANS_QUI_LAISSENT_CONTINUER } =
+      await import("@/server/qualiopi/formateurs-independants/regles-admission");
+    (ECRANS_QUI_LAISSENT_CONTINUER as Set<string>).delete("ok");
+    try {
+      const r = await demanderCodeContratAction(fd({}));
+      expect(r.ok).toBe(false);
+      expect(h.demander).not.toHaveBeenCalled();
+    } finally {
+      (ECRANS_QUI_LAISSENT_CONTINUER as Set<string>).add("ok");
+    }
+  });
+
   it("signer exige les deux cases et un code de 6 chiffres", async () => {
     expect((await signerEtEnvoyerDossierAction(fd({ certifie: "1", code: "123456" }))).ok).toBe(
       false,

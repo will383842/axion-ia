@@ -443,6 +443,17 @@ export async function demanderCodeContratAction(fd: FormData): Promise<ResultatC
   const d = await dossierModifiable(fd);
   if (!d) return { ok: false, message: TEXTES.invalideTitre };
   const maintenant = new Date();
+  // Le contrat ne se prépare que pour un dossier COMPLET (comme la signature) : aucune
+  // pièce, aucun registre ni aucun code tant qu'il manque un élément.
+  const bloquante = await entrepriseBloquante(d);
+  if (bloquante) return { ok: false, message: TEXTES.ecranFermee };
+  const manques = manquesDuDossier(etatDuDossier(d, bloquante));
+  if (manques.length > 0) {
+    return {
+      ok: false,
+      message: `Pour préparer votre contrat, il manque : ${manques.join(" · ")}.`,
+    };
+  }
   try {
     const r = await demanderCodeDuDossier(formateur(d), maintenant);
     if (!r.ok) return r;
