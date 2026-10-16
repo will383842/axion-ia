@@ -18,6 +18,8 @@
  */
 
 import { describe, it, expect, vi, beforeEach } from "vitest";
+import { readFileSync } from "node:fs";
+import { resolve } from "node:path";
 
 const findFirstMock = vi.fn();
 const createMock = vi.fn();
@@ -48,6 +50,7 @@ import {
   noterTentativeEchouee,
   marquerAnnule,
   marquerEchecMiseEnFile,
+  MOTIF_MISE_EN_FILE,
 } from "./email-log";
 import { EmailLogStatus } from "../../../prisma/generated/client";
 
@@ -95,6 +98,67 @@ describe("journaliserEnAttente — la trace posée à l'enfilage", () => {
       jobId: "qualiopi-convocation-42-2026-08-16",
       cleAppelant: true,
     });
+    expect(createMock).not.toHaveBeenCalled();
+  });
+
+  // Vérification n° 2 (V2P4) — file injoignable puis rétablie : la relance formateur
+  // réenfilée sous sa clé reprend SA ligne « échec », remise « en attente ».
+  it("V2P4 : relance formateur réenfilée après un échec de mise en file : la ligne redevient en attente", async () => {
+    findFirstMock.mockResolvedValue({
+      id: "log-echec",
+      status: EmailLogStatus.failed,
+      error: MOTIF_MISE_EN_FILE,
+    });
+    expect(
+      await journaliserEnAttente({
+        ...BASE,
+        jobId: "fi-contrat-relance-t-o-j3",
+        cleAppelant: true,
+      }),
+    ).toBe("log-echec");
+    expect(updateManyMock).toHaveBeenCalledWith({
+      where: { id: "log-echec", status: EmailLogStatus.failed, error: MOTIF_MISE_EN_FILE },
+      data: expect.objectContaining({ status: EmailLogStatus.pending, attempts: 0, error: null }),
+    });
+    expect(createMock).not.toHaveBeenCalled();
+  });
+  // Relecture de la PR #1550, point bloquant — un échec chez le WORKER (relais en panne
+  // après ses tentatives) n'est pas un échec de mise en file : la ligne garde son statut et
+  // son erreur, et le worker du nouvel essai la clôt.
+  it("ligne fi-… en échec avec une erreur du relais → rien n'est reposé", async () => {
+    findFirstMock.mockResolvedValue({
+      id: "log-relais",
+      status: EmailLogStatus.failed,
+      error: "421 4.3.0 Service temporarily unavailable",
+    });
+    expect(
+      await journaliserEnAttente({
+        ...BASE,
+        jobId: "fi-contrat-relance-t-o-j3",
+        cleAppelant: true,
+      }),
+    ).toBe(null);
+    expect(updateManyMock).not.toHaveBeenCalled();
+    expect(createMock).not.toHaveBeenCalled();
+  });
+  it("V2P4 : hors relance formateur, ou ligne non en échec : rien n'est reposé (règle d'avant)", async () => {
+    findFirstMock.mockResolvedValue({
+      id: "log-echec",
+      status: EmailLogStatus.failed,
+      error: MOTIF_MISE_EN_FILE,
+    });
+    expect(
+      await journaliserEnAttente({ ...BASE, jobId: "relance-invitation-42-j2", cleAppelant: true }),
+    ).toBe(null);
+    findFirstMock.mockResolvedValue({ id: "log-parti", status: EmailLogStatus.sent });
+    expect(
+      await journaliserEnAttente({
+        ...BASE,
+        jobId: "fi-contrat-relance-t-o-j3",
+        cleAppelant: true,
+      }),
+    ).toBe(null);
+    expect(updateManyMock).not.toHaveBeenCalled();
     expect(createMock).not.toHaveBeenCalled();
   });
 
@@ -325,6 +389,15 @@ describe("marquerEchecMiseEnFile", () => {
         failedAt: expect.any(Date),
       },
     });
+  });
+
+  // Relecture de la PR #1550 — `journaliserEnAttente` ne reprend qu'une ligne portant CE
+  // motif. L'appelant (`enqueueEmail`, `queues.ts`) doit donc écrire exactement le même
+  // texte : s'il en change, plus aucune relance n'est reprise après une file injoignable.
+  it("l'enfilage clôt une file injoignable avec le motif que `journaliserEnAttente` reconnaît", () => {
+    const source = readFileSync(resolve(process.cwd(), "src/server/queue/queues.ts"), "utf8");
+    const appel = /marquerEchecMiseEnFile\(\s*lignePosee,\s*"([^"]*)",?\s*\)/.exec(source);
+    expect(appel?.[1]).toBe(MOTIF_MISE_EN_FILE);
   });
 
   it("n'échoue pas quand la base refuse, et reste muette au build", async () => {

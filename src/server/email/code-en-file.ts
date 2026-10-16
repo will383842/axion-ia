@@ -16,6 +16,12 @@
 import { GABARITS_A_CODE_UNIQUE, sansCode } from "@/lib/email/gabarits-a-code";
 import { decryptPii, encryptPii } from "@/lib/pii-crypto";
 
+/**
+ * Clé du payload d'un e-mail à code qui porte la LIGNE du code (`DocumentSignatureCode.id`),
+ * jamais le code : le filet du départ y relit son échéance (V2-P-7).
+ */
+export const CLE_CODE_SIGNATURE = "codeSignatureId";
+
 const CONTEXTE = { aad: "file-email:code-a-usage-unique", cleExigee: true } as const;
 const PREFIXE_SCELLE = "enc:v2:";
 
