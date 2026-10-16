@@ -6,7 +6,7 @@
 
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 
-import { sendWhatsAppRaw } from "../channels/whatsapp";
+import { sendWhatsAppRaw, flushWhatsAppQueue } from "../channels/whatsapp";
 import { shouldNotifyWhatsApp, telegramGroupFor, ALL_NOTIFICATION_CATEGORIES } from "../routing";
 import { escapeMarkdownV2, markdownV2ToPlain, formatNotificationPlain } from "../format";
 import { notify, flushPendingDispatches } from "../index";
@@ -29,10 +29,14 @@ describe("sendWhatsAppRaw", () => {
   const savedEnv = { ...process.env };
 
   beforeEach(() => {
+    vi.useFakeTimers();
     fetchMock.mockReset();
     globalThis.fetch = fetchMock as unknown as typeof fetch;
   });
-  afterEach(() => {
+  afterEach(async () => {
+    await vi.runAllTimersAsync();
+    await flushWhatsAppQueue();
+    vi.useRealTimers();
     globalThis.fetch = originalFetch;
     process.env = { ...savedEnv };
   });
@@ -52,13 +56,14 @@ describe("sendWhatsAppRaw", () => {
     expect(fetchMock).not.toHaveBeenCalled();
   });
 
-  it('renvoie "sent" et construit la bonne URL CallMeBot', async () => {
+  it('renvoie "queued" puis envoie et construit la bonne URL CallMeBot', async () => {
     process.env.WHATSAPP_CALLMEBOT_APIKEY = "123456";
     process.env.WHATSAPP_NOTIFY_PHONE = "+33 6 39 98 12 35"; // espaces volontaires
     fetchMock.mockResolvedValueOnce(new Response("Message queued", { status: 200 }));
 
     const status = await sendWhatsAppRaw({ text: "Nouveau lead *Marie*" });
-    expect(status).toBe("sent");
+    expect(status).toBe("queued");
+    await vi.runAllTimersAsync();
     expect(fetchMock).toHaveBeenCalledOnce();
 
     const url = String(fetchMock.mock.calls[0]?.[0]);
@@ -68,18 +73,23 @@ describe("sendWhatsAppRaw", () => {
     expect(url).toContain(encodeURIComponent("Nouveau lead *Marie*"));
   });
 
-  it('renvoie "failed" sur réponse non-2xx', async () => {
+  it("abandonne sans relance sur une réponse 4xx", async () => {
     process.env.WHATSAPP_CALLMEBOT_APIKEY = "123456";
     process.env.WHATSAPP_NOTIFY_PHONE = "+33639981235";
     fetchMock.mockResolvedValueOnce(new Response("APIKEY invalid", { status: 403 }));
-    expect(await sendWhatsAppRaw({ text: "x" })).toBe("failed");
+    expect(await sendWhatsAppRaw({ text: "x" })).toBe("queued");
+    await vi.runAllTimersAsync();
+    expect(fetchMock).toHaveBeenCalledOnce();
   });
 
-  it('renvoie "failed" si fetch throw (réseau / timeout)', async () => {
+  it("relance puis abandonne si fetch throw (réseau / timeout)", async () => {
     process.env.WHATSAPP_CALLMEBOT_APIKEY = "123456";
     process.env.WHATSAPP_NOTIFY_PHONE = "+33639981235";
-    fetchMock.mockRejectedValueOnce(new Error("network down"));
-    expect(await sendWhatsAppRaw({ text: "x" })).toBe("failed");
+    fetchMock.mockRejectedValue(new Error("network down"));
+    vi.spyOn(console, "error").mockImplementation(() => {});
+    expect(await sendWhatsAppRaw({ text: "x" })).toBe("queued");
+    await vi.runAllTimersAsync();
+    expect(fetchMock).toHaveBeenCalledTimes(3);
   });
 });
 
@@ -190,6 +200,7 @@ describe("notify() → doublon WhatsApp pour les leads", () => {
   const savedEnv = { ...process.env };
 
   beforeEach(() => {
+    vi.useFakeTimers({ toFake: ["setTimeout", "clearTimeout", "Date"] });
     fetchMock.mockReset();
     redisSetMock.mockReset().mockResolvedValue("OK");
     redisIncrMock.mockReset().mockResolvedValue(1);
@@ -201,6 +212,9 @@ describe("notify() → doublon WhatsApp pour les leads", () => {
   });
   afterEach(async () => {
     await flushPendingDispatches();
+    await vi.runAllTimersAsync();
+    await flushWhatsAppQueue();
+    vi.useRealTimers();
     globalThis.fetch = originalFetch;
     process.env = { ...savedEnv };
   });
@@ -223,7 +237,8 @@ describe("notify() → doublon WhatsApp pour les leads", () => {
     });
 
     expect(result.channels.telegram).toBe("sent");
-    expect(result.channels.whatsapp).toBe("sent");
+    expect(result.channels.whatsapp).toBe("queued");
+    await vi.runAllTimersAsync();
     const hosts = fetchMock.mock.calls.map((c) => String(c[0]));
     expect(hosts.some((u) => u.includes("api.telegram.org"))).toBe(true);
     expect(hosts.some((u) => u.includes("api.callmebot.com"))).toBe(true);
