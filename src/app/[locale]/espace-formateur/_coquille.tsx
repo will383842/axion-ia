@@ -64,6 +64,13 @@ function construireNavigation(
   libellesIndependant = false,
   /** Lot E (M13) — indépendant, `formateurs.dossier_en_ligne` allumé : « Mon dossier ». */
   avecDossier = false,
+  /** V2-N-11 — faux pour un indépendant qui n'a aucun accompagnement : page vide, entrée ôtée. */
+  avecAccompagnements = true,
+  /**
+   * V2-N-12 — indépendant, interrupteur ou non : « Mes honoraires ». « Rémunération »
+   * est un mot du salariat, que le lexique du chantier écarte pour lui.
+   */
+  honoraires = false,
 ): readonly EspaceNavItem[] {
   return [
     {
@@ -86,8 +93,8 @@ function construireNavigation(
       // lui doit : une facture établie en son nom ne vivait que dans un e-mail.
       cle: "remuneration",
       href: `${FORMATEUR_BASE_PATH}/remuneration`,
-      label: libellesIndependant ? "Mes honoraires" : "Ma rémunération",
-      labelCourt: libellesIndependant ? "Honoraires" : "Rémunération",
+      label: libellesIndependant || honoraires ? "Mes honoraires" : "Ma rémunération",
+      labelCourt: libellesIndependant || honoraires ? "Honoraires" : "Rémunération",
       icone: IconeRemuneration,
     },
     ...(avecDossier
@@ -101,15 +108,20 @@ function construireNavigation(
           },
         ]
       : []),
-    {
-      cle: "accompagnements",
-      href: `${FORMATEUR_BASE_PATH}/seances`,
-      // « Accompagnements individuels » et non « 1-to-1 » : un nom de
-      // destination, pas un nom de produit.
-      label: "Accompagnements",
-      labelCourt: "Suivi 1-to-1",
-      icone: IconeAccompagnements,
-    },
+    ...(avecAccompagnements
+      ? [
+          {
+            cle: "accompagnements",
+            href: `${FORMATEUR_BASE_PATH}/seances`,
+            // « Accompagnements individuels » et non « 1-to-1 » : un nom de
+            // destination, pas un nom de produit. Le libellé court aussi (V2-N-11) :
+            // la barre du bas, au téléphone, affichait « Suivi 1-to-1 ».
+            label: "Accompagnements",
+            labelCourt: "Suivis",
+            icone: IconeAccompagnements,
+          },
+        ]
+      : []),
   ];
 }
 
@@ -149,6 +161,33 @@ async function aUnDossier(trainerId: string): Promise<boolean> {
   }
 }
 
+/** Le formateur est-il indépendant ? `null` si la fiche ne se lit pas. Ne lève jamais. */
+async function estIndependant(trainerId: string): Promise<boolean | null> {
+  try {
+    const t = await prisma.trainer.findUnique({
+      where: { id: trainerId },
+      select: { statut: true },
+    });
+    return t ? t.statut === "sous_traitant" : null;
+  } catch {
+    return null;
+  }
+}
+
+/**
+ * V2-N-11 — un indépendant sans aucune séance d'accompagnement n'a rien à lire sous
+ * « Accompagnements » : l'entrée est ôtée. Un salarié la garde ; en cas d'erreur de
+ * lecture, elle reste (jamais une entrée perdue pour qui en a l'usage).
+ */
+async function aDesAccompagnements(trainerId: string, independant: boolean | null) {
+  if (independant !== true) return true;
+  try {
+    return (await prisma.coachingSession.count({ where: { trainerId } })) > 0;
+  } catch {
+    return true;
+  }
+}
+
 const JOUR_FR = new Intl.DateTimeFormat("fr-FR", { dateStyle: "long", timeZone: "Europe/Paris" });
 
 export interface CoquilleFormateurProps {
@@ -168,10 +207,17 @@ export async function CoquilleFormateur({
   const nom = session ? `${session.prenom} ${session.nom}`.trim() : "";
   const libellesIndependant = session !== null && (await estIndependantEnCartes(session.trainerId));
   const avecDossier = session !== null && (await aUnDossier(session.trainerId));
+  const independant = session !== null ? await estIndependant(session.trainerId) : null;
+  const avecAccompagnements =
+    session === null || (await aDesAccompagnements(session.trainerId, independant));
   const lectureSeule = session?.lectureSeule === true;
-  const navigation = construireNavigation(aSigner, libellesIndependant, avecDossier).filter(
-    (n) => !lectureSeule || n.cle === "remuneration" || n.cle === "dossier",
-  );
+  const navigation = construireNavigation(
+    aSigner,
+    libellesIndependant,
+    avecDossier,
+    avecAccompagnements,
+    independant === true,
+  ).filter((n) => !lectureSeule || n.cle === "remuneration" || n.cle === "dossier");
 
   return (
     <EspaceShell

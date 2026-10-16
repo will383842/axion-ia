@@ -28,8 +28,10 @@ export function estPieceDossier(v: unknown): v is PieceDossier {
 /**
  * Pièces facultatives : jamais un manque. L'attestation URSSAF l'est depuis le lot G1
  * (décision du 12/10) : elle est demandée plus tard, à l'approche du seuil de vigilance
- * (`vigilance-seuil.ts`). Déposée quand même, elle est vérifiée comme avant (son code
- * de sécurité reste demandé).
+ * (`vigilance-seuil.ts`). Déposée quand même, son code de sécurité est demandé à l'écran,
+ * mais il ne bloque pas le dossier (V2-N-4) : une pièce facultative ne doit jamais devenir
+ * une impasse. La console garde ses contrôles (« l'attestation vérifiée » au-delà du
+ * seuil, demande de complément `code_urssaf`).
  */
 export const PIECES_FACULTATIVES: ReadonlySet<PieceDossier> = new Set([
   "attestation_vigilance_urssaf",
@@ -135,7 +137,12 @@ export function manquesEtape3(
     if (PIECES_FACULTATIVES.has(p)) continue;
     if (!e.piecesDeposees.includes(p)) m.push(MANQUE_PIECE[p]);
   }
-  if (e.piecesDeposees.includes("attestation_vigilance_urssaf") && !e.codeUrssafSaisi) {
+  // Le code de l'attestation ne manque que si l'attestation elle-même est exigée (V2-N-4).
+  if (
+    !PIECES_FACULTATIVES.has("attestation_vigilance_urssaf") &&
+    e.piecesDeposees.includes("attestation_vigilance_urssaf") &&
+    !e.codeUrssafSaisi
+  ) {
     m.push("le code de sécurité de votre attestation URSSAF");
   }
   return m;

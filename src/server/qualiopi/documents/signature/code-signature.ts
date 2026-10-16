@@ -87,7 +87,7 @@ export async function emettreCodeSignature(input: {
   readonly documentGenereId: string;
   readonly partie: PartieSignataire;
   readonly maintenant?: Date;
-}): Promise<{ code: string; expiresAt: Date }> {
+}): Promise<{ code: string; expiresAt: Date; id: string }> {
   secret(); // garde fermée AVANT toute écriture
   const maintenant = input.maintenant ?? new Date();
   const code = tirerCode();
@@ -114,7 +114,9 @@ export async function emettreCodeSignature(input: {
       },
     }),
   ]);
-  return { code, expiresAt };
+  // `id` : la ligne du code, relue au départ de l'e-mail (V2-P-7 — un code expiré ou
+  // remplacé pendant l'attente ne part pas). Jamais le code.
+  return { code, expiresAt, id };
 }
 
 export type VerificationCode = { ok: true } | { ok: false; message: string };

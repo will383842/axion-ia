@@ -66,6 +66,10 @@ function documentsSelon(select: Record<string, unknown> | undefined) {
     dateExpiration: null,
     numeroPiece: null,
     ...(demande ? { contenu: { trainerDocumentId: d.id } } : {}),
+    // Date du CV (15/10) : rendue, elle aussi, seulement si la lecture la demande.
+    ...(select?.["dateCvDeclaree"] !== undefined
+      ? { dateCvDeclaree: d.type === "cv" ? d.dateEmission : null }
+      : {}),
   }));
 }
 
@@ -126,6 +130,11 @@ describe("V1-A-6 — une pièce déposée en ligne compte comme un fichier", () 
     expect(ecran?.faits.dossier.cvDate).toBe(true);
     // Le RIB ne s'ouvre qu'avec le droit de rémunérer (la route le refuse sinon).
     expect(ecran?.liens).toEqual([{ libelle: "Voir le CV", url: `${base}/${CV}` }]);
+  });
+
+  it("date du CV (15/10) — W-4 affiche, à côté du CV, la date déclarée par le formateur", async () => {
+    const ecran = await lireEcranVerifierContresigner(TRAINER, MAINTENANT);
+    expect(ecran?.dateDuCv).toBe("Date du CV déclarée par le formateur : septembre 2026");
   });
 
   it("la porte de contresignature ne réclame pas les pièces déposées", async () => {
