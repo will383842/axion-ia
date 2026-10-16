@@ -17,6 +17,7 @@ import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { notify, flushPendingDispatches } from "../index";
 import { decouperPourTelegram, sendTelegramRaw, PLAFOND_TELEGRAM } from "../channels/telegram";
 import { formatNotificationClient, type EvenementClient } from "../format-clients";
+import { flushWhatsAppQueue, resetWhatsAppQueueForTests } from "../channels/whatsapp";
 
 const redisSetMock = vi.fn();
 const redisDelMock = vi.fn();
@@ -309,8 +310,11 @@ describe("notify() → salon « Clients »", () => {
     process.env.WHATSAPP_CALLMEBOT_APIKEY = "123456";
     process.env.WHATSAPP_NOTIFY_PHONE = "+33639981235";
     fetchMock.mockImplementation(async () => ok());
+    resetWhatsAppQueueForTests();
     const r = await notify({ category: "INTERVENTION_REQUEST_SUBMITTED", payload: DEMANDE });
-    expect(r.channels.whatsapp).toBe("sent");
+    // #1554 : WhatsApp passe par une file avec relances ; l'envoi part en arrière-plan.
+    expect(r.channels.whatsapp).toBe("queued");
+    await flushWhatsAppQueue();
     const url = decodeURIComponent(urls().find((u) => u.includes("callmebot")) ?? "");
     expect(url).toContain("🔥 NOUVEAU CLIENT · Formation IA · ");
     expect(url).toContain("tout le détail dans Telegram (salon Clients)");
