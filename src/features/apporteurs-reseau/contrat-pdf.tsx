@@ -53,10 +53,17 @@ export function libelleStatut(valeur: string): string {
   return STATUTS_JURIDIQUES.find((s) => s.valeur === valeur)?.libelle ?? valeur;
 }
 
-/** La qualité au sens de la clause attributive de juridiction (art. 14). */
+/**
+ * La qualité au sens de la clause attributive de juridiction (art. 14). Contrat 2.7 : un
+ * entrepreneur individuel est commerçant ou non selon son immatriculation au RCS — le dossier ne le
+ * dit pas, le texte renvoie donc au registre.
+ */
+export const QUALITE_ENTREPRENEUR_INDIVIDUEL =
+  "entrepreneur individuel commerçant s'il est immatriculé au registre du commerce et des sociétés, entrepreneur individuel non commerçant dans le cas contraire";
+
 export function qualiteDuStatut(valeur: string): string {
   return valeur === "micro_entrepreneur" || valeur === "entrepreneur_individuel"
-    ? "entrepreneur individuel"
+    ? QUALITE_ENTREPRENEUR_INDIVIDUEL
     : "société commerciale";
 }
 
