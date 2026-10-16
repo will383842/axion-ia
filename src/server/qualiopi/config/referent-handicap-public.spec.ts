@@ -68,6 +68,28 @@ describe("computeReferentHandicapPublic", () => {
     await expect(computeReferentHandicapPublic()).resolves.toEqual(REFERENT_HANDICAP_REPLI);
   });
 
+  it("🔴 mode ISR (strict) : une base en panne LÈVE — le repli ne se fige pas une heure en cache", async () => {
+    mockFindUnique.mockRejectedValue(new Error("connexion perdue"));
+    await expect(computeReferentHandicapPublic({ strict: true })).rejects.toThrow(
+      "connexion perdue",
+    );
+  });
+
+  it("mode ISR (strict) : base lisible, mêmes valeurs ; réglage absent (build stub) : repli", async () => {
+    seedConfig({
+      "qualiopi.referent_handicap_nom": "Camille Exemple",
+      "qualiopi.referent_handicap_email": "camille@example.com",
+    });
+    await expect(computeReferentHandicapPublic({ strict: true })).resolves.toEqual({
+      nom: "Camille Exemple",
+      email: "camille@example.com",
+    });
+    seedConfig({});
+    await expect(computeReferentHandicapPublic({ strict: true })).resolves.toEqual(
+      REFERENT_HANDICAP_REPLI,
+    );
+  });
+
   it("n'expose aucun numéro de téléphone", async () => {
     seedConfig({
       "qualiopi.referent_handicap_nom": "Camille Exemple",

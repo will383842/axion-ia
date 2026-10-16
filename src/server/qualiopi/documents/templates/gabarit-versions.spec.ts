@@ -87,11 +87,10 @@ describe("le scénario réel qui a motivé le mécanisme", () => {
     expect(versionGabaritInstantane(instantaneApres)).toBe(courante);
   });
 
-  it("le devis n'est PAS impacté — sa garde de certification change les données, pas le texte", () => {
-    // Un exemplaire signé rejoue son instantané : les montants qui y figuraient
-    // au moment de la signature y sont toujours. Bumper le devis refuserait des
-    // exemplaires parfaitement fidèles, et une garde qui refuse à tort finit
-    // désarmée.
-    expect(versionGabaritCourante("devis")).toBe(1);
+  it("le devis est en v2 (mention handicap, L15) ; sa v1 reste rendable par l'archive", () => {
+    // Avant le 16/10 le devis restait en v1 : sa garde de certification change les
+    // données, pas le texte. La mention handicap, elle, est du TEXTE rendu : v2, et la
+    // v1 est archivée pour que les devis déjà signés se re-rendent à l'identique.
+    expect(versionGabaritCourante("devis")).toBe(2);
   });
 });

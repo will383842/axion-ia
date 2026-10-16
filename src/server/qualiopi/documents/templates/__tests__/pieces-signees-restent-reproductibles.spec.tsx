@@ -337,8 +337,8 @@ describe("une pièce générée AUJOURD'HUI porte les citations corrigées", () 
   }
 
   it("les pièces retouchées ont changé de version (sinon l'archive ne serait jamais lue)", () => {
-    expect(versionGabaritCourante("convention")).toBe(5);
-    expect(versionGabaritCourante("convention_tripartite")).toBe(5);
+    expect(versionGabaritCourante("convention")).toBe(6);
+    expect(versionGabaritCourante("convention_tripartite")).toBe(6);
     expect(versionGabaritCourante("contrat_formation")).toBe(2);
     expect(versionGabaritCourante("releve_connexion")).toBe(2);
   });

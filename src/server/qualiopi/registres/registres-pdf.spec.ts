@@ -220,6 +220,65 @@ describe("renderRegistrePdfBuffer", () => {
     expect(registre.lignes[0]).toContain("Aucune");
   });
 
+  it("🔴 L15 : le registre des partenariats porte interlocuteur, dernier échange, pièce et statut « Inactif »", async () => {
+    mockPrisma.partenariat.findMany.mockResolvedValue([
+      {
+        nom: "Relais A",
+        type: "handicap",
+        objet: "Appui à l'adaptation",
+        dateDebut: new Date("2026-03-01T10:00:00.000Z"),
+        dateFin: null,
+        actif: true,
+        interlocuteurNom: "Camille Exemple",
+        interlocuteurEmail: "camille@example.com",
+        dernierEchangeAt: new Date("2026-09-15T10:00:00.000Z"),
+        preuveUrl: "https://example.com/piece.pdf",
+      },
+      {
+        nom: "Relais B",
+        type: "handicap",
+        objet: "Orientation",
+        dateDebut: new Date("2026-01-10T10:00:00.000Z"),
+        dateFin: null,
+        actif: false,
+        interlocuteurNom: null,
+        interlocuteurEmail: null,
+        dernierEchangeAt: null,
+        preuveUrl: null,
+      },
+    ]);
+    const registre = await construireRegistre("partenariats");
+    expect(registre.colonnes).toEqual([
+      "Nom",
+      "Type",
+      "Objet",
+      "Interlocuteur",
+      "Dernier échange",
+      "Pièce",
+      "Début",
+      "Fin",
+      "Statut",
+    ]);
+    const [actif, inactif] = registre.lignes;
+    expect(actif).toEqual([
+      "Relais A",
+      "handicap",
+      "Appui à l'adaptation",
+      "Camille Exemple — camille@example.com",
+      "15/09/2026",
+      "https://example.com/piece.pdf",
+      "01/03/2026",
+      "",
+      "Actif",
+    ]);
+    // Inactif affiché CLAIREMENT, et l'absence de trace dite en toutes lettres.
+    expect(inactif?.[8]).toBe("Inactif");
+    expect(inactif?.[3]).toBe("Non renseigné");
+    expect(inactif?.[4]).toBe("Aucun échange tracé");
+    expect(inactif?.[5]).toBe("Aucune pièce");
+    expect(registre.lignes.flat()).not.toContain("Terminé");
+  });
+
   it("partenariats + sous_traitants : rendent un PDF même registre vide", async () => {
     const p = await renderRegistrePdfBuffer("partenariats");
     const s = await renderRegistrePdfBuffer("sous_traitants");

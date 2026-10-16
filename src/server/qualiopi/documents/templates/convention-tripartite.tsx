@@ -604,6 +604,16 @@ export function ConventionTripartitePdf({
           </Text>
         </DocSection>
 
+        {/* Handicap (L15, NC12, indicateur 26) — non numérotée, pour ne renuméroter
+            aucune section : référent, contact et possibilité d'adaptation. */}
+        <DocSection title="Accessibilité et situation de handicap">
+          <Text style={pdfStyles.paragraph}>
+            {
+              "Situation de handicap : notre référent handicap étudie avec vous, avant la formation, les adaptations possibles (supports, rythme, accès, modalités). Contact : handicap@axion-ia.com."
+            }
+          </Text>
+        </DocSection>
+
         {/* 11. Signatures — 3 parties */}
         {/* « Fait à » = ville du siège — même raisonnement que la convention : un
             blanc sur une pièce signée électroniquement reste vide pour toujours. */}
