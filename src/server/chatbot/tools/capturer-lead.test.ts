@@ -42,9 +42,11 @@ vi.mock("@/server/queue/queues", () => ({
   enqueueEmail: (...a: unknown[]) => enqueueEmailMock(...a),
 }));
 
-const sendTelegramMock = vi.fn((..._a: unknown[]) => Promise.resolve({ ok: true }));
-vi.mock("@/lib/telegram", () => ({
-  sendTelegram: (...a: unknown[]) => sendTelegramMock(...a),
+// Décision Will 15/10 : le lead chatbot part par `notify()` (salon « Clients »),
+// plus par le `sendTelegram` legacy.
+const notifyMock = vi.fn((..._a: unknown[]) => Promise.resolve({ ok: true, channels: {} }));
+vi.mock("@/server/notifications", () => ({
+  notify: (...a: unknown[]) => notifyMock(...a),
 }));
 
 import { capturerLead, CapturerLeadInputSchema } from "@/server/chatbot/tools/capturer-lead";
@@ -65,7 +67,7 @@ beforeEach(() => {
   convUpdate.mockReset();
   transaction.mockClear();
   enqueueEmailMock.mockClear();
-  sendTelegramMock.mockClear();
+  notifyMock.mockClear();
 });
 
 describe("T-17 capturer_lead", () => {
@@ -227,17 +229,21 @@ describe("capturer_lead — PII chiffré au repos (AES-256-GCM)", () => {
     expect(data.contactEmailHash).toBe(hashEmailForLookup("jean@acme.fr"));
   }, 20_000);
 
-  it("notifie l'équipe (prénom + initiale) et écrit au visiteur avec la valeur EN CLAIR", async () => {
+  it("notifie le salon « Clients » avec la valeur EN CLAIR, jamais le chiffré", async () => {
     await capturerLead({ ...validInput, telephone: "+33611223344" }, ctx);
 
-    // Décision du 11/10/2026 : ni coordonnées ni besoin dans Telegram.
-    const corps = (sendTelegramMock.mock.calls[0]![0] as { body: string }).body;
-    expect(corps).toContain("Jean D.");
-    expect(corps).not.toContain("Dupont");
-    expect(corps).not.toContain("jean@acme.fr");
-    expect(corps).not.toContain("611223344");
-    expect(corps).not.toContain("Audit IA pour ma PME");
-    expect(corps).not.toContain("enc:v1:");
+    // Décision Will 15/10 : un lead chatbot est un CLIENT — le salon « Clients »
+    // reçoit tout le détail, donc les valeurs en clair, jamais `enc:v1:`.
+    const appel = notifyMock.mock.calls[0]![0] as {
+      category: string;
+      payload: Record<string, string>;
+    };
+    expect(appel.category).toBe("CHATBOT_LEAD_CAPTURED");
+    expect(appel.payload.contactName).toBe("Jean Dupont");
+    expect(appel.payload.contactEmail).toBe("jean@acme.fr");
+    expect(appel.payload.contactPhone).toBe("+33611223344");
+    expect(appel.payload.message).toBe("Audit IA pour ma PME");
+    expect(JSON.stringify(appel)).not.toContain("enc:v1:");
 
     expect(enqueueEmailMock.mock.calls[0]![1]).toBe("jean@acme.fr");
   }, 20_000);

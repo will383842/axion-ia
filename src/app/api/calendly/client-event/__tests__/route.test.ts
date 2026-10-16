@@ -110,6 +110,14 @@ describe("POST /api/calendly/client-event", () => {
     expect(calendlyCreate).toHaveBeenCalledOnce();
     expect(notifyMock).toHaveBeenCalledOnce();
     const call = notifyMock.mock.calls[0]?.[0] as { category: string };
+    // Décision Will 15/10 : un appel découverte est un CLIENT → salon « Clients ».
+    expect(call.category).toBe("CLIENT_CALL_BOOKED");
+  });
+
+  it("🔴 client ≠ apporteur : un échange apporteur reste au salon 📅 Calendly", async () => {
+    const { POST } = await import("../route");
+    await POST(makeRequest({ ...VALID_PAYLOAD, eventTypeSlug: "echange-apporteur-affaires" }));
+    const call = notifyMock.mock.calls[0]?.[0] as { category: string };
     expect(call.category).toBe("CALENDLY_INVITEE_CREATED");
   });
 
@@ -148,15 +156,19 @@ describe("POST /api/calendly/client-event", () => {
     expect(json.error).toBe("invalid_payload");
   });
 
-  it("dédup 60s → 200 deduped, pas de create ni notify", async () => {
-    calendlyFindFirst.mockResolvedValueOnce({ id: "prev_evt" });
+  // Décision Will 15/10 : le rejet « même IP + même type < 60 s » jetait la
+  // réservation légitime d'un second client pris depuis le même poste.
+  it("🔴 sans invitee.uri : deux réservations coup sur coup sont TOUTES DEUX enregistrées et annoncées", async () => {
+    calendlyFindFirst.mockResolvedValue({ id: "prev_evt" });
     const { POST } = await import("../route");
-    const res = await POST(makeRequest(VALID_PAYLOAD, { ip: "5.6.7.8" }));
-    expect(res.status).toBe(200);
-    const json = await res.json();
-    expect(json).toEqual({ ok: true, deduped: true });
-    expect(calendlyCreate).not.toHaveBeenCalled();
-    expect(notifyMock).not.toHaveBeenCalled();
+    calendlyCreate.mockResolvedValueOnce({ id: "ligne-1" });
+    const r1 = await POST(makeRequest(VALID_PAYLOAD, { ip: "5.6.7.8" }));
+    calendlyCreate.mockResolvedValueOnce({ id: "ligne-2" });
+    const r2 = await POST(makeRequest(VALID_PAYLOAD, { ip: "5.6.7.8" }));
+    expect(await r1.json()).toEqual({ ok: true, eventId: "ligne-1" });
+    expect(await r2.json()).toEqual({ ok: true, eventId: "ligne-2" });
+    expect(calendlyCreate).toHaveBeenCalledTimes(2);
+    expect(notifyMock).toHaveBeenCalledTimes(2);
   });
 
   it("payload sans invitee.email → inviteeEmail/Name omis, event créé quand même", async () => {
@@ -371,18 +383,36 @@ describe("POST /api/calendly/client-event — la porte est fermée", () => {
 
   it("la clé de déduplication de l'alerte est dérivée du FAIT, pas de la ligne créée", async () => {
     const { POST } = await import("../route");
+    const avecUri = {
+      ...VALID_PAYLOAD,
+      payload: {
+        invitee: {
+          name: "John Doe",
+          uri: "https://api.calendly.com/scheduled_events/E1/invitees/I1",
+        },
+      },
+    };
 
     // Deux appels, deux lignes différentes en base, MÊME réservation.
     calendlyCreate.mockResolvedValueOnce({ id: "ligne-1" });
-    await POST(makeRequest(VALID_PAYLOAD));
+    await POST(makeRequest(avecUri));
     calendlyCreate.mockResolvedValueOnce({ id: "ligne-2" });
-    await POST(makeRequest(VALID_PAYLOAD));
+    await POST(makeRequest(avecUri));
 
     const cles = notifyMock.mock.calls.map((c) => (c[0] as { dedupKey?: string }).dedupKey);
     expect(cles).toHaveLength(2);
     // Avant : `dedupKey: event.id` → "ligne-1" puis "ligne-2", donc deux clés
     // distinctes, donc deux alertes. Le hub ne pouvait rien dédoublonner.
-    expect(cles[0]).toBe(cles[1]);
-    expect(cles[0]).not.toBe("ligne-1");
+    expect(cles[0]).toBe("cal-created:https://api.calendly.com/scheduled_events/E1/invitees/I1");
+    expect(cles[1]).toBe(cles[0]);
+  });
+
+  // 🔴 Décision Will 15/10 : sans URI, la clé « |type|jour » était commune à
+  // tous les clients du jour — la réservation du second était avalée.
+  it("🔴 sans invitee.uri : AUCUNE clé de déduplication", async () => {
+    const { POST } = await import("../route");
+    await POST(makeRequest(VALID_PAYLOAD));
+    const appel = notifyMock.mock.calls[0]?.[0] as Record<string, unknown>;
+    expect("dedupKey" in appel).toBe(false);
   });
 });

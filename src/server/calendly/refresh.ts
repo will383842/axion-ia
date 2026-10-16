@@ -26,6 +26,7 @@
 import { prisma } from "@/lib/prisma";
 import { ERASED_PLACEHOLDER } from "@/lib/rgpd-erase";
 import { enrichCalendlyEvent } from "./enrich";
+import type { OptionsNotifier } from "@/server/notifications/mode-envoi";
 import { rattraperFichesRendezVousApporteur } from "./fiche-rendez-vous-apporteur";
 import { isCalendlyApiConfigured } from "./api";
 
@@ -83,7 +84,9 @@ const EMPTY: Omit<RefreshOutcome, "ok" | "reason"> = {
  * Ne throw jamais : l'appelant est soit un cron, soit un worker — aucun des deux
  * ne doit rougir parce que Calendly a hoqueté.
  */
-export async function refreshUpcomingCalendlyEvents(): Promise<RefreshOutcome> {
+export async function refreshUpcomingCalendlyEvents(
+  options: OptionsNotifier = {},
+): Promise<RefreshOutcome> {
   // Sans jeton API, il n'y a rien à interroger. Ce n'est pas une erreur, c'est
   // une configuration absente.
   if (!isCalendlyApiConfigured()) {
@@ -145,7 +148,7 @@ export async function refreshUpcomingCalendlyEvents(): Promise<RefreshOutcome> {
   // Séquentiel et non parallèle : on préfère être lent et poli avec l'API
   // Calendly plutôt que rapide et rate-limité.
   for (const c of batch) {
-    const res = await enrichCalendlyEvent(c.id);
+    const res = await enrichCalendlyEvent(c.id, options);
     if (res.ok) {
       if (res.updatedFields.length > 0) updated += 1;
       else unchanged += 1;

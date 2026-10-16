@@ -111,7 +111,7 @@ export async function reporterDepuisLeLien(fd: FormData): Promise<void> {
     // Calendly et émettra l'événement CRM. La nouvelle sera créée par le
     // passage de découverte.
     try {
-      await enrichCalendlyEvent(rdv.id);
+      await enrichCalendlyEvent(rdv.id, { notifier: "apres-reponse" });
     } catch (e) {
       console.warn(
         `[report] enrichissement en échec après report de ${rdv.id} : ` +

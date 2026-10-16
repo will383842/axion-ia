@@ -99,6 +99,27 @@ describe("`D6-5-C2` — la page des sous-traitants dit vrai sur Telegram", () =>
     expect(format, "aucun téléphone n'est rendu").not.toMatch(/p\.(contactPhone|inviteePhone)\b/);
   });
 
+  // Décision Will 15/10 : le salon « Clients » reçoit le contenu COMPLET des
+  // demandes de clients. La page doit le DIRE (art. 13-14) — et le dire
+  // seulement pour eux : les autres salons restent minimisés (test ci-dessus).
+  it("🔴 elle déclare l'exception des demandes de clients — et le code la pratique", () => {
+    expect(fiche).toMatch(/Exception : demandes de clients/);
+    expect(fiche).toMatch(/contenu complet de la demande/);
+    expect(fiche).toMatch(/Exception: client requests/);
+    expect(fiche).toMatch(/full content of the request/);
+
+    const clients = lire("src", "server", "notifications", "format-clients.ts");
+    expect(clients, "le salon Clients porte l'e-mail").toMatch(/p\.(contactEmail|inviteeEmail)\b/);
+    expect(clients, "et le téléphone").toMatch(/p\.(contactPhone|inviteePhone)\b/);
+    expect(clients, "et le message intégral").toMatch(/bloc\("Message", p\.message\)/);
+  });
+
+  it("la politique de confidentialité le dit aussi, en français et en anglais", () => {
+    const legal = lire("src", "content", "legal.ts");
+    expect(legal).toMatch(/Telegram de l'équipe reçoit le contenu complet de votre demande/);
+    expect(legal).toMatch(/Telegram messaging receives the full content of your request/);
+  });
+
   it("la minimisation RGPD, elle, existe VRAIMENT dans le code", () => {
     // L'autre moitié de la correspondance : la page annonce un régime minimisé
     // pour les demandes RGPD — il doit exister.

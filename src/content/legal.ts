@@ -806,7 +806,7 @@ export const LEGAL_PAGES: ReadonlyArray<LegalContent> = [
           body:
             "Conformément à l'article 13.1.e du RGPD, Axion-IA tient une liste exhaustive et publique de ses sous-processeurs sur la page /sous-processeurs (catégories : " +
             CN_FR.categories +
-            "). Cette page indique pour chaque sous-processeur sa finalité, les catégories de données traitées, la localisation des serveurs, la base légale, le statut du DPA et le cadre de transfert international. Toute évolution est notifiée par email aux clients actifs au moins 30 jours avant prise d'effet. Aucune donnée n'est vendue ni partagée à des fins publicitaires.",
+            "). Cette page indique pour chaque sous-processeur sa finalité, les catégories de données traitées, la localisation des serveurs, la base légale, le statut du DPA et le cadre de transfert international. Toute évolution est notifiée par email aux clients actifs au moins 30 jours avant prise d'effet. Aucune donnée n'est vendue ni partagée à des fins publicitaires. Lorsque vous nous adressez une demande (formulaire, assistant du site, réservation d'un rendez-vous), la messagerie interne Telegram de l'équipe reçoit le contenu complet de votre demande, afin d'y répondre rapidement.",
         },
         {
           title: "IA générative et transparence (AI Act EU)",
@@ -912,7 +912,7 @@ export const LEGAL_PAGES: ReadonlyArray<LegalContent> = [
           body:
             "In accordance with GDPR article 13.1.e, Axion-IA maintains an exhaustive public list of its sub-processors at /subprocessors (categories: " +
             CN_EN.categories +
-            "). That page specifies for each sub-processor its purpose, the categories of data processed, server location, legal basis, DPA status and international transfer framework. Any change is notified by email to active clients at least 30 days before taking effect. No data is ever sold or shared for advertising purposes.",
+            "). That page specifies for each sub-processor its purpose, the categories of data processed, server location, legal basis, DPA status and international transfer framework. Any change is notified by email to active clients at least 30 days before taking effect. No data is ever sold or shared for advertising purposes. When you send us a request (form, site assistant, appointment booking), the team's internal Telegram messaging receives the full content of your request, so that it can be answered quickly.",
         },
         {
           title: "Generative AI and transparency (EU AI Act)",
