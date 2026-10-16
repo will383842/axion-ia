@@ -48,6 +48,13 @@ const MAX_ATTEMPTS = RETRY_DELAYS_MS.length + 1;
 const CALLMEBOT_ERROR_BODY =
   /^\s*(?:error(?:\s*:|\s+-\s)|apikey\s+(?:is\s+)?(?:invalid|incorrect|wrong)\b|not\s+allowed\b)/i;
 
+/**
+ * Panne côté CallMeBot (vue en prod le 16/10/2026 : HTTP 207, corps « Message to: … Service is
+ * down (410) … technical problem … »). Le message n'est PAS parti : échec relançable, cherché
+ * n'importe où dans le texte (le corps commence par « Message to: »).
+ */
+const CALLMEBOT_SERVICE_DOWN_BODY = /service\s+is\s+down|technical\s+problem|not\s+sent/i;
+
 /** Retire les balises HTML (CallMeBot enrobe parfois ses erreurs dans <html><b>…). */
 function stripHtml(body: string): string {
   return body.replace(/<[^>]*>/g, "");
@@ -99,9 +106,13 @@ async function attempt(job: Job): Promise<AttemptResult> {
     try {
       body = await res.text();
     } catch {
-      // corps illisible : le 2xx fait foi
+      // corps illisible : le statut fait foi
     }
-    if (CALLMEBOT_ERROR_BODY.test(stripHtml(body))) return { retry: false, reason: "corps-erreur" };
+    const texte = stripHtml(body);
+    if (CALLMEBOT_SERVICE_DOWN_BODY.test(texte)) return { retry: true, reason: "service-down" };
+    if (CALLMEBOT_ERROR_BODY.test(texte)) return { retry: false, reason: "corps-erreur" };
+    // Seul un 200 vaut envoi : un 2xx « exotique » (207 vu en prod) n'est pas un succès.
+    if (res.status !== 200) return { retry: true, reason: `http-${res.status}` };
     return "sent";
   } catch (err) {
     const timedOut = err instanceof Error && err.name === "AbortError";
