@@ -64,6 +64,7 @@ function dossier(p: Partial<DossierPublic> = {}): DossierPublic {
     codePostalPro: "69003",
     siret: null,
     siretEnregistre: false,
+    adressePro: null,
     nda: null,
     regimeTva: null,
     ibanSaisi: false,
