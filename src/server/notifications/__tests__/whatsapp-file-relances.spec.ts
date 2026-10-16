@@ -125,6 +125,25 @@ describe("file WhatsApp", () => {
     expect(errorSpy).toHaveBeenCalledOnce();
   });
 
+  it.each([
+    ["erreur enroulée dans du HTML", "<html><b>ERROR</b>: wrong key</html>", true],
+    ["ERROR: APIKey is invalid", "ERROR: APIKey is invalid", true],
+    ["APIKey is invalid", "APIKey is invalid", true],
+    ["not allowed en début de texte", "Not allowed for this number", true],
+    ["Message queued", "Message queued", false],
+    ["Message queued en HTML", "<html><b>Message</b> queued</html>", false],
+    ["Error-free", "Error-free delivery", false],
+    ["not allowed au milieu d'un succès", "Message queued, nothing not allowed here", false],
+  ])("corps 200 : %s", async (_nom, corps, estErreur) => {
+    fetchMock.mockResolvedValue(new Response(corps, { status: 200 }));
+    await sendWhatsAppRaw({ text: "x" });
+    await vi.runAllTimersAsync();
+    await flushWhatsAppQueue();
+    expect(fetchMock).toHaveBeenCalledTimes(1);
+    if (estErreur) expect(errorSpy).toHaveBeenCalledOnce();
+    else expect(errorSpy).not.toHaveBeenCalled();
+  });
+
   it("refuse le 51e message (file plafonnée à 50) sans donnée personnelle", async () => {
     // Envoi bloqué : aucun message ne se termine pendant le remplissage.
     fetchMock.mockReturnValue(new Promise(() => {}));

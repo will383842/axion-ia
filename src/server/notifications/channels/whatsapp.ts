@@ -40,8 +40,18 @@ const SPACING_MS = 4500;
 const RETRY_DELAYS_MS = [5000, 15000] as const;
 const MAX_ATTEMPTS = RETRY_DELAYS_MS.length + 1;
 
-/** Corps 200 qui trahissent pourtant un échec CallMeBot. */
-const CALLMEBOT_ERROR_BODY = /^\s*error\b|apikey\s+(is\s+)?(invalid|incorrect|wrong)|not allowed/i;
+/**
+ * Corps 200 qui trahissent pourtant un échec CallMeBot. Testé sur le texte SANS balises,
+ * et ancré en début de texte (« Error: » ou « Error - », pas « Error-free ») : « Error-free » ou une phrase de succès qui mentionne
+ * « not allowed » plus loin ne doivent pas matcher.
+ */
+const CALLMEBOT_ERROR_BODY =
+  /^\s*(?:error(?:\s*:|\s+-\s)|apikey\s+(?:is\s+)?(?:invalid|incorrect|wrong)\b|not\s+allowed\b)/i;
+
+/** Retire les balises HTML (CallMeBot enrobe parfois ses erreurs dans <html><b>…). */
+function stripHtml(body: string): string {
+  return body.replace(/<[^>]*>/g, "");
+}
 
 /** Plafond de messages en attente (en cours d'envoi inclus) : au-delà, on refuse. */
 const MAX_QUEUE_SIZE = 50;
@@ -91,7 +101,7 @@ async function attempt(job: Job): Promise<AttemptResult> {
     } catch {
       // corps illisible : le 2xx fait foi
     }
-    if (CALLMEBOT_ERROR_BODY.test(body)) return { retry: false, reason: "corps-erreur" };
+    if (CALLMEBOT_ERROR_BODY.test(stripHtml(body))) return { retry: false, reason: "corps-erreur" };
     return "sent";
   } catch (err) {
     const timedOut = err instanceof Error && err.name === "AbortError";
