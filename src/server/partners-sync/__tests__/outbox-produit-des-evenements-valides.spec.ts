@@ -1,4 +1,5 @@
 // @vitest-environment node
+// @req REQ-INT-003
 /**
  * INT-T02 — la file de sortie vers Axion Partners produit des événements VALIDES, et rien
  * d'autre tant qu'elle n'est pas ouverte.
@@ -499,7 +500,7 @@ describe("REQ-INT-009 — recul exponentiel, 8 tentatives, 10 s, 422 abandonne, 
     expect(f.lignes[0]?.sentAt).toBeInstanceOf(Date);
   });
 
-  it("422 → `gave_up` IMMÉDIAT et une alerte qui nomme l'événement", async () => {
+  it("REQ-INT-003 : 422 → `gave_up` IMMÉDIAT et une alerte qui nomme l'événement", async () => {
     const f = await uneLigneNumerotee();
     const alerter = vi.fn(async () => undefined);
     const r = await envoyerLigne(f.lignes[0]!.id, {
