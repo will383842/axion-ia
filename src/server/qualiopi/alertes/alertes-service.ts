@@ -533,10 +533,41 @@ export async function synchroniserAlertes(): Promise<SyntheseSynchronisation> {
       // à la main.
     }));
 
-  const { count: crees } =
-    aInserer.length > 0
-      ? await prisma.alerteSysteme.createMany({ data: aInserer, skipDuplicates: true })
-      : { count: 0 };
+  // 🔴 2026-10-16 — `createMany` est TOUT-OU-RIEN : une seule candidate refusée par
+  // la base (identifiant de cible qui n'est pas un UUID, code trop long…) faisait
+  // échouer la salve entière, et `handleAlertes` n'en gardait qu'une ligne de
+  // journal — plus aucune alerte créée, sans que rien ne le dise. En cas d'échec
+  // de la salve, on réessaie ligne à ligne : la fautive est nommée dans le
+  // journal, toutes les autres sont créées.
+  let crees = 0;
+  if (aInserer.length > 0) {
+    try {
+      ({ count: crees } = await prisma.alerteSysteme.createMany({
+        data: aInserer,
+        skipDuplicates: true,
+      }));
+    } catch (err) {
+      console.error(
+        "[alertes-service] création en salve refusée — reprise ligne à ligne :",
+        err instanceof Error ? err.message : String(err),
+      );
+      for (const ligne of aInserer) {
+        try {
+          const { count } = await prisma.alerteSysteme.createMany({
+            data: [ligne],
+            skipDuplicates: true,
+          });
+          crees += count;
+        } catch (errLigne) {
+          console.error(
+            `[alertes-service] candidate REFUSÉE par la base — code ${ligne.code}, ` +
+              `cible ${ligne.cibleId ?? "aucune"} :`,
+            errLigne instanceof Error ? errLigne.message : String(errLigne),
+          );
+        }
+      }
+    }
+  }
 
   // ── 🔴 UNE CORRECTION DE LIBELLE N'ATTEIGNAIT JAMAIS LE STOCK ─────────────
   //

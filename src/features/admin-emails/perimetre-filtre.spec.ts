@@ -43,7 +43,7 @@ vi.mock("@/lib/prisma", () => ({
   },
 }));
 
-import { chargerEmails } from "./query";
+import { chargerEmails, idsLiesALaSession } from "./query";
 
 const BASE = {
   jours: 30,
@@ -128,5 +128,27 @@ describe("🔴 contre-témoins — ne pas trop restreindre", () => {
     for (const w of wheres()) {
       expect(w["entityId"]).toEqual({ in: [] });
     }
+  });
+});
+
+describe("idsLiesALaSession — les accès portail des stagiaires font partie du dossier", () => {
+  it("rend aussi les identifiants PortailAcces (e-mail du lien d'accès)", async () => {
+    sessionFindUnique.mockResolvedValue({
+      id: "sess-1",
+      enrollments: [
+        {
+          id: "enr-1",
+          questionnaires: [{ id: "q-1" }],
+          trainee: { portailAcces: [{ id: "acces-1" }, { id: "acces-2" }] },
+        },
+      ],
+      documents: [{ id: "doc-1" }],
+      sessionFormateurs: [],
+      missionsFormateur: [],
+    });
+
+    const ids = await idsLiesALaSession("sess-1");
+
+    expect(ids).toEqual(["sess-1", "enr-1", "q-1", "acces-1", "acces-2", "doc-1"]);
   });
 });

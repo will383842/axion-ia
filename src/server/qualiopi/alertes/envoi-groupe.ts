@@ -86,7 +86,10 @@ export async function notifierAlertesGroupees(
       // Ces codes ont deux canaux qui, eux, ne dépendent pas de la chaîne en
       // panne : l'écran et Telegram (poussé par la sonde). Cf. `hors-bande.ts`.
       code: { notIn: [...CODES_HORS_BANDE] },
-      OR: [{ niveau: "critique" }, { code: { in: [...CODES_DEBLOCAGE] } }],
+      // 🔴 2026-10-16 — « important » n'était jamais notifié (dont le besoin
+      // d'adaptation). `resolue: false` ci-dessus garantit qu'une alerte déjà
+      // résolue ne part jamais après coup ; les envois restent groupés par lot.
+      OR: [{ niveau: { in: ["critique", "important"] } }, { code: { in: [...CODES_DEBLOCAGE] } }],
     },
     select: {
       id: true,

@@ -229,7 +229,7 @@ describe("verifierToken", () => {
   };
 
   it("retourne traineeId pour un token valide non-revoque non-expire", async () => {
-    mockPrisma.portailAcces.findUnique.mockResolvedValue(validAcces);
+    mockPrisma.portailAcces.findUnique.mockResolvedValue({ ...validAcces, lastUsedAt: null });
     mockPrisma.portailAcces.update.mockResolvedValue({});
 
     const result = await verifierToken(validToken);
@@ -265,19 +265,72 @@ describe("verifierToken", () => {
     expect(result).toBeNull();
   });
 
-  it("met a jour lastUsedAt sur verification reussie", async () => {
-    mockPrisma.portailAcces.findUnique.mockResolvedValue(validAcces);
-    mockPrisma.portailAcces.update.mockResolvedValue({});
+  /**
+   * Une requête Prisma est PARESSEUSE : elle n'est envoyée que lorsqu'on
+   * l'attend (`await` / `.then`). Un simple mock `mockResolvedValue` s'exécute à
+   * l'appel et ne voit donc jamais la différence — c'est ce qui laissait passer
+   * `void prisma….update(...)`, qui n'écrivait jamais `last_used_at`.
+   */
+  function poserUpdateParesseux(): { envoyees: number } {
+    const etat = { envoyees: 0 };
+    mockPrisma.portailAcces.update.mockImplementation(() => ({
+      then: (ok: (v: unknown) => unknown) => {
+        etat.envoyees++;
+        return Promise.resolve({}).then(ok);
+      },
+    }));
+    return etat;
+  }
+
+  it("écrit lastUsedAt au premier usage du jeton (requête réellement envoyée)", async () => {
+    mockPrisma.portailAcces.findUnique.mockResolvedValue({ ...validAcces, lastUsedAt: null });
+    const etat = poserUpdateParesseux();
 
     await verifierToken(validToken);
-    await Promise.resolve();
 
+    expect(etat.envoyees).toBe(1);
     expect(mockPrisma.portailAcces.update).toHaveBeenCalledWith(
       expect.objectContaining({
         where: { id: "acces-v1" },
-        data: expect.objectContaining({ lastUsedAt: expect.any(Date) }),
+        data: { lastUsedAt: expect.any(Date) },
       }),
     );
+  });
+
+  it("n'écrit PAS à chaque page vue : rien si le dernier usage date de moins d'une minute", async () => {
+    mockPrisma.portailAcces.findUnique.mockResolvedValue({
+      ...validAcces,
+      lastUsedAt: new Date(Date.now() - 10_000),
+    });
+    const etat = poserUpdateParesseux();
+
+    const result = await verifierToken(validToken);
+
+    expect(result).toEqual({ traineeId: "trainee-v1" });
+    expect(etat.envoyees).toBe(0);
+  });
+
+  it("réécrit lastUsedAt une fois la minute passée", async () => {
+    mockPrisma.portailAcces.findUnique.mockResolvedValue({
+      ...validAcces,
+      lastUsedAt: new Date(Date.now() - 61_000),
+    });
+    const etat = poserUpdateParesseux();
+
+    await verifierToken(validToken);
+
+    expect(etat.envoyees).toBe(1);
+  });
+
+  it("une écriture qui échoue ne refuse jamais l'entrée du stagiaire", async () => {
+    mockPrisma.portailAcces.findUnique.mockResolvedValue({ ...validAcces, lastUsedAt: null });
+    mockPrisma.portailAcces.update.mockRejectedValue(new Error("base indisponible"));
+    const erreur = vi.spyOn(console, "error").mockImplementation(() => undefined);
+
+    const result = await verifierToken(validToken);
+
+    expect(result).toEqual({ traineeId: "trainee-v1" });
+    erreur.mockRestore();
   });
 
   it("retourne null en mode stub.invalid", async () => {
@@ -828,6 +881,8 @@ describe("demanderAccesParEmail", () => {
         stagiairePrenomNom: "Jean Dupont",
         lienPortail: expect.stringContaining("/portail/acces/"),
       }),
+      // L'e-mail est rattaché à l'accès (et donc au dossier) dans le journal des envois.
+      { entityType: "PortailAcces", entityId: "acc-1" },
     );
   });
 });
