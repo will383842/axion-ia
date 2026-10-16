@@ -91,6 +91,8 @@ export const TEXTES = {
   iban: "IBAN",
   ibanEnregistre: "IBAN enregistré. Laissez vide pour le garder.",
   ibanFige: "IBAN enregistré. Pour le changer, écrivez-nous : nous le vérifierons d'abord.",
+  ibanParDemande:
+    "IBAN de vos virements enregistré. Laissez vide pour le garder. Un nouveau compte saisi ici sera vérifié avant tout virement : nous vous écrirons à votre adresse connue.",
   ibanInvalide:
     "Cet IBAN n'est pas valide, ou n'est pas celui d'un compte de la zone SEPA (Europe), où nous versons vos honoraires : vérifiez-le.",
 
@@ -103,8 +105,9 @@ export const TEXTES = {
     assurance_rc_pro: "Si vous en avez une.",
     diplome: "Si vous en avez.",
   },
-  codeUrssaf: "Code de sécurité",
-  codeUrssafAide: "En bas de votre attestation.",
+  codeUrssaf: "Code de sécurité (facultatif)",
+  codeUrssafAide:
+    "En bas de votre attestation. Il nous permet de la vérifier ; sans lui, vous pouvez continuer.",
   codeUrssafInvalide:
     "Ce code n'est pas lisible : recopiez les lettres et chiffres du bas de l'attestation.",
   enregistrerCode: "Enregistrer le code",

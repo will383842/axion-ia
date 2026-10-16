@@ -28,7 +28,7 @@ vi.mock("next/navigation", () => ({ redirect: (u: string) => redirect(u) }));
 vi.mock("next/cache", () => ({ revalidatePath: vi.fn() }));
 
 import {
-  donnerAvisFormAction,
+  donnerAvisAction,
   evaluerStagiaireFormAction,
   terminerBilanFormAction,
 } from "../bilan-fin-formation.actions";
@@ -62,11 +62,14 @@ describe("garde commune de l'espace", () => {
     expect(
       await url(evaluerStagiaireFormAction(fd({ sessionId: S, enrollmentId: E, "note-0": "3" }))),
     ).toBe("/fr/espace-formateur/connexion");
+    // V2-N-3 — l'avis ne redirige pas : le texte écrit resterait derrière la connexion.
     expect(
-      await url(
-        donnerAvisFormAction(fd({ sessionId: S, commentaire: "Bon groupe, rien à dire." })),
-      ),
-    ).toBe("/fr/espace-formateur/connexion");
+      await donnerAvisAction(null, fd({ sessionId: S, commentaire: "Bon groupe, rien à dire." })),
+    ).toMatchObject({
+      ok: false,
+      message: expect.stringMatching(/connexion a expiré/),
+      commentaire: "Bon groupe, rien à dire.",
+    });
     expect(await url(terminerBilanFormAction(fd({ sessionId: S })))).toBe(
       "/fr/espace-formateur/connexion",
     );
@@ -108,17 +111,48 @@ describe("evaluerStagiaireFormAction", () => {
   });
 });
 
-describe("donnerAvisFormAction", () => {
-  it("note facultative, texte transmis", async () => {
-    await url(donnerAvisFormAction(fd({ sessionId: S, commentaire: "Groupe motivé.", note: "" })));
+describe("donnerAvisAction", () => {
+  it("note facultative, texte transmis ; succès : retour au bloc", async () => {
+    expect(
+      await url(
+        donnerAvisAction(null, fd({ sessionId: S, commentaire: "Groupe motivé.", note: "" })),
+      ),
+    ).toBe(`${PAGE}?bilan=ok#fin-de-formation`);
     expect(avis.mock.calls[0]![0]).toMatchObject({
       sessionId: S,
       trainerId: T,
       commentaire: "Groupe motivé.",
     });
     expect(avis.mock.calls[0]![0]).not.toHaveProperty("note");
-    await url(donnerAvisFormAction(fd({ sessionId: S, commentaire: "Groupe motivé.", note: "5" })));
+    await url(
+      donnerAvisAction(null, fd({ sessionId: S, commentaire: "Groupe motivé.", note: "5" })),
+    );
     expect(avis.mock.calls[1]![0]).toMatchObject({ note: 5 });
+  });
+
+  it("V2-N-3 — un refus du service rend le message ET la saisie, sans rediriger", async () => {
+    avis.mockResolvedValue("dossier_clos");
+    const etat = await donnerAvisAction(
+      null,
+      fd({ sessionId: S, commentaire: "Salle trop petite.", note: "4" }),
+    );
+    expect(redirect).not.toHaveBeenCalled();
+    expect(etat).toEqual({
+      ok: false,
+      essai: 1,
+      message: expect.stringMatching(/dossier de cette session est clos/),
+      commentaire: "Salle trop petite.",
+      note: "4",
+    });
+    // Deux refus de suite : un rang nouveau, pour remonter les champs à chaque fois.
+    expect((await donnerAvisAction(etat, fd({ sessionId: S, commentaire: "x" }))).essai).toBe(2);
+  });
+
+  it("identifiant de session forgé : rien n'est transmis, la saisie revient", async () => {
+    expect(
+      await donnerAvisAction(null, fd({ sessionId: "../x", commentaire: "Groupe motivé." })),
+    ).toMatchObject({ ok: false, commentaire: "Groupe motivé." });
+    expect(avis).not.toHaveBeenCalled();
   });
 });
 

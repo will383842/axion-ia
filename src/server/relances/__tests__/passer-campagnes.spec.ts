@@ -388,3 +388,55 @@ describe("une réponse du formateur arrête ses relances", () => {
     }
   });
 });
+
+describe("vérification n° 2 — ce que le passage laisse au filet du départ", () => {
+  it("V2-P-2 : une campagne arrêtée par la réponse porte la date de son envoi de départ", async () => {
+    const depart = new Date(MAINTENANT.getTime() - 9 * JOUR);
+    await passerCampagnes(
+      MAINTENANT,
+      deps([
+        campagne("dossier", [faits(1, { depart })], {
+          arreteeParReponseFormateur: true,
+        }),
+      ]),
+    );
+    expect(envoyer).toHaveBeenCalledWith(
+      expect.objectContaining({
+        payload: { departRelance: depart.toISOString(), etape: 1 },
+      }),
+    );
+  });
+  it("V2-P-6 : ni enfilé ni garé, ce que le payload complété a émis est rendu", async () => {
+    const renoncer = vi.fn(async () => undefined);
+    const complet = async (p: Record<string, unknown>) => ({ ...p, lien: "https://x.invalid/n" });
+    for (const r of ["indisponible", "retenu", "fiche-retiree"] as const) {
+      renoncer.mockClear();
+      envoyer.mockResolvedValueOnce(r);
+      tentes.clear();
+      await passerCampagnes(
+        MAINTENANT,
+        deps([
+          campagne("dossier", [faits(1, { completerPayload: complet, renoncerPayload: renoncer })]),
+        ]),
+      );
+      expect(renoncer, r).toHaveBeenCalledWith(
+        expect.objectContaining({ lien: "https://x.invalid/n" }),
+      );
+    }
+  });
+  it("V2-P-6 : enfilé ou garé, rien n'est rendu", async () => {
+    const renoncer = vi.fn(async () => undefined);
+    const complet = async (p: Record<string, unknown>) => ({ ...p, lien: "https://x.invalid/n" });
+    for (const r of ["envoye", "en-validation"] as const) {
+      envoyer.mockResolvedValueOnce(r);
+      tentes.clear();
+      await passerCampagnes(
+        MAINTENANT,
+        deps([
+          campagne("dossier", [faits(1, { completerPayload: complet, renoncerPayload: renoncer })]),
+        ]),
+      );
+    }
+    expect(renoncer).not.toHaveBeenCalled();
+  });
+});

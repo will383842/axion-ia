@@ -1,5 +1,6 @@
 /**
- * Espace formateur — « Ma rémunération ».
+ * Espace formateur — « Mes honoraires » (indépendant) ou « Ma rémunération » (salarié,
+ * dirigeant) : le titre suit le statut, comme le menu (V2-N-12).
  *
  * ## Le trou que cette page ferme
  *
@@ -58,7 +59,8 @@ import { CoquilleFormateur } from "../_coquille";
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
-  title: "Ma rémunération | Espace formateur Axion-IA",
+  // Neutre : l'onglet ne connaît pas le statut (« honoraires » ou « rémunération »).
+  title: "Ce qui vous est dû | Espace formateur Axion-IA",
   robots: { index: false, follow: false },
 };
 
@@ -154,7 +156,7 @@ export default async function RemunerationFormateurPage({
 
   return (
     <CoquilleFormateur section="remuneration">
-      <h1 className="text-2xl font-semibold">Ma rémunération</h1>
+      <h1 className="text-2xl font-semibold">{surPaie ? "Ma rémunération" : "Mes honoraires"}</h1>
       <p className="mt-2 text-sm opacity-80">
         {surPaie
           ? "Ce que vos formations ajoutent à votre paie, mois par mois."
