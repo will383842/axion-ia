@@ -48,8 +48,36 @@ import { hashEmailForLookup } from "@/lib/security/email-hash";
 import { signalerHoneypot } from "@/lib/security/honeypot-observable";
 import { ENTITE_MESSAGE } from "@/lib/contact/accuse-attendu";
 import { normaliserTelephone } from "@/lib/telephone";
+import { isR2Configured } from "@/lib/r2-storage";
+import {
+  finaliserPiecesJointes,
+  lireAnnoncePiecesJointes,
+  ouvrirEnvoisPiecesJointes,
+  PlafondStockageAtteint,
+  type EnvoisOuverts,
+  type IssuePiece,
+} from "@/server/contact/pieces-jointes";
+import {
+  CLE_ACCUSE_DIFFERE,
+  envoyerAccuseDiffere,
+  payloadAccuseContact,
+} from "@/server/contact/accuse-contact";
 
-export type UnifiedContactState = { ok: true; submissionId: string } | { ok: false; error: string };
+export type UnifiedContactState =
+  | {
+      ok: true;
+      submissionId: string;
+      /**
+       * Pièces jointes (2026-10-15) : les URL d'envoi DIRECT vers R2, délivrées
+       * seulement après la limite de fréquence, le leurre, Turnstile et
+       * l'écriture de la demande. Le navigateur envoie, puis appelle
+       * `finaliserPiecesJointesAction`.
+       */
+      envoiPieces?: EnvoisOuverts;
+      /** Pièces annoncées pour lesquelles aucune URL n'a été délivrée. */
+      piecesNonRecues?: number;
+    }
+  | { ok: false; error: string };
 
 const CONSENT_VERSION = "v1-2026-05-24";
 
@@ -209,6 +237,23 @@ export async function submitUnifiedContactAction(
   }
   const data = parsed.data;
 
+  // 4 bis. Pièces jointes (2026-10-15) — le formulaire n'envoie que leur
+  // ANNONCE (nom, taille) : les fichiers partiront du navigateur vers R2, sur des
+  // URL délivrées plus bas. 🔑 Aucune URL sans Turnstile validé (le leurre et la
+  // limite de fréquence sont déjà passés), ni sans annonce conforme, ni sans
+  // stockage : la demande est enregistrée QUAND MÊME, ses pièces « non reçues ».
+  // Sans fichier, rien ne change.
+  const annonce = lireAnnoncePiecesJointes(formData);
+  const envoisPossibles = annonce.pieces.length > 0 && turnstilePassed && isR2Configured();
+  const motifSansEnvoi =
+    annonce.nombre === 0 || envoisPossibles
+      ? null
+      : annonce.refus
+        ? "annonce"
+        : !turnstilePassed
+          ? "turnstile"
+          : "stockage";
+
   // 🔑 UNE SEULE FORME RANGÉE, pour les TROIS destinations de ce champ :
   //    la base (chiffrée), le CRM et la notification Telegram. Depuis que le
   //    formulaire accepte `06 12 34 56 78`, normaliser ici est ce qui évite
@@ -251,6 +296,12 @@ export async function submitUnifiedContactAction(
           consentVersion: CONSENT_VERSION,
           // Turnstile soft-fail : trace si le captcha n'a pas validé (audit abus).
           ...(turnstilePassed ? {} : { turnstilePassed: false }),
+          // Pièces jointes (2026-10-15) : combien annoncées ; si aucune URL n'a été
+          // délivrée, pourquoi (la console dit « pièces non reçues ») ; et, quand
+          // elles vont arriver, le gabarit de l'accusé qui les attendra.
+          ...(annonce.nombre > 0 ? { piecesJointesAnnoncees: annonce.nombre } : {}),
+          ...(motifSansEnvoi ? { piecesJointesNonRecues: motifSansEnvoi } : {}),
+          ...(envoisPossibles ? { [CLE_ACCUSE_DIFFERE]: emailTemplateFor(data.type) } : {}),
           ...(Object.keys(funnel).length > 0 ? { funnel: funnel as unknown as object } : {}),
         } as object,
         ipAddress: ip,
@@ -305,6 +356,25 @@ export async function submitUnifiedContactAction(
       userAgent,
     });
 
+    // 6 ter. Pièces jointes — les URL d'envoi, APRÈS la demande, jamais
+    // bloquant : la demande est en base quoi qu'il arrive au stockage
+    // (cf. `server/contact/pieces-jointes.ts`).
+    let envoiPieces: EnvoisOuverts | null = null;
+    if (envoisPossibles) {
+      try {
+        envoiPieces = await ouvrirEnvoisPiecesJointes(submission.id, annonce.pieces);
+      } catch (err) {
+        // Plafond 24 h : déjà alerté (une fois par jour) par le module ; la
+        // demande part, les pièces sont « non reçues ».
+        if (!(err instanceof PlafondStockageAtteint)) {
+          Sentry.captureException(err, {
+            tags: { action: "submitUnifiedContactAction", step: "pieces-jointes", type: data.type },
+          });
+        }
+      }
+    }
+    const piecesNonRecues = envoiPieces ? 0 : annonce.nombre;
+
     // 7. Telegram notification — via hub typé (cf. ADR 0027).
     // dedupKey = submission.id pour neutraliser un éventuel double-submit
     // qui passerait au niveau DB (improbable car idempotencyKey, mais
@@ -340,6 +410,12 @@ export async function submitUnifiedContactAction(
         ? { budget: data.budgetIndicative }
         : {}),
       locale,
+      // Pièces jointes ANNONCÉES (2026-10-15) : le nombre seulement (règle du
+      // 11/10/2026). L'alerte part tout de suite : elle n'attend pas les fichiers.
+      // Les noms (ANNONCÉS, assainis) restent en fin de payload pour le salon
+      // « Clients » (#1553) ; le format actuel ne les affiche pas.
+      ...(annonce.nombre > 0 ? { piecesJointes: annonce.nombre } : {}),
+      ...(annonce.pieces.length > 0 ? { piecesJointesNoms: annonce.pieces.map((p) => p.nom) } : {}),
     };
     // 7 & 8 = BEST-EFFORT : la notif Telegram et l'email de confirmation NE
     // DOIVENT PAS faire échouer la soumission (le lead est déjà en base). Un
@@ -356,29 +432,28 @@ export async function submitUnifiedContactAction(
       "unified-contact",
     );
 
+    // Des fichiers vont arriver : l'accusé les attend (il dira combien sont
+    // reçus) — cf. `server/contact/accuse-contact.ts`. Sinon, il part maintenant.
     try {
-      await enqueueEmail(
-        emailTemplateFor(data.type),
-        data.email,
-        locale,
-        {
-          contactName: data.nom,
-          submissionId: submission.id,
-          // `quote-request-received` s'en sert dans sa phrase d'accroche. Sans
-          // lui, le gabarit affichait « votre demande de devis pour undefined ».
-          ...(data.companyName ? { companyName: data.companyName } : {}),
-          type: data.type,
-          subType: data.subType,
-          // Champs hérités utilisés par les templates existants (audit-confirmed,
-          // implementation-confirmed, contact-confirmed) — non bloquant si absent.
-          size: data.companySize,
-          industry: data.companySector,
-          auditType: data.subType,
-        },
-        // 🔑 L'entité liée (2026-09-18) : la fiche du message dit alors EXACTEMENT
-        // si l'accusé est parti — cf. `admin-submissions/accuse-reception.ts`.
-        { entityType: ENTITE_MESSAGE, entityId: submission.id },
-      );
+      if (!envoiPieces) {
+        await enqueueEmail(
+          emailTemplateFor(data.type),
+          data.email,
+          locale,
+          payloadAccuseContact({
+            nom: data.nom,
+            submissionId: submission.id,
+            companyName: data.companyName,
+            type: data.type,
+            subType: data.subType,
+            size: data.companySize,
+            industry: data.companySector,
+          }),
+          // 🔑 L'entité liée (2026-09-18) : la fiche du message dit alors EXACTEMENT
+          // si l'accusé est parti — cf. `admin-submissions/accuse-reception.ts`.
+          { entityType: ENTITE_MESSAGE, entityId: submission.id },
+        );
+      }
     } catch (mailErr) {
       console.error("[unified-contact] enqueueEmail best-effort a échoué:", mailErr);
       Sentry.captureException(mailErr, {
@@ -386,7 +461,12 @@ export async function submitUnifiedContactAction(
       });
     }
 
-    return { ok: true, submissionId: submission.id };
+    return {
+      ok: true,
+      submissionId: submission.id,
+      ...(envoiPieces ? { envoiPieces } : {}),
+      ...(piecesNonRecues > 0 ? { piecesNonRecues } : {}),
+    };
   } catch (err) {
     // Seul un échec de l'écriture DB (capture du lead) arrive ici = vraie erreur.
     // On logge le message RÉEL (visible dans les logs Coolify) pour diagnostic.
@@ -398,5 +478,53 @@ export async function submitUnifiedContactAction(
       ok: false,
       error: "Une erreur est survenue. Réessayez ou écrivez à contact@axion-ia.com.",
     };
+  }
+}
+
+// ---- Fin d'envoi des pièces jointes (2026-10-15) ----------------------------
+
+export type FinPiecesJointesState = { ok: true; pieces: ReadonlyArray<IssuePiece> } | { ok: false };
+
+const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+const JETON = /^[A-Za-z0-9_-]{43}$/;
+
+/**
+ * Le navigateur a fini d'envoyer (ou d'échouer à envoyer) ses fichiers : le
+ * serveur les contrôle, les range, puis fait partir l'accusé de réception
+ * différé. Rien ne se passe sans le JETON rendu avec les URL : un identifiant
+ * de demande seul ne suffit pas. Ne lève jamais — au pire, « pièces non reçues ».
+ */
+export async function finaliserPiecesJointesAction(
+  submissionId: string,
+  jeton: string,
+): Promise<FinPiecesJointesState> {
+  if (typeof submissionId !== "string" || !UUID.test(submissionId)) return { ok: false };
+  if (typeof jeton !== "string" || !JETON.test(jeton)) return { ok: false };
+  const ip = await getClientIp();
+  const rl = await checkRateLimit(`unified-contact-pieces:${ip}`, { limit: 10, windowSec: 600 });
+  if (!rl.allowed) return { ok: false };
+  try {
+    const bilan = await finaliserPiecesJointes(submissionId, jeton);
+    if (bilan.controlees) {
+      try {
+        const parti = await envoyerAccuseDiffere(submissionId);
+        if (!parti) {
+          Sentry.captureMessage("[unified-contact] accusé différé non parti", {
+            level: "warning",
+            tags: { action: "finaliserPiecesJointesAction", step: "email" },
+          });
+        }
+      } catch (mailErr) {
+        Sentry.captureException(mailErr, {
+          tags: { action: "finaliserPiecesJointesAction", step: "email" },
+        });
+      }
+    }
+    return { ok: true, pieces: bilan.pieces };
+  } catch (err) {
+    Sentry.captureException(err, {
+      tags: { action: "finaliserPiecesJointesAction", step: "pieces-jointes" },
+    });
+    return { ok: false };
   }
 }

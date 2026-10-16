@@ -10,6 +10,7 @@
 "use server";
 
 import { deleteCv } from "@/server/careers/cv-storage";
+import { clesPiecesJointes, supprimerObjetsPiecesJointes } from "@/server/contact/pieces-jointes";
 import { lireCvCandidat } from "@/lib/commercial-application/cv-candidat";
 import { z } from "zod";
 import * as Sentry from "@sentry/nextjs";
@@ -245,6 +246,11 @@ export async function eraseSubmissionAction(
     }
   }
 
+  // Pièces jointes du formulaire de contact (2026-10-15) : les lignes partent en
+  // cascade avec la demande, pas les objets R2. Clés lues AVANT, objets retirés
+  // APRÈS la transaction — même raison que le CV ci-dessous.
+  const clesPieces = await clesPiecesJointes(parsed.data.id);
+
   let cheminCv: string | null = null;
   await prisma.$transaction(async (tx) => {
     const sub = await tx.submission.findUnique({
@@ -279,6 +285,7 @@ export async function eraseSubmissionAction(
   // la ligne supprimée ne l'emporte pas. Après la transaction, jamais avant —
   // un fichier effacé pour une ligne qui survit serait une perte sans effacement.
   await deleteCv(cheminCv);
+  await supprimerObjetsPiecesJointes(clesPieces);
 
   revalidateEcransDesDemandes();
   return { ok: true };

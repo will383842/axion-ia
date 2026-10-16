@@ -63,6 +63,11 @@ vi.mock("@/components/admin/contacts/RendezVousApporteur", () => ({
 vi.mock("@/components/admin/contacts/ReponsesRecuesApporteur", () => ({
   ReponsesRecuesApporteur: () => null,
 }));
+// Quatrième voisin (2026-10-15) : les pièces jointes du formulaire de contact,
+// lues par un composant SERVEUR asynchrone. Leurs tests vivent à côté de la route.
+vi.mock("@/components/admin/contacts/PiecesJointesMessage", () => ({
+  PiecesJointesMessage: () => null,
+}));
 // Les gestes de la fiche, eux, sont un composant CLIENT : ils appellent
 // `useRouter`, que ce fichier ne fournit pas (son mock de `next/navigation` ne
 // porte que `notFound` et `redirect`). Leurs tests vivent a cote d'eux.
