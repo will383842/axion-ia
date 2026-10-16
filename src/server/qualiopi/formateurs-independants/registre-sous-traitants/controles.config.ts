@@ -19,7 +19,7 @@ import { VIGILANCE_VALIDITE_MOIS } from "@/lib/vigilance";
 import type { TrainerDocumentTypeValue } from "@/server/qualiopi/trainers/conformite";
 
 /** Une pièce à échéance l'est à J-30 : l'alerte part avant, pas le jour même. */
-export const PREAVIS_ECHEANCE_JOURS = 30;
+export const ALERTE_AVANT_ECHEANCE_JOURS = 30;
 
 /** QUAND un contrôle est dû. */
 export type QuandControle =

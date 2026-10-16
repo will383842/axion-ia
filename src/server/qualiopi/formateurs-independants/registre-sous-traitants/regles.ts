@@ -27,7 +27,7 @@ import { vigilanceExigible } from "../vigilance-seuil";
 import {
   CONTROLES_SOUS_TRAITANCE,
   PIECES_REGISTRE,
-  PREAVIS_ECHEANCE_JOURS,
+  ALERTE_AVANT_ECHEANCE_JOURS,
   type PieceRegistre,
 } from "./controles.config";
 
@@ -290,7 +290,7 @@ export function etatPieces(
   cumulHtCents: number | null,
   maintenant: Date,
 ): EtatPiece[] {
-  const preavis = maintenant.getTime() + PREAVIS_ECHEANCE_JOURS * JOUR_MS;
+  const preavis = maintenant.getTime() + ALERTE_AVANT_ECHEANCE_JOURS * JOUR_MS;
   return PIECES_REGISTRE.map((p): EtatPiece => {
     const ex = exigee(p, cumulHtCents);
     const base = {
@@ -469,7 +469,7 @@ export function candidatsAlertesRegistre(
       out.push({
         sorte: "piece_a_echeance",
         niveau: "important",
-        titre: `Registre des sous-traitants : pièce à renouveler sous ${PREAVIS_ECHEANCE_JOURS} jours`,
+        titre: `Registre des sous-traitants : pièce à renouveler sous ${ALERTE_AVANT_ECHEANCE_JOURS} jours`,
         message: `${l.libelle} : ${proches.map((p) => `${p.libelle} jusqu'au ${jour(p.echeance)}`).join(", ")}. En demander le renouvellement.`,
         cibleType: "Trainer",
         cibleId: l.trainerId,

@@ -22,7 +22,7 @@ import { SEUIL_VIGILANCE_CENTS } from "@/lib/vigilance";
 import {
   CONTROLES_SOUS_TRAITANCE,
   PIECES_REGISTRE,
-  PREAVIS_ECHEANCE_JOURS,
+  ALERTE_AVANT_ECHEANCE_JOURS,
 } from "../controles.config";
 import {
   candidatsAlertesRegistre,
@@ -296,10 +296,12 @@ describe("état des pièces", () => {
     const d = (exp: Date | null) =>
       piece(etatPieces([doc({ dateExpiration: exp })], 0, MAINTENANT), "kbis_sirene")?.etat;
     expect(d(new Date(MAINTENANT.getTime() - JOUR))).toBe("expiree");
-    expect(d(new Date(MAINTENANT.getTime() + (PREAVIS_ECHEANCE_JOURS - 1) * JOUR))).toBe(
+    expect(d(new Date(MAINTENANT.getTime() + (ALERTE_AVANT_ECHEANCE_JOURS - 1) * JOUR))).toBe(
       "a_echeance",
     );
-    expect(d(new Date(MAINTENANT.getTime() + (PREAVIS_ECHEANCE_JOURS + 5) * JOUR))).toBe("valide");
+    expect(d(new Date(MAINTENANT.getTime() + (ALERTE_AVANT_ECHEANCE_JOURS + 5) * JOUR))).toBe(
+      "valide",
+    );
     expect(d(null)).toBe("valide");
   });
   it("une pièce rejetée ou en attente ne compte pas", () => {
