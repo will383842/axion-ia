@@ -67,12 +67,14 @@ export type {
 async function envoyerAuSalonClients(
   event: EvenementClient,
   texteAllege: string,
+  suivi: { unMessageEstParti: boolean },
 ): Promise<EnvoiSalonClients> {
   const salon = resolveSalonClients();
   // Relecture PR 1553 : vrai dès qu'UN message est arrivé quelque part. La clé
   // anti-doublon est alors gardée même si la suite échoue — sinon un rejeu
   // renverrait le 1er morceau en double.
-  let unMessageEstParti = false;
+  // `suivi` est partagé avec l'appelant : si une exception survient APRÈS un
+  // morceau parti, l'appelant sait quand même qu'un message est arrivé.
   if (salon) {
     let toutEstParti = true;
     for (const morceau of decouperPourTelegram(formatNotificationClient(event))) {
@@ -87,20 +89,22 @@ async function envoyerAuSalonClients(
         toutEstParti = false;
         break;
       }
-      unMessageEstParti = true;
+      suivi.unMessageEstParti = true;
     }
-    if (toutEstParti) return { statut: "sent", unMessageEstParti };
+    if (toutEstParti) return { statut: "sent", unMessageEstParti: suivi.unMessageEstParti };
   }
   // Salon pas encore créé, ou envoi échoué : la route d'avant.
   const repli = resolveTelegramTarget(groupeDeRepliClient(event.category));
-  if (!repli) return { statut: salon ? "failed" : "skipped", unMessageEstParti };
+  if (!repli)
+    return { statut: salon ? "failed" : "skipped", unMessageEstParti: suivi.unMessageEstParti };
   const ok = await sendTelegramRaw({
     text: texteAllege,
     silent: false,
     chatId: repli.chatId,
     botToken: repli.botToken,
   });
-  return { statut: ok ? "sent" : "failed", unMessageEstParti: unMessageEstParti || ok };
+  if (ok) suivi.unMessageEstParti = true;
+  return { statut: ok ? "sent" : "failed", unMessageEstParti: suivi.unMessageEstParti };
 }
 
 interface EnvoiSalonClients {
@@ -131,14 +135,17 @@ async function dispatchChannels(
 
   for (const ch of channels) {
     if (ch === "telegram" && estCategorieClient(category)) {
+      const suivi = { unMessageEstParti: false };
       tasks.push(
-        envoyerAuSalonClients(event as EvenementClient, formattedText)
+        envoyerAuSalonClients(event as EvenementClient, formattedText, suivi)
           .then(({ statut, unMessageEstParti }) => {
             results.telegram = statut;
             partiellementParti = unMessageEstParti;
           })
           .catch(() => {
             results.telegram = "failed";
+            // Une exception après un morceau parti ne libère pas la clé.
+            partiellementParti = suivi.unMessageEstParti;
           }),
       );
     } else if (ch === "telegram") {

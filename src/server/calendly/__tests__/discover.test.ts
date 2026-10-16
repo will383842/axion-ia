@@ -113,7 +113,7 @@ describe("discoverNewCalendlyEvents", () => {
       eventTypeSlug: "premier-contact-30-min",
       status: "scheduled",
     });
-    expect(enrichMock).toHaveBeenCalledWith("row_1");
+    expect(enrichMock).toHaveBeenCalledWith("row_1", {});
 
     // L'alerte doit porter le contact que l'enrichissement vient de résoudre,
     // pas « (non communiqué) » : c'est tout l'intérêt de l'enchaînement.

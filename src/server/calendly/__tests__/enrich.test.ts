@@ -287,6 +287,35 @@ describe("enrichCalendlyEvent", () => {
     expect(res.ok).toBe(true);
   });
 
+  // Relecture PR 1553 : le visiteur qui annule ne doit pas attendre Telegram.
+  it("apres-reponse : l'enrichissement répond même si l'alerte pend", async () => {
+    findUniqueMock.mockResolvedValueOnce(emptyRow({ status: "scheduled" }));
+    fetchInviteeMock.mockResolvedValueOnce(apiData({ calendlyStatus: "canceled" }));
+    notifyMock.mockReturnValueOnce(new Promise(() => {})); // Telegram ne répond jamais
+    const res = await Promise.race([
+      enrichCalendlyEvent("evt_1", { notifier: "apres-reponse" }),
+      new Promise<"bloque">((r) => setTimeout(() => r("bloque"), 1_000)),
+    ]);
+    expect(res).not.toBe("bloque");
+    expect((res as { ok: boolean }).ok).toBe(true);
+    // L'alerte est bien partie, avec sa clé anti-doublon.
+    await vi.waitFor(() => expect(notifyMock).toHaveBeenCalledOnce());
+    const call = notifyMock.mock.calls[0]?.[0] as { category: string; dedupKey: string };
+    expect(call.category).toBe("CLIENT_CALL_CANCELED");
+    expect(call.dedupKey).toBe("cal-cancel-evt_1");
+  });
+
+  it("immediat (worker) : l'alerte est attendue", async () => {
+    findUniqueMock.mockResolvedValueOnce(emptyRow({ status: "scheduled" }));
+    fetchInviteeMock.mockResolvedValueOnce(apiData({ calendlyStatus: "canceled" }));
+    notifyMock.mockReturnValueOnce(new Promise(() => {}));
+    const res = await Promise.race([
+      enrichCalendlyEvent("evt_1", { notifier: "immediat" }),
+      new Promise<"bloque">((r) => setTimeout(() => r("bloque"), 200)),
+    ]);
+    expect(res).toBe("bloque");
+  });
+
   // « Terminé » / « Absent » décrivent ce qui s'est passé pendant l'appel :
   // l'API Calendly ne connaît pas ces états et les repasserait à « programmé ».
   it.each(["completed", "no_show"])("ne rétrograde pas un statut « %s »", async (status) => {

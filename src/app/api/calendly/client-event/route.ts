@@ -317,7 +317,9 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   //    que de detacher la promesse) parce qu'un runtime serverless peut geler
   //    l'execution des la reponse renvoyee — une promesse orpheline y serait
   //    perdue silencieusement. Le cout est plafonne a 5 s (AbortSignal).
-  const enriched = isCalendlyApiConfigured() ? await enrichCalendlyEvent(event.id) : null;
+  const enriched = isCalendlyApiConfigured()
+    ? await enrichCalendlyEvent(event.id, { notifier: "apres-reponse" })
+    : null;
 
   // Relit les champs que l'enrichissement vient eventuellement de remplir, pour
   // que la notification porte le vrai contact plutot que « (non communique) ».
