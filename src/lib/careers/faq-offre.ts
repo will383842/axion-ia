@@ -3,6 +3,7 @@
 // `faq-offre-freelance.ts`.
 
 import type { JobOffer } from "../../../prisma/generated/client";
+import { phraseEtapesIntervenant } from "./etapes-intervenant";
 import {
   applicantCountryLabel,
   contractTypeLabel,
@@ -34,6 +35,11 @@ export function buildOfferFaq(
   o: JobOffer,
   title: string,
   isFr: boolean,
+  /**
+   * L14 — offre d'intervenant : la réponse « candidature » dit les vraies étapes
+   * au lieu de « CV optionnel ». Absent, la FAQ est celle d'avant, mot pour mot.
+   */
+  opts?: { readonly intervenant?: boolean; readonly certificationObtenue?: boolean },
 ): Array<{ id: string; question: string; answer: string }> {
   const items: Array<{ id: string; question: string; answer: string }> = [];
   const cityPart = o.city ? (isFr ? ` à ${o.city}` : ` in ${o.city}`) : "";
@@ -135,9 +141,14 @@ export function buildOfferFaq(
   items.push({
     id: "candidature",
     question: isFr ? "Comment postuler à cette offre ?" : "How do I apply?",
-    answer: isFr
-      ? `Vous postulez en ligne en quelques minutes via le bouton « Postuler ». Le CV est optionnel : ce qui compte, c'est votre motivation et ce que vous savez faire. ${RECRUTEMENT_REGULIER.fr}`
-      : `Apply online in a few minutes via the « Apply » button. A CV is optional — what matters is your motivation and skills. ${RECRUTEMENT_REGULIER.en}`,
+    answer:
+      opts?.intervenant === true
+        ? isFr
+          ? `Vous postulez en ligne en quelques minutes via le bouton « Postuler ». Le parcours comporte ensuite plusieurs étapes. ${phraseEtapesIntervenant("fr", { freelance: false, ...(opts.certificationObtenue !== undefined ? { certificationObtenue: opts.certificationObtenue } : {}) })}`
+          : `Apply online in a few minutes via the « Apply » button. The process then has several steps. ${phraseEtapesIntervenant("en", { freelance: false, ...(opts.certificationObtenue !== undefined ? { certificationObtenue: opts.certificationObtenue } : {}) })}`
+        : isFr
+          ? `Vous postulez en ligne en quelques minutes via le bouton « Postuler ». Le CV est optionnel : ce qui compte, c'est votre motivation et ce que vous savez faire. ${RECRUTEMENT_REGULIER.fr}`
+          : `Apply online in a few minutes via the « Apply » button. A CV is optional — what matters is your motivation and skills. ${RECRUTEMENT_REGULIER.en}`,
   });
 
   return items;

@@ -58,6 +58,7 @@ export function TrainerManageForm(props: TrainerManageFormProps): React.ReactEle
   const tousCoches =
     props.formations.length > 0 && props.formations.every((f) => selected.has(f.id));
   const [nda, setNda] = useState(props.sousTraitantNda ?? "");
+  const [motifRetrait, setMotifRetrait] = useState("");
   const [statut, setStatut] = useState<TrainerStatut>(props.statut);
   const [estFormateur, setEstFormateur] = useState<boolean>(props.estFormateur);
 
@@ -323,6 +324,15 @@ export function TrainerManageForm(props: TrainerManageFormProps): React.ReactEle
           </div>
         )}
         <div className="mt-[var(--space-admin-4)]">
+          <input
+            aria-label="Motif du retrait d'habilitation (facultatif)"
+            value={motifRetrait}
+            onChange={(e) => setMotifRetrait(e.target.value)}
+            disabled={isPending}
+            maxLength={500}
+            placeholder="Motif du retrait, si vous en retirez une (facultatif)"
+            className={`${inputCls} mb-[var(--space-admin-3)] w-full`}
+          />
           <button
             type="button"
             disabled={isPending}
@@ -333,6 +343,7 @@ export function TrainerManageForm(props: TrainerManageFormProps): React.ReactEle
                   setTrainerHabilitationsAction({
                     id: props.trainerId,
                     formationsHabilitees: Array.from(selected),
+                    ...(motifRetrait.trim() !== "" ? { motifRetrait } : {}),
                   }),
                 "Habilitations enregistrées.",
               )
