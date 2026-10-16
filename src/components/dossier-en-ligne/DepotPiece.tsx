@@ -7,7 +7,8 @@
 // Une pièce du dossier : son état (à ajouter, ajoutée, vérifiée, à renvoyer avec son
 // motif) et deux façons de l'envoyer — une photo prise sur le moment (`capture`, qui
 // ouvre l'appareil photo du téléphone) ou un fichier PDF / image déjà enregistré.
-// L'attestation de vigilance demande en plus sa date de délivrance (validité 6 mois).
+// L'attestation de vigilance demande en plus sa date de délivrance (validité 6 mois). Le CV
+// du formateur demande la date du CV, en mois et année (`moisAnnee`, absent ailleurs).
 // Le fichier envoyé s'affiche aussitôt (vignette de la photo, ou lien vers le PDF) : l'aperçu
 // est fait dans le navigateur, depuis le fichier choisi ; rien de plus ne repart au serveur.
 
@@ -42,6 +43,27 @@ export interface PieceAffichee {
 const bouton =
   "border-terracotta text-terracotta-deep hover:bg-terracotta-soft focus-within:outline-terracotta inline-flex min-h-[48px] cursor-pointer items-center justify-center rounded-xl border-2 border-dashed px-4 text-[16px] font-bold focus-within:outline-3 focus-within:outline-offset-2 focus-within:outline-solid";
 
+const MOIS = [
+  "janvier",
+  "février",
+  "mars",
+  "avril",
+  "mai",
+  "juin",
+  "juillet",
+  "août",
+  "septembre",
+  "octobre",
+  "novembre",
+  "décembre",
+] as const;
+
+/** L'année en cours, puis les quarante précédentes. */
+function anneesProposees(): number[] {
+  const cette = new Date().getFullYear();
+  return Array.from({ length: 41 }, (_, i) => cette - i);
+}
+
 export function DepotPiece({
   action,
   textes: TEXTES,
@@ -54,6 +76,7 @@ export function DepotPiece({
   piece,
   motifLibelle,
   avecDate = false,
+  moisAnnee,
 }: {
   action: ActionDepotPiece;
   textes: TextesDepotPiece;
@@ -66,12 +89,16 @@ export function DepotPiece({
   piece: PieceAffichee | null;
   motifLibelle: string | null;
   avecDate?: boolean;
+  /** Mois et année demandés avant l'envoi (libellé, nom du champ envoyé « AAAA-MM »). */
+  moisAnnee?: { readonly libelle: string; readonly champ: string };
 }) {
   const router = useRouter();
   const uid = useId();
   const [enCours, demarrer] = useTransition();
   const [erreur, setErreur] = useState<string | null>(null);
   const [date, setDate] = useState("");
+  const [mois, setMois] = useState("");
+  const [annee, setAnnee] = useState("");
   const [apercu, setApercu] = useState<{ url: string; image: boolean } | null>(null);
   // L'adresse locale de l'aperçu est libérée quand on la remplace ou qu'on quitte l'étape.
   useEffect(() => () => (apercu ? URL.revokeObjectURL(apercu.url) : undefined), [apercu]);
@@ -79,7 +106,7 @@ export function DepotPiece({
 
   const aRenvoyer = piece?.statut === "a_retransmettre";
   const presente = !!piece && !aRenvoyer;
-  const bloque = enCours || (avecDate && !date);
+  const bloque = enCours || (avecDate && !date) || (!!moisAnnee && (!mois || !annee));
 
   function envoyer(e: React.ChangeEvent<HTMLInputElement>) {
     const fichier = e.target.files?.[0];
@@ -92,6 +119,7 @@ export function DepotPiece({
     fd.set("type", type);
     fd.set("fichier", fichier);
     if (avecDate) fd.set("dateDelivrance", date);
+    if (moisAnnee) fd.set(moisAnnee.champ, `${annee}-${mois}`);
     demarrer(async () => {
       try {
         const r = await action(fd);
@@ -168,6 +196,44 @@ export function DepotPiece({
             className="border-border-strong bg-paper mt-1 min-h-[48px] w-full rounded-xl border px-3 text-[17px]"
           />
         </div>
+      ) : null}
+
+      {moisAnnee ? (
+        <fieldset className="mt-3">
+          <legend className="text-fg-soft block text-[15px] font-semibold">
+            {moisAnnee.libelle}
+          </legend>
+          <div className="mt-1 grid grid-cols-2 gap-2">
+            <select
+              aria-label={`${moisAnnee.libelle} : mois`}
+              required
+              value={mois}
+              onChange={(e) => setMois(e.target.value)}
+              className="border-border-strong bg-paper min-h-[48px] w-full rounded-xl border px-3 text-[17px]"
+            >
+              <option value="">Mois</option>
+              {MOIS.map((nom, i) => (
+                <option key={nom} value={String(i + 1).padStart(2, "0")}>
+                  {nom}
+                </option>
+              ))}
+            </select>
+            <select
+              aria-label={`${moisAnnee.libelle} : année`}
+              required
+              value={annee}
+              onChange={(e) => setAnnee(e.target.value)}
+              className="border-border-strong bg-paper min-h-[48px] w-full rounded-xl border px-3 text-[17px]"
+            >
+              <option value="">Année</option>
+              {anneesProposees().map((a) => (
+                <option key={a} value={String(a)}>
+                  {a}
+                </option>
+              ))}
+            </select>
+          </div>
+        </fieldset>
       ) : null}
 
       <div
