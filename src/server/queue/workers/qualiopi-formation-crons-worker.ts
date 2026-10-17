@@ -2779,7 +2779,6 @@ async function handleRegistreSousTraitants(): Promise<void> {
   }
 }
 
-
 /**
  * Chantier QNC L07 — test du lien de visio la veille du début. Corps dans
  * `moyens/passage-test-lien-j1.ts` (interrupteur lu AVANT toute autre requête) ;
