@@ -43,6 +43,7 @@ import {
   seConnecter,
   validerTextesParLaConsole,
 } from "../donnees";
+import { verserCompetencesDuBanc } from "../../../../fixtures/formateurs/competences-q21";
 
 /** Rend l'issue d'un geste : sa valeur, ou l'adresse de sa redirection Next. */
 async function issue(f: () => Promise<unknown>): Promise<string> {
@@ -82,6 +83,7 @@ export default async function ed3(): Promise<unknown> {
         dossierStatut: "a_completer",
         sousTraitantVerifieAt: new Date(Date.now() - 86_400_000),
         sousTraitantNda: "84691234569",
+        siret: "12345678900011",
       } as never);
       const nouveauTelephone = "0611223344";
       const nouvelleAdresse = `42 avenue Banc-Sécu-${t.id.slice(0, 6)} 13001 Marseille`;
@@ -139,6 +141,10 @@ export default async function ed3(): Promise<unknown> {
         updateTrainerAction({ id: t.id, email: nouvelEmail }),
       );
       await creerPieceASigner(t.id, "contrat_sous_traitance", "signee");
+      // Qualiopi ind. 21 — ce que l'activation exige désormais (grilles, CV, registre).
+      await verserCompetencesDuBanc(prisma, t.id, admin.id, {
+        provisoire: { siret: "12345678900011" },
+      });
       seConnecter(admin);
       gestes["activer"] = await issue(() => setTrainerActifAction({ id: t.id, actif: true }));
       gestes["fin"] = await issue(() =>

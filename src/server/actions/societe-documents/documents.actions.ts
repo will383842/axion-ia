@@ -29,6 +29,12 @@ import {
   CONSOLE_DOC_MAX_BYTES,
 } from "@/server/console-documents/storage";
 import { getRubriqueForType, SOCIETE_DOC_TYPES } from "@/server/societe-documents/rubriques";
+import { journaliser } from "@/server/journal/journaliser";
+import {
+  archivageDocumentsOrganismeActif,
+  verrouillerVersionDocument,
+} from "@/server/documents-organisme/documents-organisme";
+import { ACTION_DOCUMENT_REMPLACE } from "@/server/documents-organisme/documents-organisme-pur";
 import type { SocieteDocumentType } from "../../../../prisma/generated/client";
 
 type ActionResult = { ok: true } | { ok: false; error: string };
@@ -202,6 +208,13 @@ export async function modifierSocieteDocAction(formData: FormData): Promise<Acti
     return { ok: false, error: parsed.error.issues[0]?.message ?? "Paramètres invalides." };
   }
 
+  // CHANTIER QNC, L13 — archivage allumé : une version remplacée est figée, et
+  // la modification d'une version en vigueur garde l'avant ET l'après au
+  // journal, dans la même transaction (sans trace, pas de modification).
+  if (await archivageDocumentsOrganismeActif()) {
+    return modifierEnGardantLAvant(id.data, parsed.data, guard.userId);
+  }
+
   const avant = await prisma.societeDocument.findUnique({
     where: { id: id.data },
     select: { type: true },
@@ -259,6 +272,12 @@ export async function remplacerFichierSocieteDocAction(formData: FormData): Prom
   });
   if (!dates.success) return { ok: false, error: "Date invalide." };
 
+  // CHANTIER QNC, L13 — archivage allumé : le remplacement crée une NOUVELLE
+  // pièce et garde l'ancienne, fichier compris.
+  if (await archivageDocumentsOrganismeActif()) {
+    return remplacerEnNouvelleVersion(id.data, formData.get("file"), dates.data, guard.userId);
+  }
+
   const existant = await prisma.societeDocument.findUnique({
     where: { id: id.data },
     select: { storagePath: true, type: true, hashSha256: true },
@@ -305,6 +324,12 @@ export async function supprimerSocieteDocAction(formData: FormData): Promise<Act
   const id = idSchema.safeParse(formData.get("id"));
   if (!id.success) return { ok: false, error: "Identifiant invalide." };
 
+  // CHANTIER QNC, L13 (NC10, NC11, NC15) — archivage allumé : plus aucune
+  // suppression. Refus AVANT toute lecture : rien n'est préparé pour être détruit.
+  if (await archivageDocumentsOrganismeActif()) {
+    return { ok: false, error: REFUS_SUPPRESSION };
+  }
+
   const doc = await prisma.societeDocument.findUnique({
     where: { id: id.data },
     select: { storagePath: true, type: true, titre: true },
@@ -325,5 +350,166 @@ export async function supprimerSocieteDocAction(formData: FormData): Promise<Act
   });
 
   revalidateRubrique(doc.type);
+  return { ok: true };
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// CHANTIER QNC, LOT L13 — archiver au lieu d'effacer (interrupteur
+// `qualiopi.documents_organisme.actif`, livré éteint).
+// ─────────────────────────────────────────────────────────────────────────────
+
+const REFUS_SUPPRESSION =
+  "Une pièce ne se supprime plus : remplacez-la (l'ancienne version est gardée, étiquetée « remplacée par »). Le retrait est réservé au super-administrateur, par le journal des effacements.";
+
+const REFUS_DEJA_REMPLACEE =
+  "Cette version est déjà remplacée : elle reste au dossier telle quelle. Remplacez ou modifiez la version en vigueur.";
+
+class VersionDejaRemplacee extends Error {}
+
+const SELECT_VERSION = {
+  type: true,
+  titre: true,
+  description: true,
+  numeroPiece: true,
+  dateEmission: true,
+  dateExpiration: true,
+  sensitive: true,
+  sortOrder: true,
+  storagePath: true,
+  hashSha256: true,
+} as const;
+
+async function remplacerEnNouvelleVersion(
+  ancienId: string,
+  file: unknown,
+  dates: { dateEmission: Date | null; dateExpiration: Date | null },
+  userId: string,
+): Promise<ActionResult> {
+  const ancien = await prisma.societeDocument.findUnique({
+    where: { id: ancienId },
+    select: SELECT_VERSION,
+  });
+  if (!ancien) return { ok: false, error: "Pièce introuvable." };
+
+  const fichier = await accepterFichier(file);
+  if (!fichier.ok) return fichier;
+
+  try {
+    await prisma.$transaction(async (tx) => {
+      if ((await verrouillerVersionDocument(tx, "SocieteDocument", ancienId)).dejaRemplacee)
+        throw new VersionDejaRemplacee();
+      const nouveau = await tx.societeDocument.create({
+        data: {
+          type: ancien.type,
+          titre: ancien.titre,
+          description: ancien.description,
+          numeroPiece: ancien.numeroPiece,
+          // Les dates suivent le nouveau fichier quand elles sont fournies,
+          // celles de l'ancienne version sinon (même règle qu'avant le lot).
+          dateEmission: dates.dateEmission ?? ancien.dateEmission,
+          dateExpiration: dates.dateExpiration ?? ancien.dateExpiration,
+          fileName: sanitizeConsoleDocFileName(fichier.file.name),
+          storagePath: fichier.storagePath,
+          mimeType: fichier.file.type || "application/octet-stream",
+          sizeBytes: fichier.file.size,
+          hashSha256: fichier.hashSha256,
+          sensitive: ancien.sensitive,
+          sortOrder: ancien.sortOrder,
+          uploadedById: userId,
+        },
+        select: { id: true },
+      });
+      await journaliser(
+        tx,
+        {
+          action: ACTION_DOCUMENT_REMPLACE,
+          targetType: "SocieteDocument",
+          targetId: ancienId,
+          changes: {
+            nouveauId: nouveau.id,
+            hashAvant: ancien.hashSha256,
+            hashApres: fichier.hashSha256,
+          },
+          session: { userId },
+        },
+        { exiger: true },
+      );
+    });
+  } catch (e) {
+    if (e instanceof VersionDejaRemplacee) return { ok: false, error: REFUS_DEJA_REMPLACEE };
+    throw e;
+  }
+  // ⚠️ Aucun `deleteConsoleDocFile` : l'ancien fichier EST l'ancienne version.
+
+  revalidateRubrique(ancien.type);
+  return { ok: true };
+}
+
+function instantane(v: {
+  type: string;
+  titre: string;
+  description: string | null;
+  numeroPiece: string | null;
+  dateEmission: Date | null;
+  dateExpiration: Date | null;
+  sensitive: boolean;
+}): Record<string, unknown> {
+  return {
+    type: v.type,
+    titre: v.titre,
+    description: v.description,
+    // ⚠️ Pas de clé `numeroPiece` : le journal la masquerait (« numéro de
+    // pièce » d'identité). Ici c'est le n° de police ou de certificat.
+    reference: v.numeroPiece,
+    dateEmission: v.dateEmission?.toISOString() ?? null,
+    dateExpiration: v.dateExpiration?.toISOString() ?? null,
+    sensitive: v.sensitive,
+  };
+}
+
+async function modifierEnGardantLAvant(
+  id: string,
+  apres: z.infer<typeof metaSchema>,
+  userId: string,
+): Promise<ActionResult> {
+  const donnees = {
+    type: apres.type,
+    titre: apres.titre,
+    description: apres.description ?? null,
+    numeroPiece: apres.numeroPiece ?? null,
+    dateEmission: apres.dateEmission,
+    dateExpiration: apres.dateExpiration,
+    sensitive: apres.sensitive ?? false,
+  };
+  let typeAvant: SocieteDocumentType;
+  try {
+    const r = await prisma.$transaction(async (tx) => {
+      const avant = await tx.societeDocument.findUnique({ where: { id }, select: SELECT_VERSION });
+      if (!avant) return null;
+      if ((await verrouillerVersionDocument(tx, "SocieteDocument", id)).dejaRemplacee)
+        throw new VersionDejaRemplacee();
+      await tx.societeDocument.update({ where: { id }, data: donnees });
+      await journaliser(
+        tx,
+        {
+          action: "societe.document.modifie",
+          targetType: "SocieteDocument",
+          targetId: id,
+          changes: { avant: instantane(avant), apres: instantane(donnees) },
+          session: { userId },
+        },
+        { exiger: true },
+      );
+      return avant.type;
+    });
+    if (r === null) return { ok: false, error: "Pièce introuvable." };
+    typeAvant = r;
+  } catch (e) {
+    if (e instanceof VersionDejaRemplacee) return { ok: false, error: REFUS_DEJA_REMPLACEE };
+    throw e;
+  }
+
+  revalidateRubrique(typeAvant);
+  if (typeAvant !== apres.type) revalidateRubrique(apres.type);
   return { ok: true };
 }

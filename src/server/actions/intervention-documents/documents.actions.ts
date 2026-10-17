@@ -20,6 +20,7 @@ import { buildR2Key } from "@/server/intervention-documents/keys";
 import { notifyNewVersion } from "@/server/intervention-documents/notifications";
 import { getSlot, type InterventionFamille } from "@/content/intervention-documents-catalog";
 import { requireAdminWrite, requireAdminPublish } from "./_guards";
+import { archivageDocumentsOrganismeActif } from "@/server/documents-organisme/documents-organisme";
 
 const FAMILLES = ["formation", "un_a_un", "audit"] as const;
 const KINDS = ["source", "pdf"] as const;
@@ -218,7 +219,7 @@ const discardSchema = z.object({ versionId: z.string().uuid() });
 
 /** Annule un brouillon non publié (+ purge best-effort des fichiers R2). */
 export async function discardDraftAction(raw: unknown): Promise<{ ok: boolean; error?: string }> {
-  await requireAdminWrite();
+  const session = await requireAdminWrite();
   const parsed = discardSchema.safeParse(raw);
   if (!parsed.success) return { ok: false, error: "Paramètres invalides." };
   const version = await prisma.interventionDocumentVersion.findUnique({
@@ -227,6 +228,24 @@ export async function discardDraftAction(raw: unknown): Promise<{ ok: boolean; e
   if (!version) return { ok: false, error: "Version introuvable." };
   if (version.statut !== "brouillon")
     return { ok: false, error: "Seul un brouillon peut être annulé." };
+
+  // CHANTIER QNC, L13 — archivage allumé : on n'efface ni la ligne ni les
+  // fichiers R2. Le brouillon est ARCHIVÉ (il n'a jamais été la version
+  // courante) ; son numéro reste pris, le dépôt suivant prend le suivant.
+  if (await archivageDocumentsOrganismeActif()) {
+    await prisma.interventionDocumentVersion.update({
+      where: { id: version.id },
+      data: { statut: "archive" },
+    });
+    await logActivity({
+      action: "documents-interventions.version.brouillon_archive",
+      targetType: "InterventionDocumentVersion",
+      targetId: version.id,
+      changes: { documentId: version.documentId, version: version.version },
+      session,
+    });
+    return { ok: true };
+  }
 
   for (const key of [version.sourceKey, version.pdfKey]) {
     if (key && isR2Configured()) {

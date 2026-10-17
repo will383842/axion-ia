@@ -129,7 +129,7 @@ export type EtapeNue =
       readonly decision: "valide" | "rejete";
       readonly maintenant: string;
     }
-  /** Le formateur demande un changement d'IBAN (`demanderChangementIban`). */
+  /** Le formateur dépose son RIB et demande un changement d'IBAN (`demanderChangementIban`). */
   | {
       readonly etape: "demander-iban";
       readonly trainerId: string;

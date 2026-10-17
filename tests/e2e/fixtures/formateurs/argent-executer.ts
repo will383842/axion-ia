@@ -481,6 +481,16 @@ async function jouerEtape(e: EtapeArgent): Promise<unknown> {
         maintenant: quand(e.maintenant),
       });
     case "demander-iban":
+      // Comme l'espace (`demanderChangementIbanAvecRib`) : le RIB du nouveau compte est au
+      // dossier, en attente de vérification, AVANT la demande — la console l'exige.
+      await prisma.trainerDocument.create({
+        data: {
+          trainerId: e.trainerId,
+          type: "rib",
+          statutValidation: "en_attente",
+          fichierUrl: "banc://rib-nouveau-compte.pdf",
+        },
+      });
       return demanderChangementIban(e.trainerId, e.iban, quand(e.maintenant));
     case "valider-demande":
       return validerDemandeChangement({

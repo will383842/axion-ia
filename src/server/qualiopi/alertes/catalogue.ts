@@ -2124,6 +2124,63 @@ export const ALERTE_CATALOGUE: Record<string, AlerteCatalogueEntry> = {
     resolutionAuto: true,
     guichet: "qualite",
   },
+  // ── Qualiopi ind. 21 (NC majeure) — suivi de la qualité des intervenants externes ──
+  // Balayés par `regle-suivi-qualite-formateurs.ts`, derrière `formateurs.suivi_qualite`
+  // (éteint). Chacun se referme dès que la grille ou la décision attendue est saisie.
+  fi_observation_manquante: {
+    niveau: "important",
+    titre: "Formateur : observation de la 1re mission non saisie",
+    resolutionAuto: true,
+    guichet: "qualite",
+  },
+  fi_observation_insuffisante: {
+    niveau: "important",
+    titre: "Formateur : observation sous le seuil, habilitation non confirmée",
+    resolutionAuto: true,
+    guichet: "qualite",
+  },
+  fi_evaluation_mission_a_saisir: {
+    niveau: "info",
+    titre: "Grille d'évaluation après mission à saisir",
+    resolutionAuto: true,
+    guichet: "qualite",
+  },
+  fi_evaluation_mission_manquante: {
+    niveau: "important",
+    titre: "Grille d'évaluation après mission manquante",
+    resolutionAuto: true,
+    guichet: "qualite",
+  },
+  fi_entretien_a_prevoir: {
+    niveau: "important",
+    titre: "Formateur : entretien à prévoir (satisfaction des stagiaires)",
+    resolutionAuto: true,
+    guichet: "qualite",
+  },
+  fi_missions_suspendues: {
+    niveau: "critique",
+    titre: "Formateur : nouvelles missions suspendues (satisfaction des stagiaires)",
+    resolutionAuto: true,
+    guichet: "qualite",
+  },
+  fi_reevaluation_a_prevoir: {
+    niveau: "info",
+    titre: "Formateur : réévaluation annuelle à prévoir",
+    resolutionAuto: true,
+    guichet: "qualite",
+  },
+  fi_reevaluation_echue: {
+    niveau: "important",
+    titre: "Formateur : réévaluation annuelle échue",
+    resolutionAuto: true,
+    guichet: "qualite",
+  },
+  fi_cv_declare_perime: {
+    niveau: "important",
+    titre: "Formateur : CV déclaré trop ancien",
+    resolutionAuto: true,
+    guichet: "qualite",
+  },
 } as const;
 
 /**

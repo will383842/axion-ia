@@ -19,6 +19,7 @@ vi.hoisted(() => {
 const db = vi.hoisted(() => {
   const d = {
     trainer: { findUnique: vi.fn(), update: vi.fn() },
+    trainerDocument: { findFirst: vi.fn(), findMany: vi.fn() },
     demandeChangementFormateur: {
       create: vi.fn(),
       updateMany: vi.fn(),
@@ -101,6 +102,9 @@ beforeEach(() => {
   db.activityLog.create.mockResolvedValue({});
   db.trainer.update.mockResolvedValue({});
   db.formateurMagicLink.updateMany.mockResolvedValue({ count: 0 });
+  // Un RIB récent est au dossier (le cas sans RIB : `changement-iban-avec-rib.spec.ts`).
+  db.trainerDocument.findFirst.mockResolvedValue({ id: "doc-rib" });
+  db.trainerDocument.findMany.mockResolvedValue([]);
 });
 
 const tout = () =>

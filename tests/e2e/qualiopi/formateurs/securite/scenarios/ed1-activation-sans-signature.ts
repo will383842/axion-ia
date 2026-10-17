@@ -11,6 +11,7 @@ import {
   updateTrainerSousTraitancePiecesAction,
 } from "@/server/actions/qualiopi/trainers";
 
+import { verserCompetencesDuBanc } from "../../../../fixtures/formateurs/competences-q21";
 import {
   avecVerrouInterrupteurs,
   basculerParLaConsole,
@@ -21,6 +22,8 @@ import {
   prisma,
   seConnecter,
 } from "../donnees";
+
+const SIRET_ED1 = "12345678900011";
 
 const etat = (id: string) =>
   prisma.trainer.findUniqueOrThrow({
@@ -40,7 +43,11 @@ export default async function ed1(): Promise<unknown> {
         actif: false,
         sousTraitantVerifieAt: new Date(Date.now() - 86_400_000),
         sousTraitantNda: "84691234569",
+        siret: SIRET_ED1,
       });
+      // Qualiopi ind. 21 — grilles, formation à la méthode, CV et registre vert : la
+      // fiche est complète de ce côté, le refus ne tient qu'à la signature.
+      await verserCompetencesDuBanc(prisma, t.id, admin.id, { provisoire: { siret: SIRET_ED1 } });
       seConnecter(admin);
       const dateMain = await updateTrainerSousTraitancePiecesAction({
         id: t.id,

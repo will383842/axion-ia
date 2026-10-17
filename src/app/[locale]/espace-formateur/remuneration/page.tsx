@@ -51,7 +51,14 @@ import { signalerDesaccordFormAction } from "@/server/actions/formateur/desaccor
 import { requireFormateurLecture } from "@/server/formateur/guard";
 import { lireDateBascule } from "@/server/qualiopi/formateurs-independants/paiement/lecture-passage";
 import { LONGUEUR_MAX_DESACCORD } from "@/server/qualiopi/formateurs-independants/paiement/desaccord-mission";
-import { relevesMissionEnAttenteAttestation } from "@/server/qualiopi/formateurs-independants/paiement/virement-mission-base";
+import {
+  motifsChangementIbanDu,
+  relevesMissionEnAttenteAttestation,
+} from "@/server/qualiopi/formateurs-independants/paiement/virement-mission-base";
+import {
+  LIBELLE_CHANGEMENT_IBAN_FORMATEUR,
+  type MotifChangementIban,
+} from "@/server/qualiopi/formateurs-independants/paiement/virement-mission";
 import { SEUIL_VIGILANCE_LIBELLE } from "@/server/qualiopi/formateurs-independants/vigilance-seuil";
 import { listRelevesDuFormateur } from "@/server/qualiopi/remuneration/queries";
 import { lireRemunerationDuFormateur } from "@/server/qualiopi/remuneration/pilotage-formateurs";
@@ -140,6 +147,13 @@ export default async function RemunerationFormateurPage({
   const enAttenteAttestation = aLaMission
     ? await relevesMissionEnAttenteAttestation(prisma, session.trainerId)
     : new Set<string>();
+  // Règle C-1 (relecture de la PR 1561) : un changement d'IBAN retient TOUT virement, au
+  // mois comme à la mission. Le canal est réservé aux indépendants ; la règle du clic,
+  // lue pour SA fiche (`session.trainerId`). Illisible : l'écran n'affirme rien.
+  const motifsIban: MotifChangementIban[] =
+    moi?.statut === "sous_traitant"
+      ? await motifsChangementIbanDu(prisma, session.trainerId, new Date()).catch(() => [])
+      : [];
   const retour = sp.signale !== undefined ? RETOUR_SIGNALEMENT[sp.signale] : undefined;
 
   /*
@@ -324,6 +338,14 @@ export default async function RemunerationFormateurPage({
                 {!paye && !r.estAvoir && enAttenteAttestation.has(r.id) && (
                   <p className="mt-2 text-sm font-medium">{MESSAGE_ATTENTE_ATTESTATION}</p>
                 )}
+
+                {!paye &&
+                  !r.estAvoir &&
+                  motifsIban.map((m) => (
+                    <p key={m} className="mt-2 text-sm font-medium">
+                      {LIBELLE_CHANGEMENT_IBAN_FORMATEUR[m]}
+                    </p>
+                  ))}
 
                 {r.contesteeAt !== null &&
                   (r.desaccordNonRetenu ? (
