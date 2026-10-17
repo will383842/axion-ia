@@ -15,6 +15,8 @@
 import { z } from "zod";
 import { revalidatePath } from "next/cache";
 import { requireAdminWrite } from "@/server/actions/qualiopi/_guards";
+import { MOTIF_REFUS, peutEngager } from "@/server/auth/habilitations";
+import { acteRequisPourConfig } from "@/server/qualiopi/config/registry";
 import {
   setQualiopiConfig,
   QUALIOPI_CONFIG_REGISTRY,
@@ -47,6 +49,11 @@ export async function setQualiopiConfigAction(
   const { key, value } = parsed.data;
 
   if (!isQualiopiConfigKey(key)) return { error: "Clé de configuration inconnue" };
+  // Les seuils qui sont des verrous (ind. 21) exigent l'acte qu'ils encadrent.
+  const acte = acteRequisPourConfig(key);
+  if (acte !== null && !peutEngager(session.role, acte)) {
+    return { error: `Réglage réservé. ${MOTIF_REFUS[acte]}` };
+  }
 
   const entry = QUALIOPI_CONFIG_REGISTRY[key];
   let coerced: string | number;

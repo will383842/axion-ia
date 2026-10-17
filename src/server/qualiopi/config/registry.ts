@@ -13,6 +13,7 @@
  */
 
 import { z } from "zod";
+import type { ActeEngageant } from "@/server/auth/habilitations";
 import { BRAND } from "@/lib/brand";
 import { NDA_NUMERO } from "@/server/qualiopi/legal/legal-mentions";
 import { REGIME_TVA_DEFAUT } from "@/server/qualiopi/legal/tva";
@@ -714,6 +715,23 @@ export const QUALIOPI_CONFIG_REGISTRY = {
 export type QualiopiConfigKey = keyof typeof QUALIOPI_CONFIG_REGISTRY;
 export type QualiopiConfigValue<K extends QualiopiConfigKey> =
   (typeof QUALIOPI_CONFIG_REGISTRY)[K]["default"];
+
+/**
+ * L'acte qu'exige l'ÉCRITURE d'une clé, au-delà de la garde d'écriture commune.
+ *
+ * 🔴 Relecture sécurité 2026-10-17. Les seuils de l'indicateur 21 ne sont pas des
+ * délais : ce sont des VERROUS de mission et d'habilitation. Régler la suspension sous 1
+ * ou les moyennes à 1 neutralise la garde de mission et le refus de « habilité ». La
+ * garde commune (`requireAdminWrite`) les ouvrait à `editor` et `secretaire`, qui n'ont
+ * pas `habiliter_formateur` : un rôle délégable aurait défait, par un réglage, une
+ * décision réservée à un rôle qui engage l'organisme. Ces clés exigent donc l'acte
+ * même qu'elles encadrent.
+ */
+export function acteRequisPourConfig(key: QualiopiConfigKey): ActeEngageant | null {
+  return key.startsWith("evaluation_competences_") || key.startsWith("suivi_qualite_")
+    ? "habiliter_formateur"
+    : null;
+}
 
 /** Préfixe des clés SiteSetting du module. */
 export const QUALIOPI_CONFIG_KEY_PREFIX = "qualiopi." as const;
