@@ -26,7 +26,8 @@ const AIDE_ETAPE: Record<EtapeAjoutable, string> = {
   reponse:
     "La réponse écrite, telle qu'elle partira. Elle sera signée de votre nom et de votre qualité, puis placée dans la corbeille des e-mails à valider.",
   reexamen: "Ce que la personne conteste, ou pourquoi l'organisme réexamine.",
-  cloture: "Pourquoi la réclamation peut être close.",
+  cloture:
+    "Pourquoi la réclamation peut être close. Juste après la réception (sans analyse ni réponse), le motif est obligatoire (10 caractères au moins) et consigné « Irrecevable — … ».",
 };
 
 const inputCls =

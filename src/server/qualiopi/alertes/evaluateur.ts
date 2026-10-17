@@ -36,6 +36,7 @@ import {
   sansAucuneTraceDePresence,
 } from "@/server/qualiopi/presence/trace-cloture";
 import { compterEnAttente } from "@/server/email/outbox-service";
+import { lireInterrupteurReclamations } from "@/server/qualiopi/reclamations/interrupteur";
 import { getQualiopiConfig } from "@/server/qualiopi/config/site-settings";
 import { getOrganismeIdentite } from "@/server/qualiopi/documents/organisme";
 import { isQualiopiCertificationObtenue } from "@/server/qualiopi/config/flag";
@@ -430,13 +431,17 @@ async function regleReclamationsSansReponse(now: Date): Promise<AlerteCandidate[
   const joursCfg = await getQualiopiConfig("seuil_reclamation_jours").catch(() => 15);
   const jours = typeof joursCfg === "number" && joursCfg > 0 ? joursCfg : 15;
   const seuil = daysAgo(jours, now);
+  // Les réclamations du cycle daté ont leurs propres échéances (jours ouvrés),
+  // portées par `regle-echeances-reclamations` — mais seulement interrupteur
+  // allumé : éteint, cette règle se tait, et une réclamation qui a déjà une étape
+  // (interrupteur rallumé puis éteint) retombe ici. Une lecture en erreur vaut « éteint ».
+  const interrupteur = await lireInterrupteurReclamations().catch(() => "eteint" as const);
   const reclamations = await prisma.reclamation.findMany({
     where: {
       statut: { in: ["nouvelle", "en_cours"] },
       dateReception: { lte: seuil },
       dateReponse: null,
-      // Les réclamations du cycle daté ont leurs propres échéances (jours ouvrés).
-      etapes: { none: {} },
+      ...(interrupteur !== "eteint" ? { etapes: { none: {} } } : {}),
     },
     select: { id: true, numero: true, reclamantNom: true, dateReception: true },
   });
