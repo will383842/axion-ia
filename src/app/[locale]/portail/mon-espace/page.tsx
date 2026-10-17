@@ -28,7 +28,7 @@ import { SatisfactionPortailForm } from "@/components/portail/SatisfactionPortai
 import { SatisfactionV2PortailForm } from "@/components/portail/SatisfactionV2PortailForm";
 import { soumettreSatisfactionPortailAction } from "@/server/actions/qualiopi/portail";
 
-import { LienDepotReclamation } from "@/components/qualiopi/DepotReclamationBloc";
+import { LienDepotReclamation } from "@/components/qualiopi/LienDepotReclamation";
 import { CoquilleStagiaire } from "./_coquille";
 import { questionnairesEnAttente } from "./_chargement";
 
@@ -167,6 +167,7 @@ export default async function MonEspaceAccueilPage({ params }: PageProps) {
                 se choisit dans le formulaire : seule une inscription de la
                 personne connectée sera rattachée. */}
             <LienDepotReclamation
+              locale={locale}
               depuisEspaceDeTest={espace.formations.some((f) => f.estTestInterne === true)}
               className="text-fg-soft hover:text-terracotta mt-10 block text-sm underline underline-offset-4"
             >

@@ -8,7 +8,7 @@ import { Container } from "@/components/layout/Container";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { getLegal } from "@/content/legal";
 import { buildProductMetadata } from "@/lib/seo";
-import { BandeauDepotReclamation } from "@/components/qualiopi/DepotReclamationBloc";
+import { BandeauDepotReclamation } from "@/components/qualiopi/BandeauDepotReclamation";
 
 interface Props {
   params: Promise<{ locale: string }>;

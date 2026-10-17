@@ -11,6 +11,11 @@
  *
  * Le contrôle définitif est refait par l'action serveur : ce bloc n'ouvre
  * qu'une porte d'affichage.
+ *
+ * ⚠️ Ce module importe le formulaire CLIENT : toute page qui l'importe embarque
+ * ce formulaire et Turnstile dans son JavaScript, même sans le rendre. Le lien
+ * et le bandeau, posés sur d'autres pages, vivent donc dans
+ * `LienDepotReclamation.tsx`, qui n'importe aucun composant client.
  */
 
 import { notFound } from "next/navigation";
@@ -21,8 +26,8 @@ import { verifierToken } from "@/server/qualiopi/portail/portail-service";
 import { deposerReclamationPubliqueAction } from "@/server/actions/qualiopi/reclamation-publique";
 import { lireInterrupteurReclamations } from "@/server/qualiopi/reclamations/interrupteur";
 import { formulaireOuvert } from "@/server/qualiopi/reclamations/depot-public";
-import { Link } from "@/i18n/navigation";
 import { FormulaireReclamation } from "./FormulaireReclamation";
+import { ChampsReclamation } from "./ChampsReclamation";
 
 const DATE_PARIS = new Intl.DateTimeFormat("fr-FR", {
   timeZone: "Europe/Paris",
@@ -67,55 +72,13 @@ export async function DepotReclamationBloc() {
   return (
     <FormulaireReclamation
       action={deposerReclamationPubliqueAction}
-      formations={(etat === "essai" ? formations.filter((f) => f.deTest) : formations).map(
-        ({ enrollmentId, libelle }) => ({ enrollmentId, libelle }),
-      )}
       adresseContact={LEGAL_IDENTITY_DEFAULTS.contactEmail}
-    />
-  );
-}
-
-/**
- * Le lien « Déposer une réclamation », rendu SEULEMENT quand le dépôt est
- * ouvert à tous (`actif`) — ou, depuis l'espace stagiaire, quand la personne
- * connectée est du banc d'essai (`essai`). Sinon `null` : les pages qui le
- * portent sont inchangées.
- */
-export async function LienDepotReclamation({
-  className,
-  children,
-  depuisEspaceDeTest = false,
-}: {
-  className?: string;
-  children: React.ReactNode;
-  /** L'espace stagiaire sait si la personne connectée est du banc d'essai. */
-  depuisEspaceDeTest?: boolean;
-}) {
-  const etat = await lireInterrupteurReclamations();
-  if (!formulaireOuvert(etat, { inscriptionDeTest: depuisEspaceDeTest })) return null;
-  return (
-    <Link href="/reclamations/deposer" {...(className !== undefined ? { className } : {})}>
-      {children}
-    </Link>
-  );
-}
-
-/** Le bandeau de la page de procédure /reclamations — `null` tant que le dépôt n'est pas ouvert. */
-export async function BandeauDepotReclamation() {
-  const etat = await lireInterrupteurReclamations();
-  if (etat !== "actif") return null;
-  return (
-    <div className="border-border bg-paper mx-auto mt-6 max-w-3xl rounded-lg border p-5">
-      <p className="text-fg text-base leading-relaxed">
-        Stagiaire, entreprise, formateur ou financeur : vous pouvez déposer votre réclamation en
-        ligne. Accusé de réception immédiat, réponse écrite sous 15 jours ouvrés.
-      </p>
-      <Link
-        href="/reclamations/deposer"
-        className="text-terracotta mt-3 inline-block font-medium underline underline-offset-4"
-      >
-        Déposer une réclamation
-      </Link>
-    </div>
+    >
+      <ChampsReclamation
+        formations={(etat === "essai" ? formations.filter((f) => f.deTest) : formations).map(
+          ({ enrollmentId, libelle }) => ({ enrollmentId, libelle }),
+        )}
+      />
+    </FormulaireReclamation>
   );
 }
