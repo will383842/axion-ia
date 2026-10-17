@@ -721,6 +721,62 @@ export function dateAllumageSignature(brut: unknown, misAJourLe: Date | null): D
   return misAJourLe;
 }
 
+/**
+ * Clés (`settings`) qui gardent la date de leur PREMIER allumage, même coupées.
+ *
+ * 🔴 `formateurs.suivi_qualite` (relecture du 2026-10-17) : sa date d'allumage borne tout
+ * le suivi (« missions commencées le jour de l'allumage ou après »). Si couper puis
+ * rallumer — ou simplement réenregistrer — la remettait à aujourd'hui, les suspensions
+ * tomberaient sans décision motivée, l'observation repartirait de zéro et une
+ * réévaluation échue regagnerait sa grâce : un contournement qui toucherait tous les
+ * formateurs d'un coup. Valeur écrite : `{ actif, premierAllumageLe }`.
+ */
+export const CLES_SIGNATURE_PREMIER_ALLUMAGE: ReadonlySet<string> = new Set([
+  cleSettingSignature("suivi_qualite"),
+]);
+
+/**
+ * Date du PREMIER allumage connue d'une ligne, allumée OU coupée, ou `null`.
+ *
+ * `premierAllumageLe` lisible d'abord. À défaut, une ligne ALLUMÉE écrite avant ce champ
+ * (`{ actif: true }`, ou `{ actif, allumeLe }`) : sa date d'allumage, comme
+ * `dateAllumageSignature`. Une ligne coupée sans le champ (coupée avant lui) n'en porte
+ * aucune : l'allumage suivant repart du jour.
+ */
+export function premierAllumageSignature(brut: unknown, misAJourLe: Date | null): Date | null {
+  if (brut !== null && typeof brut === "object" && !Array.isArray(brut)) {
+    const p = (brut as Record<string, unknown>).premierAllumageLe;
+    if (typeof p === "string") {
+      const d = new Date(p);
+      if (!Number.isNaN(d.getTime())) return d;
+    }
+  }
+  return dateAllumageSignature(brut, misAJourLe);
+}
+
+/** Date d'allumage à LIRE pour une clé de `CLES_SIGNATURE_PREMIER_ALLUMAGE` : `null` si coupée. */
+export function dateAllumageDurableSignature(brut: unknown, misAJourLe: Date | null): Date | null {
+  if (!lireValeurSignature(brut).valeur) return null;
+  return premierAllumageSignature(brut, misAJourLe);
+}
+
+/**
+ * La valeur à écrire pour une clé de `CLES_SIGNATURE_PREMIER_ALLUMAGE`. La date connue
+ * est reconduite, allumé comme coupé ; au premier allumage, `maintenant`. Jamais
+ * postérieure à `maintenant` : une date future écrite à la main ne retarde pas le suivi.
+ */
+export function valeurPremierAllumage(
+  actif: boolean,
+  actuelle: { readonly value: unknown; readonly updatedAt?: Date | null } | null,
+  maintenant: Date,
+): { actif: boolean; premierAllumageLe?: string } {
+  const connue =
+    actuelle === null ? null : premierAllumageSignature(actuelle.value, actuelle.updatedAt ?? null);
+  const bornee = connue === null ? null : connue > maintenant ? maintenant : connue;
+  const premier = actif ? (bornee ?? maintenant) : bornee;
+  return premier === null ? { actif } : { actif, premierAllumageLe: premier.toISOString() };
+}
+
 // ─────────────────────────────────────────────────────────────────────────────
 // Interrupteurs de l'ENTRÉE des formateurs freelance — lots L0g et suivants
 // ─────────────────────────────────────────────────────────────────────────────

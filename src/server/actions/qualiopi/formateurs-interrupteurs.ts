@@ -25,6 +25,7 @@ import {
   type CleInterrupteurEntree,
   PREFIXE_CLES_FORMATEURS,
   cleSetting,
+  CLES_SIGNATURE_PREMIER_ALLUMAGE,
   cleSettingSignature,
   dateAllumageSignature,
   lireValeurSignature,
@@ -35,6 +36,7 @@ import {
   estPositionSure,
   reglagesActifs,
   reglagesFillesACouper,
+  valeurPremierAllumage,
   etatsDepuisLignes,
   prealablesManquants,
   valeurJson,
@@ -69,13 +71,17 @@ async function verrouillerInterrupteurs(tx: Pick<typeof prisma, "$executeRaw">):
 async function couperLesFilles(
   tx: Pick<typeof prisma, "setting" | "activityLog">,
   mere: string,
-  lignes: ReadonlyArray<{ key: string; value: unknown }>,
+  lignes: ReadonlyArray<{ key: string; value: unknown; updatedAt?: Date | null }>,
   userId: string,
 ): Promise<void> {
   for (const fille of reglagesFillesACouper(mere, reglagesActifs(lignes))) {
+    // Une fille qui garde la date de son premier allumage la garde aussi en cascade.
+    const value = CLES_SIGNATURE_PREMIER_ALLUMAGE.has(fille)
+      ? valeurPremierAllumage(false, lignes.find((l) => l.key === fille) ?? null, new Date())
+      : { actif: false };
     await tx.setting.update({
       where: { key: fille },
-      data: { value: { actif: false } as never, updatedBy: userId },
+      data: { value: value as never, updatedBy: userId },
     });
     await tx.activityLog.create({
       data: {
@@ -170,7 +176,7 @@ function ecrire(
     await verrouillerInterrupteurs(tx);
     const lignes = await tx.setting.findMany({
       where: CLAUSE_LIGNES,
-      select: { key: true, value: true },
+      select: { key: true, value: true, updatedAt: true },
     });
     const etats = etatsDepuisLignes(lignes);
     const manquants = prealablesManquants(cle, valeur, etats, lireFaitsPrealables());
@@ -344,7 +350,7 @@ function ecrireSignature(
     const lignes = await tx.setting.findMany({
       // Les préalables lisent les seize ET ce registre (dont `signature.*`).
       where: CLAUSE_LIGNES,
-      select: { key: true, value: true },
+      select: { key: true, value: true, updatedAt: true },
     });
     const manquants = prealablesManquantsSignature(
       cle,
@@ -360,8 +366,11 @@ function ecrireSignature(
     const avant = lireValeurSignature(actuelle?.value).valeur;
     // L'exemplaire de captation date son allumage : le rattrapage ne reprend que
     // ce qui est signé APRÈS. Rallumer un interrupteur déjà allumé garde la date.
-    const value =
-      cle === "exemplaire_captation" && valeur
+    // Le suivi qualité garde la date de son PREMIER allumage, même coupé : couper puis
+    // rallumer ne relance ni l'observation, ni la grâce, et ne lève aucune suspension.
+    const value = CLES_SIGNATURE_PREMIER_ALLUMAGE.has(key)
+      ? valeurPremierAllumage(valeur, actuelle, new Date())
+      : cle === "exemplaire_captation" && valeur
         ? {
             actif: true,
             allumeLe: (
@@ -477,7 +486,7 @@ function ecrireEntree(
     await verrouillerInterrupteurs(tx);
     const lignes = await tx.setting.findMany({
       where: CLAUSE_LIGNES,
-      select: { key: true, value: true },
+      select: { key: true, value: true, updatedAt: true },
     });
     const manquants = prealablesManquantsEntree(cle, valeur, etatsDepuisLignes(lignes));
     if (manquants.length > 0) return manquants;

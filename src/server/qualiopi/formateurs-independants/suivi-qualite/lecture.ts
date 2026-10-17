@@ -13,19 +13,23 @@
 import { prisma } from "@/lib/prisma";
 
 import { jourParis, type JourCivil } from "../argent/dates";
-import { cleSettingSignature, dateAllumageSignature } from "../interrupteurs";
+import { cleSettingSignature, dateAllumageDurableSignature } from "../interrupteurs";
 import { satisfactionDeLaMission, type FaitsSuiviQualite, type MissionLue } from "./regles";
 
 export const CLE_SUIVI_QUALITE = cleSettingSignature("suivi_qualite");
 
-/** Jour (Paris) d'allumage de `formateurs.suivi_qualite`, ou `null` (éteint). Peut lever. */
+/**
+ * Jour (Paris) du PREMIER allumage de `formateurs.suivi_qualite`, ou `null` (éteint). Peut
+ * lever. La date est gardée à la coupure (`valeurPremierAllumage`) : couper puis rallumer
+ * ne la remet jamais à aujourd'hui.
+ */
 export async function lireAllumageSuiviQualite(): Promise<JourCivil | null> {
   const ligne = await prisma.setting.findUnique({
     where: { key: CLE_SUIVI_QUALITE },
     select: { value: true, updatedAt: true },
   });
   if (ligne == null) return null;
-  const d = dateAllumageSignature(ligne.value, ligne.updatedAt ?? null);
+  const d = dateAllumageDurableSignature(ligne.value, ligne.updatedAt ?? null);
   return d === null ? null : jourParis(d);
 }
 
