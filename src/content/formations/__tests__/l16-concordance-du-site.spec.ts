@@ -19,8 +19,9 @@
  *   règlement       → l'émargement se signe à chaque demi-journée, le relevé ne le remplace pas
  *   visio           → Zoom « outil utilisé », sans prétendre à un compte ouvert
  *
- * Ce fichier ne lit pas la base : il vérifie que le contenu public dit la même
- * chose que ce qui s'écrit en base (`buildFormationImportData`).
+ * Ce fichier ne lit pas la base. La moitié « base » (ce que l'import écrit) vit dans
+ * `src/server/qualiopi/formations/l16-concordance-base.spec.ts` : la garde de
+ * cloisonnement Qualiopi interdit d'importer ce domaine depuis le contenu public.
  */
 import { readdirSync, readFileSync, statSync } from "node:fs";
 import path from "node:path";
@@ -44,8 +45,6 @@ import {
 } from "@/content/formations/effectif";
 import { VISIO_FORMATIONS_A_DISTANCE } from "@/content/formations/materiel";
 import { getLegal, type LegalSlug } from "@/content/legal";
-import { buildFormationImportData } from "@/server/qualiopi/formations/catalog-import";
-import { ASSISTANCE_DISTANCE } from "@/server/qualiopi/legal/assistance-distance";
 
 const RACINE = path.resolve(__dirname, "../../../..");
 
@@ -149,20 +148,6 @@ describe("L16 — modalité : toutes les formations en présentiel OU distanciel
     }
   });
 
-  it("base : l'import écrit « hybride » (présentiel ou distanciel) pour chacune, jamais « presentiel » en dur", () => {
-    for (const f of FORMATIONS_V2) {
-      expect(buildFormationImportData(f, "offre-x").modalite, f.slugFr).toBe("hybride");
-    }
-  });
-
-  it("base : les moyens techniques imprimés au programme disent la même visio que la fiche", () => {
-    const { moyensTechniques } = buildFormationImportData(FORMATIONS_V2[0]!, "offre-x");
-    expect(moyensTechniques).toContain("Zoom");
-    for (const phrase of ["un ordinateur avec caméra et micro", "une connexion internet stable"]) {
-      expect(moyensTechniques, phrase).toContain(phrase);
-    }
-  });
-
   it("la fiche rend la rubrique « à distance » avec l'assistance technique et pédagogique", () => {
     const fiche = readFileSync(
       path.join(RACINE, "src/components/formations/FormationDetailPage.tsx"),
@@ -170,7 +155,6 @@ describe("L16 — modalité : toutes les formations en présentiel OU distanciel
     );
     expect(fiche).toContain("ASSISTANCE_DISTANCE");
     expect(fiche).toContain("VISIO_FORMATIONS_A_DISTANCE");
-    expect(ASSISTANCE_DISTANCE.length).toBeGreaterThanOrEqual(3);
   });
 });
 
