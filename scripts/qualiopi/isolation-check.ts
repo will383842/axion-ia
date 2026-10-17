@@ -361,6 +361,9 @@ const CONSOMMATEURS_ASSUMES: ReadonlySet<string> = new Set([
   "src/app/[locale]/espace-formateur/dossier/actions.ts",
   "src/app/[locale]/espace-formateur/dossier/messages.ts",
   "src/app/[locale]/espace-formateur/dossier/__tests__/messages.spec.ts",
+  // Le test de l'action de changement d'IBAN : il lit les messages du circuit pour
+  //    prouver que la fiche visée est celle de la SESSION (IDOR), jamais celle du formulaire.
+  "src/app/[locale]/espace-formateur/dossier/__tests__/changement-iban-action.spec.ts",
   "src/server/formateur/acces-apres-fin.ts",
   // La route qui sert le PDF de cette page. Elle n'importe du domaine que
   // `nomFichierDocument` — la façon de NOMMER le fichier remis, qui doit être la
