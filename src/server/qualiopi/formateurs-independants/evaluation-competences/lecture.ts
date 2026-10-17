@@ -13,6 +13,7 @@
 
 import { prisma } from "@/lib/prisma";
 
+import type { FaitsActivationQ21 } from "./garde-activation-q21";
 import type { LigneEvaluationLue } from "./regles";
 
 type Client = Pick<typeof prisma, "evaluationCompetenceFormateur">;
@@ -64,4 +65,46 @@ export async function lireEvaluationsConsole(trainerId: string) {
         });
   const parId = new Map(noms.map((u) => [u.id, u.name || u.email]));
   return lignes.map((l) => ({ ...l, auteur: parId.get(l.auteurId) ?? "compte supprimé" }));
+}
+
+/**
+ * Les faits de la garde d'activation Q21 (`garde-activation-q21.ts`). Fiche absente : `{}`,
+ * donc tout manque.
+ */
+export async function lireFaitsActivationQ21(trainerId: string): Promise<FaitsActivationQ21> {
+  const [t, evaluations, controles] = await Promise.all([
+    prisma.trainer.findUnique({
+      where: { id: trainerId },
+      select: {
+        siret: true,
+        sousTraitantNda: true,
+        documents: {
+          where: { type: "cv" },
+          select: {
+            type: true,
+            statutValidation: true,
+            fichierUrl: true,
+            contenu: { select: { trainerDocumentId: true } },
+            dateEmission: true,
+            dateExpiration: true,
+          },
+        },
+      },
+    }),
+    lireEvaluationsDuFormateur(trainerId),
+    prisma.verificationRegistreSousTraitance.findMany({
+      where: { trainerId },
+      orderBy: { createdAt: "desc" },
+      take: 5,
+      select: { verdict: true, source: true, verifieAt: true, createdAt: true, siret: true },
+    }),
+  ]);
+  if (t === null) return {};
+  return {
+    evaluations,
+    siret: t.siret ?? null,
+    nda: t.sousTraitantNda ?? null,
+    controles,
+    pieces: t.documents,
+  };
 }

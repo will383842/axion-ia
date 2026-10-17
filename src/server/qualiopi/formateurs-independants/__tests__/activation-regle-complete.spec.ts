@@ -59,6 +59,18 @@ vi.mock("@/lib/prisma", () => {
 });
 
 vi.mock("@/server/actions/qualiopi/_guards", () => ({ logQualiopiActivity: h.logQualiopi }));
+// Qualiopi ind. 21 — l'évaluation des compétences a sa suite
+// (`evaluation-competences/__tests__/`) ; ici, elle est réputée complète sauf mention.
+const q21 = vi.hoisted(() => ({ manques: [] as string[] }));
+vi.mock("@/server/qualiopi/formateurs-independants/evaluation-competences/lecture", () => ({
+  lireFaitsActivationQ21: vi.fn(async () => ({})),
+}));
+vi.mock(
+  "@/server/qualiopi/formateurs-independants/evaluation-competences/garde-activation-q21",
+  () => ({
+    manquesActivationQ21: vi.fn(() => q21.manques),
+  }),
+);
 vi.mock("@/server/qualiopi/trainers/mission-formateur", () => ({
   retirerSollicitationsDuFormateur: vi.fn(async () => 0),
 }));
@@ -157,6 +169,28 @@ describe("changerActivationFormateur — interrupteurs ABSENTS (comportement d'a
     });
     expect(r.ok).toBe(true);
   });
+});
+
+describe("changerActivationFormateur — Qualiopi ind. 21, sous les DEUX règles", () => {
+  for (const cles of [{}, { activation_auto: true }]) {
+    it(`un manque d'évaluation refuse l'activation (${Object.keys(cles).join() || "règle provisoire"})`, async () => {
+      allumer(cles);
+      q21.manques = ["L'entretien noté du formateur n'est pas versé."];
+      try {
+        const r = await changerActivationFormateur({
+          trainerId: ID,
+          actif: true,
+          acteur: { type: "administrateur", session },
+          motif: "Essai",
+        });
+        expect(r).toMatchObject({ ok: false, code: "garde" });
+        expect(r.ok === false && r.manques).toContain(q21.manques[0]);
+        expect(h.updateMany).not.toHaveBeenCalled();
+      } finally {
+        q21.manques = [];
+      }
+    });
+  }
 });
 
 describe("changerActivationFormateur — activation_auto ALLUMÉ (lot L9)", () => {

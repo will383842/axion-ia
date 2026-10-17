@@ -14,6 +14,7 @@ import type { DocumentConformite } from "@/server/qualiopi/trainers/conformite";
 import { GABARIT_VERSIONS } from "@/server/qualiopi/documents/templates/gabarit-versions";
 
 import { lireContratCadreSigne } from "./contrat-cadre-en-vigueur";
+import { lireManqueHabilitationMission } from "./evaluation-competences/garde-mission-q21-lecture";
 import {
   AUCUNE_ISSUE,
   MANQUES_MISSION,
@@ -150,7 +151,20 @@ export async function controlerGardeMission(
       GABARIT_VERSIONS.contrat_sous_traitance,
       maintenant,
     );
-    return { mode, ...appliquerGarde(mode, verdict) };
+    // Qualiopi ind. 21 — la décision d'habilitation de la formation en jeu (indépendants
+    // seulement : rien n'est lu pour un salarié ou le dirigeant).
+    const manqueHabilitation =
+      t.statut === "salarie" || t.statut === "dirigeant"
+        ? null
+        : await lireManqueHabilitationMission(trainerId, t.statut, enJeu);
+    const verdictComplet =
+      manqueHabilitation === null
+        ? verdict
+        : {
+            ok: false as const,
+            manques: [...(verdict.ok ? [] : verdict.manques), manqueHabilitation],
+          };
+    return { mode, ...appliquerGarde(mode, verdictComplet) };
   } catch {
     return { mode: "refuser", refus: [MANQUES_MISSION.erreur], avertissements: [] };
   }

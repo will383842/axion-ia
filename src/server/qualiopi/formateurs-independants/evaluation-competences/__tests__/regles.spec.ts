@@ -35,7 +35,9 @@ const BON_ENTRETIEN = toutes(CRITERES_ENTRETIEN, 5);
 const BONNE_MES = toutes(BLOCS_MISE_EN_SITUATION, 5);
 
 let seq = 0;
-function ligne(p: Partial<LigneEvaluationLue> & Pick<LigneEvaluationLue, "nature">): LigneEvaluationLue {
+function ligne(
+  p: Partial<LigneEvaluationLue> & Pick<LigneEvaluationLue, "nature">,
+): LigneEvaluationLue {
   seq += 1;
   return {
     id: `l${seq}`,
@@ -92,7 +94,9 @@ describe("seuils (lus dans les réglages)", () => {
     expect(s.atteint).toBe(false);
   });
   it("mise en situation : chaque bloc au minimum", () => {
-    expect(seuilsMiseEnSituation(toutes(BLOCS_MISE_EN_SITUATION, R.miseEnSituationNoteBlocMin)).atteint).toBe(true);
+    expect(
+      seuilsMiseEnSituation(toutes(BLOCS_MISE_EN_SITUATION, R.miseEnSituationNoteBlocMin)).atteint,
+    ).toBe(true);
     const s = seuilsMiseEnSituation({ ...BONNE_MES, B3: R.miseEnSituationNoteBlocMin - 1 });
     expect(s.atteint).toBe(false);
     expect(s.blocsSousMinimum).toEqual(["B3"]);
@@ -115,27 +119,55 @@ describe("validerDecision — la décision reste humaine, mais « habilité » e
     }
   });
   it("décision inconnue refusée", () => {
-    expect(validerDecision({ decision: "peut-etre", motif: "x", lignes: [entretien, mes] }).ok).toBe(false);
+    expect(
+      validerDecision({ decision: "peut-etre", motif: "x", lignes: [entretien, mes] }).ok,
+    ).toBe(false);
   });
   it("« habilité » refusé sans entretien ni mise en situation", () => {
     expect(validerDecision({ decision: "habilite", motif: "ok", lignes: [] }).ok).toBe(false);
-    expect(validerDecision({ decision: "habilite", motif: "ok", lignes: [entretien] }).ok).toBe(false);
+    expect(validerDecision({ decision: "habilite", motif: "ok", lignes: [entretien] }).ok).toBe(
+      false,
+    );
   });
   it("« habilité » refusé quand la DERNIÈRE mise en situation n'atteint pas les seuils", () => {
-    const r = validerDecision({ decision: "habilite", motif: "ok", lignes: [entretien, mes, mauvaiseMes] });
+    const r = validerDecision({
+      decision: "habilite",
+      motif: "ok",
+      lignes: [entretien, mes, mauvaiseMes],
+    });
     expect(r.ok).toBe(false);
   });
   it("« habilité » accepté quand les seuils sont atteints, et il cite les grilles", () => {
-    const r = validerDecision({ decision: "habilite", motif: "Très bon", lignes: [entretien, mes] });
+    const r = validerDecision({
+      decision: "habilite",
+      motif: "Très bon",
+      lignes: [entretien, mes],
+    });
     expect(r).toMatchObject({ ok: true, entretienId: entretien.id, miseEnSituationId: mes.id });
   });
   it("« 2e essai » et « non habilité » restent possibles sous les seuils", () => {
-    expect(validerDecision({ decision: "second_essai", motif: "B1 à revoir", lignes: [entretien, mauvaiseMes] }).ok).toBe(true);
-    expect(validerDecision({ decision: "non_habilite", motif: "Pas prêt", lignes: [entretien] }).ok).toBe(true);
+    expect(
+      validerDecision({
+        decision: "second_essai",
+        motif: "B1 à revoir",
+        lignes: [entretien, mauvaiseMes],
+      }).ok,
+    ).toBe(true);
+    expect(
+      validerDecision({ decision: "non_habilite", motif: "Pas prêt", lignes: [entretien] }).ok,
+    ).toBe(true);
   });
   it("« avec réserve » exige les deux grilles, pas les seuils", () => {
-    expect(validerDecision({ decision: "avec_reserve", motif: "B1 faible", lignes: [entretien] }).ok).toBe(false);
-    expect(validerDecision({ decision: "avec_reserve", motif: "B1 faible", lignes: [entretien, mauvaiseMes] }).ok).toBe(true);
+    expect(
+      validerDecision({ decision: "avec_reserve", motif: "B1 faible", lignes: [entretien] }).ok,
+    ).toBe(false);
+    expect(
+      validerDecision({
+        decision: "avec_reserve",
+        motif: "B1 faible",
+        lignes: [entretien, mauvaiseMes],
+      }).ok,
+    ).toBe(true);
   });
   it("aucune décision sans entretien versé", () => {
     expect(validerDecision({ decision: "non_habilite", motif: "x", lignes: [] }).ok).toBe(false);
@@ -154,9 +186,24 @@ describe("validerFormationMethode", () => {
 describe("état et décision en vigueur", () => {
   it("la DERNIÈRE décision d'une formation décide", () => {
     const lignes = [
-      ligne({ nature: "decision_habilitation", formationId: "f1", decision: "habilite", motif: "a" }),
-      ligne({ nature: "decision_habilitation", formationId: "f1", decision: "non_habilite", motif: "b" }),
-      ligne({ nature: "decision_habilitation", formationId: "f2", decision: "avec_reserve", motif: "c" }),
+      ligne({
+        nature: "decision_habilitation",
+        formationId: "f1",
+        decision: "habilite",
+        motif: "a",
+      }),
+      ligne({
+        nature: "decision_habilitation",
+        formationId: "f1",
+        decision: "non_habilite",
+        motif: "b",
+      }),
+      ligne({
+        nature: "decision_habilitation",
+        formationId: "f2",
+        decision: "avec_reserve",
+        motif: "c",
+      }),
     ];
     expect(decisionEnVigueur(lignes, "f1")).toBe(false);
     expect(decisionEnVigueur(lignes, "f2")).toBe(true);
@@ -169,7 +216,12 @@ describe("manquesEvaluationActivation — tout est exigé", () => {
   const complet = [
     ligne({ nature: "entretien", notes: BON_ENTRETIEN }),
     ligne({ nature: "mise_en_situation", notes: BONNE_MES }),
-    ligne({ nature: "decision_habilitation", formationId: "f1", decision: "habilite", motif: "ok" }),
+    ligne({
+      nature: "decision_habilitation",
+      formationId: "f1",
+      decision: "habilite",
+      motif: "ok",
+    }),
     ligne({ nature: "formation_methode", dateSuivie: new Date("2026-10-01T00:00:00Z") }),
   ];
   it("un dossier complet ne manque de rien", () => {
@@ -197,7 +249,12 @@ describe("manquesEvaluationActivation — tout est exigé", () => {
   it("une décision « non habilité » ou « 2e essai » ne suffit pas", () => {
     const l = [
       ...complet.slice(0, 2),
-      ligne({ nature: "decision_habilitation", formationId: "f1", decision: "second_essai", motif: "x" }),
+      ligne({
+        nature: "decision_habilitation",
+        formationId: "f1",
+        decision: "second_essai",
+        motif: "x",
+      }),
       complet[3]!,
     ];
     expect(manquesEvaluationActivation(l)).toEqual([MANQUES_EVALUATION.decision]);

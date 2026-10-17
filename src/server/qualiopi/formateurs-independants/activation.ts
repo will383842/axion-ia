@@ -34,6 +34,8 @@ import { MOTIF_REFUS, peutEngager } from "@/server/auth/habilitations";
 import { retirerSollicitationsDuFormateur } from "@/server/qualiopi/trainers/mission-formateur";
 import type { DocumentConformite } from "@/server/qualiopi/trainers/conformite";
 import { journaliser as journaliserDansLaTransaction } from "@/server/journal/journaliser";
+import { manquesActivationQ21 } from "./evaluation-competences/garde-activation-q21";
+import { lireFaitsActivationQ21 } from "./evaluation-competences/lecture";
 import { lireFaitsActivationComplete } from "./faits-activation";
 import {
   peutActiverFormateurIndependantComplet,
@@ -220,7 +222,8 @@ async function journaliser(
  * - une ACTIVATION demandée par un acteur système (ADR 0066 étape 8) ;
  * - l'activation d'un `sous_traitant` par un rôle non habilité (`editor`…) ;
  * - l'activation d'un `sous_traitant` dont la garde n'est pas remplie — avec
- *   la liste des manques ;
+ *   la liste des manques ; la garde comprend TOUJOURS l'évaluation des compétences
+ *   pédagogiques (Qualiopi ind. 21, `evaluation-competences/garde-activation-q21.ts`) ;
  * - toute activation dont la lecture échoue (garde FERMÉE).
  */
 export async function changerActivationFormateur(
@@ -278,11 +281,21 @@ export async function changerActivationFormateur(
     } else {
       verdict = peutActiverFormateurIndependant(formateur);
     }
-    if (!verdict.activable) {
+    // Qualiopi ind. 21 — compétences pédagogiques évaluées, formation à la méthode
+    // suivie, CV, SIRET actif et numéro de déclaration : sous LES DEUX règles, sans
+    // interrupteur pour les couper.
+    let manquesQ21: string[];
+    try {
+      manquesQ21 = manquesActivationQ21(await lireFaitsActivationQ21(input.trainerId), regle);
+    } catch {
+      return refus("erreur", "Lecture du formateur impossible : activation refusée par prudence.");
+    }
+    const manques = [...(verdict.activable ? [] : verdict.manques), ...manquesQ21];
+    if (manques.length > 0) {
       return refus(
         "garde",
         "Activation refusée : le dossier du formateur indépendant est incomplet.",
-        verdict.manques,
+        manques,
       );
     }
   }
@@ -415,8 +428,13 @@ export async function desactiverSiGardeNonRemplie(input: {
     if (formateur === null) return { desactive: false, manques: [] };
     if (!formateur.actif) return { desactive: false, manques: [] };
     const verdict = peutActiverFormateurIndependant(formateur);
-    if (verdict.activable) return { desactive: false, manques: [] };
-    manques = verdict.manques;
+    // Qualiopi ind. 21 — même exigence qu'à l'activation (règle provisoire).
+    const manquesQ21 = manquesActivationQ21(
+      await lireFaitsActivationQ21(input.trainerId),
+      "provisoire",
+    );
+    if (verdict.activable && manquesQ21.length === 0) return { desactive: false, manques: [] };
+    manques = [...(verdict.activable ? [] : verdict.manques), ...manquesQ21];
   } catch {
     manques = ["Le contrôle des pièces n'a pas pu aboutir."];
   }
