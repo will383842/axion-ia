@@ -41,9 +41,9 @@ export const REGLAGES_EVALUATION: ReglagesEvaluation = {
  * une moyenne se compare au centième. Hors bornes, hors pas ou illisible : le défaut.
  */
 export const BORNES_EVALUATION = {
-  entretienMoyenneMin: [1, 5, 0.01],
-  entretienNoteCritereMin: [1, 5, 1],
-  miseEnSituationNoteBlocMin: [1, 5, 1],
+  entretienMoyenneMin: [2, 5, 0.01],
+  entretienNoteCritereMin: [2, 5, 1],
+  miseEnSituationNoteBlocMin: [2, 5, 1],
 } as const satisfies Record<keyof ReglagesEvaluation, readonly [number, number, number]>;
 
 function borne(k: keyof ReglagesEvaluation, v: unknown): number {

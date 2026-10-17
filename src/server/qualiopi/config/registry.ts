@@ -632,32 +632,32 @@ export const QUALIOPI_CONFIG_REGISTRY = {
   evaluation_competences_entretien_moyenne_min: {
     ...num(REGLAGES_EVALUATION.entretienMoyenneMin),
     description:
-      "Indicateur 21 — entretien : moyenne des cinq critères (sur 5) à partir de laquelle « habilité » est possible. De 1 à 5, au centième. Défaut 3,5, à valider par Will.",
+      "Indicateur 21 — entretien : moyenne des cinq critères (sur 5) à partir de laquelle « habilité » est possible. De 2 à 5, au centième. Défaut 3,5, à valider par Will.",
   },
   evaluation_competences_entretien_note_critere_min: {
     ...num(REGLAGES_EVALUATION.entretienNoteCritereMin),
     description:
-      "Indicateur 21 — entretien : aucun critère ne doit être noté sous cette note pour « habilité ». Entier de 1 à 5. Défaut 2, à valider par Will.",
+      "Indicateur 21 — entretien : aucun critère ne doit être noté sous cette note pour « habilité ». Entier de 2 à 5. Défaut 2, à valider par Will.",
   },
   evaluation_competences_mise_en_situation_note_bloc_min: {
     ...num(REGLAGES_EVALUATION.miseEnSituationNoteBlocMin),
     description:
-      "Indicateur 21 — mise en situation : note minimale (sur 5) de chaque bloc pour « habilité ». Entier de 1 à 5. Défaut 3, à valider par Will.",
+      "Indicateur 21 — mise en situation : note minimale (sur 5) de chaque bloc pour « habilité ». Entier de 2 à 5. Défaut 3, à valider par Will.",
   },
   suivi_qualite_observation_moyenne_min: {
     ...num(REGLAGES_SUIVI_QUALITE.observationMoyenneMin),
     description:
-      "Indicateur 21 — moyenne minimale (sur 5) de l'observation de la 1re mission, qui confirme l'habilitation. De 1 à 5, au centième. Défaut 3,5, à valider par Will.",
+      "Indicateur 21 — moyenne minimale (sur 5) de l'observation de la 1re mission, qui confirme l'habilitation. De 2 à 5, au centième. Défaut 3,5, à valider par Will.",
   },
   suivi_qualite_reevaluation_moyenne_min: {
     ...num(REGLAGES_SUIVI_QUALITE.reevaluationMoyenneMin),
     description:
-      "Indicateur 21 — moyenne minimale (sur 5) d'une réévaluation annuelle favorable. De 1 à 5, au centième. Défaut 3,5, à valider par Will.",
+      "Indicateur 21 — moyenne minimale (sur 5) d'une réévaluation annuelle favorable. De 2 à 5, au centième. Défaut 3,5, à valider par Will.",
   },
   suivi_qualite_evaluation_moyenne_min: {
     ...num(REGLAGES_SUIVI_QUALITE.evaluationMoyenneMin),
     description:
-      "Indicateur 21 — moyenne (sur 5) de la grille après mission sous laquelle elle est dite « réservée ». De 1 à 5, au centième. Défaut 3,5, à valider par Will.",
+      "Indicateur 21 — moyenne (sur 5) de la grille après mission sous laquelle elle est dite « réservée ». De 2 à 5, au centième. Défaut 3,5, à valider par Will.",
   },
   suivi_qualite_observation_alerte_jours: {
     ...num(REGLAGES_SUIVI_QUALITE.observationAlerteJours),
@@ -677,12 +677,12 @@ export const QUALIOPI_CONFIG_REGISTRY = {
   suivi_qualite_satisfaction_entretien_sous: {
     ...num(REGLAGES_SUIVI_QUALITE.satisfactionEntretienSous),
     description:
-      "Indicateur 21 — satisfaction des stagiaires (sur 5) sous laquelle un entretien est à prévoir. De 1 à 5, au centième, pas sous le seuil de suspension. Défaut 4, à valider par Will.",
+      "Indicateur 21 — satisfaction des stagiaires (sur 5) sous laquelle un entretien est à prévoir. De 2 à 5, au centième, pas sous le seuil de suspension. Défaut 4, à valider par Will.",
   },
   suivi_qualite_satisfaction_suspension_sous: {
     ...num(REGLAGES_SUIVI_QUALITE.satisfactionSuspensionSous),
     description:
-      "Indicateur 21 — satisfaction (sur 5) sous laquelle les NOUVELLES missions sont suspendues. De 1 à 5, au centième, pas au-dessus du seuil d'entretien. Défaut 3, à valider par Will.",
+      "Indicateur 21 — satisfaction (sur 5) sous laquelle les NOUVELLES missions sont suspendues. De 2 à 5, au centième, pas au-dessus du seuil d'entretien. Défaut 3, à valider par Will.",
   },
   suivi_qualite_reevaluation_mois: {
     ...num(REGLAGES_SUIVI_QUALITE.reevaluationMois),
@@ -707,7 +707,7 @@ export const QUALIOPI_CONFIG_REGISTRY = {
   suivi_qualite_texte_min_caracteres: {
     ...num(REGLAGES_SUIVI_QUALITE.texteMinCaracteres),
     description:
-      "Indicateur 21 — longueur minimale d'une conclusion de grille ou d'un motif de décision du suivi qualité. Entier de 1 à 500. Défaut 10, à valider par Will.",
+      "Indicateur 21 — longueur minimale d'une conclusion de grille ou d'un motif de décision du suivi qualité. Entier de 2 à 500. Défaut 10, à valider par Will.",
   },
 } as const satisfies Record<string, ConfigEntry<unknown>>;
 

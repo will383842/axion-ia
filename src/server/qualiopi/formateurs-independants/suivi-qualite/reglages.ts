@@ -65,24 +65,28 @@ export const REGLAGES_SUIVI_QUALITE: ReglagesSuiviQualite = {
 };
 
 /**
+ * 🔒 Aucune borne n'inclut la valeur qui rendrait une garde INOPÉRANTE : toute note ou
+ * satisfaction est ≥ 1 (« moyenne ≥ 1 » ou « satisfaction < 1 » ne filtrerait plus rien),
+ * d'où un minimum de 2 ; un motif d'un seul caractère ne motive rien (minimum 5).
+ *
  * Bornes d'un réglage lisible : [min, max, pas]. Notes et satisfaction sur 5, comparées
  * au centième ; jours, mois et caractères entiers. Hors bornes, hors pas ou illisible :
  * le défaut.
  */
 export const BORNES_SUIVI_QUALITE = {
-  observationMoyenneMin: [1, 5, 0.01],
-  reevaluationMoyenneMin: [1, 5, 0.01],
-  evaluationMoyenneMin: [1, 5, 0.01],
+  observationMoyenneMin: [2, 5, 0.01],
+  reevaluationMoyenneMin: [2, 5, 0.01],
+  evaluationMoyenneMin: [2, 5, 0.01],
   observationAlerteJours: [0, 60, 1],
   evaluationRelanceJours: [0, 60, 1],
   evaluationAlerteJours: [1, 90, 1],
-  satisfactionEntretienSous: [1, 5, 0.01],
-  satisfactionSuspensionSous: [1, 5, 0.01],
+  satisfactionEntretienSous: [2, 5, 0.01],
+  satisfactionSuspensionSous: [2, 5, 0.01],
   reevaluationMois: [1, 36, 1],
   reevaluationRappelJours: [0, 180, 1],
   reevaluationGraceAllumageJours: [0, 180, 1],
   cvDeclareMaxMois: [1, 60, 1],
-  texteMinCaracteres: [1, 500, 1],
+  texteMinCaracteres: [5, 500, 1],
 } as const satisfies Record<keyof ReglagesSuiviQualite, readonly [number, number, number]>;
 
 function borne(k: keyof ReglagesSuiviQualite, v: unknown): number {

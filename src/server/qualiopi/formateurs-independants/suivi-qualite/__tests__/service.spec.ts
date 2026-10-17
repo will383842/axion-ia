@@ -231,12 +231,12 @@ describe("enregistrerDecision", () => {
     });
   });
 
-  it("satisfaction 2 : suspension réglée sous 1,5 → plus rien à lever (sans objet)", async () => {
+  it("satisfaction 2 : suspension réglée sous 2 → plus rien à lever (sans objet)", async () => {
     h.etat.session = {
       ...h.etat.session!,
       enrollments: [{ questionnaires: [{ noteGlobale: 2 }] }],
     };
-    h.config.set("suivi_qualite_satisfaction_suspension_sous", 1.5);
+    h.config.set("suivi_qualite_satisfaction_suspension_sous", 2);
     expect(await enregistrerDecision(decision())).toEqual({ ok: false, erreur: "sans_objet" });
   });
 

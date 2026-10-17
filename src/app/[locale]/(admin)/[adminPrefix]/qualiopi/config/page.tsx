@@ -29,6 +29,8 @@ import { getQualiopiReferenceDataStatus } from "@/server/qualiopi/seed/reference
 import { prisma } from "@/lib/prisma";
 import { TriangleAlert } from "lucide-react";
 import { AccesRefuse } from "@/components/admin/ui/AccesRefuse";
+import { peutEngager } from "@/server/auth/habilitations";
+import { cleReserveeHabilitation } from "@/server/qualiopi/config/cles-reservees-habilitation";
 import { gardePage } from "@/server/auth/garde-page";
 import { AdressesEssaiForm } from "@/components/admin/qualiopi/AdressesEssaiForm";
 import { lireInterrupteurQualiopi } from "@/server/qualiopi/socle/interrupteurs";
@@ -52,6 +54,7 @@ export default async function QualiopiConfigPage({ params }: PageProps) {
     return <AccesRefuse motif={acces.motif} retourHref={`/${locale}/${adminPrefix}`} />;
   }
 
+  const peutHabiliter = peutEngager(acces.role, "habiliter_formateur");
   const current = await getAllQualiopiConfig();
   const referenceStatus = await getQualiopiReferenceDataStatus(prisma);
   const keys = Object.keys(QUALIOPI_CONFIG_REGISTRY) as QualiopiConfigKey[];
@@ -71,6 +74,9 @@ export default async function QualiopiConfigPage({ params }: PageProps) {
       isNumber: typeof entry.default === "number",
       ...(options ? { options } : {}),
       ...(optionLabels ? { optionLabels } : {}),
+      ...(!peutHabiliter && cleReserveeHabilitation(k)
+        ? { verrouille: "Réservé aux rôles habilités à habiliter un formateur." }
+        : {}),
     };
   });
 
