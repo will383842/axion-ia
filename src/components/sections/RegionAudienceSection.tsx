@@ -58,8 +58,8 @@ export async function RegionAudienceSection({ region, isFr }: RegionAudienceSect
               className="text-fg text-[clamp(2.25rem,4.5vw,4rem)] leading-[1.04] font-semibold tracking-tight"
             >
               {isFr
-                ? "Nous accompagnons toutes les tailles d'entreprise"
-                : "We support every business size"}{" "}
+                ? "Nous accompagnons les TPE, PME, ETI et grands groupes"
+                : "We support small businesses, SMEs, mid-caps and large groups"}{" "}
               <span
                 className="italic-editorial text-terracotta"
                 style={{ fontFamily: "var(--font-serif)" }}

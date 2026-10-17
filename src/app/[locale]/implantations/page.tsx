@@ -52,8 +52,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       ? "Implantations · Architectes IA seniors partout en France et francophonie · Axion-IA"
       : "Implantations · Architectes IA seniors partout en France et francophonie · Axion-IA",
     description: isFr
-      ? "Axion-IA intervient dans les 13 régions de France métropolitaine, les 5 DROM et dans la francophonie. TPE, PME, ETI et grands groupes. 5 services : audit IA, formation, implémentation, coaching 1-to-1, plateformes web/SaaS."
-      : "Axion-IA intervient dans les 13 régions de France métropolitaine, les 5 DROM et dans la francophonie. TPE, PME, ETI et grands groupes. 5 services : audit IA, formation, implémentation, coaching 1-to-1, plateformes web/SaaS.",
+      ? "Axion-IA intervient dans les 13 régions de France métropolitaine, les 5 DROM et dans la francophonie. De la TPE au grand groupe. 5 services : audit IA, formation, implémentation, coaching 1-to-1, plateformes web/SaaS."
+      : "Axion-IA intervient dans les 13 régions de France métropolitaine, les 5 DROM et dans la francophonie. De la TPE au grand groupe. 5 services : audit IA, formation, implémentation, coaching 1-to-1, plateformes web/SaaS.",
     alternates: { fr: "/implantations", en: "/locations" },
   });
 }

@@ -59,7 +59,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     path: "/actualites",
     title: "Actualités IA · Veille opérationnelle · Axion-IA",
     description:
-      "Veille hebdomadaire sur l'IA opérationnelle pour dirigeants de TPE, PME et ETI : décisions Search Console, sorties produits Anthropic/Mistral/OpenAI, retours terrain.",
+      "Veille hebdomadaire sur l'IA opérationnelle pour dirigeants de TPE, PME et ETI : Search Console, sorties produits Anthropic/Mistral/OpenAI, retours terrain.",
     alternates: { fr: "/actualites", en: "/actualites" },
     // SEO news 2026 — autodiscovery du flux RSS de la section (Feedly/Apple News/
     // navigateurs) via <link rel="alternate" type="application/rss+xml">.
