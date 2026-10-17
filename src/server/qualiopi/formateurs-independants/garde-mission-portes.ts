@@ -127,9 +127,10 @@ export async function controlerGardeMission(
   maintenant: Date = new Date(),
   enJeu?: MissionEnJeu,
 ): Promise<ControleGardeMission> {
-  const [suspension, garde] = await Promise.all([
-    refusSuspensionRegistre(trainerId),
+  // La garde d'avant L3 lit son interrupteur la première : son ordre ne change pas.
+  const [garde, suspension] = await Promise.all([
     controlerPortes(trainerId, maintenant, enJeu),
+    refusSuspensionRegistre(trainerId),
   ]);
   if (suspension === null) return garde;
   return {
