@@ -9,6 +9,7 @@ import { ArrowRight } from "lucide-react";
 import { Container } from "@/components/layout/Container";
 import { FadeInOnView } from "@/components/motion/FadeInOnView";
 import { Link } from "@/i18n/navigation";
+import { EFFECTIF_COURT_FR } from "@/content/formations/effectif";
 import { cn } from "@/lib/utils";
 import type { Locale } from "@/i18n/routing";
 import {
@@ -46,7 +47,7 @@ export function PricingGridVille({ isFr, villeNameFr, loc }: PricingGridVillePro
       nameFr: "Formation IA",
       subFr: "Présentiel · À partir d'une demi-journée",
       categoryFr: "Formation",
-      includesFr: "Ateliers métier · Sur site · Jusqu'à 15 pers. (séminaire : 50)",
+      includesFr: `Ateliers métier · Sur site ou à distance · ${EFFECTIF_COURT_FR} par session`,
       price: surDevisLabel,
       href: "/formations" as const,
     },

@@ -95,7 +95,7 @@ export interface FormationV2 {
   duree: FormationDuree;
   /** Formation sans prix affiché (« Sur devis ») — court-circuite la matrice. */
   surDevis?: boolean;
-  /** Séminaire (rubrique dédiée, présentiel, jusqu'à 50 pers). */
+  /** Séminaire (rubrique dédiée, d'une journée, même effectif que les autres formations). */
   seminaire?: boolean;
   /** « À LA UNE ». */
   featured?: boolean;
@@ -126,7 +126,7 @@ export interface FormationV2 {
   modalites?: ReadonlyArray<ModalitePedagogique>;
   /** Matériel requis. Défaut = FORMATION_MATERIEL_DEFAUT (« smartphone ou ordinateur, connexion internet… », catalog-v2-facts.ts). Matériel du PRÉSENTIEL : `getFormationMateriel` y ajoute l'exigence du distanciel. Ne surcharger que pour dire autre chose que le défaut. */
   materielFr?: string;
-  /** Effectif du groupe. Défaut = « Jusqu'à 15 participants ». */
+  /** Effectif du groupe. Défaut = `EFFECTIF_VALEUR_FR` (de 2 à 15 stagiaires par session) ; ne pas surcharger. */
   effectifFr?: string;
   /** Outils réellement pratiqués (phrase complète, rendue en FAQ). */
   outilsFr?: string;
@@ -5345,7 +5345,7 @@ const IA_POUR_LE_COMMERCE: FormationV2 = {
     {
       question: "Combien de personnes du magasin peuvent participer ?",
       reponse:
-        "Jusqu'à 15 participants par groupe, tous profils : responsables, vendeurs, merchandising. Le prix est par groupe, pas par personne.",
+        "De 2 à 15 stagiaires par session, tous profils : responsables, vendeurs, merchandising. Le prix est par groupe, pas par personne.",
     },
   ],
 };
@@ -6633,8 +6633,10 @@ const SEMINAIRE_IA_ENTREPRISE: FormationV2 = {
   gamme: "ia-standard",
   duree: "1j",
   surDevis: true,
-  // Programme : « Jusqu'à 50 participants, en tables de 6 à 8 ».
-  effectifFr: "Jusqu’à 50 participants, en tables de 6 à 8",
+  // 🔴 2026-10-16 (L16) — effectif aligné sur toutes les formations : de 2 à 15
+  // stagiaires par session (`effectif.ts`). Le séminaire annonçait « jusqu'à 50
+  // participants » ; la fiche, le programme remis et la convention doivent dire
+  // la même chose (O9). Pas de surcharge : le défaut du catalogue s'applique.
   // Le séminaire ne demande AUCUN matériel individuel : le formateur démontre,
   // et seul le téléphone personnel sert au SONDAGE — anonyme, agrégé par
   // service, protégé par l'engagement de non-usage disciplinaire signé à 9 h.
@@ -6657,11 +6659,11 @@ const SEMINAIRE_IA_ENTREPRISE: FormationV2 = {
   seminaire: true,
   titreFr: "Séminaire IA — Mettre toute l'entreprise au diapason",
   accrocheFr:
-    "Une journée en présentiel pour cadrer les usages de l'IA et fédérer toutes vos équipes — jusqu'à 50 participants",
+    "Une journée, en présentiel ou à distance, pour cadrer les usages de l'IA et fédérer vos équipes — de 2 à 15 stagiaires par session",
   h1Fr: "Séminaire IA en entreprise — fédérer toutes vos équipes en une journée",
   metaTitleFr: "Séminaire IA en entreprise — toute l'équipe",
   metaDescriptionFr:
-    "Séminaire IA d'une journée en présentiel, jusqu'à 50 personnes : cadrer les usages, partager la méthode AXION et fédérer toutes vos équipes.",
+    "Séminaire IA d'une journée, en présentiel ou à distance, de 2 à 15 stagiaires par session : cadrer les usages, partager la méthode AXION et fédérer vos équipes.",
   termesSemantiquesFr: [
     "séminaire IA entreprise",
     "journée IA toute l'entreprise",
@@ -6671,7 +6673,7 @@ const SEMINAIRE_IA_ENTREPRISE: FormationV2 = {
     "feuille de route IA collective",
   ],
   publicViseFr:
-    "L'entreprise entière ou un site complet, réunis le même jour : tous services, tous métiers, tous niveaux de maîtrise de l'IA. C'est précisément ce mélange qui fait la valeur de la journée — ceux qui n'ont jamais essayé et ceux qui utilisent déjà l'IA au quotidien. Jusqu'à 50 participants, en tables de 6 à 8.",
+    "Plusieurs services réunis le même jour : tous métiers, tous niveaux de maîtrise de l'IA. C'est précisément ce mélange qui fait la valeur de la journée — ceux qui n'ont jamais essayé et ceux qui utilisent déjà l'IA au quotidien. De 2 à 15 stagiaires par session, en tables de 6 à 8 dès que le groupe le permet.",
   prerequisFr:
     "Aucun prérequis technique ni expérience de l'IA. Aucun compte à créer, aucun logiciel à installer : le séminaire est conçu pour qu'on y participe sans préparation. Chaque participant utilise son téléphone personnel pour le sondage en direct, qui est anonyme et agrégé par service ; l'évaluation des acquis, elle, est individuelle et se fait sur une grille papier remise en fin de journée. Un ordinateur ou un téléphone par table suffit pour les temps collectifs.",
   casUsageFr: [
@@ -6727,8 +6729,8 @@ const SEMINAIRE_IA_ENTREPRISE: FormationV2 = {
     "1 journée réunissant toute l'entreprise → un socle commun, une cartographie réelle des usages, et une feuille de route collective formalisée le jour même.",
   resultatsFr: [
     {
-      valeur: "50",
-      label: "participants au maximum, réunis le même jour en tables de 6 à 8",
+      valeur: "15",
+      label: "stagiaires au maximum par session, réunis le même jour en tables de 6 à 8",
     },
     {
       valeur: "56 %",
@@ -6740,7 +6742,7 @@ const SEMINAIRE_IA_ENTREPRISE: FormationV2 = {
       label: "grille d'évaluation individuelle sur papier, renseignée et commentée en salle",
     },
   ],
-  modalites: ["presentiel"],
+  modalites: ["presentiel", "distanciel"],
   programme: [
     {
       titreFr: "Matin · Module 1 — Socle commun et garde-fous",
@@ -6943,17 +6945,17 @@ const SEMINAIRE_IA_ENTREPRISE: FormationV2 = {
     {
       question: "Est-ce une formation ou une conférence ?",
       reponse:
-        "Ni l'un ni l'autre. Ce n'est pas une formation déguisée (à 50 personnes, pas d'accompagnement individuel écran par écran — ce sont nos formations en groupe de 15 qui font ça), et ce n'est pas une conférence (plus de la moitié de la journée est du travail collectif par table). Le séminaire pose un socle commun et prépare les formations, il ne les remplace pas.",
+        "Ni l'un ni l'autre. Ce n'est pas une formation déguisée (la journée est conduite en plénière et par tables, pas en accompagnement individuel écran par écran — ce sont nos formations métier et secteur qui font ça), et ce n'est pas une conférence (plus de la moitié de la journée est du travail collectif par table). Le séminaire pose un socle commun et prépare les formations, il ne les remplace pas.",
     },
     {
-      question: "Pourquoi le présentiel uniquement ?",
+      question: "Se suit-il en présentiel ou à distance ?",
       reponse:
-        "Un séminaire dont l'objet est de fédérer les équipes n'a pas de sens à distance : le travail par table, les restitutions, les échanges entre services ne survivent pas à 50 personnes en salles virtuelles. Si le présentiel n'est pas possible, nos formations en groupe de 15 se dispensent aussi bien à distance.",
+        "Au choix de l'entreprise, comme toutes nos formations : en présentiel dans vos locaux, ou à distance en visioconférence (Zoom, depuis le navigateur, rien à installer). À distance, le travail par table devient un travail par petits groupes, avec l'assistance technique et pédagogique décrite sur la fiche ; le format se précise avec vous avant la session.",
     },
     {
-      question: "Combien de participants et quelle organisation de salle ?",
+      question: "Combien de stagiaires et quelle organisation de salle ?",
       reponse:
-        "Jusqu'à 50 participants, en tables de 6 à 8 personnes, de préférence en mélangeant les services. Il faut un vidéoprojecteur ou grand écran, une sonorisation adaptée, un paperboard par table et une connexion internet couvrant la salle (pour le sondage en direct depuis les téléphones). L'évaluation des acquis se fait sur grille papier : prévoir de quoi écrire à chaque place.",
+        "De 2 à 15 stagiaires par session, en tables de 6 à 8 personnes dès que le groupe le permet, de préférence en mélangeant les services. En présentiel, il faut un vidéoprojecteur ou grand écran, un paperboard par table et une connexion internet couvrant la salle (pour le sondage en direct depuis les téléphones). L'évaluation des acquis se fait sur grille papier : prévoir de quoi écrire à chaque place.",
     },
   ],
 };

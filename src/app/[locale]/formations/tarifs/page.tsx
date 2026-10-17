@@ -1,11 +1,14 @@
 /**
  * Page TARIFS du catalogue formations — /formations/tarifs.
  *
- * Refonte 2026-07-19 (décision Will) : PRIX PUBLICS fixes par groupe (2 à 15
- * participants), affichés par CATÉGORIE (offres générales / par métier / par
+ * Refonte 2026-07-19 (décision Will) : PRIX PUBLICS par groupe (de 2 à 15
+ * stagiaires par session), affichés par CATÉGORIE (offres générales / par métier / par
  * secteur d'activité) — fin du « 100 % sur devis » et de la matrice
  * gamme × durée × effectif. Aucun prix en dur : tout dérive du catalogue
  * (catalog-v2.ts) et de la matrice pricing.ts. Contenu 100 % FR.
+ *
+ * 2026-10-16 (L16, NC7) : « prix fixe, sans surprise » remplacé par les
+ * conditions tarifaires réelles (`conditions-tarifaires.ts`, copie des CGV).
  */
 
 import type { Metadata } from "next";
@@ -28,6 +31,8 @@ import {
 } from "@/content/formations/catalog-v2";
 import { FORMATION_CATEGORIES_META, SUR_MESURE } from "@/content/formations/catalog-v2-meta";
 import { FORMATION_DUREE_FACTS } from "@/content/formations/catalog-v2-facts";
+import { CONDITIONS_TARIFAIRES_FR } from "@/content/formations/conditions-tarifaires";
+import { EFFECTIF_PLAGE_FR } from "@/content/formations/effectif";
 import { formatAmount, getFormationCatalogPriceRange } from "@/content/pricing";
 import { buildProductMetadata } from "@/lib/seo";
 import { QualiopiBadge } from "@/components/qualiopi/QualiopiBadge";
@@ -53,7 +58,7 @@ export async function generateMetadata({
     locale,
     path: "/formations/tarifs",
     title: "Tarifs des formations IA en entreprise",
-    description: `Prix publics des formations IA intra-entreprise : de ${formatAmount(minEur, "fr")} à ${formatAmount(maxEur, "fr")} par groupe (2 à 15 participants), jamais par personne. Offres générales, par métier, par secteur.${qualiopiSuffix}`,
+    description: `Prix publics des formations IA intra-entreprise : de ${formatAmount(minEur, "fr")} à ${formatAmount(maxEur, "fr")} par groupe (${EFFECTIF_PLAGE_FR}), jamais par personne. Offres générales, par métier, par secteur.${qualiopiSuffix}`,
   });
 }
 
@@ -97,7 +102,7 @@ export default async function TarifsPage({ params }: { params: Promise<{ locale:
             <h1 className="display-editorial text-fg">Tarifs des formations</h1>
             <p className="text-fg-soft mt-5 max-w-2xl text-lg leading-relaxed sm:text-xl">
               Nos prix sont <strong className="text-fg">publics</strong> et tarifés{" "}
-              <strong className="text-fg">par groupe</strong> (2 à 15 participants — jamais par
+              <strong className="text-fg">par groupe</strong> ({EFFECTIF_PLAGE_FR} — jamais par
               personne), en intra-entreprise dans vos locaux ou à distance. Dès{" "}
               {/* `formatAmount` non-compact porte déjà « € HT » — ne pas resuffixer. */}
               <strong className="text-fg">{formatAmount(minEur, "fr")}</strong> pour toute votre
@@ -114,8 +119,8 @@ export default async function TarifsPage({ params }: { params: Promise<{ locale:
         tone="canvas"
         eyebrow="Prix par groupe"
         title="La grille complète,"
-        titleEm="sans surprise"
-        description="Un prix fixe par formation, pour tout le groupe (jusqu'à 15 participants). Les formations de 2 jours sont scindables en 2×1 jour, sans surcoût."
+        titleEm="et ses conditions"
+        description={`Un prix par formation, pour tout le groupe (${EFFECTIF_PLAGE_FR}). Les formations de 2 jours sont scindables en 2×1 jour, sans surcoût.`}
       >
         <Container>
           <div className="mx-auto flex max-w-4xl flex-col gap-10">
@@ -175,18 +180,18 @@ export default async function TarifsPage({ params }: { params: Promise<{ locale:
               </div>
             ))}
 
-            {/* Séminaire — à part, sur devis (jusqu'à 50 participants). */}
+            {/* Séminaire — à part, sur devis (même effectif que les autres formations). */}
             {seminaire ? (
               <div className="border-primary/40 bg-paper rounded-2xl border border-dashed p-6 sm:flex sm:items-center sm:justify-between sm:gap-6">
                 <div>
                   <p className="text-fg text-lg font-semibold">
                     {seminaire.titreFr}{" "}
                     <span className="text-fg-muted font-normal">
-                      · 1 journée · jusqu’à 50 participants
+                      · 1 journée · {EFFECTIF_PLAGE_FR}
                     </span>
                   </p>
                   <p className="text-fg-soft mt-1 text-[15px] leading-relaxed">
-                    Réunir toute l’entreprise le même jour — présentiel uniquement, sur devis.
+                    Réunir plusieurs services le même jour — en présentiel ou à distance, sur devis.
                   </p>
                 </div>
                 <div className="mt-4 shrink-0 sm:mt-0">
@@ -245,6 +250,37 @@ export default async function TarifsPage({ params }: { params: Promise<{ locale:
               </li>
             ))}
           </ul>
+        </Container>
+      </Section>
+
+      {/* CONDITIONS TARIFAIRES — copie des CGV (`conditions-tarifaires.ts`), qui
+          tient la place de l'ancien slogan tarifaire. Texte opposable : les CGV. */}
+      <Section
+        tone="canvas"
+        eyebrow="Avant de commander"
+        title="Les conditions,"
+        titleEm="telles qu'elles s'appliquent"
+        description="Ce résumé reprend nos conditions générales de vente, qui seules font foi."
+      >
+        <Container>
+          <dl className="mx-auto grid max-w-4xl gap-4 sm:grid-cols-2">
+            {CONDITIONS_TARIFAIRES_FR.map((c) => (
+              <div key={c.titre} className="border-border bg-paper rounded-2xl border p-6">
+                <dt className="text-fg text-base font-semibold">{c.titre}</dt>
+                <dd className="text-fg-soft mt-2 text-[15px] leading-relaxed">{c.texte}</dd>
+              </div>
+            ))}
+          </dl>
+          <p className="text-fg-muted mx-auto mt-4 max-w-4xl text-[13px]">
+            Le texte complet figure dans nos{" "}
+            <Link
+              href="/conditions-generales"
+              className="text-terracotta hover:text-terracotta-deep font-semibold underline underline-offset-4"
+            >
+              conditions générales de vente
+            </Link>
+            .
+          </p>
         </Container>
       </Section>
 

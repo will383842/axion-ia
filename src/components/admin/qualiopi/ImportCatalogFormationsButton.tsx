@@ -23,7 +23,7 @@ import type {
 } from "@/server/qualiopi/formations/catalog-import";
 
 /**
- * Libellés humains des 7 champs réconciliables (`RECONCILED_FIELDS`). Un
+ * Libellés humains des 9 champs réconciliables (`RECONCILED_FIELDS`). Un
  * admin non technicien ne doit jamais voir de camelCase brut (`ratioPratiquePct`,
  * `accessibleHandicap`…) dans un rapport d'écart.
  */
@@ -35,6 +35,8 @@ const RECONCILED_FIELD_LABELS: Record<ReconciledField, string> = {
   ratioPratiquePct: "Ratio pratique",
   accessibleHandicap: "Accessibilité handicap",
   certificationType: "Type de certification",
+  modalite: "Modalité (présentiel ou distanciel)",
+  moyensTechniques: "Moyens techniques",
 };
 
 function driftFieldLabel(field: ReconciledField): string {

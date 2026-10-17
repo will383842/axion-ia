@@ -8,7 +8,7 @@
  *
  * Propriétés :
  *   - IDEMPOTENT par slug : ne crée que les formations absentes.
- *   - AUTO-SYNCÉ (WS2) : sur ré-exécution, réconcilie les 7 champs partagés avec
+ *   - AUTO-SYNCÉ (WS2) : sur ré-exécution, réconcilie les 9 champs partagés avec
  *     le catalogue via un merge 3-way (catalogue vs DB vs `catalogSnapshot`).
  *     Une formation déjà en base est mise à jour si le catalogue a bougé ET que
  *     l'admin n'a pas édité le champ ; en cas de conflit (édition admin + champ
@@ -40,6 +40,13 @@ import type { PrismaClient } from "../../../../prisma/generated/client";
 import type { FormationDuree } from "../../../content/pricing";
 import type { FormationV2 } from "../../../content/formations/catalog-v2";
 import { FORMATIONS_V2 } from "../../../content/formations/catalog-v2";
+import { getFormationModalites } from "../../../content/formations/catalog-v2-facts";
+import {
+  DISTANCIEL_CONNEXION,
+  DISTANCIEL_ORDINATEUR,
+  DISTANCIEL_VISIO,
+} from "../../../content/formations/materiel";
+import { ASSISTANCE_HORS_SESSION, ASSISTANCE_PENDANT_SESSION } from "../legal/assistance-distance";
 import { ratioPratiqueDeclarable } from "./ratio-pratique";
 import { enrichissementDe } from "../../../content/formations/modules";
 import { nextNumero } from "../numbering/allocate";
@@ -80,10 +87,35 @@ const METHODES_PEDAGOGIQUES =
   "démonstrations. Reformulation, itération guidée jusqu'au résultat attendu, " +
   "grille d'évaluation renseignée et commentée en clôture, et engagement individuel.";
 
+/**
+ * 🔴 2026-10-16 (L16, NC15) — texte imprimé sur le programme remis : il disait
+ * « visioconférence en distanciel » sans dire laquelle, ni ce qu'il faut pour la
+ * suivre, ni qui répond en cas de panne. Les éléments du distanciel sont ceux que
+ * la fiche publique et la convocation importent déjà (`materiel.ts`,
+ * `assistance-distance.ts`) : le programme, la fiche et la convocation ne
+ * peuvent plus diverger (exigence orale O9).
+ */
 const MOYENS_TECHNIQUES =
-  "Salle équipée et vidéoprojecteur en présentiel, ou visioconférence en " +
-  "distanciel. Chaque participant utilise son smartphone ou son poste avec un " +
-  "compte IA gratuit ; aucun prérequis matériel ni installation.";
+  "Salle équipée et vidéoprojecteur en présentiel : chaque participant y utilise " +
+  "son smartphone ou son poste avec un compte IA gratuit, sans prérequis matériel " +
+  "ni installation. " +
+  `En distanciel : ${DISTANCIEL_ORDINATEUR}, ${DISTANCIEL_CONNEXION}, ${DISTANCIEL_VISIO}. ` +
+  `Assistance technique et pédagogique à distance. ${ASSISTANCE_PENDANT_SESSION} ${ASSISTANCE_HORS_SESSION}`;
+
+/**
+ * Valeurs que les anciens imports ont écrites EN DUR, et que personne n'a donc
+ * choisies : une ligne qui les porte encore n'a pas été éditée par un admin, on
+ * peut la synchroniser sans baseline. Toute autre valeur est une édition admin :
+ * elle est préservée et l'écart est reporté. Lu par `reconcileFormationFields`.
+ */
+const VALEURS_HISTORIQUES: Partial<Record<string, ReadonlyArray<unknown>>> = {
+  modalite: ["presentiel"],
+  moyensTechniques: [
+    "Salle équipée et vidéoprojecteur en présentiel, ou visioconférence en " +
+      "distanciel. Chaque participant utilise son smartphone ou son poste avec un " +
+      "compte IA gratuit ; aucun prérequis matériel ni installation.",
+  ],
+};
 
 const RESSOURCES_PEDAGOGIQUES: ReadonlyArray<{ type: string; libelle: string }> = [
   { type: "support", libelle: "Support de présentation projeté en séance" },
@@ -146,7 +178,8 @@ export interface FormationImportData {
   slug: string;
   offreSiteId: string;
   dureeHeures: number;
-  modalite: "presentiel";
+  /** `hybride` = « présentiel ou distanciel » : seule valeur de l'énumération qui dit les deux. */
+  modalite: "presentiel" | "distanciel" | "hybride";
   objectifsPedagogiques: FormationObjectifPedagogique[];
   programmeDetaille: FormationProgrammeModule[];
   methodesPedagogiques: string;
@@ -165,6 +198,21 @@ export interface FormationImportData {
   statut: "actif";
   validatedBy: string | null;
   validatedAt: Date | null;
+}
+
+/**
+ * Modalité à écrire en base, DÉRIVÉE du catalogue — plus jamais « presentiel » en
+ * dur (décision de Will du 2026-10-16 : toutes les formations se suivent en
+ * présentiel ou à distance). L'énumération `ModaliteFormation` n'a pas de valeur
+ * « présentiel OU distanciel » et on n'y touche pas (pas de migration) :
+ * `hybride` est la seule qui désigne les deux.
+ */
+export function modaliteEnBase(f: FormationV2): FormationImportData["modalite"] {
+  const m = getFormationModalites(f);
+  if (m.includes("hybride") || (m.includes("presentiel") && m.includes("distanciel"))) {
+    return "hybride";
+  }
+  return m.includes("distanciel") ? "distanciel" : "presentiel";
 }
 
 /** Premier mot (verbe d'action) d'un objectif pédagogique. */
@@ -254,7 +302,7 @@ export function buildFormationImportData(
     slug: f.slugFr,
     offreSiteId,
     dureeHeures: CANONICAL_DUREE_HEURES[f.duree],
-    modalite: "presentiel",
+    modalite: modaliteEnBase(f),
     objectifsPedagogiques,
     programmeDetaille: programmeEnrichi,
     methodesPedagogiques: METHODES_PEDAGOGIQUES,
@@ -281,7 +329,7 @@ export function buildFormationImportData(
 // ─────────────────────────────────────────────────────────────────────────────
 
 /**
- * Les 7 champs qu'un import écrit ET qu'un admin peut éditer : seuls ceux-là
+ * Les 9 champs qu'un import écrit ET qu'un admin peut éditer : seuls ceux-là
  * font l'objet du merge 3-way (les autres — numéro, offre, statut… — ne sont
  * jamais touchés par une re-synchro). Ordre figé = clés du `catalogSnapshot`.
  */
@@ -293,6 +341,8 @@ export const RECONCILED_FIELDS = [
   "ratioPratiquePct",
   "accessibleHandicap",
   "certificationType",
+  "modalite",
+  "moyensTechniques",
 ] as const;
 
 export type ReconciledField = (typeof RECONCILED_FIELDS)[number];
@@ -300,12 +350,12 @@ export type ReconciledField = (typeof RECONCILED_FIELDS)[number];
 /** Sous-ensemble catalogue persisté comme baseline du merge. */
 export type CatalogSnapshot = Pick<FormationImportData, ReconciledField>;
 
-/** Valeurs DB courantes des 7 champs réconciliés (lues sur la Formation). */
+/** Valeurs DB courantes des 9 champs réconciliés (lues sur la Formation). */
 export type FormationReconcileCurrent = {
   [K in ReconciledField]: FormationImportData[K] | null | undefined;
 };
 
-/** Extrait la baseline catalogue (7 champs) des données d'import dérivées. */
+/** Extrait la baseline catalogue (9 champs) des données d'import dérivées. */
 export function toCatalogSnapshot(data: FormationImportData): CatalogSnapshot {
   return {
     titre: data.titre,
@@ -315,6 +365,8 @@ export function toCatalogSnapshot(data: FormationImportData): CatalogSnapshot {
     ratioPratiquePct: data.ratioPratiquePct,
     accessibleHandicap: data.accessibleHandicap,
     certificationType: data.certificationType,
+    modalite: data.modalite,
+    moyensTechniques: data.moyensTechniques,
   };
 }
 
@@ -356,7 +408,9 @@ export interface ReconcileResult {
  * Pour chaque champ réconcilié :
  *   - DB == catalogue → rien à faire (baseline adoptée = catalogue).
  *   - DB ≠ catalogue, pas de baseline → écart reporté, DB préservée (on ne sait
- *     pas distinguer édition admin d'une création stale).
+ *     pas distinguer édition admin d'une création stale) — SAUF si la DB porte
+ *     encore la valeur que les anciens imports écrivaient en dur
+ *     (`VALEURS_HISTORIQUES`) : personne ne l'a choisie, on synchronise.
  *   - DB ≠ catalogue, DB == baseline → l'admin n'a pas touché, le catalogue a
  *     bougé → auto-synchro vers le catalogue.
  *   - DB ≠ catalogue, DB ≠ baseline → édition admin + catalogue modifié =
@@ -383,6 +437,13 @@ export function reconcileFormationFields(
       continue;
     }
     if (!hasSnapshot) {
+      if (VALEURS_HISTORIQUES[field]?.some((v) => deepEqual(v, c))) {
+        // Valeur posée par un ancien import, jamais éditée : synchro sûre.
+        assignSnapshot(updates, field, d);
+        assignSnapshot(nextSnapshot, field, d);
+        syncedFields.push(field);
+        continue;
+      }
       // Pas de baseline → on ne réécrit pas, on signale juste l'écart.
       driftFields.push(field);
       continue;
@@ -492,7 +553,7 @@ async function createFormationWithNumero(
   throw lastErr;
 }
 
-/** Sélection des 7 champs réconciliés + baseline, lue sur une Formation existante. */
+/** Sélection des 9 champs réconciliés + baseline, lue sur une Formation existante. */
 const RECONCILE_SELECT = {
   id: true,
   titre: true,
@@ -502,6 +563,8 @@ const RECONCILE_SELECT = {
   ratioPratiquePct: true,
   accessibleHandicap: true,
   certificationType: true,
+  modalite: true,
+  moyensTechniques: true,
   catalogSnapshot: true,
 } as const;
 

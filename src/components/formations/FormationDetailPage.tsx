@@ -47,7 +47,6 @@ import {
 } from "@/content/formations/catalog-v2";
 import { formationDureeIso, getCategorieMeta } from "@/content/formations/catalog-v2-meta";
 import {
-  FORMATION_EFFECTIF_DEFAUT,
   formatDureeFr,
   formatModalitesFr,
   getFormationAccessibilite,
@@ -66,6 +65,9 @@ import {
   getFormationModalites,
   getFormationOutils,
 } from "@/content/formations/catalog-v2-facts";
+import { CONDITIONS_TARIFAIRES_RESUME_FR } from "@/content/formations/conditions-tarifaires";
+import { VISIO_FORMATIONS_A_DISTANCE } from "@/content/formations/materiel";
+import { ASSISTANCE_DISTANCE } from "@/server/qualiopi/legal/assistance-distance";
 import { formatAmount, type FormationBracket } from "@/content/pricing";
 import { CLIENT_SECTORS } from "@/content/sectors";
 import { getVillesCoreIndexableNow } from "@/content/villes/core";
@@ -235,20 +237,10 @@ export function FormationDetailPage({
     ...financingFaq,
   ];
 
-  const los = brackets
-    .map((b) => Number.parseInt(b.split("-")[0] ?? "", 10))
-    .filter((n) => Number.isFinite(n));
-  const his = brackets
-    .map((b) => Number.parseInt(b.split("-")[1] ?? "", 10))
-    .filter((n) => Number.isFinite(n));
-  // L'effectif annoncé au programme PRIME sur les tranches tarifaires : celles-ci
-  // vont jusqu'à 30 pers. et sont vides en « sur devis », alors que le programme
-  // engage contractuellement une jauge (15 · 10 · 2 à 6 · 50).
-  const groupSizeLabel = f.effectifFr
-    ? `${f.effectifFr} · intra-entreprise`
-    : his.length > 0
-      ? `${Math.min(...los)} à ${Math.max(...his)} participants · intra-entreprise`
-      : `${FORMATION_EFFECTIF_DEFAUT} · intra-entreprise`;
+  // L'effectif annoncé au programme PRIME sur les tranches tarifaires, qui sont
+  // vides en « sur devis » : une seule valeur pour toutes les fiches (de 2 à 15
+  // stagiaires par session, `effectif.ts`, décision de Will du 2026-10-16).
+  const groupSizeLabel = `${effectif} · intra-entreprise`;
 
   // ── CARTE INFOS-CLÉS (héro) — tout depuis le SSOT ───────────────────────────
   const factRows: ReadonlyArray<{ icon: typeof Clock; label: string; value: string }> = [
@@ -877,6 +869,32 @@ export function FormationDetailPage({
             </div>
           ))}
         </dl>
+
+        {/* ── À DISTANCE — outil de visio + assistance technique et pédagogique
+            (art. D.6313-3-1). Mêmes phrases que la convocation et le livret
+            d'accueil : `assistance-distance.ts` est lu par les trois. Ne PAS
+            annoncer un compte Zoom ouvert (`VISIO_FORMATIONS_A_DISTANCE`). */}
+        {modalitesLabel.toLowerCase().includes("distanciel") ? (
+          <div
+            id="a-distance"
+            className="border-border bg-bg shadow-card mx-auto mt-6 max-w-5xl rounded-2xl border p-6 md:p-8"
+          >
+            <h3 className="text-fg text-lg font-semibold tracking-tight">
+              Suivre la formation à distance
+            </h3>
+            <p className="text-fg-soft mt-2 text-sm leading-relaxed">
+              {VISIO_FORMATIONS_A_DISTANCE}
+            </p>
+            <h4 className="text-terracotta-deep mt-5 text-[11.5px] font-bold tracking-[0.1em] uppercase">
+              Assistance technique et pédagogique
+            </h4>
+            <ul className="text-fg-soft mt-2 list-disc space-y-1.5 pl-5 text-sm leading-relaxed">
+              {ASSISTANCE_DISTANCE.map((phrase) => (
+                <li key={phrase}>{phrase}</li>
+              ))}
+            </ul>
+          </div>
+        ) : null}
       </Section>
 
       {/* ── INFORMATIONS RÉGLEMENTAIRES (indicateur 1 — Code du travail) ──── */}
@@ -956,7 +974,7 @@ export function FormationDetailPage({
           eyebrow="Tarif"
           title={brackets.length > 1 ? "Un tarif selon" : "Tarif pour"}
           titleEm={brackets.length > 1 ? "votre effectif" : "votre équipe"}
-          description="Prix fixe par groupe — jamais par personne. Intra-entreprise, dans vos locaux ou à distance."
+          description={CONDITIONS_TARIFAIRES_RESUME_FR}
         >
           <Container className="max-w-5xl">
             <ul className="grid gap-5 md:gap-6 lg:grid-cols-2">
@@ -1112,7 +1130,7 @@ export function FormationDetailPage({
         eyebrow="Partout en France"
         title="Cette formation,"
         titleEm="près de chez vous"
-        description="Nous intervenons en présentiel dans vos locaux, dans toute la France."
+        description="Nous intervenons dans vos locaux, dans toute la France, ou à distance."
       >
         <ul role="list" className="flex flex-wrap gap-x-2 gap-y-2.5">
           {villes.map((v) => (

@@ -18,6 +18,8 @@ import {
   getFormationsV2ByDuree,
 } from "@/content/formations/catalog-v2";
 import { getFormationPrice } from "@/content/pricing";
+import { getFormationEffectif } from "@/content/formations/catalog-v2-facts";
+import { EFFECTIF_VALEUR_FR } from "@/content/formations/effectif";
 
 describe("catalogue — cohérence interne", () => {
   it("ids, slugFr, slugEn, numéros uniques", () => {
@@ -146,10 +148,12 @@ describe("catalogue — couverture complète (21 formations + 1 séminaire)", ()
     expect(getFormationV2("ia-pour-bien-commencer-journee")?.duree).toBe("1j");
   });
 
-  it("le séminaire conservé est inchangé (slug + effectif 50)", () => {
+  it("le séminaire conservé garde son slug et le même effectif que les autres formations (L16)", () => {
     const sem = getSeminairesV2()[0];
     expect(sem?.slugFr).toBe("seminaire-ia-toute-l-entreprise-1j");
-    expect(sem?.effectifFr).toContain("50");
+    // L16 : plus de « jusqu'à 50 » — aucune surcharge, effectif commun (de 2 à 15).
+    expect(sem?.effectifFr).toBeUndefined();
+    expect(getFormationEffectif(sem!)).toBe(EFFECTIF_VALEUR_FR);
     expect(sem?.surDevis).toBe(true);
   });
 });
