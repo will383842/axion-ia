@@ -9,33 +9,27 @@
  *
  *   · Qualiopi ind. 21 — évaluation des compétences : sous-traitant + `habiliter_formateur` ;
  *   · lot L12i — présentation de la méthode : sous-traitant + interrupteur
- *     `formateurs.presentation_payee` (éteint tant que le module est gelé) ;
- *   · lot L14 — fin de collaboration : indépendant en nom propre + interrupteur
- *     `formateurs.fin_collaboration`.
+ *     `formateurs.presentation_payee` (éteint tant que le module est gelé).
  *
- * Mesuré le 17/10/2026, somme des page chunks de la console (cliquet 560 KB) : `main`
- * 560,36 kB ; la PR ind. 21 avec le panneau importé tel quel 563,13 kB, avec
- * `next/dynamic` 561,2 kB, avec `React.lazy` 560,47 kB ; avec la présentation de la
- * méthode en plus, 559,99 kB — trop près du cliquet, d'où la fin de collaboration. `React.lazy` et non
- * `next/dynamic` : celui-ci tire son runtime (`loadable`, `BailoutToCSR`,
- * `PreloadChunks`) dans le chunk de la fiche ; `lazy` et `Suspense` sont déjà dans le
- * chunk React partagé.
+ * (La fin de collaboration a son propre relais, `FinCollaborationPanelDiffere.tsx`,
+ * posé par QNC L13.)
+ *
+ * Mesuré le 17/10/2026, somme des page chunks de la console : `main` 560,36 kB ; la PR
+ * ind. 21 avec le panneau importé tel quel 563,13 kB, avec `next/dynamic` 561,2 kB, avec
+ * `React.lazy` 560,47 kB. `React.lazy` et non `next/dynamic` : celui-ci tire son runtime
+ * (`loadable`, `BailoutToCSR`, `PreloadChunks`) dans le chunk de la fiche et en reprenait
+ * la moitié du gain ; `lazy` et `Suspense` sont déjà dans le chunk React partagé.
  */
 
 import { Suspense, lazy } from "react";
 
 import type { EvaluationCompetencesPanelProps } from "./EvaluationCompetencesPanel";
-import type { FinTerminee } from "./FinCollaborationPanel";
 
 const EvaluationCompetences = lazy(() =>
   import("./EvaluationCompetencesPanel").then((m) => ({ default: m.EvaluationCompetencesPanel })),
 );
 const PresentationMethode = lazy(() =>
   import("./PresentationMethodePanel").then((m) => ({ default: m.PresentationMethodePanel })),
-);
-
-const FinCollaboration = lazy(() =>
-  import("./FinCollaborationPanel").then((m) => ({ default: m.FinCollaborationPanel })),
 );
 
 function Chargement({ titre }: { titre: string }) {
@@ -58,17 +52,6 @@ export function PresentationMethodePanelDiffere(props: { trainerId: string }) {
   return (
     <Suspense fallback={<Chargement titre="présentation de la méthode" />}>
       <PresentationMethode {...props} />
-    </Suspense>
-  );
-}
-
-export function FinCollaborationPanelDiffere(props: {
-  trainerId: string;
-  terminee: FinTerminee | null;
-}) {
-  return (
-    <Suspense fallback={<Chargement titre="fin de collaboration" />}>
-      <FinCollaboration {...props} />
     </Suspense>
   );
 }

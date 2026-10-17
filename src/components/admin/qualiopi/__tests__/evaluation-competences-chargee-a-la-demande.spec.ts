@@ -22,11 +22,7 @@ const lire = (p: string) => readFileSync(join(process.cwd(), p), "utf8");
 
 const FICHE = "src/app/[locale]/(admin)/[adminPrefix]/qualiopi/formateurs/[id]/page.tsx";
 const ENROBAGE = "src/components/admin/qualiopi/PanneauxDifferesFicheFormateur.tsx";
-const PANNEAUX = [
-  "EvaluationCompetencesPanel",
-  "PresentationMethodePanel",
-  "FinCollaborationPanel",
-] as const;
+const PANNEAUX = ["EvaluationCompetencesPanel", "PresentationMethodePanel"] as const;
 
 describe("panneaux de la fiche formateur chargés à la demande", () => {
   it.each(PANNEAUX)("la fiche n'importe jamais %s directement", (panneau) => {
