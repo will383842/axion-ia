@@ -34,6 +34,7 @@ import {
   DISTANCIEL_VISIO,
 } from "@/content/formations/materiel";
 import { ENCART_VIOLENCES, TITRE_ENCART_VIOLENCES } from "@/content/prevention-violences";
+import { phraseEffectifEtModalite } from "@/server/qualiopi/convocation-v2/decision";
 
 /** Première lettre en majuscule : les éléments du matériel commencent en minuscule. */
 function majuscule(texte: string): string {
@@ -97,6 +98,26 @@ export interface ConvocationData {
    * aucun texte inventé sur une pièce remise au stagiaire.
    */
   materielAPrevoir?: string;
+  /**
+   * Chantier QNC, L05 — version du TEXTE. Absent ou 1 : la convocation actuelle,
+   * mot pour mot. 2 : la convocation v2 (`qualiopi.convocation_v2.actif`) —
+   * pièces jointes en PDF, émargement signé pendant chaque demi-journée,
+   * réclamations, effectif, outil de visioconférence.
+   *
+   * La convocation n'est pas une pièce SIGNABLE : elle n'entre donc pas dans
+   * `GABARIT_VERSIONS` (y entrer la ferait naître « en attente de signature »).
+   * La version vit ici, et la pièce la porte dans `metadata.convocationV2`.
+   */
+  versionTexte?: 1 | 2;
+  /** v2 : la session est un séminaire (effectif « jusqu'à 50 », présentiel seul). */
+  seminaire?: boolean;
+  /** v2, distanciel : l'outil nommé (« Zoom »). Jamais le lien lui-même (ADR 0048 §4.1). */
+  outilVisio?: string;
+  /**
+   * v2, distanciel : ce que la pièce dit du lien. « Lien envoyé avant la
+   * formation » quand le champ est vide ; sinon le lien arrive par le courriel.
+   */
+  mentionLienVisio?: string;
 }
 
 // ============================================================
@@ -111,6 +132,8 @@ export function ConvocationPdf({
   identite: OrganismeIdentite;
 }): React.ReactElement {
   const isDistanciel = data.modalite === "distanciel" || data.modalite === "mixte";
+  const v2 = data.versionTexte === 2;
+  const siteBase = identite.site.replace(/\/+$/, "");
 
   return (
     <Document>
@@ -143,6 +166,12 @@ export function ConvocationPdf({
           ) : null}
           {isDistanciel && data.lienVisio ? (
             <FieldRow label="Lien visioconférence" value={data.lienVisio} />
+          ) : null}
+          {v2 && isDistanciel && data.outilVisio ? (
+            <FieldRow label="Outil de visioconférence" value={data.outilVisio} />
+          ) : null}
+          {v2 && isDistanciel && data.mentionLienVisio ? (
+            <FieldRow label="Lien de connexion" value={data.mentionLienVisio} />
           ) : null}
           {isDistanciel && data.idReunion ? (
             <FieldRow label="ID de réunion" value={data.idReunion} />
@@ -225,25 +254,62 @@ export function ConvocationPdf({
           l'e-mail : c'est la phrase qui suit le code, jamais l'inverse.
           Indicateur 9 (information sur les conditions de déroulement).
         */}
-        <DocSection title="Documents mis à votre disposition">
-          <Text style={pdfStyles.paragraph}>
-            Les documents suivants sont mis à votre disposition dans votre espace stagiaire,
-            accessible par le lien personnel qui vous est adressé par courriel avec cette
-            convocation :
-          </Text>
-          <BulletList
-            items={[
-              "Programme de formation détaillé",
-              "Règlement intérieur des stagiaires",
-              "Livret d'accueil stagiaire",
-              "Questionnaire de positionnement (à remplir avant la formation)",
-            ]}
-          />
-          <Text style={pdfStyles.paragraph}>
-            Si vous ne parvenez pas à accéder à votre espace stagiaire, signalez-le au contact
-            indiqué ci-dessus : ces documents vous seront adressés par un autre moyen.
-          </Text>
-        </DocSection>
+        {v2 ? (
+          <DocSection title="Documents joints à cette convocation">
+            <Text style={pdfStyles.paragraph}>
+              Les documents suivants sont joints en PDF au courriel qui accompagne cette
+              convocation. Ils restent disponibles dans votre espace stagiaire, par le lien
+              personnel du même courriel :
+            </Text>
+            <BulletList
+              items={[
+                "Convocation",
+                "Programme de formation détaillé",
+                "Règlement intérieur des stagiaires",
+                "Livret d'accueil stagiaire",
+              ]}
+            />
+            <Text style={pdfStyles.paragraph}>
+              Le questionnaire de positionnement (à remplir avant la formation) se trouve dans votre
+              espace stagiaire. Si une pièce jointe ne s'ouvre pas, signalez-le au contact indiqué
+              ci-dessus : elle vous sera adressée par un autre moyen.
+            </Text>
+          </DocSection>
+        ) : (
+          <DocSection title="Documents mis à votre disposition">
+            <Text style={pdfStyles.paragraph}>
+              Les documents suivants sont mis à votre disposition dans votre espace stagiaire,
+              accessible par le lien personnel qui vous est adressé par courriel avec cette
+              convocation :
+            </Text>
+            <BulletList
+              items={[
+                "Programme de formation détaillé",
+                "Règlement intérieur des stagiaires",
+                "Livret d'accueil stagiaire",
+                "Questionnaire de positionnement (à remplir avant la formation)",
+              ]}
+            />
+            <Text style={pdfStyles.paragraph}>
+              Si vous ne parvenez pas à accéder à votre espace stagiaire, signalez-le au contact
+              indiqué ci-dessus : ces documents vous seront adressés par un autre moyen.
+            </Text>
+          </DocSection>
+        )}
+
+        {v2 ? (
+          <DocSection title="Déroulement de la formation">
+            <BulletList
+              items={[
+                phraseEffectifEtModalite(data.seminaire),
+                "Émargement : vous signez votre présence pendant chaque demi-journée, en salle comme en visioconférence, avec le lien personnel de signature qui vous est adressé par courriel.",
+                siteBase
+                  ? `Une difficulté, une réclamation ? Vous pouvez la déposer à tout moment : ${siteBase}/reclamations`
+                  : "Une difficulté, une réclamation ? Vous pouvez la déposer à tout moment : la procédure est publiée sur notre site, rubrique « Réclamations ».",
+              ]}
+            />
+          </DocSection>
+        ) : null}
 
         {/* Section 5 : Situation handicap */}
         <DocSection title="Situation de handicap — référent dédié">

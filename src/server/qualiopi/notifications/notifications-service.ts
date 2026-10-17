@@ -33,6 +33,22 @@ import { formatLieu, lienVisioRemis } from "@/server/qualiopi/lieu/format-lieu";
 import { libelleModaliteMinuscule } from "@/server/qualiopi/documents/libelles-enumerations";
 import { creerAcces } from "@/server/qualiopi/portail/portail-service";
 import {
+  convocationV2Applique,
+  cibleEssaiConvocation,
+  etatConvocationV2,
+} from "@/server/qualiopi/convocation-v2/interrupteur";
+import {
+  ACTION_JOURNAL_CONVOCATION_ENVOYEE,
+  evaluerBlocageConvocation,
+  journaliserRetenue,
+} from "@/server/qualiopi/convocation-v2/blocage";
+import { modaliteVisio, numeroAcces } from "@/server/qualiopi/convocation-v2/decision";
+import {
+  assurerPiecesConvocation,
+  marquerPiecesEnvoyees,
+  type PieceAJoindre,
+} from "@/server/qualiopi/convocation-v2/pieces";
+import {
   creerQuestionnaire,
   emettreLienQuestionnaire,
 } from "@/server/qualiopi/satisfaction/satisfaction-service";
@@ -165,6 +181,14 @@ async function marquerLienRemis(tokenId: string, contexte: string): Promise<void
 }
 
 async function getOrCreatePortailLien(traineeId: string, baseUrl: string): Promise<string> {
+  return (await getOrCreatePortailAcces(traineeId, baseUrl)).lien;
+}
+
+/** Le lien ET l'identifiant de l'accès émis (L05 : le numéro d'accès en est dérivé). */
+async function getOrCreatePortailAcces(
+  traineeId: string,
+  baseUrl: string,
+): Promise<{ lien: string; accesId: string | null }> {
   const fallback = `${baseUrl}/fr/portail/mon-espace`;
   try {
     // 🔴 2026-08-19 (`D4-4-A`) — cette fonction relisait le jeton d'un accès
@@ -175,10 +199,10 @@ async function getOrCreatePortailLien(traineeId: string, baseUrl: string): Promi
     // comportements. Avec le recyclage, un SEUL e-mail intercepté valait un
     // accès permanent, et révoquer cet accès coupait d'un coup tous les liens
     // déjà envoyés au même stagiaire. Un accès par envoi se révoque isolément.
-    const { token } = await creerAcces(traineeId);
-    return `${baseUrl}/fr/portail/acces/${token}`;
+    const { id, token } = await creerAcces(traineeId);
+    return { lien: `${baseUrl}/fr/portail/acces/${token}`, accesId: id ?? null };
   } catch {
-    return fallback;
+    return { lien: fallback, accesId: null };
   }
 }
 
@@ -230,9 +254,15 @@ export async function envoyerConvocation(enrollmentId: string): Promise<boolean>
       id: true,
       // Chantier QNC, L04 — les consignes d'aménagement de la convocation.
       adaptationsRealisees: true,
+      // Chantier QNC, L05 — la cible d'essai et l'employeur (copie à l'entreprise).
+      estTestInterne: true,
+      clientId: true,
       trainee: { select: { id: true, email: true, nom: true, prenom: true } },
       session: {
         select: {
+          id: true,
+          estTestInterne: true,
+          clientId: true,
           numero: true,
           titreSession: true,
           dateDebut: true,
@@ -254,7 +284,52 @@ export async function envoyerConvocation(enrollmentId: string): Promise<boolean>
 
   const { trainee, session } = enrollment;
   const baseUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://axion-ia.com";
-  const lienPortail = await getOrCreatePortailLien(trainee.id, baseUrl);
+
+  // Chantier QNC, L05 (`qualiopi.convocation_v2.actif`) — la convocation v2 :
+  // retenue tant que la convention n'est pas signée ou qu'un besoin d'adaptation
+  // n'est pas traité ; pièces produites AVANT l'envoi et jointes en PDF.
+  // Éteint, ou hors banc d'essai en `essai` : rien de tout cela ne s'exécute.
+  //
+  // ⚠️ AVANT la création du lien portail : une convocation retenue ne doit pas
+  // semer un accès par passage du cron.
+  const etatV2 = await etatConvocationV2();
+  const v2 =
+    etatV2 !== "eteint" &&
+    convocationV2Applique(
+      etatV2,
+      cibleEssaiConvocation(
+        { estTestInterne: enrollment.estTestInterne === true },
+        { estTestInterne: session.estTestInterne === true },
+      ),
+    );
+  let piecesV2: readonly PieceAJoindre[] = [];
+  if (v2) {
+    const blocage = await evaluerBlocageConvocation(enrollmentId);
+    if (blocage === null) return false;
+    if (!blocage.decision.autorisee) {
+      await journaliserRetenue(enrollmentId, blocage.decision.motifs, blocage.essai);
+      console.error(
+        `[convocation] RETENUE — inscription ${enrollmentId} : ${blocage.decision.motifs.join(", ")} ` +
+          `(reste candidate au rattrapage)`,
+      );
+      return false;
+    }
+    const pieces = await assurerPiecesConvocation({
+      enrollmentId,
+      sessionId: session.id,
+      traineeId: trainee.id,
+    });
+    if (!pieces.ok) {
+      console.error(
+        `[convocation] NON ENVOYÉE — inscription ${enrollmentId} : ${pieces.motif} ` +
+          `(reste candidate au rattrapage)`,
+      );
+      return false;
+    }
+    piecesV2 = pieces.pieces;
+  }
+
+  const { lien: lienPortail, accesId } = await getOrCreatePortailAcces(trainee.id, baseUrl);
 
   // La convocation ATTESTE que les documents sont accessibles « par le lien
   // personnel qui vous est adressé par courriel avec cette convocation ». Si la
@@ -280,6 +355,11 @@ export async function envoyerConvocation(enrollmentId: string): Promise<boolean>
     enrollment.adaptationsRealisees,
   );
 
+  // L05 — ce que la v2 ajoute au courriel : le lien et l'outil de visio (le lien
+  // arrive par ici et non sur la pièce archivée, ADR 0048 §4.1), le numéro de
+  // l'accès, la liste des pièces jointes.
+  const payloadV2 = v2 ? payloadConvocationV2(session, piecesV2, accesId) : {};
+
   const envoi = await enqueueEmail(
     "qualiopi-convocation",
     trainee.email,
@@ -294,6 +374,7 @@ export async function envoyerConvocation(enrollmentId: string): Promise<boolean>
       modalite: libelleModaliteMinuscule(session.modalite),
       numeroSession: session.numero,
       lienPortail,
+      ...payloadV2,
     },
     // 🔴 Clé de DATE, comme rappel-j7 / satisfaction-j1 / suivi-j30. La
     // convocation etait le seul envoi a ne pas en porter, alors qu'elle est le
@@ -306,6 +387,15 @@ export async function envoyerConvocation(enrollmentId: string): Promise<boolean>
       // atterrit dans `email_logs` sans dire QUI il concerne.
       entityType: "Enrollment",
       entityId: enrollmentId,
+      ...(v2 && piecesV2.length > 0
+        ? {
+            attachments: piecesV2.map((p) => ({
+              filename: p.nomFichier,
+              r2Key: p.r2Key,
+              contentType: "application/pdf",
+            })),
+          }
+        : {}),
     },
   );
 
@@ -342,11 +432,172 @@ export async function envoyerConvocation(enrollmentId: string): Promise<boolean>
     return false;
   }
 
+  const instantEnvoi = new Date();
   await prisma.enrollment.update({
     where: { id: enrollmentId },
-    data: { convocationEnvoyeeAt: new Date() },
+    data: { convocationEnvoyeeAt: instantEnvoi },
   });
+
+  if (v2) {
+    await tracerEnvoiV2({
+      enrollmentId,
+      pieces: piecesV2,
+      instant: instantEnvoi,
+      essai: enrollment.estTestInterne === true || session.estTestInterne === true,
+    });
+    await envoyerCopieEntreprise({
+      enrollmentId,
+      clientId: enrollment.clientId ?? session.clientId ?? null,
+      stagiairePrenomNom: `${trainee.prenom} ${trainee.nom}`,
+      session,
+      pieces: piecesV2,
+    });
+  }
   return true;
+}
+
+/** Pure : ce que la v2 ajoute au payload du courriel. */
+function payloadConvocationV2(
+  session: { modalite: string; lieuVisioUrl?: string | null },
+  pieces: readonly PieceAJoindre[],
+  accesId: string | null,
+): Record<string, unknown> {
+  const distanciel = session.modalite === "distanciel" || session.modalite === "hybride";
+  const visio = distanciel ? modaliteVisio(lienVisioRemis(session)) : null;
+  return {
+    piecesJointes: pieces.map((p) => libellePiece(p.type)),
+    ...(visio !== null
+      ? {
+          outilVisio: visio.outil,
+          ...(visio.lien !== null ? { lienVisio: visio.lien } : {}),
+          ...(visio.mentionLien !== null ? { mentionLienVisio: visio.mentionLien } : {}),
+        }
+      : {}),
+    ...(accesId !== null ? { numeroAcces: numeroAcces(accesId) } : {}),
+  };
+}
+
+function libellePiece(type: PieceAJoindre["type"]): string {
+  switch (type) {
+    case "convocation":
+      return "convocation";
+    case "programme":
+      return "programme de formation";
+    case "reglement_interieur":
+      return "règlement intérieur";
+    case "livret_accueil":
+      return "livret d'accueil";
+  }
+}
+
+/**
+ * L05 — APRÈS l'envoi accepté par la file : `envoye_at` sur chaque pièce jointe,
+ * et une ligne de journal par destinataire. Fail-soft : le courriel est parti,
+ * un défaut de trace ne doit ni le défaire ni le faire renvoyer — il se dit.
+ */
+async function tracerEnvoiV2(input: {
+  enrollmentId: string;
+  pieces: readonly PieceAJoindre[];
+  instant: Date;
+  essai: boolean;
+}): Promise<void> {
+  try {
+    await marquerPiecesEnvoyees(
+      input.pieces.map((p) => p.documentId),
+      input.instant,
+    );
+    await prisma.activityLog.create({
+      data: {
+        action: ACTION_JOURNAL_CONVOCATION_ENVOYEE,
+        targetType: "Enrollment",
+        targetId: input.enrollmentId,
+        changes: {
+          documents: input.pieces.map((p) => ({ id: p.documentId, numero: p.numero })),
+          essai: input.essai,
+        },
+        createdAt: input.instant,
+      },
+    });
+  } catch (err) {
+    console.error(
+      `[convocation] ENVOYÉE mais non tracée (inscription ${input.enrollmentId}) :`,
+      err instanceof Error ? err.message : String(err),
+    );
+  }
+}
+
+/**
+ * L05 — la copie à l'entreprise, AUTOMATIQUE dès que la v2 s'applique (décision de
+ * Will, 17/10 : plus de réglage propre ; l'appelant ne l'appelle que sous `if (v2)`).
+ * Ni lien personnel, ni aménagements (donnée de santé), ni détail d'adaptation :
+ * la convocation et le programme seulement. Elle
+ * passe TOUJOURS par la corbeille de validation (ordre permanent de Will : rien ne
+ * part à un client sans sa validation). Son échec ne retient ni ne défait rien.
+ */
+async function envoyerCopieEntreprise(input: {
+  enrollmentId: string;
+  clientId: string | null;
+  stagiairePrenomNom: string;
+  session: {
+    titreSession: string;
+    dateDebut: Date;
+    dateFin: Date;
+    modalite: string;
+    numero: string;
+    lieuType?: unknown;
+  } & Parameters<typeof formatLieu>[0];
+  pieces: readonly PieceAJoindre[];
+}): Promise<void> {
+  try {
+    if (input.clientId === null) return;
+    const client = await prisma.client.findUnique({
+      where: { id: input.clientId },
+      select: { contactEmail: true },
+    });
+    const destinataire = client?.contactEmail?.trim();
+    if (!destinataire) return;
+    const jointes = input.pieces.filter((p) => p.type === "convocation" || p.type === "programme");
+    const copie = await enqueueEmail(
+      "qualiopi-convocation",
+      destinataire,
+      "fr",
+      {
+        copieEntreprise: true,
+        stagiairePrenomNom: input.stagiairePrenomNom,
+        titreFormation: input.session.titreSession,
+        dateDebut: fmtDate(input.session.dateDebut),
+        dateFin: fmtDate(input.session.dateFin),
+        lieu: formatLieu(input.session) ?? "Voir convocation",
+        modalite: libelleModaliteMinuscule(input.session.modalite as never),
+        numeroSession: input.session.numero,
+        piecesJointes: jointes.map((p) => libellePiece(p.type)),
+      },
+      {
+        jobId: `qualiopi-convocation-copie-${input.enrollmentId}-${dateKey(input.session.dateDebut)}`,
+        entityType: "Enrollment",
+        entityId: input.enrollmentId,
+        clientId: input.clientId,
+        exigerValidation: true,
+        attachments: jointes.map((p) => ({
+          filename: p.nomFichier,
+          r2Key: p.r2Key,
+          contentType: "application/pdf",
+        })),
+      },
+    );
+    // Le retour est LU (garde « le retour d'enqueueEmail ne se jette pas ») : une copie
+    // garée en validation n'est pas une copie partie, et ne retient rien.
+    if (!copie.enqueued && copie.garePourValidation !== true) {
+      console.error(
+        `[convocation] copie entreprise NON mise en file (inscription ${input.enrollmentId})`,
+      );
+    }
+  } catch (err) {
+    console.error(
+      `[convocation] copie entreprise non préparée (inscription ${input.enrollmentId}) :`,
+      err instanceof Error ? err.message : String(err),
+    );
+  }
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
