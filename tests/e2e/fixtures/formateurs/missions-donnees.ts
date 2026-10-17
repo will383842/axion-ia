@@ -16,6 +16,7 @@ import { createHash, randomUUID } from "node:crypto";
 import type { Prisma } from "../../../../prisma/generated/client/index.js";
 
 import { prisma } from "./base";
+import { verserCompetencesDuBanc } from "./competences-q21";
 import { messagesCaptes, URL_PUITS, viderPuitsPour } from "./puits-smtp";
 
 const JOUR_MS = 86_400_000;
@@ -269,6 +270,11 @@ export async function creerFormateurPret(
   if (o.habilite !== false) {
     await prisma.trainerHabilitation.create({
       data: { trainerId: t.id, formationId: monde.formationId },
+    });
+    // Qualiopi ind. 21 — la décision d'habilitation en vigueur sur la formation du monde :
+    // sans elle, la garde de mission refuse.
+    await verserCompetencesDuBanc(prisma, t.id, monde.admin.id, {
+      formationId: monde.formationId,
     });
   }
   if (o.contratSigne !== false) {

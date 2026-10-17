@@ -9,6 +9,7 @@
 import { expect, test } from "@playwright/test";
 
 import { prisma } from "../fixtures/formateurs/base";
+import { verserCompetencesDuBanc } from "../fixtures/formateurs/competences-q21";
 import { etape } from "../fixtures/formateurs/etapes";
 import {
   formateurRetenu,
@@ -80,6 +81,8 @@ test.describe("@formateurs E11 — contresigner et ouvrir son espace", () => {
   // la reconnaissent désormais (`pieceAUnFichier`, `contenu` chargé).
   test("V1-A-6 — W-4 contresigne, active par la personne qui contresigne, F19 et F20 partent", async () => {
     const formation = await formationDuBanc(`e11-${Date.now()}`);
+    // Qualiopi ind. 21 — sans grilles d'évaluation versées, l'espace ne s'ouvre pas.
+    await verserCompetencesDuBanc(prisma, trainerId, decor.admin.id);
     try {
       const ecran = await etape<{
         faits: { pieces: { cv: { fichierPresent: boolean }; rib: { fichierPresent: boolean } } };
