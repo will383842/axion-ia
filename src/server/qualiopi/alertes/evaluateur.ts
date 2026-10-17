@@ -760,34 +760,58 @@ async function regleSessionSansDispositifEmargement(now: Date): Promise<AlerteCa
       numero: true,
       titreSession: true,
       dateDebut: true,
+      // QNC L06 — sert le filtre de l'émargement par demi-journée, plus bas.
+      estTestInterne: true,
       client: { select: { raisonSociale: true } },
       _count: { select: { enrollments: true, jours: true } },
     },
     take: 50,
   });
 
-  return sessions.map((s) => {
-    // Le message NOMME la cause première : sans journées déclarées, l'émission
-    // des liens est refusée à la racine (`creerTokenInscription` lève). Dire
-    // « aucun lien émis » sans dire pourquoi enverrait chercher au mauvais
-    // endroit.
-    const causePremiere =
-      s._count.jours === 0
-        ? "Aucune journée n'est déclarée : l'émission des liens sera refusée tant que ce n'est pas fait. Déclarez les journées, générez les créneaux, puis envoyez les liens."
-        : "Les journées sont déclarées : émettez les liens et envoyez-les aux stagiaires.";
-    return {
-      code: "session_sans_dispositif_emargement",
-      niveau: "critique" as AlerteNiveau,
-      titre: "Session en cours sans dispositif de signature",
-      message:
-        `La session ${designerSession(s)} a commencé et aucun de ses ${s._count.enrollments} ` +
-        `inscrit${s._count.enrollments > 1 ? "s" : ""} ne dispose d'un lien de signature valide. ` +
-        `Personne ne peut émarger. ${causePremiere} ` +
-        `Les liens expirent 48 h après la fin de la session : passé ce délai, la feuille restera vierge.`,
-      cibleType: "TrainingSession",
-      cibleId: s.id,
-    };
-  });
+  // 🔴 QNC L06 — sous `qualiopi.emargement.actif`, un lien expire à la fin de
+  // SA demi-journée : entre deux demi-journées (pause, soir), « aucun lien
+  // vivant » est l'état normal, pas un défaut. Pour ces sessions, l'alerte ne
+  // se lève que si aucun rappel de demi-journée n'est jamais parti (journal des
+  // relances). Éteint : inchangé.
+  const { lireInterrupteurEmargement } =
+    await import("@/server/qualiopi/emargement/demi-journee/activation");
+  const { PREFIXE_OBJET_RAPPEL } =
+    await import("@/server/qualiopi/emargement/demi-journee/rappel-objet");
+  const { estActifPour } = await import("@/server/qualiopi/socle/interrupteurs");
+  const etatEmargement = await lireInterrupteurEmargement();
+  const parDemiJournee = sessions.filter((s) => estActifPour(etatEmargement, s));
+  const servies = new Set<string>();
+  for (const s of parDemiJournee) {
+    const remis = await prisma.relanceJournal.count({
+      where: { sessionId: s.id, objet: { startsWith: PREFIXE_OBJET_RAPPEL } },
+    });
+    if (remis > 0) servies.add(s.id);
+  }
+
+  return sessions
+    .filter((s) => !servies.has(s.id))
+    .map((s) => {
+      // Le message NOMME la cause première : sans journées déclarées, l'émission
+      // des liens est refusée à la racine (`creerTokenInscription` lève). Dire
+      // « aucun lien émis » sans dire pourquoi enverrait chercher au mauvais
+      // endroit.
+      const causePremiere =
+        s._count.jours === 0
+          ? "Aucune journée n'est déclarée : l'émission des liens sera refusée tant que ce n'est pas fait. Déclarez les journées, générez les créneaux, puis envoyez les liens."
+          : "Les journées sont déclarées : émettez les liens et envoyez-les aux stagiaires.";
+      return {
+        code: "session_sans_dispositif_emargement",
+        niveau: "critique" as AlerteNiveau,
+        titre: "Session en cours sans dispositif de signature",
+        message:
+          `La session ${designerSession(s)} a commencé et aucun de ses ${s._count.enrollments} ` +
+          `inscrit${s._count.enrollments > 1 ? "s" : ""} ne dispose d'un lien de signature valide. ` +
+          `Personne ne peut émarger. ${causePremiere} ` +
+          `Les liens expirent 48 h après la fin de la session : passé ce délai, la feuille restera vierge.`,
+        cibleType: "TrainingSession",
+        cibleId: s.id,
+      };
+    });
 }
 
 async function regleSessionSansFormateur(now: Date): Promise<AlerteCandidate[]> {
