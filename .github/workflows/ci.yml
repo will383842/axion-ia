@@ -534,6 +534,52 @@ jobs:
       NEXT_PUBLIC_APP_ENV: "production"
     steps:
       - uses: actions/checkout@v6
+      # ═══════════════════════════════════════════════════════════════════
+      # 🔵 2026-10-17 (lot 8 CI, P6) — LA LIBÉRATION DU DISQUE SE FAIT PENDANT
+      # L'INSTALLATION, PAS À LA PLACE D'ELLE.
+      #
+      # Mesuré sur 20 runs : l'étape de nettoyage coûtait 1,4 à 2,2 min sur le
+      # chemin critique, alors que l'installation des dépendances qui la suit
+      # n'a pas besoin de cet espace (le runner démarre à ~14 Go libres).
+      #
+      # Ici on LANCE le nettoyage en arrière-plan ; l'étape « Libérer le disque
+      # — ATTENDRE la fin » reprend à l'emplacement d'origine de l'ancienne
+      # étape (juste avant l'installation de Playwright, donc avant
+      # `.next`, le build et tout ce qui a besoin des Go libérés).
+      #
+      # ⚠️ Le `wait` est OBLIGATOIRE, et il est BLOQUANT : un nettoyage qui
+      # n'aurait pas fini laisserait le build dans l'ENOSPC (correctifs des
+      # 2026-06-21 et 2026-06-22). L'attente échoue explicitement au bout de
+      # 10 min — elle ne laisse jamais passer un disque à moitié libéré.
+      #
+      # Le travail reste le MÊME, au caractère près : mêmes dossiers retirés,
+      # `/opt/google` conservé (Chrome pour size-limit), `apt-get clean` après.
+      # Le seul changement est QUAND on attend.
+      - name: Libérer le disque — lancement en arrière-plan (attente obligatoire plus bas)
+        run: |
+          df -h /
+          rm -f /tmp/liberation-disque.fini /tmp/liberation-disque.log
+          cat > /tmp/liberation-disque.sh <<'SCRIPT'
+          # Le marqueur est posé à la sortie, quel que soit le résultat de rm :
+          # l'ancienne étape tolérait déjà l'échec (`|| true`), l'attente, elle,
+          # ne doit jamais dépendre d'un code de retour.
+          trap 'touch /tmp/liberation-disque.fini' EXIT
+          rm -rf \
+            /usr/share/dotnet \
+            /usr/local/lib/android \
+            /opt/ghc \
+            /opt/hostedtoolcache/CodeQL \
+            /usr/local/share/boost \
+            /usr/local/share/powershell \
+            /usr/lib/jvm \
+            /usr/lib/google-cloud-sdk \
+            /usr/lib/firefox \
+            /opt/az \
+            /opt/microsoft \
+            /opt/pipx || true
+          SCRIPT
+          setsid nohup sudo bash /tmp/liberation-disque.sh > /tmp/liberation-disque.log 2>&1 < /dev/null &
+          echo "Libération du disque lancée en arrière-plan (pid $!)"
       - uses: pnpm/action-setup@v5
         with:
           version: ${{ env.PNPM_VERSION }}
@@ -579,25 +625,33 @@ jobs:
       # ~14 GB free, insuffisant depuis les données villes (build + copie
       # standalone .next saturait le disque → « ENOSPC: no space left on device »).
       # Même cleanup que deploy-coolify.yml. (Fix 2026-05-29, aligné PR #45.)
-      - name: Free disk space (max headroom)
+      # 🔵 2026-10-17 (lot 8 CI, P6) — LE NETTOYAGE EST LANCÉ EN TÊTE DE JOB
+      # (étape « Libérer le disque — lancement en arrière-plan »). Cette étape-ci
+      # en est l'ATTENTE, à l'emplacement exact de l'ancienne : rien de ce qui
+      # consomme du disque (Playwright, `.next`, build, semis) ne démarre avant
+      # que le nettoyage soit fini.
+      #
+      # `apt-get clean` reste APRÈS la suppression, comme avant — et surtout
+      # avant l'installation de Playwright, qui prend le verrou apt : aucun
+      # `apt` n'a tourné entre-temps, donc aucune course sur ce verrou.
+      - name: Libérer le disque — ATTENDRE la fin (obligatoire avant Playwright, .next et build)
         run: |
-          df -h /
-          sudo rm -rf \
-            /usr/share/dotnet \
-            /usr/local/lib/android \
-            /opt/ghc \
-            /opt/hostedtoolcache/CodeQL \
-            /usr/local/share/boost \
-            /usr/local/share/powershell \
-            /usr/lib/jvm \
-            /usr/lib/google-cloud-sdk \
-            /usr/lib/firefox \
-            /opt/az \
-            /opt/microsoft \
-            /opt/pipx || true
+          attente=0
+          while [ ! -f /tmp/liberation-disque.fini ] && [ "$attente" -lt 600 ]; do
+            sleep 1
+            attente=$((attente + 1))
+          done
+          if [ ! -f /tmp/liberation-disque.fini ]; then
+            echo "::error::Le nettoyage du disque n'a pas fini en 10 min : on n'enchaîne pas sur un disque à moitié libéré (ENOSPC au build, cf. correctifs du 2026-06-21)."
+            cat /tmp/liberation-disque.log || true
+            df -h /
+            exit 1
+          fi
+          echo "Nettoyage terminé — attente restante au point de reprise : ${attente} s (0 = entièrement recouvert par l'installation)"
+          cat /tmp/liberation-disque.log || true
           # NB : on NE supprime PAS /opt/google — il contient Google Chrome dont
           # `size-limit` (estimo/puppeteer) a besoin pour mesurer le JS au step
-          # « Bundle size ». Les suppressions ci-dessus libèrent déjà ~15 GB.
+          # « Bundle size ». Les suppressions du lancement libèrent déjà ~15 GB.
           sudo apt-get clean || true
           df -h /
       - name: Install Playwright browsers (avant build pour chrome dep)
@@ -622,6 +676,57 @@ jobs:
           sudo mount --bind /mnt/axion-next .next
           sudo chown -R "$(id -u):$(id -g)" .next
           df -h / /mnt
+      # ═══════════════════════════════════════════════════════════════════
+      # 🔵 2026-10-17 (lot 8 CI, P4) — CACHE DE `.next/cache`, LIMITÉ À CE QUI EST SÛR.
+      #
+      # ⚠️ L'HYPOTHÈSE DE DÉPART ÉTAIT FAUSSE, ET `next.config.ts` LE DIT : le cache
+      # WEBPACK est coupé en build de prod (`config.cache = false`, recovery OOM du
+      # 2026-06-08 — il retenait ~17,6k routes de modules en mémoire). Il n'y a donc
+      # RIEN à rejouer côté compilation : `.next/cache/webpack` n'existe pas. Le
+      # rétablir rouvrirait le pic de heap que ce réglage a fermé ; hors périmètre,
+      # et surtout pas en passant.
+      #
+      # Ce que `.next/cache` contient réellement ici, build webpack à cache coupé :
+      #   · `.tsbuildinfo` — l'état du typecheck incrémental que Next lance pendant
+      #     le build (`tsconfig.json` : `incremental: true`) ;
+      #   · éventuellement `fetch-cache/` (cache de données de rendu) et `images/`.
+      #
+      # On ne persiste QUE `.tsbuildinfo`. Raisons, dans l'ordre :
+      #   1. `fetch-cache/` peut resservir au SSG d'une PR une donnée de rendu
+      #      calculée sur une autre version du code : c'est exactement un « build
+      #      périmé », et rien ne l'invaliderait. Écarté.
+      #   2. `.tsbuildinfo` est validé PAR TYPESCRIPT lui-même, par empreinte de
+      #      contenu (pas par date : un checkout remet tous les mtime à zéro), et
+      #      jeté s'il vient d'une autre version de `typescript`. Il ne contient
+      #      aucune sortie du build.
+      #   3. Il ne peut PAS fausser le contrôle de poids du bundle : `noEmit: true`,
+      #      il n'écrit pas un octet de JS ; `.next/static`, que lit `bundle:check`,
+      #      est reconstruit à CHAQUE build (`.next` est un montage neuf par job).
+      #   4. Il n'affaiblit pas le typecheck : « Gate A · per-commit » refait
+      #      `pnpm typecheck` À FROID (aucun cache) sur chaque PR, et c'est lui qui
+      #      est exigé par la protection de `main`.
+      #
+      # 🔑 PORTÉE : un cache GitHub créé par une PR n'est lisible que par cette PR
+      # (et par ce qui a été créé sur `main`, or Gate B ne tourne pas sur `push`).
+      # Le 1er passage d'une PR est donc TOUJOURS à froid ; le gain, s'il existe,
+      # est pour les passages suivants de la même PR.
+      #
+      # ⚠️ Gain NON MESURÉ à l'écriture de ce commentaire — voir la PR pour le
+      # relevé. Le diagnostic « Lister .next/cache » ci-dessous écrit dans le
+      # journal ce qui a vraiment été produit, pour que l'hypothèse se vérifie.
+      #
+      # Clé : lockfile (version de typescript), config (next.config + tsconfig),
+      # sources. `restore-keys` s'arrête à (lockfile + config) : jamais un cache
+      # d'un autre lockfile ni d'une autre config. Pour invalider à la main :
+      # changer `v1`.
+      - name: Restaurer le cache incrémental TypeScript (.next/cache/.tsbuildinfo)
+        id: cache-tsc
+        uses: actions/cache/restore@v6
+        with:
+          path: .next/cache/.tsbuildinfo
+          key: next-tsbuildinfo-v1-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}-${{ hashFiles('next.config.*', 'tsconfig.json') }}-${{ hashFiles('src/**', 'prisma/**', 'scripts/**', 'tests/**', '*.ts', '*.mts') }}
+          restore-keys: |
+            next-tsbuildinfo-v1-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}-${{ hashFiles('next.config.*', 'tsconfig.json') }}-
       - name: Build
         # `next build` DIRECT (pas `pnpm build`) pour SKIPPER le `postbuild` :
         # `scripts/precompress-static.ts` (Brotli-11 sur ~18k fichiers SSG) fait
@@ -672,6 +777,22 @@ jobs:
           # Lighthouse (pages HUB /implantations/<region>/<ville>) restent construites.
           BUILD_SSG_VILLES_INDEXABLE_ONLY: "true"
         run: pnpm exec next build --webpack
+      # Diagnostic (jamais bloquant) : ce que `.next/cache` contient APRÈS le
+      # build. Si `webpack/` y apparaît un jour, l'hypothèse du commentaire
+      # ci-dessus est périmée et le cache devra être réexaminé.
+      - name: Lister .next/cache (diagnostic du cache incrémental)
+        run: |
+          ls -la .next/cache || true
+          du -sh .next/cache/* .next/cache/.tsbuildinfo 2>/dev/null || true
+          echo "cache-hit=${{ steps.cache-tsc.outputs.cache-hit }} matched=${{ steps.cache-tsc.outputs.cache-matched-key }}"
+      # Sauvegarde seulement si le build a réussi (condition par défaut) et si la
+      # clé exacte n'existait pas : une clé de GitHub Actions est immuable.
+      - name: Sauver le cache incrémental TypeScript
+        if: ${{ steps.cache-tsc.outputs.cache-hit != 'true' }}
+        uses: actions/cache/save@v6
+        with:
+          path: .next/cache/.tsbuildinfo
+          key: ${{ steps.cache-tsc.outputs.cache-primary-key }}
       # ⚠️ Le paragraphe qui suit décrit une intention de 2026-05-22 (« Bundle delta
       # + LHCI passés en STRICT ») que le fichier CONTREDIT depuis : les deux portent
       # `continue-on-error: true`. AGENTS.md a d'ailleurs été corrigé le 2026-08-17
