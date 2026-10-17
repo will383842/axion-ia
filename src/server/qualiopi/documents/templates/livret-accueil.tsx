@@ -188,7 +188,7 @@ export function LivretAccueilPdf({
             items={[
               "Le lien de connexion vous est communiqué par email avant la session.",
               "Merci d'activer votre caméra pendant les séquences synchrones.",
-              "Un relevé de connexion automatique fait office d'émargement.",
+              "L'émargement se signe pendant chaque demi-journée ; le relevé de connexion ne le remplace pas.",
             ]}
           />
           {/* Assistance technique et pédagogique à distance (D.6313-3-1) — même

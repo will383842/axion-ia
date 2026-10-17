@@ -385,8 +385,8 @@ function paliersFormationDepuisMatrice(): PricingTier[] {
         durationEn: d.en,
         groupSizeFr: "2 à 15 personnes",
         groupSizeEn: "2 to 15 people",
-        descriptionFr: `${c.fr}, ${d.fr} sur site, prix par groupe de 2 à 15 participants.`,
-        descriptionEn: `${c.en}, ${d.en} on site, price per group of 2 to 15 participants.`,
+        descriptionFr: `${c.fr}, ${d.fr} sur site ou à distance, prix par groupe de 2 à 15 participants.`,
+        descriptionEn: `${c.en}, ${d.en} on site or remote, price per group of 2 to 15 participants.`,
         commissionId: duree === "1j" ? "com-formation-1j" : "com-formation-2j",
       });
     }

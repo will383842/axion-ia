@@ -110,6 +110,8 @@ import {
   type PhaseFiche,
 } from "@/features/admin-qualiopi/session-hub/ancres";
 import { OngletsPhase } from "@/features/admin-qualiopi/session-hub/OngletsPhase";
+import { BlocMoyensSession } from "@/components/admin/qualiopi/BlocMoyensSession";
+import { estActifPour, lireInterrupteurQualiopi } from "@/server/qualiopi/socle/interrupteurs";
 import { lireEtatVerrouFiche, lireParcoursFiche } from "@/server/qualiopi/sessions/lectures-fiche";
 import {
   dateHeureParis,
@@ -212,6 +214,7 @@ function chargerSession(id: string) {
       lieuVille: true,
       lieuSalle: true,
       lieuVisioUrl: true,
+      estTestInterne: true,
       contactSurPlaceNom: true,
       contactSurPlaceTelephone: true,
       consignesAcces: true,
@@ -446,6 +449,7 @@ export default async function SessionHubPage({ params, searchParams }: PageProps
     preparationKit,
     parcours,
     verrou,
+    interrupteurMoyens,
   ] = await Promise.all([
     // État de signature du relevé de connexion, lu APRÈS la garde de rôle.
     // `null` quand la session n'a pas de relevé — cas NORMAL du présentiel.
@@ -506,9 +510,15 @@ export default async function SessionHubPage({ params, searchParams }: PageProps
     // Mémoïsé pour le rendu : le layout l'a déjà lu pour son bandeau, et il
     // rend « introuvable » s'il est nul — la page fait de même, sans repli.
     lireEtatVerrouFiche(id),
+    // QNC L07 — le champ « Motif » du lieu ne s'affiche que si le lot agit sur
+    // CETTE session (éteint = la fiche est exactement celle d'avant). Ne lève
+    // jamais : une lecture en échec vaut « éteint ».
+    lireInterrupteurQualiopi("moyens"),
   ]);
 
   if (!trainingSession || verrou === null) notFound();
+
+  const moyensActif = estActifPour(interrupteurMoyens, trainingSession);
 
   const mentionTvaSession = mentionTva(regimeTva);
 
@@ -1065,7 +1075,9 @@ export default async function SessionHubPage({ params, searchParams }: PageProps
             sessionId={id}
             initial={lieuValuesDepuisSession(trainingSession)}
             modalite={trainingSession.modalite}
+            moyensActif={moyensActif}
           />
+          <BlocMoyensSession sessionId={id} />
         </section>
       </>
     ),
@@ -1172,6 +1184,14 @@ export default async function SessionHubPage({ params, searchParams }: PageProps
             </Link>
             <Link href={`${sessionBase}/financement`} className={subLinkCls}>
               <span>Financement</span>
+            </Link>
+            {/* Chantier QNC, L11 — tout ce qui concerne la session, par
+                destinataire, canal et date : le même rendu que le ZIP. */}
+            <Link href={`${sessionBase}/dossier`} className={subLinkCls}>
+              <span>Dossier complet</span>
+            </Link>
+            <Link href={`${sessionBase}/emails`} className={subLinkCls}>
+              <span>E-mails</span>
             </Link>
             {/* Le nécessaire de séance vit au niveau de la FORMATION (kit projeté
                   + supports générés) : on y mène depuis la session, là où on

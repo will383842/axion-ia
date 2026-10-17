@@ -49,6 +49,20 @@ export const MATERIEL_DISTANCIEL = [
   DISTANCIEL_VISIO,
 ].join(", ");
 
+/**
+ * Ce que le site dit de l'outil de visio, en une phrase : Zoom est l'outil
+ * UTILISÉ pour les formations à distance (ADR 0048, décision de Will du
+ * 2026-09-19 ; réécrite le 2026-10-16, lot L16).
+ *
+ * ⚠️ Elle ne dit PAS « notre compte Zoom » ni « abonnement en place » : l'ADR 0048
+ * prévoit l'abonnement Pro « avant la première session à distance », et la ligne
+ * Zoom de `subprocessors.ts` déclare qu'aucun compte n'existe encore. Annoncer
+ * l'outil retenu n'est pas annoncer un compte ouvert — c'est la limite que
+ * `subprocessors-coherence.spec.ts` et `l16-concordance-du-site.spec.ts` gardent.
+ */
+export const VISIO_FORMATIONS_A_DISTANCE =
+  "Zoom est l'outil utilisé pour les formations à distance : vous le rejoignez depuis le navigateur de votre ordinateur, sans rien installer, après un test de connexion avant la session.";
+
 /** Début de la partie du matériel qui ne dépend pas du poste : reprise telle quelle à distance. */
 export const DEBUT_DES_ACCES = "accès aux outils IA";
 

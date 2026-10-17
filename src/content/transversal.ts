@@ -4207,7 +4207,7 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
         {
           title: "Ce n'est pas réservé aux petites équipes",
           detail:
-            "Jusqu'à 15 participants au même tarif, fixé par groupe. Pour réunir toute l'entreprise le même jour, jusqu'à 50 personnes, c'est le séminaire qui prend le relais.",
+            "De 2 à 15 stagiaires par session au même tarif, fixé par groupe. Pour réunir toute l'entreprise le même jour, jusqu'à 50 personnes, c'est le séminaire qui prend le relais.",
         },
       ],
     },

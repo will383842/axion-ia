@@ -106,8 +106,8 @@ export function ReglementInterieurPdf({
             peut entraîner la non-validation de la présence pour la demi-journée concernée.
           </Text>
           <Text style={local.articleBody}>
-            La feuille d'émargement doit être signée à chaque demi-journée. En distanciel, le relevé
-            de connexion fait office de justificatif de présence.
+            La feuille d'émargement se signe pendant chaque demi-journée, en présentiel comme en
+            distanciel ; le relevé de connexion ne la remplace pas.
           </Text>
         </DocSection>
 

@@ -36,10 +36,12 @@ import {
   getFormationV2EntryPrice,
   getSeminairesV2,
 } from "@/content/formations/catalog-v2";
+import { EFFECTIF_PLAGE_EN, EFFECTIF_PLAGE_FR } from "@/content/formations/effectif";
 import { FORMATION_CATEGORIES_META, formationDureeIso } from "@/content/formations/catalog-v2-meta";
 import { SERVICE_BY_ID, serviceOfficial } from "@/content/services";
 import {
   FORMATION_DUREE_FACTS,
+  getFormationCourseModes,
   getFormationImage,
   getFormationImageCredit,
 } from "@/content/formations/catalog-v2-facts";
@@ -81,7 +83,7 @@ const TIGHT_X = "lg:px-6 xl:px-10";
 
 // ============================================================================
 // Hub « Formations équipe » — 4 paliers durée : 4 h / 1 jour / 2 jours /
-// 3 jours (sur mesure). Compteur dynamique par palier dérivé de `FORMATIONS_V2`
+// 3 jours (sur mesure — format mis de côté le 2026-10-16, L16, plus affiché). Compteur dynamique par palier dérivé de `FORMATIONS_V2`
 // (catalog-v2). Ajouter une formation au catalogue incrémente automatiquement
 // le palier correspondant.
 // ============================================================================
@@ -109,8 +111,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
         : "On-site corporate AI training · Axion-IA",
     description:
       loc === "fr"
-        ? `Formations IA présentiel ou distanciel, ${qualiopiSerp} — dès ${formatAmount(getFormationCatalogPriceRange().minEur, "fr")} par groupe (2 à 15 pers.). Vos équipes gagnent du temps dès le lendemain.`
-        : `Corporate AI training on site: general offers plus role-specific and industry-specific programmes, priced per group (2-15 people). Instant time savings for your teams.`,
+        ? `Formations IA présentiel ou distanciel, ${qualiopiSerp} — dès ${formatAmount(getFormationCatalogPriceRange().minEur, "fr")} par groupe (${EFFECTIF_PLAGE_FR}). Vos équipes gagnent du temps dès le lendemain.`
+        : `Corporate AI training on site: general offers plus role-specific and industry-specific programmes, priced per group (${EFFECTIF_PLAGE_EN}). Instant time savings for your teams.`,
   });
 }
 
@@ -279,7 +281,7 @@ export default async function FormationsHub({ params }: Props) {
       path: `/formations/${f.slugFr}`,
       name: f.titreFr,
       description: f.metaDescriptionFr,
-      courseMode: ["Onsite"],
+      courseMode: [...getFormationCourseModes(f)],
       duration: formationDureeIso(f.duree),
       audienceType: isFr
         ? "Décideurs, managers, équipes opérationnelles PME ETI grands groupes (B2B)"
@@ -581,8 +583,8 @@ export default async function FormationsHub({ params }: Props) {
                   </div>
                   <p className="text-fg-muted mt-1.5 text-[12px]">
                     {isFr
-                      ? "Prix par groupe · jusqu'à 15 participants"
-                      : "Per group · up to 15 people"}
+                      ? `Prix par groupe · ${EFFECTIF_PLAGE_FR}`
+                      : `Per group · ${EFFECTIF_PLAGE_EN}`}
                   </p>
 
                   <div className="mt-auto pt-5">
@@ -1430,7 +1432,7 @@ export default async function FormationsHub({ params }: Props) {
                       id: "effectif",
                       question: "Combien de participants par session ?",
                       answer:
-                        "Jusqu'à 15 participants par groupe, au même prix — le tarif est par groupe, pas par personne. Pour réunir toute l'entreprise le même jour (jusqu'à 50 personnes), c'est le séminaire IA, présenté plus haut, qui prend le relais.",
+                        "De 2 à 15 stagiaires par session, au même prix — le tarif est par groupe, pas par personne. Pour réunir toute l'entreprise le même jour (jusqu'à 50 personnes), c'est le séminaire IA, présenté plus haut, qui prend le relais.",
                     },
                     {
                       id: "quelle-formation",
@@ -1510,7 +1512,7 @@ export default async function FormationsHub({ params }: Props) {
                       id: "headcount",
                       question: "How many participants per session?",
                       answer:
-                        "Up to 15 participants per group, same price — pricing is per group, not per person. To gather the whole company on the same day (up to 50 people), the AI seminar takes over.",
+                        "2 to 15 trainees per session, same price — pricing is per group, not per person. To gather the whole company on the same day (up to 50 people), the AI seminar takes over.",
                     },
                     {
                       id: "which-training",

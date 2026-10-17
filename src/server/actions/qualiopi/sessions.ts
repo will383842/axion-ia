@@ -52,6 +52,15 @@ import {
 import { figerSeuilSiPedagogie } from "@/server/qualiopi/pedagogie/figer-seuil";
 import { lieuInputSchema, normaliserLieu } from "@/server/qualiopi/lieu/lieu-input";
 import {
+  CHAMPS_LIEU,
+  changementsModaliteLieu,
+  controlerLienDistanciel,
+  enregistrerChangements,
+  type EtatModaliteLieu,
+} from "@/server/qualiopi/moyens/changement-session";
+import { validerMotif } from "@/server/qualiopi/moyens/moyens-regles";
+import { estActifPour, lireInterrupteurQualiopi } from "@/server/qualiopi/socle/interrupteurs";
+import {
   compterJoursHorsPlage,
   messageRefusDates,
   verdictDates,
@@ -115,6 +124,8 @@ const createSessionSchema = z.object({
 const setSessionLieuSchema = z.object({
   id: z.string().uuid(),
   ...lieuInputSchema.shape,
+  /** QNC L07 — motif du changement de modalité / de lieu (exigé quand `qualiopi.moyens.actif` agit). */
+  motif: z.string().max(2000).optional(),
   /**
    * 🔴 La MODALITÉ n'était modifiable NULLE PART après la création (constat du
    * 2026-09-04). `createSessionAction` était sa seule écriture.
@@ -682,7 +693,7 @@ export async function setSessionLieuAction(
     const premier = parsed.error.issues[0];
     return { error: premier?.message ?? "Données invalides" };
   }
-  const { id, modalite, ...lieuBrut } = parsed.data;
+  const { id, modalite, motif: motifBrut, ...lieuBrut } = parsed.data;
   const lieu = normaliserLieu(lieuBrut);
   // ADR 0060 — écriture VERROU : refusée sur un dossier clos.
   const verrou = await assertDossierOuvert(id);
@@ -702,24 +713,89 @@ export async function setSessionLieuAction(
   } as const;
 
   let avant: Record<string, unknown> | null;
+  // QNC L07 — lu dans la MÊME lecture protégée, puis retiré de `avant` : le
+  // journal d'activité garde exactement la forme d'avant le lot.
+  let cible: { estTestInterne: boolean } | null = null;
   try {
-    avant = await prisma.trainingSession.findUnique({
+    const lu = await prisma.trainingSession.findUnique({
       where: { id },
-      select: { ...LIEU_SELECT, modalite: true },
+      select: { ...LIEU_SELECT, modalite: true, estTestInterne: true },
     });
+    if (lu === null) {
+      avant = null;
+    } else {
+      const { estTestInterne, ...reste } = lu;
+      avant = reste;
+      cible = { estTestInterne };
+    }
   } catch {
     return { error: "Erreur lors de la lecture de la session" };
   }
   if (!avant) return { error: "Session introuvable" };
 
+  // ── Chantier QNC L07 — éteint, ce bloc ne fait RIEN. Allumé (ou en essai sur
+  // une session du banc d'essai) : lien Zoom obligatoire en distanciel, motif
+  // exigé pour tout changement de modalité ou de lieu, et journal avant/après
+  // écrit dans la même transaction que le changement.
+  const donnees = {
+    ...(lieu as object),
+    ...(modalite !== undefined ? { modalite } : {}),
+  } as never;
+  let aJournaliser: ReturnType<typeof changementsModaliteLieu> = [];
+  let motifJournal = "";
+  if (estActifPour(await lireInterrupteurQualiopi("moyens"), cible)) {
+    const etatAvant = avant as unknown as EtatModaliteLieu;
+    const etatApres: EtatModaliteLieu = { ...etatAvant };
+    const demande = donnees as Record<string, unknown>;
+    if (typeof demande["modalite"] === "string") etatApres.modalite = demande["modalite"];
+    for (const c of CHAMPS_LIEU) {
+      const v = demande[c];
+      if (v !== undefined) etatApres[c] = v as string | null;
+    }
+    const lienOk = controlerLienDistanciel(etatApres.modalite, etatApres.lieuVisioUrl);
+    if (lienOk === "manquant") {
+      return { error: "En distanciel, le lien de visioconférence est obligatoire (Zoom Pro)." };
+    }
+    if (lienOk === "pas_zoom") {
+      return {
+        error: "Le lien de visioconférence doit être un lien Zoom (outil retenu : Zoom Pro).",
+      };
+    }
+    aJournaliser = changementsModaliteLieu(etatAvant, etatApres);
+    if (aJournaliser.length > 0) {
+      const m = validerMotif(motifBrut);
+      if (!m.ok) {
+        return {
+          error: "Indiquez le motif du changement de modalité ou de lieu (10 caractères au moins).",
+        };
+      }
+      motifJournal = m.motif;
+    }
+  }
+
   try {
-    await prisma.trainingSession.update({
-      where: { id },
-      // La modalité voyage AVEC le lieu : elles disent la même chose, et les
-      // laisser diverger produit une session « distancielle » qui se tient dans
-      // nos locaux. Absente de l'entrée = inchangée, comme les champs de lieu.
-      data: { ...(lieu as object), ...(modalite !== undefined ? { modalite } : {}) } as never,
-    });
+    if (aJournaliser.length > 0) {
+      const auteur = await prisma.adminUser.findUnique({
+        where: { id: session.userId },
+        select: { name: true },
+      });
+      const nom = auteur?.name?.trim() ? auteur.name.trim() : session.role;
+      await prisma.$transaction(async (tx) => {
+        await tx.trainingSession.update({ where: { id }, data: donnees });
+        await enregistrerChangements(tx, id, aJournaliser, motifJournal, {
+          id: session.userId,
+          nom,
+        });
+      });
+    } else {
+      await prisma.trainingSession.update({
+        where: { id },
+        // La modalité voyage AVEC le lieu : elles disent la même chose, et les
+        // laisser diverger produit une session « distancielle » qui se tient dans
+        // nos locaux. Absente de l'entrée = inchangée, comme les champs de lieu.
+        data: donnees,
+      });
+    }
   } catch (err) {
     Sentry.captureException(err);
     return { error: "Erreur lors de l'enregistrement du lieu" };
