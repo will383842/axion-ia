@@ -63,13 +63,24 @@ import { construireFeuillePdf } from "@/server/qualiopi/emargement/feuille-pdf";
 import { rendreTirageEmargementAJour } from "@/server/qualiopi/documents/emargement-tirage";
 import { parisDateISO } from "@/server/qualiopi/presence/time";
 import { documentJointAuDossierAudit, lignePiecesHorsDossier } from "./hors-dossier-audit";
-import {
-  HORODATAGE_CIRCUIT_VIDE,
-  besoinAdaptationDeclare,
-} from "@/server/qualiopi/adaptation/reponse-organisme";
 import { colonneDeclarationDisponible } from "@/server/qualiopi/adaptation/colonne-declaration";
-import { lireCircuitAdaptation } from "@/server/qualiopi/adaptation/journal-consignation";
-import { sectionIndicateur10 } from "@/server/qualiopi/adaptation/dossier-adaptation";
+// Chantier QNC, L11 — le dossier complet (destinataire, canal, date), écrit par
+// le MÊME rendu que l'onglet « Dossier » de la fiche session.
+import { sectionIndicateur10Session } from "@/server/qualiopi/dossier-session/adaptation-session";
+import {
+  dossierCompletActifPour,
+  lireEtatDossierSession,
+} from "@/server/qualiopi/dossier-session/interrupteur";
+import {
+  chargerDossierSession,
+  type LecteurDossier,
+} from "@/server/qualiopi/dossier-session/chargement";
+import { ecrireDossierComplet } from "@/server/qualiopi/dossier-session/ecrire-zip";
+import { remplaceePar } from "@/server/qualiopi/dossier-session/classement";
+import {
+  MENTION_RESERVE_REFERENT,
+  lecteurEstReferentHandicap,
+} from "@/server/qualiopi/dossier-session/blocs";
 // ADR 0060 (D8) — le verrou, ses réouvertures, les signatures révoquées et
 // l'origine des réponses : ce que le certificateur doit voir, écrit par les
 // MÊMES fonctions que l'écran (`texteEtatVerrou`).
@@ -113,6 +124,13 @@ export interface DossierSessionResult {
    * l'alerte ROUGE sur l'un OU l'autre compteur — pas la noyer dans le jaune.
    */
   nbChainesContresignAnormales: number;
+  /**
+   * Chantier QNC, L11 — pièces REMPLACÉES gardées et jointes, étiquetées, hors
+   * voyants. Zéro tant que `qualiopi.dossier_session.actif` est éteint.
+   */
+  nbDocumentsRemplacees: number;
+  /** Le dossier complet (`dossier-complet/`) a-t-il été écrit ? */
+  dossierComplet: boolean;
   avertissements: string[];
 }
 
@@ -120,11 +138,15 @@ export interface DossierSessionResult {
  * Produit le ZIP d'audit d'une session.
  *
  * @param sessionId Session concernée.
+ * @param options.lecteur Qui tire le dossier : décide du bloc Adaptation
+ *   (référent handicap seul). Absent = lecteur sans droit sur la santé.
  */
 export async function genererDossierSessionZip(
   sessionId: string,
+  options: { readonly lecteur?: LecteurDossier } = {},
 ): Promise<DossierSessionResult | null> {
   if (process.env["DATABASE_URL"]?.includes("stub.invalid")) return null;
+  const lecteur: LecteurDossier = options.lecteur ?? { role: null };
 
   // Troisième source du besoin déclaré (ind. 10), absente pendant l'heure qui
   // suit une fusion — le dossier se tire quand même, sans elle.
@@ -139,6 +161,8 @@ export async function genererDossierSessionZip(
       dateFin: true,
       // Qui paie — donc quelle liste de pièces CONTRACTUELLE s'applique.
       financementType: true,
+      // Chantier QNC, L11 — cible de l'interrupteur en position `essai`.
+      estTestInterne: true,
       documents: {
         // 🔴 Doctrine d'`audit-dossier.ts` : « une pièce annulée ne se compte
         // NULLE PART ». Sans ce filtre, le ZIP téléchargeait le PDF d'une pièce
@@ -150,7 +174,9 @@ export async function genererDossierSessionZip(
         // d'écrit plus bas ne peut alors atteindre une pièce annulée, même par
         // inadvertance.
         where: { annuleeAt: null },
-        select: { id: true, type: true, numero: true, createdAt: true },
+        // `remplaceeParNumero` : chantier QNC, L11 — un original REMPLACÉ
+        // (rectification sans annulation) sort des voyants, interrupteur allumé.
+        select: { id: true, type: true, numero: true, createdAt: true, remplaceeParNumero: true },
         orderBy: { createdAt: "asc" },
       },
       enrollments: {
@@ -214,14 +240,26 @@ export async function genererDossierSessionZip(
 
   if (session === null) return null;
 
+  // Chantier QNC, L11 — interrupteur `qualiopi.dossier_session.actif`, cible =
+  // la SESSION. Éteint : ce ZIP est exactement celui d'avant ce lot.
+  const dossierActif = dossierCompletActifPour(await lireEtatDossierSession(), {
+    estTestInterne: session.estTestInterne === true,
+  });
+  // 🔑 Les originaux REMPLACÉS sont gardés au dossier (sous
+  // `documents/remplacees/`, étiquetés) mais exclus de TOUS les voyants :
+  // compteurs, « [OK] », vérification de chaîne, avertissements.
+  const enVigueur = dossierActif
+    ? session.documents.filter((d) => remplaceePar(d.remplaceeParNumero) === null)
+    : session.documents;
+
   // 🔴 X-mode-auditeur-05 / G-lieu-05 (2026-09-14) — contrats de travail et
   // autofactures d'honoraires partaient dans le dossier remis à l'auditrice.
   // Ils ne prouvent aucun indicateur : ils restent au registre, pas dans le
   // dossier (RGPD, minimisation). Écartés ICI, avant toute lecture qui suit —
   // téléchargement, vérification de chaîne, journal des envois — et tout ce qui
   // suit lit `documents`, jamais `session.documents`.
-  const documents = session.documents.filter((d) => documentJointAuDossierAudit(d.type));
-  const nbDocumentsHorsDossier = session.documents.length - documents.length;
+  const documents = enVigueur.filter((d) => documentJointAuDossierAudit(d.type));
+  const nbDocumentsHorsDossier = enVigueur.length - documents.length;
 
   const zip = new JSZip();
   const avertissements: string[] = [];
@@ -603,36 +641,15 @@ export async function genererDossierSessionZip(
   // l'écran de session et l'alerte ; date lue au journal de l'unique écrivain.
   // Le détail déclaré (santé) n'est jamais chargé.
   try {
-    const circuit = await lireCircuitAdaptation(
-      session.enrollments.map((e) => ({
-        id: e.id,
-        traineeId: e.traineeId,
-        finSession: session.dateFin ?? null,
-        positionnements: (e.questionnaires ?? []).map((q) => ({
-          reponses: q.reponses,
-          reponduAt: q.reponduAt ?? null,
-        })),
-      })),
-    );
-    const section = sectionIndicateur10(
-      session.enrollments.map((e) => ({
-        stagiaire:
-          e.trainee.deletedAt !== null
-            ? "[inscription sous droit à l'effacement]"
-            : `${e.trainee.prenom} ${e.trainee.nom}`.trim(),
-        // Lecture défensive : une ligne incomplète ne doit pas faire perdre la
-        // section entière au fail-soft ci-dessous.
-        besoinDeclare: besoinAdaptationDeclare({
-          situationHandicap: e.trainee.situationHandicap === true,
-          reponsesPositionnements: (e.questionnaires ?? []).map((q) => q.reponses),
-          besoinAdaptationDeclareAt: e.besoinAdaptationDeclareAt ?? null,
-        }),
-        adaptationsRealisees: e.adaptationsRealisees ?? null,
-        horodatage: circuit.get(e.id) ?? HORODATAGE_CIRCUIT_VIDE,
-      })),
-      session.dateDebut,
-    );
-    index.push("", ...section.lignes);
+    const section = await sectionIndicateur10Session(session.enrollments, session);
+    // Chantier QNC, L11 — donnée de santé : interrupteur allumé, les lignes
+    // nominatives ne sont écrites que pour le RÉFÉRENT handicap. Le manque à
+    // consigner reste dit (avertissement chiffré, sans nom).
+    const lignesAdaptation =
+      dossierActif && !lecteurEstReferentHandicap(lecteur.role)
+        ? [section.lignes[0] ?? "", `  ${MENTION_RESERVE_REFERENT}`]
+        : section.lignes;
+    index.push("", ...lignesAdaptation);
     if (section.nbAConsigner > 0) {
       avertissements.push(
         `⚠️ ${section.nbAConsigner} besoin${section.nbAConsigner > 1 ? "s" : ""} d'adaptation déclaré${section.nbAConsigner > 1 ? "s" : ""} sans réponse de l'organisme consignée (indicateur 10). Consignez l'adaptation prévue, ou « aucune adaptation nécessaire » après échange, sur la fiche session.`,
@@ -915,6 +932,49 @@ export async function genererDossierSessionZip(
     );
   }
 
+  // ── 4. CHANTIER QNC, L11 — le DOSSIER COMPLET ─────────────────────────────
+  //
+  // Tout ce qui concerne la session, rangé par destinataire, canal et date
+  // (heure de Paris), avec le contenu des e-mails, les remises et relances,
+  // les originaux remplacés étiquetés et les blocs Moyens, Réclamations et
+  // Adaptation. Écrit par le MÊME rendu que l'onglet « Dossier » de la fiche
+  // session : ce que montre l'écran est ce que contient ce dossier.
+  let nbDocumentsRemplacees = 0;
+  let dossierComplet = false;
+  if (dossierActif) {
+    try {
+      const modele = await chargerDossierSession(sessionId, lecteur);
+      if (modele !== null) {
+        const ecrit = await ecrireDossierComplet(zip, modele, (cle) =>
+          r2Ok ? getObjectBufferR2(cle) : Promise.resolve(null),
+        );
+        dossierComplet = true;
+        nbDocumentsRemplacees = modele.elements.filter(
+          (e) => e.nature === "piece" && e.cheminPdf?.startsWith("documents/remplacees/") === true,
+        ).length;
+        index.push(
+          "",
+          `Dossier complet : dossier-complet/index.txt — classement par destinataire, canal et date (heure de Paris), contenu des e-mails compris.`,
+          ...(nbDocumentsRemplacees > 0
+            ? [
+                `Pièces remplacées : ${nbDocumentsRemplacees}, gardées sous documents/remplacees/ et étiquetées « remplacée par … » — hors de tout compteur.`,
+              ]
+            : []),
+        );
+        avertissements.push(...modele.avertissements);
+        if (ecrit.absents.length > 0) {
+          avertissements.push(
+            `⚠️ ${ecrit.absents.length} fichier${ecrit.absents.length > 1 ? "s" : ""} du dossier complet introuvable${ecrit.absents.length > 1 ? "s" : ""} au stockage : voir la fin de dossier-complet/index.txt.`,
+          );
+        }
+      }
+    } catch {
+      avertissements.push(
+        "⚠️ Le dossier complet (destinataire, canal, date) n'a pas pu être produit : ce n'est PAS un constat d'absence.",
+      );
+    }
+  }
+
   const incomplet = avertissements.length > 0;
   if (incomplet) {
     index.push("", "AVERTISSEMENTS :", ...avertissements.map((a) => `  ${a}`));
@@ -928,12 +988,14 @@ export async function genererDossierSessionZip(
     // dossier, qu'on puisse le retrouver sans l'ouvrir.
     filename: `dossier-session-${session.numero}`,
     incomplet,
-    nbDocuments: session.documents.length,
+    nbDocuments: enVigueur.length,
     nbDocumentsJoints: joints,
     nbDocumentsHorsDossier,
     nbDocumentsAnnulees: annulees.length,
     nbChainesAnormales,
     nbChainesContresignAnormales,
+    nbDocumentsRemplacees,
+    dossierComplet,
     avertissements,
   };
 }
