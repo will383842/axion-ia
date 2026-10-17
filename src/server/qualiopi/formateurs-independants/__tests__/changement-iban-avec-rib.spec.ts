@@ -289,3 +289,43 @@ describe("console W-7 : le RIB de chaque demande d'IBAN", () => {
     expect(JSON.stringify(l)).not.toMatch(/enc:v2/);
   });
 });
+
+describe("console W-7 : comparer le RIB à l'IBAN demandé", () => {
+  const ligne = (id: string, valeur: string) => ({
+    id,
+    trainerId: ID,
+    nature: "iban",
+    createdAt: new Date(MAINTENANT.getTime() - 60_000),
+    valeur,
+    trainer: { prenom: "Camille", nom: "Martin" },
+  });
+
+  it("rend les 4 DERNIERS caractères de l'IBAN demandé, jamais plus", async () => {
+    db.demandeChangementFormateur.findMany.mockResolvedValue([
+      ligne(DEMANDE, `enc:v2:demande:${DEMANDE}:iban|${Buffer.from(IBAN).toString("hex")}`),
+    ]);
+    db.trainerDocument.findMany.mockResolvedValue([]);
+    const l = await lireDemandesAValider(MAINTENANT);
+    expect(l[0]!.ibanFin4).toBe("0189");
+    const rendu = JSON.stringify(l);
+    expect(rendu).not.toContain(IBAN);
+    expect(rendu).not.toContain(IBAN.slice(-5));
+  });
+
+  it("valeur illisible (AAD d'une autre demande) : null, la liste reste lisible", async () => {
+    db.demandeChangementFormateur.findMany.mockResolvedValue([
+      ligne(DEMANDE, `enc:v2:demande:autre:iban|${Buffer.from(IBAN).toString("hex")}`),
+    ]);
+    db.trainerDocument.findMany.mockResolvedValue([]);
+    const l = await lireDemandesAValider(MAINTENANT);
+    expect(l[0]!.ibanFin4).toBeNull();
+  });
+
+  it("demande d'adresse : aucun ibanFin4", async () => {
+    db.demandeChangementFormateur.findMany.mockResolvedValue([
+      { ...ligne(DEMANDE, "12 rue de l'Exemple, 69000 Lyon"), nature: "adresse" },
+    ]);
+    const l = await lireDemandesAValider(MAINTENANT);
+    expect(l[0]!.ibanFin4).toBeNull();
+  });
+});

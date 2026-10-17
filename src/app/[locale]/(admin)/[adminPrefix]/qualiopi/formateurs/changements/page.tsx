@@ -129,16 +129,22 @@ export default async function ChangementsCoordonneesPage({ params, searchParams 
                 {d.nature === "iban" ? (
                   <>
                     <p className="admin-meta">
-                      Le nouvel IBAN n&apos;est pas affiché. Avant de valider, confirmez la demande
-                      avec le formateur, au numéro déjà connu (jamais à un numéro donné dans la
-                      demande).
+                      Le nouvel IBAN n&apos;est pas affiché en entier. Avant de valider, confirmez
+                      la demande avec le formateur, au numéro déjà connu (jamais à un numéro donné
+                      dans la demande).
                     </p>
                     <p className="admin-meta">
                       {d.ribDeposeAt ? (
                         <>
                           RIB déposé le {DATE_HEURE.format(d.ribDeposeAt)} : vérifiez-le dans les{" "}
                           <Link href={`${base}/${d.trainerId}`}>pièces de la fiche</Link> (titulaire
-                          au nom du formateur).
+                          au nom du formateur
+                          {d.ibanFin4 ? (
+                            <>
+                              , IBAN se terminant par <strong>{d.ibanFin4}</strong>
+                            </>
+                          ) : null}
+                          ).
                         </>
                       ) : (
                         "Aucun RIB récent au dossier : la validation est impossible."

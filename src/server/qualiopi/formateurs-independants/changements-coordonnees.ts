@@ -20,7 +20,8 @@
  *    au dossier (préalable de `passage_paiement`, plan §8.10 n° 12) ;
  *  - l'IBAN demandé est chiffré `enc:v2:` (AAD `demande:<id>:iban`, CHECK en base),
  *    puis rechiffré pour la fiche (AAD `trainer:<id>:iban`) à la validation. Il n'est
- *    jamais réaffiché, ni journalisé, ni envoyé dans une alerte ou un e-mail.
+ *    jamais réaffiché en entier (la console W-7 en montre les 4 derniers caractères,
+ *    pour les comparer au RIB), ni journalisé, ni envoyé dans une alerte ou un e-mail.
  *
  * Natures traitées ici : `iban` et `adresse` (adresse professionnelle). Le régime de TVA
  * et l'adresse e-mail restent hors de ce lot (TVA : calcul d'argent ; e-mail : identité
@@ -44,6 +45,7 @@ import { journaliser } from "@/server/journal/journaliser";
 import { deposerPieceFormateur } from "./depot";
 import { envoyer } from "./envois";
 import { interrupteurAllume } from "./interrupteur-allume";
+import { ibanFin4 } from "./paiement/virement-mission";
 
 /** Délai minimal entre la demande et sa validation (annoncé par F43 : « au plus tôt dans 48 heures »). */
 export const DELAI_VALIDATION_CHANGEMENT_MS = 48 * 60 * 60 * 1000;
@@ -365,10 +367,24 @@ export interface DemandeConsole {
   readonly validableAt: Date;
   /** Le délai est écoulé à `maintenant`. */
   readonly validable: boolean;
-  /** Adresse demandée (l'IBAN, lui, n'est jamais rendu). */
+  /** Adresse demandée (l'IBAN, lui, n'est jamais rendu en entier). */
   readonly adresse: string | null;
   /** IBAN : dépôt du RIB le plus récent qui compte pour la demande ; sinon `null`. */
   readonly ribDeposeAt: Date | null;
+  /**
+   * IBAN : ses 4 DERNIERS caractères (jamais plus), pour comparer au RIB déposé avant
+   * de valider. `null` : demande d'adresse, ou valeur illisible.
+   */
+  readonly ibanFin4: string | null;
+}
+
+/** Les 4 derniers caractères de l'IBAN demandé ; illisible = `null` (rien ne remonte). */
+function fin4DeLaDemande(id: string, valeur: string): string | null {
+  try {
+    return ibanFin4(decryptPii(valeur, { aad: `demande:${id}:iban`, cleExigee: true }));
+  } catch {
+    return null;
+  }
 }
 
 /** Le RIB qui compte pour une demande : le plus récent déposé dans la fenêtre. */
@@ -415,6 +431,7 @@ export async function lireDemandesAValider(
             statutValidation: { not: "rejete" },
           },
           select: { trainerId: true, createdAt: true },
+          orderBy: { createdAt: "desc" },
           take: 1000,
         });
   return l.map((d) => ({
@@ -427,6 +444,7 @@ export async function lireDemandesAValider(
     validable: maintenant.getTime() - d.createdAt.getTime() >= DELAI_VALIDATION_CHANGEMENT_MS,
     adresse: d.nature === "adresse" ? d.valeur : null,
     ribDeposeAt: d.nature === "iban" ? ribDeLaDemande(ribs, d.trainerId, d.createdAt) : null,
+    ibanFin4: d.nature === "iban" ? fin4DeLaDemande(d.id, d.valeur) : null,
   }));
 }
 
