@@ -5,7 +5,7 @@
 //   - Aucun délai concret chiffré (« 5 jours », « 7 jours », etc.).
 //   - Durée minimale = 1 journée.
 //   - Aucun prix hardcodé : tarifs viennent de `src/content/pricing.ts`.
-//   - Tailles entreprise INSEE : PME/ETI/grands groupes / Grande entreprise.
+//   - Tailles entreprise INSEE : TPE / PME / ETI / Grande entreprise.
 //   - ~95 % Axion-IA-centric, ~5 % data INSEE anti-doorway HCU 2024.
 //   - Mot « formation » autorisé en copy descriptif, naming = « intervention ».
 //
@@ -18,7 +18,7 @@ import type { VilleCopy } from "./types";
 
 export const BESANCON_COPY: VilleCopy = {
   pitchFr:
-    "Besançon regroupe 9 952 établissements actifs, capitale française des microtechniques de précision (Pôle PMT Phase V, ENSMM, Institut FEMTO-ST), siège de Maty et berceau horloger Yema/Lip, avec un bassin automobile à portée (Stellantis Sochaux). Axion-IA y intervient sur site, des PME du centre historique aux ETI microtechniques de la technopôle TEMIS.",
+    "Besançon regroupe 9 952 établissements actifs, capitale française des microtechniques de précision (Pôle PMT Phase V, ENSMM, Institut FEMTO-ST), siège de Maty et berceau horloger Yema/Lip, avec un bassin automobile à portée (Stellantis Sochaux). Axion-IA y intervient sur site, des TPE du centre historique aux ETI microtechniques de la technopôle TEMIS.",
   pitchEn:
     "Besançon hosts 9,952 active businesses, France's capital of precision microtechnologies (PMT hub Phase V, ENSMM, Institut FEMTO-ST), headquarters of Maty and birthplace of the Yema/Lip watchmaking tradition, with the automotive cluster of Stellantis Sochaux nearby. Axion-IA delivers on site, from historic-centre micro-businesses to precision-tech mid-caps at the TEMIS technopole.",
 
@@ -40,13 +40,13 @@ export const BESANCON_COPY: VilleCopy = {
       en: "One-to-one AI coaching in Besançon: bespoke sessions for Besançon executives and decision-makers — precision industry, health, services — to build your personal AI strategy and move to action.",
     },
     sitesWeb: {
-      fr: "Plateformes web et SaaS IA sur mesure pour PME et ETI bisontines — site vitrine premium pour acteurs microtechniques (Pôle PMT, ENSMM/FEMTO-ST) et dispositifs médicaux TEMIS Santé, espace client interactif, dashboard métier connecté à votre CRM/ERP/LIMS. Architectes seniors, design system Axion-IA, hébergement européen.",
+      fr: "Plateformes web et SaaS IA sur mesure pour TPE, PME et ETI bisontines — site vitrine premium pour acteurs microtechniques (Pôle PMT, ENSMM/FEMTO-ST) et dispositifs médicaux TEMIS Santé, espace client interactif, dashboard métier connecté à votre CRM/ERP/LIMS. Architectes seniors, design system Axion-IA, hébergement européen.",
       en: "Custom web platforms and SaaS AI for Besançon SMEs and mid-caps — premium showcase site for precision microtechnology players (PMT hub, ENSMM/FEMTO-ST) and TEMIS Santé medical devices, interactive customer space, business dashboard connected to your CRM/ERP/LIMS. Senior experts, Axion-IA design system, European hosting.",
     },
   },
 
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Besançon (25) sur site — TEMIS Innovation, TEMIS Santé, Châteaufarine, Trépillot, centre historique et communes du Grand Besançon. Nous accompagnons les PME, ETI et grands groupes bisontins (microtechniques, dispositifs médicaux, enseignement-recherche, services) sur leurs cas IA opérationnels : diagnostic chiffré, démos sur vos vraies données, plan d'action concret. Aucun lock-in technologique, vos équipes gardent la main.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Besançon (25) sur site — TEMIS Innovation, TEMIS Santé, Châteaufarine, Trépillot, centre historique et communes du Grand Besançon. Nous accompagnons les TPE, PME, ETI et grandes entreprises bisontines (microtechniques, dispositifs médicaux, enseignement-recherche, services) sur leurs cas IA opérationnels : diagnostic chiffré, démos sur vos vraies données, plan d'action concret. Aucun lock-in technologique, vos équipes gardent la main.",
   directAnswerEn:
     "Axion-IA is an senior AI experts consultancy that intervenes in Besançon (25) on site — TEMIS Innovation, TEMIS Santé, Châteaufarine, Trépillot, historic centre and Grand Besançon communes. We support Besançon micro-businesses, SMEs, mid-caps and large enterprises (microtechnologies, medical devices, research, services) on their operational AI use cases — costed diagnosis, demos on your real data, concrete action plan. No tech lock-in, your teams stay in control.",
 
@@ -74,7 +74,7 @@ export const BESANCON_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Combien coûte un audit IA opérationnel à Besançon ?",
-      a: "Le tarif dépend du niveau retenu — Audit sur place, Ciblé, Stratégique PME ou Stratégique ETI. Tarifs publics affichés sur la page Audit, choix calibré selon votre taille (PME, ETI et grands groupes, grande entreprise) et votre périmètre. Aucun supplément géographique : le tarif est identique à Besançon et partout en France.",
+      a: "Le tarif dépend du niveau retenu — Audit sur place, Ciblé, Stratégique PME ou Stratégique ETI. Tarifs publics affichés sur la page Audit, choix calibré selon votre taille (TPE, PME, ETI, grande entreprise) et votre périmètre. Aucun supplément géographique : le tarif est identique à Besançon et partout en France.",
     },
     {
       q: "Avez-vous des références dans les microtechniques ou le biomédical bisontins ?",
@@ -104,7 +104,7 @@ export const BESANCON_COPY: VilleCopy = {
   services: {
     audit: {
       fr: {
-        hero: "L'audit IA Axion-IA cartographie ce qui peut être automatisé dans votre entreprise bisontine et chiffre le retour sur investissement à 12-24 mois. Quatre niveaux du Sur place au Stratégique ETI couvrent toute l'échelle, des PME du centre historique aux ETI microtechniques et médicales de la technopôle TEMIS et aux PME du bassin Grand Besançon.",
+        hero: "L'audit IA Axion-IA cartographie ce qui peut être automatisé dans votre entreprise bisontine et chiffre le retour sur investissement à 12-24 mois. Quatre niveaux du Sur place au Stratégique ETI couvrent toutes les tailles, des TPE du centre historique aux ETI microtechniques et médicales de la technopôle TEMIS et aux PME du bassin Grand Besançon.",
         whyHere: [
           "Besançon est la capitale française des microtechniques de précision : le tissu B2B bisontin (TEMIS Innovation, TEMIS Santé, PMT Phase V) génère une forte demande d'audits IA sur les processus de précision — documentation technique, contrôle qualité, R&D.",
           "Tissu sectorisé caractéristique de nos clients bisontins : microtechniques et mécatronique (TEMIS Innovation, ENSMM), dispositifs médicaux (TEMIS Santé, ISIFC, CHRU), horlogerie et joaillerie (Maty, Yema), services aux entreprises (Châteaufarine) et industrie Trépillot.",
@@ -141,6 +141,12 @@ export const BESANCON_COPY: VilleCopy = {
           },
         ],
         pricing: [
+          {
+            sizeLabel: "TPE",
+            price: "Audit sur place",
+            detail:
+              "Adapté aux indépendants, micro-entreprises et petits cabinets bisontins jusqu'à une dizaine de collaborateurs — centre historique, Planoise, Montrapon.",
+          },
           {
             sizeLabel: "PME",
             price: "Audit Ciblé ou Stratégique PME",
@@ -190,7 +196,7 @@ export const BESANCON_COPY: VilleCopy = {
           "Engagement contractuel : livrable remis dans les délais convenus à la signature. Conformité RGPD, hébergement données en UE par défaut, DPO sur demande. Aucun lock-in technologique : votre plan d'action est exécutable avec n'importe quel prestataire ou en interne.",
       },
       en: {
-        hero: "Axion-IA's AI audit maps what can be automated at your Besançon business and quantifies the 12-24 month return on investment. Four tiers from Sur place to Mid-cap Strategic cover the full range, from Besançon micro-businesses to precision-tech and medical mid-caps at the TEMIS technopole and Grand Besançon basin SMEs.",
+        hero: "Axion-IA's AI audit maps what can be automated at your Besançon business and quantifies the 12-24 month return on investment. Four tiers from Sur place to Mid-cap Strategic cover every size, from Besançon micro-businesses to precision-tech and medical mid-caps at the TEMIS technopole and Grand Besançon basin SMEs.",
         whyHere: [
           "Besançon is France's capital of precision microtechnologies: the Besançon B2B fabric (TEMIS Innovation, TEMIS Santé, PMT Phase V) drives strong AI audit demand on precision processes — technical documentation, quality control, R&D.",
           "Sector fabric characteristic of our Besançon clients: microtechnologies and mechatronics (TEMIS Innovation, ENSMM), medical devices (TEMIS Santé, ISIFC, CHRU), watchmaking and jewellery (Maty, Yema), business services (Châteaufarine) and Trépillot industry.",
@@ -227,6 +233,12 @@ export const BESANCON_COPY: VilleCopy = {
           },
         ],
         pricing: [
+          {
+            sizeLabel: "Micro-business",
+            price: "Sur place audit",
+            detail:
+              "Suited to Besançon freelancers, micro-firms and small practices up to about ten staff — historic centre, Planoise, Montrapon.",
+          },
           {
             sizeLabel: "SME",
             price: "Targeted or SME Strategic audit",
@@ -316,6 +328,12 @@ export const BESANCON_COPY: VilleCopy = {
         ],
         pricing: [
           {
+            sizeLabel: "TPE",
+            price: "Formation collective",
+            detail:
+              "Idéal pour indépendants, petits cabinets et micro-structures bisontines jusqu'à une dizaine de collaborateurs — centre historique, Planoise, Montrapon.",
+          },
+          {
             sizeLabel: "PME",
             price: "Formation collective ou Équipes",
             detail:
@@ -401,6 +419,12 @@ export const BESANCON_COPY: VilleCopy = {
           },
         ],
         pricing: [
+          {
+            sizeLabel: "Micro-business",
+            price: "Group format",
+            detail:
+              "Ideal Besançon freelancers, small practices and micro-structures up to about ten staff — historic centre, Planoise, Montrapon.",
+          },
           {
             sizeLabel: "SME",
             price: "Group or Teams format",
@@ -490,6 +514,12 @@ export const BESANCON_COPY: VilleCopy = {
         ],
         pricing: [
           {
+            sizeLabel: "TPE",
+            price: "Pilote IA",
+            detail:
+              "Implémentation d'un cas d'usage simple — automatisation devis, comptes-rendus, qualification leads pour TPE et indépendants bisontins.",
+          },
+          {
             sizeLabel: "PME",
             price: "Mission PME",
             detail:
@@ -511,7 +541,7 @@ export const BESANCON_COPY: VilleCopy = {
         faq: [
           {
             q: "Combien de temps dure une implémentation Axion-IA à Besançon ?",
-            a: "Cela dépend de l'ampleur. Un POC pour PME peut tenir en quelques semaines, une mission PME standard sur quelques mois, une mission ETI transverse sur plusieurs mois, un grand programme multi-déploiement sur une année. Le SOW signé en cadrage fixe le calendrier précis.",
+            a: "Cela dépend de l'ampleur. Un POC pour TPE peut tenir en quelques semaines, une mission PME standard sur quelques mois, une mission ETI transverse sur plusieurs mois, un grand programme multi-déploiement sur une année. Le SOW signé en cadrage fixe le calendrier précis.",
           },
           {
             q: "Le tarif est-il fixe ou au temps passé ?",
@@ -575,6 +605,12 @@ export const BESANCON_COPY: VilleCopy = {
           },
         ],
         pricing: [
+          {
+            sizeLabel: "Micro-business",
+            price: "Pilote IA",
+            detail:
+              "Implementation of a simple use case — quote automation, meeting minutes, lead qualification for Besançon micro-businesses and freelancers.",
+          },
           {
             sizeLabel: "SME",
             price: "SME mission",
@@ -664,6 +700,12 @@ export const BESANCON_COPY: VilleCopy = {
         ],
         pricing: [
           {
+            sizeLabel: "TPE",
+            price: "Pack Découverte",
+            detail:
+              "Idéal pour les indépendants et dirigeants de TPE bisontines souhaitant intégrer l'IA dans leur pratique professionnelle quotidienne.",
+          },
+          {
             sizeLabel: "PME",
             price: "Pack Stratégie",
             detail:
@@ -749,6 +791,12 @@ export const BESANCON_COPY: VilleCopy = {
           },
         ],
         pricing: [
+          {
+            sizeLabel: "Micro-business",
+            price: "Discovery pack",
+            detail:
+              "Ideal for Besançon freelancers and micro-business owners wanting to integrate AI into their daily professional practice.",
+          },
           {
             sizeLabel: "SME",
             price: "Strategy pack",
@@ -836,6 +884,12 @@ export const BESANCON_COPY: VilleCopy = {
         ],
         pricing: [
           {
+            sizeLabel: "TPE",
+            price: "Brique IA greffée",
+            detail:
+              "Ajout d'une brique IA (chatbot RAG, recherche sémantique) sur un site existant en quelques semaines, sans refonte.",
+          },
+          {
             sizeLabel: "PME",
             price: "Site / boutique sur mesure",
             detail:
@@ -915,6 +969,12 @@ export const BESANCON_COPY: VilleCopy = {
           },
         ],
         pricing: [
+          {
+            sizeLabel: "Micro-business",
+            price: "Grafted AI brick",
+            detail:
+              "Adding an AI brick (RAG chatbot, semantic search) onto an existing site in a few weeks, no rebuild.",
+          },
           {
             sizeLabel: "SME",
             price: "Bespoke site / shop",

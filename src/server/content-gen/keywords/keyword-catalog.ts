@@ -47,7 +47,7 @@ export const KEYWORD_CATALOG: Record<VerticalSlug, ReadonlyArray<string>> = {
     "automatisation processus métier IA",
     "intégration LLM système information",
     "projet IA clé en main",
-    "solution IA sur mesure PME",
+    "solution IA sur mesure TPE",
     "implémentation RAG entreprise",
     "agent IA entreprise sur mesure",
     "automatisation RH IA",

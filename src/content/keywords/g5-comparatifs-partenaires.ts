@@ -226,7 +226,7 @@ export const KW_COMPARATIFS_G5: KeywordSeed[] = [
       h1: "Claude vs ChatGPT en entreprise : quel LLM choisir selon vos usages métier ?",
       metaTitle: "Claude Anthropic vs ChatGPT entreprise — Comparatif 2026",
       metaDescription:
-        "Sécurité des données, raisonnement long, intégration API : notre comparatif objectif Claude vs ChatGPT pour PME et ETI.",
+        "Sécurité des données, raisonnement long, intégration API : notre comparatif objectif Claude vs ChatGPT pour TPE, PME et ETI.",
       h2Variants: [
         "Sécurité et conformité RGPD : Claude vs ChatGPT",
         "Raisonnement complexe et fenêtre de contexte : qui gagne ?",

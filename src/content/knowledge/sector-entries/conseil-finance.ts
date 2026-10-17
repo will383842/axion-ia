@@ -355,7 +355,7 @@ Rapport structuré en trois niveaux de priorité :
   },
 
   // ─────────────────────────────────────────────────────────────────────────
-  // 5. FAQ — Tarifs d'un audit IA pour PME et ETI
+  // 5. FAQ — Tarifs d'un audit IA pour TPE, PME et ETI
   // ─────────────────────────────────────────────────────────────────────────
   {
     slug: "faq-tarifs-audit-ia-pme-eti",
@@ -363,10 +363,10 @@ Rapport structuré en trois niveaux de priorité :
     type: "faq",
     domain: "commercial",
     audience: "public",
-    titleFr: "FAQ — Tarifs d'un audit IA pour PME et ETI",
+    titleFr: "FAQ — Tarifs d'un audit IA pour TPE, PME et ETI",
     titleEn: "[EN] FAQ — AI Audit Pricing for SMEs and Mid-Market Companies",
     summaryFr:
-      "Réponses aux questions les plus fréquentes des dirigeants de PME et ETI sur les tarifs, le contenu et le retour sur investissement d'un audit IA réalisé par Axion-IA.",
+      "Réponses aux questions les plus fréquentes des dirigeants de TPE, PME et ETI sur les tarifs, le contenu et le retour sur investissement d'un audit IA réalisé par Axion-IA.",
     bodyMarkdownFr: `
 ## Q : Quelle est la fourchette de prix pour un audit IA ?
 

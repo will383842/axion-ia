@@ -1443,7 +1443,7 @@ export const KB_ROI_IA: readonly KbFact[] = [
   },
   {
     id: "roi-ia-021",
-    text: "Selon Numeum (ex-Syntec Numérique, 2024), le marché français de l'IA atteint 6,5 milliards d'euros en 2024 (+35 % vs 2023) avec une projection à 15 milliards d'euros en 2027, tirée par les PME et ETI adoptant les solutions cloud IA.",
+    text: "Selon Numeum (ex-Syntec Numérique, 2024), le marché français de l'IA atteint 6,5 milliards d'euros en 2024 (+35 % vs 2023) avec une projection à 15 milliards d'euros en 2027, tirée par les TPE, PME et ETI adoptant les solutions cloud IA.",
     source: "Numeum (ex-Syntec Numérique) — Panorama IA France 2024",
     sourceUrl: "https://numeum.fr",
     verifiedAt: "2026-08-11",
