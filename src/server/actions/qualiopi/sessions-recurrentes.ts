@@ -40,6 +40,7 @@ import {
   FORMATION_SNAPSHOT_SELECT,
   buildFormationSnapshot,
 } from "@/server/qualiopi/formations/formation-snapshot";
+import { figerSeuilSiPedagogie } from "@/server/qualiopi/pedagogie/figer-seuil";
 import { lieuInputSchema, normaliserLieu } from "@/server/qualiopi/lieu/lieu-input";
 import type { LieuTypeValue } from "@/server/qualiopi/lieu/format-lieu";
 import { isTrainerHabilite, HABILITATION_ACTIVE_WHERE } from "@/server/qualiopi/trainers/trainers";
@@ -195,7 +196,10 @@ export async function createRecurringSessionsAction(
   const titreSession = v.titreSession ?? formation.titre;
   // Snapshot légal (WS5) — fige la formation pour TOUTES les occurrences (elles
   // partagent la même prestation vendue au moment de la planification).
-  const formationSnapshot = buildFormationSnapshot(formation, new Date());
+  // Lot L08 : le seuil de réussite y est figé (interrupteur qualiopi.pedagogie.actif).
+  const formationSnapshot = await figerSeuilSiPedagogie(
+    buildFormationSnapshot(formation, new Date()),
+  );
   const deltaMs = v.frequence === "hebdomadaire" ? HEBDO_MS : MENSUEL_MS;
   // ⚠️ `dateFin` NE PEUT PAS être `dateDebut + dureeHeures`. C'était le calcul
   // précédent, et il pliait toute session de plus d'une journée sur un seul jour

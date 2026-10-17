@@ -48,6 +48,12 @@ import {
 } from "@/server/visio/conservation";
 import { ETATS_ENREGISTREMENT_ACTIFS } from "@/server/visio/etats";
 import { planifierDans } from "@/server/visio/prise-d-etape";
+import { estActifPour } from "@/server/qualiopi/socle/interrupteurs";
+import { lireEtatDossierSession } from "@/server/qualiopi/dossier-session/interrupteur";
+import {
+  rattacherEnvoisAUneSession,
+  type EnvoiARattacher,
+} from "@/server/qualiopi/dossier-session/rattachement-emails";
 
 export const ERASED_PLACEHOLDER = "[erased-rgpd-art17]";
 
@@ -256,6 +262,62 @@ export interface EraseEmailTracesResult {
   readonly outboxSupprimes: number;
   /** Copies d'e-mails envoyés (`email_log_contents`) supprimées. */
   readonly copiesSupprimees: number;
+  /**
+   * Chantier QNC, L11 — copies d'e-mails DE FORMATION gardées (5 ans), leur
+   * adresse masquée. Zéro tant que `qualiopi.dossier_session.actif` est éteint.
+   */
+  readonly copiesConserveesFormation: number;
+}
+
+/** Ce qui remplace l'adresse dans une copie d'e-mail de formation conservée. */
+export const ADRESSE_MASQUEE = "[adresse masquée]";
+
+/** Durée de conservation d'une copie d'e-mail de formation, en années (décision de Will). */
+export const CONSERVATION_COPIES_FORMATION_ANS = 5;
+
+function echapperRegex(s: string): string {
+  return s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
+
+/**
+ * PUR — masque une adresse dans un texte (objet, HTML ou version texte d'une
+ * copie), sans la casse (l'adresse est en `citext`), sous ses trois écritures
+ * courantes : telle quelle, encodée dans un lien (`mailto:a%40b`), et avec
+ * l'arobase en entité HTML (`&#64;`).
+ */
+export function masquerAdresseDansTexte(texte: string, adresse: string): string {
+  const a = adresse.trim();
+  if (a === "") return texte;
+  const formes = [...new Set([a, encodeURIComponent(a), a.replace("@", "&#64;")])];
+  return formes.reduce(
+    (t, forme) => t.replace(new RegExp(echapperRegex(forme), "gi"), ADRESSE_MASQUEE),
+    texte,
+  );
+}
+
+/**
+ * Chantier QNC, L11 — les copies d'e-mails DE FORMATION à GARDER à l'effacement.
+ *
+ * Décision de Will : la copie d'un e-mail de formation est une preuve de ce
+ * que l'organisme a remis (convocation, liens, attestation…) ; elle est gardée
+ * 5 ans, son adresse masquée — art. 17 §3 b et e, comme les signatures.
+ *
+ * Est « de formation » un envoi rattaché à UNE session par son entité, hors
+ * facturation, rémunération et employeur (`rattachement-emails.ts`). Le reste
+ * est supprimé comme avant. Interrupteur éteint (ou illisible) : rien n'est
+ * gardé — c'est le comportement d'avant ce lot. En `essai` : seulement les
+ * envois d'une session ou d'une inscription du banc d'essai.
+ */
+async function copiesDeFormationAGarder(envois: readonly EnvoiARattacher[]): Promise<Set<string>> {
+  const garder = new Set<string>();
+  if (envois.length === 0) return garder;
+  const etat = await lireEtatDossierSession();
+  if (etat === "eteint") return garder;
+  const rattachements = await rattacherEnvoisAUneSession(envois);
+  for (const [id, r] of rattachements) {
+    if (!r.horsDossier && estActifPour(etat, { estTestInterne: r.essai })) garder.add(id);
+  }
+  return garder;
 }
 
 /**
@@ -303,19 +365,50 @@ export async function eraseEmailTracesForEmail(email: string): Promise<EraseEmai
   // Supprimée, pas pseudonymisée : la PREUVE d'envoi est la ligne du journal
   // (qui reste) ; la copie porte le CONTENU — nom, formation, dates, montants —
   // et rien ne justifie de le garder pour une personne qui a demandé l'oubli.
+  // Exception (chantier QNC, L11, décision de Will) : la copie d'un e-mail DE
+  // FORMATION est gardée 5 ans, adresse masquée — `copiesDeFormationAGarder`.
   //
   // Deux requêtes plutôt qu'un filtre de relation : les identifiants d'abord,
   // la suppression ensuite — une personne n'a que quelques envois.
   const sesEnvois = await prisma.emailLog.findMany({
     where: { recipient: email },
-    select: { id: true },
+    select: { id: true, template: true, entityType: true, entityId: true },
   });
+  // Chantier QNC, L11 — les copies de FORMATION sont gardées, adresse masquée.
+  // La décision est prise ici, AVANT la pseudonymisation, pour la même raison
+  // que la suppression : elle part de l'adresse.
+  const aGarder = await copiesDeFormationAGarder(sesEnvois);
+  const aSupprimer = sesEnvois.filter((l) => !aGarder.has(l.id)).map((l) => l.id);
   const copies =
-    sesEnvois.length > 0
+    aSupprimer.length > 0
       ? await prisma.emailLogContent.deleteMany({
-          where: { emailLogId: { in: sesEnvois.map((l) => l.id) } },
+          where: { emailLogId: { in: aSupprimer } },
         })
       : { count: 0 };
+  // ⚠️ Le SEUL réécrit d'une copie gardée : l'adresse, et rien d'autre. Le
+  // reste du contenu est la preuve, il ne se touche pas (création seule,
+  // `copie-envoi.ts`).
+  let copiesConserveesFormation = 0;
+  if (aGarder.size > 0) {
+    const gardees = await prisma.emailLogContent.findMany({
+      where: { emailLogId: { in: [...aGarder] } },
+      select: { emailLogId: true, subject: true, html: true, text: true },
+    });
+    for (const c of gardees) {
+      const masquee = {
+        subject: masquerAdresseDansTexte(c.subject, email),
+        html: masquerAdresseDansTexte(c.html, email),
+        text: masquerAdresseDansTexte(c.text, email),
+      };
+      if (masquee.subject !== c.subject || masquee.html !== c.html || masquee.text !== c.text) {
+        await prisma.emailLogContent.updateMany({
+          where: { emailLogId: c.emailLogId },
+          data: masquee,
+        });
+      }
+      copiesConserveesFormation += 1;
+    }
+  }
 
   const [logs, outbox] = await Promise.all([
     prisma.emailLog.updateMany({
@@ -329,6 +422,7 @@ export async function eraseEmailTracesForEmail(email: string): Promise<EraseEmai
     logsPseudonymises: logs.count,
     outboxSupprimes: outbox.count,
     copiesSupprimees: copies.count,
+    copiesConserveesFormation,
   };
 }
 

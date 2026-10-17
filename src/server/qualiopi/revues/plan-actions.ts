@@ -351,6 +351,17 @@ export interface OptionsCouvertureOff32 {
    * (`EXIGENCE_RISQUES_DEPUIS`) decide, comme avant.
    */
   exigeAnalyseRisques?: boolean;
+  /**
+   * 🔴 Chantier QNC, L10 — registre AXI-AMC allumé (`qualiopi.amelioration.actif`).
+   * Absent : la règle d'avant, inchangée. Présent : le plan lu porte les
+   * actions du registre, et ces deux comptes s'y ajoutent.
+   */
+  registreAmc?: {
+    /** Actions ouvertes sans auteur humain : une intention du système n'est pas une mesure. BLOQUANT. */
+    readonly sansAuteurHumain: number;
+    /** Actions réalisées dont l'efficacité n'est pas encore vérifiée. SIGNALÉ. */
+    readonly realiseesSansEfficacite: number;
+  };
 }
 
 export function evaluerCouvertureOff32(
@@ -432,6 +443,20 @@ export function evaluerCouvertureOff32(
     if (resume.enRetard > 0) {
       preuves.push(
         `⚠️ ${resume.enRetard} ${pluriel(resume.enRetard, "action")} en retard (échéance dépassée, action non close)`,
+      );
+    }
+  }
+
+  if (options.registreAmc !== undefined) {
+    const { sansAuteurHumain, realiseesSansEfficacite } = options.registreAmc;
+    if (sansAuteurHumain > 0) {
+      manque(
+        `${sansAuteurHumain} ${pluriel(sansAuteurHumain, "action")} du registre AXI-AMC sans auteur humain — une mesure d'amélioration est décidée par une personne`,
+      );
+    }
+    if (realiseesSansEfficacite > 0) {
+      preuves.push(
+        `${realiseesSansEfficacite} ${pluriel(realiseesSansEfficacite, "action")} ${pluriel(realiseesSansEfficacite, "réalisée")} dont l'efficacité reste à vérifier`,
       );
     }
   }

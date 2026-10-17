@@ -119,7 +119,14 @@ describe("effacement d'un demandeur du guide", () => {
 
     // Discriminant positif : l'effacement a bien TROUVÉ ses lignes.
     expect(nl).toEqual({ deleted: 1, guideDeleted: 2 });
-    expect(traces).toEqual({ logsPseudonymises: 1, outboxSupprimes: 1, copiesSupprimees: 1 });
+    // `copiesConserveesFormation` : 0 — un envoi du guide n'est pas un e-mail
+    // de formation, et l'interrupteur du lot L11 est éteint (clé absente).
+    expect(traces).toEqual({
+      logsPseudonymises: 1,
+      outboxSupprimes: 1,
+      copiesSupprimees: 1,
+      copiesConserveesFormation: 0,
+    });
     expect(crm).toEqual({ supprimees: 3 });
 
     const fuites = toutesLesValeurs().filter((v) => v.includes(DEMANDEUR));

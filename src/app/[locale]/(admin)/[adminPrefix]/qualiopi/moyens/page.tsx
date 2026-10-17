@@ -23,6 +23,7 @@ import { MoyenRowActions } from "@/components/admin/qualiopi/MoyenRowActions";
 import { GenererInventaireMoyensButton } from "@/components/admin/qualiopi/GenererInventaireMoyensButton";
 import { AccesRefuse } from "@/components/admin/ui/AccesRefuse";
 import { gardePage } from "@/server/auth/garde-page";
+import { estActifPour, lireInterrupteurQualiopi } from "@/server/qualiopi/socle/interrupteurs";
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
@@ -50,7 +51,13 @@ export default async function QualiopiMoyensPage({ params }: PageProps) {
     return <AccesRefuse motif={acces.motif} retourHref={`/${locale}/${adminPrefix}`} />;
   }
 
-  const moyens = await listMoyens({ take: 500 });
+  const [moyens, interrupteurMoyens] = await Promise.all([
+    listMoyens({ take: 500 }),
+    lireInterrupteurQualiopi("moyens"),
+  ]);
+  // QNC L07 — même règle que le serveur (`lotMoyensAllume`) : pas de session
+  // ciblée, `essai` n'agit pas. Éteint, aucun champ « Motif ».
+  const moyensActif = estActifPour(interrupteurMoyens, null);
 
   const actifs = moyens.filter((m) => m.actif);
   const verifies = actifs.filter((m) => m.dateVerification != null).length;
@@ -185,6 +192,7 @@ export default async function QualiopiMoyensPage({ params }: PageProps) {
                             }}
                             updateAction={updateMoyenAction}
                             setActifAction={setMoyenActifAction}
+                            moyensActif={moyensActif}
                           />
                         </td>
                       </tr>

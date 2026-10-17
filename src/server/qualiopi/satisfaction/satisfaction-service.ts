@@ -14,6 +14,7 @@ import { ouvrirExamenSiNoteFaible } from "@/server/qualiopi/reclamations/examen-
 import { hacherToken } from "@/server/qualiopi/tokens/hacher-token";
 import { creerOuDedup } from "@/server/qualiopi/alertes/alertes-service";
 import { makeQrToken } from "@/server/qualiopi/documents/qr";
+import { versionIdPourNouvelEnvoi } from "@/server/qualiopi/pedagogie/questionnaire-versions";
 import { createEvaluation } from "@/server/qualiopi/evaluations/evaluations-service";
 import { creerAppreciation } from "@/server/qualiopi/portail/appreciation-service";
 import {
@@ -96,11 +97,16 @@ export async function creerQuestionnaire(input: CreerQuestionnaireInput): Promis
     return { id: existing.id };
   }
 
+  // Lot L08 (qualiopi.pedagogie.actif) — la version des questions envoyées est
+  // figée sur le questionnaire. `null` (éteint, hors essai, panne) : rien posé.
+  const versionId = await versionIdPourNouvelEnvoi(input.enrollmentId, input.type);
+
   const created = await prisma.questionnaire.create({
     data: {
       enrollmentId: input.enrollmentId,
       type: input.type,
       tokenHash: hacherToken(makeQrToken()),
+      ...(versionId !== null ? { versionId } : {}),
     },
     select: { id: true },
   });

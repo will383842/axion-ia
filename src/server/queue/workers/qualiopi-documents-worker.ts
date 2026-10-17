@@ -55,6 +55,7 @@ import {
   produireEmargement,
   produirePositionnement,
   produireGrilleEvaluation,
+  MOTIF_GRILLE_ATTEND_SAISIE,
   produireSatisfaction,
   produireReglementInterieur,
   produireProgramme,
@@ -176,6 +177,7 @@ async function handleProductionAuJalon(): Promise<void> {
 
   let produites = 0;
   let enEchec = 0;
+  let enAttenteDeSaisie = 0;
   let ecarteesParPertinence = 0;
   let ecarteesParJalon = 0;
   let dejaPresentes = 0;
@@ -263,6 +265,10 @@ async function handleProductionAuJalon(): Promise<void> {
 
           if (resultat.ok) {
             produites++;
+          } else if (resultat.motif === MOTIF_GRILLE_ATTEND_SAISIE) {
+            // Lot L08 : la grille attend la saisie du formateur. Ce n'est pas un
+            // échec — le passage suivant la produira dès que l'évaluation existe.
+            enAttenteDeSaisie++;
           } else {
             // Fail-soft par pièce : une session sans journée déclarée (feuille
             // d'émargement refusée), sans client (convention refusée)… le
@@ -293,6 +299,7 @@ async function handleProductionAuJalon(): Promise<void> {
       `${dejaPresentes} déjà présente(s), ${ecarteesParPertinence} écartée(s) par pertinence, ` +
       `${ecarteesParJalon} écartée(s) par jalon, ${sansPorteur} sans porteur, ` +
       `${sansProducteur} sans producteur, ${ecarteesDossierClos} session(s) au dossier clos ` +
+      `${enAttenteDeSaisie > 0 ? `${enAttenteDeSaisie} grille(s) en attente de saisie ` : ""}` +
       `(${sessions.length} session(s) scannée(s))`,
   );
 }

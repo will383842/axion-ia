@@ -25,6 +25,7 @@ import Link from "next/link";
 import { CarteEspace } from "@/components/espace/CarteEspace";
 import { PositionnementPortailForm } from "@/components/portail/PositionnementPortailForm";
 import { SatisfactionPortailForm } from "@/components/portail/SatisfactionPortailForm";
+import { SatisfactionV2PortailForm } from "@/components/portail/SatisfactionV2PortailForm";
 import { soumettreSatisfactionPortailAction } from "@/server/actions/qualiopi/portail";
 
 import { LienDepotReclamation } from "@/components/qualiopi/DepotReclamationBloc";
@@ -100,6 +101,14 @@ export default async function MonEspaceAccueilPage({ params }: PageProps) {
                     {q.type === "positionnement" ? (
                       <PositionnementPortailForm
                         questionnaireId={q.id}
+                        objectifs={q.objectifs}
+                        soumettreAction={soumettreSatisfactionPortailAction}
+                      />
+                    ) : (q.type === "satisfaction_chaud" || q.type === "satisfaction_froid") &&
+                      (q.versionQuestionnaire ?? 0) >= 2 ? (
+                      <SatisfactionV2PortailForm
+                        questionnaireId={q.id}
+                        type={q.type}
                         objectifs={q.objectifs}
                         soumettreAction={soumettreSatisfactionPortailAction}
                       />

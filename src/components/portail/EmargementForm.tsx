@@ -31,7 +31,10 @@ export interface CreneauAffiche {
   demiJourneeLisible: string;
   horaires: string;
   formateurNom: string;
-  etat: "signable" | "deja_signe" | "pas_encore_commence";
+  /** `clos` : QNC L06, la demi-journée est terminée et le lien ne la signe plus. */
+  etat: "signable" | "deja_signe" | "pas_encore_commence" | "clos";
+  /** QNC L06 — horaires de la DEMI-JOURNÉE, quand le lien ne s'ouvre que pendant elle. */
+  horairesDemiJournee?: string;
   /** Mentions propres À CE créneau — jamais celles d'un autre. */
   mentions: string[];
 }
@@ -42,6 +45,12 @@ export interface EmargementFormProps {
   formationIntitule: string;
   organisme: string;
   creneaux: CreneauAffiche[];
+  /**
+   * QNC L06 — la signature « nom tapé » est-elle proposée ? Faux quand
+   * l'émargement par demi-journée la réserve aux personnes qui ont une
+   * adaptation. Absent = proposée, comme avant.
+   */
+  accessibleAutorise?: boolean;
   signerAction: (input: {
     token: string;
     creneauId: string;
@@ -57,6 +66,7 @@ export function EmargementForm({
   formationIntitule,
   organisme,
   creneaux,
+  accessibleAutorise = true,
   signerAction,
 }: EmargementFormProps): React.ReactElement {
   const router = useRouter();
@@ -138,6 +148,11 @@ export function EmargementForm({
                   Journée : {c.horaires}
                   {c.formateurNom !== "" && ` · ${c.formateurNom}`}
                 </p>
+                {c.horairesDemiJournee !== undefined && (
+                  <p className="text-sm text-gray-600">
+                    Signature ouverte pendant la demi-journée : {c.horairesDemiJournee}
+                  </p>
+                )}
               </div>
 
               {c.etat === "deja_signe" && (
@@ -145,6 +160,11 @@ export function EmargementForm({
               )}
               {c.etat === "pas_encore_commence" && (
                 <span className="text-sm text-gray-500">Pas encore commencé</span>
+              )}
+              {c.etat === "clos" && (
+                <span className="text-sm text-gray-500">
+                  Terminée — signature fermée. Prévenez votre organisme.
+                </span>
               )}
               {c.etat === "signable" && ouvert !== c.id && (
                 <button
@@ -202,10 +222,14 @@ export function EmargementForm({
                 ) : (
                   <SignaturePad
                     onChange={setImage}
-                    onBasculerAccessible={() => {
-                      setAccessible(true);
-                      reinitialiser();
-                    }}
+                    onBasculerAccessible={
+                      accessibleAutorise
+                        ? () => {
+                            setAccessible(true);
+                            reinitialiser();
+                          }
+                        : undefined
+                    }
                     disabled={isPending}
                     label={`Signature pour ${c.jourLisible}, ${c.demiJourneeLisible}`}
                   />

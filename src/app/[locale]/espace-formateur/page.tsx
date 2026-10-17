@@ -41,6 +41,7 @@ import { signerContratTravailFormateurAction } from "@/server/actions/qualiopi/c
 import { lireLettresMissionDuFormateur } from "@/server/qualiopi/documents/signature/lettre-mission-queries";
 import { lireContratsTravailDuFormateur } from "@/server/qualiopi/documents/signature/contrat-travail-queries";
 import { echeancesDuFormateur } from "@/server/formateur/echeances-formateur";
+import { lirePedagogie } from "@/server/qualiopi/pedagogie/interrupteur";
 import { listerMissionsAConfirmer } from "@/server/qualiopi/trainers/mission-formateur";
 import { FORMATEUR_BASE_PATH } from "@/server/formateur/routes";
 import { FORMATEUR_SESSIONS_PATH } from "@/server/formateur/collectif-labels";
@@ -116,7 +117,10 @@ export default async function EspaceFormateurAccueilPage({
     // elle — mais la lecture ne peut échouer que si la base est indisponible,
     // auquel cas rien de cette page ne s'affiche de toute façon.
     lireContratsTravailDuFormateur(trainerId),
-    echeancesDuFormateur(trainerId).catch(() => []),
+    // Lot L08 : l'étape « évaluation » n'entre dans l'accueil que si l'espace porte la saisie.
+    echeancesDuFormateur(trainerId, new Date(), {
+      evaluationOuverte: (await lirePedagogie()) === "actif",
+    }).catch(() => []),
     // 2026-09-03 — les propositions de mission qui attendent SA réponse. Avant
     // la lettre : on ne signe pas le contrat d'une mission qu'on n'a pas dit
     // vouloir prendre.

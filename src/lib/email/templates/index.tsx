@@ -210,6 +210,7 @@ import {
   questionnaireReponsesRecuesSubject,
 } from "./questionnaire-reponses-recues";
 import { OpcoSuiviEntrepriseEmail, opcoSuiviEntrepriseSubject } from "./opco-suivi-entreprise";
+import { RecueilBesoinEmail, recueilBesoinSubject } from "./recueil-besoin";
 import {
   ApporteurDeclarationRecueEmail,
   apporteurDeclarationRecueSubject,
@@ -630,6 +631,9 @@ const TEMPLATES: TemplateMap = {
     subject: questionnaireReponsesRecuesSubject,
     component: QuestionnaireReponsesRecuesEmail,
   },
+  // QNC L03 — recueil du besoin, temps 1 : questionnaire envoyé à l'ENTREPRISE
+  // (premier envoi et relances), `server/qualiopi/recueil/envoi-email.ts`.
+  "recueil-besoin": { subject: recueilBesoinSubject, component: RecueilBesoinEmail },
   // Apporteurs (2026-10-05) — alerte INTERNE : une entreprise vient d'être déclarée par le
   // formulaire du lien personnel (`features/apporteurs-reseau/declaration-entreprise.ts`).
   "apporteur-declaration-recue": {

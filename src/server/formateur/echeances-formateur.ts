@@ -41,7 +41,9 @@ import { listMyTrainingSessions } from "./collectif-queries";
 import {
   filtrerEtapesFormateur,
   sessionsDansLePerimetre,
+  GESTE_EVALUATION_FORMATEUR,
   GESTE_FORMATEUR,
+  type OptionsEtapesFormateur,
 } from "./etapes-formateur";
 import {
   prochainesEcheances,
@@ -73,6 +75,7 @@ export interface EcheanceFormateur {
 export async function echeancesDuFormateur(
   trainerId: string,
   maintenant: Date = new Date(),
+  options?: OptionsEtapesFormateur,
 ): Promise<ReadonlyArray<EcheanceFormateur>> {
   // 🔴 La SEULE source d'identifiants. Scopée par `whereSessionsDuFormateur`.
   const mesSessions = await listMyTrainingSessions(trainerId);
@@ -84,24 +87,24 @@ export async function echeancesDuFormateur(
 
   const { echeances } = await prochainesEcheances({ sessionIds, maintenant });
 
-  return filtrerEtapesFormateur(echeances).flatMap((e) => {
+  return filtrerEtapesFormateur(echeances, options).flatMap((e) => {
     // 🔴 Relecture #1096 — la contresignature se compte au grain de CE
     // formateur, comme le bandeau de sa formation. Sur une session co-animée,
     // l'étape de session disait « 0/4 » à chacun et réclamait au co-formateur
     // l'attestation d'une journée qu'il n'a pas animée.
-    if (e.etape.cle !== "contresignature_formateur") return [ligne(e)];
+    if (e.etape.cle !== "contresignature_formateur") return [ligne(e, options)];
     const moi = e.contresignatureParFormateur?.get(trainerId);
     if (moi === undefined || moi.aContresigner === 0) return [];
     return [
       {
-        ...ligne(e),
+        ...ligne(e, options),
         avancement: { fait: moi.signees - moi.aContresigner, total: moi.signees },
       },
     ];
   });
 }
 
-function ligne(e: EcheanceSession): EcheanceFormateur {
+function ligne(e: EcheanceSession, options?: OptionsEtapesFormateur): EcheanceFormateur {
   return {
     sessionId: e.sessionId,
     numero: e.numero,
@@ -112,7 +115,11 @@ function ligne(e: EcheanceSession): EcheanceFormateur {
     // Le geste de la console nomme des boutons que le formateur n'a pas ; sa
     // réécriture est obligatoire pour les étapes retenues, et le repli n'existe
     // que pour ne pas planter si l'une des deux tables prenait de l'avance.
-    geste: GESTE_FORMATEUR[e.etape.cle] ?? e.etape.geste,
+    geste:
+      GESTE_FORMATEUR[e.etape.cle] ??
+      (e.etape.cle === "evaluation_finale" && options?.evaluationOuverte === true
+        ? GESTE_EVALUATION_FORMATEUR
+        : e.etape.geste),
     etat: e.etape.etat,
     ...(e.etape.avancement !== undefined ? { avancement: e.etape.avancement } : {}),
   };

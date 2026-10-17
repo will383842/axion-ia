@@ -10,6 +10,7 @@
  * Câble genererQuestionnairesSessionAction + saisirReponsesQuestionnaireAction.
  */
 
+import type { ReponseDetaillee } from "@/server/qualiopi/pedagogie/reponses-detaillees";
 import { Fragment, useState, useTransition } from "react";
 import {
   useDossierFige,
@@ -72,6 +73,59 @@ export interface QuestionnaireRow {
    * et par la console) : signalé hors des réponses, jamais en leur nom.
    */
   precisionSurFicheStagiaire: boolean;
+  /**
+   * Lot L08 (O4) — les réponses lues QUESTION PAR QUESTION, avec la question
+   * telle qu'elle a été posée (contenu de la version envoyée). Absent tant que
+   * `qualiopi.pedagogie.actif` est éteint, ou si personne n'a répondu.
+   */
+  reponsesDetaillees?: ReadonlyArray<ReponseDetaillee> | null;
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Sous-composant : réponses question par question (lot L08, O4)
+// ─────────────────────────────────────────────────────────────────────────────
+
+function ReponsesDetailleesPanel({
+  questionnaire,
+  reponses,
+}: {
+  questionnaire: QuestionnaireRow;
+  reponses: ReadonlyArray<ReponseDetaillee>;
+}): React.ReactElement {
+  const dtCls =
+    "text-[length:var(--text-admin-xs)] font-medium uppercase tracking-wide text-[color:var(--color-admin-fg-muted)]";
+  const ddCls =
+    "mb-[var(--space-admin-2)] whitespace-pre-line text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg)]";
+  const vide = <span className="text-[color:var(--color-admin-fg-muted)]">Non renseigné</span>;
+  return (
+    <div className="space-y-[var(--space-admin-3)] rounded-[var(--radius-admin-sm)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-surface)] p-[var(--space-admin-4)]">
+      <p className="text-[length:var(--text-admin-xs)] font-semibold tracking-wide text-[color:var(--color-admin-fg-muted)] uppercase">
+        {TYPE_LABELS[questionnaire.type]} — {questionnaire.traineeNom}
+        {questionnaire.reponduAt !== null &&
+          ` — répondu le ${formaterInstantParis(new Date(questionnaire.reponduAt))}`}
+      </p>
+      <dl className="grid gap-x-[var(--space-admin-6)] sm:grid-cols-2">
+        {reponses.map((r) => (
+          <div key={r.id} className={r.lignes ? "sm:col-span-2" : undefined}>
+            <dt className={dtCls}>{r.libelle}</dt>
+            {r.lignes ? (
+              <dd className={ddCls}>
+                <ul className="list-disc pl-[var(--space-admin-5)]">
+                  {r.lignes.map((l) => (
+                    <li key={l.libelle}>
+                      {l.libelle} — {l.reponse ?? vide}
+                    </li>
+                  ))}
+                </ul>
+              </dd>
+            ) : (
+              <dd className={ddCls}>{r.reponse ?? vide}</dd>
+            )}
+          </div>
+        ))}
+      </dl>
+    </div>
+  );
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -591,7 +645,9 @@ export function QuestionnairesSection({
                 const isRepandu = q.reponduAt !== null;
                 const isFormOpen = saisieOuverteId === q.id;
 
-                const reponsesOuvertes = q.positionnement !== null && reponsesOuvertesId === q.id;
+                const aDesReponses =
+                  q.positionnement !== null || (q.reponsesDetaillees ?? null) !== null;
+                const reponsesOuvertes = aDesReponses && reponsesOuvertesId === q.id;
 
                 return (
                   <Fragment key={q.id}>
@@ -698,7 +754,7 @@ export function QuestionnairesSection({
                             <span className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
                               Complet
                             </span>
-                            {q.positionnement !== null && (
+                            {aDesReponses && (
                               <button
                                 type="button"
                                 aria-expanded={reponsesOuvertes}
@@ -715,17 +771,24 @@ export function QuestionnairesSection({
                         )}
                       </td>
                     </tr>
-                    {reponsesOuvertes && q.positionnement !== null && (
+                    {reponsesOuvertes && (
                       <tr
                         id={`reponses-positionnement-${q.id}`}
                         className="border-b border-[color:var(--color-admin-border)] last:border-b-0"
                       >
                         <td colSpan={6} className={tdCls}>
-                          <ReponsesPositionnement
-                            questionnaire={q}
-                            positionnement={q.positionnement}
-                            debutSession={debutSession}
-                          />
+                          {q.positionnement !== null ? (
+                            <ReponsesPositionnement
+                              questionnaire={q}
+                              positionnement={q.positionnement}
+                              debutSession={debutSession}
+                            />
+                          ) : (
+                            <ReponsesDetailleesPanel
+                              questionnaire={q}
+                              reponses={q.reponsesDetaillees ?? []}
+                            />
+                          )}
                         </td>
                       </tr>
                     )}

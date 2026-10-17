@@ -3,6 +3,10 @@
  *
  * Liste les revues annuelles et expose le formulaire de création.
  * Server Component — auth + lecture DB. Composants clients pour les mutations.
+ *
+ * Chantier QNC, L10 — `qualiopi.amelioration.actif` allumé : une revue validée
+ * est en lecture seule, et le registre AXI-AMC (seule source du plan
+ * d'actions) s'affiche sous la liste. Éteint : la page d'avant.
  */
 
 import type { Metadata } from "next";
@@ -26,6 +30,26 @@ import { genererRegistrePdfAction } from "@/server/actions/qualiopi/exports-pdf"
 import { PdfExportButton } from "@/components/admin/qualiopi/PdfExportButton";
 import { AccesRefuse } from "@/components/admin/ui/AccesRefuse";
 import { gardePage } from "@/server/auth/garde-page";
+import { prisma } from "@/lib/prisma";
+import {
+  listerActionsAmelioration,
+  registreAmeliorationActif,
+} from "@/server/qualiopi/amelioration/registre-amc";
+import {
+  LIBELLES_ETAPE_AMC,
+  LIBELLES_ORIGINE_AMC,
+  estClose,
+  libelleEtat,
+} from "@/server/qualiopi/amelioration/etapes-amc";
+import { formatSaisieParis } from "@/server/qualiopi/veille/registre-veille";
+import {
+  ajouterEtapeAmeliorationAction,
+  ouvrirActionAmeliorationAction,
+} from "@/server/actions/qualiopi/amelioration";
+import {
+  RegistreAmeliorationPanel,
+  type ActionAmcAffichee,
+} from "@/components/admin/qualiopi/RegistreAmeliorationPanel";
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
@@ -55,6 +79,26 @@ export default async function QualiopiRevueDirectionPage({ params }: PageProps) 
   }
 
   const revues = await listRevues();
+  const registreAmc = await registreAmeliorationActif();
+  const actionsAmc: ActionAmcAffichee[] = registreAmc
+    ? (await listerActionsAmelioration(prisma)).map((a) => ({
+        id: a.id,
+        numero: a.numero,
+        origineLibelle: LIBELLES_ORIGINE_AMC[a.origine],
+        constat: a.constat,
+        action: a.action,
+        auteurNom: a.auteurNom,
+        creeLe: formatSaisieParis(a.creeLe),
+        etat: libelleEtat(a),
+        close: estClose(a.etapes),
+        etapes: a.etapes.map((e) => ({
+          libelle: LIBELLES_ETAPE_AMC[e.etape],
+          commentaire: e.commentaire,
+          auteurNom: e.auteurNom ?? "",
+          creeLe: formatSaisieParis(e.creeLe),
+        })),
+      }))
+    : [];
   const validees = revues.filter((r) => r.statut === STATUT_REVUE_COUVRANTE).length;
   const brouillons = revues.filter((r) => r.statut === "brouillon").length;
   const anneesCouvertes = revues.map((r) => r.annee);
@@ -220,6 +264,7 @@ export default async function QualiopiRevueDirectionPage({ params }: PageProps) 
                           risques: Array.isArray(r.risques) ? (r.risques as unknown[]) : [],
                         }}
                         updateAction={updateRevueDirectionAction}
+                        registreAmc={registreAmc}
                       />
                     </td>
                   </tr>
@@ -234,6 +279,15 @@ export default async function QualiopiRevueDirectionPage({ params }: PageProps) 
             </p>
           )}
         </div>
+      )}
+
+      {registreAmc && (
+        <RegistreAmeliorationPanel
+          actions={actionsAmc}
+          revueId={revueDeLAnnee?.id ?? null}
+          ouvrirAction={ouvrirActionAmeliorationAction}
+          ajouterEtapeAction={ajouterEtapeAmeliorationAction}
+        />
       )}
     </AdminPageShell>
   );

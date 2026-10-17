@@ -18,6 +18,7 @@
 import { prisma } from "@/lib/prisma";
 import type { RevueDirection } from "../../../../prisma/generated/client";
 import { getIndicateurs } from "@/server/qualiopi/indicateurs/service";
+import { registreAmeliorationActif } from "@/server/qualiopi/amelioration/registre-amc";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Types d'entrée
@@ -168,6 +169,15 @@ export async function reporterConstatRevue(
   }
 
   let revue = await prisma.revueDirection.findUnique({ where: { annee } });
+  // 🔴 Chantier QNC, L10 — registre AXI-AMC allumé : on n'écrit plus dans une
+  // revue VALIDÉE (et plus du tout dans `planActions`, que la base fige aussi).
+  // La Server Action ouvre une action AXI-AMC à la place ; ce refus protège les
+  // autres appelants (script, worker). Éteint : comportement d'avant.
+  if (revue?.statut === "validee" && (await registreAmeliorationActif())) {
+    throw new Error(
+      `revue-direction-service: la revue ${annee} est validée — verrouillée (registre AXI-AMC allumé)`,
+    );
+  }
   let creee = false;
   if (revue === null) {
     revue = await creerRevue(annee, { dateRevue: new Date(), statut: "brouillon" });

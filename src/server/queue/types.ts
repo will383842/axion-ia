@@ -209,6 +209,9 @@ export type EmailJobName =
   // Questionnaire de cadrage EN LIGNE (2026-10-01) — e-mail INTERNE : un client
   // a envoyé ses réponses. Aucune réponse dans le message, un lien vers la console.
   | "questionnaire-reponses-recues"
+  // QNC L03 (2026-10-16) — recueil du besoin, temps 1 : questionnaire envoyé à
+  // l'ENTREPRISE dès la demande, puis relancé (J+3, J+6 au plus).
+  | "recueil-besoin"
   // Apporteurs (2026-10-05) — alerte INTERNE : une entreprise déclarée par formulaire.
   | "apporteur-declaration-recue"
   // Lot OPCO A8 (2026-10-04) — envoi du dossier prêt à déposer à l'ENTREPRISE et

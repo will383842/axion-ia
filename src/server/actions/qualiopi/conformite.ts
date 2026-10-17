@@ -193,7 +193,11 @@ export async function exporterDossierSessionAction(input: { sessionId: string })
   const parsed = dossierSessionSchema.safeParse(input);
   if (!parsed.success) return { error: "Données invalides" };
 
-  const dossier = await genererDossierSessionZip(parsed.data.sessionId);
+  // Le rôle décide du bloc Adaptation (donnée de santé, référent seul) —
+  // chantier QNC, L11.
+  const dossier = await genererDossierSessionZip(parsed.data.sessionId, {
+    lecteur: { role: session.role },
+  });
   if (dossier === null) return { error: "Session introuvable" };
 
   await logQualiopiActivity({
@@ -211,6 +215,9 @@ export async function exporterDossierSessionAction(input: { sessionId: string })
       // une trace datée, indépendamment de ce que l'admin fera du ZIP.
       nbChainesAnormales: dossier.nbChainesAnormales,
       nbChainesContresignAnormales: dossier.nbChainesContresignAnormales,
+      // Chantier QNC, L11 — 0 / false tant que l'interrupteur est éteint.
+      nbDocumentsRemplacees: dossier.nbDocumentsRemplacees,
+      dossierComplet: dossier.dossierComplet,
     },
     session,
   });
