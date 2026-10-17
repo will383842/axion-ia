@@ -303,6 +303,9 @@ vi.mock("@/components/admin/qualiopi/InterEntreprisesSection", () => ({
   InterEntreprisesSection: Composant,
 }));
 vi.mock("@/components/admin/qualiopi/DocumentsSection", () => ({ DocumentsSection: Composant }));
+vi.mock("@/components/admin/qualiopi/RecueilBesoinSession", () => ({
+  RecueilBesoinSession: Composant,
+}));
 vi.mock("@/components/admin/qualiopi/DossierSessionButton", () => ({
   DossierSessionButton: Composant,
 }));
