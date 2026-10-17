@@ -55,6 +55,7 @@ vi.mock("@/server/qualiopi/documents/production/producteurs", () => {
     produireEmargement: ok(),
     produirePositionnement: ok(),
     produireGrilleEvaluation: ok(),
+    MOTIF_GRILLE_ATTEND_SAISIE: "grille en attente de saisie",
     produireSatisfaction: ok(),
     produireReglementInterieur: ok(),
     produireProgramme: ok(),
@@ -504,7 +505,7 @@ describe("documentsAutoHandler — le worker n'écrit jamais deux fois la même 
     mockPrisma.documentGenere.findFirst.mockResolvedValue(null);
     // `vi.clearAllMocks` efface aussi les implémentations posées par la
     // fabrique du vi.mock : on repose le contrat réel.
-    for (const fn of Object.values(producteurs)) {
+    for (const fn of Object.values(producteurs).filter((v) => typeof v === "function")) {
       (fn as unknown as ReturnType<typeof vi.fn>).mockResolvedValue({
         ok: true,
         documentId: "doc-1",
@@ -531,7 +532,7 @@ describe("documentsAutoHandler — le worker n'écrit jamais deux fois la même 
     } finally {
       verrou.clos.clear();
     }
-    for (const fn of Object.values(producteurs)) {
+    for (const fn of Object.values(producteurs).filter((v) => typeof v === "function")) {
       expect(fn as unknown as ReturnType<typeof vi.fn>).not.toHaveBeenCalled();
     }
     expect(mockPrisma.documentGenere.findFirst).not.toHaveBeenCalled();
@@ -589,6 +590,25 @@ describe("documentsAutoHandler — le worker n'écrit jamais deux fois la même 
     ).resolves.toBeUndefined();
 
     expect(mockProduireConvocation).toHaveBeenCalled();
+  });
+
+  it("Lot L08 — une grille qui attend la saisie du formateur n'est PAS un échec", async () => {
+    mockPrisma.trainingSession.findMany.mockResolvedValue([sessionNominale()]);
+    mockProduireProgramme.mockResolvedValue({ ok: false, motif: "grille en attente de saisie" });
+    const erreurs = vi.spyOn(console, "error").mockImplementation(() => {});
+    const bilans = vi.spyOn(console, "log").mockImplementation(() => {});
+    try {
+      await documentsAutoHandler({ type: "documents-auto.production", tick: "t" });
+      expect(erreurs.mock.calls.map((c) => c.map(String).join(" ")).join("\n")).not.toContain(
+        "grille en attente de saisie",
+      );
+      expect(bilans.mock.calls.map((c) => c.map(String).join(" ")).join("\n")).toMatch(
+        /1 grille\(s\) en attente de saisie/,
+      );
+    } finally {
+      erreurs.mockRestore();
+      bilans.mockRestore();
+    }
   });
 
   it("🔴 I17-01 — un refus faute de lieu est DIT : motif et session journalisés, jamais tu", async () => {

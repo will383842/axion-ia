@@ -341,6 +341,18 @@ const CONSOMMATEURS_ASSUMES: ReadonlySet<string> = new Set([
   // la session. L'action n'importe que le service du bilan, qui revérifie côté
   // serveur que le formateur a animé la session et que le stagiaire en fait partie.
   "src/server/actions/formateur/bilan-fin-formation.actions.ts",
+  // Lot L08 (2026-10-17) : la saisie de l'évaluation finale par le formateur, dans son
+  // espace. L'action n'importe que le service de saisie, qui revérifie côté serveur
+  // l'interrupteur, l'appartenance à la session, l'inscription et le verrou du dossier
+  // (le cookie, jamais le formulaire). Le composant serveur affiche la vue que ce service
+  // rend, et le fichier de messages n'importe que son TYPE d'issue.
+  "src/server/actions/formateur/evaluation-finale.actions.ts",
+  "src/components/espace-formateur/EvaluationFinaleFormateur.tsx",
+  "src/server/formateur/evaluation-finale-messages.ts",
+  // Lot L08 : questionnaire à chaud / à froid v2 du portail stagiaire. Le composant client
+  // n'importe que le CONTENU pur et versionné des questions (aucune dépendance serveur) :
+  // il ne pose aucune question que le contenu enregistré ne déclare.
+  "src/components/portail/SatisfactionV2PortailForm.tsx",
   // Lots L11b-ux et L11h (2026-10-11) : la proposition chiffrée en six
   // lignes, composant serveur de la page d'une mission (rendue par l'accueil).
   // La coquille ne lit que l'interrupteur `formateurs.choix_cartes` et le

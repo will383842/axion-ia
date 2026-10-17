@@ -49,6 +49,7 @@ import { ipDepuisEntetes } from "@/lib/client-ip";
 import { getPortailToken, clearPortailCookie } from "@/server/qualiopi/portail/cookie";
 import { creerDemandeRgpd } from "@/server/qualiopi/portail/rgpd-service";
 import { soumettreReponses } from "@/server/qualiopi/satisfaction/satisfaction-service";
+import { assainirReponses } from "@/server/qualiopi/pedagogie/assainir-reponses";
 import { decryptPii, PII_DECRYPT_PLACEHOLDER } from "@/lib/pii-crypto";
 import {
   chiffrerDetailSante,
@@ -227,7 +228,11 @@ export async function soumettreSatisfactionPortailAction(input: {
   // A-01 (IDOR) : vérifier que le questionnaire appartient bien au stagiaire authentifié.
   const questionnaire = await prisma.questionnaire.findUnique({
     where: { id: v.questionnaireId },
-    select: { type: true, enrollment: { select: { traineeId: true } } },
+    select: {
+      type: true,
+      version: { select: { version: true } },
+      enrollment: { select: { traineeId: true } },
+    },
   });
   if (!questionnaire || questionnaire.enrollment.traineeId !== authResult.traineeId) {
     return { error: "Questionnaire introuvable ou non autorisé" };
@@ -283,9 +288,17 @@ export async function soumettreSatisfactionPortailAction(input: {
   // le texte libre, celui qui décrit la situation — est retiré et chiffré.
   const { detailAdaptation: _retire, ...reponsesSansDetail } = reponsesRecues;
 
+  // Lot L08 — un questionnaire dont le contenu est versionné ne garde que les
+  // réponses que ce contenu déclare, dans leurs bornes. Sans version : inchangé.
+  const reponsesAssainies =
+    questionnaire.version != null &&
+    (questionnaire.type === "satisfaction_chaud" || questionnaire.type === "satisfaction_froid")
+      ? assainirReponses(questionnaire.type, questionnaire.version.version, reponsesSansDetail)
+      : null;
+
   const result = await soumettreReponses({
     questionnaireId: v.questionnaireId,
-    reponses: reponsesSansDetail,
+    reponses: reponsesAssainies ?? reponsesSansDetail,
     // ADR 0060 (D3) — le stagiaire répond lui-même, depuis son portail.
     origine: "stagiaire",
     ...(v.noteGlobale !== undefined ? { noteGlobale: v.noteGlobale } : {}),

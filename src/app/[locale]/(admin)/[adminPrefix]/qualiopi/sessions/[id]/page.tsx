@@ -61,6 +61,7 @@ import { lireEtatSignatureLettreMissionConsole } from "@/server/qualiopi/documen
 import { QuestionnairesSection } from "@/components/admin/qualiopi/QuestionnairesSection";
 import { envoyerQuestionnaireAction } from "@/server/actions/qualiopi/questionnaires";
 import { lirePositionnement } from "@/server/qualiopi/positionnement/lecture-positionnement";
+import { lireReponsesDetailleesSession } from "@/server/qualiopi/pedagogie/reponses-detaillees-session";
 import { stagiairesAvecPrecision } from "@/server/qualiopi/positionnement/precision-presente";
 import {
   HORODATAGE_CIRCUIT_VIDE,
@@ -782,6 +783,10 @@ export default async function SessionHubPage({ params, searchParams }: PageProps
     montantHtEuros: e.montantHtCents != null ? e.montantHtCents / 100 : null,
   }));
 
+  // Lot L08 (O4) — réponses lues question par question ; table vide tant que
+  // `qualiopi.pedagogie.actif` est éteint (la fiche est alors inchangée).
+  const reponsesDetaillees = await lireReponsesDetailleesSession(id);
+
   const questionnairesSerialized = enrollmentsRaw.flatMap((e) =>
     e.questionnaires.map((q) => ({
       id: q.id,
@@ -794,6 +799,9 @@ export default async function SessionHubPage({ params, searchParams }: PageProps
         q.type === "positionnement" && q.reponduAt !== null ? lirePositionnement(q.reponses) : null,
       precisionSurFicheStagiaire:
         q.type === "positionnement" && traineesAvecDetailChiffre.has(e.trainee.id),
+      ...(reponsesDetaillees.has(q.id)
+        ? { reponsesDetaillees: reponsesDetaillees.get(q.id)! }
+        : {}),
     })),
   );
 
