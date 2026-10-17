@@ -496,7 +496,10 @@ export default async function FicheFormateurPage({ params, searchParams }: PageP
     ...(independant && peutHabiliter && !voitSuiviQualite
       ? [INTERRUPTEURS_SIGNATURE.suivi_qualite.libelle]
       : []),
-    ...(independant && trainer.organismeSousTraitantId === null && peutHabiliter && !voitFinCollaboration
+    ...(independant &&
+    trainer.organismeSousTraitantId === null &&
+    peutHabiliter &&
+    !voitFinCollaboration
       ? [INTERRUPTEURS_SIGNATURE.fin_collaboration.libelle]
       : []),
     ...(independant &&
@@ -605,8 +608,8 @@ export default async function FicheFormateurPage({ params, searchParams }: PageP
 
       {panneauxMasques.length > 0 ? (
         <p className="admin-meta-small">
-          Panneaux masqués, interrupteurs coupés : {panneauxMasques.map((l) => `« ${l} »`).join(", ")}
-          .
+          Panneaux masqués, interrupteurs coupés :{" "}
+          {panneauxMasques.map((l) => `« ${l} »`).join(", ")}.
         </p>
       ) : null}
 

@@ -71,8 +71,8 @@ export default async function RattrapagePage({ params }: PageProps) {
       {!allume ? (
         <p className="admin-alert admin-alert-info">
           Cet écran n&apos;est pas encore ouvert : il s&apos;allume avec les interrupteurs «{" "}
-          {INTERRUPTEURS.invitation_auto.libelle} » et « {INTERRUPTEURS_ENTREE.suivi_echange.libelle}{" "}
-          », dans{" "}
+          {INTERRUPTEURS.invitation_auto.libelle} » et «{" "}
+          {INTERRUPTEURS_ENTREE.suivi_echange.libelle} », dans{" "}
           <Link href={`/${locale}/${adminPrefix}/qualiopi/formateurs/interrupteurs`}>
             l&apos;écran Interrupteurs
           </Link>
