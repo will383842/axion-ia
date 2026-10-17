@@ -11,6 +11,7 @@ import {
   FORMATION_DUREES_META,
   FORMATION_GAMMES_META,
   SUR_MESURE,
+  SUR_MESURE_MIS_DE_COTE,
   formationDureeIso,
   getDureeMeta,
   getDureeMetaBySlug,
@@ -76,13 +77,23 @@ describe("meta — sur-mesure cohérent", () => {
     }
   });
 
-  it("une variante sur-mesure par durée + une globale", () => {
-    for (const d of ["4h", "1j", "2j", "3j"] as const) {
+  it("une variante sur-mesure par durée proposée (4 h, 7 h, 14 h) + une globale", () => {
+    for (const d of ["4h", "1j", "2j"] as const) {
       expect(
         SUR_MESURE.some((s) => s.duree === d),
         `sur-mesure ${d}`,
       ).toBe(true);
     }
     expect(SUR_MESURE.some((s) => !s.duree && !s.gamme)).toBe(true); // 100 % sur mesure
+  });
+
+  it("le format « sur mesure · 3 jours » est mis de côté, pas supprimé (L16)", () => {
+    expect(SUR_MESURE.some((s) => s.duree === "3j")).toBe(false);
+    const misDeCote = SUR_MESURE_MIS_DE_COTE.filter((s) => s.duree === "3j");
+    expect(misDeCote.map((s) => s.id)).toEqual(["transformation-sur-mesure"]);
+    for (const s of SUR_MESURE_MIS_DE_COTE) {
+      expect(s.misDeCoteLe, s.id).toMatch(/^\d{4}-\d{2}-\d{2}$/);
+      expect(s.motifMiseDeCote?.length ?? 0, s.id).toBeGreaterThan(20);
+    }
   });
 });

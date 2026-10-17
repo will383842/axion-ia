@@ -276,7 +276,7 @@ export const INTERVENTION_FORMATS: ReadonlyArray<InterventionFormatEntry> = [
     priceEn: formatAmount(FOUR_H_PRICE, "en"),
     groupSizeFr: "2 à 12 personnes",
     groupSizeEn: "2 to 12 people",
-    audienceFr: "Équipes qui découvrent l'IA · PME, ETI",
+    audienceFr: "Équipes qui découvrent l'IA · TPE, PME",
     audienceEn: "Teams discovering AI · small businesses",
     accent: "terracotta",
     badgeFr: "Découverte · 4 h",

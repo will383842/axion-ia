@@ -288,7 +288,7 @@ const FR: TextesPageGuide = {
     envoi: "Envoyé par e-mail dans les minutes qui suivent, gratuitement.",
     reperes: ["13 outils à recopier", "Sources publiques citées", "PME, ETI, grands groupes"],
     altCouverture:
-      "Couverture du Guide IA entreprise d'Axion-IA, édition septembre 2026 : tout ce qu'un dirigeant doit savoir avant de déployer l'intelligence artificielle, pour les PME, ETI et grands groupes.",
+      "Couverture du Guide IA entreprise d'Axion-IA, édition septembre 2026 : tout ce qu'un dirigeant doit savoir avant de déployer l'intelligence artificielle, pour les TPE, PME, ETI et grands groupes.",
   },
   ensuite: {
     titre: "Ce qui se passe ensuite",

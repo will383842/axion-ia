@@ -35,7 +35,7 @@ fi
 # de « Gate A · couverture ».
 #
 # NE SONT PAS JOUÉS ICI :
-#   format:check · zod:check · contrast:check · i18n:check · positionnement:check
+#   format:check · zod:check · contrast:check · i18n:check
 #   admin-gardes:check · admin-nav:routes-check
 #   content-gen:isolation-check · image-bank:isolation-check · qualiopi:isolation-check
 #   et, dans le job « Gate A · couverture » :

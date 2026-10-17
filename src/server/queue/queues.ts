@@ -2128,6 +2128,14 @@ export async function bootRepeatableJobs(): Promise<void> {
         pattern: "30 6,7 * * 1-5",
         jobId: "formation-crons-suivi-entreprise-opco-cron",
       },
+      // Chantier QNC L03 — recueil du besoin : relances et retours. 08:45 À PARIS,
+      // jours ouvrés (deux déclencheurs UTC, seul celui qui tombe à 08:xx travaille).
+      // Éteint tant que `qualiopi.recueil.actif` ne l'allume pas.
+      {
+        type: "formation-crons.recueil-besoin",
+        pattern: "45 6,7 * * 1-5",
+        jobId: "formation-crons-recueil-besoin-cron",
+      },
       // Formateurs indépendants (CAMP-3) — campagnes de relance, HORAIRE à :50 ; le
       // corps ne travaille qu'entre 8 h et 19 h à Paris. Éteint à la livraison.
       {
@@ -2179,6 +2187,14 @@ export async function bootRepeatableJobs(): Promise<void> {
         type: "formation-crons.controle-registre-periodique",
         pattern: "35 8 * * *",
         jobId: "formation-crons-controle-registre-periodique-cron",
+      },
+      // QNC L07 — test du lien de visio la veille du début. 07:10 et 14:10 UTC
+      // (08:10/09:10 et 15:10/16:10 à Paris) : le second passage retente un lien
+      // en échec. Arrêté tant que `qualiopi.moyens.actif` est éteint.
+      {
+        type: "formation-crons.moyens-test-lien-j1",
+        pattern: "10 7,14 * * *",
+        jobId: "formation-crons-moyens-test-lien-j1-cron",
       },
     ];
 

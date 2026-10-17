@@ -341,6 +341,10 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
       // Une liste qui se donne pour exhaustive et qui omet la demande de
       // podcast est, selon les termes de ce depot, pire qu'une absence de liste.
       podcast: podcastResult.supprimees,
+      // Chantier QNC, L11 — la conservation des copies de formation est DITE,
+      // jamais tue : une liste qui se donne pour exhaustive ne cache pas ce
+      // qu'elle garde. Omise (0) tant que l'interrupteur du lot est éteint.
+      copiesFormationConservees: emailTracesResult.copiesConserveesFormation ?? 0,
       // 2026-08-25 — les trois dernieres tables de l'inventaire entrent dans
       // l'enumeration. `clientsRetenus` est annonce SEPAREMENT et a dessein :
       // une reponse qui dirait « tout est efface » alors qu'une fiche facturee
@@ -394,6 +398,8 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
       emailLogsPseudonymises: emailTracesResult.logsPseudonymises,
       emailOutboxSupprimes: emailTracesResult.outboxSupprimes,
       emailCopiesSupprimees: emailTracesResult.copiesSupprimees,
+      // Chantier QNC, L11 — copies d'e-mails de formation gardées, adresse masquée.
+      emailCopiesConserveesFormation: emailTracesResult.copiesConserveesFormation ?? 0,
       reponsesEntrantesSupprimees: reponsesEntrantesResult.supprimees,
       crmOutboxSupprimes: crmOutboxResult.supprimees,
       podcastSupprimes: podcastResult.supprimees,

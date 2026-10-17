@@ -42,6 +42,9 @@ import { MENTION_VERSION } from "./mentions";
 import { storeSignatureImage, supprimerImageSignature } from "./storage";
 import { recomputeTauxPresence } from "@/server/qualiopi/presence/presence-service";
 import { invalidateIndicateursCache } from "@/server/qualiopi/indicateurs/service";
+import { emargementParDemiJourneePour } from "./demi-journee/activation";
+import { positionFenetre } from "./demi-journee/fenetre";
+import { inscriptionPorteUneAdaptation } from "./demi-journee/lecture";
 
 /** Nombre de reprises sur conflit de chaîne. Au-delà, c'est autre chose qu'une course. */
 const MAX_REPRISES_CHAINE = 3;
@@ -96,6 +99,10 @@ export type RefusSignature =
   | "nom_requis"
   | "nom_non_concordant"
   | "modules_invalides"
+  /** QNC L06 : le lien du stagiaire est fermé hors du créneau de sa demi-journée. */
+  | "hors_creneau"
+  /** QNC L06 : la signature « nom tapé » est réservée aux personnes qui ont une adaptation. */
+  | "nom_tape_reserve_adaptation"
   | "conflit_concurrent";
 
 export type ResultatSignature =
@@ -182,6 +189,7 @@ async function lireContexte(creneauId: string) {
               statut: true,
               titreSession: true,
               dateDebut: true,
+              estTestInterne: true,
               formateurPrincipal: { select: { nom: true, prenom: true } },
               jours: {
                 select: {
@@ -322,6 +330,47 @@ export async function signerCreneau(input: EntreeSignature): Promise<ResultatSig
       raison: "pas_encore_commence",
       message: "Cette demi-journée n'a pas encore commencé. Vous pourrez signer le moment venu.",
     };
+  }
+
+  // 🔴 QNC L06 — interrupteur `qualiopi.emargement.actif`. Éteint : rien ne
+  // change. Allumé pour la session :
+  //   - le lien du stagiaire ne signe que PENDANT la demi-journée — ni avant,
+  //     ni après sa fin (fin de la réouverture de 48 h). Le recueil sur le poste
+  //     du formateur n'est pas un lien : il n'est pas concerné ;
+  //   - la signature « nom tapé » est réservée aux personnes qui ont une
+  //     adaptation, quel que soit le porteur.
+  if (await emargementParDemiJourneePour(session)) {
+    if (
+      input.porteur.type === "stagiaire" &&
+      positionFenetre(
+        {
+          creneauId: ctx.id,
+          date: jourIso,
+          demiJournee: ctx.demiJournee,
+          jourHeureDebut: jour.heureDebut,
+          jourHeureFin: jour.heureFin,
+        },
+        maintenant,
+      ) !== "ouverte"
+    ) {
+      return {
+        ok: false,
+        raison: "hors_creneau",
+        message:
+          "Cette demi-journée est terminée : elle ne se signe plus par votre lien. Prévenez votre organisme de formation, qui consignera un rattrapage motivé.",
+      };
+    }
+    if (
+      input.methode === "confirmation_accessible" &&
+      !(await inscriptionPorteUneAdaptation(ctx.enrollmentId))
+    ) {
+      return {
+        ok: false,
+        raison: "nom_tape_reserve_adaptation",
+        message:
+          "La signature en tapant son nom est réservée aux personnes qui bénéficient d'une adaptation. Signez en traçant votre signature, ou signalez votre besoin à l'organisme.",
+      };
+    }
   }
 
   const signataireNom = `${ctx.enrollment.trainee.prenom} ${ctx.enrollment.trainee.nom}`.trim();

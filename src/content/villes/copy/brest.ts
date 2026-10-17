@@ -5,7 +5,7 @@
 //   - Aucun « frais de déplacement intégrés »
 //   - Aucune demi-journée : durée minimale = 1 journée.
 //   - Aucun prix hardcodé : tarifs viennent de `src/content/pricing.ts`.
-//   - Tailles INSEE : PME/ETI/GE — jamais de métier-type.
+//   - Tailles INSEE : TPE / PME / ETI / GE — jamais de métier-type.
 //   - ~95 % Axion-IA-centric + ~5 % data INSEE anti-doorway HCU 2024.
 //   - PAS de heroSchema, PAS de unAUn (hors scope ville V1).
 //
@@ -26,7 +26,7 @@ import type { VilleCopy } from "./types";
 
 export const BREST_COPY: VilleCopy = {
   pitchFr:
-    "Brest concentre 12 847 établissements actifs, le siège mondial d'IFREMER, le premier pôle de défense maritime français (Naval Group, Thales Underwater Systems, Marine nationale) et un écosystème d'ingénierie numérique unique en France (IMT Atlantique, ENIB, Lab-STICC). Axion-IA y intervient sur site auprès des PME locales jusqu'aux grands groupes de défense et de l'économie marine.",
+    "Brest concentre 12 847 établissements actifs, le siège mondial d'IFREMER, le premier pôle de défense maritime français (Naval Group, Thales Underwater Systems, Marine nationale) et un écosystème d'ingénierie numérique unique en France (IMT Atlantique, ENIB, Lab-STICC). Axion-IA y intervient sur site auprès des TPE locales jusqu'aux grands groupes de défense et de l'économie marine.",
   pitchEn:
     "Brest hosts 12,847 active businesses, the world headquarters of IFREMER, France's foremost maritime-defence hub (Naval Group, Thales Underwater Systems, French Navy) and a unique digital engineering ecosystem (IMT Atlantique, ENIB, Lab-STICC). Axion-IA delivers on site for micro-businesses to large defence and marine-economy groups.",
 
@@ -54,7 +54,7 @@ export const BREST_COPY: VilleCopy = {
   },
 
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Brest (29019) sur site dans toute la Brest Métropole et le Finistère. Nous accompagnons les PME locales, PME industrielles, ETI de la filière maritime et grands groupes (Naval Group, Thales Underwater, IFREMER) sur leurs cas IA opérationnels — diagnostic chiffré, démos sur vos vraies données, plan d'action concret. Aucun lock-in technologique, vos équipes gardent la main.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Brest (29019) sur site dans toute la Brest Métropole et le Finistère. Nous accompagnons les TPE locales, PME industrielles, ETI de la filière maritime et grands groupes (Naval Group, Thales Underwater, IFREMER) sur leurs cas IA opérationnels — diagnostic chiffré, démos sur vos vraies données, plan d'action concret. Aucun lock-in technologique, vos équipes gardent la main.",
   directAnswerEn:
     "Axion-IA is a senior AI experts consultancy that intervenes in Brest (29019) on site across Brest Métropole and Finistère. We support local micro-businesses, industrial SMEs, maritime-sector mid-caps and large groups (Naval Group, Thales Underwater, IFREMER) on their operational AI use cases — costed diagnosis, demos on your real data, concrete action plan. No tech lock-in, your teams stay in control.",
 
@@ -85,7 +85,7 @@ export const BREST_COPY: VilleCopy = {
   services: {
     audit: {
       fr: {
-        hero: "L'audit IA Axion-IA cartographie ce qui peut être automatisé chez vous et chiffre le retour sur investissement à 12-24 mois. Quatre niveaux du Sur place au Stratégique ETI couvrent toute l'échelle brestoises — des PME du commerce et des services jusqu'aux directions de programme des grands groupes de défense maritime et de l'économie marine.",
+        hero: "L'audit IA Axion-IA cartographie ce qui peut être automatisé chez vous et chiffre le retour sur investissement à 12-24 mois. Quatre niveaux du Sur place au Stratégique ETI couvrent toutes les tailles brestoises — des TPE du commerce et des services jusqu'aux directions de programme des grands groupes de défense maritime et de l'économie marine.",
         whyHere: [
           "Brest est un pôle de défense maritime et de sciences de la mer sans équivalent en France : Naval Group, Thales Underwater Systems, IFREMER, Marine nationale. Ces acteurs font face à des volumes documentaires et opérationnels où l'IA à un ROI très élevé sur la gestion de configuration, la rédaction technique, le MCO et le traitement des données océanographiques.",
           "L'écosystème numérique brestois est dense : IMT Atlantique (cybersécurité, IA), ENIB (systèmes embarqués), Lab-STICC CNRS 6285 (IA, communications). Nos audits tiennent compte de vos contraintes de souveraineté et de confidentialité défense (données classifiées, export control).",
@@ -122,6 +122,12 @@ export const BREST_COPY: VilleCopy = {
           },
         ],
         pricing: [
+          {
+            sizeLabel: "TPE",
+            price: "Audit sur place",
+            detail:
+              "Adapté aux indépendants, commerçants, artisans et petites structures bretonnes jusqu'à une dizaine de collaborateurs.",
+          },
           {
             sizeLabel: "PME",
             price: "Audit Ciblé ou Stratégique PME",
@@ -171,7 +177,7 @@ export const BREST_COPY: VilleCopy = {
           "Engagement contractuel : livrable remis dans les délais convenus à la signature. Conformité RGPD, hébergement données en UE par défaut, DPO sur demande. Aucun lock-in technologique : votre plan d'action est exécutable avec n'importe quel prestataire ou en interne.",
       },
       en: {
-        hero: "Axion-IA's AI audit maps what can be automated at your company and quantifies the 12-24 month return on investment. Four tiers from Sur place to Mid-cap Strategic cover the full range in Brest — from local micro-businesses in commerce and services to programme leadership at large maritime-defence and marine-economy groups.",
+        hero: "Axion-IA's AI audit maps what can be automated at your company and quantifies the 12-24 month return on investment. Four tiers from Sur place to Mid-cap Strategic cover every size in Brest — from local micro-businesses in commerce and services to programme leadership at large maritime-defence and marine-economy groups.",
         whyHere: [
           "Brest is France's unmatched hub for maritime defence and marine science: Naval Group, Thales Underwater Systems, IFREMER, the French Navy. These players handle documentary and operational volumes where AI delivers very high ROI — configuration management, technical writing, MCO and oceanographic data processing.",
           "Brest's digital ecosystem is dense: IMT Atlantique (cybersecurity, AI), ENIB (embedded systems), Lab-STICC CNRS 6285 (AI, communications). Our audits account for your sovereignty and defence confidentiality constraints (classified data, export control).",
@@ -208,6 +214,12 @@ export const BREST_COPY: VilleCopy = {
           },
         ],
         pricing: [
+          {
+            sizeLabel: "Micro-business",
+            price: "Sur place audit",
+            detail:
+              "Suited to freelancers, retailers, artisans and small Breton structures up to about ten staff.",
+          },
           {
             sizeLabel: "SME",
             price: "Targeted or SME Strategic audit",
@@ -298,6 +310,12 @@ export const BREST_COPY: VilleCopy = {
         ],
         pricing: [
           {
+            sizeLabel: "TPE",
+            price: "Formation collective",
+            detail:
+              "Idéal indépendants, petites structures de service et artisans du bassin brestois jusqu'à une dizaine de collaborateurs.",
+          },
+          {
             sizeLabel: "PME",
             price: "Formation collective ou Équipes",
             detail:
@@ -383,6 +401,12 @@ export const BREST_COPY: VilleCopy = {
           },
         ],
         pricing: [
+          {
+            sizeLabel: "Micro-business",
+            price: "Group format",
+            detail:
+              "Ideal for freelancers, small service structures and artisans in the Brest basin up to about ten staff.",
+          },
           {
             sizeLabel: "SME",
             price: "Group or Teams format",
@@ -473,6 +497,12 @@ export const BREST_COPY: VilleCopy = {
         ],
         pricing: [
           {
+            sizeLabel: "TPE",
+            price: "Pilote IA",
+            detail:
+              "Implémentation d'un cas d'usage simple (gestion documentaire, comptes-rendus, qualification leads) pour petites structures du bassin brestois.",
+          },
+          {
             sizeLabel: "PME",
             price: "Mission PME",
             detail:
@@ -494,7 +524,7 @@ export const BREST_COPY: VilleCopy = {
         faq: [
           {
             q: "Combien de temps dure une implémentation Axion-IA à Brest ?",
-            a: "Cela dépend de l'ampleur. Un POC pour PME peut tenir en quelques semaines, une mission PME standard sur quelques mois, une mission ETI transverse sur plusieurs mois, un grand programme multi-déploiement sur une année. Le SOW signé en cadrage fixe le calendrier précis.",
+            a: "Cela dépend de l'ampleur. Un POC pour TPE peut tenir en quelques semaines, une mission PME standard sur quelques mois, une mission ETI transverse sur plusieurs mois, un grand programme multi-déploiement sur une année. Le SOW signé en cadrage fixe le calendrier précis.",
           },
           {
             q: "Le tarif est-il fixe ou au temps passé ?",
@@ -559,6 +589,12 @@ export const BREST_COPY: VilleCopy = {
         ],
         pricing: [
           {
+            sizeLabel: "Micro-business",
+            price: "Pilote IA",
+            detail:
+              "Implementation of a simple use case (document management, meeting minutes, lead qualification) for small Brest basin structures.",
+          },
+          {
             sizeLabel: "SME",
             price: "SME mission",
             detail:
@@ -609,7 +645,7 @@ export const BREST_COPY: VilleCopy = {
     },
     unAUn: {
       fr: {
-        hero: "Le coaching IA 1-to-1 Axion-IA à Brest accompagne individuellement les dirigeants et cadres des technologies marines, de la défense maritime, du Technopôle Brest-Iroise et des PME du Finistère. À partir de {{price:intervention-dirigeants|flat}} pour les PME, chaque programme est bâti autour de vos cas d'usage réels — documentation technique maritime, traitement de données océaniques, reporting de bureau d'études ou gestion commerciale de PME brestoise. Vous progressez à votre rythme, sans théorie superflue.",
+        hero: "Le coaching IA 1-to-1 Axion-IA à Brest accompagne individuellement les dirigeants et cadres des technologies marines, de la défense maritime, du Technopôle Brest-Iroise et des PME du Finistère. À partir de {{price:intervention-dirigeants|flat}} pour les TPE, chaque programme est bâti autour de vos cas d'usage réels — documentation technique maritime, traitement de données océaniques, reporting de bureau d'études ou gestion commerciale de PME brestoise. Vous progressez à votre rythme, sans théorie superflue.",
         whyHere: [
           "Brest concentre des ingénieurs et cadres de la défense maritime (Naval Group, Thales Underwater Systems, Marine nationale) avec des besoins IA précis et des contraintes de confidentialité fortes — le coaching 1-to-1 s'adapte à leurs contraintes réglementaires.",
           "Les chercheurs et cadres d'IFREMER, du Lab-STICC et du Technopôle Brest-Iroise ont des besoins IA spécifiques sur le traitement de données scientifiques marines, la veille bibliographique et la valorisation de données — le coaching individuel cible ces enjeux précisément.",
@@ -646,6 +682,12 @@ export const BREST_COPY: VilleCopy = {
           },
         ],
         pricing: [
+          {
+            sizeLabel: "TPE",
+            price: "À partir de {{price:intervention-dirigeants|flat}}",
+            detail:
+              "Programme d'entrée pour les gérants de TPE, artisans, indépendants et petites structures du Finistère souhaitant intégrer l'IA dans leur activité quotidienne.",
+          },
           {
             sizeLabel: "PME",
             price: "Sur devis",
@@ -733,6 +775,12 @@ export const BREST_COPY: VilleCopy = {
         ],
         pricing: [
           {
+            sizeLabel: "Micro-business",
+            price: "From {{price:intervention-dirigeants|compact}} excl. VAT",
+            detail:
+              "Entry programme for micro-business owners, craft firms, freelancers and small Finistère structures wishing to integrate AI into their daily activity.",
+          },
+          {
             sizeLabel: "SME",
             price: "On quote",
             detail:
@@ -819,6 +867,12 @@ export const BREST_COPY: VilleCopy = {
         ],
         pricing: [
           {
+            sizeLabel: "TPE",
+            price: "Brique IA greffée",
+            detail:
+              "Ajout d'une brique IA (chatbot RAG, recherche sémantique) sur un site existant en quelques semaines, sans refonte.",
+          },
+          {
             sizeLabel: "PME",
             price: "Site / application sur mesure",
             detail:
@@ -899,6 +953,12 @@ export const BREST_COPY: VilleCopy = {
         ],
         pricing: [
           {
+            sizeLabel: "Micro-business",
+            price: "Grafted AI brick",
+            detail:
+              "Adding an AI brick (RAG chatbot, semantic search) onto an existing site in a few weeks, no rebuild.",
+          },
+          {
             sizeLabel: "SME",
             price: "Bespoke site / app",
             detail:
@@ -948,7 +1008,7 @@ export const BREST_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Combien coûte un audit IA opérationnel à Brest ?",
-      a: "Le tarif dépend du niveau retenu — Audit sur place, Ciblé, Stratégique PME ou Stratégique ETI. Tarifs publics affichés sur la page Audit, choix calibré selon votre taille (PME, ETI et grands groupes, grande entreprise) et votre périmètre. Aucun supplément géographique : le tarif est le même à Brest que partout en France.",
+      a: "Le tarif dépend du niveau retenu — Audit sur place, Ciblé, Stratégique PME ou Stratégique ETI. Tarifs publics affichés sur la page Audit, choix calibré selon votre taille (TPE, PME, ETI, grande entreprise) et votre périmètre. Aucun supplément géographique : le tarif est le même à Brest que partout en France.",
     },
     {
       q: "Axion-IA intervient-il sur site à Brest et dans le Finistère ?",

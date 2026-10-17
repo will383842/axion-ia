@@ -174,7 +174,7 @@ Le Health Data Hub, groupement d'intérêt public piloté par le Ministère de l
 ## Financement public disponible
 
 - **France 2030 — Santé numérique** : axe dédié doté d'environ 650 millions d'euros, financé via Bpifrance et l'ANR, couvrant IA médicale, séquençage génomique et télémédecine.
-- **Bpifrance** : prêts innovation, garanties et fonds de capital-risque ciblant les HealthTech IA. Programme « IA Booster » accessible aux PME et ETI du secteur.
+- **Bpifrance** : prêts innovation, garanties et fonds de capital-risque ciblant les HealthTech IA. Programme « IA Booster » accessible aux TPE, PME et ETI du secteur.
 - **Crédit Impôt Recherche (CIR)** : applicable aux dépenses de R&D en IA médicale, jusqu'à 30 % des dépenses éligibles.
 - **Programme PSPC (Projet Structurant Pour la Compétitivité)** : cofinancement pour projets collaboratifs industrie-laboratoires sur l'IA en santé.
 `,

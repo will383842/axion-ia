@@ -31,6 +31,8 @@ import {
   BilanFinFormation,
   BilanRemisParUnAutre,
 } from "@/components/espace-formateur/BilanFinFormation";
+import { EvaluationFinaleFormateur } from "@/components/espace-formateur/EvaluationFinaleFormateur";
+import { lireSaisieFormateur } from "@/server/qualiopi/pedagogie/saisie-evaluation-service";
 import { lireBilanFormateur } from "@/server/qualiopi/formateurs-independants/bilan-fin-formation/service";
 import { contresignaturesAttenduesDuFormateur } from "@/server/qualiopi/emargement/contresignatures-attendues";
 import { feuillePapierPossiblePour } from "@/server/qualiopi/emargement/contresignature-service";
@@ -119,7 +121,12 @@ export default async function Page({
   // `formateurs.bilan_fin_formation` est éteint, pour un salarié, ou avant la fin de la
   // dernière journée. Lu APRÈS la garde de propriété, que le service refait lui-même.
   const bilan = await lireBilanFormateur(id, trainerId, maintenant);
-  const issueBilan = (await searchParams)["bilan"];
+  const paramsRecherche = await searchParams;
+  const issueBilan = paramsRecherche["bilan"];
+  // Lot L08 — la saisie de l'évaluation finale : `null` (aucun bloc) tant que
+  // `qualiopi.pedagogie.actif` est éteint. Lue APRÈS la garde de propriété.
+  const saisieEvaluation = await lireSaisieFormateur(id, trainerId);
+  const issueEvaluation = paramsRecherche["evaluation"];
   const signaturePourStagiaireFermee =
     verrou !== null && verrou.etat.etat === "clos"
       ? "Le dossier de cette session est clos : vous ne pouvez plus faire signer un stagiaire à sa place. Si une signature manque réellement, prévenez l'organisme, qui peut rouvrir le dossier. Votre contresignature, elle, reste possible."
@@ -166,6 +173,14 @@ export default async function Page({
             sessionId={id}
             vue={bilan}
             issue={typeof issueBilan === "string" ? issueBilan : null}
+          />
+        ) : null}
+
+        {saisieEvaluation !== null ? (
+          <EvaluationFinaleFormateur
+            sessionId={id}
+            vue={saisieEvaluation}
+            issue={typeof issueEvaluation === "string" ? issueEvaluation : null}
           />
         ) : null}
 
@@ -369,9 +384,14 @@ export default async function Page({
                       <tr key={p.id} className="border-border border-b last:border-b-0">
                         <td className="text-mocha px-4 py-3">
                           {p.prenom} {p.nom}
-                          {p.besoinAdaptationDeclare ? (
+                          {p.besoinAdaptationDeclare === true ? (
                             <span className="text-fg-muted mt-0.5 block text-xs">
                               besoin d&apos;adaptation déclaré
+                            </span>
+                          ) : null}
+                          {p.mesuresAdaptation !== null ? (
+                            <span className="text-fg-muted mt-0.5 block text-xs">
+                              mesures prévues : {p.mesuresAdaptation}
                             </span>
                           ) : null}
                         </td>
@@ -401,8 +421,13 @@ export default async function Page({
                         {libelle(STATUT_INSCRIPTION_LABELS, p.statut)}
                       </span>
                     </div>
-                    {p.besoinAdaptationDeclare ? (
+                    {p.besoinAdaptationDeclare === true ? (
                       <p className="text-fg-muted mt-1 text-xs">besoin d&apos;adaptation déclaré</p>
+                    ) : null}
+                    {p.mesuresAdaptation !== null ? (
+                      <p className="text-fg-muted mt-1 text-xs">
+                        mesures prévues : {p.mesuresAdaptation}
+                      </p>
                     ) : null}
                     <dl className="text-fg-muted mt-2 space-y-1 text-xs">
                       <div className="flex gap-2">

@@ -24,6 +24,11 @@
  * Node runtime (Prisma, en-têtes de requête).
  */
 
+import {
+  PARTIES_DESTINATAIRES_CONVENTION,
+  TYPES_CONVENTION,
+} from "@/server/qualiopi/recueil/constantes";
+import { garderEnvoiConvention } from "@/server/qualiopi/recueil/garde-convention";
 import * as Sentry from "@sentry/nextjs";
 import { headers } from "next/headers";
 import { z } from "zod";
@@ -376,6 +381,22 @@ export async function emettreLienSignature(
   const actifs = await prisma.documentSignatureToken.count({
     where: { documentGenereId, partie, revokedAt: null },
   });
+
+  // 🔴 QNC L03 — GARDE SERVEUR : aucune convention n'est envoyée au client (ou au
+  // financeur) sans « cadrage validé + devis accepté », sauf dérogation motivée.
+  // Posée ICI, au point commun du lien copié à la main et du lien envoyé par
+  // e-mail. Éteinte (`qualiopi.recueil.actif`), elle ne lit que l'interrupteur.
+  if (
+    piece.sessionId !== null &&
+    TYPES_CONVENTION.includes(piece.type) &&
+    PARTIES_DESTINATAIRES_CONVENTION.includes(partie)
+  ) {
+    const verdict = await garderEnvoiConvention({
+      sessionId: piece.sessionId,
+      auteurId: session?.userId ?? null,
+    });
+    if (!verdict.ok) return { error: verdict.message };
+  }
 
   const entetes = await headers();
   // `cf-connecting-ip` n'est cru que si la connexion vient de Cloudflare :

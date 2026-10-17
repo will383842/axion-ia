@@ -1028,7 +1028,7 @@ export const IMPL_FR_OVERRIDES: Record<ImplementationSlug, ImplementationFrOverr
         id: "no-code-tools",
         question: "Quels outils no-code prenez-vous en charge ?",
         answer:
-          "Principalement n8n, Make, Zapier, Bubble et Airtable, qui couvrent l'essentiel des stacks que nous rencontrons en PME et ETI. Si vous utilisez un autre outil doté d'une API ouverte, nous évaluons la faisabilité au cas par cas.",
+          "Principalement n8n, Make, Zapier, Bubble et Airtable, qui couvrent l'essentiel des stacks que nous rencontrons en TPE, PME et ETI. Si vous utilisez un autre outil doté d'une API ouverte, nous évaluons la faisabilité au cas par cas.",
       },
       {
         id: "no-code-limits",

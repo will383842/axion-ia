@@ -43,6 +43,7 @@ import {
   PLAFOND_ACOMPTE_PARTICULIER_PCT,
 } from "@/server/qualiopi/financements/acompte";
 import { getQualiopiConfig } from "@/server/qualiopi/config/site-settings";
+import { pedagogieActivePour } from "@/server/qualiopi/pedagogie/interrupteur";
 import {
   montantPrisEnChargeCents,
   resteAChargeCents,
@@ -958,6 +959,16 @@ export async function produirePositionnement(
 // 7. Grille d'évaluation des compétences (ind. 11) — par stagiaire
 // ─────────────────────────────────────────────────────────────────────────────
 
+/**
+ * Motif de la grille refusée faute de saisie (lot L08). Exporté : le passage
+ * horaire de production automatique le reconnaît pour NE PAS le journaliser
+ * comme une erreur — attendre la saisie du formateur est l'état normal d'un
+ * stagiaire pas encore évalué, pas un échec à relancer chaque heure.
+ */
+export const MOTIF_GRILLE_ATTEND_SAISIE =
+  "Aucune évaluation finale n'est saisie pour ce stagiaire : la grille d'évaluation se produit " +
+  "à partir de la saisie du formateur, jamais vierge.";
+
 export async function produireGrilleEvaluation(
   enrollmentId: string,
   opts?: OptionsProduction,
@@ -966,10 +977,12 @@ export async function produireGrilleEvaluation(
     where: { id: enrollmentId },
     select: {
       id: true,
+      estTestInterne: true,
       trainee: { select: { id: true, nom: true, prenom: true } },
       session: {
         select: {
           id: true,
+          estTestInterne: true,
           titreSession: true,
           dateDebut: true,
           coFormateurs: true,
@@ -1008,8 +1021,20 @@ export async function produireGrilleEvaluation(
     // ligne « Date d'évaluation » de la pièce imprimait `session.dateDebut` :
     // une date fausse sur un document remis au stagiaire et versé au dossier
     // d'audit. La vraie date existait, à un mot du `select`.
-    select: { competences: true, recommandations: true, dateEvaluation: true },
+    select: { id: true, competences: true, recommandations: true, dateEvaluation: true },
   });
+
+  // 🔴 Lot L08 (O13, `qualiopi.pedagogie.actif`) — la grille naît de la SAISIE.
+  // Sans évaluation enregistrée, la grille VIERGE ci-dessous était produite et
+  // versée au dossier comme une pièce de preuve : un formulaire, pas un constat.
+  // Elle ne l'est plus ; le motif dit où saisir.
+  const grilleNaitDeLaSaisie = await pedagogieActivePour({
+    estTestInterne:
+      enrollment.estTestInterne === true || enrollment.session.estTestInterne === true,
+  });
+  if (grilleNaitDeLaSaisie && evaluationFinale === null) {
+    return { ok: false, motif: MOTIF_GRILLE_ATTEND_SAISIE };
+  }
 
   const competencesEvaluees = Array.isArray(evaluationFinale?.competences)
     ? (evaluationFinale.competences as unknown[]).flatMap((c) => {
@@ -1066,6 +1091,14 @@ export async function produireGrilleEvaluation(
       }),
     refs: { sessionId: session.id, traineeId: trainee.id },
   });
+
+  // L'évaluation retient sa grille (colonne `document_id`, jusqu'ici jamais écrite).
+  if (grilleNaitDeLaSaisie && evaluationFinale !== null) {
+    await prisma.evaluationAcquis.update({
+      where: { id: evaluationFinale.id },
+      data: { documentId: doc.id },
+    });
+  }
 
   return { ok: true, documentId: doc.id, numero: doc.numero };
 }

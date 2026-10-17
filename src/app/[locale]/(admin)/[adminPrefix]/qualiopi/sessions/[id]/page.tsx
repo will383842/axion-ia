@@ -21,6 +21,7 @@ import Link from "next/link";
 import { Fragment, type ReactNode } from "react";
 import { notFound } from "next/navigation";
 
+import { RecueilBesoinSession } from "@/components/admin/qualiopi/RecueilBesoinSession";
 import { PreparationKitSession } from "@/components/admin/qualiopi/PreparationKitSession";
 import { lirePreparation } from "@/server/qualiopi/kit-session/preparation";
 import { genererSortiesAction, validerSortiesAction } from "@/server/actions/qualiopi/kit-session";
@@ -60,6 +61,7 @@ import { lireEtatSignatureLettreMissionConsole } from "@/server/qualiopi/documen
 import { QuestionnairesSection } from "@/components/admin/qualiopi/QuestionnairesSection";
 import { envoyerQuestionnaireAction } from "@/server/actions/qualiopi/questionnaires";
 import { lirePositionnement } from "@/server/qualiopi/positionnement/lecture-positionnement";
+import { lireReponsesDetailleesSession } from "@/server/qualiopi/pedagogie/reponses-detaillees-session";
 import { stagiairesAvecPrecision } from "@/server/qualiopi/positionnement/precision-presente";
 import {
   HORODATAGE_CIRCUIT_VIDE,
@@ -108,6 +110,8 @@ import {
   type PhaseFiche,
 } from "@/features/admin-qualiopi/session-hub/ancres";
 import { OngletsPhase } from "@/features/admin-qualiopi/session-hub/OngletsPhase";
+import { BlocMoyensSession } from "@/components/admin/qualiopi/BlocMoyensSession";
+import { estActifPour, lireInterrupteurQualiopi } from "@/server/qualiopi/socle/interrupteurs";
 import { lireEtatVerrouFiche, lireParcoursFiche } from "@/server/qualiopi/sessions/lectures-fiche";
 import {
   dateHeureParis,
@@ -210,6 +214,7 @@ function chargerSession(id: string) {
       lieuVille: true,
       lieuSalle: true,
       lieuVisioUrl: true,
+      estTestInterne: true,
       contactSurPlaceNom: true,
       contactSurPlaceTelephone: true,
       consignesAcces: true,
@@ -444,6 +449,7 @@ export default async function SessionHubPage({ params, searchParams }: PageProps
     preparationKit,
     parcours,
     verrou,
+    interrupteurMoyens,
   ] = await Promise.all([
     // État de signature du relevé de connexion, lu APRÈS la garde de rôle.
     // `null` quand la session n'a pas de relevé — cas NORMAL du présentiel.
@@ -504,9 +510,15 @@ export default async function SessionHubPage({ params, searchParams }: PageProps
     // Mémoïsé pour le rendu : le layout l'a déjà lu pour son bandeau, et il
     // rend « introuvable » s'il est nul — la page fait de même, sans repli.
     lireEtatVerrouFiche(id),
+    // QNC L07 — le champ « Motif » du lieu ne s'affiche que si le lot agit sur
+    // CETTE session (éteint = la fiche est exactement celle d'avant). Ne lève
+    // jamais : une lecture en échec vaut « éteint ».
+    lireInterrupteurQualiopi("moyens"),
   ]);
 
   if (!trainingSession || verrou === null) notFound();
+
+  const moyensActif = estActifPour(interrupteurMoyens, trainingSession);
 
   const mentionTvaSession = mentionTva(regimeTva);
 
@@ -781,6 +793,10 @@ export default async function SessionHubPage({ params, searchParams }: PageProps
     montantHtEuros: e.montantHtCents != null ? e.montantHtCents / 100 : null,
   }));
 
+  // Lot L08 (O4) — réponses lues question par question ; table vide tant que
+  // `qualiopi.pedagogie.actif` est éteint (la fiche est alors inchangée).
+  const reponsesDetaillees = await lireReponsesDetailleesSession(id);
+
   const questionnairesSerialized = enrollmentsRaw.flatMap((e) =>
     e.questionnaires.map((q) => ({
       id: q.id,
@@ -793,6 +809,9 @@ export default async function SessionHubPage({ params, searchParams }: PageProps
         q.type === "positionnement" && q.reponduAt !== null ? lirePositionnement(q.reponses) : null,
       precisionSurFicheStagiaire:
         q.type === "positionnement" && traineesAvecDetailChiffre.has(e.trainee.id),
+      ...(reponsesDetaillees.has(q.id)
+        ? { reponsesDetaillees: reponsesDetaillees.get(q.id)! }
+        : {}),
     })),
   );
 
@@ -982,6 +1001,9 @@ export default async function SessionHubPage({ params, searchParams }: PageProps
             conflits={conflitsFormateur}
           />
         </section>
+        {/* QNC L03 — recueil du besoin (temps 1) : rien tant que `qualiopi.recueil.actif`
+              est éteint pour cette session. */}
+        <RecueilBesoinSession sessionId={id} />
       </>
     ),
     checklist: (
@@ -1053,7 +1075,9 @@ export default async function SessionHubPage({ params, searchParams }: PageProps
             sessionId={id}
             initial={lieuValuesDepuisSession(trainingSession)}
             modalite={trainingSession.modalite}
+            moyensActif={moyensActif}
           />
+          <BlocMoyensSession sessionId={id} />
         </section>
       </>
     ),
@@ -1160,6 +1184,14 @@ export default async function SessionHubPage({ params, searchParams }: PageProps
             </Link>
             <Link href={`${sessionBase}/financement`} className={subLinkCls}>
               <span>Financement</span>
+            </Link>
+            {/* Chantier QNC, L11 — tout ce qui concerne la session, par
+                destinataire, canal et date : le même rendu que le ZIP. */}
+            <Link href={`${sessionBase}/dossier`} className={subLinkCls}>
+              <span>Dossier complet</span>
+            </Link>
+            <Link href={`${sessionBase}/emails`} className={subLinkCls}>
+              <span>E-mails</span>
             </Link>
             {/* Le nécessaire de séance vit au niveau de la FORMATION (kit projeté
                   + supports générés) : on y mène depuis la session, là où on

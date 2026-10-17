@@ -577,7 +577,7 @@ export const KB_INTERVENTIONS_FORMATIONS: readonly KbFact[] = [
   },
   {
     id: "form-068",
-    text: "Le format « Bootcamp IA intensif » de 3 jours consécutifs permet à une équipe de 6 à 12 personnes de maîtriser les fondamentaux de l'IA générative et de produire un premier prototype d'automatisation opérationnel à l'issue du bootcamp.",
+    text: "Le format « Bootcamp IA intensif » de 3 jours consécutifs permet à une équipe de 2 à 15 personnes de maîtriser les fondamentaux de l'IA générative et de produire un premier prototype d'automatisation opérationnel à l'issue du bootcamp.",
     source: "Axion-IA — Programme Bootcamp IA 2026",
     sourceUrl: "https://axion-ia.com/interventions-formations",
     verifiedAt: "2026-05-22",

@@ -53,7 +53,8 @@ import {
   pieceAdmissibleAuDossier,
   inscriptionSurSessionTenue,
 } from "@/server/qualiopi/conformite/piece-admissible";
-import { evaluerCouvertureOff32 } from "@/server/qualiopi/revues/plan-actions";
+import { evaluerOff32EnVigueur } from "@/server/qualiopi/amelioration/off32-registre";
+import { regleVeilleEnVigueur } from "@/server/qualiopi/veille/regle-veille";
 import { lireReferentielApplique } from "./referentiel-applique";
 import {
   INDICATEURS_RNQ,
@@ -215,6 +216,11 @@ export async function evaluerConformite(): Promise<ConformiteResult> {
   // Troisième branche du besoin déclaré (ind. 10) : absente tant que la colonne
   // n'est pas migrée — l'heure qui suit une fusion (cf. `colonne-declaration.ts`).
   const colonneDeclaration = await colonneDeclarationDisponible();
+
+  // 🔴 Chantier QNC, L10 — veille tracée : interrupteur éteint → `undefined`, la
+  // règle de `whereVeilleExploitee` est inchangée ; allumé → seules les veilles
+  // décidées par une personne et non archivées couvrent 23/24/25.
+  const regleVeille = await regleVeilleEnVigueur();
 
   // ── Collecte des données nécessaires en parallèle ──────────────────────────
   const [
@@ -567,9 +573,9 @@ export async function evaluerConformite(): Promise<ConformiteResult> {
     // d'audit. Elle était juste ici et ABSENTE là-bas : le manifeste déclarait
     // 23/24/25 couverts pour toujours. Deux prédicats jumeaux s'éloignent à la
     // première borne qui bouge — celui-ci n'a plus de jumeau.
-    prisma.veille.count({ where: whereVeilleExploitee("legale", maintenant) }),
-    prisma.veille.count({ where: whereVeilleExploitee("metiers", maintenant) }),
-    prisma.veille.count({ where: whereVeilleExploitee("pedagogique", maintenant) }),
+    prisma.veille.count({ where: whereVeilleExploitee("legale", maintenant, regleVeille) }),
+    prisma.veille.count({ where: whereVeilleExploitee("metiers", maintenant, regleVeille) }),
+    prisma.veille.count({ where: whereVeilleExploitee("pedagogique", maintenant, regleVeille) }),
     // off.26 : email du référent handicap — le NOM seul (défaut config) ne prouve pas la désignation.
     getQualiopiConfig("referent_handicap_email").catch(() => ""),
     // off.31 : procédure de réclamation PUBLIÉE (attestation explicite ≠ nom responsable par défaut).
@@ -1899,7 +1905,9 @@ export async function evaluerConformite(): Promise<ConformiteResult> {
   // l'écran dise quoi remplir plutôt que de se contenter de rougir.
   // L'analyse des risques est exigée par la GRILLE 2026, donc par la date de
   // l'audit, et non par le seul calendrier du jour.
-  const couvertureOff32 = evaluerCouvertureOff32(revueAnnuelle, maintenant, {
+  // 🔴 Chantier QNC, L10 — registre AXI-AMC allumé : le plan évalué est
+  // l'historique de `planActions` plus les actions du registre. Éteint : inchangé.
+  const couvertureOff32 = await evaluerOff32EnVigueur(revueAnnuelle, maintenant, {
     exigeAnalyseRisques: grille.id === "rnq-2026",
   });
   set(32, couvertureOff32.preuves, couvertureOff32.couvert);
