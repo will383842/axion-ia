@@ -11,10 +11,9 @@
  * par `basculerInterrupteurQualiopi` (réglage + `activity_logs` en une
  * transaction).
  *
- * Le réglage « copie à l'entreprise » est un AUTRE réglage, éteint par défaut
- * (Will n'a pas encore tranché) : `qualiopi.convocation_v2.copie_entreprise`,
- * forme `{"actif": true}`. Toute autre valeur, ou une base injoignable, vaut
- * « éteint ».
+ * Il n'y a PAS de réglage propre à la copie à l'entreprise (décision de Will,
+ * 17/10 : le réglage `copie_entreprise` est supprimé) : la copie part dès que
+ * ce réglage-ci s'applique à l'inscription (`actif`, ou `essai` sur le banc d'essai).
  *
  * ⚠️ Atteint par le WORKER : aucun import `server-only`, Next ni Server Action.
  */

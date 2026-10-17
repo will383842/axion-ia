@@ -443,6 +443,7 @@ export async function envoyerConvocation(enrollmentId: string): Promise<boolean>
     await tracerEnvoiV2({
       enrollmentId,
       pieces: piecesV2,
+      accesId,
       instant: instantEnvoi,
       essai: enrollment.estTestInterne === true || session.estTestInterne === true,
     });
@@ -495,12 +496,16 @@ function libellePiece(type: PieceAJoindre["type"]): string {
 
 /**
  * L05 — APRÈS l'envoi accepté par la file : `envoye_at` sur chaque pièce jointe,
- * et une ligne de journal par destinataire. Fail-soft : le courriel est parti,
+ * et UNE ligne de journal, celle du courriel au stagiaire (destinataire, canal et
+ * accès remis). La copie à l'entreprise est tracée par la corbeille de validation
+ * (`email_outbox`) puis `email_logs`, pas ici. Fail-soft : le courriel est parti,
  * un défaut de trace ne doit ni le défaire ni le faire renvoyer — il se dit.
  */
 async function tracerEnvoiV2(input: {
   enrollmentId: string;
   pieces: readonly PieceAJoindre[];
+  /** L'accès dont le numéro a été remis au stagiaire (le J-7 en crée un autre). */
+  accesId: string | null;
   instant: Date;
   essai: boolean;
 }): Promise<void> {
@@ -516,6 +521,9 @@ async function tracerEnvoiV2(input: {
         targetId: input.enrollmentId,
         changes: {
           documents: input.pieces.map((p) => ({ id: p.documentId, numero: p.numero })),
+          destinataire: "stagiaire",
+          canal: "email",
+          accesId: input.accesId,
           essai: input.essai,
         },
         createdAt: input.instant,

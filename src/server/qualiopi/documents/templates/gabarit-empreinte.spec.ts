@@ -102,17 +102,17 @@ const EMPREINTES: Readonly<
   convention: {
     // v6 — 16/10/2026 : mention handicap (L15, NC12) ; v5 archivée.
     // (v5 — 04/10/2026 : clause de condition suspensive OPCO, INT-T65-A.)
-    sha: "bb709433276765a863d542834437a843d806ed8a1bff4cd34a545aa4c5b5b564",
+    sha: "35a373df500c40867d21b308039019061a7aad97be0179ec799e17efd2b1fe85",
     version: 6,
   },
   convention_tripartite: {
     // v6 — 16/10/2026 : même mention, mot pour mot (L15) ; v5 archivée.
-    sha: "3e5482b49930054fa70bf02a1390c834f04c8866142ab8f3c5782a49cd79d2b3",
+    sha: "a2b0b6933d0425a6cdfc5763e2981f75567996856fcce697aec02ab00301f9a6",
     version: 6,
   },
   contrat_formation: {
     // v2 — 30/09/2026 : citations juridiques corrigées ; v1 archivée.
-    sha: "0c138db997a2aadff39ef3843d625d846f7f3ce813f7a39e4287d46a0fddaafa",
+    sha: "d33ee1d4f4a602d05cedb86907ae56d380b995502655ee65c9df85cbaf8fbafa",
     version: 2,
   },
   contrat_sous_traitance: {

@@ -1461,6 +1461,10 @@ export async function produireLivretAccueil(
   const siteBase = identite.site.replace(/\/+$/, "");
   const qrReclamations =
     v2 && siteBase ? await qrDataUrl(`${siteBase}/reclamations`).catch(() => null) : null;
+  // ⚠️ Lu UNE fois, à la production : un livret déjà produit (réutilisé par
+  // `pieces.ts`) garde le repli e-mail/courrier si le formulaire s'allume après.
+  // La clé `qualiopi.reclamations.actif` est SUPPOSÉE : à aligner avec le lot qui
+  // livre ce formulaire.
   const formulaireReclamationActif = v2
     ? (await lireInterrupteurQualiopi("reclamations")) === "actif"
     : false;

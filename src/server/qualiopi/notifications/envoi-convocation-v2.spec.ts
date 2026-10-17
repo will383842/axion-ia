@@ -438,3 +438,19 @@ describe("modalité hybride : un seul libellé", () => {
     expect(formatModalitesFr(["presentiel", "distanciel"])).not.toMatch(/hybride/i);
   });
 });
+
+describe("trace de l'envoi : destinataire, canal et accès remis", () => {
+  it("la ligne de journal porte l'accès dont le numéro a été remis au stagiaire", async () => {
+    etat.mockResolvedValue("actif");
+    await envoyerConvocation("e1");
+    expect(activityCreate).toHaveBeenCalledWith({
+      data: expect.objectContaining({
+        changes: expect.objectContaining({
+          destinataire: "stagiaire",
+          canal: "email",
+          accesId: "1a2b3c4d-1111-4222-8333-444455556666",
+        }),
+      }),
+    });
+  });
+});

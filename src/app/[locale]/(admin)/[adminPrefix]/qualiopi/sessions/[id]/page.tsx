@@ -79,7 +79,10 @@ import {
 } from "@/server/qualiopi/adaptation/reponse-organisme";
 import { colonneDeclarationDisponible } from "@/server/qualiopi/adaptation/colonne-declaration";
 import { lireCircuitAdaptation } from "@/server/qualiopi/adaptation/journal-consignation";
-import { lireRetenuesConvocationSession } from "@/server/qualiopi/convocation-v2/blocage";
+import {
+  lireAccesRemisParInscription,
+  lireRetenuesConvocationSession,
+} from "@/server/qualiopi/convocation-v2/blocage";
 import { numeroAcces } from "@/server/qualiopi/convocation-v2/decision";
 import {
   enrollTraineeAction,
@@ -584,6 +587,7 @@ export default async function SessionHubPage({ params, searchParams }: PageProps
     facturesDesPieces,
     conflitsFormateur,
     retenuesConvocation,
+    accesRemis,
   ] = await Promise.all([
     // ── Mission du formateur principal (2026-09-03) ───────────────────────
     trainingSession.formateurPrincipalId !== null
@@ -659,6 +663,7 @@ export default async function SessionHubPage({ params, searchParams }: PageProps
     // Chantier QNC, L05 — pourquoi une convocation est retenue. Rien si
     // `qualiopi.convocation_v2.actif` est éteint ; ne lève jamais.
     lireRetenuesConvocationSession(id),
+    lireAccesRemisParInscription(enrollmentsRaw.map((e) => e.id)),
   ]);
   const numeroFactureParPiece = new Map(
     facturesDesPieces
@@ -749,7 +754,11 @@ export default async function SessionHubPage({ params, searchParams }: PageProps
         ? { id: acces.id, expiresAt: acces.expiresAt.toISOString(), revoked: acces.revoked }
         : null,
       // L05 — affichés SEULEMENT quand la convocation v2 est allumée.
-      ...(retenuesConvocation.actif && acces ? { numeroAcces: numeroAcces(acces.id) } : {}),
+      // Le numéro REMIS au stagiaire (journalisé à l'envoi), pas le dernier accès :
+      // le rappel J-7 en crée un nouveau.
+      ...(retenuesConvocation.actif && accesRemis[e.id] !== undefined
+        ? { numeroAcces: numeroAcces(accesRemis[e.id]!) }
+        : {}),
       ...(retenuesConvocation.parInscription[e.id] !== undefined
         ? { convocationRetenue: [...retenuesConvocation.parInscription[e.id]!] }
         : {}),

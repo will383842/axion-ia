@@ -209,3 +209,35 @@ export async function lireRetenuesConvocationSession(
     return AUCUNE_RETENUE;
   }
 }
+
+/**
+ * Pour la console : le numéro d'accès REMIS au stagiaire par sa convocation, tel
+ * que journalisé à l'envoi (`accesId` dans `qualiopi.convocation.envoyee_v2`). Le
+ * dernier accès non révoqué n'est pas fiable : le rappel J-7 en crée un autre.
+ * Ne lève jamais. Une inscription sans trace n'a pas d'entrée.
+ */
+export async function lireAccesRemisParInscription(
+  enrollmentIds: readonly string[],
+): Promise<Readonly<Record<string, string>>> {
+  if (enrollmentIds.length === 0) return {};
+  try {
+    const lignes = await prisma.activityLog.findMany({
+      where: {
+        action: ACTION_JOURNAL_CONVOCATION_ENVOYEE,
+        targetType: "Enrollment",
+        targetId: { in: [...enrollmentIds] },
+      },
+      orderBy: { createdAt: "desc" },
+      select: { targetId: true, changes: true },
+    });
+    const remis: Record<string, string> = {};
+    for (const l of lignes) {
+      if (l.targetId === null || remis[l.targetId] !== undefined) continue;
+      const accesId = (l.changes as { accesId?: unknown } | null)?.accesId;
+      if (typeof accesId === "string") remis[l.targetId] = accesId;
+    }
+    return remis;
+  } catch {
+    return {};
+  }
+}

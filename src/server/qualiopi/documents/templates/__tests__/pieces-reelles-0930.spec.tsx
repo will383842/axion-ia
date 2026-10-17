@@ -98,7 +98,7 @@ describe("1. aucune valeur d'énumération brute sur les pièces", () => {
   it("les libellés sont idempotents et gardent l'inconnu visible", () => {
     expect(libelleModalite("presentiel")).toBe("Présentiel");
     expect(libelleModalite("distanciel")).toBe("Distanciel");
-    expect(libelleModalite("hybride")).toBe("Mixte");
+    expect(libelleModalite("hybride")).toBe("Hybride (présentiel et distanciel)");
     expect(libelleModalite("Présentiel")).toBe("Présentiel");
     expect(libelleModaliteMinuscule("presentiel")).toBe("présentiel");
     expect(libelleFinancement("france_travail")).toBe("France Travail");
@@ -112,9 +112,9 @@ describe("1. aucune valeur d'énumération brute sur les pièces", () => {
     expect(t).not.toMatch(/\bpresentiel\b/);
   });
 
-  it("l'attestation partielle imprime « Mixte », jamais « hybride »", () => {
+  it("l'attestation partielle imprime « Hybride (présentiel et distanciel) », jamais « hybride » brut", () => {
     const t = texte(<AttestationPartiellePdf data={PARTIELLE} />);
-    expect(t).toContain("Mixte");
+    expect(t).toContain("Hybride (présentiel et distanciel)");
     expect(t).not.toMatch(/\bhybride\b/);
   });
 
