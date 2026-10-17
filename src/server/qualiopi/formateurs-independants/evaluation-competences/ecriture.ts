@@ -13,7 +13,7 @@
  * Une décision « habilité » qui n'atteint pas les seuils de `reglages.ts` est refusée ;
  * toute décision porte un motif et garde une copie des seuils du jour.
  *
- * Verrou : `__tests__/ecrivain-unique.spec.ts` refuse toute autre écriture de la table.
+ * Verrou : `__tests__/ecrivain-unique-et-idor.spec.ts` refuse toute autre écriture de la table.
  */
 
 import { prisma } from "@/lib/prisma";

@@ -5,7 +5,7 @@
  * d'activation et la garde de mission : tous jugent sur les mêmes lignes.
  *
  * 🔴 Aucun écran du formateur (dossier en ligne, espace formateur) n'importe ce module :
- * un test le verrouille (`__tests__/le-formateur-ne-voit-jamais-les-grilles.spec.ts`).
+ * un test le verrouille (`__tests__/ecrivain-unique-et-idor.spec.ts`).
  *
  * Module neutre (sans `server-only`) : `activation.ts` et la garde de mission sont aussi
  * appelés hors requête.

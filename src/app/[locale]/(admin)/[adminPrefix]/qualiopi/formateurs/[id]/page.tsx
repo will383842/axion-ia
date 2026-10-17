@@ -18,7 +18,6 @@ import {
 } from "@/server/qualiopi/trainers/documents";
 import { TrainerForm } from "@/components/admin/qualiopi/TrainerForm";
 import { TrainerManageForm } from "@/components/admin/qualiopi/TrainerManageForm";
-import { FinCollaborationPanel } from "@/components/admin/qualiopi/FinCollaborationPanel";
 import {
   LIBELLES_MOTIF_FIN,
   conservationApresFin,
@@ -92,8 +91,11 @@ import { peutEngager } from "@/server/auth/habilitations";
 import { envoiAllume } from "@/server/qualiopi/formateurs-independants/interrupteurs-envoi";
 import { numeroRecuAVerifier } from "@/server/qualiopi/formateurs-independants/numero-declaration-espace";
 import { LieuFormateurPanel } from "@/components/admin/qualiopi/LieuFormateurPanel";
-import { PresentationMethodePanel } from "@/components/admin/qualiopi/PresentationMethodePanel";
-import { EvaluationCompetencesPanel } from "@/components/admin/qualiopi/EvaluationCompetencesPanel";
+import {
+  EvaluationCompetencesPanelDiffere,
+  FinCollaborationPanelDiffere,
+  PresentationMethodePanelDiffere,
+} from "@/components/admin/qualiopi/PanneauxDifferesFicheFormateur";
 import { lireEvaluationsConsole } from "@/server/qualiopi/formateurs-independants/evaluation-competences/lecture";
 import {
   etatEvaluation,
@@ -723,7 +725,7 @@ export default async function FicheFormateurPage({ params, searchParams }: PageP
         />
       )}
 
-      {voitPresentation && <PresentationMethodePanel trainerId={trainer.id} />}
+      {voitPresentation && <PresentationMethodePanelDiffere trainerId={trainer.id} />}
 
       {voitEvaluation && evaluations === null && (
         <div className="admin-alert admin-alert-error mb-[var(--space-admin-5)]" role="alert">
@@ -731,7 +733,7 @@ export default async function FicheFormateurPage({ params, searchParams }: PageP
         </div>
       )}
       {voitEvaluation && evaluations !== null && etatEval !== null && (
-        <EvaluationCompetencesPanel
+        <EvaluationCompetencesPanelDiffere
           trainerId={trainer.id}
           formations={formations}
           lignes={evaluations.map((l) => ({
@@ -1100,7 +1102,7 @@ export default async function FicheFormateurPage({ params, searchParams }: PageP
       </div>
 
       {voitFinCollaboration ? (
-        <FinCollaborationPanel trainerId={trainer.id} terminee={finTerminee} />
+        <FinCollaborationPanelDiffere trainerId={trainer.id} terminee={finTerminee} />
       ) : null}
 
       <TrainerManageForm
