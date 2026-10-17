@@ -18,7 +18,8 @@
  ascent/descent-override = métrique hhea / unitsPerEm / size-adjust (exprimés avant ajustement, comme next/font).
  next/font fige les faces fixes 400 et 600 (Manrope) : le 500 s'affiche donc en wght 400.
  next/font calibre sinon son repli sur l'instance PAR DÉFAUT du fichier variable : Manrope = wght 200,
- Fraunces = wght 900 → au swap le hero reflue (CLS prod 0,22-0,27 sur /formations, /implantations/*/paris).
+ Fraunces = wght 900 → au swap le hero reflue (CLS prod 0,22-0,27 sur /formations, /implantations/*/
+paris).
  adjustFontFallback est donc coupé dans layout.tsx et ces faces prennent le relais (--font-sans / --font-serif). */
 @font-face {
   font-family: "Manrope Fallback";
@@ -87,7 +88,7 @@
   font-style: italic;
   size-adjust: 114.32%;
   ascent-override: 85.55%;
-  descent-override: 22.30%;
+  descent-override: 22.3%;
   line-gap-override: 0%;
 }
 @font-face {
@@ -196,13 +197,14 @@
 
   /* ----- Typography v3 ----- */
   --font-sans:
-    var(--font-manrope), "Manrope Fallback", -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+    var(--font-manrope), "Manrope Fallback", -apple-system, BlinkMacSystemFont, "Segoe UI",
+    system-ui, sans-serif;
   /* P-105 : chaîne désormais `--font-fraunces` (variable next/font renommée)
      pour éviter l'auto-référence `--font-serif: var(--font-serif)` qui
      empêchait les fallbacks intermédiaires d'être actifs. */
   --font-serif:
-    var(--font-fraunces), "Fraunces Fallback", "Iowan Old Style", "Palatino Linotype", Palatino, "URW Palladio L", P052,
-    serif;
+    var(--font-fraunces), "Fraunces Fallback", "Iowan Old Style", "Palatino Linotype", Palatino,
+    "URW Palladio L", P052, serif;
   --font-mono: var(--font-inconsolata), ui-monospace, SFMono-Regular, Menlo, monospace;
 
   /* Type scale v3.2 — Modular hierarchy 2026 (ADR 0007, anchored body 18px Major Third 1.25)
