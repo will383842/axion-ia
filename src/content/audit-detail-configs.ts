@@ -725,7 +725,8 @@ export const AUDIT_DETAIL_CONFIGS: Record<AuditTier, AuditDetailConfig> = {
       durationEn: "1 full day (9 a.m.-5 p.m.)",
       formatFr: "Présentiel dans vos locaux",
       formatEn: "On site, at your premises",
-      audienceFr: "TPE et petites entreprises jusqu'à 19 salariés · artisans · commerçants · indépendants",
+      audienceFr:
+        "TPE et petites entreprises jusqu'à 19 salariés · artisans · commerçants · indépendants",
       audienceEn: "Small businesses 1-19 staff · artisans · retailers · freelancers",
       deliverableFr:
         "Rapport 8-15 pages : cartographie, outils chiffrés, prompts testés, 3-5 quick-wins classés — sous 48 h ouvrées (7 jours max)",
