@@ -65,6 +65,25 @@ const updatePartenariatSchema = z.object({
   preuveUrl: z.string().trim().url().max(2000).nullable().optional(),
 });
 
+/**
+ * Valeur d'avant de chaque champ présent dans la modification (dates en ISO, champ
+ * vide en `null`). Les champs absents de la modification ne sont pas recopiés.
+ */
+function valeursAvant(
+  existant: object,
+  modifies: Record<string, unknown>,
+): Record<string, string | number | boolean | null> {
+  const ligne = existant as Record<string, unknown>;
+  const avant: Record<string, string | number | boolean | null> = {};
+  for (const champ of Object.keys(modifies)) {
+    if (modifies[champ] === undefined) continue;
+    const v = ligne[champ];
+    avant[champ] =
+      v instanceof Date ? v.toISOString() : ((v ?? null) as string | number | boolean | null);
+  }
+  return avant;
+}
+
 // ─────────────────────────────────────────────────────────────────────────────
 // Actions
 // ─────────────────────────────────────────────────────────────────────────────
@@ -165,11 +184,14 @@ export async function updatePartenariatAction(input: {
     return { error: "Partenariat introuvable ou erreur de mise à jour" };
   }
 
+  // Verrou du registre (off.26, L15) : le journal garde la valeur d'AVANT de chaque champ
+  // modifié. Sans elle, « Inactif » ou un interlocuteur effacé n'avaient plus de
+  // preuve de ce qu'ils remplaçaient : rien ne s'efface, tout se retrace.
   await logQualiopiActivity({
     action: "qualiopi.partenariat.update",
     targetType: "Partenariat",
     targetId: id,
-    changes: fields,
+    changes: { ...fields, avant: valeursAvant(existe, fields) },
     session,
   });
 

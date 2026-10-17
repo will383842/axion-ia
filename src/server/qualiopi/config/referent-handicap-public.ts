@@ -26,7 +26,7 @@
  */
 
 import { cache } from "react";
-import { getQualiopiConfig } from "@/server/qualiopi/config/site-settings";
+import { getQualiopiConfig, getQualiopiConfigStrict } from "@/server/qualiopi/config/site-settings";
 
 export interface ReferentHandicapPublic {
   /** Nom de la personne désignée, ou `""` tant que la désignation n'est pas prouvée. */
@@ -44,11 +44,21 @@ export const REFERENT_HANDICAP_REPLI: ReferentHandicapPublic = {
   email: "handicap@axion-ia.com",
 };
 
-/** Implémentation non mémoïsée (tests). En production : `getReferentHandicapPublic`. */
-export async function computeReferentHandicapPublic(): Promise<ReferentHandicapPublic> {
+/**
+ * Implémentation non mémoïsée (tests). En production : `getReferentHandicapPublic`.
+ *
+ * `strict` (pages ISR) : une base illisible LÈVE au lieu de rendre le repli — sans
+ * quoi une panne passagère à la régénération figeait « pas de contact » dans le
+ * cache pour toute la période de revalidation. Absent / non saisi : repli, comme
+ * avant ; build `stub.invalid` : `findUnique` rend `null`, donc repli, sans lever.
+ */
+export async function computeReferentHandicapPublic(
+  options: { readonly strict?: boolean } = {},
+): Promise<ReferentHandicapPublic> {
+  const lire = options.strict === true ? getQualiopiConfigStrict : getQualiopiConfig;
   const [nom, email] = await Promise.all([
-    getQualiopiConfig("referent_handicap_nom").catch(() => ""),
-    getQualiopiConfig("referent_handicap_email").catch(() => ""),
+    lire("referent_handicap_nom"),
+    lire("referent_handicap_email"),
   ]);
   const emailPropre = typeof email === "string" ? email.trim() : "";
   // Nommé ET joignable, ou rien : le nom seul est le défaut du registre.
@@ -57,4 +67,9 @@ export async function computeReferentHandicapPublic(): Promise<ReferentHandicapP
 }
 
 /** Version mémoïsée par rendu. */
-export const getReferentHandicapPublic = cache(computeReferentHandicapPublic);
+export const getReferentHandicapPublic = cache(() => computeReferentHandicapPublic());
+
+/** Version mémoïsée STRICTE, pour les pages ISR (cf. `computeReferentHandicapPublic`). */
+export const getReferentHandicapPublicStrict = cache(() =>
+  computeReferentHandicapPublic({ strict: true }),
+);

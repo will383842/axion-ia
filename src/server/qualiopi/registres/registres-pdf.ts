@@ -319,6 +319,11 @@ async function buildRevueDirection(): Promise<Omit<RegistreData, "dateEdition">>
   };
 }
 
+function libelleInterlocuteur(nom: string | null, email: string | null): string {
+  const parties = [nom?.trim(), email?.trim()].filter((x): x is string => !!x);
+  return parties.length > 0 ? parties.join(" — ") : "Non renseigné";
+}
+
 async function buildPartenariats(): Promise<Omit<RegistreData, "dateEdition">> {
   const rows = await prisma.partenariat.findMany({
     select: {
@@ -328,6 +333,10 @@ async function buildPartenariats(): Promise<Omit<RegistreData, "dateEdition">> {
       dateDebut: true,
       dateFin: true,
       actif: true,
+      interlocuteurNom: true,
+      interlocuteurEmail: true,
+      dernierEchangeAt: true,
+      preuveUrl: true,
     },
     orderBy: { dateDebut: "desc" },
     take: EXPORT_TAKE,
@@ -336,14 +345,30 @@ async function buildPartenariats(): Promise<Omit<RegistreData, "dateEdition">> {
     titre: "Registre des partenariats",
     sousTitre:
       "Réseau de partenaires, dont réseau d'acteurs du handicap (indicateur 26 du référentiel national qualité).",
-    colonnes: ["Nom", "Type", "Objet", "Début", "Fin", "Statut"],
+    // L15 (NC12, off.26) : l'auditeur demande QUI, QUAND et OÙ EST LA PIÈCE. Une trace
+    // absente est DITE (« Aucun échange tracé »), pas laissée en blanc ; un partenariat
+    // inactif est écrit « Inactif » — il ne compte pas comme réseau mobilisable.
+    colonnes: [
+      "Nom",
+      "Type",
+      "Objet",
+      "Interlocuteur",
+      "Dernier échange",
+      "Pièce",
+      "Début",
+      "Fin",
+      "Statut",
+    ],
     lignes: rows.map((p) => [
       p.nom,
       p.type,
       p.objet,
+      libelleInterlocuteur(p.interlocuteurNom, p.interlocuteurEmail),
+      p.dernierEchangeAt ? formatDateFr(p.dernierEchangeAt) : "Aucun échange tracé",
+      p.preuveUrl?.trim() ? p.preuveUrl.trim() : "Aucune pièce",
       formatDateFr(p.dateDebut),
       formatDateFr(p.dateFin),
-      p.actif ? "Actif" : "Terminé",
+      p.actif ? "Actif" : "Inactif",
     ]),
     mentionBasDePage: MENTION_EXPORT,
   };

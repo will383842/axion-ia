@@ -1,5 +1,5 @@
 /**
- * Qualiopi — Fiche d'adaptation individuelle (docs A16/A9, ind. 10/20/26).
+ * Qualiopi — Fiche d'adaptation individuelle (docs A16/A9, ind. 10).
  *
  * Trace les adaptations réalisées pour un stagiaire sur une session
  * (Enrollment.adaptationsRealisees) + coordonnées du référent handicap +
@@ -110,9 +110,10 @@ export function FicheAdaptationPdf({
         </DocSection>
 
         <LegalCallout variant="legal" title="Référentiel national qualité">
-          Cette fiche trace l&apos;adaptation de la prestation aux bénéficiaires (indicateur 10) et
-          l&apos;accueil des personnes en situation de handicap (indicateurs 20 et 26). Toute
-          demande d&apos;adaptation peut être adressée au référent handicap ci-dessus.
+          Cette fiche trace l&apos;adaptation de la prestation aux bénéficiaires, y compris en
+          situation de handicap (indicateur 10 du Référentiel national qualité, article L.6316-3 du
+          Code du travail). Toute demande d&apos;adaptation peut être adressée au référent handicap
+          ci-dessus.
         </LegalCallout>
       </QualiopiPage>
     </Document>

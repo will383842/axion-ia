@@ -389,6 +389,13 @@ export function DevisPdf({ data }: { data: DevisData }): React.ReactElement {
               transmis. C'est la même leçon que le circuit « Bon pour accord »
               ci-dessous : on signe ce qu'on a sous les yeux. */}
           <Text style={styles.legalLine}>{cgvMention}</Text>
+          {/* L15 (NC12, indicateur 26) — le référent handicap et la possibilité
+              d'adaptation figurent sur la pièce que le client lit et signe. */}
+          <Text style={styles.legalLine}>
+            {
+              "Situation de handicap : notre référent handicap étudie avec vous, avant la formation, les adaptations possibles (supports, rythme, accès, modalités). Contact : handicap@axion-ia.com."
+            }
+          </Text>
         </LegalCallout>
 
         {/* ── Bon pour accord — en bas du document, SOUS les totaux ──

@@ -631,6 +631,16 @@ export function ConventionPdf({
           </View>
         </DocSection>
 
+        {/* Handicap (L15, NC12, indicateur 26) — non numérotée, pour ne renuméroter
+            aucune section : référent, contact et possibilité d'adaptation. */}
+        <DocSection title="Accessibilité et situation de handicap">
+          <Text style={pdfStyles.paragraph}>
+            {
+              "Situation de handicap : notre référent handicap étudie avec vous, avant la formation, les adaptations possibles (supports, rythme, accès, modalités). Contact : handicap@axion-ia.com."
+            }
+          </Text>
+        </DocSection>
+
         {/* 11. Signatures */}
         {/* « Fait à » = ville du siège : la pièce est établie par l'OF, pas sur le
             lieu de formation. Un blanc ici sortait « Fait à ______ » sur une pièce

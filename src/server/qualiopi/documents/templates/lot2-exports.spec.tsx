@@ -300,6 +300,15 @@ describe("FicheAdaptationPdf", () => {
     expect(text).toMatch(/Recueil du besoin/);
   });
 
+  it("🔴 L15 : cite l'indicateur 10 et l'article L.6316-3, plus « indicateurs 20 et 26 »", () => {
+    const text = collectPdfTextNormalized(
+      React.createElement(FicheAdaptationPdf, { data, identite: IDENTITE }),
+    );
+    expect(text).toMatch(/indicateur 10/);
+    expect(text).toContain("L.6316-3");
+    expect(text).not.toMatch(/indicateurs 20 et 26/);
+  });
+
   it("aucune adaptation renseignée → mention explicite (pas de champ masqué)", () => {
     const text = collectPdfTextNormalized(
       React.createElement(FicheAdaptationPdf, {

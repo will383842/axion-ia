@@ -4,7 +4,7 @@
  *
  * creerPartenariat   : crée un partenariat.
  * updatePartenariat  : met à jour un partenariat.
- * supprimerPartenariat : supprime un partenariat.
+ * (pas de suppression : un partenariat qui cesse passe « inactif », rien ne s'efface)
  * getPartenariat     : lecture unitaire.
  * listPartenariats   : liste filtrée actif/inactif.
  *
@@ -124,18 +124,6 @@ export async function updatePartenariat(
       ...fragmentTrace(input),
     },
   });
-}
-
-// ─────────────────────────────────────────────────────────────────────────────
-// supprimerPartenariat
-// ─────────────────────────────────────────────────────────────────────────────
-
-/** Supprime un partenariat. */
-export async function supprimerPartenariat(id: string): Promise<Partenariat> {
-  if (process.env["DATABASE_URL"]?.includes("stub.invalid")) {
-    throw new Error("partenariats-service: mutations interdites en mode stub.invalid");
-  }
-  return prisma.partenariat.delete({ where: { id } });
 }
 
 // ─────────────────────────────────────────────────────────────────────────────

@@ -13,12 +13,14 @@
 "use server";
 
 import { z } from "zod";
+import { revalidatePath } from "next/cache";
 import { requireAdminWrite } from "@/server/actions/qualiopi/_guards";
 import {
   setQualiopiConfig,
   QUALIOPI_CONFIG_REGISTRY,
   type QualiopiConfigKey,
 } from "@/server/qualiopi/config/site-settings";
+import { pagesPubliquesDuReglage } from "@/server/qualiopi/config/pages-publiques-du-reglage";
 
 type ActionResult<T> = { data: T } | { error: string };
 
@@ -70,6 +72,18 @@ export async function setQualiopiConfigAction(
     // n'apporte.
     const motif = e instanceof z.ZodError ? e.issues[0]?.message : undefined;
     return { error: motif ?? `Valeur refusée pour « ${key} » (format invalide)` };
+  }
+
+  // Les pages publiques en ISR qui rendent ce réglage (référent handicap sur
+  // /accessibilite et les fiches formation) sont revalidées : sans cela la saisie
+  // restait invisible jusqu'à la prochaine heure pleine. La valeur est DÉJÀ en base :
+  // un échec de revalidation ne doit pas faire croire que l'enregistrement a échoué.
+  for (const page of pagesPubliquesDuReglage(key)) {
+    try {
+      revalidatePath(page.chemin, page.type);
+    } catch (e) {
+      console.warn(`[qualiopi:config] revalidation de « ${page.chemin} » impossible`, e);
+    }
   }
 
   return { data: { key } };
