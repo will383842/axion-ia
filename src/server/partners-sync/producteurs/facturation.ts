@@ -42,6 +42,8 @@
  * exécute le travail sur le client reçu, sans transaction — le comportement d'avant, à
  * l'identique (REQ-INT-008).
  */
+import { estFactureReelle } from "@/server/qualiopi/essai/perimetre";
+import { journaliserSortieBloquee } from "@/server/qualiopi/essai/sorties";
 import type { Prisma, PrismaClient } from "../../../../prisma/generated/client";
 import {
   payloadAvoirEmis,
@@ -174,8 +176,10 @@ const SELECTION_FACTURE = {
   paidAt: true,
   createdAt: true,
   updatedAt: true,
-  session: { select: { clientId: true } },
-  enrollment: { select: { clientId: true } },
+  session: { select: { clientId: true, estTestInterne: true } },
+  enrollment: {
+    select: { clientId: true, estTestInterne: true, session: { select: { estTestInterne: true } } },
+  },
   dossierFinancement: { select: { clientId: true, echeanceFinanceurAt: true, updatedAt: true } },
 } as const;
 
@@ -222,6 +226,8 @@ type FactureLue = FactureAvecClient & {
 type Lecture = {
   readonly facture: FactureLue;
   readonly beneficiaire: ResolutionBeneficiaire;
+  /** QNC L02 — pièce d'une session ou inscription d'ESSAI : rien ne part. */
+  readonly essai: boolean;
 };
 
 /**
@@ -237,6 +243,8 @@ async function lireFacture(
     select: SELECTION_FACTURE,
   });
   if (ligne === null) return null;
+  // Lu AVANT l'effacement des sources d'attribution ci-dessous, qui vide `session`.
+  const essai = !estFactureReelle(ligne);
   const beneficiaire = resoudreClientBeneficiaire(ligne);
   const client: (ClientPourEvenement & { readonly siret: string | null }) | null =
     beneficiaire.clientId === null
@@ -268,12 +276,30 @@ async function lireFacture(
         client: null,
       },
       beneficiaire: { clientId: null, origine: "non_resolue" },
+      essai,
     };
   }
   return {
     facture: { ...ligne, client: client === null ? null : { ...client, siren } },
     beneficiaire,
+    essai,
   };
+}
+
+/**
+ * QNC L02 — une pièce d'ESSAI n'atteint jamais Axion Partners : aucun fait
+ * n'est écrit dans l'outbox, et le refus est journalisé (hors transaction,
+ * tolérant : un journal raté ne doit pas annuler l'émission locale).
+ */
+async function bloqueeCarEssai(l: Lecture, type: string): Promise<boolean> {
+  if (!l.essai) return false;
+  await journaliserSortieBloquee({
+    canal: "partners",
+    cibleType: "FactureFormation",
+    cibleId: l.facture.id,
+    objet: type,
+  });
+  return true;
 }
 
 function attenduDe(l: Lecture): { clientId: string | null; siren: string | null } {
@@ -315,6 +341,9 @@ export async function emettreFaitFacture(
   }
   const { facture } = l;
   if (!STATUTS_EMIS.includes(facture.statut)) return null;
+  if (await bloqueeCarEssai(l, facture.avoirDeId !== null ? AVOIR_EMIS : FACTURE_EMISE)) {
+    return null;
+  }
 
   let eventId: string | null;
   if (facture.avoirDeId !== null) {
@@ -375,6 +404,7 @@ export async function emettreFactureAnnulee(
     throw new Error(`[partners-sync] facture ${factureId} introuvable dans la transaction.`);
   }
   if (l.facture.statut !== "annulee") return null;
+  if (await bloqueeCarEssai(l, FACTURE_ANNULEE)) return null;
   const charge = payloadFactureAnnulee({ facture: l.facture, motif });
   return ecrireEvenementPartners(tx, {
     type: FACTURE_ANNULEE,
@@ -402,6 +432,7 @@ export async function emettreFinancementMisAJour(
   }
   const dossier = l.facture.dossierFinancement ?? null;
   if (dossier === null) return null;
+  if (await bloqueeCarEssai(l, FINANCEMENT_MIS_A_JOUR)) return null;
   const payeurs = await tx.dossierPayeur.findMany({
     where: { factureFormationId: factureId },
     select: SELECTION_PAYEUR,
@@ -466,6 +497,7 @@ export async function emettreFaitPaiement(
     });
     return null;
   }
+  if (await bloqueeCarEssai(l, type)) return null;
 
   if (estAnnulation) {
     if (options.motif === undefined) {

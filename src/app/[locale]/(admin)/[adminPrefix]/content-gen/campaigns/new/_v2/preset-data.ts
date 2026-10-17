@@ -36,9 +36,9 @@ export const FALLBACK_PRESETS: PresetRow[] = [
     },
   },
   {
-    slug: "pme-burst",
-    name: "PME burst",
-    description: "Burst articles interventions+audits PME.",
+    slug: "tpe-burst",
+    name: "TPE burst",
+    description: "Burst articles interventions+audits TPE.",
     config: {
       verticals: ["interventions_formations", "audits"],
       types: ["blog_from_keywords"],

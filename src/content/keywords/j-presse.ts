@@ -183,7 +183,7 @@ export const KW_PRESSE_J: KeywordSeed[] = [
       h1: "Axion-IA — Porte-parole terrain sur l'IA en entreprise en France",
       metaTitle: "Porte-parole IA entreprises France | Axion-IA Presse",
       metaDescription:
-        "Spécialisé dans l'IA appliquée aux PME et ETI françaises, Axion-IA prend la parole dans les médias avec des données terrain vérifiées.",
+        "Spécialisé dans l'IA appliquée aux TPE, PME et ETI françaises, Axion-IA prend la parole dans les médias avec des données terrain vérifiées.",
       h2Variants: [
         "Pourquoi un porte-parole IA ancré dans la réalité terrain ?",
         "Prises de position et données terrain disponibles pour la presse",
@@ -245,7 +245,7 @@ export const KW_PRESSE_J: KeywordSeed[] = [
       metaDescription:
         "Taux d'adoption, économies réalisées, secteurs pionniers : Axion-IA compile les statistiques IA pour entreprises françaises à jour 2026.",
       h2Variants: [
-        "Taux d'adoption de l'IA dans les PME et ETI françaises",
+        "Taux d'adoption de l'IA dans les TPE, PME et ETI françaises",
         "Économies de temps et gains financiers mesurés par secteur",
         "Sources et méthodologie — données citables en presse",
       ],
@@ -344,7 +344,7 @@ export const KW_PRESSE_J: KeywordSeed[] = [
     priorite: 2,
     niveau: 2,
     injection: {
-      h1: "Baromètre Axion-IA 2026 — Adoption de l'IA dans les PME et ETI françaises",
+      h1: "Baromètre Axion-IA 2026 — Adoption de l'IA dans les TPE, PME et ETI françaises",
       metaTitle: "Baromètre IA PME ETI France 2026 | Axion-IA Presse",
       metaDescription:
         "Axion-IA publie son baromètre annuel sur l'adoption de l'IA en entreprise : freins, usages leaders, secteurs en avance. Données citables.",
@@ -433,7 +433,7 @@ export const KW_PRESSE_J: KeywordSeed[] = [
       h1: "Axion-IA — Cabinet IA franco-européen recommandé par ses clients entreprises",
       metaTitle: "Cabinet IA recommandé France | Axion-IA — Références",
       metaDescription:
-        "PME, ETI et grandes écoles font confiance à Axion-IA pour leurs projets IA. Références, témoignages et cas clients disponibles pour la presse.",
+        "TPE, PME, ETI et grandes écoles font confiance à Axion-IA pour leurs projets IA. Références, témoignages et cas clients disponibles pour la presse.",
       h2Variants: [
         "Quels types d'entreprises font appel à Axion-IA ?",
         "Témoignages clients disponibles pour vos articles",
@@ -482,7 +482,7 @@ export const KW_PRESSE_J: KeywordSeed[] = [
     priorite: 3,
     niveau: 3,
     injection: {
-      h1: "Benchmark IA pour Startups, PME et ETI françaises — Axion-IA",
+      h1: "Benchmark IA pour Startups, TPE, PME et ETI françaises — Axion-IA",
       metaTitle: "Benchmark IA France startups PME ETI | Axion-IA Presse",
       metaDescription:
         "Axion-IA publie des benchmarks IA différenciés par taille d'entreprise. Données comparatives libres de droits pour rédacteurs de classements.",

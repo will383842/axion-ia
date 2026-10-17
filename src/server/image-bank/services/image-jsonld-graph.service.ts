@@ -85,7 +85,7 @@ function buildOrganization(args: { wikidataQid?: string; inLanguage: string }): 
     },
     description:
       args.inLanguage === "fr-FR"
-        ? "Cabinet IA opérationnel B2B — audits, interventions, implémentations Claude pour PME et ETI."
+        ? "Cabinet IA opérationnel B2B — audits, interventions, implémentations Claude pour TPE, PME et ETI."
         : "Operational AI consultancy B2B — audits, interventions, AI implementations for SMEs and mid-market companies.",
     sameAs,
     foundingDate: "2024",

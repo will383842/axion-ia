@@ -24,9 +24,10 @@
 import { prisma } from "@/lib/prisma";
 import { readContenuDetaille } from "@/server/qualiopi/engine/content-schema";
 import { construireSupport, titreSupport } from "./support-builder";
-import { renderSupportToStored } from "./render-support";
+import { renderSupportToStored, type SupportStoreResult } from "./render-support";
 import { getOrganismeIdentite } from "@/server/qualiopi/documents/organisme";
 import { normaliserObjectifsPedagogiques } from "@/server/qualiopi/formations/objectifs";
+import { pedagogieActivePour } from "@/server/qualiopi/pedagogie/interrupteur";
 import type { SupportType, SupportContenu, FormationInput } from "./types";
 import { estSupportProjete, MOTIF_REFUS_SUPPORT_PROJETE } from "./types";
 import type { SupportFormation } from "../../../../prisma/generated/client";
@@ -195,6 +196,69 @@ async function enrichirContenuIA(
   }
 }
 
+/**
+ * Lot L08 — écrit la version `version` d'un support SANS toucher à l'existant.
+ *
+ *  - rendu réussi : la nouvelle ligne est `genere`, les versions `genere`
+ *    précédentes passent `archive` (la liste « supports produits » ne compte
+ *    donc pas deux fois la même pièce) ;
+ *  - rendu en échec (ou stockage absent) : la nouvelle ligne est un
+ *    `brouillon` SANS PDF, la dernière version valide reste en place et reste
+ *    étiquetée de SA version. Avant le lot, l'échec laissait l'ancien PDF
+ *    sous le numéro de la version neuve : un contenu v3 présenté avec le PDF
+ *    de la v2, comme s'il était à jour. L'erreur est levée pour que la console
+ *    l'affiche — la tentative, elle, reste tracée.
+ */
+async function persisterNouvelleVersion(e: {
+  formationId: string;
+  type: SupportType;
+  titre: string;
+  contenuJson: Record<string, unknown>;
+  version: number;
+  enrichirIA: boolean;
+  rendu: SupportStoreResult | null;
+}): Promise<{ id: string; pdfUrl: string | null }> {
+  const commun = {
+    formationId: e.formationId,
+    type: e.type,
+    titre: e.titre,
+    contenu: e.contenuJson as never,
+    version: e.version,
+    aiGenerated: e.enrichirIA,
+    generatedAt: new Date(),
+  };
+
+  if (e.rendu === null) {
+    await prisma.$transaction(async (tx) => {
+      await tx.supportFormation.create({ data: { ...commun, statut: "brouillon" } });
+    });
+    throw new Error(
+      `Le PDF de la version ${e.version} n'a pas pu être produit : la version est enregistrée sans PDF, ` +
+        `la version précédente reste la dernière valide. Relancez la génération.`,
+    );
+  }
+
+  const rendu = e.rendu;
+  return prisma.$transaction(async (tx) => {
+    await tx.supportFormation.updateMany({
+      where: { formationId: e.formationId, type: e.type, statut: "genere" },
+      data: { statut: "archive" },
+    });
+    const created = await tx.supportFormation.create({
+      data: {
+        ...commun,
+        statut: "genere",
+        pdfKey: rendu.pdfKey,
+        ...(rendu.pdfUrl ? { pdfUrl: rendu.pdfUrl } : {}),
+        hashSha256: rendu.hashSha256,
+        sizeBytes: rendu.sizeBytes,
+      },
+      select: { id: true, pdfUrl: true },
+    });
+    return { id: created.id, pdfUrl: created.pdfUrl };
+  });
+}
+
 // ─────────────────────────────────────────────────────────────────────────────
 // genererSupport
 // ─────────────────────────────────────────────────────────────────────────────
@@ -281,6 +345,7 @@ export async function genererSupport(
   let pdfUrl: string | null = null;
   let hashSha256 = "";
   let sizeBytes = 0;
+  let renduEnEchec = false;
 
   try {
     const rendered = await renderSupportToStored({
@@ -296,6 +361,22 @@ export async function genererSupport(
     sizeBytes = rendered.sizeBytes;
   } catch {
     // fail-soft PDF : on persiste quand même le contenu textuel
+    renduEnEchec = true;
+  }
+
+  // Lot L08 (qualiopi.pedagogie.actif) — une régénération est une NOUVELLE
+  // VERSION : l'ancienne ligne n'est ni réécrite ni effacée. `essai` n'agit pas
+  // ici : un support appartient à une formation, il ne porte sur aucune session.
+  if (await pedagogieActivePour(null)) {
+    return persisterNouvelleVersion({
+      formationId,
+      type,
+      titre,
+      contenuJson: contenu as unknown as Record<string, unknown>,
+      version,
+      enrichirIA,
+      rendu: pdfKey !== null && !renduEnEchec ? { pdfKey, pdfUrl, hashSha256, sizeBytes } : null,
+    });
   }
 
   // 7. Upsert SupportFormation
@@ -456,6 +537,13 @@ export async function listSupports(formationId: string): Promise<SupportFormatio
 export async function supprimerSupport(id: string): Promise<void> {
   if (isStub()) {
     throw new Error("Suppression impossible en mode stub (build).");
+  }
+
+  // Lot L08 — rien ne s'efface : sous `qualiopi.pedagogie.actif`, le support est
+  // archivé (il reste lisible, consultable et comptable en tant qu'ancienne version).
+  if (await pedagogieActivePour(null)) {
+    await prisma.supportFormation.update({ where: { id }, data: { statut: "archive" } });
+    return;
   }
 
   await prisma.supportFormation.delete({ where: { id } });

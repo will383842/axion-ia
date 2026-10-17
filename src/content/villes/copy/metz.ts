@@ -8,7 +8,7 @@
 //   - Durée minimale = 1 journée. Mention systématique
 //     « frais de logement, repas et forfait trajet en sus » sur interventions.
 //   - Aucun prix hardcodé : tarifs viennent de `src/content/pricing.ts`.
-//   - Tailles entreprise INSEE : PME/ETI/grands groupes / Grande entreprise.
+//   - Tailles entreprise INSEE : TPE / PME / ETI / Grande entreprise.
 //   - ~95 % Axion-IA-centric, ~5 % data INSEE anti-doorway HCU 2024.
 //   - Mot « formation » autorisé en copy descriptif, naming = « intervention ».
 //
@@ -23,13 +23,13 @@ import type { VilleCopy } from "./types";
 
 export const METZ_COPY: VilleCopy = {
   pitchFr:
-    "Metz regroupe un tissu B2B dense en Moselle, capitale régionale Grand Est, adossée au bassin transfrontalier Luxembourg (~60 km, ~110 000 frontaliers lorrains), Ã  l'écosystème académique Georgia Tech Lorraine + CentraleSupélec + LORIA/Inria et Ã  l'industrie automobile (Stellantis Trémery). Axion-IA y intervient sur site, des PME messines aux ETI industrielles et aux directions IA des sièges bancaires.",
+    "Metz regroupe un tissu B2B dense en Moselle, capitale régionale Grand Est, adossée au bassin transfrontalier Luxembourg (~60 km, ~110 000 frontaliers lorrains), Ã  l'écosystème académique Georgia Tech Lorraine + CentraleSupélec + LORIA/Inria et Ã  l'industrie automobile (Stellantis Trémery). Axion-IA y intervient sur site, des TPE messines aux ETI industrielles et aux directions IA des sièges bancaires.",
   pitchEn:
     "Metz anchors a dense B2B fabric in Moselle, the Grand Est regional capital, backed by the Luxembourg cross-border basin (~60 km, ~110,000 Lorraine commuters), the Georgia Tech Lorraine + CentraleSupélec + LORIA/Inria academic ecosystem and the automotive industry (Stellantis Trémery). Axion-IA delivers on site, from Metz micro-businesses to industrial mid-caps and AI leadership at banking HQs.",
 
   servicesContext: {
     audit: {
-      fr: "Audit IA opérationnel Ã  Metz : nous cartographions ce qui peut être automatisé dans votre entreprise et chiffrons le ROI. 4 niveaux du Sur place au Stratégique ETI, des PME messines aux ETI industrielles automobile et sidérurgiques de l'Eurométropole.",
+      fr: "Audit IA opérationnel Ã  Metz : nous cartographions ce qui peut être automatisé dans votre entreprise et chiffrons le ROI. 4 niveaux du Sur place au Stratégique ETI, des TPE messines aux ETI industrielles automobile et sidérurgiques de l'Eurométropole.",
       en: "Operational AI audit in Metz: we map what can be automated at your company and quantify the ROI. 4 tiers from Sur place to Mid-cap Strategic, from Metz micro-businesses to automotive and steel industrial mid-caps in the Eurométropole.",
     },
     interventions: {
@@ -45,13 +45,13 @@ export const METZ_COPY: VilleCopy = {
       en: "Individual AI coaching in Metz: 1-to-1 coaching for Eurométropole executives and managers looking to integrate AI into their daily practice and lead their organisation's transformation.",
     },
     sitesWeb: {
-      fr: "Plateformes web et SaaS IA sur mesure pour PME et ETI messines — site vitrine premium pour industrie automobile, banque et numérique, espace client transfrontalier FR/DE/LU, dashboard métier connecté Ã  votre CRM/ERP et systèmes industriels. Architectes seniors, design system Axion-IA, hébergement européen.",
+      fr: "Plateformes web et SaaS IA sur mesure pour TPE, PME et ETI messines — site vitrine premium pour industrie automobile, banque et numérique, espace client transfrontalier FR/DE/LU, dashboard métier connecté Ã  votre CRM/ERP et systèmes industriels. Architectes seniors, design system Axion-IA, hébergement européen.",
       en: "Custom web platforms and SaaS AI for Metz SMEs and mid-caps — premium showcase site for automotive industry, banking and digital, cross-border FR/DE/LU customer space, business dashboard connected to your CRM/ERP and industrial systems. Senior experts, Axion-IA design system, European hosting.",
     },
   },
 
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient Ã  Metz (57) sur site — Technopôle Metz 2000, Quartier de l'Amphithéâtre, Actipôle Metz Nord, Montigny-lès-Metz, Woippy et communes de l'Eurométropole. Nous accompagnons les PME, ETI et grands groupes messins (industrie automobile, banque, numérique, services) sur leurs cas IA opérationnels : diagnostic chiffré, démos sur vos vraies données, plan d'action concret. Aucun lock-in technologique, vos équipes gardent la main.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient Ã  Metz (57) sur site — Technopôle Metz 2000, Quartier de l'Amphithéâtre, Actipôle Metz Nord, Montigny-lès-Metz, Woippy et communes de l'Eurométropole. Nous accompagnons les TPE, PME, ETI et grandes entreprises messines (industrie automobile, banque, numérique, services) sur leurs cas IA opérationnels : diagnostic chiffré, démos sur vos vraies données, plan d'action concret. Aucun lock-in technologique, vos équipes gardent la main.",
   directAnswerEn:
     "Axion-IA is a senior AI experts consultancy that intervenes in Metz (57) on site — Technopôle Metz 2000, Quartier de l'Amphithéâtre, Actipôle Metz Nord, Montigny-lès-Metz, Woippy and Eurométropole communes. We support Metz micro-businesses, SMEs, mid-caps and large enterprises (automotive industry, banking, digital, services) on their operational AI use cases — costed diagnosis, demos on your real data, concrete action plan. No tech lock-in, your teams stay in control.",
 
@@ -81,7 +81,7 @@ export const METZ_COPY: VilleCopy = {
   services: {
     audit: {
       fr: {
-        hero: "L'audit IA Axion-IA cartographie ce qui peut être automatisé dans votre entreprise messine et chiffre le retour sur investissement Ã  12-24 mois. Quatre niveaux du Sur place au Stratégique ETI couvrent toute l'échelle, des PME du centre de Metz aux ETI industrielles de Trémery et aux directions IA des sièges bancaires de l'Eurométropole.",
+        hero: "L'audit IA Axion-IA cartographie ce qui peut être automatisé dans votre entreprise messine et chiffre le retour sur investissement Ã  12-24 mois. Quatre niveaux du Sur place au Stratégique ETI couvrent toutes les tailles, des TPE du centre de Metz aux ETI industrielles de Trémery et aux directions IA des sièges bancaires de l'Eurométropole.",
         whyHere: [
           "Metz est un pôle d'intervention clé pour Axion-IA en Grand Est : le tissu B2B Eurométropole génère une demande croissante d'audits IA opérationnels.",
           "Tissu sectoriel sur-représenté chez nos clients messins : industrie automobile et matériaux (Stellantis Trémery, Materalia), banque/finance (BPCE, Caisse d'Épargne Grand Est), IT/numérique (Technopôle, BLIIIDA), services publics (préfecture Moselle, Université de Lorraine).",
@@ -118,6 +118,12 @@ export const METZ_COPY: VilleCopy = {
           },
         ],
         pricing: [
+          {
+            sizeLabel: "TPE",
+            price: "Audit sur place",
+            detail:
+              "Adapté aux indépendants et cabinets messins jusqu'Ã  une dizaine de collaborateurs — centre-ville, ÃŽle du Saulcy, Pontiffroy.",
+          },
           {
             sizeLabel: "PME",
             price: "Audit Ciblé ou Stratégique PME",
@@ -167,7 +173,7 @@ export const METZ_COPY: VilleCopy = {
           "Engagement contractuel : livrable remis dans les délais convenus Ã  la signature. Conformité RGPD, hébergement données en UE par défaut, DPO sur demande. Aucun lock-in technologique : votre plan d'action est exécutable avec n'importe quel prestataire ou en interne.",
       },
       en: {
-        hero: "Axion-IA's AI audit maps what can be automated at your Metz business and quantifies the 12-24 month return on investment. Four tiers from Sur place to Mid-cap Strategic cover the full range, from Metz micro-businesses to large automotive and banking mid-caps across the Eurométropole.",
+        hero: "Axion-IA's AI audit maps what can be automated at your Metz business and quantifies the 12-24 month return on investment. Four tiers from Sur place to Mid-cap Strategic cover every size, from Metz micro-businesses to large automotive and banking mid-caps across the Eurométropole.",
         whyHere: [
           "Metz is a key Axion-IA engagement hub in Grand Est: the Eurométropole B2B ecosystem generates growing operational AI audit demand.",
           "Metz B2B fabric over-represented in our cases: automotive and materials industry (Stellantis Trémery, Materalia), banking/finance (BPCE, Caisse d'Épargne Grand Est), IT/digital (Technopôle startups, BLIIIDA), public services and higher education.",
@@ -204,6 +210,12 @@ export const METZ_COPY: VilleCopy = {
           },
         ],
         pricing: [
+          {
+            sizeLabel: "Micro-business",
+            price: "Sur place audit",
+            detail:
+              "Suited to Metz freelancers and practices up to about ten staff — city centre, ÃŽle du Saulcy, Pontiffroy.",
+          },
           {
             sizeLabel: "SME",
             price: "Targeted or SME Strategic audit",
@@ -293,6 +305,12 @@ export const METZ_COPY: VilleCopy = {
         ],
         pricing: [
           {
+            sizeLabel: "TPE",
+            price: "Formation collective",
+            detail:
+              "Idéal pour indépendants, cabinets et petites agences messines jusqu'Ã  une dizaine de collaborateurs — centre-ville, quartier Impérial, ÃŽle du Saulcy.",
+          },
+          {
             sizeLabel: "PME",
             price: "Formation collective ou Équipes",
             detail:
@@ -378,6 +396,12 @@ export const METZ_COPY: VilleCopy = {
           },
         ],
         pricing: [
+          {
+            sizeLabel: "Micro-business",
+            price: "Group format",
+            detail:
+              "Ideal for Metz freelancers, practices and small agencies up to about ten staff — city centre, Quartier Impérial, ÃŽle du Saulcy.",
+          },
           {
             sizeLabel: "SME",
             price: "Group or Teams format",
@@ -467,6 +491,12 @@ export const METZ_COPY: VilleCopy = {
         ],
         pricing: [
           {
+            sizeLabel: "TPE",
+            price: "Pilote IA",
+            detail:
+              "Implémentation d'un cas d'usage simple — automatisation devis, comptes-rendus réunion, qualification leads pour TPE et indépendants messins.",
+          },
+          {
             sizeLabel: "PME",
             price: "Mission PME",
             detail:
@@ -488,7 +518,7 @@ export const METZ_COPY: VilleCopy = {
         faq: [
           {
             q: "Combien de temps dure une implémentation Axion-IA Ã  Metz ?",
-            a: "Cela dépend de l'ampleur. Un POC pour PME en quelques semaines, une mission PME sur quelques mois, une mission ETI transverse sur plusieurs mois, un grand programme multi-déploiement sur une année. Le SOW signé en cadrage fixe le calendrier précis.",
+            a: "Cela dépend de l'ampleur. Un POC pour TPE en quelques semaines, une mission PME sur quelques mois, une mission ETI transverse sur plusieurs mois, un grand programme multi-déploiement sur une année. Le SOW signé en cadrage fixe le calendrier précis.",
           },
           {
             q: "Le tarif est-il fixe ou au temps passé ?",
@@ -552,6 +582,12 @@ export const METZ_COPY: VilleCopy = {
           },
         ],
         pricing: [
+          {
+            sizeLabel: "Micro-business",
+            price: "Pilote IA",
+            detail:
+              "Implementation of a simple use case — quote automation, meeting minutes, lead qualification for Metz micro-businesses and freelancers.",
+          },
           {
             sizeLabel: "SME",
             price: "SME mission",
@@ -641,6 +677,12 @@ export const METZ_COPY: VilleCopy = {
         ],
         pricing: [
           {
+            sizeLabel: "TPE",
+            price: "Programme Essentiel",
+            detail:
+              "Idéal pour les indépendants et dirigeants de TPE messines souhaitant intégrer l'IA dans leur activité quotidienne sans mobiliser une équipe entière.",
+          },
+          {
             sizeLabel: "PME",
             price: "Programme Avancé",
             detail:
@@ -726,6 +768,12 @@ export const METZ_COPY: VilleCopy = {
           },
         ],
         pricing: [
+          {
+            sizeLabel: "Micro-business",
+            price: "Entry-level programme",
+            detail:
+              "Ideal for Metz freelancers and micro-business owners looking to integrate AI into their daily activity without mobilising a whole team.",
+          },
           {
             sizeLabel: "SME",
             price: "Advanced programme",
@@ -813,6 +861,12 @@ export const METZ_COPY: VilleCopy = {
         ],
         pricing: [
           {
+            sizeLabel: "TPE",
+            price: "Brique IA greffée",
+            detail:
+              "Ajout d'une brique IA (chatbot RAG, recherche sémantique) sur un site existant en quelques semaines, sans refonte.",
+          },
+          {
             sizeLabel: "PME",
             price: "Site / application sur mesure",
             detail:
@@ -893,6 +947,12 @@ export const METZ_COPY: VilleCopy = {
         ],
         pricing: [
           {
+            sizeLabel: "Micro-business",
+            price: "Grafted AI brick",
+            detail:
+              "Adding an AI brick (RAG chatbot, semantic search) onto an existing site in a few weeks, no rebuild.",
+          },
+          {
             sizeLabel: "SME",
             price: "Bespoke site / app",
             detail:
@@ -942,7 +1002,7 @@ export const METZ_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Combien coûte un audit IA opérationnel Ã  Metz ?",
-      a: "Le tarif dépend du niveau retenu — Audit sur place, Ciblé, Stratégique PME ou Stratégique ETI. Tarifs publics affichés sur la page Audit, choix calibré selon votre taille (PME, ETI et grands groupes, grande entreprise) et votre périmètre. Aucun supplément géographique : le tarif est identique Ã  Metz et partout en France.",
+      a: "Le tarif dépend du niveau retenu — Audit sur place, Ciblé, Stratégique PME ou Stratégique ETI. Tarifs publics affichés sur la page Audit, choix calibré selon votre taille (TPE, PME, ETI, grande entreprise) et votre périmètre. Aucun supplément géographique : le tarif est identique Ã  Metz et partout en France.",
     },
     {
       q: "Avez-vous des cas clients dans l'Eurométropole de Metz ?",

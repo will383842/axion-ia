@@ -49,7 +49,7 @@ const APP = path.resolve(process.cwd(), "src", "app");
  */
 const DETTE: Readonly<Record<string, number>> = {
   "src/app/[locale]/a-propos/page.tsx": 288,
-  "src/app/[locale]/implantations/page.tsx": 218,
+  "src/app/[locale]/implantations/page.tsx": 217,
   "src/app/[locale]/interventions/coaching-decouverte/page.tsx": 233,
   "src/app/[locale]/stack-ia/page.tsx": 221,
   "src/app/[locale]/secteurs/page.tsx": 205,
@@ -62,7 +62,6 @@ const DETTE: Readonly<Record<string, number>> = {
   "src/app/[locale]/sites-web-augmentes/page.tsx": 172,
   "src/app/[locale]/sous-processeurs/page.tsx": 172,
   "src/app/[locale]/tarifs/page.tsx": 171,
-  "src/app/[locale]/formations/page.tsx": 167,
   "src/app/[locale]/page.tsx": 167,
   "src/app/[locale]/sites-web-augmentes/magento/page.tsx": 167,
   "src/app/[locale]/sites-web-augmentes/woocommerce/page.tsx": 167,
@@ -72,7 +71,6 @@ const DETTE: Readonly<Record<string, number>> = {
   "src/app/[locale]/sites-web-augmentes/prestashop/page.tsx": 164,
   "src/app/[locale]/carrieres/page.tsx": 163,
   "src/app/[locale]/methodologie/page.tsx": 163,
-  "src/app/[locale]/actualites/page.tsx": 161,
 
   // ── Amorçage du périmètre `src/content/**`, 2026-08-27 ───────────────────
   //

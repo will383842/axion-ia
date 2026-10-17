@@ -28,6 +28,8 @@
 
 "use server";
 
+import { stagiaireDEssai } from "@/server/qualiopi/essai/contexte";
+import { sortieSaufEssai } from "@/server/qualiopi/essai/sorties";
 import { z } from "zod";
 import * as Sentry from "@sentry/nextjs";
 import { prisma } from "@/lib/prisma";
@@ -49,6 +51,7 @@ import { ipDepuisEntetes } from "@/lib/client-ip";
 import { getPortailToken, clearPortailCookie } from "@/server/qualiopi/portail/cookie";
 import { creerDemandeRgpd } from "@/server/qualiopi/portail/rgpd-service";
 import { soumettreReponses } from "@/server/qualiopi/satisfaction/satisfaction-service";
+import { assainirReponses } from "@/server/qualiopi/pedagogie/assainir-reponses";
 import { decryptPii, PII_DECRYPT_PLACEHOLDER } from "@/lib/pii-crypto";
 import {
   chiffrerDetailSante,
@@ -227,7 +230,11 @@ export async function soumettreSatisfactionPortailAction(input: {
   // A-01 (IDOR) : vérifier que le questionnaire appartient bien au stagiaire authentifié.
   const questionnaire = await prisma.questionnaire.findUnique({
     where: { id: v.questionnaireId },
-    select: { type: true, enrollment: { select: { traineeId: true } } },
+    select: {
+      type: true,
+      version: { select: { version: true } },
+      enrollment: { select: { traineeId: true } },
+    },
   });
   if (!questionnaire || questionnaire.enrollment.traineeId !== authResult.traineeId) {
     return { error: "Questionnaire introuvable ou non autorisé" };
@@ -283,9 +290,17 @@ export async function soumettreSatisfactionPortailAction(input: {
   // le texte libre, celui qui décrit la situation — est retiré et chiffré.
   const { detailAdaptation: _retire, ...reponsesSansDetail } = reponsesRecues;
 
+  // Lot L08 — un questionnaire dont le contenu est versionné ne garde que les
+  // réponses que ce contenu déclare, dans leurs bornes. Sans version : inchangé.
+  const reponsesAssainies =
+    questionnaire.version != null &&
+    (questionnaire.type === "satisfaction_chaud" || questionnaire.type === "satisfaction_froid")
+      ? assainirReponses(questionnaire.type, questionnaire.version.version, reponsesSansDetail)
+      : null;
+
   const result = await soumettreReponses({
     questionnaireId: v.questionnaireId,
-    reponses: reponsesSansDetail,
+    reponses: reponsesAssainies ?? reponsesSansDetail,
     // ADR 0060 (D3) — le stagiaire répond lui-même, depuis son portail.
     origine: "stagiaire",
     ...(v.noteGlobale !== undefined ? { noteGlobale: v.noteGlobale } : {}),
@@ -318,6 +333,26 @@ export async function soumettreSatisfactionPortailAction(input: {
   }
 
   return { data: { id: result.id } };
+}
+
+/**
+ * QNC L02 — le message Telegram d'une déclaration d'adaptation, sauf pour un
+ * stagiaire qui n'existe que dans des sessions d'essai : rien ne part vers
+ * Telegram, le refus est journalisé. L'alerte de console, interne, reste.
+ */
+async function alerterTelegramAdaptation(traineeId: string): Promise<void> {
+  // Lecture illisible : l'alerte part, comme avant ce lot — elle est INTERNE
+  // (Will), et la taire sur une panne ferait perdre une déclaration réelle.
+  const essai = await stagiaireDEssai(traineeId).catch(() => false);
+  await sortieSaufEssai(
+    essai,
+    { canal: "telegram", cibleType: "Trainee", cibleId: traineeId, objet: "ADAPTATION_DECLAREE" },
+    () =>
+      sendTelegram({
+        tag: "ADAPTATION_DECLAREE",
+        body: construireMessageTelegramAdaptation(traineeId),
+      }),
+  );
 }
 
 /**
@@ -398,10 +433,7 @@ async function signalerBesoinAdaptation(traineeId: string, detail: string): Prom
   // Will peut ne pas le lire, et rien ne l'y ramène.
   //
   // Le message ne contient ni identité ni nature : un renvoi vers la fiche.
-  void sendTelegram({
-    tag: "ADAPTATION_DECLAREE",
-    body: construireMessageTelegramAdaptation(trainee.id),
-  }).catch(() => {});
+  void alerterTelegramAdaptation(trainee.id).catch(() => {});
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -750,10 +782,7 @@ async function declarerDepuisMonCompte(
   // remplace pas l'alerte : Will peut ne pas le lire, et rien ne l'y ramène.
   //
   // Canal tiers : le message se limite à un renvoi vers la fiche.
-  void sendTelegram({
-    tag: "ADAPTATION_DECLAREE",
-    body: construireMessageTelegramAdaptation(trainee.id),
-  }).catch(() => {});
+  void alerterTelegramAdaptation(trainee.id).catch(() => {});
 
   return { data: { ok: true } };
 }

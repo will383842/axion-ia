@@ -30,9 +30,15 @@ const fieldCls = "flex flex-col gap-1";
 
 export interface VeilleFormProps {
   creerAction: typeof creerVeilleAction;
+  /**
+   * Chantier QNC, L10 — veille tracée allumée : la proposition ne porte pas de
+   * décision (une personne décide ensuite, bouton « Décider »), et la date de
+   * l'information ne peut pas dépasser aujourd'hui.
+   */
+  tracee?: boolean;
 }
 
-export function VeilleForm({ creerAction }: VeilleFormProps) {
+export function VeilleForm({ creerAction, tracee = false }: VeilleFormProps) {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
   const [error, setError] = useState<string | null>(null);
@@ -59,7 +65,7 @@ export function VeilleForm({ creerAction }: VeilleFormProps) {
         contenu,
         dateVeille: new Date(dateVeille),
         ...(impact.trim() ? { impact } : {}),
-        ...(actionDecidee.trim() ? { actionDecidee } : {}),
+        ...(!tracee && actionDecidee.trim() ? { actionDecidee } : {}),
       });
 
       if ("error" in result) {
@@ -105,7 +111,7 @@ export function VeilleForm({ creerAction }: VeilleFormProps) {
           {/* Date */}
           <div className={fieldCls}>
             <label htmlFor="veilleform-date-de-veille" className={labelCls}>
-              Date de veille
+              {tracee ? "Date de l'information" : "Date de veille"}
             </label>
             <input
               id="veilleform-date-de-veille"
@@ -187,9 +193,16 @@ export function VeilleForm({ creerAction }: VeilleFormProps) {
           />
         </div>
 
-        {/* Action décidée */}
-        <div className={`mt-[var(--space-admin-4)] ${fieldCls}`}>
-          {/* 🔴 `D7-2-A1` — ce `<label>` n'était associé à rien, et le
+        {/* Action décidée — absente en veille tracée : une personne décide ensuite. */}
+        {tracee ? (
+          <p className="mt-[var(--space-admin-4)] text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
+            La décision ne se saisit pas ici : une fois l&apos;entrée enregistrée, une personne la
+            décide (bouton « Décider ») et nomme la pièce modifiée. La date de saisie est posée par
+            le serveur.
+          </p>
+        ) : (
+          <div className={`mt-[var(--space-admin-4)] ${fieldCls}`}>
+            {/* 🔴 `D7-2-A1` — ce `<label>` n'était associé à rien, et le
               `aria-label` du champ disait AUTRE CHOSE que le texte affiché.
               Conséquence : le nom accessible ne contenait pas le libellé
               visible, donc une personne pilotant la console à la voix pouvait
@@ -198,19 +211,20 @@ export function VeilleForm({ creerAction }: VeilleFormProps) {
               ⚠️ On associe le libellé et on RETIRE le `aria-label` divergent :
               en garder un qui contredit l'écran, c'est fabriquer deux vérités
               pour le même champ. */}
-          <label className={labelCls} htmlFor="veille-action-decidee">
-            Action décidée suite à la veille (preuve d&apos;exploitation)
-          </label>
-          <textarea
-            id="veille-action-decidee"
-            value={actionDecidee}
-            onChange={(e) => setActionDecidee(e.target.value)}
-            disabled={isPending}
-            rows={2}
-            placeholder="Mesure prise ou planifiée en réponse à cette veille…"
-            className={inputCls}
-          />
-        </div>
+            <label className={labelCls} htmlFor="veille-action-decidee">
+              Action décidée suite à la veille (preuve d&apos;exploitation)
+            </label>
+            <textarea
+              id="veille-action-decidee"
+              value={actionDecidee}
+              onChange={(e) => setActionDecidee(e.target.value)}
+              disabled={isPending}
+              rows={2}
+              placeholder="Mesure prise ou planifiée en réponse à cette veille…"
+              className={inputCls}
+            />
+          </div>
+        )}
 
         {error && (
           <p

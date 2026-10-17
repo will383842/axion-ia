@@ -23,6 +23,7 @@ import {
   getFormationsV2ByCategorie,
   getFormationV2EntryPrice,
 } from "@/content/formations/catalog-v2";
+import { getFormationCourseModes } from "@/content/formations/catalog-v2-facts";
 import { formationDureeIso, getCategorieMeta } from "@/content/formations/catalog-v2-meta";
 import { formatAmount, getFormationPrice, type FormationCategorie } from "@/content/pricing";
 import {
@@ -140,10 +141,10 @@ export function FormationCategorieListing({ categorie, locale }: Props): ReactNo
       path: `/formations/${f.slugFr}`,
       name: f.titreFr,
       description: f.metaDescriptionFr,
-      courseMode: ["Onsite"],
+      courseMode: [...getFormationCourseModes(f)],
       duration: formationDureeIso(f.duree),
       audienceType:
-        "Décideurs, managers, équipes opérationnelles PME ETI grandes entreprises (B2B)",
+        "Décideurs, managers, équipes opérationnelles TPE PME ETI grandes entreprises (B2B)",
       about: "IA opérationnelle (ChatGPT, Claude, Gemini, méthode AXION)",
     }),
   );

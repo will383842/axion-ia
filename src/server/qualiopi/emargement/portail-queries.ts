@@ -21,6 +21,8 @@ import type { CreneauCandidat } from "./creneaux-signables";
 
 export interface FeuilleStagiaire {
   enrollmentId: string;
+  /** Banc d'essai (ADR 0061) : lu par l'interrupteur `qualiopi.emargement.actif`. */
+  estTestInterne: boolean;
   stagiaireNom: string;
   formationIntitule: string;
   organisme: string;
@@ -72,6 +74,7 @@ export async function lireFeuilleStagiaire(
       session: {
         select: {
           titreSession: true,
+          estTestInterne: true,
           formateurPrincipal: { select: { nom: true, prenom: true } },
           jours: {
             select: {
@@ -126,6 +129,7 @@ export async function lireFeuilleStagiaire(
 
   return {
     enrollmentId: inscription.id,
+    estTestInterne: inscription.session.estTestInterne,
     stagiaireNom: `${inscription.trainee.prenom} ${inscription.trainee.nom}`.trim(),
     formationIntitule: inscription.session.titreSession,
     organisme,

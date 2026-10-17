@@ -211,6 +211,7 @@ const A = {
   dossier: "@/app/[locale]/espace-formateur/dossier/actions",
   desaccord: "@/server/actions/formateur/desaccord.actions",
   bilan: "@/server/actions/formateur/bilan-fin-formation.actions",
+  evaluation: "@/server/actions/formateur/evaluation-finale.actions",
 } as const;
 
 const formateur = (
@@ -416,6 +417,18 @@ const INVENTAIRE: Record<string, Ligne> = {
     A.bilan,
     "terminerBilanFormAction",
     fd({ sessionId: SESSION }),
+  ),
+
+  // ── Lot L08 : la saisie de l'évaluation finale (page de la session) ──
+  [`${A.evaluation}#saisirEvaluationFinaleFormAction`]: formateur(
+    A.evaluation,
+    "saisirEvaluationFinaleFormAction",
+    fd({
+      sessionId: SESSION,
+      enrollmentId: DOC,
+      "note-0": "3",
+      "observation-0": "Autonome en atelier.",
+    }),
   ),
 
   // ── Routes : kit imprimé, PDF de la lettre de mission et du contrat à signer ──

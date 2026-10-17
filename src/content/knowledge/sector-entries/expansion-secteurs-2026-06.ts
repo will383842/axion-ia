@@ -298,7 +298,7 @@ Les marges de progression sont concrètes pour les acteurs de la filière :
 - **Industrialiser les preuves de concept** : passer de pilotes isolés à des déploiements maîtrisés en qualité et maintenance, avec mesure de la valeur.
 - **Sécuriser la conformité dès la conception** : intégrer AI Act, exigences d'homologation et RGPD en amont (privacy et safety by design) pour éviter les blocages tardifs.
 - **Accompagner l'électrification et la décarbonation** : l'IA peut soutenir l'optimisation énergétique des process et la transformation industrielle liée au véhicule électrique.
-- **Renforcer les sous-traitants** : les PME et ETI de la sous-traitance peuvent gagner en compétitivité via le contrôle qualité automatisé et la maintenance prédictive, à condition d'un cadrage adapté à leurs moyens.
+- **Renforcer les sous-traitants** : les TPE, PME et ETI de la sous-traitance peuvent gagner en compétitivité via le contrôle qualité automatisé et la maintenance prédictive, à condition d'un cadrage adapté à leurs moyens.
 
 Un accompagnement structuré (audit des cas d'usage, cadrage réglementaire, feuille de route) permet de prioriser les chantiers à fort retour et de maîtriser les risques propres au secteur.
 `,

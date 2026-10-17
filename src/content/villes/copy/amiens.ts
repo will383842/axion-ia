@@ -4,7 +4,7 @@
 //   - Aucun délai chiffré en dur.
 //   - Durée minimale = 1 journée. Aucune demi-journée.
 //   - Aucun prix hardcodé — libellés contextuels uniquement.
-//   - Tailles INSEE : PME/ETI/GE.
+//   - Tailles INSEE : TPE / PME / ETI / GE.
 //   - ~95 % Axion-IA-centric, ~5 % data INSEE bouclier anti-doorway HCU 2024.
 //   - Pas de heroSchema, pas de unAUn (non demandés pour cette ville pilote).
 //
@@ -18,13 +18,13 @@ import type { VilleCopy } from "./types";
 
 export const AMIENS_COPY: VilleCopy = {
   pitchFr:
-    "Amiens concentre 4 149 établissements actifs, deux sites UNESCO, le 2e site mondial Procter & Gamble (Ariel/Dash) et Valeo Embrayages, centre mondial des transmissions hybrides. Axion-IA intervient sur site pour accompagner PME, ETI et grands groupes amiénois dans leurs projets IA opérationnels.",
+    "Amiens concentre 4 149 établissements actifs, deux sites UNESCO, le 2e site mondial Procter & Gamble (Ariel/Dash) et Valeo Embrayages, centre mondial des transmissions hybrides. Axion-IA intervient sur site pour accompagner TPE, PME, ETI et grandes entreprises amiénoises dans leurs projets IA opérationnels.",
   pitchEn:
     "Amiens hosts 4,149 active businesses, two UNESCO sites, Procter & Gamble's 2nd global plant (Ariel/Dash) and Valeo Embrayages, the world centre for hybrid transmissions. Axion-IA deploys on site to support micro-businesses, SMEs, mid-caps and large enterprises in Amiens with their operational AI projects.",
 
   servicesContext: {
     audit: {
-      fr: "Audit IA opérationnel à Amiens : nous identifions ce qui peut être automatisé chez vous et chiffrons le ROI. 4 niveaux du Sur place au Stratégique ETI selon votre taille — de l'artisan PME aux grands sites industriels P&G et Valeo.",
+      fr: "Audit IA opérationnel à Amiens : nous identifions ce qui peut être automatisé chez vous et chiffrons le ROI. 4 niveaux du Sur place au Stratégique ETI selon votre taille — de l'artisan TPE aux grands sites industriels P&G et Valeo.",
       en: "Operational AI audit in Amiens: we identify what can be automated at your company and quantify the ROI. 4 tiers from Sur place to Mid-cap Strategic depending on your size — from micro-businesses to large industrial sites like P&G and Valeo.",
     },
     interventions: {
@@ -40,13 +40,13 @@ export const AMIENS_COPY: VilleCopy = {
       en: "1-to-1 AI coaching in Amiens: bespoke sessions for executives and managers in manufacturing, agri-food and services businesses across the Somme and Hauts-de-France. Tailored to manufacturing SMEs, logistics and mid-caps in the basin.",
     },
     sitesWeb: {
-      fr: "Plateformes web et SaaS IA sur mesure pour PME et ETI du bassin amiénois — site vitrine premium pour industrie manufacturière, agroalimentaire et bioéconomie, portail fournisseurs et qualité, dashboard métier connecté à votre CRM/ERP/GMAO. Architectes seniors, design system Axion-IA, hébergement européen.",
+      fr: "Plateformes web et SaaS IA sur mesure pour TPE, PME et ETI du bassin amiénois — site vitrine premium pour industrie manufacturière, agroalimentaire et bioéconomie, portail fournisseurs et qualité, dashboard métier connecté à votre CRM/ERP/GMAO. Architectes seniors, design system Axion-IA, hébergement européen.",
       en: "Custom web platforms and SaaS AI for SMEs and mid-caps in the Amiens basin — premium showcase site for manufacturing, agri-food and bioeconomy, suppliers and quality portal, business dashboard connected to your CRM/ERP/CMMS. Senior experts, Axion-IA design system, European hosting.",
     },
   },
 
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Amiens (80) sur site. Nous accompagnons les PME, ETI et grands groupes du bassin amiénois — industrie manufacturière (P&G, Valeo), R&D (Nestlé Purina), bioéconomie (B4C), commerce et services — sur leurs cas IA opérationnels : diagnostic chiffré, démos sur vos vraies données, plan d'action concret. Aucun lock-in technologique, vos équipes gardent la main.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Amiens (80) sur site. Nous accompagnons les TPE, PME, ETI et grandes entreprises du bassin amiénois — industrie manufacturière (P&G, Valeo), R&D (Nestlé Purina), bioéconomie (B4C), commerce et services — sur leurs cas IA opérationnels : diagnostic chiffré, démos sur vos vraies données, plan d'action concret. Aucun lock-in technologique, vos équipes gardent la main.",
   directAnswerEn:
     "Axion-IA is a senior AI experts consultancy that intervenes in Amiens (80) on site. We support micro-businesses, SMEs, mid-caps and large enterprises in the Amiens basin — manufacturing (P&G, Valeo), R&D (Nestlé Purina), bioeconomy (B4C), trade and services — on their operational AI use cases: costed diagnosis, demos on your real data, concrete action plan. No tech lock-in, your teams stay in control.",
 
@@ -76,7 +76,7 @@ export const AMIENS_COPY: VilleCopy = {
   services: {
     audit: {
       fr: {
-        hero: "L'audit IA Axion-IA cartographie ce qui peut être automatisé chez vous et chiffre le retour sur investissement à 12-24 mois. Quatre niveaux du Sur place au Stratégique ETI couvrent toute l'échelle, des PME artisanales du bassin amiénois aux sites industriels de grande envergure comme P&G ou Valeo Embrayages.",
+        hero: "L'audit IA Axion-IA cartographie ce qui peut être automatisé chez vous et chiffre le retour sur investissement à 12-24 mois. Quatre niveaux du Sur place au Stratégique ETI couvrent toutes les tailles, des TPE artisanales du bassin amiénois aux sites industriels de grande envergure comme P&G ou Valeo Embrayages.",
         whyHere: [
           "Amiens est une place industrielle de premier plan : P&G y opère son 2e site mondial (Ariel/Dash/Lenor), Valeo y dirige son centre mondial des transmissions hybrides — des grands comptes où l'IA de production et l'automatisation qualité ont un ROI massif.",
           "Le tissu PME/ETI amiénois est dense et varié : distributeurs, prestataires de services industriels, cabinets conseils, sous-traitants aéronautiques en périphérie — autant de structures qui bénéficient d'un audit ciblé sur leurs processus métier.",
@@ -113,6 +113,12 @@ export const AMIENS_COPY: VilleCopy = {
           },
         ],
         pricing: [
+          {
+            sizeLabel: "TPE",
+            price: "Audit sur place",
+            detail:
+              "Adapté aux artisans, indépendants et petites structures amiénoises jusqu'à une dizaine de collaborateurs — commerce, prestation de services, bureau d'études.",
+          },
           {
             sizeLabel: "PME",
             price: "Audit Ciblé ou Stratégique PME",
@@ -162,7 +168,7 @@ export const AMIENS_COPY: VilleCopy = {
           "Engagement contractuel : livrable remis dans les délais convenus à la signature. Conformité RGPD, hébergement données en UE par défaut, DPO sur demande. Aucun lock-in technologique : votre plan d'action est exécutable avec n'importe quel prestataire ou en interne.",
       },
       en: {
-        hero: "Axion-IA's AI audit maps what can be automated at your company and quantifies the 12-24 month return on investment. Four tiers from Sur place to Mid-cap Strategic cover the full range, from Amiens micro-businesses and craft firms to large industrial sites such as P&G or Valeo Embrayages.",
+        hero: "Axion-IA's AI audit maps what can be automated at your company and quantifies the 12-24 month return on investment. Four tiers from Sur place to Mid-cap Strategic cover every size, from Amiens micro-businesses and craft firms to large industrial sites such as P&G or Valeo Embrayages.",
         whyHere: [
           "Amiens is a top-tier industrial hub: P&G operates its 2nd global plant here (Ariel/Dash/Lenor), Valeo runs its world centre for hybrid transmissions — large accounts where production AI and quality automation deliver massive ROI.",
           "The Amiens SME/mid-cap fabric is dense and varied: distributors, industrial service providers, consulting firms, aeronautics sub-contractors nearby — all structures that benefit from a targeted process audit.",
@@ -199,6 +205,12 @@ export const AMIENS_COPY: VilleCopy = {
           },
         ],
         pricing: [
+          {
+            sizeLabel: "Micro-business",
+            price: "Sur place audit",
+            detail:
+              "Suited to Amiens craft businesses, freelancers and small structures up to about ten staff — trade, services, design bureaux.",
+          },
           {
             sizeLabel: "SME",
             price: "Targeted or SME Strategic audit",
@@ -254,7 +266,7 @@ export const AMIENS_COPY: VilleCopy = {
         whyHere: [
           "Amiens et son bassin concentrent un tissu d'entreprises manufacturières et de services où la montée en compétence IA génère des gains opérationnels immédiats : rédaction de rapports qualité, gestion documentaire fournisseurs, suivi de production.",
           "Nos consultants se déplacent sur site à Amiens — centre-ville, zone industrielle nord, Pôle Jules Verne, zones d'activités périphériques. Pas d'aléa logistique.",
-          "Le format collectif (1 journée) est calibré pour les équipes de quelques personnes à une centaine de collaborateurs, adapté aux PME artisanales comme aux PME industrielles.",
+          "Le format collectif (1 journée) est calibré pour les équipes de quelques personnes à une centaine de collaborateurs, adapté aux TPE artisanales comme aux PME industrielles.",
           "Le format Conférence convient aux plénières d'entreprise et aux séminaires de rentrée : auditoriums d'entreprise, salles de séminaire des hôtels amiénois, campus UPJV ou UniLaSalle.",
           "Le format Dirigeants permet un cadrage en huis-clos pour les comités de direction et les CODIR régionaux.",
           "Contenu ajusté à votre secteur dominant : industrie manufacturière, logistique, R&D, commerce de gros, services. Pas de session générique recyclée.",
@@ -287,6 +299,12 @@ export const AMIENS_COPY: VilleCopy = {
           },
         ],
         pricing: [
+          {
+            sizeLabel: "TPE",
+            price: "Formation collective",
+            detail:
+              "Idéal artisans, indépendants, petits commerces et petites structures industrielles amiénoises jusqu'à une dizaine de collaborateurs.",
+          },
           {
             sizeLabel: "PME",
             price: "Formation collective ou Équipes",
@@ -373,6 +391,12 @@ export const AMIENS_COPY: VilleCopy = {
           },
         ],
         pricing: [
+          {
+            sizeLabel: "Micro-business",
+            price: "Group format",
+            detail:
+              "Ideal Amiens craft businesses, freelancers, small shops and small industrial structures up to about ten staff.",
+          },
           {
             sizeLabel: "SME",
             price: "Group or Teams format",
@@ -462,6 +486,12 @@ export const AMIENS_COPY: VilleCopy = {
         ],
         pricing: [
           {
+            sizeLabel: "TPE",
+            price: "Pilote IA",
+            detail:
+              "Implémentation d'un cas d'usage simple — lecture automatique de documents, comptes-rendus, qualification leads — pour les TPE et artisans amiénois.",
+          },
+          {
             sizeLabel: "PME",
             price: "Mission PME",
             detail:
@@ -483,7 +513,7 @@ export const AMIENS_COPY: VilleCopy = {
         faq: [
           {
             q: "Combien de temps dure une implémentation Axion-IA à Amiens ?",
-            a: "Cela dépend de l'ampleur. Un POC pour PME peut tenir en quelques semaines, une mission PME standard sur quelques mois, une mission ETI transverse sur plusieurs mois, un grand programme multi-déploiement sur une année. Le SOW signé en cadrage fixe le calendrier précis.",
+            a: "Cela dépend de l'ampleur. Un POC pour TPE peut tenir en quelques semaines, une mission PME standard sur quelques mois, une mission ETI transverse sur plusieurs mois, un grand programme multi-déploiement sur une année. Le SOW signé en cadrage fixe le calendrier précis.",
           },
           {
             q: "Le tarif est-il fixe ou au temps passé ?",
@@ -548,6 +578,12 @@ export const AMIENS_COPY: VilleCopy = {
         ],
         pricing: [
           {
+            sizeLabel: "Micro-business",
+            price: "Pilote IA",
+            detail:
+              "Implementation of a simple use case — automatic document reading, meeting minutes, lead qualification — for Amiens micro-businesses and craft firms.",
+          },
+          {
             sizeLabel: "SME",
             price: "SME mission",
             detail:
@@ -598,12 +634,12 @@ export const AMIENS_COPY: VilleCopy = {
     },
     unAUn: {
       fr: {
-        hero: "Le coaching IA 1-to-1 Axion-IA à Amiens accompagne individuellement les dirigeants et cadres des PME industrielles, des entreprises logistiques et du tissu tertiaire des Hauts-de-France. À partir de {{price:intervention-dirigeants|flat}} pour les PME, chaque programme cible vos cas d'usage réels — gestion de production, documentation fournisseurs, reporting, R&D agroalimentaire. Vous progressez à votre rythme sans lâcher votre activité.",
+        hero: "Le coaching IA 1-to-1 Axion-IA à Amiens accompagne individuellement les dirigeants et cadres des PME industrielles, des entreprises logistiques et du tissu tertiaire des Hauts-de-France. À partir de {{price:intervention-dirigeants|flat}} pour les TPE, chaque programme cible vos cas d'usage réels — gestion de production, documentation fournisseurs, reporting, R&D agroalimentaire. Vous progressez à votre rythme sans lâcher votre activité.",
         whyHere: [
           "Amiens est un bassin industriel où les dirigeants de PME manufacturières (équipement, sous-traitance, agroalimentaire) ont des agendas très chargés : le coaching 1-to-1 s'adapte à leur rythme, en visio ou en présentiel à Amiens.",
           "Le tissu logistique (Longueau, Camon, Glisy) concentre des responsables d'exploitation confrontés à des cas IA concrets : traçabilité, préparation de commandes, reporting automatisé. Le coaching individuel ancre ces sujets dans leur réalité quotidienne.",
           "Les cadres des sites R&D (Nestlé Purina PetCare Center) et du pôle Bioeconomy For Change ont des besoins IA très précis sur la documentation scientifique — le 1-to-1 cible exactement ces enjeux.",
-          "Les dirigeants de PME et d'ETI de services amiénoises (conseil, juridique, formation) qui n'ont pas de DSI bénéficient d'un accompagnement individuel pour intégrer l'IA sans risque dans leurs outils existants.",
+          "Les dirigeants de TPE et PME de services amiénoises (conseil, juridique, formation) qui n'ont pas de DSI bénéficient d'un accompagnement individuel pour intégrer l'IA sans risque dans leurs outils existants.",
           "Séances 100 % flexibles : visio depuis votre bureau ou présentiel dans vos locaux amiénois, centre-ville, Pôle Jules Verne ou zones d'activités.",
           "Aucun lock-in : vous repartez avec votre plan d'action, vos outils installés et votre autonomie — sans dépendance vis-à-vis d'Axion-IA.",
         ],
@@ -635,6 +671,12 @@ export const AMIENS_COPY: VilleCopy = {
           },
         ],
         pricing: [
+          {
+            sizeLabel: "TPE",
+            price: "À partir de {{price:intervention-dirigeants|flat}}",
+            detail:
+              "Programme d'entrée pour les gérants de TPE, artisans et indépendants du bassin amiénois souhaitant intégrer l'IA dans leur activité quotidienne.",
+          },
           {
             sizeLabel: "PME",
             price: "Sur devis",
@@ -722,6 +764,12 @@ export const AMIENS_COPY: VilleCopy = {
         ],
         pricing: [
           {
+            sizeLabel: "Micro-business",
+            price: "From {{price:intervention-dirigeants|compact}} excl. VAT",
+            detail:
+              "Entry programme for micro-business owners, craft firms and freelancers in the Amiens basin wishing to integrate AI into their daily activity.",
+          },
+          {
             sizeLabel: "SME",
             price: "On quote",
             detail:
@@ -808,6 +856,12 @@ export const AMIENS_COPY: VilleCopy = {
         ],
         pricing: [
           {
+            sizeLabel: "TPE",
+            price: "Brique IA greffée",
+            detail:
+              "Ajout d'une brique IA (chatbot RAG, recherche sémantique) sur un site existant en quelques semaines, sans refonte.",
+          },
+          {
             sizeLabel: "PME",
             price: "Site / application sur mesure",
             detail:
@@ -888,6 +942,12 @@ export const AMIENS_COPY: VilleCopy = {
         ],
         pricing: [
           {
+            sizeLabel: "Micro-business",
+            price: "Grafted AI brick",
+            detail:
+              "Adding an AI brick (RAG chatbot, semantic search) onto an existing site in a few weeks, no rebuild.",
+          },
+          {
             sizeLabel: "SME",
             price: "Bespoke site / app",
             detail:
@@ -937,7 +997,7 @@ export const AMIENS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Combien coûte un audit IA opérationnel à Amiens ?",
-      a: "Le tarif dépend du niveau retenu — Audit sur place, Ciblé, Stratégique PME ou Stratégique ETI. Tarifs publics affichés sur la page Audit, choix calibré selon votre taille (PME, ETI et grands groupes, grande entreprise) et votre périmètre. Aucun supplément géographique : le tarif est le même à Amiens que partout en France.",
+      a: "Le tarif dépend du niveau retenu — Audit sur place, Ciblé, Stratégique PME ou Stratégique ETI. Tarifs publics affichés sur la page Audit, choix calibré selon votre taille (TPE, PME, ETI, grande entreprise) et votre périmètre. Aucun supplément géographique : le tarif est le même à Amiens que partout en France.",
     },
     {
       q: "Intervenez-vous sur les zones industrielles d'Amiens (Pôle Jules Verne, zone nord) ?",

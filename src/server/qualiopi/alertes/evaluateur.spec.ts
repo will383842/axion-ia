@@ -19,6 +19,8 @@ import { join } from "node:path";
 vi.mock("@/lib/prisma", () => ({
   prisma: {
     reclamation: { findMany: vi.fn() },
+    // QNC L06 : rappels de demi-journée, lus seulement interrupteur allumé.
+    relanceJournal: { count: vi.fn() },
     enrollment: { findMany: vi.fn() },
     trainingSession: { findMany: vi.fn() },
     trainer: { findMany: vi.fn() },
@@ -172,6 +174,7 @@ const mp = prisma as unknown as {
   activityLog: { findMany: ReturnType<typeof vi.fn> };
   etatFondsOpco: { findMany: ReturnType<typeof vi.fn> };
   reclamation: { findMany: ReturnType<typeof vi.fn> };
+  relanceJournal: { count: ReturnType<typeof vi.fn> };
   enrollment: { findMany: ReturnType<typeof vi.fn> };
   trainingSession: { findMany: ReturnType<typeof vi.fn> };
   trainer: { findMany: ReturnType<typeof vi.fn> };
@@ -225,6 +228,7 @@ function setupEmptyMocks() {
   mockCumulAnnuel.mockResolvedValue(0); // sous le seuil de vigilance
   mockInterrupteurs.mockResolvedValue(etatsParDefaut()); // tout éteint
   mp.reclamation.findMany.mockResolvedValue([]);
+  mp.relanceJournal.count.mockResolvedValue(0);
   mp.enrollment.findMany.mockResolvedValue([]);
   mp.trainingSession.findMany.mockResolvedValue([]);
   mp.trainer.findMany.mockResolvedValue([]);

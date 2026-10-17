@@ -37,6 +37,12 @@
  * vide (safe au build SSG).
  */
 
+import {
+  HORS_ESSAI,
+  HORS_SESSION_D_ESSAI,
+  INSCRIPTION_REELLE,
+  SESSION_REELLE,
+} from "@/server/qualiopi/essai/perimetre";
 import { prisma } from "@/lib/prisma";
 import { listerFormationsAResultatsDiffuses } from "@/server/qualiopi/indicateurs/resultats-publics-service";
 import { whereVeilleExploitee } from "./veille-exploitee";
@@ -53,7 +59,8 @@ import {
   pieceAdmissibleAuDossier,
   inscriptionSurSessionTenue,
 } from "@/server/qualiopi/conformite/piece-admissible";
-import { evaluerCouvertureOff32 } from "@/server/qualiopi/revues/plan-actions";
+import { evaluerOff32EnVigueur } from "@/server/qualiopi/amelioration/off32-registre";
+import { regleVeilleEnVigueur } from "@/server/qualiopi/veille/regle-veille";
 import { lireReferentielApplique } from "./referentiel-applique";
 import {
   INDICATEURS_RNQ,
@@ -161,6 +168,13 @@ export const MENTION_OFF12_VIOLENCES_HORS_CONSOLE =
 // evaluerConformite
 // ─────────────────────────────────────────────────────────────────────────────
 
+// QNC L02 — les sessions d'ESSAI ne prouvent rien (aucun indicateur couvert) et
+// ne manquent à rien (aucun dénominateur). Les prédicats partagés sont APPELÉS,
+// jamais réécrits, et le filtre d'essai s'y ajoute À CHAQUE SITE — pas derrière
+// une enveloppe : la garde `aucune-preuve-ne-vient-d-une-session-annulee` lit le
+// nom du prédicat dans l'appel même. Le manifeste d'audit, lui, garde les pièces
+// d'essai, marquées (numéro `-ESSAI-`, filigrane).
+
 /**
  * Évalue la conformité de l'OF sur la grille du référentiel appliquée
  * (32 indicateurs jusqu'au 31/10/2026, 33 à partir du 01/11/2026).
@@ -215,6 +229,11 @@ export async function evaluerConformite(): Promise<ConformiteResult> {
   // Troisième branche du besoin déclaré (ind. 10) : absente tant que la colonne
   // n'est pas migrée — l'heure qui suit une fusion (cf. `colonne-declaration.ts`).
   const colonneDeclaration = await colonneDeclarationDisponible();
+
+  // 🔴 Chantier QNC, L10 — veille tracée : interrupteur éteint → `undefined`, la
+  // règle de `whereVeilleExploitee` est inchangée ; allumé → seules les veilles
+  // décidées par une personne et non archivées couvrent 23/24/25.
+  const regleVeille = await regleVeilleEnVigueur();
 
   // ── Collecte des données nécessaires en parallèle ──────────────────────────
   const [
@@ -296,7 +315,7 @@ export async function evaluerConformite(): Promise<ConformiteResult> {
     nbPartenariatsHandicapAvecTrace,
   ] = await Promise.all([
     prisma.formation.count(),
-    prisma.trainingSession.count({ where: { statut: "realisee" } }),
+    prisma.trainingSession.count({ where: { ...SESSION_REELLE, statut: "realisee" } }),
     // off.8 : positionnement À L'ENTRÉE — la DATE fait la preuve.
     //
     // 🔴 Audit blanc 2026-08-15. `count({ type: "initiale" })` acceptait une
@@ -307,7 +326,7 @@ export async function evaluerConformite(): Promise<ConformiteResult> {
     // rapproche en mémoire. `take` généreux : le volume est de l'ordre du
     // millier de lignes chez un OF de cette taille.
     prisma.evaluationAcquis.findMany({
-      where: { type: "initiale" },
+      where: { type: "initiale", enrollment: INSCRIPTION_REELLE },
       select: {
         enrollmentId: true,
         dateEvaluation: true,
@@ -315,7 +334,7 @@ export async function evaluerConformite(): Promise<ConformiteResult> {
       },
       take: 2000,
     }),
-    prisma.evaluationAcquis.count({ where: { type: "finale" } }),
+    prisma.evaluationAcquis.count({ where: { type: "finale", enrollment: INSCRIPTION_REELLE } }),
     // off.30 : compter les appréciations multi-parties (≠ questionnaires stagiaire seul)
     prisma.appreciation.count(),
     prisma.reclamation.count(),
@@ -353,13 +372,19 @@ export async function evaluerConformite(): Promise<ConformiteResult> {
     // `enrollment` : une adaptation saisie sur une session ensuite ANNULÉE
     // couvrait off.10 ⭐ et off.20.
     prisma.enrollment.count({
-      where: { adaptationsRealisees: { not: null }, ...inscriptionSurSessionTenue() },
+      where: {
+        adaptationsRealisees: { not: null },
+        ...HORS_ESSAI,
+        session: { ...SESSION_REELLE, ...inscriptionSurSessionTenue().session },
+      },
     }),
     // 🔴 2026-08-24 — ce compte portait `annuleeAt: null` en littéral, donc SANS
     // le filtre de statut de session. Les pièces d'une session ANNULÉE ou
     // REPORTÉE comptaient comme preuves. Le prédicat partagé exclut les deux, et
     // admet toujours les pièces générales de l'organisme (`sessionId: null`).
-    prisma.documentGenere.count({ where: pieceAdmissibleAuDossier() }),
+    prisma.documentGenere.count({
+      where: { ...pieceAdmissibleAuDossier(), ...HORS_SESSION_D_ESSAI },
+    }),
     // R5 (audit) : off.32 n'est couvert QUE par une revue de direction VALIDÉE
     // ET de l'ANNÉE COURANTE. L'amélioration continue est une exigence annuelle :
     // sans le filtre `annee`, une revue validée en 2024 couvrait l'indicateur
@@ -438,11 +463,16 @@ export async function evaluerConformite(): Promise<ConformiteResult> {
         // 🔴 Le cas le plus visible du défaut : une convocation émise pour une
         // session ensuite ANNULÉE couvrait l'indicateur 9 devant le certificateur.
         ...pieceAdmissibleAuDossier(),
+        ...HORS_SESSION_D_ESSAI,
       },
     }),
     // off.12 : preuves de suivi/présence (émargement, relevé de connexion) — pas tous types confondus
     prisma.documentGenere.count({
-      where: { type: { in: ["emargement", "releve_connexion"] }, ...pieceAdmissibleAuDossier() },
+      where: {
+        type: { in: ["emargement", "releve_connexion"] },
+        ...pieceAdmissibleAuDossier(),
+        ...HORS_SESSION_D_ESSAI,
+      },
     }),
     // off.31 : responsable qualité = propriétaire du process réclamations/amélioration (config)
     getQualiopiConfig("responsable_qualite_nom").catch(() => ""),
@@ -487,7 +517,11 @@ export async function evaluerConformite(): Promise<ConformiteResult> {
     // (`actions/qualiopi/sessions.ts:939`), mais un `emargementSigneAt` déjà posé
     // reste posé : signer puis annuler suffisait.
     prisma.enrollment.count({
-      where: { emargementSigneAt: { not: null }, ...inscriptionSurSessionTenue() },
+      where: {
+        emargementSigneAt: { not: null },
+        ...HORS_ESSAI,
+        session: { ...SESSION_REELLE, ...inscriptionSurSessionTenue().session },
+      },
     }),
     // off.4 : analyse du besoin = questionnaire de positionnement RÉPONDU (≠ grille d'acquis off.8),
     //   et RÉPONDU AVANT le démarrage de la session de l'inscription.
@@ -498,7 +532,7 @@ export async function evaluerConformite(): Promise<ConformiteResult> {
     // une analyse du besoin. Rapprochement des dates en mémoire (Prisma ne
     // compare pas deux colonnes à travers une relation).
     prisma.questionnaire.findMany({
-      where: { type: "positionnement", reponduAt: { not: null } },
+      where: { type: "positionnement", reponduAt: { not: null }, enrollment: INSCRIPTION_REELLE },
       select: {
         enrollmentId: true,
         reponduAt: true,
@@ -567,9 +601,9 @@ export async function evaluerConformite(): Promise<ConformiteResult> {
     // d'audit. Elle était juste ici et ABSENTE là-bas : le manifeste déclarait
     // 23/24/25 couverts pour toujours. Deux prédicats jumeaux s'éloignent à la
     // première borne qui bouge — celui-ci n'a plus de jumeau.
-    prisma.veille.count({ where: whereVeilleExploitee("legale", maintenant) }),
-    prisma.veille.count({ where: whereVeilleExploitee("metiers", maintenant) }),
-    prisma.veille.count({ where: whereVeilleExploitee("pedagogique", maintenant) }),
+    prisma.veille.count({ where: whereVeilleExploitee("legale", maintenant, regleVeille) }),
+    prisma.veille.count({ where: whereVeilleExploitee("metiers", maintenant, regleVeille) }),
+    prisma.veille.count({ where: whereVeilleExploitee("pedagogique", maintenant, regleVeille) }),
     // off.26 : email du référent handicap — le NOM seul (défaut config) ne prouve pas la désignation.
     getQualiopiConfig("referent_handicap_email").catch(() => ""),
     // off.31 : procédure de réclamation PUBLIÉE (attestation explicite ≠ nom responsable par défaut).
@@ -622,7 +656,11 @@ export async function evaluerConformite(): Promise<ConformiteResult> {
     // ces compteurs par POSITION.
     // Le prédicat partagé — une procédure annulée ne couvre rien.
     prisma.documentGenere.count({
-      where: { type: "procedure_sous_traitance", ...pieceAdmissibleAuDossier() },
+      where: {
+        type: "procedure_sous_traitance",
+        ...pieceAdmissibleAuDossier(),
+        ...HORS_SESSION_D_ESSAI,
+      },
     }),
     // ── Audit blanc 2026-08-15 — 5 règles durcies. Ajouts EN FIN de liste. ───
     //
@@ -631,7 +669,12 @@ export async function evaluerConformite(): Promise<ConformiteResult> {
     // sort. Les inscriptions sur une session à venir sont exclues à dessein :
     // un stagiaire inscrit pour dans deux mois n'est pas encore en défaut de
     // positionnement, et l'inclure ferait crier la garde sans motif.
-    prisma.enrollment.count({ where: { session: { dateDebut: { lte: maintenant } } } }),
+    prisma.enrollment.count({
+      where: {
+        ...HORS_ESSAI,
+        session: { ...SESSION_REELLE, dateDebut: { lte: maintenant } },
+      },
+    }),
     // off.21 — formateurs ACTIFS disposant d'au moins une pièce de compétence
     // VALIDÉE au dossier (CV source, diplôme ou certification).
     //
@@ -679,6 +722,7 @@ export async function evaluerConformite(): Promise<ConformiteResult> {
       where: {
         type: { in: ["inventaire_moyens", "organisation_action"] },
         ...pieceAdmissibleAuDossier(),
+        ...HORS_SESSION_D_ESSAI,
       },
     }),
     // off.18 — modalités de coordination des intervenants, écrites en
@@ -759,11 +803,13 @@ export async function evaluerConformite(): Promise<ConformiteResult> {
     // ni reportée), il ne le remplace pas.
     prisma.trainingSession.count({
       where: {
+        ...SESSION_REELLE,
         statut: "realisee",
         documents: {
           some: {
             type: { in: [...TYPES_PIECE_ACCUEIL] },
             ...pieceAdmissibleAuDossier(),
+            ...HORS_SESSION_D_ESSAI,
           },
         },
       },
@@ -773,8 +819,9 @@ export async function evaluerConformite(): Promise<ConformiteResult> {
     // l'évaluation des acquis ».
     prisma.trainingSession.count({
       where: {
+        ...SESSION_REELLE,
         statut: "realisee",
-        enrollments: { some: { evaluations: { some: { type: "finale" } } } },
+        enrollments: { some: { ...HORS_ESSAI, evaluations: { some: { type: "finale" } } } },
       },
     }),
     // off.12 — sessions réalisées dont au moins un inscrit porte une présence
@@ -783,8 +830,9 @@ export async function evaluerConformite(): Promise<ConformiteResult> {
     // c'est une session tenue dont AUCUNE trace de présence n'existe.
     prisma.trainingSession.count({
       where: {
+        ...SESSION_REELLE,
         statut: "realisee",
-        enrollments: { some: { emargementSigneAt: { not: null } } },
+        enrollments: { some: { ...HORS_ESSAI, emargementSigneAt: { not: null } } },
       },
     }),
     // off.6 — formations ACTIVES dont le contenu est produit. Le compteur
@@ -811,7 +859,8 @@ export async function evaluerConformite(): Promise<ConformiteResult> {
     prisma.enrollment.count({
       where: {
         ...whereBesoinAdaptationDeclare(colonneDeclaration),
-        ...inscriptionSurSessionTenue(),
+        ...HORS_ESSAI,
+        session: { ...SESSION_REELLE, ...inscriptionSurSessionTenue().session },
       },
     }),
     // off.10 — parmi celles-ci, celles qui portent une RÉPONSE consignée
@@ -820,13 +869,19 @@ export async function evaluerConformite(): Promise<ConformiteResult> {
       where: {
         ...whereBesoinAdaptationDeclare(colonneDeclaration),
         adaptationsRealisees: { not: null },
-        ...inscriptionSurSessionTenue(),
+        ...HORS_ESSAI,
+        session: { ...SESSION_REELLE, ...inscriptionSurSessionTenue().session },
       },
     }),
     // off.10 / off.12 — dénominateur d'inscriptions sur session tenue. Il sert à
     // DIRE l'échelle : « 1 adaptation » ne veut rien dire tant qu'on ne sait pas
     // si l'organisme a inscrit dix personnes ou trois mille.
-    prisma.enrollment.count({ where: { ...inscriptionSurSessionTenue() } }),
+    prisma.enrollment.count({
+      where: {
+        ...HORS_ESSAI,
+        session: { ...SESSION_REELLE, ...inscriptionSurSessionTenue().session },
+      },
+    }),
     // off.10 ⭐ — positionnements qui RECUEILLENT le besoin d'adaptation.
     //
     // 🔴 2026-09-14 (relecture PR #1083) — PAS la lecture d'off.4. Celle-là ne
@@ -850,7 +905,12 @@ export async function evaluerConformite(): Promise<ConformiteResult> {
         type: "positionnement",
         reponduAt: { not: null },
         enrollment: {
-          session: { ...inscriptionSurSessionTenue().session, dateDebut: { lte: maintenant } },
+          ...HORS_ESSAI,
+          session: {
+            ...SESSION_REELLE,
+            ...inscriptionSurSessionTenue().session,
+            dateDebut: { lte: maintenant },
+          },
         },
       },
       select: {
@@ -868,7 +928,12 @@ export async function evaluerConformite(): Promise<ConformiteResult> {
     // plus facile à satisfaire).
     prisma.enrollment.count({
       where: {
-        session: { ...inscriptionSurSessionTenue().session, dateDebut: { lte: maintenant } },
+        ...HORS_ESSAI,
+        session: {
+          ...SESSION_REELLE,
+          ...inscriptionSurSessionTenue().session,
+          dateDebut: { lte: maintenant },
+        },
       },
     }),
     // off.26 ⭐ — parmi les partenariats réseau handicap ACTIFS, ceux qui portent
@@ -1424,7 +1489,10 @@ export async function evaluerConformite(): Promise<ConformiteResult> {
   // réponses rouvertes, lues au même prédicat que l'écran et l'alerte.
   const nbReponsesAdaptationRouvertes =
     nbInscritsBesoinAdaptationConsignes > 0
-      ? await compterReponsesRouvertes({ ...inscriptionSurSessionTenue() })
+      ? await compterReponsesRouvertes({
+          ...HORS_ESSAI,
+          session: { ...SESSION_REELLE, ...inscriptionSurSessionTenue().session },
+        })
       : 0;
   const nbInscritsBesoinAdaptationServis = Math.max(
     0,
@@ -1899,7 +1967,9 @@ export async function evaluerConformite(): Promise<ConformiteResult> {
   // l'écran dise quoi remplir plutôt que de se contenter de rougir.
   // L'analyse des risques est exigée par la GRILLE 2026, donc par la date de
   // l'audit, et non par le seul calendrier du jour.
-  const couvertureOff32 = evaluerCouvertureOff32(revueAnnuelle, maintenant, {
+  // 🔴 Chantier QNC, L10 — registre AXI-AMC allumé : le plan évalué est
+  // l'historique de `planActions` plus les actions du registre. Éteint : inchangé.
+  const couvertureOff32 = await evaluerOff32EnVigueur(revueAnnuelle, maintenant, {
     exigeAnalyseRisques: grille.id === "rnq-2026",
   });
   set(32, couvertureOff32.preuves, couvertureOff32.couvert);

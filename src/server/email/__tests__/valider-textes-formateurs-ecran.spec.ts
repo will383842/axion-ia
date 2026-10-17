@@ -156,6 +156,43 @@ describe("validerTousTextesFormateursAction (d'un coup)", () => {
     expect(tx.activityLog.create).not.toHaveBeenCalled();
   });
 
+  /**
+   * Bug du 17/10 — le navigateur envoie un formulaire en multipart, et la sérialisation
+   * multipart change chaque `\n` d'une valeur en `\r\n` (spécification HTML, appliquée
+   * par Chromium comme par Node). Le champ caché `liste` arrivait donc TOUJOURS différent
+   * de la liste du serveur : le bouton refusait même sur une page fraîche. On applique ici
+   * cette règle à la main : passer par `new Response(f)` dépend de l'environnement de test.
+   */
+  const commeLeNavigateur = async (f: FormData) => {
+    const envoye = new FormData();
+    for (const [k, v] of f.entries()) {
+      envoye.set(k, typeof v === "string" ? v.replace(/\r?\n/g, "\r\n") : v);
+    }
+    return envoye;
+  };
+
+  it("la liste réellement affichée, envoyée comme le navigateur l'envoie : acceptée", async () => {
+    connecte("super_admin");
+    const envoye = await commeLeNavigateur(form({ confirme: "oui", nombre: N, liste: L }));
+    expect(envoye.get("liste")).toContain("\r\n");
+    const r = await validerTousTextesFormateursAction(INITIAL, envoye);
+    expect(r).toEqual({ ok: true, message: `${N} textes validés.` });
+    expect(tx.setting.upsert).toHaveBeenCalledTimes(TEXTES_FORMATEURS_A_VALIDER.length);
+  });
+
+  it("envoyée comme le navigateur, mais un texte a changé depuis l'affichage : refusé", async () => {
+    connecte("super_admin");
+    const lignes = L.split("\n");
+    lignes[0] = `${cleDuTexte(TEXTES_FORMATEURS_A_VALIDER[0]!)}=${"0".repeat(64)}`;
+    const envoye = await commeLeNavigateur(
+      form({ confirme: "oui", nombre: N, liste: lignes.join("\n") }),
+    );
+    const r = await validerTousTextesFormateursAction(INITIAL, envoye);
+    expect(r.ok).toBe(false);
+    expect(tx.setting.upsert).not.toHaveBeenCalled();
+    expect(tx.activityLog.create).not.toHaveBeenCalled();
+  });
+
   it("sans session : refusé, rien n'est lu ni écrit", async () => {
     auth.mockResolvedValue(null);
     const r = await validerTousTextesFormateursAction(

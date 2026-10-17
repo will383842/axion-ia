@@ -283,6 +283,12 @@ const CODES_ATTENDUS: string[] = [
   "visio.compte_rendu_a_valider",
   "visio.audio_non_purge",
   "visio.reponse_attendue",
+  // Qualiopi ind. 27 (audit du 16/10) — échéances du registre des sous-traitants
+  // indépendants tenu par l'outil, derrière `formateurs.alertes_registre_sous_traitants`.
+  "sous_traitant_registre_piece_expiree",
+  "sous_traitant_registre_piece_a_echeance",
+  "sous_traitant_registre_controle_en_retard",
+  "sous_traitant_registre_correction_echue",
 ];
 
 const NIVEAUX_VALIDES: AlerteNiveau[] = ["info", "important", "critique"];

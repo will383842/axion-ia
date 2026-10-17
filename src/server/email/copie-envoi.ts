@@ -23,7 +23,10 @@
  * Durée : aucune suppression automatique (la purge de rétention a été
  * retirée) ; conservée tant que la relation dure, puis le temps des délais
  * légaux de réclamation. Effacement art. 17 : supprimée
- * (`eraseEmailTracesForEmail`). Export art. 15 : rendue (`api/gdpr-export`).
+ * (`eraseEmailTracesForEmail`) — sauf, interrupteur
+ * `qualiopi.dossier_session.actif` allumé, la copie d'un e-mail DE FORMATION,
+ * gardée 5 ans, adresse masquée (chantier QNC, L11). Export art. 15 : rendue
+ * (`api/gdpr-export`).
  */
 
 import { prisma } from "@/lib/prisma";
@@ -32,6 +35,7 @@ import { masquerCode } from "@/server/email/code-en-file";
 import { masquerSecretsEmail } from "@/lib/email/masquer-secrets";
 import { captureWorkerError } from "@/server/queue/lib/sentry-worker";
 import { EmailLogStatus } from "../../../prisma/generated/client";
+import { lireEtatDossierSession } from "@/server/qualiopi/dossier-session/interrupteur";
 
 function estStub(): boolean {
   return process.env["DATABASE_URL"]?.includes("stub.invalid") === true;
@@ -82,6 +86,19 @@ export async function enregistrerCopieEnvoi(copie: CopieEnvoi): Promise<boolean>
       attachmentNames: [...(copie.attachmentNames ?? [])],
       secretsMasques: masque.masques,
     };
+    // Chantier QNC, L11 — interrupteur `actif` : la copie est en CRÉATION
+    // SEULE. Elle est la preuve de ce que la personne a reçu ; un job rejoué
+    // qui la réécrirait y mettrait ce que le gabarit est devenu depuis. La
+    // première copie fait foi : une seconde écriture (P2002) est un no-op.
+    // Sans cible de session ici, `essai` n'agit pas (doctrine du socle).
+    if ((await lireEtatDossierSession()) === "actif") {
+      try {
+        await prisma.emailLogContent.create({ data: { emailLogId: ligne.id, ...donnees } });
+      } catch (e) {
+        if ((e as { code?: unknown } | null)?.code !== "P2002") throw e;
+      }
+      return true;
+    }
     // `upsert` : un job rejoué dont la ligne serait déjà copiée ne lève pas.
     await prisma.emailLogContent.upsert({
       where: { emailLogId: ligne.id },

@@ -221,7 +221,7 @@ export const SAINT_GERMAIN_EN_LAYE_COPY: VilleCopy = {
     },
     {
       q: "Quels sont les tarifs pour une intervention IA d'une PME et ETI saint-germanoise ?",
-      a: "Une intervention collective démarre à {{price:intervention-4h|flat}} pour 5 à 20 personnes. Un accompagnement dirigeant 1-to-1 démarre à {{price:intervention-dirigeants|flat}}. L'audit complet est cadré sur mesure selon le périmètre. Tarifs publics consultables sur axion-ia.fr.",
+      a: "Une intervention collective démarre à {{price:intervention-4h|flat}} pour 2 à 15 personnes. Un accompagnement dirigeant 1-to-1 démarre à {{price:intervention-dirigeants|flat}}. L'audit complet est cadré sur mesure selon le périmètre. Tarifs publics consultables sur axion-ia.fr.",
     },
     {
       q: "Quels délais pour démarrer un premier projet IA à Saint-Germain-en-Laye ?",

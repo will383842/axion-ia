@@ -12,6 +12,7 @@
 // Build-safety (ADR 0026) : au build, `prisma` est un Proxy stub qui renvoie [].
 // De plus tout est enveloppé dans un try/catch → [] en cas d'erreur DB.
 
+import { FACTURE_HORS_ESSAI, SESSION_REELLE } from "@/server/qualiopi/essai/perimetre";
 import { prisma } from "@/lib/prisma";
 import {
   agregerParMois,
@@ -60,7 +61,7 @@ export async function getPrevisionnel(
 
   try {
     const sessions = await prisma.trainingSession.findMany({
-      where: { dateDebut: { gte: from, lt: to } },
+      where: { ...SESSION_REELLE, dateDebut: { gte: from, lt: to } },
       select: { id: true, dateDebut: true, statut: true, montantHtCents: true },
       orderBy: { dateDebut: "asc" },
       take: MAX_SESSIONS,
@@ -73,6 +74,7 @@ export async function getPrevisionnel(
     // existent — `{ in: [] }` matcherait 0 ligne, autant l'omettre.
     const factures = await prisma.factureFormation.findMany({
       where: {
+        ...FACTURE_HORS_ESSAI,
         OR: [
           { echeanceAt: { gte: from, lt: to } },
           ...(sessionIds.length > 0 ? [{ sessionId: { in: sessionIds } }] : []),

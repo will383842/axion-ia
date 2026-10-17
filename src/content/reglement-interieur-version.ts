@@ -15,8 +15,11 @@
  *
  * ## La règle, et ce qui la garde
  *
- * La date est celle du DERNIER changement de contenu (ici : le texte de
- * l'article 3 quater et la numérotation du PDF, 2 octobre 2026). `empreinte` est
+ * La date est celle du DERNIER changement de contenu (ici : l'article 2, 16
+ * octobre 2026 — la feuille d'émargement se signe pendant chaque demi-journée,
+ * en présentiel comme en distanciel, et le relevé de connexion ne la remplace
+ * plus ; lot L16, décision de Will. Précédent changement : l'article 3 quater et
+ * la numérotation du PDF, 2 octobre 2026). `empreinte` est
  * le SHA-256 du contenu publié (FR + EN) : le test
  * `src/content/__tests__/reglement-interieur-date-suit-le-texte.spec.ts`
  * rougit dès que le texte change sans que la date et l'empreinte soient
@@ -24,8 +27,8 @@
  */
 
 export const REGLEMENT_INTERIEUR_VERSION = {
-  iso: "2026-10-02",
-  libelleFr: "2 octobre 2026",
-  libelleEn: "October 2, 2026",
-  empreinte: "acab41e234396187cd2f8a2ff280d0b1c41c590f09fe5cba251aaf008b7ec5a8",
+  iso: "2026-10-16",
+  libelleFr: "16 octobre 2026",
+  libelleEn: "October 16, 2026",
+  empreinte: "0bb7e29c63a79675dd6958cb497444566746b91c35f05b586f79f2235217abab",
 } as const;

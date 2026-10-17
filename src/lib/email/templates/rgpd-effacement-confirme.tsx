@@ -67,6 +67,12 @@ interface Payload {
    * n'en porte pas, et le segment est alors OMIS.
    */
   dossierClient?: number;
+  /**
+   * Chantier QNC, L11 — copies d'e-mails DE FORMATION gardées 5 ans, adresse
+   * masquée (décision de Will). Facultatif : absent ou nul, la phrase est
+   * OMISE — c'est le cas tant que `qualiopi.dossier_session.actif` est éteint.
+   */
+  copiesFormationConservees?: number;
 }
 
 const COPY = {
@@ -107,6 +113,10 @@ const COPY = {
     // donnée sur la personne) : deux affirmations fausses dans une preuve.
     conserve:
       "Certaines traces sont conservées sans votre adresse : les pièces comptables que la loi nous impose de garder, le journal de nos envois, et la preuve de ce que vous aviez accepté ou refusé (texte présenté, date). Votre adresse y est remplacée par une empreinte, qui ne permet pas de la retrouver ; elle sert seulement à ne plus vous écrire si votre adresse nous parvenait de nouveau.",
+    // Chantier QNC, L11 — ⚠️ texte à faire valider par Will avant d'allumer
+    // `qualiopi.dossier_session.actif` : il n'est rendu qu'à ce moment-là.
+    conserveFormation: (n: number) =>
+      `Nous conservons aussi, pendant 5 ans, la copie de ${n} e-mail${n > 1 ? "s" : ""} lié${n > 1 ? "s" : ""} à une formation que vous avez suivie (convocation, accès, attestation…) : c'est la preuve de ce que nous vous avons remis, exigée pour la certification Qualiopi. Votre adresse y est masquée.`,
     contact:
       "Si vous estimez que cet effacement est incomplet, écrivez à contact@axion-ia.com. Vous pouvez également saisir la CNIL.",
     // « votre adresse ne figure plus dans nos fichiers » est RETIRÉ (L6) : ce
@@ -144,6 +154,8 @@ const COPY = {
       ].join(", ") + ".",
     conserve:
       "Some records are kept without your address: accounting documents that the law requires us to retain, the log of the messages we sent, and the proof of what you had accepted or refused (text shown, date). In them, your address is replaced by a fingerprint from which it cannot be recovered; its only use is to stop us writing to you should your address reach us again.",
+    conserveFormation: (n: number) =>
+      `We also keep, for 5 years, the copy of ${n} e-mail${n > 1 ? "s" : ""} related to a training course you attended (notice, access, certificate…): it is the proof of what we provided to you, required for the Qualiopi certification. Your address is masked in it.`,
     contact:
       "If you believe this erasure is incomplete, write to contact@axion-ia.com. You may also contact your supervisory authority.",
     dernier: "This is the last message you will receive from us.",
@@ -186,6 +198,11 @@ export function RgpdEffacementConfirmeEmail({
       <Text style={{ ...emailStyles.paragraphStyle, color: emailStyles.COLORS.textMuted }}>
         {t.conserve}
       </Text>
+      {typeof p.copiesFormationConservees === "number" && p.copiesFormationConservees > 0 ? (
+        <Text style={{ ...emailStyles.paragraphStyle, color: emailStyles.COLORS.textMuted }}>
+          {t.conserveFormation(p.copiesFormationConservees)}
+        </Text>
+      ) : null}
       <Text style={{ ...emailStyles.paragraphStyle, color: emailStyles.COLORS.textMuted }}>
         {t.contact}
       </Text>

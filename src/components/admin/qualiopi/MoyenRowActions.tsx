@@ -16,6 +16,7 @@
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import type { updateMoyenAction, setMoyenActifAction } from "@/server/actions/qualiopi/moyens";
+import { jourParisDe } from "@/server/qualiopi/moyens/moyens-regles";
 
 type MoyenCategorie = "salle" | "materiel" | "plateforme" | "humain";
 
@@ -43,24 +44,36 @@ export interface MoyenRowActionsProps {
   };
   updateAction: typeof updateMoyenAction;
   setActifAction: typeof setMoyenActifAction;
+  /**
+   * QNC L07 — `qualiopi.moyens.actif` est-il allumé ? Lu par la page. Faux :
+   * pas de champ « Motif » (le serveur l'ignorerait).
+   */
+  moyensActif?: boolean;
 }
 
 export function MoyenRowActions({
   moyen,
   updateAction,
   setActifAction,
+  moyensActif = false,
 }: MoyenRowActionsProps): React.ReactElement {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
   const [open, setOpen] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  // QNC L07 — motif de la modification. Facultatif tant que le lot est éteint,
+  // exigé par le serveur (≥ 10 caractères) quand il est allumé.
+  const [motif, setMotif] = useState("");
 
   const [categorie, setCategorie] = useState<MoyenCategorie>(moyen.categorie as MoyenCategorie);
   const [libelle, setLibelle] = useState(moyen.libelle);
   const [description, setDescription] = useState(moyen.description);
   const [localisation, setLocalisation] = useState(moyen.localisation);
+  // Jour civil de Paris, comme le serveur le compare : une date stockée à
+  // 23 h 30 Z le 16 est le 17 à Paris, et la renvoyer telle quelle n'est pas
+  // un changement.
   const [dateVerification, setDateVerification] = useState(() =>
-    moyen.dateVerification ? moyen.dateVerification.toISOString().slice(0, 10) : "",
+    moyen.dateVerification ? jourParisDe(moyen.dateVerification) : "",
   );
 
   function handleUpdate(e: React.FormEvent) {
@@ -74,6 +87,7 @@ export function MoyenRowActions({
         description,
         localisation,
         dateVerification: dateVerification ? new Date(dateVerification) : null,
+        ...(moyensActif && motif.trim() !== "" ? { motif } : {}),
       });
       if ("error" in result) {
         setError(result.error);
@@ -87,7 +101,11 @@ export function MoyenRowActions({
   function handleToggleActif() {
     setError(null);
     startTransition(async () => {
-      const result = await setActifAction({ id: moyen.id, actif: !moyen.actif });
+      const result = await setActifAction({
+        id: moyen.id,
+        actif: !moyen.actif,
+        ...(moyensActif && motif.trim() !== "" ? { motif } : {}),
+      });
       if ("error" in result) {
         setError(result.error);
       } else {
@@ -120,6 +138,19 @@ export function MoyenRowActions({
           {isPending ? "…" : moyen.actif ? "Désactiver" : "Réactiver"}
         </button>
       </div>
+
+      {moyensActif && !open && (
+        <input
+          type="text"
+          value={motif}
+          onChange={(e) => setMotif(e.target.value)}
+          disabled={isPending}
+          maxLength={2000}
+          placeholder="Motif (pour désactiver / réactiver)"
+          aria-label="Motif du changement d'état"
+          className={inputCls}
+        />
+      )}
 
       {open && (
         <form
@@ -200,6 +231,22 @@ export function MoyenRowActions({
                 className={inputCls}
               />
             </div>
+            {moyensActif && (
+              <div>
+                <label htmlFor="moyenrowactions-motif" className={labelCls}>
+                  Motif de la modification
+                </label>
+                <input
+                  id="moyenrowactions-motif"
+                  type="text"
+                  value={motif}
+                  onChange={(e) => setMotif(e.target.value)}
+                  disabled={isPending}
+                  maxLength={2000}
+                  className={inputCls}
+                />
+              </div>
+            )}
             <button type="submit" disabled={isPending} className="admin-button">
               {isPending ? "Enregistrement…" : "Enregistrer"}
             </button>

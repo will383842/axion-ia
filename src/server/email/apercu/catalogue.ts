@@ -638,6 +638,13 @@ export const CATALOGUE: Readonly<Record<EmailJobName, FicheEmail>> = {
     destinataire: "Williams (alerte interne)",
     source: "features/apporteurs-reseau/declaration-entreprise.ts",
   },
+  "recueil-besoin": {
+    categorie: "commerce",
+    quand:
+      "Dès la demande de formation : le questionnaire de recueil du besoin part seul à l'entreprise, puis deux relances au plus (J+3, J+6)",
+    destinataire: "le client",
+    source: "server/qualiopi/recueil/envoi-email.ts",
+  },
   "questionnaire-reponses-recues": {
     categorie: "rendez-vous",
     quand:

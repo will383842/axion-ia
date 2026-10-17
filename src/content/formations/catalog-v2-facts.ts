@@ -25,6 +25,7 @@ import {
 } from "./materiel";
 import type { FormationCasUsage, FormationV2 } from "./catalog-v2";
 import { FORMATION_CARD_PHOTOS } from "./catalog-v2-photos";
+import { EFFECTIF_VALEUR_FR } from "./effectif";
 import { type ModalitePedagogique, PRESENTIEL_DISTANCIEL } from "./modalites";
 import { DELAI_ACCES_VALEUR, delaiAccesAutresFinanceurs } from "./delai-acces";
 
@@ -115,7 +116,9 @@ export function getFormationPrerequis(f: FormationV2): string {
 // les modalités pédagogiques ET dans les délais d'accès. Il doit donc être
 // publié. Ne PAS le dériver des tranches de prix (`FormationBracket`) : celles-ci
 // sont un axe tarifaire (jusqu'à 30 pers.) et sont vides pour les « sur devis ».
-export const FORMATION_EFFECTIF_DEFAUT = "Jusqu’à 15 participants";
+// Valeur unique : `effectif.ts` (de 2 à 15 stagiaires par session, décision de Will
+// du 2026-10-16) — aucune fiche ne la surcharge.
+export const FORMATION_EFFECTIF_DEFAUT = EFFECTIF_VALEUR_FR;
 
 export function getFormationEffectif(f: FormationV2): string {
   return f.effectifFr ?? FORMATION_EFFECTIF_DEFAUT;

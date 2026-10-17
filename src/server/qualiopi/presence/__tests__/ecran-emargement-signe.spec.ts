@@ -66,6 +66,14 @@ vi.mock("@/server/actions/qualiopi/emargement-liens", () => ({
   envoyerLiensEmargementAction: vi.fn(),
   revoquerLiensSessionAction: vi.fn(),
 }));
+vi.mock("@/server/actions/qualiopi/emargement-demi-journee", () => ({
+  saisirRattrapageFormAction: vi.fn(),
+  cocherFicheJourFormAction: vi.fn(),
+}));
+// QNC L06 : interrupteur éteint, le panneau par demi-journée n'existe pas.
+vi.mock("@/server/qualiopi/emargement/demi-journee/suivi", () => ({
+  lireSuiviEmargement: vi.fn(async () => null),
+}));
 vi.mock("@/server/auth/garde-page", () => ({ gardePage: vi.fn() }));
 vi.mock("@/server/qualiopi/config/site-settings", () => ({ getQualiopiConfig: vi.fn() }));
 vi.mock("@/server/qualiopi/presence/queries", () => ({ getSessionEmargement: vi.fn() }));
