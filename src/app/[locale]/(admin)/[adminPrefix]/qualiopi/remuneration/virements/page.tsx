@@ -11,8 +11,10 @@
  *     — chaque relevé repasse par la transition existante, avec l'empreinte de
  *     l'IBAN affiché. Rubriques suspendues (attestation URSSAF, compte à valider,
  *     nouvel IBAN) lues par la MÊME garde que le clic ; F38 sur geste.
- *   · Relevés MENSUELS et commissions des apporteurs : inchangés, « Virement
- *     fait » reste sur leur propre écran (lien).
+ *   · Relevés MENSUELS et commissions des apporteurs : « Virement fait » reste sur
+ *     leur propre écran (lien). Un relevé mensuel lit pourtant la règle C-1 du
+ *     changement d'IBAN, comme le clic (relecture de la PR 1561) : il n'est « prêt à
+ *     virer » que si aucun changement de compte ne le retient.
  *
  * 🔴 ÉTEINTE par `formateurs.virements_a_faire` : coupée, la page n'existe pas.
  */
@@ -41,7 +43,10 @@ import { lireEtatsEntree } from "@/server/qualiopi/formateurs-independants/etats
 import { interrupteurAllume } from "@/server/qualiopi/formateurs-independants/interrupteur-allume";
 import { montantEnTexte } from "@/server/qualiopi/formateurs-independants/paiement/virement-fait-envoi";
 import { LIBELLE_SUSPENSION_VIREMENT } from "@/server/qualiopi/formateurs-independants/paiement/virement-mission";
-import { etatsVirementsMission } from "@/server/qualiopi/formateurs-independants/paiement/virements-a-faire-lecture";
+import {
+  etatsVirementsMensuels,
+  etatsVirementsMission,
+} from "@/server/qualiopi/formateurs-independants/paiement/virements-a-faire-lecture";
 import { echeanceEffective } from "@/server/qualiopi/remuneration/echeance";
 
 export const dynamic = "force-dynamic";
@@ -88,6 +93,19 @@ export default async function VirementsAFairePage({ params, searchParams }: Page
   );
   const etats = await etatsVirementsMission(
     missions.map((v) => v.pieceId),
+    maintenant,
+  );
+  const autres = vue.filter(
+    (v) => !(v.flux === "formateur" && v.origineReleve === "passage_mission"),
+  );
+  const mensuels = await etatsVirementsMensuels(
+    autres
+      .filter((v) => v.flux === "formateur")
+      .map((v) => ({
+        pieceId: v.pieceId,
+        trainerId: v.beneficiaireId,
+        bloque: v.factureAttendue === true || v.nonConforme === true,
+      })),
     maintenant,
   );
   const totaux = totauxVirements(vue);
@@ -272,12 +290,13 @@ export default async function VirementsAFairePage({ params, searchParams }: Page
                 Montant TTC
               </th>
               <th scope="col">Virer avant le</th>
+              <th scope="col">État</th>
             </tr>
           </thead>
           <tbody>
-            {vue
-              .filter((v) => !(v.flux === "formateur" && v.origineReleve === "passage_mission"))
-              .map((v) => (
+            {autres.map((v) => {
+              const m = v.flux === "formateur" ? mensuels.get(v.pieceId) : undefined;
+              return (
                 <tr key={`${v.flux}-${v.pieceId}`}>
                   <td>
                     {v.beneficiaire}{" "}
@@ -304,8 +323,26 @@ export default async function VirementsAFairePage({ params, searchParams }: Page
                     </AdminBadge>{" "}
                     {jour(v.dateCible)}
                   </td>
+                  <td>
+                    {m?.pret === true && (
+                      <AdminBadge tone="neutral" compact>
+                        Prêt à virer
+                      </AdminBadge>
+                    )}
+                    {m?.motifs.map((motif) => (
+                      <p key={motif} className="admin-muted">
+                        {LIBELLE_SUSPENSION_VIREMENT[motif]}
+                      </p>
+                    ))}
+                    {m?.illisible === true && (
+                      <p className="admin-muted">
+                        Demandes de changement de compte illisibles : le paiement sera refusé.
+                      </p>
+                    )}
+                  </td>
                 </tr>
-              ))}
+              );
+            })}
           </tbody>
         </table>
       </AdminCard>

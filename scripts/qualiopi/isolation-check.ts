@@ -360,6 +360,8 @@ const CONSOMMATEURS_ASSUMES: ReadonlySet<string> = new Set([
   // formateur hors de l'espace formateur : la garde serait verte et
   // l'architecture fausse.
   "src/app/[locale]/espace-formateur/remuneration/page.tsx",
+  // Son test : il lit le libellé C-1 du domaine pour prouver que la page l'affiche tel quel.
+  "src/app/[locale]/espace-formateur/remuneration/__tests__/changement-iban-motif.spec.tsx",
   // Lot D2 (M10, 2026-10-12) : « Signaler un désaccord » sur une facture de
   // MISSION, formulaire de la page ci-dessus. L'action n'importe que
   // `signalerDesaccord`, qui revérifie côté serveur que le relevé appartient au
@@ -401,6 +403,9 @@ const CONSOMMATEURS_ASSUMES: ReadonlySet<string> = new Set([
   "src/app/[locale]/espace-formateur/dossier/actions.ts",
   "src/app/[locale]/espace-formateur/dossier/messages.ts",
   "src/app/[locale]/espace-formateur/dossier/__tests__/messages.spec.ts",
+  // Le test de l'action de changement d'IBAN : il lit les messages du circuit pour
+  //    prouver que la fiche visée est celle de la SESSION (IDOR), jamais celle du formulaire.
+  "src/app/[locale]/espace-formateur/dossier/__tests__/changement-iban-action.spec.ts",
   "src/server/formateur/acces-apres-fin.ts",
   // La route qui sert le PDF de cette page. Elle n'importe du domaine que
   // `nomFichierDocument` — la façon de NOMMER le fichier remis, qui doit être la

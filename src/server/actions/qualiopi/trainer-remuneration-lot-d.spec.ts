@@ -4,7 +4,8 @@
  *     clic était refusé « le compte a changé ») ;
  *   · contrat-cadre signé et SIREN actif contrôlés côté serveur avant tout ;
  *   · un double clic ne paie pas deux fois (écriture conditionnelle).
- * Un relevé MENSUEL ne lit aucune de ces gardes : son chemin est inchangé.
+ * Un relevé MENSUEL ne lit aucune de ces gardes : seulement la règle C-1 du
+ * changement d'IBAN (`motifsChangementIbanDu`, relecture de #1561).
  */
 
 import { describe, it, expect, vi, beforeEach } from "vitest";
@@ -20,6 +21,7 @@ const mockStatementFindUnique = vi.fn();
 const mockTransaction = vi.fn(async (fn: (t: typeof tx) => Promise<unknown>) => fn(tx));
 const contexte = vi.fn();
 const garanties = vi.fn();
+const motifsIban = vi.fn();
 // Comme Next : `redirect()` lève, rien ne s'exécute après.
 const redirect = vi.fn((u: string) => {
   throw new Error(`NEXT_REDIRECT ${u}`);
@@ -44,6 +46,7 @@ vi.mock("next/navigation", () => ({ redirect: (u: string) => redirect(u) }));
 vi.mock("next/cache", () => ({ revalidatePath: vi.fn() }));
 vi.mock("@/server/qualiopi/formateurs-independants/paiement/virement-mission-base", () => ({
   contexteVirementMission: (...a: unknown[]) => contexte(...a),
+  motifsChangementIbanDu: (...a: unknown[]) => motifsIban(...a),
 }));
 vi.mock("@/server/qualiopi/formateurs-independants/paiement/garanties-paiement-mission", () => ({
   garantiesPaiementMission: (...a: unknown[]) => garanties(...a),
@@ -94,6 +97,7 @@ beforeEach(() => {
   tx.trainerStatement.updateMany.mockResolvedValue({ count: 1 });
   tx.trainerFeeLine.updateMany.mockResolvedValue({ count: 0 });
   garanties.mockResolvedValue([]);
+  motifsIban.mockResolvedValue([]);
   contexte.mockImplementation(async (_db, _r, affichee: string | null) => ({
     verdict:
       affichee === E
@@ -182,7 +186,7 @@ describe("M6 — contrat-cadre signé et SIREN actif, contrôlés côté serveur
     expect(tx.trainerStatement.updateMany).toHaveBeenCalledTimes(1);
   });
 
-  it("témoin : un relevé MENSUEL ne lit ni les garanties ni l'IBAN", async () => {
+  it("témoin : un relevé MENSUEL ne lit ni les garanties ni l'IBAN, seulement la règle C-1", async () => {
     mockStatementFindUnique.mockResolvedValue(
       releve({ origine: "releve_mensuel", echeanceAt: null }),
     );
@@ -190,6 +194,11 @@ describe("M6 — contrat-cadre signé et SIREN actif, contrôlés côté serveur
     expect(r).toEqual({ data: { id: ID, statut: "paye" } });
     expect(garanties).not.toHaveBeenCalled();
     expect(contexte).not.toHaveBeenCalled();
+    expect(tx.trainer.findUnique).not.toHaveBeenCalled();
+    // Lue hors transaction, puis relue sous verrou avec le client de la transaction.
+    expect(motifsIban).toHaveBeenCalledTimes(2);
+    expect(motifsIban.mock.calls[1]?.[0]).toBe(tx);
+    expect(motifsIban.mock.calls[0]?.[1]).toBe(TRAINER);
   });
 });
 
