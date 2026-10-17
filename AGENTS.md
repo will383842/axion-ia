@@ -171,13 +171,15 @@ En outre, `src/server/exporters/knowledge-rss.ts` + `knowledge-sitemap.ts` font 
 
 ### ⚠️ La durée du build a DÉRIVÉ, puis est retombée
 
-> **Mesure du 2026-10-17 (état actuel).** Sur les 10 derniers runs de `deploy-coolify.yml` dont
-> le job `Build & push image to GHCR` s'est réellement exécuté (tous `workflow_dispatch`,
-> du 2026-10-14 au 2026-10-16 ; les autres runs `schedule` sont `skipped` par `precheck`) :
+> **Mesure du 2026-10-17 (état actuel).** Sur un échantillon de 10 runs de `deploy-coolify.yml`
+> dont le job `Build & push image to GHCR` a réussi (tous `workflow_dispatch`, du 2026-10-14
+> au 2026-10-16 ; les runs `schedule` sont `skipped` par `precheck`) :
 > **17 min 10 s à 23 min 40 s, médiane ~17 min 50 s** (9 runs sur 10 entre 17 min 10 s et
 > 18 min 31 s, un à 23 min 40 s). Source : `gh run view <id> --json jobs`, `completedAt - startedAt`
 > du job build (runs 38976024454, 38967711176, 38944880292, 38934661088, 38718943971,
-> 38709858650, 38699307526, 38685990830, 38636944994, 38554045687). **Le « 47-56 min »
+> 38709858650, 38699307526, 38685990830, 38636944994, 38554045687). Trois builds plus récents
+> (runs 38960873002, 39024182620, 39044234444, 16-17/10) ont un job build vert de 15 min 47 s à
+> 18 min 59 s : l'ordre de grandeur (~18 min) tient. **Le « 47-56 min »
 > ci-dessous est l'ancienne mesure du 2026-09-03**, gardée comme historique.
 >
 > **L'avertissement « fusionner pendant un build en vol le TUE » n'est plus vrai pour une
