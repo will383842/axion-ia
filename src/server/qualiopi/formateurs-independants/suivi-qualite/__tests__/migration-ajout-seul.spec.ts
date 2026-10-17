@@ -12,7 +12,7 @@ import { describe, expect, it } from "vitest";
 const SQL = readFileSync(
   path.resolve(
     __dirname,
-    "../../../../../../prisma/migrations/20261017120000_formateurs_suivi_qualite/migration.sql",
+    "../../../../../../prisma/migrations/20261016110000_formateurs_suivi_qualite/migration.sql",
   ),
   "utf8",
 );
