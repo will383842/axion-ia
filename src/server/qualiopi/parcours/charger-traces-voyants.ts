@@ -105,7 +105,7 @@ export async function sessionsALire(ids: ReadonlyArray<string>): Promise<Session
 
 // ── Organisme : ne dépend d'aucune session ────────────────────────────────────
 
-async function lireVeille(maintenant: Date): Promise<TraceLue<TraceVeille>> {
+async function lireVeille(): Promise<TraceLue<TraceVeille>> {
   const regle = await regleVeilleEnVigueur();
   if (regle === undefined) return { lecture: "lot_eteint" };
   const trace = await lireJournalVeilles(prisma as never);
@@ -445,7 +445,7 @@ export async function chargerTracesVoyants(
   if (sessions.length === 0) return out;
   const [parSession, veille, handicap] = await Promise.all([
     inscriptionsDe(sessions.map((s) => s.id)).catch(() => null),
-    protege(() => lireVeille(maintenant)),
+    protege(lireVeille),
     protege(lireHandicap),
   ]);
   const etatPedagogie = await lirePedagogie();
