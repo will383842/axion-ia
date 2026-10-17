@@ -2,7 +2,8 @@
  * Admin — Qualiopi · Registre des incidents (LOT 4 — pilotage réel).
  *
  * Liste des incidents (pédagogiques/administratifs/techniques) + déclaration,
- * édition inline, suppression et export PDF (6e registre). Les incidents et
+ * suivi (compléter, décider, noter — jamais réécrire ni supprimer, L09) et
+ * export PDF (6e registre). Les incidents et
  * leurs actions correctives alimentent M7/M9 du pilotage.
  * Server Component — auth + lecture DB. Composants clients pour les mutations.
  */
@@ -18,8 +19,16 @@ import { listIncidents } from "@/server/qualiopi/registres/incidents-service";
 import {
   creerIncidentAction,
   updateIncidentAction,
-  supprimerIncidentAction,
+  ajouterNoteIncidentAction,
 } from "@/server/actions/qualiopi/incidents";
+import {
+  LIBELLE_DECLARANT,
+  LIBELLE_NATURE,
+  LIBELLE_ORIGINE,
+  type DeclarantIncident,
+  type NatureIncident,
+  type OrigineIncident,
+} from "@/server/qualiopi/registres/incident-complement";
 import { genererRegistrePdfAction } from "@/server/actions/qualiopi/exports-pdf";
 import { IncidentForm } from "@/components/admin/qualiopi/IncidentForm";
 import { IncidentRowActions } from "@/components/admin/qualiopi/IncidentRowActions";
@@ -51,6 +60,13 @@ const STATUT_LABELS: Record<string, string> = {
   en_cours: "En cours",
   resolu: "Résolu",
 };
+
+/** Date et heure du serveur, lues à l'heure de Paris. */
+const DATE_HEURE_PARIS = new Intl.DateTimeFormat("fr-FR", {
+  timeZone: "Europe/Paris",
+  dateStyle: "short",
+  timeStyle: "short",
+});
 
 interface PageProps {
   params: Promise<{ locale: "fr" | "en"; adminPrefix: string }>;
@@ -231,6 +247,7 @@ export default async function QualiopiIncidentsPage({ params }: PageProps) {
                 <th className={headCls}>Session</th>
                 <th className={headCls}>Action corrective</th>
                 <th className={headCls}>Statut</th>
+                <th className={headCls}>Suivi (notes signées)</th>
                 <th className={headCls}>Actions</th>
               </tr>
             </thead>
@@ -257,6 +274,19 @@ export default async function QualiopiIncidentsPage({ params }: PageProps) {
                   </td>
                   <td className={cellCls}>
                     <span className="font-medium">{i.titre}</span>
+                    <span className="mt-1 block text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
+                      {i.nature
+                        ? LIBELLE_NATURE[i.nature as NatureIncident]
+                        : "Nature non qualifiée"}
+                      {" · signalé par "}
+                      {i.declarant
+                        ? LIBELLE_DECLARANT[i.declarant as DeclarantIncident].toLowerCase()
+                        : "non tracé"}
+                      {" · "}
+                      {i.origine
+                        ? LIBELLE_ORIGINE[i.origine as OrigineIncident]
+                        : "origine non tracée"}
+                    </span>
                     {i.description ? (
                       <span
                         className="mt-1 line-clamp-2 block max-w-sm text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]"
@@ -306,19 +336,35 @@ export default async function QualiopiIncidentsPage({ params }: PageProps) {
                     ) : null}
                   </td>
                   <td className={cellCls}>
+                    {i.notes.length === 0 ? (
+                      <span className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
+                        Aucune note
+                      </span>
+                    ) : (
+                      <ol className="flex max-w-sm flex-col gap-[var(--space-admin-2)]">
+                        {i.notes.map((n) => (
+                          <li key={n.id} className="text-[length:var(--text-admin-xs)]">
+                            <span className="block text-[color:var(--color-admin-fg-muted)]">
+                              {DATE_HEURE_PARIS.format(n.creeLe)} — {n.auteurNom}
+                            </span>
+                            <span className="whitespace-pre-line">{n.texte}</span>
+                          </li>
+                        ))}
+                      </ol>
+                    )}
+                  </td>
+                  <td className={cellCls}>
                     <IncidentRowActions
                       incident={{
                         id: i.id,
-                        type: i.type,
-                        gravite: i.gravite,
                         statut: i.statut,
-                        titre: i.titre,
-                        description: i.description,
+                        nature: i.nature,
+                        declarant: i.declarant,
+                        origine: i.origine,
                         actionCorrective: i.actionCorrective,
-                        dateIncident: i.dateIncident,
                       }}
                       updateAction={updateIncidentAction}
-                      supprimerAction={supprimerIncidentAction}
+                      noteAction={ajouterNoteIncidentAction}
                     />
                   </td>
                 </tr>

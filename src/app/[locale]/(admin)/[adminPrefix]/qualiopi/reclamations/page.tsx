@@ -3,6 +3,11 @@
  *
  * Liste les réclamations et expose le formulaire de création + réponse.
  * Server Component — auth + lecture DB. Composants clients pour les mutations.
+ *
+ * Chantier QNC, L09 — quand l'interrupteur `qualiopi.reclamations.actif`
+ * couvre une réclamation, sa ligne porte le SUIVI DATÉ (étapes signées,
+ * échéances en jours ouvrés, session rattachée, amélioration liée) à la place
+ * des gestes libres. Interrupteur éteint : l'écran est celui d'avant.
  */
 
 import type { Metadata } from "next";
@@ -11,12 +16,24 @@ import { AdminPageShell } from "@/components/admin/ui/AdminPageShell";
 import { AdminPageHeader } from "@/components/admin/ui/AdminPageHeader";
 import { AdminStatCard } from "@/components/admin/ui/AdminStatCard";
 import { Hash, Bell, Hourglass, CheckCircle2 } from "lucide-react";
+import { prisma } from "@/lib/prisma";
+import { adminPath } from "@/lib/admin-path";
 import { listReclamations } from "@/server/qualiopi/registres/reclamations-service";
 import {
   creerReclamationAction,
   repondreReclamationAction,
   setStatutReclamationAction,
+  ajouterEtapeReclamationAction,
 } from "@/server/actions/qualiopi/reclamations";
+import { ReclamationSuivi } from "@/components/admin/qualiopi/ReclamationSuivi";
+import {
+  inscriptionDeTest,
+  lireInterrupteurReclamations,
+} from "@/server/qualiopi/reclamations/interrupteur";
+import {
+  lireSuivisReclamations,
+  type SuiviReclamation,
+} from "@/server/qualiopi/reclamations/lecture";
 import {
   ReclamationForm,
   ReclamationReponseForm,
@@ -58,6 +75,50 @@ export default async function QualiopiReclamationsPage({ params }: PageProps) {
   }
 
   const reclamations = await listReclamations({ take: 100 });
+
+  // L09 — le cycle daté, réclamation par réclamation (essai = banc d'essai seul).
+  const etatCycle = await lireInterrupteurReclamations();
+  const dansLeCycle = new Set<string>();
+  if (etatCycle !== "eteint") {
+    // Seules les réclamations qui ont une étape de réception entrent dans le cycle.
+    const avecReception = new Set(
+      (
+        await prisma.reclamationEtape.findMany({
+          where: { etape: "reception", reclamationId: { in: reclamations.map((r) => r.id) } },
+          select: { reclamationId: true },
+        })
+      ).map((e) => e.reclamationId),
+    );
+    for (const r of reclamations) {
+      if (!avecReception.has(r.id)) continue;
+      if (etatCycle === "actif" || (await inscriptionDeTest(r.enrollmentId))) dansLeCycle.add(r.id);
+    }
+  }
+  const suivis = await lireSuivisReclamations(reclamations.filter((r) => dansLeCycle.has(r.id)));
+  const inscriptionsRecentes =
+    etatCycle === "eteint"
+      ? []
+      : await prisma.enrollment
+          .findMany({
+            where: {
+              ...(etatCycle === "essai"
+                ? { OR: [{ estTestInterne: true }, { session: { estTestInterne: true } }] }
+                : {}),
+              session: {
+                // Date.now() est OK ici : Server Component re-render à chaque requête HTTP.
+                // eslint-disable-next-line react-hooks/purity
+                dateDebut: { gte: new Date(Date.now() - 365 * 24 * 60 * 60 * 1000) },
+              },
+            },
+            select: {
+              id: true,
+              trainee: { select: { prenom: true, nom: true } },
+              session: { select: { numero: true } },
+            },
+            orderBy: { session: { dateDebut: "desc" } },
+            take: 200,
+          })
+          .catch(() => []);
   const nouvelles = reclamations.filter((r) => r.statut === "nouvelle").length;
   const enCours = reclamations.filter((r) => r.statut === "en_cours").length;
   const resolues = reclamations.filter(
@@ -108,7 +169,19 @@ export default async function QualiopiReclamationsPage({ params }: PageProps) {
 
       {/* Formulaire création */}
       <div className="mb-[var(--space-admin-8)]">
-        <ReclamationForm creerAction={creerReclamationAction} />
+        <ReclamationForm
+          creerAction={creerReclamationAction}
+          {...(etatCycle !== "eteint"
+            ? {
+                cycle: {
+                  inscriptions: inscriptionsRecentes.map((i) => ({
+                    id: i.id,
+                    libelle: `${i.session.numero} — ${`${i.trainee.prenom} ${i.trainee.nom}`.trim()}`,
+                  })),
+                },
+              }
+            : {})}
+        />
       </div>
 
       {/* Liste */}
@@ -189,13 +262,22 @@ export default async function QualiopiReclamationsPage({ params }: PageProps) {
                     )}
                   </td>
                   <td className={cellCls}>
-                    {r.statut !== "cloturee" && (
-                      <ReclamationReponseForm
+                    {suivis.get(r.id) !== undefined ? (
+                      <SuiviLigne
                         reclamationId={r.id}
-                        statutActuel={r.statut}
-                        repondreAction={repondreReclamationAction}
-                        setStatutAction={setStatutReclamationAction}
+                        numero={r.numero}
+                        suivi={suivis.get(r.id) as SuiviReclamation}
+                        locale={locale}
                       />
+                    ) : (
+                      r.statut !== "cloturee" && (
+                        <ReclamationReponseForm
+                          reclamationId={r.id}
+                          statutActuel={r.statut}
+                          repondreAction={repondreReclamationAction}
+                          setStatutAction={setStatutReclamationAction}
+                        />
+                      )
                     )}
                   </td>
                 </tr>
@@ -205,5 +287,39 @@ export default async function QualiopiReclamationsPage({ params }: PageProps) {
         </div>
       )}
     </AdminPageShell>
+  );
+}
+
+/** L09 — la cellule de suivi d'une réclamation du cycle daté. */
+function SuiviLigne({
+  reclamationId,
+  numero,
+  suivi,
+  locale,
+}: {
+  reclamationId: string;
+  numero: string;
+  suivi: SuiviReclamation;
+  locale: "fr" | "en";
+}) {
+  const session = suivi.rattachement.session;
+  return (
+    <ReclamationSuivi
+      reclamationId={reclamationId}
+      numero={numero}
+      etapes={suivi.etapes}
+      possibles={suivi.possibles}
+      echeances={suivi.echeances}
+      session={
+        session
+          ? { libelle: session.libelle, href: adminPath(locale, `qualiopi/sessions/${session.id}`) }
+          : null
+      }
+      stagiaire={suivi.rattachement.stagiaire?.libelle ?? null}
+      ameliorations={suivi.ameliorations}
+      emailsReponse={suivi.emailsReponse}
+      hrefAmelioration={adminPath(locale, "qualiopi/revue-direction")}
+      ajouterEtapeAction={ajouterEtapeReclamationAction}
+    />
   );
 }

@@ -122,6 +122,7 @@ import {
 import { factureVivante } from "@/server/qualiopi/financements/facture-vivante";
 import type { AlerteNiveau } from "../../../../prisma/generated/client";
 import { regleAdaptationReponseNonConsignee } from "./regle-adaptation-reponse";
+import { regleEcheancesReclamations } from "./regle-echeances-reclamations";
 import {
   ATTENTE_JOURS,
   MARGE_AVANT_SESSION_JOURS,
@@ -433,6 +434,8 @@ async function regleReclamationsSansReponse(now: Date): Promise<AlerteCandidate[
       statut: { in: ["nouvelle", "en_cours"] },
       dateReception: { lte: seuil },
       dateReponse: null,
+      // Les réclamations du cycle daté ont leurs propres échéances (jours ouvrés).
+      etapes: { none: {} },
     },
     select: { id: true, numero: true, reclamantNom: true, dateReception: true },
   });
@@ -5239,6 +5242,8 @@ const REGLES: Array<{ nom: string; fn: RegleFn }> = [
   { nom: "catalogue_certifiant_incoherent", fn: regleCatalogueCertifiantIncoherent },
   { nom: "offres_site_non_verifiees", fn: regleOffresNonVerifiees },
   { nom: "reclamations_sans_reponse", fn: regleReclamationsSansReponse },
+  // Chantier QNC, L09 — échéances en jours ouvrés du cycle daté (interrupteur).
+  { nom: "reclamations_echeances", fn: regleEcheancesReclamations },
   { nom: "emargement_manquant", fn: regleEmargementManquant },
   { nom: "session_sans_formateur", fn: regleSessionSansFormateur },
   { nom: "kit_sorties_non_pretes", fn: regleSortiesKitNonPretes },

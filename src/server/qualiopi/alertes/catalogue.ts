@@ -434,6 +434,29 @@ export const ALERTE_CATALOGUE: Record<string, AlerteCatalogueEntry> = {
     resolutionAuto: true,
     guichet: "qualite",
   },
+  /**
+   * Chantier QNC, L09 — les échéances du cycle daté, en JOURS OUVRÉS
+   * (`alertes/regle-echeances-reclamations.ts`). Muettes tant que l'interrupteur
+   * `qualiopi.reclamations.actif` est éteint.
+   */
+  reclamation_accuse_en_retard: {
+    niveau: "critique",
+    titre: "Réclamation sans accusé de réception après 5 jours ouvrés",
+    resolutionAuto: true,
+    guichet: "qualite",
+  },
+  reclamation_reponse_echeance_proche: {
+    niveau: "important",
+    titre: "Réclamation : réponse écrite due dans 3 jours ouvrés ou moins",
+    resolutionAuto: true,
+    guichet: "qualite",
+  },
+  reclamation_reponse_en_retard: {
+    niveau: "critique",
+    titre: "Réclamation : échéance de réponse (15 jours ouvrés) dépassée",
+    resolutionAuto: true,
+    guichet: "qualite",
+  },
 
   // ── Émargement / présence ──────────────────────────────────────────────────
   emargement_manquant: {

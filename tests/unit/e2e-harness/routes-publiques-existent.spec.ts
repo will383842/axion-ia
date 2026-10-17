@@ -94,6 +94,10 @@ const HORS_AUDIT = [
   "/appel/confirme",
   "/appel/annuler",
   "/appel/reporter",
+  // Chantier QNC, L09 — le dépôt en ligne d'une réclamation rend un 404 tant
+  // que l'interrupteur `qualiopi.reclamations.actif` est éteint (défaut) :
+  // l'auditer sur une base vierge mesurerait le 404, pas la page.
+  "/reclamations/deposer",
 ];
 
 /** Chemins des pages statiques rendues sous `[locale]` (segments dynamiques exclus). */

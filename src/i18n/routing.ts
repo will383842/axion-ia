@@ -471,6 +471,8 @@ export const routing = defineRouting({
     // stagiaires). Routes ajoutées après 2026-05-16 → doctrine fr==en (EN 301→FR
     // par le proxy) pour éviter le bug next-intl 307 self-loop des mappings fr≠en.
     "/reclamations": { fr: "/reclamations", en: "/reclamations" },
+    // Chantier QNC, L09 — dépôt en ligne d'une réclamation (interrupteur).
+    "/reclamations/deposer": { fr: "/reclamations/deposer", en: "/reclamations/deposer" },
     "/reglement-interieur": { fr: "/reglement-interieur", en: "/reglement-interieur" },
   },
 });

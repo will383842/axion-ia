@@ -171,7 +171,11 @@ describe("repondreReclamationAction", () => {
     vi.clearAllMocks();
     mockRequireAdminWrite.mockResolvedValue({ userId: "admin-uuid" });
     mockLogActivity.mockResolvedValue(undefined);
-    mockReclamation.findUnique.mockResolvedValue({ id: RECLAMATION_UUID, statut: "nouvelle" });
+    mockReclamation.findUnique.mockResolvedValue({
+      id: RECLAMATION_UUID,
+      statut: "nouvelle",
+      _count: { etapes: 0 },
+    });
     mockReclamation.update.mockResolvedValue({ id: RECLAMATION_UUID });
   });
 
@@ -187,7 +191,11 @@ describe("repondreReclamationAction", () => {
   });
 
   it("passe le statut à 'en_cours' si la réclamation est 'nouvelle'", async () => {
-    mockReclamation.findUnique.mockResolvedValue({ id: RECLAMATION_UUID, statut: "nouvelle" });
+    mockReclamation.findUnique.mockResolvedValue({
+      id: RECLAMATION_UUID,
+      statut: "nouvelle",
+      _count: { etapes: 0 },
+    });
 
     await repondreReclamationAction({
       id: RECLAMATION_UUID,
@@ -201,7 +209,11 @@ describe("repondreReclamationAction", () => {
   });
 
   it("ne change pas le statut si déjà 'en_cours'", async () => {
-    mockReclamation.findUnique.mockResolvedValue({ id: RECLAMATION_UUID, statut: "en_cours" });
+    mockReclamation.findUnique.mockResolvedValue({
+      id: RECLAMATION_UUID,
+      statut: "en_cours",
+      _count: { etapes: 0 },
+    });
 
     await repondreReclamationAction({
       id: RECLAMATION_UUID,
@@ -259,7 +271,11 @@ describe("setStatutReclamationAction", () => {
     vi.clearAllMocks();
     mockRequireAdminWrite.mockResolvedValue({ userId: "admin-uuid" });
     mockLogActivity.mockResolvedValue(undefined);
-    mockReclamation.findUnique.mockResolvedValue({ id: RECLAMATION_UUID, statut: "nouvelle" });
+    mockReclamation.findUnique.mockResolvedValue({
+      id: RECLAMATION_UUID,
+      statut: "nouvelle",
+      _count: { etapes: 0 },
+    });
     mockReclamation.update.mockResolvedValue({ id: RECLAMATION_UUID });
   });
 
@@ -281,6 +297,7 @@ describe("setStatutReclamationAction", () => {
       mockReclamation.findUnique.mockResolvedValue({
         id: RECLAMATION_UUID,
         statut: "nouvelle",
+        _count: { etapes: 0 },
       });
       mockReclamation.update.mockResolvedValue({ id: RECLAMATION_UUID });
 

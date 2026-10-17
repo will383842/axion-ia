@@ -241,7 +241,9 @@ export function sectionOrigineReponses(reponses: ReadonlyArray<QuestionnaireRepo
   const s = (n: number): string => (n > 1 ? "s" : "");
   return [
     `Origine des réponses aux questionnaires (${reponses.length}) : ` +
-      `${parRepondant} répondue${s(parRepondant)} par le stagiaire lui-même (ou l'entreprise, pour l'enquête entreprise), ` +
+      // Chantier QNC, L09 — l'outil sait qu'un LIEN a été ouvert, pas qui le
+      // tenait : « par le stagiaire lui-même » affirmait une identité non prouvée.
+      `${parRepondant} répondue${s(parRepondant)} par le destinataire du lien (stagiaire, ou entreprise pour l'enquête entreprise), ` +
       `${parOrganisme} saisie${s(parOrganisme)} par l'organisme à sa place, ` +
       `${nonTracees} ${LIBELLE_ORIGINE_NULLE}.`,
   ];
