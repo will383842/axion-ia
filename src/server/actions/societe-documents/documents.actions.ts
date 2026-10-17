@@ -33,8 +33,8 @@ import { journaliser } from "@/server/journal/journaliser";
 import {
   archivageDocumentsOrganismeActif,
   verrouillerVersionDocument,
-} from "@/server/qualiopi/documents-organisme/documents-organisme";
-import { ACTION_DOCUMENT_REMPLACE } from "@/server/qualiopi/documents-organisme/documents-organisme-pur";
+} from "@/server/documents-organisme/documents-organisme";
+import { ACTION_DOCUMENT_REMPLACE } from "@/server/documents-organisme/documents-organisme-pur";
 import type { SocieteDocumentType } from "../../../../prisma/generated/client";
 
 type ActionResult = { ok: true } | { ok: false; error: string };

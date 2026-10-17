@@ -20,7 +20,7 @@ import { buildR2Key } from "@/server/intervention-documents/keys";
 import { notifyNewVersion } from "@/server/intervention-documents/notifications";
 import { getSlot, type InterventionFamille } from "@/content/intervention-documents-catalog";
 import { requireAdminWrite, requireAdminPublish } from "./_guards";
-import { archivageDocumentsOrganismeActif } from "@/server/qualiopi/documents-organisme/documents-organisme";
+import { archivageDocumentsOrganismeActif } from "@/server/documents-organisme/documents-organisme";
 
 const FAMILLES = ["formation", "un_a_un", "audit"] as const;
 const KINDS = ["source", "pdf"] as const;

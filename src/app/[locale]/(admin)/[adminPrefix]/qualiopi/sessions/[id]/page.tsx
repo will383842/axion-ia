@@ -49,11 +49,11 @@ import { estActifPour } from "@/server/qualiopi/socle/interrupteurs";
 import {
   etatDocumentsOrganisme,
   lireNotesPieces,
-} from "@/server/qualiopi/documents-organisme/documents-organisme";
+} from "@/server/documents-organisme/documents-organisme";
 import {
   horodatageParis,
   libelleMention,
-} from "@/server/qualiopi/documents-organisme/documents-organisme-pur";
+} from "@/server/documents-organisme/documents-organisme-pur";
 import {
   euroDepuisCentimes,
   libelleJourLimite,

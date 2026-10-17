@@ -5,8 +5,8 @@
 // jamais lu depuis une colonne de statut, qui serait fausse dès le lendemain.
 
 import { auth } from "@/auth";
-import { vueArchivage } from "@/server/qualiopi/documents-organisme/documents-organisme";
-import { horodatageParis } from "@/server/qualiopi/documents-organisme/documents-organisme-pur";
+import { vueArchivage } from "@/server/documents-organisme/documents-organisme";
+import { horodatageParis } from "@/server/documents-organisme/documents-organisme-pur";
 import {
   listSocieteDocsByRubrique,
   typesPresentsDansRubrique,

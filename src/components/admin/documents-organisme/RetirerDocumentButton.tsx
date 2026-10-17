@@ -10,7 +10,7 @@ import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 
 import { retirerDocumentOrganismeAction } from "@/server/actions/documents-organisme/retrait.actions";
-import type { CibleDocumentOrganisme } from "@/server/qualiopi/documents-organisme/documents-organisme-pur";
+import type { CibleDocumentOrganisme } from "@/server/documents-organisme/documents-organisme-pur";
 
 export function RetirerDocumentButton({
   cible,

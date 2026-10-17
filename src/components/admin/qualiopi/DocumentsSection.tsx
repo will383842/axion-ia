@@ -61,10 +61,7 @@ import {
 } from "@/components/admin/qualiopi/ConditionSuspensiveOpcoChamps";
 import { genererAttestationAction } from "@/server/actions/qualiopi/evaluations";
 import { genererFicheAdaptationAction } from "@/server/actions/qualiopi/exports-pdf";
-import {
-  NotesPiece,
-  type NotePieceAffichee,
-} from "@/components/admin/documents-organisme/NotesPiece";
+import { NotesPiece, type NotePieceAffichee } from "@/components/admin/qualiopi/NotesPiece";
 import { GenererFactureButton } from "@/components/admin/qualiopi/GenererFactureButton";
 import { PdfExportButton } from "@/components/admin/qualiopi/PdfExportButton";
 import { formatDateFrShort } from "@/lib/format-date-fr";

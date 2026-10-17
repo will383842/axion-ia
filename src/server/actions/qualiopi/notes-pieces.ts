@@ -27,11 +27,11 @@ import { prisma } from "@/lib/prisma";
 import { adminPath } from "@/lib/admin-path";
 import { donneesJournalQualiopi, requireAdminWrite } from "./_guards";
 import { estActifPour } from "@/server/qualiopi/socle/interrupteurs";
-import { etatDocumentsOrganisme } from "@/server/qualiopi/documents-organisme/documents-organisme";
+import { etatDocumentsOrganisme } from "@/server/documents-organisme/documents-organisme";
 import {
   ACTION_NOTE_PIECE,
   validerNote,
-} from "@/server/qualiopi/documents-organisme/documents-organisme-pur";
+} from "@/server/documents-organisme/documents-organisme-pur";
 
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 

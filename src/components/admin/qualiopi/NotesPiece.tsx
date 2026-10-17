@@ -10,7 +10,7 @@ import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 
 import { ajouterNotePieceAction } from "@/server/actions/qualiopi/notes-pieces";
-import { MENTIONS_PIECE } from "@/server/qualiopi/documents-organisme/documents-organisme-pur";
+import { MENTIONS_PIECE } from "@/server/documents-organisme/documents-organisme-pur";
 
 export interface NotePieceAffichee {
   id: string;

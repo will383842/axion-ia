@@ -17,7 +17,7 @@ import {
   SEUIL_ALERTE_JOURS,
 } from "@/server/societe-documents/echeance";
 import { compterParRubrique, listSocieteDocsEnAlerte } from "@/server/societe-documents/queries";
-import { documentsHorsVigueur } from "@/server/qualiopi/documents-organisme/documents-organisme";
+import { documentsHorsVigueur } from "@/server/documents-organisme/documents-organisme";
 import {
   getRubriqueForType,
   labelSocieteDocType,

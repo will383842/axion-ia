@@ -3,8 +3,8 @@
 
 import { auth } from "@/auth";
 import { listConsoleDocsBySection } from "@/server/console-documents/queries";
-import { vueArchivage } from "@/server/qualiopi/documents-organisme/documents-organisme";
-import { horodatageParis } from "@/server/qualiopi/documents-organisme/documents-organisme-pur";
+import { vueArchivage } from "@/server/documents-organisme/documents-organisme";
+import { horodatageParis } from "@/server/documents-organisme/documents-organisme-pur";
 import { RemplacerConsoleDocButton } from "@/components/admin/documents-organisme/RemplacerConsoleDocButton";
 import { RetirerDocumentButton } from "@/components/admin/documents-organisme/RetirerDocumentButton";
 import { getConsoleDocSection } from "@/server/console-documents/sections";

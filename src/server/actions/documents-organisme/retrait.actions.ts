@@ -24,7 +24,7 @@ import {
   archivageDocumentsOrganismeActif,
   lireDocumentsRetires,
   retraitDocumentDisponible,
-} from "@/server/qualiopi/documents-organisme/documents-organisme";
+} from "@/server/documents-organisme/documents-organisme";
 import {
   ACTION_DOCUMENT_RETIRE,
   CIBLE_EFFACEMENT_ATTENDUE,
@@ -32,7 +32,7 @@ import {
   LONGUEUR_MAX_TEXTE,
   LONGUEUR_MIN_TEXTE,
   MOTIF_EFFACEMENT_ATTENDU,
-} from "@/server/qualiopi/documents-organisme/documents-organisme-pur";
+} from "@/server/documents-organisme/documents-organisme-pur";
 
 type ActionResult = { ok: true } | { ok: false; error: string };
 
