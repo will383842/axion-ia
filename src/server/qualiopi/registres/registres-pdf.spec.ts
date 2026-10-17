@@ -397,4 +397,22 @@ describe("🔴 constat du ZIP du 2026-09-30 — appréciations, moyens et date d
     const registre = await construireRegistre("veille");
     expect(registre.lignes[0]![0]).toBe("30/09/2026");
   });
+
+  it("chantier QNC L10 — deux dates côte à côte : l'information et la saisie (serveur, heure de Paris)", async () => {
+    mockPrisma.veille.findMany.mockResolvedValue([
+      {
+        id: "00000000-0000-4000-8000-000000000001",
+        dateVeille: new Date("2026-09-01T12:00:00.000Z"),
+        createdAt: new Date("2026-09-29T22:30:00.000Z"),
+        type: "legale",
+        titre: "Décret",
+        source: "Legifrance",
+        impact: "",
+        actionDecidee: "",
+      },
+    ]);
+    const registre = await construireRegistre("veille");
+    expect(registre.colonnes.slice(0, 2)).toEqual(["Date de l'information", "Saisie le"]);
+    expect(registre.lignes[0]!.slice(0, 2)).toEqual(["01/09/2026", "30/09/2026 à 00:30"]);
+  });
 });

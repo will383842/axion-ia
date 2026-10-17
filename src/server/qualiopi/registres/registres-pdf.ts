@@ -42,6 +42,7 @@ import { renderPdfToBuffer } from "@/server/qualiopi/documents/render";
 import { getOrganismeIdentite } from "@/server/qualiopi/documents/organisme";
 import { RegistrePdf, type RegistreData } from "@/server/qualiopi/documents/templates/registre";
 import { parisDateISO } from "@/server/qualiopi/presence/time";
+import { formatSaisieParis, lireRegistreVeille } from "@/server/qualiopi/veille/registre-veille";
 import {
   LIBELLES_GRAVITE,
   LIBELLES_PROBABILITE,
@@ -186,32 +187,51 @@ async function buildReclamations(): Promise<Omit<RegistreData, "dateEdition">> {
   };
 }
 
+/**
+ * 🔴 Chantier QNC, L10 — DEUX dates par ligne : celle de l'information et celle
+ * de la SAISIE (serveur, heure de Paris), lues par le même module que l'écran
+ * (`registre-veille.ts`). Veille tracée allumée : la décision et son auteur
+ * réel, la pièce modifiée, et l'état (une version archivée reste au journal).
+ */
 async function buildVeille(): Promise<Omit<RegistreData, "dateEdition">> {
-  const rows = await prisma.veille.findMany({
-    select: {
-      dateVeille: true,
-      type: true,
-      titre: true,
-      source: true,
-      impact: true,
-      actionDecidee: true,
-    },
-    orderBy: { dateVeille: "desc" },
-    take: EXPORT_TAKE,
-  });
+  const registre = await lireRegistreVeille({ take: EXPORT_TAKE }, prisma as never);
+  const colonnes = [
+    "Date de l'information",
+    "Saisie le",
+    "Type",
+    "Titre",
+    "Source",
+    "Impact",
+    "Action décidée",
+  ];
   return {
     titre: "Journal de veille",
     sousTitre:
-      "Veille légale et réglementaire, emplois/métiers et pédagogique/technologique (indicateurs 23, 24 et 25).",
-    colonnes: ["Date", "Type", "Titre", "Source", "Impact", "Action décidée"],
-    lignes: rows.map((v) => [
-      formatDateFr(v.dateVeille),
-      VEILLE_TYPE_LABELS[v.type] ?? v.type,
-      v.titre,
-      v.source,
-      v.impact ?? "",
-      v.actionDecidee ?? "",
-    ]),
+      "Veille légale et réglementaire, emplois/métiers et pédagogique/technologique (indicateurs 23, 24 et 25)." +
+      (registre.tracee
+        ? " Rien ne s'efface : une entrée corrigée, décidée ou retirée reste au journal, archivée, avec son motif."
+        : ""),
+    colonnes: registre.tracee ? [...colonnes, "Décidée par", "Pièce modifiée", "État"] : colonnes,
+    lignes: registre.lignes.map((v) => {
+      const base = [
+        formatDateFr(v.dateVeille),
+        formatSaisieParis(v.saisieLe),
+        VEILLE_TYPE_LABELS[v.type] ?? v.type,
+        v.titre,
+        v.source,
+        v.impact ?? "",
+        v.actionDecidee ?? "",
+      ];
+      if (!registre.tracee) return base;
+      return [
+        ...base,
+        v.decision !== null ? `${v.decision.par}, le ${formatSaisieParis(v.decision.le)}` : "",
+        v.decision?.pieceModifiee ?? "",
+        v.archivage !== null
+          ? `Archivée le ${formatSaisieParis(v.archivage.le)} — ${v.archivage.motif}`
+          : "En vigueur",
+      ];
+    }),
     mentionBasDePage: MENTION_EXPORT,
   };
 }
