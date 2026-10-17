@@ -369,7 +369,7 @@ export async function setEnrollmentAdaptationsAction(input: {
         enrollmentId: id,
         traineeId: inscription.traineeId,
       });
-      alertesFermees = f.reponseNonConsignee + f.besoinDeclare;
+      alertesFermees = f.reponseNonConsignee + f.besoinDeclare + f.casComplexe;
     } catch (err) {
       console.error(
         "[setEnrollmentAdaptationsAction] fermeture des alertes d'adaptation en échec :",

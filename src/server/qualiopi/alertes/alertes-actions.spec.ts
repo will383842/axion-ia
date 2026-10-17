@@ -14,6 +14,12 @@ import { describe, it, expect, vi, beforeEach } from "vitest";
 // Mocks
 // ─────────────────────────────────────────────────────────────────────────────
 
+// Chantier QNC, L04 — l'action lit le CODE avant de résoudre (une alerte
+// « cas complexe » ne se ferme que par la réponse écrite) : `null` ici, le
+// refus a sa propre suite (`actions/qualiopi/alertes-reponse-ecrite.spec.ts`).
+vi.mock("@/lib/prisma", () => ({
+  prisma: { alerteSysteme: { findUnique: vi.fn(async () => null) } },
+}));
 vi.mock("@/server/qualiopi/alertes/alertes-service", () => ({
   resoudreAlerte: vi.fn(),
   marquerLu: vi.fn(),

@@ -12,10 +12,19 @@
 
 import { useState, useTransition } from "react";
 
+/**
+ * Chantier QNC, L04 — clé écrite en toutes lettres (cloisonnement du domaine
+ * qualiopi) : `CLE_AMENAGEMENTS_UTILES` côté serveur, verrouillée par la spec de
+ * l'action qui asserte ce même littéral.
+ */
+const CLE_AMENAGEMENTS_UTILES = "amenagementsUtiles";
+
 type ActionResult<T> = { data: T } | { error: string };
 
 interface SatisfactionPortailFormProps {
   questionnaireId: string;
+  /** Chantier QNC, L04 — poser « les aménagements vous ont-ils été utiles ? ». */
+  questionAmenagements?: boolean;
   soumettreSatisfactionAction: (input: {
     questionnaireId: string;
     reponses: Record<string, unknown>;
@@ -25,9 +34,11 @@ interface SatisfactionPortailFormProps {
 
 export function SatisfactionPortailForm({
   questionnaireId,
+  questionAmenagements = false,
   soumettreSatisfactionAction,
 }: SatisfactionPortailFormProps): React.ReactElement {
   const [note, setNote] = useState<number | null>(null);
+  const [amenagementsUtiles, setAmenagementsUtiles] = useState<boolean | null>(null);
   const [commentaire, setCommentaire] = useState("");
   const [isPending, startTransition] = useTransition();
   const [error, setError] = useState<string | null>(null);
@@ -36,11 +47,20 @@ export function SatisfactionPortailForm({
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setError(null);
+    if (questionAmenagements && amenagementsUtiles === null) {
+      setError("Indiquez si les aménagements prévus pour vous ont été utiles (oui ou non).");
+      return;
+    }
 
     startTransition(async () => {
       const result = await soumettreSatisfactionAction({
         questionnaireId: questionnaireId,
-        reponses: commentaire.trim() ? { commentaire: commentaire.trim() } : {},
+        reponses: {
+          ...(commentaire.trim() ? { commentaire: commentaire.trim() } : {}),
+          ...(questionAmenagements && amenagementsUtiles !== null
+            ? { [CLE_AMENAGEMENTS_UTILES]: amenagementsUtiles }
+            : {}),
+        },
         ...(note !== null ? { noteGlobale: note } : {}),
       });
 
@@ -83,6 +103,38 @@ export function SatisfactionPortailForm({
           ))}
         </div>
       </div>
+
+      {questionAmenagements && (
+        <fieldset className="rounded-md border border-gray-200 p-3">
+          <legend className="px-1 text-sm text-gray-700">
+            Les aménagements prévus pour vous vous ont-ils été utiles ?
+          </legend>
+          <div className="mt-2 flex flex-wrap gap-4">
+            <label className="flex items-center gap-2 text-sm text-gray-900">
+              <input
+                type="radio"
+                name={`amenagements-${questionnaireId}`}
+                checked={amenagementsUtiles === true}
+                onChange={() => setAmenagementsUtiles(true)}
+                disabled={isPending}
+                required
+              />
+              Oui
+            </label>
+            <label className="flex items-center gap-2 text-sm text-gray-900">
+              <input
+                type="radio"
+                name={`amenagements-${questionnaireId}`}
+                checked={amenagementsUtiles === false}
+                onChange={() => setAmenagementsUtiles(false)}
+                disabled={isPending}
+                required
+              />
+              Non
+            </label>
+          </div>
+        </fieldset>
+      )}
 
       {/* Commentaire */}
       <div>

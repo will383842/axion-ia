@@ -95,6 +95,11 @@ import {
   gestePositionnement,
   HORIZON_JOURS,
 } from "@/server/qualiopi/parcours/relance-positionnement";
+import {
+  passerDemandesListeStagiaires,
+  positionnementsRetenusFauteDeConvention,
+} from "@/server/qualiopi/positionnement/temps2";
+import { passerRemisesAdaptation } from "@/server/qualiopi/adaptation/automatique/remises";
 import { chargerEtatsVerrou, dossierFige } from "@/server/qualiopi/sessions/verrou-dossier";
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -1205,11 +1210,19 @@ async function handlePositionnement(): Promise<void> {
     },
   });
 
+  // ── Chantier QNC, L04 (`qualiopi.positionnement.actif`) ─────────────────
+  // Le positionnement ne part qu'une fois la convention signée. Éteint :
+  // ensemble vide, rien ne change.
+  const retenusSansConvention = await positionnementsRetenusFauteDeConvention(
+    candidats.map((q) => q.id),
+  );
+
   let envoyes = 0;
   let relances = 0;
   let ko = 0;
 
   for (const q of candidats) {
+    if (retenusSansConvention.has(q.id)) continue;
     const geste = gestePositionnement({
       envoyeAt: q.envoyeAt,
       reponduAt: q.reponduAt,
@@ -1297,8 +1310,36 @@ async function handlePositionnement(): Promise<void> {
 
   console.log(
     `[formation-crons] positionnement: ${envoyes} envoi(s), ${relances} relance(s), ${ko} erreur(s) ` +
-      `(${candidats.length} candidat(s), ${manques} session(s) démarrée(s) sans réponse)`,
+      `(${candidats.length} candidat(s), ${retenusSansConvention.size} retenu(s) faute de convention ` +
+      `signée, ${manques} session(s) démarrée(s) sans réponse)`,
   );
+
+  // ── Chantier QNC, L04 — temps 2, derrière leurs interrupteurs ───────────
+  // Chacun isolé : l'échec de l'un ne prive pas l'autre de son passage.
+  try {
+    const l = await passerDemandesListeStagiaires(now);
+    console.log(
+      `[formation-crons] liste-stagiaires: ${l.demandes} demande(s), ${l.relances} relance(s), ` +
+        `${l.ko} erreur(s) (${l.candidates} session(s) candidate(s))`,
+    );
+  } catch (err) {
+    console.error(
+      "[formation-crons] liste-stagiaires: passage en échec :",
+      err instanceof Error ? err.message : String(err),
+    );
+  }
+  try {
+    const r = await passerRemisesAdaptation(now);
+    console.log(
+      `[formation-crons] adaptation: ${r.formateur} fiche(s) au formateur, ${r.stagiaire} ` +
+        `récapitulatif(s) au stagiaire, ${r.ko} erreur(s)`,
+    );
+  } catch (err) {
+    console.error(
+      "[formation-crons] adaptation: passage en échec :",
+      err instanceof Error ? err.message : String(err),
+    );
+  }
 }
 
 // ─────────────────────────────────────────────────────────────────────────────

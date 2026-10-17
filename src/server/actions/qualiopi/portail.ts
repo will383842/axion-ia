@@ -68,6 +68,20 @@ import {
   MESSAGE_BESOIN_ADAPTATION_SANS_REPONSE,
 } from "@/server/qualiopi/positionnement/reponse-explicite";
 import { SITE_URL } from "@/lib/site-url";
+import { adaptationAutomatiquePourInscription } from "@/server/qualiopi/adaptation/automatique/portee";
+import {
+  CLES_REPONSE_ADAPTATION,
+  lireDeclaration,
+  retirerChampsDeclaration,
+  type DeclarationAdaptation,
+} from "@/server/qualiopi/adaptation/automatique/catalogue-mesures";
+import { traiterDeclarationAutomatique } from "@/server/qualiopi/adaptation/automatique/traiter-declaration";
+import {
+  CLE_AMENAGEMENTS_UTILES,
+  MESSAGE_UTILITE_SANS_REPONSE,
+  questionUtiliteDuePourInscription,
+  signalerAmenagementsNonUtiles,
+} from "@/server/qualiopi/adaptation/automatique/utilite";
 
 type ActionResult<T> = { data: T } | { error: string };
 
@@ -231,12 +245,13 @@ export async function soumettreSatisfactionPortailAction(input: {
     select: {
       type: true,
       version: { select: { version: true } },
-      enrollment: { select: { traineeId: true } },
+      enrollment: { select: { id: true, traineeId: true } },
     },
   });
   if (!questionnaire || questionnaire.enrollment.traineeId !== authResult.traineeId) {
     return { error: "Questionnaire introuvable ou non autorisé" };
   }
+  const enrollmentId = questionnaire.enrollment.id;
 
   // 🔴 D6 (relecture #1095) — le oui/non du besoin d'adaptation se vérifie AUSSI
   // ici : un formulaire resté en cache enverrait `false` pour une question jamais
@@ -283,10 +298,50 @@ export async function soumettreSatisfactionPortailAction(input: {
   const besoinAdaptation = reponsesRecues["besoinAdaptation"] === true;
   const detailBrut = reponsesRecues["detailAdaptation"];
   const detailAdaptation = typeof detailBrut === "string" ? detailBrut.trim() : "";
+
+  // ── Chantier QNC, L04 — déclaration STRUCTURÉE (`qualiopi.adaptation.actif`) ──
+  //
+  // Les champs de la déclaration (types, mesures, commentaire) ne sont JAMAIS
+  // écrits dans la réponse : retirés ici quel que soit l'interrupteur, ils ne
+  // partent que chiffrés vers le référent. Éteint, ils sont ignorés — le
+  // formulaire de toujours, le circuit de toujours.
+  const adaptationAuto =
+    questionnaire.type === "positionnement" &&
+    (await adaptationAutomatiquePourInscription(enrollmentId));
+  let declarationAuto: DeclarationAdaptation | null = null;
+  let complementAdaptation: Record<string, unknown> = {};
+  if (adaptationAuto && besoinAdaptation) {
+    // La précision devient OBLIGATOIRE : type(s), et confirmation ou échange.
+    const lecture = lireDeclaration(reponsesRecues);
+    if (!lecture.ok) return { error: lecture.erreur };
+    declarationAuto = lecture.declaration;
+    complementAdaptation = {
+      [CLES_REPONSE_ADAPTATION.consentement]: declarationAuto.consentement,
+      [CLES_REPONSE_ADAPTATION.choix]: declarationAuto.choix,
+    };
+  }
+
+  // Après la formation : « les aménagements vous ont-ils été utiles ? ». La
+  // réponse n'est gardée que si la question était due — sinon retirée.
+  const { [CLE_AMENAGEMENTS_UTILES]: amenagementsUtiles, ...reponsesSansUtilite } =
+    retirerChampsDeclaration(reponsesRecues);
+  const utiliteDue =
+    questionnaire.type === "satisfaction_chaud" &&
+    (await questionUtiliteDuePourInscription(enrollmentId));
+  // Fusion L08 : le formulaire VERSIONNÉ (v2) ne pose pas encore la question —
+  // l'exiger bloquerait le stagiaire. Gardée si elle est répondue.
+  const utiliteExigee = utiliteDue && questionnaire.version == null;
+  if (utiliteExigee && typeof amenagementsUtiles !== "boolean") {
+    return { error: MESSAGE_UTILITE_SANS_REPONSE };
+  }
+  if (utiliteDue && typeof amenagementsUtiles === "boolean") {
+    complementAdaptation = { [CLE_AMENAGEMENTS_UTILES]: amenagementsUtiles };
+  }
+
   // Le booléen RESTE dans les réponses : il dit ce qui a été répondu, et le
   // dépôt stocke déjà `Trainee.situationHandicap` en clair. Seul le DÉTAIL —
   // le texte libre, celui qui décrit la situation — est retiré et chiffré.
-  const { detailAdaptation: _retire, ...reponsesSansDetail } = reponsesRecues;
+  const { detailAdaptation: _retire, ...reponsesSansDetail } = reponsesSansUtilite;
 
   // Lot L08 — un questionnaire dont le contenu est versionné ne garde que les
   // réponses que ce contenu déclare, dans leurs bornes. Sans version : inchangé.
@@ -298,7 +353,9 @@ export async function soumettreSatisfactionPortailAction(input: {
 
   const result = await soumettreReponses({
     questionnaireId: v.questionnaireId,
-    reponses: reponsesAssainies ?? reponsesSansDetail,
+    // L04 : le complément (consentement, choix, utilité), validé plus haut, est
+    // ajouté APRÈS l'assainissement L08 — qui ne le déclare pas et le retirerait.
+    reponses: { ...(reponsesAssainies ?? reponsesSansDetail), ...complementAdaptation },
     // ADR 0060 (D3) — le stagiaire répond lui-même, depuis son portail.
     origine: "stagiaire",
     ...(v.noteGlobale !== undefined ? { noteGlobale: v.noteGlobale } : {}),
@@ -321,11 +378,31 @@ export async function soumettreSatisfactionPortailAction(input: {
     // erreur ferait croire au bénéficiaire qu'il doit tout refaire, alors que
     // seul le signalement a échoué. Mais on ne se tait pas : Sentry le voit.
     try {
-      await signalerBesoinAdaptation(authResult.traineeId, detailAdaptation);
+      if (declarationAuto !== null) {
+        await traiterDeclarationAutomatique({
+          enrollmentId,
+          declaration: declarationAuto,
+          declareLe: new Date(),
+        });
+      } else {
+        await signalerBesoinAdaptation(authResult.traineeId, detailAdaptation);
+      }
     } catch (err) {
       Sentry.captureException(err, {
         tags: { service: "soumettreSatisfactionPortailAction", etape: "besoin_adaptation" },
         extra: { traineeId: authResult.traineeId, questionnaireId: result.id },
+      });
+    }
+  }
+
+  if (utiliteDue && amenagementsUtiles === false) {
+    // Fail-soft, comme le signalement du besoin : la réponse EST enregistrée.
+    try {
+      await signalerAmenagementsNonUtiles(enrollmentId, new Date());
+    } catch (err) {
+      Sentry.captureException(err, {
+        tags: { service: "soumettreSatisfactionPortailAction", etape: "amenagements_non_utiles" },
+        extra: { enrollmentId, questionnaireId: result.id },
       });
     }
   }

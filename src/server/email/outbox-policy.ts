@@ -77,6 +77,11 @@ export const EMAILS_AUTOMATIQUES_PAR_DEFAUT: readonly string[] = [
   "qualiopi-positionnement",
   "qualiopi-questionnaire-relance",
   "qualiopi-enquete-entreprise",
+  // Chantier QNC, L04 — la liste des participants n'a de valeur qu'AVANT la
+  // formation, et les aménagements doivent être en place le premier jour.
+  "qualiopi-liste-stagiaires",
+  "qualiopi-adaptation-stagiaire",
+  "qualiopi-adaptation-formateur",
   "qualiopi-attestation-disponible",
   "qualiopi-portail-acces",
   // Retenir un lien d'émargement en validation lui retire sa raison d'être :
@@ -189,6 +194,9 @@ export const LIBELLE_TEMPLATE_EMAIL: Record<string, string> = {
   "qualiopi-positionnement": "Questionnaire de positionnement (avant la formation)",
   "qualiopi-questionnaire-relance": "Relance de questionnaire sans réponse",
   "qualiopi-enquete-entreprise": "Enquête de satisfaction entreprise",
+  "qualiopi-liste-stagiaires": "Demande de la liste des participants à l'entreprise",
+  "qualiopi-adaptation-stagiaire": "Aménagements retenus (récapitulatif au stagiaire)",
+  "qualiopi-adaptation-formateur": "Fiche d'adaptation transmise au formateur",
   "qualiopi-attestation-disponible": "Attestation disponible",
   "qualiopi-portail-acces": "Accès au portail",
   "qualiopi-emargement-lien": "Lien de signature de présence",

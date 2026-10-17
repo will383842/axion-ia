@@ -24,6 +24,42 @@
 
 import { useState, useTransition } from "react";
 
+/**
+ * Chantier QNC, L04 — le catalogue des mesures, reçu de la page (forme de
+ * `cataloguePortail()`). Recopié en TYPE ici, et non importé : les composants
+ * du portail ne tirent pas le domaine qualiopi (cloisonnement). Le serveur
+ * revalide tout (`lireDeclaration`) ; ces aides ne décident que de l'affichage.
+ */
+export interface CatalogueAdaptation {
+  readonly types: readonly { readonly code: string; readonly libelle: string }[];
+  readonly mesures: readonly {
+    readonly code: string;
+    readonly libelle: string;
+    readonly types: readonly string[];
+    readonly complexe: boolean;
+  }[];
+  readonly champs: {
+    readonly types: string;
+    readonly mesures: string;
+    readonly commentaire: string;
+    readonly consentement: string;
+    readonly choix: string;
+  };
+  readonly commentaireMax: number;
+}
+
+type ChoixAdaptation = "confirme" | "echange";
+
+function mesuresDisponibles(catalogue: CatalogueAdaptation, types: readonly string[]) {
+  return catalogue.mesures.filter((m) => m.types.some((t) => types.includes(t)));
+}
+
+function mesuresProposees(catalogue: CatalogueAdaptation, types: readonly string[]): string[] {
+  return mesuresDisponibles(catalogue, types)
+    .filter((m) => !m.complexe)
+    .map((m) => m.code);
+}
+
 type ActionResult<T> = { data: T } | { error: string };
 
 /**
@@ -60,6 +96,14 @@ interface PositionnementPortailFormProps {
   questionnaireId: string;
   /** Objectifs pédagogiques de la formation — auto-évaluation objectif par objectif. */
   objectifs: string[];
+  /**
+   * Chantier QNC, L04 — déclaration STRUCTURÉE du besoin (types, mesures
+   * proposées, consentement séparé, confirmation ou échange). Absent : le
+   * formulaire de toujours.
+   */
+  adaptationAutomatique?: boolean;
+  /** Le catalogue des mesures — requis quand `adaptationAutomatique` est vrai. */
+  catalogueAdaptation?: CatalogueAdaptation;
   soumettreAction: (input: {
     questionnaireId: string;
     reponses: Record<string, unknown>;
@@ -70,6 +114,8 @@ interface PositionnementPortailFormProps {
 export function PositionnementPortailForm({
   questionnaireId,
   objectifs,
+  adaptationAutomatique: adaptationDemandee = false,
+  catalogueAdaptation,
   soumettreAction,
 }: PositionnementPortailFormProps): React.ReactElement {
   const [fonction, setFonction] = useState("");
@@ -96,6 +142,28 @@ export function PositionnementPortailForm({
    */
   const [besoinAdaptation, setBesoinAdaptation] = useState<boolean | null>(null);
   const [detailAdaptation, setDetailAdaptation] = useState("");
+  // Chantier QNC, L04 — déclaration structurée.
+  const catalogue = catalogueAdaptation ?? null;
+  const adaptationAutomatique = adaptationDemandee && catalogue !== null;
+  const [typesBesoin, setTypesBesoin] = useState<string[]>([]);
+  const [mesures, setMesures] = useState<string[]>([]);
+  const [commentaire, setCommentaire] = useState("");
+  const [consentement, setConsentement] = useState(false);
+  const [choix, setChoix] = useState<ChoixAdaptation | null>(null);
+
+  /** Cocher un type PROPOSE ses mesures standard ; décocher retire celles qui n'ont plus d'objet. */
+  function basculerType(code: string) {
+    if (catalogue === null) return;
+    const suivants = typesBesoin.includes(code)
+      ? typesBesoin.filter((t) => t !== code)
+      : [...typesBesoin, code];
+    const disponibles = new Set(mesuresDisponibles(catalogue, suivants).map((m) => m.code));
+    const ajoutees = typesBesoin.includes(code)
+      ? []
+      : mesuresProposees(catalogue, [code]).filter((m) => !mesures.includes(m));
+    setTypesBesoin(suivants);
+    setMesures([...mesures, ...ajoutees].filter((m) => disponibles.has(m)));
+  }
 
   const [isPending, startTransition] = useTransition();
   const [error, setError] = useState<string | null>(null);
@@ -114,6 +182,31 @@ export function PositionnementPortailForm({
       return;
     }
     const besoin: boolean = besoinAdaptation;
+    const structuree = adaptationAutomatique && besoin;
+    if (structuree) {
+      if (choix === null) {
+        setError(
+          "Confirmez les aménagements proposés, ou demandez un échange écrit avec le référent handicap.",
+        );
+        return;
+      }
+      if (consentement && typesBesoin.length === 0) {
+        setError("Cochez au moins un type de besoin dans la liste.");
+        return;
+      }
+      if (!consentement && choix === "confirme") {
+        setError(
+          "Sans votre accord pour transmettre ces précisions au référent handicap, choisissez l'échange écrit.",
+        );
+        return;
+      }
+      if (choix === "confirme" && mesures.length === 0) {
+        setError(
+          "Cochez au moins un aménagement, ou demandez un échange avec le référent handicap.",
+        );
+        return;
+      }
+    }
 
     // Un positionnement ne se note pas : on n'envoie JAMAIS de noteGlobale ici.
     // C'est ce qui distingue cette réponse d'une satisfaction dans les indicateurs.
@@ -138,8 +231,22 @@ export function PositionnementPortailForm({
           // `CLE_BESOIN_ADAPTATION_REPONDU` côté serveur, verrouillée par les
           // deux specs (formulaire et action) qui assertent ce même littéral.
           besoinAdaptationRepondu: true,
-          ...(besoin && detailAdaptation.trim()
+          ...(!structuree && besoin && detailAdaptation.trim()
             ? { detailAdaptation: detailAdaptation.trim() }
+            : {}),
+          // Sans accord, aucune précision ne quitte le navigateur.
+          ...(structuree && catalogue !== null
+            ? {
+                [catalogue.champs.consentement]: consentement,
+                [catalogue.champs.choix]: choix,
+                ...(consentement
+                  ? {
+                      [catalogue.champs.types]: typesBesoin,
+                      [catalogue.champs.mesures]: mesures,
+                      [catalogue.champs.commentaire]: commentaire.trim(),
+                    }
+                  : {}),
+              }
             : {}),
         },
       });
@@ -332,7 +439,24 @@ export function PositionnementPortailForm({
             Oui, j&apos;ai besoin d&apos;un aménagement
           </label>
         </div>
-        {besoinAdaptation === true && (
+        {besoinAdaptation === true && catalogue !== null && adaptationAutomatique && (
+          <DeclarationStructuree
+            catalogue={catalogue}
+            types={typesBesoin}
+            basculerType={basculerType}
+            mesures={mesures}
+            setMesures={setMesures}
+            commentaire={commentaire}
+            setCommentaire={setCommentaire}
+            consentement={consentement}
+            setConsentement={setConsentement}
+            choix={choix}
+            setChoix={setChoix}
+            disabled={isPending}
+            champ={champ}
+          />
+        )}
+        {besoinAdaptation === true && !adaptationAutomatique && (
           <textarea
             value={detailAdaptation}
             onChange={(e) => setDetailAdaptation(e.target.value)}
@@ -360,5 +484,140 @@ export function PositionnementPortailForm({
         {isPending ? "Envoi…" : "Envoyer mes réponses"}
       </button>
     </form>
+  );
+}
+
+/**
+ * Chantier QNC, L04 — la précision du besoin, sans donnée médicale : un TYPE
+ * dans une liste, des AMÉNAGEMENTS proposés par le catalogue, un commentaire
+ * facultatif, un CONSENTEMENT séparé, puis confirmer en un clic ou demander un
+ * échange écrit.
+ */
+function DeclarationStructuree(props: {
+  catalogue: CatalogueAdaptation;
+  types: string[];
+  basculerType: (t: string) => void;
+  mesures: string[];
+  setMesures: (m: string[]) => void;
+  commentaire: string;
+  setCommentaire: (c: string) => void;
+  consentement: boolean;
+  setConsentement: (c: boolean) => void;
+  choix: ChoixAdaptation | null;
+  setChoix: (c: ChoixAdaptation) => void;
+  disabled: boolean;
+  champ: string;
+}): React.ReactElement {
+  const disponibles = mesuresDisponibles(props.catalogue, props.types);
+  return (
+    <div className="mt-3 space-y-4">
+      <p className="text-xs text-gray-600">
+        Ces précisions sont transmises au seul référent handicap. N&apos;indiquez aucun diagnostic
+        ni information médicale : le type de besoin et les aménagements souhaités suffisent.
+      </p>
+
+      <label className="flex items-start gap-2 rounded-md bg-gray-50 p-3 text-sm text-gray-900">
+        <input
+          type="checkbox"
+          className="mt-1"
+          checked={props.consentement}
+          onChange={(e) => props.setConsentement(e.target.checked)}
+          disabled={props.disabled}
+        />
+        <span>
+          J&apos;accepte que ces précisions soient transmises au référent handicap de
+          l&apos;organisme, pour organiser mes aménagements. Mon formateur ne reçoit que la liste
+          des aménagements retenus.
+        </span>
+      </label>
+
+      <fieldset disabled={props.disabled || !props.consentement}>
+        <legend className="text-sm font-medium text-gray-900">Type de besoin</legend>
+        <div className="mt-2 grid gap-2 sm:grid-cols-2">
+          {props.catalogue.types.map((t) => (
+            <label key={t.code} className="flex items-center gap-2 text-sm text-gray-900">
+              <input
+                type="checkbox"
+                checked={props.types.includes(t.code)}
+                onChange={() => props.basculerType(t.code)}
+              />
+              {t.libelle}
+            </label>
+          ))}
+        </div>
+      </fieldset>
+
+      {props.consentement && disponibles.length > 0 && (
+        <fieldset disabled={props.disabled}>
+          <legend className="text-sm font-medium text-gray-900">
+            Aménagements proposés — décochez ceux qui ne vous servent pas
+          </legend>
+          <ul className="mt-2 space-y-2">
+            {disponibles.map((m) => (
+              <li key={m.code}>
+                <label className="flex items-start gap-2 text-sm text-gray-900">
+                  <input
+                    type="checkbox"
+                    className="mt-1"
+                    checked={props.mesures.includes(m.code)}
+                    onChange={() =>
+                      props.setMesures(
+                        props.mesures.includes(m.code)
+                          ? props.mesures.filter((x) => x !== m.code)
+                          : [...props.mesures, m.code],
+                      )
+                    }
+                  />
+                  <span>
+                    {m.libelle}
+                    {m.complexe && (
+                      <span className="block text-xs text-gray-600">
+                        Le référent handicap vous répondra par écrit avant la formation.
+                      </span>
+                    )}
+                  </span>
+                </label>
+              </li>
+            ))}
+          </ul>
+        </fieldset>
+      )}
+
+      {props.consentement && (
+        <textarea
+          value={props.commentaire}
+          onChange={(e) => props.setCommentaire(e.target.value)}
+          disabled={props.disabled}
+          rows={2}
+          maxLength={props.catalogue.commentaireMax}
+          placeholder="Commentaire facultatif — sans information médicale."
+          className={props.champ}
+          aria-label="Commentaire facultatif sur l'aménagement souhaité"
+        />
+      )}
+
+      <fieldset disabled={props.disabled} className="space-y-2">
+        <legend className="text-sm font-medium text-gray-900">Votre choix</legend>
+        <label className="flex items-center gap-2 text-sm text-gray-900">
+          <input
+            type="radio"
+            name="pos-choix-adaptation"
+            checked={props.choix === "confirme"}
+            onChange={() => props.setChoix("confirme")}
+            disabled={!props.consentement}
+          />
+          Je confirme ces aménagements
+        </label>
+        <label className="flex items-center gap-2 text-sm text-gray-900">
+          <input
+            type="radio"
+            name="pos-choix-adaptation"
+            checked={props.choix === "echange"}
+            onChange={() => props.setChoix("echange")}
+          />
+          Je préfère un échange écrit avec le référent handicap
+        </label>
+      </fieldset>
+    </div>
   );
 }

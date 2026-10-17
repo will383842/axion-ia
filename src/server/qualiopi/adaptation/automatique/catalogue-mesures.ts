@@ -191,6 +191,55 @@ export function comporteMesureSupport(codes: readonly string[]): boolean {
   return codes.some((c) => PAR_CODE.get(c)?.support === true);
 }
 
+/** Le texte consigné cite-t-il une mesure de supports (consignation automatique ou recopie) ? */
+export function texteCiteMesureSupport(texte: string): boolean {
+  return MESURES.some((m) => m.support && texte.includes(m.libelle));
+}
+
+/**
+ * Les lignes d'une réponse consignée, telles qu'on les transmet (fiche du
+ * formateur, récapitulatif, convocation) : une mesure par ligne, sans puce ni
+ * en-tête de consignation automatique.
+ */
+export function lignesDeMesures(texte: string): string[] {
+  return texte
+    .split("\n")
+    .map((l) => l.trim())
+    .filter((l) => l !== "" && !l.startsWith(ENTETE_CONSIGNATION_AUTOMATIQUE))
+    .map((l) => l.replace(/^[-•]\s*/, ""));
+}
+
+/**
+ * Le catalogue tel que le formulaire du portail le reçoit, en PROPRIÉTÉ : les
+ * composants du portail ne tirent pas le domaine qualiopi (cloisonnement,
+ * `scripts/qualiopi/isolation-check.ts`) — la page le leur passe.
+ */
+export interface CataloguePortail {
+  readonly types: readonly { readonly code: string; readonly libelle: string }[];
+  readonly mesures: readonly {
+    readonly code: string;
+    readonly libelle: string;
+    readonly types: readonly string[];
+    readonly complexe: boolean;
+  }[];
+  readonly champs: typeof CHAMPS_DECLARATION;
+  readonly commentaireMax: number;
+}
+
+export function cataloguePortail(): CataloguePortail {
+  return {
+    types: TYPES_BESOIN.map((t) => ({ code: t.code, libelle: t.libelle })),
+    mesures: MESURES.map((m) => ({
+      code: m.code,
+      libelle: m.libelle,
+      types: [...m.types],
+      complexe: m.complexe !== null,
+    })),
+    champs: CHAMPS_DECLARATION,
+    commentaireMax: COMMENTAIRE_MAX,
+  };
+}
+
 /** Les champs que le FORMULAIRE envoie. Jamais écrits tels quels en base. */
 export const CHAMPS_DECLARATION = {
   types: "adaptationTypes",
@@ -356,6 +405,27 @@ export function texteConsignationAutomatique(
     `${ENTETE_CONSIGNATION_AUTOMATIQUE} (catalogue de l'organisme, confirmées par le bénéficiaire le ${dateParis.format(confirmeLe)}) :`,
     ...mesuresStandard.map((c) => `- ${libelleMesure(c)}`),
   ].join("\n");
+}
+
+/**
+ * Ce que la consignation automatique écrit dans `adaptationsRealisees`.
+ *
+ * 🔴 Rien ne s'efface : une réponse déjà consignée (par le référent, ou par une
+ * déclaration précédente) est GARDÉE, et la nouvelle s'y ajoute. Une même
+ * déclaration resoumise ne s'ajoute pas deux fois.
+ */
+export function fusionnerConsignation(existante: string | null, nouvelle: string): string {
+  const avant = existante?.trim() ?? "";
+  if (avant === "") return nouvelle;
+  // Même liste de mesures déjà consignée (seule la date d'en-tête diffère).
+  const corps = (t: string): string => t.split("\n").slice(1).join("\n");
+  const blocs = avant.split("\n\n");
+  if (
+    blocs.some((b) => b.startsWith(ENTETE_CONSIGNATION_AUTOMATIQUE) && corps(b) === corps(nouvelle))
+  ) {
+    return avant;
+  }
+  return `${avant}\n\n${nouvelle}`;
 }
 
 /** Le texte chiffré pour le référent (lecture réservée et journalisée). */

@@ -25,6 +25,10 @@ const CODES_ATTENDUS: string[] = [
   // trace de la réponse de l'organisme (ind. 10). Celle-ci relit l'état et se
   // referme dès que la réponse est consignée sur l'inscription.
   "adaptation_reponse_non_consignee",
+  // Chantier QNC, L04 (2026-10-17) — cas d'adaptation complexe (fermé par la
+  // seule réponse écrite du référent) et examen d'aménagements jugés inutiles.
+  "adaptation_cas_complexe",
+  "adaptation_utilite_a_examiner",
   "categories_certifiees_non_renseignees",
   // Ajouté 2026-08-23 (recette du jour d'audit). Constaté À L'ÉCRAN sur
   // `/qualiopi/mode-auditeur` : « 1 formation certifiante avec code RS/RNCP »

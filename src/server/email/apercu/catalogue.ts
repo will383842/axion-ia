@@ -309,6 +309,24 @@ export const CATALOGUE: Readonly<Record<EmailJobName, FicheEmail>> = {
     destinataire: "l'entreprise cliente — jamais un stagiaire particulier",
     source: "server/qualiopi/notifications/notifications-service.ts",
   },
+  "qualiopi-liste-stagiaires": {
+    categorie: "formation",
+    quand: "Convention signée, liste des participants incomplète (puis deux relances)",
+    destinataire: "l'entreprise cliente",
+    source: "server/qualiopi/positionnement/temps2.ts",
+  },
+  "qualiopi-adaptation-stagiaire": {
+    categorie: "formation",
+    quand: "Avant la formation, une fois les aménagements consignés",
+    destinataire: "le stagiaire",
+    source: "server/qualiopi/adaptation/automatique/remises.ts",
+  },
+  "qualiopi-adaptation-formateur": {
+    categorie: "formation",
+    quand: "Avant la formation, une fois les aménagements consignés (mesures seules)",
+    destinataire: "le formateur de la session",
+    source: "server/qualiopi/adaptation/automatique/remises.ts",
+  },
   "qualiopi-questionnaire-relance": {
     categorie: "formation",
     quand: "Relance d'un questionnaire resté sans réponse",

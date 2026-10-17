@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import {
   CHAMPS_DECLARATION,
   CLES_REPONSE_ADAPTATION,
+  fusionnerConsignation,
   MESURES,
   TYPES_BESOIN,
   lireDeclaration,
@@ -154,6 +155,28 @@ describe("lireDeclaration", () => {
       ).ok,
     ).toBe(false);
     expect(lireDeclaration(saisie({ types: ["dys"], consentement: true })).ok).toBe(false);
+  });
+});
+
+describe("fusionnerConsignation — rien ne s'efface", () => {
+  const t1 = texteConsignationAutomatique(["pauses"], new Date("2026-11-02T09:00:00Z"));
+  const t1bis = texteConsignationAutomatique(["pauses"], new Date("2026-11-03T09:00:00Z"));
+  const t2 = texteConsignationAutomatique(["sous_titrage"], new Date("2026-11-03T09:00:00Z"));
+
+  it("colonne vide : la nouvelle réponse", () => {
+    expect(fusionnerConsignation(null, t1)).toBe(t1);
+    expect(fusionnerConsignation("  ", t1)).toBe(t1);
+  });
+
+  it("une réponse du référent est gardée, la nouvelle s'ajoute", () => {
+    const r = fusionnerConsignation("Interprète LSF réservé le 3/11.", t2);
+    expect(r.startsWith("Interprète LSF réservé le 3/11.")).toBe(true);
+    expect(r).toContain(t2);
+  });
+
+  it("la même déclaration resoumise ne s'ajoute pas deux fois", () => {
+    expect(fusionnerConsignation(t1, t1bis)).toBe(t1);
+    expect(fusionnerConsignation(t1, t2)).toBe(`${t1}\n\n${t2}`);
   });
 });
 
