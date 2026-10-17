@@ -366,8 +366,13 @@ describe("le matériel annoncé est le même partout", () => {
   );
 
   it("une fiche en présentiel seul n'annonce pas de distanciel", () => {
-    const presentielSeul = FORMATIONS_V2.filter((f) => !aDuDistanciel(f));
-    expect(presentielSeul.length).toBeGreaterThan(0);
+    // L16 (2026-10-16) : le séminaire, seule fiche en présentiel seul, se suit
+    // désormais aussi à distance — plus aucune fiche réelle n'est en présentiel
+    // seul. On éprouve donc la règle sur une fiche passée en présentiel seul.
+    const presentielSeul = [
+      ...FORMATIONS_V2.filter((f) => !aDuDistanciel(f)),
+      { ...FORMATIONS_V2[0]!, modalites: ["presentiel" as const] },
+    ];
     for (const f of presentielSeul) expect(getFormationMateriel(f)).not.toMatch(/distanciel/i);
   });
 
