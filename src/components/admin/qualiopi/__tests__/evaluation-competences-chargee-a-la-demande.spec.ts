@@ -6,8 +6,9 @@
  *
  * Importé tel quel par la fiche (composant serveur), le panneau d'évaluation entrait dans
  * le chunk de la page : la somme des page chunks de la console passait à 563,13 kB pour
- * un cliquet à 560 KB, que `main` dépassait déjà (560,36 kB). Relever le cliquet est
- * refusé sans accord de Will ; les panneaux passent donc par des enrobages CLIENT avec
+ * un cliquet à 560 KB, que `main` dépassait déjà (560,36 kB). Le cliquet est l'affaire de
+ * Will (ADR 0068 : 600 KB, « on continue d'alléger la console par chargement différé ») ;
+ * ce test ne le fixe pas. Les panneaux passent donc par des enrobages CLIENT avec
  * `React.lazy` (depuis un composant serveur, un import dynamique ne découpe pas le code ;
  * `next/dynamic` tire son runtime dans le chunk de la page).
  */
@@ -44,14 +45,5 @@ describe("panneaux de la fiche formateur chargés à la demande", () => {
     expect(e).toContain(`lazy(() =>\n  import("./${panneau}")`);
     expect(e).not.toMatch(new RegExp(`^import \\{[^}]*\\} from "\\./${panneau}";`, "m"));
     expect(e).not.toMatch(/from "next\/dynamic"/);
-  });
-
-  it("le cliquet de la console admin n'est pas relevé au-delà de 560 KB", () => {
-    const pkg = JSON.parse(lire("package.json")) as {
-      "size-limit": Array<{ name: string; limit: string }>;
-    };
-    const admin = pkg["size-limit"].find((b) => b.name.includes("CONSOLE ADMIN"));
-    expect(admin?.limit).toMatch(/^\d+ KB$/);
-    expect(Number.parseInt(admin?.limit ?? "", 10)).toBeLessThanOrEqual(560);
   });
 });
