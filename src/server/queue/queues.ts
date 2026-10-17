@@ -2188,6 +2188,14 @@ export async function bootRepeatableJobs(): Promise<void> {
         pattern: "35 8 * * *",
         jobId: "formation-crons-controle-registre-periodique-cron",
       },
+      // QNC L07 — test du lien de visio la veille du début. 07:10 et 14:10 UTC
+      // (08:10/09:10 et 15:10/16:10 à Paris) : le second passage retente un lien
+      // en échec. Arrêté tant que `qualiopi.moyens.actif` est éteint.
+      {
+        type: "formation-crons.moyens-test-lien-j1",
+        pattern: "10 7,14 * * *",
+        jobId: "formation-crons-moyens-test-lien-j1-cron",
+      },
     ];
 
     for (const { type, pattern, jobId } of formationCronSchedule) {
