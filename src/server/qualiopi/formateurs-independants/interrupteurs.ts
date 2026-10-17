@@ -267,14 +267,13 @@ export type Prealable =
   | { readonly sorte: "non_lisible"; readonly libelle: string };
 
 /** Les faits lisibles qu'un préalable peut exiger. Absent = non établi (refus). */
-export type FaitPrealable = "version_contrat_arretee";
+export type FaitPrealable = "version_contrat_arretee" | "canal_changement_compte_en_service";
 export type FaitsPrealables = Readonly<Partial<Record<FaitPrealable, boolean>>>;
 
 const exige = (cle: CleEnvoi): Prealable => ({ sorte: "interrupteur", cle });
 
-/** À remplacer par un préalable lisible quand le canal de changement de compte existera. */
 const LIBELLE_CANAL_CHANGEMENT_DE_COMPTE =
-  "Le formateur doit pouvoir demander un changement de compte bancaire depuis son espace (ce canal n'existe pas encore).";
+  "Le formateur doit pouvoir demander un changement de compte bancaire depuis son espace : « Changement de compte bancaire et d'adresse » et « Dossier en ligne » (dépôt du RIB) doivent être allumés, et les e-mails F43 (avis à l'adresse connue) et F44 (confirmation) validés.";
 
 /**
  * Préalables à l'ALLUMAGE (sortie de la position sûre). Couper n'en a aucun.
@@ -307,10 +306,18 @@ export const PREALABLES: Readonly<Record<CleInterrupteur, ReadonlyArray<Prealabl
   garde_mission: [exige("controle_registre_periodique")],
   lettre_auto: [exige("contrat_auto"), exige("textes_valides")],
   // Plan §8.10 n° 12 : sans canal pour changer de compte bancaire, le formateur ne
-  // peut pas corriger un IBAN une fois le paiement par mission en route. Le canal
-  // (demande depuis l'espace, validation par Will) n'est écrit par aucun code : tant
-  // qu'il n'existe pas, la date de passage ne peut pas être posée.
-  passage_paiement: [{ sorte: "non_lisible", libelle: LIBELLE_CANAL_CHANGEMENT_DE_COMPTE }],
+  // peut pas corriger un IBAN une fois le paiement par mission en route. Le canal est
+  // celui du lot E (`changement_coordonnees` : demande + RIB depuis l'espace, F43, 48 h,
+  // validation en console) ; le fait est lu dans les réglages (`faitsDepuisReglages`).
+  // 🔑 Un FAIT, pas un interrupteur mère : couper le canal ne remet pas la date de
+  // passage à « pas de passage » en cascade — l'argent ne change pas de régime en silence.
+  passage_paiement: [
+    {
+      sorte: "fait",
+      fait: "canal_changement_compte_en_service",
+      libelle: LIBELLE_CANAL_CHANGEMENT_DE_COMPTE,
+    },
+  ],
   communes_geo_cron: [],
   // Sans référentiel des communes, l'encadré rangerait tout le monde en « lieu inconnu ».
   proches_bloc: [exige("communes_geo_cron")],
@@ -576,6 +583,16 @@ export const INTERRUPTEURS_SIGNATURE = {
     ),
     cle: "formateurs.alertes_registre_sous_traitants",
   },
+  // Qualiopi ind. 21 (NC majeure) — le suivi de la qualité pédagogique des intervenants
+  // externes dans la durée. Coupé : aucune alerte, aucun refus, aucune grille saisissable
+  // — exactement comme avant. Les seuils sont dans `suivi-qualite/reglages.ts`.
+  suivi_qualite: {
+    ...envoi(
+      "Suivi de la qualité des intervenants (ind. 21)",
+      "Observation obligatoire de la 1re mission (habilitation confirmée à partir du seuil), grille après chaque mission (relance interne J+3, alerte J+7), satisfaction des stagiaires (entretien à prévoir, puis suspension des nouvelles missions jusqu'à une décision motivée), réévaluation annuelle (rappel J-30, refus à l'échéance) et alerte CV déclaré de plus de 24 mois. Missions commencées le jour de l'allumage ou après. Les refus passent par la garde de mission aux portes. Aucun e-mail, et le formateur ne voit jamais les grilles.",
+    ),
+    cle: "formateurs.suivi_qualite",
+  },
 } as const satisfies Record<string, DefinitionEnvoi & { readonly cle: string }>;
 
 export type CleInterrupteurSignature = keyof typeof INTERRUPTEURS_SIGNATURE;
@@ -651,6 +668,9 @@ export const PREALABLES_SIGNATURE: Readonly<
   registre_sous_traitants: [],
   // Sans registre tenu, il n'y a rien sur quoi alerter.
   alertes_registre_sous_traitants: [exigeSignature("registre_sous_traitants")],
+  // Aucun : aucun e-mail (alertes internes seulement). Les refus de mission ne jouent que
+  // si `garde_mission_portes` est allumée, comme toute la garde.
+  suivi_qualite: [],
 };
 
 export function cleSettingSignature(cle: CleInterrupteurSignature): string {
@@ -728,6 +748,62 @@ export function dateAllumageSignature(brut: unknown, misAJourLe: Date | null): D
     if (!Number.isNaN(d.getTime())) return d;
   }
   return misAJourLe;
+}
+
+/**
+ * Clés (`settings`) qui gardent la date de leur PREMIER allumage, même coupées.
+ *
+ * 🔴 `formateurs.suivi_qualite` (relecture du 2026-10-17) : sa date d'allumage borne tout
+ * le suivi (« missions commencées le jour de l'allumage ou après »). Si couper puis
+ * rallumer — ou simplement réenregistrer — la remettait à aujourd'hui, les suspensions
+ * tomberaient sans décision motivée, l'observation repartirait de zéro et une
+ * réévaluation échue regagnerait sa grâce : un contournement qui toucherait tous les
+ * formateurs d'un coup. Valeur écrite : `{ actif, premierAllumageLe }`.
+ */
+export const CLES_SIGNATURE_PREMIER_ALLUMAGE: ReadonlySet<string> = new Set([
+  cleSettingSignature("suivi_qualite"),
+]);
+
+/**
+ * Date du PREMIER allumage connue d'une ligne, allumée OU coupée, ou `null`.
+ *
+ * `premierAllumageLe` lisible d'abord. À défaut, une ligne ALLUMÉE écrite avant ce champ
+ * (`{ actif: true }`, ou `{ actif, allumeLe }`) : sa date d'allumage, comme
+ * `dateAllumageSignature`. Une ligne coupée sans le champ (coupée avant lui) n'en porte
+ * aucune : l'allumage suivant repart du jour.
+ */
+export function premierAllumageSignature(brut: unknown, misAJourLe: Date | null): Date | null {
+  if (brut !== null && typeof brut === "object" && !Array.isArray(brut)) {
+    const p = (brut as Record<string, unknown>).premierAllumageLe;
+    if (typeof p === "string") {
+      const d = new Date(p);
+      if (!Number.isNaN(d.getTime())) return d;
+    }
+  }
+  return dateAllumageSignature(brut, misAJourLe);
+}
+
+/** Date d'allumage à LIRE pour une clé de `CLES_SIGNATURE_PREMIER_ALLUMAGE` : `null` si coupée. */
+export function dateAllumageDurableSignature(brut: unknown, misAJourLe: Date | null): Date | null {
+  if (!lireValeurSignature(brut).valeur) return null;
+  return premierAllumageSignature(brut, misAJourLe);
+}
+
+/**
+ * La valeur à écrire pour une clé de `CLES_SIGNATURE_PREMIER_ALLUMAGE`. La date connue
+ * est reconduite, allumé comme coupé ; au premier allumage, `maintenant`. Jamais
+ * postérieure à `maintenant` : une date future écrite à la main ne retarde pas le suivi.
+ */
+export function valeurPremierAllumage(
+  actif: boolean,
+  actuelle: { readonly value: unknown; readonly updatedAt?: Date | null } | null,
+  maintenant: Date,
+): { actif: boolean; premierAllumageLe?: string } {
+  const connue =
+    actuelle === null ? null : premierAllumageSignature(actuelle.value, actuelle.updatedAt ?? null);
+  const bornee = connue === null ? null : connue > maintenant ? maintenant : connue;
+  const premier = actif ? (bornee ?? maintenant) : bornee;
+  return premier === null ? { actif } : { actif, premierAllumageLe: premier.toISOString() };
 }
 
 // ─────────────────────────────────────────────────────────────────────────────

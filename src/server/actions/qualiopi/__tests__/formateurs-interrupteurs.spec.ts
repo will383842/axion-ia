@@ -128,6 +128,33 @@ describe("préalables vérifiés côté serveur", () => {
     if (!refus.ok) expect(refus.error).toMatch(/changement de compte/);
     expect(tx.setting.upsert).not.toHaveBeenCalled();
   });
+
+  it("passage_paiement : canal de changement de compte en service (relu en base) → date posée", async () => {
+    const { empreinteAttendue } = await import("@/server/email/textes-formateurs-a-valider");
+    const { cleTexteValide } = await import("@/server/email/textes-valides");
+    const texte = (g: string) => {
+      const key = cleTexteValide(g);
+      return {
+        key,
+        value: { valide: true, empreinte: empreinteAttendue(key) },
+        updatedAt: new Date(),
+        updatedBy: null,
+      };
+    };
+    connecte("admin");
+    etat.lignes = [
+      ligne("changement_coordonnees", { actif: true }),
+      ligne("dossier_en_ligne", { actif: true }),
+      ligne("textes_valides", { actif: true }),
+      texte("formateur-iban-changement"),
+      texte("formateur-iban-valide"),
+    ];
+    const r = await basculerFormateursPassagePaiementAction(INITIAL, fd({ date: "2026-12-01" }));
+    expect(r.ok).toBe(true);
+    expect(tx.setting.upsert).toHaveBeenCalledWith(
+      expect.objectContaining({ where: { key: "formateurs.passage_paiement" } }),
+    );
+  });
 });
 
 describe("couper est toujours possible", () => {

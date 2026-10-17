@@ -18,7 +18,7 @@ import {
 } from "./interrupteurs";
 
 describe("interrupteurs du socle de signature", () => {
-  it("vingt-deux clés, chacune protégée de l'éditeur générique", () => {
+  it("vingt-trois clés, chacune protégée de l'éditeur générique", () => {
     expect(CLES_INTERRUPTEURS_SIGNATURE.map(cleSettingSignature).sort()).toEqual(
       [
         // Lot S2 — affectation et acceptation sûres, livré éteint.
@@ -52,6 +52,8 @@ describe("interrupteurs du socle de signature", () => {
         // Qualiopi ind. 27 — registre des sous-traitants tenu par l'outil et ses alertes, éteints.
         "formateurs.registre_sous_traitants",
         "formateurs.alertes_registre_sous_traitants",
+        // Qualiopi ind. 21 — suivi de la qualité pédagogique des intervenants, livré éteint.
+        "formateurs.suivi_qualite",
         "signature.alertes_hors_jeton",
         "signature.copie_partielle",
         "signature.exemplaire_captation",

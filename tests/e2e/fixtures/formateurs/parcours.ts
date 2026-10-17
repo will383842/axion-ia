@@ -240,14 +240,13 @@ export async function preparerDossier(
   lien: LienDossier,
   prenom: string,
   options: {
-    ndaEnCours?: boolean;
     registre?: ReturnType<typeof registreDe>;
     /** V1-A-11 — l'adresse professionnelle, que le registre ne donne pas en diffusion partielle. */
     adressePro?: string;
   } = {},
 ) {
-  const registre =
-    options.registre ?? registreDe(prenom, "vert", options.ndaEnCours ? null : NDA_BANC);
+  // Qualiopi ind. 21 — le numéro est obligatoire : plus de dossier « en cours ».
+  const registre = options.registre ?? registreDe(prenom, "vert", NDA_BANC);
   const pas = async (r: Promise<{ valeur: { ok: boolean; message?: string } }>) => {
     const v = (await r).valeur;
     expect(v.ok, v.message).toBe(true);
@@ -259,7 +258,7 @@ export async function preparerDossier(
       "activite",
       {
         siret: SIRET_BANC,
-        ...(options.ndaEnCours ? { ndaEnCours: "1" } : { nda: NDA_BANC }),
+        nda: NDA_BANC,
         regimeTva: "franchise_293b",
         iban: IBAN_BANC,
         ...(options.adressePro ? { adressePro: options.adressePro } : {}),
@@ -267,10 +266,7 @@ export async function preparerDossier(
       { registre },
     ),
   );
-  const pieces = options.ndaEnCours
-    ? ["rib", "cv", "recepisse_declaration_activite"]
-    : ["rib", "cv"];
-  for (const type of pieces) {
+  for (const type of ["rib", "cv"]) {
     await pas(actionDossier(lien, "piece", champsDePiece(type), { fichier: pdfFictif(type) }));
   }
   return registre;

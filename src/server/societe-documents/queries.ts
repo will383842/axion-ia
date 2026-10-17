@@ -100,9 +100,13 @@ export interface RubriqueCompteur {
  * Une seule requête groupée, puis répartition en mémoire selon la SSOT : un
  * `count` par rubrique multiplierait les allers-retours pour cinq chiffres.
  */
-export async function compterParRubrique(): Promise<RubriqueCompteur[]> {
+export async function compterParRubrique(
+  /** CHANTIER QNC, L13 — versions remplacées ou retirées, à ne pas compter. */
+  exclure: ReadonlySet<string> = new Set(),
+): Promise<RubriqueCompteur[]> {
   const rows = await prisma.societeDocument.groupBy({
     by: ["type"],
+    ...(exclure.size > 0 ? { where: { id: { notIn: [...exclure] } } } : {}),
     _count: { _all: true },
   });
   const parType = new Map(rows.map((r) => [r.type as string, r._count._all]));
@@ -148,10 +152,18 @@ export async function typesPresentsDansRubrique(
 export async function listSocieteDocsEnAlerte(
   maintenant: Date,
   jours: number,
+  /**
+   * CHANTIER QNC, L13 — versions remplacées ou retirées : un Kbis renouvelé
+   * ne doit pas sonner indéfiniment parce que son ancienne version est gardée.
+   */
+  exclure: ReadonlySet<string> = new Set(),
 ): Promise<SocieteDocListItem[]> {
   const limite = new Date(maintenant.getTime() + jours * 24 * 60 * 60 * 1000);
   return prisma.societeDocument.findMany({
-    where: { dateExpiration: { not: null, lte: limite } },
+    where: {
+      dateExpiration: { not: null, lte: limite },
+      ...(exclure.size > 0 ? { id: { notIn: [...exclure] } } : {}),
+    },
     orderBy: { dateExpiration: "asc" },
     select: LIST_SELECT,
   });

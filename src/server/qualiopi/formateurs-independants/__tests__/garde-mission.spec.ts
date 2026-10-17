@@ -27,6 +27,12 @@ const h = vi.hoisted(() => {
   return { etat, prisma };
 });
 vi.mock("@/lib/prisma", () => ({ prisma: h.prisma }));
+// Qualiopi ind. 21 — la décision d'habilitation de la formation en jeu a sa suite
+// (`evaluation-competences/__tests__/`) ; ici, elle est réputée en vigueur sauf mention.
+const q21 = vi.hoisted(() => ({ manque: null as string | null }));
+vi.mock("../evaluation-competences/garde-mission-q21-lecture", () => ({
+  lireManqueHabilitationMission: vi.fn(async () => q21.manque),
+}));
 
 import {
   MANQUES_MISSION,
@@ -164,6 +170,30 @@ describe("controlerGardeMission (lecture des interrupteurs)", () => {
     const r = await controlerGardeMission("t-1", MAINTENANT);
     expect(r).toEqual({ mode: "coupee", refus: [], avertissements: [] });
     expect(h.prisma.trainer.findUnique).not.toHaveBeenCalled();
+  });
+
+  it("Qualiopi ind. 21 — allumée : sans décision d'habilitation en vigueur, refus", async () => {
+    h.etat.settings.set("formateurs.garde_mission_portes", { actif: true });
+    q21.manque = "pas de décision";
+    try {
+      const r = await controlerGardeMission("t-1", MAINTENANT);
+      expect(r.refus).toContain("pas de décision");
+    } finally {
+      q21.manque = null;
+    }
+  });
+
+  it("Qualiopi ind. 21 — coupée : la décision d'habilitation n'est même pas lue", async () => {
+    q21.manque = "pas de décision";
+    try {
+      expect(await controlerGardeMission("t-1", MAINTENANT)).toEqual({
+        mode: "coupee",
+        refus: [],
+        avertissements: [],
+      });
+    } finally {
+      q21.manque = null;
+    }
   });
 
   it("allumée, niveau absent : refuser", async () => {

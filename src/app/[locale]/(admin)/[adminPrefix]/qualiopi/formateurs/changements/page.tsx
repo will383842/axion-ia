@@ -38,6 +38,8 @@ const ISSUES: Readonly<Record<string, string>> = {
   trop_tot: "Trop tôt : une demande se valide au plus tôt 48 heures après sa création.",
   non_avisee:
     "Validation impossible : l'avis de changement d'IBAN n'est pas parti à l'adresse connue du formateur. Sans cet avis, il n'a pas pu s'y opposer ; refusez la demande, il pourra en faire une nouvelle.",
+  rib_absent:
+    "Validation impossible : aucun RIB récent du nouveau compte n'est au dossier du formateur (ou il a été rejeté). Refusez la demande ; il pourra en refaire une avec son RIB.",
   fiche_close:
     "Validation impossible : la fiche du formateur n'est plus active, ou la collaboration est terminée.",
   deja_traitee: "Cette demande a déjà été traitée.",
@@ -125,11 +127,30 @@ export default async function ChangementsCoordonneesPage({ params, searchParams 
                   {DATE_HEURE.format(d.validableAt)}
                 </p>
                 {d.nature === "iban" ? (
-                  <p className="admin-meta">
-                    Le nouvel IBAN n&apos;est pas affiché. Avant de valider, confirmez la demande
-                    avec le formateur, au numéro déjà connu (jamais à un numéro donné dans la
-                    demande).
-                  </p>
+                  <>
+                    <p className="admin-meta">
+                      Le nouvel IBAN n&apos;est pas affiché en entier. Avant de valider, confirmez
+                      la demande avec le formateur, au numéro déjà connu (jamais à un numéro donné
+                      dans la demande).
+                    </p>
+                    <p className="admin-meta">
+                      {d.ribDeposeAt ? (
+                        <>
+                          RIB déposé le {DATE_HEURE.format(d.ribDeposeAt)} : vérifiez-le dans les{" "}
+                          <Link href={`${base}/${d.trainerId}`}>pièces de la fiche</Link> (titulaire
+                          au nom du formateur
+                          {d.ibanFin4 ? (
+                            <>
+                              , IBAN se terminant par <strong>{d.ibanFin4}</strong>
+                            </>
+                          ) : null}
+                          ).
+                        </>
+                      ) : (
+                        "Aucun RIB récent au dossier : la validation est impossible."
+                      )}
+                    </p>
+                  </>
                 ) : (
                   <p>Nouvelle adresse : {d.adresse}</p>
                 )}
