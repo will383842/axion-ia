@@ -52,7 +52,8 @@ export type IndicateurAVoyant = (typeof INDICATEURS_A_VOYANT)[number];
 export type EtatVoyant = "vert" | "en_attente" | "rouge" | "non_evalue" | "sans_objet";
 
 /** Le lot du chantier qui écrit la trace lue (pour le tableau de la PR et l'écran). */
-export type LotSource = "L03" | "L04" | "L05" | "L06" | "L07" | "L08" | "L09" | "L10" | "L14" | "L15";
+export type LotSource =
+  "L03" | "L04" | "L05" | "L06" | "L07" | "L08" | "L09" | "L10" | "L14" | "L15";
 
 /**
  * La lecture d'une trace : les faits lus, ou la raison de ne rien pouvoir dire.
@@ -186,7 +187,9 @@ export interface TraceReclamations {
   readonly reclamations: ReadonlyArray<{
     readonly numero: string;
     /** Les étapes réellement écrites (ajout seul), dans l'ordre d'écriture. */
-    readonly etapes: ReadonlyArray<"reception" | "accuse" | "analyse" | "reponse" | "reexamen" | "cloture">;
+    readonly etapes: ReadonlyArray<
+      "reception" | "accuse" | "analyse" | "reponse" | "reexamen" | "cloture"
+    >;
   }>;
 }
 
@@ -241,7 +244,10 @@ const LIBELLES: Readonly<Record<IndicateurAVoyant, { libelle: string; lot: LotSo
   9: { libelle: "Information sur les conditions de déroulement (convocation)", lot: "L05" },
   10: { libelle: "Adaptation de la prestation aux publics", lot: "L15" },
   11: { libelle: "Évaluation de l'atteinte des objectifs", lot: "L08" },
-  12: { libelle: "Engagement et prévention des ruptures (émargement par demi-journée)", lot: "L06" },
+  12: {
+    libelle: "Engagement et prévention des ruptures (émargement par demi-journée)",
+    lot: "L06",
+  },
   17: { libelle: "Moyens humains et techniques vérifiés", lot: "L07" },
   19: { libelle: "Ressources pédagogiques mises à disposition", lot: "L08" },
   21: { libelle: "Compétences des intervenants", lot: "L14" },
@@ -257,13 +263,20 @@ const LIBELLES: Readonly<Record<IndicateurAVoyant, { libelle: string; lot: LotSo
 // ─────────────────────────────────────────────────────────────────────────────
 
 function jour(d: Date): string {
-  return new Intl.DateTimeFormat("fr-FR", { timeZone: "Europe/Paris", dateStyle: "short" }).format(d);
+  return new Intl.DateTimeFormat("fr-FR", { timeZone: "Europe/Paris", dateStyle: "short" }).format(
+    d,
+  );
 }
 
 type Verdict = Pick<Voyant, "etat" | "trace" | "manque">;
 
 /** Pas de trace suffisante : `en_attente` avant l'échéance, `rouge` après. */
-function sansTrace(echeance: Date, maintenant: Date, manque: string, trace: string | null = null): Verdict {
+function sansTrace(
+  echeance: Date,
+  maintenant: Date,
+  manque: string,
+  trace: string | null = null,
+): Verdict {
   return {
     etat: maintenant.getTime() > echeance.getTime() ? "rouge" : "en_attente",
     trace,
@@ -374,7 +387,7 @@ function p11(t: TraceEvaluationAcquis, c: ContexteVoyants): Verdict {
   );
 }
 
-function p12(t: TraceEmargementDemiJournee, c: ContexteVoyants): Verdict {
+function p12(t: TraceEmargementDemiJournee): Verdict {
   if (t.echues === 0) {
     return t.aVenir > 0
       ? { etat: "en_attente", trace: null, manque: "Aucune demi-journée n'est encore échue." }
@@ -396,7 +409,11 @@ function p12(t: TraceEmargementDemiJournee, c: ContexteVoyants): Verdict {
 
 function p17(t: TraceMoyens, c: ContexteVoyants): Verdict {
   if (t.verifieLe === null) {
-    return sansTrace(c.dateDebut, c.maintenant, "Aucune vérification des moyens n'est journalisée pour cette session.");
+    return sansTrace(
+      c.dateDebut,
+      c.maintenant,
+      "Aucune vérification des moyens n'est journalisée pour cette session.",
+    );
   }
   if (t.lienTeste === false) {
     return sansTrace(
@@ -438,7 +455,11 @@ function p21(t: TraceIntervenants, c: ContexteVoyants): Verdict {
   if (t.habilitationActive && t.habiliteLe !== null) {
     return vert(`Formateur habilité sur cette formation depuis le ${jour(t.habiliteLe)}.`);
   }
-  return sansTrace(c.dateDebut, c.maintenant, "Le formateur principal n'a pas d'habilitation active sur cette formation.");
+  return sansTrace(
+    c.dateDebut,
+    c.maintenant,
+    "Le formateur principal n'a pas d'habilitation active sur cette formation.",
+  );
 }
 
 function p23(t: TraceVeille, c: ContexteVoyants): Verdict {
@@ -450,18 +471,24 @@ function p23(t: TraceVeille, c: ContexteVoyants): Verdict {
     );
   }
   const manques: string[] = [];
-  if (!decisionRecente) manques.push("aucune décision de veille tracée depuis douze mois (collecter ne suffit pas)");
+  if (!decisionRecente)
+    manques.push("aucune décision de veille tracée depuis douze mois (collecter ne suffit pas)");
   if (!t.revueValidee) manques.push("aucune revue de direction validée cette année");
   return {
     etat: "rouge",
-    trace: t.derniereDecisionLe !== null ? `Dernière décision de veille le ${jour(t.derniereDecisionLe)}.` : null,
+    trace:
+      t.derniereDecisionLe !== null
+        ? `Dernière décision de veille le ${jour(t.derniereDecisionLe)}.`
+        : null,
     manque: `Manque : ${manques.join(" ; ")}.`,
   };
 }
 
 function p26(t: TraceHandicap): Verdict {
   if (t.referentNommeEtJoignable && t.reseauActif) {
-    return vert("Référent handicap nommé et joignable (saisi, pas le défaut) ; réseau handicap actif au registre.");
+    return vert(
+      "Référent handicap nommé et joignable (saisi, pas le défaut) ; réseau handicap actif au registre.",
+    );
   }
   const manques: string[] = [];
   if (!t.referentNommeEtJoignable) manques.push("référent handicap non saisi ou injoignable");
@@ -499,12 +526,16 @@ function p30(t: TraceAppreciations, c: ContexteVoyants): Verdict {
 }
 
 function p31(t: TraceReclamations): Verdict {
-  if (t.reclamations.length === 0) return sansObjet("Aucune réclamation rattachée à cette session.");
+  if (t.reclamations.length === 0)
+    return sansObjet("Aucune réclamation rattachée à cette session.");
   const incompletes = t.reclamations.filter(
-    (r) => !(["reception", "accuse", "reponse", "cloture"] as const).every((e) => r.etapes.includes(e)),
+    (r) =>
+      !(["reception", "accuse", "reponse", "cloture"] as const).every((e) => r.etapes.includes(e)),
   );
   if (incompletes.length === 0) {
-    return vert(`${t.reclamations.length} réclamation(s), toutes menées de la réception à la clôture (étapes tracées).`);
+    return vert(
+      `${t.reclamations.length} réclamation(s), toutes menées de la réception à la clôture (étapes tracées).`,
+    );
   }
   return {
     etat: "rouge",
@@ -540,7 +571,10 @@ export function construireVoyants(
   const t = traces ?? {};
   const verdicts: Record<IndicateurAVoyant, Verdict> = c.estTestInterne
     ? (Object.fromEntries(
-        INDICATEURS_A_VOYANT.map((n) => [n, sansObjet("Session d'essai : exclue des voyants réels.")]),
+        INDICATEURS_A_VOYANT.map((n) => [
+          n,
+          sansObjet("Session d'essai : exclue des voyants réels."),
+        ]),
       ) as Record<IndicateurAVoyant, Verdict>)
     : {
         4: evaluer(t.i4, "L03", (x) => p4(x, c)),
@@ -548,7 +582,7 @@ export function construireVoyants(
         9: evaluer(t.i9, "L05", (x) => p9(x, c)),
         10: evaluer(t.i10, "L15", (x) => p10(x, c)),
         11: evaluer(t.i11, "L08", (x) => p11(x, c)),
-        12: evaluer(t.i12, "L06", (x) => p12(x, c)),
+        12: evaluer(t.i12, "L06", p12),
         17: evaluer(t.i17, "L07", (x) => p17(x, c)),
         19: evaluer(t.i19, "L08", (x) => p19(x, c)),
         21: evaluer(t.i21, "L14", (x) => p21(x, c)),

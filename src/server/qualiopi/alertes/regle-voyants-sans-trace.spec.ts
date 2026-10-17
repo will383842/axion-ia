@@ -36,7 +36,19 @@ describe("regleVoyantsSansTrace", () => {
 
   it("alerte quand la trace manque : convocation partie pour 1 stagiaire sur 2", async () => {
     h.traces.mockResolvedValue(
-      new Map([["s1", { i9: lue({ stagiairesActifs: 2, convoques: 1, derniereConvocation: NOW, piecesRemises: 0 }) }]]),
+      new Map([
+        [
+          "s1",
+          {
+            i9: lue({
+              stagiairesActifs: 2,
+              convoques: 1,
+              derniereConvocation: NOW,
+              piecesRemises: 0,
+            }),
+          },
+        ],
+      ]),
     );
     const r = await regleVoyantsSansTrace(NOW);
     expect(r.map((a) => a.code)).toEqual(["voyant_ind_09_sans_trace"]);
@@ -45,20 +57,46 @@ describe("regleVoyantsSansTrace", () => {
 
   it("se tait quand la trace existe", async () => {
     h.traces.mockResolvedValue(
-      new Map([["s1", { i9: lue({ stagiairesActifs: 2, convoques: 2, derniereConvocation: NOW, piecesRemises: 2 }) }]]),
+      new Map([
+        [
+          "s1",
+          {
+            i9: lue({
+              stagiairesActifs: 2,
+              convoques: 2,
+              derniereConvocation: NOW,
+              piecesRemises: 2,
+            }),
+          },
+        ],
+      ]),
     );
     expect(await regleVoyantsSansTrace(NOW)).toEqual([]);
   });
 
   it("se tait quand le lot n'écrit rien (non évalué) : on ne sait pas, on n'accuse pas", async () => {
-    h.traces.mockResolvedValue(new Map([["s1", { i4: { lecture: "lot_eteint" }, i12: { lecture: "lot_absent" } }]]));
+    h.traces.mockResolvedValue(
+      new Map([["s1", { i4: { lecture: "lot_eteint" }, i12: { lecture: "lot_absent" } }]]),
+    );
     expect(await regleVoyantsSansTrace(NOW)).toEqual([]);
   });
 
   it("essai exclu : la requête filtre les sessions d'essai et une session d'essai rendue est sans objet", async () => {
     h.sessions.mockResolvedValue([session("e1", true)]);
     h.traces.mockResolvedValue(
-      new Map([["e1", { i9: lue({ stagiairesActifs: 2, convoques: 0, derniereConvocation: null, piecesRemises: 0 }) }]]),
+      new Map([
+        [
+          "e1",
+          {
+            i9: lue({
+              stagiairesActifs: 2,
+              convoques: 0,
+              derniereConvocation: null,
+              piecesRemises: 0,
+            }),
+          },
+        ],
+      ]),
     );
     expect(await regleVoyantsSansTrace(NOW)).toEqual([]);
     expect(h.sessions.mock.calls[0]![0].where).toMatchObject({ estTestInterne: false });
@@ -72,7 +110,12 @@ describe("regleVoyantsSansTrace", () => {
   it("un voyant d'organisme (23) n'est émis qu'une fois, sans cible de session", async () => {
     h.sessions.mockResolvedValue([session("s1"), session("s2")]);
     const t = { i23: lue({ derniereDecisionLe: null, revueValidee: false }) };
-    h.traces.mockResolvedValue(new Map([["s1", t], ["s2", t]]));
+    h.traces.mockResolvedValue(
+      new Map([
+        ["s1", t],
+        ["s2", t],
+      ]),
+    );
     const r = await regleVoyantsSansTrace(NOW);
     expect(r).toHaveLength(1);
     expect(r[0]!.cibleId).toBeUndefined();

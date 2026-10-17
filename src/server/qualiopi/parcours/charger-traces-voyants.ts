@@ -20,7 +20,11 @@
  */
 
 import { prisma } from "@/lib/prisma";
-import { ACTION_ANALYSE_VALIDEE, ACTION_DEROGATION_ACCORDEE, LOT_RECUEIL } from "../recueil/constantes";
+import {
+  ACTION_ANALYSE_VALIDEE,
+  ACTION_DEROGATION_ACCORDEE,
+  LOT_RECUEIL,
+} from "../recueil/constantes";
 import { getQualiopiConfig } from "../config/site-settings";
 import { estActifPour, lireInterrupteurQualiopi } from "../socle/interrupteurs";
 import { HORS_ESSAI, SESSION_REELLE } from "../essai/perimetre";
@@ -119,7 +123,9 @@ async function lireHandicap(): Promise<TraceLue<TraceHandicap>> {
   // Même lecture que le moteur de conformité (une seule vérité).
   const [email, reseau] = await Promise.all([
     getQualiopiConfig("referent_handicap_email").catch(() => ""),
-    prisma.partenariat.count({ where: { actif: true, type: { contains: "handicap", mode: "insensitive" } } }),
+    prisma.partenariat.count({
+      where: { actif: true, type: { contains: "handicap", mode: "insensitive" } },
+    }),
   ]);
   return lue<TraceHandicap>({
     referentNommeEtJoignable: typeof email === "string" && email.includes("@"),
@@ -144,7 +150,11 @@ async function lireRecueil(s: SessionALire): Promise<TraceLue<TraceRecueilTemps1
     ids.length === 0
       ? Promise.resolve(null)
       : prisma.activityLog.findFirst({
-          where: { action: ACTION_ANALYSE_VALIDEE, targetType: "QuestionnaireCadrage", targetId: { in: ids } },
+          where: {
+            action: ACTION_ANALYSE_VALIDEE,
+            targetType: "QuestionnaireCadrage",
+            targetId: { in: ids },
+          },
           orderBy: { createdAt: "asc" },
           select: { createdAt: true },
         }),
@@ -182,7 +192,12 @@ async function inscriptionsDe(
 ): Promise<Map<string, InscriptionLue[]>> {
   const colonne = await colonneDeclarationDisponible();
   const rows = await prisma.enrollment.findMany({
-    where: { sessionId: { in: [...sessionIds] }, ...inscriptionsActives(), ...HORS_ESSAI, session: SESSION_REELLE },
+    where: {
+      sessionId: { in: [...sessionIds] },
+      ...inscriptionsActives(),
+      ...HORS_ESSAI,
+      session: SESSION_REELLE,
+    },
     select: {
       id: true,
       sessionId: true,
@@ -191,7 +206,10 @@ async function inscriptionsDe(
       adaptationsRealisees: true,
       besoinAdaptationDeclareAt: colonne,
       trainee: { select: { situationHandicap: true } },
-      questionnaires: { where: { reponduAt: { not: null } }, select: { type: true, reponduAt: true, reponses: true } },
+      questionnaires: {
+        where: { reponduAt: { not: null } },
+        select: { type: true, reponduAt: true, reponses: true },
+      },
       evaluations: { where: { type: "finale" }, select: { dateEvaluation: true } },
     },
   });
@@ -237,7 +255,10 @@ function convocation(ins: InscriptionLue[]): TraceLue<TraceConvocation> {
   });
 }
 
-async function adaptation(s: SessionALire, ins: InscriptionLue[]): Promise<TraceLue<TraceAdaptation>> {
+async function adaptation(
+  s: SessionALire,
+  ins: InscriptionLue[],
+): Promise<TraceLue<TraceAdaptation>> {
   const circuits = await lireCircuitAdaptation(
     ins.map((i) => ({
       id: i.id,
@@ -254,7 +275,9 @@ async function adaptation(s: SessionALire, ins: InscriptionLue[]): Promise<Trace
   for (const i of ins) {
     const declare = besoinAdaptationDeclare({
       situationHandicap: i.trainee.situationHandicap,
-      reponsesPositionnements: i.questionnaires.filter((q) => q.type === "positionnement").map((q) => q.reponses),
+      reponsesPositionnements: i.questionnaires
+        .filter((q) => q.type === "positionnement")
+        .map((q) => q.reponses),
       besoinAdaptationDeclareAt: i.besoinAdaptationDeclareAt,
     });
     if (!declare) continue;
@@ -265,7 +288,11 @@ async function adaptation(s: SessionALire, ins: InscriptionLue[]): Promise<Trace
       dates.push(h.derniereConsignationLe);
     }
   }
-  return lue<TraceAdaptation>({ besoinsDeclares: besoins, reponsesConsignees: consignees, derniereReponse: max(dates) });
+  return lue<TraceAdaptation>({
+    besoinsDeclares: besoins,
+    reponsesConsignees: consignees,
+    derniereReponse: max(dates),
+  });
 }
 
 function evaluation(ins: InscriptionLue[]): TraceLue<TraceEvaluationAcquis> {
@@ -278,7 +305,9 @@ function evaluation(ins: InscriptionLue[]): TraceLue<TraceEvaluationAcquis> {
 }
 
 function appreciations(ins: InscriptionLue[]): TraceLue<TraceAppreciations> {
-  const chauds = ins.map((i) => i.questionnaires.find((q) => q.type === "satisfaction_chaud")).filter((q) => q !== undefined);
+  const chauds = ins
+    .map((i) => i.questionnaires.find((q) => q.type === "satisfaction_chaud"))
+    .filter((q) => q !== undefined);
   return lue<TraceAppreciations>({
     stagiairesActifs: ins.length,
     chaudRepondus: chauds.length,
@@ -291,11 +320,18 @@ function ressources(ins: InscriptionLue[]): TraceLue<TraceRessources> {
   return lue<TraceRessources>({
     stagiairesActifs: ins.length,
     avecSupportRemis: avec.length,
-    derniereRemise: max(avec.flatMap((i) => i.remises.filter((r) => r.objet.startsWith("support_")).map((r) => r.survenuLe))),
+    derniereRemise: max(
+      avec.flatMap((i) =>
+        i.remises.filter((r) => r.objet.startsWith("support_")).map((r) => r.survenuLe),
+      ),
+    ),
   });
 }
 
-async function emargement(s: SessionALire, maintenant: Date): Promise<TraceLue<TraceEmargementDemiJournee>> {
+async function emargement(
+  s: SessionALire,
+  maintenant: Date,
+): Promise<TraceLue<TraceEmargementDemiJournee>> {
   const suivi = await lireSuiviEmargement(s.id, maintenant);
   // `null` : le lot n'agit pas sur cette session — pas de trace par demi-journée.
   if (suivi === null) return { lecture: "lot_eteint" };
@@ -324,7 +360,11 @@ async function moyens(s: SessionALire): Promise<TraceLue<TraceMoyens>> {
       select: { changes: true },
     }),
     prisma.moyenPedagogique.count({
-      where: { actif: true, dateVerification: null, categorie: { in: [...categoriesPourModalite(s.modalite)] } },
+      where: {
+        actif: true,
+        dateVerification: null,
+        categorie: { in: [...categoriesPourModalite(s.modalite)] },
+      },
     }),
   ]);
   const ok = (lien?.changes as { ok?: unknown } | null | undefined)?.ok;
@@ -337,7 +377,11 @@ async function moyens(s: SessionALire): Promise<TraceLue<TraceMoyens>> {
 
 async function intervenants(s: SessionALire): Promise<TraceLue<TraceIntervenants>> {
   if (s.formateurPrincipalId === null) {
-    return lue<TraceIntervenants>({ formateurDesigne: false, habilitationActive: false, habiliteLe: null });
+    return lue<TraceIntervenants>({
+      formateurDesigne: false,
+      habilitationActive: false,
+      habiliteLe: null,
+    });
   }
   const h = await prisma.trainerHabilitation.findFirst({
     where: { trainerId: s.formateurPrincipalId, formationId: s.formationId, retireAt: null },
@@ -361,7 +405,12 @@ async function sousTraitance(s: SessionALire): Promise<TraceLue<TraceSousTraitan
     where: { id: { in: [...ids] }, statut: "sous_traitant" },
     select: { id: true },
   });
-  if (sts.length === 0) return lue<TraceSousTraitance>({ sousTraitants: 0, controlesConformes: 0, dernierControle: null });
+  if (sts.length === 0)
+    return lue<TraceSousTraitance>({
+      sousTraitants: 0,
+      controlesConformes: 0,
+      dernierControle: null,
+    });
   const verifs = await prisma.verificationRegistreSousTraitance.findMany({
     where: { trainerId: { in: sts.map((t) => t.id) } },
     orderBy: { verifieAt: "desc" },
@@ -400,7 +449,16 @@ export async function chargerTracesVoyants(
     const [i4, i10, i12, i17, i21, i27] = await Promise.all([
       protege(() => lireRecueil(s)),
       base ?? protege(() => adaptation(s, ins)),
-      demarree ? protege(() => emargement(s, maintenant)) : Promise.resolve(lue<TraceEmargementDemiJournee>({ echues: 0, signeesDansLeCreneau: 0, ecarts: 0, aVenir: 1 })),
+      demarree
+        ? protege(() => emargement(s, maintenant))
+        : Promise.resolve(
+            lue<TraceEmargementDemiJournee>({
+              echues: 0,
+              signeesDansLeCreneau: 0,
+              ecarts: 0,
+              aVenir: 1,
+            }),
+          ),
       protege(() => moyens(s)),
       protege(() => intervenants(s)),
       protege(() => sousTraitance(s)),

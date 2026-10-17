@@ -42,11 +42,7 @@ import { manquantsPourClore } from "../sessions/verrou-dossier-pur";
 import { partieARelancer } from "../documents/signature/relance-partie";
 import type { PartieSignataire } from "../documents/signature/document-signature-hash";
 // 🔴 QNC L12 — les voyants d'indicateurs fondés sur une trace réelle (module pur).
-import {
-  construireVoyants,
-  type TracesVoyants,
-  type Voyant,
-} from "./voyants-indicateurs";
+import { construireVoyants, type TracesVoyants, type Voyant } from "./voyants-indicateurs";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // L'état d'entrée — exactement ce que le hub porte déjà
