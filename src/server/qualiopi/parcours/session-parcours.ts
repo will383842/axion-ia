@@ -41,6 +41,12 @@ import {
 import { manquantsPourClore } from "../sessions/verrou-dossier-pur";
 import { partieARelancer } from "../documents/signature/relance-partie";
 import type { PartieSignataire } from "../documents/signature/document-signature-hash";
+// 🔴 QNC L12 — les voyants d'indicateurs fondés sur une trace réelle (module pur).
+import {
+  construireVoyants,
+  type TracesVoyants,
+  type Voyant,
+} from "./voyants-indicateurs";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // L'état d'entrée — exactement ce que le hub porte déjà
@@ -57,7 +63,14 @@ export interface SessionParcoursInput {
     readonly sessionReporteeNumero?: string | null;
     /** Identifiant de la même session de remplacement — pour le lien de la fiche. */
     readonly sessionReporteeId?: string | null;
+    /** Session d'ESSAI (ADR 0061) : tous ses voyants sont « sans objet ». */
+    readonly estTestInterne?: boolean;
   };
+  /**
+   * 🔴 QNC L12 — les traces lues par le chargeur (`charger-traces-voyants.ts`).
+   * Facultatif : sans lui, les quatorze voyants sont « non évalués » — jamais verts.
+   */
+  readonly traces?: TracesVoyants;
   /** Pièces de la session, telles que le hub les charge. */
   readonly documents: ReadonlyArray<{
     readonly id: string;
@@ -273,6 +286,8 @@ export interface Parcours {
    * gestes que plus personne ne doit poser.
    */
   readonly repliee: RepliParcours | null;
+  /** 🔴 QNC L12 — les voyants des indicateurs, un par trace réelle (jamais vert par défaut). */
+  readonly voyants: ReadonlyArray<Voyant>;
 }
 
 /** Le repli d'un statut terminal. */
@@ -398,6 +413,8 @@ export function construireParcours(input: SessionParcoursInput): Parcours {
         remplacement,
         remplacementId: remplacement !== null ? (session.sessionReporteeId ?? null) : null,
       },
+      // Une session annulée ou reportée ne porte plus de voyant.
+      voyants: [],
     };
   }
 
@@ -960,6 +977,12 @@ export function construireParcours(input: SessionParcoursInput): Parcours {
       total: comptees.length,
     },
     repliee: null,
+    voyants: construireVoyants(input.traces, {
+      dateDebut: session.dateDebut,
+      dateFin: session.dateFin,
+      estTestInterne: session.estTestInterne === true,
+      maintenant,
+    }),
   };
 }
 
