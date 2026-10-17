@@ -5,8 +5,12 @@
 
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
-const h = vi.hoisted(() => ({ sessions: vi.fn(), traces: vi.fn() }));
+const h = vi.hoisted(() => ({ sessions: vi.fn(), traces: vi.fn(), etat: vi.fn() }));
 vi.mock("@/lib/prisma", () => ({ prisma: { trainingSession: { findMany: h.sessions } } }));
+vi.mock("../socle/interrupteurs", async (orig) => ({
+  ...(await orig<typeof import("../socle/interrupteurs")>()),
+  lireInterrupteurQualiopi: h.etat,
+}));
 vi.mock("../parcours/charger-traces-voyants", () => ({ chargerTracesVoyants: h.traces }));
 
 import { ALERTE_CATALOGUE } from "./catalogue";
@@ -25,6 +29,7 @@ const lue = <T extends object>(t: T) => ({ lecture: "lue" as const, ...t });
 beforeEach(() => {
   h.sessions.mockReset().mockResolvedValue([session("s1")]);
   h.traces.mockReset();
+  h.etat.mockReset().mockResolvedValue("actif");
 });
 
 describe("regleVoyantsSansTrace", () => {
@@ -119,5 +124,12 @@ describe("regleVoyantsSansTrace", () => {
     const r = await regleVoyantsSansTrace(NOW);
     expect(r).toHaveLength(1);
     expect(r[0]!.cibleId).toBeUndefined();
+  });
+
+  it("interrupteur L12 éteint : aucune alerte, aucune lecture", async () => {
+    h.etat.mockResolvedValue("eteint");
+    expect(await regleVoyantsSansTrace(NOW)).toEqual([]);
+    expect(h.sessions).not.toHaveBeenCalled();
+    expect(h.traces).not.toHaveBeenCalled();
   });
 });

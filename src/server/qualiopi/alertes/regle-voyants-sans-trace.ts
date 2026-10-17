@@ -21,6 +21,7 @@ import { prisma } from "@/lib/prisma";
 import { SESSION_REELLE } from "../essai/perimetre";
 import { chargerTracesVoyants } from "../parcours/charger-traces-voyants";
 import { construireVoyants, type IndicateurAVoyant } from "../parcours/voyants-indicateurs";
+import { estActifPour, lireInterrupteurQualiopi } from "../socle/interrupteurs";
 import type { AlerteCandidate } from "./evaluateur";
 
 const MS_JOUR = 24 * 60 * 60 * 1000;
@@ -50,7 +51,12 @@ export const CODE_VOYANT: Readonly<Record<IndicateurAVoyant, { readonly code: st
   31: { code: "voyant_ind_31_sans_trace" },
 };
 
+/** Interrupteur du lot : `qualiopi.voyants.actif`. Éteint par défaut, comme les autres lots. */
+export const LOT_VOYANTS = "voyants";
+
 export async function regleVoyantsSansTrace(now: Date): Promise<AlerteCandidate[]> {
+  // Éteint : aucune alerte (ni lecture de session). Un lot livré éteint ne parle pas.
+  if (!estActifPour(await lireInterrupteurQualiopi(LOT_VOYANTS), null)) return [];
   const sessions = await prisma.trainingSession.findMany({
     where: {
       ...SESSION_REELLE,

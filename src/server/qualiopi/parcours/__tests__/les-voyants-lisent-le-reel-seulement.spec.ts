@@ -157,7 +157,7 @@ describe("chargerTracesVoyants", () => {
     allumer("pedagogie");
     h.sessions.mockResolvedValue([SESSION]);
     const t = (await chargerTracesVoyants(["s1"], NOW)).get("s1")!;
-    expect(t.i19.lecture).not.toBe("lot_eteint");
+    expect(t.i19?.lecture).not.toBe("lot_eteint");
   });
 
   describe("ind. 23 : seule la veille LÉGALE compte", () => {
