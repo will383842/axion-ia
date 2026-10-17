@@ -12,10 +12,18 @@
 
 import { useState, useTransition } from "react";
 
+import {
+  CLE_AMENAGEMENTS_UTILES,
+  MESSAGE_AMENAGEMENTS_SANS_REPONSE,
+  QuestionAmenagementsUtiles,
+} from "./QuestionAmenagementsUtiles";
+
 type ActionResult<T> = { data: T } | { error: string };
 
 interface SatisfactionPortailFormProps {
   questionnaireId: string;
+  /** Chantier QNC, L04 — poser « les aménagements vous ont-ils été utiles ? ». */
+  questionAmenagements?: boolean;
   soumettreSatisfactionAction: (input: {
     questionnaireId: string;
     reponses: Record<string, unknown>;
@@ -25,9 +33,11 @@ interface SatisfactionPortailFormProps {
 
 export function SatisfactionPortailForm({
   questionnaireId,
+  questionAmenagements = false,
   soumettreSatisfactionAction,
 }: SatisfactionPortailFormProps): React.ReactElement {
   const [note, setNote] = useState<number | null>(null);
+  const [amenagementsUtiles, setAmenagementsUtiles] = useState<boolean | null>(null);
   const [commentaire, setCommentaire] = useState("");
   const [isPending, startTransition] = useTransition();
   const [error, setError] = useState<string | null>(null);
@@ -36,11 +46,20 @@ export function SatisfactionPortailForm({
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setError(null);
+    if (questionAmenagements && amenagementsUtiles === null) {
+      setError(MESSAGE_AMENAGEMENTS_SANS_REPONSE);
+      return;
+    }
 
     startTransition(async () => {
       const result = await soumettreSatisfactionAction({
         questionnaireId: questionnaireId,
-        reponses: commentaire.trim() ? { commentaire: commentaire.trim() } : {},
+        reponses: {
+          ...(commentaire.trim() ? { commentaire: commentaire.trim() } : {}),
+          ...(questionAmenagements && amenagementsUtiles !== null
+            ? { [CLE_AMENAGEMENTS_UTILES]: amenagementsUtiles }
+            : {}),
+        },
         ...(note !== null ? { noteGlobale: note } : {}),
       });
 
@@ -83,6 +102,15 @@ export function SatisfactionPortailForm({
           ))}
         </div>
       </div>
+
+      {questionAmenagements && (
+        <QuestionAmenagementsUtiles
+          questionnaireId={questionnaireId}
+          valeur={amenagementsUtiles}
+          onChange={setAmenagementsUtiles}
+          desactive={isPending}
+        />
+      )}
 
       {/* Commentaire */}
       <div>

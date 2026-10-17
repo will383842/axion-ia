@@ -28,6 +28,11 @@ import { retenirPiecesParSessionEtType } from "./pieces-par-formation";
 import { pieceEstRemise } from "./piece-remise";
 import { besoinAdaptationDeclare } from "@/server/qualiopi/adaptation/reponse-organisme";
 import { colonneDeclarationDisponible } from "@/server/qualiopi/adaptation/colonne-declaration";
+import {
+  adaptationAutomatiquePourInscription,
+  etatAdaptation,
+} from "@/server/qualiopi/adaptation/automatique/portee";
+import { questionUtiliteApplicable } from "@/server/qualiopi/adaptation/automatique/utilite-question";
 
 /**
  * Les pièces COLLECTIVES : elles décrivent l'ACTION, pas une personne. Tout
@@ -136,6 +141,14 @@ export interface QuestionnaireResume {
    * et ce qui rend la progression mesurable face à l'évaluation finale.
    */
   objectifs: string[];
+  /**
+   * Chantier QNC, L04 — positionnement : la déclaration de besoin est
+   * STRUCTURÉE (types, mesures proposées, consentement). Le serveur le revérifie
+   * à la soumission : ce drapeau ne décide que de l'affichage.
+   */
+  adaptationAutomatique?: boolean;
+  /** Chantier QNC, L04 — satisfaction à chaud : poser « les aménagements vous ont-ils été utiles ? ». */
+  questionAmenagements?: boolean;
 }
 
 /** Espace stagiaire complet retourné par getEspaceStagiaire. */
@@ -486,6 +499,9 @@ export async function getEspaceStagiaire(traineeId: string): Promise<EspaceStagi
       handicapDetailsChiffre: true,
       enrollments: {
         select: {
+          // Chantier QNC, L04 — portée de l'adaptation automatique.
+          id: true,
+          adaptationsRealisees: true,
           statut: true,
           // Ind. 10, troisième source : un aménagement déclaré sans handicap
           // depuis « mon compte ». C'est ce qui empêche l'écran de RE-proposer
@@ -624,9 +640,27 @@ export async function getEspaceStagiaire(traineeId: string): Promise<EspaceStagi
   // On repart de l'inscription (et non des seuls questionnaires) pour rattacher a
   // chacun le titre de sa session et les objectifs de sa formation — necessaires au
   // questionnaire de POSITIONNEMENT (off.8).
+  // Chantier QNC, L04 — une lecture de l'interrupteur ; en `essai`, la portée
+  // se décide par inscription (banc d'essai), éteint rien de neuf n'est lu.
+  const etatAdaptationAuto = await etatAdaptation();
+  const adaptationAutoParInscription = new Map<string, boolean>();
+  for (const e of trainee.enrollments) {
+    adaptationAutoParInscription.set(
+      e.id,
+      await adaptationAutomatiquePourInscription(e.id, etatAdaptationAuto),
+    );
+  }
+
   const questionnaires: QuestionnaireResume[] = trainee.enrollments.flatMap((e) => {
     const objectifs = normaliserObjectifs(e.session?.formation?.objectifsPedagogiques);
+    const adaptationAuto = adaptationAutoParInscription.get(e.id) === true;
     return e.questionnaires.map((q) => ({
+      ...(adaptationAuto && q.type === "positionnement" ? { adaptationAutomatique: true } : {}),
+      ...(adaptationAuto &&
+      q.type === "satisfaction_chaud" &&
+      questionUtiliteApplicable(e.adaptationsRealisees)
+        ? { questionAmenagements: true }
+        : {}),
       type: q.type,
       // 🔴 `D4-5-S1` — c'était `token`. Le portail transportait le jeton porteur
       // de chaque questionnaire jusqu'au navigateur, alors qu'il authentifie

@@ -15,6 +15,11 @@ interface Payload {
   modalite: string;
   numeroSession: string;
   lienPortail?: string;
+  /**
+   * Chantier QNC, L04 — les aménagements prévus pour CE stagiaire (les mesures
+   * seules, jamais le besoin). Absent : aucune consigne.
+   */
+  amenagements?: string[];
 }
 
 const COPY = {
@@ -72,6 +77,12 @@ export function QualiopiConvocationEmail({
       </Text>
       <Text style={emailStyles.paragraphStyle}>{t.kit}</Text>
       <Text style={emailStyles.paragraphStyle}>{t.emargement}</Text>
+      {Array.isArray(p.amenagements) && p.amenagements.length > 0 ? (
+        <Text style={emailStyles.paragraphStyle}>
+          {locale === "fr" ? "Aménagements prévus pour vous : " : "Adjustments planned for you: "}
+          {p.amenagements.join(" ; ")}.
+        </Text>
+      ) : null}
       <Text style={{ ...emailStyles.paragraphStyle, color: emailStyles.COLORS.textMuted }}>
         {t.refRow(p.numeroSession)}
       </Text>

@@ -20,6 +20,11 @@ import {
   synchroniserAlertes,
 } from "@/server/qualiopi/alertes/alertes-service";
 import { requireAdminWrite, logQualiopiActivity } from "@/server/actions/qualiopi/_guards";
+import { prisma } from "@/lib/prisma";
+import {
+  CODES_FERMES_PAR_REPONSE_ECRITE,
+  MESSAGE_RESOLUTION_REFUSEE,
+} from "@/server/qualiopi/adaptation/automatique/alertes-adaptation";
 
 type ActionResult<T> = { data: T } | { error: string };
 
@@ -46,6 +51,13 @@ export async function resoudreAlerteAction(input: {
   const parsed = idSchema.safeParse(input);
   if (!parsed.success) return { error: "Données invalides" };
   const { id } = parsed.data;
+
+  // Chantier QNC, L04 — certaines alertes ne se ferment que par la réponse
+  // écrite qu'elles réclament, jamais par un clic.
+  const cible = await prisma.alerteSysteme.findUnique({ where: { id }, select: { code: true } });
+  if (cible !== null && CODES_FERMES_PAR_REPONSE_ECRITE.includes(cible.code)) {
+    return { error: MESSAGE_RESOLUTION_REFUSEE };
+  }
 
   const alerte = await resoudreAlerte(id);
   if (!alerte) return { error: "Alerte introuvable ou déjà résolue" };

@@ -76,6 +76,18 @@ import {
   QualiopiEnqueteEntrepriseEmail,
   qualiopiEnqueteEntrepriseSubject,
 } from "./qualiopi-enquete-entreprise";
+import {
+  QualiopiListeStagiairesEmail,
+  qualiopiListeStagiairesSubject,
+} from "./qualiopi-liste-stagiaires";
+import {
+  QualiopiAdaptationStagiaireEmail,
+  qualiopiAdaptationStagiaireSubject,
+} from "./qualiopi-adaptation-stagiaire";
+import {
+  QualiopiAdaptationFormateurEmail,
+  qualiopiAdaptationFormateurSubject,
+} from "./qualiopi-adaptation-formateur";
 import { QualiopiPortailAccesEmail, qualiopiPortailAccesSubject } from "./qualiopi-portail-acces";
 import {
   QualiopiEmargementLienEmail,
@@ -392,6 +404,19 @@ const TEMPLATES: TemplateMap = {
   "qualiopi-enquete-entreprise": {
     subject: qualiopiEnqueteEntrepriseSubject,
     component: QualiopiEnqueteEntrepriseEmail,
+  },
+  // Chantier QNC, L04.
+  "qualiopi-liste-stagiaires": {
+    subject: qualiopiListeStagiairesSubject,
+    component: QualiopiListeStagiairesEmail,
+  },
+  "qualiopi-adaptation-stagiaire": {
+    subject: qualiopiAdaptationStagiaireSubject,
+    component: QualiopiAdaptationStagiaireEmail,
+  },
+  "qualiopi-adaptation-formateur": {
+    subject: qualiopiAdaptationFormateurSubject,
+    component: QualiopiAdaptationFormateurEmail,
   },
   "qualiopi-attestation-disponible": {
     subject: qualiopiAttestationDisponibleSubject,
