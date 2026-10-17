@@ -24,7 +24,7 @@ export async function declencherRecueilALaCreation(
     if (r.etat === "refuse") {
       // Pas une panne : le dossier n'est pas prêt (projet, adresse). L'écran de la
       // session le dit et le geste manuel reste ouvert.
-      console.log(`[recueil] session ${sessionId} : ${r.message}`);
+      console.warn(`[recueil] session ${sessionId} : ${r.message}`);
     }
   } catch (err) {
     Sentry.captureException(err, { tags: { module: "qualiopi-recueil", etape: "creation" } });

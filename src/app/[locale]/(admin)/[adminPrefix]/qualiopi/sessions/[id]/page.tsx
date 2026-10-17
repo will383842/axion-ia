@@ -21,6 +21,7 @@ import Link from "next/link";
 import { Fragment, type ReactNode } from "react";
 import { notFound } from "next/navigation";
 
+import { RecueilBesoinSession } from "@/components/admin/qualiopi/RecueilBesoinSession";
 import { PreparationKitSession } from "@/components/admin/qualiopi/PreparationKitSession";
 import { lirePreparation } from "@/server/qualiopi/kit-session/preparation";
 import { genererSortiesAction, validerSortiesAction } from "@/server/actions/qualiopi/kit-session";
@@ -982,6 +983,9 @@ export default async function SessionHubPage({ params, searchParams }: PageProps
             conflits={conflitsFormateur}
           />
         </section>
+        {/* QNC L03 — recueil du besoin (temps 1) : rien tant que `qualiopi.recueil.actif`
+              est éteint pour cette session. */}
+        <RecueilBesoinSession sessionId={id} />
       </>
     ),
     checklist: (
