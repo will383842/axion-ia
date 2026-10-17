@@ -314,7 +314,8 @@ describe("les portes passent la mission en jeu", () => {
       /controlerVigilanceLettre|controlerGardeMission/,
     );
     expect(lire("src/server/qualiopi/formateurs-independants/moteur-mission.ts")).toMatch(
-      /garde\.refus\.filter\(\(r\) => !MANQUES_VIGILANCE\.has\(r\)\)/,
+      // Qualiopi ind. 21 : le suivi qualité, lui aussi, ne refuse que les NOUVELLES missions.
+      /garde\.refus\.filter\(\s*\(r\) => !MANQUES_VIGILANCE\.has\(r\) && !MANQUES_SUIVI_QUALITE_SET\.has\(r\),?\s*\)/,
     );
     const service = lire("src/server/qualiopi/trainers/mission-formateur.ts");
     expect(

@@ -40,6 +40,7 @@ import {
 } from "./interrupteurs";
 import { lireEngagementHtCents, type MissionEnJeu } from "./montant-mission-lecture";
 import { lireCumulHonorairesHtCents } from "./vigilance-seuil-lecture";
+import { manquesDuSuiviQualite } from "./suivi-qualite/garde";
 
 export type { MissionEnJeu } from "./montant-mission-lecture";
 
@@ -213,13 +214,20 @@ async function controlerPortes(
         ? null
         : await lireManqueHabilitationMission(trainerId, t.statut, enJeu ?? habilitationSur);
     const issue = appliquerGarde(mode, verdict);
-    if (manqueHabilitation === null) return { mode, ...issue };
+    // Qualiopi ind. 21 — le suivi qualité REFUSE, même en « avertir » (l'ancien stock
+    // n'est pas dispensé d'observation ni de réévaluation). Éteint : aucun manque.
+    const suivi = await manquesDuSuiviQualite(trainerId, maintenant, enJeu);
+    if (manqueHabilitation === null) {
+      return suivi.length === 0
+        ? { mode, ...issue }
+        : { mode, ...issue, refus: [...issue.refus, ...suivi] };
+    }
     // 🔴 Comme la suspension au registre : jamais en simple avertissement, même en mode
     // « avertir » (ancien stock). L'habilitation est une décision, pas une pièce du stock ;
     // les autres manques gardent leur mode.
     return {
       mode: "refuser",
-      refus: [manqueHabilitation, ...issue.refus],
+      refus: [manqueHabilitation, ...issue.refus, ...suivi],
       avertissements: issue.avertissements,
     };
   } catch {
