@@ -206,15 +206,15 @@ export default async function PricingPage({ params }: Props) {
     eyebrow: isFr ? "Montée en compétence" : "Upskilling",
     title: isFr ? "Formations IA en entreprise" : "Corporate AI trainings",
     description: isFr
-      ? `${formationsCount} formations, de 4 h à 2 jours — offres générales, par métier et par secteur d'activité. Intra-entreprise, dans vos locaux ou à distance, ${EFFECTIF_PLAGE_FR}.`
-      : `${formationsCount} trainings, 4 h to 2 days — general, role-specific and industry-specific. In-house, on site or remote, ${EFFECTIF_PLAGE_EN}.`,
+      ? `${formationsCount} formations, de 4 h à 2 jours — offres générales, par métier et par secteur d'activité. Intra-entreprise, dans vos locaux ou à distance, ${EFFECTIF_PLAGE_FR} (séminaire : 50).`
+      : `${formationsCount} trainings, 4 h to 2 days — general, role-specific and industry-specific. In-house, on site or remote, ${EFFECTIF_PLAGE_EN} (seminar: 50).`,
     // `formatAmount` non-compact porte déjà « € HT » — ne pas resuffixer.
     quoteLabel: isFr
       ? `De ${formatAmount(formationsRange.minEur, "fr")} à ${formatAmount(formationsRange.maxEur, "fr")} · par groupe`
       : `From ${formatAmount(formationsRange.minEur, "en")} to ${formatAmount(formationsRange.maxEur, "en")} · per group`,
     detail: isFr
-      ? `Prix publics hors taxes, par groupe (${EFFECTIF_PLAGE_FR}) — jamais par personne. La grille complète (générales, métiers, secteurs) et les conditions de paiement et d'annulation sont sur la page tarifs formations ; le séminaire est sur devis.`
-      : `Public prices excl. VAT, per group (${EFFECTIF_PLAGE_EN}) — never per person. The full grid (general, roles, industries) and the payment and cancellation terms are on the training pricing page; the seminar is on quote.`,
+      ? `Prix publics hors taxes, par groupe (${EFFECTIF_PLAGE_FR}) — jamais par personne. La grille complète (générales, métiers, secteurs) et les conditions de paiement et d'annulation sont sur la page tarifs formations ; le séminaire (jusqu'à 50 personnes) est sur devis.`
+      : `Public prices excl. VAT, per group (${EFFECTIF_PLAGE_EN}) — never per person. The full grid (general, roles, industries) and the payment and cancellation terms are on the training pricing page; the seminar (up to 50 people) is on quote.`,
     ctaLabel: isFr
       ? `Voir les ${formationsCount} formations`
       : `See the ${formationsCount} trainings`,
@@ -252,7 +252,7 @@ export default async function PricingPage({ params }: Props) {
         {
           id: "prix-formation-ia",
           question: "Combien coûte une formation IA en entreprise ?",
-          answer: `Nos prix formations sont publics, hors taxes, par groupe (${EFFECTIF_PLAGE_FR}) — jamais par personne : de ${formatAmount(getFormationCatalogPriceRange().minEur, "fr")} (offre générale 4 h) à ${formatAmount(getFormationCatalogPriceRange().maxEur, "fr")} (formation sectorielle 2 jours). La grille complète par catégorie, avec les conditions de paiement et d'annulation, est sur la page tarifs formations ; le séminaire est sur devis.`,
+          answer: `Nos prix formations sont publics, hors taxes, par groupe (${EFFECTIF_PLAGE_FR}) — jamais par personne : de ${formatAmount(getFormationCatalogPriceRange().minEur, "fr")} (offre générale 4 h) à ${formatAmount(getFormationCatalogPriceRange().maxEur, "fr")} (formation sectorielle 2 jours). La grille complète par catégorie, avec les conditions de paiement et d'annulation, est sur la page tarifs formations ; le séminaire (jusqu'à 50 personnes) est sur devis.`,
         },
         {
           id: "tarifs-publics",
@@ -283,7 +283,7 @@ export default async function PricingPage({ params }: Props) {
         {
           id: "prix-formation-ia",
           question: "How much does corporate AI training cost?",
-          answer: `Our training prices are public, excl. VAT, per group (${EFFECTIF_PLAGE_EN}) — never per person: from ${formatAmount(getFormationCatalogPriceRange().minEur, "en")} (general 4 h offer) to ${formatAmount(getFormationCatalogPriceRange().maxEur, "en")} (2-day industry training). The full grid, with the payment and cancellation terms, is on the training pricing page; the seminar is on quote.`,
+          answer: `Our training prices are public, excl. VAT, per group (${EFFECTIF_PLAGE_EN}) — never per person: from ${formatAmount(getFormationCatalogPriceRange().minEur, "en")} (general 4 h offer) to ${formatAmount(getFormationCatalogPriceRange().maxEur, "en")} (2-day industry training). The full grid, with the payment and cancellation terms, is on the training pricing page; the seminar (up to 50 people) is on quote.`,
         },
         {
           id: "tarifs-publics",

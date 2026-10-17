@@ -3,15 +3,17 @@
  *
  * 🔴 Le défaut : l'auditeur compare le site public, la fiche formation, le
  * programme remis et la convention. Chacun disait un effectif, un délai, un
- * format ou une modalité différents (jusqu'à 50 / jusqu'à 15 / de 2 à 15 ;
- * « dès 48 heures » ; « Sur mesure · 3 jours » ; un séminaire « présentiel
- * uniquement » ; une base qui écrivait « presentiel » en dur pour toutes les
- * formations). Décisions de Will du 2026-10-16, chacune lue ici depuis UNE
+ * format ou une modalité différents (jusqu'à 15 / de 2 à 15 ; « dès 48 heures » ;
+ * « Sur mesure · 3 jours » ; une base qui écrivait « presentiel » en dur pour
+ * toutes les formations). Le SÉMINAIRE garde son propre effectif (« jusqu'à 50
+ * participants, en tables de 6 à 8 ») et sa modalité d'avant la PR (présentiel)
+ * tant que Will n'a pas tranché. Décisions de Will du 2026-10-16, chacune lue ici depuis UNE
  * source et verrouillée :
  *
- *   effectif        → `effectif.ts`               (de 2 à 15 stagiaires par session)
- *   délai d'accès   → `delai-acces.ts`            (environ 2 semaines) — garde dédiée :
- *                                                  `delai-acces-une-seule-regle.spec.tsx`
+ *   effectif        → `effectif.ts`               (de 2 à 15 stagiaires par session ;
+ *                                                  séminaire : `EFFECTIF_SEMINAIRE_*`, 50)
+ *   délai d'accès   → NON réglé ici : règle unique de `main` (L15), `delai-acces.ts`,
+ *                                                  garde `delai-acces-une-seule-regle.spec.tsx`
  *   « 3 jours »     → `catalog-v2-meta.ts`        (mis de côté, jamais supprimé)
  *   modalité        → catalogue ET base           (présentiel ou distanciel ; hybride en base)
  *   tarif           → `conditions-tarifaires.ts`  (les conditions réelles, plus de slogan)
@@ -37,10 +39,11 @@ import {
   SLOGANS_TARIFAIRES_RETIRES,
 } from "@/content/formations/conditions-tarifaires";
 import {
-  EFFECTIF_FORMES_RETIREES,
   EFFECTIF_MAX,
   EFFECTIF_MIN,
   EFFECTIF_PLAGE_FR,
+  EFFECTIF_SEMINAIRE_FR,
+  EFFECTIF_SEMINAIRE_MAX,
   EFFECTIF_VALEUR_FR,
 } from "@/content/formations/effectif";
 import { VISIO_FORMATIONS_A_DISTANCE } from "@/content/formations/materiel";
@@ -83,20 +86,38 @@ describe("L16 — effectif : de 2 à 15 stagiaires par session, partout", () => 
     expect(EFFECTIF_PLAGE_FR).toBe("de 2 à 15 stagiaires par session");
   });
 
-  it("aucune formation du catalogue — séminaire compris — ne surcharge l'effectif", () => {
-    for (const f of FORMATIONS_V2) {
+  it("les formations (seminaire !== true) ne surchargent pas l'effectif", () => {
+    const formations = FORMATIONS_V2.filter((f) => f.seminaire !== true);
+    expect(formations.length).toBeGreaterThan(0);
+    for (const f of formations) {
       expect(f.effectifFr, f.slugFr).toBeUndefined();
       expect(getFormationEffectif(f), f.slugFr).toBe(EFFECTIF_VALEUR_FR);
     }
   });
 
-  it("aucune ligne de code du contenu public ne porte « jusqu'à 50 »", () => {
+  it("le séminaire garde son effectif propre : jusqu'à 50, en tables de 6 à 8", () => {
+    const seminaires = FORMATIONS_V2.filter((f) => f.seminaire === true);
+    expect(seminaires.length).toBeGreaterThan(0);
+    expect(EFFECTIF_SEMINAIRE_FR).toBe("Jusqu’à 50 participants, en tables de 6 à 8");
+    for (const f of seminaires) {
+      expect(f.effectifFr, f.slugFr).toBe(EFFECTIF_SEMINAIRE_FR);
+      expect(getFormationEffectif(f), f.slugFr).toBe(EFFECTIF_SEMINAIRE_FR);
+    }
+  });
+
+  it("le contenu public ne dit qu'un seul plafond hors formations : 50, celui du séminaire", () => {
+    // « jusqu'à N participants/personnes » : N vaut 15 (formations) ou le plafond du séminaire.
+    const re =
+      /(?:jusqu['’]à|up to)\s+(\d+)\s+(?:participants|personnes|pers\b|stagiaires|people|trainees)/gi;
     const fautes: string[] = [];
     for (const dir of SURFACES_PUBLIQUES) {
       for (const f of fichiers(dir)) {
         for (const l of lignesDeCode(readFileSync(f, "utf8"))) {
-          if (EFFECTIF_FORMES_RETIREES.some((re) => re.test(l))) {
-            fautes.push(`${path.relative(RACINE, f)} : ${l.trim().slice(0, 120)}`);
+          for (const m of l.matchAll(re)) {
+            const n = Number(m[1]);
+            if (n !== EFFECTIF_MAX && n !== EFFECTIF_SEMINAIRE_MAX) {
+              fautes.push(`${path.relative(RACINE, f)} : ${l.trim().slice(0, 120)}`);
+            }
           }
         }
       }
@@ -104,17 +125,10 @@ describe("L16 — effectif : de 2 à 15 stagiaires par session, partout", () => 
     expect(fautes).toEqual([]);
   });
 
-  it("la garde reconnaît bien l'ancien effectif (témoin)", () => {
-    for (const t of [
-      "Jusqu’à 50 participants, en tables de 6 à 8",
-      "séminaire (jusqu'à 50 personnes)",
-      "up to 50 people",
-    ]) {
-      expect(
-        EFFECTIF_FORMES_RETIREES.some((re) => re.test(t)),
-        t,
-      ).toBe(true);
-    }
+  it("la garde sait distinguer un plafond étranger du plafond du séminaire (témoin)", () => {
+    const re = /(?:jusqu['’]à|up to)\s+(\d+)\s+(?:participants|personnes|people)/i;
+    expect(Number(re.exec("jusqu'à 30 participants")?.[1])).toBe(30);
+    expect(Number(re.exec("jusqu’à 50 personnes")?.[1])).toBe(EFFECTIF_SEMINAIRE_MAX);
   });
 });
 
@@ -141,10 +155,18 @@ describe("L16 — « Sur mesure · 3 jours » : mis de côté, pas supprimé", (
 
 describe("L16 — modalité : toutes les formations en présentiel OU distanciel, au catalogue ET en base", () => {
   it("catalogue : chaque formation (4 h, 7 h, 14 h) se suit sur place ou à distance", () => {
-    for (const f of FORMATIONS_V2) {
+    // Le séminaire est HORS de cette règle : sa modalité reste celle d'avant la PR
+    // (présentiel) tant que Will n'a pas tranché.
+    for (const f of FORMATIONS_V2.filter((x) => x.seminaire !== true)) {
       const m = getFormationModalites(f);
       expect(m, f.slugFr).toContain("presentiel");
       expect(m, f.slugFr).toContain("distanciel");
+    }
+  });
+
+  it("le séminaire reste en présentiel (modalité d'origine, décision de Will en attente)", () => {
+    for (const f of FORMATIONS_V2.filter((x) => x.seminaire === true)) {
+      expect(getFormationModalites(f), f.slugFr).toEqual(["presentiel"]);
     }
   });
 

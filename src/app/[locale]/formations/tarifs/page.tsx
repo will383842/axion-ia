@@ -180,18 +180,18 @@ export default async function TarifsPage({ params }: { params: Promise<{ locale:
               </div>
             ))}
 
-            {/* Séminaire — à part, sur devis (même effectif que les autres formations). */}
+            {/* Séminaire — à part, sur devis (jusqu'à 50 participants). */}
             {seminaire ? (
               <div className="border-primary/40 bg-paper rounded-2xl border border-dashed p-6 sm:flex sm:items-center sm:justify-between sm:gap-6">
                 <div>
                   <p className="text-fg text-lg font-semibold">
                     {seminaire.titreFr}{" "}
                     <span className="text-fg-muted font-normal">
-                      · 1 journée · {EFFECTIF_PLAGE_FR}
+                      · 1 journée · jusqu’à 50 participants
                     </span>
                   </p>
                   <p className="text-fg-soft mt-1 text-[15px] leading-relaxed">
-                    Réunir plusieurs services le même jour — en présentiel ou à distance, sur devis.
+                    Réunir toute l’entreprise le même jour — présentiel uniquement, sur devis.
                   </p>
                 </div>
                 <div className="mt-4 shrink-0 sm:mt-0">

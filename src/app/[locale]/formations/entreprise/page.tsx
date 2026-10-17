@@ -437,8 +437,8 @@ export default async function FormationsEntreprise({ params }: Props) {
         ? "Combien coûte une formation IA en entreprise ?"
         : "How much does a corporate AI training cost?",
       answer: isFr
-        ? `Nos prix sont publics et forfaitaires par groupe (2 à 15 participants), jamais par personne : de ${formatAmount(getFormationCatalogPriceRange().minEur, "fr")} (offre générale 4 h) à ${formatAmount(getFormationCatalogPriceRange().maxEur, "fr")} (formation sectorielle 2 jours). Plus le groupe est nombreux, plus le coût par participant baisse. La grille complète est sur la page tarifs ; le séminaire est sur devis.`
-        : "Our prices are public and set per group (2-15 participants), never per person. The larger the group, the lower the cost per participant. The full grid is on the pricing page; the company seminar is on quote.",
+        ? `Nos prix sont publics et forfaitaires par groupe (2 à 15 participants), jamais par personne : de ${formatAmount(getFormationCatalogPriceRange().minEur, "fr")} (offre générale 4 h) à ${formatAmount(getFormationCatalogPriceRange().maxEur, "fr")} (formation sectorielle 2 jours). Plus le groupe est nombreux, plus le coût par participant baisse. La grille complète est sur la page tarifs ; le séminaire (jusqu'à 50 personnes) est sur devis.`
+        : "Our prices are public and set per group (2-15 participants), never per person. The larger the group, the lower the cost per participant. The full grid is on the pricing page; the company seminar (up to 50 people) is on quote.",
     },
     ...(ofPublic
       ? [

@@ -2434,7 +2434,7 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
         {
           title: "Former tout le monde d'un coup n'est pas la meilleure entrée",
           detail:
-            "Un premier groupe qui pratique vraiment vaut mieux qu'une plénière suivie de rien. Si l'objectif est justement de réunir plusieurs services le même jour, le format séminaire s'y prête, dans la même limite de 2 à 15 stagiaires par session.",
+            "Un premier groupe qui pratique vraiment vaut mieux qu'une plénière suivie de rien. Si l'objectif est justement de réunir toute l'entreprise le même jour, le format séminaire monte jusqu'à 50 participants.",
         },
         {
           title: "Ce n'est pas la même chose qu'un accompagnement individuel",
@@ -4207,7 +4207,7 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
         {
           title: "Ce n'est pas réservé aux petites équipes",
           detail:
-            "De 2 à 15 stagiaires par session au même tarif, fixé par groupe. Pour réunir plusieurs services le même jour, c'est le séminaire qui prend le relais.",
+            "De 2 à 15 stagiaires par session au même tarif, fixé par groupe. Pour réunir toute l'entreprise le même jour, jusqu'à 50 personnes, c'est le séminaire qui prend le relais.",
         },
       ],
     },
@@ -4228,13 +4228,13 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
     fr: {
       question: "Existe-t-il une formation IA pour dirigeants et managers ?",
       answer:
-        "Oui, sous deux formes qu'il vaut mieux ne pas confondre. Pour le dirigeant lui-même, le format le plus direct est la journée 1-to-1 : 7 à 8 heures en tête-à-tête avec un intervenant senior, sur son poste réel et ses propres dossiers — préparation de réunions, analyse, rédaction, veille — avec un état des lieux de son poste et un plan d'action chiffré à la clé.\n\nPour une équipe de direction ou une ligne managériale, ce sont les interventions collectives : une journée en intra, en groupe de 2 à 15 personnes, sur site ou à distance, avec les mêmes fondamentaux que pour les autres équipes — formuler une demande structurée, choisir le bon assistant, vérifier avant de diffuser, protéger les données — appliqués cette fois aux tâches d'un manager.\n\nDans les deux cas, l'objectif est double : gagner du temps personnellement, et savoir cadrer puis piloter la démarche IA de ses équipes sans être un expert technique. Pour réunir plusieurs services le même jour, c'est le format séminaire qui prend le relais, dans la même limite de 2 à 15 stagiaires par session.",
+        "Oui, sous deux formes qu'il vaut mieux ne pas confondre. Pour le dirigeant lui-même, le format le plus direct est la journée 1-to-1 : 7 à 8 heures en tête-à-tête avec un intervenant senior, sur son poste réel et ses propres dossiers — préparation de réunions, analyse, rédaction, veille — avec un état des lieux de son poste et un plan d'action chiffré à la clé.\n\nPour une équipe de direction ou une ligne managériale, ce sont les interventions collectives : une journée en intra, en groupe de 2 à 15 personnes, sur site ou à distance, avec les mêmes fondamentaux que pour les autres équipes — formuler une demande structurée, choisir le bon assistant, vérifier avant de diffuser, protéger les données — appliqués cette fois aux tâches d'un manager.\n\nDans les deux cas, l'objectif est double : gagner du temps personnellement, et savoir cadrer puis piloter la démarche IA de ses équipes sans être un expert technique. Pour réunir toute l'entreprise le même jour, jusqu'à 50 participants, c'est le format séminaire qui prend le relais.",
       keyPoints: [
         "Deux formats : la journée 1-to-1 pour le dirigeant, l'intervention collective pour l'équipe de direction",
         "1-to-1 : 7 à 8 heures en tête-à-tête, sur ses propres dossiers",
         "Collectif : une journée en intra, 2 à 15 personnes, sur site ou à distance",
         "Objectif double : gagner du temps et savoir piloter la démarche IA de ses équipes",
-        "Séminaire d'une journée pour réunir plusieurs services, de 2 à 15 stagiaires par session",
+        "Séminaire jusqu'à 50 participants pour réunir toute l'entreprise le même jour",
       ],
       facts: [
         { figure: "7-8 h", label: "en tête-à-tête (1-to-1)" },

@@ -12,8 +12,14 @@ import { buildFormationImportData } from "./catalog-import";
 
 describe("L16 — ce que l'import écrit en base", () => {
   it("chaque formation est écrite « hybride » (présentiel ou distanciel), jamais « presentiel » en dur", () => {
-    for (const f of FORMATIONS_V2) {
+    // Le séminaire reste en présentiel (modalité d'origine, décision de Will en attente).
+    for (const f of FORMATIONS_V2.filter((x) => x.seminaire !== true)) {
       expect(buildFormationImportData(f, "offre-x").modalite, f.slugFr).toBe("hybride");
+    }
+    for (const f of FORMATIONS_V2.filter((x) => x.seminaire === true)) {
+      const d = buildFormationImportData(f, "offre-x");
+      expect(d.modalite, f.slugFr).toBe("presentiel");
+      expect(d.moyensTechniques, f.slugFr).not.toMatch(/distanciel|Zoom/i);
     }
   });
 

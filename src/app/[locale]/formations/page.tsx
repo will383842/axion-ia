@@ -41,6 +41,7 @@ import { FORMATION_CATEGORIES_META, formationDureeIso } from "@/content/formatio
 import { SERVICE_BY_ID, serviceOfficial } from "@/content/services";
 import {
   FORMATION_DUREE_FACTS,
+  getFormationCourseModes,
   getFormationImage,
   getFormationImageCredit,
 } from "@/content/formations/catalog-v2-facts";
@@ -280,7 +281,7 @@ export default async function FormationsHub({ params }: Props) {
       path: `/formations/${f.slugFr}`,
       name: f.titreFr,
       description: f.metaDescriptionFr,
-      courseMode: ["Onsite"],
+      courseMode: [...getFormationCourseModes(f)],
       duration: formationDureeIso(f.duree),
       audienceType: isFr
         ? "Décideurs, managers, équipes opérationnelles PME ETI grands groupes (B2B)"
@@ -1031,7 +1032,7 @@ export default async function FormationsHub({ params }: Props) {
 
       {/* SÉMINAIRE — À PART (décision Will 2026-07-19) : conservé hors des
           catégories du catalogue, rubrique dédiée. Fiche et offre inchangées
-          (seminaire-ia-toute-l-entreprise-1j, même effectif que les autres formations). */}
+          (seminaire-ia-toute-l-entreprise-1j, jusqu'à 50 participants). */}
       {seminaire ? (
         <Section
           eyebrow={isFr ? "Et pour toute l'entreprise ?" : "For the whole company?"}
@@ -1073,12 +1074,10 @@ export default async function FormationsHub({ params }: Props) {
                 <div className="flex flex-wrap items-center gap-2">
                   <span className="bg-primary-soft text-primary inline-flex items-center gap-2 rounded-full px-3 py-1.5 text-[12px] font-semibold">
                     <Users aria-hidden="true" className="h-3.5 w-3.5" />
-                    {isFr ? EFFECTIF_PLAGE_FR : EFFECTIF_PLAGE_EN}
+                    {isFr ? "Jusqu'à 50 participants" : "Up to 50 participants"}
                   </span>
                   <span className="bg-primary-soft text-primary inline-flex items-center rounded-full px-3 py-1.5 text-[12px] font-semibold">
-                    {isFr
-                      ? "1 journée · présentiel ou distanciel · sur devis"
-                      : "1 day · on site or remote · on quote"}
+                    {isFr ? "1 journée · présentiel · sur devis" : "1 day · on site · on quote"}
                   </span>
                 </div>
                 <h3 className="text-fg text-2xl leading-tight font-semibold tracking-tight">
@@ -1087,8 +1086,8 @@ export default async function FormationsHub({ params }: Props) {
                 <p className="text-fg-soft text-[15px] leading-relaxed">{seminaire.accrocheFr}</p>
                 <p className="text-fg-soft text-[14px] leading-relaxed">
                   {isFr
-                    ? "Distinct des formations métier et secteur : une journée pour poser un socle commun, cartographier les usages réels de l'entreprise et repartir avec des règles et des engagements par service."
-                    : "Distinct from the role and industry trainings: one day to build a common base, map real usage across the company and leave with rules and commitments per department."}
+                    ? "Distinct des formations en groupe de 15 : une journée pour poser un socle commun, cartographier les usages réels de l'entreprise et repartir avec des règles et des engagements par service."
+                    : "Distinct from the 15-person trainings: one day to build a common base, map real usage across the company and leave with rules and commitments per department."}
                 </p>
                 <div className="pt-2">
                   <Link
@@ -1220,8 +1219,8 @@ export default async function FormationsHub({ params }: Props) {
                 },
                 {
                   number: isFr ? "2 à 15" : "2 to 15",
-                  labelFr: "stagiaires par session, intra-entreprise",
-                  labelEn: "trainees per session, in-house",
+                  labelFr: "participants par groupe, intra-entreprise (séminaire : jusqu'à 50)",
+                  labelEn: "participants per group, in-house (seminar: up to 50)",
                 },
               ] as const
             ).map((stat, idx) => (
@@ -1433,7 +1432,7 @@ export default async function FormationsHub({ params }: Props) {
                       id: "effectif",
                       question: "Combien de participants par session ?",
                       answer:
-                        "De 2 à 15 stagiaires par session, au même prix — le tarif est par groupe, pas par personne. Pour réunir plusieurs services le même jour, c'est le séminaire IA, présenté plus haut, qui prend le relais.",
+                        "De 2 à 15 stagiaires par session, au même prix — le tarif est par groupe, pas par personne. Pour réunir toute l'entreprise le même jour (jusqu'à 50 personnes), c'est le séminaire IA, présenté plus haut, qui prend le relais.",
                     },
                     {
                       id: "quelle-formation",
@@ -1513,7 +1512,7 @@ export default async function FormationsHub({ params }: Props) {
                       id: "headcount",
                       question: "How many participants per session?",
                       answer:
-                        "2 to 15 trainees per session, same price — pricing is per group, not per person. To gather several departments on the same day, the AI seminar takes over.",
+                        "2 to 15 trainees per session, same price — pricing is per group, not per person. To gather the whole company on the same day (up to 50 people), the AI seminar takes over.",
                     },
                     {
                       id: "which-training",

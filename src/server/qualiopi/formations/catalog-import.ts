@@ -95,6 +95,15 @@ const METHODES_PEDAGOGIQUES =
  * `assistance-distance.ts`) : le programme, la fiche et la convocation ne
  * peuvent plus diverger (exigence orale O9).
  */
+/**
+ * Fiche en présentiel seul (le séminaire, dont la modalité reste celle d'avant la
+ * L16 tant que Will n'a pas tranché) : aucune mention du distanciel au programme.
+ */
+const MOYENS_TECHNIQUES_PRESENTIEL =
+  "Salle équipée et vidéoprojecteur en présentiel : chaque participant y utilise " +
+  "son smartphone ou son poste avec un compte IA gratuit, sans prérequis matériel " +
+  "ni installation.";
+
 const MOYENS_TECHNIQUES =
   "Salle équipée et vidéoprojecteur en présentiel : chaque participant y utilise " +
   "son smartphone ou son poste avec un compte IA gratuit, sans prérequis matériel " +
@@ -306,7 +315,8 @@ export function buildFormationImportData(
     objectifsPedagogiques,
     programmeDetaille: programmeEnrichi,
     methodesPedagogiques: METHODES_PEDAGOGIQUES,
-    moyensTechniques: MOYENS_TECHNIQUES,
+    moyensTechniques:
+      modaliteEnBase(f) === "presentiel" ? MOYENS_TECHNIQUES_PRESENTIEL : MOYENS_TECHNIQUES,
     ressourcesPedagogiques: RESSOURCES_PEDAGOGIQUES,
     // Formats sans prérequis, adaptables (référent handicap org, indicateur 26).
     accessibleHandicap: true,

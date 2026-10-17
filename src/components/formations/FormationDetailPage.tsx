@@ -238,8 +238,9 @@ export function FormationDetailPage({
   ];
 
   // L'effectif annoncé au programme PRIME sur les tranches tarifaires, qui sont
-  // vides en « sur devis » : une seule valeur pour toutes les fiches (de 2 à 15
-  // stagiaires par session, `effectif.ts`, décision de Will du 2026-10-16).
+  // vides en « sur devis » : de 2 à 15 stagiaires par session pour les formations
+  // (`effectif.ts`, décision de Will du 2026-10-16), « jusqu'à 50 » pour le
+  // séminaire, qui garde son effectif (`EFFECTIF_SEMINAIRE_FR`).
   const groupSizeLabel = `${effectif} · intra-entreprise`;
 
   // ── CARTE INFOS-CLÉS (héro) — tout depuis le SSOT ───────────────────────────
@@ -1130,7 +1131,11 @@ export function FormationDetailPage({
         eyebrow="Partout en France"
         title="Cette formation,"
         titleEm="près de chez vous"
-        description="Nous intervenons dans vos locaux, dans toute la France, ou à distance."
+        description={
+          modalitesLabel.toLowerCase().includes("distanciel")
+            ? "Nous intervenons dans vos locaux, dans toute la France, ou à distance."
+            : "Nous intervenons en présentiel dans vos locaux, dans toute la France."
+        }
       >
         <ul role="list" className="flex flex-wrap gap-x-2 gap-y-2.5">
           {villes.map((v) => (

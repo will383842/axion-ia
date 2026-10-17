@@ -13,7 +13,6 @@
 import type { ReactNode } from "react";
 import { ArrowRight } from "lucide-react";
 import { Link } from "@/i18n/navigation";
-import { EFFECTIF_COURT_FR, EFFECTIF_PLAGE_EN } from "@/content/formations/effectif";
 import { HeaderMegaMenu } from "./HeaderMegaMenu";
 
 export interface FormationsMenuItem {
@@ -142,8 +141,8 @@ export function HeaderFormationsMenu({
             </span>
             <span className="text-fg-muted block text-[12px]">
               {isFr
-                ? `1 journée · présentiel ou distanciel · ${EFFECTIF_COURT_FR}`
-                : `1 day · on site or remote · ${EFFECTIF_PLAGE_EN}`}
+                ? "1 journée · présentiel · jusqu'à 50 personnes"
+                : "1 day · on-site · up to 50 people"}
             </span>
           </Link>
 
