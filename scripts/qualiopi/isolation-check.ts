@@ -332,6 +332,8 @@ const CONSOMMATEURS_ASSUMES: ReadonlySet<string> = new Set([
   // formateur hors de l'espace formateur : la garde serait verte et
   // l'architecture fausse.
   "src/app/[locale]/espace-formateur/remuneration/page.tsx",
+  // Son test : il lit le libellé C-1 du domaine pour prouver que la page l'affiche tel quel.
+  "src/app/[locale]/espace-formateur/remuneration/__tests__/changement-iban-motif.spec.tsx",
   // Lot D2 (M10, 2026-10-12) : « Signaler un désaccord » sur une facture de
   // MISSION, formulaire de la page ci-dessus. L'action n'importe que
   // `signalerDesaccord`, qui revérifie côté serveur que le relevé appartient au
