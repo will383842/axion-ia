@@ -139,6 +139,7 @@ import { regleDonneesOpcoIncompletes } from "./regle-donnees-opco-incompletes";
 import { regleSuiviEntrepriseOpco } from "./regle-suivi-entreprise-opco";
 import { regleEtatFondsPerime } from "./regle-etat-fonds-perime";
 import { regleRegistreSousTraitants } from "./regle-registre-sous-traitants";
+import { regleVoyantsSansTrace } from "./regle-voyants-sans-trace";
 import { regleDesistementLettreSignee } from "./regle-desistement-lettre-signee";
 import { regleFondsOpcoSuspendusSession } from "./regle-fonds-opco-suspendus-session";
 import { regleSubrogationIncompatibleRegime } from "./regle-subrogation-incompatible-regime";
@@ -5350,6 +5351,8 @@ const REGLES: Array<{ nom: string; fn: RegleFn }> = [
   // Qualiopi ind. 27 (audit du 16/10) — échéances du registre des sous-traitants
   // indépendants tenu par l'outil. Éteinte tant que son interrupteur est coupé.
   { nom: "registre_sous_traitants", fn: regleRegistreSousTraitants },
+  // QNC L12 (O13) — voyants d'indicateurs rouges faute de trace réelle. Placée en fin de liste.
+  { nom: "voyants_sans_trace", fn: regleVoyantsSansTrace },
 ];
 
 // ─────────────────────────────────────────────────────────────────────────────
