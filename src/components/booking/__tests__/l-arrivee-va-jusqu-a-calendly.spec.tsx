@@ -45,11 +45,19 @@ const DAYS = [
     slots: [{ startIso: "2026-08-04T07:00:00.000Z", schedulingUrl: `${DIAG}/x` }],
   },
 ];
-const SUIVI = { utm_source: "linkedin", utm_medium: "social", utm_campaign: "x", ref: "p-42" };
+const SUIVI = {
+  utm_source: "linkedin",
+  utm_medium: "social",
+  utm_campaign: "x",
+  utm_content: "clients",
+  depuis: "video-linkedin",
+  ref: "p-42",
+};
 
 function verifier(href: string | null | undefined) {
   const p = new URL(href ?? "").searchParams;
-  expect(p.get("utm_content")).toBe("diagnostic");
+  expect(p.get("utm_content")).toBe("clients");
+  expect(p.get("utm_term")).toBe("video-linkedin");
   expect(p.get("utm_source")).toBe("linkedin");
   expect(p.get("utm_medium")).toBe("social");
   expect(p.get("utm_campaign")).toBe("x");

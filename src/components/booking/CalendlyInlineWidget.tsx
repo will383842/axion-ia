@@ -95,7 +95,7 @@ interface CalendlyInlineWidgetProps {
   readonly repli?: ReactNode;
 }
 
-function buildCalendlyUrl(baseUrl: string, utmContent?: string, suivi?: SuiviArrivee): string {
+function buildCalendlyUrl(baseUrl: string, suivi?: SuiviArrivee): string {
   const url = new URL(baseUrl);
   url.searchParams.set("hide_event_type_details", "1");
   // GARDER `hide_gdpr_banner=1`. Contre-intuitif, donc à ne pas « corriger » :
@@ -110,7 +110,7 @@ function buildCalendlyUrl(baseUrl: string, utmContent?: string, suivi?: SuiviArr
   url.searchParams.set("primary_color", CALENDLY_BRAND.primary);
   url.searchParams.set("text_color", CALENDLY_BRAND.text);
   url.searchParams.set("background_color", CALENDLY_BRAND.background);
-  return avecUtmContent(url.toString(), utmContent, suivi);
+  return avecUtmContent(url.toString(), suivi);
 }
 
 export async function CalendlyInlineWidget({
@@ -124,7 +124,7 @@ export async function CalendlyInlineWidget({
   suivi,
   repli,
 }: CalendlyInlineWidgetProps) {
-  const finalUrl = calendlyUrl ? buildCalendlyUrl(calendlyUrl, utmContent, suivi) : null;
+  const finalUrl = calendlyUrl ? buildCalendlyUrl(calendlyUrl, suivi) : null;
 
   if (!calendlyUrl || !finalUrl) {
     return (
@@ -204,7 +204,7 @@ export async function CalendlyInlineWidget({
           censé s'afficher), sur une surface de recueil de consentement. */}
       <CalendlyConsentGate
         url={finalUrl}
-        fallbackUrl={avecUtmContent(calendlyUrl, utmContent, suivi)}
+        fallbackUrl={avecUtmContent(calendlyUrl, suivi)}
         isFr={isFr}
         height={height}
       />

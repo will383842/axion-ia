@@ -219,9 +219,12 @@ describe("`utm_content` mesure le bouton", () => {
     );
   });
 
-  it("l'URL Calendly porte `utm_content`, le reste intact", () => {
-    const u = new URL(avecUtmContent(`${DIAG}?hide_gdpr_banner=1`, "diagnostic:faq"));
-    expect(u.searchParams.get("utm_content")).toBe("diagnostic:faq");
+  it("l'URL Calendly porte `utm_content` d'arrivée (jamais le bouton), le reste intact", () => {
+    const u = new URL(
+      avecUtmContent(`${DIAG}?hide_gdpr_banner=1`, { utm_content: "clients", depuis: "faq" }),
+    );
+    expect(u.searchParams.get("utm_content")).toBe("clients");
+    expect(u.searchParams.get("utm_term")).toBe("faq");
     expect(u.searchParams.get("hide_gdpr_banner")).toBe("1");
     expect(avecUtmContent(DIAG, null)).toBe(DIAG);
   });

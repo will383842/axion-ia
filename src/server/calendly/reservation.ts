@@ -220,6 +220,8 @@ export interface DemandeReservation {
    * `tracking` de l'invité, puis dans notre colonne `utm_content` au sondage.
    */
   readonly utmContent?: string | null;
+  /** `depuis` à l'arrivée (ADR 0002) : le seul champ libre que Calendly transporte. */
+  readonly utmTerm?: string | null;
   /**
    * L'adresse du lieu, pour un rendez-vous SUR PLACE : celle que Calendly donne
    * lui-même dans les lieux de l'événement. Jamais saisie par le visiteur.
@@ -345,7 +347,7 @@ export function corpsDeLaDemande(
       utm_medium: d.utmMedium ?? null,
       utm_campaign: d.utmCampaign ?? null,
       utm_content: d.utmContent ?? null,
-      utm_term: null,
+      utm_term: d.utmTerm ?? null,
       salesforce_uuid: null,
     },
     booking_source: "axion_ia_site",

@@ -180,8 +180,9 @@ export interface OptionsValidation {
   readonly utmSource?: string | null;
   readonly utmMedium?: string | null;
   readonly utmCampaign?: string | null;
-  /** Le bouton qui a mené ici (`diagnostic`, `projet:faq`…), voir `choix-rendez-vous.ts`. */
+  /** `utm_content` d'arrivée, tel que reçu (ADR 0002 : l'activité visée), voir `choix-rendez-vous.ts`. */
   readonly utmContent?: string | null;
+  readonly utmTerm?: string | null;
   /**
    * Les formats que CE type de rendez-vous propose (`formatsProposes`). Absent =
    * visio ET téléphone, comme avant l'ouverture aux quatre types.
@@ -370,6 +371,7 @@ export function validerFormulaire(fd: FormData, o: OptionsValidation): ResultatV
       utmMedium: o.utmMedium ?? null,
       utmCampaign: o.utmCampaign ?? null,
       utmContent: o.utmContent ?? null,
+      utmTerm: o.utmTerm ?? null,
       ...(format === "sur_place" && o.adresseDuLieu ? { adresseDuLieu: o.adresseDuLieu } : {}),
     },
   };

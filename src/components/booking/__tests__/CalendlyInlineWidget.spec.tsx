@@ -108,7 +108,7 @@ describe("CalendlyInlineWidget — aiguillage", () => {
 /**
  * Chantier « Types de rendez-vous », L2 (2026-10-04) : le widget suit le
  * rendez-vous CHOISI. Notre formulaire reçoit le choix (`rdv=`), la page
- * Calendly reçoit le bouton (`utm_content`) — créneaux ET lien de secours.
+ * Calendly reçoit le `utm_content` d'arrivée — créneaux ET lien de secours.
  */
 describe("CalendlyInlineWidget — le type choisi voyage", () => {
   const DIAG = "https://calendly.com/axion-ia/diagnostic-ia";
@@ -135,21 +135,31 @@ describe("CalendlyInlineWidget — le type choisi voyage", () => {
   it("page Calendly : chaque créneau porte `utm_content`", async () => {
     fetchAvailableSlotsMock.mockResolvedValue({ ok: true, days: DAYS });
     const { container } = render(
-      await CalendlyInlineWidget({ calendlyUrl: DIAG, isFr: true, utmContent: "diagnostic" }),
+      await CalendlyInlineWidget({
+        calendlyUrl: DIAG,
+        isFr: true,
+        suivi: { utm_content: "clients" },
+      }),
     );
     const href = container.querySelector('a[data-cta="appel_slot_pick"]')?.getAttribute("href");
-    expect(new URL(href ?? "").searchParams.get("utm_content")).toBe("diagnostic");
+    expect(new URL(href ?? "").searchParams.get("utm_content")).toBe("clients");
   });
 
   it("repli : le lien de secours porte `utm_content`", async () => {
     fetchAvailableSlotsMock.mockResolvedValue({ ok: false, reason: "api_error" });
     const { container } = render(
-      await CalendlyInlineWidget({ calendlyUrl: DIAG, isFr: true, utmContent: "projet" }),
+      await CalendlyInlineWidget({
+        calendlyUrl: DIAG,
+        isFr: true,
+        suivi: { utm_content: "apporteurs" },
+      }),
     );
     const secours = [...container.querySelectorAll('a[href^="https://calendly.com/axion-ia"]')];
     expect(secours.length).toBeGreaterThan(0);
     for (const a of secours) {
-      expect(new URL(a.getAttribute("href") ?? "").searchParams.get("utm_content")).toBe("projet");
+      expect(new URL(a.getAttribute("href") ?? "").searchParams.get("utm_content")).toBe(
+        "apporteurs",
+      );
     }
   });
 });
