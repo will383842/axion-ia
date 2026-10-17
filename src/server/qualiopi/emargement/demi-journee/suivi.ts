@@ -100,7 +100,6 @@ export interface ContresignatureDuJour {
 }
 
 export interface SuiviEmargement {
-  readonly actif: boolean;
   readonly aujourdHui: string;
   readonly demain: string;
   readonly stagiaires: ReadonlyArray<StagiaireSuivi>;
@@ -134,18 +133,25 @@ function motifDuJournal(changes: unknown): string | null {
   return typeof m === "string" ? m : null;
 }
 
-/** La lecture complète. `null` si la session n'existe pas. */
+/**
+ * La lecture complète. `null` si la session n'existe pas OU si l'interrupteur
+ * n'agit pas sur elle : éteint, rien d'autre que ce réglage n'est lu.
+ */
 export async function lireSuiviEmargement(
   sessionId: string,
   maintenant: Date = new Date(),
 ): Promise<SuiviEmargement | null> {
   if (process.env["DATABASE_URL"]?.includes("stub.invalid")) return null;
+  const tete = await prisma.trainingSession.findUnique({
+    where: { id: sessionId },
+    select: { estTestInterne: true },
+  });
+  if (tete === null || !(await emargementParDemiJourneePour(tete))) return null;
   const colonne = await colonneDeclarationDisponible();
   const session = await prisma.trainingSession.findUnique({
     where: { id: sessionId },
     select: {
       id: true,
-      estTestInterne: true,
       jours: { select: { date: true, heureDebut: true, heureFin: true } },
       enrollments: {
         where: { ...inscriptionsActives(), trainee: { deletedAt: null } },
@@ -179,7 +185,7 @@ export async function lireSuiviEmargement(
 
   const aujourdHui = parisDateISO(maintenant);
   const creneauIds = session.enrollments.flatMap((e) => e.presences.map((p) => p.id));
-  const [rattrapages, relances, contresignatures, ficheDuJour, actif] = await Promise.all([
+  const [rattrapages, relances, contresignatures, ficheDuJour] = await Promise.all([
     creneauIds.length === 0
       ? Promise.resolve([])
       : prisma.activityLog.findMany({
@@ -195,7 +201,6 @@ export async function lireSuiviEmargement(
       select: { demiJournee: true },
     }),
     lireFicheJour(sessionId, aujourdHui),
-    emargementParDemiJourneePour(session),
   ]);
 
   const motifParCreneau = new Map(
@@ -262,7 +267,6 @@ export async function lireSuiviEmargement(
   }
 
   return {
-    actif,
     aujourdHui,
     demain: lendemain(aujourdHui),
     stagiaires,

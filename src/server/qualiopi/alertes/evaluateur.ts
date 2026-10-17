@@ -735,7 +735,7 @@ async function regleRappelJ7NonEnvoye(now: Date): Promise<AlerteCandidate[]> {
 }
 
 async function regleSessionSansDispositifEmargement(now: Date): Promise<AlerteCandidate[]> {
-  const sessions = await prisma.trainingSession.findMany({
+  const sessionsCandidates = await prisma.trainingSession.findMany({
     where: {
       statut: { in: ["planifiee", "en_cours"] },
       // Elle a commencé, et pas il y a un mois : fenêtre glissante de 7 jours,
@@ -779,39 +779,37 @@ async function regleSessionSansDispositifEmargement(now: Date): Promise<AlerteCa
     await import("@/server/qualiopi/emargement/demi-journee/rappel-objet");
   const { estActifPour } = await import("@/server/qualiopi/socle/interrupteurs");
   const etatEmargement = await lireInterrupteurEmargement();
-  const parDemiJournee = sessions.filter((s) => estActifPour(etatEmargement, s));
   const servies = new Set<string>();
-  for (const s of parDemiJournee) {
-    const remis = await prisma.relanceJournal.count({
+  for (const s of sessionsCandidates.filter((c) => estActifPour(etatEmargement, c))) {
+    const rappels = await prisma.relanceJournal.count({
       where: { sessionId: s.id, objet: { startsWith: PREFIXE_OBJET_RAPPEL } },
     });
-    if (remis > 0) servies.add(s.id);
+    if (rappels > 0) servies.add(s.id);
   }
+  const sessions = sessionsCandidates.filter((s) => !servies.has(s.id));
 
-  return sessions
-    .filter((s) => !servies.has(s.id))
-    .map((s) => {
-      // Le message NOMME la cause première : sans journées déclarées, l'émission
-      // des liens est refusée à la racine (`creerTokenInscription` lève). Dire
-      // « aucun lien émis » sans dire pourquoi enverrait chercher au mauvais
-      // endroit.
-      const causePremiere =
-        s._count.jours === 0
-          ? "Aucune journée n'est déclarée : l'émission des liens sera refusée tant que ce n'est pas fait. Déclarez les journées, générez les créneaux, puis envoyez les liens."
-          : "Les journées sont déclarées : émettez les liens et envoyez-les aux stagiaires.";
-      return {
-        code: "session_sans_dispositif_emargement",
-        niveau: "critique" as AlerteNiveau,
-        titre: "Session en cours sans dispositif de signature",
-        message:
-          `La session ${designerSession(s)} a commencé et aucun de ses ${s._count.enrollments} ` +
-          `inscrit${s._count.enrollments > 1 ? "s" : ""} ne dispose d'un lien de signature valide. ` +
-          `Personne ne peut émarger. ${causePremiere} ` +
-          `Les liens expirent 48 h après la fin de la session : passé ce délai, la feuille restera vierge.`,
-        cibleType: "TrainingSession",
-        cibleId: s.id,
-      };
-    });
+  return sessions.map((s) => {
+    // Le message NOMME la cause première : sans journées déclarées, l'émission
+    // des liens est refusée à la racine (`creerTokenInscription` lève). Dire
+    // « aucun lien émis » sans dire pourquoi enverrait chercher au mauvais
+    // endroit.
+    const causePremiere =
+      s._count.jours === 0
+        ? "Aucune journée n'est déclarée : l'émission des liens sera refusée tant que ce n'est pas fait. Déclarez les journées, générez les créneaux, puis envoyez les liens."
+        : "Les journées sont déclarées : émettez les liens et envoyez-les aux stagiaires.";
+    return {
+      code: "session_sans_dispositif_emargement",
+      niveau: "critique" as AlerteNiveau,
+      titre: "Session en cours sans dispositif de signature",
+      message:
+        `La session ${designerSession(s)} a commencé et aucun de ses ${s._count.enrollments} ` +
+        `inscrit${s._count.enrollments > 1 ? "s" : ""} ne dispose d'un lien de signature valide. ` +
+        `Personne ne peut émarger. ${causePremiere} ` +
+        `Les liens expirent 48 h après la fin de la session : passé ce délai, la feuille restera vierge.`,
+      cibleType: "TrainingSession",
+      cibleId: s.id,
+    };
+  });
 }
 
 async function regleSessionSansFormateur(now: Date): Promise<AlerteCandidate[]> {

@@ -93,6 +93,14 @@ const ECRIVAINS_CONNUS: ReadonlyArray<{ fichier: string; sites: number; raison: 
       "défait ce que la signature avait posé, et seulement quand plus aucune " +
       "signature vivante ne couvre le créneau. Même exception distancielle.",
   },
+  {
+    fichier: "src/server/qualiopi/emargement/demi-journee/rattrapage.ts",
+    sites: 1,
+    raison:
+      "QNC L06 — rattrapage motivé de l'organisme : « je refuse » sur un créneau " +
+      "qui porte une signature vivante (`deja_signe`), et ne touche pas la durée " +
+      "d'un créneau issu d'un import.",
+  },
 ];
 
 /** `presenceCreneau.update|upsert|updateMany|create`, ou un appel à `upsertCreneau`. */
