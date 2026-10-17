@@ -340,7 +340,7 @@ describe("suspension : décisions de Will du 17/10/2026", () => {
     expect(suspendu(f)).toBe(false);
   });
 
-  it("questionnaires sous le seuil puis remontés : maintenue", () => {
+  it("pire mesure sous le seuil (fournie par la lecture) puis moyenne remontée : maintenue", () => {
     const f = faits({
       missions: [mission({ sessionId: "s1", satisfaction: 4, satisfactionMin: 2.4 })],
       observations: obs,
