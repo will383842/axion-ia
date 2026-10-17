@@ -18,7 +18,7 @@ import {
 } from "@/server/qualiopi/trainers/documents";
 import { TrainerForm } from "@/components/admin/qualiopi/TrainerForm";
 import { TrainerManageForm } from "@/components/admin/qualiopi/TrainerManageForm";
-import { FinCollaborationPanel } from "@/components/admin/qualiopi/FinCollaborationPanel";
+import { FinCollaborationPanelDiffere } from "@/components/admin/qualiopi/FinCollaborationPanelDiffere";
 import {
   LIBELLES_MOTIF_FIN,
   conservationApresFin,
@@ -28,7 +28,7 @@ import {
 import { TrainerDocumentsPanel } from "@/components/admin/qualiopi/TrainerDocumentsPanel";
 import { TrainerFacturationPanel } from "@/components/admin/qualiopi/TrainerFacturationPanel";
 import { TrainerFixePanel } from "@/components/admin/qualiopi/TrainerFixePanel";
-import { TrainerContratTravailPanel } from "@/components/admin/qualiopi/TrainerContratTravailPanel";
+import { TrainerContratTravailPanelDiffere } from "@/components/admin/qualiopi/TrainerContratTravailPanelDiffere";
 import { getQualiopiConfig } from "@/server/qualiopi/config/site-settings";
 import { lireSituationFixe } from "@/server/qualiopi/remuneration/pilotage-formateurs";
 import { TrainerCompetencesPanel } from "@/components/admin/qualiopi/TrainerCompetencesPanel";
@@ -715,7 +715,7 @@ export default async function FicheFormateurPage({ params, searchParams }: PageP
         vient de corriger.
       */}
       {estSalarie && (
-        <TrainerContratTravailPanel
+        <TrainerContratTravailPanelDiffere
           trainerId={trainer.id}
           initial={{
             contratType: trainer.contratType,
@@ -1043,7 +1043,7 @@ export default async function FicheFormateurPage({ params, searchParams }: PageP
       </div>
 
       {voitFinCollaboration ? (
-        <FinCollaborationPanel trainerId={trainer.id} terminee={finTerminee} />
+        <FinCollaborationPanelDiffere trainerId={trainer.id} terminee={finTerminee} />
       ) : null}
 
       <TrainerManageForm

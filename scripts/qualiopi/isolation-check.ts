@@ -158,6 +158,12 @@ const CONSOMMATEURS_ASSUMES: ReadonlySet<string> = new Set([
   // du dossier de session est `actif`. L'écrivain de la copie lit cet
   // interrupteur (`dossier-session/interrupteur`) et rien d'autre du domaine.
   "src/server/email/copie-envoi.ts",
+  // Chantier QNC, lot L13 — documents de l'organisme archivés, jamais effacés.
+  // Le module des documents de l'organisme (rubrique Société, hub Documents) vit
+  // HORS du domaine ; il ne lit du domaine que l'interrupteur du socle L00
+  // (`qualiopi.documents_organisme.actif`). Nommé seul : les écrans et actions
+  // Société/hub importent ce module, jamais le domaine.
+  "src/server/documents-organisme/documents-organisme.ts",
   // Dossier en ligne à jeton du FORMATEUR INDÉPENDANT (lot L5, ADR 0066 étape 5). Page
   // publique hors `[locale]`, jumelle du dossier apporteur : elle ne sait rien faire sans
   // le domaine qui porte la fiche `Trainer`, ses pièces, le contrôle registre et les règles
