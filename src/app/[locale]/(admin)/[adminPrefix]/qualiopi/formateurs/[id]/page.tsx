@@ -93,6 +93,13 @@ import { envoiAllume } from "@/server/qualiopi/formateurs-independants/interrupt
 import { numeroRecuAVerifier } from "@/server/qualiopi/formateurs-independants/numero-declaration-espace";
 import { LieuFormateurPanel } from "@/components/admin/qualiopi/LieuFormateurPanel";
 import { PresentationMethodePanel } from "@/components/admin/qualiopi/PresentationMethodePanel";
+import { EvaluationCompetencesPanel } from "@/components/admin/qualiopi/EvaluationCompetencesPanel";
+import { lireEvaluationsConsole } from "@/server/qualiopi/formateurs-independants/evaluation-competences/lecture";
+import {
+  etatEvaluation,
+  seuilsEntretien,
+  seuilsMiseEnSituation,
+} from "@/server/qualiopi/formateurs-independants/evaluation-competences/regles";
 import { DossierEnLignePanel } from "@/components/admin/qualiopi/DossierEnLignePanel";
 import { ContratCadrePanel } from "@/components/admin/qualiopi/ContratCadrePanel";
 import {
@@ -446,6 +453,22 @@ export default async function FicheFormateurPage({ params, searchParams }: PageP
       ? await missionsVisiblesIndependant(trainer.id, now)
       : null;
 
+  // Qualiopi ind. 21 — grilles d'évaluation des compétences pédagogiques : indépendant,
+  // rôle `habiliter_formateur` jugé AVANT toute lecture. Sans interrupteur : la garde
+  // d'activation les exige, l'écran doit pouvoir les recevoir.
+  const voitEvaluation =
+    trainer.statut === "sous_traitant" && peutEngager(role, "habiliter_formateur");
+  const evaluations = voitEvaluation
+    ? await lireEvaluationsConsole(trainer.id).catch(() => null)
+    : null;
+  const titreFormation = new Map(formations.map((f) => [f.id, f.titre]));
+  const etatEval = evaluations === null ? null : etatEvaluation(evaluations);
+  const horodatage = new Intl.DateTimeFormat("fr-FR", {
+    dateStyle: "short",
+    timeStyle: "short",
+    timeZone: "Europe/Paris",
+  });
+
   // Lot L12i — « Présentation faite le … » : interrupteur absent = panneau absent.
   const voitPresentation =
     trainer.statut === "sous_traitant" &&
@@ -701,6 +724,40 @@ export default async function FicheFormateurPage({ params, searchParams }: PageP
       )}
 
       {voitPresentation && <PresentationMethodePanel trainerId={trainer.id} />}
+
+      {voitEvaluation && evaluations === null && (
+        <div className="admin-alert admin-alert-error mb-[var(--space-admin-5)]" role="alert">
+          Les grilles d&apos;évaluation des compétences n&apos;ont pas pu être lues.
+        </div>
+      )}
+      {voitEvaluation && evaluations !== null && etatEval !== null && (
+        <EvaluationCompetencesPanel
+          trainerId={trainer.id}
+          formations={formations}
+          lignes={evaluations.map((l) => ({
+            id: l.id,
+            nature: l.nature,
+            formationTitre: l.formationId ? (titreFormation.get(l.formationId) ?? null) : null,
+            notes:
+              typeof l.notes === "object" && l.notes !== null && !Array.isArray(l.notes)
+                ? (l.notes as Record<string, number>)
+                : null,
+            decision: l.decision,
+            motif: l.motif,
+            dateSuivie: l.dateSuivie ? l.dateSuivie.toISOString().slice(0, 10) : null,
+            versee: horodatage.format(l.createdAt),
+            auteur: l.auteur,
+          }))}
+          dernierEntretienAtteint={
+            etatEval.entretien ? seuilsEntretien(etatEval.entretien.notes).atteint : null
+          }
+          derniereMiseEnSituationAtteinte={
+            etatEval.miseEnSituation
+              ? seuilsMiseEnSituation(etatEval.miseEnSituation.notes).atteint
+              : null
+          }
+        />
+      )}
 
       {/*
         Fixe récupérable sur commissions — 2026-09-12.
