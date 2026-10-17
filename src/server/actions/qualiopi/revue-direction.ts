@@ -8,6 +8,13 @@
  *                                 (créée en brouillon si absente) — LOT 4.
  *
  * off.32 — indicateur 32 (NC majeure). Snapshot indicateurs capturé à la création.
+ *
+ * 🔴 Chantier QNC, lot L10 — `qualiopi.amelioration.actif` à `actif` :
+ *   - une revue VALIDÉE ne s'écrit plus (ni mise à jour, ni constat reporté) ;
+ *   - le plan d'actions s'écrit au registre AXI-AMC (`amelioration.ts`), jamais
+ *     plus dans `planActions`, relu seulement pour l'historique ;
+ *   - un constat reporté OUVRE une action AXI-AMC, à décider par une personne.
+ * Interrupteur éteint : tout se comporte comme avant.
  */
 
 "use server";
@@ -21,15 +28,27 @@ import {
   reporterConstatRevue,
   getRevueParId,
 } from "@/server/qualiopi/registres/revue-direction-service";
+import { normaliserPlanActions } from "@/server/qualiopi/revues/plan-actions";
+import { evaluerOff32EnVigueur } from "@/server/qualiopi/amelioration/off32-registre";
 import {
-  evaluerCouvertureOff32,
-  normaliserPlanActions,
-} from "@/server/qualiopi/revues/plan-actions";
+  ouvrirActionAmelioration,
+  registreAmeliorationActif,
+} from "@/server/qualiopi/amelioration/registre-amc";
+import { contexteRequeteQualiopi } from "@/server/qualiopi/journal/contexte-requete";
+import { nomAdministrateur } from "@/server/qualiopi/journal/nom-administrateur";
+import { prisma } from "@/lib/prisma";
 import { horodaterRisques } from "@/server/qualiopi/revues/analyse-risques";
 import { risquesSaisisSchema } from "@/server/qualiopi/revues/risque-saisi-schema";
 import { lireReferentielApplique } from "@/server/qualiopi/conformite/referentiel-applique";
 
 type ActionResult<T> = { data: T } | { error: string };
+
+const REFUS_REVUE_VALIDEE =
+  "Cette revue de direction est validée : elle est verrouillée. Ce qui suit s'écrit au registre des actions d'amélioration (AXI-AMC).";
+const REFUS_PLAN_HISTORIQUE =
+  "Le plan d'actions de la revue n'est plus qu'un historique : les actions d'amélioration s'ouvrent et se suivent au registre AXI-AMC.";
+/** Le libellé d'action d'un constat reporté : la décision appartient à une personne. */
+const ACTION_A_DECIDER = "À décider par la direction (constat reporté en revue)";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Schémas Zod
@@ -107,7 +126,8 @@ async function refuserValidation(etat: {
   // Paris. L'analyse des risques n'est exigée que par la grille 2026.
   const maintenant = new Date();
   const referentiel = await lireReferentielApplique(maintenant);
-  const verdict = evaluerCouvertureOff32(etat, maintenant, {
+  // Registre AXI-AMC allumé : le plan jugé est celui que voit la matrice.
+  const verdict = await evaluerOff32EnVigueur(etat, maintenant, {
     exigeAnalyseRisques: referentiel.grille === "rnq-2026",
   });
   if (verdict.couvert) return null;
@@ -140,6 +160,11 @@ export async function creerRevueDirectionAction(input: {
   const parsed = creerRevueDirectionSchema.safeParse(input);
   if (!parsed.success) return { error: "Données invalides" };
   const v = parsed.data;
+
+  // Chantier QNC, L10 — registre allumé : une revue neuve ne porte plus de plan.
+  if ((v.planActions ?? []).length > 0 && (await registreAmeliorationActif())) {
+    return { error: REFUS_PLAN_HISTORIQUE };
+  }
 
   // Même garde qu'à la mise à jour : on ne CRÉE pas non plus une revue déjà
   // « validée » qui ne prouverait rien. L'écran de création ne propose pas le
@@ -216,8 +241,22 @@ export async function updateRevueDirectionAction(input: {
   if (!parsed.success) return { error: "Données invalides" };
   const { id, ...fields } = parsed.data;
 
-  const planActions =
+  let planActions =
     fields.planActions !== undefined ? normaliserPlanActions(fields.planActions) : undefined;
+
+  // 🔴 Chantier QNC, L10 — registre AXI-AMC allumé.
+  if (await registreAmeliorationActif()) {
+    const enBase = await getRevueParId(id);
+    if (enBase === null) return { error: "Revue de direction introuvable" };
+    if (enBase.statut === "validee") return { error: REFUS_REVUE_VALIDEE };
+    if (planActions !== undefined) {
+      // Le formulaire peut renvoyer le plan tel qu'il l'a lu : ce n'est pas une
+      // écriture. Toute DIFFÉRENCE en est une, et elle va au registre.
+      const avant = JSON.stringify(normaliserPlanActions(enBase.planActions));
+      if (JSON.stringify(planActions) !== avant) return { error: REFUS_PLAN_HISTORIQUE };
+      planActions = undefined;
+    }
+  }
 
   // La revue en base est lue quand la validation doit être opposée à son état
   // résultant, OU quand l'analyse des risques est réécrite : c'est elle qui dit
@@ -291,6 +330,30 @@ export async function reporterEnRevueDirectionAction(input: {
   const v = parsed.data;
 
   const annee = new Date().getFullYear();
+
+  // 🔴 Chantier QNC, L10 — registre allumé : le constat ouvre une action AXI-AMC.
+  // La revue n'est pas touchée (validée ou non) ; une personne décidera la suite
+  // (mise en œuvre : responsable et échéance), et off.32 reste rouge d'ici là.
+  if (await registreAmeliorationActif()) {
+    try {
+      const ouverte = await ouvrirActionAmelioration(
+        prisma,
+        {
+          origine: "appreciation",
+          constat: `${v.texte}\n\nSource : ${v.source}`,
+          action: ACTION_A_DECIDER,
+          auteurId: session.userId,
+          auteurNom: await nomAdministrateur(session.userId, session.role ?? "administrateur"),
+        },
+        { contexte: contexteRequeteQualiopi },
+      );
+      return { data: { id: ouverte.id, annee, creee: false } };
+    } catch {
+      return {
+        error: "Erreur lors de l'ouverture de l'action d'amélioration : rien n'a été écrit.",
+      };
+    }
+  }
 
   let resultat: { id: string; annee: number; creee: boolean };
   try {

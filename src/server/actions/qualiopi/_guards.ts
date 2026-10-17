@@ -36,10 +36,9 @@
 //
 // ⚠️ NE PAS reintroduire `"use server"` ici. Garde : `tests/unit/ci/surface-server-actions.spec.ts`.
 
-import { headers } from "next/headers";
 import { prisma } from "@/lib/prisma";
-import { hashIp } from "@/lib/security/ip-hash";
-import { donneesJournal, journaliser, type ContexteJournal } from "@/server/journal/journaliser";
+import { donneesJournal, journaliser } from "@/server/journal/journaliser";
+import { contexteRequeteQualiopi } from "@/server/qualiopi/journal/contexte-requete";
 import {
   requireAdminRead,
   requireAdminWrite,
@@ -49,7 +48,6 @@ import {
   type AdminSession,
 } from "@/server/actions/knowledge/_guards";
 import { peutEngager, MOTIF_REFUS, type ActeEngageant } from "@/server/auth/habilitations";
-import { ipVisiteurOuNull } from "@/lib/client-ip";
 
 export {
   requireAdminRead,
@@ -145,13 +143,7 @@ export async function donneesJournalQualiopi(input: QualiopiActivityInput): Prom
 }
 
 /** Contexte de la requête en cours (IP hachée, user-agent), pour le journal. */
-async function contexteRequete(): Promise<ContexteJournal> {
-  const h = await headers();
-  // IP du visiteur par la règle unique (cf. lib/client-ip-core) : via Cloudflare,
-  // x-forwarded-for et x-real-ip ne portaient que le relais Cloudflare.
-  // A-02 (RGPD) : hachage de l'IP avant stockage (aligné sur le reste du repo).
-  return { ipAddress: hashIp(ipVisiteurOuNull(h)), userAgent: h.get("user-agent") || null };
-}
+const contexteRequete = contexteRequeteQualiopi;
 
 export async function logQualiopiActivity(input: QualiopiActivityInput): Promise<void> {
   // Délègue au journal unique, avec sa tolérance (best-effort, fail-silent).
