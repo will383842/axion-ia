@@ -233,6 +233,49 @@ describe("setTrainerHabilitationsAction", () => {
     expect(arg.where.retireAt).toBeNull();
   });
 
+  describe("L14 — motif du retrait : OPTIONNEL", () => {
+    const retrait = async (extra: Record<string, unknown>) => {
+      mockUpdate.mockResolvedValue({ id: TRAINER_ID });
+      const r = await setTrainerHabilitationsAction({
+        id: TRAINER_ID,
+        formationsHabilitees: [FORMATION_ID],
+        ...extra,
+      } as never);
+      const arg = mockHabilitationUpdateMany.mock.calls[0]?.[0] as {
+        data: Record<string, unknown>;
+      };
+      return { r, data: arg.data };
+    };
+
+    it("sans motif, le flux d'avant est inchangé (aucune clé de motif écrite)", async () => {
+      const { r, data } = await retrait({});
+      expect(r).toEqual({ data: { id: TRAINER_ID } });
+      expect(Object.keys(data).sort()).toEqual(["retireAt", "retireById"]);
+    });
+
+    it("avec un motif, il est écrit sur la ligne retirée, nettoyé", async () => {
+      const { r, data } = await retrait({ motifRetrait: "  Évaluations insuffisantes  " });
+      expect(r).toEqual({ data: { id: TRAINER_ID } });
+      expect(data["motifRetrait"]).toBe("Évaluations insuffisantes");
+    });
+
+    it("un motif vide ou blanc n'écrit rien (il n'est jamais exigé)", async () => {
+      const { r, data } = await retrait({ motifRetrait: "   " });
+      expect(r).toEqual({ data: { id: TRAINER_ID } });
+      expect("motifRetrait" in data).toBe(false);
+    });
+
+    it("un motif démesuré est refusé plutôt que tronqué en silence", async () => {
+      mockUpdate.mockResolvedValue({ id: TRAINER_ID });
+      const r = await setTrainerHabilitationsAction({
+        id: TRAINER_ID,
+        formationsHabilitees: [FORMATION_ID],
+        motifRetrait: "x".repeat(501),
+      });
+      expect(r).toEqual({ error: "Données invalides" });
+    });
+  });
+
   it("une liste VIDE retire tout, sans tenter d'insérer", async () => {
     mockUpdate.mockResolvedValue({ id: TRAINER_ID });
     await setTrainerHabilitationsAction({ id: TRAINER_ID, formationsHabilitees: [] });

@@ -23,6 +23,7 @@ import {
   SousTraitantVerifButton,
   SousTraitantContratButton,
   ProcedureSousTraitanceButton,
+  RemplacerProcedureSousTraitance,
 } from "@/components/admin/qualiopi/SousTraitantForm";
 import { SousTraitantPiecesEditor } from "@/components/admin/qualiopi/SousTraitantPiecesEditor";
 import { SousTraitantRowActions } from "@/components/admin/qualiopi/SousTraitantRowActions";
@@ -30,6 +31,7 @@ import { genererRegistrePdfAction } from "@/server/actions/qualiopi/exports-pdf"
 import {
   genererContratSousTraitanceAction,
   genererProcedureSousTraitanceAction,
+  remplacerProcedureSousTraitanceAction,
 } from "@/server/actions/qualiopi/documents";
 import { PdfExportButton } from "@/components/admin/qualiopi/PdfExportButton";
 import { AccesRefuse } from "@/components/admin/ui/AccesRefuse";
@@ -77,6 +79,9 @@ export default async function QualiopiSousTraitantsPage({ params }: PageProps) {
               premier recours.
             */}
             <ProcedureSousTraitanceButton genererAction={genererProcedureSousTraitanceAction} />
+            <RemplacerProcedureSousTraitance
+              remplacerAction={remplacerProcedureSousTraitanceAction}
+            />
             <PdfExportButton
               label="Exporter le registre (PDF)"
               input={{ type: "sous_traitants" as const }}

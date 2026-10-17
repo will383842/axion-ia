@@ -1991,15 +1991,28 @@ async function handleLiensEmargementJ0(): Promise<void> {
         },
       },
     },
-    select: { id: true, numero: true, _count: { select: { jours: true } } },
+    select: {
+      id: true,
+      numero: true,
+      // QNC L06 — repère les sessions servies par le rappel de demi-journée.
+      estTestInterne: true,
+      _count: { select: { jours: true } },
+    },
     take: 50,
   });
+
+  // QNC L06 — sous `qualiopi.emargement.actif`, une session reçoit un lien par
+  // demi-journée (rappel ci-dessous), jamais le lien unique d'ici.
+  const emargementDemiJournee = await import("@/server/qualiopi/emargement/demi-journee/rappel");
+  const { estActifPour } = await import("@/server/qualiopi/socle/interrupteurs");
+  const etatEmargement = await emargementDemiJournee.etatInterrupteurPourCron();
 
   let traitees = 0;
   let sansJournees = 0;
   let enEchec = 0;
 
   for (const session of sessions) {
+    if (estActifPour(etatEmargement, session)) continue;
     if (session._count.jours === 0) {
       sansJournees++;
       console.error(
@@ -2051,6 +2064,18 @@ async function handleLiensEmargementJ0(): Promise<void> {
       `${sansJournees} sans journée déclarée, ${enEchec} en échec ` +
       `(${sessions.length} session(s) sans lien vivant, démarrant aujourd'hui ou depuis < 24 h)`,
   );
+
+  // QNC L06 — le rappel au début de chaque demi-journée (sans effet si éteint).
+  if (etatEmargement !== "eteint") {
+    const bilan = await emargementDemiJournee.envoyerRappelsDemiJournee(now);
+    for (const echec of bilan.echecs) {
+      console.error(`[formation-crons] liens-emargement-j0: rappel demi-journée — ${echec}`);
+    }
+    console.log(
+      `[formation-crons] liens-emargement-j0: rappels de demi-journée — ${bilan.envoyes} envoyé(s) ` +
+        `sur ${bilan.sessions} session(s), ${bilan.echecs.length} échec(s)`,
+    );
+  }
 }
 
 // ─────────────────────────────────────────────────────────────────────────────

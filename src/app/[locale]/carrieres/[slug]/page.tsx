@@ -53,6 +53,13 @@ import {
 import type { JobOffer } from "../../../../../prisma/generated/client";
 import { buildOfferFaq, RECRUTEMENT_REGULIER } from "@/lib/careers/faq-offre";
 import { buildOfferFaqFreelance } from "@/lib/careers/faq-offre-freelance";
+import {
+  MENTION_AUCUNE_MISSION_AVANT_QUALIOPI,
+  TITRE_ETAPES_INTERVENANT,
+  estOffreIntervenant,
+  etapesIntervenant,
+} from "@/lib/careers/etapes-intervenant";
+import { isQualiopiCertificationObtenue } from "@/server/qualiopi/config/flag";
 import { prefixerLiensInternes } from "@/lib/content/liens-internes";
 import { neutraliserSelonInterrupteur } from "@/components/qualiopi/affirmations-en-base";
 
@@ -234,6 +241,10 @@ export default async function JobOfferDetailPage({
     natureLue: entree.nature_offre,
     offre: offer,
   });
+  // L14 — offre d'intervenant (formateur, freelance ou salarié) : les vraies
+  // étapes remplacent les promesses d'« accompagnement » et de « doublon ».
+  const intervenant = formateurFreelance || estOffreIntervenant(offer);
+  const certificationObtenue = isQualiopiCertificationObtenue();
   const heroFacts = [
     sal
       ? { label: formateurFreelance ? "Tarif" : isFr ? "Rémunération" : "Pay", value: sal }
@@ -587,45 +598,68 @@ export default async function JobOfferDetailPage({
         </Section>
       ) : null}
 
-      {/* Accompagnement — panneau mocha (réf. /methodologie « Notre parti pris ») :
-          les 2 cartes blanches plates manquaient d'énergie (retour Will 2026-08-12). */}
-      <Section
-        eyebrow={isFr ? "Accompagnement" : "Support"}
-        title={isFr ? "Comment on t'" : "How we"}
-        titleEm={isFr ? "accompagne" : "support you"}
-      >
-        <Container>
-          <DarkTriadPanel
-            items={[
-              {
-                Icon: GraduationCap,
-                eyebrow: "01",
-                title: isFr ? "Votre formation" : "Your training",
-                description: isFr ? EMPLOYER_BRAND.formationFr : EMPLOYER_BRAND.formationEn,
-              },
-              {
-                Icon: Handshake,
-                eyebrow: "02",
-                title: isFr ? "Votre intégration" : "Your onboarding",
-                description: isFr ? EMPLOYER_BRAND.integrationFr : EMPLOYER_BRAND.integrationEn,
-              },
-              {
-                Icon: MessagesSquare,
-                eyebrow: "03",
-                title: isFr ? "Autonomie + franchise" : "Autonomy + straight talk",
-                description: isFr
-                  ? "Peu de réunions, beaucoup de confiance. On dit ce qui marche, ce qui ne marchera pas, et on livre."
-                  : "Few meetings, lots of trust. We say what works, what won't, and we ship.",
-              },
-            ]}
-          />
-          {offer.category === "conseil" ? (
-            <p className="border-terracotta text-fg-soft mx-auto mt-6 max-w-3xl border-l-4 pl-4 leading-relaxed">
-              {isFr ? EMPLOYER_BRAND.formateurOnboardingFr : EMPLOYER_BRAND.formateurOnboardingEn}
-            </p>
-          ) : null}
-        </Container>
-      </Section>
+      {/* Intervenant (L14) : les vraies étapes, jamais « doublon » ni « équipe ».
+          Autres offres — Accompagnement : panneau mocha (réf. /methodologie « Notre
+          parti pris ») ; les 2 cartes blanches plates manquaient d'énergie (retour
+          Will 2026-08-12). */}
+      {intervenant ? (
+        <Section
+          eyebrow={isFr ? "Parcours" : "Process"}
+          title={isFr ? "Avant votre première " : "Before your first "}
+          titleEm={isFr ? "mission" : "assignment"}
+        >
+          <Container>
+            <div className="mx-auto max-w-3xl">
+              <h3 className="font-serif text-xl font-semibold">
+                {TITRE_ETAPES_INTERVENANT[isFr ? "fr" : "en"]}
+              </h3>
+              <ol className="mt-4 list-decimal space-y-2 pl-6 leading-relaxed">
+                {etapesIntervenant({ freelance: formateurFreelance }).map((e) => (
+                  <li key={e.id}>{isFr ? e.fr : e.en}</li>
+                ))}
+              </ol>
+              {certificationObtenue ? null : (
+                <p className="border-terracotta text-fg-soft mt-6 border-l-4 pl-4 leading-relaxed">
+                  {MENTION_AUCUNE_MISSION_AVANT_QUALIOPI[isFr ? "fr" : "en"]}
+                </p>
+              )}
+            </div>
+          </Container>
+        </Section>
+      ) : (
+        <Section
+          eyebrow={isFr ? "Accompagnement" : "Support"}
+          title={isFr ? "Comment on t'" : "How we"}
+          titleEm={isFr ? "accompagne" : "support you"}
+        >
+          <Container>
+            <DarkTriadPanel
+              items={[
+                {
+                  Icon: GraduationCap,
+                  eyebrow: "01",
+                  title: isFr ? "Votre formation" : "Your training",
+                  description: isFr ? EMPLOYER_BRAND.formationFr : EMPLOYER_BRAND.formationEn,
+                },
+                {
+                  Icon: Handshake,
+                  eyebrow: "02",
+                  title: isFr ? "Votre intégration" : "Your onboarding",
+                  description: isFr ? EMPLOYER_BRAND.integrationFr : EMPLOYER_BRAND.integrationEn,
+                },
+                {
+                  Icon: MessagesSquare,
+                  eyebrow: "03",
+                  title: isFr ? "Autonomie + franchise" : "Autonomy + straight talk",
+                  description: isFr
+                    ? "Peu de réunions, beaucoup de confiance. On dit ce qui marche, ce qui ne marchera pas, et on livre."
+                    : "Few meetings, lots of trust. We say what works, what won't, and we ship.",
+                },
+              ]}
+            />
+          </Container>
+        </Section>
+      )}
 
       <FaqBlock
         tone="canvas"
@@ -634,8 +668,8 @@ export default async function JobOfferDetailPage({
         titleEm={isFr ? "fréquentes" : "questions"}
         items={
           formateurFreelance
-            ? buildOfferFaqFreelance(offer, isFr)
-            : buildOfferFaq(offer, title, isFr)
+            ? buildOfferFaqFreelance(offer, isFr, { certificationObtenue })
+            : buildOfferFaq(offer, title, isFr, { intervenant, certificationObtenue })
         }
       />
 
@@ -687,9 +721,13 @@ export default async function JobOfferDetailPage({
           title={isFr ? "Prêt·e à nous" : "Ready to"}
           titleEm={isFr ? "rejoindre ?" : "join us?"}
           description={
-            isFr
-              ? "La candidature prend quelques minutes. Le CV est optionnel : ce qui compte, c'est votre motivation et ce que vous savez faire."
-              : "Applying takes a few minutes. A CV is optional — what matters is your motivation and skills."
+            intervenant
+              ? isFr
+                ? "La candidature prend quelques minutes. Elle ouvre un parcours en plusieurs étapes, détaillées plus haut."
+                : "Applying takes a few minutes. It opens a multi-step process, detailed above."
+              : isFr
+                ? "La candidature prend quelques minutes. Le CV est optionnel : ce qui compte, c'est votre motivation et ce que vous savez faire."
+                : "Applying takes a few minutes. A CV is optional — what matters is your motivation and skills."
           }
           cta={
             <Cta href={applyHref} size="lg" track="career-apply-footer">

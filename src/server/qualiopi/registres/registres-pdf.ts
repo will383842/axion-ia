@@ -1,7 +1,7 @@
 /**
  * Qualiopi — Exports PDF des registres (docs A3/A7/A8/A17/A18 — LOT 2).
  *
- * 6 exports d'ÉTAT à la volée (PAS des documents officiels : pas de
+ * 10 exports d'ÉTAT à la volée (PAS des documents officiels : pas de
  * DocumentGenere, pas de numérotation, pas de rétention) rendus via le
  * template générique `templates/registre.tsx` :
  *   - reclamations   : registre des réclamations (ind. 31)
@@ -17,6 +17,11 @@
  *                      des intervenants (ind. 22) — ajouté le 2026-10-01 : le
  *                      dossier remis n'en portait AUCUNE trace, alors que la
  *                      preuve existe en base, fiche formateur par fiche.
+ *
+ *   - habilitations  : habilitations des intervenants par formation, actives ET
+ *                      retirées (ind. 21) — ajouté par le lot L14 : la preuve
+ *                      qu'un intervenant était habilité à une date donnée vivait
+ *                      en base sans jamais figurer au dossier remis.
  *
  * 🔴 Constat du dossier ZIP du 2026-09-30 : l'indicateur 30 n'avait AUCUNE
  * preuve de recueil des appréciations dans le dossier remis, et l'inventaire
@@ -42,6 +47,7 @@ import { renderPdfToBuffer } from "@/server/qualiopi/documents/render";
 import { getOrganismeIdentite } from "@/server/qualiopi/documents/organisme";
 import { RegistrePdf, type RegistreData } from "@/server/qualiopi/documents/templates/registre";
 import { parisDateISO } from "@/server/qualiopi/presence/time";
+import { formatSaisieParis, lireRegistreVeille } from "@/server/qualiopi/veille/registre-veille";
 import {
   LIBELLES_GRAVITE,
   LIBELLES_PROBABILITE,
@@ -66,6 +72,7 @@ export const REGISTRE_TYPES = [
   "appreciations",
   "moyens",
   "developpement_competences",
+  "habilitations",
 ] as const;
 
 export type RegistreType = (typeof REGISTRE_TYPES)[number];
@@ -186,32 +193,51 @@ async function buildReclamations(): Promise<Omit<RegistreData, "dateEdition">> {
   };
 }
 
+/**
+ * 🔴 Chantier QNC, L10 — DEUX dates par ligne : celle de l'information et celle
+ * de la SAISIE (serveur, heure de Paris), lues par le même module que l'écran
+ * (`registre-veille.ts`). Veille tracée allumée : la décision et son auteur
+ * réel, la pièce modifiée, et l'état (une version archivée reste au journal).
+ */
 async function buildVeille(): Promise<Omit<RegistreData, "dateEdition">> {
-  const rows = await prisma.veille.findMany({
-    select: {
-      dateVeille: true,
-      type: true,
-      titre: true,
-      source: true,
-      impact: true,
-      actionDecidee: true,
-    },
-    orderBy: { dateVeille: "desc" },
-    take: EXPORT_TAKE,
-  });
+  const registre = await lireRegistreVeille({ take: EXPORT_TAKE }, prisma as never);
+  const colonnes = [
+    "Date de l'information",
+    "Saisie le",
+    "Type",
+    "Titre",
+    "Source",
+    "Impact",
+    "Action décidée",
+  ];
   return {
     titre: "Journal de veille",
     sousTitre:
-      "Veille légale et réglementaire, emplois/métiers et pédagogique/technologique (indicateurs 23, 24 et 25).",
-    colonnes: ["Date", "Type", "Titre", "Source", "Impact", "Action décidée"],
-    lignes: rows.map((v) => [
-      formatDateFr(v.dateVeille),
-      VEILLE_TYPE_LABELS[v.type] ?? v.type,
-      v.titre,
-      v.source,
-      v.impact ?? "",
-      v.actionDecidee ?? "",
-    ]),
+      "Veille légale et réglementaire, emplois/métiers et pédagogique/technologique (indicateurs 23, 24 et 25)." +
+      (registre.tracee
+        ? " Rien ne s'efface : une entrée corrigée, décidée ou retirée reste au journal, archivée, avec son motif."
+        : ""),
+    colonnes: registre.tracee ? [...colonnes, "Décidée par", "Pièce modifiée", "État"] : colonnes,
+    lignes: registre.lignes.map((v) => {
+      const base = [
+        formatDateFr(v.dateVeille),
+        formatSaisieParis(v.saisieLe),
+        VEILLE_TYPE_LABELS[v.type] ?? v.type,
+        v.titre,
+        v.source,
+        v.impact ?? "",
+        v.actionDecidee ?? "",
+      ];
+      if (!registre.tracee) return base;
+      return [
+        ...base,
+        v.decision !== null ? `${v.decision.par}, le ${formatSaisieParis(v.decision.le)}` : "",
+        v.decision?.pieceModifiee ?? "",
+        v.archivage !== null
+          ? `Archivée le ${formatSaisieParis(v.archivage.le)} — ${v.archivage.motif}`
+          : "En vigueur",
+      ];
+    }),
     mentionBasDePage: MENTION_EXPORT,
   };
 }
@@ -597,6 +623,54 @@ async function buildDeveloppementCompetences(): Promise<Omit<RegistreData, "date
   };
 }
 
+/**
+ * Habilitations des intervenants (ind. 21), par formation — actives ET retirées.
+ *
+ * Aucun filtre sur `retireAt` : un retrait se date, il ne s'efface pas. Un
+ * auditeur qui remonte une session passée doit y retrouver que l'intervenant
+ * était habilité À CETTE DATE, même si l'habilitation a été retirée depuis.
+ * Le motif du retrait est facultatif (cf. `setTrainerHabilitationsAction`) :
+ * cellule vide quand il n'a pas été renseigné, jamais une valeur inventée.
+ */
+async function buildHabilitations(): Promise<Omit<RegistreData, "dateEdition">> {
+  const rows = await prisma.trainerHabilitation.findMany({
+    select: {
+      habiliteAt: true,
+      retireAt: true,
+      motifRetrait: true,
+      note: true,
+      trainer: { select: { nom: true, prenom: true, statut: true } },
+      formation: { select: { titre: true } },
+    },
+    orderBy: { habiliteAt: "desc" },
+    take: EXPORT_TAKE,
+  });
+  return {
+    titre: "Registre des habilitations des intervenants",
+    sousTitre:
+      "Habilitations prononcées par formation, actives et retirées, avec leurs dates (indicateur 21 du référentiel national qualité).",
+    colonnes: [
+      "Intervenant",
+      "Statut",
+      "Formation",
+      "Habilité le",
+      "Situation",
+      "Motif du retrait",
+      "Note",
+    ],
+    lignes: rows.map((h) => [
+      nomPersonne(h.trainer),
+      TRAINER_STATUT_LABELS[h.trainer.statut] ?? h.trainer.statut,
+      h.formation.titre,
+      formatDateFr(h.habiliteAt),
+      h.retireAt ? `Retirée le ${formatDateFr(h.retireAt)}` : "Active",
+      h.motifRetrait ?? "",
+      h.note ?? "",
+    ]),
+    mentionBasDePage: MENTION_EXPORT,
+  };
+}
+
 const BUILDERS: Record<RegistreType, () => Promise<Omit<RegistreData, "dateEdition">>> = {
   reclamations: buildReclamations,
   veille: buildVeille,
@@ -607,6 +681,7 @@ const BUILDERS: Record<RegistreType, () => Promise<Omit<RegistreData, "dateEditi
   appreciations: buildAppreciations,
   moyens: buildMoyens,
   developpement_competences: buildDeveloppementCompetences,
+  habilitations: buildHabilitations,
 };
 
 const FILENAMES: Record<RegistreType, string> = {
@@ -619,6 +694,7 @@ const FILENAMES: Record<RegistreType, string> = {
   appreciations: "registre-appreciations",
   moyens: "inventaire-moyens",
   developpement_competences: "registre-developpement-competences",
+  habilitations: "registre-habilitations",
 };
 
 /** Contenu d'un registre (titre, colonnes, lignes), sans rendu PDF. */

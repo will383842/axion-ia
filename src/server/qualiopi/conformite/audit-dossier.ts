@@ -41,7 +41,8 @@ import {
 import { joindreFichiersPiecesCompetence } from "@/server/qualiopi/conformite/pieces-competence-zip";
 import { pieceAUnFichier } from "@/server/qualiopi/trainers/piece-competence";
 import { renderRegistrePdfBuffer, REGISTRE_TYPES } from "@/server/qualiopi/registres/registres-pdf";
-import { evaluerCouvertureOff32 } from "@/server/qualiopi/revues/plan-actions";
+import { evaluerOff32EnVigueur } from "@/server/qualiopi/amelioration/off32-registre";
+import { regleVeilleEnVigueur } from "@/server/qualiopi/veille/regle-veille";
 import { getObjectBufferR2, isR2Configured, documentPdfKey } from "@/lib/r2-storage";
 import { libelleTypeDocument } from "@/server/qualiopi/documents/libelles-type-document";
 import {
@@ -425,10 +426,14 @@ export async function genererManifesteAudit(): Promise<ManifesteAuditResult> {
   // qu'on donne à lire à l'auditeur. Les deux lisent désormais le même prédicat,
   // pour que la prochaine borne qui bouge les fasse bouger ensemble.
   const maintenantVeille = new Date();
+  // Chantier QNC, L10 — même règle en vigueur que la matrice (interrupteur veille).
+  const regleVeille = await regleVeilleEnVigueur();
   const [nbVeilleLegale, nbVeilleMetiers, nbVeillePedagogique] = await Promise.all([
-    prisma.veille.count({ where: whereVeilleExploitee("legale", maintenantVeille) }),
-    prisma.veille.count({ where: whereVeilleExploitee("metiers", maintenantVeille) }),
-    prisma.veille.count({ where: whereVeilleExploitee("pedagogique", maintenantVeille) }),
+    prisma.veille.count({ where: whereVeilleExploitee("legale", maintenantVeille, regleVeille) }),
+    prisma.veille.count({ where: whereVeilleExploitee("metiers", maintenantVeille, regleVeille) }),
+    prisma.veille.count({
+      where: whereVeilleExploitee("pedagogique", maintenantVeille, regleVeille),
+    }),
   ]);
 
   // off.26 : nom du référent handicap
@@ -484,7 +489,7 @@ export async function genererManifesteAudit(): Promise<ManifesteAuditResult> {
       },
     })
     .catch(() => null);
-  const couvertureOff32 = evaluerCouvertureOff32(revueAnnuelleOff32, maintenantOff32, {
+  const couvertureOff32 = await evaluerOff32EnVigueur(revueAnnuelleOff32, maintenantOff32, {
     // Même grille que la matrice : l'analyse des risques est exigée par la
     // grille du 1er novembre 2026, donc par la date de l'audit.
     exigeAnalyseRisques: conformite.referentiel.grille === "rnq-2026",

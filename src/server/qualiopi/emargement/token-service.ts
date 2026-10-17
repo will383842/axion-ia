@@ -23,6 +23,14 @@ import { prisma } from "@/lib/prisma";
 import { signMagicToken, verifyMagicToken } from "@/lib/magic-token";
 import { lienVisioRemis } from "@/server/qualiopi/lieu/format-lieu";
 import type { CoachingSignataireRole } from "../../../../prisma/generated/client";
+import { emargementParDemiJourneePour } from "./demi-journee/activation";
+import { lireDemiJourneesInscription } from "./demi-journee/lecture";
+import {
+  demiJourneeCible,
+  fenetreSignature,
+  type DemiJourneePrevue,
+  type FenetreSignature,
+} from "./demi-journee/fenetre";
 
 /**
  * Fenêtre de signature après la fin de la session — décision D13.
@@ -65,7 +73,13 @@ export type MotifRefusEmission =
    * peut rien corriger. En présentiel l'oubli se rattrape — on est quelque
    * part, on s'appelle. À distance il n'y a pas de « quelque part ».
    */
-  | "distanciel_sans_lien";
+  | "distanciel_sans_lien"
+  /**
+   * QNC L06 — interrupteur `qualiopi.emargement.actif` : plus aucune
+   * demi-journée à venir ou en cours pour ce stagiaire. Le lien ne se rouvre
+   * pas après coup ; un oubli se traite par un rattrapage de l'organisme.
+   */
+  | "hors_demi_journee";
 
 export class TokenEmargementError extends Error {
   readonly motif: MotifRefusEmission;
@@ -174,7 +188,13 @@ export async function creerTokenInscription(input: {
   destinataireEmail: string;
   createdIpHash?: string | null;
   maintenant?: Date;
-}): Promise<{ token: string; tokenId: string; expiresAt: Date }> {
+}): Promise<{
+  token: string;
+  tokenId: string;
+  expiresAt: Date;
+  /** QNC L06 : la demi-journée que sert ce jeton. Absente quand l'interrupteur est éteint. */
+  demiJournee?: { prevue: DemiJourneePrevue; fenetre: FenetreSignature };
+}> {
   const maintenant = input.maintenant ?? new Date();
 
   // Même refus, mot pour mot, que sur le chemin AFEST : un lien qui n'est lié à
@@ -200,6 +220,7 @@ export async function creerTokenInscription(input: {
     select: {
       lieuType: true,
       lieuVisioUrl: true,
+      estTestInterne: true,
       jours: { select: { horairesConfirmes: true } },
     },
   });
@@ -250,7 +271,30 @@ export async function creerTokenInscription(input: {
     );
   }
 
-  const expiresAt = calculerExpiration(input.dateFinSession, maintenant);
+  // 🔴 QNC L06 — UN JETON PAR STAGIAIRE ET PAR DEMI-JOURNÉE (interrupteur
+  // `qualiopi.emargement.actif`). Le jeton expire à la FIN de la demi-journée
+  // qu'il sert — celle en cours, sinon la prochaine — et non plus 48 h après la
+  // session : le plancher `maintenant + 48 h` de `calculerExpiration`, qui
+  // rouvrait un lien sans limite à toute émission tardive, ne s'applique plus.
+  // Éteint : `calculerExpiration`, à l'identique.
+  let expiresAt: Date;
+  let demiJournee: { prevue: DemiJourneePrevue; fenetre: FenetreSignature } | undefined;
+  if (await emargementParDemiJourneePour({ estTestInterne: session?.estTestInterne })) {
+    const cible = demiJourneeCible(
+      await lireDemiJourneesInscription(input.enrollmentId),
+      maintenant,
+    );
+    if (cible === null) {
+      throw new TokenEmargementError(
+        "hors_demi_journee",
+        "Aucune demi-journée n'est en cours ni à venir pour ce stagiaire : le lien de signature ne s'ouvre que pendant la demi-journée. Si les créneaux ne sont pas générés, générez-les ; si la demi-journée est passée, saisissez un rattrapage motivé.",
+      );
+    }
+    demiJournee = { prevue: cible, fenetre: fenetreSignature(cible) };
+    expiresAt = demiJournee.fenetre.fin;
+  } else {
+    expiresAt = calculerExpiration(input.dateFinSession, maintenant);
+  }
 
   // ⚠️ L'adresse N'ENTRE PAS dans le jeton, contrairement au chemin AFEST.
   //
@@ -289,7 +333,7 @@ export async function creerTokenInscription(input: {
     });
   });
 
-  return { token, tokenId: ligne.id, expiresAt };
+  return { token, tokenId: ligne.id, expiresAt, ...(demiJournee ? { demiJournee } : {}) };
 }
 
 /**

@@ -183,6 +183,13 @@ const updateTrainerSchema = z.object({
 const setHabilitationsSchema = z.object({
   id: z.string().uuid(),
   formationsHabilitees: z.array(z.string().uuid()),
+  /**
+   * L14 — pourquoi des habilitations sont retirées. FACULTATIF : le formulaire
+   * d'habilitation sert aussi à habiliter et à ajuster, et le flux existant
+   * (dont celui des formateurs indépendants) ne l'envoie pas. Absent ou blanc,
+   * rien n'est écrit ; il n'est jamais exigé ni inventé.
+   */
+  motifRetrait: z.string().trim().max(500).optional(),
 });
 
 const verifySousTraitantSchema = z.object({
@@ -504,6 +511,7 @@ export async function setTrainerHabilitationsAction(
   const parsed = setHabilitationsSchema.safeParse(input);
   if (!parsed.success) return { error: "Données invalides" };
   const { id, formationsHabilitees: demandees } = parsed.data;
+  const motifRetrait = parsed.data.motifRetrait ? parsed.data.motifRetrait : undefined;
 
   // 🔴 Constaté EN PRODUCTION le 2026-07-26. Le tableau legacy tolère des ids de
   // formations supprimées ; celui du dirigeant en portait 33, tous orphelins.
@@ -558,7 +566,11 @@ export async function setTrainerHabilitationsAction(
           formationId: { notIn: formationsHabilitees },
           retireAt: null,
         },
-        data: { retireAt: new Date(), retireById: session.userId },
+        data: {
+          retireAt: new Date(),
+          retireById: session.userId,
+          ...(motifRetrait !== undefined ? { motifRetrait } : {}),
+        },
       });
       if (formationsHabilitees.length > 0) {
         await tx.trainerHabilitation.createMany({
@@ -588,7 +600,11 @@ export async function setTrainerHabilitationsAction(
     action: "qualiopi.trainer.habilitations",
     targetType: "Trainer",
     targetId: id,
-    changes: { formationsHabilitees, orphelinsEcartes: ecartees },
+    changes: {
+      formationsHabilitees,
+      orphelinsEcartes: ecartees,
+      ...(motifRetrait !== undefined ? { motifRetrait } : {}),
+    },
     session,
   });
 

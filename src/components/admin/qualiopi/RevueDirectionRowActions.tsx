@@ -189,11 +189,18 @@ export interface RevueDirectionRowActionsProps {
     risques: readonly unknown[];
   };
   updateAction: typeof updateRevueDirectionAction;
+  /**
+   * Chantier QNC, L10 — registre AXI-AMC allumé (`qualiopi.amelioration.actif`) :
+   * une revue validée est en lecture seule, et le plan d'actions n'est plus
+   * qu'un historique (affiché, jamais renvoyé) : les actions vivent au registre.
+   */
+  registreAmc?: boolean;
 }
 
 export function RevueDirectionRowActions({
   revue,
   updateAction,
+  registreAmc = false,
 }: RevueDirectionRowActionsProps): React.ReactElement {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
@@ -266,7 +273,12 @@ export function RevueDirectionRowActions({
         decisions: versListe(decisionsRaw, revue.decisions),
         // Les lignes sans libellé sont écartées ici comme côté serveur : une
         // ligne qu'on vient d'ajouter et qu'on n'a pas remplie n'est pas une action.
-        planActions: actions.filter((a) => a.action.trim().length > 0),
+        // Registre AXI-AMC allumé : le plan n'est plus qu'un historique. Il est
+        // renvoyé TEL QU'IL A ÉTÉ LU, ce que le serveur reconnaît comme « aucune
+        // écriture » ; les actions vivent au registre.
+        planActions: registreAmc
+          ? [...revue.planActions]
+          : actions.filter((a) => a.action.trim().length > 0),
         risques: risquesAEnvoyer(risques),
       });
       if ("error" in result) {
@@ -276,6 +288,14 @@ export function RevueDirectionRowActions({
         router.refresh();
       }
     });
+  }
+
+  if (registreAmc && revue.statut === "validee") {
+    return (
+      <p className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
+        Validée : verrouillée. Les suites s&apos;écrivent au registre AXI-AMC.
+      </p>
+    );
   }
 
   if (!open) {
@@ -563,153 +583,165 @@ export function RevueDirectionRowActions({
           `min-inline-size: min-content` sur tout `<fieldset>`, ce qui l'empêche de
           rétrécir et pousse la page hors de l'écran (défaut payé le 2026-08-22 sur
           le formulaire de candidature). */}
-      <fieldset className="min-w-0 border-0 p-0 [min-inline-size:0]">
-        <legend className={labelCls}>Plan d&apos;actions d&apos;amélioration</legend>
-
-        {actions.length === 0 && (
-          <p className="mb-[var(--space-admin-2)] text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-warning)]">
-            Aucune action d&apos;amélioration. L&apos;indicateur 32 porte sur la mise en œuvre de
-            mesures, pas sur la tenue de la revue.
+      {registreAmc ? (
+        <div>
+          <p className={labelCls}>Plan d&apos;actions d&apos;amélioration (historique)</p>
+          <p className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
+            {actions.length} action{actions.length > 1 ? "s" : ""} saisie
+            {actions.length > 1 ? "s" : ""} avant le registre, conservée
+            {actions.length > 1 ? "s" : ""} pour l&apos;historique. Les actions s&apos;ouvrent et se
+            suivent désormais au registre AXI-AMC, plus bas sur cette page.
           </p>
-        )}
+        </div>
+      ) : (
+        <fieldset className="min-w-0 border-0 p-0 [min-inline-size:0]">
+          <legend className={labelCls}>Plan d&apos;actions d&apos;amélioration</legend>
 
-        <ul className="flex flex-col gap-[var(--space-admin-3)]">
-          {actions.map((a, i) => {
-            const idBase = `revuedirection-action-${i}`;
-            const close = STATUTS_CLOS.includes(a.statut);
-            return (
-              <li
-                key={idBase}
-                className="rounded-[var(--radius-admin-sm)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] p-[var(--space-admin-3)]"
-              >
-                <label htmlFor={`${idBase}-libelle`} className={microLabelCls}>
-                  Action décidée
-                </label>
-                <input
-                  id={`${idBase}-libelle`}
-                  type="text"
-                  value={a.action}
-                  onChange={(e) => patcherAction(i, { action: e.target.value })}
-                  disabled={isPending}
-                  placeholder="Ce qui doit être fait"
-                  className={inputCls}
-                />
+          {actions.length === 0 && (
+            <p className="mb-[var(--space-admin-2)] text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-warning)]">
+              Aucune action d&apos;amélioration. L&apos;indicateur 32 porte sur la mise en œuvre de
+              mesures, pas sur la tenue de la revue.
+            </p>
+          )}
 
-                <div className="mt-[var(--space-admin-2)] grid grid-cols-1 gap-[var(--space-admin-2)] sm:grid-cols-2">
-                  <div className="min-w-0">
-                    <label htmlFor={`${idBase}-responsable`} className={microLabelCls}>
-                      Responsable
-                    </label>
-                    <input
-                      id={`${idBase}-responsable`}
-                      type="text"
-                      value={a.responsable}
-                      onChange={(e) => patcherAction(i, { responsable: e.target.value })}
-                      disabled={isPending}
-                      placeholder="Qui la porte"
-                      className={inputCls}
-                    />
-                  </div>
-                  <div className="min-w-0">
-                    <label htmlFor={`${idBase}-echeance`} className={microLabelCls}>
-                      Échéance
-                    </label>
-                    <input
-                      id={`${idBase}-echeance`}
-                      type="date"
-                      value={a.echeance ?? ""}
-                      onChange={(e) =>
-                        patcherAction(i, {
-                          echeance: e.target.value.length > 0 ? e.target.value : null,
-                        })
-                      }
-                      disabled={isPending}
-                      className={inputCls}
-                    />
-                  </div>
-                  <div className="min-w-0">
-                    <label htmlFor={`${idBase}-statut`} className={microLabelCls}>
-                      État
-                    </label>
-                    <select
-                      id={`${idBase}-statut`}
-                      value={a.statut}
-                      onChange={(e) => {
-                        const suivant = e.target.value as StatutActionAmelioration;
-                        patcherAction(i, {
-                          statut: suivant,
-                          // Passer en « faite »/« abandonnée » propose la date du
-                          // jour ; revenir en arrière efface la clôture, sinon une
-                          // action rouverte resterait datée comme close.
-                          clotureAt: STATUTS_CLOS.includes(suivant)
-                            ? (a.clotureAt ?? new Date().toISOString().slice(0, 10))
-                            : null,
-                        });
-                      }}
-                      disabled={isPending}
-                      className={inputCls}
-                    >
-                      {STATUTS_ACTION_AMELIORATION.map((s) => (
-                        <option key={s} value={s}>
-                          {LIBELLES_STATUT_ACTION[s]}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-                  {close && (
+          <ul className="flex flex-col gap-[var(--space-admin-3)]">
+            {actions.map((a, i) => {
+              const idBase = `revuedirection-action-${i}`;
+              const close = STATUTS_CLOS.includes(a.statut);
+              return (
+                <li
+                  key={idBase}
+                  className="rounded-[var(--radius-admin-sm)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] p-[var(--space-admin-3)]"
+                >
+                  <label htmlFor={`${idBase}-libelle`} className={microLabelCls}>
+                    Action décidée
+                  </label>
+                  <input
+                    id={`${idBase}-libelle`}
+                    type="text"
+                    value={a.action}
+                    onChange={(e) => patcherAction(i, { action: e.target.value })}
+                    disabled={isPending}
+                    placeholder="Ce qui doit être fait"
+                    className={inputCls}
+                  />
+
+                  <div className="mt-[var(--space-admin-2)] grid grid-cols-1 gap-[var(--space-admin-2)] sm:grid-cols-2">
                     <div className="min-w-0">
-                      <label htmlFor={`${idBase}-cloture`} className={microLabelCls}>
-                        Date de clôture
+                      <label htmlFor={`${idBase}-responsable`} className={microLabelCls}>
+                        Responsable
                       </label>
                       <input
-                        id={`${idBase}-cloture`}
+                        id={`${idBase}-responsable`}
+                        type="text"
+                        value={a.responsable}
+                        onChange={(e) => patcherAction(i, { responsable: e.target.value })}
+                        disabled={isPending}
+                        placeholder="Qui la porte"
+                        className={inputCls}
+                      />
+                    </div>
+                    <div className="min-w-0">
+                      <label htmlFor={`${idBase}-echeance`} className={microLabelCls}>
+                        Échéance
+                      </label>
+                      <input
+                        id={`${idBase}-echeance`}
                         type="date"
-                        value={a.clotureAt ?? ""}
+                        value={a.echeance ?? ""}
                         onChange={(e) =>
                           patcherAction(i, {
-                            clotureAt: e.target.value.length > 0 ? e.target.value : null,
+                            echeance: e.target.value.length > 0 ? e.target.value : null,
                           })
                         }
                         disabled={isPending}
                         className={inputCls}
                       />
                     </div>
-                  )}
-                </div>
+                    <div className="min-w-0">
+                      <label htmlFor={`${idBase}-statut`} className={microLabelCls}>
+                        État
+                      </label>
+                      <select
+                        id={`${idBase}-statut`}
+                        value={a.statut}
+                        onChange={(e) => {
+                          const suivant = e.target.value as StatutActionAmelioration;
+                          patcherAction(i, {
+                            statut: suivant,
+                            // Passer en « faite »/« abandonnée » propose la date du
+                            // jour ; revenir en arrière efface la clôture, sinon une
+                            // action rouverte resterait datée comme close.
+                            clotureAt: STATUTS_CLOS.includes(suivant)
+                              ? (a.clotureAt ?? new Date().toISOString().slice(0, 10))
+                              : null,
+                          });
+                        }}
+                        disabled={isPending}
+                        className={inputCls}
+                      >
+                        {STATUTS_ACTION_AMELIORATION.map((s) => (
+                          <option key={s} value={s}>
+                            {LIBELLES_STATUT_ACTION[s]}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                    {close && (
+                      <div className="min-w-0">
+                        <label htmlFor={`${idBase}-cloture`} className={microLabelCls}>
+                          Date de clôture
+                        </label>
+                        <input
+                          id={`${idBase}-cloture`}
+                          type="date"
+                          value={a.clotureAt ?? ""}
+                          onChange={(e) =>
+                            patcherAction(i, {
+                              clotureAt: e.target.value.length > 0 ? e.target.value : null,
+                            })
+                          }
+                          disabled={isPending}
+                          className={inputCls}
+                        />
+                      </div>
+                    )}
+                  </div>
 
-                <div className="mt-[var(--space-admin-2)] flex flex-wrap items-center justify-between gap-[var(--space-admin-2)]">
-                  <span className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
-                    {a.source.length > 0 ? `Origine : ${a.source}` : "Origine non renseignée"}
-                    {a.ajouteAt.length > 0 ? ` · ajoutée le ${a.ajouteAt.slice(0, 10)}` : ""}
-                  </span>
-                  <button
-                    type="button"
-                    onClick={() => retirerAction(i)}
-                    disabled={isPending}
-                    className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)] underline"
-                  >
-                    Retirer cette action
-                  </button>
-                </div>
-              </li>
-            );
-          })}
-        </ul>
+                  <div className="mt-[var(--space-admin-2)] flex flex-wrap items-center justify-between gap-[var(--space-admin-2)]">
+                    <span className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
+                      {a.source.length > 0 ? `Origine : ${a.source}` : "Origine non renseignée"}
+                      {a.ajouteAt.length > 0 ? ` · ajoutée le ${a.ajouteAt.slice(0, 10)}` : ""}
+                    </span>
+                    <button
+                      type="button"
+                      onClick={() => retirerAction(i)}
+                      disabled={isPending}
+                      className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)] underline"
+                    >
+                      Retirer cette action
+                    </button>
+                  </div>
+                </li>
+              );
+            })}
+          </ul>
 
-        <button
-          type="button"
-          onClick={() => setActions((prev) => [...prev, actionVierge()])}
-          disabled={isPending}
-          className="mt-[var(--space-admin-3)] rounded-[var(--radius-admin-sm)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] px-[var(--space-admin-3)] py-[var(--space-admin-1)] text-[length:var(--text-admin-xs)] font-medium text-[color:var(--color-admin-fg-muted)] transition-opacity hover:opacity-80"
-        >
-          Ajouter une action
-        </button>
+          <button
+            type="button"
+            onClick={() => setActions((prev) => [...prev, actionVierge()])}
+            disabled={isPending}
+            className="mt-[var(--space-admin-3)] rounded-[var(--radius-admin-sm)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] px-[var(--space-admin-3)] py-[var(--space-admin-1)] text-[length:var(--text-admin-xs)] font-medium text-[color:var(--color-admin-fg-muted)] transition-opacity hover:opacity-80"
+          >
+            Ajouter une action
+          </button>
 
-        <p className="mt-[var(--space-admin-2)] text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
-          Les constats reportés depuis un autre écran gardent leur origine et leur date
-          d&apos;ajout.
-        </p>
-      </fieldset>
+          <p className="mt-[var(--space-admin-2)] text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
+            Les constats reportés depuis un autre écran gardent leur origine et leur date
+            d&apos;ajout.
+          </p>
+        </fieldset>
+      )}
 
       {error && (
         <p
