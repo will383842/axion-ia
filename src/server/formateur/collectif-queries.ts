@@ -24,7 +24,15 @@
  */
 
 import { prisma } from "@/lib/prisma";
-import { besoinAdaptationDeclare } from "@/server/qualiopi/adaptation/reponse-organisme";
+import {
+  besoinAdaptationDeclare,
+  estReponseAucuneAdaptation,
+  reponseAdaptationConsignee,
+} from "@/server/qualiopi/adaptation/reponse-organisme";
+import {
+  dossierCompletActifPour,
+  lireEtatDossierSession,
+} from "@/server/qualiopi/dossier-session/interrupteur";
 import { colonneDeclarationDisponible } from "@/server/qualiopi/adaptation/colonne-declaration";
 import { resoudreAppartenance, type RoleFormateur } from "./session-membership";
 
@@ -111,6 +119,8 @@ export async function getTrainingSessionForFormateur(sessionId: string, trainerI
       dateFin: true,
       dureeReelleHeures: true,
       nbParticipantsPrevus: true,
+      // Chantier QNC, L11 — cible de l'interrupteur en position `essai`.
+      estTestInterne: true,
       // 2026-09-03 — le formateur voyait ville et code postal, jamais la salle,
       // l'adresse, le lien visio, le contact sur place ni les consignes d'accès.
       // Ces champs sont POUR LUI : ils s'affichent ici et partent dans sa
@@ -144,6 +154,10 @@ export async function getTrainingSessionForFormateur(sessionId: string, trainerI
           id: true,
           statut: true,
           tauxPresencePct: true,
+          // Chantier QNC, L11 — la MESURE consignée par l'organisme (« salle
+          // accessible », « pauses »…), jamais le besoin déclaré. Rendue au
+          // formateur seulement interrupteur allumé (cf. plus bas).
+          adaptationsRealisees: true,
           trainee: {
             select: {
               nom: true,
@@ -170,6 +184,14 @@ export async function getTrainingSessionForFormateur(sessionId: string, trainerI
   });
 
   if (session === null) return null;
+
+  // Chantier QNC, L11 — interrupteur `qualiopi.dossier_session.actif` (cible =
+  // la session) : la fiche formateur est LIMITÉE AUX MESURES. Le formateur lit
+  // ce que l'organisme a décidé pour adapter la séance ; il ne lit plus qu'un
+  // besoin (donnée de santé) a été déclaré. Éteint : rien ne change.
+  const limiteeAuxMesures = dossierCompletActifPour(await lireEtatDossierSession(), {
+    estTestInterne: session.estTestInterne === true,
+  });
 
   const app = resoudreAppartenance({
     estPrincipalFk: session.formateurPrincipalId === trainerId,
@@ -209,11 +231,29 @@ export async function getTrainingSessionForFormateur(sessionId: string, trainerI
       prenom: e.trainee.prenom,
       entreprise: e.trainee.entreprise,
       fonction: e.trainee.fonction,
-      besoinAdaptationDeclare: besoinAdaptationDeclare({
-        situationHandicap: e.trainee.situationHandicap,
-        reponsesPositionnements: (e.questionnaires ?? []).map((q) => q.reponses),
-        besoinAdaptationDeclareAt: e.besoinAdaptationDeclareAt ?? null,
-      }),
+      // `null` = non communiqué : la fiche est limitée aux mesures.
+      besoinAdaptationDeclare: limiteeAuxMesures
+        ? null
+        : besoinAdaptationDeclare({
+            situationHandicap: e.trainee.situationHandicap,
+            reponsesPositionnements: (e.questionnaires ?? []).map((q) => q.reponses),
+            besoinAdaptationDeclareAt: e.besoinAdaptationDeclareAt ?? null,
+          }),
+      mesuresAdaptation: limiteeAuxMesures ? mesuresPourFormateur(e.adaptationsRealisees) : null,
     })),
   };
+}
+
+/**
+ * Chantier QNC, L11 — la mesure d'adaptation telle que le formateur la lit :
+ * la réponse CONSIGNÉE par l'organisme, ou rien. « Aucune adaptation
+ * nécessaire » se dit en clair ; une réponse vide ne se lit pas.
+ */
+export function mesuresPourFormateur(
+  adaptationsRealisees: string | null | undefined,
+): string | null {
+  const v = adaptationsRealisees ?? null;
+  if (!reponseAdaptationConsignee(v)) return null;
+  if (estReponseAucuneAdaptation(v)) return "aucune adaptation nécessaire après échange";
+  return (v ?? "").trim();
 }

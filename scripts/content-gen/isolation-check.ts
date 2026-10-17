@@ -604,19 +604,6 @@ const ALLOWED_PATTERNS: ReadonlyArray<RegExp> = [
   // trente écrans mesurés propres, pour un motif purement lexical — et la
   // console content-gen serait le seul pan de l'admin sans garde d'accessibilité.
   /^tests\/e2e\/a11y-admin\.spec\.ts$/,
-  // check-positionnement.ts (2026-08-30) — garde du repositionnement PME/ETI/
-  // grands groupes. Le marqueur vient de DEUX chemins de scope écrits en clair
-  // (`src/server/content-gen/generators`, `.../brand`), parce que les prompts
-  // sont l'endroit d'où la régression revient : `blog-article.ts` ordonnait
-  // encore d'ajouter « pour TPE/PME » aux metaTitle courts. La garde LIT ces
-  // dossiers avec `fs.readdirSync` ; elle n'importe rien, n'exécute rien du
-  // pipeline, et ne connaît du contenu que des chaînes de caractères.
-  // Exactement le cas `services-ssot.spec.ts` ci-dessus : le marqueur est une
-  // string de chemin dans la propre liste de scopes du contrôle.
-  // ⚠️ Réécrire ces chemins pour esquiver la détection rendrait la garde
-  // illisible et son scope indevinable — c'est ce que l'en-tête de cette liste
-  // interdit en substance.
-  /^scripts\/check-positionnement\.ts$/,
   // Console editoriale (2026-08-21) — trois fichiers qui NOMMENT `content-gen`
   // sans en importer une seule ligne. Le marqueur vient de la prose, et la
   // prose dit precisement pourquoi le branchement N'A PAS ete fait :

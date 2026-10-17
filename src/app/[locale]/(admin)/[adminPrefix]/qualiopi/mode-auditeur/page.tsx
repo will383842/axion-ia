@@ -15,6 +15,7 @@
  * /qualiopi/conformite redirige ici en 308.
  */
 
+import { BadgeEssai } from "@/components/admin/qualiopi/BadgeEssai";
 import type { Metadata } from "next";
 import Link from "next/link";
 
@@ -227,8 +228,8 @@ export default async function QualiopiModeAuditeurPage({ params, searchParams }:
                       className="font-medium underline"
                     >
                       {s.numero}
-                    </Link>{" "}
-                    — {s.titre}
+                    </Link>
+                    {s.estTestInterne && <BadgeEssai />} — {s.titre}
                     <span className="ml-[var(--space-admin-2)] text-[color:var(--color-admin-fg-muted)]">
                       du {jourParis(s.dateDebut)} au {jourParis(s.dateFin)}
                     </span>

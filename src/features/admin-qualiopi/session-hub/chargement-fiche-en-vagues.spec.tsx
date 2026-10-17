@@ -74,6 +74,7 @@ function sessionFixture() {
     lieuVille: null,
     lieuSalle: null,
     lieuVisioUrl: null,
+    estTestInterne: false,
     contactSurPlaceNom: null,
     contactSurPlaceTelephone: null,
     consignesAcces: null,
@@ -298,11 +299,15 @@ vi.mock("@/components/admin/qualiopi/MissionFormateurPanel", () => ({
   MissionFormateurPanel: Composant,
 }));
 vi.mock("@/components/admin/qualiopi/SessionLieuForm", () => ({ SessionLieuForm: Composant }));
+vi.mock("@/components/admin/qualiopi/BlocMoyensSession", () => ({ BlocMoyensSession: Composant }));
 vi.mock("@/components/admin/qualiopi/SessionDatesForm", () => ({ SessionDatesForm: Composant }));
 vi.mock("@/components/admin/qualiopi/InterEntreprisesSection", () => ({
   InterEntreprisesSection: Composant,
 }));
 vi.mock("@/components/admin/qualiopi/DocumentsSection", () => ({ DocumentsSection: Composant }));
+vi.mock("@/components/admin/qualiopi/RecueilBesoinSession", () => ({
+  RecueilBesoinSession: Composant,
+}));
 vi.mock("@/components/admin/qualiopi/DossierSessionButton", () => ({
   DossierSessionButton: Composant,
 }));

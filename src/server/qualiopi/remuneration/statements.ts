@@ -33,6 +33,7 @@
  * cohérent avec la vue prévisionnelle.
  */
 
+import { SESSION_REELLE } from "@/server/qualiopi/essai/perimetre";
 import type { Prisma } from "../../../../prisma/generated/client";
 import { prisma } from "@/lib/prisma";
 import {
@@ -130,7 +131,9 @@ async function lirePrestations(periode: Periode): Promise<PrestationACalculer[]>
 
   const [sessions, coachings, audits] = await Promise.all([
     prisma.trainingSession.findMany({
-      where: { dateDebut: { gte: debut, lt: fin } },
+      // QNC L02 — une session d'ESSAI ne rémunère personne : aucune ligne
+      // d'honoraires, donc aucune autofacture.
+      where: { ...SESSION_REELLE, dateDebut: { gte: debut, lt: fin } },
       select: {
         id: true,
         dateDebut: true,

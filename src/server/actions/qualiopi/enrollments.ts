@@ -104,11 +104,18 @@ export async function enrollTraineeAction(input: {
 
   let created: { id: string };
   try {
+    // QNC L02 — l'inscription à une session d'ESSAI est d'essai elle aussi :
+    // elle hérite du drapeau de sa session, une fois pour toutes.
+    const cible = await prisma.trainingSession.findUnique({
+      where: { id: v.sessionId },
+      select: { estTestInterne: true },
+    });
     created = await prisma.enrollment.create({
       data: {
         sessionId: v.sessionId,
         traineeId: v.traineeId,
         statut: "planifiee",
+        ...(cible?.estTestInterne === true ? { estTestInterne: true } : {}),
       },
       select: { id: true },
     });

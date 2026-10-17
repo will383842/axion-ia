@@ -201,7 +201,7 @@ Axion-IA intervient typiquement sur : (1) audit de la maturité data de la maiso
   },
 
   // ────────────────────────────────────────────────────────────────────────────
-  // 4. FAQ — ROI d'un projet IA pour PME et ETI
+  // 4. FAQ — ROI d'un projet IA pour TPE, PME et ETI
   // ────────────────────────────────────────────────────────────────────────────
   {
     slug: "faq-roi-ia-cas-pme-industriel",
@@ -209,10 +209,10 @@ Axion-IA intervient typiquement sur : (1) audit de la maturité data de la maiso
     type: "faq",
     domain: "commercial",
     audience: "public",
-    titleFr: "FAQ — ROI d'un projet IA pour PME et ETI",
+    titleFr: "FAQ — ROI d'un projet IA pour TPE, PME et ETI",
     titleEn: "FAQ — ROI of an AI project for SMEs and Mid-Market",
     summaryFr:
-      "Cinq questions fréquentes sur le retour sur investissement d'un projet IA en PME et ETI : délai avant ROI positif, méthode de mesure, coût total, risques d'échec et indicateurs clés à suivre.",
+      "Cinq questions fréquentes sur le retour sur investissement d'un projet IA en TPE, PME et ETI : délai avant ROI positif, méthode de mesure, coût total, risques d'échec et indicateurs clés à suivre.",
     bodyMarkdownFr: `## Q : Quel est le délai typique avant d'atteindre un ROI positif sur un projet IA ?
 
 **R :** Pour une PME ou ETI industrielle, le délai médian avant ROI positif se situe entre **6 et 18 mois** selon la complexité du projet et la qualité des données disponibles. Un projet de prévision de la demande sur une gamme de produits bien définie peut générer un ROI positif dès 6 à 9 mois (réduction des surstocks et des ruptures mesurable dès les premières semaines d'exploitation). À l'inverse, un projet de maintenance prédictive sur un parc machine hétérogène nécessite souvent 12 à 18 mois pour collecter suffisamment de données de défaillance et valider le modèle en production. Les projets qui dépassent 24 mois avant ROI positif présentent en général un périmètre mal cadré ou des problèmes de qualité de données non résolus en amont. La méthodologie Axion-IA préconise de commencer par un POC délimité (4 à 8 semaines) pour valider l'hypothèse de valeur avant tout déploiement à l'échelle.
@@ -284,7 +284,7 @@ Un tableau de bord simple (4 à 6 KPIs maximum) est préférable à un reporting
     titleFr: "Méthodologie d'intervention IA — PME & ETI Industrielles",
     titleEn: "AI Intervention Methodology — Industrial SMEs & Mid-Market",
     summaryFr:
-      "Méthodologie Axion-IA pour les interventions IA en PME et ETI industrielles : spécificités du contexte PME, phases (cadrage 1 jour, POC 4-8 semaines, déploiement progressif), livrables adaptés et facteurs clés de succès.",
+      "Méthodologie Axion-IA pour les interventions IA en TPE, PME et ETI industrielles : spécificités du contexte PME, phases (cadrage 1 jour, POC 4-8 semaines, déploiement progressif), livrables adaptés et facteurs clés de succès.",
     bodyMarkdownFr: `## Spécificités du contexte PME industrielle
 
 Intervenir chez une PME ou ETI industrielle française diffère fondamentalement d'un projet chez un grand groupe. Trois contraintes structurelles définissent ce contexte :

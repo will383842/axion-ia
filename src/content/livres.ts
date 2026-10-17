@@ -111,7 +111,7 @@ const LE_SECOND: Livre = {
     "Neuf chapitres, neuf gestes. Le premier se pose lundi matin.",
   ],
   authorBio:
-    "Williams Jullin est le fondateur et CEO d'Axion-IA.com, cabinet de conseil en intelligence artificielle pour les PME, ETI et grands groupes français : audit, formation, implémentation et conduite du changement. Ce livre part de ce terrain — l'installation d'un assistant permanent, un « second », dans le quotidien d'une direction. Mandat, périmètre, contrôle des rendus : il reste sur le travail du dirigeant et de son premier cercle.",
+    "Williams Jullin est le fondateur et CEO d'Axion-IA.com, cabinet de conseil en intelligence artificielle pour les TPE, PME, ETI et grands groupes français : audit, formation, implémentation et conduite du changement. Ce livre part de ce terrain — l'installation d'un assistant permanent, un « second », dans le quotidien d'une direction. Mandat, périmètre, contrôle des rendus : il reste sur le travail du dirigeant et de son premier cercle.",
 
   excerpts: [
     {
@@ -153,7 +153,7 @@ const LE_SECOND: Livre = {
     datePublished: null,
   },
 
-  categories: ["Management et leadership", "PME et ETI", "Efficacité professionnelle"],
+  categories: ["Management et leadership", "PME et TPE", "Efficacité professionnelle"],
 };
 
 export const LIVRES: readonly Livre[] = [LE_SECOND];

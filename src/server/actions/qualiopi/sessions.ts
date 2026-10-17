@@ -17,6 +17,7 @@
 
 "use server";
 
+import { declencherRecueilALaCreation } from "@/server/qualiopi/recueil/declenchement";
 import { z } from "zod";
 import * as Sentry from "@sentry/nextjs";
 import { prisma } from "@/lib/prisma";
@@ -48,7 +49,17 @@ import {
   FORMATION_SNAPSHOT_SELECT,
   buildFormationSnapshot,
 } from "@/server/qualiopi/formations/formation-snapshot";
+import { figerSeuilSiPedagogie } from "@/server/qualiopi/pedagogie/figer-seuil";
 import { lieuInputSchema, normaliserLieu } from "@/server/qualiopi/lieu/lieu-input";
+import {
+  CHAMPS_LIEU,
+  changementsModaliteLieu,
+  controlerLienDistanciel,
+  enregistrerChangements,
+  type EtatModaliteLieu,
+} from "@/server/qualiopi/moyens/changement-session";
+import { validerMotif } from "@/server/qualiopi/moyens/moyens-regles";
+import { estActifPour, lireInterrupteurQualiopi } from "@/server/qualiopi/socle/interrupteurs";
 import {
   compterJoursHorsPlage,
   messageRefusDates,
@@ -65,6 +76,9 @@ import {
   isTrainerHabilite,
   type TrainerHabilitationFields,
 } from "@/server/qualiopi/trainers/trainers";
+import { LOT_ESSAI } from "@/server/qualiopi/essai/perimetre";
+import { numeroEssai } from "@/server/qualiopi/essai/numerotation";
+import { refusSessionDEssai } from "@/server/qualiopi/essai/creation";
 import { assertDossierOuvert } from "@/server/qualiopi/sessions/verrou-dossier-garde";
 
 // NB : le type `WriteSessionTransitionInput` n'est PAS ré-exporté ici (aucun
@@ -105,6 +119,12 @@ const createSessionSchema = z.object({
   trainerId: z.string().uuid().optional(),
   financementType: z.enum(FINANCEMENT_TYPES).optional(),
   recurrence: z.number().int().min(1).optional(),
+  /**
+   * QNC L02 — session d'ESSAI (banc d'essai, ADR 0061). Posé à la création
+   * SEULEMENT, jamais après coup : une session réelle ne devient pas un essai
+   * (ses pièces portent déjà des numéros légaux), et inversement.
+   */
+  estTestInterne: z.boolean().optional(),
   // Lieu de déroulement — facultatif, mais imprimé sur la convention, la
   // convocation et la feuille d'émargement dès qu'il est renseigné.
   ...lieuInputSchema.shape,
@@ -113,6 +133,8 @@ const createSessionSchema = z.object({
 const setSessionLieuSchema = z.object({
   id: z.string().uuid(),
   ...lieuInputSchema.shape,
+  /** QNC L07 — motif du changement de modalité / de lieu (exigé quand `qualiopi.moyens.actif` agit). */
+  motif: z.string().max(2000).optional(),
   /**
    * 🔴 La MODALITÉ n'était modifiable NULLE PART après la création (constat du
    * 2026-09-04). `createSessionAction` était sa seule écriture.
@@ -198,6 +220,18 @@ export async function createSessionAction(
   // Valider dateFin > dateDebut
   if (v.dateFin <= v.dateDebut) {
     return { error: "La date de fin doit être postérieure à la date de début" };
+  }
+
+  // QNC L02 — une session d'essai n'existe que si l'interrupteur
+  // `qualiopi.essai.actif` n'est pas éteint (`essai` ou `actif`).
+  const estEssai = v.estTestInterne === true;
+  if (estEssai) {
+    const refus = refusSessionDEssai({
+      etat: await lireInterrupteurQualiopi(LOT_ESSAI),
+      devisId: v.devisId ?? null,
+      recurrence: v.recurrence ?? null,
+    });
+    if (refus !== null) return { error: refus };
   }
 
   // Vérifier que la formation est publiée et active. On lit aussi les champs du
@@ -396,7 +430,10 @@ export async function createSessionAction(
   }
 
   // Snapshot légal (WS5) — fige la formation telle que vendue à cette session.
-  const formationSnapshot = buildFormationSnapshot(formation, new Date());
+  // Lot L08 : le seuil de réussite y est figé (interrupteur qualiopi.pedagogie.actif).
+  const formationSnapshot = await figerSeuilSiPedagogie(
+    buildFormationSnapshot(formation, new Date()),
+  );
 
   // Créer la session + FormationTransition initiale dans une transaction,
   // avec retry sur collision de numéro (R7 : numéro ré-alloué à chaque tentative).
@@ -426,9 +463,12 @@ export async function createSessionAction(
       //
       // 🔑 Ce site était le seul des trois à diverger. Un prédicat recopié
       // diverge toujours : les trois disent maintenant la même chose.
-      const numero = await allocateSessionNumero(
-        v.recurrence !== undefined ? { recurrence: v.recurrence } : undefined,
-      );
+      // QNC L02 — un essai prend un numéro hors suite légale (`-ESSAI-`).
+      const numero = estEssai
+        ? numeroEssai("session")
+        : await allocateSessionNumero(
+            v.recurrence !== undefined ? { recurrence: v.recurrence } : undefined,
+          );
       return prisma.$transaction(
         async (tx) => {
           const newSession = await tx.trainingSession.create({
@@ -443,6 +483,7 @@ export async function createSessionAction(
               montantHtCents: v.montantHtCents,
               formationSnapshot: formationSnapshot as never,
               statut: "planifiee",
+              ...(estEssai ? { estTestInterne: true } : {}),
               ...(v.clientId !== undefined ? { clientId: v.clientId } : {}),
               ...(v.devisId !== undefined ? { devisId: v.devisId } : {}),
               // Le champ Prisma s'appelle `formateurPrincipalId` : il n'existe pas
@@ -598,6 +639,7 @@ export async function createSessionAction(
       // distinguer plus tard une session partie sans intervenant d'une session
       // dont le journal aurait simplement omis le champ.
       formateurPrincipalId: v.trainerId ?? null,
+      ...(estEssai ? { estTestInterne: true } : {}),
     },
     session,
   });
@@ -616,6 +658,10 @@ export async function createSessionAction(
   // session EXISTE déjà en base à ce point : la faire échouer pour un Kbis qui
   // arrive demain empêcherait de planifier, et une garde qui empêche de
   // travailler finit par être retirée.
+  // QNC L03 — « dès la demande » : le recueil du besoin part à l'entreprise.
+  // Éteint (`qualiopi.recueil.actif`), une seule lecture ; ne lève jamais.
+  await declencherRecueilALaCreation(created.id, session.userId);
+
   const avertissements = await avertissementsAffectation(v.trainerId ?? null);
   if (doubleEmploiSignale !== null) avertissements.push(doubleEmploiSignale);
   avertissements.push(...avertissementsGarde);
@@ -673,7 +719,7 @@ export async function setSessionLieuAction(
     const premier = parsed.error.issues[0];
     return { error: premier?.message ?? "Données invalides" };
   }
-  const { id, modalite, ...lieuBrut } = parsed.data;
+  const { id, modalite, motif: motifBrut, ...lieuBrut } = parsed.data;
   const lieu = normaliserLieu(lieuBrut);
   // ADR 0060 — écriture VERROU : refusée sur un dossier clos.
   const verrou = await assertDossierOuvert(id);
@@ -693,24 +739,89 @@ export async function setSessionLieuAction(
   } as const;
 
   let avant: Record<string, unknown> | null;
+  // QNC L07 — lu dans la MÊME lecture protégée, puis retiré de `avant` : le
+  // journal d'activité garde exactement la forme d'avant le lot.
+  let cible: { estTestInterne: boolean } | null = null;
   try {
-    avant = await prisma.trainingSession.findUnique({
+    const lu = await prisma.trainingSession.findUnique({
       where: { id },
-      select: { ...LIEU_SELECT, modalite: true },
+      select: { ...LIEU_SELECT, modalite: true, estTestInterne: true },
     });
+    if (lu === null) {
+      avant = null;
+    } else {
+      const { estTestInterne, ...reste } = lu;
+      avant = reste;
+      cible = { estTestInterne };
+    }
   } catch {
     return { error: "Erreur lors de la lecture de la session" };
   }
   if (!avant) return { error: "Session introuvable" };
 
+  // ── Chantier QNC L07 — éteint, ce bloc ne fait RIEN. Allumé (ou en essai sur
+  // une session du banc d'essai) : lien Zoom obligatoire en distanciel, motif
+  // exigé pour tout changement de modalité ou de lieu, et journal avant/après
+  // écrit dans la même transaction que le changement.
+  const donnees = {
+    ...(lieu as object),
+    ...(modalite !== undefined ? { modalite } : {}),
+  } as never;
+  let aJournaliser: ReturnType<typeof changementsModaliteLieu> = [];
+  let motifJournal = "";
+  if (estActifPour(await lireInterrupteurQualiopi("moyens"), cible)) {
+    const etatAvant = avant as unknown as EtatModaliteLieu;
+    const etatApres: EtatModaliteLieu = { ...etatAvant };
+    const demande = donnees as Record<string, unknown>;
+    if (typeof demande["modalite"] === "string") etatApres.modalite = demande["modalite"];
+    for (const c of CHAMPS_LIEU) {
+      const v = demande[c];
+      if (v !== undefined) etatApres[c] = v as string | null;
+    }
+    const lienOk = controlerLienDistanciel(etatApres.modalite, etatApres.lieuVisioUrl);
+    if (lienOk === "manquant") {
+      return { error: "En distanciel, le lien de visioconférence est obligatoire (Zoom Pro)." };
+    }
+    if (lienOk === "pas_zoom") {
+      return {
+        error: "Le lien de visioconférence doit être un lien Zoom (outil retenu : Zoom Pro).",
+      };
+    }
+    aJournaliser = changementsModaliteLieu(etatAvant, etatApres);
+    if (aJournaliser.length > 0) {
+      const m = validerMotif(motifBrut);
+      if (!m.ok) {
+        return {
+          error: "Indiquez le motif du changement de modalité ou de lieu (10 caractères au moins).",
+        };
+      }
+      motifJournal = m.motif;
+    }
+  }
+
   try {
-    await prisma.trainingSession.update({
-      where: { id },
-      // La modalité voyage AVEC le lieu : elles disent la même chose, et les
-      // laisser diverger produit une session « distancielle » qui se tient dans
-      // nos locaux. Absente de l'entrée = inchangée, comme les champs de lieu.
-      data: { ...(lieu as object), ...(modalite !== undefined ? { modalite } : {}) } as never,
-    });
+    if (aJournaliser.length > 0) {
+      const auteur = await prisma.adminUser.findUnique({
+        where: { id: session.userId },
+        select: { name: true },
+      });
+      const nom = auteur?.name?.trim() ? auteur.name.trim() : session.role;
+      await prisma.$transaction(async (tx) => {
+        await tx.trainingSession.update({ where: { id }, data: donnees });
+        await enregistrerChangements(tx, id, aJournaliser, motifJournal, {
+          id: session.userId,
+          nom,
+        });
+      });
+    } else {
+      await prisma.trainingSession.update({
+        where: { id },
+        // La modalité voyage AVEC le lieu : elles disent la même chose, et les
+        // laisser diverger produit une session « distancielle » qui se tient dans
+        // nos locaux. Absente de l'entrée = inchangée, comme les champs de lieu.
+        data: donnees,
+      });
+    }
   } catch (err) {
     Sentry.captureException(err);
     return { error: "Erreur lors de l'enregistrement du lieu" };

@@ -48,6 +48,16 @@ const MODULE_PREDICAT = "@/server/qualiopi/revues/plan-actions";
 const NOM_PREDICAT = "evaluerCouvertureOff32";
 
 /**
+ * Chantier QNC, lot L10 — le SEUL relais admis : il choisit la SOURCE du plan
+ * d'actions (registre AXI-AMC quand `qualiopi.amelioration.actif` est allumé),
+ * puis rend la parole au prédicat unique. Il ne prononce aucun verdict à lui.
+ */
+const RELAIS = {
+  nom: "evaluerOff32EnVigueur",
+  chemin: "src/server/qualiopi/amelioration/off32-registre.ts",
+} as const;
+
+/**
  * Les lectures qui prononcent un verdict sur l'indicateur 32.
  * `audit-dossier.ts` en fait partie : c'est lui qui écrit les preuves d'off.32
  * dans le manifeste remis au certificateur ET dans la matrice de
@@ -82,7 +92,7 @@ describe("off.32 ⭐ — un seul prédicat, et il regarde le contenu de la revue
       const source = lire(chemin);
 
       expect(
-        source.includes(NOM_PREDICAT),
+        source.includes(NOM_PREDICAT) || source.includes(RELAIS.nom),
         `🔴 ${role} (${chemin}) prononce un verdict sur l'indicateur 32 sans appeler\n` +
           `   « ${NOM_PREDICAT} » (${MODULE_PREDICAT}).\n` +
           "   off.32 est un SUPER-indicateur : une NC majeure refuse la certification.\n" +
@@ -92,6 +102,20 @@ describe("off.32 ⭐ — un seul prédicat, et il regarde le contenu de la revue
       ).toBe(true);
     },
   );
+
+  it("le relais du registre AXI-AMC rend la parole au prédicat unique, sur tous ses chemins", () => {
+    const source = lire(RELAIS.chemin);
+    // Chaque `return` du relais est un appel au prédicat, ou dérive de lui (`base`).
+    const retours = [...source.matchAll(/\breturn\s+([^;]+);/g)].map((m) => m[1] ?? "");
+    const verdicts = retours.filter((r) => /couvert|evaluer/.test(r));
+    expect(verdicts.length).toBeGreaterThan(0);
+    for (const r of verdicts) {
+      expect(
+        r.includes(NOM_PREDICAT) || /\.\.\.base\b/.test(r),
+        `retour sans le prédicat : ${r}`,
+      ).toBe(true);
+    }
+  });
 
   it("le moteur ne conclut plus sur le seul NOMBRE de revues", () => {
     const source = lire("src/server/qualiopi/conformite/conformite-service.ts");

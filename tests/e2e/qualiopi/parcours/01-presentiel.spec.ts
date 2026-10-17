@@ -191,6 +191,11 @@ const LIBELLES_SOUS_PAGES = [
   "Émargement", // page.tsx:817-819
   "Évaluations", // page.tsx:820-822
   "Financement", // page.tsx:823-825
+  // Chantier QNC, L11 — le dossier de la session par destinataire, canal et
+  // date, et ses e-mails : le même rendu que le ZIP. Ils nomment la session
+  // (en-tête du cadre commun, et première ligne du dossier).
+  "Dossier complet",
+  "E-mails",
   "Tout pour animer (formation)", // page.tsx:829-834
 ] as const;
 

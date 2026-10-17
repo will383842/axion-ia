@@ -1487,7 +1487,7 @@ export const KW_INTERVENTIONS_G2: KeywordSeed[] = [
       h1: "Formation Prompt Engineering en entreprise : pratique, opérationnelle, dès J+1",
       metaTitle: "Formation prompt engineering entreprise — Axion-IA",
       metaDescription:
-        "Maîtrisez le prompt engineering en une demi-journée : structure, chaînes de prompts, cas métier réels. Formation sur site pour équipes 5 à 30 personnes.",
+        "Maîtrisez le prompt engineering en une demi-journée : structure, chaînes de prompts, cas métier réels. Formation sur site pour équipes 2 à 15 personnes.",
       h2Variants: [
         "Qu'est-ce que le prompt engineering et pourquoi toute équipe doit le maîtriser",
         "Programme type d'une demi-journée prompt engineering pour non-techniques",

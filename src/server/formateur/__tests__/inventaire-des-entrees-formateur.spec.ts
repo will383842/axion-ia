@@ -31,6 +31,8 @@ const INVENTAIRE = [
   "src/server/actions/formateur/desaccord.actions.ts",
   // Lot G2 — bilan de fin de formation : session du cookie, animation et stagiaire revérifiés.
   "src/server/actions/formateur/bilan-fin-formation.actions.ts",
+  // Lot L08 — saisie de l'évaluation finale : session du cookie, appartenance, inscription et verrou revérifiés.
+  "src/server/actions/formateur/evaluation-finale.actions.ts",
   // Lot L11h — « Je ne peux plus assurer cette mission » (appartenance revérifiée).
   "src/server/actions/qualiopi/choix-formateur.ts",
   "src/server/actions/qualiopi/contrat-travail-signature.ts",

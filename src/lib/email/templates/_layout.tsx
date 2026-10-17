@@ -703,7 +703,7 @@ const TXT = {
      * à un acheteur d'ETI ou de grand groupe, une liste de services suggère
      * qu'on prend ce qui passe. La ligne dit désormais CE QU'EST la structure.
      */
-    tagline: "Cabinet IA pour entreprises — PME, ETI et grands groupes",
+    tagline: "Cabinet IA pour entreprises — TPE, PME, ETI et grands groupes",
     reviewsWord: "avis clients",
     qualiopiAlt: "Organisme de formation certifié Qualiopi — Axion-IA",
     ctaFallback: "Le bouton ne fonctionne pas ? Copiez cette adresse :",

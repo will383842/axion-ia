@@ -183,13 +183,16 @@ describe("getResultatsPublicsFormation — lecture en base", () => {
       expect.objectContaining({ where: { slug: "ia-pour-bien-commencer-journee" } }),
     );
     expect(db.trainingSession.findMany).toHaveBeenCalledWith(
-      expect.objectContaining({ where: { formationId: "f-038", statut: "realisee" } }),
+      expect.objectContaining({
+        where: { estTestInterne: false, formationId: "f-038", statut: "realisee" },
+      }),
     );
     expect(db.enrollment.findMany).toHaveBeenCalledWith(
       expect.objectContaining({
         where: {
           statut: { notIn: ["abandon", "exclu"] },
-          session: { formationId: "f-038", statut: "realisee" },
+          estTestInterne: false,
+          session: { estTestInterne: false, formationId: "f-038", statut: "realisee" },
         },
       }),
     );
@@ -206,7 +209,10 @@ describe("getResultatsPublicsFormation — lecture en base", () => {
           type: "satisfaction_chaud",
           reponduAt: { not: null },
           noteGlobale: { not: null },
-          enrollment: { session: { formationId: "f-038", statut: "realisee" } },
+          enrollment: {
+            estTestInterne: false,
+            session: { estTestInterne: false, formationId: "f-038", statut: "realisee" },
+          },
         },
       }),
     );
@@ -307,10 +313,14 @@ describe("diffusion RÉELLE — la règle partagée avec le Mode auditeur (ind. 
         slug: true,
         indicateursPubliesAt: true,
         sessions: {
-          where: { statut: "realisee" },
+          where: { estTestInterne: false, statut: "realisee" },
           select: {
             _count: {
-              select: { enrollments: { where: { statut: { notIn: ["abandon", "exclu"] } } } },
+              select: {
+                enrollments: {
+                  where: { statut: { notIn: ["abandon", "exclu"] }, estTestInterne: false },
+                },
+              },
             },
           },
         },

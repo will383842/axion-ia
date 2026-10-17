@@ -146,6 +146,18 @@ const ALLOWED_PATTERNS: ReadonlyArray<RegExp> = [
  * pour rien.
  */
 const CONSOMMATEURS_ASSUMES: ReadonlySet<string> = new Set([
+  // Chantier QNC, lot L11 — décision de Will : à l'effacement art. 17, la copie
+  // d'un e-mail DE FORMATION est gardée 5 ans, adresse masquée. Savoir si un
+  // envoi est « de formation » (rattaché à une session, hors facturation) et lire
+  // l'interrupteur `qualiopi.dossier_session.actif` sont des règles du domaine :
+  // l'effacement les appelle (`dossier-session/interrupteur`,
+  // `dossier-session/rattachement-emails`, `socle/interrupteurs`), il ne les
+  // recopie pas. Nommé seul, pas le répertoire.
+  "src/lib/rgpd-erase.ts",
+  // Même lot — la copie d'un e-mail passe en CRÉATION SEULE quand l'interrupteur
+  // du dossier de session est `actif`. L'écrivain de la copie lit cet
+  // interrupteur (`dossier-session/interrupteur`) et rien d'autre du domaine.
+  "src/server/email/copie-envoi.ts",
   // Dossier en ligne à jeton du FORMATEUR INDÉPENDANT (lot L5, ADR 0066 étape 5). Page
   // publique hors `[locale]`, jumelle du dossier apporteur : elle ne sait rien faire sans
   // le domaine qui porte la fiche `Trainer`, ses pièces, le contrôle registre et les règles
@@ -309,6 +321,16 @@ const CONSOMMATEURS_ASSUMES: ReadonlySet<string> = new Set([
   "src/server/admin/dossiers-pipeline.ts",
   "src/server/admin/pilotage-dashboard.ts",
   "src/server/admin/qualiopi-nav-counts.ts",
+  // ── QNC L02 (mode essai) — deux sorties EXTERNES qui doivent reconnaître une
+  //    pièce d'essai pour ne pas la laisser partir. Elles importent le prédicat
+  //    UNIQUE (`essai/perimetre`) et le journal des sorties bloquées
+  //    (`essai/sorties`), jamais une copie : une règle recopiée diverge. Nommées
+  //    fichier par fichier, pas leur répertoire.
+  //    · Axion Partners : aucun fait d'une facture, d'un avoir ou d'un paiement
+  //      d'essai n'entre dans la file ;
+  "src/server/partners-sync/producteurs/facturation.ts",
+  //    · commissions d'apporteur : une facture d'essai ne fonde aucune commission.
+  "src/features/apporteurs-reseau/passage-quotidien.ts",
   // ── Espace formateur & portail stagiaire : consommateurs assumés du domaine,
   //    au même titre que `[locale]/portail/` déjà autorisé plus haut.
   "src/app/[locale]/espace-formateur/page.tsx",
@@ -341,6 +363,18 @@ const CONSOMMATEURS_ASSUMES: ReadonlySet<string> = new Set([
   // la session. L'action n'importe que le service du bilan, qui revérifie côté
   // serveur que le formateur a animé la session et que le stagiaire en fait partie.
   "src/server/actions/formateur/bilan-fin-formation.actions.ts",
+  // Lot L08 (2026-10-17) : la saisie de l'évaluation finale par le formateur, dans son
+  // espace. L'action n'importe que le service de saisie, qui revérifie côté serveur
+  // l'interrupteur, l'appartenance à la session, l'inscription et le verrou du dossier
+  // (le cookie, jamais le formulaire). Le composant serveur affiche la vue que ce service
+  // rend, et le fichier de messages n'importe que son TYPE d'issue.
+  "src/server/actions/formateur/evaluation-finale.actions.ts",
+  "src/components/espace-formateur/EvaluationFinaleFormateur.tsx",
+  "src/server/formateur/evaluation-finale-messages.ts",
+  // Lot L08 : questionnaire à chaud / à froid v2 du portail stagiaire. Le composant client
+  // n'importe que le CONTENU pur et versionné des questions (aucune dépendance serveur) :
+  // il ne pose aucune question que le contenu enregistré ne déclare.
+  "src/components/portail/SatisfactionV2PortailForm.tsx",
   // Lots L11b-ux et L11h (2026-10-11) : la proposition chiffrée en six
   // lignes, composant serveur de la page d'une mission (rendue par l'accueil).
   // La coquille ne lit que l'interrupteur `formateurs.choix_cartes` et le

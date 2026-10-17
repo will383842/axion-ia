@@ -22,6 +22,12 @@ import { mentionComplete } from "@/server/qualiopi/emargement/mentions";
 import { getOrganismeIdentite } from "@/server/qualiopi/documents/organisme";
 import { signerDepuisPortailAction } from "@/server/actions/qualiopi/emargement-public";
 import { EmargementForm, type CreneauAffiche } from "@/components/portail/EmargementForm";
+import { emargementParDemiJourneePour } from "@/server/qualiopi/emargement/demi-journee/activation";
+import {
+  fenetreSignature,
+  positionFenetre,
+} from "@/server/qualiopi/emargement/demi-journee/fenetre";
+import { inscriptionPorteUneAdaptation } from "@/server/qualiopi/emargement/demi-journee/lecture";
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
@@ -105,13 +111,37 @@ export default async function EmargerPage({ params }: PageProps) {
   // La ligne scellée porte `mentionVersion` et prétend prouver ce qui était à
   // l'écran — c'était faux, et devant un contrôle la pièce aurait dit le
   // contraire de ce que le signataire avait lu.
+  // QNC L06 — interrupteur `qualiopi.emargement.actif` : une demi-journée
+  // terminée et non signée se dit « close » (le serveur la refuserait), et la
+  // signature « nom tapé » n'est proposée qu'aux personnes qui ont une
+  // adaptation. Éteint : rien ne change à l'écran.
+  const parDemiJournee = await emargementParDemiJourneePour(feuille);
+  const accessibleAutorise =
+    !parDemiJournee || (await inscriptionPorteUneAdaptation(feuille.enrollmentId));
+  const prevue = (c: (typeof feuille.creneaux)[number]) => ({
+    creneauId: c.id,
+    date: c.date,
+    demiJournee: c.demiJournee,
+    jourHeureDebut: c.jourHeureDebut,
+    jourHeureFin: c.jourHeureFin,
+  });
+
   const creneaux: CreneauAffiche[] = feuille.creneaux.map((c) => ({
     id: c.id,
     jourLisible: c.jourLisible,
     demiJourneeLisible: c.demiJourneeLisible,
     horaires: c.horaires,
     formateurNom: c.formateurNom,
-    etat: etats.get(c.id) ?? "pas_encore_commence",
+    ...(parDemiJournee
+      ? (() => {
+          const f = fenetreSignature(prevue(c));
+          return { horairesDemiJournee: `${f.heureDebut}–${f.heureFin}` };
+        })()
+      : {}),
+    etat:
+      parDemiJournee && !c.dejaSigne && positionFenetre(prevue(c), maintenant) === "close"
+        ? "clos"
+        : (etats.get(c.id) ?? "pas_encore_commence"),
     mentions: mentionComplete({
       formationIntitule: feuille.formationIntitule,
       jourLisible: c.jourLisible,
@@ -128,6 +158,7 @@ export default async function EmargerPage({ params }: PageProps) {
       formationIntitule={feuille.formationIntitule}
       organisme={feuille.organisme}
       creneaux={creneaux}
+      accessibleAutorise={accessibleAutorise}
       signerAction={signerDepuisPortailAction}
     />
   );

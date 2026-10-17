@@ -3,6 +3,11 @@
  *
  * Liste les entrées de veille et expose le formulaire de création.
  * Server Component — auth + lecture DB. Composants clients pour les mutations.
+ *
+ * Chantier QNC, L10 — chaque ligne montre la date de l'INFORMATION et la date
+ * de SAISIE (serveur, heure de Paris). `qualiopi.veille.actif` allumé : la
+ * décision humaine (auteur, pièce modifiée) et les gestes tracés remplacent
+ * « Modifier » et « Supprimer » ; les versions archivées restent lisibles.
  */
 
 import type { Metadata } from "next";
@@ -11,12 +16,16 @@ import { CheckCircle2, GraduationCap, Hash, ShieldCheck } from "lucide-react";
 import { AdminPageShell } from "@/components/admin/ui/AdminPageShell";
 import { AdminPageHeader } from "@/components/admin/ui/AdminPageHeader";
 import { AdminStatCard } from "@/components/admin/ui/AdminStatCard";
-import { listVeille } from "@/server/qualiopi/registres/veille-service";
+import { formatSaisieParis, lireRegistreVeille } from "@/server/qualiopi/veille/registre-veille";
 import {
+  archiverVeilleAction,
+  corrigerVeilleAction,
   creerVeilleAction,
+  deciderVeilleAction,
   updateVeilleAction,
   supprimerVeilleAction,
 } from "@/server/actions/qualiopi/veille";
+import { VeilleTraceeActions } from "@/components/admin/qualiopi/VeilleTraceeActions";
 import { genererRegistrePdfAction } from "@/server/actions/qualiopi/exports-pdf";
 import { VeilleForm } from "@/components/admin/qualiopi/VeilleForm";
 import { VeilleRowActions } from "@/components/admin/qualiopi/VeilleRowActions";
@@ -48,10 +57,18 @@ export default async function QualiopiVeillePage({ params }: PageProps) {
     return <AccesRefuse motif={acces.motif} retourHref={`/${locale}/${adminPrefix}`} />;
   }
 
-  const veilles = await listVeille({ take: 100 });
+  const registre = await lireRegistreVeille({ take: 300 });
+  const { tracee } = registre;
+  // Veille tracée : une version archivée (corrigée, décidée, retirée) n'est plus
+  // « en vigueur » ; elle reste lisible plus bas, jamais effacée.
+  const veilles = registre.lignes.filter((v) => v.archivage === null).slice(0, 100);
+  const archivees = tracee ? registre.lignes.filter((v) => v.archivage !== null) : [];
 
   const parType = (type: string) => veilles.filter((v) => v.type === type).length;
-  const avecAction = veilles.filter((v) => v.actionDecidee != null).length;
+  // Veille tracée : seule une décision PRISE PAR UNE PERSONNE compte.
+  const avecAction = veilles.filter((v) =>
+    tracee ? v.decision !== null : v.actionDecidee != null,
+  ).length;
 
   const cellCls =
     "px-[var(--space-admin-4)] py-[var(--space-admin-3)] align-top text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg)]";
@@ -91,7 +108,7 @@ export default async function QualiopiVeillePage({ params }: PageProps) {
 
       {/* Formulaire création */}
       <div className="mb-[var(--space-admin-8)]">
-        <VeilleForm creerAction={creerVeilleAction} />
+        <VeilleForm creerAction={creerVeilleAction} tracee={tracee} />
       </div>
 
       {/* Liste */}
@@ -104,7 +121,8 @@ export default async function QualiopiVeillePage({ params }: PageProps) {
           <table className="w-full border-collapse bg-[color:var(--color-admin-paper)] text-[length:var(--text-admin-sm)]">
             <thead className="border-b border-[color:var(--color-admin-border)]">
               <tr>
-                <th className={headCls}>Date</th>
+                <th className={headCls}>Date de l&apos;information</th>
+                <th className={headCls}>Saisie le</th>
                 <th className={headCls}>Type</th>
                 <th className={headCls}>Titre</th>
                 <th className={headCls}>Source</th>
@@ -119,7 +137,14 @@ export default async function QualiopiVeillePage({ params }: PageProps) {
                   key={v.id}
                   className="border-b border-[color:var(--color-admin-border)] last:border-b-0"
                 >
-                  <td className={cellCls}>{v.dateVeille.toLocaleDateString("fr-FR")}</td>
+                  <td className={cellCls}>
+                    {v.dateVeille.toLocaleDateString("fr-FR", { timeZone: "Europe/Paris" })}
+                  </td>
+                  <td className={cellCls}>
+                    <span className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
+                      {formatSaisieParis(v.saisieLe)}
+                    </span>
+                  </td>
                   <td className={cellCls}>
                     <span className="text-[length:var(--text-admin-xs)] font-medium">
                       {TYPE_LABELS[v.type] ?? v.type}
@@ -147,7 +172,21 @@ export default async function QualiopiVeillePage({ params }: PageProps) {
                     )}
                   </td>
                   <td className={cellCls}>
-                    {v.actionDecidee != null ? (
+                    {tracee && v.decision !== null ? (
+                      <div className="text-[length:var(--text-admin-xs)]">
+                        <span className="text-[color:var(--color-admin-success)]">
+                          {v.actionDecidee}
+                        </span>
+                        <div className="text-[color:var(--color-admin-fg-muted)]">
+                          Décidée par {v.decision.par}, le {formatSaisieParis(v.decision.le)} ·
+                          pièce modifiée : {v.decision.pieceModifiee}
+                        </div>
+                      </div>
+                    ) : tracee && v.actionDecidee != null ? (
+                      <span className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-warning)]">
+                        {v.actionDecidee} — sans décision tracée : à décider
+                      </span>
+                    ) : v.actionDecidee != null ? (
                       <span className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-success)]">
                         {v.actionDecidee}
                       </span>
@@ -158,26 +197,64 @@ export default async function QualiopiVeillePage({ params }: PageProps) {
                     )}
                   </td>
                   <td className={cellCls}>
-                    <VeilleRowActions
-                      veille={{
-                        id: v.id,
-                        type: v.type,
-                        source: v.source,
-                        titre: v.titre,
-                        contenu: v.contenu,
-                        dateVeille: v.dateVeille,
-                        impact: v.impact ?? null,
-                        actionDecidee: v.actionDecidee ?? null,
-                      }}
-                      updateAction={updateVeilleAction}
-                      supprimerAction={supprimerVeilleAction}
-                    />
+                    {tracee ? (
+                      <VeilleTraceeActions
+                        veille={{
+                          id: v.id,
+                          source: v.source,
+                          titre: v.titre,
+                          contenu: v.contenu,
+                          impact: v.impact,
+                          decidee: v.decision !== null,
+                        }}
+                        deciderAction={deciderVeilleAction}
+                        corrigerAction={corrigerVeilleAction}
+                        archiverAction={archiverVeilleAction}
+                      />
+                    ) : (
+                      <VeilleRowActions
+                        veille={{
+                          id: v.id,
+                          type: v.type,
+                          source: v.source,
+                          titre: v.titre,
+                          contenu: v.contenu,
+                          dateVeille: v.dateVeille,
+                          impact: v.impact ?? null,
+                          actionDecidee: v.actionDecidee ?? null,
+                        }}
+                        updateAction={updateVeilleAction}
+                        supprimerAction={supprimerVeilleAction}
+                      />
+                    )}
                   </td>
                 </tr>
               ))}
             </tbody>
           </table>
         </div>
+      )}
+
+      {archivees.length > 0 && (
+        <details className="mt-[var(--space-admin-8)]">
+          <summary className="cursor-pointer text-[length:var(--text-admin-sm)] font-medium text-[color:var(--color-admin-fg)]">
+            Versions archivées ({archivees.length}) — rien ne s&apos;efface du registre
+          </summary>
+          <ul className="mt-[var(--space-admin-3)] flex flex-col gap-[var(--space-admin-2)]">
+            {archivees.map((v) => (
+              <li
+                key={v.id}
+                className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]"
+              >
+                <span className="font-medium text-[color:var(--color-admin-fg)]">{v.titre}</span> —
+                information du{" "}
+                {v.dateVeille.toLocaleDateString("fr-FR", { timeZone: "Europe/Paris" })}, saisie le{" "}
+                {formatSaisieParis(v.saisieLe)} · archivée le {formatSaisieParis(v.archivage?.le)} :{" "}
+                {v.archivage?.motif}
+              </li>
+            ))}
+          </ul>
+        </details>
       )}
     </AdminPageShell>
   );

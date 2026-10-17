@@ -17,6 +17,7 @@
  *    Les deux périmètres ne s'additionnent JAMAIS.
  */
 
+import { FACTURE_HORS_ESSAI, SESSION_REELLE } from "@/server/qualiopi/essai/perimetre";
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
 import { apporteursEnAttente, type ApporteursEnAttente } from "./apporteurs-en-attente";
@@ -337,7 +338,11 @@ async function caRealisePlage(plage: Plage): Promise<number> {
     const [formations, audits] = await Promise.all([
       prisma.trainingSession.aggregate({
         _sum: { montantHtCents: true },
-        where: { statut: "realisee", dateDebut: { gte: plage.gte, lt: plage.lt } },
+        where: {
+          ...SESSION_REELLE,
+          statut: "realisee",
+          dateDebut: { gte: plage.gte, lt: plage.lt },
+        },
       }),
       prisma.auditMission.aggregate({
         _sum: { montantHtCents: true },
@@ -446,6 +451,7 @@ async function caParActivitePlage(plage: Plage): Promise<CaParActiviteLigne[]> {
     const [factures, paiements] = await Promise.all([
       prisma.factureFormation.findMany({
         where: {
+          ...FACTURE_HORS_ESSAI,
           statut: { in: ["emise", "partiellement_payee", "en_retard", "payee"] },
           emiseAt: { gte: plage.gte, lt: plage.lt },
         },
@@ -456,6 +462,7 @@ async function caParActivitePlage(plage: Plage): Promise<CaParActiviteLigne[]> {
         where: {
           status: "succeeded",
           factureFormationId: { not: null },
+          factureFormation: { is: FACTURE_HORS_ESSAI },
           paidAt: { gte: plage.gte, lt: plage.lt },
         },
         select: { amountCents: true, factureFormation: { select: { activite: true } } },
@@ -553,7 +560,7 @@ async function comptesFormations(plage: Plage): Promise<{ statut: string; n: num
   try {
     const rows = await prisma.trainingSession.groupBy({
       by: ["statut"],
-      where: { dateDebut: { gte: plage.gte, lt: plage.lt } },
+      where: { ...SESSION_REELLE, dateDebut: { gte: plage.gte, lt: plage.lt } },
       _count: { _all: true },
     });
     return rows.map((r) => ({ statut: r.statut, n: r._count._all }));
@@ -596,7 +603,11 @@ async function datesRealisees(source: ActiviteDossier, plage: Plage): Promise<Da
   try {
     if (source === "formation") {
       const rows = await prisma.trainingSession.findMany({
-        where: { statut: "realisee", dateDebut: { gte: plage.gte, lt: plage.lt } },
+        where: {
+          ...SESSION_REELLE,
+          statut: "realisee",
+          dateDebut: { gte: plage.gte, lt: plage.lt },
+        },
         select: { dateDebut: true },
         take: MAX_TENDANCE,
       });

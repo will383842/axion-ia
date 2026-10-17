@@ -178,9 +178,24 @@ export const ETAPES_DU_FORMATEUR: Readonly<Record<EtapeCle, boolean>> = {
   satisfaction_froid: false,
 };
 
+/**
+ * Options de l'accueil formateur.
+ *
+ * `evaluationOuverte` : l'espace du formateur porte la saisie de l'évaluation
+ * (lot L08, `qualiopi.pedagogie.actif`). C'est la condition que la ligne
+ * `evaluation_finale` de la table donne pour basculer — portée ici par une
+ * option plutôt que par la table, pour qu'éteint la table ne change pas : une
+ * étape réclamée sans le geste qui la lève est le défaut que ce module empêche.
+ */
+export interface OptionsEtapesFormateur {
+  readonly evaluationOuverte?: boolean;
+}
+
 /** L'étape appelle-t-elle un geste du formateur ? */
-export function concerneLeFormateur(cle: EtapeCle): boolean {
-  return ETAPES_DU_FORMATEUR[cle];
+export function concerneLeFormateur(cle: EtapeCle, options?: OptionsEtapesFormateur): boolean {
+  return (
+    ETAPES_DU_FORMATEUR[cle] || (cle === "evaluation_finale" && options?.evaluationOuverte === true)
+  );
 }
 
 /**
@@ -203,6 +218,13 @@ export const GESTE_FORMATEUR: Readonly<Partial<Record<EtapeCle, string>>> = {
 };
 
 /**
+ * Le geste de l'étape « évaluation finale », quand elle est ouverte. Séparé de
+ * `GESTE_FORMATEUR` : celui-ci ne contient que des étapes toujours retenues.
+ */
+export const GESTE_EVALUATION_FORMATEUR =
+  "Ouvrez la formation et saisissez l'évaluation de chaque stagiaire, objectif par objectif, avec votre observation.";
+
+/**
  * Filtre une liste d'échéances sur les étapes qui concernent le formateur.
  *
  * Générique sur la forme minimale `{ etape: { cle } }` : le module reste pur et
@@ -210,8 +232,9 @@ export const GESTE_FORMATEUR: Readonly<Partial<Record<EtapeCle, string>>> = {
  */
 export function filtrerEtapesFormateur<T extends { readonly etape: { readonly cle: EtapeCle } }>(
   echeances: ReadonlyArray<T>,
+  options?: OptionsEtapesFormateur,
 ): T[] {
-  return echeances.filter((e) => concerneLeFormateur(e.etape.cle));
+  return echeances.filter((e) => concerneLeFormateur(e.etape.cle, options));
 }
 
 const MS_JOUR = 24 * 60 * 60 * 1000;

@@ -167,9 +167,14 @@ export async function validerTousTextesFormateursAction(
   if (formData.get("confirme") !== "oui") {
     return { ok: false, error: "Cochez la case de confirmation : rien n'a été validé." };
   }
+  // Le navigateur envoie le formulaire en multipart, qui change chaque `\n` d'une valeur
+  // en `\r\n` : on ramène les fins de ligne avant de comparer, sinon la liste affichée
+  // ne correspond JAMAIS (bug du 17/10). Le contenu, lui, est comparé à l'identique.
+  const liste = formData.get("liste");
   if (
     formData.get("nombre") !== String(TEXTES_FORMATEURS_A_VALIDER.length) ||
-    formData.get("liste") !== listeDesTextesAffichee()
+    typeof liste !== "string" ||
+    liste.replace(/\r\n/g, "\n") !== listeDesTextesAffichee()
   ) {
     return {
       ok: false,

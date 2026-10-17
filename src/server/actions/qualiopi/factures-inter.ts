@@ -18,6 +18,8 @@
 
 "use server";
 
+import { numeroEssai } from "@/server/qualiopi/essai/numerotation";
+import { estInscriptionReelle } from "@/server/qualiopi/essai/perimetre";
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
 import { requireHabilitation, logQualiopiActivity } from "@/server/actions/qualiopi/_guards";
@@ -77,6 +79,7 @@ export async function genererFactureParInscriptionAction(
     where: { id: parsed.data.enrollmentId },
     select: {
       id: true,
+      estTestInterne: true,
       financementType: true,
       clientId: true,
       numeroDossierOpco: true,
@@ -98,6 +101,7 @@ export async function genererFactureParInscriptionAction(
       session: {
         select: {
           id: true,
+          estTestInterne: true,
           interEntreprises: true,
           financementType: true,
           clientId: true,
@@ -250,7 +254,10 @@ export async function genererFactureParInscriptionAction(
   let created: { id: string; numero: string };
   try {
     created = await withNumberRetry(async () => {
-      const numero = await genererNumeroFacture(annee);
+      // QNC L02 — inscription ou session d'ESSAI : numéro hors suite légale.
+      const numero = estInscriptionReelle(enrollment)
+        ? await genererNumeroFacture(annee)
+        : numeroEssai("facture");
       // INT-T05 : l'émission et `facture.emise` vivent et meurent ensemble.
       return transactionFaitFacturation(prisma, async (tx) => {
         const creee = await tx.factureFormation.create({

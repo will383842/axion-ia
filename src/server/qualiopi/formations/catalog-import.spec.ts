@@ -134,7 +134,28 @@ describe("buildFormationImportData", () => {
     expect(data.slug).toBe("ia-pour-bien-commencer");
     expect(data.offreSiteId).toBe("offre-x");
     expect(data.dureeHeures).toBe(4); // 4h → 4
-    expect(data.modalite).toBe("presentiel");
+    // 🔴 L16 — « présentiel ou distanciel » (hybride en base), plus « presentiel » en dur.
+    expect(data.modalite).toBe("hybride");
+  });
+
+  it("🔴 L16 : TOUTES les formations du catalogue s'écrivent en base « présentiel ou distanciel »", () => {
+    // Le séminaire reste en présentiel (modalité d'origine, décision de Will en attente).
+    for (const f of FORMATIONS_V2.filter((x) => x.seminaire !== true)) {
+      expect(buildFormationImportData(f, "offre-x").modalite, f.slugFr).toBe("hybride");
+    }
+    for (const f of FORMATIONS_V2.filter((x) => x.seminaire === true)) {
+      const d = buildFormationImportData(f, "offre-x");
+      expect(d.modalite, f.slugFr).toBe("presentiel");
+      expect(d.moyensTechniques, f.slugFr).not.toMatch(/distanciel|Zoom/i);
+    }
+  });
+
+  it("🔴 L16 : les moyens techniques imprimés nomment Zoom et l'assistance à distance", () => {
+    const { moyensTechniques } = buildFormationImportData(pilote!, "offre-x");
+    expect(moyensTechniques).toContain("Zoom");
+    expect(moyensTechniques).toContain("caméra et micro");
+    expect(moyensTechniques).toContain("Assistance technique et pédagogique");
+    expect(moyensTechniques).toContain("contact@axion-ia.com");
   });
 
   it("mappe chaque objectif (verbe + description)", () => {
@@ -456,6 +477,8 @@ describe("reconcileFormationFields", () => {
     ratioPratiquePct: 70,
     accessibleHandicap: true,
     certificationType: "aucune",
+    modalite: "hybride",
+    moyensTechniques: "Moyens",
   });
 
   it("DB == catalogue → ni update ni drift, baseline = catalogue", () => {
@@ -492,6 +515,23 @@ describe("reconcileFormationFields", () => {
     const db = { ...base(), titre: "DB" };
     const r = reconcileFormationFields(desired, db, null);
     expect(r.driftFields).toEqual(["titre"]);
+    expect(r.updates).toEqual({});
+  });
+
+  it("🔴 L16 : une ligne qui porte encore la valeur écrite en dur par l'ancien import est synchronisée sans baseline", () => {
+    const desired = base(); // modalite "hybride"
+    const db = { ...base(), modalite: "presentiel" as const }; // ancien import
+    const r = reconcileFormationFields(desired, db, null);
+    expect(r.syncedFields).toEqual(["modalite"]);
+    expect(r.updates.modalite).toBe("hybride");
+    expect(r.driftFields).toHaveLength(0);
+  });
+
+  it("🔴 L16 : une modalité éditée par un admin (autre que l'ancienne valeur en dur) est préservée", () => {
+    const desired = base();
+    const db = { ...base(), modalite: "distanciel" as const }; // choix de l'admin
+    const r = reconcileFormationFields(desired, db, null);
+    expect(r.driftFields).toEqual(["modalite"]);
     expect(r.updates).toEqual({});
   });
 

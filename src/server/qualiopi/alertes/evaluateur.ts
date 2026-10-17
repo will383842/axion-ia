@@ -138,6 +138,7 @@ import { regleConditionSuspensiveOpco } from "./regle-condition-suspensive-opco"
 import { regleDonneesOpcoIncompletes } from "./regle-donnees-opco-incompletes";
 import { regleSuiviEntrepriseOpco } from "./regle-suivi-entreprise-opco";
 import { regleEtatFondsPerime } from "./regle-etat-fonds-perime";
+import { regleRegistreSousTraitants } from "./regle-registre-sous-traitants";
 import { regleDesistementLettreSignee } from "./regle-desistement-lettre-signee";
 import { regleFondsOpcoSuspendusSession } from "./regle-fonds-opco-suspendus-session";
 import { regleSubrogationIncompatibleRegime } from "./regle-subrogation-incompatible-regime";
@@ -735,7 +736,7 @@ async function regleRappelJ7NonEnvoye(now: Date): Promise<AlerteCandidate[]> {
 }
 
 async function regleSessionSansDispositifEmargement(now: Date): Promise<AlerteCandidate[]> {
-  const sessions = await prisma.trainingSession.findMany({
+  const sessionsCandidates = await prisma.trainingSession.findMany({
     where: {
       statut: { in: ["planifiee", "en_cours"] },
       // Elle a commencé, et pas il y a un mois : fenêtre glissante de 7 jours,
@@ -760,11 +761,33 @@ async function regleSessionSansDispositifEmargement(now: Date): Promise<AlerteCa
       numero: true,
       titreSession: true,
       dateDebut: true,
+      // QNC L06 — sert le filtre de l'émargement par demi-journée, plus bas.
+      estTestInterne: true,
       client: { select: { raisonSociale: true } },
       _count: { select: { enrollments: true, jours: true } },
     },
     take: 50,
   });
+
+  // 🔴 QNC L06 — sous `qualiopi.emargement.actif`, un lien expire à la fin de
+  // SA demi-journée : entre deux demi-journées (pause, soir), « aucun lien
+  // vivant » est l'état normal, pas un défaut. Pour ces sessions, l'alerte ne
+  // se lève que si aucun rappel de demi-journée n'est jamais parti (journal des
+  // relances). Éteint : inchangé.
+  const { lireInterrupteurEmargement } =
+    await import("@/server/qualiopi/emargement/demi-journee/activation");
+  const { PREFIXE_OBJET_RAPPEL } =
+    await import("@/server/qualiopi/emargement/demi-journee/rappel-objet");
+  const { estActifPour } = await import("@/server/qualiopi/socle/interrupteurs");
+  const etatEmargement = await lireInterrupteurEmargement();
+  const servies = new Set<string>();
+  for (const s of sessionsCandidates.filter((c) => estActifPour(etatEmargement, c))) {
+    const rappels = await prisma.relanceJournal.count({
+      where: { sessionId: s.id, objet: { startsWith: PREFIXE_OBJET_RAPPEL } },
+    });
+    if (rappels > 0) servies.add(s.id);
+  }
+  const sessions = sessionsCandidates.filter((s) => !servies.has(s.id));
 
   return sessions.map((s) => {
     // Le message NOMME la cause première : sans journées déclarées, l'émission
@@ -1913,7 +1936,10 @@ async function regleVigilanceSousTraitance(now: Date): Promise<AlerteCandidate[]
 
   const [organismes, formateurs] = await Promise.all([
     prisma.sousTraitant.findMany({
-      where: { actif: true },
+      // Qualiopi ind. 27 — une ligne du registre tenue par l'outil pour un formateur
+      // INDÉPENDANT est déjà surveillée ci-dessous par sa fiche (`trainer`) : la lire
+      // aussi comme un organisme doublerait chaque alerte (RC pro absente…).
+      where: { actif: true, independant: { is: null } },
       select: {
         id: true,
         nom: true,
@@ -5321,6 +5347,9 @@ const REGLES: Array<{ nom: string; fn: RegleFn }> = [
   { nom: "autofacture_a_emettre", fn: regleAutofactureAEmettre },
   { nom: "contrat_cdd_non_remis", fn: regleContratCddNonRemis },
   { nom: "formateur_rc_pro_hors_sous_traitance", fn: regleRcProFormateurHorsSousTraitance },
+  // Qualiopi ind. 27 (audit du 16/10) — échéances du registre des sous-traitants
+  // indépendants tenu par l'outil. Éteinte tant que son interrupteur est coupé.
+  { nom: "registre_sous_traitants", fn: regleRegistreSousTraitants },
 ];
 
 // ─────────────────────────────────────────────────────────────────────────────

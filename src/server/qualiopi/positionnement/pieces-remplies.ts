@@ -27,6 +27,7 @@ import React from "react";
 import { prisma } from "@/lib/prisma";
 import { inscriptionSurSessionTenue } from "@/server/qualiopi/conformite/piece-admissible";
 import { getOrganismeIdentite } from "@/server/qualiopi/documents/organisme";
+import { SEGMENT_ESSAI } from "@/server/qualiopi/essai/numerotation";
 import { renderPdfToBuffer } from "@/server/qualiopi/documents/render";
 import { PositionnementRempliPdf } from "@/server/qualiopi/documents/templates/positionnement-rempli";
 import {
@@ -123,7 +124,7 @@ export async function produirePiecesPositionnementRempli(): Promise<{
       enrollment: {
         select: {
           trainee: { select: { id: true, nom: true, prenom: true } },
-          session: { select: { titreSession: true, dateDebut: true } },
+          session: { select: { titreSession: true, estTestInterne: true, dateDebut: true } },
         },
       },
     },
@@ -152,7 +153,9 @@ export async function produirePiecesPositionnementRempli(): Promise<{
       const { buffer } = await renderPdfToBuffer(
         React.createElement(PositionnementRempliPdf, {
           data: {
-            reference: `POS-${ligne.id.slice(0, 8)}`,
+            // QNC L02 — la référence d'une pièce d'essai porte `-ESSAI-` : c'est elle
+            // qui fait imprimer le filigrane (`QualiopiPage`).
+            reference: `POS${session.estTestInterne ? SEGMENT_ESSAI : "-"}${ligne.id.slice(0, 8)}`,
             nomStagiaire: nomStagiaire === "" ? "Stagiaire non nommé" : nomStagiaire,
             intituleFormation: session.titreSession,
             debutSession: formaterInstantParis(session.dateDebut),

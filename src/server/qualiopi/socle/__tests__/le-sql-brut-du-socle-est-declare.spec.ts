@@ -6,7 +6,7 @@
  *
  * Sans base : la migration crée chaque objet déclaré, rien de non déclaré, elle
  * est ADDITIVE (ni DROP, ni RENAME, ni reprise de données) et horodatée après
- * toutes les autres. La garde de dérive rougit pour un objet ABSENT, DÉSACTIVÉ
+ * 20261015180000 ; les migrations postérieures ne touchent pas au socle. La garde de dérive rougit pour un objet ABSENT, DÉSACTIVÉ
  * ou NON DÉCLARÉ. La preuve sur une vraie base est en Gate D
  * (`tests/integration/verrou-dossier/socle-qnc-ajout-seul.spec.ts`).
  */
@@ -42,6 +42,44 @@ function tousPresents(): ObjetPresentSocle[] {
     type: o.type,
     ...(o.type === "trigger" ? { actif: true } : {}),
   }));
+}
+
+/** Les noms que le socle déclare : tables, triggers, CHECK et fonctions. */
+const NOMS_DU_SOCLE = [
+  ...TABLES_AJOUT_SEUL,
+  ...Object.keys(TRIGGERS_SOUS_INTERRUPTEUR),
+  ...OBJETS_SQL_SOCLE_QNC.map((o) => o.nom),
+  ...FONCTIONS_SQL_SOCLE_QNC,
+];
+
+/**
+ * Ce qu'une migration ULTÉRIEURE ne doit pas faire au socle : éteindre ou
+ * altérer un trigger, supprimer / modifier / réécrire l'un de ses objets déclarés.
+ */
+function fautesMigrationSurSocle(contenu: string): string[] {
+  const instructions = contenu
+    .split(/\r?\n/)
+    .filter((l) => !l.trim().startsWith("--"))
+    .join("\n")
+    .split(";")
+    .map((i) => i.trim())
+    .filter(Boolean);
+  const fautes: string[] = [];
+  for (const i of instructions) {
+    if (/\b(DISABLE|ALTER)\s+TRIGGER\b/i.test(i)) {
+      fautes.push(`éteint ou altère un trigger : ${i.slice(0, 80)}`);
+      continue;
+    }
+    const touche =
+      /^(DROP|ALTER|TRUNCATE|UPDATE|DELETE|CREATE\s+(OR\s+REPLACE\s+)?(TRIGGER|FUNCTION))\b/i.test(
+        i,
+      );
+    const nom = NOMS_DU_SOCLE.find((n) =>
+      new RegExp(`(?<![A-Za-z0-9_])${n}(?![A-Za-z0-9_])`).test(i),
+    );
+    if (touche && nom) fautes.push(`modifie « ${nom} » du socle : ${i.slice(0, 80)}`);
+  }
+  return fautes;
 }
 
 describe("le SQL brut du socle QNC est déclaré", () => {
@@ -115,21 +153,38 @@ describe("le SQL brut du socle QNC est déclaré", () => {
     expect(actif).not.toMatch(/ALTER TYPE/i);
   });
 
-  it("elle est horodatée après toutes les autres migrations de main", () => {
-    const noms = readdirSync(DOSSIER)
-      .filter((n) => /^\d{14}_/.test(n))
-      .sort();
-    // Elle suit les migrations de main à sa création ; « la dernière » ne peut pas rester
-    // vrai à jamais : toute migration posée APRÈS elle (ex. 20261017120000, ind. 21) le
-    // contredirait sans qu'aucune règle ne soit violée.
-    expect(noms).toContain(MIGRATION_SOCLE_QNC);
-    expect(
-      noms
-        .filter((n) => n < MIGRATION_SOCLE_QNC)
-        .at(-1)
-        ?.slice(0, 14),
-    ).toBe("20261015180000");
+  it("elle est horodatée après 20261015180000, la dernière migration de main à sa création", () => {
     expect(MIGRATION_SOCLE_QNC.slice(0, 14) > "20261015180000").toBe(true);
+  });
+
+  it("toute migration horodatée APRÈS le socle laisse intacts ses tables, triggers et fonctions", () => {
+    const apres = readdirSync(DOSSIER)
+      .filter((n) => /^\d{14}_/.test(n) && n > MIGRATION_SOCLE_QNC)
+      .sort();
+    const fautes = apres.flatMap((nom) =>
+      fautesMigrationSurSocle(readFileSync(path.join(DOSSIER, nom, "migration.sql"), "utf8")).map(
+        (f) => `${nom} : ${f}`,
+      ),
+    );
+    expect(fautes).toEqual([]);
+  });
+
+  it("le détecteur voit bien une atteinte au socle (et laisse passer le reste)", () => {
+    expect(
+      fautesMigrationSurSocle('DROP TRIGGER "relances_journal_ajout_seul" ON "relances_journal";'),
+    ).not.toEqual([]);
+    expect(
+      fautesMigrationSurSocle('ALTER TABLE "questionnaire_versions" DISABLE TRIGGER ALL;'),
+    ).not.toEqual([]);
+    expect(fautesMigrationSurSocle('ALTER TABLE "veilles" ADD COLUMN "x" TEXT;')).not.toEqual([]);
+    expect(fautesMigrationSurSocle('DROP FUNCTION "qualiopi_ajout_seul"();')).not.toEqual([]);
+    expect(fautesMigrationSurSocle('ALTER TABLE "autre" DISABLE TRIGGER "t";')).not.toEqual([]);
+    expect(
+      fautesMigrationSurSocle(
+        '-- DROP TRIGGER "relances_journal_ajout_seul"\nCREATE TABLE "autre" ("id" TEXT);',
+      ),
+    ).toEqual([]);
+    expect(fautesMigrationSurSocle('ALTER TABLE "autre" ADD COLUMN "x" TEXT;')).toEqual([]);
   });
 
   it("aucun interrupteur `qualiopi.<lot>.actif` n'est inscrit au registre de config (le seed le poserait)", () => {

@@ -979,7 +979,7 @@ export const KW_CODAGE_G3: KeywordSeed[] = [
       h1: "IA sur mesure vs no-code : comment choisir pour votre PME ?",
       metaTitle: "IA sur mesure vs no-code PME — comparatif honnête",
       metaDescription:
-        "Zapier, Make, n8n vs développement custom : coût total, flexibilité, limite de passage à l'échelle. Notre comparatif honnête pour PME et ETI.",
+        "Zapier, Make, n8n vs développement custom : coût total, flexibilité, limite de passage à l'échelle. Notre comparatif honnête pour TPE, PME et ETI.",
     },
     urlCible: "/fr/blog/ia-sur-mesure-vs-no-code-pme",
     canonicalParent: "/fr/codage-developpement",

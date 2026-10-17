@@ -119,6 +119,13 @@ export const EMAILS_AUTOMATIQUES_PAR_DEFAUT: readonly string[] = [
   // a répondu »), sans contenu de réponse. Garée, elle serait une alerte perdue
   // — même raisonnement que `qualiopi-alerte-interne`.
   "questionnaire-reponses-recues",
+  // QNC L03 (2026-10-16) : le recueil du besoin part SEUL, sur décision du
+  // brief du lot (« envoi AUTOMATIQUE à l'entreprise dès la demande, avec
+  // relance »). Il ne contient ni prix, ni engagement : un questionnaire. Retenu
+  // en corbeille, il ne serait jamais relu à temps pour précéder le devis.
+  // ⚠️ DÉROGE à l'ordre « rien ne part à un client sans validation » : à confirmer
+  // par Will avant d'allumer `qualiopi.recueil.actif` (cf. PR).
+  "recueil-besoin",
   // Apporteurs (2026-10-05) : alerte INTERNE « une entreprise est déclarée ».
   "apporteur-declaration-recue",
   // Réseau d'apporteurs (2026-10-05) : l'alerte INTERNE « un dossier est signé » et
@@ -169,6 +176,7 @@ export const LIBELLE_TEMPLATE_EMAIL: Record<string, string> = {
   "apporteur-lien-espace": "Apporteur : lien de son espace, à sa demande",
   "devis-envoi": "Envoi d'un devis",
   "convention-envoi": "Envoi d'une convention",
+  "recueil-besoin": "Recueil du besoin : questionnaire envoyé à l'entreprise (et relances)",
   "facture-envoi": "Envoi d'une facture",
   "facture-pieces-remboursement-opco":
     "Pièces de remboursement OPCO (facture acquittée, certificat de réalisation)",
