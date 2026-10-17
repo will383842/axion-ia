@@ -16,6 +16,8 @@
 import { Download, ShieldCheck } from "lucide-react";
 import { Link } from "@/i18n/navigation";
 
+import { lirePedagogie } from "@/server/qualiopi/pedagogie/interrupteur";
+
 import { CoquilleStagiaire } from "../_coquille";
 
 const LIBELLES_ATTESTATION: Record<string, string> = {
@@ -45,6 +47,8 @@ interface PageProps {
 
 export default async function MesDocumentsPage({ params }: PageProps) {
   const { locale } = await params;
+  // Lot L08 — la rubrique « Mes supports » n'existe que si le lot est allumé.
+  const supportsOuverts = (await lirePedagogie()) !== "eteint";
 
   return (
     <CoquilleStagiaire section="documents" locale={locale}>
@@ -186,6 +190,17 @@ export default async function MesDocumentsPage({ params }: PageProps) {
                   </div>
                 ))}
               </section>
+            ) : null}
+
+            {supportsOuverts ? (
+              <p className="text-fg-muted mt-10 text-sm">
+                <a
+                  href={`/${locale}/portail/mon-espace/supports`}
+                  className="hover:text-mocha underline"
+                >
+                  Mes supports de formation
+                </a>
+              </p>
             ) : null}
 
             <p className="text-fg-muted mt-10 text-sm">
