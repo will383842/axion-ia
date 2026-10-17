@@ -108,6 +108,7 @@ import {
   type PhaseFiche,
 } from "@/features/admin-qualiopi/session-hub/ancres";
 import { OngletsPhase } from "@/features/admin-qualiopi/session-hub/OngletsPhase";
+import { BlocMoyensSession } from "@/components/admin/qualiopi/BlocMoyensSession";
 import { lireEtatVerrouFiche, lireParcoursFiche } from "@/server/qualiopi/sessions/lectures-fiche";
 import {
   dateHeureParis,
@@ -1054,6 +1055,7 @@ export default async function SessionHubPage({ params, searchParams }: PageProps
             initial={lieuValuesDepuisSession(trainingSession)}
             modalite={trainingSession.modalite}
           />
+          <BlocMoyensSession sessionId={id} />
         </section>
       </>
     ),

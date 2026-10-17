@@ -81,6 +81,9 @@ export function SessionLieuForm({
   const [lieu, setLieu] = useState<LieuValues>(initial);
   const [modalite, setModalite] = useState<ModaliteValue | "">(modaliteInitiale ?? "");
   const [error, setError] = useState<string | null>(null);
+  // QNC L07 — motif d'un changement de modalité ou de lieu (exigé par le
+  // serveur quand `qualiopi.moyens.actif` agit sur cette session).
+  const [motif, setMotif] = useState("");
   const [successMsg, setSuccessMsg] = useState<string | null>(null);
 
   const modaliteEffective = modalite === "" ? undefined : modalite;
@@ -131,6 +134,7 @@ export function SessionLieuForm({
         // sans modalité ne doit pas en gagner une par le seul fait qu'on
         // corrige son adresse.
         ...(modaliteEffective !== undefined ? { modalite: modaliteEffective } : {}),
+        ...(motif.trim() !== "" ? { motif } : {}),
       });
       if ("error" in result) {
         setError(result.error);
@@ -203,6 +207,24 @@ export function SessionLieuForm({
         idPrefix="fiche-lieu"
         modalite={modaliteEffective}
       />
+
+      <div className="mb-[var(--space-admin-5)]">
+        <label className={labelCls} htmlFor="fiche-lieu-motif">
+          Motif du changement de modalité ou de lieu
+        </label>
+        <input
+          id="fiche-lieu-motif"
+          type="text"
+          value={motif}
+          onChange={(e) => setMotif(e.target.value)}
+          disabled={isPending}
+          maxLength={2000}
+          className={inputCls}
+        />
+        <p className="mt-[var(--space-admin-1)] text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
+          Gardé au journal avec l&apos;avant / après. À remplir si la modalité ou le lieu change.
+        </p>
+      </div>
 
       {error !== null && (
         <p

@@ -54,6 +54,9 @@ export function MoyenRowActions({
   const [isPending, startTransition] = useTransition();
   const [open, setOpen] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  // QNC L07 — motif de la modification. Facultatif tant que le lot est éteint,
+  // exigé par le serveur (≥ 10 caractères) quand il est allumé.
+  const [motif, setMotif] = useState("");
 
   const [categorie, setCategorie] = useState<MoyenCategorie>(moyen.categorie as MoyenCategorie);
   const [libelle, setLibelle] = useState(moyen.libelle);
@@ -74,6 +77,7 @@ export function MoyenRowActions({
         description,
         localisation,
         dateVerification: dateVerification ? new Date(dateVerification) : null,
+        ...(motif.trim() !== "" ? { motif } : {}),
       });
       if ("error" in result) {
         setError(result.error);
@@ -87,7 +91,11 @@ export function MoyenRowActions({
   function handleToggleActif() {
     setError(null);
     startTransition(async () => {
-      const result = await setActifAction({ id: moyen.id, actif: !moyen.actif });
+      const result = await setActifAction({
+        id: moyen.id,
+        actif: !moyen.actif,
+        ...(motif.trim() !== "" ? { motif } : {}),
+      });
       if ("error" in result) {
         setError(result.error);
       } else {
@@ -120,6 +128,19 @@ export function MoyenRowActions({
           {isPending ? "…" : moyen.actif ? "Désactiver" : "Réactiver"}
         </button>
       </div>
+
+      {!open && (
+        <input
+          type="text"
+          value={motif}
+          onChange={(e) => setMotif(e.target.value)}
+          disabled={isPending}
+          maxLength={2000}
+          placeholder="Motif (pour désactiver / réactiver)"
+          aria-label="Motif du changement d'état"
+          className={inputCls}
+        />
+      )}
 
       {open && (
         <form
@@ -197,6 +218,20 @@ export function MoyenRowActions({
                 value={dateVerification}
                 onChange={(e) => setDateVerification(e.target.value)}
                 disabled={isPending}
+                className={inputCls}
+              />
+            </div>
+            <div>
+              <label htmlFor="moyenrowactions-motif" className={labelCls}>
+                Motif de la modification
+              </label>
+              <input
+                id="moyenrowactions-motif"
+                type="text"
+                value={motif}
+                onChange={(e) => setMotif(e.target.value)}
+                disabled={isPending}
+                maxLength={2000}
                 className={inputCls}
               />
             </div>
