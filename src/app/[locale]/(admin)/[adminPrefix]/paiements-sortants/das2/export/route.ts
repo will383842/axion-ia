@@ -19,6 +19,7 @@ import { prisma } from "@/lib/prisma";
 import { peutEngager } from "@/server/auth/habilitations";
 import { journaliser } from "@/server/journal/journaliser";
 import { exportDas2Commune } from "@/server/paiements-sortants/das2";
+import { INTERRUPTEURS_SIGNATURE } from "@/server/qualiopi/formateurs-independants/interrupteurs";
 import { interrupteurAllume } from "@/server/qualiopi/formateurs-independants/interrupteur-allume";
 
 export const dynamic = "force-dynamic";
@@ -32,7 +33,7 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
   }
   if (!(await interrupteurAllume("das2_commun"))) {
     return new NextResponse(
-      "Export non disponible : allumez l'interrupteur « Export DAS 2 commun » dans l'écran Interrupteurs (Formateurs).",
+      `Export non disponible : allumez l'interrupteur « ${INTERRUPTEURS_SIGNATURE.das2_commun.libelle} » dans l'écran Interrupteurs (Formateurs).`,
       { status: 404 },
     );
   }

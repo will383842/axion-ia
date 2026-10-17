@@ -4,6 +4,8 @@
  * le lit, jamais l'inverse. Un geste ajouté au registre apparaît ici sans autre geste.
  */
 
+import { peutEngager } from "@/server/auth/habilitations";
+
 import { GESTES_HUMAINS, type GesteHumain, type RubriqueAFaire } from "./gestes-humains";
 
 export interface BlocAFaire {
@@ -51,7 +53,8 @@ export function blocsAFaire(adminBase: string): ReadonlyArray<BlocAFaire> {
 
 /**
  * Les pages du groupe qu'aucun menu ne montre : reliées d'ici. Chaque page garde sa propre
- * porte (interrupteur) ; le lien n'est offert que si elle s'ouvre.
+ * porte (interrupteur, droit) ; le lien n'est offert EXACTEMENT sous la même condition que
+ * la page : même interrupteur, même droit (`peutEngager`, la fonction des pages).
  */
 export function liensAnnexes(
   adminBase: string,
@@ -60,6 +63,7 @@ export function liensAnnexes(
     readonly mise_a_niveau: boolean;
     readonly changement_coordonnees?: boolean;
   },
+  role: string | null | undefined,
 ): ReadonlyArray<{ libelle: string; href: string }> {
   const base = `${adminBase}/qualiopi/formateurs`;
   return [
@@ -67,12 +71,16 @@ export function liensAnnexes(
       ? [{ libelle: "Échanges de découverte", href: `${base}/echanges-du-pont` }]
       : []),
     ...(ouvert.mise_a_niveau ? [{ libelle: "Mise à niveau", href: `${base}/mise-a-niveau` }] : []),
-    ...(ouvert.changement_coordonnees === true
+    ...(ouvert.changement_coordonnees === true && peutEngager(role, "remunerer_formateur")
       ? [{ libelle: "Changements IBAN et adresse", href: `${base}/changements` }]
       : []),
     { libelle: "Pièces", href: `${base}/pieces` },
-    // Pages sans autre porte : chacune garde la sienne et dit quelle clé l'ouvre.
-    { libelle: "Lieux à compléter", href: `${base}/lieux` },
-    { libelle: "Rattrapage des candidatures", href: `${base}/rattrapage` },
+    // Pages sans interrupteur : leur seule porte est le droit.
+    ...(peutEngager(role, "habiliter_formateur")
+      ? [{ libelle: "Lieux à compléter", href: `${base}/lieux` }]
+      : []),
+    ...(peutEngager(role, "contresigner")
+      ? [{ libelle: "Rattrapage des candidatures", href: `${base}/rattrapage` }]
+      : []),
   ];
 }

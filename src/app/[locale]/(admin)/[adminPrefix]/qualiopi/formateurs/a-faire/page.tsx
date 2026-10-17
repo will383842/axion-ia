@@ -70,11 +70,15 @@ export default async function AFaireMaintenantPage({ params }: PageProps) {
   });
   const adminBase = `/${locale}/${adminPrefix}`;
   const blocs = blocsAFaire(adminBase);
-  const liens = liensAnnexes(adminBase, {
-    suivi_echange: entree.suivi_echange,
-    mise_a_niveau: miseANiveau,
-    changement_coordonnees: changements,
-  });
+  const liens = liensAnnexes(
+    adminBase,
+    {
+      suivi_echange: entree.suivi_echange,
+      mise_a_niveau: miseANiveau,
+      changement_coordonnees: changements,
+    },
+    acces.role,
+  );
 
   return (
     <AdminPageShell>
