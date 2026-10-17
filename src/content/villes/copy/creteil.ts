@@ -435,7 +435,7 @@ export const CRETEIL_COPY: VilleCopy = {
     },
     {
       q: "Quelle différence entre une intervention collective et un accompagnement 1-to-1 dirigeant ?",
-      a: "L'intervention collective (dès {{price:intervention-4h|flat}}) s'adresse à une équipe de 5 à 20 personnes : prise en main d'outils IA, cas d'usage métier, mise en pratique. Le 1-to-1 dirigeant (dès {{price:intervention-dirigeants|flat}}) est un format individuel centré sur la stratégie IA : feuille de route, gouvernance, arbitrages make-or-buy. Les deux formats sont disponibles à Créteil.",
+      a: "L'intervention collective (dès {{price:intervention-4h|flat}}) s'adresse à une équipe de 2 à 15 personnes : prise en main d'outils IA, cas d'usage métier, mise en pratique. Le 1-to-1 dirigeant (dès {{price:intervention-dirigeants|flat}}) est un format individuel centré sur la stratégie IA : feuille de route, gouvernance, arbitrages make-or-buy. Les deux formats sont disponibles à Créteil.",
     },
   ],
 };

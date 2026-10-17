@@ -111,11 +111,12 @@ describe("off.31 — traitement des aléas décrit", () => {
     expect(b).toMatch(/action corrective/);
   });
 
-  it("les trois mesures de remédiation sont publiées", () => {
+  it("les deux mesures de remédiation tenables sont publiées, sans remplacement du formateur (L16)", () => {
     // Limitatives et réellement praticables : un engagement publié se constate.
     const b = section(REC_FR, "Aléas survenus en cours de prestation");
     expect(b).toMatch(/report de la séquence ou de la session sans frais/);
-    expect(b).toMatch(/remplacement du formateur/);
+    // Décision de Will, 2026-10-16 : la promesse de remplacement du formateur est retirée.
+    expect(b).not.toMatch(/remplacement du formateur/);
     expect(b).toMatch(/séquence de rattrapage/);
   });
 

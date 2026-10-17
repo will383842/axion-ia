@@ -214,9 +214,17 @@ export interface SurMesureMeta {
   duree?: FormationDuree;
   /** Gamme rattachée (pour afficher sur la page gamme). */
   gamme?: FormationGamme;
+  /**
+   * Date (AAAA-MM-JJ) à laquelle l'offre a été MISE DE CÔTÉ. Une offre mise de
+   * côté n'est plus servie par `SUR_MESURE` (donc plus rendue par le site), mais
+   * reste ici : rien ne s'efface, on la remet en ligne en retirant ce champ.
+   */
+  misDeCoteLe?: string;
+  /** Pourquoi elle a été mise de côté (obligatoire dès que `misDeCoteLe` est posé). */
+  motifMiseDeCote?: string;
 }
 
-export const SUR_MESURE: ReadonlyArray<SurMesureMeta> = [
+const SUR_MESURE_TOUTES: ReadonlyArray<SurMesureMeta> = [
   {
     id: "express-sur-mesure",
     labelFr: "Express Sur Mesure",
@@ -245,6 +253,12 @@ export const SUR_MESURE: ReadonlyArray<SurMesureMeta> = [
     labelFr: "Transformation Sur Mesure",
     dureeFr: "3 jours",
     duree: "3j",
+    // 🔴 2026-10-16 (L16, NC2) — décision de Will : le format « Sur mesure · 3 jours »
+    // quitte le site. Les formations du catalogue durent 4 h, 7 h ou 14 h ; une
+    // offre de 21 h n'a ni fiche, ni programme, ni convention qui lui corresponde.
+    misDeCoteLe: "2026-10-16",
+    motifMiseDeCote:
+      "Décision de Will : les formations durent 4 h, 7 h ou 14 h ; aucun document ne correspond à une offre de 3 jours.",
     descriptionFr:
       "Le programme complet bâti avec votre direction : multi-équipes, multi-sites, objectifs chiffrés.",
   },
@@ -256,6 +270,19 @@ export const SUR_MESURE: ReadonlyArray<SurMesureMeta> = [
       "Nous construisons votre formation de A à Z : contenu, durée, format, équipes concernées — de la PME au grand groupe. Combinaisons métier × secteur possibles, multi-sites, secteurs réglementés.",
   },
 ];
+
+/**
+ * Offres sur-mesure SERVIES au public — celles qui ne sont pas mises de côté.
+ * Tout le site lit cette liste ; `SUR_MESURE_MIS_DE_COTE` garde les autres.
+ */
+export const SUR_MESURE: ReadonlyArray<SurMesureMeta> = SUR_MESURE_TOUTES.filter(
+  (s) => s.misDeCoteLe === undefined,
+);
+
+/** Offres sur-mesure mises de côté (non supprimées) — pour les remettre en ligne ou les relire. */
+export const SUR_MESURE_MIS_DE_COTE: ReadonlyArray<SurMesureMeta> = SUR_MESURE_TOUTES.filter(
+  (s) => s.misDeCoteLe !== undefined,
+);
 
 export function getSurMesureByDuree(duree: FormationDuree): ReadonlyArray<SurMesureMeta> {
   return SUR_MESURE.filter((s) => s.duree === duree);

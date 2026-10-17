@@ -25,6 +25,7 @@
 import type { FormationCategorie, FormationDuree, FormationGamme } from "../pricing";
 import { getFormationBrackets, getFormationEntryPrice, getFormationPrice } from "../pricing";
 import type { FormationBracket } from "../pricing";
+import { EFFECTIF_SEMINAIRE_FR } from "./effectif";
 import { MATERIEL_SMARTPHONE_OU_ORDINATEUR, MATERIEL_TABLEUR } from "./materiel";
 import type { ModalitePedagogique } from "./modalites";
 
@@ -126,7 +127,7 @@ export interface FormationV2 {
   modalites?: ReadonlyArray<ModalitePedagogique>;
   /** Matériel requis. Défaut = FORMATION_MATERIEL_DEFAUT (« smartphone ou ordinateur, connexion internet… », catalog-v2-facts.ts). Matériel du PRÉSENTIEL : `getFormationMateriel` y ajoute l'exigence du distanciel. Ne surcharger que pour dire autre chose que le défaut. */
   materielFr?: string;
-  /** Effectif du groupe. Défaut = « Jusqu'à 15 participants ». */
+  /** Effectif du groupe. Défaut = `EFFECTIF_VALEUR_FR` (de 2 à 15 stagiaires par session) ; seul le séminaire surcharge (`EFFECTIF_SEMINAIRE_FR`). */
   effectifFr?: string;
   /** Outils réellement pratiqués (phrase complète, rendue en FAQ). */
   outilsFr?: string;
@@ -5345,7 +5346,7 @@ const IA_POUR_LE_COMMERCE: FormationV2 = {
     {
       question: "Combien de personnes du magasin peuvent participer ?",
       reponse:
-        "Jusqu'à 15 participants par groupe, tous profils : responsables, vendeurs, merchandising. Le prix est par groupe, pas par personne.",
+        "De 2 à 15 stagiaires par session, tous profils : responsables, vendeurs, merchandising. Le prix est par groupe, pas par personne.",
     },
   ],
 };
@@ -6634,7 +6635,7 @@ const SEMINAIRE_IA_ENTREPRISE: FormationV2 = {
   duree: "1j",
   surDevis: true,
   // Programme : « Jusqu'à 50 participants, en tables de 6 à 8 ».
-  effectifFr: "Jusqu’à 50 participants, en tables de 6 à 8",
+  effectifFr: EFFECTIF_SEMINAIRE_FR,
   // Le séminaire ne demande AUCUN matériel individuel : le formateur démontre,
   // et seul le téléphone personnel sert au SONDAGE — anonyme, agrégé par
   // service, protégé par l'engagement de non-usage disciplinaire signé à 9 h.

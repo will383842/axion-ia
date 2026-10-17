@@ -554,7 +554,7 @@ export const KW_AEO_G4: KeywordSeed[] = [
       h1: "Prix d'une journée de formation IA collective en 2026",
       metaTitle: "Tarif journée formation IA entreprise | Axion-IA",
       metaDescription:
-        "Le marché pratique 400 à 2 000 € par personne par jour. En format collectif B2B sur site, notre journée couvre 5 à 20 personnes avec un tarif groupe.",
+        "Le marché pratique 400 à 2 000 € par personne par jour. En format collectif B2B sur site, notre journée couvre 2 à 15 personnes avec un tarif groupe.",
       h2Variants: [
         "Tarif groupe vs individuel : la différence",
         "Ce qui justifie le prix d'une formation IA",
