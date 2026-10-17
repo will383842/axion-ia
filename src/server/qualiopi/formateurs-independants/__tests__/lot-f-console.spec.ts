@@ -107,14 +107,25 @@ describe("W-2 « À faire maintenant » : lu depuis le registre des gestes humai
     }
   });
   it("les pages orphelines sont reliées, selon leur interrupteur", () => {
-    const tout = liensAnnexes("/fr/p", { suivi_echange: true, mise_a_niveau: true });
+    const tout = liensAnnexes(
+      "/fr/p",
+      { suivi_echange: true, mise_a_niveau: true, changement_coordonnees: true },
+      "admin",
+    );
     expect(tout.map((l) => l.href)).toEqual([
       "/fr/p/qualiopi/formateurs/echanges-du-pont",
       "/fr/p/qualiopi/formateurs/mise-a-niveau",
+      "/fr/p/qualiopi/formateurs/changements",
       "/fr/p/qualiopi/formateurs/pieces",
+      "/fr/p/qualiopi/formateurs/lieux",
+      "/fr/p/qualiopi/formateurs/rattrapage",
     ]);
-    const rien = liensAnnexes("/fr/p", { suivi_echange: false, mise_a_niveau: false });
-    expect(rien.map((l) => l.href)).toEqual(["/fr/p/qualiopi/formateurs/pieces"]);
+    const rien = liensAnnexes("/fr/p", { suivi_echange: false, mise_a_niveau: false }, "admin");
+    expect(rien.map((l) => l.href)).toEqual([
+      "/fr/p/qualiopi/formateurs/pieces",
+      "/fr/p/qualiopi/formateurs/lieux",
+      "/fr/p/qualiopi/formateurs/rattrapage",
+    ]);
   });
 });
 

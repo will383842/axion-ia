@@ -31,7 +31,7 @@ import {
   seDesister,
 } from "@/server/qualiopi/formateurs-independants/choix-formateur-service";
 import { prisma } from "@/lib/prisma";
-import { FORMATEUR_BASE_PATH } from "@/server/formateur/routes";
+import { FORMATEUR_BASE_PATH, FORMATEUR_CONNEXION_PATH } from "@/server/formateur/routes";
 import { STATUTS_ACCORD_DONNE } from "@/server/qualiopi/trainers/mission-formateur";
 
 import { logQualiopiActivity, requireAdminWrite } from "./_guards";
@@ -181,6 +181,21 @@ const desistementSchema = z.object({
   remplacant: z.string().max(500).optional(),
 });
 
+/**
+ * Formulaire HTML : une session expirée (`unauthorized`, levée par la garde) renvoie vers la
+ * connexion avec « reconnectez-vous », pas vers l'erreur générique. Aucune lecture en plus.
+ */
+async function sansSessionExpiree<T>(appel: () => Promise<T>): Promise<T> {
+  try {
+    return await appel();
+  } catch (e) {
+    if (e instanceof Error && e.message === "unauthorized") {
+      redirect(`${FORMATEUR_CONNEXION_PATH}?erreur=session`);
+    }
+    throw e;
+  }
+}
+
 /** « Je ne peux plus assurer cette mission » — depuis l'espace connecté. */
 export async function seDesisterMissionAction(
   input: z.infer<typeof desistementSchema>,
@@ -217,11 +232,13 @@ export async function seDesisterDepuisFormulaireAction(formData: FormData): Prom
   };
   const motif = texte("motif");
   const remplacant = texte("remplacant");
-  const r = await seDesisterMissionAction({
-    missionId,
-    ...(motif !== undefined ? { motif: motif.slice(0, 1400) } : {}),
-    ...(remplacant !== undefined ? { remplacant: remplacant.slice(0, 500) } : {}),
-  });
+  const r = await sansSessionExpiree(() =>
+    seDesisterMissionAction({
+      missionId,
+      ...(motif !== undefined ? { motif: motif.slice(0, 1400) } : {}),
+      ...(remplacant !== undefined ? { remplacant: remplacant.slice(0, 500) } : {}),
+    }),
+  );
   redirect(`${FORMATEUR_BASE_PATH}?mission=${missionId}&${"error" in r ? "erreur=1" : "fait=1"}`);
 }
 
@@ -248,11 +265,13 @@ export async function repondreDepuisFormulaireAction(formData: FormData): Promis
     .filter((x) => x !== "")
     .join(" : ")
     .slice(0, 2000);
-  const r = await repondreMissionFormateurAction({
-    missionId,
-    reponse,
-    ...(reponse === "refusee" && motif !== "" ? { motif } : {}),
-  });
+  const r = await sansSessionExpiree(() =>
+    repondreMissionFormateurAction({
+      missionId,
+      reponse,
+      ...(reponse === "refusee" && motif !== "" ? { motif } : {}),
+    }),
+  );
   const page = `${FORMATEUR_BASE_PATH}?mission=${missionId}`;
   // Aucun texte libre dans l'adresse : un code, que la page traduit.
   redirect("error" in r ? `${page}&erreur=reponse` : `${page}&reponse=${reponse}`);

@@ -17,6 +17,7 @@ import { AccesRefuse } from "@/components/admin/ui/AccesRefuse";
 import { gardePage } from "@/server/auth/garde-page";
 import { peutEngager } from "@/server/auth/habilitations";
 import { rattraperLieuxFormateursFormAction } from "@/server/actions/qualiopi/formateur-lieu";
+import { INTERRUPTEURS } from "@/server/qualiopi/formateurs-independants/interrupteurs";
 import { envoiAllume } from "@/server/qualiopi/formateurs-independants/interrupteurs-envoi";
 import { lireLieuxACompleter } from "@/server/qualiopi/formateurs-proches/lieu-formateur-service";
 import { messageRetourLieu } from "@/server/qualiopi/formateurs-proches/retour-lieu";
@@ -67,7 +68,9 @@ export default async function LieuxFormateursPage({ params, searchParams }: Page
       ) : null}
       {!allume ? (
         <p className="admin-alert admin-alert-info">
-          Le bloc « formateurs proches » n&apos;est pas encore allumé (écran Interrupteurs).
+          Cet écran n&apos;est pas encore ouvert : il s&apos;allume avec l&apos;interrupteur «{" "}
+          {INTERRUPTEURS.proches_bloc.libelle} », dans{" "}
+          <Link href={`${base}/interrupteurs`}>l&apos;écran Interrupteurs</Link>.
         </p>
       ) : fiches === null ? (
         <p className="admin-alert admin-alert-warning">Liste indisponible pour le moment.</p>

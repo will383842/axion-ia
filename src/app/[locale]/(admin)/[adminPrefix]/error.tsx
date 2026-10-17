@@ -22,11 +22,13 @@ export default function AdminErrorBoundary({
   useEffect(() => {
     // Audit deploy-unstuck 2026-05-18 — verbose console pour debug admin crash
     // post-deploy. À retirer quand la cause root sera identifiée.
-    console.error("[ADMIN ERROR BOUNDARY] message:", error.message);
-    console.error("[ADMIN ERROR BOUNDARY] stack:", error.stack);
-    console.error("[ADMIN ERROR BOUNDARY] digest:", error.digest);
-    console.error("[ADMIN ERROR BOUNDARY] name:", error.name);
-    console.error("[ADMIN ERROR BOUNDARY] cause:", error.cause);
+    if (process.env.NODE_ENV !== "production") {
+      console.error("[ADMIN ERROR BOUNDARY] message:", error.message);
+      console.error("[ADMIN ERROR BOUNDARY] stack:", error.stack);
+      console.error("[ADMIN ERROR BOUNDARY] digest:", error.digest);
+      console.error("[ADMIN ERROR BOUNDARY] name:", error.name);
+      console.error("[ADMIN ERROR BOUNDARY] cause:", error.cause);
+    }
     // 🔴 2026-09-09 — CETTE CAPTURE EXISTAIT DEPUIS MAI ET NE RAPPORTAIT RIEN.
     // `Sentry.captureException` sans client attaché ne lève pas : elle
     // abandonne l'événement en silence. Or le SDK ne s'initialise qu'à
@@ -36,9 +38,11 @@ export default function AdminErrorBoundary({
     void capturerErreurDeFrontiere(error, "admin-error");
   }, [error]);
 
-  // Audit deploy-unstuck 2026-05-18 — affichage détail en prod aussi
-  // (temporaire). À retirer ASAP.
-  const detailString = `${error.message}\n${error.stack ?? ""}\n${error.digest ? `digest: ${error.digest}` : ""}`;
+  // Ni message, ni stack, ni digest en production : l'incident est déjà signalé.
+  const detailString =
+    process.env.NODE_ENV === "production"
+      ? ""
+      : `${error.message}\n${error.stack ?? ""}\n${error.digest ? `digest: ${error.digest}` : ""}`;
 
   return (
     <AdminErrorState
