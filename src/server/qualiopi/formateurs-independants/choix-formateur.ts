@@ -164,6 +164,8 @@ const LEVEE_GARDE: Readonly<Record<keyof typeof MANQUES_MISSION, string | null>>
   vigilance: "Recevoir et valider une attestation URSSAF à jour.",
   vigilanceMission: "Recevoir et valider son attestation URSSAF avant de lui confier la mission.",
   erreur: "Réessayer dans un instant.",
+  suspenduRegistre:
+    "Lever la suspension par une décision motivée, depuis le registre des sous-traitants.",
 };
 
 const LEVEE_PAR_CODE: Readonly<Record<Exclude<CodeRaison, "garde">, string | null>> = {

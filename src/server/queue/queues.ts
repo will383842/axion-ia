@@ -317,7 +317,7 @@ export const visioQueue: Queue<VisioJobData, void, VisioJobName> | null = connec
 /** Cadence du balayage du CIRCUIT visio (file `visio`) : toutes les 5 minutes. */
 export const PATTERN_BALAYAGE_CIRCUIT_VISIO = "*/5 * * * *";
 
-// ============================================================
+// =====================================================      },
 // Content Generator V1 — Sprint 4/5 queues (§ 13.1 master prompt v1.7)
 // ============================================================
 //
@@ -2187,6 +2187,15 @@ export async function bootRepeatableJobs(): Promise<void> {
         type: "formation-crons.controle-registre-periodique",
         pattern: "35 8 * * *",
         jobId: "formation-crons-controle-registre-periodique-cron",
+      },
+      // Qualiopi ind. 27 (2026-10-16) — le registre des sous-traitants tenu par l'outil :
+      // chaque formateur indépendant au contrat-cadre signé (ou actif) y est inscrit, sa
+      // sortie datée. 08:50 UTC, APRÈS le recontrôle du registre (08:35) dont il reprend
+      // la date. Arrêté tant que `formateurs.registre_sous_traitants` est coupé.
+      {
+        type: "formation-crons.registre-sous-traitants",
+        pattern: "50 8 * * *",
+        jobId: "formation-crons-registre-sous-traitants-cron",
       },
       // QNC L07 — test du lien de visio la veille du début. 07:10 et 14:10 UTC
       // (08:10/09:10 et 15:10/16:10 à Paris) : le second passage retente un lien
