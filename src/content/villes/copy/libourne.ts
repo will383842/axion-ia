@@ -7,13 +7,13 @@ import type { VilleCopy } from "./types";
 
 export const LIBOURNE_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA intervient à Libourne auprès des TPE et PME du Libournais, et accompagne aussi les ETI lorsque le besoin se présente. Sous-préfecture de Gironde (25 036 habitants en 2023) située au confluent de la Dordogne et de l'Isle, Libourne s'appuie sur la viticulture des AOC Saint-Émilion, Pomerol et Fronsac, le commerce portuaire historique, une garnison militaire active et le centre hospitalier Robert-Boulin. Nous déployons des solutions IA opérationnelles sur site, sans dépendance éditeur.",
+    "Axion-IA intervient à Libourne auprès des PME et ETI du Libournais, et accompagne aussi les grands groupes selon leurs besoins. Sous-préfecture de Gironde (25 036 habitants en 2023) située au confluent de la Dordogne et de l'Isle, Libourne s'appuie sur la viticulture des AOC Saint-Émilion, Pomerol et Fronsac, le commerce portuaire historique, une garnison militaire active et le centre hospitalier Robert-Boulin. Nous déployons des solutions IA opérationnelles sur site, sans dépendance éditeur.",
   pitchEn:
-    "Axion-IA intervient à Libourne auprès des TPE et PME du Libournais, et accompagne aussi les ETI lorsque le besoin se présente. Sous-préfecture de Gironde (25 036 habitants en 2023) située au confluent de la Dordogne et de l'Isle, Libourne s'appuie sur la viticulture des AOC Saint-Émilion, Pomerol et Fronsac, le commerce portuaire historique, une garnison militaire active et le centre hospitalier Robert-Boulin. Nous déployons des solutions IA opérationnelles sur site, sans dépendance éditeur.",
+    "Axion-IA intervient à Libourne auprès des PME et ETI du Libournais, et accompagne aussi les grands groupes selon leurs besoins. Sous-préfecture de Gironde (25 036 habitants en 2023) située au confluent de la Dordogne et de l'Isle, Libourne s'appuie sur la viticulture des AOC Saint-Émilion, Pomerol et Fronsac, le commerce portuaire historique, une garnison militaire active et le centre hospitalier Robert-Boulin. Nous déployons des solutions IA opérationnelles sur site, sans dépendance éditeur.",
   directAnswerFr:
-    "Axion-IA cible en priorité les TPE et PME libournaises, et accompagne aussi les ETI selon leurs besoins. Le bassin économique de Libourne s'organise autour des AOC viticoles (Saint-Émilion, Pomerol, Fronsac), du commerce, du centre hospitalier Robert-Boulin et de plusieurs régiments militaires. Nous auditons, formons et implémentons du code IA sur mesure — pas de no-code — pour les dirigeants qui veulent automatiser leurs flux administratifs, commerciaux ou logistiques avec des résultats mesurables.",
+    "Axion-IA cible en priorité les PME et ETI libournaises, et accompagne aussi les grands groupes selon leurs besoins. Le bassin économique de Libourne s'organise autour des AOC viticoles (Saint-Émilion, Pomerol, Fronsac), du commerce, du centre hospitalier Robert-Boulin et de plusieurs régiments militaires. Nous auditons, formons et implémentons du code IA sur mesure — pas de no-code — pour les dirigeants qui veulent automatiser leurs flux administratifs, commerciaux ou logistiques avec des résultats mesurables.",
   directAnswerEn:
-    "Axion-IA cible en priorité les TPE et PME libournaises, et accompagne aussi les ETI selon leurs besoins. Le bassin économique de Libourne s'organise autour des AOC viticoles (Saint-Émilion, Pomerol, Fronsac), du commerce, du centre hospitalier Robert-Boulin et de plusieurs régiments militaires. Nous auditons, formons et implémentons du code IA sur mesure — pas de no-code — pour les dirigeants qui veulent automatiser leurs flux administratifs, commerciaux ou logistiques avec des résultats mesurables.",
+    "Axion-IA cible en priorité les PME et ETI libournaises, et accompagne aussi les grands groupes selon leurs besoins. Le bassin économique de Libourne s'organise autour des AOC viticoles (Saint-Émilion, Pomerol, Fronsac), du commerce, du centre hospitalier Robert-Boulin et de plusieurs régiments militaires. Nous auditons, formons et implémentons du code IA sur mesure — pas de no-code — pour les dirigeants qui veulent automatiser leurs flux administratifs, commerciaux ou logistiques avec des résultats mesurables.",
   seoHook: "viticulture AOC & commerce libournais",
   ecosystemFr:
     "Le tissu économique libournais s'organise autour des AOC viticoles voisines (Saint-Émilion, Pomerol, Fronsac), du port historique sur la Dordogne, du centre hospitalier Robert-Boulin et de la garnison militaire (régiments et école de santé des armées). Le secrétariat du Père Noël, basé à Libourne depuis 1962, gère chaque année les courriers adressés à La Poste. Le réseau de bus Calibus, gratuit depuis 2010, structure la mobilité urbaine.",
@@ -33,20 +33,20 @@ export const LIBOURNE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Libourne pour identifier vos chantiers prioritaires — adapté aux domaines viticoles du Libournais (Saint-Émilion, Pomerol, Fronsac), aux TPE/PME commerciales et aux structures de santé. Livrable : 3 axes actionnables chiffrés. Détail complet sur la sous-page /audits.",
-      en: "Audit IA à Libourne pour identifier vos chantiers prioritaires — adapté aux domaines viticoles du Libournais (Saint-Émilion, Pomerol, Fronsac), aux TPE/PME commerciales et aux structures de santé. Livrable : 3 axes actionnables chiffrés. Détail complet sur la sous-page /audits.",
+      fr: "Audit IA à Libourne pour identifier vos chantiers prioritaires — adapté aux domaines viticoles du Libournais (Saint-Émilion, Pomerol, Fronsac), aux PME et ETI commerciales et aux structures de santé. Livrable : 3 axes actionnables chiffrés. Détail complet sur la sous-page /audits.",
+      en: "Audit IA à Libourne pour identifier vos chantiers prioritaires — adapté aux domaines viticoles du Libournais (Saint-Émilion, Pomerol, Fronsac), aux PME et ETI commerciales et aux structures de santé. Livrable : 3 axes actionnables chiffrés. Détail complet sur la sous-page /audits.",
     },
     interventions: {
-      fr: "Interventions collectives à Libourne pour équipes opérationnelles et managers — TPE/PME viticoles, commerces et hôtellerie-restauration du centre-ville. Détail complet sur la sous-page /interventions.",
-      en: "Interventions collectives à Libourne pour équipes opérationnelles et managers — TPE/PME viticoles, commerces et hôtellerie-restauration du centre-ville. Détail complet sur la sous-page /interventions.",
+      fr: "Interventions collectives à Libourne pour équipes opérationnelles et managers — PME et ETI viticoles, commerces et hôtellerie-restauration du centre-ville. Détail complet sur la sous-page /interventions.",
+      en: "Interventions collectives à Libourne pour équipes opérationnelles et managers — PME et ETI viticoles, commerces et hôtellerie-restauration du centre-ville. Détail complet sur la sous-page /interventions.",
     },
     implementation: {
       fr: "Déploiement d'outils IA sur mesure (RAG documentaire, automatisation, agents) chez vos équipes à Libourne — code custom intégré dans votre SI, sans dépendance éditeur. Détail complet sur la sous-page /implementations.",
       en: "Déploiement d'outils IA sur mesure (RAG documentaire, automatisation, agents) chez vos équipes à Libourne — code custom intégré dans votre SI, sans dépendance éditeur. Détail complet sur la sous-page /implementations.",
     },
     unAUn: {
-      fr: "Accompagnement individuel dirigeant TPE/PME à Libourne : cadrage stratégique IA, feuille de route, arbitrages make-or-buy. Format intensif sur site. À partir de {{price:intervention-dirigeants|flat}} — détail sur la sous-page /un-a-un.",
-      en: "Accompagnement individuel dirigeant TPE/PME à Libourne : cadrage stratégique IA, feuille de route, arbitrages make-or-buy. Format intensif sur site. À partir de {{price:intervention-dirigeants|flat}} — détail sur la sous-page /un-a-un.",
+      fr: "Accompagnement individuel dirigeants de PME et d'ETI à Libourne : cadrage stratégique IA, feuille de route, arbitrages make-or-buy. Format intensif sur site. À partir de {{price:intervention-dirigeants|flat}} — détail sur la sous-page /un-a-un.",
+      en: "Accompagnement individuel dirigeants de PME et d'ETI à Libourne : cadrage stratégique IA, feuille de route, arbitrages make-or-buy. Format intensif sur site. À partir de {{price:intervention-dirigeants|flat}} — détail sur la sous-page /un-a-un.",
     },
   },
   services: {
@@ -57,7 +57,7 @@ export const LIBOURNE_COPY: VilleCopy = {
           "Vignobles d'appellation tout autour (Saint-Émilion, Pomerol, Fronsac) : on construit des boutiques de vente directe au domaine, des fiches techniques multilingues générées par IA et des espaces acheteurs B2B avec relance automatisée, calibrés pour la clientèle internationale du négoce qui achète en primeurs comme en livrable. Recherche sémantique sur vos millésimes incluse.",
           "Cœur marchand de la bastille et commerces du centre desservis par le réseau gratuit Calibus : nos vitrines e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento) et chatbots ancrés sur vos contenus rapprochent boutiques et clients locaux, avec click-and-collect, gestion de stock et UX mobile-first pour les achats sur smartphone en rue piétonne.",
           "Pôle santé du centre hospitalier Robert-Boulin, cabinets associés et école de santé des armées : portails patients, prise de contact en ligne, formulaires accessibles et recherche sémantique documentaire, conçus avec une exigence RGPD stricte propre aux données de santé et un hébergement certifié en UE. Aucune donnée patient hors Europe.",
-          "Carrefour ferroviaire et routier — gare sur la ligne Paris-Bordeaux en plein centre, A89 vers Bordeaux à ~31 km, aéroport de Mérignac à ~45 km — et zones d'activités gérées par La Cali (Communauté d'Agglomération du Libournais) : on greffe l'IA sur l'existant (widget, API, plugin) sans refonte coûteuse pour les TPE et PME logistiques, viticoles et industrielles du Libournais.",
+          "Carrefour ferroviaire et routier — gare sur la ligne Paris-Bordeaux en plein centre, A89 vers Bordeaux à ~31 km, aéroport de Mérignac à ~45 km — et zones d'activités gérées par La Cali (Communauté d'Agglomération du Libournais) : on greffe l'IA sur l'existant (widget, API, plugin) sans refonte coûteuse pour les PME et ETI logistiques, viticoles et industrielles du Libournais.",
         ],
         methodology: [
           {
@@ -87,12 +87,6 @@ export const LIBOURNE_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA (chatbot multilingue, recherche sémantique, fiches techniques assistées, formulaire intelligent) sur le site existant d'un domaine viticole de Saint-Émilion, d'un commerce de la bastille ou d'un cabinet libournais, en quelques semaines et sans refonte.",
-          },
           {
             sizeLabel: "PME",
             price: "Site / vitrine e-commerce sur mesure",
@@ -143,7 +137,7 @@ export const LIBOURNE_COPY: VilleCopy = {
           "Vignobles d'appellation tout autour (Saint-Émilion, Pomerol, Fronsac) : on construit des boutiques de vente directe au domaine, des fiches techniques multilingues générées par IA et des espaces acheteurs B2B avec relance automatisée, calibrés pour la clientèle internationale du négoce qui achète en primeurs comme en livrable. Recherche sémantique sur vos millésimes incluse.",
           "Cœur marchand de la bastille et commerces du centre desservis par le réseau gratuit Calibus : nos vitrines e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento) et chatbots ancrés sur vos contenus rapprochent boutiques et clients locaux, avec click-and-collect, gestion de stock et UX mobile-first pour les achats sur smartphone en rue piétonne.",
           "Pôle santé du centre hospitalier Robert-Boulin, cabinets associés et école de santé des armées : portails patients, prise de contact en ligne, formulaires accessibles et recherche sémantique documentaire, conçus avec une exigence RGPD stricte propre aux données de santé et un hébergement certifié en UE. Aucune donnée patient hors Europe.",
-          "Carrefour ferroviaire et routier — gare sur la ligne Paris-Bordeaux en plein centre, A89 vers Bordeaux à ~31 km, aéroport de Mérignac à ~45 km — et zones d'activités gérées par La Cali (Communauté d'Agglomération du Libournais) : on greffe l'IA sur l'existant (widget, API, plugin) sans refonte coûteuse pour les TPE et PME logistiques, viticoles et industrielles du Libournais.",
+          "Carrefour ferroviaire et routier — gare sur la ligne Paris-Bordeaux en plein centre, A89 vers Bordeaux à ~31 km, aéroport de Mérignac à ~45 km — et zones d'activités gérées par La Cali (Communauté d'Agglomération du Libournais) : on greffe l'IA sur l'existant (widget, API, plugin) sans refonte coûteuse pour les PME et ETI logistiques, viticoles et industrielles du Libournais.",
         ],
         methodology: [
           {
@@ -173,12 +167,6 @@ export const LIBOURNE_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA (chatbot multilingue, recherche sémantique, fiches techniques assistées, formulaire intelligent) sur le site existant d'un domaine viticole de Saint-Émilion, d'un commerce de la bastille ou d'un cabinet libournais, en quelques semaines et sans refonte.",
-          },
           {
             sizeLabel: "PME",
             price: "Site / vitrine e-commerce sur mesure",
@@ -232,12 +220,12 @@ export const LIBOURNE_COPY: VilleCopy = {
       a: "Oui. L'équipe Axion-IA se déplace sur site à Libourne et dans les communes du Libournais : Saint-Émilion, Pomerol, Fronsac, Arveyres, Génissac, Saint-Denis-de-Pile et Coutras. Les sessions peuvent aussi se tenir en format hybride. Un défraiement transport est appliqué hors Île-de-France selon les modalités précisées au devis.",
     },
     {
-      q: "Quels sont les tarifs pour une intervention IA d'une TPE/PME libournaise ?",
+      q: "Quels sont les tarifs pour une intervention IA d'une PME et ETI libournaise ?",
       a: "Une intervention collective démarre à {{price:intervention-4h|flat}} pour une équipe de 5 à 20 personnes. Un accompagnement dirigeant 1-to-1 démarre à {{price:intervention-dirigeants|flat}}. L'audit complet est cadré sur mesure selon le périmètre. Tarifs publics consultables sur axion-ia.fr.",
     },
     {
       q: "Quels délais pour démarrer un premier projet IA à Libourne ?",
-      a: "Pour une TPE (1-10 salariés), un premier outil IA peut être déployé en 3 à 5 semaines après l'audit initial. Pour une PME, comptez 6 à 10 semaines selon l'intégration SI. Le périmètre est cadré dès l'audit pour éviter tout dérapage de scope.",
+      a: "Pour une PME (1-10 salariés), un premier outil IA peut être déployé en 3 à 5 semaines après l'audit initial. Pour une PME, comptez 6 à 10 semaines selon l'intégration SI. Le périmètre est cadré dès l'audit pour éviter tout dérapage de scope.",
     },
     {
       q: "Comment Axion-IA garantit-il la conformité RGPD à Libourne ?",
@@ -245,7 +233,7 @@ export const LIBOURNE_COPY: VilleCopy = {
     },
     {
       q: "Quels secteurs économiques locaux Axion-IA cible-t-il à Libourne ?",
-      a: "Compte tenu du tissu libournais, nos missions concernent surtout la viticulture des AOC Saint-Émilion, Pomerol et Fronsac (gestion des chais, traçabilité, relation acheteurs), le commerce de détail du centre-ville, la santé (cabinets liés au centre hospitalier Robert-Boulin), l'hôtellerie-restauration et la logistique. Toute TPE/PME hors de ces filières peut nous solliciter.",
+      a: "Compte tenu du tissu libournais, nos missions concernent surtout la viticulture des AOC Saint-Émilion, Pomerol et Fronsac (gestion des chais, traçabilité, relation acheteurs), le commerce de détail du centre-ville, la santé (cabinets liés au centre hospitalier Robert-Boulin), l'hôtellerie-restauration et la logistique. Toute PME et ETI hors de ces filières peut nous solliciter.",
     },
     {
       q: "Axion-IA peut-il accompagner les domaines viticoles du Libournais sur des usages IA spécifiques ?",

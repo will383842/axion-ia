@@ -7,13 +7,13 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_GERMAIN_EN_LAYE_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA intervient à Saint-Germain-en-Laye auprès des TPE et PME des Yvelines, et accompagne aussi les ETI lorsque le besoin se présente. Commune nouvelle (45 931 habitants en 2023, fusionnée avec Fourqueux le 1er janvier 2019) située à 19 km à l'ouest de Paris, Saint-Germain-en-Laye combine un patrimoine touristique majeur (château royal, musée d'Archéologie nationale), une forêt domaniale de plus de 4 800 hectares et un terminus du RER A reliant Châtelet en 30 minutes. Nous déployons des solutions IA opérationnelles sur site.",
+    "Axion-IA intervient à Saint-Germain-en-Laye auprès des PME et ETI des Yvelines, et accompagne aussi les grands groupes selon leurs besoins. Commune nouvelle (45 931 habitants en 2023, fusionnée avec Fourqueux le 1er janvier 2019) située à 19 km à l'ouest de Paris, Saint-Germain-en-Laye combine un patrimoine touristique majeur (château royal, musée d'Archéologie nationale), une forêt domaniale de plus de 4 800 hectares et un terminus du RER A reliant Châtelet en 30 minutes. Nous déployons des solutions IA opérationnelles sur site.",
   pitchEn:
-    "Axion-IA intervient à Saint-Germain-en-Laye auprès des TPE et PME des Yvelines, et accompagne aussi les ETI lorsque le besoin se présente. Commune nouvelle (45 931 habitants en 2023, fusionnée avec Fourqueux le 1er janvier 2019) située à 19 km à l'ouest de Paris, Saint-Germain-en-Laye combine un patrimoine touristique majeur (château royal, musée d'Archéologie nationale), une forêt domaniale de plus de 4 800 hectares et un terminus du RER A reliant Châtelet en 30 minutes. Nous déployons des solutions IA opérationnelles sur site.",
+    "Axion-IA intervient à Saint-Germain-en-Laye auprès des PME et ETI des Yvelines, et accompagne aussi les grands groupes selon leurs besoins. Commune nouvelle (45 931 habitants en 2023, fusionnée avec Fourqueux le 1er janvier 2019) située à 19 km à l'ouest de Paris, Saint-Germain-en-Laye combine un patrimoine touristique majeur (château royal, musée d'Archéologie nationale), une forêt domaniale de plus de 4 800 hectares et un terminus du RER A reliant Châtelet en 30 minutes. Nous déployons des solutions IA opérationnelles sur site.",
   directAnswerFr:
-    "Axion-IA cible en priorité les TPE et PME saint-germanoises, et accompagne aussi les ETI selon leurs besoins. Le tissu économique de Saint-Germain-en-Laye repose sur le tertiaire de proximité (commerces, professions libérales, cabinets de conseil), les activités touristiques liées au château royal et à la forêt domaniale, et la proximité immédiate avec La Défense (≈17 minutes en RER A). Nous auditons, formons et implémentons du code IA sur mesure — pas de no-code — pour les dirigeants qui veulent automatiser concrètement.",
+    "Axion-IA cible en priorité les PME et ETI saint-germanoises, et accompagne aussi les grands groupes selon leurs besoins. Le tissu économique de Saint-Germain-en-Laye repose sur le tertiaire de proximité (commerces, professions libérales, cabinets de conseil), les activités touristiques liées au château royal et à la forêt domaniale, et la proximité immédiate avec La Défense (≈17 minutes en RER A). Nous auditons, formons et implémentons du code IA sur mesure — pas de no-code — pour les dirigeants qui veulent automatiser concrètement.",
   directAnswerEn:
-    "Axion-IA cible en priorité les TPE et PME saint-germanoises, et accompagne aussi les ETI selon leurs besoins. Le tissu économique de Saint-Germain-en-Laye repose sur le tertiaire de proximité (commerces, professions libérales, cabinets de conseil), les activités touristiques liées au château royal et à la forêt domaniale, et la proximité immédiate avec La Défense (≈17 minutes en RER A). Nous auditons, formons et implémentons du code IA sur mesure — pas de no-code — pour les dirigeants qui veulent automatiser concrètement.",
+    "Axion-IA cible en priorité les PME et ETI saint-germanoises, et accompagne aussi les grands groupes selon leurs besoins. Le tissu économique de Saint-Germain-en-Laye repose sur le tertiaire de proximité (commerces, professions libérales, cabinets de conseil), les activités touristiques liées au château royal et à la forêt domaniale, et la proximité immédiate avec La Défense (≈17 minutes en RER A). Nous auditons, formons et implémentons du code IA sur mesure — pas de no-code — pour les dirigeants qui veulent automatiser concrètement.",
   seoHook: "tertiaire de proximité & tourisme patrimonial",
   ecosystemFr:
     "Le tissu économique saint-germanois s'organise autour des commerces et professions libérales du centre historique, des activités touristiques liées au château et au musée d'Archéologie nationale, du Lycée international (sections internationales étrangères) et des cabinets de conseil installés près du RER A. La forêt domaniale de Saint-Germain-en-Laye (plus de 4 800 hectares, la plus vaste des Yvelines) constitue un poumon économique pour le tourisme de loisirs et l'hôtellerie.",
@@ -33,8 +33,8 @@ export const SAINT_GERMAIN_EN_LAYE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Germain-en-Laye pour identifier vos chantiers prioritaires — adapté aux TPE/PME du tertiaire de proximité, aux cabinets libéraux et aux activités touristiques liées au château. Livrable : 3 axes actionnables chiffrés. Détail complet sur la sous-page /audits.",
-      en: "Audit IA à Saint-Germain-en-Laye pour identifier vos chantiers prioritaires — adapté aux TPE/PME du tertiaire de proximité, aux cabinets libéraux et aux activités touristiques liées au château. Livrable : 3 axes actionnables chiffrés. Détail complet sur la sous-page /audits.",
+      fr: "Audit IA à Saint-Germain-en-Laye pour identifier vos chantiers prioritaires — adapté aux PME et ETI du tertiaire de proximité, aux cabinets libéraux et aux activités touristiques liées au château. Livrable : 3 axes actionnables chiffrés. Détail complet sur la sous-page /audits.",
+      en: "Audit IA à Saint-Germain-en-Laye pour identifier vos chantiers prioritaires — adapté aux PME et ETI du tertiaire de proximité, aux cabinets libéraux et aux activités touristiques liées au château. Livrable : 3 axes actionnables chiffrés. Détail complet sur la sous-page /audits.",
     },
     interventions: {
       fr: "Interventions collectives à Saint-Germain-en-Laye pour équipes opérationnelles et managers — commerces du centre historique, cabinets de conseil, professions libérales. Détail complet sur la sous-page /interventions.",
@@ -45,8 +45,8 @@ export const SAINT_GERMAIN_EN_LAYE_COPY: VilleCopy = {
       en: "Déploiement d'outils IA sur mesure (RAG documentaire, automatisation, agents) chez vos équipes à Saint-Germain-en-Laye — code custom intégré dans votre SI, sans dépendance éditeur. Détail complet sur la sous-page /implementations.",
     },
     unAUn: {
-      fr: "Accompagnement individuel dirigeant TPE/PME à Saint-Germain-en-Laye : cadrage stratégique IA, feuille de route, arbitrages make-or-buy. Format intensif sur site. À partir de {{price:intervention-dirigeants|flat}} — détail sur la sous-page /un-a-un.",
-      en: "Accompagnement individuel dirigeant TPE/PME à Saint-Germain-en-Laye : cadrage stratégique IA, feuille de route, arbitrages make-or-buy. Format intensif sur site. À partir de {{price:intervention-dirigeants|flat}} — détail sur la sous-page /un-a-un.",
+      fr: "Accompagnement individuel dirigeants de PME et d'ETI à Saint-Germain-en-Laye : cadrage stratégique IA, feuille de route, arbitrages make-or-buy. Format intensif sur site. À partir de {{price:intervention-dirigeants|flat}} — détail sur la sous-page /un-a-un.",
+      en: "Accompagnement individuel dirigeants de PME et d'ETI à Saint-Germain-en-Laye : cadrage stratégique IA, feuille de route, arbitrages make-or-buy. Format intensif sur site. À partir de {{price:intervention-dirigeants|flat}} — détail sur la sous-page /un-a-un.",
     },
   },
   services: {
@@ -56,7 +56,7 @@ export const SAINT_GERMAIN_EN_LAYE_COPY: VilleCopy = {
         whyHere: [
           "La présence du siège EXAIL et de l'écosystème iXcampus (8 500 m², ouvert en 2016) fait de Saint-Germain-en-Laye une rare ville T3 où des projets web et SaaS doivent dialoguer avec des contraintes deep-tech réelles : documentation technique navigation/photonique, portails partenaires, interfaces de visualisation de données de drones.",
           "Le quartier campus CY Tech / Sciences Po Saint-Germain / Lycée international génère une demande spécifique de plateformes éducatives, intranets étudiants, sites multilingues (sections internationales) et outils data — exactement le terrain de nos plateformes IA-native avec recherche sémantique.",
-          "La zone des Coteaux du Bel Air concentre PME et TPE tech (WEBDYN, E-THEMIS, NGS IT, EUROTECH INTERNATIONAL) et services aux entreprises ; nous y déployons sites vitrines performants, portails clients et e-commerce B2B multi-CMS, avec un kick-off sur site et des frais de déplacement nuls en Île-de-France.",
+          "La zone des Coteaux du Bel Air concentre PME et ETI tech (WEBDYN, E-THEMIS, NGS IT, EUROTECH INTERNATIONAL) et services aux entreprises ; nous y déployons sites vitrines performants, portails clients et e-commerce B2B multi-CMS, avec un kick-off sur site et des frais de déplacement nuls en Île-de-France.",
           "Le pôle touristique du Château royal et du Musée d'Archéologie nationale (29 000 objets, jardins Le Nôtre) appelle des sites de réservation, des contenus multilingues et des chatbots d'accueil — autant de cas où nous ancrons l'IA dans l'expérience visiteur plutôt que dans des slides.",
         ],
         methodology: [
@@ -87,12 +87,6 @@ export const SAINT_GERMAIN_EN_LAYE_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Site vitrine IA-ready",
-            detail:
-              "Pour commerces du centre historique, professions libérales et indépendants saint-germanois : site rapide mobile-first, formulaires intelligents, chatbot FAQ. Devis à partir de 24-48 h selon la complexité.",
-          },
           {
             sizeLabel: "PME",
             price: "Plateforme métier ou e-commerce augmenté",
@@ -174,12 +168,6 @@ export const SAINT_GERMAIN_EN_LAYE_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "Micro-business",
-            price: "AI-ready showcase site",
-            detail:
-              "For historic-centre shops, professionals and Saint-Germain freelancers: fast mobile-first site, smart forms, FAQ chatbot. Quote from 24-48 h depending on complexity.",
-          },
-          {
             sizeLabel: "SME",
             price: "Business platform or augmented e-commerce",
             detail:
@@ -232,12 +220,12 @@ export const SAINT_GERMAIN_EN_LAYE_COPY: VilleCopy = {
       a: "Oui. L'équipe Axion-IA se déplace sur site à Saint-Germain-en-Laye et dans les communes limitrophes des Yvelines : Le Pecq, Le Vésinet, Chambourcy, Mareil-Marly, Saint-Nom-la-Bretèche, L'Étang-la-Ville, Poissy, Achères et Maisons-Laffitte. Aucun surcoût de déplacement n'est appliqué en Île-de-France.",
     },
     {
-      q: "Quels sont les tarifs pour une intervention IA d'une TPE/PME saint-germanoise ?",
+      q: "Quels sont les tarifs pour une intervention IA d'une PME et ETI saint-germanoise ?",
       a: "Une intervention collective démarre à {{price:intervention-4h|flat}} pour 5 à 20 personnes. Un accompagnement dirigeant 1-to-1 démarre à {{price:intervention-dirigeants|flat}}. L'audit complet est cadré sur mesure selon le périmètre. Tarifs publics consultables sur axion-ia.fr.",
     },
     {
       q: "Quels délais pour démarrer un premier projet IA à Saint-Germain-en-Laye ?",
-      a: "Pour une TPE (1-10 salariés), un premier outil IA peut être déployé en 3 à 5 semaines après l'audit initial. Pour une PME, comptez 6 à 10 semaines selon l'intégration SI. Le périmètre est cadré dès l'audit pour éviter tout dérapage.",
+      a: "Pour une PME (1-10 salariés), un premier outil IA peut être déployé en 3 à 5 semaines après l'audit initial. Pour une PME, comptez 6 à 10 semaines selon l'intégration SI. Le périmètre est cadré dès l'audit pour éviter tout dérapage.",
     },
     {
       q: "Comment Axion-IA garantit-il la conformité RGPD à Saint-Germain-en-Laye ?",
@@ -245,7 +233,7 @@ export const SAINT_GERMAIN_EN_LAYE_COPY: VilleCopy = {
     },
     {
       q: "Quels secteurs économiques locaux Axion-IA cible-t-il à Saint-Germain-en-Laye ?",
-      a: "Compte tenu du tissu saint-germanois, nos missions concernent surtout le commerce de détail du centre historique, les activités juridiques, comptables et de conseil, l'hôtellerie-restauration liée au tourisme patrimonial, l'enseignement (Lycée international, écoles privées), la santé libérale et l'immobilier. Toute TPE/PME hors de ces filières peut nous solliciter.",
+      a: "Compte tenu du tissu saint-germanois, nos missions concernent surtout le commerce de détail du centre historique, les activités juridiques, comptables et de conseil, l'hôtellerie-restauration liée au tourisme patrimonial, l'enseignement (Lycée international, écoles privées), la santé libérale et l'immobilier. Toute PME et ETI hors de ces filières peut nous solliciter.",
     },
     {
       q: "Axion-IA peut-il intervenir sur des cas d'usage tourisme et patrimoine à Saint-Germain-en-Laye ?",
