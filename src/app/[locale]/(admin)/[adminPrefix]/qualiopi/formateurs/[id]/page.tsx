@@ -387,6 +387,12 @@ export default async function FicheFormateurPage({ params, searchParams }: PageP
   // lecture ; interrupteur `formateurs.proches_bloc` absent = panneau absent.
   const voitLieu = peutEngager(role, "habiliter_formateur") && (await envoiAllume("proches_bloc"));
   // Lot L14 — fin de collaboration : indépendant en nom propre, interrupteur allumé.
+  // Qualiopi ind. 21 — le dossier de suivi qualité : intervenant externe, acte
+  // `habiliter_formateur`, interrupteur `formateurs.suivi_qualite` allumé.
+  const voitSuiviQualite =
+    trainer.statut === "sous_traitant" &&
+    peutEngager(role, "habiliter_formateur") &&
+    (await interrupteurAllume("suivi_qualite"));
   const voitFinCollaboration =
     trainer.statut === "sous_traitant" &&
     trainer.organismeSousTraitantId === null &&
@@ -1041,6 +1047,17 @@ export default async function FicheFormateurPage({ params, searchParams }: PageP
           }}
         />
       </div>
+
+      {voitSuiviQualite ? (
+        <p className="mb-[var(--space-admin-4)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg)]">
+          <Link
+            href={`/${locale}/${adminPrefix}/qualiopi/formateurs/${trainer.id}/suivi-qualite`}
+            className="underline"
+          >
+            Suivi qualité (ind. 21) : observation, évaluations après mission, réévaluation
+          </Link>
+        </p>
+      ) : null}
 
       {voitFinCollaboration ? (
         <FinCollaborationPanel trainerId={trainer.id} terminee={finTerminee} />
