@@ -14,9 +14,14 @@
  *    changement de compte n'échappe pas au titulaire ;
  *  - vérification 1 (V1-C-7) : la VALIDATION d'un nouvel IBAN consomme les liens de
  *    connexion en attente et augmente la version d'accès, dans la même transaction ;
+ *  - depuis l'espace, la demande d'IBAN se fait AVEC le RIB du nouveau compte, déposé
+ *    comme pièce EN ATTENTE (contrôle commun, antivirus, chiffrement au repos) AVANT la
+ *    demande ; la console ne valide un nouvel IBAN que si un RIB récent, non rejeté, est
+ *    au dossier (préalable de `passage_paiement`, plan §8.10 n° 12) ;
  *  - l'IBAN demandé est chiffré `enc:v2:` (AAD `demande:<id>:iban`, CHECK en base),
  *    puis rechiffré pour la fiche (AAD `trainer:<id>:iban`) à la validation. Il n'est
- *    jamais réaffiché, ni journalisé, ni envoyé dans une alerte ou un e-mail.
+ *    jamais réaffiché en entier (la console W-7 en montre les 4 derniers caractères,
+ *    pour les comparer au RIB), ni journalisé, ni envoyé dans une alerte ou un e-mail.
  *
  * Natures traitées ici : `iban` et `adresse` (adresse professionnelle). Le régime de TVA
  * et l'adresse e-mail restent hors de ce lot (TVA : calcul d'argent ; e-mail : identité
@@ -37,11 +42,19 @@ import { decryptPii, encryptPii } from "@/lib/pii-crypto";
 import { prisma } from "@/lib/prisma";
 import { journaliser } from "@/server/journal/journaliser";
 
+import { deposerPieceFormateur } from "./depot";
 import { envoyer } from "./envois";
 import { interrupteurAllume } from "./interrupteur-allume";
+import { ibanFin4 } from "./paiement/virement-mission";
 
 /** Délai minimal entre la demande et sa validation (annoncé par F43 : « au plus tôt dans 48 heures »). */
 export const DELAI_VALIDATION_CHANGEMENT_MS = 48 * 60 * 60 * 1000;
+
+/**
+ * Un RIB compte pour une demande d'IBAN s'il a été déposé au plus tôt 24 h avant elle
+ * (le dossier de mise à niveau, V2-S-1, dépose le sien dans la même visite), ou après.
+ */
+export const FENETRE_RIB_AVANT_DEMANDE_MS = 24 * 60 * 60 * 1000;
 
 /** V1-C-6 — pendant combien de temps l'adresse remplacée reçoit aussi F43. */
 export const FENETRE_ANCIENNE_ADRESSE_MS = 30 * 24 * 60 * 60 * 1000;
@@ -63,6 +76,7 @@ export const MESSAGES_CHANGEMENT = {
   identique: "Ce compte est déjà celui que nous utilisons pour vos virements.",
   adresseInvalide: "Indiquez votre nouvelle adresse professionnelle (500 caractères au plus).",
   dejaEnCours: "Une demande du même type est déjà en cours de vérification.",
+  ribManquant: "Joignez le RIB du nouveau compte (PDF ou photo) à votre demande.",
   erreur: "La demande n'a pas pu s'enregistrer. Réessayez dans quelques minutes.",
 } as const;
 
@@ -227,6 +241,58 @@ export async function demanderChangementIban(
   return { ok: true };
 }
 
+export interface RibJoint {
+  readonly nomFichier: string;
+  readonly octets: Uint8Array;
+}
+
+/**
+ * Demande de changement d'IBAN DEPUIS L'ESPACE, avec le RIB du nouveau compte.
+ *
+ * L'appelant passe la fiche de la SESSION (jamais un identifiant du navigateur). Tout
+ * ce qui peut refuser la demande est vérifié AVANT le dépôt, pour ne pas laisser de RIB
+ * en attente pour rien ; puis le RIB est déposé (pièce en attente de vérification), et
+ * seulement ensuite la demande est créée par le circuit commun (`demanderChangementIban`).
+ * Un dépôt refusé (format, antivirus, débit) : aucune demande.
+ */
+export async function demanderChangementIbanAvecRib(
+  trainerId: string,
+  ibanSaisi: string,
+  rib: RibJoint | null,
+  maintenant: Date,
+): Promise<ResultatDemande> {
+  if (!(await interrupteurAllume("changement_coordonnees"))) {
+    return { ok: false, message: MESSAGES_CHANGEMENT.indisponible };
+  }
+  if (rib === null || rib.octets.length === 0) {
+    return { ok: false, message: MESSAGES_CHANGEMENT.ribManquant };
+  }
+  const iban = ibanNormalise(ibanSaisi);
+  if (!ibanValide(iban)) return { ok: false, message: MESSAGES_CHANGEMENT.ibanInvalide };
+  const empreinte = empreinteIban(iban);
+  if (empreinte === null) return { ok: false, message: MESSAGES_CHANGEMENT.erreur };
+  try {
+    const t = await ficheIndependante(trainerId);
+    if (t === null) return { ok: false, message: MESSAGES_CHANGEMENT.indisponible };
+    if (t.ibanEmpreinte === empreinte) return { ok: false, message: MESSAGES_CHANGEMENT.identique };
+    const enCours = await prisma.demandeChangementFormateur.findFirst({
+      where: { trainerId, nature: "iban", statut: "en_attente" },
+      select: { id: true },
+    });
+    if (enCours !== null) return { ok: false, message: MESSAGES_CHANGEMENT.dejaEnCours };
+  } catch {
+    return { ok: false, message: MESSAGES_CHANGEMENT.erreur };
+  }
+  const depot = await deposerPieceFormateur({
+    trainerId,
+    type: "rib",
+    nomFichier: rib.nomFichier,
+    octets: rib.octets,
+  });
+  if (!depot.ok) return { ok: false, message: depot.message };
+  return demanderChangementIban(trainerId, iban, maintenant);
+}
+
 /** Demande de changement d'adresse professionnelle, depuis l'espace. */
 export async function demanderChangementAdresse(
   trainerId: string,
@@ -301,8 +367,39 @@ export interface DemandeConsole {
   readonly validableAt: Date;
   /** Le délai est écoulé à `maintenant`. */
   readonly validable: boolean;
-  /** Adresse demandée (l'IBAN, lui, n'est jamais rendu). */
+  /** Adresse demandée (l'IBAN, lui, n'est jamais rendu en entier). */
   readonly adresse: string | null;
+  /** IBAN : dépôt du RIB le plus récent qui compte pour la demande ; sinon `null`. */
+  readonly ribDeposeAt: Date | null;
+  /**
+   * IBAN : ses 4 DERNIERS caractères (jamais plus), pour comparer au RIB déposé avant
+   * de valider. `null` : demande d'adresse, ou valeur illisible.
+   */
+  readonly ibanFin4: string | null;
+}
+
+/** Les 4 derniers caractères de l'IBAN demandé ; illisible = `null` (rien ne remonte). */
+function fin4DeLaDemande(id: string, valeur: string): string | null {
+  try {
+    return ibanFin4(decryptPii(valeur, { aad: `demande:${id}:iban`, cleExigee: true }));
+  } catch {
+    return null;
+  }
+}
+
+/** Le RIB qui compte pour une demande : le plus récent déposé dans la fenêtre. */
+function ribDeLaDemande(
+  ribs: ReadonlyArray<{ trainerId: string; createdAt: Date }>,
+  trainerId: string,
+  demandeCreeeAt: Date,
+): Date | null {
+  const depuis = demandeCreeeAt.getTime() - FENETRE_RIB_AVANT_DEMANDE_MS;
+  let dernier: Date | null = null;
+  for (const r of ribs) {
+    if (r.trainerId !== trainerId || r.createdAt.getTime() < depuis) continue;
+    if (dernier === null || r.createdAt > dernier) dernier = r.createdAt;
+  }
+  return dernier;
 }
 
 export async function lireDemandesAValider(
@@ -322,6 +419,21 @@ export async function lireDemandesAValider(
     orderBy: { createdAt: "asc" },
     take: 200,
   });
+  const trainersIban = [...new Set(l.filter((d) => d.nature === "iban").map((d) => d.trainerId))];
+  const ribs =
+    trainersIban.length === 0
+      ? []
+      : await prisma.trainerDocument.findMany({
+          where: {
+            trainerId: { in: trainersIban },
+            type: "rib",
+            archiveAt: null,
+            statutValidation: { not: "rejete" },
+          },
+          select: { trainerId: true, createdAt: true },
+          orderBy: { createdAt: "desc" },
+          take: 1000,
+        });
   return l.map((d) => ({
     id: d.id,
     trainerId: d.trainerId,
@@ -331,6 +443,8 @@ export async function lireDemandesAValider(
     validableAt: new Date(d.createdAt.getTime() + DELAI_VALIDATION_CHANGEMENT_MS),
     validable: maintenant.getTime() - d.createdAt.getTime() >= DELAI_VALIDATION_CHANGEMENT_MS,
     adresse: d.nature === "adresse" ? d.valeur : null,
+    ribDeposeAt: d.nature === "iban" ? ribDeLaDemande(ribs, d.trainerId, d.createdAt) : null,
+    ibanFin4: d.nature === "iban" ? fin4DeLaDemande(d.id, d.valeur) : null,
   }));
 }
 
@@ -343,6 +457,7 @@ export type ResultatTraitement =
         | "introuvable"
         | "trop_tot"
         | "non_avisee"
+        | "rib_absent"
         | "fiche_close"
         | "deja_traitee"
         | "motif"
@@ -402,6 +517,20 @@ export async function validerDemandeChangement(p: {
     // C4 — un IBAN ne change pas sans que le titulaire ait été prévenu.
     if (nature === "iban" && d.ancienneAdresseAviseeAt === null) {
       return { ok: false, raison: "non_avisee" };
+    }
+    // Le nouvel IBAN se vérifie sur un RIB : un RIB récent, non rejeté, au dossier.
+    if (nature === "iban") {
+      const rib = await prisma.trainerDocument.findFirst({
+        where: {
+          trainerId: d.trainerId,
+          type: "rib",
+          archiveAt: null,
+          statutValidation: { not: "rejete" },
+          createdAt: { gte: new Date(d.createdAt.getTime() - FENETRE_RIB_AVANT_DEMANDE_MS) },
+        },
+        select: { id: true },
+      });
+      if (rib === null) return { ok: false, raison: "rib_absent" };
     }
     if (!d.trainer.actif || d.trainer.finCollaborationAt !== null) {
       return { ok: false, raison: "fiche_close" };

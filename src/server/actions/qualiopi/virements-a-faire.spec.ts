@@ -15,6 +15,7 @@ const transition = vi.fn();
 const envoyerFaits = vi.fn();
 const envoyerAttente = vi.fn();
 const ibanClair = vi.fn();
+const motifsIban = vi.fn();
 const etats = vi.fn();
 const relevesMission = vi.fn();
 const virementDu = vi.fn();
@@ -40,6 +41,7 @@ vi.mock("@/server/qualiopi/formateurs-independants/paiement/virement-fait-envoi"
 }));
 vi.mock("@/server/qualiopi/formateurs-independants/paiement/virement-mission-base", () => ({
   ibanEnClairPourVirement: (...a: unknown[]) => ibanClair(...a),
+  motifsChangementIbanDu: (...a: unknown[]) => motifsIban(...a),
 }));
 vi.mock("@/server/qualiopi/formateurs-independants/paiement/virements-a-faire-lecture", () => ({
   etatsVirementsMission: (...a: unknown[]) => etats(...a),
@@ -66,6 +68,7 @@ beforeEach(() => {
   etatsEntree.mockResolvedValue({ virements_a_faire: true });
   transition.mockResolvedValue({ data: { id: A, statut: "paye" } });
   ibanClair.mockResolvedValue({ iban: IBAN, empreinte: E });
+  motifsIban.mockResolvedValue([]);
   envoyerAttente.mockResolvedValue("envoye");
   relevesMission.mockImplementation(async (ids: string[]) => new Set(ids));
   virementDu.mockResolvedValue(true);
@@ -100,6 +103,22 @@ describe("interrupteur éteint", () => {
 });
 
 describe("« Copier l'IBAN »", () => {
+  it("🔴 règle C-1 : pendant un changement d'IBAN, l'ANCIEN compte n'est jamais servi", async () => {
+    motifsIban.mockResolvedValue(["compte_bancaire_a_valider"]);
+    const r = await revelerIbanVirementAction(T);
+    expect(r).toEqual({ error: expect.stringMatching(/Compte bancaire à valider/) });
+    expect(motifsIban.mock.calls[0]?.[1]).toBe(T);
+    expect(ibanClair).not.toHaveBeenCalled();
+    expect(log).not.toHaveBeenCalled();
+    motifsIban.mockResolvedValue(["nouvel_iban_moins_de_48h"]);
+    expect(await revelerIbanVirementAction(T)).toEqual({
+      error: expect.stringMatching(/48 heures/),
+    });
+    motifsIban.mockRejectedValue(new Error("base"));
+    expect(await revelerIbanVirementAction(T)).toEqual({ error: expect.any(String) });
+    expect(ibanClair).not.toHaveBeenCalled();
+  });
+
   it("rend l'IBAN et son empreinte ; le journal ne porte jamais l'IBAN", async () => {
     expect(await revelerIbanVirementAction(T)).toEqual({ data: { iban: IBAN, empreinte: E } });
     expect(log).toHaveBeenCalledTimes(1);
