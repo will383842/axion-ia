@@ -273,7 +273,7 @@ const FLASH_FAQ: ReadonlyArray<AuditFaq> = [
   {
     qFr: "Pour qui est-ce vraiment fait ?",
     qEn: "Who is this really for?",
-    aFr: `TPE (1-19 salariés), indépendant·e·s, freelances, professions libérales. Si vous avez plus de 20 salariés et plusieurs services concernés, l'audit Ciblé (${PRICE_CIBLE_SOLO}-${PRICE_CIBLE_AVANCE} €) ou Stratégique PME (${PRICE_PME_20_50}-${PRICE_PME_50_250} €) est mieux calibré.`,
+    aFr: `TPE (moins de 10 salariés) et petites entreprises jusqu'à 19 salariés, indépendant·e·s, freelances, professions libérales. Si vous avez plus de 20 salariés et plusieurs services concernés, l'audit Ciblé (${PRICE_CIBLE_SOLO}-${PRICE_CIBLE_AVANCE} €) ou Stratégique PME (${PRICE_PME_20_50}-${PRICE_PME_50_250} €) est mieux calibré.`,
     aEn: `Small businesses (1-19 staff), independents, freelancers. If you have 20+ staff and multiple departments concerned, the Targeted audit (€${PRICE_CIBLE_SOLO}-${PRICE_CIBLE_AVANCE}) or Strategic SME (€${PRICE_PME_20_50}-${PRICE_PME_50_250}) is better calibrated.`,
   },
   {
@@ -725,7 +725,7 @@ export const AUDIT_DETAIL_CONFIGS: Record<AuditTier, AuditDetailConfig> = {
       durationEn: "1 full day (9 a.m.-5 p.m.)",
       formatFr: "Présentiel dans vos locaux",
       formatEn: "On site, at your premises",
-      audienceFr: "TPE 1-19 salariés · artisans · commerçants · indépendants",
+      audienceFr: "TPE et petites entreprises jusqu'à 19 salariés · artisans · commerçants · indépendants",
       audienceEn: "Small businesses 1-19 staff · artisans · retailers · freelancers",
       deliverableFr:
         "Rapport 8-15 pages : cartographie, outils chiffrés, prompts testés, 3-5 quick-wins classés — sous 48 h ouvrées (7 jours max)",
@@ -764,7 +764,7 @@ export const AUDIT_DETAIL_CONFIGS: Record<AuditTier, AuditDetailConfig> = {
     heroMetaEn:
       "1 day on site · 9 a.m.-5 p.m. · written report and costed plan within 48 business hours (7 days max)",
     forWhomFr: [
-      "TPE de 1 à 19 salariés",
+      "TPE et petites entreprises jusqu'à 19 salariés",
       "Artisans, commerçants, professions libérales",
       "Indépendant·e·s & freelances qui veulent un cap clair",
     ],

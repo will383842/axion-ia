@@ -2136,7 +2136,7 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
         {
           title: "Une journée sur site n'est pas une version au rabais",
           detail:
-            "L'audit sur place couvre toute l'activité d'une TPE. Ce n'est pas un extrait d'un audit plus long : c'est le format calibré pour une entreprise de 1 à 19 salariés.",
+            "L'audit sur place couvre toute l'activité d'une TPE ou d'une petite entreprise. Ce n'est pas un extrait d'un audit plus long : c'est le format calibré pour une entreprise de 1 à 19 salariés.",
         },
       ],
     },
@@ -3836,9 +3836,9 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
     fr: {
       question: "Quel audit IA pour une TPE ou une PME ?",
       answer:
-        "Cela dépend surtout de votre effectif. Une TPE de 1 à 19 salariés — artisan, commerçant, profession libérale, indépendant — relève de l'audit sur place : une journée complète dans vos locaux, de 9 h à 17 h. On cartographie toute l'activité, on teste l'IA en direct sur deux ou trois de vos vrais cas, et le rapport de synthèse suit sous 48 heures ouvrées.\n\nUne PME s'oriente vers l'audit Ciblé quand un seul département est concerné — marketing, RH, opérations, finance, juridique ou support — sur trois à quatre semaines. Quand plusieurs services le sont, c'est l'audit Stratégique PME : deux à quatre services cartographiés sur cinq à six semaines, avec une roadmap 12-24 mois et une restitution en COMEX.\n\nDans tous les cas, vous repartez avec une feuille de route priorisée et chiffrée, calibrée sur votre taille et votre secteur — pas un rapport théorique. Un appel de cadrage permet de choisir le bon niveau avant tout devis : c'est le point de départ le plus sûr pour démarrer l'IA sans se disperser.",
+        "Cela dépend surtout de votre effectif. Une TPE (moins de 10 salariés) ou une petite entreprise jusqu'à 19 salariés — artisan, commerçant, profession libérale, indépendant — relève de l'audit sur place : une journée complète dans vos locaux, de 9 h à 17 h. On cartographie toute l'activité, on teste l'IA en direct sur deux ou trois de vos vrais cas, et le rapport de synthèse suit sous 48 heures ouvrées.\n\nUne PME s'oriente vers l'audit Ciblé quand un seul département est concerné — marketing, RH, opérations, finance, juridique ou support — sur trois à quatre semaines. Quand plusieurs services le sont, c'est l'audit Stratégique PME : deux à quatre services cartographiés sur cinq à six semaines, avec une roadmap 12-24 mois et une restitution en COMEX.\n\nDans tous les cas, vous repartez avec une feuille de route priorisée et chiffrée, calibrée sur votre taille et votre secteur — pas un rapport théorique. Un appel de cadrage permet de choisir le bon niveau avant tout devis : c'est le point de départ le plus sûr pour démarrer l'IA sans se disperser.",
       keyPoints: [
-        "TPE de 1 à 19 salariés : audit sur place, 1 journée complète dans vos locaux",
+        "TPE et petites entreprises jusqu'à 19 salariés : audit sur place, 1 journée complète dans vos locaux",
         "PME, un seul département concerné : audit Ciblé, 3 à 4 semaines",
         "PME, plusieurs services : Stratégique PME, 5 à 6 semaines et roadmap 12-24 mois",
         "Rapport de synthèse sous 48 h ouvrées pour l'audit sur place",
