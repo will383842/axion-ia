@@ -33,7 +33,6 @@ import {
 } from "@/server/qualiopi/formateurs-independants/suivi-qualite/console";
 import {
   GRILLES_SUIVI_QUALITE,
-  REGLAGES_SUIVI_QUALITE,
   type TypeGrilleSuivi,
 } from "@/server/qualiopi/formateurs-independants/suivi-qualite/reglages";
 
@@ -44,7 +43,6 @@ export const metadata: Metadata = {
 };
 
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
-const R = REGLAGES_SUIVI_QUALITE;
 
 const dateFmt = new Intl.DateTimeFormat("fr-FR", {
   day: "numeric",
@@ -141,14 +139,14 @@ function Commun({
   );
 }
 
-function Conclusion() {
+function Conclusion({ min }: { min: number }) {
   return (
     <label className={`${discret} block`}>
       Conclusion (obligatoire, gardée au dossier)
       <textarea
         name="conclusion"
         required
-        minLength={R.texteMinCaracteres}
+        minLength={min}
         maxLength={5000}
         rows={3}
         className={champ}
@@ -219,6 +217,8 @@ export default async function SuiviQualiteFormateurPage({ params, searchParams }
   const aujourdhui = jourParis(maintenant);
   const commencees = ecran.missions.filter((m) => m.debut <= aujourdhui);
   const finies = ecran.missions.filter((m) => m.finie);
+  // Les seuils RÉGLÉS en console (ou leurs défauts), lus avec l'écran.
+  const R = ecran.reglages;
   const obs = ecran.observation;
   const reeval = ecran.reevaluation;
 
@@ -232,8 +232,9 @@ export default async function SuiviQualiteFormateurPage({ params, searchParams }
         <Link href={`${base}/qualiopi/formateurs/${id}`} className="underline">
           ← Retour à la fiche
         </Link>{" "}
-        · Seuils et délais à valider par Will : observation ≥ {virgule(R.observationMoyenneMin)}/5,
-        grille après mission relancée à J+{R.evaluationRelanceJours} et en alerte à J+
+        · Seuils et délais réglés en console (défauts à valider par Will) : observation ≥{" "}
+        {virgule(R.observationMoyenneMin)}/5, grille après mission relancée à J+
+        {R.evaluationRelanceJours} et en alerte à J+
         {R.evaluationAlerteJours}, entretien sous {virgule(R.satisfactionEntretienSous)}/5,
         suspension sous {virgule(R.satisfactionSuspensionSous)}/5, réévaluation tous les{" "}
         {R.reevaluationMois} mois (rappel J-{R.reevaluationRappelJours}).
@@ -421,7 +422,7 @@ export default async function SuiviQualiteFormateurPage({ params, searchParams }
                   />
                 </label>
                 <Criteres type="observation" />
-                <Conclusion />
+                <Conclusion min={R.texteMinCaracteres} />
                 <button type="submit" className={bouton} disabled={commencees.length === 0}>
                   Enregistrer l&apos;observation
                 </button>
@@ -464,7 +465,7 @@ export default async function SuiviQualiteFormateurPage({ params, searchParams }
                     className={champ}
                   />
                 </label>
-                <Conclusion />
+                <Conclusion min={R.texteMinCaracteres} />
                 <button type="submit" className={bouton} disabled={finies.length === 0}>
                   Enregistrer l&apos;évaluation
                 </button>
@@ -482,7 +483,7 @@ export default async function SuiviQualiteFormateurPage({ params, searchParams }
                   aujourdhui={aujourdhui}
                 />
                 <Criteres type="reevaluation" />
-                <Conclusion />
+                <Conclusion min={R.texteMinCaracteres} />
                 <button type="submit" className={bouton}>
                   Enregistrer la réévaluation
                 </button>

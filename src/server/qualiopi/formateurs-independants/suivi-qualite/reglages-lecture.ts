@@ -7,10 +7,14 @@
  * défaut (`reglagesSuiviQualite`).
  *
  * Module neutre (ni `server-only`, ni Next) : le moteur d'alertes tourne dans le worker.
+ *
+ * `site-settings` est chargé À LA LECTURE, pas à l'import : ce module est sur le chemin de
+ * la garde de mission (`garde-mission-portes.ts`), que des dizaines de modules importent ;
+ * un import statique y ajouterait la chaîne de l'écriture console (`_guards`, NextAuth)
+ * à chacun. Le chargement est dans le `try` : s'il échoue, ce sont les défauts.
  */
 
 import type { QualiopiConfigKey } from "@/server/qualiopi/config/registry";
-import { getQualiopiConfig } from "@/server/qualiopi/config/site-settings";
 
 import {
   REGLAGES_SUIVI_QUALITE,
@@ -37,6 +41,7 @@ export const CLES_SUIVI_QUALITE = {
 
 export async function lireReglagesSuiviQualite(): Promise<ReglagesSuiviQualite> {
   try {
+    const { getQualiopiConfig } = await import("@/server/qualiopi/config/site-settings");
     const noms = Object.keys(CLES_SUIVI_QUALITE) as Array<keyof ReglagesSuiviQualite>;
     const valeurs = await Promise.all(noms.map((n) => getQualiopiConfig(CLES_SUIVI_QUALITE[n])));
     return reglagesSuiviQualite(

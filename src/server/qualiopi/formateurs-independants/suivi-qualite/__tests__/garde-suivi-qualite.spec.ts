@@ -24,9 +24,19 @@ const h = vi.hoisted(() => {
     trainingSession: { findMany: vi.fn(async () => etat.sessions) },
     documentGenere: { findFirst: vi.fn(async () => null) },
   };
-  return { etat, prisma };
+  return { etat, prisma, config: new Map<string, unknown>() };
 });
 vi.mock("@/lib/prisma", () => ({ prisma: h.prisma }));
+// Les seuils sont des RÉGLAGES : absents, le défaut du registre.
+vi.mock("@/server/qualiopi/config/site-settings", () => ({
+  getQualiopiConfig: vi.fn(async (k: string) => {
+    if (h.config.has("__panne__")) throw new Error("base injoignable");
+    const { QUALIOPI_CONFIG_REGISTRY } = await import("@/server/qualiopi/config/registry");
+    return h.config.has(k)
+      ? h.config.get(k)
+      : QUALIOPI_CONFIG_REGISTRY[k as keyof typeof QUALIOPI_CONFIG_REGISTRY].default;
+  }),
+}));
 // Qualiopi ind. 21 — la décision d'habilitation de la formation en jeu a sa suite
 // (`evaluation-competences/__tests__/`) ; ici, elle est réputée en vigueur.
 vi.mock("../../evaluation-competences/garde-mission-q21-lecture", () => ({
@@ -53,6 +63,7 @@ const session = (id: string, debut: string, fin: string, notes: number[] = []) =
 
 beforeEach(() => {
   vi.clearAllMocks();
+  h.config.clear();
   h.etat.settings.clear();
   h.etat.settings.set("formateurs.garde_mission_portes", { actif: true });
   h.etat.trainer = {
@@ -184,6 +195,36 @@ describe("garde de mission × suivi qualité", () => {
     };
     const r = await controlerGardeMission("t-1", MAINTENANT, { sessionId: "s2" });
     expect(r.refus).toContain(MANQUES_SUIVI_QUALITE.suspension);
+  });
+
+  it("satisfaction 2,5 : suspension réglée sous 2 → plus de suspension ; illisible ou panne → le défaut (suspendu)", async () => {
+    h.etat.settings.set("formateurs.suivi_qualite", {
+      actif: true,
+      allumeLe: "2026-11-01T08:00:00Z",
+    });
+    h.etat.sessions = [session("s1", "2026-11-05", "2026-11-06", [2, 3])];
+    h.etat.trainer = {
+      ...h.etat.trainer!,
+      grillesSuiviQualite: [
+        {
+          type: "observation",
+          sessionId: "s1",
+          favorable: true,
+          satisfactionSaisie: null,
+          createdAt: MAINTENANT,
+        },
+      ],
+    };
+    h.config.set("suivi_qualite_satisfaction_suspension_sous", 2);
+    const regle = await controlerGardeMission("t-1", MAINTENANT, { sessionId: "s2" });
+    expect(regle.refus).not.toContain(MANQUES_SUIVI_QUALITE.suspension);
+    h.config.set("suivi_qualite_satisfaction_suspension_sous", "deux");
+    const illisible = await controlerGardeMission("t-1", MAINTENANT, { sessionId: "s2" });
+    expect(illisible.refus).toContain(MANQUES_SUIVI_QUALITE.suspension);
+    h.config.set("suivi_qualite_satisfaction_suspension_sous", 2);
+    h.config.set("__panne__", true);
+    const panne = await controlerGardeMission("t-1", MAINTENANT, { sessionId: "s2" });
+    expect(panne.refus).toContain(MANQUES_SUIVI_QUALITE.suspension);
   });
 
   it("garde coupée aux portes : le suivi qualité ne refuse rien non plus", async () => {

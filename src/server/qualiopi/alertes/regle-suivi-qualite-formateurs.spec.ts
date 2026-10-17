@@ -13,6 +13,8 @@ const h = vi.hoisted(() => {
     faits: new Map<string, Record<string, unknown>>(),
     sessions: new Map<string, Array<Record<string, unknown>>>(),
     ouvertes: [] as Array<{ code: string; cibleId: string | null }>,
+    config: new Map<string, unknown>(),
+    configEnPanne: false,
   };
   const prisma = {
     setting: {
@@ -40,6 +42,16 @@ const h = vi.hoisted(() => {
   return { etat, prisma };
 });
 vi.mock("@/lib/prisma", () => ({ prisma: h.prisma }));
+// Les seuils sont des RÉGLAGES : absents, le défaut du registre.
+vi.mock("@/server/qualiopi/config/site-settings", () => ({
+  getQualiopiConfig: vi.fn(async (k: string) => {
+    if (h.etat.configEnPanne) throw new Error("base injoignable");
+    const { QUALIOPI_CONFIG_REGISTRY } = await import("@/server/qualiopi/config/registry");
+    return h.etat.config.has(k)
+      ? h.etat.config.get(k)
+      : QUALIOPI_CONFIG_REGISTRY[k as keyof typeof QUALIOPI_CONFIG_REGISTRY].default;
+  }),
+}));
 
 import { regleSuiviQualiteFormateurs } from "./regle-suivi-qualite-formateurs";
 
@@ -79,6 +91,8 @@ beforeEach(() => {
     [B, [session(S1, "2026-11-05", "2026-11-06")]],
   ]);
   h.etat.ouvertes = [];
+  h.etat.config.clear();
+  h.etat.configEnPanne = false;
 });
 
 const codes = (xs: Array<{ code: string }>) => xs.map((x) => x.code).sort();
@@ -160,6 +174,53 @@ describe("alertes du suivi qualité", () => {
     expect(codes(await regleSuiviQualiteFormateurs(new Date("2026-11-20T10:00:00Z")))).toEqual([
       "fi_cv_declare_perime",
     ]);
+  });
+
+  describe("seuils RÉGLÉS en console", () => {
+    const cvDe = (iso: string) => [
+      {
+        id: A,
+        nom: "Durand",
+        prenom: "Alex",
+        documents: [{ dateCvDeclaree: new Date(iso), createdAt: new Date() }],
+      },
+    ];
+
+    it("CV de 20 mois : rien au défaut (24), alerte avec un réglage à 18 mois — et le titre le dit", async () => {
+      h.etat.formateurs = cvDe("2025-03-01T00:00:00Z");
+      h.etat.sessions.set(A, []);
+      const maintenant = new Date("2026-11-20T10:00:00Z");
+      expect(await regleSuiviQualiteFormateurs(maintenant)).toEqual([]);
+      h.etat.config.set("suivi_qualite_cv_declare_max_mois", 18);
+      const r = await regleSuiviQualiteFormateurs(maintenant);
+      expect(codes(r)).toEqual(["fi_cv_declare_perime"]);
+      expect(r[0]!.titre).toContain("18 mois");
+    });
+
+    it("réglage illisible ou hors bornes, base en panne : le défaut (24 mois)", async () => {
+      h.etat.formateurs = cvDe("2025-03-01T00:00:00Z");
+      h.etat.sessions.set(A, []);
+      const maintenant = new Date("2026-11-20T10:00:00Z");
+      h.etat.config.set("suivi_qualite_cv_declare_max_mois", "dix-huit");
+      expect(await regleSuiviQualiteFormateurs(maintenant)).toEqual([]);
+      h.etat.config.set("suivi_qualite_cv_declare_max_mois", 0);
+      expect(await regleSuiviQualiteFormateurs(maintenant)).toEqual([]);
+      h.etat.config.set("suivi_qualite_cv_declare_max_mois", 18);
+      h.etat.configEnPanne = true;
+      expect(await regleSuiviQualiteFormateurs(maintenant)).toEqual([]);
+    });
+
+    it("relance réglée à J+1 : la grille est relancée dès J+1", async () => {
+      h.etat.formateurs = [h.etat.formateurs[0]!];
+      const j1 = new Date("2026-11-07T10:00:00Z");
+      expect(codes(await regleSuiviQualiteFormateurs(j1))).not.toContain(
+        "fi_evaluation_mission_a_saisir",
+      );
+      h.etat.config.set("suivi_qualite_evaluation_relance_jours", 1);
+      expect(codes(await regleSuiviQualiteFormateurs(j1))).toContain(
+        "fi_evaluation_mission_a_saisir",
+      );
+    });
   });
 
   it("chaque NOUVELLE alerte est tracée au journal, une déjà ouverte ne l'est pas deux fois", async () => {

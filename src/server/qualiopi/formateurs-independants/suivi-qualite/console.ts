@@ -11,6 +11,8 @@ import { prisma } from "@/lib/prisma";
 
 import { jourParis, type JourCivil } from "../argent/dates";
 import { lireFaitsSuiviQualite, suiviQualiteAllumeLe } from "./lecture";
+import type { ReglagesSuiviQualite } from "./reglages";
+import { lireReglagesSuiviQualite } from "./reglages-lecture";
 import type { CritereNote } from "./regles";
 import {
   etatEvaluationMission,
@@ -75,6 +77,8 @@ export interface EcranSuiviQualite {
   readonly missions: ReadonlyArray<MissionConsole>;
   readonly grilles: ReadonlyArray<GrilleConsole>;
   readonly decisions: ReadonlyArray<DecisionConsole>;
+  /** Les seuils et délais RÉGLÉS (ou leurs défauts) : ceux que l'écran affiche et applique. */
+  readonly reglages: ReglagesSuiviQualite;
 }
 
 function criteresLus(brut: unknown): CritereNote[] {
@@ -152,7 +156,10 @@ export async function lireEcranSuiviQualite(
     select: { id: true, nom: true, prenom: true, statut: true },
   });
   if (t === null) return null;
-  const allumeLe = await suiviQualiteAllumeLe();
+  const [allumeLe, reglages] = await Promise.all([
+    suiviQualiteAllumeLe(),
+    lireReglagesSuiviQualite(),
+  ]);
   const externe = t.statut === "sous_traitant";
   const nom = `${t.prenom} ${t.nom}`.trim();
   const [grilles, decisions] = await Promise.all([
@@ -180,6 +187,7 @@ export async function lireEcranSuiviQualite(
     nom,
     externe,
     allumeLe,
+    reglages,
     grilles: grilles.map(versConsole),
     decisions: decisions.map((d) => ({
       id: d.id,
@@ -214,17 +222,18 @@ export async function lireEcranSuiviQualite(
       fin: m.fin,
       finie: m.fin <= aujourdhui,
       evaluationSaisie: saisie,
-      evaluation: m.fin <= aujourdhui ? etatEvaluationMission(m.fin, saisie, maintenant) : null,
+      evaluation:
+        m.fin <= aujourdhui ? etatEvaluationMission(m.fin, saisie, maintenant, reglages) : null,
       satisfaction: m.satisfaction,
-      niveau: niveauSatisfaction(m.satisfaction),
+      niveau: niveauSatisfaction(m.satisfaction, reglages),
       decisionPrise: ds.length > 0,
       suspensionLevee: ds.some((d) => d.type === "levee_suspension"),
     };
   });
   return {
     ...base,
-    observation: etatObservation(f, maintenant),
-    reevaluation: etatReevaluation(f, maintenant),
+    observation: etatObservation(f, maintenant, reglages),
+    reevaluation: etatReevaluation(f, maintenant, reglages),
     missions,
   };
 }
