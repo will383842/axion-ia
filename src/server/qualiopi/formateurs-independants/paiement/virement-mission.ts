@@ -111,6 +111,47 @@ export function attenteAttestationALaMission(
   );
 }
 
+/** Les deux motifs de la règle C-1 (changement d'IBAN), communs à tous les virements. */
+export type MotifChangementIban = Extract<
+  MotifSuspensionVirement,
+  "compte_bancaire_a_valider" | "nouvel_iban_moins_de_48h"
+>;
+
+/**
+ * Le même motif, tel que le FORMATEUR le lit dans son espace (jamais l'IBAN, ni ses
+ * derniers caractères).
+ */
+export const LIBELLE_CHANGEMENT_IBAN_FORMATEUR: Record<MotifChangementIban, string> = {
+  compte_bancaire_a_valider:
+    "Virement en attente : votre changement de compte bancaire est en cours de vérification. Le virement partira sur le nouveau compte une fois le changement validé, au plus tôt 48 heures après votre demande.",
+  nouvel_iban_moins_de_48h:
+    "Virement en attente : votre nouveau compte bancaire est utilisable 48 heures après votre demande. Le virement partira sur ce compte.",
+};
+
+/**
+ * 🔴 RÈGLE C-1 (décision 72, V1-C-1) — LA SEULE. Aucun virement à un formateur tant
+ * qu'une demande de changement d'IBAN attend, puis tant que
+ * `maintenant < max(demande + 48 h, validation)` de la dernière demande acceptée.
+ *
+ * Lue par TOUT virement d'honoraires : le paiement par mission (`gardeVirementMission`)
+ * ET le relevé mensuel (`transitionStatementAction`), car le canal est ouvert avant la
+ * date de passage, quand les indépendants sont encore payés au mois. Calcul en
+ * millisecondes sur des instants : un changement d'heure ne décale rien.
+ */
+export function gardeChangementIban(
+  c: Pick<ContexteVirementMission, "demandeIbanEnAttente" | "dernierChangementIban" | "maintenant">,
+  p: Pick<ParametresArgentFormateurs, "delaiChangementIbanHeures"> = PARAMETRES_ARGENT_FORMATEURS,
+): MotifChangementIban[] {
+  const motifs: MotifChangementIban[] = [];
+  if (c.demandeIbanEnAttente) motifs.push("compte_bancaire_a_valider");
+  if (c.dernierChangementIban) {
+    const des = nouvelIbanUtilisableDes(c.dernierChangementIban, p);
+    if (des !== null && c.maintenant.getTime() < des.getTime())
+      motifs.push("nouvel_iban_moins_de_48h");
+  }
+  return motifs;
+}
+
 export function gardeVirementMission(
   c: ContexteVirementMission,
   p: ParametresArgentFormateurs = PARAMETRES_ARGENT_FORMATEURS,
@@ -118,12 +159,7 @@ export function gardeVirementMission(
   const motifs: MotifSuspensionVirement[] = [];
   if (c.finPourDeces) motifs.push("reglement_a_la_main");
   if (attenteAttestationALaMission(c)) motifs.push("attestation_urssaf_echue_a_la_mission");
-  if (c.demandeIbanEnAttente) motifs.push("compte_bancaire_a_valider");
-  if (c.dernierChangementIban) {
-    const des = nouvelIbanUtilisableDes(c.dernierChangementIban, p);
-    if (des !== null && c.maintenant.getTime() < des.getTime())
-      motifs.push("nouvel_iban_moins_de_48h");
-  }
+  motifs.push(...gardeChangementIban(c, p));
   if (c.ibanEmpreinteActuelle === null) motifs.push("iban_absent");
   else if (c.ibanEmpreinteAffichee !== c.ibanEmpreinteActuelle)
     motifs.push("iban_change_depuis_l_affichage");

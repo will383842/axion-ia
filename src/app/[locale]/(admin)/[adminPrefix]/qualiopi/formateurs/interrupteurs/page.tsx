@@ -27,9 +27,10 @@ import {
   type CleInterrupteur,
   type CleInterrupteurSignature,
 } from "@/server/qualiopi/formateurs-independants/interrupteurs";
+import { PREFIXE_TEXTES_VALIDES } from "@/server/email/textes-valides";
 import {
+  faitsPrealables,
   libelleVersionContratCadreEnVigueur,
-  lireFaitsPrealables,
 } from "@/server/qualiopi/formateurs-independants/prealables-faits";
 import {
   lireInterrupteurs,
@@ -63,6 +64,7 @@ import {
   basculerFormateursCertificatAutoAction,
   basculerFormateursRegistreSousTraitantsAction,
   basculerFormateursAlertesRegistreSousTraitantsAction,
+  basculerFormateursSuiviQualiteAction,
   basculerFormateursSuiteContratCadreAction,
   basculerSignatureAlertesHorsJetonAction,
   basculerSignatureCopiePartielleAction,
@@ -147,6 +149,7 @@ const ACTIONS_SIGNATURE: Record<
   certificat_auto: basculerFormateursCertificatAutoAction,
   registre_sous_traitants: basculerFormateursRegistreSousTraitantsAction,
   alertes_registre_sous_traitants: basculerFormateursAlertesRegistreSousTraitantsAction,
+  suivi_qualite: basculerFormateursSuiviQualiteAction,
 };
 
 const ACTIONS_ENTREE: Record<CleInterrupteurEntree, typeof basculerFormateursTextesValidesAction> =
@@ -228,6 +231,22 @@ export default async function InterrupteursFormateursPage({ params, searchParams
     lignesSignature.map((l) => [l.cle, l.valeur === true]),
   ) as EtatsInterrupteursSignature;
   const lignesEntree = await lireInterrupteursEntree();
+  // Les faits lus dans les réglages (canal de changement de compte : interrupteurs et
+  // textes F43/F44). Lecture en échec : aucun fait établi, l'écran montre le refus.
+  const faits = faitsPrealables(
+    await prisma.setting
+      .findMany({
+        where: {
+          OR: [
+            { key: { startsWith: "formateurs." } },
+            { key: { startsWith: "signature." } },
+            { key: { startsWith: PREFIXE_TEXTES_VALIDES } },
+          ],
+        },
+        select: { key: true, value: true },
+      })
+      .catch(() => []),
+  );
   const direction = acces.role === "super_admin" || acces.role === "admin";
   const remunere = peutEngager(acces.role, "remunerer_formateur");
   const rattrapage = remunere ? await apercuRattrapagePourPage(sp.rattrapage) : null;
@@ -262,9 +281,7 @@ export default async function InterrupteursFormateursPage({ params, searchParams
                   : def.sorte === "date"
                     ? "2000-01-01"
                     : l.valeur !== true;
-              const manques = sure
-                ? prealablesManquants(l.cle, cible, etats, lireFaitsPrealables())
-                : [];
+              const manques = sure ? prealablesManquants(l.cle, cible, etats, faits) : [];
               const habilite =
                 def.habilitation === "valider_texte_email"
                   ? acces.role === "super_admin"

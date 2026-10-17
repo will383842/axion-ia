@@ -27,7 +27,11 @@ import {
   transmettreAutofactureFormAction,
 } from "@/server/actions/qualiopi/autofacture";
 import { getReleveDetail } from "@/server/qualiopi/remuneration/queries";
-import { ibanAffichePourVirement } from "@/server/qualiopi/formateurs-independants/paiement/virement-mission-base";
+import {
+  ibanAffichePourVirement,
+  motifsChangementIbanDu,
+} from "@/server/qualiopi/formateurs-independants/paiement/virement-mission-base";
+import { LIBELLE_SUSPENSION_VIREMENT } from "@/server/qualiopi/formateurs-independants/paiement/virement-mission";
 import { prisma } from "@/lib/prisma";
 import { transitionsPossibles } from "@/server/qualiopi/remuneration/run";
 import {
@@ -92,6 +96,11 @@ export default async function ReleveDetailPage({ params, searchParams }: PagePro
     demandePaiement && releve.origine === "passage_mission"
       ? await ibanAffichePourVirement(prisma, releve.trainerId).catch(() => null)
       : null;
+  // Règle C-1 (relecture de la PR 1561) : mission ET mensuel. Les mêmes motifs que le clic
+  // refusera ; `null` : demandes illisibles (le clic refusera aussi).
+  const motifsIban = demandePaiement
+    ? await motifsChangementIbanDu(prisma, releve.trainerId, new Date()).catch(() => null)
+    : [];
   // Lot D2 (M10) : un désaccord ouvert sur une facture de MISSION se tranche ici.
   const desaccordOuvert =
     releve.origine === "passage_mission" &&
@@ -593,6 +602,18 @@ export default async function ReleveDetailPage({ params, searchParams }: PagePro
             {demandePaiement && (
               <fieldset className="flex flex-wrap gap-[var(--space-admin-3)]">
                 <legend className="admin-label">Paiement</legend>
+                {motifsIban === null ? (
+                  <p className="admin-alert admin-alert-error w-full" role="alert">
+                    Demandes de changement de compte illisibles : le paiement sera refusé.
+                  </p>
+                ) : (
+                  motifsIban.length > 0 && (
+                    <p className="admin-alert admin-alert-error w-full" role="alert">
+                      {motifsIban.map((m) => LIBELLE_SUSPENSION_VIREMENT[m]).join(" ")} Paiement
+                      refusé tant que ce motif tient.
+                    </p>
+                  )
+                )}
                 <div className="admin-field">
                   <label className="admin-label" htmlFor="moyenPaiement">
                     Moyen

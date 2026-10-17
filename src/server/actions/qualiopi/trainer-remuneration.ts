@@ -355,14 +355,14 @@ export async function transitionStatementAction(
   const maintenant = new Date();
   /**
    * Paiement par mission (L12d) — vigilance à la date de la mission, IBAN en
-   * attente ou trop récent, empreinte relue au clic. Les relevés MENSUELS ne
-   * passent jamais ici : leur chemin est inchangé.
+   * attente ou trop récent, empreinte relue au clic. Le relevé MENSUEL lit, lui,
+   * la seule règle C-1 (changement d'IBAN), juste en dessous.
    */
   let preuveIban: { ibanFin4: string; ibanEmpreinte: string } | null = null;
   /**
    * Chantier C4 (défaut 5) — de quoi RELIRE les garanties sous verrou : la même
    * lecture du contexte, et les garanties sans appel réseau, avec le client de la
-   * transaction. `null` hors relevé de mission payé.
+   * transaction. `null` hors paiement. Pour un relevé MENSUEL : la règle C-1 seule.
    */
   let relectureSousVerrou: ((tx: Prisma.TransactionClient) => Promise<string | null>) | null = null;
   if (v.to === "paye" && releveDeMission) {
@@ -436,6 +436,37 @@ export async function transitionStatementAction(
         );
       return null;
     };
+  }
+  /**
+   * 🔴 RÈGLE C-1 SUR LE RELEVÉ MENSUEL (relecture de #1561). Le canal de changement
+   * d'IBAN est ouvert AVANT la date de passage au paiement par mission : pendant
+   * cette période, les indépendants sont payés au mois. Sans cette garde, un relevé
+   * mensuel était marqué « payé » pendant la vérification d'un nouveau compte. La
+   * même fonction que la mission (`gardeChangementIban`), le même libellé, relue
+   * sous verrou. Un salarié ou un dirigeant n'a jamais de demande d'IBAN (le canal
+   * est réservé aux indépendants) : la règle ne lui oppose rien.
+   */
+  if (v.to === "paye" && !releveDeMission) {
+    const { motifsChangementIbanDu } =
+      await import("@/server/qualiopi/formateurs-independants/paiement/virement-mission-base");
+    const { LIBELLE_SUSPENSION_VIREMENT } =
+      await import("@/server/qualiopi/formateurs-independants/paiement/virement-mission");
+    const LECTURE_IMPOSSIBLE =
+      "Lecture du compte bancaire du formateur impossible : paiement refusé.";
+    const refusChangementIban = async (
+      db: Parameters<typeof motifsChangementIbanDu>[0],
+    ): Promise<string | null> => {
+      let motifs: Awaited<ReturnType<typeof motifsChangementIbanDu>>;
+      try {
+        motifs = await motifsChangementIbanDu(db, releve.trainerId, maintenant);
+      } catch {
+        return LECTURE_IMPOSSIBLE;
+      }
+      return motifs.length > 0 ? motifs.map((m) => LIBELLE_SUSPENSION_VIREMENT[m]).join(" ") : null;
+    };
+    const refus = await refusChangementIban(prisma);
+    if (refus !== null) return { error: refus };
+    relectureSousVerrou = (tx) => refusChangementIban(tx);
   }
   let aChange = false;
   let ibanChange = false;

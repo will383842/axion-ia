@@ -62,6 +62,12 @@ const h = vi.hoisted(() => {
   return { etat, prisma };
 });
 vi.mock("@/lib/prisma", () => ({ prisma: h.prisma }));
+// Qualiopi ind. 21 — la décision d'habilitation de la formation en jeu a sa suite
+// (`evaluation-competences/__tests__/`) ; ici, elle est réputée en vigueur sauf mention.
+const q21 = vi.hoisted(() => ({ manque: null as string | null }));
+vi.mock("../evaluation-competences/garde-mission-q21-lecture", () => ({
+  lireManqueHabilitationMission: vi.fn(async () => q21.manque),
+}));
 
 import { MANQUES_MISSION } from "../garde-mission";
 import { controlerGardeMission } from "../garde-mission-portes";
@@ -308,7 +314,8 @@ describe("les portes passent la mission en jeu", () => {
       /controlerVigilanceLettre|controlerGardeMission/,
     );
     expect(lire("src/server/qualiopi/formateurs-independants/moteur-mission.ts")).toMatch(
-      /garde\.refus\.filter\(\(r\) => !MANQUES_VIGILANCE\.has\(r\)\)/,
+      // Qualiopi ind. 21 : le suivi qualité, lui aussi, ne refuse que les NOUVELLES missions.
+      /garde\.refus\.filter\(\s*\(r\) => !MANQUES_VIGILANCE\.has\(r\) && !MANQUES_SUIVI_QUALITE_SET\.has\(r\),?\s*\)/,
     );
     const service = lire("src/server/qualiopi/trainers/mission-formateur.ts");
     expect(

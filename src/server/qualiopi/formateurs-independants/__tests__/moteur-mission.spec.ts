@@ -99,6 +99,7 @@ vi.mock("../contrat-cadre-en-vigueur", () => ({
 }));
 
 import { MANQUES_MISSION } from "../garde-mission";
+import { MANQUE_MISSION_HABILITATION } from "../evaluation-competences/regles";
 import { CROCHET_NON_REMPLI } from "@/lib/email/templates/formateur-independant-textes";
 import { remplir } from "@/lib/email/templates/_formateur-independant";
 import { TEXTES_FORMATEUR } from "@/lib/email/templates/formateur-independant-textes";
@@ -433,6 +434,20 @@ describe("lettre due (T8)", () => {
       "bloquee_notifiee",
     );
     expect(h.envoyer).not.toHaveBeenCalled();
+    expect(h.generer).not.toHaveBeenCalled();
+  });
+
+  it("🔴 ind. 21 — « non habilité » versé APRÈS l'acceptation : la garde juge SA formation, aucune lettre", async () => {
+    const { controlerGardeMission } = await import("../garde-mission-portes");
+    h.etat.gardeRefus = [MANQUE_MISSION_HABILITATION];
+    expect((await reevaluerMission(MISSION, "passage", MAINTENANT)).action).toBe(
+      "bloquee_notifiee",
+    );
+    // La session de la mission, pas « au moins une formation habilitée » ; et sans
+    // `enJeu` : le montant de la mission acceptée n'entre pas au cumul.
+    expect(controlerGardeMission).toHaveBeenCalledWith(TRAINER, MAINTENANT, undefined, {
+      sessionId: SESSION,
+    });
     expect(h.generer).not.toHaveBeenCalled();
   });
 

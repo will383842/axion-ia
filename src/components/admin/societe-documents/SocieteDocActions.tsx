@@ -19,15 +19,22 @@ import {
 import { useConfirmation } from "@/components/admin/ui/useConfirmation";
 import type { SocieteDocTypeDef } from "@/server/societe-documents/rubriques";
 import { SocieteDocForm, type PieceEditable } from "./SocieteDocForm";
+import { RetirerDocumentButton } from "@/components/admin/documents-organisme/RetirerDocumentButton";
 
 interface Props {
   piece: PieceEditable;
   types: ReadonlyArray<SocieteDocTypeDef>;
+  /**
+   * CHANTIER QNC, L13 — présent quand l'archivage est allumé : plus de
+   * « Supprimer », le remplacement garde l'ancienne version, et « Retirer »
+   * n'apparaît que pour le super-administrateur, base prête.
+   */
+  archivage?: { retraitPossible: boolean } | undefined;
 }
 
 const LIEN = "text-terracotta text-xs font-medium underline disabled:opacity-60";
 
-export function SocieteDocActions({ piece, types }: Props): React.ReactElement {
+export function SocieteDocActions({ piece, types, archivage }: Props): React.ReactElement {
   const router = useRouter();
   const [panneau, setPanneau] = useState<"aucun" | "modifier" | "remplacer">("aucun");
   const [pending, startTransition] = useTransition();
@@ -91,14 +98,20 @@ export function SocieteDocActions({ piece, types }: Props): React.ReactElement {
         >
           {panneau === "remplacer" ? "Fermer" : "Remplacer le fichier"}
         </button>
-        <button
-          type="button"
-          onClick={onSupprimer}
-          disabled={pending}
-          className="text-fg-muted text-xs underline hover:text-[color:var(--color-admin-destructive-fg)] disabled:opacity-60"
-        >
-          {pending ? "…" : "Supprimer"}
-        </button>
+        {archivage ? (
+          archivage.retraitPossible ? (
+            <RetirerDocumentButton cible="SocieteDocument" id={piece.id} titre={piece.titre} />
+          ) : null
+        ) : (
+          <button
+            type="button"
+            onClick={onSupprimer}
+            disabled={pending}
+            className="text-fg-muted text-xs underline hover:text-[color:var(--color-admin-destructive-fg)] disabled:opacity-60"
+          >
+            {pending ? "…" : "Supprimer"}
+          </button>
+        )}
       </div>
 
       {error ? (
@@ -122,8 +135,9 @@ export function SocieteDocActions({ piece, types }: Props): React.ReactElement {
           className="border-border w-full min-w-0 space-y-3 rounded-lg border bg-[color:var(--color-admin-paper)] p-4 text-left sm:w-[32rem]"
         >
           <p className="text-fg-muted text-xs">
-            Le nouveau fichier prend la place de l&apos;ancien, qui est effacé du disque. Les dates
-            laissées vides restent inchangées.
+            {archivage
+              ? "Le nouveau fichier devient la version en vigueur. L'ancienne est gardée, avec son fichier, dans « Versions remplacées ». Les dates laissées vides reprennent celles de l'ancienne version."
+              : "Le nouveau fichier prend la place de l'ancien, qui est effacé du disque. Les dates laissées vides restent inchangées."}
           </p>
           <div>
             <label

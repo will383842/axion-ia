@@ -51,6 +51,18 @@ vi.mock("@/server/actions/qualiopi/_guards", () => ({
 }));
 
 vi.mock("@/features/admin-planning/queries", () => ({ getTrainerConflicts: vi.fn() }));
+// Qualiopi ind. 21 — l'évaluation des compétences a sa suite
+// (`evaluation-competences/__tests__/`) ; ici, elle est réputée complète sauf mention.
+const q21 = vi.hoisted(() => ({ manques: [] as string[] }));
+vi.mock("@/server/qualiopi/formateurs-independants/evaluation-competences/lecture", () => ({
+  lireFaitsActivationQ21: vi.fn(async () => ({})),
+}));
+vi.mock(
+  "@/server/qualiopi/formateurs-independants/evaluation-competences/garde-activation-q21",
+  () => ({
+    manquesActivationQ21: vi.fn(() => q21.manques),
+  }),
+);
 vi.mock("@/server/qualiopi/trainers/documents", () => ({ getTrainerConformite: vi.fn() }));
 
 import { createTrainerAction, setTrainerActifAction, updateTrainerAction } from "./trainers";

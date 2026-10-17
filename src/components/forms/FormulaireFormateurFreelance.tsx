@@ -42,7 +42,6 @@ interface Props {
 export function FormulaireFormateurFreelance({ offerId, invitationAuto }: Props) {
   const cvRef = React.useRef<HTMLInputElement>(null);
   const [cvName, setCvName] = React.useState("");
-  const [pasEncore, setPasEncore] = React.useState(false);
   const [consent, setConsent] = React.useState(false);
   const [consentVivier, setConsentVivier] = React.useState(false);
   const [submitting, setSubmitting] = React.useState(false);
@@ -75,7 +74,6 @@ export function FormulaireFormateurFreelance({ offerId, invitationAuto }: Props)
       fd.set("consent", "true");
       fd.set("landingPath", window.location.pathname);
       fd.set("consentVivier", consentVivier ? "true" : "false");
-      if (pasEncore) fd.delete("numeroDeclaration");
       if (turnstileToken) fd.set("cf-turnstile-response", turnstileToken);
       const result = await submitJobApplicationAction({ ok: false, error: "" }, fd);
       if (!result.ok) {
@@ -229,21 +227,10 @@ export function FormulaireFormateurFreelance({ offerId, invitationAuto }: Props)
             inputMode="numeric"
             maxLength={14}
             placeholder="11 chiffres"
-            required={!pasEncore}
+            required
             className={FIELD}
-            disabled={submitting || pasEncore}
+            disabled={submitting}
           />
-          <label className="mt-3 flex min-h-12 items-center gap-3 text-base">
-            <input
-              type="checkbox"
-              name="pasEncoreDeNumero"
-              checked={pasEncore}
-              onChange={(ev) => setPasEncore(ev.target.checked)}
-              className="h-5 w-5"
-              disabled={submitting}
-            />
-            Je n&apos;ai pas encore de numéro
-          </label>
         </div>
       </fieldset>
 

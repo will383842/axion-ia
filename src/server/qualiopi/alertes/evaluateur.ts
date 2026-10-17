@@ -144,6 +144,7 @@ import { regleFondsOpcoSuspendusSession } from "./regle-fonds-opco-suspendus-ses
 import { regleSubrogationIncompatibleRegime } from "./regle-subrogation-incompatible-regime";
 import { regleCertificatRealisationManquant } from "./regle-certificat-realisation-manquant";
 import { regleAvisFinanceurManquant } from "./regle-avis-financeur-manquant";
+import { regleSuiviQualiteFormateurs } from "./regle-suivi-qualite-formateurs";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Type de retour de l'évaluateur
@@ -5350,6 +5351,8 @@ const REGLES: Array<{ nom: string; fn: RegleFn }> = [
   // Qualiopi ind. 27 (audit du 16/10) — échéances du registre des sous-traitants
   // indépendants tenu par l'outil. Éteinte tant que son interrupteur est coupé.
   { nom: "registre_sous_traitants", fn: regleRegistreSousTraitants },
+  // Qualiopi ind. 21 — suivi de la qualité des intervenants externes (éteint par défaut).
+  { nom: "suivi_qualite_formateurs", fn: regleSuiviQualiteFormateurs },
 ];
 
 // ─────────────────────────────────────────────────────────────────────────────

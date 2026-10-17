@@ -18,7 +18,7 @@ import {
 } from "@/server/qualiopi/trainers/documents";
 import { TrainerForm } from "@/components/admin/qualiopi/TrainerForm";
 import { TrainerManageForm } from "@/components/admin/qualiopi/TrainerManageForm";
-import { FinCollaborationPanel } from "@/components/admin/qualiopi/FinCollaborationPanel";
+import { FinCollaborationPanelDiffere } from "@/components/admin/qualiopi/FinCollaborationPanelDiffere";
 import {
   LIBELLES_MOTIF_FIN,
   conservationApresFin,
@@ -28,7 +28,7 @@ import {
 import { TrainerDocumentsPanel } from "@/components/admin/qualiopi/TrainerDocumentsPanel";
 import { TrainerFacturationPanel } from "@/components/admin/qualiopi/TrainerFacturationPanel";
 import { TrainerFixePanel } from "@/components/admin/qualiopi/TrainerFixePanel";
-import { TrainerContratTravailPanel } from "@/components/admin/qualiopi/TrainerContratTravailPanel";
+import { TrainerContratTravailPanelDiffere } from "@/components/admin/qualiopi/TrainerContratTravailPanelDiffere";
 import { getQualiopiConfig } from "@/server/qualiopi/config/site-settings";
 import { lireSituationFixe } from "@/server/qualiopi/remuneration/pilotage-formateurs";
 import { TrainerCompetencesPanel } from "@/components/admin/qualiopi/TrainerCompetencesPanel";
@@ -92,7 +92,16 @@ import { peutEngager } from "@/server/auth/habilitations";
 import { envoiAllume } from "@/server/qualiopi/formateurs-independants/interrupteurs-envoi";
 import { numeroRecuAVerifier } from "@/server/qualiopi/formateurs-independants/numero-declaration-espace";
 import { LieuFormateurPanel } from "@/components/admin/qualiopi/LieuFormateurPanel";
-import { PresentationMethodePanel } from "@/components/admin/qualiopi/PresentationMethodePanel";
+import {
+  EvaluationCompetencesPanelDiffere,
+  PresentationMethodePanelDiffere,
+} from "@/components/admin/qualiopi/PanneauxDifferesFicheFormateur";
+import { lireEvaluationsConsole } from "@/server/qualiopi/formateurs-independants/evaluation-competences/lecture";
+import {
+  etatEvaluation,
+  seuilsEntretien,
+  seuilsMiseEnSituation,
+} from "@/server/qualiopi/formateurs-independants/evaluation-competences/regles";
 import { DossierEnLignePanel } from "@/components/admin/qualiopi/DossierEnLignePanel";
 import { ContratCadrePanel } from "@/components/admin/qualiopi/ContratCadrePanel";
 import {
@@ -386,6 +395,12 @@ export default async function FicheFormateurPage({ params, searchParams }: PageP
   // Lot L15a — lieu d'exercice (formateurs proches). Rôle jugé AVANT toute
   // lecture ; interrupteur `formateurs.proches_bloc` absent = panneau absent.
   const voitLieu = peutEngager(role, "habiliter_formateur") && (await envoiAllume("proches_bloc"));
+  // Qualiopi ind. 21 — le dossier de suivi qualité : intervenant externe, acte
+  // `habiliter_formateur`, interrupteur `formateurs.suivi_qualite` allumé.
+  const voitSuiviQualite =
+    trainer.statut === "sous_traitant" &&
+    peutEngager(role, "habiliter_formateur") &&
+    (await interrupteurAllume("suivi_qualite"));
   // Lot L14 — fin de collaboration : indépendant en nom propre, interrupteur allumé.
   const voitFinCollaboration =
     trainer.statut === "sous_traitant" &&
@@ -445,6 +460,22 @@ export default async function FicheFormateurPage({ params, searchParams }: PageP
     trainer.statut === "sous_traitant" && (await interrupteurAllume("affectation_sure"))
       ? await missionsVisiblesIndependant(trainer.id, now)
       : null;
+
+  // Qualiopi ind. 21 — grilles d'évaluation des compétences pédagogiques : indépendant,
+  // rôle `habiliter_formateur` jugé AVANT toute lecture. Sans interrupteur : la garde
+  // d'activation les exige, l'écran doit pouvoir les recevoir.
+  const voitEvaluation =
+    trainer.statut === "sous_traitant" && peutEngager(role, "habiliter_formateur");
+  const evaluations = voitEvaluation
+    ? await lireEvaluationsConsole(trainer.id).catch(() => null)
+    : null;
+  const titreFormation = new Map(formations.map((f) => [f.id, f.titre]));
+  const etatEval = evaluations === null ? null : etatEvaluation(evaluations);
+  const horodatage = new Intl.DateTimeFormat("fr-FR", {
+    dateStyle: "short",
+    timeStyle: "short",
+    timeZone: "Europe/Paris",
+  });
 
   // Lot L12i — « Présentation faite le … » : interrupteur absent = panneau absent.
   const voitPresentation =
@@ -700,7 +731,41 @@ export default async function FicheFormateurPage({ params, searchParams }: PageP
         />
       )}
 
-      {voitPresentation && <PresentationMethodePanel trainerId={trainer.id} />}
+      {voitPresentation && <PresentationMethodePanelDiffere trainerId={trainer.id} />}
+
+      {voitEvaluation && evaluations === null && (
+        <div className="admin-alert admin-alert-error mb-[var(--space-admin-5)]" role="alert">
+          Les grilles d&apos;évaluation des compétences n&apos;ont pas pu être lues.
+        </div>
+      )}
+      {voitEvaluation && evaluations !== null && etatEval !== null && (
+        <EvaluationCompetencesPanelDiffere
+          trainerId={trainer.id}
+          formations={formations}
+          lignes={evaluations.map((l) => ({
+            id: l.id,
+            nature: l.nature,
+            formationTitre: l.formationId ? (titreFormation.get(l.formationId) ?? null) : null,
+            notes:
+              typeof l.notes === "object" && l.notes !== null && !Array.isArray(l.notes)
+                ? (l.notes as Record<string, number>)
+                : null,
+            decision: l.decision,
+            motif: l.motif,
+            dateSuivie: l.dateSuivie ? l.dateSuivie.toISOString().slice(0, 10) : null,
+            versee: horodatage.format(l.createdAt),
+            auteur: l.auteur,
+          }))}
+          dernierEntretienAtteint={
+            etatEval.entretien ? seuilsEntretien(etatEval.entretien.notes).atteint : null
+          }
+          derniereMiseEnSituationAtteinte={
+            etatEval.miseEnSituation
+              ? seuilsMiseEnSituation(etatEval.miseEnSituation.notes).atteint
+              : null
+          }
+        />
+      )}
 
       {/*
         Fixe récupérable sur commissions — 2026-09-12.
@@ -715,7 +780,7 @@ export default async function FicheFormateurPage({ params, searchParams }: PageP
         vient de corriger.
       */}
       {estSalarie && (
-        <TrainerContratTravailPanel
+        <TrainerContratTravailPanelDiffere
           trainerId={trainer.id}
           initial={{
             contratType: trainer.contratType,
@@ -1042,8 +1107,19 @@ export default async function FicheFormateurPage({ params, searchParams }: PageP
         />
       </div>
 
+      {voitSuiviQualite ? (
+        <p className="mb-[var(--space-admin-4)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg)]">
+          <Link
+            href={`/${locale}/${adminPrefix}/qualiopi/formateurs/${trainer.id}/suivi-qualite`}
+            className="underline"
+          >
+            Suivi qualité (ind. 21) : observation, évaluations après mission, réévaluation
+          </Link>
+        </p>
+      ) : null}
+
       {voitFinCollaboration ? (
-        <FinCollaborationPanel trainerId={trainer.id} terminee={finTerminee} />
+        <FinCollaborationPanelDiffere trainerId={trainer.id} terminee={finTerminee} />
       ) : null}
 
       <TrainerManageForm
