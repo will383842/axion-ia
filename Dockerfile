@@ -169,7 +169,7 @@ ENV COREPACK_INTEGRITY_KEYS=0
 # routes Next standalone) OOM kill exit 255 silencieux. Réduction de
 # pression mémoire pour donner du headroom à BuildKit qui ré-encode
 # tous les layers. CPX42 16 GB : 8 heap + 2 worker + 2 pg + 0.5 redis
-# + 1 system + 2 BuildKit = 15.5 GB, marge 0.5 GB. Build ~25 min vs 20.
+# + 1 system + 2 BuildKit = 15.5 GB, marge 0.5 GB. Build ~50 min (mesuré ; 17 629 routes SSG).
 #
 # Audit verif-fix-deploy 2026-05-18 : streak 8+ deploys ratés depuis PR 7
 # (2026-05-17 soir), pattern OOM-kill silencieux à ~38 min sur ubuntu-latest
@@ -257,8 +257,10 @@ ENV HOSTNAME=0.0.0.0
 #
 # ⚠️ Ce sont des valeurs par DÉFAUT de l'image. Une variable d'environnement
 # posée côté Coolify (scope RUN) prime toujours sur un `ENV` de Dockerfile —
-# donc pour éteindre en urgence sans redéployer (~25 min de build), poser
-# `QUALIOPI_CERTIFICATION_OBTENUE=false` dans Coolify + Restart : effet en 30 s.
+# donc pour changer l'état sans redéployer (~50 min de build), poser
+# `QUALIOPI_CERTIFICATION_OBTENUE` dans Coolify + Restart : effet en 30 s.
+# 2026-10-16 : défaut de l'image = `false` — aucune mention de certification tant
+# que le certificat n'est pas obtenu. Le passage à `true` se fait au certificat.
 #
 # `OF_PUBLIC_DISCLOSURE_ENABLED` : rend visibles les pages de l'organisme de
 # formation (catalogue, fiches). Déjà à true côté Coolify — inscrit ici pour
@@ -270,7 +272,7 @@ ENV HOSTNAME=0.0.0.0
 # en base, saisies en console admin ; les champs vides ne sont plus rendus
 # (garde posée dans `certifications-section.ts` le 2026-08-10).
 ENV OF_PUBLIC_DISCLOSURE_ENABLED=true
-ENV QUALIOPI_CERTIFICATION_OBTENUE=true
+ENV QUALIOPI_CERTIFICATION_OBTENUE=false
 
 # curl pour healthchecks orchestrator + libc6-compat + openssl REQUIS pour
 # Prisma runtime. Sans openssl au runner stage, Prisma détecte "no openssl"

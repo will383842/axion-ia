@@ -471,3 +471,40 @@ describe("🔴 aucune affirmation de certification hors registre", () => {
     ).toEqual([]);
   });
 });
+
+/**
+ * 🔴 Les visuels qui AFFIRMENT la certification ne se servent pas avant le certificat.
+ *
+ * Cinq images (4 illustrations + l'image de partage « formations certifiées »)
+ * disaient « certifié » dans le pixel : aucun drapeau ne peut les masquer, elles
+ * sont servies telles quelles par `public/`. Elles vivent donc HORS de `public/`
+ * (`private/qualiopi-attente-certificat/`), et plus aucune source ne les cite.
+ * Les remettre en ligne se fait au certificat, en même temps que ce test.
+ */
+describe("visuels « certifié » hors de public/", () => {
+  const RACINE = process.cwd();
+  const RETIRES = [
+    "illustrations/qualiopi/certification-qualiopi-axion-ia-formation-ia-qualite.webp",
+    "illustrations/qualiopi/bandeau-qualiopi-qualite-certifiee-formation-ia-axion-ia.webp",
+    "illustrations/qualiopi/audit-documentaire-processus-qualite-certification-qualiopi-axion-ia.webp",
+    "illustrations/qualiopi/confiance-accord-organisme-formation-certifie-qualiopi-axion-ia.webp",
+    "og/pages/formations-certifiees-qualiopi.png",
+  ];
+
+  it.each(RETIRES)("public/%s n'existe plus, son fichier est conservé hors de public/", (rel) => {
+    expect(existsSync(path.join(RACINE, "public", rel))).toBe(false);
+    expect(existsSync(path.join(RACINE, "private/qualiopi-attente-certificat", rel))).toBe(true);
+  });
+
+  it("aucune source ne cite plus ces visuels", () => {
+    const citations: string[] = [];
+    for (const abs of fichiersSource(SRC)) {
+      if (abs.endsWith(".spec.ts") || abs.endsWith(".spec.tsx")) continue;
+      const code = readFileSync(abs, "utf8");
+      for (const rel of RETIRES) {
+        if (code.includes(`/${rel}`)) citations.push(`${relSrc(abs)} → /${rel}`);
+      }
+    }
+    expect(citations).toEqual([]);
+  });
+});

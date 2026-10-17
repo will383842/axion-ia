@@ -139,6 +139,8 @@ export async function envoyerDevisEmailAction(
     },
     {
       attachments: [{ filename: `${devis.numero}.pdf`, r2Key: devis.fichierPdfUrl }],
+      entityType: "Devis",
+      entityId: devis.id,
       // 🔴 Vérification E2E 2026-07-26. Sans `clientId`, aucune règle
       // d'automatisation PAR CLIENT ne peut jamais s'appliquer : le `where` de
       // `resoudreMode` se réduit aux règles globales. L'écran affichait donc des
