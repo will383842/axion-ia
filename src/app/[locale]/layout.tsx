@@ -66,6 +66,8 @@ const manrope = localFont({
   ],
   variable: "--font-manrope",
   display: "swap",
+  // Repli métrique manuel (globals.css « Manrope Fallback ») : celui de next/font est calé sur wght 200.
+  adjustFontFallback: false,
 });
 
 // P3-35 (audit re-run 2026-05-15 AGENT 6) — Inconsolata preload:false.
@@ -114,21 +116,17 @@ const inconsolata = localFont({
 //      cf. P-105 globals.css). Cette chaîne est désormais réparée
 //      (`--font-fraunces` → fallback métrique next/font → Iowan…), donc le
 //      reflow au swap est aujourd'hui fortement réduit.
-//   3. `adjustFontFallback: true` (explicite ci-dessous) génère un @font-face
-//      fallback aux métriques calées sur Fraunces (size-adjust / overrides)
-//      → swap fallback → Fraunces ≈ 0 décalage. Technique « FOUT métriques
-//      calées » standard des sites premium.
+//   3. Repli métrique MANUEL (`adjustFontFallback: false` ci-dessous + `@font-face`
+//      « Fraunces Fallback » dans globals.css). Celui de next/font est calé sur
+//      l'instance par défaut du fichier variable (wght 900) : ~9 % trop large
+//      au poids affiché (500), d'où un reflow au swap. Six faces (Times New Roman
+//      Regular/Bold/Italic/Bold Italic ; 400 et 500 séparés) : size-adjust mesuré
+//      avec l'algorithme de next/font au poids de chaque face (méthode : globals.css).
 // Trade-off assumé : CLS peut passer de 0 strict (cible interne) à ~0.0-0.02
 // (très en dessous du « good » Google = 0.1). À valider par le gate Lighthouse
 // CI (job `lhci`, autorité Web Vitals) au prochain deploy ; rollback = remettre
 // `display: "optional"` si régression au-delà du budget.
 //
-// `adjustFontFallback` : `next/font/google` acceptait `true` et choisissait
-// seul la fonte-repère. En local il faut la NOMMER — « Times New Roman » pour
-// une serif (c'est ce que le loader Google retenait pour Fraunces). Les
-// `size-adjust` / `ascent-override` restent calculés sur les métriques du
-// fichier réel : la chaîne de repli métrique décrite ci-dessus est conservée,
-// et avec elle le comportement CLS mesuré.
 const fraunces = localFont({
   src: [
     { path: "../../fonts/fraunces-latin-var.woff2", weight: "400", style: "normal" },
@@ -152,7 +150,8 @@ const fraunces = localFont({
   ],
   variable: "--font-fraunces",
   display: "swap",
-  adjustFontFallback: "Times New Roman",
+  // Repli métrique manuel (globals.css « Fraunces Fallback ») : celui de next/font est calé sur wght 900.
+  adjustFontFallback: false,
 });
 
 // Pre-render only the build-time locales (FR ; EN exclu tant que désactivé —
