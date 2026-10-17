@@ -1,10 +1,14 @@
 /**
  * Le contexte de la requête en cours (IP hachée, user-agent), pour le journal.
  *
- * Sorti de `_guards` (chantier QNC, L10) pour les écritures qui journalisent
- * DANS leur transaction (`journaliser(tx, …, { exiger: true, contexte })`) :
+ * Même composition que `contexteRequete` de `_guards` (mêmes helpers partagés
+ * `hashIp` et `ipVisiteurOuNull` : la RÈGLE n'est pas recopiée), exposée pour les
+ * écritures qui journalisent DANS leur transaction (chantier QNC, L10) :
  * 75 specs remplacent `_guards` tout entier par un mock, où cette fonction
  * deviendrait `undefined` (cf. le même raisonnement pour `verrou-dossier-garde`).
+ *
+ * ⚠️ `_guards` garde son propre `import "next/headers"` : les gardes
+ * `*.graphe-worker.spec.ts` s'en servent de témoin.
  */
 
 import { headers } from "next/headers";
