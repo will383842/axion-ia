@@ -249,7 +249,8 @@ describe("ADR 0060 — dossier de session AXI-SESS-2026-001 rouvert puis reclos"
   it("la section « Origine des réponses » distingue stagiaire, organisme et non tracée", async () => {
     const { index } = await indexDuZip();
     expect(index).toContain("Origine des réponses aux questionnaires (3)");
-    expect(index).toContain("1 répondue par le stagiaire lui-même");
+    // L09 — l'outil sait qu'un lien a été ouvert, pas qui le tenait.
+    expect(index).toContain("1 répondue par le destinataire du lien");
     expect(index).toContain("1 saisie par l'organisme à sa place");
     expect(index).toContain("1 origine non tracée (réponse antérieure au 30/09/2026)");
   });

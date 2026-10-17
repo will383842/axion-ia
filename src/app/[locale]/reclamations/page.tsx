@@ -8,6 +8,7 @@ import { Container } from "@/components/layout/Container";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { getLegal } from "@/content/legal";
 import { buildProductMetadata } from "@/lib/seo";
+import { BandeauDepotReclamation } from "@/components/qualiopi/DepotReclamationBloc";
 
 interface Props {
   params: Promise<{ locale: string }>;
@@ -26,6 +27,11 @@ const SLUG = "reclamations" as const;
 // substantiellement révisée qui affiche une date antérieure à sa révision est,
 // à elle seule, un constat de document non maîtrisé.
 const LAST_UPDATED_ISO = "2026-08-15";
+
+// Chantier QNC, L09 — le bandeau « Déposer une réclamation » dépend de
+// l'interrupteur `qualiopi.reclamations.actif` (lu en base) : la page se
+// régénère toutes les heures. Éteint, le bandeau ne rend rien.
+export const revalidate = 3600;
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
@@ -57,6 +63,7 @@ export default async function Reclamations({ params }: Props) {
       <Container className="border-border border-b py-3">
         <Breadcrumbs items={breadcrumbItems} />
       </Container>
+      {isFr ? <BandeauDepotReclamation /> : null}
       <LegalPageTemplate
         isFr={isFr}
         locale={loc}

@@ -27,6 +27,7 @@ import { PositionnementPortailForm } from "@/components/portail/PositionnementPo
 import { SatisfactionPortailForm } from "@/components/portail/SatisfactionPortailForm";
 import { soumettreSatisfactionPortailAction } from "@/server/actions/qualiopi/portail";
 
+import { LienDepotReclamation } from "@/components/qualiopi/DepotReclamationBloc";
 import { CoquilleStagiaire } from "./_coquille";
 import { questionnairesEnAttente } from "./_chargement";
 
@@ -151,6 +152,15 @@ export default async function MonEspaceAccueilPage({ params }: PageProps) {
                 </Link>
               </section>
             ) : null}
+
+            {/* Chantier QNC, L09 — la porte des réclamations, rendue seulement
+                quand le dépôt en ligne est ouvert (interrupteur). La formation
+                se choisit dans le formulaire : seule une inscription de la
+                personne connectée sera rattachée. */}
+            <LienDepotReclamation className="text-fg-soft hover:text-terracotta mt-10 block text-sm underline underline-offset-4">
+              Une difficulté, une réclamation ? Déposez-la ici : réponse écrite sous 15 jours
+              ouvrés.
+            </LienDepotReclamation>
           </>
         );
       }}

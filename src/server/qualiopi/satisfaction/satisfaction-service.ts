@@ -10,6 +10,7 @@
  */
 
 import { prisma } from "@/lib/prisma";
+import { ouvrirExamenSiNoteFaible } from "@/server/qualiopi/reclamations/examen-note-faible";
 import { hacherToken } from "@/server/qualiopi/tokens/hacher-token";
 import { creerOuDedup } from "@/server/qualiopi/alertes/alertes-service";
 import { makeQrToken } from "@/server/qualiopi/documents/qr";
@@ -305,6 +306,17 @@ export async function soumettreReponses(
         err instanceof Error ? err.message : String(err),
       );
     }
+
+    // Chantier QNC, L09 — une note de 2/5 ou moins ouvre un examen au registre
+    // des incidents (interrupteur `qualiopi.reclamations.actif`). Fail-soft :
+    // ne lève jamais, la soumission est déjà enregistrée.
+    await ouvrirExamenSiNoteFaible({
+      questionnaireId: questionnaire.id,
+      type: questionnaire.type,
+      enrollmentId: questionnaire.enrollment.id,
+      noteGlobale: input.noteGlobale,
+      origine: input.origine,
+    });
   }
 
   return { id: updated.id };
