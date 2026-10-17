@@ -18,6 +18,8 @@ describe("candidature-recue — variante intervenant (L14)", () => {
       freelance: true,
     });
     expect(r.subject).toBe("Bien reçu : votre candidature de formateur");
+    // La phrase F0 validée est conservée pour un formateur indépendant.
+    expect(r.text).toContain("missions de formateur IA indépendant");
     expect(r.text).toMatch(/entretien, noté/);
     expect(r.text).toMatch(/mise en situation d'animation, également notée/);
     expect(r.text).toMatch(/SIRET, déclaration d'activité et CV de moins de 24 mois/);
@@ -33,6 +35,7 @@ describe("candidature-recue — variante intervenant (L14)", () => {
   it("un salarié ne se voit pas annoncer de SIRET", async () => {
     const r = await renderEmailTemplate("candidature-recue", "fr", { ...BASE, intervenant: true });
     expect(r.text).not.toMatch(/SIRET/);
+    expect(r.text).toContain("Votre candidature d'intervenant est bien arrivée.");
     expect(r.text).toMatch(/CV de moins de 24 mois/);
   });
 

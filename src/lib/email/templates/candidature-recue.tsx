@@ -143,7 +143,10 @@ export function CandidatureRecueEmail({
         title={INTERVENANT.title}
         locale={locale}
       >
-        <Text style={emailStyles.paragraphStyle}>{INTERVENANT.body}</Text>
+        {/* Freelance : la phrase F0 validée reste telle quelle ; les étapes la prolongent. */}
+        <Text style={emailStyles.paragraphStyle}>
+          {p.freelance === true ? MISSION.body : INTERVENANT.body}
+        </Text>
         <Text style={emailStyles.paragraphStyle}>
           {t.intro(p.contactName)}
           <br />
