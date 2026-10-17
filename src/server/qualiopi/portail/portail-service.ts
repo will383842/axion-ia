@@ -113,6 +113,12 @@ export interface QuestionnaireResume {
   type: QuestionnaireType;
   id: string;
   reponduAt: Date | null;
+  /**
+   * Numéro de version des questions envoyées (lot L08), `null` pour un envoi
+   * antérieur au versionnage. Aiguille le formulaire : la v2 à chaud / à froid
+   * évalue les acquis par objectif.
+   */
+  versionQuestionnaire: number | null;
   /** Titre de la session rattachée — affiché en tête du questionnaire. */
   sessionTitre: string;
   /**
@@ -474,6 +480,7 @@ export async function getEspaceStagiaire(traineeId: string): Promise<EspaceStagi
               // stagiaire. L'identifiant suffit, et il n'ouvre rien.
               id: true,
               reponduAt: true,
+              version: { select: { version: true } },
               // Lu côté serveur pour le seul booléen du besoin d'adaptation
               // (`declaree`, plus bas) ; jamais recopié dans l'espace rendu.
               reponses: true,
@@ -598,6 +605,7 @@ export async function getEspaceStagiaire(traineeId: string): Promise<EspaceStagi
       // déjà le stagiaire par cookie et vérifie l'appartenance à la soumission.
       id: q.id,
       reponduAt: q.reponduAt ?? null,
+      versionQuestionnaire: q.version?.version ?? null,
       sessionTitre: e.session?.titreSession ?? "",
       sessionDateDebut: e.session?.dateDebut ?? null,
       sessionDateFin: e.session?.dateFin ?? null,

@@ -197,6 +197,35 @@ describe("soumettreSatisfactionPortailAction", () => {
     expect(result.data.id).toBe("quest-repondu-1");
   });
 
+  it("Lot L08 — questionnaire v2 : seules les réponses du contenu sont stockées", async () => {
+    mockPrisma.questionnaire.findUnique.mockResolvedValue({
+      type: "satisfaction_chaud",
+      version: { version: 2 },
+      enrollment: { traineeId: TRAINEE_UUID },
+    });
+    await soumettreSatisfactionPortailAction({
+      questionnaireId: QUEST_ID,
+      reponses: { noteContenu: 4, acquisParObjectif: { A: 3 }, intrus: "x" },
+      noteGlobale: 4,
+    });
+    const call = mockCall<{ reponses: Record<string, unknown> }>(mockSoumettreReponses);
+    expect(call.reponses).toEqual({ noteContenu: 4, acquisParObjectif: { A: 3 } });
+  });
+
+  it("Lot L08 — questionnaire sans version : réponses transmises telles quelles (inchangé)", async () => {
+    mockPrisma.questionnaire.findUnique.mockResolvedValue({
+      type: "satisfaction_chaud",
+      version: null,
+      enrollment: { traineeId: TRAINEE_UUID },
+    });
+    await soumettreSatisfactionPortailAction({
+      questionnaireId: QUEST_ID,
+      reponses: { commentaire: "ok", libre: 1 },
+    });
+    const call = mockCall<{ reponses: Record<string, unknown> }>(mockSoumettreReponses);
+    expect(call.reponses).toEqual({ commentaire: "ok", libre: 1 });
+  });
+
   it("transmet noteGlobale a soumettreReponses si fourni", async () => {
     await soumettreSatisfactionPortailAction({
       questionnaireId: QUEST_ID,
