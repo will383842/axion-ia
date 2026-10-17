@@ -20,6 +20,7 @@
  * Stub-aware : early-return si DATABASE_URL contient "stub.invalid".
  */
 
+import { estNumeroEssai, numeroEssai } from "@/server/qualiopi/essai/numerotation";
 import React from "react";
 import { prisma } from "@/lib/prisma";
 import type {
@@ -410,12 +411,15 @@ export async function genererAvoirFacture(input: GenererAvoirInput): Promise<Gen
     // ce sont DEUX séries distinctes, discriminées par le préfixe. Partager la
     // table ne partage pas le compteur — c'est précisément l'amalgame qui
     // rendait faux le dénominateur de `actions/qualiopi/financements.ts`.
-    const numero = await nextNumero("avoir", annee, (prefixe) =>
-      prisma.factureFormation.findMany({
-        where: { numero: { startsWith: prefixe } },
-        select: { numero: true },
-      }),
-    );
+    // QNC L02 — l'avoir d'une facture d'ESSAI reste hors suite légale.
+    const numero = estNumeroEssai(origine.numero)
+      ? numeroEssai("avoir")
+      : await nextNumero("avoir", annee, (prefixe) =>
+          prisma.factureFormation.findMany({
+            where: { numero: { startsWith: prefixe } },
+            select: { numero: true },
+          }),
+        );
 
     try {
       // INT-T05 : l'avoir et `avoir.emis` vivent et meurent ensemble (même patron que la facture).

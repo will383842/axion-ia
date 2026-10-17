@@ -31,6 +31,8 @@ import { FORMATEUR_BASE_PATH } from "@/server/formateur/routes";
 import { formulerEffectif } from "./mission-formateur";
 import { envoiAllume } from "@/server/qualiopi/formateurs-independants/interrupteurs-envoi";
 import { sendTelegram } from "@/lib/telegram";
+import { estNumeroEssai } from "@/server/qualiopi/essai/numerotation";
+import { sortieSaufEssai } from "@/server/qualiopi/essai/sorties";
 import { uploadToR2 } from "@/lib/r2-storage";
 import { construireAgendaSession } from "./agenda-formateur-ics";
 
@@ -306,12 +308,24 @@ async function envoyer(
   // convocation (qui ne part qu'une fois par affectation). Aucun nom, aucun montant.
   if (quoi === "convocation-j7" && infos.lettreNonSignee) {
     const jours = infos.payload["joursAvantDebut"];
-    await sendTelegram({
-      tag: "AUTO",
-      body: `✍️ Session ${infos.lettreNonSignee.numeroSession} : la lettre de mission n'est pas signée par le formateur${
-        typeof jours === "number" ? ` (début dans ${jours} j)` : ""
-      }.`,
-    }).catch(() => false);
+    const numeroSession = infos.lettreNonSignee.numeroSession;
+    // QNC L02 — une session d'ESSAI (numéro `-ESSAI-`) n'alerte pas Telegram.
+    await sortieSaufEssai(
+      estNumeroEssai(numeroSession),
+      {
+        canal: "telegram",
+        cibleType: "SessionFormateur",
+        cibleId: sessionFormateurId,
+        objet: "lettre_non_signee",
+      },
+      () =>
+        sendTelegram({
+          tag: "AUTO",
+          body: `✍️ Session ${numeroSession} : la lettre de mission n'est pas signée par le formateur${
+            typeof jours === "number" ? ` (début dans ${jours} j)` : ""
+          }.`,
+        }),
+    ).catch(() => false);
   }
   return true;
 }

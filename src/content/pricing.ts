@@ -59,7 +59,7 @@ export interface PricingTier {
    * affiche « À partir de X € HT ». Miroir d'`isFromPrice` sur `PricingSubTier`.
    *
    * Décision Will 2026-07-17 : les audits s'annoncent TOUJOURS en « à partir
-   * de » (audit sur place dès 1 190 €, PME/ETI/grands groupes dès 1 900 €) — le
+   * de » (TPE dès 1 190 €, PME/ETI/grandes entreprises dès 1 900 €) — le
    * chiffrage réel se fait au cas par cas.
    *
    * Opt-in par tier, volontairement : `priceFlat` reste un prix FERME pour les
@@ -103,9 +103,7 @@ export interface PricingTier {
   descriptionFr: string;
   /** Description courte EN. */
   descriptionEn: string;
-  /** Tailles INSEE ciblées, dimension de FILTRE du chatbot — pas un affichage.
-   *  La valeur "tpe" reste qualifiable meme si la cible commerciale est
-   *  PME / ETI / grands groupes (repositionnement 2026-08-29). */
+  /** Tailles INSEE ciblées (TPE/PME/ETI/grande-entreprise). Optionnel. */
   audienceSizes?: ReadonlyArray<"tpe" | "pme" | "eti" | "grande-entreprise">;
   /** Effectif visé (ex « 2 à 20 personnes »). Optionnel. */
   groupSizeFr?: string;
@@ -132,7 +130,7 @@ export interface PricingTier {
 // AUDIT IA — 4 niveaux pyramide
 // ============================================================================
 
-/** Audit sur place — 1 journée complète sur site (Will 2026-05-31 :
+/** Audit TPE présentiel — 1 journée complète sur site (Will 2026-05-31 :
     suppression du 490 € distanciel, prix de référence unique 1190 € HT). */
 export const AUDIT_FLASH_SUB_TIERS: ReadonlyArray<PricingSubTier> = [
   {
@@ -253,7 +251,7 @@ export const AUDIT_TIERS: ReadonlyArray<PricingTier> = [
     // Suppression du 490 € distanciel ; 1190 € HT devient le prix de référence.
     // Will 2026-07-17 — seul niveau d'audit encore annoncé en prix FERME alors
     // que Ciblé/PME/ETI sont tous en « À partir de 1 900 € ». Décision : les
-    // audits s'annoncent TOUJOURS en « à partir de » — sur place dès 1 190 €.
+    // audits s'annoncent TOUJOURS en « à partir de » — TPE dès 1 190 €.
     // Montant inchangé, seule la présentation devient un plancher.
     priceFlat: 1190,
     isFromPrice: true,
@@ -385,8 +383,8 @@ function paliersFormationDepuisMatrice(): PricingTier[] {
         durationEn: d.en,
         groupSizeFr: "2 à 15 personnes",
         groupSizeEn: "2 to 15 people",
-        descriptionFr: `${c.fr}, ${d.fr} sur site, prix par groupe de 2 à 15 participants.`,
-        descriptionEn: `${c.en}, ${d.en} on site, price per group of 2 to 15 participants.`,
+        descriptionFr: `${c.fr}, ${d.fr} sur site ou à distance, prix par groupe de 2 à 15 participants.`,
+        descriptionEn: `${c.en}, ${d.en} on site or remote, price per group of 2 to 15 participants.`,
         commissionId: duree === "1j" ? "com-formation-1j" : "com-formation-2j",
       });
     }
@@ -1084,7 +1082,7 @@ export function formatAmount(
  *
  * À utiliser partout où l'on affiche `formatAmount(tier.priceFlat!, …)` en dur :
  * ces call-sites court-circuitent `formatPrice()` et ne verraient donc jamais le
- * flag (bug 2026-07-17 — l'audit sur place restait « 1 190 € » ferme sur /audit, /tarifs,
+ * flag (bug 2026-07-17 — le TPE restait « 1 190 € » ferme sur /audit, /tarifs,
  * les cards format et les pages ville, alors que les 3 autres niveaux d'audit
  * annonçaient « À partir de … »).
  *

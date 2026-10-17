@@ -36,10 +36,12 @@ import {
   getFormationV2EntryPrice,
   getSeminairesV2,
 } from "@/content/formations/catalog-v2";
+import { EFFECTIF_PLAGE_EN, EFFECTIF_PLAGE_FR } from "@/content/formations/effectif";
 import { FORMATION_CATEGORIES_META, formationDureeIso } from "@/content/formations/catalog-v2-meta";
 import { SERVICE_BY_ID, serviceOfficial } from "@/content/services";
 import {
   FORMATION_DUREE_FACTS,
+  getFormationCourseModes,
   getFormationImage,
   getFormationImageCredit,
 } from "@/content/formations/catalog-v2-facts";
@@ -81,7 +83,7 @@ const TIGHT_X = "lg:px-6 xl:px-10";
 
 // ============================================================================
 // Hub « Formations équipe » — 4 paliers durée : 4 h / 1 jour / 2 jours /
-// 3 jours (sur mesure). Compteur dynamique par palier dérivé de `FORMATIONS_V2`
+// 3 jours (sur mesure — format mis de côté le 2026-10-16, L16, plus affiché). Compteur dynamique par palier dérivé de `FORMATIONS_V2`
 // (catalog-v2). Ajouter une formation au catalogue incrémente automatiquement
 // le palier correspondant.
 // ============================================================================
@@ -101,7 +103,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     locale,
     path: "/formations",
     // Titre court (≤ 60 car) pour éviter la troncature SERP + servir de label
-    // sitelink net (audit sitelinks 2026-07-06). PME/ETI/grands groupes restent dans la
+    // sitelink net (audit sitelinks 2026-07-06). TPE/PME/ETI restent dans la
     // description. Finit par « · Axion-IA » (bypass template).
     title:
       loc === "fr"
@@ -109,8 +111,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
         : "On-site corporate AI training · Axion-IA",
     description:
       loc === "fr"
-        ? `Formations IA présentiel ou distanciel, ${qualiopiSerp} — dès ${formatAmount(getFormationCatalogPriceRange().minEur, "fr")} par groupe (2 à 15 pers.). Vos équipes gagnent du temps dès le lendemain.`
-        : `Corporate AI training on site: general offers plus role-specific and industry-specific programmes, priced per group (2-15 people). Instant time savings for your teams.`,
+        ? `Formations IA présentiel ou distanciel, ${qualiopiSerp} — dès ${formatAmount(getFormationCatalogPriceRange().minEur, "fr")} par groupe (${EFFECTIF_PLAGE_FR}). Vos équipes gagnent du temps dès le lendemain.`
+        : `Corporate AI training on site: general offers plus role-specific and industry-specific programmes, priced per group (${EFFECTIF_PLAGE_EN}). Instant time savings for your teams.`,
   });
 }
 
@@ -279,10 +281,10 @@ export default async function FormationsHub({ params }: Props) {
       path: `/formations/${f.slugFr}`,
       name: f.titreFr,
       description: f.metaDescriptionFr,
-      courseMode: ["Onsite"],
+      courseMode: [...getFormationCourseModes(f)],
       duration: formationDureeIso(f.duree),
       audienceType: isFr
-        ? "Décideurs, managers, équipes opérationnelles PME ETI grands groupes (B2B)"
+        ? "Décideurs, managers, équipes opérationnelles PME ETI grands groupes TPE (B2B)"
         : "Decision-makers, managers, operational teams SME mid-cap large enterprise (B2B)",
       about: "IA opérationnelle (ChatGPT, Claude, Gemini, méthode AXION)",
     }),
@@ -581,8 +583,8 @@ export default async function FormationsHub({ params }: Props) {
                   </div>
                   <p className="text-fg-muted mt-1.5 text-[12px]">
                     {isFr
-                      ? "Prix par groupe · jusqu'à 15 participants"
-                      : "Per group · up to 15 people"}
+                      ? `Prix par groupe · ${EFFECTIF_PLAGE_FR}`
+                      : `Per group · ${EFFECTIF_PLAGE_EN}`}
                   </p>
 
                   <div className="mt-auto pt-5">
@@ -725,7 +727,7 @@ export default async function FormationsHub({ params }: Props) {
           répétitives (mensuelles ou bi-mensuelles) pour installer
           durablement la culture IA. Sémantique SEO renforcée pour
           requêtes : « formation IA entreprise », « formateur IA »,
-          « formation IA PME / ETI / grands groupes », « montée
+          « formation IA TPE/PME/ETI/grandes entreprises », « montée
           en compétence IA », « formation IA récurrente », « formation
           continue IA », « formation IA mensuelle ».
           ============================================================ */}
@@ -736,7 +738,7 @@ export default async function FormationsHub({ params }: Props) {
         titleEm={isFr ? "mensuelle" : "monthly"}
         description={
           isFr
-            ? "Pour les PME, ETI et grands groupes, un formateur IA expert intervient chez vous régulièrement, sur 6, 12 ou 24 mois. Gains de temps instantanés mesurés à chaque session, automatisations métier déployées progressivement, échanges continus entre les journées de formation pour ne jamais vous laisser seul."
+            ? "Pour les TPE, PME, ETI et grands groupes, un formateur IA expert intervient chez vous régulièrement, sur 6, 12 ou 24 mois. Gains de temps instantanés mesurés à chaque session, automatisations métier déployées progressivement, échanges continus entre les journées de formation pour ne jamais vous laisser seul."
             : "For SMEs, mid-caps and large companies, an expert AI trainer comes on site regularly, over 6, 12 or 24 months. Instant time savings measured at each session, business automations rolled out progressively, continuous exchanges between training days so you're never left alone."
         }
         contentClassName={TIGHT_X}
@@ -876,7 +878,7 @@ export default async function FormationsHub({ params }: Props) {
                 </h3>
                 <p className="text-fg-soft mt-3 text-[15px] leading-relaxed">
                   {isFr
-                    ? "1 journée de formation IA tous les 2 mois, sur 6 ou 12 mois — le rythme idéal pour les PME et équipes chargées qui veulent progresser sans saturer leur agenda."
+                    ? "1 journée de formation IA tous les 2 mois, sur 6 ou 12 mois — le rythme idéal pour les TPE et équipes chargées qui veulent progresser sans saturer leur agenda."
                     : "1 day of AI training every 2 months, over 6 or 12 months — the ideal pace for small businesses and busy teams that want to progress without saturating their schedule."}
                 </p>
 
@@ -960,8 +962,8 @@ export default async function FormationsHub({ params }: Props) {
                       d: "Dès la 1ʳᵉ journée, les participants maîtrisent 3-5 automatisations applicables à leurs tâches, qui leur font gagner du temps immédiatement.",
                     },
                     {
-                      t: "Adapté à chaque échelle",
-                      d: "Programme calibré pour PME (9-50 pers.), ETI (50-250 pers.) ou grands groupes (déploiement multi-sites).",
+                      t: "Adapté à toutes les tailles",
+                      d: "Programme calibré pour TPE (2-8 pers.), PME (9-50 pers.), ETI (50-250 pers.) ou grandes entreprises (déploiement multi-sites).",
                     },
                     {
                       t: "Assistants IA",
@@ -1171,7 +1173,7 @@ export default async function FormationsHub({ params }: Props) {
                     src="/illustrations/william-fondateur-formateur-ia-axion-ia.png"
                     alt={
                       isFr
-                        ? "Williams, fondateur Axion-IA et formateur IA — portrait posé devant olivier, ambiance méditerranée. Forme les équipes des PME, ETI et grands groupes français avec une équipe de formateurs experts dédiés."
+                        ? "Williams, fondateur Axion-IA et formateur IA — portrait posé devant olivier, ambiance méditerranée. Forme les équipes des TPE, PME, ETI et grands groupes français avec une équipe de formateurs experts dédiés."
                         : "Williams, Axion-IA founder and AI trainer — portrait in front of olive tree, Mediterranean atmosphere. Trains French SME, mid-cap and large enterprise teams with a dedicated team of expert trainers."
                     }
                     width={800}
@@ -1430,7 +1432,7 @@ export default async function FormationsHub({ params }: Props) {
                       id: "effectif",
                       question: "Combien de participants par session ?",
                       answer:
-                        "Jusqu'à 15 participants par groupe, au même prix — le tarif est par groupe, pas par personne. Pour réunir toute l'entreprise le même jour (jusqu'à 50 personnes), c'est le séminaire IA, présenté plus haut, qui prend le relais.",
+                        "De 2 à 15 stagiaires par session, au même prix — le tarif est par groupe, pas par personne. Pour réunir toute l'entreprise le même jour (jusqu'à 50 personnes), c'est le séminaire IA, présenté plus haut, qui prend le relais.",
                     },
                     {
                       id: "quelle-formation",
@@ -1510,7 +1512,7 @@ export default async function FormationsHub({ params }: Props) {
                       id: "headcount",
                       question: "How many participants per session?",
                       answer:
-                        "Up to 15 participants per group, same price — pricing is per group, not per person. To gather the whole company on the same day (up to 50 people), the AI seminar takes over.",
+                        "2 to 15 trainees per session, same price — pricing is per group, not per person. To gather the whole company on the same day (up to 50 people), the AI seminar takes over.",
                     },
                     {
                       id: "which-training",

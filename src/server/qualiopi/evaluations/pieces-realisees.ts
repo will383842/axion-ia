@@ -21,6 +21,7 @@ import React from "react";
 import { prisma } from "@/lib/prisma";
 import { inscriptionSurSessionTenue } from "@/server/qualiopi/conformite/piece-admissible";
 import { getOrganismeIdentite } from "@/server/qualiopi/documents/organisme";
+import { SEGMENT_ESSAI } from "@/server/qualiopi/essai/numerotation";
 import { renderPdfToBuffer } from "@/server/qualiopi/documents/render";
 import {
   EvaluationRealiseePdf,
@@ -88,7 +89,7 @@ export async function produirePiecesEvaluationRealisee(): Promise<{
       enrollment: {
         select: {
           trainee: { select: { nom: true, prenom: true } },
-          session: { select: { titreSession: true, dateDebut: true } },
+          session: { select: { titreSession: true, estTestInterne: true, dateDebut: true } },
         },
       },
     },
@@ -119,7 +120,9 @@ export async function produirePiecesEvaluationRealisee(): Promise<{
       const { buffer } = await renderPdfToBuffer(
         React.createElement(EvaluationRealiseePdf, {
           data: {
-            reference: `EVA-${ligne.id.slice(0, 8)}`,
+            // QNC L02 — la référence d'une pièce d'essai porte `-ESSAI-` : c'est elle
+            // qui fait imprimer le filigrane (`QualiopiPage`).
+            reference: `EVA${session.estTestInterne ? SEGMENT_ESSAI : "-"}${ligne.id.slice(0, 8)}`,
             nomStagiaire: nomStagiaire === "" ? "Stagiaire non nommé" : nomStagiaire,
             intituleFormation: session.titreSession,
             evalueeLe: formaterInstantParis(ligne.dateEvaluation),

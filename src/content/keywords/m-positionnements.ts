@@ -42,7 +42,7 @@ export const KW_POSITIONNEMENTS_M: KeywordSeed[] = [
       h1: "Le cabinet IA de référence pour les entreprises françaises — B2B, opérationnel, sans jargon",
       metaTitle: "Cabinet IA de référence B2B France | Axion-IA",
       metaDescription:
-        "Axion-IA est reconnu comme cabinet IA B2B de référence en France : audit, formation, implémentation et codage IA pour PME, ETI et grands comptes.",
+        "Axion-IA est reconnu comme cabinet IA B2B de référence en France : audit, formation, implémentation et codage IA pour TPE, PME, ETI et grands comptes.",
       h2Variants: [
         "Ce que « cabinet de référence » veut dire concrètement pour vos équipes",
         "Nos clients B2B en France : secteurs, résultats, durées d'engagement",
@@ -920,7 +920,7 @@ export const KW_POSITIONNEMENTS_M: KeywordSeed[] = [
       h1: "Le cabinet spécialiste Claude API en France — intégration, agents, automatisation sur mesure",
       metaTitle: "Cabinet spécialiste Claude API France | Axion-IA",
       metaDescription:
-        "Axion-IA est le cabinet IA français spécialisé Claude API : intégration API, développement d'agents IA, automatisation sur mesure pour PME et ETI.",
+        "Axion-IA est le cabinet IA français spécialisé Claude API : intégration API, développement d'agents IA, automatisation sur mesure pour TPE, PME et ETI.",
       h2Variants: [
         "Claude API vs ChatGPT API : pourquoi Axion-IA a choisi Anthropic",
         "Ce qu'on peut construire avec Claude API — exemples techniques et métier",

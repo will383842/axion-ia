@@ -81,6 +81,8 @@ export const MANQUES_MISSION = {
   vigilance: "L'attestation de vigilance URSSAF n'est pas valable aujourd'hui.",
   vigilanceMission: `Avec cette mission, les honoraires de ce formateur atteignent ${SEUIL_VIGILANCE_LIBELLE} HT : son attestation de vigilance URSSAF doit être vérifiée avant de la lui confier.`,
   erreur: "Le contrôle du formateur n'a pas pu aboutir.",
+  suspenduRegistre:
+    "Ce sous-traitant est suspendu au registre des sous-traitants (écart majeur d'un contrôle) : aucune nouvelle mission tant que la suspension n'est pas levée par une décision motivée.",
 } as const;
 
 /**

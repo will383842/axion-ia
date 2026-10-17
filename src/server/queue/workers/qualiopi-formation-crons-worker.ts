@@ -95,6 +95,7 @@ import {
   gestePositionnement,
   HORIZON_JOURS,
 } from "@/server/qualiopi/parcours/relance-positionnement";
+import { FACTURE_HORS_ESSAI } from "@/server/qualiopi/essai/perimetre";
 import { chargerEtatsVerrou, dossierFige } from "@/server/qualiopi/sessions/verrou-dossier";
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -211,6 +212,10 @@ export type FormationCronJobType =
   // dont le dernier contrôle a plus de 25 jours). QUOTIDIEN ; arrêté tant que
   // `formateurs.controle_registre_periodique` est coupé.
   | "formation-crons.controle-registre-periodique"
+  // Qualiopi ind. 27 — le registre des sous-traitants tenu par l'outil (formateurs
+  // indépendants au contrat-cadre signé ou actifs). QUOTIDIEN ; arrêté tant que
+  // `formateurs.registre_sous_traitants` est coupé.
+  | "formation-crons.registre-sous-traitants"
   // QNC L07 — test du lien de visio à J-1 (éteint tant que `qualiopi.moyens.actif` l'est)
   | "formation-crons.moyens-test-lien-j1"
   // 🔴 2026-09-12 — RATTRAPAGE DES AUTOFACTURES QUI NE SONT PAS PARTIES.
@@ -1354,6 +1359,8 @@ async function handleFacturesRetard(): Promise<void> {
       OR: [{ echeanceAt: { lt: now } }, { echeanceAt: null }],
       avoirDeId: null,
       estImportee: false,
+      // QNC L02 — une facture d'essai n'est jamais relancée.
+      ...FACTURE_HORS_ESSAI,
     },
     select: {
       id: true,
@@ -2745,8 +2752,35 @@ const HANDLERS: Record<FormationCronJobType, () => Promise<void>> = {
   "formation-crons.fin-collaboration": handleFinCollaboration,
   "formation-crons.invitations-formateurs": handleInvitationsFormateurs,
   "formation-crons.controle-registre-periodique": handleControleRegistrePeriodique,
+  "formation-crons.registre-sous-traitants": handleRegistreSousTraitants,
   "formation-crons.moyens-test-lien-j1": handleMoyensTestLienJ1,
 };
+
+/**
+ * Qualiopi ind. 27 — synchronisation du registre des sous-traitants. Corps dans
+ * `formateurs-independants/registre-sous-traitants/synchronisation.ts` (interrupteur lu
+ * AVANT toute autre requête, idempotente, rien n'est supprimé) ; ici on déclenche et on
+ * trace des compteurs, aucune donnée personnelle. Import PARESSEUX ; ne lève jamais.
+ */
+async function handleRegistreSousTraitants(): Promise<void> {
+  if (process.env["DATABASE_URL"]?.includes("stub.invalid")) return;
+  try {
+    const { synchroniserRegistre } =
+      await import("@/server/qualiopi/formateurs-independants/registre-sous-traitants/synchronisation");
+    const b = await synchroniserRegistre({ maintenant: new Date(), parId: null });
+    if (b.etat === "coupe") return;
+    const ligne =
+      `[formation-crons] registre-sous-traitants (${b.etat}) : ${b.crees} entrée(s), ` +
+      `${b.misAJour} mise(s) à jour dont ${b.sorties} sortie(s), ${b.erreurs} erreur(s)`;
+    if (b.erreurs > 0 || b.etat === "echec") console.error(ligne);
+    else console.log(ligne);
+  } catch (err) {
+    console.error(
+      "[formation-crons] registre-sous-traitants: erreur:",
+      err instanceof Error ? err.name : "erreur",
+    );
+  }
+}
 
 /**
  * Chantier QNC L07 — test du lien de visio la veille du début. Corps dans

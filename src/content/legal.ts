@@ -1220,13 +1220,17 @@ export const LEGAL_PAGES: ReadonlyArray<LegalContent> = [
           // client. N'ajouter une mesure ici que si elle est effectivement
           // tenable — un engagement publié se constate le jour de l'audit.
           //
+          // 🔴 2026-10-16 (L16, NC) — « remplacement du formateur par un intervenant
+          // de compétences équivalentes » RETIRÉ sur décision de Will : la promesse
+          // n'est pas tenable. Ne pas la réintroduire sans une nouvelle décision.
+          //
           // ⚠️ Le délai de 24 heures ouvrées est un ENGAGEMENT PUBLIÉ : il
           // suppose que le registre des incidents soit alimenté au fil de l'eau
           // et non reconstitué avant l'audit. `dateIncident` et `createdAt` du
           // modèle `Incident` sont deux champs distincts ; un écart systématique
           // entre les deux est exactement ce qu'un auditeur regarde.
           title: "Aléas survenus en cours de prestation",
-          body: "Tout aléa survenu en cours de prestation est déclaré au responsable qualité dans un délai de 24 heures ouvrées à compter de sa survenance ou, s'il est constaté plus tard, de sa découverte. La déclaration incombe au formateur ou à l'intervenant qui constate l'aléa ; le stagiaire, l'entreprise cliente et le financeur peuvent également le signaler, par les mêmes voies qu'une réclamation. Chaque aléa est systématiquement enregistré au registre des incidents, qui mentionne sa date, son type (pédagogique, administratif, technique ou autre), sa gravité (mineure, majeure ou critique), la session concernée le cas échéant, l'action corrective décidée et son statut de traitement (ouvert, en cours, résolu) jusqu'à la clôture du dossier. Selon la nature de l'aléa, les mesures de remédiation admises sont le report de la séquence ou de la session sans frais pour le client, le remplacement du formateur par un intervenant de compétences équivalentes, ou l'organisation d'une séquence de rattrapage permettant d'atteindre les objectifs pédagogiques prévus. Le stagiaire, l'entreprise cliente et, lorsque la prestation est financée, le financeur sont informés de l'aléa, de la mesure retenue et de ses conséquences éventuelles sur le calendrier, sur les modalités ou sur la durée de la prestation.",
+          body: "Tout aléa survenu en cours de prestation est déclaré au responsable qualité dans un délai de 24 heures ouvrées à compter de sa survenance ou, s'il est constaté plus tard, de sa découverte. La déclaration incombe au formateur ou à l'intervenant qui constate l'aléa ; le stagiaire, l'entreprise cliente et le financeur peuvent également le signaler, par les mêmes voies qu'une réclamation. Chaque aléa est systématiquement enregistré au registre des incidents, qui mentionne sa date, son type (pédagogique, administratif, technique ou autre), sa gravité (mineure, majeure ou critique), la session concernée le cas échéant, l'action corrective décidée et son statut de traitement (ouvert, en cours, résolu) jusqu'à la clôture du dossier. Selon la nature de l'aléa, les mesures de remédiation admises sont le report de la séquence ou de la session sans frais pour le client, ou l'organisation d'une séquence de rattrapage permettant d'atteindre les objectifs pédagogiques prévus. Le stagiaire, l'entreprise cliente et, lorsque la prestation est financée, le financeur sont informés de l'aléa, de la mesure retenue et de ses conséquences éventuelles sur le calendrier, sur les modalités ou sur la durée de la prestation.",
         },
         {
           title: "Suivi, registres et amélioration continue",
@@ -1335,7 +1339,7 @@ export const LEGAL_PAGES: ReadonlyArray<LegalContent> = [
         },
         {
           title: "Article 2 — Assiduité et ponctualité",
-          body: "Le stagiaire s'engage à être présent et ponctuel à toutes les sessions de formation. Toute absence ou tout retard doit être signalé le plus tôt possible à l'organisme de formation. En formation distancielle, la caméra doit rester activée pendant les séquences synchrones, sauf autorisation explicite du formateur ; une absence de caméra non justifiée peut entraîner la non-validation de la présence pour la demi-journée concernée. La feuille d'émargement est signée à chaque demi-journée ; en distanciel, le relevé de connexion fait office de justificatif de présence.",
+          body: "Le stagiaire s'engage à être présent et ponctuel à toutes les sessions de formation. Toute absence ou tout retard doit être signalé le plus tôt possible à l'organisme de formation. En formation distancielle, la caméra doit rester activée pendant les séquences synchrones, sauf autorisation explicite du formateur ; une absence de caméra non justifiée peut entraîner la non-validation de la présence pour la demi-journée concernée. La feuille d'émargement se signe pendant chaque demi-journée, en présentiel comme en distanciel ; le relevé de connexion ne la remplace pas.",
         },
         {
           // ── Remise du règlement (art. L.6352-3 et R.6352-1) — reportée du
@@ -1449,7 +1453,7 @@ export const LEGAL_PAGES: ReadonlyArray<LegalContent> = [
         },
         {
           title: "Article 2 — Attendance and punctuality",
-          body: "The trainee undertakes to be present and punctual at all training sessions. Any absence or lateness must be reported to the training organisation as soon as possible. In distance learning, the camera must remain on during synchronous sessions, unless the trainer explicitly authorises otherwise; an unjustified absence of camera may lead to the half-day's attendance not being validated. The attendance sheet is signed for each half-day; for distance learning, the connection log serves as proof of attendance.",
+          body: "The trainee undertakes to be present and punctual at all training sessions. Any absence or lateness must be reported to the training organisation as soon as possible. In distance learning, the camera must remain on during synchronous sessions, unless the trainer explicitly authorises otherwise; an unjustified absence of camera may lead to the half-day's attendance not being validated. The attendance sheet is signed during each half-day, on site or at a distance; the connection log does not replace it.",
         },
         {
           title: "Article 3 — Discipline and conduct",

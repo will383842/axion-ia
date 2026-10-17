@@ -6519,6 +6519,8 @@ model Trainer {
   revendicationsPaiement  RevendicationPaiement[]
   /// Schéma n° 2 formateurs — demandes de changement (adresse, TVA, IBAN, e-mail).
   demandesChangement      DemandeChangementFormateur[]
+  /// Qualiopi ind. 27 — sa ligne au registre des sous-traitants (tenue par l'outil, éteint).
+  registreSousTraitant    RegistreSousTraitantIndependant?
 
   @@index([statut])
   @@index([actif])
@@ -6898,6 +6900,8 @@ model MissionFormateur {
   tarifHtCents                     Int?                 @map("tarif_ht_cents")
   forfaitDeplacementParJourHtCents Int?                 @map("forfait_deplacement_par_jour_ht_cents")
   regimeTvaFige                    TvaRegimeHonoraires? @map("regime_tva_fige")
+  /// Qualiopi ind. 27 — contrôles de mission tracés au registre des sous-traitants.
+  controlesSousTraitance           ControleSousTraitant[]
 
   @@index([sessionId, trainerId, statut])
   @@index([trainerId, statut])
@@ -8564,6 +8568,8 @@ model SousTraitant {
   relevesOrganisme TrainerStatement[] @relation("TrainerStatementOrganisme")
   /// Schéma n° 2 formateurs — pièces de l'organisme (vigilance, Kbis…).
   pieces           PieceOrganisme[]
+  /// Qualiopi ind. 27 — la ligne est celle d'un formateur INDÉPENDANT, tenue par l'outil.
+  independant      RegistreSousTraitantIndependant?
 
   @@index([actif])
   /// Les alertes balaient par ÉCHÉANCE, jamais par identité. [2026-08-03]
@@ -16168,6 +16174,144 @@ model VerificationRegistreSousTraitance {
 
   @@index([trainerId, verifieAt])
   @@map("verifications_registre_sous_traitance")
+}
+
+/// Statut d'un formateur indépendant au registre des sous-traitants (Qualiopi ind. 27).
+/// Une sortie est un statut daté et motivé : la ligne n'est jamais supprimée.
+enum StatutRegistreSousTraitant {
+  actif
+  suspendu
+  sorti
+
+  @@map("statut_registre_sous_traitant")
+}
+
+/// Résultat d'un contrôle de sous-traitance tracé (méthode de contrôle, ind. 27).
+enum ResultatControleSousTraitant {
+  conforme
+  non_conforme
+  a_revoir
+
+  @@map("resultat_controle_sous_traitant")
+}
+
+/// Qualiopi ind. 27 — la place d'un formateur INDÉPENDANT au registre des
+/// sous-traitants, tenue par l'outil (interrupteur `formateurs.registre_sous_traitants`,
+/// éteint par défaut). La ligne visible du registre est la `SousTraitant` liée, écrite
+/// par son service ; celle-ci porte ce que le registre générique n'a pas : date
+/// d'entrée, statut daté (actif, suspendu, sorti avec motif) et les contrôles faits.
+/// Une par formateur (rejeu sans doublon). Jamais supprimée (Restrict des deux côtés).
+/// rgpd: technique — identifiants, dates, statut et motif de sortie (libellé d'une liste fermée) ; l'identité reste sur la fiche formateur
+model RegistreSousTraitantIndependant {
+  id             String                     @id @default(uuid()) @db.Uuid
+  trainerId      String                     @unique @map("trainer_id") @db.Uuid
+  trainer        Trainer                    @relation(fields: [trainerId], references: [id], onDelete: Restrict)
+  sousTraitantId String                     @unique @map("sous_traitant_id") @db.Uuid
+  sousTraitant   SousTraitant               @relation(fields: [sousTraitantId], references: [id], onDelete: Restrict)
+  /// Contrat-cadre signé ou activation, la première des deux ; figée à l'entrée.
+  dateEntree     DateTime                   @map("date_entree")
+  statut         StatutRegistreSousTraitant @default(actif)
+  /// Date du dernier changement de statut constaté.
+  statutDepuis   DateTime                   @map("statut_depuis")
+  dateSortie     DateTime?                  @map("date_sortie")
+  motifSortie    String?                    @map("motif_sortie") @db.Text
+  /// Dernier passage de la synchronisation sur cette ligne.
+  synchroniseAt  DateTime                   @map("synchronise_at")
+  createdAt      DateTime                   @default(now()) @map("created_at")
+  updatedAt      DateTime                   @updatedAt @map("updated_at")
+  controles      ControleSousTraitant[]
+  ecarts         EcartSousTraitant[]
+  suspensions    SuspensionSousTraitant[]
+
+  @@index([statut])
+  @@map("registre_sous_traitants_independants")
+}
+
+/// Qualiopi ind. 27 — un contrôle FAIT sur un sous-traitant indépendant (méthode de
+/// contrôle portée par l'outil, `registre-sous-traitants/controles.config.ts`). Ajout
+/// seul : un contrôle ne se corrige pas, on en trace un nouveau.
+/// rgpd: technique — code du contrôle, date, auteur (administrateur), résultat et motif saisi par l'administrateur
+model ControleSousTraitant {
+  id          String                          @id @default(uuid()) @db.Uuid
+  registreId  String                          @map("registre_id") @db.Uuid
+  registre    RegistreSousTraitantIndependant @relation(fields: [registreId], references: [id], onDelete: Restrict)
+  /// Code d'un contrôle de la configuration (`pieces_entree`, `revue_annuelle`…).
+  code        String                          @db.VarChar(60)
+  faitAt      DateTime                        @map("fait_at")
+  /// Administrateur auteur ; NULL = constat d'une tâche de fond.
+  auteurId    String?                         @map("auteur_id") @db.Uuid
+  resultat    ResultatControleSousTraitant
+  motif       String?                         @db.Text
+  createdAt   DateTime                        @default(now()) @map("created_at")
+  /// Contrôle de CHAQUE MISSION : la mission contrôlée (NULL pour les autres contrôles).
+  missionId   String?                         @map("mission_id") @db.Uuid
+  mission     MissionFormateur?               @relation(fields: [missionId], references: [id], onDelete: SetNull)
+  /// Contrôle à preuves : la liste cochée, figée (`[{ code, gravite, fournie }]`).
+  preuves     Json?
+  ecarts      EcartSousTraitant[]
+  suspensions SuspensionSousTraitant[]
+
+  @@index([registreId, code, faitAt])
+  @@index([missionId])
+  @@map("controles_sous_traitants")
+}
+
+/// Gravité d'un écart constaté par un contrôle à preuves (ind. 27).
+enum GraviteEcartSousTraitant {
+  majeur
+  mineur
+
+  @@map("gravite_ecart_sous_traitant")
+}
+
+/// Qualiopi ind. 27 — un ÉCART constaté par un contrôle à preuves : une preuve attendue
+/// manquante. Mineur : plan de correction à échéance (réglage, J+15 par défaut), alerte
+/// à l'échéance. Majeur : suspension du sous-traitant (`SuspensionSousTraitant`). La
+/// correction se date et se motive ; la ligne n'est jamais supprimée.
+/// rgpd: technique — code de preuve, gravité, dates, auteur (administrateur) et motif de correction saisi par l'administrateur
+model EcartSousTraitant {
+  id                   String                          @id @default(uuid()) @db.Uuid
+  registreId           String                          @map("registre_id") @db.Uuid
+  registre             RegistreSousTraitantIndependant @relation(fields: [registreId], references: [id], onDelete: Restrict)
+  controleId           String                          @map("controle_id") @db.Uuid
+  controle             ControleSousTraitant            @relation(fields: [controleId], references: [id], onDelete: Restrict)
+  preuveCode           String                          @map("preuve_code") @db.VarChar(60)
+  gravite              GraviteEcartSousTraitant
+  constateAt           DateTime                        @map("constate_at")
+  /// Écart mineur : échéance du plan de correction. NULL pour un écart majeur.
+  echeanceCorrectionAt DateTime?                       @map("echeance_correction_at")
+  corrigeAt            DateTime?                       @map("corrige_at")
+  corrigeParId         String?                         @map("corrige_par_id") @db.Uuid
+  motifCorrection      String?                         @map("motif_correction") @db.Text
+  createdAt            DateTime                        @default(now()) @map("created_at")
+
+  @@index([registreId, corrigeAt])
+  @@index([controleId])
+  @@map("ecarts_sous_traitants")
+}
+
+/// Qualiopi ind. 27 — une SUSPENSION d'un sous-traitant pour écart majeur : la garde de
+/// mission refuse ses nouvelles missions tant que `leveeAt` est NULL. Levée par décision
+/// motivée en console (qui, quand, pourquoi). Jamais supprimée.
+/// rgpd: technique — dates, auteurs (administrateurs), motif de suspension (preuves manquantes) et motif de levée saisi par l'administrateur
+model SuspensionSousTraitant {
+  id            String                          @id @default(uuid()) @db.Uuid
+  registreId    String                          @map("registre_id") @db.Uuid
+  registre      RegistreSousTraitantIndependant @relation(fields: [registreId], references: [id], onDelete: Restrict)
+  /// Le contrôle dont l'écart majeur a suspendu.
+  controleId    String?                         @map("controle_id") @db.Uuid
+  controle      ControleSousTraitant?           @relation(fields: [controleId], references: [id], onDelete: Restrict)
+  suspenduAt    DateTime                        @map("suspendu_at")
+  suspenduParId String?                         @map("suspendu_par_id") @db.Uuid
+  motif         String                          @db.Text
+  leveeAt       DateTime?                       @map("levee_at")
+  leveeParId    String?                         @map("levee_par_id") @db.Uuid
+  motifLevee    String?                         @map("motif_levee") @db.Text
+  createdAt     DateTime                        @default(now()) @map("created_at")
+  updatedAt     DateTime                        @updatedAt @map("updated_at")
+
+  @@index([registreId, leveeAt])
+  @@map("suspensions_sous_traitants")
 }
 
 /// Vérification d'une attestation de vigilance URSSAF (art. L.8222-1) — PREUVE

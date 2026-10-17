@@ -52,8 +52,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       ? "Implantations · Architectes IA seniors partout en France et francophonie · Axion-IA"
       : "Implantations · Architectes IA seniors partout en France et francophonie · Axion-IA",
     description: isFr
-      ? "Axion-IA intervient dans les 13 régions de France métropolitaine, les 5 DROM et dans la francophonie. PME, ETI et grands groupes. 5 services : audit IA, formation, implémentation, coaching 1-to-1, plateformes web/SaaS."
-      : "Axion-IA intervient dans les 13 régions de France métropolitaine, les 5 DROM et dans la francophonie. PME, ETI et grands groupes. 5 services : audit IA, formation, implémentation, coaching 1-to-1, plateformes web/SaaS.",
+      ? "Axion-IA intervient dans les 13 régions de France métropolitaine, les 5 DROM et dans la francophonie. De la TPE au grand groupe. 5 services : audit IA, formation, implémentation, coaching 1-to-1, plateformes web/SaaS."
+      : "Axion-IA intervient dans les 13 régions de France métropolitaine, les 5 DROM et dans la francophonie. De la TPE au grand groupe. 5 services : audit IA, formation, implémentation, coaching 1-to-1, plateformes web/SaaS.",
     alternates: { fr: "/implantations", en: "/locations" },
   });
 }
@@ -91,8 +91,8 @@ export default async function ImplantationsHub({ params }: Props) {
       sameAs: "https://www.wikidata.org/wiki/Q142",
     },
     description: isFr
-      ? "Architectes IA seniors — interventions sur site dans les 13 régions de France métropolitaine, les 5 DROM (Guadeloupe, Martinique, Guyane, La Réunion, Mayotte) et auprès des entreprises francophones à l'étranger. PME, ETI et grands groupes."
-      : "Architectes IA seniors — interventions sur site dans les 13 régions de France métropolitaine, les 5 DROM (Guadeloupe, Martinique, Guyane, La Réunion, Mayotte) et auprès des entreprises francophones à l'étranger. PME, ETI et grands groupes.",
+      ? "Architectes IA seniors — interventions sur site dans les 13 régions de France métropolitaine, les 5 DROM (Guadeloupe, Martinique, Guyane, La Réunion, Mayotte) et auprès des entreprises francophones à l'étranger. PME, ETI, grands groupes et TPE."
+      : "Architectes IA seniors — interventions sur site dans les 13 régions de France métropolitaine, les 5 DROM (Guadeloupe, Martinique, Guyane, La Réunion, Mayotte) et auprès des entreprises francophones à l'étranger. PME, ETI, grands groupes et TPE.",
   };
   const serviceNationalJsonLd = buildServiceJsonLd({
     locale: loc,
@@ -101,8 +101,8 @@ export default async function ImplantationsHub({ params }: Props) {
       ? "Architectes IA seniors partout en France et francophonie · 5 services"
       : "Architectes IA seniors partout en France et francophonie · 5 services",
     description: isFr
-      ? "Axion-IA intervient dans les 13 régions de France métropolitaine, les 5 DROM et auprès des entreprises francophones à l'étranger (Belgique, Suisse, Luxembourg, Monaco, Maghreb, Afrique francophone, Québec). PME, ETI et grands groupes. 5 services : audit IA, formation, implémentation, coaching 1-to-1 dirigeants, plateformes web/SaaS IA."
-      : "Axion-IA intervient dans les 13 régions de France métropolitaine, les 5 DROM et auprès des entreprises francophones à l'étranger (Belgique, Suisse, Luxembourg, Monaco, Maghreb, Afrique francophone, Québec). PME, ETI et grands groupes. 5 services : audit IA, formation, implémentation, coaching 1-to-1 dirigeants, plateformes web/SaaS IA.",
+      ? "Axion-IA intervient dans les 13 régions de France métropolitaine, les 5 DROM et auprès des entreprises francophones à l'étranger (Belgique, Suisse, Luxembourg, Monaco, Maghreb, Afrique francophone, Québec). TPE, PME, ETI et grands groupes. 5 services : audit IA, formation, implémentation, coaching 1-to-1 dirigeants, plateformes web/SaaS IA."
+      : "Axion-IA intervient dans les 13 régions de France métropolitaine, les 5 DROM et auprès des entreprises francophones à l'étranger (Belgique, Suisse, Luxembourg, Monaco, Maghreb, Afrique francophone, Québec). TPE, PME, ETI et grands groupes. 5 services : audit IA, formation, implémentation, coaching 1-to-1 dirigeants, plateformes web/SaaS IA.",
     serviceType: isFr ? "Services IA opérationnels" : "Services IA opérationnels",
     areasServed: buildServiceAreasServed(loc),
   });
@@ -596,7 +596,7 @@ export default async function ImplantationsHub({ params }: Props) {
         titleEm={isFr ? "Parlons-en." : "Let's talk."}
         description={
           isFr
-            ? "PME, ETI ou grand groupe — partout en France, vous bénéficiez du même standard premium senior. Tarifs publics, calendrier temps réel, vos données restent chez vous."
+            ? "PME, ETI, grand groupe ou TPE — partout en France, vous bénéficiez du même standard premium senior. Tarifs publics, calendrier temps réel, vos données restent chez vous."
             : "Micro-business, SMB, mid-market or large enterprise — everywhere in France, you get the same premium senior standard. Public pricing, real-time calendar, your data stays yours."
         }
         cta={

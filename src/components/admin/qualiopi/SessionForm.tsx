@@ -104,6 +104,12 @@ export interface SessionFormProps {
     /** Liste des formateurs — d&apos;où l&apos;on ouvre une fiche pour l&apos;habiliter. */
     formateurs: string;
   };
+  /**
+   * QNC L02 — la case « session d'essai » n'est RENDUE que si l'interrupteur
+   * `qualiopi.essai.actif` n'est pas éteint (lu côté serveur). L'action refuse
+   * de toute façon un essai quand il l'est.
+   */
+  modeEssaiOuvert?: boolean;
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -142,6 +148,7 @@ export function SessionForm({
   onSuccess,
   redirectAfterCreate,
   liensPrerequis,
+  modeEssaiOuvert = false,
 }: SessionFormProps): React.ReactElement {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
@@ -173,6 +180,7 @@ export function SessionForm({
   const [montantVientDuCatalogue, setMontantVientDuCatalogue] = useState(false);
   const [clientId, setClientId] = useState("");
   const [devisId, setDevisId] = useState("");
+  const [estEssai, setEstEssai] = useState(false);
 
   // Un devis n'appartient qu'à un client. Changer de client doit donc relâcher
   // le devis retenu, sinon on enverrait à l'action un couple incohérent que
@@ -313,7 +321,8 @@ export function SessionForm({
           montantHtCents: montantCents,
           ...(titreSession.trim() ? { titreSession: titreSession.trim() } : {}),
           ...(clientId ? { clientId } : {}),
-          ...(devisId ? { devisId } : {}),
+          ...(devisId && !estEssai ? { devisId } : {}),
+          ...(estEssai ? { estTestInterne: true } : {}),
           // `trainerId` n'est envoyé QUE s'il est renseigné : le champ est
           // facultatif, et une chaîne vide échouerait la validation `uuid()`.
           ...(trainerId ? { trainerId } : {}),
@@ -663,6 +672,32 @@ export function SessionForm({
           </p>
         </div>
       </div>
+
+      {/* ── Session d'essai (QNC L02) — seulement si l'interrupteur le permet ─ */}
+      {modeEssaiOuvert && !modeRecurrent && (
+        <div className="mb-[var(--space-admin-5)]">
+          <label className="flex cursor-pointer items-center gap-[var(--space-admin-3)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg)]">
+            <input
+              type="checkbox"
+              checked={estEssai}
+              onChange={(e) => {
+                setEstEssai(e.target.checked);
+                if (e.target.checked) setDevisId("");
+              }}
+              disabled={isPending}
+              className="accent-[color:var(--color-admin-accent)]"
+            />
+            <span>Session d&apos;essai (interne)</span>
+          </label>
+          {estEssai && (
+            <p className="mt-[var(--space-admin-1)] text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
+              Numéros « ESSAI » hors suite légale, filigrane sur chaque pièce, aucun e-mail hors des
+              adresses de test, aucune facture électronique, commission ni synchronisation. Exclue
+              du BPF, du pilotage et des taux publiés. Aucun devis rattaché.
+            </p>
+          )}
+        </div>
+      )}
 
       {/* ── Mode récurrent toggle ─────────────────────────────────────────── */}
       <div className="mb-[var(--space-admin-5)]">

@@ -21,6 +21,8 @@ export interface SessionEchantillon {
   readonly titre: string;
   readonly dateDebut: Date;
   readonly dateFin: Date;
+  /** QNC L02 — session d'essai : listée (rien ne se cache à l'auditeur), et marquée. */
+  readonly estTestInterne: boolean;
 }
 
 export interface EchantillonSessions {
@@ -37,7 +39,14 @@ export async function listerSessionsRealiseesPourEchantillon(): Promise<Echantil
     const [sessions, total] = await Promise.all([
       prisma.trainingSession.findMany({
         where: { statut: "realisee" },
-        select: { id: true, numero: true, titreSession: true, dateDebut: true, dateFin: true },
+        select: {
+          id: true,
+          numero: true,
+          titreSession: true,
+          dateDebut: true,
+          dateFin: true,
+          estTestInterne: true,
+        },
         orderBy: { dateDebut: "desc" },
         take: NB_SESSIONS_ECHANTILLON,
       }),
@@ -50,6 +59,7 @@ export async function listerSessionsRealiseesPourEchantillon(): Promise<Echantil
         titre: s.titreSession,
         dateDebut: s.dateDebut,
         dateFin: s.dateFin,
+        estTestInterne: s.estTestInterne === true,
       })),
       total,
     };
