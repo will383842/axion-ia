@@ -120,6 +120,8 @@ export const QUALIOPI_CONFIG_LABELS: Record<QualiopiConfigKey, string> = {
   modalites_coordination: "Modalités de coordination des intervenants",
   nda_region: "Région de la déclaration d'activité",
   adresse_formateurs: "Adresse électronique dédiée aux formateurs",
+  sous_traitance_delai_correction_jours: "Sous-traitants — délai du plan de correction (jours)",
+  sous_traitance_revue_complete_mois: "Sous-traitants — périodicité de la revue complète (mois)",
 };
 
 /** Libellés lisibles des options, pour les clés à choix fermé (rendues en <select>). */

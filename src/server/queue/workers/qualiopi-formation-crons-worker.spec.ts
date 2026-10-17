@@ -12,6 +12,7 @@
  */
 
 import { describe, it, expect, vi, beforeEach } from "vitest";
+import { FACTURE_HORS_ESSAI } from "@/server/qualiopi/essai/perimetre";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Mocks
@@ -830,6 +831,15 @@ describe("handleFacturesRetard — échéances manquantes (via formationCronsHan
         "relance d'impayé ne part JAMAIS seule : ce cron ne fait que PROPOSER " +
         "dans le hub, l'envoi est un clic humain (`facturation-hub.ts`)",
     ).not.toMatch(/\b(enqueueEmail|sendEmail|envoyerRelance|envoyerEmail)\b/);
+  });
+
+  it("QNC L02 — écarte les factures d'essai des candidats à la relance", async () => {
+    await lancer();
+
+    const args = mockPrisma.factureFormation.findMany.mock.calls[0]![0] as {
+      where: { NOT?: unknown };
+    };
+    expect(args.where.NOT).toEqual(FACTURE_HORS_ESSAI.NOT);
   });
 
   it("sélectionne AUSSI les factures à échéance NULLE (le trou d'origine)", async () => {

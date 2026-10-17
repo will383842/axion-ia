@@ -25,6 +25,7 @@ import {
   QUALIOPI_PDF_SPACE as S,
 } from "@/server/qualiopi/brand/brand-tokens";
 import { registerQualiopiPdfFonts } from "@/server/qualiopi/documents/fonts";
+import { SEGMENT_ESSAI } from "@/server/qualiopi/essai/numerotation";
 import type { OrganismeIdentite } from "@/server/qualiopi/documents/organisme";
 import type { PartieSignataire } from "@/server/qualiopi/documents/signature/document-signature-hash";
 // Ré-export pour que les templates puissent importer le type depuis base-layout.
@@ -436,9 +437,20 @@ export function QualiopiPage({
     "  ·  ",
   );
   const footerContact = joinDefined([identite.email, identite.telephone, identite.site], "  ·  ");
+  // QNC L02 — une pièce d'essai se reconnaît à son numéro (`-ESSAI-`, hors
+  // suite légale) : aucun gabarit n'a de drapeau à transmettre, et la copie
+  // signée ou la réimpression d'une pièce d'essai garde son filigrane.
+  const estEssai = docNumber.includes(SEGMENT_ESSAI);
 
   return (
     <Page size="A4" style={pdfStyles.page}>
+      {/* Filigrane ESSAI (QNC L02) — `fixed` : répété sur chaque page. */}
+      {estEssai && (
+        <Text style={pdfStyles.watermarkSpecimen} fixed>
+          ESSAI
+        </Text>
+      )}
+
       {/* Filigrane COPIE */}
       {estCopie && <Text style={pdfStyles.watermark}>COPIE</Text>}
 
@@ -472,6 +484,16 @@ export function QualiopiPage({
           <Text style={pdfStyles.specimenBannerText}>
             {specimenMotif ??
               "Identité de l'organisme incomplète : ce document ne peut pas être remis à un client, un financeur ou un auditeur."}
+          </Text>
+        </View>
+      )}
+
+      {estEssai && (
+        <View style={pdfStyles.specimenBanner}>
+          <Text style={pdfStyles.specimenBannerTitle}>ESSAI — pièce sans valeur</Text>
+          <Text style={pdfStyles.specimenBannerText}>
+            Pièce d&apos;une session d&apos;essai interne : numéro hors suite légale, jamais remise
+            à un client, un financeur ou un auditeur comme pièce réelle.
           </Text>
         </View>
       )}

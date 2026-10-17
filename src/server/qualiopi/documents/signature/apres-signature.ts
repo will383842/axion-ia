@@ -37,6 +37,8 @@
 import * as Sentry from "@sentry/nextjs";
 import { prisma } from "@/lib/prisma";
 import { sendTelegram } from "@/lib/telegram";
+import { estNumeroEssai } from "@/server/qualiopi/essai/numerotation";
+import { sortieSaufEssai } from "@/server/qualiopi/essai/sorties";
 import type { AdminSession } from "@/server/actions/knowledge/_guards";
 import { logQualiopiActivity } from "@/server/actions/qualiopi/_guards";
 import { changerActivationFormateur } from "@/server/qualiopi/formateurs-independants/activation";
@@ -402,6 +404,14 @@ export async function apresSignature(ctx: ContexteApresSignature): Promise<Resul
   // illisible ou lecture en panne = comportement d'avant S6a, à l'identique.
   const interrupteurs = await lireEtatsSignature();
   const alerter = ctx.canal === "lien_a_jeton" || interrupteurs.alertes_hors_jeton;
+  // QNC L02 — la pièce d'une session d'ESSAI (numéro `-ESSAI-`) n'alerte pas Telegram.
+  const essai = estNumeroEssai(ctx.numero);
+  const alerteBloquee = {
+    canal: "telegram",
+    cibleType: "DocumentGenere",
+    cibleId: ctx.documentGenereId,
+    objet: "signature",
+  } as const;
 
   // ── 1. Remise ─────────────────────────────────────────────────────────────
   //
@@ -431,10 +441,12 @@ export async function apresSignature(ctx: ContexteApresSignature): Promise<Resul
       try {
         const manquantes =
           circuit === null ? [] : await partiesManquantes(ctx.documentGenereId, circuit.parties);
-        await sendTelegram({
-          tag: "AUTO",
-          body: `✍️ ${libelle} ${ctx.numero} : signature reçue (${ctx.partie}). Reste à signer : ${manquantes.join(", ")}.`,
-        });
+        await sortieSaufEssai(essai, alerteBloquee, () =>
+          sendTelegram({
+            tag: "AUTO",
+            body: `✍️ ${libelle} ${ctx.numero} : signature reçue (${ctx.partie}). Reste à signer : ${manquantes.join(", ")}.`,
+          }),
+        );
       } catch (err) {
         capturer(err, "alerte", ctx);
       }
@@ -451,10 +463,12 @@ export async function apresSignature(ctx: ContexteApresSignature): Promise<Resul
   // Le canal jeton prévenait aussi d'une complétion : on le garde pour les
   // signataires extérieurs, l'organisme qui contresigne le sait déjà.
   if (ctx.statutSignature === "signee" && ctx.acteur.type === "signataire" && alerter) {
-    await sendTelegram({
-      tag: "AUTO",
-      body: `✅ ${libelle} ${ctx.numero} : intégralement signée.`,
-    }).catch(() => {});
+    await sortieSaufEssai(essai, alerteBloquee, () =>
+      sendTelegram({
+        tag: "AUTO",
+        body: `✅ ${libelle} ${ctx.numero} : intégralement signée.`,
+      }),
+    ).catch(() => {});
   }
 
   // ── 2. Lettre de mission : la mission se réévalue à chaque signature ──────

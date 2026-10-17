@@ -26,6 +26,7 @@
  * `facture-auto-session.graphe-worker.spec.ts`.
  */
 
+import { numeroEssai } from "@/server/qualiopi/essai/numerotation";
 import React from "react";
 import { prisma } from "@/lib/prisma";
 import { computeVentilationDossier } from "@/server/qualiopi/financements/opco-calcul";
@@ -222,6 +223,7 @@ async function emettreSansVerrou(
   const trainingSession = await prisma.trainingSession.findUnique({
     where: { id: sessionId },
     select: {
+      estTestInterne: true,
       financementType: true,
       opcoStatut: true,
       opcoSubrogation: true,
@@ -591,7 +593,10 @@ async function emettreSansVerrou(
   // fermé pour de bon par L7 (`allocateNumero`, MAX(seq)+1 sous verrou).
   const annee = new Date().getFullYear();
   const facture = await withNumberRetry(async () => {
-    const numero = await genererNumeroFacture(annee);
+    // QNC L02 — une session d'ESSAI se facture hors suite légale (`-ESSAI-`).
+    const numero = trainingSession.estTestInterne
+      ? numeroEssai("facture")
+      : await genererNumeroFacture(annee);
     // INT-T05 : l'émission, le rattachement de la créance et `facture.emise` vivent et meurent
     // ensemble. Le rattachement vient AVANT l'émission : c'est lui qui donne ses `payers[]` à
     // la charge (REQ-DM-039, K-18).

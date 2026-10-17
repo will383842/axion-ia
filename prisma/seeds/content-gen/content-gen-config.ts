@@ -107,7 +107,7 @@ const SEEDS: ReadonlyArray<ConfigSeed> = [
     key: "llms_txt",
     value: `# Axion-IA — Cabinet IA opérationnel français
 
-> Cabinet IA opérationnel français pour PME, ETI et grands comptes.
+> Cabinet IA opérationnel français pour TPE, PME, ETI et grands comptes.
 > Auteur principal : Manon (IA disclosed, doctrine éditoriale v2.1).
 > Périmètre : audit IA, intervention, implémentation, conseil stratégique.
 

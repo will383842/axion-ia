@@ -86,6 +86,7 @@ vi.mock("@sentry/nextjs", () => ({ captureException: vi.fn() }));
 // Module sous test
 // ─────────────────────────────────────────────────────────────────────────────
 
+import { allocateSessionNumero } from "@/server/qualiopi/formations/numbering";
 import { reportSessionAction } from "./sessions-recurrentes";
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -314,5 +315,34 @@ describe("reportSessionAction — 4/4 formateur", () => {
     // `resolvePrincipalTrainerId` y retomberait et les documents le nommeraient.
     expect(dataCreee()["coFormateurs"]).toEqual([]);
     expect(mockSessionFormateurCreateMany).not.toHaveBeenCalled();
+  });
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+// QNC L02 — reporter un essai reste un essai
+// ─────────────────────────────────────────────────────────────────────────────
+
+describe("reportSessionAction — session d'essai (QNC L02)", () => {
+  it("garde le drapeau d'essai et prend un numéro hors suite légale", async () => {
+    mockSessionFindUnique.mockResolvedValue(
+      makeAncienne({ numero: "AXI-SESS-ESSAI-2026-3F9A0C", estTestInterne: true }),
+    );
+
+    const r = await reportSessionAction(INPUT);
+
+    expect(r).toHaveProperty("data");
+    expect(dataCreee().estTestInterne).toBe(true);
+    expect(dataCreee().numero).toMatch(/^AXI-SESS-ESSAI-\d{4}-[0-9A-F]{6}$/);
+    expect(allocateSessionNumero).not.toHaveBeenCalled();
+  });
+
+  it("témoin : une session réelle prend le numéro légal et ne porte aucun drapeau", async () => {
+    mockSessionFindUnique.mockResolvedValue(makeAncienne({ estTestInterne: false }));
+
+    await reportSessionAction(INPUT);
+
+    expect(dataCreee()).not.toHaveProperty("estTestInterne");
+    expect(dataCreee().numero).toBe("AXI-SESS-2026-042");
+    expect(allocateSessionNumero).toHaveBeenCalledTimes(1);
   });
 });

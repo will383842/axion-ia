@@ -317,7 +317,7 @@ export const visioQueue: Queue<VisioJobData, void, VisioJobName> | null = connec
 /** Cadence du balayage du CIRCUIT visio (file `visio`) : toutes les 5 minutes. */
 export const PATTERN_BALAYAGE_CIRCUIT_VISIO = "*/5 * * * *";
 
-// ============================================================
+// =====================================================      },
 // Content Generator V1 — Sprint 4/5 queues (§ 13.1 master prompt v1.7)
 // ============================================================
 //
@@ -849,6 +849,41 @@ export async function enqueueImageBankAutoConvert(
   });
 }
 
+/**
+ * QNC L02 — l'envoi concerne-t-il une session d'essai, vers une adresse hors
+ * liste blanche ? Si oui, il est journalisé (empreinte du destinataire, jamais
+ * l'adresse) et ne part pas. Chargé à la demande : la plupart des envois ne
+ * relèvent d'aucune session et ne lisent rien.
+ */
+async function essaiHorsListeBlanche(
+  template: EmailJobName,
+  to: string,
+  options: { entityType?: string; entityId?: string } | undefined,
+): Promise<boolean> {
+  const { verdictEssaiDeLEntite } = await import("@/server/qualiopi/essai/contexte");
+  const verdict = await verdictEssaiDeLEntite({
+    entityType: options?.entityType ?? null,
+    entityId: options?.entityId ?? null,
+  });
+  if (verdict !== "essai") return false;
+  const [{ lireAdressesDEssai, destinatairesAutorises }, { journaliserSortieBloquee }] =
+    await Promise.all([
+      import("@/server/qualiopi/essai/liste-blanche"),
+      import("@/server/qualiopi/essai/sorties"),
+    ]);
+  if (destinatairesAutorises([to], await lireAdressesDEssai())) return false;
+  const { hashEmailForLookup } = await import("@/lib/security/email-hash");
+  const empreinte = hashEmailForLookup(to);
+  await journaliserSortieBloquee({
+    canal: "email",
+    cibleType: options?.entityType ?? "email",
+    cibleId: options?.entityId ?? null,
+    objet: template,
+    empreintes: empreinte !== null ? [empreinte] : [],
+  });
+  return true;
+}
+
 /** Objet du gabarit, sans rendu HTML — pour l'affichage de la corbeille (lot 2). */
 async function sujetLisible(
   template: EmailJobName,
@@ -952,6 +987,8 @@ export async function enqueueEmail(
   retenu?: MotifRetenue;
   /** La corbeille devait retenir cet email et n'a pas pu l'écrire : rien n'est parti (lot 2). */
   corbeilleIndisponible?: boolean;
+  /** E-mail d'une session d'ESSAI vers une adresse hors liste blanche : bloqué (QNC L02). */
+  essaiBloque?: boolean;
 }> {
   if (!emailsQueue) {
     if (process.env.NODE_ENV !== "production" && !isBullmqDisabled()) {
@@ -960,6 +997,12 @@ export async function enqueueEmail(
     // Retour détectable : les appelants qui exigent une garantie de mise en file
     // (ex. reply admin) peuvent marquer un échec explicite au lieu d'un faux succès.
     return { enqueued: false };
+  }
+  // 🔴 QNC L02 — un e-mail d'une session d'ESSAI ne part que vers la liste
+  // blanche des adresses d'essai. AVANT la corbeille : un e-mail garé puis
+  // approuvé repasse ici (`bypassValidation`) et y est jugé de nouveau.
+  if (await essaiHorsListeBlanche(template, to, options)) {
+    return { enqueued: false, essaiBloque: true };
   }
   // 🔴 Audit e-mails 2026-09-02 — liste de suppression, AVANT la corbeille et
   // AVANT la file. Une adresse qui a rebondi dur ne reçoit plus rien ; une
@@ -2187,6 +2230,15 @@ export async function bootRepeatableJobs(): Promise<void> {
         type: "formation-crons.controle-registre-periodique",
         pattern: "35 8 * * *",
         jobId: "formation-crons-controle-registre-periodique-cron",
+      },
+      // Qualiopi ind. 27 (2026-10-16) — le registre des sous-traitants tenu par l'outil :
+      // chaque formateur indépendant au contrat-cadre signé (ou actif) y est inscrit, sa
+      // sortie datée. 08:50 UTC, APRÈS le recontrôle du registre (08:35) dont il reprend
+      // la date. Arrêté tant que `formateurs.registre_sous_traitants` est coupé.
+      {
+        type: "formation-crons.registre-sous-traitants",
+        pattern: "50 8 * * *",
+        jobId: "formation-crons-registre-sous-traitants-cron",
       },
       // QNC L07 — test du lien de visio la veille du début. 07:10 et 14:10 UTC
       // (08:10/09:10 et 15:10/16:10 à Paris) : le second passage retente un lien

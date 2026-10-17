@@ -6,7 +6,7 @@
 //     forfait trajet toujours mentionnés « en sus » sur les interventions.
 //   - Durée minimale = 1 journée. Pas de demi-journée.
 //   - Aucun prix hardcodé : libellés uniquement, valeurs viennent de pricing.ts.
-//   - Tailles d'entreprise INSEE : PME/ETI/grands groupes / Grande entreprise.
+//   - Tailles d'entreprise INSEE : TPE / PME / ETI / Grande entreprise.
 //   - ~95 % Axion-IA-centric, ~5 % data INSEE anti-doorway HCU 2024.
 //   - Pas de heroSchema, pas de unAUn (non demandés pour cette ville).
 //
@@ -27,7 +27,7 @@ import type { VilleCopy } from "./types";
 
 export const LE_MANS_COPY: VilleCopy = {
   pitchFr:
-    "Le Mans rassemble 11 301 établissements actifs — de la PME sarthoise aux sièges MMA/Covéa et Renault ACI — dans un bassin industriel et tertiaire structuré autour de la mobilité, de l'assurance et de la recherche acoustique. Axion-IA y intervient sur site, de la PME locale à l'ETI grand compte.",
+    "Le Mans rassemble 11 301 établissements actifs — de la TPE sarthoise aux sièges MMA/Covéa et Renault ACI — dans un bassin industriel et tertiaire structuré autour de la mobilité, de l'assurance et de la recherche acoustique. Axion-IA y intervient sur site, de la PME locale à l'ETI grand compte.",
   pitchEn:
     "Le Mans brings together 11,301 active businesses — from local micro-firms to MMA/Covéa and Renault ACI HQs — in an industrial and services basin centred on mobility, insurance and acoustic research. Axion-IA delivers on site, from local SMEs to mid-cap key accounts.",
 
@@ -55,7 +55,7 @@ export const LE_MANS_COPY: VilleCopy = {
   },
 
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient au Mans (72) sur site. Nous accompagnons les PME, ETI et grands groupes de la Sarthe — groupes d'assurance (Covéa/MMA), industrie automobile (Renault ACI), PME de services et structures de recherche (LAUM, ENSIM) — sur leurs cas IA opérationnels : diagnostic chiffré, démos sur vos vraies données, plan d'action concret. Aucun lock-in technologique, vos équipes gardent la main.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient au Mans (72) sur site. Nous accompagnons les TPE, PME, ETI et grandes entreprises de la Sarthe — groupes d'assurance (Covéa/MMA), industrie automobile (Renault ACI), PME de services et structures de recherche (LAUM, ENSIM) — sur leurs cas IA opérationnels : diagnostic chiffré, démos sur vos vraies données, plan d'action concret. Aucun lock-in technologique, vos équipes gardent la main.",
   directAnswerEn:
     "Axion-IA is a senior AI experts consultancy that intervenes in Le Mans (72) on site. We support Sarthe micro-businesses, SMEs, mid-caps and large enterprises — insurance groups (Covéa/MMA), automotive manufacturing (Renault ACI), service SMEs and research organisations (LAUM, ENSIM) — on their operational AI use cases: costed diagnosis, demos on your real data, concrete action plan. No tech lock-in, your teams stay in control.",
 
@@ -82,7 +82,7 @@ export const LE_MANS_COPY: VilleCopy = {
   services: {
     audit: {
       fr: {
-        hero: "L'audit IA Axion-IA au Mans cartographie ce qui peut être automatisé chez vous et chiffre le retour sur investissement à 12-24 mois. Quatre niveaux du Sur place au Stratégique ETI couvrent toute l'échelle, des PME sartoises aux ETI assurance et mobilité dont le bassin manceau est le siège historique.",
+        hero: "L'audit IA Axion-IA au Mans cartographie ce qui peut être automatisé chez vous et chiffre le retour sur investissement à 12-24 mois. Quatre niveaux du Sur place au Stratégique ETI couvrent toutes les tailles, des TPE sartoises aux ETI assurance et mobilité dont le bassin manceau est le siège historique.",
         whyHere: [
           "Le Mans concentre deux écosystèmes B2B à fort potentiel IA : l'assurance (MMA/Covéa, courtiers, mutuelles) et l'industrie automobile/mobilité (Renault ACI, fournisseurs ACO, iD4CAR), deux secteurs dans lesquels la lecture de documents, la qualification de sinistres et la gestion de données industrielles sont des cas d'usage IA immédiats.",
           "Le tissu de PME et ETI de services (transports, logistique, conseil, distribution) représente le gros des 11 301 établissements actifs — périmètre idéal pour l'Audit Ciblé ou Stratégique PME.",
@@ -119,6 +119,12 @@ export const LE_MANS_COPY: VilleCopy = {
           },
         ],
         pricing: [
+          {
+            sizeLabel: "TPE",
+            price: "Audit sur place",
+            detail:
+              "Adapté aux indépendants, micro-entreprises et cabinets sarthois jusqu'à une dizaine de collaborateurs (artisans, professions libérales, petits commerces).",
+          },
           {
             sizeLabel: "PME",
             price: "Audit Ciblé ou Stratégique PME",
@@ -168,7 +174,7 @@ export const LE_MANS_COPY: VilleCopy = {
           "Engagement contractuel : livrable remis dans les délais convenus à la signature. Conformité RGPD, hébergement données en UE par défaut, DPO sur demande. Aucun lock-in technologique : votre plan d'action est exécutable avec n'importe quel prestataire ou en interne.",
       },
       en: {
-        hero: "Axion-IA's AI audit in Le Mans maps what can be automated at your company and quantifies the 12-24 month return on investment. Four tiers from Sur place to Mid-cap Strategic cover the full range, from local Sarthe micro-firms to insurance and mobility mid-caps headquartered in the Le Mans basin.",
+        hero: "Axion-IA's AI audit in Le Mans maps what can be automated at your company and quantifies the 12-24 month return on investment. Four tiers from Sur place to Mid-cap Strategic cover every size, from local Sarthe micro-firms to insurance and mobility mid-caps headquartered in the Le Mans basin.",
         whyHere: [
           "Le Mans concentrates two B2B ecosystems with strong AI potential: insurance (MMA/Covéa, brokers, mutual insurers) and automotive/mobility manufacturing (Renault ACI, ACO suppliers, iD4CAR cluster) — both sectors where document reading, claim qualification and industrial data management are immediate AI use cases.",
           "The SME and mid-cap services fabric (transport, logistics, consulting, distribution) accounts for the bulk of the 11,301 active businesses — ideal scope for a Targeted or SME Strategic Audit.",
@@ -205,6 +211,12 @@ export const LE_MANS_COPY: VilleCopy = {
           },
         ],
         pricing: [
+          {
+            sizeLabel: "Micro-business",
+            price: "Sur place audit",
+            detail:
+              "Suited to Sarthe freelancers, micro-firms and practices up to about ten staff (artisans, liberal professions, small traders).",
+          },
           {
             sizeLabel: "SME",
             price: "Targeted or SME Strategic audit",
@@ -259,7 +271,7 @@ export const LE_MANS_COPY: VilleCopy = {
         hero: "Les interventions IA Axion-IA au Mans se déclinent en formats sur site d'une à plusieurs journées selon vos équipes. Vos collaborateurs ne repartent pas avec des slides : ils repartent avec des outils IA installés sur leur poste, configurés pour leur travail réel dans les secteurs assurance, automobile, industrie et services.",
         whyHere: [
           "Le Mans regroupe des équipes opérationnelles à fort potentiel d'adoption IA : gestionnaires sinistres MMA/Covéa, techniciens et ingénieurs Renault ACI, commerciaux PME de services, équipes administratives des structures universitaires et de recherche.",
-          "Le format collectif (1 journée) est calibré pour les PME et ETI du bassin (quelques personnes à une centaine de collaborateurs) : sessions ciblées sur les cas métier réels du secteur assurance ou automobile.",
+          "Le format collectif (1 journée) est calibré pour les TPE, PME et ETI du bassin (quelques personnes à une centaine de collaborateurs) : sessions ciblées sur les cas métier réels du secteur assurance ou automobile.",
           "Le format Conférence convient aux plénières et séminaires des grandes entités (groupes assurance, sites industriels, campus universitaire).",
           "Le format Dirigeants permet un cadrage en huis-clos pour les comités de direction des ETI sartoises souhaitant aligner leur trajectoire IA avant de déployer.",
           "Vocabulaire ajusté à votre secteur dominant : aucune session générique recyclée — une formation pour une équipe sinistres n'a rien à voir avec une session pour une ligne de production automobile.",
@@ -293,6 +305,12 @@ export const LE_MANS_COPY: VilleCopy = {
           },
         ],
         pricing: [
+          {
+            sizeLabel: "TPE",
+            price: "Formation collective",
+            detail:
+              "Idéal pour indépendants, cabinets, petites PME sartoises jusqu'à une dizaine de collaborateurs.",
+          },
           {
             sizeLabel: "PME",
             price: "Formation collective ou Équipes",
@@ -379,6 +397,11 @@ export const LE_MANS_COPY: VilleCopy = {
           },
         ],
         pricing: [
+          {
+            sizeLabel: "Micro-business",
+            price: "Group format",
+            detail: "Ideal for Sarthe freelancers, practices and small SMEs up to about ten staff.",
+          },
           {
             sizeLabel: "SME",
             price: "Group or Teams format",
@@ -468,6 +491,12 @@ export const LE_MANS_COPY: VilleCopy = {
         ],
         pricing: [
           {
+            sizeLabel: "TPE",
+            price: "Pilote IA",
+            detail:
+              "Implémentation d'un cas d'usage simple (lecture factures, comptes-rendus, qualification leads) pour TPE sartoises.",
+          },
+          {
             sizeLabel: "PME",
             price: "Mission PME",
             detail:
@@ -489,7 +518,7 @@ export const LE_MANS_COPY: VilleCopy = {
         faq: [
           {
             q: "Combien de temps dure une implémentation Axion-IA au Mans ?",
-            a: "Cela dépend de l'ampleur. Un POC pour PME tient en quelques semaines, une mission PME standard sur quelques mois, une mission ETI transverse sur plusieurs mois, un grand programme sur une année. Le SOW signé au cadrage fixe le calendrier précis.",
+            a: "Cela dépend de l'ampleur. Un POC pour TPE tient en quelques semaines, une mission PME standard sur quelques mois, une mission ETI transverse sur plusieurs mois, un grand programme sur une année. Le SOW signé au cadrage fixe le calendrier précis.",
           },
           {
             q: "Le tarif est-il fixe ou au temps passé ?",
@@ -554,6 +583,12 @@ export const LE_MANS_COPY: VilleCopy = {
         ],
         pricing: [
           {
+            sizeLabel: "Micro-business",
+            price: "Pilote IA",
+            detail:
+              "Implementation of a simple use case (invoice reading, meeting minutes, lead qualification) for Sarthe micro-firms.",
+          },
+          {
             sizeLabel: "SME",
             price: "SME mission",
             detail:
@@ -607,7 +642,7 @@ export const LE_MANS_COPY: VilleCopy = {
       fr: {
         hero: "Le coaching IA individuel Axion-IA au Mans s'adresse au dirigeant, manager ou expert qui veut progresser sur l'IA à son rythme, sur ses propres cas métier, sans partager sa session avec un groupe. À partir de {{price:intervention-dirigeants|flat}}, un consultant senior est entièrement dédié à vous dans vos locaux manceaux — Novaxis, sites industriels ou PME sarthoises.",
         whyHere: [
-          "Le Mans concentre des dirigeants de PME et ETI assurance (MMA/Covéa, courtiers régionaux) dont la confidentialité des données sinistres et contrats rend le format collectif inadapté — le coaching individuel est la seule option viable.",
+          "Le Mans concentre des dirigeants de TPE, PME et ETI assurance (MMA/Covéa, courtiers régionaux) dont la confidentialité des données sinistres et contrats rend le format collectif inadapté — le coaching individuel est la seule option viable.",
           "Les responsables techniques et ingénieurs de la filière automobile (Renault ACI, fournisseurs iD4CAR) traitent des données de production propriétaires (bons de commande, PPAP, données qualité) trop sensibles pour un cadre collectif.",
           "Les directeurs transformation digitale de l'écosystème Novaxis bénéficient d'un accompagnement individuel centré sur leurs systèmes existants (CRM assurance, ERP industriel) — pas sur des exemples génériques.",
           "Aucun minimum de participants, aucune date imposée : vous choisissez le créneau dans vos locaux manceaux selon vos contraintes opérationnelles.",
@@ -642,6 +677,12 @@ export const LE_MANS_COPY: VilleCopy = {
           },
         ],
         pricing: [
+          {
+            sizeLabel: "TPE",
+            price: "À partir de {{price:intervention-dirigeants|flat}}",
+            detail:
+              "Coaching individuel entrée pour dirigeants TPE, artisans, indépendants et petits cabinets sarthois — une journée, un consultant dédié.",
+          },
           {
             sizeLabel: "PME",
             price: "Sur devis",
@@ -724,6 +765,12 @@ export const LE_MANS_COPY: VilleCopy = {
           },
         ],
         pricing: [
+          {
+            sizeLabel: "Micro-business",
+            price: "From {{price:intervention-dirigeants|compact}} excl. VAT",
+            detail:
+              "Entry individual coaching for Sarthe micro-business executives, artisans, freelancers and small practices — one day, one dedicated consultant.",
+          },
           {
             sizeLabel: "SME",
             price: "On request",
@@ -811,6 +858,12 @@ export const LE_MANS_COPY: VilleCopy = {
         ],
         pricing: [
           {
+            sizeLabel: "TPE",
+            price: "Brique IA greffée",
+            detail:
+              "Ajout d'une brique IA (chatbot RAG, recherche sémantique) sur un site existant en quelques semaines, sans refonte.",
+          },
+          {
             sizeLabel: "PME",
             price: "Site / application sur mesure",
             detail:
@@ -891,6 +944,12 @@ export const LE_MANS_COPY: VilleCopy = {
         ],
         pricing: [
           {
+            sizeLabel: "Micro-business",
+            price: "Grafted AI brick",
+            detail:
+              "Adding an AI brick (RAG chatbot, semantic search) onto an existing site in a few weeks, no rebuild.",
+          },
+          {
             sizeLabel: "SME",
             price: "Bespoke site / app",
             detail:
@@ -940,7 +999,7 @@ export const LE_MANS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Combien coûte un audit IA opérationnel au Mans ?",
-      a: "Le tarif dépend du niveau retenu — Audit sur place, Ciblé, Stratégique PME ou Stratégique ETI. Tarifs publics affichés sur la page Audit, calibrés selon votre taille (PME, ETI et grands groupes, grande entreprise) et votre périmètre. Aucun supplément géographique : le tarif est identique au Mans qu'ailleurs en France.",
+      a: "Le tarif dépend du niveau retenu — Audit sur place, Ciblé, Stratégique PME ou Stratégique ETI. Tarifs publics affichés sur la page Audit, calibrés selon votre taille (TPE, PME, ETI, grande entreprise) et votre périmètre. Aucun supplément géographique : le tarif est identique au Mans qu'ailleurs en France.",
     },
     {
       q: "Avez-vous des références dans le secteur assurance au Mans ?",

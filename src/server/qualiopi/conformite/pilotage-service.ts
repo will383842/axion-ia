@@ -30,6 +30,11 @@
  * PilotageResult vide (safe au build SSG).
  */
 
+import {
+  HORS_ESSAI,
+  HORS_SESSION_D_ESSAI,
+  SESSION_REELLE,
+} from "@/server/qualiopi/essai/perimetre";
 import { prisma } from "@/lib/prisma";
 import { inscriptionsActives } from "@/server/qualiopi/inscriptions/inscriptions-actives";
 import { redis } from "@/lib/redis";
@@ -186,7 +191,12 @@ export async function getPilotage(input: number | PilotageOptions): Promise<Pilo
 
   // Filtre commun sur les sessions : plage de dates + type d'action Qualiopi
   // (champ réel `Formation.typesActionQualiopi TypeActionQualiopi[]`).
+  //
+  // QNC L02 — les sessions d'ESSAI n'entrent dans aucune métrique : le filtre
+  // de session les écarte, et chaque lecture d'inscription écarte en plus les
+  // inscriptions d'essai (`...HORS_ESSAI`).
   const sessionWhere = {
+    ...SESSION_REELLE,
     dateDebut: plage,
     ...(typeAction !== undefined
       ? { formation: { typesActionQualiopi: { has: typeAction } } }
@@ -229,6 +239,7 @@ export async function getPilotage(input: number | PilotageOptions): Promise<Pilo
     prisma.enrollment.count({
       where: {
         statut: "abandon",
+        ...HORS_ESSAI,
         session: sessionWhere,
       },
     }),
@@ -238,6 +249,7 @@ export async function getPilotage(input: number | PilotageOptions): Promise<Pilo
       by: ["sortieMotif"],
       where: {
         statut: "abandon",
+        ...HORS_ESSAI,
         session: sessionWhere,
         sortieMotif: { not: null },
       },
@@ -245,6 +257,7 @@ export async function getPilotage(input: number | PilotageOptions): Promise<Pilo
     }),
     prisma.enrollment.count({
       where: {
+        ...HORS_ESSAI,
         session: sessionWhere,
       },
     }),
@@ -269,7 +282,7 @@ export async function getPilotage(input: number | PilotageOptions): Promise<Pilo
     }),
     prisma.sousTraitant.count(),
     prisma.sousTraitant.count({ where: { contratSigneAt: { not: null } } }),
-    prisma.documentGenere.count({ where: { createdAt: plage } }),
+    prisma.documentGenere.count({ where: { createdAt: plage, ...HORS_SESSION_D_ESSAI } }),
     prisma.trainer.count({ where: { actif: true } }),
     // M11 (LOT 4) — critère « à jour » HONNÊTE (remplace le proxy updatedAt) :
     // formateur actif avec CV présent (cvUrl non null) ET preuve datée dans les
@@ -307,12 +320,14 @@ export async function getPilotage(input: number | PilotageOptions): Promise<Pilo
       where: {
         adaptationsRealisees: { not: null },
         NOT: { adaptationsRealisees: REPONSE_AUCUNE_ADAPTATION },
+        ...HORS_ESSAI,
         session: sessionWhere,
       },
     }),
     // Convocations générées (proxy délai d'entrée)
     prisma.enrollment.count({
       where: {
+        ...HORS_ESSAI,
         session: sessionWhere,
         ...inscriptionsActives(),
       },
@@ -322,6 +337,7 @@ export async function getPilotage(input: number | PilotageOptions): Promise<Pilo
     // type sont comptés (un incident sans session est hors périmètre du filtre).
     prisma.incident.count({
       where: {
+        ...HORS_SESSION_D_ESSAI,
         dateIncident: plage,
         ...(typeAction !== undefined
           ? { session: { formation: { typesActionQualiopi: { has: typeAction } } } }
@@ -338,6 +354,7 @@ export async function getPilotage(input: number | PilotageOptions): Promise<Pilo
     // M9 (LOT 4) — incidents de la période avec action corrective renseignée.
     prisma.incident.count({
       where: {
+        ...HORS_SESSION_D_ESSAI,
         dateIncident: plage,
         actionCorrective: { not: "" },
         ...(typeAction !== undefined
@@ -557,6 +574,7 @@ async function computeTaux(
   // Filtre actif → calcul direct avec les MÊMES formules (calcul.ts) sur le
   // périmètre filtré (période Europe/Paris + type d'action éventuel).
   const sessionWhere = {
+    ...SESSION_REELLE,
     statut: "realisee" as const,
     dateDebut: plage,
     ...(typeAction !== undefined
@@ -572,20 +590,21 @@ async function computeTaux(
         type: "satisfaction_chaud",
         reponduAt: { not: null },
         noteGlobale: { not: null },
-        enrollment: { session: sessionWhere },
+        enrollment: { ...HORS_ESSAI, session: sessionWhere },
       },
       select: { noteGlobale: true },
     }),
     prisma.evaluationAcquis.findMany({
       where: {
         type: "finale",
-        enrollment: { session: sessionWhere },
+        enrollment: { ...HORS_ESSAI, session: sessionWhere },
       },
       select: { niveauGlobal: true },
     }),
     prisma.enrollment.findMany({
       where: {
         ...inscriptionsActives(),
+        ...HORS_ESSAI,
         session: sessionWhere,
       },
       select: { tauxPresencePct: true },

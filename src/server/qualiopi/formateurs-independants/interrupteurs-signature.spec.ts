@@ -14,10 +14,11 @@ import {
   lireValeurSignature,
   dateAllumageSignature,
   prealablesManquantsSignature,
+  reglagesFillesACouper,
 } from "./interrupteurs";
 
 describe("interrupteurs du socle de signature", () => {
-  it("vingt clés, chacune protégée de l'éditeur générique", () => {
+  it("vingt-deux clés, chacune protégée de l'éditeur générique", () => {
     expect(CLES_INTERRUPTEURS_SIGNATURE.map(cleSettingSignature).sort()).toEqual(
       [
         // Lot S2 — affectation et acceptation sûres, livré éteint.
@@ -48,6 +49,9 @@ describe("interrupteurs du socle de signature", () => {
         "formateurs.bilan_fin_formation",
         // Lot 8B — certificat de réalisation créé à la fin de la formation, livré éteint.
         "formateurs.certificat_realisation_auto",
+        // Qualiopi ind. 27 — registre des sous-traitants tenu par l'outil et ses alertes, éteints.
+        "formateurs.registre_sous_traitants",
+        "formateurs.alertes_registre_sous_traitants",
         "signature.alertes_hors_jeton",
         "signature.copie_partielle",
         "signature.exemplaire_captation",
@@ -143,5 +147,35 @@ describe("correctifs L11b et L11h — préalables du choix en cartes et du rang 
     ).toEqual([]);
     // États du registre non fournis : le plus strict.
     expect(prealablesManquantsSignature("rang_suivant", true, avecTextes)).toHaveLength(2);
+  });
+});
+
+describe("Qualiopi ind. 27 — registre des sous-traitants et ses alertes", () => {
+  const etats = etatsParDefaut();
+  it("le registre s'allume sans préalable ; ses alertes exigent le registre", () => {
+    const sig = etatsSignatureParDefaut();
+    expect(prealablesManquantsSignature("registre_sous_traitants", true, etats, sig)).toEqual([]);
+    expect(
+      prealablesManquantsSignature("alertes_registre_sous_traitants", true, etats, sig),
+    ).toHaveLength(1);
+    expect(
+      prealablesManquantsSignature("alertes_registre_sous_traitants", true, etats, {
+        ...sig,
+        registre_sous_traitants: true,
+      }),
+    ).toEqual([]);
+  });
+  it("couper le registre coupe ses alertes", () => {
+    expect(
+      reglagesFillesACouper(
+        "formateurs.registre_sous_traitants",
+        new Set(["formateurs.alertes_registre_sous_traitants"]),
+      ),
+    ).toEqual(["formateurs.alertes_registre_sous_traitants"]);
+  });
+  it("éteints par défaut", () => {
+    const sig = etatsSignatureParDefaut();
+    expect(sig.registre_sous_traitants).toBe(false);
+    expect(sig.alertes_registre_sous_traitants).toBe(false);
   });
 });

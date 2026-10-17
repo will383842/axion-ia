@@ -291,6 +291,10 @@ describe("L7a — la version inscrite suit le composant rendu", () => {
       "verifierVersionDuComposant(input.type, elementToRender.type, gabaritVersion);",
     );
     expect(verif).toBeGreaterThan(-1);
-    expect(verif).toBeLessThan(source.indexOf("await renderPdfToBuffer(elementToRender)"));
+    // QNC L02 : le rendu enveloppe l'élément du filigrane d'essai — l'appel
+    // garde son nom, et l'ordre (vérifier, PUIS rendre) reste ce qui compte.
+    const rendu = source.indexOf("await renderPdfToBuffer(");
+    expect(rendu).toBeGreaterThan(-1);
+    expect(verif).toBeLessThan(rendu);
   });
 });
