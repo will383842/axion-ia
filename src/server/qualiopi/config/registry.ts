@@ -18,6 +18,8 @@ import { NDA_NUMERO } from "@/server/qualiopi/legal/legal-mentions";
 import { REGIME_TVA_DEFAUT } from "@/server/qualiopi/legal/tva";
 import { estJourIsoValide } from "@/server/qualiopi/conformite/indicateurs-registre";
 import { REGLAGES_IND27_DEFAUTS } from "@/server/qualiopi/formateurs-independants/registre-sous-traitants/controles.config";
+import { REGLAGES_EVALUATION } from "@/server/qualiopi/formateurs-independants/evaluation-competences/reglages";
+import { REGLAGES_SUIVI_QUALITE } from "@/server/qualiopi/formateurs-independants/suivi-qualite/reglages";
 
 /** Définition typée d'une clé : schéma Zod + défaut + description. */
 export interface ConfigEntry<T> {
@@ -621,6 +623,91 @@ export const QUALIOPI_CONFIG_REGISTRY = {
     ...num(REGLAGES_IND27_DEFAUTS.revueCompleteMois),
     description:
       "Indicateur 27 — périodicité, en mois, de la revue complète de chaque sous-traitant indépendant. Entier de 1 à 36. Défaut 12 mois (annuelle), à valider par Will.",
+  },
+
+  // ── Évaluation des compétences et suivi qualité des indépendants (indicateur 21) ──
+  // Seuils de `evaluation-competences/reglages.ts` et `suivi-qualite/reglages.ts`,
+  // modifiables ici, jamais en dur. ⚠️ Défauts À VALIDER PAR WILL. Lus par les
+  // `reglages-lecture.ts` de ces dossiers ; hors bornes ou illisibles : le défaut.
+  evaluation_competences_entretien_moyenne_min: {
+    ...num(REGLAGES_EVALUATION.entretienMoyenneMin),
+    description:
+      "Indicateur 21 — entretien : moyenne des cinq critères (sur 5) à partir de laquelle « habilité » est possible. De 1 à 5, au centième. Défaut 3,5, à valider par Will.",
+  },
+  evaluation_competences_entretien_note_critere_min: {
+    ...num(REGLAGES_EVALUATION.entretienNoteCritereMin),
+    description:
+      "Indicateur 21 — entretien : aucun critère ne doit être noté sous cette note pour « habilité ». Entier de 1 à 5. Défaut 2, à valider par Will.",
+  },
+  evaluation_competences_mise_en_situation_note_bloc_min: {
+    ...num(REGLAGES_EVALUATION.miseEnSituationNoteBlocMin),
+    description:
+      "Indicateur 21 — mise en situation : note minimale (sur 5) de chaque bloc pour « habilité ». Entier de 1 à 5. Défaut 3, à valider par Will.",
+  },
+  suivi_qualite_observation_moyenne_min: {
+    ...num(REGLAGES_SUIVI_QUALITE.observationMoyenneMin),
+    description:
+      "Indicateur 21 — moyenne minimale (sur 5) de l'observation de la 1re mission, qui confirme l'habilitation. De 1 à 5, au centième. Défaut 3,5, à valider par Will.",
+  },
+  suivi_qualite_reevaluation_moyenne_min: {
+    ...num(REGLAGES_SUIVI_QUALITE.reevaluationMoyenneMin),
+    description:
+      "Indicateur 21 — moyenne minimale (sur 5) d'une réévaluation annuelle favorable. De 1 à 5, au centième. Défaut 3,5, à valider par Will.",
+  },
+  suivi_qualite_evaluation_moyenne_min: {
+    ...num(REGLAGES_SUIVI_QUALITE.evaluationMoyenneMin),
+    description:
+      "Indicateur 21 — moyenne (sur 5) de la grille après mission sous laquelle elle est dite « réservée ». De 1 à 5, au centième. Défaut 3,5, à valider par Will.",
+  },
+  suivi_qualite_observation_alerte_jours: {
+    ...num(REGLAGES_SUIVI_QUALITE.observationAlerteJours),
+    description:
+      "Indicateur 21 — jours après la fin de la 1re mission avant l'alerte « observation manquante ». Entier de 0 à 60. Défaut 0 (dès le lendemain), à valider par Will.",
+  },
+  suivi_qualite_evaluation_relance_jours: {
+    ...num(REGLAGES_SUIVI_QUALITE.evaluationRelanceJours),
+    description:
+      "Indicateur 21 — relance interne de la grille après mission, en jours après la fin. Entier de 0 à 60, pas après l'alerte. Défaut 3, à valider par Will.",
+  },
+  suivi_qualite_evaluation_alerte_jours: {
+    ...num(REGLAGES_SUIVI_QUALITE.evaluationAlerteJours),
+    description:
+      "Indicateur 21 — alerte si la grille après mission manque toujours, en jours après la fin. Entier de 1 à 90, pas avant la relance. Défaut 7, à valider par Will.",
+  },
+  suivi_qualite_satisfaction_entretien_sous: {
+    ...num(REGLAGES_SUIVI_QUALITE.satisfactionEntretienSous),
+    description:
+      "Indicateur 21 — satisfaction des stagiaires (sur 5) sous laquelle un entretien est à prévoir. De 1 à 5, au centième, pas sous le seuil de suspension. Défaut 4, à valider par Will.",
+  },
+  suivi_qualite_satisfaction_suspension_sous: {
+    ...num(REGLAGES_SUIVI_QUALITE.satisfactionSuspensionSous),
+    description:
+      "Indicateur 21 — satisfaction (sur 5) sous laquelle les NOUVELLES missions sont suspendues. De 1 à 5, au centième, pas au-dessus du seuil d'entretien. Défaut 3, à valider par Will.",
+  },
+  suivi_qualite_reevaluation_mois: {
+    ...num(REGLAGES_SUIVI_QUALITE.reevaluationMois),
+    description:
+      "Indicateur 21 — périodicité, en mois, de la réévaluation après la décision d'habilitation. Entier de 1 à 36. Défaut 12, à valider par Will.",
+  },
+  suivi_qualite_reevaluation_rappel_jours: {
+    ...num(REGLAGES_SUIVI_QUALITE.reevaluationRappelJours),
+    description:
+      "Indicateur 21 — rappel avant l'échéance de réévaluation, en jours. Entier de 0 à 180. Défaut 30, à valider par Will.",
+  },
+  suivi_qualite_reevaluation_grace_allumage_jours: {
+    ...num(REGLAGES_SUIVI_QUALITE.reevaluationGraceAllumageJours),
+    description:
+      "Indicateur 21 — report, en jours après l'allumage, d'une échéance de réévaluation déjà dépassée. Entier de 0 à 180. Défaut 30, à valider par Will.",
+  },
+  suivi_qualite_cv_declare_max_mois: {
+    ...num(REGLAGES_SUIVI_QUALITE.cvDeclareMaxMois),
+    description:
+      "Indicateur 21 — âge maximal, en mois, du CV déclaré par un intervenant externe (alerte). Entier de 1 à 60. Défaut 24, à valider par Will.",
+  },
+  suivi_qualite_texte_min_caracteres: {
+    ...num(REGLAGES_SUIVI_QUALITE.texteMinCaracteres),
+    description:
+      "Indicateur 21 — longueur minimale d'une conclusion de grille ou d'un motif de décision du suivi qualité. Entier de 1 à 500. Défaut 10, à valider par Will.",
   },
 } as const satisfies Record<string, ConfigEntry<unknown>>;
 
