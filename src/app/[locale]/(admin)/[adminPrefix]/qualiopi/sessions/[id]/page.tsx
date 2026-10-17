@@ -201,11 +201,9 @@ function chargerSession(id: string) {
     where: { id },
     select: {
       id: true,
-      // CHANTIER QNC, L13 — l'interrupteur des notes sur pièce en `essai`
-      // n'agit que sur le banc d'essai.
-      estTestInterne: true,
       numero: true,
-      // QNC L02 — la fiche d'une session d'essai le dit en tête.
+      // QNC L02 — la fiche d'une session d'essai le dit en tête ; QNC L13 — l'interrupteur
+      // des notes sur pièce en `essai` n'agit que sur le banc d'essai.
       estTestInterne: true,
       titreSession: true,
       statut: true,
