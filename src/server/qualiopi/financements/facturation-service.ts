@@ -20,6 +20,7 @@
  * numeroDossierOpco BLOQUANT si absent.
  */
 
+import { numeroEssai } from "@/server/qualiopi/essai/numerotation";
 import React from "react";
 import { prisma } from "@/lib/prisma";
 import type { FactureFormationDestinataire } from "../../../../prisma/generated/client";
@@ -292,12 +293,15 @@ export async function genererFactureFormation(
     // On ne prend PAS de verrou consultatif ici : le rendu PDF a lieu à
     // l'intérieur de cette boucle, et le tenir plusieurs centaines de
     // millisecondes sérialiserait toute la facturation en épuisant le pool.
-    const numero = await nextNumero("facture", annee, (prefixe) =>
-      prisma.factureFormation.findMany({
-        where: { numero: { startsWith: prefixe } },
-        select: { numero: true },
-      }),
-    );
+    // QNC L02 — une session d'ESSAI se facture hors suite légale (`-ESSAI-`).
+    const numero = session.estTestInterne
+      ? numeroEssai("facture")
+      : await nextNumero("facture", annee, (prefixe) =>
+          prisma.factureFormation.findMany({
+            where: { numero: { startsWith: prefixe } },
+            select: { numero: true },
+          }),
+        );
 
     // 🔴 #7 — Le PDF affiche le NUMÉRO DE FACTURE (`factureData.numero`, celui
     // enregistré dans `factureFormation` et exporté au FEC/compta), et NON le

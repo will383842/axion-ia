@@ -18,6 +18,9 @@ import { listTrainers, isTrainerHabilite } from "@/server/qualiopi/trainers/trai
 import { listOffres } from "@/server/qualiopi/offres/offres";
 import { AccesRefuse } from "@/components/admin/ui/AccesRefuse";
 import { gardePage } from "@/server/auth/garde-page";
+import { lireInterrupteurQualiopi } from "@/server/qualiopi/socle/interrupteurs";
+import { LOT_ESSAI } from "@/server/qualiopi/essai/perimetre";
+import { creationEssaiOuverte } from "@/server/qualiopi/essai/creation";
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
@@ -154,6 +157,9 @@ export default async function NouvelleSessionPage({ params }: PageProps) {
   // Les habilitations viennent de la relation `TrainerHabilitation` (portée par
   // `listTrainers` sous le nom `formationIdsHabilites`), jamais de la colonne
   // legacy `formationsHabilitees` qui contient des slugs en production.
+  // QNC L02 — la case « session d'essai » suit l'interrupteur `qualiopi.essai.actif`.
+  const modeEssaiOuvert = creationEssaiOuverte(await lireInterrupteurQualiopi(LOT_ESSAI));
+
   let formateursParFormation: Record<string, Array<{ id: string; label: string }>> = {};
   try {
     const formateursActifs = await listTrainers({ actifOnly: true });
@@ -201,6 +207,7 @@ export default async function NouvelleSessionPage({ params }: PageProps) {
         // connaît le `locale` et le préfixe d'administration (secret injecté
         // par Coolify). Les laisser deviner au composant client produirait un
         // lien mort le jour où le préfixe change.
+        modeEssaiOuvert={modeEssaiOuvert}
         liensPrerequis={{
           formations: `/${locale}/${adminPrefix}/qualiopi/formations/new`,
           clients: `/${locale}/${adminPrefix}/qualiopi/clients/new`,

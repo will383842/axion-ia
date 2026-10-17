@@ -11,6 +11,9 @@
  * absent → stub explicite (dépôt refusé avec message actionnable).
  */
 
+import { estNumeroEssai } from "@/server/qualiopi/essai/numerotation";
+import { journaliserSortieBloquee } from "@/server/qualiopi/essai/sorties";
+
 export interface DepotFactureInput {
   /** XML EN 16931 (CII) généré par cii.ts. */
   xml: string;
@@ -43,12 +46,37 @@ class StubPaAdapter implements PlateformeAgreeeAdapter {
   }
 }
 
+/**
+ * QNC L02 — une facture d'ESSAI (numéro `-ESSAI-`, hors suite légale) n'est
+ * JAMAIS déposée sur une Plateforme Agréée, quel que soit l'adaptateur. La
+ * garde enveloppe TOUT adaptateur résolu : le futur `TiimeAdapter` en hérite
+ * sans avoir à y penser.
+ */
+export function avecGardeEssai(adapter: PlateformeAgreeeAdapter): PlateformeAgreeeAdapter {
+  return {
+    nom: adapter.nom,
+    async deposerFacture(input: DepotFactureInput): Promise<DepotFactureResult> {
+      if (!estNumeroEssai(input.numero)) return adapter.deposerFacture(input);
+      await journaliserSortieBloquee({
+        canal: "facture_electronique",
+        cibleType: "FactureFormation",
+        objet: input.numero,
+      });
+      return {
+        depotId: "",
+        statut: "rejetee",
+        message: `Facture ${input.numero} : pièce d'essai, jamais déposée sur la Plateforme Agréée.`,
+      };
+    },
+  };
+}
+
 /** Résout l'adaptateur PA depuis l'env. Défaut sécurisé : stub explicite. */
 export function resolvePaAdapter(): PlateformeAgreeeAdapter {
   const provider = process.env.PA_PROVIDER;
   switch (provider) {
-    // case "tiime": return new TiimeAdapter(); — à implémenter au choix de la PA.
+    // case "tiime": return avecGardeEssai(new TiimeAdapter()); — au choix de la PA.
     default:
-      return new StubPaAdapter();
+      return avecGardeEssai(new StubPaAdapter());
   }
 }

@@ -15,6 +15,7 @@
  * Stub-aware (early-exit `stub.invalid` → résultats vides) : lisible au build SSG.
  */
 
+import { SESSION_REELLE } from "@/server/qualiopi/essai/perimetre";
 import { prisma } from "@/lib/prisma";
 import {
   derivePlage,
@@ -144,7 +145,7 @@ function ratKey(date: Date): string {
  */
 async function collecteSessionsMarge(plage: { gte: Date; lt: Date }): Promise<MargeSession[]> {
   const sessions = await prisma.trainingSession.findMany({
-    where: { statut: "realisee", dateDebut: plage },
+    where: { ...SESSION_REELLE, statut: "realisee", dateDebut: plage },
     select: {
       id: true,
       numero: true,
@@ -267,7 +268,7 @@ export async function getHeuresParFormateur(options: MargeOptions): Promise<Heur
 
   // Sessions réalisées de la période (bornage commun heures ↔ coût).
   const sessions = await prisma.trainingSession.findMany({
-    where: { statut: "realisee", dateDebut: plage },
+    where: { ...SESSION_REELLE, statut: "realisee", dateDebut: plage },
     select: { id: true, dateDebut: true },
   });
   if (sessions.length === 0) return [];

@@ -30,6 +30,7 @@ import { revoquerTokensInscription } from "@/server/qualiopi/emargement/token-se
 import type { ModaliteFormation, FinancementType } from "@/server/qualiopi/formations/types";
 import { requireAdminWrite, logQualiopiActivity } from "@/server/actions/qualiopi/_guards";
 import { allocateSessionNumero } from "@/server/qualiopi/formations/numbering";
+import { numeroEssai } from "@/server/qualiopi/essai/numerotation";
 import { genererJoursParDefaut } from "@/server/qualiopi/presence/jours-defaut";
 import type { JourSession } from "@/server/qualiopi/presence/creneaux";
 import { parisDateISO } from "@/server/qualiopi/presence/time";
@@ -467,6 +468,7 @@ export async function reportSessionAction(input: z.infer<typeof reportSessionSch
     conventionTripartiteSigneeAt: Date | null;
     sessionParentId: string | null;
     // 🔴 Lieu de déroulement (off.9 + L.6353-1) — cf. bloc du `select`.
+    estTestInterne: boolean;
     lieuType: LieuTypeValue | null;
     lieuIntitule: string | null;
     lieuAdresse: string | null;
@@ -516,6 +518,8 @@ export async function reportSessionAction(input: z.infer<typeof reportSessionSch
         opcoStatut: true,
         conventionTripartiteSigneeAt: true,
         sessionParentId: true,
+        // QNC L02 — un report d'essai reste un essai (numéro hors suite légale).
+        estTestInterne: true,
         // 🔴 Vérification du plan 2026-08-19 — LE REPORT PERDAIT LE LIEU.
         //
         // Les 7 colonnes `lieu*` n'étaient ni lues ici, ni écrites au `create`,
@@ -702,7 +706,10 @@ export async function reportSessionAction(input: z.infer<typeof reportSessionSch
       : ancienne.coFormateurs;
 
   // Allouer le numéro de la nouvelle session (sans suffixe de récurrence)
-  const nouveauNumero = await allocateSessionNumero();
+  // QNC L02 — reporter un essai : numéro d'essai, drapeau recopié, jamais la suite légale.
+  const nouveauNumero = ancienne.estTestInterne
+    ? numeroEssai("session")
+    : await allocateSessionNumero();
 
   let nouvelleSessionId: string;
   let nouvelleSessionNumero: string;
@@ -722,6 +729,7 @@ export async function reportSessionAction(input: z.infer<typeof reportSessionSch
           montantHtCents: ancienne!.montantHtCents,
           statut: "planifiee",
           sessionReporteeId: ancienne!.id,
+          ...(ancienne!.estTestInterne ? { estTestInterne: true } : {}),
           // 🔴 Le LIEU suit la prestation (off.9 / L.6353-1). Recopié colonne à
           // colonne, `null` compris : un report qui n'emporte pas le lieu produit
           // une convention et une convocation muettes sur les conditions de

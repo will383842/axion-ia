@@ -95,6 +95,7 @@ import {
   gestePositionnement,
   HORIZON_JOURS,
 } from "@/server/qualiopi/parcours/relance-positionnement";
+import { FACTURE_HORS_ESSAI } from "@/server/qualiopi/essai/perimetre";
 import { chargerEtatsVerrou, dossierFige } from "@/server/qualiopi/sessions/verrou-dossier";
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -1358,6 +1359,8 @@ async function handleFacturesRetard(): Promise<void> {
       OR: [{ echeanceAt: { lt: now } }, { echeanceAt: null }],
       avoirDeId: null,
       estImportee: false,
+      // QNC L02 — une facture d'essai n'est jamais relancée.
+      ...FACTURE_HORS_ESSAI,
     },
     select: {
       id: true,
