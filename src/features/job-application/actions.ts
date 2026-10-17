@@ -46,6 +46,8 @@ import {
 import type { Prisma } from "../../../prisma/generated/client";
 import { signalerHoneypot } from "@/lib/security/honeypot-observable";
 import { estCandidatureFormateurFreelance } from "@/lib/careers/formateur-freelance";
+import { estOffreIntervenant } from "@/lib/careers/etapes-intervenant";
+import { isQualiopiCertificationObtenue } from "@/server/qualiopi/config/flag";
 import {
   decisionsDuDepot,
   lireChampsFormateurFreelance,
@@ -609,6 +611,14 @@ export async function submitJobApplicationAction(
         ...(lienDepot ? { lienDepot } : {}),
         // L0c-1 — F0 « mission », seulement quand son texte est validé.
         ...(decisions.accuseMission ? { mission: true } : {}),
+        // L14 — candidature d'intervenant : l'accusé décrit les vraies étapes.
+        ...(estOffreIntervenant(offer)
+          ? {
+              intervenant: true,
+              ...(estCandidatureFormateurFreelance(offer) ? { freelance: true } : {}),
+              ...(isQualiopiCertificationObtenue() ? { certificationObtenue: true } : {}),
+            }
+          : {}),
         ...(lienSuppression ? { lienSuppression } : {}),
       },
       { entityType: "JobApplication", entityId: app.id },

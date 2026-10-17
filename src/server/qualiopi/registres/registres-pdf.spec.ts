@@ -24,6 +24,7 @@ vi.mock("@/lib/prisma", () => ({
     appreciation: { findMany: vi.fn() },
     moyenPedagogique: { findMany: vi.fn() },
     trainerDevelopmentAction: { findMany: vi.fn() },
+    trainerHabilitation: { findMany: vi.fn() },
   },
 }));
 
@@ -54,6 +55,7 @@ const mockPrisma = prisma as unknown as {
   appreciation: { findMany: ReturnType<typeof vi.fn> };
   moyenPedagogique: { findMany: ReturnType<typeof vi.fn> };
   trainerDevelopmentAction: { findMany: ReturnType<typeof vi.fn> };
+  trainerHabilitation: { findMany: ReturnType<typeof vi.fn> };
 };
 
 beforeAll(() => {
@@ -71,6 +73,7 @@ function setupEmpty() {
   mockPrisma.appreciation.findMany.mockResolvedValue([]);
   mockPrisma.moyenPedagogique.findMany.mockResolvedValue([]);
   mockPrisma.trainerDevelopmentAction.findMany.mockResolvedValue([]);
+  mockPrisma.trainerHabilitation.findMany.mockResolvedValue([]);
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -80,7 +83,7 @@ function setupEmpty() {
 describe("renderRegistrePdfBuffer", () => {
   beforeEach(setupEmpty);
 
-  it("expose les 9 types de registres attendus", () => {
+  it("expose les 10 types de registres attendus", () => {
     expect([...REGISTRE_TYPES]).toEqual([
       "reclamations",
       "veille",
@@ -91,6 +94,7 @@ describe("renderRegistrePdfBuffer", () => {
       "appreciations",
       "moyens",
       "developpement_competences",
+      "habilitations",
     ]);
   });
 
@@ -429,6 +433,58 @@ describe("🔴 constat du ZIP du 2026-09-30 — appréciations, moyens et date d
     const result = await renderRegistrePdfBuffer("developpement_competences");
     expect(result.buffer.slice(0, 4).toString("utf8")).toBe("%PDF");
     expect(result.filename).toMatch(/^registre-developpement-competences-\d{4}-\d{2}-\d{2}\.pdf$/);
+  }, 30_000);
+
+  it("habilitations (ind. 21) : actives ET retirées, jamais effacées, motif facultatif", async () => {
+    mockPrisma.trainerHabilitation.findMany.mockResolvedValue([
+      {
+        habiliteAt: new Date("2026-03-02T09:00:00.000Z"),
+        retireAt: null,
+        motifRetrait: null,
+        note: null,
+        trainer: { nom: "Dupont", prenom: "Camille", statut: "sous_traitant" },
+        formation: { titre: "IA pour managers" },
+      },
+      {
+        habiliteAt: new Date("2025-11-10T09:00:00.000Z"),
+        retireAt: new Date("2026-02-01T09:00:00.000Z"),
+        motifRetrait: "Évaluations insuffisantes",
+        note: null,
+        trainer: { nom: "Martin", prenom: "Alex", statut: "salarie" },
+        formation: { titre: "Prompting avancé" },
+      },
+      {
+        habiliteAt: new Date("2025-10-01T09:00:00.000Z"),
+        retireAt: new Date("2026-01-15T09:00:00.000Z"),
+        motifRetrait: null,
+        note: null,
+        trainer: { nom: "Durand", prenom: "Sam", statut: "sous_traitant" },
+        formation: { titre: "IA et RGPD" },
+      },
+    ]);
+    const registre = await construireRegistre("habilitations");
+    // Aucun filtre sur `retireAt` : une habilitation retirée reste au registre.
+    const appel = mockPrisma.trainerHabilitation.findMany.mock.calls[0]![0] as {
+      where?: Record<string, unknown>;
+    };
+    expect(JSON.stringify(appel.where ?? {})).not.toContain("retireAt");
+    expect(registre.titre).toMatch(/habilitations/i);
+    expect(registre.lignes).toEqual([
+      ["Camille Dupont", "Indépendant", "IA pour managers", "02/03/2026", "Active", "", ""],
+      [
+        "Alex Martin",
+        "Salarié",
+        "Prompting avancé",
+        "10/11/2025",
+        "Retirée le 01/02/2026",
+        "Évaluations insuffisantes",
+        "",
+      ],
+      ["Sam Durand", "Indépendant", "IA et RGPD", "01/10/2025", "Retirée le 15/01/2026", "", ""],
+    ]);
+    const result = await renderRegistrePdfBuffer("habilitations");
+    expect(result.buffer.slice(0, 4).toString("utf8")).toBe("%PDF");
+    expect(result.filename).toMatch(/^registre-habilitations-\d{4}-\d{2}-\d{2}\.pdf$/);
   }, 30_000);
 
   it("le nom de fichier porte le jour de PARIS, pas celui d'UTC (00 h 53 à Paris le 30/09)", async () => {

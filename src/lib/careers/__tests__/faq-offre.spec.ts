@@ -24,8 +24,11 @@ const offre = (surcharge: Record<string, unknown>): JobOffer =>
     ...surcharge,
   }) as unknown as JobOffer;
 
+// L14 — « entretien » et « obligatoire » ne sont plus interdits : ce sont deux des
+// étapes RÉELLES du parcours (entretien noté, formation obligatoire à la méthode),
+// que la FAQ doit nommer. Le reste du lexique « mission, pas emploi » est inchangé.
 const MOTS_INTERDITS =
-  /poste|entretien|recrutement|salaire|r[ée]mun[ée]ration|bienvenue|vous devez|obligatoire|agent commercial|grenoble/i;
+  /poste|recrutement|salaire|r[ée]mun[ée]ration|bienvenue|vous devez|agent commercial|grenoble/i;
 
 const freelance = (surcharge: Record<string, unknown> = {}) =>
   offre({
@@ -142,6 +145,7 @@ describe("FAQ de l'offre freelance — lexique", () => {
       "statut",
       "honoraires",
       "candidature",
+      "etapes",
     ]);
     expect(items.find((i) => i.id === "honoraires")?.answer).toBe(
       "Les honoraires sont de 350 EUR /jour.",
@@ -155,6 +159,36 @@ describe("FAQ de l'offre freelance — lexique", () => {
   it("sans tarif visible, aucune question d'honoraires", () => {
     const ids = buildOfferFaqFreelance(freelance({ salaryVisible: false }), true).map((i) => i.id);
     expect(ids).not.toContain("honoraires");
+  });
+});
+
+describe("L14 — les vraies étapes dans les FAQ d'intervenants", () => {
+  it("la FAQ freelance annonce les étapes et la mention Qualiopi, sans « certifié »", () => {
+    const etapes = buildOfferFaqFreelance(freelance(), true).find((i) => i.id === "etapes")!;
+    expect(etapes.answer).toMatch(/entretien, noté/);
+    expect(etapes.answer).toMatch(/SIRET/);
+    expect(etapes.answer).toMatch(/formation obligatoire à la méthode Axion-IA/);
+    expect(etapes.answer).toContain(
+      "Aucune mission ne sera confiée avant l'obtention de la certification Qualiopi de l'organisme.",
+    );
+    expect(etapes.answer).not.toMatch(/certifi[ée]\b/i);
+  });
+
+  it("la mention s'efface quand la certification est obtenue", () => {
+    const etapes = buildOfferFaqFreelance(freelance(), true, { certificationObtenue: true }).find(
+      (i) => i.id === "etapes",
+    )!;
+    expect(etapes.answer).not.toMatch(/Qualiopi/);
+  });
+
+  it("la FAQ d'un formateur salarié ne dit plus « CV optionnel »", () => {
+    const a = buildOfferFaq(offre({}), "Formateur IA", true, { intervenant: true }).find(
+      (i) => i.id === "candidature",
+    )!.answer;
+    expect(a).not.toMatch(/optionnel/i);
+    expect(a).toMatch(/CV de moins de 24 mois/);
+    expect(a).not.toMatch(/SIRET/);
+    expect(a).toContain("certification Qualiopi de l'organisme");
   });
 });
 

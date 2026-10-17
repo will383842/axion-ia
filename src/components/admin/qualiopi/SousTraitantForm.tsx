@@ -19,6 +19,7 @@ import type {
 import type {
   genererContratSousTraitanceAction,
   genererProcedureSousTraitanceAction,
+  remplacerProcedureSousTraitanceAction,
 } from "@/server/actions/qualiopi/documents";
 
 const inputCls =
@@ -469,5 +470,103 @@ export function ProcedureSousTraitanceButton({ genererAction }: ProcedureSousTra
         </span>
       )}
     </span>
+  );
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Remplacement de la procédure par la v2.0 (lot L14)
+// ─────────────────────────────────────────────────────────────────────────────
+
+export interface RemplacerProcedureSousTraitanceProps {
+  remplacerAction: typeof remplacerProcedureSousTraitanceAction;
+}
+
+/**
+ * Saisit les numéros des pièces (celle que la v2.0 remplace, et l'éventuelle
+ * ancienne à annuler) et le motif. Tant que le texte de la v2.0 n'est pas
+ * rédigé, l'action répond par un refus explicite : rien n'est créé ni annulé.
+ */
+export function RemplacerProcedureSousTraitance({
+  remplacerAction,
+}: RemplacerProcedureSousTraitanceProps) {
+  const router = useRouter();
+  const [isPending, startTransition] = useTransition();
+  const [numeroRemplacee, setNumeroRemplacee] = useState("");
+  const [numeroAAnnuler, setNumeroAAnnuler] = useState("");
+  const [motif, setMotif] = useState("");
+  const [error, setError] = useState<string | null>(null);
+  const [successMsg, setSuccessMsg] = useState<string | null>(null);
+
+  function handleRemplacer() {
+    setError(null);
+    setSuccessMsg(null);
+    startTransition(async () => {
+      const result = await remplacerAction({
+        numeroRemplacee,
+        ...(numeroAAnnuler.trim() !== "" ? { numeroAAnnuler } : {}),
+        motif,
+      });
+      if ("error" in result) {
+        setError(result.error);
+      } else {
+        setSuccessMsg(
+          `Procédure v2.0 n° ${result.data.numero} versée ; elle remplace ${result.data.remplacee}.`,
+        );
+        router.refresh();
+      }
+    });
+  }
+
+  return (
+    <details className="inline-block">
+      <summary className="admin-button-secondary cursor-pointer">
+        Remplacer par la procédure v2.0
+      </summary>
+      <div className="mt-2 flex flex-col gap-1">
+        <input
+          aria-label="N° de la procédure remplacée"
+          placeholder="N° de la procédure remplacée"
+          value={numeroRemplacee}
+          onChange={(e) => setNumeroRemplacee(e.target.value)}
+          disabled={isPending}
+          className={inputCls}
+        />
+        <input
+          aria-label="N° de l'ancienne procédure à annuler (facultatif)"
+          placeholder="N° de l'ancienne procédure à annuler (facultatif)"
+          value={numeroAAnnuler}
+          onChange={(e) => setNumeroAAnnuler(e.target.value)}
+          disabled={isPending}
+          className={inputCls}
+        />
+        <input
+          aria-label="Motif (10 caractères minimum)"
+          placeholder="Motif (10 caractères minimum)"
+          value={motif}
+          onChange={(e) => setMotif(e.target.value)}
+          disabled={isPending}
+          maxLength={500}
+          className={inputCls}
+        />
+        <button
+          type="button"
+          onClick={handleRemplacer}
+          disabled={isPending || numeroRemplacee.trim() === ""}
+          className="admin-button-secondary"
+        >
+          {isPending ? "Remplacement…" : "Remplacer"}
+        </button>
+        {error && (
+          <span className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-error)]">
+            {error}
+          </span>
+        )}
+        {successMsg && (
+          <span className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-success)]">
+            {successMsg}
+          </span>
+        )}
+      </div>
+    </details>
   );
 }

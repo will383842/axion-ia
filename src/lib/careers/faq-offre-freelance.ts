@@ -9,9 +9,14 @@
 
 import type { JobOffer } from "../../../prisma/generated/client";
 import type { FaqOffreItem } from "./faq-offre";
+import { phraseEtapesIntervenant } from "./etapes-intervenant";
 import { applicantCountryLabel, normalizeApplicantCountries, salaryLabel } from "./format";
 
-export function buildOfferFaqFreelance(o: JobOffer, isFr: boolean): FaqOffreItem[] {
+export function buildOfferFaqFreelance(
+  o: JobOffer,
+  isFr: boolean,
+  opts?: { readonly certificationObtenue?: boolean },
+): FaqOffreItem[] {
   const items: FaqOffreItem[] = [];
 
   items.push({
@@ -87,6 +92,23 @@ export function buildOfferFaqFreelance(o: JobOffer, isFr: boolean): FaqOffreItem
     answer: isFr
       ? "Vous envoyez votre candidature en ligne en quelques minutes, via le bouton « Postuler » : un formulaire en quatre blocs courts, sans lettre ni photo."
       : "Send your application online in a few minutes via the « Apply » button: a short four-part form, no cover letter or photo.",
+  });
+
+  // L14 — les vraies étapes, sans promesse : pas de « CV optionnel », pas de
+  // doublon, pas d'équipe qui accompagne. La mention Qualiopi s'efface d'elle-même
+  // une fois la certification obtenue.
+  const langue = isFr ? "fr" : "en";
+  items.push({
+    id: "etapes",
+    question: isFr
+      ? "Quelles sont les étapes avant la première mission ?"
+      : "What are the steps before the first assignment?",
+    answer: phraseEtapesIntervenant(langue, {
+      freelance: true,
+      ...(opts?.certificationObtenue !== undefined
+        ? { certificationObtenue: opts.certificationObtenue }
+        : {}),
+    }),
   });
 
   return items;

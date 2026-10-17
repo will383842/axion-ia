@@ -15,6 +15,13 @@ import { modeFormateurFreelance } from "../formulaire-formateur-freelance";
 const MOTS_INTERDITS =
   /poste|entretien|recrutement|salaire|r[ée]mun[ée]ration|bienvenue|vous devez|obligatoire|agent commercial|grenoble/i;
 
+// L14 — la FAQ nomme les étapes réelles (entretien noté, formation obligatoire) ;
+// l'annonce JobPosting, elle, reste sans ces mots.
+const MOTS_INTERDITS_FAQ = new RegExp(
+  MOTS_INTERDITS.source.replace("|entretien", "").replace("|obligatoire", ""),
+  "i",
+);
+
 const offre = (surcharge: Record<string, unknown> = {}): JobOffer =>
   ({
     id: "00000000-0000-0000-0000-000000000001",
@@ -85,7 +92,7 @@ describe("JSON-LD d'une offre freelance, interrupteur allumé", () => {
         expect(freelance).toBe(true);
         expect(jobPosting).not.toBeNull();
         expect(valeurs(jobPosting).join("\n")).not.toMatch(MOTS_INTERDITS);
-        expect(valeurs(faq).join("\n")).not.toMatch(MOTS_INTERDITS);
+        expect(valeurs(faq).join("\n")).not.toMatch(MOTS_INTERDITS_FAQ);
         expect(jobPosting!.employmentType).toBe("CONTRACTOR");
         expect(jobPosting).not.toHaveProperty("baseSalary");
         expect(jobPosting).not.toHaveProperty("incentiveCompensation");
