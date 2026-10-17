@@ -160,9 +160,16 @@ describe("validerTousTextesFormateursAction (d'un coup)", () => {
    * Bug du 17/10 — le navigateur envoie un formulaire en multipart, et la sérialisation
    * multipart change chaque `\n` d'une valeur en `\r\n` (spécification HTML, appliquée
    * par Chromium comme par Node). Le champ caché `liste` arrivait donc TOUJOURS différent
-   * de la liste du serveur : le bouton refusait même sur une page fraîche.
+   * de la liste du serveur : le bouton refusait même sur une page fraîche. On applique ici
+   * cette règle à la main : passer par `new Response(f)` dépend de l'environnement de test.
    */
-  const commeLeNavigateur = (f: FormData) => new Response(f).formData();
+  const commeLeNavigateur = async (f: FormData) => {
+    const envoye = new FormData();
+    for (const [k, v] of f.entries()) {
+      envoye.set(k, typeof v === "string" ? v.replace(/\r?\n/g, "\r\n") : v);
+    }
+    return envoye;
+  };
 
   it("la liste réellement affichée, envoyée comme le navigateur l'envoie : acceptée", async () => {
     connecte("super_admin");
