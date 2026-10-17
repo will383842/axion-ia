@@ -29,6 +29,7 @@
 import React from "react";
 import { prisma } from "@/lib/prisma";
 import { getOrganismeIdentite } from "@/server/qualiopi/documents/organisme";
+import { avecFiligraneEssai } from "@/server/qualiopi/documents/filigrane-essai";
 import { renderPdfToBuffer } from "@/server/qualiopi/documents/render";
 import { EmargementPdf } from "@/server/qualiopi/documents/templates/emargement";
 import { construireFeuillePdf, LIBELLE_DEMI } from "@/server/qualiopi/emargement/feuille-pdf";
@@ -243,8 +244,15 @@ export async function rendreTirageEmargementAJour(
     maintenant,
     officielle === null ? null : { numero: officielle.numero, emiseLe: officielle.createdAt },
   );
+  const session = await prisma.trainingSession.findUnique({
+    where: { id: sessionId },
+    select: { estTestInterne: true },
+  });
   const rendu = await renderPdfToBuffer(
-    tirage.element(officielle?.numero ?? NUMERO_SANS_ORIGINE, mention),
+    avecFiligraneEssai(
+      tirage.element(officielle?.numero ?? NUMERO_SANS_ORIGINE, mention),
+      session?.estTestInterne === true,
+    ),
   );
 
   return {

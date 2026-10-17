@@ -4,6 +4,7 @@
  * voir `./resultats-publics` (module pur).
  */
 
+import { SESSION_REELLE } from "@/server/qualiopi/essai/perimetre";
 import { prisma } from "@/lib/prisma";
 import { getQualiopiConfig } from "@/server/qualiopi/config/site-settings";
 import { inscriptionsActives } from "@/server/qualiopi/inscriptions/inscriptions-actives";
@@ -35,7 +36,12 @@ export async function getResultatsPublicsFormation(
     });
     if (!formation || formation.indicateursPubliesAt === null) return null;
 
-    const sessionRealisee = { formationId: formation.id, statut: "realisee" as const };
+    // QNC L02 — une session d'essai ne nourrit aucun taux public.
+    const sessionRealisee = {
+      ...SESSION_REELLE,
+      formationId: formation.id,
+      statut: "realisee" as const,
+    };
 
     const sessions = await prisma.trainingSession.findMany({
       where: sessionRealisee,
@@ -45,7 +51,7 @@ export async function getResultatsPublicsFormation(
 
     const [inscriptions, questionnaires, seuilPresencePct] = await Promise.all([
       prisma.enrollment.findMany({
-        where: { ...inscriptionsActives(), session: sessionRealisee },
+        where: { ...inscriptionsActives(), estTestInterne: false, session: sessionRealisee },
         select: { tauxPresencePct: true },
       }),
       prisma.questionnaire.findMany({
@@ -53,7 +59,7 @@ export async function getResultatsPublicsFormation(
           type: "satisfaction_chaud",
           reponduAt: { not: null },
           noteGlobale: { not: null },
-          enrollment: { session: sessionRealisee },
+          enrollment: { estTestInterne: false, session: sessionRealisee },
         },
         select: { noteGlobale: true },
       }),
@@ -94,8 +100,12 @@ export async function listerFormationsAResultatsDiffuses(): Promise<string[]> {
       slug: true,
       indicateursPubliesAt: true,
       sessions: {
-        where: { statut: "realisee" },
-        select: { _count: { select: { enrollments: { where: inscriptionsActives() } } } },
+        where: { ...SESSION_REELLE, statut: "realisee" },
+        select: {
+          _count: {
+            select: { enrollments: { where: { ...inscriptionsActives(), estTestInterne: false } } },
+          },
+        },
       },
     },
   });

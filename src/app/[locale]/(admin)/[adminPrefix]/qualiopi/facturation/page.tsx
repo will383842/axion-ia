@@ -12,6 +12,7 @@
  * gardent leurs écrans dédiés — ce Hub est la vue de PILOTAGE transverse.
  */
 
+import { FACTURE_HORS_ESSAI } from "@/server/qualiopi/essai/perimetre";
 import React from "react";
 import type { Metadata } from "next";
 import Link from "next/link";
@@ -184,11 +185,20 @@ export default async function FacturationHubPage({
         // est le CA ÉMIS, qui inclut `payee`. Une facture réglée reste du chiffre
         // d'affaires émis ; elle n'est simplement plus une créance. Ne pas
         // « harmoniser » ce filtre — il répond à une autre question.
-        where: { statut: { in: ["emise", "partiellement_payee", "en_retard", "payee"] } },
+        // QNC L02 — une facture d'ESSAI reste listée (son numéro `-ESSAI-` la
+        // marque) mais ne compte dans aucun indicateur d'argent.
+        where: {
+          ...FACTURE_HORS_ESSAI,
+          statut: { in: ["emise", "partiellement_payee", "en_retard", "payee"] },
+        },
         _sum: { montantTtcCents: true },
       }),
       prisma.payment.aggregate({
-        where: { factureFormationId: { not: null }, status: "succeeded" },
+        where: {
+          factureFormationId: { not: null },
+          factureFormation: { is: FACTURE_HORS_ESSAI },
+          status: "succeeded",
+        },
         _sum: { amountCents: true },
       }),
       // Balance âgée + retards : factures ouvertes avec paiements et avoirs —
@@ -196,6 +206,7 @@ export default async function FacturationHubPage({
       // avoir ou trop-perçu ne pèse plus rien). Volume TPE, calcul serveur.
       prisma.factureFormation.findMany({
         where: {
+          ...FACTURE_HORS_ESSAI,
           statut: { in: [...STATUTS_FACTURE_OUVERTE] },
           avoirDeId: null,
         },

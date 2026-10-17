@@ -28,6 +28,8 @@
 
 "use server";
 
+import { stagiaireDEssai } from "@/server/qualiopi/essai/contexte";
+import { sortieSaufEssai } from "@/server/qualiopi/essai/sorties";
 import { z } from "zod";
 import * as Sentry from "@sentry/nextjs";
 import { prisma } from "@/lib/prisma";
@@ -334,6 +336,23 @@ export async function soumettreSatisfactionPortailAction(input: {
 }
 
 /**
+ * QNC L02 — le message Telegram d'une déclaration d'adaptation, sauf pour un
+ * stagiaire qui n'existe que dans des sessions d'essai : rien ne part vers
+ * Telegram, le refus est journalisé. L'alerte de console, interne, reste.
+ */
+async function alerterTelegramAdaptation(traineeId: string): Promise<void> {
+  await sortieSaufEssai(
+    await stagiaireDEssai(traineeId),
+    { canal: "telegram", cibleType: "Trainee", cibleId: traineeId, objet: "ADAPTATION_DECLAREE" },
+    () =>
+      sendTelegram({
+        tag: "ADAPTATION_DECLAREE",
+        body: construireMessageTelegramAdaptation(traineeId),
+      }),
+  );
+}
+
+/**
  * Enregistre un besoin d'adaptation déclaré au POSITIONNEMENT et prévient.
  *
  * Même destination et même régime que `declarerHandicapAction` pour le DÉTAIL :
@@ -411,10 +430,7 @@ async function signalerBesoinAdaptation(traineeId: string, detail: string): Prom
   // Will peut ne pas le lire, et rien ne l'y ramène.
   //
   // Le message ne contient ni identité ni nature : un renvoi vers la fiche.
-  void sendTelegram({
-    tag: "ADAPTATION_DECLAREE",
-    body: construireMessageTelegramAdaptation(trainee.id),
-  }).catch(() => {});
+  void alerterTelegramAdaptation(trainee.id).catch(() => {});
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -763,10 +779,7 @@ async function declarerDepuisMonCompte(
   // remplace pas l'alerte : Will peut ne pas le lire, et rien ne l'y ramène.
   //
   // Canal tiers : le message se limite à un renvoi vers la fiche.
-  void sendTelegram({
-    tag: "ADAPTATION_DECLAREE",
-    body: construireMessageTelegramAdaptation(trainee.id),
-  }).catch(() => {});
+  void alerterTelegramAdaptation(trainee.id).catch(() => {});
 
   return { data: { ok: true } };
 }

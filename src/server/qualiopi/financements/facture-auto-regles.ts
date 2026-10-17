@@ -45,6 +45,7 @@
  *     alerte, jamais une réémission automatique.
  */
 
+import { estSessionReelle, SESSION_REELLE } from "@/server/qualiopi/essai/perimetre";
 import { prisma } from "@/lib/prisma";
 import { dayKeyInParis } from "@/lib/calendar-grid";
 import { champsAcheteurManquants } from "@/server/qualiopi/documents/conformite";
@@ -185,10 +186,13 @@ export interface SessionFactureAuto {
    * Rempli par `chargerSessionsFactureAuto` ; absent = aucune.
    */
   facturesHorsSession?: Array<{ numero: string }>;
+  /** QNC L02 — session d'ESSAI : jamais facturée par l'automate. Absent = réelle. */
+  estTestInterne?: boolean;
 }
 
 export const SESSION_FACTURE_AUTO_SELECT = {
   id: true,
+  estTestInterne: true,
   numero: true,
   titreSession: true,
   statut: true,
@@ -240,6 +244,7 @@ export async function chargerSessionsFactureAuto(now: Date): Promise<SessionFact
   ];
   const lignes = await prisma.trainingSession.findMany({
     where: {
+      ...SESSION_REELLE,
       statut: "realisee",
       dateFin: { gte: new Date(Math.max(...planchers)), lte: now },
     },
@@ -356,7 +361,10 @@ export type MotifNonAutomatisable =
 
 export type DecisionFactureAuto =
   | { verdict: "attendre"; raison: "non_realisee" | "avant_lendemain" }
-  | { verdict: "hors_champ"; raison: "avant_mise_en_service" | "fenetre_depassee" }
+  | {
+      verdict: "hors_champ";
+      raison: "avant_mise_en_service" | "fenetre_depassee" | "session_d_essai";
+    }
   | { verdict: "deja_facturee" }
   | {
       verdict: "non_automatisable";
@@ -389,6 +397,9 @@ const LIBELLE_FINANCEMENT: Record<string, string> = {
  * du 6 à 00 h (heure de Paris), pas 24 h plus tard.
  */
 export function deciderFactureAuto(s: SessionFactureAuto, now: Date): DecisionFactureAuto {
+  // QNC L02 — en PREMIER : une session d'essai ne déclenche aucune facture,
+  // aucun e-mail, aucun évènement Partners. Relue sous verrou par la garde.
+  if (!estSessionReelle(s)) return { verdict: "hors_champ", raison: "session_d_essai" };
   if (s.statut !== "realisee") return { verdict: "attendre", raison: "non_realisee" };
   if (s.dateFin.getTime() < MISE_EN_SERVICE_FACTURE_AUTO.getTime()) {
     return { verdict: "hors_champ", raison: "avant_mise_en_service" };

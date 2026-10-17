@@ -396,6 +396,15 @@ function joinDefined(parts: Array<string | null | undefined>, sep: string): stri
 }
 
 /**
+ * QNC L02 — filigrane ESSAI. Porté par un CONTEXTE et non par une prop : les
+ * 48 gabarits ne transmettent pas un drapeau de plus, et un gabarit oublié
+ * sortirait une pièce d'essai d'apparence officielle. `generateDocument` (et
+ * le rendu de l'exemplaire signé) enveloppent l'élément dans ce contexte quand
+ * la session est d'essai ; `QualiopiPage` le lit sur CHAQUE page.
+ */
+export const FiligraneEssaiContexte = React.createContext(false);
+
+/**
  * Wrapper de page A4 avec en-tête organisme, encart numéro de document,
  * filigrane "COPIE" optionnel, et pied de page paginé portant l'identité +
  * l'adresse postale complète de l'OF (répétée sur chaque page — pièce d'audit).
@@ -436,9 +445,17 @@ export function QualiopiPage({
     "  ·  ",
   );
   const footerContact = joinDefined([identite.email, identite.telephone, identite.site], "  ·  ");
+  const estEssai = React.useContext(FiligraneEssaiContexte);
 
   return (
     <Page size="A4" style={pdfStyles.page}>
+      {/* Filigrane ESSAI (QNC L02) — `fixed` : répété sur chaque page. */}
+      {estEssai && (
+        <Text style={pdfStyles.watermarkSpecimen} fixed>
+          ESSAI
+        </Text>
+      )}
+
       {/* Filigrane COPIE */}
       {estCopie && <Text style={pdfStyles.watermark}>COPIE</Text>}
 
@@ -472,6 +489,16 @@ export function QualiopiPage({
           <Text style={pdfStyles.specimenBannerText}>
             {specimenMotif ??
               "Identité de l'organisme incomplète : ce document ne peut pas être remis à un client, un financeur ou un auditeur."}
+          </Text>
+        </View>
+      )}
+
+      {estEssai && (
+        <View style={pdfStyles.specimenBanner}>
+          <Text style={pdfStyles.specimenBannerTitle}>ESSAI — pièce sans valeur</Text>
+          <Text style={pdfStyles.specimenBannerText}>
+            Pièce d&apos;une session d&apos;essai interne : numéro hors suite légale, jamais remise
+            à un client, un financeur ou un auditeur comme pièce réelle.
           </Text>
         </View>
       )}

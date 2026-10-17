@@ -30,6 +30,10 @@ import { prisma } from "@/lib/prisma";
 import { TriangleAlert } from "lucide-react";
 import { AccesRefuse } from "@/components/admin/ui/AccesRefuse";
 import { gardePage } from "@/server/auth/garde-page";
+import { AdressesEssaiForm } from "@/components/admin/qualiopi/AdressesEssaiForm";
+import { lireInterrupteurQualiopi } from "@/server/qualiopi/socle/interrupteurs";
+import { LOT_ESSAI } from "@/server/qualiopi/essai/perimetre";
+import { lireAdressesDEssai } from "@/server/qualiopi/essai/liste-blanche";
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
@@ -70,6 +74,12 @@ export default async function QualiopiConfigPage({ params }: PageProps) {
     };
   });
 
+  // QNC L02 — état du mode essai et liste blanche (lectures tolérantes : éteint / vide).
+  const [etatEssai, adressesEssai] = await Promise.all([
+    lireInterrupteurQualiopi(LOT_ESSAI),
+    lireAdressesDEssai(),
+  ]);
+
   return (
     <AdminPageShell width="wide">
       <AdminPageHeader
@@ -97,6 +107,18 @@ export default async function QualiopiConfigPage({ params }: PageProps) {
           et non destructif : aucune valeur saisie n&apos;est écrasée.
         </p>
         <SeedReferenceDataButton initial={referenceStatus} />
+      </section>
+
+      <section className="mb-[var(--space-admin-6)] rounded-[var(--radius-admin-lg)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] p-[var(--space-admin-5)]">
+        <h2 className="mb-[var(--space-admin-2)] text-[length:var(--text-admin-lg)] font-[var(--font-weight-admin-semibold)]">
+          Mode essai — adresses de test
+        </h2>
+        <p className="mb-[var(--space-admin-4)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
+          Interrupteur <code>qualiopi.essai.actif</code> : <strong>{etatEssai}</strong>. Les e-mails
+          d&apos;une session d&apos;essai ne partent QUE vers ces adresses ; tout autre destinataire
+          est bloqué et journalisé. Liste vide = aucun e-mail d&apos;essai ne part.
+        </p>
+        <AdressesEssaiForm initiales={[...adressesEssai]} />
       </section>
 
       <QualiopiConfigForm fields={fields} />

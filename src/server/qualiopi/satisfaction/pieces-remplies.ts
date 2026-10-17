@@ -21,6 +21,7 @@ import React from "react";
 import { prisma } from "@/lib/prisma";
 import { inscriptionSurSessionTenue } from "@/server/qualiopi/conformite/piece-admissible";
 import { getOrganismeIdentite } from "@/server/qualiopi/documents/organisme";
+import { avecFiligraneEssai } from "@/server/qualiopi/documents/filigrane-essai";
 import { renderPdfToBuffer } from "@/server/qualiopi/documents/render";
 import { SatisfactionRempliePdf } from "@/server/qualiopi/documents/templates/satisfaction-remplie";
 import {
@@ -78,7 +79,9 @@ export async function produirePiecesSatisfactionRemplie(): Promise<{
       enrollment: {
         select: {
           trainee: { select: { nom: true, prenom: true } },
-          session: { select: { titreSession: true, dateDebut: true, dateFin: true } },
+          session: {
+            select: { titreSession: true, estTestInterne: true, dateDebut: true, dateFin: true },
+          },
         },
       },
     },
@@ -105,25 +108,28 @@ export async function produirePiecesSatisfactionRemplie(): Promise<{
 
     try {
       const { buffer } = await renderPdfToBuffer(
-        React.createElement(SatisfactionRempliePdf, {
-          data: {
-            reference: `SAT-${ligne.id.slice(0, 8)}`,
-            moment,
-            nomStagiaire: nomStagiaire === "" ? "Stagiaire non nommé" : nomStagiaire,
-            intituleFormation: session.titreSession,
-            debutSession: formaterInstantParis(session.dateDebut),
-            finSession: formaterInstantParis(session.dateFin),
-            reponduLe: formaterInstantParis(ligne.reponduAt),
-            tireeLe,
-            saisieOrganisme,
-            noteGlobale: ligne.noteGlobale,
-            commentaire: texte(ligne.reponses, "commentaire"),
-            objectifsAtteints: texte(ligne.reponses, "objectifs_atteints"),
-            pointsForts: texte(ligne.reponses, "points_forts"),
-            axesAmelioration: texte(ligne.reponses, "axes_amelioration"),
-          },
-          identite,
-        }),
+        avecFiligraneEssai(
+          React.createElement(SatisfactionRempliePdf, {
+            data: {
+              reference: `SAT-${ligne.id.slice(0, 8)}`,
+              moment,
+              nomStagiaire: nomStagiaire === "" ? "Stagiaire non nommé" : nomStagiaire,
+              intituleFormation: session.titreSession,
+              debutSession: formaterInstantParis(session.dateDebut),
+              finSession: formaterInstantParis(session.dateFin),
+              reponduLe: formaterInstantParis(ligne.reponduAt),
+              tireeLe,
+              saisieOrganisme,
+              noteGlobale: ligne.noteGlobale,
+              commentaire: texte(ligne.reponses, "commentaire"),
+              objectifsAtteints: texte(ligne.reponses, "objectifs_atteints"),
+              pointsForts: texte(ligne.reponses, "points_forts"),
+              axesAmelioration: texte(ligne.reponses, "axes_amelioration"),
+            },
+            identite,
+          }),
+          session.estTestInterne,
+        ),
       );
       pieces.push({ chemin, buffer, saisieOrganisme, moment });
     } catch (err) {

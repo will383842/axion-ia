@@ -52,6 +52,7 @@
  * `autofacture-rattrapage.graphe-worker.spec.ts`.
  */
 
+import { journaliserSortieBloquee } from "@/server/qualiopi/essai/sorties";
 import { prisma } from "@/lib/prisma";
 import { enqueueEmail } from "@/server/queue/queues";
 import { documentPdfKey } from "@/lib/r2-storage";
@@ -242,7 +243,9 @@ export type CodeRefusAutofacture =
   | "montant_incoherent"
   | "technique"
   /** Une autre émission tenait la série au-delà de l'attente : rien n'a été tenté. */
-  | "verrou_pris";
+  | "verrou_pris"
+  /** QNC L02 — le relevé porte une prestation d'une session d'ESSAI. */
+  | "session_d_essai";
 
 /** L'étape où un échec technique s'est produit — c'est elle qu'on journalise. */
 export type EtapeEmissionAutofacture = "verrou" | "preparation" | "numero" | "pdf" | "ecriture";
@@ -346,6 +349,25 @@ export async function emettreAutofacture(
   return { data: { numero: piece.numero, transmise } };
 }
 
+/**
+ * QNC L02 — garde de dernier recours. Le calcul des relevés écarte déjà les
+ * sessions d'essai (`statements.ts`) ; un chemin qui poserait quand même une
+ * ligne d'honoraires sur un essai (paiement à la mission) est arrêté ici,
+ * avant tout numéro `AXI-AUTOF` et tout e-mail au formateur.
+ */
+async function releveTouchantUnEssai(statementId: string): Promise<boolean> {
+  const lignes = await prisma.trainerFeeLine.findMany({
+    where: { statementId, sessionId: { not: null } },
+    select: { sessionId: true },
+  });
+  const ids = [...new Set(lignes.flatMap((l) => (l.sessionId ? [l.sessionId] : [])))];
+  if (ids.length === 0) return false;
+  const essais = await prisma.trainingSession.count({
+    where: { id: { in: ids }, estTestInterne: true },
+  });
+  return essais > 0;
+}
+
 /** Tout ce qui décide et écrit — appelé UNIQUEMENT sous le verrou de série. */
 async function emettreSousVerrou(
   statementId: string,
@@ -355,6 +377,19 @@ async function emettreSousVerrou(
   try {
     releve = await lireReleveAutofacture(statementId);
     if (releve === null) return { error: "Relevé introuvable.", code: "introuvable" };
+    if (await releveTouchantUnEssai(statementId)) {
+      await journaliserSortieBloquee({
+        canal: "autofacture",
+        cibleType: "TrainerStatement",
+        cibleId: statementId,
+        objet: "autofacture",
+      });
+      return {
+        error:
+          "Ce relevé porte une prestation d'une session d'essai : une session d'essai ne rémunère personne et ne s'autofacture pas.",
+        code: "session_d_essai",
+      };
+    }
     mandat = await resoudreMandat(releve.trainerId, releve.trainer);
   } catch (cause) {
     return {

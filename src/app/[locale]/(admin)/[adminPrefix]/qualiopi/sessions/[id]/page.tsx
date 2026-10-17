@@ -16,6 +16,7 @@
  * Server Component. Force-dynamic. Robots noindex.
  */
 
+import { BadgeEssai } from "@/components/admin/qualiopi/BadgeEssai";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Fragment, type ReactNode } from "react";
@@ -193,6 +194,8 @@ function chargerSession(id: string) {
     select: {
       id: true,
       numero: true,
+      // QNC L02 — la fiche d'une session d'essai le dit en tête.
+      estTestInterne: true,
       titreSession: true,
       statut: true,
       modalite: true,
@@ -853,7 +856,17 @@ export default async function SessionHubPage({ params, searchParams }: PageProps
       <>
         {/* ── En-tête de la session ─────────────────────────────────────────── */}
         <section id="infos" className={`mb-[var(--space-admin-8)] ${CLASSE_ANCRE_SECTION}`}>
-          <h2 className={sectionHeadCls}>Informations générales</h2>
+          <h2 className={sectionHeadCls}>
+            Informations générales
+            {trainingSession.estTestInterne && <BadgeEssai />}
+          </h2>
+          {trainingSession.estTestInterne && (
+            <p className="mb-[var(--space-admin-3)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
+              Session d&apos;essai interne : pièces numérotées hors suite légale et filigranées,
+              e-mails limités aux adresses de test, aucune facture électronique, commission,
+              synchronisation ni alerte externe. Exclue du BPF, du pilotage et des taux publiés.
+            </p>
+          )}
           <div className="grid grid-cols-2 gap-[var(--space-admin-4)] rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] p-[var(--space-admin-5)] sm:grid-cols-4">
             {/* Formation */}
             <div>

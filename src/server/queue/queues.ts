@@ -849,6 +849,41 @@ export async function enqueueImageBankAutoConvert(
   });
 }
 
+/**
+ * QNC L02 — l'envoi concerne-t-il une session d'essai, vers une adresse hors
+ * liste blanche ? Si oui, il est journalisé (empreinte du destinataire, jamais
+ * l'adresse) et ne part pas. Chargé à la demande : la plupart des envois ne
+ * relèvent d'aucune session et ne lisent rien.
+ */
+async function essaiHorsListeBlanche(
+  template: EmailJobName,
+  to: string,
+  options: { entityType?: string; entityId?: string } | undefined,
+): Promise<boolean> {
+  const { verdictEssaiDeLEntite } = await import("@/server/qualiopi/essai/contexte");
+  const verdict = await verdictEssaiDeLEntite({
+    entityType: options?.entityType ?? null,
+    entityId: options?.entityId ?? null,
+  });
+  if (verdict !== "essai") return false;
+  const [{ lireAdressesDEssai, destinatairesAutorises }, { journaliserSortieBloquee }] =
+    await Promise.all([
+      import("@/server/qualiopi/essai/liste-blanche"),
+      import("@/server/qualiopi/essai/sorties"),
+    ]);
+  if (destinatairesAutorises([to], await lireAdressesDEssai())) return false;
+  const { hashEmailForLookup } = await import("@/lib/security/email-hash");
+  const empreinte = hashEmailForLookup(to);
+  await journaliserSortieBloquee({
+    canal: "email",
+    cibleType: options?.entityType ?? "email",
+    cibleId: options?.entityId ?? null,
+    objet: template,
+    empreintes: empreinte !== null ? [empreinte] : [],
+  });
+  return true;
+}
+
 /** Objet du gabarit, sans rendu HTML — pour l'affichage de la corbeille (lot 2). */
 async function sujetLisible(
   template: EmailJobName,
@@ -952,6 +987,8 @@ export async function enqueueEmail(
   retenu?: MotifRetenue;
   /** La corbeille devait retenir cet email et n'a pas pu l'écrire : rien n'est parti (lot 2). */
   corbeilleIndisponible?: boolean;
+  /** E-mail d'une session d'ESSAI vers une adresse hors liste blanche : bloqué (QNC L02). */
+  essaiBloque?: boolean;
 }> {
   if (!emailsQueue) {
     if (process.env.NODE_ENV !== "production" && !isBullmqDisabled()) {
@@ -960,6 +997,12 @@ export async function enqueueEmail(
     // Retour détectable : les appelants qui exigent une garantie de mise en file
     // (ex. reply admin) peuvent marquer un échec explicite au lieu d'un faux succès.
     return { enqueued: false };
+  }
+  // 🔴 QNC L02 — un e-mail d'une session d'ESSAI ne part que vers la liste
+  // blanche des adresses d'essai. AVANT la corbeille : un e-mail garé puis
+  // approuvé repasse ici (`bypassValidation`) et y est jugé de nouveau.
+  if (await essaiHorsListeBlanche(template, to, options)) {
+    return { enqueued: false, essaiBloque: true };
   }
   // 🔴 Audit e-mails 2026-09-02 — liste de suppression, AVANT la corbeille et
   // AVANT la file. Une adresse qui a rebondi dur ne reçoit plus rien ; une

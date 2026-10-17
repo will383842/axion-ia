@@ -29,6 +29,8 @@ import {
   versionGabaritAEcrire,
 } from "@/server/qualiopi/documents/templates/versions-arretees";
 import type { OrganismeIdentite } from "@/server/qualiopi/documents/organisme";
+import { avecFiligraneEssai } from "@/server/qualiopi/documents/filigrane-essai";
+import { numeroEssai } from "@/server/qualiopi/essai/numerotation";
 
 /**
  * Mappage DocumentType → série de numérotation.
@@ -517,6 +519,19 @@ export async function generateDocument(
     }
   }
 
+  // QNC L02 — une pièce de session d'ESSAI : numéro hors suite légale et
+  // filigrane ESSAI. Lu SANS tolérance : une base illisible fait échouer la
+  // génération plutôt que de consommer un numéro légal pour un essai.
+  const estEssai =
+    input.refs?.sessionId !== undefined
+      ? (
+          await prisma.trainingSession.findUnique({
+            where: { id: input.refs.sessionId },
+            select: { estTestInterne: true },
+          })
+        )?.estTestInterne === true
+      : false;
+
   // 1. Allocation numéro séquentiel + rendu PDF (retry sur P2002 contrainte unique).
   const year = new Date().getFullYear();
   // Pas de `?? "formation"` : `DOC_TYPE_TO_NUMBERING` est un Record EXHAUSTIF
@@ -572,12 +587,14 @@ export async function generateDocument(
     // table est écrite ici, à la main, parce qu'une série est le couple
     // (PRÉFIXE, TABLE) : la déduire du type était précisément l'erreur qui
     // faisait frapper `AXI-FORM-2026-001` par deux registres différents.
-    const numero = await nextNumero(numberingType, year, (prefixe) =>
-      prisma.documentGenere.findMany({
-        where: { numero: { startsWith: prefixe } },
-        select: { numero: true },
-      }),
-    );
+    const numero = estEssai
+      ? numeroEssai(numberingType)
+      : await nextNumero(numberingType, year, (prefixe) =>
+          prisma.documentGenere.findMany({
+            where: { numero: { startsWith: prefixe } },
+            select: { numero: true },
+          }),
+        );
 
     // 🔴 Une régénération n'est JAMAIS un original. Chaque tirage alloue un
     // nouveau numéro séquentiel : sans filigrane, deux pièces d'apparence
@@ -603,7 +620,9 @@ export async function generateDocument(
     verifierVersionDuComposant(input.type, elementToRender.type, gabaritVersion);
     elementToRender = avecFiligraneCopie(elementToRender, estUneRegeneration);
     elementToRender = avecMarquageSpecimen(elementToRender, specimen);
-    const { buffer, hashSha256, sizeBytes } = await renderPdfToBuffer(elementToRender);
+    const { buffer, hashSha256, sizeBytes } = await renderPdfToBuffer(
+      avecFiligraneEssai(elementToRender, estEssai),
+    );
 
     /**
      * 🔴 INSTANTANÉ des données de rendu — c'est ce qui rend l'exemplaire SIGNÉ

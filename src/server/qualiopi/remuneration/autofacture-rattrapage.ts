@@ -139,7 +139,13 @@ export async function rattraperAutofactures(): Promise<BilanRattrapageAutofactur
       // l'émission. `verrou_pris` : un autre émetteur tenait la série — le
       // relevé est repris au passage suivant, relu sous verrou. Ni l'un ni
       // l'autre n'est une panne ou un manque de données.
-      if (res.code === "ineligible" || res.code === "introuvable" || res.code === "verrou_pris") {
+      // `session_d_essai` (QNC L02) : refus voulu, déjà journalisé — pas une panne.
+      if (
+        res.code === "ineligible" ||
+        res.code === "introuvable" ||
+        res.code === "verrou_pris" ||
+        res.code === "session_d_essai"
+      ) {
         refusees += 1;
         continue;
       }

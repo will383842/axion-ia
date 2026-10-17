@@ -27,6 +27,7 @@ import React from "react";
 import { prisma } from "@/lib/prisma";
 import { inscriptionSurSessionTenue } from "@/server/qualiopi/conformite/piece-admissible";
 import { getOrganismeIdentite } from "@/server/qualiopi/documents/organisme";
+import { avecFiligraneEssai } from "@/server/qualiopi/documents/filigrane-essai";
 import { renderPdfToBuffer } from "@/server/qualiopi/documents/render";
 import { PositionnementRempliPdf } from "@/server/qualiopi/documents/templates/positionnement-rempli";
 import {
@@ -123,7 +124,7 @@ export async function produirePiecesPositionnementRempli(): Promise<{
       enrollment: {
         select: {
           trainee: { select: { id: true, nom: true, prenom: true } },
-          session: { select: { titreSession: true, dateDebut: true } },
+          session: { select: { titreSession: true, estTestInterne: true, dateDebut: true } },
         },
       },
     },
@@ -150,20 +151,23 @@ export async function produirePiecesPositionnementRempli(): Promise<{
 
     try {
       const { buffer } = await renderPdfToBuffer(
-        React.createElement(PositionnementRempliPdf, {
-          data: {
-            reference: `POS-${ligne.id.slice(0, 8)}`,
-            nomStagiaire: nomStagiaire === "" ? "Stagiaire non nommé" : nomStagiaire,
-            intituleFormation: session.titreSession,
-            debutSession: formaterInstantParis(session.dateDebut),
-            reponduLe: formaterInstantParis(ligne.reponduAt),
-            chronologie: chronologieReponse(ligne.reponduAt, session.dateDebut),
-            reponduAvantDebut: reponseAvantDebut(ligne.reponduAt, session.dateDebut),
-            tireeLe,
-            positionnement: lirePositionnement(ligne.reponses),
-          },
-          identite,
-        }),
+        avecFiligraneEssai(
+          React.createElement(PositionnementRempliPdf, {
+            data: {
+              reference: `POS-${ligne.id.slice(0, 8)}`,
+              nomStagiaire: nomStagiaire === "" ? "Stagiaire non nommé" : nomStagiaire,
+              intituleFormation: session.titreSession,
+              debutSession: formaterInstantParis(session.dateDebut),
+              reponduLe: formaterInstantParis(ligne.reponduAt),
+              chronologie: chronologieReponse(ligne.reponduAt, session.dateDebut),
+              reponduAvantDebut: reponseAvantDebut(ligne.reponduAt, session.dateDebut),
+              tireeLe,
+              positionnement: lirePositionnement(ligne.reponses),
+            },
+            identite,
+          }),
+          session.estTestInterne,
+        ),
       );
       pieces.push({ chemin, buffer, saisieOrganisme });
     } catch (err) {

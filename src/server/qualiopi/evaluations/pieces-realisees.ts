@@ -21,6 +21,7 @@ import React from "react";
 import { prisma } from "@/lib/prisma";
 import { inscriptionSurSessionTenue } from "@/server/qualiopi/conformite/piece-admissible";
 import { getOrganismeIdentite } from "@/server/qualiopi/documents/organisme";
+import { avecFiligraneEssai } from "@/server/qualiopi/documents/filigrane-essai";
 import { renderPdfToBuffer } from "@/server/qualiopi/documents/render";
 import {
   EvaluationRealiseePdf,
@@ -88,7 +89,7 @@ export async function produirePiecesEvaluationRealisee(): Promise<{
       enrollment: {
         select: {
           trainee: { select: { nom: true, prenom: true } },
-          session: { select: { titreSession: true, dateDebut: true } },
+          session: { select: { titreSession: true, estTestInterne: true, dateDebut: true } },
         },
       },
     },
@@ -117,23 +118,26 @@ export async function produirePiecesEvaluationRealisee(): Promise<{
 
     try {
       const { buffer } = await renderPdfToBuffer(
-        React.createElement(EvaluationRealiseePdf, {
-          data: {
-            reference: `EVA-${ligne.id.slice(0, 8)}`,
-            nomStagiaire: nomStagiaire === "" ? "Stagiaire non nommé" : nomStagiaire,
-            intituleFormation: session.titreSession,
-            evalueeLe: formaterInstantParis(ligne.dateEvaluation),
-            tireeLe,
-            scoreObtenu: ligne.scoreObtenu,
-            scoreMax: ligne.scoreMax,
-            scorePct: ligne.scorePct,
-            niveauGlobal: ligne.niveauGlobal,
-            reussite: ligne.reussite,
-            competences: lireCompetences(ligne.competences),
-            recommandations,
-          },
-          identite,
-        }),
+        avecFiligraneEssai(
+          React.createElement(EvaluationRealiseePdf, {
+            data: {
+              reference: `EVA-${ligne.id.slice(0, 8)}`,
+              nomStagiaire: nomStagiaire === "" ? "Stagiaire non nommé" : nomStagiaire,
+              intituleFormation: session.titreSession,
+              evalueeLe: formaterInstantParis(ligne.dateEvaluation),
+              tireeLe,
+              scoreObtenu: ligne.scoreObtenu,
+              scoreMax: ligne.scoreMax,
+              scorePct: ligne.scorePct,
+              niveauGlobal: ligne.niveauGlobal,
+              reussite: ligne.reussite,
+              competences: lireCompetences(ligne.competences),
+              recommandations,
+            },
+            identite,
+          }),
+          session.estTestInterne,
+        ),
       );
       pieces.push({ chemin, buffer });
     } catch (err) {
