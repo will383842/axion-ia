@@ -130,11 +130,6 @@ const CODES_ATTENDUS: string[] = [
   "sous_traitant_rc_pro_expire_j60",
   "sous_traitant_verification_annuelle_due",
   "sous_traitant_incidents_repetes",
-  // Qualiopi ind. 27 (audit du 16/10) — échéances du registre des sous-traitants
-  // indépendants tenu par l'outil, derrière `formateurs.alertes_registre_sous_traitants`.
-  "sous_traitant_registre_piece_expiree",
-  "sous_traitant_registre_piece_a_echeance",
-  "sous_traitant_registre_controle_en_retard",
   "opco_sans_accord",
   "opco_formation_demarree_sans_accord",
   "convention_tripartite_manquante",
@@ -288,6 +283,11 @@ const CODES_ATTENDUS: string[] = [
   "visio.compte_rendu_a_valider",
   "visio.audio_non_purge",
   "visio.reponse_attendue",
+  // Qualiopi ind. 27 (audit du 16/10) — échéances du registre des sous-traitants
+  // indépendants tenu par l'outil, derrière `formateurs.alertes_registre_sous_traitants`.
+  "sous_traitant_registre_piece_expiree",
+  "sous_traitant_registre_piece_a_echeance",
+  "sous_traitant_registre_controle_en_retard",
 ];
 
 const NIVEAUX_VALIDES: AlerteNiveau[] = ["info", "important", "critique"];

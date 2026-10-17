@@ -5247,9 +5247,6 @@ const REGLES: Array<{ nom: string; fn: RegleFn }> = [
   { nom: "cv_formateur_perime", fn: regleCvFormateurPerime },
   { nom: "sous_traitants_qualiopi", fn: regleSousTraitantsQualiopi },
   { nom: "vigilance_sous_traitance", fn: regleVigilanceSousTraitance },
-  // Qualiopi ind. 27 (audit du 16/10) — échéances du registre des sous-traitants
-  // indépendants tenu par l'outil. Éteinte tant que son interrupteur est coupé.
-  { nom: "registre_sous_traitants", fn: regleRegistreSousTraitants },
   { nom: "formateur_desactive_encore_affecte", fn: regleFormateurDesactiveEncoreAffecte },
   {
     nom: "stagiaires_non_prevenus_changement_formateur",
@@ -5328,6 +5325,9 @@ const REGLES: Array<{ nom: string; fn: RegleFn }> = [
   { nom: "autofacture_a_emettre", fn: regleAutofactureAEmettre },
   { nom: "contrat_cdd_non_remis", fn: regleContratCddNonRemis },
   { nom: "formateur_rc_pro_hors_sous_traitance", fn: regleRcProFormateurHorsSousTraitance },
+  // Qualiopi ind. 27 (audit du 16/10) — échéances du registre des sous-traitants
+  // indépendants tenu par l'outil. Éteinte tant que son interrupteur est coupé.
+  { nom: "registre_sous_traitants", fn: regleRegistreSousTraitants },
 ];
 
 // ─────────────────────────────────────────────────────────────────────────────
