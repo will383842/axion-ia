@@ -5,7 +5,8 @@
  *
  * Composée par `controlerGardeMission` (garde-mission-portes.ts) avec les autres manques :
  * elle suit donc le même interrupteur (`formateurs.garde_mission_portes`, coupé = rien
- * n'est lu ni refusé) et le même mode (avertir / refuser).
+ * n'est lu ni refusé). 🔴 Mais PAS le mode : ce manque REFUSE toujours, même en
+ * « avertir » (ancien stock) — une habilitation est une décision, pas une pièce du stock.
  *
  * 🔴 Module PUR, garde FERMÉE : lignes non lues ou formation inconnue = manque.
  */

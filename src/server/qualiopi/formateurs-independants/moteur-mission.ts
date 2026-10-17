@@ -252,7 +252,9 @@ export async function lireEtatMission(
       },
     }),
     // Sans mission en jeu : la mission est déjà acceptée, son montant ne décide de rien.
-    controlerGardeMission(m.trainerId, maintenant),
+    // Mais l'habilitation (ind. 21) se juge sur SA formation : une décision « non
+    // habilité » versée après l'acceptation arrête la lettre.
+    controlerGardeMission(m.trainerId, maintenant, undefined, { sessionId: m.sessionId }),
     // Une lettre émise avant le moteur (non liée), déjà signée par le formateur :
     // c'est SA lettre ; le moteur n'en émet pas d'autre.
     m.lettreMission === null || m.lettreMission.annuleeAt !== null

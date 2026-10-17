@@ -122,15 +122,21 @@ async function refusSuspensionRegistre(trainerId: string): Promise<string | null
  * autres missions ouvertes du formateur s'ajoutent au cumul pour le seuil de vigilance
  * (`lireEngagementHtCents`) : l'attestation est exigée AVANT une mission qui fait
  * atteindre 5 000 € HT. Absent : le cumul seul, comme avant.
+ *
+ * `habilitationSur` (ind. 21) : sans `enJeu`, la session dont la FORMATION doit avoir sa
+ * décision d'habilitation en vigueur — le moteur de la mission déjà acceptée juge sur
+ * SA formation sans faire entrer son montant au cumul. Sans l'un ni l'autre, il suffit
+ * d'UNE formation habilitée (contrôle général, aucune mission précise).
  */
 export async function controlerGardeMission(
   trainerId: string,
   maintenant: Date = new Date(),
   enJeu?: MissionEnJeu,
+  habilitationSur?: { readonly sessionId: string },
 ): Promise<ControleGardeMission> {
   // La garde d'avant L3 lit son interrupteur la première : son ordre ne change pas.
   const [garde, suspension] = await Promise.all([
-    controlerPortes(trainerId, maintenant, enJeu),
+    controlerPortes(trainerId, maintenant, enJeu, habilitationSur),
     refusSuspensionRegistre(trainerId),
   ]);
   if (suspension === null) return garde;
@@ -145,6 +151,7 @@ async function controlerPortes(
   trainerId: string,
   maintenant: Date,
   enJeu: MissionEnJeu | undefined,
+  habilitationSur: { readonly sessionId: string } | undefined,
 ): Promise<ControleGardeMission> {
   const allumage = await lireAllumage();
   if (allumage !== "allumee") return allumage;
@@ -204,15 +211,17 @@ async function controlerPortes(
     const manqueHabilitation =
       t.statut === "salarie" || t.statut === "dirigeant"
         ? null
-        : await lireManqueHabilitationMission(trainerId, t.statut, enJeu);
-    const verdictComplet =
-      manqueHabilitation === null
-        ? verdict
-        : {
-            ok: false as const,
-            manques: [...(verdict.ok ? [] : verdict.manques), manqueHabilitation],
-          };
-    return { mode, ...appliquerGarde(mode, verdictComplet) };
+        : await lireManqueHabilitationMission(trainerId, t.statut, enJeu ?? habilitationSur);
+    const issue = appliquerGarde(mode, verdict);
+    if (manqueHabilitation === null) return { mode, ...issue };
+    // 🔴 Comme la suspension au registre : jamais en simple avertissement, même en mode
+    // « avertir » (ancien stock). L'habilitation est une décision, pas une pièce du stock ;
+    // les autres manques gardent leur mode.
+    return {
+      mode: "refuser",
+      refus: [manqueHabilitation, ...issue.refus],
+      avertissements: issue.avertissements,
+    };
   } catch {
     return { mode: "refuser", refus: [MANQUES_MISSION.erreur], avertissements: [] };
   }
