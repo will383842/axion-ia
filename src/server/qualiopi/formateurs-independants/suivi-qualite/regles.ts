@@ -194,7 +194,11 @@ export function missionsSuspensives(f: FaitsSuiviQualite): MissionLue[] {
   return f.missions.filter((m) => m.debut >= depuis);
 }
 
-/** La mesure qui fait foi pour la suspension : la pire (doute de lecture = suspendu). */
+/**
+ * La mesure qui fait foi pour la suspension : la pire des mesures lues. Une mission sans
+ * aucune mesure rend `null` (donc « ok », comme avant) : le doute porte sur les mesures
+ * lues, pas sur leur absence.
+ */
 export function satisfactionPlancher(m: MissionLue): number | null {
   const mesures = [m.satisfaction, m.satisfactionMin ?? null].filter(
     (v): v is number => v !== null && v !== undefined,
