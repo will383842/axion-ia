@@ -39,6 +39,7 @@ import {
 } from "./interrupteurs";
 import { lireEngagementHtCents, type MissionEnJeu } from "./montant-mission-lecture";
 import { lireCumulHonorairesHtCents } from "./vigilance-seuil-lecture";
+import { manquesDuSuiviQualite } from "./suivi-qualite/garde";
 
 export type { MissionEnJeu } from "./montant-mission-lecture";
 
@@ -198,7 +199,13 @@ async function controlerPortes(
       GABARIT_VERSIONS.contrat_sous_traitance,
       maintenant,
     );
-    return { mode, ...appliquerGarde(mode, verdict) };
+    const issue = appliquerGarde(mode, verdict);
+    // Qualiopi ind. 21 — le suivi qualité REFUSE, même en « avertir » (l'ancien stock
+    // n'est pas dispensé d'observation ni de réévaluation). Éteint : aucun manque.
+    const suivi = await manquesDuSuiviQualite(trainerId, maintenant, enJeu);
+    return suivi.length === 0
+      ? { mode, ...issue }
+      : { mode, ...issue, refus: [...issue.refus, ...suivi] };
   } catch {
     return { mode: "refuser", refus: [MANQUES_MISSION.erreur], avertissements: [] };
   }
