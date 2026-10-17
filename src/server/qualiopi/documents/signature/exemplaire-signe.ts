@@ -44,8 +44,6 @@
  * Node runtime (Prisma + R2 + react-pdf). Stub-aware.
  */
 
-import { avecFiligraneEssai } from "@/server/qualiopi/documents/filigrane-essai";
-import { estNumeroEssai } from "@/server/qualiopi/essai/numerotation";
 import React from "react";
 import { prisma } from "@/lib/prisma";
 import { renderPdfToBuffer } from "@/server/qualiopi/documents/render";
@@ -354,15 +352,11 @@ export async function rendreExemplaireSigne(documentGenereId: string): Promise<R
 
   // 🔴 L'instantané est rejoué TEL QUEL, seules les signatures sont injectées.
   // Écraser un autre champ ici ferait diverger l'exemplaire de la pièce signée.
-  // QNC L02 — la pièce d'essai garde son filigrane : son numéro le dit.
   const rendu = await renderPdfToBuffer(
-    avecFiligraneEssai(
-      React.createElement(Composant, {
-        data: { ...snap.data, signatures } as never,
-        ...(snap.identite !== undefined ? { identite: snap.identite as never } : {}),
-      }),
-      estNumeroEssai(piece.numero),
-    ),
+    React.createElement(Composant, {
+      data: { ...snap.data, signatures } as never,
+      ...(snap.identite !== undefined ? { identite: snap.identite as never } : {}),
+    }),
   );
 
   return {

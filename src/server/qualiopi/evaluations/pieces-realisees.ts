@@ -21,7 +21,7 @@ import React from "react";
 import { prisma } from "@/lib/prisma";
 import { inscriptionSurSessionTenue } from "@/server/qualiopi/conformite/piece-admissible";
 import { getOrganismeIdentite } from "@/server/qualiopi/documents/organisme";
-import { avecFiligraneEssai } from "@/server/qualiopi/documents/filigrane-essai";
+import { SEGMENT_ESSAI } from "@/server/qualiopi/essai/numerotation";
 import { renderPdfToBuffer } from "@/server/qualiopi/documents/render";
 import {
   EvaluationRealiseePdf,
@@ -118,26 +118,25 @@ export async function produirePiecesEvaluationRealisee(): Promise<{
 
     try {
       const { buffer } = await renderPdfToBuffer(
-        avecFiligraneEssai(
-          React.createElement(EvaluationRealiseePdf, {
-            data: {
-              reference: `EVA-${ligne.id.slice(0, 8)}`,
-              nomStagiaire: nomStagiaire === "" ? "Stagiaire non nommé" : nomStagiaire,
-              intituleFormation: session.titreSession,
-              evalueeLe: formaterInstantParis(ligne.dateEvaluation),
-              tireeLe,
-              scoreObtenu: ligne.scoreObtenu,
-              scoreMax: ligne.scoreMax,
-              scorePct: ligne.scorePct,
-              niveauGlobal: ligne.niveauGlobal,
-              reussite: ligne.reussite,
-              competences: lireCompetences(ligne.competences),
-              recommandations,
-            },
-            identite,
-          }),
-          session.estTestInterne,
-        ),
+        React.createElement(EvaluationRealiseePdf, {
+          data: {
+            // QNC L02 — la référence d'une pièce d'essai porte `-ESSAI-` : c'est elle
+            // qui fait imprimer le filigrane (`QualiopiPage`).
+            reference: `EVA${session.estTestInterne ? SEGMENT_ESSAI : "-"}${ligne.id.slice(0, 8)}`,
+            nomStagiaire: nomStagiaire === "" ? "Stagiaire non nommé" : nomStagiaire,
+            intituleFormation: session.titreSession,
+            evalueeLe: formaterInstantParis(ligne.dateEvaluation),
+            tireeLe,
+            scoreObtenu: ligne.scoreObtenu,
+            scoreMax: ligne.scoreMax,
+            scorePct: ligne.scorePct,
+            niveauGlobal: ligne.niveauGlobal,
+            reussite: ligne.reussite,
+            competences: lireCompetences(ligne.competences),
+            recommandations,
+          },
+          identite,
+        }),
       );
       pieces.push({ chemin, buffer });
     } catch (err) {

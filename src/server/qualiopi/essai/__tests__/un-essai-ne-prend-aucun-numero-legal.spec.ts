@@ -15,7 +15,6 @@
  */
 
 import React from "react";
-import { renderToStaticMarkup } from "react-dom/server";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 const doubles = vi.hoisted(() => ({
@@ -51,7 +50,7 @@ vi.mock("@/server/qualiopi/documents/organisme", () => ({
 }));
 
 import { generateDocument } from "@/server/qualiopi/documents/documents-service";
-import { FiligraneEssaiContexte, QualiopiPage } from "@/server/qualiopi/documents/base-layout";
+import { QualiopiPage } from "@/server/qualiopi/documents/base-layout";
 import { nextNumero } from "@/server/qualiopi/numbering/allocate";
 import { isValidDocumentNumber, parseSequence } from "@/server/qualiopi/numbering/formats";
 import { estNumeroEssai, numeroEssai, anneeParis } from "@/server/qualiopi/essai/numerotation";
@@ -149,15 +148,16 @@ describe("generateDocument — pièce d'une session d'essai", () => {
     expect(doubles.findManySerie).not.toHaveBeenCalled();
   });
 
-  it("🔴 le rendu passe par le contexte du filigrane ESSAI", async () => {
+  it("🔴 le gabarit reçoit ce numéro d'essai — c'est lui qui fait poser le filigrane", async () => {
     await generateDocument({
       type: "convocation",
       buildElement: (numero) => React.createElement(Gabarit, { data: { numero } }),
       refs: { sessionId: SESSION },
     });
-    const rendu = doubles.rendu.mock.calls[0]![0] as React.ReactElement<{ value?: boolean }>;
-    expect(rendu.type).toBe(FiligraneEssaiContexte.Provider);
-    expect(rendu.props.value).toBe(true);
+    const rendu = doubles.rendu.mock.calls[0]![0] as React.ReactElement<{
+      data: { numero: string };
+    }>;
+    expect(estNumeroEssai(rendu.props.data.numero)).toBe(true);
   });
 
   it("témoin — une session réelle prend le numéro suivant de la série, sans filigrane", async () => {
@@ -168,35 +168,49 @@ describe("generateDocument — pièce d'une session d'essai", () => {
       refs: { sessionId: SESSION },
     });
     expect(r.numero).toBe(`AXI-DOC-${AN}-008`);
-    const rendu = doubles.rendu.mock.calls[0]![0] as React.ReactElement;
-    expect(rendu.type).toBe(Gabarit);
   });
 });
 
 describe("QualiopiPage — le filigrane ESSAI sur chaque page", () => {
-  const page = () =>
-    React.createElement(
-      QualiopiPage,
-      // `children` est requis par le type des props : il est passé ici en
-      // troisième argument, que le typage de `createElement` ne relie pas.
-      {
-        docTitle: "Convocation",
-        docNumber: "AXI-DOC-ESSAI-2026-0D0D0D",
-        identite: IDENTITE,
-      } as React.ComponentProps<typeof QualiopiPage>,
-      "contenu",
-    );
+  /**
+   * La marque est le NUMÉRO : aucun gabarit n'a de drapeau à transmettre, et
+   * la copie signée ou la réimpression d'une pièce d'essai, qui rejouent ce
+   * numéro, gardent le filigrane. (Un contexte React est exclu : la version
+   * serveur de React, celle des composants serveur, n'a pas `createContext`.)
+   */
+  type Noeud = React.ReactElement<{ children?: React.ReactNode; fixed?: boolean }>;
 
-  it("🔴 dans le contexte d'essai, la page porte « ESSAI » (filigrane répété + bandeau)", () => {
-    const html = renderToStaticMarkup(
-      React.createElement(FiligraneEssaiContexte.Provider, { value: true }, page()),
+  /** Les nœuds `Text` de la page, rendue comme les specs de gabarits la rendent. */
+  function textes(docNumber: string): Array<{ texte: string; fixed: boolean }> {
+    const out: Array<{ texte: string; fixed: boolean }> = [];
+    const visiter = (n: React.ReactNode): void => {
+      if (Array.isArray(n)) return n.forEach(visiter);
+      if (!React.isValidElement(n)) return;
+      const e = n as Noeud;
+      const enfants = e.props.children;
+      if (typeof enfants === "string") out.push({ texte: enfants, fixed: e.props.fixed === true });
+      else visiter(enfants);
+    };
+    visiter(
+      QualiopiPage({ docTitle: "Convocation", docNumber, identite: IDENTITE, children: "x" }),
     );
-    expect(html).toContain(">ESSAI<");
-    expect(html).toContain("ESSAI — pièce sans valeur");
+    return out;
+  }
+
+  it("🔴 une pièce numérotée `-ESSAI-` porte le filigrane ESSAI, RÉPÉTÉ sur chaque page", () => {
+    for (const numero of ["AXI-DOC-ESSAI-2026-0D0D0D", "EVA-ESSAI-0a0b0c0d"]) {
+      const t = textes(numero);
+      expect(t, numero).toContainEqual({ texte: "ESSAI", fixed: true });
+      expect(
+        t.map((x) => x.texte),
+        numero,
+      ).toContain("ESSAI — pièce sans valeur");
+    }
   });
 
-  it("témoin — hors contexte, aucune mention d'essai", () => {
-    expect(renderToStaticMarkup(page())).not.toContain("ESSAI<");
+  it("témoin — une pièce au numéro légal ne porte aucune mention d'essai", () => {
+    const t = textes("AXI-DOC-2026-008").map((x) => x.texte);
+    expect(t.some((x) => x.includes("ESSAI"))).toBe(false);
   });
 });
 

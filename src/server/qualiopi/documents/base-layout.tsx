@@ -25,6 +25,7 @@ import {
   QUALIOPI_PDF_SPACE as S,
 } from "@/server/qualiopi/brand/brand-tokens";
 import { registerQualiopiPdfFonts } from "@/server/qualiopi/documents/fonts";
+import { SEGMENT_ESSAI } from "@/server/qualiopi/essai/numerotation";
 import type { OrganismeIdentite } from "@/server/qualiopi/documents/organisme";
 import type { PartieSignataire } from "@/server/qualiopi/documents/signature/document-signature-hash";
 // Ré-export pour que les templates puissent importer le type depuis base-layout.
@@ -396,29 +397,6 @@ function joinDefined(parts: Array<string | null | undefined>, sep: string): stri
 }
 
 /**
- * QNC L02 — filigrane ESSAI. Porté par un CONTEXTE et non par une prop : les
- * 48 gabarits ne transmettent pas un drapeau de plus, et un gabarit oublié
- * sortirait une pièce d'essai d'apparence officielle. `generateDocument` (et
- * le rendu de l'exemplaire signé) enveloppent l'élément dans ce contexte quand
- * la session est d'essai ; `QualiopiPage` le lit sur CHAQUE page.
- */
-export const FiligraneEssaiContexte = React.createContext(false);
-
-/**
- * Le contexte du filigrane ESSAI, lu sans lever. Les specs de gabarits
- * invoquent les composants comme des fonctions pures, HORS rendu React : la
- * lecture y lève (aucun rendu en cours) et vaut alors « pas d'essai ». Au
- * rendu réel (`renderPdfToBuffer`), elle lit le contexte posé par l'appelant.
- */
-function useFiligraneEssai(): boolean {
-  try {
-    return React.useContext(FiligraneEssaiContexte);
-  } catch {
-    return false;
-  }
-}
-
-/**
  * Wrapper de page A4 avec en-tête organisme, encart numéro de document,
  * filigrane "COPIE" optionnel, et pied de page paginé portant l'identité +
  * l'adresse postale complète de l'OF (répétée sur chaque page — pièce d'audit).
@@ -459,7 +437,10 @@ export function QualiopiPage({
     "  ·  ",
   );
   const footerContact = joinDefined([identite.email, identite.telephone, identite.site], "  ·  ");
-  const estEssai = useFiligraneEssai();
+  // QNC L02 — une pièce d'essai se reconnaît à son numéro (`-ESSAI-`, hors
+  // suite légale) : aucun gabarit n'a de drapeau à transmettre, et la copie
+  // signée ou la réimpression d'une pièce d'essai garde son filigrane.
+  const estEssai = docNumber.includes(SEGMENT_ESSAI);
 
   return (
     <Page size="A4" style={pdfStyles.page}>

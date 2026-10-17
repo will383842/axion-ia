@@ -21,7 +21,7 @@ import React from "react";
 import { prisma } from "@/lib/prisma";
 import { inscriptionSurSessionTenue } from "@/server/qualiopi/conformite/piece-admissible";
 import { getOrganismeIdentite } from "@/server/qualiopi/documents/organisme";
-import { avecFiligraneEssai } from "@/server/qualiopi/documents/filigrane-essai";
+import { SEGMENT_ESSAI } from "@/server/qualiopi/essai/numerotation";
 import { renderPdfToBuffer } from "@/server/qualiopi/documents/render";
 import { SatisfactionRempliePdf } from "@/server/qualiopi/documents/templates/satisfaction-remplie";
 import {
@@ -108,28 +108,27 @@ export async function produirePiecesSatisfactionRemplie(): Promise<{
 
     try {
       const { buffer } = await renderPdfToBuffer(
-        avecFiligraneEssai(
-          React.createElement(SatisfactionRempliePdf, {
-            data: {
-              reference: `SAT-${ligne.id.slice(0, 8)}`,
-              moment,
-              nomStagiaire: nomStagiaire === "" ? "Stagiaire non nommé" : nomStagiaire,
-              intituleFormation: session.titreSession,
-              debutSession: formaterInstantParis(session.dateDebut),
-              finSession: formaterInstantParis(session.dateFin),
-              reponduLe: formaterInstantParis(ligne.reponduAt),
-              tireeLe,
-              saisieOrganisme,
-              noteGlobale: ligne.noteGlobale,
-              commentaire: texte(ligne.reponses, "commentaire"),
-              objectifsAtteints: texte(ligne.reponses, "objectifs_atteints"),
-              pointsForts: texte(ligne.reponses, "points_forts"),
-              axesAmelioration: texte(ligne.reponses, "axes_amelioration"),
-            },
-            identite,
-          }),
-          session.estTestInterne,
-        ),
+        React.createElement(SatisfactionRempliePdf, {
+          data: {
+            // QNC L02 — la référence d'une pièce d'essai porte `-ESSAI-` : c'est elle
+            // qui fait imprimer le filigrane (`QualiopiPage`).
+            reference: `SAT${session.estTestInterne ? SEGMENT_ESSAI : "-"}${ligne.id.slice(0, 8)}`,
+            moment,
+            nomStagiaire: nomStagiaire === "" ? "Stagiaire non nommé" : nomStagiaire,
+            intituleFormation: session.titreSession,
+            debutSession: formaterInstantParis(session.dateDebut),
+            finSession: formaterInstantParis(session.dateFin),
+            reponduLe: formaterInstantParis(ligne.reponduAt),
+            tireeLe,
+            saisieOrganisme,
+            noteGlobale: ligne.noteGlobale,
+            commentaire: texte(ligne.reponses, "commentaire"),
+            objectifsAtteints: texte(ligne.reponses, "objectifs_atteints"),
+            pointsForts: texte(ligne.reponses, "points_forts"),
+            axesAmelioration: texte(ligne.reponses, "axes_amelioration"),
+          },
+          identite,
+        }),
       );
       pieces.push({ chemin, buffer, saisieOrganisme, moment });
     } catch (err) {

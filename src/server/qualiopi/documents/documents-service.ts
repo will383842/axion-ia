@@ -29,7 +29,6 @@ import {
   versionGabaritAEcrire,
 } from "@/server/qualiopi/documents/templates/versions-arretees";
 import type { OrganismeIdentite } from "@/server/qualiopi/documents/organisme";
-import { avecFiligraneEssai } from "@/server/qualiopi/documents/filigrane-essai";
 import { numeroEssai } from "@/server/qualiopi/essai/numerotation";
 
 /**
@@ -519,9 +518,10 @@ export async function generateDocument(
     }
   }
 
-  // QNC L02 — une pièce de session d'ESSAI : numéro hors suite légale et
-  // filigrane ESSAI. Lu SANS tolérance : une base illisible fait échouer la
-  // génération plutôt que de consommer un numéro légal pour un essai.
+  // QNC L02 — une pièce de session d'ESSAI prend un numéro hors suite légale
+  // (`-ESSAI-`), et c'est ce numéro, imprimé en en-tête, qui fait poser le
+  // filigrane ESSAI par `QualiopiPage`. Lu SANS tolérance : une base illisible
+  // fait échouer la génération plutôt que de consommer un numéro légal.
   const estEssai =
     input.refs?.sessionId !== undefined
       ? (
@@ -620,9 +620,7 @@ export async function generateDocument(
     verifierVersionDuComposant(input.type, elementToRender.type, gabaritVersion);
     elementToRender = avecFiligraneCopie(elementToRender, estUneRegeneration);
     elementToRender = avecMarquageSpecimen(elementToRender, specimen);
-    const { buffer, hashSha256, sizeBytes } = await renderPdfToBuffer(
-      avecFiligraneEssai(elementToRender, estEssai),
-    );
+    const { buffer, hashSha256, sizeBytes } = await renderPdfToBuffer(elementToRender);
 
     /**
      * 🔴 INSTANTANÉ des données de rendu — c'est ce qui rend l'exemplaire SIGNÉ
