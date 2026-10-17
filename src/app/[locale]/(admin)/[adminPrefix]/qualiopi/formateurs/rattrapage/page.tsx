@@ -10,6 +10,11 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 
+import {
+  INTERRUPTEURS,
+  INTERRUPTEURS_ENTREE,
+} from "@/server/qualiopi/formateurs-independants/interrupteurs";
+
 import { AdminPageShell } from "@/components/admin/ui/AdminPageShell";
 import { AdminPageHeader } from "@/components/admin/ui/AdminPageHeader";
 import { AccesRefuse } from "@/components/admin/ui/AccesRefuse";
@@ -65,8 +70,13 @@ export default async function RattrapagePage({ params }: PageProps) {
       />
       {!allume ? (
         <p className="admin-alert admin-alert-info">
-          L&apos;invitation automatique et le suivi de l&apos;échange doivent être allumés (écran
-          Interrupteurs).
+          Cet écran n&apos;est pas encore ouvert : il s&apos;allume avec les interrupteurs «{" "}
+          {INTERRUPTEURS.invitation_auto.libelle} » et « {INTERRUPTEURS_ENTREE.suivi_echange.libelle}{" "}
+          », dans{" "}
+          <Link href={`/${locale}/${adminPrefix}/qualiopi/formateurs/interrupteurs`}>
+            l&apos;écran Interrupteurs
+          </Link>
+          .
         </p>
       ) : liste === null ? (
         <p className="admin-alert admin-alert-warning">Liste indisponible pour le moment.</p>

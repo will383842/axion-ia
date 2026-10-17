@@ -5,6 +5,10 @@
 
 import type { Metadata } from "next";
 import Link from "next/link";
+import {
+  INTERRUPTEURS,
+  INTERRUPTEURS_SIGNATURE,
+} from "@/server/qualiopi/formateurs-independants/interrupteurs";
 import { notFound } from "next/navigation";
 
 import { prisma } from "@/lib/prisma";
@@ -483,6 +487,32 @@ export default async function FicheFormateurPage({ params, searchParams }: PageP
     peutEngager(role, "remunerer_formateur") &&
     (await interrupteurAllume("presentation_payee"));
 
+  // Panneaux que le rôle verrait mais qu'un interrupteur coupé masque : une ligne sobre,
+  // pour ne pas prendre une clé éteinte pour un droit manquant. Rôle insuffisant = rien.
+  const independant = trainer.statut === "sous_traitant";
+  const peutHabiliter = peutEngager(role, "habiliter_formateur");
+  const panneauxMasques: string[] = [
+    ...(peutHabiliter && !voitLieu ? [INTERRUPTEURS.proches_bloc.libelle] : []),
+    ...(independant && peutHabiliter && !voitSuiviQualite
+      ? [INTERRUPTEURS_SIGNATURE.suivi_qualite.libelle]
+      : []),
+    ...(independant && trainer.organismeSousTraitantId === null && peutHabiliter && !voitFinCollaboration
+      ? [INTERRUPTEURS_SIGNATURE.fin_collaboration.libelle]
+      : []),
+    ...(independant &&
+    trainer.organismeSousTraitantId === null &&
+    peutEngager(role, "contresigner") &&
+    !voitContratCadre
+      ? [INTERRUPTEURS_SIGNATURE.contrat_cadre_emission.libelle]
+      : []),
+    ...(trainer.dossierStatut !== null && peutHabiliter && !voitDossier
+      ? [INTERRUPTEURS.dossier_en_ligne.libelle]
+      : []),
+    ...(independant && peutEngager(role, "remunerer_formateur") && !voitPresentation
+      ? [INTERRUPTEURS_SIGNATURE.presentation_payee.libelle]
+      : []),
+  ];
+
   // Lot F (W-10) — bandeau d'étape : indépendant en nom propre, page « Dossiers et contrats »
   // ouverte (mêmes interrupteurs que cette page). Sinon, aucune lecture et aucun bandeau.
   const entreeFiche =
@@ -572,6 +602,13 @@ export default async function FicheFormateurPage({ params, searchParams }: PageP
           .
         </p>
       </div>
+
+      {panneauxMasques.length > 0 ? (
+        <p className="admin-meta-small">
+          Panneaux masqués, interrupteurs coupés : {panneauxMasques.map((l) => `« ${l} »`).join(", ")}
+          .
+        </p>
+      ) : null}
 
       {voitLieu ? (
         <LieuFormateurPanel

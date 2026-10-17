@@ -58,9 +58,10 @@ export default async function AFaireMaintenantPage({ params }: PageProps) {
     );
   }
 
-  const [missionsOuvertes, miseANiveau] = await Promise.all([
+  const [missionsOuvertes, miseANiveau, changements] = await Promise.all([
     interrupteurAllume("missions_console"),
     interrupteurAllume("mise_a_niveau"),
+    interrupteurAllume("changement_coordonnees"),
   ]);
   const compteurs = await compterFormateursNav({
     dossiers: entree.dossiers_contrats,
@@ -72,6 +73,7 @@ export default async function AFaireMaintenantPage({ params }: PageProps) {
   const liens = liensAnnexes(adminBase, {
     suivi_echange: entree.suivi_echange,
     mise_a_niveau: miseANiveau,
+    changement_coordonnees: changements,
   });
 
   return (

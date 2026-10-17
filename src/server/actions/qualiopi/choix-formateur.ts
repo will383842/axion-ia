@@ -16,7 +16,7 @@
 import { redirect } from "next/navigation";
 import { z } from "zod";
 
-import { requireFormateurAction } from "@/server/formateur/guard";
+import { getFormateurSession, requireFormateurAction } from "@/server/formateur/guard";
 import { assertDossierOuvert } from "@/server/qualiopi/sessions/verrou-dossier-garde";
 import { interrupteurAllume } from "@/server/qualiopi/formateurs-independants/interrupteur-allume";
 import {
@@ -31,7 +31,7 @@ import {
   seDesister,
 } from "@/server/qualiopi/formateurs-independants/choix-formateur-service";
 import { prisma } from "@/lib/prisma";
-import { FORMATEUR_BASE_PATH } from "@/server/formateur/routes";
+import { FORMATEUR_BASE_PATH, FORMATEUR_CONNEXION_PATH } from "@/server/formateur/routes";
 import { STATUTS_ACCORD_DONNE } from "@/server/qualiopi/trainers/mission-formateur";
 
 import { logQualiopiActivity, requireAdminWrite } from "./_guards";
@@ -209,6 +209,8 @@ export async function seDesisterMissionAction(
  * reste légère, et le formateur revient sur sa mission avec le résultat.
  */
 export async function seDesisterDepuisFormulaireAction(formData: FormData): Promise<void> {
+  // Session expirée pendant le formulaire : « reconnectez-vous », pas l'erreur générique.
+  if (!(await getFormateurSession())) redirect(`${FORMATEUR_CONNEXION_PATH}?erreur=session`);
   const missionId = String(formData.get("missionId") ?? "");
   if (!z.string().uuid().safeParse(missionId).success) redirect(FORMATEUR_BASE_PATH);
   const texte = (cle: string) => {
@@ -232,6 +234,8 @@ export async function seDesisterDepuisFormulaireAction(formData: FormData): Prom
  * `repondreMissionFormateurAction` (le formateur connecté, SA mission).
  */
 export async function repondreDepuisFormulaireAction(formData: FormData): Promise<void> {
+  // Session expirée pendant le formulaire : « reconnectez-vous », pas l'erreur générique.
+  if (!(await getFormateurSession())) redirect(`${FORMATEUR_CONNEXION_PATH}?erreur=session`);
   const missionId = String(formData.get("missionId") ?? "");
   if (!z.string().uuid().safeParse(missionId).success) redirect(FORMATEUR_BASE_PATH);
   const brute = formData.get("reponse");

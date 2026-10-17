@@ -55,7 +55,11 @@ export function blocsAFaire(adminBase: string): ReadonlyArray<BlocAFaire> {
  */
 export function liensAnnexes(
   adminBase: string,
-  ouvert: { readonly suivi_echange: boolean; readonly mise_a_niveau: boolean },
+  ouvert: {
+    readonly suivi_echange: boolean;
+    readonly mise_a_niveau: boolean;
+    readonly changement_coordonnees?: boolean;
+  },
 ): ReadonlyArray<{ libelle: string; href: string }> {
   const base = `${adminBase}/qualiopi/formateurs`;
   return [
@@ -63,6 +67,12 @@ export function liensAnnexes(
       ? [{ libelle: "Échanges de découverte", href: `${base}/echanges-du-pont` }]
       : []),
     ...(ouvert.mise_a_niveau ? [{ libelle: "Mise à niveau", href: `${base}/mise-a-niveau` }] : []),
+    ...(ouvert.changement_coordonnees === true
+      ? [{ libelle: "Changements IBAN et adresse", href: `${base}/changements` }]
+      : []),
     { libelle: "Pièces", href: `${base}/pieces` },
+    // Pages sans autre porte : chacune garde la sienne et dit quelle clé l'ouvre.
+    { libelle: "Lieux à compléter", href: `${base}/lieux` },
+    { libelle: "Rattrapage des candidatures", href: `${base}/rattrapage` },
   ];
 }

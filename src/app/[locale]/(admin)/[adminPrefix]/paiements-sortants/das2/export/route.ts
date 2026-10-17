@@ -31,7 +31,10 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
     return new NextResponse("Accès refusé.", { status: 403 });
   }
   if (!(await interrupteurAllume("das2_commun"))) {
-    return new NextResponse("Export non disponible.", { status: 404 });
+    return new NextResponse(
+      "Export non disponible : allumez l'interrupteur « Export DAS 2 commun » dans l'écran Interrupteurs (Formateurs).",
+      { status: 404 },
+    );
   }
 
   const brut = req.nextUrl.searchParams.get("annee") ?? "";

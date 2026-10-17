@@ -21,6 +21,7 @@ const h = vi.hoisted(() => ({
   enregistrer: vi.fn(async () => undefined),
   abandonner: vi.fn(async () => undefined),
   assign: vi.fn(async () => ({ data: { missionProposee: true, avertissements: [] } }) as unknown),
+  session: vi.fn(async () => ({ trainerId: "t" }) as unknown),
   repondre: vi.fn(async () => ({ data: { statut: "acceptee", sessionId: "s" } }) as unknown),
   redirect: vi.fn((url: string) => {
     throw new Error(`REDIRECT ${url}`);
@@ -30,6 +31,7 @@ const h = vi.hoisted(() => ({
 vi.mock("next/navigation", () => ({ redirect: h.redirect }));
 vi.mock("@/server/formateur/guard", () => ({
   requireFormateurAction: vi.fn(async () => ({ trainerId: A })),
+  getFormateurSession: h.session,
 }));
 vi.mock("@/server/qualiopi/sessions/verrou-dossier-garde", () => ({
   assertDossierOuvert: vi.fn(async () => ({ ok: true })),
@@ -89,6 +91,7 @@ const SAISIE = {
 beforeEach(() => {
   vi.clearAllMocks();
   h.payeeParMission.mockResolvedValue(false);
+  h.session.mockResolvedValue({ trainerId: "t" });
 });
 
 describe("ARGENT — honoraires figés seulement sur une session réglée par mission", () => {
@@ -132,6 +135,14 @@ describe("réponse depuis le formulaire de l'espace", () => {
     if (reponse !== null) f.set("reponse", reponse);
     return f;
   }
+
+  it("session expirée : renvoi vers la connexion, aucune réponse enregistrée", async () => {
+    h.session.mockResolvedValue(null);
+    await expect(repondreDepuisFormulaireAction(formulaire("acceptee"))).rejects.toThrow(
+      /REDIRECT .*connexion\?erreur=session/,
+    );
+    expect(h.repondre).not.toHaveBeenCalled();
+  });
 
   it("une valeur autre qu'« acceptee » ou « refusee » est rejetée, jamais lue comme un refus", async () => {
     for (const v of ["autre", "", null]) {
