@@ -13,11 +13,11 @@ PUBLICS » (`pnpm bundle:check`, Gate B). Will a décidé d'alléger d'abord, pu
 
 ## 2. Mesures (Gate B, somme des page chunks publics, brotli)
 
-| Lot | PR    | Mesure          | Limite | Écart       |
-| --- | ----- | --------------- | ------ | ----------- |
-| L04 | #1571 | 280,03 kB (*)   | 280 kB | +0,03 kB    |
-| L05 | #1582 | 280,01 kB       | 280 kB | +14 B       |
-| L09 | #1585 | 283,06 kB       | 280 kB | +3,06 kB    |
+| Lot | PR    | Mesure        | Limite | Écart    |
+| --- | ----- | ------------- | ------ | -------- |
+| L04 | #1571 | 280,03 kB (*) | 280 kB | +0,03 kB |
+| L05 | #1582 | 280,01 kB     | 280 kB | +14 B    |
+| L09 | #1585 | 283,06 kB     | 280 kB | +3,06 kB |
 
 (*) valeur donnée dans la consigne de Will ; non relue dans les logs.
 La mesure de L09 est celle du dernier run Gate B lu (run `39074824580`) ; la consigne
