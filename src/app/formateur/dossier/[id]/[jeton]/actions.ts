@@ -40,7 +40,6 @@ import {
   type DossierVue,
 } from "@/server/qualiopi/formateurs-independants/dossier";
 import {
-  NDA_EN_COURS,
   adresseProValide,
   codePostalValide,
   estPieceDossier,
@@ -205,8 +204,9 @@ export async function enregistrerActiviteAction(fd: FormData): Promise<Resultat>
   const siret = normalizeSiret(champ(fd, "siret", 30));
   if (!checkSiretFormat(siret).ok) return { ok: false, message: TEXTES.siretInvalide };
 
-  const enCours = champ(fd, "ndaEnCours", 5) === "1";
-  const nda = enCours ? NDA_EN_COURS : normaliserNda(champ(fd, "nda", 30));
+  // Qualiopi ind. 21 (2026-10-17) — le numéro de déclaration est OBLIGATOIRE : « je n'ai
+  // pas encore de numéro » n'est plus reçu, même envoyé à la main (`ndaEnCours=1`).
+  const nda = normaliserNda(champ(fd, "nda", 30));
   if (!nda) return { ok: false, message: TEXTES.ndaInvalide };
 
   const tva = champ(fd, "regimeTva", 30);

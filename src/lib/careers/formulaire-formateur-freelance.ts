@@ -75,25 +75,20 @@ export function lireChampsFormateurFreelance(
     reponses[REPONSE_SIRET] = normalizeSiret(siret.value);
   }
 
+  // Qualiopi ind. 21 (2026-10-17) — numéro de déclaration d'activité exigé : « pas encore
+  // de numéro » n'est plus accepté, même envoyé à la main (`pasEncoreDeNumero`).
   const numero = (lire("numeroDeclaration") ?? "").replace(/\s/g, "");
-  if (numero) {
-    if (!/^\d{11}$/.test(numero)) {
-      return {
-        ok: false,
-        error:
-          "Le numéro de déclaration d'activité compte 11 chiffres. Si vous ne l'avez pas encore, cochez « Je n'ai pas encore de numéro ».",
-      };
-    }
-    reponses[REPONSE_NUMERO_DECLARATION] = numero;
-  } else if (coche(lire("pasEncoreDeNumero"))) {
-    reponses[REPONSE_NUMERO_DECLARATION] = "Pas encore de numéro";
-  } else {
+  if (!numero) {
     return {
       ok: false,
       error:
-        "Indiquez votre numéro de déclaration d'activité, ou cochez « Je n'ai pas encore de numéro ».",
+        "Indiquez votre numéro de déclaration d'activité (11 chiffres) : il est nécessaire pour animer nos formations.",
     };
   }
+  if (!/^\d{11}$/.test(numero)) {
+    return { ok: false, error: "Le numéro de déclaration d'activité compte 11 chiffres." };
+  }
+  reponses[REPONSE_NUMERO_DECLARATION] = numero;
 
   const formations = (lire("formations") ?? "").trim().slice(0, 600);
   if (!formations) {

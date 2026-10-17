@@ -118,7 +118,8 @@ export function manquesEtape2(
   if (!e.siret || !/^\d{14}$/.test(e.siret) || e.entrepriseBloquante) {
     m.push("votre numéro SIRET, recherché au registre");
   }
-  if (!e.nda) m.push("votre numéro de déclaration d'activité");
+  // Qualiopi ind. 21 — un numéro « en cours » (dossiers d'avant le 17/10) ne vaut plus.
+  if (!e.nda || ndaEnCours(e.nda)) m.push("votre numéro de déclaration d'activité");
   if (!e.regimeTva) m.push("votre régime de TVA");
   if (!e.ibanSaisi) m.push("un IBAN valide");
   return m;

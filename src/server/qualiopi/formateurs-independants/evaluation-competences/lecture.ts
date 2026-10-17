@@ -72,32 +72,38 @@ export async function lireEvaluationsConsole(trainerId: string) {
  * donc tout manque.
  */
 export async function lireFaitsActivationQ21(trainerId: string): Promise<FaitsActivationQ21> {
+  // Chaque lecture part d'une promesse : une erreur levée en construisant l'une ne laisse
+  // jamais les autres rejetées sans preneur.
   const [t, evaluations, controles] = await Promise.all([
-    prisma.trainer.findUnique({
-      where: { id: trainerId },
-      select: {
-        siret: true,
-        sousTraitantNda: true,
-        documents: {
-          where: { type: "cv" },
-          select: {
-            type: true,
-            statutValidation: true,
-            fichierUrl: true,
-            contenu: { select: { trainerDocumentId: true } },
-            dateEmission: true,
-            dateExpiration: true,
+    Promise.resolve().then(() =>
+      prisma.trainer.findUnique({
+        where: { id: trainerId },
+        select: {
+          siret: true,
+          sousTraitantNda: true,
+          documents: {
+            where: { type: "cv" },
+            select: {
+              type: true,
+              statutValidation: true,
+              fichierUrl: true,
+              contenu: { select: { trainerDocumentId: true } },
+              dateEmission: true,
+              dateExpiration: true,
+            },
           },
         },
-      },
-    }),
-    lireEvaluationsDuFormateur(trainerId),
-    prisma.verificationRegistreSousTraitance.findMany({
-      where: { trainerId },
-      orderBy: { createdAt: "desc" },
-      take: 5,
-      select: { verdict: true, source: true, verifieAt: true, createdAt: true, siret: true },
-    }),
+      }),
+    ),
+    Promise.resolve().then(() => lireEvaluationsDuFormateur(trainerId)),
+    Promise.resolve().then(() =>
+      prisma.verificationRegistreSousTraitance.findMany({
+        where: { trainerId },
+        orderBy: { createdAt: "desc" },
+        take: 5,
+        select: { verdict: true, source: true, verifieAt: true, createdAt: true, siret: true },
+      }),
+    ),
   ]);
   if (t === null) return {};
   return {

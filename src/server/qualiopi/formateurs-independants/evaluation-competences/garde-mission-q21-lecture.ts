@@ -36,8 +36,8 @@ export async function lireManqueHabilitationMission(
   enJeu: MissionEnJeu | undefined,
 ): Promise<string | null> {
   const [lignes, formationId] = await Promise.all([
-    lireEvaluationsDuFormateur(trainerId),
-    formationDeLaMission(enJeu),
+    Promise.resolve().then(() => lireEvaluationsDuFormateur(trainerId)),
+    Promise.resolve().then(() => formationDeLaMission(enJeu)),
   ]);
   return manqueHabilitationMission(statut, lignes, formationId);
 }
