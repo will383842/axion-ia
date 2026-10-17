@@ -243,8 +243,8 @@ export const ETAPES: Readonly<Record<string, Etape>> = {
         consent: "true",
         codePostal: "69003",
         siret: a["siret"] as string | undefined,
-        numeroDeclaration: a["numeroDeclaration"] as string | undefined,
-        pasEncoreDeNumero: a["numeroDeclaration"] ? undefined : "on",
+        // Qualiopi ind. 21 — numéro de déclaration obligatoire : celui du banc par défaut.
+        numeroDeclaration: (a["numeroDeclaration"] as string | undefined) ?? "84691234569",
         formations: "Initiation à l'IA générative pour les équipes administratives.",
         locale: "fr",
       }),

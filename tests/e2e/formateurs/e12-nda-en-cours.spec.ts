@@ -1,14 +1,17 @@
-// @formateurs — E12 · Numéro de déclaration d'activité « en cours » : l'espace
-// s'ouvre, mais AUCUNE mission ; F21 à 1 puis 2 mois ; arrêt dès que le numéro
-// est connu.
+// @formateurs — E12 · Numéro de déclaration d'activité « en cours ».
 //
-// Le dossier accepte « en cours » et exige alors le récépissé ; la règle de mission
-// refuse « en cours » sur une fiche par ailleurs complète (V1-A-9, corrigé) ; W-4 ouvre
-// l'espace (V1-A-6, corrigé) ; F21 part à 1 mois, puis s'arrête quand la personne
-// transmet son numéro depuis « Mon dossier » (V1-A-10, corrigé).
+// Qualiopi ind. 21 (2026-10-17) : le numéro est désormais OBLIGATOIRE. Le dossier refuse
+// « en cours » ; une fiche ancienne qui le porte encore ne s'active pas ; et la règle de
+// mission refuse toujours « en cours » sur une fiche par ailleurs complète (V1-A-9). Le
+// parcours d'avant (espace ouvert avec « en cours », F21 à 1 puis 2 mois) n'existe plus
+// pour un nouveau dossier.
 
 import { expect, test } from "@playwright/test";
 
+import {
+  MANQUES_Q21,
+  manquesActivationQ21,
+} from "@/server/qualiopi/formateurs-independants/evaluation-competences/garde-activation-q21";
 import {
   MANQUES_MISSION,
   peutRecevoirMission,
@@ -16,27 +19,14 @@ import {
 } from "@/server/qualiopi/formateurs-independants/garde-mission";
 
 import { prisma } from "../fixtures/formateurs/base";
-import { etape } from "../fixtures/formateurs/etapes";
 import {
   NDA_BANC,
   actionDossier,
-  champsDePiece,
   formateurRetenu,
-  formationDuBanc,
-  pdfFictif,
-  preparerDossier,
   registreDe,
-  signerAvecCode,
-  demanderCode,
 } from "../fixtures/formateurs/parcours";
 import { SIRET_BANC } from "../fixtures/formateurs/registre-entreprises";
-import {
-  attendreLeWorker,
-  gabaritsVers,
-  jourOuvre,
-  ouvrirScenario,
-  type DecorScenario,
-} from "../fixtures/formateurs/scenario";
+import { ouvrirScenario, type DecorScenario } from "../fixtures/formateurs/scenario";
 
 /** Une fiche indépendante ACTIVE, complète, sauf ce que le test fait varier. */
 function ficheComplete(nda: string, maintenant: Date): FaitsGardeMission {
@@ -74,13 +64,14 @@ test.describe("@formateurs E12 — numéro de déclaration « en cours »", () =
     await prisma.$disconnect();
   });
 
-  test("« en cours » est accepté, le récépissé est alors exigé, le dossier part signé", async () => {
+  // Qualiopi ind. 21 (2026-10-17) — le numéro de déclaration est OBLIGATOIRE : le dossier
+  // ne reçoit plus « je n'ai pas encore de numéro », même envoyé à la main.
+  test("« en cours » est refusé par le dossier ; rien n'est écrit", async () => {
     email = decor.adresse("nda");
     const { fiche, lien } = await formateurRetenu(email, "Zoé", decor.admin);
     trainerId = fiche.id;
     const registre = registreDe("Zoé", "vert", null);
 
-    // Sans le récépissé, l'envoi est refusé et le dit.
     await actionDossier(lien, "vous", { telephone: "0600000000", codePostal: "69003" });
     const activite = await actionDossier(
       lien,
@@ -93,29 +84,9 @@ test.describe("@formateurs E12 — numéro de déclaration « en cours »", () =
       },
       { registre },
     );
-    expect(activite.valeur.ok, activite.valeur.message).toBe(true);
-    for (const type of ["rib", "cv"]) {
-      await actionDossier(lien, "piece", champsDePiece(type), { fichier: pdfFictif(type) });
-    }
-    // Le contrat ne se prépare que pour un dossier complet : sans récépissé, ni contrat
-    // ni code, et le refus le dit.
-    const sansRecepisse = await actionDossier(lien, "code", {}, { registre });
-    expect(sansRecepisse.valeur.ok).toBe(false);
-    expect(sansRecepisse.valeur.message).toMatch(/récépissé/);
-    expect(
-      await prisma.documentGenere.count({
-        where: { trainerId, type: "contrat_sous_traitance" },
-      }),
-    ).toBe(0);
-
-    // Avec le récépissé : code, signé, envoyé.
-    await preparerDossier(lien, "Zoé", { ndaEnCours: true, registre });
-    const code = await demanderCode(lien, email, registre);
-    await signerAvecCode(lien, email, registre, code);
+    expect(activite.valeur.ok).toBe(false);
     const apres = await prisma.trainer.findUniqueOrThrow({ where: { id: trainerId } });
-    expect(apres.sousTraitantNda).toBe("en cours");
-    expect(apres.dossierStatut).toBe("a_verifier");
-    expect(apres.actif).toBe(false);
+    expect(apres.sousTraitantNda ?? "").not.toMatch(/en\s*cours/i);
   });
 
   test("la règle de mission accepte une fiche complète avec un numéro (témoin)", () => {
@@ -133,63 +104,11 @@ test.describe("@formateurs E12 — numéro de déclaration « en cours »", () =
     expect(verdict).toEqual({ ok: false, manques: [MANQUES_MISSION.ndaEnCours] });
   });
 
-  // V1-A-6 (corrigé, cf. E11) : W-4 ouvre l'espace. V1-A-10 (corrigé) : la personne
-  // transmet son numéro depuis « Mon dossier », et F21 s'arrête. L'oracle d'origine
-  // n'avait aucune assertion sur l'arrêt : F21 part à 1 mois, le numéro est transmis,
-  // et le passage de 2 mois n'envoie plus rien.
-  test("V1-A-6 / V1-A-10 — espace ouvert, F21 à 1 mois, arrêt au numéro reçu", async () => {
-    const formation = await formationDuBanc(`e12-${Date.now()}`);
-    try {
-      const w4 = await etape<{ ok: boolean; error?: string }>({
-        etape: "contresigner-w4",
-        args: {
-          saisie: {
-            trainerId,
-            codeAttestation: "",
-            attestationAuthentique: false,
-            piecesVerifiees: true,
-            formationIds: [formation.id],
-            orangeVerifie: true,
-            motifOrange: "Numéro de déclaration en cours d'attribution",
-          },
-        },
-        session: decor.admin,
-        registre: registreDe("Zoé", "vert", null),
-      });
-      expect(w4.valeur.ok, w4.valeur.error).toBe(true);
-      const contresigne = await prisma.documentSignature.findFirstOrThrow({
-        where: { documentGenere: { trainerId }, partie: "axionia" },
-      });
-      expect((await prisma.trainer.findUniqueOrThrow({ where: { id: trainerId } })).actif).toBe(
-        true,
-      );
-      const f21 = async () =>
-        (await gabaritsVers(email)).filter((g) => g === "formateur-nda-a-transmettre");
-      const passage = (j: number) =>
-        etape({
-          etape: "passage-campagnes",
-          args: { maintenant: jourOuvre(contresigne.signeAt, j).toISOString() },
-        });
-
-      await passage(30);
-      await attendreLeWorker(email);
-      expect(await f21()).toHaveLength(1);
-
-      // « Mon dossier » : le numéro reçu.
-      const recu = await etape<string>({
-        etape: "transmettre-nda",
-        args: { trainerId, nda: NDA_BANC },
-      });
-      expect(recu.valeur).toBe("nda_recu");
-      const apres = await prisma.trainer.findUniqueOrThrow({ where: { id: trainerId } });
-      expect(apres.sousTraitantNda).toBe(NDA_BANC);
-
-      // Le passage de 2 mois n'envoie plus F21.
-      await passage(60);
-      await attendreLeWorker(email);
-      expect(await f21()).toHaveLength(1);
-    } finally {
-      await formation.effacer();
+  // Qualiopi ind. 21 — une fiche d'AVANT le 17/10 qui porte encore « en cours » ne
+  // s'active plus : le numéro est exigé à l'activation, sous les deux règles.
+  test("ind. 21 — une fiche ancienne « en cours » ne s'active pas", () => {
+    for (const regle of ["provisoire", "complete"] as const) {
+      expect(manquesActivationQ21({ nda: "en cours" }, regle)).toContain(MANQUES_Q21.ndaEnCours);
     }
   });
 });

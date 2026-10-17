@@ -95,15 +95,14 @@ describe("L0c-1 — les champs du formulaire", () => {
     });
   });
 
-  it("pas encore de numéro de déclaration : c'est dit, et accepté", () => {
+  it("Qualiopi ind. 21 — « pas encore de numéro » n'est plus accepté, même envoyé à la main", () => {
     const r = lireChampsFormateurFreelance(
       champs({ numeroDeclaration: "", pasEncoreDeNumero: "on" }),
     );
-    expect(r.ok).toBe(true);
-    if (r.ok) expect(r.reponses["Numéro de déclaration d'activité"]).toBe("Pas encore de numéro");
+    expect(r.ok).toBe(false);
   });
 
-  it("ni numéro ni « pas encore » : refusé ; numéro de 11 chiffres exigé", () => {
+  it("numéro absent : refusé ; numéro de 11 chiffres exigé", () => {
     expect(lireChampsFormateurFreelance(champs({ numeroDeclaration: "" })).ok).toBe(false);
     expect(lireChampsFormateurFreelance(champs({ numeroDeclaration: "1234" })).ok).toBe(false);
   });

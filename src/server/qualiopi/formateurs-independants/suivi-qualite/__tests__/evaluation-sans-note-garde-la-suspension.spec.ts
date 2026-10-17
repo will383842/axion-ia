@@ -27,6 +27,11 @@ const h = vi.hoisted(() => {
   return { etat, prisma };
 });
 vi.mock("@/lib/prisma", () => ({ prisma: h.prisma }));
+// Qualiopi ind. 21 — la décision d'habilitation de la formation en jeu a sa suite
+// (`evaluation-competences/__tests__/`) ; ici, elle est réputée en vigueur.
+vi.mock("../../evaluation-competences/garde-mission-q21-lecture", () => ({
+  lireManqueHabilitationMission: async () => null,
+}));
 vi.mock("../../vigilance-seuil-lecture", () => ({ lireCumulHonorairesHtCents: async () => 0 }));
 vi.mock("../../montant-mission-lecture", () => ({ lireEngagementHtCents: async () => 0 }));
 vi.mock("../../contrat-cadre-en-vigueur", () => ({
