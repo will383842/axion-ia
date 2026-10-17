@@ -771,10 +771,10 @@ export default async function MemoIserePage({ params }: Props) {
                   chiffres-clés — la répéter ici coûtait deux lignes et
                   repoussait le CTA hors du premier écran. */}
               <p data-speakable className="text-fg-soft mt-5 max-w-xl text-lg leading-relaxed">
-                Vous recommandez aux <strong>TPE, PME, ETI et grands groupes</strong> que vous connaissez
-                des formations IA — l’AI Act les rend incontournables. Vous touchez, à titre
-                indicatif, <strong>{`${commission(1)} par journée vendue`}</strong>. De Grenoble à
-                Lyon, là où vous avez votre réseau.
+                Vous recommandez aux <strong>TPE, PME, ETI et grands groupes</strong> que vous
+                connaissez des formations IA — l’AI Act les rend incontournables. Vous touchez, à
+                titre indicatif, <strong>{`${commission(1)} par journée vendue`}</strong>. De
+                Grenoble à Lyon, là où vous avez votre réseau.
               </p>
 
               {/* CTA remonté AVANT la photo : sur mobile il était sous une image
