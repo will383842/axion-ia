@@ -92,6 +92,14 @@ export interface CandidatMission {
    * la session est à cheval sur la bascule (V1-C-2). Absente : jamais à cheval.
    */
   readonly derniereJourneeSession?: string | null;
+  /**
+   * Vérification 2, V2-A-2 — le formateur intervient pour un ORGANISME sous-traitant
+   * (`Trainer.organismeSousTraitantId`) : c'est l'organisme qui facture ses journées.
+   * Le passage n'écrit JAMAIS de relevé au nom de l'intervenant ; ces journées sont à
+   * traiter à la main (alerte `honoraires_organisme_a_traiter`), sans virement
+   * automatique, tant que le circuit des organismes (L11f) n'est pas livré.
+   */
+  readonly intervenantOrganisme?: boolean;
 }
 
 /**
@@ -151,7 +159,14 @@ export type MotifAnomaliePassage =
   | "conditions_absentes"
   | "conditions_hors_plafond"
   /** Signatures sur un mois sans aucune demi-journée prévue pour ce formateur : jamais payé seul. */
-  | "prevu_absent";
+  | "prevu_absent"
+  /**
+   * V2-A-1 — des demi-journées signées qui ne sont PAS les siennes (journée désignée à un
+   * autre formateur) : jamais payées, le reste du mois l'est.
+   */
+  | "signee_hors_prevu"
+  /** V2-A-2 — intervenant d'un organisme : rien à son nom, à traiter à la main. */
+  | "intervenant_organisme";
 
 export interface Plan {
   readonly aEcrire: ReadonlyArray<MoisAEcrire>;
@@ -192,8 +207,16 @@ export function planifierPassage(
 
   for (const c of candidats) {
     if (!appartientAuPassage(c, dateBascule)) continue;
-    const signees = demiJourneesSignees(c.contresignatures);
-    if (signees.length === 0) continue;
+    const toutesSignees = demiJourneesSignees(c.contresignatures);
+    if (toutesSignees.length === 0) continue;
+    if (c.intervenantOrganisme === true) {
+      anomalies.push({
+        trainerId: c.trainerId,
+        sessionId: c.sessionId,
+        motif: "intervenant_organisme",
+      });
+      continue;
+    }
     if (c.conditions === null) {
       anomalies.push({
         trainerId: c.trainerId,
@@ -205,6 +228,21 @@ export function planifierPassage(
     const conditions = c.conditions;
     const prevues = demiJourneesPrevuesDuCandidat(c, bornes);
     const prevuesParMois = new Map(parMoisCivil(prevues).map((m) => [m.mois, m] as const));
+    // V2-A-1 : dans un mois qui compte des journées à lui, seules SES demi-journées
+    // signées sont payées. Une journée désignée à un autre (co-animation) que ce
+    // formateur aurait aussi contresignée n'est jamais payée deux fois.
+    const clesPrevues = new Set(prevues.map((d) => `${d.jour}|${d.creneau}`));
+    const horsPrevu = toutesSignees.filter(
+      (d) => prevuesParMois.has(d.jour.slice(0, 7)) && !clesPrevues.has(`${d.jour}|${d.creneau}`),
+    );
+    if (horsPrevu.length > 0) {
+      anomalies.push({
+        trainerId: c.trainerId,
+        sessionId: c.sessionId,
+        motif: "signee_hors_prevu",
+      });
+    }
+    const signees = toutesSignees.filter((d) => !horsPrevu.includes(d));
     const moisSignes = new Set(parMoisCivil(signees).map((m) => m.mois));
     // Décision de Will : seul le DERNIER mois de la mission (celui de la dernière journée
     // prévue de ce formateur, `parMoisCivil` trie les mois) attend le bilan.
@@ -221,6 +259,11 @@ export function planifierPassage(
           });
       }
     }
+    // V2-A-3 : les demi-journées PRÉVUES des mois précédents, pour que le reliquat d'un
+    // tarif impair ne se perde pas entre deux mois. Prévues et non signées (relecture
+    // #1552) : un mois payé est complet, ses signées sont ses prévues ; compter les
+    // signées d'un mois encore en attente ferait dépendre le total de l'ordre de paiement.
+    const prevuesAvant = (m: string) => prevues.filter((d) => d.jour.slice(0, 7) < m).length;
     for (const mois of parMoisCivil(signees)) {
       const prevuDuMois: MoisAnime | undefined = prevuesParMois.get(mois.mois);
       if (!prevuDuMois) {
@@ -257,7 +300,7 @@ export function planifierPassage(
       }
       let releve: ReleveMissionCalcule;
       try {
-        releve = calculerReleveDuMois(mois, conditions, p);
+        releve = calculerReleveDuMois(mois, conditions, p, prevuesAvant(mois.mois));
       } catch {
         anomalies.push({
           trainerId: c.trainerId,
@@ -272,8 +315,13 @@ export function planifierPassage(
         releve,
         regimeTva: conditions.regimeTva,
         tarifJourneeHtCents: conditions.tarifJourneeHtCents,
-        sansEcart: releveSansEcart(releve, prevuDuMois, conditions, p),
-        prevuHtCents: montantPrevuDuMoisHtCents(prevuDuMois, conditions, p),
+        sansEcart: releveSansEcart(releve, prevuDuMois, conditions, p, prevuesAvant(mois.mois)),
+        prevuHtCents: montantPrevuDuMoisHtCents(
+          prevuDuMois,
+          conditions,
+          p,
+          prevuesAvant(mois.mois),
+        ),
       });
     }
   }

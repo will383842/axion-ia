@@ -94,9 +94,4 @@ export const EMPLOYER_BRAND = {
     "Votre intégration est pensée pour que vous soyez à l'aise avant d'être autonome : vous n'êtes jamais lâché·e dans le grand bain, et vous avez toujours quelqu'un vers qui vous tourner.",
   integrationEn:
     "Onboarding is designed so you feel confident before going solo: you're never thrown in at the deep end, and there's always someone to turn to.",
-  /** Spécifique formateurs (catégorie « conseil ») — doublon au début, solo quand prêt. */
-  formateurOnboardingFr:
-    "Pour les interventions : au début, vous êtes systématiquement en doublon avec un formateur expérimenté — jamais lancé·e seul·e. Une fois que vous avez pris confiance et que vous assurez des prestations de haute qualité, vous animez vos propres formations en solo.",
-  formateurOnboardingEn:
-    "For training sessions: at first you always shadow an experienced trainer — never sent out alone. Once you've built confidence and consistently deliver high-quality sessions, you run your own trainings solo.",
 } as const;

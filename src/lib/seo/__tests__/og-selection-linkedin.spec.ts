@@ -25,10 +25,6 @@ const RACINE = process.cwd();
 const PAGES = [
   { page: "src/app/[locale]/appel/page.tsx", image: "appel-45-min-gratuit.png" },
   { page: "src/app/[locale]/guide-ia/page.tsx", image: "guide-ia-2026-gratuit.png" },
-  {
-    page: "src/app/[locale]/certification-qualiopi/page.tsx",
-    image: "formations-certifiees-qualiopi.png",
-  },
 ] as const;
 
 /** Largeur et hauteur lues dans l'en-tête IHDR du PNG (octets 16 à 23). */

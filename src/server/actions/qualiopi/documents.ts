@@ -120,6 +120,12 @@ import { ListeFormateursPdf } from "@/server/qualiopi/documents/templates/liste-
 import { AutorisationCaptationPdf } from "@/server/qualiopi/documents/templates/autorisation-captation";
 import { ContratSousTraitancePdf } from "@/server/qualiopi/documents/templates/contrat-sous-traitance";
 import { ProcedureSousTraitancePdf } from "@/server/qualiopi/documents/templates/procedure-sous-traitance";
+import {
+  MESSAGE_V2_ETEINTE,
+  PROCEDURE_SOUS_TRAITANCE_V2_VERSION,
+  planifierRemplacementProcedure,
+  texteProcedureV2Redige,
+} from "@/server/qualiopi/documents/procedure-sous-traitance-v2";
 import { readFormationForDocs } from "@/server/qualiopi/formations/formation-snapshot";
 import { coachingInterventionLabel } from "@/server/formateur/coaching-options";
 import { listMoyens } from "@/server/qualiopi/moyens/moyens-service";
@@ -3489,6 +3495,136 @@ export async function annulerDocumentAction(input: {
   });
 
   return { data: { numero: doc.numero } };
+}
+
+/**
+ * Remplace une procédure de sous-traitance par la v2.0 (lot L14, NC13 ind. 27).
+ *
+ *   · la v2.0 est générée avec `rectifie` : elle dit ce qu'elle remplace, et la
+ *     pièce remplacée dit par quoi (`remplaceeParNumero`) — lien EXPLICITE, le
+ *     mécanisme existant de `generateDocument` ;
+ *   · l'éventuelle ancienne pièce restée en circulation est ANNULÉE par
+ *     `annulerDocumentAction` (motif obligatoire, jamais de suppression), et son
+ *     motif nomme la v2.0.
+ *
+ * 🔴 ÉTEINT TANT QUE LE TEXTE N'EXISTE PAS (`texteProcedureV2Redige`) : le gabarit
+ * ne porte que la v1.0, et une pièce « version 2.0 » aux articles de la v1.0
+ * mentirait sur son contenu. L'action refuse avant toute lecture ou écriture.
+ */
+const remplacerProcedureSchema = z.object({
+  numeroRemplacee: z.string().trim().min(1).max(40),
+  numeroAAnnuler: z.string().trim().min(1).max(40).optional(),
+  motif: z.string().trim().min(MOTIF_ANNULATION_MIN).max(500),
+});
+
+export async function remplacerProcedureSousTraitanceAction(input: {
+  numeroRemplacee: string;
+  numeroAAnnuler?: string;
+  motif: string;
+}): Promise<
+  ActionResult<{ documentId: string; numero: string; remplacee: string; annulee: string | null }>
+> {
+  const adminSession = await requireAdminWrite();
+  if (isStub()) return { error: "Génération désactivée en mode build (stub)" };
+
+  if (!texteProcedureV2Redige()) return { error: MESSAGE_V2_ETEINTE };
+
+  const parsed = remplacerProcedureSchema.safeParse(input);
+  if (!parsed.success) {
+    return {
+      error: `Motif obligatoire (${MOTIF_ANNULATION_MIN} caractères minimum) et numéros de pièces — le motif est lu par l'auditeur.`,
+    };
+  }
+  const { numeroRemplacee, numeroAAnnuler, motif } = parsed.data;
+
+  const colonnes = { id: true, numero: true, type: true, annuleeAt: true } as const;
+  const [remplacee, aAnnuler] = await Promise.all([
+    prisma.documentGenere.findUnique({ where: { numero: numeroRemplacee }, select: colonnes }),
+    numeroAAnnuler === undefined
+      ? Promise.resolve(null)
+      : prisma.documentGenere.findUnique({ where: { numero: numeroAAnnuler }, select: colonnes }),
+  ]);
+  const plan = planifierRemplacementProcedure({
+    numeroRemplacee,
+    remplacee,
+    numeroAAnnuler,
+    aAnnuler,
+  });
+  if (!plan.ok) return { error: plan.error };
+
+  const identite = await getOrganismeIdentite();
+  const [dirigeantNom, dirigeantFonction] = await Promise.all([
+    getQualiopiConfig("dirigeant_nom").catch(() => ""),
+    getQualiopiConfig("dirigeant_fonction").catch(() => ""),
+  ]);
+  const signataireNom =
+    typeof dirigeantNom === "string" && dirigeantNom.trim() !== ""
+      ? dirigeantNom.trim()
+      : identite.raisonSociale;
+  const signataireQualite =
+    typeof dirigeantFonction === "string" && dirigeantFonction.trim() !== ""
+      ? dirigeantFonction.trim()
+      : "Nom, qualité, signature et cachet";
+
+  const doc = await generateDocument({
+    type: "procedure_sous_traitance",
+    identite,
+    // Lien explicite : la v2.0 rectifie la pièce nommée, qui en garde la contre-trace.
+    rectifie: { numero: plan.remplacee.numero, motif },
+    buildElement: (numero) =>
+      React.createElement(ProcedureSousTraitancePdf, {
+        data: {
+          numero,
+          version: PROCEDURE_SOUS_TRAITANCE_V2_VERSION,
+          applicableLe: formatDateFr(new Date()),
+          signataireNom,
+          signataireQualite,
+        },
+        identite,
+      }),
+  });
+
+  await logQualiopiActivity({
+    action: "qualiopi.document.procedure_sous_traitance.remplacee",
+    targetType: "DocumentGenere",
+    targetId: doc.id,
+    changes: {
+      numero: doc.numero,
+      version: PROCEDURE_SOUS_TRAITANCE_V2_VERSION,
+      remplacee: plan.remplacee.numero,
+      annulee: plan.aAnnuler?.numero ?? null,
+    },
+    session: adminSession,
+  });
+
+  if (plan.aAnnuler !== null) {
+    const annulation = await annulerDocumentAction({
+      documentId: plan.aAnnuler.id,
+      motif:
+        `Remplacée par la procédure de sous-traitance v${PROCEDURE_SOUS_TRAITANCE_V2_VERSION} (${doc.numero}) : ${motif}`.slice(
+          0,
+          500,
+        ),
+    }).catch((err: unknown) => ({
+      error: err instanceof Error ? err.message : String(err),
+    }));
+    if ("error" in annulation) {
+      // La v2.0 EXISTE (numéro consommé, PDF conservé) : on le dit, plutôt que
+      // de laisser croire que rien n'a été produit. L'annulation se rejoue seule.
+      return {
+        error: `Procédure ${doc.numero} générée, mais ${plan.aAnnuler.numero} n'a pas pu être annulée (${annulation.error}). Annulez-la depuis le registre.`,
+      };
+    }
+  }
+
+  return {
+    data: {
+      documentId: doc.id,
+      numero: doc.numero,
+      remplacee: plan.remplacee.numero,
+      annulee: plan.aAnnuler?.numero ?? null,
+    },
+  };
 }
 
 /**

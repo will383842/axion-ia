@@ -10,9 +10,9 @@
 
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
-import { sendTelegram } from "@/lib/telegram";
+import { notifyApresReponse } from "@/server/notifications/apres-reponse";
+import { resolveTelegramTargetPourCategorie } from "@/server/notifications/routing";
 import { enqueueEmail } from "@/server/queue/queues";
-import { lienConsole } from "@/server/notifications/personne";
 import type { ToolContext } from "@/server/chatbot/tools/rechercher-offres";
 
 export const EscaladerQuestionInputSchema = z
@@ -28,7 +28,7 @@ export type EscaladerQuestionInput = z.infer<typeof EscaladerQuestionInputSchema
 export interface EscalationResult {
   readonly escalationId: string;
   readonly statut: string;
-  /** true si l'équipe a été notifiée (Telegram) ; false si non configuré. */
+  /** true si l'alerte Telegram est programmée (une route existe) ; false si non configuré. */
   readonly notified: boolean;
 }
 
@@ -52,20 +52,29 @@ export async function escaladerQuestion(
 
   // Ping équipe best-effort. Fail-soft AUTOPORTANT : on n'échoue jamais la
   // création d'escalade (déjà persistée) à cause d'un souci de notification.
-  // Ni la question ni l'adresse (décision du 11/10/2026) : elles se lisent
-  // dans la console.
-  const body = [
-    "❓ Escalade chatbot — question sans réponse",
-    input.contact_email ? "Contact : fourni" : "Contact : non fourni",
-    `Escalade #${escalation.id}`,
-    `Voir en console : ${lienConsole("chatbot/escalades")}`,
-  ].join("\n");
-  let notified = false;
-  try {
-    notified = await sendTelegram({ tag: "CONTACT", body, silent: false });
-  } catch (err) {
-    console.warn("[escalader_question] notification Telegram échouée:", err);
-  }
+  //
+  // Décision Will 15/10 : une question escaladée est celle d'un CLIENT. Elle
+  // quitte le `sendTelegram` legacy (→ `MONITORING_ALERT`, silencieux) pour le
+  // salon « Clients », avec la question en entier et l'adresse s'il l'a donnée.
+  //
+  // Après la réponse (`after`) : la réponse du bot n'attend plus Telegram
+  // (relecture PR 1553). `notified` dit donc qu'une route Telegram existe et
+  // que l'envoi est programmé — un échec réseau ultérieur est journalisé.
+  const notified = resolveTelegramTargetPourCategorie("CHATBOT_ESCALATION") !== undefined;
+  notifyApresReponse(
+    {
+      category: "CHATBOT_ESCALATION",
+      payload: {
+        escalationId: escalation.id,
+        question: input.question,
+        ...(input.contexte_conversation ? { contexte: input.contexte_conversation } : {}),
+        ...(input.contact_email ? { contactEmail: input.contact_email } : {}),
+        submittedAt: new Date().toISOString(),
+      },
+      dedupKey: escalation.id,
+    },
+    "escalader_question",
+  );
 
   // Confirmation au visiteur (2026-08-13). C'est le pire endroit pour un
   // silence : la personne vient d'écrire dans une fenêtre de discussion

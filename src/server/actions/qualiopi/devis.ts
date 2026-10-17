@@ -746,6 +746,8 @@ export async function sendDevisAction(
       },
       {
         attachments: [{ filename: `${devis.numero}.pdf`, r2Key: fichierPdfUrl }],
+        entityType: "Devis",
+        entityId: devis.id,
       },
     );
     emailEnvoye = enqueued;

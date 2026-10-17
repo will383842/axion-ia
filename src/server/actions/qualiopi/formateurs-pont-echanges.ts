@@ -40,7 +40,9 @@ export async function relireEchangesDuPontAction(
 
   let bilan: Awaited<ReturnType<typeof relireEchangesDuPont>>;
   try {
-    bilan = await relireEchangesDuPont(new Date(), (id) => enrichCalendlyEvent(id));
+    bilan = await relireEchangesDuPont(new Date(), (id) =>
+      enrichCalendlyEvent(id, { notifier: "apres-reponse" }),
+    );
   } catch (err) {
     Sentry.captureException(err, { tags: { action: "pont-echanges-formateur" } });
     return { etat: "erreur", message: "La relecture a échoué. Réessayez dans un instant." };

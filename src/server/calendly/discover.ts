@@ -32,7 +32,8 @@
 import * as Sentry from "@sentry/nextjs";
 import { prisma } from "@/lib/prisma";
 import { syncCalendlyEventToCrm } from "@/server/crm-sync";
-import { notify } from "@/server/notifications";
+import { notifierSelonMode, type OptionsNotifier } from "@/server/notifications/mode-envoi";
+import { categorieAlerteCalendly } from "@/server/calendly/categorie-alerte";
 import { CALENDLY_API_BASE, isCalendlyApiConfigured } from "./api";
 import { enrichCalendlyEvent } from "./enrich";
 import { canalDuRendezVous, COULEUR_GOOGLE_CANAL } from "@/server/calendly/canal";
@@ -255,6 +256,7 @@ async function profondeurRattrapage(nowMs: number): Promise<number> {
 
 export async function discoverNewCalendlyEvents(
   nowMs: number = Date.now(),
+  options: OptionsNotifier = {},
 ): Promise<DiscoverOutcome> {
   if (!isCalendlyApiConfigured()) {
     return { ok: true, scanned: 0, created: 0, reason: "not_configured" };
@@ -404,7 +406,7 @@ export async function discoverNewCalendlyEvents(
 
     // Remplit nom / email / téléphone / lien d'annulation. Best-effort : une
     // ligne non enrichie reste une ligne visible, ce qui est déjà l'essentiel.
-    const enriched = await enrichCalendlyEvent(row.id);
+    const enriched = await enrichCalendlyEvent(row.id, options);
 
     let inviteeName: string | null = null;
     let inviteeEmail: string | null = null;
@@ -470,26 +472,32 @@ export async function discoverNewCalendlyEvents(
     // Même alerte que pour une capture depuis /appel : c'est le même
     // évènement commercial, quel que soit le chemin emprunté par le client.
     try {
-      await notify({
-        category: "CALENDLY_INVITEE_CREATED",
-        payload: {
-          eventUri: row.id,
-          inviteeEmail: inviteeEmail ?? "(non communiqué)",
-          inviteeName: inviteeName ?? "(non communiqué)",
-          eventStartTime: start?.toISOString() ?? "(voir mail Calendly)",
-          eventName: name,
-          // Le titre de l'alerte se tire du type classé (« Diagnostic IA
-          // réservé », « Échange projet réservé — Besoin : Formation »).
-          typeRendezVous,
-          ...(besoin ? { besoin } : {}),
-          format,
-          ...(location ? { lieu: location } : {}),
-          ...(inviteePhone ? { inviteePhone } : {}),
-          ...(cancelUrl ? { cancelUrl } : {}),
-          ...(enriched.ok && enriched.answersText ? { answersText: enriched.answersText } : {}),
+      await notifierSelonMode(
+        {
+          // Décision Will 15/10 : un client part au salon « Clients » (tout le
+          // détail), un candidat apporteur ou un formateur reste au salon 📅.
+          category: categorieAlerteCalendly("reservation", { typeRendezVous, eventTypeName: name }),
+          payload: {
+            eventUri: row.id,
+            inviteeEmail: inviteeEmail ?? "(non communiqué)",
+            inviteeName: inviteeName ?? "(non communiqué)",
+            eventStartTime: start?.toISOString() ?? "(voir mail Calendly)",
+            eventName: name,
+            // Le titre de l'alerte se tire du type classé (« Diagnostic IA
+            // réservé », « Échange projet réservé — Besoin : Formation »).
+            typeRendezVous,
+            ...(besoin ? { besoin } : {}),
+            format,
+            ...(location ? { lieu: location } : {}),
+            ...(inviteePhone ? { inviteePhone } : {}),
+            ...(cancelUrl ? { cancelUrl } : {}),
+            ...(enriched.ok && enriched.answersText ? { answersText: enriched.answersText } : {}),
+          },
+          dedupKey: row.id,
         },
-        dedupKey: row.id,
-      });
+        options.notifier,
+        "calendly-discover",
+      );
     } catch (e) {
       Sentry.captureException(e);
     }

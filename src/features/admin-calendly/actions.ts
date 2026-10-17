@@ -269,7 +269,7 @@ export async function enrichCalendlyEventAction(
     return { ok: false, error: ENRICH_ERROR_LABELS["not_configured"] as string };
   }
 
-  const res = await enrichCalendlyEvent(parsed.data.id);
+  const res = await enrichCalendlyEvent(parsed.data.id, { notifier: "apres-reponse" });
   if (!res.ok) {
     return { ok: false, error: ENRICH_ERROR_LABELS[res.reason] ?? `Échec (${res.reason})` };
   }

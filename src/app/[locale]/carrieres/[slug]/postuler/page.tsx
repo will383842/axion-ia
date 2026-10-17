@@ -14,6 +14,7 @@ import { getJobOfferBySlug, isOfferOpen } from "@/lib/careers/job-offers";
 import { isVideoFreelanceOffer } from "@/lib/careers/video-editor-offer";
 import { JobApplicationForm, type ScreeningQuestion } from "@/components/forms/JobApplicationForm";
 import { FormulaireFormateurFreelance } from "@/components/forms/FormulaireFormateurFreelance";
+import { estOffreIntervenant } from "@/lib/careers/etapes-intervenant";
 import { modeFormateurFreelance } from "@/lib/careers/formulaire-formateur-freelance";
 import {
   lireEtatsEntree,
@@ -36,9 +37,15 @@ export async function generateMetadata({
     locale: locale as Locale,
     path: `/carrieres/${slug}/postuler`,
     title: isFr ? `Postuler · ${title} · Axion-IA.com` : `Apply · ${title} · Axion-IA.com`,
-    description: isFr
-      ? "Postulez en quelques minutes — CV optionnel."
-      : "Apply in a few minutes — CV optional.",
+    // L14 — une offre d'intervenant ne promet pas un « CV optionnel » : le CV de
+    // moins de 24 mois est une pièce vérifiée au parcours.
+    description: estOffreIntervenant(offer)
+      ? isFr
+        ? "Postulez en quelques minutes."
+        : "Apply in a few minutes."
+      : isFr
+        ? "Postulez en quelques minutes — CV optionnel."
+        : "Apply in a few minutes — CV optional.",
   });
   return { ...base, robots: { index: false, follow: true } };
 }
@@ -145,13 +152,27 @@ export default async function PostulerPage({
                 ? ["⏱️ 2 minutes", "📄 Sans CV", "💶 Vos prix", "🔗 Vos réalisations"]
                 : ["⏱️ 2 minutes", "📄 No CV", "💶 Your rates", "🔗 Your work"]
               : isFr
-                ? [
-                    "📄 CV optionnel",
-                    "⚡ Réponse rapide",
-                    "🙌 Process simple",
-                    "🔒 Données protégées",
-                  ]
-                : ["📄 CV optional", "⚡ Fast reply", "🙌 Simple process", "🔒 Data protected"]
+                ? estOffreIntervenant(offer)
+                  ? [
+                      "⚡ Quelques minutes",
+                      "🧭 Parcours en étapes",
+                      "🙌 Process simple",
+                      "🔒 Données protégées",
+                    ]
+                  : [
+                      "📄 CV optionnel",
+                      "⚡ Réponse rapide",
+                      "🙌 Process simple",
+                      "🔒 Données protégées",
+                    ]
+                : estOffreIntervenant(offer)
+                  ? [
+                      "⚡ A few minutes",
+                      "🧭 Step-by-step process",
+                      "🙌 Simple process",
+                      "🔒 Data protected",
+                    ]
+                  : ["📄 CV optional", "⚡ Fast reply", "🙌 Simple process", "🔒 Data protected"]
             ).map((chip) => (
               <li key={chip} className="border-border bg-paper rounded-full border px-3 py-1">
                 {chip}

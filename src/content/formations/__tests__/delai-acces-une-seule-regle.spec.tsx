@@ -1,9 +1,9 @@
 /**
  * Délai d'accès (indicateur 1 Qualiopi) — UNE règle, lue partout, jamais l'ancienne.
  *
- * Le 2026-10-02, le dirigeant a fixé la règle réelle : « dès 48 heures pour un
- * financement direct par l'entreprise ; avec une prise en charge OPCO, comptez le
- * délai de réponse de l'OPCO (en général 2 à 4 semaines) ». Le site affichait
+ * Le 2026-10-16 (L15), le dirigeant a fixé la règle : « environ 2 semaines entre
+ * votre demande et la formation » (elle remplace celle du 2026-10-02, « dès 48
+ * heures pour un financement direct… »). Le site affichait
  * jusque-là « 11 jours ouvrés minimum », un chiffre sans fondement, recopié sur
  * les fiches, la FAQ, sept pages villes et la base de connaissances.
  *
@@ -52,8 +52,7 @@ vi.mock("@/components/nav/Breadcrumbs", () => ({ Breadcrumbs: () => null }));
 const RACINE = path.resolve(__dirname, "../../../..");
 
 /** Texte de référence validé par le dirigeant — recopié ICI à dessein, et nulle part ailleurs. */
-const PHRASE_VALIDEE =
-  "Délai d'accès : dès 48 heures pour un financement direct par l'entreprise ; avec une prise en charge OPCO, comptez le délai de réponse de l'OPCO (en général 2 à 4 semaines).";
+const PHRASE_VALIDEE = "Délai d'accès : environ 2 semaines entre votre demande et la formation.";
 
 function fautes(texte: string): string[] {
   return DELAI_ACCES_FORMES_RETIREES.filter((re) => re.test(texte)).map(String);
@@ -87,7 +86,7 @@ describe("délai d'accès — la source unique porte la règle du dirigeant", ()
   });
 
   it("forme abrégée fidèle, et aucune forme ne porte l'ancienne affirmation", () => {
-    expect(DELAI_ACCES_COURT).toBe("Dès 48 h (financement direct) · délai OPCO en sus");
+    expect(DELAI_ACCES_COURT).toBe("Environ 2 semaines entre votre demande et la formation");
     for (const t of [
       DELAI_ACCES_PHRASE,
       DELAI_ACCES_VALEUR,
@@ -104,6 +103,9 @@ describe("délai d'accès — la source unique porte la règle du dirigeant", ()
     ).not.toEqual([]);
     expect(fautes("Comptez au moins 11 jours ouvrés avant la session.")).not.toEqual([]);
     expect(fautes('{ figure: "11 j", label: "ouvrés de délai d\'accès" }')).not.toEqual([]);
+    // La règle du 2026-10-02 est elle aussi remplacée (décision du 2026-10-16).
+    expect(fautes("Délai d'accès : dès 48 heures pour un financement direct")).not.toEqual([]);
+    expect(fautes("Dès 48 h (financement direct) · délai OPCO en sus")).not.toEqual([]);
   });
 });
 

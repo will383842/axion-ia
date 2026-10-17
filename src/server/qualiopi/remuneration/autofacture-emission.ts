@@ -71,6 +71,7 @@ import {
   echeanceAutofactureMission,
   instantDuJourCivil,
 } from "@/server/qualiopi/formateurs-independants/paiement/echeance-autofacture";
+import { echeanceDuJourComplet } from "@/server/qualiopi/formateurs-independants/paiement/jour-complet";
 import { resoudreMandat } from "@/server/qualiopi/remuneration/mandat-source";
 import {
   avecVerrouEmissionAutofacture,
@@ -471,6 +472,9 @@ async function emettreSousVerrou(
   // rectifiée garde la date limite de celle qu'elle remplace ; une indemnité d'annulation
   // ou une présentation de la méthode garde sa date fixe si elle est plus proche
   // (`echeance-autofacture.ts`). Le relevé mensuel garde sa règle (émission + 30 jours).
+  // V2-A-5 : l'autofacture reste datée de son émission, mais le délai court depuis le
+  // jour où tout était complet (dernière feuille du mois, bilan du dernier mois) : un
+  // retard de validation d'Axion ne recule jamais la date limite du virement.
   const echeance =
     releve.origine === "passage_mission"
       ? instantDuJourCivil(
@@ -479,6 +483,7 @@ async function emettreSousVerrou(
             echeanceDuReleve: releve.echeanceAt === null ? null : jourParis(releve.echeanceAt),
             remplace: releve.remplaceId != null,
             objets: releve.feeLines.map((l) => l.objet ?? null),
+            echeanceDuJourComplet: await echeanceDuJourComplet(prisma as never, releve.id),
           }),
         )
       : calculerEcheanceHonoraires(maintenant);

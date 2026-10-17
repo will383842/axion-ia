@@ -27,7 +27,6 @@ import { prisma } from "@/lib/prisma";
 import {
   creerPartenariat,
   updatePartenariat,
-  supprimerPartenariat,
   getPartenariat,
   listPartenariats,
 } from "./partenariats-service";
@@ -158,18 +157,13 @@ describe("updatePartenariat", () => {
 });
 
 // ─────────────────────────────────────────────────────────────────────────────
-// supprimerPartenariat
+// Pas de suppression : un partenariat qui cesse passe « inactif », rien ne s'efface
 // ─────────────────────────────────────────────────────────────────────────────
 
-describe("supprimerPartenariat", () => {
-  beforeEach(() => {
-    vi.clearAllMocks();
-    mockPrisma.partenariat.delete.mockResolvedValue(makePartenariat());
-  });
-
-  it("supprime un partenariat par id", async () => {
-    await supprimerPartenariat("part-uuid-001");
-    expect(mockPrisma.partenariat.delete).toHaveBeenCalledWith({ where: { id: "part-uuid-001" } });
+describe("registre des partenariats — rien ne s'efface", () => {
+  it("🔴 le service n'exporte plus de suppression (export mort retiré)", async () => {
+    const service = await import("./partenariats-service");
+    expect(Object.keys(service)).not.toContain("supprimerPartenariat");
   });
 });
 

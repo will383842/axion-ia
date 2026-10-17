@@ -6,7 +6,7 @@
 
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 
-import { sendWhatsAppRaw } from "../channels/whatsapp";
+import { sendWhatsAppRaw, flushWhatsAppQueue } from "../channels/whatsapp";
 import { shouldNotifyWhatsApp, telegramGroupFor, ALL_NOTIFICATION_CATEGORIES } from "../routing";
 import { escapeMarkdownV2, markdownV2ToPlain, formatNotificationPlain } from "../format";
 import { notify, flushPendingDispatches } from "../index";
@@ -29,10 +29,14 @@ describe("sendWhatsAppRaw", () => {
   const savedEnv = { ...process.env };
 
   beforeEach(() => {
+    vi.useFakeTimers();
     fetchMock.mockReset();
     globalThis.fetch = fetchMock as unknown as typeof fetch;
   });
-  afterEach(() => {
+  afterEach(async () => {
+    await vi.runAllTimersAsync();
+    await flushWhatsAppQueue();
+    vi.useRealTimers();
     globalThis.fetch = originalFetch;
     process.env = { ...savedEnv };
   });
@@ -52,110 +56,99 @@ describe("sendWhatsAppRaw", () => {
     expect(fetchMock).not.toHaveBeenCalled();
   });
 
-  it('renvoie "sent" et construit la bonne URL CallMeBot', async () => {
+  it('renvoie "queued" puis envoie et construit la bonne URL CallMeBot', async () => {
     process.env.WHATSAPP_CALLMEBOT_APIKEY = "123456";
-    process.env.WHATSAPP_NOTIFY_PHONE = "+33 7 55 51 23 45"; // espaces volontaires
+    process.env.WHATSAPP_NOTIFY_PHONE = "+33 6 39 98 12 35"; // espaces volontaires
     fetchMock.mockResolvedValueOnce(new Response("Message queued", { status: 200 }));
 
     const status = await sendWhatsAppRaw({ text: "Nouveau lead *Marie*" });
-    expect(status).toBe("sent");
+    expect(status).toBe("queued");
+    await vi.runAllTimersAsync();
     expect(fetchMock).toHaveBeenCalledOnce();
 
     const url = String(fetchMock.mock.calls[0]?.[0]);
     expect(url).toContain("api.callmebot.com/whatsapp.php");
-    expect(url).toContain(`phone=${encodeURIComponent("+33755512345")}`); // espaces retirés
+    expect(url).toContain(`phone=${encodeURIComponent("+33639981235")}`); // espaces retirés
     expect(url).toContain("apikey=123456");
     expect(url).toContain(encodeURIComponent("Nouveau lead *Marie*"));
   });
 
-  it('renvoie "failed" sur réponse non-2xx', async () => {
+  it("abandonne sans relance sur une réponse 4xx", async () => {
     process.env.WHATSAPP_CALLMEBOT_APIKEY = "123456";
-    process.env.WHATSAPP_NOTIFY_PHONE = "+33755512345";
+    process.env.WHATSAPP_NOTIFY_PHONE = "+33639981235";
     fetchMock.mockResolvedValueOnce(new Response("APIKEY invalid", { status: 403 }));
-    expect(await sendWhatsAppRaw({ text: "x" })).toBe("failed");
+    expect(await sendWhatsAppRaw({ text: "x" })).toBe("queued");
+    await vi.runAllTimersAsync();
+    expect(fetchMock).toHaveBeenCalledOnce();
   });
 
-  it('renvoie "failed" si fetch throw (réseau / timeout)', async () => {
+  it("relance puis abandonne si fetch throw (réseau / timeout)", async () => {
     process.env.WHATSAPP_CALLMEBOT_APIKEY = "123456";
-    process.env.WHATSAPP_NOTIFY_PHONE = "+33755512345";
-    fetchMock.mockRejectedValueOnce(new Error("network down"));
-    expect(await sendWhatsAppRaw({ text: "x" })).toBe("failed");
+    process.env.WHATSAPP_NOTIFY_PHONE = "+33639981235";
+    fetchMock.mockRejectedValue(new Error("network down"));
+    vi.spyOn(console, "error").mockImplementation(() => {});
+    expect(await sendWhatsAppRaw({ text: "x" })).toBe("queued");
+    await vi.runAllTimersAsync();
+    expect(fetchMock).toHaveBeenCalledTimes(3);
   });
 });
 
-// ── 2. Routing leads-only ────────────────────────────────────────────────────
+// ── 2. Routing : la sonnette des CLIENTS, et rien d'autre ─────────────────────
 describe("shouldNotifyWhatsApp", () => {
-  // Périmètre arrêté par Will le 2026-08-09 : « ce à quoi je dois réagir dans
-  // l'heure ». CallMeBot n'écrit que dans une seule conversation, donc tout ce
-  // qu'on y met dilue le reste — cette liste est un budget, pas une préférence.
-  it("vrai pour les 3 événements Calendly", () => {
+  // Décision Will 15/10 : WhatsApp (CallMeBot, un seul fil) devient la SONNETTE
+  // réservée aux clients. Tout le reste reste sur Telegram, dans son salon.
+  const CLIENTS = [
+    "CONTACT_FORM_SUBMITTED",
+    "AUDIT_REQUEST_SUBMITTED",
+    "INTERVENTION_REQUEST_SUBMITTED",
+    "IMPLEMENTATION_REQUEST_SUBMITTED",
+    "QUOTE_REQUEST_RECEIVED",
+    "CUSTOMER_SUPPORT_REQUEST",
+    "CHATBOT_LEAD_CAPTURED",
+    "CHATBOT_ESCALATION",
+    "CLIENT_CALL_BOOKED",
+    "CLIENT_CALL_CANCELED",
+    "CLIENT_CALL_RESCHEDULED",
+  ] as const;
+
+  it("vrai pour chaque demande de client (formulaires, chatbot, rendez-vous)", () => {
+    for (const c of CLIENTS) expect(shouldNotifyWhatsApp(c), c).toBe(true);
+  });
+
+  it("🔴 la liste WhatsApp est EXACTEMENT celle du salon « Clients »", () => {
+    const sonnent = ALL_NOTIFICATION_CATEGORIES.filter(shouldNotifyWhatsApp).sort();
+    expect(sonnent).toEqual([...CLIENTS].sort());
+    for (const c of sonnent) expect(telegramGroupFor(c), c).toBe("clients");
+  });
+
+  // 🔴 RETIRÉS le 15/10 (décision Will) — ce test ROUGIT si l'un revient.
+  it("faux pour presse, investisseur, speaker, podcast, avis et candidatures", () => {
+    for (const c of [
+      "PRESS_REQUEST_SUBMITTED",
+      "INVESTOR_INQUIRY_RECEIVED",
+      "SPEAKER_INVITATION_RECEIVED",
+      "PODCAST_REQUEST_SUBMITTED",
+      "REVIEW_SUBMITTED",
+      "VIDEO_EDITOR_APPLICATION_RECEIVED",
+      "COMMERCIAL_APPLICATION_RECEIVED",
+      "JOB_APPLICATION_RECEIVED",
+      "RECRUITMENT_RECEIVED",
+      "RGPD_REQUEST_SUBMITTED",
+    ] as const) {
+      expect(shouldNotifyWhatsApp(c), c).toBe(false);
+    }
+  });
+
+  it("faux pour les rendez-vous des candidats apporteurs et des formateurs", () => {
     for (const c of [
       "CALENDLY_INVITEE_CREATED",
       "CALENDLY_INVITEE_CANCELED",
       "CALENDLY_INVITEE_RESCHEDULED",
     ] as const) {
-      expect(shouldNotifyWhatsApp(c), c).toBe(true);
-    }
-  });
-
-  it("vrai pour les demandes de prestation, la presse, l'investisseur et les avis", () => {
-    for (const c of [
-      "INTERVENTION_REQUEST_SUBMITTED",
-      "AUDIT_REQUEST_SUBMITTED",
-      "IMPLEMENTATION_REQUEST_SUBMITTED",
-      "QUOTE_REQUEST_RECEIVED",
-      "PRESS_REQUEST_SUBMITTED",
-      "INVESTOR_INQUIRY_RECEIVED",
-      "SPEAKER_INVITATION_RECEIVED",
-      "REVIEW_SUBMITTED",
-    ] as const) {
-      expect(shouldNotifyWhatsApp(c), c).toBe(true);
-    }
-  });
-
-  // Exception demandée par Will le 2026-08-12 : les candidatures à l'offre
-  // monteur vidéo freelance (catégorie dédiée, triée par slug au call-site)
-  // arrivent SUR WhatsApp — sans rouvrir la porte aux autres candidatures.
-  it("vrai pour la candidature monteur vidéo (demande Will 2026-08-12)", () => {
-    expect(shouldNotifyWhatsApp("VIDEO_EDITOR_APPLICATION_RECEIVED")).toBe(true);
-  });
-
-  // Même décision pour les candidatures commerciales du tunnel Mémorial de
-  // l'Isère (Will 2026-08-12) : campagne active, catégorie dédiée, en-tête 🧲.
-  it("vrai pour la candidature commerciale (demande Will 2026-08-12)", () => {
-    expect(shouldNotifyWhatsApp("COMMERCIAL_APPLICATION_RECEIVED")).toBe(true);
-  });
-
-  // 🔴 EXCLUSIONS EXPLICITES — décision de Will du 2026-08-09, pas un oubli.
-  // Ce test est là pour ROUGIR si quelqu'un rajoute une de ces catégories en
-  // croyant combler un trou. Si le besoin change, il faut le lui redemander et
-  // modifier ce test en connaissance de cause.
-  it("faux pour les candidatures génériques (retirées le 2026-08-09 — volume)", () => {
-    for (const c of ["JOB_APPLICATION_RECEIVED", "RECRUITMENT_RECEIVED"] as const) {
       expect(shouldNotifyWhatsApp(c), c).toBe(false);
     }
   });
 
-  it("faux pour support / podcast (retirés le 2026-08-09 — pas urgents)", () => {
-    for (const c of ["CUSTOMER_SUPPORT_REQUEST", "PODCAST_REQUEST_SUBMITTED"] as const) {
-      expect(shouldNotifyWhatsApp(c), c).toBe(false);
-    }
-  });
-
-  // Décision INVERSÉE le 2026-08-16, sur demande explicite de Will après un
-  // envoi de contrôle où rien n'est arrivé sur son téléphone. Le formulaire
-  // unifié est la porte d'entrée commerciale du site : une demande qui dort
-  // jusqu'à la prochaine ouverture de Telegram coûte plus cher que la dilution
-  // du fil. Ce test remplace celui qui verrouillait l'exclusion — il verrouille
-  // maintenant l'inverse, pour que le prochain retrait soit lui aussi conscient.
-  it("VRAI pour le formulaire de contact (remis le 2026-08-16)", () => {
-    expect(shouldNotifyWhatsApp("CONTACT_FORM_SUBMITTED")).toBe(true);
-  });
-
-  // Garde générale plutôt qu'un échantillon : couvre newsletter, déploiements,
-  // sauvegardes, incidents, sécurité, Stripe, monitoring ET les 6 dormantes
-  // BOOKING_*/OPTION_*, sans avoir à les énumérer — et couvrira aussi toute
-  // catégorie technique ajoutée plus tard.
   it("AUCUNE catégorie du groupe Système ne part sur WhatsApp", () => {
     const systeme = ALL_NOTIFICATION_CATEGORIES.filter((c) => telegramGroupFor(c) === "system");
     expect(systeme.length).toBeGreaterThan(15);
@@ -207,6 +200,7 @@ describe("notify() → doublon WhatsApp pour les leads", () => {
   const savedEnv = { ...process.env };
 
   beforeEach(() => {
+    vi.useFakeTimers({ toFake: ["setTimeout", "clearTimeout", "Date"] });
     fetchMock.mockReset();
     redisSetMock.mockReset().mockResolvedValue("OK");
     redisIncrMock.mockReset().mockResolvedValue(1);
@@ -218,13 +212,16 @@ describe("notify() → doublon WhatsApp pour les leads", () => {
   });
   afterEach(async () => {
     await flushPendingDispatches();
+    await vi.runAllTimersAsync();
+    await flushWhatsAppQueue();
+    vi.useRealTimers();
     globalThis.fetch = originalFetch;
     process.env = { ...savedEnv };
   });
 
   it("envoie Telegram + WhatsApp quand la clé CallMeBot est configurée", async () => {
     process.env.WHATSAPP_CALLMEBOT_APIKEY = "123456";
-    process.env.WHATSAPP_NOTIFY_PHONE = "+33755512345";
+    process.env.WHATSAPP_NOTIFY_PHONE = "+33639981235";
     fetchMock.mockResolvedValue(new Response('{"ok":true}', { status: 200 }));
 
     // Demande de devis, et non plus `CONTACT_FORM_SUBMITTED` : ce dernier est
@@ -240,7 +237,8 @@ describe("notify() → doublon WhatsApp pour les leads", () => {
     });
 
     expect(result.channels.telegram).toBe("sent");
-    expect(result.channels.whatsapp).toBe("sent");
+    expect(result.channels.whatsapp).toBe("queued");
+    await vi.runAllTimersAsync();
     const hosts = fetchMock.mock.calls.map((c) => String(c[0]));
     expect(hosts.some((u) => u.includes("api.telegram.org"))).toBe(true);
     expect(hosts.some((u) => u.includes("api.callmebot.com"))).toBe(true);
@@ -269,7 +267,7 @@ describe("notify() → doublon WhatsApp pour les leads", () => {
 
   it("PAS de WhatsApp pour une catégorie système (newsletter)", async () => {
     process.env.WHATSAPP_CALLMEBOT_APIKEY = "123456";
-    process.env.WHATSAPP_NOTIFY_PHONE = "+33755512345";
+    process.env.WHATSAPP_NOTIFY_PHONE = "+33639981235";
     fetchMock.mockResolvedValue(new Response('{"ok":true}', { status: 200 }));
 
     const result = await notify({

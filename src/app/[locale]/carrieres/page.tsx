@@ -507,7 +507,7 @@ export default async function CarrieresHubPage({
                     {
                       question: "Faut-il un CV pour postuler ?",
                       answer:
-                        "Non, le CV est optionnel. Vous répondez à quelques questions et pouvez joindre un CV si vous en avez un — l'essentiel pour nous, c'est votre motivation et ce que vous savez faire.",
+                        "Non, le CV est optionnel. Vous répondez à quelques questions et pouvez joindre un CV si vous en avez un — l'essentiel pour nous, c'est votre motivation et ce que vous savez faire. Exception : pour les missions d'intervenant (formateur), un CV de moins de 24 mois fait partie des pièces vérifiées avant toute mission.",
                     },
                     {
                       question: "Comment se passe le recrutement ?",

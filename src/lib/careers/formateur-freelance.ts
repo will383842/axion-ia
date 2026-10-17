@@ -115,7 +115,7 @@ type OffreAvecNature = OffreLue & {
 };
 
 /** Une offre de FORMATEUR (slug ou intitulé), sans rien dire du statut. */
-function estOffreDeFormateur(offre: OffreLue): boolean {
+export function estOffreDeFormateur(offre: OffreLue): boolean {
   return [offre.titleFr, offre.slug?.replace(/-/g, " ")]
     .map(plie)
     .some((t) => contientUn(t, MOTS_FORMATEUR));

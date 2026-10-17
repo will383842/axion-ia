@@ -27,7 +27,7 @@ import {
   preparerDossier,
   registreDe,
   signerAvecCode,
-  codeCapte,
+  demanderCode,
 } from "../fixtures/formateurs/parcours";
 import { SIRET_BANC } from "../fixtures/formateurs/registre-entreprises";
 import {
@@ -97,22 +97,21 @@ test.describe("@formateurs E12 — numéro de déclaration « en cours »", () =
     for (const type of ["rib", "cv"]) {
       await actionDossier(lien, "piece", champsDePiece(type), { fichier: pdfFictif(type) });
     }
-    const code = await actionDossier(lien, "code", {}, { registre });
-    expect(code.valeur.ok, code.valeur.message).toBe(true);
-    await attendreLeWorker(email);
-    const sansRecepisse = await actionDossier(
-      lien,
-      "signer",
-      { certifie: "1", accepte: "1", code: "123456" },
-      { registre },
-    );
+    // Le contrat ne se prépare que pour un dossier complet : sans récépissé, ni contrat
+    // ni code, et le refus le dit.
+    const sansRecepisse = await actionDossier(lien, "code", {}, { registre });
     expect(sansRecepisse.valeur.ok).toBe(false);
     expect(sansRecepisse.valeur.message).toMatch(/récépissé/);
+    expect(
+      await prisma.documentGenere.count({
+        where: { trainerId, type: "contrat_sous_traitance" },
+      }),
+    ).toBe(0);
 
-    // Avec le récépissé : signé, envoyé.
+    // Avec le récépissé : code, signé, envoyé.
     await preparerDossier(lien, "Zoé", { ndaEnCours: true, registre });
-    // Le code reçu plus haut n'a pas servi (le refus précède sa vérification).
-    await signerAvecCode(lien, email, registre, await codeCapte(email));
+    const code = await demanderCode(lien, email, registre);
+    await signerAvecCode(lien, email, registre, code);
     const apres = await prisma.trainer.findUniqueOrThrow({ where: { id: trainerId } });
     expect(apres.sousTraitantNda).toBe("en cours");
     expect(apres.dossierStatut).toBe("a_verifier");

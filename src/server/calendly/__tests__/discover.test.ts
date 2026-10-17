@@ -113,13 +113,14 @@ describe("discoverNewCalendlyEvents", () => {
       eventTypeSlug: "premier-contact-30-min",
       status: "scheduled",
     });
-    expect(enrichMock).toHaveBeenCalledWith("row_1");
+    expect(enrichMock).toHaveBeenCalledWith("row_1", {});
 
     // L'alerte doit porter le contact que l'enrichissement vient de résoudre,
     // pas « (non communiqué) » : c'est tout l'intérêt de l'enchaînement.
     expect(notifyMock).toHaveBeenCalledWith(
       expect.objectContaining({
-        category: "CALENDLY_INVITEE_CREATED",
+        // Décision Will 15/10 : un premier contact est un CLIENT.
+        category: "CLIENT_CALL_BOOKED",
         payload: expect.objectContaining({ inviteeEmail: "marie@example.test" }),
       }),
     );

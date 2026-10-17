@@ -75,10 +75,10 @@ export async function POST(req: NextRequest): Promise<Response> {
   // pourrait jamais la voir. Depuis que /appel affiche des créneaux qui mènent
   // à calendly.com dans un nouvel onglet, c'est devenu le chemin principal.
   // Ne throw jamais ; un échec ici ne doit pas empêcher le rafraîchissement.
-  const discovery = await discoverNewCalendlyEvents();
+  const discovery = await discoverNewCalendlyEvents(Date.now(), { notifier: "apres-reponse" });
 
   // ÉTAPE 2 — rafraîchir les réservations connues (annulations, déplacements).
-  const refresh = await refreshUpcomingCalendlyEvents();
+  const refresh = await refreshUpcomingCalendlyEvents({ notifier: "apres-reponse" });
   if (!refresh.ok) {
     return Response.json({ ok: false, error: refresh.reason ?? "refresh_failed" }, { status: 500 });
   }

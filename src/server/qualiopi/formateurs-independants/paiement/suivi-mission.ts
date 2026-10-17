@@ -137,6 +137,79 @@ function moisEcoule(maintenant: Date): { year: number; month: number } {
   return m === 1 ? { year: y - 1, month: 12 } : { year: y, month: m - 1 };
 }
 
+/**
+ * Vérification 2, V2-A-8 — combien de mois AVANT le mois écoulé restent surveillés. Un
+ * calcul oublié n'est pas « réglé » le 1er du mois suivant : c'est précisément le jour
+ * où il dépasse 30 jours. Douze mois : au-delà, l'oubli relève d'un contrôle annuel.
+ */
+export const MOIS_OUBLIES_SURVEILLES = 12;
+
+/** Les `n` mois civils qui précèdent `periode`, du plus récent au plus ancien. */
+function moisPrecedents(periode: { year: number; month: number }, n: number) {
+  const out: Array<{ year: number; month: number }> = [];
+  let { year, month } = periode;
+  for (let i = 0; i < n; i += 1) {
+    if (month === 1) {
+      year -= 1;
+      month = 12;
+    } else month -= 1;
+    out.push({ year, month });
+  }
+  return out;
+}
+
+/**
+ * V2-A-8 — les mois PLUS ANCIENS que le mois écoulé dont le calcul n'a jamais été lancé
+ * (aucun relevé mensuel) alors que le run, simulé sans rien écrire, en préparerait ; et
+ * les relevés de ces mois encore à valider. Deux lectures bon marché avant toute
+ * simulation : le mois a-t-il eu des journées de session, et un relevé mensuel. Une
+ * lecture ou une simulation en échec ne compte rien : jamais d'alerte inventée.
+ */
+async function moisOublies(periodeEcoulee: { year: number; month: number }): Promise<{
+  nonLances: number;
+  moisNonLances: string[];
+  nonValides: number;
+}> {
+  const anciens = moisPrecedents(periodeEcoulee, MOIS_OUBLIES_SURVEILLES);
+  let nonLances = 0;
+  const moisNonLances: string[] = [];
+  for (const m of anciens) {
+    try {
+      const debut = new Date(Date.UTC(m.year, m.month - 1, 1));
+      const fin = new Date(Date.UTC(m.year, m.month, 1));
+      const journees = await prisma.sessionJour.count({
+        where: { date: { gte: debut, lt: fin } },
+      });
+      if (journees === 0) continue;
+      const mensuels = await prisma.trainerStatement.count({
+        where: { periodeYear: m.year, periodeMonth: m.month, origine: "releve_mensuel" },
+      });
+      if (mensuels > 0) continue;
+      const { runRemunerationMensuelle } =
+        await import("@/server/qualiopi/remuneration/statements");
+      const n = (await runRemunerationMensuelle(m, { dryRun: true })).relevesEcrits;
+      if (n > 0) {
+        nonLances += n;
+        moisNonLances.push(NOM_MOIS.format(new Date(Date.UTC(m.year, m.month - 1, 1))));
+      }
+    } catch {
+      // Lecture ou simulation en échec : ce mois ne compte pas.
+    }
+  }
+  let nonValides = 0;
+  try {
+    nonValides = await prisma.trainerStatement.count({
+      where: {
+        statut: { in: ["brouillon", "a_valider"] },
+        OR: anciens.map((m) => ({ periodeYear: m.year, periodeMonth: m.month })),
+      },
+    });
+  } catch {
+    nonValides = 0;
+  }
+  return { nonLances, moisNonLances, nonValides };
+}
+
 /** 1 et 2 — rappels internes ; rien n'est calculé ni validé seul. */
 async function rappelsMensuels(
   maintenant: Date,
@@ -161,6 +234,20 @@ async function rappelsMensuels(
       `Le calcul des relevés de ${nomMois} n'a pas été lancé : ${nonLances} relevé(s) à préparer. Lancez-le depuis « Honoraires » (rien ne se calcule ni ne se valide seul).`,
     );
   }
+  // V2-A-8 : les mois plus anciens restent surveillés tant qu'ils ne sont pas faits.
+  const oublies = delaiAlerteReleveAtteint(maintenant)
+    ? await moisOublies(periode)
+    : { nonLances: 0, moisNonLances: [], nonValides: 0 };
+  if (oublies.nonLances > 0) {
+    await alerter(
+      `Calcul des relevés jamais lancé pour ${oublies.moisNonLances.join(", ")} : ${oublies.nonLances} relevé(s) à préparer, et le délai de paiement court. Lancez-le depuis « Honoraires » (rien ne se calcule ni ne se valide seul).`,
+    );
+  }
+  if (oublies.nonValides > 0) {
+    await alerter(
+      `${oublies.nonValides} relevé(s) de mois antérieurs à ${nomMois} attendent encore votre validation (rien ne se valide seul).`,
+    );
+  }
   const nonValides = statuts.filter(
     (s) => s.statut === "brouillon" || s.statut === "a_valider",
   ).length;
@@ -173,9 +260,13 @@ async function rappelsMensuels(
     await alerter(
       `${nonValides} relevé(s) de ${nomMois} attendent encore votre validation (rien ne se valide seul).`,
     );
-    return { rappel, nonValides, nonLances };
+    return {
+      rappel,
+      nonValides: nonValides + oublies.nonValides,
+      nonLances: nonLances + oublies.nonLances,
+    };
   }
-  return { rappel, nonValides: 0, nonLances };
+  return { rappel, nonValides: oublies.nonValides, nonLances: nonLances + oublies.nonLances };
 }
 
 /**

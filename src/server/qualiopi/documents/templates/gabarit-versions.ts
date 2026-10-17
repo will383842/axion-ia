@@ -88,6 +88,9 @@ export type TypeGabaritSignable =
  * | `convention_tripartite` | 5 | 04/10 — même clause, mot pour mot. **v4 archivée** |
  * | `mandat_opco` | 1 | 04/10 — premier texte (INT-T66-A) : mandat spécial, limité, révocable, sans pouvoir de recevoir des fonds ; relu par la juriste avant fusion |
  * | `autorisation_captation` | 1 | 10/10 — S6a : entre dans la table pour être rendue en exemplaire signé ; texte inchangé depuis l'origine |
+ * | `devis` | 2 | 16/10 — L15 (NC12, indicateur 26) : mention handicap (référent, contact handicap@axion-ia.com, possibilité d'adaptation) dans « Conditions du devis ». **v1 archivée** |
+ * | `convention` | 6 | 16/10 — L15 : même mention, section non numérotée « Accessibilité et situation de handicap » avant les signatures. **v5 archivée** |
+ * | `convention_tripartite` | 6 | 16/10 — L15 : même mention, mot pour mot. **v5 archivée** |
  * | les autres | 1 | texte inchangé depuis l'origine |
  *
  * 🔑 DEPUIS LE 30/09, UNE VERSION REMPLACÉE S'ARCHIVE (`./archives/`). Avant,
@@ -116,12 +119,14 @@ export type TypeGabaritSignable =
  * clauses que son signataire n'a jamais lues — exactement ce que ce module
  * existe pour empêcher.
  *
- * ⚠️ Le `devis` reste en 1 : la garde de certification du 16/08 change ce qui
- * est CALCULÉ (les montants entrent ou non dans l'instantané), pas le texte du
- * gabarit. Un exemplaire signé rejoue son instantané et reste donc fidèle.
+ * ⚠️ Le `devis` est resté en 1 jusqu'au 16/10 : la garde de certification du 16/08
+ * change ce qui est CALCULÉ (les montants entrent ou non dans l'instantané), pas le
+ * texte du gabarit. Il passe en 2 le 16/10 pour la mention handicap (L15), qui est
+ * un texte rendu : la v1 est archivée.
  */
 export const GABARIT_VERSIONS: Record<TypeGabaritSignable, number> = {
-  devis: 1,
+  /* v2 — 16/10/2026, L15 : mention handicap ajoutée (texte rendu changé, donc incrément). */
+  devis: 2,
   /*
     v5 — 04/10/2026, INT-T65-A : clause de condition suspensive OPCO.
 
@@ -137,8 +142,9 @@ export const GABARIT_VERSIONS: Record<TypeGabaritSignable, number> = {
       · la règle du fichier tranche : une clause AJOUTÉE est un changement de
         fond, même conditionnel.
   */
-  convention: 5,
-  convention_tripartite: 5,
+  /* v6 — 16/10/2026, L15 : mention handicap (indicateur 26) ; v5 archivée. */
+  convention: 6,
+  convention_tripartite: 6,
   contrat_formation: 2,
   contrat_sous_traitance: 2,
   /*
