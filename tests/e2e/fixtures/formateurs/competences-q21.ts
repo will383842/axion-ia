@@ -12,11 +12,12 @@ import { randomUUID } from "node:crypto";
 
 import type { PrismaClient } from "../../../../prisma/generated/client/index.js";
 
-import {
-  BLOCS_MISE_EN_SITUATION,
-  CRITERES_ENTRETIEN,
-  VERSION_CONFIGURATION_EVALUATION,
-} from "@/server/qualiopi/formateurs-independants/evaluation-competences/configuration";
+// Codes recopiés de `evaluation-competences/configuration.ts` (version 1) : la fixture
+// n'importe pas le domaine Qualiopi (cloisonnement, `qualiopi:isolation-check`). Une
+// configuration changée sans ce fichier fait rougir le banc — c'est voulu.
+const VERSION_CONFIGURATION_EVALUATION = 1;
+const CRITERES_ENTRETIEN = ["expertise", "conception", "animation", "adaptation", "evaluation"];
+const BLOCS_MISE_EN_SITUATION = ["B1", "B2", "B3", "B4"];
 
 type Db = Pick<
   PrismaClient,
@@ -27,8 +28,7 @@ type Db = Pick<
   | "verificationRegistreSousTraitance"
 >;
 
-const notes = (codes: ReadonlyArray<{ code: string }>) =>
-  Object.fromEntries(codes.map((c) => [c.code, 5]));
+const notes = (codes: ReadonlyArray<string>) => Object.fromEntries(codes.map((c) => [c, 5]));
 
 /** Une formation propre à la décision du banc, jamais effacée. */
 async function formationDeLaDecision(db: Db): Promise<string> {
