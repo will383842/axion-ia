@@ -189,7 +189,6 @@ En outre, `src/server/exporters/knowledge-rss.ts` + `knowledge-sitemap.ts` font 
 > `cancel-in-progress: true` dans le groupe `build-<workflow>-<ref>`, donc **lancer un second run
 > sur `main` (créneau ou `gh workflow run`) pendant qu'un build tourne annule le premier**.
 
-
 Ce paragraphe a annoncé « Job `build` (~25 min) » jusqu'au 2026-09-03. **C'est faux d'un
 facteur deux**, et mesuré sur **trois runs**, par **deux sessions indépendantes**, en lisant
 les `startedAt`/`completedAt` de chaque job — pas les bornes du run :
