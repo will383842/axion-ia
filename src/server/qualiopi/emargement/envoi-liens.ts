@@ -29,6 +29,7 @@ import {
   TokenEmargementError,
 } from "@/server/qualiopi/emargement/token-service";
 import { inscriptionAttendSonLien } from "@/server/qualiopi/emargement/remise-lien";
+import { libelleDemiJournee } from "@/server/qualiopi/emargement/demi-journee/fenetre";
 
 export interface EchecEnvoiLien {
   stagiaireNom: string;
@@ -188,7 +189,7 @@ export async function envoyerLiensPourSession(input: {
           continue;
         }
       }
-      const { token, tokenId } = await creerTokenInscription({
+      const { token, tokenId, demiJournee } = await creerTokenInscription({
         enrollmentId: inscription.id,
         dateFinSession: formation.dateFin,
         // Le lien est LIÉ à l'adresse qui le reçoit (ADR 0048 §4.1) : c'est la
@@ -210,6 +211,11 @@ export async function envoyerLiensPourSession(input: {
           }),
           lienEmargement: `${base}/fr/portail/emarger/${token}`,
           numeroSession: formation.numero,
+          // QNC L06 : le lien ne sert que cette demi-journée — l'e-mail le dit,
+          // au lieu de promettre « valable 48 h après la session ».
+          ...(demiJournee !== undefined
+            ? { demiJourneeLibelle: libelleDemiJournee(demiJournee.prevue) }
+            : {}),
         },
         // 🔴 `jobId` horodaté : le cas d'usage principal EST le renvoi (un
         // stagiaire qui a perdu son lien). Un jobId stable ferait dédoublonner

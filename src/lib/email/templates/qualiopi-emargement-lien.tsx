@@ -44,6 +44,12 @@ interface Payload {
   /** Lien personnel `/portail/emarger/<jeton>`. */
   lienEmargement: string;
   numeroSession: string;
+  /**
+   * QNC L06 — présent quand le lien ne sert QU'UNE demi-journée (interrupteur
+   * `qualiopi.emargement.actif`), ex. « jeudi 15 octobre 2026, matin, de 09:00
+   * à 13:00 ». Absent : le texte d'avant, à l'identique.
+   */
+  demiJourneeLibelle?: string;
 }
 
 export const qualiopiEmargementLienSubject = (
@@ -95,7 +101,11 @@ export function QualiopiEmargementLienEmail({
   return (
     <EmailLayout
       famille="A"
-      preview="Une demi-journée à la fois, depuis votre téléphone. Valable jusqu'à J+48 h."
+      preview={
+        p.demiJourneeLibelle
+          ? `À signer pendant la demi-journée : ${p.demiJourneeLibelle}.`
+          : "Une demi-journée à la fois, depuis votre téléphone. Valable jusqu'à J+48 h."
+      }
       title="Votre lien de signature de présence"
       cta={{ label: "Signer ma présence", href: ctaHref }}
       /* Ce lien PORTE la signature du stagiaire : le corps dit lui-même
@@ -115,10 +125,18 @@ export function QualiopiEmargementLienEmail({
         <strong>votre</strong> signature, et une signature attribuée à quelqu&apos;un d&apos;autre
         rendrait la feuille inexacte.
       </Text>
-      <Text style={emailStyles.paragraphStyle}>
-        Le lien reste valable jusqu&apos;à 48 heures après la fin de la session. Si vous le perdez,
-        demandez-le simplement à votre formateur.
-      </Text>
+      {p.demiJourneeLibelle ? (
+        <Text style={emailStyles.paragraphStyle}>
+          Ce lien sert à signer <strong>{p.demiJourneeLibelle}</strong>, pendant qu&apos;elle se
+          déroule : il se ferme à la fin du créneau. Un nouveau lien vous est envoyé au début de
+          chaque demi-journée. Si vous le perdez, demandez-le simplement à votre formateur.
+        </Text>
+      ) : (
+        <Text style={emailStyles.paragraphStyle}>
+          Le lien reste valable jusqu&apos;à 48 heures après la fin de la session. Si vous le
+          perdez, demandez-le simplement à votre formateur.
+        </Text>
+      )}
     </EmailLayout>
   );
 }
