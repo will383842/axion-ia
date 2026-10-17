@@ -46,6 +46,14 @@ import { listClients } from "@/server/qualiopi/crm/clients";
 import { countTrainees, listTrainees } from "@/server/qualiopi/trainees/trainees";
 import { DocumentsSection } from "@/components/admin/qualiopi/DocumentsSection";
 import {
+  etatDocumentsOrganisme,
+  lireNotesPieces,
+} from "@/server/documents-organisme/documents-organisme";
+import {
+  horodatageParis,
+  libelleMention,
+} from "@/server/documents-organisme/documents-organisme-pur";
+import {
   euroDepuisCentimes,
   libelleJourLimite,
   pourcentageDepuisBps,
@@ -195,7 +203,8 @@ function chargerSession(id: string) {
     select: {
       id: true,
       numero: true,
-      // QNC L02 — la fiche d'une session d'essai le dit en tête.
+      // QNC L02 — la fiche d'une session d'essai le dit en tête ; QNC L13 — l'interrupteur
+      // des notes sur pièce en `essai` n'agit que sur le banc d'essai.
       estTestInterne: true,
       titreSession: true,
       statut: true,
@@ -779,6 +788,27 @@ export default async function SessionHubPage({ params, searchParams }: PageProps
     };
   });
 
+  // CHANTIER QNC, L13 — notes en ajout seul sur les pièces (dossier clos
+  // compris). Interrupteur éteint pour cette session : aucune lecture, et la
+  // section des pièces reste exactement celle d'avant (`notesPieces` absent).
+  const notesOuvertes = estActifPour(await etatDocumentsOrganisme(), trainingSession);
+  const notesPieces = notesOuvertes
+    ? Object.fromEntries(
+        [...(await lireNotesPieces(documentsRaw.map((d) => d.id))).entries()].map(
+          ([pieceId, notes]) => [
+            pieceId,
+            notes.map((n) => ({
+              id: n.id,
+              libelleMention: libelleMention(n.mention),
+              texte: n.texte,
+              auteurNom: n.auteurNom,
+              horodatage: horodatageParis(n.le),
+            })),
+          ],
+        ),
+      )
+    : undefined;
+
   const enrollmentsLight = enrollmentsRaw.map((e) => ({
     id: e.id,
     traineeId: e.trainee.id,
@@ -1305,6 +1335,7 @@ export default async function SessionHubPage({ params, searchParams }: PageProps
             sessionId={id}
             enrollments={enrollmentsLight}
             documentsExistants={documentsSerialized}
+            notesPieces={notesPieces}
             // Lot 1ter §2/§5 — ce que ce dossier appelle reellement. Sans lui, les
             // ~20 boutons de generation s affichaient TOUS, sur TOUTES les
             // sessions : Kit OPCO sur un financement direct, Contrat de formation

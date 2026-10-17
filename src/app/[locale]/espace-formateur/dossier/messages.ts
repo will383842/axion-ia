@@ -27,6 +27,7 @@ export const ISSUES_DEPOT = {
   changement_identique: MESSAGES_CHANGEMENT.identique,
   changement_adresseInvalide: MESSAGES_CHANGEMENT.adresseInvalide,
   changement_dejaEnCours: MESSAGES_CHANGEMENT.dejaEnCours,
+  changement_ribManquant: MESSAGES_CHANGEMENT.ribManquant,
   changement_erreur: MESSAGES_CHANGEMENT.erreur,
 } as const;
 

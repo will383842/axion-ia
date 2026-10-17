@@ -157,7 +157,6 @@ export function DossierFormateur({
   const [recherche, setRecherche] = useState<ResultatRecherche | null>(null);
   const [adressePro, setAdressePro] = useState(dossier.adressePro ?? "");
   const [nda, setNda] = useState(dossier.nda && !ndaEnCours(dossier.nda) ? dossier.nda : "");
-  const [sansNda, setSansNda] = useState(ndaEnCours(dossier.nda));
   const [tva, setTva] = useState<RegimeTvaDossier | null>(dossier.regimeTva);
   const [iban, setIban] = useState("");
   const [situation, setSituation] = useState<string | null>(null);
@@ -299,7 +298,7 @@ export function DossierFormateur({
       recherche?.ok === true
         ? recherche.continuer
         : dossier.siretEnregistre && siretNet === dossier.siret;
-    const ndaOk = sansNda || /^\d{11}$/.test(nda.replace(/[\s.-]/g, ""));
+    const ndaOk = /^\d{11}$/.test(nda.replace(/[\s.-]/g, ""));
     const ibanOk = iban ? ibanValide(iban.replace(/\s+/g, "").toUpperCase()) : dossier.ibanSaisi;
     // V1-A-11 — le registre ne donne pas l'adresse (diffusion partielle) : elle est
     // demandée ici, pour le contrat. Le serveur la redemande aussi s'il le constate.
@@ -489,21 +488,10 @@ export function DossierFormateur({
                 className={champ}
                 inputMode="numeric"
                 value={nda}
-                disabled={sansNda}
                 onChange={(e) => setNda(e.target.value)}
               />
             </label>
             <p className="text-fg-soft mt-1 text-[14px]">{TEXTES.ndaAide}</p>
-            <label className="mt-2 flex min-h-[44px] items-center gap-3 text-[16px]">
-              <input
-                type="checkbox"
-                className="h-5 w-5"
-                checked={sansNda}
-                onChange={(e) => setSansNda(e.target.checked)}
-              />
-              {TEXTES.ndaEnCours}
-            </label>
-            {sansNda ? <p className="text-fg-soft text-[14px]">{TEXTES.ndaEnCoursAide}</p> : null}
           </div>
 
           <fieldset>
@@ -570,7 +558,6 @@ export function DossierFormateur({
               const fd = new FormData();
               fd.set("siret", siretNet);
               fd.set("nda", nda);
-              if (sansNda) fd.set("ndaEnCours", "1");
               fd.set("regimeTva", tva ?? "");
               if (adresseDemandee) fd.set("adressePro", adresseNette);
               if (!dossier.ibanFige) fd.set("iban", iban);

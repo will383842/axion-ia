@@ -330,6 +330,13 @@ export const ECRITURES_SESSION: ReadonlyArray<EcritureSession> = [
 
   // ── Pièces ────────────────────────────────────────────────────────────────
   {
+    action: "ajouterNotePieceAction",
+    fichier: "notes-pieces.ts",
+    decision: O,
+    raison:
+      "Chantier QNC, L13 : la note s'écrit À CÔTÉ de la pièce, en ajout seul, datée par le serveur — la pièce close n'est jamais modifiée.",
+  },
+  {
     action: "genererConventionAction",
     fichier: "documents.ts",
     decision: V,

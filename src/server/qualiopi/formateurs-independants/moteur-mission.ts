@@ -43,6 +43,7 @@ import { EMPREINTE_SELECT, empreinteDeLaMission } from "./empreinte-mission-lect
 import { envoyer } from "./envois";
 import { etapeMission, type EtapeMission } from "./etape-mission";
 import { MANQUES_MISSION, MANQUES_VIGILANCE } from "./garde-mission";
+import { MANQUES_SUIVI_QUALITE_SET } from "./suivi-qualite/regles";
 import { controlerGardeMission } from "./garde-mission-portes";
 import { interrupteurAllume } from "./interrupteur-allume";
 import { envoiAllume } from "./interrupteurs-envoi";
@@ -252,7 +253,9 @@ export async function lireEtatMission(
       },
     }),
     // Sans mission en jeu : la mission est déjà acceptée, son montant ne décide de rien.
-    controlerGardeMission(m.trainerId, maintenant),
+    // Mais l'habilitation (ind. 21) se juge sur SA formation : une décision « non
+    // habilité » versée après l'acceptation arrête la lettre.
+    controlerGardeMission(m.trainerId, maintenant, undefined, { sessionId: m.sessionId }),
     // Une lettre émise avant le moteur (non liée), déjà signée par le formateur :
     // c'est SA lettre ; le moteur n'en émet pas d'autre.
     m.lettreMission === null || m.lettreMission.annuleeAt !== null
@@ -271,7 +274,11 @@ export async function lireEtatMission(
   // Décision du 14/10/2026 (contrat-cadre v4, art. 18.2) : une mission ACCEPTÉE est
   // maintenue sans attestation URSSAF ; seul le virement l'attend (`virement-mission.ts`).
   // Les autres manques bloquent toujours la lettre.
-  const gardeRefus = garde.refus.filter((r) => !MANQUES_VIGILANCE.has(r));
+  // Qualiopi ind. 21 — de même, le suivi qualité refuse une NOUVELLE mission, jamais la
+  // lettre d'une mission déjà acceptée.
+  const gardeRefus = garde.refus.filter(
+    (r) => !MANQUES_VIGILANCE.has(r) && !MANQUES_SUIVI_QUALITE_SET.has(r),
+  );
   const { tarifEffectif, empreinte: empreinteActuelle } = empreinteDeLaMission(m);
   const lettre =
     m.lettreMission !== null && m.lettreMission.annuleeAt === null

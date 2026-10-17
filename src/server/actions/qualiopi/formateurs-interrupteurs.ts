@@ -25,6 +25,7 @@ import {
   type CleInterrupteurEntree,
   PREFIXE_CLES_FORMATEURS,
   cleSetting,
+  CLES_SIGNATURE_PREMIER_ALLUMAGE,
   cleSettingSignature,
   dateAllumageSignature,
   lireValeurSignature,
@@ -35,13 +36,15 @@ import {
   estPositionSure,
   reglagesActifs,
   reglagesFillesACouper,
+  valeurPremierAllumage,
   etatsDepuisLignes,
   prealablesManquants,
   valeurJson,
   type CleInterrupteur,
   type Habilitation,
 } from "@/server/qualiopi/formateurs-independants/interrupteurs";
-import { lireFaitsPrealables } from "@/server/qualiopi/formateurs-independants/prealables-faits";
+import { PREFIXE_TEXTES_VALIDES } from "@/server/email/textes-valides";
+import { faitsPrealables } from "@/server/qualiopi/formateurs-independants/prealables-faits";
 
 export type EtatBascule = { ok: true; message: string } | { ok: false; error: string };
 
@@ -69,13 +72,17 @@ async function verrouillerInterrupteurs(tx: Pick<typeof prisma, "$executeRaw">):
 async function couperLesFilles(
   tx: Pick<typeof prisma, "setting" | "activityLog">,
   mere: string,
-  lignes: ReadonlyArray<{ key: string; value: unknown }>,
+  lignes: ReadonlyArray<{ key: string; value: unknown; updatedAt?: Date | null }>,
   userId: string,
 ): Promise<void> {
   for (const fille of reglagesFillesACouper(mere, reglagesActifs(lignes))) {
+    // Une fille qui garde la date de son premier allumage la garde aussi en cascade.
+    const value = CLES_SIGNATURE_PREMIER_ALLUMAGE.has(fille)
+      ? valeurPremierAllumage(false, lignes.find((l) => l.key === fille) ?? null, new Date())
+      : { actif: false };
     await tx.setting.update({
       where: { key: fille },
-      data: { value: { actif: false } as never, updatedBy: userId },
+      data: { value: value as never, updatedBy: userId },
     });
     await tx.activityLog.create({
       data: {
@@ -168,12 +175,14 @@ function ecrire(
 ): Promise<string[]> {
   return prisma.$transaction(async (tx) => {
     await verrouillerInterrupteurs(tx);
+    // Le canal de changement de compte (préalable de `passage_paiement`) se lit aussi
+    // dans les validations de textes (F43, F44) : relues dans la même lecture.
     const lignes = await tx.setting.findMany({
-      where: CLAUSE_LIGNES,
-      select: { key: true, value: true },
+      where: { OR: [...CLAUSE_LIGNES.OR, { key: { startsWith: PREFIXE_TEXTES_VALIDES } }] },
+      select: { key: true, value: true, updatedAt: true },
     });
     const etats = etatsDepuisLignes(lignes);
-    const manquants = prealablesManquants(cle, valeur, etats, lireFaitsPrealables());
+    const manquants = prealablesManquants(cle, valeur, etats, faitsPrealables(lignes));
     if (manquants.length > 0) return manquants;
     const avant = etats[cle];
     await tx.setting.upsert({
@@ -344,7 +353,7 @@ function ecrireSignature(
     const lignes = await tx.setting.findMany({
       // Les préalables lisent les seize ET ce registre (dont `signature.*`).
       where: CLAUSE_LIGNES,
-      select: { key: true, value: true },
+      select: { key: true, value: true, updatedAt: true },
     });
     const manquants = prealablesManquantsSignature(
       cle,
@@ -360,8 +369,11 @@ function ecrireSignature(
     const avant = lireValeurSignature(actuelle?.value).valeur;
     // L'exemplaire de captation date son allumage : le rattrapage ne reprend que
     // ce qui est signé APRÈS. Rallumer un interrupteur déjà allumé garde la date.
-    const value =
-      cle === "exemplaire_captation" && valeur
+    // Le suivi qualité garde la date de son PREMIER allumage, même coupé : couper puis
+    // rallumer ne relance ni l'observation, ni la grâce, et ne lève aucune suspension.
+    const value = CLES_SIGNATURE_PREMIER_ALLUMAGE.has(key)
+      ? valeurPremierAllumage(valeur, actuelle, new Date())
+      : cle === "exemplaire_captation" && valeur
         ? {
             actif: true,
             allumeLe: (
@@ -477,7 +489,7 @@ function ecrireEntree(
     await verrouillerInterrupteurs(tx);
     const lignes = await tx.setting.findMany({
       where: CLAUSE_LIGNES,
-      select: { key: true, value: true },
+      select: { key: true, value: true, updatedAt: true },
     });
     const manquants = prealablesManquantsEntree(cle, valeur, etatsDepuisLignes(lignes));
     if (manquants.length > 0) return manquants;
@@ -670,4 +682,11 @@ export async function basculerFormateursAlertesRegistreSousTraitantsAction(
   formData: FormData,
 ): Promise<EtatBascule> {
   return basculerSignature("alertes_registre_sous_traitants", formData);
+}
+/** Qualiopi ind. 21 — le suivi de la qualité pédagogique des intervenants externes. */
+export async function basculerFormateursSuiviQualiteAction(
+  _prev: EtatBascule,
+  formData: FormData,
+): Promise<EtatBascule> {
+  return basculerSignature("suivi_qualite", formData);
 }

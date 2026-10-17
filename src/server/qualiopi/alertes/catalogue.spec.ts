@@ -292,6 +292,18 @@ const CODES_ATTENDUS: string[] = [
   "sous_traitant_registre_piece_a_echeance",
   "sous_traitant_registre_controle_en_retard",
   "sous_traitant_registre_correction_echue",
+  // Qualiopi ind. 21 (NC majeure) — suivi de la qualité pédagogique des intervenants
+  // externes dans la durée. Balayés (`regle-suivi-qualite-formateurs.ts`), tous
+  // `resolutionAuto: true` : ils se referment quand la grille ou la décision est saisie.
+  "fi_observation_manquante",
+  "fi_observation_insuffisante",
+  "fi_evaluation_mission_a_saisir",
+  "fi_evaluation_mission_manquante",
+  "fi_entretien_a_prevoir",
+  "fi_missions_suspendues",
+  "fi_reevaluation_a_prevoir",
+  "fi_reevaluation_echue",
+  "fi_cv_declare_perime",
 ];
 
 const NIVEAUX_VALIDES: AlerteNiveau[] = ["info", "important", "critique"];

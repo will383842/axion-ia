@@ -21,6 +21,7 @@ import { expect, test } from "@playwright/test";
 import { MOTIFS_ORANGE } from "@/server/qualiopi/formateurs-independants/verifier-contresigner-regles";
 
 import { prisma } from "../fixtures/formateurs/base";
+import { verserCompetencesDuBanc } from "../fixtures/formateurs/competences-q21";
 import { etape } from "../fixtures/formateurs/etapes";
 import {
   IBAN_BANC,
@@ -103,6 +104,8 @@ test.describe("@formateurs E09 — registre orange et muet, preuve inaltérable"
   // validation de l'orange (étape 5 de W-4) est atteinte.
   test("(a) V1-A-6 — l'orange est validé sur W-4, avec un motif de la liste fermée", async () => {
     const formation = await formationDuBanc(`e09-${Date.now()}`);
+    // Qualiopi ind. 21 — sans grilles d'évaluation versées, l'espace ne s'ouvre pas.
+    await verserCompetencesDuBanc(prisma, trainerOrange, decor.admin.id);
     try {
       const w4 = await etape<{ ok: boolean; error?: string }>({
         etape: "contresigner-w4",

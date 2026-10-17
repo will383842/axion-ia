@@ -27,6 +27,10 @@ import { AccesRefuse } from "@/components/admin/ui/AccesRefuse";
 import { gardePage } from "@/server/auth/garde-page";
 import { CLASSE_ANCRE_SECTION } from "@/features/admin-qualiopi/session-hub/ancres";
 import { BilansFinFormationConsole } from "@/components/admin/qualiopi/BilansFinFormationConsole";
+import { GrillesSuiviQualiteSession } from "@/components/admin/qualiopi/GrillesSuiviQualiteSession";
+import { peutEngager } from "@/server/auth/habilitations";
+import { lireGrillesDeLaSession } from "@/server/qualiopi/formateurs-independants/suivi-qualite/console";
+import { suiviQualiteAllumeLe } from "@/server/qualiopi/formateurs-independants/suivi-qualite/lecture";
 import { lireBilansConsole } from "@/server/qualiopi/formateurs-independants/bilan-fin-formation/console";
 
 export const dynamic = "force-dynamic";
@@ -118,6 +122,12 @@ export default async function EvaluationsPage({ params, searchParams }: PageProp
   // Lot G2 — le bilan de fin de formation des formateurs indépendants : `null` (rien
   // n'est montré) tant que `formateurs.bilan_fin_formation` est éteint.
   const bilans = await lireBilansConsole(id).catch(() => null);
+  // Qualiopi ind. 21 — les grilles de suivi qualité rattachées à la session : `null` (rien
+  // n'est montré) tant que `formateurs.suivi_qualite` est éteint ou hors de l'acte.
+  const grillesSuivi =
+    peutEngager(acces.role, "habiliter_formateur") && (await suiviQualiteAllumeLe()) !== null
+      ? await lireGrillesDeLaSession(id).catch(() => null)
+      : null;
   const sp = (await searchParams) ?? {};
   const message = (k: string): string | null =>
     typeof sp[k] === "string" ? (sp[k] as string) : null;
@@ -155,6 +165,10 @@ export default async function EvaluationsPage({ params, searchParams }: PageProp
           ok={message("ok")}
           erreur={message("erreur")}
         />
+      ) : null}
+
+      {grillesSuivi !== null ? (
+        <GrillesSuiviQualiteSession base={`/${locale}/${adminPrefix}`} grilles={grillesSuivi} />
       ) : null}
 
       {session.enrollments.length === 0 ? (
