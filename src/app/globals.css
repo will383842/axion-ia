@@ -10,20 +10,24 @@
  * via Tailwind utilities only (`bg-canvas`, `text-fg`, `font-serif`, …).
  * =============================================================*/
 
-/* CLS — replis métriques calés sur le POIDS RÉELLEMENT AFFICHÉ (mesuré fontTools sur le texte français réel du hero, repli Liberation = métriques Arial/TNR, 2026-10-17 ;
- faces next/font fixes à 400 et 600 → 500 s'affiche en 400).
- next/font calibre son repli sur l'instance PAR DÉFAUT du fichier variable : Manrope = wght 200
- (≈ 8 % trop étroit à 600), Fraunces = wght 900 (≈ 9 % trop large à 500). Au swap le texte du
- hero reflue → CLS prod 0,22-0,27 (/formations, /implantations/*/paris). adjustFontFallback est
- donc coupé dans layout.tsx et ces faces prennent le relais (cf. --font-sans / --font-serif). */
+/* CLS — replis métriques calés sur le POIDS RÉELLEMENT AFFICHÉ (2026-10-17).
+ Méthode = celle de next/font (calcAverageWidth : chaîne « aaabcdeeeefghiijklmnnoopqrrssttuvwxyz » + 6 espaces,
+ largeur moyenne / unitsPerEm, rapportée à celle du repli) mesurée avec fontTools sur l'instance du fichier
+ variable au poids de la face (axes autres que wght à leur défaut). Référence = la police locale réellement
+ appelée par src: local() (Liberation = métriques Arial/Times New Roman, Regular/Bold/Italic/Bold Italic).
+ ascent/descent-override = métrique hhea / unitsPerEm / size-adjust (exprimés avant ajustement, comme next/font).
+ next/font fige les faces fixes 400 et 600 (Manrope) : le 500 s'affiche donc en wght 400.
+ next/font calibre sinon son repli sur l'instance PAR DÉFAUT du fichier variable : Manrope = wght 200,
+ Fraunces = wght 900 → au swap le hero reflue (CLS prod 0,22-0,27 sur /formations, /implantations/*/paris).
+ adjustFontFallback est donc coupé dans layout.tsx et ces faces prennent le relais (--font-sans / --font-serif). */
 @font-face {
   font-family: "Manrope Fallback";
   src: local("Arial");
   font-weight: 400 500;
   font-style: normal;
-  size-adjust: 102.04%;
-  ascent-override: 104.47%;
-  descent-override: 29.4%;
+  size-adjust: 103.76%;
+  ascent-override: 102.74%;
+  descent-override: 28.91%;
   line-gap-override: 0%;
 }
 @font-face {
@@ -31,19 +35,29 @@
   src: local("Arial Bold");
   font-weight: 600 800;
   font-style: normal;
-  size-adjust: 98.76%;
-  ascent-override: 107.94%;
-  descent-override: 30.38%;
+  size-adjust: 99.27%;
+  ascent-override: 107.38%;
+  descent-override: 30.22%;
   line-gap-override: 0%;
 }
 @font-face {
   font-family: "Fraunces Fallback";
   src: local("Times New Roman");
-  font-weight: 400 500;
+  font-weight: 400;
   font-style: normal;
-  size-adjust: 116.63%;
-  ascent-override: 83.86%;
-  descent-override: 21.86%;
+  size-adjust: 115.46%;
+  ascent-override: 84.71%;
+  descent-override: 22.09%;
+  line-gap-override: 0%;
+}
+@font-face {
+  font-family: "Fraunces Fallback";
+  src: local("Times New Roman");
+  font-weight: 500;
+  font-style: normal;
+  size-adjust: 117.37%;
+  ascent-override: 83.33%;
+  descent-override: 21.73%;
   line-gap-override: 0%;
 }
 @font-face {
@@ -51,19 +65,29 @@
   src: local("Times New Roman Bold");
   font-weight: 600 900;
   font-style: normal;
-  size-adjust: 110.92%;
-  ascent-override: 88.17%;
-  descent-override: 22.99%;
+  size-adjust: 112.22%;
+  ascent-override: 87.15%;
+  descent-override: 22.72%;
   line-gap-override: 0%;
 }
 @font-face {
   font-family: "Fraunces Fallback";
   src: local("Times New Roman Italic");
-  font-weight: 400 500;
+  font-weight: 400;
   font-style: italic;
-  size-adjust: 111.72%;
-  ascent-override: 87.54%;
-  descent-override: 22.82%;
+  size-adjust: 111.67%;
+  ascent-override: 87.58%;
+  descent-override: 22.84%;
+  line-gap-override: 0%;
+}
+@font-face {
+  font-family: "Fraunces Fallback";
+  src: local("Times New Roman Italic");
+  font-weight: 500;
+  font-style: italic;
+  size-adjust: 114.32%;
+  ascent-override: 85.55%;
+  descent-override: 22.30%;
   line-gap-override: 0%;
 }
 @font-face {
@@ -71,9 +95,9 @@
   src: local("Times New Roman Bold Italic");
   font-weight: 600 900;
   font-style: italic;
-  size-adjust: 111.26%;
-  ascent-override: 87.9%;
-  descent-override: 22.92%;
+  size-adjust: 114.07%;
+  ascent-override: 85.74%;
+  descent-override: 22.35%;
   line-gap-override: 0%;
 }
 

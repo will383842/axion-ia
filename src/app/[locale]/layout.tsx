@@ -119,8 +119,9 @@ const inconsolata = localFont({
 //   3. Repli métrique MANUEL (`adjustFontFallback: false` ci-dessous + `@font-face`
 //      « Fraunces Fallback » dans globals.css). Celui de next/font est calé sur
 //      l'instance par défaut du fichier variable (wght 900) : ~9 % trop large
-//      au poids affiché (500), d'où un reflow au swap. Les faces manuelles sont
-//      mesurées au poids réel, sur le texte français du hero.
+//      au poids affiché (500), d'où un reflow au swap. Six faces (Times New Roman
+//      Regular/Bold/Italic/Bold Italic ; 400 et 500 séparés) : size-adjust mesuré
+//      avec l'algorithme de next/font au poids de chaque face (méthode : globals.css).
 // Trade-off assumé : CLS peut passer de 0 strict (cible interne) à ~0.0-0.02
 // (très en dessous du « good » Google = 0.1). À valider par le gate Lighthouse
 // CI (job `lhci`, autorité Web Vitals) au prochain deploy ; rollback = remettre
