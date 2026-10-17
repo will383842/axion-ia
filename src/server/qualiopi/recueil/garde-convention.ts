@@ -100,6 +100,18 @@ export async function lireEtatRecueil(
   sessionId: string,
   db: LecteurEtat = prisma,
 ): Promise<EtatRecueil | null> {
+  const interrupteur = await lireInterrupteurQualiopi(LOT_RECUEIL, db);
+  // Éteint : on ne lit RIEN d'autre (ni session, ni journal) — chemin inchangé.
+  if (interrupteur === "eteint") {
+    return {
+      interrupteur,
+      sessionEstTest: false,
+      projetId: null,
+      cadrage: null,
+      devisStatut: null,
+      derogation: null,
+    };
+  }
   const session = await db.trainingSession.findUnique({
     where: { id: sessionId },
     select: {
@@ -109,8 +121,7 @@ export async function lireEtatRecueil(
     },
   });
   if (session === null) return null;
-  const interrupteur = await lireInterrupteurQualiopi(LOT_RECUEIL, db);
-  // Éteint (pour cette session) : rien d'autre à lire.
+  // En essai sur une session réelle : pas touchée, rien d'autre à lire.
   if (!estActifPour(interrupteur, { estTestInterne: session.estTestInterne })) {
     return {
       interrupteur,
