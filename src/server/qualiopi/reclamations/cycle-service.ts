@@ -322,8 +322,9 @@ export async function ajouterEtapeReclamation(entree: EntreeEtape): Promise<Resu
   }
 
   // 🔴 La réponse ne part JAMAIS seule : corbeille « E-mails à valider ».
+  let preparation: Awaited<ReturnType<typeof enqueueEmail>>;
   try {
-    await enqueueEmail(
+    preparation = await enqueueEmail(
       "reclamation-reponse",
       resultat.reclamantEmail,
       "fr",
@@ -348,5 +349,7 @@ export async function ajouterEtapeReclamation(entree: EntreeEtape): Promise<Resu
     );
     return { ok: true, email: "echec" };
   }
-  return { ok: true, email: "a_valider" };
+  // `exigerValidation` gare toujours : un retour sans garage est une anomalie
+  // (corbeille indisponible), à dire plutôt qu'à taire.
+  return { ok: true, email: preparation.garePourValidation === true ? "a_valider" : "echec" };
 }

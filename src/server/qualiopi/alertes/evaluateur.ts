@@ -122,7 +122,7 @@ import {
 import { factureVivante } from "@/server/qualiopi/financements/facture-vivante";
 import type { AlerteNiveau } from "../../../../prisma/generated/client";
 import { regleAdaptationReponseNonConsignee } from "./regle-adaptation-reponse";
-import { regleEcheancesReclamations } from "@/server/qualiopi/reclamations/regle-echeances";
+import { regleEcheancesReclamations } from "./regle-echeances-reclamations";
 import {
   ATTENTE_JOURS,
   MARGE_AVANT_SESSION_JOURS,

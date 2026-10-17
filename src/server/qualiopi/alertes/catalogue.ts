@@ -436,7 +436,7 @@ export const ALERTE_CATALOGUE: Record<string, AlerteCatalogueEntry> = {
   },
   /**
    * Chantier QNC, L09 — les échéances du cycle daté, en JOURS OUVRÉS
-   * (`reclamations/regle-echeances.ts`). Muettes tant que l'interrupteur
+   * (`alertes/regle-echeances-reclamations.ts`). Muettes tant que l'interrupteur
    * `qualiopi.reclamations.actif` est éteint.
    */
   reclamation_accuse_en_retard: {

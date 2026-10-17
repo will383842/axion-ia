@@ -18,8 +18,11 @@
 
 import { prisma } from "@/lib/prisma";
 import type { AlerteNiveau } from "../../../../prisma/generated/client";
-import { cycleActifPour, lireInterrupteurReclamations } from "./interrupteur";
-import { dateLisibleParis, etatEcheances } from "./echeances";
+import {
+  cycleActifPour,
+  lireInterrupteurReclamations,
+} from "@/server/qualiopi/reclamations/interrupteur";
+import { dateLisibleParis, etatEcheances } from "@/server/qualiopi/reclamations/echeances";
 
 export const CODE_ACCUSE_EN_RETARD = "reclamation_accuse_en_retard";
 export const CODE_REPONSE_PROCHE = "reclamation_reponse_echeance_proche";
@@ -67,7 +70,7 @@ export async function regleEcheancesReclamations(
     const e = etatEcheances(r.dateReception, r.etapes, now);
     if (e.accuse === "depassee") {
       out.push({
-        code: CODE_ACCUSE_EN_RETARD,
+        code: "reclamation_accuse_en_retard",
         niveau: "critique",
         titre: TITRES_ECHEANCES[CODE_ACCUSE_EN_RETARD] as string,
         message:
@@ -79,19 +82,30 @@ export async function regleEcheancesReclamations(
       });
     }
     if (e.reponse === "proche" || e.reponse === "depassee") {
-      const code = e.reponse === "proche" ? CODE_REPONSE_PROCHE : CODE_REPONSE_EN_RETARD;
-      out.push({
-        code,
-        niveau: e.reponse === "proche" ? "important" : "critique",
-        titre: TITRES_ECHEANCES[code] as string,
-        message:
-          `La réponse écrite à la réclamation ${r.numero} est due au plus tard le ` +
-          `${dateLisibleParis(e.reponseAvant)}` +
-          (e.reponse === "depassee" ? " : l'échéance est dépassée." : ".") +
-          ` Rédigez-la et signez-la dans son suivi ; elle partira après validation.`,
-        cibleType: "Reclamation",
-        cibleId: r.id,
-      });
+      const message =
+        `La réponse écrite à la réclamation ${r.numero} est due au plus tard le ` +
+        `${dateLisibleParis(e.reponseAvant)}` +
+        (e.reponse === "depassee" ? " : l'échéance est dépassée." : ".") +
+        ` Rédigez-la et signez-la dans son suivi ; elle partira après validation.`;
+      out.push(
+        e.reponse === "proche"
+          ? {
+              code: "reclamation_reponse_echeance_proche",
+              niveau: "important",
+              titre: TITRES_ECHEANCES[CODE_REPONSE_PROCHE] as string,
+              message,
+              cibleType: "Reclamation",
+              cibleId: r.id,
+            }
+          : {
+              code: "reclamation_reponse_en_retard",
+              niveau: "critique",
+              titre: TITRES_ECHEANCES[CODE_REPONSE_EN_RETARD] as string,
+              message,
+              cibleType: "Reclamation",
+              cibleId: r.id,
+            },
+      );
     }
   }
   return out;
