@@ -16,6 +16,8 @@
 import { prisma } from "@/lib/prisma";
 import { getQualiopiConfig } from "@/server/qualiopi/config/site-settings";
 import { computeEvaluationScore, niveauFromScore, reussiteFromScore } from "./scoring";
+import { pedagogieActivePour } from "@/server/qualiopi/pedagogie/interrupteur";
+import { resoudreSeuil, verdictReussite } from "@/server/qualiopi/pedagogie/seuil-reussite";
 import type { EvaluationAcquis } from "../../../../prisma/generated/client";
 
 /**
@@ -174,7 +176,10 @@ export async function createEvaluation(
 
   const inscription = await client.enrollment.findUnique({
     where: { id: input.enrollmentId },
-    select: { session: { select: { dateDebut: true } } },
+    select: {
+      estTestInterne: true,
+      session: { select: { dateDebut: true, estTestInterne: true, formationSnapshot: true } },
+    },
   });
   if (inscription === null) {
     throw new Error(
@@ -198,7 +203,21 @@ export async function createEvaluation(
     throw new Error(incoherence);
   }
 
-  const seuilReussitePct = await getQualiopiConfig("seuil_reussite_pct");
+  const seuilReglagePct = await getQualiopiConfig("seuil_reussite_pct");
+
+  // Lot L08 (qualiopi.pedagogie.actif) — éteint, rien ne change : le réglage
+  // courant s'applique et seul le score compte. Actif : le seuil FIGÉ dans la
+  // session fait foi, et aucun objectif ne doit être « non acquis ».
+  const pedagogie = await pedagogieActivePour({
+    estTestInterne:
+      inscription.estTestInterne === true || inscription.session?.estTestInterne === true,
+  });
+  const seuilReussitePct = pedagogie
+    ? resoudreSeuil({
+        snapshot: inscription.session?.formationSnapshot,
+        reglagePct: seuilReglagePct,
+      }).pct
+    : seuilReglagePct;
 
   const { scoreObtenu, scoreMax, scorePct } = computeEvaluationScore(input.competences);
   const niveauGlobal = niveauFromScore(scorePct);
@@ -216,7 +235,16 @@ export async function createEvaluation(
   // écrits — ils portent le niveau d'entrée, qui est précisément la preuve
   // attendue à l'indicateur 4.
   const reussite =
-    input.type === "initiale" ? false : reussiteFromScore(scorePct, seuilReussitePct);
+    input.type === "initiale"
+      ? false
+      : pedagogie
+        ? verdictReussite({
+            scorePct,
+            competences: input.competences,
+            seuilPct: seuilReussitePct,
+            aucunNonAcquis: true,
+          }).reussite
+        : reussiteFromScore(scorePct, seuilReussitePct);
 
   const created = await client.evaluationAcquis.create({
     data: {
