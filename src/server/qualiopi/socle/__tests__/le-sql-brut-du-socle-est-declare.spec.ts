@@ -119,7 +119,16 @@ describe("le SQL brut du socle QNC est déclaré", () => {
     const noms = readdirSync(DOSSIER)
       .filter((n) => /^\d{14}_/.test(n))
       .sort();
-    expect(noms.at(-1)).toBe(MIGRATION_SOCLE_QNC);
+    // Elle suit les migrations de main à sa création ; « la dernière » ne peut pas rester
+    // vrai à jamais : toute migration posée APRÈS elle (ex. 20261017120000, ind. 21) le
+    // contredirait sans qu'aucune règle ne soit violée.
+    expect(noms).toContain(MIGRATION_SOCLE_QNC);
+    expect(
+      noms
+        .filter((n) => n < MIGRATION_SOCLE_QNC)
+        .at(-1)
+        ?.slice(0, 14),
+    ).toBe("20261015180000");
     expect(MIGRATION_SOCLE_QNC.slice(0, 14) > "20261015180000").toBe(true);
   });
 
