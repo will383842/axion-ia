@@ -601,9 +601,12 @@ describe("CHANTIER QNC, L13 — notes en ajout seul sur un dossier clos", () => 
     return { ...utils, docs };
   }
 
-  it("interrupteur allumé : chaque pièce close garde « Ajouter une note »", () => {
+  it("interrupteur allumé : chaque pièce close garde « Ajouter une note »", async () => {
     const { container, docs } = rendre({});
-    expect(boutonsActifs(container, /^Ajouter une note$/)).toHaveLength(docs.length);
+    // Le formulaire de note est chargé en différé (hors du chunk de la page).
+    await waitFor(() =>
+      expect(boutonsActifs(container, /^Ajouter une note$/)).toHaveLength(docs.length),
+    );
   });
 
   it("éteint (`notesPieces` absent) : rien ne change, aucun geste de note", () => {

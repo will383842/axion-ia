@@ -24,7 +24,7 @@ import {
   type EtatEcheance,
 } from "@/server/societe-documents/echeance";
 import { SocieteDocForm } from "./SocieteDocForm";
-import { SocieteDocActions } from "./SocieteDocActions";
+import { SocieteDocActionsDiffere } from "./SocieteDocActionsDiffere";
 
 function formatBytes(bytes: number): string {
   if (bytes < 1024) return `${bytes} o`;
@@ -194,7 +194,7 @@ export async function SocieteDocRubriqueView({
                     </div>
                   </div>
 
-                  <SocieteDocActions
+                  <SocieteDocActionsDiffere
                     archivage={vue ? { retraitPossible: vue.retraitPossible } : undefined}
                     types={rubrique.types}
                     piece={{

@@ -5,8 +5,7 @@ import { auth } from "@/auth";
 import { listConsoleDocsBySection } from "@/server/console-documents/queries";
 import { vueArchivage } from "@/server/documents-organisme/documents-organisme";
 import { horodatageParis } from "@/server/documents-organisme/documents-organisme-pur";
-import { RemplacerConsoleDocButton } from "@/components/admin/documents-organisme/RemplacerConsoleDocButton";
-import { RetirerDocumentButton } from "@/components/admin/documents-organisme/RetirerDocumentButton";
+import { ActionsArchivageConsoleDoc } from "@/components/admin/documents-organisme/ActionsArchivageConsoleDoc";
 import { getConsoleDocSection } from "@/server/console-documents/sections";
 import type { ConsoleDocSection } from "../../../../prisma/generated/client";
 import { ConsoleDocUploader } from "./ConsoleDocUploader";
@@ -114,16 +113,12 @@ export async function ConsoleDocBucket({
                     </a>
                   ) : null}
                   {vue ? (
-                    <>
-                      <RemplacerConsoleDocButton id={doc.id} title={doc.title} />
-                      {vue.retraitPossible ? (
-                        <RetirerDocumentButton
-                          cible="ConsoleDocument"
-                          id={doc.id}
-                          titre={doc.title}
-                        />
-                      ) : null}
-                    </>
+                    <ActionsArchivageConsoleDoc
+                      cible="ConsoleDocument"
+                      id={doc.id}
+                      titre={doc.title}
+                      retraitPossible={vue.retraitPossible}
+                    />
                   ) : (
                     <ConsoleDocDeleteButton id={doc.id} title={doc.title} />
                   )}

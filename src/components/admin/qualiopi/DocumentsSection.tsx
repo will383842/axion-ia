@@ -61,7 +61,7 @@ import {
 } from "@/components/admin/qualiopi/ConditionSuspensiveOpcoChamps";
 import { genererAttestationAction } from "@/server/actions/qualiopi/evaluations";
 import { genererFicheAdaptationAction } from "@/server/actions/qualiopi/exports-pdf";
-import { NotesPiece, type NotePieceAffichee } from "@/components/admin/qualiopi/NotesPiece";
+import type { NotePieceAffichee } from "@/components/admin/qualiopi/NotesPiece";
 import { GenererFactureButton } from "@/components/admin/qualiopi/GenererFactureButton";
 import { PdfExportButton } from "@/components/admin/qualiopi/PdfExportButton";
 import { formatDateFrShort } from "@/lib/format-date-fr";
@@ -105,6 +105,11 @@ import { CLASSE_ANCRE_SECTION } from "@/features/admin-qualiopi/session-hub/ancr
  */
 const MandatOpcoButton = dynamic(() =>
   import("@/components/admin/qualiopi/MandatOpcoButton").then((m) => m.MandatOpcoButton),
+);
+// CHANTIER QNC, L13 — les notes sont un geste rare : leur formulaire sort du chunk
+// de la page (poids de la console, cliquet « page chunks de la console admin »).
+const NotesPiece = dynamic(() =>
+  import("@/components/admin/qualiopi/NotesPiece").then((m) => m.NotesPiece),
 );
 
 // ─────────────────────────────────────────────────────────────────────────────
