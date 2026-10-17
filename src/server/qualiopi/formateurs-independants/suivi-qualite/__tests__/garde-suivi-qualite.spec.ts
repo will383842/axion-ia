@@ -84,6 +84,60 @@ describe("garde de mission × suivi qualité", () => {
     expect(r.refus).toContain(MANQUES_SUIVI_QUALITE.observation);
   });
 
+  // Relecture du 2026-10-17 (bloquant 2) : le report passe la forme `nouvelleSession`,
+  // sans `sessionId`. La mission reportée est celle que le report remplace : elle ne
+  // compte pas comme une « 2e mission » contre son propre formateur.
+  const report = (remplaceSessionId?: string) => ({
+    nouvelleSession: {
+      formationId: null,
+      debut: new Date("2026-12-10T08:00:00Z"),
+      fin: new Date("2026-12-11T16:00:00Z"),
+      distanciel: false,
+      ...(remplaceSessionId === undefined ? {} : { remplaceSessionId }),
+    },
+  });
+
+  it("allumé, REPORT de la 1re mission non observée : la mission reportée ne compte pas contre elle-même", async () => {
+    h.etat.settings.set("formateurs.suivi_qualite", {
+      actif: true,
+      allumeLe: "2026-11-01T08:00:00Z",
+    });
+    h.etat.sessions = [session("s1", "2026-11-25", "2026-11-26")];
+    const r = await controlerGardeMission("t-1", MAINTENANT, report("s1"));
+    expect(r.refus).toEqual([]);
+  });
+
+  it("allumé, report d'une mission alors qu'une AUTRE n'est pas observée : refusé", async () => {
+    h.etat.settings.set("formateurs.suivi_qualite", {
+      actif: true,
+      allumeLe: "2026-11-01T08:00:00Z",
+    });
+    h.etat.sessions = [
+      session("s1", "2026-11-05", "2026-11-06"),
+      session("s2", "2026-11-25", "2026-11-26"),
+    ];
+    const r = await controlerGardeMission("t-1", MAINTENANT, report("s2"));
+    expect(r.refus).toContain(MANQUES_SUIVI_QUALITE.observation);
+  });
+
+  it("allumé, CRÉATION d'une session (sans session remplacée) : c'est bien une 2e mission", async () => {
+    h.etat.settings.set("formateurs.suivi_qualite", {
+      actif: true,
+      allumeLe: "2026-11-01T08:00:00Z",
+    });
+    const r = await controlerGardeMission("t-1", MAINTENANT, report());
+    expect(r.refus).toContain(MANQUES_SUIVI_QUALITE.observation);
+  });
+
+  it("allumé, acceptation de SA mission (sessionId + missionId) : jamais comptée contre elle-même", async () => {
+    h.etat.settings.set("formateurs.suivi_qualite", {
+      actif: true,
+      allumeLe: "2026-11-01T08:00:00Z",
+    });
+    const r = await controlerGardeMission("t-1", MAINTENANT, { sessionId: "s1", missionId: "m1" });
+    expect(r.refus).toEqual([]);
+  });
+
   it("allumé, observation favorable : la 2e mission passe", async () => {
     h.etat.settings.set("formateurs.suivi_qualite", {
       actif: true,

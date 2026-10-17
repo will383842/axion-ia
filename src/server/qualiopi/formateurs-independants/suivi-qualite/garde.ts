@@ -35,9 +35,21 @@ export async function manquesDuSuiviQualite(
   try {
     const f = await lireFaitsSuiviQualite(trainerId, allumeLe);
     if (!f.trouve) return [MANQUES_SUIVI_QUALITE.erreur];
-    const sessionId = enJeu !== undefined && "sessionId" in enJeu ? enJeu.sessionId : undefined;
+    const sessionId = sessionDeLaMissionEnJeu(enJeu);
     return manquesSuiviQualite(f, sessionId === undefined ? undefined : { sessionId }, maintenant);
   } catch {
     return [MANQUES_SUIVI_QUALITE.erreur];
   }
+}
+
+/**
+ * La session dont on décide, jamais comptée comme « autre mission » : la session même
+ * (acceptation, lettre, affectation), ou au REPORT la session reportée — la mission que
+ * le report remplace. Création d'une session : aucune (elle n'existe pas encore). Sans
+ * mission en jeu (mission déjà acceptée) : aucune.
+ */
+export function sessionDeLaMissionEnJeu(enJeu: MissionEnJeu | undefined): string | undefined {
+  if (enJeu === undefined) return undefined;
+  if ("sessionId" in enJeu) return enJeu.sessionId;
+  return enJeu.nouvelleSession.remplaceSessionId;
 }
