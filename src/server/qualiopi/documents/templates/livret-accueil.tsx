@@ -8,7 +8,7 @@
  */
 
 import React from "react";
-import { View, Document, Text, StyleSheet } from "@react-pdf/renderer";
+import { View, Document, Text, StyleSheet, Image } from "@react-pdf/renderer";
 import {
   QualiopiPage,
   DocSection,
@@ -21,6 +21,7 @@ import { LEGAL_MENTIONS, HANDICAP_PARTENAIRES } from "@/server/qualiopi/legal/le
 import { ASSISTANCE_DISTANCE } from "@/server/qualiopi/legal/assistance-distance";
 import { ENCART_VIOLENCES, TITRE_ENCART_VIOLENCES } from "@/content/prevention-violences";
 import type { OrganismeIdentite } from "@/server/qualiopi/documents/organisme";
+import { phraseEffectifEtModalite } from "@/server/qualiopi/convocation-v2/decision";
 
 // ============================================================
 // Types
@@ -42,6 +43,23 @@ export interface LivretAccueilData {
   };
   // Version du livret
   dateVersion: string;
+  /**
+   * Chantier QNC, L05 — version du TEXTE. Absent ou 1 : le livret actuel, mot
+   * pour mot. 2 : émargement signé pendant chaque demi-journée, effectif,
+   * « présentiel ou distanciel », lien et QR code vers /reclamations.
+   * Pas dans `GABARIT_VERSIONS` : le livret n'est pas une pièce signable.
+   */
+  versionTexte?: 1 | 2;
+  /** v2 : la session est un séminaire (effectif « jusqu'à 50 », présentiel seul). */
+  seminaire?: boolean;
+  /** v2 : QR code (data URL PNG) vers `/reclamations`. Absent : le lien seul. */
+  qrReclamationsDataUrl?: string;
+  /**
+   * v2 : le formulaire de réclamation en ligne est-il ouvert ? Faux (défaut) :
+   * le livret donne le repli — e-mail et courrier — au lieu d'annoncer un
+   * formulaire qui n'existe pas encore.
+   */
+  formulaireReclamationActif?: boolean;
 }
 
 // ============================================================
@@ -81,6 +99,7 @@ export function LivretAccueilPdf({
   // procédure plutôt que d'imprimer une URL tronquée du type « /reclamations »,
   // inexploitable pour le stagiaire.
   const siteBase = identite.site.replace(/\/+$/, "");
+  const v2 = data.versionTexte === 2;
 
   return (
     <Document>
@@ -168,13 +187,21 @@ export function LivretAccueilPdf({
 
         {/* Modalités pratiques */}
         <DocSection title="3. Modalités pratiques">
+          {v2 ? (
+            <Text style={local.bodyText}>
+              {phraseEffectifEtModalite(data.seminaire)} Dans les deux cas, vous signez votre
+              présence pendant chaque demi-journée.
+            </Text>
+          ) : null}
           <Text style={[local.bodyText, { fontWeight: "bold" }]}>En présentiel</Text>
           <BulletList
             items={[
               "L'accueil est assuré 15 minutes avant le début de chaque session.",
               "Merci de vous munir d'une pièce d'identité lors de votre première journée.",
               "Des pauses sont prévues selon le programme communiqué.",
-              "L'émargement est obligatoire à chaque demi-journée.",
+              v2
+                ? "L'émargement se signe pendant chaque demi-journée, en salle, avec le lien personnel de signature reçu par courriel."
+                : "L'émargement est obligatoire à chaque demi-journée.",
               // 🔴 2026-09-30 — santé et sécurité, alignées sur l'article 6 du
               // règlement intérieur (PDF et page publique).
               "Il est interdit de fumer et de vapoter dans les locaux de formation (Code de la santé publique).",
@@ -188,7 +215,9 @@ export function LivretAccueilPdf({
             items={[
               "Le lien de connexion vous est communiqué par email avant la session.",
               "Merci d'activer votre caméra pendant les séquences synchrones.",
-              "L'émargement se signe pendant chaque demi-journée ; le relevé de connexion ne le remplace pas.",
+              v2
+                ? "L'émargement se signe pendant chaque demi-journée, en visioconférence, avec le lien personnel de signature reçu par courriel."
+                : "L'émargement se signe pendant chaque demi-journée ; le relevé de connexion ne le remplace pas.",
             ]}
           />
           {/* Assistance technique et pédagogique à distance (D.6313-3-1) — même
@@ -307,11 +336,41 @@ export function LivretAccueilPdf({
             ]}
           />
           <FieldRow label="Email réclamations" value={identite.email || "—"} />
-          <Text style={pdfStyles.legalNote}>
-            {siteBase
-              ? `Procédure complète (dépôt, traitement, suivi et voies de recours) : ${siteBase}/reclamations`
-              : "La procédure complète (dépôt, traitement, suivi et voies de recours) est publiée sur notre site, rubrique « Réclamations », et communiquée sur simple demande."}
-          </Text>
+          {v2 ? (
+            <>
+              {data.formulaireReclamationActif === true ? (
+                <Text style={local.bodyText}>
+                  Vous pouvez aussi déposer votre réclamation en ligne, à tout moment, depuis la
+                  page ci-dessous.
+                </Text>
+              ) : (
+                <Text style={local.bodyText}>
+                  Le formulaire en ligne n'est pas encore ouvert : écrivez-nous par e-mail (adresse
+                  ci-dessus) ou par courrier à l'adresse de notre siège
+                  {identite.adresseSiege ? ` (${identite.adresseSiege})` : ""}.
+                </Text>
+              )}
+              <Text style={pdfStyles.legalNote}>
+                {siteBase
+                  ? `Procédure complète (dépôt, traitement, suivi et voies de recours) : ${siteBase}/reclamations`
+                  : "La procédure complète (dépôt, traitement, suivi et voies de recours) est publiée sur notre site, rubrique « Réclamations », et communiquée sur simple demande."}
+              </Text>
+              {data.qrReclamationsDataUrl ? (
+                <View style={{ marginTop: 6, alignItems: "flex-start" }}>
+                  <Image src={data.qrReclamationsDataUrl} style={{ width: 80, height: 80 }} />
+                  <Text style={pdfStyles.legalNote}>Scannez pour ouvrir la page Réclamations.</Text>
+                </View>
+              ) : null}
+            </>
+          ) : (
+            <>
+              <Text style={pdfStyles.legalNote}>
+                {siteBase
+                  ? `Procédure complète (dépôt, traitement, suivi et voies de recours) : ${siteBase}/reclamations`
+                  : "La procédure complète (dépôt, traitement, suivi et voies de recours) est publiée sur notre site, rubrique « Réclamations », et communiquée sur simple demande."}
+              </Text>
+            </>
+          )}
         </DocSection>
 
         {/* Prévention des violences (indicateur 12, décret n° 2026-728) */}
