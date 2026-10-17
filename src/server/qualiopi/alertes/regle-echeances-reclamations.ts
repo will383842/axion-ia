@@ -66,7 +66,13 @@ export async function regleEcheancesReclamations(
     // Une réclamation antérieure au cycle n'a pas d'étapes : l'alerte J+15
     // historique la couvre déjà.
     if (r.etapes.length === 0) continue;
-    if (!(await cycleActifPour(r, etat))) continue;
+    if (
+      !(await cycleActifPour(
+        { ...r, aUneReception: r.etapes.some((x) => x.etape === "reception") },
+        etat,
+      ))
+    )
+      continue;
     const e = etatEcheances(r.dateReception, r.etapes, now);
     if (e.accuse === "depassee") {
       out.push({

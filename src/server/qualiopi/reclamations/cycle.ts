@@ -63,6 +63,11 @@ export function etapesPossibles(etapes: ReadonlyArray<EtapeCode>): EtapeCode[] {
   if (!etapes.includes("accuse") && derniere !== "cloture") possibles.push("accuse");
   switch (derniere) {
     case "reception":
+      // Clôture directe : un dépôt irrecevable (spam, hors sujet) ne force pas
+      // une analyse et une réponse signée. Le motif « irrecevable » est
+      // obligatoire et consigné (cycle-service) ; rien n'est supprimé.
+      possibles.push("analyse", "cloture");
+      break;
     case "reexamen":
       possibles.push("analyse");
       break;

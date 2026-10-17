@@ -433,6 +433,8 @@ async function regleReclamationsSansReponse(now: Date): Promise<AlerteCandidate[
       statut: { in: ["nouvelle", "en_cours"] },
       dateReception: { lte: seuil },
       dateReponse: null,
+      // Les réclamations du cycle daté ont leurs propres échéances (jours ouvrés).
+      etapes: { none: {} },
     },
     select: { id: true, numero: true, reclamantNom: true, dateReception: true },
   });

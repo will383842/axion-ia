@@ -28,21 +28,27 @@ beforeEach(() => {
 describe("interrupteur des réclamations", () => {
   it("clé absente = éteint : rien ne s'applique", async () => {
     expect(await lireInterrupteurReclamations()).toBe("eteint");
-    expect(await cycleActifPour({ enrollmentId: "e" })).toBe(false);
+    expect(await cycleActifPour({ enrollmentId: "e", aUneReception: true })).toBe(false);
   });
 
   it("actif : le cycle vaut pour toutes les réclamations, même sans inscription", async () => {
     h.valeur = { etat: "actif" };
-    expect(await cycleActifPour({ enrollmentId: null })).toBe(true);
+    expect(await cycleActifPour({ enrollmentId: null, aUneReception: true })).toBe(true);
+  });
+
+  it("actif, réclamation sans étape de réception (antérieure au cycle) : hors cycle", async () => {
+    h.valeur = { etat: "actif" };
+    expect(await cycleActifPour({ enrollmentId: null, aUneReception: false })).toBe(false);
+    expect(await cycleActifPour({ enrollmentId: "e", aUneReception: false })).toBe(false);
   });
 
   it("essai : seulement une inscription (ou une session) du banc d'essai", async () => {
     h.valeur = { etat: "essai" };
-    expect(await cycleActifPour({ enrollmentId: null })).toBe(false);
+    expect(await cycleActifPour({ enrollmentId: null, aUneReception: true })).toBe(false);
     h.inscription = { estTestInterne: false, session: { estTestInterne: false } };
-    expect(await cycleActifPour({ enrollmentId: "e" })).toBe(false);
+    expect(await cycleActifPour({ enrollmentId: "e", aUneReception: true })).toBe(false);
     h.inscription = { estTestInterne: false, session: { estTestInterne: true } };
-    expect(await cycleActifPour({ enrollmentId: "e" })).toBe(true);
+    expect(await cycleActifPour({ enrollmentId: "e", aUneReception: true })).toBe(true);
   });
 
   it("une valeur mal formée vaut éteint", async () => {

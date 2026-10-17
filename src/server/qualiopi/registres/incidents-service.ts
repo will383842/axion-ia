@@ -206,6 +206,8 @@ export async function completerIncident(
 ): Promise<ResultatCompleter> {
   interditAuBuild();
   return prisma.$transaction(async (tx) => {
+    // Deux compléments simultanés se suivent au lieu de s'écraser.
+    await tx.$executeRaw`SELECT pg_advisory_xact_lock(hashtext(${`incident:${id}`}))`;
     const actuel = await tx.incident.findUnique({ where: { id } });
     if (actuel === null) return { ok: false as const, erreur: "Incident introuvable" };
     const plan = planifierComplement(actuel, demande, new Date());

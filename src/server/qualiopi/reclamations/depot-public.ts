@@ -53,3 +53,11 @@ export function nettoyerTexte(valeur: string | undefined, multiligne = false): s
     ? valeur.replace(CONTROLE_TEXTE_LONG, "").trim()
     : valeur.replace(CONTROLE_LIGNE, " ").trim();
 }
+
+/** Pure : l'adresse sous la forme qui sert de clé de limite (partie locale coupée au premier « + »). */
+export function cleLimiteAdresse(email: string): string {
+  const normalisee = email.trim().toLowerCase();
+  const arobase = normalisee.lastIndexOf("@");
+  if (arobase < 0) return normalisee;
+  return `${normalisee.slice(0, arobase).split("+")[0]}${normalisee.slice(arobase)}`;
+}

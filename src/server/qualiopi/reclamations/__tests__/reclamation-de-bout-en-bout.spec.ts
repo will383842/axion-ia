@@ -273,6 +273,38 @@ describe("réclamation d'essai — de bout en bout", () => {
     expect(r).toEqual({ ok: true, email: null });
   });
 
+  it("un dépôt irrecevable se clôt juste après la réception, motif consigné, rien supprimé", async () => {
+    const deposee = await deposerReclamation({
+      qualite: "autre",
+      reclamantNom: "Inconnu",
+      reclamantEmail: "spam@example.test",
+      objet: "Offre promotionnelle",
+      description: "Message publicitaire sans rapport avec une formation.",
+      dateReception: new Date("2026-10-16T09:00:00.000Z"),
+      canal: "formulaire_public",
+      auteur: FORMULAIRE,
+    });
+    const court = await ajouterEtapeReclamation({
+      reclamationId: deposee.id,
+      etape: "cloture",
+      contenu: "spam",
+      auteur: ADMIN,
+    });
+    expect(court.ok).toBe(false);
+    const r = await ajouterEtapeReclamation({
+      reclamationId: deposee.id,
+      etape: "cloture",
+      contenu: "Message publicitaire sans rapport avec la formation.",
+      auteur: ADMIN,
+    });
+    expect(r).toEqual({ ok: true, email: null });
+    expect(h.reclamations[0]?.["statut"]).toBe("cloturee");
+    const derniere = h.etapes[h.etapes.length - 1];
+    expect(derniere?.etape).toBe("cloture");
+    expect(String(derniere?.contenu)).toMatch(/^Irrecevable — /);
+    expect(h.etapes.map((x) => x.etape)).toContain("reception");
+  });
+
   it("une réponse non signée est refusée", async () => {
     const deposee = await deposerReclamation({
       qualite: "stagiaire",

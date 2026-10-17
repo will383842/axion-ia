@@ -52,7 +52,7 @@ vi.mock("@/server/qualiopi/reclamations/interrupteur", () => ({
 }));
 
 import { deposerReclamationPubliqueAction } from "@/server/actions/qualiopi/reclamation-publique";
-import { MESSAGE_REFUS_DEPOT, nettoyerTexte } from "../depot-public";
+import { MESSAGE_REFUS_DEPOT, cleLimiteAdresse, nettoyerTexte } from "../depot-public";
 
 const INSCRIPTION = "550e8400-e29b-41d4-a716-446655440077";
 
@@ -226,5 +226,13 @@ describe("nettoyerTexte", () => {
     expect(nettoyerTexte("  a\u0000b\nc  ")).toBe("a b c");
     expect(nettoyerTexte("a\u0007b\nc", true)).toBe("ab\nc");
     expect(nettoyerTexte(undefined)).toBeUndefined();
+  });
+});
+
+describe("cleLimiteAdresse — la limite par adresse ne se contourne pas avec un « + »", () => {
+  it("coupe la partie locale au premier « + » et normalise", () => {
+    expect(cleLimiteAdresse("Victime+1@Exemple.fr")).toBe("victime@exemple.fr");
+    expect(cleLimiteAdresse(" victime+2+x@exemple.fr ")).toBe("victime@exemple.fr");
+    expect(cleLimiteAdresse("victime@exemple.fr")).toBe("victime@exemple.fr");
   });
 });

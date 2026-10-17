@@ -6,8 +6,8 @@ import { etapesPossibles, verifierEtape } from "../cycle";
 
 describe("cycle d'une réclamation", () => {
   it("après la réception : accusé (s'il manque) puis analyse", () => {
-    expect(etapesPossibles(["reception"])).toEqual(["accuse", "analyse"]);
-    expect(etapesPossibles(["reception", "accuse"])).toEqual(["analyse"]);
+    expect(etapesPossibles(["reception"])).toEqual(["accuse", "analyse", "cloture"]);
+    expect(etapesPossibles(["reception", "accuse"])).toEqual(["analyse", "cloture"]);
   });
 
   it("une réponse exige une analyse", () => {

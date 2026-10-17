@@ -80,7 +80,17 @@ export default async function QualiopiReclamationsPage({ params }: PageProps) {
   const etatCycle = await lireInterrupteurReclamations();
   const dansLeCycle = new Set<string>();
   if (etatCycle !== "eteint") {
+    // Seules les réclamations qui ont une étape de réception entrent dans le cycle.
+    const avecReception = new Set(
+      (
+        await prisma.reclamationEtape.findMany({
+          where: { etape: "reception", reclamationId: { in: reclamations.map((r) => r.id) } },
+          select: { reclamationId: true },
+        })
+      ).map((e) => e.reclamationId),
+    );
     for (const r of reclamations) {
+      if (!avecReception.has(r.id)) continue;
       if (etatCycle === "actif" || (await inscriptionDeTest(r.enrollmentId))) dansLeCycle.add(r.id);
     }
   }

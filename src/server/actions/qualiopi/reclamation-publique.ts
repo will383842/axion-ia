@@ -40,6 +40,7 @@ import { checkRateLimit } from "@/lib/rate-limit";
 import { verifyTurnstile } from "@/lib/turnstile";
 import { getClientIp } from "@/lib/client-ip";
 import { signalerHoneypot } from "@/lib/security/honeypot-observable";
+import { cleLimiteAdresse } from "@/server/qualiopi/reclamations/depot-public";
 import { hashEmailForLookup } from "@/lib/security/email-hash";
 import { getPortailToken } from "@/server/qualiopi/portail/cookie";
 import { verifierToken } from "@/server/qualiopi/portail/portail-service";
@@ -121,7 +122,9 @@ export async function deposerReclamationPubliqueAction(
   }
   const v = parsed.data;
 
-  const empreinte = hashEmailForLookup(v.email);
+  // Clé de limite seulement : la partie locale coupée au « + », sinon
+  // `victime+1@…`, `victime+2@…` contournent le compteur (même boîte).
+  const empreinte = hashEmailForLookup(cleLimiteAdresse(v.email));
   if (empreinte !== null) {
     const parAdresse = await checkRateLimit(`reclamation-publique-adresse:${empreinte}`, {
       limit: 3,

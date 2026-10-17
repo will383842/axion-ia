@@ -39,11 +39,18 @@ export async function inscriptionDeTest(enrollmentId: string | null): Promise<bo
   }
 }
 
-/** Le cycle L09 s'applique-t-il à CETTE réclamation ? */
+/**
+ * Le cycle L09 s'applique-t-il à CETTE réclamation ?
+ *
+ * Seule une réclamation qui a une étape de RÉCEPTION est dans le cycle : une
+ * réclamation ouverte avant le cycle n'a aucune étape, `etapesPossibles([])`
+ * est vide, et la refuser aux gestes libres la rendrait intraitable.
+ */
 export async function cycleActifPour(
-  reclamation: { readonly enrollmentId: string | null },
+  reclamation: { readonly enrollmentId: string | null; readonly aUneReception: boolean },
   etat?: EtatInterrupteur,
 ): Promise<boolean> {
+  if (!reclamation.aUneReception) return false;
   const e = etat ?? (await lireInterrupteurReclamations());
   if (e === "eteint") return false;
   if (e === "actif") return true;

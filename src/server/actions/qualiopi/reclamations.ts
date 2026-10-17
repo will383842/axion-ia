@@ -136,8 +136,12 @@ export async function creerReclamationAction(input: {
   const v = parsed.data;
 
   // L09 — le cycle daté, quand l'interrupteur couvre cette réclamation.
-  if (await cycleActifPour({ enrollmentId: v.enrollmentId ?? null })) {
-    if (v.dateReception.getTime() > Date.now()) {
+  if (await cycleActifPour({ enrollmentId: v.enrollmentId ?? null, aUneReception: true })) {
+    const canal = v.canal ?? "console";
+    // Saisie à la console : la réception, c'est maintenant (date serveur). Seuls
+    // téléphone, courrier et e-mail peuvent porter une date saisie.
+    const dateReception = canal === "console" ? new Date() : v.dateReception;
+    if (dateReception.getTime() > Date.now()) {
       return { error: "La date de réception ne peut pas être dans le futur" };
     }
     const auteur = await auteurAdministrateur(session);
@@ -149,9 +153,9 @@ export async function creerReclamationAction(input: {
         objet: v.objet,
         description: v.description,
         ...(v.gravite !== undefined ? { gravite: v.gravite } : {}),
-        dateReception: v.dateReception,
+        dateReception,
         ...(v.enrollmentId !== undefined ? { enrollmentId: v.enrollmentId } : {}),
-        canal: v.canal ?? "console",
+        canal,
         auteur,
       });
       await logQualiopiActivity({
@@ -234,9 +238,13 @@ export async function repondreReclamationAction(input: {
   if (!parsed.success) return { error: "Données invalides" };
   const v = parsed.data;
 
-  const reclamation = await prisma.reclamation.findUnique({ where: { id: v.id } });
+  const reclamation = await prisma.reclamation.findUnique({
+    where: { id: v.id },
+    include: { _count: { select: { etapes: { where: { etape: "reception" } } } } },
+  });
   if (reclamation === null) return { error: "Réclamation introuvable" };
-  if (await cycleActifPour(reclamation)) return { error: REFUS_GESTE_LIBRE };
+  if (await cycleActifPour({ ...reclamation, aUneReception: reclamation._count.etapes > 0 }))
+    return { error: REFUS_GESTE_LIBRE };
 
   const nouvelleStatut = reclamation.statut === "nouvelle" ? "en_cours" : undefined;
 
@@ -278,9 +286,13 @@ export async function setStatutReclamationAction(input: {
   if (!parsed.success) return { error: "Données invalides" };
   const { id, statut } = parsed.data;
 
-  const reclamation = await prisma.reclamation.findUnique({ where: { id } });
+  const reclamation = await prisma.reclamation.findUnique({
+    where: { id },
+    include: { _count: { select: { etapes: { where: { etape: "reception" } } } } },
+  });
   if (reclamation === null) return { error: "Réclamation introuvable" };
-  if (await cycleActifPour(reclamation)) return { error: REFUS_GESTE_LIBRE };
+  if (await cycleActifPour({ ...reclamation, aUneReception: reclamation._count.etapes > 0 }))
+    return { error: REFUS_GESTE_LIBRE };
 
   await prisma.reclamation.update({
     where: { id },
@@ -321,10 +333,14 @@ export async function ajouterEtapeReclamationAction(input: {
 
   const reclamation = await prisma.reclamation.findUnique({
     where: { id: v.id },
-    select: { id: true, enrollmentId: true },
+    select: {
+      id: true,
+      enrollmentId: true,
+      _count: { select: { etapes: { where: { etape: "reception" } } } },
+    },
   });
   if (reclamation === null) return { error: "Réclamation introuvable" };
-  if (!(await cycleActifPour(reclamation))) {
+  if (!(await cycleActifPour({ ...reclamation, aUneReception: reclamation._count.etapes > 0 }))) {
     return { error: "Le suivi daté des réclamations n'est pas activé pour cette réclamation." };
   }
 

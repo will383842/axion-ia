@@ -22,7 +22,7 @@ vi.mock("@/lib/prisma", () => {
     findMany: vi.fn(),
   };
   const incidentNote = { create: vi.fn() };
-  const client = { incident, incidentNote };
+  const client = { incident, incidentNote, $executeRaw: vi.fn(async () => 0) };
   return {
     prisma: {
       ...client,

@@ -5,13 +5,19 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 
 const h = vi.hoisted(() => ({
   actif: false,
+  receptions: 1,
   deposer: vi.fn(async () => ({ id: "rec-1", numero: "AXI-REC-2026-001", accuse: "envoye" })),
   ajouterEtape: vi.fn(async () => ({ ok: true, email: null })),
   prisma: {
     reclamation: {
       create: vi.fn(async () => ({ id: "rec-1", numero: "AXI-REC-2026-001" })),
       update: vi.fn(async () => ({})),
-      findUnique: vi.fn(async () => ({ id: "rec-1", statut: "nouvelle", enrollmentId: null })),
+      findUnique: vi.fn(async () => ({
+        id: "rec-1",
+        statut: "nouvelle",
+        enrollmentId: null,
+        _count: { etapes: h.receptions },
+      })),
       findMany: vi.fn(async () => []),
     },
   },
@@ -26,7 +32,7 @@ vi.mock("@/server/qualiopi/registres/auteur", () => ({
   auteurAdministrateur: vi.fn(async () => ({ id: "admin-uuid", nom: "Camille Exemple" })),
 }));
 vi.mock("@/server/qualiopi/reclamations/interrupteur", () => ({
-  cycleActifPour: vi.fn(async () => h.actif),
+  cycleActifPour: vi.fn(async (r: { aUneReception: boolean }) => h.actif && r.aUneReception),
 }));
 vi.mock("@/server/qualiopi/reclamations/cycle-service", () => ({
   CANAUX_DEPOT: [
@@ -94,7 +100,19 @@ describe("interrupteur éteint — rien ne change", () => {
 describe("interrupteur allumé — le cycle daté", () => {
   beforeEach(() => {
     h.actif = true;
+    h.receptions = 1;
     vi.clearAllMocks();
+  });
+
+  it("réclamation sans étape (antérieure au cycle), interrupteur actif : répondre et clore restent possibles", async () => {
+    h.receptions = 0;
+    expect(await repondreReclamationAction({ id: ID, reponse: "Réponse" })).toEqual({
+      data: { id: ID },
+    });
+    expect(await setStatutReclamationAction({ id: ID, statut: "cloturee" })).toEqual({
+      data: { id: ID },
+    });
+    expect(h.prisma.reclamation.update).toHaveBeenCalledTimes(2);
   });
 
   it("creerReclamationAction passe par le dépôt (réception + accusé), qualité déduite", async () => {
@@ -113,9 +131,25 @@ describe("interrupteur allumé — le cycle daté", () => {
   it("refuse une date de réception dans le futur", async () => {
     const r = await creerReclamationAction({
       ...SAISIE,
+      canal: "telephone",
       dateReception: new Date(Date.now() + 3 * 86_400_000),
     });
     expect(r).toEqual({ error: expect.stringMatching(/futur/) });
+  });
+
+  it("canal console : la date de réception est celle du serveur, jamais antidatée", async () => {
+    const avant = Date.now();
+    await creerReclamationAction({ ...SAISIE, dateReception: new Date("2020-01-01T00:00:00Z") });
+    const appels = h.deposer.mock.calls as unknown as Array<[{ dateReception: Date }]>;
+    const dateReception = appels[0]![0].dateReception;
+    expect(dateReception.getTime()).toBeGreaterThanOrEqual(avant);
+  });
+
+  it("canal téléphone : la date saisie est conservée", async () => {
+    await creerReclamationAction({ ...SAISIE, canal: "telephone" });
+    expect(h.deposer).toHaveBeenCalledWith(
+      expect.objectContaining({ dateReception: SAISIE.dateReception }),
+    );
   });
 
   it("les gestes libres sont refusés : le statut suit les étapes", async () => {

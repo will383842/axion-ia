@@ -282,10 +282,15 @@ export async function ajouterEtapeReclamation(entree: EntreeEtape): Promise<Resu
     );
     if (!verdict.ok) return { ok: false as const, erreur: verdict.erreur };
 
+    const apresReception = !reclamation.etapes.some(
+      (e) => e.etape !== "reception" && e.etape !== "accuse",
+    );
     const texte =
       entree.etape === "reponse"
         ? `${contenu}\n\nPour ${EMAIL_LEGAL.legalName}, ${entree.auteur.nom}, ${qualite}.`
-        : contenu;
+        : entree.etape === "cloture" && apresReception
+          ? `Irrecevable — ${contenu}`
+          : contenu;
     await tx.reclamationEtape.create({
       data: {
         reclamationId: reclamation.id,

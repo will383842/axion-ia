@@ -166,7 +166,10 @@ export default async function MonEspaceAccueilPage({ params }: PageProps) {
                 quand le dépôt en ligne est ouvert (interrupteur). La formation
                 se choisit dans le formulaire : seule une inscription de la
                 personne connectée sera rattachée. */}
-            <LienDepotReclamation className="text-fg-soft hover:text-terracotta mt-10 block text-sm underline underline-offset-4">
+            <LienDepotReclamation
+              depuisEspaceDeTest={espace.formations.some((f) => f.estTestInterne === true)}
+              className="text-fg-soft hover:text-terracotta mt-10 block text-sm underline underline-offset-4"
+            >
               Une difficulté, une réclamation ? Déposez-la ici : réponse écrite sous 15 jours
               ouvrés.
             </LienDepotReclamation>
