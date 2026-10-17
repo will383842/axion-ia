@@ -326,6 +326,7 @@ export const MANQUES_SUIVI_QUALITE = {
     "Les nouvelles missions de ce formateur sont suspendues (satisfaction des stagiaires sous le seuil) jusqu'à une décision motivée en console.",
   reevaluation:
     "La réévaluation annuelle de ce formateur est échue : aucune nouvelle mission avant qu'elle soit saisie.",
+  erreur: "Le suivi de la qualité de ce formateur n'a pas pu être relu.",
 } as const;
 
 /** Ils refusent une NOUVELLE mission ; une mission déjà acceptée est maintenue. */
