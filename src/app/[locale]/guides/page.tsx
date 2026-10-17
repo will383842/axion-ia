@@ -66,7 +66,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
         : "Operational AI guides · Axion-IA pillars",
     description:
       locale === "fr"
-        ? "Guides piliers Axion-IA : étapes claires, exemples concrets, repères ROI pour cadrer vos chantiers IA en PME et ETI."
+        ? "Guides piliers Axion-IA : étapes claires, exemples concrets, repères ROI pour cadrer vos chantiers IA en TPE, PME et ETI."
         : "Axion-IA pillar guides: clear steps, concrete examples, ROI benchmarks to scope your AI initiatives for SMBs and mid-market.",
   });
 }

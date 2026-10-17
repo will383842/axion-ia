@@ -43,7 +43,7 @@ import { EMAIL_LEGAL } from "../legal-footer";
  * catalogue porte « Prompt engineering et automatisations métier » et plus long
  * encore.
  */
-const TITRE_LONG = "Intelligence artificielle appliquée aux PME et ETI";
+const TITRE_LONG = "Intelligence artificielle appliquée aux TPE, PME et ETI";
 
 const PAYLOAD: Record<string, unknown> = {
   contactName: "Jean Dupont",

@@ -322,7 +322,7 @@ export function FormationDetailPage({
       courseMode: [...getFormationCourseModes(f)],
       duration: formationDureeIso(f.duree),
       audienceType:
-        "Équipes, dirigeants et collaborateurs opérationnels (PME, ETI, grande entreprise)",
+        "Équipes, dirigeants et collaborateurs opérationnels (TPE, PME, ETI, grandes entreprises)",
       about: "IA opérationnelle (ChatGPT, Claude, Gemini, assistants IA, agents, automatisations)",
       ...(typeof entryPrice === "number" ? { priceEurHt: entryPrice } : {}),
     }),

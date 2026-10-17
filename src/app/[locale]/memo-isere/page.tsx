@@ -123,14 +123,14 @@ const SECTEURS = [
 // ── Tailles d'entreprise ────────────────────────────────────────────────────
 //
 // Retour Will 2026-08-22 : la page nommait « PME, ETI et grands groupes » sans
-// jamais parler des PME autrement qu'en fin de phrase, et sans jamais dire À
+// jamais parler des TPE autrement qu'en fin de phrase, et sans jamais dire À
 // QUOI ressemble une entreprise de chaque taille. Un lecteur d'annonce locale
 // ne se projette pas sur un sigle : il se projette sur « le cabinet d'avocats
 // de la place » ou « l'atelier de mécanique de la zone ».
 //
 // Les seuils d'effectif sont ceux de la nomenclature officielle française
 // (décret n° 2008-1354 d'application de la LME, catégories INSEE : micro-
-// entreprise/PME, ETI, grande entreprise). On ne cite QUE l'effectif :
+// entreprise/TPE, PME, ETI, grande entreprise). On ne cite QUE l'effectif :
 // les seuils de chiffre d'affaires ajouteraient des montants en euros sans
 // rien apprendre à un commercial qui prospecte au téléphone.
 //
@@ -156,6 +156,23 @@ interface TailleCible {
 }
 
 const TAILLES_CIBLES: readonly TailleCible[] = [
+  {
+    emoji: "🧑‍💼",
+    sigle: "TPE",
+    effectif: "moins de 10 salariés",
+    exemples: [
+      "Cabinet d’avocats, notaire, huissier",
+      "Expert-comptable, paie, conseil",
+      "Cabinet infirmier, dentaire, kiné, vétérinaire",
+      "Agence immobilière, courtier, assureur",
+      "Garage, carrosserie, artisan du bâtiment",
+      "Restaurant, boulangerie, commerce de centre-ville",
+      "Agence web, studio de com’, photographe",
+      "Domaine viticole, exploitation agricole",
+    ],
+    ceQueCaVaut:
+      "Le dirigeant décide seul, souvent dans le rendez-vous. Une seule journée forme toute l’équipe : c’est la vente la plus rapide à signer, et le meilleur terrain pour tes premières références.",
+  },
   {
     emoji: "🏢",
     sigle: "PME",
@@ -659,13 +676,13 @@ export default async function MemoIserePage({ params }: Props) {
       id: "quelles-entreprises",
       question: "Quelles entreprises est-ce que je démarche ?",
       answer:
-        "Les trois tailles, sans exception. Les PME de 10 à 249 salariés — mécanique, plasturgie, BTP, transport, laboratoires et cliniques, cabinets comptables, ESN, négoce, agroalimentaire, hôtellerie : c'est le cœur de cible, 1 à 3 journées par service. Les ETI de 250 à 4 999 salariés — groupes industriels multi-sites, groupes de cliniques ou d'EHPAD, coopératives agricoles, enseignes régionales : plusieurs sites et plusieurs vagues, donc des dizaines de journées chez un seul client. Et les grands groupes de 5 000 salariés et plus — chimie et énergie de la vallée du Rhône, microélectronique grenobloise, sièges régionaux de banque ou d'assurance, centres hospitaliers : on y entre par l'établissement local, pas par le siège. Attention, ce ne sont que des exemples : la liste n'est ni limitative ni exclusive. Un magasin, une entreprise du bâtiment, un établissement de santé, un hôtel-restaurant, une exploitation agricole, une collectivité ou un grand groupe sont tout aussi concernés. Quel que soit le secteur et quelle que soit la taille, une entreprise qui utilise l'IA a des obligations au titre de l'AI Act.",
+        "Les quatre tailles, sans exception. Les TPE de moins de 10 salariés — cabinet d'avocats, expert-comptable, cabinet infirmier ou dentaire, agence immobilière, garage, restaurant, artisan du bâtiment, agence de com' : le dirigeant décide seul et une seule journée forme toute l'équipe, ce sont les ventes les plus rapides. Les PME de 10 à 249 salariés — mécanique, plasturgie, BTP, transport, laboratoires et cliniques, cabinets comptables, ESN, négoce, agroalimentaire, hôtellerie : c'est le cœur de cible, 1 à 3 journées par service. Les ETI de 250 à 4 999 salariés — groupes industriels multi-sites, groupes de cliniques ou d'EHPAD, coopératives agricoles, enseignes régionales : plusieurs sites et plusieurs vagues, donc des dizaines de journées chez un seul client. Et les grands groupes de 5 000 salariés et plus — chimie et énergie de la vallée du Rhône, microélectronique grenobloise, sièges régionaux de banque ou d'assurance, centres hospitaliers : on y entre par l'établissement local, pas par le siège. Attention, ce ne sont que des exemples : la liste n'est ni limitative ni exclusive. Un magasin, une entreprise du bâtiment, un établissement de santé, un hôtel-restaurant, une exploitation agricole, une collectivité ou un grand groupe sont tout aussi concernés. Quel que soit le secteur et quelle que soit la taille, une entreprise qui utilise l'IA a des obligations au titre de l'AI Act.",
     },
     {
       id: "pourquoi-ca-se-vend",
       question: "Pourquoi les entreprises achètent-elles ces formations ?",
       answer:
-        "Deux raisons. L'AI Act européen impose désormais aux entreprises de former leurs équipes qui utilisent l'IA (article 4, en vigueur depuis février 2025). Et la demande explose : toutes les PME et ETI parlent d'IA, très peu ont été démarchées.",
+        "Deux raisons. L'AI Act européen impose désormais aux entreprises de former leurs équipes qui utilisent l'IA (article 4, en vigueur depuis février 2025). Et la demande explose : toutes les TPE, PME et ETI parlent d'IA, très peu ont été démarchées.",
     },
     {
       id: "demarrage",
@@ -754,7 +771,7 @@ export default async function MemoIserePage({ params }: Props) {
                   chiffres-clés — la répéter ici coûtait deux lignes et
                   repoussait le CTA hors du premier écran. */}
               <p data-speakable className="text-fg-soft mt-5 max-w-xl text-lg leading-relaxed">
-                Vous recommandez aux <strong>PME, ETI et grands groupes</strong> que vous connaissez
+                Vous recommandez aux <strong>TPE, PME, ETI et grands groupes</strong> que vous connaissez
                 des formations IA — l’AI Act les rend incontournables. Vous touchez, à titre
                 indicatif, <strong>{`${commission(1)} par journée vendue`}</strong>. De Grenoble à
                 Lyon, là où vous avez votre réseau.
@@ -1103,7 +1120,7 @@ export default async function MemoIserePage({ params }: Props) {
         title="Votre prochain client ? Le site industriel"
         titleEm="d'à côté"
         titleTail=" — ou le cabinet d'avocats d'en face"
-        description="De la PME au grand groupe, chaque taille a ses clients. Les PME signent vite, les grandes rapportent gros — les quatre sont concernées, et voici à quoi elles ressemblent autour de vous."
+        description="De la TPE au grand groupe, chaque taille a ses clients. Les petites structures signent vite, les grandes rapportent gros — les quatre sont concernées, et voici à quoi elles ressemblent autour de vous."
       >
         <>
           {/* Triptyque : trois tuiles VERTICALES sur mobile (une bande d'un seul
@@ -1125,7 +1142,7 @@ export default async function MemoIserePage({ params }: Props) {
               {
                 slot: "secteur-commerce" as const,
                 titre: "Commerces",
-                alt: "Commerçant servant un client derrière son comptoir : les PME et ETI de la région, excellentes premières ventes.",
+                alt: "Commerçant servant un client derrière son comptoir : les TPE et artisans de la région, excellentes premières ventes.",
               },
             ].map((c) => (
               <li key={c.slot}>
@@ -1161,7 +1178,7 @@ export default async function MemoIserePage({ params }: Props) {
 
           {/* ── Les quatre tailles, avec des exemples concrets ────────────────
               Une carte par taille, listée de la plus petite à la plus grande :
-              un lecteur d'annonce locale se reconnaît d'abord dans la PME
+              un lecteur d'annonce locale se reconnaît d'abord dans la TPE
               qu'il connaît, pas dans le sigle « ETI ». Chaque carte dit trois
               choses — combien de salariés, à quoi ça ressemble chez lui, et ce
               que ça change POUR LUI (cycle de vente, volume de journées).
@@ -1244,8 +1261,8 @@ export default async function MemoIserePage({ params }: Props) {
             Et dans quels secteurs ?
           </h3>
           <p className="text-fg-muted mx-auto mt-2 mb-6 max-w-2xl text-center text-sm">
-            Tous, de la PME au grand groupe. Là encore, les cases ci-dessous sont des exemples :
-            seul le nombre de groupes à former change d’une PME à un grand groupe.
+            Tous, à toutes les tailles. Là encore, les cases ci-dessous sont des exemples : seul le
+            nombre de groupes à former change d’une TPE à un grand groupe.
           </p>
 
           <ul
@@ -1267,7 +1284,7 @@ export default async function MemoIserePage({ params }: Props) {
             ))}
           </ul>
           <p className="text-fg-muted mx-auto mt-5 max-w-2xl text-center text-sm">
-            … et tous les autres, de la PME au grand groupe : si une entreprise a des équipes et des
+            … et tous les autres, de la TPE au grand groupe : si une entreprise a des équipes et des
             dossiers à traiter, elle est concernée.
           </p>
         </>
@@ -1426,7 +1443,7 @@ export default async function MemoIserePage({ params }: Props) {
               <p className="text-fg-soft mt-2 text-sm leading-relaxed">
                 Un audit IA, c’est simple à expliquer : on cartographie les process de l’entreprise,
                 on chiffre où l’IA fait gagner du temps et de l’argent, et le dirigeant repart avec
-                un plan d’action priorisé. Quatre niveaux selon la taille (PME → ETI) — votre
+                un plan d’action priorisé. Quatre niveaux selon la taille (TPE → ETI) — votre
                 commission suit le niveau vendu, et elle s’ajoute aux journées de formation.
               </p>
             </div>

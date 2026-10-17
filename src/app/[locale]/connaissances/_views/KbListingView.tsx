@@ -58,7 +58,7 @@ export async function buildKbListingMetadata(locale: string, page: number): Prom
     path: kbPagePath(page),
     title: `Connaissances IA · Knowledge Base · Axion-IA${suffixe}`,
     description:
-      "Base de connaissances Axion-IA — articles, méthodologies, comparatifs, playbooks et études de cas IA opérationnels pour dirigeants de PME et ETI.",
+      "Base de connaissances Axion-IA — articles, méthodologies, comparatifs, playbooks et études de cas IA opérationnels pour dirigeants de TPE, PME et ETI.",
     alternates: { fr: kbPagePath(page), en: kbPagePath(page) },
   });
 }

@@ -149,12 +149,12 @@ describe("REQ-JUR-001 — ni promesse sans risque, ni AI Act trop large", () => 
   });
 
   it.each([
-    "L'AI Act l'impose aux PME, ETI et grands groupes : 474 communes au choix.",
-    "L'AI Act oblige PME, ETI et grands groupes à former leurs équipes à l'IA.",
+    "L'AI Act l'impose aux TPE, PME, ETI et grands groupes : 474 communes au choix.",
+    "L'AI Act oblige TPE, PME, ETI et grands groupes à former leurs équipes à l'IA.",
     "The AI Act mandates it for SMEs, mid-caps and large groups.",
     "The AI Act requires small businesses, SMEs, mid-caps and large groups to train their teams.",
     "Les PME doivent se conformer à l'AI Act.",
-    "PME, ETI et grands groupes sont tenus de respecter l'AI Act",
+    "TPE, PME, ETI et grands groupes sont tenus de respecter l'AI Act",
     "SMEs must comply with the AI Act.",
     "Quel que soit le secteur et quelle que soit la taille : l'obligation de formation de l'AI Act concerne tout le monde.",
     "De la PME au grand groupe : l'AI Act ne fait pas de tri entre les tailles ni entre les secteurs.",

@@ -231,25 +231,31 @@ export default async function Home({ params }: HomeProps) {
     },
   ];
 
-  // ─── Cible (3 segments PME/ETI/grands groupes) — Blueprint Section 8 ───
+  // ─── Cible (4 segments TPE/PME/ETI/Grande) — Blueprint Section 8 ───
   const audienceSegments = [
     {
-      id: "pme",
+      id: "tpe",
       title: t("audience1Title"),
       lead: t("audience1Lead"),
       detail: t("audience1Detail"),
     },
     {
-      id: "eti",
+      id: "pme",
       title: t("audience2Title"),
       lead: t("audience2Lead"),
       detail: t("audience2Detail"),
     },
     {
-      id: "large",
+      id: "eti",
       title: t("audience3Title"),
       lead: t("audience3Lead"),
       detail: t("audience3Detail"),
+    },
+    {
+      id: "large",
+      title: t("audience4Title"),
+      lead: t("audience4Lead"),
+      detail: t("audience4Detail"),
     },
   ];
 
@@ -1311,7 +1317,7 @@ export default async function Home({ params }: HomeProps) {
       </section>
 
       {/* ───────────── AUDIENCE + SECTEURS (Blueprint §11) ─────────────
-          3 segments PME/ETI/grands groupes + nuage des secteurs. Texte
+          4 segments TPE/PME/ETI/Grande + nuage des secteurs. Texte
           riche en keywords pour AEO ("IA pour PME françaises", "cabinet
           IA grandes entreprises"…). */}
       <section

@@ -375,7 +375,7 @@ export default async function GuidePiliersPage({ params }: Props) {
 
       <CtaBlock
         title="Besoin d'un accompagnement opérationnel ?"
-        description="Axion-IA accompagne les PME et ETI sur l'audit, l'intervention et l'implémentation IA."
+        description="Axion-IA accompagne les TPE, PME et ETI sur l'audit, l'intervention et l'implémentation IA."
         cta={
           <Cta href="/audit" size="lg">
             Demander un audit

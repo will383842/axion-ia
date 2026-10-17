@@ -25,7 +25,7 @@ describe("objetCompose", () => {
   });
 
   it("abrège la VARIABLE, jamais le préfixe", () => {
-    const s = objetCompose("Rappel J-7 —", "Intelligence artificielle appliquée aux PME et ETI");
+    const s = objetCompose("Rappel J-7 —", "Intelligence artificielle appliquée aux TPE, PME et ETI");
     expect(s.startsWith("Rappel J-7 —")).toBe(true);
     expect(s.length).toBeLessThanOrEqual(OBJET_MAX);
     expect(s.endsWith("…")).toBe(true);

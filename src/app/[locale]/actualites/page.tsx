@@ -59,7 +59,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     path: "/actualites",
     title: "Actualités IA · Veille opérationnelle · Axion-IA",
     description:
-      "Veille hebdomadaire sur l'IA opérationnelle pour dirigeants de PME et ETI : décisions Search Console, sorties produits Anthropic/Mistral/OpenAI, retours terrain.",
+      "Veille hebdomadaire sur l'IA opérationnelle pour dirigeants de TPE, PME et ETI : décisions Search Console, sorties produits Anthropic/Mistral/OpenAI, retours terrain.",
     alternates: { fr: "/actualites", en: "/actualites" },
     // SEO news 2026 — autodiscovery du flux RSS de la section (Feedly/Apple News/
     // navigateurs) via <link rel="alternate" type="application/rss+xml">.
@@ -182,11 +182,11 @@ export default async function ActualitesHub({ params }: Props) {
     name: "Actualités IA — Axion-IA",
     inLanguage: "fr-FR",
     isPartOf: { "@id": `${SITE_URL}/fr#website` },
-    description: "Veille hebdomadaire sur l'IA opérationnelle pour dirigeants de PME et ETI.",
+    description: "Veille hebdomadaire sur l'IA opérationnelle pour dirigeants de TPE, PME et ETI.",
     // Résumé answer-ready (schema.org `abstract`, 40-60 mots) — excerptable par
     // Perplexity / Claude / AI Overviews (parité hub /blog, audit AEO 2026-07-03).
     abstract:
-      "Les Actualités IA d'Axion-IA proposent une veille hebdomadaire sur l'IA opérationnelle : sorties produits, mises à jour Search Console et décisions techniques qui changent les arbitrages des dirigeants de PME et ETI. Chaque brève cite sa source primaire — pas de hype, uniquement ce qui impacte vos décisions cette semaine.",
+      "Les Actualités IA d'Axion-IA proposent une veille hebdomadaire sur l'IA opérationnelle : sorties produits, mises à jour Search Console et décisions techniques qui changent les arbitrages des dirigeants de TPE, PME et ETI. Chaque brève cite sa source primaire — pas de hype, uniquement ce qui impacte vos décisions cette semaine.",
     speakable: true,
     mainEntity: { "@id": `${SITE_URL}/fr/actualites#itemlist` },
     hasPart: items.slice(0, 12).map((item) => ({

@@ -89,6 +89,12 @@ export const NANTERRE_COPY: VilleCopy = {
         ],
         pricing: [
           {
+            sizeLabel: "TPE",
+            price: "Formation 4 heures ({{price:intervention-4h|flat}}, 2 à 15 personnes)",
+            detail:
+              "Pour indépendants, jeunes structures des Groues et petites équipes de Nanterre-Préfecture : une demi-journée pour installer et prendre en main les premiers outils IA sur les postes, sans bloquer la journée entière.",
+          },
+          {
             sizeLabel: "PME",
             price: "Formation d'une journée (2 à 15 personnes)",
             detail:
@@ -174,6 +180,12 @@ export const NANTERRE_COPY: VilleCopy = {
           },
         ],
         pricing: [
+          {
+            sizeLabel: "TPE",
+            price: "Formation 4 heures ({{price:intervention-4h|flat}}, 2 à 15 personnes)",
+            detail:
+              "Pour indépendants, jeunes structures des Groues et petites équipes de Nanterre-Préfecture : une demi-journée pour installer et prendre en main les premiers outils IA sur les postes, sans bloquer la journée entière.",
+          },
           {
             sizeLabel: "PME",
             price: "Formation d'une journée (2 à 15 personnes)",
@@ -261,6 +273,12 @@ export const NANTERRE_COPY: VilleCopy = {
         ],
         pricing: [
           {
+            sizeLabel: "TPE",
+            price: "Site vitrine ou e-commerce IA-assisté",
+            detail:
+              "Pour indépendants, commerçants et jeunes structures des Groues ou de Nanterre-Préfecture : site rapide, responsive, avec assistant IA de réponse aux visiteurs et génération de contenu — hébergement UE inclus.",
+          },
+          {
             sizeLabel: "PME",
             price: "Plateforme métier ou portail client sur mesure",
             detail:
@@ -340,6 +358,12 @@ export const NANTERRE_COPY: VilleCopy = {
           },
         ],
         pricing: [
+          {
+            sizeLabel: "Micro-business",
+            price: "AI-assisted showcase or e-commerce site",
+            detail:
+              "For freelancers, retailers and young structures in Les Groues or Nanterre-Préfecture: fast, responsive site with an AI visitor-response assistant and content generation — EU hosting included.",
+          },
           {
             sizeLabel: "SME",
             price: "Custom business platform or client portal",
