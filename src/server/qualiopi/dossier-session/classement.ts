@@ -184,9 +184,6 @@ const GABARITS_HORS_DOSSIER: ReadonlySet<string> = new Set([
   "qualiopi-relance-impayee",
   "autofacture-transmission",
   "formateur-contrat-travail",
-  "payment-link",
-  "payment-receipt",
-  "payment-failed",
 ]);
 
 export function emailHorsDossier(template: string, pieceHorsDossier: boolean): boolean {
