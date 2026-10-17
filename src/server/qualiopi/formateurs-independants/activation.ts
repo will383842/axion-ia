@@ -34,7 +34,7 @@ import { MOTIF_REFUS, peutEngager } from "@/server/auth/habilitations";
 import { retirerSollicitationsDuFormateur } from "@/server/qualiopi/trainers/mission-formateur";
 import type { DocumentConformite } from "@/server/qualiopi/trainers/conformite";
 import { journaliser as journaliserDansLaTransaction } from "@/server/journal/journaliser";
-import { manquesActivationQ21 } from "./evaluation-competences/garde-activation-q21";
+import { MANQUES_Q21, manquesActivationQ21 } from "./evaluation-competences/garde-activation-q21";
 import { lireFaitsActivationQ21 } from "./evaluation-competences/lecture";
 import { lireFaitsActivationComplete } from "./faits-activation";
 import {
@@ -288,7 +288,8 @@ export async function changerActivationFormateur(
     try {
       manquesQ21 = manquesActivationQ21(await lireFaitsActivationQ21(input.trainerId), regle);
     } catch {
-      return refus("erreur", "Lecture du formateur impossible : activation refusée par prudence.");
+      // Garde FERMÉE : une lecture impossible est un manque, dit avec les autres.
+      manquesQ21 = [MANQUES_Q21.erreur];
     }
     const manques = [...(verdict.activable ? [] : verdict.manques), ...manquesQ21];
     if (manques.length > 0) {
