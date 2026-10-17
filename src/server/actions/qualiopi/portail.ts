@@ -341,8 +341,11 @@ export async function soumettreSatisfactionPortailAction(input: {
  * Telegram, le refus est journalisé. L'alerte de console, interne, reste.
  */
 async function alerterTelegramAdaptation(traineeId: string): Promise<void> {
+  // Lecture illisible : l'alerte part, comme avant ce lot — elle est INTERNE
+  // (Will), et la taire sur une panne ferait perdre une déclaration réelle.
+  const essai = await stagiaireDEssai(traineeId).catch(() => false);
   await sortieSaufEssai(
-    await stagiaireDEssai(traineeId),
+    essai,
     { canal: "telegram", cibleType: "Trainee", cibleId: traineeId, objet: "ADAPTATION_DECLAREE" },
     () =>
       sendTelegram({

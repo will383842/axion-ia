@@ -38,6 +38,7 @@
  */
 
 import {
+  HORS_ESSAI,
   HORS_SESSION_D_ESSAI,
   INSCRIPTION_REELLE,
   SESSION_REELLE,
@@ -178,7 +179,7 @@ export const MENTION_OFF12_VIOLENCES_HORS_CONSOLE =
  */
 function inscriptionReelleTenue() {
   const tenue = inscriptionSurSessionTenue();
-  return { estTestInterne: false, session: { ...SESSION_REELLE, ...tenue.session } };
+  return { ...HORS_ESSAI, session: { ...SESSION_REELLE, ...tenue.session } };
 }
 
 function pieceReelleAdmissible() {
@@ -662,7 +663,7 @@ export async function evaluerConformite(): Promise<ConformiteResult> {
     // positionnement, et l'inclure ferait crier la garde sans motif.
     prisma.enrollment.count({
       where: {
-        estTestInterne: false,
+        ...HORS_ESSAI,
         session: { ...SESSION_REELLE, dateDebut: { lte: maintenant } },
       },
     }),
@@ -810,7 +811,7 @@ export async function evaluerConformite(): Promise<ConformiteResult> {
       where: {
         ...SESSION_REELLE,
         statut: "realisee",
-        enrollments: { some: { estTestInterne: false, evaluations: { some: { type: "finale" } } } },
+        enrollments: { some: { ...HORS_ESSAI, evaluations: { some: { type: "finale" } } } },
       },
     }),
     // off.12 — sessions réalisées dont au moins un inscrit porte une présence
@@ -821,7 +822,7 @@ export async function evaluerConformite(): Promise<ConformiteResult> {
       where: {
         ...SESSION_REELLE,
         statut: "realisee",
-        enrollments: { some: { estTestInterne: false, emargementSigneAt: { not: null } } },
+        enrollments: { some: { ...HORS_ESSAI, emargementSigneAt: { not: null } } },
       },
     }),
     // off.6 — formations ACTIVES dont le contenu est produit. Le compteur
@@ -887,7 +888,7 @@ export async function evaluerConformite(): Promise<ConformiteResult> {
         type: "positionnement",
         reponduAt: { not: null },
         enrollment: {
-          estTestInterne: false,
+          ...HORS_ESSAI,
           session: { ...inscriptionReelleTenue().session, dateDebut: { lte: maintenant } },
         },
       },
@@ -906,7 +907,7 @@ export async function evaluerConformite(): Promise<ConformiteResult> {
     // plus facile à satisfaire).
     prisma.enrollment.count({
       where: {
-        estTestInterne: false,
+        ...HORS_ESSAI,
         session: { ...inscriptionReelleTenue().session, dateDebut: { lte: maintenant } },
       },
     }),

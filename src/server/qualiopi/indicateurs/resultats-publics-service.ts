@@ -4,7 +4,7 @@
  * voir `./resultats-publics` (module pur).
  */
 
-import { SESSION_REELLE } from "@/server/qualiopi/essai/perimetre";
+import { HORS_ESSAI, SESSION_REELLE } from "@/server/qualiopi/essai/perimetre";
 import { prisma } from "@/lib/prisma";
 import { getQualiopiConfig } from "@/server/qualiopi/config/site-settings";
 import { inscriptionsActives } from "@/server/qualiopi/inscriptions/inscriptions-actives";
@@ -51,7 +51,7 @@ export async function getResultatsPublicsFormation(
 
     const [inscriptions, questionnaires, seuilPresencePct] = await Promise.all([
       prisma.enrollment.findMany({
-        where: { ...inscriptionsActives(), estTestInterne: false, session: sessionRealisee },
+        where: { ...inscriptionsActives(), ...HORS_ESSAI, session: sessionRealisee },
         select: { tauxPresencePct: true },
       }),
       prisma.questionnaire.findMany({
@@ -59,7 +59,7 @@ export async function getResultatsPublicsFormation(
           type: "satisfaction_chaud",
           reponduAt: { not: null },
           noteGlobale: { not: null },
-          enrollment: { estTestInterne: false, session: sessionRealisee },
+          enrollment: { ...HORS_ESSAI, session: sessionRealisee },
         },
         select: { noteGlobale: true },
       }),
@@ -103,7 +103,7 @@ export async function listerFormationsAResultatsDiffuses(): Promise<string[]> {
         where: { ...SESSION_REELLE, statut: "realisee" },
         select: {
           _count: {
-            select: { enrollments: { where: { ...inscriptionsActives(), estTestInterne: false } } },
+            select: { enrollments: { where: { ...inscriptionsActives(), ...HORS_ESSAI } } },
           },
         },
       },

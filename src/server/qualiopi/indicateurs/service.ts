@@ -9,7 +9,7 @@
  * vides (safe au build SSG). Redis stub-aware via @/lib/redis.
  */
 
-import { SESSION_REELLE } from "@/server/qualiopi/essai/perimetre";
+import { HORS_ESSAI, SESSION_REELLE } from "@/server/qualiopi/essai/perimetre";
 import { prisma } from "@/lib/prisma";
 import { inscriptionsActives } from "@/server/qualiopi/inscriptions/inscriptions-actives";
 import { redis } from "@/lib/redis";
@@ -108,7 +108,7 @@ export async function getIndicateurs(
       reponduAt: { not: null },
       noteGlobale: { not: null },
       enrollment: {
-        estTestInterne: false,
+        ...HORS_ESSAI,
         session: {
           ...SESSION_REELLE,
           statut: "realisee",
@@ -126,7 +126,7 @@ export async function getIndicateurs(
     where: {
       type: "finale",
       enrollment: {
-        estTestInterne: false,
+        ...HORS_ESSAI,
         session: {
           ...SESSION_REELLE,
           statut: "realisee",
@@ -146,7 +146,7 @@ export async function getIndicateurs(
     where: {
       ...inscriptionsActives(),
       // QNC L02 — ni inscription d'essai, ni session d'essai dans un taux publié.
-      estTestInterne: false,
+      ...HORS_ESSAI,
       session: {
         ...SESSION_REELLE,
         statut: "realisee",

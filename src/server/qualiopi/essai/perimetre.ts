@@ -29,23 +29,32 @@
  */
 
 import type { Prisma } from "../../../../prisma/generated/client";
+import { HORS_RENCONTRES_DE_TEST } from "@/features/dossier-client/client-test";
 import { SEGMENT_ESSAI, estNumeroEssai } from "./numerotation";
 
 /** Le lot du chantier : interrupteur `qualiopi.essai.actif`. */
 export const LOT_ESSAI = "essai" as const;
 
+/**
+ * Le drapeau « hors test interne ». Son littéral a UNE source dans le dépôt
+ * (`client-test.ts`, ADR 0061 ; garde
+ * `une-rencontre-de-test-n-apparait-dans-aucune-synthese.spec.ts`) : sessions,
+ * inscriptions et rencontres portent la même colonne, avec le même sens.
+ */
+export const HORS_ESSAI = HORS_RENCONTRES_DE_TEST;
+
 /** Filtre `TrainingSession` : les seules sessions réelles. */
-export const SESSION_REELLE = { estTestInterne: false } as const;
+export const SESSION_REELLE = HORS_ESSAI;
 
 /**
  * Filtre `Enrollment` : les seules inscriptions réelles, session comprise.
  *
  * ⚠️ Il porte la clé `session` : l'étaler À CÔTÉ d'un autre filtre `session`
- * écraserait l'un ou l'autre. Dans ce cas, poser `estTestInterne: false` sur
- * l'inscription et `...SESSION_REELLE` DANS le filtre de session existant.
+ * écraserait l'un ou l'autre. Dans ce cas, étaler `HORS_ESSAI` sur l'inscription
+ * et `SESSION_REELLE` DANS le filtre de session existant.
  */
 export const INSCRIPTION_REELLE = {
-  estTestInterne: false,
+  ...HORS_ESSAI,
   session: SESSION_REELLE,
 } as const;
 

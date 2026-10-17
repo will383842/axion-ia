@@ -30,7 +30,11 @@
  * PilotageResult vide (safe au build SSG).
  */
 
-import { HORS_SESSION_D_ESSAI, SESSION_REELLE } from "@/server/qualiopi/essai/perimetre";
+import {
+  HORS_ESSAI,
+  HORS_SESSION_D_ESSAI,
+  SESSION_REELLE,
+} from "@/server/qualiopi/essai/perimetre";
 import { prisma } from "@/lib/prisma";
 import { inscriptionsActives } from "@/server/qualiopi/inscriptions/inscriptions-actives";
 import { redis } from "@/lib/redis";
@@ -190,7 +194,7 @@ export async function getPilotage(input: number | PilotageOptions): Promise<Pilo
   //
   // QNC L02 — les sessions d'ESSAI n'entrent dans aucune métrique : le filtre
   // de session les écarte, et chaque lecture d'inscription écarte en plus les
-  // inscriptions d'essai (`estTestInterne: false`).
+  // inscriptions d'essai (`...HORS_ESSAI`).
   const sessionWhere = {
     ...SESSION_REELLE,
     dateDebut: plage,
@@ -235,7 +239,7 @@ export async function getPilotage(input: number | PilotageOptions): Promise<Pilo
     prisma.enrollment.count({
       where: {
         statut: "abandon",
-        estTestInterne: false,
+        ...HORS_ESSAI,
         session: sessionWhere,
       },
     }),
@@ -245,7 +249,7 @@ export async function getPilotage(input: number | PilotageOptions): Promise<Pilo
       by: ["sortieMotif"],
       where: {
         statut: "abandon",
-        estTestInterne: false,
+        ...HORS_ESSAI,
         session: sessionWhere,
         sortieMotif: { not: null },
       },
@@ -253,7 +257,7 @@ export async function getPilotage(input: number | PilotageOptions): Promise<Pilo
     }),
     prisma.enrollment.count({
       where: {
-        estTestInterne: false,
+        ...HORS_ESSAI,
         session: sessionWhere,
       },
     }),
@@ -316,14 +320,14 @@ export async function getPilotage(input: number | PilotageOptions): Promise<Pilo
       where: {
         adaptationsRealisees: { not: null },
         NOT: { adaptationsRealisees: REPONSE_AUCUNE_ADAPTATION },
-        estTestInterne: false,
+        ...HORS_ESSAI,
         session: sessionWhere,
       },
     }),
     // Convocations générées (proxy délai d'entrée)
     prisma.enrollment.count({
       where: {
-        estTestInterne: false,
+        ...HORS_ESSAI,
         session: sessionWhere,
         ...inscriptionsActives(),
       },
@@ -586,21 +590,21 @@ async function computeTaux(
         type: "satisfaction_chaud",
         reponduAt: { not: null },
         noteGlobale: { not: null },
-        enrollment: { estTestInterne: false, session: sessionWhere },
+        enrollment: { ...HORS_ESSAI, session: sessionWhere },
       },
       select: { noteGlobale: true },
     }),
     prisma.evaluationAcquis.findMany({
       where: {
         type: "finale",
-        enrollment: { estTestInterne: false, session: sessionWhere },
+        enrollment: { ...HORS_ESSAI, session: sessionWhere },
       },
       select: { niveauGlobal: true },
     }),
     prisma.enrollment.findMany({
       where: {
         ...inscriptionsActives(),
-        estTestInterne: false,
+        ...HORS_ESSAI,
         session: sessionWhere,
       },
       select: { tauxPresencePct: true },

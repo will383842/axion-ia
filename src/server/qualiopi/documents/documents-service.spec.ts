@@ -16,6 +16,10 @@ import React from "react";
 
 vi.mock("@/lib/prisma", () => ({
   prisma: {
+    // QNC L02 — `generateDocument` lit le drapeau d'essai de la session.
+    trainingSession: {
+      findUnique: vi.fn(async () => ({ estTestInterne: false })),
+    },
     documentGenere: {
       // `count` reste utilisé par `estUneRegenerationDe` (filigrane COPIE).
       count: vi.fn(),

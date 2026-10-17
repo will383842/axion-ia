@@ -168,7 +168,14 @@ export async function lireReleveAutofacture(id: string) {
       },
       feeLines: {
         where: { nature: "honoraire_du" },
-        select: { prestationType: true, heures: true, montantHtCents: true, objet: true },
+        select: {
+          prestationType: true,
+          heures: true,
+          montantHtCents: true,
+          objet: true,
+          // QNC L02 — lu pour la garde d'essai (`releveTouchantUnEssai`).
+          sessionId: true,
+        },
         orderBy: { montantHtCents: "desc" },
       },
     },
@@ -353,14 +360,14 @@ export async function emettreAutofacture(
  * QNC L02 — garde de dernier recours. Le calcul des relevés écarte déjà les
  * sessions d'essai (`statements.ts`) ; un chemin qui poserait quand même une
  * ligne d'honoraires sur un essai (paiement à la mission) est arrêté ici,
- * avant tout numéro `AXI-AUTOF` et tout e-mail au formateur.
+ * avant tout numéro `AXI-AUTOF` et tout e-mail au formateur. Les sessions sont
+ * celles des lignes du relevé déjà lues : une seule requête de plus, et
+ * seulement si des lignes portent une session.
  */
-async function releveTouchantUnEssai(statementId: string): Promise<boolean> {
-  const lignes = await prisma.trainerFeeLine.findMany({
-    where: { statementId, sessionId: { not: null } },
-    select: { sessionId: true },
-  });
-  const ids = [...new Set(lignes.flatMap((l) => (l.sessionId ? [l.sessionId] : [])))];
+async function releveTouchantUnEssai(
+  feeLines: ReadonlyArray<{ sessionId?: string | null }>,
+): Promise<boolean> {
+  const ids = [...new Set(feeLines.flatMap((l) => (l.sessionId ? [l.sessionId] : [])))];
   if (ids.length === 0) return false;
   const essais = await prisma.trainingSession.count({
     where: { id: { in: ids }, estTestInterne: true },
@@ -377,7 +384,7 @@ async function emettreSousVerrou(
   try {
     releve = await lireReleveAutofacture(statementId);
     if (releve === null) return { error: "Relevé introuvable.", code: "introuvable" };
-    if (await releveTouchantUnEssai(statementId)) {
+    if (await releveTouchantUnEssai(releve.feeLines)) {
       await journaliserSortieBloquee({
         canal: "autofacture",
         cibleType: "TrainerStatement",

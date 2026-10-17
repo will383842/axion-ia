@@ -13,7 +13,7 @@
  * ajouterDepense  : création d'une dépense BPF.
  */
 
-import { SESSION_REELLE } from "@/server/qualiopi/essai/perimetre";
+import { HORS_ESSAI, SESSION_REELLE } from "@/server/qualiopi/essai/perimetre";
 import { prisma } from "@/lib/prisma";
 import { getOrganismeIdentite } from "@/server/qualiopi/documents/organisme";
 // SSOT des statuts de facture — l'en-tête de ce module liste les trois endroits
@@ -136,7 +136,7 @@ export async function computeBpf(annee: number): Promise<BpfResult> {
       // session inter.
       interEntreprises: true,
       enrollments: {
-        where: { estTestInterne: false },
+        where: HORS_ESSAI,
         select: { traineeId: true },
       },
     },

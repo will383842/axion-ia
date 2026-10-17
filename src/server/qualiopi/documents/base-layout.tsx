@@ -405,6 +405,20 @@ function joinDefined(parts: Array<string | null | undefined>, sep: string): stri
 export const FiligraneEssaiContexte = React.createContext(false);
 
 /**
+ * Le contexte du filigrane ESSAI, lu sans lever. Les specs de gabarits
+ * invoquent les composants comme des fonctions pures, HORS rendu React : la
+ * lecture y lève (aucun rendu en cours) et vaut alors « pas d'essai ». Au
+ * rendu réel (`renderPdfToBuffer`), elle lit le contexte posé par l'appelant.
+ */
+function useFiligraneEssai(): boolean {
+  try {
+    return React.useContext(FiligraneEssaiContexte);
+  } catch {
+    return false;
+  }
+}
+
+/**
  * Wrapper de page A4 avec en-tête organisme, encart numéro de document,
  * filigrane "COPIE" optionnel, et pied de page paginé portant l'identité +
  * l'adresse postale complète de l'OF (répétée sur chaque page — pièce d'audit).
@@ -445,7 +459,7 @@ export function QualiopiPage({
     "  ·  ",
   );
   const footerContact = joinDefined([identite.email, identite.telephone, identite.site], "  ·  ");
-  const estEssai = React.useContext(FiligraneEssaiContexte);
+  const estEssai = useFiligraneEssai();
 
   return (
     <Page size="A4" style={pdfStyles.page}>
