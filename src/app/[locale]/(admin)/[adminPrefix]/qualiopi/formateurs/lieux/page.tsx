@@ -68,7 +68,8 @@ export default async function LieuxFormateursPage({ params, searchParams }: Page
       ) : null}
       {!allume ? (
         <p className="admin-alert admin-alert-info">
-          Cet écran n&apos;est pas encore ouvert : il s&apos;allume avec l&apos;interrupteur « {INTERRUPTEURS.proches_bloc.libelle} », dans{" "}
+          Cet écran n&apos;est pas encore ouvert : il s&apos;allume avec l&apos;interrupteur «{" "}
+          {INTERRUPTEURS.proches_bloc.libelle} », dans{" "}
           <Link href={`${base}/interrupteurs`}>l&apos;écran Interrupteurs</Link>.
         </p>
       ) : fiches === null ? (
