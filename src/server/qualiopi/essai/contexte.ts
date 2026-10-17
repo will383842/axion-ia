@@ -43,21 +43,8 @@ const DRAPEAU_INSCRIPTION = {
   session: { select: { estTestInterne: true } },
 } as const;
 
-const verdict = (reelle: boolean | null): VerdictEssai =>
-  reelle === null ? "reel" : reelle ? "reel" : "essai";
-
-/** Les entités qui mènent à une session. Exporté pour la garde de test. */
-export const ENTITES_RATTACHEES_A_UNE_SESSION = [
-  "TrainingSession",
-  "Enrollment",
-  "Questionnaire",
-  "DocumentGenere",
-  "FactureFormation",
-  "SessionFormateur",
-  "MissionFormateur",
-  "DossierFinancement",
-  "PortailAcces",
-] as const;
+/** `null` (ligne introuvable) : rien ne la rattache à un essai. */
+const verdict = (reelle: boolean | null): VerdictEssai => (reelle === false ? "essai" : "reel");
 
 /** L'entité rattachée à l'envoi relève-t-elle d'un essai ? */
 export async function verdictEssaiDeLEntite(ref: ReferenceEnvoi): Promise<VerdictEssai> {
