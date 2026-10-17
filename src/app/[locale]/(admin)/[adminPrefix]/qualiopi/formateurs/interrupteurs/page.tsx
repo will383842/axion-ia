@@ -61,6 +61,8 @@ import {
   basculerFormateursNouvelleVersionContratAction,
   basculerFormateursBilanFinFormationAction,
   basculerFormateursCertificatAutoAction,
+  basculerFormateursRegistreSousTraitantsAction,
+  basculerFormateursAlertesRegistreSousTraitantsAction,
   basculerFormateursSuiviQualiteAction,
   basculerFormateursSuiteContratCadreAction,
   basculerSignatureAlertesHorsJetonAction,
@@ -144,6 +146,8 @@ const ACTIONS_SIGNATURE: Record<
   nouvelle_version_contrat: basculerFormateursNouvelleVersionContratAction,
   bilan_fin_formation: basculerFormateursBilanFinFormationAction,
   certificat_auto: basculerFormateursCertificatAutoAction,
+  registre_sous_traitants: basculerFormateursRegistreSousTraitantsAction,
+  alertes_registre_sous_traitants: basculerFormateursAlertesRegistreSousTraitantsAction,
   suivi_qualite: basculerFormateursSuiviQualiteAction,
 };
 

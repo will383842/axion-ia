@@ -666,6 +666,20 @@ export async function basculerFormateursCertificatAutoAction(
 ): Promise<EtatBascule> {
   return basculerSignature("certificat_auto", formData);
 }
+/** Qualiopi ind. 27 — le registre des sous-traitants tenu par l'outil. */
+export async function basculerFormateursRegistreSousTraitantsAction(
+  _prev: EtatBascule,
+  formData: FormData,
+): Promise<EtatBascule> {
+  return basculerSignature("registre_sous_traitants", formData);
+}
+/** Qualiopi ind. 27 — les alertes d'échéance du registre des sous-traitants. */
+export async function basculerFormateursAlertesRegistreSousTraitantsAction(
+  _prev: EtatBascule,
+  formData: FormData,
+): Promise<EtatBascule> {
+  return basculerSignature("alertes_registre_sous_traitants", formData);
+}
 /** Qualiopi ind. 21 — le suivi de la qualité pédagogique des intervenants externes. */
 export async function basculerFormateursSuiviQualiteAction(
   _prev: EtatBascule,

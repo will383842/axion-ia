@@ -558,6 +558,24 @@ export const INTERRUPTEURS_SIGNATURE = {
     ),
     cle: "formateurs.certificat_realisation_auto",
   },
+  // Qualiopi ind. 27 (audit du 16/10) — le registre des sous-traitants tenu par l'outil
+  // pour les formateurs indépendants. Coupé : rien n'est lu ni écrit, le registre reste
+  // exactement celui d'avant, et le rattrapage depuis la console refuse.
+  registre_sous_traitants: {
+    ...envoi(
+      "Registre des sous-traitants tenu par l'outil",
+      "Chaque matin, chaque formateur indépendant au contrat-cadre signé (ou actif) est inscrit au registre des sous-traitants (identité, NDA, formations, date d'entrée, statut) ; sa sortie y est datée et motivée, rien n'est supprimé. Rattrapage des fiches existantes depuis l'écran du registre, après aperçu. Les contrôles faits s'y tracent.",
+    ),
+    cle: "formateurs.registre_sous_traitants",
+  },
+  // Les alertes d'échéance du registre (moteur d'alertes existant). Coupé : aucune.
+  alertes_registre_sous_traitants: {
+    ...envoi(
+      "Alertes d'échéance du registre des sous-traitants",
+      "Le moteur d'alertes signale, pour chaque sous-traitant indépendant actif au registre, une pièce exigée expirée, une pièce à renouveler sous 30 jours et un contrôle en retard (méthode de contrôle du registre). Aucun e-mail au formateur.",
+    ),
+    cle: "formateurs.alertes_registre_sous_traitants",
+  },
   // Qualiopi ind. 21 (NC majeure) — le suivi de la qualité pédagogique des intervenants
   // externes dans la durée. Coupé : aucune alerte, aucun refus, aucune grille saisissable
   // — exactement comme avant. Les seuils sont dans `suivi-qualite/reglages.ts`.
@@ -639,6 +657,10 @@ export const PREALABLES_SIGNATURE: Readonly<
   bilan_fin_formation: [],
   // Aucun : rien n'est envoyé, la pièce est seulement créée.
   certificat_auto: [],
+  // Aucun : rien n'est envoyé, des lignes sont seulement écrites au registre.
+  registre_sous_traitants: [],
+  // Sans registre tenu, il n'y a rien sur quoi alerter.
+  alertes_registre_sous_traitants: [exigeSignature("registre_sous_traitants")],
   // Aucun : aucun e-mail (alertes internes seulement). Les refus de mission ne jouent que
   // si `garde_mission_portes` est allumée, comme toute la garde.
   suivi_qualite: [],
