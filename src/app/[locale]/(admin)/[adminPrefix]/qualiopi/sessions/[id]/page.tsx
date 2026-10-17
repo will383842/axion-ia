@@ -217,7 +217,6 @@ function chargerSession(id: string) {
       lieuVille: true,
       lieuSalle: true,
       lieuVisioUrl: true,
-      estTestInterne: true,
       contactSurPlaceNom: true,
       contactSurPlaceTelephone: true,
       consignesAcces: true,

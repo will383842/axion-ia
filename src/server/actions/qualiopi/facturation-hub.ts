@@ -1134,6 +1134,9 @@ export async function envoyerRelanceAction(
     {
       ...(facture.clientId !== null ? { clientId: facture.clientId } : {}),
       sujet: `Relance ${libellePalier(relance.palier)} — facture ${facture.numero}`,
+      // QNC L02 — rattache l'envoi à la facture : la liste blanche des essais s'applique.
+      entityType: "FactureFormation",
+      entityId: facture.id,
     },
   );
 

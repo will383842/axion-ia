@@ -55,6 +55,21 @@ const SITES: ReadonlyArray<{ fichier: string; doit: RegExp; pourquoi: string }> 
     doit: /cible\?\.estTestInterne === true \? \{ estTestInterne: true \}/,
     pourquoi: "l'inscription hérite du drapeau d'essai de sa session",
   },
+  {
+    fichier: "src/server/actions/qualiopi/sessions-recurrentes.ts",
+    doit: /ancienne\.estTestInterne\s*\?\s*numeroEssai\("session"\)/,
+    pourquoi: "report d'un essai : numéro `-ESSAI-`, jamais la suite légale",
+  },
+  {
+    fichier: "src/server/queue/workers/qualiopi-formation-crons-worker.ts",
+    doit: /estImportee: false,[\s\S]{0,120}\.\.\.FACTURE_HORS_ESSAI,/,
+    pourquoi: "relance d'impayé : aucune proposition sur une facture d'essai",
+  },
+  {
+    fichier: "src/server/actions/qualiopi/facturation-hub.ts",
+    doit: /Relance \$\{libellePalier[\s\S]{0,260}entityType: "FactureFormation",\s*entityId: facture\.id/,
+    pourquoi: "relance d'impayé : l'envoi est rattaché à la facture (liste blanche des essais)",
+  },
   // ── Argent : aucun indicateur, aucune écriture comptable ───────────────────
   {
     fichier: "src/server/admin/pilotage-dashboard.ts",

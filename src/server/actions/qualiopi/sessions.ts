@@ -76,7 +76,6 @@ import {
   isTrainerHabilite,
   type TrainerHabilitationFields,
 } from "@/server/qualiopi/trainers/trainers";
-import { lireInterrupteurQualiopi } from "@/server/qualiopi/socle/interrupteurs";
 import { LOT_ESSAI } from "@/server/qualiopi/essai/perimetre";
 import { numeroEssai } from "@/server/qualiopi/essai/numerotation";
 import { refusSessionDEssai } from "@/server/qualiopi/essai/creation";
