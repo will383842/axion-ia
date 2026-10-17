@@ -369,9 +369,14 @@ export default async function Page({
                       <tr key={p.id} className="border-border border-b last:border-b-0">
                         <td className="text-mocha px-4 py-3">
                           {p.prenom} {p.nom}
-                          {p.besoinAdaptationDeclare ? (
+                          {p.besoinAdaptationDeclare === true ? (
                             <span className="text-fg-muted mt-0.5 block text-xs">
                               besoin d&apos;adaptation déclaré
+                            </span>
+                          ) : null}
+                          {p.mesuresAdaptation !== null ? (
+                            <span className="text-fg-muted mt-0.5 block text-xs">
+                              mesures prévues : {p.mesuresAdaptation}
                             </span>
                           ) : null}
                         </td>
@@ -401,8 +406,13 @@ export default async function Page({
                         {libelle(STATUT_INSCRIPTION_LABELS, p.statut)}
                       </span>
                     </div>
-                    {p.besoinAdaptationDeclare ? (
+                    {p.besoinAdaptationDeclare === true ? (
                       <p className="text-fg-muted mt-1 text-xs">besoin d&apos;adaptation déclaré</p>
+                    ) : null}
+                    {p.mesuresAdaptation !== null ? (
+                      <p className="text-fg-muted mt-1 text-xs">
+                        mesures prévues : {p.mesuresAdaptation}
+                      </p>
                     ) : null}
                     <dl className="text-fg-muted mt-2 space-y-1 text-xs">
                       <div className="flex gap-2">

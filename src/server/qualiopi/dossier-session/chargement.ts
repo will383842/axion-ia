@@ -192,6 +192,7 @@ export async function chargerDossierSession(
         horsVoyants: par !== null || p.annuleeAt !== null,
         // Annulée sans remplaçant : nommée, jamais jointe (doctrine du ZIP).
         cheminPdf: p.annuleeAt !== null && par === null ? null : cheminPdfPiece(p, par !== null),
+        cleStockage: cleStockagePiece(p),
       });
     }
   } catch {

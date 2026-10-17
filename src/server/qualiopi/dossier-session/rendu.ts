@@ -60,6 +60,8 @@ export interface ElementDossier {
   readonly horsVoyants: boolean;
   /** Chemin du PDF dans le ZIP, pour une pièce. */
   readonly cheminPdf?: string | null;
+  /** Clé de stockage du PDF (R2), pour que le ZIP aille le chercher. */
+  readonly cleStockage?: string | null;
   /** Copie de l'e-mail tel qu'il est parti, pour un e-mail. */
   readonly copie?: { readonly sujet: string; readonly html: string; readonly texte: string } | null;
 }
@@ -285,4 +287,20 @@ export function texteCopieEmail(e: EntreeRendue, copie: { sujet: string; texte: 
     "",
     copie.texte,
   ].join("\n");
+}
+
+/**
+ * L'onglet « E-mails » : le MÊME rendu, réduit aux e-mails. Aucune règle
+ * nouvelle — un filtre sur la nature, rien d'autre.
+ */
+export function restreindreAuxEmails(r: DossierRendu): DossierRendu {
+  const groupes = r.groupes
+    .map((g) => ({
+      ...g,
+      canaux: g.canaux
+        .map((c) => ({ ...c, entrees: c.entrees.filter((e) => e.nature === "email") }))
+        .filter((c) => c.entrees.length > 0),
+    }))
+    .filter((g) => g.canaux.length > 0);
+  return { ...r, groupes, blocs: [] };
 }

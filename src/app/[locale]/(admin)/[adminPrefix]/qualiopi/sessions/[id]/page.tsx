@@ -1161,6 +1161,14 @@ export default async function SessionHubPage({ params, searchParams }: PageProps
             <Link href={`${sessionBase}/financement`} className={subLinkCls}>
               <span>Financement</span>
             </Link>
+            {/* Chantier QNC, L11 — tout ce qui concerne la session, par
+                destinataire, canal et date : le même rendu que le ZIP. */}
+            <Link href={`${sessionBase}/dossier`} className={subLinkCls}>
+              <span>Dossier complet</span>
+            </Link>
+            <Link href={`${sessionBase}/emails`} className={subLinkCls}>
+              <span>E-mails</span>
+            </Link>
             {/* Le nécessaire de séance vit au niveau de la FORMATION (kit projeté
                   + supports générés) : on y mène depuis la session, là où on
                   prépare l'animation. */}
