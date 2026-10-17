@@ -144,6 +144,27 @@ describe("file WhatsApp", () => {
     else expect(errorSpy).not.toHaveBeenCalled();
   });
 
+  it("🔴 CallMeBot en panne (207 « Service is down », vu en prod le 16/10) : relances puis échec signalé", async () => {
+    const panne =
+      "<html><p>Message to: +33XXXXXXXXX</p><p>Text to send: x</p><p><b>Service is down (410)</b> : Sorry for the inconvenience. There is a technical problem and I am working on it.</p></html>";
+    fetchMock.mockImplementation(async () => new Response(panne, { status: 207 }));
+    await sendWhatsAppRaw({ text: "x" });
+    await vi.runAllTimersAsync();
+    await flushWhatsAppQueue();
+    expect(fetchMock).toHaveBeenCalledTimes(3);
+    expect(errorSpy).toHaveBeenCalledOnce();
+    expect(JSON.stringify(errorSpy.mock.calls)).toContain("service-down");
+  });
+
+  it("un 2xx autre que 200 n'est jamais un envoi réussi", async () => {
+    fetchMock.mockImplementation(async () => new Response("Message queued", { status: 207 }));
+    await sendWhatsAppRaw({ text: "x" });
+    await vi.runAllTimersAsync();
+    await flushWhatsAppQueue();
+    expect(fetchMock).toHaveBeenCalledTimes(3);
+    expect(errorSpy).toHaveBeenCalledOnce();
+  });
+
   it("refuse le 51e message (file plafonnée à 50) sans donnée personnelle", async () => {
     // Envoi bloqué : aucun message ne se termine pendant le remplissage.
     fetchMock.mockReturnValue(new Promise(() => {}));

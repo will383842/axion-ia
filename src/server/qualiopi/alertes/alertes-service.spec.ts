@@ -1050,3 +1050,34 @@ describe("resoudreAlertesParCode", () => {
     expect(mp.alerteSysteme.updateMany).not.toHaveBeenCalled();
   });
 });
+
+describe("synchroniserAlertes — une candidate refusée par la base ne tait pas les autres", () => {
+  it("reprend ligne à ligne quand la salve échoue, et crée les bonnes", async () => {
+    vi.clearAllMocks();
+    delete process.env["DATABASE_URL"];
+    mp.alerteSysteme.findMany.mockResolvedValue([]);
+    const bonne = {
+      code: "referent_handicap_absent",
+      niveau: "critique",
+      titre: "Référent absent",
+      message: "Msg",
+    };
+    const mauvaise = { ...bonne, code: "satisfaction_basse", cibleId: "pas-un-uuid" };
+    mockEvaluerAlertes.mockResolvedValue([mauvaise, bonne]);
+    mp.alerteSysteme.createMany.mockImplementation((args: { data: Array<{ cibleId?: string }> }) =>
+      args.data.length > 1 || args.data[0]?.cibleId === "pas-un-uuid"
+        ? Promise.reject(new Error("invalid input syntax for type uuid"))
+        : Promise.resolve({ count: 1 }),
+    );
+    const erreur = vi.spyOn(console, "error").mockImplementation(() => undefined);
+
+    const result = await synchroniserAlertes();
+
+    expect(result.crees).toBe(1);
+    expect(erreur).toHaveBeenCalledWith(
+      expect.stringContaining("candidate REFUSÉE par la base"),
+      expect.any(String),
+    );
+    erreur.mockRestore();
+  });
+});

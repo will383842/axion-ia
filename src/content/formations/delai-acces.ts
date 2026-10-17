@@ -22,9 +22,14 @@
  * si une offre aux particuliers ouvre, ce délai devra figurer ici.
  */
 
-/** Corps de la règle, sans son étiquette. Texte validé par le dirigeant, tel quel. */
-export const DELAI_ACCES_CORPS =
-  "dès 48 heures pour un financement direct par l'entreprise ; avec une prise en charge OPCO, comptez le délai de réponse de l'OPCO (en général 2 à 4 semaines).";
+/**
+ * Corps de la règle, sans son étiquette. Texte validé par le dirigeant, tel quel.
+ *
+ * 🔴 2026-10-16 (L15, NC12) — nouvelle décision du dirigeant : « environ 2 semaines
+ * entre votre demande et la formation ». Elle remplace la règle du 2026-10-02
+ * (« dès 48 heures pour un financement direct… ») : une seule phrase, lue partout.
+ */
+export const DELAI_ACCES_CORPS = "environ 2 semaines entre votre demande et la formation.";
 
 /** Phrase complète, à afficher là où le texte n'a pas déjà l'étiquette « Délai d'accès ». */
 export const DELAI_ACCES_PHRASE = `Délai d'accès : ${DELAI_ACCES_CORPS}`;
@@ -33,12 +38,12 @@ export const DELAI_ACCES_PHRASE = `Délai d'accès : ${DELAI_ACCES_CORPS}`;
 export const DELAI_ACCES_VALEUR = `${DELAI_ACCES_CORPS.charAt(0).toUpperCase()}${DELAI_ACCES_CORPS.slice(1)}`;
 
 /** Forme abrégée fidèle, pour les espaces courts (badge, ligne de fiche). */
-export const DELAI_ACCES_COURT = "Dès 48 h (financement direct) · délai OPCO en sus";
+export const DELAI_ACCES_COURT = "Environ 2 semaines entre votre demande et la formation";
 
 /** Forme abrégée découpée pour les tuiles « chiffre + libellé ». */
 export const DELAI_ACCES_FAIT = {
-  figure: "Dès 48 h",
-  label: "délai d'accès en financement direct · délai OPCO en sus",
+  figure: "≈ 2 sem.",
+  label: "entre votre demande et la formation",
 } as const;
 
 /**
@@ -59,4 +64,8 @@ export const DELAI_ACCES_FORMES_RETIREES: ReadonlyArray<RegExp> = [
   /\bonze\s+jours\s+ouvr/i,
   /jours\s+ouvrés\s+minimum/i,
   /figure:\s*"11 j"/,
+  // 🔴 2026-10-16 (L15) — la règle « dès 48 heures / délai OPCO en sus » est remplacée
+  // par la décision du dirigeant : « environ 2 semaines entre votre demande et la formation ».
+  /d[èe]s\s+48\s*(h\b|heures)/i,
+  /d[ée]lai\s+OPCO\s+en\s+sus/i,
 ];

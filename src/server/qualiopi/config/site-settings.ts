@@ -26,6 +26,28 @@ export type { QualiopiConfigKey, QualiopiConfigValue };
 export async function getQualiopiConfig<K extends QualiopiConfigKey>(
   key: K,
 ): Promise<QualiopiConfigValue<K>> {
+  return lireQualiopiConfig(key, false);
+}
+
+/**
+ * Comme `getQualiopiConfig`, mais une base ILLISIBLE lève au lieu de rendre le
+ * défaut. Pour les pages ISR : un défaut rendu sur une panne passagère est mis
+ * en cache pour toute la période de revalidation (le contact du référent handicap
+ * disparaissait une heure), alors qu'une exception laisse Next servir la dernière
+ * version saine et réessayer à la requête suivante. Absent ou refusé par le schéma :
+ * même repli que `getQualiopiConfig` (et `findUnique` du stub `stub.invalid` rend
+ * `null`, donc jamais d'exception au build).
+ */
+export async function getQualiopiConfigStrict<K extends QualiopiConfigKey>(
+  key: K,
+): Promise<QualiopiConfigValue<K>> {
+  return lireQualiopiConfig(key, true);
+}
+
+async function lireQualiopiConfig<K extends QualiopiConfigKey>(
+  key: K,
+  strict: boolean,
+): Promise<QualiopiConfigValue<K>> {
   const entry = QUALIOPI_CONFIG_REGISTRY[key];
   try {
     const row = await prisma.siteSetting.findUnique({
@@ -55,7 +77,8 @@ export async function getQualiopiConfig<K extends QualiopiConfigKey>(
       return entry.default as QualiopiConfigValue<K>;
     }
     return parsed.data as QualiopiConfigValue<K>;
-  } catch {
+  } catch (e) {
+    if (strict) throw e;
     return entry.default as QualiopiConfigValue<K>;
   }
 }

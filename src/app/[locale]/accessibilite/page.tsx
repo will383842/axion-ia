@@ -10,11 +10,18 @@ import { Link } from "@/i18n/navigation";
 import { JsonLd } from "@/components/marketing/JsonLd";
 import { buildProductMetadata, buildWebPageJsonLd, SITE_URL, SITE_EDITORIAL_DATE } from "@/lib/seo";
 import { HANDICAP_PARTENAIRES } from "@/server/qualiopi/legal/legal-mentions";
-import { getReferentHandicapPublic } from "@/server/qualiopi/config/referent-handicap-public";
+import { getReferentHandicapPublicStrict } from "@/server/qualiopi/config/referent-handicap-public";
+import { mesuresHandicapTextes } from "@/content/accessibilite/mesures-handicap";
 
 // ISR : le contact du référent handicap (ind. 26) est lu en configuration. Au
 // build (`stub.invalid`, ADR 0026) il vaut le repli générique ; la page se
 // repeuple avec la vraie configuration au runtime, sans appel DB par requête.
+//
+// Deux garde-fous (L15, NC12 — « Référent handicap : » sans nom en production) :
+//  · lecture STRICTE : une base illisible à la régénération lève, et Next garde la
+//    dernière version saine au lieu de figer le repli pour une heure ;
+//  · l'enregistrement du réglage en console revalide cette page
+//    (`pages-publiques-du-reglage.ts`) : la saisie est visible aussitôt.
 export const revalidate = 3600;
 
 interface Props {
@@ -45,7 +52,8 @@ export default async function AccessibilityPage({ params }: Props) {
   setRequestLocale(locale);
   const loc = locale as Locale;
   const isFr = loc === "fr";
-  const referentHandicap = await getReferentHandicapPublic();
+  const referentHandicap = await getReferentHandicapPublicStrict();
+  const mesures = mesuresHandicapTextes(isFr ? "fr" : "en");
 
   // Breadcrumb visuel + JSON-LD intégré (composant unique). L'item "Accueil"
   // est ajouté automatiquement par le composant.
@@ -186,11 +194,42 @@ export default async function AccessibilityPage({ params }: Props) {
                   {referentHandicap.email}
                 </a>
               </p>
-              <p className="text-fg-soft text-base leading-relaxed">
-                {isFr
-                  ? "Nous pouvons aussi vous orienter vers les relais spécialisés suivants :"
-                  : "We can also refer you to the following specialised bodies:"}
-              </p>
+
+              <h3 className="text-fg pt-2 text-lg leading-tight font-semibold">
+                {mesures.titreCatalogue}
+              </h3>
+              <p className="text-fg-soft text-base leading-relaxed">{mesures.introCatalogue}</p>
+              <ul className="space-y-4">
+                {mesures.besoins.map((b) => (
+                  <li key={b.besoin}>
+                    <p className="text-fg text-base font-semibold">{b.besoin}</p>
+                    <ul className="text-fg-soft mt-1 list-disc space-y-1 pl-5 text-base leading-relaxed">
+                      {b.mesures.map((m) => (
+                        <li key={m}>{m}</li>
+                      ))}
+                    </ul>
+                  </li>
+                ))}
+              </ul>
+              <p className="text-fg-soft text-base leading-relaxed">{mesures.noteCatalogue}</p>
+
+              <h3 className="text-fg pt-2 text-lg leading-tight font-semibold">
+                {mesures.titreCircuit}
+              </h3>
+              <p className="text-fg-soft text-base leading-relaxed">{mesures.introCircuit}</p>
+              <ol className="text-fg-soft list-decimal space-y-1 pl-5 text-base leading-relaxed">
+                {mesures.etapes.map((e) => (
+                  <li key={e.titre}>
+                    <strong className="text-fg font-semibold">{e.titre}</strong> {e.detail}
+                  </li>
+                ))}
+              </ol>
+              <p className="text-fg-soft text-base leading-relaxed">{mesures.delai}</p>
+
+              <h3 className="text-fg pt-2 text-lg leading-tight font-semibold">
+                {mesures.titreRecours}
+              </h3>
+              <p className="text-fg-soft text-base leading-relaxed">{mesures.introRecours}</p>
               <ul className="text-fg-soft space-y-2 text-base leading-relaxed">
                 {HANDICAP_PARTENAIRES.map((p) => (
                   <li key={p.nom}>

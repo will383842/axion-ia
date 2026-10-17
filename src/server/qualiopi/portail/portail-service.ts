@@ -290,7 +290,7 @@ export async function demanderAccesParEmail(email: string): Promise<void> {
   });
   if (!trainee) return; // silencieux — anti-énumération
 
-  const { token } = await creerAcces(trainee.id);
+  const { id: accesId, token } = await creerAcces(trainee.id);
   const baseUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://axion-ia.com";
   const lienPortail = `${baseUrl}/fr/portail/acces/${token}`;
 
@@ -307,10 +307,20 @@ export async function demanderAccesParEmail(email: string): Promise<void> {
   // change pas : le jeton doit exister pour figurer dans le message. Mais un
   // accès vivant sans lien remis n'est pas un accès — d'où ce journal, qui nomme
   // la conséquence pour que la ligne soit actionnable.
-  const envoiAcces = await enqueueEmail("qualiopi-portail-acces", normalized, "fr", {
-    stagiairePrenomNom: `${trainee.prenom} ${trainee.nom}`.trim(),
-    lienPortail,
-  });
+  const envoiAcces = await enqueueEmail(
+    "qualiopi-portail-acces",
+    normalized,
+    "fr",
+    {
+      stagiairePrenomNom: `${trainee.prenom} ${trainee.nom}`.trim(),
+      lienPortail,
+    },
+    {
+      // Rattache l'e-mail au dossier : sans entité, il restait introuvable depuis la session.
+      entityType: "PortailAcces",
+      entityId: accesId,
+    },
+  );
 
   if (envoiAcces.enqueued !== true && envoiAcces.garePourValidation !== true) {
     console.error(
@@ -327,6 +337,9 @@ export async function demanderAccesParEmail(email: string): Promise<void> {
 // ─────────────────────────────────────────────────────────────────────────────
 // verifierToken
 // ─────────────────────────────────────────────────────────────────────────────
+
+/** Écriture de `last_used_at` au plus une fois par minute et par accès. */
+const INTERVALLE_LAST_USED_MS = 60_000;
 
 /**
  * Vérifie un token portail (timing-safe) et retourne le traineeId si valide.
@@ -345,18 +358,33 @@ export async function verifierToken(token: string): Promise<{ traineeId: string 
   // un porteur de dump n'y trouve rien de rejouable.
   const acces = await prisma.portailAcces.findUnique({
     where: { tokenHash: hacherToken(token) },
-    select: { id: true, traineeId: true, expiresAt: true, revoked: true },
+    select: { id: true, traineeId: true, expiresAt: true, revoked: true, lastUsedAt: true },
   });
 
   if (acces === null) return null;
   if (acces.revoked) return null;
-  if (acces.expiresAt < new Date()) return null;
+  const maintenant = new Date();
+  if (acces.expiresAt < maintenant) return null;
 
-  // Mise à jour lastUsedAt (fire-and-forget : ne bloque pas la réponse)
-  void prisma.portailAcces.update({
-    where: { id: acces.id },
-    data: { lastUsedAt: new Date() },
-  });
+  // 🔴 `void prisma…update(...)` ne s'exécutait jamais : la requête Prisma est
+  // paresseuse, sans `await` ni `.then` elle n'est pas envoyée, et `last_used_at`
+  // restait vide. On attend donc l'écriture, mais au plus UNE FOIS PAR MINUTE
+  // (ou au premier usage) : `verifierToken` est appelé à chaque page vue.
+  // Une panne d'écriture ne doit jamais refuser l'entrée d'un stagiaire.
+  const derniere = acces.lastUsedAt;
+  if (derniere === null || maintenant.getTime() - derniere.getTime() >= INTERVALLE_LAST_USED_MS) {
+    try {
+      await prisma.portailAcces.update({
+        where: { id: acces.id },
+        data: { lastUsedAt: maintenant },
+      });
+    } catch (err) {
+      console.error(
+        "[portail] last_used_at non écrit :",
+        err instanceof Error ? err.message : String(err),
+      );
+    }
+  }
 
   return { traineeId: acces.traineeId };
 }

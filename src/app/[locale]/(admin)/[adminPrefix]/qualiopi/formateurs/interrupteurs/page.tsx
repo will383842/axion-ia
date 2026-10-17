@@ -27,7 +27,10 @@ import {
   type CleInterrupteur,
   type CleInterrupteurSignature,
 } from "@/server/qualiopi/formateurs-independants/interrupteurs";
-import { lireFaitsPrealables } from "@/server/qualiopi/formateurs-independants/prealables-faits";
+import {
+  libelleVersionContratCadreEnVigueur,
+  lireFaitsPrealables,
+} from "@/server/qualiopi/formateurs-independants/prealables-faits";
 import {
   lireInterrupteurs,
   lireInterrupteursEntree,
@@ -271,6 +274,11 @@ export default async function InterrupteursFormateursPage({ params, searchParams
                   <td>
                     <strong>{def.libelle}</strong>
                     <div className="admin-meta-small">{def.aide}</div>
+                    {l.cle === "contrat_auto" ? (
+                      <div className="admin-meta-small">
+                        Version en vigueur : {libelleVersionContratCadreEnVigueur()}
+                      </div>
+                    ) : null}
                   </td>
                   <td>
                     <AdminBadge tone={sure ? "neutral" : "success"}>

@@ -159,19 +159,26 @@ export type ChargementEmails = {
  * On ratisse les quatre familles d'entités qu'une session engendre : ses
  * inscriptions (convocation, rappels, émargement, attestation), ses pièces
  * (convention, devis, facture, exemplaire signé), ses questionnaires
- * (positionnement, satisfaction, suivi à froid) et ses missions de formateur.
+ * (positionnement, satisfaction, suivi à froid), ses missions de formateur et
+ * les accès au portail de ses stagiaires (`PortailAcces`).
  *
  * ⚠️ Rend `[]` si la session n'existe pas — et l'appelant doit alors filtrer sur
  * une liste VIDE plutôt que de ne pas filtrer du tout. Un identifiant erroné
  * doit rendre zéro ligne, jamais tout le journal : sinon l'auditeur lirait le
  * courrier d'autres dossiers en croyant lire le sien.
  */
-async function idsLiesALaSession(sessionId: string): Promise<string[]> {
+export async function idsLiesALaSession(sessionId: string): Promise<string[]> {
   const s = await prisma.trainingSession.findUnique({
     where: { id: sessionId },
     select: {
       id: true,
-      enrollments: { select: { id: true, questionnaires: { select: { id: true } } } },
+      enrollments: {
+        select: {
+          id: true,
+          questionnaires: { select: { id: true } },
+          trainee: { select: { portailAcces: { select: { id: true } } } },
+        },
+      },
       documents: { select: { id: true } },
       sessionFormateurs: { select: { id: true } },
       missionsFormateur: { select: { id: true } },
@@ -183,6 +190,8 @@ async function idsLiesALaSession(sessionId: string): Promise<string[]> {
   for (const e of s.enrollments) {
     ids.push(e.id);
     for (const q of e.questionnaires) ids.push(q.id);
+    // L'accès au portail du stagiaire (e-mail du lien) : rattaché via `PortailAcces`.
+    for (const a of e.trainee.portailAcces) ids.push(a.id);
   }
   for (const d of s.documents) ids.push(d.id);
   for (const f of s.sessionFormateurs) ids.push(f.id);

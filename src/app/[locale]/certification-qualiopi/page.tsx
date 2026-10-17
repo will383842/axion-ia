@@ -48,7 +48,6 @@ import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { FaqAccordion } from "@/components/marketing/FaqAccordion";
 import { StickyMobileCta } from "@/components/marketing/StickyMobileCta";
 import { ClientLogosMarqueeBand } from "@/components/services/audit/ClientLogosMarqueeBand";
-import { UnsplashCredit } from "@/components/media/UnsplashCredit";
 import { FinancingBadges } from "@/components/qualiopi/FinancingBadges";
 import { IndicateursResultatsPublic } from "@/components/qualiopi/IndicateursResultatsPublic";
 import { getIndicateurs } from "@/server/qualiopi/indicateurs/service";
@@ -98,14 +97,6 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       path: PATH,
       title,
       description,
-      // Image de partage dédiée (2026-09-27) : ce lien est épinglé dans la
-      // « Sélection » du profil LinkedIn, où la vignette ne fait que ~190 px de
-      // large. La carte générique `/api/og` y devenait illisible ; celle-ci est
-      // calibrée pour rester lisible à cette taille. Dimensions MESURÉES.
-      // Le logo Qualiopi y figure avec sa mention obligatoire, sur fond blanc.
-      ogImage: `${SITE_URL}/og/pages/formations-certifiees-qualiopi.png`,
-      ogImageWidth: 1200,
-      ogImageHeight: 628,
     })),
     title: { absolute: title },
   };
@@ -133,17 +124,6 @@ export default async function CertificationQualiopiPage({ params }: Props) {
   // Indicateur RNQ 2 : diffusion publique des indicateurs de résultats.
   //   Stub-aware (build) → « en cours de constitution » ; repeuplé à l'ISR.
   const indicateursResultats = await getIndicateurs(new Date().getFullYear());
-
-  // Attribution photographe Unsplash (CGU §6) pour les photos de la section agrément.
-  const UNSPLASH_CREDITS: Record<string, { name: string; url: string }> = {
-    "/illustrations/qualiopi/audit-documentaire-processus-qualite-certification-qualiopi-axion-ia.webp":
-      { name: "Markus Winkler", url: "https://unsplash.com/@markuswinkler" },
-    "/illustrations/qualiopi/confiance-accord-organisme-formation-certifie-qualiopi-axion-ia.webp":
-      {
-        name: "Radission US",
-        url: "https://unsplash.com/@radission",
-      },
-  };
 
   // Mention de marque OBLIGATOIRE (règles d'usage officielles). Catégorie par défaut
   // du registre : « Actions de formation ».
@@ -501,7 +481,6 @@ export default async function CertificationQualiopiPage({ params }: Props) {
         <div className="grid grid-cols-1 items-center gap-8 lg:grid-cols-2">
           <div className="xs:grid-cols-2 grid grid-cols-1 gap-4">
             {agrementPhotos.map((img) => {
-              const credit = UNSPLASH_CREDITS[img.src];
               return (
                 <figure key={img.src} className="flex flex-col gap-1.5">
                   <div className="border-border shadow-subtle relative aspect-[3/2] overflow-hidden rounded-2xl border">
@@ -514,13 +493,6 @@ export default async function CertificationQualiopiPage({ params }: Props) {
                       className="object-cover"
                     />
                   </div>
-                  {credit ? (
-                    <UnsplashCredit
-                      photographerName={credit.name}
-                      photographerUrl={credit.url}
-                      className="text-[11px]"
-                    />
-                  ) : null}
                 </figure>
               );
             })}

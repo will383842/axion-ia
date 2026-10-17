@@ -1,7 +1,7 @@
 /**
  * Qualiopi — Exports PDF des registres (docs A3/A7/A8/A17/A18 — LOT 2).
  *
- * 6 exports d'ÉTAT à la volée (PAS des documents officiels : pas de
+ * 10 exports d'ÉTAT à la volée (PAS des documents officiels : pas de
  * DocumentGenere, pas de numérotation, pas de rétention) rendus via le
  * template générique `templates/registre.tsx` :
  *   - reclamations   : registre des réclamations (ind. 31)
@@ -17,6 +17,11 @@
  *                      des intervenants (ind. 22) — ajouté le 2026-10-01 : le
  *                      dossier remis n'en portait AUCUNE trace, alors que la
  *                      preuve existe en base, fiche formateur par fiche.
+ *
+ *   - habilitations  : habilitations des intervenants par formation, actives ET
+ *                      retirées (ind. 21) — ajouté par le lot L14 : la preuve
+ *                      qu'un intervenant était habilité à une date donnée vivait
+ *                      en base sans jamais figurer au dossier remis.
  *
  * 🔴 Constat du dossier ZIP du 2026-09-30 : l'indicateur 30 n'avait AUCUNE
  * preuve de recueil des appréciations dans le dossier remis, et l'inventaire
@@ -66,6 +71,7 @@ export const REGISTRE_TYPES = [
   "appreciations",
   "moyens",
   "developpement_competences",
+  "habilitations",
 ] as const;
 
 export type RegistreType = (typeof REGISTRE_TYPES)[number];
@@ -319,6 +325,11 @@ async function buildRevueDirection(): Promise<Omit<RegistreData, "dateEdition">>
   };
 }
 
+function libelleInterlocuteur(nom: string | null, email: string | null): string {
+  const parties = [nom?.trim(), email?.trim()].filter((x): x is string => !!x);
+  return parties.length > 0 ? parties.join(" — ") : "Non renseigné";
+}
+
 async function buildPartenariats(): Promise<Omit<RegistreData, "dateEdition">> {
   const rows = await prisma.partenariat.findMany({
     select: {
@@ -328,6 +339,10 @@ async function buildPartenariats(): Promise<Omit<RegistreData, "dateEdition">> {
       dateDebut: true,
       dateFin: true,
       actif: true,
+      interlocuteurNom: true,
+      interlocuteurEmail: true,
+      dernierEchangeAt: true,
+      preuveUrl: true,
     },
     orderBy: { dateDebut: "desc" },
     take: EXPORT_TAKE,
@@ -336,14 +351,30 @@ async function buildPartenariats(): Promise<Omit<RegistreData, "dateEdition">> {
     titre: "Registre des partenariats",
     sousTitre:
       "Réseau de partenaires, dont réseau d'acteurs du handicap (indicateur 26 du référentiel national qualité).",
-    colonnes: ["Nom", "Type", "Objet", "Début", "Fin", "Statut"],
+    // L15 (NC12, off.26) : l'auditeur demande QUI, QUAND et OÙ EST LA PIÈCE. Une trace
+    // absente est DITE (« Aucun échange tracé »), pas laissée en blanc ; un partenariat
+    // inactif est écrit « Inactif » — il ne compte pas comme réseau mobilisable.
+    colonnes: [
+      "Nom",
+      "Type",
+      "Objet",
+      "Interlocuteur",
+      "Dernier échange",
+      "Pièce",
+      "Début",
+      "Fin",
+      "Statut",
+    ],
     lignes: rows.map((p) => [
       p.nom,
       p.type,
       p.objet,
+      libelleInterlocuteur(p.interlocuteurNom, p.interlocuteurEmail),
+      p.dernierEchangeAt ? formatDateFr(p.dernierEchangeAt) : "Aucun échange tracé",
+      p.preuveUrl?.trim() ? p.preuveUrl.trim() : "Aucune pièce",
       formatDateFr(p.dateDebut),
       formatDateFr(p.dateFin),
-      p.actif ? "Actif" : "Terminé",
+      p.actif ? "Actif" : "Inactif",
     ]),
     mentionBasDePage: MENTION_EXPORT,
   };
@@ -572,6 +603,54 @@ async function buildDeveloppementCompetences(): Promise<Omit<RegistreData, "date
   };
 }
 
+/**
+ * Habilitations des intervenants (ind. 21), par formation — actives ET retirées.
+ *
+ * Aucun filtre sur `retireAt` : un retrait se date, il ne s'efface pas. Un
+ * auditeur qui remonte une session passée doit y retrouver que l'intervenant
+ * était habilité À CETTE DATE, même si l'habilitation a été retirée depuis.
+ * Le motif du retrait est facultatif (cf. `setTrainerHabilitationsAction`) :
+ * cellule vide quand il n'a pas été renseigné, jamais une valeur inventée.
+ */
+async function buildHabilitations(): Promise<Omit<RegistreData, "dateEdition">> {
+  const rows = await prisma.trainerHabilitation.findMany({
+    select: {
+      habiliteAt: true,
+      retireAt: true,
+      motifRetrait: true,
+      note: true,
+      trainer: { select: { nom: true, prenom: true, statut: true } },
+      formation: { select: { titre: true } },
+    },
+    orderBy: { habiliteAt: "desc" },
+    take: EXPORT_TAKE,
+  });
+  return {
+    titre: "Registre des habilitations des intervenants",
+    sousTitre:
+      "Habilitations prononcées par formation, actives et retirées, avec leurs dates (indicateur 21 du référentiel national qualité).",
+    colonnes: [
+      "Intervenant",
+      "Statut",
+      "Formation",
+      "Habilité le",
+      "Situation",
+      "Motif du retrait",
+      "Note",
+    ],
+    lignes: rows.map((h) => [
+      nomPersonne(h.trainer),
+      TRAINER_STATUT_LABELS[h.trainer.statut] ?? h.trainer.statut,
+      h.formation.titre,
+      formatDateFr(h.habiliteAt),
+      h.retireAt ? `Retirée le ${formatDateFr(h.retireAt)}` : "Active",
+      h.motifRetrait ?? "",
+      h.note ?? "",
+    ]),
+    mentionBasDePage: MENTION_EXPORT,
+  };
+}
+
 const BUILDERS: Record<RegistreType, () => Promise<Omit<RegistreData, "dateEdition">>> = {
   reclamations: buildReclamations,
   veille: buildVeille,
@@ -582,6 +661,7 @@ const BUILDERS: Record<RegistreType, () => Promise<Omit<RegistreData, "dateEditi
   appreciations: buildAppreciations,
   moyens: buildMoyens,
   developpement_competences: buildDeveloppementCompetences,
+  habilitations: buildHabilitations,
 };
 
 const FILENAMES: Record<RegistreType, string> = {
@@ -594,6 +674,7 @@ const FILENAMES: Record<RegistreType, string> = {
   appreciations: "registre-appreciations",
   moyens: "inventaire-moyens",
   developpement_competences: "registre-developpement-competences",
+  habilitations: "registre-habilitations",
 };
 
 /** Contenu d'un registre (titre, colonnes, lignes), sans rendu PDF. */

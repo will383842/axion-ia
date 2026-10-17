@@ -80,7 +80,7 @@ describe("🔴 le périmètre notifié est inchangé depuis le cron", () => {
   // sélection ici, et une intention qu'on déplace sans la reposer est une
   // couverture perdue en silence. Le seuil `critique` reste l'anti-spam par
   // défaut ; les déblocages du parcours vente restent l'exception voulue.
-  it("ne retient que les non-résolues, non-notifiées, critiques OU déblocages", async () => {
+  it("ne retient que les non-résolues, non-notifiées, critiques/importantes OU déblocages", async () => {
     poserCandidates([]);
     await notifierAlertesGroupees(MAINTENANT);
     const where = (alerteFindMany.mock.calls[0]![0] as { where: Record<string, unknown> }).where;
@@ -88,7 +88,7 @@ describe("🔴 le périmètre notifié est inchangé depuis le cron", () => {
       resolue: false,
       notifiedAt: null,
       OR: [
-        { niveau: "critique" },
+        { niveau: { in: ["critique", "important"] } },
         { code: { in: ["devis_signe_convention", "moteur_assemble_a_publier"] } },
       ],
     });

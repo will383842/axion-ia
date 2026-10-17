@@ -6138,6 +6138,26 @@ model TrainingSession {
   /// Réouvertures et reverrouillages du dossier (ADR 0060). Append-only.
   evenementsDossier          SessionDossierEvenement[]
 
+  // ── Chantier QNC, lot L00 — schéma unique (2026-10-16) ────────────────────
+  // ADDITIF, livré ÉTEINT : aucune de ces colonnes n'est lue ni écrite par le
+  // code de ce lot. Contrat complet : `src/server/qualiopi/socle/objets-sql.ts`.
+  //
+  /// Session du banc d'essai (calque de `Rencontre.estTestInterne`, ADR 0061).
+  /// Un interrupteur `qualiopi.<lot>.actif` en position `essai` n'agit QUE sur
+  /// les sessions qui portent ce drapeau. Jamais de champ `estEssai` concurrent.
+  estTestInterne          Boolean                         @default(false) @map("est_test_interne")
+  /// Le projet commercial (et donc son questionnaire de cadrage) dont la
+  /// session est issue. SetNull : la purge du pilote supprime les projets de
+  /// test ; la session, pièce Qualiopi, reste.
+  projetId                String?                         @map("projet_id") @db.Uuid
+  projet                  Projet?                         @relation("ProjetSessionsFormation", fields: [projetId], references: [id], onDelete: SetNull)
+  /// Documents et e-mails remis, et leurs retours. Ajout seul.
+  remisesRetours          RemiseRetour[]
+  /// Changements de modalité et de lieu, avant/après et motif. Ajout seul.
+  changementsModaliteLieu SessionChangementModaliteLieu[]
+  /// Relances envoyées pour cette session. Ajout seul.
+  relancesJournal         RelanceJournal[]
+
   @@index([formationId])
   @@index([clientId])
   @@index([devisId])
@@ -6154,6 +6174,7 @@ model TrainingSession {
   @@index([financementType, dateDebut])
   /// Charge d'un formateur sur une période.
   @@index([formateurPrincipalId, dateDebut])
+  @@index([projetId])
   @@map("training_sessions")
 }
 
@@ -7096,6 +7117,14 @@ model Enrollment {
   /// Signatures d'émargement — porte la CHAÎNE de cet inscrit (D12).
   emargementSignatures EmargementSignature[]
 
+  // ── Chantier QNC, lot L00 (2026-10-16) — additif, livré éteint ──
+  /// Inscription du banc d'essai (même convention que la session, ADR 0061).
+  estTestInterne  Boolean          @default(false) @map("est_test_interne")
+  /// Remises et retours adressés à CE stagiaire. Ajout seul.
+  remisesRetours  RemiseRetour[]
+  /// Relances adressées à CE stagiaire. Ajout seul.
+  relancesJournal RelanceJournal[]
+
   @@unique([sessionId, traineeId], map: "enrollment_unique_per_session")
   @@index([sessionId])
   @@index([sortieAt])
@@ -7949,10 +7978,15 @@ model Questionnaire {
   /// tracée : réponse antérieure au 30/09/2026, ou écrite par l'application
   /// N-1 pendant la fenêtre de déploiement. Jamais « stagiaire » par défaut.
   origineReponse    OrigineReponseQuestionnaire? @map("origine_reponse")
+  /// Chantier QNC, L00 — la version des questions ENVOYÉE. NULL = envoi
+  /// antérieur au versionnage (questions de l'époque non figées).
+  versionId         String?                      @map("version_id") @db.Uuid
+  version           QuestionnaireVersion?        @relation(fields: [versionId], references: [id], onDelete: Restrict)
   createdAt         DateTime                     @default(now()) @map("created_at")
   updatedAt         DateTime                     @updatedAt @map("updated_at")
 
   @@unique([enrollmentId, type], map: "questionnaire_unique_per_type")
+  @@index([versionId])
   @@index([enrollmentId])
   @@index([type])
   @@map("questionnaires")
@@ -8398,26 +8432,30 @@ enum VeilleType {
 
 /// Registre des réclamations (off.31). Alerte si sans réponse > J+15.
 model Reclamation {
-  id                 String            @id @default(uuid()) @db.Uuid
-  numero             String            @unique @db.VarChar(40)
+  id                 String             @id @default(uuid()) @db.Uuid
+  numero             String             @unique @db.VarChar(40)
   source             ReclamationSource
-  reclamantNom       String            @map("reclamant_nom") @db.VarChar(200)
-  reclamantEmail     String?           @map("reclamant_email") @db.VarChar(255)
-  objet              String            @db.VarChar(300)
-  description        String            @db.Text
-  gravite            String?           @db.VarChar(20)
-  statut             ReclamationStatut @default(nouvelle)
-  dateReception      DateTime          @map("date_reception")
-  dateReponse        DateTime?         @map("date_reponse")
-  reponse            String?           @db.Text
-  actionsCorrectives String?           @map("actions_correctives") @db.Text
-  enrollmentId       String?           @map("enrollment_id") @db.Uuid
+  reclamantNom       String             @map("reclamant_nom") @db.VarChar(200)
+  reclamantEmail     String?            @map("reclamant_email") @db.VarChar(255)
+  objet              String             @db.VarChar(300)
+  description        String             @db.Text
+  gravite            String?            @db.VarChar(20)
+  statut             ReclamationStatut  @default(nouvelle)
+  dateReception      DateTime           @map("date_reception")
+  dateReponse        DateTime?          @map("date_reponse")
+  reponse            String?            @db.Text
+  actionsCorrectives String?            @map("actions_correctives") @db.Text
+  enrollmentId       String?            @map("enrollment_id") @db.Uuid
   /// Parcours coaching 1-to-1 AFEST (harmonisation off.31) — alternatif à enrollmentId.
-  coachingSessionId  String?           @map("coaching_session_id") @db.Uuid
-  coachingSession    CoachingSession?  @relation("CoachingReclamations", fields: [coachingSessionId], references: [id], onDelete: SetNull)
-  traiteeParId       String?           @map("traitee_par_id") @db.Uuid
-  createdAt          DateTime          @default(now()) @map("created_at")
-  updatedAt          DateTime          @updatedAt @map("updated_at")
+  coachingSessionId  String?            @map("coaching_session_id") @db.Uuid
+  coachingSession    CoachingSession?   @relation("CoachingReclamations", fields: [coachingSessionId], references: [id], onDelete: SetNull)
+  traiteeParId       String?            @map("traitee_par_id") @db.Uuid
+  createdAt          DateTime           @default(now()) @map("created_at")
+  updatedAt          DateTime           @updatedAt @map("updated_at")
+  /// Chantier QNC, L00 — les étapes du traitement, en ajout seul. Le lien à
+  /// la session passe par `enrollmentId` (et `rattachements.ts`), jamais par
+  /// une seconde clé.
+  etapes             ReclamationEtape[]
 
   @@index([statut])
   @@index([dateReception])
@@ -8426,6 +8464,11 @@ model Reclamation {
 }
 
 /// Registre de veille (off.23/24/25). Preuve d'exploitation : `actionDecidee`.
+///
+/// Chantier QNC, L00 — trigger `veilles_ajout_seul` posé ÉTEINT : il refuse
+/// UPDATE, DELETE et TRUNCATE seulement quand le réglage `qualiopi.veille.actif`
+/// (table `settings`) vaut `actif`. Clé absente, `eteint` ou `essai` : rien ne
+/// change (la veille n'a pas de session, donc pas de banc d'essai).
 model Veille {
   id            String     @id @default(uuid()) @db.Uuid
   type          VeilleType
@@ -8545,15 +8588,17 @@ enum MoyenCategorie {
 /// `dateVerification` = dernière vérification d'adéquation/disponibilité par
 /// l'OF (preuve d'entretien des moyens — un moyen jamais vérifié ne prouve rien).
 model MoyenPedagogique {
-  id               String         @id @default(uuid()) @db.Uuid
+  id               String                       @id @default(uuid()) @db.Uuid
   categorie        MoyenCategorie
-  libelle          String         @db.VarChar(300)
-  description      String         @default("") @db.Text
-  localisation     String         @default("") @db.VarChar(250)
-  actif            Boolean        @default(true)
-  dateVerification DateTime?      @map("date_verification")
-  createdAt        DateTime       @default(now()) @map("created_at")
-  updatedAt        DateTime       @updatedAt @map("updated_at")
+  libelle          String                       @db.VarChar(300)
+  description      String                       @default("") @db.Text
+  localisation     String                       @default("") @db.VarChar(250)
+  actif            Boolean                      @default(true)
+  dateVerification DateTime?                    @map("date_verification")
+  createdAt        DateTime                     @default(now()) @map("created_at")
+  updatedAt        DateTime                     @updatedAt @map("updated_at")
+  /// Chantier QNC, L00 — historique avant/après motivé. Ajout seul.
+  historique       MoyenPedagogiqueHistorique[]
 
   @@index([categorie])
   @@index([actif])
@@ -8637,6 +8682,18 @@ model Incident {
   /// Le fait constaté. Renseigné dès qu'un intervenant est mis en cause.
   faitIntervenant IncidentFaitIntervenant? @map("fait_intervenant")
 
+  // ── Chantier QNC, lot L00 (2026-10-16) — additif, livré éteint ──
+  /// Aléa, dysfonctionnement ou difficulté. NULL = incident antérieur, non qualifié.
+  nature       IncidentNature?
+  /// QUI a signalé l'incident (partie prenante). NULL = non tracé.
+  declarant    PartiePrenanteQualiopi?
+  /// PAR OÙ l'incident est arrivé. NULL = non tracé.
+  origine      IncidentOrigine?
+  /// L'administrateur qui l'a saisi (identifiant seul).
+  declareParId String?                 @map("declare_par_id") @db.Uuid
+  /// Notes de suivi, en ajout seul.
+  notes        IncidentNote[]
+
   @@index([statut])
   @@index([type])
   @@index([dateIncident])
@@ -8655,6 +8712,11 @@ model RevueDirection {
   participants        Json     @default("[]")
   indicateursSnapshot Json     @default("{}") @map("indicateurs_snapshot")
   decisions           Json     @default("[]")
+  /// ⚠️ Chantier QNC, L00 — LECTURE SEULE pour l'historique : la seule source
+  /// des actions d'amélioration devient le registre `actions_amelioration`
+  /// (AXI-AMC). Trigger `revues_direction_plan_actions_lecture_seule` posé
+  /// ÉTEINT : il refuse une modification de cette colonne seulement quand
+  /// `qualiopi.amelioration.actif` (table `settings`) vaut `actif`.
   planActions         Json     @default("[]") @map("plan_actions")
   /// 🔴 Décret n° 2026-728 — analyse de risques, exigible au 1er novembre 2026.
   ///
@@ -13785,6 +13847,9 @@ model Projet {
   creeParId             String?              @map("cree_par_id") @db.Uuid
   createdAt             DateTime             @default(now()) @map("created_at")
   updatedAt             DateTime             @updatedAt @map("updated_at")
+  /// Chantier QNC, L00 — sessions de formation issues de ce projet (clé portée
+  /// par `training_sessions`, aucun objet SQL sur `projets`).
+  sessionsFormation     TrainingSession[]    @relation("ProjetSessionsFormation")
 
   @@unique([id, clientId])
   @@index([clientId, statut])
@@ -16808,4 +16873,343 @@ model ReponseEntranteFormateur {
   @@index([trainerId, recuLe])
   @@index([candidatureId, recuLe])
   @@map("reponses_entrantes_formateurs")
+}
+
+// ============================================================
+// CHANTIER QNC — LOT L00 : SCHÉMA UNIQUE (2026-10-16)
+//
+// Levée des 15 non-conformités de l'audit du 16/10/2026 : ce lot pose le
+// SOCLE des 16 autres, et rien d'autre. ADDITIF, livré ÉTEINT : aucune table
+// ni colonne ci-dessous n'est lue ni écrite par le code de ce lot.
+//
+// Règles communes à toutes ces tables :
+//   · rien ne s'efface : les journaux sont en AJOUT SEUL (UPDATE, DELETE et
+//     TRUNCATE refusés par trigger, `qualiopi_ajout_seul`) ; on annule, on
+//     archive, on AJOUTE une ligne ;
+//   · aucune date venue du navigateur : chaque ligne porte la date posée par
+//     le SERVEUR (`DEFAULT CURRENT_TIMESTAMP`, timestamptz), affichée à
+//     l'heure de Paris ;
+//   · les clés vers une pièce Qualiopi sont RESTRICT : une session, une
+//     inscription, un incident qui portent une trace ne se suppriment plus.
+//
+// Liste unique des triggers et CHECK : `src/server/qualiopi/socle/objets-sql.ts`,
+// confrontée à `pg_trigger` / `pg_constraint` en Gate D.
+// ============================================================
+
+/// Nature d'un incident (indicateurs 31 et 32).
+enum IncidentNature {
+  /// Événement extérieur imprévu (panne d'un tiers, intempérie, grève…).
+  alea
+  /// Défaut imputable à l'organisme (document absent, erreur de planning…).
+  dysfonctionnement
+  /// Difficulté rencontrée par une partie prenante (stagiaire en difficulté…).
+  difficulte
+
+  @@map("incident_nature")
+}
+
+/// Les parties prenantes d'une action de formation, plus l'organisme lui-même.
+enum PartiePrenanteQualiopi {
+  stagiaire
+  entreprise
+  formateur
+  financeur
+  organisme
+
+  @@map("partie_prenante_qualiopi")
+}
+
+/// Par où un incident est parvenu à l'organisme.
+enum IncidentOrigine {
+  console
+  espace_stagiaire
+  espace_formateur
+  email
+  telephone
+  questionnaire
+  detection_automatique
+
+  @@map("incident_origine")
+}
+
+/// Étapes du traitement d'une réclamation (indicateur 31).
+enum EtapeReclamation {
+  reception
+  accuse
+  analyse
+  reponse
+  reexamen
+  cloture
+
+  @@map("etape_reclamation")
+}
+
+/// À qui une pièce est remise (ou de qui vient le retour).
+enum DestinataireRemise {
+  stagiaire
+  entreprise
+  formateur
+  financeur
+
+  @@map("destinataire_remise")
+}
+
+/// Canal d'une remise ou d'une relance.
+enum CanalRemise {
+  /// Espace en ligne (stagiaire, formateur, entreprise).
+  espace
+  email
+  papier
+  autre
+
+  @@map("canal_remise")
+}
+
+/// Une remise, ou l'un des retours qu'elle reçoit.
+enum NatureRemiseRetour {
+  remise
+  ouverture
+  telechargement
+  signature
+  reponse
+
+  @@map("nature_remise_retour")
+}
+
+/// Ce qui change dans une session : sa modalité, ou son lieu.
+enum ChangementSessionNature {
+  modalite
+  lieu
+
+  @@map("changement_session_nature")
+}
+
+/// D'où vient une action d'amélioration (indicateur 32).
+enum OrigineAmelioration {
+  reclamation
+  incident
+  appreciation
+  revue_direction
+  veille
+  audit
+  autre
+
+  @@map("origine_amelioration")
+}
+
+/// Étapes de la vie d'une action d'amélioration, APRÈS son ouverture.
+enum EtapeAmelioration {
+  mise_en_oeuvre
+  realisee
+  efficacite_verifiee
+  abandonnee
+  /// Note de suivi, sans changement d'état.
+  note
+
+  @@map("etape_amelioration")
+}
+
+/// Note de suivi d'un incident. Ajout seul (trigger) : une note fausse se
+/// corrige par une note suivante, jamais en réécrivant la première.
+/// rgpd: technique — registre légal des incidents de l'organisme (Qualiopi ind. 31-32, obligation de conservation), texte de suivi et auteur administrateur ; hors export et effacement du dossier client, sans clé vers une personne cliente
+model IncidentNote {
+  id         String   @id @default(uuid()) @db.Uuid
+  incidentId String   @map("incident_id") @db.Uuid
+  incident   Incident @relation(fields: [incidentId], references: [id], onDelete: Restrict)
+  texte      String   @db.Text
+  auteurId   String?  @map("auteur_id") @db.Uuid
+  auteurNom  String   @map("auteur_nom") @db.VarChar(200)
+  creeLe     DateTime @default(now()) @map("cree_le") @db.Timestamptz(6)
+
+  @@index([incidentId, creeLe])
+  @@map("incident_notes")
+}
+
+/// Une étape du traitement d'une réclamation (réception, accusé, analyse,
+/// réponse, réexamen, clôture). Ajout seul (trigger).
+/// rgpd: technique — registre légal des réclamations (Qualiopi ind. 31, obligation de conservation), texte de l'étape et auteur administrateur ; la personne réclamante est sur `reclamations`
+model ReclamationEtape {
+  id            String           @id @default(uuid()) @db.Uuid
+  reclamationId String           @map("reclamation_id") @db.Uuid
+  reclamation   Reclamation      @relation(fields: [reclamationId], references: [id], onDelete: Restrict)
+  etape         EtapeReclamation
+  contenu       String           @default("") @db.Text
+  auteurId      String?          @map("auteur_id") @db.Uuid
+  auteurNom     String           @map("auteur_nom") @db.VarChar(200)
+  creeLe        DateTime         @default(now()) @map("cree_le") @db.Timestamptz(6)
+
+  @@index([reclamationId, creeLe])
+  @@map("reclamation_etapes")
+}
+
+/// Chaque document ou e-mail REMIS à une partie prenante, et chaque RETOUR
+/// (ouverture, téléchargement, signature, réponse). Un retour pointe sa
+/// remise (CHECK `remises_retours_retour_vise_une_remise`). Ajout seul.
+/// Pas d'adresse : l'e-mail se retrouve par `emailLogId` (copie gardée 5 ans,
+/// adresse masquée en cas d'effacement RGPD — décision de Will).
+/// rgpd: technique — preuve de remise Qualiopi (identifiants, nature, canal, date serveur) ; aucune adresse, aucun nom, aucun contenu
+model RemiseRetour {
+  id               String             @id @default(uuid()) @db.Uuid
+  sessionId        String             @map("session_id") @db.Uuid
+  session          TrainingSession    @relation(fields: [sessionId], references: [id], onDelete: Restrict)
+  /// L'inscription visée, quand le destinataire est un stagiaire.
+  enrollmentId     String?            @map("enrollment_id") @db.Uuid
+  enrollment       Enrollment?        @relation(fields: [enrollmentId], references: [id], onDelete: Restrict)
+  nature           NatureRemiseRetour
+  /// Pour un retour : la remise qu'il concerne. NULL pour une remise.
+  remiseId         String?            @map("remise_id") @db.Uuid
+  remise           RemiseRetour?      @relation("RemiseRetours", fields: [remiseId], references: [id], onDelete: Restrict)
+  retours          RemiseRetour[]     @relation("RemiseRetours")
+  destinataire     DestinataireRemise
+  canal            CanalRemise
+  /// Ce qui est remis, en code stable (ex. `convocation`, `programme`).
+  objet            String             @db.VarChar(80)
+  libelle          String             @default("") @db.VarChar(300)
+  /// Référence sans clé étrangère : un journal survit à tout.
+  documentGenereId String?            @map("document_genere_id") @db.Uuid
+  emailLogId       String?            @map("email_log_id") @db.Uuid
+  /// L'administrateur, NULL pour un envoi automatique ou un retour.
+  auteurId         String?            @map("auteur_id") @db.Uuid
+  survenuLe        DateTime           @default(now()) @map("survenu_le") @db.Timestamptz(6)
+
+  @@index([sessionId, survenuLe])
+  @@index([enrollmentId])
+  @@index([remiseId])
+  @@map("remises_retours")
+}
+
+/// Historique d'un moyen pédagogique : état avant, état après, motif.
+/// Ajout seul. Motif ≥ 10 caractères (CHECK).
+/// rgpd: technique — inventaire des moyens de l'organisme (ind. 17-19) ; auteur administrateur, aucune donnée de client ni de stagiaire
+model MoyenPedagogiqueHistorique {
+  id        String           @id @default(uuid()) @db.Uuid
+  moyenId   String           @map("moyen_id") @db.Uuid
+  moyen     MoyenPedagogique @relation(fields: [moyenId], references: [id], onDelete: Restrict)
+  avant     Json
+  apres     Json
+  motif     String           @db.Text
+  auteurId  String?          @map("auteur_id") @db.Uuid
+  auteurNom String           @map("auteur_nom") @db.VarChar(200)
+  creeLe    DateTime         @default(now()) @map("cree_le") @db.Timestamptz(6)
+
+  @@index([moyenId, creeLe])
+  @@map("moyens_pedagogiques_historique")
+}
+
+/// Journal des changements de MODALITÉ et de LIEU d'une session : avant,
+/// après, motif (≥ 10 caractères, CHECK). Ajout seul.
+/// rgpd: technique — modalité et lieu d'une session de formation, motif et auteur administrateur ; aucune donnée de stagiaire
+model SessionChangementModaliteLieu {
+  id        String                  @id @default(uuid()) @db.Uuid
+  sessionId String                  @map("session_id") @db.Uuid
+  session   TrainingSession         @relation(fields: [sessionId], references: [id], onDelete: Restrict)
+  nature    ChangementSessionNature
+  avant     Json
+  apres     Json
+  motif     String                  @db.Text
+  auteurId  String?                 @map("auteur_id") @db.Uuid
+  auteurNom String                  @map("auteur_nom") @db.VarChar(200)
+  creeLe    DateTime                @default(now()) @map("cree_le") @db.Timestamptz(6)
+
+  @@index([sessionId, creeLe])
+  @@map("sessions_changements_modalite_lieu")
+}
+
+/// Journal des relances (questionnaires, pièces, signatures…) : à qui, par
+/// quel canal, de quel rang. Ajout seul. Rang ≥ 1 (CHECK).
+/// rgpd: technique — preuve de relance Qualiopi (identifiants, canal, rang, date serveur) ; aucune adresse, aucun nom, aucun contenu
+model RelanceJournal {
+  id           String             @id @default(uuid()) @db.Uuid
+  sessionId    String             @map("session_id") @db.Uuid
+  session      TrainingSession    @relation(fields: [sessionId], references: [id], onDelete: Restrict)
+  enrollmentId String?            @map("enrollment_id") @db.Uuid
+  enrollment   Enrollment?        @relation(fields: [enrollmentId], references: [id], onDelete: Restrict)
+  /// Ce qui est relancé, en code stable (ex. `questionnaire_satisfaction_froid`).
+  objet        String             @db.VarChar(80)
+  destinataire DestinataireRemise
+  canal        CanalRemise
+  rang         Int                @db.SmallInt
+  automatique  Boolean            @default(false)
+  /// Référence sans clé étrangère : un journal survit à tout.
+  emailLogId   String?            @map("email_log_id") @db.Uuid
+  auteurId     String?            @map("auteur_id") @db.Uuid
+  creeLe       DateTime           @default(now()) @map("cree_le") @db.Timestamptz(6)
+
+  @@index([sessionId, creeLe])
+  @@index([enrollmentId])
+  @@map("relances_journal")
+}
+
+/// Registre d'amélioration continue (numéros AXI-AMC-AAAA-NNN) — SEULE source
+/// des actions d'amélioration ; `RevueDirection.planActions` reste en lecture
+/// pour l'historique. Ajout seul : la vie de l'action est dans ses étapes.
+/// rgpd: technique — registre légal d'amélioration (Qualiopi ind. 32), constat, action et auteur administrateur ; l'origine est désignée par identifiant, sans donnée de la personne
+model ActionAmelioration {
+  id           String                    @id @default(uuid()) @db.Uuid
+  /// AXI-AMC-AAAA-NNN. ⚠️ Le déclencheur `numeros_emis` (ADR 0059) sera posé
+  /// par le lot qui alloue ce numéro (`nextNumero`), pas avant.
+  numero       String                    @unique @db.VarChar(40)
+  origine      OrigineAmelioration
+  /// La réclamation, l'incident, la revue… d'origine. Sans clé étrangère.
+  origineRefId String?                   @map("origine_ref_id") @db.Uuid
+  constat      String                    @db.Text
+  action       String                    @db.Text
+  auteurId     String?                   @map("auteur_id") @db.Uuid
+  auteurNom    String                    @map("auteur_nom") @db.VarChar(200)
+  creeLe       DateTime                  @default(now()) @map("cree_le") @db.Timestamptz(6)
+  etapes       ActionAmeliorationEtape[]
+
+  @@index([origine, origineRefId])
+  @@index([creeLe])
+  @@map("actions_amelioration")
+}
+
+/// Une étape d'une action d'amélioration. Ajout seul.
+/// rgpd: technique — suivi d'une action d'amélioration de l'organisme, commentaire et auteur administrateur
+model ActionAmeliorationEtape {
+  id          String             @id @default(uuid()) @db.Uuid
+  actionId    String             @map("action_id") @db.Uuid
+  action      ActionAmelioration @relation(fields: [actionId], references: [id], onDelete: Restrict)
+  etape       EtapeAmelioration
+  commentaire String             @default("") @db.Text
+  auteurId    String?            @map("auteur_id") @db.Uuid
+  auteurNom   String             @map("auteur_nom") @db.VarChar(200)
+  creeLe      DateTime           @default(now()) @map("cree_le") @db.Timestamptz(6)
+
+  @@index([actionId, creeLe])
+  @@map("actions_amelioration_etapes")
+}
+
+/// Version FIGÉE des questions d'un questionnaire Qualiopi (sur le modèle
+/// `Questionnaire`, par type). Une version publiée ne se réécrit jamais :
+/// on en ajoute une. Ajout seul. Empreinte SHA-256 hexadécimale (CHECK).
+/// rgpd: technique — texte des questions et empreinte ; aucune réponse, aucune personne
+model QuestionnaireVersion {
+  id             String            @id @default(uuid()) @db.Uuid
+  type           QuestionnaireType
+  version        Int               @db.SmallInt
+  contenu        Json
+  empreinte      String            @db.Char(64)
+  auteurId       String?           @map("auteur_id") @db.Uuid
+  creeLe         DateTime          @default(now()) @map("cree_le") @db.Timestamptz(6)
+  questionnaires Questionnaire[]
+
+  @@unique([type, version])
+  @@map("questionnaire_versions")
+}
+
+/// Journal en ajout seul (trigger) des ouvertures de l'espace stagiaire
+/// (patron `DocumentProjetOuverture`, ADR 0063) : ni adresse IP, ni
+/// navigateur ; la date serveur et l'origine probable. Sans clé étrangère :
+/// un journal survit à tout.
+/// rgpd: technique — date et origine probable d'une ouverture de l'espace stagiaire, identifiant de la fiche ; ni IP, ni navigateur, ni nom
+model EspaceStagiaireOuverture {
+  id           String                   @id @default(uuid()) @db.Uuid
+  traineeId    String                   @map("trainee_id") @db.Uuid
+  enrollmentId String?                  @map("enrollment_id") @db.Uuid
+  origine      OrigineOuvertureDocument
+  ouvertLe     DateTime                 @default(now()) @map("ouvert_le") @db.Timestamptz(6)
+
+  @@index([traineeId, ouvertLe])
+  @@map("espace_stagiaire_ouvertures")
 }

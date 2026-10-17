@@ -94,17 +94,21 @@ const SOURCE: Readonly<Record<TypeGabaritSignable, string>> = {
 const EMPREINTES: Readonly<
   Record<TypeGabaritSignable, { readonly sha: string; readonly version: number }>
 > = {
-  devis: { sha: "bfd05ad0ef5d538342d23a8deeff1b69f10c8fb9acdad6f5dd88a1cb79fc1f90", version: 1 },
+  devis: {
+    // v2 — 16/10/2026 : mention handicap (L15, NC12) ; v1 archivée.
+    sha: "c702f29f1febb462cc3461591a8704b13c1512fa0e42b18219febccac6d4c811",
+    version: 2,
+  },
   convention: {
-    // v5 — 04/10/2026 : clause de condition suspensive OPCO (INT-T65-A), de FOND
-    // même si une convention sans case imprime le texte v4 ; v4 archivée.
-    sha: "2bb846d9e800199e49eb27fe59e034268d3b0f925398621b0709d5d8dbd22035",
-    version: 5,
+    // v6 — 16/10/2026 : mention handicap (L15, NC12) ; v5 archivée.
+    // (v5 — 04/10/2026 : clause de condition suspensive OPCO, INT-T65-A.)
+    sha: "bb709433276765a863d542834437a843d806ed8a1bff4cd34a545aa4c5b5b564",
+    version: 6,
   },
   convention_tripartite: {
-    // v5 — 04/10/2026 : même clause, mot pour mot (INT-T65-A) ; v4 archivée.
-    sha: "b9b3ccb96488c5e04e09f6a089ae13a4e29d995c70cf9b2931661f020eadb5ac",
-    version: 5,
+    // v6 — 16/10/2026 : même mention, mot pour mot (L15) ; v5 archivée.
+    sha: "3e5482b49930054fa70bf02a1390c834f04c8866142ab8f3c5782a49cd79d2b3",
+    version: 6,
   },
   contrat_formation: {
     // v2 — 30/09/2026 : citations juridiques corrigées ; v1 archivée.
@@ -297,6 +301,10 @@ const EMPREINTES_ARCHIVES: Readonly<Record<string, string>> = {
   "convention.v4.tsx": "4f4a212643f49e4873bae2517b28dfaceab218057e6c9895287e4005798c4b1c",
   "convention-tripartite.v4.tsx":
     "fb7fa23dae608dc04921190e5e0538373fc94615bc228f145354c4cda53b154e",
+  "convention.v5.tsx": "12e956e39f7a868b8bdf5ecddb599f0fe389add85c280469e1bbad74952560ee",
+  "convention-tripartite.v5.tsx":
+    "b46c9072efe9f2013c499629f2af2364e6d56a92a3c35f83c353c5dfb16817d4",
+  "devis.v1.tsx": "bfd05ad0ef5d538342d23a8deeff1b69f10c8fb9acdad6f5dd88a1cb79fc1f90",
   "contrat-formation.v1.tsx": "4afe9d19dac33437e8970ecbad091af861e8a5bce4f01b35ac4fceaed264e4cd",
   "releve-connexion.v1.tsx": "958909a208a6f56c286c67f68694982e9668b48232872553c683ac68aee44ae7",
   "mentions-figees.ts": "6f570713a14786affb5a2a2bc2dd73f61e0ff1546dcf9ab896917ff03eb6f199",

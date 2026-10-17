@@ -174,4 +174,55 @@ describe("updatePartenariatAction", () => {
     const logCall = mockLogActivity.mock.calls[0]?.[0] as { action: string };
     expect(logCall.action).toBe("qualiopi.partenariat.update");
   });
+
+  it("🔴 L15 : journalise les valeurs « avant » de chaque champ modifié, et rien de plus", async () => {
+    mockGetPartenariat.mockResolvedValue({
+      id: PARTENARIAT_UUID,
+      nom: "Ancien nom",
+      type: "réseau_handicap",
+      objet: "Ancien objet",
+      dateDebut: new Date("2026-01-01T00:00:00.000Z"),
+      dateFin: null,
+      actif: true,
+      interlocuteurNom: "Camille Exemple",
+      interlocuteurEmail: "camille@example.com",
+      dernierEchangeAt: new Date("2026-06-01T08:00:00.000Z"),
+      preuveUrl: null,
+    });
+
+    await updatePartenariatAction({
+      id: PARTENARIAT_UUID,
+      nom: "Nouveau nom",
+      actif: false,
+      dernierEchangeAt: new Date("2026-09-15T08:00:00.000Z"),
+      preuveUrl: "https://example.com/piece.pdf",
+    });
+
+    const logCall = mockLogActivity.mock.calls[0]?.[0] as { changes: Record<string, unknown> };
+    expect(logCall.changes["avant"]).toEqual({
+      nom: "Ancien nom",
+      actif: true,
+      dernierEchangeAt: "2026-06-01T08:00:00.000Z",
+      preuveUrl: null,
+    });
+    // Les valeurs « après » restent au journal, comme avant.
+    expect(logCall.changes["nom"]).toBe("Nouveau nom");
+    expect(logCall.changes["actif"]).toBe(false);
+  });
+
+  it("n'échoue pas à journaliser « avant » quand le champ était vide", async () => {
+    mockGetPartenariat.mockResolvedValue({
+      id: PARTENARIAT_UUID,
+      nom: "X",
+      dateFin: null,
+      interlocuteurNom: null,
+    });
+    await updatePartenariatAction({
+      id: PARTENARIAT_UUID,
+      interlocuteurNom: "Camille",
+      dateFin: new Date("2026-12-31T00:00:00.000Z"),
+    });
+    const logCall = mockLogActivity.mock.calls[0]?.[0] as { changes: Record<string, unknown> };
+    expect(logCall.changes["avant"]).toEqual({ interlocuteurNom: null, dateFin: null });
+  });
 });

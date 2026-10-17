@@ -10,6 +10,8 @@ import Link from "next/link";
 import { AlertTriangle, Handshake, Hash, Users } from "lucide-react";
 
 import { AdminPageShell } from "@/components/admin/ui/AdminPageShell";
+import { genererRegistrePdfAction } from "@/server/actions/qualiopi/exports-pdf";
+import { PdfExportButton } from "@/components/admin/qualiopi/PdfExportButton";
 import { GenererListeFormateursButton } from "@/components/admin/qualiopi/GenererListeFormateursButton";
 import { AdminPageHeader } from "@/components/admin/ui/AdminPageHeader";
 import { EcransRattaches } from "@/components/admin/qualiopi/EcransRattaches";
@@ -94,7 +96,16 @@ export default async function QualiopiFormateursPage({ params }: PageProps) {
       <AdminPageHeader
         title="Formateurs"
         description="Salariés, dirigeant-formateur et sous-traitants, habilitations par formation, vérification data.gouv.fr (indicateurs 17, 21 et 22 — compétences des intervenants ; indicateur 27 — vigilance sur les sous-traitants)."
-        actions={<GenererListeFormateursButton />}
+        actions={
+          <>
+            <GenererListeFormateursButton />
+            <PdfExportButton
+              label="Registre des habilitations (PDF)"
+              input={{ type: "habilitations" as const }}
+              action={genererRegistrePdfAction}
+            />
+          </>
+        }
       />
 
       {/* Lot L4 — les écrans retirés de la barre latérale (menu allégé) dont

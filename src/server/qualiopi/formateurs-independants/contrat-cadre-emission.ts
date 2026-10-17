@@ -25,7 +25,6 @@ import {
   ContratCadrePdf,
   champsManquantsContratCadre,
 } from "@/server/qualiopi/documents/templates/contrat-cadre";
-import { derniereVersionArretee } from "@/server/qualiopi/documents/templates/versions-arretees";
 import {
   lireEtablissementParSiret,
   type ResultatRegistre,
@@ -40,6 +39,7 @@ import {
 } from "./contrat-cadre-emission-regles";
 import { versionDuContrat } from "./faits-activation";
 import { VERSION_MINIMALE_CONTRAT_INDEPENDANT } from "./garde-activation-complete";
+import { versionContratCadreEnVigueur } from "./prealables-faits";
 import { lireCumulHonorairesHtCents } from "./vigilance-seuil-lecture";
 
 /** Motif système d'annulation d'un contrat jamais signé, remplacé par une version plus récente. */
@@ -54,9 +54,12 @@ const DATE_FR = new Intl.DateTimeFormat("fr-FR", {
   timeZone: "Europe/Paris",
 });
 
-/** La version qu'émet la préparation : la plus haute version ARRÊTÉE. */
+/**
+ * La version qu'émet la préparation : la VERSION EN VIGUEUR (plus haute version ARRÊTÉE,
+ * jamais sous la version minimale) — la même que lit le préalable de `contrat_auto`.
+ */
 export function versionContratAEmettre(): number | null {
-  return derniereVersionArretee("contrat_sous_traitance");
+  return versionContratCadreEnVigueur()?.version ?? null;
 }
 
 type LireRegistre = (siret: string) => Promise<ResultatRegistre>;

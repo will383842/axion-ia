@@ -14,6 +14,10 @@
 // si elle est négative. C'est le seul engagement qu'on peut tenir.
 
 import { Text } from "@react-email/components";
+import {
+  MENTION_AUCUNE_MISSION_AVANT_QUALIOPI,
+  etapesIntervenant,
+} from "../../careers/etapes-intervenant";
 import { EmailLayout, emailStyles } from "./_layout";
 import { LienSuppressionCandidature } from "./_lien-suppression-candidature";
 import type { Locale } from "../../../../prisma/generated/client";
@@ -35,6 +39,18 @@ interface Payload {
    * d'avant, à l'octet près.
    */
   mission?: boolean;
+  /**
+   * L14 — variante « intervenant » : candidature d'un formateur (freelance ou
+   * salarié). Elle décrit les vraies étapes jusqu'à la première mission. Posée par
+   * l'action de dépôt ; absente, l'accusé est celui d'avant. Prioritaire sur
+   * `mission` (qui reste le texte F0 des dépôts sans cette variante).
+   * ⚠️ Ne concerne que l'accusé : la réponse « poste pourvu » est un autre envoi.
+   */
+  intervenant?: boolean;
+  /** L14 — formateur indépendant : SIRET et déclaration d'activité font partie des pièces. */
+  freelance?: boolean;
+  /** L14 — certification obtenue : la mention « avant l'obtention » ne serait plus vraie. */
+  certificationObtenue?: boolean;
   /** Lien signé « Supprimer ma candidature » (2026-10-11). */
   lienSuppression?: string;
 }
@@ -48,6 +64,16 @@ const MISSION = {
   body: "Votre candidature à nos missions de formateur IA indépendant est bien arrivée.",
   suite:
     "Merci pour votre intérêt. Chaque candidature est lue par une personne. Si votre profil correspond, nous vous proposerons un échange de 20 minutes en visio pour faire connaissance, sans engagement.",
+} as const;
+
+/** L14 — accusé d'une candidature d'intervenant. Français seulement, comme F0. */
+const INTERVENANT = {
+  subject: MISSION.subject,
+  title: "Bien reçu, merci",
+  preview: "Une personne la lit. Voici les étapes qui suivent, jusqu'à la première mission.",
+  body: "Votre candidature d'intervenant est bien arrivée.",
+  suite:
+    "Merci pour votre intérêt. Chaque candidature est lue par une personne. Si votre profil correspond, voici les étapes qui suivent :",
 } as const;
 
 const COPY = {
@@ -93,7 +119,7 @@ const COPY = {
 } as const;
 
 export const candidatureRecueSubject = (locale: Locale, p: Record<string, unknown>): string =>
-  p["mission"] === true
+  p["mission"] === true || p["intervenant"] === true
     ? MISSION.subject
     : locale === "fr"
       ? "Votre candidature est bien arrivée"
@@ -108,6 +134,36 @@ export function CandidatureRecueEmail({
 }) {
   const p = payload as unknown as Payload;
   const t = COPY[locale];
+  if (p.intervenant === true) {
+    const etapes = etapesIntervenant({ freelance: p.freelance === true });
+    return (
+      <EmailLayout
+        famille="B"
+        preview={INTERVENANT.preview}
+        title={INTERVENANT.title}
+        locale={locale}
+      >
+        {/* Freelance : la phrase F0 validée reste telle quelle ; les étapes la prolongent. */}
+        <Text style={emailStyles.paragraphStyle}>
+          {p.freelance === true ? MISSION.body : INTERVENANT.body}
+        </Text>
+        <Text style={emailStyles.paragraphStyle}>
+          {t.intro(p.contactName)}
+          <br />
+          {INTERVENANT.suite}
+        </Text>
+        {etapes.map((e, i) => (
+          <Text key={e.id} style={emailStyles.paragraphStyle}>
+            {`${i + 1}. ${e.fr}`}
+          </Text>
+        ))}
+        {p.certificationObtenue === true ? null : (
+          <Text style={emailStyles.paragraphStyle}>{MENTION_AUCUNE_MISSION_AVANT_QUALIOPI.fr}</Text>
+        )}
+        <LienSuppressionCandidature href={p.lienSuppression} locale={locale} />
+      </EmailLayout>
+    );
+  }
   if (p.mission === true) {
     return (
       <EmailLayout famille="B" preview={MISSION.preview} title={MISSION.title} locale={locale}>
