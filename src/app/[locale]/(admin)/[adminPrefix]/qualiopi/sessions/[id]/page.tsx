@@ -45,7 +45,6 @@ import { listTrainers, isTrainerHabilite } from "@/server/qualiopi/trainers/trai
 import { listClients } from "@/server/qualiopi/crm/clients";
 import { countTrainees, listTrainees } from "@/server/qualiopi/trainees/trainees";
 import { DocumentsSection } from "@/components/admin/qualiopi/DocumentsSection";
-import { estActifPour } from "@/server/qualiopi/socle/interrupteurs";
 import {
   etatDocumentsOrganisme,
   lireNotesPieces,
