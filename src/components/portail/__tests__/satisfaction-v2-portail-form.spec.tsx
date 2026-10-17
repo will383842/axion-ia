@@ -6,13 +6,14 @@ import { SatisfactionV2PortailForm } from "../SatisfactionV2PortailForm";
 
 const OBJECTIFS = ["Rédiger un prompt", "Vérifier une réponse"];
 
-function rendre(type: "satisfaction_chaud" | "satisfaction_froid") {
+function rendre(type: "satisfaction_chaud" | "satisfaction_froid", questionAmenagements = false) {
   const soumettre = vi.fn(async () => ({ data: { id: "q1" } }));
   render(
     <SatisfactionV2PortailForm
       questionnaireId="q1"
       type={type}
       objectifs={OBJECTIFS}
+      questionAmenagements={questionAmenagements}
       soumettreAction={soumettre}
     />,
   );
@@ -45,5 +46,26 @@ describe("SatisfactionV2PortailForm", () => {
   it("à froid : pose la question de mise en pratique", () => {
     rendre("satisfaction_froid");
     expect(screen.getByLabelText(/mettez-vous en pratique/i)).toBeTruthy();
+  });
+
+  it("ne pose pas la question des aménagements quand elle n'est pas due", () => {
+    rendre("satisfaction_chaud");
+    expect(screen.queryByText(/aménagements prévus pour vous/)).toBeNull();
+  });
+
+  // Chantier QNC, L04 — même bloc, même clé que la v1.
+  it("aménagement déclaré : la question est posée, exigée, et part sous « amenagementsUtiles »", async () => {
+    const soumettre = rendre("satisfaction_chaud", true);
+    fireEvent.click(screen.getByRole("button", { name: "Satisfaction globale : 4 sur 5" }));
+    // `submit` direct : le `required` du navigateur arrêterait le clic avant le contrôle JS.
+    fireEvent.submit(screen.getByRole("button", { name: /envoyer/i }).closest("form")!);
+    expect((await screen.findByRole("alert")).textContent).toMatch(/aménagements/);
+    expect(soumettre).not.toHaveBeenCalled();
+
+    fireEvent.click(screen.getByLabelText("Oui"));
+    fireEvent.click(screen.getByRole("button", { name: /envoyer/i }));
+    await waitFor(() => expect(soumettre).toHaveBeenCalledTimes(1));
+    const arg = (soumettre.mock.calls[0] as unknown[])[0] as { reponses: Record<string, unknown> };
+    expect(arg.reponses["amenagementsUtiles"]).toBe(true);
   });
 });

@@ -12,12 +12,11 @@
 
 import { useState, useTransition } from "react";
 
-/**
- * Chantier QNC, L04 — clé écrite en toutes lettres (cloisonnement du domaine
- * qualiopi) : `CLE_AMENAGEMENTS_UTILES` côté serveur, verrouillée par la spec de
- * l'action qui asserte ce même littéral.
- */
-const CLE_AMENAGEMENTS_UTILES = "amenagementsUtiles";
+import {
+  CLE_AMENAGEMENTS_UTILES,
+  MESSAGE_AMENAGEMENTS_SANS_REPONSE,
+  QuestionAmenagementsUtiles,
+} from "./QuestionAmenagementsUtiles";
 
 type ActionResult<T> = { data: T } | { error: string };
 
@@ -48,7 +47,7 @@ export function SatisfactionPortailForm({
     e.preventDefault();
     setError(null);
     if (questionAmenagements && amenagementsUtiles === null) {
-      setError("Indiquez si les aménagements prévus pour vous ont été utiles (oui ou non).");
+      setError(MESSAGE_AMENAGEMENTS_SANS_REPONSE);
       return;
     }
 
@@ -105,35 +104,12 @@ export function SatisfactionPortailForm({
       </div>
 
       {questionAmenagements && (
-        <fieldset className="rounded-md border border-gray-200 p-3">
-          <legend className="px-1 text-sm text-gray-700">
-            Les aménagements prévus pour vous vous ont-ils été utiles ?
-          </legend>
-          <div className="mt-2 flex flex-wrap gap-4">
-            <label className="flex items-center gap-2 text-sm text-gray-900">
-              <input
-                type="radio"
-                name={`amenagements-${questionnaireId}`}
-                checked={amenagementsUtiles === true}
-                onChange={() => setAmenagementsUtiles(true)}
-                disabled={isPending}
-                required
-              />
-              Oui
-            </label>
-            <label className="flex items-center gap-2 text-sm text-gray-900">
-              <input
-                type="radio"
-                name={`amenagements-${questionnaireId}`}
-                checked={amenagementsUtiles === false}
-                onChange={() => setAmenagementsUtiles(false)}
-                disabled={isPending}
-                required
-              />
-              Non
-            </label>
-          </div>
-        </fieldset>
+        <QuestionAmenagementsUtiles
+          questionnaireId={questionnaireId}
+          valeur={amenagementsUtiles}
+          onChange={setAmenagementsUtiles}
+          desactive={isPending}
+        />
       )}
 
       {/* Commentaire */}

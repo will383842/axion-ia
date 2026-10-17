@@ -114,6 +114,7 @@ export default async function MonEspaceAccueilPage({ params }: PageProps) {
                         questionnaireId={q.id}
                         type={q.type}
                         objectifs={q.objectifs}
+                        questionAmenagements={q.questionAmenagements === true}
                         soumettreAction={soumettreSatisfactionPortailAction}
                       />
                     ) : (

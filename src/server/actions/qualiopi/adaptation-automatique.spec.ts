@@ -224,3 +224,54 @@ describe("satisfaction à chaud — « les aménagements vous ont-ils été util
     expect(signalerNonUtiles).toHaveBeenCalledWith("e1", expect.any(Date));
   });
 });
+
+describe("satisfaction à chaud v2 (L08) — L04 et L08 allumés", () => {
+  beforeEach(() => {
+    adaptationAuto.mockResolvedValue(true);
+    utiliteDue.mockResolvedValue(true);
+    questionnaireFindUnique.mockResolvedValue({
+      type: "satisfaction_chaud",
+      version: { version: 2 },
+      enrollment: { id: "e1", traineeId: "t1" },
+    });
+  });
+
+  it("un stagiaire ayant déclaré un aménagement envoie son questionnaire v2, et la clé survit à l'assainissement", async () => {
+    const r = await soumettreSatisfactionPortailAction({
+      questionnaireId: QID,
+      reponses: {
+        commentaire: "Très clair",
+        acquisParObjectif: { "Rédiger un prompt": 3 },
+        amenagementsUtiles: true,
+        // Hors contenu v2 : retiré par `assainirReponses`.
+        champInconnu: "x",
+      },
+      noteGlobale: 5,
+    });
+    expect(r).toEqual({ data: { id: "q1" } });
+    expect(reponsesEcrites()).toEqual({
+      commentaire: "Très clair",
+      acquisParObjectif: { "Rédiger un prompt": 3 },
+      amenagementsUtiles: true,
+    });
+    expect(signalerNonUtiles).not.toHaveBeenCalled();
+  });
+
+  it("v2 : la réponse est exigée comme en v1, et un « non » ouvre l'examen", async () => {
+    const sans = await soumettreSatisfactionPortailAction({
+      questionnaireId: QID,
+      reponses: { commentaire: "ok" },
+      noteGlobale: 4,
+    });
+    expect(sans).toHaveProperty("error");
+    expect(soumettreReponses).not.toHaveBeenCalled();
+
+    await soumettreSatisfactionPortailAction({
+      questionnaireId: QID,
+      reponses: { amenagementsUtiles: false },
+      noteGlobale: 4,
+    });
+    expect(reponsesEcrites()).toEqual({ amenagementsUtiles: false });
+    expect(signalerNonUtiles).toHaveBeenCalledWith("e1", expect.any(Date));
+  });
+});

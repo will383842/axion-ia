@@ -14,7 +14,8 @@ import {
   mesuresProposees,
 } from "@/server/qualiopi/adaptation/automatique/catalogue-mesures";
 
-function monter() {
+/** Le bloc structuré est chargé par `next/dynamic` : on attend qu'il soit là. */
+async function monter() {
   const soumettre = vi.fn(async (_i: { reponses: Record<string, unknown> }) => ({
     data: { id: "q-1" },
   }));
@@ -30,12 +31,13 @@ function monter() {
   const form = container.querySelector("form");
   if (form === null) throw new Error("formulaire absent");
   fireEvent.click(screen.getByLabelText(/Oui, j'ai besoin d'un aménagement/));
+  await screen.findByLabelText(/J'accepte que ces précisions/);
   return { soumettre, form };
 }
 
 describe("positionnement — déclaration structurée (L04)", () => {
   it("cocher « Auditif » propose les mesures standard du catalogue, confirmées en un clic", async () => {
-    const { soumettre, form } = monter();
+    const { soumettre, form } = await monter();
     fireEvent.click(screen.getByLabelText(/J'accepte que ces précisions/));
     fireEvent.click(screen.getByLabelText("Auditif"));
     // Proposées et pré-cochées : celles du serveur, ni plus ni moins.
@@ -53,7 +55,7 @@ describe("positionnement — déclaration structurée (L04)", () => {
   });
 
   it("sans consentement : seul l'échange est possible, et rien de détaillé ne part", async () => {
-    const { soumettre, form } = monter();
+    const { soumettre, form } = await monter();
     expect(
       (screen.getByLabelText(/Je confirme ces aménagements/) as HTMLInputElement).disabled,
     ).toBe(true);
@@ -68,7 +70,7 @@ describe("positionnement — déclaration structurée (L04)", () => {
   });
 
   it("ne part pas sans choix (confirmer ou échanger)", async () => {
-    const { soumettre, form } = monter();
+    const { soumettre, form } = await monter();
     fireEvent.submit(form);
     expect(await screen.findByRole("alert")).toHaveTextContent(/échange/);
     expect(soumettre).not.toHaveBeenCalled();

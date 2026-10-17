@@ -328,10 +328,9 @@ export async function soumettreSatisfactionPortailAction(input: {
   const utiliteDue =
     questionnaire.type === "satisfaction_chaud" &&
     (await questionUtiliteDuePourInscription(enrollmentId));
-  // Fusion L08 : le formulaire VERSIONNÉ (v2) ne pose pas encore la question —
-  // l'exiger bloquerait le stagiaire. Gardée si elle est répondue.
-  const utiliteExigee = utiliteDue && questionnaire.version == null;
-  if (utiliteExigee && typeof amenagementsUtiles !== "boolean") {
+  // Fusion L08 : la v1 ET la v2 (`SatisfactionV2PortailForm`) posent la
+  // question, même bloc et même clé — elle est donc exigée sur les deux.
+  if (utiliteDue && typeof amenagementsUtiles !== "boolean") {
     return { error: MESSAGE_UTILITE_SANS_REPONSE };
   }
   if (utiliteDue && typeof amenagementsUtiles === "boolean") {
