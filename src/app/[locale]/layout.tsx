@@ -66,6 +66,8 @@ const manrope = localFont({
   ],
   variable: "--font-manrope",
   display: "swap",
+  // Repli métrique manuel (globals.css « Manrope Fallback ») : celui de next/font est calé sur wght 200.
+  adjustFontFallback: false,
 });
 
 // P3-35 (audit re-run 2026-05-15 AGENT 6) — Inconsolata preload:false.
@@ -152,7 +154,8 @@ const fraunces = localFont({
   ],
   variable: "--font-fraunces",
   display: "swap",
-  adjustFontFallback: "Times New Roman",
+  // Repli métrique manuel (globals.css « Fraunces Fallback ») : celui de next/font est calé sur wght 900.
+  adjustFontFallback: false,
 });
 
 // Pre-render only the build-time locales (FR ; EN exclu tant que désactivé —

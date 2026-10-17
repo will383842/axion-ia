@@ -10,6 +10,72 @@
  * via Tailwind utilities only (`bg-canvas`, `text-fg`, `font-serif`, …).
  * =============================================================*/
 
+/* CLS — replis métriques calés sur le POIDS RÉELLEMENT AFFICHÉ (mesuré fontTools, 2026-10-17).
+ next/font calibre son repli sur l'instance PAR DÉFAUT du fichier variable : Manrope = wght 200
+ (≈ 8 % trop étroit à 600), Fraunces = wght 900 (≈ 9 % trop large à 500). Au swap le texte du
+ hero reflue → CLS prod 0,22-0,27 (/formations, /implantations/*/paris). adjustFontFallback est
+ donc coupé dans layout.tsx et ces faces prennent le relais (cf. --font-sans / --font-serif). */
+@font-face {
+  font-family: "Manrope Fallback";
+  src: local("Arial");
+  font-weight: 400 500;
+  font-style: normal;
+  size-adjust: 106.44%;
+  ascent-override: 100.15%;
+  descent-override: 28.19%;
+  line-gap-override: 0%;
+}
+@font-face {
+  font-family: "Manrope Fallback";
+  src: local("Arial Bold");
+  font-weight: 600 800;
+  font-style: normal;
+  size-adjust: 100.7%;
+  ascent-override: 105.86%;
+  descent-override: 29.79%;
+  line-gap-override: 0%;
+}
+@font-face {
+  font-family: "Fraunces Fallback";
+  src: local("Times New Roman");
+  font-weight: 400 500;
+  font-style: normal;
+  size-adjust: 118.82%;
+  ascent-override: 82.31%;
+  descent-override: 21.46%;
+  line-gap-override: 0%;
+}
+@font-face {
+  font-family: "Fraunces Fallback";
+  src: local("Times New Roman Bold");
+  font-weight: 600 900;
+  font-style: normal;
+  size-adjust: 114.44%;
+  ascent-override: 85.46%;
+  descent-override: 22.28%;
+  line-gap-override: 0%;
+}
+@font-face {
+  font-family: "Fraunces Fallback";
+  src: local("Times New Roman Italic");
+  font-weight: 400 500;
+  font-style: italic;
+  size-adjust: 114.76%;
+  ascent-override: 85.22%;
+  descent-override: 22.22%;
+  line-gap-override: 0%;
+}
+@font-face {
+  font-family: "Fraunces Fallback";
+  src: local("Times New Roman Bold Italic");
+  font-weight: 600 900;
+  font-style: italic;
+  size-adjust: 115.13%;
+  ascent-override: 84.95%;
+  descent-override: 22.15%;
+  line-gap-override: 0%;
+}
+
 @theme {
   /* ----- Surfaces : 4 tons éditoriaux (sans noir) ----- */
   --color-bg: #faf8f3; /* canvas — ivoire chaud (était blanc froid) */
@@ -105,12 +171,12 @@
 
   /* ----- Typography v3 ----- */
   --font-sans:
-    var(--font-manrope), -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+    var(--font-manrope), "Manrope Fallback", -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
   /* P-105 : chaîne désormais `--font-fraunces` (variable next/font renommée)
      pour éviter l'auto-référence `--font-serif: var(--font-serif)` qui
      empêchait les fallbacks intermédiaires d'être actifs. */
   --font-serif:
-    var(--font-fraunces), "Iowan Old Style", "Palatino Linotype", Palatino, "URW Palladio L", P052,
+    var(--font-fraunces), "Fraunces Fallback", "Iowan Old Style", "Palatino Linotype", Palatino, "URW Palladio L", P052,
     serif;
   --font-mono: var(--font-inconsolata), ui-monospace, SFMono-Regular, Menlo, monospace;
 
