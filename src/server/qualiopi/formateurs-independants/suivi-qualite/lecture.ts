@@ -115,33 +115,42 @@ export async function lireFaitsSuiviQualite(
   });
 
   const grilles = t.grillesSuiviQualite;
-  // La dernière note SAISIE fait foi : une grille sans note n'efface pas la mesure précédente.
-  const saisieDe = (sessionId: string): number | null => {
-    let d: { satisfactionSaisie: number | null; createdAt: Date } | null = null;
-    for (const g of grilles) {
-      if (
-        g.type !== "evaluation_mission" ||
-        g.sessionId !== sessionId ||
-        g.satisfactionSaisie === null
+  // 🔑 La pire note SAISIE compte aussi : une 2e grille mieux notée ne lève pas la suspension
+  // (décision de Will, 17/10/2026) ; seule une `levee_suspension` la lève. La dernière note
+  // saisie reste celle qu'on AFFICHE ; une grille sans note n'efface rien.
+  const saisiesDe = (sessionId: string): number[] =>
+    grilles
+      .filter(
+        (g) =>
+          g.type === "evaluation_mission" &&
+          g.sessionId === sessionId &&
+          g.satisfactionSaisie !== null,
       )
-        continue;
-      if (d === null || g.createdAt >= d.createdAt) d = g;
-    }
-    return d?.satisfactionSaisie ?? null;
-  };
+      .sort((a, b) => a.createdAt.getTime() - b.createdAt.getTime())
+      .map((g) => g.satisfactionSaisie as number);
 
-  const missions: MissionLue[] = sessions.map((s) => ({
-    sessionId: s.id,
-    debut: jourParis(s.dateDebut),
-    fin: jourParis(s.dateFin),
-    annulee: s.statut === "annulee" || s.statut === "reportee",
-    satisfaction: satisfactionDeLaMission(
-      s.enrollments.flatMap((e) =>
-        e.questionnaires.map((q) => q.noteGlobale).filter((n): n is number => n !== null),
-      ),
-      saisieDe(s.id),
-    ),
-  }));
+  const missions: MissionLue[] = sessions.map((s) => {
+    const questionnaires = s.enrollments.flatMap((e) =>
+      e.questionnaires.map((q) => q.noteGlobale).filter((n): n is number => n !== null),
+    );
+    const saisies = saisiesDe(s.id);
+    const moyenneQuestionnaires =
+      questionnaires.length > 0
+        ? questionnaires.reduce((a, b) => a + b, 0) / questionnaires.length
+        : null;
+    const mesures = [
+      ...saisies,
+      ...(moyenneQuestionnaires === null ? [] : [moyenneQuestionnaires]),
+    ];
+    return {
+      sessionId: s.id,
+      debut: jourParis(s.dateDebut),
+      fin: jourParis(s.dateFin),
+      annulee: s.statut === "annulee" || s.statut === "reportee",
+      satisfaction: satisfactionDeLaMission(questionnaires, saisies[saisies.length - 1] ?? null),
+      satisfactionMin: mesures.length === 0 ? null : Math.min(...mesures),
+    };
+  });
 
   const lue = (g: (typeof grilles)[number]) => ({
     sessionId: g.sessionId,

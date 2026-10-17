@@ -142,6 +142,11 @@ export interface MissionLue {
   readonly annulee: boolean;
   /** Satisfaction moyenne des stagiaires (sur 5), ou `null` sans mesure. */
   readonly satisfaction: number | null;
+  /**
+   * La PIRE mesure de satisfaction de la mission (notes saisies, moyenne des questionnaires) :
+   * une note corrigée à la hausse ne l'efface pas. `undefined` = seule `satisfaction` mesure.
+   */
+  readonly satisfactionMin?: number | null;
 }
 
 export interface GrilleLue {
@@ -186,6 +191,29 @@ export function missionsSuivies(f: FaitsSuiviQualite): MissionLue[] {
     .sort((a, b) =>
       a.debut === b.debut ? a.fin.localeCompare(b.fin) : a.debut.localeCompare(b.debut),
     );
+}
+
+/**
+ * Les missions qui peuvent porter une SUSPENSION : les mêmes, annulées ou reportées comprises
+ * (une mission annulée après une mauvaise note garde sa suspension). Elles restent exclues de
+ * `missionsSuivies` : ni 1re mission, ni relance de grille, ni entretien, ni réévaluation.
+ */
+export function missionsSuspensives(f: FaitsSuiviQualite): MissionLue[] {
+  if (!concerne(f)) return [];
+  const depuis = f.allumeLe;
+  return f.missions.filter((m) => m.debut >= depuis);
+}
+
+/**
+ * La mesure qui fait foi pour la suspension : la pire des mesures lues. Une mission sans
+ * aucune mesure rend `null` (donc « ok », comme avant) : le doute porte sur les mesures
+ * lues, pas sur leur absence.
+ */
+export function satisfactionPlancher(m: MissionLue): number | null {
+  const mesures = [m.satisfaction, m.satisfactionMin ?? null].filter(
+    (v): v is number => v !== null && v !== undefined,
+  );
+  return mesures.length === 0 ? null : Math.min(...mesures);
 }
 
 function derniere<T extends { creeLe: Date }>(xs: ReadonlyArray<T>): T | null {
@@ -274,14 +302,20 @@ export function missionsAReprendre(
 } {
   const entretien: MissionLue[] = [];
   const suspension: MissionLue[] = [];
-  for (const m of missionsSuivies(f)) {
-    const niveau = niveauSatisfaction(m.satisfaction, R);
-    if (niveau === "ok") continue;
+  const suivies = new Set(missionsSuivies(f).map((m) => m.sessionId));
+  for (const m of missionsSuspensives(f)) {
+    // 🔑 La suspension se juge sur la PIRE mesure : seule une `levee_suspension` la lève.
     const ds = f.decisions.filter((d) => d.sessionId === m.sessionId);
     const levee = ds.some((d) => d.type === "levee_suspension");
-    if (niveau === "suspension" && !levee) suspension.push(m);
+    if (niveauSatisfaction(satisfactionPlancher(m), R) === "suspension") {
+      if (!levee) suspension.push(m);
+      continue;
+    }
+    // Entretien : mission suivie seulement (une annulée n'a pas d'entretien à prévoir).
     // Une levée motivée vaut entretien ; un entretien seul ne lève pas une suspension.
-    if (niveau === "entretien" && ds.length === 0) entretien.push(m);
+    if (suivies.has(m.sessionId) && niveauSatisfaction(m.satisfaction, R) === "entretien") {
+      if (ds.length === 0) entretien.push(m);
+    }
   }
   return { entretien, suspension };
 }
