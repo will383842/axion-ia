@@ -704,11 +704,21 @@ export async function setSessionLieuAction(
   } as const;
 
   let avant: Record<string, unknown> | null;
+  // QNC L07 — lu dans la MÊME lecture protégée, puis retiré de `avant` : le
+  // journal d'activité garde exactement la forme d'avant le lot.
+  let cible: { estTestInterne: boolean } | null = null;
   try {
-    avant = await prisma.trainingSession.findUnique({
+    const lu = await prisma.trainingSession.findUnique({
       where: { id },
-      select: { ...LIEU_SELECT, modalite: true },
+      select: { ...LIEU_SELECT, modalite: true, estTestInterne: true },
     });
+    if (lu === null) {
+      avant = null;
+    } else {
+      const { estTestInterne, ...reste } = lu;
+      avant = reste;
+      cible = { estTestInterne };
+    }
   } catch {
     return { error: "Erreur lors de la lecture de la session" };
   }
@@ -724,10 +734,6 @@ export async function setSessionLieuAction(
   } as never;
   let aJournaliser: ReturnType<typeof changementsModaliteLieu> = [];
   let motifJournal = "";
-  const cible = await prisma.trainingSession.findUnique({
-    where: { id },
-    select: { estTestInterne: true },
-  });
   if (estActifPour(await lireInterrupteurQualiopi("moyens"), cible)) {
     const etatAvant = avant as unknown as EtatModaliteLieu;
     const etatApres: EtatModaliteLieu = { ...etatAvant };

@@ -50,6 +50,11 @@ export interface SessionLieuFormProps {
    * plus seulement une donnée de lecture : elle s&apos;enregistre avec le lieu.
    */
   modalite?: ModaliteValue;
+  /**
+   * QNC L07 — `qualiopi.moyens.actif` agit-il sur cette session ? Lu par la
+   * page. Faux : pas de champ « Motif » (le serveur l'ignorerait).
+   */
+  moyensActif?: boolean;
 }
 
 const MODALITE_OPTIONS: ReadonlyArray<{ value: ModaliteValue; label: string; aide: string }> = [
@@ -74,6 +79,7 @@ export function SessionLieuForm({
   sessionId,
   initial,
   modalite: modaliteInitiale,
+  moyensActif = false,
 }: SessionLieuFormProps): React.ReactElement {
   const fige = useDossierFige();
   const router = useRouter();
@@ -134,7 +140,7 @@ export function SessionLieuForm({
         // sans modalité ne doit pas en gagner une par le seul fait qu'on
         // corrige son adresse.
         ...(modaliteEffective !== undefined ? { modalite: modaliteEffective } : {}),
-        ...(motif.trim() !== "" ? { motif } : {}),
+        ...(moyensActif && motif.trim() !== "" ? { motif } : {}),
       });
       if ("error" in result) {
         setError(result.error);
@@ -208,23 +214,25 @@ export function SessionLieuForm({
         modalite={modaliteEffective}
       />
 
-      <div className="mb-[var(--space-admin-5)]">
-        <label className={labelCls} htmlFor="fiche-lieu-motif">
-          Motif du changement de modalité ou de lieu
-        </label>
-        <input
-          id="fiche-lieu-motif"
-          type="text"
-          value={motif}
-          onChange={(e) => setMotif(e.target.value)}
-          disabled={isPending}
-          maxLength={2000}
-          className={inputCls}
-        />
-        <p className="mt-[var(--space-admin-1)] text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
-          Gardé au journal avec l&apos;avant / après. À remplir si la modalité ou le lieu change.
-        </p>
-      </div>
+      {moyensActif && (
+        <div className="mb-[var(--space-admin-5)]">
+          <label className={labelCls} htmlFor="fiche-lieu-motif">
+            Motif du changement de modalité ou de lieu
+          </label>
+          <input
+            id="fiche-lieu-motif"
+            type="text"
+            value={motif}
+            onChange={(e) => setMotif(e.target.value)}
+            disabled={isPending}
+            maxLength={2000}
+            className={inputCls}
+          />
+          <p className="mt-[var(--space-admin-1)] text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
+            Gardé au journal avec l&apos;avant / après. À remplir si la modalité ou le lieu change.
+          </p>
+        </div>
+      )}
 
       {error !== null && (
         <p

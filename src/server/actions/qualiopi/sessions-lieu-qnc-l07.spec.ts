@@ -42,6 +42,7 @@ vi.mock("@/server/qualiopi/socle/interrupteurs", async (orig) => ({
   lireInterrupteurQualiopi: vi.fn(async () => etat.valeur),
 }));
 
+import { logQualiopiActivity } from "@/server/actions/qualiopi/_guards";
 import { setSessionLieuAction } from "./sessions";
 
 const ID = "11111111-1111-4111-8111-111111111111";
@@ -62,9 +63,29 @@ const AVANT = {
 beforeEach(() => {
   vi.clearAllMocks();
   etat.valeur = "eteint";
-  m.findUnique.mockImplementation(async (a: { select: Record<string, boolean> }) =>
-    "estTestInterne" in a.select ? { estTestInterne: false } : AVANT,
-  );
+  m.findUnique.mockResolvedValue({ ...AVANT, estTestInterne: false });
+});
+
+describe("setSessionLieuAction — une seule lecture, protégée", () => {
+  it("lit estTestInterne dans la lecture `avant`, et le journal d'activité ne le porte pas", async () => {
+    await setSessionLieuAction({ id: ID, lieuVille: "Lyon" });
+    expect(m.findUnique).toHaveBeenCalledOnce();
+    expect(m.findUnique.mock.calls[0]![0].select).toMatchObject({
+      estTestInterne: true,
+      modalite: true,
+    });
+    const log = vi.mocked(logQualiopiActivity).mock.calls[0]![0] as {
+      changes: { avant: Record<string, unknown> };
+    };
+    expect(log.changes.avant).toEqual(AVANT);
+  });
+  it("base en échec : message propre, aucune exception", async () => {
+    m.findUnique.mockRejectedValueOnce(new Error("base injoignable"));
+    expect(await setSessionLieuAction({ id: ID, lieuVille: "Lyon" })).toEqual({
+      error: "Erreur lors de la lecture de la session",
+    });
+    expect(m.update).not.toHaveBeenCalled();
+  });
 });
 
 describe("setSessionLieuAction — éteint = inchangé", () => {
@@ -134,9 +155,7 @@ describe("setSessionLieuAction — allumé", () => {
     expect(await setSessionLieuAction({ id: ID, modalite: "distanciel" })).toEqual({
       data: { id: ID },
     });
-    m.findUnique.mockImplementation(async (a: { select: Record<string, boolean> }) =>
-      "estTestInterne" in a.select ? { estTestInterne: true } : AVANT,
-    );
+    m.findUnique.mockResolvedValue({ ...AVANT, estTestInterne: true });
     expect(await setSessionLieuAction({ id: ID, modalite: "distanciel" })).toEqual({
       error: expect.any(String),
     });

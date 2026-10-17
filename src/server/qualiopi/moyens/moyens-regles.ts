@@ -43,16 +43,33 @@ export function validerMotif(motif: string | null | undefined): ResultatMotif {
 export type ResultatDateVerification =
   { ok: true } | { ok: false; raison: "invalide" | "anterieure_creation" | "future" };
 
+/**
+ * Une date de vérification est un JOUR, pas un instant : le formulaire envoie
+ * `AAAA-MM-JJ` (minuit UTC). On compare donc en jour civil de Paris — un moyen
+ * créé le jour J à 14 h et vérifié « le jour J » est valide, et une
+ * vérification datée d'aujourd'hui l'est aussi à la création.
+ */
 export function validerDateVerification(
   date: Date,
   creeLe: Date,
   maintenant: Date,
 ): ResultatDateVerification {
-  const t = date.getTime();
-  if (Number.isNaN(t)) return { ok: false, raison: "invalide" };
-  if (t < creeLe.getTime()) return { ok: false, raison: "anterieure_creation" };
-  if (t > maintenant.getTime()) return { ok: false, raison: "future" };
+  if (Number.isNaN(date.getTime())) return { ok: false, raison: "invalide" };
+  const jour = jourParisDe(date);
+  if (jour < jourParisDe(creeLe)) return { ok: false, raison: "anterieure_creation" };
+  if (jour > jourParisDe(maintenant)) return { ok: false, raison: "future" };
   return { ok: true };
+}
+
+/**
+ * Même date de vérification au jour civil de Paris (ou toutes deux vides) :
+ * renvoyer la date stockée n'est PAS un changement, on ne la revalide pas et
+ * elle n'entre pas dans l'historique.
+ */
+export function memeJourVerification(a: Date | null, b: Date | null): boolean {
+  if (a === null || b === null) return a === b;
+  if (Number.isNaN(a.getTime()) || Number.isNaN(b.getTime())) return false;
+  return jourParisDe(a) === jourParisDe(b);
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -191,7 +208,10 @@ export interface BlocVerification {
   readonly materielStagiaire: boolean;
   /** Ce que l'entreprise fournit quand la formation a lieu chez elle (O11). */
   readonly fourniParEntreprise?: ReadonlyArray<string>;
-  /** Confirmation de l'entreprise : qui, quand. Texte libre, pas de coordonnée. */
+  /**
+   * Confirmation de l'entreprise : la FONCTION de la personne (jamais son nom)
+   * et la date. Texte libre, pas de coordonnée : gardé dans `activity_logs`.
+   */
   readonly confirmationEntreprise?: { readonly par: string; readonly le: string };
 }
 

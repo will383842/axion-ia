@@ -4,7 +4,8 @@
 /**
  * VerificationMoyensForm — bloc « Vérification des moyens » d'une session
  * (chantier QNC, lot L07, exigence orale O11). Six points constatés AVANT le
- * début ; chez l'entreprise, ce qu'elle fournit et qui l'a confirmé.
+ * début ; chez l'entreprise, ce qu'elle fournit et la FONCTION de la personne
+ * qui l'a confirmé (jamais son nom : le bloc est gardé au journal d'activité).
  * L'horodatage est posé par le serveur, jamais par ce formulaire.
  */
 
@@ -119,7 +120,7 @@ export function VerificationMoyensForm({
             className={inputCls}
           />
           <label htmlFor="verif-par" className="text-[length:var(--text-admin-sm)] font-semibold">
-            Confirmé par (nom et fonction)
+            Confirmé par (fonction seule)
           </label>
           <input
             id="verif-par"
@@ -127,8 +128,17 @@ export function VerificationMoyensForm({
             value={par}
             disabled={isPending}
             onChange={(e) => setPar(e.target.value)}
+            maxLength={200}
+            placeholder="ex. Responsable des services généraux"
+            aria-describedby="verif-par-aide"
             className={inputCls}
           />
+          <p
+            id="verif-par-aide"
+            className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]"
+          >
+            La fonction, pas le nom : ce champ est gardé au journal d&apos;activité.
+          </p>
           <label htmlFor="verif-le" className="text-[length:var(--text-admin-sm)] font-semibold">
             Confirmé le
           </label>

@@ -113,6 +113,45 @@ describe("allumé", () => {
     expect(r).toEqual({ error: expect.stringContaining("antérieure") });
     expect(tx.moyenPedagogiqueHistorique.create).not.toHaveBeenCalled();
   });
+  it("charge COMPLÈTE du formulaire, date inchangée, moyen créé l'après-midi : accepté", async () => {
+    tx.moyenPedagogique.findUnique.mockResolvedValue({
+      id: ID,
+      categorie: "salle",
+      libelle: "A",
+      description: "",
+      localisation: "",
+      actif: true,
+      dateVerification: new Date("2026-10-16T00:00:00Z"),
+      createdAt: new Date("2026-10-16T12:30:00Z"),
+    });
+    const r = await updateMoyenAction({
+      id: ID,
+      categorie: "salle",
+      libelle: "B",
+      description: "",
+      localisation: "",
+      dateVerification: new Date("2026-10-16"),
+      motif: "Salle renommée par le client",
+    });
+    expect(r).toEqual({ data: { id: ID } });
+    expect(tx.moyenPedagogiqueHistorique.create.mock.calls[0]?.[0].data.apres).toEqual({
+      libelle: "B",
+    });
+  });
+  it("création : une vérification datée d'aujourd'hui est acceptée", async () => {
+    vi.useFakeTimers({ toFake: ["Date"] });
+    try {
+      vi.setSystemTime(new Date("2026-10-16T13:00:00Z"));
+      const r = await creerMoyenAction({
+        categorie: "salle",
+        libelle: "S",
+        dateVerification: new Date("2026-10-16"),
+      });
+      expect(r).toEqual({ data: { id: "m1" } });
+    } finally {
+      vi.useRealTimers();
+    }
+  });
   it("création : une date de vérification déjà passée est refusée", async () => {
     const r = await creerMoyenAction({
       categorie: "salle",

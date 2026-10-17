@@ -4,7 +4,9 @@
  * Quand `qualiopi.moyens.actif` est allumé, on ne modifie plus un moyen
  * pédagogique « à sec » : chaque modification (y compris la désactivation)
  *   1. exige un MOTIF d'au moins 10 caractères ;
- *   2. refuse une date de vérification antérieure à la création de la ligne ;
+ *   2. refuse une date de vérification antérieure à la création de la ligne
+ *      (jour civil de Paris) — seulement si elle CHANGE : le formulaire renvoie
+ *      toujours la date stockée, qui n'est alors ni revalidée ni historisée ;
  *   3. écrit, dans la MÊME transaction, la ligne de `moyens_pedagogiques_historique`
  *      (avant / après / motif / auteur) — table en ajout seul ;
  *   4. ne supprime jamais : désactiver = `actif: false`.
@@ -18,6 +20,7 @@
 
 import {
   differencesMoyen,
+  memeJourVerification,
   validerDateVerification,
   validerMotif,
 } from "@/server/qualiopi/moyens/moyens-regles";
@@ -126,9 +129,19 @@ export async function modifierMoyenMotive(
     const actuel = await tx.moyenPedagogique.findUnique({ where: { id } });
     if (actuel === null) throw new MoyenRefuse("introuvable");
 
-    if (champs.dateVerification instanceof Date) {
+    // Le formulaire renvoie TOUJOURS la date stockée : inchangée au jour près,
+    // elle ne se revalide pas et ne compte pas comme un changement.
+    const demandeChamps: ChampsMoyen = { ...champs };
+    if (
+      demandeChamps.dateVerification !== undefined &&
+      memeJourVerification(demandeChamps.dateVerification, actuel.dateVerification)
+    ) {
+      delete demandeChamps.dateVerification;
+    }
+
+    if (demandeChamps.dateVerification instanceof Date) {
       const r = validerDateVerification(
-        champs.dateVerification,
+        demandeChamps.dateVerification,
         actuel.createdAt,
         entree.maintenant,
       );
@@ -144,7 +157,9 @@ export async function modifierMoyenMotive(
     }
 
     const demande: Record<string, unknown> = {};
-    for (const c of CHAMPS_COMPARES) if (champs[c] !== undefined) demande[c] = champs[c];
+    for (const c of CHAMPS_COMPARES) {
+      if (demandeChamps[c] !== undefined) demande[c] = demandeChamps[c];
+    }
     const diff = differencesMoyen(photo(actuel), demande);
     if (diff.vide) throw new MoyenRefuse("rien_a_changer");
 

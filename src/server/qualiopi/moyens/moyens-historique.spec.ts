@@ -140,6 +140,93 @@ describe("modifierMoyenMotive", () => {
     });
   });
 
+  describe("charge COMPLÈTE du vrai formulaire (MoyenRowActions)", () => {
+    // Moyen créé le 16 à 14 h 30 (Paris), vérifié « le 16 » : la date stockée
+    // est 2026-10-16T00:00Z, AVANT l'instant de création. Le formulaire renvoie
+    // TOUS les champs, dont cette date, réduite au jour puis `new Date("AAAA-MM-JJ")`.
+    const CREE_APRES_MIDI = new Date("2026-10-16T12:30:00.000Z");
+    const LE_SOIR = new Date("2026-10-16T19:00:00.000Z");
+    const STOCKEE = new Date("2026-10-16T00:00:00.000Z");
+    const existant = () =>
+      ligne({ createdAt: CREE_APRES_MIDI, dateVerification: STOCKEE, libelle: "Salle A" });
+    const formulaire = (over: Record<string, unknown> = {}) => ({
+      categorie: "salle",
+      libelle: "Salle A",
+      description: "",
+      localisation: "Lyon",
+      dateVerification: new Date("2026-10-16"),
+      ...over,
+    });
+
+    it("date inchangée + libellé modifié : accepté, l'historique ne porte QUE le libellé", async () => {
+      const f = faux(existant());
+      await modifierMoyenMotive(f.client, "m1", formulaire({ libelle: "Salle B" }), {
+        motif: "Salle renommée par le client",
+        auteur: AUTEUR,
+        maintenant: LE_SOIR,
+      });
+      expect(f.update).toHaveBeenCalledWith({
+        where: { id: "m1" },
+        data: formulaire({ libelle: "Salle B", dateVerification: undefined }),
+      });
+      expect(f.historique.mock.calls[0]?.[0].data).toMatchObject({
+        avant: { libelle: "Salle A" },
+        apres: { libelle: "Salle B" },
+      });
+      expect(f.historique.mock.calls[0]?.[0].data.apres).not.toHaveProperty("dateVerification");
+    });
+
+    it("rien de changé : « rien à changer », jamais « antérieure à la création »", async () => {
+      const f = faux(existant());
+      expect(
+        await code(
+          modifierMoyenMotive(f.client, "m1", formulaire(), {
+            motif: "Enregistré sans changement",
+            auteur: AUTEUR,
+            maintenant: LE_SOIR,
+          }),
+        ),
+      ).toBe("rien_a_changer");
+      expect(f.historique).not.toHaveBeenCalled();
+    });
+
+    it("date stockée avec une heure : la renvoyer n'est pas un faux changement", async () => {
+      // 23 h 30 Z le 16 = le 17 à Paris ; le formulaire affiche et renvoie le 17.
+      const f = faux(
+        ligne({
+          createdAt: CREE,
+          dateVerification: new Date("2026-10-15T23:30:00.000Z"),
+        }),
+      );
+      await modifierMoyenMotive(
+        f.client,
+        "m1",
+        formulaire({ libelle: "Salle B", dateVerification: new Date("2026-10-16") }),
+        { motif: "Salle renommée par le client", auteur: AUTEUR, maintenant: LE_SOIR },
+      );
+      expect(f.historique.mock.calls[0]?.[0].data.apres).toEqual({ libelle: "Salle B" });
+    });
+
+    it("une date réellement changée reste validée (jour antérieur à la création)", async () => {
+      const f = faux(existant());
+      expect(
+        await code(
+          modifierMoyenMotive(
+            f.client,
+            "m1",
+            formulaire({ dateVerification: new Date("2026-10-15") }),
+            {
+              motif: "Date corrigée après relecture",
+              auteur: AUTEUR,
+              maintenant: LE_SOIR,
+            },
+          ),
+        ),
+      ).toBe("date_anterieure_creation");
+      expect(f.update).not.toHaveBeenCalled();
+    });
+  });
+
   it("refuse un moyen introuvable et une demande qui ne change rien", async () => {
     expect(
       await code(

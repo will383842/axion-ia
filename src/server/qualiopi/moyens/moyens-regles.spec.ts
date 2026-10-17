@@ -12,6 +12,7 @@ import {
   estLienZoom,
   jourParisDe,
   lienVisioRequis,
+  memeJourVerification,
   testLienDuAujourdhui,
   validerBlocVerification,
   validerDateVerification,
@@ -38,10 +39,27 @@ describe("validerMotif", () => {
   });
 });
 
-describe("validerDateVerification", () => {
-  it("refuse une date antérieure à la création de la ligne", () => {
-    const r = validerDateVerification(new Date("2026-09-30T23:59:59.000Z"), CREE, MAINTENANT);
+describe("validerDateVerification — jour civil de Paris, pas l'instant", () => {
+  it("refuse une date d'un jour (Paris) antérieur à celui de la création", () => {
+    const r = validerDateVerification(new Date("2026-09-30T12:00:00.000Z"), CREE, MAINTENANT);
     expect(r).toEqual({ ok: false, raison: "anterieure_creation" });
+  });
+  it("accepte le jour de création même si l'instant est avant (formulaire = minuit UTC)", () => {
+    // Moyen créé le 1er à 11 h Paris, vérifié « le 1er » : le formulaire envoie
+    // 2026-10-01T00:00Z, avant l'instant de création, mais le MÊME jour.
+    expect(validerDateVerification(new Date("2026-10-01"), CREE, MAINTENANT).ok).toBe(true);
+    // 23 h 30 Z le 30 septembre = 1er octobre 01 h 30 à Paris.
+    expect(validerDateVerification(new Date("2026-09-30T23:30:00Z"), CREE, MAINTENANT).ok).toBe(
+      true,
+    );
+  });
+  it("à la création, une vérification datée d'aujourd'hui est acceptée", () => {
+    const apresMidi = new Date("2026-10-16T13:00:00.000Z");
+    expect(validerDateVerification(new Date("2026-10-16"), apresMidi, apresMidi).ok).toBe(true);
+    expect(validerDateVerification(new Date("2026-10-15"), apresMidi, apresMidi)).toEqual({
+      ok: false,
+      raison: "anterieure_creation",
+    });
   });
   it("accepte exactement la date de création et toute date jusqu'à maintenant", () => {
     expect(validerDateVerification(CREE, CREE, MAINTENANT).ok).toBe(true);
@@ -53,6 +71,23 @@ describe("validerDateVerification", () => {
   });
   it("refuse une date invalide", () => {
     expect(validerDateVerification(new Date("pas une date"), CREE, MAINTENANT).ok).toBe(false);
+  });
+});
+
+describe("memeJourVerification", () => {
+  it("compare au jour civil de Paris, et deux vides sont égaux", () => {
+    expect(memeJourVerification(null, null)).toBe(true);
+    expect(memeJourVerification(null, new Date("2026-10-01"))).toBe(false);
+    expect(memeJourVerification(new Date("2026-10-01"), new Date("2026-10-01T15:00:00Z"))).toBe(
+      true,
+    );
+    // Stockée à 23 h 30 Z le 16 = le 17 à Paris : le formulaire renvoie le 17.
+    expect(memeJourVerification(new Date("2026-10-17"), new Date("2026-10-16T23:30:00Z"))).toBe(
+      true,
+    );
+    expect(memeJourVerification(new Date("2026-10-16"), new Date("2026-10-16T23:30:00Z"))).toBe(
+      false,
+    );
   });
 });
 

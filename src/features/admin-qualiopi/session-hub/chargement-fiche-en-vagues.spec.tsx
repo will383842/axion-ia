@@ -74,6 +74,7 @@ function sessionFixture() {
     lieuVille: null,
     lieuSalle: null,
     lieuVisioUrl: null,
+    estTestInterne: false,
     contactSurPlaceNom: null,
     contactSurPlaceTelephone: null,
     consignesAcces: null,

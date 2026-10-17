@@ -35,7 +35,7 @@ const MESSAGES = {
   apres_debut: "La vérification doit être enregistrée AVANT le début de la session.",
   fourniture_entreprise_manquante: "Formation chez l'entreprise : indiquez ce qu'elle fournit.",
   confirmation_entreprise_manquante:
-    "Formation chez l'entreprise : indiquez qui a confirmé, et quand.",
+    "Formation chez l'entreprise : indiquez la fonction de la personne qui a confirmé, et quand.",
   session_introuvable: "Session introuvable.",
 } as const;
 
