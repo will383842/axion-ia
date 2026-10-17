@@ -115,16 +115,11 @@ describe("le SQL brut du socle QNC est déclaré", () => {
     expect(actif).not.toMatch(/ALTER TYPE/i);
   });
 
-  it("elle est horodatée après toutes les migrations qui l'ont précédée sur main", () => {
+  it("elle est horodatée après toutes les autres migrations de main", () => {
     const noms = readdirSync(DOSSIER)
       .filter((n) => /^\d{14}_/.test(n))
       .sort();
-    // Rien ne s'intercale AVANT elle après coup. Les migrations des lots suivants
-    // (ex. Qualiopi ind. 21, `20261017120000_formateurs_suivi_qualite`) viennent APRÈS :
-    // exiger qu'elle reste la dernière à jamais refusait toute migration future.
-    expect(noms.filter((n) => n < MIGRATION_SOCLE_QNC).at(-1)).toBe(
-      "20261015180000_contact_pieces_jointes",
-    );
+    expect(noms.at(-1)).toBe(MIGRATION_SOCLE_QNC);
     expect(MIGRATION_SOCLE_QNC.slice(0, 14) > "20261015180000").toBe(true);
   });
 
