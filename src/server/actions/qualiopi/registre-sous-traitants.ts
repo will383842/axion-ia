@@ -4,7 +4,9 @@
 // d'un sous-traitant »), puis l'interrupteur `formateurs.registre_sous_traitants`,
 // AVANT toute lecture. Coupé : refus, rien n'est lu ni écrit.
 //   - rattrapage : la synchronisation lancée à la main, après l'aperçu de l'écran ;
-//   - trace d'un contrôle fait (auteur = la session, jamais le formulaire).
+//   - trace d'un contrôle fait (auteur = la session, jamais le formulaire) ;
+//   - trace d'un contrôle à PREUVES (mission, revue complète), levée motivée d'une
+//     suspension, correction motivée d'un écart mineur (ind. 27, `ecarts.ts`).
 // Journal : écrit par les services (identifiants, codes, compteurs). Sentry : le nom de
 // l'action seulement.
 
@@ -19,6 +21,11 @@ import { adminPath } from "@/lib/admin-path";
 import { peutEngager } from "@/server/auth/habilitations";
 import { interrupteurAllume } from "@/server/qualiopi/formateurs-independants/interrupteur-allume";
 import { synchroniserRegistre } from "@/server/qualiopi/formateurs-independants/registre-sous-traitants/synchronisation";
+import {
+  corrigerEcart,
+  leverSuspension,
+  tracerControlePreuves,
+} from "@/server/qualiopi/formateurs-independants/registre-sous-traitants/ecarts";
 import { tracerControle } from "@/server/qualiopi/formateurs-independants/registre-sous-traitants/traces";
 
 export type EtatGesteRegistre =
@@ -116,5 +123,130 @@ export async function tracerControleRegistreAction(
   } catch (err) {
     Sentry.captureException(err, { tags: { action: "tracerControleRegistreAction" } });
     return { etat: "erreur", message: "Le contrôle n'a pas pu être tracé. Réessayez." };
+  }
+}
+
+const schemaPreuves = z.object({
+  trainerId: z.string().uuid(),
+  code: z.enum(["controle_mission", "revue_annuelle"]),
+  missionId: z.string().uuid().optional(),
+  preuves: z.array(z.string().min(1).max(60)).max(50),
+  motif: z.string().max(2000).optional(),
+  faitLe: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
+});
+
+/** Trace un contrôle à preuves : la liste cochée ; les écarts en découlent. */
+export async function tracerControlePreuvesAction(
+  _prev: EtatGesteRegistre,
+  formData: FormData,
+): Promise<EtatGesteRegistre> {
+  const a = await autorise();
+  if ("error" in a) return { etat: "erreur", message: a.error };
+  const mission = formData.get("missionId");
+  const p = schemaPreuves.safeParse({
+    trainerId: formData.get("trainerId"),
+    code: formData.get("code"),
+    missionId: typeof mission === "string" && mission !== "" ? mission : undefined,
+    preuves: formData.getAll("preuves"),
+    motif: formData.get("motif") ?? undefined,
+    faitLe: formData.get("faitLe"),
+  });
+  if (!p.success) return { etat: "erreur", message: "Données invalides." };
+  try {
+    const r = await tracerControlePreuves({
+      trainerId: p.data.trainerId,
+      code: p.data.code,
+      missionId: p.data.missionId ?? null,
+      cochees: p.data.preuves,
+      motif: p.data.motif ?? null,
+      // Midi UTC : le jour saisi reste le même jour à Paris, été comme hiver.
+      faitAt: new Date(`${p.data.faitLe}T12:00:00Z`),
+      auteurId: a.userId,
+      maintenant: new Date(),
+    });
+    if (!r.ok) return { etat: "erreur", message: r.refus };
+    revalidatePath(ECRAN);
+    if (r.suspendu === true) {
+      return {
+        etat: "ok",
+        message: `Contrôle tracé : ${r.majeurs} écart(s) majeur(s), le sous-traitant est suspendu (nouvelles missions refusées).`,
+      };
+    }
+    return {
+      etat: "ok",
+      message:
+        r.mineurs > 0
+          ? `Contrôle tracé : ${r.mineurs} écart(s) mineur(s), plan de correction ouvert.`
+          : "Contrôle tracé : conforme.",
+    };
+  } catch (err) {
+    Sentry.captureException(err, { tags: { action: "tracerControlePreuvesAction" } });
+    return { etat: "erreur", message: "Le contrôle n'a pas pu être tracé. Réessayez." };
+  }
+}
+
+const schemaLevee = z.object({
+  trainerId: z.string().uuid(),
+  motif: z.string().trim().min(1).max(2000),
+});
+
+/** Lève une suspension par décision motivée ; l'auteur est la session. */
+export async function leverSuspensionAction(
+  _prev: EtatGesteRegistre,
+  formData: FormData,
+): Promise<EtatGesteRegistre> {
+  const a = await autorise();
+  if ("error" in a) return { etat: "erreur", message: a.error };
+  const p = schemaLevee.safeParse({
+    trainerId: formData.get("trainerId"),
+    motif: formData.get("motif"),
+  });
+  if (!p.success) return { etat: "erreur", message: "La levée exige un motif." };
+  try {
+    const r = await leverSuspension({
+      trainerId: p.data.trainerId,
+      motif: p.data.motif,
+      auteurId: a.userId,
+      maintenant: new Date(),
+    });
+    if (!r.ok) return { etat: "erreur", message: r.refus };
+    revalidatePath(ECRAN);
+    return { etat: "ok", message: "Suspension levée, décision tracée." };
+  } catch (err) {
+    Sentry.captureException(err, { tags: { action: "leverSuspensionAction" } });
+    return { etat: "erreur", message: "La levée n'a pas pu se faire. Réessayez." };
+  }
+}
+
+const schemaCorrection = z.object({
+  ecartId: z.string().uuid(),
+  motif: z.string().trim().min(1).max(2000),
+});
+
+/** Clôt le plan de correction d'un écart mineur, avec un motif. */
+export async function corrigerEcartAction(
+  _prev: EtatGesteRegistre,
+  formData: FormData,
+): Promise<EtatGesteRegistre> {
+  const a = await autorise();
+  if ("error" in a) return { etat: "erreur", message: a.error };
+  const p = schemaCorrection.safeParse({
+    ecartId: formData.get("ecartId"),
+    motif: formData.get("motif"),
+  });
+  if (!p.success) return { etat: "erreur", message: "La correction exige un motif." };
+  try {
+    const r = await corrigerEcart({
+      ecartId: p.data.ecartId,
+      motif: p.data.motif,
+      auteurId: a.userId,
+      maintenant: new Date(),
+    });
+    if (!r.ok) return { etat: "erreur", message: r.refus };
+    revalidatePath(ECRAN);
+    return { etat: "ok", message: "Correction tracée." };
+  } catch (err) {
+    Sentry.captureException(err, { tags: { action: "corrigerEcartAction" } });
+    return { etat: "erreur", message: "La correction n'a pas pu être tracée. Réessayez." };
   }
 }

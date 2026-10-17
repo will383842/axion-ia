@@ -74,6 +74,7 @@ function existanteDepuis(f: FaitsFiche): LigneExistante {
     statutDepuis: MAINTENANT,
     dateSortie: plan.statut.dateSortie,
     motifSortie: plan.statut.motifSortie,
+    suspensionEnCours: false,
     generique: { ...plan.generique, verifieDataGouvAt: plan.verifieDataGouvAt },
   };
 }
@@ -236,6 +237,7 @@ describe("configuration des contrôles (un seul fichier)", () => {
       "pieces_validite",
       "registre_public",
       "revue_annuelle",
+      "controle_mission",
     ]);
   });
   it("les pièces suivies : URSSAF au seuil, RC pro non exigée, KBIS/avis SIRENE, NDA", () => {
@@ -393,6 +395,7 @@ describe("alertes d'échéance", () => {
       MAINTENANT,
     ),
     controles: [] as ReturnType<typeof etatControles>,
+    correctionsEchues: [],
     ...p,
   });
 
@@ -461,5 +464,26 @@ describe("alertes d'échéance", () => {
   it("rien pour une ligne suspendue ou sortie", () => {
     expect(candidatsAlertesRegistre([ligne({ statut: "suspendu" })])).toEqual([]);
     expect(candidatsAlertesRegistre([ligne({ statut: "sorti" })])).toEqual([]);
+  });
+});
+
+describe("une suspension pour écart majeur survit à la synchronisation", () => {
+  it("ligne suspendue, fiche active : le plan ne la remet pas « actif »", () => {
+    const f = fiche();
+    const e = { ...existanteDepuis(f), statut: "suspendu" as const, suspensionEnCours: true };
+    const [p] = planifierSynchronisation(
+      [f],
+      [{ ...e, generique: { ...e.generique, actif: false } }],
+      MAINTENANT,
+    );
+    expect(p?.sorte).toBe("inchange");
+  });
+
+  it("ligne active qui vient d'être suspendue : statut et ligne visible passent « suspendu »", () => {
+    const f = fiche();
+    const e = { ...existanteDepuis(f), suspensionEnCours: true };
+    const [p] = planifierSynchronisation([f], [e], MAINTENANT);
+    expect(p).toMatchObject({ sorte: "mettre_a_jour", generique: { actif: false } });
+    expect(p?.sorte === "mettre_a_jour" ? p.statut?.statut : null).toBe("suspendu");
   });
 });

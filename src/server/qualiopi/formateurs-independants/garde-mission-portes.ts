@@ -7,6 +7,11 @@
  * 🔑 Interrupteur `formateurs.garde_mission_portes` coupé (ou illisible) : rien
  * n'est lu, rien n'est refusé — exactement le comportement d'avant L3.
  * Allumé : la garde ÉCHOUE FERMÉE (une lecture impossible refuse).
+ *
+ * 🔴 Qualiopi ind. 27 — un sous-traitant SUSPENDU au registre (écart majeur d'un
+ * contrôle, non levé) est refusé dès que `formateurs.registre_sous_traitants` est
+ * allumé, portes de la garde allumées ou non, et jamais en simple avertissement : une
+ * suspension est une décision, levée en console par une décision motivée.
  */
 
 import { prisma } from "@/lib/prisma";
@@ -14,6 +19,7 @@ import type { DocumentConformite } from "@/server/qualiopi/trainers/conformite";
 import { GABARIT_VERSIONS } from "@/server/qualiopi/documents/templates/gabarit-versions";
 
 import { lireContratCadreSigne } from "./contrat-cadre-en-vigueur";
+import { interrupteurAllume } from "./interrupteur-allume";
 import {
   AUCUNE_ISSUE,
   MANQUES_MISSION,
@@ -83,6 +89,30 @@ async function lireAllumage(): Promise<ControleGardeMission | "allumee"> {
 }
 
 /**
+ * Ind. 27 — le refus pour suspension au registre, ou `null`. Interrupteur du registre
+ * coupé : rien n'est lu. Allumé, une lecture en échec refuse.
+ */
+async function refusSuspensionRegistre(trainerId: string): Promise<string | null> {
+  if (!(await interrupteurAllume("registre_sous_traitants"))) return null;
+  // Un client sans la table (doublure de test d'une autre suite) n'est pas une panne.
+  if (
+    typeof (prisma as { suspensionSousTraitant?: { findFirst?: unknown } }).suspensionSousTraitant
+      ?.findFirst !== "function"
+  ) {
+    return null;
+  }
+  try {
+    const s = await prisma.suspensionSousTraitant.findFirst({
+      where: { leveeAt: null, registre: { trainerId } },
+      select: { suspenduAt: true },
+    });
+    return s === null ? null : MANQUES_MISSION.suspenduRegistre;
+  } catch {
+    return MANQUES_MISSION.erreur;
+  }
+}
+
+/**
  * La garde de mission pour CE formateur, aujourd'hui. Ne lève jamais : allumée,
  * une erreur de lecture rend un refus.
  *
@@ -96,6 +126,23 @@ export async function controlerGardeMission(
   trainerId: string,
   maintenant: Date = new Date(),
   enJeu?: MissionEnJeu,
+): Promise<ControleGardeMission> {
+  const [suspension, garde] = await Promise.all([
+    refusSuspensionRegistre(trainerId),
+    controlerPortes(trainerId, maintenant, enJeu),
+  ]);
+  if (suspension === null) return garde;
+  return {
+    mode: "refuser",
+    refus: [...new Set([suspension, ...garde.refus, ...garde.avertissements])],
+    avertissements: [],
+  };
+}
+
+async function controlerPortes(
+  trainerId: string,
+  maintenant: Date,
+  enJeu: MissionEnJeu | undefined,
 ): Promise<ControleGardeMission> {
   const allumage = await lireAllumage();
   if (allumage !== "allumee") return allumage;

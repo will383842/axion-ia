@@ -12,6 +12,8 @@
  *   rien. Un verrou consultatif empêche deux passages simultanés (tâche du matin et
  *   rattrapage depuis la console) de créer deux lignes visibles pour le même formateur.
  * - **Rien n'est supprimé** : une sortie est un statut, une date et un motif.
+ * - **Une suspension pour écart majeur tient** : tant qu'elle n'est pas levée en
+ *   console (`ecarts.ts`), la ligne reste « suspendue », fiche active ou non.
  * - **Journal** : identifiants, statuts et compteurs seulement.
  *
  * Module neutre (ni `server-only`, ni Next) : le worker l'importe. Ne lève jamais.
@@ -107,6 +109,7 @@ async function lireExistants(): Promise<LigneExistante[]> {
       statutDepuis: true,
       dateSortie: true,
       motifSortie: true,
+      suspensions: { where: { leveeAt: null }, select: { id: true }, take: 1 },
       sousTraitant: {
         select: {
           nom: true,
@@ -128,6 +131,7 @@ async function lireExistants(): Promise<LigneExistante[]> {
     statutDepuis: l.statutDepuis,
     dateSortie: l.dateSortie,
     motifSortie: l.motifSortie,
+    suspensionEnCours: l.suspensions.length > 0,
     generique: l.sousTraitant,
   }));
 }

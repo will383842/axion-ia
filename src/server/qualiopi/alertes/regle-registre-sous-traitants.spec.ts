@@ -56,6 +56,7 @@ beforeEach(() => {
           enRetard: true,
         },
       ],
+      correctionsEchues: [],
     },
   ]);
 });
@@ -79,6 +80,27 @@ describe("règle « registre des sous-traitants »", () => {
       expect(x).toMatchObject({ cibleType: "Trainer", cibleId: T1 });
       expect(ALERTE_CATALOGUE[x.code]).toMatchObject({ niveau: x.niveau, resolutionAuto: true });
     }
+  });
+
+  it("plan de correction échu : alerte au catalogue, même sous suspension", async () => {
+    m.lire.mockResolvedValue([
+      {
+        trainerId: T1,
+        raisonSociale: "Anne Martin",
+        statut: "suspendu",
+        pieces: [],
+        controles: [],
+        correctionsEchues: [
+          { libelle: "Bilan de fin de formation", echeance: new Date("2026-10-10T00:00:00Z") },
+        ],
+      },
+    ]);
+    const a = await regleRegistreSousTraitants(MAINTENANT);
+    expect(a.map((x) => x.code)).toEqual(["sous_traitant_registre_correction_echue"]);
+    expect(ALERTE_CATALOGUE["sous_traitant_registre_correction_echue"]).toMatchObject({
+      niveau: a[0]?.niveau,
+      resolutionAuto: true,
+    });
   });
 
   it("est inscrite au moteur d'alertes", () => {

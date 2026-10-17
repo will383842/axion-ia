@@ -4,7 +4,8 @@
  *
  * - **Qui entre** : un indépendant au contrat-cadre signé, ou actif. Jamais une fiche de
  *   test : le registre est celui que lit l'auditeur.
- * - **Statut** : actif, suspendu (fiche désactivée), sorti (date et motif). Une sortie
+ * - **Statut** : actif, suspendu (fiche désactivée, ou écart MAJEUR d'un contrôle tant
+ *   que la suspension n'est pas levée en console), sorti (date et motif). Une sortie
  *   est DÉFINITIVE et rien n'est jamais retiré du registre : une fiche qui cesse d'être
  *   éligible y reste, sortie.
  * - **Plan IDEMPOTENT** : rejoué sur son propre résultat, il ne crée ni ne modifie rien.
@@ -28,7 +29,9 @@ import {
   CONTROLES_SOUS_TRAITANCE,
   PIECES_REGISTRE,
   ALERTE_AVANT_ECHEANCE_JOURS,
+  REGLAGES_IND27_DEFAUTS,
   type PieceRegistre,
+  type ReglagesInd27,
 } from "./controles.config";
 
 const JOUR_MS = 24 * 3600 * 1000;
@@ -81,6 +84,8 @@ export interface LigneExistante {
   readonly statutDepuis: Date;
   readonly dateSortie: Date | null;
   readonly motifSortie: string | null;
+  /** Une suspension pour écart majeur est en cours (non levée). */
+  readonly suspensionEnCours: boolean;
   readonly generique: ChampsGeneriques & { readonly verifieDataGouvAt: Date | null };
 }
 
@@ -130,11 +135,15 @@ function motifFin(motif: string | null): string {
     : "Fin de collaboration";
 }
 
-/** Le statut au registre. Une sortie déjà inscrite est définitive. */
+/**
+ * Le statut au registre. Une sortie déjà inscrite est définitive ; une suspension pour
+ * écart majeur tient tant qu'elle n'est pas levée (une sortie l'emporte).
+ */
 export function statutAttendu(
   f: FaitsFiche,
   actuel: StatutAttendu | null,
   maintenant: Date,
+  suspensionEnCours = false,
 ): StatutAttendu {
   if (actuel?.statut === "sorti") return actuel;
   if (f.finCollaborationAt !== null) {
@@ -147,6 +156,7 @@ export function statutAttendu(
   if (f.statut !== "sous_traitant") {
     return { statut: "sorti", dateSortie: maintenant, motifSortie: MOTIF_CHANGEMENT_DE_NATURE };
   }
+  if (suspensionEnCours) return { statut: "suspendu", dateSortie: null, motifSortie: null };
   return { statut: f.actif ? "actif" : "suspendu", dateSortie: null, motifSortie: null };
 }
 
@@ -205,7 +215,7 @@ export function planifierSynchronisation(
       });
       continue;
     }
-    const statut = statutAttendu(f, e, maintenant);
+    const statut = statutAttendu(f, e, maintenant, e.suspensionEnCours);
     const voulu = generiqueDe(f, statut);
     const g: Partial<Omit<ChampsGeneriques, "nom">> = {
       ...(voulu.siret !== e.generique.siret ? { siret: voulu.siret } : {}),
@@ -344,7 +354,11 @@ function plusProche(dates: ReadonlyArray<Date | null>): Date | null {
   return v.length === 0 ? null : new Date(Math.min(...v.map((d) => d.getTime())));
 }
 
-export function etatControles(e: EntreeControles, maintenant: Date): EtatControle[] {
+export function etatControles(
+  e: EntreeControles,
+  maintenant: Date,
+  reglages: ReglagesInd27 = REGLAGES_IND27_DEFAUTS,
+): EtatControle[] {
   const dernier = (code: string, seulementConforme = false) =>
     plusRecente(
       e.traces
@@ -386,7 +400,7 @@ export function etatControles(e: EntreeControles, maintenant: Date): EtatControl
       }
       case "annuelle": {
         const fait = dernier(c.code);
-        const echeance = addMonths(fait ?? e.dateEntree, 12);
+        const echeance = addMonths(fait ?? e.dateEntree, reglages.revueCompleteMois);
         return {
           ...base,
           dernierAt: fait,
@@ -394,6 +408,9 @@ export function etatControles(e: EntreeControles, maintenant: Date): EtatControl
           enRetard: echeance.getTime() < maintenant.getTime(),
         };
       }
+      case "a_chaque_mission":
+        // Dû à chaque mission, sans échéance propre : ses écarts portent leurs suites.
+        return { ...base, dernierAt: dernier(c.code), echeance: null, enRetard: false };
     }
   });
 }
@@ -404,8 +421,12 @@ export interface EtatLigne {
   readonly prochaineEcheance: Date | null;
 }
 
-export function etatLigneRegistre(e: EntreeControles, maintenant: Date): EtatLigne {
-  const controles = etatControles(e, maintenant);
+export function etatLigneRegistre(
+  e: EntreeControles,
+  maintenant: Date,
+  reglages: ReglagesInd27 = REGLAGES_IND27_DEFAUTS,
+): EtatLigne {
+  const controles = etatControles(e, maintenant, reglages);
   return {
     controles,
     dernierControleAt: plusRecente(controles.map((c) => c.dernierAt)),
@@ -422,7 +443,8 @@ export function etatLigneRegistre(e: EntreeControles, maintenant: Date): EtatLig
  * Les trois alertes du registre. Le CODE d'alerte est posé par la règle du moteur
  * (`alertes/regle-registre-sous-traitants.ts`), là où le verrou du catalogue le lit.
  */
-export type SorteAlerteRegistre = "piece_expiree" | "piece_a_echeance" | "controle_en_retard";
+export type SorteAlerteRegistre =
+  "piece_expiree" | "piece_a_echeance" | "controle_en_retard" | "correction_echue";
 
 export interface CandidatAlerteRegistre {
   readonly sorte: SorteAlerteRegistre;
@@ -439,6 +461,8 @@ export interface LigneAlertes {
   readonly statut: StatutRegistre;
   readonly pieces: ReadonlyArray<EtatPiece>;
   readonly controles: ReadonlyArray<EtatControle>;
+  /** Plans de correction (écarts mineurs) ouverts dont l'échéance est passée. */
+  readonly correctionsEchues: ReadonlyArray<{ readonly libelle: string; readonly echeance: Date }>;
 }
 
 const jour = (d: Date | null) =>
@@ -450,6 +474,18 @@ export function candidatsAlertesRegistre(
 ): CandidatAlerteRegistre[] {
   const out: CandidatAlerteRegistre[] = [];
   for (const l of lignes) {
+    if (l.statut === "sorti") continue;
+    // Un plan de correction échu se suit même sous suspension : c'est sa levée qui l'attend.
+    if (l.correctionsEchues.length > 0) {
+      out.push({
+        sorte: "correction_echue",
+        niveau: "important",
+        titre: "Registre des sous-traitants : plan de correction échu",
+        message: `${l.libelle} : ${l.correctionsEchues.map((c) => `${c.libelle} (à corriger avant le ${jour(c.echeance)})`).join(", ")}. Obtenir la correction puis la tracer au registre.`,
+        cibleType: "Trainer",
+        cibleId: l.trainerId,
+      });
+    }
     if (l.statut !== "actif") continue;
     const suivies = l.pieces.filter((p) => p.exigee && !p.alertesAilleurs);
     const expirees = suivies.filter((p) => p.etat === "expiree");

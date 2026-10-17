@@ -288,6 +288,7 @@ const CODES_ATTENDUS: string[] = [
   "sous_traitant_registre_piece_expiree",
   "sous_traitant_registre_piece_a_echeance",
   "sous_traitant_registre_controle_en_retard",
+  "sous_traitant_registre_correction_echue",
 ];
 
 const NIVEAUX_VALIDES: AlerteNiveau[] = ["info", "important", "critique"];

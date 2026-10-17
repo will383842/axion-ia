@@ -134,6 +134,14 @@ L'alerte « Avis du financeur non recueilli » (J+30 après une session financé
 
 La méthode de contrôle (quoi, quand, qui) est dans **un seul fichier** : `src/server/qualiopi/formateurs-independants/registre-sous-traitants/controles.config.ts`. Elle est provisoire jusqu'à la procédure de sous-traitance v2 : pièces légales à l'entrée, puis selon leur validité ; recontrôle du registre public (fraîcheur de la garde de mission) ; revue annuelle. La raison sociale est écrite une seule fois, à l'entrée (nom de la personne) : la corriger sur la ligne du registre général, la synchronisation ne la réécrit pas.
 
+**Seuils de contrôle (ind. 27), derrière `formateurs.registre_sous_traitants`.** Deux contrôles se tracent par **liste de preuves**, cochée une à une et figée sur la trace : le **contrôle de chaque mission** (lettre de mission signée, émargements, pièces légales, supports, évaluations, bilan) et la **revue complète annuelle**. Les listes et la gravité de chaque preuve sont dans `controles.config.ts` (**à valider par Will**).
+
+- **Écart majeur** (preuve majeure manquante, émargement absent) : le sous-traitant est **suspendu** au registre, motif tracé. La garde de mission refuse ses nouvelles missions, que `garde_mission_portes` soit allumée ou non, et jamais en simple avertissement. La suspension se lève dans l'écran du registre, par une décision motivée (qui, quand, pourquoi) ; la synchronisation ne la défait pas.
+- **Écart mineur** : un plan de correction s'ouvre, échéance **J+15**, et l'alerte « plan de correction échu » part à l'échéance s'il n'est pas tracé corrigé (avec `alertes_registre_sous_traitants`).
+- Le délai de correction et la périodicité de la revue complète sont des **réglages** de `/qualiopi/config` (`sous_traitance_delai_correction_jours`, `sous_traitance_revue_complete_mois`), défauts 15 jours et 12 mois, à valider par Will.
+
+⚠️ **Avant d'allumer `alertes_registre_sous_traitants`**, tracer les contrôles d'entrée (« Pièces légales à l'entrée », « Recontrôle du registre public ») du stock rattrapé : sans trace, chaque ligne lève au premier passage une alerte « contrôle en retard », puisque leur échéance est la date d'entrée.
+
 ## Constater après chaque allumage
 
 1. Recharger l'écran Interrupteurs : la clé est allumée et ses préalables aussi.

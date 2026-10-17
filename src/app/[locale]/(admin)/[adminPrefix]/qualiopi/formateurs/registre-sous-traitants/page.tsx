@@ -9,6 +9,8 @@
  *     d'entrée, état des pièces, dernier contrôle, prochaine échéance, statut ;
  *   - le RATTRAPAGE des fiches existantes, après aperçu ;
  *   - la TRACE d'un contrôle fait (auteur, date, résultat, motif) ;
+ *   - le CONTRÔLE À PREUVES (chaque mission, revue complète annuelle) et ses suites :
+ *     suspension pour écart majeur (levée motivée) et plans de correction (J+réglage) ;
  *   - l'export CSV et PDF (date d'export en pied).
  *
  * La ligne de chaque indépendant apparaît aussi au registre général des sous-traitants
@@ -31,7 +33,12 @@ import { gardePage } from "@/server/auth/garde-page";
 import { peutEngager } from "@/server/auth/habilitations";
 import { interrupteurAllume } from "@/server/qualiopi/formateurs-independants/interrupteur-allume";
 import { INTERRUPTEURS_SIGNATURE } from "@/server/qualiopi/formateurs-independants/interrupteurs";
-import { CONTROLES_SOUS_TRAITANCE } from "@/server/qualiopi/formateurs-independants/registre-sous-traitants/controles.config";
+import {
+  CONTROLES_SOUS_TRAITANCE,
+  PREUVES_MISSION,
+  PREUVES_REVUE_COMPLETE,
+  preuvesDuControle,
+} from "@/server/qualiopi/formateurs-independants/registre-sous-traitants/controles.config";
 import {
   LIBELLES_STATUT_REGISTRE,
   jour,
@@ -39,12 +46,20 @@ import {
 } from "@/server/qualiopi/formateurs-independants/registre-sous-traitants/export";
 import {
   PLAFOND_REGISTRE,
+  lireMissionsAControler,
   lireRegistre,
 } from "@/server/qualiopi/formateurs-independants/registre-sous-traitants/lecture";
+import { lireReglagesInd27 } from "@/server/qualiopi/formateurs-independants/registre-sous-traitants/reglages";
 import { apercuSynchronisation } from "@/server/qualiopi/formateurs-independants/registre-sous-traitants/synchronisation";
 import { parisDateISO } from "@/server/qualiopi/presence/time";
 
-import { RattrapageRegistreForm, TracerControleForm } from "./RegistreGestes";
+import {
+  ControlePreuvesForm,
+  CorrigerEcartForm,
+  LeverSuspensionForm,
+  RattrapageRegistreForm,
+  TracerControleForm,
+} from "./RegistreGestes";
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
@@ -79,10 +94,16 @@ export default async function RegistreSousTraitantsPage({ params }: PageProps) {
   }
 
   const maintenant = new Date();
-  const [registre, apercu] = await Promise.all([
+  const [registre, apercu, reglages] = await Promise.all([
     lireRegistre(maintenant),
     apercuSynchronisation(maintenant),
+    lireReglagesInd27(),
   ]);
+  const missions = await lireMissionsAControler(
+    registre.filter((l) => l.statut !== "sorti").map((l) => l.trainerId),
+    maintenant,
+  );
+  const suites = registre.filter((l) => l.suspension !== null || l.corrections.length > 0);
   const aAppliquer = apercu.lignes.filter((l) => l.sorte !== "inchange");
   const peutAgir = peutEngager(acces.role, "habiliter_formateur");
   const base = `/${locale}/${adminPrefix}/qualiopi/formateurs`;
@@ -98,7 +119,7 @@ export default async function RegistreSousTraitantsPage({ params }: PageProps) {
             <a href={lienTelechargement(`${exportHref}?format=csv`)} className="admin-button-ghost">
               Exporter (CSV)
             </a>
-            <a href={`${exportHref}?format=pdf`} className="admin-button-ghost">
+            <a href={lienTelechargement(`${exportHref}?format=pdf`)} className="admin-button-ghost">
               Exporter (PDF)
             </a>
           </div>
@@ -133,6 +154,30 @@ export default async function RegistreSousTraitantsPage({ params }: PageProps) {
             ))}
           </tbody>
         </table>
+        <h3 className="admin-h3">Preuves attendues à chaque mission</h3>
+        <ul>
+          {PREUVES_MISSION.map((p) => (
+            <li key={p.code}>
+              {p.libelle} — absente : écart {p.gravite}
+            </li>
+          ))}
+        </ul>
+        <h3 className="admin-h3">Preuves de la revue complète</h3>
+        <ul>
+          {PREUVES_REVUE_COMPLETE.map((p) => (
+            <li key={p.code}>
+              {p.libelle} — absente : écart {p.gravite}
+            </li>
+          ))}
+        </ul>
+        <p className="admin-meta-small">
+          Écart majeur : le sous-traitant est suspendu, ses nouvelles missions sont refusées
+          jusqu&apos;à une levée motivée. Écart mineur : plan de correction à{" "}
+          {reglages.delaiCorrectionJours} jours, alerte à l&apos;échéance. Revue complète tous les{" "}
+          {reglages.revueCompleteMois} mois. Seuils modifiables dans la{" "}
+          <Link href={`/${locale}/${adminPrefix}/qualiopi/config`}>configuration Qualiopi</Link>{" "}
+          (valeurs à valider par Will).
+        </p>
         <p className="admin-meta-small">
           Méthode provisoire, en attendant la procédure de sous-traitance v2.
         </p>
@@ -199,6 +244,11 @@ export default async function RegistreSousTraitantsPage({ params }: PageProps) {
                       </td>
                       <td>
                         {LIBELLES_STATUT_REGISTRE[l.statut]} depuis le {jour(l.statutDepuis)}
+                        {l.suspension !== null ? (
+                          <p className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-danger)]">
+                            Suspendu le {jour(l.suspension.suspenduAt)} — {l.suspension.motif}
+                          </p>
+                        ) : null}
                         {l.statut === "sorti" ? (
                           <p className="text-[length:var(--text-admin-xs)]">
                             Sortie le {jour(l.dateSortie)} — {l.motifSortie}
@@ -249,12 +299,81 @@ export default async function RegistreSousTraitantsPage({ params }: PageProps) {
         ) : null}
       </AdminCard>
 
+      {suites.length > 0 ? (
+        <AdminCard>
+          <h2 className="admin-h2">Suspensions et plans de correction</h2>
+          <table className="admin-table">
+            <thead>
+              <tr>
+                <th scope="col">Sous-traitant</th>
+                <th scope="col">Suspension</th>
+                <th scope="col">Plans de correction ouverts</th>
+              </tr>
+            </thead>
+            <tbody>
+              {suites.map((l) => (
+                <tr key={l.registreId}>
+                  <td>{l.raisonSociale}</td>
+                  <td>
+                    {l.suspension === null ? (
+                      "—"
+                    ) : (
+                      <>
+                        <p>
+                          Depuis le {jour(l.suspension.suspenduAt)} — {l.suspension.motif}
+                        </p>
+                        {peutAgir ? <LeverSuspensionForm trainerId={l.trainerId} /> : null}
+                      </>
+                    )}
+                  </td>
+                  <td>
+                    {l.corrections.length === 0 ? (
+                      "—"
+                    ) : (
+                      <ul>
+                        {l.corrections.map((c) => (
+                          <li key={c.ecartId}>
+                            {c.libelle} — à corriger avant le {jour(c.echeance)}
+                            {c.echeance.getTime() <= maintenant.getTime() ? " (échu)" : ""}
+                            {peutAgir ? <CorrigerEcartForm ecartId={c.ecartId} /> : null}
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </AdminCard>
+      ) : null}
+
+      {peutAgir ? (
+        <AdminCard>
+          <h2 className="admin-h2">Contrôle d&apos;une mission ou revue complète</h2>
+          <p className="admin-meta-small">
+            Cocher chaque preuve présente : le résultat et les écarts en découlent.
+          </p>
+          <ControlePreuvesForm
+            formateurs={registre
+              .filter((l) => l.statut !== "sorti")
+              .map((l) => ({ trainerId: l.trainerId, libelle: l.raisonSociale }))}
+            missions={missions}
+            preuvesMission={PREUVES_MISSION}
+            preuvesRevue={PREUVES_REVUE_COMPLETE}
+            aujourdhui={parisDateISO(maintenant)}
+          />
+        </AdminCard>
+      ) : null}
+
       {peutAgir ? (
         <AdminCard>
           <h2 className="admin-h2">Tracer un contrôle fait</h2>
           <TracerControleForm
             formateurs={registre.map((l) => ({ trainerId: l.trainerId, libelle: l.raisonSociale }))}
-            controles={CONTROLES_SOUS_TRAITANCE.map((c) => ({ code: c.code, libelle: c.libelle }))}
+            controles={CONTROLES_SOUS_TRAITANCE.filter(
+              (c) => preuvesDuControle(c.code) === null,
+            ).map((c) => ({ code: c.code, libelle: c.libelle }))}
             aujourdhui={parisDateISO(maintenant)}
           />
         </AdminCard>

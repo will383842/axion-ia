@@ -11,6 +11,10 @@ import { prisma } from "@/lib/prisma";
 import { etatControle } from "../controle-regles";
 import { lireCumulsHonorairesHtCents } from "../vigilance-seuil-lecture";
 
+import { preuvesDuControle } from "./controles.config";
+import { correctionsEchues } from "./ecarts-regles";
+import { lireReglagesInd27 } from "./reglages";
+
 import {
   etatLigneRegistre,
   etatPieces,
@@ -26,6 +30,20 @@ export interface TraceLue {
   readonly resultat: ResultatControle;
   readonly motif: string | null;
   readonly auteurId: string | null;
+  /** Contrôle de chaque mission : la mission contrôlée. */
+  readonly missionId: string | null;
+}
+
+/** Un plan de correction (écart mineur) encore ouvert. */
+export interface CorrectionOuverte {
+  readonly ecartId: string;
+  readonly libelle: string;
+  readonly echeance: Date;
+}
+
+export interface SuspensionLue {
+  readonly suspenduAt: Date;
+  readonly motif: string;
 }
 
 export interface LigneRegistreLue {
@@ -46,6 +64,15 @@ export interface LigneRegistreLue {
   readonly traces: ReadonlyArray<TraceLue>;
   readonly dernierControleAt: Date | null;
   readonly prochaineEcheance: Date | null;
+  /** Suspension pour écart majeur en cours, ou `null`. */
+  readonly suspension: SuspensionLue | null;
+  readonly corrections: ReadonlyArray<CorrectionOuverte>;
+  readonly correctionsEchues: ReadonlyArray<{ readonly libelle: string; readonly echeance: Date }>;
+}
+
+/** Le libellé d'une preuve, lu dans la liste du contrôle qui l'a constatée. */
+function libellePreuve(codeControle: string, codePreuve: string): string {
+  return preuvesDuControle(codeControle)?.find((p) => p.code === codePreuve)?.libelle ?? codePreuve;
 }
 
 /** Plafond de lecture : bien au-delà du vivier d'un organisme ; l'écran le dit s'il est atteint. */
@@ -65,8 +92,31 @@ export async function lireRegistre(maintenant: Date): Promise<LigneRegistreLue[]
       motifSortie: true,
       sousTraitant: { select: { nom: true, siret: true, nda: true, objetPrestation: true } },
       controles: {
-        select: { code: true, faitAt: true, resultat: true, motif: true, auteurId: true },
+        select: {
+          code: true,
+          faitAt: true,
+          resultat: true,
+          motif: true,
+          auteurId: true,
+          missionId: true,
+        },
         orderBy: { faitAt: "desc" },
+      },
+      suspensions: {
+        where: { leveeAt: null },
+        select: { suspenduAt: true, motif: true },
+        orderBy: { suspenduAt: "desc" },
+        take: 1,
+      },
+      ecarts: {
+        where: { gravite: "mineur", corrigeAt: null },
+        select: {
+          id: true,
+          preuveCode: true,
+          echeanceCorrectionAt: true,
+          controle: { select: { code: true } },
+        },
+        orderBy: { echeanceCorrectionAt: "asc" },
       },
       trainer: {
         select: {
@@ -91,7 +141,10 @@ export async function lireRegistre(maintenant: Date): Promise<LigneRegistreLue[]
     orderBy: { dateEntree: "asc" },
     take: PLAFOND_REGISTRE,
   });
-  const cumuls = await lireCumulsHonorairesHtCents(lues.map((l) => l.trainerId));
+  const [cumuls, reglages] = await Promise.all([
+    lireCumulsHonorairesHtCents(lues.map((l) => l.trainerId)),
+    lireReglagesInd27(),
+  ]);
   return lues.map((l): LigneRegistreLue => {
     const pieces = etatPieces(
       l.trainer.documents.filter((d) => d.archiveAt === null),
@@ -109,7 +162,20 @@ export async function lireRegistre(maintenant: Date): Promise<LigneRegistreLue[]
         pieces,
       },
       maintenant,
+      reglages,
     );
+    const corrections = l.ecarts.flatMap((e): CorrectionOuverte[] =>
+      e.echeanceCorrectionAt === null
+        ? []
+        : [
+            {
+              ecartId: e.id,
+              libelle: libellePreuve(e.controle.code, e.preuveCode),
+              echeance: e.echeanceCorrectionAt,
+            },
+          ],
+    );
+    const suspension = l.suspensions[0] ?? null;
     return {
       registreId: l.id,
       trainerId: l.trainerId,
@@ -128,6 +194,61 @@ export async function lireRegistre(maintenant: Date): Promise<LigneRegistreLue[]
       traces: l.controles,
       dernierControleAt: etat.dernierControleAt,
       prochaineEcheance: etat.prochaineEcheance,
+      suspension,
+      corrections,
+      correctionsEchues: correctionsEchues(
+        corrections.map((c) => ({ ...c, corrigeAt: null })),
+        maintenant,
+      ),
     };
   });
+}
+
+export interface MissionAControler {
+  readonly missionId: string;
+  readonly trainerId: string;
+  readonly libelle: string;
+  /** Un contrôle de mission y est déjà tracé (un nouveau peut toujours s'ajouter). */
+  readonly dejaControlee: boolean;
+}
+
+/** Au plus 300 missions proposées au contrôle : les plus récentes d'abord. */
+export const MISSIONS_A_CONTROLER_MAX = 300;
+
+/**
+ * Les missions ACCORDÉES des sous-traitants du registre, sessions commencées, pour le
+ * contrôle de chaque mission. Lecture seule ; illisible : liste vide.
+ */
+export async function lireMissionsAControler(
+  trainerIds: ReadonlyArray<string>,
+  maintenant: Date,
+): Promise<MissionAControler[]> {
+  if (trainerIds.length === 0 || process.env["DATABASE_URL"]?.includes("stub.invalid")) return [];
+  try {
+    const lues = await prisma.missionFormateur.findMany({
+      where: {
+        trainerId: { in: [...trainerIds] },
+        // = `STATUTS_ACCORD_DONNE` (`trainers/mission-formateur.ts`, trop lourd à importer
+        // ici : il tire la file d'envoi dans le moteur d'alertes).
+        statut: { in: ["acceptee", "accord_hors_outil"] },
+        session: { dateDebut: { lte: maintenant } },
+      },
+      select: {
+        id: true,
+        trainerId: true,
+        session: { select: { numero: true, titreSession: true, dateDebut: true } },
+        controlesSousTraitance: { select: { id: true }, take: 1 },
+      },
+      orderBy: { session: { dateDebut: "desc" } },
+      take: MISSIONS_A_CONTROLER_MAX,
+    });
+    return lues.map((m) => ({
+      missionId: m.id,
+      trainerId: m.trainerId,
+      libelle: `${m.session.numero} — ${m.session.titreSession} (${m.session.dateDebut.toLocaleDateString("fr-FR", { timeZone: "Europe/Paris" })})`,
+      dejaControlee: m.controlesSousTraitance.length > 0,
+    }));
+  } catch {
+    return [];
+  }
 }

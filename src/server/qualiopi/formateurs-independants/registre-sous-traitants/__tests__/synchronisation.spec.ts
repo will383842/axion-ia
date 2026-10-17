@@ -81,6 +81,7 @@ function ligneLue(p: Record<string, unknown> = {}) {
     statutDepuis: new Date("2026-09-01T00:00:00Z"),
     dateSortie: null,
     motifSortie: null,
+    suspensions: [],
     sousTraitant: {
       nom: "Anne Martin",
       siret: "12345678900011",
@@ -149,6 +150,19 @@ describe("synchronisation", () => {
     expect(m.creerSousTraitant).not.toHaveBeenCalled();
     expect(m.updateSousTraitant).not.toHaveBeenCalled();
     expect(m.db.registreSousTraitantIndependant.create).not.toHaveBeenCalled();
+  });
+
+  it("🔑 une suspension pour écart majeur en cours : la ligne passe et reste « suspendue »", async () => {
+    m.db.registreSousTraitantIndependant.findMany.mockResolvedValue([
+      ligneLue({ suspensions: [{ id: "susp-1" }] }),
+    ]);
+    const r = await synchroniserRegistre({ maintenant: MAINTENANT, parId: null });
+    expect(r).toMatchObject({ misAJour: 1 });
+    expect(m.updateSousTraitant).toHaveBeenCalledWith(S1, { actif: false });
+    expect(m.db.registreSousTraitantIndependant.update).toHaveBeenCalledWith({
+      where: { id: R1 },
+      data: expect.objectContaining({ statut: "suspendu" }),
+    });
   });
 
   it("une fin de collaboration : la ligne sort (statut, date, motif), rien n'est supprimé", async () => {

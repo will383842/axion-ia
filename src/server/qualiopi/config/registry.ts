@@ -17,6 +17,7 @@ import { BRAND } from "@/lib/brand";
 import { NDA_NUMERO } from "@/server/qualiopi/legal/legal-mentions";
 import { REGIME_TVA_DEFAUT } from "@/server/qualiopi/legal/tva";
 import { estJourIsoValide } from "@/server/qualiopi/conformite/indicateurs-registre";
+import { REGLAGES_IND27_DEFAUTS } from "@/server/qualiopi/formateurs-independants/registre-sous-traitants/controles.config";
 
 /** Définition typée d'une clé : schéma Zod + défaut + description. */
 export interface ConfigEntry<T> {
@@ -605,6 +606,21 @@ export const QUALIOPI_CONFIG_REGISTRY = {
     ...str(),
     description:
       "Adresse électronique à laquelle les formateurs indépendants écrivent à Axion (article 34 du contrat-cadre).",
+  },
+
+  // ── Contrôle des sous-traitants indépendants (indicateur 27) ──────────────
+  // Seuils de la méthode de contrôle (`registre-sous-traitants/controles.config.ts`),
+  // modifiables ici, jamais en dur. ⚠️ Défauts À VALIDER PAR WILL. Lus par
+  // `registre-sous-traitants/reglages.ts` ; hors bornes ou illisibles : le défaut.
+  sous_traitance_delai_correction_jours: {
+    ...num(REGLAGES_IND27_DEFAUTS.delaiCorrectionJours),
+    description:
+      "Indicateur 27 — délai, en jours, du plan de correction ouvert par un écart MINEUR d'un contrôle de sous-traitant (alerte à l'échéance). Entier de 1 à 365. Défaut 15 jours, à valider par Will.",
+  },
+  sous_traitance_revue_complete_mois: {
+    ...num(REGLAGES_IND27_DEFAUTS.revueCompleteMois),
+    description:
+      "Indicateur 27 — périodicité, en mois, de la revue complète de chaque sous-traitant indépendant. Entier de 1 à 36. Défaut 12 mois (annuelle), à valider par Will.",
   },
 } as const satisfies Record<string, ConfigEntry<unknown>>;
 

@@ -2077,6 +2077,14 @@ export const ALERTE_CATALOGUE: Record<string, AlerteCatalogueEntry> = {
     resolutionAuto: true,
     guichet: "qualite",
   },
+  // Écart MINEUR d'un contrôle à preuves non corrigé à l'échéance de son plan
+  // (J+15 par défaut, réglage `sous_traitance_delai_correction_jours`).
+  sous_traitant_registre_correction_echue: {
+    niveau: "important",
+    titre: "Registre des sous-traitants : plan de correction échu",
+    resolutionAuto: true,
+    guichet: "qualite",
+  },
 } as const;
 
 /**

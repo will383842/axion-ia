@@ -6,9 +6,12 @@
  *   - `sous_traitant_registre_piece_a_echeance` (important) : une pièce exigée tombe
  *     sous 30 jours ;
  *   - `sous_traitant_registre_controle_en_retard` (important) : un contrôle de la
- *     méthode (`registre-sous-traitants/controles.config.ts`) n'a pas été fait à temps.
+ *     méthode (`registre-sous-traitants/controles.config.ts`) n'a pas été fait à temps ;
+ *   - `sous_traitant_registre_correction_echue` (important) : le plan de correction
+ *     d'un écart MINEUR a passé son échéance (J+15 par défaut, réglage) sans être corrigé.
  *
- * Une alerte par code et par formateur, sur les lignes ACTIVES seulement. L'attestation
+ * Une alerte par code et par formateur, sur les lignes ACTIVES seulement (le plan de
+ * correction échu, lui, se suit aussi sous suspension). L'attestation
  * URSSAF garde ses propres alertes (`vigilance_urssaf_*`) : le registre ne les double
  * pas. Toutes se referment seules quand la cause disparaît.
  *
@@ -36,6 +39,8 @@ function enAlerte(c: CandidatAlerteRegistre): AlerteCandidate {
       return { ...reste, code: "sous_traitant_registre_piece_a_echeance" };
     case "controle_en_retard":
       return { ...reste, code: "sous_traitant_registre_controle_en_retard" };
+    case "correction_echue":
+      return { ...reste, code: "sous_traitant_registre_correction_echue" };
   }
 }
 
@@ -49,6 +54,7 @@ export async function regleRegistreSousTraitants(now: Date): Promise<AlerteCandi
       statut: l.statut,
       pieces: l.pieces,
       controles: l.controles,
+      correctionsEchues: l.correctionsEchues,
     })),
   ).map(enAlerte);
 }

@@ -4,6 +4,8 @@
  *
  * - Ajout seul : un contrôle ne se corrige pas, on en trace un nouveau.
  * - Un résultat non conforme ou à revoir exige un motif.
+ * - Un contrôle À PREUVES (mission, revue complète) ne se trace pas ici : par sa liste
+ *   (`ecarts.ts`), dont découlent résultat et écarts.
  * - Coupé (`formateurs.registre_sous_traitants`) : rien n'est tracé.
  * - Journal : le code et le résultat ; JAMAIS le motif (texte libre).
  *
@@ -16,7 +18,7 @@ import { parisDateISO } from "@/server/qualiopi/presence/time";
 
 import { interrupteurAllume } from "../interrupteur-allume";
 
-import { estCodeControle } from "./controles.config";
+import { estCodeControle, preuvesDuControle } from "./controles.config";
 import type { ResultatControle } from "./regles";
 
 export const ACTION_CONTROLE_TRACE = "qualiopi.registre_sous_traitants.controle_trace";
@@ -39,6 +41,9 @@ export async function tracerControle(input: {
     };
   }
   if (!estCodeControle(input.code)) return { ok: false, refus: "Contrôle inconnu." };
+  if (preuvesDuControle(input.code) !== null) {
+    return { ok: false, refus: "Ce contrôle se trace par sa liste de preuves." };
+  }
   const motif = input.motif?.trim() ?? "";
   if (input.resultat !== "conforme" && motif === "") {
     return { ok: false, refus: "Un contrôle non conforme ou à revoir exige un motif." };

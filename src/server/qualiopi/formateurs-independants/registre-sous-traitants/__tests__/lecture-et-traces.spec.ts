@@ -33,6 +33,9 @@ vi.mock("@/lib/prisma", () => ({ prisma: m.db }));
 vi.mock("@/server/journal/journaliser", () => ({ journaliser: m.journaliser }));
 vi.mock("../../interrupteur-allume", () => ({ interrupteurAllume: m.allume }));
 vi.mock("../../vigilance-seuil-lecture", () => ({ lireCumulsHonorairesHtCents: m.cumuls }));
+vi.mock("../reglages", () => ({
+  lireReglagesInd27: async () => ({ delaiCorrectionJours: 15, revueCompleteMois: 12 }),
+}));
 
 import { exportRegistreCsv } from "../export";
 import { lireRegistre } from "../lecture";
@@ -61,8 +64,11 @@ function ligneLue() {
         resultat: "conforme",
         motif: null,
         auteurId: ADMIN,
+        missionId: null,
       },
     ],
+    suspensions: [],
+    ecarts: [],
     trainer: {
       documents: [
         {
@@ -124,7 +130,7 @@ describe("lecture du registre", () => {
 describe("trace d'un contrôle", () => {
   const base = {
     trainerId: T1,
-    code: "revue_annuelle",
+    code: "registre_public",
     resultat: "conforme" as const,
     motif: null,
     faitAt: new Date("2026-10-15T00:00:00Z"),
@@ -142,7 +148,7 @@ describe("trace d'un contrôle", () => {
     expect(m.db.controleSousTraitant.create).toHaveBeenCalledWith({
       data: {
         registreId: R1,
-        code: "revue_annuelle",
+        code: "registre_public",
         faitAt: new Date("2026-10-15T00:00:00Z"),
         auteurId: ADMIN,
         resultat: "non_conforme",
@@ -155,10 +161,17 @@ describe("trace d'un contrôle", () => {
       action: "qualiopi.registre_sous_traitants.controle_trace",
       targetType: "Trainer",
       targetId: T1,
-      changes: { code: "revue_annuelle", resultat: "non_conforme" },
+      changes: { code: "registre_public", resultat: "non_conforme" },
       session: { userId: ADMIN },
     });
     expect(JSON.stringify(entree)).not.toContain("Assurance");
+  });
+
+  it("un contrôle à preuves (mission, revue complète) se trace par sa liste, pas ici", async () => {
+    for (const code of ["controle_mission", "revue_annuelle"]) {
+      expect((await tracerControle({ ...base, code })).ok).toBe(false);
+    }
+    expect(m.db.controleSousTraitant.create).not.toHaveBeenCalled();
   });
 
   it("un code hors de la configuration est refusé", async () => {
