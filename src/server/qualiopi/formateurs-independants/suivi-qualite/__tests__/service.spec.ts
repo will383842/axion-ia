@@ -210,6 +210,29 @@ describe("enregistrerDecision", () => {
     expect(h.tx.activityLog.create).toHaveBeenCalledTimes(1);
   });
 
+  it("levee_suspension sur une session annulée porteuse d'une suspension : acceptée", async () => {
+    h.etat.session = {
+      ...h.etat.session!,
+      statut: "annulee",
+      enrollments: [{ questionnaires: [{ noteGlobale: 2 }] }],
+    };
+    expect(await enregistrerDecision(decision())).toEqual({
+      ok: true,
+      id: "55555555-5555-4555-8555-555555555555",
+    });
+  });
+
+  it("entretien seul sur une session annulée : refusé", async () => {
+    h.etat.session = {
+      ...h.etat.session!,
+      statut: "annulee",
+      enrollments: [{ questionnaires: [{ noteGlobale: 3.5 }] }],
+    };
+    const r = await enregistrerDecision(decision({ type: "entretien" }));
+    expect(r.ok).toBe(false);
+    expect(h.tx.activityLog.create).not.toHaveBeenCalled();
+  });
+
   it("session d'un autre formateur : introuvable (IDOR)", async () => {
     h.etat.session = null;
     expect(await enregistrerDecision(decision())).toEqual({ ok: false, erreur: "introuvable" });
