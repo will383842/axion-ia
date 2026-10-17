@@ -2105,7 +2105,7 @@ export const ALERTE_CATALOGUE: Record<string, AlerteCatalogueEntry> = {
   },
   fi_cv_declare_perime: {
     niveau: "important",
-    titre: "Formateur : CV déclaré de plus de 24 mois",
+    titre: "Formateur : CV déclaré trop ancien",
     resolutionAuto: true,
     guichet: "qualite",
   },
