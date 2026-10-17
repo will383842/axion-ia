@@ -147,7 +147,10 @@ describe("le jeu de données d'exemple couvre tous les gabarits", () => {
     // champs sont tous facultatifs.
     // 🔴 2026-10-09 — RELEVÉ À 70 : `apporteur-lien-espace`, le lien de l'espace renvoyé à
     // l'apporteur depuis « Retrouver mon espace ». Ses champs sont tous facultatifs.
-    expect(tous.length).toBe(70);
+    // 🔴 2026-10-16 — RELEVÉ À 71 : `recueil-besoin` (chantier QNC, lot L03), le
+    // questionnaire de recueil du besoin envoyé à l'entreprise (premier envoi et
+    // relances, UN fichier). Ses champs sont tous facultatifs.
+    expect(tous.length).toBe(71);
   });
 
   it.each(tous.map((g) => g.nom))("%s : tous ses champs requis ont une valeur d'exemple", (nom) => {
