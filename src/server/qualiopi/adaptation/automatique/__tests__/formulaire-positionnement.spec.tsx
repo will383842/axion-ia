@@ -8,7 +8,7 @@
 import { describe, expect, it, vi } from "vitest";
 import { fireEvent, render, screen } from "@testing-library/react";
 
-import { PositionnementPortailForm } from "../PositionnementPortailForm";
+import { PositionnementPortailForm } from "@/components/portail/PositionnementPortailForm";
 import {
   cataloguePortail,
   mesuresProposees,
