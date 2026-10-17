@@ -49,7 +49,12 @@ export async function lireReglagesSuiviQualite(): Promise<ReglagesSuiviQualite> 
         [K in keyof ReglagesSuiviQualite]: unknown;
       },
     );
-  } catch {
+  } catch (e) {
+    // Défaut appliqué : un réglage plus strict que le défaut est perdu, on le dit.
+    console.warn(
+      "[suivi-qualite] réglages illisibles, défauts appliqués :",
+      e instanceof Error ? e.message : String(e),
+    );
     return REGLAGES_SUIVI_QUALITE;
   }
 }
