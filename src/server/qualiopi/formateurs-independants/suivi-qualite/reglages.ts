@@ -12,6 +12,10 @@
 export const REGLAGES_SUIVI_QUALITE = {
   /** À valider par Will — moyenne minimale de l'observation de la 1re mission (sur 5). */
   observationMoyenneMin: 3.5,
+  /** À valider par Will — moyenne minimale d'une réévaluation annuelle pour repartir pour un an. */
+  reevaluationMoyenneMin: 3.5,
+  /** À valider par Will — moyenne de la grille après mission sous laquelle elle est dite « réservée ». */
+  evaluationMoyenneMin: 3.5,
   /**
    * À valider par Will — jours après la fin de la 1re mission avant l'alerte
    * « observation manquante » (0 = dès le lendemain de la dernière journée).
