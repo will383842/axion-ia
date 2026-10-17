@@ -37,7 +37,8 @@ import { lireCircuitAdaptation } from "../adaptation/journal-consignation";
 import { colonneDeclarationDisponible } from "../adaptation/colonne-declaration";
 import { lireJournalVeilles, regleVeilleEnVigueur } from "../veille/regle-veille";
 import { idsVeillesDecidees } from "../veille/trace-veille";
-import { STATUT_REVUE_COUVRANTE } from "../registres/statuts-revue";
+import { whereReseauHandicapActif } from "../conformite/conformite-service";
+import { lirePedagogie } from "../pedagogie/interrupteur";
 import type {
   TraceAdaptation,
   TraceAppreciations,
@@ -108,14 +109,21 @@ async function lireVeille(maintenant: Date): Promise<TraceLue<TraceVeille>> {
   const regle = await regleVeilleEnVigueur();
   if (regle === undefined) return { lecture: "lot_eteint" };
   const trace = await lireJournalVeilles(prisma as never);
-  const decidees = new Set(idsVeillesDecidees(trace));
+  // Ind. 23 = veille LÉGALE et réglementaire. Les veilles métiers (24) et
+  // pédagogiques/technologiques (25) ne l'allument pas.
+  const decideesToutTypes = idsVeillesDecidees(trace);
+  const legales =
+    decideesToutTypes.length === 0
+      ? []
+      : await prisma.veille.findMany({
+          where: { id: { in: decideesToutTypes }, type: "legale" },
+          select: { id: true },
+        });
+  const decidees = new Set(legales.map((v) => v.id));
   const derniereDecisionLe = max(
     [...trace.decisions.entries()].filter(([id]) => decidees.has(id)).map(([, d]) => d.decideLe),
   );
-  const revue = await prisma.revueDirection.count({
-    where: { statut: STATUT_REVUE_COUVRANTE, annee: maintenant.getUTCFullYear() },
-  });
-  return lue<TraceVeille>({ derniereDecisionLe, revueValidee: revue > 0 });
+  return lue<TraceVeille>({ derniereDecisionLe });
 }
 
 async function lireHandicap(): Promise<TraceLue<TraceHandicap>> {
@@ -123,9 +131,7 @@ async function lireHandicap(): Promise<TraceLue<TraceHandicap>> {
   // Même lecture que le moteur de conformité (une seule vérité).
   const [email, reseau] = await Promise.all([
     getQualiopiConfig("referent_handicap_email").catch(() => ""),
-    prisma.partenariat.count({
-      where: { actif: true, type: { contains: "handicap", mode: "insensitive" } },
-    }),
+    prisma.partenariat.count({ where: whereReseauHandicapActif() }),
   ]);
   return lue<TraceHandicap>({
     referentNommeEtJoignable: typeof email === "string" && email.includes("@"),
@@ -442,6 +448,7 @@ export async function chargerTracesVoyants(
     protege(() => lireVeille(maintenant)),
     protege(lireHandicap),
   ]);
+  const etatPedagogie = await lirePedagogie();
   for (const s of sessions) {
     const ins = parSession?.get(s.id) ?? [];
     const base = parSession === null ? { lecture: "illisible" as const } : null;
@@ -472,7 +479,13 @@ export async function chargerTracesVoyants(
       i11: base ?? evaluation(ins),
       i12,
       i17,
-      i19: base ?? ressources(ins),
+      // L08 éteint : les remises `support_*` ne sont jamais écrites, leur absence
+      // ne prouve rien. « Non mesuré », jamais rouge ni vert.
+      i19:
+        base ??
+        (estActifPour(etatPedagogie, { estTestInterne: s.estTestInterne })
+          ? ressources(ins)
+          : { lecture: "lot_eteint" as const }),
       i21,
       i23: veille,
       i26: handicap,

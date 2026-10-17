@@ -109,7 +109,7 @@ describe("regleVoyantsSansTrace", () => {
 
   it("un voyant d'organisme (23) n'est émis qu'une fois, sans cible de session", async () => {
     h.sessions.mockResolvedValue([session("s1"), session("s2")]);
-    const t = { i23: lue({ derniereDecisionLe: null, revueValidee: false }) };
+    const t = { i23: lue({ derniereDecisionLe: null }) };
     h.traces.mockResolvedValue(
       new Map([
         ["s1", t],

@@ -151,12 +151,11 @@ export interface TraceIntervenants {
   readonly habiliteLe: Date | null;
 }
 
-/** Ind. 23 — veille légale EXPLOITÉE (L10) : une décision tracée, une revue validée. */
+/** Ind. 23 — veille légale EXPLOITÉE (L10) : une décision tracée par une personne, sur une veille LÉGALE.
+ * La revue de direction relève de l'ind. 32 : elle n'entre pas ici. */
 export interface TraceVeille {
   /** Date de la dernière décision de veille tracée au journal (par une personne). */
   readonly derniereDecisionLe: Date | null;
-  /** Une revue de direction validée existe pour l'année en cours. */
-  readonly revueValidee: boolean;
 }
 
 /** Ind. 26 — handicap : référent nommé ET joignable, réponse aux besoins déclarés (L15). */
@@ -465,15 +464,12 @@ function p21(t: TraceIntervenants, c: ContexteVoyants): Verdict {
 function p23(t: TraceVeille, c: ContexteVoyants): Verdict {
   const douzeMois = new Date(c.maintenant.getTime() - 365 * MS_JOUR);
   const decisionRecente = t.derniereDecisionLe !== null && t.derniereDecisionLe >= douzeMois;
-  if (decisionRecente && t.revueValidee) {
-    return vert(
-      `Dernière décision de veille tracée le ${jour(t.derniereDecisionLe!)} ; revue de direction validée cette année.`,
-    );
+  if (decisionRecente) {
+    return vert(`Dernière décision de veille légale tracée le ${jour(t.derniereDecisionLe!)}.`);
   }
-  const manques: string[] = [];
-  if (!decisionRecente)
-    manques.push("aucune décision de veille tracée depuis douze mois (collecter ne suffit pas)");
-  if (!t.revueValidee) manques.push("aucune revue de direction validée cette année");
+  const manques: string[] = [
+    "aucune décision de veille légale tracée depuis douze mois (collecter ne suffit pas)",
+  ];
   return {
     etat: "rouge",
     trace:

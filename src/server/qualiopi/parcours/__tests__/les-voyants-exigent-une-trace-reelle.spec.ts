@@ -62,7 +62,7 @@ const COMPLETES: TracesVoyants = {
     habilitationActive: true,
     habiliteLe: D("2026-01-10T10:00:00Z"),
   }),
-  i23: L({ derniereDecisionLe: D("2026-09-01T10:00:00Z"), revueValidee: true }),
+  i23: L({ derniereDecisionLe: D("2026-09-01T10:00:00Z") }),
   i26: L({ referentNommeEtJoignable: true, reseauActif: true }),
   i27: L({ sousTraitants: 1, controlesConformes: 1, dernierControle: D("2026-10-01T10:00:00Z") }),
   i30: L({ stagiairesActifs: 2, chaudRepondus: 2, dernierRepondu: D("2026-11-13T10:00:00Z") }),
@@ -109,7 +109,7 @@ const SANS_TRACE: Record<IndicateurAVoyant, TracesVoyants> = {
     i19: L({ stagiairesActifs: 2, avecSupportRemis: 1, derniereRemise: D("2026-11-10T10:00:00Z") }),
   },
   21: { i21: L({ formateurDesigne: true, habilitationActive: false, habiliteLe: null }) },
-  23: { i23: L({ derniereDecisionLe: null, revueValidee: false }) },
+  23: { i23: L({ derniereDecisionLe: null }) },
   26: { i26: L({ referentNommeEtJoignable: false, reseauActif: true }) },
   27: { i27: L({ sousTraitants: 1, controlesConformes: 0, dernierControle: null }) },
   30: {
@@ -224,18 +224,18 @@ describe("les voyants exigent une trace réelle (O13)", () => {
       expect(v.etat).toBe("rouge");
     });
 
-    it("ind. 23 : collecter ne suffit pas — il faut une décision tracée ET une revue validée", () => {
-      const sansRevue = voyant(
+    it("ind. 23 : collecter ne suffit pas — il faut une décision légale tracée de moins de douze mois", () => {
+      const recente = voyant(
         23,
-        { i23: L({ derniereDecisionLe: D("2026-09-01T10:00:00Z"), revueValidee: false }) },
+        { i23: L({ derniereDecisionLe: D("2026-09-01T10:00:00Z") }) },
         APRES,
       );
       const vieille = voyant(
         23,
-        { i23: L({ derniereDecisionLe: D("2024-01-01T10:00:00Z"), revueValidee: true }) },
+        { i23: L({ derniereDecisionLe: D("2024-01-01T10:00:00Z") }) },
         APRES,
       );
-      expect(sansRevue.etat).toBe("rouge");
+      expect(recente.etat).toBe("vert");
       expect(vieille.etat).toBe("rouge");
     });
 
