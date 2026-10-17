@@ -26,6 +26,7 @@ import { verifierToken } from "@/server/qualiopi/portail/portail-service";
 import { deposerReclamationPubliqueAction } from "@/server/actions/qualiopi/reclamation-publique";
 import { lireInterrupteurReclamations } from "@/server/qualiopi/reclamations/interrupteur";
 import { formulaireOuvert } from "@/server/qualiopi/reclamations/depot-public";
+import { buttonVariants } from "@/components/ui/button";
 import { FormulaireReclamation } from "./FormulaireReclamation";
 import { ChampsReclamation } from "./ChampsReclamation";
 
@@ -73,6 +74,7 @@ export async function DepotReclamationBloc() {
     <FormulaireReclamation
       action={deposerReclamationPubliqueAction}
       adresseContact={LEGAL_IDENTITY_DEFAULTS.contactEmail}
+      classeBouton={buttonVariants()}
     >
       <ChampsReclamation
         formations={(etat === "essai" ? formations.filter((f) => f.deTest) : formations).map(

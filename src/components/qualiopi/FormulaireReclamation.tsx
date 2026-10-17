@@ -18,15 +18,22 @@
  * rattachée (vérifié côté serveur).
  */
 
-import { useActionState } from "react";
-import { Button } from "@/components/ui/button";
-import { useTurnstileToken } from "@/components/forms/TurnstileWidget";
+import { useActionState, useCallback, useState } from "react";
+import dynamic from "next/dynamic";
 import type {
   EtatDepotReclamation,
   deposerReclamationPubliqueAction,
 } from "@/server/actions/qualiopi/reclamation-publique";
 
+// Turnstile (script + rendu) n'a pas à peser dans le JS initial de la page.
+const TurnstileDiffere = dynamic(
+  () => import("@/components/forms/TurnstileWidget").then((m) => m.TurnstileWidget),
+  { ssr: false },
+);
+
 export interface FormulaireReclamationProps {
+  /** Classes du bouton, calculées par le serveur (`buttonVariants()`) : pas de `Button` côté client. */
+  classeBouton: string;
   action: typeof deposerReclamationPubliqueAction;
   /** Adresse écrite de repli, citée en cas d'échec. */
   adresseContact: string;
@@ -39,10 +46,13 @@ const ETAT_INITIAL: EtatDepotReclamation = { etat: "initial" };
 export function FormulaireReclamation({
   action,
   adresseContact,
+  classeBouton,
   children,
 }: FormulaireReclamationProps) {
   const [etat, soumettre, enCours] = useActionState(action, ETAT_INITIAL);
-  const { token, widget } = useTurnstileToken("reclamation");
+  const [token, setToken] = useState("");
+  // Identité stable : le widget se re-monte si ses rappels changent à chaque rendu.
+  const effacerToken = useCallback(() => setToken(""), []);
 
   if (etat.etat === "recue") {
     return (
@@ -72,11 +82,11 @@ export function FormulaireReclamation({
         </p>
       )}
 
-      {widget}
+      <TurnstileDiffere action="reclamation" onToken={setToken} onExpire={effacerToken} />
 
-      <Button type="submit" disabled={enCours}>
+      <button type="submit" disabled={enCours} className={classeBouton}>
         {enCours ? "Envoi…" : "Déposer ma réclamation"}
-      </Button>
+      </button>
     </form>
   );
 }

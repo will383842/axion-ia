@@ -11,9 +11,11 @@
 
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Label } from "@/components/ui/label";
 import { HoneypotField } from "@/components/forms/HoneypotField";
 import { LIBELLE_QUALITE_DEPOT, QUALITES_DEPOT } from "@/server/qualiopi/reclamations/depot-public";
+
+/** Mêmes classes que `ui/label.tsx` : le `Label` Radix est un module client, ici inutile. */
+const CLASSE_LIBELLE = "text-fg text-sm font-medium leading-none";
 
 export interface ChampsReclamationProps {
   /** Les formations du stagiaire connecté à son espace (vide sinon). */
@@ -42,7 +44,9 @@ export function ChampsReclamation({ formations }: ChampsReclamationProps) {
       </fieldset>
 
       <div className="flex flex-col gap-2">
-        <Label htmlFor="reclamation-nom">Nom et prénom (ou raison sociale)</Label>
+        <label className={CLASSE_LIBELLE} htmlFor="reclamation-nom">
+          Nom et prénom (ou raison sociale)
+        </label>
         <Input
           id="reclamation-nom"
           name="nom"
@@ -54,7 +58,9 @@ export function ChampsReclamation({ formations }: ChampsReclamationProps) {
       </div>
 
       <div className="flex flex-col gap-2">
-        <Label htmlFor="reclamation-email">Adresse e-mail</Label>
+        <label className={CLASSE_LIBELLE} htmlFor="reclamation-email">
+          Adresse e-mail
+        </label>
         <Input
           id="reclamation-email"
           name="email"
@@ -71,7 +77,9 @@ export function ChampsReclamation({ formations }: ChampsReclamationProps) {
 
       {formations.length > 0 ? (
         <div className="flex flex-col gap-2">
-          <Label htmlFor="reclamation-formation">Formation concernée</Label>
+          <label className={CLASSE_LIBELLE} htmlFor="reclamation-formation">
+            Formation concernée
+          </label>
           <select
             id="reclamation-formation"
             name="enrollmentId"
@@ -88,20 +96,24 @@ export function ChampsReclamation({ formations }: ChampsReclamationProps) {
         </div>
       ) : (
         <div className="flex flex-col gap-2">
-          <Label htmlFor="reclamation-formation-libre">
+          <label className={CLASSE_LIBELLE} htmlFor="reclamation-formation-libre">
             Formation ou session concernée (facultatif)
-          </Label>
+          </label>
           <Input id="reclamation-formation-libre" name="formationConcernee" maxLength={300} />
         </div>
       )}
 
       <div className="flex flex-col gap-2">
-        <Label htmlFor="reclamation-objet">Objet</Label>
+        <label className={CLASSE_LIBELLE} htmlFor="reclamation-objet">
+          Objet
+        </label>
         <Input id="reclamation-objet" name="objet" required minLength={3} maxLength={300} />
       </div>
 
       <div className="flex flex-col gap-2">
-        <Label htmlFor="reclamation-description">Votre réclamation</Label>
+        <label className={CLASSE_LIBELLE} htmlFor="reclamation-description">
+          Votre réclamation
+        </label>
         <Textarea
           id="reclamation-description"
           name="description"
