@@ -1,5 +1,5 @@
 /**
- * Clés de configuration dont l'ÉCRITURE exige le droit `habiliter_formateur`.
+ * Bornes à l'ÉCRITURE des clés réservées à `habiliter_formateur` (cf. `acteRequisPourConfig`).
  *
  * 🔴 Les seuils de l'indicateur 21 (`evaluation_competences_*`, `suivi_qualite_*`) décident
  * de gardes — activation d'un formateur indépendant, suspension de ses missions. Les
@@ -12,13 +12,6 @@
 
 import { BORNES_EVALUATION } from "@/server/qualiopi/formateurs-independants/evaluation-competences/reglages";
 import { BORNES_SUIVI_QUALITE } from "@/server/qualiopi/formateurs-independants/suivi-qualite/reglages";
-
-export const PREFIXES_CLES_RESERVEES = ["evaluation_competences_", "suivi_qualite_"] as const;
-
-/** Cette clé est-elle réservée aux détenteurs de `habiliter_formateur` ? */
-export function cleReserveeHabilitation(cle: string): boolean {
-  return PREFIXES_CLES_RESERVEES.some((p) => cle.startsWith(p));
-}
 
 const snake = (s: string): string => s.replace(/[A-Z]/g, (c) => `_${c.toLowerCase()}`);
 

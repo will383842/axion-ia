@@ -22,11 +22,7 @@ import {
   QUALIOPI_CONFIG_REGISTRY,
   type QualiopiConfigKey,
 } from "@/server/qualiopi/config/site-settings";
-import { peutEngager, MOTIF_REFUS } from "@/server/auth/habilitations";
-import {
-  cleReserveeHabilitation,
-  refusBorneCleReservee,
-} from "@/server/qualiopi/config/cles-reservees-habilitation";
+import { refusBorneCleReservee } from "@/server/qualiopi/config/cles-reservees-habilitation";
 import { pagesPubliquesDuReglage } from "@/server/qualiopi/config/pages-publiques-du-reglage";
 
 type ActionResult<T> = { data: T } | { error: string };
@@ -60,19 +56,12 @@ export async function setQualiopiConfigAction(
     return { error: `Réglage réservé. ${MOTIF_REFUS[acte]}` };
   }
 
-  // 🔒 Seuils de l'indicateur 21 : ils décident de gardes (activation, mission) ; même droit
-  // que les pages formateurs. Refus explicite, jamais d'écriture partielle.
-  const reservee = cleReserveeHabilitation(key);
-  if (reservee && !peutEngager(session.role, "habiliter_formateur")) {
-    return { error: MOTIF_REFUS.habiliter_formateur };
-  }
-
   const entry = QUALIOPI_CONFIG_REGISTRY[key];
   let coerced: string | number;
   if (typeof entry.default === "number") {
     const n = Number(value.replace(",", ".").trim());
     if (Number.isNaN(n)) return { error: `Valeur numérique attendue pour « ${key} »` };
-    if (reservee) {
+    if (acte !== null) {
       const hors = refusBorneCleReservee(key, n);
       if (hors !== null) return { error: hors };
     }

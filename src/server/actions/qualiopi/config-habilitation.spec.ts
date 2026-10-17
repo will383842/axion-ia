@@ -20,11 +20,8 @@ vi.mock("@/server/qualiopi/config/site-settings", async () => {
 });
 
 import { setQualiopiConfigAction } from "./config";
-import {
-  BORNES_CLES_RESERVEES,
-  cleReserveeHabilitation,
-} from "@/server/qualiopi/config/cles-reservees-habilitation";
-import { QUALIOPI_CONFIG_REGISTRY } from "@/server/qualiopi/config/registry";
+import { BORNES_CLES_RESERVEES } from "@/server/qualiopi/config/cles-reservees-habilitation";
+import { QUALIOPI_CONFIG_REGISTRY, acteRequisPourConfig } from "@/server/qualiopi/config/registry";
 
 const SUSPENSION = "suivi_qualite_satisfaction_suspension_sous";
 const CLE_AUTRE_DOMAINE = "sous_traitance_revue_complete_mois";
@@ -36,7 +33,9 @@ beforeEach(() => {
 
 describe("clés réservées", () => {
   it("couvrent exactement les 16 clés evaluation_competences_* et suivi_qualite_*", () => {
-    const cles = Object.keys(QUALIOPI_CONFIG_REGISTRY).filter(cleReserveeHabilitation);
+    const cles = Object.keys(QUALIOPI_CONFIG_REGISTRY).filter(
+      (k) => acteRequisPourConfig(k as never) !== null,
+    );
     expect(cles).toHaveLength(16);
     expect(Object.keys(BORNES_CLES_RESERVEES).sort()).toEqual([...cles].sort());
   });

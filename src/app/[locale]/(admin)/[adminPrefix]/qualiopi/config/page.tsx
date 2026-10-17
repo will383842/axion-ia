@@ -21,6 +21,7 @@ import {
   QUALIOPI_CONFIG_REGISTRY,
   type QualiopiConfigKey,
 } from "@/server/qualiopi/config/site-settings";
+import { acteRequisPourConfig } from "@/server/qualiopi/config/registry";
 import {
   QUALIOPI_CONFIG_OPTION_LABELS,
   resolveQualiopiConfigLabel,
@@ -30,7 +31,6 @@ import { prisma } from "@/lib/prisma";
 import { TriangleAlert } from "lucide-react";
 import { AccesRefuse } from "@/components/admin/ui/AccesRefuse";
 import { peutEngager } from "@/server/auth/habilitations";
-import { cleReserveeHabilitation } from "@/server/qualiopi/config/cles-reservees-habilitation";
 import { gardePage } from "@/server/auth/garde-page";
 import { AdressesEssaiForm } from "@/components/admin/qualiopi/AdressesEssaiForm";
 import { lireInterrupteurQualiopi } from "@/server/qualiopi/socle/interrupteurs";
@@ -74,7 +74,7 @@ export default async function QualiopiConfigPage({ params }: PageProps) {
       isNumber: typeof entry.default === "number",
       ...(options ? { options } : {}),
       ...(optionLabels ? { optionLabels } : {}),
-      ...(!peutHabiliter && cleReserveeHabilitation(k)
+      ...(!peutHabiliter && acteRequisPourConfig(k) !== null
         ? { verrouille: "Réservé aux rôles habilités à habiliter un formateur." }
         : {}),
     };
