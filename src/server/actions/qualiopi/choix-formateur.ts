@@ -16,7 +16,7 @@
 import { redirect } from "next/navigation";
 import { z } from "zod";
 
-import { getFormateurSession, requireFormateurAction } from "@/server/formateur/guard";
+import { requireFormateurAction } from "@/server/formateur/guard";
 import { assertDossierOuvert } from "@/server/qualiopi/sessions/verrou-dossier-garde";
 import { interrupteurAllume } from "@/server/qualiopi/formateurs-independants/interrupteur-allume";
 import {
@@ -181,6 +181,21 @@ const desistementSchema = z.object({
   remplacant: z.string().max(500).optional(),
 });
 
+/**
+ * Formulaire HTML : une session expirée (`unauthorized`, levée par la garde) renvoie vers la
+ * connexion avec « reconnectez-vous », pas vers l'erreur générique. Aucune lecture en plus.
+ */
+async function sansSessionExpiree<T>(appel: () => Promise<T>): Promise<T> {
+  try {
+    return await appel();
+  } catch (e) {
+    if (e instanceof Error && e.message === "unauthorized") {
+      redirect(`${FORMATEUR_CONNEXION_PATH}?erreur=session`);
+    }
+    throw e;
+  }
+}
+
 /** « Je ne peux plus assurer cette mission » — depuis l'espace connecté. */
 export async function seDesisterMissionAction(
   input: z.infer<typeof desistementSchema>,
@@ -209,8 +224,6 @@ export async function seDesisterMissionAction(
  * reste légère, et le formateur revient sur sa mission avec le résultat.
  */
 export async function seDesisterDepuisFormulaireAction(formData: FormData): Promise<void> {
-  // Session expirée pendant le formulaire : « reconnectez-vous », pas l'erreur générique.
-  if (!(await getFormateurSession())) redirect(`${FORMATEUR_CONNEXION_PATH}?erreur=session`);
   const missionId = String(formData.get("missionId") ?? "");
   if (!z.string().uuid().safeParse(missionId).success) redirect(FORMATEUR_BASE_PATH);
   const texte = (cle: string) => {
@@ -219,11 +232,13 @@ export async function seDesisterDepuisFormulaireAction(formData: FormData): Prom
   };
   const motif = texte("motif");
   const remplacant = texte("remplacant");
-  const r = await seDesisterMissionAction({
-    missionId,
-    ...(motif !== undefined ? { motif: motif.slice(0, 1400) } : {}),
-    ...(remplacant !== undefined ? { remplacant: remplacant.slice(0, 500) } : {}),
-  });
+  const r = await sansSessionExpiree(() =>
+    seDesisterMissionAction({
+      missionId,
+      ...(motif !== undefined ? { motif: motif.slice(0, 1400) } : {}),
+      ...(remplacant !== undefined ? { remplacant: remplacant.slice(0, 500) } : {}),
+    }),
+  );
   redirect(`${FORMATEUR_BASE_PATH}?mission=${missionId}&${"error" in r ? "erreur=1" : "fait=1"}`);
 }
 
@@ -234,8 +249,6 @@ export async function seDesisterDepuisFormulaireAction(formData: FormData): Prom
  * `repondreMissionFormateurAction` (le formateur connecté, SA mission).
  */
 export async function repondreDepuisFormulaireAction(formData: FormData): Promise<void> {
-  // Session expirée pendant le formulaire : « reconnectez-vous », pas l'erreur générique.
-  if (!(await getFormateurSession())) redirect(`${FORMATEUR_CONNEXION_PATH}?erreur=session`);
   const missionId = String(formData.get("missionId") ?? "");
   if (!z.string().uuid().safeParse(missionId).success) redirect(FORMATEUR_BASE_PATH);
   const brute = formData.get("reponse");
@@ -252,11 +265,13 @@ export async function repondreDepuisFormulaireAction(formData: FormData): Promis
     .filter((x) => x !== "")
     .join(" : ")
     .slice(0, 2000);
-  const r = await repondreMissionFormateurAction({
-    missionId,
-    reponse,
-    ...(reponse === "refusee" && motif !== "" ? { motif } : {}),
-  });
+  const r = await sansSessionExpiree(() =>
+    repondreMissionFormateurAction({
+      missionId,
+      reponse,
+      ...(reponse === "refusee" && motif !== "" ? { motif } : {}),
+    }),
+  );
   const page = `${FORMATEUR_BASE_PATH}?mission=${missionId}`;
   // Aucun texte libre dans l'adresse : un code, que la page traduit.
   redirect("error" in r ? `${page}&erreur=reponse` : `${page}&reponse=${reponse}`);
