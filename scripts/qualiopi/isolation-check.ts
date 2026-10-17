@@ -146,6 +146,18 @@ const ALLOWED_PATTERNS: ReadonlyArray<RegExp> = [
  * pour rien.
  */
 const CONSOMMATEURS_ASSUMES: ReadonlySet<string> = new Set([
+  // Chantier QNC, lot L11 — décision de Will : à l'effacement art. 17, la copie
+  // d'un e-mail DE FORMATION est gardée 5 ans, adresse masquée. Savoir si un
+  // envoi est « de formation » (rattaché à une session, hors facturation) et lire
+  // l'interrupteur `qualiopi.dossier_session.actif` sont des règles du domaine :
+  // l'effacement les appelle (`dossier-session/interrupteur`,
+  // `dossier-session/rattachement-emails`, `socle/interrupteurs`), il ne les
+  // recopie pas. Nommé seul, pas le répertoire.
+  "src/lib/rgpd-erase.ts",
+  // Même lot — la copie d'un e-mail passe en CRÉATION SEULE quand l'interrupteur
+  // du dossier de session est `actif`. L'écrivain de la copie lit cet
+  // interrupteur (`dossier-session/interrupteur`) et rien d'autre du domaine.
+  "src/server/email/copie-envoi.ts",
   // Dossier en ligne à jeton du FORMATEUR INDÉPENDANT (lot L5, ADR 0066 étape 5). Page
   // publique hors `[locale]`, jumelle du dossier apporteur : elle ne sait rien faire sans
   // le domaine qui porte la fiche `Trainer`, ses pièces, le contrôle registre et les règles
