@@ -317,7 +317,7 @@ export const visioQueue: Queue<VisioJobData, void, VisioJobName> | null = connec
 /** Cadence du balayage du CIRCUIT visio (file `visio`) : toutes les 5 minutes. */
 export const PATTERN_BALAYAGE_CIRCUIT_VISIO = "*/5 * * * *";
 
-// ============================================================
+// =====================================================      },
 // Content Generator V1 — Sprint 4/5 queues (§ 13.1 master prompt v1.7)
 // ============================================================
 //
@@ -2196,6 +2196,14 @@ export async function bootRepeatableJobs(): Promise<void> {
         type: "formation-crons.registre-sous-traitants",
         pattern: "50 8 * * *",
         jobId: "formation-crons-registre-sous-traitants-cron",
+      },
+      // QNC L07 — test du lien de visio la veille du début. 07:10 et 14:10 UTC
+      // (08:10/09:10 et 15:10/16:10 à Paris) : le second passage retente un lien
+      // en échec. Arrêté tant que `qualiopi.moyens.actif` est éteint.
+      {
+        type: "formation-crons.moyens-test-lien-j1",
+        pattern: "10 7,14 * * *",
+        jobId: "formation-crons-moyens-test-lien-j1-cron",
       },
     ];
 

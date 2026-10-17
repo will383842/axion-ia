@@ -215,6 +215,8 @@ export type FormationCronJobType =
   // indépendants au contrat-cadre signé ou actifs). QUOTIDIEN ; arrêté tant que
   // `formateurs.registre_sous_traitants` est coupé.
   | "formation-crons.registre-sous-traitants"
+  // QNC L07 — test du lien de visio à J-1 (éteint tant que `qualiopi.moyens.actif` l'est)
+  | "formation-crons.moyens-test-lien-j1"
   // 🔴 2026-09-12 — RATTRAPAGE DES AUTOFACTURES QUI NE SONT PAS PARTIES.
   //
   // L'émission se déclenche à la validation du relevé, en fail-soft : un PDF
@@ -2748,6 +2750,7 @@ const HANDLERS: Record<FormationCronJobType, () => Promise<void>> = {
   "formation-crons.invitations-formateurs": handleInvitationsFormateurs,
   "formation-crons.controle-registre-periodique": handleControleRegistrePeriodique,
   "formation-crons.registre-sous-traitants": handleRegistreSousTraitants,
+  "formation-crons.moyens-test-lien-j1": handleMoyensTestLienJ1,
 };
 
 /**
@@ -2771,6 +2774,36 @@ async function handleRegistreSousTraitants(): Promise<void> {
   } catch (err) {
     console.error(
       "[formation-crons] registre-sous-traitants: erreur:",
+      err instanceof Error ? err.name : "erreur",
+    );
+  }
+}
+
+
+/**
+ * Chantier QNC L07 — test du lien de visio la veille du début. Corps dans
+ * `moyens/passage-test-lien-j1.ts` (interrupteur lu AVANT toute autre requête) ;
+ * ici on déclenche et on trace des compteurs, aucune donnée personnelle. Import
+ * PARESSEUX ; ne lève jamais.
+ */
+async function handleMoyensTestLienJ1(): Promise<void> {
+  if (process.env["DATABASE_URL"]?.includes("stub.invalid")) return;
+  try {
+    const [{ passerTestLienJ1 }, { lireInterrupteurQualiopi }] = await Promise.all([
+      import("@/server/qualiopi/moyens/passage-test-lien-j1"),
+      import("@/server/qualiopi/socle/interrupteurs"),
+    ]);
+    const etat = await lireInterrupteurQualiopi("moyens");
+    const b = await passerTestLienJ1(prisma as never, etat, new Date());
+    if (!b.allume || b.testees === 0) return;
+    const ligne =
+      `[formation-crons] moyens-test-lien-j1: ${b.testees} lien(s) testé(s), ` +
+      `${b.reussis} réussi(s), ${b.alertes} en alerte`;
+    if (b.alertes > 0) console.error(ligne);
+    else console.log(ligne);
+  } catch (err) {
+    console.error(
+      "[formation-crons] moyens-test-lien-j1: erreur:",
       err instanceof Error ? err.name : "erreur",
     );
   }
