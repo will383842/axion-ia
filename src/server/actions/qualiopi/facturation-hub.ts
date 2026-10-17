@@ -16,6 +16,7 @@
 
 "use server";
 
+import { FACTURE_HORS_ESSAI } from "@/server/qualiopi/essai/perimetre";
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
 import { dayKeyInParis } from "@/lib/calendar-grid";
@@ -1133,6 +1134,9 @@ export async function envoyerRelanceAction(
     {
       ...(facture.clientId !== null ? { clientId: facture.clientId } : {}),
       sujet: `Relance ${libellePalier(relance.palier)} — facture ${facture.numero}`,
+      // QNC L02 — rattache l'envoi à la facture : la liste blanche des essais s'applique.
+      entityType: "FactureFormation",
+      entityId: facture.id,
     },
   );
 
@@ -1352,6 +1356,9 @@ export async function exporterFecAction(
   const [factures, paiements] = await Promise.all([
     prisma.factureFormation.findMany({
       where: {
+        // QNC L02 — une facture d'ESSAI n'est pas une écriture comptable : son
+        // numéro est hors suite légale, elle n'entre pas au FEC.
+        ...FACTURE_HORS_ESSAI,
         statut: { in: ["emise", "partiellement_payee", "en_retard", "payee"] },
         emiseAt: { gte: debut, lt: fin },
       },
@@ -1368,6 +1375,7 @@ export async function exporterFecAction(
     prisma.payment.findMany({
       where: {
         factureFormationId: { not: null },
+        factureFormation: { is: FACTURE_HORS_ESSAI },
         status: "succeeded",
         paidAt: { gte: debut, lt: fin },
       },

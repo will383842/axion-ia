@@ -76,6 +76,9 @@ import {
   isTrainerHabilite,
   type TrainerHabilitationFields,
 } from "@/server/qualiopi/trainers/trainers";
+import { LOT_ESSAI } from "@/server/qualiopi/essai/perimetre";
+import { numeroEssai } from "@/server/qualiopi/essai/numerotation";
+import { refusSessionDEssai } from "@/server/qualiopi/essai/creation";
 import { assertDossierOuvert } from "@/server/qualiopi/sessions/verrou-dossier-garde";
 
 // NB : le type `WriteSessionTransitionInput` n'est PAS ré-exporté ici (aucun
@@ -116,6 +119,12 @@ const createSessionSchema = z.object({
   trainerId: z.string().uuid().optional(),
   financementType: z.enum(FINANCEMENT_TYPES).optional(),
   recurrence: z.number().int().min(1).optional(),
+  /**
+   * QNC L02 — session d'ESSAI (banc d'essai, ADR 0061). Posé à la création
+   * SEULEMENT, jamais après coup : une session réelle ne devient pas un essai
+   * (ses pièces portent déjà des numéros légaux), et inversement.
+   */
+  estTestInterne: z.boolean().optional(),
   // Lieu de déroulement — facultatif, mais imprimé sur la convention, la
   // convocation et la feuille d'émargement dès qu'il est renseigné.
   ...lieuInputSchema.shape,
@@ -211,6 +220,18 @@ export async function createSessionAction(
   // Valider dateFin > dateDebut
   if (v.dateFin <= v.dateDebut) {
     return { error: "La date de fin doit être postérieure à la date de début" };
+  }
+
+  // QNC L02 — une session d'essai n'existe que si l'interrupteur
+  // `qualiopi.essai.actif` n'est pas éteint (`essai` ou `actif`).
+  const estEssai = v.estTestInterne === true;
+  if (estEssai) {
+    const refus = refusSessionDEssai({
+      etat: await lireInterrupteurQualiopi(LOT_ESSAI),
+      devisId: v.devisId ?? null,
+      recurrence: v.recurrence ?? null,
+    });
+    if (refus !== null) return { error: refus };
   }
 
   // Vérifier que la formation est publiée et active. On lit aussi les champs du
@@ -442,9 +463,12 @@ export async function createSessionAction(
       //
       // 🔑 Ce site était le seul des trois à diverger. Un prédicat recopié
       // diverge toujours : les trois disent maintenant la même chose.
-      const numero = await allocateSessionNumero(
-        v.recurrence !== undefined ? { recurrence: v.recurrence } : undefined,
-      );
+      // QNC L02 — un essai prend un numéro hors suite légale (`-ESSAI-`).
+      const numero = estEssai
+        ? numeroEssai("session")
+        : await allocateSessionNumero(
+            v.recurrence !== undefined ? { recurrence: v.recurrence } : undefined,
+          );
       return prisma.$transaction(
         async (tx) => {
           const newSession = await tx.trainingSession.create({
@@ -459,6 +483,7 @@ export async function createSessionAction(
               montantHtCents: v.montantHtCents,
               formationSnapshot: formationSnapshot as never,
               statut: "planifiee",
+              ...(estEssai ? { estTestInterne: true } : {}),
               ...(v.clientId !== undefined ? { clientId: v.clientId } : {}),
               ...(v.devisId !== undefined ? { devisId: v.devisId } : {}),
               // Le champ Prisma s'appelle `formateurPrincipalId` : il n'existe pas
@@ -614,6 +639,7 @@ export async function createSessionAction(
       // distinguer plus tard une session partie sans intervenant d'une session
       // dont le journal aurait simplement omis le champ.
       formateurPrincipalId: v.trainerId ?? null,
+      ...(estEssai ? { estTestInterne: true } : {}),
     },
     session,
   });

@@ -25,6 +25,7 @@
 // ⚠️ Tourne dans le WORKER (tsx, hors Next) : aucun `server-only` ici ni dans ce que ce
 // module importe (verrouillé par `le-worker-n-importe-pas-server-only.spec.ts`).
 
+import { FACTURE_HORS_ESSAI } from "@/server/qualiopi/essai/perimetre";
 import { destinataireAlertesInternes } from "@/lib/destinataires-internes";
 import { prisma } from "@/lib/prisma";
 import { decryptPii } from "@/lib/pii-crypto";
@@ -648,7 +649,13 @@ async function etapeCommissions(maintenant: Date, bilan: BilanPassageReseau): Pr
   const index = parSiren(presentations);
   const etablissements = await lireEtablissements(presentations.map((p) => p.id));
   const payees = await prisma.factureFormation.findMany({
-    where: { statut: "payee", avoirDeId: null, client: { siren: { in: [...index.keys()] } } },
+    where: {
+      // QNC L02 — une facture d'ESSAI ne fonde aucune commission d'apporteur.
+      ...FACTURE_HORS_ESSAI,
+      statut: "payee",
+      avoirDeId: null,
+      client: { siren: { in: [...index.keys()] } },
+    },
     select: { id: true, devisId: true },
   });
   if (payees.length === 0) return;
@@ -656,6 +663,7 @@ async function etapeCommissions(maintenant: Date, bilan: BilanPassageReseau): Pr
   const devisIds = [...new Set(payees.map((f) => f.devisId).filter((d): d is string => !!d))];
   const lignes = await prisma.factureFormation.findMany({
     where: {
+      ...FACTURE_HORS_ESSAI,
       avoirDeId: null,
       OR: [
         { id: { in: payees.map((f) => f.id) } },

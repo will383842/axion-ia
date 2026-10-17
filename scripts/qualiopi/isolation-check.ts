@@ -321,6 +321,16 @@ const CONSOMMATEURS_ASSUMES: ReadonlySet<string> = new Set([
   "src/server/admin/dossiers-pipeline.ts",
   "src/server/admin/pilotage-dashboard.ts",
   "src/server/admin/qualiopi-nav-counts.ts",
+  // ── QNC L02 (mode essai) — deux sorties EXTERNES qui doivent reconnaître une
+  //    pièce d'essai pour ne pas la laisser partir. Elles importent le prédicat
+  //    UNIQUE (`essai/perimetre`) et le journal des sorties bloquées
+  //    (`essai/sorties`), jamais une copie : une règle recopiée diverge. Nommées
+  //    fichier par fichier, pas leur répertoire.
+  //    · Axion Partners : aucun fait d'une facture, d'un avoir ou d'un paiement
+  //      d'essai n'entre dans la file ;
+  "src/server/partners-sync/producteurs/facturation.ts",
+  //    · commissions d'apporteur : une facture d'essai ne fonde aucune commission.
+  "src/features/apporteurs-reseau/passage-quotidien.ts",
   // ── Espace formateur & portail stagiaire : consommateurs assumés du domaine,
   //    au même titre que `[locale]/portail/` déjà autorisé plus haut.
   "src/app/[locale]/espace-formateur/page.tsx",
