@@ -49,11 +49,42 @@ const fieldCls = "flex flex-col gap-1";
 // Formulaire création
 // ─────────────────────────────────────────────────────────────────────────────
 
-export interface ReclamationFormProps {
-  creerAction: typeof creerReclamationAction;
+type Qualite = "stagiaire" | "entreprise" | "formateur" | "financeur" | "autre";
+type Canal = "console" | "telephone" | "courrier" | "email";
+
+const QUALITE_LABELS: Record<Qualite, string> = {
+  stagiaire: "Stagiaire",
+  entreprise: "Entreprise",
+  formateur: "Formateur",
+  financeur: "Financeur",
+  autre: "Autre",
+};
+
+const CANAL_LABELS: Record<Canal, string> = {
+  console: "Saisie directe",
+  telephone: "Téléphone",
+  courrier: "Courrier",
+  email: "E-mail",
+};
+
+/** L09 — `reclamations.source` n'a que quatre cases : la qualité exacte va dans l'étape. */
+function sourceDeQualite(q: Qualite): ReclamationSource {
+  if (q === "entreprise") return "client";
+  if (q === "formateur") return "autre";
+  return q;
 }
 
-export function ReclamationForm({ creerAction }: ReclamationFormProps) {
+export interface ReclamationFormProps {
+  creerAction: typeof creerReclamationAction;
+  /**
+   * Chantier QNC, L09 — présent quand le cycle daté est allumé : la console
+   * demande alors la qualité, le canal et l'inscription (rattachement à la
+   * session). Absent : le formulaire est celui d'avant, à l'identique.
+   */
+  cycle?: { inscriptions: ReadonlyArray<{ id: string; libelle: string }> };
+}
+
+export function ReclamationForm({ creerAction, cycle }: ReclamationFormProps) {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
   const [error, setError] = useState<string | null>(null);
@@ -66,6 +97,9 @@ export function ReclamationForm({ creerAction }: ReclamationFormProps) {
   const [description, setDescription] = useState("");
   const [gravite, setGravite] = useState("");
   const [dateReception, setDateReception] = useState(() => new Date().toISOString().slice(0, 10));
+  const [qualite, setQualite] = useState<Qualite>("stagiaire");
+  const [canal, setCanal] = useState<Canal>("console");
+  const [enrollmentId, setEnrollmentId] = useState("");
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -74,7 +108,8 @@ export function ReclamationForm({ creerAction }: ReclamationFormProps) {
 
     startTransition(async () => {
       const result = await creerAction({
-        source,
+        source: cycle ? sourceDeQualite(qualite) : source,
+        ...(cycle ? { qualite, canal, ...(enrollmentId ? { enrollmentId } : {}) } : {}),
         reclamantNom,
         ...(reclamantEmail ? { reclamantEmail } : {}),
         objet,
@@ -103,25 +138,87 @@ export function ReclamationForm({ creerAction }: ReclamationFormProps) {
     <AdminBlocRepliable titre="+ Nouvelle réclamation">
       <form onSubmit={handleSubmit}>
         <div className="grid grid-cols-1 gap-[var(--space-admin-4)] sm:grid-cols-2">
+          {cycle && (
+            <>
+              <div className={fieldCls}>
+                <label htmlFor="reclamationform-qualite" className={labelCls}>
+                  Déposée par
+                </label>
+                <select
+                  id="reclamationform-qualite"
+                  value={qualite}
+                  onChange={(e) => setQualite(e.target.value as Qualite)}
+                  disabled={isPending}
+                  className={inputCls}
+                >
+                  {(Object.keys(QUALITE_LABELS) as Qualite[]).map((q) => (
+                    <option key={q} value={q}>
+                      {QUALITE_LABELS[q]}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <div className={fieldCls}>
+                <label htmlFor="reclamationform-canal" className={labelCls}>
+                  Reçue par
+                </label>
+                <select
+                  id="reclamationform-canal"
+                  value={canal}
+                  onChange={(e) => setCanal(e.target.value as Canal)}
+                  disabled={isPending}
+                  className={inputCls}
+                >
+                  {(Object.keys(CANAL_LABELS) as Canal[]).map((c) => (
+                    <option key={c} value={c}>
+                      {CANAL_LABELS[c]}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <div className={fieldCls}>
+                <label htmlFor="reclamationform-inscription" className={labelCls}>
+                  Inscription concernée (rattache la session)
+                </label>
+                <select
+                  id="reclamationform-inscription"
+                  value={enrollmentId}
+                  onChange={(e) => setEnrollmentId(e.target.value)}
+                  disabled={isPending}
+                  className={inputCls}
+                >
+                  <option value="">— aucune —</option>
+                  {cycle.inscriptions.map((i) => (
+                    <option key={i.id} value={i.id}>
+                      {i.libelle}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            </>
+          )}
+
           {/* Source */}
-          <div className={fieldCls}>
-            <label htmlFor="reclamationform-origine" className={labelCls}>
-              Origine
-            </label>
-            <select
-              id="reclamationform-origine"
-              value={source}
-              onChange={(e) => setSource(e.target.value as ReclamationSource)}
-              disabled={isPending}
-              className={inputCls}
-            >
-              {(Object.keys(SOURCE_LABELS) as ReclamationSource[]).map((s) => (
-                <option key={s} value={s}>
-                  {SOURCE_LABELS[s]}
-                </option>
-              ))}
-            </select>
-          </div>
+          {!cycle && (
+            <div className={fieldCls}>
+              <label htmlFor="reclamationform-origine" className={labelCls}>
+                Origine
+              </label>
+              <select
+                id="reclamationform-origine"
+                value={source}
+                onChange={(e) => setSource(e.target.value as ReclamationSource)}
+                disabled={isPending}
+                className={inputCls}
+              >
+                {(Object.keys(SOURCE_LABELS) as ReclamationSource[]).map((s) => (
+                  <option key={s} value={s}>
+                    {SOURCE_LABELS[s]}
+                  </option>
+                ))}
+              </select>
+            </div>
+          )}
 
           {/* Date réception */}
           <div className={fieldCls}>

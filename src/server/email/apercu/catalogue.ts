@@ -661,6 +661,18 @@ export const CATALOGUE: Readonly<Record<EmailJobName, FicheEmail>> = {
     destinataire: "la personne concernée",
     source: "server/qualiopi/portail/rgpd-service.ts",
   },
+  "reclamation-accuse": {
+    categorie: "formation",
+    quand: "Une réclamation vient d'être enregistrée (accusé automatique, immédiat)",
+    destinataire: "la personne réclamante",
+    source: "server/qualiopi/reclamations/cycle-service.ts",
+  },
+  "reclamation-reponse": {
+    categorie: "formation",
+    quand: "Réponse écrite et signée à une réclamation, après validation",
+    destinataire: "la personne réclamante",
+    source: "server/qualiopi/reclamations/cycle-service.ts",
+  },
   "rgpd-effacement-confirme": {
     categorie: "rgpd",
     quand: "Effacement effectué, confirmation",

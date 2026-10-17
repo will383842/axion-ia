@@ -122,6 +122,7 @@ import {
 import { factureVivante } from "@/server/qualiopi/financements/facture-vivante";
 import type { AlerteNiveau } from "../../../../prisma/generated/client";
 import { regleAdaptationReponseNonConsignee } from "./regle-adaptation-reponse";
+import { regleEcheancesReclamations } from "@/server/qualiopi/reclamations/regle-echeances";
 import {
   ATTENTE_JOURS,
   MARGE_AVANT_SESSION_JOURS,
@@ -5213,6 +5214,8 @@ const REGLES: Array<{ nom: string; fn: RegleFn }> = [
   { nom: "catalogue_certifiant_incoherent", fn: regleCatalogueCertifiantIncoherent },
   { nom: "offres_site_non_verifiees", fn: regleOffresNonVerifiees },
   { nom: "reclamations_sans_reponse", fn: regleReclamationsSansReponse },
+  // Chantier QNC, L09 — échéances en jours ouvrés du cycle daté (interrupteur).
+  { nom: "reclamations_echeances", fn: regleEcheancesReclamations },
   { nom: "emargement_manquant", fn: regleEmargementManquant },
   { nom: "session_sans_formateur", fn: regleSessionSansFormateur },
   { nom: "kit_sorties_non_pretes", fn: regleSortiesKitNonPretes },

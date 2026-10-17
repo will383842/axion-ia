@@ -657,6 +657,19 @@ export const ECRITURES_SESSION: ReadonlyArray<EcritureSession> = [
     decision: O,
     raison: "Suivi de la réclamation.",
   },
+  {
+    action: "ajouterEtapeReclamationAction",
+    fichier: "reclamations.ts",
+    decision: O,
+    raison:
+      "Le traitement d'une réclamation se poursuit après la session (ind. 31) ; une étape s'ajoute.",
+  },
+  {
+    action: "ajouterNoteIncidentAction",
+    fichier: "incidents.ts",
+    decision: O,
+    raison: "Une note de suivi d'incident ajoute de la traçabilité, sans rien réécrire.",
+  },
 ];
 
 /** Les actions d'une décision donnée. */
