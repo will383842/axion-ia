@@ -61,6 +61,7 @@ import {
   basculerFormateursNouvelleVersionContratAction,
   basculerFormateursBilanFinFormationAction,
   basculerFormateursCertificatAutoAction,
+  basculerFormateursSuiviQualiteAction,
   basculerFormateursSuiteContratCadreAction,
   basculerSignatureAlertesHorsJetonAction,
   basculerSignatureCopiePartielleAction,
@@ -143,6 +144,7 @@ const ACTIONS_SIGNATURE: Record<
   nouvelle_version_contrat: basculerFormateursNouvelleVersionContratAction,
   bilan_fin_formation: basculerFormateursBilanFinFormationAction,
   certificat_auto: basculerFormateursCertificatAutoAction,
+  suivi_qualite: basculerFormateursSuiviQualiteAction,
 };
 
 const ACTIONS_ENTREE: Record<CleInterrupteurEntree, typeof basculerFormateursTextesValidesAction> =

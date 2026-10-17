@@ -558,6 +558,16 @@ export const INTERRUPTEURS_SIGNATURE = {
     ),
     cle: "formateurs.certificat_realisation_auto",
   },
+  // Qualiopi ind. 21 (NC majeure) — le suivi de la qualité pédagogique des intervenants
+  // externes dans la durée. Coupé : aucune alerte, aucun refus, aucune grille saisissable
+  // — exactement comme avant. Les seuils sont dans `suivi-qualite/reglages.ts`.
+  suivi_qualite: {
+    ...envoi(
+      "Suivi de la qualité des intervenants (ind. 21)",
+      "Observation obligatoire de la 1re mission (habilitation confirmée à partir du seuil), grille après chaque mission (relance interne J+3, alerte J+7), satisfaction des stagiaires (entretien à prévoir, puis suspension des nouvelles missions jusqu'à une décision motivée), réévaluation annuelle (rappel J-30, refus à l'échéance) et alerte CV déclaré de plus de 24 mois. Missions commencées le jour de l'allumage ou après. Les refus passent par la garde de mission aux portes. Aucun e-mail, et le formateur ne voit jamais les grilles.",
+    ),
+    cle: "formateurs.suivi_qualite",
+  },
 } as const satisfies Record<string, DefinitionEnvoi & { readonly cle: string }>;
 
 export type CleInterrupteurSignature = keyof typeof INTERRUPTEURS_SIGNATURE;
@@ -629,6 +639,9 @@ export const PREALABLES_SIGNATURE: Readonly<
   bilan_fin_formation: [],
   // Aucun : rien n'est envoyé, la pièce est seulement créée.
   certificat_auto: [],
+  // Aucun : aucun e-mail (alertes internes seulement). Les refus de mission ne jouent que
+  // si `garde_mission_portes` est allumée, comme toute la garde.
+  suivi_qualite: [],
 };
 
 export function cleSettingSignature(cle: CleInterrupteurSignature): string {

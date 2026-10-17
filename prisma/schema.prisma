@@ -6118,6 +6118,9 @@ model TrainingSession {
   missionsFormateur          MissionFormateur[]
   /// Lot G2 — les bilans de fin de formation de ses formateurs indépendants.
   bilansFinFormation         BilanFinFormation[]
+  /// Qualiopi ind. 21 — grilles de suivi qualité des intervenants rattachées à la session.
+  grillesSuiviFormateur      GrilleSuiviFormateur[]
+  decisionsSuiviFormateur    DecisionSuiviFormateur[]
   /// Schéma n° 1 formateurs — formateurs choisis, par rang.
   choixFormateurs            ChoixFormateurSession[]
   /// Schéma n° 2 formateurs — relevés PAR MISSION (paiement par mission, éteint).
@@ -6411,6 +6414,9 @@ model Trainer {
   missionsFormateur           MissionFormateur[]
   /// Lot G2 — ses bilans de fin de formation (un par session animée).
   bilansFinFormation          BilanFinFormation[]
+  /// Qualiopi ind. 21 — son dossier de suivi qualité (grilles et décisions, ajout seul).
+  grillesSuiviQualite         GrilleSuiviFormateur[]
+  decisionsSuiviQualite       DecisionSuiviFormateur[]
   /// Affectations RETIRÉES — « il a un jour été le formateur de cette session » (D6).
   affectationsRetirees        SessionFormateurRetire[]
   /// Journées qu'il anime par EXCEPTION (désistement en cours de session, co-animation).
@@ -17138,4 +17144,83 @@ model EspaceStagiaireOuverture {
 
   @@index([traineeId, ouvertLe])
   @@map("espace_stagiaire_ouvertures")
+}
+
+// ============================================================
+// Qualiopi ind. 21 — SUIVI DE LA QUALITÉ PÉDAGOGIQUE DES INTERVENANTS EXTERNES
+// Observation de la 1re mission, grille après chaque mission, réévaluation annuelle,
+// décisions motivées. AJOUT SEUL (trigger `formateurs_preuve_ajout_seul`) : une
+// correction est une nouvelle ligne, la plus récente fait foi. Le formateur ne les voit
+// jamais. Interrupteur `formateurs.suivi_qualite` (éteint).
+// ============================================================
+
+enum TypeGrilleSuiviFormateur {
+  observation
+  evaluation_mission
+  reevaluation
+}
+
+enum TypeDecisionSuiviFormateur {
+  /// Entretien mené après une satisfaction sous le seuil d'entretien.
+  entretien
+  /// Reprise des nouvelles missions après une suspension (satisfaction sous le seuil).
+  levee_suspension
+}
+
+/// Une grille de suivi qualité d'un intervenant externe, versionnée, datée et signée
+/// (auteur console). Rangée au dossier du formateur ET rattachée à la session (sauf la
+/// réévaluation annuelle, qui porte sur le formateur).
+/// rgpd: technique — preuve Qualiopi (ind. 21) de l'organisme : identifiants, notes et conclusion professionnelle d'un auteur de la console ; suit la conservation des pièces du formateur
+model GrilleSuiviFormateur {
+  id                 String                   @id @default(uuid()) @db.Uuid
+  trainerId          String                   @map("trainer_id") @db.Uuid
+  trainer            Trainer                  @relation(fields: [trainerId], references: [id], onDelete: Restrict)
+  sessionId          String?                  @map("session_id") @db.Uuid
+  session            TrainingSession?         @relation(fields: [sessionId], references: [id], onDelete: Restrict)
+  type               TypeGrilleSuiviFormateur
+  /// Rang de la saisie pour (formateur, type, session) : 1, puis 2 pour une correction…
+  numero             Int
+  /// Version des critères (`suivi-qualite/reglages.ts`) au moment de la saisie.
+  versionGrille      Int                      @map("version_grille")
+  /// Critères figés : [{ code, libelle, note }].
+  criteres           Json
+  moyenneCentiemes   Int                      @map("moyenne_centiemes")
+  /// Moyenne au moins égale au seuil réglé pour ce type, au moment de la saisie.
+  favorable          Boolean
+  conclusion         String                   @db.Text
+  /// Observation : la personne qui a observé.
+  observateur        String?                  @db.VarChar(200)
+  /// Date de l'observation ou de l'évaluation (pas celle de la saisie).
+  dateEvaluation     DateTime                 @map("date_evaluation")
+  /// Grille après mission : satisfaction saisie (1 à 5), à défaut de questionnaires.
+  satisfactionSaisie Int?                     @map("satisfaction_saisie")
+  /// La signature : l'auteur console, et son nom tel qu'affiché à la saisie.
+  auteurId           String                   @map("auteur_id") @db.Uuid
+  auteurNom          String                   @map("auteur_nom") @db.VarChar(200)
+  createdAt          DateTime                 @default(now()) @map("created_at")
+
+  @@index([trainerId, type])
+  @@index([sessionId])
+  @@map("grilles_suivi_formateur")
+}
+
+/// Une décision motivée de la console sur le suivi qualité d'un intervenant (entretien,
+/// reprise après suspension). Ajout seul.
+/// rgpd: technique — preuve Qualiopi (ind. 21) de l'organisme : identifiants, date et motif écrit par un auteur de la console
+model DecisionSuiviFormateur {
+  id        String                     @id @default(uuid()) @db.Uuid
+  trainerId String                     @map("trainer_id") @db.Uuid
+  trainer   Trainer                    @relation(fields: [trainerId], references: [id], onDelete: Restrict)
+  /// La mission qui l'a appelée (satisfaction sous le seuil).
+  sessionId String?                    @map("session_id") @db.Uuid
+  session   TrainingSession?           @relation(fields: [sessionId], references: [id], onDelete: Restrict)
+  type      TypeDecisionSuiviFormateur
+  motif     String                     @db.Text
+  auteurId  String                     @map("auteur_id") @db.Uuid
+  auteurNom String                     @map("auteur_nom") @db.VarChar(200)
+  createdAt DateTime                   @default(now()) @map("created_at")
+
+  @@index([trainerId])
+  @@index([sessionId])
+  @@map("decisions_suivi_formateur")
 }

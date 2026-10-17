@@ -17,7 +17,7 @@ import {
 } from "./interrupteurs";
 
 describe("interrupteurs du socle de signature", () => {
-  it("vingt clés, chacune protégée de l'éditeur générique", () => {
+  it("vingt et une clés, chacune protégée de l'éditeur générique", () => {
     expect(CLES_INTERRUPTEURS_SIGNATURE.map(cleSettingSignature).sort()).toEqual(
       [
         // Lot S2 — affectation et acceptation sûres, livré éteint.
@@ -48,6 +48,8 @@ describe("interrupteurs du socle de signature", () => {
         "formateurs.bilan_fin_formation",
         // Lot 8B — certificat de réalisation créé à la fin de la formation, livré éteint.
         "formateurs.certificat_realisation_auto",
+        // Qualiopi ind. 21 — suivi de la qualité pédagogique des intervenants, livré éteint.
+        "formateurs.suivi_qualite",
         "signature.alertes_hors_jeton",
         "signature.copie_partielle",
         "signature.exemplaire_captation",
