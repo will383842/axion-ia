@@ -10,7 +10,8 @@
  * via Tailwind utilities only (`bg-canvas`, `text-fg`, `font-serif`, …).
  * =============================================================*/
 
-/* CLS — replis métriques calés sur le POIDS RÉELLEMENT AFFICHÉ (mesuré fontTools, 2026-10-17).
+/* CLS — replis métriques calés sur le POIDS RÉELLEMENT AFFICHÉ (mesuré fontTools sur le texte français réel du hero, repli Liberation = métriques Arial/TNR, 2026-10-17 ;
+ faces next/font fixes à 400 et 600 → 500 s'affiche en 400).
  next/font calibre son repli sur l'instance PAR DÉFAUT du fichier variable : Manrope = wght 200
  (≈ 8 % trop étroit à 600), Fraunces = wght 900 (≈ 9 % trop large à 500). Au swap le texte du
  hero reflue → CLS prod 0,22-0,27 (/formations, /implantations/*/paris). adjustFontFallback est
@@ -20,9 +21,9 @@
   src: local("Arial");
   font-weight: 400 500;
   font-style: normal;
-  size-adjust: 106.44%;
-  ascent-override: 100.15%;
-  descent-override: 28.19%;
+  size-adjust: 102.04%;
+  ascent-override: 104.47%;
+  descent-override: 29.4%;
   line-gap-override: 0%;
 }
 @font-face {
@@ -30,9 +31,9 @@
   src: local("Arial Bold");
   font-weight: 600 800;
   font-style: normal;
-  size-adjust: 100.7%;
-  ascent-override: 105.86%;
-  descent-override: 29.79%;
+  size-adjust: 98.76%;
+  ascent-override: 107.94%;
+  descent-override: 30.38%;
   line-gap-override: 0%;
 }
 @font-face {
@@ -40,9 +41,9 @@
   src: local("Times New Roman");
   font-weight: 400 500;
   font-style: normal;
-  size-adjust: 118.82%;
-  ascent-override: 82.31%;
-  descent-override: 21.46%;
+  size-adjust: 116.63%;
+  ascent-override: 83.86%;
+  descent-override: 21.86%;
   line-gap-override: 0%;
 }
 @font-face {
@@ -50,9 +51,9 @@
   src: local("Times New Roman Bold");
   font-weight: 600 900;
   font-style: normal;
-  size-adjust: 114.44%;
-  ascent-override: 85.46%;
-  descent-override: 22.28%;
+  size-adjust: 110.92%;
+  ascent-override: 88.17%;
+  descent-override: 22.99%;
   line-gap-override: 0%;
 }
 @font-face {
@@ -60,9 +61,9 @@
   src: local("Times New Roman Italic");
   font-weight: 400 500;
   font-style: italic;
-  size-adjust: 114.76%;
-  ascent-override: 85.22%;
-  descent-override: 22.22%;
+  size-adjust: 111.72%;
+  ascent-override: 87.54%;
+  descent-override: 22.82%;
   line-gap-override: 0%;
 }
 @font-face {
@@ -70,9 +71,9 @@
   src: local("Times New Roman Bold Italic");
   font-weight: 600 900;
   font-style: italic;
-  size-adjust: 115.13%;
-  ascent-override: 84.95%;
-  descent-override: 22.15%;
+  size-adjust: 111.26%;
+  ascent-override: 87.9%;
+  descent-override: 22.92%;
   line-gap-override: 0%;
 }
 
