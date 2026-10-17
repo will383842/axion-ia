@@ -17,6 +17,7 @@ import {
   SEUIL_ALERTE_JOURS,
 } from "@/server/societe-documents/echeance";
 import { compterParRubrique, listSocieteDocsEnAlerte } from "@/server/societe-documents/queries";
+import { documentsHorsVigueur } from "@/server/documents-organisme/documents-organisme";
 import {
   getRubriqueForType,
   labelSocieteDocType,
@@ -46,9 +47,11 @@ export default async function SocietePage({
   }
 
   const maintenant = new Date();
+  // CHANTIER QNC, L13 — vide tant que l'archivage est éteint : rien ne change.
+  const horsVigueur = await documentsHorsVigueur("SocieteDocument");
   const [compteurs, alertes] = await Promise.all([
-    compterParRubrique(),
-    listSocieteDocsEnAlerte(maintenant, SEUIL_ALERTE_JOURS),
+    compterParRubrique(horsVigueur),
+    listSocieteDocsEnAlerte(maintenant, SEUIL_ALERTE_JOURS, horsVigueur),
   ]);
 
   const parRubrique = new Map(compteurs.map((c) => [c.rubrique, c]));

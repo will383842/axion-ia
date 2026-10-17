@@ -173,6 +173,15 @@ export default async function MonDossierPage({
                       className="rounded-md border px-2 py-1"
                     />
                   </label>
+                  <label className="flex flex-col gap-1">
+                    <span>RIB du nouveau compte (PDF ou photo)</span>
+                    <input
+                      type="file"
+                      name="rib"
+                      required
+                      accept="application/pdf,image/jpeg,image/png"
+                    />
+                  </label>
                   <button type="submit" className="w-fit rounded-md border px-3 py-1.5 font-medium">
                     Demander le changement
                   </button>

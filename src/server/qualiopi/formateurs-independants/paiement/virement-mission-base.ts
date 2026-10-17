@@ -18,10 +18,58 @@ import { lireCumulHonorairesHtCents, type ClientCumulHonoraires } from "../vigil
 import { derniereJourneeDuMois, OBJETS_A_DATE_FIXE } from "./echeance-autofacture";
 import {
   attenteAttestationALaMission,
+  gardeChangementIban,
   gardeVirementMission,
   ibanFin4,
+  type MotifChangementIban,
   type VerdictVirementMission,
 } from "./virement-mission";
+
+/** Le strict nécessaire pour lire la règle C-1 (changement d'IBAN). */
+export interface ClientChangementIban {
+  demandeChangementFormateur: {
+    count(a: unknown): Promise<number>;
+    findFirst(a: unknown): Promise<{ createdAt: Date; traiteAt: Date | null } | null>;
+  };
+}
+
+/** Les demandes d'IBAN de CE formateur : une en attente ? la dernière acceptée ? */
+async function lireChangementIban(
+  db: ClientChangementIban,
+  trainerId: string,
+): Promise<{
+  demandeIbanEnAttente: boolean;
+  dernierChangementIban: { demandeA: Date; valideA: Date } | null;
+}> {
+  const [enAttente, dernier] = await Promise.all([
+    db.demandeChangementFormateur.count({
+      where: { trainerId, nature: "iban", statut: "en_attente" },
+    }),
+    db.demandeChangementFormateur.findFirst({
+      where: { trainerId, nature: "iban", statut: "acceptee" },
+      orderBy: { traiteAt: "desc" },
+      select: { createdAt: true, traiteAt: true },
+    }),
+  ]);
+  return {
+    demandeIbanEnAttente: enAttente > 0,
+    dernierChangementIban:
+      dernier?.traiteAt != null ? { demandeA: dernier.createdAt, valideA: dernier.traiteAt } : null,
+  };
+}
+
+/**
+ * La règle C-1 lue en base pour un formateur (`gardeChangementIban`). Vide : aucun
+ * changement d'IBAN ne retient le virement. Une lecture en échec REMONTE : l'appelant
+ * refuse le paiement, il ne conclut jamais « rien à signaler ».
+ */
+export async function motifsChangementIbanDu(
+  db: ClientChangementIban,
+  trainerId: string,
+  maintenant: Date,
+): Promise<MotifChangementIban[]> {
+  return gardeChangementIban({ ...(await lireChangementIban(db, trainerId)), maintenant });
+}
 
 /** Le strict nécessaire d'un client Prisma. */
 export interface ClientVirementMission {
@@ -35,10 +83,7 @@ export interface ClientVirementMission {
       Array<{ dateExpiration: Date | null; dateEmission?: Date | null; valideAt?: Date | null }>
     >;
   };
-  demandeChangementFormateur: {
-    count(a: unknown): Promise<number>;
-    findFirst(a: unknown): Promise<{ createdAt: Date; traiteAt: Date | null } | null>;
-  };
+  demandeChangementFormateur: ClientChangementIban["demandeChangementFormateur"];
   /**
    * Lot G1 — le cumul des honoraires HT (seuil de vigilance). Absent ou illisible :
    * l'attestation reste exigée (garde d'avant le lot).
@@ -167,7 +212,7 @@ export async function contexteVirementMission(
   preuve: { ibanFin4: string; ibanEmpreinte: string } | null;
 }> {
   const echeance = jourParis(releve.echeanceAt);
-  const [derniereJournee, trainer, attestations, enAttente, dernier, cumul] = await Promise.all([
+  const [derniereJournee, trainer, attestations, changementIban, cumul] = await Promise.all([
     derniereJourneeDuReleve(db, releve, maintenant),
     db.trainer.findUnique({
       where: { id: releve.trainerId },
@@ -182,14 +227,7 @@ export async function contexteVirementMission(
       },
       select: { dateExpiration: true, dateEmission: true, valideAt: true },
     }),
-    db.demandeChangementFormateur.count({
-      where: { trainerId: releve.trainerId, nature: "iban", statut: "en_attente" },
-    }),
-    db.demandeChangementFormateur.findFirst({
-      where: { trainerId: releve.trainerId, nature: "iban", statut: "acceptee" },
-      orderBy: { traiteAt: "desc" },
-      select: { createdAt: true, traiteAt: true },
-    }),
+    lireChangementIban(db, releve.trainerId),
     // Ce relevé est « facture reçue » : il est DANS le cumul (la mission en cours de paiement).
     db.trainerStatement
       ? lireCumulHonorairesHtCents(releve.trainerId, { trainerStatement: db.trainerStatement })
@@ -220,9 +258,7 @@ export async function contexteVirementMission(
     }),
     // Lot G1 : sous le seuil de vigilance, l'attestation n'est pas exigée pour payer.
     vigilanceExigible: exigible,
-    demandeIbanEnAttente: enAttente > 0,
-    dernierChangementIban:
-      dernier?.traiteAt != null ? { demandeA: dernier.createdAt, valideA: dernier.traiteAt } : null,
+    ...changementIban,
     ibanEmpreinteActuelle: trainer?.ibanEmpreinte ?? null,
     ibanEmpreinteAffichee,
     // La fin de collaboration pour décès n'existe pas encore (motif à venir, L14).

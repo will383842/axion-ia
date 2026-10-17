@@ -14,8 +14,12 @@ import { prisma } from "@/lib/prisma";
 
 import type { Retard } from "../argent/calcul-mission";
 import { ISSUE_DESACCORD_NON_RETENU } from "./desaccord-regle";
-import { contexteVirementMission, ibanAffichePourVirement } from "./virement-mission-base";
-import type { MotifSuspensionVirement } from "./virement-mission";
+import {
+  contexteVirementMission,
+  ibanAffichePourVirement,
+  motifsChangementIbanDu,
+} from "./virement-mission-base";
+import type { MotifChangementIban, MotifSuspensionVirement } from "./virement-mission";
 
 export interface EtatVirementMission {
   readonly fin4: string | null;
@@ -82,6 +86,47 @@ export async function etatsVirementsMission(
       // Clé absente, IBAN illisible : présenté comme suspendu, jamais comme payable.
       etats.set(r.id, { fin4: null, empreinte: null, motifs: ["iban_absent"], retard: null });
     }
+  }
+  return etats;
+}
+
+export interface EtatVirementMensuel {
+  /** Rien ne retient le virement : « Virement fait » (sur le relevé) passera la règle C-1. */
+  readonly pret: boolean;
+  /** Règle C-1 (changement d'IBAN) : les MÊMES motifs que le clic refuserait. */
+  readonly motifs: ReadonlyArray<MotifChangementIban>;
+  /** Demandes illisibles : jamais présenté comme prêt (le clic refusera aussi). */
+  readonly illisible: boolean;
+}
+
+/**
+ * Relecture de #1561 — l'état des virements MENSUELS des formateurs dans « Virements à
+ * faire ». Le canal de changement d'IBAN est ouvert avant la date de passage : un
+ * relevé mensuel dont le formateur change de compte n'est pas « prêt à virer ». La
+ * règle est celle du clic (`motifsChangementIbanDu`), lue une fois par formateur.
+ * `bloque` : facture attendue ou non conforme (la vue le sait déjà).
+ */
+export async function etatsVirementsMensuels(
+  releves: ReadonlyArray<{ pieceId: string; trainerId: string; bloque: boolean }>,
+  maintenant: Date,
+): Promise<Map<string, EtatVirementMensuel>> {
+  const parFormateur = new Map<string, Promise<MotifChangementIban[] | null>>();
+  for (const r of releves) {
+    if (!parFormateur.has(r.trainerId))
+      parFormateur.set(
+        r.trainerId,
+        motifsChangementIbanDu(prisma, r.trainerId, maintenant).catch(() => null),
+      );
+  }
+  const etats = new Map<string, EtatVirementMensuel>();
+  for (const r of releves) {
+    const motifs = await parFormateur.get(r.trainerId)!;
+    etats.set(
+      r.pieceId,
+      motifs === null
+        ? { pret: false, motifs: [], illisible: true }
+        : { pret: !r.bloque && motifs.length === 0, motifs, illisible: false },
+    );
   }
   return etats;
 }

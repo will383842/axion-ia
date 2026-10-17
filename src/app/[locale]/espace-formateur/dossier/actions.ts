@@ -19,7 +19,7 @@ import { getFormateurSession } from "@/server/formateur/guard";
 import { FORMATEUR_BASE_PATH, FORMATEUR_CONNEXION_PATH } from "@/server/formateur/routes";
 import {
   demanderChangementAdresse,
-  demanderChangementIban,
+  demanderChangementIbanAvecRib,
 } from "@/server/qualiopi/formateurs-independants/changements-coordonnees";
 import { deposerDepuisMonDossier } from "@/server/qualiopi/formateurs-independants/mon-dossier";
 import { transmettreNumeroDeclaration } from "@/server/qualiopi/formateurs-independants/numero-declaration-espace";
@@ -62,17 +62,25 @@ export async function deposerMaPieceAction(fd: FormData): Promise<void> {
 }
 
 /**
- * Lot E (M12) — demande de changement d'IBAN. L'IBAN saisi ne revient JAMAIS dans
- * l'adresse ni dans un journal ; la fiche n'est pas touchée avant la validation.
+ * Lot E (M12) — demande de changement d'IBAN, avec le RIB du nouveau compte. L'IBAN
+ * saisi ne revient JAMAIS dans l'adresse ni dans un journal ; la fiche n'est pas touchée
+ * avant la validation. La fiche est celle de la SESSION : un identifiant glissé dans le
+ * formulaire est ignoré.
  */
 export async function demanderChangementIbanAction(fd: FormData): Promise<void> {
   const session = await getFormateurSession();
   if (!session) redirect(FORMATEUR_CONNEXION_PATH);
   let code: string;
   try {
-    const r = await demanderChangementIban(
+    const fichier = fd.get("rib");
+    const rib =
+      fichier instanceof File && fichier.size > 0
+        ? { nomFichier: fichier.name || "rib", octets: new Uint8Array(await fichier.arrayBuffer()) }
+        : null;
+    const r = await demanderChangementIbanAvecRib(
       session.trainerId,
       String(fd.get("iban") ?? "").slice(0, 50),
+      rib,
       new Date(),
     );
     code = r.ok ? "demande" : codeDuMessage(r.message, "changement_erreur");

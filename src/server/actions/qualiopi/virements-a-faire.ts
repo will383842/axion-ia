@@ -23,7 +23,11 @@ import { prisma } from "@/lib/prisma";
 import { logQualiopiActivity, requireHabilitation } from "@/server/actions/qualiopi/_guards";
 import { transitionStatementAction } from "@/server/actions/qualiopi/trainer-remuneration";
 import { lireEtatsEntree } from "@/server/qualiopi/formateurs-independants/etats-entree";
-import { ibanEnClairPourVirement } from "@/server/qualiopi/formateurs-independants/paiement/virement-mission-base";
+import {
+  ibanEnClairPourVirement,
+  motifsChangementIbanDu,
+} from "@/server/qualiopi/formateurs-independants/paiement/virement-mission-base";
+import { LIBELLE_SUSPENSION_VIREMENT } from "@/server/qualiopi/formateurs-independants/paiement/virement-mission";
 import {
   envoyerVirementEnAttente,
   envoyerVirementsFaits,
@@ -65,6 +69,12 @@ export async function revelerIbanVirementAction(
     return { error: "Formateur inconnu." };
   if (!(await aUnVirementMissionDu(trainerId).catch(() => false)))
     return { error: "Aucun virement de mission à faire pour ce formateur." };
+  // Règle C-1 : pendant un changement d'IBAN, copier le compte, c'est préparer un
+  // virement vers l'ANCIEN (ou un nouveau pas encore utilisable). Refusé, comme le clic.
+  const motifs = await motifsChangementIbanDu(prisma, trainerId, new Date()).catch(() => null);
+  if (motifs === null) return { error: "Lecture du compte bancaire impossible." };
+  if (motifs.length > 0)
+    return { error: motifs.map((m) => LIBELLE_SUSPENSION_VIREMENT[m]).join(" ") };
   const lu = await ibanEnClairPourVirement(prisma, trainerId).catch(() => null);
   if (lu === null) return { error: "Aucun IBAN lisible pour ce formateur." };
   await logQualiopiActivity({

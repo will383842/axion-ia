@@ -12,34 +12,12 @@
 
 import { prisma } from "@/lib/prisma";
 
-import { empreinteAttendue } from "./textes-formateurs-a-valider";
-import {
-  PREFIXE_TEXTES_VALIDES,
-  lireEmpreinte,
-  textesValidesDepuisLignes,
-  type RegistreTextesValides,
-} from "./textes-valides";
+import { etatsTextesDepuisLignes, type EtatsTextes } from "./textes-valides-etats";
+import { PREFIXE_TEXTES_VALIDES, type RegistreTextesValides } from "./textes-valides";
 
-export interface EtatsTextes {
-  readonly valides: RegistreTextesValides;
-  /** Validés sur un AUTRE texte que l'actuel (ou sans empreinte) : la validation est tombée. */
-  readonly aRevalider: ReadonlySet<string>;
-}
-
-/** Pur : sépare les validations encore justes de celles que le texte a dépassées. */
-export function etatsTextesDepuisLignes(
-  lignes: ReadonlyArray<{ key: string; value: unknown }>,
-): EtatsTextes {
-  const parCle = new Map(lignes.map((l) => [l.key, l.value]));
-  const valides = new Set<string>();
-  const aRevalider = new Set<string>();
-  for (const cle of textesValidesDepuisLignes(lignes)) {
-    const attendue = empreinteAttendue(cle);
-    if (attendue === null || lireEmpreinte(parCle.get(cle)) === attendue) valides.add(cle);
-    else aRevalider.add(cle);
-  }
-  return { valides, aRevalider };
-}
+// La partie pure vit dans `textes-valides-etats.ts` (importable sans Prisma) ; ré-exportée
+// ici pour les appelants existants.
+export { etatsTextesDepuisLignes, type EtatsTextes };
 
 export async function lireEtatsTextes(): Promise<EtatsTextes> {
   try {

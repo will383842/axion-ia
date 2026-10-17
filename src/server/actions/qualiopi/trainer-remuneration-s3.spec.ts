@@ -18,6 +18,11 @@ const tx = {
   $executeRawUnsafe: vi.fn(),
   trainerStatement: { update: vi.fn(), updateMany: vi.fn() },
   trainerFeeLine: { updateMany: vi.fn() },
+  // Règle C-1 (changement d'IBAN), lue au paiement d'un relevé mensuel : aucune demande.
+  demandeChangementFormateur: {
+    count: vi.fn().mockResolvedValue(0),
+    findFirst: vi.fn().mockResolvedValue(null),
+  },
 };
 
 const mockStatementFindUnique = vi.fn();
@@ -26,6 +31,10 @@ const mockTransaction = vi.fn(async (fn: (t: typeof tx) => Promise<unknown>) => 
 vi.mock("@/lib/prisma", () => ({
   prisma: {
     trainerStatement: { findUnique: (...a: unknown[]) => mockStatementFindUnique(...a) },
+    demandeChangementFormateur: {
+      count: () => Promise.resolve(0),
+      findFirst: () => Promise.resolve(null),
+    },
     $transaction: (...a: unknown[]) => mockTransaction(...(a as [never])),
   },
 }));
