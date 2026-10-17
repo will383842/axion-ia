@@ -1,12 +1,21 @@
 /**
  * Qualiopi — Service registre des incidents (LOT 4 — pilotage réel).
  *
- * creerIncident     : déclare un incident (pédagogique/administratif/technique/autre).
- * updateIncident    : met à jour un incident (champs fournis uniquement) —
- *                     passe resoluAt automatiquement quand statut → resolu.
- * supprimerIncident : suppression physique (registre interne, pattern veille).
- * getIncident       : lecture unitaire.
- * listIncidents     : liste filtrée (statut/type optionnels) avec la session liée.
+ * creerIncident        : déclare un incident (pédagogique/administratif/technique/autre),
+ *                        avec sa nature, son déclarant et son origine.
+ * completerIncident    : complète ce qui n'est pas renseigné ou décide d'un
+ *                        changement de statut — dans la MÊME transaction que la
+ *                        note signée qui le documente (L09).
+ * ajouterNoteIncident  : note de suivi, en ajout seul.
+ * getIncident          : lecture unitaire.
+ * listIncidents        : liste filtrée (statut/type optionnels) avec la session
+ *                        liée et les notes.
+ *
+ * 🔴 Chantier QNC, L09 — il n'existe plus ni `updateIncident` libre ni
+ * `supprimerIncident` : un incident déclaré est une pièce du registre (ind. 31
+ * et 32). Les règles de ce qui reste permis vivent, pures, dans
+ * `incident-complement.ts` ; `registres-rien-ne-s-efface.spec.ts` rougit au
+ * premier effacement réintroduit.
  *
  * Alimente M7 (incidents réels) et M9 (actions correctives) du pilotage.
  * Stub-aware : early-exit/mutations interdites si DATABASE_URL contient "stub.invalid".
@@ -16,11 +25,19 @@
 import { prisma } from "@/lib/prisma";
 import type {
   Incident,
+  IncidentNote,
   IncidentType,
   IncidentGravite,
   IncidentStatut,
   IncidentFaitIntervenant,
 } from "../../../../prisma/generated/client";
+import {
+  planifierComplement,
+  type DeclarantIncident,
+  type DemandeComplement,
+  type NatureIncident,
+  type OrigineIncident,
+} from "./incident-complement";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Types
@@ -44,6 +61,12 @@ export interface MiseEnCauseIntervenant {
   faitIntervenant?: IncidentFaitIntervenant | null;
 }
 
+/** L'auteur RÉEL d'un geste : la personne connectée, ou l'automate qui agit. */
+export interface AuteurRegistre {
+  readonly id: string | null;
+  readonly nom: string;
+}
+
 export interface CreerIncidentInput extends MiseEnCauseIntervenant {
   type: IncidentType;
   gravite: IncidentGravite;
@@ -53,18 +76,20 @@ export interface CreerIncidentInput extends MiseEnCauseIntervenant {
   dateIncident: Date;
   actionCorrective?: string;
   statut?: IncidentStatut;
-}
-
-export interface UpdateIncidentInput extends MiseEnCauseIntervenant {
-  type?: IncidentType;
-  gravite?: IncidentGravite;
-  titre?: string;
-  description?: string;
-  /** `null` détache la session. */
-  sessionId?: string | null;
-  dateIncident?: Date;
-  actionCorrective?: string;
-  statut?: IncidentStatut;
+  /** L09 — aléa, dysfonctionnement ou difficulté. */
+  nature?: NatureIncident;
+  /** L09 — la partie prenante qui l'a signalé. */
+  declarant?: DeclarantIncident;
+  /** L09 — par où il est arrivé. */
+  origine?: OrigineIncident;
+  /** L09 — l'administrateur qui le saisit (NULL pour un automate). */
+  declareParId?: string | null;
+  /**
+   * L09 — note d'ouverture, écrite dans la même transaction. Sert aux
+   * ouvertures automatiques (examen d'une note faible) : la note dit d'où
+   * vient l'incident et qui l'a ouvert.
+   */
+  noteOuverture?: { texte: string; auteur: AuteurRegistre };
 }
 
 export interface ListIncidentsOptions {
@@ -74,6 +99,8 @@ export interface ListIncidentsOptions {
   trainerId?: string;
   /** Restreint aux incidents mettant en cause cet organisme sous-traitant. */
   sousTraitantId?: string;
+  /** Restreint aux incidents d'une session (dossier de session). */
+  sessionId?: string;
   skip?: number;
   take?: number;
 }
@@ -106,9 +133,18 @@ function dataMiseEnCause(input: MiseEnCauseIntervenant) {
   };
 }
 
+export type NoteIncidentLue = Pick<IncidentNote, "id" | "texte" | "auteurNom" | "creeLe">;
+
 export type IncidentWithSession = Incident & {
   session: { id: string; numero: string; titreSession: string } | null;
+  notes: NoteIncidentLue[];
 };
+
+function interditAuBuild(): void {
+  if (process.env["DATABASE_URL"]?.includes("stub.invalid")) {
+    throw new Error("incidents-service: mutations interdites en mode stub.invalid");
+  }
+}
 
 // ─────────────────────────────────────────────────────────────────────────────
 // creerIncident
@@ -116,72 +152,90 @@ export type IncidentWithSession = Incident & {
 
 /** Déclare un incident dans le registre. */
 export async function creerIncident(input: CreerIncidentInput): Promise<Incident> {
-  if (process.env["DATABASE_URL"]?.includes("stub.invalid")) {
-    throw new Error("incidents-service: mutations interdites en mode stub.invalid");
-  }
+  interditAuBuild();
   verifierMiseEnCause(input);
   const statut = input.statut ?? "ouvert";
-  return prisma.incident.create({
-    data: {
-      type: input.type,
-      gravite: input.gravite,
-      titre: input.titre,
-      dateIncident: input.dateIncident,
-      statut,
-      ...(input.description !== undefined ? { description: input.description } : {}),
-      ...(input.sessionId !== undefined ? { sessionId: input.sessionId } : {}),
-      ...(input.actionCorrective !== undefined ? { actionCorrective: input.actionCorrective } : {}),
-      ...(statut === "resolu" ? { resoluAt: new Date() } : {}),
-      ...dataMiseEnCause(input),
-    },
+  const data = {
+    type: input.type,
+    gravite: input.gravite,
+    titre: input.titre,
+    dateIncident: input.dateIncident,
+    statut,
+    ...(input.description !== undefined ? { description: input.description } : {}),
+    ...(input.sessionId !== undefined ? { sessionId: input.sessionId } : {}),
+    ...(input.actionCorrective !== undefined ? { actionCorrective: input.actionCorrective } : {}),
+    ...(statut === "resolu" ? { resoluAt: new Date() } : {}),
+    ...(input.nature !== undefined ? { nature: input.nature } : {}),
+    ...(input.declarant !== undefined ? { declarant: input.declarant } : {}),
+    ...(input.origine !== undefined ? { origine: input.origine } : {}),
+    ...(input.declareParId !== undefined ? { declareParId: input.declareParId } : {}),
+    ...dataMiseEnCause(input),
+  };
+  const note = input.noteOuverture;
+  if (note === undefined) return prisma.incident.create({ data });
+  return prisma.$transaction(async (tx) => {
+    const incident = await tx.incident.create({ data });
+    await tx.incidentNote.create({
+      data: {
+        incidentId: incident.id,
+        texte: note.texte,
+        auteurId: note.auteur.id,
+        auteurNom: note.auteur.nom,
+      },
+    });
+    return incident;
   });
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// updateIncident
+// completerIncident
 // ─────────────────────────────────────────────────────────────────────────────
+
+export type ResultatCompleter =
+  { ok: true; incident: Incident; note: string } | { ok: false; erreur: string };
 
 /**
- * Met à jour les champs fournis d'un incident. Quand le statut passe à
- * `resolu`, `resoluAt` est posé (s'il ne l'était pas déjà) ; quand il repasse
- * à `ouvert`/`en_cours`, `resoluAt` est remis à null.
+ * Complète un incident ou décide de son statut. L'état est RELU dans la
+ * transaction, la règle appliquée sur cet état, et la note signée écrite avec
+ * la modification : sans note, pas de modification.
  */
-export async function updateIncident(id: string, input: UpdateIncidentInput): Promise<Incident> {
-  if (process.env["DATABASE_URL"]?.includes("stub.invalid")) {
-    throw new Error("incidents-service: mutations interdites en mode stub.invalid");
-  }
-  verifierMiseEnCause(input);
-  return prisma.incident.update({
-    where: { id },
-    data: {
-      ...dataMiseEnCause(input),
-      ...(input.type !== undefined ? { type: input.type } : {}),
-      ...(input.gravite !== undefined ? { gravite: input.gravite } : {}),
-      ...(input.titre !== undefined ? { titre: input.titre } : {}),
-      ...(input.description !== undefined ? { description: input.description } : {}),
-      ...(input.sessionId !== undefined ? { sessionId: input.sessionId } : {}),
-      ...(input.dateIncident !== undefined ? { dateIncident: input.dateIncident } : {}),
-      ...(input.actionCorrective !== undefined ? { actionCorrective: input.actionCorrective } : {}),
-      ...(input.statut !== undefined
-        ? {
-            statut: input.statut,
-            resoluAt: input.statut === "resolu" ? new Date() : null,
-          }
-        : {}),
-    },
+export async function completerIncident(
+  id: string,
+  demande: DemandeComplement,
+  auteur: AuteurRegistre,
+): Promise<ResultatCompleter> {
+  interditAuBuild();
+  return prisma.$transaction(async (tx) => {
+    const actuel = await tx.incident.findUnique({ where: { id } });
+    if (actuel === null) return { ok: false as const, erreur: "Incident introuvable" };
+    const plan = planifierComplement(actuel, demande, new Date());
+    if (!plan.ok) return { ok: false as const, erreur: plan.erreur };
+    const incident =
+      Object.keys(plan.data).length > 0
+        ? await tx.incident.update({ where: { id }, data: plan.data })
+        : actuel;
+    await tx.incidentNote.create({
+      data: { incidentId: id, texte: plan.note, auteurId: auteur.id, auteurNom: auteur.nom },
+    });
+    return { ok: true as const, incident, note: plan.note };
   });
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// supprimerIncident
+// ajouterNoteIncident
 // ─────────────────────────────────────────────────────────────────────────────
 
-/** Supprime un incident (registre interne — pattern veille). */
-export async function supprimerIncident(id: string): Promise<Incident> {
-  if (process.env["DATABASE_URL"]?.includes("stub.invalid")) {
-    throw new Error("incidents-service: mutations interdites en mode stub.invalid");
-  }
-  return prisma.incident.delete({ where: { id } });
+/** Ajoute une note de suivi. Une note fausse se corrige par une note suivante. */
+export async function ajouterNoteIncident(
+  incidentId: string,
+  texte: string,
+  auteur: AuteurRegistre,
+): Promise<NoteIncidentLue> {
+  interditAuBuild();
+  return prisma.incidentNote.create({
+    data: { incidentId, texte, auteurId: auteur.id, auteurNom: auteur.nom },
+    select: { id: true, texte: true, auteurNom: true, creeLe: true },
+  });
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -200,7 +254,7 @@ export async function getIncident(id: string): Promise<Incident | null> {
 // listIncidents
 // ─────────────────────────────────────────────────────────────────────────────
 
-/** Liste les incidents (plus récents d'abord), avec la session liée éventuelle. */
+/** Liste les incidents (plus récents d'abord), avec la session liée et les notes. */
 export async function listIncidents(
   options: ListIncidentsOptions = {},
 ): Promise<IncidentWithSession[]> {
@@ -213,9 +267,14 @@ export async function listIncidents(
       ...(options.type !== undefined ? { type: options.type } : {}),
       ...(options.trainerId !== undefined ? { trainerId: options.trainerId } : {}),
       ...(options.sousTraitantId !== undefined ? { sousTraitantId: options.sousTraitantId } : {}),
+      ...(options.sessionId !== undefined ? { sessionId: options.sessionId } : {}),
     },
     include: {
       session: { select: { id: true, numero: true, titreSession: true } },
+      notes: {
+        select: { id: true, texte: true, auteurNom: true, creeLe: true },
+        orderBy: { creeLe: "asc" },
+      },
     },
     orderBy: { dateIncident: "desc" },
     skip: options.skip ?? 0,

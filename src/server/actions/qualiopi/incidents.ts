@@ -1,9 +1,15 @@
 /**
  * Qualiopi — Server Actions registre des incidents (LOT 4 — pilotage réel).
  *
- * creerIncidentAction     : déclare un incident.
- * updateIncidentAction    : met à jour un incident (dont statut/action corrective).
- * supprimerIncidentAction : supprime un incident (requireAdminDelete).
+ * creerIncidentAction       : déclare un incident (nature, déclarant, origine).
+ * updateIncidentAction      : COMPLÈTE ce qui manque ou DÉCIDE d'un statut, avec
+ *                             un motif — jamais une réécriture (L09).
+ * ajouterNoteIncidentAction : note de suivi, en ajout seul.
+ *
+ * 🔴 Chantier QNC, L09 — `supprimerIncidentAction` n'existe plus, et
+ * `updateIncidentAction` n'accepte plus titre, description, type, gravité ni
+ * date : un incident déclaré est une pièce du registre. Chaque geste accepté
+ * écrit une note signée du nom réel de la personne connectée.
  *
  * Délègue au service incidents-service (stub-aware).
  */
@@ -11,18 +17,20 @@
 "use server";
 
 import { z } from "zod";
-import {
-  requireAdminWrite,
-  requireAdminDelete,
-  logQualiopiActivity,
-} from "@/server/actions/qualiopi/_guards";
+import { requireAdminWrite, logQualiopiActivity } from "@/server/actions/qualiopi/_guards";
 import {
   creerIncident,
-  updateIncident,
-  supprimerIncident,
+  completerIncident,
+  ajouterNoteIncident,
   getIncident,
 } from "@/server/qualiopi/registres/incidents-service";
-import { assertDossierOuvert } from "@/server/qualiopi/sessions/verrou-dossier-garde";
+import {
+  CHAMPS_FIGES_INCIDENT,
+  DECLARANTS_INCIDENT,
+  NATURES_INCIDENT,
+  ORIGINES_INCIDENT,
+} from "@/server/qualiopi/registres/incident-complement";
+import { auteurAdministrateur } from "@/server/qualiopi/registres/auteur";
 
 type ActionResult<T> = { data: T } | { error: string };
 
@@ -79,6 +87,12 @@ function verifierCoherenceMiseEnCause(v: EtatMiseEnCause): string | null {
   return null;
 }
 
+const qualificationFields = {
+  nature: z.enum(NATURES_INCIDENT).optional(),
+  declarant: z.enum(DECLARANTS_INCIDENT).optional(),
+  origine: z.enum(ORIGINES_INCIDENT).optional(),
+};
+
 const creerIncidentSchema = z.object({
   type: z.enum(INCIDENT_TYPES),
   gravite: z.enum(INCIDENT_GRAVITES),
@@ -89,22 +103,32 @@ const creerIncidentSchema = z.object({
   actionCorrective: z.string().max(10000).optional(),
   statut: z.enum(INCIDENT_STATUTS).optional(),
   ...miseEnCauseFields,
+  ...qualificationFields,
 });
 
-const updateIncidentSchema = z.object({
+/**
+ * L09 — ce que `updateIncidentAction` accepte encore : compléter un champ
+ * vide, ou décider d'un statut avec son motif. `strict()` : un champ figé
+ * (titre, gravité…) envoyé quand même est refusé, pas ignoré en silence.
+ */
+const updateIncidentSchema = z
+  .object({
+    id: z.string().uuid(),
+    statut: z.enum(INCIDENT_STATUTS).optional(),
+    motif: z.string().trim().max(4000).optional(),
+    sessionId: z.string().uuid().optional(),
+    trainerId: z.string().uuid().optional(),
+    sousTraitantId: z.string().uuid().optional(),
+    faitIntervenant: z.enum(INCIDENT_FAITS_INTERVENANT).optional(),
+    actionCorrective: z.string().max(10000).optional(),
+    ...qualificationFields,
+  })
+  .strict();
+
+const noteIncidentSchema = z.object({
   id: z.string().uuid(),
-  type: z.enum(INCIDENT_TYPES).optional(),
-  gravite: z.enum(INCIDENT_GRAVITES).optional(),
-  titre: z.string().min(1).max(300).optional(),
-  description: z.string().max(10000).optional(),
-  sessionId: z.string().uuid().nullable().optional(),
-  dateIncident: z.coerce.date().optional(),
-  actionCorrective: z.string().max(10000).optional(),
-  statut: z.enum(INCIDENT_STATUTS).optional(),
-  ...miseEnCauseFields,
+  texte: z.string().trim().min(3).max(4000),
 });
-
-const supprimerIncidentSchema = z.object({ id: z.string().uuid() });
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Actions
@@ -123,6 +147,9 @@ export async function creerIncidentAction(input: {
   trainerId?: string | null;
   sousTraitantId?: string | null;
   faitIntervenant?: (typeof INCIDENT_FAITS_INTERVENANT)[number] | null;
+  nature?: (typeof NATURES_INCIDENT)[number];
+  declarant?: (typeof DECLARANTS_INCIDENT)[number];
+  origine?: (typeof ORIGINES_INCIDENT)[number];
 }): Promise<ActionResult<{ id: string }>> {
   const session = await requireAdminWrite();
   const parsed = creerIncidentSchema.safeParse(input);
@@ -139,6 +166,7 @@ export async function creerIncidentAction(input: {
       gravite: v.gravite,
       titre: v.titre,
       dateIncident: v.dateIncident,
+      declareParId: session.userId,
       ...(v.description !== undefined ? { description: v.description } : {}),
       ...(v.sessionId !== undefined ? { sessionId: v.sessionId } : {}),
       ...(v.actionCorrective !== undefined ? { actionCorrective: v.actionCorrective } : {}),
@@ -146,6 +174,9 @@ export async function creerIncidentAction(input: {
       ...(v.trainerId !== undefined ? { trainerId: v.trainerId } : {}),
       ...(v.sousTraitantId !== undefined ? { sousTraitantId: v.sousTraitantId } : {}),
       ...(v.faitIntervenant !== undefined ? { faitIntervenant: v.faitIntervenant } : {}),
+      ...(v.nature !== undefined ? { nature: v.nature } : {}),
+      ...(v.declarant !== undefined ? { declarant: v.declarant } : {}),
+      ...(v.origine !== undefined ? { origine: v.origine } : {}),
     });
   } catch {
     return { error: "Erreur lors de l'enregistrement de l'incident" };
@@ -162,103 +193,81 @@ export async function creerIncidentAction(input: {
   return { data: { id: incident.id } };
 }
 
-/** Met à jour un incident (statut resolu → resoluAt posé automatiquement). */
+/**
+ * Complète un incident ou décide de son statut (statut resolu → resoluAt posé
+ * à la date du serveur). Le geste est écrit dans une note signée, dans la même
+ * transaction ; rien de ce qui est renseigné ne se réécrit.
+ */
 export async function updateIncidentAction(input: {
   id: string;
-  type?: (typeof INCIDENT_TYPES)[number];
-  gravite?: (typeof INCIDENT_GRAVITES)[number];
-  titre?: string;
-  description?: string;
-  sessionId?: string | null;
-  dateIncident?: Date;
-  actionCorrective?: string;
   statut?: (typeof INCIDENT_STATUTS)[number];
-  trainerId?: string | null;
-  sousTraitantId?: string | null;
-  faitIntervenant?: (typeof INCIDENT_FAITS_INTERVENANT)[number] | null;
-}): Promise<ActionResult<{ id: string }>> {
+  motif?: string;
+  sessionId?: string;
+  trainerId?: string;
+  sousTraitantId?: string;
+  faitIntervenant?: (typeof INCIDENT_FAITS_INTERVENANT)[number];
+  actionCorrective?: string;
+  nature?: (typeof NATURES_INCIDENT)[number];
+  declarant?: (typeof DECLARANTS_INCIDENT)[number];
+  origine?: (typeof ORIGINES_INCIDENT)[number];
+}): Promise<ActionResult<{ id: string; note: string }>> {
   const session = await requireAdminWrite();
+  const figes = CHAMPS_FIGES_INCIDENT.filter((c) => c in (input as object));
+  if (figes.length > 0) {
+    return {
+      error:
+        "Un incident déclaré ne se réécrit pas (titre, description, type, gravité, date) : ajoutez une note pour le corriger.",
+    };
+  }
   const parsed = updateIncidentSchema.safeParse(input);
   if (!parsed.success) return { error: "Données invalides" };
-  const { id, ...fields } = parsed.data;
+  const { id, ...demande } = parsed.data;
 
-  const existe = await getIncident(id);
-  if (existe === null) return { error: "Incident introuvable" };
-
-  // Cohérence évaluée sur l'état FUSIONNÉ, pas sur les seuls champs envoyés :
-  // corriger le titre d'un incident déjà rattaché à un formateur n'a pas à
-  // renvoyer le fait reproché pour être accepté.
-  const incoherence = verifierCoherenceMiseEnCause({
-    trainerId: fields.trainerId !== undefined ? fields.trainerId : existe.trainerId,
-    sousTraitantId:
-      fields.sousTraitantId !== undefined ? fields.sousTraitantId : existe.sousTraitantId,
-    faitIntervenant:
-      fields.faitIntervenant !== undefined ? fields.faitIntervenant : existe.faitIntervenant,
-  });
-  if (incoherence !== null) return { error: incoherence };
-
+  const auteur = await auteurAdministrateur(session);
+  let resultat: Awaited<ReturnType<typeof completerIncident>>;
   try {
-    await updateIncident(id, {
-      ...(fields.trainerId !== undefined ? { trainerId: fields.trainerId } : {}),
-      ...(fields.sousTraitantId !== undefined ? { sousTraitantId: fields.sousTraitantId } : {}),
-      ...(fields.faitIntervenant !== undefined ? { faitIntervenant: fields.faitIntervenant } : {}),
-      ...(fields.type !== undefined ? { type: fields.type } : {}),
-      ...(fields.gravite !== undefined ? { gravite: fields.gravite } : {}),
-      ...(fields.titre !== undefined ? { titre: fields.titre } : {}),
-      ...(fields.description !== undefined ? { description: fields.description } : {}),
-      ...(fields.sessionId !== undefined ? { sessionId: fields.sessionId } : {}),
-      ...(fields.dateIncident !== undefined ? { dateIncident: fields.dateIncident } : {}),
-      ...(fields.actionCorrective !== undefined
-        ? { actionCorrective: fields.actionCorrective }
-        : {}),
-      ...(fields.statut !== undefined ? { statut: fields.statut } : {}),
-    });
+    resultat = await completerIncident(id, demande, auteur);
   } catch {
-    return { error: "Incident introuvable ou erreur de mise à jour" };
+    return { error: "Incident introuvable ou erreur d'enregistrement" };
   }
+  if (!resultat.ok) return { error: resultat.erreur };
 
   await logQualiopiActivity({
-    action: "qualiopi.incident.update",
+    action: "qualiopi.incident.complete",
     targetType: "Incident",
     targetId: id,
-    changes: fields,
+    changes: { ...demande, auteurNom: auteur.nom },
     session,
   });
 
-  return { data: { id } };
+  return { data: { id, note: resultat.note } };
 }
 
-/** Supprime un incident du registre. */
-export async function supprimerIncidentAction(input: {
+/** Ajoute une note de suivi à un incident (ajout seul, auteur réel). */
+export async function ajouterNoteIncidentAction(input: {
   id: string;
+  texte: string;
 }): Promise<ActionResult<{ id: string }>> {
-  const session = await requireAdminDelete();
-  const parsed = supprimerIncidentSchema.safeParse(input);
-  if (!parsed.success) return { error: "Données invalides" };
-  const { id } = parsed.data;
-  // ADR 0060 — écriture VERROU : refusée sur un dossier clos.
-  const verrou = await assertDossierOuvert({ incidentId: id });
-  if (!verrou.ok) return verrou;
+  const session = await requireAdminWrite();
+  const parsed = noteIncidentSchema.safeParse(input);
+  if (!parsed.success) return { error: "Une note fait au moins 3 caractères" };
+  const { id, texte } = parsed.data;
 
   const existe = await getIncident(id);
   if (existe === null) return { error: "Incident introuvable" };
 
+  const auteur = await auteurAdministrateur(session);
   try {
-    await supprimerIncident(id);
+    await ajouterNoteIncident(id, texte, auteur);
   } catch {
-    return { error: "Erreur lors de la suppression de l'incident" };
+    return { error: "Erreur lors de l'enregistrement de la note" };
   }
 
   await logQualiopiActivity({
-    action: "qualiopi.incident.delete",
+    action: "qualiopi.incident.note",
     targetType: "Incident",
     targetId: id,
-    // ADR 0060 (D8) — l'incident n'existe plus : sans ce marqueur, le dossier
-    // de sa session ne retrouverait pas sa suppression dans le journal.
-    changes: {
-      titre: existe.titre,
-      ...(verrou.sessionId !== null ? { dossierSessionId: verrou.sessionId } : {}),
-    },
+    changes: { auteurNom: auteur.nom },
     session,
   });
 

@@ -3,7 +3,8 @@
  *
  * Stratégie :
  *   - Mock @/server/qualiopi/registres/incidents-service + _guards.
- *   - Vérifie : creerIncidentAction, updateIncidentAction, supprimerIncidentAction.
+ *   - Vérifie : creerIncidentAction, updateIncidentAction (compléter / décider,
+ *     jamais réécrire — L09), ajouterNoteIncidentAction.
  *   - Délégation totale au service + validation Zod + audit log.
  */
 
@@ -22,9 +23,13 @@ vi.mock("@/server/qualiopi/sessions/verrou-dossier-garde", () => ({
 
 vi.mock("@/server/qualiopi/registres/incidents-service", () => ({
   creerIncident: vi.fn(),
-  updateIncident: vi.fn(),
-  supprimerIncident: vi.fn(),
+  completerIncident: vi.fn(),
+  ajouterNoteIncident: vi.fn(),
   getIncident: vi.fn(),
+}));
+
+vi.mock("@/server/qualiopi/registres/auteur", () => ({
+  auteurAdministrateur: vi.fn().mockResolvedValue({ id: "admin-uuid", nom: "Will Exemple" }),
 }));
 
 vi.mock("@/server/actions/qualiopi/_guards", () => ({
@@ -40,22 +45,22 @@ vi.mock("@/server/actions/qualiopi/_guards", () => ({
 
 import {
   creerIncident,
-  updateIncident,
-  supprimerIncident,
+  completerIncident,
+  ajouterNoteIncident,
   getIncident,
 } from "@/server/qualiopi/registres/incidents-service";
 import { logQualiopiActivity } from "@/server/actions/qualiopi/_guards";
 import {
   creerIncidentAction,
   updateIncidentAction,
-  supprimerIncidentAction,
+  ajouterNoteIncidentAction,
 } from "@/server/actions/qualiopi/incidents";
 
 type MockFn = ReturnType<typeof vi.fn>;
 
 const mockCreer = creerIncident as unknown as MockFn;
-const mockUpdate = updateIncident as unknown as MockFn;
-const mockSupprimer = supprimerIncident as unknown as MockFn;
+const mockCompleter = completerIncident as unknown as MockFn;
+const mockNote = ajouterNoteIncident as unknown as MockFn;
 const mockGet = getIncident as unknown as MockFn;
 const mockLog = logQualiopiActivity as unknown as MockFn;
 
@@ -125,34 +130,55 @@ describe("creerIncidentAction", () => {
 // updateIncidentAction
 // ─────────────────────────────────────────────────────────────────────────────
 
-describe("updateIncidentAction", () => {
+describe("updateIncidentAction — compléter ou décider, jamais réécrire (L09)", () => {
   beforeEach(() => {
     vi.clearAllMocks();
-    mockGet.mockResolvedValue({ id: INCIDENT_UUID, titre: INPUT_BASE.titre });
-    mockUpdate.mockResolvedValue({ id: INCIDENT_UUID });
+    mockCompleter.mockResolvedValue({
+      ok: true,
+      incident: { id: INCIDENT_UUID },
+      note: "Décision",
+    });
   });
 
-  it("met à jour le statut + l'action corrective", async () => {
+  it("délègue la décision au service, signée du nom réel de la personne connectée", async () => {
     const result = await updateIncidentAction({
       id: INCIDENT_UUID,
       statut: "resolu",
+      motif: "Supports re-générés et contrôlés",
       actionCorrective: "Supports re-générés + contrôle version",
     });
 
     expect("data" in result).toBe(true);
-    expect(mockUpdate).toHaveBeenCalledOnce();
-    const [id, fields] = mockUpdate.mock.calls[0] as [string, Record<string, unknown>];
+    expect(mockCompleter).toHaveBeenCalledOnce();
+    const [id, demande, auteur] = mockCompleter.mock.calls[0] as [
+      string,
+      Record<string, unknown>,
+      { nom: string },
+    ];
     expect(id).toBe(INCIDENT_UUID);
-    expect(fields["statut"]).toBe("resolu");
-    expect(fields["actionCorrective"]).toBe("Supports re-générés + contrôle version");
+    expect(demande["statut"]).toBe("resolu");
+    expect(demande["actionCorrective"]).toBe("Supports re-générés + contrôle version");
+    expect(auteur.nom).toBe("Will Exemple");
   });
 
-  it("retourne { error } si l'incident est introuvable", async () => {
-    mockGet.mockResolvedValue(null);
-    const result = await updateIncidentAction({ id: INCIDENT_UUID, statut: "resolu" });
+  it.each(["titre", "description", "type", "gravite", "dateIncident"])(
+    "🔴 refuse de réécrire le champ figé « %s »",
+    async (champ) => {
+      const result = await updateIncidentAction({
+        id: INCIDENT_UUID,
+        [champ]: "valeur",
+      } as never);
+      expect(result).toEqual({ error: expect.stringMatching(/ne se réécrit pas/) });
+      expect(mockCompleter).not.toHaveBeenCalled();
+    },
+  );
+
+  it("relaie le refus du service (incident introuvable, valeur déjà posée…)", async () => {
+    mockCompleter.mockResolvedValue({ ok: false, erreur: "Incident introuvable" });
+    const result = await updateIncidentAction({ id: INCIDENT_UUID, nature: "alea" });
 
     expect(result).toEqual({ error: "Incident introuvable" });
-    expect(mockUpdate).not.toHaveBeenCalled();
+    expect(mockLog).not.toHaveBeenCalled();
   });
 
   it("rejette un id non-uuid (Zod)", async () => {
@@ -163,30 +189,36 @@ describe("updateIncidentAction", () => {
 });
 
 // ─────────────────────────────────────────────────────────────────────────────
-// supprimerIncidentAction
+// ajouterNoteIncidentAction
 // ─────────────────────────────────────────────────────────────────────────────
 
-describe("supprimerIncidentAction", () => {
+describe("ajouterNoteIncidentAction", () => {
   beforeEach(() => {
     vi.clearAllMocks();
     mockGet.mockResolvedValue({ id: INCIDENT_UUID, titre: INPUT_BASE.titre });
-    mockSupprimer.mockResolvedValue({ id: INCIDENT_UUID });
+    mockNote.mockResolvedValue({ id: "note" });
   });
 
-  it("supprime et trace l'audit", async () => {
-    const result = await supprimerIncidentAction({ id: INCIDENT_UUID });
+  it("ajoute la note avec l'auteur réel et trace l'audit", async () => {
+    const result = await ajouterNoteIncidentAction({
+      id: INCIDENT_UUID,
+      texte: "Gravité réévaluée : majeur",
+    });
 
     expect("data" in result).toBe(true);
-    expect(mockSupprimer).toHaveBeenCalledWith(INCIDENT_UUID);
+    expect(mockNote).toHaveBeenCalledWith(INCIDENT_UUID, "Gravité réévaluée : majeur", {
+      id: "admin-uuid",
+      nom: "Will Exemple",
+    });
     const arg = mockLog.mock.calls[0]?.[0] as { action: string };
-    expect(arg.action).toBe("qualiopi.incident.delete");
+    expect(arg.action).toBe("qualiopi.incident.note");
   });
 
   it("retourne { error } si l'incident est introuvable", async () => {
     mockGet.mockResolvedValue(null);
-    const result = await supprimerIncidentAction({ id: INCIDENT_UUID });
+    const result = await ajouterNoteIncidentAction({ id: INCIDENT_UUID, texte: "Une note" });
 
     expect(result).toEqual({ error: "Incident introuvable" });
-    expect(mockSupprimer).not.toHaveBeenCalled();
+    expect(mockNote).not.toHaveBeenCalled();
   });
 });

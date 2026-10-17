@@ -1,134 +1,134 @@
 "use client";
-// use-client: édition inline + suppression d'un incident via useTransition + Server Actions.
+// use-client: compléter / décider / noter un incident via useTransition + Server Actions.
 
 /**
- * IncidentRowActions — Édition / suppression d'un incident (LOT 4).
+ * IncidentRowActions — Suivi d'un incident (LOT 4, refondu en L09).
  *
- * Bouton « Modifier » ouvre un panneau d'édition inline (statut, gravité,
- * action corrective…) → updateIncidentAction (statut resolu → resoluAt posé
- * côté service). Bouton « Supprimer » → supprimerIncidentAction (confirmation).
+ * 🔴 Chantier QNC, L09 — plus de « Modifier » libre ni de « Supprimer » : un
+ * incident déclaré est une pièce du registre. Il reste trois gestes :
+ *   - compléter ce qui n'a jamais été renseigné (nature, déclarant, origine,
+ *     action corrective) ;
+ *   - décider d'un changement de statut, avec son motif ;
+ *   - ajouter une note (une erreur dans le titre se corrige par une note).
+ * Chaque geste est écrit par le serveur dans une note signée du nom réel de la
+ * personne connectée.
  *
- * "use client" : useState/useTransition + appel Server Actions.
  * Zéro appel DB côté client.
  */
 
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
+import { useConfirmation } from "@/components/admin/ui/useConfirmation";
 import type {
   updateIncidentAction,
-  supprimerIncidentAction,
+  ajouterNoteIncidentAction,
 } from "@/server/actions/qualiopi/incidents";
-import { useConfirmation } from "@/components/admin/ui/useConfirmation";
-
-type IncidentType = "pedagogique" | "administratif" | "technique" | "autre";
-type IncidentGravite = "mineur" | "majeur" | "critique";
-type IncidentStatut = "ouvert" | "en_cours" | "resolu";
-
-const TYPE_LABELS: Record<IncidentType, string> = {
-  pedagogique: "Pédagogique",
-  administratif: "Administratif",
-  technique: "Technique",
-  autre: "Autre",
-};
-
-const GRAVITE_LABELS: Record<IncidentGravite, string> = {
-  mineur: "Mineur",
-  majeur: "Majeur",
-  critique: "Critique",
-};
-
-const STATUT_LABELS: Record<IncidentStatut, string> = {
-  ouvert: "Ouvert",
-  en_cours: "En cours",
-  resolu: "Résolu",
-};
+import {
+  DECLARANTS_INCIDENT,
+  LIBELLE_DECLARANT,
+  LIBELLE_NATURE,
+  LIBELLE_ORIGINE,
+  LIBELLE_STATUT_INCIDENT,
+  MOTIF_MIN,
+  NATURES_INCIDENT,
+  ORIGINES_INCIDENT,
+  STATUTS_INCIDENT,
+  type DeclarantIncident,
+  type NatureIncident,
+  type OrigineIncident,
+  type StatutIncident,
+} from "@/server/qualiopi/registres/incident-complement";
 
 const inputCls =
   "w-full rounded-[var(--radius-admin-sm)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] px-[var(--space-admin-3)] py-[var(--space-admin-2)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg)] focus:outline-none focus:ring-2 focus:ring-[color:var(--color-admin-accent)]";
 const labelCls =
   "block text-[length:var(--text-admin-xs)] font-medium uppercase tracking-wide text-[color:var(--color-admin-fg-muted)] mb-1";
+const lienCls =
+  "text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-accent)] underline-offset-2 hover:underline disabled:opacity-50";
 
 export interface IncidentRowActionsProps {
   incident: {
     id: string;
-    type: string;
-    gravite: string;
     statut: string;
-    titre: string;
-    description: string;
+    nature: string | null;
+    declarant: string | null;
+    origine: string | null;
     actionCorrective: string;
-    dateIncident: Date;
   };
   updateAction: typeof updateIncidentAction;
-  supprimerAction: typeof supprimerIncidentAction;
+  noteAction: typeof ajouterNoteIncidentAction;
 }
+
+type Panneau = "fermé" | "suivi" | "note";
 
 export function IncidentRowActions({
   incident,
   updateAction,
-  supprimerAction,
+  noteAction,
 }: IncidentRowActionsProps): React.ReactElement {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
-  const [open, setOpen] = useState(false);
+  const [panneau, setPanneau] = useState<Panneau>("fermé");
   const [error, setError] = useState<string | null>(null);
   const { demander, dialogue } = useConfirmation();
 
-  const [type, setType] = useState<IncidentType>(incident.type as IncidentType);
-  const [gravite, setGravite] = useState<IncidentGravite>(incident.gravite as IncidentGravite);
-  const [statut, setStatut] = useState<IncidentStatut>(incident.statut as IncidentStatut);
-  const [titre, setTitre] = useState(incident.titre);
-  const [description, setDescription] = useState(incident.description);
-  const [actionCorrective, setActionCorrective] = useState(incident.actionCorrective);
-  const [dateIncident, setDateIncident] = useState(() =>
-    incident.dateIncident.toISOString().slice(0, 10),
-  );
+  const [statut, setStatut] = useState<StatutIncident>(incident.statut as StatutIncident);
+  const [motif, setMotif] = useState("");
+  const [nature, setNature] = useState<NatureIncident | "">("");
+  const [declarant, setDeclarant] = useState<DeclarantIncident | "">("");
+  const [origine, setOrigine] = useState<OrigineIncident | "">("");
+  const [actionCorrective, setActionCorrective] = useState("");
+  const [note, setNote] = useState("");
 
-  function handleUpdate(e: React.FormEvent) {
-    e.preventDefault();
-    setError(null);
-    startTransition(async () => {
-      const result = await updateAction({
-        id: incident.id,
-        type,
-        gravite,
-        statut,
-        titre,
-        description,
-        actionCorrective,
-        ...(dateIncident ? { dateIncident: new Date(dateIncident) } : {}),
-      });
-      if ("error" in result) {
-        setError(result.error);
-      } else {
-        setOpen(false);
-        router.refresh();
-      }
-    });
+  const changeStatut = statut !== incident.statut;
+
+  function terminer(result: { error: string } | { data: unknown }) {
+    if ("error" in result) {
+      setError(result.error);
+      return;
+    }
+    setPanneau("fermé");
+    setMotif("");
+    setNote("");
+    setActionCorrective("");
+    router.refresh();
   }
 
-  function handleDelete() {
+  function handleSuivi(e: React.FormEvent) {
+    e.preventDefault();
     demander(
       {
-        titre: "Supprimer définitivement cet incident du registre ?",
+        titre: "Inscrire cette décision au registre",
         description:
-          "Le registre des réclamations est une pièce d'audit (ind. 31) : un incident retiré ne peut plus être montré.",
-        destructif: true,
-        libelleConfirmer: "Supprimer",
+          "La note est signée de votre nom et datée par le serveur. Elle ne pourra plus être modifiée ni effacée : une erreur se corrigera par une note suivante.",
+        libelleConfirmer: "Inscrire",
       },
-      () => supprimerVraiment(),
+      () => enregistrerSuivi(),
     );
   }
 
-  function supprimerVraiment() {
+  function enregistrerSuivi() {
     setError(null);
     startTransition(async () => {
-      const result = await supprimerAction({ id: incident.id });
-      if ("error" in result) {
-        setError(result.error);
-      } else {
-        router.refresh();
-      }
+      terminer(
+        await updateAction({
+          id: incident.id,
+          ...(changeStatut ? { statut } : {}),
+          ...(motif.trim() ? { motif } : {}),
+          ...(nature ? { nature } : {}),
+          ...(declarant ? { declarant } : {}),
+          ...(origine ? { origine } : {}),
+          ...(actionCorrective.trim() ? { actionCorrective } : {}),
+        }),
+      );
+    });
+  }
+
+  function handleNote(e: React.FormEvent) {
+    e.preventDefault();
+    setError(null);
+    startTransition(async () => {
+      terminer(await noteAction({ id: incident.id, texte: note }));
     });
   }
 
@@ -138,145 +138,140 @@ export function IncidentRowActions({
       <div className="flex flex-wrap gap-[var(--space-admin-2)]">
         <button
           type="button"
-          onClick={() => setOpen((o) => !o)}
+          onClick={() => setPanneau((p) => (p === "suivi" ? "fermé" : "suivi"))}
           disabled={isPending}
-          className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-accent)] underline-offset-2 hover:underline disabled:opacity-50"
+          className={lienCls}
         >
-          {open ? "Fermer" : "Modifier"}
+          {panneau === "suivi" ? "Fermer" : "Décider / compléter"}
         </button>
         <button
           type="button"
-          onClick={handleDelete}
+          onClick={() => setPanneau((p) => (p === "note" ? "fermé" : "note"))}
           disabled={isPending}
-          className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-error)] underline-offset-2 hover:underline disabled:opacity-50"
+          className={lienCls}
         >
-          {isPending ? "…" : "Supprimer"}
+          {panneau === "note" ? "Fermer" : "Ajouter une note"}
         </button>
       </div>
 
-      {open && (
+      {panneau === "suivi" && (
         <form
-          onSubmit={handleUpdate}
+          onSubmit={handleSuivi}
+          className="w-80 rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-surface)] p-[var(--space-admin-4)]"
+        >
+          <div className="flex flex-col gap-[var(--space-admin-3)]">
+            <p className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
+              Un incident déclaré ne se réécrit pas. Vous pouvez décider de son statut (avec un
+              motif) et compléter ce qui n&apos;a jamais été renseigné. Votre nom signe la note.
+            </p>
+            <div>
+              <label htmlFor={`incident-${incident.id}-statut`} className={labelCls}>
+                Statut
+              </label>
+              <select
+                id={`incident-${incident.id}-statut`}
+                value={statut}
+                onChange={(e) => setStatut(e.target.value as StatutIncident)}
+                disabled={isPending}
+                className={inputCls}
+              >
+                {STATUTS_INCIDENT.map((s) => (
+                  <option key={s} value={s}>
+                    {LIBELLE_STATUT_INCIDENT[s]}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div>
+              <label htmlFor={`incident-${incident.id}-motif`} className={labelCls}>
+                Motif de la décision{changeStatut ? ` (${MOTIF_MIN} caractères au moins)` : ""}
+              </label>
+              <textarea
+                id={`incident-${incident.id}-motif`}
+                value={motif}
+                onChange={(e) => setMotif(e.target.value)}
+                disabled={isPending}
+                required={changeStatut}
+                minLength={changeStatut ? MOTIF_MIN : undefined}
+                rows={2}
+                className={inputCls}
+              />
+            </div>
+            {incident.nature === null && (
+              <ChoixListe
+                id={`incident-${incident.id}-nature`}
+                libelle="Nature"
+                valeur={nature}
+                options={NATURES_INCIDENT.map((n) => [n, LIBELLE_NATURE[n]])}
+                onChange={(v) => setNature(v as NatureIncident | "")}
+                disabled={isPending}
+              />
+            )}
+            {incident.declarant === null && (
+              <ChoixListe
+                id={`incident-${incident.id}-declarant`}
+                libelle="Déclarant"
+                valeur={declarant}
+                options={DECLARANTS_INCIDENT.map((d) => [d, LIBELLE_DECLARANT[d]])}
+                onChange={(v) => setDeclarant(v as DeclarantIncident | "")}
+                disabled={isPending}
+              />
+            )}
+            {incident.origine === null && (
+              <ChoixListe
+                id={`incident-${incident.id}-origine`}
+                libelle="Origine"
+                valeur={origine}
+                options={ORIGINES_INCIDENT.map((o) => [o, LIBELLE_ORIGINE[o]])}
+                onChange={(v) => setOrigine(v as OrigineIncident | "")}
+                disabled={isPending}
+              />
+            )}
+            {incident.actionCorrective.trim() === "" && (
+              <div>
+                <label htmlFor={`incident-${incident.id}-action`} className={labelCls}>
+                  Action corrective (reprise dans le pilotage)
+                </label>
+                <textarea
+                  id={`incident-${incident.id}-action`}
+                  value={actionCorrective}
+                  onChange={(e) => setActionCorrective(e.target.value)}
+                  disabled={isPending}
+                  rows={2}
+                  className={inputCls}
+                />
+              </div>
+            )}
+            <button type="submit" disabled={isPending} className="admin-button">
+              {isPending ? "Enregistrement…" : "Enregistrer la décision"}
+            </button>
+          </div>
+        </form>
+      )}
+
+      {panneau === "note" && (
+        <form
+          onSubmit={handleNote}
           className="w-80 rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-surface)] p-[var(--space-admin-4)]"
         >
           <div className="flex flex-col gap-[var(--space-admin-3)]">
             <div>
-              <label htmlFor="incidentrowactions-type" className={labelCls}>
-                Type
-              </label>
-              <select
-                id="incidentrowactions-type"
-                value={type}
-                onChange={(e) => setType(e.target.value as IncidentType)}
-                disabled={isPending}
-                className={inputCls}
-              >
-                {(Object.keys(TYPE_LABELS) as IncidentType[]).map((t) => (
-                  <option key={t} value={t}>
-                    {TYPE_LABELS[t]}
-                  </option>
-                ))}
-              </select>
-            </div>
-            <div>
-              <label htmlFor="incidentrowactions-gravite" className={labelCls}>
-                Gravité
-              </label>
-              <select
-                id="incidentrowactions-gravite"
-                value={gravite}
-                onChange={(e) => setGravite(e.target.value as IncidentGravite)}
-                disabled={isPending}
-                className={inputCls}
-              >
-                {(Object.keys(GRAVITE_LABELS) as IncidentGravite[]).map((g) => (
-                  <option key={g} value={g}>
-                    {GRAVITE_LABELS[g]}
-                  </option>
-                ))}
-              </select>
-            </div>
-            <div>
-              <label
-                htmlFor="incidentrowactions-statut-resolu-date-de-resolution"
-                className={labelCls}
-              >
-                Statut (résolu = date de résolution posée)
-              </label>
-              <select
-                id="incidentrowactions-statut-resolu-date-de-resolution"
-                value={statut}
-                onChange={(e) => setStatut(e.target.value as IncidentStatut)}
-                disabled={isPending}
-                className={inputCls}
-              >
-                {(Object.keys(STATUT_LABELS) as IncidentStatut[]).map((s) => (
-                  <option key={s} value={s}>
-                    {STATUT_LABELS[s]}
-                  </option>
-                ))}
-              </select>
-            </div>
-            <div>
-              <label htmlFor="incidentrowactions-titre" className={labelCls}>
-                Titre
-              </label>
-              <input
-                id="incidentrowactions-titre"
-                type="text"
-                value={titre}
-                onChange={(e) => setTitre(e.target.value)}
-                disabled={isPending}
-                required
-                maxLength={300}
-                className={inputCls}
-              />
-            </div>
-            <div>
-              <label htmlFor="incidentrowactions-date-de-lincident" className={labelCls}>
-                Date de l&apos;incident
-              </label>
-              <input
-                id="incidentrowactions-date-de-lincident"
-                type="date"
-                value={dateIncident}
-                onChange={(e) => setDateIncident(e.target.value)}
-                disabled={isPending}
-                required
-                className={inputCls}
-              />
-            </div>
-            <div>
-              <label htmlFor="incidentrowactions-description" className={labelCls}>
-                Description
+              <label htmlFor={`incident-${incident.id}-note`} className={labelCls}>
+                Note de suivi (ne s&apos;efface pas)
               </label>
               <textarea
-                id="incidentrowactions-description"
-                value={description}
-                onChange={(e) => setDescription(e.target.value)}
+                id={`incident-${incident.id}-note`}
+                value={note}
+                onChange={(e) => setNote(e.target.value)}
                 disabled={isPending}
-                rows={2}
-                className={inputCls}
-              />
-            </div>
-            <div>
-              <label
-                htmlFor="incidentrowactions-action-corrective-alimente-m9"
-                className={labelCls}
-              >
-                Action corrective (reprise dans le pilotage)
-              </label>
-              <textarea
-                id="incidentrowactions-action-corrective-alimente-m9"
-                value={actionCorrective}
-                onChange={(e) => setActionCorrective(e.target.value)}
-                disabled={isPending}
-                rows={2}
+                required
+                minLength={3}
+                rows={3}
                 className={inputCls}
               />
             </div>
             <button type="submit" disabled={isPending} className="admin-button">
-              {isPending ? "Enregistrement…" : "Enregistrer"}
+              {isPending ? "Enregistrement…" : "Ajouter la note"}
             </button>
           </div>
         </form>
@@ -290,6 +285,37 @@ export function IncidentRowActions({
           Erreur : {error}
         </p>
       )}
+    </div>
+  );
+}
+
+function ChoixListe(props: {
+  id: string;
+  libelle: string;
+  valeur: string;
+  options: ReadonlyArray<readonly [string, string]>;
+  onChange: (v: string) => void;
+  disabled: boolean;
+}): React.ReactElement {
+  return (
+    <div>
+      <label htmlFor={props.id} className={labelCls}>
+        {props.libelle} (à compléter)
+      </label>
+      <select
+        id={props.id}
+        value={props.valeur}
+        onChange={(e) => props.onChange(e.target.value)}
+        disabled={props.disabled}
+        className={inputCls}
+      >
+        <option value="">— non renseigné —</option>
+        {props.options.map(([v, l]) => (
+          <option key={v} value={v}>
+            {l}
+          </option>
+        ))}
+      </select>
     </div>
   );
 }
