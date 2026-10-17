@@ -159,3 +159,24 @@ export async function lireDocumentsRetires(
     return new Set();
   }
 }
+
+/**
+ * À appeler EN TRANSACTION, avant d'écrire une nouvelle version ou de modifier
+ * une version : sérialise les gestes sur ce document (deux remplacements
+ * croisés créeraient deux successeurs) et dit s'il est déjà remplacé.
+ */
+export async function verrouillerVersionDocument(
+  tx: {
+    $executeRaw: typeof prisma.$executeRaw;
+    activityLog: Pick<typeof prisma.activityLog, "findFirst">;
+  },
+  cible: CibleDocumentOrganisme,
+  id: string,
+): Promise<{ readonly dejaRemplacee: boolean }> {
+  await tx.$executeRaw`SELECT pg_advisory_xact_lock(hashtext(${`qualiopi.documents_organisme:${cible}:${id}`}))`;
+  const deja = await tx.activityLog.findFirst({
+    where: { action: ACTION_DOCUMENT_REMPLACE, targetType: cible, targetId: id },
+    select: { id: true },
+  });
+  return { dejaRemplacee: deja !== null };
+}
