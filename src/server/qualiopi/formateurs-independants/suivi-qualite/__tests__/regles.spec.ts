@@ -15,6 +15,8 @@ import {
   etatObservation,
   etatReevaluation,
   manquesSuiviQualite,
+  missionsAReprendre,
+  missionsSuivies,
   niveauSatisfaction,
   satisfactionDeLaMission,
   validerGrille,
@@ -310,6 +312,66 @@ describe("satisfaction des stagiaires", () => {
     expect(manquesSuiviQualite(f, { sessionId: "s2" }, MAINTENANT)).toContain(
       MANQUES_SUIVI_QUALITE.suspension,
     );
+  });
+});
+
+describe("suspension : décisions de Will du 17/10/2026", () => {
+  const obs = [{ sessionId: "s1", favorable: true, creeLe: MAINTENANT }];
+  const suspendu = (f: FaitsSuiviQualite) =>
+    manquesSuiviQualite(f, { sessionId: "s2" }, MAINTENANT).includes(
+      MANQUES_SUIVI_QUALITE.suspension,
+    );
+
+  it("note 2,5 puis corrigée à 4,5 : la suspension est maintenue", () => {
+    const f = faits({
+      missions: [mission({ sessionId: "s1", satisfaction: 4.5, satisfactionMin: 2.5 })],
+      observations: obs,
+    });
+    expect(suspendu(f)).toBe(true);
+    expect(missionsAReprendre(f).suspension).toHaveLength(1);
+  });
+
+  it("puis levee_suspension : levée, quelles que soient les notes", () => {
+    const f = faits({
+      missions: [mission({ sessionId: "s1", satisfaction: 4.5, satisfactionMin: 2.5 })],
+      observations: obs,
+      decisions: [{ sessionId: "s1", type: "levee_suspension", creeLe: MAINTENANT }],
+    });
+    expect(suspendu(f)).toBe(false);
+  });
+
+  it("questionnaires sous le seuil puis remontés : maintenue", () => {
+    const f = faits({
+      missions: [mission({ sessionId: "s1", satisfaction: 4, satisfactionMin: 2.4 })],
+      observations: obs,
+    });
+    expect(suspendu(f)).toBe(true);
+  });
+
+  it("mission notée 2,5 puis annulée : la suspension est maintenue", () => {
+    const f = faits({
+      missions: [mission({ sessionId: "s1", annulee: true, satisfaction: 2.5 })],
+      observations: obs,
+    });
+    expect(suspendu(f)).toBe(true);
+  });
+
+  it("mission annulée : pas 1re mission, pas de relance de grille, pas d'entretien", () => {
+    const f = faits({
+      missions: [mission({ sessionId: "s1", annulee: true, satisfaction: 3.5 })],
+    });
+    expect(etatObservation(f, MAINTENANT).premiere).toBeNull();
+    expect(missionsSuivies(f)).toEqual([]);
+    expect(missionsAReprendre(f).entretien).toEqual([]);
+    expect(suspendu(f)).toBe(false);
+  });
+
+  it("annulée avec levee_suspension : levée", () => {
+    const f = faits({
+      missions: [mission({ sessionId: "s1", annulee: true, satisfaction: 2.5 })],
+      decisions: [{ sessionId: "s1", type: "levee_suspension", creeLe: MAINTENANT }],
+    });
+    expect(suspendu(f)).toBe(false);
   });
 });
 

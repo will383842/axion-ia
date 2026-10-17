@@ -21,7 +21,13 @@ import { journaliser } from "@/server/journal/journaliser";
 import { jourParis } from "../argent/dates";
 import { lireFaitsSuiviQualite, suiviQualiteAllumeLe } from "./lecture";
 import { REGLAGES_SUIVI_QUALITE, type TypeGrilleSuivi } from "./reglages";
-import { missionsSuivies, niveauSatisfaction, validerGrille, type ErreurGrille } from "./regles";
+import {
+  missionsSuspensives,
+  niveauSatisfaction,
+  satisfactionPlancher,
+  validerGrille,
+  type ErreurGrille,
+} from "./regles";
 
 type Tx = Parameters<Parameters<typeof prisma.$transaction>[0]>[0];
 
@@ -198,10 +204,12 @@ export async function enregistrerDecision(d: SaisieDecisionConsole): Promise<Iss
   const f = await lireFaitsSuiviQualite(d.trainerId, allumeLe);
   if (!f.trouve) return refus("introuvable");
   if (!f.externe) return refus("non_concerne");
-  // La mission doit être une mission suivie de CE formateur (IDOR compris).
-  const m = missionsSuivies(f).find((x) => x.sessionId === d.sessionId);
+  // La mission doit être une mission de CE formateur (IDOR compris). Une mission annulée ou
+  // reportée garde sa suspension : seule la `levee_suspension` y est admise.
+  const m = missionsSuspensives(f).find((x) => x.sessionId === d.sessionId);
   if (m === undefined) return refus("introuvable");
-  const niveau = niveauSatisfaction(m.satisfaction);
+  const niveau = niveauSatisfaction(satisfactionPlancher(m));
+  if (m.annulee && d.type !== "levee_suspension") return refus("non_concerne");
   if (niveau === "ok" || (d.type === "levee_suspension" && niveau !== "suspension")) {
     return refus("sans_objet");
   }
