@@ -34,6 +34,8 @@ export interface InscriptionPourConvention {
   readonly traineeId: string;
   /** Employeur de CE participant, en inter-entreprises. `null` en intra. */
   readonly clientId: string | null;
+  /** Session inter-entreprises : chaque participant y vient pour lui-même. */
+  readonly interEntreprises: boolean;
 }
 
 /**
@@ -42,6 +44,11 @@ export interface InscriptionPourConvention {
  * Une pièce nominative (contrat d'une personne) ne couvre que sa titulaire ;
  * une convention d'une entreprise, en inter, ne couvre que ses salariés. Une
  * pièce de session couvre tout le monde.
+ *
+ * 🔴 Relecture #1571 — en inter, un participant sans employeur (`clientId`
+ * vide) n'est PAS couvert par la convention d'une entreprise : il lui faut une
+ * pièce à son nom, ou une pièce de session. En intra, l'inscription ne porte
+ * pas de client : la convention du client de la session la couvre.
  */
 export function conventionSigneePourInscription(
   pieces: readonly PieceContractuelle[],
@@ -51,9 +58,8 @@ export function conventionSigneePourInscription(
     if (!(TYPES_PIECE_CONTRACTUELLE as readonly string[]).includes(p.type)) return false;
     if (p.annuleeAt !== null || p.statutSignature !== "signee") return false;
     if (p.traineeId !== null) return p.traineeId === inscription.traineeId;
-    if (p.clientId !== null && inscription.clientId !== null) {
-      return p.clientId === inscription.clientId;
-    }
-    return true;
+    if (p.clientId === null) return true;
+    if (inscription.clientId !== null) return p.clientId === inscription.clientId;
+    return !inscription.interEntreprises;
   });
 }

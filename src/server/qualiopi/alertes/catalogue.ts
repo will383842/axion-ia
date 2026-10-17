@@ -257,6 +257,20 @@ export const ALERTE_CATALOGUE: Record<string, AlerteCatalogueEntry> = {
       "STRUCTUREL — l'alerte naît de la réponse du stagiaire au questionnaire à chaud, pas du balayage quotidien : `synchroniserAlertes` la résoudrait au premier tour. Elle se résout à la main, une fois l'examen mené.",
     guichet: "qualite",
   },
+  /**
+   * Chantier QNC, L04 — positionnement(s) RETENU(S) faute de convention signée
+   * (`qualiopi.positionnement.actif`). Sans elle, l'envoi attendait en silence
+   * jusqu'au début de la session (convention papier, financement sans contrat
+   * généré). Émise et refermée par le cron du positionnement lui-même.
+   */
+  positionnement_retenu_sans_convention: {
+    niveau: "important",
+    titre: "Positionnement retenu : convention non signée",
+    resolutionAuto: false,
+    motifSansResolutionAuto:
+      "STRUCTUREL — l'alerte naît du cron du positionnement (`positionnementsRetenusFauteDeConvention`), pas du balayage quotidien : `synchroniserAlertes` la résoudrait au premier tour. Ce cron la met à jour à chaque passage et la referme lui-même quand plus aucun positionnement n'est retenu.",
+    guichet: "qualite",
+  },
 
   // ── Vigilance URSSAF des sous-traitants (audit E2E 2026-08-19, `D5-4-01`) ──
   //

@@ -29,6 +29,8 @@ const CODES_ATTENDUS: string[] = [
   // seule réponse écrite du référent) et examen d'aménagements jugés inutiles.
   "adaptation_cas_complexe",
   "adaptation_utilite_a_examiner",
+  // Chantier QNC, L04 — positionnements retenus faute de convention signée.
+  "positionnement_retenu_sans_convention",
   "categories_certifiees_non_renseignees",
   // Ajouté 2026-08-23 (recette du jour d'audit). Constaté À L'ÉCRAN sur
   // `/qualiopi/mode-auditeur` : « 1 formation certifiante avec code RS/RNCP »

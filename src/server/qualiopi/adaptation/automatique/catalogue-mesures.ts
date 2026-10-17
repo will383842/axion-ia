@@ -191,22 +191,34 @@ export function comporteMesureSupport(codes: readonly string[]): boolean {
   return codes.some((c) => PAR_CODE.get(c)?.support === true);
 }
 
-/** Le texte consigné cite-t-il une mesure de supports (consignation automatique ou recopie) ? */
+/** Le texte consigné cite-t-il une mesure de supports (ligne du catalogue, mot pour mot) ? */
 export function texteCiteMesureSupport(texte: string): boolean {
-  return MESURES.some((m) => m.support && texte.includes(m.libelle));
+  const lignes = new Set(lignesDeMesures(texte));
+  return MESURES.some((m) => m.support && lignes.has(m.libelle));
 }
+
+const LIBELLES_MESURES: ReadonlySet<string> = new Set(MESURES.map((m) => m.libelle));
 
 /**
  * Les lignes d'une réponse consignée, telles qu'on les transmet (fiche du
- * formateur, récapitulatif, convocation) : une mesure par ligne, sans puce ni
- * en-tête de consignation automatique.
+ * formateur, récapitulatif, convocation) : une mesure par ligne, sans puce.
+ *
+ * 🔴 Relecture #1571 — SEULES passent les lignes qui sont, mot pour mot, un
+ * libellé du catalogue. Le texte libre saisi à la main dans la console (qui peut
+ * porter une information de santé) ne sort jamais : ni en-tête, ni phrase du
+ * référent, ni ligne « presque » du catalogue.
  */
 export function lignesDeMesures(texte: string): string[] {
-  return texte
+  const lignes = texte
     .split("\n")
-    .map((l) => l.trim())
-    .filter((l) => l !== "" && !l.startsWith(ENTETE_CONSIGNATION_AUTOMATIQUE))
-    .map((l) => l.replace(/^[-•]\s*/, ""));
+    .map((l) => l.trim().replace(/^[-•]\s*/, ""))
+    .filter((l) => LIBELLES_MESURES.has(l));
+  return [...new Set(lignes)];
+}
+
+/** Le texte porte-t-il un bloc écrit par la consignation automatique ? */
+export function porteConsignationAutomatique(texte: string): boolean {
+  return texte.split("\n\n").some((b) => b.trim().startsWith(ENTETE_CONSIGNATION_AUTOMATIQUE));
 }
 
 /**

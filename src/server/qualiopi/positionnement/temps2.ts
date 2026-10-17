@@ -28,6 +28,8 @@ import { gesteListeStagiaires, OBJET_LISTE_STAGIAIRES } from "./liste-stagiaires
 
 export const LOT_POSITIONNEMENT = "positionnement";
 
+export const CODE_ALERTE_POSITIONNEMENT_RETENU = "positionnement_retenu_sans_convention";
+
 function estStub(): boolean {
   return process.env["DATABASE_URL"]?.includes("stub.invalid") === true;
 }
@@ -47,15 +49,24 @@ const piecesContractuelles = {
  * Parmi ces positionnements candidats, ceux qu'il faut RETENIR : l'interrupteur
  * s'applique à leur session et aucune convention signée ne couvre l'inscription.
  * Éteint : ensemble vide, sans requête sur le socle.
+ *
+ * 🔴 Relecture #1571 — une retenue ne reste pas silencieuse : allumé, chaque
+ * passage met à jour l'alerte `positionnement_retenu_sans_convention` (nombre
+ * et numéros de session, aucun nom), et la referme quand plus rien n'est retenu.
  */
 export async function positionnementsRetenusFauteDeConvention(
   questionnaireIds: readonly string[],
   etat?: EtatInterrupteur,
 ): Promise<Set<string>> {
   const retenus = new Set<string>();
-  if (questionnaireIds.length === 0 || estStub()) return retenus;
+  if (estStub()) return retenus;
   const e = etat ?? (await lireInterrupteurQualiopi(LOT_POSITIONNEMENT));
   if (e === "eteint") return retenus;
+  if (questionnaireIds.length === 0) {
+    // Plus aucun candidat : une alerte restée ouverte ne dit plus rien de vrai.
+    await signalerRetenues(0, []);
+    return retenus;
+  }
 
   const lignes = await prisma.questionnaire.findMany({
     where: { id: { in: [...questionnaireIds] } },
@@ -67,19 +78,64 @@ export async function positionnementsRetenusFauteDeConvention(
           clientId: true,
           estTestInterne: true,
           session: {
-            select: { estTestInterne: true, documents: piecesContractuelles },
+            select: {
+              numero: true,
+              estTestInterne: true,
+              interEntreprises: true,
+              documents: piecesContractuelles,
+            },
           },
         },
       },
     },
   });
+  const sessions = new Set<string>();
   for (const q of lignes) {
     const ins = q.enrollment;
     const cible = { estTestInterne: ins.estTestInterne || ins.session.estTestInterne };
     if (!estActifPour(e, cible)) continue;
-    if (!conventionSigneePourInscription(ins.session.documents, ins)) retenus.add(q.id);
+    const couverte = conventionSigneePourInscription(ins.session.documents, {
+      traineeId: ins.traineeId,
+      clientId: ins.clientId,
+      interEntreprises: ins.session.interEntreprises,
+    });
+    if (!couverte) {
+      retenus.add(q.id);
+      sessions.add(ins.session.numero);
+    }
   }
+  await signalerRetenues(retenus.size, [...sessions].sort());
   return retenus;
+}
+
+/** L'alerte des retenues : créée ou mise à jour, refermée quand il n'y en a plus. */
+async function signalerRetenues(nombre: number, sessions: readonly string[]): Promise<void> {
+  // Import DIFFÉRÉ, comme la file : le service d'alertes tire l'évaluateur entier.
+  try {
+    const { creerOuActualiser, resoudreAlertesParCode } =
+      await import("@/server/qualiopi/alertes/alertes-service");
+    if (nombre === 0) {
+      await resoudreAlertesParCode([CODE_ALERTE_POSITIONNEMENT_RETENU]);
+      return;
+    }
+    await creerOuActualiser({
+      code: CODE_ALERTE_POSITIONNEMENT_RETENU,
+      niveau: "important",
+      titre: `Positionnement retenu : convention non signée (${nombre})`,
+      message:
+        `${nombre} positionnement(s) ne partent pas : aucune convention signée ne couvre ` +
+        `l'inscription (sessions ${sessions.join(", ")}). Faites signer la convention ` +
+        `(convention papier, financement sans contrat généré : vérifiez la pièce de la ` +
+        `session) — l'envoi partira au passage suivant. Le questionnaire reste visible dans ` +
+        `l'espace stagiaire ; seul l'e-mail est retenu.`,
+    });
+  } catch (err) {
+    // L'alerte ne doit pas priver le cron de son passage.
+    console.error(
+      "[positionnement] alerte des retenues : écriture impossible :",
+      err instanceof Error ? err.message : String(err),
+    );
+  }
 }
 
 export interface BilanListes {
@@ -149,7 +205,13 @@ export async function passerDemandesListeStagiaires(
   for (const s of sessions) {
     if (!estActifPour(e, s)) continue;
     // La convention doit couvrir l'entreprise de la SESSION (intra).
-    if (!conventionSigneePourInscription(s.documents, { traineeId: "", clientId: s.clientId })) {
+    if (
+      !conventionSigneePourInscription(s.documents, {
+        traineeId: "",
+        clientId: s.clientId,
+        interEntreprises: false,
+      })
+    ) {
       continue;
     }
     const envois = s.remisesRetours.length;

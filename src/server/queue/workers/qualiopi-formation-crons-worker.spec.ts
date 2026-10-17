@@ -155,7 +155,20 @@ vi.mock("@/server/qualiopi/emargement/demande-contresignature", () => ({
   })),
 }));
 
+// Chantier QNC, L04 — la retenue du positionnement faute de convention signée :
+// le vrai module (éteint, ensemble vide) sauf dans le test qui la simule.
+vi.mock("@/server/qualiopi/positionnement/temps2", async () => {
+  const reel = await vi.importActual<typeof import("@/server/qualiopi/positionnement/temps2")>(
+    "@/server/qualiopi/positionnement/temps2",
+  );
+  return {
+    ...reel,
+    positionnementsRetenusFauteDeConvention: vi.fn(reel.positionnementsRetenusFauteDeConvention),
+  };
+});
+
 import { prisma } from "@/lib/prisma";
+import { positionnementsRetenusFauteDeConvention } from "@/server/qualiopi/positionnement/temps2";
 import {
   envoyerConvocation,
   envoyerPositionnement,
@@ -1673,6 +1686,23 @@ describe("handlePositionnement — deux passages, UN SEUL envoi", () => {
     await lancer();
 
     expect(mockEnvoyerPositionnement).toHaveBeenCalledTimes(2);
+    expect(ligne.envoyeAt).toBeInstanceOf(Date);
+  });
+
+  it("🔴 L04 : positionnement retenu faute de convention signée → rien ne part, aucune trace", async () => {
+    mockEnvoyerPositionnement.mockResolvedValue(true);
+    vi.mocked(positionnementsRetenusFauteDeConvention).mockResolvedValueOnce(new Set(["q-pos-1"]));
+
+    await lancer();
+
+    expect(positionnementsRetenusFauteDeConvention).toHaveBeenCalledWith(["q-pos-1"]);
+    expect(mockEnvoyerPositionnement).not.toHaveBeenCalled();
+    expect(ligne.envoyeAt).toBeNull();
+    expect(mockPrisma.questionnaire.updateMany).not.toHaveBeenCalled();
+
+    // Convention signée depuis : le passage suivant l'envoie.
+    await lancer();
+    expect(mockEnvoyerPositionnement).toHaveBeenCalledWith("q-pos-1");
     expect(ligne.envoyeAt).toBeInstanceOf(Date);
   });
 });

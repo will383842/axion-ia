@@ -2,7 +2,7 @@
  * Chantier QNC, lot L04 — les mesures s'appliquent SEULES avant la formation.
  *
  * Pour chaque inscription à venir dont la réponse d'adaptation est consignée
- * (automatiquement ou par le référent), le passage quotidien :
+ * et cite des mesures du catalogue, le passage quotidien :
  *   · transmet la FICHE D'ADAPTATION au formateur de la session — les mesures,
  *     rien d'autre ; s'il y a des mesures de supports, il lui demande de
  *     transmettre les supports adaptés avant la formation ;
@@ -12,6 +12,12 @@
  * date serveur). Une réponse consignée APRÈS la dernière remise (le référent a
  * répondu, une nouvelle déclaration est arrivée) déclenche une nouvelle remise :
  * le formateur travaille toujours sur la dernière version.
+ *
+ * 🔴 Relecture #1571 — seules les mesures du catalogue sortent
+ * (`lignesDeMesures`), jamais le texte libre de la console. La PREMIÈRE remise
+ * d'une inscription n'est due que si la consignation automatique y a écrit :
+ * à l'allumage, les inscriptions consignées à la main avant ne reçoivent rien
+ * d'un coup.
  *
  * Les consignes de la convocation, elles, sont ajoutées par `envoyerConvocation`
  * (`consignesPourConvocation`).
@@ -23,20 +29,30 @@ import { prisma } from "@/lib/prisma";
 import { inscriptionsActives } from "@/server/qualiopi/inscriptions/inscriptions-actives";
 import type { EtatInterrupteur } from "@/server/qualiopi/socle/interrupteurs";
 import { lireCircuitAdaptation } from "../journal-consignation";
-import { lignesDeMesures, texteCiteMesureSupport } from "./catalogue-mesures";
+import {
+  lignesDeMesures,
+  porteConsignationAutomatique,
+  texteCiteMesureSupport,
+} from "./catalogue-mesures";
 import { adaptationAutomatiquePourInscription, etatAdaptation } from "./portee";
 import { questionUtiliteApplicable } from "./utilite-question";
 
 export const OBJET_FICHE_FORMATEUR = "fiche_adaptation";
 export const OBJET_RECAP_STAGIAIRE = "adaptation_mesures";
 
-/** Pure : une remise est-elle due au regard de la dernière consignation ? */
+/**
+ * Pure : une remise est-elle due au regard de la dernière consignation ?
+ * Sans consignation datée, rien. Jamais remise : seulement si la consignation
+ * automatique a écrit (`consigneeAutomatiquement`) — une saisie à la main
+ * antérieure à l'allumage ne déclenche pas de première remise.
+ */
 export function remiseDue(
   derniereConsignationLe: Date | null,
   derniereRemiseLe: Date | null,
+  consigneeAutomatiquement = false,
 ): boolean {
-  if (derniereRemiseLe === null) return true;
   if (derniereConsignationLe === null) return false;
+  if (derniereRemiseLe === null) return consigneeAutomatiquement;
   return derniereConsignationLe.getTime() > derniereRemiseLe.getTime();
 }
 
@@ -130,6 +146,10 @@ export async function passerRemisesAdaptation(
   let ko = 0;
   for (const i of aTraiter) {
     const texte = i.adaptationsRealisees ?? "";
+    const mesures = lignesDeMesures(texte);
+    // Aucune mesure du catalogue : rien à transmettre (le texte libre ne sort pas).
+    if (mesures.length === 0) continue;
+    const automatique = porteConsignationAutomatique(texte);
     const consigneLe = circuit.get(i.id)?.derniereConsignationLe ?? null;
     const derniere = (objet: string): Date | null =>
       i.remisesRetours.find((r) => r.objet === objet)?.survenuLe ?? null;
@@ -137,7 +157,7 @@ export async function passerRemisesAdaptation(
       stagiairePrenomNom: `${i.trainee.prenom} ${i.trainee.nom}`.trim(),
       titreFormation: i.session.titreSession,
       dateDebutFormation: dateCourte.format(i.session.dateDebut),
-      mesures: lignesDeMesures(texte),
+      mesures,
       supportsAvant: texteCiteMesureSupport(texte),
       numeroSession: i.session.numero,
     };
@@ -152,7 +172,7 @@ export async function passerRemisesAdaptation(
     }[] = [];
     const f = i.session.formateurPrincipal;
     // Sans formateur affecté, la fiche attend : le passage suivant la remettra.
-    if (f !== null && remiseDue(consigneLe, derniere(OBJET_FICHE_FORMATEUR))) {
+    if (f !== null && remiseDue(consigneLe, derniere(OBJET_FICHE_FORMATEUR), automatique)) {
       envois.push({
         objet: OBJET_FICHE_FORMATEUR,
         destinataire: "formateur",
@@ -162,7 +182,7 @@ export async function passerRemisesAdaptation(
         libelle: "Fiche d'adaptation transmise au formateur (mesures seules)",
       });
     }
-    if (i.trainee.email && remiseDue(consigneLe, derniere(OBJET_RECAP_STAGIAIRE))) {
+    if (i.trainee.email && remiseDue(consigneLe, derniere(OBJET_RECAP_STAGIAIRE), automatique)) {
       envois.push({
         objet: OBJET_RECAP_STAGIAIRE,
         destinataire: "stagiaire",
@@ -173,10 +193,14 @@ export async function passerRemisesAdaptation(
       });
     }
 
+    // Version de la fiche = instant de la dernière consignation : le `jobId` est
+    // stable d'un passage à l'autre, et un e-mail parti dont la trace au dossier
+    // a échoué n'est pas renvoyé le lendemain (BullMQ écarte le doublon).
+    const version = consigneLe?.getTime() ?? 0;
     for (const env of envois) {
       try {
         const envoi = await enqueueEmail(env.template, env.to, "fr", env.payload, {
-          jobId: `${env.template}-${i.id}-${maintenant.getTime()}`,
+          jobId: `${env.template}-${i.id}-${version}`,
           entityType: "Enrollment",
           entityId: i.id,
         });

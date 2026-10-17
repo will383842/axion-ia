@@ -101,12 +101,21 @@ vi.mock("@/server/qualiopi/satisfaction/satisfaction-service", () => ({
   emettreLienQuestionnaire: vi.fn().mockResolvedValue("c".repeat(48)),
 }));
 
+// Chantier QNC, L04 — l'interrupteur de l'adaptation automatique : éteint par
+// défaut, allumé par le seul test des consignes de convocation.
+vi.mock("@/server/qualiopi/adaptation/automatique/portee", () => ({
+  etatAdaptation: vi.fn().mockResolvedValue("eteint"),
+  adaptationAutomatiquePourInscription: vi.fn().mockResolvedValue(false),
+}));
+
 // ─────────────────────────────────────────────────────────────────────────────
 // Imports après mocks
 // ─────────────────────────────────────────────────────────────────────────────
 
 import { prisma } from "@/lib/prisma";
 import { enqueueEmail } from "@/server/queue/queues";
+import { adaptationAutomatiquePourInscription } from "@/server/qualiopi/adaptation/automatique/portee";
+import { texteConsignationAutomatique } from "@/server/qualiopi/adaptation/automatique/catalogue-mesures";
 import { creerAcces } from "@/server/qualiopi/portail/portail-service";
 import { creerTokenInscription } from "@/server/qualiopi/emargement/token-service";
 import {
@@ -316,6 +325,25 @@ describe("envoyerConvocation", () => {
         data: expect.objectContaining({ convocationEnvoyeeAt: expect.any(Date) }),
       }),
     );
+  });
+
+  it("🔴 L04 allumé : la convocation porte les mesures du catalogue, jamais le texte saisi à la main", async () => {
+    vi.mocked(adaptationAutomatiquePourInscription).mockResolvedValueOnce(true);
+    const texte = [
+      texteConsignationAutomatique(["pauses"], new Date("2026-10-30T10:00:00Z")),
+      "Interprète LSF réservé, Mme X est malentendante",
+    ].join("\n\n");
+    mockPrisma.enrollment.findUnique.mockResolvedValue({
+      ...fakeEnrollmentBase,
+      adaptationsRealisees: texte,
+    });
+    await envoyerConvocation(ENROLLMENT_ID);
+    const call = mockEnqueueEmail.mock.calls[0] as unknown[];
+    expect((call[3] as Record<string, unknown>)["amenagements"]).toEqual([
+      "Pauses supplémentaires",
+    ]);
+    expect(JSON.stringify(call)).not.toContain("malentendante");
+    expect(JSON.stringify(call)).not.toContain("LSF");
   });
 
   it("lienPortail contient /portail/acces/ (pas /espace-stagiaire)", async () => {

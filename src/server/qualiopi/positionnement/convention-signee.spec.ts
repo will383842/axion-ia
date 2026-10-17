@@ -9,7 +9,7 @@ const piece = (p: Partial<PieceContractuelle> = {}): PieceContractuelle => ({
   traineeId: null,
   ...p,
 });
-const inscription = { traineeId: "t1", clientId: null };
+const inscription = { traineeId: "t1", clientId: null, interEntreprises: false };
 
 describe("positionnement bloqué sans convention signée", () => {
   it("aucune pièce, pièce partielle, en attente ou annulée : bloqué", () => {
@@ -44,15 +44,25 @@ describe("positionnement bloqué sans convention signée", () => {
       conventionSigneePourInscription([piece({ clientId: "c2" })], {
         traineeId: "t1",
         clientId: "c1",
+        interEntreprises: true,
       }),
     ).toBe(false);
     expect(
       conventionSigneePourInscription([piece({ clientId: "c1" })], {
         traineeId: "t1",
         clientId: "c1",
+        interEntreprises: true,
       }),
     ).toBe(true);
     // Intra : la convention porte le client de la session, l'inscription n'en a pas.
     expect(conventionSigneePourInscription([piece({ clientId: "c1" })], inscription)).toBe(true);
+  });
+
+  it("🔴 inter : un participant sans employeur n'est pas couvert par la convention d'une autre entreprise", () => {
+    const particulier = { traineeId: "t1", clientId: null, interEntreprises: true };
+    expect(conventionSigneePourInscription([piece({ clientId: "cA" })], particulier)).toBe(false);
+    // Une pièce à son nom, ou une pièce de session, le couvre.
+    expect(conventionSigneePourInscription([piece({ traineeId: "t1" })], particulier)).toBe(true);
+    expect(conventionSigneePourInscription([piece()], particulier)).toBe(true);
   });
 });

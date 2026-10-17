@@ -28,6 +28,12 @@ vi.mock("@/lib/prisma", () => {
 vi.mock("@/server/queue/queues", () => ({
   enqueueEmail: (...a: unknown[]) => enqueueEmail(...a),
 }));
+const creerOuActualiser = vi.fn(async (_a: unknown) => null);
+const resoudreAlertesParCode = vi.fn(async (_c: readonly string[]) => 0);
+vi.mock("@/server/qualiopi/alertes/alertes-service", () => ({
+  creerOuActualiser: (a: unknown) => creerOuActualiser(a),
+  resoudreAlertesParCode: (c: readonly string[]) => resoudreAlertesParCode(c),
+}));
 vi.mock("@/server/qualiopi/socle/interrupteurs", async () => ({
   ...(await vi.importActual<object>("@/server/qualiopi/socle/interrupteurs")),
   lireInterrupteurQualiopi: (lot: string) => lireInterrupteur(lot),
@@ -56,6 +62,8 @@ describe("éteint = inchangé", () => {
     expect(questionnaireFindMany).not.toHaveBeenCalled();
     expect(sessionFindMany).not.toHaveBeenCalled();
     expect(enqueueEmail).not.toHaveBeenCalled();
+    expect(creerOuActualiser).not.toHaveBeenCalled();
+    expect(resoudreAlertesParCode).not.toHaveBeenCalled();
   });
 });
 
@@ -66,7 +74,12 @@ describe("positionnement bloqué sans convention signée", () => {
       traineeId: "t1",
       clientId: null,
       estTestInterne: false,
-      session: { estTestInterne: false, documents },
+      session: {
+        numero: "AXI-S-2026-010",
+        estTestInterne: false,
+        interEntreprises: false,
+        documents,
+      },
     });
     questionnaireFindMany.mockResolvedValue([
       { id: "sans", enrollment: ins([]) },
@@ -75,6 +88,61 @@ describe("positionnement bloqué sans convention signée", () => {
     ]);
     const retenus = await positionnementsRetenusFauteDeConvention(["sans", "partielle", "signee"]);
     expect([...retenus].sort()).toEqual(["partielle", "sans"]);
+    // 🔴 La retenue ne reste pas silencieuse : une alerte visible, sans nom.
+    expect(creerOuActualiser).toHaveBeenCalledWith(
+      expect.objectContaining({
+        code: "positionnement_retenu_sans_convention",
+        titre: expect.stringContaining("(2)"),
+        message: expect.stringContaining("AXI-S-2026-010"),
+      }),
+    );
+    expect(resoudreAlertesParCode).not.toHaveBeenCalled();
+  });
+
+  it("allumé, plus rien de retenu : l'alerte est refermée", async () => {
+    lireInterrupteur.mockResolvedValue("actif");
+    questionnaireFindMany.mockResolvedValue([
+      {
+        id: "signee",
+        enrollment: {
+          traineeId: "t1",
+          clientId: null,
+          estTestInterne: false,
+          session: {
+            numero: "N",
+            estTestInterne: false,
+            interEntreprises: false,
+            documents: [signee],
+          },
+        },
+      },
+    ]);
+    expect((await positionnementsRetenusFauteDeConvention(["signee"])).size).toBe(0);
+    expect(resoudreAlertesParCode).toHaveBeenCalledWith(["positionnement_retenu_sans_convention"]);
+    expect(creerOuActualiser).not.toHaveBeenCalled();
+  });
+
+  it("🔴 inter : un particulier n'est pas couvert par la convention d'une autre entreprise", async () => {
+    lireInterrupteur.mockResolvedValue("actif");
+    questionnaireFindMany.mockResolvedValue([
+      {
+        id: "particulier",
+        enrollment: {
+          traineeId: "t1",
+          clientId: null,
+          estTestInterne: false,
+          session: {
+            numero: "N",
+            estTestInterne: false,
+            interEntreprises: true,
+            documents: [signee],
+          },
+        },
+      },
+    ]);
+    expect([...(await positionnementsRetenusFauteDeConvention(["particulier"]))]).toEqual([
+      "particulier",
+    ]);
   });
 
   it("essai : seules les sessions du banc d'essai sont retenues", async () => {
