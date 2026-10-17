@@ -42,6 +42,12 @@ import {
   envoyerLiensEmargementAction,
   revoquerLiensSessionAction,
 } from "@/server/actions/qualiopi/emargement-liens";
+import { EmargementDemiJournee } from "@/components/admin/qualiopi/EmargementDemiJournee";
+import { lireSuiviEmargement } from "@/server/qualiopi/emargement/demi-journee/suivi";
+import {
+  cocherFicheJourFormAction,
+  saisirRattrapageFormAction,
+} from "@/server/actions/qualiopi/emargement-demi-journee";
 import { AccesRefuse } from "@/components/admin/ui/AccesRefuse";
 import { gardePage } from "@/server/auth/garde-page";
 import { CLASSE_ANCRE_SECTION } from "@/features/admin-qualiopi/session-hub/ancres";
@@ -82,9 +88,14 @@ const TAUX_LABELS: Record<"complete" | "partielle" | "aucune", string> = {
 
 interface PageProps {
   params: Promise<{ locale: "fr" | "en"; adminPrefix: string; id: string }>;
+  searchParams?: Promise<Record<string, string | string[] | undefined>>;
 }
 
-export default async function EmargementPage({ params }: PageProps) {
+function premier(v: string | string[] | undefined): string | undefined {
+  return Array.isArray(v) ? v[0] : v;
+}
+
+export default async function EmargementPage({ params, searchParams }: PageProps) {
   const { locale, adminPrefix, id } = await params;
   const acces = await gardePage("consultation", `/${locale}/${adminPrefix}/login`);
   if (!acces.autorise) {
@@ -110,6 +121,11 @@ export default async function EmargementPage({ params }: PageProps) {
   // ⛔ NON BLOQUANT — décision de Will du 25/08/2026. Le constat n'est qu'un
   // constat : il ne conditionne aucun bouton de cette page.
   const constatFinanceur = await constatContresignatureSession(id, new Date());
+
+  // QNC L06 — le panneau n'existe que si `qualiopi.emargement.actif` agit sur
+  // la session : éteint, cette page est celle d'avant.
+  const suiviDemiJournee = await lireSuiviEmargement(id);
+  const retoursFormulaire = (await searchParams) ?? {};
 
   // Prépare les props pour EmargementGrid (clés sérialisables)
   // c.date est un DateTime Prisma (Date JS) → on extrait la partie ISO date (Europe/Paris).
@@ -252,6 +268,20 @@ export default async function EmargementPage({ params }: PageProps) {
           revoquerAction={revoquerLiensSessionAction}
         />
       </div>
+
+      {suiviDemiJournee !== null && (
+        <div className={CLASSE_ANCRE_SECTION}>
+          <EmargementDemiJournee
+            sessionId={id}
+            retour={`/${locale}/${adminPrefix}/qualiopi/sessions/${id}/emargement`}
+            suivi={suiviDemiJournee}
+            ok={premier(retoursFormulaire["ok"])}
+            erreur={premier(retoursFormulaire["erreur"])}
+            rattrapageAction={saisirRattrapageFormAction}
+            ficheJourAction={cocherFicheJourFormAction}
+          />
+        </div>
+      )}
 
       {/* Section : Générer les créneaux */}
       <section className="mb-[var(--space-admin-8)]">

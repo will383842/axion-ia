@@ -17,6 +17,7 @@
 
 "use server";
 
+import { declencherRecueilALaCreation } from "@/server/qualiopi/recueil/declenchement";
 import { z } from "zod";
 import * as Sentry from "@sentry/nextjs";
 import { prisma } from "@/lib/prisma";
@@ -48,6 +49,7 @@ import {
   FORMATION_SNAPSHOT_SELECT,
   buildFormationSnapshot,
 } from "@/server/qualiopi/formations/formation-snapshot";
+import { figerSeuilSiPedagogie } from "@/server/qualiopi/pedagogie/figer-seuil";
 import { lieuInputSchema, normaliserLieu } from "@/server/qualiopi/lieu/lieu-input";
 import {
   compterJoursHorsPlage,
@@ -396,7 +398,10 @@ export async function createSessionAction(
   }
 
   // Snapshot légal (WS5) — fige la formation telle que vendue à cette session.
-  const formationSnapshot = buildFormationSnapshot(formation, new Date());
+  // Lot L08 : le seuil de réussite y est figé (interrupteur qualiopi.pedagogie.actif).
+  const formationSnapshot = await figerSeuilSiPedagogie(
+    buildFormationSnapshot(formation, new Date()),
+  );
 
   // Créer la session + FormationTransition initiale dans une transaction,
   // avec retry sur collision de numéro (R7 : numéro ré-alloué à chaque tentative).
@@ -616,6 +621,10 @@ export async function createSessionAction(
   // session EXISTE déjà en base à ce point : la faire échouer pour un Kbis qui
   // arrive demain empêcherait de planifier, et une garde qui empêche de
   // travailler finit par être retirée.
+  // QNC L03 — « dès la demande » : le recueil du besoin part à l'entreprise.
+  // Éteint (`qualiopi.recueil.actif`), une seule lecture ; ne lève jamais.
+  await declencherRecueilALaCreation(created.id, session.userId);
+
   const avertissements = await avertissementsAffectation(v.trainerId ?? null);
   if (doubleEmploiSignale !== null) avertissements.push(doubleEmploiSignale);
   avertissements.push(...avertissementsGarde);

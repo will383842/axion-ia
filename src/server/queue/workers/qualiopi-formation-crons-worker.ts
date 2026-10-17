@@ -185,6 +185,10 @@ export type FormationCronJobType =
   // Lot OPCO A8 (2026-10-04) — envoi du dossier prêt à déposer à l'ENTREPRISE
   // et relances (dépôt fait ? réponse de l'OPCO ?). 08:30 Paris, jours ouvrés.
   | "formation-crons.suivi-entreprise-opco"
+  // Chantier QNC, lot L03 (2026-10-16) — recueil du besoin : relance de l'entreprise
+  // sans réponse (J+3, J+6 au plus) et retours rangés dans la session. 08:xx Paris,
+  // jours ouvrés ; arrêté tant que `qualiopi.recueil.actif` n'est pas allumé.
+  | "formation-crons.recueil-besoin"
   // Chantier formateurs indépendants (CAMP-3) — le passage HORAIRE des campagnes de
   // relance, de 8 h à 19 h à Paris. Livré éteint : registre vide, interrupteurs coupés.
   | "formation-crons.campagnes-formateurs"
@@ -1995,15 +1999,28 @@ async function handleLiensEmargementJ0(): Promise<void> {
         },
       },
     },
-    select: { id: true, numero: true, _count: { select: { jours: true } } },
+    select: {
+      id: true,
+      numero: true,
+      // QNC L06 — repère les sessions servies par le rappel de demi-journée.
+      estTestInterne: true,
+      _count: { select: { jours: true } },
+    },
     take: 50,
   });
+
+  // QNC L06 — sous `qualiopi.emargement.actif`, une session reçoit un lien par
+  // demi-journée (rappel ci-dessous), jamais le lien unique d'ici.
+  const emargementDemiJournee = await import("@/server/qualiopi/emargement/demi-journee/rappel");
+  const { estActifPour } = await import("@/server/qualiopi/socle/interrupteurs");
+  const etatEmargement = await emargementDemiJournee.etatInterrupteurPourCron();
 
   let traitees = 0;
   let sansJournees = 0;
   let enEchec = 0;
 
   for (const session of sessions) {
+    if (estActifPour(etatEmargement, session)) continue;
     if (session._count.jours === 0) {
       sansJournees++;
       console.error(
@@ -2055,6 +2072,18 @@ async function handleLiensEmargementJ0(): Promise<void> {
       `${sansJournees} sans journée déclarée, ${enEchec} en échec ` +
       `(${sessions.length} session(s) sans lien vivant, démarrant aujourd'hui ou depuis < 24 h)`,
   );
+
+  // QNC L06 — le rappel au début de chaque demi-journée (sans effet si éteint).
+  if (etatEmargement !== "eteint") {
+    const bilan = await emargementDemiJournee.envoyerRappelsDemiJournee(now);
+    for (const echec of bilan.echecs) {
+      console.error(`[formation-crons] liens-emargement-j0: rappel demi-journée — ${echec}`);
+    }
+    console.log(
+      `[formation-crons] liens-emargement-j0: rappels de demi-journée — ${bilan.envoyes} envoyé(s) ` +
+        `sur ${bilan.sessions} session(s), ${bilan.echecs.length} échec(s)`,
+    );
+  }
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -2711,6 +2740,7 @@ const HANDLERS: Record<FormationCronJobType, () => Promise<void>> = {
   "formation-crons.formateur-rappel-j1": handleFormateurRappelJ1,
   "formation-crons.rappel-j1": handleRappelJ1,
   "formation-crons.suivi-entreprise-opco": handleSuiviEntrepriseOpco,
+  "formation-crons.recueil-besoin": handleRecueilBesoin,
   "formation-crons.campagnes-formateurs": handleCampagnesFormateurs,
   "formation-crons.paiement-mission": handlePaiementMission,
   "formation-crons.communes-geo": handleCommunesGeo,
@@ -2945,6 +2975,34 @@ async function handleSuiviEntrepriseOpco(): Promise<void> {
   } catch (err) {
     console.error(
       "[formation-crons] suivi-entreprise-opco: erreur:",
+      err instanceof Error ? err.message : String(err),
+    );
+  }
+}
+
+/**
+ * Chantier QNC L03 — recueil du besoin : relances et retours. Corps dans
+ * `qualiopi/recueil/` ; ici on déclenche et on trace. Imports PARESSEUX.
+ * Type NEUF, consommé par le seul worker : aucun décalage app/worker.
+ */
+async function handleRecueilBesoin(): Promise<void> {
+  if (process.env["DATABASE_URL"]?.includes("stub.invalid")) return;
+  try {
+    const { estLHeureDuPassage, passerRecueil } =
+      await import("@/server/qualiopi/recueil/passage-quotidien");
+    const now = new Date();
+    if (!estLHeureDuPassage(now)) return;
+    const { envoyerEmailRecueil } = await import("@/server/qualiopi/recueil/envoi-email");
+    const b = await passerRecueil(envoyerEmailRecueil, now);
+    if (b.examines + b.retoursTraces > 0) {
+      console.log(
+        `[formation-crons] recueil-besoin: ${b.examines} examiné(s), ${b.premiersEnvois} premier(s) envoi(s), ` +
+          `${b.relances} relance(s), ${b.retoursTraces} retour(s) rangé(s)`,
+      );
+    }
+  } catch (err) {
+    console.error(
+      "[formation-crons] recueil-besoin: erreur:",
       err instanceof Error ? err.message : String(err),
     );
   }

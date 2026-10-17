@@ -22,6 +22,11 @@ vi.mock("@/lib/prisma", () => ({
   },
 }));
 
+vi.mock("@/server/qualiopi/socle/interrupteurs", async (orig) => ({
+  ...(await orig<typeof import("@/server/qualiopi/socle/interrupteurs")>()),
+  lireInterrupteurQualiopi: vi.fn().mockResolvedValue("eteint"),
+}));
+
 vi.mock("@/server/qualiopi/indicateurs/service", () => ({
   getIndicateurs: vi.fn().mockResolvedValue({
     annee: 2026,
@@ -41,6 +46,7 @@ vi.mock("@/server/qualiopi/indicateurs/service", () => ({
 
 import { prisma } from "@/lib/prisma";
 import { getIndicateurs } from "@/server/qualiopi/indicateurs/service";
+import { lireInterrupteurQualiopi } from "@/server/qualiopi/socle/interrupteurs";
 import {
   creerRevue,
   updateRevue,
@@ -59,6 +65,7 @@ const mockPrisma = prisma as unknown as {
 };
 
 const mockGetIndicateurs = getIndicateurs as ReturnType<typeof vi.fn>;
+const mockInterrupteur = lireInterrupteurQualiopi as ReturnType<typeof vi.fn>;
 
 // Valeur de référence (définie APRÈS hoisting des mocks).
 const INDICATEURS_FIXTURE = {
@@ -280,6 +287,33 @@ describe("reporterConstatRevue", () => {
   beforeEach(() => {
     vi.clearAllMocks();
     mockGetIndicateurs.mockResolvedValue(INDICATEURS_FIXTURE);
+    mockInterrupteur.mockResolvedValue("eteint");
+  });
+
+  it("chantier QNC L10 — registre allumé : une revue VALIDÉE n'est pas écrite", async () => {
+    mockInterrupteur.mockResolvedValue("actif");
+    mockPrisma.revueDirection.findUnique.mockResolvedValue({
+      id: "revue-2026",
+      annee: 2026,
+      statut: "validee",
+      planActions: [],
+    });
+    await expect(
+      reporterConstatRevue(2026, { texte: "Constat", source: "Verbatim" }),
+    ).rejects.toThrow(/validée — verrouillée/);
+    expect(mockPrisma.revueDirection.update).not.toHaveBeenCalled();
+  });
+
+  it("chantier QNC L10 — interrupteur éteint : une revue validée reçoit encore le constat (inchangé)", async () => {
+    mockPrisma.revueDirection.findUnique.mockResolvedValue({
+      id: "revue-2026",
+      annee: 2026,
+      statut: "validee",
+      planActions: [],
+    });
+    mockPrisma.revueDirection.update.mockResolvedValue({ id: "revue-2026" });
+    await reporterConstatRevue(2026, { texte: "Constat", source: "Verbatim" });
+    expect(mockPrisma.revueDirection.update).toHaveBeenCalledTimes(1);
   });
 
   it("ajoute le constat au planActions d'une revue existante (creee=false)", async () => {

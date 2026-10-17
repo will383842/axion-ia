@@ -42,6 +42,7 @@ import { demiJourneeCommencee } from "./creneaux-signables";
 //    CE QUI A ÉTÉ SIGNÉ.
 import { MENTION_VERSION_CONTRESIGNATURE } from "./mentions";
 import { storeSignatureImage, supprimerImageSignature } from "./storage";
+import { emargementParDemiJourneePour } from "./demi-journee/activation";
 
 /** Nombre de reprises sur conflit de chaîne. Au-delà, ce n'est plus une course. */
 const MAX_REPRISES_CHAINE = 3;
@@ -66,6 +67,8 @@ export type RefusContresignature =
   | "methode_non_admise"
   /** V2-A-1 : un formateur indépendant ne contresigne pas la journée désignée à un autre. */
   | "journee_d_un_autre"
+  /** QNC L06 : la contresignature se pose le jour même de la demi-journée. */
+  | "hors_jour"
   | "conflit_concurrent";
 
 export type ResultatContresignature =
@@ -173,6 +176,7 @@ export async function contresignerDemiJournee(
       id: true,
       statut: true,
       titreSession: true,
+      estTestInterne: true,
       jours: {
         select: { date: true, heureDebut: true, heureFin: true, modules: true, trainerId: true },
       },
@@ -267,6 +271,17 @@ export async function contresignerDemiJournee(
       raison: "pas_encore_commence",
       message:
         "Cette demi-journée n'a pas encore commencé. Vous pourrez contresigner le moment venu.",
+    };
+  }
+
+  // 🔴 QNC L06 — interrupteur `qualiopi.emargement.actif` : le formateur
+  // contresigne LE JOUR MÊME (heure de Paris). Éteint : inchangé.
+  if (parisDateISO(maintenant) !== input.date && (await emargementParDemiJourneePour(session))) {
+    return {
+      ok: false,
+      raison: "hors_jour",
+      message:
+        "La contresignature se pose le jour même de la demi-journée. Ce jour est passé : prévenez l'organisme, qui consignera l'écart.",
     };
   }
 
