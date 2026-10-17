@@ -68,17 +68,33 @@ vi.mock("@/server/qualiopi/convocation-v2/pieces", async () => ({
 }));
 
 import { envoyerConvocation } from "./notifications-service";
+import {
+  libelleModalite,
+  libelleModaliteMinuscule,
+  modaliteLabel,
+  modaliteLabelLower,
+} from "@/server/qualiopi/documents/libelles-enumerations";
+import { formatModalitesFr } from "@/content/formations/catalog-v2-facts";
 
-function inscription(over: { essai?: boolean; modalite?: string; visio?: string | null } = {}) {
+function inscription(
+  over: {
+    essai?: boolean;
+    modalite?: string;
+    visio?: string | null;
+    inter?: boolean;
+    clientInscription?: string | null;
+  } = {},
+) {
   return {
     id: "e1",
     adaptationsRealisees: null,
     estTestInterne: over.essai ?? false,
-    clientId: "c1",
+    clientId: over.clientInscription === undefined ? "c1" : over.clientInscription,
     trainee: { id: "t1", email: "stagiaire@exemple.fr", nom: "Durand", prenom: "Alice" },
     session: {
       id: "s1",
       estTestInterne: false,
+      interEntreprises: over.inter ?? false,
       clientId: "c1",
       numero: "AXI-SESS-2026-001",
       titreSession: "IA au quotidien",
@@ -370,5 +386,55 @@ describe("copie à l'entreprise : automatique avec la v2", () => {
       .mockResolvedValueOnce({ enqueued: true })
       .mockRejectedValueOnce(new Error("file en panne"));
     expect(await envoyerConvocation("e1")).toBe(true);
+  });
+});
+
+describe("copie à l'entreprise : jamais au client d'une session inter pour un participant sans employeur", () => {
+  beforeEach(() => {
+    etat.mockResolvedValue("actif");
+    clientFindUnique.mockResolvedValue({ contactEmail: "rh@autre-entreprise.fr" });
+  });
+
+  it("inter, sans employeur : un seul courriel (au stagiaire), aucune lecture du client", async () => {
+    enrollmentFindUnique.mockResolvedValue(inscription({ inter: true, clientInscription: null }));
+    expect(await envoyerConvocation("e1")).toBe(true);
+    expect(enqueueEmail).toHaveBeenCalledTimes(1);
+    expect(enqueueEmail.mock.calls[0]![1]).toBe("stagiaire@exemple.fr");
+    expect(clientFindUnique).not.toHaveBeenCalled();
+  });
+
+  it("inter, avec employeur B : copie à B seulement", async () => {
+    enrollmentFindUnique.mockResolvedValue(inscription({ inter: true, clientInscription: "c-b" }));
+    await envoyerConvocation("e1");
+    expect(clientFindUnique.mock.calls[0]![0]).toMatchObject({ where: { id: "c-b" } });
+    expect(enqueueEmail).toHaveBeenCalledTimes(2);
+  });
+
+  it("intra, sans client sur l'inscription : repli sur le client de la session", async () => {
+    enrollmentFindUnique.mockResolvedValue(inscription({ inter: false, clientInscription: null }));
+    await envoyerConvocation("e1");
+    expect(clientFindUnique.mock.calls[0]![0]).toMatchObject({ where: { id: "c1" } });
+    expect(enqueueEmail).toHaveBeenCalledTimes(2);
+  });
+});
+
+describe("modalité hybride : un seul libellé", () => {
+  it("le courriel porte le libellé commun, en bas de casse", async () => {
+    etat.mockResolvedValue("actif");
+    enrollmentFindUnique.mockResolvedValue(inscription({ modalite: "hybride" }));
+    await envoyerConvocation("e1");
+    const payload = enqueueEmail.mock.calls[0]![3] as Record<string, unknown>;
+    expect(payload["modalite"]).toBe(libelleModaliteMinuscule("hybride"));
+    expect(payload["modalite"]).toMatch(/^hybride/);
+  });
+
+  it("courriel, convocation, convention et site disent la même chose", () => {
+    const commun = libelleModalite("hybride");
+    expect(commun).toBe("Hybride (présentiel et distanciel)");
+    expect(modaliteLabel("hybride")).toBe(commun);
+    expect(modaliteLabelLower("hybride")).toBe(libelleModaliteMinuscule("hybride"));
+    expect(formatModalitesFr(["hybride"])).toBe(commun);
+    // « présentiel OU distanciel » ne s'appelle plus « hybride ».
+    expect(formatModalitesFr(["presentiel", "distanciel"])).not.toMatch(/hybride/i);
   });
 });

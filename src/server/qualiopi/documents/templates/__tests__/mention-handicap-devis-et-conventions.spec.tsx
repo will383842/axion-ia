@@ -84,7 +84,7 @@ const tripartite: ConventionTripartiteData = {
   dureeHeures: 14,
   dateDebut: "20/09/2026",
   dateFin: "21/09/2026",
-  modalite: "Mixte",
+  modalite: "Hybride (présentiel et distanciel)",
   lieu: "Lyon + Distanciel",
   effectif: 8,
   prixHt: 4200,

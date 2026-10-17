@@ -26,14 +26,39 @@
  * manquant se voit à la relecture, un blanc passe pour « rien à dire ».
  */
 
+/**
+ * SOURCE UNIQUE du libellé de la modalité `hybride` (salle ET visio) : courriel,
+ * copie entreprise, PDF (convocation, convention, programme), site et console
+ * le dérivent tous d'ici. Ne plus écrire « Mixte » ni « hybride » en dur ailleurs.
+ */
+export const LIBELLE_MODALITE_HYBRIDE = "Hybride (présentiel et distanciel)" as const;
+export const LIBELLE_MODALITE_HYBRIDE_MINUSCULE = "hybride (présentiel et distanciel)" as const;
+
 const MODALITE: Readonly<Record<string, string>> = {
   presentiel: "Présentiel",
   distanciel: "Distanciel",
-  // `hybride` en base, « Mixte » sur les pièces : c'est le libellé que portent
-  // déjà la convention, le contrat et le programme (`modaliteLabel`).
-  hybride: "Mixte",
-  mixte: "Mixte",
+  hybride: LIBELLE_MODALITE_HYBRIDE,
+  // Ancienne valeur « mixte » encore présente dans d'anciens instantanés.
+  mixte: LIBELLE_MODALITE_HYBRIDE,
 };
+
+/** Libellé de la modalité sur les pièces (convention, contrat, programme). */
+export function modaliteLabel(
+  m: "presentiel" | "distanciel" | "hybride",
+): "Présentiel" | "Distanciel" | typeof LIBELLE_MODALITE_HYBRIDE {
+  if (m === "presentiel") return "Présentiel";
+  if (m === "distanciel") return "Distanciel";
+  return LIBELLE_MODALITE_HYBRIDE;
+}
+
+/** Même libellé en bas de casse (convocation). */
+export function modaliteLabelLower(
+  m: "presentiel" | "distanciel" | "hybride",
+): "présentiel" | "distanciel" | typeof LIBELLE_MODALITE_HYBRIDE_MINUSCULE {
+  if (m === "presentiel") return "présentiel";
+  if (m === "distanciel") return "distanciel";
+  return LIBELLE_MODALITE_HYBRIDE_MINUSCULE;
+}
 
 /** « presentiel » → « Présentiel ». Idempotent ; inconnu → inchangé. */
 export function libelleModalite(valeur: string | null | undefined): string {

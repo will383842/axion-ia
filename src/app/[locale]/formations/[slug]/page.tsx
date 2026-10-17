@@ -9,6 +9,7 @@
  * (build GitHub Actions sans DB) → notFound() sans instancier Prisma.
  */
 
+import { LIBELLE_MODALITE_HYBRIDE } from "@/server/qualiopi/documents/libelles-enumerations";
 import type { Metadata } from "next";
 import { notFound, permanentRedirect } from "next/navigation";
 import { setRequestLocale } from "next-intl/server";
@@ -111,7 +112,7 @@ function modaliteLabel(modalite: "presentiel" | "distanciel" | "hybride"): strin
   const MAP: Record<typeof modalite, string> = {
     presentiel: "Présentiel (sur site)",
     distanciel: "À distance (FOAD)",
-    hybride: "Hybride (présentiel + distanciel)",
+    hybride: LIBELLE_MODALITE_HYBRIDE,
   };
   return MAP[modalite] ?? modalite;
 }

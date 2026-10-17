@@ -6,6 +6,7 @@
  * Rendu serveur exclusif — NE PAS "use client".
  */
 
+import type { LIBELLE_MODALITE_HYBRIDE } from "@/server/qualiopi/documents/libelles-enumerations";
 import React from "react";
 import { Document, View, Text, StyleSheet } from "@react-pdf/renderer";
 import {
@@ -50,7 +51,7 @@ export interface ConventionData {
   dureeHeures: number;
   dateDebut: string;
   dateFin: string;
-  modalite: "Présentiel" | "Distanciel" | "Mixte";
+  modalite: "Présentiel" | "Distanciel" | typeof LIBELLE_MODALITE_HYBRIDE;
   lieu: string;
   effectif: number;
   /**

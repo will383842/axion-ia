@@ -183,7 +183,7 @@ describe("livret d'accueil et convocation — information directe du stagiaire",
     ["livret d'accueil", livret],
     ["convocation présentiel", () => convocation("présentiel")],
     ["convocation distanciel", () => convocation("distanciel")],
-    ["convocation mixte", () => convocation("mixte")],
+    ["convocation hybride", () => convocation("hybride (présentiel et distanciel)")],
   ];
 
   it.each(PIECES)("%s : encart, renvoi au règlement et contact de signalement", (_nom, texte) => {

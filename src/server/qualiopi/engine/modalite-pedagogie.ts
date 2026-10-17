@@ -13,6 +13,7 @@
  * de l'assiduité — le distanciel s'appuie sur le relevé de connexion), et le
  * décret FOAD (D.6313-3-1) pour la formation ouverte et à distance.
  */
+import { LIBELLE_MODALITE_HYBRIDE } from "@/server/qualiopi/documents/libelles-enumerations";
 
 export type Modalite = "presentiel" | "distanciel" | "hybride";
 
@@ -30,7 +31,7 @@ export function libelleModalite(modalite: Modalite): string {
     case "distanciel":
       return "À distance (classe virtuelle)";
     case "hybride":
-      return "Hybride (présentiel + distanciel)";
+      return LIBELLE_MODALITE_HYBRIDE;
     default:
       return "En présentiel";
   }

@@ -126,7 +126,7 @@ const DISPOSITIF: ReadonlyArray<readonly [string, RegExp]> = [
 ];
 
 describe("le dispositif d'assistance à distance est imprimé", () => {
-  describe.each(["distanciel", "mixte"] as const)("convocation %s", (modalite) => {
+  describe.each(["distanciel", "hybride (présentiel et distanciel)"] as const)("convocation %s", (modalite) => {
     const texte = convocation(modalite);
 
     it("porte la section « Assistance à distance »", () => {
@@ -153,7 +153,7 @@ describe("le dispositif d'assistance à distance est imprimé", () => {
     });
   });
 
-  it.each(["distanciel", "mixte", "présentiel"] as const)(
+  it.each(["distanciel", "hybride (présentiel et distanciel)", "présentiel"] as const)(
     "la convocation %s n'exige d'installer rien",
     (modalite) => {
       expect(fautesInstallation([convocation(modalite)])).toEqual([]);

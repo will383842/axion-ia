@@ -21,6 +21,10 @@
  */
 
 import React from "react";
+import {
+  modaliteLabel,
+  modaliteLabelLower,
+} from "@/server/qualiopi/documents/libelles-enumerations";
 import { prisma } from "@/lib/prisma";
 import { generateDocument } from "@/server/qualiopi/documents/documents-service";
 import { getOrganismeIdentite } from "@/server/qualiopi/documents/organisme";
@@ -125,21 +129,8 @@ export function formatDateFr(d: Date): string {
   return d.toLocaleDateString("fr-FR");
 }
 
-export function modaliteLabel(
-  m: "presentiel" | "distanciel" | "hybride",
-): "Présentiel" | "Distanciel" | "Mixte" {
-  if (m === "presentiel") return "Présentiel";
-  if (m === "distanciel") return "Distanciel";
-  return "Mixte";
-}
-
-export function modaliteLabelLower(
-  m: "presentiel" | "distanciel" | "hybride",
-): "présentiel" | "distanciel" | "mixte" {
-  if (m === "presentiel") return "présentiel";
-  if (m === "distanciel") return "distanciel";
-  return "mixte";
-}
+// Source unique : `libelles-enumerations.ts` (réexportées pour les appelants existants).
+export { modaliteLabel, modaliteLabelLower };
 
 /**
  * Nom du formateur principal d'une session. FK `formateurPrincipalId` prioritaire

@@ -27,6 +27,7 @@ import type { FormationCasUsage, FormationV2 } from "./catalog-v2";
 import { FORMATION_CARD_PHOTOS } from "./catalog-v2-photos";
 import { EFFECTIF_VALEUR_FR } from "./effectif";
 import { type ModalitePedagogique, PRESENTIEL_DISTANCIEL } from "./modalites";
+import { LIBELLE_MODALITE_HYBRIDE } from "@/server/qualiopi/documents/libelles-enumerations";
 import { DELAI_ACCES_VALEUR, delaiAccesAutresFinanceurs } from "./delai-acces";
 
 // ── Durée canonique en NOMBRES (heures d'horloge + jours) ───────────────────
@@ -64,7 +65,7 @@ export function formatModalitesFr(m: ReadonlyArray<ModalitePedagogique>): string
   const p = m.includes("presentiel");
   const d = m.includes("distanciel");
   const h = m.includes("hybride");
-  if (h) return "Présentiel ou distanciel (hybride)";
+  if (h) return LIBELLE_MODALITE_HYBRIDE;
   if (p && d) return "Présentiel (dans vos locaux) — distanciel possible";
   if (p) return "Présentiel — dans vos locaux";
   if (d) return "Distanciel";

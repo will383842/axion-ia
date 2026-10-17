@@ -262,6 +262,7 @@ export async function envoyerConvocation(enrollmentId: string): Promise<boolean>
         select: {
           id: true,
           estTestInterne: true,
+          interEntreprises: true,
           clientId: true,
           numero: true,
           titreSession: true,
@@ -447,7 +448,9 @@ export async function envoyerConvocation(enrollmentId: string): Promise<boolean>
     });
     await envoyerCopieEntreprise({
       enrollmentId,
-      clientId: enrollment.clientId ?? session.clientId ?? null,
+      // 🔴 Relecture 2 (#1582) — en inter, un participant sans employeur n'est PAS
+      // copié au client de la session (même règle que `conventionSigneePourInscription`).
+      clientId: enrollment.clientId ?? (session.interEntreprises ? null : session.clientId) ?? null,
       stagiairePrenomNom: `${trainee.prenom} ${trainee.nom}`,
       session,
       pieces: piecesV2,

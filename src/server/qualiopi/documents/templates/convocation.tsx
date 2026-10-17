@@ -21,7 +21,10 @@ import {
   BulletList,
 } from "@/server/qualiopi/documents/base-layout";
 import type { OrganismeIdentite } from "@/server/qualiopi/documents/organisme";
-import { libelleFinancement } from "@/server/qualiopi/documents/libelles-enumerations";
+import {
+  LIBELLE_MODALITE_HYBRIDE_MINUSCULE,
+  libelleFinancement,
+} from "@/server/qualiopi/documents/libelles-enumerations";
 import { LEGAL_MENTIONS } from "@/server/qualiopi/legal/legal-mentions";
 import {
   ASSISTANCE_COUPURE,
@@ -60,7 +63,7 @@ export interface ConvocationData {
    */
   horaires: string;
   dureeHeures: number;
-  modalite: "présentiel" | "distanciel" | "mixte";
+  modalite: "présentiel" | "distanciel" | typeof LIBELLE_MODALITE_HYBRIDE_MINUSCULE;
   lieu?: string;
   /**
    * ⚠️ Modalité d'accès en distanciel — attendue par l'indicateur 9 au même
@@ -131,7 +134,7 @@ export function ConvocationPdf({
   data: ConvocationData;
   identite: OrganismeIdentite;
 }): React.ReactElement {
-  const isDistanciel = data.modalite === "distanciel" || data.modalite === "mixte";
+  const isDistanciel = data.modalite === "distanciel" || data.modalite === LIBELLE_MODALITE_HYBRIDE_MINUSCULE;
   const v2 = data.versionTexte === 2;
   const siteBase = identite.site.replace(/\/+$/, "");
 
