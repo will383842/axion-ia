@@ -115,10 +115,16 @@ export async function lireFaitsSuiviQualite(
   });
 
   const grilles = t.grillesSuiviQualite;
+  // La dernière note SAISIE fait foi : une grille sans note n'efface pas la mesure précédente.
   const saisieDe = (sessionId: string): number | null => {
     let d: { satisfactionSaisie: number | null; createdAt: Date } | null = null;
     for (const g of grilles) {
-      if (g.type !== "evaluation_mission" || g.sessionId !== sessionId) continue;
+      if (
+        g.type !== "evaluation_mission" ||
+        g.sessionId !== sessionId ||
+        g.satisfactionSaisie === null
+      )
+        continue;
       if (d === null || g.createdAt >= d.createdAt) d = g;
     }
     return d?.satisfactionSaisie ?? null;
