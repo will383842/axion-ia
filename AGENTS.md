@@ -169,7 +169,25 @@ En outre, `src/server/exporters/knowledge-rss.ts` + `knowledge-sitemap.ts` font 
 - ✅ Si une nouvelle page SSG fait un appel DB direct au build, vérifier que le stub Proxy couvre la méthode utilisée OU ajouter un `if (process.env.DATABASE_URL?.includes("stub.invalid")) return <fallback>` early-exit dans la page
 - ✅ Tests Vitest tournent avec un PrismaClient mock distinct (pas affecté par le stub Proxy build-time)
 
-### ⚠️ La durée du build a DÉRIVÉ — ~50 min, pas ~25
+### ⚠️ La durée du build a DÉRIVÉ, puis est retombée
+
+> **Mesure du 2026-10-17 (état actuel).** Sur un échantillon de 10 runs de `deploy-coolify.yml`
+> dont le job `Build & push image to GHCR` a réussi (tous `workflow_dispatch`, du 2026-10-14
+> au 2026-10-16 ; les runs `schedule` sont `skipped` par `precheck`) :
+> **17 min 10 s à 23 min 40 s, médiane ~17 min 50 s** (9 runs sur 10 entre 17 min 10 s et
+> 18 min 31 s, un à 23 min 40 s). Source : `gh run view <id> --json jobs`, `completedAt - startedAt`
+> du job build (runs 38976024454, 38967711176, 38944880292, 38934661088, 38718943971,
+> 38709858650, 38699307526, 38685990830, 38636944994, 38554045687). Trois builds plus récents
+> (runs 38960873002, 39024182620, 39044234444, 16-17/10) ont un job build vert de 15 min 47 s à
+> 18 min 59 s : l'ordre de grandeur (~18 min) tient. **Le « 47-56 min »
+> ci-dessous est l'ancienne mesure du 2026-09-03**, gardée comme historique.
+>
+> **L'avertissement « fusionner pendant un build en vol le TUE » n'est plus vrai pour une
+> fusion** : depuis le 2026-10-08 une fusion ne déclenche aucun run (cf. plus bas), et
+> `_FILE-FUSION/fusion.ps1` ne teste plus les déploiements en vol (le commentaire d'en-tête du
+> script, ligne 4, est périmé). Seul subsiste : le job `build` porte
+> `cancel-in-progress: true` dans le groupe `build-<workflow>-<ref>`, donc **lancer un second run
+> sur `main` (créneau ou `gh workflow run`) pendant qu'un build tourne annule le premier**.
 
 Ce paragraphe a annoncé « Job `build` (~25 min) » jusqu'au 2026-09-03. **C'est faux d'un
 facteur deux**, et mesuré sur **trois runs**, par **deux sessions indépendantes**, en lisant
@@ -240,15 +258,17 @@ demande : `gh workflow run deploy-coolify.yml` (seulement quand Will le demande)
 
 Conséquences : **on fusionne à toute heure, sans réserver de créneau** — plus aucune
 fusion ne tue un build. Tout ce qui précède sur la famine et les créneaux de fusion
-décrit l'ancien régime (déclencheur `push`) ; la durée du build (~50 min) et la
+décrit l'ancien régime (déclencheur `push`) ; la durée du build (47-56 min
+mesurés en septembre, 17-24 min mesurés le 2026-10-17, voir plus haut) et la
 fenêtre app/worker restent vraies **à partir du lancement du créneau**. Pour savoir
-quand un code atterrit : au prochain créneau, + ~55 min. Verrouillé par
+quand un code atterrit : au prochain créneau, + la durée du build + celle du job `deploy`
+(non remesuré en octobre ; ~55 min au total en septembre). Verrouillé par
 `tests/unit/ci/deploiement-a-heures-fixes.spec.ts`.
 
 ### Pipeline complet
 
 1. Créneau (12 h / 17 h / 22 h) ou `gh workflow run deploy-coolify.yml` → workflow `.github/workflows/deploy-coolify.yml` (avant le 2026-10-08 : `git push main`)
-2. **Job `build`** (⚠️ **47-56 min mesurés**, pas ~25 — voir ci-dessus) :
+2. **Job `build`** (⚠️ **17-24 min mesurés le 2026-10-17** ; 47-56 min en septembre — voir ci-dessus) :
    - Free disk space agressif (~75 GB free)
    - `docker build axionia/Dockerfile` avec build-args stubs
    - `docker push ghcr.io/will383842/axion-ia:{latest,sha-XXXXXXX,main}`
@@ -397,6 +417,7 @@ Le 2026-05-16, le locale EN a été désactivé suite à un bug pré-existant ne
 1. Set env var Coolify `EN_LOCALE_ENABLED=true` (Application → Env vars → New → key `EN_LOCALE_ENABLED`, value `true`, scope RUN)
 2. Restart container (Coolify → Restart)
 3. ✅ EN re-actif. Vérifier `/en/about` → 200 (au lieu de 301 vers `/fr/a-propos`)
+4. ⚠️ **Sitemap images EN** : `/sitemaps/images-en.xml` est gaté hors `sitemap-index.xml` tant que `EN_LOCALE_ENABLED !== "true"` (PR #243, pour ne pas déclarer d'URLs `/en/gallery/` qui 301→FR). Une fois EN réactivé, la route se repeuple et le gate le remet automatiquement dans l'index — **vérifier** que `/sitemaps/images-en.xml` réapparaît dans `sitemap-index.xml` et porte des `<image:loc>`, puis **resoumettre `/sitemap-index.xml` dans la Search Console** pour que Google découvre les variantes image EN.
 
 **Si tu veux purger les EN URLs de Google Search Console** (recommandé après ≥4 semaines de 301) :
 

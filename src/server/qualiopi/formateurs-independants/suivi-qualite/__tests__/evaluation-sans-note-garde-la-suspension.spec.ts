@@ -1,6 +1,6 @@
 /**
- * Qualiopi ind. 21 — relecture du 2026-10-17 : la DERNIÈRE note de satisfaction SAISIE fait
- * foi. Une 2e grille `evaluation_mission` sans note (null) n'efface pas la mesure de la 1re,
+ * Qualiopi ind. 21 — relecture du 2026-10-17 : la PIRE note de satisfaction mesurée fait
+ * foi (décision de Will du 17/10/2026). Une 2e grille `evaluation_mission` sans note (null) n'efface pas la mesure de la 1re,
  * donc la suspension (satisfaction < 3) ne tombe pas sans décision motivée.
  */
 
@@ -100,7 +100,7 @@ describe("suivi qualité × grille d'évaluation sans note", () => {
     expect(r.refus).toContain(MANQUES_SUIVI_QUALITE.suspension);
   });
 
-  it("une 2e grille AVEC note fait foi (la dernière note saisie remplace la précédente)", async () => {
+  it("une 2e grille AVEC une meilleure note NE LÈVE PAS la suspension (décision de Will, 17/10/2026)", async () => {
     h.etat.settings.set("formateurs.suivi_qualite", {
       actif: true,
       allumeLe: "2026-11-01T08:00:00Z",
@@ -115,6 +115,6 @@ describe("suivi qualité × grille d'évaluation sans note", () => {
       ],
     };
     const r = await controlerGardeMission("t-1", MAINTENANT, { sessionId: "s2" });
-    expect(r.refus).not.toContain(MANQUES_SUIVI_QUALITE.suspension);
+    expect(r.refus).toContain(MANQUES_SUIVI_QUALITE.suspension);
   });
 });
