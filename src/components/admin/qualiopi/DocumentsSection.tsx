@@ -61,6 +61,10 @@ import {
 } from "@/components/admin/qualiopi/ConditionSuspensiveOpcoChamps";
 import { genererAttestationAction } from "@/server/actions/qualiopi/evaluations";
 import { genererFicheAdaptationAction } from "@/server/actions/qualiopi/exports-pdf";
+import {
+  NotesPiece,
+  type NotePieceAffichee,
+} from "@/components/admin/documents-organisme/NotesPiece";
 import { GenererFactureButton } from "@/components/admin/qualiopi/GenererFactureButton";
 import { PdfExportButton } from "@/components/admin/qualiopi/PdfExportButton";
 import { formatDateFrShort } from "@/lib/format-date-fr";
@@ -230,6 +234,14 @@ export interface DocumentsSectionProps {
    * pour ce motif exact, sur le premier dossier réel.
    */
   contexte: ContexteSession;
+  /**
+   * CHANTIER QNC, L13 — notes en ajout seul par pièce (« ne pas envoyer »,
+   * « établie hors délai », pièce vierge, pièce rectificative). ABSENT quand
+   * l'interrupteur est éteint pour cette session : rien ne s'affiche de plus.
+   * Présent, les notes et le geste d'en ajouter une restent visibles sur un
+   * dossier clos — la note ne touche pas la pièce.
+   */
+  notesPieces?: Record<string, NotePieceAffichee[]> | undefined;
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -1454,6 +1466,7 @@ export function DocumentsSection({
   enrollments,
   documentsExistants,
   contexte,
+  notesPieces,
 }: DocumentsSectionProps): React.ReactElement {
   const fige = useDossierFige();
   const [selectedEnrollmentId, setSelectedEnrollmentId] = useState<string>(
@@ -2120,6 +2133,13 @@ export function DocumentsSection({
                           Rectifie {doc.rectifieNumero}
                           {doc.rectifieMotif ? ` — ${doc.rectifieMotif}` : ""}
                         </span>
+                      )}
+                      {notesPieces !== undefined && (
+                        <NotesPiece
+                          documentId={doc.id}
+                          numero={doc.numero}
+                          notes={notesPieces[doc.id] ?? []}
+                        />
                       )}
                     </td>
                     <td className="py-[var(--space-admin-2)] pr-[var(--space-admin-4)] font-mono text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">

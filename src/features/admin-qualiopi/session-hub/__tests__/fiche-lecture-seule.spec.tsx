@@ -105,6 +105,8 @@ vi.mock("@/server/actions/qualiopi/conformite", () => ({
 }));
 // `verrou-dossier.ts` porte aussi les chargeurs Prisma : le client n'est jamais
 // appelé par les fonctions pures testées ici.
+// Chantier QNC, L13 — les notes sur pièce (rendues seulement si `notesPieces` est passé).
+vi.mock("@/server/actions/qualiopi/notes-pieces", () => ({ ajouterNotePieceAction: action() }));
 vi.mock("@/lib/prisma", () => ({ prisma: {} }));
 
 import {
@@ -579,6 +581,34 @@ describe("🟢 dossier CLOS — ce qui reste ouvert reste rendu", () => {
     expect(boutonsActifs(container, /^Certificat de réalisation/)).toHaveLength(1);
     // …mais aucune autre génération.
     expect(boutonsActifs(container, /^Convocation/)).toHaveLength(0);
+  });
+});
+
+describe("CHANTIER QNC, L13 — notes en ajout seul sur un dossier clos", () => {
+  function rendre(notesPieces?: Record<string, never[]>) {
+    const docs = documents() as unknown as Array<{ id: string; numero: string }>;
+    const utils = render(
+      <DossierVerrouProvider fige etat="clos">
+        <DocumentsSection
+          sessionId={SESSION}
+          enrollments={[{ id: ENR, traineeId: TRAINEE, nomStagiaire: "Ada Lovelace" }]}
+          documentsExistants={docs as never}
+          contexte={{ financement: "direct", typeClient: "entreprise", statut: "realisee" }}
+          notesPieces={notesPieces}
+        />
+      </DossierVerrouProvider>,
+    );
+    return { ...utils, docs };
+  }
+
+  it("interrupteur allumé : chaque pièce close garde « Ajouter une note »", () => {
+    const { container, docs } = rendre({});
+    expect(boutonsActifs(container, /^Ajouter une note$/)).toHaveLength(docs.length);
+  });
+
+  it("éteint (`notesPieces` absent) : rien ne change, aucun geste de note", () => {
+    const { container } = rendre(undefined);
+    expect(boutonsActifs(container, /^Ajouter une note$/)).toHaveLength(0);
   });
 });
 

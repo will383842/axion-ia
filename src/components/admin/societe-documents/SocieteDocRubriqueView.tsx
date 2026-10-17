@@ -4,6 +4,9 @@
 // L'état d'échéance est calculé ICI, au rendu, à partir de la date stockée —
 // jamais lu depuis une colonne de statut, qui serait fausse dès le lendemain.
 
+import { auth } from "@/auth";
+import { vueArchivage } from "@/server/qualiopi/documents-organisme/documents-organisme";
+import { horodatageParis } from "@/server/qualiopi/documents-organisme/documents-organisme-pur";
 import {
   listSocieteDocsByRubrique,
   typesPresentsDansRubrique,
@@ -80,10 +83,18 @@ export async function SocieteDocRubriqueView({
   }
 
   const cle = rubrique.key as SocieteRubriqueKey;
-  const [docs, presents] = await Promise.all([
+  const [tous, presentsEnBase, session] = await Promise.all([
     listSocieteDocsByRubrique(cle),
     typesPresentsDansRubrique(cle),
+    auth(),
   ]);
+  // CHANTIER QNC, L13 — interrupteur allumé : les versions remplacées sont
+  // gardées et montrées à part, plus de suppression ; une pièce retirée ne
+  // couvre plus son type. Éteint : `vue` est nul, l'écran est celui d'avant.
+  const role = (session?.user as { role?: string } | undefined)?.role;
+  const vue = await vueArchivage("SocieteDocument", tous, role);
+  const docs = vue ? vue.enVigueur : tous;
+  const presents = vue ? new Set<string>(docs.map((d) => d.type)) : presentsEnBase;
   const manquants = typesManquants(cle, presents);
   const attendus = typesAttendusDeRubrique(cle);
   const couverts = attendus.length - manquants.length;
@@ -184,6 +195,7 @@ export async function SocieteDocRubriqueView({
                   </div>
 
                   <SocieteDocActions
+                    archivage={vue ? { retraitPossible: vue.retraitPossible } : undefined}
                     types={rubrique.types}
                     piece={{
                       id: doc.id,
@@ -202,6 +214,39 @@ export async function SocieteDocRubriqueView({
           })}
         </ul>
       )}
+
+      {vue && vue.remplacees.length > 0 ? (
+        <details className="border-border mt-4 rounded-lg border bg-[color:var(--color-admin-paper)] p-4">
+          <summary className="text-mocha cursor-pointer text-sm font-semibold">
+            {`Versions remplacées (${vue.remplacees.length}) — gardées, jamais effacées`}
+          </summary>
+          <ul className="mt-3 space-y-2">
+            {vue.remplacees.map(({ doc, remplacement, par }) => (
+              <li
+                key={doc.id}
+                className="flex flex-wrap items-center justify-between gap-2 text-xs"
+              >
+                <span className="min-w-0">
+                  <span className="text-mocha font-medium">{doc.titre}</span>
+                  <span className="text-fg-muted font-mono">
+                    {" "}
+                    · {doc.fileName} · déposé le {formatDate(doc.createdAt)}
+                  </span>
+                  <span className="text-fg-muted block">
+                    {`Remplacée par ${par ? `« ${par.fileName} »` : "une version plus récente"} ${horodatageParis(remplacement.le)}`}
+                  </span>
+                </span>
+                <a
+                  href={`${fichiersBase}/${doc.id}?dl=1`}
+                  className="text-terracotta font-medium underline"
+                >
+                  Télécharger
+                </a>
+              </li>
+            ))}
+          </ul>
+        </details>
+      ) : null}
 
       {/*
         🔴 CE QUI MANQUE, ET POURQUOI C'EST EN BAS MAIS PAS EN PETIT.

@@ -29,6 +29,8 @@ import {
   MOTIF_EFFACEMENT_ATTENDU,
   notesDepuisJournal,
   remplacementsDepuisJournal,
+  separerVersions,
+  type AvecId,
   type CibleDocumentOrganisme,
   type LigneJournal,
   type NotePiece,
@@ -179,4 +181,68 @@ export async function verrouillerVersionDocument(
     select: { id: true },
   });
   return { dejaRemplacee: deja !== null };
+}
+
+export interface VersionRemplacee<T> {
+  readonly doc: T;
+  readonly remplacement: Remplacement;
+  /** La version qui la remplace, si elle est dans la même liste. */
+  readonly par: T | null;
+}
+
+export interface VueArchivage<T> {
+  readonly enVigueur: T[];
+  readonly remplacees: Array<VersionRemplacee<T>>;
+  /** Documents retirés (masqués, jamais effacés) : on en dit le nombre. */
+  readonly nbRetires: number;
+  /** Le bouton « Retirer » : super-administrateur ET base prête. */
+  readonly retraitPossible: boolean;
+}
+
+/**
+ * Ce qu'un écran de liste affiche, interrupteur allumé : les versions en
+ * vigueur, les versions remplacées (chacune avec celle qui la remplace), le
+ * nombre de documents retirés. `null` quand le lot est éteint : l'écran
+ * reste exactement celui d'avant, sans aucune lecture de plus.
+ */
+export async function vueArchivage<T extends AvecId>(
+  cible: CibleDocumentOrganisme,
+  docs: ReadonlyArray<T>,
+  role: string | undefined,
+): Promise<VueArchivage<T> | null> {
+  if (!(await archivageDocumentsOrganismeActif())) return null;
+  const [remplacements, retires, retraitPret] = await Promise.all([
+    lireRemplacements(
+      cible,
+      docs.map((d) => d.id),
+    ),
+    lireDocumentsRetires(cible),
+    role === "super_admin" ? retraitDocumentDisponible(cible) : Promise.resolve(false),
+  ]);
+  const visibles = docs.filter((d) => !retires.has(d.id));
+  const parId = new Map(docs.map((d) => [d.id, d]));
+  const { enVigueur, remplacees } = separerVersions(visibles, remplacements);
+  return {
+    enVigueur,
+    remplacees: remplacees.map((r) => ({
+      doc: r as T,
+      remplacement: r.remplacement,
+      par: parId.get(r.remplacement.nouveauId) ?? null,
+    })),
+    nbRetires: docs.length - visibles.length,
+    retraitPossible: retraitPret,
+  };
+}
+
+/**
+ * Les documents à NE PAS compter (remplacés ou retirés), pour les compteurs et
+ * les alertes d'échéance. Vide quand le lot est éteint.
+ */
+export async function documentsHorsVigueur(cible: CibleDocumentOrganisme): Promise<Set<string>> {
+  if (!(await archivageDocumentsOrganismeActif())) return new Set();
+  const [remplacements, retires] = await Promise.all([
+    lireRemplacements(cible),
+    lireDocumentsRetires(cible),
+  ]);
+  return new Set([...remplacements.keys(), ...retires]);
 }

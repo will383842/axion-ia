@@ -1,7 +1,12 @@
 // Bucket de documents console (server component) — liste + upload + actions.
 // Utilisé par les pages Implémentations / Sites web / Autres.
 
+import { auth } from "@/auth";
 import { listConsoleDocsBySection } from "@/server/console-documents/queries";
+import { vueArchivage } from "@/server/qualiopi/documents-organisme/documents-organisme";
+import { horodatageParis } from "@/server/qualiopi/documents-organisme/documents-organisme-pur";
+import { RemplacerConsoleDocButton } from "@/components/admin/documents-organisme/RemplacerConsoleDocButton";
+import { RetirerDocumentButton } from "@/components/admin/documents-organisme/RetirerDocumentButton";
 import { getConsoleDocSection } from "@/server/console-documents/sections";
 import type { ConsoleDocSection } from "../../../../prisma/generated/client";
 import { ConsoleDocUploader } from "./ConsoleDocUploader";
@@ -24,6 +29,11 @@ export async function ConsoleDocBucket({
 }: Props): Promise<React.ReactElement> {
   const def = getConsoleDocSection(section);
   const docs = await listConsoleDocsBySection(section);
+  // CHANTIER QNC, L13 — interrupteur allumé : versions remplacées gardées et
+  // montrées à part, plus de suppression. Éteint : `vue` est nul, rien ne change.
+  const role = ((await auth())?.user as { role?: string } | undefined)?.role;
+  const vue = await vueArchivage("ConsoleDocument", docs, role);
+  const liste = vue ? vue.enVigueur : docs;
   const fichiersBase = `/fr/${adminPrefix}/documents-interventions/fichiers`;
   const allowSensitive = section === "autres";
 
@@ -37,14 +47,24 @@ export async function ConsoleDocBucket({
         <ConsoleDocUploader section={section} allowSensitive={allowSensitive} />
       </div>
 
-      {docs.length === 0 ? (
+      {vue ? (
+        <p className="text-fg-muted mb-4 text-xs">
+          Rien ne s&apos;efface : remplacer un document garde l&apos;ancien, avec son fichier, dans
+          «&nbsp;Versions remplacées&nbsp;».
+          {vue.nbRetires > 0
+            ? ` ${vue.nbRetires} document${vue.nbRetires > 1 ? "s" : ""} retiré${vue.nbRetires > 1 ? "s" : ""} par le super-administrateur (conservé${vue.nbRetires > 1 ? "s" : ""}, masqué${vue.nbRetires > 1 ? "s" : ""}).`
+            : ""}
+        </p>
+      ) : null}
+
+      {liste.length === 0 ? (
         <div className="border-border text-fg-muted rounded-lg border border-dashed bg-[color:var(--color-admin-paper)] p-8 text-center text-sm">
           Aucun document pour le moment. Cliquez sur «&nbsp;Ajouter un document&nbsp;» pour en
           déposer un.
         </div>
       ) : (
         <ul className="space-y-2">
-          {docs.map((doc) => {
+          {liste.map((doc) => {
             const canPrint = !doc.sensitive && doc.mimeType === "application/pdf";
             return (
               <li
@@ -93,13 +113,56 @@ export async function ConsoleDocBucket({
                       Imprimer
                     </a>
                   ) : null}
-                  <ConsoleDocDeleteButton id={doc.id} title={doc.title} />
+                  {vue ? (
+                    <>
+                      <RemplacerConsoleDocButton id={doc.id} title={doc.title} />
+                      {vue.retraitPossible ? (
+                        <RetirerDocumentButton
+                          cible="ConsoleDocument"
+                          id={doc.id}
+                          titre={doc.title}
+                        />
+                      ) : null}
+                    </>
+                  ) : (
+                    <ConsoleDocDeleteButton id={doc.id} title={doc.title} />
+                  )}
                 </div>
               </li>
             );
           })}
         </ul>
       )}
+
+      {vue && vue.remplacees.length > 0 ? (
+        <details className="border-border mt-6 rounded-lg border bg-[color:var(--color-admin-paper)] p-4">
+          <summary className="text-mocha cursor-pointer text-sm font-semibold">
+            {`Versions remplacées (${vue.remplacees.length})`}
+          </summary>
+          <ul className="mt-3 space-y-2">
+            {vue.remplacees.map(({ doc, remplacement, par }) => (
+              <li
+                key={doc.id}
+                className="flex flex-wrap items-center justify-between gap-2 text-xs"
+              >
+                <span className="min-w-0">
+                  <span className="text-mocha font-medium">{doc.title}</span>
+                  <span className="text-fg-muted font-mono"> · {doc.fileName}</span>
+                  <span className="text-fg-muted block">
+                    {`Remplacée par ${par ? `« ${par.fileName} »` : "une version plus récente"} ${horodatageParis(remplacement.le)}`}
+                  </span>
+                </span>
+                <a
+                  href={`${fichiersBase}/${doc.id}?dl=1`}
+                  className="text-terracotta font-medium underline"
+                >
+                  Télécharger
+                </a>
+              </li>
+            ))}
+          </ul>
+        </details>
+      ) : null}
     </div>
   );
 }
