@@ -114,15 +114,13 @@ describe("🔑 la provenance d'une réservation directe se prend en BLOC", () =>
   const COOKIE = { utm_source: "google", utm_medium: "cpc", utm_campaign: "printemps" };
 
   it("l'arrivée porte une UTM : tout le bloc d'arrivée, rien du cookie", () => {
-    expect(provenanceEnBloc({ utm_source: "linkedin", depuis: "video-demo" }, COOKIE)).toEqual(
-      {
-        utmSource: "linkedin",
-        utmMedium: null,
-        utmCampaign: null,
-        utmContent: null,
-        utmTerm: "video-demo",
-      },
-    );
+    expect(provenanceEnBloc({ utm_source: "linkedin", depuis: "video-demo" }, COOKIE)).toEqual({
+      utmSource: "linkedin",
+      utmMedium: null,
+      utmCampaign: null,
+      utmContent: null,
+      utmTerm: "video-demo",
+    });
   });
 
   it("aucune UTM d'arrivée (`ref` seul ne compte pas) : tout le bloc du cookie", () => {
