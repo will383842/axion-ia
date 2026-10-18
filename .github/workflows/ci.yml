@@ -1587,6 +1587,19 @@ jobs:
       - name: Interrupteurs formateurs — allumer et couper (Postgres réel)
         run: pnpm test:integration tests/integration/formateurs-interrupteurs
 
+      # Vidéos du site (W1, ADR 0070) — la migration additive `site_videos_reception`
+      # jouée sur le vrai Postgres : unicité du slug, du studio_video_id et du nonce.
+      # Transaction ANNULÉE : rien ne reste.
+      - name: Vidéos du site — schéma (Postgres réel)
+        run: pnpm test:integration tests/integration/videos/schema
+
+      # Vidéos du site (W1) — studio factice → réception signée, sur le vrai Postgres.
+      # Fabrique une vidéo de 31 s avec ffmpeg, installé ici faute de garantie sur l'image.
+      - name: Vidéos du site — studio factice de bout en bout (Postgres réel)
+        run: |
+          sudo apt-get update -qq && sudo apt-get install -y -qq --no-install-recommends ffmpeg
+          pnpm test:integration tests/integration/videos/bout-en-bout
+
       # ── T0 — volumétrie (plan de tenue à la charge, § T0) ─────────────────
       #
       # 🔴 Pourquoi ici, et pas dans un job à part : Gate D est le SEUL endroit
