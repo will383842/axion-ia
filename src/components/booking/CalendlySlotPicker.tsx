@@ -90,12 +90,6 @@ interface CalendlySlotPickerProps {
    * selecteur se comporte exactement comme avant.
    */
   readonly lienDuCreneau?: ((startIso: string) => string) | undefined;
-  /**
-   * Le bouton qui a mené ici. N'est plus envoyé à Calendly (ADR 0002 :
-   * `utm_content` est celui de l'arrivée, via `suivi`) ; prop conservée pour ne
-   * pas élargir ce changement.
-   */
-  readonly utmContent?: string | undefined;
   /** `rdv=…&depuis=…`, recopié dans les liens vers notre formulaire. */
   readonly parametresDuChoix?: string | undefined;
   /** Les UTM d'ARRIVÉE (L5a), ajoutées aux créneaux qui partent chez Calendly. */

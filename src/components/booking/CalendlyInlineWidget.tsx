@@ -71,9 +71,8 @@ interface CalendlyInlineWidgetProps {
   readonly reservationDirecte?: boolean;
   readonly locale?: string;
   /**
-   * Le bouton qui a mené ici (`diagnostic`, `projet:faq`…) — chantier « Types de
-   * rendez-vous », L2. Ajouté en `utm_content` à l'iframe, au lien de secours
-   * et aux créneaux qui partent chez Calendly.
+   * Le bouton qui a mené ici (`diagnostic`, `projet:faq`…). Non utilisé par ce
+   * composant : l'`utm_content` envoyé à Calendly est celui de l'arrivée (`suivi`).
    */
   readonly utmContent?: string | undefined;
   /**
@@ -119,7 +118,6 @@ export async function CalendlyInlineWidget({
   height = 720,
   reservationDirecte = false,
   locale = "fr",
-  utmContent,
   parametresDuChoix,
   suivi,
   repli,
@@ -178,7 +176,6 @@ export async function CalendlyInlineWidget({
           dureeMinutes={availability.dureeMinutes}
           reservationDirecte={reservationDirecte}
           locale={locale}
-          utmContent={utmContent}
           parametresDuChoix={parametresDuChoix}
           suivi={suivi}
         />
