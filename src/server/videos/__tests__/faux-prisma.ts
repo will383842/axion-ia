@@ -19,6 +19,26 @@ export function creerFauxPrisma() {
     siteVideo: {
       findUnique: async ({ where }: { where: Ligne }) =>
         videos.find((v) => Object.entries(where).every(([k, val]) => v[k] === val)) ?? null,
+      findMany: async ({
+        where,
+        select,
+      }: {
+        where?: Ligne;
+        orderBy?: unknown;
+        select?: Record<string, boolean>;
+      } = {}) => {
+        const lignes = videos
+          .filter((v) => Object.entries(where ?? {}).every(([k, val]) => v[k] === val))
+          // publiée le plus récemment d'abord, puis par slug (comme `lecture.ts` le demande).
+          .sort(
+            (a, b) =>
+              (b.publieeLe as Date).getTime() - (a.publieeLe as Date).getTime() ||
+              String(a.slug).localeCompare(String(b.slug)),
+          );
+        return select
+          ? lignes.map((l) => Object.fromEntries(Object.keys(select).map((k) => [k, l[k]])))
+          : lignes;
+      },
       create: async ({ data }: { data: Ligne }) => {
         ecritures.push("siteVideo.create");
         if (videos.some((v) => v.slug === data.slug || v.studioVideoId === data.studioVideoId)) {

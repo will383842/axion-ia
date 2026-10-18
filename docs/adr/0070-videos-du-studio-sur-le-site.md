@@ -60,7 +60,7 @@ DROP TYPE "SiteVideoStatut";
 ## 5. Écarts au plan (assumés, à relire)
 
 1. `theme` n'est validé que par sa forme (slug) : la liste fermée arrive en W3.
-2. `lien.chemin` n'est validé que par sa forme (`/fr/...`) : la liste blanche arrive en W4 (§ 8.2).
+2. `lien.chemin` : liste blanche du § 8.2 livrée en W4 (`src/server/videos/liens.ts`), rejouée à la réception (422) et au rendu (repli `/fr/formations`, ou aucun lien).
 3. Même `studioVideoId` + même version + **contenu différent** → 409 `version_deja_publiee`
    (le plan ne tranche pas ce cas).
 4. Vidéo **retirée** : republier le même `studioVideoId` → 409 `video_retiree` (renommer =

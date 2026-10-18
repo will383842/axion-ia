@@ -192,6 +192,41 @@ describe("analyserPublication — schemaVersion 1", () => {
       ),
     ).toContain("lien.chemin");
   });
+
+  // Plan § 8.2 : liste blanche dérivée des services (thèmes) et du catalogue public.
+  it("lien de service hors des pages de service → refusé (§ 8.2)", () => {
+    expect(
+      champsFautifs(publicationValide({ lien: { type: "service", chemin: "/fr/admin-secret" } })),
+    ).toContain("lien.chemin");
+  });
+
+  it("lien de formation absente du catalogue public → refusé (§ 8.2)", () => {
+    expect(
+      champsFautifs(
+        publicationValide({ lien: { type: "formation", chemin: "/fr/formations/inventee" } }),
+      ),
+    ).toContain("lien.chemin");
+  });
+
+  it("lien de formation du catalogue public (slug FR) → accepté (§ 8.2)", () => {
+    expect(
+      champsFautifs(
+        publicationValide({
+          lien: { type: "formation", chemin: "/fr/formations/ia-pour-bien-commencer" },
+        }),
+      ),
+    ).toEqual([]);
+  });
+
+  it("lien de type service vers une fiche de formation → refusé (§ 8.2)", () => {
+    expect(
+      champsFautifs(
+        publicationValide({
+          lien: { type: "service", chemin: "/fr/formations/ia-pour-bien-commencer" },
+        }),
+      ),
+    ).toContain("lien.chemin");
+  });
 });
 
 describe("analyserRetrait", () => {

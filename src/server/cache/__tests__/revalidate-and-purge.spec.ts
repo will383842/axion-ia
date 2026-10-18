@@ -33,6 +33,7 @@ import {
   MAX_URLS_PAR_PURGE,
   edgePurgeDisponible,
   purgerEdge,
+  purgerToutEdge,
   revalidateAndPurge,
 } from "@/server/cache/revalidate-and-purge";
 
@@ -188,5 +189,40 @@ describe("chemin nominal", () => {
     const r = await revalidateAndPurge([], () => {});
     expect(appels).toEqual([]);
     expect(r.urlsPurgees).toEqual([]);
+  });
+});
+
+describe("purgerToutEdge — purge large (retrait d'une vidéo)", () => {
+  it("sans secrets : aucun appel réseau, « non configuré »", async () => {
+    delete process.env["CLOUDFLARE_API_TOKEN"];
+    delete process.env["CLOUDFLARE_ZONE_ID"];
+    const fetchMock = vi.fn();
+    vi.stubGlobal("fetch", fetchMock);
+    const r = await purgerToutEdge("retrait");
+    expect(r).toEqual({ purgee: false, configure: false });
+    expect(fetchMock).not.toHaveBeenCalled();
+  });
+
+  it("avec secrets : un seul POST purge_cache { purge_everything: true }", async () => {
+    process.env["CLOUDFLARE_API_TOKEN"] = "t";
+    process.env["CLOUDFLARE_ZONE_ID"] = "z";
+    const fetchMock = vi.fn(async () => new Response("{}", { status: 200 }));
+    vi.stubGlobal("fetch", fetchMock);
+    const r = await purgerToutEdge("retrait");
+    expect(r).toEqual({ purgee: true, configure: true });
+    expect(fetchMock).toHaveBeenCalledTimes(1);
+    const [url, init] = fetchMock.mock.calls[0] as unknown as [string, RequestInit];
+    expect(url).toBe("https://api.cloudflare.com/client/v4/zones/z/purge_cache");
+    expect(JSON.parse(String(init.body))).toEqual({ purge_everything: true });
+  });
+
+  it("un refus HTTP ou une panne ne lève jamais (fail-soft, signalé par purgee=false)", async () => {
+    process.env["CLOUDFLARE_API_TOKEN"] = "t";
+    process.env["CLOUDFLARE_ZONE_ID"] = "z";
+    vi.spyOn(console, "warn").mockImplementation(() => {});
+    vi.stubGlobal("fetch", () => Promise.resolve(new Response("quota", { status: 429 })));
+    expect(await purgerToutEdge("retrait")).toEqual({ purgee: false, configure: true });
+    vi.stubGlobal("fetch", () => Promise.reject(new Error("ECONNRESET")));
+    expect(await purgerToutEdge("retrait")).toEqual({ purgee: false, configure: true });
   });
 });

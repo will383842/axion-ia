@@ -5,6 +5,7 @@
 // « par métier » (9) et « par secteur d'activité » (8). Le séminaire est
 // présenté À PART, la formule mensuelle/bi-mensuelle est conservée. Prix
 // PUBLICS par groupe, dérivés de la matrice pricing.ts (jamais en dur).
+import { EncartEnVideo } from "@/components/videos/EncartEnVideo";
 import type { Metadata } from "next";
 import Image from "next/image";
 import { setRequestLocale } from "next-intl/server";
@@ -1576,6 +1577,9 @@ export default async function FormationsHub({ params }: Props) {
       {/* AVIS CLIENTS RÉELS — DB, hide-if-empty, stub-safe (jamais d'avis
           fabriqué). Même section que les autres pages service. */}
       <ServiceReviewsSection serviceLine="interventions_formations" />
+
+      {/* Encart « En vidéo » (lots W3-W4, ADR 0070) : rien tant qu'aucune vidéo du thème n'est publiée. */}
+      <EncartEnVideo theme="formations-ia" />
 
       {/* CONNAISSANCES LIÉES — KB V4.1 Service Binding (masqué si vide) */}
       <RelatedKnowledge service="interventions-formations" />

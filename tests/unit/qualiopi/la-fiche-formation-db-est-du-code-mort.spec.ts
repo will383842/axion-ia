@@ -70,10 +70,11 @@ describe("la fiche formation « base de données » est du code mort — et le d
     expect(debut, "FormationSlugPage introuvable : la garde ne lit plus rien").toBeGreaterThan(-1);
     const corps = PAGE.slice(debut);
 
+    // Lot W4 des vidéos : le `return` peut porter un fragment `<>` (encart « En vidéo » après la fiche).
     // 2026-09-30 : le `return` porte désormais des parenthèses (la fiche reçoit
     // le contact du référent handicap, prop de plus → JSX sur plusieurs lignes).
     const courtCircuit =
-      /const cat = getFormationV2\(slug\);\s*if \(cat\) \{[\s\S]*?return \(?\s*<FormationDetailPage/.exec(
+      /const cat = getFormationV2\(slug\);\s*if \(cat\) \{[\s\S]*?return \(?\s*(?:<>\s*)?<FormationDetailPage/.exec(
         corps,
       );
     expect(courtCircuit, "le court-circuit par le catalogue a disparu du corps").not.toBeNull();
@@ -90,7 +91,8 @@ describe("la fiche formation « base de données » est du code mort — et le d
   it("la branche catalogue (vivante) lit les résultats publiés de la formation", () => {
     const debut = PAGE.indexOf("export default async function FormationSlugPage");
     const corps = PAGE.slice(debut);
-    const branche = /if \(cat\) \{[\s\S]*?return \(?\s*<FormationDetailPage[\s\S]*?\/>/.exec(corps);
+    const branche =
+      /if \(cat\) \{[\s\S]*?return \(?\s*(?:<>\s*)?<FormationDetailPage[\s\S]*?\/>/.exec(corps);
     expect(branche, "branche catalogue introuvable").not.toBeNull();
     expect(branche![0]).toContain("getResultatsPublicsFormation(cat.slugFr)");
     expect(branche![0]).toContain("resultats={resultats}");

@@ -151,6 +151,9 @@ const CONSOMMATEURS_ASSUMES: ReadonlySet<string> = new Set([
   // contenu de la réception lisent `isQualiopiCertificationObtenue()` et
   // `isQualiopiPublicDisclosureEnabled()` — rien d'autre du domaine — et les rejouent au rendu.
   "src/server/videos/gardes-contenu.ts",
+  // Lot W4 — l'encart « En vidéo » des fiches de formation n'existe que si la divulgation de
+  // l'organisme de formation est ouverte : `videoPourFormation()` lit `isQualiopiPublicDisclosureEnabled()`.
+  "src/server/videos/encarts.ts",
   // Même lot — le studio lit ces mêmes deux réglages (booléens seulement) avant de générer :
   // `GET /api/interne/reglages-publics`. Il les relaie, il ne les recopie pas.
   "src/app/api/interne/reglages-publics/route.ts",

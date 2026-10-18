@@ -4,13 +4,13 @@
  *
  * Tout objet est `.strict()` : un champ inconnu est un 422, jamais ignoré.
  *
- * Écarts assumés au plan (voir la description de la PR W1) :
- *  - `lien.chemin` n'est vérifié que par sa forme (`/fr/...`) : la liste blanche
- *    dérivée de `routing.ts` et des formations publiques est livrée en W4 (§8.2).
+ * `lien` : liste blanche du §8.2 (`liens.ts`) — pages de service des thèmes et catalogue
+ * public des formations.
  */
 import { z } from "zod";
 import { SEUIL_CHAPITRES_SECONDES } from "@/content/videos/chapitres";
 import { THEME_SLUGS } from "@/content/videos/themes";
+import { lienAutorise } from "./liens";
 
 const RE_SLUG = /^[a-z0-9]+(-[a-z0-9]+)*$/;
 
@@ -72,7 +72,9 @@ const publicationBrute = z
           .max(200)
           .regex(/^\/fr(\/[a-z0-9-]+)+$/),
       })
-      .strict(),
+      .strict()
+      // Liste blanche (§8.2) : refus nommé sur `lien.chemin`.
+      .refine(lienAutorise, { message: "lien hors liste blanche", path: ["chemin"] }),
     dureeSecondes: z.number().int().min(5).max(3600),
     chapitres: z.array(
       z.object({ titre: texte(2, 120), debutSecondes: z.number().int().min(0) }).strict(),
