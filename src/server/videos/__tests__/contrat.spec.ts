@@ -175,6 +175,10 @@ describe("analyserPublication — schemaVersion 1", () => {
     ).toContain("serie.rang");
   });
 
+  it("thème hors de la liste fermée → refusé (W3.1)", () => {
+    expect(champsFautifs(publicationValide({ theme: "cuisine" }))).toContain("theme");
+  });
+
   it("lien de type inconnu → refusé", () => {
     expect(
       champsFautifs(publicationValide({ lien: { type: "externe", chemin: "/fr/x" } })),

@@ -5,13 +5,12 @@
  * Tout objet est `.strict()` : un champ inconnu est un 422, jamais ignoré.
  *
  * Écarts assumés au plan (voir la description de la PR W1) :
- *  - `theme` n'est vérifié que par sa forme (slug) : la liste fermée
- *    `src/content/videos/themes.ts` est livrée en W3 (W3.1), qui resserrera ce champ ;
  *  - `lien.chemin` n'est vérifié que par sa forme (`/fr/...`) : la liste blanche
  *    dérivée de `routing.ts` et des formations publiques est livrée en W4 (§8.2).
  */
 import { z } from "zod";
 import { SEUIL_CHAPITRES_SECONDES } from "@/content/videos/chapitres";
+import { THEME_SLUGS } from "@/content/videos/themes";
 
 const RE_SLUG = /^[a-z0-9]+(-[a-z0-9]+)*$/;
 
@@ -59,7 +58,8 @@ const publicationBrute = z
       .array(z.object({ question: texte(10, 160), reponse: texte(40, 600) }).strict())
       .min(2)
       .max(3),
-    theme: slug(60),
+    // Liste FERMÉE (W3.1, décision D3) : `src/content/videos/themes.ts`.
+    theme: z.string().refine((t) => THEME_SLUGS.includes(t), { message: "thème hors liste" }),
     serie: z
       .object({ slug: slug(80), titre: texte(3, 120), rang: z.number().int().min(1) })
       .strict()
