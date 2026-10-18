@@ -114,3 +114,12 @@ describe("poids du lecteur partagé", () => {
     expect(source).not.toMatch(/URLSearchParams|window\.location/);
   });
 });
+
+describe("poids de la page vidéo", () => {
+  const page = readFileSync(resolve(__dirname, "../PageVideo.tsx"), "utf8");
+
+  it("l'île des chapitres est chargée à la demande, pas dans le chunk de la page", () => {
+    expect(page).toMatch(/ChapitresVideoDiffere/);
+    expect(page).not.toMatch(/from "@\/components\/videos\/ChapitresVideo"/);
+  });
+});
