@@ -124,6 +124,44 @@ export async function purgerEdge(
 }
 
 /**
+ * Purge TOUTE la copie d'edge de la zone (`purge_everything`).
+ *
+ * Réservé aux événements RARES dont les pages touchées ne tiennent pas dans le plafond par
+ * adresse : le retrait d'une vidéo (ses encarts sont sur 2 157 villes, les articles et les
+ * fiches de formation). Une publication ne l'appelle JAMAIS. C'est la même purge que le job
+ * `purge` du déploiement. À appeler APRÈS l'invalidation de l'origine, comme `purgerEdge`.
+ *
+ * Fail-soft : ne throw jamais ; `purgee: false` dit que l'edge n'a pas été vidée (le
+ * `s-maxage` finira par expirer), `configure: false` que les secrets sont absents.
+ */
+export async function purgerToutEdge(
+  contexte = "retrait",
+): Promise<{ purgee: boolean; configure: boolean }> {
+  const token = process.env["CLOUDFLARE_API_TOKEN"];
+  const zone = process.env["CLOUDFLARE_ZONE_ID"];
+  if (!token || !zone) return { purgee: false, configure: false };
+  try {
+    const res = await fetch(`${CF_API}/zones/${zone}/purge_cache`, {
+      method: "POST",
+      headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" },
+      body: JSON.stringify({ purge_everything: true }),
+      signal: AbortSignal.timeout(15_000),
+    });
+    if (!res.ok) {
+      const corps = await res.text().catch(() => "");
+      console.warn(
+        `[cache] ${contexte} — purge CF large HTTP ${res.status} : ${corps.slice(0, 200)}`,
+      );
+      return { purgee: false, configure: true };
+    }
+    return { purgee: true, configure: true };
+  } catch (err) {
+    console.warn(`[cache] ${contexte} — purge CF large injoignable (non bloquant) :`, err);
+    return { purgee: false, configure: true };
+  }
+}
+
+/**
  * Invalide les deux étages pour une liste de chemins.
  *
  * 🔑 L'ordre est imposé : **origine d'abord, edge ensuite**. Purger l'edge avant

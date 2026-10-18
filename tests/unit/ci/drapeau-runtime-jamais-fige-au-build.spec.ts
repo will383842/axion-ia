@@ -72,6 +72,8 @@ const DRAPEAUX_RUNTIME = [
   "isQualiopiPublicDisclosureEnabled",
   "isFacturationHubEnabled",
   "EN_LOCALE_ENABLED",
+  // Vidéos du site (W1) : lu au runtime, jamais figé au build (plan §10).
+  "videosSiteActives",
 ];
 
 describe("🔴 aucun drapeau d'exécution n'est figé au build", () => {

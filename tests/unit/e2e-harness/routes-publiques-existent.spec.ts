@@ -98,6 +98,11 @@ const HORS_AUDIT = [
   // que l'interrupteur `qualiopi.reclamations.actif` est éteint (défaut) :
   // l'auditer sur une base vierge mesurerait le 404, pas la page.
   "/reclamations/deposer",
+  // Vidéos du studio (lots W2-W4, ADR 0070) : toute la famille répond 404 tant que
+  // l'interrupteur est éteint ou qu'aucune vidéo n'est publiée (règle « 0 vidéo = rien »).
+  // L'audit E2E exige un 200 sur chaque route de la liste : y inscrire `/fr/videos` ferait
+  // rougir la suite à chaque déploiement d'avant la première vidéo.
+  "/videos",
 ];
 
 /** Chemins des pages statiques rendues sous `[locale]` (segments dynamiques exclus). */

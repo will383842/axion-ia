@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { EncartEnVideo } from "@/components/videos/EncartEnVideo";
 import { setRequestLocale } from "next-intl/server";
 import { hasLocale } from "next-intl";
 import { notFound } from "next/navigation";
@@ -228,6 +229,9 @@ export default async function AuditHub({ params }: Props) {
       {/* AVIS CLIENTS — preuve sociale (5 étoiles + avatar), réaliste sans
           inventer de marque (prénom + initiale + fonction). (Will 2026-05-31) */}
       <ServiceReviewsSection serviceLine="audits" />
+
+      {/* Encart « En vidéo » (lots W3-W4, ADR 0070) : rien tant qu'aucune vidéo du thème n'est publiée. */}
+      <EncartEnVideo theme="audit-ia" />
 
       {/* Barre de réassurance (confidentialité/NDA, RGPD, AI Act, pure-play) */}
       <AuditTrustPills isFr={isFr} />

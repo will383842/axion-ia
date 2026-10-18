@@ -27,6 +27,7 @@ import { PositionnementPortailForm } from "@/components/portail/PositionnementPo
 import { SatisfactionPortailForm } from "@/components/portail/SatisfactionPortailForm";
 import { SatisfactionV2PortailForm } from "@/components/portail/SatisfactionV2PortailForm";
 import { soumettreSatisfactionPortailAction } from "@/server/actions/qualiopi/portail";
+import { cataloguePortail } from "@/server/qualiopi/adaptation/automatique/catalogue-mesures";
 
 import { LienDepotReclamation } from "@/components/qualiopi/LienDepotReclamation";
 import { CoquilleStagiaire } from "./_coquille";
@@ -102,6 +103,10 @@ export default async function MonEspaceAccueilPage({ params }: PageProps) {
                       <PositionnementPortailForm
                         questionnaireId={q.id}
                         objectifs={q.objectifs}
+                        adaptationAutomatique={q.adaptationAutomatique === true}
+                        {...(q.adaptationAutomatique === true
+                          ? { catalogueAdaptation: cataloguePortail() }
+                          : {})}
                         soumettreAction={soumettreSatisfactionPortailAction}
                       />
                     ) : (q.type === "satisfaction_chaud" || q.type === "satisfaction_froid") &&
@@ -110,11 +115,13 @@ export default async function MonEspaceAccueilPage({ params }: PageProps) {
                         questionnaireId={q.id}
                         type={q.type}
                         objectifs={q.objectifs}
+                        questionAmenagements={q.questionAmenagements === true}
                         soumettreAction={soumettreSatisfactionPortailAction}
                       />
                     ) : (
                       <SatisfactionPortailForm
                         questionnaireId={q.id}
+                        questionAmenagements={q.questionAmenagements === true}
                         soumettreSatisfactionAction={soumettreSatisfactionPortailAction}
                       />
                     )}

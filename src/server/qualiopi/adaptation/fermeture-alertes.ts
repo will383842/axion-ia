@@ -34,12 +34,19 @@ import {
 } from "./reponse-organisme";
 import { lireCircuitAdaptation } from "./journal-consignation";
 import { colonneDeclarationDisponible } from "./colonne-declaration";
+import { CODE_ALERTE_CAS_COMPLEXE } from "./automatique/alertes-adaptation";
 
 export interface FermetureAlertesAdaptation {
   /** Alertes « réponse non consignée » fermées pour cette inscription. */
   readonly reponseNonConsignee: number;
   /** Alertes « besoin déclaré » (geste) fermées pour la personne. */
   readonly besoinDeclare: number;
+  /**
+   * Chantier QNC, L04 — alertes « cas complexe » de cette inscription. Cette
+   * fonction n'est appelée que par la consignation de la CONSOLE : c'est la
+   * réponse écrite du référent, la seule qui les ferme.
+   */
+  readonly casComplexe: number;
 }
 
 export async function fermerAlertesAdaptationConsignee(input: {
@@ -48,7 +55,7 @@ export async function fermerAlertesAdaptationConsignee(input: {
   now?: Date;
 }): Promise<FermetureAlertesAdaptation> {
   if (process.env["DATABASE_URL"]?.includes("stub.invalid")) {
-    return { reponseNonConsignee: 0, besoinDeclare: 0 };
+    return { reponseNonConsignee: 0, besoinDeclare: 0, casComplexe: 0 };
   }
   const now = input.now ?? new Date();
   const resolution = { resolue: true, resolueAt: now };
@@ -59,6 +66,10 @@ export async function fermerAlertesAdaptationConsignee(input: {
       resolue: false,
       cibleId: input.enrollmentId,
     },
+    data: resolution,
+  });
+  const { count: casComplexe } = await prisma.alerteSysteme.updateMany({
+    where: { code: CODE_ALERTE_CAS_COMPLEXE, resolue: false, cibleId: input.enrollmentId },
     data: resolution,
   });
 
@@ -117,11 +128,11 @@ export async function fermerAlertesAdaptationConsignee(input: {
         circuit.get(e.id) ?? HORODATAGE_CIRCUIT_VIDE,
       ) === "a_consigner",
   );
-  if (resteEnAttente) return { reponseNonConsignee, besoinDeclare: 0 };
+  if (resteEnAttente) return { reponseNonConsignee, besoinDeclare: 0, casComplexe };
 
   const { count: besoinDeclare } = await prisma.alerteSysteme.updateMany({
     where: { code: CODE_ALERTE_BESOIN_DECLARE, resolue: false, cibleId: input.traineeId },
     data: resolution,
   });
-  return { reponseNonConsignee, besoinDeclare };
+  return { reponseNonConsignee, besoinDeclare, casComplexe };
 }

@@ -252,7 +252,9 @@ code serveur, 29 fichiers, aucune route nouvelle.
 ### 🕛 Depuis le 2026-10-08 : mise en ligne À HEURES FIXES (décision de Will)
 
 **Une fusion sur `main` ne déclenche plus de déploiement.** Le workflow tourne à
-**12 h, 17 h et 22 h, heure de Paris** (crons UTC doublés été/hiver, filtrés par le job
+**12 h, 17 h et 22 h, heure de Paris** — plus, depuis le 2026-10-18 (décision de Will), trois
+créneaux de nuit à **1 h 07, 3 h 07 et 5 h 07** (crons UTC doublés été/hiver ; le cron de
+23:07 UTC, 1 h 07 d'été, appartient à la veille : `precheck` gère le passage de minuit), filtrés par le job
 `precheck`, qui saute aussi le créneau si la prod sert déjà le dernier commit), ou à la
 demande : `gh workflow run deploy-coolify.yml` (seulement quand Will le demande).
 
@@ -267,7 +269,7 @@ quand un code atterrit : au prochain créneau, + la durée du build + celle du j
 
 ### Pipeline complet
 
-1. Créneau (12 h / 17 h / 22 h) ou `gh workflow run deploy-coolify.yml` → workflow `.github/workflows/deploy-coolify.yml` (avant le 2026-10-08 : `git push main`)
+1. Créneau (12 h / 17 h / 22 h, + 1 h 07 / 3 h 07 / 5 h 07) ou `gh workflow run deploy-coolify.yml` → workflow `.github/workflows/deploy-coolify.yml` (avant le 2026-10-08 : `git push main`)
 2. **Job `build`** (⚠️ **17-24 min mesurés le 2026-10-17** ; 47-56 min en septembre — voir ci-dessus) :
    - Free disk space agressif (~75 GB free)
    - `docker build axionia/Dockerfile` avec build-args stubs

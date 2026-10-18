@@ -18,12 +18,17 @@ import {
 import { collapsePriceProseDuplicates, resolvePriceTokens } from "@/content/pricing-tokens";
 import { SITE_URL } from "@/lib/seo";
 import { FOUNDER, founderUrl } from "@/lib/brand";
+import { videosPubliees } from "@/server/videos/lecture";
+import { sectionVideosLlms } from "@/server/videos/llms";
 
-// `pricing-tokens` n'importe que `@/lib/intl` + `@/content/pricing` : aucune
-// dépendance Node, la route reste donc en `edge` (vérifié audit H4, LOT 4).
-export const runtime = "edge";
+// 🔁 Passée de `edge` à `nodejs` (lot W3 des vidéos, ADR 0070) : la section « Vidéos » lit la
+// base (via `lecture.ts`, qui rend [] interrupteur éteint ou base factice du build). Jamais
+// `force-static` ; ISR 1 h, revalidée à la publication / au retrait des vidéos.
+export const runtime = "nodejs";
+export const revalidate = 3600;
 
-export function GET() {
+export async function GET() {
+  const sectionVideos = sectionVideosLlms(await videosPubliees(), SITE_URL, true);
   // Sprint 14.10.5 — prix dérivés du SSOT pricing.ts (zéro hardcode).
   // L'ancienne mention « 290-1990 € » audit était OBSOLÈTE (les vrais tiers
   // commencent à 490 €). Range complet du catalogue audit (Flash → ETI).
@@ -84,8 +89,13 @@ Axion-IA est un organisme de formation certifié **Qualiopi** au titre de la cat
   // `from` rendrait « à partir de À partir de ».
   // `collapsePriceProseDuplicates` rattrape les collisions résiduelles, comme
   // dans `api/markdown/[type]/[slug]/route.ts`.
-  const renderFr = (s: string) => collapsePriceProseDuplicates(resolvePriceTokens(s, "fr"));
-  const renderEn = (s: string) => resolvePriceTokens(s, "en");
+  // Décision Will 2026-10-18 (L0-08) : aucune ville nommée dans ce canal. La FAQ
+  // partagée (`transversal.ts`, hors périmètre) cite Grenoble dans une liste de
+  // villes desservies : on retire cette entrée ici, sans toucher à la source.
+  const sansVille = (s: string) => s.replace(/,\s*Grenoble(?=,)/g, "");
+  const renderFr = (s: string) =>
+    sansVille(collapsePriceProseDuplicates(resolvePriceTokens(s, "fr")));
+  const renderEn = (s: string) => sansVille(resolvePriceTokens(s, "en"));
 
   const faqBlock = FAQ_GLOBAL.map(
     (f) =>
@@ -112,7 +122,7 @@ Axion-IA est un cabinet IA opérationnel pour entreprises. Nous intervenons sur 
 
 ## Direction — qui dirige Axion-IA
 
-${FOUNDER.fullName} est le fondateur et CEO d'Axion-IA. Spécialiste de l'intelligence artificielle en entreprise, il pilote les cinq métiers de la maison et intervient personnellement sur les missions : audit IA, formation professionnelle, coaching individuel de dirigeants, implémentation d'IA sur mesure et automatisation des processus. Siège à Grenoble (Auvergne-Rhône-Alpes), missions dans toute la France — Paris et Île-de-France compris — auprès de TPE, PME, ETI et grands groupes, tous secteurs.
+${FOUNDER.fullName} est le fondateur et CEO d'Axion-IA. Spécialiste de l'intelligence artificielle en entreprise, il pilote les cinq métiers de la maison et intervient personnellement sur les missions : audit IA, formation professionnelle, coaching individuel de dirigeants, implémentation d'IA sur mesure et automatisation des processus. Entreprise qui intervient partout en France — Paris et Île-de-France compris — auprès de TPE, PME, ETI et grands groupes, tous secteurs.
 
 Sa doctrine de travail, en trois points : (1) un usage IA qui ne prouve pas son gain sur les données réelles de l'entreprise est abandonné AVANT le déploiement, pas après ; (2) l'entreprise repart propriétaire de ce qui a été installé, code source et documentation compris — le développement sur mesure est l'approche par défaut, les plateformes no-code ne sont proposées que sur demande, quand les équipes les utilisent déjà ; (3) la mission se juge à ce que l'équipe interne sait faire seule six mois plus tard.
 
@@ -170,7 +180,7 @@ C'est le format pensé pour être cité par les moteurs de réponse IA (Perplexi
 4. **Mesurer** — ROI mesuré post-déploiement.
 
 URL : ${SITE_URL}/fr/methodologie
-
+${sectionVideos}
 ## Engagement
 
 - Mobile-first absolu. Accessibilité : objectif WCAG 2.2 AA, conformité partielle non encore auditée — déclaration : ${SITE_URL}/fr/accessibilite.

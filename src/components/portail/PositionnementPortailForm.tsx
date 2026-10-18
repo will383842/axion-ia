@@ -22,7 +22,44 @@
  * Sobre (charte publique — PAS de tokens admin). Français, apostrophes JSX échappées.
  */
 
-import { useState, useTransition } from "react";
+import { lazy, Suspense, useState, useTransition } from "react";
+
+/**
+ * Chantier QNC, L04 — la déclaration structurée ne se charge qu'après un « oui »,
+ * interrupteur allumé : elle ne pèse rien sur le premier chargement du portail
+ * (cliquet du bundle public, Gate B), et éteinte elle n'est jamais téléchargée.
+ *
+ * `React.lazy` et non `next/dynamic` : mesuré, le chargeur de `next/dynamic`
+ * atterrit dans le chunk de la page et coûte plus que le bloc qu'il déplace.
+ * Le bloc n'apparaît qu'après un clic : jamais rendu au serveur.
+ */
+const DeclarationStructureePortail = lazy(() => import("./DeclarationStructureePortail"));
+
+/**
+ * Chantier QNC, L04 — le catalogue des mesures, reçu de la page (forme de
+ * `cataloguePortail()`). Recopié en TYPE ici, et non importé : les composants
+ * du portail ne tirent pas le domaine qualiopi (cloisonnement). Le serveur
+ * revalide tout (`lireDeclaration`) ; ces aides ne décident que de l'affichage.
+ */
+export interface CatalogueAdaptation {
+  readonly types: readonly { readonly code: string; readonly libelle: string }[];
+  readonly mesures: readonly {
+    readonly code: string;
+    readonly libelle: string;
+    readonly types: readonly string[];
+    readonly complexe: boolean;
+  }[];
+  readonly champs: {
+    readonly types: string;
+    readonly mesures: string;
+    readonly commentaire: string;
+    readonly consentement: string;
+    readonly choix: string;
+  };
+  readonly commentaireMax: number;
+}
+
+export type ChoixAdaptation = "confirme" | "echange";
 
 type ActionResult<T> = { data: T } | { error: string };
 
@@ -60,6 +97,14 @@ interface PositionnementPortailFormProps {
   questionnaireId: string;
   /** Objectifs pédagogiques de la formation — auto-évaluation objectif par objectif. */
   objectifs: string[];
+  /**
+   * Chantier QNC, L04 — déclaration STRUCTURÉE du besoin (types, mesures
+   * proposées, consentement séparé, confirmation ou échange). Absent : le
+   * formulaire de toujours.
+   */
+  adaptationAutomatique?: boolean;
+  /** Le catalogue des mesures — requis quand `adaptationAutomatique` est vrai. */
+  catalogueAdaptation?: CatalogueAdaptation;
   soumettreAction: (input: {
     questionnaireId: string;
     reponses: Record<string, unknown>;
@@ -70,6 +115,8 @@ interface PositionnementPortailFormProps {
 export function PositionnementPortailForm({
   questionnaireId,
   objectifs,
+  adaptationAutomatique: adaptationDemandee = false,
+  catalogueAdaptation,
   soumettreAction,
 }: PositionnementPortailFormProps): React.ReactElement {
   const [fonction, setFonction] = useState("");
@@ -96,6 +143,14 @@ export function PositionnementPortailForm({
    */
   const [besoinAdaptation, setBesoinAdaptation] = useState<boolean | null>(null);
   const [detailAdaptation, setDetailAdaptation] = useState("");
+  // Chantier QNC, L04 — déclaration structurée.
+  const catalogue = catalogueAdaptation ?? null;
+  const adaptationAutomatique = adaptationDemandee && catalogue !== null;
+  const [typesBesoin, setTypesBesoin] = useState<string[]>([]);
+  const [mesures, setMesures] = useState<string[]>([]);
+  const [commentaire, setCommentaire] = useState("");
+  const [consentement, setConsentement] = useState(false);
+  const [choix, setChoix] = useState<ChoixAdaptation | null>(null);
 
   const [isPending, startTransition] = useTransition();
   const [error, setError] = useState<string | null>(null);
@@ -114,10 +169,30 @@ export function PositionnementPortailForm({
       return;
     }
     const besoin: boolean = besoinAdaptation;
+    const structuree = adaptationAutomatique && besoin;
 
     // Un positionnement ne se note pas : on n'envoie JAMAIS de noteGlobale ici.
     // C'est ce qui distingue cette réponse d'une satisfaction dans les indicateurs.
     startTransition(async () => {
+      // Sans accord, aucune précision ne quitte le navigateur : la règle vit
+      // avec le bloc, dans son module — déjà chargé, puisqu'il est affiché.
+      let declaration: Record<string, unknown> = {};
+      if (structuree && catalogue !== null) {
+        const { declarationAEnvoyer } = await import("./DeclarationStructureePortail");
+        const lue = declarationAEnvoyer(catalogue, {
+          types: typesBesoin,
+          mesures,
+          commentaire,
+          consentement,
+          choix,
+        });
+        if ("erreur" in lue) {
+          setError(lue.erreur);
+          return;
+        }
+        declaration = lue.reponses;
+      }
+
       const result = await soumettreAction({
         questionnaireId: questionnaireId,
         reponses: {
@@ -138,9 +213,10 @@ export function PositionnementPortailForm({
           // `CLE_BESOIN_ADAPTATION_REPONDU` côté serveur, verrouillée par les
           // deux specs (formulaire et action) qui assertent ce même littéral.
           besoinAdaptationRepondu: true,
-          ...(besoin && detailAdaptation.trim()
+          ...(!structuree && besoin && detailAdaptation.trim()
             ? { detailAdaptation: detailAdaptation.trim() }
             : {}),
+          ...declaration,
         },
       });
 
@@ -332,7 +408,26 @@ export function PositionnementPortailForm({
             Oui, j&apos;ai besoin d&apos;un aménagement
           </label>
         </div>
-        {besoinAdaptation === true && (
+        {besoinAdaptation === true && catalogue !== null && adaptationAutomatique && (
+          <Suspense fallback={null}>
+            <DeclarationStructureePortail
+              catalogue={catalogue}
+              types={typesBesoin}
+              setTypes={setTypesBesoin}
+              mesures={mesures}
+              setMesures={setMesures}
+              commentaire={commentaire}
+              setCommentaire={setCommentaire}
+              consentement={consentement}
+              setConsentement={setConsentement}
+              choix={choix}
+              setChoix={setChoix}
+              disabled={isPending}
+              champ={champ}
+            />
+          </Suspense>
+        )}
+        {besoinAdaptation === true && !adaptationAutomatique && (
           <textarea
             value={detailAdaptation}
             onChange={(e) => setDetailAdaptation(e.target.value)}

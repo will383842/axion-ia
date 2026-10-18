@@ -22,7 +22,7 @@ vi.mock("@/lib/seo", () => ({ SITE_URL: "https://axion-ia.com" }));
 import { GET } from "./route";
 import robots from "../robots";
 
-const CORPS = await GET().text();
+const CORPS = await (await GET()).text();
 
 type Regle = { userAgent?: string | string[]; allow?: string | string[] };
 const AUTORISATIONS_GENERIQUES: string[] = (() => {

@@ -15,6 +15,8 @@
  * Wording mentionne explicitement TPE / PME / ETI / grandes entreprises.
  */
 
+import { EncartEnVideo } from "@/components/videos/EncartEnVideo";
+import { THEME_GENERIQUE_VILLES } from "@/server/videos/encarts";
 import type { Metadata } from "next";
 import { setRequestLocale } from "next-intl/server";
 import { hasLocale } from "next-intl";
@@ -828,6 +830,10 @@ export default async function VilleHubPage({ params }: Props) {
 
       {/* ── FAQ ville-spécifique (composant ville Phase 4) ── */}
       <VilleFaqGeolocalisee villeContext={villeContext} faqs={villeSpecificFaqs} isFr={isFr} />
+
+      {/* Encart « En vidéo » (ADR 0070) : lecture mise en cache par processus (jamais une requête
+          par page), rien tant qu'aucune vidéo n'est publiée. */}
+      <EncartEnVideo theme={THEME_GENERIQUE_VILLES} />
 
       {/* ── P2 maillage ville (2026-06-21) — « Contenus IA à {Ville} » : articles
             content-gen tier-1 ancrés sur la ville. Rendu UNIQUEMENT s'il y en a

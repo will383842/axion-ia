@@ -105,6 +105,11 @@ export type EmailJobName =
   // Relance de questionnaire sans réponse (J+3 / J+10) + enquête ENTREPRISE.
   | "qualiopi-questionnaire-relance"
   | "qualiopi-enquete-entreprise"
+  // Chantier QNC, L04 — liste des stagiaires demandée à l'entreprise, et
+  // aménagements (récapitulatif au stagiaire, fiche au formateur).
+  | "qualiopi-liste-stagiaires"
+  | "qualiopi-adaptation-stagiaire"
+  | "qualiopi-adaptation-formateur"
   // Lien PERSONNEL de signature de la feuille de présence. 🔴 Il n'existait
   // pas : `emettreLiensSessionAction` fabriquait les jetons et les affichait à
   // l'écran, sans jamais rien envoyer. La chaîne probante des indicateurs 9 et

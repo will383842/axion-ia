@@ -170,6 +170,10 @@ type ServiceVillesKey =
 type PathnameKey = keyof typeof routing.pathnames;
 
 const EXCLUDED_FROM_INDEX: ReadonlyArray<PathnameKey> = [
+  // Vidéos du studio (lot W3, ADR 0070) : la galerie répond 404 tant qu'aucune vidéo n'est
+  // publiée. Elle est annoncée par `sitemap-videos.xml`, qui est lui-même 404 dans ce cas ;
+  // la déclarer ici ferait figurer une URL 404 dans pages.xml.
+  "/videos",
   "/design",
   "/components",
   "/desabonnement",

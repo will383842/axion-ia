@@ -146,6 +146,17 @@ const ALLOWED_PATTERNS: ReadonlyArray<RegExp> = [
  * pour rien.
  */
 const CONSOMMATEURS_ASSUMES: ReadonlySet<string> = new Set([
+  // Vidéos du studio sur le site (lot W1, ADR 0070). Le site ne doit JAMAIS dire « certifié
+  // Qualiopi » (ni citer CPF/OPCO) tant que les réglages ne l'autorisent pas : les gardes de
+  // contenu de la réception lisent `isQualiopiCertificationObtenue()` et
+  // `isQualiopiPublicDisclosureEnabled()` — rien d'autre du domaine — et les rejouent au rendu.
+  "src/server/videos/gardes-contenu.ts",
+  // Lot W4 — l'encart « En vidéo » des fiches de formation n'existe que si la divulgation de
+  // l'organisme de formation est ouverte : `videoPourFormation()` lit `isQualiopiPublicDisclosureEnabled()`.
+  "src/server/videos/encarts.ts",
+  // Même lot — le studio lit ces mêmes deux réglages (booléens seulement) avant de générer :
+  // `GET /api/interne/reglages-publics`. Il les relaie, il ne les recopie pas.
+  "src/app/api/interne/reglages-publics/route.ts",
   // Chantier QNC, lot L11 — décision de Will : à l'effacement art. 17, la copie
   // d'un e-mail DE FORMATION est gardée 5 ans, adresse masquée. Savoir si un
   // envoi est « de formation » (rattaché à une session, hors facturation) et lire

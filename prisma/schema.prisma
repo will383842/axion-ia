@@ -17429,3 +17429,76 @@ model DecisionSuiviFormateur {
   @@index([sessionId])
   @@map("decisions_suivi_formateur")
 }
+
+// ============================================================
+// Vidéos du studio publiées sur le site (lots W1-W4, ADR 0070)
+// ============================================================
+// Deux tables NEUVES et un type NEUF : aucune colonne ni valeur d'énumération
+// existante n'est touchée. Le worker ne les lit ni ne les écrit (aucune file
+// BullMQ) : la fenêtre app/worker d'AGENTS.md ne s'applique pas.
+// Seul écrivain de `SiteVideo` : `src/server/videos/reception.ts`.
+
+enum SiteVideoStatut {
+  publiee
+  retiree
+}
+
+/// rgpd: technique — vidéo éditoriale du studio publiée sur le site ; aucune donnée sur une personne (les attestations interdisent noms et logos de clients)
+model SiteVideo {
+  id                String          @id @default(uuid()) @db.Uuid
+  /// Identifiant STABLE côté studio.
+  studioVideoId     String          @unique @map("studio_video_id") @db.VarChar(64)
+  version           Int
+  /// Immuable une fois publié (409 `slug_immuable` sinon).
+  slug              String          @unique @db.VarChar(80)
+  statut            SiteVideoStatut @default(publiee)
+  theme             String          @db.VarChar(60)
+  serieSlug         String?         @map("serie_slug") @db.VarChar(80)
+  serieTitre        String?         @map("serie_titre") @db.VarChar(120)
+  serieRang         Int?            @map("serie_rang")
+  titre             String          @db.VarChar(100)
+  description       String          @db.VarChar(300)
+  resume            String          @db.Text
+  aRetenir          Json            @map("a_retenir")
+  questions         Json
+  chapitres         Json            @default("[]")
+  fichiers          Json
+  transcription     String?         @db.Text
+  dureeSecondes     Int             @map("duree_secondes")
+  lienType          String          @map("lien_type") @db.VarChar(20)
+  lienChemin        String          @map("lien_chemin") @db.VarChar(200)
+  iaVoixGeneree     Boolean         @default(false) @map("ia_voix_generee")
+  iaDoubleNumerique Boolean         @default(false) @map("ia_double_numerique")
+  williamsALImage   Boolean         @default(false) @map("williams_a_l_image")
+  /// Empreinte du corps reçu : distingue un rejeu d'une vraie nouvelle version.
+  corpsSha256       String          @map("corps_sha256") @db.Char(64)
+  /// Fixée à la première réception acceptée, jamais modifiée.
+  publieeLe         DateTime        @map("publiee_le") @db.Timestamptz(3)
+  modifieeLe        DateTime        @map("modifiee_le") @db.Timestamptz(3)
+  retireeLe         DateTime?       @map("retiree_le") @db.Timestamptz(3)
+  motifRetrait      String?         @map("motif_retrait") @db.VarChar(20)
+
+  @@index([statut, theme], map: "site_videos_statut_theme_idx")
+  @@index([serieSlug, serieRang], map: "site_videos_serie_idx")
+  @@map("site_videos")
+}
+
+/// Journal des requêtes SIGNÉES VALIDES du studio : anti-rejeu (nonce unique),
+/// idempotence réseau (réponse enregistrée rejouée) et trace « qui a publié quoi,
+/// quand ». Aucune donnée personnelle (pas d'IP).
+/// rgpd: technique — journal des échanges signés du studio : identifiants de vidéos, empreintes et réponses ; ni IP ni donnée de personne
+model SiteVideoReception {
+  id            String   @id @default(uuid()) @db.Uuid
+  nonce         String   @unique @db.Char(32)
+  methode       String   @db.VarChar(8)
+  chemin        String   @db.VarChar(80)
+  horodatage    Int
+  corpsSha256   String   @map("corps_sha256") @db.Char(64)
+  studioVideoId String?  @map("studio_video_id") @db.VarChar(64)
+  reponseStatut Int      @map("reponse_statut")
+  reponseCorps  Json     @map("reponse_corps")
+  recueLe       DateTime @default(now()) @map("recue_le") @db.Timestamptz(3)
+
+  @@index([recueLe], map: "site_video_receptions_recue_le_idx")
+  @@map("site_video_receptions")
+}

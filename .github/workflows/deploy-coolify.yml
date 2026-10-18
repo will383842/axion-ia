@@ -42,7 +42,8 @@ name: Build & Deploy · GHCR + Coolify (axion-ia.com)
 
 on:
   # 2026-10-08 (décision de Will) — MISE EN LIGNE À HEURES FIXES : 12 h, 17 h et
-  # 22 h, heure de Paris. Une fusion sur `main` ne déclenche PLUS rien.
+  # 22 h, heure de Paris. 2026-10-18 (Will) : + TROIS créneaux de nuit, 1 h 07,
+  # 3 h 07 et 5 h 07 (Paris). Une fusion sur `main` ne déclenche PLUS rien.
   # Avant : chaque fusion lançait son propre build de ~50 min, et une fusion
   # pendant un build en vol l'annulait (`cancel-in-progress`) : fusions au
   # compte-gouttes, des heures perdues à attendre un créneau (« famine »).
@@ -59,10 +60,18 @@ on:
     - cron: "7 10 * * *"
     - cron: "7 15 * * *"
     - cron: "7 20 * * *"
+    # Heure d'été (UTC+2), nuit : 1 h 07 (23:07 UTC la veille), 3 h 07, 5 h 07.
+    - cron: "7 23 * * *"
+    - cron: "7 1 * * *"
+    - cron: "7 3 * * *"
     # Heure d'hiver (UTC+1) : 12 h, 17 h, 22 h à Paris.
     - cron: "7 11 * * *"
     - cron: "7 16 * * *"
     - cron: "7 21 * * *"
+    # Heure d'hiver (UTC+1), nuit : 1 h 07 (00:07 UTC), 3 h 07, 5 h 07.
+    - cron: "7 0 * * *"
+    - cron: "7 2 * * *"
+    - cron: "7 4 * * *"
   workflow_dispatch:
     inputs:
       skip_deploy:
@@ -127,6 +136,9 @@ jobs:
           # une mise en ligne en pleine nuit que personne n'attendait. On compare
           # l'heure RÉELLE d'exécution à l'heure du cron (aujourd'hui, ou hier si
           # le run a franchi minuit UTC) ; au-delà de 90 min, rien à faire.
+          # Créneaux de nuit : le cron « 7 23 » (1 h 07 Paris en été) lancé à
+          # 00:20 UTC le lendemain donne « aujourd'hui 23:07 » > maintenant, donc
+          # on recule d'un jour : retard 73 min, accepté.
           maintenant=$(date -u +%s)
           prevu=$(date -u -d "$(date -u +%F) ${heure_utc}:${minute_utc}:00" +%s)
           if [ "${prevu}" -gt "${maintenant}" ]; then
@@ -139,7 +151,7 @@ jobs:
           fi
           decalage=$(TZ=Europe/Paris date +%z)
           case "${decalage}:${heure_utc}" in
-            +0200:10|+0200:15|+0200:20|+0100:11|+0100:16|+0100:21) ;;
+            +0200:10|+0200:15|+0200:20|+0200:23|+0200:1|+0200:3|+0100:11|+0100:16|+0100:21|+0100:0|+0100:2|+0100:4) ;;
             *)
               echo "::notice::Cron « ${CRON} » hors saison (Paris ${decalage}) : rien à faire."
               echo "go=false" >> "$GITHUB_OUTPUT"; exit 0 ;;
