@@ -580,3 +580,57 @@ describe("🔴 aucune étape n'est privée d'état terminal par OUBLI", () => {
     expect(avecBorne.motifSansBorne).toBeUndefined();
   });
 });
+
+// ─────────────────────────────────────────────────────────────────────────────
+// QNC L12 — les voyants d'indicateurs sont portés par le parcours (O13)
+// ─────────────────────────────────────────────────────────────────────────────
+
+describe("voyants d'indicateurs (QNC L12)", () => {
+  it("sans trace lue : quatorze voyants « non évalués », jamais verts par défaut", () => {
+    const p = construireParcours(dossier({ inscriptions: [inscription()] }));
+    expect(p.voyants).toHaveLength(14);
+    expect(p.voyants.every((v) => v.etat === "non_evalue")).toBe(true);
+  });
+
+  it("une convocation PARTIE (trace lue) verdit l'indicateur 9, et lui seul", () => {
+    const p = construireParcours(
+      dossier({
+        traces: {
+          i9: {
+            lecture: "lue",
+            stagiairesActifs: 1,
+            convoques: 1,
+            derniereConvocation: d("2026-08-01T08:00:00.000Z"),
+            piecesRemises: 0,
+          },
+        },
+      }),
+    );
+    expect(p.voyants.filter((v) => v.etat === "vert").map((v) => v.indicateur)).toEqual([9]);
+  });
+
+  it("une session d'essai : tous les voyants sans objet, même avec une trace", () => {
+    const base = dossier();
+    const p = construireParcours({
+      ...base,
+      session: { ...base.session, estTestInterne: true },
+      traces: {
+        i9: {
+          lecture: "lue",
+          stagiairesActifs: 1,
+          convoques: 1,
+          derniereConvocation: d("2026-08-01T08:00:00.000Z"),
+          piecesRemises: 0,
+        },
+      },
+    });
+    expect(p.voyants.every((v) => v.etat === "sans_objet")).toBe(true);
+  });
+
+  it("une session annulée ne porte aucun voyant", () => {
+    const base = dossier();
+    expect(
+      construireParcours({ ...base, session: { ...base.session, statut: "annulee" } }).voyants,
+    ).toEqual([]);
+  });
+});

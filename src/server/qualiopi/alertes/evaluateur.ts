@@ -139,6 +139,7 @@ import { regleDonneesOpcoIncompletes } from "./regle-donnees-opco-incompletes";
 import { regleSuiviEntrepriseOpco } from "./regle-suivi-entreprise-opco";
 import { regleEtatFondsPerime } from "./regle-etat-fonds-perime";
 import { regleRegistreSousTraitants } from "./regle-registre-sous-traitants";
+import { regleVoyantsSansTrace } from "./regle-voyants-sans-trace";
 import { regleDesistementLettreSignee } from "./regle-desistement-lettre-signee";
 import { regleFondsOpcoSuspendusSession } from "./regle-fonds-opco-suspendus-session";
 import { regleSubrogationIncompatibleRegime } from "./regle-subrogation-incompatible-regime";
@@ -5353,6 +5354,8 @@ const REGLES: Array<{ nom: string; fn: RegleFn }> = [
   { nom: "registre_sous_traitants", fn: regleRegistreSousTraitants },
   // Qualiopi ind. 21 — suivi de la qualité des intervenants externes (éteint par défaut).
   { nom: "suivi_qualite_formateurs", fn: regleSuiviQualiteFormateurs },
+  // QNC L12 (O13) — voyants d'indicateurs rouges faute de trace réelle. Placée en fin de liste.
+  { nom: "voyants_sans_trace", fn: regleVoyantsSansTrace },
 ];
 
 // ─────────────────────────────────────────────────────────────────────────────
