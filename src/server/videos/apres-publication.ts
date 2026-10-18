@@ -36,6 +36,23 @@ export interface ResultatApresPublication {
   readonly erreurs: ReadonlyArray<string>;
 }
 
+export interface ResultatPurgeLarge {
+  readonly purgee: boolean;
+  readonly configure: boolean;
+}
+
+/** Verrou de fenêtre : la valeur est l'heure (ms) de DÉMARRAGE de la purge qui le tient. */
+export interface VerrouPurgeLarge {
+  /** Pose le verrou (60 s) si libre ; `false` = déjà pris. */
+  prendre(debutMs: number): Promise<boolean>;
+  /** Heure de démarrage de la purge qui tient le verrou, `null` s'il est libre. */
+  debut(): Promise<number | null>;
+  /** Temps restant avant la fin de la fenêtre (0 si libre). */
+  ttlMs(): Promise<number>;
+  /** Libère le verrou si c'est bien celui de cette purge (purge en échec). */
+  liberer(debutMs: number): Promise<void>;
+}
+
 export interface DepsApresPublication {
   viderCache?: () => void;
   revalidateTag?: (tag: string) => void;
@@ -44,9 +61,11 @@ export interface DepsApresPublication {
   revalidateGabarit?: (gabarit: string) => void;
   purgerEdge?: (chemins: ReadonlyArray<string>) => Promise<unknown>;
   /** Purge LARGE de l'edge, au retrait seulement (pages hôtes des encarts). */
-  purgerEdgeLarge?: () => Promise<{ purgee: boolean; configure: boolean } | unknown>;
-  /** Prend le verrou « une purge large par fenêtre de 60 s » ; `false` = déjà prise. */
-  verrouPurgeLarge?: () => Promise<boolean>;
+  purgerEdgeLarge?: () => Promise<ResultatPurgeLarge>;
+  /** Verrou « une purge large par fenêtre de 60 s » (clé = heure de démarrage de la purge). */
+  verrouPurgeLarge?: VerrouPurgeLarge;
+  /** Attente de la fin de la fenêtre (injectable pour les tests). */
+  attendre?: (ms: number) => Promise<void>;
   indexNow?: (host: string, cle: string, urls: ReadonlyArray<string>) => Promise<IndexNowResult>;
   cleIndexNow?: string | undefined;
   siteUrl?: string;
@@ -87,22 +106,60 @@ export function urlsAImpacter(e: EffetPublication): string[] {
 }
 
 const FENETRE_PURGE_LARGE_S = 60;
-let dernierePurgeLargeMs = 0;
+const CLE_PURGE_LARGE = "videos:purge-large";
+/** Tentatives max d'un retrait qui attend la fin de la fenêtre (purge, ou purge de rattrapage). */
+const TENTATIVES_PURGE_LARGE = 3;
+const MARGE_ATTENTE_MS = 1_000;
+
+let repliMemoire: { debut: number; expire: number } | null = null;
+const repliVivant = () => (repliMemoire && repliMemoire.expire > Date.now() ? repliMemoire : null);
 
 /**
- * Une purge large par fenêtre de 60 s : `SET videos:purge-large NX EX 60` (partagé entre
- * processus). Redis injoignable → repli sur un horodatage en mémoire (par processus).
+ * `SET videos:purge-large <debut> PX 60000 NX` (partagé entre processus). Redis injoignable →
+ * repli sur un état en mémoire (par processus).
  */
-async function verrouPurgeLargeParDefaut(): Promise<boolean> {
-  try {
-    return (await redis.set("videos:purge-large", "1", "EX", FENETRE_PURGE_LARGE_S, "NX")) === "OK";
-  } catch {
-    const maintenant = Date.now();
-    if (maintenant - dernierePurgeLargeMs < FENETRE_PURGE_LARGE_S * 1000) return false;
-    dernierePurgeLargeMs = maintenant;
-    return true;
-  }
-}
+const verrouPurgeLargeParDefaut: VerrouPurgeLarge = {
+  async prendre(debutMs) {
+    try {
+      return (
+        (await redis.set(
+          CLE_PURGE_LARGE,
+          String(debutMs),
+          "PX",
+          FENETRE_PURGE_LARGE_S * 1000,
+          "NX",
+        )) === "OK"
+      );
+    } catch {
+      if (repliVivant()) return false;
+      repliMemoire = { debut: debutMs, expire: Date.now() + FENETRE_PURGE_LARGE_S * 1000 };
+      return true;
+    }
+  },
+  async debut() {
+    try {
+      const v = await redis.get(CLE_PURGE_LARGE);
+      return v === null ? null : Number(v);
+    } catch {
+      return repliVivant()?.debut ?? null;
+    }
+  },
+  async ttlMs() {
+    try {
+      return Math.max(0, await redis.pttl(CLE_PURGE_LARGE));
+    } catch {
+      const r = repliVivant();
+      return r ? r.expire - Date.now() : 0;
+    }
+  },
+  async liberer(debutMs) {
+    try {
+      if ((await redis.get(CLE_PURGE_LARGE)) === String(debutMs)) await redis.del(CLE_PURGE_LARGE);
+    } catch {
+      if (repliMemoire?.debut === debutMs) repliMemoire = null;
+    }
+  },
+};
 
 function alerteParDefaut(message: string, details: Record<string, unknown>): void {
   console.error(JSON.stringify({ event: "videos_apres_publication", message, ...details }));
@@ -153,28 +210,57 @@ export async function apresPublication(
   // RETRAIT seulement (événement rare) : les copies d'edge des pages hôtes (2 157 villes,
   // articles, fiches — `s-maxage` jusqu'à 24 h) ne se purgent pas par adresse. Purge large,
   // après la revalidation de l'origine. Une publication ne la déclenche jamais.
+  //
+  // Une purge par fenêtre de 60 s, sans perdre de retrait : `tB` (heure du retrait, après la
+  // revalidation de l'origine) est comparée à l'heure de démarrage de la purge qui tient le
+  // verrou. Démarrée avant `tB`, elle n'a pas vidé ce que l'origine a régénéré depuis : on
+  // attend la fin de la fenêtre et on repurge (purge de rattrapage).
   if (effet.type === "retrait") {
+    const verrou = deps.verrouPurgeLarge ?? verrouPurgeLargeParDefaut;
+    const attendre =
+      deps.attendre ?? ((ms: number) => new Promise<void>((resolve) => setTimeout(resolve, ms)));
+    const purger = deps.purgerEdgeLarge ?? (() => purgerToutEdge("videos-retrait"));
+    const tB = Date.now();
+    let couvert = false;
     let purgee = false;
     let configure: boolean | undefined;
-    let sautee = false;
     await etape("purgerEdgeLarge", async () => {
-      if (!(await (deps.verrouPurgeLarge ?? verrouPurgeLargeParDefaut)())) {
-        sautee = true;
+      for (let essai = 0; essai < TENTATIVES_PURGE_LARGE && !couvert; essai++) {
+        const debut = Date.now();
+        if (await verrou.prendre(debut)) {
+          let r: ResultatPurgeLarge;
+          try {
+            r = await purger();
+          } catch (err) {
+            await verrou.liberer(debut);
+            throw err;
+          }
+          configure = r.configure;
+          purgee = r.purgee;
+          // Purge en échec : le verrou est libéré, le retrait suivant repurge aussitôt.
+          if (!r.purgee) await verrou.liberer(debut);
+          couvert = true;
+          return;
+        }
+        const tenue = await verrou.debut();
+        if (tenue !== null && tenue >= tB) {
+          couvert = true; // la purge qui tient le verrou a démarré après ce retrait
+          purgee = true;
+          console.info(
+            `[videos] retrait de « ${effet.slug} » : couvert par une purge large démarrée après lui`,
+          );
+          return;
+        }
         console.info(
-          `[videos] retrait de « ${effet.slug} » : purge large déjà faite il y a moins de ${FENETRE_PURGE_LARGE_S} s, sautée`,
+          `[videos] retrait de « ${effet.slug} » : purge large en cours (démarrée avant ce retrait), purge de rattrapage à la fin de la fenêtre`,
         );
-        return;
+        await attendre((await verrou.ttlMs()) + MARGE_ATTENTE_MS);
       }
-      const r = await (deps.purgerEdgeLarge ?? (() => purgerToutEdge("videos-retrait")))();
-      const rep = (r ?? {}) as { purgee?: boolean; configure?: boolean };
-      purgee = rep.purgee ?? true; // un faux injecté qui ne rend rien = succès
-      configure = rep.configure;
     });
+    if (!couvert && !erreurs.includes("purgerEdgeLarge")) erreurs.push("purgerEdgeLarge");
     // `purgerToutEdge` ne lève jamais : un 429/403/réseau/secrets absents est un `purgee: false`.
-    if (!sautee && !purgee && !erreurs.includes("purgerEdgeLarge")) {
-      erreurs.push("purgerEdgeLarge");
-    }
-    if (!sautee && !purgee) {
+    if (!purgee) {
+      if (!erreurs.includes("purgerEdgeLarge")) erreurs.push("purgerEdgeLarge");
       alerter(
         "Retrait : copie d'edge non purgée, la vidéo retirée peut rester visible jusqu'à 24 h",
         { slug: effet.slug, configure },
