@@ -220,7 +220,7 @@ export interface DemandeReservation {
    * `tracking` de l'invité, puis dans notre colonne `utm_content` au sondage.
    */
   readonly utmContent?: string | null;
-  /** `depuis` à l'arrivée (ADR 0002) : le seul champ libre que Calendly transporte. */
+  /** `depuis` à l'arrivée : le seul champ libre que Calendly transporte. */
   readonly utmTerm?: string | null;
   /**
    * L'adresse du lieu, pour un rendez-vous SUR PLACE : celle que Calendly donne

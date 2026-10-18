@@ -97,8 +97,7 @@ export function utmContentDuChoix(choix: ChoixRendezVous, depuis?: string | null
 
 /**
  * Les paramètres de SUIVI d'arrivée que la page `/appel` lit dans son URL.
- * `utm_content` est gardé tel que reçu (ADR 0002 : c'est l'activité visée, plus
- * le bouton cliqué) ; `depuis` part chez Calendly dans `utm_term`.
+ * `utm_content` est gardé tel que reçu (ce n'est plus le bouton cliqué) ; `depuis` part chez Calendly dans `utm_term`.
  */
 export const PARAMS_SUIVI = [
   "utm_source",
@@ -367,7 +366,7 @@ export const PARAMS_SUIVI_CALENDLY = [
 /**
  * Ajoute les UTM d'ARRIVÉE (L5a) à une URL Calendly : iframe, lien de secours,
  * créneau. `utm_content` part tel que reçu, jamais remplacé par le bouton ;
- * `depuis` part dans `utm_term` (ADR 0002).
+ * `depuis` part dans `utm_term`.
  */
 export function avecUtmContent(url: string, suivi?: SuiviArrivee | null): string {
   const arrivee = PARAMS_SUIVI_CALENDLY.filter((cle) => suivi?.[cle]);

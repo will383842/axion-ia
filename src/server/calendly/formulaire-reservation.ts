@@ -180,7 +180,7 @@ export interface OptionsValidation {
   readonly utmSource?: string | null;
   readonly utmMedium?: string | null;
   readonly utmCampaign?: string | null;
-  /** `utm_content` d'arrivée, tel que reçu (ADR 0002 : l'activité visée), voir `choix-rendez-vous.ts`. */
+  /** `utm_content` d'arrivée, tel que reçu, voir `choix-rendez-vous.ts`. */
   readonly utmContent?: string | null;
   readonly utmTerm?: string | null;
   /**

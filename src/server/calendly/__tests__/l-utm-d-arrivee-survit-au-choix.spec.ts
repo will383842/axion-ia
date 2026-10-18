@@ -82,7 +82,7 @@ describe("🔑 l'UTM d'arrivée survit au choix", () => {
     expect(p.get("utm_medium")).toBe("social");
     expect(p.get("utm_campaign")).toBe("x");
     expect(p.get("ref")).toBe("partenaire-42");
-    // `utm_content` d'arrivée est recopié tel quel (ADR 0002), jamais remplacé.
+    // `utm_content` d'arrivée est recopié tel quel, jamais remplacé.
     expect(p.get("utm_content")).toBe("ecrase-par-le-choix");
   });
 
@@ -114,13 +114,13 @@ describe("🔑 la provenance d'une réservation directe se prend en BLOC", () =>
   const COOKIE = { utm_source: "google", utm_medium: "cpc", utm_campaign: "printemps" };
 
   it("l'arrivée porte une UTM : tout le bloc d'arrivée, rien du cookie", () => {
-    expect(provenanceEnBloc({ utm_source: "linkedin", depuis: "video-instagram" }, COOKIE)).toEqual(
+    expect(provenanceEnBloc({ utm_source: "linkedin", depuis: "video-demo" }, COOKIE)).toEqual(
       {
         utmSource: "linkedin",
         utmMedium: null,
         utmCampaign: null,
         utmContent: null,
-        utmTerm: "video-instagram",
+        utmTerm: "video-demo",
       },
     );
   });
@@ -177,56 +177,56 @@ describe("🔴 chaque lien du parcours porte l'arrivée", () => {
   });
 });
 
-/** ADR 0002 (fixtures A01-A08) : ce qui part chez Calendly pour une URL d'arrivée. */
+/** Ce qui part chez Calendly pour une URL d'arrivée. */
 describe("🔑 L2-09 · `utm_content` conservé, `depuis` dans `utm_term`", () => {
   const CAS: ReadonlyArray<[string, string, Record<string, string | null>]> = [
     [
-      "A01 conforme",
-      "utm_source=instagram&utm_medium=video&utm_campaign=0042-TB-IG&utm_content=clients&depuis=video-instagram",
+      "conforme",
+      "utm_source=instagram&utm_medium=video&utm_campaign=campagne-test&utm_content=clients&depuis=video-demo",
       {
         utm_source: "instagram",
         utm_medium: "video",
-        utm_campaign: "0042-TB-IG",
+        utm_campaign: "campagne-test",
         utm_content: "clients",
-        utm_term: "video-instagram",
+        utm_term: "video-demo",
       },
     ],
     [
-      "A02 ancien lien du studio",
-      "utm_source=instagram&utm_medium=video&utm_campaign=0042-TB-IG&utm_content=0042-TB-IG",
+      "utm_content identique à la campagne",
+      "utm_source=instagram&utm_medium=video&utm_campaign=campagne-test&utm_content=campagne-test",
       {
         utm_source: "instagram",
         utm_medium: "video",
-        utm_campaign: "0042-TB-IG",
-        utm_content: "0042-TB-IG",
+        utm_campaign: "campagne-test",
+        utm_content: "campagne-test",
         utm_term: null,
       },
     ],
-    ["A03 en-tête du site", "depuis=entete", { utm_content: null, utm_term: "entete" }],
+    ["en-tête du site", "depuis=entete", { utm_content: null, utm_term: "entete" }],
     [
-      "A04 utm_content trop long",
-      `utm_source=instagram&utm_content=${"c".repeat(61)}&depuis=video-instagram`,
-      { utm_source: "instagram", utm_content: null, utm_term: "video-instagram" },
+      "utm_content trop long",
+      `utm_source=instagram&utm_content=${"c".repeat(61)}&depuis=video-demo`,
+      { utm_source: "instagram", utm_content: null, utm_term: "video-demo" },
     ],
     [
-      "A05 « : » et majuscules abandonnés",
-      "utm_source=instagram&utm_campaign=usine:L12-3&utm_content=clients&depuis=Video-Instagram",
+      "« : » et majuscules abandonnés",
+      "utm_source=instagram&utm_campaign=campagne:test&utm_content=clients&depuis=Video-Demo",
       { utm_source: "instagram", utm_campaign: null, utm_content: "clients", utm_term: null },
     ],
     [
-      "A06 espace",
-      "utm_campaign=0042-TB-IG&utm_content=clients%20test",
+      "espace",
+      "utm_campaign=campagne-test&utm_content=clients%20test",
       {
-        utm_campaign: "0042-TB-IG",
+        utm_campaign: "campagne-test",
         utm_content: null,
       },
     ],
     [
-      "A07 valeurs inconnues bien formées",
+      "valeurs inconnues bien formées",
       "utm_source=newsletter&utm_medium=email&utm_campaign=lettre-12&utm_content=haut",
       { utm_source: "newsletter", utm_campaign: "lettre-12", utm_content: "haut" },
     ],
-    ["A08 aucune valeur", "", { utm_source: null, utm_content: null, utm_term: null }],
+    ["aucune valeur", "", { utm_source: null, utm_content: null, utm_term: null }],
   ];
 
   it.each(CAS)("%s", (_nom, requete, attendu) => {
