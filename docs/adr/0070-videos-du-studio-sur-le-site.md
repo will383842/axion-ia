@@ -76,3 +76,20 @@ DROP TYPE "SiteVideoStatut";
    `videosSiteActives` est donc toujours `true` quand la lecture réussit.
 9. Les tests de route vivent sous `tests/unit/videos/` (la règle d'import `lib/` ne tolère pas
    d'importer `app/` depuis `src/`).
+
+## 6. Procédure d'extinction (`VIDEOS_SITE_ENABLED` repassé à `false`)
+
+⚠️ **Éteindre le drapeau ne revalide rien.** Les pages vidéo, la galerie, les thèmes, les
+séries, les encarts des pages hôtes, `llms.txt`, `llms-full.txt` et les plans du site sont en
+ISR (1 h, 24 h pour les villes) et en cache d'edge : **ils restent servis jusqu'à l'échéance**
+après la bascule. Pour une extinction immédiate :
+
+1. poser `VIDEOS_SITE_ENABLED=false` côté Coolify (conteneur **app**) et redémarrer ;
+2. **purger l'edge Cloudflare** (`purge_everything`, ou le job `purge` d'un créneau) ;
+3. attendre ou forcer la revalidation des gabarits ISR (un créneau de déploiement la fait) ;
+4. vérifier : `/fr/videos`, `/sitemap-videos.xml` → 404 ; section « Vidéos » absente de
+   `/llms.txt` ; aucun encart « En vidéo » sur une page ville.
+
+Un **retrait d'une vidéo** (`DELETE`) n'a pas ce délai : la suite de publication revalide et
+purge les surfaces concernées, y compris `/api/interne/videos/retirees` (liste lue par le
+proxy pour le 410).

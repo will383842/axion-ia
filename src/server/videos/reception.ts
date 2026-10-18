@@ -318,29 +318,3 @@ export async function recevoirRetrait(e: EntreeSignee): Promise<Reception> {
     studioVideoIdBrut,
   );
 }
-
-/**
- * Garde trace, dans la réponse ENREGISTRÉE au journal, d'un IndexNow qui n'a pas abouti :
- * « indexnow_echec » ou « indexnow_non_configure ». Le studio a déjà reçu sa réponse (200/201) ;
- * ceci n'est que la trace pour qui relit le journal. Ne lève jamais.
- */
-export async function noterEchecIndexNow(
-  nonce: string,
-  motif: "echec" | "non_configure",
-): Promise<void> {
-  try {
-    const ligne = await prisma.siteVideoReception.findUnique({ where: { nonce } });
-    if (!ligne) return;
-    await prisma.siteVideoReception.update({
-      where: { nonce },
-      data: {
-        reponseCorps: {
-          ...(ligne.reponseCorps as Record<string, unknown>),
-          [`indexnow_${motif === "echec" ? "echec" : "non_configure"}`]: true,
-        } as Prisma.InputJsonValue,
-      },
-    });
-  } catch (err) {
-    console.error("[videos] trace IndexNow impossible au journal :", err);
-  }
-}

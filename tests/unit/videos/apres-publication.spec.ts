@@ -40,6 +40,8 @@ describe("urlsAImpacter", () => {
         "/llms-full.txt",
         "/sitemap-index.xml",
         "/sitemap-videos.xml",
+        // Liste publique lue par le proxy pour le 410 : sans sa purge, un retrait tarde ~10 min.
+        "/api/interne/videos/retirees",
       ]),
     );
   });

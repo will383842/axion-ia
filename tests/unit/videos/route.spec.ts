@@ -461,4 +461,16 @@ describe("suite de la publication (cache, edge, IndexNow) — après la réponse
     await attendre();
     expect(apresPublication).not.toHaveBeenCalled();
   });
+
+  it("IndexNow en échec → le journal garde la réponse ENVOYÉE, le rejeu rend le même corps", async () => {
+    apresPublication.mockResolvedValueOnce({ indexnow: "echec", erreurs: [] });
+    const corps = JSON.stringify(publicationValide());
+    const nonce = nonceNeuf();
+    const premiere = await POST(requete({ corps, nonce }));
+    const corpsEnvoye = await premiere.text();
+    await attendre();
+    const rejeu = await POST(requete({ corps, nonce }));
+    expect(await rejeu.text()).toBe(corpsEnvoye);
+    expect(JSON.stringify(faux.journal[0])).not.toMatch(/indexnow/);
+  });
 });
