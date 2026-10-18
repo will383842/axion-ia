@@ -15,6 +15,7 @@ function deps(over: Record<string, unknown> = {}) {
     revalidateTag: vi.fn(),
     revalidatePath: vi.fn(),
     revalidateGabarit: vi.fn(),
+    purgerEdgeLarge: vi.fn(async () => undefined),
     purgerEdge: vi.fn(async () => ({
       cheminsRevalides: [],
       urlsPurgees: [],
@@ -150,5 +151,35 @@ describe("apresPublication", () => {
     expect(d.viderCache).toHaveBeenCalled();
     expect(d.revalidateTag).toHaveBeenCalledWith("videos");
     expect(d.indexNow).toHaveBeenCalled();
+  });
+
+  // Les copies d'edge des 2 157 villes, des articles et des fiches ne se purgent pas par adresse
+  // (plafond de 30 URLs) : au RETRAIT seulement (événement rare), purge large.
+  it("retrait → la purge d'edge large est appelée, APRÈS la revalidation de l'origine", async () => {
+    const ordre: string[] = [];
+    const d = deps({
+      revalidateGabarit: vi.fn(() => ordre.push("origine")),
+      purgerEdgeLarge: vi.fn(async () => void ordre.push("edge-large")),
+    });
+    await apresPublication({ ...effet, type: "retrait" }, d);
+    expect(d.purgerEdgeLarge).toHaveBeenCalledTimes(1);
+    expect(ordre.lastIndexOf("origine")).toBeLessThan(ordre.indexOf("edge-large"));
+  });
+
+  it("publication → la purge d'edge large n'est PAS appelée", async () => {
+    const d = deps();
+    await apresPublication(effet, d);
+    expect(d.purgerEdgeLarge).not.toHaveBeenCalled();
+  });
+
+  it("l'échec de la purge large est isolé : IndexNow part quand même, l'étape est signalée", async () => {
+    const d = deps({
+      purgerEdgeLarge: vi.fn(async () => {
+        throw new Error("cloudflare");
+      }),
+    });
+    const r = await apresPublication({ ...effet, type: "retrait" }, d);
+    expect(d.indexNow).toHaveBeenCalled();
+    expect(r.erreurs).toContain("purgerEdgeLarge");
   });
 });
