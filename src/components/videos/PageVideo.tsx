@@ -11,7 +11,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { VslVideo } from "@/components/lp/VslVideo";
-import { ChapitresVideo } from "@/components/videos/ChapitresVideo";
+import { ChapitresVideoDiffere } from "@/components/videos/ChapitresVideoDiffere";
 import type { VideoPubliee } from "@/server/videos/lecture";
 import { mentionIa } from "@/server/videos/mention-ia";
 
@@ -102,7 +102,7 @@ export function PageVideo({
           {...(f.sousTitres ? { sousTitres: { src: f.sousTitres.chemin } } : {})}
           {...(transcription.length > 0 ? { transcription } : {})}
         />
-        <ChapitresVideo
+        <ChapitresVideoDiffere
           videoId={ID_LECTEUR}
           videoSlug={video.slug}
           dureeSecondes={video.dureeSecondes}
