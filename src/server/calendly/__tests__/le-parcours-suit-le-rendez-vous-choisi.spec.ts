@@ -7,7 +7,8 @@
  *   2. diagnostic INTROUVABLE chez Calendly → repli silencieux sur le type
  *      appel ; liste illisible → on garde le diagnostic (absence non prouvée) ;
  *   3. un report garde le type d'ORIGINE (URI stockée, puis type, puis nom) ;
- *   4. `utm_content` mesure le bouton : `diagnostic`, `projet`, `diagnostic:accueil-hero`.
+ *   4. le suivi interne note le bouton (`diagnostic`, `projet`, `diagnostic:accueil-hero`) ;
+ *      chez Calendly, `utm_content` reste celui de l'arrivée.
  */
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 
@@ -197,7 +198,7 @@ describe("🔴 un report garde le type d'ORIGINE", () => {
   });
 });
 
-describe("`utm_content` mesure le bouton", () => {
+describe("le bouton et l'emplacement : suivi interne, et `utm_content` d'arrivée chez Calendly", () => {
   it("le choix seul, ou le choix et l'emplacement", () => {
     expect(utmContentDuChoix("diagnostic")).toBe("diagnostic");
     expect(utmContentDuChoix("projet", null)).toBe("projet");
