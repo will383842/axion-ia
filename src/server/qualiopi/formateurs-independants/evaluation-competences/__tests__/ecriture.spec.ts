@@ -28,6 +28,9 @@ vi.mock("@/lib/prisma", () => {
   return { prisma: client };
 });
 vi.mock("@/server/journal/journaliser", () => ({ journaliser: h.journal }));
+vi.mock("../reglages-lecture", async () => ({
+  lireReglagesEvaluation: async () => (await import("../reglages")).REGLAGES_EVALUATION,
+}));
 
 import { BLOCS_MISE_EN_SITUATION, CRITERES_ENTRETIEN } from "../configuration";
 import { verserEvaluation } from "../ecriture";

@@ -17,9 +17,10 @@ import { requireHabilitation } from "@/server/actions/qualiopi/_guards";
 import { jourParis } from "@/server/qualiopi/formateurs-independants/argent/dates";
 import {
   GRILLES_SUIVI_QUALITE,
-  REGLAGES_SUIVI_QUALITE,
+  type ReglagesSuiviQualite,
   type TypeGrilleSuivi,
 } from "@/server/qualiopi/formateurs-independants/suivi-qualite/reglages";
+import { lireReglagesSuiviQualite } from "@/server/qualiopi/formateurs-independants/suivi-qualite/reglages-lecture";
 import {
   MOTIF_MAX_CARACTERES,
   enregistrerDecision,
@@ -29,24 +30,29 @@ import {
 
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 
-const LIBELLES: Record<Extract<IssueSuivi, { ok: false }>["erreur"], string> = {
+const INTROUVABLE = "Cette session n'est pas une mission de ce formateur.";
+
+/** Les messages de refus ; les longueurs citées sont celles RÉGLÉES en console. */
+const libelles = (
+  R: ReglagesSuiviQualite,
+): Record<Extract<IssueSuivi, { ok: false }>["erreur"], string> => ({
   eteint: "Le suivi qualité des intervenants n'est pas ouvert (interrupteur éteint).",
   non_concerne:
     "Aucune grille ici : formateur non externe (salarié ou dirigeant), ou session annulée ou reportée.",
-  introuvable: "Cette session n'est pas une mission de ce formateur.",
+  introuvable: INTROUVABLE,
   trop_tot:
     "Trop tôt : l'observation se saisit à partir du premier jour, la grille après mission à partir du dernier.",
   auteur_inconnu: "Votre compte n'a pas de nom affichable : la grille ne peut pas être signée.",
-  motif_invalide: `Écrivez le motif (${REGLAGES_SUIVI_QUALITE.texteMinCaracteres} à ${MOTIF_MAX_CARACTERES} caractères) : il reste au dossier.`,
+  motif_invalide: `Écrivez le motif (${R.texteMinCaracteres} à ${MOTIF_MAX_CARACTERES} caractères) : il reste au dossier.`,
   sans_objet: "Aucune décision attendue sur cette mission (satisfaction au-dessus du seuil).",
   vierge: "Grille vierge : rien n'est enregistré.",
   critere_manquant: "Notez chaque critère de 1 à 5.",
   note_invalide: "Chaque note est un entier de 1 à 5.",
   observateur_manquant: "Indiquez qui a observé.",
-  conclusion_trop_courte: `Écrivez la conclusion (${REGLAGES_SUIVI_QUALITE.texteMinCaracteres} caractères au moins).`,
+  conclusion_trop_courte: `Écrivez la conclusion (${R.texteMinCaracteres} caractères au moins).`,
   date_invalide: "La date est absente, illisible ou dans le futur.",
   satisfaction_invalide: "La satisfaction saisie est un entier de 1 à 5.",
-};
+});
 
 const TYPES = new Set<TypeGrilleSuivi>(["observation", "evaluation_mission", "reevaluation"]);
 
@@ -85,7 +91,7 @@ export async function enregistrerGrilleSuiviFormAction(formData: FormData): Prom
   const type = champ(formData, "type") as TypeGrilleSuivi | undefined;
   if (type === undefined || !TYPES.has(type)) vers("erreur", "Type de grille inconnu.");
   const sessionBrut = champ(formData, "sessionId");
-  if (sessionBrut !== undefined && !UUID.test(sessionBrut)) vers("erreur", LIBELLES.introuvable);
+  if (sessionBrut !== undefined && !UUID.test(sessionBrut)) vers("erreur", INTROUVABLE);
 
   const notes: Record<string, number | undefined> = {};
   for (const c of GRILLES_SUIVI_QUALITE[type!].criteres) {
@@ -115,7 +121,7 @@ export async function enregistrerGrilleSuiviFormAction(formData: FormData): Prom
     maintenant,
   });
   revalidatePath(base);
-  if (!issue.ok) vers("erreur", LIBELLES[issue.erreur]);
+  if (!issue.ok) vers("erreur", libelles(await lireReglagesSuiviQualite())[issue.erreur]);
   vers("ok", "Grille enregistrée et signée. Elle est rangée au dossier du formateur.");
 }
 
@@ -128,7 +134,7 @@ export async function enregistrerDecisionSuiviFormAction(formData: FormData): Pr
     redirect(`${base}?${cle}=${encodeURIComponent(m)}#missions`);
   const sessionId = champ(formData, "sessionId") ?? "";
   const type = champ(formData, "type");
-  if (!UUID.test(sessionId)) vers("erreur", LIBELLES.introuvable);
+  if (!UUID.test(sessionId)) vers("erreur", INTROUVABLE);
   if (type !== "entretien" && type !== "levee_suspension") vers("erreur", "Décision inconnue.");
   if (type === "levee_suspension" && champ(formData, "confirmer") !== "oui") {
     vers(
@@ -145,6 +151,6 @@ export async function enregistrerDecisionSuiviFormAction(formData: FormData): Pr
     maintenant: new Date(),
   });
   revalidatePath(base);
-  if (!issue.ok) vers("erreur", LIBELLES[issue.erreur]);
+  if (!issue.ok) vers("erreur", libelles(await lireReglagesSuiviQualite())[issue.erreur]);
   vers("ok", "Décision enregistrée, signée et tracée au journal.");
 }

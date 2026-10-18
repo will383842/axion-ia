@@ -101,6 +101,7 @@ import {
   PresentationMethodePanelDiffere,
 } from "@/components/admin/qualiopi/PanneauxDifferesFicheFormateur";
 import { lireEvaluationsConsole } from "@/server/qualiopi/formateurs-independants/evaluation-competences/lecture";
+import { lireReglagesEvaluation } from "@/server/qualiopi/formateurs-independants/evaluation-competences/reglages-lecture";
 import {
   etatEvaluation,
   seuilsEntretien,
@@ -470,9 +471,12 @@ export default async function FicheFormateurPage({ params, searchParams }: PageP
   // d'activation les exige, l'écran doit pouvoir les recevoir.
   const voitEvaluation =
     trainer.statut === "sous_traitant" && peutEngager(role, "habiliter_formateur");
-  const evaluations = voitEvaluation
-    ? await lireEvaluationsConsole(trainer.id).catch(() => null)
-    : null;
+  const [evaluations, reglagesEvaluation] = voitEvaluation
+    ? await Promise.all([
+        lireEvaluationsConsole(trainer.id).catch(() => null),
+        lireReglagesEvaluation(),
+      ])
+    : [null, null];
   const titreFormation = new Map(formations.map((f) => [f.id, f.titre]));
   const etatEval = evaluations === null ? null : etatEvaluation(evaluations);
   const horodatage = new Intl.DateTimeFormat("fr-FR", {
@@ -778,34 +782,40 @@ export default async function FicheFormateurPage({ params, searchParams }: PageP
           Les grilles d&apos;évaluation des compétences n&apos;ont pas pu être lues.
         </div>
       )}
-      {voitEvaluation && evaluations !== null && etatEval !== null && (
-        <EvaluationCompetencesPanelDiffere
-          trainerId={trainer.id}
-          formations={formations}
-          lignes={evaluations.map((l) => ({
-            id: l.id,
-            nature: l.nature,
-            formationTitre: l.formationId ? (titreFormation.get(l.formationId) ?? null) : null,
-            notes:
-              typeof l.notes === "object" && l.notes !== null && !Array.isArray(l.notes)
-                ? (l.notes as Record<string, number>)
-                : null,
-            decision: l.decision,
-            motif: l.motif,
-            dateSuivie: l.dateSuivie ? l.dateSuivie.toISOString().slice(0, 10) : null,
-            versee: horodatage.format(l.createdAt),
-            auteur: l.auteur,
-          }))}
-          dernierEntretienAtteint={
-            etatEval.entretien ? seuilsEntretien(etatEval.entretien.notes).atteint : null
-          }
-          derniereMiseEnSituationAtteinte={
-            etatEval.miseEnSituation
-              ? seuilsMiseEnSituation(etatEval.miseEnSituation.notes).atteint
-              : null
-          }
-        />
-      )}
+      {voitEvaluation &&
+        evaluations !== null &&
+        etatEval !== null &&
+        reglagesEvaluation !== null && (
+          <EvaluationCompetencesPanelDiffere
+            trainerId={trainer.id}
+            formations={formations}
+            lignes={evaluations.map((l) => ({
+              id: l.id,
+              nature: l.nature,
+              formationTitre: l.formationId ? (titreFormation.get(l.formationId) ?? null) : null,
+              notes:
+                typeof l.notes === "object" && l.notes !== null && !Array.isArray(l.notes)
+                  ? (l.notes as Record<string, number>)
+                  : null,
+              decision: l.decision,
+              motif: l.motif,
+              dateSuivie: l.dateSuivie ? l.dateSuivie.toISOString().slice(0, 10) : null,
+              versee: horodatage.format(l.createdAt),
+              auteur: l.auteur,
+            }))}
+            reglages={reglagesEvaluation}
+            dernierEntretienAtteint={
+              etatEval.entretien
+                ? seuilsEntretien(etatEval.entretien.notes, reglagesEvaluation).atteint
+                : null
+            }
+            derniereMiseEnSituationAtteinte={
+              etatEval.miseEnSituation
+                ? seuilsMiseEnSituation(etatEval.miseEnSituation.notes, reglagesEvaluation).atteint
+                : null
+            }
+          />
+        )}
 
       {/*
         Fixe récupérable sur commissions — 2026-09-12.
