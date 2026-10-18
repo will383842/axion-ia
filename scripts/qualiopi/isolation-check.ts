@@ -176,6 +176,10 @@ const CONSOMMATEURS_ASSUMES: ReadonlySet<string> = new Set([
   //    `formateurs.*`. Il n'importe que `estCleProtegee`, pour que le préfixe protégé ne soit
   //    écrit qu'une fois — une recopie divergerait et rouvrirait le contournement.
   "src/features/admin-settings/actions.ts",
+  // Réservation de l'échange formateur (2026-10-18) : la page publique `/appel` doit se fermer
+  //    quand `formateurs.echange_ouvert` est éteint. Elle lit CET interrupteur par la même
+  //    interprétation que la console (`lireValeur`, `PREFIXE_CLES_FORMATEURS`), sans recopier la clé.
+  "src/server/calendly/echange-formateur-ouvert.ts",
   // ── Surfaces PUBLIQUES : affichage de la certification et de l'identité
   //    légale. Obligation réglementaire (RNQ critère 1 — information du public).
   "src/app/[locale]/a-propos/page.tsx",
