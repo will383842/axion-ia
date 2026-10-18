@@ -18,7 +18,8 @@ import { PageVideo } from "@/components/videos/PageVideo";
 import { routing } from "@/i18n/routing";
 import { buildProductMetadata, SITE_URL } from "@/lib/seo";
 import { buildVideoPageJsonLd } from "@/lib/seo/video-jsonld";
-import { videoParSlug } from "@/server/videos/lecture";
+import { videoParSlug, videosPubliees } from "@/server/videos/lecture";
+import { videosLiees } from "@/server/videos/liees";
 import { mentionIa } from "@/server/videos/mention-ia";
 
 interface Props {
@@ -62,7 +63,7 @@ export default async function PageVideoRoute({ params }: Props) {
   return (
     <>
       <JsonLd data={buildVideoPageJsonLd(video, { siteUrl: SITE_URL })} />
-      <PageVideo video={video} />
+      <PageVideo video={video} liees={videosLiees(video, await videosPubliees())} />
     </>
   );
 }
