@@ -477,6 +477,10 @@ export const config = {
     // emerging), futurs `.well-known/*` doivent rester ROOT (pas de prefix
     // locale). Sans cette exclusion, middleware rewrite `/.well-known/x` →
     // `/fr/.well-known/x` → 404 (pas de route locale variant).
+    // `medias/` exclu (vidéos du site, lot W1) : fichiers du studio servis par une
+    // règle Cloudflare (`/medias/*` → R2). Si la règle tombe, la requête ne doit pas
+    // partir dans next-intl (redirection `/fr/medias/...` absurde) : l'origine répond
+    // 404. Verrou : tests/unit/ci/proxy-exclut-medias.spec.ts.
     // `widget/` exclu : le loader public du widget offres d'emploi
     // (`/public/widget/offres-emploi.js`) est un asset racine SANS préfixe
     // locale. Sans cette exclusion, le redirect 0bis le 301 vers
@@ -564,6 +568,6 @@ export const config = {
     // `formateur/dossier/` exclu (lot L5, formateurs indépendants) : même raison, même
     // en-têtes (`next.config.ts`). `/fr/formateurs` et `/fr/espace-formateur/…` restent
     // couverts (le motif exige `formateur/dossier/` en tête).
-    "/((?!api/|widget/|qr/|videos/|questionnaire/|document/|apporteur/dossier/|formateur/dossier/|maintenance|_next/static|_next/image|favicon\\.ico|sitemap|opengraph-image|twitter-image|manifest\\.webmanifest|\\.well-known/|^icon$|^apple-icon$|(?!(?:fr|en)/).*\\.txt$|(?!(?:fr|en)/).*\\.(?:png|jpg|jpeg|svg|webp|avif|ico|woff2|woff|pdf|html|vcf)$).*)",
+    "/((?!api/|widget/|qr/|videos/|medias/|questionnaire/|document/|apporteur/dossier/|formateur/dossier/|maintenance|_next/static|_next/image|favicon\\.ico|sitemap|opengraph-image|twitter-image|manifest\\.webmanifest|\\.well-known/|^icon$|^apple-icon$|(?!(?:fr|en)/).*\\.txt$|(?!(?:fr|en)/).*\\.(?:png|jpg|jpeg|svg|webp|avif|ico|woff2|woff|pdf|html|vcf)$).*)",
   ],
 };

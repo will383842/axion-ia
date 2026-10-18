@@ -252,6 +252,11 @@ export function buildCspHeader({
     "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
     "img-src 'self' data: blob: https:",
     "font-src 'self' data: https://fonts.gstatic.com",
+    // Explicite (vidéos du site, lot W1) : les médias retombaient sur `default-src`.
+    // Écrit pour qu'un `default-src` plus large n'ouvre pas les médias à tous les
+    // domaines, ni qu'un plus strict ne les casse en silence. Jamais de `https:`.
+    // Verrou : src/lib/__tests__/csp-media-src.spec.ts.
+    "media-src 'self'",
     `connect-src 'self' https://challenges.cloudflare.com https://plausible.axion-ia.com https://api.telegram.org https://*.ingest.sentry.io https://*.ingest.de.sentry.io https://*.ingest.us.sentry.io${stripeConnect} https://www.clarity.ms https://*.clarity.ms https://snap.licdn.com https://px.ads.linkedin.com https://www.facebook.com https://calendly.com https://*.calendly.com https://*.r2.cloudflarestorage.com`,
     // `*.r2.cloudflarestorage.com` : upload présigné direct navigateur→R2
     // (import de kit + uploads admin documents-interventions). Sans ça, la CSP
