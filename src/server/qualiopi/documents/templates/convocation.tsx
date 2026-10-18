@@ -134,7 +134,8 @@ export function ConvocationPdf({
   data: ConvocationData;
   identite: OrganismeIdentite;
 }): React.ReactElement {
-  const isDistanciel = data.modalite === "distanciel" || data.modalite === LIBELLE_MODALITE_HYBRIDE_MINUSCULE;
+  const isDistanciel =
+    data.modalite === "distanciel" || data.modalite === LIBELLE_MODALITE_HYBRIDE_MINUSCULE;
   const v2 = data.versionTexte === 2;
   const siteBase = identite.site.replace(/\/+$/, "");
 
