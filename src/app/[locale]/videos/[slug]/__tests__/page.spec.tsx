@@ -100,6 +100,22 @@ describe("generateMetadata", () => {
     expect(JSON.stringify(meta)).not.toContain("?t=");
   });
 
+  it("og:video (contentUrl, type, dimensions) et og:image = l'affiche 16:9", async () => {
+    const meta = await generateMetadata({ params: params("automatiser-ses-relances") });
+    const videos = meta.openGraph && "videos" in meta.openGraph ? meta.openGraph.videos : undefined;
+    const chemin = "/medias/videos/automatiser-ses-relances/v3/video-1080p.mp4";
+    expect(videos).toEqual([
+      {
+        url: expect.stringMatching(new RegExp(`^https?://.+${chemin}$`)),
+        secureUrl: expect.stringMatching(new RegExp(`^https?://.+${chemin}$`)),
+        type: "video/mp4",
+        width: 1920,
+        height: 1080,
+      },
+    ]);
+    expect(JSON.stringify(meta.openGraph?.images)).toContain("affiche-16x9.avif");
+  });
+
   it("la page ne lit JAMAIS searchParams (sinon elle quitte l'ISR)", () => {
     const code = sansCommentaires(readFileSync(join(__dirname, "../page.tsx"), "utf8"));
     expect(code).not.toMatch(/searchParams/);

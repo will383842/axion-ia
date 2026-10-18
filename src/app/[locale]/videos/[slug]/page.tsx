@@ -40,7 +40,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (!video) return {};
   const affiche = video.fichiers.affiche169;
   const mention = mentionIa(video);
-  return buildProductMetadata({
+  const meta = await buildProductMetadata({
     locale,
     path: `/videos/${video.slug}`,
     title: video.titre,
@@ -51,6 +51,22 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       ? { ogImageWidth: affiche.largeur, ogImageHeight: affiche.hauteur }
       : {}),
   });
+  const f = video.fichiers.video;
+  const urlVideo = `${SITE_URL}${f.chemin}`;
+  return {
+    ...meta,
+    openGraph: {
+      ...meta.openGraph,
+      videos: [
+        {
+          url: urlVideo,
+          secureUrl: urlVideo,
+          type: f.type,
+          ...(f.largeur && f.hauteur ? { width: f.largeur, height: f.hauteur } : {}),
+        },
+      ],
+    },
+  };
 }
 
 export default async function PageVideoRoute({ params }: Props) {
