@@ -2,9 +2,13 @@
  * Carte d'une vidéo (vignette 4:3, titre, durée) : composant SERVEUR, zéro JS, jamais de
  * lecteur. Partagé par la page vidéo (« À voir aussi »), la galerie, les pages de thème et
  * de série, et les encarts « En vidéo » (W4). Ne doit importer AUCUN composant client :
- * `tests/unit/videos/aucun-js-client-dans-les-listes.spec.ts` le verrouille.
+ * `src/app/[locale]/videos/__tests__/galerie.spec.tsx` le verrouille.
+ *
+ * Liens en `<a>` natifs, images en `<img>` natifs : ni `next/link` ni `next/image` (deux
+ * composants CLIENT) — chacun ajoutait 2 à 4 ko de JS aux pages porteuses de cartes, dont les
+ * 2 157 pages villes qui portent l'encart. Ici une navigation complète ne coûte rien : la
+ * cible est une page serveur qui ne se précharge pas.
  */
-import Link from "next/link";
 import { libelleDuree } from "@/content/videos/duree";
 import type { VideoPubliee } from "@/server/videos/lecture";
 
@@ -14,7 +18,7 @@ export function CarteVideo({ video }: { video: VideoPubliee }) {
   const v = video.fichiers.vignette43;
   return (
     <li>
-      <Link
+      <a
         href={`/fr/videos/${video.slug}`}
         className="border-border bg-paper hover:border-terracotta/50 block overflow-hidden rounded-xl border transition-colors"
       >
@@ -37,7 +41,7 @@ export function CarteVideo({ video }: { video: VideoPubliee }) {
             {libelleDuree(video.dureeSecondes)}
           </span>
         </span>
-      </Link>
+      </a>
     </li>
   );
 }

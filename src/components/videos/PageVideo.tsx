@@ -8,7 +8,6 @@
  * gouvernementaux et de santé) → lien vers le service ou la formation → vidéos liées
  * → transcription repliée (portée par le lecteur).
  */
-import Link from "next/link";
 import { VslVideo } from "@/components/lp/VslVideo";
 import { CarteVideo, libelleDuree } from "@/components/videos/CarteVideo";
 import type { VideoPubliee } from "@/server/videos/lecture";
@@ -99,12 +98,12 @@ export function PageVideo({
       </section>
 
       <p className="mt-8">
-        <Link
+        <a
           href={video.lien.chemin}
           className="bg-terracotta text-paper inline-flex rounded-lg px-5 py-3 text-sm font-semibold"
         >
           {LIBELLE_LIEN[video.lien.type]}
-        </Link>
+        </a>
       </p>
 
       {liees.length > 0 ? (
