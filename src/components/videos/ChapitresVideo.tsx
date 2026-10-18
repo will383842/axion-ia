@@ -20,7 +20,7 @@ interface ChapitresVideoProps {
   videoSlug: string;
   /** Durée réelle, en secondes : seuil des chapitres (30 s) et borne d'un `?t=` entrant. */
   dureeSecondes: number;
-  chapitres?: ReadonlyArray<ChapitreVideo>;
+  chapitres?: ReadonlyArray<ChapitreVideo> | undefined;
   /** Lit un `?t=<secondes>` ENTRANT (lien de Clip suivi depuis Google). */
   lireDebutDansUrl?: boolean;
 }
