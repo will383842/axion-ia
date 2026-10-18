@@ -77,6 +77,16 @@ describe("urlsAImpacter", () => {
 });
 
 describe("apresPublication", () => {
+  // Rien ne fuit d'un test à l'autre : espions, globaux, variables, timers, doMock de Redis.
+  afterEach(() => {
+    vi.restoreAllMocks();
+    vi.unstubAllGlobals();
+    vi.unstubAllEnvs();
+    vi.useRealTimers();
+    vi.doUnmock("@/lib/redis");
+    vi.resetModules();
+  });
+
   it("vide le cache, invalide l'étiquette « videos » et les chemins, purge l'edge", async () => {
     const d = deps();
     await apresPublication(effet, d);
@@ -198,11 +208,6 @@ describe("apresPublication", () => {
 
   // Chemin RÉEL : `purgerToutEdge` ne lève jamais (429, secrets absents → `purgee: false`).
   describe("purge large — vrai chemin (fetch simulé)", () => {
-    afterEach(() => {
-      vi.unstubAllGlobals();
-      vi.unstubAllEnvs();
-    });
-
     it("Cloudflare répond 429 → erreurs + alerte, IndexNow part quand même", async () => {
       vi.stubEnv("CLOUDFLARE_API_TOKEN", "jeton");
       vi.stubEnv("CLOUDFLARE_ZONE_ID", "zone");
@@ -254,10 +259,6 @@ describe("apresPublication", () => {
   // démarrage de la purge ; un retrait B qui trouve le verrou pris attend la fin de la fenêtre
   // puis compare l'heure de son retrait (tB) à celle de la purge qui le tient.
   describe("purge large — fenêtre de 60 s et purge de rattrapage (timers simulés)", () => {
-    afterEach(() => {
-      vi.useRealTimers();
-    });
-
     function verrouMemoire(): VerrouPurgeLarge {
       let cle: { debut: number; expire: number } | null = null;
       const vivante = () => (cle && cle.expire > Date.now() ? cle : null);
@@ -344,8 +345,6 @@ describe("apresPublication", () => {
       expect(fetchMock).toHaveBeenCalledTimes(2);
       expect(rB.erreurs).not.toContain("purgerEdgeLarge");
       expect(dB.alerter).not.toHaveBeenCalled();
-      vi.unstubAllGlobals();
-      vi.unstubAllEnvs();
     });
 
     it("verrou par défaut (Redis injoignable, repli mémoire) : A puis B à +30 s = 2 purges", async () => {
