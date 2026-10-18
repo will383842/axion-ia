@@ -6,15 +6,10 @@
  */
 import Image from "next/image";
 import Link from "next/link";
+import { libelleDuree } from "@/content/videos/duree";
 import type { VideoPubliee } from "@/server/videos/lecture";
 
-/** « 3 min 04 » — rassure avant le clic. */
-export function libelleDuree(secondes: number): string {
-  const m = Math.floor(secondes / 60);
-  const s = secondes % 60;
-  if (m === 0) return `${s} s`;
-  return `${m} min ${String(s).padStart(2, "0")}`;
-}
+export { libelleDuree };
 
 export function CarteVideo({ video }: { video: VideoPubliee }) {
   const v = video.fichiers.vignette43;

@@ -85,7 +85,7 @@ describe("2. les surfaces lues par les moteurs de réponse", () => {
 
   it("/llms-full.txt", async () => {
     const { GET } = await import("@/app/llms-full.txt/route");
-    const texte = await GET().text();
+    const texte = await (await GET()).text();
     expect(texte.length).toBeGreaterThan(1000);
     sansMontantErrone("/llms-full.txt", texte);
     expect(NOMS.exec(texte)?.[0] ?? null).toBeNull();
