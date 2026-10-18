@@ -50,6 +50,13 @@ export function creerFauxPrisma() {
         journal.push({ ...data });
         return data;
       },
+      update: async ({ where, data }: { where: { nonce: string }; data: Partial<Ligne> }) => {
+        ecritures.push("siteVideoReception.update");
+        const l = journal.find((x) => x.nonce === where.nonce);
+        if (!l) throw new Error("ligne absente");
+        Object.assign(l, data);
+        return l;
+      },
     },
     $transaction: async <T>(fn: (tx: unknown) => Promise<T>): Promise<T> => {
       // Instantané : une erreur annule tout, comme un ROLLBACK.
