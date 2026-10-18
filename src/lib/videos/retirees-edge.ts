@@ -1,7 +1,7 @@
 /**
  * 410 DES VIDÉOS RETIRÉES, côté proxy (lot W2, plan PLAN-W1-W4 §6.6, décision D6).
  *
- * Next 16 n'a pas de `gone()` natif (cf. `server/content-gen/tombstone.ts`) et le proxy est
+ * Next 16 n'a pas de `gone()` natif (le « soft-410 » documenté ailleurs dans le dépôt reste le repli) et le proxy est
  * Edge, sans Prisma. On garde donc en mémoire de module la liste des slugs retirés,
  * rafraîchie au plus toutes les 5 minutes par un `fetch` vers l'adresse PUBLIQUE
  * `/api/interne/videos/retirees` (pas vers l'origine interne : on ne s'appuie pas sur le
