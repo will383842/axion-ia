@@ -10,8 +10,11 @@
  */
 import { VslVideo } from "@/components/lp/VslVideo";
 import { CarteVideo, libelleDuree } from "@/components/videos/CarteVideo";
+import { ChapitresVideoDiffere } from "@/components/videos/ChapitresVideoDiffere";
 import type { VideoPubliee } from "@/server/videos/lecture";
 import { mentionIa } from "@/server/videos/mention-ia";
+
+const ID_LECTEUR = "lecteur-video";
 
 const LIBELLE_LIEN = {
   service: "Découvrir le service associé",
@@ -48,12 +51,10 @@ export function PageVideo({
           label={video.titre}
           landing="videos"
           videoSlug={video.slug}
+          videoId={ID_LECTEUR}
           legendeMasquee
           afficheNonOptimisee
           suiviProgression
-          lireDebutDansUrl
-          dureeSecondes={video.dureeSecondes}
-          chapitres={video.chapitres}
           tone="light"
           {...(f.affiche169.largeur && f.affiche169.hauteur
             ? {
@@ -62,6 +63,13 @@ export function PageVideo({
             : {})}
           {...(f.sousTitres ? { sousTitres: { src: f.sousTitres.chemin } } : {})}
           {...(transcription.length > 0 ? { transcription } : {})}
+        />
+        <ChapitresVideoDiffere
+          videoId={ID_LECTEUR}
+          videoSlug={video.slug}
+          dureeSecondes={video.dureeSecondes}
+          chapitres={video.chapitres}
+          lireDebutDansUrl
         />
       </div>
 

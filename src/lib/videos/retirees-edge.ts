@@ -27,9 +27,12 @@ interface Etat {
 }
 
 let etat: Etat = { jusqua: 0, slugs: new Set() };
+/** Rafraîchissement en cours : les requêtes simultanées l'attendent au lieu de relancer un `fetch`. */
+let enVol: Promise<void> | null = null;
 
 export function reinitialiserRetirees(): void {
   etat = { jusqua: 0, slugs: new Set() };
+  enVol = null;
 }
 
 export interface DepsRetirees {
@@ -38,9 +41,16 @@ export interface DepsRetirees {
   maintenant?: () => number;
 }
 
-async function rafraichir(deps: Required<DepsRetirees>): Promise<void> {
+function rafraichir(deps: Required<DepsRetirees>): Promise<void> {
+  if (deps.maintenant() < etat.jusqua) return Promise.resolve();
+  enVol ??= interroger(deps).finally(() => {
+    enVol = null;
+  });
+  return enVol;
+}
+
+async function interroger(deps: Required<DepsRetirees>): Promise<void> {
   const t = deps.maintenant();
-  if (t < etat.jusqua) return;
   try {
     const r = await deps.fetchImpl(`${deps.origine}/api/interne/videos/retirees`, {
       signal: AbortSignal.timeout(DELAI_MS),
