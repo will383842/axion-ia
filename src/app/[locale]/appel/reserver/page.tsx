@@ -54,7 +54,6 @@ import {
   lireSuiviArrivee,
   lienDuCalendrier,
   resoudreChoix,
-  utmContentDuChoix,
   PARAM_DEPUIS,
   PARAM_RDV,
 } from "@/server/calendly/choix-rendez-vous";
@@ -260,11 +259,7 @@ export default async function ReserverPage({ params, searchParams }: Props) {
                     },
                   }
                 : {})}
-            replidUrl={avecUtmContent(
-              resolu.url,
-              choixExplicite ? utmContentDuChoix(choixExplicite, depuis) : null,
-              suivi,
-            )}
+            replidUrl={avecUtmContent(resolu.url, suivi)}
             action={soumettreLaReservation}
             // Les formats DE CE TYPE — le même jugement que l'action
             // (`formatsProposes`), jamais une liste recopiée ici.

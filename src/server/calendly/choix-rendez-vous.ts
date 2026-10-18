@@ -96,29 +96,45 @@ export function utmContentDuChoix(choix: ChoixRendezVous, depuis?: string | null
 }
 
 /**
- * Les paramètres de SUIVI d'arrivée que la page `/appel` lit dans son URL (les
- * quatre déjà lus sur main). `utm_content` n'en fait PAS partie : sur ce
- * parcours, il mesure le bouton cliqué (`utmContentDuChoix`).
+ * Les paramètres de SUIVI d'arrivée que la page `/appel` lit dans son URL.
+ * `utm_content` est gardé tel que reçu (ce n'est plus le bouton cliqué) ; `depuis` part chez Calendly dans `utm_term`.
  */
-export const PARAMS_SUIVI = ["utm_source", "utm_medium", "utm_campaign", "ref"] as const;
+export const PARAMS_SUIVI = [
+  "utm_source",
+  "utm_medium",
+  "utm_campaign",
+  "utm_content",
+  "ref",
+  "depuis",
+] as const;
 export type ParamSuivi = (typeof PARAMS_SUIVI)[number];
 export type SuiviArrivee = Partial<Record<ParamSuivi, string>>;
 
-/** Même borne et même nettoyage que `parseUtmFromUrl` (`src/lib/utm.ts`). */
+/** Même borne et même nettoyage que `parseUtmFromUrl` (`src/lib/utm.ts`), pour `ref`. */
 const SUIVI_MAX = 200;
+/** Bornes des `utm_*` et de `depuis` : une valeur non conforme est abandonnée, jamais réécrite. */
+const UTM_MAX = 60;
+const FORME_UTM = /^[A-Za-z0-9][A-Za-z0-9-]*$/;
+const FORME_DEPUIS = /^[a-z0-9][a-z0-9-]*$/;
 
 /**
- * Les paramètres de suivi d'arrivée (`?utm_source=linkedin…`), bornés et
- * nettoyés. Sans eux, un visiteur arrivé d'une campagne perdait son attribution
- * au premier clic du parcours (chantier « Types de rendez-vous », L5a).
+ * Les paramètres de suivi d'arrivée (`?utm_source=linkedin…`), bornés. Les
+ * `utm_*` et `depuis` sont validés SANS réécriture : une valeur non conforme est
+ * abandonnée seule. Sans eux, un visiteur arrivé d'une campagne perdait son
+ * attribution au premier clic du parcours (chantier « Types de rendez-vous », L5a).
  */
 export function lireSuiviArrivee(source: Readonly<Record<string, unknown>>): SuiviArrivee {
   const out: SuiviArrivee = {};
   for (const cle of PARAMS_SUIVI) {
     const v = source[cle];
-    if (typeof v !== "string" || v.length === 0 || v.length > SUIVI_MAX) continue;
-    const propre = v.replace(/[^\w\s.\-/+]/g, "").trim();
-    if (propre) out[cle] = propre;
+    if (typeof v !== "string" || v.length === 0) continue;
+    if (cle === "ref") {
+      if (v.length > SUIVI_MAX) continue;
+      const propre = v.replace(/[^\w\s.\-/+]/g, "").trim();
+      if (propre) out[cle] = propre;
+    } else if (v.length <= UTM_MAX && (cle === "depuis" ? FORME_DEPUIS : FORME_UTM).test(v)) {
+      out[cle] = v;
+    }
   }
   return out;
 }
@@ -126,6 +142,7 @@ export function lireSuiviArrivee(source: Readonly<Record<string, unknown>>): Sui
 function ajouterSuivi(p: URLSearchParams, suivi?: SuiviArrivee | null): void {
   if (!suivi) return;
   for (const cle of PARAMS_SUIVI) {
+    if (cle === PARAM_DEPUIS) continue; // porté par l'emplacement (`lireDepuis`)
     const v = suivi[cle];
     if (v) p.set(cle, v);
   }
@@ -339,24 +356,26 @@ export function choixDuType(type: unknown): ChoixRendezVous | null {
  * l'invité, relu par le sondage). `ref` n'en fait pas partie : Calendly ne le
  * reprend pas, il reste porté par nos propres URL et par la capture de la page.
  */
-export const PARAMS_SUIVI_CALENDLY = ["utm_source", "utm_medium", "utm_campaign"] as const;
+export const PARAMS_SUIVI_CALENDLY = [
+  "utm_source",
+  "utm_medium",
+  "utm_campaign",
+  "utm_content",
+] as const;
 
 /**
- * Ajoute `utm_content` (le BOUTON) et, s'il y en a, les UTM d'ARRIVÉE (L5a) à
- * une URL Calendly : iframe, lien de secours, créneau. Sans l'arrivée, une
- * réservation prise chez Calendly ne gardait que le bouton.
+ * Ajoute les UTM d'ARRIVÉE (L5a) à une URL Calendly : iframe, lien de secours,
+ * créneau. `utm_content` part tel que reçu, jamais remplacé par le bouton ;
+ * `depuis` part dans `utm_term`.
  */
-export function avecUtmContent(
-  url: string,
-  utmContent: string | null | undefined,
-  suivi?: SuiviArrivee | null,
-): string {
+export function avecUtmContent(url: string, suivi?: SuiviArrivee | null): string {
   const arrivee = PARAMS_SUIVI_CALENDLY.filter((cle) => suivi?.[cle]);
-  if (!utmContent && arrivee.length === 0) return url;
+  const depuis = suivi?.depuis;
+  if (arrivee.length === 0 && !depuis) return url;
   try {
     const u = new URL(url);
-    if (utmContent) u.searchParams.set("utm_content", utmContent);
     for (const cle of arrivee) u.searchParams.set(cle, suivi?.[cle] ?? "");
+    if (depuis) u.searchParams.set("utm_term", depuis);
     return u.toString();
   } catch {
     return url;
@@ -370,12 +389,22 @@ export function avecUtmContent(
  */
 export function provenanceEnBloc(
   arrivee: SuiviArrivee,
-  cookie: Readonly<Partial<Record<"utm_source" | "utm_medium" | "utm_campaign", string>>>,
-): { utmSource: string | null; utmMedium: string | null; utmCampaign: string | null } {
+  cookie: Readonly<
+    Partial<Record<"utm_source" | "utm_medium" | "utm_campaign" | "utm_content", string>>
+  >,
+): {
+  utmSource: string | null;
+  utmMedium: string | null;
+  utmCampaign: string | null;
+  utmContent: string | null;
+  utmTerm: string | null;
+} {
   const bloc = PARAMS_SUIVI_CALENDLY.some((cle) => arrivee[cle]) ? arrivee : cookie;
   return {
     utmSource: bloc.utm_source ?? null,
     utmMedium: bloc.utm_medium ?? null,
     utmCampaign: bloc.utm_campaign ?? null,
+    utmContent: bloc.utm_content ?? null,
+    utmTerm: arrivee.depuis ?? null,
   };
 }
