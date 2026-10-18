@@ -2,7 +2,6 @@
  * Mises en page des listes de vidéos (galerie, thème, série) — lot W3. Composants SERVEUR,
  * zéro JS client : cartes `next/image` + liens, jamais de lecteur.
  */
-import Link from "next/link";
 import { CarteVideo } from "@/components/videos/CarteVideo";
 import type { GroupeSerie, GroupeTheme } from "@/server/videos/groupes";
 import type { VideoPubliee } from "@/server/videos/lecture";
@@ -37,12 +36,12 @@ export function SectionsTheme({ groupes }: { groupes: ReadonlyArray<GroupeTheme>
           </h2>
           {g.aPage ? (
             <p className="mt-1">
-              <Link
+              <a
                 href={`/fr/videos/theme/${g.theme.slug}`}
                 className="text-terracotta text-sm font-semibold underline"
               >
                 Voir toutes les vidéos « {g.theme.libelle} »
-              </Link>
+              </a>
             </p>
           ) : null}
           <GrilleVideos videos={g.videos} />
@@ -63,12 +62,12 @@ export function SectionSeries({ groupes }: { groupes: ReadonlyArray<GroupeSerie>
         {groupes.map((g) => (
           <li key={g.slug} className="text-fg-soft">
             {g.aPage ? (
-              <Link
+              <a
                 href={`/fr/videos/serie/${g.slug}`}
                 className="text-terracotta font-semibold underline"
               >
                 {g.titre}
-              </Link>
+              </a>
             ) : (
               <span className="text-fg font-semibold">{g.titre}</span>
             )}{" "}
@@ -88,9 +87,9 @@ export function PagesLiees({ pages }: { pages: ReadonlyArray<PageLieeTheme> }) {
       <ul className="mt-3 space-y-2">
         {pages.map((p) => (
           <li key={p.href}>
-            <Link href={`/fr${p.href}`} className="text-terracotta font-semibold underline">
+            <a href={`/fr${p.href}`} className="text-terracotta font-semibold underline">
               {p.libelle}
-            </Link>
+            </a>
           </li>
         ))}
       </ul>
