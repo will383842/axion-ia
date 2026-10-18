@@ -5,6 +5,10 @@
 
 import type { Metadata } from "next";
 import Link from "next/link";
+import {
+  INTERRUPTEURS,
+  INTERRUPTEURS_SIGNATURE,
+} from "@/server/qualiopi/formateurs-independants/interrupteurs";
 import { notFound } from "next/navigation";
 
 import { prisma } from "@/lib/prisma";
@@ -97,6 +101,7 @@ import {
   PresentationMethodePanelDiffere,
 } from "@/components/admin/qualiopi/PanneauxDifferesFicheFormateur";
 import { lireEvaluationsConsole } from "@/server/qualiopi/formateurs-independants/evaluation-competences/lecture";
+import { lireReglagesEvaluation } from "@/server/qualiopi/formateurs-independants/evaluation-competences/reglages-lecture";
 import {
   etatEvaluation,
   seuilsEntretien,
@@ -466,9 +471,12 @@ export default async function FicheFormateurPage({ params, searchParams }: PageP
   // d'activation les exige, l'écran doit pouvoir les recevoir.
   const voitEvaluation =
     trainer.statut === "sous_traitant" && peutEngager(role, "habiliter_formateur");
-  const evaluations = voitEvaluation
-    ? await lireEvaluationsConsole(trainer.id).catch(() => null)
-    : null;
+  const [evaluations, reglagesEvaluation] = voitEvaluation
+    ? await Promise.all([
+        lireEvaluationsConsole(trainer.id).catch(() => null),
+        lireReglagesEvaluation(),
+      ])
+    : [null, null];
   const titreFormation = new Map(formations.map((f) => [f.id, f.titre]));
   const etatEval = evaluations === null ? null : etatEvaluation(evaluations);
   const horodatage = new Intl.DateTimeFormat("fr-FR", {
@@ -482,6 +490,35 @@ export default async function FicheFormateurPage({ params, searchParams }: PageP
     trainer.statut === "sous_traitant" &&
     peutEngager(role, "remunerer_formateur") &&
     (await interrupteurAllume("presentation_payee"));
+
+  // Panneaux que le rôle verrait mais qu'un interrupteur coupé masque : une ligne sobre,
+  // pour ne pas prendre une clé éteinte pour un droit manquant. Rôle insuffisant = rien.
+  const independant = trainer.statut === "sous_traitant";
+  const peutHabiliter = peutEngager(role, "habiliter_formateur");
+  const panneauxMasques: string[] = [
+    ...(peutHabiliter && !voitLieu ? [INTERRUPTEURS.proches_bloc.libelle] : []),
+    ...(independant && peutHabiliter && !voitSuiviQualite
+      ? [INTERRUPTEURS_SIGNATURE.suivi_qualite.libelle]
+      : []),
+    ...(independant &&
+    trainer.organismeSousTraitantId === null &&
+    peutHabiliter &&
+    !voitFinCollaboration
+      ? [INTERRUPTEURS_SIGNATURE.fin_collaboration.libelle]
+      : []),
+    ...(independant &&
+    trainer.organismeSousTraitantId === null &&
+    peutEngager(role, "contresigner") &&
+    !voitContratCadre
+      ? [INTERRUPTEURS_SIGNATURE.contrat_cadre_emission.libelle]
+      : []),
+    ...(trainer.dossierStatut !== null && peutHabiliter && !voitDossier
+      ? [INTERRUPTEURS.dossier_en_ligne.libelle]
+      : []),
+    ...(independant && peutEngager(role, "remunerer_formateur") && !voitPresentation
+      ? [INTERRUPTEURS_SIGNATURE.presentation_payee.libelle]
+      : []),
+  ];
 
   // Lot F (W-10) — bandeau d'étape : indépendant en nom propre, page « Dossiers et contrats »
   // ouverte (mêmes interrupteurs que cette page). Sinon, aucune lecture et aucun bandeau.
@@ -572,6 +609,13 @@ export default async function FicheFormateurPage({ params, searchParams }: PageP
           .
         </p>
       </div>
+
+      {panneauxMasques.length > 0 ? (
+        <p className="admin-meta-small">
+          Panneaux masqués, interrupteurs coupés :{" "}
+          {panneauxMasques.map((l) => `« ${l} »`).join(", ")}.
+        </p>
+      ) : null}
 
       {voitLieu ? (
         <LieuFormateurPanel
@@ -738,34 +782,40 @@ export default async function FicheFormateurPage({ params, searchParams }: PageP
           Les grilles d&apos;évaluation des compétences n&apos;ont pas pu être lues.
         </div>
       )}
-      {voitEvaluation && evaluations !== null && etatEval !== null && (
-        <EvaluationCompetencesPanelDiffere
-          trainerId={trainer.id}
-          formations={formations}
-          lignes={evaluations.map((l) => ({
-            id: l.id,
-            nature: l.nature,
-            formationTitre: l.formationId ? (titreFormation.get(l.formationId) ?? null) : null,
-            notes:
-              typeof l.notes === "object" && l.notes !== null && !Array.isArray(l.notes)
-                ? (l.notes as Record<string, number>)
-                : null,
-            decision: l.decision,
-            motif: l.motif,
-            dateSuivie: l.dateSuivie ? l.dateSuivie.toISOString().slice(0, 10) : null,
-            versee: horodatage.format(l.createdAt),
-            auteur: l.auteur,
-          }))}
-          dernierEntretienAtteint={
-            etatEval.entretien ? seuilsEntretien(etatEval.entretien.notes).atteint : null
-          }
-          derniereMiseEnSituationAtteinte={
-            etatEval.miseEnSituation
-              ? seuilsMiseEnSituation(etatEval.miseEnSituation.notes).atteint
-              : null
-          }
-        />
-      )}
+      {voitEvaluation &&
+        evaluations !== null &&
+        etatEval !== null &&
+        reglagesEvaluation !== null && (
+          <EvaluationCompetencesPanelDiffere
+            trainerId={trainer.id}
+            formations={formations}
+            lignes={evaluations.map((l) => ({
+              id: l.id,
+              nature: l.nature,
+              formationTitre: l.formationId ? (titreFormation.get(l.formationId) ?? null) : null,
+              notes:
+                typeof l.notes === "object" && l.notes !== null && !Array.isArray(l.notes)
+                  ? (l.notes as Record<string, number>)
+                  : null,
+              decision: l.decision,
+              motif: l.motif,
+              dateSuivie: l.dateSuivie ? l.dateSuivie.toISOString().slice(0, 10) : null,
+              versee: horodatage.format(l.createdAt),
+              auteur: l.auteur,
+            }))}
+            reglages={reglagesEvaluation}
+            dernierEntretienAtteint={
+              etatEval.entretien
+                ? seuilsEntretien(etatEval.entretien.notes, reglagesEvaluation).atteint
+                : null
+            }
+            derniereMiseEnSituationAtteinte={
+              etatEval.miseEnSituation
+                ? seuilsMiseEnSituation(etatEval.miseEnSituation.notes, reglagesEvaluation).atteint
+                : null
+            }
+          />
+        )}
 
       {/*
         Fixe récupérable sur commissions — 2026-09-12.

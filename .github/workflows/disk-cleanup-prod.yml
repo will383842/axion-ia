@@ -30,8 +30,16 @@ name: Disk Cleanup Prod (Hetzner CPX42)
 
 on:
   schedule:
-    # 02:00 UTC daily — 1h avant Gate D nightly
-    - cron: "0 2 * * *"
+    # 05:37 UTC daily — HORS de toute fenetre de mise en ligne. Les creneaux
+    # de nuit (1 h / 3 h / 5 h Paris, minute 07) basculent Coolify ~20-30 min
+    # apres le lancement (ex. 3 h 07 hiver = 02:07 UTC, bascule ~02:25-02:35),
+    # et GitHub retarde les crons. Ce job lance `docker system prune -af
+    # --volumes` + `docker builder prune -af` sur le VPS : pendant une mise en
+    # ligne il ruinerait le pull de l'image.
+    # Volontairement PAS dans le groupe de concurrence `deploy-coolify` : un
+    # run en attente y serait remplace, et le nettoyage pourrait annuler une
+    # mise en ligne.
+    - cron: "37 5 * * *"
   workflow_dispatch:
     inputs:
       dry_run:

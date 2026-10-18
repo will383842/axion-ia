@@ -90,11 +90,6 @@ interface CalendlySlotPickerProps {
    * selecteur se comporte exactement comme avant.
    */
   readonly lienDuCreneau?: ((startIso: string) => string) | undefined;
-  /**
-   * Chantier « Types de rendez-vous », L2 : le bouton qui a mené ici, ajouté en
-   * `utm_content` aux liens qui partent chez Calendly.
-   */
-  readonly utmContent?: string | undefined;
   /** `rdv=…&depuis=…`, recopié dans les liens vers notre formulaire. */
   readonly parametresDuChoix?: string | undefined;
   /** Les UTM d'ARRIVÉE (L5a), ajoutées aux créneaux qui partent chez Calendly. */
@@ -274,7 +269,6 @@ export function CalendlySlotPicker({
   reservationDirecte = false,
   locale = "fr",
   lienDuCreneau,
-  utmContent,
   parametresDuChoix,
   suivi,
 }: CalendlySlotPickerProps) {
@@ -427,11 +421,7 @@ export function CalendlySlotPicker({
                               ? lienDuCreneau(slot.startIso)
                               : reservationDirecte
                                 ? urlDuFormulaire(locale, slot.startIso, parametresDuChoix)
-                                : avecUtmContent(
-                                    avecCouleursAxion(slot.schedulingUrl),
-                                    utmContent,
-                                    suivi,
-                                  )
+                                : avecUtmContent(avecCouleursAxion(slot.schedulingUrl), suivi)
                           }
                           {...(lienDuCreneau || reservationDirecte
                             ? {}

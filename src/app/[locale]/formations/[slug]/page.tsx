@@ -10,6 +10,8 @@
  */
 
 import { LIBELLE_MODALITE_HYBRIDE } from "@/server/qualiopi/documents/libelles-enumerations";
+import { EncartEnVideo } from "@/components/videos/EncartEnVideo";
+import { videoPourFormation } from "@/server/videos/encarts";
 import type { Metadata } from "next";
 import { notFound, permanentRedirect } from "next/navigation";
 import { setRequestLocale } from "next-intl/server";
@@ -196,13 +198,18 @@ export default async function FormationSlugPage({ params }: { params: Promise<Pa
       getReferentHandicapPublic(),
       getResultatsPublicsFormation(cat.slugFr),
     ]);
+    // Encart « En vidéo » (ADR 0070) : soumis au drapeau de divulgation OF — `null` sans lui.
+    const videoEncart = await videoPourFormation();
     return (
-      <FormationDetailPage
-        formation={cat}
-        locale={locale as Locale}
-        referentHandicap={referentHandicap}
-        resultats={resultats}
-      />
+      <>
+        <FormationDetailPage
+          formation={cat}
+          locale={locale as Locale}
+          referentHandicap={referentHandicap}
+          resultats={resultats}
+        />
+        <EncartEnVideo theme="formations-ia" video={videoEncart} />
+      </>
     );
   }
 
@@ -267,6 +274,8 @@ export default async function FormationSlugPage({ params }: { params: Promise<Pa
     audienceType: f.offreSite.publicViseFr,
     about: "Formation professionnelle IA opérationnelle — Axion-IA",
   });
+
+  const videoEncart = await videoPourFormation();
 
   return (
     <>
@@ -681,6 +690,8 @@ export default async function FormationSlugPage({ params }: { params: Promise<Pa
           </div>
         </Container>
       </section>
+
+      <EncartEnVideo theme="formations-ia" video={videoEncart} />
     </>
   );
 }

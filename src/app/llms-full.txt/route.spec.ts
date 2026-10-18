@@ -18,7 +18,7 @@ vi.mock("@/lib/seo", () => ({ SITE_URL: "https://axion-ia.com" }));
 
 import { GET } from "./route";
 
-const CORPS = await GET().text();
+const CORPS = await (await GET()).text();
 
 describe("llms-full.txt — le canal d'ingestion sert des prix, pas des gabarits", () => {
   it("ne contient AUCUN token de prix brut", () => {

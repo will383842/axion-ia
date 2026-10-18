@@ -34,7 +34,9 @@ interface JsonLdProps {
  * `strategy="afterInteractive"` pour déferer après hydratation.
  */
 export function JsonLd({ data, strategy = "inline", scriptId }: JsonLdProps) {
-  const json = JSON.stringify(data);
+  // « < » échappé : un texte libre (transcription, résumé…) contenant `</script>` ne peut
+  // pas fermer la balise. `\u003c` est relu à l'identique par tout parseur JSON.
+  const json = JSON.stringify(data).replace(/</g, "\\u003c");
 
   if (strategy !== "inline") {
     return (

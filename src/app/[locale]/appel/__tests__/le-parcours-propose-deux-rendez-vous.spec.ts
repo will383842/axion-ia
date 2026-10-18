@@ -108,12 +108,10 @@ describe("🔴 aucune page du parcours ne relit l'URL Calendly en direct", () =>
     }
   });
 
-  it("le formulaire maison réserve le type choisi et envoie le bouton", () => {
+  it("le formulaire maison réserve le type choisi et envoie l'arrivée en bloc", () => {
     const actions = sansCommentaires(lire("src/app/[locale]/appel/reserver/actions.ts"));
     expect(actions).toContain("resoudreChoix(choix)");
-    expect(actions).toContain(
-      "utmContent: choixExplicite ? utmContentDuChoix(choixExplicite, depuis) : null",
-    );
+    expect(actions).toContain("...provenanceEnBloc(suivi, utm)");
     const pageReserver = sansCommentaires(lire("src/app/[locale]/appel/reserver/page.tsx"));
     expect(pageReserver).toContain("resoudreEventTypePourReservation(resolu.url)");
     expect(pageReserver).toContain("champsCaches=");

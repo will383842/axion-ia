@@ -20,7 +20,8 @@ import { journaliser } from "@/server/journal/journaliser";
 
 import { jourParis } from "../argent/dates";
 import { lireFaitsSuiviQualite, suiviQualiteAllumeLe } from "./lecture";
-import { REGLAGES_SUIVI_QUALITE, type TypeGrilleSuivi } from "./reglages";
+import type { TypeGrilleSuivi } from "./reglages";
+import { lireReglagesSuiviQualite } from "./reglages-lecture";
 import {
   missionsSuspensives,
   niveauSatisfaction,
@@ -117,14 +118,19 @@ export async function enregistrerGrille(s: SaisieGrilleConsole): Promise<IssueSu
     if (aujourdhui < borne) return refus("trop_tot");
   }
 
-  const v = validerGrille(s.type, {
-    notes: s.notes,
-    conclusion: s.conclusion,
-    date: s.date,
-    ...(s.observateur !== undefined ? { observateur: s.observateur } : {}),
-    ...(s.type === "evaluation_mission" ? { satisfaction: s.satisfaction ?? null } : {}),
-    maintenant: s.maintenant,
-  });
+  const reglages = await lireReglagesSuiviQualite();
+  const v = validerGrille(
+    s.type,
+    {
+      notes: s.notes,
+      conclusion: s.conclusion,
+      date: s.date,
+      ...(s.observateur !== undefined ? { observateur: s.observateur } : {}),
+      ...(s.type === "evaluation_mission" ? { satisfaction: s.satisfaction ?? null } : {}),
+      maintenant: s.maintenant,
+    },
+    reglages,
+  );
   if (!v.ok) return refus(v.erreur);
   const auteurNom = await nomAuteur(s.auteur.userId);
   if (auteurNom === null) return refus("auteur_inconnu");
@@ -195,10 +201,8 @@ export async function enregistrerDecision(d: SaisieDecisionConsole): Promise<Iss
   const allumeLe = await suiviQualiteAllumeLe();
   if (allumeLe === null) return refus("eteint");
   const motif = d.motif.trim();
-  if (
-    motif.length < REGLAGES_SUIVI_QUALITE.texteMinCaracteres ||
-    motif.length > MOTIF_MAX_CARACTERES
-  ) {
+  const reglages = await lireReglagesSuiviQualite();
+  if (motif.length < reglages.texteMinCaracteres || motif.length > MOTIF_MAX_CARACTERES) {
     return refus("motif_invalide");
   }
   const f = await lireFaitsSuiviQualite(d.trainerId, allumeLe);
@@ -208,7 +212,7 @@ export async function enregistrerDecision(d: SaisieDecisionConsole): Promise<Iss
   // reportée garde sa suspension : seule la `levee_suspension` y est admise.
   const m = missionsSuspensives(f).find((x) => x.sessionId === d.sessionId);
   if (m === undefined) return refus("introuvable");
-  const niveau = niveauSatisfaction(satisfactionPlancher(m));
+  const niveau = niveauSatisfaction(satisfactionPlancher(m), reglages);
   if (m.annulee && d.type !== "levee_suspension") return refus("non_concerne");
   if (niveau === "ok" || (d.type === "levee_suspension" && niveau !== "suspension")) {
     return refus("sans_objet");

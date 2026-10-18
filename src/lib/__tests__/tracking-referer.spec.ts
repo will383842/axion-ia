@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { detectSearchEngine } from "@/lib/tracking";
+import { detectSearchEngine } from "@/lib/tracking-referer";
 
 describe("detectSearchEngine", () => {
   it("returns 'direct' for empty or null referrer", () => {
@@ -46,5 +46,14 @@ describe("detectSearchEngine", () => {
   it("is case-insensitive on host", () => {
     expect(detectSearchEngine("https://Google.com/")).toBe("google");
     expect(detectSearchEngine("https://BING.COM/search?q=foo")).toBe("bing");
+  });
+});
+
+describe("poids de lib/tracking", () => {
+  it("le détecteur de referer vit à part : trackFunnel ne le traîne pas dans chaque page", async () => {
+    const { readFileSync } = await import("node:fs");
+    const { resolve } = await import("node:path");
+    const source = readFileSync(resolve(__dirname, "../tracking.ts"), "utf8");
+    expect(source).not.toMatch(/REFERER_PATTERNS/);
   });
 });

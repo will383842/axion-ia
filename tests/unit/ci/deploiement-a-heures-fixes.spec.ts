@@ -3,10 +3,11 @@
  *
  * Avant : chaque fusion sur `main` lançait un build de ~50 min, et une fusion
  * pendant un build en vol l'annulait. Les fusions se faisaient au compte-gouttes.
- * Désormais : 12 h, 17 h et 22 h (heure de Paris), plus un lancement manuel.
+ * Désormais : 12 h, 17 h et 22 h (heure de Paris), plus trois créneaux de nuit
+ * (1 h 07, 3 h 07, 5 h 07 — décision de Will, 2026-10-18), plus un lancement manuel.
  *
  * Ce test verrouille :
- *   · les SIX crons (été UTC+2 : 10/15/20 ; hiver UTC+1 : 11/16/21) ;
+ *   · les DOUZE crons (été UTC+2 : 10/15/20 + 23/1/3 ; hiver UTC+1 : 11/16/21 + 0/2/4) ;
  *   · le job `precheck`, qui ne laisse passer que le jeu de la saison en cours
  *     et saute si la prod sert déjà le dernier commit ;
  *   · le refus d'un créneau rejoué plus de 90 min après son cron ;
@@ -42,20 +43,40 @@ describe("🕛 mise en ligne à heures fixes", () => {
     expect(on).toMatch(/^\s{2}workflow_dispatch:/m);
     const crons = [...on.matchAll(/cron:\s*"([^"]+)"/g)].map((m) => m[1]);
     expect(crons.sort()).toEqual(
-      ["7 10 * * *", "7 11 * * *", "7 15 * * *", "7 16 * * *", "7 20 * * *", "7 21 * * *"].sort(),
+      [
+        "7 10 * * *",
+        "7 11 * * *",
+        "7 15 * * *",
+        "7 16 * * *",
+        "7 20 * * *",
+        "7 21 * * *",
+        "7 23 * * *",
+        "7 0 * * *",
+        "7 1 * * *",
+        "7 2 * * *",
+        "7 3 * * *",
+        "7 4 * * *",
+      ].sort(),
     );
   });
 
   it("precheck : saison, créneau, et rien de nouveau = rien à faire", () => {
     const p = job("precheck");
     expect(p).toContain("TZ=Europe/Paris date +%z");
-    expect(p).toContain("+0200:10|+0200:15|+0200:20|+0100:11|+0100:16|+0100:21");
+    expect(p).toContain(
+      "+0200:10|+0200:15|+0200:20|+0200:23|+0200:1|+0200:3|+0100:11|+0100:16|+0100:21|+0100:0|+0100:2|+0100:4",
+    );
     expect(p).toContain("x-axion-build-sha");
     // Un créneau rejoué plus de 90 min après l'heure de son cron est refusé
     // (cron « 7 20 » relancé par GitHub à 23:58 UTC le 2026-10-09).
     expect(p).toMatch(
       /if \[ "\$\{retard\}" -gt 90 \]; then\s*\n.*::notice::.*\n\s*echo "go=false"/,
     );
+    // Créneaux de nuit : le cron de 23:07 UTC (1 h 07 Paris en été) et celui de
+    // 00:07 UTC (1 h 07 en hiver) sont calculés « aujourd'hui, ou hier si le run
+    // a franchi minuit UTC » : la ligne qui recule d'un jour doit rester.
+    expect(p).toContain('if [ "${prevu}" -gt "${maintenant}" ]; then');
+    expect(p).toContain("prevu=$((prevu - 86400))");
     // Un lancement manuel passe toujours.
     expect(p).toMatch(/if \[ "\$\{EVENT\}" != "schedule" \]; then\s*\n\s*echo "go=true"/);
   });

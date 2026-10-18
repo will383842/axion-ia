@@ -122,6 +122,35 @@ export const QUALIOPI_CONFIG_LABELS: Record<QualiopiConfigKey, string> = {
   adresse_formateurs: "Adresse électronique dédiée aux formateurs",
   sous_traitance_delai_correction_jours: "Sous-traitants — délai du plan de correction (jours)",
   sous_traitance_revue_complete_mois: "Sous-traitants — périodicité de la revue complète (mois)",
+  evaluation_competences_entretien_moyenne_min:
+    "Évaluation des compétences — moyenne minimale de l'entretien",
+  evaluation_competences_entretien_note_critere_min:
+    "Évaluation des compétences — note minimale d'un critère de l'entretien",
+  evaluation_competences_mise_en_situation_note_bloc_min:
+    "Évaluation des compétences — note minimale d'un bloc de la mise en situation",
+  suivi_qualite_observation_moyenne_min:
+    "Suivi qualité — moyenne minimale de l'observation de la 1re mission",
+  suivi_qualite_reevaluation_moyenne_min:
+    "Suivi qualité — moyenne minimale de la réévaluation annuelle",
+  suivi_qualite_evaluation_moyenne_min:
+    "Suivi qualité — moyenne de la grille après mission (sous : réservée)",
+  suivi_qualite_observation_alerte_jours:
+    "Suivi qualité — alerte observation manquante (jours après la 1re mission)",
+  suivi_qualite_evaluation_relance_jours:
+    "Suivi qualité — relance de la grille après mission (jours)",
+  suivi_qualite_evaluation_alerte_jours:
+    "Suivi qualité — alerte grille après mission manquante (jours)",
+  suivi_qualite_satisfaction_entretien_sous:
+    "Suivi qualité — satisfaction sous laquelle un entretien est à prévoir",
+  suivi_qualite_satisfaction_suspension_sous:
+    "Suivi qualité — satisfaction sous laquelle les missions sont suspendues",
+  suivi_qualite_reevaluation_mois: "Suivi qualité — périodicité de la réévaluation (mois)",
+  suivi_qualite_reevaluation_rappel_jours: "Suivi qualité — rappel avant la réévaluation (jours)",
+  suivi_qualite_reevaluation_grace_allumage_jours:
+    "Suivi qualité — report d'une réévaluation échue à l'allumage (jours)",
+  suivi_qualite_cv_declare_max_mois: "Suivi qualité — âge maximal du CV déclaré (mois)",
+  suivi_qualite_texte_min_caracteres:
+    "Suivi qualité — longueur minimale d'une conclusion ou d'un motif",
 };
 
 /** Libellés lisibles des options, pour les clés à choix fermé (rendues en <select>). */

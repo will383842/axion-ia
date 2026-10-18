@@ -16,7 +16,7 @@
 
 import { useEffect, useRef } from "react";
 import { usePathname } from "next/navigation";
-import { trackRefererSource } from "@/lib/tracking";
+import { trackRefererSource } from "@/lib/tracking-referer";
 import { urlPorteUnSecret } from "@/lib/analytics/routes-privees";
 
 export function RefererTracker() {

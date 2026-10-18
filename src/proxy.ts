@@ -27,6 +27,7 @@ import {
 } from "./lib/csp";
 import { isEnLocaleDisabled, mapEnToFr } from "./lib/i18n/en-to-fr-redirect";
 import { resolveLegacyRedirect } from "./lib/legacy-redirects";
+import { reponseGoneSiRetiree } from "./lib/videos/retirees-edge";
 import { isNoindexStubRoute } from "./lib/seo-noindex-routes";
 import { parseUtmFromUrl, buildUtmSetCookie } from "./lib/utm";
 import { verifyFormateurSession } from "./lib/formateur-session";
@@ -99,6 +100,15 @@ const authPipeline = auth(async (req) => {
         },
       });
     }
+  }
+
+  // 0a-quater. 410 Gone — vidéo du site RETIRÉE (lot W2, ADR 0070, décision D6).
+  //   Périmètre strict : `/fr|en/videos/<slug>`. La liste des slugs retirés vient d'une
+  //   route publique, en mémoire 5 min ; liste injoignable → on laisse passer (la page
+  //   rend alors son 404 noindex). Cf. src/lib/videos/retirees-edge.ts.
+  {
+    const gone = await reponseGoneSiRetiree(req.nextUrl.pathname);
+    if (gone) return new NextResponse(gone.body, gone);
   }
 
   // 0a-bis. Aplatissement des chaînes de redirection legacy (audit indexation 2026-06-17).
@@ -477,6 +487,10 @@ export const config = {
     // emerging), futurs `.well-known/*` doivent rester ROOT (pas de prefix
     // locale). Sans cette exclusion, middleware rewrite `/.well-known/x` →
     // `/fr/.well-known/x` → 404 (pas de route locale variant).
+    // `medias/` exclu (vidéos du site, lot W1) : fichiers du studio servis par une
+    // règle Cloudflare (`/medias/*` → R2). Si la règle tombe, la requête ne doit pas
+    // partir dans next-intl (redirection `/fr/medias/...` absurde) : l'origine répond
+    // 404. Verrou : tests/unit/ci/proxy-exclut-medias.spec.ts.
     // `widget/` exclu : le loader public du widget offres d'emploi
     // (`/public/widget/offres-emploi.js`) est un asset racine SANS préfixe
     // locale. Sans cette exclusion, le redirect 0bis le 301 vers
@@ -564,6 +578,6 @@ export const config = {
     // `formateur/dossier/` exclu (lot L5, formateurs indépendants) : même raison, même
     // en-têtes (`next.config.ts`). `/fr/formateurs` et `/fr/espace-formateur/…` restent
     // couverts (le motif exige `formateur/dossier/` en tête).
-    "/((?!api/|widget/|qr/|videos/|questionnaire/|document/|apporteur/dossier/|formateur/dossier/|maintenance|_next/static|_next/image|favicon\\.ico|sitemap|opengraph-image|twitter-image|manifest\\.webmanifest|\\.well-known/|^icon$|^apple-icon$|(?!(?:fr|en)/).*\\.txt$|(?!(?:fr|en)/).*\\.(?:png|jpg|jpeg|svg|webp|avif|ico|woff2|woff|pdf|html|vcf)$).*)",
+    "/((?!api/|widget/|qr/|videos/|medias/|questionnaire/|document/|apporteur/dossier/|formateur/dossier/|maintenance|_next/static|_next/image|favicon\\.ico|sitemap|opengraph-image|twitter-image|manifest\\.webmanifest|\\.well-known/|^icon$|^apple-icon$|(?!(?:fr|en)/).*\\.txt$|(?!(?:fr|en)/).*\\.(?:png|jpg|jpeg|svg|webp|avif|ico|woff2|woff|pdf|html|vcf)$).*)",
   ],
 };

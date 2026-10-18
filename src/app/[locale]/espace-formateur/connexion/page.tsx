@@ -31,6 +31,12 @@ export default async function ConnexionPage({
           Recevez un lien de connexion sécurisé par e-mail. Aucun mot de passe à retenir.
         </p>
 
+        {erreur === "session" ? (
+          <p className="border-error/30 bg-error/5 text-error mb-4 rounded-md border px-3 py-2 text-sm">
+            Votre session a expiré. Reconnectez-vous ci-dessous.
+          </p>
+        ) : null}
+
         {erreur === "lien_invalide" ? (
           <p className="border-error/30 bg-error/5 text-error mb-4 rounded-md border px-3 py-2 text-sm">
             Ce lien de connexion est invalide ou a expiré. Demandez-en un nouveau ci-dessous.
