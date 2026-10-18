@@ -81,6 +81,9 @@ export function PageVideo({
           legendeMasquee
           afficheNonOptimisee
           suiviProgression
+          lireDebutDansUrl
+          dureeSecondes={video.dureeSecondes}
+          chapitres={video.chapitres}
           tone="light"
           {...(f.affiche169.largeur && f.affiche169.hauteur
             ? {

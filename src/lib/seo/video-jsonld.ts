@@ -13,7 +13,7 @@
  *  - dates avec fuseau (Europe/Paris), jamais « Z » nu ; `creator` = l'organisation,
  *    sauf la Person de Williams quand il est à l'image (D7).
  */
-import { SEUIL_CHAPITRES_SECONDES } from "@/server/videos/contrat";
+import { chapitresAffichables } from "@/content/videos/chapitres";
 import { mentionIa } from "@/server/videos/mention-ia";
 import type { VideoPubliee } from "@/server/videos/lecture";
 
@@ -64,14 +64,15 @@ export function buildVideoPageJsonLd(v: VideoPubliee, { siteUrl, theme }: Option
   const page = `${site}/fr/videos/${v.slug}`;
   const f = v.fichiers;
   const mention = mentionIa(v);
-  const avecChapitres = v.dureeSecondes >= SEUIL_CHAPITRES_SECONDES && v.chapitres.length >= 2;
+  const chapitres = chapitresAffichables(v.dureeSecondes, v.chapitres);
+  const avecChapitres = chapitres.length > 0;
 
   const clips = avecChapitres
-    ? v.chapitres.map((c, i) => ({
+    ? chapitres.map((c, i) => ({
         "@type": "Clip",
         name: c.titre,
         startOffset: c.debutSecondes,
-        endOffset: v.chapitres[i + 1]?.debutSecondes ?? v.dureeSecondes,
+        endOffset: chapitres[i + 1]?.debutSecondes ?? v.dureeSecondes,
         url: `${page}?t=${c.debutSecondes}`,
       }))
     : null;

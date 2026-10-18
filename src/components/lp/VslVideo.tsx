@@ -25,6 +25,11 @@ import Image from "next/image";
 import { Play } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { trackFunnel } from "@/lib/tracking";
+import {
+  chapitresAffichables,
+  horodatageLisible,
+  type ChapitreVideo,
+} from "@/content/videos/chapitres";
 
 /** Jalons de progression émis (en % de la durée). Un seul calcul par jalon. */
 const JALONS = [25, 50, 75, 95] as const;
@@ -65,6 +70,12 @@ interface VslVideoProps {
   legendeMasquee?: boolean;
   /** Slug de la vidéo du site, joint aux événements Plausible (propriété `video`). */
   videoSlug?: string;
+  /** Durée réelle, en secondes : sert au seuil des chapitres (30 s) et borne un `?t=` entrant. */
+  dureeSecondes?: number;
+  /** Chapitres : liste de boutons « aller à », sans changer l'adresse. Rendus si durée ≥ 30 s et ≥ 2. */
+  chapitres?: ReadonlyArray<ChapitreVideo>;
+  /** Lit un `?t=<secondes>` ENTRANT (lien de Clip suivi depuis Google) pour positionner la lecture. */
+  lireDebutDansUrl?: boolean;
 }
 
 export function VslVideo({
@@ -83,6 +94,9 @@ export function VslVideo({
   dimensionsAffiche,
   legendeMasquee = false,
   videoSlug,
+  dureeSecondes,
+  chapitres,
+  lireDebutDansUrl = false,
 }: VslVideoProps) {
   const videoRef = React.useRef<HTMLVideoElement>(null);
   const [started, setStarted] = React.useState(false);
@@ -116,6 +130,34 @@ export function VslVideo({
     // restent affichés, l'utilisateur relance lui-même.
     void video.play().catch(() => undefined);
   }, [landing, videoSlug]);
+
+  const chapitresVisibles = chapitresAffichables(dureeSecondes ?? 0, chapitres);
+
+  // `?t=` entrant : entier strictement positif, avant la fin. Le navigateur retient
+  // la position même avant le chargement des métadonnées (`preload="none"`).
+  React.useEffect(() => {
+    if (!lireDebutDansUrl) return;
+    const brut = new URLSearchParams(window.location.search).get("t");
+    if (brut === null || !/^[0-9]+$/.test(brut)) return;
+    const t = Number(brut);
+    if (t <= 0 || (dureeSecondes !== undefined && t >= dureeSecondes)) return;
+    const video = videoRef.current;
+    if (video) video.currentTime = t;
+  }, [lireDebutDansUrl, dureeSecondes]);
+
+  // Aller à un chapitre : ni `pushState` ni `?t=` — aucune adresse de ce type n'est
+  // jamais produite par la page (la canonique reste sans paramètre).
+  const allerA = React.useCallback(
+    (secondes: number) => {
+      const video = videoRef.current;
+      if (!video) return;
+      video.currentTime = secondes;
+      setStarted(true);
+      trackFunnel("Landing Video Played", { landing, ...(videoSlug ? { video: videoSlug } : {}) });
+      void video.play().catch(() => undefined);
+    },
+    [landing, videoSlug],
+  );
 
   return (
     <figure className={cn("min-w-0", className)}>
@@ -203,6 +245,27 @@ export function VslVideo({
           ) : null}
         </div>
       </div>
+
+      {chapitresVisibles.length > 0 ? (
+        <nav aria-label="Chapitres" className="mt-3">
+          <ol className="space-y-1">
+            {chapitresVisibles.map((c) => (
+              <li key={c.debutSecondes}>
+                <button
+                  type="button"
+                  onClick={() => allerA(c.debutSecondes)}
+                  className="text-fg hover:text-terracotta focus-visible:ring-terracotta flex w-full gap-3 rounded-lg px-2 py-1.5 text-left text-sm focus-visible:ring-2 focus-visible:outline-none"
+                >
+                  <span className="text-fg-muted w-10 shrink-0 tabular-nums">
+                    {horodatageLisible(c.debutSecondes)}
+                  </span>
+                  <span>{c.titre}</span>
+                </button>
+              </li>
+            ))}
+          </ol>
+        </nav>
+      ) : null}
 
       {transcription && transcription.length > 0 ? (
         <details className="border-border bg-paper mt-3 rounded-xl border px-4 py-3">
