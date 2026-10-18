@@ -134,6 +134,20 @@ describe("correspondances thème", () => {
     expect(themeDeCategorieBlog(cat)).toBe(theme);
   });
 
+  it.each(["jaun-a-unique", "mon-un-a-unite", "tout-1-to-12"])(
+    "« %s » : « un-a-un » / « 1-to-1 » se comparent par segments, jamais par sous-chaîne",
+    (cat) => {
+      expect(themeDeCategorieBlog(cat)).toBeNull();
+    },
+  );
+
+  it.each(["coaching-un-a-un", "un-a-un", "offre-1-to-1-dirigeants"])(
+    "« %s » → coaching-ia (suite de segments)",
+    (cat) => {
+      expect(themeDeCategorieBlog(cat)).toBe("coaching-ia");
+    },
+  );
+
   it("catégorie « formations » : sans divulgation OF, pas de thème (comme videoPourFormation)", () => {
     vi.stubEnv("OF_PUBLIC_DISCLOSURE_ENABLED", "false");
     expect(themeDeCategorieBlog("formations-ia")).toBeNull();

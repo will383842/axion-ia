@@ -61,6 +61,14 @@ const THEME_PAR_MOT: Readonly<Record<string, string>> = {
   web: "sites-web-ia",
 };
 
+/** Vrai si `suite` apparaît telle quelle, segments contigus, dans `mots`. */
+function contientSuite(mots: ReadonlyArray<string>, suite: ReadonlyArray<string>): boolean {
+  for (let i = 0; i + suite.length <= mots.length; i++) {
+    if (suite.every((m, k) => mots[i + k] === m)) return true;
+  }
+  return false;
+}
+
 /**
  * Thème d'une catégorie de blog (les catégories viennent de la base, leur liste n'est pas
  * figée dans le code). Catégorie inconnue → pas d'encart. Le thème des formations suit le
@@ -69,10 +77,10 @@ const THEME_PAR_MOT: Readonly<Record<string, string>> = {
 export function themeDeCategorieBlog(categorie: string | null | undefined): string | null {
   const mots = (categorie ?? "").toLowerCase().split("-").filter(Boolean);
   if (mots.length === 0) return null;
-  // « un-a-un » et « 1-to-1 » : expressions de plusieurs segments.
-  const c = mots.join("-");
+  // « un-a-un » et « 1-to-1 » : expressions de plusieurs segments, comparées SEGMENT PAR SEGMENT
+  // (une sous-chaîne verrait « un-a-un » dans « jaun-a-unique »).
   const theme =
-    c.includes("un-a-un") || c.includes("1-to-1")
+    contientSuite(mots, ["un", "a", "un"]) || contientSuite(mots, ["1", "to", "1"])
       ? "coaching-ia"
       : (mots.map((m) => THEME_PAR_MOT[m]).find(Boolean) ?? null);
   if (theme === "formations-ia" && !isQualiopiPublicDisclosureEnabled()) return null;
