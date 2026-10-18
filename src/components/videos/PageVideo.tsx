@@ -11,6 +11,7 @@
 import { VslVideo } from "@/components/lp/VslVideo";
 import { CarteVideo, libelleDuree } from "@/components/videos/CarteVideo";
 import type { VideoPubliee } from "@/server/videos/lecture";
+import { lienAffiche } from "@/server/videos/liens";
 import { mentionIa } from "@/server/videos/mention-ia";
 
 const LIBELLE_LIEN = {
@@ -27,6 +28,7 @@ export function PageVideo({
 }) {
   const f = video.fichiers;
   const mention = mentionIa(video);
+  const lien = lienAffiche(video.lien);
   const transcription = video.transcription
     ? video.transcription.split(/\n{2,}/).filter((l) => l.trim().length > 0)
     : [];
@@ -97,14 +99,16 @@ export function PageVideo({
         </dl>
       </section>
 
-      <p className="mt-8">
-        <a
-          href={video.lien.chemin}
-          className="bg-terracotta text-paper inline-flex rounded-lg px-5 py-3 text-sm font-semibold"
-        >
-          {LIBELLE_LIEN[video.lien.type]}
-        </a>
-      </p>
+      {lien ? (
+        <p className="mt-8">
+          <a
+            href={lien.chemin}
+            className="bg-terracotta text-paper inline-flex rounded-lg px-5 py-3 text-sm font-semibold"
+          >
+            {LIBELLE_LIEN[lien.type]}
+          </a>
+        </p>
+      ) : null}
 
       {liees.length > 0 ? (
         <section className="mt-10" aria-labelledby="liees-video">

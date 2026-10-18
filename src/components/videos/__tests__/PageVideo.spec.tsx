@@ -32,8 +32,24 @@ describe("PageVideo — une page jamais pauvre (§6.5)", () => {
   });
 
   it("lien vers la formation quand le contrat en désigne une", () => {
-    const h = rendre(uneVideo({ lien: { type: "formation", chemin: "/fr/formations/chatgpt" } }));
-    expect(h).toMatch(/<a[^>]*href="\/fr\/formations\/chatgpt"/);
+    const h = rendre(
+      uneVideo({ lien: { type: "formation", chemin: "/fr/formations/ia-pour-bien-commencer" } }),
+    );
+    expect(h).toMatch(/<a[^>]*href="\/fr\/formations\/ia-pour-bien-commencer"/);
+  });
+
+  // Plan § 8.2 : la liste blanche est rejouée AU RENDU (une formation peut quitter le
+  // catalogue après la réception).
+  it("formation sortie du catalogue → le lien se rabat sur /fr/formations (§ 8.2)", () => {
+    const h = rendre(uneVideo({ lien: { type: "formation", chemin: "/fr/formations/retiree" } }));
+    expect(h).toMatch(/<a[^>]*href="\/fr\/formations"/);
+    expect(h).not.toMatch(/\/fr\/formations\/retiree/);
+  });
+
+  it("lien de service hors liste → aucun bouton de lien (§ 8.2)", () => {
+    const h = rendre(uneVideo({ lien: { type: "service", chemin: "/fr/disparue" } }));
+    expect(h).not.toMatch(/href="\/fr\/disparue"/);
+    expect(h).not.toMatch(/Découvrir le service associé/);
   });
 
   it("seule vidéo → AUCUN lien vers une autre vidéo", () => {
