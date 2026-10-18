@@ -1,6 +1,10 @@
 // Tout ce qui suit une publication ou un retrait (W3.7) : cache, edge, IndexNow.
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { apresPublication, urlsAImpacter } from "@/server/videos/apres-publication";
+import {
+  apresPublication,
+  urlsAImpacter,
+  type VerrouPurgeLarge,
+} from "@/server/videos/apres-publication";
 
 const effet = {
   type: "publication",
@@ -16,7 +20,12 @@ function deps(over: Record<string, unknown> = {}) {
     revalidatePath: vi.fn(),
     revalidateGabarit: vi.fn(),
     purgerEdgeLarge: vi.fn(async () => ({ purgee: true, configure: true })),
-    verrouPurgeLarge: vi.fn(async () => true),
+    verrouPurgeLarge: {
+      prendre: vi.fn(async () => true),
+      debut: vi.fn(async () => null),
+      ttlMs: vi.fn(async () => 0),
+      liberer: vi.fn(async () => undefined),
+    },
     purgerEdge: vi.fn(async () => ({
       cheminsRevalides: [],
       urlsPurgees: [],
@@ -160,7 +169,10 @@ describe("apresPublication", () => {
     const ordre: string[] = [];
     const d = deps({
       revalidateGabarit: vi.fn(() => ordre.push("origine")),
-      purgerEdgeLarge: vi.fn(async () => void ordre.push("edge-large")),
+      purgerEdgeLarge: vi.fn(async () => {
+        ordre.push("edge-large");
+        return { purgee: true, configure: true };
+      }),
     });
     await apresPublication({ ...effet, type: "retrait" }, d);
     expect(d.purgerEdgeLarge).toHaveBeenCalledTimes(1);
@@ -238,39 +250,133 @@ describe("apresPublication", () => {
     });
   });
 
-  // Une purge large par fenêtre de 60 s : une rafale de retraits ne vide pas la zone N fois.
-  it("deux retraits de suite = UN seul appel de purge large", async () => {
-    let pris = false;
-    const d = deps({
-      verrouPurgeLarge: vi.fn(async () => {
-        if (pris) return false;
-        pris = true;
-        return true;
-      }),
+  // Une purge large par fenêtre de 60 s, MAIS sans perdre un retrait : le verrou porte l'heure de
+  // démarrage de la purge ; un retrait B qui trouve le verrou pris attend la fin de la fenêtre
+  // puis compare l'heure de son retrait (tB) à celle de la purge qui le tient.
+  describe("purge large — fenêtre de 60 s et purge de rattrapage (timers simulés)", () => {
+    afterEach(() => {
+      vi.useRealTimers();
     });
-    const r1 = await apresPublication({ ...effet, type: "retrait", slug: "a" }, d);
-    const r2 = await apresPublication({ ...effet, type: "retrait", slug: "b" }, d);
-    expect(d.purgerEdgeLarge).toHaveBeenCalledTimes(1);
-    expect(r1.erreurs).not.toContain("purgerEdgeLarge");
-    expect(r2.erreurs).not.toContain("purgerEdgeLarge");
-    expect(d.indexNow).toHaveBeenCalledTimes(2);
-  });
 
-  it("verrou par défaut (repli mémoire, Redis injoignable) : deux retraits = un appel", async () => {
-    vi.doMock("@/lib/redis", () => ({
-      redis: {
-        set: vi.fn(async () => {
-          throw new Error("redis down");
+    function verrouMemoire(): VerrouPurgeLarge {
+      let cle: { debut: number; expire: number } | null = null;
+      const vivante = () => (cle && cle.expire > Date.now() ? cle : null);
+      return {
+        prendre: vi.fn(async (debut: number) => {
+          if (vivante()) return false;
+          cle = { debut, expire: Date.now() + 60_000 };
+          return true;
         }),
-      },
-    }));
-    vi.resetModules();
-    const { apresPublication: ap } = await import("@/server/videos/apres-publication");
-    const purge = vi.fn(async () => ({ purgee: true, configure: true }));
-    const d = deps({ verrouPurgeLarge: undefined, purgerEdgeLarge: purge });
-    await ap({ ...effet, type: "retrait", slug: "a" }, d);
-    await ap({ ...effet, type: "retrait", slug: "b" }, d);
-    expect(purge).toHaveBeenCalledTimes(1);
-    vi.doUnmock("@/lib/redis");
+        debut: vi.fn(async () => vivante()?.debut ?? null),
+        ttlMs: vi.fn(async () => (vivante() ? vivante()!.expire - Date.now() : 0)),
+        liberer: vi.fn(async (debut: number) => {
+          if (cle?.debut === debut) cle = null;
+        }),
+      };
+    }
+
+    it("A à t=0 puis B à t=30 s : la purge de A ne couvre pas B → 2e purge APRÈS la revalidation de B", async () => {
+      vi.useFakeTimers();
+      vi.setSystemTime(new Date("2026-10-18T12:00:00Z"));
+      const verrou = verrouMemoire();
+      const ordre: string[] = [];
+      const purge = vi.fn(async () => {
+        ordre.push(`purge@${Date.now() - Date.parse("2026-10-18T12:00:00Z")}`);
+        return { purgee: true, configure: true };
+      });
+      const dA = deps({ verrouPurgeLarge: verrou, purgerEdgeLarge: purge });
+      const dB = deps({
+        verrouPurgeLarge: verrou,
+        purgerEdgeLarge: purge,
+        revalidateGabarit: vi.fn(() => ordre.push("origine-B")),
+      });
+      await apresPublication({ ...effet, type: "retrait", slug: "a" }, dA);
+      expect(purge).toHaveBeenCalledTimes(1);
+
+      await vi.advanceTimersByTimeAsync(30_000);
+      const pB = apresPublication({ ...effet, type: "retrait", slug: "b" }, dB);
+      await vi.advanceTimersByTimeAsync(29_000);
+      expect(purge).toHaveBeenCalledTimes(1); // B attend encore la fin de la fenêtre
+      await vi.advanceTimersByTimeAsync(2_000);
+      const rB = await pB;
+
+      expect(purge).toHaveBeenCalledTimes(2);
+      expect(ordre.lastIndexOf("origine-B")).toBeLessThan(ordre.lastIndexOf("purge@61000"));
+      expect(rB.erreurs).not.toContain("purgerEdgeLarge");
+      expect(dB.alerter).not.toHaveBeenCalled();
+      expect(dB.indexNow).toHaveBeenCalled();
+    });
+
+    it("B arrive pendant la purge de A, démarrée APRÈS la revalidation de B : B est couvert, pas de 2e purge", async () => {
+      vi.useFakeTimers();
+      vi.setSystemTime(new Date("2026-10-18T12:00:00Z"));
+      const verrou = verrouMemoire();
+      // Une purge de rattrapage a démarré à t=+5 s ; B a été revalidé à t=+2 s.
+      await verrou.prendre(Date.now() + 5_000);
+      const purge = vi.fn(async () => ({ purgee: true, configure: true }));
+      const d = deps({ verrouPurgeLarge: verrou, purgerEdgeLarge: purge });
+      await apresPublication({ ...effet, type: "retrait", slug: "b" }, d);
+      expect(purge).not.toHaveBeenCalled();
+      expect(d.alerter).not.toHaveBeenCalled();
+    });
+
+    it("la purge de A échoue (429) puis B dans la fenêtre : le verrou est libéré, B repurge aussitôt", async () => {
+      vi.useFakeTimers();
+      vi.setSystemTime(new Date("2026-10-18T12:00:00Z"));
+      vi.spyOn(console, "warn").mockImplementation(() => undefined);
+      vi.stubEnv("CLOUDFLARE_API_TOKEN", "jeton");
+      vi.stubEnv("CLOUDFLARE_ZONE_ID", "zone");
+      const fetchMock = vi
+        .fn()
+        .mockResolvedValueOnce(new Response("rate limited", { status: 429 }))
+        .mockResolvedValueOnce(new Response("{}", { status: 200 }));
+      vi.stubGlobal("fetch", fetchMock);
+      const verrou = verrouMemoire();
+      const dA = deps({ verrouPurgeLarge: verrou, purgerEdgeLarge: undefined });
+      const dB = deps({ verrouPurgeLarge: verrou, purgerEdgeLarge: undefined });
+      const rA = await apresPublication({ ...effet, type: "retrait", slug: "a" }, dA);
+      expect(rA.erreurs).toContain("purgerEdgeLarge");
+      expect(dA.alerter).toHaveBeenCalled();
+      expect(verrou.liberer).toHaveBeenCalled();
+
+      await vi.advanceTimersByTimeAsync(10_000);
+      const rB = await apresPublication({ ...effet, type: "retrait", slug: "b" }, dB);
+      expect(fetchMock).toHaveBeenCalledTimes(2);
+      expect(rB.erreurs).not.toContain("purgerEdgeLarge");
+      expect(dB.alerter).not.toHaveBeenCalled();
+      vi.unstubAllGlobals();
+      vi.unstubAllEnvs();
+    });
+
+    it("verrou par défaut (Redis injoignable, repli mémoire) : A puis B à +30 s = 2 purges", async () => {
+      vi.useFakeTimers();
+      vi.setSystemTime(new Date("2026-10-18T12:00:00Z"));
+      vi.doMock("@/lib/redis", () => ({
+        redis: {
+          set: vi.fn(async () => {
+            throw new Error("redis down");
+          }),
+          get: vi.fn(async () => {
+            throw new Error("redis down");
+          }),
+          pttl: vi.fn(async () => {
+            throw new Error("redis down");
+          }),
+          del: vi.fn(async () => {
+            throw new Error("redis down");
+          }),
+        },
+      }));
+      vi.resetModules();
+      const { apresPublication: ap } = await import("@/server/videos/apres-publication");
+      const purge = vi.fn(async () => ({ purgee: true, configure: true }));
+      const d = deps({ verrouPurgeLarge: undefined, purgerEdgeLarge: purge });
+      await ap({ ...effet, type: "retrait", slug: "a" }, d);
+      await vi.advanceTimersByTimeAsync(30_000);
+      const pB = ap({ ...effet, type: "retrait", slug: "b" }, d);
+      await vi.advanceTimersByTimeAsync(31_000);
+      await pB;
+      expect(purge).toHaveBeenCalledTimes(2);
+    });
   });
 });
