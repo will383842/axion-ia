@@ -19,13 +19,24 @@ import { analyserPublication, analyserRetrait, type PublicationVideo } from "./c
 import type { EntreeSignee } from "./entree";
 import { verifierFichiers } from "./fichiers";
 import { controlerContenu, reglagesRuntime } from "./gardes-contenu";
+import type { EffetPublication } from "./apres-publication";
 import { reponseJson } from "./reponse";
 
 interface Resultat {
   readonly statut: number;
   readonly corps: Record<string, unknown>;
   readonly studioVideoId?: string | null;
+  /** Ce qui doit suivre la réponse (cache, edge, IndexNow) — seulement pour un fait NOUVEAU. */
+  readonly effet?: EffetPublication;
 }
+
+/** Réponse au studio + effet à planifier APRÈS elle (`null` : rien à faire). */
+export interface Reception {
+  readonly reponse: Response;
+  readonly effet: EffetPublication | null;
+}
+
+const sansEffet = (reponse: Response): Reception => ({ reponse, effet: null });
 
 const echec = (statut: number, erreur: string, plus: Record<string, unknown> = {}): Resultat => ({
   statut,
@@ -45,16 +56,18 @@ function enReponse(r: Resultat, rejeu: boolean): Response {
 }
 
 /** Le nonce a-t-il déjà été vu ? Rejeu idempotent, ou conflit si le corps diffère. */
-async function nonceDejaVu(e: EntreeSignee): Promise<Response | null> {
+async function nonceDejaVu(e: EntreeSignee): Promise<Reception | null> {
   const vu = await prisma.siteVideoReception.findUnique({ where: { nonce: e.nonce } });
   if (!vu) return null;
   if (vu.corpsSha256 === e.corpsSha256) {
-    return enReponse(
-      { statut: vu.reponseStatut, corps: vu.reponseCorps as Record<string, unknown> },
-      true,
+    return sansEffet(
+      enReponse(
+        { statut: vu.reponseStatut, corps: vu.reponseCorps as Record<string, unknown> },
+        true,
+      ),
     );
   }
-  return reponseJson(409, { ok: false, erreur: "nonce_reutilise" });
+  return sansEffet(reponseJson(409, { ok: false, erreur: "nonce_reutilise" }));
 }
 
 /** Écrit (dans UNE transaction) ce que `decider` ordonne, plus la ligne de journal. */
@@ -62,7 +75,7 @@ async function ecrireEtJournaliser(
   e: EntreeSignee,
   decider: (tx: Prisma.TransactionClient) => Promise<Resultat>,
   studioVideoId: string | null,
-): Promise<Response> {
+): Promise<Reception> {
   try {
     const resultat = await prisma.$transaction(async (tx) => {
       const r = await decider(tx);
@@ -80,7 +93,7 @@ async function ecrireEtJournaliser(
       });
       return r;
     });
-    return enReponse(resultat, false);
+    return { reponse: enReponse(resultat, false), effet: resultat.effet ?? null };
   } catch (err) {
     // Deux requêtes simultanées du même nonce : la seconde relit la première.
     if (estUniciteViolee(err)) {
@@ -128,7 +141,7 @@ function donneesDe(p: PublicationVideo, e: EntreeSignee, maintenant: Date) {
   };
 }
 
-export async function recevoirPublication(e: EntreeSignee): Promise<Response> {
+export async function recevoirPublication(e: EntreeSignee): Promise<Reception> {
   const dejaVu = await nonceDejaVu(e);
   if (dejaVu) return dejaVu;
 
@@ -196,6 +209,12 @@ export async function recevoirPublication(e: EntreeSignee): Promise<Response> {
         return {
           statut: 200,
           studioVideoId: sid,
+          effet: {
+            type: "publication",
+            slug: p.slug,
+            theme: p.theme,
+            serieSlug: p.serie?.slug ?? null,
+          },
           corps: {
             ok: true,
             statut: "publiee",
@@ -222,6 +241,12 @@ export async function recevoirPublication(e: EntreeSignee): Promise<Response> {
       return {
         statut: 201,
         studioVideoId: sid,
+        effet: {
+          type: "publication",
+          slug: p.slug,
+          theme: p.theme,
+          serieSlug: p.serie?.slug ?? null,
+        },
         corps: {
           ok: true,
           statut: "publiee",
@@ -236,7 +261,7 @@ export async function recevoirPublication(e: EntreeSignee): Promise<Response> {
   );
 }
 
-export async function recevoirRetrait(e: EntreeSignee): Promise<Response> {
+export async function recevoirRetrait(e: EntreeSignee): Promise<Reception> {
   const dejaVu = await nonceDejaVu(e);
   if (dejaVu) return dejaVu;
 
@@ -281,9 +306,41 @@ export async function recevoirRetrait(e: EntreeSignee): Promise<Response> {
       return {
         statut: 200,
         studioVideoId,
+        effet: {
+          type: "retrait",
+          slug: existante.slug,
+          theme: existante.theme,
+          serieSlug: existante.serieSlug,
+        },
         corps: { ok: true, statut: "retiree", slug: existante.slug, rejeu: false },
       };
     },
     studioVideoIdBrut,
   );
+}
+
+/**
+ * Garde trace, dans la réponse ENREGISTRÉE au journal, d'un IndexNow qui n'a pas abouti :
+ * « indexnow_echec » ou « indexnow_non_configure ». Le studio a déjà reçu sa réponse (200/201) ;
+ * ceci n'est que la trace pour qui relit le journal. Ne lève jamais.
+ */
+export async function noterEchecIndexNow(
+  nonce: string,
+  motif: "echec" | "non_configure",
+): Promise<void> {
+  try {
+    const ligne = await prisma.siteVideoReception.findUnique({ where: { nonce } });
+    if (!ligne) return;
+    await prisma.siteVideoReception.update({
+      where: { nonce },
+      data: {
+        reponseCorps: {
+          ...(ligne.reponseCorps as Record<string, unknown>),
+          [`indexnow_${motif === "echec" ? "echec" : "non_configure"}`]: true,
+        } as Prisma.InputJsonValue,
+      },
+    });
+  } catch (err) {
+    console.error("[videos] trace IndexNow impossible au journal :", err);
+  }
 }

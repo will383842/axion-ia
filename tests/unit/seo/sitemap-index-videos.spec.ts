@@ -1,5 +1,6 @@
 // L'index des plans du site liste sitemap-videos.xml seulement s'il y a ≥ 1 vidéo publiée (W3.5).
 import { beforeEach, describe, expect, it, vi } from "vitest";
+// eslint-disable-next-line no-restricted-imports
 import { uneVideo } from "@/app/[locale]/videos/__tests__/fixture";
 
 const h = vi.hoisted(() => ({ videos: [] as unknown[] }));
@@ -26,6 +27,7 @@ vi.mock("@/app/sitemap-news-evergreen.xml/route", () => ({
 vi.mock("@/server/reviews/presence", () => ({ avisPublies: async () => false }));
 vi.mock("@/server/videos/lecture", () => ({ videosPubliees: async () => h.videos }));
 
+// eslint-disable-next-line no-restricted-imports
 import { GET } from "@/app/sitemap-index.xml/route";
 
 beforeEach(() => {

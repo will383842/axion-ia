@@ -2,13 +2,16 @@
 // sans vidéo retirée (la lecture ne rend que les publiées).
 import { readFileSync } from "node:fs";
 import { beforeEach, describe, expect, it, vi } from "vitest";
+// eslint-disable-next-line no-restricted-imports
 import { uneVideo } from "@/app/[locale]/videos/__tests__/fixture";
 
 const h = vi.hoisted(() => ({ videos: [] as unknown[] }));
 vi.mock("@/lib/seo", () => ({ SITE_URL: "https://axion-ia.com" }));
 vi.mock("@/server/videos/lecture", () => ({ videosPubliees: async () => h.videos }));
 
+// eslint-disable-next-line no-restricted-imports
 import { GET as llms } from "@/app/llms.txt/route";
+// eslint-disable-next-line no-restricted-imports
 import { GET as llmsFull } from "@/app/llms-full.txt/route";
 
 beforeEach(() => {

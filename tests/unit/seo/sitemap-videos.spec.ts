@@ -1,11 +1,13 @@
 // Sitemap des vidéos (lot W3) : motif de `sitemap-avis.xml`.
 import { readFileSync } from "node:fs";
 import { beforeEach, describe, expect, it, vi } from "vitest";
+// eslint-disable-next-line no-restricted-imports
 import { uneVideo } from "@/app/[locale]/videos/__tests__/fixture";
 
 const h = vi.hoisted(() => ({ videos: [] as unknown[] }));
 vi.mock("@/server/videos/lecture", () => ({ videosPubliees: async () => h.videos }));
 
+// eslint-disable-next-line no-restricted-imports
 import { GET } from "@/app/sitemap-videos.xml/route";
 
 beforeEach(() => {
