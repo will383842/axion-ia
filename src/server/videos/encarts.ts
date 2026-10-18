@@ -43,16 +43,38 @@ export function themeDuService(href: string): string | null {
 }
 
 /**
- * Thème d'une catégorie de blog, par mots du slug (les catégories viennent de la base, leur
- * liste n'est pas figée dans le code). Catégorie inconnue → pas d'encart.
+ * Mots (segments du slug) → thème. Table explicite : on compare des SEGMENTS entiers, jamais
+ * des sous-chaînes (« transformation » ne contient pas « formation » au sens de la table,
+ * « webinaire » n'est pas « web », « necessite » n'est pas « site »).
+ */
+const THEME_PAR_MOT: Readonly<Record<string, string>> = {
+  formation: "formations-ia",
+  formations: "formations-ia",
+  coaching: "coaching-ia",
+  audit: "audit-ia",
+  audits: "audit-ia",
+  implementation: "automatisation",
+  automatisation: "automatisation",
+  site: "sites-web-ia",
+  sites: "sites-web-ia",
+  saas: "sites-web-ia",
+  web: "sites-web-ia",
+};
+
+/**
+ * Thème d'une catégorie de blog (les catégories viennent de la base, leur liste n'est pas
+ * figée dans le code). Catégorie inconnue → pas d'encart. Le thème des formations suit le
+ * drapeau de divulgation de l'organisme de formation, comme `videoPourFormation`.
  */
 export function themeDeCategorieBlog(categorie: string | null | undefined): string | null {
-  const c = (categorie ?? "").toLowerCase();
-  if (!c) return null;
-  if (c.includes("formation")) return "formations-ia";
-  if (c.includes("coaching") || c.includes("1-to-1") || c.includes("un-a-un")) return "coaching-ia";
-  if (c.includes("audit")) return "audit-ia";
-  if (c.includes("implementation") || c.includes("automatisation")) return "automatisation";
-  if (c.includes("site") || c.includes("saas") || c.includes("web")) return "sites-web-ia";
-  return null;
+  const mots = (categorie ?? "").toLowerCase().split("-").filter(Boolean);
+  if (mots.length === 0) return null;
+  // « un-a-un » et « 1-to-1 » : expressions de plusieurs segments.
+  const c = mots.join("-");
+  const theme =
+    c.includes("un-a-un") || c.includes("1-to-1")
+      ? "coaching-ia"
+      : (mots.map((m) => THEME_PAR_MOT[m]).find(Boolean) ?? null);
+  if (theme === "formations-ia" && !isQualiopiPublicDisclosureEnabled()) return null;
+  return theme;
 }

@@ -20,6 +20,7 @@ import { revalidatePath, revalidateTag } from "next/cache";
 import { submitToIndexNow, type IndexNowResult } from "@/lib/indexnow";
 import { revalidateAndPurge } from "@/server/cache/revalidate-and-purge";
 import { EXPIRATION_IMMEDIATE } from "@/server/cache/expiration-immediate";
+import { THEMES } from "@/content/videos/themes";
 import { viderCacheVideos } from "./lecture";
 
 export interface EffetPublication {
@@ -38,12 +39,28 @@ export interface DepsApresPublication {
   viderCache?: () => void;
   revalidateTag?: (tag: string) => void;
   revalidatePath?: (chemin: string) => void;
+  /** Revalide TOUTES les pages d'un gabarit de route (`revalidatePath(gabarit, "page")`). */
+  revalidateGabarit?: (gabarit: string) => void;
   purgerEdge?: (chemins: ReadonlyArray<string>) => Promise<unknown>;
   indexNow?: (host: string, cle: string, urls: ReadonlyArray<string>) => Promise<IndexNowResult>;
   cleIndexNow?: string | undefined;
   siteUrl?: string;
   alerter?: (message: string, details: Record<string, unknown>) => void;
 }
+
+/**
+ * Pages HÔTES des encarts « En vidéo » : un retrait doit les vider elles aussi, sinon la
+ * vignette et le lien (vers un 410) restent servis jusqu'à l'échéance de l'ISR (24 h sur les
+ * 2 157 villes). Les pages de service et la page des formations sont des adresses fixes
+ * (revalidées et purgées à l'edge) ; villes, blog et fiches de formation sont des gabarits
+ * (revalidés d'un coup à l'origine : une purge d'edge par adresse y dépasserait le plafond de
+ * 30 URLs — leur copie d'edge expire à son `s-maxage`).
+ */
+export const GABARITS_HOTES: ReadonlyArray<string> = [
+  "/[locale]/implantations/[region]/[ville]",
+  "/[locale]/blog/[slug]",
+  "/[locale]/formations/[slug]",
+];
 
 /** Chemins publics touchés par la publication ou le retrait de cette vidéo. */
 export function urlsAImpacter(e: EffetPublication): string[] {
@@ -56,6 +73,8 @@ export function urlsAImpacter(e: EffetPublication): string[] {
     "/llms-full.txt",
     "/sitemap-index.xml",
     "/sitemap-videos.xml",
+    ...THEMES.map((t) => `/fr${t.service}`),
+    "/fr/formations",
     // Liste publique lue par le proxy pour le 410 (`s-maxage=300`) : purgée pour que le retrait
     // ne tarde pas.
     "/api/interne/videos/retirees",
@@ -96,6 +115,10 @@ export async function apresPublication(
   await etape("revalidatePath", () => {
     const revalider = deps.revalidatePath ?? ((c: string) => revalidatePath(c));
     for (const c of chemins) revalider(c);
+  });
+  await etape("revalidateGabarits", () => {
+    const revalider = deps.revalidateGabarit ?? ((g: string) => revalidatePath(g, "page"));
+    for (const g of GABARITS_HOTES) revalider(g);
   });
   // Purge de l'edge APRÈS l'invalidation de l'origine (jamais l'inverse), via le helper partagé.
   await etape("purgerEdge", () =>
