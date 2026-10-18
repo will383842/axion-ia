@@ -14,8 +14,8 @@ import { GET as getLlms } from "./llms.txt/route";
 import { GET as getLlmsFull } from "./llms-full.txt/route";
 
 const SORTIES = [
-  ["llms.txt", await getLlms().text()],
-  ["llms-full.txt", await getLlmsFull().text()],
+  ["llms.txt", await (await getLlms()).text()],
+  ["llms-full.txt", await (await getLlmsFull()).text()],
 ] as const;
 
 describe.each(SORTIES)("%s — sans ville, partout en France", (_nom, corps) => {
