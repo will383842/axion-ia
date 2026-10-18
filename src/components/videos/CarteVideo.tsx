@@ -4,7 +4,6 @@
  * de série, et les encarts « En vidéo » (W4). Ne doit importer AUCUN composant client :
  * `tests/unit/videos/aucun-js-client-dans-les-listes.spec.ts` le verrouille.
  */
-import Image from "next/image";
 import Link from "next/link";
 import { libelleDuree } from "@/content/videos/duree";
 import type { VideoPubliee } from "@/server/videos/lecture";
@@ -19,14 +18,17 @@ export function CarteVideo({ video }: { video: VideoPubliee }) {
         href={`/fr/videos/${video.slug}`}
         className="border-border bg-paper hover:border-terracotta/50 block overflow-hidden rounded-xl border transition-colors"
       >
-        <Image
+        {/* `<img>` natif et non `next/image` : l'affiche est déjà en AVIF, servie hors de l'optimiseur
+            (`unoptimized` revenait au même). `next/image` embarque son composant CLIENT : ~3,7 ko
+            de JS ajoutés à CHAQUE page qui porte une carte (2 157 pages villes avec les encarts). */}
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
           src={v.chemin}
           alt=""
           width={v.largeur ?? 960}
           height={v.hauteur ?? 720}
-          sizes="(max-width: 768px) 100vw, 280px"
           loading="lazy"
-          unoptimized
+          decoding="async"
           className="aspect-[4/3] w-full object-cover"
         />
         <span className="block p-3">
