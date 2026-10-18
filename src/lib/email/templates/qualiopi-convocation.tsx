@@ -113,7 +113,7 @@ export function QualiopiConvocationEmail({
       ) : null}
       {copie ? null : <Text style={emailStyles.paragraphStyle}>{t.kit}</Text>}
       {copie ? null : <Text style={emailStyles.paragraphStyle}>{t.emargement}</Text>}
-      {Array.isArray(p.amenagements) && p.amenagements.length > 0 ? (
+      {Array.isArray(p.amenagements) && p.amenagements.length > 0 && !copie ? (
         <Text style={emailStyles.paragraphStyle}>
           {locale === "fr" ? "Aménagements prévus pour vous : " : "Adjustments planned for you: "}
           {p.amenagements.join(" ; ")}.

@@ -134,6 +134,7 @@ import {
 } from "@/server/qualiopi/sessions/verrou-dossier-pur";
 import { ChecklistSession } from "@/features/admin-qualiopi/session-hub/ChecklistSession";
 import { AccesRefuse } from "@/components/admin/ui/AccesRefuse";
+import { LIBELLE_MODALITE_HYBRIDE } from "@/server/qualiopi/documents/libelles-enumerations";
 import { gardePage } from "@/server/auth/garde-page";
 
 export const dynamic = "force-dynamic";
@@ -149,7 +150,7 @@ export const metadata: Metadata = {
 const MODALITE_LABELS: Record<string, string> = {
   presentiel: "Présentiel",
   distanciel: "Distanciel",
-  hybride: "Hybride",
+  hybride: LIBELLE_MODALITE_HYBRIDE,
 };
 
 const FINANCEMENT_LABELS: Record<string, string> = {
