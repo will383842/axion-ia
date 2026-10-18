@@ -45,7 +45,7 @@ describe("<JsonLd>", () => {
   });
 
   it("n'ouvre jamais de balise : « < » est échappé (une transcription ne ferme pas le script)", () => {
-    const piege = "</script><a href=\"https://exemple.test\">cliquez</a>";
+    const piege = '</script><a href="https://exemple.test">cliquez</a>';
     const { container } = render(<JsonLd data={{ transcript: piege }} />);
     const script = container.querySelector('script[type="application/ld+json"]');
     expect(container.querySelector("a")).toBeNull();
