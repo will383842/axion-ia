@@ -12,6 +12,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { VslVideo } from "@/components/lp/VslVideo";
 import type { VideoPubliee } from "@/server/videos/lecture";
+import { mentionIa } from "@/server/videos/mention-ia";
 
 /** « 3 min 04 » — rassure avant le clic. */
 export function libelleDuree(secondes: number): string {
@@ -63,12 +64,19 @@ export function PageVideo({
   liees: ReadonlyArray<VideoPubliee>;
 }) {
   const f = video.fichiers;
+  const mention = mentionIa(video);
   const transcription = video.transcription
     ? video.transcription.split(/\n{2,}/).filter((l) => l.trim().length > 0)
     : [];
   return (
     <article className="mx-auto w-full max-w-4xl px-4 py-8 md:py-12">
       <h1 className="text-fg text-3xl font-bold tracking-tight md:text-4xl">{video.titre}</h1>
+
+      {mention ? (
+        <p className="bg-paper border-border text-fg-soft mt-4 rounded-lg border px-3 py-2 text-sm">
+          {mention}
+        </p>
+      ) : null}
 
       <div className="mt-6">
         <VslVideo

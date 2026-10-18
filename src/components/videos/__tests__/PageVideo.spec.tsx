@@ -56,3 +56,24 @@ describe("PageVideo — une page jamais pauvre (§6.5)", () => {
     expect(h).toContain("Deuxième paragraphe.");
   });
 });
+
+describe("mention IA (AI Act art. 50) — visible AVANT le lecteur", () => {
+  const cas: Array<[boolean, boolean, string | null]> = [
+    [false, false, null],
+    [true, false, "Voix de synthèse générée par IA."],
+    [false, true, "Présentateur numérique généré par IA."],
+    [true, true, "Vidéo réalisée avec un présentateur et une voix générés par IA."],
+  ];
+  it.each(cas)("voix=%s double=%s", (voix, double, attendu) => {
+    const h = rendre(uneVideo({ iaVoixGeneree: voix, iaDoubleNumerique: double }));
+    if (attendu === null) {
+      expect(h).not.toMatch(/générée? par IA|générés par IA/);
+      return;
+    }
+    expect(h).toContain(attendu);
+    // dans le texte de la page, avant la balise <video>
+    expect(h.indexOf(attendu)).toBeLessThan(h.indexOf("<video"));
+    // pas seulement dans un attribut title
+    expect(h).not.toContain(`title="${attendu}"`);
+  });
+});
