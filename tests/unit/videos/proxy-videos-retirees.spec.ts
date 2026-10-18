@@ -128,4 +128,18 @@ describe("branchement dans le proxy", () => {
     const source = readFileSync("src/proxy.ts", "utf8");
     expect(source).toMatch(/reponseGoneSiRetiree\(/);
   });
+
+  it("N requêtes simultanées à l'échéance → UN SEUL fetch (rafraîchissement en vol partagé)", async () => {
+    const f = liste("ancienne-video\n");
+    const appels = Array.from({ length: 20 }, () =>
+      reponseGoneSiRetiree("/fr/videos/ancienne-video", {
+        fetchImpl: f,
+        origine: ORIGINE,
+        maintenant: () => 1_000,
+      }),
+    );
+    const reponses = await Promise.all(appels);
+    expect(f).toHaveBeenCalledTimes(1);
+    expect(reponses.every((r) => r?.status === 410)).toBe(true);
+  });
 });
