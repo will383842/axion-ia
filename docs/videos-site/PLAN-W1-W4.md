@@ -245,13 +245,13 @@ max-age=31536000, immutable` posé par la règle Cloudflare. Une nouvelle versio
 Appliquées à **tous** les textes reçus (`titre`, `description`, `resume`, `aRetenir`,
 `questions`, `chapitres[].titre`, `serie.titre`, `transcription`) :
 
-| Règle | Détection |
-| -------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------- |
-| Jamais « Grenoble » | `/grenoble/i` (la mention RCS des mentions légales est hors de ce flux et n'est pas touchée) |
-| Jamais « Aucun gain garanti » | `/aucun\s+gain\s+garanti/i` |
-| Jamais « certifié(e) Qualiopi » sans réglage | `/certifi\S\*\s+qualiopi                                                                                                                                                                             | qualiopi\s+certifi/i`refusé tant que`isQualiopiCertificationObtenue()`est`false` |
-| Aucun nom ni logo de client | attestation `aucunNomNiLogoDeClient: true` **obligatoire** + liste noire optionnelle `src/content/videos/termes-interdits.ts` (vide dans le dépôt public, alimentable sans y écrire de nom : **D9**) |
-| Financements (CPF, OPCO…) | mêmes règles que `checkTranslationBannedWords()` quand `isQualiopiPublicDisclosureEnabled()` est `false` |
+| Règle                                        | Détection                                                                                                                                                                           |
+| -------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Jamais « Grenoble »                          | `/grenoble/i` (la mention RCS des mentions légales est hors de ce flux et n'est pas touchée)                                                                                        |
+| Jamais « Aucun gain garanti »                | `/aucun\s+gain\s+garanti/i`                                                                                                                                                         |
+| Jamais « certifié(e) Qualiopi » sans réglage | « certifi… Qualiopi » ou « Qualiopi … certifi… », insensible à la casse, refusé tant que `isQualiopiCertificationObtenue()` est `false`                                             |
+| Aucun nom ni logo de client                  | attestation `aucunNomNiLogoDeClient: true` **obligatoire** + liste noire optionnelle lue au runtime dans une variable d'environnement (jamais écrite dans le dépôt public : **D9**) |
+| Financements (CPF, OPCO…)                    | mêmes règles que `checkTranslationBannedWords()` quand `isQualiopiPublicDisclosureEnabled()` est `false`                                                                            |
 
 Le site **re-vérifie au rendu** (une page ne rend jamais « certifié Qualiopi » si le
 réglage est retombé à `false` entre-temps : la garde est appliquée à la lecture, pas
