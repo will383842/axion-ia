@@ -77,6 +77,7 @@ describe("setEnrollmentAdaptationsAction — la réponse ferme les alertes", () 
     });
     expect(codesFermes()).toEqual([
       { code: "adaptation_reponse_non_consignee", cibleId: ENR },
+      { code: "adaptation_cas_complexe", cibleId: ENR },
       { code: "besoin_adaptation_declare", cibleId: TRAINEE },
     ]);
   });
@@ -106,7 +107,11 @@ describe("setEnrollmentAdaptationsAction — la réponse ferme les alertes", () 
       id: ENR,
       adaptationsRealisees: "Salle au rez-de-chaussée",
     });
-    expect(codesFermes()).toEqual([{ code: "adaptation_reponse_non_consignee", cibleId: ENR }]);
+    expect(codesFermes()).toEqual([
+      { code: "adaptation_reponse_non_consignee", cibleId: ENR },
+      // Chantier QNC, L04 — la réponse écrite ferme aussi le cas complexe.
+      { code: "adaptation_cas_complexe", cibleId: ENR },
+    ]);
     const where = (enrollmentFindMany.mock.calls[0]?.[0] as { where: Record<string, unknown> })
       .where;
     expect(where).toMatchObject({ traineeId: TRAINEE, id: { not: ENR } });
@@ -137,7 +142,11 @@ describe("setEnrollmentAdaptationsAction — la réponse ferme les alertes", () 
         : [{ targetId: TRAINEE, createdAt: new Date("2026-09-10T08:00:00.000Z") }],
     );
     await setEnrollmentAdaptationsAction({ id: ENR, adaptationsRealisees: "Sous-titrage" });
-    expect(codesFermes()).toEqual([{ code: "adaptation_reponse_non_consignee", cibleId: ENR }]);
+    expect(codesFermes()).toEqual([
+      { code: "adaptation_reponse_non_consignee", cibleId: ENR },
+      // Chantier QNC, L04 — la réponse écrite ferme aussi le cas complexe.
+      { code: "adaptation_cas_complexe", cibleId: ENR },
+    ]);
 
     // Contre-épreuve : la même inscription, réponse POSTÉRIEURE à la déclaration
     // → elle est couverte, et l'alerte du geste se ferme.
@@ -156,6 +165,7 @@ describe("setEnrollmentAdaptationsAction — la réponse ferme les alertes", () 
     await setEnrollmentAdaptationsAction({ id: ENR, adaptationsRealisees: "Sous-titrage" });
     expect(codesFermes()).toEqual([
       { code: "adaptation_reponse_non_consignee", cibleId: ENR },
+      { code: "adaptation_cas_complexe", cibleId: ENR },
       { code: "besoin_adaptation_declare", cibleId: TRAINEE },
     ]);
   });

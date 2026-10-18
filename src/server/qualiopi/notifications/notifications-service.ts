@@ -26,6 +26,7 @@
 import { prisma } from "@/lib/prisma";
 import { destinataireAlertesInternes } from "@/lib/destinataires-internes";
 import { enqueueEmail } from "@/server/queue/queues";
+import { consignesConvocationPourInscription } from "@/server/qualiopi/adaptation/automatique/remises";
 import { creerTokenInscription } from "@/server/qualiopi/emargement/token-service";
 import { formatLieu, lienVisioRemis } from "@/server/qualiopi/lieu/format-lieu";
 // « — présentiel — » dans la phrase, jamais l'énumération brute « presentiel ».
@@ -227,6 +228,8 @@ export async function envoyerConvocation(enrollmentId: string): Promise<boolean>
     where: { id: enrollmentId },
     select: {
       id: true,
+      // Chantier QNC, L04 — les consignes d'aménagement de la convocation.
+      adaptationsRealisees: true,
       trainee: { select: { id: true, email: true, nom: true, prenom: true } },
       session: {
         select: {
@@ -270,11 +273,19 @@ export async function envoyerConvocation(enrollmentId: string): Promise<boolean>
     );
   }
 
+  // Chantier QNC, L04 (`qualiopi.adaptation.actif`) — les mesures retenues
+  // rejoignent la convocation. Éteint, ou sans mesure : rien ne change.
+  const amenagements = await consignesConvocationPourInscription(
+    enrollment.id,
+    enrollment.adaptationsRealisees,
+  );
+
   const envoi = await enqueueEmail(
     "qualiopi-convocation",
     trainee.email,
     "fr",
     {
+      ...(amenagements !== null ? { amenagements } : {}),
       stagiairePrenomNom: `${trainee.prenom} ${trainee.nom}`,
       titreFormation: session.titreSession,
       dateDebut: fmtDate(session.dateDebut),

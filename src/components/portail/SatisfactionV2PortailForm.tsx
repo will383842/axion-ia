@@ -18,6 +18,12 @@ import {
   MISE_EN_PRATIQUE,
 } from "@/server/qualiopi/pedagogie/questionnaire-contenu";
 
+import {
+  CLE_AMENAGEMENTS_UTILES,
+  MESSAGE_AMENAGEMENTS_SANS_REPONSE,
+  QuestionAmenagementsUtiles,
+} from "./QuestionAmenagementsUtiles";
+
 type ActionResult<T> = { data: T } | { error: string };
 
 const NIVEAUX = [
@@ -30,6 +36,12 @@ interface Props {
   questionnaireId: string;
   type: "satisfaction_chaud" | "satisfaction_froid";
   objectifs: string[];
+  /**
+   * Chantier QNC, L04 — poser « les aménagements vous ont-ils été utiles ? »,
+   * comme la v1 : même bloc, même clé. Le contenu versionné ne la déclare pas ;
+   * l'action l'ajoute APRÈS `assainirReponses`, qui sinon la retirerait.
+   */
+  questionAmenagements?: boolean;
   soumettreAction: (input: {
     questionnaireId: string;
     reponses: Record<string, unknown>;
@@ -76,6 +88,7 @@ export function SatisfactionV2PortailForm({
   questionnaireId,
   type,
   objectifs,
+  questionAmenagements = false,
   soumettreAction,
 }: Props): React.ReactElement {
   const questions = CONTENUS_QUESTIONNAIRE[type][1]!.questions;
@@ -87,6 +100,7 @@ export function SatisfactionV2PortailForm({
   const [choix, setChoix] = useState("");
   const [frein, setFrein] = useState("");
   const [commentaire, setCommentaire] = useState("");
+  const [amenagementsUtiles, setAmenagementsUtiles] = useState<boolean | null>(null);
   const [isPending, startTransition] = useTransition();
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
@@ -96,6 +110,10 @@ export function SatisfactionV2PortailForm({
     setError(null);
     if (note === null) {
       setError("Indiquez votre satisfaction globale.");
+      return;
+    }
+    if (questionAmenagements && amenagementsUtiles === null) {
+      setError(MESSAGE_AMENAGEMENTS_SANS_REPONSE);
       return;
     }
     startTransition(async () => {
@@ -110,6 +128,9 @@ export function SatisfactionV2PortailForm({
           ),
           ...(frein.trim() ? { frein: frein.trim() } : {}),
           ...(commentaire.trim() ? { commentaire: commentaire.trim() } : {}),
+          ...(questionAmenagements && amenagementsUtiles !== null
+            ? { [CLE_AMENAGEMENTS_UTILES]: amenagementsUtiles }
+            : {}),
         },
       });
       if ("error" in result) setError(result.error);
@@ -221,6 +242,15 @@ export function SatisfactionV2PortailForm({
           />
         </div>
       ) : null}
+
+      {questionAmenagements && (
+        <QuestionAmenagementsUtiles
+          questionnaireId={questionnaireId}
+          valeur={amenagementsUtiles}
+          onChange={setAmenagementsUtiles}
+          desactive={isPending}
+        />
+      )}
 
       <div>
         <label

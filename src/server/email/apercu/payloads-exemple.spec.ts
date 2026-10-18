@@ -150,7 +150,10 @@ describe("le jeu de données d'exemple couvre tous les gabarits", () => {
     // 🔴 2026-10-16 — RELEVÉ À 71 : `recueil-besoin` (chantier QNC, lot L03), le
     // questionnaire de recueil du besoin envoyé à l'entreprise (premier envoi et
     // relances, UN fichier). Ses champs sont tous facultatifs.
-    expect(tous.length).toBe(71);
+    // 🔴 2026-10-17 — RELEVÉ À 74 : chantier QNC, L04 — `qualiopi-liste-stagiaires`
+    // (liste demandée à l'entreprise), `qualiopi-adaptation-stagiaire` et
+    // `qualiopi-adaptation-formateur` (aménagements). Champs tous facultatifs.
+    expect(tous.length).toBe(74);
   });
 
   it.each(tous.map((g) => g.nom))("%s : tous ses champs requis ont une valeur d'exemple", (nom) => {
