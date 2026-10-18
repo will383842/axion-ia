@@ -93,6 +93,8 @@ export interface FunnelProps {
   intervention?: string;
   /** Service source (audit, interventions, implementation). */
   fromService?: string;
+  /** Slug de la vidéo regardée (pages `/fr/videos/*`). */
+  video?: string;
   /** Ville pSEO d'origine (lowercased). */
   fromCity?: string;
   /** Région pSEO d'origine (lowercased). */

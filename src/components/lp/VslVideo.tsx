@@ -53,6 +53,18 @@ interface VslVideoProps {
   tone?: "dark" | "light";
   /** Émet « Video Progress » à 25 / 50 / 75 / 95 %. Défaut : non (comportement historique). */
   suiviProgression?: boolean;
+  /**
+   * Fichier servi hors de l'optimiseur d'images de Next (vidéos du site, `/medias/…`) :
+   * l'affiche est déjà au bon format (AVIF) et le fichier n'est pas dans `public/`, donc
+   * l'optimiseur ne pourrait pas le lire depuis l'origine. Défaut : non.
+   */
+  afficheNonOptimisee?: boolean;
+  /** Dimensions de l'affiche : fige le ratio de la boîte (CLS = 0). Défaut : 16:9. */
+  dimensionsAffiche?: { largeur: number; hauteur: number };
+  /** Légende masquée visuellement (le titre est déjà le `h1` de la page). */
+  legendeMasquee?: boolean;
+  /** Slug de la vidéo du site, joint aux événements Plausible (propriété `video`). */
+  videoSlug?: string;
 }
 
 export function VslVideo({
@@ -67,6 +79,10 @@ export function VslVideo({
   transcription,
   suiviProgression = false,
   tone = "dark",
+  afficheNonOptimisee = false,
+  dimensionsAffiche,
+  legendeMasquee = false,
+  videoSlug,
 }: VslVideoProps) {
   const videoRef = React.useRef<HTMLVideoElement>(null);
   const [started, setStarted] = React.useState(false);
@@ -81,21 +97,25 @@ export function VslVideo({
     for (const jalon of JALONS) {
       if (pct >= jalon && !jalonsEmis.current.has(jalon)) {
         jalonsEmis.current.add(jalon);
-        trackFunnel("Video Progress", { landing, step: `p${jalon}` });
+        trackFunnel("Video Progress", {
+          landing,
+          step: `p${jalon}`,
+          ...(videoSlug ? { video: videoSlug } : {}),
+        });
       }
     }
-  }, [landing]);
+  }, [landing, videoSlug]);
 
   const play = React.useCallback(() => {
     const video = videoRef.current;
     if (!video) return;
     setStarted(true);
-    trackFunnel("Landing Video Played", { landing });
+    trackFunnel("Landing Video Played", { landing, ...(videoSlug ? { video: videoSlug } : {}) });
     // `play()` renvoie une promesse rejetée si le navigateur refuse (économie
     // de données, politique d'autoplay). On l'avale : les contrôles natifs
     // restent affichés, l'utilisateur relance lui-même.
     void video.play().catch(() => undefined);
-  }, [landing]);
+  }, [landing, videoSlug]);
 
   return (
     <figure className={cn("min-w-0", className)}>
@@ -103,6 +123,7 @@ export function VslVideo({
         className={cn(
           "mb-3 text-center text-[14px] font-bold tracking-tight",
           tone === "light" ? "text-fg" : "text-mocha-fg",
+          legendeMasquee && "sr-only",
         )}
       >
         {label}
@@ -117,6 +138,11 @@ export function VslVideo({
             "relative w-full",
             ratio === "4:5-mobile" ? "aspect-[4/5] md:aspect-video" : "aspect-video",
           )}
+          style={
+            dimensionsAffiche
+              ? { aspectRatio: `${dimensionsAffiche.largeur} / ${dimensionsAffiche.hauteur}` }
+              : undefined
+          }
         >
           <video
             ref={videoRef}
@@ -161,6 +187,7 @@ export function VslVideo({
                 fill
                 sizes="(max-width: 768px) 100vw, 640px"
                 priority
+                {...(afficheNonOptimisee ? { unoptimized: true } : {})}
                 className="object-cover"
               />
               <span
