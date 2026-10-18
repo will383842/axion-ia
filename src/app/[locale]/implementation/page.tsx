@@ -12,6 +12,7 @@
  * Aucun montant : prix retirés de la metadata, du Service JSON-LD et du HowTo.
  */
 
+import { EncartEnVideo } from "@/components/videos/EncartEnVideo";
 import type { Metadata } from "next";
 import { setRequestLocale } from "next-intl/server";
 import { hasLocale } from "next-intl";
@@ -259,6 +260,9 @@ export default async function ImplementationListing({ params }: Props) {
 
       {/* AVIS CLIENTS — quotes propres à l'implémentation (anti-duplicate /audit) */}
       <ServiceReviewsSection serviceLine="implementations" />
+
+      {/* Encart « En vidéo » (lots W3-W4, ADR 0070) : rien tant qu'aucune vidéo du thème n'est publiée. */}
+      <EncartEnVideo theme="automatisation" />
 
       {/* L'IMPLÉMENTATION & AGENTS IA PARTOUT EN FRANCE (pSEO levier 3) */}
       <LocalCoverageSection

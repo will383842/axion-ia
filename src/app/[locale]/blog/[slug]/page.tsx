@@ -1,4 +1,6 @@
 import type { Metadata } from "next";
+import { EncartEnVideo } from "@/components/videos/EncartEnVideo";
+import { themeDeCategorieBlog } from "@/server/videos/encarts";
 import { setRequestLocale } from "next-intl/server";
 import { hasLocale } from "next-intl";
 import { notFound, permanentRedirect } from "next/navigation";
@@ -513,6 +515,7 @@ export default async function BlogArticle({ params }: Props) {
     loadAdjacentArticles(slug, loc, view.categorySlug),
     loadPeopleAlsoAsk(slug, loc),
   ]);
+  const themeEncart = themeDeCategorieBlog(view.categorySlug);
 
   // Maillage ville (2026-06-21) — lien RETOUR article → page locale, si l'article
   // est ancré sur une ville indexable. Complète le maillage bidirectionnel (la
@@ -799,6 +802,9 @@ export default async function BlogArticle({ params }: Props) {
 
       {/* Refonte templates 2026-06-22 — article précédent / suivant (série). */}
       <ArticlePrevNext prev={adjacent.prev} next={adjacent.next} locale={loc} />
+
+      {/* Encart « En vidéo » (ADR 0070) : thème déduit de la catégorie ; sans thème ou sans vidéo, rien. */}
+      {themeEncart ? <EncartEnVideo theme={themeEncart} /> : null}
 
       {/* Refonte templates 2026-06-22 — capture newsletter (réutilise l'inscription
           existante du site, double opt-in + Turnstile). */}

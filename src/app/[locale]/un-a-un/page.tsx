@@ -14,6 +14,7 @@
 // CTAs alignés sur /interventions/collectives : primary « Réserver un appel »
 // (/appel) + outline « Nous écrire » (/contact).
 
+import { EncartEnVideo } from "@/components/videos/EncartEnVideo";
 import type { Metadata } from "next";
 import Image from "next/image";
 import { setRequestLocale } from "next-intl/server";
@@ -1020,6 +1021,9 @@ export default async function UnAUnHubPage({ params }: Props) {
       <RelatedKnowledge service="un-a-un" />
 
       <VisibiliteCallout isFr={isFr} />
+
+      {/* Encart « En vidéo » (ADR 0070) : rien tant qu'aucune vidéo du thème n'est publiée. */}
+      <EncartEnVideo theme="coaching-ia" />
 
       <CtaBlock
         eyebrow={isFr ? "Coaching IA individuel" : "Individual AI coaching"}
