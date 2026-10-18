@@ -606,7 +606,13 @@ async function issue(appel: () => Promise<unknown>): Promise<string> {
     return "acceptee";
   } catch (e) {
     const m = e instanceof Error ? e.message : String(e);
-    if (m === "unauthorized" || m === `REDIRECT:${FORMATEUR_CONNEXION_PATH}`) return "refusee";
+    if (
+      m === "unauthorized" ||
+      m === `REDIRECT:${FORMATEUR_CONNEXION_PATH}` ||
+      m === `REDIRECT:${FORMATEUR_CONNEXION_PATH}?erreur=session`
+    ) {
+      return "refusee";
+    }
     return `exception:${m}`;
   }
 }

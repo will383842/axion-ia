@@ -30,6 +30,8 @@ export interface ConfigField {
   isFallback?: boolean;
   /** Libellés lisibles des options (ex. exoneration_261 → « Exonéré formation »). */
   optionLabels?: Record<string, string>;
+  /** Message court : le champ est verrouillé pour ce rôle (le serveur refuse de toute façon). */
+  verrouille?: string;
 }
 
 export interface QualiopiConfigFormProps {
@@ -113,12 +115,13 @@ export function QualiopiConfigForm({ fields }: QualiopiConfigFormProps): React.R
               )}
             </span>
             <span className={descCls}>{f.description}</span>
+            {f.verrouille && <span className={descCls}>🔒 {f.verrouille}</span>}
             {f.options ? (
               <select
                 id={`cfg-${f.key}`}
                 value={values[f.key] ?? ""}
                 onChange={(e) => setValues((prev) => ({ ...prev, [f.key]: e.target.value }))}
-                disabled={isPending}
+                disabled={isPending || Boolean(f.verrouille)}
                 className={inputCls}
               >
                 {f.options.map((opt) => (
@@ -134,7 +137,7 @@ export function QualiopiConfigForm({ fields }: QualiopiConfigFormProps): React.R
                 step={f.isNumber ? "any" : undefined}
                 value={values[f.key] ?? ""}
                 onChange={(e) => setValues((prev) => ({ ...prev, [f.key]: e.target.value }))}
-                disabled={isPending}
+                disabled={isPending || Boolean(f.verrouille)}
                 className={inputCls}
               />
             )}

@@ -21,13 +21,14 @@
 
 import type { Metadata } from "next";
 import Link from "next/link";
-import { notFound } from "next/navigation";
 
 import { AdminBadge } from "@/components/admin/ui/AdminBadge";
 import { AdminCard } from "@/components/admin/ui/AdminCard";
 import { AdminPageHeader } from "@/components/admin/ui/AdminPageHeader";
 import { AdminPageShell } from "@/components/admin/ui/AdminPageShell";
 import { AccesRefuse } from "@/components/admin/ui/AccesRefuse";
+import { EcranPasEncoreOuvert } from "@/components/admin/qualiopi/EcranPasEncoreOuvert";
+import { INTERRUPTEURS_ENTREE } from "@/server/qualiopi/formateurs-independants/interrupteurs";
 import { CopiesVirement } from "@/components/admin/qualiopi/remuneration/CopiesVirement";
 import {
   prevenirVirementEnAttenteFormAction,
@@ -84,7 +85,15 @@ export default async function VirementsAFairePage({ params, searchParams }: Page
   if (!acces.autorise) {
     return <AccesRefuse motif={acces.motif} retourHref={`/${locale}/${adminPrefix}`} />;
   }
-  if (!(await lireEtatsEntree()).virements_a_faire) notFound();
+  if (!(await lireEtatsEntree()).virements_a_faire) {
+    return (
+      <EcranPasEncoreOuvert
+        titre="Virements à faire"
+        interrupteurs={[INTERRUPTEURS_ENTREE.virements_a_faire.libelle]}
+        base={`/${locale}/${adminPrefix}`}
+      />
+    );
+  }
 
   const maintenant = new Date();
   const vue = await lireVirementsSortants(maintenant, echeanceEffective);
