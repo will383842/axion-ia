@@ -33,6 +33,8 @@ import { ArrowLeft, Check } from "lucide-react";
 import { routing } from "@/i18n/routing";
 import { Container } from "@/components/layout/Container";
 import { FormulaireReservation } from "@/components/booking/FormulaireReservation";
+import { EchangeFormateurFerme } from "@/components/booking/EchangeFormateurFerme";
+import { echangeFormateurOuvert } from "@/server/calendly/echange-formateur-ouvert";
 import { RemonterAuMessage } from "@/components/booking/RemonterAuMessage";
 import { resoudreEventTypePourReservation } from "@/server/calendly/availability";
 import { lireLaRepriseDuCreneau } from "@/server/calendly/reprise-formulaire";
@@ -126,6 +128,11 @@ export default async function ReserverPage({ params, searchParams }: Props) {
   // Le calendrier DU BON TYPE : l'adresse historique pour les deux types publics,
   // la leur pour l'échange apporteur et le salon (`lienDuCalendrier`).
   const calendrier = lienDuCalendrier(locale, choix, depuis, suivi);
+
+  // L'échange formateur fermé n'a ni formulaire ni redirection : le message.
+  if (choix === "formateur" && !(await echangeFormateurOuvert())) {
+    return <EchangeFormateurFerme retour={`/${locale}/appel`} />;
+  }
 
   // Le drapeau d'abord : tant qu'il est éteint, cette route n'existe pas pour
   // le visiteur, et les créneaux continuent de pointer vers Calendly.

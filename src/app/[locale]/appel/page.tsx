@@ -9,6 +9,8 @@ import { Link } from "@/i18n/navigation";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { JsonLd } from "@/components/marketing/JsonLd";
 import { buildProductMetadata, buildServiceJsonLd, SITE_URL } from "@/lib/seo";
+import { EchangeFormateurFerme } from "@/components/booking/EchangeFormateurFerme";
+import { echangeFormateurOuvert } from "@/server/calendly/echange-formateur-ouvert";
 import { CalendlyInlineWidget } from "@/components/booking/CalendlyInlineWidget";
 import { reservationDirecteActive } from "@/server/calendly/formulaire-reservation";
 import { CalendlyEventCapture } from "@/components/booking/CalendlyEventCapture";
@@ -155,6 +157,12 @@ export default async function AppelPage({ params, searchParams }: Props) {
 
   const choix = lireChoixRendezVous(sp[PARAM_RDV]);
   const depuis = lireDepuis(sp[PARAM_DEPUIS]);
+  // `formateurs.echange_ouvert` éteint (ou illisible) : aucune réservation de
+  // l'échange formateur, donc aucune résolution ni lien Calendly. Les autres
+  // choix ne lisent pas l'interrupteur.
+  if (choix === "formateur" && !(await echangeFormateurOuvert())) {
+    return <EchangeFormateurFerme retour={`/${locale}/appel`} />;
+  }
   // Les UTM d'ARRIVÉE (L5a) : lus une fois, bornés, puis recopiés par chaque
   // lien du parcours — sans quoi le premier clic effaçait l'attribution.
   const suivi = lireSuiviArrivee(sp);
