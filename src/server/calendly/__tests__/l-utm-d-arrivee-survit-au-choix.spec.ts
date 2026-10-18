@@ -178,7 +178,7 @@ describe("🔴 chaque lien du parcours porte l'arrivée", () => {
 });
 
 /** Ce qui part chez Calendly pour une URL d'arrivée. */
-describe("🔑 L2-09 · `utm_content` conservé, `depuis` dans `utm_term`", () => {
+describe("🔑 `utm_content` conservé, `depuis` dans `utm_term`", () => {
   const CAS: ReadonlyArray<[string, string, Record<string, string | null>]> = [
     [
       "conforme",
