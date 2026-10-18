@@ -122,6 +122,8 @@ describe("correspondances thème", () => {
     ["sites-web-augmentes", "sites-web-ia"],
     ["actualites-du-mois", null],
     // Comparaison par SEGMENTS de mot, jamais par sous-chaîne.
+    ["chacun-a-une-place", null],
+    ["un-a-un-premium", "coaching-ia"],
     ["transformation-numerique", null],
     ["webinaire-du-mois", null],
     ["necessite-de-former", null],
