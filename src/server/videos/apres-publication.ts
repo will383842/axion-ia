@@ -18,7 +18,7 @@
 import * as Sentry from "@sentry/nextjs";
 import { revalidatePath, revalidateTag } from "next/cache";
 import { submitToIndexNow, type IndexNowResult } from "@/lib/indexnow";
-import { revalidateAndPurge } from "@/server/cache/revalidate-and-purge";
+import { purgerToutEdge, revalidateAndPurge } from "@/server/cache/revalidate-and-purge";
 import { EXPIRATION_IMMEDIATE } from "@/server/cache/expiration-immediate";
 import { THEMES } from "@/content/videos/themes";
 import { viderCacheVideos } from "./lecture";
@@ -42,6 +42,8 @@ export interface DepsApresPublication {
   /** Revalide TOUTES les pages d'un gabarit de route (`revalidatePath(gabarit, "page")`). */
   revalidateGabarit?: (gabarit: string) => void;
   purgerEdge?: (chemins: ReadonlyArray<string>) => Promise<unknown>;
+  /** Purge LARGE de l'edge, au retrait seulement (pages hôtes des encarts). */
+  purgerEdgeLarge?: () => Promise<unknown>;
   indexNow?: (host: string, cle: string, urls: ReadonlyArray<string>) => Promise<IndexNowResult>;
   cleIndexNow?: string | undefined;
   siteUrl?: string;
@@ -54,7 +56,7 @@ export interface DepsApresPublication {
  * 2 157 villes). Les pages de service et la page des formations sont des adresses fixes
  * (revalidées et purgées à l'edge) ; villes, blog et fiches de formation sont des gabarits
  * (revalidés d'un coup à l'origine : une purge d'edge par adresse y dépasserait le plafond de
- * 30 URLs — leur copie d'edge expire à son `s-maxage`).
+ * 30 URLs : leur copie d'edge est vidée par la purge LARGE du retrait, cf. `apresPublication`).
  */
 export const GABARITS_HOTES: ReadonlyArray<string> = [
   "/[locale]/implantations/[region]/[ville]",
@@ -126,6 +128,15 @@ export async function apresPublication(
       ? deps.purgerEdge(chemins)
       : revalidateAndPurge(chemins, () => undefined, "videos"),
   );
+
+  // RETRAIT seulement (événement rare) : les copies d'edge des pages hôtes (2 157 villes,
+  // articles, fiches — `s-maxage` jusqu'à 24 h) ne se purgent pas par adresse. Purge large,
+  // après la revalidation de l'origine. Une publication ne la déclenche jamais.
+  if (effet.type === "retrait") {
+    await etape("purgerEdgeLarge", () =>
+      deps.purgerEdgeLarge ? deps.purgerEdgeLarge() : purgerToutEdge("videos-retrait"),
+    );
+  }
 
   // IndexNow : l'URL de la page seulement.
   const cle = "cleIndexNow" in deps ? deps.cleIndexNow : process.env.INDEXNOW_KEY;
