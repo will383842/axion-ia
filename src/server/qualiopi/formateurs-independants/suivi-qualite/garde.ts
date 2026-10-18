@@ -4,13 +4,15 @@
  * suspension après une satisfaction sous le seuil, réévaluation annuelle échue.
  *
  * Module NEUTRE (le worker charge la garde). Interrupteur `formateurs.suivi_qualite`
- * éteint : rien n'est lu, rien n'est refusé. Allumé : ÉCHOUE FERMÉE.
+ * éteint : rien n'est lu, rien n'est refusé. Allumé : ÉCHOUE FERMÉE. Les seuils sont les
+ * réglages de la console ; illisibles, ce sont les défauts (jamais plus permissifs).
  */
 
 import { prisma } from "@/lib/prisma";
 
 import type { MissionEnJeu } from "../montant-mission-lecture";
 import { lireAllumageSuiviQualite, lireFaitsSuiviQualite } from "./lecture";
+import { lireReglagesSuiviQualite } from "./reglages-lecture";
 import { MANQUES_SUIVI_QUALITE, manquesSuiviQualite } from "./regles";
 
 export async function manquesDuSuiviQualite(
@@ -33,10 +35,18 @@ export async function manquesDuSuiviQualite(
   }
   if (allumeLe === null) return [];
   try {
-    const f = await lireFaitsSuiviQualite(trainerId, allumeLe);
+    const [f, reglages] = await Promise.all([
+      lireFaitsSuiviQualite(trainerId, allumeLe),
+      lireReglagesSuiviQualite(),
+    ]);
     if (!f.trouve) return [MANQUES_SUIVI_QUALITE.erreur];
     const sessionId = sessionDeLaMissionEnJeu(enJeu);
-    return manquesSuiviQualite(f, sessionId === undefined ? undefined : { sessionId }, maintenant);
+    return manquesSuiviQualite(
+      f,
+      sessionId === undefined ? undefined : { sessionId },
+      maintenant,
+      reglages,
+    );
   } catch {
     return [MANQUES_SUIVI_QUALITE.erreur];
   }

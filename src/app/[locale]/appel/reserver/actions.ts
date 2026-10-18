@@ -56,7 +56,6 @@ import {
   parametresDuChoix,
   provenanceEnBloc,
   resoudreChoix,
-  utmContentDuChoix,
   avecParametre,
   lienDuCalendrier,
 } from "@/server/calendly/choix-rendez-vous";
@@ -252,8 +251,6 @@ export async function soumettreLaReservation(fd: FormData): Promise<void> {
     // parcours si elle porte une UTM, sinon celle du cookie (réécrit à chaque
     // URL avec UTM, donc la DERNIÈRE vue). Jamais un mélange des deux.
     ...provenanceEnBloc(suivi, utm),
-    // Le BOUTON qui a mené ici — mesure « quel bouton rapporte ».
-    utmContent: choixExplicite ? utmContentDuChoix(choixExplicite, depuis) : null,
     // Les formats DE CE TYPE, jugés comme la page du formulaire les a annoncés.
     formats: formatsProposes(choix, et.lieux?.formats),
     adresseDuLieu: et.lieux?.adresse ?? null,

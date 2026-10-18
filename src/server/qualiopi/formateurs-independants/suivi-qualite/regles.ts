@@ -14,7 +14,8 @@
  *
  * 🔑 Jamais rétroactif : seules comptent les missions qui COMMENCENT le jour de
  * l'allumage ou après, et une échéance de réévaluation déjà dépassée est reportée.
- * 🔑 Seuils et délais : `reglages.ts`, nulle part ailleurs.
+ * 🔑 Seuils et délais : RÉGLÉS en console, passés en dernier paramètre par les lecteurs
+ * (`reglages-lecture.ts`) ; à défaut, les défauts de `reglages.ts`, nulle part ailleurs.
  *
  * Module neutre (ni `server-only`, ni Next, ni Prisma) : le worker le lit.
  */
@@ -22,9 +23,14 @@
 import { addMonths } from "@/server/qualiopi/trainers/conformite";
 
 import { ajouterJours, jourParis, joursEntre, type JourCivil } from "../argent/dates";
-import { GRILLES_SUIVI_QUALITE, REGLAGES_SUIVI_QUALITE, type TypeGrilleSuivi } from "./reglages";
+import {
+  GRILLES_SUIVI_QUALITE,
+  REGLAGES_SUIVI_QUALITE,
+  type ReglagesSuiviQualite,
+  type TypeGrilleSuivi,
+} from "./reglages";
 
-const R = REGLAGES_SUIVI_QUALITE;
+const DEFAUTS = REGLAGES_SUIVI_QUALITE;
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Les grilles : validation à la saisie
@@ -73,7 +79,7 @@ const estNote = (v: unknown): v is number =>
   typeof v === "number" && Number.isInteger(v) && v >= 1 && v <= 5;
 
 /** Seuil de la grille, en centièmes : la moyenne est comparée sans flottant. */
-function seuilCentiemes(type: TypeGrilleSuivi): number {
+function seuilCentiemes(type: TypeGrilleSuivi, R: ReglagesSuiviQualite): number {
   const s =
     type === "observation"
       ? R.observationMoyenneMin
@@ -84,7 +90,11 @@ function seuilCentiemes(type: TypeGrilleSuivi): number {
 }
 
 /** Une grille vierge ou incomplète est refusée ; complète, elle rend ce qui sera écrit. */
-export function validerGrille(type: TypeGrilleSuivi, s: SaisieGrille): VerdictGrille {
+export function validerGrille(
+  type: TypeGrilleSuivi,
+  s: SaisieGrille,
+  R: ReglagesSuiviQualite = DEFAUTS,
+): VerdictGrille {
   const modele = GRILLES_SUIVI_QUALITE[type];
   const valeurs = Object.values(s.notes).filter((v) => v !== undefined);
   if (valeurs.length === 0 && s.conclusion.trim() === "") return { ok: false, erreur: "vierge" };
@@ -114,7 +124,7 @@ export function validerGrille(type: TypeGrilleSuivi, s: SaisieGrille): VerdictGr
     version: modele.version,
     criteres,
     moyenneCentiemes,
-    favorable: moyenneCentiemes >= seuilCentiemes(type),
+    favorable: moyenneCentiemes >= seuilCentiemes(type, R),
   };
 }
 
@@ -132,6 +142,11 @@ export interface MissionLue {
   readonly annulee: boolean;
   /** Satisfaction moyenne des stagiaires (sur 5), ou `null` sans mesure. */
   readonly satisfaction: number | null;
+  /**
+   * La PIRE mesure de satisfaction de la mission (notes saisies, moyenne des questionnaires) :
+   * une note corrigée à la hausse ne l'efface pas. `undefined` = seule `satisfaction` mesure.
+   */
+  readonly satisfactionMin?: number | null;
 }
 
 export interface GrilleLue {
@@ -178,6 +193,29 @@ export function missionsSuivies(f: FaitsSuiviQualite): MissionLue[] {
     );
 }
 
+/**
+ * Les missions qui peuvent porter une SUSPENSION : les mêmes, annulées ou reportées comprises
+ * (une mission annulée après une mauvaise note garde sa suspension). Elles restent exclues de
+ * `missionsSuivies` : ni 1re mission, ni relance de grille, ni entretien, ni réévaluation.
+ */
+export function missionsSuspensives(f: FaitsSuiviQualite): MissionLue[] {
+  if (!concerne(f)) return [];
+  const depuis = f.allumeLe;
+  return f.missions.filter((m) => m.debut >= depuis);
+}
+
+/**
+ * La mesure qui fait foi pour la suspension : la pire des mesures lues. Une mission sans
+ * aucune mesure rend `null` (donc « ok », comme avant) : le doute porte sur les mesures
+ * lues, pas sur leur absence.
+ */
+export function satisfactionPlancher(m: MissionLue): number | null {
+  const mesures = [m.satisfaction, m.satisfactionMin ?? null].filter(
+    (v): v is number => v !== null && v !== undefined,
+  );
+  return mesures.length === 0 ? null : Math.min(...mesures);
+}
+
 function derniere<T extends { creeLe: Date }>(xs: ReadonlyArray<T>): T | null {
   let d: T | null = null;
   for (const x of xs) if (d === null || x.creeLe.getTime() >= d.creeLe.getTime()) d = x;
@@ -195,7 +233,11 @@ export interface EtatObservation {
   readonly alerte: "manquante" | "insuffisante" | null;
 }
 
-export function etatObservation(f: FaitsSuiviQualite, maintenant: Date): EtatObservation {
+export function etatObservation(
+  f: FaitsSuiviQualite,
+  maintenant: Date,
+  R: ReglagesSuiviQualite = DEFAUTS,
+): EtatObservation {
   const premiere = missionsSuivies(f)[0] ?? null;
   const observation = concerne(f) ? derniere(f.observations) : null;
   const confirmee = observation?.favorable === true;
@@ -220,6 +262,7 @@ export function etatEvaluationMission(
   fin: JourCivil,
   grilleSaisie: boolean,
   maintenant: Date,
+  R: ReglagesSuiviQualite = DEFAUTS,
 ): "relance" | "alerte" | null {
   if (grilleSaisie) return null;
   const j = joursEntre(fin, jourParis(maintenant));
@@ -239,7 +282,10 @@ export function satisfactionDeLaMission(
   return saisie;
 }
 
-export function niveauSatisfaction(m: number | null): "ok" | "entretien" | "suspension" {
+export function niveauSatisfaction(
+  m: number | null,
+  R: ReglagesSuiviQualite = DEFAUTS,
+): "ok" | "entretien" | "suspension" {
   if (m === null) return "ok";
   if (m < R.satisfactionSuspensionSous) return "suspension";
   if (m < R.satisfactionEntretienSous) return "entretien";
@@ -247,20 +293,29 @@ export function niveauSatisfaction(m: number | null): "ok" | "entretien" | "susp
 }
 
 /** Les missions dont la satisfaction appelle un geste encore absent. */
-export function missionsAReprendre(f: FaitsSuiviQualite): {
+export function missionsAReprendre(
+  f: FaitsSuiviQualite,
+  R: ReglagesSuiviQualite = DEFAUTS,
+): {
   entretien: MissionLue[];
   suspension: MissionLue[];
 } {
   const entretien: MissionLue[] = [];
   const suspension: MissionLue[] = [];
-  for (const m of missionsSuivies(f)) {
-    const niveau = niveauSatisfaction(m.satisfaction);
-    if (niveau === "ok") continue;
+  const suivies = new Set(missionsSuivies(f).map((m) => m.sessionId));
+  for (const m of missionsSuspensives(f)) {
+    // 🔑 La suspension se juge sur la PIRE mesure : seule une `levee_suspension` la lève.
     const ds = f.decisions.filter((d) => d.sessionId === m.sessionId);
     const levee = ds.some((d) => d.type === "levee_suspension");
-    if (niveau === "suspension" && !levee) suspension.push(m);
+    if (niveauSatisfaction(satisfactionPlancher(m), R) === "suspension") {
+      if (!levee) suspension.push(m);
+      continue;
+    }
+    // Entretien : mission suivie seulement (une annulée n'a pas d'entretien à prévoir).
     // Une levée motivée vaut entretien ; un entretien seul ne lève pas une suspension.
-    if (niveau === "entretien" && ds.length === 0) entretien.push(m);
+    if (suivies.has(m.sessionId) && niveauSatisfaction(m.satisfaction, R) === "entretien") {
+      if (ds.length === 0) entretien.push(m);
+    }
   }
   return { entretien, suspension };
 }
@@ -275,8 +330,12 @@ function ajouterMois(jour: JourCivil, n: number): JourCivil {
   return new Date(Date.UTC(a, m - 1 + n, Math.min(j, dernierDuMois))).toISOString().slice(0, 10);
 }
 
-/** Décision + 12 mois, jamais avant l'allumage + le délai de grâce (pas de blocage rétroactif). */
-export function echeanceReevaluation(base: Date, allumeLe: JourCivil): JourCivil {
+/** Décision + 12 mois (réglage), jamais avant l'allumage + le délai de grâce (pas de blocage rétroactif). */
+export function echeanceReevaluation(
+  base: Date,
+  allumeLe: JourCivil,
+  R: ReglagesSuiviQualite = DEFAUTS,
+): JourCivil {
   const e = ajouterMois(jourParis(base), R.reevaluationMois);
   const plancher = ajouterJours(allumeLe, R.reevaluationGraceAllumageJours);
   return e > plancher ? e : plancher;
@@ -287,7 +346,11 @@ export interface EtatReevaluation {
   readonly etat: "sans_objet" | "a_jour" | "rappel" | "echue";
 }
 
-export function etatReevaluation(f: FaitsSuiviQualite, maintenant: Date): EtatReevaluation {
+export function etatReevaluation(
+  f: FaitsSuiviQualite,
+  maintenant: Date,
+  R: ReglagesSuiviQualite = DEFAUTS,
+): EtatReevaluation {
   if (!concerne(f)) return { echeance: null, etat: "sans_objet" };
   const reeval = derniere(f.reevaluations.filter((r) => r.favorable));
   const candidats = [f.dateDecisionHabilitation, reeval?.creeLe ?? null].filter(
@@ -295,7 +358,7 @@ export function etatReevaluation(f: FaitsSuiviQualite, maintenant: Date): EtatRe
   );
   if (candidats.length === 0) return { echeance: null, etat: "sans_objet" };
   const base = new Date(Math.max(...candidats.map((d) => d.getTime())));
-  const echeance = echeanceReevaluation(base, f.allumeLe);
+  const echeance = echeanceReevaluation(base, f.allumeLe, R);
   const aujourdhui = jourParis(maintenant);
   if (aujourdhui >= echeance) return { echeance, etat: "echue" };
   if (joursEntre(aujourdhui, echeance) <= R.reevaluationRappelJours) {
@@ -309,7 +372,11 @@ export function etatReevaluation(f: FaitsSuiviQualite, maintenant: Date): EtatRe
 // ─────────────────────────────────────────────────────────────────────────────
 
 /** CV déclaré depuis plus de 24 mois (réglage). Non déclaré : la règle du dossier joue. */
-export function cvDeclarePerime(dateCv: Date | null, maintenant: Date): boolean {
+export function cvDeclarePerime(
+  dateCv: Date | null,
+  maintenant: Date,
+  R: ReglagesSuiviQualite = DEFAUTS,
+): boolean {
   if (dateCv === null || Number.isNaN(dateCv.getTime())) return false;
   return addMonths(dateCv, R.cvDeclareMaxMois).getTime() <= maintenant.getTime();
 }
@@ -321,7 +388,9 @@ export function cvDeclarePerime(dateCv: Date | null, maintenant: Date): boolean 
 export const MANQUES_SUIVI_QUALITE = {
   observation:
     "L'observation de la première mission n'est pas saisie : l'habilitation n'est pas confirmée, aucune autre mission avant elle.",
-  observationInsuffisante: `L'observation de la première mission est sous ${String(R.observationMoyenneMin).replace(".", ",")}/5 : l'habilitation n'est pas confirmée, aucune autre mission avant une nouvelle observation.`,
+  // Sans le nombre : le seuil est un réglage, et ce texte sert de clé (MANQUES_SUIVI_QUALITE_SET).
+  observationInsuffisante:
+    "L'observation de la première mission est sous le seuil réglé : l'habilitation n'est pas confirmée, aucune autre mission avant une nouvelle observation.",
   suspension:
     "Les nouvelles missions de ce formateur sont suspendues (satisfaction des stagiaires sous le seuil) jusqu'à une décision motivée en console.",
   reevaluation:
@@ -342,12 +411,13 @@ export function manquesSuiviQualite(
   f: FaitsSuiviQualite,
   enJeu: { readonly sessionId?: string } | undefined,
   maintenant: Date,
+  R: ReglagesSuiviQualite = DEFAUTS,
 ): string[] {
   if (!concerne(f)) return [];
   const manques: string[] = [];
   const suivies = missionsSuivies(f);
   const autres = suivies.filter((m) => m.sessionId !== enJeu?.sessionId);
-  const obs = etatObservation(f, maintenant);
+  const obs = etatObservation(f, maintenant, R);
   if (autres.length > 0 && !obs.confirmee) {
     manques.push(
       obs.observation === null
@@ -355,8 +425,9 @@ export function manquesSuiviQualite(
         : MANQUES_SUIVI_QUALITE.observationInsuffisante,
     );
   }
-  if (missionsAReprendre(f).suspension.length > 0) manques.push(MANQUES_SUIVI_QUALITE.suspension);
-  if (etatReevaluation(f, maintenant).etat === "echue") {
+  if (missionsAReprendre(f, R).suspension.length > 0)
+    manques.push(MANQUES_SUIVI_QUALITE.suspension);
+  if (etatReevaluation(f, maintenant, R).etat === "echue") {
     manques.push(MANQUES_SUIVI_QUALITE.reevaluation);
   }
   return manques;

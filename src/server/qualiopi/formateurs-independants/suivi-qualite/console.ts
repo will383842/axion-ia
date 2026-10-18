@@ -11,13 +11,17 @@ import { prisma } from "@/lib/prisma";
 
 import { jourParis, type JourCivil } from "../argent/dates";
 import { lireFaitsSuiviQualite, suiviQualiteAllumeLe } from "./lecture";
+import type { ReglagesSuiviQualite } from "./reglages";
+import { lireReglagesSuiviQualite } from "./reglages-lecture";
 import type { CritereNote } from "./regles";
 import {
   etatEvaluationMission,
   etatObservation,
   etatReevaluation,
+  missionsAReprendre,
   missionsSuivies,
   niveauSatisfaction,
+  satisfactionPlancher,
   type EtatObservation,
   type EtatReevaluation,
 } from "./regles";
@@ -63,6 +67,10 @@ export interface MissionConsole {
   readonly niveau: "ok" | "entretien" | "suspension";
   readonly decisionPrise: boolean;
   readonly suspensionLevee: boolean;
+  /** Mission annulée ou reportée qui garde une suspension (seule la levée motivée s'y applique). */
+  readonly annulee: boolean;
+  /** Suspendu, note corrigée depuis à la hausse : décision motivée requise. */
+  readonly noteCorrigeeDepuis: number | null;
 }
 
 export interface EcranSuiviQualite {
@@ -75,6 +83,8 @@ export interface EcranSuiviQualite {
   readonly missions: ReadonlyArray<MissionConsole>;
   readonly grilles: ReadonlyArray<GrilleConsole>;
   readonly decisions: ReadonlyArray<DecisionConsole>;
+  /** Les seuils et délais RÉGLÉS (ou leurs défauts) : ceux que l'écran affiche et applique. */
+  readonly reglages: ReglagesSuiviQualite;
 }
 
 function criteresLus(brut: unknown): CritereNote[] {
@@ -152,7 +162,10 @@ export async function lireEcranSuiviQualite(
     select: { id: true, nom: true, prenom: true, statut: true },
   });
   if (t === null) return null;
-  const allumeLe = await suiviQualiteAllumeLe();
+  const [allumeLe, reglages] = await Promise.all([
+    suiviQualiteAllumeLe(),
+    lireReglagesSuiviQualite(),
+  ]);
   const externe = t.statut === "sous_traitant";
   const nom = `${t.prenom} ${t.nom}`.trim();
   const [grilles, decisions] = await Promise.all([
@@ -180,6 +193,7 @@ export async function lireEcranSuiviQualite(
     nom,
     externe,
     allumeLe,
+    reglages,
     grilles: grilles.map(versConsole),
     decisions: decisions.map((d) => ({
       id: d.id,
@@ -198,14 +212,23 @@ export async function lireEcranSuiviQualite(
   const f = await lireFaitsSuiviQualite(trainerId, allumeLe);
   const suivies = missionsSuivies(f);
   const infos = await prisma.trainingSession.findMany({
-    where: { id: { in: suivies.map((m) => m.sessionId) } },
+    where: {
+      id: {
+        in: [...suivies, ...missionsAReprendre(f, reglages).suspension].map((m) => m.sessionId),
+      },
+    },
     select: { id: true, numero: true, titreSession: true },
   });
   const info = new Map(infos.map((i) => [i.id, i]));
   const aujourdhui = jourParis(maintenant);
-  const missions: MissionConsole[] = suivies.map((m) => {
+  // Les missions annulées ne s'affichent que si elles portent une suspension non levée.
+  const annuleesSuspendues = missionsAReprendre(f, reglages).suspension.filter((m) => m.annulee);
+  const missions: MissionConsole[] = [...suivies, ...annuleesSuspendues].map((m) => {
     const saisie = f.evaluations.some((e) => e.sessionId === m.sessionId);
     const ds = f.decisions.filter((d) => d.sessionId === m.sessionId);
+    const niveau = niveauSatisfaction(satisfactionPlancher(m), reglages);
+    const corrigee =
+      niveau === "suspension" && niveauSatisfaction(m.satisfaction, reglages) !== "suspension";
     return {
       sessionId: m.sessionId,
       numero: info.get(m.sessionId)?.numero ?? "—",
@@ -214,17 +237,22 @@ export async function lireEcranSuiviQualite(
       fin: m.fin,
       finie: m.fin <= aujourdhui,
       evaluationSaisie: saisie,
-      evaluation: m.fin <= aujourdhui ? etatEvaluationMission(m.fin, saisie, maintenant) : null,
+      evaluation:
+        m.annulee || m.fin > aujourdhui
+          ? null
+          : etatEvaluationMission(m.fin, saisie, maintenant, reglages),
       satisfaction: m.satisfaction,
-      niveau: niveauSatisfaction(m.satisfaction),
+      niveau,
       decisionPrise: ds.length > 0,
       suspensionLevee: ds.some((d) => d.type === "levee_suspension"),
+      annulee: m.annulee,
+      noteCorrigeeDepuis: corrigee ? m.satisfaction : null,
     };
   });
   return {
     ...base,
-    observation: etatObservation(f, maintenant),
-    reevaluation: etatReevaluation(f, maintenant),
+    observation: etatObservation(f, maintenant, reglages),
+    reevaluation: etatReevaluation(f, maintenant, reglages),
     missions,
   };
 }

@@ -29,7 +29,7 @@ import {
   lireAllumageSuiviQualite,
   lireFaitsSuiviQualite,
 } from "../formateurs-independants/suivi-qualite/lecture";
-import { REGLAGES_SUIVI_QUALITE } from "../formateurs-independants/suivi-qualite/reglages";
+import { lireReglagesSuiviQualite } from "../formateurs-independants/suivi-qualite/reglages-lecture";
 import {
   cvDeclarePerime,
   etatEvaluationMission,
@@ -40,7 +40,6 @@ import {
 } from "../formateurs-independants/suivi-qualite/regles";
 import type { AlerteCandidate } from "./evaluateur";
 
-const R = REGLAGES_SUIVI_QUALITE;
 const virgule = (n: number) => String(Math.round(n * 100) / 100).replace(".", ",");
 const dateFr = (jour: string) => jour.split("-").reverse().join("/");
 
@@ -60,6 +59,8 @@ export const CODES_SUIVI_QUALITE = [
 export async function candidatesSuiviQualite(now: Date): Promise<AlerteCandidate[]> {
   const allumeLe = await lireAllumageSuiviQualite();
   if (allumeLe === null) return [];
+  // Les seuils RÉGLÉS ; illisibles ou base en panne : les défauts (ne lève jamais).
+  const R = await lireReglagesSuiviQualite();
 
   const formateurs = await prisma.trainer.findMany({
     where: { statut: "sous_traitant", actif: true, finCollaborationAt: null },
@@ -107,7 +108,7 @@ export async function candidatesSuiviQualite(now: Date): Promise<AlerteCandidate
     const f = await lireFaitsSuiviQualite(t.id, allumeLe);
     if (!f.trouve || !f.externe) continue;
 
-    const obs = etatObservation(f, now);
+    const obs = etatObservation(f, now, R);
     if (obs.alerte === "manquante" && obs.premiere !== null) {
       alertes.push({
         code: "fi_observation_manquante",
@@ -132,7 +133,7 @@ export async function candidatesSuiviQualite(now: Date): Promise<AlerteCandidate
     for (const m of missionsSuivies(f)) {
       if (m.fin > aujourdhui) continue;
       const saisie = f.evaluations.some((e) => e.sessionId === m.sessionId);
-      const etat = etatEvaluationMission(m.fin, saisie, now);
+      const etat = etatEvaluationMission(m.fin, saisie, now, R);
       if (etat === "relance") {
         ajouterSession("fi_evaluation_mission_a_saisir", m.sessionId, nom, dateFr(m.fin));
       } else if (etat === "alerte") {
@@ -140,7 +141,7 @@ export async function candidatesSuiviQualite(now: Date): Promise<AlerteCandidate
       }
     }
 
-    const { entretien, suspension } = missionsAReprendre(f);
+    const { entretien, suspension } = missionsAReprendre(f, R);
     for (const m of entretien) {
       ajouterSession("fi_entretien_a_prevoir", m.sessionId, nom, virgule(m.satisfaction ?? 0));
     }
@@ -155,7 +156,7 @@ export async function candidatesSuiviQualite(now: Date): Promise<AlerteCandidate
       });
     }
 
-    const reeval = etatReevaluation(f, now);
+    const reeval = etatReevaluation(f, now, R);
     if (reeval.etat === "rappel" && reeval.echeance !== null) {
       alertes.push({
         code: "fi_reevaluation_a_prevoir",
@@ -179,7 +180,7 @@ export async function candidatesSuiviQualite(now: Date): Promise<AlerteCandidate
     // Le CV le plus récent ; sa date DÉCLARÉE seulement (#1551).
     let cv: { dateCvDeclaree: Date | null; createdAt: Date } | null = null;
     for (const d of t.documents) if (cv === null || d.createdAt > cv.createdAt) cv = d;
-    if (cv !== null && cvDeclarePerime(cv.dateCvDeclaree, now)) {
+    if (cv !== null && cvDeclarePerime(cv.dateCvDeclaree, now, R)) {
       alertes.push({
         code: "fi_cv_declare_perime",
         niveau: "important" as AlerteNiveau,

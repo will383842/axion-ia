@@ -282,6 +282,7 @@ describe("aperçu du fichier envoyé", () => {
     });
     const lien = await screen.findByRole("link", { name: TEXTES.voirLePdf });
     expect(lien.getAttribute("target")).toBe("_blank");
-    expect(URL.revokeObjectURL).toHaveBeenCalled();
+    // Le nettoyage de l'effet (qui libère l'ancien aperçu) passe après l'affichage : on l'attend.
+    await waitFor(() => expect(URL.revokeObjectURL).toHaveBeenCalled());
   });
 });

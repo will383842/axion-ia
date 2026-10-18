@@ -23,6 +23,7 @@ import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 
 import {
+  avecUtmContent,
   lireSuiviArrivee,
   parametresDuChoix,
   parametresDuRetour,
@@ -49,24 +50,26 @@ const ARRIVEE = {
 };
 
 describe("🔑 l'UTM d'arrivée survit au choix", () => {
-  it("les quatre paramètres de suivi sont lus, et eux seuls", () => {
+  it("les paramètres de suivi sont lus, et eux seuls (`utm_content` tel que reçu)", () => {
     expect(lireSuiviArrivee(ARRIVEE)).toEqual({
       utm_source: "linkedin",
       utm_medium: "social",
       utm_campaign: "x",
+      utm_content: "ecrase-par-le-choix",
       ref: "partenaire-42",
     });
   });
 
-  it("valeurs bornées et nettoyées comme ailleurs", () => {
+  it("valeur non conforme : abandonnée seule, jamais réécrite", () => {
     expect(
       lireSuiviArrivee({
         utm_source: "<script>alert(1)</script>",
-        utm_campaign: "a".repeat(201),
+        utm_campaign: "a".repeat(61),
         utm_medium: ["liste"],
+        utm_content: "clients",
         ref: "   ",
       }),
-    ).toEqual({ utm_source: "scriptalert1/script" });
+    ).toEqual({ utm_content: "clients" });
   });
 
   it("la carte recopie le choix, l'emplacement ET l'arrivée", () => {
@@ -79,8 +82,8 @@ describe("🔑 l'UTM d'arrivée survit au choix", () => {
     expect(p.get("utm_medium")).toBe("social");
     expect(p.get("utm_campaign")).toBe("x");
     expect(p.get("ref")).toBe("partenaire-42");
-    // `utm_content` reste celui du BOUTON, jamais celui de l'arrivée.
-    expect(p.get("utm_content")).toBeNull();
+    // `utm_content` d'arrivée est recopié tel quel, jamais remplacé.
+    expect(p.get("utm_content")).toBe("ecrase-par-le-choix");
   });
 
   it("sans arrivée : les paramètres d'avant, inchangés", () => {
@@ -111,10 +114,12 @@ describe("🔑 la provenance d'une réservation directe se prend en BLOC", () =>
   const COOKIE = { utm_source: "google", utm_medium: "cpc", utm_campaign: "printemps" };
 
   it("l'arrivée porte une UTM : tout le bloc d'arrivée, rien du cookie", () => {
-    expect(provenanceEnBloc({ utm_source: "linkedin" }, COOKIE)).toEqual({
+    expect(provenanceEnBloc({ utm_source: "linkedin", depuis: "video-demo" }, COOKIE)).toEqual({
       utmSource: "linkedin",
       utmMedium: null,
       utmCampaign: null,
+      utmContent: null,
+      utmTerm: "video-demo",
     });
   });
 
@@ -123,11 +128,15 @@ describe("🔑 la provenance d'une réservation directe se prend en BLOC", () =>
       utmSource: "google",
       utmMedium: "cpc",
       utmCampaign: "printemps",
+      utmContent: null,
+      utmTerm: null,
     });
     expect(provenanceEnBloc({}, {})).toEqual({
       utmSource: null,
       utmMedium: null,
       utmCampaign: null,
+      utmContent: null,
+      utmTerm: null,
     });
   });
 });
@@ -163,5 +172,66 @@ describe("🔴 chaque lien du parcours porte l'arrivée", () => {
     expect(actions).toContain("lienDuCalendrier(locale, choix, depuis, suivi)");
     // La provenance de la réservation directe se prend en BLOC.
     expect(actions).toContain("...provenanceEnBloc(suivi, utm)");
+  });
+});
+
+/** Ce qui part chez Calendly pour une URL d'arrivée. */
+describe("🔑 `utm_content` conservé, `depuis` dans `utm_term`", () => {
+  const CAS: ReadonlyArray<[string, string, Record<string, string | null>]> = [
+    [
+      "conforme",
+      "utm_source=instagram&utm_medium=video&utm_campaign=campagne-test&utm_content=clients&depuis=video-demo",
+      {
+        utm_source: "instagram",
+        utm_medium: "video",
+        utm_campaign: "campagne-test",
+        utm_content: "clients",
+        utm_term: "video-demo",
+      },
+    ],
+    [
+      "utm_content identique à la campagne",
+      "utm_source=instagram&utm_medium=video&utm_campaign=campagne-test&utm_content=campagne-test",
+      {
+        utm_source: "instagram",
+        utm_medium: "video",
+        utm_campaign: "campagne-test",
+        utm_content: "campagne-test",
+        utm_term: null,
+      },
+    ],
+    ["en-tête du site", "depuis=entete", { utm_content: null, utm_term: "entete" }],
+    [
+      "utm_content trop long",
+      `utm_source=instagram&utm_content=${"c".repeat(61)}&depuis=video-demo`,
+      { utm_source: "instagram", utm_content: null, utm_term: "video-demo" },
+    ],
+    [
+      "« : » et majuscules abandonnés",
+      "utm_source=instagram&utm_campaign=campagne:test&utm_content=clients&depuis=Video-Demo",
+      { utm_source: "instagram", utm_campaign: null, utm_content: "clients", utm_term: null },
+    ],
+    [
+      "espace",
+      "utm_campaign=campagne-test&utm_content=clients%20test",
+      {
+        utm_campaign: "campagne-test",
+        utm_content: null,
+      },
+    ],
+    [
+      "valeurs inconnues bien formées",
+      "utm_source=newsletter&utm_medium=email&utm_campaign=lettre-12&utm_content=haut",
+      { utm_source: "newsletter", utm_campaign: "lettre-12", utm_content: "haut" },
+    ],
+    ["aucune valeur", "", { utm_source: null, utm_content: null, utm_term: null }],
+  ];
+
+  it.each(CAS)("%s", (_nom, requete, attendu) => {
+    const sp = Object.fromEntries(new URLSearchParams(requete));
+    const u = new URL(avecUtmContent("https://calendly.com/axion-ia/x", lireSuiviArrivee(sp)));
+    for (const [cle, valeur] of Object.entries(attendu)) {
+      expect(u.searchParams.get(cle)).toBe(valeur);
+    }
   });
 });
