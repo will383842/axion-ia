@@ -8,20 +8,11 @@
  * gouvernementaux et de santé) → lien vers le service ou la formation → vidéos liées
  * → transcription repliée (portée par le lecteur).
  */
-import Image from "next/image";
-import Link from "next/link";
 import { VslVideo } from "@/components/lp/VslVideo";
+import { CarteVideo, libelleDuree } from "@/components/videos/CarteVideo";
 import { ChapitresVideoDiffere } from "@/components/videos/ChapitresVideoDiffere";
 import type { VideoPubliee } from "@/server/videos/lecture";
 import { mentionIa } from "@/server/videos/mention-ia";
-
-/** « 3 min 04 » — rassure avant le clic. */
-export function libelleDuree(secondes: number): string {
-  const m = Math.floor(secondes / 60);
-  const s = secondes % 60;
-  if (m === 0) return `${s} s`;
-  return `${m} min ${String(s).padStart(2, "0")}`;
-}
 
 const ID_LECTEUR = "lecteur-video";
 
@@ -29,35 +20,6 @@ const LIBELLE_LIEN = {
   service: "Découvrir le service associé",
   formation: "Voir la formation associée",
 } as const;
-
-export function CarteVideo({ video }: { video: VideoPubliee }) {
-  const v = video.fichiers.vignette43;
-  return (
-    <li>
-      <Link
-        href={`/fr/videos/${video.slug}`}
-        className="border-border bg-paper hover:border-terracotta/50 block overflow-hidden rounded-xl border transition-colors"
-      >
-        <Image
-          src={v.chemin}
-          alt=""
-          width={v.largeur ?? 960}
-          height={v.hauteur ?? 720}
-          sizes="(max-width: 768px) 100vw, 280px"
-          loading="lazy"
-          unoptimized
-          className="aspect-[4/3] w-full object-cover"
-        />
-        <span className="block p-3">
-          <span className="text-fg block text-sm font-semibold">{video.titre}</span>
-          <span className="text-fg-muted mt-1 block text-xs tabular-nums">
-            {libelleDuree(video.dureeSecondes)}
-          </span>
-        </span>
-      </Link>
-    </li>
-  );
-}
 
 export function PageVideo({
   video,
@@ -144,12 +106,12 @@ export function PageVideo({
       </section>
 
       <p className="mt-8">
-        <Link
+        <a
           href={video.lien.chemin}
           className="bg-terracotta text-paper inline-flex rounded-lg px-5 py-3 text-sm font-semibold"
         >
           {LIBELLE_LIEN[video.lien.type]}
-        </Link>
+        </a>
       </p>
 
       {liees.length > 0 ? (

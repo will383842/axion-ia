@@ -395,6 +395,10 @@ export const routing = defineRouting({
     // (1 segment) : « plus spécifique d'abord » = reverse-mapping correct.
     // Vidéos du studio (lots W2-W4, ADR 0070). fr==en : EN redirigé 301→FR (proxy).
     // 404 tant que `VIDEOS_SITE_ENABLED` est éteint ou qu'aucune vidéo n'est publiée.
+    // Plus spécifique d'abord : galerie, thème et série AVANT `/videos/[slug]`.
+    "/videos": { fr: "/videos", en: "/videos" },
+    "/videos/theme/[theme]": { fr: "/videos/theme/[theme]", en: "/videos/theme/[theme]" },
+    "/videos/serie/[serie]": { fr: "/videos/serie/[serie]", en: "/videos/serie/[serie]" },
     "/videos/[slug]": { fr: "/videos/[slug]", en: "/videos/[slug]" },
 
     "/avis": { fr: "/avis", en: "/avis" },

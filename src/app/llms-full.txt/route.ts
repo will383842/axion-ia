@@ -18,12 +18,17 @@ import {
 import { collapsePriceProseDuplicates, resolvePriceTokens } from "@/content/pricing-tokens";
 import { SITE_URL } from "@/lib/seo";
 import { FOUNDER, founderUrl } from "@/lib/brand";
+import { videosPubliees } from "@/server/videos/lecture";
+import { sectionVideosLlms } from "@/server/videos/llms";
 
-// `pricing-tokens` n'importe que `@/lib/intl` + `@/content/pricing` : aucune
-// dépendance Node, la route reste donc en `edge` (vérifié audit H4, LOT 4).
-export const runtime = "edge";
+// 🔁 Passée de `edge` à `nodejs` (lot W3 des vidéos, ADR 0070) : la section « Vidéos » lit la
+// base (via `lecture.ts`, qui rend [] interrupteur éteint ou base factice du build). Jamais
+// `force-static` ; ISR 1 h, revalidée à la publication / au retrait des vidéos.
+export const runtime = "nodejs";
+export const revalidate = 3600;
 
-export function GET() {
+export async function GET() {
+  const sectionVideos = sectionVideosLlms(await videosPubliees(), SITE_URL, true);
   // Sprint 14.10.5 — prix dérivés du SSOT pricing.ts (zéro hardcode).
   // L'ancienne mention « 290-1990 € » audit était OBSOLÈTE (les vrais tiers
   // commencent à 490 €). Range complet du catalogue audit (Flash → ETI).
@@ -175,7 +180,7 @@ C'est le format pensé pour être cité par les moteurs de réponse IA (Perplexi
 4. **Mesurer** — ROI mesuré post-déploiement.
 
 URL : ${SITE_URL}/fr/methodologie
-
+${sectionVideos}
 ## Engagement
 
 - Mobile-first absolu. Accessibilité : objectif WCAG 2.2 AA, conformité partielle non encore auditée — déclaration : ${SITE_URL}/fr/accessibilite.

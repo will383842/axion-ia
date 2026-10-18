@@ -130,3 +130,58 @@ export function buildVideoPageJsonLd(v: VideoPubliee, { siteUrl, theme }: Option
     ],
   } as const;
 }
+
+export interface OptionsJsonLdListe {
+  readonly siteUrl: string;
+  /** Chemin de la page, avec la locale : `/fr/videos`. */
+  readonly chemin: string;
+  readonly titre: string;
+  readonly description: string;
+  readonly videos: ReadonlyArray<VideoPubliee>;
+  /** Fil d'Ariane APRÈS « Accueil ». */
+  readonly fil: ReadonlyArray<{ readonly name: string; readonly href: string }>;
+}
+
+/**
+ * JSON-LD d'une LISTE de vidéos (galerie, thème, série) : `CollectionPage` + `ItemList` de
+ * liens vers les pages vidéo + fil d'Ariane. Aucun `VideoObject` ici : la page vidéo est
+ * l'UNIQUE porteuse de la vidéo (pas de pages concurrentes pour une même vidéo).
+ */
+export function buildListeVideosJsonLd(o: OptionsJsonLdListe) {
+  const site = o.siteUrl.replace(/\/+$/, "");
+  const url = `${site}${o.chemin}`;
+  const fil = [{ name: "Accueil", href: "/fr" }, ...o.fil];
+  return {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "CollectionPage",
+        "@id": `${url}#page`,
+        url,
+        name: o.titre,
+        description: o.description,
+        inLanguage: "fr",
+        isPartOf: { "@id": `${site}/#website` },
+        mainEntity: {
+          "@type": "ItemList",
+          itemListElement: o.videos.map((v, i) => ({
+            "@type": "ListItem",
+            position: i + 1,
+            url: `${site}/fr/videos/${v.slug}`,
+            name: v.titre,
+          })),
+        },
+      },
+      {
+        "@type": "BreadcrumbList",
+        "@id": `${url}#breadcrumb`,
+        itemListElement: fil.map((x, i) => ({
+          "@type": "ListItem",
+          position: i + 1,
+          name: x.name,
+          item: `${site}${x.href}`,
+        })),
+      },
+    ],
+  } as const;
+}

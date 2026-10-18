@@ -10,6 +10,7 @@ const CHEMIN = "/api/interne/videos";
 
 const faux = creerFauxPrisma();
 const verifierFichiers = vi.fn();
+const apresPublication = vi.fn(async () => ({ indexnow: "ok", erreurs: [] }));
 
 vi.mock("@/lib/prisma", () => ({
   get prisma() {
@@ -24,6 +25,9 @@ vi.mock("@/lib/rate-limit", () => ({
     resetAt: 0,
     panne: false,
   })),
+}));
+vi.mock("@/server/videos/apres-publication", () => ({
+  apresPublication: (...a: unknown[]) => (apresPublication as (...x: unknown[]) => unknown)(...a),
 }));
 vi.mock("@/server/videos/fichiers", () => ({
   verifierFichiers: (...a: unknown[]) => verifierFichiers(...a),
@@ -90,6 +94,7 @@ beforeEach(() => {
   faux.videos.length = 0;
   faux.journal.length = 0;
   faux.ecritures.length = 0;
+  apresPublication.mockClear();
   verifierFichiers.mockReset();
   verifierFichiers.mockResolvedValue({ ok: true });
 });
@@ -392,5 +397,80 @@ describe("empreinte", () => {
     const corps = JSON.stringify(publicationValide());
     await POST(requete({ corps }));
     expect(faux.journal[0]!.corpsSha256).toBe(sha256Hex(corps));
+  });
+});
+
+describe("suite de la publication (cache, edge, IndexNow) — après la réponse", () => {
+  const retrait = JSON.stringify({
+    schemaVersion: 1,
+    studioVideoId: "vs_01j9abcdefgh",
+    motif: "obsolete",
+  });
+  const attendre = () => vi.advanceTimersByTimeAsync(10);
+
+  it("publication nouvelle → planifiée une fois, avec slug, thème et série", async () => {
+    await POST(requete());
+    await attendre();
+    expect(apresPublication).toHaveBeenCalledTimes(1);
+    expect(apresPublication).toHaveBeenCalledWith({
+      type: "publication",
+      slug: "automatiser-ses-relances",
+      theme: "automatisation",
+      serieSlug: "gagner-du-temps",
+    });
+  });
+
+  it("rejeu réseau (même nonce) et rejeu du fait (nouveau nonce) → RIEN de planifié", async () => {
+    const corps = JSON.stringify(publicationValide());
+    const nonce = nonceNeuf();
+    await POST(requete({ corps, nonce }));
+    await attendre();
+    apresPublication.mockClear();
+    await POST(requete({ corps, nonce }));
+    await POST(requete({ corps }));
+    await attendre();
+    expect(apresPublication).not.toHaveBeenCalled();
+  });
+
+  it("refus (signature, schéma, contenu, fichier, version) → RIEN de planifié", async () => {
+    await POST(requete({ secret: "x".repeat(40) }));
+    await POST(requete({ corps: JSON.stringify({ ...publicationValide(), surprise: 1 }) }));
+    verifierFichiers.mockResolvedValue({
+      ok: false,
+      fautes: [{ champ: "fichiers.video", raison: "http_404" }],
+    });
+    await POST(requete());
+    await attendre();
+    expect(apresPublication).not.toHaveBeenCalled();
+  });
+
+  it("retrait → planifié (type retrait) ; retrait rejoué → rien", async () => {
+    await POST(requete());
+    await attendre();
+    apresPublication.mockClear();
+    await DELETE(requete({ methode: "DELETE", corps: retrait }));
+    await attendre();
+    expect(apresPublication).toHaveBeenCalledWith({
+      type: "retrait",
+      slug: "automatiser-ses-relances",
+      theme: "automatisation",
+      serieSlug: "gagner-du-temps",
+    });
+    apresPublication.mockClear();
+    await DELETE(requete({ methode: "DELETE", corps: retrait }));
+    await attendre();
+    expect(apresPublication).not.toHaveBeenCalled();
+  });
+
+  it("IndexNow en échec → le journal garde la réponse ENVOYÉE, le rejeu rend le même corps", async () => {
+    apresPublication.mockResolvedValueOnce({ indexnow: "echec", erreurs: [] });
+    const corps = JSON.stringify(publicationValide());
+    const nonce = nonceNeuf();
+    const premiere = await POST(requete({ corps, nonce }));
+    const corpsEnvoye = await premiere.text();
+    await attendre();
+    const rejeu = await POST(requete({ corps, nonce }));
+    expect(await rejeu.text()).toBe(corpsEnvoye);
+    expect(JSON.stringify(faux.journal[0])).not.toMatch(/indexnow/);
   });
 });
