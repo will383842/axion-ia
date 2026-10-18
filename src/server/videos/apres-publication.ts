@@ -21,6 +21,7 @@ import { submitToIndexNow, type IndexNowResult } from "@/lib/indexnow";
 import { purgerToutEdge, revalidateAndPurge } from "@/server/cache/revalidate-and-purge";
 import { EXPIRATION_IMMEDIATE } from "@/server/cache/expiration-immediate";
 import { THEMES } from "@/content/videos/themes";
+import { redis } from "@/lib/redis";
 import { viderCacheVideos } from "./lecture";
 
 export interface EffetPublication {
@@ -43,7 +44,9 @@ export interface DepsApresPublication {
   revalidateGabarit?: (gabarit: string) => void;
   purgerEdge?: (chemins: ReadonlyArray<string>) => Promise<unknown>;
   /** Purge LARGE de l'edge, au retrait seulement (pages hôtes des encarts). */
-  purgerEdgeLarge?: () => Promise<unknown>;
+  purgerEdgeLarge?: () => Promise<{ purgee: boolean; configure: boolean } | unknown>;
+  /** Prend le verrou « une purge large par fenêtre de 60 s » ; `false` = déjà prise. */
+  verrouPurgeLarge?: () => Promise<boolean>;
   indexNow?: (host: string, cle: string, urls: ReadonlyArray<string>) => Promise<IndexNowResult>;
   cleIndexNow?: string | undefined;
   siteUrl?: string;
@@ -81,6 +84,24 @@ export function urlsAImpacter(e: EffetPublication): string[] {
     // ne tarde pas.
     "/api/interne/videos/retirees",
   ];
+}
+
+const FENETRE_PURGE_LARGE_S = 60;
+let dernierePurgeLargeMs = 0;
+
+/**
+ * Une purge large par fenêtre de 60 s : `SET videos:purge-large NX EX 60` (partagé entre
+ * processus). Redis injoignable → repli sur un horodatage en mémoire (par processus).
+ */
+async function verrouPurgeLargeParDefaut(): Promise<boolean> {
+  try {
+    return (await redis.set("videos:purge-large", "1", "EX", FENETRE_PURGE_LARGE_S, "NX")) === "OK";
+  } catch {
+    const maintenant = Date.now();
+    if (maintenant - dernierePurgeLargeMs < FENETRE_PURGE_LARGE_S * 1000) return false;
+    dernierePurgeLargeMs = maintenant;
+    return true;
+  }
 }
 
 function alerteParDefaut(message: string, details: Record<string, unknown>): void {
@@ -133,9 +154,32 @@ export async function apresPublication(
   // articles, fiches — `s-maxage` jusqu'à 24 h) ne se purgent pas par adresse. Purge large,
   // après la revalidation de l'origine. Une publication ne la déclenche jamais.
   if (effet.type === "retrait") {
-    await etape("purgerEdgeLarge", () =>
-      deps.purgerEdgeLarge ? deps.purgerEdgeLarge() : purgerToutEdge("videos-retrait"),
-    );
+    let purgee = false;
+    let configure: boolean | undefined;
+    let sautee = false;
+    await etape("purgerEdgeLarge", async () => {
+      if (!(await (deps.verrouPurgeLarge ?? verrouPurgeLargeParDefaut)())) {
+        sautee = true;
+        console.info(
+          `[videos] retrait de « ${effet.slug} » : purge large déjà faite il y a moins de ${FENETRE_PURGE_LARGE_S} s, sautée`,
+        );
+        return;
+      }
+      const r = await (deps.purgerEdgeLarge ?? (() => purgerToutEdge("videos-retrait")))();
+      const rep = (r ?? {}) as { purgee?: boolean; configure?: boolean };
+      purgee = rep.purgee ?? true; // un faux injecté qui ne rend rien = succès
+      configure = rep.configure;
+    });
+    // `purgerToutEdge` ne lève jamais : un 429/403/réseau/secrets absents est un `purgee: false`.
+    if (!sautee && !purgee && !erreurs.includes("purgerEdgeLarge")) {
+      erreurs.push("purgerEdgeLarge");
+    }
+    if (!sautee && !purgee) {
+      alerter(
+        "Retrait : copie d'edge non purgée, la vidéo retirée peut rester visible jusqu'à 24 h",
+        { slug: effet.slug, configure },
+      );
+    }
   }
 
   // IndexNow : l'URL de la page seulement.
