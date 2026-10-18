@@ -1,5 +1,5 @@
 // Tout ce qui suit une publication ou un retrait (W3.7) : cache, edge, IndexNow.
-import { describe, expect, it, vi } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
 import { apresPublication, urlsAImpacter } from "@/server/videos/apres-publication";
 
 const effet = {
@@ -15,7 +15,8 @@ function deps(over: Record<string, unknown> = {}) {
     revalidateTag: vi.fn(),
     revalidatePath: vi.fn(),
     revalidateGabarit: vi.fn(),
-    purgerEdgeLarge: vi.fn(async () => undefined),
+    purgerEdgeLarge: vi.fn(async () => ({ purgee: true, configure: true })),
+    verrouPurgeLarge: vi.fn(async () => true),
     purgerEdge: vi.fn(async () => ({
       cheminsRevalides: [],
       urlsPurgees: [],
@@ -181,5 +182,95 @@ describe("apresPublication", () => {
     const r = await apresPublication({ ...effet, type: "retrait" }, d);
     expect(d.indexNow).toHaveBeenCalled();
     expect(r.erreurs).toContain("purgerEdgeLarge");
+  });
+
+  // Chemin RÉEL : `purgerToutEdge` ne lève jamais (429, secrets absents → `purgee: false`).
+  describe("purge large — vrai chemin (fetch simulé)", () => {
+    afterEach(() => {
+      vi.unstubAllGlobals();
+      vi.unstubAllEnvs();
+    });
+
+    it("Cloudflare répond 429 → erreurs + alerte, IndexNow part quand même", async () => {
+      vi.stubEnv("CLOUDFLARE_API_TOKEN", "jeton");
+      vi.stubEnv("CLOUDFLARE_ZONE_ID", "zone");
+      vi.spyOn(console, "warn").mockImplementation(() => undefined);
+      const fetchMock = vi.fn(async () => new Response("rate limited", { status: 429 }));
+      vi.stubGlobal("fetch", fetchMock);
+      const d = deps({ purgerEdgeLarge: undefined });
+      const r = await apresPublication({ ...effet, type: "retrait" }, d);
+      expect(fetchMock).toHaveBeenCalledTimes(1);
+      expect(r.erreurs).toContain("purgerEdgeLarge");
+      expect(d.alerter).toHaveBeenCalledWith(
+        expect.stringContaining("copie d'edge non purgée"),
+        expect.objectContaining({ slug: "ma-video", configure: true }),
+      );
+      expect(d.indexNow).toHaveBeenCalled();
+    });
+
+    it("secrets Cloudflare absents → erreurs + alerte (configure: false), aucun appel", async () => {
+      vi.stubEnv("CLOUDFLARE_API_TOKEN", "");
+      vi.stubEnv("CLOUDFLARE_ZONE_ID", "");
+      const fetchMock = vi.fn();
+      vi.stubGlobal("fetch", fetchMock);
+      const d = deps({ purgerEdgeLarge: undefined });
+      const r = await apresPublication({ ...effet, type: "retrait" }, d);
+      expect(fetchMock).not.toHaveBeenCalled();
+      expect(r.erreurs).toContain("purgerEdgeLarge");
+      expect(d.alerter).toHaveBeenCalledWith(
+        expect.stringContaining("copie d'edge non purgée"),
+        expect.objectContaining({ slug: "ma-video", configure: false }),
+      );
+      expect(d.indexNow).toHaveBeenCalled();
+    });
+
+    it("succès → ni erreur ni alerte", async () => {
+      vi.stubEnv("CLOUDFLARE_API_TOKEN", "jeton");
+      vi.stubEnv("CLOUDFLARE_ZONE_ID", "zone");
+      vi.stubGlobal(
+        "fetch",
+        vi.fn(async () => new Response("{}", { status: 200 })),
+      );
+      const d = deps({ purgerEdgeLarge: undefined });
+      const r = await apresPublication({ ...effet, type: "retrait" }, d);
+      expect(r.erreurs).not.toContain("purgerEdgeLarge");
+      expect(d.alerter).not.toHaveBeenCalled();
+    });
+  });
+
+  // Une purge large par fenêtre de 60 s : une rafale de retraits ne vide pas la zone N fois.
+  it("deux retraits de suite = UN seul appel de purge large", async () => {
+    let pris = false;
+    const d = deps({
+      verrouPurgeLarge: vi.fn(async () => {
+        if (pris) return false;
+        pris = true;
+        return true;
+      }),
+    });
+    const r1 = await apresPublication({ ...effet, type: "retrait", slug: "a" }, d);
+    const r2 = await apresPublication({ ...effet, type: "retrait", slug: "b" }, d);
+    expect(d.purgerEdgeLarge).toHaveBeenCalledTimes(1);
+    expect(r1.erreurs).not.toContain("purgerEdgeLarge");
+    expect(r2.erreurs).not.toContain("purgerEdgeLarge");
+    expect(d.indexNow).toHaveBeenCalledTimes(2);
+  });
+
+  it("verrou par défaut (repli mémoire, Redis injoignable) : deux retraits = un appel", async () => {
+    vi.doMock("@/lib/redis", () => ({
+      redis: {
+        set: vi.fn(async () => {
+          throw new Error("redis down");
+        }),
+      },
+    }));
+    vi.resetModules();
+    const { apresPublication: ap } = await import("@/server/videos/apres-publication");
+    const purge = vi.fn(async () => ({ purgee: true, configure: true }));
+    const d = deps({ verrouPurgeLarge: undefined, purgerEdgeLarge: purge });
+    await ap({ ...effet, type: "retrait", slug: "a" }, d);
+    await ap({ ...effet, type: "retrait", slug: "b" }, d);
+    expect(purge).toHaveBeenCalledTimes(1);
+    vi.doUnmock("@/lib/redis");
   });
 });
