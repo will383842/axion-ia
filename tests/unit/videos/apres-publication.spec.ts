@@ -14,6 +14,7 @@ function deps(over: Record<string, unknown> = {}) {
     viderCache: vi.fn(),
     revalidateTag: vi.fn(),
     revalidatePath: vi.fn(),
+    revalidateGabarit: vi.fn(),
     purgerEdge: vi.fn(async () => ({
       cheminsRevalides: [],
       urlsPurgees: [],
@@ -45,6 +46,18 @@ describe("urlsAImpacter", () => {
       ]),
     );
   });
+  it("pages hôtes des encarts : pages de service et formations (revalidées ET purgées à l'edge)", () => {
+    const u = urlsAImpacter({ ...effet, type: "retrait" });
+    for (const hote of [
+      "/fr/formations",
+      "/fr/un-a-un",
+      "/fr/audit",
+      "/fr/implementation",
+      "/fr/sites-web-augmentes",
+    ]) {
+      expect(u).toContain(hote);
+    }
+  });
   it("sans série : pas d'adresse de série", () => {
     expect(urlsAImpacter({ ...effet, serieSlug: null }).some((u) => u.includes("/serie/"))).toBe(
       false,
@@ -61,6 +74,22 @@ describe("apresPublication", () => {
     expect(d.revalidatePath).toHaveBeenCalledWith("/fr/videos/ma-video");
     expect(d.purgerEdge).toHaveBeenCalled();
   });
+
+  it.each(["publication", "retrait"] as const)(
+    "%s : les gabarits hôtes d'encarts (villes, blog, fiches formation) sont revalidés",
+    async (type) => {
+      const d = deps();
+      await apresPublication({ ...effet, type }, d);
+      const g = d.revalidateGabarit.mock.calls.map((c: unknown[]) => c[0]);
+      expect(g).toEqual(
+        expect.arrayContaining([
+          "/[locale]/implantations/[region]/[ville]",
+          "/[locale]/blog/[slug]",
+          "/[locale]/formations/[slug]",
+        ]),
+      );
+    },
+  );
 
   it("IndexNow succès → l'URL de la PAGE est notifiée, pas d'alerte", async () => {
     const d = deps();

@@ -121,9 +121,20 @@ describe("correspondances thème", () => {
     ["implementation-automatisation", "automatisation"],
     ["sites-web-augmentes", "sites-web-ia"],
     ["actualites-du-mois", null],
+    // Comparaison par SEGMENTS de mot, jamais par sous-chaîne.
+    ["transformation-numerique", null],
+    ["webinaire-du-mois", null],
+    ["necessite-de-former", null],
+    ["visite-d-entreprise", null],
+    ["saas-et-web", "sites-web-ia"],
     [null, null],
   ])("catégorie de blog %s → %s", (cat, theme) => {
     expect(themeDeCategorieBlog(cat)).toBe(theme);
+  });
+
+  it("catégorie « formations » : sans divulgation OF, pas de thème (comme videoPourFormation)", () => {
+    vi.stubEnv("OF_PUBLIC_DISCLOSURE_ENABLED", "false");
+    expect(themeDeCategorieBlog("formations-ia")).toBeNull();
   });
 
   it("le thème générique des villes existe dans la liste fermée", async () => {
