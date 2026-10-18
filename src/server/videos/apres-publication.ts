@@ -56,6 +56,9 @@ export function urlsAImpacter(e: EffetPublication): string[] {
     "/llms-full.txt",
     "/sitemap-index.xml",
     "/sitemap-videos.xml",
+    // Liste publique lue par le proxy pour le 410 (`s-maxage=300`) : purgée pour que le retrait
+    // ne tarde pas.
+    "/api/interne/videos/retirees",
   ];
 }
 
