@@ -40,6 +40,8 @@ import { listKnowledgeSitemapEntries } from "@/server/exporters/knowledge-sitema
 import { listRecentNewsEntries } from "@/app/sitemap-news.xml/route";
 import { listEvergreenNewsEntries } from "@/app/sitemap-news-evergreen.xml/route";
 import { avisPublies } from "@/server/reviews/presence";
+import { videosPubliees } from "@/server/videos/lecture";
+import { derniereModification } from "@/server/videos/sitemap";
 
 // Sub-sitemaps custom (Route Handlers XML brut, hors `generateSitemaps()`).
 // Référencés manuellement pour que Googlebot les découvre via l'index racine.
@@ -113,6 +115,10 @@ const CUSTOM_SITEMAPS: ReadonlyArray<string> = [
   // photo pour Google Images) + facettes curées. Toujours ≥ 2 URLs (hub +
   // deposer) → jamais un urlset vide. Cf. `app/sitemap-avis.xml/route.ts`.
   "/sitemap-avis.xml",
+  // Vidéos du studio (/fr/videos, lot W3, ADR 0070) — listé CONDITIONNELLEMENT : seulement si
+  // l'interrupteur est allumé ET qu'au moins une vidéo est publiée (sinon la route répond 404).
+  // `lastmod` = dernière modification d'une vidéo. Cf. `app/sitemap-videos.xml/route.ts`.
+  "/sitemap-videos.xml",
 ];
 
 // Rendu DYNAMIQUE au runtime (2026-07-06). Auparavant `force-static` : l'index
@@ -299,12 +305,17 @@ export async function GET(): Promise<Response> {
   // listé dès qu'au moins un avis est publié. Le helper ne lève jamais.
   const avisEnLigne = await avisPublies();
 
+  // Vidéos : la lecture rend [] si l'interrupteur est éteint ou sur la base factice du build.
+  const videosEnLigne = await videosPubliees();
+
   const customSitemaps = CUSTOM_SITEMAPS.filter((path) => {
     if (path === "/sitemap-knowledge.xml") return kbEmittableCount > 0;
     if (path === "/sitemap-blog.xml") return blogEmittableCount > 0;
     if (path === "/sitemap-presse.xml") return presseEmittableCount > 0;
     // 0 avis publié → /avis/* en 404 → pas de sitemap-avis.
     if (path === "/sitemap-avis.xml") return avisEnLigne;
+    // 0 vidéo publiée (ou interrupteur éteint) → /fr/videos/* en 404 → pas de sitemap-videos.
+    if (path === "/sitemap-videos.xml") return videosEnLigne.length > 0;
     if (path === "/sitemap-news.xml") return newsEmittableCount > 0;
     if (path === "/sitemap-news-evergreen.xml") return evergreenEmittableCount > 0;
     // `images-en.xml` est vide tant qu'EN est désactivé (301→FR) → ne pas le
@@ -328,15 +339,17 @@ export async function GET(): Promise<Response> {
     // sitemap-news-evergreen.xml → même source (Article isNews) → même signal
     // sitemap-knowledge.xml      → max(updatedAt) KnowledgeEntry (signal fraîcheur réel)
     const lm =
-      path === "/sitemap-news.xml" || path === "/sitemap-news-evergreen.xml"
-        ? lastmods.news
-        : path === "/sitemap-knowledge.xml"
-          ? lastmods.knowledge
-          : // Blog (articles tier-1) + images blog : suivent les articles →
-            // max(updatedAt) blog (signal de fraîcheur réel).
-            path === "/sitemap-blog.xml" || path === "/sitemap-images-blog.xml"
-            ? lastmods.blog
-            : lastmods.fallback;
+      path === "/sitemap-videos.xml" && videosEnLigne.length > 0
+        ? derniereModification(videosEnLigne).toISOString()
+        : path === "/sitemap-news.xml" || path === "/sitemap-news-evergreen.xml"
+          ? lastmods.news
+          : path === "/sitemap-knowledge.xml"
+            ? lastmods.knowledge
+            : // Blog (articles tier-1) + images blog : suivent les articles →
+              // max(updatedAt) blog (signal de fraîcheur réel).
+              path === "/sitemap-blog.xml" || path === "/sitemap-images-blog.xml"
+              ? lastmods.blog
+              : lastmods.fallback;
     return `  <sitemap>
     <loc>${SITE_URL}${path}</loc>
     <lastmod>${lm}</lastmod>
