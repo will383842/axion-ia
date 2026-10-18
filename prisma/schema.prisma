@@ -17443,6 +17443,7 @@ enum SiteVideoStatut {
   retiree
 }
 
+/// rgpd: technique — vidéo éditoriale du studio publiée sur le site ; aucune donnée sur une personne (les attestations interdisent noms et logos de clients)
 model SiteVideo {
   id                String          @id @default(uuid()) @db.Uuid
   /// Identifiant STABLE côté studio.
@@ -17485,6 +17486,7 @@ model SiteVideo {
 /// Journal des requêtes SIGNÉES VALIDES du studio : anti-rejeu (nonce unique),
 /// idempotence réseau (réponse enregistrée rejouée) et trace « qui a publié quoi,
 /// quand ». Aucune donnée personnelle (pas d'IP).
+/// rgpd: technique — journal des échanges signés du studio : identifiants de vidéos, empreintes et réponses ; ni IP ni donnée de personne
 model SiteVideoReception {
   id            String   @id @default(uuid()) @db.Uuid
   nonce         String   @unique @db.Char(32)

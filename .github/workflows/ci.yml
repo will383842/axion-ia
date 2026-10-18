@@ -1593,6 +1593,13 @@ jobs:
       - name: Vidéos du site — schéma (Postgres réel)
         run: pnpm test:integration tests/integration/videos/schema
 
+      # Vidéos du site (W1) — studio factice → réception signée, sur le vrai Postgres.
+      # Fabrique une vidéo de 31 s avec ffmpeg, installé ici faute de garantie sur l'image.
+      - name: Vidéos du site — studio factice de bout en bout (Postgres réel)
+        run: |
+          sudo apt-get update -qq && sudo apt-get install -y -qq --no-install-recommends ffmpeg
+          pnpm test:integration tests/integration/videos/bout-en-bout
+
       # ── T0 — volumétrie (plan de tenue à la charge, § T0) ─────────────────
       #
       # 🔴 Pourquoi ici, et pas dans un job à part : Gate D est le SEUL endroit

@@ -93,8 +93,10 @@ describe("site_videos / site_video_receptions", () => {
     });
   });
 
-  it("la base reste vide (aucune fuite entre cas)", async () => {
-    expect(await prisma.siteVideo.count()).toBe(0);
-    expect(await prisma.siteVideoReception.count()).toBe(0);
+  it("les cas annulés ne laissent aucune ligne de test", async () => {
+    expect(
+      await prisma.siteVideo.count({ where: { studioVideoId: { startsWith: "vs_0000000" } } }),
+    ).toBe(0);
+    expect(await prisma.siteVideoReception.count({ where: { nonce: "0".repeat(32) } })).toBe(0);
   });
 });
