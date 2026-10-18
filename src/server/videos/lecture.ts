@@ -120,3 +120,21 @@ export async function videoParSlug(slug: string): Promise<VideoPubliee | null> {
 export async function videosDuTheme(theme: string): Promise<VideoPubliee[]> {
   return (await videosPubliees()).filter((v) => v.theme === theme);
 }
+
+/**
+ * Slugs des vidéos RETIRÉES (pour le 410 du proxy). Vide si l'interrupteur est éteint ou
+ * sur la base factice du build. Jamais d'exception.
+ */
+export async function slugsRetires(): Promise<string[]> {
+  if (!videosSiteActives() || estBaseFactice()) return [];
+  try {
+    const lignes = await prisma.siteVideo.findMany({
+      where: { statut: "retiree" },
+      select: { slug: true },
+      orderBy: { slug: "asc" },
+    });
+    return lignes.map((l) => l.slug);
+  } catch {
+    return [];
+  }
+}

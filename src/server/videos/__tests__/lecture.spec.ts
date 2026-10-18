@@ -83,3 +83,19 @@ describe("lecture des vidéos publiées", () => {
     expect(await videosPubliees()).toEqual([]);
   });
 });
+
+describe("slugsRetires", () => {
+  it("ne lit que les retirées et rend leurs slugs", async () => {
+    findMany.mockResolvedValue([{ slug: "a" }, { slug: "b" }]);
+    const { slugsRetires } = await import("../lecture");
+    expect(await slugsRetires()).toEqual(["a", "b"]);
+    expect(findMany.mock.calls.at(-1)![0]).toMatchObject({ where: { statut: "retiree" } });
+  });
+  it("interrupteur éteint → [] sans appel", async () => {
+    vi.stubEnv("VIDEOS_SITE_ENABLED", "");
+    findMany.mockClear();
+    const { slugsRetires } = await import("../lecture");
+    expect(await slugsRetires()).toEqual([]);
+    expect(findMany).not.toHaveBeenCalled();
+  });
+});

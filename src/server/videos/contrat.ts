@@ -11,6 +11,7 @@
  *    dérivée de `routing.ts` et des formations publiques est livrée en W4 (§8.2).
  */
 import { z } from "zod";
+import { SEUIL_CHAPITRES_SECONDES } from "@/content/videos/chapitres";
 
 const RE_SLUG = /^[a-z0-9]+(-[a-z0-9]+)*$/;
 
@@ -42,8 +43,6 @@ const fichierImage = z
   .strict();
 
 const fichierSousTitres = z.object({ ...fichierBase, type: z.literal("text/vtt") }).strict();
-
-export const SEUIL_CHAPITRES_SECONDES = 30;
 
 const publicationBrute = z
   .object({

@@ -393,6 +393,10 @@ export const routing = defineRouting({
     // fr==en : EN redirigé 301→FR (proxy), évite le bug next-intl 307 self-loop.
     // ⚠️ Routes STATIQUES + facettes (2 segments) déclarées AVANT `/avis/[slug]`
     // (1 segment) : « plus spécifique d'abord » = reverse-mapping correct.
+    // Vidéos du studio (lots W2-W4, ADR 0070). fr==en : EN redirigé 301→FR (proxy).
+    // 404 tant que `VIDEOS_SITE_ENABLED` est éteint ou qu'aucune vidéo n'est publiée.
+    "/videos/[slug]": { fr: "/videos/[slug]", en: "/videos/[slug]" },
+
     "/avis": { fr: "/avis", en: "/avis" },
     "/avis/deposer": { fr: "/avis/deposer", en: "/avis/deposer" },
     "/avis/service/[service]": { fr: "/avis/service/[service]", en: "/avis/service/[service]" },

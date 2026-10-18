@@ -27,6 +27,7 @@ import {
 } from "./lib/csp";
 import { isEnLocaleDisabled, mapEnToFr } from "./lib/i18n/en-to-fr-redirect";
 import { resolveLegacyRedirect } from "./lib/legacy-redirects";
+import { reponseGoneSiRetiree } from "./lib/videos/retirees-edge";
 import { isNoindexStubRoute } from "./lib/seo-noindex-routes";
 import { parseUtmFromUrl, buildUtmSetCookie } from "./lib/utm";
 import { verifyFormateurSession } from "./lib/formateur-session";
@@ -99,6 +100,15 @@ const authPipeline = auth(async (req) => {
         },
       });
     }
+  }
+
+  // 0a-quater. 410 Gone — vidéo du site RETIRÉE (lot W2, ADR 0070, décision D6).
+  //   Périmètre strict : `/fr|en/videos/<slug>`. La liste des slugs retirés vient d'une
+  //   route publique, en mémoire 5 min ; liste injoignable → on laisse passer (la page
+  //   rend alors son 404 noindex). Cf. src/lib/videos/retirees-edge.ts.
+  {
+    const gone = await reponseGoneSiRetiree(req.nextUrl.pathname);
+    if (gone) return new NextResponse(gone.body, gone);
   }
 
   // 0a-bis. Aplatissement des chaînes de redirection legacy (audit indexation 2026-06-17).
