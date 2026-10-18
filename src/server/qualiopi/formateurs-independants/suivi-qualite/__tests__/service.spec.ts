@@ -41,9 +41,19 @@ const h = vi.hoisted(() => {
     adminUser: { findUnique: vi.fn(async () => etat.auteur) },
     $transaction: vi.fn(async (fn: (t: typeof tx) => unknown) => fn(tx)),
   };
-  return { etat, prisma, tx };
+  return { etat, prisma, tx, config: new Map<string, unknown>() };
 });
 vi.mock("@/lib/prisma", () => ({ prisma: h.prisma }));
+// Les seuils sont des RÉGLAGES : absents, le défaut du registre.
+vi.mock("@/server/qualiopi/config/site-settings", () => ({
+  getQualiopiConfig: vi.fn(async (k: string) => {
+    if (h.config.has("__panne__")) throw new Error("base injoignable");
+    const { QUALIOPI_CONFIG_REGISTRY } = await import("@/server/qualiopi/config/registry");
+    return h.config.has(k)
+      ? h.config.get(k)
+      : QUALIOPI_CONFIG_REGISTRY[k as keyof typeof QUALIOPI_CONFIG_REGISTRY].default;
+  }),
+}));
 
 import { GRILLES_SUIVI_QUALITE } from "../reglages";
 import { enregistrerDecision, enregistrerGrille } from "../service";
@@ -71,6 +81,7 @@ const saisie = (over: Record<string, unknown> = {}) => ({
 
 beforeEach(() => {
   vi.clearAllMocks();
+  h.config.clear();
   h.etat.allume = true;
   h.etat.trainer = {
     statut: "sous_traitant",
@@ -170,6 +181,20 @@ describe("enregistrerGrille", () => {
     });
   });
 
+  it("moyenne 4 : favorable au défaut ; seuil réglé à 4,5 : écrite NON favorable ; illisible : le défaut", async () => {
+    await enregistrerGrille(saisie());
+    h.config.set("suivi_qualite_evaluation_moyenne_min", 4.5);
+    await enregistrerGrille(saisie());
+    h.config.set("suivi_qualite_evaluation_moyenne_min", "beaucoup");
+    await enregistrerGrille(saisie());
+    const favorables = (
+      h.tx.grilleSuiviFormateur.create.mock.calls as unknown as Array<
+        [{ data: { favorable: boolean } }]
+      >
+    ).map((c) => c[0].data.favorable);
+    expect(favorables).toEqual([true, false, true]);
+  });
+
   it("auteur introuvable en base : refusé (une grille non signée n'existe pas)", async () => {
     h.etat.auteur = null;
     expect(await enregistrerGrille(saisie())).toEqual({ ok: false, erreur: "auteur_inconnu" });
@@ -194,6 +219,27 @@ describe("enregistrerDecision", () => {
     });
   });
 
+  it("motif de 15 caractères : refusé quand le minimum est réglé à 20", async () => {
+    h.etat.session = {
+      ...h.etat.session!,
+      enrollments: [{ questionnaires: [{ noteGlobale: 2 }] }],
+    };
+    h.config.set("suivi_qualite_texte_min_caracteres", 20);
+    expect(await enregistrerDecision(decision({ motif: "Quinze lettres." }))).toEqual({
+      ok: false,
+      erreur: "motif_invalide",
+    });
+  });
+
+  it("satisfaction 2 : suspension réglée sous 2 → plus rien à lever (sans objet)", async () => {
+    h.etat.session = {
+      ...h.etat.session!,
+      enrollments: [{ questionnaires: [{ noteGlobale: 2 }] }],
+    };
+    h.config.set("suivi_qualite_satisfaction_suspension_sous", 2);
+    expect(await enregistrerDecision(decision())).toEqual({ ok: false, erreur: "sans_objet" });
+  });
+
   it("lever une suspension qui n'existe pas : sans objet", async () => {
     expect(await enregistrerDecision(decision())).toEqual({ ok: false, erreur: "sans_objet" });
   });
@@ -208,6 +254,29 @@ describe("enregistrerDecision", () => {
       id: "55555555-5555-4555-8555-555555555555",
     });
     expect(h.tx.activityLog.create).toHaveBeenCalledTimes(1);
+  });
+
+  it("levee_suspension sur une session annulée porteuse d'une suspension : acceptée", async () => {
+    h.etat.session = {
+      ...h.etat.session!,
+      statut: "annulee",
+      enrollments: [{ questionnaires: [{ noteGlobale: 2 }] }],
+    };
+    expect(await enregistrerDecision(decision())).toEqual({
+      ok: true,
+      id: "55555555-5555-4555-8555-555555555555",
+    });
+  });
+
+  it("entretien seul sur une session annulée : refusé", async () => {
+    h.etat.session = {
+      ...h.etat.session!,
+      statut: "annulee",
+      enrollments: [{ questionnaires: [{ noteGlobale: 3.5 }] }],
+    };
+    const r = await enregistrerDecision(decision({ type: "entretien" }));
+    expect(r.ok).toBe(false);
+    expect(h.tx.activityLog.create).not.toHaveBeenCalled();
   });
 
   it("session d'un autre formateur : introuvable (IDOR)", async () => {

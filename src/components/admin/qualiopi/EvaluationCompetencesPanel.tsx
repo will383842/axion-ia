@@ -31,7 +31,7 @@ import {
   type CritereGrille,
   type DecisionHabilitation,
 } from "@/server/qualiopi/formateurs-independants/evaluation-competences/configuration";
-import { REGLAGES_EVALUATION as R } from "@/server/qualiopi/formateurs-independants/evaluation-competences/reglages";
+import type { ReglagesEvaluation } from "@/server/qualiopi/formateurs-independants/evaluation-competences/reglages";
 import {
   seuilsEntretien,
   seuilsMiseEnSituation,
@@ -55,6 +55,8 @@ export interface EvaluationCompetencesPanelProps {
   readonly trainerId: string;
   readonly formations: ReadonlyArray<{ id: string; titre: string }>;
   readonly lignes: ReadonlyArray<LigneEvaluationAffichee>;
+  /** Seuils RÉGLÉS en console (ou leurs défauts), lus côté serveur. */
+  readonly reglages: ReglagesEvaluation;
   /** Seuils des DERNIÈRES grilles versées. */
   readonly dernierEntretienAtteint: boolean | null;
   readonly derniereMiseEnSituationAtteinte: boolean | null;
@@ -126,10 +128,12 @@ function GrilleNotee({
   trainerId,
   nature,
   criteres,
+  reglages: R,
 }: {
   trainerId: string;
   nature: "entretien" | "mise_en_situation";
   criteres: ReadonlyArray<CritereGrille>;
+  reglages: ReglagesEvaluation;
 }) {
   const [notes, setNotes] = useState<Record<string, number>>({});
   const [observation, setObservation] = useState("");
@@ -141,8 +145,8 @@ function GrilleNotee({
   const apercu = !complete
     ? null
     : nature === "entretien"
-      ? seuilsEntretien(notes)
-      : seuilsMiseEnSituation(notes);
+      ? seuilsEntretien(notes, R)
+      : seuilsMiseEnSituation(notes, R);
 
   return (
     <div className="flex flex-col gap-[var(--space-admin-3)]">
@@ -375,7 +379,7 @@ function detailLigne(l: LigneEvaluationAffichee): string {
 }
 
 export function EvaluationCompetencesPanel(props: EvaluationCompetencesPanelProps) {
-  const { trainerId, formations, lignes } = props;
+  const { trainerId, formations, lignes, reglages } = props;
   return (
     <section
       id="evaluation-competences"
@@ -431,11 +435,17 @@ export function EvaluationCompetencesPanel(props: EvaluationCompetencesPanelProp
         </div>
       )}
 
-      <GrilleNotee trainerId={trainerId} nature="entretien" criteres={CRITERES_ENTRETIEN} />
+      <GrilleNotee
+        trainerId={trainerId}
+        nature="entretien"
+        criteres={CRITERES_ENTRETIEN}
+        reglages={reglages}
+      />
       <GrilleNotee
         trainerId={trainerId}
         nature="mise_en_situation"
         criteres={BLOCS_MISE_EN_SITUATION}
+        reglages={reglages}
       />
       <Decision trainerId={trainerId} formations={formations} />
       <FormationMethode trainerId={trainerId} />

@@ -6,14 +6,15 @@
  * sur 30 jours. Une ligne = la formation, la date, le formateur, l'étape, UN
  * bouton. Même calcul que le moteur des missions (`etapeMission`).
  *
- * 🔑 Interrupteur `formateurs.missions_console` coupé : la page n'existe pas.
+ * 🔑 Interrupteur `formateurs.missions_console` coupé : l'écran « pas encore ouvert » le nomme.
  * Rôles du dossier candidat seulement (la page nomme des formateurs).
  */
 
 import Link from "next/link";
-import { notFound } from "next/navigation";
 
+import { EcranPasEncoreOuvert } from "@/components/admin/qualiopi/EcranPasEncoreOuvert";
 import { AccesRefuse } from "@/components/admin/ui/AccesRefuse";
+import { INTERRUPTEURS_SIGNATURE } from "@/server/qualiopi/formateurs-independants/interrupteurs";
 import { gardePage } from "@/server/auth/garde-page";
 import { peutOuvrirDossierCandidat } from "@/server/auth/habilitations";
 import { interrupteurAllume } from "@/server/qualiopi/formateurs-independants/interrupteur-allume";
@@ -89,7 +90,15 @@ export default async function MissionsFormateursPage({ params, searchParams }: P
       />
     );
   }
-  if (!(await interrupteurAllume("missions_console"))) notFound();
+  if (!(await interrupteurAllume("missions_console"))) {
+    return (
+      <EcranPasEncoreOuvert
+        titre="Missions"
+        interrupteurs={[INTERRUPTEURS_SIGNATURE.missions_console.libelle]}
+        base={`/${locale}/${adminPrefix}`}
+      />
+    );
+  }
 
   const sp = await searchParams;
   const qui: QuiAgit = ONGLETS.some((o) => o.cle === sp.qui) ? (sp.qui as QuiAgit) : "vous";

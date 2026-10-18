@@ -11,7 +11,6 @@
  */
 
 import type { Metadata } from "next";
-import { notFound } from "next/navigation";
 
 import { requireFormateurLecture } from "@/server/formateur/guard";
 import { lireDemandesEnCours } from "@/server/qualiopi/formateurs-independants/changements-coordonnees";
@@ -54,7 +53,17 @@ export default async function MonDossierPage({
       : null;
   // V1-A-10 — signé avec un numéro « en cours » : F21 renvoie ici pour le transmettre.
   const ndaAttendu = !session.lectureSeule && (await numeroDeclarationAttendu(session.trainerId));
-  if (vue === null && changement === null && !ndaAttendu) notFound();
+  if (vue === null && changement === null && !ndaAttendu) {
+    return (
+      <CoquilleFormateur section="dossier">
+        <h1 className="text-2xl font-semibold">Mon dossier</h1>
+        <p className="mt-2 text-sm opacity-80">
+          Cette page n&apos;est pas encore ouverte pour vous. Revenez dans quelques jours, ou
+          répondez au dernier message que vous avez reçu.
+        </p>
+      </CoquilleFormateur>
+    );
+  }
   const enCours = (nature: string) => changement?.find((d) => d.nature === nature) ?? null;
   const issue = messageDuCode((await searchParams).issue);
 

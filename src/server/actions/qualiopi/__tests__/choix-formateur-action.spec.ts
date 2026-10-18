@@ -133,6 +133,13 @@ describe("réponse depuis le formulaire de l'espace", () => {
     return f;
   }
 
+  it("session expirée : renvoi vers la connexion, la garde lève unauthorized", async () => {
+    h.repondre.mockRejectedValueOnce(new Error("unauthorized"));
+    await expect(repondreDepuisFormulaireAction(formulaire("acceptee"))).rejects.toThrow(
+      /REDIRECT .*connexion\?erreur=session/,
+    );
+  });
+
   it("une valeur autre qu'« acceptee » ou « refusee » est rejetée, jamais lue comme un refus", async () => {
     for (const v of ["autre", "", null]) {
       await expect(repondreDepuisFormulaireAction(formulaire(v))).rejects.toThrow(

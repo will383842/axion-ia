@@ -10,8 +10,9 @@
  *   - refusé s'il est vierge ou incomplet ;
  *   - journalisé DANS la même transaction (`exiger`) : pas de grille sans trace.
  *
- * Une décision « habilité » qui n'atteint pas les seuils de `reglages.ts` est refusée ;
- * toute décision porte un motif et garde une copie des seuils du jour.
+ * Une décision « habilité » qui n'atteint pas les seuils RÉGLÉS (`reglages-lecture.ts`,
+ * défauts dans `reglages.ts`) est refusée ; toute décision porte un motif et garde une
+ * copie des seuils réellement appliqués ce jour-là.
  *
  * Verrou : `__tests__/ecrivain-unique-et-idor.spec.ts` refuse toute autre écriture de la table.
  */
@@ -23,7 +24,7 @@ import { journaliser } from "@/server/journal/journaliser";
 
 import { MOTIF_MAX, VERSION_CONFIGURATION_EVALUATION } from "./configuration";
 import { SELECT_LIGNE_EVALUATION } from "./lecture";
-import { REGLAGES_EVALUATION } from "./reglages";
+import { lireReglagesEvaluation } from "./reglages-lecture";
 import {
   validerDecision,
   validerFormationMethode,
@@ -67,6 +68,8 @@ export async function verserEvaluation(input: {
     return refus(`Versement refusé : ${MOTIF_REFUS[ACTE_EVALUATION]}`);
   }
   const maintenant = input.maintenant ?? new Date();
+  // Ne lève jamais : illisible ou base en panne, les défauts (jamais plus permissif).
+  const reglages = await lireReglagesEvaluation();
 
   try {
     return await prisma.$transaction(async (tx) => {
@@ -113,7 +116,7 @@ export async function verserEvaluation(input: {
           decision: demande.decision,
           motif: demande.motif,
           lignes,
-          reglages: REGLAGES_EVALUATION,
+          reglages,
         });
         if (!v.ok) throw new Refus(v.message);
         data = {
@@ -123,7 +126,7 @@ export async function verserEvaluation(input: {
           motif: v.motif,
           entretienId: v.entretienId,
           miseEnSituationId: v.miseEnSituationId,
-          seuilsAppliques: { ...REGLAGES_EVALUATION },
+          seuilsAppliques: { ...reglages },
         };
       } else if (demande.nature === "formation_methode") {
         const v = validerFormationMethode(demande.jour, maintenant);
