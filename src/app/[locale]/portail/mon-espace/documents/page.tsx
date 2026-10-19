@@ -41,6 +41,16 @@ function formatDateCourte(d: Date): string {
   }).format(d);
 }
 
+/**
+ * P11 — la route tracée seulement si l'interrupteur agit pour ce stagiaire
+ * (`ouvertureId` posé par le service) ; sinon l'URL signée, comme avant.
+ */
+function lienPiece(locale: string, piece: { pdfUrl: string | null; ouvertureId?: string }): string {
+  return piece.ouvertureId !== undefined
+    ? `/${locale}/portail/mon-espace/documents/${piece.ouvertureId}`
+    : (piece.pdfUrl ?? "");
+}
+
 interface PageProps {
   params: Promise<{ locale: string }>;
 }
@@ -108,7 +118,7 @@ export default async function MesDocumentsPage({ params }: PageProps) {
                       <div className="flex shrink-0 items-center gap-4">
                         {a.pdfUrl ? (
                           <a
-                            href={a.pdfUrl}
+                            href={lienPiece(locale, a)}
                             target="_blank"
                             rel="noopener noreferrer"
                             className="text-terracotta hover:text-terracotta-deep inline-flex items-center gap-1.5 text-sm font-medium"
@@ -175,7 +185,7 @@ export default async function MesDocumentsPage({ params }: PageProps) {
                           </div>
                           {p.pdfUrl ? (
                             <a
-                              href={p.pdfUrl}
+                              href={lienPiece(locale, p)}
                               target="_blank"
                               rel="noopener noreferrer"
                               className="text-terracotta hover:text-terracotta-deep inline-flex shrink-0 items-center gap-1.5 text-sm font-medium"
