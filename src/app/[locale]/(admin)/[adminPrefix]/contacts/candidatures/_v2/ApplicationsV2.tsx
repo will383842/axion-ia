@@ -206,7 +206,7 @@ export function ApplicationsV2({
       ? [
           {
             key: "favori",
-            header: <span className="sr-only">Favori</span>,
+            header: "Favori",
             cell: (a: JobApplicationListItem) =>
               a.favori === null || a.favori === undefined ? (
                 MASQUE
