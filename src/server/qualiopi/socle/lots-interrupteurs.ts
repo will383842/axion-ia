@@ -119,6 +119,12 @@ export const LOTS_INTERRUPTEURS: ReadonlyArray<LotInterrupteur> = [
     description:
       "Transforme un voyant rouge (trace attendue absente après l'échéance) en alerte, une par indicateur.",
   },
+  {
+    lot: "presence",
+    libelle: "Confirmation de présence",
+    description:
+      "Envoie la confirmation de présence avant la formation et ses relances aux stagiaires (indicateur 12).",
+  },
 ];
 
 const LOTS_CONNUS: ReadonlySet<string> = new Set(LOTS_INTERRUPTEURS.map((l) => l.lot));
