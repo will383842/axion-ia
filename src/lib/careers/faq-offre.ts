@@ -39,7 +39,7 @@ export function buildOfferFaq(
    * L14 — offre d'intervenant : la réponse « candidature » dit les vraies étapes
    * au lieu de « CV optionnel ». Absent, la FAQ est celle d'avant, mot pour mot.
    */
-  opts?: { readonly intervenant?: boolean; readonly certificationObtenue?: boolean },
+  opts?: { readonly intervenant?: boolean },
 ): Array<{ id: string; question: string; answer: string }> {
   const items: Array<{ id: string; question: string; answer: string }> = [];
   const cityPart = o.city ? (isFr ? ` à ${o.city}` : ` in ${o.city}`) : "";
@@ -144,8 +144,8 @@ export function buildOfferFaq(
     answer:
       opts?.intervenant === true
         ? isFr
-          ? `Vous postulez en ligne en quelques minutes via le bouton « Postuler ». Le parcours comporte ensuite plusieurs étapes. ${phraseEtapesIntervenant("fr", { freelance: false, ...(opts.certificationObtenue !== undefined ? { certificationObtenue: opts.certificationObtenue } : {}) })}`
-          : `Apply online in a few minutes via the « Apply » button. The process then has several steps. ${phraseEtapesIntervenant("en", { freelance: false, ...(opts.certificationObtenue !== undefined ? { certificationObtenue: opts.certificationObtenue } : {}) })}`
+          ? `Vous postulez en ligne en quelques minutes via le bouton « Postuler ». Le parcours comporte ensuite plusieurs étapes. ${phraseEtapesIntervenant("fr", { freelance: false })}`
+          : `Apply online in a few minutes via the « Apply » button. The process then has several steps. ${phraseEtapesIntervenant("en", { freelance: false })}`
         : isFr
           ? `Vous postulez en ligne en quelques minutes via le bouton « Postuler ». Le CV est optionnel : ce qui compte, c'est votre motivation et ce que vous savez faire. ${RECRUTEMENT_REGULIER.fr}`
           : `Apply online in a few minutes via the « Apply » button. A CV is optional — what matters is your motivation and skills. ${RECRUTEMENT_REGULIER.en}`,

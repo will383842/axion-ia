@@ -14,10 +14,7 @@
 // si elle est négative. C'est le seul engagement qu'on peut tenir.
 
 import { Text } from "@react-email/components";
-import {
-  MENTION_AUCUNE_MISSION_AVANT_QUALIOPI,
-  etapesIntervenant,
-} from "../../careers/etapes-intervenant";
+import { etapesIntervenant } from "../../careers/etapes-intervenant";
 import { EmailLayout, emailStyles } from "./_layout";
 import { LienSuppressionCandidature } from "./_lien-suppression-candidature";
 import type { Locale } from "../../../../prisma/generated/client";
@@ -49,8 +46,6 @@ interface Payload {
   intervenant?: boolean;
   /** L14 — formateur indépendant : SIRET et déclaration d'activité font partie des pièces. */
   freelance?: boolean;
-  /** L14 — certification obtenue : la mention « avant l'obtention » ne serait plus vraie. */
-  certificationObtenue?: boolean;
   /** Lien signé « Supprimer ma candidature » (2026-10-11). */
   lienSuppression?: string;
 }
@@ -157,9 +152,6 @@ export function CandidatureRecueEmail({
             {`${i + 1}. ${e.fr}`}
           </Text>
         ))}
-        {p.certificationObtenue === true ? null : (
-          <Text style={emailStyles.paragraphStyle}>{MENTION_AUCUNE_MISSION_AVANT_QUALIOPI.fr}</Text>
-        )}
         <LienSuppressionCandidature href={p.lienSuppression} locale={locale} />
       </EmailLayout>
     );

@@ -26,9 +26,7 @@ describe("candidature-recue — variante intervenant (L14)", () => {
     expect(r.text).toMatch(/formation obligatoire à la méthode Axion-IA/);
     expect(r.text).toMatch(/observation de votre première mission/);
     expect(r.text).toMatch(/évaluation après chaque mission/);
-    expect(r.text).toContain(
-      "Aucune mission ne sera confiée avant l'obtention de la certification Qualiopi de l'organisme.",
-    );
+    expect(r.text).not.toMatch(/Qualiopi|obtention/);
     expect(r.text).not.toMatch(/certifi[ée]e?\b/i);
   });
 
@@ -37,15 +35,6 @@ describe("candidature-recue — variante intervenant (L14)", () => {
     expect(r.text).not.toMatch(/SIRET/);
     expect(r.text).toContain("Votre candidature d'intervenant est bien arrivée.");
     expect(r.text).toMatch(/CV de moins de 24 mois/);
-  });
-
-  it("la mention disparaît quand la certification est obtenue", async () => {
-    const r = await renderEmailTemplate("candidature-recue", "fr", {
-      ...BASE,
-      intervenant: true,
-      certificationObtenue: true,
-    });
-    expect(r.text).not.toMatch(/Qualiopi/);
   });
 
   it("sans la variante, l'accusé est celui d'avant (aucune étape, aucune mention)", async () => {

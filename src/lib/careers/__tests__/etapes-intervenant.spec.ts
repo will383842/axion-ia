@@ -2,7 +2,6 @@ import { describe, expect, it } from "vitest";
 
 import {
   ETAPES_INTERVENANT,
-  MENTION_AUCUNE_MISSION_AVANT_QUALIOPI,
   estOffreIntervenant,
   etapesIntervenant,
   phraseEtapesIntervenant,
@@ -36,21 +35,12 @@ describe("étapes d'une candidature d'intervenant (L14)", () => {
     expect(fr).toMatch(/évaluation après chaque mission/);
   });
 
-  it("porte la mention exacte, sans jamais écrire « certifié »", () => {
-    expect(MENTION_AUCUNE_MISSION_AVANT_QUALIOPI.fr).toBe(
-      "Aucune mission ne sera confiée avant l'obtention de la certification Qualiopi de l'organisme.",
-    );
+  it("ne dit rien de l'état de la certification Qualiopi, sans jamais écrire « certifié »", () => {
     for (const langue of ["fr", "en"] as const) {
-      expect(phraseEtapesIntervenant(langue)).toContain(
-        MENTION_AUCUNE_MISSION_AVANT_QUALIOPI[langue],
-      );
+      expect(phraseEtapesIntervenant(langue)).not.toMatch(/Qualiopi|obtention|obtains/i);
       expect(JSON.stringify(ETAPES_INTERVENANT)).not.toMatch(/certifi[ée]s?\b(?! Qualiopi)/i);
       expect(phraseEtapesIntervenant(langue)).not.toMatch(/\bcertifi[ée]e?s?\b|\bcertified\b/i);
     }
-  });
-
-  it("la mention disparaît une fois la certification obtenue (elle ne serait plus vraie)", () => {
-    expect(phraseEtapesIntervenant("fr", { certificationObtenue: true })).not.toMatch(/Qualiopi/);
   });
 
   it("ne promet ni doublon, ni équipe d'accompagnement, ni CV optionnel", () => {
