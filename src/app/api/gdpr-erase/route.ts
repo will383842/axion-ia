@@ -400,6 +400,8 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
       emailCopiesSupprimees: emailTracesResult.copiesSupprimees,
       // Chantier QNC, L11 — copies d'e-mails de formation gardées, adresse masquée.
       emailCopiesConserveesFormation: emailTracesResult.copiesConserveesFormation ?? 0,
+      // Lot P10 — lignes de la corbeille d'envoi de formation gardées (adresse masquée).
+      emailOutboxConserveesFormation: emailTracesResult.outboxConserveesFormation ?? 0,
       reponsesEntrantesSupprimees: reponsesEntrantesResult.supprimees,
       crmOutboxSupprimes: crmOutboxResult.supprimees,
       podcastSupprimes: podcastResult.supprimees,
@@ -438,8 +440,14 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
         // qu'on pratique sans la dire est indiscernable d'un oubli — et c'est
         // précisément sous cette forme que le défaut a vécu.
         "email_logs : l'adresse est PSEUDONYMISÉE, la ligne conservée. C'est la preuve que vous avez été informé (convocation, convention, attestation), exigée par la certification Qualiopi et couverte par l'art. 17(3)(b) et (e) RGPD. Elle ne permet plus de vous identifier.",
-        "email_log_contents : la COPIE des e-mails qui vous ont été envoyés (objet, texte) est SUPPRIMÉE. Seule la ligne pseudonymisée du journal subsiste.",
-        "email_outbox : SUPPRIMÉ intégralement — messages non envoyés, charge utile comprise. Aucune base légale ne justifie de les conserver.",
+        // Lots L11 et P10 — la déclaration suit ce qui s'est PASSÉ : jamais
+        // « supprimée » pour une copie gardée, jamais « gardée » si elle ne l'est pas.
+        emailTracesResult.copiesConserveesFormation
+          ? `email_log_contents : la copie des e-mails de FORMATION qui vous ont été envoyés (convocation, liens, attestation…) est CONSERVÉE 5 ans, votre adresse y étant masquée (art. 17(3)(b) et (e) RGPD). Les autres copies sont SUPPRIMÉES.`
+          : "email_log_contents : la COPIE des e-mails qui vous ont été envoyés (objet, texte) est SUPPRIMÉE. Seule la ligne pseudonymisée du journal subsiste.",
+        emailTracesResult.outboxConserveesFormation
+          ? `email_outbox : les copies d'e-mails de FORMATION approuvés ou envoyés sont CONSERVÉES 5 ans, votre adresse y étant masquée (art. 17(3)(b) et (e) RGPD). Les messages à valider ou refusés, jamais partis, sont SUPPRIMÉS.`
+          : "email_outbox : SUPPRIMÉ intégralement — messages non envoyés, charge utile comprise. Aucune base légale ne justifie de les conserver.",
         "podcast_requests : SUPPRIMÉ intégralement (nom, adresse, téléphone, ville, activité). Aucun contrat, aucune obligation comptable : rien ne justifiait de les conserver.",
         "booking_options : SUPPRIMÉ intégralement. Une option de réservation non confirmée ne fonde aucune obligation.",
         "document_signature_tokens : liens de signature RÉVOQUÉS puis adresse pseudonymisée. Le jeton est un artefact d'envoi, pas une preuve.",

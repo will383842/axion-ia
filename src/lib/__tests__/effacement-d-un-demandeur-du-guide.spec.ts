@@ -124,6 +124,7 @@ describe("effacement d'un demandeur du guide", () => {
     expect(traces).toEqual({
       logsPseudonymises: 1,
       outboxSupprimes: 1,
+      outboxConserveesFormation: 0,
       copiesSupprimees: 1,
       copiesConserveesFormation: 0,
     });
