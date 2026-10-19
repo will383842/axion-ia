@@ -285,6 +285,20 @@ export const CATALOGUE: Readonly<Record<EmailJobName, FicheEmail>> = {
     destinataire: "le stagiaire",
     source: "server/qualiopi/emargement/envoi-liens.ts",
   },
+  "qualiopi-presence-confirmation": {
+    categorie: "formation",
+    quand:
+      "Rien ne l'envoie encore — socle posé (lot présence 1/3) ; l'envoi arrive au lot 2/3 : de J-3 à J-1, une demande de confirmation, puis une seule relance",
+    destinataire: "le stagiaire",
+    source: null,
+  },
+  "qualiopi-presence-entreprise": {
+    categorie: "formation",
+    quand:
+      "Rien ne l'envoie encore — socle posé (lot présence 1/3) ; l'envoi arrive au lot 2/3 : à J-1, si le stagiaire n'a pas confirmé sa présence, une seule fois, sans motif",
+    destinataire: "l'entreprise cliente",
+    source: null,
+  },
   "qualiopi-satisfaction-j1": {
     categorie: "formation",
     quand: "Le lendemain de la fin de session",

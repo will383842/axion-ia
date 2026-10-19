@@ -88,6 +88,12 @@ export const EMAILS_AUTOMATIQUES_PAR_DEFAUT: readonly string[] = [
   // il n'a de valeur que PENDANT la session, et le jeton expire 48 h après sa
   // fin. Même raisonnement que la convocation.
   "qualiopi-emargement-lien",
+  // QNC NC6 (2026-10-19, décision de Will) — la confirmation de présence et
+  // l'information de l'entreprise partent SEULES (P-12 étape 4). Retenues en
+  // corbeille, elles arriveraient après la formation qu'elles préparent : une
+  // information « à J-1 » relue le lendemain n'informe plus personne.
+  "qualiopi-presence-confirmation",
+  "qualiopi-presence-entreprise",
   "qualiopi-alerte-interne",
   // Un rappel retenu en validation manque le rendez-vous qu il devait preparer :
   // il part seul, exactement comme la convocation et le rappel J-7.
@@ -200,6 +206,8 @@ export const LIBELLE_TEMPLATE_EMAIL: Record<string, string> = {
   "qualiopi-attestation-disponible": "Attestation disponible",
   "qualiopi-portail-acces": "Accès au portail",
   "qualiopi-emargement-lien": "Lien de signature de présence",
+  "qualiopi-presence-confirmation": "Demande de confirmation de présence (stagiaire)",
+  "qualiopi-presence-entreprise": "Information de l'entreprise : présence non confirmée",
   "formateur-contresignature": "Demande de contresignature de l'émargement au formateur",
   "qualiopi-alerte-interne": "Alerte interne",
   "qualiopi-relance-impayee": "Relance d'impayé",

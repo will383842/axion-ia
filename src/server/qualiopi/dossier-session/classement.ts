@@ -120,6 +120,8 @@ const DESTINATAIRE_PAR_GABARIT: Readonly<Record<string, Destinataire>> = {
   "qualiopi-positionnement": "stagiaire",
   "qualiopi-questionnaire-relance": "stagiaire",
   "qualiopi-emargement-lien": "stagiaire",
+  "qualiopi-presence-confirmation": "stagiaire",
+  "qualiopi-presence-entreprise": "entreprise",
   "qualiopi-attestation-disponible": "stagiaire",
   "qualiopi-portail-acces": "stagiaire",
   // Le questionnaire à froid de l'ENTREPRISE vise le commanditaire, même

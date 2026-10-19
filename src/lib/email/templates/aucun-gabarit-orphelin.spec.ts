@@ -118,7 +118,14 @@ describe("registre des gabarits — les dormants sont vraiment dormants", () => 
     // Seule exception, nominative : la purge de conservation (lot L6) cite des
     // gabarits dormants pour EFFACER leurs anciennes lignes d'`email_logs`, jamais
     // pour les envoyer. Tout autre fichier qui les cite les réveille.
-    const PURGES = ["src/server/newsletter/retention.ts"];
+    // Deuxième exception, nominative aussi : les deux fichiers qui CLASSENT un
+    // gabarit (mode d'envoi par défaut, destinataire du dossier de session). Les
+    // classer est obligatoire avant qu'il parte ; cela n'est pas l'envoyer.
+    const PURGES = [
+      "src/server/newsletter/retention.ts",
+      "src/server/email/outbox-policy.ts",
+      "src/server/qualiopi/dossier-session/classement.ts",
+    ];
     const sources = fichiersDeProduction()
       .filter((f) => !PURGES.some((p) => f.replace(/\\/g, "/").endsWith(p)))
       .map((f) => readFileSync(f, "utf8"));
