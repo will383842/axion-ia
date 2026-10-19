@@ -4,12 +4,13 @@
  * (`email_outbox`), derrière `qualiopi.dossier_session.actif`.
  *
  *   · ÉTEINT — toute la corbeille de la personne est supprimée, comme avant ;
- *   · ESSAI — seules les lignes `approuve`/`envoye` d'une session ou d'une
- *     inscription du banc d'essai sont gardées ;
- *   · ACTIF — les lignes `approuve`/`envoye` rattachées à une session (hors
- *     facturation) sont gardées : adresse pseudonymisée, adresse masquée dans
- *     `payload` et `sujet`, `approuveAt`/`approuveById` intacts. `a_valider` et
- *     `refuse` sont supprimées.
+ *   · ESSAI — seules les lignes `envoye` d'une session ou d'une inscription du
+ *     banc d'essai sont gardées ;
+ *   · ACTIF — les lignes `envoye` rattachées à une session (hors facturation)
+ *     sont gardées : adresse pseudonymisée, adresse masquée dans `payload` et
+ *     `sujet`, `approuveAt`/`approuveById` intacts. `approuve` (état de passage,
+ *     que le balayage remet en `a_valider`), `a_valider` et `refuse` sont
+ *     supprimées.
  *
  * Par l'effet, sur une base en mémoire.
  */
@@ -18,13 +19,24 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import { table, type Table } from "@/server/newsletter/__tests__/base-en-memoire";
 
-const base = vi.hoisted(() => ({ tables: {} as Record<string, unknown> }));
+const base = vi.hoisted(() => ({
+  tables: {} as Record<string, unknown>,
+  transactions: [] as number[],
+}));
 
 vi.mock("@/lib/prisma", () => ({
   prisma: new Proxy(
     {},
     {
       get(_c, modele: string) {
+        // Le faux `$transaction` n'accepte que la forme tableau et en compte les
+        // opérations : « une seule transaction » se lit dans `base.transactions`.
+        if (modele === "$transaction") {
+          return async (ops: Promise<unknown>[]) => {
+            base.transactions.push(ops.length);
+            return Promise.all(ops);
+          };
+        }
         const t = base.tables[modele];
         if (!t) throw new Error(`table inattendue : ${modele}`);
         return t;
@@ -111,6 +123,7 @@ beforeEach(() => {
     ]),
   };
   base.tables = tables;
+  base.transactions = [];
 });
 
 function ids(): string[] {
@@ -135,7 +148,7 @@ describe("éteint — la corbeille entière disparaît, comme avant", () => {
 });
 
 describe("essai — seuls les envois du banc d'essai sont gardés", () => {
-  it("garde la seule ligne approuvée/envoyée d'une inscription d'essai", async () => {
+  it("garde la seule ligne envoyée d'une inscription d'essai", async () => {
     tables["setting"] = interrupteur("essai");
     base.tables = tables;
     const r = await eraseEmailTracesForEmail(PERSONNE);
@@ -151,20 +164,25 @@ describe("actif — gardé et pseudonymisé", () => {
     base.tables = tables;
   });
 
-  it("garde approuve/envoye rattachés à une session ; supprime a_valider, refuse, facture, hors formation", async () => {
+  it("garde les seuls envoyés rattachés à une session ; supprime approuve, a_valider, refuse, facture, hors formation", async () => {
     const r = await eraseEmailTracesForEmail(PERSONNE);
-    expect(r.outboxConserveesFormation).toBe(3);
-    expect(r.outboxSupprimes).toBe(4);
-    expect(ids()).toEqual(["o-approuve", "o-autre", "o-envoye", "o-essai"]);
+    expect(r.outboxConserveesFormation).toBe(2);
+    expect(r.outboxSupprimes).toBe(5);
+    expect(ids()).toEqual(["o-autre", "o-envoye", "o-essai"]);
   });
 
-  it("pseudonymise le destinataire au format commun et laisse l'approbation intacte", async () => {
+  it("🔴 une ligne `approuve` est SUPPRIMÉE : état de passage, le balayage la remettrait en a_valider", async () => {
     await eraseEmailTracesForEmail(PERSONNE);
-    const o = tables["emailOutbox"]!.lignes.find((l) => l["id"] === "o-approuve")!;
+    expect(ids()).not.toContain("o-approuve");
+  });
+
+  it("pseudonymise le destinataire au format commun et laisse l'approbation d'un envoyé intacte", async () => {
+    await eraseEmailTracesForEmail(PERSONNE);
+    const o = tables["emailOutbox"]!.lignes.find((l) => l["id"] === "o-envoye")!;
     expect(o["recipient"]).toMatch(/^erased:[0-9a-f]{16}@erased\.local$/);
     expect(o["approuveAt"]).toBe(QUAND);
     expect(o["approuveById"]).toBe(APPROBATEUR);
-    expect(o["statut"]).toBe("approuve");
+    expect(o["statut"]).toBe("envoye");
   });
 
   it("🔴 aucune adresse en clair ne subsiste (requête sur le JSON), sous aucune écriture", async () => {
@@ -185,6 +203,26 @@ describe("actif — gardé et pseudonymisé", () => {
     await eraseEmailTracesForEmail(PERSONNE);
     const o = tables["emailOutbox"]!.lignes.find((l) => l["id"] === "o-envoye")!;
     expect(o["messagePersonnalise"]).toBe(`Répondez à ${ADRESSE_MASQUEE}`);
+  });
+
+  it("tout ou rien : journal, suppressions et lignes gardées partent dans UNE transaction", async () => {
+    await eraseEmailTracesForEmail(PERSONNE);
+    // 1 pseudonymisation du journal + 1 suppression + 2 lignes gardées réécrites.
+    expect(base.transactions).toEqual([4]);
+  });
+
+  it("le sujet masqué reste dans les 300 caractères de la colonne VarChar(300)", async () => {
+    // Adresse courte : la remplacer par « [adresse masquée] » ALLONGE le sujet.
+    const courte = "a@b.fr";
+    const sujet = "x".repeat(290) + courte;
+    tables["emailOutbox"]!.lignes.push(
+      ligne("o-long", "envoye", { recipient: courte, sujet, payload: { to: courte } }),
+    );
+    await eraseEmailTracesForEmail(courte);
+    const o = tables["emailOutbox"]!.lignes.find((l) => l["id"] === "o-long")!;
+    expect(sujet.length).toBe(296);
+    expect(String(o["sujet"]).length).toBe(300);
+    expect(String(o["sujet"]).startsWith("x".repeat(290))).toBe(true);
   });
 
   it("la ligne d'une autre personne n'est pas touchée", async () => {

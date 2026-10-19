@@ -261,8 +261,8 @@ export interface EraseEmailTracesResult {
   /** Lignes de `email_outbox` supprimées. */
   readonly outboxSupprimes: number;
   /**
-   * Lot P10 — lignes de `email_outbox` DE FORMATION gardées (`approuve` ou
-   * `envoye`), adresse pseudonymisée et masquée. Zéro tant que
+   * Lot P10 — lignes de `email_outbox` DE FORMATION gardées (`envoye`
+   * seulement), adresse pseudonymisée et masquée. Zéro tant que
    * `qualiopi.dossier_session.actif` est éteint.
    */
   readonly outboxConserveesFormation: number;
@@ -436,9 +436,17 @@ export async function eraseEmailTracesForEmail(email: string): Promise<EraseEmai
 
   // Lot P10 — la corbeille d'envoi. Interrupteur éteint : toute la corbeille de
   // la personne est supprimée, comme avant (aucune lecture de plus). Sinon, les
-  // lignes `approuve`/`envoye` rattachées à une session (hors facturation) sont
-  // gardées, adresse pseudonymisée et masquée ; `a_valider` et `refuse` — jamais
-  // partis — sont supprimées. Décidé AVANT la pseudonymisation : part de l'adresse.
+  // lignes `envoye` rattachées à une session (hors facturation) sont gardées,
+  // adresse pseudonymisée et masquée ; `a_valider`, `refuse` et `approuve` sont
+  // supprimées. ⚠️ PAS `approuve` : c'est un état de passage, que
+  // `actions/qualiopi/email-outbox.ts` et le balayage `email/health.ts` remettent
+  // en `a_valider` — la ligne perdrait sa preuve d'approbation et pourrait être
+  // réapprouvée. Seul `envoye` est définitif. Décidé AVANT la pseudonymisation :
+  // part de l'adresse.
+  //
+  // ⚠️ Conservation : aucune purge n'applique encore un délai à ces lignes ; le
+  // texte déclaré dit « durée légale de conservation », sans chiffre. Une purge
+  // reste à faire.
   const etat = await lireEtatDossierSession();
   let outboxAGarder: Array<{
     id: string;
@@ -449,7 +457,7 @@ export async function eraseEmailTracesForEmail(email: string): Promise<EraseEmai
   }> = [];
   if (etat !== "eteint") {
     const lignes = await prisma.emailOutbox.findMany({
-      where: { recipient: email, statut: { in: ["approuve", "envoye"] } },
+      where: { recipient: email, statut: "envoye" },
       select: {
         id: true,
         template: true,
@@ -466,7 +474,14 @@ export async function eraseEmailTracesForEmail(email: string): Promise<EraseEmai
   }
   const idsOutboxGardes = outboxAGarder.map((l) => l.id);
 
-  const [logs, outbox] = await Promise.all([
+  // Tout ou rien : pseudonymisation du journal, suppression de la corbeille et
+  // réécriture des lignes gardées partent dans UNE transaction. Sans elle, un
+  // échec entre deux écritures laisserait l'adresse en clair dans une ligne
+  // gardée dont le reste est déjà pseudonymisé.
+  // Le SEUL réécrit d'une ligne gardée : adresse, sujet, charge utile, texte
+  // libre. `approuveAt` / `approuveById` ne se touchent pas — c'est la preuve.
+  // `sujet` est VarChar(300) : le masquage peut l'allonger, d'où le `slice`.
+  const [logs, outbox] = await prisma.$transaction([
     prisma.emailLog.updateMany({
       where: { recipient: email },
       data: { recipient: pseudonyme, bounceReason: null },
@@ -477,26 +492,24 @@ export async function eraseEmailTracesForEmail(email: string): Promise<EraseEmai
           ? { recipient: email }
           : { recipient: email, NOT: { id: { in: idsOutboxGardes } } },
     }),
+    ...outboxAGarder.map((l) =>
+      prisma.emailOutbox.updateMany({
+        where: { id: l.id },
+        data: {
+          recipient: pseudonyme,
+          sujet: masquerAdresseDansTexte(l.sujet, email).slice(0, 300),
+          messagePersonnalise:
+            l.messagePersonnalise === null
+              ? null
+              : masquerAdresseDansTexte(l.messagePersonnalise, email),
+          payload: masquerAdresseDansJson(l.payload, email),
+          ...(l.attachments === null || l.attachments === undefined
+            ? {}
+            : { attachments: masquerAdresseDansJson(l.attachments, email) }),
+        },
+      }),
+    ),
   ]);
-  // Le SEUL réécrit d'une ligne gardée : adresse, sujet, charge utile, texte
-  // libre. `approuveAt` / `approuveById` ne se touchent pas — c'est la preuve.
-  for (const l of outboxAGarder) {
-    await prisma.emailOutbox.updateMany({
-      where: { id: l.id },
-      data: {
-        recipient: pseudonyme,
-        sujet: masquerAdresseDansTexte(l.sujet, email),
-        messagePersonnalise:
-          l.messagePersonnalise === null
-            ? null
-            : masquerAdresseDansTexte(l.messagePersonnalise, email),
-        payload: masquerAdresseDansJson(l.payload, email),
-        ...(l.attachments === null || l.attachments === undefined
-          ? {}
-          : { attachments: masquerAdresseDansJson(l.attachments, email) }),
-      },
-    });
-  }
 
   return {
     logsPseudonymises: logs.count,

@@ -345,6 +345,10 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
       // jamais tue : une liste qui se donne pour exhaustive ne cache pas ce
       // qu'elle garde. Omise (0) tant que l'interrupteur du lot est éteint.
       copiesFormationConservees: emailTracesResult.copiesConserveesFormation ?? 0,
+      // Lot P10 — la corbeille d'envoi gardée est dite elle aussi, dans un champ
+      // DISTINCT : sans lui, une personne dont seule une ligne de corbeille
+      // survit recevrait une confirmation muette sur ce qui est conservé.
+      outboxConserveesFormation: emailTracesResult.outboxConserveesFormation ?? 0,
       // 2026-08-25 — les trois dernieres tables de l'inventaire entrent dans
       // l'enumeration. `clientsRetenus` est annonce SEPAREMENT et a dessein :
       // une reponse qui dirait « tout est efface » alors qu'une fiche facturee
@@ -446,7 +450,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
           ? `email_log_contents : la copie des e-mails de FORMATION qui vous ont été envoyés (convocation, liens, attestation…) est CONSERVÉE 5 ans, votre adresse y étant masquée (art. 17(3)(b) et (e) RGPD). Les autres copies sont SUPPRIMÉES.`
           : "email_log_contents : la COPIE des e-mails qui vous ont été envoyés (objet, texte) est SUPPRIMÉE. Seule la ligne pseudonymisée du journal subsiste.",
         emailTracesResult.outboxConserveesFormation
-          ? `email_outbox : les copies d'e-mails de FORMATION approuvés ou envoyés sont CONSERVÉES 5 ans, votre adresse y étant masquée (art. 17(3)(b) et (e) RGPD). Les messages à valider ou refusés, jamais partis, sont SUPPRIMÉS.`
+          ? `email_outbox : les copies d'e-mails de FORMATION envoyés sont CONSERVÉES pendant la durée légale de conservation, votre adresse y étant masquée (art. 17(3)(b) et (e) RGPD). Les messages à valider, approuvés non encore partis ou refusés sont SUPPRIMÉS.`
           : "email_outbox : SUPPRIMÉ intégralement — messages non envoyés, charge utile comprise. Aucune base légale ne justifie de les conserver.",
         "podcast_requests : SUPPRIMÉ intégralement (nom, adresse, téléphone, ville, activité). Aucun contrat, aucune obligation comptable : rien ne justifiait de les conserver.",
         "booking_options : SUPPRIMÉ intégralement. Une option de réservation non confirmée ne fonde aucune obligation.",
