@@ -13,6 +13,7 @@
 
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
+import { LIBELLE_MODALITE_HYBRIDE } from "@/server/qualiopi/documents/libelles-enumerations";
 import { createSessionAction } from "@/server/actions/qualiopi/sessions";
 import { createRecurringSessionsAction } from "@/server/actions/qualiopi/sessions-recurrentes";
 import { LieuFieldset } from "@/components/admin/qualiopi/LieuFieldset";
@@ -119,7 +120,7 @@ export interface SessionFormProps {
 const MODALITE_OPTIONS = [
   { value: "presentiel", label: "Présentiel" },
   { value: "distanciel", label: "Distanciel" },
-  { value: "hybride", label: "Hybride" },
+  { value: "hybride", label: LIBELLE_MODALITE_HYBRIDE },
 ] as const;
 
 const FINANCEMENT_OPTIONS = [

@@ -82,6 +82,11 @@ import {
 import { colonneDeclarationDisponible } from "@/server/qualiopi/adaptation/colonne-declaration";
 import { lireCircuitAdaptation } from "@/server/qualiopi/adaptation/journal-consignation";
 import {
+  lireAccesRemisParInscription,
+  lireRetenuesConvocationSession,
+} from "@/server/qualiopi/convocation-v2/blocage";
+import { numeroAcces } from "@/server/qualiopi/convocation-v2/decision";
+import {
   enrollTraineeAction,
   setEnrollmentStatutAction,
   setEnrollmentAdaptationsAction,
@@ -131,6 +136,7 @@ import {
 } from "@/server/qualiopi/sessions/verrou-dossier-pur";
 import { ChecklistSession } from "@/features/admin-qualiopi/session-hub/ChecklistSession";
 import { AccesRefuse } from "@/components/admin/ui/AccesRefuse";
+import { LIBELLE_MODALITE_HYBRIDE } from "@/server/qualiopi/documents/libelles-enumerations";
 import { gardePage } from "@/server/auth/garde-page";
 
 export const dynamic = "force-dynamic";
@@ -146,7 +152,7 @@ export const metadata: Metadata = {
 const MODALITE_LABELS: Record<string, string> = {
   presentiel: "Présentiel",
   distanciel: "Distanciel",
-  hybride: "Hybride",
+  hybride: LIBELLE_MODALITE_HYBRIDE,
 };
 
 const FINANCEMENT_LABELS: Record<string, string> = {
@@ -583,6 +589,8 @@ export default async function SessionHubPage({ params, searchParams }: PageProps
     traineesAvecDetailChiffre,
     facturesDesPieces,
     conflitsFormateur,
+    retenuesConvocation,
+    accesRemis,
   ] = await Promise.all([
     // ── Mission du formateur principal (2026-09-03) ───────────────────────
     trainingSession.formateurPrincipalId !== null
@@ -655,6 +663,10 @@ export default async function SessionHubPage({ params, searchParams }: PageProps
       statut: trainingSession.statut,
       formateurPrincipalId: trainingSession.formateurPrincipalId,
     }),
+    // Chantier QNC, L05 — pourquoi une convocation est retenue. Rien si
+    // `qualiopi.convocation_v2.actif` est éteint ; ne lève jamais.
+    lireRetenuesConvocationSession(id),
+    lireAccesRemisParInscription(enrollmentsRaw.map((e) => e.id)),
   ]);
   const numeroFactureParPiece = new Map(
     facturesDesPieces
@@ -744,6 +756,15 @@ export default async function SessionHubPage({ params, searchParams }: PageProps
       portailAcces: acces
         ? { id: acces.id, expiresAt: acces.expiresAt.toISOString(), revoked: acces.revoked }
         : null,
+      // L05 — affichés SEULEMENT quand la convocation v2 est allumée.
+      // Le numéro REMIS au stagiaire (journalisé à l'envoi), pas le dernier accès :
+      // le rappel J-7 en crée un nouveau.
+      ...(retenuesConvocation.actif && accesRemis[e.id] !== undefined
+        ? { numeroAcces: numeroAcces(accesRemis[e.id]!) }
+        : {}),
+      ...(retenuesConvocation.parInscription[e.id] !== undefined
+        ? { convocationRetenue: [...retenuesConvocation.parInscription[e.id]!] }
+        : {}),
     };
   });
 

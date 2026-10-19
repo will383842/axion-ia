@@ -30,6 +30,7 @@
  * référencée par rang casserait ses renvois — ce n'est pas le cas ici.
  */
 
+import type { LIBELLE_MODALITE_HYBRIDE } from "@/server/qualiopi/documents/libelles-enumerations";
 import React from "react";
 import { Document, View, Text, StyleSheet } from "@react-pdf/renderer";
 import {
@@ -80,7 +81,7 @@ export interface ConventionTripartiteData {
   dureeHeures: number;
   dateDebut: string;
   dateFin: string;
-  modalite: "Présentiel" | "Distanciel" | "Mixte";
+  modalite: "Présentiel" | "Distanciel" | typeof LIBELLE_MODALITE_HYBRIDE;
   lieu: string;
   effectif: number;
   /**

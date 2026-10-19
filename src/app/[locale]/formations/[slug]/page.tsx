@@ -9,6 +9,10 @@
  * (build GitHub Actions sans DB) → notFound() sans instancier Prisma.
  */
 
+import {
+  LIBELLE_MODALITE_HYBRIDE,
+  libelleModaliteMinuscule,
+} from "@/server/qualiopi/documents/libelles-enumerations";
 import { EncartEnVideo } from "@/components/videos/EncartEnVideo";
 import { videoPourFormation } from "@/server/videos/encarts";
 import type { Metadata } from "next";
@@ -96,7 +100,7 @@ export async function generateMetadata({
   const title = `${f.titre} — Formation IA · Axion-IA`;
   const description =
     `Formation professionnelle continue dispensée par Axion-IA — ${f.dureeHeures} h, ` +
-    `${f.modalite === "presentiel" ? "présentiel" : f.modalite === "distanciel" ? "distanciel" : "hybride"}.`;
+    `${libelleModaliteMinuscule(f.modalite)}.`;
 
   return buildProductMetadata({
     locale: loc,
@@ -113,7 +117,7 @@ function modaliteLabel(modalite: "presentiel" | "distanciel" | "hybride"): strin
   const MAP: Record<typeof modalite, string> = {
     presentiel: "Présentiel (sur site)",
     distanciel: "À distance (FOAD)",
-    hybride: "Hybride (présentiel + distanciel)",
+    hybride: LIBELLE_MODALITE_HYBRIDE,
   };
   return MAP[modalite] ?? modalite;
 }

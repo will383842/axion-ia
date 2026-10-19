@@ -72,6 +72,10 @@ export interface EnrollmentSerialized {
    * déclaration ne la couvre pas — la colonne repasse « à consigner ».
    */
   circuitAdaptation?: HorodatageCircuitSerialise;
+  /** L05 — « ACC-1A2B3C4D » : le numéro de l'accès à l'espace stagiaire (convocation v2 allumée). */
+  numeroAcces?: string;
+  /** L05 — pourquoi la convocation de cette inscription est retenue (un libellé par motif). */
+  convocationRetenue?: string[];
   /** Date de sortie du dispositif (abandon / exclusion), ISO — null si active. */
   sortieAt: string | null;
   /** Motif de la sortie — null si active. */
@@ -319,6 +323,24 @@ function EnrollmentRow({
         <p className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
           {enrollment.trainee.email}
         </p>
+        {enrollment.numeroAcces !== undefined ? (
+          <p className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
+            Accès espace stagiaire n° {enrollment.numeroAcces}
+          </p>
+        ) : null}
+        {enrollment.convocationRetenue !== undefined && enrollment.convocationRetenue.length > 0 ? (
+          <div
+            role="status"
+            className="mt-1 text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-warning)]"
+          >
+            <p className="font-medium">Convocation retenue</p>
+            <ul className="list-disc pl-4">
+              {enrollment.convocationRetenue.map((motif) => (
+                <li key={motif}>{motif}</li>
+              ))}
+            </ul>
+          </div>
+        ) : null}
       </td>
 
       {/* Statut */}

@@ -146,6 +146,12 @@ const ALLOWED_PATTERNS: ReadonlyArray<RegExp> = [
  * pour rien.
  */
 const CONSOMMATEURS_ASSUMES: ReadonlySet<string> = new Set([
+  // Chantier QNC, lot L05 — le libellé de la modalité « hybride » a UNE seule source
+  // (`libelles-enumerations`, constante pure, sans lecture de base ni d'interrupteur) :
+  // la fiche formation publique, la convocation et la console disent la même chose.
+  // Les faits centralisés des formations n'importent que cette constante, rien d'autre
+  // du domaine. Nommé seul, pas le répertoire.
+  "src/content/formations/catalog-v2-facts.ts",
   // Vidéos du studio sur le site (lot W1, ADR 0070). Le site ne doit JAMAIS dire « certifié
   // Qualiopi » (ni citer CPF/OPCO) tant que les réglages ne l'autorisent pas : les gardes de
   // contenu de la réception lisent `isQualiopiCertificationObtenue()` et

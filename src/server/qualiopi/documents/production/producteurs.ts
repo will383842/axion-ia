@@ -21,6 +21,10 @@
  */
 
 import React from "react";
+import {
+  modaliteLabel,
+  modaliteLabelLower,
+} from "@/server/qualiopi/documents/libelles-enumerations";
 import { prisma } from "@/lib/prisma";
 import { generateDocument } from "@/server/qualiopi/documents/documents-service";
 import { getOrganismeIdentite } from "@/server/qualiopi/documents/organisme";
@@ -73,6 +77,11 @@ import { GrilleEvaluationPdf } from "@/server/qualiopi/documents/templates/grill
 import { SatisfactionPdf } from "@/server/qualiopi/documents/templates/satisfaction";
 import { ReglementInterieurPdf } from "@/server/qualiopi/documents/templates/reglement-interieur";
 import { LivretAccueilPdf } from "@/server/qualiopi/documents/templates/livret-accueil";
+import { getFormationV2 } from "@/content/formations/catalog-v2";
+import { qrDataUrl } from "@/server/qualiopi/documents/qr";
+import { modaliteVisio } from "@/server/qualiopi/convocation-v2/decision";
+import { lireInterrupteurQualiopi } from "@/server/qualiopi/socle/interrupteurs";
+import { lienVisioRemis } from "@/server/qualiopi/lieu/format-lieu";
 import { REGLEMENT_INTERIEUR_VERSION } from "@/content/reglement-interieur-version";
 import { ProgrammeFormationPdf } from "@/server/qualiopi/documents/templates/programme-formation";
 import { OrganisationActionPdf } from "@/server/qualiopi/documents/templates/organisation-action";
@@ -120,21 +129,8 @@ export function formatDateFr(d: Date): string {
   return d.toLocaleDateString("fr-FR");
 }
 
-export function modaliteLabel(
-  m: "presentiel" | "distanciel" | "hybride",
-): "Présentiel" | "Distanciel" | "Mixte" {
-  if (m === "presentiel") return "Présentiel";
-  if (m === "distanciel") return "Distanciel";
-  return "Mixte";
-}
-
-export function modaliteLabelLower(
-  m: "presentiel" | "distanciel" | "hybride",
-): "présentiel" | "distanciel" | "mixte" {
-  if (m === "presentiel") return "présentiel";
-  if (m === "distanciel") return "distanciel";
-  return "mixte";
-}
+// Source unique : `libelles-enumerations.ts` (réexportées pour les appelants existants).
+export { modaliteLabel, modaliteLabelLower };
 
 /**
  * Nom du formateur principal d'une session. FK `formateurPrincipalId` prioritaire
@@ -267,6 +263,12 @@ export interface OptionsProduction {
    * elle est née, et le registre distingue un clic d'un automatisme.
    */
   metadata?: Record<string, unknown>;
+  /**
+   * Chantier QNC, L05 — version du TEXTE de la convocation et du livret
+   * (`qualiopi.convocation_v2.actif`). Absent : le texte actuel, inchangé.
+   * Ignorée par les autres producteurs.
+   */
+  versionTexte?: 1 | 2;
 }
 
 function optionsGenerate(opts?: OptionsProduction): {
@@ -813,7 +815,7 @@ export async function produireConvocation(
           // par la convocation (cf. `ConvocationData.materielAPrevoir`). Lecture
           // live, comme le programme (`produireProgramme`) : les deux pièces
           // disent la même chose.
-          formation: { select: { dureeHeures: true, moyensTechniques: true } },
+          formation: { select: { dureeHeures: true, moyensTechniques: true, slug: true } },
           coFormateurs: true,
           formateurPrincipalId: true,
           numeroDossierOpco: true,
@@ -854,6 +856,12 @@ export async function produireConvocation(
 
   const lieuConvocation = resolveLieuConvocation(session, identite);
   const materielAPrevoir = session.formation.moyensTechniques?.trim() ?? "";
+  // L05 — texte v2 : l'outil de visioconférence est NOMMÉ sur la pièce, le lien
+  // lui-même part par le courriel (ADR 0048 §4.1 : une pièce archivée ne porte
+  // pas une clé d'accès). Champ vide : « Lien envoyé avant la formation ».
+  const v2 = opts?.versionTexte === 2;
+  const visio = modaliteVisio(lienVisioRemis(session));
+  const distanciel = session.modalite === "distanciel" || session.modalite === "hybride";
 
   const doc = await generateDocument({
     type: "convocation",
@@ -881,6 +889,21 @@ export async function produireConvocation(
             ? { numeroOrdrePriseEnCharge: session.numeroDossierOpco }
             : {}),
           ...(materielAPrevoir !== "" ? { materielAPrevoir } : {}),
+          ...(v2
+            ? {
+                versionTexte: 2 as const,
+                ...(getFormationV2(session.formation.slug)?.seminaire === true
+                  ? { seminaire: true }
+                  : {}),
+                ...(distanciel
+                  ? {
+                      outilVisio: visio.outil,
+                      mentionLienVisio:
+                        visio.mentionLien ?? "Transmis par courriel avec cette convocation",
+                    }
+                  : {}),
+              }
+            : {}),
         },
         identite,
       }),
@@ -1407,7 +1430,12 @@ export async function produireLivretAccueil(
 ): Promise<ResultatProduction> {
   const session = await prisma.trainingSession.findUnique({
     where: { id: sessionId },
-    select: { id: true, coFormateurs: true, formateurPrincipalId: true },
+    select: {
+      id: true,
+      coFormateurs: true,
+      formateurPrincipalId: true,
+      formation: { select: { slug: true } },
+    },
   });
   if (!session) return { ok: false, motif: "Session introuvable" };
 
@@ -1425,6 +1453,21 @@ export async function produireLivretAccueil(
     identite.raisonSociale,
   );
   const dateVersion = formatDateFr(new Date());
+  // L05 — texte v2 : lien et QR code vers /reclamations. Le formulaire en ligne
+  // a son propre interrupteur (`qualiopi.reclamations.actif`) ; éteint, le livret
+  // donne le repli (e-mail et courrier) au lieu d'annoncer un formulaire absent.
+  const v2 = opts?.versionTexte === 2;
+  const sessionSeminaire = v2 && getFormationV2(session.formation?.slug ?? "")?.seminaire === true;
+  const siteBase = identite.site.replace(/\/+$/, "");
+  const qrReclamations =
+    v2 && siteBase ? await qrDataUrl(`${siteBase}/reclamations`).catch(() => null) : null;
+  // ⚠️ Lu UNE fois, à la production : un livret déjà produit (réutilisé par
+  // `pieces.ts`) garde le repli e-mail/courrier si le formulaire s'allume après.
+  // La clé `qualiopi.reclamations.actif` est SUPPOSÉE : à aligner avec le lot qui
+  // livre ce formulaire.
+  const formulaireReclamationActif = v2
+    ? (await lireInterrupteurQualiopi("reclamations")) === "actif"
+    : false;
 
   const doc = await generateDocument({
     type: "livret_accueil",
@@ -1439,6 +1482,14 @@ export async function produireLivretAccueil(
             ...(identite.telephone ? { telephone: identite.telephone } : {}),
           },
           dateVersion,
+          ...(v2
+            ? {
+                versionTexte: 2 as const,
+                ...(sessionSeminaire ? { seminaire: true } : {}),
+                formulaireReclamationActif,
+                ...(qrReclamations !== null ? { qrReclamationsDataUrl: qrReclamations } : {}),
+              }
+            : {}),
         },
         identite,
       }),

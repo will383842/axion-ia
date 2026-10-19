@@ -126,34 +126,37 @@ const DISPOSITIF: ReadonlyArray<readonly [string, RegExp]> = [
 ];
 
 describe("le dispositif d'assistance à distance est imprimé", () => {
-  describe.each(["distanciel", "mixte"] as const)("convocation %s", (modalite) => {
-    const texte = convocation(modalite);
+  describe.each(["distanciel", "hybride (présentiel et distanciel)"] as const)(
+    "convocation %s",
+    (modalite) => {
+      const texte = convocation(modalite);
 
-    it("porte la section « Assistance à distance »", () => {
-      expect(texte).toContain("Assistance à distance");
-    });
+      it("porte la section « Assistance à distance »", () => {
+        expect(texte).toContain("Assistance à distance");
+      });
 
-    it.each(DISPOSITIF)("dit %s", (_volet, motif) => {
-      expect(texte).toMatch(motif);
-    });
+      it.each(DISPOSITIF)("dit %s", (_volet, motif) => {
+        expect(texte).toMatch(motif);
+      });
 
-    it("dit l'outil : Zoom, dans le navigateur, rien à installer", () => {
-      expect(texte).toContain(
-        "Zoom, depuis le navigateur (rien à installer), testé avant la session : caméra, micro, son.",
-      );
-      expect(texte).toContain("Un ordinateur avec caméra et micro fonctionnels.");
-      expect(texte).toContain("Une connexion internet stable (≥ 5 Mbit/s recommandé).");
-    });
+      it("dit l'outil : Zoom, dans le navigateur, rien à installer", () => {
+        expect(texte).toContain(
+          "Zoom, depuis le navigateur (rien à installer), testé avant la session : caméra, micro, son.",
+        );
+        expect(texte).toContain("Un ordinateur avec caméra et micro fonctionnels.");
+        expect(texte).toContain("Une connexion internet stable (≥ 5 Mbit/s recommandé).");
+      });
 
-    it("importe l'équipement que publient les fiches (MATERIEL_DISTANCIEL)", () => {
-      // Aucun élément retapé : chaque morceau de la constante est imprimé.
-      for (const element of MATERIEL_DISTANCIEL.split(", ")) {
-        expect(texte.toLowerCase(), element).toContain(element.toLowerCase());
-      }
-    });
-  });
+      it("importe l'équipement que publient les fiches (MATERIEL_DISTANCIEL)", () => {
+        // Aucun élément retapé : chaque morceau de la constante est imprimé.
+        for (const element of MATERIEL_DISTANCIEL.split(", ")) {
+          expect(texte.toLowerCase(), element).toContain(element.toLowerCase());
+        }
+      });
+    },
+  );
 
-  it.each(["distanciel", "mixte", "présentiel"] as const)(
+  it.each(["distanciel", "hybride (présentiel et distanciel)", "présentiel"] as const)(
     "la convocation %s n'exige d'installer rien",
     (modalite) => {
       expect(fautesInstallation([convocation(modalite)])).toEqual([]);

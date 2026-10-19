@@ -25,6 +25,7 @@
 
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
+import { LIBELLE_MODALITE_HYBRIDE } from "@/server/qualiopi/documents/libelles-enumerations";
 
 import { setSessionLieuAction } from "@/server/actions/qualiopi/sessions";
 import { LieuFieldset } from "@/components/admin/qualiopi/LieuFieldset";
@@ -70,7 +71,7 @@ const MODALITE_OPTIONS: ReadonlyArray<{ value: ModaliteValue; label: string; aid
   },
   {
     value: "hybride",
-    label: "Hybride (salle + visio)",
+    label: LIBELLE_MODALITE_HYBRIDE,
     aide: "Une salle À TENIR et des participants à distance à accueillir. Les deux blocs comptent.",
   },
 ];

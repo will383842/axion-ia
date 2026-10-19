@@ -82,7 +82,7 @@ const TRIPARTITE: ConventionTripartiteData = {
   dureeHeures: 14,
   dateDebut: "01/06/2026",
   dateFin: "02/06/2026",
-  modalite: "Mixte",
+  modalite: "Hybride (présentiel et distanciel)",
   lieu: "Paris",
   effectif: 5,
   prixHt: 2800,
