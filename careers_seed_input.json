@@ -354,7 +354,7 @@
       "sal_max": 32000,
       "sal_note": "",
       "tech": false,
-      "skills": ["conformité qualité", "CPF / EDOF", "OPCO", "France Travail", "montage de dossiers"],
+      "skills": ["qualité", "CPF / EDOF", "OPCO", "France Travail", "montage de dossiers"],
       "group": "fixe",
       "workMode": "on_site",
       "multiCity": false,
