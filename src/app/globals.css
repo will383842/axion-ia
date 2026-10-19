@@ -1,5 +1,19 @@
 @import "tailwindcss";
+/* Tailwind lit tout le dépôt : il tirait du CSS de noms de scripts et de préfixes de journaux
+   (ex. `[qualiopi:seed]`) écrits hors du site. On exclut ce qui n'est pas du site. */
 @source not "../../package.json";
+@source not "../../prisma";
+@source not "../../scripts";
+@source not "../../tests";
+@source not "../../docs";
+@source not "../../_AUDIT";
+@source not "../../_LMS-ELEARNING";
+@source not "../../_SESSIONS";
+@source not "../../.claude";
+@source not "../../.github";
+@source not "../../.husky";
+@source not "../server";
+@source not "../instrumentation.ts";
 
 /* =============================================================
  * Axion-IA · Design System tokens v3 (Editorial Premium Light)
