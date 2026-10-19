@@ -14,6 +14,7 @@ import { revalidatePath } from "next/cache";
 import { prisma } from "@/lib/prisma";
 import { getClientIp } from "@/lib/client-ip";
 import { adminPath } from "@/lib/admin-path";
+import { VIDEO_FREELANCE_OFFER_SLUGS } from "@/lib/careers/video-editor-offer";
 import { requireAdminWrite } from "./session";
 
 const Entree = z.object({
@@ -32,14 +33,17 @@ export async function marquerFavoriAction(formData: FormData): Promise<void> {
   if (!lu.success) return;
   const { id, favori } = lu.data;
 
+  // Seules les candidatures des offres vidéo freelance : un appel direct à l'action
+  // ne doit pas marquer le dossier d'une autre offre.
+  const offre = { slug: { in: [...VIDEO_FREELANCE_OFFER_SLUGS] } };
   const { count } =
     favori === "1"
       ? await prisma.jobApplication.updateMany({
-          where: { id, favoriAt: null },
+          where: { id, offer: offre, favoriAt: null },
           data: { favoriAt: new Date() },
         })
       : await prisma.jobApplication.updateMany({
-          where: { id, favoriAt: { not: null } },
+          where: { id, offer: offre, favoriAt: { not: null } },
           data: { favoriAt: null },
         });
 

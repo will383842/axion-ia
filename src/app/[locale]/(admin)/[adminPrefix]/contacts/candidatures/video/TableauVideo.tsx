@@ -123,7 +123,7 @@ interface Colonne {
 
 /** Étoile favori : un formulaire par ligne qui envoie l'état VOULU. */
 function EtoileFavori({ c }: { c: CandidatVideo }) {
-  const nom = c.nom ?? "ce candidat";
+  const nom = c.nom || "ce candidat";
   return (
     <form action={marquerFavoriAction}>
       <input type="hidden" name="id" value={c.id} />
@@ -131,7 +131,7 @@ function EtoileFavori({ c }: { c: CandidatVideo }) {
       <button
         type="submit"
         aria-pressed={c.favori === true}
-        aria-label={c.favori ? `Retirer ${nom} des favoris` : `Mettre ${nom} en favori`}
+        aria-label={`Favori : ${nom}`}
         title={c.favori ? "Retirer des favoris" : "Mettre en favori"}
         className="inline-flex min-h-11 min-w-11 items-center justify-center"
       >

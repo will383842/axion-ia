@@ -49,7 +49,7 @@ describe("marquerFavoriAction", () => {
   it("favori=1 n'écrit que sur un dossier qui n'est pas déjà favori", async () => {
     await marquerFavoriAction(form(ID, "1"));
     expect(updateManyMock.mock.calls[0]?.[0]).toMatchObject({
-      where: { id: ID, favoriAt: null },
+      where: { id: ID, favoriAt: null, offer: { slug: { in: expect.any(Array) } } },
     });
     expect(activityCreateMock.mock.calls[0]?.[0].data.action).toBe(
       "careers.candidature.favori.ajoute",
