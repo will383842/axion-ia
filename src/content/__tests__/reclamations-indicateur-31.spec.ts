@@ -210,12 +210,9 @@ describe("off.31 — voies de recours externes publiées", () => {
     expect(b).toMatch(/le financeur peut être saisi/);
   });
 
-  it("le recours au certificateur est conditionné à la détention de la certification", () => {
-    // 🔴 Axion-IA est NOUVEL ENTRANT : affirmer au présent qu'elle est certifiée
-    // serait faux sur un support public. La phrase doit rester conditionnelle.
+  it("la section ne cite aucune certification (ordre de Will du 19/10/2026 : zéro trace publique)", () => {
     const b = section(REC_FR, "Voies de recours externes");
-    expect(b).toMatch(/lorsque Axion-IA est titulaire de la certification Qualiopi/i);
-    expect(b).not.toMatch(/Axion-IA est certifiée Qualiopi/i);
+    expect(b).not.toMatch(/Qualiopi/i);
   });
 
   it("AUCUN médiateur de la consommation n'est nommé", () => {
