@@ -9,9 +9,11 @@
 // surface (page d'offre, FAQ, accusé de réception) la lit d'ici : un seul texte,
 // donc un seul endroit à relire.
 //
-// ⚠️ Lexique. La mention dit « l'obtention de la certification Qualiopi » — on
-// n'écrit JAMAIS « certifié » : tant que la certification n'est pas obtenue,
-// l'écrire serait une fausse déclaration (verrouillé par le test voisin).
+// ⚠️ Lexique. On n'écrit JAMAIS « certifié » : tant que la certification n'est pas
+// obtenue, l'écrire serait une fausse déclaration (verrouillé par le test voisin).
+// Les étapes ne disent rien non plus de l'état de la certification (retiré le
+// 2026-10-19 : la formule « avant l'obtention de la certification Qualiopi » n'était
+// pas prouvable).
 //
 // Module PUR : aucune dépendance serveur, importable par le client comme par l'e-mail.
 
@@ -83,34 +85,20 @@ export function etapesIntervenant(opts?: {
   return ETAPES_INTERVENANT;
 }
 
-/** La mention Qualiopi — jamais « certifié ». */
-export const MENTION_AUCUNE_MISSION_AVANT_QUALIOPI = {
-  fr: "Aucune mission ne sera confiée avant l'obtention de la certification Qualiopi de l'organisme.",
-  en: "No assignment will be given before the organisation obtains its Qualiopi certification.",
-} as const;
-
 /** Chapeau des étapes. */
 export const TITRE_ETAPES_INTERVENANT = {
   fr: "Les étapes, de la candidature à la première mission",
   en: "The steps, from application to first assignment",
 } as const;
 
-/**
- * Phrase de FAQ / de page : les étapes en une ligne, puis la mention.
- *
- * La mention parle d'une certification « à obtenir » : une fois le certificat
- * délivré (`certificationObtenue`), elle ne dit plus rien de vrai et disparaît.
- */
+/** Phrase de FAQ / de page : les étapes en une ligne. */
 export function phraseEtapesIntervenant(
   langue: Langue,
-  opts?: { readonly freelance?: boolean; readonly certificationObtenue?: boolean },
+  opts?: { readonly freelance?: boolean },
 ): string {
-  const etapes = etapesIntervenant(opts)
+  return etapesIntervenant(opts)
     .map((e, i) => `${i + 1}. ${e[langue]}`)
     .join(" ");
-  return opts?.certificationObtenue === true
-    ? etapes
-    : `${etapes} ${MENTION_AUCUNE_MISSION_AVANT_QUALIOPI[langue]}`;
 }
 
 /**

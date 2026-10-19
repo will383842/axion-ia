@@ -12,11 +12,7 @@ import type { FaqOffreItem } from "./faq-offre";
 import { phraseEtapesIntervenant } from "./etapes-intervenant";
 import { applicantCountryLabel, normalizeApplicantCountries, salaryLabel } from "./format";
 
-export function buildOfferFaqFreelance(
-  o: JobOffer,
-  isFr: boolean,
-  opts?: { readonly certificationObtenue?: boolean },
-): FaqOffreItem[] {
+export function buildOfferFaqFreelance(o: JobOffer, isFr: boolean): FaqOffreItem[] {
   const items: FaqOffreItem[] = [];
 
   items.push({
@@ -103,12 +99,7 @@ export function buildOfferFaqFreelance(
     question: isFr
       ? "Quelles sont les étapes avant la première mission ?"
       : "What are the steps before the first assignment?",
-    answer: phraseEtapesIntervenant(langue, {
-      freelance: true,
-      ...(opts?.certificationObtenue !== undefined
-        ? { certificationObtenue: opts.certificationObtenue }
-        : {}),
-    }),
+    answer: phraseEtapesIntervenant(langue, { freelance: true }),
   });
 
   return items;

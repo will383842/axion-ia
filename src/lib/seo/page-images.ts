@@ -341,8 +341,8 @@ export const PAGE_IMAGES_MANIFEST: readonly PageImagesManifest[] = [
         // Le critère n'est pas « rendue à l'instant t » mais « la page a-t-elle
         // un consommateur pour ce slot ».
         src: "/illustrations/home-hero-equipe.avif",
-        nameFr: "Formations IA en entreprise — équipe Axion-IA n°1 en France",
-        nameEn: "Corporate AI training — Axion-IA team, France leader",
+        nameFr: "Formations IA en entreprise — équipe Axion-IA",
+        nameEn: "Corporate AI training — Axion-IA team",
         altFr:
           "L'équipe Axion-IA réunie autour d'une table de formation : dirigeants et collaborateurs de PME formés à l'IA opérationnelle en entreprise.",
         altEn:
