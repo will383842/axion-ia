@@ -52,9 +52,6 @@ vi.mock("@/lib/prisma", () => ({
 vi.mock("@/lib/client-ip", () => ({ getClientIp: async () => "127.0.0.1" }));
 vi.mock("next/cache", () => ({ revalidatePath: () => {}, revalidateTag: () => {} }));
 vi.mock("@/lib/indexnow", () => ({ pingIndexNow: async () => {} }));
-vi.mock("@/server/content-gen/indexing/enqueue", () => ({
-  enqueueGoogleIndexingForUrls: async () => {},
-}));
 vi.mock("@/lib/pii-crypto", () => ({ decryptPii: (v: string) => v }));
 vi.mock("@/features/admin-job-applications/envoyer-reponse", () => ({
   ecrireEtEnfilerReponse: (...a: unknown[]) => db.ecrire(...a),
