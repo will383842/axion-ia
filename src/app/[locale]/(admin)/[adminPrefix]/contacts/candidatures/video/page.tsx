@@ -45,9 +45,11 @@ export default async function CandidaturesVideoPage({ params, searchParams }: Pa
   const sp = await searchParams;
   const etape = lireEtape(un(sp.etape));
   const prixMaxCentimes = montantEnCentimes(un(sp.prixMax));
+  const prixMinCentimes = montantEnCentimes(un(sp.prixMin));
   const etat: Etat = {
     tri: un(sp.tri).slice(0, 80),
     sens: un(sp.sens) === "desc" ? "desc" : "asc",
+    prixMin: prixMinCentimes !== null ? un(sp.prixMin).slice(0, 20) : "",
     prixMax: prixMaxCentimes !== null ? un(sp.prixMax).slice(0, 20) : "",
     ville: un(sp.ville).slice(0, 80),
     etape: etape ?? "",
@@ -56,6 +58,7 @@ export default async function CandidaturesVideoPage({ params, searchParams }: Pa
     tri: etat.tri || null,
     sens: etat.sens,
     prixMaxCentimes,
+    prixMinCentimes,
     ville: etat.ville || null,
     etape,
   };

@@ -26,6 +26,7 @@ const URL_RE = /(https?:\/\/[^\s<>"]+)/g;
 export interface Etat {
   tri: string;
   sens: "asc" | "desc";
+  prixMin: string;
   prixMax: string;
   ville: string;
   etape: string;
@@ -36,6 +37,7 @@ export function hrefAvec(chemin: string, etat: Etat, change: Partial<Etat>): str
   const p = new URLSearchParams();
   if (e.tri) p.set("tri", e.tri);
   if (e.sens === "desc") p.set("sens", "desc");
+  if (e.prixMin) p.set("prixMin", e.prixMin);
   if (e.prixMax) p.set("prixMax", e.prixMax);
   if (e.ville) p.set("ville", e.ville);
   if (e.etape) p.set("etape", e.etape);
@@ -203,7 +205,7 @@ export function TableauOffre({
     }),
   ];
 
-  const filtre = Boolean(etat.prixMax || etat.ville || etat.etape);
+  const filtre = Boolean(etat.prixMin || etat.prixMax || etat.ville || etat.etape);
   return (
     <AdminCard className="mb-[var(--space-admin-5)]">
       <div className="mb-[var(--space-admin-3)] flex flex-wrap items-baseline justify-between gap-2">
@@ -285,7 +287,7 @@ export function TableauOffre({
 }
 
 export function Filtres({ etat, chemin, ouvert }: { etat: Etat; chemin: string; ouvert: boolean }) {
-  const actif = Boolean(etat.prixMax || etat.ville || etat.etape);
+  const actif = Boolean(etat.prixMin || etat.prixMax || etat.ville || etat.etape);
   return (
     <form
       method="get"
@@ -297,6 +299,16 @@ export function Filtres({ etat, chemin, ouvert }: { etat: Etat; chemin: string; 
       {etat.sens === "desc" ? <input type="hidden" name="sens" value="desc" /> : null}
       {ouvert ? (
         <>
+          <label className="flex flex-col gap-1 text-sm">
+            Prix min (€)
+            <input
+              name="prixMin"
+              defaultValue={etat.prixMin}
+              inputMode="decimal"
+              placeholder="ex. 15"
+              className="admin-input admin-input-w-sm admin-input-tactile min-h-11"
+            />
+          </label>
           <label className="flex flex-col gap-1 text-sm">
             Prix max (€)
             <input
@@ -338,7 +350,7 @@ export function Filtres({ etat, chemin, ouvert }: { etat: Etat; chemin: string; 
       </button>
       {actif ? (
         <Link
-          href={hrefAvec(chemin, etat, { prixMax: "", ville: "", etape: "" })}
+          href={hrefAvec(chemin, etat, { prixMin: "", prixMax: "", ville: "", etape: "" })}
           className="admin-button-ghost admin-button-tactile"
         >
           Tout afficher
