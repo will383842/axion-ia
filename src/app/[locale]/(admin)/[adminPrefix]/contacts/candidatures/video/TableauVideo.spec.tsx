@@ -16,7 +16,7 @@ import type { CandidatVideo, OffreVideo } from "@/features/admin-job-application
 import { Filtres, TableauOffre, type Etat } from "./TableauVideo";
 
 const BASE = "/fr/console/contacts/candidatures";
-const ETAT: Etat = { tri: "", sens: "asc", prixMax: "", ville: "", etape: "" };
+const ETAT: Etat = { tri: "", sens: "asc", prixMin: "", prixMax: "", ville: "", etape: "" };
 
 function candidat(id: string, partiel: Partial<CandidatVideo> = {}): CandidatVideo {
   return {

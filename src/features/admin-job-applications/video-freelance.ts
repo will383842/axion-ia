@@ -103,6 +103,8 @@ export interface FiltresVideo {
   sens?: SensTri;
   /** Prix maximum, en centimes, sur la colonne qui classe la liste. */
   prixMaxCentimes?: number | null;
+  /** Prix minimum, en centimes, sur la même colonne. */
+  prixMinCentimes?: number | null;
   /** Morceau du nom de ville, sans tenir compte des accents ni de la casse. */
   ville?: string | null;
   etape?: JobApplicationStatus | null;
@@ -167,8 +169,8 @@ interface LigneTriable {
  *  - `questionTri` null → aucun tri par prix, l'ordre d'arrivée reste ;
  *  - prix illisible → « à préciser », toujours APRÈS les montants, dans les deux
  *    sens ; deux prix égaux (ou deux « à préciser ») gardent l'ordre d'arrivée ;
- *  - `prixMaxCentimes` écarte aussi les « à préciser » : un prix inconnu n'est
- *    pas sous le plafond.
+ *  - `prixMaxCentimes` et `prixMinCentimes` écartent aussi les « à préciser » :
+ *    un prix inconnu n'est ni sous le plafond ni au-dessus du plancher.
  */
 export function filtrerEtClasser<T extends LigneTriable>(
   lignes: readonly T[],
@@ -176,6 +178,7 @@ export function filtrerEtClasser<T extends LigneTriable>(
     questionTri: string | null;
     sens: SensTri;
     prixMaxCentimes?: number | null;
+    prixMinCentimes?: number | null;
     ville?: string | null;
     etape?: JobApplicationStatus | null;
   },
@@ -188,6 +191,9 @@ export function filtrerEtClasser<T extends LigneTriable>(
       if (o.etape && l.status !== o.etape) return false;
       if (ville && !sansAccents(l.city ?? "").includes(ville)) return false;
       if (o.prixMaxCentimes != null && o.questionTri && (p === null || p > o.prixMaxCentimes)) {
+        return false;
+      }
+      if (o.prixMinCentimes != null && o.questionTri && (p === null || p < o.prixMinCentimes)) {
         return false;
       }
       return true;
@@ -258,6 +264,7 @@ export async function listerCandidaturesVideoFreelance(
       sens,
       etape: filtres.etape ?? null,
       prixMaxCentimes: ouvert ? (filtres.prixMaxCentimes ?? null) : null,
+      prixMinCentimes: ouvert ? (filtres.prixMinCentimes ?? null) : null,
       ville: ouvert ? (filtres.ville ?? null) : null,
     });
     const affichees = retenues.slice(0, PLAFOND_VIDEO_FREELANCE);

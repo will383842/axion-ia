@@ -141,6 +141,16 @@ describe("L1 — classer les monteurs et vidéastes par prix", () => {
     expect(res[0]?.total).toBe(4);
   });
 
+  it("prix min 100 € et max 500 € ne gardent que 250 (bornes comprises, « à préciser » écarté)", async () => {
+    expect((await ordre({ prixMinCentimes: 10000, prixMaxCentimes: 50000 })).montage).toEqual([
+      "250",
+    ]);
+    expect((await ordre({ prixMinCentimes: 25000, prixMaxCentimes: 25000 })).montage).toEqual([
+      "250",
+    ]);
+    expect((await ordre({ prixMinCentimes: 10000 })).montage).toEqual(["250", "1200"]);
+  });
+
   it("ville sans accent ni tiret, et étape", async () => {
     expect((await ordre({ ville: "saint etienne" })).montage).toEqual(["250"]);
     expect((await ordre({ etape: "reviewing" })).montage).toEqual(["90"]);
