@@ -214,9 +214,7 @@ async function decouperLockup() {
       .toBuffer(),
   );
 
-  console.log(
-    `  détourage — logo ${(await sharp(logo).metadata()).width}px`,
-  );
+  console.log(`  détourage — logo ${(await sharp(logo).metadata()).width}px`);
 
   return { logo: await png64(logo) };
 }
