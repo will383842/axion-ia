@@ -96,6 +96,14 @@ import {
   qualiopiEmargementLienSubject,
 } from "./qualiopi-emargement-lien";
 import {
+  QualiopiPresenceConfirmationEmail,
+  qualiopiPresenceConfirmationSubject,
+} from "./qualiopi-presence-confirmation";
+import {
+  QualiopiPresenceEntrepriseEmail,
+  qualiopiPresenceEntrepriseSubject,
+} from "./qualiopi-presence-entreprise";
+import {
   QualiopiAttestationDisponibleEmail,
   qualiopiAttestationDisponibleSubject,
 } from "./qualiopi-attestation-disponible";
@@ -448,6 +456,15 @@ const TEMPLATES: TemplateMap = {
   "qualiopi-emargement-lien": {
     subject: qualiopiEmargementLienSubject,
     component: QualiopiEmargementLienEmail,
+  },
+  // QNC NC6 — confirmation de présence avant la formation (P-12, étapes 3 et 4).
+  "qualiopi-presence-confirmation": {
+    subject: qualiopiPresenceConfirmationSubject,
+    component: QualiopiPresenceConfirmationEmail,
+  },
+  "qualiopi-presence-entreprise": {
+    subject: qualiopiPresenceEntrepriseSubject,
+    component: QualiopiPresenceEntrepriseEmail,
   },
   "qualiopi-alerte-interne": {
     subject: qualiopiAlerteInterneSubject,

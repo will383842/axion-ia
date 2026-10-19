@@ -117,6 +117,7 @@ export const PAYLOAD_EXEMPLE: Readonly<Record<string, unknown>> = {
   // requis sans valeur d'exemple, et son aperçu s'affichait troué en silence.
   libellePiece: "la convention de formation",
   libelleQuestionnaire: "Questionnaire de positionnement",
+  lienPresence: "https://exemple.invalid/lien-de-demonstration",
   lienEmargement: "https://exemple.invalid/lien-de-demonstration",
   // Lien de connexion COMPLET — ADR 0048 §4.1. Le seul e-mail qui le porte est
   // le rappel de la veille : la convocation, elle, n'en montre que l'hôte.
