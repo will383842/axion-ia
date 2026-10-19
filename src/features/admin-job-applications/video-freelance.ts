@@ -76,6 +76,8 @@ export interface CandidatVideo {
   videos: VideoDeposee[];
   /** Liens vers son travail (formulaire, petit mot, portfolio). Vide quand le dossier est fermé. */
   liens: LienExemple[];
+  /** `null` quand le dossier est fermé au rôle (pas d'étoile, pas de filtre). */
+  favori: boolean | null;
 }
 
 export interface OffreVideo {
@@ -108,6 +110,8 @@ export interface FiltresVideo {
   /** Morceau du nom de ville, sans tenir compte des accents ni de la casse. */
   ville?: string | null;
   etape?: JobApplicationStatus | null;
+  /** Ne garder que les favoris de l'équipe. */
+  favorisSeulement?: boolean;
 }
 
 function lireReponses(raw: unknown): Record<string, string> {
@@ -160,6 +164,7 @@ interface LigneTriable {
   status: JobApplicationStatus;
   city: string | null;
   answers: Record<string, string>;
+  favoriAt?: Date | null;
 }
 
 /**
@@ -181,6 +186,7 @@ export function filtrerEtClasser<T extends LigneTriable>(
     prixMinCentimes?: number | null;
     ville?: string | null;
     etape?: JobApplicationStatus | null;
+    favorisSeulement?: boolean;
   },
 ): T[] {
   const ville = o.ville ? sansAccents(o.ville) : "";
@@ -189,6 +195,7 @@ export function filtrerEtClasser<T extends LigneTriable>(
     .map((l, rang) => ({ l, rang, p: prix(l) }))
     .filter(({ l, p }) => {
       if (o.etape && l.status !== o.etape) return false;
+      if (o.favorisSeulement && !l.favoriAt) return false;
       if (ville && !sansAccents(l.city ?? "").includes(ville)) return false;
       if (o.prixMaxCentimes != null && o.questionTri && (p === null || p > o.prixMaxCentimes)) {
         return false;
@@ -252,6 +259,7 @@ export async function listerCandidaturesVideoFreelance(
           city: true,
           status: true,
           submittedAt: true,
+          favoriAt: true,
           answers: true,
           motivation: true,
           linkedinUrl: true,
@@ -266,6 +274,7 @@ export async function listerCandidaturesVideoFreelance(
       prixMaxCentimes: ouvert ? (filtres.prixMaxCentimes ?? null) : null,
       prixMinCentimes: ouvert ? (filtres.prixMinCentimes ?? null) : null,
       ville: ouvert ? (filtres.ville ?? null) : null,
+      favorisSeulement: ouvert ? Boolean(filtres.favorisSeulement) : false,
     });
     const affichees = retenues.slice(0, PLAFOND_VIDEO_FREELANCE);
 
@@ -294,6 +303,7 @@ export async function listerCandidaturesVideoFreelance(
         ville: ouvert ? l.city : null,
         status: l.status,
         submittedAt: l.submittedAt,
+        favori: ouvert ? l.favoriAt != null : null,
         reponses: ouvert ? l.answers : {},
         videos: videos
           .filter((v) => v.applicationId === l.id)

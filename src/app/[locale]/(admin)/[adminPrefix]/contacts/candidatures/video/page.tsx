@@ -49,6 +49,7 @@ export default async function CandidaturesVideoPage({ params, searchParams }: Pa
   const etat: Etat = {
     tri: un(sp.tri).slice(0, 80),
     sens: un(sp.sens) === "desc" ? "desc" : "asc",
+    favoris: un(sp.favoris) === "1",
     prixMin: prixMinCentimes !== null ? un(sp.prixMin).slice(0, 20) : "",
     prixMax: prixMaxCentimes !== null ? un(sp.prixMax).slice(0, 20) : "",
     ville: un(sp.ville).slice(0, 80),
@@ -59,6 +60,7 @@ export default async function CandidaturesVideoPage({ params, searchParams }: Pa
     sens: etat.sens,
     prixMaxCentimes,
     prixMinCentimes,
+    favorisSeulement: etat.favoris,
     ville: etat.ville || null,
     etape,
   };

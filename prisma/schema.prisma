@@ -10178,6 +10178,9 @@ model JobApplication {
   /// rafraîchir sans que personne n'ait écrit à la personne.
   firstResponseAt DateTime? @map("first_response_at")
   needsAttention  Boolean   @default(true) @map("needs_attention")
+  /// Favori de l'équipe (vue « Monteurs & vidéastes », demande Will 2026-10-19).
+  /// NULL = pas favori. Partagé par toute l'équipe. Tombe avec la ligne à l'effacement.
+  favoriAt        DateTime? @map("favori_at")
   submittedAt     DateTime  @default(now()) @map("submitted_at")
   updatedAt       DateTime  @updatedAt @map("updated_at")
 
