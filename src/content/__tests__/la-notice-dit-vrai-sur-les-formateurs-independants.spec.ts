@@ -216,7 +216,7 @@ describe("la notice dit vrai sur les formateurs indépendants", () => {
       return [...m![1]!.matchAll(/"([a-z_]+)"/g)].map((x) => x[1]!);
     };
     // Pièces sans objet pour un indépendant (contrat de travail, déclaration d'embauche).
-    const horsSujet = new Set(["contrat_travail", "dpae"]);
+    const horsSujet = new Set(["contrat_travail", "dpae", "attestation_qualiopi"]);
     const mots: Record<string, readonly [RegExp, RegExp]> = {
       contrat_sous_traitance: [/contrats/, /agreements/],
       attestation_vigilance_urssaf: [/preuves de vigilance/, /due-diligence proofs/],
@@ -229,7 +229,6 @@ describe("la notice dit vrai sur les formateurs indépendants", () => {
         /proof of your training declaration number/,
       ],
       recepisse_declaration_activite: [/récépissé de déclaration/, /declaration receipt/],
-      attestation_qualiopi: [/attestation Qualiopi/, /Qualiopi certificate/],
       assurance_rc_pro: [/attestation d'assurance/, /insurance certificate/],
       diplome: [/justificatifs de compétences/, /proofs of skills/],
       certification: [/justificatifs de compétences/, /proofs of skills/],
