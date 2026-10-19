@@ -43,8 +43,12 @@ export function QualiopiPresenceConfirmationEmail({
   payload: Record<string, unknown>;
 }) {
   const p = payload as Payload;
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://axion-ia.com";
-  const ctaHref = p.lienPresence ?? `${baseUrl}/fr/portail/mon-espace`;
+  // 🔴 Jamais de repli : une demande sans lien est une question à laquelle le stagiaire ne
+  // peut pas répondre. Le gabarit refuse de se rendre plutôt que d'envoyer un lien ailleurs.
+  const ctaHref = p.lienPresence;
+  if (typeof ctaHref !== "string" || ctaHref.length === 0) {
+    throw new Error("Demande de présence : le lien de réponse (lienPresence) est absent.");
+  }
   const relance = p.relance === true;
 
   return (

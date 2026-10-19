@@ -288,16 +288,16 @@ export const CATALOGUE: Readonly<Record<EmailJobName, FicheEmail>> = {
   "qualiopi-presence-confirmation": {
     categorie: "formation",
     quand:
-      "Rien ne l'envoie encore — socle posé (lot présence 1/3) ; l'envoi arrive au lot 2/3 : de J-3 à J-1, une demande de confirmation, puis une seule relance",
+      "De J-3 à J-1 (9 h – 19 h, Paris), une demande de confirmation de présence, puis une seule relance si le stagiaire n'a pas répondu — seulement quand l'interrupteur « présence » agit sur la session (éteint par défaut)",
     destinataire: "le stagiaire",
-    source: null,
+    source: "server/qualiopi/confirmation-presence/envois.ts",
   },
   "qualiopi-presence-entreprise": {
     categorie: "formation",
     quand:
-      "Rien ne l'envoie encore — socle posé (lot présence 1/3) ; l'envoi arrive au lot 2/3 : à J-1, si le stagiaire n'a pas confirmé sa présence, une seule fois, sans motif",
+      "À J-1 (12 h – 19 h, Paris), seul et automatique, si le stagiaire n'a pas confirmé sa présence — une seule fois, sans motif ni donnée de santé ; seulement quand l'interrupteur « présence » agit sur la session",
     destinataire: "l'entreprise cliente",
-    source: null,
+    source: "server/qualiopi/confirmation-presence/envois.ts",
   },
   "qualiopi-satisfaction-j1": {
     categorie: "formation",

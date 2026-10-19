@@ -47,6 +47,17 @@ function dansLaPlage(minutes: number, plage: { debut: number; fin: number }): bo
 }
 
 /**
+ * Le jour de Paris d'une date de journée. Une date SEULE (`YYYY-MM-DD`) est déjà un jour
+ * civil ; une chaîne ISO AVEC heure est un instant, dont le jour de Paris n'est pas le
+ * jour UTC (`2026-12-06T23:30:00Z` est le 7 à Paris) — le découper en `slice(0, 10)` lisait
+ * la date UTC.
+ */
+function jourDeParis(date: string | Date): string {
+  if (typeof date !== "string") return parisDateISO(date);
+  return date.length <= 10 ? date : parisDateISO(new Date(date));
+}
+
+/**
  * J : la première date de `jours` (Paris), à défaut `dateDebut`. Rend une date
  * ISO `YYYY-MM-DD` de Paris.
  */
@@ -54,9 +65,7 @@ export function jourJ(session: {
   readonly jours?: ReadonlyArray<{ readonly date: string | Date }> | null | undefined;
   readonly dateDebut: Date;
 }): string {
-  const dates = (session.jours ?? []).map((j) =>
-    typeof j.date === "string" ? j.date.slice(0, 10) : parisDateISO(j.date),
-  );
+  const dates = (session.jours ?? []).map((j) => jourDeParis(j.date));
   if (dates.length === 0) return parisDateISO(session.dateDebut);
   return [...dates].sort()[0] as string;
 }
@@ -108,4 +117,15 @@ export function etapesDues(
   }
 
   return dues;
+}
+
+/** « lundi 26 octobre 2026 », pour un jour civil `YYYY-MM-DD` (celui de Paris). */
+export function libelleJour(iso: string): string {
+  return new Date(`${iso}T12:00:00Z`).toLocaleDateString("fr-FR", {
+    weekday: "long",
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+    timeZone: "UTC",
+  });
 }

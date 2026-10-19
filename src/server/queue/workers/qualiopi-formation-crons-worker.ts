@@ -2130,6 +2130,31 @@ async function handleLiensEmargementJ0(): Promise<void> {
         `sur ${bilan.sessions} session(s), ${bilan.echecs.length} échec(s)`,
     );
   }
+
+  // QNC NC6 (lot présence) — la confirmation de présence : demande (J-3 à J-1), relance,
+  // information de l'entreprise (J-1). Sans effet si `qualiopi.presence.actif` est éteint.
+  // Dans son PROPRE try/catch : une erreur ici est journalisée et ne casse jamais les rappels
+  // ci-dessus. Aucun job BullMQ de plus : on réutilise ce passage horaire.
+  try {
+    const { envoyerConfirmationsPresence } =
+      await import("@/server/qualiopi/confirmation-presence/envois");
+    const bilan = await envoyerConfirmationsPresence(now);
+    for (const echec of bilan.echecs) {
+      console.error(`[formation-crons] liens-emargement-j0: confirmation de présence — ${echec}`);
+    }
+    if (bilan.demandes + bilan.relances + bilan.informations + bilan.echecs.length > 0) {
+      console.log(
+        `[formation-crons] liens-emargement-j0: confirmation de présence — ${bilan.demandes} demande(s), ` +
+          `${bilan.relances} relance(s), ${bilan.informations} information(s) entreprise, ` +
+          `${bilan.echecs.length} échec(s)`,
+      );
+    }
+  } catch (err) {
+    console.error(
+      "[formation-crons] liens-emargement-j0: confirmation de présence en erreur:",
+      err instanceof Error ? err.message : String(err),
+    );
+  }
 }
 
 // ─────────────────────────────────────────────────────────────────────────────

@@ -13,6 +13,11 @@
 
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { FACTURE_HORS_ESSAI } from "@/server/qualiopi/essai/perimetre";
+import { envoyerConfirmationsPresence } from "@/server/qualiopi/confirmation-presence/envois";
+import {
+  envoyerRappelsDemiJournee,
+  etatInterrupteurPourCron,
+} from "@/server/qualiopi/emargement/demi-journee/rappel";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Mocks
@@ -139,6 +144,24 @@ vi.mock("@/server/qualiopi/notifications/rappel-j7-manquant", () => ({
 // le passage du matin).
 vi.mock("@/server/qualiopi/emargement/envoi-liens", () => ({
   envoyerLiensPourSession: vi.fn(async () => ({ ok: true, echecs: [] })),
+}));
+
+// QNC NC6 (lot présence 2/3) — le branchement des envois de confirmation de présence ; leurs
+// règles ont leurs propres tests (`confirmation-presence/__tests__/envois.spec.ts`).
+vi.mock("@/server/qualiopi/confirmation-presence/envois", () => ({
+  envoyerConfirmationsPresence: vi.fn(async () => ({
+    sessions: 0,
+    demandes: 0,
+    relances: 0,
+    informations: 0,
+    echecs: [],
+  })),
+}));
+// Le rappel de demi-journée : éteint par défaut (le comportement des tests d'avant), allumé
+// dans le test qui vérifie qu'une erreur de la présence ne le casse pas.
+vi.mock("@/server/qualiopi/emargement/demi-journee/rappel", () => ({
+  etatInterrupteurPourCron: vi.fn(async () => "eteint"),
+  envoyerRappelsDemiJournee: vi.fn(async () => ({ sessions: 0, envoyes: 0, echecs: [] })),
 }));
 
 // Demande de contresignature au formateur — le service a ses propres tests
@@ -1941,6 +1964,32 @@ describe("handleLiensEmargementJ0 — plus de fenêtre jour UTC aveugle", () => 
       origine: "cron-j0",
       cible: "sans_lien_remis",
     });
+  });
+
+  it("🔴 le passage horaire appelle les envois de confirmation de présence (lot présence 2/3)", async () => {
+    await lancer();
+    expect(envoyerConfirmationsPresence).toHaveBeenCalledTimes(1);
+    expect(envoyerConfirmationsPresence).toHaveBeenCalledWith(expect.any(Date));
+  });
+
+  it("🔴 une erreur des envois de présence est journalisée et ne casse JAMAIS les rappels", async () => {
+    vi.mocked(etatInterrupteurPourCron).mockResolvedValueOnce("actif");
+    vi.mocked(envoyerConfirmationsPresence).mockRejectedValueOnce(new Error("boum présence"));
+    const erreurs = vi.spyOn(console, "error").mockImplementation(() => undefined);
+
+    await expect(lancer()).resolves.toBeUndefined();
+
+    // Les rappels de demi-journée sont partis, avant ou après : l'erreur ne les a pas empêchés.
+    expect(envoyerRappelsDemiJournee).toHaveBeenCalledTimes(1);
+    expect(erreurs.mock.calls.flat().join(" ")).toContain("boum présence");
+    erreurs.mockRestore();
+  });
+
+  it("🔴 aucun nouveau job BullMQ : on réutilise le passage horaire liens-emargement-j0", async () => {
+    const { readFileSync } = await import("node:fs");
+    const { join } = await import("node:path");
+    const source = readFileSync(join(process.cwd(), "src/server/queue/queues.ts"), "utf8");
+    expect(source).not.toMatch(/formation-crons\.[a-z-]*presence/);
   });
 
   it("🔴 le cron est HORAIRE dans queues.ts — pas un unique passage à 06:00", async () => {
