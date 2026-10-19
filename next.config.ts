@@ -289,6 +289,19 @@ const nextConfig: NextConfig = {
       //
       // ⚠️ Ne pas ajouter ces deux chemins a un sitemap : une URL qui repond 301
       // n'a rien a y faire, seule la destination s'indexe.
+      // 2026-10-19 : deux offres d'emploi dont l'adresse citait la certification
+      // qualité changent de slug (retrait des mentions Qualiopi) : 301 pour les
+      // liens et les index existants.
+      {
+        source: "/:locale(fr|en)/carrieres/responsable-qualite-qualiopi",
+        destination: "/:locale/carrieres/responsable-qualite",
+        permanent: true,
+      },
+      {
+        source: "/:locale(fr|en)/carrieres/assistant-financements-qualiopi",
+        destination: "/:locale/carrieres/assistant-financements",
+        permanent: true,
+      },
       {
         source: "/:locale(fr|en)/apporteur/candidature",
         destination: "/:locale/devenir-commercial-ia/candidature",

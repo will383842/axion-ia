@@ -147,7 +147,7 @@ export const CAREERS_IMAGES: Record<string, CareerImage> = {
     byName: "Element5 Digital",
     byUrl: "https://unsplash.com/@element5digital",
   },
-  "assistant-financements-qualiopi": {
+  "assistant-financements": {
     url: "https://images.unsplash.com/photo-1764025851210-9ad5ed83e01f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5NTEzMjN8MHwxfHNlYXJjaHwxfHxvZmZpY2UlMjBwYXBlcndvcmslMjBhZG1pbmlzdHJhdGlvbiUyMGRlc2t8ZW58MXwwfHx8MTc4MTAwODMxNnww&ixlib=rb-4.1.0&q=80&w=1080",
     alt: "A black stapler rests on a desk with papers.",
     byName: "Duskfall Crew",
@@ -207,7 +207,7 @@ export const CAREERS_IMAGES: Record<string, CareerImage> = {
     byName: "Christina @ wocintechchat.com M",
     byUrl: "https://unsplash.com/@wocintechchat",
   },
-  "responsable-qualite-qualiopi": {
+  "responsable-qualite": {
     url: "https://images.unsplash.com/photo-1754039985008-a15410211b67?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5NTEzMjN8MHwxfHNlYXJjaHwxfHxxdWFsaXR5JTIwY2hlY2tsaXN0JTIwY2xpcGJvYXJkJTIwb2ZmaWNlfGVufDF8MHx8fDE3ODEwMDgzMjR8MA&ixlib=rb-4.1.0&q=80&w=1080",
     alt: "Someone is checking items off a checklist.",
     byName: "Jakub Żerdzicki",
