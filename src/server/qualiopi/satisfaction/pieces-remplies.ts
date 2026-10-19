@@ -64,12 +64,17 @@ function texte(reponses: unknown, cle: string): string | null {
   return t;
 }
 
-export async function produirePiecesSatisfactionRemplie(): Promise<{
+/**
+ * `sessionId` (facultatif) borne la liste à UNE session ; sans argument, le
+ * comportement est inchangé (ZIP de l'organisme).
+ */
+export async function produirePiecesSatisfactionRemplie(sessionId?: string): Promise<{
   pieces: PieceSatisfactionRemplie[];
   echecs: EchecSatisfactionRemplie[];
 }> {
+  const w = whereSatisfactionRemplie();
   const lignes = await prisma.questionnaire.findMany({
-    where: whereSatisfactionRemplie(),
+    where: sessionId === undefined ? w : { ...w, enrollment: { ...w.enrollment, sessionId } },
     select: {
       id: true,
       type: true,

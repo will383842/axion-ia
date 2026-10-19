@@ -92,6 +92,18 @@ describe("pièces positionnement rempli", () => {
     );
   });
 
+  it("`sessionId` borne la lecture à une session ; sans argument le where est inchangé", async () => {
+    await produirePiecesPositionnementRempli("s-1");
+    expect(mockPrisma.questionnaire.findMany.mock.calls[0]![0].where).toEqual({
+      ...wherePositionnementRempli(),
+      enrollment: { ...wherePositionnementRempli().enrollment, sessionId: "s-1" },
+    });
+    await produirePiecesPositionnementRempli();
+    expect(mockPrisma.questionnaire.findMany.mock.calls[1]![0].where).toEqual(
+      wherePositionnementRempli(),
+    );
+  });
+
   // ── Relectures de la PR 1090 : formes réelles ────────────────────────────
 
   it("le compte est fait EN BASE, sans charger les réponses (ni les anciens détails en clair)", async () => {

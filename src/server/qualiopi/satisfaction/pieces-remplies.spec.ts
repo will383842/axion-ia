@@ -87,6 +87,18 @@ describe("pièces satisfaction répondue (ind. 30)", () => {
     );
   });
 
+  it("`sessionId` borne la lecture à une session ; sans argument le where est inchangé", async () => {
+    await produirePiecesSatisfactionRemplie("s-1");
+    expect(mockPrisma.questionnaire.findMany.mock.calls[0]![0].where).toEqual({
+      ...whereSatisfactionRemplie(),
+      enrollment: { ...whereSatisfactionRemplie().enrollment, sessionId: "s-1" },
+    });
+    await produirePiecesSatisfactionRemplie();
+    expect(mockPrisma.questionnaire.findMany.mock.calls[1]![0].where).toEqual(
+      whereSatisfactionRemplie(),
+    );
+  });
+
   it("rend une pièce nominative, datée de la réponse en heure de Paris, rangée sous satisfactions/", async () => {
     mockPrisma.questionnaire.findMany.mockResolvedValue([LIGNE]);
     const { pieces, echecs } = await produirePiecesSatisfactionRemplie();

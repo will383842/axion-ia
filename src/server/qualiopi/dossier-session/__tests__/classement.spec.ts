@@ -17,6 +17,7 @@ import {
   destinatairePiece,
   emailHorsDossier,
   gabaritsHorsDossier,
+  motifModeleVierge,
   motifNonProbante,
   remplaceePar,
 } from "../classement";
@@ -108,5 +109,44 @@ describe("remplacée par", () => {
     expect(remplaceePar("AXI-ATT-2026-005")).toBe("AXI-ATT-2026-005");
     expect(remplaceePar("  ")).toBeNull();
     expect(remplaceePar(null)).toBeNull();
+  });
+});
+
+describe("motifModeleVierge — un modèle vierge n'est jamais une preuve", () => {
+  it("un positionnement est un formulaire non rempli", () => {
+    expect(motifModeleVierge("positionnement", {})).toBe(
+      "questionnaire de positionnement VIERGE (formulaire non rempli)",
+    );
+  });
+
+  it("une satisfaction est un formulaire non rempli", () => {
+    expect(motifModeleVierge("satisfaction", null)).toBe(
+      "questionnaire de satisfaction VIERGE (formulaire non rempli)",
+    );
+  });
+
+  it("une grille dont aucune compétence n'est notée est vierge", () => {
+    const metadata = {
+      renderData: { data: { competences: [{ intitule: "a" }, { intitule: "b", note: null }] } },
+    };
+    expect(motifModeleVierge("grille_evaluation", metadata)).toBe(
+      "grille d'évaluation VIERGE (aucune compétence notée)",
+    );
+  });
+
+  it("une grille notée n'est pas vierge", () => {
+    const metadata = {
+      renderData: { data: { competences: [{ intitule: "a" }, { intitule: "b", note: 3 }] } },
+    };
+    expect(motifModeleVierge("grille_evaluation", metadata)).toBeNull();
+  });
+
+  it("une grille sans instantané est illisible : on n'invente rien", () => {
+    expect(motifModeleVierge("grille_evaluation", {})).toBeNull();
+    expect(motifModeleVierge("grille_evaluation", null)).toBeNull();
+  });
+
+  it("une convention n'est jamais un modèle vierge", () => {
+    expect(motifModeleVierge("convention", {})).toBeNull();
   });
 });

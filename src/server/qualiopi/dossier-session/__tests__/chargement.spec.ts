@@ -250,7 +250,10 @@ describe("e-mails : contenu, adresse masquée, banc d'essai", () => {
 describe("🔒 adaptation : donnée de santé, référent handicap seul", () => {
   it("pour un autre rôle, rien n'est chargé et le bloc dit sa réserve", async () => {
     const m = await chargerDossierSession("s1", { role: "admin" });
-    expect(p["questionnaire"]!["findMany"]).not.toHaveBeenCalled();
+    // Seule la liste des questionnaires remplis (sans `reponses`) est lue.
+    for (const [arg] of p["questionnaire"]!["findMany"]!.mock.calls) {
+      expect(arg.select.reponses).toBeUndefined();
+    }
     expect(sectionIndicateur10Session).not.toHaveBeenCalled();
     const bloc = m!.blocs.find((b) => b.id === "adaptation")!;
     expect(bloc.lignes).toEqual([MENTION_RESERVE_REFERENT]);
@@ -259,7 +262,8 @@ describe("🔒 adaptation : donnée de santé, référent handicap seul", () => 
 
   it("pour le référent, le bloc porte le besoin et la mesure", async () => {
     const m = await chargerDossierSession("s1", { role: "super_admin" });
-    expect(p["questionnaire"]!["findMany"]!.mock.calls[0]![0].where).toEqual({
+    const appels = p["questionnaire"]!["findMany"]!.mock.calls.map((c) => c[0]);
+    expect(appels.map((a) => a.where)).toContainEqual({
       enrollmentId: { in: ["e1", "e2"] },
       type: "positionnement",
       reponduAt: { not: null },
@@ -279,5 +283,100 @@ describe("fail-soft, jamais muet", () => {
     p["remiseRetour"]!["findMany"]!.mockRejectedValueOnce(new Error("P2021"));
     const m = await chargerDossierSession("s1", { role: "admin" });
     expect(m!.avertissements.join(" ")).toContain("ce n'est PAS un constat d'absence");
+  });
+});
+
+describe("modèles vierges et questionnaires remplis (dossier à 100 %)", () => {
+  it("un positionnement généré est un modèle vierge : étiqueté, hors voyants, jamais joint", async () => {
+    p["documentGenere"]!["findMany"]!.mockResolvedValue([
+      piece({ id: "pv", type: "positionnement", numero: "AXI-POS-2026-001" }),
+    ]);
+    const m = await chargerDossierSession("s1", { role: "admin" });
+    const pv = m!.elements.find((e) => e.cle === "piece:pv")!;
+    expect(pv.etiquettes.join(" ")).toContain("Modèle vierge — non probant, non joint");
+    expect(pv.horsVoyants).toBe(true);
+    expect(pv.cheminPdf).toBeNull();
+    expect(pv.cleStockage).toBeNull();
+  });
+
+  it("un questionnaire répondu devient un élément « rempli » ; `reponses` n'est jamais lue", async () => {
+    p["questionnaire"]!["findMany"]!.mockResolvedValue([
+      {
+        id: "qr1",
+        type: "satisfaction_chaud",
+        reponduAt: new Date("2026-06-11T14:00:00Z"),
+        enrollmentId: "e1",
+      },
+    ]);
+    const m = await chargerDossierSession("s1", { role: "admin" });
+    const q = m!.elements.find((e) => e.cle === "questionnaire-rempli:qr1")!;
+    expect(q.titre).toBe("Satisfaction à chaud remplie");
+    expect(q.destinataire).toBe("stagiaire");
+    expect(q.canal).toBe("espace");
+    expect(q.details).toContain("Stagiaire : Alice Dupont");
+    expect(q.details).toContain("PDF rempli : dossier questionnaires-remplis/ du ZIP");
+    expect(q.cheminPdf).toBeNull();
+    const appel = p["questionnaire"]!["findMany"]!.mock.calls.find(
+      (c) => c[0].where.enrollment !== undefined,
+    )![0];
+    expect(appel.where).toEqual({
+      enrollment: { sessionId: "s1" },
+      reponduAt: { not: null },
+      type: { in: ["positionnement", "satisfaction_chaud", "satisfaction_froid"] },
+    });
+    expect(appel.select).toEqual({ id: true, type: true, reponduAt: true, enrollmentId: true });
+  });
+
+  it("une lecture des questionnaires qui échoue est dite", async () => {
+    p["questionnaire"]!["findMany"]!.mockRejectedValueOnce(new Error("boom"));
+    const m = await chargerDossierSession("s1", { role: "admin" });
+    expect(m!.avertissements.join(" ")).toContain("questionnaires remplis");
+  });
+});
+
+describe("exemplaire signé", () => {
+  const signee = {
+    id: "ps",
+    type: "convention",
+    numero: "AXI-CONV-2026-009",
+    exemplaireSigneKey: "documents/signes/x.pdf",
+    signatures: [{ signeAt: new Date("2026-10-20T10:00:00Z") }],
+  };
+
+  it("avec une clé : la pièce et son exemplaire signé, daté", async () => {
+    p["documentGenere"]!["findMany"]!.mockResolvedValue([piece(signee)]);
+    const m = await chargerDossierSession("s1", { role: "admin" });
+    const els = m!.elements.filter((e) => e.cle.endsWith(":ps"));
+    expect(els).toHaveLength(2);
+    const s = els.find((e) => e.cle === "piece-signee:ps")!;
+    expect(s.titre).toBe("AXI-CONV-2026-009 (convention) — exemplaire signé");
+    expect(s.etiquettes).toContain("Signé le 20/10/2026");
+    expect(s.cheminPdf).toBe("documents/signes/convention/AXI-CONV-2026-009.pdf");
+    expect(s.cleStockage).toBe("documents/signes/x.pdf");
+    expect(s.horsVoyants).toBe(false);
+  });
+
+  it("sans clé : un seul élément", async () => {
+    p["documentGenere"]!["findMany"]!.mockResolvedValue([
+      piece({ ...signee, exemplaireSigneKey: null, signatures: [] }),
+    ]);
+    const m = await chargerDossierSession("s1", { role: "admin" });
+    expect(m!.elements.filter((e) => e.cle.endsWith(":ps"))).toHaveLength(1);
+  });
+
+  it("sans signature non révoquée : date de signature non retrouvée", async () => {
+    p["documentGenere"]!["findMany"]!.mockResolvedValue([piece({ ...signee, signatures: [] })]);
+    const m = await chargerDossierSession("s1", { role: "admin" });
+    expect(m!.elements.find((e) => e.cle === "piece-signee:ps")!.etiquettes).toContain(
+      "date de signature non retrouvée",
+    );
+  });
+
+  it("une pièce annulée n'a pas d'exemplaire signé séparé", async () => {
+    p["documentGenere"]!["findMany"]!.mockResolvedValue([
+      piece({ ...signee, annuleeAt: new Date("2026-10-21T00:00:00Z") }),
+    ]);
+    const m = await chargerDossierSession("s1", { role: "admin" });
+    expect(m!.elements.some((e) => e.cle === "piece-signee:ps")).toBe(false);
   });
 });
