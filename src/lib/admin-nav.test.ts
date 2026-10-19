@@ -210,7 +210,7 @@ describe("buildAdminNav SSOT", () => {
     // la seule route console `/api/admin/imprimes/<id>/<fichier>`. 168 + 1 = 169.
     // +1 État des fonds OPCO (lot OPCO A5, 2026-10-04) : 169 + 1 = 170.
     // +1 Conformité RGPD (2026-10-10, groupe Société & conformité).
-    expect(items.length).toBe(176);
+    expect(items.length).toBe(177); // +1 Interrupteurs Qualiopi (masqué sous Conformité & auditeur)
   });
 
   it("prefixes all INTERNAL hrefs with /fr/<adminPrefix>", () => {
@@ -926,6 +926,7 @@ const HREFS_AVANT_REFONTE: ReadonlyArray<string> = [
   "/qualiopi/incidents",
   "/qualiopi/revue-direction",
   "/qualiopi/config",
+  "/qualiopi/interrupteurs",
   "/qualiopi/rgpd",
   "/qualiopi/alertes",
   "/qualiopi/emails",
@@ -1166,14 +1167,14 @@ describe("« Formations & prestations » : 11 entrées au plus (lot L4, 2026-09-
   it("chaque entrée masquée a pour parent une entrée VISIBLE de la rubrique (fil d'Ariane)", () => {
     const hrefsVisibles = new Set(visibles.map((it) => it.href));
     const masquees = qualiopi.filter((it) => it.parent != null);
-    expect(masquees.length).toBe(22);
+    expect(masquees.length).toBe(23);
     for (const it of masquees) {
       expect(hrefsVisibles.has(it.parent as string), `${it.label} → ${it.parent}`).toBe(true);
     }
   });
 
-  it("aucune entrée n'est perdue : les 33 écrans restent trouvables par la palette ⌘K", () => {
-    expect(qualiopi.length).toBe(33);
+  it("aucune entrée n'est perdue : les 34 écrans restent trouvables par la palette ⌘K", () => {
+    expect(qualiopi.length).toBe(34);
     // La palette cherche sur le libellé (cmdk) : une recherche par un mot du
     // libellé doit toujours retrouver l'écran masqué.
     const chercher = (q: string) =>

@@ -1698,6 +1698,16 @@ function buildAdminNavSocle(adminPrefix: string): ReadonlyArray<AdminNavItem> {
       group: "qualiopi",
       subGroup: "reglages_suivi",
     },
+    // Chantier QNC : état des interrupteurs `qualiopi.<lot>.actif` (eteint / essai / actif).
+    {
+      href: `${base}/qualiopi/interrupteurs`,
+      label: "Interrupteurs Qualiopi",
+      icon: "ToggleRight",
+      group: "qualiopi",
+      subGroup: "reglages_suivi",
+      tier: "advanced",
+      parent: `${base}/qualiopi/mode-auditeur`,
+    },
     {
       href: `${base}/qualiopi/rgpd`,
       label: "Demandes RGPD",
