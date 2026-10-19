@@ -23,9 +23,10 @@ export function debutPremiereDemiJournee(session: {
   readonly jours: ReadonlyArray<JourSession>;
 }): Date {
   const j = jourJ(session);
-  const premier = session.jours.find(
-    (x) => jourJ({ dateDebut: session.dateDebut, jours: [x] }) === j,
-  );
+  // Plusieurs lignes le jour J (matin / après-midi) : la plus matinale, pas la première du tableau.
+  const premier = session.jours
+    .filter((x) => jourJ({ dateDebut: session.dateDebut, jours: [x] }) === j)
+    .sort((a, b) => a.heureDebut.localeCompare(b.heureDebut))[0];
   // Sans journée déclarée, on ne connaît pas l'heure : minuit de Paris du jour J, l'instant le
   // plus tôt — le lien ferme plus tôt plutôt que jamais.
   if (premier === undefined) return instantParis(j, 0);
