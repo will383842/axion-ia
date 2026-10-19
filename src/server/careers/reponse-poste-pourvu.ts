@@ -66,7 +66,10 @@ import {
   envoyerProposition,
   preparerProposition,
 } from "@/server/careers/proposer-reseau-auto";
+import { estOffreIntervenant } from "@/lib/careers/etapes-intervenant";
+import { LOT_DOCUMENTS_ORGANISME } from "@/server/documents-organisme/documents-organisme-pur";
 import { lireEtatsEntree } from "@/server/qualiopi/formateurs-independants/etats-entree";
+import { estActifPour, lireInterrupteurQualiopi } from "@/server/qualiopi/socle/interrupteurs";
 import type { Prisma } from "../../../prisma/generated/client";
 
 export const CLE_ACTIVATION = "recrutement.reponse-poste-pourvu-auto";
@@ -198,6 +201,34 @@ function exclusionFormateurFreelance(): Prisma.JobApplicationWhereInput[] {
 }
 
 /**
+ * Lot P15 (CH4-37) : toute offre d'INTERVENANT, formateur salarié compris, sort
+ * du passage — la règle de `estOffreIntervenant` (intitulé ou slug disant
+ * « formateur|formatrice »), écrite en Prisma, plus l'intitulé figé sur la
+ * candidature (spontanée « Formateur… »). Le prédicat rejoue la règle sur
+ * chaque dossier du lot (filet si les deux écritures divergeaient).
+ */
+function exclusionIntervenants(): Prisma.JobApplicationWhereInput {
+  const contient = (m: string) => ({ contains: m, mode: "insensitive" as const });
+  return {
+    NOT: {
+      OR: [
+        ...MOTS_FORMATEUR.map((f) => ({ offerTitleSnap: contient(f) })),
+        {
+          offer: {
+            OR: MOTS_FORMATEUR.flatMap((f) => [{ titleFr: contient(f) }, { slug: contient(f) }]),
+          },
+        },
+      ],
+    },
+  };
+}
+
+/** Lot P15 : l'interrupteur agit-il ? (seul `actif` : une offre n'a pas de session) */
+async function intervenantsExclusActuel(): Promise<boolean> {
+  return estActifPour(await lireInterrupteurQualiopi(LOT_DOCUMENTS_ORGANISME), null);
+}
+
+/**
  * Le filtre d'éligibilité — une seule définition, lue par le passage ET l'écran.
  * `idsTunnel` : les candidatures dont une fiche apporteur est née (lu par
  * `idsBasculesAuTunnel`, qui a besoin de la base — ce filtre reste pur).
@@ -205,7 +236,7 @@ function exclusionFormateurFreelance(): Prisma.JobApplicationWhereInput[] {
 export function critereEligible(
   maintenant: Date,
   idsTunnel: readonly string[] = [],
-  options: { readonly natureOffreLue?: boolean } = {},
+  options: { readonly natureOffreLue?: boolean; readonly intervenantsExclus?: boolean } = {},
 ): Prisma.JobApplicationWhereInput {
   return {
     status: "new",
@@ -237,6 +268,9 @@ export function critereEligible(
             },
           ]
         : []),
+      // P15, interrupteur `qualiopi.documents_organisme.actif`. Éteint, rien n'est
+      // ajouté : le filtre est celui d'avant, à l'octet près.
+      ...(options.intervenantsExclus ? [exclusionIntervenants()] : []),
     ],
   };
 }
@@ -261,8 +295,15 @@ export async function idsBasculesAuTunnel(): Promise<string[]> {
 export async function critereEligibleActuel(
   maintenant: Date,
 ): Promise<Prisma.JobApplicationWhereInput> {
-  const [idsTunnel, entree] = await Promise.all([idsBasculesAuTunnel(), lireEtatsEntree()]);
-  return critereEligible(maintenant, idsTunnel, { natureOffreLue: entree.nature_offre });
+  const [idsTunnel, entree, intervenantsExclus] = await Promise.all([
+    idsBasculesAuTunnel(),
+    lireEtatsEntree(),
+    intervenantsExclusActuel(),
+  ]);
+  return critereEligible(maintenant, idsTunnel, {
+    natureOffreLue: entree.nature_offre,
+    intervenantsExclus,
+  });
 }
 
 /** Interrupteur : ABSENT ou illisible = ARRÊTÉ. */
@@ -292,7 +333,10 @@ export async function passerReponsePostePourvu(
   if (!(await estActive())) {
     return { actif: false, envoyees: 0, ecartees: 0, echouees: 0, restantes: 0 };
   }
-  const where = await critereEligibleActuel(maintenant);
+  const [where, intervenantsExclus] = await Promise.all([
+    critereEligibleActuel(maintenant),
+    intervenantsExclusActuel(),
+  ]);
   const lot = await prisma.jobApplication.findMany({
     where,
     orderBy: { submittedAt: "asc" },
@@ -322,6 +366,14 @@ export async function passerReponsePostePourvu(
     if (envoyees + echouees >= PAR_PASSAGE) break;
     // Une mission de formateur indépendant n'est jamais « pourvue » (lot U2).
     if (estCandidatureFormateurFreelance(c)) {
+      ecartees += 1;
+      continue;
+    }
+    // P15 : une offre d'intervenant (formateur salarié compris) n'est jamais « pourvue ».
+    if (
+      intervenantsExclus &&
+      (estOffreIntervenant(c.offer) || estOffreIntervenant({ titleFr: c.offerTitleSnap }))
+    ) {
       ecartees += 1;
       continue;
     }
