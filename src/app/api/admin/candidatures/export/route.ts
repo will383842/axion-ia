@@ -44,6 +44,7 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
       // ⚠️ `z.coerce.boolean()` rend TRUE pour la chaîne "false" : on ne
       // transmet le champ que lorsqu'il vaut explicitement "1".
       ...(sp.get("attention") === "1" ? { onlyAttention: true } : {}),
+      ...(sp.get("favoris") === "1" ? { favorisSeulement: true } : {}),
       search: sp.get("q") ?? undefined,
     });
   } catch {

@@ -88,6 +88,8 @@ export const listApplicationsSchema = z.object({
   // est allumé.
   view: z.enum(["standard", "monteur", "all", "formateurs-freelance"]).default("standard"),
   onlyAttention: z.coerce.boolean().optional(),
+  /** Ne garder que les favoris de l'équipe (`favoriAt` renseigné). */
+  favorisSeulement: z.boolean().optional(),
   /**
    * Recherche libre sur le nom et l'adresse.
    *
@@ -111,6 +113,8 @@ export type ListApplicationsInput = z.infer<typeof listApplicationsSchema>;
 
 export interface JobApplicationListItem {
   id: string;
+  /** Favori de l'équipe ; `null` quand le dossier est fermé au rôle. Absent hors de la liste console. */
+  favori?: boolean | null;
   /**
    * 🔴 `null` QUAND LA CANDIDATURE N'A PLUS — OU N'A JAMAIS EU — D'OFFRE.
    *
@@ -227,6 +231,7 @@ export function construireFiltreCandidatures(input: Partial<ListApplicationsInpu
   else if (parsed.offerId) where.offerId = parsed.offerId;
   if (parsed.status !== "all") where.status = parsed.status;
   if (parsed.onlyAttention) where.needsAttention = true;
+  if (parsed.favorisSeulement) where.favoriAt = { not: null };
   if (parsed.view === "formateurs-freelance") {
     where.AND = [whereCandidatureFormateurFreelance()];
   } else if (parsed.view === "monteur") {
@@ -273,6 +278,9 @@ export async function listApplications(
 ): Promise<JobApplicationListResult> {
   const { where, recherche, parsed } = construireFiltreCandidatures(input);
   const terme = normaliserRecherche(recherche);
+  // Un rôle qui n'ouvre pas le dossier ne voit pas les favoris : le filtre ne
+  // doit pas les trahir (même règle que la vue Monteurs & vidéastes).
+  if (!peutOuvrirDossierCandidat(acces.role)) delete where.favoriAt;
 
   const SELECTION = {
     id: true,
@@ -284,6 +292,7 @@ export async function listApplications(
     status: true,
     cvStoragePath: true,
     needsAttention: true,
+    favoriAt: true,
     submittedAt: true,
   } as const;
 
@@ -375,6 +384,7 @@ export async function listApplications(
     status: r.status,
     hasCv: ouvert ? Boolean(r.cvStoragePath) : false,
     needsAttention: r.needsAttention,
+    favori: ouvert ? r.favoriAt != null : null,
     submittedAt: r.submittedAt,
   }));
 

@@ -14,13 +14,26 @@ import { revalidatePath } from "next/cache";
 import { prisma } from "@/lib/prisma";
 import { getClientIp } from "@/lib/client-ip";
 import { adminPath } from "@/lib/admin-path";
-import { VIDEO_FREELANCE_OFFER_SLUGS } from "@/lib/careers/video-editor-offer";
 import { requireAdminWrite } from "./session";
 
 const Entree = z.object({
   id: z.string().uuid(),
   favori: z.enum(["0", "1"]),
 });
+
+/**
+ * Deux formes : `id` + `favori` (vue Monteurs & vidéastes), ou `cible` = « <id>:<0|1> »
+ * (liste Candidatures : le cœur est un bouton rattaché par `form=` à un formulaire
+ * unique hors du formulaire d'actions en masse, un formulaire ne pouvant en contenir un autre).
+ */
+function lire(formData: FormData) {
+  const cible = formData.get("cible");
+  if (typeof cible === "string") {
+    const [id, favori] = cible.split(":");
+    return Entree.safeParse({ id, favori });
+  }
+  return Entree.safeParse({ id: formData.get("id"), favori: formData.get("favori") });
+}
 
 export async function marquerFavoriAction(formData: FormData): Promise<void> {
   let acteurId: string;
@@ -29,21 +42,18 @@ export async function marquerFavoriAction(formData: FormData): Promise<void> {
   } catch {
     return;
   }
-  const lu = Entree.safeParse({ id: formData.get("id"), favori: formData.get("favori") });
+  const lu = lire(formData);
   if (!lu.success) return;
   const { id, favori } = lu.data;
 
-  // Seules les candidatures des offres vidéo freelance : un appel direct à l'action
-  // ne doit pas marquer le dossier d'une autre offre.
-  const offre = { slug: { in: [...VIDEO_FREELANCE_OFFER_SLUGS] } };
   const { count } =
     favori === "1"
       ? await prisma.jobApplication.updateMany({
-          where: { id, offer: offre, favoriAt: null },
+          where: { id, favoriAt: null },
           data: { favoriAt: new Date() },
         })
       : await prisma.jobApplication.updateMany({
-          where: { id, offer: offre, favoriAt: { not: null } },
+          where: { id, favoriAt: { not: null } },
           data: { favoriAt: null },
         });
 
@@ -66,4 +76,5 @@ export async function marquerFavoriAction(formData: FormData): Promise<void> {
     }
   }
   revalidatePath(adminPath("fr", "contacts/candidatures/video"));
+  revalidatePath(adminPath("fr", "contacts/candidatures"));
 }

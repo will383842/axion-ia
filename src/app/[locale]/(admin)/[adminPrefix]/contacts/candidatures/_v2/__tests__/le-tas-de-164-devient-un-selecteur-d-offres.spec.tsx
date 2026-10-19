@@ -117,3 +117,38 @@ describe("ApplicationsV2 — retrait des deux onglets, sélecteur d'offre", () =
     expect(html).toContain("Candidatures — Rédacteur web");
   });
 });
+
+describe("ApplicationsV2 — cœur de favori sur toutes les candidatures", () => {
+  const avecCoeur = (items: readonly JobApplicationListItem[]) =>
+    renderToStaticMarkup(
+      <ApplicationsV2
+        adminPrefix="console-abc123"
+        marquerFavori={async () => {}}
+        searchParams={{}}
+        offres={OFFRES}
+        items={items}
+        total={items.length}
+        page={1}
+        totalPages={1}
+      />,
+    );
+
+  it("un cœur par ligne, rattaché au formulaire unique HORS du formulaire en masse", () => {
+    const html = avecCoeur([
+      { ...item("a1", "offre-redacteur", "Rédacteur web"), favori: false },
+      { ...item("a2", "offre-monteur", "Monteur vidéo"), favori: true },
+    ]);
+    expect(html).toContain('<form id="formulaire-favori"');
+    expect(html).toContain('form="formulaire-favori"');
+    expect(html).toContain('value="a1:1"');
+    expect(html).toContain('value="a2:0"');
+    expect(html).toContain('name="cible"');
+    expect(html).toContain('aria-pressed="true"');
+    expect(html).toContain('name="favoris"');
+  });
+
+  it("dossier fermé au rôle (favori null) : pas de cœur ; sans action : pas de colonne", () => {
+    expect(avecCoeur([{ ...item("a1", "o", "X"), favori: null }])).not.toContain("aria-pressed");
+    expect(rendre()).not.toContain("formulaire-favori");
+  });
+});

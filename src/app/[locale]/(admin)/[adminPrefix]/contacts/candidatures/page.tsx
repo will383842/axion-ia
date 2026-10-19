@@ -38,6 +38,7 @@ import {
   estActive as reponseAutoActive,
 } from "@/server/careers/reponse-poste-pourvu";
 import { basculerReponsePostePourvuAction } from "@/features/admin-job-applications/reponse-poste-pourvu-actions";
+import { marquerFavoriAction } from "@/features/admin-job-applications/favori-actions";
 import { ApplicationsV2 } from "./_v2/ApplicationsV2";
 
 export const dynamic = "force-dynamic";
@@ -94,6 +95,7 @@ export default async function ApplicationsListPage({ params, searchParams }: Pag
       // filtre par offre (sélecteur) remplace la distinction d'onglet.
       view: vueFormateurs ? "formateurs-freelance" : "all",
       onlyAttention,
+      ...(sp.favoris === "1" ? { favorisSeulement: true } : {}),
       ...(recherche ? { search: recherche } : {}),
       page,
     }),
@@ -119,7 +121,8 @@ export default async function ApplicationsListPage({ params, searchParams }: Pag
   //    onglets « Monteur vidéo » et « Apporteurs d'affaires » ont cédé la place
   //    à un sélecteur d'offre. Il n'y a donc plus qu'un atterrissage possible,
   //    et c'est celui-ci.
-  const alerteRepos = page === 1 && !sp.offerId && !recherche && !onlyAttention;
+  const alerteRepos =
+    page === 1 && !sp.offerId && !recherche && !onlyAttention && sp.favoris !== "1";
   const plusAncien = alerteRepos
     ? plusAncienJamaisRepondu(
         (
@@ -149,6 +152,7 @@ export default async function ApplicationsListPage({ params, searchParams }: Pag
         basculer: basculerReponsePostePourvuAction,
       }}
       adminPrefix={adminPrefix}
+      marquerFavori={marquerFavoriAction}
       vueFormateursFreelance={vueFormateurs}
       ajoutCandidatFormateur={ajoutCandidatFormateur ? ajouterCandidatFormateurAction : null}
       searchParams={sp}

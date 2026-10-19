@@ -24,7 +24,7 @@
 import { AjouterCandidatFormateur } from "./AjouterCandidatFormateur";
 import type { EtatAjoutCandidatFormateur } from "@/features/admin-job-applications/candidat-formateur-actions";
 import Link from "next/link";
-import { ArrowRight, Download, FolderOpen, Gauge } from "lucide-react";
+import { ArrowRight, Download, FolderOpen, Gauge, Heart } from "lucide-react";
 import {
   AdminPageShell,
   AdminPageHeader,
@@ -91,12 +91,19 @@ const OPTIONS_MOTIF = MOTIFS_REFUS_SAISISSABLES.map((m) => ({
  */
 const MASQUE = "—";
 
+const FORMULAIRE_FAVORI = "formulaire-favori";
+
 const STATUS_LABELS: Record<string, string> = LIBELLE_STATUT;
 const STATUS_TONE: Record<string, "success" | "warning" | "neutral" | "info" | "destructive"> =
   TON_STATUT;
 
 interface Props {
   adminPrefix: string;
+  /**
+   * Action « cœur » passée PAR LA PAGE (importer l'auth ici casserait les tests de rendu).
+   * Absente : pas de colonne cœur.
+   */
+  marquerFavori?: ((formData: FormData) => Promise<void>) | null;
   searchParams: Record<string, string | undefined>;
   /**
    * Les offres ayant au moins une candidature, avec leur volume — alimente le
@@ -146,6 +153,7 @@ interface Props {
 
 export function ApplicationsV2({
   adminPrefix,
+  marquerFavori = null,
   searchParams: sp,
   offres,
   items,
@@ -175,6 +183,7 @@ export function ApplicationsV2({
       offerId: offerId ?? "",
       status: sp["status"] ?? "",
       attention: sp["attention"] ?? "",
+      favoris: sp["favoris"] ?? "",
       q: sp["q"] ?? "",
     }).filter(([, v]) => v !== "" && v !== "all"),
   ).toString();
@@ -193,6 +202,31 @@ export function ApplicationsV2({
         />
       ),
     },
+    ...(marquerFavori
+      ? [
+          {
+            key: "favori",
+            header: <span className="sr-only">Favori</span>,
+            cell: (a: JobApplicationListItem) =>
+              a.favori === null || a.favori === undefined ? (
+                MASQUE
+              ) : (
+                <button
+                  type="submit"
+                  form={FORMULAIRE_FAVORI}
+                  name="cible"
+                  value={`${a.id}:${a.favori ? "0" : "1"}`}
+                  aria-pressed={a.favori}
+                  aria-label={`Favori : ${a.contactName || "ce candidat"}`}
+                  title={a.favori ? "Retirer des favoris" : "Mettre en favori"}
+                  className="inline-flex min-h-11 min-w-11 items-center justify-center"
+                >
+                  <Heart size={20} aria-hidden="true" fill={a.favori ? "currentColor" : "none"} />
+                </button>
+              ),
+          },
+        ]
+      : []),
     { key: "date", header: "Date", cell: (a) => formatDateFrShort(a.submittedAt) },
     {
       key: "candidate",
@@ -355,6 +389,20 @@ export function ApplicationsV2({
               />
             </div>
             <div className="admin-field">
+              <label htmlFor="favoris" className="admin-label">
+                Favoris
+              </label>
+              <select
+                id="favoris"
+                name="favoris"
+                defaultValue={sp["favoris"] ?? ""}
+                className="admin-input"
+              >
+                <option value="">Tous</option>
+                <option value="1">Favoris seulement</option>
+              </select>
+            </div>
+            <div className="admin-field">
               <label htmlFor="attention" className="admin-label">
                 À traiter
               </label>
@@ -395,6 +443,9 @@ export function ApplicationsV2({
         </p>
       ) : null}
 
+      {/* Formulaire unique des cœurs, HORS du formulaire d'actions en masse : un
+          formulaire ne peut pas en contenir un autre, les boutons s'y rattachent par `form=`. */}
+      {marquerFavori ? <form id={FORMULAIRE_FAVORI} action={marquerFavori} /> : null}
       {items.length === 0 ? (
         <AdminEmptyState title="Aucune candidature." />
       ) : (
@@ -437,6 +488,7 @@ export function ApplicationsV2({
           status: sp["status"],
           offerId: sp["offerId"],
           attention: sp["attention"],
+          favoris: sp["favoris"],
           // Sans lui, passer à la page 2 d'une recherche repartait de la liste
           // complète — la page 2 ne parlait plus du même ensemble que la page 1.
           q: sp["q"],
