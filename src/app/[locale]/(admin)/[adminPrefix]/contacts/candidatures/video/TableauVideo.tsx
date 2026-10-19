@@ -3,7 +3,7 @@
 // (un fichier `page` ne peut exporter que sa page).
 
 import Link from "next/link";
-import { Star } from "lucide-react";
+import { Heart } from "lucide-react";
 import { AdminCard, AdminBadge, AdminEmptyState } from "@/components/admin/ui";
 import {
   PLAFOND_LECTURE_VIDEO,
@@ -135,7 +135,7 @@ function EtoileFavori({ c }: { c: CandidatVideo }) {
         title={c.favori ? "Retirer des favoris" : "Mettre en favori"}
         className="inline-flex min-h-11 min-w-11 items-center justify-center"
       >
-        <Star size={20} aria-hidden="true" fill={c.favori ? "currentColor" : "none"} />
+        <Heart size={20} aria-hidden="true" fill={c.favori ? "currentColor" : "none"} />
       </button>
     </form>
   );
