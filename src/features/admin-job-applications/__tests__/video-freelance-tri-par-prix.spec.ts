@@ -75,6 +75,8 @@ function lignes(question: string, ville: (i: number) => string) {
     answers: { [question]: prix, liens: "https://vimeo.com/123" },
     motivation: null,
     linkedinUrl: null,
+    // « 250 € » et « 90 » sont en favori.
+    favoriAt: i === 1 || i === 2 ? new Date(Date.UTC(2026, 9, 7)) : null,
   }));
 }
 
@@ -149,6 +151,31 @@ describe("L1 — classer les monteurs et vidéastes par prix", () => {
       "250",
     ]);
     expect((await ordre({ prixMinCentimes: 10000 })).montage).toEqual(["250", "1200"]);
+  });
+
+  it("favoris seulement : ne garde que les favoris et garde l'ordre par prix", async () => {
+    const { montage, tournage, res } = await ordre({ favorisSeulement: true });
+    expect(montage).toEqual(["90", "250"]);
+    expect(tournage).toEqual(["90", "250"]);
+    expect(res[0]?.candidats.map((c) => c.favori)).toEqual([true, true]);
+    expect((await ordre({})).res[0]?.candidats.map((c) => c.favori)).toEqual([
+      true,
+      true,
+      false,
+      false,
+    ]);
+  });
+
+  it("favoris seulement se combine avec le prix max", async () => {
+    expect((await ordre({ favorisSeulement: true, prixMaxCentimes: 10000 })).montage).toEqual([
+      "90",
+    ]);
+  });
+
+  it("un rôle sans accès : aucune étoile et le filtre favoris est ignoré", async () => {
+    const { montage, res } = await ordre({ favorisSeulement: true }, "reader");
+    expect(montage).toHaveLength(4);
+    expect(res.every((o) => o.candidats.every((c) => c.favori === null))).toBe(true);
   });
 
   it("ville sans accent ni tiret, et étape", async () => {

@@ -8,15 +8,27 @@
  *  - L1 : prix lisible ou « à préciser », en-tête de prix triable, bouton
  *    « ▶ N vidéos », rien de tout cela pour un rôle sans accès.
  */
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import { renderToStaticMarkup } from "react-dom/server";
 
 import type { CandidatVideo, OffreVideo } from "@/features/admin-job-applications/video-freelance";
 
-import { Filtres, TableauOffre, type Etat } from "./TableauVideo";
+vi.mock("@/features/admin-job-applications/favori-actions", () => ({
+  marquerFavoriAction: async () => {},
+}));
+
+import { Filtres, TableauOffre, hrefAvec, type Etat } from "./TableauVideo";
 
 const BASE = "/fr/console/contacts/candidatures";
-const ETAT: Etat = { tri: "", sens: "asc", prixMin: "", prixMax: "", ville: "", etape: "" };
+const ETAT: Etat = {
+  tri: "",
+  sens: "asc",
+  favoris: false,
+  prixMin: "",
+  prixMax: "",
+  ville: "",
+  etape: "",
+};
 
 function candidat(id: string, partiel: Partial<CandidatVideo> = {}): CandidatVideo {
   return {
@@ -28,6 +40,7 @@ function candidat(id: string, partiel: Partial<CandidatVideo> = {}): CandidatVid
     reponses: {},
     videos: [],
     liens: [],
+    favori: false,
     ...partiel,
   };
 }
@@ -186,5 +199,32 @@ describe("filtres", () => {
     expect(html).not.toContain('name="prixMax"');
     expect(html).not.toContain('name="ville"');
     expect(html).toContain('name="etape"');
+  });
+});
+
+describe("favoris", () => {
+  const avec = (c: CandidatVideo) => rendre(offre({ candidats: [c], total: 1, retenus: 1 }));
+
+  it("un favori est pressé et renvoie l'état « retiré » ; un non-favori l'inverse", () => {
+    const oui = avec(candidat("a", { favori: true }));
+    expect(oui).toContain('aria-pressed="true"');
+    expect(oui).toContain('name="favori" value="0"');
+    const non = avec(candidat("b", { favori: false }));
+    expect(non).toContain('aria-pressed="false"');
+    expect(non).toContain('name="favori" value="1"');
+  });
+
+  it("dossier fermé au rôle : aucune étoile", () => {
+    expect(avec(candidat("c", { nom: null, favori: null }))).not.toContain("aria-pressed");
+  });
+
+  it("hrefAvec garde favoris=1 quand on trie, et la case se règle selon le rôle", () => {
+    expect(hrefAvec(BASE, { ...ETAT, favoris: true }, { tri: "pv" })).toBe(
+      `${BASE}?tri=pv&favoris=1`,
+    );
+    const ouvert = renderToStaticMarkup(<Filtres etat={ETAT} chemin={BASE} ouvert />);
+    expect(ouvert).toContain('name="favoris"');
+    const ferme = renderToStaticMarkup(<Filtres etat={ETAT} chemin={BASE} ouvert={false} />);
+    expect(ferme).not.toContain('name="favoris"');
   });
 });

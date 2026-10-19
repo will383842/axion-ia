@@ -55,6 +55,7 @@ const LIGNE = {
   status: "new" as const,
   submittedAt: new Date("2026-09-26T10:00:00Z"),
   answers: { tarifs: "250 € la demi-journée", prix_vertical: "40 €" },
+  favoriAt: new Date("2026-10-07T10:00:00Z"),
 };
 
 beforeEach(() => {
@@ -88,6 +89,7 @@ describe("listerCandidaturesVideoFreelance", () => {
         admis += 1;
         expect(c?.nom, role).toBe("clair:Jean clair:Témoin");
         expect(c?.ville, role).toBe("Lyon");
+        expect(c?.favori, role).toBe(true);
         expect(c?.reponses.tarifs, role).toBe("250 € la demi-journée");
         expect(
           c?.videos.map((v) => v.id),
@@ -97,6 +99,7 @@ describe("listerCandidaturesVideoFreelance", () => {
         refuses += 1;
         expect(c?.nom, role).toBeNull();
         expect(c?.ville, role).toBeNull();
+        expect(c?.favori, role).toBeNull();
         expect(c?.reponses, role).toEqual({});
         // Ni prix ni vidéo : pas même le nombre de vidéos, ni les liens.
         expect(c?.videos, role).toEqual([]);

@@ -3,6 +3,7 @@
 // (un fichier `page` ne peut exporter que sa page).
 
 import Link from "next/link";
+import { Heart } from "lucide-react";
 import { AdminCard, AdminBadge, AdminEmptyState } from "@/components/admin/ui";
 import {
   PLAFOND_LECTURE_VIDEO,
@@ -17,6 +18,7 @@ import {
   type ScreeningQuestion,
 } from "@/lib/careers/screening-answers";
 import { formatDateFrShort } from "@/lib/format-date-fr";
+import { marquerFavoriAction } from "@/features/admin-job-applications/favori-actions";
 import { BoutonVideos } from "./BoutonVideos";
 
 const MASQUE = "—";
@@ -26,6 +28,7 @@ const URL_RE = /(https?:\/\/[^\s<>"]+)/g;
 export interface Etat {
   tri: string;
   sens: "asc" | "desc";
+  favoris: boolean;
   prixMin: string;
   prixMax: string;
   ville: string;
@@ -37,6 +40,7 @@ export function hrefAvec(chemin: string, etat: Etat, change: Partial<Etat>): str
   const p = new URLSearchParams();
   if (e.tri) p.set("tri", e.tri);
   if (e.sens === "desc") p.set("sens", "desc");
+  if (e.favoris) p.set("favoris", "1");
   if (e.prixMin) p.set("prixMin", e.prixMin);
   if (e.prixMax) p.set("prixMax", e.prixMax);
   if (e.ville) p.set("ville", e.ville);
@@ -117,6 +121,26 @@ interface Colonne {
   cell: (c: CandidatVideo) => React.ReactNode;
 }
 
+/** Étoile favori : un formulaire par ligne qui envoie l'état VOULU. */
+function EtoileFavori({ c }: { c: CandidatVideo }) {
+  const nom = c.nom || "ce candidat";
+  return (
+    <form action={marquerFavoriAction}>
+      <input type="hidden" name="id" value={c.id} />
+      <input type="hidden" name="favori" value={c.favori ? "0" : "1"} />
+      <button
+        type="submit"
+        aria-pressed={c.favori === true}
+        aria-label={`Favori : ${nom}`}
+        title={c.favori ? "Retirer des favoris" : "Mettre en favori"}
+        className="inline-flex min-h-11 min-w-11 items-center justify-center"
+      >
+        <Heart size={20} aria-hidden="true" fill={c.favori ? "currentColor" : "none"} />
+      </button>
+    </form>
+  );
+}
+
 export function TableauOffre({
   offre,
   base,
@@ -134,6 +158,11 @@ export function TableauOffre({
   const questionTri = offre.questions.find((q) => q.id === offre.questionTri);
 
   const colonnes: Colonne[] = [
+    {
+      key: "favori",
+      titre: <span className="sr-only">Favori</span>,
+      cell: (c) => (c.favori === null ? MASQUE : <EtoileFavori c={c} />),
+    },
     {
       key: "candidat",
       titre: "Candidat",
@@ -205,7 +234,7 @@ export function TableauOffre({
     }),
   ];
 
-  const filtre = Boolean(etat.prixMin || etat.prixMax || etat.ville || etat.etape);
+  const filtre = Boolean(etat.favoris || etat.prixMin || etat.prixMax || etat.ville || etat.etape);
   return (
     <AdminCard className="mb-[var(--space-admin-5)]">
       <div className="mb-[var(--space-admin-3)] flex flex-wrap items-baseline justify-between gap-2">
@@ -287,7 +316,7 @@ export function TableauOffre({
 }
 
 export function Filtres({ etat, chemin, ouvert }: { etat: Etat; chemin: string; ouvert: boolean }) {
-  const actif = Boolean(etat.prixMin || etat.prixMax || etat.ville || etat.etape);
+  const actif = Boolean(etat.favoris || etat.prixMin || etat.prixMax || etat.ville || etat.etape);
   return (
     <form
       method="get"
@@ -328,6 +357,10 @@ export function Filtres({ etat, chemin, ouvert }: { etat: Etat; chemin: string; 
               className="admin-input admin-input-w-md admin-input-tactile min-h-11"
             />
           </label>
+          <label className="flex min-h-11 items-center gap-2 text-sm">
+            <input type="checkbox" name="favoris" value="1" defaultChecked={etat.favoris} />
+            Favoris seulement
+          </label>
         </>
       ) : null}
       <label className="flex flex-col gap-1 text-sm">
@@ -350,7 +383,13 @@ export function Filtres({ etat, chemin, ouvert }: { etat: Etat; chemin: string; 
       </button>
       {actif ? (
         <Link
-          href={hrefAvec(chemin, etat, { prixMin: "", prixMax: "", ville: "", etape: "" })}
+          href={hrefAvec(chemin, etat, {
+            favoris: false,
+            prixMin: "",
+            prixMax: "",
+            ville: "",
+            etape: "",
+          })}
           className="admin-button-ghost admin-button-tactile"
         >
           Tout afficher
