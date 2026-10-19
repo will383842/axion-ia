@@ -25,6 +25,8 @@ import { signedDocumentPdfUrl, TTL_LECTURE_NOMINATIVE_S } from "@/lib/r2-storage
 import { enqueueEmail } from "@/server/queue/queues";
 import { normaliserObjectifsPedagogiques } from "@/server/qualiopi/formations/objectifs";
 import { retenirPiecesParSessionEtType } from "./pieces-par-formation";
+import { lireEtatDossierSession } from "@/server/qualiopi/dossier-session/interrupteur";
+import { ouverturesActives } from "./ouvertures-actives";
 import { pieceEstRemise } from "./piece-remise";
 import { besoinAdaptationDeclare } from "@/server/qualiopi/adaptation/reponse-organisme";
 import { colonneDeclarationDisponible } from "@/server/qualiopi/adaptation/colonne-declaration";
@@ -113,6 +115,8 @@ export interface AttestationResume {
   numero: string;
   pdfUrl: string | null;
   qrToken: string | null;
+  /** P11 — présent seulement quand l'ouverture passe par la route tracée. */
+  ouvertureId?: string;
 }
 
 /** Résumé d'un questionnaire visible dans l'espace stagiaire. */
@@ -161,6 +165,8 @@ export interface PieceRemise {
   /** URL re-signée à CHAQUE lecture — jamais la valeur stockée (expire en 900 s). */
   pdfUrl: string | null;
   remiseLe: Date;
+  /** P11 — présent seulement quand l'ouverture passe par la route tracée. */
+  ouvertureId?: string;
   /**
    * Formation à laquelle la pièce se rattache.
    *
@@ -512,6 +518,7 @@ export async function getEspaceStagiaire(traineeId: string): Promise<EspaceStagi
           besoinAdaptationDeclareAt: colonneDeclaration,
           attestationDocument: {
             select: {
+              id: true,
               type: true,
               numero: true,
               pdfUrl: true,
@@ -613,6 +620,11 @@ export async function getEspaceStagiaire(traineeId: string): Promise<EspaceStagi
     estTestInterne: e.estTestInterne || e.session.estTestInterne,
   }));
 
+  // Chantier QNC, P11 — les liens de l'espace passent par la route tracée seulement
+  // si l'interrupteur agit pour ce stagiaire. Éteint : aucun champ ajouté, la
+  // forme rendue est celle d'avant.
+  const ouvertureTracee = ouverturesActives(await lireEtatDossierSession(), trainee.enrollments);
+
   const attestations: AttestationResume[] = await Promise.all(
     trainee.enrollments
       .flatMap((e) => (e.attestationDocument ? [e.attestationDocument] : []))
@@ -638,6 +650,7 @@ export async function getEspaceStagiaire(traineeId: string): Promise<EspaceStagi
           numero: doc.numero,
           pdfUrl,
           qrToken: doc.qrToken ?? null,
+          ...(ouvertureTracee ? { ouvertureId: doc.id } : {}),
         };
       }),
   );
@@ -758,6 +771,7 @@ export async function getEspaceStagiaire(traineeId: string): Promise<EspaceStagi
         numero: doc.numero,
         pdfUrl,
         remiseLe: doc.createdAt,
+        ...(ouvertureTracee ? { ouvertureId: doc.id } : {}),
         sessionId,
         sessionTitre,
       };

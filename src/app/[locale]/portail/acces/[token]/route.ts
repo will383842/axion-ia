@@ -9,7 +9,8 @@
  *   2. Rate-limit par IP (10 tentatives / 60 s) — anti-brute-force. Fail-open si Redis indispo.
  *   3. Vérifie le token via `verifierToken` (timing-safe, non révoqué, non expiré).
  *   4. Pose le cookie HttpOnly via `setPortailCookie`.
- *   5. Redirige 302 vers /{locale}/portail/mon-espace SANS le token dans l'URL.
+ *   5. Trace l'ouverture (P11, derrière `qualiopi.dossier_session.actif`, fail-soft).
+ *   6. Redirige 302 vers /{locale}/portail/mon-espace SANS le token dans l'URL.
  *
  * Le cookie est posé ici (Route Handler) car Next.js n'autorise le set-cookie
  * que depuis des Route Handlers ou Server Actions — PAS depuis un Server Component.
@@ -25,6 +26,8 @@ import { setPortailCookie } from "@/server/qualiopi/portail/cookie";
 import { checkRateLimit } from "@/lib/rate-limit";
 import { SITE_URL } from "@/lib/site-url";
 import { ipDepuisEntetes } from "@/lib/client-ip";
+import { origineOuverture } from "@/features/dossier-client/documents/partage";
+import { tracerOuvertureEspace } from "@/server/qualiopi/portail/ouvertures-espace";
 
 /** Extrait l'IP réelle depuis les headers Cloudflare / proxy / fallback. */
 function clientIp(req: NextRequest): string {
@@ -80,6 +83,10 @@ export async function GET(request: NextRequest, { params }: RouteContext): Promi
 
   // Poser le cookie HttpOnly avant la redirection
   await setPortailCookie(token);
+
+  // Chantier QNC, P11 — trace de l'ouverture (éteint = aucune écriture). Fail-soft :
+  // `tracerOuvertureEspace` ne lève jamais, l'accès ne dépend pas de la trace.
+  await tracerOuvertureEspace(result.traineeId, origineOuverture(request.headers));
 
   // Redirection vers l'espace stagiaire SANS token dans l'URL
   const response = NextResponse.redirect(`${baseUrl}/${locale}/portail/mon-espace`, {
