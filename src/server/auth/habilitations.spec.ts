@@ -90,7 +90,7 @@ describe("matrice d'habilitation — invariants de structure", () => {
     expect(Object.keys(MOTIF_REFUS).sort()).toEqual(Object.keys(HABILITATIONS).sort());
   });
 
-  it("les neuf actes engageants attendus sont présents — un retrait doit rougir", () => {
+  it("les dix actes engageants attendus sont présents — un retrait doit rougir", () => {
     // ⚠️ Le titre disait « huit » alors que la liste en portait sept, depuis
     // l'ajout de `revoquer_signature`. Il en porte huit pour de bon depuis
     // l'ajout de `remunerer_formateur` (`D3`, 2026-09-05), neuf depuis
@@ -109,6 +109,7 @@ describe("matrice d'habilitation — invariants de structure", () => {
       "deposer_demande_financeur",
       "facturer",
       "habiliter_formateur",
+      "piloter_interrupteurs",
       "remunerer_formateur",
       "revoquer_signature",
       "rouvrir_dossier",
