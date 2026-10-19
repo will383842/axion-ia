@@ -1388,7 +1388,7 @@ function pageTarifs(a: Actifs): string {
         <div class="fin-c"><b>OPCO</b><span>dossier de<br>financement</span></div>
       </div>
       <div class="fin-t">
-        <b>Organisme de formation déclaré · NDA 84381100438</b>
+        <b>Organisme de formation déclaré</b>
         <p>Nos formations sont des <b>actions de formation</b>. <b>Dossier de financement monté par nos soins lorsque l'entreprise y est éligible.</b></p>
       </div>
       <div class="fin-q"><div class="nda-carte"><span>Organisme de formation déclaré</span><b>NDA<br>84381100438</b></div></div>
