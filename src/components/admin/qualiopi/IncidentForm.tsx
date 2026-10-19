@@ -12,6 +12,17 @@ import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { AdminBlocRepliable } from "@/components/admin/ui/AdminBlocRepliable";
 import type { creerIncidentAction } from "@/server/actions/qualiopi/incidents";
+import {
+  DECLARANTS_INCIDENT,
+  LIBELLE_DECLARANT,
+  LIBELLE_NATURE,
+  LIBELLE_ORIGINE,
+  NATURES_INCIDENT,
+  ORIGINES_INCIDENT,
+  type DeclarantIncident,
+  type NatureIncident,
+  type OrigineIncident,
+} from "@/server/qualiopi/registres/incident-complement";
 
 type IncidentType = "pedagogique" | "administratif" | "technique" | "autre";
 type IncidentGravite = "mineur" | "majeur" | "critique";
@@ -96,6 +107,11 @@ export function IncidentForm({ creerAction, sessions, intervenants = [] }: Incid
   const [sessionId, setSessionId] = useState("");
   const [dateIncident, setDateIncident] = useState(() => new Date().toISOString().slice(0, 10));
   const [actionCorrective, setActionCorrective] = useState("");
+  // L09 — la qualification (ind. 31) : aléa, dysfonctionnement ou difficulté ;
+  // qui l'a signalé ; par où il est arrivé.
+  const [nature, setNature] = useState<NatureIncident>("alea");
+  const [declarant, setDeclarant] = useState<DeclarantIncident>("organisme");
+  const [origine, setOrigine] = useState<OrigineIncident>("console");
   // Encodé « Trainer:<id> » ou « SousTraitant:<id> » pour tenir les deux natures
   // dans un seul <select>. Chaîne vide = incident ne visant personne.
   const [intervenant, setIntervenant] = useState("");
@@ -120,6 +136,9 @@ export function IncidentForm({ creerAction, sessions, intervenants = [] }: Incid
         gravite,
         statut,
         titre,
+        nature,
+        declarant,
+        origine,
         dateIncident: new Date(dateIncident),
         ...(description.trim() ? { description } : {}),
         ...(sessionId ? { sessionId } : {}),
@@ -173,6 +192,62 @@ export function IncidentForm({ creerAction, sessions, intervenants = [] }: Incid
               {(Object.keys(TYPE_LABELS) as IncidentType[]).map((t) => (
                 <option key={t} value={t}>
                   {TYPE_LABELS[t]}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          {/* Nature, déclarant, origine (L09) */}
+          <div className={fieldCls}>
+            <label htmlFor="incidentform-nature" className={labelCls}>
+              Nature
+            </label>
+            <select
+              id="incidentform-nature"
+              value={nature}
+              onChange={(e) => setNature(e.target.value as NatureIncident)}
+              disabled={isPending}
+              className={inputCls}
+            >
+              {NATURES_INCIDENT.map((n) => (
+                <option key={n} value={n}>
+                  {LIBELLE_NATURE[n]}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div className={fieldCls}>
+            <label htmlFor="incidentform-declarant" className={labelCls}>
+              Signalé par
+            </label>
+            <select
+              id="incidentform-declarant"
+              value={declarant}
+              onChange={(e) => setDeclarant(e.target.value as DeclarantIncident)}
+              disabled={isPending}
+              className={inputCls}
+            >
+              {DECLARANTS_INCIDENT.map((d) => (
+                <option key={d} value={d}>
+                  {LIBELLE_DECLARANT[d]}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div className={fieldCls}>
+            <label htmlFor="incidentform-origine" className={labelCls}>
+              Arrivé par
+            </label>
+            <select
+              id="incidentform-origine"
+              value={origine}
+              onChange={(e) => setOrigine(e.target.value as OrigineIncident)}
+              disabled={isPending}
+              className={inputCls}
+            >
+              {ORIGINES_INCIDENT.map((o) => (
+                <option key={o} value={o}>
+                  {LIBELLE_ORIGINE[o]}
                 </option>
               ))}
             </select>

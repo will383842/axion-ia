@@ -103,6 +103,8 @@ export interface FormationResume {
   dateDebut: Date;
   dateFin: Date;
   statut: EnrollmentStatut;
+  /** Inscription (ou session) du banc d'essai — décide si le lien de dépôt d'une réclamation s'affiche en mode « essai ». */
+  estTestInterne?: boolean;
 }
 
 /** Résumé d'une attestation/certificat visible dans l'espace stagiaire. */
@@ -503,6 +505,7 @@ export async function getEspaceStagiaire(traineeId: string): Promise<EspaceStagi
           id: true,
           adaptationsRealisees: true,
           statut: true,
+          estTestInterne: true,
           // Ind. 10, troisième source : un aménagement déclaré sans handicap
           // depuis « mon compte ». C'est ce qui empêche l'écran de RE-proposer
           // le formulaire à quelqu'un qui vient de déclarer.
@@ -533,6 +536,7 @@ export async function getEspaceStagiaire(traineeId: string): Promise<EspaceStagi
           session: {
             select: {
               id: true,
+              estTestInterne: true,
               titreSession: true,
               dateDebut: true,
               dateFin: true,
@@ -606,6 +610,7 @@ export async function getEspaceStagiaire(traineeId: string): Promise<EspaceStagi
     dateDebut: e.session.dateDebut,
     dateFin: e.session.dateFin,
     statut: e.statut,
+    estTestInterne: e.estTestInterne || e.session.estTestInterne,
   }));
 
   const attestations: AttestationResume[] = await Promise.all(

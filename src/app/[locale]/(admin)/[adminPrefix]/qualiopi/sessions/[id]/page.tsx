@@ -69,6 +69,7 @@ import { lireEtatSignatureReleveConsole } from "@/server/qualiopi/documents/sign
 import { contresignerLettreMissionAction } from "@/server/actions/qualiopi/lettre-mission-signature";
 import { lireEtatSignatureLettreMissionConsole } from "@/server/qualiopi/documents/signature/lettre-mission-queries";
 import { QuestionnairesSection } from "@/components/admin/qualiopi/QuestionnairesSection";
+import { ReclamationsIncidentsSession } from "@/components/admin/qualiopi/ReclamationsIncidentsSession";
 import { envoyerQuestionnaireAction } from "@/server/actions/qualiopi/questionnaires";
 import { lirePositionnement } from "@/server/qualiopi/positionnement/lecture-positionnement";
 import { lireReponsesDetailleesSession } from "@/server/qualiopi/pedagogie/reponses-detaillees-session";
@@ -1480,6 +1481,9 @@ export default async function SessionHubPage({ params, searchParams }: PageProps
             envoyerAction={envoyerQuestionnaireAction}
           />
         </section>
+        {/* Chantier QNC, L09 — réclamations (par l'inscription) et incidents de
+            la session. Ne rend rien tant que l'interrupteur est éteint. */}
+        <ReclamationsIncidentsSession sessionId={id} locale={locale} />
       </>
     ),
     // ── Clôture du dossier (onglet « Clôturée ») ─────────────────────────

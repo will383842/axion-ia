@@ -643,14 +643,8 @@ export const ECRITURES_SESSION: ReadonlyArray<EcritureSession> = [
     action: "updateIncidentAction",
     fichier: "incidents.ts",
     decision: O,
-    raison: "Le traitement d'un incident se poursuit après la session.",
-  },
-  {
-    action: "supprimerIncidentAction",
-    fichier: "incidents.ts",
-    decision: V,
-    raison: "Supprimer l'incident d'une session close effacerait une trace du dossier.",
-    condition: "seulement si l'incident est rattaché à une session",
+    raison:
+      "Le traitement d'un incident se poursuit après la session ; il complète ou décide, jamais ne réécrit (L09).",
   },
   {
     action: "creerReclamationAction",
@@ -669,6 +663,19 @@ export const ECRITURES_SESSION: ReadonlyArray<EcritureSession> = [
     fichier: "reclamations.ts",
     decision: O,
     raison: "Suivi de la réclamation.",
+  },
+  {
+    action: "ajouterEtapeReclamationAction",
+    fichier: "reclamations.ts",
+    decision: O,
+    raison:
+      "Le traitement d'une réclamation se poursuit après la session (ind. 31) ; une étape s'ajoute.",
+  },
+  {
+    action: "ajouterNoteIncidentAction",
+    fichier: "incidents.ts",
+    decision: O,
+    raison: "Une note de suivi d'incident ajoute de la traçabilité, sans rien réécrire.",
   },
 ];
 

@@ -125,6 +125,10 @@ vi.mock("@/server/qualiopi/trainers/documents", () => ({
 vi.mock("@/server/qualiopi/formateurs-independants/vigilance-seuil-lecture", () => ({
   lireCumulsHonorairesHtCents: vi.fn(),
 }));
+const mockInterrupteurReclamations = vi.hoisted(() => vi.fn(async () => "eteint" as string));
+vi.mock("@/server/qualiopi/reclamations/interrupteur", () => ({
+  lireInterrupteurReclamations: mockInterrupteurReclamations,
+}));
 vi.mock("@/server/qualiopi/formateurs-independants/interrupteurs-etat", () => ({
   lireEtatsInterrupteurs: vi.fn(),
 }));
@@ -506,6 +510,28 @@ describe("evaluerAlertes — reclamation_sans_reponse_j15", () => {
     expect(recs[0]?.niveau).toBe("critique");
     expect(recs[0]?.cibleType).toBe("Reclamation");
     expect(recs[0]?.cibleId).toBe("rec-001");
+  });
+
+  it("interrupteur éteint : les réclamations qui ont des étapes retombent sur le J+15", async () => {
+    mockInterrupteurReclamations.mockResolvedValue("eteint");
+    await evaluerAlertes();
+    const where = mp.reclamation.findMany.mock.calls[0]?.[0]?.where;
+    expect(where).not.toHaveProperty("etapes");
+  });
+
+  it("interrupteur allumé : le J+15 laisse le cycle daté à ses échéances", async () => {
+    mockInterrupteurReclamations.mockResolvedValue("actif");
+    await evaluerAlertes();
+    const where = mp.reclamation.findMany.mock.calls[0]?.[0]?.where;
+    expect(where).toHaveProperty("etapes", { none: {} });
+    mockInterrupteurReclamations.mockResolvedValue("eteint");
+  });
+
+  it("lecture de l'interrupteur en erreur : traité comme éteint", async () => {
+    mockInterrupteurReclamations.mockRejectedValueOnce(new Error("DB"));
+    await evaluerAlertes();
+    const where = mp.reclamation.findMany.mock.calls[0]?.[0]?.where;
+    expect(where).not.toHaveProperty("etapes");
   });
 
   it("ne crée PAS d'alerte si aucune réclamation en retard", async () => {

@@ -183,6 +183,9 @@ const EXCLUDED_FROM_INDEX: ReadonlyArray<PathnameKey> = [
   // (incohérence Search Console "noindexed URL in sitemap"). Comme la version
   // EN `/my-data/export` partage le même endpoint, on exclut la clé canonique.
   "/mes-donnees/export",
+  // Lot L09 — `/reclamations/deposer` renvoie un 404 tant que l'interrupteur
+  // `qualiopi.reclamations.actif` est éteint, et porte `noindex` une fois allumé.
+  "/reclamations/deposer",
   "/confirmation",
   // GEO-130 (audit GEO/AEO 2026-08-14) — `/demande-devis/confirmation` porte
   // `robots: { index: false }` (cf. sa `generateMetadata`) et figurait pourtant

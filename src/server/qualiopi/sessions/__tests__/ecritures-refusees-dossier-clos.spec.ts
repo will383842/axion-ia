@@ -87,7 +87,6 @@ const CRENEAU = "00000000-0000-4000-8000-000000000004";
 const TRAINER = "00000000-0000-4000-8000-000000000005";
 const SIGNATURE = "00000000-0000-4000-8000-000000000006";
 const QUESTIONNAIRE = "00000000-0000-4000-8000-000000000007";
-const INCIDENT = "00000000-0000-4000-8000-000000000008";
 const IMPORT = "00000000-0000-4000-8000-000000000009";
 const ADMIN = "00000000-0000-4000-8000-00000000000a";
 
@@ -552,12 +551,6 @@ const APPELS: Record<string, { appel: Appel; prepare?: () => void }> = {
     appel: async () =>
       (await import("@/server/actions/qualiopi/kit-session")).validerSortiesAction({
         sessionId: SESSION,
-      }),
-  },
-  supprimerIncidentAction: {
-    appel: async () =>
-      (await import("@/server/actions/qualiopi/incidents")).supprimerIncidentAction({
-        id: INCIDENT,
       }),
   },
 };

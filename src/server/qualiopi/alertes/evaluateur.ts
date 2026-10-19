@@ -36,6 +36,7 @@ import {
   sansAucuneTraceDePresence,
 } from "@/server/qualiopi/presence/trace-cloture";
 import { compterEnAttente } from "@/server/email/outbox-service";
+import { lireInterrupteurReclamations } from "@/server/qualiopi/reclamations/interrupteur";
 import { getQualiopiConfig } from "@/server/qualiopi/config/site-settings";
 import { getOrganismeIdentite } from "@/server/qualiopi/documents/organisme";
 import { isQualiopiCertificationObtenue } from "@/server/qualiopi/config/flag";
@@ -122,6 +123,7 @@ import {
 import { factureVivante } from "@/server/qualiopi/financements/facture-vivante";
 import type { AlerteNiveau } from "../../../../prisma/generated/client";
 import { regleAdaptationReponseNonConsignee } from "./regle-adaptation-reponse";
+import { regleEcheancesReclamations } from "./regle-echeances-reclamations";
 import {
   ATTENTE_JOURS,
   MARGE_AVANT_SESSION_JOURS,
@@ -430,11 +432,17 @@ async function regleReclamationsSansReponse(now: Date): Promise<AlerteCandidate[
   const joursCfg = await getQualiopiConfig("seuil_reclamation_jours").catch(() => 15);
   const jours = typeof joursCfg === "number" && joursCfg > 0 ? joursCfg : 15;
   const seuil = daysAgo(jours, now);
+  // Les réclamations du cycle daté ont leurs propres échéances (jours ouvrés),
+  // portées par `regle-echeances-reclamations` — mais seulement interrupteur
+  // allumé : éteint, cette règle se tait, et une réclamation qui a déjà une étape
+  // (interrupteur rallumé puis éteint) retombe ici. Une lecture en erreur vaut « éteint ».
+  const interrupteur = await lireInterrupteurReclamations().catch(() => "eteint" as const);
   const reclamations = await prisma.reclamation.findMany({
     where: {
       statut: { in: ["nouvelle", "en_cours"] },
       dateReception: { lte: seuil },
       dateReponse: null,
+      ...(interrupteur !== "eteint" ? { etapes: { none: {} } } : {}),
     },
     select: { id: true, numero: true, reclamantNom: true, dateReception: true },
   });
@@ -5241,6 +5249,8 @@ const REGLES: Array<{ nom: string; fn: RegleFn }> = [
   { nom: "catalogue_certifiant_incoherent", fn: regleCatalogueCertifiantIncoherent },
   { nom: "offres_site_non_verifiees", fn: regleOffresNonVerifiees },
   { nom: "reclamations_sans_reponse", fn: regleReclamationsSansReponse },
+  // Chantier QNC, L09 — échéances en jours ouvrés du cycle daté (interrupteur).
+  { nom: "reclamations_echeances", fn: regleEcheancesReclamations },
   { nom: "emargement_manquant", fn: regleEmargementManquant },
   { nom: "session_sans_formateur", fn: regleSessionSansFormateur },
   { nom: "kit_sorties_non_pretes", fn: regleSortiesKitNonPretes },

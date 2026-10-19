@@ -2,9 +2,10 @@
  * Tests — registres/incidents-service.ts (LOT 4).
  *
  * Stratégie : mock @/lib/prisma.
- * Vérifie : creerIncident (resoluAt si statut resolu), updateIncident
- * (resoluAt posé/effacé selon statut), supprimerIncident, getIncident,
- * listIncidents (filtres + include session), stub-aware.
+ * Vérifie : creerIncident (resoluAt si statut resolu), completerIncident
+ * (note signée écrite dans la même transaction, resoluAt posé/effacé selon
+ * statut — L09), getIncident, listIncidents (filtres + include session et
+ * notes), stub-aware.
  */
 
 import { describe, it, expect, vi, beforeEach } from "vitest";
@@ -13,26 +14,25 @@ import { describe, it, expect, vi, beforeEach } from "vitest";
 // Mocks
 // ─────────────────────────────────────────────────────────────────────────────
 
-vi.mock("@/lib/prisma", () => ({
-  prisma: {
-    incident: {
-      create: vi.fn(),
-      update: vi.fn(),
-      delete: vi.fn(),
-      findUnique: vi.fn(),
-      findMany: vi.fn(),
+vi.mock("@/lib/prisma", () => {
+  const incident = {
+    create: vi.fn(),
+    update: vi.fn(),
+    findUnique: vi.fn(),
+    findMany: vi.fn(),
+  };
+  const incidentNote = { create: vi.fn() };
+  const client = { incident, incidentNote, $executeRaw: vi.fn(async () => 0) };
+  return {
+    prisma: {
+      ...client,
+      $transaction: vi.fn(async (fn: (tx: typeof client) => Promise<unknown>) => fn(client)),
     },
-  },
-}));
+  };
+});
 
 import { prisma } from "@/lib/prisma";
-import {
-  creerIncident,
-  updateIncident,
-  supprimerIncident,
-  getIncident,
-  listIncidents,
-} from "./incidents-service";
+import { creerIncident, completerIncident, getIncident, listIncidents } from "./incidents-service";
 
 type MockFn = ReturnType<typeof vi.fn>;
 
@@ -40,10 +40,25 @@ const mockPrisma = prisma as unknown as {
   incident: {
     create: MockFn;
     update: MockFn;
-    delete: MockFn;
     findUnique: MockFn;
     findMany: MockFn;
   };
+  incidentNote: { create: MockFn };
+};
+
+const AUTEUR = { id: "admin-uuid", nom: "Will Exemple" };
+
+const ACTUEL = {
+  id: "550e8400-e29b-41d4-a716-446655440042",
+  statut: "ouvert",
+  nature: null,
+  declarant: null,
+  origine: null,
+  sessionId: null,
+  trainerId: null,
+  sousTraitantId: null,
+  faitIntervenant: null,
+  actionCorrective: "",
 };
 
 const INCIDENT_UUID = "550e8400-e29b-41d4-a716-446655440042";
@@ -100,18 +115,25 @@ describe("creerIncident", () => {
 });
 
 // ─────────────────────────────────────────────────────────────────────────────
-// updateIncident
+// completerIncident
 // ─────────────────────────────────────────────────────────────────────────────
 
-describe("updateIncident", () => {
+describe("completerIncident", () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    mockPrisma.incident.findUnique.mockResolvedValue(ACTUEL);
     mockPrisma.incident.update.mockResolvedValue({ id: INCIDENT_UUID });
+    mockPrisma.incidentNote.create.mockResolvedValue({ id: "note" });
   });
 
-  it("statut → resolu : pose resoluAt", async () => {
-    await updateIncident(INCIDENT_UUID, { statut: "resolu" });
+  it("statut → resolu : pose resoluAt ET écrit la note signée", async () => {
+    const r = await completerIncident(
+      INCIDENT_UUID,
+      { statut: "resolu", motif: "Connexion doublée et testée" },
+      AUTEUR,
+    );
 
+    expect(r.ok).toBe(true);
     const arg = mockPrisma.incident.update.mock.calls[0]?.[0] as {
       where: { id: string };
       data: Record<string, unknown>;
@@ -119,44 +141,41 @@ describe("updateIncident", () => {
     expect(arg.where.id).toBe(INCIDENT_UUID);
     expect(arg.data["statut"]).toBe("resolu");
     expect(arg.data["resoluAt"]).toBeInstanceOf(Date);
-  });
-
-  it("statut → en_cours : remet resoluAt à null", async () => {
-    await updateIncident(INCIDENT_UUID, { statut: "en_cours" });
-
-    const arg = mockPrisma.incident.update.mock.calls[0]?.[0] as {
+    const note = mockPrisma.incidentNote.create.mock.calls[0]?.[0] as {
       data: Record<string, unknown>;
     };
-    expect(arg.data["statut"]).toBe("en_cours");
-    expect(arg.data["resoluAt"]).toBeNull();
+    expect(note.data).toMatchObject({
+      incidentId: INCIDENT_UUID,
+      auteurId: "admin-uuid",
+      auteurNom: "Will Exemple",
+    });
+    expect(String(note.data["texte"])).toMatch(/^Décision : statut « Ouvert » → « Résolu »/);
   });
 
-  it("ne touche pas resoluAt si le statut n'est pas fourni", async () => {
-    await updateIncident(INCIDENT_UUID, { actionCorrective: "Doubler la connexion" });
+  it("🔴 refuse une réécriture : ni update ni note", async () => {
+    mockPrisma.incident.findUnique.mockResolvedValue({ ...ACTUEL, actionCorrective: "Déjà" });
+    const r = await completerIncident(INCIDENT_UUID, { actionCorrective: "Autre" }, AUTEUR);
 
-    const arg = mockPrisma.incident.update.mock.calls[0]?.[0] as {
-      data: Record<string, unknown>;
-    };
-    expect(arg.data["actionCorrective"]).toBe("Doubler la connexion");
-    expect("resoluAt" in arg.data).toBe(false);
-    expect("statut" in arg.data).toBe(false);
+    expect(r.ok).toBe(false);
+    expect(mockPrisma.incident.update).not.toHaveBeenCalled();
+    expect(mockPrisma.incidentNote.create).not.toHaveBeenCalled();
+  });
+
+  it("incident introuvable : refus lisible", async () => {
+    mockPrisma.incident.findUnique.mockResolvedValue(null);
+    const r = await completerIncident(INCIDENT_UUID, { nature: "alea" }, AUTEUR);
+    expect(r).toEqual({ ok: false, erreur: "Incident introuvable" });
   });
 });
 
 // ─────────────────────────────────────────────────────────────────────────────
-// supprimerIncident / getIncident
+// getIncident
 // ─────────────────────────────────────────────────────────────────────────────
 
-describe("supprimerIncident / getIncident", () => {
+describe("getIncident", () => {
   beforeEach(() => {
     vi.clearAllMocks();
-    mockPrisma.incident.delete.mockResolvedValue({ id: INCIDENT_UUID });
     mockPrisma.incident.findUnique.mockResolvedValue({ id: INCIDENT_UUID });
-  });
-
-  it("supprimerIncident délègue à prisma.incident.delete", async () => {
-    await supprimerIncident(INCIDENT_UUID);
-    expect(mockPrisma.incident.delete).toHaveBeenCalledWith({ where: { id: INCIDENT_UUID } });
   });
 
   it("getIncident retourne null en mode stub.invalid", async () => {

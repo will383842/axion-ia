@@ -33,6 +33,10 @@ export type EmailJobName =
   // juste après, ce qui rendait l'omission irrattrapable.
   | "rgpd-demande-recue"
   | "rgpd-effacement-confirme"
+  // Chantier QNC, L09 — réclamations (ind. 31) : l'accusé part seul à
+  // l'instant du dépôt ; la réponse signée ne part qu'après validation.
+  | "reclamation-accuse"
+  | "reclamation-reponse"
   // Accusés commerciaux ajoutés le 2026-08-13 : ces trois canaux ne
   // répondaient RIEN à l'expéditeur. Gabarits dédiés et non
   // `contact-confirmed`, qui sert déjà à huit flux différents.

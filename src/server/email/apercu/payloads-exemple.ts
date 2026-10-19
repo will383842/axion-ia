@@ -208,6 +208,13 @@ export const PAYLOAD_EXEMPLE: Readonly<Record<string, unknown>> = {
   unsubscribeToken: "jeton-de-demonstration",
   version: "v2",
   ville: "Grenoble",
+  // Chantier QNC, L09 — réclamations (accusé et réponse signée).
+  recueLe: "16 octobre 2026",
+  reponseAvant: "6 novembre 2026",
+  reponse:
+    "Bonjour, voici la réponse d'exemple utilisée pour l'aperçu de ce gabarit. La salle est désormais confirmée par écrit 48 h avant chaque session.",
+  signataireQualite: "Responsable qualité",
+  organisme: "Axion-IA SAS",
 } as const;
 
 /**

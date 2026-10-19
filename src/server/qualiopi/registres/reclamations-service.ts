@@ -38,6 +38,17 @@ export interface CreerReclamationInput {
   /** Réclamation rattachée à un parcours coaching 1-to-1 (off.31). */
   coachingSessionId?: string;
   traiteeParId?: string;
+  /**
+   * Chantier QNC, L09 — étapes posées DANS la même écriture que la
+   * réclamation (création imbriquée, donc atomique) : une réclamation du
+   * nouveau cycle ne peut pas exister sans son étape de réception.
+   */
+  etapesInitiales?: ReadonlyArray<{
+    etape: "reception";
+    contenu: string;
+    auteurId: string | null;
+    auteurNom: string;
+  }>;
 }
 
 export interface RepondreReclamationInput {
@@ -124,6 +135,9 @@ export async function creerReclamation(input: CreerReclamationInput): Promise<Re
             ? { coachingSessionId: input.coachingSessionId }
             : {}),
           ...(input.traiteeParId !== undefined ? { traiteeParId: input.traiteeParId } : {}),
+          ...(input.etapesInitiales !== undefined && input.etapesInitiales.length > 0
+            ? { etapes: { create: input.etapesInitiales.map((e) => ({ ...e })) } }
+            : {}),
         },
       });
     } catch (err: unknown) {

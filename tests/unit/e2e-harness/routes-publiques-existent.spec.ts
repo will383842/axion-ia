@@ -94,6 +94,10 @@ const HORS_AUDIT = [
   "/appel/confirme",
   "/appel/annuler",
   "/appel/reporter",
+  // Chantier QNC, L09 — le dépôt en ligne d'une réclamation rend un 404 tant
+  // que l'interrupteur `qualiopi.reclamations.actif` est éteint (défaut) :
+  // l'auditer sur une base vierge mesurerait le 404, pas la page.
+  "/reclamations/deposer",
   // Vidéos du studio (lots W2-W4, ADR 0070) : toute la famille répond 404 tant que
   // l'interrupteur est éteint ou qu'aucune vidéo n'est publiée (règle « 0 vidéo = rien »).
   // L'audit E2E exige un 200 sur chaque route de la liste : y inscrire `/fr/videos` ferait

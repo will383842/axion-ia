@@ -21,6 +21,8 @@ import {
   newsletterConfirmOptinSubject,
 } from "./newsletter-confirm-optin";
 import { GuideIaEnvoiEmail, guideIaEnvoiSubject } from "./guide-ia-envoi";
+import { ReclamationAccuseEmail, reclamationAccuseSubject } from "./reclamation-accuse";
+import { ReclamationReponseEmail, reclamationReponseSubject } from "./reclamation-reponse";
 import { ContactConfirmedEmail, contactConfirmedSubject } from "./contact-confirmed";
 import { RoiReportEmail, roiReportSubject } from "./roi-report";
 import { GdprExportLinkEmail, gdprExportLinkSubject } from "./gdpr-export-link";
@@ -335,6 +337,14 @@ const TEMPLATES: TemplateMap = {
   "avis-recu": {
     subject: avisRecuSubject,
     component: AvisRecuEmail,
+  },
+  "reclamation-accuse": {
+    subject: reclamationAccuseSubject,
+    component: ReclamationAccuseEmail,
+  },
+  "reclamation-reponse": {
+    subject: reclamationReponseSubject,
+    component: ReclamationReponseEmail,
   },
   "quote-request-received": {
     subject: quoteRequestReceivedSubject,
