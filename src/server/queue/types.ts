@@ -115,6 +115,10 @@ export type EmailJobName =
   // l'écran, sans jamais rien envoyer. La chaîne probante des indicateurs 9 et
   // 11 reposait sur un envoi que personne n'avait écrit.
   | "qualiopi-emargement-lien"
+  // QNC NC6 — confirmation de présence (stagiaire, avec relance) et information
+  // de l'entreprise (P-12, étapes 3 et 4).
+  | "qualiopi-presence-confirmation"
+  | "qualiopi-presence-entreprise"
   | "qualiopi-attestation-disponible"
   | "qualiopi-relance-impayee"
   | "qualiopi-portail-acces"

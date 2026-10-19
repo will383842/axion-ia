@@ -154,7 +154,11 @@ describe("le jeu de données d'exemple couvre tous les gabarits", () => {
     // (liste demandée à l'entreprise), `qualiopi-adaptation-stagiaire` et
     // `qualiopi-adaptation-formateur` (aménagements), champs tous facultatifs ; et L09 —
     // `reclamation-accuse` et `reclamation-reponse`, champs déclarés dans `PAYLOAD_EXEMPLE`.
-    expect(tous.length).toBe(76);
+    // 🔴 2026-10-19 — RELEVÉ À 78 : chantier QNC, NC6 (lot présence 1/3) —
+    // `qualiopi-presence-confirmation` (avec sa relance, UN fichier) et
+    // `qualiopi-presence-entreprise`. Champs tous facultatifs ; `lienPresence`
+    // a sa valeur d'exemple.
+    expect(tous.length).toBe(78);
   });
 
   it.each(tous.map((g) => g.nom))("%s : tous ses champs requis ont une valeur d'exemple", (nom) => {

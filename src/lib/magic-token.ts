@@ -34,7 +34,8 @@ export type MagicScope =
   | "ressources_login"
   | "formateur_mission"
   | "emargement"
-  | "document_signature";
+  | "document_signature"
+  | "presence_confirmation";
 
 /** TTL par scope, en millisecondes. */
 const TTL_MS: Record<MagicScope, number> = {
@@ -65,6 +66,10 @@ const TTL_MS: Record<MagicScope, number> = {
   // 90 j n'existe que pour qu'un appel oubliant `ttlMs` ne crée pas un lien
   // éternel sur un engagement contractuel.
   document_signature: 90 * 24 * 60 * 60 * 1000,
+  // Confirmation de présence avant la formation (QNC NC6). Plafond de 30 j ; la
+  // vraie fenêtre est « jusqu'au début de la première demi-journée », passée en
+  // `ttlMs`. Le jeton désigne UNE inscription (`Enrollment.id`).
+  presence_confirmation: 30 * 24 * 60 * 60 * 1000,
 };
 
 interface MagicPayload {

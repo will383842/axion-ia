@@ -168,6 +168,10 @@ describe("le catalogue décrit le code réel", () => {
       "payment-failed",
       "payment-link",
       "payment-receipt",
+      // Lot présence 1/3 (NC6) : posés, inertes ; l'envoi arrive au lot 2/3, qui
+      // les retire de cette liste en même temps qu'il pose `source`.
+      "qualiopi-presence-confirmation",
+      "qualiopi-presence-entreprise",
     ]);
   });
 });
