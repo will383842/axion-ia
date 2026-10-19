@@ -48,7 +48,10 @@ import { formatAmount, getFormationPrice } from "@/content/pricing";
 import type { FormationCategorie, FormationDuree } from "@/content/pricing";
 
 const RACINE = process.cwd();
-const SORTIE = join(RACINE, "public", "imprimes");
+// Sortie redirigeable : `DEPLIANT_SORTIE=docs/pdf-hors-ligne-sans-qualiopi/imprimes` écrit hors de public/.
+const SORTIE = process.env.DEPLIANT_SORTIE
+  ? join(RACINE, process.env.DEPLIANT_SORTIE)
+  : join(RACINE, "public", "imprimes");
 
 // ────────────────────────────────────────────────────────────────────────────
 // CIBLES DES QR
@@ -93,9 +96,7 @@ const DEBORDS = [
   { debord: 3, nom: "EXAPRINT" },
 ] as const;
 
-const QUALIOPI_MENTION =
-  "La certification qualité a été délivrée au titre de la catégorie d'actions suivante : " +
-  "ACTIONS DE FORMATION.";
+const NDA_MENTION = "Organisme de formation déclaré (NDA 84381100438).";
 
 // ────────────────────────────────────────────────────────────────────────────
 // PALETTE — prélevée au pixel sur le catalogue imprimé (p01/p15 du feuilletoir)
@@ -145,7 +146,7 @@ interface Region {
  * donc sa bordure n'est pas d'une couleur unique et `trim()` ne rogne RIEN
  * (mesure : 737 × 1017 rendus sur un extrait de 737 × 1024 — zéro pixel ôté).
  * Le symptôme n'était pas une erreur mais une laideur : logo réduit à un
- * timbre-poste et carte Qualiopi deux fois trop haute, toutes deux gonflées
+ * timbre-poste et carte logo deux fois trop haute, toutes deux gonflées
  * de vide. On cherche donc l'encre — un pixel opaque ET assez loin du blanc.
  */
 async function boiteEncre(buf: Buffer): Promise<Region> {
@@ -196,17 +197,10 @@ async function detourer(buf: Buffer): Promise<Buffer> {
     .toBuffer();
 }
 
-/** Découpe le lockup `public/email/axion-qualiopi-lockup.png` en ses deux moitiés. */
+/** Extrait le logo Axion-IA du lockup `public/email/axion-qualiopi-lockup.png` (seule la moitié logo est utilisée). */
 async function decouperLockup() {
   const src = join(RACINE, "public", "email", "axion-qualiopi-lockup.png");
   const { width = 1536, height = 1024 } = await sharp(src).metadata();
-
-  const qualiopi = await detourer(
-    await sharp(src)
-      .extract({ left: 0, top: 0, width: Math.round(width * 0.47), height })
-      .png()
-      .toBuffer(),
-  );
 
   const logo = await detourer(
     await sharp(src)
@@ -220,12 +214,9 @@ async function decouperLockup() {
       .toBuffer(),
   );
 
-  console.log(
-    `  détourage — qualiopi ${(await sharp(qualiopi).metadata()).width}px, ` +
-      `logo ${(await sharp(logo).metadata()).width}px`,
-  );
+  console.log(`  détourage — logo ${(await sharp(logo).metadata()).width}px`);
 
-  return { qualiopi: await png64(qualiopi), logo: await png64(logo) };
+  return { logo: await png64(logo) };
 }
 
 /**
@@ -482,7 +473,6 @@ function echapper(s: string): string {
 }
 
 interface Actifs {
-  qualiopi: string;
   logos: Array<{ nom: string; src: string }>;
   logo: string;
   photo: string;
@@ -685,11 +675,16 @@ h2.section span.compte { font-size:8pt; font-weight:700; color:${C.terracotta}; 
 }
 .couv-zero .texte h3 { font-size:11pt; font-weight:700; color:${C.blanc}; margin-bottom:1.5mm; }
 .couv-zero .texte p { font-size:8.4pt; line-height:1.42; color:rgba(255,255,255,.95); }
-.couv-qualiopi {
+.couv-nda {
   background:${C.blanc}; border-radius:3mm; padding:4mm; width:52mm;
   display:flex; align-items:center; justify-content:center;
 }
-.couv-qualiopi img { width:100%; }
+.nda-carte { text-align:center; }
+.nda-carte span {
+  display:block; font-size:6.4pt; font-weight:800; letter-spacing:.09em; text-transform:uppercase;
+  color:${C.encre}; margin-bottom:1.5mm;
+}
+.nda-carte b { display:block; font-size:14pt; line-height:1.1; color:${C.terracotta}; }
 
 .couv-offre { margin-top:6mm; display:flex; align-items:flex-end; justify-content:space-between; gap:8mm; }
 
@@ -1009,8 +1004,7 @@ h2.section span.compte { font-size:8pt; font-weight:700; color:${C.terracotta}; 
   display:block; font-size:6.8pt; font-weight:700; letter-spacing:.08em;
   color:rgba(255,255,255,.9); margin-top:1.5mm; text-transform:uppercase; line-height:1.3;
 }
-.finance .fin-q { flex-shrink:0; background:${C.blanc}; border-radius:2mm; padding:2.4mm; width:41mm; }
-.finance .fin-q img { width:100%; display:block; }
+.finance .fin-q { flex-shrink:0; background:${C.blanc}; border-radius:2mm; padding:2.4mm; width:41mm; display:flex; align-items:center; justify-content:center; }
 
 .deux { display:grid; grid-template-columns:1fr 1fr; gap:4mm; margin-bottom:4mm; }
 .carte { background:${C.blanc}; border-radius:2mm; padding:2.8mm 3.5mm; border-left:2.2px solid ${C.olive}; }
@@ -1102,19 +1096,18 @@ function pageCouverture(a: Actifs): string {
     <div class="couv-sous">21 formations + 1 séminaire · intra-entreprise, présentiel &amp; distanciel</div>
   </div>
 
-  <div class="couv-bande">Organisme de formation certifié Qualiopi — prise en charge OPCO jusqu'à 100 %</div>
+  <div class="couv-bande">Organisme de formation déclaré · NDA 84381100438</div>
 
   <div class="couv-bas">
     <div class="couv-argent">
       <div class="couv-zero">
-        <div class="chiffre"><b>0 €</b><span>RESTE À CHARGE<br>POSSIBLE</span></div>
+        <div class="chiffre"><b>OPCO</b><span>DOSSIER DE<br>FINANCEMENT</span></div>
         <div class="texte">
-          <h3>Vos formations peuvent ne rien vous coûter</h3>
-          <p>Prises en charge par votre OPCO, <b>jusqu'à 100 %</b> — vous avez déjà cotisé pour ça.
-          En subrogation, l'OPCO nous règle directement : vous n'avancez rien. Nous montons le dossier de A à Z.</p>
+          <h3>Un dossier de financement monté par nos soins</h3>
+          <p>Vous cotisez déjà à un OPCO. <b>Dossier de financement monté par nos soins lorsque l'entreprise y est éligible.</b></p>
         </div>
       </div>
-      <div class="couv-qualiopi"><img src="${a.qualiopi}" alt="Qualiopi — processus certifié"></div>
+      <div class="couv-nda"><div class="nda-carte"><span>Organisme de formation déclaré</span><b>NDA<br>84381100438</b></div></div>
     </div>
 
     <div class="couv-offre">
@@ -1246,14 +1239,14 @@ function pagePourquoi(a: Actifs): string {
         <b>L'AI Act ? Vous n'avez pas à vous en occuper.</b>
         <p>Le règlement impose d'assurer la maîtrise de l'IA chez ceux qui l'utilisent. Se former y
         répond — et produit les preuves qui vont avec : programmes, émargements, attestations. Un
-        organisme certifié Qualiopi les délivre en même temps que la formation. Vous n'avez rien
+        organisme de formation les délivre en même temps que la formation. Vous n'avez rien
         à monter.</p>
       </div>
     </div>
 
   </div>
   <div class="pied">
-    <span><strong>Prise en charge OPCO jusqu'à 100 %</strong> — sans avance de votre part · axion-ia.com/formations</span>
+    <span><strong>Dossier de financement monté par nos soins lorsque l'entreprise y est éligible</strong> · axion-ia.com/formations</span>
     <span class="folio">02 · 04</span>
   </div>
 </div>`;
@@ -1321,14 +1314,12 @@ function pageFormations(a: Actifs): string {
 
     <div class="opco">
       <div class="opco-chiffre">
-        <b>100 %</b>
-        <span>PRIS EN CHARGE<br>POSSIBLE</span>
+        <b>OPCO</b>
+        <span>DOSSIER DE<br>FINANCEMENT</span>
       </div>
       <div class="opco-txt">
-        <b>Ces prix, vous ne les paierez peut-être jamais.</b>
-        <p>Votre OPCO peut financer ces formations <b>jusqu'à 100 %</b> — vous avez déjà cotisé pour ça.
-        <b>Nous montons le dossier de A à Z</b>, vous n'avez qu'à signer. Et en subrogation, l'OPCO nous
-        règle directement : <b>vous n'avancez rien.</b></p>
+        <b>Un dossier de financement monté par nos soins.</b>
+        <p>Vous cotisez déjà à un OPCO. <b>Dossier de financement monté par nos soins lorsque l'entreprise y est éligible.</b></p>
       </div>
     </div>
   </div>
@@ -1378,7 +1369,7 @@ function pageTarifs(a: Actifs): string {
         </div>
         <div class="sm-item">
           <span class="sm-num">03</span>
-          <div><b>Hors catalogue</b><p>4 h à 3 jours, tout thème. Finançable pareil.</p></div>
+          <div><b>Hors catalogue</b><p>4 h à 3 jours, tout thème. Même dossier de financement, si éligible.</p></div>
         </div>
       </div>
       <div class="sm-qr">
@@ -1392,15 +1383,13 @@ function pageTarifs(a: Actifs): string {
 
     <div class="finance">
       <div class="fin-chiffres">
-        <div class="fin-c"><b>0 €</b><span>reste à charge<br>possible</span></div>
-        <div class="fin-c"><b>100 %</b><span>pris en charge<br>par votre OPCO</span></div>
+        <div class="fin-c"><b>OPCO</b><span>dossier de<br>financement</span></div>
       </div>
       <div class="fin-t">
-        <b>Certifié Qualiopi</b>
-        <p>Nos formations sont des <b>actions de formation</b> : votre OPCO les finance, vous avez déjà cotisé.
-        En subrogation, <b>vous n'avancez rien.</b> Dossier monté par nous, de A à Z.</p>
+        <b>Organisme de formation déclaré</b>
+        <p>Nos formations sont des <b>actions de formation</b>. <b>Dossier de financement monté par nos soins lorsque l'entreprise y est éligible.</b></p>
       </div>
-      <div class="fin-q"><img src="${a.qualiopi}" alt="Qualiopi — processus certifié"></div>
+      <div class="fin-q"><div class="nda-carte"><span>Organisme de formation déclaré</span><b>NDA<br>84381100438</b></div></div>
     </div>
 
     <div class="deux">
@@ -1440,9 +1429,9 @@ function pageTarifs(a: Actifs): string {
     <div class="contact">
       <div class="ct">
         <b>Parlons de <em>vos équipes.</em></b>
-        <p>30 minutes pour cibler les formations utiles et chiffrer l'OPCO. Devis sous 48 h.
+        <p>30 minutes pour cibler les formations utiles et préparer le dossier de financement. Devis sous 48 h.
         Sans engagement.</p>
-        <div class="coord">axion-ia.com/appel · contact@axion-ia.com<br>Grenoble · Auvergne-Rhône-Alpes</div>
+        <div class="coord">axion-ia.com/appel · contact@axion-ia.com<br>Partout en France</div>
       </div>
       <div class="cq"><img src="${a.qrAppel}" alt=""><span>Réserver<br>un appel</span></div>
     </div>
@@ -1459,7 +1448,7 @@ function pageTarifs(a: Actifs): string {
     }
 
     <div class="mentions">
-      <b>Organisme de formation certifié Qualiopi.</b> ${echapper(QUALIOPI_MENTION)}<br>
+      <b>${echapper(NDA_MENTION)}</b><br>
       ${echapper(MENTIONS)}
     </div>
   </div>
@@ -1576,8 +1565,8 @@ function documentHtml(corps: string, pageCss = ""): string {
 // RENDU
 // ────────────────────────────────────────────────────────────────────────────
 async function main() {
-  console.log("→ Découpe du lockup Qualiopi / logo…");
-  const { qualiopi, logo } = await decouperLockup();
+  console.log("→ Découpe du logo…");
+  const { logo } = await decouperLockup();
 
   console.log("→ Recadrage de la photo de couverture…");
   const photo = await photoCouverture();
@@ -1587,7 +1576,6 @@ async function main() {
 
   console.log("→ Génération des QR…");
   const a: Actifs = {
-    qualiopi,
     logos: logosClients(),
     logo,
     photo,
