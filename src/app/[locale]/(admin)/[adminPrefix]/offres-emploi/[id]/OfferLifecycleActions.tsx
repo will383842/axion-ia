@@ -82,7 +82,7 @@ export function OfferLifecycleActions({
           action={deleteJobOfferAction}
           id={id}
           label="Supprimer définitivement"
-          confirmMessage="SUPPRIMER définitivement l'offre ET toutes ses candidatures (CV inclus) ? Action irréversible."
+          confirmMessage="SUPPRIMER définitivement l'offre ? Les candidatures sont conservées, sans offre rattachée. Action irréversible."
         />
       )}
     </div>

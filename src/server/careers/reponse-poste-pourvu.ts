@@ -209,17 +209,29 @@ function exclusionFormateurFreelance(): Prisma.JobApplicationWhereInput[] {
  */
 function exclusionIntervenants(): Prisma.JobApplicationWhereInput {
   const contient = (m: string) => ({ contains: m, mode: "insensitive" as const });
+  // Garde « candidature sans offre » (comme les autres exclusions) : sous un
+  // `NOT`, une relation vide donne NULL en SQL et la candidature sortirait à jamais.
   return {
-    NOT: {
-      OR: [
-        ...MOTS_FORMATEUR.map((f) => ({ offerTitleSnap: contient(f) })),
-        {
-          offer: {
-            OR: MOTS_FORMATEUR.flatMap((f) => [{ titleFr: contient(f) }, { slug: contient(f) }]),
+    AND: [
+      ...MOTS_FORMATEUR.map((f) => ({
+        offerTitleSnap: { not: { contains: f }, mode: "insensitive" as const },
+      })),
+      {
+        OR: [
+          { offer: null },
+          {
+            NOT: {
+              offer: {
+                OR: MOTS_FORMATEUR.flatMap((f) => [
+                  { titleFr: contient(f) },
+                  { slug: contient(f) },
+                ]),
+              },
+            },
           },
-        },
-      ],
-    },
+        ],
+      },
+    ],
   };
 }
 
@@ -294,11 +306,12 @@ export async function idsBasculesAuTunnel(): Promise<string[]> {
 /** Le critère complet, tunnel compris — celui qu'utilisent le passage et l'écran. */
 export async function critereEligibleActuel(
   maintenant: Date,
+  intervenantsExclusLu?: boolean,
 ): Promise<Prisma.JobApplicationWhereInput> {
   const [idsTunnel, entree, intervenantsExclus] = await Promise.all([
     idsBasculesAuTunnel(),
     lireEtatsEntree(),
-    intervenantsExclusActuel(),
+    intervenantsExclusLu ?? intervenantsExclusActuel(),
   ]);
   return critereEligible(maintenant, idsTunnel, {
     natureOffreLue: entree.nature_offre,
@@ -333,10 +346,8 @@ export async function passerReponsePostePourvu(
   if (!(await estActive())) {
     return { actif: false, envoyees: 0, ecartees: 0, echouees: 0, restantes: 0 };
   }
-  const [where, intervenantsExclus] = await Promise.all([
-    critereEligibleActuel(maintenant),
-    intervenantsExclusActuel(),
-  ]);
+  const intervenantsExclus = await intervenantsExclusActuel();
+  const where = await critereEligibleActuel(maintenant, intervenantsExclus);
   const lot = await prisma.jobApplication.findMany({
     where,
     orderBy: { submittedAt: "asc" },

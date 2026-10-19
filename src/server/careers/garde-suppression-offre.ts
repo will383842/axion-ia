@@ -2,8 +2,9 @@
  * LOT P15 (CH4-38) — une offre qui porte des candidatures s'archive, elle ne
  * se supprime pas. Interrupteur `qualiopi.documents_organisme.actif`, lu par
  * la constante `LOT_DOCUMENTS_ORGANISME` ; seul `actif` agit (une offre ne
- * porte aucune session, donc `essai` n'agit pas). Éteint : rien n'est lu en
- * plus, la suppression se comporte comme avant.
+ * porte aucune session, donc `essai` n'agit pas). Éteint : le réglage est lu à
+ * chaque tentative (l'écran ajoute un count), mais la suppression se comporte
+ * comme avant.
  *
  * Module à part : `actions.ts` est un fichier « use server », qui ne peut
  * exporter que des actions.

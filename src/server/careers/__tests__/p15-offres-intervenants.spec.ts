@@ -161,6 +161,16 @@ describe("(b) CH4-37 — la réponse « poste pourvu » ignore les offres d'inte
     expect(j).toContain('"formatrice"');
   });
 
+  it("une candidature SANS offre reste éligible (garde { offer: null })", () => {
+    const tout = critereEligible(MAINTENANT, [], { intervenantsExclus: true }) as {
+      AND: Array<{ AND?: Array<{ OR?: unknown[] }> }>;
+    };
+    const clause = tout.AND[tout.AND.length - 1]!;
+    expect(clause.AND?.some((c) => c.OR?.some((o) => JSON.stringify(o) === '{"offer":null}'))).toBe(
+      true,
+    );
+  });
+
   it("FILET : un formateur SALARIÉ renvoyé par la base n'est jamais écrit", async () => {
     etat.valeur = "actif";
     const lot = [
