@@ -11,6 +11,7 @@ import {
   INDICATEURS_A_VOYANT,
   construireVoyants,
   etatGlobalVoyants,
+  type AutresPartiesAppreciations,
   type ContexteVoyants,
   type IndicateurAVoyant,
   type TracesVoyants,
@@ -255,5 +256,95 @@ describe("les voyants exigent une trace réelle (O13)", () => {
     it("une session annulée ne porte aucun voyant (voir session-parcours)", () => {
       expect(etatGlobalVoyants([])).toBe("sans_objet");
     });
+  });
+});
+
+describe("ind. 30 : les autres parties prenantes (NC14, derrière l'interrupteur des voyants)", () => {
+  /** Après la fin + 30 j + 7 j : l'échéance des autres parties est passée. */
+  const TARD: ContexteVoyants = { ...APRES, maintenant: D("2027-01-15T08:00:00Z") };
+  /** Après la fin + 7 j mais avant fin + 37 j. */
+  const MILIEU: ContexteVoyants = { ...APRES, maintenant: D("2026-12-01T08:00:00Z") };
+
+  const TOUT: AutresPartiesAppreciations = {
+    entreprise: { sollicitee: D("2026-11-13T10:00:00Z"), avis: null },
+    formateur: { attendus: 1, avis: D("2026-11-14T10:00:00Z") },
+    financeur: { tiers: "non", avis: null },
+  };
+  const stagiaires = {
+    stagiairesActifs: 2,
+    chaudRepondus: 2,
+    dernierRepondu: D("2026-11-13T10:00:00Z"),
+  };
+
+  const v30 = (autres: AutresPartiesAppreciations | undefined, c: ContexteVoyants) =>
+    voyant(
+      30,
+      { i30: L({ ...stagiaires, ...(autres !== undefined ? { autresParties: autres } : {}) }) },
+      c,
+    );
+
+  it("champ absent : verdicts d'avant (stagiaires complets = vert)", () => {
+    expect(v30(undefined, TARD).etat).toBe("vert");
+    expect(voyant(30, { i30: L({ ...stagiaires, chaudRepondus: 1 }) }, APRES).etat).toBe("rouge");
+  });
+
+  it("tout complet : vert, avec la trace « sans objet » datée pour un financement direct", () => {
+    const v = v30(TOUT, TARD);
+    expect(v.etat).toBe("vert");
+    expect(v.trace).toMatch(/sans objet : aucun financeur tiers déclaré/);
+    expect(v.trace).toMatch(
+      /financement direct sur toutes les inscriptions \(lu le 15\/01\/2027\)/,
+    );
+  });
+
+  it("stagiaires complets SEULS : pas vert", () => {
+    const seuls: AutresPartiesAppreciations = {
+      entreprise: { sollicitee: null, avis: null },
+      formateur: { attendus: 1, avis: null },
+      financeur: { tiers: "oui", avis: null },
+    };
+    expect(v30(seuls, TARD).etat).toBe("rouge");
+    expect(v30(seuls, TARD).etat).not.toBe("vert");
+  });
+
+  it.each([
+    [
+      "entreprise sans sollicitation ni avis",
+      { ...TOUT, entreprise: { sollicitee: null, avis: null } },
+    ],
+    ["formateur attendu sans avis", { ...TOUT, formateur: { attendus: 1, avis: null } }],
+    ["financeur tiers sans avis", { ...TOUT, financeur: { tiers: "oui", avis: null } }],
+    ["financement non renseigné", { ...TOUT, financeur: { tiers: "inconnu", avis: null } }],
+  ] as const)("%s : en attente avant l'échéance, rouge après", (_nom, autres) => {
+    expect(v30(autres, MILIEU).etat).toBe("en_attente");
+    const rouge = v30(autres, TARD);
+    expect(rouge.etat).toBe("rouge");
+    expect(rouge.manque).toBeTruthy();
+  });
+
+  it("financement non renseigné : jamais vert, le manque le dit", () => {
+    const v = v30({ ...TOUT, financeur: { tiers: "inconnu", avis: null } }, TARD);
+    expect(v.manque).toMatch(/financement non renseigné/);
+  });
+
+  it("entreprise : un avis reçu suffit sans sollicitation ; aucun formateur attendu n'exige rien", () => {
+    const v = v30(
+      {
+        entreprise: { sollicitee: null, avis: D("2026-11-20T10:00:00Z") },
+        formateur: { attendus: 0, avis: null },
+        financeur: { tiers: "oui", avis: D("2026-11-25T10:00:00Z") },
+      },
+      TARD,
+    );
+    expect(v.etat).toBe("vert");
+  });
+
+  it("stagiaires incomplets + autres complets : toujours pas vert", () => {
+    const v = voyant(
+      30,
+      { i30: L({ ...stagiaires, chaudRepondus: 1, autresParties: TOUT }) },
+      TARD,
+    );
+    expect(v.etat).toBe("rouge");
   });
 });

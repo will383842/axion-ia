@@ -17,6 +17,7 @@
  */
 
 import { prisma } from "@/lib/prisma";
+import { lireAppreciationsHorsPreuve } from "@/server/qualiopi/appreciations/hors-preuve";
 import { financementTypeEffectif } from "@/server/qualiopi/financements/inter-entreprises";
 import type { AlerteNiveau } from "../../../../prisma/generated/client";
 import type { AlerteCandidate } from "./evaluateur";
@@ -51,8 +52,10 @@ export async function regleAvisFinanceurManquant(now: Date): Promise<AlerteCandi
   );
   if (financees.length === 0) return [];
   const clients = [...new Set(financees.map((s) => s.clientId).filter((c) => c !== null))];
+  const horsPreuve = [...(await lireAppreciationsHorsPreuve())];
   const avis = await prisma.appreciation.findMany({
     where: {
+      ...(horsPreuve.length > 0 ? { id: { notIn: horsPreuve } } : {}),
       source: "financeur",
       OR: [
         { enrollmentId: { in: financees.flatMap((s) => s.enrollments.map((e) => e.id)) } },

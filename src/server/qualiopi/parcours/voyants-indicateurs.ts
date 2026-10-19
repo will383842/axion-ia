@@ -174,11 +174,39 @@ export interface TraceSousTraitance {
   readonly dernierControle: Date | null;
 }
 
+/**
+ * Ind. 30 — les AUTRES parties prenantes (NC14) : entreprise, formateur, financeur.
+ * Lues seulement quand l'interrupteur des voyants est allumé pour la session.
+ */
+export interface AutresPartiesAppreciations {
+  readonly entreprise: {
+    /** Premier envoi du questionnaire « entreprise » (trace de sollicitation). */
+    readonly sollicitee: Date | null;
+    /** Dernier avis d'entreprise reçu (questionnaire répondu ou appréciation). */
+    readonly avis: Date | null;
+  };
+  readonly formateur: {
+    /** Formateurs qui ont animé la session (même règle que l'action de saisie). */
+    readonly attendus: number;
+    readonly avis: Date | null;
+  };
+  readonly financeur: {
+    /** Un tiers finance-t-il ? `inconnu` : un type de financement n'est pas renseigné. */
+    readonly tiers: "oui" | "non" | "inconnu";
+    readonly avis: Date | null;
+  };
+}
+
 /** Ind. 30 — appréciations : le questionnaire à chaud RÉPONDU. */
 export interface TraceAppreciations {
   readonly stagiairesActifs: number;
   readonly chaudRepondus: number;
   readonly dernierRepondu: Date | null;
+  /**
+   * Absent : comportement d'avant (stagiaires seuls). Présent : les autres
+   * parties prenantes sont exigées elles aussi pour le vert.
+   */
+  readonly autresParties?: AutresPartiesAppreciations;
 }
 
 /** Ind. 31 — réclamations rattachées à la session et leurs ÉTAPES (L09). */
@@ -236,6 +264,15 @@ const MS_JOUR = 24 * 60 * 60 * 1000;
 
 /** Délai laissé après la fin de session pour les gestes d'après-séance. */
 export const DELAI_APRES_SESSION_JOURS = 7;
+
+/** Délai de l'enquête « entreprise » / de l'avis financeur après la fin de session (jours). */
+export const DELAI_AUTRES_PARTIES_JOURS = 30;
+
+/**
+ * Clé d'interrupteur du lot « voyants » (alertes ET lecture des autres parties
+ * prenantes de l'ind. 30). Déclarée ici, ré-exportée par `regle-voyants-sans-trace.ts`.
+ */
+export const LOT_VOYANTS = "voyants";
 
 const LIBELLES: Readonly<Record<IndicateurAVoyant, { libelle: string; lot: LotSource }>> = {
   4: { libelle: "Analyse du besoin (recueil temps 1)", lot: "L03" },
@@ -508,16 +545,75 @@ function p27(t: TraceSousTraitance, c: ContexteVoyants): Verdict {
 
 function p30(t: TraceAppreciations, c: ContexteVoyants): Verdict {
   if (t.stagiairesActifs === 0) return sansObjet("Aucun stagiaire actif.");
-  if (t.chaudRepondus >= t.stagiairesActifs && t.dernierRepondu !== null) {
-    return vert(
-      `${t.chaudRepondus}/${t.stagiairesActifs} questionnaires à chaud RÉPONDUS, le dernier le ${jour(t.dernierRepondu)}.`,
+  const echeanceStagiaires = new Date(c.dateFin.getTime() + DELAI_APRES_SESSION_JOURS * MS_JOUR);
+  const stagiairesComplets = t.chaudRepondus >= t.stagiairesActifs && t.dernierRepondu !== null;
+  const autres = t.autresParties;
+  if (autres === undefined) {
+    if (stagiairesComplets && t.dernierRepondu !== null) {
+      return vert(
+        `${t.chaudRepondus}/${t.stagiairesActifs} questionnaires à chaud RÉPONDUS, le dernier le ${jour(t.dernierRepondu)}.`,
+      );
+    }
+    return sansTrace(
+      echeanceStagiaires,
+      c.maintenant,
+      `${t.stagiairesActifs - t.chaudRepondus} questionnaire(s) à chaud sans réponse.`,
+      t.chaudRepondus > 0 ? `${t.chaudRepondus}/${t.stagiairesActifs} réponses.` : null,
     );
   }
+
+  // NC14 — toutes les parties prenantes, une trace chacune. Jamais de vert sur
+  // une partie dont on ne sait pas si elle existe (financement non renseigné).
+  const traces: string[] = [];
+  const manques: string[] = [];
+  if (stagiairesComplets && t.dernierRepondu !== null) {
+    traces.push(
+      `${t.chaudRepondus}/${t.stagiairesActifs} questionnaires à chaud RÉPONDUS, le dernier le ${jour(t.dernierRepondu)}`,
+    );
+  } else {
+    manques.push(`${t.stagiairesActifs - t.chaudRepondus} questionnaire(s) à chaud sans réponse`);
+  }
+  const { entreprise, formateur, financeur } = autres;
+  if (entreprise.avis !== null) {
+    traces.push(`avis de l'entreprise reçu le ${jour(entreprise.avis)}`);
+  } else if (entreprise.sollicitee !== null) {
+    traces.push(`entreprise sollicitée le ${jour(entreprise.sollicitee)}`);
+  } else {
+    manques.push("entreprise ni sollicitée ni répondue");
+  }
+  if (formateur.avis !== null) {
+    traces.push(`avis du formateur reçu le ${jour(formateur.avis)}`);
+  } else if (formateur.attendus === 0) {
+    traces.push("aucun formateur à interroger sur cette session");
+  } else {
+    manques.push("avis du formateur non recueilli");
+  }
+  if (financeur.tiers === "non") {
+    traces.push(
+      `sans objet : aucun financeur tiers déclaré, financement direct sur toutes les inscriptions (lu le ${jour(c.maintenant)})`,
+    );
+  } else if (financeur.tiers === "oui") {
+    if (financeur.avis !== null) {
+      traces.push(`avis du financeur reçu le ${jour(financeur.avis)}`);
+    } else {
+      manques.push("avis du financeur non recueilli");
+    }
+  } else {
+    manques.push("financement non renseigné : impossible de dire si un financeur doit répondre");
+  }
+
+  if (manques.length === 0) return vert(`${traces.join(" ; ")}.`);
+  // Les stagiaires restent dus à fin + 7 j ; les autres parties à fin + 30 j + 7 j.
+  const echeanceAutres = new Date(
+    c.dateFin.getTime() + (DELAI_AUTRES_PARTIES_JOURS + DELAI_APRES_SESSION_JOURS) * MS_JOUR,
+  );
+  const echeance =
+    manques.length === 1 && !stagiairesComplets ? echeanceStagiaires : echeanceAutres;
   return sansTrace(
-    new Date(c.dateFin.getTime() + DELAI_APRES_SESSION_JOURS * MS_JOUR),
+    echeance,
     c.maintenant,
-    `${t.stagiairesActifs - t.chaudRepondus} questionnaire(s) à chaud sans réponse.`,
-    t.chaudRepondus > 0 ? `${t.chaudRepondus}/${t.stagiairesActifs} réponses.` : null,
+    `${manques.join(" ; ")}.`,
+    traces.length > 0 ? `${traces.join(" ; ")}.` : null,
   );
 }
 

@@ -44,6 +44,10 @@ import {
   SESSION_REELLE,
 } from "@/server/qualiopi/essai/perimetre";
 import { prisma } from "@/lib/prisma";
+import {
+  filtreHorsPreuve,
+  lireAppreciationsHorsPreuve,
+} from "@/server/qualiopi/appreciations/hors-preuve";
 import { listerFormationsAResultatsDiffuses } from "@/server/qualiopi/indicateurs/resultats-publics-service";
 import { whereVeilleExploitee } from "./veille-exploitee";
 import { whereBesoinAdaptationDeclare } from "@/server/qualiopi/adaptation/reponse-organisme";
@@ -194,6 +198,10 @@ export async function evaluerConformite(): Promise<ConformiteResult> {
     return buildEmptyConformite();
   }
 
+  // off.30 : les appréciations d'ESSAI marquées « hors preuve » (NC14) ne
+  // comptent ni dans le décompte, ni dans la diversité, ni dans les auteurs.
+  const filtreEssais = filtreHorsPreuve(await lireAppreciationsHorsPreuve());
+
   /**
    * Les pièces qui INFORMENT sur les conditions de déroulement (off.9).
    *
@@ -336,7 +344,7 @@ export async function evaluerConformite(): Promise<ConformiteResult> {
     }),
     prisma.evaluationAcquis.count({ where: { type: "finale", enrollment: INSCRIPTION_REELLE } }),
     // off.30 : compter les appréciations multi-parties (≠ questionnaires stagiaire seul)
-    prisma.appreciation.count(),
+    prisma.appreciation.count({ ...filtreEssais }),
     prisma.reclamation.count(),
     prisma.veille.count({ where: { type: "legale" } }),
     prisma.veille.count({ where: { type: "metiers" } }),
@@ -509,7 +517,7 @@ export async function evaluerConformite(): Promise<ConformiteResult> {
     getQualiopiConfig("off29_applicable").catch(() => false),
     // ── P1 (durcissement anti-proxy — audit 2026-07-14) ──────────────────────
     // off.30 : diversité RÉELLE des sources d'appréciation (multi-parties = ≥2 sources).
-    prisma.appreciation.groupBy({ by: ["source"] }),
+    prisma.appreciation.groupBy({ by: ["source"], ...filtreEssais }),
     // off.12 : émargements RÉELLEMENT signés (Enrollment.emargementSigneAt), ≠ simple PDF.
     // 🔴 2026-08-25, cahier D1-2 — même défaut, même cause. off.12 affichait
     // « Couvert · 1 inscription avec présence constatée » sur l'émargement d'une
@@ -732,6 +740,7 @@ export async function evaluerConformite(): Promise<ConformiteResult> {
     // de dérivation plus bas : `groupBy(["source"])` comptait des qualités
     // déclarées, alors que deux qualités peuvent être la même personne.
     prisma.appreciation.findMany({
+      ...filtreEssais,
       select: {
         source: true,
         clientId: true,

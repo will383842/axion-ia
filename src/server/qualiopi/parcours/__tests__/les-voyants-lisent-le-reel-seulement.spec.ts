@@ -12,10 +12,13 @@ const h = vi.hoisted(() => ({
   journal: vi.fn(),
   veilles: vi.fn(),
   partenariats: vi.fn(),
+  sessionUnique: vi.fn(),
+  appreciations: vi.fn(),
+  siteSetting: vi.fn(),
 }));
 vi.mock("@/lib/prisma", () => ({
   prisma: {
-    trainingSession: { findMany: h.sessions },
+    trainingSession: { findMany: h.sessions, findUnique: h.sessionUnique },
     enrollment: { findMany: h.enrollments },
     remiseRetour: { findMany: vi.fn().mockResolvedValue([]) },
     activityLog: { findFirst: vi.fn().mockResolvedValue(null), findMany: h.journal },
@@ -29,6 +32,9 @@ vi.mock("@/lib/prisma", () => ({
     verificationRegistreSousTraitance: { findMany: vi.fn().mockResolvedValue([]) },
     revueDirection: { count: vi.fn().mockResolvedValue(0) },
     partenariat: { count: h.partenariats },
+    appreciation: { findMany: h.appreciations },
+    bilanFinFormation: { findMany: vi.fn().mockResolvedValue([]) },
+    siteSetting: { findUnique: h.siteSetting },
     $queryRaw: vi.fn().mockResolvedValue([{ existe: false }]),
   },
 }));
@@ -46,6 +52,17 @@ beforeEach(() => {
   h.journal.mockReset().mockResolvedValue([]);
   h.veilles.mockReset().mockResolvedValue([]);
   h.partenariats.mockReset().mockResolvedValue(0);
+  h.sessionUnique.mockReset().mockResolvedValue({
+    clientId: "c1",
+    formateurPrincipalId: "t1",
+    financementType: "direct",
+    opcoSubrogation: false,
+    opcoStatut: "non_demande",
+    sessionFormateurs: [],
+    jours: [],
+  });
+  h.appreciations.mockReset().mockResolvedValue([]);
+  h.siteSetting.mockReset().mockResolvedValue(null);
 });
 
 const SESSION = {
@@ -205,6 +222,77 @@ describe("chargerTracesVoyants", () => {
     await chargerTracesVoyants(["s1"], NOW);
     expect(h.partenariats).toHaveBeenCalledWith({
       where: { type: "reseau_handicap", actif: true },
+    });
+  });
+
+  describe("ind. 30 : les autres parties prenantes ne sont lues que derrière l'interrupteur des voyants", () => {
+    it("interrupteur éteint : « autresParties » absent, comportement d'avant", async () => {
+      h.sessions.mockResolvedValue([SESSION]);
+      const t = (await chargerTracesVoyants(["s1"], NOW)).get("s1")!;
+      expect(t.i30).toMatchObject({ lecture: "lue" });
+      expect(t.i30).not.toHaveProperty("autresParties");
+      // Aucune lecture des autres parties (financement, formateurs) : seule la
+      // lecture d'essai de l'interrupteur interroge la session.
+      for (const [arg] of h.sessionUnique.mock.calls) {
+        expect(arg.select).not.toHaveProperty("financementType");
+      }
+      expect(h.appreciations).not.toHaveBeenCalled();
+    });
+
+    it("interrupteur allumé : « autresParties » présent, financement direct = tiers « non »", async () => {
+      allumer("voyants");
+      h.sessions.mockResolvedValue([SESSION]);
+      const t = (await chargerTracesVoyants(["s1"], NOW)).get("s1")!;
+      expect(t.i30).toMatchObject({
+        lecture: "lue",
+        autresParties: {
+          entreprise: { sollicitee: null, avis: null },
+          formateur: { attendus: 1, avis: null },
+          financeur: { tiers: "non", avis: null },
+        },
+      });
+    });
+
+    it("subrogation OPCO sur la session : tiers « oui » (jamais « non »)", async () => {
+      allumer("voyants");
+      h.sessions.mockResolvedValue([SESSION]);
+      h.sessionUnique.mockResolvedValue({
+        clientId: "c1",
+        formateurPrincipalId: "t1",
+        financementType: "direct",
+        opcoSubrogation: true,
+        opcoStatut: "non_demande",
+        sessionFormateurs: [],
+        jours: [],
+      });
+      const t = (await chargerTracesVoyants(["s1"], NOW)).get("s1")!;
+      expect(t.i30).toMatchObject({ autresParties: { financeur: { tiers: "oui" } } });
+    });
+
+    it("lecture en échec : « illisible », jamais vert", async () => {
+      allumer("voyants");
+      h.sessions.mockResolvedValue([SESSION]);
+      h.sessionUnique.mockRejectedValue(new Error("base indisponible"));
+      const t = (await chargerTracesVoyants(["s1"], NOW)).get("s1")!;
+      expect(t.i30).toEqual({ lecture: "illisible" });
+    });
+
+    it("les appréciations d'essai marquées « hors preuve » sont écartées de la lecture", async () => {
+      allumer("voyants");
+      const essai = "99999999-9999-4999-8999-999999999999";
+      h.siteSetting.mockResolvedValue({
+        value: [
+          {
+            appreciationId: essai,
+            motif: "essai du 04/08",
+            marqueLe: "2026-10-19T00:00:00.000Z",
+            marquePar: "a",
+          },
+        ],
+      });
+      h.sessions.mockResolvedValue([SESSION]);
+      await chargerTracesVoyants(["s1"], NOW);
+      expect(h.appreciations.mock.calls[0]![0].where).toMatchObject({ id: { notIn: [essai] } });
     });
   });
 });
