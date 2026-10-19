@@ -39,7 +39,11 @@ import { lireJournalVeilles, regleVeilleEnVigueur } from "../veille/regle-veille
 import { idsVeillesDecidees } from "../veille/trace-veille";
 import { whereReseauHandicapActif } from "../conformite/conformite-service";
 import { lirePedagogie } from "../pedagogie/interrupteur";
+import { formateursDeLaSession } from "../appreciations/formateurs-de-la-session";
+import { lireAppreciationsHorsPreuve } from "../appreciations/hors-preuve";
+import { LOT_VOYANTS } from "./voyants-indicateurs";
 import type {
+  AutresPartiesAppreciations,
   TraceAdaptation,
   TraceAppreciations,
   TraceConvocation,
@@ -321,6 +325,129 @@ function appreciations(ins: InscriptionLue[]): TraceLue<TraceAppreciations> {
   });
 }
 
+/** Financements où un tiers (OPCO, CPF, France Travail…) paie : son avis est attendu. */
+const FINANCEMENTS_TIERS = new Set(["opco", "cpf", "france_travail", "mixte"]);
+
+/**
+ * NC14 — les autres parties prenantes de l'ind. 30. Appelée SEULEMENT quand
+ * l'interrupteur des voyants est allumé pour la session. Les appréciations
+ * d'essai marquées « hors preuve » ne comptent pas. Lève en cas d'échec : l'appelant
+ * rend alors `illisible` (jamais de vert sur une lecture ratée).
+ */
+async function lireAutresParties(s: SessionALire): Promise<AutresPartiesAppreciations> {
+  const horsPreuve = [...(await lireAppreciationsHorsPreuve())];
+  const session = await prisma.trainingSession.findUnique({
+    where: { id: s.id },
+    select: {
+      clientId: true,
+      formateurPrincipalId: true,
+      financementType: true,
+      opcoSubrogation: true,
+      opcoStatut: true,
+      sessionFormateurs: { select: { trainerId: true } },
+      jours: { select: { trainerId: true } },
+    },
+  });
+  if (session === null) throw new Error("session introuvable");
+  const inscriptions = await prisma.enrollment.findMany({
+    where: { sessionId: s.id, ...inscriptionsActives(), ...HORS_ESSAI, session: SESSION_REELLE },
+    select: {
+      id: true,
+      financementType: true,
+      questionnaires: {
+        where: { type: "satisfaction_entreprise" },
+        select: { envoyeAt: true, reponduAt: true },
+      },
+    },
+  });
+  const ids = inscriptions.map((i) => i.id);
+  const formateurs = formateursDeLaSession(session);
+  const filtreEssais = horsPreuve.length > 0 ? { id: { notIn: horsPreuve } } : {};
+  const [appreciations, bilans] = await Promise.all([
+    prisma.appreciation.findMany({
+      where: {
+        ...filtreEssais,
+        OR: [
+          { enrollmentId: { in: ids }, source: { in: ["entreprise", "formateur", "financeur"] } },
+          // Même rapprochement que l'alerte « avis du financeur manquant ».
+          ...(session.clientId !== null
+            ? [{ source: "financeur" as const, clientId: session.clientId }]
+            : []),
+        ],
+      },
+      select: {
+        source: true,
+        enrollmentId: true,
+        clientId: true,
+        trainerId: true,
+        dateAppreciation: true,
+      },
+    }),
+    prisma.bilanFinFormation.findMany({
+      where: { sessionId: s.id, appreciationId: { not: null } },
+      select: { appreciation: { select: { id: true, dateAppreciation: true } } },
+    }),
+  ]);
+  const dansSession = (a: { enrollmentId: string | null }) =>
+    a.enrollmentId !== null && ids.includes(a.enrollmentId);
+
+  const questionnaires = inscriptions.flatMap((i) => i.questionnaires);
+  const entreprise = {
+    sollicitee: questionnaires
+      .map((q) => q.envoyeAt)
+      .reduce<Date | null>((m, d) => (d !== null && (m === null || d < m) ? d : m), null),
+    avis: max([
+      ...questionnaires.map((q) => q.reponduAt),
+      ...appreciations
+        .filter((a) => a.source === "entreprise" && dansSession(a))
+        .map((a) => a.dateAppreciation),
+    ]),
+  };
+  const formateur = {
+    attendus: formateurs.length,
+    avis: max([
+      ...appreciations
+        .filter(
+          (a) =>
+            a.source === "formateur" &&
+            dansSession(a) &&
+            a.trainerId !== null &&
+            formateurs.includes(a.trainerId),
+        )
+        .map((a) => a.dateAppreciation),
+      ...bilans
+        .filter((b) => b.appreciation !== null && !horsPreuve.includes(b.appreciation.id))
+        .map((b) => b.appreciation?.dateAppreciation),
+    ]),
+  };
+
+  const effectifs = inscriptions.map((i) => i.financementType ?? session.financementType ?? null);
+  const tiers: AutresPartiesAppreciations["financeur"]["tiers"] =
+    effectifs.some((t) => t !== null && FINANCEMENTS_TIERS.has(t)) ||
+    session.opcoSubrogation ||
+    session.opcoStatut !== "non_demande"
+      ? "oui"
+      : effectifs.some((t) => t === null)
+        ? "inconnu"
+        : "non";
+  const financeur = {
+    tiers,
+    avis: max(
+      appreciations
+        .filter(
+          (a) =>
+            a.source === "financeur" &&
+            (dansSession(a) ||
+              (session.clientId !== null &&
+                a.clientId === session.clientId &&
+                a.dateAppreciation.getTime() >= s.dateDebut.getTime())),
+        )
+        .map((a) => a.dateAppreciation),
+    ),
+  };
+  return { entreprise, formateur, financeur };
+}
+
 function ressources(ins: InscriptionLue[]): TraceLue<TraceRessources> {
   const avec = ins.filter((i) => i.remises.some((r) => r.objet.startsWith("support_")));
   return lue<TraceRessources>({
@@ -449,6 +576,7 @@ export async function chargerTracesVoyants(
     protege(lireHandicap),
   ]);
   const etatPedagogie = await lirePedagogie();
+  const etatVoyants = await lireInterrupteurQualiopi(LOT_VOYANTS);
   for (const s of sessions) {
     const ins = parSession?.get(s.id) ?? [];
     const base = parSession === null ? { lecture: "illisible" as const } : null;
@@ -490,7 +618,19 @@ export async function chargerTracesVoyants(
       i23: veille,
       i26: handicap,
       i27,
-      i30: base ?? appreciations(ins),
+      // NC14 : les autres parties ne sont lues que si l'interrupteur des voyants
+      // est allumé pour la session ; éteint, rien ne change.
+      i30:
+        base ??
+        (estActifPour(etatVoyants, { estTestInterne: s.estTestInterne })
+          ? await protege(async () => {
+              const stagiaires = appreciations(ins);
+              return {
+                ...stagiaires,
+                autresParties: await lireAutresParties(s),
+              } as TraceLue<TraceAppreciations>;
+            })
+          : appreciations(ins)),
       // L09 n'écrit pas encore les étapes (aucun écrivain sur main).
       i31: { lecture: "lot_absent" },
     });

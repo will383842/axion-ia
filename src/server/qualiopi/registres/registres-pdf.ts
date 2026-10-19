@@ -43,6 +43,8 @@
 
 import React from "react";
 import { prisma } from "@/lib/prisma";
+import { auteurAppreciation } from "@/server/qualiopi/appreciations/auteur";
+import { lireAppreciationsHorsPreuve } from "@/server/qualiopi/appreciations/hors-preuve";
 import { renderPdfToBuffer } from "@/server/qualiopi/documents/render";
 import { getOrganismeIdentite } from "@/server/qualiopi/documents/organisme";
 import { RegistrePdf, type RegistreData } from "@/server/qualiopi/documents/templates/registre";
@@ -505,8 +507,12 @@ function nomPersonne(p: { nom: string | null; prenom: string | null } | null): s
  * la ligne porte — exactement comme les positionnements du même dossier.
  */
 async function buildAppreciations(): Promise<Omit<RegistreData, "dateEdition">> {
+  const horsPreuve = [...(await lireAppreciationsHorsPreuve())];
   const rows = await prisma.appreciation.findMany({
+    ...(horsPreuve.length > 0 ? { where: { id: { notIn: horsPreuve } } } : {}),
     select: {
+      id: true,
+      clientId: true,
       dateAppreciation: true,
       source: true,
       note: true,
@@ -517,6 +523,24 @@ async function buildAppreciations(): Promise<Omit<RegistreData, "dateEdition">> 
     orderBy: { dateAppreciation: "desc" },
     take: EXPORT_TAKE,
   });
+  // `Appreciation.clientId` est une colonne nue (pas de relation Prisma) : la
+  // raison sociale demande une seconde requête, faite seulement si un client existe.
+  // Jamais *OrThrow : le stub du build renvoie un tableau vide.
+  const clientIds = [
+    ...new Set(rows.map((a) => a.clientId).filter((c): c is string => typeof c === "string")),
+  ];
+  const clients =
+    clientIds.length > 0
+      ? await prisma.client.findMany({
+          where: { id: { in: clientIds } },
+          select: { id: true, raisonSociale: true },
+        })
+      : [];
+  const raisonParClient = new Map(clients.map((c) => [c.id, c.raisonSociale]));
+  const mentionEssais =
+    horsPreuve.length > 0
+      ? ` ${horsPreuve.length} appréciation${horsPreuve.length > 1 ? "s" : ""} d'essai écartée${horsPreuve.length > 1 ? "s" : ""} de ce registre, conservée${horsPreuve.length > 1 ? "s" : ""} au registre de la console.`
+      : "";
   return {
     titre: "Registre des appréciations",
     sousTitre:
@@ -525,11 +549,11 @@ async function buildAppreciations(): Promise<Omit<RegistreData, "dateEdition">> 
     lignes: rows.map((a) => [
       formatDateFr(a.dateAppreciation),
       APPRECIATION_SOURCE_LABELS[a.source] ?? a.source,
-      nomPersonne(a.trainee) || nomPersonne(a.trainer),
+      auteurAppreciation(a, raisonParClient),
       a.note !== null ? `${a.note}/5` : "",
       a.commentaire ?? "",
     ]),
-    mentionBasDePage: MENTION_EXPORT,
+    mentionBasDePage: `${MENTION_EXPORT}${mentionEssais}`,
   };
 }
 

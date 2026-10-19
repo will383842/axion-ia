@@ -17,9 +17,12 @@ import { AdminStatCard } from "@/components/admin/ui/AdminStatCard";
 import {
   creerAppreciationAction,
   listAppreciationsAction,
+  marquerAppreciationHorsPreuveAction,
   statsAppreciationsAction,
 } from "@/server/actions/qualiopi/appreciations";
 import { AppreciationForm } from "@/components/admin/qualiopi/AppreciationForm";
+import { MarquerEssaiBouton } from "@/components/admin/qualiopi/MarquerEssaiBouton";
+import { lireAppreciationsHorsPreuve } from "@/server/qualiopi/appreciations/hors-preuve";
 import { listerOptionsAppreciation } from "@/server/qualiopi/appreciations/options";
 import {
   resoudreRattachementsAppreciations,
@@ -62,6 +65,9 @@ export default async function QualiopiAppreciationsPage({ params }: PageProps) {
   // Libellés de la colonne « Rattachée à » : une requête groupée par table,
   // jamais une par ligne.
   const rattachements = await resoudreRattachementsAppreciations(appreciations);
+  const horsPreuve = await lireAppreciationsHorsPreuve();
+  // Le marquage est une écriture : le bouton n'est montré qu'à qui peut écrire.
+  const peutEcrire = acces.peutEcrire;
   const base = `/${locale}/${adminPrefix}`;
 
   const cellCls =
@@ -214,6 +220,7 @@ export default async function QualiopiAppreciationsPage({ params }: PageProps) {
                 <th className={headCls}>Note</th>
                 <th className={headCls}>Commentaire</th>
                 <th className={headCls}>Rattachée à</th>
+                <th className={headCls}>Preuve</th>
               </tr>
             </thead>
             <tbody>
@@ -235,6 +242,16 @@ export default async function QualiopiAppreciationsPage({ params }: PageProps) {
                     )}
                   </td>
                   <td className={cellCls}>{renderRattachements(rattachements.get(a.id))}</td>
+                  <td className={cellCls}>
+                    {horsPreuve.has(a.id) ? (
+                      <span>Essai : hors preuve, conservée</span>
+                    ) : peutEcrire ? (
+                      <MarquerEssaiBouton
+                        appreciationId={a.id}
+                        marquerAction={marquerAppreciationHorsPreuveAction}
+                      />
+                    ) : null}
+                  </td>
                 </tr>
               ))}
             </tbody>

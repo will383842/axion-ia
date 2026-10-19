@@ -14,6 +14,11 @@ vi.mock("@/lib/prisma", () => ({
   },
 }));
 
+vi.mock("@/server/qualiopi/appreciations/hors-preuve", async (importOriginal) => ({
+  ...(await importOriginal<typeof import("@/server/qualiopi/appreciations/hors-preuve")>()),
+  lireAppreciationsHorsPreuve: vi.fn(async () => new Set<string>()),
+}));
+
 import { ALERTE_CATALOGUE } from "./catalogue";
 import {
   BORNE_BASSE_AVIS_FINANCEUR_JOURS,

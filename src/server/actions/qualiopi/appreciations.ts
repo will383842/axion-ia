@@ -39,6 +39,7 @@ import {
 } from "@/server/qualiopi/portail/rgpd-service";
 import { prisma } from "@/lib/prisma";
 import { formateursDeLaSession } from "@/server/qualiopi/appreciations/formateurs-de-la-session";
+import { marquerHorsPreuve } from "@/server/qualiopi/appreciations/hors-preuve";
 
 type ActionResult<T> = { data: T } | { error: string };
 
@@ -148,6 +149,46 @@ export async function creerAppreciationAction(input: {
   });
 
   return { data: { id: created.id } };
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// ADMIN — marquerAppreciationHorsPreuveAction (NC14)
+// ─────────────────────────────────────────────────────────────────────────────
+
+const marquerHorsPreuveSchema = z.object({
+  appreciationId: z.string().uuid(),
+  motif: z.string().max(500),
+});
+
+/**
+ * Marque une appréciation d'ESSAI « hors preuve » : elle reste en base, visible
+ * dans la console, mais n'entre plus dans les preuves de l'indicateur 30.
+ *
+ * Ajout seul : ni suppression, ni modification de l'appréciation, et aucune
+ * action « démarquer ». Motif obligatoire, journalisé.
+ */
+export async function marquerAppreciationHorsPreuveAction(input: {
+  appreciationId: string;
+  motif: string;
+}): Promise<ActionResult<{ dejaMarquee: boolean }>> {
+  const session = await requireAdminWrite();
+
+  const parsed = marquerHorsPreuveSchema.safeParse(input);
+  if (!parsed.success) return { error: "Données invalides" };
+
+  const r = await marquerHorsPreuve(parsed.data.appreciationId, parsed.data.motif, session.userId);
+  if (!r.ok) return { error: r.raison };
+
+  if (!r.dejaMarquee) {
+    await logQualiopiActivity({
+      action: "qualiopi.appreciations.marquer_hors_preuve",
+      targetType: "Appreciation",
+      targetId: parsed.data.appreciationId,
+      changes: { motif: parsed.data.motif.trim() },
+      session,
+    });
+  }
+  return { data: { dejaMarquee: r.dejaMarquee } };
 }
 
 // ─────────────────────────────────────────────────────────────────────────────

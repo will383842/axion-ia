@@ -20,7 +20,11 @@
 import { prisma } from "@/lib/prisma";
 import { SESSION_REELLE } from "../essai/perimetre";
 import { chargerTracesVoyants } from "../parcours/charger-traces-voyants";
-import { construireVoyants, type IndicateurAVoyant } from "../parcours/voyants-indicateurs";
+import {
+  LOT_VOYANTS,
+  construireVoyants,
+  type IndicateurAVoyant,
+} from "../parcours/voyants-indicateurs";
 import { estActifPour, lireInterrupteurQualiopi } from "../socle/interrupteurs";
 import type { AlerteCandidate } from "./evaluateur";
 
@@ -52,7 +56,8 @@ export const CODE_VOYANT: Readonly<Record<IndicateurAVoyant, { readonly code: st
 };
 
 /** Interrupteur du lot : `qualiopi.voyants.actif`. Éteint par défaut, comme les autres lots. */
-export const LOT_VOYANTS = "voyants";
+// Déclaré dans `parcours/voyants-indicateurs.ts` (le chargeur lit la même clé), ré-exporté ici.
+export { LOT_VOYANTS };
 
 export async function regleVoyantsSansTrace(now: Date): Promise<AlerteCandidate[]> {
   // Éteint : aucune alerte (ni lecture de session). Un lot livré éteint ne parle pas.

@@ -43,8 +43,14 @@ vi.mock("@/server/qualiopi/config/site-settings", () => ({
   getQualiopiConfig: vi.fn().mockResolvedValue(""),
 }));
 
+vi.mock("@/server/qualiopi/appreciations/hors-preuve", async (importOriginal) => ({
+  ...(await importOriginal<typeof import("@/server/qualiopi/appreciations/hors-preuve")>()),
+  lireAppreciationsHorsPreuve: vi.fn(async () => new Set<string>()),
+}));
+
 import { prisma } from "@/lib/prisma";
 import { getQualiopiConfig } from "@/server/qualiopi/config/site-settings";
+import { lireAppreciationsHorsPreuve } from "@/server/qualiopi/appreciations/hors-preuve";
 import { MENTION_OFF12_VIOLENCES_HORS_CONSOLE, evaluerConformite } from "./conformite-service";
 // Le trio certifiant (3/7/16) est DERIVE de ce registre par la garde off.1,
 // jamais recopie : un predicat recopie diverge, ce depot l'a paye 4 fois.
@@ -848,6 +854,16 @@ describe("evaluerConformite", () => {
     const result = await evaluerConformite();
     const ind30 = result.indicateurs.find((i) => i.numero === 30);
     expect(ind30?.statut).toBe("couvert");
+  });
+
+  it("off.30 : une appréciation d'essai marquée « hors preuve » n'entre ni dans le décompte ni dans les auteurs", async () => {
+    const essai = "99999999-9999-4999-8999-999999999999";
+    vi.mocked(lireAppreciationsHorsPreuve).mockResolvedValueOnce(new Set([essai]));
+    await evaluerConformite();
+    const filtre = { where: { id: { notIn: [essai] } } };
+    expect(mockP.appreciation.count).toHaveBeenCalledWith(expect.objectContaining(filtre));
+    expect(mockP.appreciation.groupBy).toHaveBeenCalledWith(expect.objectContaining(filtre));
+    expect(mockP.appreciation.findMany).toHaveBeenCalledWith(expect.objectContaining(filtre));
   });
 
   // ── off.30 : une QUALITÉ déclarée n'est pas une PARTIE PRENANTE ────────────

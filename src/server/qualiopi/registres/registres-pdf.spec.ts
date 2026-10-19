@@ -22,6 +22,8 @@ vi.mock("@/lib/prisma", () => ({
     sousTraitant: { findMany: vi.fn() },
     incident: { findMany: vi.fn() },
     appreciation: { findMany: vi.fn() },
+    client: { findMany: vi.fn() },
+    siteSetting: { findUnique: vi.fn() },
     moyenPedagogique: { findMany: vi.fn() },
     trainerDevelopmentAction: { findMany: vi.fn() },
     trainerHabilitation: { findMany: vi.fn() },
@@ -53,6 +55,8 @@ const mockPrisma = prisma as unknown as {
   sousTraitant: { findMany: ReturnType<typeof vi.fn> };
   incident: { findMany: ReturnType<typeof vi.fn> };
   appreciation: { findMany: ReturnType<typeof vi.fn> };
+  client: { findMany: ReturnType<typeof vi.fn> };
+  siteSetting: { findUnique: ReturnType<typeof vi.fn> };
   moyenPedagogique: { findMany: ReturnType<typeof vi.fn> };
   trainerDevelopmentAction: { findMany: ReturnType<typeof vi.fn> };
   trainerHabilitation: { findMany: ReturnType<typeof vi.fn> };
@@ -71,6 +75,8 @@ function setupEmpty() {
   mockPrisma.sousTraitant.findMany.mockResolvedValue([]);
   mockPrisma.incident.findMany.mockResolvedValue([]);
   mockPrisma.appreciation.findMany.mockResolvedValue([]);
+  mockPrisma.client.findMany.mockResolvedValue([]);
+  mockPrisma.siteSetting.findUnique.mockResolvedValue(null);
   mockPrisma.moyenPedagogique.findMany.mockResolvedValue([]);
   mockPrisma.trainerDevelopmentAction.findMany.mockResolvedValue([]);
   mockPrisma.trainerHabilitation.findMany.mockResolvedValue([]);
@@ -376,6 +382,63 @@ describe("🔴 constat du ZIP du 2026-09-30 — appréciations, moyens et date d
     const result = await renderRegistrePdfBuffer("appreciations");
     expect(result.buffer.slice(0, 4).toString("utf8")).toBe("%PDF");
     expect(result.filename).toMatch(/^registre-appreciations-\d{4}-\d{2}-\d{2}\.pdf$/);
+  }, 30_000);
+
+  it("appréciations (ind. 30) : l'auteur suit la qualité, jamais un repli ; essais écartés", async () => {
+    const hp = "99999999-9999-4999-8999-999999999999";
+    mockPrisma.siteSetting.findUnique.mockResolvedValue({
+      value: [
+        {
+          appreciationId: hp,
+          motif: "essai du 04/08",
+          marqueLe: "2026-10-19T00:00:00.000Z",
+          marquePar: "a",
+        },
+      ],
+    });
+    mockPrisma.client.findMany.mockResolvedValue([{ id: "c1", raisonSociale: "Acme SAS" }]);
+    mockPrisma.appreciation.findMany.mockResolvedValue([
+      {
+        id: "a1",
+        clientId: null,
+        dateAppreciation: new Date("2026-09-10T10:00:00.000Z"),
+        source: "formateur",
+        note: null,
+        commentaire: "Groupe homogène",
+        trainee: { nom: "Martin", prenom: "Camille" },
+        trainer: { nom: "Durand", prenom: "Luc" },
+      },
+      {
+        id: "a2",
+        clientId: "c1",
+        dateAppreciation: new Date("2026-09-09T10:00:00.000Z"),
+        source: "entreprise",
+        note: 5,
+        commentaire: "",
+        trainee: null,
+        trainer: null,
+      },
+      {
+        id: "a3",
+        clientId: "c1",
+        dateAppreciation: new Date("2026-09-08T10:00:00.000Z"),
+        source: "financeur",
+        note: null,
+        commentaire: "",
+        trainee: { nom: "Martin", prenom: "Camille" },
+        trainer: null,
+      },
+    ]);
+    const registre = await construireRegistre("appreciations");
+    expect(registre.lignes.map((l) => l[2])).toEqual([
+      "Luc Durand",
+      "Entreprise : Acme SAS",
+      "Non établi en base",
+    ]);
+    // Les essais marqués sont écartés DANS la requête, et le pied de page le dit.
+    const where = mockPrisma.appreciation.findMany.mock.calls[0]![0].where;
+    expect(where).toEqual({ id: { notIn: [hp] } });
+    expect(registre.mentionBasDePage).toMatch(/1 appréciation d'essai écartée/);
   }, 30_000);
 
   it("moyens (ind. 17 / 19) : inventaire avec statut et date de vérification", async () => {
