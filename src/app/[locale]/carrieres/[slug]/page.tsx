@@ -54,12 +54,10 @@ import type { JobOffer } from "../../../../../prisma/generated/client";
 import { buildOfferFaq, RECRUTEMENT_REGULIER } from "@/lib/careers/faq-offre";
 import { buildOfferFaqFreelance } from "@/lib/careers/faq-offre-freelance";
 import {
-  MENTION_AUCUNE_MISSION_AVANT_QUALIOPI,
   TITRE_ETAPES_INTERVENANT,
   estOffreIntervenant,
   etapesIntervenant,
 } from "@/lib/careers/etapes-intervenant";
-import { isQualiopiCertificationObtenue } from "@/server/qualiopi/config/flag";
 import { prefixerLiensInternes } from "@/lib/content/liens-internes";
 import { neutraliserSelonInterrupteur } from "@/components/qualiopi/affirmations-en-base";
 
@@ -244,7 +242,6 @@ export default async function JobOfferDetailPage({
   // L14 — offre d'intervenant (formateur, freelance ou salarié) : les vraies
   // étapes remplacent les promesses d'« accompagnement » et de « doublon ».
   const intervenant = formateurFreelance || estOffreIntervenant(offer);
-  const certificationObtenue = isQualiopiCertificationObtenue();
   const heroFacts = [
     sal
       ? { label: formateurFreelance ? "Tarif" : isFr ? "Rémunération" : "Pay", value: sal }
@@ -618,11 +615,6 @@ export default async function JobOfferDetailPage({
                   <li key={e.id}>{isFr ? e.fr : e.en}</li>
                 ))}
               </ol>
-              {certificationObtenue ? null : (
-                <p className="border-terracotta text-fg-soft mt-6 border-l-4 pl-4 leading-relaxed">
-                  {MENTION_AUCUNE_MISSION_AVANT_QUALIOPI[isFr ? "fr" : "en"]}
-                </p>
-              )}
             </div>
           </Container>
         </Section>
@@ -668,8 +660,8 @@ export default async function JobOfferDetailPage({
         titleEm={isFr ? "fréquentes" : "questions"}
         items={
           formateurFreelance
-            ? buildOfferFaqFreelance(offer, isFr, { certificationObtenue })
-            : buildOfferFaq(offer, title, isFr, { intervenant, certificationObtenue })
+            ? buildOfferFaqFreelance(offer, isFr)
+            : buildOfferFaq(offer, title, isFr, { intervenant })
         }
       />
 

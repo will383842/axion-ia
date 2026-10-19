@@ -380,7 +380,7 @@ export default async function Home({ params }: HomeProps) {
       >
         <Container className="relative">
           {/* Badge pastille centré sur la page (demande Will 2026-07-10) —
-              drapeau + positionnement N°1, au-dessus de la grille 2 colonnes. */}
+              drapeau + positionnement, au-dessus de la grille 2 colonnes. */}
           <HeroBadge className="mb-10 sm:mb-12">
             <span aria-hidden="true">🇫🇷</span>
             {t("heroEyebrow")}

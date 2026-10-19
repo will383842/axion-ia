@@ -163,22 +163,13 @@ describe("FAQ de l'offre freelance — lexique", () => {
 });
 
 describe("L14 — les vraies étapes dans les FAQ d'intervenants", () => {
-  it("la FAQ freelance annonce les étapes et la mention Qualiopi, sans « certifié »", () => {
+  it("la FAQ freelance annonce les étapes, sans mention Qualiopi ni « certifié »", () => {
     const etapes = buildOfferFaqFreelance(freelance(), true).find((i) => i.id === "etapes")!;
     expect(etapes.answer).toMatch(/entretien, noté/);
     expect(etapes.answer).toMatch(/SIRET/);
     expect(etapes.answer).toMatch(/formation obligatoire à la méthode Axion-IA/);
-    expect(etapes.answer).toContain(
-      "Aucune mission ne sera confiée avant l'obtention de la certification Qualiopi de l'organisme.",
-    );
+    expect(etapes.answer).not.toMatch(/Qualiopi|obtention/);
     expect(etapes.answer).not.toMatch(/certifi[ée]\b/i);
-  });
-
-  it("la mention s'efface quand la certification est obtenue", () => {
-    const etapes = buildOfferFaqFreelance(freelance(), true, { certificationObtenue: true }).find(
-      (i) => i.id === "etapes",
-    )!;
-    expect(etapes.answer).not.toMatch(/Qualiopi/);
   });
 
   it("la FAQ d'un formateur salarié ne dit plus « CV optionnel »", () => {
@@ -188,7 +179,7 @@ describe("L14 — les vraies étapes dans les FAQ d'intervenants", () => {
     expect(a).not.toMatch(/optionnel/i);
     expect(a).toMatch(/CV de moins de 24 mois/);
     expect(a).not.toMatch(/SIRET/);
-    expect(a).toContain("certification Qualiopi de l'organisme");
+    expect(a).not.toMatch(/Qualiopi|obtention/);
   });
 });
 

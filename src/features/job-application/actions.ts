@@ -47,7 +47,6 @@ import type { Prisma } from "../../../prisma/generated/client";
 import { signalerHoneypot } from "@/lib/security/honeypot-observable";
 import { estCandidatureFormateurFreelance } from "@/lib/careers/formateur-freelance";
 import { estOffreIntervenant } from "@/lib/careers/etapes-intervenant";
-import { isQualiopiCertificationObtenue } from "@/server/qualiopi/config/flag";
 import {
   decisionsDuDepot,
   lireChampsFormateurFreelance,
@@ -616,7 +615,6 @@ export async function submitJobApplicationAction(
           ? {
               intervenant: true,
               ...(estCandidatureFormateurFreelance(offer) ? { freelance: true } : {}),
-              ...(isQualiopiCertificationObtenue() ? { certificationObtenue: true } : {}),
             }
           : {}),
         ...(lienSuppression ? { lienSuppression } : {}),
