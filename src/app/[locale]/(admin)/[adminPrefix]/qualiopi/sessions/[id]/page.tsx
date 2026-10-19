@@ -23,6 +23,7 @@ import { Fragment, type ReactNode } from "react";
 import { notFound } from "next/navigation";
 
 import { RecueilBesoinSession } from "@/components/admin/qualiopi/RecueilBesoinSession";
+import { VoyantsSession } from "@/components/admin/qualiopi/VoyantsSession";
 import { PreparationKitSession } from "@/components/admin/qualiopi/PreparationKitSession";
 import { lirePreparation } from "@/server/qualiopi/kit-session/preparation";
 import { genererSortiesAction, validerSortiesAction } from "@/server/actions/qualiopi/kit-session";
@@ -1089,6 +1090,9 @@ export default async function SessionHubPage({ params, searchParams }: PageProps
             />
           </section>
         ) : null}
+        {/* QNC L12 — voyants d'indicateurs fondés sur une trace réelle (lecture seule,
+              livré allumé : un lot éteint s'y lit « non évalué », jamais vert). */}
+        <VoyantsSession sessionId={id} />
       </>
     ),
     "cycle-de-vie": (

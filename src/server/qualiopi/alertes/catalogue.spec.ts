@@ -307,6 +307,21 @@ const CODES_ATTENDUS: string[] = [
   "fi_reevaluation_a_prevoir",
   "fi_reevaluation_echue",
   "fi_cv_declare_perime",
+  // QNC L12 (O13) — un voyant ne passe au vert qu'avec une trace réelle.
+  "voyant_ind_04_sans_trace",
+  "voyant_ind_06_sans_trace",
+  "voyant_ind_09_sans_trace",
+  "voyant_ind_10_sans_trace",
+  "voyant_ind_11_sans_trace",
+  "voyant_ind_12_sans_trace",
+  "voyant_ind_17_sans_trace",
+  "voyant_ind_19_sans_trace",
+  "voyant_ind_21_sans_trace",
+  "voyant_ind_23_sans_trace",
+  "voyant_ind_26_sans_trace",
+  "voyant_ind_27_sans_trace",
+  "voyant_ind_30_sans_trace",
+  "voyant_ind_31_sans_trace",
 ];
 
 const NIVEAUX_VALIDES: AlerteNiveau[] = ["info", "important", "critique"];

@@ -2181,6 +2181,97 @@ export const ALERTE_CATALOGUE: Record<string, AlerteCatalogueEntry> = {
     resolutionAuto: true,
     guichet: "qualite",
   },
+
+  // ── QNC L12 (O13) — un voyant ne passe au vert qu'avec une TRACE RÉELLE ────
+  //
+  // Un code par indicateur, levé par `regle-voyants-sans-trace.ts` quand le voyant
+  // est ROUGE (trace absente ou incomplète, échéance passée). Un voyant « non
+  // évalué » (lot éteint ou absent) n'alerte jamais. `resolutionAuto` : la règle
+  // se relit à chaque passe et se referme dès que la trace existe.
+  voyant_ind_04_sans_trace: {
+    niveau: "important",
+    titre: "Indicateur 4 : aucune trace réelle (Analyse du besoin (recueil temps 1))",
+    resolutionAuto: true,
+    guichet: "qualite",
+  },
+  voyant_ind_06_sans_trace: {
+    niveau: "important",
+    titre: "Indicateur 6 : aucune trace réelle (Recueil temps 2)",
+    resolutionAuto: true,
+    guichet: "qualite",
+  },
+  voyant_ind_09_sans_trace: {
+    niveau: "important",
+    titre: "Indicateur 9 : aucune trace réelle (Convocation et pièces envoyées)",
+    resolutionAuto: true,
+    guichet: "administratif",
+  },
+  voyant_ind_10_sans_trace: {
+    niveau: "important",
+    titre: "Indicateur 10 : aucune trace réelle (Adaptation de la prestation)",
+    resolutionAuto: true,
+    guichet: "qualite",
+  },
+  voyant_ind_11_sans_trace: {
+    niveau: "important",
+    titre: "Indicateur 11 : aucune trace réelle (Évaluation des acquis)",
+    resolutionAuto: true,
+    guichet: "qualite",
+  },
+  voyant_ind_12_sans_trace: {
+    niveau: "important",
+    titre: "Indicateur 12 : aucune trace réelle (Émargement par demi-journée)",
+    resolutionAuto: true,
+    guichet: "administratif",
+  },
+  voyant_ind_17_sans_trace: {
+    niveau: "important",
+    titre: "Indicateur 17 : aucune trace réelle (Moyens vérifiés)",
+    resolutionAuto: true,
+    guichet: "administratif",
+  },
+  voyant_ind_19_sans_trace: {
+    niveau: "important",
+    titre: "Indicateur 19 : aucune trace réelle (Ressources pédagogiques remises)",
+    resolutionAuto: true,
+    guichet: "qualite",
+  },
+  voyant_ind_21_sans_trace: {
+    niveau: "important",
+    titre: "Indicateur 21 : aucune trace réelle (Compétences de l'intervenant)",
+    resolutionAuto: true,
+    guichet: "qualite",
+  },
+  voyant_ind_23_sans_trace: {
+    niveau: "important",
+    titre: "Indicateur 23 : aucune trace réelle (Veille exploitée et revue validée)",
+    resolutionAuto: true,
+    guichet: "qualite",
+  },
+  voyant_ind_26_sans_trace: {
+    niveau: "important",
+    titre: "Indicateur 26 : aucune trace réelle (Handicap : référent joignable et réseau)",
+    resolutionAuto: true,
+    guichet: "qualite",
+  },
+  voyant_ind_27_sans_trace: {
+    niveau: "important",
+    titre: "Indicateur 27 : aucune trace réelle (Sous-traitance : contrôle tracé)",
+    resolutionAuto: true,
+    guichet: "qualite",
+  },
+  voyant_ind_30_sans_trace: {
+    niveau: "important",
+    titre: "Indicateur 30 : aucune trace réelle (Appréciations recueillies)",
+    resolutionAuto: true,
+    guichet: "qualite",
+  },
+  voyant_ind_31_sans_trace: {
+    niveau: "important",
+    titre: "Indicateur 31 : aucune trace réelle (Réclamations traitées par étapes)",
+    resolutionAuto: true,
+    guichet: "qualite",
+  },
 } as const;
 
 /**
