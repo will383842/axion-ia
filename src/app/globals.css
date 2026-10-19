@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@source not "../../package.json";
 
 /* =============================================================
  * Axion-IA · Design System tokens v3 (Editorial Premium Light)
