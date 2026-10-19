@@ -52,6 +52,12 @@ describe("piiScrubBeforeSend — jeton dans le chemin", () => {
     expect(nettoye?.exception?.values?.[0]?.value).not.toContain(JETON);
   });
 
+  it("masque le jeton de confirmation de présence (/portail/presence/)", () => {
+    const url = `https://axion-ia.com/fr/portail/presence/abc.def`;
+    const nettoye = piiScrubBeforeSend({ request: { url } } as never);
+    expect(nettoye?.request?.url).toBe("https://axion-ia.com/fr/portail/presence/[TOKEN]");
+  });
+
   it("⭐ masque même un jeton TROP COURT pour la regex — c'est le rôle du masquage par route", () => {
     // Les deux gardes sont complémentaires, et ce test rend la seconde
     // nécessaire : `MAGIC_TOKEN_RE` exige 20 caractères par segment pour ne pas

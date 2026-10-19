@@ -80,6 +80,8 @@ const SEGMENTS_SECRETS: ReadonlyArray<RegExp> = [
   // à `HEX_TOKEN_RE` et `JWT_RE`. L'identifiant reste lisible, le jeton est masqué.
   /(\/document\/[0-9a-fA-F-]{36}\/)[^/?#]+/gi,
   /(\/portail\/emarger\/)[^/?#]+/gi,
+  // Confirmation de présence (QNC NC6) : `/portail/presence/<jeton>` — le jeton désigne une inscription.
+  /(\/portail\/presence\/)[^/?#]+/gi,
   /(\/booking\/)[^/?#]+/gi,
   /(\/verifier-attestation\/)[^/?#]+/gi,
   /(\/portail\/acces\/)[^/?#]+/gi,

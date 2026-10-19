@@ -77,4 +77,19 @@ describe("gabarits de confirmation de présence", () => {
     expect(html).toContain("pas confirmé sa présence à ce jour");
     expect(html).toContain("Camille Dupont");
   });
+
+  it("🔴 sans lien, la demande ne se rend pas : jamais de repli silencieux sur mon-espace", async () => {
+    const { lienPresence: _lien, ...sansLien } = PAYLOAD_CONFIRMATION;
+    await expect(
+      render(<QualiopiPresenceConfirmationEmail locale="fr" payload={sansLien} />),
+    ).rejects.toThrow(/lien/i);
+    await expect(
+      render(
+        <QualiopiPresenceConfirmationEmail
+          locale="fr"
+          payload={{ ...sansLien, lienPresence: "" }}
+        />,
+      ),
+    ).rejects.toThrow(/lien/i);
+  });
 });

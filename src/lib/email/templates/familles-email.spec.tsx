@@ -134,6 +134,7 @@ const PAYLOAD: Record<string, unknown> = {
   lienQuestionnaire: "https://axion-ia.com/fr/portail/acces/AAA",
   lienEnquete: "https://axion-ia.com/fr/portail/acces/AAA",
   lienEmargement: "https://axion-ia.com/fr/portail/acces/BBB",
+  lienPresence: "https://axion-ia.com/fr/portail/presence/CCC",
   lienFacture: "https://axion-ia.com/fr/portail/acces/CCC",
   interventionType: "essentielle",
   notes: "Alerte rouge météo.",

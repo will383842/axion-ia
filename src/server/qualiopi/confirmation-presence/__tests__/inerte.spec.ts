@@ -1,9 +1,14 @@
 /**
- * QNC NC6, lot présence 1/3 — le socle est INERTE : aucun fichier hors de
- * `confirmation-presence/` ne l'importe, et rien n'y lit ni n'y écrit en base.
- * Le lot 2/3 (envois, réponse, page) retirera la première assertion, nommément,
- * en posant ses appelants ; la seconde restera tant qu'aucun écrivain n'a son
- * cliquet.
+ * QNC NC6, lot présence — qui peut appeler le dossier `confirmation-presence/`.
+ *
+ * Lot 1/3 : le socle était INERTE, aucun appelant. Lot 2/3 : trois appelants, et seulement
+ * eux — le passage horaire du worker (envois), l'action publique (réponse) et la page de
+ * réponse. Tout autre fichier de production qui l'importe doit d'abord être ajouté ICI, à
+ * la main : c'est ce qui empêche un second chemin d'envoi de naître sans que le lot le sache.
+ *
+ * Le motif cherche `confirmation-presence` dans une INSTRUCTION d'import (alias `@/...`,
+ * relatif `../confirmation-presence/...`, ou `import()` dynamique), pas seulement le chemin
+ * complet `qualiopi/confirmation-presence` : un import relatif échappait à l'ancien motif.
  */
 
 import { readdirSync, readFileSync, statSync } from "node:fs";
@@ -25,30 +30,61 @@ function fichiers(dossier: string): string[] {
   return out;
 }
 
-describe("confirmation de présence : socle inerte", () => {
+describe("confirmation de présence : qui l appelle", () => {
   const tous = fichiers(RACINE);
 
   it("lit bien un corpus non vide", () => {
     expect(tous.length).toBeGreaterThan(500);
   });
 
-  it("aucun fichier hors du dossier n'importe le socle (lot 2/3 : à retirer en posant les appelants)", () => {
+  /** Les SEULS fichiers de production hors du dossier qui l'importent (lot 2/3). */
+  const AUTORISES = [
+    "src/server/queue/workers/qualiopi-formation-crons-worker.ts",
+    "src/server/actions/qualiopi/presence-public.ts",
+    "src/app/[locale]/portail/presence/[token]/page.tsx",
+  ];
+
+  const IMPORT = /(?:from\s+|import\(\s*|import\s+)["'][^"']*confirmation-presence/;
+
+  it("seuls le worker, l'action publique et la page importent le dossier", () => {
     const appelants = tous
       .filter((f) => !f.includes(DOSSIER))
-      .filter((f) => /qualiopi\/confirmation-presence/.test(readFileSync(f, "utf8")))
-      // Ce test lui-même cite le chemin ; les gabarits ne l'importent pas.
-      .map((f) => f.replace(/\\/g, "/"));
-    expect(appelants).toEqual([]);
+      // Les tests importent ce qu'ils testent ; ils n'ajoutent aucun chemin d'envoi.
+      .filter((f) => !/\.(spec|test)\.tsx?$/.test(f))
+      .filter((f) => IMPORT.test(readFileSync(f, "utf8")))
+      .map((f) => f.replace(/\\/g, "/").replace(`${process.cwd().replace(/\\/g, "/")}/`, ""))
+      .sort();
+    expect(appelants).toEqual([...AUTORISES].sort());
   });
 
-  it("aucun écrivain : le dossier n'importe ni Prisma ni la file d'e-mails", () => {
+  it("le motif voit un import relatif, alias ou dynamique", () => {
+    expect(IMPORT.test('import { x } from "../confirmation-presence/envois";')).toBe(true);
+    expect(IMPORT.test('import { x } from "@/server/qualiopi/confirmation-presence/envois";')).toBe(
+      true,
+    );
+    expect(
+      IMPORT.test('const m = await import("@/server/qualiopi/confirmation-presence/envois");'),
+    ).toBe(true);
+    expect(IMPORT.test('source: "server/qualiopi/confirmation-presence/envois.ts",')).toBe(false);
+  });
+
+  it("seuls envois.ts et reponse.ts écrivent ; le reste du dossier reste pur", () => {
+    const ECRIVAINS = ["envois.ts", "reponse.ts"];
     const sources = tous
       .filter((f) => f.includes(DOSSIER) && !f.includes("__tests__"))
+      .filter((f) => !ECRIVAINS.some((e) => f.replace(/\\/g, "/").endsWith(`/${e}`)))
       .map((f) => readFileSync(f, "utf8"));
     expect(sources.length).toBeGreaterThan(0);
     for (const s of sources) {
       expect(s).not.toMatch(/from\s+["']@\/lib\/prisma["']/);
       expect(s).not.toMatch(/enqueueEmail|\.create\(|\.update\(|\.upsert\(/);
     }
+  });
+
+  it("envois.ts n'importe rien de Next et charge enqueueEmail à la demande (atteint par le worker)", () => {
+    const source = readFileSync(join(DOSSIER, "envois.ts"), "utf8");
+    expect(source).not.toMatch(/from\s+["']next(\/|["'])/);
+    expect(source).not.toMatch(/^import[^\n]*@\/server\/queue\/queues/m);
+    expect(source).toMatch(/await import\(["']@\/server\/queue\/queues["']\)/);
   });
 });

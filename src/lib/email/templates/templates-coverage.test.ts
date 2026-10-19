@@ -45,6 +45,8 @@ const PAYLOAD: Record<string, unknown> = {
   bodyMarkdown: "Bonjour,\n\nMerci de votre message, voici notre retour.",
   numero: "AXI-CONV-2026-001",
   intituleFormation: "IA appliquée aux entreprises",
+  // Le gabarit de demande de présence refuse de se rendre sans lien (jamais de repli).
+  lienPresence: "https://axion-ia.com/fr/portail/presence/jeton",
 };
 
 const ESTONIA_LEAKS = ["oü", "estoni", "tallinn", "aki.ee", "registrikood", "eesti"];
