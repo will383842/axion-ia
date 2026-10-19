@@ -42,6 +42,27 @@ describe("basculerInterrupteurQualiopiAction", () => {
     expect(m.basculer).not.toHaveBeenCalled();
   });
 
+  it.each(["editor", "secretaire", "responsable_qualite", "reader"])(
+    "refuse la bascule au rôle « %s » : un interrupteur actif envoie de vrais e-mails",
+    async (role) => {
+      m.ecriture.mockResolvedValue({ userId: "u2", role });
+      const r = await basculerInterrupteurQualiopiAction({
+        lot: "convocation_v2",
+        etat: "actif",
+        confirmerActif: true,
+      });
+      expect(r.ok).toBe(false);
+      expect(m.basculer).not.toHaveBeenCalled();
+    },
+  );
+
+  it.each(["admin", "super_admin"])("accepte la bascule du rôle « %s »", async (role) => {
+    m.ecriture.mockResolvedValue({ userId: "u3", role });
+    const r = await basculerInterrupteurQualiopiAction({ lot: "veille", etat: "essai" });
+    expect(r.ok).toBe(true);
+    expect(m.basculer).toHaveBeenCalledOnce();
+  });
+
   it("refuse un lot inconnu", async () => {
     const r = await basculerInterrupteurQualiopiAction({ lot: "inconnu", etat: "essai" });
     expect(r).toEqual({ ok: false, error: "Interrupteur inconnu." });

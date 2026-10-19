@@ -19,6 +19,7 @@ import { z } from "zod";
 
 import { adminPath } from "@/lib/admin-path";
 import { requireAdminWrite } from "@/server/actions/qualiopi/_guards";
+import { MOTIF_REFUS, peutEngager } from "@/server/auth/habilitations";
 import {
   basculerInterrupteurQualiopi,
   ETATS_INTERRUPTEUR,
@@ -43,6 +44,11 @@ export async function basculerInterrupteurQualiopiAction(input: {
   confirmerActif?: boolean;
 }): Promise<EtatBasculeQualiopi> {
   const session = await requireAdminWrite();
+  // `requireAdminWrite` laisse passer editor et secretaire ; passer un lot à « actif »
+  // agit sur de vrais clients : direction seule (matrice `habilitations`).
+  if (!peutEngager(session.role, "piloter_interrupteurs")) {
+    return { ok: false, error: MOTIF_REFUS.piloter_interrupteurs };
+  }
   const parsed = basculeSchema.safeParse(input);
   if (!parsed.success) {
     const inconnu = parsed.error.issues.some((i) => i.path[0] === "lot");

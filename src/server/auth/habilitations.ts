@@ -107,7 +107,16 @@ export type ActeEngageant =
    * réservé à la DIRECTION seule. Le responsable qualité ajoute de la preuve ;
    * décider qu'une preuve close redevient modifiable n'est pas le même geste.
    */
-  | "rouvrir_dossier";
+  | "rouvrir_dossier"
+  /**
+   * Changer l'état d'un interrupteur `qualiopi.<lot>.actif` (écran « Interrupteurs
+   * Qualiopi »).
+   *
+   * 🔴 Passer un lot à « actif » le fait agir sur de VRAIS clients (convocations,
+   * accusés de réclamation…) : c'est une décision de direction. `editor` et
+   * `secretaire` passent `requireAdminWrite` et ne doivent pas pouvoir la prendre.
+   */
+  | "piloter_interrupteurs";
 
 /**
  * Les rôles du produit, du plus au moins étendu.
@@ -280,6 +289,7 @@ export const HABILITATIONS: Readonly<Record<ActeEngageant, ReadonlyArray<RoleAdm
   deposer_demande_financeur: ["super_admin", "admin"],
   revoquer_signature: ["super_admin", "admin"],
   rouvrir_dossier: ["super_admin", "admin"],
+  piloter_interrupteurs: ["super_admin", "admin"],
 };
 
 /**
@@ -313,6 +323,9 @@ export const MOTIF_REFUS: Readonly<Record<ActeEngageant, string>> = {
   rouvrir_dossier:
     "Rouvrir un dossier de session clos rend modifiable une preuve déjà constituée : acte réservé à la direction. " +
     "Adressez-vous au dirigeant ou à un administrateur, avec le motif de la correction.",
+  piloter_interrupteurs:
+    "Changer un interrupteur Qualiopi peut faire partir des e-mails à de vrais clients : " +
+    "acte réservé à la direction (administrateur). Demandez-lui de faire la bascule.",
 };
 
 /**
