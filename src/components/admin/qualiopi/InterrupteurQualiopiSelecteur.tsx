@@ -3,6 +3,7 @@
 
 import { useState, useTransition } from "react";
 
+import { CONFIRMATION_ACTIF_PAR_DEFAUT } from "@/server/qualiopi/socle/lots-interrupteurs";
 import type { EtatBasculeQualiopi } from "@/server/actions/qualiopi/interrupteurs-qualiopi";
 
 type Etat = "eteint" | "essai" | "actif";
@@ -23,9 +24,18 @@ interface Props {
     confirmerActif?: boolean;
   }) => Promise<EtatBasculeQualiopi>;
   desactive: boolean;
+  /** Phrase propre au lot ; à défaut, le texte « vrais clients ». */
+  confirmationActif?: string | undefined;
 }
 
-export function InterrupteurQualiopiSelecteur({ lot, libelle, etat, action, desactive }: Props) {
+export function InterrupteurQualiopiSelecteur({
+  lot,
+  libelle,
+  etat,
+  action,
+  desactive,
+  confirmationActif = CONFIRMATION_ACTIF_PAR_DEFAUT,
+}: Props) {
   const [courant, setCourant] = useState<Etat>(etat);
   const [choix, setChoix] = useState<Etat>(etat);
   const [aConfirmer, setAConfirmer] = useState(false);
@@ -88,8 +98,7 @@ export function InterrupteurQualiopiSelecteur({ lot, libelle, etat, action, desa
       {aConfirmer ? (
         <div role="alertdialog" aria-label="Confirmer le passage à actif" className="text-right">
           <p className="admin-meta-small">
-            « {libelle} » agira sur de VRAIS clients, pas seulement sur les sessions d&apos;essai.
-            Confirmer le passage à « actif » ?
+            « {libelle} » {confirmationActif} Confirmer le passage à « actif » ?
           </p>
           <div className="flex justify-end gap-[var(--space-admin-2)]">
             <button

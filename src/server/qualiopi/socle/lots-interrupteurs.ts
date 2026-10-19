@@ -21,7 +21,17 @@ export interface LotInterrupteur {
   readonly libelle: string;
   /** Une phrase : ce que l'interrupteur allume. */
   readonly description: string;
+  /**
+   * Facultatif : phrase exacte affichée au second temps de la confirmation « actif »,
+   * à la place du texte par défaut (« agira sur de VRAIS clients… »). À renseigner
+   * pour un lot qui n'envoie rien à de vrais clients.
+   */
+  readonly confirmationActif?: string;
 }
+
+/** Texte de confirmation par défaut : le lot agit pour tous, donc sur de vrais clients. */
+export const CONFIRMATION_ACTIF_PAR_DEFAUT =
+  "agira sur de VRAIS clients, pas seulement sur les sessions d'essai.";
 
 export const LOTS_INTERRUPTEURS: ReadonlyArray<LotInterrupteur> = [
   {
@@ -29,6 +39,7 @@ export const LOTS_INTERRUPTEURS: ReadonlyArray<LotInterrupteur> = [
     libelle: "Mode essai (sessions de test)",
     description:
       "Permet de créer des sessions d'essai, jouées de bout en bout sans compter dans les chiffres ni sortir vers de vrais clients.",
+    confirmationActif: "ouvre la création de sessions d'essai ; aucun vrai client n'est touché.",
   },
   {
     lot: "recueil",
