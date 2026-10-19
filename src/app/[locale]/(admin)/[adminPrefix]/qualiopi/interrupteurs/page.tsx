@@ -16,6 +16,7 @@ import { AdminBadge } from "@/components/admin/ui/AdminBadge";
 import { AccesRefuse } from "@/components/admin/ui/AccesRefuse";
 import { InterrupteurQualiopiSelecteur } from "@/components/admin/qualiopi/InterrupteurQualiopiSelecteur";
 import { gardePage } from "@/server/auth/garde-page";
+import { MOTIF_REFUS, peutEngager } from "@/server/auth/habilitations";
 import { basculerInterrupteurQualiopiAction } from "@/server/actions/qualiopi/interrupteurs-qualiopi";
 import { lireLignesInterrupteurs } from "@/server/qualiopi/socle/lire-interrupteurs";
 
@@ -36,6 +37,8 @@ export default async function QualiopiInterrupteursPage({ params }: PageProps) {
     return <AccesRefuse motif={acces.motif} retourHref={`/${locale}/${adminPrefix}`} />;
   }
   const accesEcriture = await gardePage("ecriture", `/${locale}/${adminPrefix}/login`);
+  const peutPiloter =
+    accesEcriture.autorise && peutEngager(accesEcriture.role, "piloter_interrupteurs");
   const lignes = await lireLignesInterrupteurs();
 
   return (
@@ -51,6 +54,11 @@ export default async function QualiopiInterrupteursPage({ params }: PageProps) {
           </strong>{" "}
           Une clé absente vaut « éteint ». Chaque changement est inscrit au journal d&apos;activité.
         </p>
+        {!peutPiloter ? (
+          <p role="note" className="admin-meta-small">
+            <strong>Lecture seule.</strong> {MOTIF_REFUS.piloter_interrupteurs}
+          </p>
+        ) : null}
         <table className="admin-table">
           <thead>
             <tr>
@@ -82,8 +90,9 @@ export default async function QualiopiInterrupteursPage({ params }: PageProps) {
                     lot={l.lot}
                     libelle={l.libelle}
                     etat={l.etat}
+                    confirmationActif={l.confirmationActif}
                     action={basculerInterrupteurQualiopiAction}
-                    desactive={!accesEcriture.autorise}
+                    desactive={!peutPiloter}
                   />
                 </td>
               </tr>
