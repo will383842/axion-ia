@@ -131,17 +131,11 @@ describe("🔴 contre-témoins — ne pas trop restreindre", () => {
   });
 });
 
-describe("idsLiesALaSession — les accès portail des stagiaires font partie du dossier", () => {
-  it("rend aussi les identifiants PortailAcces (e-mail du lien d'accès)", async () => {
+describe("idsLiesALaSession — les accès portail n'appartiennent à aucune session", () => {
+  it("n'inclut JAMAIS les PortailAcces", async () => {
     sessionFindUnique.mockResolvedValue({
       id: "sess-1",
-      enrollments: [
-        {
-          id: "enr-1",
-          questionnaires: [{ id: "q-1" }],
-          trainee: { portailAcces: [{ id: "acces-1" }, { id: "acces-2" }] },
-        },
-      ],
+      enrollments: [{ id: "enr-1", questionnaires: [{ id: "q-1" }] }],
       documents: [{ id: "doc-1" }],
       sessionFormateurs: [],
       missionsFormateur: [],
@@ -149,6 +143,26 @@ describe("idsLiesALaSession — les accès portail des stagiaires font partie du
 
     const ids = await idsLiesALaSession("sess-1");
 
-    expect(ids).toEqual(["sess-1", "enr-1", "q-1", "acces-1", "acces-2", "doc-1"]);
+    expect(ids).toEqual(["sess-1", "enr-1", "q-1", "doc-1"]);
+    const select = (sessionFindUnique.mock.calls.at(-1)?.[0] as { select: unknown }).select;
+    expect(JSON.stringify(select)).not.toContain("portailAcces");
+  });
+
+  it("deux sessions du même stagiaire : aucun identifiant d'accès dans l'une ni l'autre", async () => {
+    const lire = (id: string) => ({
+      id,
+      enrollments: [{ id: `enr-${id}`, questionnaires: [] }],
+      documents: [],
+      sessionFormateurs: [],
+      missionsFormateur: [],
+    });
+    sessionFindUnique.mockResolvedValueOnce(lire("A")).mockResolvedValueOnce(lire("B"));
+
+    const a = await idsLiesALaSession("A");
+    const b = await idsLiesALaSession("B");
+
+    expect([...a, ...b].some((x) => x.startsWith("acces"))).toBe(false);
+    expect(a).toEqual(["A", "enr-A"]);
+    expect(b).toEqual(["B", "enr-B"]);
   });
 });

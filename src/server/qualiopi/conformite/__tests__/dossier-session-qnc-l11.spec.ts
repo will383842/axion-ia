@@ -64,7 +64,35 @@ vi.mock("@/server/qualiopi/dossier-session/chargement", async (importOriginal) =
   chargerDossierSession: vi.fn(),
 }));
 
+vi.mock("@/server/qualiopi/positionnement/pieces-remplies", () => ({
+  produirePiecesPositionnementRempli: vi.fn(async () => ({
+    pieces: [
+      {
+        chemin: "positionnements/2026-06-10_dupont-alice_1a2b3c4d.pdf",
+        buffer: Buffer.from("%PDF pos"),
+        saisieOrganisme: true,
+      },
+    ],
+    echecs: [{ chemin: "positionnements/x.pdf", motif: "rendu", saisieOrganisme: false }],
+  })),
+}));
+vi.mock("@/server/qualiopi/satisfaction/pieces-remplies", () => ({
+  produirePiecesSatisfactionRemplie: vi.fn(async () => ({
+    pieces: [
+      {
+        chemin: "satisfactions/2026-06-10_dupont-alice_5e6f_a-chaud.pdf",
+        buffer: Buffer.from("%PDF sat"),
+        saisieOrganisme: false,
+        moment: "chaud",
+      },
+    ],
+    echecs: [],
+  })),
+}));
+
 import { prisma } from "@/lib/prisma";
+import { produirePiecesPositionnementRempli } from "@/server/qualiopi/positionnement/pieces-remplies";
+import { produirePiecesSatisfactionRemplie } from "@/server/qualiopi/satisfaction/pieces-remplies";
 import { lireEtatDossierSession } from "@/server/qualiopi/dossier-session/interrupteur";
 import { chargerDossierSession } from "@/server/qualiopi/dossier-session/chargement";
 import { MENTION_RESERVE_REFERENT } from "@/server/qualiopi/dossier-session/blocs";
@@ -246,5 +274,55 @@ describe("essai : le banc d'essai seul", () => {
     const r = await genererDossierSessionZip("s1", { lecteur: { role: "admin" } });
     expect(r!.dossierComplet).toBe(true);
     expect(r!.nbDocuments).toBe(1);
+  });
+});
+
+describe("🔴 modèles vierges et questionnaires remplis (dossier à 100 %)", () => {
+  const avecVierge = () => {
+    const sess = session();
+    sess.documents.push({
+      id: "pv",
+      type: "positionnement",
+      numero: "AXI-POS-2026-001",
+      createdAt: CREE,
+      remplaceeParNumero: null,
+      metadata: {},
+    } as never);
+    return sess;
+  };
+
+  it("actif : le modèle vierge n'est pas joint, il est nommé, et les pièces remplies sont versées", async () => {
+    mockEtat.mockResolvedValue("actif");
+    mockSession.mockResolvedValue(avecVierge());
+    const r = await genererDossierSessionZip("s1", { lecteur: { role: "admin" } });
+    const { index, chemins } = await ouvrir(r!.base64);
+    expect(chemins).not.toContain("documents/positionnement/AXI-POS-2026-001.pdf");
+    expect(index).toContain(
+      "[MODÈLE VIERGE — non joint, non probant] positionnement/AXI-POS-2026-001",
+    );
+    expect(chemins).toContain(
+      "questionnaires-remplis/positionnements/2026-06-10_dupont-alice_1a2b3c4d.pdf",
+    );
+    expect(chemins).toContain(
+      "questionnaires-remplis/satisfactions/2026-06-10_dupont-alice_5e6f_a-chaud.pdf",
+    );
+    expect(index).toContain("(saisie par l'organisme)");
+    expect(index).toContain("positionnements/x.pdf");
+    expect(produirePiecesPositionnementRempli).toHaveBeenCalledWith("s1");
+    expect(produirePiecesSatisfactionRemplie).toHaveBeenCalledWith("s1");
+    // Le vierge ne rend pas « aucun PDF joint » : les deux autres sont joints.
+    expect(index).not.toContain("[ABSENT] positionnement");
+  });
+
+  it("éteint : le ZIP est inchangé, le vierge est toujours joint, rien n'est versé", async () => {
+    mockEtat.mockResolvedValue("eteint");
+    mockSession.mockResolvedValue(avecVierge());
+    const r = await genererDossierSessionZip("s1", { lecteur: { role: "admin" } });
+    const { index, chemins } = await ouvrir(r!.base64);
+    expect(chemins).toContain("documents/positionnement/AXI-POS-2026-001.pdf");
+    expect(index).not.toContain("MODÈLE VIERGE");
+    expect(chemins.some((c) => c.startsWith("questionnaires-remplis/"))).toBe(false);
+    expect(produirePiecesPositionnementRempli).not.toHaveBeenCalled();
+    expect(produirePiecesSatisfactionRemplie).not.toHaveBeenCalled();
   });
 });

@@ -243,6 +243,36 @@ export function motifNonProbante(metadata: unknown): string | null {
 }
 
 /**
+ * Un MODÈLE VIERGE : une pièce générée dont le contenu est un formulaire non
+ * rempli (positionnement, satisfaction) ou une grille sans aucune note. Il
+ * reste en base et au dossier (nommé), mais n'est ni probant ni joint : les
+ * réponses réelles sont dans les pièces « remplies ».
+ *
+ * `null` dans tous les autres cas, y compris une grille sans instantané
+ * (illisible) : on n'invente pas un constat. Pur — n'importe pas les constantes
+ * des producteurs (ils chargent React).
+ */
+export function motifModeleVierge(type: string, metadata: unknown): string | null {
+  if (type === "positionnement") {
+    return "questionnaire de positionnement VIERGE (formulaire non rempli)";
+  }
+  if (type === "satisfaction") {
+    return "questionnaire de satisfaction VIERGE (formulaire non rempli)";
+  }
+  if (type === "grille_evaluation") {
+    const data = objet(objet(objet(metadata)?.["renderData"])?.["data"]);
+    const competences = data?.["competences"];
+    if (!Array.isArray(competences)) return null;
+    const notee = competences.some((c) => {
+      const note = objet(c)?.["note"];
+      return note !== undefined && note !== null;
+    });
+    return notee ? null : "grille d'évaluation VIERGE (aucune compétence notée)";
+  }
+  return null;
+}
+
+/**
  * Une pièce REMPLACÉE : sa contre-trace `remplaceeParNumero` est posée. Elle
  * reste au dossier, étiquetée — un original remplacé est une trace de ce qui
  * a été remis à l'époque —, mais elle ne compte plus dans aucun voyant.

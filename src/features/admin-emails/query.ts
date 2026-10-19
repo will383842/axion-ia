@@ -159,8 +159,10 @@ export type ChargementEmails = {
  * On ratisse les quatre familles d'entités qu'une session engendre : ses
  * inscriptions (convocation, rappels, émargement, attestation), ses pièces
  * (convention, devis, facture, exemplaire signé), ses questionnaires
- * (positionnement, satisfaction, suivi à froid), ses missions de formateur et
- * les accès au portail de ses stagiaires (`PortailAcces`).
+ * (positionnement, satisfaction, suivi à froid) et ses missions de formateur.
+ * Les accès au portail visent un stagiaire, pas une session : hors dossier
+ * (cf. `rattachement-emails.ts:10-12`) — sinon le dossier de la session B
+ * montrerait les accès de la session A du même stagiaire.
  *
  * ⚠️ Rend `[]` si la session n'existe pas — et l'appelant doit alors filtrer sur
  * une liste VIDE plutôt que de ne pas filtrer du tout. Un identifiant erroné
@@ -176,7 +178,6 @@ export async function idsLiesALaSession(sessionId: string): Promise<string[]> {
         select: {
           id: true,
           questionnaires: { select: { id: true } },
-          trainee: { select: { portailAcces: { select: { id: true } } } },
         },
       },
       documents: { select: { id: true } },
@@ -190,8 +191,6 @@ export async function idsLiesALaSession(sessionId: string): Promise<string[]> {
   for (const e of s.enrollments) {
     ids.push(e.id);
     for (const q of e.questionnaires) ids.push(q.id);
-    // L'accès au portail du stagiaire (e-mail du lien) : rattaché via `PortailAcces`.
-    for (const a of e.trainee.portailAcces) ids.push(a.id);
   }
   for (const d of s.documents) ids.push(d.id);
   for (const f of s.sessionFormateurs) ids.push(f.id);

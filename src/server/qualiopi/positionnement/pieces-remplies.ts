@@ -111,12 +111,18 @@ export function jourParis(instant: Date): string {
   }).format(instant);
 }
 
-export async function produirePiecesPositionnementRempli(): Promise<{
+/**
+ * `sessionId` (facultatif) borne la liste à UNE session — le dossier d'une
+ * session n'a pas à porter les pièces des autres. Sans argument, le comportement
+ * est inchangé (ZIP de l'organisme).
+ */
+export async function produirePiecesPositionnementRempli(sessionId?: string): Promise<{
   pieces: PiecePositionnementRempli[];
   echecs: EchecPositionnementRempli[];
 }> {
+  const w = wherePositionnementRempli();
   const lignes = await prisma.questionnaire.findMany({
-    where: wherePositionnementRempli(),
+    where: sessionId === undefined ? w : { ...w, enrollment: { ...w.enrollment, sessionId } },
     select: {
       id: true,
       reponduAt: true,

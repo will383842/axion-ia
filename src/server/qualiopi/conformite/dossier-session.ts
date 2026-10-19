@@ -76,7 +76,7 @@ import {
   type LecteurDossier,
 } from "@/server/qualiopi/dossier-session/chargement";
 import { ecrireDossierComplet } from "@/server/qualiopi/dossier-session/ecrire-zip";
-import { remplaceePar } from "@/server/qualiopi/dossier-session/classement";
+import { motifModeleVierge, remplaceePar } from "@/server/qualiopi/dossier-session/classement";
 import {
   MENTION_RESERVE_REFERENT,
   lecteurEstReferentHandicap,
@@ -176,7 +176,15 @@ export async function genererDossierSessionZip(
         where: { annuleeAt: null },
         // `remplaceeParNumero` : chantier QNC, L11 — un original REMPLACÉ
         // (rectification sans annulation) sort des voyants, interrupteur allumé.
-        select: { id: true, type: true, numero: true, createdAt: true, remplaceeParNumero: true },
+        select: {
+          id: true,
+          type: true,
+          numero: true,
+          createdAt: true,
+          remplaceeParNumero: true,
+          // Chantier QNC — repère les modèles VIERGES (dossier à 100 %).
+          metadata: true,
+        },
         orderBy: { createdAt: "asc" },
       },
       enrollments: {
@@ -669,8 +677,15 @@ export async function genererDossierSessionZip(
   }
 
   let joints = 0;
+  let vierges = 0;
   index.push("", `Documents (${documents.length}) :`);
   for (const doc of documents) {
+    // Un modèle VIERGE n'est ni probant ni joint : nommé, jamais supprimé.
+    if (dossierActif && motifModeleVierge(doc.type, doc.metadata) !== null) {
+      index.push(`  [MODÈLE VIERGE — non joint, non probant] ${doc.type}/${doc.numero}`);
+      vierges += 1;
+      continue;
+    }
     // Clé alignée sur l'écriture (`documents-service.ts` utilise l'année locale
     // au moment de la génération).
     const cle = documentPdfKey(doc);
@@ -695,10 +710,45 @@ export async function genererDossierSessionZip(
   // ⚠️ La condition porte sur les pièces EN VIGUEUR, et c'est le point : une
   // session dont toutes les pièces sont annulées n'a plus rien à joindre. Faire
   // porter le chapeau au stockage enverrait chercher une panne qui n'existe pas.
-  if (documents.length > 0 && joints === 0) {
+  if (documents.length - vierges > 0 && joints === 0) {
     avertissements.push(
       `⚠️ ${documents.length} document${documents.length > 1 ? "s" : ""} en base mais AUCUN PDF joint — vérifiez le stockage R2.`,
     );
+  }
+
+  // ── 3 bis. Questionnaires REMPLIS de la session (dossier à 100 %) ──
+  // Les PDF remplis (positionnement, satisfaction) de CETTE session seulement.
+  if (dossierActif) {
+    try {
+      // Import tardif : les producteurs chargent le rendu PDF, inutile éteint.
+      const [{ produirePiecesPositionnementRempli }, { produirePiecesSatisfactionRemplie }] =
+        await Promise.all([
+          import("@/server/qualiopi/positionnement/pieces-remplies"),
+          import("@/server/qualiopi/satisfaction/pieces-remplies"),
+        ]);
+      const [positionnements, satisfactions] = await Promise.all([
+        produirePiecesPositionnementRempli(sessionId),
+        produirePiecesSatisfactionRemplie(sessionId),
+      ]);
+      const pieces = [...positionnements.pieces, ...satisfactions.pieces];
+      index.push("", `Questionnaires remplis (${pieces.length}) :`);
+      for (const p of pieces) {
+        zip.file(`questionnaires-remplis/${p.chemin}`, p.buffer);
+        index.push(
+          `  [OK]     questionnaires-remplis/${p.chemin}${p.saisieOrganisme ? " (saisie par l'organisme)" : ""}`,
+        );
+      }
+      for (const e of [...positionnements.echecs, ...satisfactions.echecs]) {
+        avertissements.push(
+          `⚠️ Questionnaire rempli non rendu (${e.chemin}) : ${e.motif}. Le dossier est incomplet sur ce point.`,
+        );
+        index.push(`  [ABSENT] questionnaires-remplis/${e.chemin}`);
+      }
+    } catch {
+      avertissements.push(
+        "⚠️ Les questionnaires remplis de la session n'ont pas pu être produits : ce n'est PAS un constat d'absence.",
+      );
+    }
   }
 
   // ── 3 ter. La feuille d'émargement À JOUR ──

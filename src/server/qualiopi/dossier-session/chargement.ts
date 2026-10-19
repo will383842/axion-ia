@@ -29,12 +29,13 @@ import { idsLiesALaSession } from "@/features/admin-emails/query";
 import { libelleStatutLigne } from "@/features/admin-emails/statut-libelles";
 import { documentJointAuDossierAudit } from "@/server/qualiopi/conformite/hors-dossier-audit";
 import { colonneDeclarationDisponible } from "@/server/qualiopi/adaptation/colonne-declaration";
-import { dateHeureParis } from "@/server/qualiopi/sessions/verrou-dossier-pur";
+import { dateHeureParis, dateParis } from "@/server/qualiopi/sessions/verrou-dossier-pur";
 
 import {
   destinataireEmail,
   destinatairePiece,
   emailHorsDossier,
+  motifModeleVierge,
   motifNonProbante,
   remplaceePar,
   type Canal,
@@ -153,6 +154,13 @@ export async function chargerDossierSession(
         remplaceeParNumero: true,
         metadata: true,
         traineeId: true,
+        exemplaireSigneKey: true,
+        signatures: {
+          where: { revokedAt: null },
+          select: { signeAt: true },
+          orderBy: { signeAt: "desc" },
+          take: 1,
+        },
       },
     });
     for (const p of pieces) {
@@ -174,6 +182,11 @@ export async function chargerDossierSession(
       }
       const nonProbante = motifNonProbante(p.metadata);
       if (nonProbante !== null) etiquettes.push(`Non probante — ${nonProbante}`);
+      // Un modèle vierge reste nommé mais n'est ni probant ni joint.
+      const vierge = motifModeleVierge(p.type, p.metadata);
+      if (vierge !== null) {
+        etiquettes.push(`Modèle vierge — non probant, non joint : ${vierge}`);
+      }
       const canal: Canal = p.envoyeAt !== null ? "email" : "autre";
       elements.push({
         cle: `piece:${p.id}`,
@@ -189,14 +202,81 @@ export async function chargerDossierSession(
         etiquettes,
         essai: essaiInscription(inscription?.id),
         // Une pièce remplacée OU annulée ne compte dans aucun voyant.
-        horsVoyants: par !== null || p.annuleeAt !== null,
+        horsVoyants: par !== null || p.annuleeAt !== null || vierge !== null,
         // Annulée sans remplaçant : nommée, jamais jointe (doctrine du ZIP).
-        cheminPdf: p.annuleeAt !== null && par === null ? null : cheminPdfPiece(p, par !== null),
-        cleStockage: cleStockagePiece(p),
+        cheminPdf:
+          vierge !== null || (p.annuleeAt !== null && par === null)
+            ? null
+            : cheminPdfPiece(p, par !== null),
+        cleStockage: vierge !== null ? null : cleStockagePiece(p),
       });
+      // L'exemplaire SIGNÉ est versé tel quel, à côté de la pièce d'origine.
+      if (p.exemplaireSigneKey && p.annuleeAt === null) {
+        const signeAt = p.signatures[0]?.signeAt ?? null;
+        elements.push({
+          cle: `piece-signee:${p.id}`,
+          nature: "piece",
+          destinataire: destinatairePiece(p.type),
+          canal: "email",
+          date: signeAt ?? p.createdAt,
+          titre: `${p.numero} (${p.type}) — exemplaire signé`,
+          details: [
+            ...(inscription !== undefined ? [`Stagiaire : ${nomStagiaire(inscription)}`] : []),
+          ],
+          etiquettes: [
+            signeAt !== null ? `Signé le ${dateParis(signeAt)}` : "date de signature non retrouvée",
+          ],
+          essai: essaiInscription(inscription?.id),
+          horsVoyants: false,
+          cheminPdf: `documents/signes/${p.type}/${p.numero}.pdf`,
+          cleStockage: p.exemplaireSigneKey,
+        });
+      }
     }
   } catch {
     avertissements.push(`⚠️ Les pièces de la session n'ont pas pu être lues : ${NON_CONSTAT}`);
+  }
+
+  // ── Questionnaires remplis (le PDF rempli est versé au ZIP) ────────────────
+  // ⚠️ Jamais `reponses` : donnée de santé possible.
+  try {
+    const remplis = await prisma.questionnaire.findMany({
+      where: {
+        enrollment: { sessionId },
+        reponduAt: { not: null },
+        type: { in: ["positionnement", "satisfaction_chaud", "satisfaction_froid"] },
+      },
+      select: { id: true, type: true, reponduAt: true, enrollmentId: true },
+    });
+    for (const q of remplis) {
+      if (q.reponduAt === null) continue;
+      const inscription = inscriptionParId.get(q.enrollmentId);
+      elements.push({
+        cle: `questionnaire-rempli:${q.id}`,
+        nature: "piece",
+        destinataire: "stagiaire",
+        canal: "espace",
+        date: q.reponduAt,
+        titre:
+          q.type === "positionnement"
+            ? "Positionnement rempli"
+            : q.type === "satisfaction_chaud"
+              ? "Satisfaction à chaud remplie"
+              : "Satisfaction à froid remplie",
+        details: [
+          ...(inscription !== undefined ? [`Stagiaire : ${nomStagiaire(inscription)}`] : []),
+          "PDF rempli : dossier questionnaires-remplis/ du ZIP",
+        ],
+        etiquettes: [],
+        essai: essaiInscription(q.enrollmentId),
+        horsVoyants: false,
+        cheminPdf: null,
+      });
+    }
+  } catch {
+    avertissements.push(
+      `⚠️ Les questionnaires remplis de la session n'ont pas pu être lus : ${NON_CONSTAT}`,
+    );
   }
 
   // ── E-mails ───────────────────────────────────────────────────────────────
