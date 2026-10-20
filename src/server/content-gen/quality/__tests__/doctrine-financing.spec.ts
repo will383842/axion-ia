@@ -1,7 +1,7 @@
 /**
  * Tests — garde-fous FINANCEMENT du doctrine-check (anti-fabrication).
  *
- * Axion-IA (certifié Qualiopi) peut mentionner OPCO + France Travail, mais le
+ * Axion-IA peut mentionner OPCO + France Travail (jamais Qualiopi), mais le
  * contenu généré ne doit JAMAIS : citer le CPF, sur-promettre un financement
  * « 100 % / automatique / gratuit / intégral », ni exposer un numéro légal.
  * On mocke `bannedPhrase.findMany` → [] pour isoler ces règles.
@@ -41,6 +41,17 @@ describe("doctrine-check — financement interdit", () => {
 
   it("BLOQUE une promesse de gratuité", async () => {
     expect(isBlocked(await checkDoctrine("Une formation gratuite grâce à votre OPCO."))).toBe(true);
+  });
+
+  it("BLOQUE toute mention de Qualiopi (label non obtenu, zéro trace publique)", async () => {
+    for (const t of [
+      "Notre organisme est certifié Qualiopi.",
+      "Une formation éligible grâce à Qualiopi.",
+      "Le référentiel QUALIOPI impose un questionnaire.",
+      "indicateur Qualiopi 8",
+    ]) {
+      expect(isBlocked(await checkDoctrine(t)), t).toBe(true);
+    }
   });
 
   it("BLOQUE un numéro de certificat Qualiopi exposé", async () => {

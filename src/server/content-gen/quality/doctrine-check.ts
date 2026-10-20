@@ -64,20 +64,27 @@ const FABRICATED_STAT_PATTERNS: ReadonlyArray<{ re: RegExp; reason: string }> = 
   },
 ];
 
-// Financement — garde-fous doctrine (Phase B). Axion-IA est certifié Qualiopi →
-// OPCO + France Travail sont mobilisables et PEUVENT être mentionnés (registre
-// « éligible / prise en charge possible »). Mais 3 familles restent INTERDITES
-// dans tout contenu généré :
-//  (a) le CPF (Qualiopi ne suffit pas : exige RNCP/RS + EDOF non détenus) ;
+// Financement — garde-fous doctrine (Phase B). Axion-IA n'est PAS certifiée
+// Qualiopi (ordre de Will, 19/10/2026 : zéro trace publique) : le mot est bloqué
+// dans tout contenu généré. OPCO + France Travail PEUVENT être mentionnés
+// (registre « prise en charge possible »). 4 familles sont INTERDITES :
+//  (a) le CPF (exige RNCP/RS + EDOF non détenus) ;
 //  (b) les sur-promesses « automatique / 100 % / gratuit » (le versement dépend
 //      toujours de l'accord de l'OPCO ou de France Travail — C. conso L121-2) ;
-//  (c) les numéros légaux (NDA, certificat Qualiopi) — jamais dans le public.
+//  (c) les numéros légaux (NDA, certificat) — jamais dans le public ;
+//  (d) toute mention de « Qualiopi » (label non obtenu : fausse déclaration).
 // SSOT des formulations autorisées : `server/qualiopi/config/financing.ts`.
 const FINANCING_FORBIDDEN_PATTERNS: ReadonlyArray<{
   re: RegExp;
   severity: "block" | "warn";
   reason: string;
 }> = [
+  {
+    re: /qualiopi/gi,
+    severity: "block",
+    reason:
+      "« Qualiopi » cité dans un contenu généré. Axion-IA n'est pas certifiée : aucune mention publique (ordre de Will, 19/10/2026). Retirer le mot.",
+  },
   {
     re: /\bCPF\b|compte\s+personnel\s+de\s+formation|mon\s+compte\s+formation|moncompteformation/gi,
     severity: "block",

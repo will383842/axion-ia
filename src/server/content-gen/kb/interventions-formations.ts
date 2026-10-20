@@ -611,7 +611,7 @@ export const KB_INTERVENTIONS_FORMATIONS: readonly KbFact[] = [
     // grounding des articles générés ET le chatbot public — l'allégation y devient
     // auto-publiée. Réécrit en énoncé qualitatif, sans chiffre de résultat ni
     // référence aux avis clients (retirés le 2026-10-09).
-    text: "Chaque formation Axion-IA est précédée d'un questionnaire de positionnement envoyé aux participants, permettant d'adapter le contenu pédagogique au niveau réel et aux cas d'usage propres à l'équipe (indicateur Qualiopi 8).",
+    text: "Chaque formation Axion-IA est précédée d'un questionnaire de positionnement envoyé aux participants, permettant d'adapter le contenu pédagogique au niveau réel et aux cas d'usage propres à l'équipe.",
     source: "Axion-IA — Méthode pédagogique v2.0",
     sourceUrl: "https://axion-ia.com/interventions-formations",
     verifiedAt: "2026-05-22",
