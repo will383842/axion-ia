@@ -78,8 +78,7 @@ export function memoriserDernierElagage(r: RapportElagage, maintenant = new Date
 export function lireDernierElagage(): DernierElagage | null {
   return (
     ((globalThis as unknown as Record<string, unknown>)[CLE_GLOBALE] as
-      | DernierElagage
-      | undefined) ?? null
+      DernierElagage | undefined) ?? null
   );
 }
 
