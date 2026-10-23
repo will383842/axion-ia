@@ -47,6 +47,8 @@ import { AlertesCritiques } from "./pilotage/AlertesCritiques";
 import { ApporteursEnAttenteSection } from "./pilotage/ApporteursEnAttenteSection";
 import { GuideLettreSection } from "./pilotage/GuideLettreSection";
 import type { TuileGuideLettre } from "@/server/newsletter/console";
+import { EtatServeurSection } from "./pilotage/EtatServeurSection";
+import type { EtatServeur } from "@/server/admin/etat-serveur";
 import { CalendrierPrevisionnel } from "./pilotage/CalendrierPrevisionnel";
 import { ActiviteSection } from "./pilotage/ActiviteSection";
 import { FormateursSection } from "./pilotage/FormateursSection";
@@ -122,6 +124,8 @@ interface DashboardV2Props {
   dashboard: PilotageDashboard;
   /** Lot L3 : la lettre et le guide. */
   guideLettre: TuileGuideLettre;
+  /** Disque du VPS et dernier nettoyage du cache des pages (2026-10-23). */
+  etatServeur: EtatServeur;
   activityRows: ReadonlyArray<{
     id: string;
     icone: ActivityIconKey;
@@ -136,6 +140,7 @@ export function DashboardV2({
   logoutAction,
   dashboard,
   guideLettre,
+  etatServeur,
   activityRows,
 }: DashboardV2Props): React.ReactElement {
   const base = `/fr/${adminPrefix}`;
@@ -211,6 +216,9 @@ export function DashboardV2({
 
       {/* 2 ter — Lettre et guide (lot L3). Une tuile, pas une alerte. */}
       <GuideLettreSection adminPrefix={adminPrefix} tuile={guideLettre} />
+
+      {/* 2 quater — État du serveur : disque du VPS (incident du 10/10). */}
+      <EtatServeurSection etat={etatServeur} />
 
       {/* 3 — Calendrier & prévisionnel (le cœur). */}
       <CalendrierPrevisionnel

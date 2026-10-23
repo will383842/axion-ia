@@ -10,6 +10,18 @@ export async function register() {
     // bundle edge élimine la branche entière. Posé hors de la branche, il était compilé
     // pour edge, qui refuse `node:crypto` (Gate B et Gate C rouges sur #1181).
     await alerterGrillePartnersOnBoot(() => import("@/server/partners-sync/grille/export"));
+    // Disque du VPS (incident du 2026-10-10, mesure du 2026-10-23) : le cache ISR
+    // grossissait de ~12 Go par jour sans jamais rien retirer. Même raison que
+    // ci-dessus pour l'import DANS la branche (`node:fs` refusé par edge).
+    try {
+      const { demarrerElagueurCacheIsr } = await import("@/server/cache/elagueur-cache-isr");
+      demarrerElagueurCacheIsr();
+    } catch (err) {
+      console.error(
+        "[cache-isr:elagage] démarrage impossible (le serveur démarre quand même) :",
+        err instanceof Error ? err.message : String(err),
+      );
+    }
   }
   if (process.env["NEXT_RUNTIME"] === "edge") {
     await import("./sentry.edge.config");
