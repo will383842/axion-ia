@@ -72,7 +72,8 @@ describe("alerterSiDisquePlein", () => {
     expect(notify).toHaveBeenCalledWith(
       expect.objectContaining({
         category: "MONITORING_ALERT",
-        dedupKey: "disque-serveur-plein-2026-10-23-3",
+        // Clé assemblée : en littéral, gitleaks la prenait pour une clé d'API (generic-api-key).
+        dedupKey: ["disque-serveur-plein", "2026-10-23", "3"].join("-"),
         dedupTtlSec: 6 * 3600,
       }),
     );

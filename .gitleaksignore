@@ -16,3 +16,8 @@
 
 # QNC L03 (recueil du besoin) : AUTH_SECRET de TEST fictif injecté par vi.stubEnv dans lancement.spec.ts.
 d0d8c2a0ba94fd66beee226362789b8d0037b940:src/server/qualiopi/recueil/__tests__/lancement.spec.ts:generic-api-key:21
+
+# PR #1630 (disque du VPS) : FAUX POSITIF, clé de dédoublonnage d'alerte en littéral
+# (`dedupKey: "disque-serveur-plein-2026-10-23-3"`) dans un test, remplacée par une
+# chaîne assemblée au commit suivant. L'historique ne se réécrit pas.
+563e385f843052edff4b42cfe8ca80650bf4eba2:src/server/admin/__tests__/etat-serveur.spec.ts:generic-api-key:75
