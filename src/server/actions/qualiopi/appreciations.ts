@@ -22,6 +22,7 @@ import {
   requireAdminRead,
   requireAdminWrite,
   requireAdminPublish,
+  donneesJournalQualiopi,
   logQualiopiActivity,
 } from "@/server/actions/qualiopi/_guards";
 import {
@@ -176,18 +177,24 @@ export async function marquerAppreciationHorsPreuveAction(input: {
   const parsed = marquerHorsPreuveSchema.safeParse(input);
   if (!parsed.success) return { error: "Données invalides" };
 
-  const r = await marquerHorsPreuve(parsed.data.appreciationId, parsed.data.motif, session.userId);
+  // Le journal est écrit dans la transaction du marquage (comme la bascule des
+  // interrupteurs) : pas de marque sans trace.
+  const entreeJournal = await donneesJournalQualiopi({
+    action: "qualiopi.appreciations.marquer_hors_preuve",
+    targetType: "Appreciation",
+    targetId: parsed.data.appreciationId,
+    changes: { motif: parsed.data.motif.trim() },
+    session,
+  });
+  const r = await marquerHorsPreuve(
+    parsed.data.appreciationId,
+    parsed.data.motif,
+    session.userId,
+    async (tx) => {
+      await tx.activityLog.create({ data: entreeJournal });
+    },
+  );
   if (!r.ok) return { error: r.raison };
-
-  if (!r.dejaMarquee) {
-    await logQualiopiActivity({
-      action: "qualiopi.appreciations.marquer_hors_preuve",
-      targetType: "Appreciation",
-      targetId: parsed.data.appreciationId,
-      changes: { motif: parsed.data.motif.trim() },
-      session,
-    });
-  }
   return { data: { dejaMarquee: r.dejaMarquee } };
 }
 
