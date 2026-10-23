@@ -10,6 +10,7 @@ import { redirect } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import { getPilotageDashboard, type PeriodePilotage } from "@/server/admin/pilotage-dashboard";
 import { lireTuileGuideLettre } from "@/server/newsletter/console";
+import { lireEtatServeur } from "@/server/admin/etat-serveur";
 import { DashboardV2 } from "./DashboardV2";
 // Refonte 2026-08-02 : `libelleAction` retombait sur la CLÉ BRUTE pour toute
 // action hors de sa table (« auth.2fa.setup_started » affiché tel quel en
@@ -90,11 +91,13 @@ export async function DashboardV2Wrapper({
   role,
   periode,
 }: DashboardV2WrapperProps): Promise<React.ReactElement> {
-  const [dashboard, activityRows, guideLettre] = await Promise.all([
+  const [dashboard, activityRows, guideLettre, etatServeur] = await Promise.all([
     getPilotageDashboard(periode, adminPrefix),
     lireActiviteRecente(),
     // Ne lève jamais (repli à zéro) : une tuile ne fait pas tomber l'accueil.
     lireTuileGuideLettre(),
+    // Ne lève jamais non plus (repli à `null`) : disque du VPS, incident du 10/10.
+    lireEtatServeur(),
   ]);
 
   return (
@@ -104,6 +107,7 @@ export async function DashboardV2Wrapper({
       logoutAction={logoutAction}
       dashboard={dashboard}
       guideLettre={guideLettre}
+      etatServeur={etatServeur}
       activityRows={activityRows.map((a) => {
         const { icone, texte } = decrireAction(a.action);
         return {
