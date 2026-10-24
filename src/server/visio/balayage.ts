@@ -342,25 +342,45 @@ export async function passerBalayage(
     creeraient: 0,
     rattacheraient: 0,
     doublons: [],
-    aClasser: null,
+    aClasser: { nombre: 0, raisons: {} },
   };
+  let fichesLues = false;
   await etape<void>("fiches-auto", undefined, async () => {
     fichesAuto = await assurerLesFichesProspectAuto(db);
+    fichesLues = true;
     if (fichesAuto.plantees > 0) throw new FicheAutoPlantee();
   });
-  // Les fiches créées avec un doute d'identité : une alerte par fiche, jamais une panne.
-  for (const d of fichesAuto.doublons) {
-    await etape<void>("fiches-auto-doublon", undefined, async () => {
-      await signalerDoublonPossible(db, d, {
-        notifier: deps.notifier,
-        maintenant,
-        ...(deps.creerAlerte ? { creer: deps.creerAlerte } : {}),
-      });
+  // Les fiches créées avec un doute d'identité : l'alerte est écrite avec la fiche (même
+  // transaction) ; ici on l'ENVOIE, tant qu'elle n'est pas partie. Jamais une panne.
+  await etape<void>("fiches-auto-doublon", undefined, async () => {
+    const en_attente = await db.alerteSysteme.findMany({
+      where: { code: "visio.doublon_possible", resolue: false, notifiedAt: null },
+      select: { cibleId: true, metadata: true },
+      take: 50,
     });
-  }
+    for (const a of en_attente) {
+      if (!a.cibleId) continue;
+      const proches =
+        a.metadata !== null &&
+        typeof a.metadata === "object" &&
+        typeof (a.metadata as Record<string, unknown>)["proches"] === "number"
+          ? ((a.metadata as Record<string, unknown>)["proches"] as number)
+          : 0;
+      await signalerDoublonPossible(
+        db,
+        { clientId: a.cibleId, proches },
+        {
+          notifier: deps.notifier,
+          maintenant,
+          ...(deps.creerAlerte ? { creer: deps.creerAlerte } : {}),
+        },
+      );
+    }
+  });
   // Les rendez-vous laissés à Will (refus de la porte, sans nom) : alerte PROPRE « N rendez-vous à classer », jamais une panne.
+  // (Coupé ou à blanc : nombre 0, donc l'alerte éventuelle est résolue. Passage en échec : on n'y touche pas.)
   const aClasser = fichesAuto.aClasser;
-  if (aClasser !== null) {
+  if (fichesLues) {
     await etape<void>("fiches-auto-alerte", undefined, async () => {
       await signalerRendezVousAClasser(db, aClasser, {
         notifier: deps.notifier,

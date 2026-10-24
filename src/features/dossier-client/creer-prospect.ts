@@ -52,6 +52,11 @@ export interface EntreeCreerProspect {
   readonly motifCreationForcee?: string | null;
   /** `null` : création AUTOMATIQUE au rendez-vous (`fiche-auto.ts`) — aucune signature de Will. */
   readonly parAdminId: string | null;
+  /**
+   * Écritures de l'appelant, DANS la transaction de la création (avant le COMMIT) : si
+   * elles échouent, la fiche n'existe pas (pas de fiche orpheline sans sa trace).
+   */
+  readonly apresCreation?: (tx: Tx, clientId: string) => Promise<void>;
 }
 
 export type ResultatCreerProspect =
@@ -186,6 +191,7 @@ export async function creerProspectDepuisRencontre(
       clientId: cree.id,
       parAdminId: e.parAdminId,
     });
+    await e.apresCreation?.(tx, cree.id);
     return { statut: "cree", clientId: cree.id, numero: cree.numero };
   });
 }

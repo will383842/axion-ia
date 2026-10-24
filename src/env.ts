@@ -87,6 +87,9 @@ export const env = createEnv({
     // de la liste blanche (décision de Will, 24/10/2026). Lu par le WORKER (balayage).
     // Actif SEULEMENT si "true" (comme DOSSIER_BALAYAGE_ENABLED) ; "essai" = à blanc
     // (journal de ce qui serait fait, rien d'écrit) ; absent ou "false" = coupé.
+    // ⚠️ La fiche auto tourne DANS le balayage du dossier client : elle ne fait rien si
+    // DOSSIER_BALAYAGE_ENABLED n'est pas "true" (visio-balayage-worker.ts), quel que
+    // soit DOSSIER_FICHE_AUTO. Il faut donc les DEUX, plus DOSSIER_FICHE_AUTO_DEPUIS.
     // Sans DOSSIER_FICHE_AUTO_DEPUIS (date ISO d'activation) : rien n'est traité, et
     // le stock créé avant cette date reste à classer à la main.
     DOSSIER_FICHE_AUTO: z.enum(["true", "false", "essai"]).optional(),

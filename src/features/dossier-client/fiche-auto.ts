@@ -79,6 +79,7 @@ import { creerProspectDepuisRencontre, ErreurCreerProspect } from "./creer-prosp
 import {
   calculerProposition,
   chargerFichesPourRattachement,
+  ErreurRattachement,
   relancerApresRattachement,
   sirenDuNumeroSaisi,
   validerRattachement,
@@ -276,6 +277,8 @@ export interface OptionsFicheAuto {
   readonly relancer?: (rencontreId: string) => Promise<unknown>;
   /** À blanc : décide, n'écrit rien. */
   readonly essai?: boolean;
+  /** Date d'activation : une réservation CAPTÉE avant elle n'est jamais traitée. */
+  readonly depuis?: Date | null;
 }
 
 async function demandeLiee(db: Tx, submissionId: string | null): Promise<DemandeLiee | null> {
@@ -322,6 +325,7 @@ export async function assurerFicheProspectAuto(
     where: { id: r.calendlyEventId },
     select: {
       status: true,
+      capturedAt: true,
       inviteeName: true,
       inviteeEmail: true,
       rawPayload: true,
@@ -329,6 +333,10 @@ export async function assurerFicheProspectAuto(
     },
   });
   if (ev === null || ev.status !== "scheduled") return { statut: "ignoree" };
+  // Une rencontre créée APRÈS l'activation pour une réservation captée AVANT reste à Will.
+  if (options.depuis && ev.capturedAt.getTime() < options.depuis.getTime()) {
+    return { statut: "ignoree" };
+  }
 
   const invites = invitesSupplementaires(ev.rawPayload);
   const declaree = entrepriseDeclaree(ev.rawPayload);
@@ -373,9 +381,16 @@ export async function assurerFicheProspectAuto(
             changes: { origine: "automatique", clientId, motif },
           },
         });
+        await tx.rencontre.update({
+          where: { id: rencontreId },
+          data: { clientProposeId: null, motifProposition: null },
+        });
       });
-    } catch {
-      return await relireOuDoute(db, rencontreId, "rattachement_refuse");
+    } catch (e) {
+      if (e instanceof ErreurRattachement) {
+        return await relireOuDoute(db, rencontreId, "rattachement_refuse");
+      }
+      throw e;
     }
     return { statut: "rattachee", clientId, relanceEnEchec: await apresRangement() };
   }
@@ -413,6 +428,54 @@ export async function assurerFicheProspectAuto(
       type: identite.type,
       ville: identite.ville,
       parAdminId: null,
+      // Les traces et l'alerte « doublon possible » s'écrivent DANS la transaction de la
+      // création : jamais une fiche sans sa trace.
+      apresCreation: async (tx, clientId) => {
+        await tx.activityLog.create({
+          data: {
+            adminUserId: null,
+            action: ACTION_CREATION_AUTOMATIQUE,
+            targetType: "Client",
+            targetId: clientId,
+            changes: { origine: "automatique", rencontreId },
+          },
+        });
+        if (lies.length > 0) {
+          await tx.activityLog.create({
+            data: {
+              adminUserId: null,
+              action: ACTION_DOUBLON_POSSIBLE,
+              targetType: "Client",
+              targetId: clientId,
+              changes: {
+                origine: "automatique",
+                rencontreId,
+                proches: lies.map((l) => ({ ...l })),
+              },
+            },
+          });
+          // L'alerte (envoyée ensuite par le balayage, tant que `notifiedAt` est vide).
+          await tx.alerteSysteme.create({
+            data: {
+              code: "visio.doublon_possible",
+              niveau: "important",
+              titre: "Fiche prospect créée : doublon possible",
+              message:
+                `Une fiche prospect a été créée toute seule au rendez-vous, mais ${lies.length} ` +
+                `fiche(s) lui ressemble(nt). Le lien est dans son historique ; la fusion se fera ` +
+                `quand le SIRET sera renseigné.`,
+              cibleType: "Client",
+              cibleId: clientId,
+              metadata: { proches: lies.length },
+            },
+          });
+        }
+        // La proposition de la réservation est dépassée : la rencontre est rangée.
+        await tx.rencontre.update({
+          where: { id: rencontreId },
+          data: { clientProposeId: null, motifProposition: null },
+        });
+      },
     });
   } catch (e) {
     if (e instanceof ErreurCreerProspect) {
@@ -421,28 +484,6 @@ export async function assurerFicheProspectAuto(
     throw e;
   }
   if (cree.statut !== "cree") return await relireOuDoute(db, rencontreId, "refus_porte");
-  await db.activityLog.create({
-    data: {
-      adminUserId: null,
-      action: ACTION_CREATION_AUTOMATIQUE,
-      targetType: "Client",
-      targetId: cree.clientId,
-      changes: { origine: "automatique", rencontreId },
-    },
-  });
-  if (lies.length > 0) {
-    // « Doublon possible » : la trace est dans l'historique de la NOUVELLE fiche, avec le lien
-    // vers chaque fiche proche. La fusion (au SIRET) est une autre PR.
-    await db.activityLog.create({
-      data: {
-        adminUserId: null,
-        action: ACTION_DOUBLON_POSSIBLE,
-        targetType: "Client",
-        targetId: cree.clientId,
-        changes: { origine: "automatique", rencontreId, proches: lies.map((l) => ({ ...l })) },
-      },
-    });
-  }
   return {
     statut: "creee",
     clientId: cree.clientId,
@@ -480,8 +521,8 @@ export interface BilanFichesAuto {
   readonly rattacheraient: number;
   /** Fiches créées à CE passage avec un doute d'identité (« doublon possible »). */
   readonly doublons: ReadonlyArray<{ readonly clientId: string; readonly proches: number }>;
-  /** Ce qui attend Will (doutes déjà vus compris) ; `null` hors mode actif. */
-  readonly aClasser: { readonly nombre: number; readonly raisons: Record<string, number> } | null;
+  /** Ce qui attend Will (doutes déjà vus compris) ; 0 hors mode actif. */
+  readonly aClasser: { readonly nombre: number; readonly raisons: Record<string, number> };
 }
 
 const BILAN_VIDE: BilanFichesAuto = {
@@ -494,7 +535,8 @@ const BILAN_VIDE: BilanFichesAuto = {
   creeraient: 0,
   rattacheraient: 0,
   doublons: [],
-  aClasser: null,
+  // Coupé ou à blanc : plus rien n'attend, l'alerte « à classer » éventuelle est résolue.
+  aClasser: { nombre: 0, raisons: {} },
 };
 
 /** Les doutes déjà vus : leurs rencontres et leur raison. */
@@ -550,7 +592,7 @@ export async function assurerLesFichesProspectAuto(
   const doublons: Array<{ clientId: string; proches: number }> = [];
   for (const cand of candidates) {
     try {
-      const issue = await assurerFicheProspectAuto(db, cand.id, { ...options, essai });
+      const issue = await assurerFicheProspectAuto(db, cand.id, { ...options, essai, depuis });
       if (issue.statut === "creee") {
         c.creees += 1;
         if (issue.proches.length > 0) {
@@ -580,7 +622,7 @@ export async function assurerLesFichesProspectAuto(
     }
   }
 
-  let aClasser: BilanFichesAuto["aClasser"] = null;
+  let aClasser: BilanFichesAuto["aClasser"] = { nombre: 0, raisons: {} };
   if (!essai) {
     const tous = [...vus, ...(essai ? [] : nouveaux)];
     const ouverts =
@@ -590,6 +632,8 @@ export async function assurerLesFichesProspectAuto(
               id: { in: tous.map((t) => t.id) },
               clientId: null,
               rattachementStatut: { in: ["a_classer", "propose"] },
+              // Un rendez-vous annulé ou absent n'attend plus personne.
+              OR: [{ statut: null }, { statut: { notIn: ["annule", "absent"] } }],
             },
             select: { id: true },
           })

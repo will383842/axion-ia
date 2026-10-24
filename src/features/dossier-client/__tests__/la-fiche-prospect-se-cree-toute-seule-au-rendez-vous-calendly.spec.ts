@@ -220,6 +220,8 @@ describe("la fiche prospect se crée toute seule au rendez-vous Calendly", () =>
     const r = rencontreDe(base, rencontres[0]!);
     expect(r).toMatchObject({ clientId: existante["id"], rattachementStatut: "valide" });
     expect(r?.["rattacheParId"]).toBeNull();
+    // La proposition de la réservation est dépassée : rangée, plus « proposée ».
+    expect(r).toMatchObject({ clientProposeId: null, motifProposition: null });
     expect(traces(base, "rencontre.rattachement_automatique")).toHaveLength(1);
     expect(appelsPorte).toHaveLength(0);
   });
@@ -364,6 +366,15 @@ describe("la fiche prospect se crée toute seule au rendez-vous Calendly", () =>
     expect(base.tables["client"] ?? []).toHaveLength(0);
   });
 
+  it("un rendez-vous devenu annulé n'attend plus personne : il sort du décompte « à classer »", async () => {
+    porte.refus = { statut: "motif_requis", proches: [], message: "connue" };
+    const { base, rencontres } = await scene([rendezVousCalendly()]);
+    expect((await passage(base)).aClasser?.nombre).toBe(1);
+    const r = rencontreDe(base, rencontres[0]!);
+    if (r) r["statut"] = "annule";
+    expect((await passage(base)).aClasser?.nombre).toBe(0);
+  });
+
   it("un doute déjà vu sort des candidats : il n'affame pas le passage suivant", async () => {
     porte.refus = { statut: "motif_requis", proches: [], message: "connue" };
     const { base } = await scene([rendezVousCalendly()]);
@@ -421,6 +432,19 @@ describe("la fiche prospect se crée toute seule au rendez-vous Calendly", () =>
 });
 
 describe("ce que la fiche automatique ne traite jamais", () => {
+  it("une réservation CAPTÉE avant l'activation, même si sa rencontre est créée après", async () => {
+    const { base, rencontres } = await scene([
+      rendezVousCalendly({
+        capturedAt: new Date("2026-09-20T08:00:00Z"),
+        rawPayload: payload({ entreprise: "Menuiserie Fictive" }),
+      }),
+    ]);
+    const bilan = await passage(base);
+    expect(bilan).toMatchObject({ creees: 0, rattachees: 0, doutes: 0 });
+    expect(base.tables["client"] ?? []).toHaveLength(0);
+    expect(rencontreDe(base, rencontres[0]!)).toMatchObject({ clientId: null });
+  });
+
   it("un rendez-vous annulé dans Calendly", async () => {
     const { base } = await scene([rendezVousCalendly({ status: "canceled" })]);
     const bilan = await passage(base);
@@ -487,6 +511,59 @@ describe("ce que la fiche automatique ne traite jamais", () => {
   });
 });
 
+describe("la trace et la fiche sont écrites ensemble", () => {
+  /** Une trace qui ne s'écrit pas : le journal refuse. */
+  const casserLeJournal = (base: BaseEnMemoire) => {
+    (base.client as Record<string, unknown>)["activityLog"] = {
+      findMany: async () => [],
+      create: async () => {
+        throw new Error("journal indisponible");
+      },
+    };
+  };
+
+  it("échec d'écriture de la trace : aucune fiche orpheline, la rencontre reste intacte", async () => {
+    const { base, rencontres } = await scene([
+      rendezVousCalendly({ rawPayload: payload({ entreprise: "Menuiserie Fictive" }) }),
+    ]);
+    casserLeJournal(base);
+    const bilan = await passage(base);
+    expect(bilan).toMatchObject({ creees: 0, plantees: 1 });
+    expect(base.tables["client"] ?? []).toHaveLength(0);
+    expect(base.tables["clientContact"] ?? []).toHaveLength(0);
+    expect(rencontreDe(base, rencontres[0]!)).toMatchObject({ clientId: null });
+  });
+
+  it("l'alerte « doublon possible » s'écrit avec la fiche, dans la même transaction", async () => {
+    const homonyme = fiche({ raisonSociale: "Menuiserie Fictive" });
+    const { base } = await scene(
+      [rendezVousCalendly({ rawPayload: payload({ entreprise: "Menuiserie Fictive" }) })],
+      { client: [homonyme] },
+    );
+    await passage(base);
+    const nouvelle = (base.tables["client"] ?? []).find((c) => c["id"] !== homonyme["id"]);
+    const alertes = base.tables["alerteSysteme"] ?? [];
+    expect(alertes).toHaveLength(1);
+    expect(alertes[0]).toMatchObject({
+      code: "visio.doublon_possible",
+      cibleId: nouvelle?.["id"],
+      notifiedAt: null,
+    });
+  });
+
+  it("une erreur autre qu'un refus de rattachement n'est pas avalée : le passage la compte", async () => {
+    const existante = fiche({
+      raisonSociale: "Atelier Existant",
+      contactEmail: "camille@exemple-fictif.fr",
+    });
+    const { base, rencontres } = await scene([rendezVousCalendly()], { client: [existante] });
+    casserLeJournal(base);
+    const bilan = await passage(base);
+    expect(bilan).toMatchObject({ rattachees: 0, doutes: 0, plantees: 1 });
+    expect(rencontreDe(base, rencontres[0]!)).toMatchObject({ clientId: null });
+  });
+});
+
 describe("l'interrupteur et l'essai à blanc", () => {
   it("actif seulement si DOSSIER_FICHE_AUTO vaut « true » ; « essai » est à blanc", () => {
     expect(modeFicheAuto({})).toBe("coupe");
@@ -535,7 +612,7 @@ describe("l'interrupteur et l'essai à blanc", () => {
       rattacheraient: 1,
       creees: 0,
       rattachees: 0,
-      aClasser: null,
+      aClasser: { nombre: 0, raisons: {} },
     });
     expect(base.tables["client"]).toHaveLength(1);
     expect(base.tables["activityLog"] ?? []).toHaveLength(0);
@@ -621,6 +698,28 @@ describe("le balayage appelle la fiche automatique", () => {
       (a) => a["code"] === "visio.rendez_vous_a_classer",
     );
     expect(alerte).toMatchObject({ resolue: true });
+  });
+
+  it("interrupteur coupé ou à blanc : l'alerte « à classer » encore ouverte est résolue", async () => {
+    for (const mode of ["false", "essai"]) {
+      vi.stubEnv("DOSSIER_FICHE_AUTO", mode);
+      const base = dossierEnMemoire({
+        calendlyEvent: [rendezVousCalendly()],
+        alerteSysteme: [
+          {
+            id: "a-classer",
+            code: "visio.rendez_vous_a_classer",
+            resolue: false,
+            cibleId: null,
+            metadata: { nombre: 2 },
+          },
+        ],
+      });
+      await passerBalayage(base.client as never, deps(base, []));
+      expect(base.tables["alerteSysteme"]?.find((a) => a["id"] === "a-classer")).toMatchObject({
+        resolue: true,
+      });
+    }
   });
 
   it("une rencontre qui plante n'arrête pas les autres, et la panne est signalée", async () => {
