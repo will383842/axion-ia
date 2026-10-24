@@ -19,6 +19,7 @@ const base = vi.hoisted(() => ({
   outbox: [] as Ligne[],
   client: null as unknown,
   apresCount: null as null | (() => void),
+  brouillons: 0,
 }));
 
 function correspond(l: Ligne, where: Record<string, unknown>): boolean {
@@ -92,7 +93,10 @@ vi.mock("@/lib/prisma", () => ({
       },
     },
     // Brouillons (2026-10-24) : l'envoi réussi supprime celui de la personne.
-    questionnaireAvantAuditBrouillon: { deleteMany: async () => ({ count: 0 }) },
+    questionnaireAvantAuditBrouillon: {
+      deleteMany: async () => ({ count: 0 }),
+      count: async () => base.brouillons,
+    },
     questionnaireAvantAuditEnvoi: {
       count: async ({ where }: { where: Ligne }) => {
         const n = base.e.filter((x) => correspond(x, where)).length;
@@ -103,9 +107,11 @@ vi.mock("@/lib/prisma", () => ({
         return n;
       },
       create: async ({ data }: { data: Ligne }) => {
-        base.e.push({ id: String(++base.seq), recuLe: new Date(), ...data });
+        base.e.push({ id: String(++base.seq), recuLe: new Date(), ecarteLe: null, ...data });
       },
       findMany: async ({ where }: { where: Ligne }) => base.e.filter((x) => correspond(x, where)),
+      findFirst: async ({ where }: { where: Ligne }) =>
+        base.e.find((x) => correspond(x, where)) ?? null,
       deleteMany: async ({ where }: { where: { recuLe: { lt: Date } } }) => {
         const avant = base.e.length;
         base.e = base.e.filter((x) => !((x["recuLe"] as Date) < where.recuLe.lt));
@@ -131,7 +137,7 @@ vi.mock("next/navigation", () => ({
 }));
 
 import { prisma as prismaMock } from "@/lib/prisma";
-import { POST, OPTIONS } from "@/app/api/questionnaire-preaudit/[id]/[jeton]/route";
+import { LIMITE_PAR_IP, POST, OPTIONS } from "@/app/api/questionnaire-preaudit/[id]/[jeton]/route";
 import { GET } from "@/app/questionnaire/preaudit/[id]/[jeton]/route";
 import { dechiffrerParole } from "@/lib/chiffrer-parole";
 import { jetonPreaudit } from "@/server/visio/questionnaire-en-ligne/jeton";
@@ -236,6 +242,7 @@ beforeEach(() => {
   base.e = [];
   base.outbox = [];
   base.apresCount = null;
+  base.brouillons = 0;
   base.client = prismaMock;
   vi.clearAllMocks();
   base.limite.mockResolvedValue({ allowed: true });
@@ -260,13 +267,34 @@ describe("réception des réponses", () => {
   it("corps trop gros : 413 (en-tête ET flux sans en-tête), rien d'écrit", async () => {
     allumer();
     const q = questionnaire();
-    // Une charge VALIDE de ~450 Ko : c'est bien la taille qui est refusée, pas la forme.
-    const gros = chargeDe(450_000);
+    // Une charge VALIDE de ~1,05 Mo : c'est bien la taille qui est refusée, pas la forme.
+    const gros = chargeDe(1_050_000);
     expect(Buffer.byteLength(gros, "utf8")).toBeGreaterThan(CHARGE_MAX_OCTETS);
     const n = String(Buffer.byteLength(gros, "utf8"));
-    expect((await post(q, gros, "", { "content-length": n })).status).toBe(413);
+    const r = await post(q, gros, "", { "content-length": n });
+    expect(r.status).toBe(413);
+    // Motif lisible, taille, plafond et quoi faire (jamais « connexion coupée »).
+    const corps = (await r.json()) as Record<string, unknown>;
+    expect(corps).toMatchObject({
+      ok: false,
+      motif: "charge_trop_grosse",
+      taille: Number(n),
+      plafond: CHARGE_MAX_OCTETS,
+    });
+    expect(String(corps["message"])).toMatch(/Gardez cette page ouverte.*PDF/);
     expect((await post(q, gros)).status).toBe(413);
     expect(base.e).toHaveLength(0);
+  });
+
+  it("« toutes cases remplies » (~470 Ko, jusqu'à ~950 Ko) : jamais refusé", async () => {
+    allumer();
+    const q = questionnaire();
+    for (const taille of [470_000, 950_000]) {
+      const c = chargeDe(taille);
+      const n = String(Buffer.byteLength(c, "utf8"));
+      expect((await post(q, c, "", { "content-length": n })).status).toBe(200);
+    }
+    expect(base.e).toHaveLength(2);
   });
 
   it("charge de ~300 Ko (sous le plafond de 400 Ko) : acceptée et gardée entière", async () => {
@@ -388,16 +416,80 @@ describe("réception des réponses", () => {
     expect(base.e).toHaveLength(0);
   });
 
-  it("la limite de 60 réponses par questionnaire est tenue", async () => {
+  it("la limite de 300 réponses est tenue, avec un refus DÉDIÉ (422, jamais 429)", async () => {
     allumer();
     const q = questionnaire();
+    expect(ENVOIS_MAX_PAR_QUESTIONNAIRE).toBeGreaterThanOrEqual(300);
     for (let i = 0; i < ENVOIS_MAX_PAR_QUESTIONNAIRE; i++) {
       base.e.push({ questionnaireId: q["id"], recuLe: new Date(), mode: "emp", donnees: "x" });
     }
-    expect((await post(q, CHARGE())).status).toBe(429);
+    const r0 = await post(q, CHARGE());
+    expect(r0.status).toBe(422);
+    const c = (await r0.json()) as Record<string, unknown>;
+    expect(c["motif"]).toBe("trop_de_reponses");
+    expect(String(c["message"])).not.toMatch(/connexion/i);
     expect(base.e).toHaveLength(ENVOIS_MAX_PAR_QUESTIONNAIRE);
-    const r = await enregistrerReponse(q as never, { mode: "emp", membre: null, json: CHARGE() });
+    const r = await enregistrerReponse(q as never, {
+      mode: "emp",
+      membre: null,
+      envoyeLe: null,
+      json: CHARGE(),
+    });
     expect(r).toBe("trop");
+  });
+
+  it("62 personnes (60 collaborateurs + dirigeant + référent) passent toutes, même IP, VRAIES limites", async () => {
+    allumer();
+    const q = questionnaire();
+    // Limiteur qui applique la configuration réelle (compteur par clé), au lieu de tout laisser passer.
+    const compteurs = new Map<string, number>();
+    base.limite.mockImplementation(async (cle: string, conf: { limit: number }) => {
+      const n = (compteurs.get(cle) ?? 0) + 1;
+      compteurs.set(cle, n);
+      return { allowed: n <= conf.limit };
+    });
+    for (let i = 0; i < 60; i++) {
+      expect((await post(q, CHARGE("emp", `membre${String(i).padStart(6, "0")}`))).status).toBe(
+        200,
+      );
+    }
+    expect((await post(q, CHARGE("main"))).status).toBe(200);
+    expect((await post(q, CHARGE("it", "referentit01"))).status).toBe(200);
+    expect(base.e).toHaveLength(62);
+    // Toutes derrière la même IP : le compteur IP a bien été consulté 62 fois.
+    expect(
+      Math.max(...[...compteurs.entries()].filter(([k]) => k.includes(":ip:")).map(([, n]) => n)),
+    ).toBe(62);
+    expect(LIMITE_PAR_IP.limit).toBeGreaterThanOrEqual(90);
+  });
+
+  it("renvoi IDENTIQUE (même envoyeLe) : 409 « déjà reçu », aucune seconde ligne, hors plafond", async () => {
+    allumer();
+    const q = questionnaire();
+    const c = JSON.stringify({
+      ...JSON.parse(CHARGE("emp", "membre000001")),
+      envoyeLe: "2026-10-24T12:00:00.000Z",
+    });
+    expect((await post(q, c)).status).toBe(200);
+    const r = await post(q, c);
+    expect(r.status).toBe(409);
+    expect(await r.json()).toEqual({ ok: true, motif: "deja_recu" });
+    expect(base.e).toHaveLength(1);
+    // Même `envoyeLe` mais contenu MODIFIÉ : jamais perdu, nouvelle ligne.
+    const modifiee = JSON.stringify({
+      ...JSON.parse(c),
+      donnees: { ...JSON.parse(c).donnees, ajout: "modifié" },
+    });
+    expect((await post(q, modifiee)).status).toBe(200);
+    expect(base.e).toHaveLength(2);
+    expect((await post(q, modifiee)).status).toBe(409);
+    expect(base.e).toHaveLength(2);
+    base.e.splice(1, 1);
+    // Une version CORRIGÉE (autre envoyeLe) est une nouvelle ligne : tout l'historique est gardé.
+    const corrigee = JSON.stringify({ ...JSON.parse(c), envoyeLe: "2026-10-24T12:05:00.000Z" });
+    expect((await post(q, corrigee)).status).toBe(200);
+    expect(base.e).toHaveLength(2);
+    expect(base.e[1]?.["envoyeLeNavigateur"]).toBe("2026-10-24T12:05:00.000Z");
   });
 
   it("répond en CORS à l'origine opaque du bac à sable, et à elle seule", async () => {
@@ -563,7 +655,7 @@ describe("les actions de la console", () => {
     // la ligne a disparu : le verrou ne trouve rien
     const r = await enregistrerReponse(
       { id: ancien["id"] as string },
-      { mode: "emp", membre: null, json: CHARGE() },
+      { mode: "emp", membre: null, envoyeLe: null, json: CHARGE() },
     );
     expect(r).toBe("ferme");
     expect(base.e).toHaveLength(0);
@@ -581,6 +673,20 @@ describe("les actions de la console", () => {
     expect(base.q[0]?.["id"]).toBe(q["id"]);
     expect(base.q[0]?.["html"]).toBe(HTML);
     expect(base.e).toHaveLength(1);
+  });
+
+  it("redépôt refusé quand un BROUILLON est en cours : rien n'est supprimé (point 6)", async () => {
+    const q = questionnaire();
+    base.brouillons = 1;
+    const url = await redirige(() =>
+      deposerQuestionnaireAction(
+        formulaire({ rencontreId: RENCONTRE, fichier: new File([HTML + " "], "q.html") }),
+      ),
+    );
+    expect(decodeURIComponent(url)).toContain("brouillon enregistré");
+    expect(base.q).toHaveLength(1);
+    expect(base.q[0]?.["id"]).toBe(q["id"]);
+    expect(base.q[0]?.["html"]).toBe(HTML);
   });
 
   it("envoyer et clore exigent l'accès aux échanges", async () => {

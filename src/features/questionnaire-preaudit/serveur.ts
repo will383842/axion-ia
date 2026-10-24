@@ -27,6 +27,7 @@ import {
   type ReponseLisible,
 } from "./donnees";
 import { validerHtml } from "./html";
+import { lireLaCharge } from "./lecture";
 
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/;
 
@@ -117,7 +118,10 @@ export interface ResultatDepot {
  *   · rien d'envoyé : remplacement sur place ;
  *   · déjà envoyé SANS aucune réponse (adresse fausse, e-mail seulement retenu en corbeille) :
  *     la ligne est recréée — nouvel identifiant, donc nouveau jeton : l'ancien lien meurt (404) ;
- *   · déjà envoyé AVEC au moins une réponse : refusé.
+ *   · déjà envoyé AVEC au moins une réponse : refusé ;
+ *   · déjà envoyé avec un BROUILLON en cours (quelqu'un remplit) : refusé aussi — la recréation
+ *     effacerait ce brouillon en cascade, et aucune donnée d'un client n'est supprimée sans que
+ *     Will l'ait décidé (audit des données du 24/10/2026, point 6).
  *
  * Tout se passe dans UNE transaction qui verrouille la ligne (`FOR UPDATE`) ; `enregistrerReponse`
  * prend le même verrou. Une réponse validée pendant le redépôt attend la fin de la transaction,
@@ -151,8 +155,18 @@ export async function deposerQuestionnaire(
         where: { questionnaireId: existant.id },
       });
       if (reponses > 0) throw refus;
+      const brouillons = await tx.questionnaireAvantAuditBrouillon.count({
+        where: { questionnaireId: existant.id },
+      });
+      if (brouillons > 0) {
+        throw new MessagePourWill(
+          "Quelqu'un a déjà commencé à remplir ce questionnaire (brouillon enregistré) : le " +
+            "remplacer effacerait ce brouillon, il n'est donc pas remplacé. Attendez sa réponse, " +
+            "ou déposez un questionnaire sur la rencontre de la bonne personne.",
+        );
+      }
       const supprime = await tx.questionnaireAvantAudit.deleteMany({
-        where: { id: existant.id, envois: { none: {} } },
+        where: { id: existant.id, envois: { none: {} }, brouillons: { none: {} } },
       });
       if (supprime.count === 0) throw refus;
       // Les e-mails encore en attente portent l'ancien lien (mort) : REJETÉS, pas supprimés.
@@ -258,17 +272,26 @@ export async function annulerEnvoi(id: string, avant: EtatAvantEnvoi): Promise<v
   });
 }
 
+export type ResultatReponse = "ok" | "doublon" | "ferme" | "trop";
+
 /**
  * Une réponse d'une personne, chiffrée. Refus tant que le lien n'accepte pas de réponses.
  * Même verrou que `deposerQuestionnaire` : si un redépôt est en cours, on attend sa fin, on trouve
  * la ligne disparue, et la réponse est refusée au lieu d'être effacée par la cascade.
+ *
+ *   · IDEMPOTENT : un renvoi identique (même questionnaire, parcours, `membre` gardé,
+ *     `envoyeLe` du navigateur ET contenu identique) ne crée pas de seconde ligne (`doublon`) — délai dépassé, réponse
+ *     perdue, la page renvoie ; il ne compte pas dans le plafond ;
+ *   · plafond de `ENVOIS_MAX_PAR_QUESTIONNAIRE` lignes (`trop`) ;
+ *   · le brouillon du DIRIGEANT n'est supprimé que si sa réponse porte SON code (lien de base sans
+ *     code : un salarié qui répond « dirigeant » ne supprime pas le brouillon du dirigeant).
  */
 export async function enregistrerReponse(
   q: { id: string },
   charge: ChargeValide,
   maintenant: Date = new Date(),
-): Promise<"ok" | "ferme" | "trop"> {
-  return prisma.$transaction(async (tx): Promise<"ok" | "ferme" | "trop"> => {
+): Promise<ResultatReponse> {
+  return prisma.$transaction(async (tx): Promise<ResultatReponse> => {
     const verrou = await tx.$queryRaw<
       { id: string }[]
     >`SELECT id FROM questionnaires_avant_audit WHERE id = ${q.id}::uuid FOR UPDATE`;
@@ -278,24 +301,53 @@ export async function enregistrerReponse(
       select: { envoyeLe: true, closLe: true, expireLe: true },
     });
     if (frais === null || !accepteDesReponses(frais, maintenant)) return "ferme";
+    const membre = membreAGarder(q.id, charge.mode, charge.membre);
+    if (charge.envoyeLe !== null) {
+      const memes = await tx.questionnaireAvantAuditEnvoi.findMany({
+        where: {
+          questionnaireId: q.id,
+          mode: charge.mode,
+          membre,
+          envoyeLeNavigateur: charge.envoyeLe,
+        },
+        select: { donnees: true },
+      });
+      // Doublon seulement si le CONTENU est identique, octet pour octet : une version modifiée
+      // portant le même `envoyeLe` n'est JAMAIS perdue (elle devient une nouvelle ligne).
+      const identique = memes.some((e) => {
+        try {
+          return dechiffrerParole(e.donnees) === charge.json;
+        } catch {
+          return false;
+        }
+      });
+      if (identique) return "doublon";
+    }
     const n = await tx.questionnaireAvantAuditEnvoi.count({ where: { questionnaireId: q.id } });
     if (n >= ENVOIS_MAX_PAR_QUESTIONNAIRE) return "trop";
     await tx.questionnaireAvantAuditEnvoi.create({
       data: {
         questionnaireId: q.id,
         mode: charge.mode,
-        membre: membreAGarder(q.id, charge.mode, charge.membre),
+        membre,
+        envoyeLeNavigateur: charge.envoyeLe,
         donnees: chiffrerParole(charge.json),
       },
     });
-    // Réponse reçue : le brouillon de cette personne n'a plus lieu d'être (`brouillon.ts`). Le
-    // dirigeant par son parcours seul : sa réponse peut arriver sans `membre`.
-    await tx.questionnaireAvantAuditBrouillon.deleteMany({
-      where:
-        charge.mode === "main"
-          ? { questionnaireId: q.id, mode: "main" }
-          : { questionnaireId: q.id, mode: charge.mode, membre: charge.membre ?? "" },
-    });
+    // Réponse reçue : le brouillon de cette personne n'a plus lieu d'être (`brouillon.ts`).
+    // Dirigeant : seulement si la réponse est AUTHENTIFIÉE par son code.
+    const dirigeantAuthentifie =
+      charge.mode === "main" &&
+      charge.membre !== null &&
+      codeDirigeantPreauditValide(q.id, charge.membre);
+    if (charge.mode !== "main" || dirigeantAuthentifie) {
+      await tx.questionnaireAvantAuditBrouillon.deleteMany({
+        where:
+          charge.mode === "main"
+            ? { questionnaireId: q.id, mode: "main" }
+            : { questionnaireId: q.id, mode: charge.mode, membre: charge.membre ?? "" },
+      });
+    }
     // Une nouvelle réponse repasse la fiche « à traiter » : la lecture précédente est périmée.
     await tx.questionnaireAvantAudit.update({ where: { id: q.id }, data: { luLe: null } });
     return "ok";
@@ -325,25 +377,38 @@ export async function purgerReponsesAnciennes(avant: Date): Promise<number> {
   return r.count;
 }
 
-/** Les réponses, une par personne, déchiffrées pour la console. */
+/**
+ * Les réponses, une par personne, déchiffrées pour la console. Une réponse ILLISIBLE (clé absente
+ * ou valeur abîmée) reste listée avec `illisible: true` — la console affiche une alerte rouge,
+ * jamais une liste vide. Une réponse MISE À L'ÉCART (demande d'effacement d'un salarié) n'est pas
+ * déchiffrée : seule sa ligne et l'alerte sont montrées.
+ */
 export async function lireReponses(questionnaireId: string): Promise<ReponseLisible[]> {
   const lignes = await prisma.questionnaireAvantAuditEnvoi.findMany({
     where: { questionnaireId },
     orderBy: { recuLe: "asc" },
   });
   return lignes.map((e) => {
-    let json = "{}";
-    try {
-      json = dechiffrerParole(e.donnees);
-    } catch {
-      // clé absente ou réponse illisible : la ligne reste listée, sans contenu
-    }
-    return {
+    const base = {
       id: e.id,
       mode: e.mode as ReponseLisible["mode"],
       membre: membreAGarder(questionnaireId, e.mode, e.membre),
       recuLe: e.recuLe,
+      ecarteLe: e.ecarteLe,
+    };
+    if (e.ecarteLe !== null) return { ...base, illisible: false, lignes: [], lecture: null };
+    let json: string;
+    try {
+      json = dechiffrerParole(e.donnees);
+      JSON.parse(json);
+    } catch {
+      return { ...base, illisible: true, lignes: [], lecture: null };
+    }
+    return {
+      ...base,
+      illisible: false,
       lignes: lignesDeLaCharge(json),
+      lecture: lireLaCharge(json, (m) => codeDirigeantPreauditValide(questionnaireId, m)),
     };
   });
 }

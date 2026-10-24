@@ -2450,9 +2450,31 @@ export async function eraseReseauApporteurForEmail(
 }
 
 /**
- * Effacement des réponses d'UN salarié ou du référent informatique au questionnaire de pré-audit,
- * à sa demande (2026-10-24) : il n'a pas d'adresse dans nos tables, le code `membre` (affiché
- * par la console à côté de sa réponse) et la référence du questionnaire l'identifient.
+ * DEMANDE d'effacement d'un salarié ou du référent informatique au questionnaire de pré-audit
+ * (audit des données du 24/10/2026, point 12) : ses réponses sont MISES À L'ÉCART (plus montrées
+ * dans la console, `ecarte_le` posé) et la console alerte Will. RIEN n'est supprimé ici : aucune
+ * donnée d'un client n'est supprimée sans décision de Will. L'effacement définitif est son clic,
+ * `eraseQuestionnairePreauditMembre`, sur des réponses déjà mises à l'écart.
+ */
+export async function ecarterQuestionnairePreauditMembre(
+  ref: string,
+  membre: string,
+  maintenant: Date = new Date(),
+): Promise<number> {
+  if (ref.trim() === "" || membre.trim() === "") return 0;
+  const r = await prisma.questionnaireAvantAuditEnvoi.updateMany({
+    where: { mode: { in: ["emp", "it"] }, membre, questionnaire: { ref }, ecarteLe: null },
+    data: { ecarteLe: maintenant },
+  });
+  return r.count;
+}
+
+/**
+ * Effacement DÉFINITIF des réponses d'UN salarié ou du référent informatique au questionnaire de
+ * pré-audit (2026-10-24) : il n'a pas d'adresse dans nos tables, le code `membre` (affiché par la
+ * console à côté de sa réponse) et la référence du questionnaire l'identifient.
+ * ⛔ Clic de Will SEULEMENT (console, super-administrateur), après la mise à l'écart
+ * (`ecarterQuestionnairePreauditMembre`) : jamais appelé par une tâche ni automatiquement.
  */
 export async function eraseQuestionnairePreauditMembre(
   ref: string,
@@ -2462,8 +2484,14 @@ export async function eraseQuestionnairePreauditMembre(
   // Son brouillon en cours suit (2026-10-24), dans la MÊME transaction ; le compte rendu reste
   // celui des réponses.
   const [r] = await prisma.$transaction([
+    // Seulement ce qui a été MIS À L'ÉCART : une réponse arrivée après l'écart n'est pas touchée.
     prisma.questionnaireAvantAuditEnvoi.deleteMany({
-      where: { mode: { in: ["emp", "it"] }, membre, questionnaire: { ref } },
+      where: {
+        mode: { in: ["emp", "it"] },
+        membre,
+        questionnaire: { ref },
+        ecarteLe: { not: null },
+      },
     }),
     prisma.questionnaireAvantAuditBrouillon.deleteMany({
       where: { mode: { in: ["emp", "it"] }, membre, questionnaire: { ref } },

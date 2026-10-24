@@ -4,7 +4,7 @@
 //   · POST   : enregistre `{ consent: true, horodatage, mode, membre, brouillon }` (chiffré) ;
 //   · GET    : `?mode=main|emp|it&m=<code>` rend le brouillon de cette personne ;
 //   · DELETE : mêmes paramètres, supprime le brouillon (retrait de l'accord).
-// Même jeton HMAC que la route des réponses (faux → 404 neutre), même plafond de 400 000 octets,
+// Même jeton HMAC que la route des réponses (faux → 404 neutre), même plafond (`CHARGE_MAX_OCTETS`, 1 000 000 octets),
 // même CORS `null`. Débit : compteurs PROPRES au brouillon (un enregistrement automatique ne
 // consomme jamais le quota de l'envoi final) — 120/h par personne, plafonds plus larges par lien
 // et par IP pour qu'un bureau entier qui remplit en même temps ne soit jamais bloqué.
@@ -17,6 +17,7 @@ import { createHash } from "node:crypto";
 import { NextResponse } from "next/server";
 
 import {
+  BROUILLONS_MAX_PAR_QUESTIONNAIRE,
   enregistrerBrouillon,
   lireBrouillon,
   personneDe,
@@ -25,7 +26,7 @@ import {
   type Personne,
 } from "@/features/questionnaire-preaudit/brouillon";
 import { refusReel } from "@/features/questionnaire-preaudit/config";
-import { lireCorpsPlafonne } from "@/features/questionnaire-preaudit/corps";
+import { lireCorpsPlafonne, refusTropGros } from "@/features/questionnaire-preaudit/corps";
 import { CHARGE_MAX_OCTETS } from "@/features/questionnaire-preaudit/donnees";
 import { ENTETES_CORS_BROUILLON } from "@/features/questionnaire-preaudit/entetes";
 import { accepteDesReponses, lireParJeton } from "@/features/questionnaire-preaudit/serveur";
@@ -41,9 +42,9 @@ export const LIMITE_BROUILLON_PAR_PERSONNE: RateLimitConfig = {
   windowSec: 3600,
   surPanne: "laisser-passer",
 };
-/** Par lien : 30 personnes (le plafond de brouillons) au rythme maximal. */
+/** Par lien : les 62 personnes que la page admet, toutes au rythme maximal (7 440), arrondi. */
 export const LIMITE_BROUILLON_PAR_LIEN: RateLimitConfig = {
-  limit: 3600,
+  limit: 8000,
   windowSec: 3600,
   surPanne: "laisser-passer",
 };
@@ -120,7 +121,7 @@ export async function POST(req: Request, ctx: Ctx): Promise<Response> {
   const q = await ouvrir(req, ctx);
   if (q instanceof Response) return q;
   const corps = await lireCorpsPlafonne(req, CHARGE_MAX_OCTETS);
-  if (corps === null) return reponse(413, { ok: false, motif: "trop_volumineux" });
+  if (corps === null) return reponse(413, refusTropGros(req, CHARGE_MAX_OCTETS));
   const v = validerBrouillon(corps, q.id);
   if (!v.ok) return reponse(400, { ok: false, motif: v.motif });
   if (!(await debitPersonneOk(q, v.valeur.personne))) return LIMITE_ATTEINTE();
@@ -135,7 +136,14 @@ export async function POST(req: Request, ctx: Ctx): Promise<Response> {
   }
   if (r.statut === "ferme") return reponse(404, { ok: false });
   if (r.statut === "trop_de_brouillons") {
-    return reponse(413, { ok: false, motif: "trop_de_brouillons" });
+    return reponse(413, {
+      ok: false,
+      motif: "trop_de_brouillons",
+      plafond: BROUILLONS_MAX_PAR_QUESTIONNAIRE,
+      message:
+        "Votre brouillon ne peut pas être enregistré sur le serveur (trop de brouillons en cours " +
+        "pour ce questionnaire). Gardez cette page ouverte jusqu'à l'envoi, ou téléchargez le PDF.",
+    });
   }
   if (r.statut === "deja_envoye") return reponse(409, { ok: false, motif: "deja_envoye" });
   if (r.statut === "plus_ancien") {

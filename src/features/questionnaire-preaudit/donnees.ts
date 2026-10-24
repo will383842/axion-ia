@@ -8,17 +8,33 @@
  * reçu, octet pour octet), chiffré : zéro perte de réponses.
  */
 
+import type { LectureReponse } from "./lecture";
+
 export const SCHEMAS_ACCEPTES: ReadonlySet<unknown> = new Set([3, 4]);
 
-/** 400 Ko : le pire cas borné du schéma 4 mesuré à ~229 Ko. */
-export const CHARGE_MAX_OCTETS = 400_000;
-export const ENVOIS_MAX_PAR_QUESTIONNAIRE = 60;
+/**
+ * 1 000 000 octets (audit des données du 24/10/2026) : TOUTES les cases remplies au maximum
+ * pèsent 452 Ko (v2) à 467 Ko (Oury) pour une réponse, et le brouillon (état complet de la page)
+ * 586 à 605 Ko — l'ancien plafond de 400 000 octets aurait refusé ces deux cas. 1 Mo les couvre
+ * avec une marge de 1,6 fois et reste une BORNE DE SÉCURITÉ : le corps est lu en flux et coupé
+ * au plafond (`corps.ts`), chaque lien est limité en débit, et au chiffrement (base64, ×1,33)
+ * une ligne pèse au plus ~1,4 Mo.
+ */
+export const CHARGE_MAX_OCTETS = 1_000_000;
+/**
+ * 300 réponses par questionnaire : la page admet 60 collaborateurs + le dirigeant + le référent
+ * informatique (62 personnes) ; chacune peut renvoyer une version corrigée. Un renvoi IDENTIQUE
+ * (même `envoyeLe`) ne crée pas de ligne (idempotence, `enregistrerReponse`) et ne compte pas.
+ */
+export const ENVOIS_MAX_PAR_QUESTIONNAIRE = 300;
 
 export type ModeReponse = "main" | "emp" | "it";
 
 export interface ChargeValide {
   readonly mode: ModeReponse;
   readonly membre: string | null;
+  /** `envoyeLe` de la charge (heure du navigateur, texte tel quel, ≤ 40 car.) ou `null`. */
+  readonly envoyeLe: string | null;
   readonly json: string;
 }
 
@@ -59,7 +75,9 @@ export function validerCharge(texte: string): ResultatCharge {
   if (objet(o["donnees"]) === null) return { ok: false, motif: "Aucune réponse." };
   const m = o["membre"];
   const membre = typeof m === "string" && m.trim() !== "" ? m.trim().slice(0, 60) : null;
-  return { ok: true, charge: { mode: mode as ModeReponse, membre, json: texte } };
+  const e = o["envoyeLe"];
+  const envoyeLe = typeof e === "string" && e !== "" && e.length <= 40 ? e : null;
+  return { ok: true, charge: { mode: mode as ModeReponse, membre, envoyeLe, json: texte } };
 }
 
 /** État d'une case pré-remplie par Axion (bloc `prefill` du schéma 4). */
@@ -86,6 +104,12 @@ export interface ReponseLisible {
   readonly membre: string | null;
   readonly recuLe: Date;
   readonly lignes: ReadonlyArray<LigneLisible>;
+  /** Réponse impossible à déchiffrer ou à lire : alerte rouge dans la console, jamais du vide. */
+  readonly illisible: boolean;
+  /** Mise à l'écart sur demande d'effacement d'un salarié (effacement définitif : clic de Will). */
+  readonly ecarteLe: Date | null;
+  /** Lecture complète (en-tête, tableaux, calc, prefill, brut), ou `null` (illisible, écartée). */
+  readonly lecture: LectureReponse | null;
 }
 
 function enTexte(v: unknown): string {
