@@ -15,6 +15,7 @@ import { SITE_URL } from "@/lib/site-url";
 import { MessagePourWill } from "@/features/dossier-client/message-affichable";
 import {
   codeDirigeantPreaudit,
+  codeDirigeantPreauditValide,
   jetonPreaudit,
   jetonPreauditValide,
 } from "@/server/visio/questionnaire-en-ligne/jeton";
@@ -48,6 +49,29 @@ export function urlPreaudit(id: string): string | null {
   const chemin = cheminPreaudit(id);
   const code = codeDirigeantPreaudit(id);
   return chemin === null || code === null ? null : `${SITE_URL}${chemin}?m=${code}`;
+}
+
+/**
+ * Le lien « Essayer » de la console : celui du dirigeant (son code `m`) en mode essai — Will
+ * teste le parcours du dirigeant, brouillon compris, sans rien écrire.
+ */
+export function cheminEssaiPreaudit(id: string): string | null {
+  const chemin = cheminPreaudit(id);
+  const code = codeDirigeantPreaudit(id);
+  return chemin === null || code === null ? null : `${chemin}?m=${code}&essai=1`;
+}
+
+/**
+ * Le `membre` gardé avec une réponse : JAMAIS le code du dirigeant (il ouvre son brouillon) —
+ * masqué en `null`, ni en base, ni dans la console.
+ */
+export function membreAGarder(
+  questionnaireId: string,
+  mode: string,
+  membre: string | null,
+): string | null {
+  if (membre === null) return null;
+  return mode === "main" && codeDirigeantPreauditValide(questionnaireId, membre) ? null : membre;
 }
 
 /** Le questionnaire de ce lien, ou `null` si le jeton est faux ou le questionnaire inconnu. */
@@ -260,13 +284,17 @@ export async function enregistrerReponse(
       data: {
         questionnaireId: q.id,
         mode: charge.mode,
-        membre: charge.membre,
+        membre: membreAGarder(q.id, charge.mode, charge.membre),
         donnees: chiffrerParole(charge.json),
       },
     });
-    // Réponse reçue : le brouillon de cette personne n'a plus lieu d'être (`brouillon.ts`).
+    // Réponse reçue : le brouillon de cette personne n'a plus lieu d'être (`brouillon.ts`). Le
+    // dirigeant par son parcours seul : sa réponse peut arriver sans `membre`.
     await tx.questionnaireAvantAuditBrouillon.deleteMany({
-      where: { questionnaireId: q.id, mode: charge.mode, membre: charge.membre ?? "" },
+      where:
+        charge.mode === "main"
+          ? { questionnaireId: q.id, mode: "main" }
+          : { questionnaireId: q.id, mode: charge.mode, membre: charge.membre ?? "" },
     });
     // Une nouvelle réponse repasse la fiche « à traiter » : la lecture précédente est périmée.
     await tx.questionnaireAvantAudit.update({ where: { id: q.id }, data: { luLe: null } });
@@ -313,7 +341,7 @@ export async function lireReponses(questionnaireId: string): Promise<ReponseLisi
     return {
       id: e.id,
       mode: e.mode as ReponseLisible["mode"],
-      membre: e.membre,
+      membre: membreAGarder(questionnaireId, e.mode, e.membre),
       recuLe: e.recuLe,
       lignes: lignesDeLaCharge(json),
     };

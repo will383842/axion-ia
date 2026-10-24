@@ -12,6 +12,8 @@
 // définitive attend la purge planifiée (`purgerBrouillonsInactifs`, non branchée).
 // Rien n'est journalisé ici : ni corps, ni brouillon.
 
+import { createHash } from "node:crypto";
+
 import { NextResponse } from "next/server";
 
 import {
@@ -93,9 +95,14 @@ async function ouvrir(req: Request, ctx: Ctx): Promise<Questionnaire | Response>
   return q;
 }
 
+/** Jamais un code de lien en clair dans une clé Redis : son empreinte. */
+function empreinteMembre(membre: string): string {
+  return createHash("sha256").update(`brouillon-membre|${membre}`).digest("hex").slice(0, 16);
+}
+
 async function debitPersonneOk(q: Questionnaire, p: Personne): Promise<boolean> {
   const r = await checkRateLimit(
-    `questionnaire-preaudit-brouillon:personne:${q.id}:${p.mode}:${p.membre}`,
+    `questionnaire-preaudit-brouillon:personne:${q.id}:${p.mode}:${empreinteMembre(p.membre)}`,
     LIMITE_BROUILLON_PAR_PERSONNE,
   );
   return r.allowed;

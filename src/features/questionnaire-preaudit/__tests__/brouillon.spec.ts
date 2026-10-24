@@ -100,7 +100,7 @@ import {
   validerBrouillon,
 } from "../brouillon";
 import { CHARGE_MAX_OCTETS } from "../donnees";
-import { urlPreaudit } from "../serveur";
+import { cheminEssaiPreaudit, membreAGarder, urlPreaudit } from "../serveur";
 
 const ENV0 = { ...process.env };
 const REEL = {
@@ -201,6 +201,10 @@ describe("le brouillon est gardé et rendu", () => {
     expect(dir(q)).toHaveLength(24);
     // Le code ne se déduit ni de l'identifiant ni du jeton.
     expect(dir(q)).not.toBe(jetonPreaudit(q["id"] as string)?.slice(0, 24));
+    // Le lien « Essayer » de la console : celui du dirigeant, en essai.
+    const essai = new URL(cheminEssaiPreaudit(q["id"] as string) as string, "http://x");
+    expect(essai.searchParams.get("m")).toBe(dir(q));
+    expect(essai.searchParams.get("essai")).toBe("1");
   });
 });
 
@@ -336,6 +340,26 @@ describe("plafonds, jeton, débit", () => {
     expect((await enregistrer(autre, corps(autre))).status).toBe(200);
   });
 
+  it("le plafond ne compte que les brouillons modifiés depuis moins de 30 jours", async () => {
+    const q = questionnaire();
+    for (let i = 0; i < BROUILLONS_MAX_PAR_QUESTIONNAIRE; i += 1) {
+      await enregistrer(
+        q,
+        corps(q, { mode: "emp", membre: `membre${String(i).padStart(6, "0")}` }),
+      );
+    }
+    // Un seul devient inactif (31 jours) : une place se libère, sans rien supprimer.
+    (base.b[0] as Ligne)["majLe"] = new Date(Date.now() - 31 * JOUR);
+    expect((await enregistrer(q, corps(q, { mode: "emp", membre: "membrenouveau1" }))).status).toBe(
+      200,
+    );
+    expect(base.b).toHaveLength(BROUILLONS_MAX_PAR_QUESTIONNAIRE + 1);
+    // Le plafond des vivants est de nouveau atteint.
+    expect((await enregistrer(q, corps(q, { mode: "emp", membre: "membrenouveau2" }))).status).toBe(
+      413,
+    );
+  });
+
   it("jeton faux : 404 neutre en lecture, écriture et suppression", async () => {
     const q = questionnaire();
     await enregistrer(q, corps(q));
@@ -357,8 +381,18 @@ describe("plafonds, jeton, débit", () => {
     expect(cles).toEqual([
       expect.stringMatching(/^questionnaire-preaudit-brouillon:ip:/),
       `questionnaire-preaudit-brouillon:lien:${q["id"] as string}`,
-      `questionnaire-preaudit-brouillon:personne:${q["id"] as string}:main:${dir(q)}`,
+      expect.stringMatching(
+        new RegExp(
+          `^questionnaire-preaudit-brouillon:personne:${q["id"] as string}:main:[0-9a-f]{16}$`,
+        ),
+      ),
     ]);
+    // Jamais un code de lien en clair dans une clé Redis (dirigeant ni salarié).
+    await enregistrer(q, corps(q, { mode: "emp", membre: CODE }));
+    for (const c of base.limite.mock.calls.map((x) => x[0] as string)) {
+      expect(c).not.toContain(dir(q));
+      expect(c).not.toContain(CODE);
+    }
     const confs = base.limite.mock.calls.map((c) => (c[1] as { limit: number }).limit);
     expect(confs[2]).toBe(120);
     expect(confs[0]).toBeGreaterThan(120);
@@ -428,6 +462,42 @@ describe("suppression", () => {
     });
   const envoyer = (q: Ligne, c: string) =>
     postReponse(new Request("http://localhost/api/q", { method: "POST", body: c }), ctx(q));
+
+  it("réponse finale du dirigeant SANS `membre` : brouillon supprimé, sauvegarde en retard refusée", async () => {
+    const q = questionnaire();
+    const t = Date.now();
+    await enregistrer(q, corps(q, { horodatage: t, brouillon: "dirigeant" }));
+    await enregistrer(q, corps(q, { mode: "emp", membre: CODE, horodatage: t, brouillon: "s" }));
+    const sansMembre = JSON.stringify({
+      schema: 3,
+      mode: "main",
+      envoyeLe: new Date(t + 1000).toISOString(),
+      consentements: { traitement: true },
+      donnees: { ent_nom: "x" },
+    });
+    expect((await envoyer(q, sansMembre)).status).toBe(200);
+    expect(base.b.map((b) => b["mode"])).toEqual(["emp"]);
+    const tard = await enregistrer(q, corps(q, { horodatage: t + 500 }));
+    expect(tard.status).toBe(409);
+    expect((await json(tard))["motif"]).toBe("deja_envoye");
+    expect(base.b).toHaveLength(1);
+  });
+
+  it("le code du dirigeant n'est gardé NULLE PART en clair (réponse, brouillon, console)", async () => {
+    const q = questionnaire();
+    await enregistrer(q, corps(q));
+    expect(base.b[0]?.["membre"]).toBe("");
+    expect((await envoyer(q, reponse("main", dir(q), Date.now() + 1000))).status).toBe(200);
+    expect(base.e[0]?.["membre"]).toBeNull();
+    expect(JSON.stringify(base.b) + JSON.stringify(base.e.map((e) => e["membre"]))).not.toContain(
+      dir(q),
+    );
+    // Un code de salarié reste gardé (il sert à effacer SES réponses à sa demande).
+    expect((await envoyer(q, reponse("emp", CODE, Date.now()))).status).toBe(200);
+    expect(base.e[1]?.["membre"]).toBe(CODE);
+    expect(membreAGarder(q["id"] as string, "main", dir(q))).toBeNull();
+    expect(membreAGarder(q["id"] as string, "emp", CODE)).toBe(CODE);
+  });
 
   it("après l'envoi RÉUSSI de la réponse, le brouillon de cette personne est supprimé (et lui seul)", async () => {
     const q = questionnaire();

@@ -15,7 +15,7 @@ import { MESSAGE_REFUS, refusEnvoiReel } from "@/features/questionnaire-preaudit
 import { LIBELLE_PREFILL } from "@/features/questionnaire-preaudit/donnees";
 import { apercuEnvoi } from "@/features/questionnaire-preaudit/envoyer";
 import {
-  cheminPreaudit,
+  cheminEssaiPreaudit,
   lireDeLaRencontre,
   lireReponses,
 } from "@/features/questionnaire-preaudit/serveur";
@@ -58,7 +58,7 @@ export async function QuestionnairePreaudit(props: {
     q !== null &&
     reponses.length > 0 &&
     (q.luLe === null || reponses.some((r) => r.recuLe > (q.luLe as Date)));
-  const chemin = q === null ? null : cheminPreaudit(q.id);
+  const chemin = q === null ? null : cheminEssaiPreaudit(q.id);
 
   let apercuMail: { sujet: string; html: string } | null = null;
   let erreurApercu: string | null = null;
@@ -117,7 +117,7 @@ export async function QuestionnairePreaudit(props: {
         <>
           <p className="mb-[var(--space-admin-3)] text-[length:var(--text-admin-sm)]">
             <a
-              href={`${chemin}?essai=1`}
+              href={chemin}
               target="_blank"
               rel="noopener noreferrer"
               className="text-[color:var(--color-admin-accent)] underline-offset-2 hover:underline"

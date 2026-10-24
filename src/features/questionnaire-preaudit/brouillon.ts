@@ -44,7 +44,11 @@ const MEMBRE = /^[A-Za-z0-9_-]{12,60}$/;
 
 export interface Personne {
   readonly mode: ModeReponse;
-  /** Code du lien personnel (jamais vide). */
+  /**
+   * Code du lien personnel du collaborateur ou du référent informatique. Pour le dirigeant :
+   * TOUJOURS vide une fois son code vérifié (un seul code dirigeant valide par questionnaire) —
+   * son code n'est donc écrit nulle part (ni en base, ni dans une clé de débit).
+   */
   readonly membre: string;
 }
 
@@ -73,7 +77,17 @@ export function personneDe(
   if (mode === "main" && !codeDirigeantPreauditValide(questionnaireId, m)) {
     return { ok: false, motif: "code_personnel_invalide" };
   }
-  return { ok: true, personne: { mode: mode as ModeReponse, membre: m } };
+  return { ok: true, personne: { mode: mode as ModeReponse, membre: mode === "main" ? "" : m } };
+}
+
+/**
+ * Les réponses de CETTE personne : le dirigeant par son parcours seul (avec ou sans `membre` dans
+ * sa réponse), un salarié par son parcours ET son code.
+ */
+export function reponsesDeLaPersonne(questionnaireId: string, p: Personne) {
+  return p.mode === "main"
+    ? { questionnaireId, mode: "main" }
+    : { questionnaireId, mode: p.mode, membre: p.membre };
 }
 
 export interface BrouillonValide {
@@ -187,7 +201,7 @@ export async function enregistrerBrouillon(
     >`SELECT id FROM questionnaires_avant_audit WHERE id = ${questionnaireId}::uuid FOR UPDATE`;
     if (verrou.length === 0) return { statut: "ferme" };
     const envois = await tx.questionnaireAvantAuditEnvoi.findMany({
-      where: { questionnaireId, mode: v.personne.mode, membre: v.personne.membre },
+      where: reponsesDeLaPersonne(questionnaireId, v.personne),
       select: { donnees: true },
     });
     const h = v.horodatage.getTime();
@@ -199,7 +213,10 @@ export async function enregistrerBrouillon(
       select: { horodatage: true, majLe: true },
     });
     if (existant === null) {
-      const n = await tx.questionnaireAvantAuditBrouillon.count({ where: { questionnaireId } });
+      // Seuls les brouillons VIVANTS (modifiés depuis moins de 30 jours) comptent.
+      const n = await tx.questionnaireAvantAuditBrouillon.count({
+        where: { questionnaireId, majLe: { gte: limiteInactivite(maintenant) } },
+      });
       if (n >= BROUILLONS_MAX_PAR_QUESTIONNAIRE) return { statut: "trop_de_brouillons" };
     }
     const vivant =
