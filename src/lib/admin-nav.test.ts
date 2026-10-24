@@ -854,6 +854,7 @@ const HREFS_AVANT_REFONTE: ReadonlyArray<string> = [
   "/content-gen/coverage/presets",
   "/content-gen/orchestrator/adhoc",
   "/content-gen/news",
+  "/content-gen/audit-blog",
   "/content-gen/onboarding",
   "/content-gen",
   "/content-gen/coverage",
