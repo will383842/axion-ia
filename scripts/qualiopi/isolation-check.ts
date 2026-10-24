@@ -160,6 +160,12 @@ const CONSOMMATEURS_ASSUMES: ReadonlySet<string> = new Set([
   // Lot W4 — l'encart « En vidéo » des fiches de formation n'existe que si la divulgation de
   // l'organisme de formation est ouverte : `videoPourFormation()` lit `isQualiopiPublicDisclosureEnabled()`.
   "src/server/videos/encarts.ts",
+  // Blog (audit du 24/10/2026, lot L1) — la doctrine de publication ne doit JAMAIS laisser passer
+  // « Qualiopi », CPF ou OPCO tant que les réglages ne les autorisent pas, comme pour les vidéos.
+  // Le contrôle du corps (`doctrine-check`) et la porte de surface du worker de génération
+  // lisent `financementPublicCitable()` (financing.ts) — rien d'autre du domaine. Nommés seuls.
+  "src/server/content-gen/quality/doctrine-check.ts",
+  "src/server/queue/workers/content-gen-worker.ts",
   // Même lot — le studio lit ces mêmes deux réglages (booléens seulement) avant de générer :
   // `GET /api/interne/reglages-publics`. Il les relaie, il ne les recopie pas.
   "src/app/api/interne/reglages-publics/route.ts",
