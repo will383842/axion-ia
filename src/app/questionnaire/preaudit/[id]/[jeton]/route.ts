@@ -1,29 +1,26 @@
 // Le questionnaire de pré-audit, page publique à jeton (2026-10-24).
 //
 // `/questionnaire/preaudit/<id>/<jeton>` sert le HTML de Will TEL QUEL, avec `CONFIG` injectée
-// (voir `features/questionnaire-preaudit/html.ts`). `?essai=1` : mode essai (bandeau, rien
-// enregistré, aucune notification). Le réel exige l'interrupteur allumé ET un questionnaire
-// envoyé par Will ; sinon la MÊME réponse neutre 404, qui ne dit pas lequel.
+// (voir `features/questionnaire-preaudit/html.ts`), en BAC À SABLE (voir `entetes.ts`) : son
+// JavaScript n'a ni les cookies ni le stockage du site. `?essai=1` : mode essai (bandeau, rien
+// enregistré, aucune notification). Le réel exige l'interrupteur allumé, la notice RGPD
+// renseignée, la purge planifiée ET un questionnaire envoyé, ni clos ni expiré ; sinon la MÊME
+// réponse neutre 404, qui ne dit pas lequel.
 //
-// Sous `/questionnaire/`, donc hors du proxy et sous la CSP stricte de `next.config.ts`.
-// `force-dynamic` : aucune requête à la base pendant `next build` (contrat `stub.invalid`).
+// Sous `/questionnaire/`, donc hors du proxy. `force-dynamic` : aucune requête à la base pendant
+// `next build` (contrat `stub.invalid`).
 
-import { mentionsRgpd, preauditActif } from "@/features/questionnaire-preaudit/config";
+import { mentionsRgpd, refusReel } from "@/features/questionnaire-preaudit/config";
+import { ENTETES_PAGE_PREAUDIT } from "@/features/questionnaire-preaudit/entetes";
 import { pagePourClient } from "@/features/questionnaire-preaudit/html";
-import { lireParJeton } from "@/features/questionnaire-preaudit/serveur";
+import { accepteDesReponses, lireParJeton } from "@/features/questionnaire-preaudit/serveur";
 
 export const dynamic = "force-dynamic";
-
-const ENTETES = {
-  "Cache-Control": "no-store",
-  "X-Robots-Tag": "noindex, nofollow, noarchive",
-  "Referrer-Policy": "same-origin",
-} as const;
 
 function neutre(): Response {
   return new Response("Page introuvable", {
     status: 404,
-    headers: { ...ENTETES, "Content-Type": "text/plain; charset=utf-8" },
+    headers: { ...ENTETES_PAGE_PREAUDIT, "Content-Type": "text/plain; charset=utf-8" },
   });
 }
 
@@ -36,7 +33,7 @@ export async function GET(
   if (q === null) return neutre();
   const url = new URL(req.url);
   const essai = url.searchParams.get("essai") === "1";
-  if (!essai && (!preauditActif() || q.envoyeLe === null)) return neutre();
+  if (!essai && (refusReel() !== null || !accepteDesReponses(q))) return neutre();
 
   // Le `ref` est imposé par le serveur : dirigeant, collaborateurs et référent informatique
   // se regroupent sous la même référence (le HTML la lit dans `?ref=`).
@@ -44,7 +41,7 @@ export async function GET(
     url.searchParams.set("ref", q.ref);
     return new Response(null, {
       status: 302,
-      headers: { ...ENTETES, Location: `${url.pathname}${url.search}` },
+      headers: { ...ENTETES_PAGE_PREAUDIT, Location: `${url.pathname}${url.search}` },
     });
   }
 
@@ -59,6 +56,6 @@ export async function GET(
   });
   return new Response(page, {
     status: 200,
-    headers: { ...ENTETES, "Content-Type": "text/html; charset=utf-8" },
+    headers: { ...ENTETES_PAGE_PREAUDIT, "Content-Type": "text/html; charset=utf-8" },
   });
 }

@@ -32,6 +32,10 @@ import type {
 } from "../../prisma/generated/client";
 import { Prisma as PrismaRuntime } from "../../prisma/generated/client";
 import * as Sentry from "@sentry/nextjs";
+import {
+  envoisDuDirigeant,
+  questionnairesDuDirigeant,
+} from "@/features/questionnaire-preaudit/portee-rgpd";
 import { prisma } from "@/lib/prisma";
 import { chargeClientAvant, emettreFaitClient } from "@/server/partners-sync/producteurs/client";
 import { hashEmailForLookup } from "@/lib/security/email-hash";
@@ -841,12 +845,15 @@ export async function eraseCalendlyEventsForEmail(email: string): Promise<EraseC
   // (chiffrées, `rgpd: dossier-client`) ; elles partent avec elle, AVANT l'anonymisation
   // ci-dessous qui remplace l'adresse par laquelle on les retrouve. Le questionnaire lui-même
   // (le HTML de Will) ne porte aucune donnée personnelle : on le garde.
+  // Seules les réponses du DIRIGEANT partent avec lui (celles d'un salarié sont les siennes :
+  // `eraseQuestionnairePreauditMembre`). Retrouvé par la réservation OU l'adresse d'envoi du lien.
+  const empreintePreaudit = hashEmailForLookup(email);
   await prisma.questionnaireAvantAuditEnvoi.deleteMany({
-    where: { questionnaire: { rencontre: { calendlyEvent: { inviteeEmail: email } } } },
+    where: envoisDuDirigeant(email, empreintePreaudit),
   });
   await prisma.questionnaireAvantAudit.updateMany({
-    where: { rencontre: { calendlyEvent: { inviteeEmail: email } } },
-    data: { luLe: null, luParId: null },
+    where: questionnairesDuDirigeant(email, empreintePreaudit),
+    data: { luLe: null, luParId: null, destinataire: null, destinataireHash: null },
   });
 
   // UNE SEULE instruction, donc atomique : la ligne perd ses coordonnées ET
@@ -2433,4 +2440,20 @@ export async function eraseReseauApporteurForEmail(
     },
   });
   return { apporteur: "efface", presentationsAnonymisees: presentations.count };
+}
+
+/**
+ * Effacement des réponses d'UN salarié ou du référent informatique au questionnaire de pré-audit,
+ * à sa demande (2026-10-24) : il n'a pas d'adresse dans nos tables, le code `membre` (affiché
+ * par la console à côté de sa réponse) et la référence du questionnaire l'identifient.
+ */
+export async function eraseQuestionnairePreauditMembre(
+  ref: string,
+  membre: string,
+): Promise<number> {
+  if (ref.trim() === "" || membre.trim() === "") return 0;
+  const r = await prisma.questionnaireAvantAuditEnvoi.deleteMany({
+    where: { mode: { in: ["emp", "it"] }, membre, questionnaire: { ref } },
+  });
+  return r.count;
 }

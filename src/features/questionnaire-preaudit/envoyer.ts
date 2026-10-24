@@ -14,7 +14,7 @@ import { renderEmailTemplate, type RenderedEmail } from "@/lib/email/templates";
 import { MessagePourWill } from "@/features/dossier-client/message-affichable";
 
 import { MESSAGE_REFUS, refusEnvoiReel } from "./config";
-import { marquerEnvoye, urlPreaudit } from "./serveur";
+import { annulerEnvoi, reserverEnvoi, urlPreaudit } from "./serveur";
 
 const adresse = z.string().trim().toLowerCase().email().max(200);
 
@@ -54,18 +54,32 @@ export async function envoyerQuestionnaire(args: {
   });
   if (q === null) throw new MessagePourWill("Questionnaire introuvable.");
   const lien = lienOuRefus(q.id);
-  const r = await enqueueEmail(
-    "questionnaire-avant-audit",
-    a.data,
-    "fr",
-    { prenom: args.prenom.trim().slice(0, 60), lien },
-    {
-      jobId: `preaudit-${q.id}-${Date.now()}`,
-      entityType: "QuestionnaireAvantAudit",
-      entityId: q.id,
-      clientId: q.rencontre.clientId ?? null,
-    },
-  );
-  if (!r.enqueued) throw new MessagePourWill("L'e-mail n'a pas pu être mis en file. Réessayez.");
-  await marquerEnvoye(q.id);
+  // Réservation AVANT la mise en file : un double clic (ou deux onglets) ne fait partir qu'un e-mail.
+  const maintenant = new Date();
+  const avant = await reserverEnvoi(q.id, a.data, maintenant);
+  if (avant === null) {
+    throw new MessagePourWill(
+      "Un envoi vient d'avoir lieu : patientez une minute avant de renvoyer.",
+    );
+  }
+  let enfile = false;
+  try {
+    const r = await enqueueEmail(
+      "questionnaire-avant-audit",
+      a.data,
+      "fr",
+      { prenom: args.prenom.trim().slice(0, 60), lien },
+      {
+        // Idempotent : le même envoi réservé ne produit jamais deux tâches.
+        jobId: `preaudit-${q.id}-${maintenant.getTime()}`,
+        entityType: "QuestionnaireAvantAudit",
+        entityId: q.id,
+        clientId: q.rencontre.clientId ?? null,
+      },
+    );
+    enfile = r.enqueued;
+  } finally {
+    if (!enfile) await annulerEnvoi(q.id, avant);
+  }
+  if (!enfile) throw new MessagePourWill("L'e-mail n'a pas pu être mis en file. Réessayez.");
 }

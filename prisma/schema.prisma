@@ -14528,21 +14528,29 @@ model QuestionnaireQuestion {
 /// l'envoi est un clic de Will. Le HTML n'est pas une donnée personnelle.
 /// rgpd: dossier-client
 model QuestionnaireAvantAudit {
-  id          String    @id @default(uuid()) @db.Uuid
-  rencontreId String    @unique @map("rencontre_id") @db.Uuid
-  rencontre   Rencontre @relation(fields: [rencontreId], references: [id], onDelete: Cascade)
-  html        String    @db.Text
+  id               String    @id @default(uuid()) @db.Uuid
+  rencontreId      String    @unique @map("rencontre_id") @db.Uuid
+  rencontre        Rencontre @relation(fields: [rencontreId], references: [id], onDelete: Cascade)
+  html             String    @db.Text
   /// Regroupe les envois du dirigeant, des collaborateurs et du référent informatique.
-  ref         String    @db.VarChar(40)
-  creeLe      DateTime  @default(now()) @map("cree_le")
+  ref              String    @db.VarChar(40)
+  creeLe           DateTime  @default(now()) @map("cree_le")
   /// NULL = brouillon. Posé par le clic « Envoyer » seulement.
-  envoyeLe    DateTime? @map("envoye_le")
+  envoyeLe         DateTime? @map("envoye_le")
   /// Dernière lecture des réponses par Will : NULL ou antérieure à un envoi = à traiter.
-  luLe        DateTime? @map("lu_le")
-  luParId     String?   @map("lu_par_id") @db.Uuid
+  luLe             DateTime? @map("lu_le")
+  luParId          String?   @map("lu_par_id") @db.Uuid
+  /// Adresse à qui Will a envoyé le lien (enc) : retrouve les réponses à l'export/effacement même
+  /// sans réservation Calendly. `destinataire_hash` = empreinte de recherche (jamais l'adresse).
+  destinataire     String?   @db.Text
+  destinataireHash String?   @map("destinataire_hash") @db.VarChar(64)
+  /// Le lien cesse de recevoir des réponses : clos par Will, ou à l'expiration.
+  closLe           DateTime? @map("clos_le")
+  expireLe         DateTime? @map("expire_le")
 
   envois QuestionnaireAvantAuditEnvoi[]
 
+  @@index([destinataireHash])
   @@map("questionnaires_avant_audit")
 }
 

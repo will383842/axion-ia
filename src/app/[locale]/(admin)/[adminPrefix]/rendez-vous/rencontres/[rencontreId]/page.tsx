@@ -184,6 +184,7 @@ export default async function RencontrePage({ params, searchParams }: PageProps)
 
       <QuestionnairePreaudit
         rencontreId={r.id}
+        peutDeposer={acces.role === "super_admin"}
         titulaire={r.titulaire}
         apercu={
           typeof sp.pa_email === "string" && sp.pa_email.trim() !== ""

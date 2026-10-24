@@ -6,6 +6,7 @@
 
 import { AdminBadge } from "@/components/admin/ui/AdminBadge";
 import {
+  cloreQuestionnaireAction,
   deposerQuestionnaireAction,
   envoyerQuestionnaireAction,
   marquerQuestionnaireLuAction,
@@ -42,6 +43,8 @@ function quand(d: Date): string {
 
 export async function QuestionnairePreaudit(props: {
   rencontreId: string;
+  /** Seul Williams (super_admin) dépose le HTML. */
+  peutDeposer: boolean;
   titulaire: { nom: string | null; email: string | null } | null;
   /** Adresse et prénom saisis pour l'aperçu (`?pa_email=&pa_prenom=`). */
   apercu: { email: string; prenom: string } | null;
@@ -78,29 +81,36 @@ export async function QuestionnairePreaudit(props: {
         ) : (
           <AdminBadge tone="success">envoyé le {quand(q.envoyeLe)}</AdminBadge>
         )}{" "}
+        {q?.closLe != null ? (
+          <AdminBadge tone="outline">clos</AdminBadge>
+        ) : q?.expireLe != null ? (
+          <AdminBadge tone="outline">expire le {quand(q.expireLe)}</AdminBadge>
+        ) : null}{" "}
         {aTraiter ? <AdminBadge tone="warning">réponses à traiter</AdminBadge> : null}
       </h2>
 
-      <form
-        action={deposerQuestionnaireAction}
-        className="mb-[var(--space-admin-3)] flex flex-wrap items-center gap-[var(--space-admin-2)]"
-      >
-        <input type="hidden" name="rencontreId" value={rencontreId} />
-        <input
-          type="file"
-          name="fichier"
-          accept=".html,text/html"
-          required
-          className={inputCls}
-          aria-label="Fichier HTML du questionnaire"
-        />
-        <button type="submit" className={boutonCls} disabled={q?.envoyeLe != null}>
-          {q === null ? "Ajouter un questionnaire" : "Remplacer le questionnaire"}
-        </button>
-        {q?.envoyeLe != null ? (
-          <span className={mutedCls}>Déjà envoyé : il ne peut plus être remplacé.</span>
-        ) : null}
-      </form>
+      {props.peutDeposer ? (
+        <form
+          action={deposerQuestionnaireAction}
+          className="mb-[var(--space-admin-3)] flex flex-wrap items-center gap-[var(--space-admin-2)]"
+        >
+          <input type="hidden" name="rencontreId" value={rencontreId} />
+          <input
+            type="file"
+            name="fichier"
+            accept=".html,text/html"
+            required
+            className={inputCls}
+            aria-label="Fichier HTML du questionnaire"
+          />
+          <button type="submit" className={boutonCls} disabled={q?.envoyeLe != null}>
+            {q === null ? "Ajouter un questionnaire" : "Remplacer le questionnaire"}
+          </button>
+          {q?.envoyeLe != null ? (
+            <span className={mutedCls}>Déjà envoyé : il ne peut plus être remplacé.</span>
+          ) : null}
+        </form>
+      ) : null}
 
       {q !== null && chemin !== null ? (
         <>
@@ -176,6 +186,15 @@ export async function QuestionnairePreaudit(props: {
             </div>
           ) : null}
         </>
+      ) : null}
+
+      {q !== null && q.envoyeLe !== null && q.closLe === null ? (
+        <form action={cloreQuestionnaireAction} className="mb-[var(--space-admin-3)]">
+          <input type="hidden" name="rencontreId" value={rencontreId} />
+          <button type="submit" className={boutonCls}>
+            Clore le questionnaire
+          </button>
+        </form>
       ) : null}
 
       {reponses.length > 0 ? (

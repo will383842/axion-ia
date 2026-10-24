@@ -46,8 +46,7 @@ export function QuestionnaireAvantAuditEmail({
       <Text style={emailStyles.paragraphStyle}>{prenom ? `Bonjour ${prenom},` : "Bonjour,"}</Text>
       <Text style={emailStyles.paragraphStyle}>
         Pour que notre audit parte de votre quotidien plutôt que de généralités, nous vous proposons
-        un questionnaire en ligne. Vous pouvez vous arrêter et reprendre plus tard : vos réponses
-        restent sur votre appareil tant que vous ne les avez pas envoyées.
+        un questionnaire en ligne, à remplir en une seule fois.
       </Text>
       <Text style={emailStyles.paragraphStyle}>
         Les questions marquées d&apos;un cadenas sont facultatives. Si vous avez des collaborateurs,

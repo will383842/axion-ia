@@ -29,6 +29,7 @@
  * lecture impossible est DITE dans l'export (`avertissements`), jamais tue.
  */
 
+import { envoisDuDirigeant } from "@/features/questionnaire-preaudit/portee-rgpd";
 import { dechiffrerParole, dechiffrerParoleOuNull } from "@/lib/chiffrer-parole";
 import { prisma } from "@/lib/prisma";
 import { hashEmailForLookup } from "@/lib/security/email-hash";
@@ -328,9 +329,10 @@ export async function exporterDossierClientPour(email: string): Promise<ExportDo
             orderBy: { survenuLe: "asc" },
           });
 
-    // Questionnaire de pré-audit (2026-10-24) : retrouvé par la réservation du titulaire.
+    // Questionnaire de pré-audit (2026-10-24) : les réponses du DIRIGEANT seulement (jamais celles
+    // de ses salariés), retrouvées par la réservation du titulaire ou l'adresse d'envoi du lien.
     const reponsesPreaudit = await prisma.questionnaireAvantAuditEnvoi.findMany({
-      where: { questionnaire: { rencontre: { calendlyEvent: { inviteeEmail: email } } } },
+      where: envoisDuDirigeant(email, empreinte),
       select: { mode: true, recuLe: true, donnees: true },
       orderBy: { recuLe: "asc" },
     });

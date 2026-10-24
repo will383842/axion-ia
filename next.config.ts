@@ -922,6 +922,33 @@ const nextConfig: NextConfig = {
           },
         ],
       },
+      // Questionnaire de pré-audit (2026-10-24) — `/questionnaire/preaudit/<id>/<jeton>`.
+      // Le HTML déposé par Will porte du JavaScript : servi en BAC À SABLE (origine opaque, sans
+      // cookie ni stockage du site). Placé APRÈS `/questionnaire/:path*` : même clé, la dernière
+      // règle gagne. Mêmes valeurs que `features/questionnaire-preaudit/entetes.ts` (un test les
+      // compare).
+      {
+        source: "/questionnaire/preaudit/:path*",
+        headers: [
+          { key: "Referrer-Policy", value: "no-referrer" },
+          { key: "X-Robots-Tag", value: "noindex, nofollow, noarchive" },
+          {
+            key: "Content-Security-Policy",
+            value: [
+              "sandbox allow-scripts allow-forms",
+              "default-src 'none'",
+              "script-src 'unsafe-inline'",
+              "style-src 'unsafe-inline'",
+              "img-src data:",
+              "font-src data:",
+              "connect-src 'self'",
+              "form-action 'none'",
+              "base-uri 'none'",
+              "frame-ancestors 'none'",
+            ].join("; "),
+          },
+        ],
+      },
       // Dossier en ligne d'un apporteur du réseau (2026-10-05) —
       // `/apporteur/dossier/<id>/<jeton>`. Page racine EXCLUE du proxy, comme le
       // questionnaire : même CSP stricte (aucun hôte tiers, formulaire vers

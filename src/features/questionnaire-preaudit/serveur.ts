@@ -1,18 +1,19 @@
 /**
  * Lecture et écriture du questionnaire de pré-audit (2026-10-24).
  *
- * Écrivains de la table (verrouillés par le cliquet nominatif) : `deposerQuestionnaire`,
- * `marquerEnvoye`, `enregistrerReponse`, `marquerLu`. Aucun n'envoie d'e-mail : seul
- * `envoyer.ts` le fait, sur clic de Will.
+ * Écrivains des tables (verrouillés par le cliquet nominatif) : `deposerQuestionnaire`,
+ * `reserverEnvoi`, `annulerEnvoi`, `enregistrerReponse`, `marquerLu`, `clore`,
+ * `purgerReponsesAnciennes`. Aucun n'envoie d'e-mail : seul `envoyer.ts` le fait, sur clic de Will.
  */
 
 import { randomBytes } from "node:crypto";
 
 import { prisma } from "@/lib/prisma";
 import { chiffrerParole, dechiffrerParole } from "@/lib/chiffrer-parole";
-import { MessagePourWill } from "@/features/dossier-client/message-affichable";
-import { jetonQuestionnaire, jetonValide } from "@/server/visio/questionnaire-en-ligne/jeton";
+import { hashEmailForLookup } from "@/lib/security/email-hash";
 import { SITE_URL } from "@/lib/site-url";
+import { MessagePourWill } from "@/features/dossier-client/message-affichable";
+import { jetonPreaudit, jetonPreauditValide } from "@/server/visio/questionnaire-en-ligne/jeton";
 
 import {
   ENVOIS_MAX_PAR_QUESTIONNAIRE,
@@ -24,9 +25,14 @@ import { validerHtml } from "./html";
 
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/;
 
+/** Le lien reçoit des réponses 45 jours après l'envoi, sauf clôture plus tôt par Will. */
+export const VALIDITE_JOURS = 45;
+/** Deux envois du même questionnaire à moins de 60 s : le second est un double clic. */
+export const DELAI_ANTI_DOUBLE_CLIC_MS = 60_000;
+
 /** Le chemin public d'un questionnaire (page à jeton), ou `null` sans secret de production. */
 export function cheminPreaudit(id: string): string | null {
-  const jeton = jetonQuestionnaire(id);
+  const jeton = jetonPreaudit(id);
   return jeton === null ? null : `/questionnaire/preaudit/${id.toLowerCase()}/${jeton}`;
 }
 
@@ -37,14 +43,31 @@ export function urlPreaudit(id: string): string | null {
 
 /** Le questionnaire de ce lien, ou `null` si le jeton est faux ou le questionnaire inconnu. */
 export async function lireParJeton(id: string, jeton: string) {
-  if (!UUID.test(id.toLowerCase()) || !jetonValide(id, jeton)) return null;
+  if (!UUID.test(id.toLowerCase()) || !jetonPreauditValide(id, jeton)) return null;
   return prisma.questionnaireAvantAudit.findUnique({ where: { id: id.toLowerCase() } });
+}
+
+/** Le lien accepte-t-il encore des réponses réelles ? (envoyé, ni clos, ni expiré) */
+export function accepteDesReponses(
+  q: { envoyeLe: Date | null; closLe: Date | null; expireLe: Date | null },
+  maintenant: Date = new Date(),
+): boolean {
+  if (q.envoyeLe === null || q.closLe !== null) return false;
+  return q.expireLe === null || q.expireLe.getTime() > maintenant.getTime();
 }
 
 export async function lireDeLaRencontre(rencontreId: string) {
   return prisma.questionnaireAvantAudit.findUnique({
     where: { rencontreId },
-    select: { id: true, ref: true, creeLe: true, envoyeLe: true, luLe: true },
+    select: {
+      id: true,
+      ref: true,
+      creeLe: true,
+      envoyeLe: true,
+      luLe: true,
+      closLe: true,
+      expireLe: true,
+    },
   });
 }
 
@@ -72,17 +95,53 @@ export async function deposerQuestionnaire(rencontreId: string, html: string): P
   return cree.id;
 }
 
-/** Posé par le clic « Envoyer » de Will, après la mise en file de l'e-mail. */
-export async function marquerEnvoye(id: string): Promise<void> {
-  await prisma.questionnaireAvantAudit.update({ where: { id }, data: { envoyeLe: new Date() } });
+/**
+ * Réserve l'envoi AVANT la mise en file (anti double clic) : n'aboutit que si rien n'est parti
+ * depuis moins de 60 s. Garde l'adresse (chiffrée + empreinte) pour l'export et l'effacement.
+ * Rend l'état d'avant (pour `annulerEnvoi`), ou `null` si un envoi vient d'avoir lieu.
+ */
+export async function reserverEnvoi(
+  id: string,
+  destinataire: string,
+  maintenant: Date = new Date(),
+): Promise<{ envoyeLe: Date | null; expireLe: Date | null } | null> {
+  const avant = await prisma.questionnaireAvantAudit.findUnique({
+    where: { id },
+    select: { envoyeLe: true, expireLe: true },
+  });
+  if (avant === null) return null;
+  const limite = new Date(maintenant.getTime() - DELAI_ANTI_DOUBLE_CLIC_MS);
+  const r = await prisma.questionnaireAvantAudit.updateMany({
+    where: { id, OR: [{ envoyeLe: null }, { envoyeLe: { lt: limite } }] },
+    data: {
+      envoyeLe: maintenant,
+      expireLe: new Date(maintenant.getTime() + VALIDITE_JOURS * 86_400_000),
+      closLe: null,
+      destinataire: chiffrerParole(destinataire),
+      destinataireHash: hashEmailForLookup(destinataire),
+    },
+  });
+  return r.count === 1 ? avant : null;
 }
 
-/** Une réponse d'une personne, chiffrée. Refus tant que le questionnaire n'est pas envoyé. */
+/** La mise en file a échoué : on remet le questionnaire dans l'état d'avant. */
+export async function annulerEnvoi(
+  id: string,
+  avant: { envoyeLe: Date | null; expireLe: Date | null },
+): Promise<void> {
+  await prisma.questionnaireAvantAudit.update({
+    where: { id },
+    data: { envoyeLe: avant.envoyeLe, expireLe: avant.expireLe },
+  });
+}
+
+/** Une réponse d'une personne, chiffrée. Refus tant que le lien n'accepte pas de réponses. */
 export async function enregistrerReponse(
-  q: { id: string; envoyeLe: Date | null },
+  q: { id: string; envoyeLe: Date | null; closLe: Date | null; expireLe: Date | null },
   charge: ChargeValide,
-): Promise<"ok" | "pas_envoye" | "trop"> {
-  if (q.envoyeLe === null) return "pas_envoye";
+  maintenant: Date = new Date(),
+): Promise<"ok" | "ferme" | "trop"> {
+  if (!accepteDesReponses(q, maintenant)) return "ferme";
   const n = await prisma.questionnaireAvantAuditEnvoi.count({ where: { questionnaireId: q.id } });
   if (n >= ENVOIS_MAX_PAR_QUESTIONNAIRE) return "trop";
   await prisma.questionnaireAvantAuditEnvoi.create({
@@ -103,6 +162,22 @@ export async function marquerLu(id: string, userId: string): Promise<void> {
     where: { id },
     data: { luLe: new Date(), luParId: userId },
   });
+}
+
+/** « Clore » : le lien ne reçoit plus de réponses (les réponses déjà reçues restent). */
+export async function clore(id: string): Promise<void> {
+  await prisma.questionnaireAvantAudit.update({ where: { id }, data: { closLe: new Date() } });
+}
+
+/**
+ * Purge de rétention : supprime les réponses reçues avant `avant`. Branchée sur une tâche
+ * planifiée par la PR qui passera `PURGE_PLANIFIEE` à `true` (voir `config.ts`).
+ */
+export async function purgerReponsesAnciennes(avant: Date): Promise<number> {
+  const r = await prisma.questionnaireAvantAuditEnvoi.deleteMany({
+    where: { recuLe: { lt: avant } },
+  });
+  return r.count;
 }
 
 /** Les réponses, une par personne, déchiffrées pour la console. */

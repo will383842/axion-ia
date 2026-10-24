@@ -50,7 +50,8 @@ describe("le questionnaire de pré-audit ne part que par un clic de Will", () =>
       (f) =>
         /^src\/server\/(queue|visio|calendly)\//.test(f.rel) &&
         /questionnaire-avant-audit|questionnaire-preaudit|questionnaireAvantAudit/i.test(f.src) &&
-        f.rel !== "src/server/queue/types.ts",
+        f.rel !== "src/server/queue/types.ts" &&
+        f.rel !== "src/server/visio/questionnaire-en-ligne/jeton.ts",
     ).map((f) => f.rel);
     expect(intrus).toEqual([]);
   });

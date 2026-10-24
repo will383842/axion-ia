@@ -19,7 +19,7 @@ import { MessagePourWill, messageAffichable } from "@/features/dossier-client/me
 import { avecMessageDeRetour } from "@/features/dossier-client/message-de-retour";
 
 import { envoyerQuestionnaire } from "./envoyer";
-import { deposerQuestionnaire, lireDeLaRencontre, marquerLu } from "./serveur";
+import { clore, deposerQuestionnaire, lireDeLaRencontre, marquerLu } from "./serveur";
 
 const uuid = z.string().uuid();
 
@@ -40,7 +40,13 @@ export async function deposerQuestionnaireAction(fd: FormData): Promise<void> {
   const rencontreId = champ(fd, "rencontreId");
   if (!uuid.safeParse(rencontreId).success) redirect(adminPath("fr", "/rendez-vous"));
   try {
-    await exigerAccesEchanges();
+    // Le HTML déposé porte du JavaScript servi aux prospects : réservé à Williams.
+    const { role } = await exigerAccesEchanges();
+    if (role !== "super_admin") {
+      throw new MessagePourWill(
+        "Seul Williams (super-administrateur) peut déposer un questionnaire.",
+      );
+    }
     const f = fd.get("fichier");
     if (!(f instanceof File) || f.size === 0) {
       throw new MessagePourWill("Choisissez le fichier HTML du questionnaire.");
@@ -89,4 +95,18 @@ export async function marquerQuestionnaireLuAction(fd: FormData): Promise<void> 
   }
   revalidatePath(pageRencontre(rencontreId));
   retour(rencontreId, "message", "Réponses marquées comme lues.");
+}
+
+export async function cloreQuestionnaireAction(fd: FormData): Promise<void> {
+  const rencontreId = champ(fd, "rencontreId");
+  if (!uuid.safeParse(rencontreId).success) redirect(adminPath("fr", "/rendez-vous"));
+  try {
+    await exigerAccesEchanges();
+    const q = await lireDeLaRencontre(rencontreId);
+    if (q !== null) await clore(q.id);
+  } catch (e) {
+    retour(rencontreId, "erreur", messageAffichable(e));
+  }
+  revalidatePath(pageRencontre(rencontreId));
+  retour(rencontreId, "message", "Questionnaire clos : le lien ne reçoit plus de réponses.");
 }

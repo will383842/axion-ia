@@ -59,14 +59,19 @@ const BANDEAU_ESSAI =
 
 /** La page à servir : le HTML de Will + la configuration (+ le bandeau d'essai). */
 export function pagePourClient(html: string, o: OptionsPage): string {
-  const config = {
-    endpoint: o.endpoint,
-    client: o.client,
-    rgpd: { contact: o.contact, conservation: o.conservation },
-  };
+  const rgpd: Record<string, string> = {};
+  if (o.contact.trim() !== "") rgpd["contact"] = o.contact;
+  if (o.conservation.trim() !== "") rgpd["conservation"] = o.conservation;
+  const base: Record<string, unknown> = { endpoint: o.endpoint };
+  // Le nom du client posé par Will dans sa copie n'est écrasé que si on en a un à donner.
+  if (o.client.trim() !== "") base["client"] = o.client;
   const injection =
-    `\n/* — configuration du site — */\nObject.assign(CONFIG, { endpoint: ${jsonSur(config.endpoint)}, client: ${jsonSur(config.client)} });\n` +
-    `Object.assign(CONFIG.rgpd, ${jsonSur(config.rgpd)});\n`;
+    `
+/* — configuration du site — */
+Object.assign(CONFIG, ${jsonSur(base)});
+` +
+    `Object.assign(CONFIG.rgpd, ${jsonSur(rgpd)});
+`;
   let page = html.replace(DECLARATION_CONFIG, (m) => m + injection);
   if (o.essai) page = page.replace("</body>", `${BANDEAU_ESSAI}</body>`);
   return page;

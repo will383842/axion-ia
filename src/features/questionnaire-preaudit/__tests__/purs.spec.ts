@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { mentionsRgpd, preauditActif, refusEnvoiReel } from "../config";
+import { mentionsRgpd, preauditActif, PURGE_PLANIFIEE, refusEnvoiReel } from "../config";
 import { lignesDeLaCharge, validerCharge } from "../donnees";
 import { pagePourClient, validerHtml } from "../html";
 
@@ -23,11 +23,11 @@ describe("interrupteur et notice RGPD", () => {
     expect(preauditActif({ QUESTIONNAIRE_AVANT_AUDIT_ENABLED: "false" })).toBe(false);
     expect(preauditActif({ QUESTIONNAIRE_AVANT_AUDIT_ENABLED: "true" })).toBe(true);
   });
-  it("l'envoi réel est refusé éteint, puis tant que la notice est vide", () => {
-    expect(refusEnvoiReel({})).toBe("eteint");
+  it("le réel est refusé éteint, puis notice vide, puis purge non planifiée", () => {
+    expect(refusEnvoiReel({}, true)).toBe("eteint");
     const allume = { QUESTIONNAIRE_AVANT_AUDIT_ENABLED: "true" };
-    expect(refusEnvoiReel(allume)).toBe("notice_rgpd_vide");
-    expect(refusEnvoiReel({ ...allume, QUESTIONNAIRE_PREAUDIT_RGPD_CONTACT: "a@b.fr" })).toBe(
+    expect(refusEnvoiReel(allume, true)).toBe("notice_rgpd_vide");
+    expect(refusEnvoiReel({ ...allume, QUESTIONNAIRE_PREAUDIT_RGPD_CONTACT: "a@b.fr" }, true)).toBe(
       "notice_rgpd_vide",
     );
     const complet = {
@@ -35,7 +35,11 @@ describe("interrupteur et notice RGPD", () => {
       QUESTIONNAIRE_PREAUDIT_RGPD_CONTACT: "a@b.fr",
       QUESTIONNAIRE_PREAUDIT_RGPD_CONSERVATION: "3 ans",
     };
-    expect(refusEnvoiReel(complet)).toBeNull();
+    expect(refusEnvoiReel(complet, false)).toBe("purge_non_planifiee");
+    expect(refusEnvoiReel(complet, true)).toBeNull();
+    // Livré tel quel : la purge n'est pas encore planifiée, donc le réel reste refusé.
+    expect(PURGE_PLANIFIEE).toBe(false);
+    expect(refusEnvoiReel(complet)).toBe("purge_non_planifiee");
     expect(mentionsRgpd(complet)).toEqual({ contact: "a@b.fr", conservation: "3 ans" });
   });
 });
@@ -56,11 +60,23 @@ describe("le HTML de Will", () => {
       essai: false,
     });
     expect(page).toContain(HTML.slice(0, HTML.indexOf("const payload")));
-    expect(page).toContain('endpoint: "/api/x"');
+    expect(page).toContain('"endpoint":"/api/x"');
+    expect(page).toContain("u003c/script");
     expect(page).not.toContain("Société </script>");
     expect(page).toContain("\\u003c/script\\u003e");
     expect(page).toContain("a@b.fr");
     expect(page).not.toContain("ESSAI");
+  });
+  it("n'écrase pas le client posé par Will dans sa copie quand on n'en donne pas", () => {
+    const page = pagePourClient(HTML, {
+      endpoint: "/api/x",
+      client: "",
+      contact: "",
+      conservation: "",
+      essai: false,
+    });
+    expect(page).not.toContain('"client"');
+    expect(page).not.toContain('"contact"');
   });
   it("le mode essai ajoute le bandeau", () => {
     const page = pagePourClient(HTML, {
