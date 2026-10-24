@@ -342,7 +342,7 @@ export async function passerBalayage(
     creeraient: 0,
     rattacheraient: 0,
     doublons: [],
-    aClasser: { nombre: 0, raisons: {} },
+    aClasser: { nombre: 0, raisons: {}, empreinte: "" },
   };
   let fichesLues = false;
   await etape<void>("fiches-auto", undefined, async () => {

@@ -64,6 +64,8 @@
  * Module neutre (sans `server-only`, sans Next) : le balayage du worker l'importe.
  */
 
+import { createHash } from "node:crypto";
+
 import { entrepriseDeclaree } from "@/features/admin-rendezvous/a-venir";
 import { invitesSupplementaires } from "@/features/admin-rendezvous/visio";
 import { domaineDe, natureAdresse } from "@/lib/email/nature-adresse";
@@ -522,7 +524,12 @@ export interface BilanFichesAuto {
   /** Fiches créées à CE passage avec un doute d'identité (« doublon possible »). */
   readonly doublons: ReadonlyArray<{ readonly clientId: string; readonly proches: number }>;
   /** Ce qui attend Will (doutes déjà vus compris) ; 0 hors mode actif. */
-  readonly aClasser: { readonly nombre: number; readonly raisons: Record<string, number> };
+  readonly aClasser: {
+    readonly nombre: number;
+    readonly raisons: Record<string, number>;
+    /** Condensat court de l'ensemble trié des rendez-vous à classer (aucun nom ni adresse). */
+    readonly empreinte: string;
+  };
 }
 
 const BILAN_VIDE: BilanFichesAuto = {
@@ -536,8 +543,16 @@ const BILAN_VIDE: BilanFichesAuto = {
   rattacheraient: 0,
   doublons: [],
   // Coupé ou à blanc : plus rien n'attend, l'alerte « à classer » éventuelle est résolue.
-  aClasser: { nombre: 0, raisons: {} },
+  aClasser: { nombre: 0, raisons: {}, empreinte: "" },
 };
+
+/** Le condensat court de l'ensemble TRIÉ des rencontres à classer : ni nom ni adresse. PUR. */
+export function empreinteDe(ids: Iterable<string>): string {
+  return createHash("sha256")
+    .update([...ids].sort().join(","))
+    .digest("hex")
+    .slice(0, 12);
+}
 
 /** Les doutes déjà vus : leurs rencontres et leur raison. */
 async function doutesVus(db: Tx): Promise<Array<{ id: string; raison: string }>> {
@@ -575,6 +590,7 @@ export async function assurerLesFichesProspectAuto(
   const recentes = await db.calendlyEvent.findMany({
     where: { capturedAt: { gte: depuis }, status: "scheduled" },
     select: { id: true },
+    orderBy: { capturedAt: "desc" },
     take: 2000,
   });
   const candidates = await db.rencontre.findMany({
@@ -629,7 +645,7 @@ export async function assurerLesFichesProspectAuto(
     }
   }
 
-  let aClasser: BilanFichesAuto["aClasser"] = { nombre: 0, raisons: {} };
+  let aClasser: BilanFichesAuto["aClasser"] = { nombre: 0, raisons: {}, empreinte: "" };
   if (!essai) {
     const tous = [...vus, ...(essai ? [] : nouveaux)];
     const ouverts =
@@ -650,7 +666,7 @@ export async function assurerLesFichesProspectAuto(
     for (const t of tous) {
       if (ouvertsIds.has(t.id)) raisons[t.raison] = (raisons[t.raison] ?? 0) + 1;
     }
-    aClasser = { nombre: ouvertsIds.size, raisons };
+    aClasser = { nombre: ouvertsIds.size, raisons, empreinte: empreinteDe(ouvertsIds) };
   }
   return {
     mode,

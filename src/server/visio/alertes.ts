@@ -315,28 +315,32 @@ export async function leverPanneDuBalayage(
 /**
  * « N rendez-vous à classer » : la fiche automatique a laissé des rendez-vous à
  * Will (doute). Code PROPRE, sans rapport avec une panne : il ne passe jamais par
- * `VISIO_BALAYAGE_EN_PANNE`. Une seule alerte ouverte ; si le nombre change, elle
- * est refermée et rouverte (le titre dit le nombre et les raisons). `nombre` 0 la
- * résout. Ne contient ni nom ni adresse : des nombres et des raisons.
+ * `VISIO_BALAYAGE_EN_PANNE`. `nombre` 0 résout l'alerte ouverte.
+ *
+ * L'identité de l'alerte est l'EMPREINTE de l'ensemble trié des rendez-vous à classer
+ * (condensat court, sans nom ni adresse), dans le message ET `metadata.empreinte` :
+ *   · même ensemble, alerte ouverte → rien ; envoi raté (`notifiedAt` vide) → retenté ;
+ *   · même ensemble, alerte FERMÉE à la main → rien (`creerOuDedup` retrouve son message) :
+ *     Will a répondu, on ne le redit pas ;
+ *   · ensemble différent (un rendez-vous de plus, ou un autre après 1 -> 0 -> 1) → l'ouverte
+ *     est refermée et une nouvelle s'ouvre, avec un message neuf donc une nouvelle alerte.
+ * Ne contient ni nom ni adresse : des nombres, des raisons, un condensat.
  */
 export async function signalerRendezVousAClasser(
   db: TxAlertes,
-  etat: { readonly nombre: number; readonly raisons: Readonly<Record<string, number>> },
+  etat: {
+    readonly nombre: number;
+    readonly raisons: Readonly<Record<string, number>>;
+    readonly empreinte: string;
+  },
   deps: { readonly notifier: Notifier; readonly creer?: CreerAlerte; readonly maintenant?: Date },
 ): Promise<ResultatSignalement | "resolue" | "rien"> {
   const maintenant = deps.maintenant ?? new Date();
   const code = CODES_ALERTES_VISIO.rendezVousAClasser;
   const ouverte = await db.alerteSysteme.findFirst({
     where: { code, resolue: false, cibleId: null },
-    select: { id: true, metadata: true },
+    select: { id: true, metadata: true, notifiedAt: true },
   });
-  const nombreOuvert =
-    ouverte !== null &&
-    ouverte.metadata !== null &&
-    typeof ouverte.metadata === "object" &&
-    typeof (ouverte.metadata as Record<string, unknown>)["nombre"] === "number"
-      ? ((ouverte.metadata as Record<string, unknown>)["nombre"] as number)
-      : null;
   if (etat.nombre <= 0) {
     if (ouverte === null) return "rien";
     await db.alerteSysteme.update({
@@ -345,8 +349,19 @@ export async function signalerRendezVousAClasser(
     });
     return "resolue";
   }
-  if (ouverte !== null && nombreOuvert === etat.nombre) return "deja_envoyee";
-  if (ouverte !== null) {
+  const empreinteOuverte =
+    ouverte !== null &&
+    ouverte.metadata !== null &&
+    typeof ouverte.metadata === "object" &&
+    typeof (ouverte.metadata as Record<string, unknown>)["empreinte"] === "string"
+      ? ((ouverte.metadata as Record<string, unknown>)["empreinte"] as string)
+      : null;
+  // Même ensemble, déjà envoyée : rien. Pas encore envoyée : on retombe sur `signalerUneFois`,
+  // avec le MÊME message (l'alerte est retrouvée, rien n'est créé, l'envoi est retenté).
+  if (ouverte !== null && empreinteOuverte === etat.empreinte && ouverte.notifiedAt) {
+    return "deja_envoyee";
+  }
+  if (ouverte !== null && empreinteOuverte !== etat.empreinte) {
     await db.alerteSysteme.update({
       where: { id: ouverte.id },
       data: { resolue: true, resolueAt: maintenant },
@@ -363,16 +378,15 @@ export async function signalerRendezVousAClasser(
       niveau: "important",
       titre,
       message:
-        // L'heure d'ouverture change à CHAQUE ouverture : `creerOuDedup` refuse de recréer une
-        // alerte dont le message est identique à celui d'une alerte RÉSOLUE (1 -> 0 -> 1
-        // ne préviendrait plus Will). Pas de doublon pour autant : elle n'est rouverte que
-        // si aucune n'est ouverte ou si le nombre change.
-        `Le ${maintenant.toISOString()} : la fiche automatique n'a pas rangé ${etat.nombre} ` +
-        `rendez-vous Calendly (${detail}). ` +
+        // Le message porte l'empreinte : le même ensemble redit le même message (dé-dupliqué,
+        // y compris après une fermeture à la main), un ensemble différent en fait un neuf.
+        `La fiche automatique n'a pas rangé ${etat.nombre} rendez-vous Calendly ` +
+        `(${detail}) [empreinte ${etat.empreinte}]. ` +
         `Ce n'est pas une panne : ouvrez l'onglet « À classer » de la console.`,
       cibleId: null,
       metadata: {
         nombre: etat.nombre,
+        empreinte: etat.empreinte,
         raisons: Object.entries(etat.raisons).map(([r, n]) => `${r}:${n}`),
       },
     },

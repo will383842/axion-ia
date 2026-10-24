@@ -203,7 +203,8 @@ describe("la fiche prospect se crée toute seule au rendez-vous Calendly", () =>
     ]);
     const bilan = await passage(base);
     expect(bilan).toMatchObject({ creees: 0, doutes: 1 });
-    expect(bilan.aClasser).toEqual({ nombre: 1, raisons: { sans_nom: 1 } });
+    expect(bilan.aClasser).toMatchObject({ nombre: 1, raisons: { sans_nom: 1 } });
+    expect(bilan.aClasser.empreinte).toMatch(/^[0-9a-f]{12}$/);
     expect(base.tables["client"] ?? []).toHaveLength(0);
     expect(rencontreDe(base, rencontres[0]!)).toMatchObject({ clientId: null });
   });
@@ -346,7 +347,7 @@ describe("la fiche prospect se crée toute seule au rendez-vous Calendly", () =>
     const { base, rencontres } = await scene([rendezVousCalendly()]);
     const bilan = await passage(base);
     expect(bilan).toMatchObject({ creees: 0, doutes: 1 });
-    expect(bilan.aClasser).toEqual({ nombre: 1, raisons: { refus_porte: 1 } });
+    expect(bilan.aClasser).toMatchObject({ nombre: 1, raisons: { refus_porte: 1 } });
     expect(base.tables["client"] ?? []).toHaveLength(0);
     expect(rencontreDe(base, rencontres[0]!)).toMatchObject({
       clientId: null,
@@ -646,7 +647,7 @@ describe("l'interrupteur et l'essai à blanc", () => {
       rattacheraient: 1,
       creees: 0,
       rattachees: 0,
-      aClasser: { nombre: 0, raisons: {} },
+      aClasser: { nombre: 0, raisons: {}, empreinte: "" },
     });
     expect(base.tables["client"]).toHaveLength(1);
     expect(base.tables["activityLog"] ?? []).toHaveLength(0);
