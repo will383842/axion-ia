@@ -3,7 +3,7 @@
  *
  * Écrivains des tables (verrouillés par le cliquet nominatif) : `deposerQuestionnaire`,
  * `reserverEnvoi`, `annulerEnvoi`, `enregistrerReponse`, `marquerLu`, `clore`,
- * `purgerReponsesAnciennes`. Aucun n'envoie d'e-mail : seul `envoyer.ts` le fait, sur clic de Will.
+ * `purgerReponsesAnciennes` (et, pour les brouillons, `brouillon.ts`). Aucun n'envoie d'e-mail : seul `envoyer.ts` le fait, sur clic de Will.
  */
 
 import { randomBytes } from "node:crypto";
@@ -254,6 +254,10 @@ export async function enregistrerReponse(
         membre: charge.membre,
         donnees: chiffrerParole(charge.json),
       },
+    });
+    // Réponse reçue : le brouillon de cette personne n'a plus lieu d'être (`brouillon.ts`).
+    await tx.questionnaireAvantAuditBrouillon.deleteMany({
+      where: { questionnaireId: q.id, mode: charge.mode, membre: charge.membre ?? "" },
     });
     // Une nouvelle réponse repasse la fiche « à traiter » : la lecture précédente est périmée.
     await tx.questionnaireAvantAudit.update({ where: { id: q.id }, data: { luLe: null } });

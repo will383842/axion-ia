@@ -40,6 +40,7 @@ const suiviUpdateMany = vi.fn();
 const queryRaw = vi.fn();
 const preDeleteMany = vi.fn();
 const preParentUpdateMany = vi.fn();
+const brouillonDeleteMany = vi.fn();
 vi.mock("@/lib/prisma", () => ({
   prisma: {
     calendlyEvent: { updateMany: (...a: unknown[]) => updateMany(...a) },
@@ -48,6 +49,9 @@ vi.mock("@/lib/prisma", () => ({
     // Questionnaire de pré-audit (2026-10-24) : réponses effacées avec la personne.
     questionnaireAvantAuditEnvoi: { deleteMany: (...a: unknown[]) => preDeleteMany(...a) },
     questionnaireAvantAudit: { updateMany: (...a: unknown[]) => preParentUpdateMany(...a) },
+    questionnaireAvantAuditBrouillon: {
+      deleteMany: (...a: unknown[]) => brouillonDeleteMany(...a),
+    },
     // 🔑 Ajouté le 2026-08-31 avec l'élargissement de l'effacement à la charge
     // brute : `eraseCalendlyEventsForEmail` cherche d'abord les lignes dont le
     // `raw_payload` contient l'adresse, parce qu'une réservation non enrichie a
@@ -67,6 +71,7 @@ beforeEach(() => {
   queryRaw.mockResolvedValue([]);
   preDeleteMany.mockResolvedValue({ count: 0 });
   preParentUpdateMany.mockResolvedValue({ count: 0 });
+  brouillonDeleteMany.mockResolvedValue({ count: 0 });
 });
 
 describe("la note du suivi après l'appel", () => {
@@ -96,6 +101,10 @@ describe("questionnaire de pré-audit (2026-10-24)", () => {
       ],
     };
     expect(preDeleteMany).toHaveBeenCalledWith({ where: { mode: "main", questionnaire: ou } });
+    // Son brouillon en cours part avec ses réponses (2026-10-24).
+    expect(brouillonDeleteMany).toHaveBeenCalledWith({
+      where: { mode: "main", questionnaire: ou },
+    });
     expect(preParentUpdateMany).toHaveBeenCalledWith({
       where: ou,
       data: { luLe: null, luParId: null, destinataire: null, destinataireHash: null },
@@ -107,6 +116,9 @@ describe("questionnaire de pré-audit (2026-10-24)", () => {
     preDeleteMany.mockResolvedValue({ count: 1 });
     expect(await eraseQuestionnairePreauditMembre("ref1", "m42")).toBe(1);
     expect(preDeleteMany).toHaveBeenCalledWith({
+      where: { mode: { in: ["emp", "it"] }, membre: "m42", questionnaire: { ref: "ref1" } },
+    });
+    expect(brouillonDeleteMany).toHaveBeenCalledWith({
       where: { mode: { in: ["emp", "it"] }, membre: "m42", questionnaire: { ref: "ref1" } },
     });
     preDeleteMany.mockClear();

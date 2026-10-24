@@ -36,3 +36,9 @@ export const ENTETES_CORS_PREAUDIT = {
   "Access-Control-Max-Age": "600",
   Vary: "Origin",
 } as const;
+
+/** CORS du brouillon (même origine `null`) : relu (GET), enregistré (POST), retiré (DELETE). */
+export const ENTETES_CORS_BROUILLON = {
+  ...ENTETES_CORS_PREAUDIT,
+  "Access-Control-Allow-Methods": "GET, POST, DELETE, OPTIONS",
+} as const;

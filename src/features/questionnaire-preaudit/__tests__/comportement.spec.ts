@@ -91,6 +91,8 @@ vi.mock("@/lib/prisma", () => ({
         return { count: l.length };
       },
     },
+    // Brouillons (2026-10-24) : l'envoi réussi supprime celui de la personne.
+    questionnaireAvantAuditBrouillon: { deleteMany: async () => ({ count: 0 }) },
     questionnaireAvantAuditEnvoi: {
       count: async ({ where }: { where: Ligne }) => {
         const n = base.e.filter((x) => correspond(x, where)).length;

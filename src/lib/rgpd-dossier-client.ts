@@ -48,6 +48,13 @@ export const EXCLUSIONS_EXPORT_DOSSIER: ReadonlyArray<{
   readonly motif: string;
 }> = [
   {
+    modele: "QuestionnaireAvantAuditBrouillon",
+    motif:
+      "votre brouillon en cours du questionnaire avant audit : il vous est rendu par votre propre " +
+      "lien tant que vous remplissez, et il est supprimé dès l'envoi de vos réponses ou après 30 " +
+      "jours sans modification.",
+  },
+  {
     modele: "QuestionnaireAvantAudit",
     motif:
       "la copie du questionnaire préparée pour vous : l'adresse d'envoi et vos réponses sont " +

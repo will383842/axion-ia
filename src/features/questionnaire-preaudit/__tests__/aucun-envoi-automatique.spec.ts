@@ -3,7 +3,7 @@
  *
  *   · seul `features/questionnaire-preaudit/envoyer.ts` met le gabarit en file ;
  *   · seule l'action « Envoyer » de la console appelle `envoyerQuestionnaire` ;
- *   · seuls `serveur.ts` (et l'effacement RGPD) écrivent dans les deux tables : si quelqu'un ajoute
+ *   · seuls `serveur.ts` (et l'effacement RGPD) écrivent dans les trois tables (`brouillon.ts` pour les brouillons) : si quelqu'un ajoute
  *     un autre chemin d'écriture, ce test rougit et dit lequel.
  */
 
@@ -58,11 +58,12 @@ describe("le questionnaire de pré-audit ne part que par un clic de Will", () =>
 
   it("les écrivains des deux tables sont connus", () => {
     const ecrivains = FICHIERS.filter((f) =>
-      /\.questionnaireAvantAudit(Envoi)?\.(create|createMany|update|updateMany|upsert|delete|deleteMany)\b/.test(
+      /\.questionnaireAvantAudit(Envoi|Brouillon)?\.(create|createMany|update|updateMany|upsert|delete|deleteMany)\b/.test(
         f.src,
       ),
     ).map((f) => f.rel);
     expect(ecrivains.sort()).toEqual([
+      "src/features/questionnaire-preaudit/brouillon.ts",
       "src/features/questionnaire-preaudit/serveur.ts",
       "src/lib/rgpd-erase.ts",
     ]);

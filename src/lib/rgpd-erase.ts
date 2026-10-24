@@ -851,6 +851,10 @@ export async function eraseCalendlyEventsForEmail(email: string): Promise<EraseC
   await prisma.questionnaireAvantAuditEnvoi.deleteMany({
     where: envoisDuDirigeant(email, empreintePreaudit),
   });
+  // Son brouillon en cours (2026-10-24, `rgpd: dossier-client`) part avec ses réponses.
+  await prisma.questionnaireAvantAuditBrouillon.deleteMany({
+    where: envoisDuDirigeant(email, empreintePreaudit),
+  });
   await prisma.questionnaireAvantAudit.updateMany({
     where: questionnairesDuDirigeant(email, empreintePreaudit),
     data: { luLe: null, luParId: null, destinataire: null, destinataireHash: null },
@@ -2453,6 +2457,10 @@ export async function eraseQuestionnairePreauditMembre(
 ): Promise<number> {
   if (ref.trim() === "" || membre.trim() === "") return 0;
   const r = await prisma.questionnaireAvantAuditEnvoi.deleteMany({
+    where: { mode: { in: ["emp", "it"] }, membre, questionnaire: { ref } },
+  });
+  // Son brouillon en cours suit (2026-10-24) ; le compte rendu reste celui des réponses.
+  await prisma.questionnaireAvantAuditBrouillon.deleteMany({
     where: { mode: { in: ["emp", "it"] }, membre, questionnaire: { ref } },
   });
   return r.count;
