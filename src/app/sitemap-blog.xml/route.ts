@@ -32,6 +32,7 @@
 // garantie car les deux appellent le MÊME builder.
 
 import sitemap from "@/app/sitemap";
+import { SitemapDbIndisponibleError, reponseSitemap503 } from "@/lib/seo/sitemap-erreur";
 
 // Rendu DYNAMIQUE au runtime (cf. en-tête). Volontairement PAS `force-static` :
 // la version pré-rendue au build stub.invalid serait vide (bug d'origine).
@@ -57,7 +58,18 @@ export async function GET(): Promise<Response> {
   // Réutilise le builder blog existant (default export metadata sitemap). Le
   // filtrage EN (`filterEnIfDisabled`) et les alternates hreflang sont déjà
   // appliqués côté builder → on sérialise tel quel.
-  const entries = await sitemap({ id: Promise.resolve("blog") });
+  // Lot 9 : mode strict → base injoignable = 503 (Retry-After), jamais un plan
+  // sans articles servi en 200 et mis en cache par le CDN.
+  let entries: Awaited<ReturnType<typeof sitemap>>;
+  try {
+    entries = await sitemap({ id: Promise.resolve("blog"), strict: true });
+  } catch (err) {
+    if (err instanceof SitemapDbIndisponibleError) {
+      console.error(`[sitemap-blog] ${err.message} — réponse 503`);
+      return reponseSitemap503();
+    }
+    throw err;
+  }
 
   const urlBlocks: string[] = [];
   for (const e of entries) {
