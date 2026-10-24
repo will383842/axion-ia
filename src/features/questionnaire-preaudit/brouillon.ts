@@ -32,8 +32,12 @@ export const BROUILLON_INACTIF_JOURS = 30;
 const JOUR_MS = 86_400_000;
 /** Tolérance sur l'horloge du navigateur (un téléphone en avance d'un jour reste accepté). */
 const AVANCE_MAX_MS = JOUR_MS;
-/** Au plus 30 brouillons par questionnaire (dirigeant, collaborateurs, référent informatique). */
-export const BROUILLONS_MAX_PAR_QUESTIONNAIRE = 30;
+/**
+ * Au plus 150 brouillons VIVANTS (modifiés depuis moins de 30 jours) par questionnaire : la page
+ * admet 62 personnes (60 collaborateurs, le dirigeant, le référent informatique), avec une marge
+ * pour les liens personnels régénérés. Toujours borné.
+ */
+export const BROUILLONS_MAX_PAR_QUESTIONNAIRE = 150;
 
 const MODES: ReadonlySet<string> = new Set(["main", "emp", "it"]);
 /**
@@ -166,10 +170,27 @@ export type ResultatEnregistrement =
   | { readonly statut: "trop_de_brouillons" }
   | { readonly statut: "ferme" };
 
-/** L'heure du NAVIGATEUR à l'envoi d'une réponse (`envoyeLe` de la charge), ou `null`. */
-function envoyeLeNavigateur(donneesChiffrees: string): number | null {
+/**
+ * L'heure du NAVIGATEUR à l'envoi d'une réponse de CETTE personne (`envoyeLe` de la charge), ou
+ * `null`. Dirigeant : seule une réponse AUTHENTIFIÉE par son code compte (lien de base sans code :
+ * la réponse d'un salarié en parcours « dirigeant » n'arrête pas le brouillon du dirigeant).
+ */
+function envoyeLeNavigateur(
+  questionnaireId: string,
+  p: Personne,
+  donneesChiffrees: string,
+): number | null {
   try {
-    const o = JSON.parse(dechiffrerParole(donneesChiffrees)) as { envoyeLe?: unknown };
+    const o = JSON.parse(dechiffrerParole(donneesChiffrees)) as {
+      envoyeLe?: unknown;
+      membre?: unknown;
+    };
+    if (
+      p.mode === "main" &&
+      (typeof o.membre !== "string" || !codeDirigeantPreauditValide(questionnaireId, o.membre))
+    ) {
+      return null;
+    }
     const t = typeof o.envoyeLe === "string" ? Date.parse(o.envoyeLe) : Number.NaN;
     return Number.isFinite(t) ? t : null;
   } catch {
@@ -205,7 +226,8 @@ export async function enregistrerBrouillon(
       select: { donnees: true },
     });
     const h = v.horodatage.getTime();
-    if (envois.some((e) => (envoyeLeNavigateur(e.donnees) ?? -Infinity) >= h)) {
+    const deLaPersonne = (d: string) => envoyeLeNavigateur(questionnaireId, v.personne, d);
+    if (envois.some((e) => (deLaPersonne(e.donnees) ?? -Infinity) >= h)) {
       return { statut: "deja_envoye" };
     }
     const existant = await tx.questionnaireAvantAuditBrouillon.findUnique({

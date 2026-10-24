@@ -3,15 +3,21 @@
 // POST JSON « schéma 3 » ou « 4 », une personne à la fois, gardé tel quel. Jeton faux → 404 neutre.
 //   · débit limité par IP ET par jeton (`checkRateLimit`) ; corps lu avec un plafond ;
 //   · `?essai=1` : on valide la forme et on répond 200 SANS RIEN ÉCRIRE ni notifier ;
-//   · réel : interrupteur + notice RGPD + purge, lien envoyé, ni clos ni expiré ; réponse chiffrée.
+//   · réel : interrupteur + notice RGPD + purge, lien envoyé, ni clos ni expiré ; réponse chiffrée ;
+//   · 413 `charge_trop_grosse` (taille, plafond, message), 422 `trop_de_reponses`, 409 `deja_recu`
+//     pour un renvoi identique (idempotence, aucune seconde ligne).
 // Appelée depuis un document en bac à sable (origine opaque) : CORS limité à `null` et au POST.
 // Aucune notification par e-mail : la console affiche « à traiter » (`lu_le` vide).
 
 import { NextResponse } from "next/server";
 
 import { refusReel } from "@/features/questionnaire-preaudit/config";
-import { lireCorpsPlafonne } from "@/features/questionnaire-preaudit/corps";
-import { CHARGE_MAX_OCTETS, validerCharge } from "@/features/questionnaire-preaudit/donnees";
+import { lireCorpsPlafonne, refusTropGros } from "@/features/questionnaire-preaudit/corps";
+import {
+  CHARGE_MAX_OCTETS,
+  ENVOIS_MAX_PAR_QUESTIONNAIRE,
+  validerCharge,
+} from "@/features/questionnaire-preaudit/donnees";
 import { ENTETES_CORS_PREAUDIT } from "@/features/questionnaire-preaudit/entetes";
 import { enregistrerReponse, lireParJeton } from "@/features/questionnaire-preaudit/serveur";
 import { ipVisiteurOuNull } from "@/lib/client-ip-core";
@@ -75,7 +81,7 @@ export async function POST(
 
   const essai = new URL(req.url).searchParams.get("essai") === "1";
   const corps = await lireCorpsPlafonne(req, CHARGE_MAX_OCTETS);
-  if (corps === null) return reponse(413, { ok: false });
+  if (corps === null) return reponse(413, refusTropGros(req, CHARGE_MAX_OCTETS));
   const v = validerCharge(corps);
   if (!v.ok) return reponse(400, { ok: false, motif: v.motif });
 
@@ -84,6 +90,18 @@ export async function POST(
   if (refusReel() !== null) return reponse(404, { ok: false });
   const r = await enregistrerReponse(q, v.charge);
   if (r === "ferme") return reponse(404, { ok: false });
-  if (r === "trop") return reponse(429, { ok: false });
+  // 4xx dédié, jamais 429 : la page ne relance pas et ne parle pas de « connexion coupée ».
+  if (r === "trop") {
+    return reponse(422, {
+      ok: false,
+      motif: "trop_de_reponses",
+      plafond: ENVOIS_MAX_PAR_QUESTIONNAIRE,
+      message:
+        "Ce questionnaire a atteint le nombre maximal de réponses. Gardez cette page ouverte, " +
+        "téléchargez le PDF de vos réponses et transmettez-le à votre interlocuteur Axion IA.",
+    });
+  }
+  // Renvoi identique d'une réponse déjà reçue : succès pour la page (409 « déjà reçu »).
+  if (r === "doublon") return reponse(409, { ok: true, motif: "deja_recu" });
   return reponse(200, { ok: true });
 }

@@ -18,6 +18,12 @@ import { exigerAccesEchanges } from "@/features/dossier-client/acces";
 import { MessagePourWill, messageAffichable } from "@/features/dossier-client/message-affichable";
 import { avecMessageDeRetour } from "@/features/dossier-client/message-de-retour";
 
+import { prisma } from "@/lib/prisma";
+import {
+  ecarterQuestionnairePreauditMembre,
+  eraseQuestionnairePreauditMembre,
+} from "@/lib/rgpd-erase";
+
 import { envoyerQuestionnaire } from "./envoyer";
 import { clore, deposerQuestionnaire, lireDeLaRencontre, marquerLu } from "./serveur";
 
@@ -126,4 +132,94 @@ export async function cloreQuestionnaireAction(fd: FormData): Promise<void> {
   }
   revalidatePath(pageRencontre(rencontreId));
   retour(rencontreId, "message", "Questionnaire clos : le lien ne reçoit plus de réponses.");
+}
+
+/** La référence et le code d'un salarié, lus du formulaire de la console (bornés). */
+function refEtMembre(fd: FormData): { ref: string; membre: string } {
+  const ref = champ(fd, "ref").slice(0, 40);
+  const membre = champ(fd, "membre").slice(0, 60);
+  if (ref === "" || membre === "") {
+    throw new MessagePourWill("Référence du questionnaire ou code du collaborateur manquant.");
+  }
+  return { ref, membre };
+}
+
+/** Trace best-effort (sans le contenu des réponses) : qui a fait quel geste RGPD. */
+async function tracer(userId: string, action: string, ref: string, nombre: number): Promise<void> {
+  try {
+    await prisma.activityLog.create({
+      data: {
+        adminUserId: userId,
+        action,
+        targetType: "QuestionnaireAvantAuditEnvoi",
+        changes: { ref, nombre },
+      },
+    });
+  } catch {
+    // un journal indisponible n'empêche pas le geste
+  }
+}
+
+/**
+ * Demande d'effacement d'un salarié (audit des données du 24/10/2026, point 12) : ses réponses
+ * sont MISES À L'ÉCART et la fiche affiche une alerte à Will. Rien n'est supprimé.
+ */
+export async function ecarterReponsesMembreAction(fd: FormData): Promise<void> {
+  const rencontreId = champ(fd, "rencontreId");
+  if (!uuid.safeParse(rencontreId).success) redirect(adminPath("fr", "/rendez-vous"));
+  let n = 0;
+  try {
+    const { userId } = await exigerAccesEchanges();
+    const { ref, membre } = refEtMembre(fd);
+    n = await ecarterQuestionnairePreauditMembre(ref, membre);
+    await tracer(userId, "questionnaire-preaudit.membre.ecarte", ref, n);
+  } catch (e) {
+    retour(rencontreId, "erreur", messageAffichable(e));
+  }
+  revalidatePath(pageRencontre(rencontreId));
+  retour(
+    rencontreId,
+    "message",
+    `${n} réponse(s) mise(s) à l'écart. L'effacement définitif reste à faire par Williams ` +
+      "(bouton rouge sur la fiche).",
+  );
+}
+
+/**
+ * Effacement DÉFINITIF des réponses d'un salarié : clic de Williams (super-administrateur)
+ * SEULEMENT, sur des réponses déjà mises à l'écart, avec la confirmation écrite « EFFACER ».
+ */
+export async function effacerReponsesMembreAction(fd: FormData): Promise<void> {
+  const rencontreId = champ(fd, "rencontreId");
+  if (!uuid.safeParse(rencontreId).success) redirect(adminPath("fr", "/rendez-vous"));
+  let n = 0;
+  try {
+    const { userId, role } = await exigerAccesEchanges();
+    if (role !== "super_admin") {
+      throw new MessagePourWill(
+        "Seul Williams (super-administrateur) peut effacer définitivement.",
+      );
+    }
+    if (champ(fd, "confirmation") !== "EFFACER") {
+      throw new MessagePourWill("Écrivez EFFACER pour confirmer l'effacement définitif.");
+    }
+    const { ref, membre } = refEtMembre(fd);
+    const ecartees = await prisma.questionnaireAvantAuditEnvoi.count({
+      where: {
+        mode: { in: ["emp", "it"] },
+        membre,
+        questionnaire: { ref },
+        ecarteLe: { not: null },
+      },
+    });
+    if (ecartees === 0) {
+      throw new MessagePourWill("Mettez d'abord ces réponses à l'écart (demande d'effacement).");
+    }
+    n = await eraseQuestionnairePreauditMembre(ref, membre);
+    await tracer(userId, "questionnaire-preaudit.membre.efface", ref, n);
+  } catch (e) {
+    retour(rencontreId, "erreur", messageAffichable(e));
+  }
+  revalidatePath(pageRencontre(rencontreId));
+  retour(rencontreId, "message", `${n} réponse(s) effacée(s) définitivement.`);
 }

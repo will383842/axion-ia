@@ -75,7 +75,7 @@ export async function envoyerQuestionnaire(args: {
         jobId: `preaudit-${q.id}-${maintenant.getTime()}`,
         entityType: "QuestionnaireAvantAudit",
         entityId: q.id,
-        clientId: q.rencontre.clientId ?? null,
+        clientId: q.rencontre?.clientId ?? null,
       },
     );
     // Retenu dans la corbeille « E-mails à valider » : l'e-mail EXISTE et partira à la validation

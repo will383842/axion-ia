@@ -3,9 +3,10 @@
  * Brouillon du questionnaire de pré-audit (2026-10-24) — le VRAI `brouillon.ts`, `serveur.ts` et
  * les deux routes (brouillon + réponses), sur une base en mémoire (seuls Prisma et le limiteur
  * sont remplacés). Couvre : relu octet pour octet, consentement exigé, code personnel du dirigeant
- * (un salarié avec le lien de base ne lit rien), vieil onglet refusé, 400 000 octets, 30 brouillons
- * au plus, jeton faux, suppression à l'envoi (horloges décalées), aucune purge automatique,
- * chiffrement, débit, CORS, essai.
+ * (un salarié avec le lien de base ne lit rien), vieil onglet refusé, 1 000 000 d'octets (413
+ * lisible), 150 brouillons au plus, jeton faux, suppression à l'envoi (horloges décalées ; celui du
+ * dirigeant seulement si sa réponse porte son code), aucune purge automatique, chiffrement, débit,
+ * CORS, essai.
  */
 
 import { beforeEach, describe, expect, it, vi } from "vitest";
@@ -52,8 +53,10 @@ vi.mock("@/lib/prisma", () => {
         base.e.filter((x) => correspond(x, where)).length,
       findMany: async ({ where }: { where: Ligne }) =>
         base.e.filter((x) => correspond(x, where)).map((x) => ({ ...x })),
+      findFirst: async ({ where }: { where: Ligne }) =>
+        base.e.find((x) => correspond(x, where)) ?? null,
       create: async ({ data }: { data: Ligne }) => {
-        base.e.push({ id: String(++base.seq), recuLe: new Date(), ...data });
+        base.e.push({ id: String(++base.seq), recuLe: new Date(), ecarteLe: null, ...data });
       },
     },
     questionnaireAvantAuditBrouillon: {
@@ -286,10 +289,16 @@ describe("rien sans accord, rien d'un vieil onglet", () => {
 });
 
 describe("plafonds, jeton, débit", () => {
-  it("au-delà de 400 000 octets : 413 (en-tête ET flux), rien d'écrit", async () => {
+  it("au-delà de 1 000 000 d'octets : 413 lisible (en-tête ET flux), rien d'écrit", async () => {
     const q = questionnaire();
     const gros = corps(q, { brouillon: "a".repeat(CHARGE_MAX_OCTETS) });
-    expect((await enregistrer(q, gros)).status).toBe(413);
+    const r0 = await enregistrer(q, gros);
+    expect(r0.status).toBe(413);
+    expect(await json(r0)).toMatchObject({
+      ok: false,
+      motif: "charge_trop_grosse",
+      plafond: CHARGE_MAX_OCTETS,
+    });
     const flux = new ReadableStream<Uint8Array>({
       start(c) {
         c.enqueue(new TextEncoder().encode(gros));
@@ -327,7 +336,18 @@ describe("plafonds, jeton, débit", () => {
     }
     const r = await enregistrer(q, corps(q, { mode: "emp", membre: "membredetrop1" }));
     expect(r.status).toBe(413);
-    expect(await json(r)).toEqual({ ok: false, motif: "trop_de_brouillons" });
+    expect(await json(r)).toMatchObject({
+      ok: false,
+      motif: "trop_de_brouillons",
+      plafond: BROUILLONS_MAX_PAR_QUESTIONNAIRE,
+    });
+    expect(
+      String(
+        (await json(await enregistrer(q, corps(q, { mode: "emp", membre: "membredetrop2" }))))[
+          "message"
+        ],
+      ),
+    ).not.toMatch(/connexion/i);
     expect(base.b).toHaveLength(BROUILLONS_MAX_PAR_QUESTIONNAIRE);
     // Une personne qui a déjà le sien continue d'enregistrer.
     const maj = await enregistrer(
@@ -396,7 +416,8 @@ describe("plafonds, jeton, débit", () => {
     const confs = base.limite.mock.calls.map((c) => (c[1] as { limit: number }).limit);
     expect(confs[2]).toBe(120);
     expect(confs[0]).toBeGreaterThan(120);
-    expect(confs[1]).toBeGreaterThanOrEqual(120 * BROUILLONS_MAX_PAR_QUESTIONNAIRE);
+    // Le lien est partagé par 62 personnes au plus (60 collaborateurs, dirigeant, référent).
+    expect(confs[1]).toBeGreaterThanOrEqual(120 * 62);
     // Chaque compteur bloque à son tour.
     for (const rang of [0, 1, 2]) {
       base.limite.mockReset();
@@ -463,24 +484,38 @@ describe("suppression", () => {
   const envoyer = (q: Ligne, c: string) =>
     postReponse(new Request("http://localhost/api/q", { method: "POST", body: c }), ctx(q));
 
-  it("réponse finale du dirigeant SANS `membre` : brouillon supprimé, sauvegarde en retard refusée", async () => {
+  it("réponse « dirigeant » SANS son code (lien de base) : son brouillon RESTE, il continue", async () => {
     const q = questionnaire();
     const t = Date.now();
     await enregistrer(q, corps(q, { horodatage: t, brouillon: "dirigeant" }));
     await enregistrer(q, corps(q, { mode: "emp", membre: CODE, horodatage: t, brouillon: "s" }));
-    const sansMembre = JSON.stringify({
-      schema: 3,
-      mode: "main",
-      envoyeLe: new Date(t + 1000).toISOString(),
-      consentements: { traitement: true },
-      donnees: { ent_nom: "x" },
-    });
-    expect((await envoyer(q, sansMembre)).status).toBe(200);
+    for (const membre of [undefined, CODE, "x".repeat(24)]) {
+      const sansCode = JSON.stringify({
+        schema: 3,
+        mode: "main",
+        membre,
+        envoyeLe: new Date(t + 1000).toISOString() + String(membre),
+        consentements: { traitement: true },
+        donnees: { ent_nom: "x" },
+      });
+      expect((await envoyer(q, sansCode)).status).toBe(200);
+    }
+    expect(base.b.map((b) => b["mode"]).sort()).toEqual(["emp", "main"]);
+    expect((await json(await relire(q)))["brouillon"]).toBe("dirigeant");
+    // Ces réponses non authentifiées ne bloquent pas ses sauvegardes (pas de `deja_envoye`).
+    expect((await enregistrer(q, corps(q, { horodatage: t + 500 }))).status).toBe(200);
+  });
+
+  it("réponse du dirigeant AVEC son code : son brouillon est supprimé, le retard refusé", async () => {
+    const q = questionnaire();
+    const t = Date.now();
+    await enregistrer(q, corps(q, { horodatage: t, brouillon: "dirigeant" }));
+    await enregistrer(q, corps(q, { mode: "emp", membre: CODE, horodatage: t, brouillon: "s" }));
+    expect((await envoyer(q, reponse("main", dir(q), t + 1000))).status).toBe(200);
     expect(base.b.map((b) => b["mode"])).toEqual(["emp"]);
     const tard = await enregistrer(q, corps(q, { horodatage: t + 500 }));
     expect(tard.status).toBe(409);
     expect((await json(tard))["motif"]).toBe("deja_envoye");
-    expect(base.b).toHaveLength(1);
   });
 
   it("le code du dirigeant n'est gardé NULLE PART en clair (réponse, brouillon, console)", async () => {

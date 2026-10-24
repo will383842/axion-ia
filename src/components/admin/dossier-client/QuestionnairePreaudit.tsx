@@ -5,6 +5,7 @@
 // avec « à traiter » tant qu'il ne les a pas marquées lues (pas d'e-mail interne).
 
 import { AdminBadge } from "@/components/admin/ui/AdminBadge";
+import { ReponsePreaudit } from "@/components/admin/dossier-client/ReponsePreaudit";
 import {
   cloreQuestionnaireAction,
   deposerQuestionnaireAction,
@@ -12,7 +13,6 @@ import {
   marquerQuestionnaireLuAction,
 } from "@/features/questionnaire-preaudit/actions";
 import { MESSAGE_REFUS, refusEnvoiReel } from "@/features/questionnaire-preaudit/config";
-import { LIBELLE_PREFILL } from "@/features/questionnaire-preaudit/donnees";
 import { apercuEnvoi } from "@/features/questionnaire-preaudit/envoyer";
 import {
   cheminEssaiPreaudit,
@@ -203,28 +203,42 @@ export async function QuestionnairePreaudit(props: {
           <h3 className="mb-[var(--space-admin-2)] text-[length:var(--text-admin-sm)] font-semibold">
             Réponses reçues ({reponses.length})
           </h3>
+          {q !== null ? (
+            <p className={mutedCls}>
+              Référence du questionnaire : {q.ref} (avec le code d&apos;un collaborateur, elle
+              l&apos;identifie pour une demande d&apos;accès ou d&apos;effacement).
+            </p>
+          ) : null}
+          {reponses.some((r) => r.ecarteLe !== null) ? (
+            <p
+              role="alert"
+              className="my-[var(--space-admin-2)] font-semibold text-[color:var(--color-admin-danger)]"
+            >
+              {reponses.filter((r) => r.ecarteLe !== null).length} réponse(s) mise(s) à l&apos;écart
+              sur demande d&apos;effacement : l&apos;effacement définitif attend la décision de
+              Williams.
+            </p>
+          ) : null}
+          {reponses.some((r) => r.illisible) ? (
+            <p
+              role="alert"
+              className="my-[var(--space-admin-2)] font-semibold text-[color:var(--color-admin-danger)]"
+            >
+              {reponses.filter((r) => r.illisible).length} réponse(s) illisible(s) : voir le détail
+              ci-dessous.
+            </p>
+          ) : null}
           <ul className="space-y-[var(--space-admin-3)] text-[length:var(--text-admin-sm)]">
             {reponses.map((r) => (
               <li key={r.id}>
-                <details>
-                  <summary>
-                    {LIBELLE_MODE[r.mode]}
-                    {r.membre !== null ? ` (${r.membre})` : ""} — {quand(r.recuLe)}
-                  </summary>
-                  <dl className="mt-[var(--space-admin-2)] space-y-[var(--space-admin-1)]">
-                    {r.lignes.map((l) => (
-                      <div key={l.cle}>
-                        <dt className={mutedCls}>{l.cle}</dt>
-                        <dd className="whitespace-pre-line">
-                          {l.valeur}
-                          {l.prefill !== undefined ? (
-                            <span className={mutedCls}> ({LIBELLE_PREFILL[l.prefill]})</span>
-                          ) : null}
-                        </dd>
-                      </div>
-                    ))}
-                  </dl>
-                </details>
+                <ReponsePreaudit
+                  r={r}
+                  rencontreId={rencontreId}
+                  reference={q?.ref ?? ""}
+                  peutEffacer={props.peutDeposer}
+                  libelleMode={LIBELLE_MODE[r.mode]}
+                  quand={quand(r.recuLe)}
+                />
               </li>
             ))}
           </ul>

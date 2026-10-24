@@ -159,8 +159,8 @@ describe("la charge schéma 4", () => {
     expect(validerCharge(t.replace('"schema":4', '"schema":5')).ok).toBe(false);
     expect(validerCharge(t.replace('"schema":4', '"schema":"4"')).ok).toBe(false);
   });
-  it("plafond : 400 Ko", () => {
-    expect(CHARGE_MAX_OCTETS).toBe(400_000);
+  it("plafond : 1 000 000 octets (toutes cases remplies : 452 à 467 Ko ; brouillon : ~605 Ko)", () => {
+    expect(CHARGE_MAX_OCTETS).toBe(1_000_000);
   });
   it("l'état du pré-remplissage accompagne chaque ligne pré-remplie", () => {
     const lignes = lignesDeLaCharge(JSON.stringify(CHARGES_SCHEMA_4.main));

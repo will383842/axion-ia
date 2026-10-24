@@ -14528,25 +14528,27 @@ model QuestionnaireQuestion {
 /// l'envoi est un clic de Will. Le HTML n'est pas une donnée personnelle.
 /// rgpd: dossier-client
 model QuestionnaireAvantAudit {
-  id               String    @id @default(uuid()) @db.Uuid
-  rencontreId      String    @unique @map("rencontre_id") @db.Uuid
-  rencontre        Rencontre @relation(fields: [rencontreId], references: [id], onDelete: Cascade)
-  html             String    @db.Text
+  id               String     @id @default(uuid()) @db.Uuid
+  /// NULL : la rencontre a été supprimée (fin de conservation) — le questionnaire et ses réponses
+  /// RESTENT (2026-10-24 : la suppression d'une rencontre n'efface plus les réponses des salariés).
+  rencontreId      String?    @unique @map("rencontre_id") @db.Uuid
+  rencontre        Rencontre? @relation(fields: [rencontreId], references: [id], onDelete: SetNull)
+  html             String     @db.Text
   /// Regroupe les envois du dirigeant, des collaborateurs et du référent informatique.
-  ref              String    @db.VarChar(40)
-  creeLe           DateTime  @default(now()) @map("cree_le")
+  ref              String     @db.VarChar(40)
+  creeLe           DateTime   @default(now()) @map("cree_le")
   /// NULL = brouillon. Posé par le clic « Envoyer » seulement.
-  envoyeLe         DateTime? @map("envoye_le")
+  envoyeLe         DateTime?  @map("envoye_le")
   /// Dernière lecture des réponses par Will : NULL ou antérieure à un envoi = à traiter.
-  luLe             DateTime? @map("lu_le")
-  luParId          String?   @map("lu_par_id") @db.Uuid
+  luLe             DateTime?  @map("lu_le")
+  luParId          String?    @map("lu_par_id") @db.Uuid
   /// Adresse à qui Will a envoyé le lien (enc) : retrouve les réponses à l'export/effacement même
   /// sans réservation Calendly. `destinataire_hash` = empreinte de recherche (jamais l'adresse).
-  destinataire     String?   @db.Text
-  destinataireHash String?   @map("destinataire_hash") @db.VarChar(64)
+  destinataire     String?    @db.Text
+  destinataireHash String?    @map("destinataire_hash") @db.VarChar(64)
   /// Le lien cesse de recevoir des réponses : clos par Will, ou à l'expiration.
-  closLe           DateTime? @map("clos_le")
-  expireLe         DateTime? @map("expire_le")
+  closLe           DateTime?  @map("clos_le")
+  expireLe         DateTime?  @map("expire_le")
 
   envois     QuestionnaireAvantAuditEnvoi[]
   brouillons QuestionnaireAvantAuditBrouillon[]
@@ -14559,18 +14561,25 @@ model QuestionnaireAvantAudit {
 /// questionnaire de pré-audit : la charge « schéma 3 » telle quelle, chiffrée.
 /// rgpd: dossier-client
 model QuestionnaireAvantAuditEnvoi {
-  id              String                  @id @default(uuid()) @db.Uuid
-  questionnaireId String                  @map("questionnaire_id") @db.Uuid
-  questionnaire   QuestionnaireAvantAudit @relation(fields: [questionnaireId], references: [id], onDelete: Cascade)
+  id                 String                  @id @default(uuid()) @db.Uuid
+  questionnaireId    String                  @map("questionnaire_id") @db.Uuid
+  questionnaire      QuestionnaireAvantAudit @relation(fields: [questionnaireId], references: [id], onDelete: Cascade)
   /// main (dirigeant), emp (collaborateur), it (référent informatique).
-  mode            String                  @db.VarChar(8)
+  mode               String                  @db.VarChar(8)
   /// Code du collaborateur (`membre`), ou NULL.
-  membre          String?                 @db.VarChar(60)
-  recuLe          DateTime                @default(now()) @map("recu_le")
+  membre             String?                 @db.VarChar(60)
+  recuLe             DateTime                @default(now()) @map("recu_le")
   /// (enc) JSON complet du schéma 3.
-  donnees         String                  @db.Text
+  donnees            String                  @db.Text
+  /// `envoyeLe` de la charge (heure du NAVIGATEUR, texte tel quel) : clé d'idempotence d'un renvoi
+  /// identique (questionnaire, mode, membre, envoyeLe). NULL pour une charge sans `envoyeLe`.
+  envoyeLeNavigateur String?                 @map("envoye_le_navigateur") @db.VarChar(40)
+  /// Mise à l'écart sur demande d'effacement d'un salarié (2026-10-24) : la réponse n'est plus
+  /// montrée ; son effacement définitif reste un clic de Will (`eraseQuestionnairePreauditMembre`).
+  ecarteLe           DateTime?               @map("ecarte_le")
 
   @@index([questionnaireId])
+  @@index([questionnaireId, mode, envoyeLeNavigateur], map: "questionnaires_avant_audit_envois_idempotence_idx")
   @@map("questionnaires_avant_audit_envois")
 }
 

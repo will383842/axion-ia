@@ -489,3 +489,54 @@ export async function exporterDossierClientPour(email: string): Promise<ExportDo
     };
   }
 }
+
+/** Ce que reçoit un SALARIÉ (ou le référent informatique) qui exerce son droit d'accès. */
+export interface ExportReponsesPreauditMembre {
+  readonly ref: string;
+  readonly membre: string;
+  readonly reponses: ReadonlyArray<{
+    readonly recuLe: Date;
+    readonly parcours: string;
+    /** `null` : réponse illisible au moment de l'export (voir `avertissements`). */
+    readonly reponses: string | null;
+    /** Mise à l'écart sur sa demande d'effacement (en attente de l'effacement définitif). */
+    readonly ecarteLe: Date | null;
+  }>;
+  readonly avertissements: readonly string[];
+}
+
+/**
+ * Droit d'accès (art. 15) d'un salarié au questionnaire de pré-audit (2026-10-24) : il n'a pas
+ * d'adresse dans nos tables ; la référence du questionnaire et le code de son lien personnel
+ * (affichés par la console à côté de sa réponse) l'identifient. Ses réponses SEULEMENT — jamais
+ * celles du dirigeant ni d'un autre salarié. Appelé par la console (geste de Will), jamais
+ * automatiquement. Ne lève pas : une lecture impossible devient un avertissement.
+ */
+export async function exporterReponsesPreauditMembre(
+  ref: string,
+  membre: string,
+): Promise<ExportReponsesPreauditMembre> {
+  const avertissements: string[] = [];
+  const avertir = (m: string) => {
+    if (!avertissements.includes(m)) avertissements.push(m);
+  };
+  if (ref.trim() === "" || membre.trim() === "") {
+    return { ref, membre, reponses: [], avertissements: ["Référence ou code manquant."] };
+  }
+  const lignes = await prisma.questionnaireAvantAuditEnvoi.findMany({
+    where: { mode: { in: ["emp", "it"] }, membre, questionnaire: { ref } },
+    select: { recuLe: true, mode: true, donnees: true, ecarteLe: true },
+    orderBy: { recuLe: "asc" },
+  });
+  return {
+    ref,
+    membre,
+    reponses: lignes.map((l) => ({
+      recuLe: l.recuLe,
+      parcours: l.mode,
+      reponses: lisible(l.donnees, avertir, "questionnairesPreaudit"),
+      ecarteLe: l.ecarteLe,
+    })),
+    avertissements,
+  };
+}
