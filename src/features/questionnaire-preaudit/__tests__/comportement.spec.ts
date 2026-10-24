@@ -58,6 +58,12 @@ vi.mock("@/lib/prisma", () => ({
         Object.assign(l, data);
         return l;
       },
+      delete: async ({ where }: { where: Ligne }) => {
+        const l = trouver(base.q, where);
+        base.q = base.q.filter((x) => x !== l);
+        base.e = base.e.filter((x) => x["questionnaireId"] !== where["id"]);
+        return l;
+      },
       updateMany: async ({ where, data }: { where: Ligne; data: Ligne }) => {
         const l = base.q.filter((x) => correspond(x, where));
         l.forEach((x) => Object.assign(x, data));
@@ -381,15 +387,45 @@ describe("les actions de la console", () => {
     expect(decodeURIComponent(url)).toContain("erreur");
   });
 
-  it("refuse de remplacer un questionnaire déjà envoyé", async () => {
-    questionnaire();
+  it("redépôt possible après un envoi SANS réponse : nouvel identifiant, ancien lien mort", async () => {
+    allumer();
+    const ancien = questionnaire();
+    const ancienId = ancien["id"] as string;
     const url = await redirige(() =>
       deposerQuestionnaireAction(
         formulaire({ rencontreId: RENCONTRE, fichier: new File([HTML + " "], "q.html") }),
       ),
     );
-    expect(decodeURIComponent(url)).toContain("déjà envoyé");
+    const decode = decodeURIComponent(url);
+    expect(decode).toContain("l'ancien lien ne marche plus");
+    expect(decode).toContain("E-mails à valider");
+    expect(base.q).toHaveLength(1);
+    expect(base.q[0]?.["id"]).not.toBe(ancienId);
+    expect(base.q[0]?.["envoyeLe"]).toBeNull();
+    // l'ancien lien est introuvable
+    const vieux = {
+      params: Promise.resolve({ id: ancienId, jeton: jetonPreaudit(ancienId) ?? "" }),
+    };
+    const r = await POST(
+      new Request("http://localhost/api/q", { method: "POST", body: CHARGE() }),
+      vieux,
+    );
+    expect(r.status).toBe(404);
+    expect(base.e).toHaveLength(0);
+  });
+
+  it("redépôt refusé dès qu'une réponse existe", async () => {
+    const q = questionnaire();
+    base.e.push({ questionnaireId: q["id"], recuLe: new Date(), mode: "main", donnees: "x" });
+    const url = await redirige(() =>
+      deposerQuestionnaireAction(
+        formulaire({ rencontreId: RENCONTRE, fichier: new File([HTML + " "], "q.html") }),
+      ),
+    );
+    expect(decodeURIComponent(url)).toContain("des réponses sont arrivées");
+    expect(base.q[0]?.["id"]).toBe(q["id"]);
     expect(base.q[0]?.["html"]).toBe(HTML);
+    expect(base.e).toHaveLength(1);
   });
 
   it("envoyer et clore exigent l'accès aux échanges", async () => {
@@ -530,7 +566,7 @@ describe("l'envoi : corbeille de validation, rollback complet, changement d'adre
     q["envoyeLe"] = new Date(Date.now() - 3_600_000);
     base.enqueue.mockClear();
     await expect(envoyerQuestionnaire(args(q, "autre@exemple.fr"))).rejects.toThrow(
-      /rencontre de cette personne/,
+      /déposez-le de nouveau/,
     );
     expect(base.enqueue).not.toHaveBeenCalled();
     // la même adresse, elle, peut recevoir un renvoi
@@ -546,7 +582,7 @@ describe("l'envoi : corbeille de validation, rollback complet, changement d'adre
     q["destinataireHash"] = null;
     base.enqueue.mockClear();
     await expect(envoyerQuestionnaire(args(q, "autre@exemple.fr"))).rejects.toThrow(
-      /rencontre de cette personne/,
+      /déposez-le de nouveau/,
     );
     expect(base.enqueue).not.toHaveBeenCalled();
   });

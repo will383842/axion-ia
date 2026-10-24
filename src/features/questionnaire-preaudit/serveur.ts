@@ -71,28 +71,54 @@ export async function lireDeLaRencontre(rencontreId: string) {
   });
 }
 
-/** Dépôt (ou remplacement tant que rien n'est parti) du HTML adapté par Will. */
-export async function deposerQuestionnaire(rencontreId: string, html: string): Promise<string> {
+export interface ResultatDepot {
+  readonly id: string;
+  /** Un questionnaire déjà envoyé (sans réponse) a été recréé : l'ancien lien ne marche plus. */
+  readonly ancienLienMort: boolean;
+}
+
+/**
+ * Dépôt du HTML adapté par Will.
+ *   · rien d'envoyé : remplacement sur place ;
+ *   · déjà envoyé SANS aucune réponse (adresse fausse, e-mail seulement retenu en corbeille) :
+ *     la ligne est supprimée puis recréée — nouvel identifiant, donc nouveau jeton : l'ancien lien
+ *     meurt (404) et aucune réponse ne peut se mêler ;
+ *   · déjà envoyé AVEC au moins une réponse : refusé.
+ */
+export async function deposerQuestionnaire(
+  rencontreId: string,
+  html: string,
+): Promise<ResultatDepot> {
   const v = validerHtml(html);
   if (!v.ok) throw new MessagePourWill(v.motif);
   const existant = await prisma.questionnaireAvantAudit.findUnique({
     where: { rencontreId },
     select: { id: true, envoyeLe: true },
   });
+  let ancienLienMort = false;
   if (existant !== null) {
-    if (existant.envoyeLe !== null) {
+    if (existant.envoyeLe === null) {
+      await prisma.questionnaireAvantAudit.update({ where: { id: existant.id }, data: { html } });
+      return { id: existant.id, ancienLienMort: false };
+    }
+    const reponses = await prisma.questionnaireAvantAuditEnvoi.count({
+      where: { questionnaireId: existant.id },
+    });
+    if (reponses > 0) {
       throw new MessagePourWill(
-        "Ce questionnaire est déjà envoyé : il ne peut plus être remplacé.",
+        "Ce questionnaire a déjà été envoyé à une autre adresse et des réponses sont arrivées : " +
+          "il ne peut plus être remplacé. Pour écrire à quelqu'un d'autre, déposez un " +
+          "questionnaire sur la rencontre de cette personne.",
       );
     }
-    await prisma.questionnaireAvantAudit.update({ where: { id: existant.id }, data: { html } });
-    return existant.id;
+    await prisma.questionnaireAvantAudit.delete({ where: { id: existant.id } });
+    ancienLienMort = true;
   }
   const cree = await prisma.questionnaireAvantAudit.create({
     data: { rencontreId, html, ref: randomBytes(6).toString("hex") },
     select: { id: true },
   });
-  return cree.id;
+  return { id: cree.id, ancienLienMort };
 }
 
 /** L'état d'avant un envoi, à rétablir tel quel si la mise en file échoue. */
@@ -109,13 +135,13 @@ export interface EtatAvantEnvoi {
  * depuis moins de 60 s. Garde l'adresse (chiffrée + empreinte) pour l'export et l'effacement.
  * Rend l'état d'avant (pour `annulerEnvoi`), ou `null` si un envoi vient d'avoir lieu.
  *
- * ⛔ Une fois qu'une réponse est arrivée, l'adresse ne change plus. L'export et l'effacement
- * retrouvent les réponses du dirigeant par cette adresse OU par la réservation Calendly ; si on
- * renvoyait à une autre personne, ses réponses se mêleraient à celles de la première (export
- * livré à la mauvaise personne, effacement de la mauvaise). Risque voisin, connu : une
- * réservation Calendly prise par un TIERS (un assistant, un invité) rattache le questionnaire
- * à son adresse — d'où cette règle, et l'obligation de créer un NOUVEAU questionnaire pour un
- * autre destinataire.
+ * ⛔ Dès qu'un envoi est RÉSERVÉ (`envoyeLe` posé, même si l'e-mail est seulement retenu dans la
+ * corbeille), l'adresse est figée : un autre destinataire est refusé. Le lien ne dépend pas de
+ * l'adresse, donc l'ancien destinataire pourrait encore répondre ; et l'export/l'effacement
+ * retrouvent les réponses du dirigeant par cette adresse OU par la réservation Calendly (risque
+ * voisin : une réservation Calendly prise par un TIERS rattache le questionnaire à son adresse).
+ * Issue en cas d'adresse fausse : `deposerQuestionnaire` recrée le questionnaire (nouveau lien)
+ * tant qu'aucune réponse n'est arrivée.
  */
 export async function reserverEnvoi(
   id: string,
@@ -140,9 +166,10 @@ export async function reserverEnvoi(
   // celles du nouveau.
   if (avant.envoyeLe !== null && avant.destinataireHash !== hash) {
     throw new MessagePourWill(
-      "Ce questionnaire a déjà été envoyé à une autre adresse et ne peut plus changer de " +
-        "destinataire. Pour écrire à quelqu'un d'autre, déposez le questionnaire sur la " +
-        "rencontre de cette personne (un questionnaire par rencontre).",
+      "Ce questionnaire a déjà été envoyé à une autre adresse. Si l'adresse était fausse et que " +
+        "personne n'a encore répondu, déposez-le de nouveau : l'ancien lien cessera de marcher. " +
+        "Pour écrire à quelqu'un d'autre, déposez un questionnaire sur la rencontre de cette " +
+        "personne.",
     );
   }
   const limite = new Date(maintenant.getTime() - DELAI_ANTI_DOUBLE_CLIC_MS);

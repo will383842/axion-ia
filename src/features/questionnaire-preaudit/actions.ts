@@ -39,6 +39,7 @@ function retour(rencontreId: string, cle: "message" | "erreur", texte: string): 
 export async function deposerQuestionnaireAction(fd: FormData): Promise<void> {
   const rencontreId = champ(fd, "rencontreId");
   if (!uuid.safeParse(rencontreId).success) redirect(adminPath("fr", "/rendez-vous"));
+  let ancienLienMort = false;
   try {
     // Le HTML déposé porte du JavaScript servi aux prospects : réservé à Williams.
     const { role } = await exigerAccesEchanges();
@@ -52,7 +53,8 @@ export async function deposerQuestionnaireAction(fd: FormData): Promise<void> {
       throw new MessagePourWill("Choisissez le fichier HTML du questionnaire.");
     }
     if (f.size > 900_000) throw new MessagePourWill("Le fichier est trop gros.");
-    await deposerQuestionnaire(rencontreId, await f.text());
+    const depot = await deposerQuestionnaire(rencontreId, await f.text());
+    ancienLienMort = depot.ancienLienMort;
   } catch (e) {
     retour(rencontreId, "erreur", messageAffichable(e));
   }
@@ -60,7 +62,11 @@ export async function deposerQuestionnaireAction(fd: FormData): Promise<void> {
   retour(
     rencontreId,
     "message",
-    "Questionnaire déposé (brouillon). Essayez-le avant de l'envoyer.",
+    ancienLienMort
+      ? "Questionnaire déposé de nouveau (brouillon) : l'ancien lien ne marche plus. Si un e-mail " +
+          "avec l'ancien lien attend encore dans « E-mails à valider », rejetez-le. Essayez le " +
+          "questionnaire avant de l'envoyer."
+      : "Questionnaire déposé (brouillon). Essayez-le avant de l'envoyer.",
   );
 }
 

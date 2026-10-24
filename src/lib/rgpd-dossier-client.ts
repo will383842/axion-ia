@@ -48,7 +48,8 @@ export const EXCLUSIONS_EXPORT_DOSSIER: ReadonlyArray<{
     modele: "QuestionnaireAvantAudit",
     motif:
       "c'est la copie du questionnaire adaptée par Williams (le formulaire lui-même) : elle " +
-      "ne contient aucune donnée vous concernant. Vos réponses, elles, sont rendues ci-dessus.",
+      "ne contient que votre adresse d'envoi (chiffrée), que vous connaissez déjà ; vos " +
+      "réponses sont rendues ci-dessus.",
   },
   {
     modele: "CompteRendu",
