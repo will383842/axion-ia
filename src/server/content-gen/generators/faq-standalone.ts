@@ -24,6 +24,8 @@ import { escapeLlmInput } from "../shared/prompt-input-escape";
 import { logStep } from "../shared/generation-log";
 import type { Generator, GeneratorBaseInput, GeneratorOutput } from "./types";
 import { injectBrandVoice } from "../brand/brand-voice";
+import { consigneAngle } from "../brand/positionnement";
+import { REGLE_CHIFFRES_SOURCES, sectionChiffresVerifies } from "../kb/chiffres-verifies";
 import { pickInternalExpert, buildExpertQuote } from "../brand/expert-bank";
 import { getGlossaryContext } from "../brand/glossary-context";
 import { injectInternalLinks } from "../links/internal-link-catalog";
@@ -36,7 +38,7 @@ const MAX_QUALITY_ITERATIONS = 2;
 const BUDGET_CAP_USD = 0.1;
 
 const SYSTEM_PROMPT =
-  injectBrandVoice(`Tu es Manon, experte IA chez Axion-IA, cabinet de conseil en IA pour TPE/PME/ETI françaises.
+  injectBrandVoice(`Tu es Manon, experte IA chez Axion-IA, cabinet de conseil en IA pour les petites et moyennes entreprises françaises.
 Produis une page FAQ complète en français optimisée AEO/SEO 2026. Règles absolues :
 - 10 à 15 questions réelles posées par des dirigeants PME sur l'IA en entreprise.
 - Chaque réponse : 3-6 phrases, directes, sans jargon inutile, ancrées sur Axion-IA.
@@ -45,7 +47,7 @@ Produis une page FAQ complète en français optimisée AEO/SEO 2026. Règles abs
 - 0 prix en dur, 0 promesses de délais chiffrés.
 - bodyHtml = intro thématique HTML (2-3 paragraphes) — les Q/A vont dans faq[].
 - Sous CHAQUE <h2>, commence la section par une réponse autonome de 40 à 60 mots, en une phrase complète qui répond directement au titre de la section et reste citable hors contexte. Enveloppe-la dans <p data-aeo="answer">…</p>. Le reste du développement suit ensuite.
-- Inclure au moins 2 statistiques chiffrées récentes avec source nommée et lien inline (ex. « 31 % des PME… (DARES, 2024) [lien] »), UNIQUEMENT issues des sources internes/d'autorité fournies — jamais inventées.
+- ${REGLE_CHIFFRES_SOURCES}
 - À la première occurrence d'un terme technique, encadre-le avec <dfn> ou <span class="glossary-term" title="définition courte">terme</span>.
 - Quand c'est pertinent (1 à 2 max), utilise un encadré : <aside class="callout callout-warning"><p class="callout-label">Attention</p><p>…</p></aside>. Variantes de classe : callout-info, callout-note, callout-warning, callout-danger.
 - "metaTitle": "OBLIGATOIREMENT 50 à 60 caractères (compte les espaces), keyword principal au tout début. NE JAMAIS sous 50 caractères : si trop court, ajoute une précision utile (bénéfice, secteur). NE PAS dépasser 60."
@@ -149,6 +151,8 @@ Audience cible : ${safeAudienceSize}.
 ${kbContext}
 ${externalLinksCtx.markdownSection}${feedbackSection}
 ${glossaryContext ? `\n${glossaryContext}` : ""}
+${consigneAngle(input.jobId)}
+${sectionChiffresVerifies()}
 ## Avis d'expert
 "expertTake" = une prise de position de ${expert.name} (${expert.title}) : perspective d'expert concise et utile sur le sujet, sans chiffre inventé.
 ## Output attendu (JSON)

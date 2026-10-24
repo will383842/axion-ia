@@ -357,16 +357,21 @@ export default async function GuidePiliersPage({ params }: Props) {
       {/* V-14 sprint UX 2026-05-22 — section Articles connexes (auparavant absente sur /guides/[slug] → dead-end + bounce maximal). */}
       <SuggestedContent
         variant="articles"
-        items={(await findRelatedArticles({ currentSlug: slug, locale: "fr", limit: 4 })).map(
-          (r) => ({
-            href: `/blog/${r.slug}`,
-            title: r.title,
-            excerpt: r.excerpt,
-            publishedAt: r.publishedAt,
-            readingTime: r.readingTime,
-            ...(r.imageUrl ? { imageUrl: r.imageUrl } : {}),
-          }),
-        )}
+        items={(
+          await findRelatedArticles({
+            currentSlug: slug,
+            currentTitle: guide.title,
+            locale: "fr",
+            limit: 4,
+          })
+        ).map((r) => ({
+          href: `/blog/${r.slug}`,
+          title: r.title,
+          excerpt: r.excerpt,
+          publishedAt: r.publishedAt,
+          readingTime: r.readingTime,
+          ...(r.imageUrl ? { imageUrl: r.imageUrl } : {}),
+        }))}
         eyebrow="Articles connexes"
         title="À lire aussi"
         tone="sand"

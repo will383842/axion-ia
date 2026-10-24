@@ -310,10 +310,10 @@ export const KB_INTERVENTIONS_FORMATIONS: readonly KbFact[] = [
   },
   {
     id: "form-032",
-    text: "Axion-IA intervient sur site en Île-de-France et dans les 10 premières métropoles françaises (Lyon, Bordeaux, Nantes, Marseille, Lille, Toulouse, Rennes, Strasbourg, Grenoble, Montpellier) — distanciel disponible partout.",
+    text: "Axion-IA intervient partout en France, en visio et sur site.",
     source: "Axion-IA — Zones d'intervention 2026",
     sourceUrl: "https://axion-ia.com/interventions-formations",
-    verifiedAt: "2026-05-01",
+    verifiedAt: "2026-10-24",
     verticales: ["interventions_formations"],
     confidence: 0.95,
   },

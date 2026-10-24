@@ -1131,6 +1131,14 @@ function buildAdminNavSocle(adminPrefix: string): ReadonlyArray<AdminNavItem> {
       parent: `${base}/content-gen`,
     },
     {
+      href: `${base}/content-gen/audit-blog`,
+      label: "Audit de l'existant du blog",
+      icon: "ScanSearch",
+      group: "content_gen",
+      subGroup: "qualite",
+      tier: "advanced",
+    },
+    {
       href: `${base}/content-gen/brand-voice-drift`,
       label: "Dérive du ton éditorial",
       icon: "AudioLines",

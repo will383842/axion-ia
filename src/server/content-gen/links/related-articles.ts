@@ -17,6 +17,7 @@ import { BLOG_POSTS } from "@/content/transversal";
 import { listPublishedArticles } from "@/lib/knowledge/readers";
 import { resolveTier } from "@/content/blog";
 import { prisma } from "@/lib/prisma";
+import { jetonsArticle } from "@/data/external-links/pertinence-sujet";
 
 /** Type d'article surfacé en suggestion (segment public correspondant). */
 export type RelatedArticleType = "blog" | "guides" | "news";
@@ -78,73 +79,73 @@ export function segmentForArticleType(type: RelatedArticleType): "blog" | "guide
   return "blog";
 }
 
-const RELATED_STOPWORDS = new Set([
-  "les",
-  "des",
-  "une",
-  "pour",
-  "avec",
-  "dans",
-  "sur",
-  "par",
-  "aux",
-  "vos",
-  "nos",
-  "que",
-  "qui",
-  "the",
-  "and",
-  "with",
-  "for",
-  "your",
-  "comment",
-  "pourquoi",
-  "quel",
-  "quelle",
-  "quels",
-  "quelles",
-]);
-
-/** Mots de contenu (≥4 lettres, hors stopwords) d'un titre, en minuscules. */
-function titleTokens(title: string | null | undefined): Set<string> {
-  if (!title) return new Set();
-  const out = new Set<string>();
-  for (const raw of title.toLowerCase().split(/\s+/)) {
-    const w = raw.replace(/[^\p{L}\p{N}-]/gu, "");
-    if (w.length >= 4 && !RELATED_STOPWORDS.has(w)) out.add(w);
-  }
-  return out;
-}
+/** Catégories fourre-tout : partager l'une d'elles ne prouve aucune proximité de sujet. */
+const CATEGORIES_GENERIQUES = new Set(["cas d'usage", "cas d’usage", "actualités", "actualites"]);
 
 /**
- * Trie les suggestions par pertinence (audit maillage 2026-07-03) :
- *   1. recouvrement de mots-clés du titre (si `currentTitle` fourni) — desc,
- *   2. même catégorie prioritaire,
- *   3. date de publication desc.
- * Sans `currentTitle`, dégénère en (catégorie, date) = comportement historique.
+ * Trie les suggestions par proximité de sujet (audit blog du 24/10/2026 : des
+ * « articles liés » sans rapport, choisis par date). C'est un TRI, jamais un filtre :
+ * la liste garde tous les articles, pour qu'une page ne se retrouve pas sans lien
+ * (VIS-10, V-14).
+ *   1. avec `currentTitle`, d'abord les articles dont le titre partage au moins un mot
+ *      de contenu avec lui (ou dont le résumé en partage au moins deux), classés par
+ *      recouvrement décroissant (titre compte double) ;
+ *   2. puis les articles de la même catégorie, si elle n'est pas fourre-tout ;
+ *   3. puis tout le reste, dans l'ordre historique (même catégorie, puis date).
+ * À égalité, date de publication décroissante. Sans `currentTitle`, comportement
+ * historique (catégorie puis date).
  */
-function sortByRelevance<T extends { category: string | null; title: string; publishedAt: string }>(
-  items: T[],
-  currentCategory: string | null | undefined,
-  currentTitle: string | undefined,
-): T[] {
-  const base = currentTitle ? titleTokens(currentTitle) : null;
-  const overlap = (title: string): number => {
-    if (!base || base.size === 0) return 0;
+export function sortByRelevance<
+  T extends { category: string | null; title: string; excerpt?: string; publishedAt: string },
+>(items: T[], currentCategory: string | null | undefined, currentTitle: string | undefined): T[] {
+  const parDate = (a: T, b: T): number => b.publishedAt.localeCompare(a.publishedAt);
+  const memeCategorie = (x: T): boolean => !!currentCategory && x.category === currentCategory;
+
+  const base = currentTitle ? jetonsArticle(currentTitle) : null;
+  if (!base || base.size === 0) {
+    return [...items].sort((a, b) => {
+      const aSame = memeCategorie(a) ? 0 : 1;
+      const bSame = memeCategorie(b) ? 0 : 1;
+      if (aSame !== bSame) return aSame - bSame;
+      return parDate(a, b);
+    });
+  }
+
+  const commun = (texte: string | undefined): number => {
     let n = 0;
-    for (const tok of titleTokens(title)) if (base.has(tok)) n++;
+    for (const tok of jetonsArticle(texte)) if (base.has(tok)) n++;
     return n;
   };
-  return [...items].sort((a, b) => {
-    const ov = overlap(b.title) - overlap(a.title);
-    if (ov !== 0) return ov;
-    if (currentCategory) {
-      const aSame = a.category === currentCategory ? 0 : 1;
-      const bSame = b.category === currentCategory ? 0 : 1;
-      if (aSame !== bSame) return aSame - bSame;
-    }
-    return b.publishedAt.localeCompare(a.publishedAt);
+  const evalues = items.map((item) => {
+    const titre = commun(item.title);
+    const resume = commun(item.excerpt);
+    return { item, score: titre * 2 + resume, proche: titre >= 1 || resume >= 2 };
   });
+
+  const proches = evalues
+    .filter((e) => e.proche)
+    .sort((a, b) => b.score - a.score || parDate(a.item, b.item))
+    .map((e) => e.item);
+
+  const categorieSpecifique =
+    !!currentCategory && !CATEGORIES_GENERIQUES.has(currentCategory.trim().toLowerCase());
+  const complement = categorieSpecifique
+    ? evalues
+        .filter((e) => !e.proche && memeCategorie(e.item))
+        .sort((a, b) => parDate(a.item, b.item))
+        .map((e) => e.item)
+    : [];
+
+  const dejaPris = new Set<T>([...proches, ...complement]);
+  const reste = items
+    .filter((x) => !dejaPris.has(x))
+    .sort((a, b) => {
+      const aSame = memeCategorie(a) ? 0 : 1;
+      const bSame = memeCategorie(b) ? 0 : 1;
+      return aSame - bSame || parDate(a, b);
+    });
+
+  return [...proches, ...complement, ...reste];
 }
 
 /**

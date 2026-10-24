@@ -10,6 +10,7 @@
 
 import type { ExternalLink, ExternalLinkAuthority, SelectExternalLinksOptions } from "./types";
 import { isCompetitorDomain } from "./types";
+import { bonusSujet, departageStable, jetonsSujet, malusGeo } from "./pertinence-sujet";
 import { ALL_EXTERNAL_LINKS } from "./master";
 
 function passesHardFilters(
@@ -37,6 +38,7 @@ export function selectExternalLinksPure(
     cityId,
     regionSlug,
     topic,
+    subject,
     minAuthority = 3,
     count = 3,
     excludeIds = [],
@@ -66,6 +68,8 @@ export function selectExternalLinksPure(
 
   const filtered = rotated.length >= count * 2 ? rotated : candidates;
 
+  const jetonsSujetArticle = jetonsSujet(subject);
+
   const scored = filtered.map((link) => {
     let score = 0;
 
@@ -83,6 +87,14 @@ export function selectExternalLinksPure(
       if (link.scope === "international") score += 5;
       if (link.hasSchemaOrg) score += 8;
       score += Math.max(0, 100 - link.usageCount * 2);
+
+      // Pertinence de sujet (audit 24/10/2026) : le catalogue ignorait le sujet de
+      // l'article. Bonus par mot commun, malus des sources locales/régionales hors
+      // contexte, et départage stable par sujet (aucun effet sans `subject`).
+      score -= malusGeo(link, cityId, regionSlug);
+      if (jetonsSujetArticle.size > 0 && subject) {
+        score += bonusSujet(link, jetonsSujetArticle) + departageStable(subject, link.id);
+      }
     }
 
     return { link, score };

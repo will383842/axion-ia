@@ -29,6 +29,17 @@ function mapTemplateVariantToVertical(templateVariant?: string): string | undefi
   return undefined;
 }
 
+/**
+ * Sujet de l'article pour classer les sources : mot-clé principal, titre de la
+ * dépêche RSS le cas échéant, puis mots-clés secondaires. Vide si l'entrée n'en
+ * porte aucun (le catalogue retombe alors sur son classement habituel).
+ */
+function sujetDepuisEntree(input: GeneratorBaseInput): string {
+  return [input.primaryKeyword, input.rssItemTitle, ...(input.secondaryKeywords ?? [])]
+    .filter((p): p is string => typeof p === "string" && p.trim().length > 0)
+    .join(" ");
+}
+
 export interface InjectExternalLinksOpts {
   readonly count?: number;
   readonly minAuthority?: ExternalLinkAuthority;
@@ -56,6 +67,7 @@ export function injectExternalLinks(
   opts: InjectExternalLinksOpts = {},
 ): InjectedExternalLinks {
   const vertical = mapTemplateVariantToVertical(input.templateVariant);
+  const subject = sujetDepuisEntree(input);
   const links = selectExternalLinks({
     count: opts.count ?? 4,
     minAuthority: opts.minAuthority ?? 4,
@@ -63,6 +75,8 @@ export function injectExternalLinks(
     ...(input.anchorVilleSlug ? { cityId: input.anchorVilleSlug } : {}),
     ...(input.anchorRegionSlug ? { regionSlug: input.anchorRegionSlug } : {}),
     ...(opts.topic ? { topic: opts.topic } : {}),
+    // Sources choisies selon le sujet (audit 24/10/2026), pas seulement la verticale.
+    ...(subject ? { subject } : {}),
     ...(opts.excludeIds ? { excludeIds: opts.excludeIds } : {}),
     language: "fr",
     rotationMode: "round_robin",

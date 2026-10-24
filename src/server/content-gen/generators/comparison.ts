@@ -41,6 +41,8 @@ import { escapeLlmInput } from "../shared/prompt-input-escape";
 import { logStep } from "../shared/generation-log";
 import type { Generator, GeneratorBaseInput, GeneratorOutput } from "./types";
 import { injectBrandVoice } from "../brand/brand-voice";
+import { consigneAngle } from "../brand/positionnement";
+import { REGLE_CHIFFRES_SOURCES, sectionChiffresVerifies } from "../kb/chiffres-verifies";
 import { pickInternalExpert, buildExpertQuote } from "../brand/expert-bank";
 import { getGlossaryContext } from "../brand/glossary-context";
 import { injectInternalLinks } from "../links/internal-link-catalog";
@@ -49,7 +51,6 @@ import { getIntentPromptAddendum } from "../shared/intent-prompt-adapter";
 import { applySystemPromptOverride } from "@/server/content-gen/template-resolver";
 import { extractMentionedCitiesFromText } from "@/lib/geo/extract-mentioned-cities";
 import { keywordPresentInText } from "@/server/content-gen/shared/keyword-match";
-import { consigneAngle } from "../brand/positionnement";
 import { MIN_LIGNES_TABLEAU, tableauSuffisant } from "./comparison-tableau";
 
 // ARCHITECTURE 3-APPELS (2026-06-25) — voir blog-from-keywords.ts.
@@ -72,21 +73,21 @@ const MIN_WORD_COUNT = 850;
 // DOIT prévoir une section « tableau comparatif » (la table elle-même est rédigée
 // à l'appel 2). PAS de bodyHtml ici.
 const SYSTEM_PROMPT_PLAN =
-  injectBrandVoice(`Tu es Manon, experte IA chez Axion-IA, cabinet de conseil en IA pour TPE/PME/ETI françaises.
+  injectBrandVoice(`Tu es Manon, experte IA chez Axion-IA, cabinet de conseil en IA pour les petites et moyennes entreprises françaises.
 Tu prépares le PLAN d'un article COMPARATIF FR optimisé SEO/AEO 2026 (intent commercial_investigation : l'utilisateur compare des options). Le corps sera rédigé séparément. Règles :
 - L'article compare plusieurs options (outils, solutions SaaS, build-vs-buy, cabinet vs interne…). La section Axion-IA est UNE option parmi d'autres, évaluée factuellement.
 - AUCUNE NOTE sur un tiers : jamais de score /100, d'étoiles, de classement chiffré ni de « X/10 » attribué à un outil ou à une entreprise concurrente. On compare par critères observables (fonctions, prise en main, hébergement, support, cas d'usage), en termes qualitatifs.
 - 100 % centré sur les « Sources internes Axion-IA » fournies (faits KB) pour la partie Axion-IA. Rien d'inventé : ni cas client fictif (« Entreprise Anonyme »…), ni chiffre non sourcé.
 - 0 prix en dur, 0 délai chiffré, 0 numéro de téléphone (uniquement contact@axion-ia.com).
 - "title" (le H1 affiché) : **50 à 60 caractères**, keyword principal au tout début, cliquable. NE JAMAIS dépasser 60 caractères.
-- "metaTitle" : OBLIGATOIREMENT 50 à 60 caractères (compte les espaces), keyword principal au tout début. NE JAMAIS descendre sous 50 caractères : si trop court, ajoute une précision utile (bénéfice, secteur, « pour TPE/PME »…). NE PAS dépasser 60.
+- "metaTitle" : OBLIGATOIREMENT 50 à 60 caractères (compte les espaces), keyword principal au tout début. NE JAMAIS descendre sous 50 caractères : si trop court, ajoute une précision utile (bénéfice, secteur, métier visé…). NE PAS dépasser 60.
 - "metaDescription" : OBLIGATOIREMENT 140 à 160 caractères (compte les espaces), phrase complète avec bénéfice clair + keyword naturel. NE JAMAIS descendre sous 140 caractères : développe jusqu'à atteindre la fourchette. NE PAS dépasser 160.
 - "directAnswer" : OBLIGATOIREMENT **40 à 80 mots** (ni moins, ni plus), réponse autonome qui tranche la comparaison, citable seule par une IA (AI Overview / vocal). NE JAMAIS répondre en moins de 40 mots : ajoute le « comment » / « pourquoi » concret jusqu'au plancher.
 - "faq" : 8 questions People-Also-Ask comparatives réelles — chaque réponse answer-first : 1ʳᵉ phrase = réponse directe ≤ 25 mots, puis 1-2 phrases ; 40-55 mots au total.
 - "keyTakeaway" : 1-2 phrases = LE point clé à retenir (synthèse autonome citable).
 - "expertTake" : 1-2 phrases = point de vue d'Axion-IA (voix collective, jamais une personne nommée), sans statistique inventée.
-- "outline" : **8 sections <h2>** couvrant une progression comparative logique : enjeu/contexte → critères de comparaison (lisibilité, coût, déploiement, support, cas d'usage) un par section → **UNE section dédiée « Tableau comparatif récapitulatif »** → recommandation par profil (TPE/PME/ETI). Chaque entrée = { h2 (titre de section, 5-9 mots), brief (1 phrase : ce que la section doit développer, ancré sur un fait KB précis) }. OBLIGATOIRE : exactement une entrée d'outline doit être la section « tableau comparatif » (son brief précise que cette section contient un <table> récapitulatif 3-5 colonnes Option/Avantages/Inconvénients/Coût/Cible).
-- INTERDIT (marketing-hype, doctrine § 21 — rejet automatique) : « unique », « meilleur », « la meilleure », « leader », « n°1 », « révolutionnaire », « exceptionnel », « incroyable », « incontournable », « garanti », « sans risque », « instantané ». Reste factuel et sobre.
+- "outline" : **8 sections <h2>** couvrant une progression comparative logique : enjeu/contexte → critères de comparaison (lisibilité, coût, déploiement, support, cas d'usage) un par section → **UNE section dédiée « Tableau comparatif récapitulatif »** → recommandation par profil (petite structure, entreprise de taille moyenne, grande entreprise). Chaque entrée = { h2 (titre de section, 5-9 mots), brief (1 phrase : ce que la section doit développer, ancré sur un fait KB précis) }. OBLIGATOIRE : exactement une entrée d'outline doit être la section « tableau comparatif » (son brief précise que cette section contient un <table> récapitulatif 3-5 colonnes Option/Avantages/Inconvénients/Coût/Cible).
+- INTERDIT (marketing-hype, doctrine § 21 — chaque mot fait baisser la note qualité ; « garanti » et « sans risque » promettant un résultat bloquent la publication) : « unique », « meilleur », « la meilleure », « leader », « n°1 », « révolutionnaire », « exceptionnel », « incroyable », « incontournable », « garanti », « sans risque », « instantané ». Reste factuel et sobre.
 - Output JSON strict : { title, metaTitle, metaDescription, slug, directAnswer, faq:[{q,a}×8], tags, keyTakeaway, expertTake, outline:[{h2,brief}×8] }`);
 
 // APPEL 2 — EXPANSION : développe l'outline en bodyHtml complet et long.
@@ -102,8 +103,8 @@ const SYSTEM_PROMPT_EXPAND =
 - Le keyword principal DOIT apparaître textuellement AU MOINS 3 fois dans le corps, réparti naturellement.
 - NE PAS inclure de <h1> dans le corps (le titre est rendu séparément par la page).
 - Sous CHAQUE <h2>, commence par une réponse autonome de 40-60 mots citable hors contexte, enveloppée dans <p data-aeo="answer">…</p>. Le développement suit.
-- ANTI-MONOTONIE : en plus du tableau, alterne les formats. 1-2 encadrés <aside class="callout callout-info|callout-note|callout-warning"><p class="callout-label">…</p><p>…</p></aside>, et 1 chiffre-clé SEULEMENT s'il figure dans les sources fournies <aside class="ax-stat" data-aeo="stat"><span class="ax-stat-num">[chiffre sourcé]</span><span class="ax-stat-label">…</span></aside> (jamais une note donnée à un outil ; à défaut de chiffre sourcé, n'en mets pas). Jamais plus de 3 paragraphes consécutifs sans élément visuel.
-- Inclure ≥ 2 liens externes <a href="https://…" rel="noopener noreferrer"> vers des sources d'autorité FR fournies ; cite une statistique inline uniquement si elle figure dans les sources fournies, sinon reste qualitatif — jamais inventée.
+- ANTI-MONOTONIE : en plus du tableau et du graphique, alterne les formats. 1-2 encadrés <aside class="callout callout-info|callout-note|callout-warning"><p class="callout-label">…</p><p>…</p></aside>, et, UNIQUEMENT si un chiffre RÉEL figure dans les faits fournis, un chiffre-clé <aside class="ax-stat" data-aeo="stat"><span class="ax-stat-num">[chiffre sourcé]</span><span class="ax-stat-label">…</span></aside> (sinon N'EN METS AUCUN : un encadré qualitatif vaut mieux qu'un chiffre inventé). Jamais plus de 3 paragraphes consécutifs sans élément visuel. Jamais de note donnée à un outil ni à un concurrent.
+- Inclure ≥ 2 liens externes <a href="https://…" rel="noopener noreferrer"> vers des sources d'autorité FR fournies. ${REGLE_CHIFFRES_SOURCES}
 - À la première occurrence d'un terme technique, encadre-le avec <dfn> ou <span class="glossary-term" title="définition courte">terme</span>.
 - INTERDIT (marketing-hype, doctrine § 21 — un seul de ces mots fait REJETER l'article) : « unique », « meilleur », « la meilleure », « leader », « n°1 », « révolutionnaire », « exceptionnel », « incroyable », « incontournable », « garanti », « sans risque », « instantané ». Écris factuel et sobre, sans superlatif.
 - Output JSON strict : { bodyHtml }  (UNIQUEMENT le corps HTML des sections demandées, rien d'autre).`);
@@ -190,7 +191,7 @@ export const comparisonGenerator: Generator = {
 Intent : ${safeIntent} (comparaison directe d'options).
 Audience cible : ${safeAudienceSize}.
 
-L'outline doit inclure une section « Tableau comparatif récapitulatif » dédiée (avec <table> 3-5 colonnes), et se conclure par une recommandation par profil (TPE / PME / ETI).
+L'outline doit inclure une section « Tableau comparatif récapitulatif » dédiée (avec <table> 3-5 colonnes), et se conclure par une recommandation par profil (petite structure, entreprise de taille moyenne, grande entreprise).
 
 ## Sources internes Axion-IA (à exploiter en priorité)
 ${kbContext}
@@ -199,7 +200,7 @@ ${glossaryContext ? `\n${glossaryContext}` : ""}
 ${consigneAngle(input.jobId)}
 ## Avis d'expert
 "expertTake" = le point de vue d'Axion-IA (voix collective de l'entreprise, jamais celle d'une personne nommée, ni « je » d'un témoin) : perspective concise et utile, sans chiffre inventé.
-## Output attendu (JSON)
+${sectionChiffresVerifies()}## Output attendu (JSON)
 { title, metaTitle, metaDescription, slug, directAnswer, faq:[{q,a}×8], tags, keyTakeaway, expertTake, outline:[{h2,brief}×8] }`;
 
     let plan: PlanParsed | null = null;
@@ -523,6 +524,7 @@ ${glossaryContext ? `\n${glossaryContext}` : ""}
       seoScore: seo.score,
       readabilityScore: readability.score,
       wordCount,
+      ...(plan?.outline?.length ? { plannedH2Count: plan.outline.length } : {}),
       readingTimeMinutes,
       totalTokens: lastTokensInput + lastTokensOutput,
       totalCostUsd: accumulatedCostUsd,

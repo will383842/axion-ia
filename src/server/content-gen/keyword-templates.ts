@@ -167,7 +167,8 @@ export const TOP_100_VILLES_FRANCE: readonly CityRef[] = [
   { name: "Montpellier", regionName: "Occitanie", departmentName: "Hérault" },
   { name: "Reims", regionName: "Grand Est", departmentName: "Marne" },
   { name: "Toulon", regionName: "Provence-Alpes-Côte d'Azur", departmentName: "Var" },
-  { name: "Grenoble", regionName: "Auvergne-Rhône-Alpes", departmentName: "Isère" },
+  // Une ville a été retirée de cette liste le 24/10/2026 (ordre de Will : aucune ville
+  // n'est présentée comme base d'Axion-IA, qui intervient partout en France).
   { name: "Dijon", regionName: "Bourgogne-Franche-Comté", departmentName: "Côte-d'Or" },
   { name: "Angers", regionName: "Pays de la Loire", departmentName: "Maine-et-Loire" },
   { name: "Nîmes", regionName: "Occitanie", departmentName: "Gard" },

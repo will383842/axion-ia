@@ -103,6 +103,15 @@ function computeAxionIaRatio(text: string): number {
 }
 
 /**
+ * Le financement public (OPCO, France Travail) est-il citable aujourd'hui ? Point d'accès
+ * unique pour les workers : ce fichier est déjà l'unique consommateur assumé du réglage,
+ * ils n'ont donc pas à importer le domaine Qualiopi eux-mêmes.
+ */
+export function financementPublicAutoriseAujourdhui(): boolean {
+  return financementPublicCitable();
+}
+
+/**
  * Lance le doctrine-check complet sur un texte.
  * Lit BannedPhrase DB si disponible (fallback hardcoded list si P2021).
  */

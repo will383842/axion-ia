@@ -30,9 +30,11 @@
  *
  * Échec : si step 1 (outline) fail → throw, le job repart sur retry BullMQ.
  * Si une seule step 2 fail → soft : on continue avec un placeholder section
- * "Section indisponible — re-génération recommandée" pour ne pas perdre les
+ * un corps vide (aucun texte « indisponible » dans l'article) pour ne pas perdre les
  * sections déjà générées (gaspillage tokens). Le job est marqué
- * `qualityScore -= 20` pour basculer en review queue.
+ * `qualityScore -= 10` par section en échec, et le guide est forcé en
+ * tier_3 sous le seuil de qualité : il part en relecture (le corps vide n'est plus
+ * repéré par le détecteur de texte d'administration).
  */
 
 import { generate as routerGenerate } from "../providers/provider-router";
@@ -52,6 +54,9 @@ import { escapeLlmInput, escapeSlugInput } from "../shared/prompt-input-escape";
 import type { Generator, GeneratorBaseInput, GeneratorOutput } from "./types";
 import { ECONOMIC_DATA_BY_SLUG } from "@/content/villes/economic-data";
 import { injectBrandVoice } from "../brand/brand-voice";
+import { consigneAngle } from "../brand/positionnement";
+import { appliquerEchecsSections } from "./echecs-sections";
+import { REGLE_CHIFFRES_SOURCES, sectionChiffresVerifies } from "../kb/chiffres-verifies";
 import { pickInternalExpert, buildExpertQuote } from "../brand/expert-bank";
 import { getGlossaryContext } from "../brand/glossary-context";
 import { injectInternalLinks } from "../links/internal-link-catalog";
@@ -65,7 +70,7 @@ const SYSTEM_PROMPT_OUTLINE =
   injectBrandVoice(`Tu es Manon, experte IA chez Axion-IA (cabinet conseil IA France).
 Cabinet IA opérationnel français. Doctrine v2.5 stricte :
 - Axion-IA-centric ≥ 95 % (méthodologie + cas concrets + tarifs SSOT)
-- SIREN : [SIREN à compléter] · mot "formation" BANNI · FR uniquement
+- SIREN : [SIREN à compléter] · FR uniquement
 
 Mission STEP 1 : tu produis UNIQUEMENT le PLAN (outline) d'un guide pilier
 long-form 2000-5000 mots. PAS DE TEXTE COMPLET — juste les titres + briefs
@@ -95,7 +100,7 @@ Output STRICT JSON (zéro prose hors JSON) :
 
 const SYSTEM_PROMPT_SECTION =
   injectBrandVoice(`Tu es Manon, experte IA chez Axion-IA (cabinet conseil IA France).
-Doctrine v2.5 stricte (formation BANNI · FR · Axion-IA-centric ≥ 95 %).
+Doctrine v2.5 stricte (FR · Axion-IA-centric ≥ 95 %).
 
 Mission STEP 2 : tu rédiges UNE seule section d'un guide pilier (la section
 demandée par l'utilisateur). Texte 250-450 mots, ton expert-accessible, sans
@@ -107,7 +112,7 @@ est ajouté par l'assembly). Format : 2-4 paragraphes <p>, optionnellement
 
 Règles de structure du corps :
 - Commence la section par une réponse autonome de 40 à 60 mots, en une phrase complète qui répond directement au titre de la section et reste citable hors contexte. Enveloppe-la dans <p data-aeo="answer">…</p>. Le reste du développement suit ensuite.
-- Inclure au moins 2 statistiques chiffrées récentes avec source nommée et lien inline (ex. « 31 % des PME… (DARES, 2024) [lien] »), UNIQUEMENT issues des sources internes/d'autorité fournies — jamais inventées.
+- ${REGLE_CHIFFRES_SOURCES}
 - À la première occurrence d'un terme technique, encadre-le avec <dfn> ou <span class="glossary-term" title="définition courte">terme</span>.
 - Quand c'est pertinent (1 à 2 max), utilise un encadré : <aside class="callout callout-warning"><p class="callout-label">Attention</p><p>…</p></aside>. Variantes de classe : callout-info, callout-note, callout-warning, callout-danger.`);
 
@@ -130,8 +135,9 @@ interface ParsedOutline {
   readonly expertTake?: string;
 }
 
-const PLACEHOLDER_SECTION_HTML =
-  "<p><em>Section indisponible — re-génération recommandée par l'admin.</em></p>";
+// Section en échec : corps vide (jamais de texte « indisponible » publié). Le journal
+// ci-dessous et la pénalité de qualité (sectionFailures) envoient le guide en relecture.
+const PLACEHOLDER_SECTION_HTML = "";
 
 function clampSections(sections: ReadonlyArray<OutlineSection>): ReadonlyArray<OutlineSection> {
   // Hard cap 6-15 sections (§ 6.4 spec). Sous 6 = pas un guide pilier (trop
@@ -241,7 +247,8 @@ ${externalLinksCtx.markdownSection}${localEconomicContext}${improvementSection}
 ${glossaryContext ? `\n${glossaryContext}` : ""}
 ## Avis d'expert
 "expertTake" = une prise de position de ${expert.name} (${expert.title}) : perspective d'expert concise et utile sur le sujet, sans chiffre inventé.
-Rappel : 8-15 sections, output JSON strict (cf. system prompt) incluant keyTakeaway, expertTake.`;
+${consigneAngle(input.jobId)}
+${sectionChiffresVerifies()}Rappel : 8-15 sections, output JSON strict (cf. system prompt) incluant keyTakeaway, expertTake.`;
 
     const outlineResult = await routerGenerate({
       jobId: input.jobId,
@@ -358,7 +365,8 @@ Pas de sur-promesses ("garanti", "révolutionnaire" interdits).`;
 
     let qualityScore = qualityFromScores(seo.score, readability.score, doctrine.passed);
     // Pénalité section failures (chaque placeholder pénalise -10 pts max -50)
-    qualityScore = Math.max(0, qualityScore - Math.min(50, sectionFailures * 10));
+    const apresEchecs = appliquerEchecsSections(qualityScore, sectionFailures, QUALITY_THRESHOLD);
+    qualityScore = apresEchecs.qualityScore;
 
     const expertQuote = buildExpertQuote(expert, outline.expertTake);
 
@@ -386,7 +394,10 @@ Pas de sur-promesses ("garanti", "révolutionnaire" interdits).`;
       ...(outline.keyTakeaway?.trim() ? { keyTakeaway: outline.keyTakeaway.trim() } : {}),
       ...(expertQuote ? { expertQuote } : {}),
       indexationTier:
-        doctrine.passed && qualityScore >= QUALITY_THRESHOLD && qualityScore >= 70
+        !apresEchecs.forcerRelecture &&
+        doctrine.passed &&
+        qualityScore >= QUALITY_THRESHOLD &&
+        qualityScore >= 70
           ? "tier_2_noindex_follow"
           : "tier_3_noindex_nofollow",
       qualityScore,

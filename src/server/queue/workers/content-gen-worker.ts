@@ -35,6 +35,7 @@ import {
 import { checkDoctrine } from "@/server/content-gen/quality/doctrine-check";
 import { fautesDures, surfaceDepuisSortie } from "@/server/content-gen/quality/doctrine-surface";
 import { detecterInterditsSurface } from "@/lib/contenu/interdits-publication";
+import { evaluerBarrieresRelecture } from "@/server/content-gen/quality/barrieres-publication";
 import { financementPublicCitable } from "@/server/qualiopi/config/financing";
 import { readContentGenConfig } from "@/server/actions/content-gen/_settings";
 // Fix 2026-08-15 (audit e2e, C8) — lecture du kill switch en fail-SAFE : une
@@ -912,6 +913,33 @@ async function processJob(job: Job<ContentGenJobPayload>): Promise<void> {
       },
     );
 
+    // Audit 24/10/2026 (lot L2) — barrières de RELECTURE : section indisponible,
+    // sections manquantes au plan, soft-404, moins de 850 mots (articles longs),
+    // aucun fait de la base, accroche trop proche d'un article publié. Elles
+    // envoient en `needs_review` (via `blockingFail`) et ne touchent JAMAIS au
+    // niveau d'indexation (décision Will « tout indexable »).
+    const barrieresRelecture = evaluerBarrieresRelecture({
+      contentType,
+      output,
+      corpus,
+      ancreVille: Boolean(dbJob.anchorVilleSlug),
+    });
+    const barrieresFail = barrieresRelecture.length > 0;
+    if (barrieresFail) {
+      await logStep(
+        contentGenJobId,
+        "validation",
+        `Barrières de relecture : ${barrieresRelecture.map((b) => b.code).join(", ")}`,
+        {
+          barrieres: barrieresRelecture.map((b) => ({
+            code: b.code,
+            libelle: b.libelle,
+            ...(b.detail ?? {}),
+          })),
+        },
+      );
+    }
+
     // #2 2026-06-14 — Dedup SÉMANTIQUE cross-entry (topic-fingerprint Voyage).
     // Détecte la redondance THÉMATIQUE (même sujet, mots différents) que le
     // plagiat lexical Jaccard rate — notamment 2 sources RSS couvrant le même
@@ -1055,6 +1083,7 @@ async function processJob(job: Job<ContentGenJobPayload>): Promise<void> {
       outlineBlockingFail ||
       doctrineHardFail ||
       topicDuplicateFail ||
+      barrieresFail ||
       benefitFail;
     const finalIndexationTier = blockingFail ? "tier_3_noindex_nofollow" : output.indexationTier;
 
@@ -1072,6 +1101,7 @@ async function processJob(job: Job<ContentGenJobPayload>): Promise<void> {
         blockCauses.push(
           "Doctrine (mots interdits : Qualiopi, CPF, financement, partenariat, garanti, SIREN, prix…)",
         );
+      for (const b of barrieresRelecture) blockCauses.push(b.libelle);
       if (benefitFail) blockCauses.push("Bénéfice concret insuffisant");
       // Fix 2026-08-15 — le journal annonçait un déclassement « en noindex »
       // qui n'a plus lieu à la publication : `content-publish-worker.ts` force
@@ -1124,6 +1154,15 @@ async function processJob(job: Job<ContentGenJobPayload>): Promise<void> {
       // #2 2026-06-14 — Fingerprint sémantique (persisté sur Article au publish
       // pour alimenter la dedup cross-entry des prochaines générations).
       topicFingerprint,
+      // Lot L2 — barrières de relecture franchies (traçabilité console).
+      ...(barrieresFail
+        ? {
+            barrieresRelecture: barrieresRelecture.map((b) => ({
+              code: b.code,
+              libelle: b.libelle,
+            })),
+          }
+        : {}),
       // P0 2026-06-13 — Traçabilité des fautes dures (SIREN/prix non-SSOT) ayant
       // retenu l'article pour correction humaine.
       doctrineHardFaults: doctrineHardFaults.map((v) => ({

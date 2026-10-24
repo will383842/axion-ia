@@ -13,6 +13,7 @@
 
 import type { ExternalLink, ExternalLinkAuthority, SelectExternalLinksOptions } from "./types";
 import { isCompetitorDomain } from "./types";
+import { bonusSujet, departageStable, jetonsSujet, malusGeo } from "./pertinence-sujet";
 import { ALL_EXTERNAL_LINKS } from "./master";
 import { prisma } from "@/lib/prisma";
 
@@ -54,6 +55,7 @@ export function selectExternalLinks(opts: SelectExternalLinksOptions): ExternalL
     cityId,
     regionSlug,
     topic,
+    subject,
     minAuthority = 3,
     count = 3,
     excludeIds = [],
@@ -88,6 +90,8 @@ export function selectExternalLinks(opts: SelectExternalLinksOptions): ExternalL
   const pool = rotated.length >= count * 2 ? rotated : candidates;
 
   // === ÉTAGE 4 — SCORING ===
+  const jetonsSujetArticle = jetonsSujet(subject);
+
   const scored = pool.map((link) => {
     let score = 0;
 
@@ -112,6 +116,14 @@ export function selectExternalLinks(opts: SelectExternalLinksOptions): ExternalL
 
       // Anti-répétition : privilégier les liens les MOINS utilisés
       score += Math.max(0, 100 - link.usageCount * 2);
+
+      // Pertinence de sujet (audit 24/10/2026) : le catalogue ignorait le sujet de
+      // l'article. Bonus par mot commun, malus des sources locales/régionales hors
+      // contexte, et départage stable par sujet (aucun effet sans `subject`).
+      score -= malusGeo(link, cityId, regionSlug);
+      if (jetonsSujetArticle.size > 0 && subject) {
+        score += bonusSujet(link, jetonsSujetArticle) + departageStable(subject, link.id);
+      }
     }
 
     return { link, score };

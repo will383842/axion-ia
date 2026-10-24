@@ -1196,10 +1196,10 @@ export const KB_AI_ACT: readonly KbFact[] = [
   },
   {
     id: "ai-act-025",
-    text: "Les obligations de transparence de l'AI Act imposent aux chatbots et assistants virtuels de signaler clairement leur nature artificielle. Cette règle est en vigueur depuis le 2 août 2025.",
+    text: "Les obligations de transparence de l'AI Act imposent aux chatbots et assistants virtuels de signaler clairement leur nature artificielle. Cette règle s'applique à partir du 2 août 2026 (Art. 50 et Art. 113).",
     source: "EUR-Lex — Règlement UE 2024/1689, Art. 50",
     sourceUrl: "https://eur-lex.europa.eu/legal-content/FR/TXT/?uri=CELEX:32024R1689",
-    verifiedAt: "2026-05-25",
+    verifiedAt: "2026-10-24",
     verticales: ["implementations"],
     confidence: 0.99,
   },

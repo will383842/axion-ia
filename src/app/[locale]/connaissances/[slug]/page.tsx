@@ -295,16 +295,21 @@ export default async function ConnaissanceDetail({ params }: Props) {
       {/* Articles connexes — évite le dead-end + réduit le bounce sur /connaissances/[slug]. */}
       <SuggestedContent
         variant="articles"
-        items={(await findRelatedArticles({ currentSlug: slug, locale: "fr", limit: 4 })).map(
-          (r) => ({
-            href: `/blog/${r.slug}`,
-            title: r.title,
-            excerpt: r.excerpt,
-            publishedAt: r.publishedAt,
-            readingTime: r.readingTime,
-            ...(r.imageUrl ? { imageUrl: r.imageUrl } : {}),
-          }),
-        )}
+        items={(
+          await findRelatedArticles({
+            currentSlug: slug,
+            currentTitle: entry.title,
+            locale: "fr",
+            limit: 4,
+          })
+        ).map((r) => ({
+          href: `/blog/${r.slug}`,
+          title: r.title,
+          excerpt: r.excerpt,
+          publishedAt: r.publishedAt,
+          readingTime: r.readingTime,
+          ...(r.imageUrl ? { imageUrl: r.imageUrl } : {}),
+        }))}
         eyebrow="Articles connexes"
         title="À lire aussi"
         tone="sand"

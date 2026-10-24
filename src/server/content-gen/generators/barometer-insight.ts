@@ -32,6 +32,8 @@ import { escapeLlmInput } from "../shared/prompt-input-escape";
 import { logStep } from "../shared/generation-log";
 import type { Generator, GeneratorBaseInput, GeneratorOutput } from "./types";
 import { injectBrandVoice } from "../brand/brand-voice";
+import { consigneAngle } from "../brand/positionnement";
+import { sectionChiffresVerifies } from "../kb/chiffres-verifies";
 import { pickInternalExpert, buildExpertQuote } from "../brand/expert-bank";
 import { injectInternalLinks } from "../links/internal-link-catalog";
 import { injectExternalLinks } from "../links/external-links-injector";
@@ -47,7 +49,6 @@ import {
   STUDY_ATTRIBUTION,
   SEUIL_REPONSES_REELLES,
 } from "@/content/observatoire/study";
-import { consigneAngle } from "../brand/positionnement";
 
 // ARCHITECTURE 2-APPELS (2026-06-25) — voir audit content-gen profond.
 // Le mono-appel JSON faisait écrire le modèle court car il devait produire
@@ -84,17 +85,17 @@ const SYSTEM_PROMPT_PLAN =
 - Tu ne cites QUE les chiffres présents dans le bloc « DONNÉES VÉRIFIÉES » fourni. Tu n'inventes AUCUN pourcentage, AUCUN effectif, AUCUNE donnée.
 - Chaque chiffre cité est attribué à « Observatoire Axion-IA 2026 ».
 - Si un angle n'est pas couvert par les données, tu restes qualitatif (pas de chiffre inventé).
-- Angle opérationnel : ce que ces chiffres impliquent concrètement pour un dirigeant de TPE/PME/ETI française.
+- Angle opérationnel : ce que ces chiffres impliquent concrètement pour un dirigeant d'une petite ou moyenne entreprise française.
 - 0 délai chiffré, 0 frais de déplacement, 0 prix en dur, 0 numéro de téléphone (contact@axion-ia.com uniquement).
 - "title" (le H1 affiché) : **50 à 60 caractères**, mot-clé/angle au tout début, cliquable. NE JAMAIS dépasser 60 caractères.
-- "metaTitle" : OBLIGATOIREMENT 50 à 60 caractères (compte les espaces), mot-clé au tout début. NE JAMAIS descendre sous 50 caractères : si trop court, ajoute une précision utile (bénéfice, secteur, « pour TPE/PME »…). NE PAS dépasser 60.
+- "metaTitle" : OBLIGATOIREMENT 50 à 60 caractères (compte les espaces), mot-clé au tout début. NE JAMAIS descendre sous 50 caractères : si trop court, ajoute une précision utile (bénéfice, secteur, métier visé…). NE PAS dépasser 60.
 - "metaDescription" : OBLIGATOIREMENT 140 à 160 caractères (compte les espaces), phrase complète avec bénéfice clair + mot-clé naturel. NE JAMAIS descendre sous 140 caractères : développe jusqu'à atteindre la fourchette. NE PAS dépasser 160.
 - "directAnswer" : OBLIGATOIREMENT **40 à 80 mots** (ni moins, ni plus), réponse autonome et complète à l'angle, citable seule par une IA (AI Overview / vocal). NE JAMAIS répondre en moins de 40 mots : ajoute le « comment » / « pourquoi » concret jusqu'au plancher.
 - "faq" : 8 questions People-Also-Ask réelles — chaque réponse answer-first : 1ʳᵉ phrase = réponse directe ≤ 25 mots, puis 1-2 phrases ; 40-55 mots au total.
 - "keyTakeaway" : 1-2 phrases = LE point clé à retenir (synthèse autonome citable).
 - "expertTake" : 1-2 phrases = prise de position d'expert, sans statistique inventée.
 - "outline" : **8 sections <h2>** couvrant une progression logique d'analyse des données : enjeu/contexte → lecture des constats chiffrés majeurs → implications terrain pour le dirigeant → erreurs à éviter → recommandations opérationnelles. Chaque section d'un constat chiffré doit commencer par le chiffre (phrase autoportante). Chaque entrée = { h2 (titre de section, 5-9 mots), brief (1 phrase : ce que la section doit développer, ancré sur un chiffre PRÉCIS du bloc « DONNÉES VÉRIFIÉES » quand pertinent) }. PAS de section définitionnelle creuse.
-- INTERDIT (marketing-hype, doctrine § 21 — rejet automatique) : « unique », « meilleur », « la meilleure », « leader », « n°1 », « révolutionnaire », « exceptionnel », « incroyable », « incontournable », « garanti », « sans risque », « instantané ». Reste factuel et sobre.
+- INTERDIT (marketing-hype, doctrine § 21 — chaque mot fait baisser la note qualité ; « garanti » et « sans risque » promettant un résultat bloquent la publication) : « unique », « meilleur », « la meilleure », « leader », « n°1 », « révolutionnaire », « exceptionnel », « incroyable », « incontournable », « garanti », « sans risque », « instantané ». Reste factuel et sobre.
 - Output JSON strict : { title, metaTitle, metaDescription, slug, directAnswer, faq:[{q,a}×8], tags, keyTakeaway, expertTake, outline:[{h2,brief}×8] }`);
 
 // APPEL 2 — EXPANSION : développe l'outline en bodyHtml complet et long.
@@ -104,7 +105,7 @@ const SYSTEM_PROMPT_PLAN =
 const SYSTEM_PROMPT_EXPAND =
   injectBrandVoice(`Tu es Manon, experte IA chez Axion-IA. Tu RÉDIGES le corps HTML d'un article d'ANALYSE FR commentant « ${STUDY_NAME_FR} », à partir d'un plan déjà validé. Règles absolues :
 - Tu ne cites QUE les chiffres présents dans le bloc « DONNÉES VÉRIFIÉES » fourni. Tu n'inventes AUCUN pourcentage, AUCUN effectif, AUCUNE donnée. Chaque chiffre est attribué à « Observatoire Axion-IA 2026 ». Si un angle n'est pas couvert, reste qualitatif (pas de chiffre inventé).
-- Angle opérationnel : ce que ces chiffres impliquent concrètement pour un dirigeant de TPE/PME/ETI française. 0 prix en dur, 0 délai chiffré, 0 numéro de téléphone (contact@axion-ia.com uniquement).
+- Angle opérationnel : ce que ces chiffres impliquent concrètement pour un dirigeant d'une petite ou moyenne entreprise française. 0 prix en dur, 0 délai chiffré, 0 numéro de téléphone (contact@axion-ia.com uniquement).
 - LONGUEUR DÉTERMINANTE POUR LE RANG : développe EXACTEMENT les sections de l'outline fourni (une <h2> par entrée, dans l'ordre), **chacune de 130 à 190 mots** (2-3 paragraphes pleins). Corps total visé : **1000 à 1800 mots**. JAMAIS une section de 2 phrases. Développe pleinement l'analyse, ne résume pas.
 - Chaque <h2> d'un constat chiffré commence par le chiffre, en phrase autoportante (ex. « [chiffre du bloc] % des entreprises… »).
 - NE PAS inclure de <h1> dans le corps (le titre est rendu séparément par la page).
@@ -213,7 +214,7 @@ ${externalLinksCtx.markdownSection}
 ${consigneAngle(input.jobId)}
 ## Avis d'expert
 "expertTake" = le point de vue d'Axion-IA (voix collective de l'entreprise, jamais celle d'une personne nommée, ni « je » d'un témoin) : perspective concise et utile sur le sujet, sans chiffre inventé.
-## Output attendu (JSON)
+${sectionChiffresVerifies()}## Output attendu (JSON)
 { title, metaTitle, metaDescription, slug, directAnswer, faq:[{q,a}×8], tags, keyTakeaway, expertTake, outline:[{h2,brief}×8] }`;
 
     let plan: PlanParsed | null = null;
@@ -486,6 +487,7 @@ ${externalLinksCtx.markdownSection}${feedbackSection}
       seoScore: seo.score,
       readabilityScore: readability.score,
       wordCount,
+      ...(plan?.outline?.length ? { plannedH2Count: plan.outline.length } : {}),
       readingTimeMinutes,
       totalTokens: lastTokensInput + lastTokensOutput,
       totalCostUsd: accumulatedCostUsd,
