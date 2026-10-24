@@ -12,7 +12,12 @@ import {
   envoyerQuestionnaireAction,
   marquerQuestionnaireLuAction,
 } from "@/features/questionnaire-preaudit/actions";
-import { MESSAGE_REFUS, refusEnvoiReel } from "@/features/questionnaire-preaudit/config";
+import {
+  conservationEchue,
+  MESSAGE_REFUS,
+  refusEnvoiReel,
+  RETENTION_ANS,
+} from "@/features/questionnaire-preaudit/config";
 import { apercuEnvoi } from "@/features/questionnaire-preaudit/envoyer";
 import {
   cheminEssaiPreaudit,
@@ -217,6 +222,16 @@ export async function QuestionnairePreaudit(props: {
               {reponses.filter((r) => r.ecarteLe !== null).length} réponse(s) mise(s) à l&apos;écart
               sur demande d&apos;effacement : l&apos;effacement définitif attend la décision de
               Williams.
+            </p>
+          ) : null}
+          {reponses.some((r) => conservationEchue(r.recuLe)) ? (
+            <p
+              role="alert"
+              className="my-[var(--space-admin-2)] font-semibold text-[color:var(--color-admin-danger)]"
+            >
+              Rappel : {reponses.filter((r) => conservationEchue(r.recuLe)).length} réponse(s) ont
+              dépassé leur échéance de conservation ({RETENTION_ANS} ans). Rien n&apos;est supprimé
+              automatiquement : à supprimer à la main si plus rien ne justifie de les garder.
             </p>
           ) : null}
           {reponses.some((r) => r.illisible) ? (

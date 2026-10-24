@@ -8,11 +8,11 @@
  *   · un brouillon par (questionnaire, parcours, code du lien personnel) : le dernier gagne, un
  *     enregistrement PLUS ANCIEN que celui gardé (vieil onglet) est refusé ;
  *   · chiffré comme les réponses (`chiffrerParole`), jamais journalisé ;
- *   · supprimé à l'envoi réussi de la réponse (`enregistrerReponse`) et avec la personne
- *     (`rgpd-erase.ts`) ; inactif depuis 30 jours, il n'est plus JAMAIS rendu ;
- *   · ⛔ AUCUNE suppression automatique ici : `purgerBrouillonsInactifs` n'est appelée par RIEN.
- *     Elle sera branchée sur la tâche planifiée par la PR qui passera `PURGE_PLANIFIEE` à `true`
- *     (garde `garde-structure.spec.ts`), après décision écrite de Will ;
+ *   · supprimé à l'envoi réussi de la réponse (`enregistrerReponse`), quand la personne le
+ *     demande (DELETE) et avec la personne (`rgpd-erase.ts`, clic de Will) ;
+ *   · ⛔ AUCUNE suppression automatique (décision de Will, 25/10) : conservé comme les réponses
+ *     (5 ans, `config.ts`), supprimé à la main seulement. Aucune fonction de purge (garde
+ *     `garde-structure.spec.ts`) ;
  *   · le dirigeant a un code PERSONNEL (`m`, `codeDirigeantPreaudit`, posé par le serveur dans
  *     le lien qui lui est envoyé) : un salarié qui a le lien de base ne lit pas son brouillon.
  *
@@ -27,7 +27,10 @@ import { codeDirigeantPreauditValide } from "@/server/visio/questionnaire-en-lig
 
 import type { ModeReponse } from "./donnees";
 
-/** Un brouillon que personne n'a touché depuis 30 jours n'est plus rendu (ni gagnant). */
+/**
+ * Un brouillon que personne n'a touché depuis 30 jours ne compte plus dans le plafond et ne
+ * protège plus contre un vieil onglet. Il reste gardé ET rendu (rien n'est perdu ni supprimé).
+ */
 export const BROUILLON_INACTIF_JOURS = 30;
 const JOUR_MS = 86_400_000;
 /** Tolérance sur l'horloge du navigateur (un téléphone en avance d'un jour reste accepté). */
@@ -151,18 +154,6 @@ const cle = (questionnaireId: string, p: Personne) => ({
   questionnaireId_mode_membre: { questionnaireId, mode: p.mode, membre: p.membre },
 });
 
-/**
- * Purge de rétention : supprime TOUS les brouillons inactifs depuis 30 jours.
- * ⛔ Appelée par RIEN aujourd'hui (aucune suppression automatique sans décision écrite de Will) :
- * à brancher sur la tâche planifiée de la PR qui passe `PURGE_PLANIFIEE` à `true`.
- */
-export async function purgerBrouillonsInactifs(maintenant: Date = new Date()): Promise<number> {
-  const r = await prisma.questionnaireAvantAuditBrouillon.deleteMany({
-    where: { majLe: { lt: limiteInactivite(maintenant) } },
-  });
-  return r.count;
-}
-
 export type ResultatEnregistrement =
   | { readonly statut: "ok"; readonly horodatage: Date }
   | { readonly statut: "plus_ancien"; readonly horodatage: Date }
@@ -206,7 +197,7 @@ function envoyeLeNavigateur(
  *     retard ne ressuscite pas le brouillon supprimé à l'envoi). Horloge du NAVIGATEUR contre
  *     horloge du NAVIGATEUR (`envoyeLe` de la réponse contre `horodatage` du brouillon), jamais
  *     l'heure du serveur contre celle du navigateur, qui peut être décalée ;
- *   · au-delà de 30 brouillons pour ce questionnaire (`trop_de_brouillons`).
+ *   · au-delà de `BROUILLONS_MAX_PAR_QUESTIONNAIRE` brouillons (`trop_de_brouillons`).
  * Même verrou que `enregistrerReponse` (`FOR UPDATE` sur le questionnaire) : un brouillon et une
  * réponse de ce questionnaire ne s'écrivent jamais en même temps.
  */
@@ -262,17 +253,16 @@ export async function enregistrerBrouillon(
   });
 }
 
-/** Le brouillon de cette personne, déchiffré, ou `null` (absent, inactif, illisible). */
+/** Le brouillon de cette personne, déchiffré, ou `null` (absent, illisible). */
 export async function lireBrouillon(
   questionnaireId: string,
   p: Personne,
-  maintenant: Date = new Date(),
 ): Promise<{ brouillon: string; horodatage: Date } | null> {
   const l = await prisma.questionnaireAvantAuditBrouillon.findUnique({
     where: cle(questionnaireId, p),
-    select: { horodatage: true, majLe: true, donnees: true },
+    select: { horodatage: true, donnees: true },
   });
-  if (l === null || l.majLe.getTime() < limiteInactivite(maintenant).getTime()) return null;
+  if (l === null) return null;
   try {
     return { brouillon: dechiffrerParole(l.donnees), horodatage: l.horodatage };
   } catch {

@@ -24,7 +24,7 @@
  *      l'invité (type particulier). Jamais de SIREN : il ne se pose que d'un clic
  *      de Will. S'IL Y A UN DOUTE sur l'identité (fiche proche par la proposition
  *      ou la comparaison de la porte, homonyme, domaine partagé, plusieurs fiches,
- *      invité connu ailleurs), la fiche est créée QUAND MÊME (décision de Will,
+ *      invité connu ailleurs, même téléphone), la fiche est créée QUAND MÊME (décision de Will,
  *      24/10 : le SIRET n'est pas connu au départ) et marquée « doublon possible » :
  *      une ligne d'historique `client.doublon_possible` porte le lien vers chaque
  *      fiche proche, et une alerte (`visio.doublon_possible`) prévient Will. La
@@ -284,6 +284,32 @@ export interface OptionsFicheAuto {
   readonly depuis?: Date | null;
 }
 
+/** Les 9 derniers chiffres d'un numéro (`+33 6 12…` et `06 12…` se comparent), ou `null`. PUR. */
+export function finDeTelephone(tel: string | null | undefined): string | null {
+  const chiffres = (tel ?? "").replace(/\D/g, "");
+  return chiffres.length >= 9 ? chiffres.slice(-9) : null;
+}
+
+/** Les fiches dont le téléphone (fiche ou personne) finit par les mêmes 9 chiffres. */
+async function fichesAuMemeTelephone(db: Tx, tel: string | null): Promise<string[]> {
+  const fin = finDeTelephone(tel);
+  if (fin === null) return [];
+  const [fiches, personnes] = await Promise.all([
+    db.client.findMany({
+      where: { contactTelephone: { not: null } },
+      select: { id: true, contactTelephone: true },
+    }),
+    db.clientContact.findMany({
+      where: { telephone: { not: null } },
+      select: { clientId: true, telephone: true },
+    }),
+  ]);
+  const ids = new Set<string>();
+  for (const f of fiches) if (finDeTelephone(f.contactTelephone) === fin) ids.add(f.id);
+  for (const c of personnes) if (finDeTelephone(c.telephone) === fin) ids.add(c.clientId);
+  return [...ids];
+}
+
 async function demandeLiee(db: Tx, submissionId: string | null): Promise<DemandeLiee | null> {
   if (!submissionId) return null;
   const d = await db.submission.findUnique({
@@ -331,6 +357,7 @@ export async function assurerFicheProspectAuto(
       capturedAt: true,
       inviteeName: true,
       inviteeEmail: true,
+      inviteePhone: true,
       rawPayload: true,
       linkedSubmissionId: true,
     },
@@ -418,6 +445,11 @@ export async function assurerFicheProspectAuto(
   });
   for (const p of trouverFichesProches(candidat, await chargerFichesCandidates(db, candidat))) {
     proches.set(p.ficheId, p.signal);
+  }
+  // Le même téléphone (fiche ou une de ses personnes) : un DOUTE, jamais un rattachement (un
+  // standard se partage).
+  for (const id of await fichesAuMemeTelephone(db, ev.inviteePhone ?? null)) {
+    proches.set(id, proches.get(id) ?? "telephone");
   }
   const lies: ProcheLie[] = [...proches].map(([ficheId, signal]) => ({ ficheId, signal }));
   if (options.essai) return { statut: "creerait", doublon: lies.length > 0 };

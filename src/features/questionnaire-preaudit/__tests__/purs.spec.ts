@@ -1,6 +1,15 @@
 import { describe, expect, it } from "vitest";
 
-import { mentionsRgpd, preauditActif, PURGE_PLANIFIEE, refusEnvoiReel } from "../config";
+import {
+  conservationEchue,
+  CONTACT_RGPD_DEFAUT,
+  echeanceConservation,
+  mentionsRgpd,
+  preauditActif,
+  refusEnvoiReel,
+  RETENTION_ANS,
+  TEXTE_CONSERVATION,
+} from "../config";
 import { CHARGE_MAX_OCTETS, LIBELLE_PREFILL, lignesDeLaCharge, validerCharge } from "../donnees";
 import { pagePourClient, validerHtml } from "../html";
 import { CHARGES_SCHEMA_4 } from "./charges-schema-4.fixture";
@@ -24,24 +33,33 @@ describe("interrupteur et notice RGPD", () => {
     expect(preauditActif({ QUESTIONNAIRE_AVANT_AUDIT_ENABLED: "false" })).toBe(false);
     expect(preauditActif({ QUESTIONNAIRE_AVANT_AUDIT_ENABLED: "true" })).toBe(true);
   });
-  it("le réel est refusé éteint, puis notice vide, puis purge non planifiée", () => {
-    expect(refusEnvoiReel({}, true)).toBe("eteint");
+  it("le réel est refusé éteint ; allumé, il est permis", () => {
+    expect(refusEnvoiReel({})).toBe("eteint");
     const allume = { QUESTIONNAIRE_AVANT_AUDIT_ENABLED: "true" };
-    expect(refusEnvoiReel(allume, true)).toBe("notice_rgpd_vide");
-    expect(refusEnvoiReel({ ...allume, QUESTIONNAIRE_PREAUDIT_RGPD_CONTACT: "a@b.fr" }, true)).toBe(
-      "notice_rgpd_vide",
+    expect(refusEnvoiReel({ QUESTIONNAIRE_AVANT_AUDIT_ENABLED: "1" })).toBe("eteint");
+    // Décision de Will (25/10) : l'interrupteur SEUL autorise le réel (plus de verrou de purge).
+    expect(refusEnvoiReel(allume)).toBeNull();
+    expect(mentionsRgpd(allume)).toEqual({
+      contact: CONTACT_RGPD_DEFAUT,
+      conservation: TEXTE_CONSERVATION,
+    });
+    expect(mentionsRgpd({ ...allume, QUESTIONNAIRE_PREAUDIT_RGPD_CONTACT: " a@b.fr " })).toEqual({
+      contact: "a@b.fr",
+      conservation: TEXTE_CONSERVATION,
+    });
+  });
+
+  it("conservation : 5 ans, jamais « 30 jours », échéance = reçu + 5 ans, rappel sans suppression", () => {
+    expect(RETENTION_ANS).toBe(5);
+    expect(TEXTE_CONSERVATION).toMatch(/^5 ans,/);
+    expect(TEXTE_CONSERVATION).toBe(
+      "5 ans, puis supprimées par notre équipe ; vous pouvez demander leur suppression à tout moment",
     );
-    const complet = {
-      ...allume,
-      QUESTIONNAIRE_PREAUDIT_RGPD_CONTACT: "a@b.fr",
-      QUESTIONNAIRE_PREAUDIT_RGPD_CONSERVATION: "3 ans",
-    };
-    expect(refusEnvoiReel(complet, false)).toBe("purge_non_planifiee");
-    expect(refusEnvoiReel(complet, true)).toBeNull();
-    // Livré tel quel : la purge n'est pas encore planifiée, donc le réel reste refusé.
-    expect(PURGE_PLANIFIEE).toBe(false);
-    expect(refusEnvoiReel(complet)).toBe("purge_non_planifiee");
-    expect(mentionsRgpd(complet)).toEqual({ contact: "a@b.fr", conservation: "3 ans" });
+    expect(TEXTE_CONSERVATION).not.toMatch(/30 jours/);
+    const recu = new Date("2026-10-25T09:00:00Z");
+    expect(echeanceConservation(recu).toISOString()).toBe("2031-10-25T09:00:00.000Z");
+    expect(conservationEchue(recu, new Date("2031-10-25T08:59:59Z"))).toBe(false);
+    expect(conservationEchue(recu, new Date("2031-10-25T09:00:00Z"))).toBe(true);
   });
 });
 

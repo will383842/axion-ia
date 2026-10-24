@@ -291,6 +291,32 @@ describe("la fiche prospect se crée toute seule au rendez-vous Calendly", () =>
     expect(rencontreDe(base, rencontres[0]!)).toMatchObject({ clientId: f["id"] });
   });
 
+  it("le même téléphone (fiche ou personne) : nouvelle fiche, doublon possible, jamais fusionnée", async () => {
+    const parFiche = fiche({ raisonSociale: "Garage Fictif", contactTelephone: "04 76 12 34 56" });
+    const parPersonne = fiche({ raisonSociale: "Plomberie Fictive" });
+    const { base, rencontres } = await scene(
+      [rendezVousCalendly({ inviteePhone: "+33 4 76 12 34 56" })],
+      {
+        client: [parFiche, parPersonne],
+        clientContact: [{ id: "c9", clientId: parPersonne["id"], telephone: "0476123456" }],
+      },
+    );
+    const bilan = await passage(base);
+    expect(bilan).toMatchObject({ creees: 1, rattachees: 0, doutes: 0 });
+    const nouvelle = doublonDe(base, [parFiche, parPersonne], "telephone");
+    // Ni rattachée à une fiche proche, ni fusion : les deux fiches existantes restent intactes.
+    expect(rencontreDe(base, rencontres[0]!)).toMatchObject({ clientId: nouvelle?.["id"] });
+    expect(base.tables["client"]).toHaveLength(3);
+    expect(base.tables["clientContact"]?.[0]).toMatchObject({ clientId: parPersonne["id"] });
+  });
+
+  it("un numéro trop court ou absent ne crée aucun doute", async () => {
+    const { finDeTelephone } = await import("../fiche-auto");
+    expect(finDeTelephone("+33 (0)4 76 12 34 56")).toBe("476123456");
+    expect(finDeTelephone("12 34")).toBeNull();
+    expect(finDeTelephone(null)).toBeNull();
+  });
+
   it("la même entreprise déclarée (homonyme) : nouvelle fiche, doublon possible", async () => {
     const homonyme = fiche({ raisonSociale: "Menuiserie Fictive" });
     const { base } = await scene(

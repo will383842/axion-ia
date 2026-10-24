@@ -3,7 +3,7 @@
  *
  * Écrivains des tables (verrouillés par le cliquet nominatif) : `deposerQuestionnaire`,
  * `reserverEnvoi`, `annulerEnvoi`, `enregistrerReponse`, `marquerLu`, `clore`,
- * `purgerReponsesAnciennes` (et, pour les brouillons, `brouillon.ts`). Aucun n'envoie d'e-mail : seul `envoyer.ts` le fait, sur clic de Will.
+ * `brouillon.ts` (aucune purge : conservation 5 ans, suppression manuelle, `config.ts`). Aucun n'envoie d'e-mail : seul `envoyer.ts` le fait, sur clic de Will.
  */
 
 import { randomBytes } from "node:crypto";
@@ -331,6 +331,7 @@ export async function enregistrerReponse(
         mode: charge.mode,
         membre,
         envoyeLeNavigateur: charge.envoyeLe,
+        infosEmail: charge.infosEmail,
         donnees: chiffrerParole(charge.json),
       },
     });
@@ -367,17 +368,6 @@ export async function clore(id: string): Promise<void> {
 }
 
 /**
- * Purge de rétention : supprime les réponses reçues avant `avant`. Branchée sur une tâche
- * planifiée par la PR qui passera `PURGE_PLANIFIEE` à `true` (voir `config.ts`).
- */
-export async function purgerReponsesAnciennes(avant: Date): Promise<number> {
-  const r = await prisma.questionnaireAvantAuditEnvoi.deleteMany({
-    where: { recuLe: { lt: avant } },
-  });
-  return r.count;
-}
-
-/**
  * Les réponses, une par personne, déchiffrées pour la console. Une réponse ILLISIBLE (clé absente
  * ou valeur abîmée) reste listée avec `illisible: true` — la console affiche une alerte rouge,
  * jamais une liste vide. Une réponse MISE À L'ÉCART (demande d'effacement d'un salarié) n'est pas
@@ -395,6 +385,7 @@ export async function lireReponses(questionnaireId: string): Promise<ReponseLisi
       membre: membreAGarder(questionnaireId, e.mode, e.membre),
       recuLe: e.recuLe,
       ecarteLe: e.ecarteLe,
+      infosEmail: e.infosEmail ?? null,
     };
     if (e.ecarteLe !== null) return { ...base, illisible: false, lignes: [], lecture: null };
     let json: string;

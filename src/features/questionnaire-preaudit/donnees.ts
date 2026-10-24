@@ -35,6 +35,11 @@ export interface ChargeValide {
   readonly membre: string | null;
   /** `envoyeLe` de la charge (heure du navigateur, texte tel quel, ≤ 40 car.) ou `null`. */
   readonly envoyeLe: string | null;
+  /**
+   * Case séparée « recevoir des informations par e-mail » (`consentements.infosEmail`) : booléen,
+   * ou `null` si absente ou mal formée (jamais un refus). N'abonne personne, n'envoie rien.
+   */
+  readonly infosEmail: boolean | null;
   readonly json: string;
 }
 
@@ -77,7 +82,12 @@ export function validerCharge(texte: string): ResultatCharge {
   const membre = typeof m === "string" && m.trim() !== "" ? m.trim().slice(0, 60) : null;
   const e = o["envoyeLe"];
   const envoyeLe = typeof e === "string" && e !== "" && e.length <= 40 ? e : null;
-  return { ok: true, charge: { mode: mode as ModeReponse, membre, envoyeLe, json: texte } };
+  const ie = consent["infosEmail"];
+  const infosEmail = typeof ie === "boolean" ? ie : null;
+  return {
+    ok: true,
+    charge: { mode: mode as ModeReponse, membre, envoyeLe, infosEmail, json: texte },
+  };
 }
 
 /** État d'une case pré-remplie par Axion (bloc `prefill` du schéma 4). */
@@ -108,6 +118,8 @@ export interface ReponseLisible {
   readonly illisible: boolean;
   /** Mise à l'écart sur demande d'effacement d'un salarié (effacement définitif : clic de Will). */
   readonly ecarteLe: Date | null;
+  /** Case « informations par e-mail » : oui, non, ou `null` (non posée). Datée par `recuLe`. */
+  readonly infosEmail: boolean | null;
   /** Lecture complète (en-tête, tableaux, calc, prefill, brut), ou `null` (illisible, écartée). */
   readonly lecture: LectureReponse | null;
 }

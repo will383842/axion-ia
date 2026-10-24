@@ -14577,6 +14577,10 @@ model QuestionnaireAvantAuditEnvoi {
   /// Mise à l'écart sur demande d'effacement d'un salarié (2026-10-24) : la réponse n'est plus
   /// montrée ; son effacement définitif reste un clic de Will (`eraseQuestionnairePreauditMembre`).
   ecarteLe           DateTime?               @map("ecarte_le")
+  /// Case SÉPARÉE « recevoir des informations par e-mail » (`consentements.infosEmail`, 25/10/2026) :
+  /// vrai, faux, ou NULL si la charge ne la portait pas. Datée par `recuLe` (heure du serveur).
+  /// ⛔ N'abonne personne et ne déclenche aucun envoi : une information pour Will, rien d'autre.
+  infosEmail         Boolean?                @map("infos_email")
 
   @@index([questionnaireId])
   @@index([questionnaireId, mode, envoyeLeNavigateur], map: "questionnaires_avant_audit_envois_idempotence_idx")

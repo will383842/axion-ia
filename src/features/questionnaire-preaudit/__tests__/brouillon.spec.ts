@@ -5,7 +5,7 @@
  * sont remplacés). Couvre : relu octet pour octet, consentement exigé, code personnel du dirigeant
  * (un salarié avec le lien de base ne lit rien), vieil onglet refusé, 1 000 000 d'octets (413
  * lisible), 150 brouillons au plus, jeton faux, suppression à l'envoi (horloges décalées ; celui du
- * dirigeant seulement si sa réponse porte son code), aucune purge automatique, chiffrement, débit,
+ * dirigeant seulement si sa réponse porte son code), aucune suppression automatique (conservation 5 ans), chiffrement, débit,
  * CORS, essai.
  */
 
@@ -84,14 +84,6 @@ vi.mock("@/lib/rate-limit", () => ({ checkRateLimit: base.limite }));
 vi.mock("@/features/dossier-client/message-affichable", () => ({
   MessagePourWill: class MessagePourWill extends Error {},
 }));
-/** Le réel est refusé tant que la purge des RÉPONSES n'est pas planifiée : on simule la PR qui la planifie. */
-vi.mock("../config", async (orig) => {
-  const m = await orig<typeof import("../config")>();
-  return {
-    ...m,
-    refusReel: (env?: Record<string, string | undefined>) => m.refusReel(env, true),
-  };
-});
 
 import * as routeBrouillon from "@/app/api/questionnaire-preaudit/[id]/[jeton]/brouillon/route";
 import { POST as postReponse } from "@/app/api/questionnaire-preaudit/[id]/[jeton]/route";
@@ -99,7 +91,6 @@ import { codeDirigeantPreaudit, jetonPreaudit } from "@/server/visio/questionnai
 import {
   BROUILLON_INACTIF_JOURS,
   BROUILLONS_MAX_PAR_QUESTIONNAIRE,
-  purgerBrouillonsInactifs,
   validerBrouillon,
 } from "../brouillon";
 import { CHARGE_MAX_OCTETS } from "../donnees";
@@ -592,26 +583,15 @@ describe("suppression", () => {
     expect(base.b).toHaveLength(0);
   });
 
-  it("30 jours d'inactivité : plus JAMAIS rendu, mais AUCUNE suppression automatique", async () => {
+  it("30 jours d'inactivité : toujours gardé ET rendu (conservation 5 ans), rien supprimé", async () => {
     const q = questionnaire();
     await enregistrer(q, corps(q, { brouillon: "ancien" }));
     await enregistrer(q, corps(q, { mode: "emp", membre: CODE, brouillon: "frais" }));
     const ancien = base.b.find((b) => b["mode"] === "main") as Ligne;
     ancien["majLe"] = new Date(Date.now() - (BROUILLON_INACTIF_JOURS * JOUR + 60_000));
-    expect((await json(await relire(q)))["brouillon"]).toBeNull();
+    expect((await json(await relire(q)))["brouillon"]).toBe("ancien");
     expect((await json(await relire(q, `?mode=emp&m=${CODE}`)))["brouillon"]).toBe("frais");
-    // Aucune requête ne supprime : la suppression définitive attend la purge planifiée.
     expect(base.b).toHaveLength(2);
-  });
-
-  it("purgerBrouillonsInactifs (non branchée) : supprime à 30 jours, garde à 29", async () => {
-    const q = questionnaire();
-    await enregistrer(q, corps(q));
-    await enregistrer(q, corps(q, { mode: "emp", membre: CODE }));
-    (base.b[0] as Ligne)["majLe"] = new Date(Date.now() - 31 * JOUR);
-    (base.b[1] as Ligne)["majLe"] = new Date(Date.now() - 29 * JOUR);
-    expect(await purgerBrouillonsInactifs()).toBe(1);
-    expect(base.b.map((b) => b["mode"])).toEqual(["emp"]);
   });
 
   it("un brouillon inactif depuis 30 jours n'écrase pas un nouveau, même plus ancien", async () => {

@@ -501,6 +501,8 @@ export interface ExportReponsesPreauditMembre {
     readonly reponses: string | null;
     /** Mise à l'écart sur sa demande d'effacement (en attente de l'effacement définitif). */
     readonly ecarteLe: Date | null;
+    /** Case « informations par e-mail » (oui, non, `null` = non posée), datée par `recuLe`. */
+    readonly infosEmail: boolean | null;
   }>;
   readonly avertissements: readonly string[];
 }
@@ -525,7 +527,7 @@ export async function exporterReponsesPreauditMembre(
   }
   const lignes = await prisma.questionnaireAvantAuditEnvoi.findMany({
     where: { mode: { in: ["emp", "it"] }, membre, questionnaire: { ref } },
-    select: { recuLe: true, mode: true, donnees: true, ecarteLe: true },
+    select: { recuLe: true, mode: true, donnees: true, ecarteLe: true, infosEmail: true },
     orderBy: { recuLe: "asc" },
   });
   return {
@@ -536,6 +538,7 @@ export async function exporterReponsesPreauditMembre(
       parcours: l.mode,
       reponses: lisible(l.donnees, avertir, "questionnairesPreaudit"),
       ecarteLe: l.ecarteLe,
+      infosEmail: l.infosEmail ?? null,
     })),
     avertissements,
   };
