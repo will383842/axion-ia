@@ -25,8 +25,9 @@ import { prisma } from "@/lib/prisma";
 import type { SearchIntent } from "../../../prisma/generated/client";
 import { ALL_KEYWORD_SEEDS } from "@/content/keywords/master";
 import type { KeywordModule } from "@/content/keywords/types";
-import { generateGeoKeywords, selectGeoKeyword } from "./keyword-templates";
+import { generateGeoKeywords } from "./keyword-templates";
 import type { CityRef } from "./keyword-templates";
+import { evaluerSujetCible } from "./sujet-cible";
 
 // ── Mapping vertical (ServiceSector) → KeywordModule ─────────────────────────
 
@@ -47,17 +48,25 @@ const inMemoryCounters = new Map<string, number>();
 function selectFromMemory(vertical: string): string | null {
   const mod = VERTICAL_TO_MODULE[vertical] ?? "transversal";
   const pool = ALL_KEYWORD_SEEDS.filter((s) => s.module === mod);
-  if (pool.length === 0) {
-    const all = ALL_KEYWORD_SEEDS;
-    if (all.length === 0) return null;
-    const idx = (inMemoryCounters.get("__all") ?? 0) % all.length;
-    inMemoryCounters.set("__all", idx + 1);
-    return all[idx]?.keyword ?? null;
+  const source = pool.length > 0 ? pool : ALL_KEYWORD_SEEDS;
+  if (source.length === 0) return null;
+  const cle = pool.length > 0 ? mod : "__all";
+  // Les sujets hors cible (cf. sujet-cible.ts) sont sautés ; si tout le pool est
+  // hors cible on rend null plutôt qu'un sujet ETI / luxe.
+  for (let essai = 0; essai < source.length; essai++) {
+    const idx = (inMemoryCounters.get(cle) ?? 0) % source.length;
+    inMemoryCounters.set(cle, idx + 1);
+    const kw = source[idx]?.keyword;
+    if (kw && evaluerSujetCible(kw).accepte) return kw;
   }
-  const idx = (inMemoryCounters.get(mod) ?? 0) % pool.length;
-  inMemoryCounters.set(mod, idx + 1);
-  return pool[idx]?.keyword ?? null;
+  return null;
 }
+
+/**
+ * Nombre maximal de candidats écartés par le filtre de sujets avant d'abandonner
+ * le vivier en base pour ce tirage (repli géo puis mémoire).
+ */
+const MAX_SUJETS_ECARTES = 8;
 
 /** Reset du compteur in-memory — tests uniquement. */
 export function __resetInMemoryCounters(): void {
@@ -182,8 +191,14 @@ export async function selectKeywordRich(
   //    Le LEFT JOIN sur l'agrégat `c` calcule, par cluster, la dernière
   //    utilisation (toutes verticals). `FOR UPDATE OF k` ne verrouille QUE la
   //    ligne keyword `k` (pas le côté nullable de l'outer join, interdit en PG).
+  let vivierVide = false;
   try {
-    const rows = await prisma.$queryRaw<readonly AtomicSelectResult[]>(Prisma.sql`
+    // Filtre de sujets hors cible (audit blog 24/10/2026) : un candidat écarté
+    // est déjà réservé par l'UPDATE atomique (usage_count + 1, last_used_at =
+    // NOW) : il passe donc en fin de rotation et ne revient pas au tirage
+    // suivant. Rien n'est supprimé ni modifié d'autre dans la table.
+    for (let essai = 0; essai < MAX_SUJETS_ECARTES; essai++) {
+      const rows = await prisma.$queryRaw<readonly AtomicSelectResult[]>(Prisma.sql`
       UPDATE keywords
       SET usage_count = usage_count + 1,
           last_used_at = NOW()
@@ -206,18 +221,34 @@ export async function selectKeywordRich(
       )
       RETURNING term, search_intent, cluster_id
     `);
-    const row = rows[0];
-    if (row?.term) {
-      return {
-        term: row.term,
-        searchIntent: row.search_intent ?? null,
-        clusterId: row.cluster_id ?? null,
-      };
+      const row = rows[0];
+      if (!row?.term) {
+        vivierVide = true;
+        break;
+      }
+      const verdict = evaluerSujetCible(row.term);
+      if (verdict.accepte) {
+        return {
+          term: row.term,
+          searchIntent: row.search_intent ?? null,
+          clusterId: row.cluster_id ?? null,
+        };
+      }
+      console.warn(
+        JSON.stringify({
+          event: "keyword_sujet_ecarte",
+          term: row.term,
+          raison: verdict.raison,
+          vertical,
+          campaignId: campaignId ?? null,
+          timestamp: new Date().toISOString(),
+        }),
+      );
     }
     // DB vide pour cette vertical → exhaustion. Si la sélection était scopée à
     // une campagne, on émet un warn observable (fail-open : pas de throw, on
     // continue vers le fallback in-memory du pool global).
-    if (campaignId) {
+    if (vivierVide && campaignId) {
       console.warn(
         JSON.stringify({
           event: "keyword_select_exhausted",
@@ -255,8 +286,14 @@ export async function selectKeywordRich(
         index = inMemoryCounters.get(key) ?? 0;
         inMemoryCounters.set(key, index + 1);
       }
-      const kw = selectGeoKeyword(vertical, city, index);
-      if (kw) return { term: kw, searchIntent: null, clusterId: null };
+      // Premier gabarit de la rotation qui vise la cible (ex. ville interdite
+      // comme Grenoble, jamais en communication, donc sauté).
+      for (let k = 0; k < geoKws.length; k++) {
+        const kw = geoKws[(index + k) % geoKws.length];
+        if (kw && evaluerSujetCible(kw).accepte) {
+          return { term: kw, searchIntent: null, clusterId: null };
+        }
+      }
     }
   }
 

@@ -70,6 +70,12 @@ export interface SelectExternalLinksOptions {
   readonly cityId?: string;
   readonly regionSlug?: string;
   readonly topic?: string;
+  /**
+   * Sujet libre de l'article (mot-clé, titre). Contrairement à `topic` (filtre dur
+   * sur un thème du catalogue), il ne fait que classer : bonus par mot commun avec
+   * la source, départage stable. Absent = comportement inchangé.
+   */
+  readonly subject?: string;
   readonly minAuthority?: ExternalLinkAuthority;
   readonly count?: number;
   readonly excludeIds?: readonly string[];
