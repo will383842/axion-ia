@@ -211,6 +211,13 @@ export function AuditBlogV2({ adminPrefix, audit }: Props): React.ReactElement {
               </AdminBadge>
             </h2>
             <p className="admin-meta-block">{d.explication}</p>
+            {d.id === "doublons" ? (
+              <p className="admin-meta-block">
+                <Link href={`/fr/${adminPrefix}/content-gen/similarity-monitor`}>
+                  Voir les paires similaires mesurées
+                </Link>
+              </p>
+            ) : null}
             {lignes.length === 0 ? (
               <AdminEmptyState title="Aucun article dans cette catégorie." />
             ) : (

@@ -151,6 +151,11 @@ describe("auditerArticles", () => {
     expect(r.doublons[0]?.famille).toBe("formation-ia-");
   });
 
+  it("les quasi-doublons par début d'adresse restent une liste seule, sans geste de retrait", () => {
+    const d = CATEGORIES_AUDIT.find((c) => c.id === "doublons");
+    expect(d?.geste).toBe("liste-seule");
+  });
+
   it("cite OPCO seulement quand la divulgation publique n'est pas autorisée", () => {
     const e = entree("o", {
       surface: { corps: "Une prise en charge par votre OPCO est possible." },

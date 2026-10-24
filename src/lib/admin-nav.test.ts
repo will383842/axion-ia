@@ -210,7 +210,8 @@ describe("buildAdminNav SSOT", () => {
     // la seule route console `/api/admin/imprimes/<id>/<fichier>`. 168 + 1 = 169.
     // +1 État des fonds OPCO (lot OPCO A5, 2026-10-04) : 169 + 1 = 170.
     // +1 Conformité RGPD (2026-10-10, groupe Société & conformité).
-    expect(items.length).toBe(177); // +1 Interrupteurs Qualiopi (masqué sous Conformité & auditeur)
+    // +1 Audit de l'existant du blog (lot L10, 2026-10-24, pôle content_gen/qualite) : 177 + 1 = 178.
+    expect(items.length).toBe(178); // +1 Audit de l'existant du blog (lot L10)
   });
 
   it("prefixes all INTERNAL hrefs with /fr/<adminPrefix>", () => {

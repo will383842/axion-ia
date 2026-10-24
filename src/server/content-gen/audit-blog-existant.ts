@@ -87,8 +87,8 @@ export const CATEGORIES_AUDIT: ReadonlyArray<DescriptionCategorie> = [
     id: "doublons",
     titre: "Quasi-doublons",
     explication:
-      "Articles dont l'adresse suit le même modèle (« certification-ia-managers-… », « formation-ia-… ») : ils se concurrencent. Garder le meilleur, sortir les autres de Google.",
-    geste: "retirer-de-google",
+      "Simple INDICE : articles dont l'adresse suit le même modèle (« certification-ia-managers-… », « formation-ia-… »). Le début d'adresse ne prouve pas que deux sujets se ressemblent. Les vraies paires, mesurées par similarité, sont dans « Paires similaires » (lien ci-dessous). Liste seule : aucun geste ici.",
+    geste: "liste-seule",
   },
   {
     id: "grenoble",
@@ -109,7 +109,7 @@ export const CATEGORIES_AUDIT: ReadonlyArray<DescriptionCategorie> = [
 /** Seuil d'affichage de la liste « très courts » (information, jamais une règle d'indexation). */
 export const SEUIL_MOTS_COURT = 500;
 
-/** Début d'adresse des familles de quasi-doublons connues (requête R2 du plan). */
+/** Début d'adresse des familles de quasi-doublons connues (requête R2 du plan) : indice affiché, jamais critère d'un geste. */
 export const PREFIXES_DOUBLONS: ReadonlyArray<string> = [
   "certification-ia-managers-",
   "formation-ia-",
