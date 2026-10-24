@@ -40,7 +40,7 @@ describe("selectKeywordRich — le vivier prime sur la synthèse géo", () => {
   it("interroge la base MÊME quand une ville est fournie (la régression)", async () => {
     queryRawMock.mockResolvedValueOnce([
       {
-        term: "formation IA équipe retail luxe",
+        term: "formation IA équipe commerce de proximité",
         search_intent: "sectoriel",
         cluster_id: "formation-metiers-sectorielle",
       },
@@ -54,7 +54,7 @@ describe("selectKeywordRich — le vivier prime sur la synthèse géo", () => {
     // Avant le correctif : la base n'était jamais appelée et le terme retourné
     // était un gabarit géo du type « formation IA Lyon ».
     expect(queryRawMock).toHaveBeenCalledTimes(1);
-    expect(result?.term).toBe("formation IA équipe retail luxe");
+    expect(result?.term).toBe("formation IA équipe commerce de proximité");
   });
 
   it("conserve les métadonnées du vivier (intent + cluster) malgré la ville", async () => {

@@ -329,7 +329,12 @@ export default async function NewsArticlePage({ params }: Props) {
 
   // VIS-10 — articles connexes (anti dead-end de maillage : la page news n'en
   // avait aucun). Tier-1 only (anti-doorway).
-  const related = await findRelatedArticles({ currentSlug: slug, locale: "fr", limit: 4 });
+  const related = await findRelatedArticles({
+    currentSlug: slug,
+    currentTitle: t.title,
+    locale: "fr",
+    limit: 4,
+  });
   // Refonte 2026-06-22 — People Also Ask (parité maillage /blog).
   const peopleAlsoAsk = await loadPeopleAlsoAsk(slug, "fr");
   const adjacentNews = await loadAdjacentArticlesByType(slug, "fr", "news");
