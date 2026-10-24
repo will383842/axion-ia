@@ -1127,8 +1127,10 @@ async function processJob(job: Job<ContentGenJobPayload>): Promise<void> {
       // P0 2026-06-13 — Traçabilité des fautes dures (SIREN/prix non-SSOT) ayant
       // retenu l'article pour correction humaine.
       doctrineHardFaults: doctrineHardFaults.map((v) => ({
-        pattern: v.pattern,
-        reason: v.reason,
+        pattern: v.code,
+        reason: [v.champ ? `champ « ${v.champ} »` : null, v.extrait ? `« ${v.extrait} »` : null]
+          .filter(Boolean)
+          .join(" : "),
       })),
     };
 
