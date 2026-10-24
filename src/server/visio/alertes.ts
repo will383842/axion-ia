@@ -63,6 +63,16 @@ export const CODES_ALERTES_VISIO = {
   // ── balayage du dossier client (PR 4) ──
   /** Une étape du balayage du dossier client échoue. */
   balayageEnPanne: "visio.balayage_en_panne",
+  /**
+   * Des rendez-vous Calendly que la fiche automatique n'a pas osé ranger : ce n'est
+   * PAS une panne (code propre, jamais mêlé à `balayageEnPanne` ni à `etapesEnEchec`).
+   */
+  rendezVousAClasser: "visio.rendez_vous_a_classer",
+  /**
+   * Une fiche prospect créée toute seule ressemble à d'autres (« doublon possible »).
+   * Une alerte par fiche (cible = la fiche) : à fusionner plus tard, quand le SIRET est connu.
+   */
+  doublonPossible: "visio.doublon_possible",
   // ── enregistreur (PR 5) ──
   /** Le worker ne relit pas le témoin de clé. */
   temoinCle: "visio.temoin_cle",
@@ -300,4 +310,137 @@ export async function leverPanneDuBalayage(
         : { metadata: { ...meta, etapes: reste } },
   });
   return reste.length === 0;
+}
+
+/**
+ * « N rendez-vous à classer » : la fiche automatique a laissé des rendez-vous à
+ * Will (doute). Code PROPRE, sans rapport avec une panne : il ne passe jamais par
+ * `VISIO_BALAYAGE_EN_PANNE`. Une seule alerte ouverte ; si le nombre change, elle
+ * est refermée et rouverte (le titre dit le nombre et les raisons). `nombre` 0 la
+ * résout. Ne contient ni nom ni adresse : des nombres et des raisons.
+ */
+export async function signalerRendezVousAClasser(
+  db: TxAlertes,
+  etat: { readonly nombre: number; readonly raisons: Readonly<Record<string, number>> },
+  deps: { readonly notifier: Notifier; readonly creer?: CreerAlerte; readonly maintenant?: Date },
+): Promise<ResultatSignalement | "resolue" | "rien"> {
+  const maintenant = deps.maintenant ?? new Date();
+  const code = CODES_ALERTES_VISIO.rendezVousAClasser;
+  const ouverte = await db.alerteSysteme.findFirst({
+    where: { code, resolue: false, cibleId: null },
+    select: { id: true, metadata: true },
+  });
+  const nombreOuvert =
+    ouverte !== null &&
+    ouverte.metadata !== null &&
+    typeof ouverte.metadata === "object" &&
+    typeof (ouverte.metadata as Record<string, unknown>)["nombre"] === "number"
+      ? ((ouverte.metadata as Record<string, unknown>)["nombre"] as number)
+      : null;
+  if (etat.nombre <= 0) {
+    if (ouverte === null) return "rien";
+    await db.alerteSysteme.update({
+      where: { id: ouverte.id },
+      data: { resolue: true, resolueAt: maintenant },
+    });
+    return "resolue";
+  }
+  if (ouverte !== null && nombreOuvert === etat.nombre) return "deja_envoyee";
+  if (ouverte !== null) {
+    await db.alerteSysteme.update({
+      where: { id: ouverte.id },
+      data: { resolue: true, resolueAt: maintenant },
+    });
+  }
+  const detail = Object.entries(etat.raisons)
+    .map(([r, n]) => `${n} ${r}`)
+    .join(", ");
+  const titre = `${etat.nombre} rendez-vous à classer à la main`;
+  const r = await signalerUneFois(
+    db,
+    {
+      code,
+      niveau: "important",
+      titre,
+      message:
+        `La fiche automatique n'a pas rangé ${etat.nombre} rendez-vous Calendly (${detail}). ` +
+        `Ce n'est pas une panne : ouvrez l'onglet « À classer » de la console.`,
+      cibleId: null,
+      metadata: {
+        nombre: etat.nombre,
+        raisons: Object.entries(etat.raisons).map(([r, n]) => `${r}:${n}`),
+      },
+    },
+    {
+      maintenant,
+      ...(deps.creer ? { creer: deps.creer } : {}),
+      envoyer: async () => {
+        const n = await deps.notifier({
+          category: "MONITORING_ALERT",
+          payload: {
+            kind: code,
+            details: {
+              legacyBody: `${titre}
+
+${detail}`,
+              nombre: etat.nombre,
+            },
+          },
+        });
+        return n.channels.telegram === "sent";
+      },
+    },
+  );
+  return r ?? "echec_envoi";
+}
+
+/**
+ * « Doublon possible » : une fiche vient d'être créée toute seule alors que
+ * `nombreProches` fiches lui ressemblent. Une alerte par fiche créée (dé-dupliquée
+ * par `signalerUneFois` sur la cible), sans nom ni adresse : le lien est dans
+ * l'historique de la fiche.
+ */
+export async function signalerDoublonPossible(
+  db: TxAlertes,
+  doublon: { readonly clientId: string; readonly proches: number },
+  deps: { readonly notifier: Notifier; readonly creer?: CreerAlerte; readonly maintenant?: Date },
+): Promise<ResultatSignalement> {
+  const maintenant = deps.maintenant ?? new Date();
+  const code = CODES_ALERTES_VISIO.doublonPossible;
+  const titre = "Fiche prospect créée : doublon possible";
+  const r = await signalerUneFois(
+    db,
+    {
+      code,
+      niveau: "important",
+      titre,
+      message:
+        `Une fiche prospect a été créée toute seule au rendez-vous, mais ${doublon.proches} ` +
+        `fiche(s) lui ressemble(nt). Le lien est dans son historique ; la fusion se fera ` +
+        `quand le SIRET sera renseigné.`,
+      cibleType: "Client",
+      cibleId: doublon.clientId,
+      metadata: { proches: doublon.proches },
+    },
+    {
+      maintenant,
+      ...(deps.creer ? { creer: deps.creer } : {}),
+      envoyer: async () => {
+        const n = await deps.notifier({
+          category: "MONITORING_ALERT",
+          payload: {
+            kind: code,
+            details: {
+              legacyBody: `${titre}
+
+${doublon.proches} fiche(s) proche(s).`,
+              proches: doublon.proches,
+            },
+          },
+        });
+        return n.channels.telegram === "sent";
+      },
+    },
+  );
+  return r ?? "echec_envoi";
 }

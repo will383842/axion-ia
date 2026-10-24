@@ -1880,6 +1880,23 @@ export const ALERTE_CATALOGUE: Record<string, AlerteCatalogueEntry> = {
     guichet: "direction",
   },
 
+  "visio.doublon_possible": {
+    niveau: "important",
+    titre: "Fiche prospect créée toute seule : doublon possible à fusionner",
+    resolutionAuto: false,
+    motifSansResolutionAuto:
+      "STRUCTUREL — émise une fois par fiche créée en doute d'identité par le balayage du dossier client ; elle attend la fusion au SIRET (une autre PR), `synchroniserAlertes` la fermerait au premier tour.",
+    guichet: "direction",
+  },
+  "visio.rendez_vous_a_classer": {
+    niveau: "important",
+    titre: "Rendez-vous Calendly à classer à la main (fiche automatique en doute)",
+    resolutionAuto: false,
+    motifSansResolutionAuto:
+      "STRUCTUREL — ouverte et résolue par le balayage du dossier client (étape « fiches-auto »), qui sait seul combien de rendez-vous attendent ; `synchroniserAlertes` la fermerait au premier tour.",
+    guichet: "direction",
+  },
+
   // ── Pilotage — cadence trimestrielle (LOT 4) ──────────────────────────────
   // Non bloquante (décision B4) : gatée par la clé de config
   // `revue_trimestrielle_activee` (défaut true).

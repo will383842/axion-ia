@@ -59,6 +59,8 @@ import { dayKeyInParis } from "@/lib/calendar-grid";
 import {
   leverPanneDuBalayage,
   signalerPanneDuBalayage,
+  signalerDoublonPossible,
+  signalerRendezVousAClasser,
   VISIO_BALAYAGE_EN_PANNE,
   type CreerAlerte,
   type Notifier,
@@ -92,12 +94,12 @@ export interface CouvertureDuMois {
 }
 
 /**
- * Des rendez-vous Calendly que la fiche automatique n'a pas osé ranger (refus de
- * la porte, fiche proche ambiguë) : l'étape « fiches-auto » les signale, une fois,
- * sur Telegram par le canal de panne du balayage (nom de l'erreur = ce qui reste).
+ * Une rencontre dont le traitement automatique a PLANTÉ (erreur, pas doute) : c'est
+ * une vraie panne, elle passe par l'étape en échec. Les DOUTES, eux, ont leur alerte
+ * propre (`signalerRendezVousAClasser`) et ne touchent jamais `etapesEnEchec`.
  */
-class FichesAClasser extends Error {
-  override name = "FichesAClasser";
+class FicheAutoPlantee extends Error {
+  override name = "FicheAutoPlantee";
 }
 
 export interface ResultatBalayage {
@@ -331,15 +333,42 @@ export async function passerBalayage(
   // 2 bis. La fiche prospect des rendez-vous Calendly, sans clic (DOSSIER_FICHE_AUTO).
   // Un doute n'est jamais forcé : la rencontre reste « à classer » et l'étape le signale.
   let fichesAuto: BilanFichesAuto = {
+    mode: "coupe",
     creees: 0,
     rattachees: 0,
-    laisseesAClasser: 0,
+    doutes: 0,
+    plantees: 0,
     relancesEnEchec: 0,
+    creeraient: 0,
+    rattacheraient: 0,
+    doublons: [],
+    aClasser: null,
   };
   await etape<void>("fiches-auto", undefined, async () => {
     fichesAuto = await assurerLesFichesProspectAuto(db);
-    if (fichesAuto.laisseesAClasser > 0) throw new FichesAClasser();
+    if (fichesAuto.plantees > 0) throw new FicheAutoPlantee();
   });
+  // Les fiches créées avec un doute d'identité : une alerte par fiche, jamais une panne.
+  for (const d of fichesAuto.doublons) {
+    await etape<void>("fiches-auto-doublon", undefined, async () => {
+      await signalerDoublonPossible(db, d, {
+        notifier: deps.notifier,
+        maintenant,
+        ...(deps.creerAlerte ? { creer: deps.creerAlerte } : {}),
+      });
+    });
+  }
+  // Les rendez-vous laissés à Will (refus de la porte, sans nom) : alerte PROPRE « N rendez-vous à classer », jamais une panne.
+  const aClasser = fichesAuto.aClasser;
+  if (aClasser !== null) {
+    await etape<void>("fiches-auto-alerte", undefined, async () => {
+      await signalerRendezVousAClasser(db, aClasser, {
+        notifier: deps.notifier,
+        maintenant,
+        ...(deps.creerAlerte ? { creer: deps.creerAlerte } : {}),
+      });
+    });
+  }
 
   // 3 à 6. Les compteurs (les mêmes lectures que le panneau de la console).
   const comptesRendusAValider = await etape("comptes-rendus", 0, () =>

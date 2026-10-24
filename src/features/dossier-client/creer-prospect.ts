@@ -50,7 +50,8 @@ export interface EntreeCreerProspect {
   /** SIREN CONFIRMÉ par Will (jamais une proposition non cochée). */
   readonly sirenConfirme?: string | null;
   readonly motifCreationForcee?: string | null;
-  readonly parAdminId: string;
+  /** `null` : création AUTOMATIQUE au rendez-vous (`fiche-auto.ts`) — aucune signature de Will. */
+  readonly parAdminId: string | null;
 }
 
 export type ResultatCreerProspect =
@@ -86,9 +87,10 @@ async function tracerProposition(
   champ: "client_raison_sociale" | "client_ville" | "client_siren",
   propose: string | null,
   retenu: string | null,
-  parAdminId: string,
+  parAdminId: string | null,
 ): Promise<void> {
-  if (propose === null || propose.trim() === "") return;
+  // Création automatique : rien n'a été proposé à Will, donc rien à tracer.
+  if (parAdminId === null || propose === null || propose.trim() === "") return;
   await tx.preRemplissage.create({
     data: {
       cible: "client",

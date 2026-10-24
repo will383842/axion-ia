@@ -85,8 +85,12 @@ export const env = createEnv({
     DOSSIER_BALAYAGE_ENABLED: z.enum(["true", "false"]).optional(),
     // Fiche prospect créée toute seule à la réservation d'un rendez-vous Calendly
     // de la liste blanche (décision de Will, 24/10/2026). Lu par le WORKER (balayage).
-    // Absent : ACTIF ; "false" coupe (les rendez-vous restent « à classer »).
-    DOSSIER_FICHE_AUTO: z.enum(["true", "false"]).optional(),
+    // Actif SEULEMENT si "true" (comme DOSSIER_BALAYAGE_ENABLED) ; "essai" = à blanc
+    // (journal de ce qui serait fait, rien d'écrit) ; absent ou "false" = coupé.
+    // Sans DOSSIER_FICHE_AUTO_DEPUIS (date ISO d'activation) : rien n'est traité, et
+    // le stock créé avant cette date reste à classer à la main.
+    DOSSIER_FICHE_AUTO: z.enum(["true", "false", "essai"]).optional(),
+    DOSSIER_FICHE_AUTO_DEPUIS: z.string().optional(),
     // Lot OPCO A8 — envoi du dossier prêt à déposer à l'entreprise et relances.
     // Lu par le site ET le worker. Absent : ACTIF (hors tests) ; "false" coupe
     // tout (envoi automatique, bouton, relances, réponses par lien).
@@ -711,6 +715,7 @@ export const env = createEnv({
     CRM_SYNC_ENABLED: process.env.CRM_SYNC_ENABLED,
     DOSSIER_BALAYAGE_ENABLED: process.env.DOSSIER_BALAYAGE_ENABLED,
     DOSSIER_FICHE_AUTO: process.env.DOSSIER_FICHE_AUTO,
+    DOSSIER_FICHE_AUTO_DEPUIS: process.env.DOSSIER_FICHE_AUTO_DEPUIS,
     OPCO_SUIVI_ENTREPRISE_ENABLED: process.env.OPCO_SUIVI_ENTREPRISE_ENABLED,
     IDCC_OPCO_IMPORT_ENABLED: process.env.IDCC_OPCO_IMPORT_ENABLED,
     VISIO_ADRESSES_DE_TEST: process.env.VISIO_ADRESSES_DE_TEST,
