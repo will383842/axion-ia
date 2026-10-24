@@ -551,6 +551,40 @@ describe("la trace et la fiche sont écrites ensemble", () => {
     });
   });
 
+  /** La fiche « disparaît » au moment de ranger : `validerRattachement` lève ErreurRattachement. */
+  const fichesIntrouvablesAuRangement = (base: BaseEnMemoire) => {
+    const delegue = (base.client as Record<string, unknown>)["client"] as Record<string, unknown>;
+    (base.client as Record<string, unknown>)["client"] = {
+      ...delegue,
+      findUnique: async () => null,
+    };
+  };
+
+  it("un refus de rattachement (fiche sûre) est un doute, jamais une panne", async () => {
+    const existante = fiche({
+      raisonSociale: "Atelier Existant",
+      contactEmail: "camille@exemple-fictif.fr",
+    });
+    const { base, rencontres } = await scene([rendezVousCalendly()], { client: [existante] });
+    fichesIntrouvablesAuRangement(base);
+    const bilan = await passage(base);
+    expect(bilan).toMatchObject({ rattachees: 0, doutes: 1, plantees: 0 });
+    expect(bilan.aClasser?.raisons).toEqual({ rattachement_refuse: 1 });
+    expect(rencontreDe(base, rencontres[0]!)).toMatchObject({ clientId: null });
+  });
+
+  it("un refus de rattachement en pleine création annule la fiche : doute, pas une panne", async () => {
+    const { base, rencontres } = await scene([
+      rendezVousCalendly({ rawPayload: payload({ entreprise: "Menuiserie Fictive" }) }),
+    ]);
+    fichesIntrouvablesAuRangement(base);
+    const bilan = await passage(base);
+    expect(bilan).toMatchObject({ creees: 0, doutes: 1, plantees: 0 });
+    expect(bilan.aClasser?.raisons).toEqual({ creation_refusee: 1 });
+    expect(base.tables["client"] ?? []).toHaveLength(0);
+    expect(rencontreDe(base, rencontres[0]!)).toMatchObject({ clientId: null });
+  });
+
   it("une erreur autre qu'un refus de rattachement n'est pas avalée : le passage la compte", async () => {
     const existante = fiche({
       raisonSociale: "Atelier Existant",

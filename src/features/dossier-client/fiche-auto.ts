@@ -478,7 +478,7 @@ export async function assurerFicheProspectAuto(
       },
     });
   } catch (e) {
-    if (e instanceof ErreurCreerProspect) {
+    if (e instanceof ErreurCreerProspect || e instanceof ErreurRattachement) {
       return await relireOuDoute(db, rencontreId, "creation_refusee");
     }
     throw e;
@@ -570,6 +570,13 @@ export async function assurerLesFichesProspectAuto(
   const essai = mode === "essai";
 
   const vus = await doutesVus(db);
+  // Seules les réservations captées depuis l'activation (et encore planifiées) sont candidates :
+  // les anciennes n'occupent jamais les places du `take`. Le contrôle par rencontre reste un filet.
+  const recentes = await db.calendlyEvent.findMany({
+    where: { capturedAt: { gte: depuis }, status: "scheduled" },
+    select: { id: true },
+    take: 2000,
+  });
   const candidates = await db.rencontre.findMany({
     where: {
       source: "calendly",
@@ -577,7 +584,7 @@ export async function assurerLesFichesProspectAuto(
       rattachementStatut: { in: ["a_classer", "propose"] },
       repriseHistorique: false,
       ...HORS_RENCONTRES_DE_TEST,
-      calendlyEventId: { not: null },
+      calendlyEventId: { in: recentes.map((e) => e.id) },
       createdAt: { gte: depuis },
       ...(vus.length > 0 ? { id: { notIn: vus.map((v) => v.id) } } : {}),
       OR: [{ statut: null }, { statut: { notIn: ["annule", "absent"] } }],

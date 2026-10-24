@@ -363,7 +363,12 @@ export async function signalerRendezVousAClasser(
       niveau: "important",
       titre,
       message:
-        `La fiche automatique n'a pas rangé ${etat.nombre} rendez-vous Calendly (${detail}). ` +
+        // L'heure d'ouverture change à CHAQUE ouverture : `creerOuDedup` refuse de recréer une
+        // alerte dont le message est identique à celui d'une alerte RÉSOLUE (1 -> 0 -> 1
+        // ne préviendrait plus Will). Pas de doublon pour autant : elle n'est rouverte que
+        // si aucune n'est ouverte ou si le nombre change.
+        `Le ${maintenant.toISOString()} : la fiche automatique n'a pas rangé ${etat.nombre} ` +
+        `rendez-vous Calendly (${detail}). ` +
         `Ce n'est pas une panne : ouvrez l'onglet « À classer » de la console.`,
       cibleId: null,
       metadata: {
