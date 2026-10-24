@@ -15,6 +15,7 @@
 // Composant serveur, `force-dynamic` : le bouton passe en évidence au rendu
 // (10 min avant l'heure), sans JavaScript client.
 
+import { QuestionnairesSansRencontre } from "@/components/admin/dossier-client/QuestionnairesSansRencontre";
 import Link from "next/link";
 import { Phone } from "lucide-react";
 
@@ -103,7 +104,7 @@ export const dynamic = "force-dynamic";
 // « a-classer » et « circuit » (chantier visio, PR 4) : des ONGLETS, pas des
 // pages de plus (cliquet de poids de la console, ADR 0058) ; montrés aux seuls
 // rôles du dossier client (A2).
-type Vue = "avenir" | "point" | "passes" | "a-classer" | "circuit";
+type Vue = "avenir" | "point" | "passes" | "a-classer" | "circuit" | "questionnaires";
 
 interface PageProps {
   params: Promise<{ locale: string; adminPrefix: string }>;
@@ -557,7 +558,10 @@ export default async function RendezVousPage({
   const vue: Vue =
     vueDemandee === "point" || vueDemandee === "passes"
       ? vueDemandee
-      : voitDossier && (vueDemandee === "a-classer" || vueDemandee === "circuit")
+      : voitDossier &&
+          (vueDemandee === "a-classer" ||
+            vueDemandee === "circuit" ||
+            vueDemandee === "questionnaires")
         ? vueDemandee
         : "avenir";
   const base = `/fr/${adminPrefix}/rendez-vous`;
@@ -635,6 +639,11 @@ export default async function RendezVousPage({
                     href: `${base}?vue=a-classer`,
                   },
                   { value: "circuit", label: "État du circuit", href: `${base}?vue=circuit` },
+                  {
+                    value: "questionnaires",
+                    label: "Questionnaires sans rencontre",
+                    href: `${base}?vue=questionnaires`,
+                  },
                 ]
               : []),
           ]}
@@ -673,6 +682,12 @@ export default async function RendezVousPage({
         />
       ) : vue === "circuit" ? (
         <EtatDuCircuitVue rdvBase={base} />
+      ) : vue === "questionnaires" ? (
+        <QuestionnairesSansRencontre
+          peutEffacer={acces.role === "super_admin"}
+          erreur={messageScelle(sp, "erreur")}
+          message={messageScelle(sp, "message")}
+        />
       ) : vue === "point" ? (
         <VuePoint
           peutRetenir={peutRetenir}

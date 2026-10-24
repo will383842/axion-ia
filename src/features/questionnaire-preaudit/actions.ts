@@ -42,6 +42,24 @@ function retour(rencontreId: string, cle: "message" | "erreur", texte: string): 
   redirect(avecMessageDeRetour(pageRencontre(rencontreId), cle, texte));
 }
 
+/** La vue « Questionnaires sans rencontre » (rencontre supprimée, réponses gardées). */
+const PAGE_SANS_RENCONTRE = adminPath("fr", "/rendez-vous?vue=questionnaires");
+
+/**
+ * Où revenir après un geste RGPD : la fiche de la rencontre, ou la liste des questionnaires
+ * sans rencontre (`retour=questionnaires`).
+ */
+function pageDeRetour(fd: FormData): string {
+  const rencontreId = champ(fd, "rencontreId");
+  if (uuid.safeParse(rencontreId).success) return pageRencontre(rencontreId);
+  if (champ(fd, "retour") === "questionnaires") return PAGE_SANS_RENCONTRE;
+  redirect(adminPath("fr", "/rendez-vous"));
+}
+
+function retourVers(page: string, cle: "message" | "erreur", texte: string): never {
+  redirect(avecMessageDeRetour(page, cle, texte));
+}
+
 export async function deposerQuestionnaireAction(fd: FormData): Promise<void> {
   const rencontreId = champ(fd, "rencontreId");
   if (!uuid.safeParse(rencontreId).success) redirect(adminPath("fr", "/rendez-vous"));
@@ -165,8 +183,7 @@ async function tracer(userId: string, action: string, ref: string, nombre: numbe
  * sont MISES À L'ÉCART et la fiche affiche une alerte à Will. Rien n'est supprimé.
  */
 export async function ecarterReponsesMembreAction(fd: FormData): Promise<void> {
-  const rencontreId = champ(fd, "rencontreId");
-  if (!uuid.safeParse(rencontreId).success) redirect(adminPath("fr", "/rendez-vous"));
+  const page = pageDeRetour(fd);
   let n = 0;
   try {
     const { userId } = await exigerAccesEchanges();
@@ -174,11 +191,11 @@ export async function ecarterReponsesMembreAction(fd: FormData): Promise<void> {
     n = await ecarterQuestionnairePreauditMembre(ref, membre);
     await tracer(userId, "questionnaire-preaudit.membre.ecarte", ref, n);
   } catch (e) {
-    retour(rencontreId, "erreur", messageAffichable(e));
+    retourVers(page, "erreur", messageAffichable(e));
   }
-  revalidatePath(pageRencontre(rencontreId));
-  retour(
-    rencontreId,
+  revalidatePath(page.split("?")[0] ?? page);
+  retourVers(
+    page,
     "message",
     `${n} réponse(s) mise(s) à l'écart. L'effacement définitif reste à faire par Williams ` +
       "(bouton rouge sur la fiche).",
@@ -190,8 +207,7 @@ export async function ecarterReponsesMembreAction(fd: FormData): Promise<void> {
  * SEULEMENT, sur des réponses déjà mises à l'écart, avec la confirmation écrite « EFFACER ».
  */
 export async function effacerReponsesMembreAction(fd: FormData): Promise<void> {
-  const rencontreId = champ(fd, "rencontreId");
-  if (!uuid.safeParse(rencontreId).success) redirect(adminPath("fr", "/rendez-vous"));
+  const page = pageDeRetour(fd);
   let n = 0;
   try {
     const { userId, role } = await exigerAccesEchanges();
@@ -218,8 +234,8 @@ export async function effacerReponsesMembreAction(fd: FormData): Promise<void> {
     n = await eraseQuestionnairePreauditMembre(ref, membre);
     await tracer(userId, "questionnaire-preaudit.membre.efface", ref, n);
   } catch (e) {
-    retour(rencontreId, "erreur", messageAffichable(e));
+    retourVers(page, "erreur", messageAffichable(e));
   }
-  revalidatePath(pageRencontre(rencontreId));
-  retour(rencontreId, "message", `${n} réponse(s) effacée(s) définitivement.`);
+  revalidatePath(page.split("?")[0] ?? page);
+  retourVers(page, "message", `${n} réponse(s) effacée(s) définitivement.`);
 }
