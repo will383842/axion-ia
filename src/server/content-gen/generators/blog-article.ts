@@ -35,6 +35,8 @@ import { escapeLlmInput } from "../shared/prompt-input-escape";
 import { logStep } from "../shared/generation-log";
 import type { Generator, GeneratorBaseInput, GeneratorOutput } from "./types";
 import { injectBrandVoice } from "../brand/brand-voice";
+import { consigneAngle } from "../brand/positionnement";
+import { sectionChiffresVerifies } from "../kb/chiffres-verifies";
 import { pickInternalExpert, buildExpertQuote } from "../brand/expert-bank";
 import { getGlossaryContext } from "../brand/glossary-context";
 import { injectInternalLinks } from "../links/internal-link-catalog";
@@ -62,20 +64,21 @@ const MIN_WORD_COUNT = 850;
 // APPEL 1 — PLAN : produit l'ossature (métadonnées + FAQ + outline 8 sections).
 // PAS de bodyHtml ici (c'est l'appel 2 qui développe).
 const SYSTEM_PROMPT_PLAN =
-  injectBrandVoice(`Tu es Manon, experte IA chez Axion-IA, cabinet de conseil en IA pour les TPE, PME, ETI et grands groupes français.
+  injectBrandVoice(`Tu es Manon, experte IA chez Axion-IA, cabinet de conseil en IA pour les petites et moyennes entreprises françaises.
 Tu prépares le PLAN d'un article de blog FR optimisé SEO/AEO 2026 (le corps sera rédigé séparément). Règles :
 - 100 % centré Axion-IA, ancré sur les « Sources internes Axion-IA » fournies (faits KB). Rien d'inventé : ni cas client fictif, ni chiffre non sourcé.
 - INTERDIT : angle purement définitionnel. L'angle est TOUJOURS ce qu'Axion-IA fait concrètement (cas d'usage réels, bénéfices mesurables, retour terrain).
 - 0 prix en dur, 0 délai chiffré, 0 numéro de téléphone (uniquement contact@axion-ia.com).
 - "title" (le H1 affiché) : **50 à 60 caractères**, keyword principal au tout début, cliquable. NE JAMAIS dépasser 60 caractères.
-- "metaTitle" : OBLIGATOIREMENT 50 à 60 caractères (compte les espaces), keyword principal au tout début. NE JAMAIS descendre sous 50 caractères : si trop court, ajoute une précision utile (bénéfice, secteur, « pour TPE/PME »…). NE PAS dépasser 60.
+- Titre : pas de liste de mots-clés collés ; pas d'étiquette « TPE/PME » (écris « petites et moyennes entreprises » ou le métier visé) ; pas de « comparatif » ni de « meilleurs » sauf si l'article contient un tableau d'au moins 3 lignes.
+- "metaTitle" : OBLIGATOIREMENT 50 à 60 caractères (compte les espaces), keyword principal au tout début. NE JAMAIS descendre sous 50 caractères : si trop court, ajoute une précision utile (bénéfice, secteur, métier visé…). NE PAS dépasser 60.
 - "metaDescription" : OBLIGATOIREMENT 140 à 160 caractères (compte les espaces), phrase complète avec bénéfice clair + keyword naturel. NE JAMAIS descendre sous 140 caractères : développe jusqu'à atteindre la fourchette. NE PAS dépasser 160.
 - "directAnswer" : OBLIGATOIREMENT **40 à 80 mots** (ni moins, ni plus), réponse autonome et complète au sujet, citable seule par une IA (AI Overview / vocal). NE JAMAIS répondre en moins de 40 mots : ajoute le « comment » / « pourquoi » concret jusqu'au plancher.
 - "faq" : 8 questions People-Also-Ask réelles — chaque réponse answer-first : 1ʳᵉ phrase = réponse directe ≤ 25 mots, puis 1-2 phrases ; 40-55 mots au total.
 - "keyTakeaway" : 1-2 phrases = LE point clé à retenir (synthèse autonome citable).
 - "expertTake" : 1-2 phrases = prise de position d'expert, sans statistique inventée.
 - "outline" : **8 sections <h2>** couvrant une progression logique : enjeu/contexte sectoriel → méthodologie Axion-IA étape par étape → livrables concrets → ROI & preuves → cas d'usage réels → erreurs à éviter → mise en œuvre. Chaque entrée = { h2 (titre de section, 5-9 mots), brief (1 phrase : ce que la section doit développer, ancré sur un fait KB précis) }. PAS de section définitionnelle creuse.
-- INTERDIT (marketing-hype, doctrine § 21 — rejet automatique) : « unique », « meilleur », « la meilleure », « leader », « n°1 », « révolutionnaire », « exceptionnel », « incroyable », « incontournable », « garanti », « sans risque », « instantané ». Reste factuel et sobre.
+- INTERDIT (marketing-hype, doctrine § 21 — chaque mot fait baisser la note qualité ; « garanti » et « sans risque » promettant un résultat bloquent la publication) : « unique », « meilleur », « la meilleure », « leader », « n°1 », « révolutionnaire », « exceptionnel », « incroyable », « incontournable », « garanti », « sans risque », « instantané ». Reste factuel et sobre.
 - Output JSON strict : { title, metaTitle, metaDescription, slug, directAnswer, faq:[{q,a}×8], tags, keyTakeaway, expertTake, outline:[{h2,brief}×8] }`);
 
 // APPEL 2 — EXPANSION : développe l'outline en bodyHtml complet et long.
@@ -89,7 +92,7 @@ const SYSTEM_PROMPT_EXPAND =
 - Le keyword principal DOIT apparaître textuellement AU MOINS 3 fois dans le corps, réparti naturellement.
 - NE PAS inclure de <h1> dans le corps (le titre est rendu séparément par la page).
 - Sous CHAQUE <h2>, commence par une réponse autonome de 40-60 mots citable hors contexte, enveloppée dans <p data-aeo="answer">…</p>. Le développement suit.
-- ANTI-MONOTONIE : alterne les formats. 2-3 encadrés <aside class="callout callout-info|callout-note|callout-warning"><p class="callout-label">…</p><p>…</p></aside>, 1-2 <blockquote>. Un chiffre-clé <aside class="ax-stat" data-aeo="stat"><span class="ax-stat-num">+40 %</span><span class="ax-stat-label">…</span></aside> UNIQUEMENT si un chiffre RÉEL et publiquement sourçable figure dans les faits fournis — sinon N'EN METS AUCUN (un encadré qualitatif vaut mieux qu'un chiffre inventé). Jamais plus de 3 paragraphes consécutifs sans élément visuel.
+- ANTI-MONOTONIE : alterne les formats. 2-3 encadrés <aside class="callout callout-info|callout-note|callout-warning"><p class="callout-label">…</p><p>…</p></aside>, 1-2 <blockquote>. Un chiffre-clé <aside class="ax-stat" data-aeo="stat"><span class="ax-stat-num">[chiffre sourcé]</span><span class="ax-stat-label">…</span></aside> UNIQUEMENT si un chiffre RÉEL et publiquement sourçable figure dans les faits fournis — sinon N'EN METS AUCUN (un encadré qualitatif vaut mieux qu'un chiffre inventé). Jamais plus de 3 paragraphes consécutifs sans élément visuel.
 - Inclure ≥ 2 liens externes <a href="https://…" rel="noopener noreferrer"> vers des sources d'autorité FR fournies (INSEE, DARES, BPI France, France Num, McKinsey, Stanford AI Index…). Cite un chiffre inline SEULEMENT s'il provient d'une de ces sources publiques et reste attribué à ELLE. INTERDIT ABSOLU : fabriquer une statistique, ou attribuer un chiffre à des « données / mesures / étude internes Axion-IA », « n=… », « évaluations 20XX » (invérifiable → rejet E-E-A-T). En l'absence de chiffre réel, écris qualitativement (« nettement », « une large part »…).
 - À la première occurrence d'un terme technique, encadre-le avec <dfn> ou <span class="glossary-term" title="définition courte">terme</span>.
 - INTERDIT (marketing-hype, doctrine § 21 — un seul de ces mots fait REJETER l'article) : « unique », « meilleur », « la meilleure », « leader », « n°1 », « révolutionnaire », « exceptionnel », « incroyable », « incontournable », « garanti », « sans risque », « instantané ». Écris factuel et sobre, sans superlatif.
@@ -103,7 +106,7 @@ function synthesizeTopic(input: GeneratorBaseInput): string {
       ? "audit IA"
       : input.templateVariant === "implementations"
         ? "implémentation IA"
-        : "formation intelligence artificielle";
+        : "déploiement de l'IA";
 
   const audience =
     input.targetAudienceSize === "TPE"
@@ -209,7 +212,8 @@ ${kbContext}
 ${glossaryContext ? `\n${glossaryContext}` : ""}
 ## Avis d'expert
 "expertTake" = une prise de position de ${expert.name} (${expert.title}) : perspective d'expert concise et utile sur le sujet, sans chiffre inventé.
-## Output attendu (JSON)
+${consigneAngle(input.jobId)}
+${sectionChiffresVerifies()}## Output attendu (JSON)
 { title, metaTitle, metaDescription, slug, directAnswer, faq:[{q,a}×8], tags, keyTakeaway, expertTake, outline:[{h2,brief}×8] }`;
 
     let plan: PlanParsed | null = null;

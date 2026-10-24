@@ -39,6 +39,8 @@ import { sanitizeContentGenHtml } from "../shared/html-sanitizer";
 import { parseLlmJson } from "../shared/parse-llm-json";
 import { escapeLlmInput } from "../shared/prompt-input-escape";
 import { getBrandVoiceForContentType } from "../brand/brand-voice";
+import { consigneAngle } from "../brand/positionnement";
+import { REGLE_CHIFFRES_SOURCES, sectionChiffresVerifies } from "../kb/chiffres-verifies";
 import { pickInternalExpert, buildExpertQuote } from "../brand/expert-bank";
 import { computeReadabilityFr, readabilityFitScore } from "../quality/readability";
 import { seoContentKind } from "./seo-content-kind";
@@ -202,7 +204,7 @@ ${config.userPromptFocusSection}
 - Body HTML : ${MIN_WORD_COUNT}-2000 mots minimum (anti-doorway HCU 2024)
 - Structure : ≥ 6 balises <h2> + ≥ 10 balises <h3>
 - Sous CHAQUE <h2>, commence la section par une réponse autonome de 40 à 60 mots, en une phrase complète qui répond directement au titre de la section et reste citable hors contexte. Enveloppe-la dans <p data-aeo="answer">…</p>. Le reste du développement suit ensuite.
-- Inclure au moins 2 statistiques chiffrées récentes avec source nommée et lien inline (ex. « 31 % des PME… (DARES, 2024) [lien] »), UNIQUEMENT issues des sources internes/d'autorité fournies — jamais inventées.
+- ${REGLE_CHIFFRES_SOURCES}
 - À la première occurrence d'un terme technique, encadre-le avec <dfn> ou <span class="glossary-term" title="définition courte">terme</span>.
 - Quand c'est pertinent (1 à 2 max), utilise un encadré : <aside class="callout callout-warning"><p class="callout-label">Attention</p><p>…</p></aside>. Variantes de classe : callout-info, callout-note, callout-warning, callout-danger.
 - FAQ : 8-12 paires Q/R substantielles (réponses ≥ 2 lignes)
@@ -211,8 +213,8 @@ ${config.userPromptFocusSection}
 - Le primary keyword DOIT apparaître textuellement dans le <h1> ET début du metaTitle.
 - metaTitle : OBLIGATOIREMENT 50 à 60 caractères (compte les espaces). NE JAMAIS descendre sous 50 : si trop court, ajoute une précision utile (bénéfice, secteur). NE PAS dépasser 60.
 - metaDescription : OBLIGATOIREMENT 140 à 160 caractères (compte les espaces), phrase complète. NE JAMAIS descendre sous 140 : développe jusqu'à la fourchette. NE PAS dépasser 160.
-- INTERDIT (marketing-hype, doctrine §21 — un seul de ces mots fait REJETER le contenu) : « unique », « meilleur », « la meilleure », « leader », « n°1 », « révolutionnaire », « exceptionnel », « incroyable », « incontournable », « garanti », « sans risque », « instantané ». Écris factuel et sobre.
-- FINANCEMENT FORMATION : ne JAMAIS mentionner le « CPF » ni le « Compte Personnel de Formation » (Axion-IA n'a pas cette habilitation — mention illégale). Si tu évoques un financement, cite UNIQUEMENT : les OPCO, France Travail (AIF — Aide Individuelle à la Formation), et le plan de développement des compétences de l'entreprise. Jamais le CPF.
+- INTERDIT (marketing-hype, doctrine §21 — chaque mot fait baisser la note qualité ; « garanti » et « sans risque » promettant un résultat bloquent la publication) : « unique », « meilleur », « la meilleure », « leader », « n°1 », « révolutionnaire », « exceptionnel », « incroyable », « incontournable », « garanti », « sans risque », « instantané ». Écris factuel et sobre.
+- FINANCEMENT : ne mentionne AUCUN financement ni aide publique (ni CPF, Mon Compte Formation, RNCP, OPCO, France Travail, ni financement « à 100 % », « intégral » ou « gratuit »). Axion-IA n'a pas cette habilitation : mention illégale.
 - Ne JAMAIS présenter Axion-IA comme partenaire/membre/labellisé d'une institution nommée (CCI, pôle, université, France Compétences…) ni citer un client nommé : ces entités sont du contexte, pas des relations d'Axion-IA.
 
 ## Sources internes Axion-IA (à citer en priorité)
@@ -231,7 +233,8 @@ label : ${config.recommendedCtaLabel}
 - "keyTakeaway": 1 à 2 phrases = LE point clé à retenir (synthèse autonome, citable telle quelle par une IA).
 - "expertTake": 1 à 2 phrases = prise de position d'expert (perspective/insight concret), SANS statistique inventée, signée par l'expert nommé ci-dessus.
 
-## Output attendu (JSON strict, sans balise markdown)
+${consigneAngle(input.jobId)}
+${sectionChiffresVerifies()}## Output attendu (JSON strict, sans balise markdown)
 { title, metaTitle, metaDescription, slug, directAnswer, bodyHtml, faq:[{q,a}×8-12], tags:[string×4-8], keyTakeaway, expertTake }`;
 
     lastPromptHash = hashPrompt(systemPromptWithBrandVoice + userPrompt);

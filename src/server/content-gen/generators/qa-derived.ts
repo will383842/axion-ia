@@ -35,6 +35,8 @@ import { escapeLlmInput, escapeSlugInput } from "../shared/prompt-input-escape";
 import { logStep } from "../shared/generation-log";
 import type { Generator, GeneratorBaseInput, GeneratorOutput } from "./types";
 import { injectBrandVoice } from "../brand/brand-voice";
+import { consigneAngle } from "../brand/positionnement";
+import { REGLE_CHIFFRES_SOURCES, sectionChiffresVerifies } from "../kb/chiffres-verifies";
 import { pickInternalExpert, buildExpertQuote } from "../brand/expert-bank";
 import { getGlossaryContext } from "../brand/glossary-context";
 import { injectInternalLinks } from "../links/internal-link-catalog";
@@ -47,14 +49,14 @@ const MAX_QUALITY_ITERATIONS = 2;
 const BUDGET_CAP_USD = 0.08;
 
 const SYSTEM_PROMPT =
-  injectBrandVoice(`Tu es Manon, experte IA chez Axion-IA, cabinet de conseil en IA pour TPE/PME/ETI françaises.
+  injectBrandVoice(`Tu es Manon, experte IA chez Axion-IA, cabinet de conseil en IA pour les petites et moyennes entreprises françaises.
 Produis une page FAQ détaillée en français optimisée AEO/GEO 2026. Règles absolues :
 - La question principale est fournie par l'utilisateur — tu DOIS y répondre directement.
 - directAnswer : OBLIGATOIREMENT 40 à 80 mots (idéal 50-70), réponse concise et actionnable (cible Google Featured Snippet). NE JAMAIS sous 40 mots : ajoute le « comment » concret jusqu'au plancher.
 - answerHtml : réponse étendue 350-550 mots, HTML valide, enrichie de contexte Axion-IA.
-  Structure : <p> intro answer-first + 2-3 <h2> sections thématiques (chacune avec son <p data-aeo="answer">) + <ul>/<ol> points clés + <p> conclusion CTA. Développe réellement chaque section (pas de remplissage) : enjeux concrets, exemple opérationnel TPE/PME, ce que ça change pour un dirigeant.
+  Structure : <p> intro answer-first + 2-3 <h2> sections thématiques (chacune avec son <p data-aeo="answer">) + <ul>/<ol> points clés + <p> conclusion CTA. Développe réellement chaque section (pas de remplissage) : enjeux concrets, exemple opérationnel dans une petite entreprise, ce que ça change pour un dirigeant.
 - Sous CHAQUE <h2>, commence la section par une réponse autonome de 40 à 60 mots, en une phrase complète qui répond directement au titre de la section et reste citable hors contexte. Enveloppe-la dans <p data-aeo="answer">…</p>. Le reste du développement suit ensuite.
-- Inclure au moins 2 statistiques chiffrées récentes avec source nommée et lien inline (ex. « 31 % des PME… (DARES, 2024) [lien] »), UNIQUEMENT issues des sources internes/d'autorité fournies — jamais inventées.
+- ${REGLE_CHIFFRES_SOURCES}
 - À la première occurrence d'un terme technique, encadre-le avec <dfn> ou <span class="glossary-term" title="définition courte">terme</span>.
 - Quand c'est pertinent (1 à 2 max), utilise un encadré : <aside class="callout callout-warning"><p class="callout-label">Attention</p><p>…</p></aside>. Variantes de classe : callout-info, callout-note, callout-warning, callout-danger.
 - relatedFaq : 4-5 questions similaires fréquentes avec réponses directes de 40-60 mots chacune (2-3 phrases, citables hors contexte).
@@ -186,6 +188,8 @@ export const qaDerivedGenerator: Generator = {
 ${kbContext}
 ${externalLinksCtx.markdownSection}${feedbackSection}
 ${glossaryContext ? `\n${glossaryContext}` : ""}
+${consigneAngle(input.jobId)}
+${sectionChiffresVerifies()}
 ## Avis d'expert
 "expertTake" = une prise de position de ${expert.name} (${expert.title}) : perspective d'expert concise et utile sur le sujet, sans chiffre inventé.
 ## Output attendu (JSON)
