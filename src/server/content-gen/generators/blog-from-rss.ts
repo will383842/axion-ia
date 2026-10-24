@@ -296,7 +296,7 @@ ${glossaryContext ? `\n${glossaryContext}` : ""}
         ...articlePageSeoDefaults(parsed.slug ?? "", "blog_from_rss"),
       });
 
-      const doctrine = await checkDoctrine(bodyText);
+      const doctrine = await checkDoctrine(bodyText, { actualite: true });
       const qualityScore = qualityFromScores(seo.score, readability.score, doctrine.passed);
 
       // V-06 P0b — gate Jaccard 0.10 vs résumé source RSS. Doit passer AVANT
@@ -406,7 +406,7 @@ ${glossaryContext ? `\n${glossaryContext}` : ""}
       (parsed.bodyHtml.match(/<a\b[^>]*href="\/[^"]*"/gi) ?? []).length +
       (parsed.bodyHtml.match(/\[.*?\]\(\/[^)]+\)/g) ?? []).length;
     const readability = computeReadabilityFr(bodyText);
-    const doctrine = await checkDoctrine(bodyText);
+    const doctrine = await checkDoctrine(bodyText, { actualite: true });
     const seo = computeSeoScore({
       title: parsed.title ?? "",
       metaDescription: parsed.metaDescription ?? "",

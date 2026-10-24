@@ -151,7 +151,7 @@ export const MOTIFS_INTERDITS: ReadonlyArray<MotifInterdit> = [
   {
     code: "partenariat",
     re: new RegExp(
-      String.raw`${B}(?:axion-?ia|nous|notre cabinet|notre equipe)[^.!?]{0,60}(?:partenaire|partenariat|labellise|certifie|agree|accredite|homologue|reference par)|${B}(?:nos|notre) (?:partenaires?|partenariats?|labels?|accreditations?)${E}|(?:partenaire|revendeur|integrateur) (?:officiel|certifie|agree|gold|premier|strategique)|en (?:partenariat|collaboration) avec (?:la |le |l'|les )?(?:cci|chambre|pole|universite|metropole|agglomeration|region|prefecture|mairie|ville de|bpifrance|france num)|parmi nos clients|nos clients (?:tels? que|comme|incluent)|ils nous font confiance|activateur france num`,
+      String.raw`${B}(?:axion-?ia|nous|notre cabinet|notre equipe) (?:sommes|est|avons ete|a ete|etes)(?: [a-z']+){0,3} (?:partenaire|labellise|certifie|agree|accredite|homologue|reference par)|${B}(?:axion-?ia|nous) (?:travaillons|collaborons) en partenariat|${B}(?:nos|notre) (?:partenaires?|partenariats?|labels?|accreditations?)${E}|(?:partenaire|revendeur|integrateur) (?:officiel|certifie|agree|gold|premier|strategique)|en (?:partenariat|collaboration) avec (?:la |le |l'|les )?(?:cci|chambre|pole|universite|metropole|agglomeration|region|prefecture|mairie|ville de|bpifrance|france num)|parmi nos clients|nos clients (?:tels? que|comme|incluent)|ils nous font confiance|activateur france num`,
       "g",
     ),
     raison:
@@ -160,7 +160,7 @@ export const MOTIFS_INTERDITS: ReadonlyArray<MotifInterdit> = [
   {
     code: "temoignage-axion",
     re: new RegExp(
-      String.raw`${B}cas clients?${E}|${B}retours? clients?${E}|${B}temoignages? (?:client|de nos clients|d'un client)|${B}etude de cas[^.!?]{0,40}${B}(?:axion|notre|nous)|${B}notre cliente?${E}|${B}un de nos clients|${B}une de nos clientes|${B}nos clients ont|${B}accompagnee?s? par (?:axion|nos soins|notre equipe)|${B}(?:grace a|avec) (?:axion-?ia|notre accompagnement|notre audit|notre intervention)[^.!?]{0,80}[0-9]+ ?(?:%|heures?|jours?|euros?|€)`,
+      String.raw`${B}cas clients?${E}|${B}retours? (?:de nos|d'un de nos) clients|${B}temoignages? (?:client|de nos clients|d'un client)|${B}etude de cas[^.!?]{0,40}${B}(?:axion|notre|nous)|${B}notre cliente?${E}|${B}un de nos clients|${B}une de nos clientes|${B}nos clients ont|${B}accompagnee?s? par (?:axion|nos soins|notre equipe)|${B}(?:grace a|avec) (?:axion-?ia|notre accompagnement|notre audit|notre intervention)[^.!?]{0,80}[0-9]+ ?(?:%|heures?|jours?|euros?|€)`,
       "g",
     ),
     raison:
@@ -169,7 +169,7 @@ export const MOTIFS_INTERDITS: ReadonlyArray<MotifInterdit> = [
   {
     code: "citation-temoin",
     re: new RegExp(
-      String.raw`« ?[^»]{10,300}» ?[,-]?[^.]{0,30}${B}(?:directeur|directrice|dirigeante?|gerante?|responsable|fondat(?:eur|rice)|presidente?|(?:ceo|daf|drh)${E})`,
+      String.raw`« ?[^»\s]+(?: [^»\s]+){2,}[^»]{0,300}» ?[,-]? ?(?:a |ont )?(?:confie|explique|temoigne|raconte|souligne|precise|indique|declare|ajoute|reconnait|affirme|assure|estime|note|observe)[^.]{0,30}${B}(?:directeur|directrice|dirigeante?|gerante?|responsable|fondat(?:eur|rice)|presidente?|(?:ceo|daf|drh)${E})`,
       "g",
     ),
     sauf: "actualite",
@@ -196,12 +196,13 @@ export const MOTIFS_INTERDITS: ReadonlyArray<MotifInterdit> = [
       String.raw`${B}axion-?ia[^.!?]{0,40}(?:base|situe|implante|installe)e?s? (?:a|en|au|dans)(?![a-z])`,
       "g",
     ),
-    raison: "Ancrage local d'Axion-IA (« basée à… ») interdit : Axion-IA intervient partout en France.",
+    raison:
+      "Ancrage local d'Axion-IA (« basée à… ») interdit : Axion-IA intervient partout en France.",
   },
   {
     code: "promesse-garantie",
     re: new RegExp(
-      String.raw`${B}gains? garantis?${E}|aucun gain (?:n'est )?garanti|${B}(?:resultats?|roi|retour sur investissement|economies?|rentabilite|succes|reussite|chiffre d'affaires) (?:est |sont |reste )?garantis?${E}|${B}garantie?s? (?:de |des |du )?(?:gain|resultat|roi|economie|succes|reussite)|${B}nous (?:vous )?garantissons|${B}axion-?ia (?:vous )?garantit|garantie de (?:resultat|reussite|satisfaction)|${B}sans (?:aucun )?risque|zero risque|satisfait ou rembourse`,
+      String.raw`${B}gains? garanti(?:e|s|es)?${E}|aucun gain (?:n'est )?garanti|aucun (?:resultat|gain|succes) (?:n'est )?garanti|${B}(?:resultats?|roi|retour sur investissement|economies?|rentabilite|succes|reussite|chiffre d'affaires|satisfaction) (?:est |sont |reste )?garanti(?:e|s|es)?${E}|${B}garantie?s? (?:de |des |du )?(?:gain|resultat|roi|economie|succes|reussite)|${B}nous (?:vous )?garantissons|${B}axion-?ia (?:vous )?garantit|garantie de (?:resultat|reussite|satisfaction)|${B}sans (?:aucun )?risque|zero risque|satisfait ou rembourse`,
       "g",
     ),
     raison:
@@ -218,7 +219,8 @@ export const MOTIFS_INTERDITS: ReadonlyArray<MotifInterdit> = [
   {
     code: "etiquette-tpe-pme",
     re: new RegExp(String.raw`${B}tpe ?[/,-] ?pme${E}|${B}tpe (?:et|ou) pme${E}`, "g"),
-    raison: "L'étiquette « TPE/PME » est interdite : parler d'un dirigeant, d'une petite entreprise.",
+    raison:
+      "L'étiquette « TPE/PME » est interdite : parler d'un dirigeant, d'une petite entreprise.",
   },
   {
     code: "slogan-recopie",

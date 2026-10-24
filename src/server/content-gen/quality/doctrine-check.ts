@@ -21,7 +21,7 @@ import {
   type CodeInterdit,
   type OptionsInterdits,
 } from "@/lib/contenu/interdits-publication";
-import { isQualiopiPublicDisclosureEnabled } from "@/server/qualiopi/config/flag";
+import { financementPublicCitable } from "@/server/qualiopi/config/financing";
 
 export interface DoctrineCheckResult {
   readonly passed: boolean;
@@ -112,8 +112,7 @@ export async function checkDoctrine(
 ): Promise<DoctrineCheckResult> {
   const optsInterdits: OptionsInterdits = {
     actualite: options.actualite ?? false,
-    financementPublicAutorise:
-      options.financementPublicAutorise ?? isQualiopiPublicDisclosureEnabled(),
+    financementPublicAutorise: options.financementPublicAutorise ?? financementPublicCitable(),
   };
   const blocking: DoctrineViolation[] = [];
   const warnings: DoctrineViolation[] = [];

@@ -73,13 +73,33 @@ describe("doctrine-check — financement interdit", () => {
     expect(isBlocked(r)).toBe(true);
   });
 
-  it("AUTORISE une formulation conforme OPCO / France Travail quand la divulgation est activée", async () => {
+  it("BLOQUE OPCO / France Travail quand la divulgation est activée mais la certification NON obtenue (cas de la prod)", async () => {
     vi.stubEnv("OF_PUBLIC_DISCLOSURE_ENABLED", "true");
+    vi.stubEnv("QUALIOPI_CERTIFICATION_OBTENUE", "false");
+    const r = await checkDoctrine(
+      "Nos formations sont éligibles à une prise en charge par votre OPCO ; " +
+        "selon votre situation, un financement France Travail est possible.",
+    );
+    expect(r.passed).toBe(false);
+    expect(r.blockingViolations.some((v) => v.pattern === "financement-interdit")).toBe(true);
+  });
+
+  it("AUTORISE une formulation conforme OPCO / France Travail quand la divulgation est activée et la certification obtenue", async () => {
+    vi.stubEnv("OF_PUBLIC_DISCLOSURE_ENABLED", "true");
+    vi.stubEnv("QUALIOPI_CERTIFICATION_OBTENUE", "true");
     const r = await checkDoctrine(
       "Nos formations sont éligibles à une prise en charge par votre OPCO ; " +
         "selon votre situation, un financement France Travail est possible.",
     );
     expect(r.blockingViolations.some((v) => v.pattern === "financement-interdit")).toBe(false);
+  });
+
+  it("ne bloque pas une citation de dirigeant tiers dans une actualité (option actualite)", async () => {
+    const r = await checkDoctrine(
+      "« Nous déployons l'assistant dans tous les services cette année », a déclaré le directeur général.",
+      { actualite: true },
+    );
+    expect(r.blockingViolations.some((v) => v.pattern === "citation-temoin")).toBe(false);
   });
 
   it("garde le nom historique CPF-non-autorise", async () => {

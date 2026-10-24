@@ -33,12 +33,9 @@ import {
   hasRecognizedCta,
 } from "@/server/content-gen/quality/intent-enforcement";
 import { checkDoctrine } from "@/server/content-gen/quality/doctrine-check";
-import {
-  fautesDures,
-  surfaceDepuisSortie,
-} from "@/server/content-gen/quality/doctrine-surface";
+import { fautesDures, surfaceDepuisSortie } from "@/server/content-gen/quality/doctrine-surface";
 import { detecterInterditsSurface } from "@/lib/contenu/interdits-publication";
-import { isQualiopiPublicDisclosureEnabled } from "@/server/qualiopi/config/flag";
+import { financementPublicCitable } from "@/server/qualiopi/config/financing";
 import { readContentGenConfig } from "@/server/actions/content-gen/_settings";
 // Fix 2026-08-15 (audit e2e, C8) — lecture du kill switch en fail-SAFE : une
 // erreur DB transitoire « dé-gelait » silencieusement un arrêt d'urgence
@@ -897,7 +894,7 @@ async function processJob(job: Job<ContentGenJobPayload>): Promise<void> {
     const doctrine = await checkDoctrine(output.bodyText);
     const violationsSurface = detecterInterditsSurface(surfaceDepuisSortie(output), {
       actualite: contentType === "blog_from_rss",
-      financementPublicAutorise: isQualiopiPublicDisclosureEnabled(),
+      financementPublicAutorise: financementPublicCitable(),
     });
     const doctrineHardFaults = fautesDures(doctrine, violationsSurface, {
       retainNonSsotPrice: hardFaultGate.retainNonSsotPrice === true,
@@ -1072,7 +1069,9 @@ async function processJob(job: Job<ContentGenJobPayload>): Promise<void> {
       if (outlineBlockingFail) blockCauses.push("Structure trop proche (plan H2/H3 d'un existant)");
       if (!intent.aligned) blockCauses.push("Intention de recherche non respectée");
       if (doctrineHardFail)
-        blockCauses.push("Doctrine (mots interdits : Qualiopi, CPF, financement, partenariat, garanti, SIREN, prix…)");
+        blockCauses.push(
+          "Doctrine (mots interdits : Qualiopi, CPF, financement, partenariat, garanti, SIREN, prix…)",
+        );
       if (benefitFail) blockCauses.push("Bénéfice concret insuffisant");
       // Fix 2026-08-15 — le journal annonçait un déclassement « en noindex »
       // qui n'a plus lieu à la publication : `content-publish-worker.ts` force
