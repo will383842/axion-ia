@@ -26,6 +26,13 @@ import { escapeSlugInput } from "../shared/prompt-input-escape";
 import { getBrandVoiceForContentType } from "../brand/brand-voice";
 import { evaluateSoft404 } from "../quality/soft-404-gate";
 import { checkHubVsVerticalesDuplicate } from "./anti-duplicate-check";
+import { checkDoctrine, financementPublicAutoriseAujourdhui } from "../quality/doctrine-check";
+import {
+  champsCopieVille,
+  donneesEconomiquesDeLaMemoire,
+  fautesDoctrineVille,
+  resumerFautesDoctrine,
+} from "../villes/controle-ville";
 import { prisma } from "@/lib/prisma";
 import { getVille } from "@/content/villes";
 import { ECONOMIC_DATA_BY_SLUG } from "@/content/villes/economic-data";
@@ -75,6 +82,16 @@ export interface VilleHubCopyResult {
   readonly tokensOutput: number;
   readonly promptHash: string;
   readonly kbContextUsed: ReadonlyArray<string>;
+  /**
+   * Fautes dures de doctrine trouvées dans les textes (une ligne par faute).
+   * Non vide = la copie ne doit JAMAIS être approuvée automatiquement.
+   */
+  readonly fautesDoctrine: ReadonlyArray<string>;
+  /**
+   * Les données économiques injectées viennent de la mémoire du modèle (non
+   * vérifiées) : relecture humaine obligatoire, pas d'approbation sur le score.
+   */
+  readonly donneesDeLaMemoire: boolean;
 }
 
 // ===========================================================================
@@ -796,6 +813,43 @@ export async function generateVilleHubCopy(
     );
   }
 
+  // Contrôle de doctrine (audit 24/10/2026, option B de Will) : tous les textes
+  // de la ville passent par les interdits de publication, champ par champ, puis
+  // par `checkDoctrine` sur le texte complet. Une faute dure ne bloque pas
+  // l'enregistrement (statut « generated », page non servie) : elle est écrite
+  // dans les notes de relecture et rend l'approbation automatique impossible.
+  const champsCopie = champsCopieVille(bestOutput);
+  const fautesSurface = fautesDoctrineVille(champsCopie, {
+    actualite: false,
+    financementPublicAutorise: financementPublicAutoriseAujourdhui(),
+  });
+  // L'appel IA est déjà payé : si le contrôle global tombe (base injoignable), on
+  // ne perd pas la copie, on la marque « à relire » (aucune approbation possible).
+  let fautesGlobales: string[];
+  try {
+    const doctrineGlobale = await checkDoctrine(Object.values(champsCopie).join("\n"));
+    fautesGlobales = doctrineGlobale.blockingViolations.map(
+      (v) => `texte complet : ${v.pattern} (${v.reason})`,
+    );
+  } catch (err) {
+    fautesGlobales = [
+      `texte complet : contrôle de doctrine indisponible (${err instanceof Error ? err.message : String(err)})`,
+    ];
+  }
+  const fautesDoctrine = [...resumerFautesDoctrine(fautesSurface), ...fautesGlobales];
+  const donneesDeLaMemoire = donneesEconomiquesDeLaMemoire(eco);
+  const notesRelecture =
+    [
+      fautesDoctrine.length > 0
+        ? `DOCTRINE : ${fautesDoctrine.length} faute(s) dure(s), relecture humaine obligatoire.\n- ${fautesDoctrine.join("\n- ")}`
+        : null,
+      donneesDeLaMemoire
+        ? "DONNÉES LOCALES : issues de la mémoire du modèle (non vérifiées une à une), relecture humaine obligatoire."
+        : null,
+    ]
+      .filter((n): n is string => n !== null)
+      .join("\n") || null;
+
   // Persist le meilleur (upsert sur villeSlug)
   await prisma.generatedVilleCopy.upsert({
     where: { villeSlug },
@@ -821,6 +875,7 @@ export async function generateVilleHubCopy(
         iterations: iteration,
       },
       status: "generated",
+      reviewNotes: notesRelecture,
     },
     update: {
       pitchFr: bestOutput.pitchFr,
@@ -845,6 +900,7 @@ export async function generateVilleHubCopy(
       status: "generated",
       reviewedAt: null,
       reviewedBy: null,
+      reviewNotes: notesRelecture,
     },
   });
 
@@ -885,5 +941,7 @@ export async function generateVilleHubCopy(
     tokensOutput: bestTokensOutput,
     promptHash: bestPromptHash,
     kbContextUsed: kbFacts.map((f) => `${f.label}: ${f.value}`),
+    fautesDoctrine,
+    donneesDeLaMemoire,
   };
 }

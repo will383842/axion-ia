@@ -14,6 +14,7 @@
  *   - Stats console : score, coût, tokens, issues
  */
 import { generateVilleHubCopy } from "@/server/content-gen/generators/ville-hub-copy";
+import { decisionApprobationAuto } from "@/server/content-gen/villes/controle-ville";
 import { prisma } from "@/lib/prisma";
 
 const VILLE_SLUG = "paris";
@@ -56,7 +57,14 @@ async function main(): Promise<void> {
     console.log(`        A: ${f.a}`);
   });
   // Auto-approve si score ≥ threshold
-  if (result.qualityScore >= AUTO_APPROVE_THRESHOLD) {
+  // Doctrine et données de la mémoire du modèle : jamais d'approbation sur simple score.
+  const decision = decisionApprobationAuto({
+    qualityScore: result.qualityScore,
+    seuil: AUTO_APPROVE_THRESHOLD,
+    donneesDeLaMemoire: result.donneesDeLaMemoire,
+    nbFautesDoctrine: result.fautesDoctrine.length,
+  });
+  if (decision.approuver) {
     await prisma.generatedVilleCopy.update({
       where: { villeSlug: VILLE_SLUG },
       data: {
@@ -71,12 +79,8 @@ async function main(): Promise<void> {
       `   La page hub /fr/implantations/ile-de-france/paris doit maintenant rendre le contenu auto-généré.`,
     );
   } else {
-    console.log(
-      `\n⚠️  Score ${result.qualityScore} < ${AUTO_APPROVE_THRESHOLD} — laissé en status=generated`,
-    );
-    console.log(
-      `   Approve manuellement : UPDATE generated_ville_copies SET status='approved' WHERE ville_slug='paris';`,
-    );
+    console.log(`\n⚠️  ${decision.motif} — laissé en status=generated`);
+    console.log(`   Relecture humaine requise avant toute approbation.`);
   }
 
   console.log(`\n[test-ville-hub-copy-paris] DONE\n`);

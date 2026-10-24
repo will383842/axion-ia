@@ -28,6 +28,7 @@ import type { KeywordModule } from "@/content/keywords/types";
 import { generateGeoKeywords } from "./keyword-templates";
 import type { CityRef } from "./keyword-templates";
 import { evaluerSujetCible } from "./sujet-cible";
+import { motCleVisUneAutreVille } from "./ville-du-mot-cle";
 
 // ── Mapping vertical (ServiceSector) → KeywordModule ─────────────────────────
 
@@ -45,7 +46,7 @@ const VERTICAL_TO_MODULE: Record<string, KeywordModule> = {
 
 const inMemoryCounters = new Map<string, number>();
 
-function selectFromMemory(vertical: string): string | null {
+function selectFromMemory(vertical: string, nomVilleJob?: string): string | null {
   const mod = VERTICAL_TO_MODULE[vertical] ?? "transversal";
   const pool = ALL_KEYWORD_SEEDS.filter((s) => s.module === mod);
   const source = pool.length > 0 ? pool : ALL_KEYWORD_SEEDS;
@@ -57,7 +58,11 @@ function selectFromMemory(vertical: string): string | null {
     const idx = (inMemoryCounters.get(cle) ?? 0) % source.length;
     inMemoryCounters.set(cle, idx + 1);
     const kw = source[idx]?.keyword;
-    if (kw && evaluerSujetCible(kw).accepte) return kw;
+    if (!kw || !evaluerSujetCible(kw).accepte) continue;
+    // Un mot-clé qui vise une autre ville que celle du job est sauté (la ville
+    // du job est appliquée par le générateur : deux villes = ville plaquée).
+    if (nomVilleJob && motCleVisUneAutreVille(kw, nomVilleJob)) continue;
+    return kw;
   }
   return null;
 }
@@ -227,6 +232,22 @@ export async function selectKeywordRich(
         break;
       }
       const verdict = evaluerSujetCible(row.term);
+      // Ville plaquée au hasard (audit 24/10/2026) : un mot-clé du vivier qui
+      // nomme une AUTRE ville que celle du job est écarté, comme un sujet hors
+      // cible (il est déjà réservé, donc passe en fin de rotation).
+      if (verdict.accepte && city && motCleVisUneAutreVille(row.term, city.name)) {
+        console.warn(
+          JSON.stringify({
+            event: "keyword_ville_ecartee",
+            term: row.term,
+            villeJob: city.name,
+            vertical,
+            campaignId: campaignId ?? null,
+            timestamp: new Date().toISOString(),
+          }),
+        );
+        continue;
+      }
       if (verdict.accepte) {
         return {
           term: row.term,
@@ -298,7 +319,7 @@ export async function selectKeywordRich(
   }
 
   // 3. Fallback in-memory depuis les seeds (pas de métadonnées intent/cluster).
-  const memTerm = selectFromMemory(vertical);
+  const memTerm = selectFromMemory(vertical, city?.name);
 
   // P2-4 — Log structure si tous les keywords sont epuises (DB vide + seeds vides).
   if (memTerm === null) {
