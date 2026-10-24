@@ -37,9 +37,21 @@ import { env } from "@/env";
 //
 // La source de vérité reste la variable d'environnement : ceci n'est qu'un
 // filet.
-const RAW_SITE_URL = env.NEXT_PUBLIC_SITE_URL;
+//
+// Sous `SKIP_ENV_VALIDATION=true` (scripts de la chaîne Qualiopi de nuit), t3-env
+// n'applique pas le `.default(...)` du schéma : la valeur lue est `undefined`.
+// Hors production on retombe alors sur le défaut local ; en production une
+// adresse absente fait toujours échouer, explicitement.
+const RAW_SITE_URL: string | undefined = env.NEXT_PUBLIC_SITE_URL;
 
-export const SITE_URL =
-  process.env.NODE_ENV === "production" && RAW_SITE_URL.startsWith("http://localhost")
-    ? "https://axion-ia.com"
-    : RAW_SITE_URL;
+function resoudreSiteUrl(): string {
+  if (process.env.NODE_ENV === "production") {
+    if (!RAW_SITE_URL) {
+      throw new Error("NEXT_PUBLIC_SITE_URL est absent : refus de construire en production.");
+    }
+    return RAW_SITE_URL.startsWith("http://localhost") ? "https://axion-ia.com" : RAW_SITE_URL;
+  }
+  return RAW_SITE_URL ?? "http://localhost:3000";
+}
+
+export const SITE_URL = resoudreSiteUrl();
