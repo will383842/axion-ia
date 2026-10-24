@@ -134,8 +134,9 @@ export function lignesDeLaCharge(json: string): ReadonlyArray<LigneLisible> {
       })
       .filter((l) => l.valeur !== "");
     // Une case pré-remplie que la personne a VIDÉE n'est plus dans `donnees` : on la montre.
+    const vues = new Set(lignes.map((l) => l.cle));
     for (const [cle, etat] of etats) {
-      if (etat === "vide" && !lignes.some((l) => l.cle === cle)) {
+      if (etat === "vide" && !vues.has(cle)) {
         lignes.push({ cle, valeur: "(vidée par la personne)", prefill: "vide" });
       }
     }
