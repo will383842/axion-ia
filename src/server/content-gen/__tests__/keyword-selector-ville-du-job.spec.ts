@@ -19,7 +19,7 @@ vi.mock("@/lib/prisma", () => ({
 
 import { selectKeywordRich, __resetInMemoryCounters } from "../keyword-selector";
 
-const BEZONS = { name: "Bezons", regionName: "Île-de-France" };
+const BEZONS = { name: "Bezons", regionName: "Île-de-France", inseeCode: "95063" };
 
 function ligne(term: string) {
   return [{ term, search_intent: null, cluster_id: null }];
@@ -32,7 +32,26 @@ beforeEach(() => {
 });
 
 describe("selectKeywordRich — la ville du mot-clé doit être celle du job", () => {
-  it("écarte un mot-clé qui nomme une autre ville et passe au suivant", async () => {
+  it("filtre dans la requête atomique sur city_ids avec le code INSEE du job", async () => {
+    queryRawMock.mockResolvedValueOnce(ligne("audit IA pour TPE"));
+
+    await selectKeywordRich({ vertical: "audits", city: BEZONS });
+
+    const requete = queryRawMock.mock.calls[0]?.[0] as { sql: string; values: unknown[] };
+    expect(requete.sql).toContain("city_ids");
+    expect(requete.values).toContain("95063");
+  });
+
+  it("sans code INSEE, aucun prédicat ville n'est ajouté à la requête", async () => {
+    queryRawMock.mockResolvedValueOnce(ligne("audit IA pour TPE"));
+
+    await selectKeywordRich({ vertical: "audits", city: { name: "Bezons", regionName: "IDF" } });
+
+    const requete = queryRawMock.mock.calls[0]?.[0] as { sql: string };
+    expect(requete.sql).not.toContain("city_ids");
+  });
+
+  it("écarte un mot-clé qui nomme une autre ville (filet si city_ids est vide) et passe au suivant", async () => {
     queryRawMock
       .mockResolvedValueOnce(ligne("formation IA Strasbourg Grand Est"))
       .mockResolvedValueOnce(ligne("formation IA équipe commerce de proximité"));

@@ -28,7 +28,7 @@ import type { KeywordModule } from "@/content/keywords/types";
 import { generateGeoKeywords } from "./keyword-templates";
 import type { CityRef } from "./keyword-templates";
 import { evaluerSujetCible } from "./sujet-cible";
-import { motCleVisUneAutreVille } from "./ville-du-mot-cle";
+import { extractCityInseeCodes } from "@/content/keywords/geo-cities";
 
 // ── Mapping vertical (ServiceSector) → KeywordModule ─────────────────────────
 
@@ -46,7 +46,18 @@ const VERTICAL_TO_MODULE: Record<string, KeywordModule> = {
 
 const inMemoryCounters = new Map<string, number>();
 
-function selectFromMemory(vertical: string, nomVilleJob?: string): string | null {
+/**
+ * Ce mot-clé nomme-t-il une AUTRE commune que celle du job (code INSEE) ?
+ * Réutilise le détecteur des mots-clés (`extractCityInseeCodes`, celui qui remplit
+ * la colonne `city_ids`). Faux sans code INSEE de job ou sans commune nommée.
+ */
+function motCleVisUneAutreVille(motCle: string, inseeJob: string | undefined): boolean {
+  if (!inseeJob) return false;
+  const codes = extractCityInseeCodes(motCle, "");
+  return codes.length > 0 && !codes.includes(inseeJob);
+}
+
+function selectFromMemory(vertical: string, inseeJob?: string): string | null {
   const mod = VERTICAL_TO_MODULE[vertical] ?? "transversal";
   const pool = ALL_KEYWORD_SEEDS.filter((s) => s.module === mod);
   const source = pool.length > 0 ? pool : ALL_KEYWORD_SEEDS;
@@ -61,7 +72,7 @@ function selectFromMemory(vertical: string, nomVilleJob?: string): string | null
     if (!kw || !evaluerSujetCible(kw).accepte) continue;
     // Un mot-clé qui vise une autre ville que celle du job est sauté (la ville
     // du job est appliquée par le générateur : deux villes = ville plaquée).
-    if (nomVilleJob && motCleVisUneAutreVille(kw, nomVilleJob)) continue;
+    if (motCleVisUneAutreVille(kw, inseeJob)) continue;
     return kw;
   }
   return null;
@@ -192,6 +203,14 @@ export async function selectKeywordRich(
     ? Prisma.sql`AND (k.campaign_id = ${campaignId} OR k.campaign_id IS NULL)`
     : Prisma.empty;
 
+  // Ville du job (audit 24/10/2026) : filtre dans la requête atomique elle-même,
+  // sur la colonne `city_ids` (codes INSEE), pour qu'un mot-clé d'une autre ville
+  // ne soit ni réservé ni compté dans les essais. Les mots-clés sans ville
+  // (`city_ids` vide) restent permis. Sans code INSEE : aucun prédicat ajouté.
+  const villeFilter = city?.inseeCode
+    ? Prisma.sql`AND (cardinality(k.city_ids) = 0 OR ${city.inseeCode} = ANY(k.city_ids))`
+    : Prisma.empty;
+
   // 1. Tentative DB mode avec lock atomique + rotation cluster-aware (Postgres).
   //    Le LEFT JOIN sur l'agrégat `c` calcule, par cluster, la dernière
   //    utilisation (toutes verticals). `FOR UPDATE OF k` ne verrouille QUE la
@@ -217,6 +236,7 @@ export async function selectKeywordRich(
         ) c ON c.cluster_id = k.cluster_id
         WHERE k.vertical = ${vertical}
         ${campaignFilter}
+        ${villeFilter}
         ORDER BY c.cluster_last ASC NULLS FIRST,
                  k.last_used_at ASC NULLS FIRST,
                  k.usage_count ASC,
@@ -232,15 +252,15 @@ export async function selectKeywordRich(
         break;
       }
       const verdict = evaluerSujetCible(row.term);
-      // Ville plaquée au hasard (audit 24/10/2026) : un mot-clé du vivier qui
-      // nomme une AUTRE ville que celle du job est écarté, comme un sujet hors
-      // cible (il est déjà réservé, donc passe en fin de rotation).
-      if (verdict.accepte && city && motCleVisUneAutreVille(row.term, city.name)) {
+      // Filet si `city_ids` est vide en base : un mot-clé qui nomme une AUTRE
+      // ville que celle du job est écarté comme un sujet hors cible (déjà
+      // réservé, donc en fin de rotation).
+      if (verdict.accepte && motCleVisUneAutreVille(row.term, city?.inseeCode)) {
         console.warn(
           JSON.stringify({
             event: "keyword_ville_ecartee",
             term: row.term,
-            villeJob: city.name,
+            villeJob: city?.name ?? null,
             vertical,
             campaignId: campaignId ?? null,
             timestamp: new Date().toISOString(),
@@ -319,7 +339,7 @@ export async function selectKeywordRich(
   }
 
   // 3. Fallback in-memory depuis les seeds (pas de métadonnées intent/cluster).
-  const memTerm = selectFromMemory(vertical, city?.name);
+  const memTerm = selectFromMemory(vertical, city?.inseeCode);
 
   // P2-4 — Log structure si tous les keywords sont epuises (DB vide + seeds vides).
   if (memTerm === null) {

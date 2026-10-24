@@ -535,6 +535,11 @@ export interface GenerateVilleHubCopyInput {
 // pour T3 (cohérent avec batch précédent 53 villes gpt-4o approved score 50-63).
 const QUALITY_THRESHOLD_FOR_RETRY = 50;
 const MAX_RETRY_ITERATIONS = 1;
+
+/** Options des interdits de publication, lues à l'appel (le financement public dépend de la date). */
+function optionsDoctrineVille() {
+  return { actualite: false, financementPublicAutorise: financementPublicAutoriseAujourdhui() };
+}
 const BUDGET_CAP_USD_PER_VILLE = 0.2; // était 0.15 (Claude). OpenAI moins cher → tolère 4 iter.
 
 function buildUserPrompt(
@@ -726,7 +731,28 @@ export async function generateVilleHubCopy(
     const output = parseResult.data;
 
     // Quality gate
-    const { score, issues, retryFeedback: nextFeedback } = computeQualityScore(output);
+    const base = computeQualityScore(output);
+    let score = base.score;
+    const issues = [...base.issues];
+    let nextFeedback = base.retryFeedback;
+    // Fautes de doctrine (TPE/PME, Grenoble, Qualiopi…) : elles pèsent sur
+    // le score et déclenchent une nouvelle passe avec la liste exacte à corriger,
+    // au lieu d'être découvertes après la dernière passe (appel IA déjà payé).
+    const fautesPasse = resumerFautesDoctrine(
+      fautesDoctrineVille(champsCopieVille(output), optionsDoctrineVille()),
+    );
+    if (fautesPasse.length > 0) {
+      score = Math.max(0, Math.min(score - 40, QUALITY_THRESHOLD_FOR_RETRY - 1));
+      issues.push(`${fautesPasse.length} faute(s) de doctrine`);
+      nextFeedback = [
+        nextFeedback,
+        "🚨 FAUTES DE DOCTRINE — à corriger OBLIGATOIREMENT (réécris les passages concernés, ne les répète pas) :\n- " +
+          fautesPasse.slice(0, 8).join("\n- ") +
+          "\nRappels : jamais « TPE/PME » (dis « dirigeant », « petite entreprise »), jamais « Grenoble », jamais d'allusion à Qualiopi ni aux financements interdits.",
+      ]
+        .filter((t) => t !== "")
+        .join("\n");
+    }
     console.log(
       `[ville-hub-copy] ${villeSlug} iter${iteration} — score ${score}/100 (${issues.length} issues, cost $${llmResult.costUsd.toFixed(4)}, cumulé $${totalCostUsd.toFixed(4)})`,
     );
@@ -819,10 +845,7 @@ export async function generateVilleHubCopy(
   // l'enregistrement (statut « generated », page non servie) : elle est écrite
   // dans les notes de relecture et rend l'approbation automatique impossible.
   const champsCopie = champsCopieVille(bestOutput);
-  const fautesSurface = fautesDoctrineVille(champsCopie, {
-    actualite: false,
-    financementPublicAutorise: financementPublicAutoriseAujourdhui(),
-  });
+  const fautesSurface = fautesDoctrineVille(champsCopie, optionsDoctrineVille());
   // L'appel IA est déjà payé : si le contrôle global tombe (base injoignable), on
   // ne perd pas la copie, on la marque « à relire » (aucune approbation possible).
   let fautesGlobales: string[];
