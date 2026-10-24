@@ -1,7 +1,11 @@
 /**
+ * @vitest-environment node
+ *
  * Baromètre (lot L3, audit du 24/10/2026) : aucune réponse de test (`seed:%`)
  * dans un pourcentage, et aucun pourcentage sous SEUIL_REPONSES_REELLES vraies
  * réponses. On ne lance pas de base : `$queryRaw` est simulé et on lit le SQL.
+ * Environnement node : sous jsdom, le client Prisma chargé est la version
+ * navigateur, dont `Prisma.sql` ne fonctionne pas.
  */
 import { describe, it, expect, vi, beforeEach } from "vitest";
 
