@@ -17,6 +17,10 @@ export interface KbHealthSnapshot {
   readonly publicPublished: number;
   readonly canonicalRatio: number;
   readonly lastPublishedAt: Date | null;
+  /** Fiches publiées dont la date de revue (`reviewDueAt`) est dépassée. Informatif : ne bloque rien. */
+  readonly reviewOverdueCount: number;
+  /** Part des fiches publiées à relire (0 à 1). Informatif : ne bloque rien. */
+  readonly reviewOverdueRatio: number;
   readonly healthy: boolean;
   readonly bypassMode: boolean;
   readonly reason?: string;
@@ -51,7 +55,7 @@ function isBypassActive(): boolean {
 export async function getKbHealth(): Promise<KbHealthSnapshot> {
   const bypassMode = isBypassActive();
   try {
-    const [publishedTotal, publicPublished, lastIngest] = await Promise.all([
+    const [publishedTotal, publicPublished, lastIngest, reviewOverdueCount] = await Promise.all([
       prisma.knowledgeEntry.count({ where: { status: "published", deletedAt: null } }),
       prisma.knowledgeEntry.count({
         where: { status: "published", audience: "public", deletedAt: null },
@@ -61,7 +65,13 @@ export async function getKbHealth(): Promise<KbHealthSnapshot> {
         orderBy: { publishedAt: "desc" },
         select: { publishedAt: true },
       }),
+      // Fraîcheur : le volume seul ne dit pas si les faits sont périmés. Signal
+      // affiché, pas un blocage (le hard stop reste à 180 j, décision du 11/08).
+      prisma.knowledgeEntry.count({
+        where: { status: "published", deletedAt: null, reviewDueAt: { lt: new Date() } },
+      }),
     ]);
+    const reviewOverdueRatio = publishedTotal > 0 ? reviewOverdueCount / publishedTotal : 0;
 
     const canonicalRatio = publishedTotal > 0 ? publicPublished / publishedTotal : 0;
     const lastPublishedAt = lastIngest?.publishedAt ?? null;
@@ -97,6 +107,8 @@ export async function getKbHealth(): Promise<KbHealthSnapshot> {
       publicPublished,
       canonicalRatio,
       lastPublishedAt,
+      reviewOverdueCount,
+      reviewOverdueRatio,
       healthy,
       bypassMode,
       ...(reason ? { reason } : {}),
@@ -122,6 +134,8 @@ export async function getKbHealth(): Promise<KbHealthSnapshot> {
         publicPublished: 0,
         canonicalRatio: 0,
         lastPublishedAt: null,
+        reviewOverdueCount: 0,
+        reviewOverdueRatio: 0,
         healthy: true, // accept en mode dégradé
         bypassMode: true,
         reason: "DB not accessible (P2021/PrismaInit) — bypass V0",
