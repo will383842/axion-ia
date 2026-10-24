@@ -64,6 +64,13 @@ async function passerDossierClient(prisma: BaseDossier): Promise<void> {
       notifier: notify,
       drapeauBrut: process.env.DOSSIER_BALAYAGE_ENABLED,
     });
+    const fa = r.fichesAuto;
+    if (fa && (fa.creees > 0 || fa.rattachees > 0 || fa.laisseesAClasser > 0)) {
+      console.warn(
+        `[visio-balayage-worker] fiches automatiques : ${fa.creees} créée(s), ` +
+          `${fa.rattachees} rattachée(s), ${fa.laisseesAClasser} laissée(s) à classer`,
+      );
+    }
     if (r.etapesEnEchec.length > 0 || r.rencontresAssurees > 0) {
       console.warn(
         `[visio-balayage-worker] ${r.rencontresAssurees} rencontre(s) assurée(s), ` +

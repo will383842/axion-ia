@@ -47,6 +47,10 @@ import type { Tx, BaseTransactionnelle } from "@/features/dossier-client/base";
 import { HORS_RENCONTRES_DE_TEST } from "@/features/dossier-client/client-test";
 import { assurerRencontrePourCalendly } from "@/features/dossier-client/rencontre-calendly";
 import {
+  assurerLesFichesProspectAuto,
+  type BilanFichesAuto,
+} from "@/features/dossier-client/fiche-auto";
+import {
   aEuLieu,
   estDuMoisDuBilan,
   fenetreDuBilan,
@@ -87,8 +91,18 @@ export interface CouvertureDuMois {
   readonly sansRien: number;
 }
 
+/**
+ * Des rendez-vous Calendly que la fiche automatique n'a pas osé ranger (refus de
+ * la porte, fiche proche ambiguë) : l'étape « fiches-auto » les signale, une fois,
+ * sur Telegram par le canal de panne du balayage (nom de l'erreur = ce qui reste).
+ */
+class FichesAClasser extends Error {
+  override name = "FichesAClasser";
+}
+
 export interface ResultatBalayage {
   readonly rencontresAssurees: number;
+  readonly fichesAuto: BilanFichesAuto;
   readonly comptesRendusAValider: number;
   readonly suitesEchues: number;
   readonly veille: number;
@@ -314,6 +328,19 @@ export async function passerBalayage(
     return n;
   });
 
+  // 2 bis. La fiche prospect des rendez-vous Calendly, sans clic (DOSSIER_FICHE_AUTO).
+  // Un doute n'est jamais forcé : la rencontre reste « à classer » et l'étape le signale.
+  let fichesAuto: BilanFichesAuto = {
+    creees: 0,
+    rattachees: 0,
+    laisseesAClasser: 0,
+    relancesEnEchec: 0,
+  };
+  await etape<void>("fiches-auto", undefined, async () => {
+    fichesAuto = await assurerLesFichesProspectAuto(db);
+    if (fichesAuto.laisseesAClasser > 0) throw new FichesAClasser();
+  });
+
   // 3 à 6. Les compteurs (les mêmes lectures que le panneau de la console).
   const comptesRendusAValider = await etape("comptes-rendus", 0, () =>
     compterComptesRendusAValider(db, maintenant),
@@ -326,6 +353,7 @@ export async function passerBalayage(
 
   return {
     rencontresAssurees,
+    fichesAuto,
     comptesRendusAValider,
     suitesEchues,
     veille,
