@@ -146,6 +146,13 @@ export interface GeneratorOutput {
    * « quels faits KB ont nourri quel article ». Optionnel (KB vide → []).
    */
   readonly kbEntryIds?: ReadonlyArray<string>;
+  /**
+   * Audit 24/10/2026 (lot L2) — nombre de sections `<h2>` prévues par le plan
+   * (générateurs en 3 appels : plan → expansion par tranches). Le worker retient
+   * l'article en relecture si le corps final a MOINS de `<h2>` que prévu (une
+   * tranche perdue). Optionnel : absent = pas de plan connu, pas de contrôle.
+   */
+  readonly plannedH2Count?: number;
 }
 
 export interface Generator<TInput extends GeneratorBaseInput = GeneratorBaseInput> {

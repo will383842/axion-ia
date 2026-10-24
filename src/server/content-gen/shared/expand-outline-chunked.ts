@@ -16,6 +16,7 @@
  * homogène.
  */
 import { generate as routerGenerate } from "../providers/provider-router";
+import { logStep } from "./generation-log";
 import { parseLlmJson } from "./parse-llm-json";
 
 export interface OutlineSection {
@@ -56,9 +57,11 @@ export interface ExpandOutlineChunkedResult {
 
 /**
  * Développe l'outline en bodyHtml en `ceil(outline.length / chunkSize)` appels
- * LLM séquentiels, puis concatène. Une tranche dont le JSON est invalide
- * contribue une chaîne vide (le générateur verra un corps court et pourra
- * retenter via sa boucle qualité).
+ * LLM séquentiels, puis concatène. Une tranche dont le JSON est illisible est
+ * journalisée puis relancée UNE fois (audit 24/10/2026 : avant, elle
+ * contribuait en silence une chaîne vide et l'article partait avec des sections
+ * manquantes). Si la relance échoue aussi, la tranche reste vide et le plan
+ * n'est plus respecté : la barrière « h2 ≠ plan » du worker retient l'article.
  */
 export async function expandOutlineChunked(
   opts: ExpandOutlineChunkedOpts,
@@ -81,31 +84,46 @@ export async function expandOutlineChunked(
       .map((s, i) => `${sectionStart + i + 1}. ${s.h2} — ${s.brief}`)
       .join("\n");
 
-    const res = await routerGenerate({
-      jobId: opts.jobId,
-      contentType: opts.contentType,
-      role: "text",
-      systemPrompt: opts.expandSystem,
-      userPrompt: opts.buildUserPrompt({
-        chunkText,
-        isFirst: c === 0,
-        isLast: c === chunks.length - 1,
-        sectionStart,
-      }),
-      maxTokens: opts.maxTokens ?? 5000,
-      temperature: opts.temperature ?? 0.7,
+    const userPrompt = opts.buildUserPrompt({
+      chunkText,
+      isFirst: c === 0,
+      isLast: c === chunks.length - 1,
+      sectionStart,
     });
-    calls++;
-    costUsd += res.costUsd;
-    tokensInput += res.tokensInput;
-    tokensOutput += res.tokensOutput;
 
+    // 2 essais au plus : le second ne part que si le premier JSON est illisible.
     let chunkBody = "";
-    try {
-      const parsed = parseLlmJson<{ bodyHtml?: string }>(res.output);
-      chunkBody = parsed.bodyHtml ?? "";
-    } catch {
-      chunkBody = "";
+    for (let essai = 1; essai <= 2; essai++) {
+      const res = await routerGenerate({
+        jobId: opts.jobId,
+        contentType: opts.contentType,
+        role: "text",
+        systemPrompt: opts.expandSystem,
+        userPrompt,
+        maxTokens: opts.maxTokens ?? 5000,
+        temperature: opts.temperature ?? 0.7,
+      });
+      calls++;
+      costUsd += res.costUsd;
+      tokensInput += res.tokensInput;
+      tokensOutput += res.tokensOutput;
+
+      try {
+        const parsed = parseLlmJson<{ bodyHtml?: string }>(res.output);
+        chunkBody = parsed.bodyHtml ?? "";
+        break;
+      } catch (err) {
+        chunkBody = "";
+        const raison = err instanceof Error ? err.message : String(err);
+        const message = `Tranche ${c + 1}/${chunks.length} illisible (JSON invalide, essai ${essai}/2)${essai < 2 ? " : relance" : " : abandon, la tranche reste vide"}`;
+        console.warn(`[expand-outline-chunked] ${message} — ${raison}`);
+        await logStep(opts.jobId, "validation", message, {
+          tranche: c + 1,
+          tranches: chunks.length,
+          essai,
+          erreur: raison,
+        });
+      }
     }
     if (chunkBody) bodyHtml += (bodyHtml ? "\n" : "") + chunkBody;
   }
