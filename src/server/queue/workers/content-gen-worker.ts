@@ -33,6 +33,9 @@ import {
   hasRecognizedCta,
 } from "@/server/content-gen/quality/intent-enforcement";
 import { checkDoctrine } from "@/server/content-gen/quality/doctrine-check";
+import { fautesDures, surfaceDepuisSortie } from "@/server/content-gen/quality/doctrine-surface";
+import { detecterInterditsSurface } from "@/lib/contenu/interdits-publication";
+import { financementPublicCitable } from "@/server/qualiopi/config/financing";
 import { readContentGenConfig } from "@/server/actions/content-gen/_settings";
 // Fix 2026-08-15 (audit e2e, C8) — lecture du kill switch en fail-SAFE : une
 // erreur DB transitoire « dé-gelait » silencieusement un arrêt d'urgence
@@ -869,6 +872,11 @@ async function processJob(job: Job<ContentGenJobPayload>): Promise<void> {
     // l'article pour correction humaine (needs_review) au lieu de le publier.
     //
     // Fautes dures retenues :
+    //   - Interdits de doctrine sur TOUTE la surface (titre, méta, slug, réponse
+    //     directe, FAQ, point clé, avis d'expert, tags, alt/title, corps) :
+    //     Qualiopi, CPF, financement 100 %, faux partenariats, Grenoble,
+    //     « garanti »… (module `lib/contenu/interdits-publication`). Audit
+    //     24/10/2026 : seul le SIREN bloquait, le reste baissait seulement la note.
     //   - SIREN/SIRET/RCS : un identifiant légal inventé est un problème de
     //     conformité/confiance (le vrai n'est qu'un placeholder). Quasi zéro
     //     faux-positif (9/14 chiffres consécutifs en prose = rare).
@@ -884,19 +892,24 @@ async function processJob(job: Job<ContentGenJobPayload>): Promise<void> {
       {},
     );
     const doctrine = await checkDoctrine(output.bodyText);
-    const doctrineHardFaults = doctrine.blockingViolations.filter(
-      (v) =>
-        v.pattern === "SIREN/SIRET/RCS" ||
-        (hardFaultGate.retainNonSsotPrice === true && v.pattern.startsWith("prix-non-SSOT:")),
-    );
+    const violationsSurface = detecterInterditsSurface(surfaceDepuisSortie(output), {
+      actualite: contentType === "blog_from_rss",
+      financementPublicAutorise: financementPublicCitable(),
+    });
+    const doctrineHardFaults = fautesDures(doctrine, violationsSurface, {
+      retainNonSsotPrice: hardFaultGate.retainNonSsotPrice === true,
+    });
     const doctrineHardFail = doctrineHardFaults.length > 0;
     await logStep(
       contentGenJobId,
       "doctrine_check",
       doctrineHardFail
-        ? `Doctrine HARD FAULT → retenu pour correction : ${doctrineHardFaults.map((v) => v.pattern).join(", ")}`
-        : "Doctrine hard-fault OK (SIREN/prix)",
-      { hard_fault: doctrineHardFail, faults: doctrineHardFaults.map((v) => v.pattern) },
+        ? `Doctrine HARD FAULT → retenu pour correction : ${doctrineHardFaults.map((v) => (v.champ ? `${v.code}@${v.champ}` : v.code)).join(", ")}`
+        : "Doctrine hard-fault OK (interdits/SIREN/prix)",
+      {
+        hard_fault: doctrineHardFail,
+        faults: doctrineHardFaults.map((v) => (v.champ ? `${v.code}@${v.champ}` : v.code)),
+      },
     );
 
     // #2 2026-06-14 — Dedup SÉMANTIQUE cross-entry (topic-fingerprint Voyage).
@@ -1055,7 +1068,10 @@ async function processJob(job: Job<ContentGenJobPayload>): Promise<void> {
       if (!plagiarism.passed) blockCauses.push("Plagiat lexical (texte trop proche d'un existant)");
       if (outlineBlockingFail) blockCauses.push("Structure trop proche (plan H2/H3 d'un existant)");
       if (!intent.aligned) blockCauses.push("Intention de recherche non respectée");
-      if (doctrineHardFail) blockCauses.push("Doctrine (prix/SIREN non conforme)");
+      if (doctrineHardFail)
+        blockCauses.push(
+          "Doctrine (mots interdits : Qualiopi, CPF, financement, partenariat, garanti, SIREN, prix…)",
+        );
       if (benefitFail) blockCauses.push("Bénéfice concret insuffisant");
       // Fix 2026-08-15 — le journal annonçait un déclassement « en noindex »
       // qui n'a plus lieu à la publication : `content-publish-worker.ts` force
@@ -1111,8 +1127,10 @@ async function processJob(job: Job<ContentGenJobPayload>): Promise<void> {
       // P0 2026-06-13 — Traçabilité des fautes dures (SIREN/prix non-SSOT) ayant
       // retenu l'article pour correction humaine.
       doctrineHardFaults: doctrineHardFaults.map((v) => ({
-        pattern: v.pattern,
-        reason: v.reason,
+        pattern: v.code,
+        reason: [v.champ ? `champ « ${v.champ} »` : null, v.extrait ? `« ${v.extrait} »` : null]
+          .filter(Boolean)
+          .join(" : "),
       })),
     };
 

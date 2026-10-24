@@ -119,6 +119,27 @@ export interface JudgeResult {
 
 // ── Prompt (XML tagged for Claude) ───────────────────────────────────────────
 
+/**
+ * Interdits de doctrine Axion-IA que le juge doit traiter comme P0 (audit
+ * 24/10/2026 : seul le SIREN était connu du juge). Les 13 libelles sont
+ * injectes tels quels dans le prompt et verifies un par un par le test.
+ */
+export const JUDGE_LIBELLES_INTERDITS: ReadonlyArray<string> = [
+  "Qualiopi",
+  "CPF / Mon Compte Formation / RNCP",
+  "financement a 100 % / integral / gratuit",
+  "OPCO ou France Travail",
+  "partenariat / label / client non reel",
+  "cas client / temoignage / resultat chiffre attribue a Axion-IA",
+  "statistique attribuee a Axion-IA",
+  "garanti / sans risque / aucun gain garanti",
+  "faites-le vous-meme",
+  "Grenoble ou un ancrage local d'Axion-IA",
+  "l'etiquette TPE/PME",
+  "reservation ou paiement en ligne",
+  "TVA non facturee",
+];
+
 export const JUDGE_SYSTEM_PROMPT = `Tu es un editeur senior B2B specialise dans le contenu IA conformite (RGPD, AI Act, Google HCU). Tu evalues des articles generes pour le site axion-ia.com (cabinet IA operationnel : interventions, audits, implementations, coaching 1-to-1, sites-web augmentes).
 
 Ton job : noter l'article sur 7 dimensions (0-10 chacune) et donner un verdict ferme (publish / improve / reject). Tu ne diluies pas tes scores. Un score de 7 est correct mais perfectible. Un 9+ est exceptionnel.
@@ -129,7 +150,7 @@ Ton job : noter l'article sur 7 dimensions (0-10 chacune) et donner un verdict f
 3. **originality** (0-10) : Pas du copy-paste ChatGPT generique ? Point de vue cabinet IA distinct ?
 4. **readability** (0-10) : Phrases courtes, structure h2/h3 logique, paragraphes < 4 lignes, jargon explique ?
 5. **seo_completeness** (0-10) : title <= 60 chars optimise ? meta description 140-160 chars ? keyword dans h1 + 2 h2 ? FAQ couvrant longue traine ?
-6. **value_to_reader** (0-10) : Le lecteur PME/ETI repart avec actions concretes ou juste de la theorie creuse ?
+6. **value_to_reader** (0-10) : Le dirigeant d'une petite entreprise qui ne sait pas par ou commencer avec l'IA repart avec actions concretes ou juste de la theorie creuse ?
 7. **tone_axionia_alignment** (0-10) : Ton consultatif precis sans sur-promesses. Pas de "magique"/"revolutionnaire". Axion-IA = cabinet operationnel, pas usine a contenu.
 </rubric>
 
@@ -141,6 +162,7 @@ Ton job : noter l'article sur 7 dimensions (0-10 chacune) et donner un verdict f
 
 <issues_severity>
 - P0 : factual error, content filter risk, HCU/AI Act non-compliance, doctrine violation (SIREN/SIRET/RCS hardcode)
+- P0 doctrine Axion-IA, a verifier dans le titre, la meta, la reponse directe, la FAQ, le point cle, l'avis d'expert ET le corps : ${JUDGE_LIBELLES_INTERDITS.join(", ")}
 - P1 : structure cassee, seo incomplet, ton off-brand, depth manquant sur sujet annonce
 - P2 : suggestion d'amelioration mineure, pas bloquant
 </issues_severity>

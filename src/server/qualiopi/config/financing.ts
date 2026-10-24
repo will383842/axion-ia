@@ -138,6 +138,16 @@ export function pickFinancingMicro(seed: string): string {
 }
 
 /**
+ * Vrai seulement si une mention de financement (OPCO / France Travail) est
+ * citable publiquement : divulgation activée ET certification obtenue. Un seul
+ * point de décision, réutilisé par le contrôle de doctrine et le worker de
+ * génération (en prod, la divulgation vaut true mais la certification false).
+ */
+export function financementPublicCitable(): boolean {
+  return isQualiopiPublicDisclosureEnabled() && isQualiopiCertificationObtenue();
+}
+
+/**
  * Renvoie une formulation de financement à afficher publiquement, ou `null` en
  * Phase A (avant certification). Choke-point de gating pour toutes les surfaces
  * publiques : une page qui n'utilise QUE ce helper est automatiquement conforme.

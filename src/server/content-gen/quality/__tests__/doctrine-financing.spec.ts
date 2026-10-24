@@ -7,7 +7,7 @@
  * On mocke `bannedPhrase.findMany` → [] pour isoler ces règles.
  */
 
-import { describe, expect, it, vi } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
 
 vi.mock("@/lib/prisma", () => ({
   prisma: {
@@ -21,6 +21,10 @@ const isBlocked = (r: Awaited<ReturnType<typeof checkDoctrine>>) =>
   !r.passed && r.blockingViolations.some((v) => v.pattern === "financement-interdit");
 
 describe("doctrine-check — financement interdit", () => {
+  afterEach(() => {
+    vi.unstubAllEnvs();
+  });
+
   it("BLOQUE une mention CPF", async () => {
     expect(isBlocked(await checkDoctrine("Cette formation est éligible au CPF."))).toBe(true);
   });
@@ -60,11 +64,62 @@ describe("doctrine-check — financement interdit", () => {
     ).toBe(true);
   });
 
-  it("AUTORISE une formulation conforme OPCO / France Travail", async () => {
+  it("BLOQUE OPCO / France Travail tant que la divulgation publique n'est pas activée", async () => {
+    vi.stubEnv("OF_PUBLIC_DISCLOSURE_ENABLED", "false");
+    const r = await checkDoctrine(
+      "Nos formations sont éligibles à une prise en charge par votre OPCO ; " +
+        "selon votre situation, un financement France Travail est possible.",
+    );
+    expect(isBlocked(r)).toBe(true);
+  });
+
+  it("BLOQUE OPCO / France Travail quand la divulgation est activée mais la certification NON obtenue (cas de la prod)", async () => {
+    vi.stubEnv("OF_PUBLIC_DISCLOSURE_ENABLED", "true");
+    vi.stubEnv("QUALIOPI_CERTIFICATION_OBTENUE", "false");
+    const r = await checkDoctrine(
+      "Nos formations sont éligibles à une prise en charge par votre OPCO ; " +
+        "selon votre situation, un financement France Travail est possible.",
+    );
+    expect(r.passed).toBe(false);
+    expect(r.blockingViolations.some((v) => v.pattern === "financement-interdit")).toBe(true);
+  });
+
+  it("AUTORISE une formulation conforme OPCO / France Travail quand la divulgation est activée et la certification obtenue", async () => {
+    vi.stubEnv("OF_PUBLIC_DISCLOSURE_ENABLED", "true");
+    vi.stubEnv("QUALIOPI_CERTIFICATION_OBTENUE", "true");
     const r = await checkDoctrine(
       "Nos formations sont éligibles à une prise en charge par votre OPCO ; " +
         "selon votre situation, un financement France Travail est possible.",
     );
     expect(r.blockingViolations.some((v) => v.pattern === "financement-interdit")).toBe(false);
+  });
+
+  it("ne bloque pas une citation de dirigeant tiers dans une actualité (option actualite)", async () => {
+    const r = await checkDoctrine(
+      "« Nous déployons l'assistant dans tous les services cette année », a déclaré le directeur général.",
+      { actualite: true },
+    );
+    expect(r.blockingViolations.some((v) => v.pattern === "citation-temoin")).toBe(false);
+  });
+
+  it("garde le nom historique CPF-non-autorise", async () => {
+    const r = await checkDoctrine("Cette formation est éligible au CPF.");
+    expect(r.blockingViolations.some((v) => v.pattern === "CPF-non-autorise")).toBe(true);
+  });
+
+  // Non-régression : les motifs accentués ne trouvaient jamais le mot après une
+  // espace (`` ne voit pas « é » comme une lettre de mot).
+  it("trouve « étude interne » et « évaluations 2025 » (regex accentuées corrigées)", async () => {
+    const r = await checkDoctrine("Selon notre étude interne, les évaluations 2025 le confirment.");
+    expect(r.blockingViolations.some((v) => v.pattern === "stat-fabriquée-Axion-IA")).toBe(true);
+  });
+
+  it("trouve « instantané » dans les phrases de la base (texte normalisé)", async () => {
+    const { prisma } = await import("@/lib/prisma");
+    vi.mocked(prisma.bannedPhrase.findMany).mockResolvedValueOnce([
+      { pattern: "instantané", reason: "Promesse temporelle", severity: "warn" },
+    ] as never);
+    const r = await checkDoctrine("Un résultat instantané pour votre équipe.");
+    expect(r.warnings.some((v) => v.pattern === "instantané")).toBe(true);
   });
 });
