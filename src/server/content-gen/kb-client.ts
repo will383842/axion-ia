@@ -191,7 +191,13 @@ function aplatir(texte: string): string {
 
 /** Mots utiles d'une requête (sans accents, 4 lettres ou plus). */
 function motsUtiles(texte: string): string[] {
-  return Array.from(new Set(aplatir(texte).split(/[^a-z0-9]+/).filter((m) => m.length >= 4)));
+  return Array.from(
+    new Set(
+      aplatir(texte)
+        .split(/[^a-z0-9]+/)
+        .filter((m) => m.length >= 4),
+    ),
+  );
 }
 
 /**
