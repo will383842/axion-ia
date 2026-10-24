@@ -19,7 +19,7 @@ vi.mock("@/lib/prisma", () => ({
 // analysis.ts importe le routeur LLM : on le neutralise (aucun appel payant).
 vi.mock("../../content-gen/providers/provider-router", () => ({ generate: vi.fn() }));
 
-import { SEUIL_REPONSES_REELLES } from "@/content/observatoire/study";
+import { SEUIL_REPONSES_REELLES, HISTORIQUE_FIABLE_DEPUIS } from "@/content/observatoire/study";
 import { readSnapshotHistory } from "../snapshot";
 import { readLatestAnalysis } from "../analysis";
 
@@ -31,10 +31,23 @@ describe("readSnapshotHistory — seuil de publication", () => {
     await readSnapshotHistory(10);
     expect(historyFindMany).toHaveBeenCalledWith(
       expect.objectContaining({
-        where: { totalResponses: { gte: SEUIL_REPONSES_REELLES } },
+        where: {
+          totalResponses: { gte: SEUIL_REPONSES_REELLES },
+          computedAt: { gte: HISTORIQUE_FIABLE_DEPUIS },
+        },
         take: 10,
       }),
     );
+  });
+
+  it("coupe par date : un ancien point à 8 627 réponses (seed compris) n'est pas demandé", async () => {
+    historyFindMany.mockResolvedValue([]);
+    await readSnapshotHistory();
+    const where = historyFindMany.mock.calls[0]?.[0]?.where;
+    // Le point ancien (total 8 627 > seuil) est écarté par la date seule.
+    const ancien = new Date("2026-10-10T00:00:00.000Z");
+    expect(where.totalResponses.gte).toBeLessThan(8627);
+    expect(where.computedAt.gte.getTime()).toBeGreaterThan(ancien.getTime());
   });
 
   it("convertit les lignes renvoyées", async () => {

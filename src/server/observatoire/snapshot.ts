@@ -15,7 +15,11 @@
 import { prisma } from "@/lib/prisma";
 import { Prisma } from "../../../prisma/generated/client";
 import { BAROMETER_QUESTIONS, SECTOR_SLUGS, REGION_SLUGS } from "@/content/observatoire/questions";
-import { SNAPSHOT_KEY_LATEST, SEUIL_REPONSES_REELLES } from "@/content/observatoire/study";
+import {
+  SNAPSHOT_KEY_LATEST,
+  SEUIL_REPONSES_REELLES,
+  HISTORIQUE_FIABLE_DEPUIS,
+} from "@/content/observatoire/study";
 
 export interface DistributionEntry {
   readonly value: string;
@@ -419,7 +423,7 @@ export async function recomputeAndPersistSnapshot(): Promise<BarometerSnapshotPa
  * Lit l'historique des recalculs (ordre chronologique) — pour les courbes d'évolution.
  * Lot L3 : on ne renvoie que les points obtenus à partir d'au moins
  * SEUIL_REPONSES_REELLES réponses (les anciens points sous le seuil restent en base,
- * mais ne sont plus publiés : page et export JSON passent tous deux par ici).
+ * mais ne sont plus publiés, de même que ceux d'avant HISTORIQUE_FIABLE_DEPUIS : page et export JSON passent tous deux par ici).
  */
 export async function readSnapshotHistory(
   limit = 60,
@@ -427,7 +431,10 @@ export async function readSnapshotHistory(
   Array<{ computedAt: string; totalResponses: number; insights: Record<string, number> }>
 > {
   const rows = await prisma.barometerSnapshotHistory.findMany({
-    where: { totalResponses: { gte: SEUIL_REPONSES_REELLES } },
+    where: {
+      totalResponses: { gte: SEUIL_REPONSES_REELLES },
+      computedAt: { gte: HISTORIQUE_FIABLE_DEPUIS },
+    },
     orderBy: { computedAt: "asc" },
     take: limit,
   });
