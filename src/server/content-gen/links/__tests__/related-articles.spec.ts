@@ -68,9 +68,11 @@ describe("sortByRelevance — proximité de sujet (audit blog 24/10/2026)", () =
 
   it("met en tête les articles qui partagent un mot de contenu avec le titre", () => {
     const out = sortByRelevance(catalogue, "Cas d'usage", "Chatbot et RGPD en PME");
+    // « pme » est un mot de sujet : le premier article partage 3 mots avec le titre
+    // (chatbot, rgpd, pme), le second 2. Le score l'emporte sur la date.
     expect(out.slice(0, 2).map((a) => a.title)).toEqual([
-      "Mettre en conformité son chatbot avec le RGPD",
       "Chatbot RGPD : ce que doit savoir une PME",
+      "Mettre en conformité son chatbot avec le RGPD",
     ]);
   });
 
