@@ -70,9 +70,13 @@ export function pagePourClient(html: string, o: OptionsPage): string {
 /* — configuration du site — */
 Object.assign(CONFIG, ${jsonSur(base)});
 ` +
-    `Object.assign(CONFIG.rgpd, ${jsonSur(rgpd)});
+    `CONFIG.rgpd = Object.assign(CONFIG.rgpd || {}, ${jsonSur(rgpd)});
 `;
   let page = html.replace(DECLARATION_CONFIG, (m) => m + injection);
-  if (o.essai) page = page.replace("</body>", `${BANDEAU_ESSAI}</body>`);
+  if (o.essai) {
+    // Le DERNIER </body> : une chaîne « </body> » dans le script de Will ne doit pas le recevoir.
+    const i = page.lastIndexOf("</body>");
+    if (i >= 0) page = page.slice(0, i) + BANDEAU_ESSAI + page.slice(i);
+  }
   return page;
 }

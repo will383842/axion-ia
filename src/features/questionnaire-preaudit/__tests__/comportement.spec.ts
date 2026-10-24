@@ -465,6 +465,88 @@ describe("l'envoi par clic", () => {
   });
 });
 
+describe("l'envoi : corbeille de validation, rollback complet, changement d'adresse", () => {
+  const args = (q: Ligne, destinataire = "client@exemple.fr") => ({
+    questionnaireId: q["id"] as string,
+    destinataire,
+    prenom: "Sam",
+  });
+
+  it("retenu dans la corbeille : le questionnaire RESTE envoyé, sans contournement", async () => {
+    allumer();
+    const q = questionnaire({ envoyeLe: null, expireLe: null });
+    base.enqueue.mockResolvedValue({ enqueued: false, garePourValidation: true, outboxId: "o1" });
+    await expect(envoyerQuestionnaire(args(q))).resolves.toBe("retenu_corbeille");
+    expect(q["envoyeLe"]).toBeInstanceOf(Date);
+    expect(q["expireLe"]).toBeInstanceOf(Date);
+    expect(base.enqueue).toHaveBeenCalledOnce();
+    const options = base.enqueue.mock.calls[0]?.[4] as Record<string, unknown>;
+    expect(options["bypassValidation"]).toBeUndefined();
+  });
+
+  it("envoi normal : « envoye »", async () => {
+    allumer();
+    const q = questionnaire({ envoyeLe: null });
+    await expect(envoyerQuestionnaire(args(q))).resolves.toBe("envoye");
+  });
+
+  it("adresse retenue : le vrai motif est affiché et l'état est rétabli", async () => {
+    allumer();
+    const q = questionnaire({ envoyeLe: null, expireLe: null });
+    base.enqueue.mockResolvedValue({ enqueued: false, retenu: "adresse_morte" });
+    await expect(envoyerQuestionnaire(args(q))).rejects.toThrow(/adresse_morte/);
+    expect(q["envoyeLe"]).toBeNull();
+  });
+
+  it("l'échec rétablit AUSSI la clôture et l'ancienne adresse", async () => {
+    allumer();
+    const clos = new Date("2026-10-01");
+    const q = questionnaire({
+      envoyeLe: new Date(Date.now() - 3_600_000),
+      closLe: clos,
+      destinataire: "enc:v1:ancienne",
+      destinataireHash: "hash-ancien",
+    });
+    base.enqueue.mockResolvedValue({ enqueued: false });
+    await expect(envoyerQuestionnaire(args(q))).rejects.toThrow();
+    expect(q["closLe"]).toEqual(clos);
+    expect(q["destinataire"]).toBe("enc:v1:ancienne");
+    expect(q["destinataireHash"]).toBe("hash-ancien");
+  });
+
+  it("une exception de la file rétablit aussi l'état", async () => {
+    allumer();
+    const q = questionnaire({ envoyeLe: null, closLe: new Date("2026-10-01") });
+    base.enqueue.mockRejectedValue(new Error("redis"));
+    await expect(envoyerQuestionnaire(args(q))).rejects.toThrow(/redis/);
+    expect(q["envoyeLe"]).toBeNull();
+    expect(q["closLe"]).toBeInstanceOf(Date);
+  });
+
+  it("refuse de changer d'adresse une fois qu'une réponse est arrivée", async () => {
+    allumer();
+    await envoyerQuestionnaire(args(questionnaire({ envoyeLe: null }), "premiere@exemple.fr"));
+    const q = base.q[0] as Ligne;
+    q["envoyeLe"] = new Date(Date.now() - 3_600_000);
+    base.e.push({ questionnaireId: q["id"], recuLe: new Date(), mode: "main", donnees: "x" });
+    base.enqueue.mockClear();
+    await expect(envoyerQuestionnaire(args(q, "autre@exemple.fr"))).rejects.toThrow(
+      /nouveau questionnaire/,
+    );
+    expect(base.enqueue).not.toHaveBeenCalled();
+    // la même adresse, elle, peut recevoir un renvoi
+    await expect(envoyerQuestionnaire(args(q, "premiere@exemple.fr"))).resolves.toBe("envoye");
+  });
+
+  it("sans réponse reçue, l'adresse peut encore être corrigée", async () => {
+    allumer();
+    await envoyerQuestionnaire(args(questionnaire({ envoyeLe: null }), "faute@exemple.fr"));
+    const q = base.q[0] as Ligne;
+    q["envoyeLe"] = new Date(Date.now() - 3_600_000);
+    await expect(envoyerQuestionnaire(args(q, "bonne@exemple.fr"))).resolves.toBe("envoye");
+  });
+});
+
 describe("la purge de rétention", () => {
   it("supprime les réponses plus anciennes que la date, garde les autres", async () => {
     base.e.push(

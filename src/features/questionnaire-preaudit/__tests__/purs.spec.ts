@@ -78,6 +78,30 @@ describe("le HTML de Will", () => {
     expect(page).not.toContain('"client"');
     expect(page).not.toContain('"contact"');
   });
+  it("fonctionne même si CONFIG.rgpd est absent de la copie de Will", () => {
+    const sansRgpd = HTML.replace(/rgpd: {[^}]*},/, "");
+    const page = pagePourClient(sansRgpd, {
+      endpoint: "/api/x",
+      client: "",
+      contact: "a@b.fr",
+      conservation: "3 ans",
+      essai: false,
+    });
+    expect(page).toContain("CONFIG.rgpd = Object.assign(CONFIG.rgpd || {}");
+  });
+  it("le bandeau d'essai va avant le DERNIER </body>, pas dans le script", () => {
+    const piege = HTML.replace("const payload", 'const t = "</body>"; const payload');
+    const page = pagePourClient(piege, {
+      endpoint: "/api/x",
+      client: "",
+      contact: "",
+      conservation: "",
+      essai: true,
+    });
+    expect(page.indexOf("ESSAI")).toBeGreaterThan(page.indexOf('const t = "</body>"'));
+    expect(page.indexOf("ESSAI")).toBe(page.lastIndexOf("ESSAI"));
+    expect(page.indexOf("ESSAI")).toBeLessThan(page.lastIndexOf("</body>"));
+  });
   it("le mode essai ajoute le bandeau", () => {
     const page = pagePourClient(HTML, {
       endpoint: "/api/x?essai=1",

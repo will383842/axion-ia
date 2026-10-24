@@ -43,7 +43,7 @@ export async function envoyerQuestionnaire(args: {
   readonly questionnaireId: string;
   readonly destinataire: string;
   readonly prenom: string;
-}): Promise<void> {
+}): Promise<"envoye" | "retenu_corbeille"> {
   const refus = refusEnvoiReel();
   if (refus !== null) throw new MessagePourWill(MESSAGE_REFUS[refus]);
   const a = adresse.safeParse(args.destinataire);
@@ -62,7 +62,8 @@ export async function envoyerQuestionnaire(args: {
       "Un envoi vient d'avoir lieu : patientez une minute avant de renvoyer.",
     );
   }
-  let enfile = false;
+  let garde = false;
+  let echec: string | null = null;
   try {
     const r = await enqueueEmail(
       "questionnaire-avant-audit",
@@ -77,9 +78,26 @@ export async function envoyerQuestionnaire(args: {
         clientId: q.rencontre.clientId ?? null,
       },
     );
-    enfile = r.enqueued;
-  } finally {
-    if (!enfile) await annulerEnvoi(q.id, avant);
+    // Retenu dans la corbeille « E-mails à valider » : l'e-mail EXISTE et partira à la validation
+    // de Will. Le questionnaire reste « envoyé » (sinon : lien 404 après validation, copies à
+    // chaque nouvel essai). On ne passe JAMAIS `bypassValidation`.
+    garde = r.garePourValidation === true;
+    if (!r.enqueued && !garde) {
+      echec = r.retenu
+        ? `L'e-mail n'est pas parti : adresse retenue (${r.retenu}).`
+        : r.corbeilleIndisponible
+          ? "La corbeille de validation est indisponible : rien n'est parti. Réessayez plus tard."
+          : r.essaiBloque
+            ? "Envoi bloqué : cette adresse n'est pas autorisée pendant la session d'essai."
+            : "L'e-mail n'a pas pu être mis en file. Réessayez.";
+    }
+  } catch (e) {
+    await annulerEnvoi(q.id, avant);
+    throw e;
   }
-  if (!enfile) throw new MessagePourWill("L'e-mail n'a pas pu être mis en file. Réessayez.");
+  if (echec !== null) {
+    await annulerEnvoi(q.id, avant);
+    throw new MessagePourWill(echec);
+  }
+  return garde ? "retenu_corbeille" : "envoye";
 }

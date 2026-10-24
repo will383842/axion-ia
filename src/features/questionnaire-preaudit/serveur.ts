@@ -95,21 +95,56 @@ export async function deposerQuestionnaire(rencontreId: string, html: string): P
   return cree.id;
 }
 
+/** L'état d'avant un envoi, à rétablir tel quel si la mise en file échoue. */
+export interface EtatAvantEnvoi {
+  envoyeLe: Date | null;
+  expireLe: Date | null;
+  closLe: Date | null;
+  destinataire: string | null;
+  destinataireHash: string | null;
+}
+
 /**
  * Réserve l'envoi AVANT la mise en file (anti double clic) : n'aboutit que si rien n'est parti
  * depuis moins de 60 s. Garde l'adresse (chiffrée + empreinte) pour l'export et l'effacement.
  * Rend l'état d'avant (pour `annulerEnvoi`), ou `null` si un envoi vient d'avoir lieu.
+ *
+ * ⛔ Une fois qu'une réponse est arrivée, l'adresse ne change plus. L'export et l'effacement
+ * retrouvent les réponses du dirigeant par cette adresse OU par la réservation Calendly ; si on
+ * renvoyait à une autre personne, ses réponses se mêleraient à celles de la première (export
+ * livré à la mauvaise personne, effacement de la mauvaise). Risque voisin, connu : une
+ * réservation Calendly prise par un TIERS (un assistant, un invité) rattache le questionnaire
+ * à son adresse — d'où cette règle, et l'obligation de créer un NOUVEAU questionnaire pour un
+ * autre destinataire.
  */
 export async function reserverEnvoi(
   id: string,
   destinataire: string,
   maintenant: Date = new Date(),
-): Promise<{ envoyeLe: Date | null; expireLe: Date | null } | null> {
+): Promise<EtatAvantEnvoi | null> {
   const avant = await prisma.questionnaireAvantAudit.findUnique({
     where: { id },
-    select: { envoyeLe: true, expireLe: true },
+    select: {
+      envoyeLe: true,
+      expireLe: true,
+      closLe: true,
+      destinataire: true,
+      destinataireHash: true,
+    },
   });
   if (avant === null) return null;
+  const hash = hashEmailForLookup(destinataire);
+  if (avant.destinataireHash !== null && avant.destinataireHash !== hash) {
+    const recues = await prisma.questionnaireAvantAuditEnvoi.count({
+      where: { questionnaireId: id },
+    });
+    if (recues > 0) {
+      throw new MessagePourWill(
+        "Des réponses sont déjà arrivées pour une autre adresse : le questionnaire ne peut plus " +
+          "être renvoyé à quelqu'un d'autre. Créez un nouveau questionnaire pour ce destinataire.",
+      );
+    }
+  }
   const limite = new Date(maintenant.getTime() - DELAI_ANTI_DOUBLE_CLIC_MS);
   const r = await prisma.questionnaireAvantAudit.updateMany({
     where: { id, OR: [{ envoyeLe: null }, { envoyeLe: { lt: limite } }] },
@@ -118,20 +153,23 @@ export async function reserverEnvoi(
       expireLe: new Date(maintenant.getTime() + VALIDITE_JOURS * 86_400_000),
       closLe: null,
       destinataire: chiffrerParole(destinataire),
-      destinataireHash: hashEmailForLookup(destinataire),
+      destinataireHash: hash,
     },
   });
   return r.count === 1 ? avant : null;
 }
 
-/** La mise en file a échoué : on remet le questionnaire dans l'état d'avant. */
-export async function annulerEnvoi(
-  id: string,
-  avant: { envoyeLe: Date | null; expireLe: Date | null },
-): Promise<void> {
+/** La mise en file a échoué : on rétablit TOUT l'état d'avant (clôture et adresse comprises). */
+export async function annulerEnvoi(id: string, avant: EtatAvantEnvoi): Promise<void> {
   await prisma.questionnaireAvantAudit.update({
     where: { id },
-    data: { envoyeLe: avant.envoyeLe, expireLe: avant.expireLe },
+    data: {
+      envoyeLe: avant.envoyeLe,
+      expireLe: avant.expireLe,
+      closLe: avant.closLe,
+      destinataire: avant.destinataire,
+      destinataireHash: avant.destinataireHash,
+    },
   });
 }
 

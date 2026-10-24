@@ -67,11 +67,12 @@ export async function deposerQuestionnaireAction(fd: FormData): Promise<void> {
 export async function envoyerQuestionnaireAction(fd: FormData): Promise<void> {
   const rencontreId = champ(fd, "rencontreId");
   if (!uuid.safeParse(rencontreId).success) redirect(adminPath("fr", "/rendez-vous"));
+  let issue: "envoye" | "retenu_corbeille" = "envoye";
   try {
     await exigerAccesEchanges();
     const q = await lireDeLaRencontre(rencontreId);
     if (q === null) throw new MessagePourWill("Déposez d'abord le questionnaire.");
-    await envoyerQuestionnaire({
+    issue = await envoyerQuestionnaire({
       questionnaireId: q.id,
       destinataire: champ(fd, "destinataire"),
       prenom: champ(fd, "prenom"),
@@ -80,7 +81,13 @@ export async function envoyerQuestionnaireAction(fd: FormData): Promise<void> {
     retour(rencontreId, "erreur", messageAffichable(e));
   }
   revalidatePath(pageRencontre(rencontreId));
-  retour(rencontreId, "message", "Questionnaire envoyé.");
+  retour(
+    rencontreId,
+    "message",
+    issue === "retenu_corbeille"
+      ? "E-mail retenu dans la corbeille « E-mails à valider » : il partira quand vous l'aurez validé."
+      : "Questionnaire envoyé.",
+  );
 }
 
 export async function marquerQuestionnaireLuAction(fd: FormData): Promise<void> {
