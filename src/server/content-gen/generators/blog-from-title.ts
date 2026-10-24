@@ -477,6 +477,7 @@ ${glossaryContext ? `\n${glossaryContext}` : ""}
       seoScore: seo.score,
       readabilityScore: readability.score,
       wordCount,
+      ...(plan?.outline?.length ? { plannedH2Count: plan.outline.length } : {}),
       readingTimeMinutes,
       totalTokens: lastTokensInput + lastTokensOutput,
       totalCostUsd: accumulatedCostUsd,

@@ -61,6 +61,14 @@ import { trackExternalLinksUsage, detectHallucinations } from "@/data/external-l
 import { persistArticleCitations } from "@/server/content-gen/links/persist-citations";
 // Chantier perfection 2026-06-22 — gate de complétude qualité avant publication.
 import { validateDataQuality } from "@/server/content-gen/quality/data-quality-gate";
+// Audit 24/10/2026 (lot L2) — doctrine de surface rejouée à la publication +
+// garde fact-check à trois états (passer / non vérifié / quarantaine).
+import {
+  controlerSurfacePublication,
+  decisionGardeFactCheck,
+  resumerViolations,
+} from "@/server/content-gen/quality/barrieres-publication";
+import { financementPublicAutoriseAujourdhui } from "@/server/content-gen/quality/doctrine-check";
 // Refonte templates 2026-06-22 — images Unsplash intercalées dans le corps
 // (best-effort, doctrine « Unsplash uniquement », attribution CGU §6).
 import { injectBodyImages } from "@/server/content-gen/images/inject-body-images";
@@ -340,13 +348,26 @@ async function executePublishPipeline(
     enabled: true,
     minScore: 40,
   });
-  if (
-    !existingArticle &&
-    factCheckGate.enabled &&
-    cgJob.factCheckScore !== null &&
-    cgJob.factCheckScore !== undefined &&
-    cgJob.factCheckScore < factCheckGate.minScore
-  ) {
+  const decisionFactCheck = decisionGardeFactCheck({
+    actif: factCheckGate.enabled,
+    articleExiste: Boolean(existingArticle),
+    score: cgJob.factCheckScore,
+    seuil: factCheckGate.minScore,
+  });
+  if (decisionFactCheck === "non-verifie") {
+    // Un score vide veut dire « non vérifié », pas « refusé » : on publie, le
+    // fact-check post-publication corrige en place (décision Will 14/06/2026).
+    await logStep(
+      cgJob.id,
+      "validation",
+      "Fact-check : non vérifié à la publication (score vide)",
+      {
+        fact_check_score: null,
+        fact_check_status: "non_verifie",
+      },
+    );
+  }
+  if (decisionFactCheck === "quarantaine") {
     const errMsg = `factcheck_score_below_threshold:${cgJob.factCheckScore}`;
     await prisma.contentGenJob.update({
       where: { id: cgJob.id },
@@ -367,6 +388,51 @@ async function executePublishPipeline(
   const output = cgJob.outputJsonRaw as Record<string, unknown> | null;
   if (!output) {
     throw new Error(`ContentGenJob ${cgJob.id} has no outputJsonRaw`);
+  }
+
+  // Audit 24/10/2026 (lot L2) — la doctrine de surface est REJOUÉE ici, sur le
+  // JSON persisté, pour TOUS les chemins (juge, relecture humaine, actualités) :
+  // titre, méta, slug, réponse directe, FAQ, point clé, avis d'expert, tags,
+  // attributs alt/title et corps. Une faute dure ne se publie pas : le job
+  // repasse en `needs_review` (et sa fiche en attente) avec la cause, sans rien
+  // écrire d'autre. Le slot journalier est rendu par le `finally` de l'appelant.
+  const violationsSurface = controlerSurfacePublication(output, {
+    actualite: cgJob.contentType === "blog_from_rss",
+    financementPublicAutorise: financementPublicAutoriseAujourdhui(),
+  });
+  // Un article déjà inséré pour ce job (retry après insertion) n'est jamais retenu ici.
+  if (!existingArticle && violationsSurface.length > 0) {
+    const resume = resumerViolations(violationsSurface);
+    await logStepError(
+      cgJob.id,
+      "doctrine_check",
+      `Publication refusée : interdit de doctrine à la publication (${resume})`,
+      {
+        faults: violationsSurface.map((v) => ({
+          code: v.code,
+          champ: v.champ,
+          extrait: v.extrait,
+        })),
+      },
+    );
+    await prisma.contentGenJob.update({
+      where: { id: cgJob.id },
+      data: {
+        status: "needs_review",
+        errorMessage: `doctrine_publication: ${resume}`.slice(0, 500),
+      },
+    });
+    await prisma.reviewQueue.update({
+      where: { id: reviewQueueId },
+      data: {
+        status: "pending",
+        reviewNotes: `Retenu à la publication (interdit de doctrine) : ${resume}`.slice(0, 1000),
+      },
+    });
+    console.log(
+      JSON.stringify({ event: "publish_doctrine_hold", jobId: cgJob.id, faults: resume }),
+    );
+    return;
   }
 
   // Troncature défensive aux limites des colonnes DB (article_translations :
