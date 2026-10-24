@@ -47,14 +47,20 @@ import type { Tx, BaseTransactionnelle } from "@/features/dossier-client/base";
 import { HORS_RENCONTRES_DE_TEST } from "@/features/dossier-client/client-test";
 import { assurerRencontrePourCalendly } from "@/features/dossier-client/rencontre-calendly";
 import {
+  assurerLesFichesProspectAuto,
+  type BilanFichesAuto,
+} from "@/features/dossier-client/fiche-auto";
+import {
   aEuLieu,
   estDuMoisDuBilan,
   fenetreDuBilan,
 } from "@/features/admin-rendezvous/rendez-vous-tenu";
 import { dayKeyInParis } from "@/lib/calendar-grid";
 import {
+  envoyerDoublonsEnAttente,
   leverPanneDuBalayage,
   signalerPanneDuBalayage,
+  signalerRendezVousAClasser,
   VISIO_BALAYAGE_EN_PANNE,
   type CreerAlerte,
   type Notifier,
@@ -87,8 +93,18 @@ export interface CouvertureDuMois {
   readonly sansRien: number;
 }
 
+/**
+ * Une rencontre dont le traitement automatique a PLANTÉ (erreur, pas doute) : c'est
+ * une vraie panne, elle passe par l'étape en échec. Les DOUTES, eux, ont leur alerte
+ * propre (`signalerRendezVousAClasser`) et ne touchent jamais `etapesEnEchec`.
+ */
+class FicheAutoPlantee extends Error {
+  override name = "FicheAutoPlantee";
+}
+
 export interface ResultatBalayage {
   readonly rencontresAssurees: number;
+  readonly fichesAuto: BilanFichesAuto;
   readonly comptesRendusAValider: number;
   readonly suitesEchues: number;
   readonly veille: number;
@@ -314,6 +330,48 @@ export async function passerBalayage(
     return n;
   });
 
+  // 2 bis. La fiche prospect des rendez-vous Calendly, sans clic (DOSSIER_FICHE_AUTO).
+  // Un doute n'est jamais forcé : la rencontre reste « à classer » et l'étape le signale.
+  let fichesAuto: BilanFichesAuto = {
+    mode: "coupe",
+    creees: 0,
+    rattachees: 0,
+    doutes: 0,
+    plantees: 0,
+    relancesEnEchec: 0,
+    creeraient: 0,
+    rattacheraient: 0,
+    doublons: [],
+    aClasser: { nombre: 0, raisons: {}, empreinte: "" },
+  };
+  let fichesLues = false;
+  await etape<void>("fiches-auto", undefined, async () => {
+    fichesAuto = await assurerLesFichesProspectAuto(db);
+    fichesLues = true;
+    if (fichesAuto.plantees > 0) throw new FicheAutoPlantee();
+  });
+  // Les fiches créées avec un doute d'identité : l'alerte est écrite avec la fiche (même
+  // transaction) ; ici on l'ENVOIE, tant qu'elle n'est pas partie. Jamais une panne.
+  await etape<void>("fiches-auto-doublon", undefined, async () => {
+    await envoyerDoublonsEnAttente(db, {
+      notifier: deps.notifier,
+      maintenant,
+      ...(deps.creerAlerte ? { creer: deps.creerAlerte } : {}),
+    });
+  });
+  // Les rendez-vous laissés à Will (refus de la porte, sans nom) : alerte PROPRE « N rendez-vous à classer », jamais une panne.
+  // (Coupé ou à blanc : nombre 0, donc l'alerte éventuelle est résolue. Passage en échec : on n'y touche pas.)
+  const aClasser = fichesAuto.aClasser;
+  if (fichesLues) {
+    await etape<void>("fiches-auto-alerte", undefined, async () => {
+      await signalerRendezVousAClasser(db, aClasser, {
+        notifier: deps.notifier,
+        maintenant,
+        ...(deps.creerAlerte ? { creer: deps.creerAlerte } : {}),
+      });
+    });
+  }
+
   // 3 à 6. Les compteurs (les mêmes lectures que le panneau de la console).
   const comptesRendusAValider = await etape("comptes-rendus", 0, () =>
     compterComptesRendusAValider(db, maintenant),
@@ -326,6 +384,7 @@ export async function passerBalayage(
 
   return {
     rencontresAssurees,
+    fichesAuto,
     comptesRendusAValider,
     suitesEchues,
     veille,

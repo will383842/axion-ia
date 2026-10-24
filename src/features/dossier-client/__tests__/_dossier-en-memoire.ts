@@ -172,6 +172,7 @@ export function rendezVousCalendly(partiel: Partial<Ligne> = {}): Ligne {
     eventTypeName: "Discutons de votre projet IA",
     linkedJobApplicationId: null,
     status: "scheduled",
+    capturedAt: new Date(),
     startTime: new Date("2026-10-06T08:00:00Z"),
     endTime: new Date("2026-10-06T08:45:00Z"),
     inviteeName: "Camille Prospect",

@@ -324,7 +324,8 @@ export interface EntreeValiderRattachement {
   readonly rencontreId: string;
   readonly clientId: string;
   readonly projetId?: string | null;
-  readonly parAdminId: string;
+  /** `null` : geste AUTOMATIQUE (fiche créée au rendez-vous) — aucune signature de Will. */
+  readonly parAdminId: string | null;
 }
 
 /**
