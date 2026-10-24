@@ -15,7 +15,7 @@
 
 import { prisma } from "@/lib/prisma";
 import type { KbAudience, KbType, Locale } from "../../../prisma/generated/client";
-import type { KbSearchResult } from "./search-fts";
+import { clauseStatuts, type KbSearchResult, type KbSearchStatut } from "./search-fts";
 
 export interface KbVectorSearchParams {
   /** Embedding 1024-dim de la requête (produit via generateEmbedding). */
@@ -25,6 +25,8 @@ export interface KbVectorSearchParams {
   readonly audiences?: readonly KbAudience[];
   readonly sectorTagSlugs?: readonly string[];
   readonly limit?: number;
+  /** Statuts acceptés ; défaut `['published', 'deprecated']` (inchangé). */
+  readonly statuts?: readonly KbSearchStatut[];
 }
 
 interface RawRow {
@@ -80,7 +82,7 @@ export async function searchKnowledgeVector(params: KbVectorSearchParams): Promi
     JOIN knowledge_entries ke ON ke.id = kt.entry_id
     WHERE kt.locale = $1::"Locale"
       AND ke.deleted_at IS NULL
-      AND ke.status IN ('published', 'deprecated')
+      AND ${clauseStatuts(params.statuts)}
       AND ke.audience = ANY($2::"KbAudience"[])
       AND ke.confidentiality = 'public'
       AND (ke.published_at IS NULL OR ke.published_at <= NOW())

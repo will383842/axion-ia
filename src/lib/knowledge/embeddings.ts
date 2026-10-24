@@ -35,6 +35,12 @@ export interface EmbeddingResult {
   readonly tokensUsed: number;
 }
 
+/**
+ * Type d'entrée Voyage : `document` pour ce qu'on range, `query` pour la question
+ * posée à la recherche (Voyage ajoute alors un préfixe interne qui améliore le rapprochement).
+ */
+export type EmbeddingInputType = "document" | "query";
+
 export class EmbeddingConfidentialityRefusal extends Error {
   constructor(public readonly confidentiality: KbConfidentiality) {
     super(
@@ -116,7 +122,11 @@ function alertVoyageAuthFailure(status: number, detail: string): void {
  * de dimension inattendue (pas de fallback dimension-incompatible : OpenAI = 1536
  * ≠ 1024 → poisonnerait l'index vector(1024) ; le worker BullMQ retente).
  */
-async function embedWithVoyage(text: string, apiKey: string): Promise<EmbeddingResult> {
+async function embedWithVoyage(
+  text: string,
+  apiKey: string,
+  inputType: EmbeddingInputType,
+): Promise<EmbeddingResult> {
   const res = await fetch(VOYAGE_API_URL, {
     method: "POST",
     headers: {
@@ -126,7 +136,7 @@ async function embedWithVoyage(text: string, apiKey: string): Promise<EmbeddingR
     body: JSON.stringify({
       input: [text],
       model: EMBEDDING_MODEL_NAME,
-      input_type: "document",
+      input_type: inputType,
       // Force la dimension de sortie à 1024 (Matryoshka) pour matcher la colonne
       // pgvector(1024) + l'index HNSW, quel que soit le défaut du modèle.
       output_dimension: EMBEDDING_DIMENSION,
@@ -169,6 +179,7 @@ async function embedWithVoyage(text: string, apiKey: string): Promise<EmbeddingR
 export async function generateEmbedding(
   text: string,
   confidentiality: KbConfidentiality = "public",
+  inputType: EmbeddingInputType = "document",
 ): Promise<EmbeddingResult> {
   // Refus dur (Agent 10 §10.5 + Agent 9 §9.10 audit Phase A V3) — AVANT tout appel réseau.
   if (!isExternalApiAllowed(confidentiality)) {
@@ -177,7 +188,7 @@ export async function generateEmbedding(
 
   const apiKey = process.env.VOYAGE_API_KEY;
   if (apiKey) {
-    return embedWithVoyage(text, apiKey);
+    return embedWithVoyage(text, apiKey, inputType);
   }
   return stubEmbedding(text);
 }
