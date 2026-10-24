@@ -584,7 +584,9 @@ export default async function sitemap(props: {
     case "blog":
       // Les articles portent leur `publishedAt` réel via `lastModFor` ; cette
       // date ne sert que de défaut pour les entrées sans date propre.
-      return filterEnIfDisabled(await buildBlogSitemap(editorialFor("blog"), props.strict === true));
+      return filterEnIfDisabled(
+        await buildBlogSitemap(editorialFor("blog"), props.strict === true),
+      );
     case "faq":
       return filterEnIfDisabled(await buildFaqSitemap(editorialFor("faq")));
     case "help":
