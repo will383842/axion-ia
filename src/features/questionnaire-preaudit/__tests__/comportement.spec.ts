@@ -523,27 +523,38 @@ describe("l'envoi : corbeille de validation, rollback complet, changement d'adre
     expect(q["closLe"]).toBeInstanceOf(Date);
   });
 
-  it("refuse de changer d'adresse une fois qu'une réponse est arrivée", async () => {
+  it("refuse de changer d'adresse dès qu'un envoi a abouti, même sans réponse", async () => {
     allumer();
     await envoyerQuestionnaire(args(questionnaire({ envoyeLe: null }), "premiere@exemple.fr"));
     const q = base.q[0] as Ligne;
     q["envoyeLe"] = new Date(Date.now() - 3_600_000);
-    base.e.push({ questionnaireId: q["id"], recuLe: new Date(), mode: "main", donnees: "x" });
     base.enqueue.mockClear();
     await expect(envoyerQuestionnaire(args(q, "autre@exemple.fr"))).rejects.toThrow(
-      /nouveau questionnaire/,
+      /rencontre de cette personne/,
     );
     expect(base.enqueue).not.toHaveBeenCalled();
     // la même adresse, elle, peut recevoir un renvoi
     await expect(envoyerQuestionnaire(args(q, "premiere@exemple.fr"))).resolves.toBe("envoye");
   });
 
-  it("sans réponse reçue, l'adresse peut encore être corrigée", async () => {
+  it("l'effacement du dirigeant (empreinte à NULL) ne libère pas la garde", async () => {
     allumer();
-    await envoyerQuestionnaire(args(questionnaire({ envoyeLe: null }), "faute@exemple.fr"));
+    await envoyerQuestionnaire(args(questionnaire({ envoyeLe: null }), "premiere@exemple.fr"));
     const q = base.q[0] as Ligne;
     q["envoyeLe"] = new Date(Date.now() - 3_600_000);
-    await expect(envoyerQuestionnaire(args(q, "bonne@exemple.fr"))).resolves.toBe("envoye");
+    q["destinataire"] = null;
+    q["destinataireHash"] = null;
+    base.enqueue.mockClear();
+    await expect(envoyerQuestionnaire(args(q, "autre@exemple.fr"))).rejects.toThrow(
+      /rencontre de cette personne/,
+    );
+    expect(base.enqueue).not.toHaveBeenCalled();
+  });
+
+  it("jamais envoyé : l'adresse est libre", async () => {
+    allumer();
+    const q = questionnaire({ envoyeLe: null });
+    await expect(envoyerQuestionnaire(args(q, "n-importe@exemple.fr"))).resolves.toBe("envoye");
   });
 });
 

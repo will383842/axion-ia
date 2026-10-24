@@ -134,16 +134,16 @@ export async function reserverEnvoi(
   });
   if (avant === null) return null;
   const hash = hashEmailForLookup(destinataire);
-  if (avant.destinataireHash !== null && avant.destinataireHash !== hash) {
-    const recues = await prisma.questionnaireAvantAuditEnvoi.count({
-      where: { questionnaireId: id },
-    });
-    if (recues > 0) {
-      throw new MessagePourWill(
-        "Des réponses sont déjà arrivées pour une autre adresse : le questionnaire ne peut plus " +
-          "être renvoyé à quelqu'un d'autre. Créez un nouveau questionnaire pour ce destinataire.",
-      );
-    }
+  // Dès qu'un envoi a abouti, l'adresse est FIGÉE (même sans réponse, même si l'effacement du
+  // dirigeant a remis l'empreinte à NULL) : le lien ne dépend pas de l'adresse, donc l'ancien
+  // destinataire pourrait encore répondre par l'ancien lien et ses réponses se mêleraient à
+  // celles du nouveau.
+  if (avant.envoyeLe !== null && avant.destinataireHash !== hash) {
+    throw new MessagePourWill(
+      "Ce questionnaire a déjà été envoyé à une autre adresse et ne peut plus changer de " +
+        "destinataire. Pour écrire à quelqu'un d'autre, déposez le questionnaire sur la " +
+        "rencontre de cette personne (un questionnaire par rencontre).",
+    );
   }
   const limite = new Date(maintenant.getTime() - DELAI_ANTI_DOUBLE_CLIC_MS);
   const r = await prisma.questionnaireAvantAudit.updateMany({
