@@ -52,6 +52,8 @@ import { escapeLlmInput } from "../shared/prompt-input-escape";
 import { logStep } from "../shared/generation-log";
 import type { Generator, GeneratorBaseInput, GeneratorOutput } from "./types";
 import { getBrandVoiceForContentType } from "../brand/brand-voice";
+import { consigneAngle } from "../brand/positionnement";
+import { REGLE_CHIFFRES_SOURCES, sectionChiffresVerifies } from "../kb/chiffres-verifies";
 import { pickInternalExpert, buildExpertQuote } from "../brand/expert-bank";
 import { getGlossaryContext } from "../brand/glossary-context";
 import { injectInternalLinks } from "../links/internal-link-catalog";
@@ -67,24 +69,24 @@ const BUDGET_CAP_USD = 0.1;
 const SYSTEM_PROMPT = `Tu es un journaliste expert en IA produisant un article d'actualité en français optimisé SEO/AEO 2026.
 Règles absolues :
 - Introduction : commence par l'information elle-même, pas par "Chez Axion-IA" — l'intro est centrée sur l'actu.
-- Style journalistique : réactif, factuel, contextuel. Explique l'info, donne le contexte marché, puis impact concret pour les entreprises françaises de toutes tailles (TPE, PME, ETI, grands comptes), en nuançant selon la taille quand c'est pertinent.
+- Style journalistique : réactif, factuel, contextuel. Explique l'info, donne le contexte marché, puis impact concret pour les entreprises françaises de toutes tailles, en nuançant selon la taille quand c'est pertinent.
 - INTERDICTION DE CITER LA SOURCE : ne mentionne JAMAIS dans le body visible le nom du média/site/source d'origine ni d'expressions du type "Selon X", "d'après Y", "le média Z rapporte". Présente l'information comme un constat factuel ré-analysé sous le prisme Axion-IA. (Traçabilité préservée côté machine via JSON-LD \`isBasedOn\` au publish — AI Act art. 50.)
 - Ré-écriture TOTALE obligatoire (garde-fou anti-régurgitation Jaccard 5-gram BLOQUANT à 0.10 — échec = article NON indexé) : n'emprunte AUCUNE tournure du résumé source. Change l'ANGLE (pars de l'impact opérationnel pour les entreprises françaises, jamais du fil chronologique de la source), l'ORDRE des idées, le vocabulaire et la structure de phrases. Aucune séquence de 5 mots consécutifs ne doit être identique à la source. Traite le résumé comme une matière première factuelle à ré-analyser, jamais comme un texte à paraphraser.
 - Structure : 3 à 6 sous-titres <h2> (section Axion-IA finale incluse), article scannable, aucun <h2> vide.
-- Section Axion-IA : UNE section H2 en fin d'article ("Ce que cela signifie pour les entreprises françaises") — angle conseil, en distinguant si utile TPE/PME vs ETI/grands comptes.
-- CTA discret en fin d'article uniquement : "Axion-IA accompagne les entreprises (TPE, PME, ETI, grands comptes) dans leur transformation IA — contact@axion-ia.com."
+- Section Axion-IA : UNE section H2 en fin d'article ("Ce que cela signifie pour les entreprises françaises") — angle conseil, en distinguant si utile les petites structures et les grands comptes.
+- CTA discret en fin d'article uniquement : "Axion-IA accompagne les entreprises dans leur transformation IA — contact@axion-ia.com."
 - Le keyword principal DOIT apparaître textuellement dans le H1.
 - 0 délai chiffré, 0 mention de frais de déplacement, 0 prix en dur.
-- Longueur : vise 550-750 mots (digest d'actualité commenté). Minimum STRICT 550 mots. Si la source est courte, développe l'analyse de marché et l'angle opérationnel Axion-IA (impacts concrets pour TPE/PME/ETI, ce que ça change pour un dirigeant). N'INVENTE JAMAIS de faits pour rallonger : enrichis uniquement avec le contexte marché vérifiable et l'angle Axion-IA (section finale). Reste plus court qu'un guide, mais suffisamment développé pour être autonome et utile.
+- Longueur : vise 550-750 mots (digest d'actualité commenté). Minimum STRICT 550 mots. Si la source est courte, développe l'analyse de marché et l'angle opérationnel Axion-IA (impacts concrets pour une entreprise de quelques dizaines de personnes, ce que ça change pour un dirigeant). N'INVENTE JAMAIS de faits pour rallonger : enrichis uniquement avec le contexte marché vérifiable et l'angle Axion-IA (section finale). Reste plus court qu'un guide, mais suffisamment développé pour être autonome et utile.
 - 4 à 6 questions FAQ réelles optimisées Featured Snippet — réponse answer-first : 1ère phrase directe autonome (≤ 25 mots, citable seule), puis 1-2 phrases ; 40 à 55 mots au total.
 - Sous CHAQUE <h2>, commence la section par une réponse autonome de 40 à 60 mots, en une phrase complète qui répond directement au titre de la section et reste citable hors contexte. Enveloppe-la dans <p data-aeo="answer">…</p>. Le reste du développement suit ensuite.
-- Inclure au moins 2 statistiques chiffrées récentes avec source nommée et lien inline (ex. « 31 % des PME… (DARES, 2024) [lien] »), UNIQUEMENT issues des sources internes/d'autorité fournies — jamais inventées.
+- ${REGLE_CHIFFRES_SOURCES}
 - À la première occurrence d'un terme technique, encadre-le avec <dfn> ou <span class="glossary-term" title="définition courte">terme</span>.
 - Quand c'est pertinent (1 à 2 max), utilise un encadré : <aside class="callout callout-warning"><p class="callout-label">Attention</p><p>…</p></aside>. Variantes de classe : callout-info, callout-note, callout-warning, callout-danger.
 - "metaTitle": "OBLIGATOIREMENT 50 à 60 caractères (compte les espaces), keyword principal au tout début. NE JAMAIS sous 50 caractères : si trop court, ajoute une précision utile (bénéfice, secteur). NE PAS dépasser 60."
 - "metaDescription": "OBLIGATOIREMENT 140 à 160 caractères (compte les espaces), phrase complète avec bénéfice clair + keyword naturel. NE JAMAIS sous 140 caractères : développe jusqu'à la fourchette. NE PAS dépasser 160."
 - "directAnswer": "OBLIGATOIREMENT 40 à 80 mots (ni moins, ni plus), réponse directe autonome citable seule par une IA. NE JAMAIS sous 40 mots."
-- INTERDIT (marketing-hype, doctrine §21 — un seul de ces mots fait REJETER le contenu) : « unique », « meilleur », « la meilleure », « leader », « n°1 », « révolutionnaire », « exceptionnel », « incroyable », « incontournable », « garanti », « sans risque », « instantané ». Reste factuel et sobre.
+- INTERDIT (marketing-hype, doctrine §21 — chaque mot fait baisser la note qualité ; « garanti » et « sans risque » promettant un résultat bloquent la publication) : « unique », « meilleur », « la meilleure », « leader », « n°1 », « révolutionnaire », « exceptionnel », « incroyable », « incontournable », « garanti », « sans risque », « instantané ». Reste factuel et sobre.
 - "keyTakeaway": 1 à 2 phrases = LE point clé à retenir (synthèse autonome, citable telle quelle par une IA).
 - "expertTake": 1 à 2 phrases = prise de position d'expert (perspective/insight concret), SANS statistique inventée, signée par l'expert nommé dans le prompt utilisateur.
 - Output JSON strict : { title, metaTitle, metaDescription, slug, directAnswer, bodyHtml, faq:[{q,a}], tags, keyTakeaway, expertTake }
@@ -196,6 +198,8 @@ ${rssSection ? `\n${rssSection}\n` : ""}
 ${kbContext}
 ${externalLinksCtx.markdownSection}${feedbackSection}
 ${glossaryContext ? `\n${glossaryContext}` : ""}
+${consigneAngle(input.jobId)}
+${sectionChiffresVerifies()}
 ## Avis d'expert
 "expertTake" = une prise de position de ${expert.name} (${expert.title}) : perspective d'expert concise et utile sur le sujet, sans chiffre inventé.
 ## Output attendu (JSON)
