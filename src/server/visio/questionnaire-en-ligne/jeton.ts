@@ -43,8 +43,31 @@ function cle(): Buffer | null {
   return createHash("sha256").update("axion-questionnaire-cadrage|dev").digest();
 }
 
-function signer(cleHmac: Buffer, questionnaireId: string): string {
-  return createHmac("sha256", cleHmac).update(`${DOMAINE}${questionnaireId}`).digest("base64url");
+function signer(cleHmac: Buffer, questionnaireId: string, domaine: string = DOMAINE): string {
+  return createHmac("sha256", cleHmac).update(`${domaine}${questionnaireId}`).digest("base64url");
+}
+
+/**
+ * Domaine PROPRE du questionnaire de pré-audit (2026-10-24) : le jeton d'un questionnaire de
+ * cadrage n'ouvre jamais un pré-audit, et inversement (même clé, domaines HMAC distincts).
+ */
+const DOMAINE_PREAUDIT = "questionnaire-preaudit:v1:";
+
+export function jetonPreaudit(id: string): string | null {
+  const i = id.toLowerCase();
+  if (!UUID.test(i)) return null;
+  const k = cle();
+  return k === null ? null : signer(k, i, DOMAINE_PREAUDIT);
+}
+
+export function jetonPreauditValide(id: string, jeton: string): boolean {
+  const i = id.toLowerCase();
+  if (!UUID.test(i) || !JETON.test(jeton)) return false;
+  const k = cle();
+  if (k === null) return false;
+  const attendu = Buffer.from(signer(k, i, DOMAINE_PREAUDIT), "utf8");
+  const recu = Buffer.from(jeton, "utf8");
+  return attendu.length === recu.length && timingSafeEqual(attendu, recu);
 }
 
 /** Le jeton d'un questionnaire, ou `null` (production sans secret, identifiant invalide). */

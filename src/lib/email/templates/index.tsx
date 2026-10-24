@@ -229,6 +229,10 @@ import {
   QuestionnaireReponsesRecuesEmail,
   questionnaireReponsesRecuesSubject,
 } from "./questionnaire-reponses-recues";
+import {
+  QuestionnaireAvantAuditEmail,
+  questionnaireAvantAuditSubject,
+} from "./questionnaire-avant-audit";
 import { OpcoSuiviEntrepriseEmail, opcoSuiviEntrepriseSubject } from "./opco-suivi-entreprise";
 import { RecueilBesoinEmail, recueilBesoinSubject } from "./recueil-besoin";
 import {
@@ -672,6 +676,11 @@ const TEMPLATES: TemplateMap = {
   "questionnaire-reponses-recues": {
     subject: questionnaireReponsesRecuesSubject,
     component: QuestionnaireReponsesRecuesEmail,
+  },
+  // Questionnaire de pré-audit (2026-10-24) — envoyé UNIQUEMENT par clic de Will, avec aperçu.
+  "questionnaire-avant-audit": {
+    subject: questionnaireAvantAuditSubject,
+    component: QuestionnaireAvantAuditEmail,
   },
   // QNC L03 — recueil du besoin, temps 1 : questionnaire envoyé à l'ENTREPRISE
   // (premier envoi et relances), `server/qualiopi/recueil/envoi-email.ts`.

@@ -158,7 +158,9 @@ describe("le jeu de données d'exemple couvre tous les gabarits", () => {
     // `qualiopi-presence-confirmation` (avec sa relance, UN fichier) et
     // `qualiopi-presence-entreprise`. Champs tous facultatifs ; `lienPresence`
     // a sa valeur d'exemple.
-    expect(tous.length).toBe(78);
+    // RELEVÉ À 79 (2026-10-24) : `questionnaire-avant-audit`, le lien du questionnaire de pré-audit
+    // envoyé par clic de Will. Champs tous facultatifs.
+    expect(tous.length).toBe(79);
   });
 
   it.each(tous.map((g) => g.nom))("%s : tous ses champs requis ont une valeur d'exemple", (nom) => {

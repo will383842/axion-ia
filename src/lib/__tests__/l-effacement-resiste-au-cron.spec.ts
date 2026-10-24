@@ -38,11 +38,16 @@ import { join } from "node:path";
 const updateMany = vi.fn();
 const suiviUpdateMany = vi.fn();
 const queryRaw = vi.fn();
+const preDeleteMany = vi.fn();
+const preParentUpdateMany = vi.fn();
 vi.mock("@/lib/prisma", () => ({
   prisma: {
     calendlyEvent: { updateMany: (...a: unknown[]) => updateMany(...a) },
     // Le suivi après l'appel (2026-09-27) : sa note part avec le reste.
     rendezVousSuivi: { updateMany: (...a: unknown[]) => suiviUpdateMany(...a) },
+    // Questionnaire de pré-audit (2026-10-24) : réponses effacées avec la personne.
+    questionnaireAvantAuditEnvoi: { deleteMany: (...a: unknown[]) => preDeleteMany(...a) },
+    questionnaireAvantAudit: { updateMany: (...a: unknown[]) => preParentUpdateMany(...a) },
     // 🔑 Ajouté le 2026-08-31 avec l'élargissement de l'effacement à la charge
     // brute : `eraseCalendlyEventsForEmail` cherche d'abord les lignes dont le
     // `raw_payload` contient l'adresse, parce qu'une réservation non enrichie a
@@ -60,6 +65,8 @@ beforeEach(() => {
   updateMany.mockResolvedValue({ count: 1 });
   suiviUpdateMany.mockResolvedValue({ count: 1 });
   queryRaw.mockResolvedValue([]);
+  preDeleteMany.mockResolvedValue({ count: 0 });
+  preParentUpdateMany.mockResolvedValue({ count: 0 });
 });
 
 describe("la note du suivi après l'appel", () => {
@@ -75,6 +82,36 @@ describe("la note du suivi après l'appel", () => {
     expect(suiviUpdateMany.mock.invocationCallOrder[0]).toBeLessThan(
       updateMany.mock.invocationCallOrder[0] ?? 0,
     );
+  });
+});
+
+describe("questionnaire de pré-audit (2026-10-24)", () => {
+  it("efface les réponses du DIRIGEANT seul, retrouvé par réservation ou adresse d'envoi", async () => {
+    const { eraseCalendlyEventsForEmail } = await import("../rgpd-erase");
+    await eraseCalendlyEventsForEmail("temoin@example.invalid");
+    const ou = {
+      OR: [
+        { rencontre: { calendlyEvent: { inviteeEmail: "temoin@example.invalid" } } },
+        { destinataireHash: "hash" },
+      ],
+    };
+    expect(preDeleteMany).toHaveBeenCalledWith({ where: { mode: "main", questionnaire: ou } });
+    expect(preParentUpdateMany).toHaveBeenCalledWith({
+      where: ou,
+      data: { luLe: null, luParId: null, destinataire: null, destinataireHash: null },
+    });
+  });
+
+  it("efface les réponses d'un salarié par son code, sans toucher au dirigeant", async () => {
+    const { eraseQuestionnairePreauditMembre } = await import("../rgpd-erase");
+    preDeleteMany.mockResolvedValue({ count: 1 });
+    expect(await eraseQuestionnairePreauditMembre("ref1", "m42")).toBe(1);
+    expect(preDeleteMany).toHaveBeenCalledWith({
+      where: { mode: { in: ["emp", "it"] }, membre: "m42", questionnaire: { ref: "ref1" } },
+    });
+    preDeleteMany.mockClear();
+    expect(await eraseQuestionnairePreauditMembre("", "m42")).toBe(0);
+    expect(preDeleteMany).not.toHaveBeenCalled();
   });
 });
 

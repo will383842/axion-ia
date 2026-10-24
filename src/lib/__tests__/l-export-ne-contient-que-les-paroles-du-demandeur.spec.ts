@@ -28,6 +28,8 @@ const donnees = vi.hoisted(() => ({
   segments: [] as unknown[],
   faits: [] as unknown[],
   participations: [] as unknown[],
+  preaudit: [] as unknown[],
+  preauditAppels: [] as unknown[],
 }));
 
 vi.mock("@/lib/security/email-hash", () => ({
@@ -73,6 +75,13 @@ vi.mock("@/lib/prisma", () => ({
       ],
     },
     questionnaireCadrage: { findMany: async () => [] },
+    questionnaireAvantAudit: { findMany: async () => [] },
+    questionnaireAvantAuditEnvoi: {
+      findMany: async (arg: unknown) => {
+        donnees.preauditAppels.push(arg);
+        return donnees.preaudit;
+      },
+    },
     questionnaireQuestion: { findMany: async () => [] },
     emailSuivi: { findMany: async () => [] },
   },
@@ -92,6 +101,8 @@ afterAll(() => {
 });
 
 beforeEach(() => {
+  donnees.preaudit = [];
+  donnees.preauditAppels = [];
   donnees.participations = [
     { id: "p-alice", role: "client", voixValideeLe: new Date("2026-10-01"), rencontreId: "r1" },
   ];
@@ -284,4 +295,34 @@ describe("l'export ne contient que les paroles du demandeur", () => {
       expect(ex.vosPropos.map((f) => f.type)).toEqual(["nb_participants"]);
     },
   );
+});
+
+describe("questionnaire de pré-audit dans l'export (2026-10-24)", () => {
+  it("ne demande que les réponses du DIRIGEANT, par réservation OU adresse d'envoi", async () => {
+    await exporterDossierClientPour("Alice@exemple.fr");
+    const where = (donnees.preauditAppels[0] as { where: Record<string, unknown> }).where;
+    expect(where).toEqual({
+      mode: "main",
+      questionnaire: {
+        OR: [
+          { rencontre: { calendlyEvent: { inviteeEmail: "Alice@exemple.fr" } } },
+          { destinataireHash: "h:alice@exemple.fr" },
+        ],
+      },
+    });
+  });
+
+  it("rend les réponses déchiffrées, jamais le texte chiffré", async () => {
+    donnees.preaudit = [
+      {
+        mode: "main",
+        recuLe: new Date("2026-10-20"),
+        donnees: chiffrerParole('{"donnees":{"ent_nom":"REPONSE-DU-DIRIGEANT"}}'),
+      },
+    ];
+    const ex = await exporterDossierClientPour("alice@exemple.fr");
+    expect(ex.questionnairesPreaudit).toHaveLength(1);
+    expect(JSON.stringify(ex)).toContain("REPONSE-DU-DIRIGEANT");
+    expect(JSON.stringify(ex)).not.toContain("enc:v1:");
+  });
 });

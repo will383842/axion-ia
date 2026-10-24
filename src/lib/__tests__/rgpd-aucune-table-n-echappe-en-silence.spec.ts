@@ -160,6 +160,16 @@ const INVENTAIRE: ReadonlyArray<{ modele: string; statut: Statut; note: string }
     note: "effacement ou conservation légale motivée (`eraseReseauApporteurForEmail`).",
   },
 
+  {
+    // Questionnaire de pré-audit (2026-10-24) — l'adresse à qui Will a envoyé le lien est
+    // CHIFFRÉE (`destinataire`) avec une empreinte de recherche. L'export art. 15 rend les
+    // réponses du dirigeant (`rgpd-dossier-client.ts`) ; l'effacement supprime ses réponses et
+    // met l'adresse et l'empreinte à NULL (`eraseCalendlyEventsForEmail`).
+    modele: "QuestionnaireAvantAudit",
+    statut: "traite",
+    note: "adresse et empreinte mises à NULL, réponses du dirigeant supprimées (`eraseCalendlyEventsForEmail`).",
+  },
+
   // ── Comptes internes : ce ne sont pas des personnes concernées par la route
   //    publique d'exercice des droits, mais des accès de l'organisme. ─────────
   {
