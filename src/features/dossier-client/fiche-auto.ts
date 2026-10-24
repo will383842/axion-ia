@@ -560,6 +560,7 @@ async function doutesVus(db: Tx): Promise<Array<{ id: string; raison: string }>>
   const lignes = await db.activityLog.findMany({
     where: { action: ACTION_DOUTE_VU, targetType: "Rencontre", targetId: { not: null } },
     select: { targetId: true, changes: true },
+    orderBy: { createdAt: "asc" },
     take: 5000,
   });
   return lignes.flatMap((l) => {
@@ -667,7 +668,14 @@ export async function assurerLesFichesProspectAuto(
     for (const t of tous) {
       if (ouvertsIds.has(t.id)) raisons[t.raison] = (raisons[t.raison] ?? 0) + 1;
     }
-    aClasser = { nombre: ouvertsIds.size, raisons, empreinte: empreinteDe(ouvertsIds) };
+    const raisonsTriees = Object.fromEntries(
+      Object.entries(raisons).sort(([a], [b]) => a.localeCompare(b)),
+    );
+    aClasser = {
+      nombre: ouvertsIds.size,
+      raisons: raisonsTriees,
+      empreinte: empreinteDe(ouvertsIds),
+    };
   }
   return {
     mode,

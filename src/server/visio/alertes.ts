@@ -367,9 +367,9 @@ export async function signalerRendezVousAClasser(
       data: { resolue: true, resolueAt: maintenant },
     });
   }
-  const detail = Object.entries(etat.raisons)
-    .map(([r, n]) => `${n} ${r}`)
-    .join(", ");
+  // Triées : le message (donc l'identité de l'alerte) ne dépend pas de l'ordre de la base.
+  const raisonsTriees = Object.entries(etat.raisons).sort(([a], [b]) => a.localeCompare(b));
+  const detail = raisonsTriees.map(([r, n]) => `${n} ${r}`).join(", ");
   const titre = `${etat.nombre} rendez-vous à classer à la main`;
   const r = await signalerUneFois(
     db,
@@ -387,7 +387,7 @@ export async function signalerRendezVousAClasser(
       metadata: {
         nombre: etat.nombre,
         empreinte: etat.empreinte,
-        raisons: Object.entries(etat.raisons).map(([r, n]) => `${r}:${n}`),
+        raisons: raisonsTriees.map(([r, n]) => `${r}:${n}`),
       },
     },
     {

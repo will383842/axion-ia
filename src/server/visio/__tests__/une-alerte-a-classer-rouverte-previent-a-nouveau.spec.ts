@@ -79,6 +79,21 @@ describe("l'alerte « à classer » : une empreinte, pas une heure", () => {
     expect(notifier).toHaveBeenCalledTimes(1);
   });
 
+  it("mêmes raisons dans un autre ordre, alerte fermée à la main : aucun envoi", async () => {
+    const notifier = vi.fn(async () => envoye);
+    const base1 = { ...etatDe(["r1", "r2"]), raisons: { sans_nom: 1, refus_porte: 1 } };
+    const base2 = { ...base1, raisons: { refus_porte: 1, sans_nom: 1 } };
+    await signaler(base1, notifier);
+    const ligne = memoire.tables["alerteSysteme"]?.[0];
+    if (ligne) {
+      ligne["resolue"] = true;
+      ligne["resolueAt"] = new Date();
+    }
+    await signaler(base2, notifier, "2026-10-25T09:05:00Z");
+    expect(memoire.tables["alerteSysteme"]).toHaveLength(1);
+    expect(notifier).toHaveBeenCalledTimes(1);
+  });
+
   it("un rendez-vous de plus : une nouvelle alerte, un envoi, pas de doublon ouvert", async () => {
     const notifier = vi.fn(async () => envoye);
     await signaler(etatDe(["r1"]), notifier);
