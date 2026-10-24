@@ -257,9 +257,12 @@ describe("la fiche prospect se crée toute seule au rendez-vous Calendly", () =>
   };
 
   it("un invité connu chez un AUTRE client : fiche créée, doublon possible, jamais rattachée", async () => {
-    const autre = fiche({ raisonSociale: "Cabinet Autre", contactEmail: "collegue@gmail.com" });
+    const autre = fiche({
+      raisonSociale: "Cabinet Autre",
+      contactEmail: "collegue@autre-fictif.fr",
+    });
     const { base, rencontres } = await scene(
-      [rendezVousCalendly({ rawPayload: payload({ invites: ["collegue@gmail.com"] }) })],
+      [rendezVousCalendly({ rawPayload: payload({ invites: ["collegue@autre-fictif.fr"] }) })],
       { client: [autre] },
     );
     const bilan = await passage(base);

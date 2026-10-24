@@ -69,6 +69,7 @@ import { createHash } from "node:crypto";
 import { entrepriseDeclaree } from "@/features/admin-rendezvous/a-venir";
 import { invitesSupplementaires } from "@/features/admin-rendezvous/visio";
 import { domaineDe, natureAdresse } from "@/lib/email/nature-adresse";
+import { CODES_ALERTES_VISIO } from "@/server/visio/alertes";
 import { hashEmailForLookup } from "@/lib/security/email-hash";
 import {
   chargerFichesCandidates,
@@ -459,7 +460,7 @@ export async function assurerFicheProspectAuto(
           // L'alerte (envoyée ensuite par le balayage, tant que `notifiedAt` est vide).
           await tx.alerteSysteme.create({
             data: {
-              code: "visio.doublon_possible",
+              code: CODES_ALERTES_VISIO.doublonPossible,
               niveau: "important",
               titre: "Fiche prospect créée : doublon possible",
               message:

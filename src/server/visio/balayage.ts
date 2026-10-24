@@ -57,9 +57,9 @@ import {
 } from "@/features/admin-rendezvous/rendez-vous-tenu";
 import { dayKeyInParis } from "@/lib/calendar-grid";
 import {
+  envoyerDoublonsEnAttente,
   leverPanneDuBalayage,
   signalerPanneDuBalayage,
-  signalerDoublonPossible,
   signalerRendezVousAClasser,
   VISIO_BALAYAGE_EN_PANNE,
   type CreerAlerte,
@@ -353,29 +353,11 @@ export async function passerBalayage(
   // Les fiches créées avec un doute d'identité : l'alerte est écrite avec la fiche (même
   // transaction) ; ici on l'ENVOIE, tant qu'elle n'est pas partie. Jamais une panne.
   await etape<void>("fiches-auto-doublon", undefined, async () => {
-    const en_attente = await db.alerteSysteme.findMany({
-      where: { code: "visio.doublon_possible", resolue: false, notifiedAt: null },
-      select: { cibleId: true, metadata: true },
-      take: 50,
+    await envoyerDoublonsEnAttente(db, {
+      notifier: deps.notifier,
+      maintenant,
+      ...(deps.creerAlerte ? { creer: deps.creerAlerte } : {}),
     });
-    for (const a of en_attente) {
-      if (!a.cibleId) continue;
-      const proches =
-        a.metadata !== null &&
-        typeof a.metadata === "object" &&
-        typeof (a.metadata as Record<string, unknown>)["proches"] === "number"
-          ? ((a.metadata as Record<string, unknown>)["proches"] as number)
-          : 0;
-      await signalerDoublonPossible(
-        db,
-        { clientId: a.cibleId, proches },
-        {
-          notifier: deps.notifier,
-          maintenant,
-          ...(deps.creerAlerte ? { creer: deps.creerAlerte } : {}),
-        },
-      );
-    }
   });
   // Les rendez-vous laissés à Will (refus de la porte, sans nom) : alerte PROPRE « N rendez-vous à classer », jamais une panne.
   // (Coupé ou à blanc : nombre 0, donc l'alerte éventuelle est résolue. Passage en échec : on n'y touche pas.)

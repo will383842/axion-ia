@@ -708,6 +708,12 @@ const CONSOMMATEURS_ASSUMES: ReadonlySet<string> = new Set([
   //      jamais écrire une fiche.
   "src/features/dossier-client/creer-prospect.ts",
   "src/features/dossier-client/rattacher.ts",
+  // ── Fiche prospect créée toute seule au rendez-vous Calendly (2026-10-24) : elle
+  //    passe par la MÊME porte unique `crm/porte-client.ts` (refus SIREN/motif
+  //    compris) et lit les fiches proches par ses fonctions ; sa spec appelle la
+  //    vraie porte. Aucune seconde porte, aucune table nouvelle.
+  "src/features/dossier-client/fiche-auto.ts",
+  "src/features/dossier-client/__tests__/la-fiche-prospect-se-cree-toute-seule-au-rendez-vous-calendly.spec.ts",
   "scripts/visio/pilote.ts",
   // ── Alertes visio (PR 4, correction anti-doublon A3, 2026-09-29) : AUCUNE
   //    table ni service d'alerte parallèle. Les alertes du circuit visio

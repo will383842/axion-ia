@@ -463,3 +463,31 @@ ${doublon.proches} fiche(s) proche(s).`,
   );
   return r ?? "echec_envoi";
 }
+
+/**
+ * Envoie les alertes « doublon possible » écrites avec leur fiche mais pas encore parties
+ * (`notifiedAt` vide) : un envoi raté, ou un passage interrompu, est retenté au suivant.
+ */
+export async function envoyerDoublonsEnAttente(
+  db: Pick<Tx, "alerteSysteme">,
+  deps: { readonly notifier: Notifier; readonly creer?: CreerAlerte; readonly maintenant?: Date },
+): Promise<number> {
+  const enAttente = await db.alerteSysteme.findMany({
+    where: { code: CODES_ALERTES_VISIO.doublonPossible, resolue: false, notifiedAt: null },
+    select: { cibleId: true, metadata: true },
+    take: 50,
+  });
+  let n = 0;
+  for (const a of enAttente) {
+    if (!a.cibleId) continue;
+    const meta = a.metadata !== null && typeof a.metadata === "object" ? a.metadata : {};
+    const proches = (meta as Record<string, unknown>)["proches"];
+    await signalerDoublonPossible(
+      db,
+      { clientId: a.cibleId, proches: typeof proches === "number" ? proches : 0 },
+      deps,
+    );
+    n += 1;
+  }
+  return n;
+}
