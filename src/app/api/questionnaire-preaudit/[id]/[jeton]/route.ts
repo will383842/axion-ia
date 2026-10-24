@@ -1,6 +1,6 @@
 // Réception des réponses du questionnaire de pré-audit (2026-10-24).
 //
-// POST JSON « schéma 3 », une personne à la fois. Jeton faux → 404 neutre.
+// POST JSON « schéma 3 » ou « 4 », une personne à la fois, gardé tel quel. Jeton faux → 404 neutre.
 //   · débit limité par IP ET par jeton (`checkRateLimit`) ; corps lu avec un plafond ;
 //   · `?essai=1` : on valide la forme et on répond 200 SANS RIEN ÉCRIRE ni notifier ;
 //   · réel : interrupteur + notice RGPD + purge, lien envoyé, ni clos ni expiré ; réponse chiffrée.

@@ -28,8 +28,8 @@ export function validerHtml(html: string): ValidationHtml {
       motif: "Le bloc « const CONFIG = {…}; » du questionnaire est introuvable.",
     };
   }
-  if (!/schema:\s*3\b/.test(html)) {
-    return { ok: false, motif: "Ce questionnaire n'envoie pas le « schéma 3 » attendu." };
+  if (!/schema:\s*[34]\b/.test(html)) {
+    return { ok: false, motif: "Ce questionnaire n'envoie pas le « schéma 3 » ou « 4 » attendu." };
   }
   return { ok: true };
 }

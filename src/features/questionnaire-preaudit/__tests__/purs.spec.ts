@@ -1,8 +1,9 @@
 import { describe, expect, it } from "vitest";
 
 import { mentionsRgpd, preauditActif, PURGE_PLANIFIEE, refusEnvoiReel } from "../config";
-import { lignesDeLaCharge, validerCharge } from "../donnees";
+import { CHARGE_MAX_OCTETS, LIBELLE_PREFILL, lignesDeLaCharge, validerCharge } from "../donnees";
 import { pagePourClient, validerHtml } from "../html";
+import { CHARGES_SCHEMA_4 } from "./charges-schema-4.fixture";
 
 // Forme du questionnaire de Will (CONFIG, schéma 3) en miniature.
 const HTML = `<!doctype html><html><head><title>Q</title></head><body>
@@ -49,6 +50,9 @@ describe("le HTML de Will", () => {
     expect(validerHtml(HTML).ok).toBe(true);
     expect(validerHtml("<p>rien</p>").ok).toBe(false);
     expect(validerHtml(HTML.replace("schema: 3", "schema: 2")).ok).toBe(false);
+    expect(validerHtml(HTML.replace("schema: 3", "schema: 4")).ok).toBe(true);
+    expect(validerHtml(HTML.replace("schema: 3", "schema: 5")).ok).toBe(false);
+    expect(validerHtml(HTML.replace("schema: 3", "schema: 34")).ok).toBe(false);
     expect(validerHtml(HTML + "x".repeat(900_000)).ok).toBe(false);
   });
   it("injecte la configuration sans toucher au script de Will", () => {
@@ -137,5 +141,44 @@ describe("la charge schéma 3", () => {
     expect(validerCharge(ok.replace('"emp"', '"zzz"')).ok).toBe(false);
     expect(validerCharge(ok.replace('"traitement":true', '"traitement":false')).ok).toBe(false);
     expect(validerCharge("pas du json").ok).toBe(false);
+  });
+});
+
+describe("la charge schéma 4", () => {
+  it("les trois parcours réels sont acceptés, le texte gardé tel quel", () => {
+    for (const mode of ["main", "emp", "it"] as const) {
+      const texte = JSON.stringify(CHARGES_SCHEMA_4[mode]);
+      const r = validerCharge(texte);
+      expect(r.ok).toBe(true);
+      expect(r.ok && r.charge.mode).toBe(mode);
+      expect(r.ok && r.charge.json).toBe(texte);
+    }
+  });
+  it("schéma 5 (ou chaîne « 4 ») refusé", () => {
+    const t = JSON.stringify(CHARGES_SCHEMA_4.main);
+    expect(validerCharge(t.replace('"schema":4', '"schema":5')).ok).toBe(false);
+    expect(validerCharge(t.replace('"schema":4', '"schema":"4"')).ok).toBe(false);
+  });
+  it("plafond : 400 Ko", () => {
+    expect(CHARGE_MAX_OCTETS).toBe(400_000);
+  });
+  it("l'état du pré-remplissage accompagne chaque ligne pré-remplie", () => {
+    const lignes = lignesDeLaCharge(JSON.stringify(CHARGES_SCHEMA_4.main));
+    const etat = (cle: string) => lignes.find((l) => l.cle === cle)?.prefill;
+    expect(etat("ent_nom")).toBe("confirme");
+    expect(etat("ent_ville")).toBe("modifie");
+    expect(etat("contact_email")).toBe("non_verifie");
+    expect(etat("ent_site")).toBe("vide");
+    expect(lignes.find((l) => l.cle === "ent_site")?.valeur).toBe("(vidée par la personne)");
+    // Une réponse jamais pré-remplie ne porte pas d'état.
+    const libre = lignes.find((l) => !("prefill" in l));
+    expect(libre).toBeDefined();
+    expect(LIBELLE_PREFILL.vide).toBe("pré-rempli, vidé");
+  });
+  it("un bloc prefill mal formé n'empêche pas la lecture", () => {
+    const c = { ...CHARGES_SCHEMA_4.main, prefill: { confirmes: "pas une liste", vides: [3] } };
+    const lignes = lignesDeLaCharge(JSON.stringify(c));
+    expect(lignes.length).toBeGreaterThan(0);
+    expect(lignes.every((l) => l.prefill === undefined)).toBe(true);
   });
 });
