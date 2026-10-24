@@ -39,6 +39,7 @@ import { ArticlePeopleAlsoAsk } from "@/components/content-gen/ArticlePeopleAlso
 import { ArticlePrevNext } from "@/components/content-gen/ArticlePrevNext";
 import { ArticleNewsletterInline } from "@/components/content-gen/ArticleNewsletterInline";
 import { sanitizeContentGenHtml } from "@/server/content-gen/shared/html-sanitizer";
+import { prefixerLiensInternes } from "@/lib/content/liens-internes";
 import { SuggestedContent } from "@/components/suggested/SuggestedContent";
 import { findRelatedArticles } from "@/server/content-gen/links/related-articles";
 import { ArticleFaq } from "@/components/content-gen/ArticleFaq";
@@ -159,6 +160,11 @@ export default async function GuidePiliersPage({ params }: Props) {
       ? sanitizeContentGenHtml(guide.body)
       : null;
 
+  // Lot 9 audit blog 2026-10-24 : les liens internes des corps persistés sont
+  // écrits sans préfixe de langue ; chacun coûtait une redirection au clic. On
+  // les réécrit au rendu, comme sur `blog/[slug]` (aucun coût côté client).
+  const guideBodyHtmlPrefixe = guideBodyHtml ? prefixerLiensInternes(guideBodyHtml, locale) : null;
+
   // TOC Featured Snippets P0-4 — généré depuis les steps structurées si
   // disponibles. Chaque step.name devient un h2 dans le rendu, donc une entrée TOC.
   // Chantier templates 2026-06-21 — FIX ancres mortes : l'ancre du sommaire
@@ -276,10 +282,10 @@ export default async function GuidePiliersPage({ params }: Props) {
                       </div>
                     </section>
                   ))
-                ) : guideBodyHtml ? (
+                ) : guideBodyHtmlPrefixe ? (
                   <div
                     className="prose prose-axionia text-ink max-w-none leading-relaxed"
-                    dangerouslySetInnerHTML={{ __html: guideBodyHtml }}
+                    dangerouslySetInnerHTML={{ __html: guideBodyHtmlPrefixe }}
                   />
                 ) : (
                   paragraphs.map((p, idx) => (

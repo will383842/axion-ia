@@ -26,6 +26,7 @@
 
 import { listKnowledgeSitemapEntries } from "@/server/exporters/knowledge-sitemap";
 import { buildExcludeSlugsByType } from "@/app/sitemap";
+import { SitemapDbIndisponibleError, reponseSitemap503 } from "@/lib/seo/sitemap-erreur";
 
 // EN désactivé (AGENTS.md §EN locale désactivé 2026-05-16) → on n'émet ni les
 // `<url>` EN (qui seraient 301→FR) ni les `hreflang="en"` (qui pointeraient vers
@@ -61,7 +62,17 @@ export async function GET(): Promise<Response> {
   // Dédup vs les builders TS (blog tier-1, case studies, help, faq) — mêmes slugs
   // déjà émis dans pages/blog/faq/help → on ne les ré-émet pas ici (anti-doublon
   // sitemap-index). SSOT = `buildExcludeSlugsByType()` (exporté depuis sitemap.ts).
-  const entries = await listKnowledgeSitemapEntries(buildExcludeSlugsByType());
+  // Lot 9 : mode strict → base injoignable = 503 (et non un plan vide en 200).
+  let entries: Awaited<ReturnType<typeof listKnowledgeSitemapEntries>>;
+  try {
+    entries = await listKnowledgeSitemapEntries(buildExcludeSlugsByType(), { strict: true });
+  } catch (err) {
+    if (err instanceof SitemapDbIndisponibleError) {
+      console.error(`[sitemap-knowledge] ${err.message} — réponse 503`);
+      return reponseSitemap503();
+    }
+    throw err;
+  }
 
   const capped = entries.slice(0, KB_SITEMAP_MAX_URLS);
   if (entries.length > KB_SITEMAP_MAX_URLS) {

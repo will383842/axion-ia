@@ -32,6 +32,7 @@ vi.mock("@/app/sitemap", () => ({
 }));
 
 import { GET } from "../route";
+import { SitemapDbIndisponibleError } from "@/lib/seo/sitemap-erreur";
 
 const FR_ENTRY = {
   url: "https://axion-ia.com/fr/ressources/methodology/cadrage-ia",
@@ -100,5 +101,17 @@ describe("sitemap-knowledge.xml · EN activé", () => {
     expect(body).toContain('hreflang="en"');
     expect(body).toContain('hreflang="fr"');
     expect(body).toContain('hreflang="x-default"');
+  });
+});
+
+describe("sitemap-knowledge.xml · base injoignable (lot 9)", () => {
+  it("répond 503 + Retry-After, sans <url>", async () => {
+    listMock.mockImplementation(async () => {
+      throw new SitemapDbIndisponibleError("knowledge");
+    });
+    const res = await GET();
+    expect(res.status).toBe(503);
+    expect(res.headers.get("Retry-After")).toBe("300");
+    expect(await res.text()).not.toContain("<url>");
   });
 });

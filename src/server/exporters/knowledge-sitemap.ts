@@ -8,9 +8,11 @@
  *
  * Ce module exporte une liste d'URLs sitemap dérivée de la DB :
  *   - `audience = 'public'`
- *   - `status IN ('published', 'deprecated')` (deprecated = encore indexable
- *     historiquement, mais signalé bas)
+ *   - `status = 'published'` ET `publishedAt <= now` (lot 9 audit 24/10/2026 :
+ *     aligné sur le prédicat de la page publique `/connaissances/[slug]`,
+ *     `publicEntryFilter` ; une fiche `deprecated` ou sans date y répond 404)
  *   - `deletedAt IS NULL`
+ *   - type `guide` écarté : sa route `/guide-ia/<slug>` n'a pas de page de détail
  *   - dédupliquée vs les slugs déjà émis par les builders TS (passés en arg)
  *
  * Tolérance bootstrap (P2021) : si la table `knowledge_entries` n'existe pas
@@ -30,9 +32,34 @@
 import type { MetadataRoute } from "next";
 
 import { prisma } from "@/lib/prisma";
+import type { Prisma } from "../../../prisma/generated/client";
 import { SITE_URL } from "@/lib/seo";
 import { buildKbPublicUrl } from "@/content/knowledge/routes";
 import { isEnLocaleDisabled } from "@/lib/i18n/en-to-fr-redirect";
+import { SitemapDbIndisponibleError } from "@/lib/seo/sitemap-erreur";
+
+/**
+ * Types KB dont l'URL publique calculée ne mène à AUCUNE page de détail (404).
+ * `guide` → `/guide-ia/<slug>` : seul le hub `/guide-ia` existe.
+ */
+const KB_TYPES_SANS_PAGE_DETAIL: ReadonlySet<string> = new Set(["guide"]);
+
+/**
+ * Clause WHERE commune à la liste et au compte : MÊME prédicat que la page
+ * publique (`publicEntryFilter` de `lib/knowledge/public-fetch.ts`), pour que le
+ * sitemap n'annonce jamais une adresse qui répond 404.
+ */
+function wherePublic(now: Date): Prisma.KnowledgeEntryWhereInput {
+  return {
+    audience: "public",
+    // P0 audit KB 2026-05-29 — anti-fuite sitemap (confidentialité + futur + embargo).
+    confidentiality: "public",
+    status: "published",
+    deletedAt: null,
+    publishedAt: { lte: now },
+    AND: [{ OR: [{ embargoUntil: null }, { embargoUntil: { lte: now } }] }],
+  };
+}
 
 export interface KnowledgeSitemapEntry {
   readonly url: string; // canonical FR
@@ -48,9 +75,12 @@ export interface KnowledgeSitemapEntry {
  * @param excludeSlugsByType - dédup : slugs déjà émis par les builders TS,
  *   indexés par type pour éviter doublons sur les routes partagées
  *   (blog tier-1 fichiers TS + blog factory DB → 1 seule entry sitemap).
+ * @param options.strict - lot 9 : base injoignable → lève
+ *   `SitemapDbIndisponibleError` (la route répond 503) au lieu de renvoyer `[]`.
  */
 export async function listKnowledgeSitemapEntries(
   excludeSlugsByType: ReadonlyMap<string, ReadonlySet<string>> = new Map(),
+  options: { readonly strict?: boolean } = {},
 ): Promise<readonly KnowledgeSitemapEntry[]> {
   // Build-time short-circuit : voir knowledge-rss.ts.
   if (process.env.DATABASE_URL?.includes("stub.invalid")) {
@@ -59,17 +89,7 @@ export async function listKnowledgeSitemapEntries(
   const now = new Date();
   try {
     const entries = await prisma.knowledgeEntry.findMany({
-      where: {
-        audience: "public",
-        // P0 audit KB 2026-05-29 — anti-fuite sitemap (confidentialité + futur + embargo).
-        confidentiality: "public",
-        status: { in: ["published", "deprecated"] },
-        deletedAt: null,
-        AND: [
-          { OR: [{ publishedAt: null }, { publishedAt: { lte: now } }] },
-          { OR: [{ embargoUntil: null }, { embargoUntil: { lte: now } }] },
-        ],
-      },
+      where: wherePublic(now),
       select: {
         id: true,
         type: true,
@@ -85,6 +105,7 @@ export async function listKnowledgeSitemapEntries(
 
     const out: KnowledgeSitemapEntry[] = [];
     for (const e of entries) {
+      if (KB_TYPES_SANS_PAGE_DETAIL.has(String(e.type))) continue;
       const frT = e.translations.find((t) => t.locale === "fr");
       const enT = e.translations.find((t) => t.locale === "en");
       // V1 KB factory = FR-only ; pas de translation FR → on saute.
@@ -136,6 +157,7 @@ export async function listKnowledgeSitemapEntries(
       code === "ECONNREFUSED" ||
       code === "ENOTFOUND"
     ) {
+      if (options.strict) throw new SitemapDbIndisponibleError("knowledge");
       console.warn(`[KB sitemap] DB unavailable (${code}) — returning empty`);
       return [];
     }
@@ -248,17 +270,8 @@ export async function countKnowledgePublicEntries(): Promise<number> {
   const now = new Date();
   try {
     return await prisma.knowledgeEntry.count({
-      where: {
-        audience: "public",
-        // P0 audit KB 2026-05-29 — cohérence avec listKnowledgeSitemapEntries.
-        confidentiality: "public",
-        status: { in: ["published", "deprecated"] },
-        deletedAt: null,
-        AND: [
-          { OR: [{ publishedAt: null }, { publishedAt: { lte: now } }] },
-          { OR: [{ embargoUntil: null }, { embargoUntil: { lte: now } }] },
-        ],
-      },
+      // Cohérence avec listKnowledgeSitemapEntries (même prédicat).
+      where: wherePublic(now),
     });
   } catch {
     return 0;

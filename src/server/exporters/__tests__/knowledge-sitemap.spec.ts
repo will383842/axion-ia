@@ -6,8 +6,9 @@
  * confidentialité ni la porte EN au niveau données. Ce fichier verrouille :
  *
  *   1. La clause WHERE anti-fuite : SEULES les entrées `audience='public'` +
- *      `confidentiality='public'` + `status ∈ {published,deprecated}` +
- *      `deletedAt=null` + fenêtres publishedAt/embargo passées sont émises.
+ *      `confidentiality='public'` + `status='published'` (lot 9 : plus de
+ *      `deprecated`, la page publique répond 404) + `deletedAt=null` +
+ *      `publishedAt <= now` + embargo passé sont émises.
  *      (régression ici = fuite sitemap d'un brouillon / contenu confidentiel /
  *      sous embargo → indexation Google d'un contenu non-public.)
  *   2. Une entrée sans translation FR est ignorée (KB factory = FR-only).
@@ -42,6 +43,7 @@ import {
   buildKnowledgeSitemapChunk,
   __resetKnowledgeSitemapCache,
 } from "../knowledge-sitemap";
+import { SitemapDbIndisponibleError } from "@/lib/seo/sitemap-erreur";
 
 const FR_TR = { locale: "fr", slug: "cadrage-ia", updatedAt: new Date("2026-06-10T00:00:00Z") };
 const EN_TR = { locale: "en", slug: "ai-scoping", updatedAt: new Date("2026-06-10T00:00:00Z") };
@@ -72,13 +74,29 @@ describe("listKnowledgeSitemapEntries · clause WHERE anti-fuite", () => {
     const where = findManyMock.mock.calls[0]?.[0]?.where;
     expect(where.audience).toBe("public");
     expect(where.confidentiality).toBe("public");
-    expect(where.status).toEqual({ in: ["published", "deprecated"] });
+    // Lot 9 : aligné sur la page publique (`publicEntryFilter`) — ni `deprecated`,
+    // ni fiche sans date de publication.
+    expect(where.status).toBe("published");
     expect(where.deletedAt).toBeNull();
-    // Fenêtres temporelles : publishedAt <= now ET embargoUntil <= now (ou null).
+    expect(where.publishedAt).toHaveProperty("lte");
+    // Embargo : embargoUntil <= now (ou null).
     expect(Array.isArray(where.AND)).toBe(true);
-    const json = JSON.stringify(where.AND);
-    expect(json).toContain("publishedAt");
-    expect(json).toContain("embargoUntil");
+    expect(JSON.stringify(where.AND)).toContain("embargoUntil");
+  });
+
+  it("écarte le type guide (/guide-ia/<slug> n'a pas de page de détail)", async () => {
+    findManyMock.mockResolvedValue([entry({ type: "guide" }), entry({ id: "e2" })]);
+    const out = await listKnowledgeSitemapEntries();
+    expect(out).toHaveLength(1);
+  });
+
+  it("base injoignable : [] en mode tolérant, SitemapDbIndisponibleError en mode strict", async () => {
+    const panne = Object.assign(new Error("injoignable"), { code: "P1001" });
+    findManyMock.mockRejectedValue(panne);
+    await expect(listKnowledgeSitemapEntries()).resolves.toEqual([]);
+    await expect(listKnowledgeSitemapEntries(new Map(), { strict: true })).rejects.toBeInstanceOf(
+      SitemapDbIndisponibleError,
+    );
   });
 
   it("émet une entrée publique avec son URL FR canonique", async () => {

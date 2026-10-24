@@ -39,6 +39,7 @@ import {
 import { listFaqs, isFaqItemIndexable } from "@/lib/knowledge/readers";
 import { FAQ_CATEGORIES } from "@/content/faq-categories";
 import { prisma } from "@/lib/prisma";
+import { SitemapDbIndisponibleError } from "@/lib/seo/sitemap-erreur";
 // Sprint S+4-A 2026-05-18 — glossary extension (60 termes /glossaire/[slug]).
 import { listGlossaryTermSlugs, isGlossaryTermIndexable } from "@/content/glossary-extension";
 // Sprint S+4-B 2026-05-18 (audit P1-17 TYPE-9-STACK-IA) — pages détail outils.
@@ -113,6 +114,8 @@ const SITEMAP_CHUNK_SIZE = 1000;
 // plafond pour planifier ce chantier.
 const BLOG_SITEMAP_MAX_URLS = 45_000;
 const BLOG_SITEMAP_ALERT_THRESHOLD = 40_000;
+// Plancher de qualité du sitemap blog (lot 9, audit 24/10/2026).
+export const BLOG_SITEMAP_MIN_QUALITY_SCORE = 70;
 
 // Drip indexation (Will 2026-05-28) — le sitemap se régénère toutes les 24h
 // (ISR). La cohorte indexable (`getIndexableVilles` / `isVilleIndexable`) est
@@ -561,6 +564,13 @@ function filterEnIfDisabled(entries: MetadataRoute.Sitemap): MetadataRoute.Sitem
 
 export default async function sitemap(props: {
   id: Promise<string>;
+  /**
+   * Mode strict (lot 9 audit blog 2026-10-24) : pour l'id `blog`, une base
+   * injoignable lève `SitemapDbIndisponibleError` au lieu de servir un plan sans
+   * articles. Réservé au Route Handler `sitemap-blog.xml` (qui répond 503).
+   * Le défaut (faux) garde le comportement tolérant du build SSG (stub.invalid).
+   */
+  strict?: boolean;
 }): Promise<MetadataRoute.Sitemap> {
   const id = await props.id;
   // Drip cohort « aujourd'hui » = build time (cohorte villes calculée au build,
@@ -574,7 +584,7 @@ export default async function sitemap(props: {
     case "blog":
       // Les articles portent leur `publishedAt` réel via `lastModFor` ; cette
       // date ne sert que de défaut pour les entrées sans date propre.
-      return filterEnIfDisabled(await buildBlogSitemap(editorialFor("blog")));
+      return filterEnIfDisabled(await buildBlogSitemap(editorialFor("blog"), props.strict === true));
     case "faq":
       return filterEnIfDisabled(await buildFaqSitemap(editorialFor("faq")));
     case "help":
@@ -808,11 +818,16 @@ function buildPagesSitemap(now: Date): MetadataRoute.Sitemap {
 // accurate lastmod (signal not gameable, used for crawl prioritization).
 // Categories / tags / authors stay on `now` (the listing page changes when
 // a new post enters the corpus).
-async function buildBlogSitemap(now: Date): Promise<MetadataRoute.Sitemap> {
-  // Anti-doorway HCU 2024 (Sprint 14.10) : seuls les articles tier-1 (validés
-  // qualité + score ≥ 70 + body ≥ 800 mots + faq ≥ 4 + directAnswer 40-80 mots)
-  // entrent dans le sitemap. Tier-2 (bulk en attente review) et tier-3 (drafts)
-  // restent crawlable mais hors sitemap → crawl budget Google concentré.
+async function buildBlogSitemap(now: Date, strict = false): Promise<MetadataRoute.Sitemap> {
+  // Anti-doorway HCU 2024 (Sprint 14.10) : seuls les articles tier-1 dont le
+  // `qualityScore` est ≥ 70 entrent dans le sitemap (filtre RÉEL depuis le lot 9
+  // de l'audit blog du 24/10/2026 : avant, le commentaire promettait le score
+  // mais seul le palier tier-1 était testé, et le publish force tier-1).
+  // Les seuils « 800 mots / FAQ ≥ 4 / réponse directe 40-80 mots » ne sont PAS
+  // contrôlés ici : ils relèvent du worker de génération (lots 2 et suivants) et
+  // le plancher de longueur reste une décision de Will. Tier-2 (bulk en attente
+  // review) et tier-3 (drafts) restent crawlables mais hors sitemap → crawl
+  // budget Google concentré.
   //
   // Audit indexation 2026-05-15 P1-11 — DB-aware : on lit aussi les Article
   // tier-1 indexable publiés via la factory content-gen (table Article) +
@@ -836,6 +851,8 @@ async function buildBlogSitemap(now: Date): Promise<MetadataRoute.Sitemap> {
         status: "published",
         indexationTier: "tier_1_indexable",
         isNews: false,
+        // Lot 9 : plancher de qualité réel. `null` (jamais noté) est exclu aussi.
+        qualityScore: { gte: BLOG_SITEMAP_MIN_QUALITY_SCORE },
       },
       select: {
         publishedAt: true,
@@ -882,7 +899,10 @@ async function buildBlogSitemap(now: Date): Promise<MetadataRoute.Sitemap> {
       );
     }
   } catch {
-    // best-effort — DB peut être down au build SSG
+    // Mode strict (Route Handler runtime) : on NE sert PAS un plan sans articles
+    // en 200, la route répond 503. Mode tolérant (build SSG, stub.invalid) :
+    // best-effort, la DB peut être down.
+    if (strict) throw new SitemapDbIndisponibleError("blog");
     dbArticles = [];
   }
 
