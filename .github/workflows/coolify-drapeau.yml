@@ -34,14 +34,21 @@ on:
           # Enregistrement des visios (PR 5) : lu par le site ET le worker.
           - "ENREGISTREMENT_VISIO_PILOTE"
           - "ENREGISTREMENT_VISIO_OUVERT"
+          # Fiche prospect créée toute seule au rendez-vous (PR #1642). Cible : worker.
+          # Valeurs : true | false | essai. Sans la date ci-dessous, rien n'est traité.
+          - "DOSSIER_FICHE_AUTO"
+          # Date ISO d'activation (ex. 2026-10-24T16:00:00+02:00) : seuls les rendez-vous
+          # réservés APRÈS cette date reçoivent une fiche. Cible : worker.
+          - "DOSSIER_FICHE_AUTO_DEPUIS"
+          # Questionnaire avant audit (PR #1644). Cible : les deux. L'envoi réel reste
+          # verrouillé en dur dans le code (PURGE_PLANIFIEE = false) : ce drapeau ne
+          # déclenche aucun envoi.
+          - "QUESTIONNAIRE_AVANT_AUDIT_ENABLED"
       valeur:
-        description: "Valeur"
+        description: "Valeur : true, false, essai, ou une date ISO pour DOSSIER_FICHE_AUTO_DEPUIS"
         required: true
         default: "true"
-        type: choice
-        options:
-          - "true"
-          - "false"
+        type: string
       cible:
         description: "Application(s)"
         required: true
@@ -83,6 +90,20 @@ jobs:
             fi
           done
           echo "Secrets présents."
+
+      - name: Valider la valeur
+        env:
+          CLE: ${{ inputs.cle }}
+          VALEUR: ${{ inputs.valeur }}
+        run: |
+          set -euo pipefail
+          if [ "$CLE" = "DOSSIER_FICHE_AUTO_DEPUIS" ]; then
+            [[ "$VALEUR" =~ ^20[0-9]{2}-[0-9]{2}-[0-9]{2}T[0-9:]{8}(Z|[+-][0-9]{2}:[0-9]{2})$ ]] || { echo "::error::Date ISO attendue"; exit 1; }
+          elif [ "$CLE" = "DOSSIER_FICHE_AUTO" ]; then
+            [[ "$VALEUR" =~ ^(true|false|essai)$ ]] || { echo "::error::true, false ou essai"; exit 1; }
+          else
+            [[ "$VALEUR" =~ ^(true|false)$ ]] || { echo "::error::true ou false"; exit 1; }
+          fi
 
       - name: Lire l'état actuel
         env:
