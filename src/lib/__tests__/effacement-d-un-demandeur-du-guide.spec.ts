@@ -28,6 +28,8 @@ vi.mock("@/lib/prisma", () => ({
     {},
     {
       get(_c, modele: string) {
+        // Forme tableau seule : les opérations sont déjà lancées sur la base en mémoire.
+        if (modele === "$transaction") return (ops: Promise<unknown>[]) => Promise.all(ops);
         const t = base.tables[modele];
         if (!t) throw new Error(`table inattendue : ${modele}`);
         return t;
@@ -124,6 +126,7 @@ describe("effacement d'un demandeur du guide", () => {
     expect(traces).toEqual({
       logsPseudonymises: 1,
       outboxSupprimes: 1,
+      outboxConserveesFormation: 0,
       copiesSupprimees: 1,
       copiesConserveesFormation: 0,
     });

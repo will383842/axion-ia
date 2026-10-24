@@ -15,6 +15,10 @@ import { NextRequest } from "next/server";
 const ordre: string[] = [];
 const annuler = vi.fn();
 const journal = vi.hoisted(() => ({ create: vi.fn() }));
+const traces = vi.hoisted(() => ({
+  resultat: {} as Record<string, number>,
+}));
+const courriel = vi.hoisted(() => ({ enqueueEmail: vi.fn() }));
 
 vi.mock("@/lib/rate-limit", () => ({ checkRateLimit: async () => ({ allowed: true }) }));
 vi.mock("@/lib/gdpr-token", () => ({
@@ -53,7 +57,11 @@ vi.mock("@/lib/rgpd-erase", () => ({
     comptesRendusSupprimes: 0,
     questions: 0,
   }),
-  eraseEmailTracesForEmail: async () => ({ logsPseudonymises: 0, outboxSupprimes: 0 }),
+  eraseEmailTracesForEmail: async () => ({
+    logsPseudonymises: 0,
+    outboxSupprimes: 0,
+    ...traces.resultat,
+  }),
   eraseCrmOutboxForEmail: async () => ({ supprimees: 0 }),
   eraseNewsletterForEmail: async () => ({ deleted: 0, guideDeleted: 0 }),
   eraseSubmissionsForEmail: async () => {
@@ -69,7 +77,9 @@ vi.mock("@/lib/rgpd-erase", () => ({
   erasePiecesJointesContactForEmail: async () => ({ supprimees: 0 }),
 }));
 vi.mock("@/lib/telegram", () => ({ alertIncident: async () => undefined }));
-vi.mock("@/server/queue/queues", () => ({ enqueueEmail: async () => ({ enqueued: true }) }));
+vi.mock("@/server/queue/queues", () => ({
+  enqueueEmail: (...a: unknown[]) => courriel.enqueueEmail(...a),
+}));
 
 import { POST } from "./route";
 import { hashEmailForLookup } from "@/lib/security/email-hash";
@@ -106,6 +116,8 @@ function requete(entetes: Record<string, string> = {}): NextRequest {
 
 beforeEach(() => {
   ordre.length = 0;
+  traces.resultat = {};
+  courriel.enqueueEmail.mockReset().mockResolvedValue({ enqueued: true });
   annuler.mockReset().mockResolvedValue(3);
   journal.create.mockReset().mockResolvedValue({});
   vi.spyOn(console, "error").mockImplementation(() => {});
@@ -161,5 +173,69 @@ describe("POST /api/gdpr-erase — l'IP de la preuve d'effacement", () => {
       .map((c) => (c[0] as { data: { action: string; ipAddress: string | null } }).data)
       .find((dd) => dd.action === "gdpr.erase.completed");
     expect(trace?.ipAddress).toBe("198.51.100.23");
+  });
+});
+
+describe("POST /api/gdpr-erase — la déclaration des e-mails gardés (lot P10)", () => {
+  async function exceptions(): Promise<string[]> {
+    const res = await POST(requete());
+    const corps = (await res.json()) as { notice: { retentionExceptions: string[] } };
+    return corps.notice.retentionExceptions.filter(
+      (e) => e.startsWith("email_outbox") || e.startsWith("email_log_contents"),
+    );
+  }
+
+  it("rien de gardé : copies et corbeille déclarées SUPPRIMÉES, comme avant", async () => {
+    const [copies, corbeille] = await exceptions();
+    expect(copies).toContain("SUPPRIMÉE");
+    expect(corbeille).toContain("SUPPRIMÉ intégralement");
+  });
+
+  it("🔴 corbeille gardée : jamais déclarée « supprimée intégralement », 5 ans et adresse masquée", async () => {
+    traces.resultat = { outboxConserveesFormation: 2 };
+    const [copies, corbeille] = await exceptions();
+    expect(corbeille).not.toContain("SUPPRIMÉ intégralement");
+    expect(corbeille).toContain("CONSERVÉES pendant la durée légale de conservation");
+    expect(corbeille).not.toContain("5 ans");
+    expect(corbeille).toContain("envoyés");
+    expect(corbeille).not.toContain("approuvés ou envoyés");
+    expect(corbeille).toContain("masquée");
+    expect(corbeille).toContain("17(3)(b) et (e)");
+    expect(copies).toContain("SUPPRIMÉE");
+  });
+
+  it("🔴 copies gardées : jamais déclarées « SUPPRIMÉE » en bloc", async () => {
+    traces.resultat = { copiesConserveesFormation: 1 };
+    const [copies] = await exceptions();
+    expect(copies).toContain("CONSERVÉE 5 ans");
+    expect(copies).not.toContain("est SUPPRIMÉE.");
+  });
+});
+
+describe("POST /api/gdpr-erase — le courriel de confirmation (art. 19) dit la corbeille gardée", () => {
+  async function charge(): Promise<Record<string, unknown>> {
+    await POST(requete());
+    const appel = courriel.enqueueEmail.mock.calls.find((c) => c[0] === "rgpd-effacement-confirme");
+    return appel![3] as Record<string, unknown>;
+  }
+
+  it("🔴 seule une ligne de corbeille est gardée : la charge utile la porte", async () => {
+    traces.resultat = { outboxConserveesFormation: 2 };
+    const p = await charge();
+    expect(p["outboxConserveesFormation"]).toBe(2);
+    expect(p["copiesFormationConservees"]).toBe(0);
+  });
+
+  it("copies et corbeille gardées : les deux compteurs restent distincts", async () => {
+    traces.resultat = { copiesConserveesFormation: 3, outboxConserveesFormation: 1 };
+    const p = await charge();
+    expect(p["copiesFormationConservees"]).toBe(3);
+    expect(p["outboxConserveesFormation"]).toBe(1);
+  });
+
+  it("rien de gardé : zéro partout, comme avant", async () => {
+    const p = await charge();
+    expect(p["copiesFormationConservees"]).toBe(0);
+    expect(p["outboxConserveesFormation"]).toBe(0);
   });
 });
