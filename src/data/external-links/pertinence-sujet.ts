@@ -58,8 +58,66 @@ const MOTS_VIDES = new Set([
   "agence",
 ]);
 
-/** Minuscules, accents retirés, pluriel simple retiré, mots de 3 lettres et plus. */
-export function jetonsSujet(texte: string | null | undefined): Set<string> {
+/**
+ * Mots vides pour les articles liés : seulement la langue courante. Contrairement à
+ * `MOTS_VIDES` (pensé pour les sources), on garde ici formation, audit, pme, tpe,
+ * intelligence, artificielle : ce sont les mots qui portent le sujet de ce blog.
+ */
+const MOTS_VIDES_ARTICLES = new Set([
+  "est",
+  "par",
+  "pas",
+  "ses",
+  "son",
+  "vos",
+  "nos",
+  "ces",
+  "mes",
+  "the",
+  "and",
+  "pour",
+  "avec",
+  "dans",
+  "sans",
+  "sur",
+  "des",
+  "les",
+  "une",
+  "aux",
+  "que",
+  "qui",
+  "quoi",
+  "comment",
+  "pourquoi",
+  "quel",
+  "quelle",
+  "quels",
+  "quelles",
+  "vous",
+  "votre",
+  "faire",
+  "tout",
+  "tous",
+  "toute",
+  "toutes",
+  "plus",
+  "bien",
+  "etre",
+  "avoir",
+  "peut",
+  "peuvent",
+  "cette",
+  "notre",
+  "leur",
+  "leurs",
+  "entre",
+  "aussi",
+  "dont",
+  "mais",
+]);
+
+/** Découpe : minuscules, accents retirés, pluriel simple retiré, mots de 3 lettres et plus. */
+function jetonsAvec(texte: string | null | undefined, motsVides: ReadonlySet<string>): Set<string> {
   const sortie = new Set<string>();
   if (!texte) return sortie;
   const propre = texte
@@ -70,9 +128,19 @@ export function jetonsSujet(texte: string | null | undefined): Set<string> {
   for (const brut of propre.split(" ")) {
     if (brut.length < 3 || /^\d+$/.test(brut)) continue;
     const mot = brut.length > 4 && /[sx]$/.test(brut) ? brut.slice(0, -1) : brut;
-    if (!MOTS_VIDES.has(brut) && !MOTS_VIDES.has(mot)) sortie.add(mot);
+    if (!motsVides.has(brut) && !motsVides.has(mot)) sortie.add(mot);
   }
   return sortie;
+}
+
+/** Mots de sujet pour choisir des sources (liste de mots vides large). */
+export function jetonsSujet(texte: string | null | undefined): Set<string> {
+  return jetonsAvec(texte, MOTS_VIDES);
+}
+
+/** Mots de sujet pour classer des articles liés (mots vides de la langue seulement). */
+export function jetonsArticle(texte: string | null | undefined): Set<string> {
+  return jetonsAvec(texte, MOTS_VIDES_ARTICLES);
 }
 
 /**

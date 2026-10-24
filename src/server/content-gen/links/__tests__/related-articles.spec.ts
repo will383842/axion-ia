@@ -66,26 +66,45 @@ describe("sortByRelevance — proximité de sujet (audit blog 24/10/2026)", () =
     item("Recruter un comptable", "Cas d'usage", "2026-09-01"),
   ];
 
-  it("ne garde que les articles qui partagent un mot de contenu avec le titre", () => {
+  it("met en tête les articles qui partagent un mot de contenu avec le titre", () => {
     const out = sortByRelevance(catalogue, "Cas d'usage", "Chatbot et RGPD en PME");
-    expect(out.map((a) => a.title)).toEqual([
+    expect(out.slice(0, 2).map((a) => a.title)).toEqual([
       "Mettre en conformité son chatbot avec le RGPD",
       "Chatbot RGPD : ce que doit savoir une PME",
     ]);
   });
 
-  it("ne complète pas avec une catégorie fourre-tout", () => {
+  it("garde tous les articles, même sans aucun rapport de sujet", () => {
     const out = sortByRelevance(catalogue, "Cas d'usage", "Sujet sans aucun rapport");
-    expect(out).toEqual([]);
+    expect(out).toHaveLength(catalogue.length);
+  });
+
+  it("un mot vide comme « votre » ne suffit pas à rendre deux titres proches", () => {
+    const items = [
+      item("Optimisez votre trésorerie", "Gestion", "2026-01-01"),
+      item("Chatbot RGPD", "Autre", "2026-09-01"),
+    ];
+    const out = sortByRelevance(items, "Autre", "Réussir votre recrutement");
+    // Aucun mot de contenu commun : ordre historique (même catégorie d'abord, puis date).
+    expect(out.map((a) => a.title)).toEqual(["Chatbot RGPD", "Optimisez votre trésorerie"]);
+  });
+
+  it("garde formation et pme comme mots de sujet", () => {
+    const items = [
+      item("Recruter un comptable", "Cas d'usage", "2026-10-01"),
+      item("Formation des équipes", "Cas d'usage", "2026-01-01"),
+    ];
+    const out = sortByRelevance(items, "Cas d'usage", "Formation en PME");
+    expect(out[0]?.title).toBe("Formation des équipes");
   });
 
   it("complète avec la même catégorie quand elle est spécifique", () => {
     const items = [
+      item("Calendrier éditorial", "Marketing", "2026-10-01"),
       item("Facturation électronique", "Gestion", "2026-05-01"),
-      item("Calendrier éditorial", "Marketing", "2026-06-01"),
     ];
     const out = sortByRelevance(items, "Gestion", "Sujet sans aucun rapport");
-    expect(out.map((a) => a.title)).toEqual(["Facturation électronique"]);
+    expect(out.map((a) => a.title)).toEqual(["Facturation électronique", "Calendrier éditorial"]);
   });
 
   it("garde le comportement historique (catégorie puis date) sans titre courant", () => {
@@ -96,5 +115,11 @@ describe("sortByRelevance — proximité de sujet (audit blog 24/10/2026)", () =
     ];
     const out = sortByRelevance(items, "Gestion", undefined);
     expect(out.map((a) => a.title)).toEqual(["C", "B", "A"]);
+  });
+
+  it("revient toujours pleine (4 éléments) quand le catalogue en contient au moins 4", () => {
+    const out = sortByRelevance(catalogue, "Cas d'usage", "Chatbot et RGPD en PME");
+    expect(out.slice(0, 4)).toHaveLength(4);
+    expect(new Set(out).size).toBe(catalogue.length);
   });
 });
