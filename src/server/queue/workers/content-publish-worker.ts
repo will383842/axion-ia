@@ -426,7 +426,15 @@ async function executePublishPipeline(
       where: { id: reviewQueueId },
       data: {
         status: "pending",
-        reviewNotes: `Retenu à la publication (interdit de doctrine) : ${resume}`.slice(0, 1000),
+        // On ajoute la cause à la note de l'humain au lieu de l'écraser. La console
+        // ne permet pas de modifier le texte : il faut rejeter la fiche ou relancer la génération.
+        reviewNotes: [
+          review.reviewNotes?.slice(0, 500),
+          `Retenu à la publication (interdit de doctrine) : ${resume.slice(0, 400)} — rejeter ou relancer la génération, le texte n'est pas modifiable dans la console`,
+        ]
+          .filter(Boolean)
+          .join("\n")
+          .slice(0, 1000),
       },
     });
     console.log(
