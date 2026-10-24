@@ -14548,7 +14548,8 @@ model QuestionnaireAvantAudit {
   closLe           DateTime? @map("clos_le")
   expireLe         DateTime? @map("expire_le")
 
-  envois QuestionnaireAvantAuditEnvoi[]
+  envois     QuestionnaireAvantAuditEnvoi[]
+  brouillons QuestionnaireAvantAuditBrouillon[]
 
   @@index([destinataireHash])
   @@map("questionnaires_avant_audit")
@@ -14571,6 +14572,32 @@ model QuestionnaireAvantAuditEnvoi {
 
   @@index([questionnaireId])
   @@map("questionnaires_avant_audit_envois")
+}
+
+/// Le brouillon d'UNE personne (dirigeant, collaborateur ou référent informatique) pendant le
+/// remplissage (2026-10-24) : le bac à sable n'a pas de stockage local, le brouillon permet de
+/// reprendre après une fermeture. Enregistré SEULEMENT après l'accord explicite de la personne
+/// (`consent: true`). Le dernier enregistrement gagne ; un plus ancien que celui gardé est refusé.
+/// Supprimé à l'envoi réussi de la réponse, à 30 jours d'inactivité, et avec la personne.
+/// rgpd: dossier-client
+model QuestionnaireAvantAuditBrouillon {
+  id              String                  @id @default(uuid()) @db.Uuid
+  questionnaireId String                  @map("questionnaire_id") @db.Uuid
+  questionnaire   QuestionnaireAvantAudit @relation(fields: [questionnaireId], references: [id], onDelete: Cascade)
+  /// main (dirigeant), emp (collaborateur), it (référent informatique).
+  mode            String                  @db.VarChar(8)
+  /// Code du lien personnel (`m`), chaîne vide pour le dirigeant sans code.
+  membre          String                  @default("") @db.VarChar(60)
+  /// Horodatage du navigateur au moment de la saisie : refuse un vieil onglet.
+  horodatage      DateTime
+  /// Dernier enregistrement reçu (serveur) : base de la purge à 30 jours d'inactivité.
+  majLe           DateTime                @default(now()) @map("maj_le")
+  /// (enc) Le brouillon tel qu'envoyé par la page, jamais en clair.
+  donnees         String                  @db.Text
+
+  @@unique([questionnaireId, mode, membre], map: "questionnaires_avant_audit_brouillons_personne_key")
+  @@index([majLe])
+  @@map("questionnaires_avant_audit_brouillons")
 }
 
 /// Un brouillon d'e-mail de suivi d'une rencontre, et ce qu'il est devenu. Le

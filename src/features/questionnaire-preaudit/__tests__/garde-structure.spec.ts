@@ -82,6 +82,17 @@ describe("la purge de rétention", () => {
     if (PURGE_PLANIFIEE) expect(appelants.length).toBeGreaterThan(0);
     else expect(PURGE_PLANIFIEE).toBe(false);
   });
+
+  it("brouillons : AUCUNE purge appelée tant que PURGE_PLANIFIEE est false, la tâche ensuite", () => {
+    const rel = (p: string) => path.relative(RACINE, p).replace(/\\/g, "/");
+    const appelants = sources(path.join(RACINE, "src"))
+      .filter((p) => /purgerBrouillonsInactifs\(/.test(readFileSync(p, "utf8")))
+      .map(rel)
+      .filter((p) => p !== "src/features/questionnaire-preaudit/brouillon.ts");
+    if (PURGE_PLANIFIEE)
+      expect(appelants.some((p) => p.startsWith("src/server/queue/"))).toBe(true);
+    else expect(appelants).toEqual([]);
+  });
 });
 
 describe("le jeton du pré-audit", () => {
