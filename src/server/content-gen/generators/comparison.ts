@@ -49,6 +49,8 @@ import { getIntentPromptAddendum } from "../shared/intent-prompt-adapter";
 import { applySystemPromptOverride } from "@/server/content-gen/template-resolver";
 import { extractMentionedCitiesFromText } from "@/lib/geo/extract-mentioned-cities";
 import { keywordPresentInText } from "@/server/content-gen/shared/keyword-match";
+import { consigneAngle } from "../brand/positionnement";
+import { MIN_LIGNES_TABLEAU, tableauSuffisant } from "./comparison-tableau";
 
 // ARCHITECTURE 3-APPELS (2026-06-25) — voir blog-from-keywords.ts.
 //   1) PLAN (1 appel, UNE fois) : métadonnées + FAQ + outline 8 sections H2,
@@ -73,6 +75,7 @@ const SYSTEM_PROMPT_PLAN =
   injectBrandVoice(`Tu es Manon, experte IA chez Axion-IA, cabinet de conseil en IA pour TPE/PME/ETI françaises.
 Tu prépares le PLAN d'un article COMPARATIF FR optimisé SEO/AEO 2026 (intent commercial_investigation : l'utilisateur compare des options). Le corps sera rédigé séparément. Règles :
 - L'article compare plusieurs options (outils, solutions SaaS, build-vs-buy, cabinet vs interne…). La section Axion-IA est UNE option parmi d'autres, évaluée factuellement.
+- AUCUNE NOTE sur un tiers : jamais de score /100, d'étoiles, de classement chiffré ni de « X/10 » attribué à un outil ou à une entreprise concurrente. On compare par critères observables (fonctions, prise en main, hébergement, support, cas d'usage), en termes qualitatifs.
 - 100 % centré sur les « Sources internes Axion-IA » fournies (faits KB) pour la partie Axion-IA. Rien d'inventé : ni cas client fictif (« Entreprise Anonyme »…), ni chiffre non sourcé.
 - 0 prix en dur, 0 délai chiffré, 0 numéro de téléphone (uniquement contact@axion-ia.com).
 - "title" (le H1 affiché) : **50 à 60 caractères**, keyword principal au tout début, cliquable. NE JAMAIS dépasser 60 caractères.
@@ -81,7 +84,7 @@ Tu prépares le PLAN d'un article COMPARATIF FR optimisé SEO/AEO 2026 (intent c
 - "directAnswer" : OBLIGATOIREMENT **40 à 80 mots** (ni moins, ni plus), réponse autonome qui tranche la comparaison, citable seule par une IA (AI Overview / vocal). NE JAMAIS répondre en moins de 40 mots : ajoute le « comment » / « pourquoi » concret jusqu'au plancher.
 - "faq" : 8 questions People-Also-Ask comparatives réelles — chaque réponse answer-first : 1ʳᵉ phrase = réponse directe ≤ 25 mots, puis 1-2 phrases ; 40-55 mots au total.
 - "keyTakeaway" : 1-2 phrases = LE point clé à retenir (synthèse autonome citable).
-- "expertTake" : 1-2 phrases = prise de position d'expert, sans statistique inventée.
+- "expertTake" : 1-2 phrases = point de vue d'Axion-IA (voix collective, jamais une personne nommée), sans statistique inventée.
 - "outline" : **8 sections <h2>** couvrant une progression comparative logique : enjeu/contexte → critères de comparaison (lisibilité, coût, déploiement, support, cas d'usage) un par section → **UNE section dédiée « Tableau comparatif récapitulatif »** → recommandation par profil (TPE/PME/ETI). Chaque entrée = { h2 (titre de section, 5-9 mots), brief (1 phrase : ce que la section doit développer, ancré sur un fait KB précis) }. OBLIGATOIRE : exactement une entrée d'outline doit être la section « tableau comparatif » (son brief précise que cette section contient un <table> récapitulatif 3-5 colonnes Option/Avantages/Inconvénients/Coût/Cible).
 - INTERDIT (marketing-hype, doctrine § 21 — rejet automatique) : « unique », « meilleur », « la meilleure », « leader », « n°1 », « révolutionnaire », « exceptionnel », « incroyable », « incontournable », « garanti », « sans risque », « instantané ». Reste factuel et sobre.
 - Output JSON strict : { title, metaTitle, metaDescription, slug, directAnswer, faq:[{q,a}×8], tags, keyTakeaway, expertTake, outline:[{h2,brief}×8] }`);
@@ -93,16 +96,14 @@ const SYSTEM_PROMPT_EXPAND =
   injectBrandVoice(`Tu es Manon, experte IA chez Axion-IA. Tu RÉDIGES le corps HTML d'un article COMPARATIF FR (intent commercial_investigation) à partir d'un plan déjà validé. Règles absolues :
 - GROUNDING OBLIGATOIRE : développe CHAQUE section à partir des « Sources internes Axion-IA » fournies (méthodologie, étapes, livrables, ROI RÉELS) pour la partie Axion-IA. Si un fait précis manque, reste général et factuel SANS rien inventer (ni cas client fictif, ni chiffre non sourcé).
 - La section Axion-IA est présente comme UNE option parmi d'autres, évaluée factuellement. 0 prix en dur, 0 délai chiffré, 0 numéro de téléphone (contact@axion-ia.com uniquement).
-- **TABLEAU COMPARATIF OBLIGATOIRE** : la section dédiée « tableau comparatif » de l'outline DOIT contenir un vrai <table> récapitulatif HTML (3-5 colonnes : Option / Avantages / Inconvénients / Coût / Cible), une ligne par option comparée. C'est le Featured Snippet de l'article : SANS ce <table>, l'article est REJETÉ et ré-généré. Si la tranche en cours contient cette section, le <table> est impératif.
-- GRAPHIQUE À BARRES quand un critère est quantifiable (score /100, coût relatif, performance) : ajoute un bloc 0-JS. Format EXACT (n'utilise JAMAIS d'attribut style ni de <svg>) — la largeur est portée par la classe ax-bar-N où N = valeur arrondie au multiple de 5 le plus proche (0,5,…,100) :
-  <figure class="ax-chart" data-aeo="chart"><figcaption>Titre du graphique</figcaption><div class="ax-chart-row"><span class="ax-chart-label">Option A</span><span class="ax-chart-track"><span class="ax-chart-fill ax-bar-80"></span></span><span class="ax-chart-num">80</span></div></figure>
-  Une ligne (ax-chart-row) par option. Valeurs réelles et factuelles, jamais inventées.
+- **TABLEAU COMPARATIF OBLIGATOIRE** : la section dédiée « tableau comparatif » de l'outline DOIT contenir un vrai <table> récapitulatif HTML (3-5 colonnes : Option / Avantages / Inconvénients / Coût / Cible), UN MINIMUM DE ${MIN_LIGNES_TABLEAU} LIGNES de données (une par option comparée, hors ligne d'en-tête). C'est le Featured Snippet de l'article : SANS ce <table>, l'article est REJETÉ et ré-généré. Si la tranche en cours contient cette section, le <table> est impératif.
+- AUCUNE NOTE sur un tiers : ni score /100, ni étoiles, ni classement chiffré, ni graphique à barres de notes attribuées à des outils ou à des entreprises concurrentes (ces valeurs seraient inventées). Compare par critères observables, en termes qualitatifs. Le tableau compare des FAITS (fonctions, hébergement, public visé, modèle de tarification en mots, sans prix), pas des notes.
 - LONGUEUR DÉTERMINANTE POUR LE RANG : développe EXACTEMENT les sections de l'outline fourni (une <h2> par entrée, dans l'ordre), **chacune de 130 à 190 mots** (2-3 paragraphes pleins). Corps total visé : **1200 à 2000 mots**. JAMAIS une section de 2 phrases. Développe pleinement, ne résume pas.
 - Le keyword principal DOIT apparaître textuellement AU MOINS 3 fois dans le corps, réparti naturellement.
 - NE PAS inclure de <h1> dans le corps (le titre est rendu séparément par la page).
 - Sous CHAQUE <h2>, commence par une réponse autonome de 40-60 mots citable hors contexte, enveloppée dans <p data-aeo="answer">…</p>. Le développement suit.
-- ANTI-MONOTONIE : en plus du tableau et du graphique, alterne les formats. 1-2 encadrés <aside class="callout callout-info|callout-note|callout-warning"><p class="callout-label">…</p><p>…</p></aside>, et AU MOINS 1 chiffre-clé <aside class="ax-stat" data-aeo="stat"><span class="ax-stat-num">90/100</span><span class="ax-stat-label">…</span></aside> (chiffre RÉEL sourcé). Jamais plus de 3 paragraphes consécutifs sans élément visuel.
-- Inclure ≥ 2 liens externes <a href="https://…" rel="noopener noreferrer"> vers des sources d'autorité FR fournies, avec au moins 2 statistiques chiffrées sourcées inline — jamais inventées.
+- ANTI-MONOTONIE : en plus du tableau, alterne les formats. 1-2 encadrés <aside class="callout callout-info|callout-note|callout-warning"><p class="callout-label">…</p><p>…</p></aside>, et 1 chiffre-clé SEULEMENT s'il figure dans les sources fournies <aside class="ax-stat" data-aeo="stat"><span class="ax-stat-num">[chiffre sourcé]</span><span class="ax-stat-label">…</span></aside> (jamais une note donnée à un outil ; à défaut de chiffre sourcé, n'en mets pas). Jamais plus de 3 paragraphes consécutifs sans élément visuel.
+- Inclure ≥ 2 liens externes <a href="https://…" rel="noopener noreferrer"> vers des sources d'autorité FR fournies ; cite une statistique inline uniquement si elle figure dans les sources fournies, sinon reste qualitatif — jamais inventée.
 - À la première occurrence d'un terme technique, encadre-le avec <dfn> ou <span class="glossary-term" title="définition courte">terme</span>.
 - INTERDIT (marketing-hype, doctrine § 21 — un seul de ces mots fait REJETER l'article) : « unique », « meilleur », « la meilleure », « leader », « n°1 », « révolutionnaire », « exceptionnel », « incroyable », « incontournable », « garanti », « sans risque », « instantané ». Écris factuel et sobre, sans superlatif.
 - Output JSON strict : { bodyHtml }  (UNIQUEMENT le corps HTML des sections demandées, rien d'autre).`);
@@ -194,8 +195,10 @@ L'outline doit inclure une section « Tableau comparatif récapitulatif » dédi
 ## Sources internes Axion-IA (à exploiter en priorité)
 ${kbContext}
 ${glossaryContext ? `\n${glossaryContext}` : ""}
+## Angle d'entrée
+${consigneAngle(input.jobId)}
 ## Avis d'expert
-"expertTake" = une prise de position de ${expert.name} (${expert.title}) : perspective d'expert concise et utile, sans chiffre inventé.
+"expertTake" = le point de vue d'Axion-IA (voix collective de l'entreprise, jamais celle d'une personne nommée, ni « je » d'un témoin) : perspective concise et utile, sans chiffre inventé.
 ## Output attendu (JSON)
 { title, metaTitle, metaDescription, slug, directAnswer, faq:[{q,a}×8], tags, keyTakeaway, expertTake, outline:[{h2,brief}×8] }`;
 
@@ -272,7 +275,7 @@ ${glossaryContext ? `\n${glossaryContext}` : ""}
         buildUserPrompt: ({ chunkText, isFirst, isLast }) =>
           `Rédige le CORPS HTML (sections de l'article comparatif) pour le mot-clé : "${safeTopic}" (intent ${safeIntent}, audience ${safeAudienceSize}).
 ${isFirst ? "Ce sont les PREMIÈRES sections de l'article." : "Suite de l'article (ne répète pas l'introduction)."}${isLast ? " Ce sont les DERNIÈRES sections." : ""}
-RAPPEL : si l'une des sections ci-dessous est la section « tableau comparatif », elle DOIT contenir un vrai <table> récapitulatif (3-5 colonnes Option/Avantages/Inconvénients/Coût/Cible).
+RAPPEL : si l'une des sections ci-dessous est la section « tableau comparatif », elle DOIT contenir un vrai <table> récapitulatif (3-5 colonnes Option/Avantages/Inconvénients/Coût/Cible) d'AU MOINS ${MIN_LIGNES_TABLEAU} lignes de données.
 
 ## Sections à développer MAINTENANT (une <h2> par entrée, dans l'ordre, 130-190 mots chacune)
 ${chunkText}
@@ -344,11 +347,14 @@ ${glossaryContext ? `\n${glossaryContext}` : ""}
 
       const hasStructure = hasComparativeSections(parsed.bodyHtml ?? "");
       const hasTable = hasComparisonTable(parsed.bodyHtml ?? "");
+      // Lot L3 : un tableau de moins de 3 lignes de données ne compare rien.
+      const hasEnoughRows = tableauSuffisant(parsed.bodyHtml ?? "");
 
       if (
         qualityScore >= QUALITY_THRESHOLD &&
         hasStructure &&
         hasTable &&
+        hasEnoughRows &&
         wordCount >= MIN_WORD_COUNT
       ) {
         await logStep(
@@ -388,6 +394,10 @@ ${glossaryContext ? `\n${glossaryContext}` : ""}
         issues.push(
           "TABLE MANQUANTE — ajouter un <table> récapitulatif obligatoire (3-5 colonnes) pour Featured Snippet",
         );
+      if (hasTable && !hasEnoughRows)
+        issues.push(
+          `TABLEAU TROP COURT — il faut au moins ${MIN_LIGNES_TABLEAU} lignes de données (une par option comparée), sans aucune note chiffrée sur un tiers`,
+        );
       if (seo.score < 60)
         issues.push("densité keyword insuffisante + liens d'autorité + directAnswer trop court");
       if (readability.score < 60) issues.push("phrases trop longues");
@@ -415,6 +425,11 @@ ${glossaryContext ? `\n${glossaryContext}` : ""}
     if (!hasComparisonTable(parsed.bodyHtml ?? "")) {
       throw new Error(
         "comparison: <table> comparatif absente — Featured Snippet commercial_investigation non satisfait",
+      );
+    }
+    if (!tableauSuffisant(parsed.bodyHtml ?? "")) {
+      throw new Error(
+        `comparison: tableau comparatif de moins de ${MIN_LIGNES_TABLEAU} lignes de données — un comparatif doit comparer au moins ${MIN_LIGNES_TABLEAU} options`,
       );
     }
 

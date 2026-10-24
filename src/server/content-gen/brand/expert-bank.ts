@@ -11,12 +11,12 @@
  * le LLM est purement et simplement IGNORÉ (jamais lu). On ne met donc jamais
  * de mots dans la bouche d'une personne fictive ou tierce.
  *
- * Désambiguïsation d'entité : l'avis d'expert émet un nœud `Person` (@id
- * `/equipe/<key>#person`, worksFor Organization) — voir `ArticleExpertQuote`.
- * Manon a une page dédiée `/equipe/manon` (AuthorProfile) ; Williams a
- * désormais SA page d'autorité `/equipe/williams` (statique, `williams-person.ts`)
- * → l'@id de l'avis d'expert Williams pointe sur cette page (fusion Knowledge
- * Panel avec `Organization.founder`, audit Knowledge Panel 2026-07-06).
+ * Depuis le 24/10/2026 (lot L3), l'avis n'est plus signé d'une personne mais de
+ * « Point de vue d'Axion-IA » (`SIGNATURE_AVIS`) ; `ArticleExpertQuote` n'émet
+ * plus de nœud `Person` pour l'avis. Les experts ci-dessous servent au routage
+ * du sujet et aux pages /equipe, pas à la signature.
+ * Manon a une page dédiée `/equipe/manon` (AuthorProfile) ; Williams a SA page
+ * d'autorité `/equipe/williams` (statique, `williams-person.ts`).
  *
  * Doctrine nommage fondateur (cf. `FOUNDER`, lib/brand.ts) : `displayName`
  * (« Williams ») pour l'affichage figcaption ; `name` (= nom complet «
@@ -128,15 +128,31 @@ export function expertByKey(key: string): InternalExpert | null {
 }
 
 /**
- * Construit l'`expertQuote` final à partir d'un expert choisi + le texte rédigé
- * par le LLM. Le nom/titre viennent TOUJOURS de la banque (jamais du LLM).
+ * Signature des avis d'expert (audit blog/RAG du 24/10/2026, lot L3).
+ *
+ * Une prise de position écrite par un modèle de langage ne doit JAMAIS porter le
+ * nom d'une personne : ce serait mettre des mots dans la bouche de Williams ou
+ * de Manon, donc une fausse preuve. L'avis est signé de la marque, au pluriel
+ * de voix, et le rendu (`ArticleExpertQuote`) applique la même règle aux
+ * anciennes lignes déjà en base, sans les modifier.
+ */
+export const SIGNATURE_AVIS = {
+  name: "Axion-IA",
+  title: "Point de vue d'Axion-IA",
+} as const;
+
+/**
+ * Construit l'`expertQuote` final à partir du texte rédigé par le LLM.
+ * La signature est TOUJOURS « Point de vue d'Axion-IA » (jamais une personne,
+ * jamais le LLM). L'expert choisi par `pickInternalExpert` reste accepté pour ne
+ * pas changer les appels des générateurs : il oriente le sujet, pas la signature.
  * Retourne `undefined` si le texte est vide → le bloc ne se rend pas (CLS=0).
  */
 export function buildExpertQuote(
-  expert: InternalExpert,
+  _expert: InternalExpert,
   take: string | null | undefined,
 ): { readonly name: string; readonly title: string; readonly text: string } | undefined {
   const text = (take ?? "").trim();
   if (text.length === 0) return undefined;
-  return { name: expert.name, title: expert.title, text };
+  return { name: SIGNATURE_AVIS.name, title: SIGNATURE_AVIS.title, text };
 }

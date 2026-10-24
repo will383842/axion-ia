@@ -32,6 +32,14 @@ export const STUDY_LICENSE_LABEL = "CC BY 4.0";
 export const STUDY_ATTRIBUTION = "Source : Observatoire Axion-IA 2026 — axion-ia.com";
 
 /**
+ * Effectif minimal de VRAIES réponses (hors fixture de test `seed:%`) pour publier
+ * un pourcentage ou générer un article d'analyse (audit blog/RAG du 24/10/2026,
+ * lot L3). En dessous, l'observatoire reste « enquête en cours » : jamais de
+ * chiffre, jamais d'attribution « Observatoire Axion-IA ».
+ */
+export const SEUIL_REPONSES_REELLES = 100;
+
+/**
  * Période de terrain — collecte CONTINUE (l'observatoire ne se clôt pas).
  * `temporalCoverage` est un intervalle ISO 8601 OUVERT (`2026-01-06/..`),
  * format reconnu par schema.org pour un dataset toujours alimenté.

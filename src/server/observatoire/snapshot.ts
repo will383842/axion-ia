@@ -15,7 +15,7 @@
 import { prisma } from "@/lib/prisma";
 import { Prisma } from "../../../prisma/generated/client";
 import { BAROMETER_QUESTIONS, SECTOR_SLUGS, REGION_SLUGS } from "@/content/observatoire/questions";
-import { SNAPSHOT_KEY_LATEST } from "@/content/observatoire/study";
+import { SNAPSHOT_KEY_LATEST, SEUIL_REPONSES_REELLES } from "@/content/observatoire/study";
 
 export interface DistributionEntry {
   readonly value: string;
@@ -92,6 +92,13 @@ const MULTI_COLUMNS: ReadonlyArray<{ key: string; col: string }> = [
   { key: "barriers", col: "barriers" },
 ];
 
+/**
+ * Réponse réelle = tout sauf la fixture de test (`visitor_id` commençant par
+ * `seed:`). Même sémantique que `countRealResponses` : un `visitor_id` nul est
+ * une vraie réponse (le NOT LIKE seul écarterait les NULL).
+ */
+const REPONSE_REELLE = Prisma.sql`(visitor_id IS NULL OR visitor_id NOT LIKE 'seed:%')`;
+
 function pct(count: number, base: number): number {
   return base > 0 ? Math.round((count / base) * 100) : 0;
 }
@@ -141,7 +148,7 @@ async function aggregateSegment(dimCol: string): Promise<SegmentMetric[]> {
       COUNT(*) FILTER (WHERE maturity_level::text = 'production')::int AS m_production,
       COUNT(*) FILTER (WHERE maturity_level::text = 'scaled')::int AS m_scaled
     FROM barometer_responses
-    WHERE ${col} IS NOT NULL
+    WHERE ${col} IS NOT NULL AND ${REPONSE_REELLE}
     GROUP BY ${col}
     HAVING COUNT(*) >= ${MIN_SEGMENT_N}
   `);
@@ -179,6 +186,8 @@ async function aggregateSegment(dimCol: string): Promise<SegmentMetric[]> {
 
 /** Agrège les 3 dimensions de segment (taille, secteur, région). */
 export async function aggregateAllSegments(): Promise<Record<string, SegmentMetric[]>> {
+  // Sous le seuil de vraies réponses, aucun segment (donc aucun pourcentage).
+  if ((await countResponses([REPONSE_REELLE])) < SEUIL_REPONSES_REELLES) return {};
   const results = await Promise.all(
     SEGMENT_DIMENSIONS.map(async ({ key, col }) => [key, await aggregateSegment(col)] as const),
   );
@@ -202,7 +211,8 @@ function orderEntries(questionId: string, entries: DistributionEntry[]): Distrib
 
 /** Conditions WHERE paramétrées issues du filtre (valeurs bindées). */
 function whereConds(f: BarometerFilter): Prisma.Sql[] {
-  const c: Prisma.Sql[] = [];
+  // Toujours hors fixture de test : aucun pourcentage ne repose sur le seed.
+  const c: Prisma.Sql[] = [REPONSE_REELLE];
   if (f.companySize) c.push(Prisma.sql`company_size = ${f.companySize}::"CompanySize"`);
   if (f.sector) c.push(Prisma.sql`sector = ${f.sector}`);
   if (f.region) c.push(Prisma.sql`region = ${f.region}`);
@@ -286,9 +296,15 @@ export async function aggregateBarometer(
 ): Promise<BarometerSnapshotPayload> {
   const conds = whereConds(f);
 
-  // Requêtes indépendantes lancées en parallèle (1 count + 13 single + 3 multi).
-  const [total, singleResults, multiResults] = await Promise.all([
-    countResponses(conds),
+  // Seuil de publication : sous SEUIL_REPONSES_REELLES vraies réponses (global),
+  // payload vide → les pages affichent « enquête en cours », jamais un chiffre.
+  // Sans filtre, le total filtré EST le total global (une requête de moins).
+  const total = await countResponses(conds);
+  const reellesGlobal = conds.length > 1 ? await countResponses([REPONSE_REELLE]) : total;
+  if (reellesGlobal < SEUIL_REPONSES_REELLES) return emptySnapshotPayload(f);
+
+  // Requêtes indépendantes lancées en parallèle (13 single + 3 multi).
+  const [singleResults, multiResults] = await Promise.all([
     Promise.all(
       SINGLE_FIELDS.map(async ({ key, col }) => [key, await groupSingle(col, conds)] as const),
     ),
@@ -363,6 +379,9 @@ export async function aggregateBarometer(
 export async function recomputeAndPersistSnapshot(): Promise<BarometerSnapshotPayload> {
   const [base, segments] = await Promise.all([aggregateBarometer(), aggregateAllSegments()]);
   const payload: BarometerSnapshotPayload = { ...base, segments };
+  // Sous le seuil de vraies réponses : le snapshot publié est vidé (total 0),
+  // et on n'ajoute AUCUN point à l'historique (une courbe de zéros mentirait).
+  const publiable = payload.totalResponses > 0;
 
   await prisma.barometerSnapshot.upsert({
     where: { key: SNAPSHOT_KEY_LATEST },
@@ -381,12 +400,14 @@ export async function recomputeAndPersistSnapshot(): Promise<BarometerSnapshotPa
   // Historisation pour les COURBES d'évolution — append-only, best-effort
   // (un échec d'historisation ne doit jamais invalider le snapshot publié).
   try {
-    await prisma.barometerSnapshotHistory.create({
-      data: {
-        totalResponses: payload.totalResponses,
-        insights: payload.insights as unknown as Prisma.InputJsonValue,
-      },
-    });
+    if (publiable) {
+      await prisma.barometerSnapshotHistory.create({
+        data: {
+          totalResponses: payload.totalResponses,
+          insights: payload.insights as unknown as Prisma.InputJsonValue,
+        },
+      });
+    }
   } catch {
     // no-op : historique non critique.
   }
