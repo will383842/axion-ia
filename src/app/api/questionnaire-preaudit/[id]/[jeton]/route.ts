@@ -32,15 +32,18 @@ const ENTETES = {
   ...ENTETES_CORS_PREAUDIT,
 } as const;
 
-/** Par IP : un bureau entier peut répondre derrière la même adresse. */
+/**
+ * Par IP : un bureau entier (62 personnes au plus) peut répondre derrière la même adresse, et
+ * chacune peut renvoyer une fois.
+ */
 export const LIMITE_PAR_IP: RateLimitConfig = {
-  limit: 60,
+  limit: 150,
   windowSec: 900,
   surPanne: "laisser-passer",
 };
-/** Par lien : au plus ~3 réponses par minute en moyenne, tous appareils confondus. */
+/** Par lien : 62 personnes et leurs renvois dans l'heure, tous appareils confondus. */
 export const LIMITE_PAR_JETON: RateLimitConfig = {
-  limit: 120,
+  limit: 300,
   windowSec: 3600,
   surPanne: "laisser-passer",
 };

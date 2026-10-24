@@ -122,8 +122,14 @@ describe("questionnaire de pré-audit (2026-10-24)", () => {
     const { eraseQuestionnairePreauditMembre } = await import("../rgpd-erase");
     preDeleteMany.mockResolvedValue({ count: 1 });
     expect(await eraseQuestionnairePreauditMembre("ref1", "m42")).toBe(1);
+    // Seulement les réponses MISES À L'ÉCART : une réponse arrivée après l'écart reste.
     expect(preDeleteMany).toHaveBeenCalledWith({
-      where: { mode: { in: ["emp", "it"] }, membre: "m42", questionnaire: { ref: "ref1" } },
+      where: {
+        mode: { in: ["emp", "it"] },
+        membre: "m42",
+        questionnaire: { ref: "ref1" },
+        ecarteLe: { not: null },
+      },
     });
     expect(brouillonDeleteMany).toHaveBeenCalledWith({
       where: { mode: { in: ["emp", "it"] }, membre: "m42", questionnaire: { ref: "ref1" } },

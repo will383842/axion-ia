@@ -2484,8 +2484,14 @@ export async function eraseQuestionnairePreauditMembre(
   // Son brouillon en cours suit (2026-10-24), dans la MÊME transaction ; le compte rendu reste
   // celui des réponses.
   const [r] = await prisma.$transaction([
+    // Seulement ce qui a été MIS À L'ÉCART : une réponse arrivée après l'écart n'est pas touchée.
     prisma.questionnaireAvantAuditEnvoi.deleteMany({
-      where: { mode: { in: ["emp", "it"] }, membre, questionnaire: { ref } },
+      where: {
+        mode: { in: ["emp", "it"] },
+        membre,
+        questionnaire: { ref },
+        ecarteLe: { not: null },
+      },
     }),
     prisma.questionnaireAvantAuditBrouillon.deleteMany({
       where: { mode: { in: ["emp", "it"] }, membre, questionnaire: { ref } },

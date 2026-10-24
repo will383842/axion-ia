@@ -137,7 +137,7 @@ vi.mock("next/navigation", () => ({
 }));
 
 import { prisma as prismaMock } from "@/lib/prisma";
-import { POST, OPTIONS } from "@/app/api/questionnaire-preaudit/[id]/[jeton]/route";
+import { LIMITE_PAR_IP, POST, OPTIONS } from "@/app/api/questionnaire-preaudit/[id]/[jeton]/route";
 import { GET } from "@/app/questionnaire/preaudit/[id]/[jeton]/route";
 import { dechiffrerParole } from "@/lib/chiffrer-parole";
 import { jetonPreaudit } from "@/server/visio/questionnaire-en-ligne/jeton";
@@ -438,9 +438,16 @@ describe("réception des réponses", () => {
     expect(r).toBe("trop");
   });
 
-  it("62 personnes (60 collaborateurs + dirigeant + référent) passent toutes", async () => {
+  it("62 personnes (60 collaborateurs + dirigeant + référent) passent toutes, même IP, VRAIES limites", async () => {
     allumer();
     const q = questionnaire();
+    // Limiteur qui applique la configuration réelle (compteur par clé), au lieu de tout laisser passer.
+    const compteurs = new Map<string, number>();
+    base.limite.mockImplementation(async (cle: string, conf: { limit: number }) => {
+      const n = (compteurs.get(cle) ?? 0) + 1;
+      compteurs.set(cle, n);
+      return { allowed: n <= conf.limit };
+    });
     for (let i = 0; i < 60; i++) {
       expect((await post(q, CHARGE("emp", `membre${String(i).padStart(6, "0")}`))).status).toBe(
         200,
@@ -449,6 +456,11 @@ describe("réception des réponses", () => {
     expect((await post(q, CHARGE("main"))).status).toBe(200);
     expect((await post(q, CHARGE("it", "referentit01"))).status).toBe(200);
     expect(base.e).toHaveLength(62);
+    // Toutes derrière la même IP : le compteur IP a bien été consulté 62 fois.
+    expect(
+      Math.max(...[...compteurs.entries()].filter(([k]) => k.includes(":ip:")).map(([, n]) => n)),
+    ).toBe(62);
+    expect(LIMITE_PAR_IP.limit).toBeGreaterThanOrEqual(90);
   });
 
   it("renvoi IDENTIQUE (même envoyeLe) : 409 « déjà reçu », aucune seconde ligne, hors plafond", async () => {
@@ -463,6 +475,16 @@ describe("réception des réponses", () => {
     expect(r.status).toBe(409);
     expect(await r.json()).toEqual({ ok: true, motif: "deja_recu" });
     expect(base.e).toHaveLength(1);
+    // Même `envoyeLe` mais contenu MODIFIÉ : jamais perdu, nouvelle ligne.
+    const modifiee = JSON.stringify({
+      ...JSON.parse(c),
+      donnees: { ...JSON.parse(c).donnees, ajout: "modifié" },
+    });
+    expect((await post(q, modifiee)).status).toBe(200);
+    expect(base.e).toHaveLength(2);
+    expect((await post(q, modifiee)).status).toBe(409);
+    expect(base.e).toHaveLength(2);
+    base.e.splice(1, 1);
     // Une version CORRIGÉE (autre envoyeLe) est une nouvelle ligne : tout l'historique est gardé.
     const corrigee = JSON.stringify({ ...JSON.parse(c), envoyeLe: "2026-10-24T12:05:00.000Z" });
     expect((await post(q, corrigee)).status).toBe(200);

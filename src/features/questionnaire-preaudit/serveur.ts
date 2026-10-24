@@ -279,8 +279,8 @@ export type ResultatReponse = "ok" | "doublon" | "ferme" | "trop";
  * Même verrou que `deposerQuestionnaire` : si un redépôt est en cours, on attend sa fin, on trouve
  * la ligne disparue, et la réponse est refusée au lieu d'être effacée par la cascade.
  *
- *   · IDEMPOTENT : un renvoi identique (même questionnaire, parcours, `membre` gardé et
- *     `envoyeLe` du navigateur) ne crée pas de seconde ligne (`doublon`) — délai dépassé, réponse
+ *   · IDEMPOTENT : un renvoi identique (même questionnaire, parcours, `membre` gardé,
+ *     `envoyeLe` du navigateur ET contenu identique) ne crée pas de seconde ligne (`doublon`) — délai dépassé, réponse
  *     perdue, la page renvoie ; il ne compte pas dans le plafond ;
  *   · plafond de `ENVOIS_MAX_PAR_QUESTIONNAIRE` lignes (`trop`) ;
  *   · le brouillon du DIRIGEANT n'est supprimé que si sa réponse porte SON code (lien de base sans
@@ -303,16 +303,25 @@ export async function enregistrerReponse(
     if (frais === null || !accepteDesReponses(frais, maintenant)) return "ferme";
     const membre = membreAGarder(q.id, charge.mode, charge.membre);
     if (charge.envoyeLe !== null) {
-      const deja = await tx.questionnaireAvantAuditEnvoi.findFirst({
+      const memes = await tx.questionnaireAvantAuditEnvoi.findMany({
         where: {
           questionnaireId: q.id,
           mode: charge.mode,
           membre,
           envoyeLeNavigateur: charge.envoyeLe,
         },
-        select: { id: true },
+        select: { donnees: true },
       });
-      if (deja !== null) return "doublon";
+      // Doublon seulement si le CONTENU est identique, octet pour octet : une version modifiée
+      // portant le même `envoyeLe` n'est JAMAIS perdue (elle devient une nouvelle ligne).
+      const identique = memes.some((e) => {
+        try {
+          return dechiffrerParole(e.donnees) === charge.json;
+        } catch {
+          return false;
+        }
+      });
+      if (identique) return "doublon";
     }
     const n = await tx.questionnaireAvantAuditEnvoi.count({ where: { questionnaireId: q.id } });
     if (n >= ENVOIS_MAX_PAR_QUESTIONNAIRE) return "trop";
