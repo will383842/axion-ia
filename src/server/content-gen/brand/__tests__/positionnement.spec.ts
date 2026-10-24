@@ -23,7 +23,10 @@ describe("angles d'entrée", () => {
 
   it("répartit 800 graines entre 70 et 130 par angle", () => {
     const compte = new Array<number>(ANGLES_ENTREE.length).fill(0);
-    for (let i = 0; i < 800; i++) compte[choisirAngleEntree(`seed-${i}`)]++;
+    for (let i = 0; i < 800; i++) {
+      const angle = choisirAngleEntree(`seed-${i}`);
+      compte[angle] = (compte[angle] ?? 0) + 1;
+    }
     for (const n of compte) {
       expect(n).toBeGreaterThanOrEqual(70);
       expect(n).toBeLessThanOrEqual(130);
