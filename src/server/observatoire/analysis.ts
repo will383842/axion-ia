@@ -145,11 +145,14 @@ Règles absolues :
   "recommendations": ["3 à 5 recommandations opérationnelles concrètes pour un dirigeant"]
 }`;
 
-/** Lit l'analyse en cache (ou null). */
+/**
+ * Lit l'analyse en cache (ou null). Lot L3 : une analyse ancrée sur moins de
+ * SEUIL_REPONSES_REELLES réponses n'est jamais publiée (elle reste en base).
+ */
 export async function readLatestAnalysis(): Promise<BarometerAnalysisRecord | null> {
   try {
     const row = await prisma.barometerAnalysis.findUnique({ where: { key: ANALYSIS_KEY } });
-    if (!row) return null;
+    if (!row || row.basedOnTotal < SEUIL_REPONSES_REELLES) return null;
     return {
       payload: row.payload as unknown as BarometerAnalysisPayload,
       generatedAt: row.generatedAt.toISOString(),

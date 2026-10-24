@@ -415,13 +415,19 @@ export async function recomputeAndPersistSnapshot(): Promise<BarometerSnapshotPa
   return payload;
 }
 
-/** Lit l'historique des recalculs (ordre chronologique) — pour les courbes d'évolution. */
+/**
+ * Lit l'historique des recalculs (ordre chronologique) — pour les courbes d'évolution.
+ * Lot L3 : on ne renvoie que les points obtenus à partir d'au moins
+ * SEUIL_REPONSES_REELLES réponses (les anciens points sous le seuil restent en base,
+ * mais ne sont plus publiés : page et export JSON passent tous deux par ici).
+ */
 export async function readSnapshotHistory(
   limit = 60,
 ): Promise<
   Array<{ computedAt: string; totalResponses: number; insights: Record<string, number> }>
 > {
   const rows = await prisma.barometerSnapshotHistory.findMany({
+    where: { totalResponses: { gte: SEUIL_REPONSES_REELLES } },
     orderBy: { computedAt: "asc" },
     take: limit,
   });
