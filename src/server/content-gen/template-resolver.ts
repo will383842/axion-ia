@@ -17,6 +17,10 @@
 import { prisma } from "@/lib/prisma";
 import type { ContentType } from "../../../prisma/generated/client";
 import { injectBrandVoiceForType } from "@/server/content-gen/brand/brand-voice";
+import {
+  BLOC_POSITIONNEMENT,
+  MARQUEUR_POSITIONNEMENT,
+} from "@/server/content-gen/brand/positionnement";
 
 /**
  * Cap de longueur raisonnable pour un systemPrompt de template console. Un
@@ -171,5 +175,11 @@ export function applySystemPromptOverride(
     }
     throw err;
   }
-  return injectBrandVoiceForType(override.systemPrompt, contentType);
+  // Le prompt modèle remplace celui du code : on y remet le bloc de positionnement
+  // s'il n'y est pas déjà (idempotent). Ce chemin n'est pas celui du chatbot.
+  const avecVoix = injectBrandVoiceForType(override.systemPrompt, contentType);
+  if (avecVoix.includes(MARQUEUR_POSITIONNEMENT)) return avecVoix;
+  return `${avecVoix}
+
+${BLOC_POSITIONNEMENT}`;
 }

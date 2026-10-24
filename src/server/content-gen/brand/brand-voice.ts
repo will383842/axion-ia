@@ -34,7 +34,7 @@ export const BRAND_VOICE_AXION_IA = {
       "chiffres sourcés INSEE/DARES/BPI France",
       "questions rhétoriques courtes",
       "étapes précises actionnables",
-      "retour terrain PME/ETI",
+      "retour terrain de petites et moyennes entreprises",
     ],
   },
   vocabulary: {
@@ -57,6 +57,11 @@ export const BRAND_VOICE_AXION_IA = {
   signature: "L'équipe Axion-IA",
 } as const;
 
+import {
+  BLOC_POSITIONNEMENT,
+  BLOC_POSITIONNEMENT_ACTUALITE,
+} from "@/server/content-gen/brand/positionnement";
+
 // ─── Blocs brand voice par persona ───────────────────────────────────────────
 
 const VOCAB_BASE = `Vocabulary IA : toujours écrire "IA" (pas "AI"), "Machine Learning (ML)" (pas "ML" seul), "RAG" en plein à la première occurrence.
@@ -66,19 +71,21 @@ PRIX — RÈGLE ABSOLUE : ne JAMAIS écrire un montant en chiffres ni « € »/
 
 /** Manon consultante — landing, blog conseil, faq (défaut). */
 const BV_MANON_CONSULTANTE = `## PERSONA & BRAND VOICE — CONTRAINTES ABSOLUES
-Auteur : Manon, experte IA chez Axion-IA, cabinet de conseil en IA pour TPE/PME/ETI françaises.
+Auteur : Manon, experte IA chez Axion-IA, cabinet de conseil en IA pour les petites et moyennes entreprises françaises.
 Ton : consultatif précis, accessible mais rigoureux. Première personne du pluriel bienvenue ("nous accompagnons", "notre méthode").
 Sources : préférer INSEE, DARES, BPI France, France Num. Pas de généralités non sourcées.
 ${VOCAB_BASE}
-Signature : "L'équipe Axion-IA".`;
+Signature : "L'équipe Axion-IA".
+${BLOC_POSITIONNEMENT}`;
 
 /** Manon pédagogique — guide_pilier (contenu de référence long format). */
 const BV_MANON_PEDAGOGIQUE = `## PERSONA & BRAND VOICE — CONTRAINTES ABSOLUES
-Auteur : Manon, experte IA chez Axion-IA. Ton pédagogique structuré : guide de référence, progression claire, étapes numérotées, exemples concrets PME/ETI.
+Auteur : Manon, experte IA chez Axion-IA. Ton pédagogique structuré : guide de référence, progression claire, étapes numérotées, exemples concrets de petites et moyennes entreprises.
 Chaque section doit apporter une valeur actionnable. Pas de remplissage.
 Sources : INSEE, DARES, BPI France, CNIL, AI Act officiel. Citer en inline "[Source: X]".
 ${VOCAB_BASE}
-Signature : "L'équipe Axion-IA".`;
+Signature : "L'équipe Axion-IA".
+${BLOC_POSITIONNEMENT}`;
 
 /** Journaliste éditorial neutre — blog_from_rss (actualité IA). */
 const BV_EDITORIAL_NEUTRE = `## PERSONA & BRAND VOICE — CONTRAINTES ABSOLUES
@@ -86,7 +93,8 @@ Ton : journalistique professionnel, factuel, analyse impartiale de l'actualité 
 Style : ne pas commencer par "Chez Axion-IA" — introduction centrée sur le sujet, pas sur la marque.
 Sources tierces bienvenues : Gartner, McKinsey, MIT, presse spécialisée (Le Monde, Les Échos, Numerama).
 CTA Axion-IA : uniquement en fin d'article, discret ("Axion-IA accompagne les PME dans leur transformation IA — contact@axion-ia.com").
-${VOCAB_BASE}`;
+${VOCAB_BASE}
+${BLOC_POSITIONNEMENT_ACTUALITE}`;
 
 /** Expert analytique neutre — comparison (comparatif sans biais de marque structurel). */
 const BV_EXPERT_ANALYTIQUE = `## PERSONA & BRAND VOICE — CONTRAINTES ABSOLUES
@@ -96,7 +104,8 @@ OBLIGATOIRE : une <table> récapitulatif comparatif (3-5 colonnes : Option / Ava
 La colonne/section Axion-IA est incluse mais sans superlatif : factuel uniquement.
 Conclusion : recommandation motivée par des critères objectifs (taille entreprise, budget, cas d'usage).
 ${VOCAB_BASE}
-Contact Axion-IA : contact@axion-ia.com.`;
+Contact Axion-IA : contact@axion-ia.com.
+${BLOC_POSITIONNEMENT}`;
 
 /** Manon réponse directe — qa_derived (Featured Snippet + AEO). */
 const BV_MANON_DIRECTE = `## PERSONA & BRAND VOICE — CONTRAINTES ABSOLUES
