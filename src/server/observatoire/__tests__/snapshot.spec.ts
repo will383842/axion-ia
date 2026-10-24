@@ -17,6 +17,27 @@ vi.mock("@/lib/prisma", () => ({
   prisma: { $queryRaw: queryRawMock },
 }));
 
+// Mini `Prisma.sql` : assemble le texte SQL (les valeurs deviennent `?`) pour
+// que le test lise la requête, sans dépendre du client Prisma généré.
+vi.mock("../../../../prisma/generated/client", () => {
+  class Sql {
+    constructor(readonly sql: string) {}
+  }
+  const texte = (v: unknown): string => (v instanceof Sql ? v.sql : "?");
+  return {
+    Prisma: {
+      Sql,
+      empty: new Sql(""),
+      raw: (t: string) => new Sql(t),
+      join: (parts: Sql[], sep = ",") => new Sql(parts.map(texte).join(sep)),
+      sql: (strings: TemplateStringsArray, ...vals: unknown[]) =>
+        new Sql(
+          strings.reduce((acc, s, i) => acc + s + (i < vals.length ? texte(vals[i]) : ""), ""),
+        ),
+    },
+  };
+});
+
 import { SEUIL_REPONSES_REELLES } from "@/content/observatoire/study";
 import { aggregateAllSegments, aggregateBarometer } from "../snapshot";
 
