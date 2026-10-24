@@ -33,6 +33,7 @@ import {
   reviewArticle,
   JUDGE_THRESHOLDS,
   JUDGE_SYSTEM_PROMPT,
+  JUDGE_LIBELLES_INTERDITS,
 } from "../llm-judge";
 
 function makeRawJudgeJson(opts: {
@@ -337,5 +338,23 @@ describe("Thresholds exposed", () => {
 
   it("IMPROVE_MIN = 6.0 (D1 décision Will 2026-05-21 — aligné P5 D-P5-2)", () => {
     expect(JUDGE_THRESHOLDS.IMPROVE_MIN).toBe(6.0);
+  });
+});
+
+describe("JUDGE_SYSTEM_PROMPT — doctrine Axion-IA (audit 24/10/2026)", () => {
+  it("liste 13 libelles d'interdit", () => {
+    expect(JUDGE_LIBELLES_INTERDITS).toHaveLength(13);
+  });
+
+  it("contient chacun des 13 libelles d'interdit en P0", () => {
+    for (const libelle of JUDGE_LIBELLES_INTERDITS) {
+      expect(JUDGE_SYSTEM_PROMPT, libelle).toContain(libelle);
+    }
+    expect(JUDGE_SYSTEM_PROMPT).toContain("P0 doctrine Axion-IA");
+  });
+
+  it("nomme la cible : dirigeant d'une petite entreprise, plus PME/ETI", () => {
+    expect(JUDGE_SYSTEM_PROMPT).toContain("dirigeant d'une petite entreprise");
+    expect(JUDGE_SYSTEM_PROMPT).not.toContain("lecteur PME/ETI");
   });
 });

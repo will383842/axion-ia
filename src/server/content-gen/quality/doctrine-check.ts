@@ -3,6 +3,8 @@
  *
  * Vérifie qu'un contenu généré respecte la doctrine éditoriale Axion-IA :
  * 1. Anti-SIREN strict (regex SIREN/SIRET/RCS — block)
+ * 1bis. Interdits de publication (Qualiopi, CPF, financement, partenariats…) :
+ *    module pur `@/lib/contenu/interdits-publication`
  * 2. Naming Axion-IA exact (jamais « AxionIA » ou « Axion IA »)
  * 3. Mot « formation » banni (cf. axionia-core §1)
  * 4. Banned phrases lookup table `BannedPhrase` (severity block/warn/info)
@@ -12,6 +14,14 @@
 
 import { prisma } from "@/lib/prisma";
 import { findNonSsotPrices } from "./price-gate";
+import {
+  detecterInterdits,
+  normaliserPourControle,
+  raisonInterdit,
+  type CodeInterdit,
+  type OptionsInterdits,
+} from "@/lib/contenu/interdits-publication";
+import { isQualiopiPublicDisclosureEnabled } from "@/server/qualiopi/config/flag";
 
 export interface DoctrineCheckResult {
   readonly passed: boolean;
@@ -26,130 +36,39 @@ export interface DoctrineViolation {
   readonly severity: "block" | "warn" | "info";
   readonly reason: string;
   readonly occurrences: number;
+  /** Champ de la sortie où la violation a été trouvée (contrôle de surface). */
+  readonly champ?: string;
+  /** `phrase-base` = phrase de la table BannedPhrase ; absent = règle du code. */
+  readonly origine?: "phrase-base";
 }
 
 const SIREN_REGEX = /\b\d{9}\b|\b\d{14}\b|RCS\s+[A-Z]/i;
 const NAMING_INCORRECT_REGEX = /\b(AxionIA|Axion\s+IA)\b/g; // doit être Axion-IA
 
-// Stats « propriétaires » fabriquées (audit blog 2026-07-03). Le LLM inventait
-// des statistiques auto-attribuées présentées comme des faits (« 89 % … données
-// Axion-IA, évaluations 2024-2025 », « étude interne Axion-IA, n=87 dirigeants »).
-// Invérifiables → risque E-E-A-T. On BLOQUE : aucun chiffre ne doit être attribué
-// à des données internes Axion-IA. `\b` ancré pour ne PAS matcher « ressources
-// Axion-IA » (source ⊂ ressource) ni les mentions brand légitimes.
-const FABRICATED_STAT_PATTERNS: ReadonlyArray<{ re: RegExp; reason: string }> = [
-  {
-    re: /\b(?:données|mesures|chiffres|statistiques?)\s+(?:internes?\s+)?(?:d['’]\s*)?Axion-?IA/gi,
-    reason:
-      "Statistique auto-attribuée à des « données internes Axion-IA » (invérifiable, E-E-A-T). Citer une source publique vérifiable OU formuler qualitativement, sans chiffre inventé.",
-  },
-  {
-    re: /\bsource\s+interne\s+Axion-?IA/gi,
-    reason:
-      "Attribution « source interne Axion-IA » d'une donnée fabriquée. Retirer ou sourcer publiquement.",
-  },
-  {
-    re: /\bétude\s+interne\b/gi,
-    reason:
-      "Renvoi à une « étude interne » (propriétaire, invérifiable). Interdit sauf source publique.",
-  },
-  {
-    re: /\bn\s*=\s*\d{1,5}\b/g,
-    reason:
-      "Taille d'échantillon (« n=87 ») d'une étude interne fabriquée. Retirer ou sourcer publiquement.",
-  },
-  {
-    re: /\bévaluations?\s+20\d{2}(?:\s*[-–]\s*20\d{2})?/gi,
-    reason: "Attribution « évaluations 20XX » d'une étude propriétaire fabriquée.",
-  },
-];
-
-// Financement — garde-fous doctrine (Phase B). Axion-IA n'est PAS certifiée
-// Qualiopi (ordre de Will, 19/10/2026 : zéro trace publique) : le mot est bloqué
-// dans tout contenu généré. OPCO + France Travail PEUVENT être mentionnés
-// (registre « prise en charge possible »). 4 familles sont INTERDITES :
-//  (a) le CPF (exige RNCP/RS + EDOF non détenus) ;
-//  (b) les sur-promesses « automatique / 100 % / gratuit » (le versement dépend
-//      toujours de l'accord de l'OPCO ou de France Travail — C. conso L121-2) ;
-//  (c) les numéros légaux (NDA, certificat) — jamais dans le public ;
-//  (d) toute mention de « Qualiopi » (label non obtenu : fausse déclaration).
-// SSOT des formulations autorisées : `server/qualiopi/config/financing.ts`.
-const FINANCING_FORBIDDEN_PATTERNS: ReadonlyArray<{
-  re: RegExp;
-  severity: "block" | "warn";
-  reason: string;
-}> = [
-  {
-    re: /qualiopi/gi,
-    severity: "block",
-    reason:
-      "« Qualiopi » cité dans un contenu généré. Axion-IA n'est pas certifiée : aucune mention publique (ordre de Will, 19/10/2026). Retirer le mot.",
-  },
-  {
-    re: /\bCPF\b|compte\s+personnel\s+de\s+formation|mon\s+compte\s+formation|moncompteformation/gi,
-    severity: "block",
-    reason:
-      "CPF / Mon Compte Formation cité : NON éligible (Qualiopi seul ne suffit pas, il faut RNCP/RS + EDOF). Ne mentionner que OPCO / France Travail.",
-  },
-  {
-    // ⚠️ `\S*` (et non `\w+`) : `\w` ne matche PAS les lettres accentuées, donc
-    // « financée / financés » échapperait à `financ\w+`. `financ\S*` les couvre.
-    re: /(?:financ\S*|pris\S*\s+en\s+charge)\s+(?:à\s+)?100\s*%|100\s*%\s+(?:financ\S*|pris\S*\s+en\s+charge|gratuit)/gi,
-    severity: "block",
-    reason:
-      "Sur-promesse « 100 % financé / pris en charge ». Le versement dépend de l'accord de l'OPCO / France Travail. Formuler « prise en charge possible, selon votre situation ».",
-  },
-  {
-    re: /financement\s+automatique|automatiquement\s+financ\S*|financ\S*\s+automatiquement/gi,
-    severity: "block",
-    reason:
-      "Sur-promesse « financement automatique ». L'éligibilité est acquise, mais le financement suppose une demande + accord préalable.",
-  },
-  {
-    re: /(?:intégralement|entièrement|totalement)\s+(?:financ\S*|gratuit\S*)|formation\s+gratuite|gratuit\S*\s+grâce\s+à/gi,
-    severity: "block",
-    reason:
-      "Sur-promesse de gratuité / financement intégral. Le reste à charge dépend du dossier OPCO. Formuler au conditionnel (« en tout ou partie »).",
-  },
-  {
-    // NDA / certificat Qualiopi suivi d'un numéro, sous toutes ses formes :
-    // « certificat n° 12345 », « certification Qualiopi numéro … », « NDA 11380… ».
-    re: /(?:déclaration\s+d['’e]?\s*activité|certificat|certification\s+qualiopi|qualiopi|\bNDA\b)\s*(?:qualiopi\s*)?(?:n[°ºo]|numéro|:)\s*\d|\bNDA\b\s*\d{3}/gi,
-    severity: "block",
-    reason:
-      "Numéro légal (NDA / certificat Qualiopi) dans un contenu généré. Ces numéros ne figurent JAMAIS dans le public/généré. Retirer le numéro.",
-  },
-];
-
-// 2026-07-04 — Partenariats / clients / labels FABRIQUÉS. Will a repéré des
-// mentions inventées (« développé en partenariat avec la CCI Lyon Métropole… »).
-// Axion-IA n'a AUCUN partenariat institutionnel ni client nommé public. On BLOQUE
-// ces revendications (publicité mensongère / E-E-A-T). Patterns ciblés sur une
-// institution nommée OU « parmi nos clients » pour NE PAS faux-positiver les
-// usages légitimes (« en collaboration avec vos équipes », « nos clients
-// bénéficient de… »).
-const FABRICATED_PARTNERSHIP_PATTERNS: ReadonlyArray<{ re: RegExp; reason: string }> = [
-  {
-    re: /\ben\s+(?:partenariat|collaboration)\s+avec\s+(?:la\s+|le\s+|l['’]|les\s+)?(?:CCI|chambre\s+(?:de\s+commerce|des\s+métiers|consulaire)|pôle\s+(?:de\s+compétitivité|d['’]excellence)|université|métropole|agglomération|communauté\s+(?:de\s+communes|d['’]agglomération)|région|préfecture|mairie|ville\s+de)/gi,
-    reason:
-      "Partenariat/collaboration FABRIQUÉ avec une institution nommée (CCI, pôle, université, métropole…). Axion-IA n'a pas ces partenariats — retirer la mention.",
-  },
-  {
-    re: /\b(?:développ[ée]e?s?|conçue?s?|créée?s?|élaborée?s?)\s+(?:en\s+partenariat\b|en\s+collaboration\s+avec\s+(?:la\s+|le\s+)?(?:CCI|chambre|pôle|université|région))/gi,
-    reason:
-      "Contenu prétendument « développé en partenariat » avec une institution — fabrication. Axion-IA produit seul ; retirer.",
-  },
-  {
-    re: /\b(?:labellisée?s?|accréditée?s?|certifiée?s?\s+par|soutenue?s?|financée?s?)\s+(?:par\s+)?(?:la\s+|le\s+)?(?:CCI|chambre\s+consulaire|pôle\s+de\s+compétitivité|région|préfecture)/gi,
-    reason:
-      "Label / soutien / accréditation FABRIQUÉ par une institution. Retirer sauf preuve réelle vérifiable.",
-  },
-  {
-    re: /\b(?:parmi\s+nos\s+clients|comptent\s+parmi\s+nos\s+clients|nos\s+clients\s+(?:tels?\s+que|comme|incluent)\b)/gi,
-    reason:
-      "Référence client nommée/listée FABRIQUÉE (« parmi nos clients… »). Axion-IA ne cite pas de clients nommés — retirer ou anonymiser (« un client industriel de la région »).",
-  },
-];
+// Les motifs « stat fabriquée », financement, CPF, partenariat, etc. vivent
+// désormais dans `@/lib/contenu/interdits-publication` (module pur, texte
+// normalisé, bornes de mot explicites). Ici on ne garde que les NOMS de motif
+// historiques, utilisés par les journaux et les tests.
+const PATTERN_PAR_CODE: Readonly<Record<CodeInterdit, string>> = {
+  qualiopi: "financement-interdit",
+  cpf: "financement-interdit",
+  "financement-100": "financement-interdit",
+  "financement-public": "financement-interdit",
+  "numero-legal": "financement-interdit",
+  partenariat: "partenariat-fabriqué",
+  "stat-axion": "stat-fabriquée-Axion-IA",
+  "temoignage-axion": "temoignage-axion",
+  "citation-temoin": "citation-temoin",
+  grenoble: "grenoble",
+  "ancrage-local": "ancrage-local",
+  "promesse-garantie": "promesse-garantie",
+  "faites-le-vous-meme": "faites-le-vous-meme",
+  "etiquette-tpe-pme": "etiquette-tpe-pme",
+  "slogan-recopie": "slogan-recopie",
+  "reservation-paiement": "reservation-paiement",
+  "tva-non-facturee": "tva-non-facturee",
+  "texte-admin": "texte-admin",
+};
 
 const AXIONIA_KEYWORDS = [
   "axion-ia",
@@ -187,7 +106,15 @@ function computeAxionIaRatio(text: string): number {
  * Lance le doctrine-check complet sur un texte.
  * Lit BannedPhrase DB si disponible (fallback hardcoded list si P2021).
  */
-export async function checkDoctrine(text: string): Promise<DoctrineCheckResult> {
+export async function checkDoctrine(
+  text: string,
+  options: Partial<OptionsInterdits> = {},
+): Promise<DoctrineCheckResult> {
+  const optsInterdits: OptionsInterdits = {
+    actualite: options.actualite ?? false,
+    financementPublicAutorise:
+      options.financementPublicAutorise ?? isQualiopiPublicDisclosureEnabled(),
+  };
   const blocking: DoctrineViolation[] = [];
   const warnings: DoctrineViolation[] = [];
   const infos: DoctrineViolation[] = [];
@@ -215,64 +142,25 @@ export async function checkDoctrine(text: string): Promise<DoctrineCheckResult> 
     });
   }
 
-  // 2bis. Stats « propriétaires » fabriquées (auto-attribuées à Axion-IA).
-  for (const { re, reason } of FABRICATED_STAT_PATTERNS) {
-    const matches = text.match(re);
-    if (matches) {
-      blocking.push({
-        pattern: "stat-fabriquée-Axion-IA",
-        severity: "block",
-        reason,
-        occurrences: matches.length,
-      });
-    }
-  }
-
-  // 2ter. Financement — sur-promesses interdites (100 % / automatique / gratuit),
-  // numéros légaux exposés, et CPF interdit. NB : le CPF est AUSSI attrapé plus bas
-  // par le bloc dédié 2sexies (décision Will) — la double détection est bénigne
-  // (deux violations bloquantes cumulables) et laisse les deux jeux de tests verts.
-  for (const { re, severity, reason } of FINANCING_FORBIDDEN_PATTERNS) {
-    const matches = text.match(re);
-    if (matches) {
-      const violation: DoctrineViolation = {
-        pattern: "financement-interdit",
-        severity,
-        reason,
-        occurrences: matches.length,
-      };
-      if (severity === "block") blocking.push(violation);
-      else warnings.push(violation);
-    }
-  }
-
-  // 2quater. Partenariats / clients / labels institutionnels FABRIQUÉS.
-  for (const { re, reason } of FABRICATED_PARTNERSHIP_PATTERNS) {
-    const matches = text.match(re);
-    if (matches) {
-      blocking.push({
-        pattern: "partenariat-fabriqué",
-        severity: "block",
-        reason,
-        occurrences: matches.length,
-      });
-    }
-  }
-
-  // 2sexies. CPF INTERDIT (2026-07-04, décision Will) — Axion-IA n'a PAS
-  // l'autorisation CPF (nécessite un enregistrement RNCP/RS distinct de Qualiopi).
-  // Annoncer un financement CPF sans habilitation est illégal. Toute mention est
-  // BLOQUÉE. Financements légitimes à citer : OPCO, France Travail (AIF), plan de
-  // développement des compétences. (Qualiopi + OPCO = OK ; CPF = jamais.)
-  const cpfMatches = text.match(/\bCPF\b|compte\s+personnel\s+de\s+formation/gi);
-  if (cpfMatches) {
+  // 2bis. Interdits de publication (stats fabriquées, Qualiopi, CPF, financement,
+  // partenariats, Grenoble, « garanti »…). Un seul module pur, texte normalisé.
+  for (const d of detecterInterdits(text, optsInterdits)) {
+    const reason = raisonInterdit(d.code);
     blocking.push({
-      pattern: "CPF-non-autorise",
+      pattern: PATTERN_PAR_CODE[d.code],
       severity: "block",
-      reason:
-        "Mention du CPF INTERDITE — Axion-IA n'a pas l'habilitation CPF. Retirer toute référence au CPF ; financements citables : OPCO, France Travail (AIF), plan de développement des compétences.",
-      occurrences: cpfMatches.length,
+      reason,
+      occurrences: d.occurrences,
     });
+    // Le CPF garde aussi son nom historique (journaux et anciens tests).
+    if (d.code === "cpf") {
+      blocking.push({
+        pattern: "CPF-non-autorise",
+        severity: "block",
+        reason,
+        occurrences: d.occurrences,
+      });
+    }
   }
 
   // 3. Banned phrases (DB ou fallback)
@@ -334,15 +222,17 @@ export async function checkDoctrine(text: string): Promise<DoctrineCheckResult> 
   // Ex: "angle unique par ville" justifie le mot « unique » (différenciation
   // sémantique pour échapper aux doorway pages massivement clonées).
   const DOCTRINE_EXCEPTIONS: ReadonlyArray<{ pattern: string; allowedRegex: RegExp }> = [
-    { pattern: "unique", allowedRegex: /\bangle\s+unique\s+par\s+ville\b/i },
+    { pattern: "unique", allowedRegex: /(?<![a-z0-9])angle unique par ville(?![a-z0-9])/ },
   ];
 
-  const lower = text.toLowerCase();
+  // Texte et motif normalisés (accents retirés) avec bornes de mot explicites :
+  // `\b` ne voit pas « é » comme une lettre de mot, donc « instantané » ne
+  // pouvait jamais être trouvé.
+  const lower = normaliserPourControle(text);
   for (const phrase of bannedPhrases) {
-    const re = new RegExp(
-      `\\b${phrase.pattern.toLowerCase().replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}\\b`,
-      "g",
-    );
+    const motif = normaliserPourControle(phrase.pattern).replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    if (!motif) continue;
+    const re = new RegExp(`(?<![a-z0-9])${motif}(?![a-z0-9])`, "g");
     const matches = lower.match(re);
     if (!matches) continue;
 
@@ -352,7 +242,7 @@ export async function checkDoctrine(text: string): Promise<DoctrineCheckResult> 
       (e) => e.pattern.toLowerCase() === phrase.pattern.toLowerCase(),
     );
     if (exception) {
-      const exemptMatches = text.match(new RegExp(exception.allowedRegex.source, "gi"));
+      const exemptMatches = lower.match(new RegExp(exception.allowedRegex.source, "g"));
       if (exemptMatches) occurrences = Math.max(0, occurrences - exemptMatches.length);
     }
     if (occurrences === 0) continue;
@@ -362,6 +252,7 @@ export async function checkDoctrine(text: string): Promise<DoctrineCheckResult> 
       severity: phrase.severity as "block" | "warn" | "info",
       reason: phrase.reason ?? "Phrase doctrine",
       occurrences,
+      origine: "phrase-base",
     };
     if (phrase.severity === "block") blocking.push(violation);
     else if (phrase.severity === "warn") warnings.push(violation);
