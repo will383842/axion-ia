@@ -73,6 +73,7 @@ vi.mock("@/lib/prisma", () => ({
       ],
     },
     questionnaireCadrage: { findMany: async () => [] },
+    questionnaireAvantAuditEnvoi: { findMany: async () => [] },
     questionnaireQuestion: { findMany: async () => [] },
     emailSuivi: { findMany: async () => [] },
   },

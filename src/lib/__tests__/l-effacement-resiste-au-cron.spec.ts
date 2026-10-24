@@ -43,6 +43,9 @@ vi.mock("@/lib/prisma", () => ({
     calendlyEvent: { updateMany: (...a: unknown[]) => updateMany(...a) },
     // Le suivi après l'appel (2026-09-27) : sa note part avec le reste.
     rendezVousSuivi: { updateMany: (...a: unknown[]) => suiviUpdateMany(...a) },
+    // Questionnaire de pré-audit (2026-10-24) : réponses effacées avec la personne.
+    questionnaireAvantAuditEnvoi: { deleteMany: async () => ({ count: 0 }) },
+    questionnaireAvantAudit: { updateMany: async () => ({ count: 0 }) },
     // 🔑 Ajouté le 2026-08-31 avec l'élargissement de l'effacement à la charge
     // brute : `eraseCalendlyEventsForEmail` cherche d'abord les lignes dont le
     // `raw_payload` contient l'adresse, parce qu'une réservation non enrichie a

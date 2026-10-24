@@ -40,6 +40,7 @@ import { VueCompteRendu } from "@/components/admin/visio/VueCompteRendu";
 import { lireCircuitDeLaRencontre, lireCompteRendu } from "@/features/dossier-client/compte-rendu";
 import { compteRenduEnregistre } from "@/features/dossier-client/compte-rendu-en-preparation";
 import { lireMessageDeRetour } from "@/features/dossier-client/message-de-retour";
+import { QuestionnairePreaudit } from "@/components/admin/dossier-client/QuestionnairePreaudit";
 import { prisma } from "@/lib/prisma";
 import { formatDateFrShort } from "@/lib/format-date-fr";
 import { timeInParis } from "@/lib/calendar-grid";
@@ -180,6 +181,19 @@ export default async function RencontrePage({ params, searchParams }: PageProps)
           {message}
         </p>
       ) : null}
+
+      <QuestionnairePreaudit
+        rencontreId={r.id}
+        titulaire={r.titulaire}
+        apercu={
+          typeof sp.pa_email === "string" && sp.pa_email.trim() !== ""
+            ? {
+                email: sp.pa_email.trim().slice(0, 200),
+                prenom: typeof sp.pa_prenom === "string" ? sp.pa_prenom.trim().slice(0, 60) : "",
+              }
+            : null
+        }
+      />
 
       <section className={carteCls}>
         <h2 className={titreCls}>Compte rendu</h2>

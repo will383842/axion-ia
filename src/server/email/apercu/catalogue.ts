@@ -677,6 +677,13 @@ export const CATALOGUE: Readonly<Record<EmailJobName, FicheEmail>> = {
     destinataire: "le client",
     source: "server/qualiopi/recueil/envoi-email.ts",
   },
+  "questionnaire-avant-audit": {
+    categorie: "rendez-vous",
+    quand:
+      "Quand Will clique « Envoyer » sur le questionnaire de pré-audit d'une rencontre (aperçu exact avant) — jamais automatique",
+    destinataire: "la personne à qui Will envoie le questionnaire",
+    source: "features/questionnaire-preaudit/envoyer.ts",
+  },
   "questionnaire-reponses-recues": {
     categorie: "rendez-vous",
     quand:

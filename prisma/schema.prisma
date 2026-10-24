@@ -14255,13 +14255,14 @@ model Rencontre {
   createdAt                     DateTime           @default(now()) @map("created_at")
   updatedAt                     DateTime           @updatedAt @map("updated_at")
 
-  participants    RencontreParticipant[]
-  suivi           RencontreSuivi?
-  emailsSuivi     EmailSuivi[]
-  comptesRendus   CompteRendu[]
-  faits           Fait[]
-  enregistrements Enregistrement[]
-  traitements     TraitementVisio[]
+  questionnaireAvantAudit QuestionnaireAvantAudit?
+  participants            RencontreParticipant[]
+  suivi                   RencontreSuivi?
+  emailsSuivi             EmailSuivi[]
+  comptesRendus           CompteRendu[]
+  faits                   Fait[]
+  enregistrements         Enregistrement[]
+  traitements             TraitementVisio[]
 
   @@index([clientId, debutPrevu])
   @@index([projetId])
@@ -14520,6 +14521,48 @@ model QuestionnaireQuestion {
   @@unique([questionnaireId, ordre])
   @@index([faitSourceId])
   @@map("questionnaire_questions")
+}
+
+/// Le questionnaire de pré-audit déposé par Will sur une rencontre (2026-10-24) : son HTML adapté
+/// pour ce prospect, servi tel quel sous un lien à jeton. Brouillon tant que `envoye_le` est NULL ;
+/// l'envoi est un clic de Will. Le HTML n'est pas une donnée personnelle.
+/// rgpd: dossier-client
+model QuestionnaireAvantAudit {
+  id          String    @id @default(uuid()) @db.Uuid
+  rencontreId String    @unique @map("rencontre_id") @db.Uuid
+  rencontre   Rencontre @relation(fields: [rencontreId], references: [id], onDelete: Cascade)
+  html        String    @db.Text
+  /// Regroupe les envois du dirigeant, des collaborateurs et du référent informatique.
+  ref         String    @db.VarChar(40)
+  creeLe      DateTime  @default(now()) @map("cree_le")
+  /// NULL = brouillon. Posé par le clic « Envoyer » seulement.
+  envoyeLe    DateTime? @map("envoye_le")
+  /// Dernière lecture des réponses par Will : NULL ou antérieure à un envoi = à traiter.
+  luLe        DateTime? @map("lu_le")
+  luParId     String?   @map("lu_par_id") @db.Uuid
+
+  envois QuestionnaireAvantAuditEnvoi[]
+
+  @@map("questionnaires_avant_audit")
+}
+
+/// Une réponse d'UNE personne (dirigeant, collaborateur ou référent informatique) au
+/// questionnaire de pré-audit : la charge « schéma 3 » telle quelle, chiffrée.
+/// rgpd: dossier-client
+model QuestionnaireAvantAuditEnvoi {
+  id              String                  @id @default(uuid()) @db.Uuid
+  questionnaireId String                  @map("questionnaire_id") @db.Uuid
+  questionnaire   QuestionnaireAvantAudit @relation(fields: [questionnaireId], references: [id], onDelete: Cascade)
+  /// main (dirigeant), emp (collaborateur), it (référent informatique).
+  mode            String                  @db.VarChar(8)
+  /// Code du collaborateur (`membre`), ou NULL.
+  membre          String?                 @db.VarChar(60)
+  recuLe          DateTime                @default(now()) @map("recu_le")
+  /// (enc) JSON complet du schéma 3.
+  donnees         String                  @db.Text
+
+  @@index([questionnaireId])
+  @@map("questionnaires_avant_audit_envois")
 }
 
 /// Un brouillon d'e-mail de suivi d'une rencontre, et ce qu'il est devenu. Le

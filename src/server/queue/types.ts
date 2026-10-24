@@ -218,6 +218,8 @@ export type EmailJobName =
   // Questionnaire de cadrage EN LIGNE (2026-10-01) — e-mail INTERNE : un client
   // a envoyé ses réponses. Aucune réponse dans le message, un lien vers la console.
   | "questionnaire-reponses-recues"
+  // Questionnaire de pré-audit (2026-10-24) — au prospect, par clic de Will uniquement.
+  | "questionnaire-avant-audit"
   // QNC L03 (2026-10-16) — recueil du besoin, temps 1 : questionnaire envoyé à
   // l'ENTREPRISE dès la demande, puis relancé (J+3, J+6 au plus).
   | "recueil-besoin"

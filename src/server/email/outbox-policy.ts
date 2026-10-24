@@ -214,6 +214,7 @@ export const LIBELLE_TEMPLATE_EMAIL: Record<string, string> = {
   "appel-rappel": "Rappel avant un appel de découverte",
   "piece-exemplaire-signe": "Remise de l'exemplaire signé",
   "questionnaire-reponses-recues": "Questionnaire en ligne : réponses reçues (interne)",
+  "questionnaire-avant-audit": "Questionnaire de pré-audit envoyé par Will",
   "apporteur-declaration-recue": "Alerte interne : entreprise déclarée par un apporteur",
   // Lot OPCO A8 — volontairement HORS des deux listes : défaut « auto » (envoi
   // automatique demandé par Will le 04/10), mais une règle « validation »,

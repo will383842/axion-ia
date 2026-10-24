@@ -44,6 +44,12 @@ export const EXCLUSIONS_EXPORT_DOSSIER: ReadonlyArray<{
   readonly motif: string;
 }> = [
   {
+    modele: "QuestionnaireAvantAudit",
+    motif:
+      "c'est la copie du questionnaire adaptée par Williams (le formulaire lui-même) : elle " +
+      "ne contient aucune donnée vous concernant. Vos réponses, elles, sont rendues ci-dessus.",
+  },
+  {
     modele: "CompteRendu",
     motif:
       "un compte rendu d'échange professionnel rapporte aussi les propos d'autres personnes : " +
@@ -157,6 +163,12 @@ export interface ExportDossierClient {
     readonly questions: ReadonlyArray<{ readonly texte: string; readonly reponse: string | null }>;
   }>;
   readonly emailsSuiviPrepares: ReadonlyArray<{ readonly preparesLe: Date }>;
+  /** Réponses au questionnaire de pré-audit d'une rencontre réservée sous cette adresse. */
+  readonly questionnairesPreaudit: ReadonlyArray<{
+    readonly recuLe: Date;
+    readonly parcours: string;
+    readonly reponses: string;
+  }>;
   readonly avertissements: readonly string[];
 }
 
@@ -170,6 +182,7 @@ const VIDE: ExportDossierClient = {
   preuvesAccord: [],
   questionnairesRecus: [],
   emailsSuiviPrepares: [],
+  questionnairesPreaudit: [],
   avertissements: [],
 };
 
@@ -315,6 +328,13 @@ export async function exporterDossierClientPour(email: string): Promise<ExportDo
             orderBy: { survenuLe: "asc" },
           });
 
+    // Questionnaire de pré-audit (2026-10-24) : retrouvé par la réservation du titulaire.
+    const reponsesPreaudit = await prisma.questionnaireAvantAuditEnvoi.findMany({
+      where: { questionnaire: { rencontre: { calendlyEvent: { inviteeEmail: email } } } },
+      select: { mode: true, recuLe: true, donnees: true },
+      orderBy: { recuLe: "asc" },
+    });
+
     const questionnaires =
       contactIds.length === 0
         ? []
@@ -423,6 +443,10 @@ export async function exporterDossierClientPour(email: string): Promise<ExportDo
           })),
       })),
       emailsSuiviPrepares: emails.map((e) => ({ preparesLe: e.creeLe })),
+      questionnairesPreaudit: reponsesPreaudit.flatMap((r) => {
+        const reponses = lisible(r.donnees, avertir, "questionnairesPreaudit");
+        return reponses === null ? [] : [{ recuLe: r.recuLe, parcours: r.mode, reponses }];
+      }),
       avertissements,
     };
   } catch {

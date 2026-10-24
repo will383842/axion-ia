@@ -837,6 +837,18 @@ export async function eraseCalendlyEventsForEmail(email: string): Promise<EraseC
   // autres faits dont elle est sujet. Elle ne porte que l'issue, la suite et
   // leur date (annotation `rgpd: technique`), et part avec sa rencontre.
 
+  // Questionnaire de pré-audit (2026-10-24) : les réponses sont des paroles de la personne
+  // (chiffrées, `rgpd: dossier-client`) ; elles partent avec elle, AVANT l'anonymisation
+  // ci-dessous qui remplace l'adresse par laquelle on les retrouve. Le questionnaire lui-même
+  // (le HTML de Will) ne porte aucune donnée personnelle : on le garde.
+  await prisma.questionnaireAvantAuditEnvoi.deleteMany({
+    where: { questionnaire: { rencontre: { calendlyEvent: { inviteeEmail: email } } } },
+  });
+  await prisma.questionnaireAvantAudit.updateMany({
+    where: { rencontre: { calendlyEvent: { inviteeEmail: email } } },
+    data: { luLe: null, luParId: null },
+  });
+
   // UNE SEULE instruction, donc atomique : la ligne perd ses coordonnées ET
   // sort de la fenêtre du cron au même instant. En deux temps, un passage de
   // `refresh` glissé entre les deux réécrirait la charge brute.
