@@ -16,6 +16,9 @@ const base = vi.hoisted(() => ({
   enqueue: vi.fn(),
   limite: vi.fn(),
   acces: vi.fn(),
+  outbox: [] as Ligne[],
+  client: null as unknown,
+  apresCount: null as null | (() => void),
 }));
 
 function correspond(l: Ligne, where: Record<string, unknown>): boolean {
@@ -36,6 +39,23 @@ const instantane = (l: Ligne | null): Ligne | null => (l === null ? null : { ...
 
 vi.mock("@/lib/prisma", () => ({
   prisma: {
+    // Le simulacre de transaction APPELLE la fonction passée, avec le même faux client.
+    $transaction: async (fn: (tx: unknown) => Promise<unknown>) => fn(base.client),
+    // Verrou FOR UPDATE : rend la ligne si elle existe encore.
+    $queryRaw: async (_strings: unknown, id: string) => base.q.filter((x) => x["id"] === id),
+    emailOutbox: {
+      updateMany: async ({ where, data }: { where: Ligne; data: Ligne }) => {
+        const statuts = (where["statut"] as { in: string[] }).in;
+        const l = base.outbox.filter(
+          (x) =>
+            x["entityId"] === where["entityId"] &&
+            x["entityType"] === where["entityType"] &&
+            statuts.includes(x["statut"] as string),
+        );
+        l.forEach((x) => Object.assign(x, data));
+        return { count: l.length };
+      },
+    },
     questionnaireAvantAudit: {
       findUnique: async ({ where }: { where: Record<string, unknown> }) =>
         instantane(trouver(base.q, where)),
@@ -58,11 +78,12 @@ vi.mock("@/lib/prisma", () => ({
         Object.assign(l, data);
         return l;
       },
-      delete: async ({ where }: { where: Ligne }) => {
-        const l = trouver(base.q, where);
-        base.q = base.q.filter((x) => x !== l);
-        base.e = base.e.filter((x) => x["questionnaireId"] !== where["id"]);
-        return l;
+      deleteMany: async ({ where }: { where: { id: string; envois: unknown } }) => {
+        const aDesReponses = base.e.some((x) => x["questionnaireId"] === where.id);
+        if (aDesReponses) return { count: 0 };
+        const avant = base.q.length;
+        base.q = base.q.filter((x) => x["id"] !== where.id);
+        return { count: avant - base.q.length };
       },
       updateMany: async ({ where, data }: { where: Ligne; data: Ligne }) => {
         const l = base.q.filter((x) => correspond(x, where));
@@ -71,8 +92,14 @@ vi.mock("@/lib/prisma", () => ({
       },
     },
     questionnaireAvantAuditEnvoi: {
-      count: async ({ where }: { where: Ligne }) =>
-        base.e.filter((x) => correspond(x, where)).length,
+      count: async ({ where }: { where: Ligne }) => {
+        const n = base.e.filter((x) => correspond(x, where)).length;
+        // Simule une réponse qui arrive APRÈS le comptage (sans verrou, ce serait la course).
+        const hook = base.apresCount;
+        base.apresCount = null;
+        hook?.();
+        return n;
+      },
       create: async ({ data }: { data: Ligne }) => {
         base.e.push({ id: String(++base.seq), recuLe: new Date(), ...data });
       },
@@ -101,6 +128,7 @@ vi.mock("next/navigation", () => ({
   },
 }));
 
+import { prisma as prismaMock } from "@/lib/prisma";
 import { POST, OPTIONS } from "@/app/api/questionnaire-preaudit/[id]/[jeton]/route";
 import { GET } from "@/app/questionnaire/preaudit/[id]/[jeton]/route";
 import { dechiffrerParole } from "@/lib/chiffrer-parole";
@@ -195,6 +223,9 @@ beforeEach(() => {
   process.env = { ...ENV0, PII_ENCRYPTION_KEY: "d".repeat(64) };
   base.q = [];
   base.e = [];
+  base.outbox = [];
+  base.apresCount = null;
+  base.client = prismaMock;
   vi.clearAllMocks();
   base.limite.mockResolvedValue({ allowed: true });
   base.enqueue.mockResolvedValue({ enqueued: true });
@@ -391,6 +422,11 @@ describe("les actions de la console", () => {
     allumer();
     const ancien = questionnaire();
     const ancienId = ancien["id"] as string;
+    base.outbox.push(
+      { entityType: "QuestionnaireAvantAudit", entityId: ancienId, statut: "a_valider" },
+      { entityType: "QuestionnaireAvantAudit", entityId: ancienId, statut: "envoye" },
+    );
+    base.enqueue.mockClear();
     const url = await redirige(() =>
       deposerQuestionnaireAction(
         formulaire({ rencontreId: RENCONTRE, fichier: new File([HTML + " "], "q.html") }),
@@ -398,7 +434,11 @@ describe("les actions de la console", () => {
     );
     const decode = decodeURIComponent(url);
     expect(decode).toContain("l'ancien lien ne marche plus");
-    expect(decode).toContain("E-mails à valider");
+    // seul l'e-mail EN ATTENTE est rejeté (pas supprimé) ; celui déjà envoyé n'est pas touché
+    expect(decode).toContain("1 e-mail(s) en attente");
+    expect(base.outbox.map((x) => x["statut"])).toEqual(["refuse", "envoye"]);
+    expect(base.outbox[0]?.["refuseMotif"]).toContain("redéposé");
+    expect(base.enqueue).not.toHaveBeenCalled();
     expect(base.q).toHaveLength(1);
     expect(base.q[0]?.["id"]).not.toBe(ancienId);
     expect(base.q[0]?.["envoyeLe"]).toBeNull();
@@ -414,6 +454,49 @@ describe("les actions de la console", () => {
     expect(base.e).toHaveLength(0);
   });
 
+  it("sans e-mail en attente, aucun avertissement sur la corbeille", async () => {
+    questionnaire();
+    const url = await redirige(() =>
+      deposerQuestionnaireAction(
+        formulaire({ rencontreId: RENCONTRE, fichier: new File([HTML + " "], "q.html") }),
+      ),
+    );
+    expect(decodeURIComponent(url)).toContain("l'ancien lien ne marche plus");
+    expect(decodeURIComponent(url)).not.toContain("e-mail(s)");
+  });
+
+  it("réponse insérée entre le comptage et la suppression : dépôt refusé, réponse conservée", async () => {
+    const q = questionnaire();
+    base.apresCount = () =>
+      base.e.push({ questionnaireId: q["id"], recuLe: new Date(), mode: "main", donnees: "x" });
+    const url = await redirige(() =>
+      deposerQuestionnaireAction(
+        formulaire({ rencontreId: RENCONTRE, fichier: new File([HTML + " "], "q.html") }),
+      ),
+    );
+    expect(decodeURIComponent(url)).toContain("déjà reçu des réponses");
+    expect(base.q).toHaveLength(1);
+    expect(base.q[0]?.["id"]).toBe(q["id"]);
+    expect(base.e).toHaveLength(1);
+  });
+
+  it("une réponse tardive pour un questionnaire redéposé est REFUSÉE, jamais perdue en silence", async () => {
+    allumer();
+    const ancien = questionnaire();
+    await redirige(() =>
+      deposerQuestionnaireAction(
+        formulaire({ rencontreId: RENCONTRE, fichier: new File([HTML + " "], "q.html") }),
+      ),
+    );
+    // la ligne a disparu : le verrou ne trouve rien
+    const r = await enregistrerReponse(
+      { id: ancien["id"] as string },
+      { mode: "emp", membre: null, json: CHARGE() },
+    );
+    expect(r).toBe("ferme");
+    expect(base.e).toHaveLength(0);
+  });
+
   it("redépôt refusé dès qu'une réponse existe", async () => {
     const q = questionnaire();
     base.e.push({ questionnaireId: q["id"], recuLe: new Date(), mode: "main", donnees: "x" });
@@ -422,7 +505,7 @@ describe("les actions de la console", () => {
         formulaire({ rencontreId: RENCONTRE, fichier: new File([HTML + " "], "q.html") }),
       ),
     );
-    expect(decodeURIComponent(url)).toContain("des réponses sont arrivées");
+    expect(decodeURIComponent(url)).toContain("déjà reçu des réponses");
     expect(base.q[0]?.["id"]).toBe(q["id"]);
     expect(base.q[0]?.["html"]).toBe(HTML);
     expect(base.e).toHaveLength(1);

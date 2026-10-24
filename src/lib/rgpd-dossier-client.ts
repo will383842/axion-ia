@@ -29,7 +29,10 @@
  * lecture impossible est DITE dans l'export (`avertissements`), jamais tue.
  */
 
-import { envoisDuDirigeant } from "@/features/questionnaire-preaudit/portee-rgpd";
+import {
+  envoisDuDirigeant,
+  questionnairesDuDirigeant,
+} from "@/features/questionnaire-preaudit/portee-rgpd";
 import { dechiffrerParole, dechiffrerParoleOuNull } from "@/lib/chiffrer-parole";
 import { prisma } from "@/lib/prisma";
 import { hashEmailForLookup } from "@/lib/security/email-hash";
@@ -47,9 +50,8 @@ export const EXCLUSIONS_EXPORT_DOSSIER: ReadonlyArray<{
   {
     modele: "QuestionnaireAvantAudit",
     motif:
-      "c'est la copie du questionnaire adaptée par Williams (le formulaire lui-même) : elle " +
-      "ne contient que votre adresse d'envoi (chiffrée), que vous connaissez déjà ; vos " +
-      "réponses sont rendues ci-dessus.",
+      "la copie du questionnaire préparée pour vous : l'adresse d'envoi et vos réponses sont " +
+      "rendues ci-dessus.",
   },
   {
     modele: "CompteRendu",
@@ -165,6 +167,11 @@ export interface ExportDossierClient {
     readonly questions: ReadonlyArray<{ readonly texte: string; readonly reponse: string | null }>;
   }>;
   readonly emailsSuiviPrepares: ReadonlyArray<{ readonly preparesLe: Date }>;
+  /** Questionnaires de pré-audit envoyés à cette adresse : l'adresse d'envoi (droit d'accès). */
+  readonly questionnairesPreauditEnvoyes: ReadonlyArray<{
+    readonly envoyeLe: Date | null;
+    readonly adresseEnvoi: string | null;
+  }>;
   /** Réponses au questionnaire de pré-audit d'une rencontre réservée sous cette adresse. */
   readonly questionnairesPreaudit: ReadonlyArray<{
     readonly recuLe: Date;
@@ -184,6 +191,7 @@ const VIDE: ExportDossierClient = {
   preuvesAccord: [],
   questionnairesRecus: [],
   emailsSuiviPrepares: [],
+  questionnairesPreauditEnvoyes: [],
   questionnairesPreaudit: [],
   avertissements: [],
 };
@@ -338,6 +346,11 @@ export async function exporterDossierClientPour(email: string): Promise<ExportDo
       orderBy: { recuLe: "asc" },
     });
 
+    const preauditEnvoyes = await prisma.questionnaireAvantAudit.findMany({
+      where: questionnairesDuDirigeant(email, empreinte),
+      select: { envoyeLe: true, destinataire: true },
+    });
+
     const questionnaires =
       contactIds.length === 0
         ? []
@@ -446,6 +459,13 @@ export async function exporterDossierClientPour(email: string): Promise<ExportDo
           })),
       })),
       emailsSuiviPrepares: emails.map((e) => ({ preparesLe: e.creeLe })),
+      questionnairesPreauditEnvoyes: preauditEnvoyes.map((p) => ({
+        envoyeLe: p.envoyeLe,
+        adresseEnvoi:
+          p.destinataire === null
+            ? null
+            : lisible(p.destinataire, avertir, "questionnairesPreauditEnvoyes"),
+      })),
       questionnairesPreaudit: reponsesPreaudit.flatMap((r) => {
         const reponses = lisible(r.donnees, avertir, "questionnairesPreaudit");
         return reponses === null ? [] : [{ recuLe: r.recuLe, parcours: r.mode, reponses }];

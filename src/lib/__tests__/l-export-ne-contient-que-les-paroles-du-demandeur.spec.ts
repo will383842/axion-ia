@@ -75,6 +75,7 @@ vi.mock("@/lib/prisma", () => ({
       ],
     },
     questionnaireCadrage: { findMany: async () => [] },
+    questionnaireAvantAudit: { findMany: async () => [] },
     questionnaireAvantAuditEnvoi: {
       findMany: async (arg: unknown) => {
         donnees.preauditAppels.push(arg);

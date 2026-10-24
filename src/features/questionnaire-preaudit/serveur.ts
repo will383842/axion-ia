@@ -75,15 +75,21 @@ export interface ResultatDepot {
   readonly id: string;
   /** Un questionnaire déjà envoyé (sans réponse) a été recréé : l'ancien lien ne marche plus. */
   readonly ancienLienMort: boolean;
+  /** E-mails encore en attente avec l'ancien lien, REJETÉS (jamais supprimés). */
+  readonly emailsRejetes: number;
 }
 
 /**
  * Dépôt du HTML adapté par Will.
  *   · rien d'envoyé : remplacement sur place ;
  *   · déjà envoyé SANS aucune réponse (adresse fausse, e-mail seulement retenu en corbeille) :
- *     la ligne est supprimée puis recréée — nouvel identifiant, donc nouveau jeton : l'ancien lien
- *     meurt (404) et aucune réponse ne peut se mêler ;
+ *     la ligne est recréée — nouvel identifiant, donc nouveau jeton : l'ancien lien meurt (404) ;
  *   · déjà envoyé AVEC au moins une réponse : refusé.
+ *
+ * Tout se passe dans UNE transaction qui verrouille la ligne (`FOR UPDATE`) ; `enregistrerReponse`
+ * prend le même verrou. Une réponse validée pendant le redépôt attend la fin de la transaction,
+ * trouve alors la ligne disparue et est REFUSÉE : elle n'est jamais effacée en silence par la
+ * cascade. La suppression est de plus conditionnée à l'absence de réponse (`envois: { none }`).
  */
 export async function deposerQuestionnaire(
   rencontreId: string,
@@ -91,34 +97,53 @@ export async function deposerQuestionnaire(
 ): Promise<ResultatDepot> {
   const v = validerHtml(html);
   if (!v.ok) throw new MessagePourWill(v.motif);
-  const existant = await prisma.questionnaireAvantAudit.findUnique({
-    where: { rencontreId },
-    select: { id: true, envoyeLe: true },
-  });
-  let ancienLienMort = false;
-  if (existant !== null) {
-    if (existant.envoyeLe === null) {
-      await prisma.questionnaireAvantAudit.update({ where: { id: existant.id }, data: { html } });
-      return { id: existant.id, ancienLienMort: false };
-    }
-    const reponses = await prisma.questionnaireAvantAuditEnvoi.count({
-      where: { questionnaireId: existant.id },
+  return prisma.$transaction(async (tx): Promise<ResultatDepot> => {
+    const existant = await tx.questionnaireAvantAudit.findUnique({
+      where: { rencontreId },
+      select: { id: true, envoyeLe: true },
     });
-    if (reponses > 0) {
-      throw new MessagePourWill(
-        "Ce questionnaire a déjà été envoyé à une autre adresse et des réponses sont arrivées : " +
-          "il ne peut plus être remplacé. Pour écrire à quelqu'un d'autre, déposez un " +
-          "questionnaire sur la rencontre de cette personne.",
+    let ancienLienMort = false;
+    let emailsRejetes = 0;
+    if (existant !== null) {
+      await tx.$queryRaw`SELECT id FROM questionnaires_avant_audit WHERE id = ${existant.id}::uuid FOR UPDATE`;
+      if (existant.envoyeLe === null) {
+        await tx.questionnaireAvantAudit.update({ where: { id: existant.id }, data: { html } });
+        return { id: existant.id, ancienLienMort: false, emailsRejetes: 0 };
+      }
+      const refus = new MessagePourWill(
+        "Ce questionnaire a déjà reçu des réponses : il ne peut plus être remplacé. Pour écrire à " +
+          "quelqu'un d'autre, déposez un questionnaire sur la rencontre de cette personne.",
       );
+      const reponses = await tx.questionnaireAvantAuditEnvoi.count({
+        where: { questionnaireId: existant.id },
+      });
+      if (reponses > 0) throw refus;
+      const supprime = await tx.questionnaireAvantAudit.deleteMany({
+        where: { id: existant.id, envois: { none: {} } },
+      });
+      if (supprime.count === 0) throw refus;
+      // Les e-mails encore en attente portent l'ancien lien (mort) : REJETÉS, pas supprimés.
+      const rejetes = await tx.emailOutbox.updateMany({
+        where: {
+          entityType: "QuestionnaireAvantAudit",
+          entityId: existant.id,
+          statut: { in: ["a_valider", "approuve"] },
+        },
+        data: {
+          statut: "refuse",
+          refuseAt: new Date(),
+          refuseMotif: "Questionnaire redéposé : l'ancien lien n'existe plus.",
+        },
+      });
+      emailsRejetes = rejetes.count;
+      ancienLienMort = true;
     }
-    await prisma.questionnaireAvantAudit.delete({ where: { id: existant.id } });
-    ancienLienMort = true;
-  }
-  const cree = await prisma.questionnaireAvantAudit.create({
-    data: { rencontreId, html, ref: randomBytes(6).toString("hex") },
-    select: { id: true },
+    const cree = await tx.questionnaireAvantAudit.create({
+      data: { rencontreId, html, ref: randomBytes(6).toString("hex") },
+      select: { id: true },
+    });
+    return { id: cree.id, ancienLienMort, emailsRejetes };
   });
-  return { id: cree.id, ancienLienMort };
 }
 
 /** L'état d'avant un envoi, à rétablir tel quel si la mise en file échoue. */
@@ -200,26 +225,40 @@ export async function annulerEnvoi(id: string, avant: EtatAvantEnvoi): Promise<v
   });
 }
 
-/** Une réponse d'une personne, chiffrée. Refus tant que le lien n'accepte pas de réponses. */
+/**
+ * Une réponse d'une personne, chiffrée. Refus tant que le lien n'accepte pas de réponses.
+ * Même verrou que `deposerQuestionnaire` : si un redépôt est en cours, on attend sa fin, on trouve
+ * la ligne disparue, et la réponse est refusée au lieu d'être effacée par la cascade.
+ */
 export async function enregistrerReponse(
-  q: { id: string; envoyeLe: Date | null; closLe: Date | null; expireLe: Date | null },
+  q: { id: string },
   charge: ChargeValide,
   maintenant: Date = new Date(),
 ): Promise<"ok" | "ferme" | "trop"> {
-  if (!accepteDesReponses(q, maintenant)) return "ferme";
-  const n = await prisma.questionnaireAvantAuditEnvoi.count({ where: { questionnaireId: q.id } });
-  if (n >= ENVOIS_MAX_PAR_QUESTIONNAIRE) return "trop";
-  await prisma.questionnaireAvantAuditEnvoi.create({
-    data: {
-      questionnaireId: q.id,
-      mode: charge.mode,
-      membre: charge.membre,
-      donnees: chiffrerParole(charge.json),
-    },
+  return prisma.$transaction(async (tx): Promise<"ok" | "ferme" | "trop"> => {
+    const verrou = await tx.$queryRaw<
+      { id: string }[]
+    >`SELECT id FROM questionnaires_avant_audit WHERE id = ${q.id}::uuid FOR UPDATE`;
+    if (verrou.length === 0) return "ferme";
+    const frais = await tx.questionnaireAvantAudit.findUnique({
+      where: { id: q.id },
+      select: { envoyeLe: true, closLe: true, expireLe: true },
+    });
+    if (frais === null || !accepteDesReponses(frais, maintenant)) return "ferme";
+    const n = await tx.questionnaireAvantAuditEnvoi.count({ where: { questionnaireId: q.id } });
+    if (n >= ENVOIS_MAX_PAR_QUESTIONNAIRE) return "trop";
+    await tx.questionnaireAvantAuditEnvoi.create({
+      data: {
+        questionnaireId: q.id,
+        mode: charge.mode,
+        membre: charge.membre,
+        donnees: chiffrerParole(charge.json),
+      },
+    });
+    // Une nouvelle réponse repasse la fiche « à traiter » : la lecture précédente est périmée.
+    await tx.questionnaireAvantAudit.update({ where: { id: q.id }, data: { luLe: null } });
+    return "ok";
   });
-  // Une nouvelle réponse repasse la fiche « à traiter » : la lecture précédente est périmée.
-  await prisma.questionnaireAvantAudit.update({ where: { id: q.id }, data: { luLe: null } });
-  return "ok";
 }
 
 export async function marquerLu(id: string, userId: string): Promise<void> {
