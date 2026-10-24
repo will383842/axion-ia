@@ -714,6 +714,12 @@ const CONSOMMATEURS_ASSUMES: ReadonlySet<string> = new Set([
   //    vraie porte. Aucune seconde porte, aucune table nouvelle.
   "src/features/dossier-client/fiche-auto.ts",
   "src/features/dossier-client/__tests__/la-fiche-prospect-se-cree-toute-seule-au-rendez-vous-calendly.spec.ts",
+  // ── Fiche complétée depuis la réponse du dirigeant au questionnaire (2026-10-25) :
+  //    champs VIDES seulement ; le SIREN passe par le verrou de la MÊME porte unique
+  //    (`exigerSirenLibre`), la personne par `ajouterPersonneAFiche`. Aucune seconde
+  //    porte, aucune table nouvelle ; sa spec simule la porte.
+  "src/features/questionnaire-preaudit/completer-fiche.ts",
+  "src/features/questionnaire-preaudit/__tests__/completer-fiche.spec.ts",
   "scripts/visio/pilote.ts",
   // ── Alertes visio (PR 4, correction anti-doublon A3, 2026-09-29) : AUCUNE
   //    table ni service d'alerte parallèle. Les alertes du circuit visio
