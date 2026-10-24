@@ -30,6 +30,24 @@ export interface KbSearchParams {
   readonly sectorTagSlugs?: readonly string[];
   readonly limit?: number;
   readonly offset?: number;
+  /**
+   * Statuts de fiche acceptés. Défaut = `['published', 'deprecated']` (comportement
+   * historique du chatbot et de la recherche du site). Le RAG des articles passe
+   * `['published']` pour ne plus citer une fiche dépréciée.
+   */
+  readonly statuts?: readonly KbSearchStatut[];
+}
+
+export type KbSearchStatut = "published" | "deprecated";
+
+/**
+ * Construit le filtre SQL des statuts. Valeurs filtrées sur une liste blanche
+ * (jamais de texte libre dans le SQL) ; liste vide ou inconnue = défaut historique.
+ */
+export function clauseStatuts(statuts?: readonly KbSearchStatut[]): string {
+  const valides = (statuts ?? []).filter((x) => x === "published" || x === "deprecated");
+  const liste = valides.length > 0 ? Array.from(new Set(valides)) : ["published", "deprecated"];
+  return `ke.status IN (${liste.map((x) => `'${x}'`).join(", ")})`;
 }
 
 export interface KbSearchResult {
@@ -134,7 +152,7 @@ export async function searchKnowledge(params: KbSearchParams): Promise<KbSearchR
     JOIN knowledge_entries ke ON ke.id = kt.entry_id
     WHERE kt.locale = $3::"Locale"
       AND ke.deleted_at IS NULL
-      AND ke.status IN ('published', 'deprecated')
+      AND ${clauseStatuts(params.statuts)}
       AND ke.audience = ANY($4::"KbAudience"[])
       AND ke.confidentiality = 'public'
       AND (ke.published_at IS NULL OR ke.published_at <= NOW())
@@ -171,7 +189,7 @@ export async function searchKnowledge(params: KbSearchParams): Promise<KbSearchR
     JOIN knowledge_entries ke ON ke.id = kt.entry_id
     WHERE kt.locale = $3::"Locale"
       AND ke.deleted_at IS NULL
-      AND ke.status IN ('published', 'deprecated')
+      AND ${clauseStatuts(params.statuts)}
       AND ke.audience = ANY($4::"KbAudience"[])
       AND ke.confidentiality = 'public'
       AND (ke.published_at IS NULL OR ke.published_at <= NOW())

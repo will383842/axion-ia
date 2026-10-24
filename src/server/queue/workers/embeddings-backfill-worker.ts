@@ -23,6 +23,12 @@ import OpenAI from "openai";
 import { prisma } from "@/lib/prisma";
 import { captureWorkerError } from "@/server/queue/lib/sentry-worker";
 import { readKillSwitchFailSafe } from "@/server/content-gen/config-store";
+import {
+  buildEmbeddingInput,
+  EMBEDDING_DIMENSION,
+  EMBEDDING_MODEL_NAME,
+  generateEmbedding,
+} from "@/lib/knowledge/embeddings";
 
 export const EMBEDDINGS_BACKFILL_QUEUE = "embeddings-backfill";
 
@@ -34,10 +40,29 @@ const MAX_ARTICLES_PER_RUN = 1000;
 const COST_PER_TOKEN_USD = 0.00000013;
 const AVG_TOKENS_PER_ARTICLE = 695;
 
+// Recalcul des vecteurs de la base de connaissances (Voyage, quelques centimes par passage).
+const MAX_KB_VECTORS_PER_RUN = 600;
+const KB_PAUSE_MS = 250;
+
 interface ArticleRow {
   id: string;
   title: string;
   content: string | null;
+}
+
+interface KbStaleRow {
+  translation_id: string;
+  title: string;
+  excerpt: string | null;
+  body_text: string | null;
+  body: string | null;
+}
+
+export interface KbRefreshStats {
+  refreshed: number;
+  errors: number;
+  candidates: number;
+  skippedReason?: string;
 }
 
 interface RunStats {
@@ -55,7 +80,115 @@ function buildEmbeddingText(title: string, content: string | null): string {
   return `${title}\n\n${body}`;
 }
 
-async function runBackfill(_job: Job): Promise<RunStats> {
+/** Retire les balises HTML d'un corps de fiche quand `body_text` est vide. */
+function htmlToText(html: string): string {
+  return html
+    .replace(/<[^>]+>/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+/**
+ * Recalcule les vecteurs de la base de connaissances (Voyage, 1024 dim) dont la fiche a été
+ * modifiée APRÈS le dernier calcul (`knowledge_translations.updated_at > knowledge_embeddings.embedded_at`).
+ * Sans cela, une fiche corrigée garde le vecteur de son ancien texte et la recherche
+ * remonte l'ancienne version.
+ *
+ * - UPDATE de la ligne existante : jamais de DELETE, jamais de nouvelle ligne.
+ * - Aucune clé Voyage, ou vecteur stub (non sémantique) : on ne touche à rien.
+ * - Seules les fiches publiques partent chez Voyage (confidentialité).
+ */
+export async function rafraichirVecteursKbPerimes(): Promise<KbRefreshStats> {
+  const saute = async (skippedReason: string): Promise<KbRefreshStats> => ({
+    refreshed: 0,
+    errors: 0,
+    candidates: 0,
+    skippedReason,
+  });
+
+  if (!process.env.VOYAGE_API_KEY) return saute("VOYAGE_API_KEY absente");
+  const killSwitch = await readKillSwitchFailSafe();
+  if (killSwitch.active) return saute("kill switch actif");
+
+  const rows = (await prisma.$queryRawUnsafe(
+    `SELECT kt.id AS translation_id, kt.title, kt.excerpt, kt.body_text, kt.body
+     FROM knowledge_embeddings kemb
+     JOIN knowledge_translations kt ON kt.id = kemb.translation_id
+     JOIN knowledge_entries ke ON ke.id = kt.entry_id
+     WHERE kt.updated_at > kemb.embedded_at
+       AND ke.deleted_at IS NULL
+       AND ke.confidentiality = 'public'
+     ORDER BY kt.updated_at ASC
+     LIMIT ${MAX_KB_VECTORS_PER_RUN}`,
+  )) as KbStaleRow[];
+
+  let refreshed = 0;
+  let errors = 0;
+  for (const row of rows) {
+    try {
+      const texte = buildEmbeddingInput({
+        title: row.title,
+        excerpt: row.excerpt,
+        bodyText: row.body_text?.trim() ? row.body_text : htmlToText(row.body ?? ""),
+      });
+      const emb = await generateEmbedding(texte);
+      if (emb.modelVersion.endsWith("-stub")) {
+        // Garde anti-stub : mieux vaut un vecteur périmé qu'un faux vecteur.
+        return { refreshed, errors, candidates: rows.length, skippedReason: "vecteur stub" };
+      }
+      await prisma.$executeRawUnsafe(
+        `UPDATE knowledge_embeddings
+         SET embedding = $1::vector, model = $2, model_version = $3, dimensionality = $4, embedded_at = NOW()
+         WHERE translation_id = $5::uuid`,
+        `[${emb.embedding.join(",")}]`,
+        EMBEDDING_MODEL_NAME,
+        emb.modelVersion,
+        EMBEDDING_DIMENSION,
+        row.translation_id,
+      );
+      refreshed++;
+    } catch (err) {
+      errors++;
+      console.error(
+        `[embeddings-backfill] recalcul vecteur KB ${row.translation_id} en échec:`,
+        err instanceof Error ? err.message : String(err),
+      );
+    }
+    await new Promise<void>((resolve) => setTimeout(resolve, KB_PAUSE_MS));
+  }
+  return { refreshed, errors, candidates: rows.length };
+}
+
+/** Passage de 03 h : vecteurs des articles (OpenAI), puis vecteurs périmés de la base (Voyage). */
+async function runBackfill(job: Job): Promise<RunStats> {
+  try {
+    return await runBackfillArticles(job);
+  } finally {
+    // Même si la partie articles échoue (clé OpenAI absente...), la base est recalculée.
+    await rafraichirBaseSansEchec();
+  }
+}
+
+async function rafraichirBaseSansEchec(): Promise<void> {
+  try {
+    const kb = await rafraichirVecteursKbPerimes();
+    if (kb.candidates > 0 || kb.skippedReason !== "VOYAGE_API_KEY absente") {
+      await prisma.contentGenConfig.upsert({
+        where: { key: "embeddings_kb_last_run" },
+        create: { key: "embeddings_kb_last_run", value: { at: new Date().toISOString(), ...kb } },
+        update: { value: { at: new Date().toISOString(), ...kb } },
+      });
+    }
+  } catch (err) {
+    // Le recalcul de la base ne doit jamais faire échouer le passage des articles.
+    console.error(
+      "[embeddings-backfill] recalcul des vecteurs KB en échec:",
+      err instanceof Error ? err.message : String(err),
+    );
+  }
+}
+
+async function runBackfillArticles(_job: Job): Promise<RunStats> {
   const startMs = Date.now();
 
   if (process.env.OPENAI_EMBEDDINGS_ENABLED !== "true") {
@@ -145,7 +278,9 @@ async function runBackfill(_job: Job): Promise<RunStats> {
   // Prisma ne supporte pas le filtrage IS NULL sur Unsupported("vector") →
   // on passe par $queryRawUnsafe (cohérent avec backfill-embeddings.ts).
   const articles = (await prisma.$queryRawUnsafe(
-    `SELECT a.id, t.title, t.content
+    // `article_translations` n'a pas de colonne `content` : le texte est `body_text`
+    // (texte brut), ou `body` quand `body_text` est vide. Alias `content` conservé.
+    `SELECT a.id, t.title, COALESCE(NULLIF(t.body_text, ''), t.body) AS content
      FROM articles a
      LEFT JOIN article_translations t ON t.article_id = a.id AND t.locale = 'fr'
      WHERE a.status = 'published'
