@@ -41,6 +41,7 @@ const queryRaw = vi.fn();
 const preDeleteMany = vi.fn();
 const preParentUpdateMany = vi.fn();
 const brouillonDeleteMany = vi.fn();
+const transaction = vi.fn();
 vi.mock("@/lib/prisma", () => ({
   prisma: {
     calendlyEvent: { updateMany: (...a: unknown[]) => updateMany(...a) },
@@ -51,6 +52,11 @@ vi.mock("@/lib/prisma", () => ({
     questionnaireAvantAudit: { updateMany: (...a: unknown[]) => preParentUpdateMany(...a) },
     questionnaireAvantAuditBrouillon: {
       deleteMany: (...a: unknown[]) => brouillonDeleteMany(...a),
+    },
+    // Réponses et brouillon partent dans la MÊME transaction (forme tableau).
+    $transaction: (ops: unknown[]) => {
+      transaction(ops.length);
+      return Promise.all(ops);
     },
     // 🔑 Ajouté le 2026-08-31 avec l'élargissement de l'effacement à la charge
     // brute : `eraseCalendlyEventsForEmail` cherche d'abord les lignes dont le
@@ -105,6 +111,7 @@ describe("questionnaire de pré-audit (2026-10-24)", () => {
     expect(brouillonDeleteMany).toHaveBeenCalledWith({
       where: { mode: "main", questionnaire: ou },
     });
+    expect(transaction).toHaveBeenCalledWith(2);
     expect(preParentUpdateMany).toHaveBeenCalledWith({
       where: ou,
       data: { luLe: null, luParId: null, destinataire: null, destinataireHash: null },

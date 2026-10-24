@@ -13,7 +13,11 @@ import { chiffrerParole, dechiffrerParole } from "@/lib/chiffrer-parole";
 import { hashEmailForLookup } from "@/lib/security/email-hash";
 import { SITE_URL } from "@/lib/site-url";
 import { MessagePourWill } from "@/features/dossier-client/message-affichable";
-import { jetonPreaudit, jetonPreauditValide } from "@/server/visio/questionnaire-en-ligne/jeton";
+import {
+  codeDirigeantPreaudit,
+  jetonPreaudit,
+  jetonPreauditValide,
+} from "@/server/visio/questionnaire-en-ligne/jeton";
 
 import {
   ENVOIS_MAX_PAR_QUESTIONNAIRE,
@@ -36,9 +40,14 @@ export function cheminPreaudit(id: string): string | null {
   return jeton === null ? null : `/questionnaire/preaudit/${id.toLowerCase()}/${jeton}`;
 }
 
+/**
+ * Le lien ENVOYÉ AU DIRIGEANT : le chemin public + son code personnel `m` (brouillon, voir
+ * `brouillon.ts`). Les liens des salariés sont fabriqués par la page, sans ce code.
+ */
 export function urlPreaudit(id: string): string | null {
   const chemin = cheminPreaudit(id);
-  return chemin === null ? null : `${SITE_URL}${chemin}`;
+  const code = codeDirigeantPreaudit(id);
+  return chemin === null || code === null ? null : `${SITE_URL}${chemin}?m=${code}`;
 }
 
 /** Le questionnaire de ce lien, ou `null` si le jeton est faux ou le questionnaire inconnu. */

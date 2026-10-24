@@ -70,6 +70,27 @@ export function jetonPreauditValide(id: string, jeton: string): boolean {
   return attendu.length === recu.length && timingSafeEqual(attendu, recu);
 }
 
+/**
+ * Code du DIRIGEANT pour le brouillon du pré-audit (2026-10-24) : posé par le serveur dans le lien
+ * envoyé au dirigeant (`?m=`), jamais dans les liens des salariés. Domaine HMAC propre : il ne se
+ * déduit ni du jeton ni de l'identifiant, donc un salarié qui a le lien de base ne peut pas lire
+ * le brouillon du dirigeant.
+ */
+const DOMAINE_PREAUDIT_DIRIGEANT = "questionnaire-preaudit-dirigeant:v1:";
+
+export function codeDirigeantPreaudit(id: string): string | null {
+  const i = id.toLowerCase();
+  if (!UUID.test(i)) return null;
+  const k = cle();
+  return k === null ? null : signer(k, i, DOMAINE_PREAUDIT_DIRIGEANT).slice(0, 24);
+}
+
+export function codeDirigeantPreauditValide(id: string, code: string): boolean {
+  const attendu = codeDirigeantPreaudit(id);
+  if (attendu === null || code.length !== attendu.length) return false;
+  return timingSafeEqual(Buffer.from(attendu, "utf8"), Buffer.from(code, "utf8"));
+}
+
 /** Le jeton d'un questionnaire, ou `null` (production sans secret, identifiant invalide). */
 export function jetonQuestionnaire(questionnaireId: string): string | null {
   const id = questionnaireId.toLowerCase();
