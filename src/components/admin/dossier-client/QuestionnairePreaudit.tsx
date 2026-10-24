@@ -12,6 +12,7 @@ import {
   marquerQuestionnaireLuAction,
 } from "@/features/questionnaire-preaudit/actions";
 import { MESSAGE_REFUS, refusEnvoiReel } from "@/features/questionnaire-preaudit/config";
+import { LIBELLE_PREFILL } from "@/features/questionnaire-preaudit/donnees";
 import { apercuEnvoi } from "@/features/questionnaire-preaudit/envoyer";
 import {
   cheminPreaudit,
@@ -214,7 +215,12 @@ export async function QuestionnairePreaudit(props: {
                     {r.lignes.map((l) => (
                       <div key={l.cle}>
                         <dt className={mutedCls}>{l.cle}</dt>
-                        <dd className="whitespace-pre-line">{l.valeur}</dd>
+                        <dd className="whitespace-pre-line">
+                          {l.valeur}
+                          {l.prefill !== undefined ? (
+                            <span className={mutedCls}> ({LIBELLE_PREFILL[l.prefill]})</span>
+                          ) : null}
+                        </dd>
                       </div>
                     ))}
                   </dl>

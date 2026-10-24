@@ -2,7 +2,7 @@
 /**
  * Comportement du questionnaire de pré-audit — le VRAI `serveur.ts`, `envoyer.ts`, `actions.ts` et
  * les deux routes, sur une base en mémoire (seuls Prisma, la file, le limiteur et la session sont
- * remplacés). Couvre : 404/413/400/429, limite de 60, chiffrement, `luLe`, accès aux actions,
+ * remplacés). Couvre : 404/413/400/429, schémas 3 et 4 gardés tels quels, limite de 60, chiffrement, `luLe`, accès aux actions,
  * remplacement d'un questionnaire envoyé, double clic, expiration, clôture, en-têtes.
  */
 
@@ -139,9 +139,10 @@ import {
   envoyerQuestionnaireAction,
 } from "../actions";
 import { CSP_PAGE_PREAUDIT } from "../entetes";
-import { ENVOIS_MAX_PAR_QUESTIONNAIRE } from "../donnees";
+import { CHARGE_MAX_OCTETS, ENVOIS_MAX_PAR_QUESTIONNAIRE } from "../donnees";
 import { envoyerQuestionnaire } from "../envoyer";
-import { enregistrerReponse, purgerReponsesAnciennes } from "../serveur";
+import { enregistrerReponse, lireReponses, purgerReponsesAnciennes } from "../serveur";
+import { CHARGES_SCHEMA_4 } from "./charges-schema-4.fixture";
 
 const RENCONTRE = "11111111-1111-4111-8111-111111111111";
 const HTML = `<!doctype html><html><body><script>
@@ -159,6 +160,14 @@ const CHARGE = (mode = "main", membre?: string) =>
     consentements: { traitement: true },
     donnees: { ent_nom: "SECRET-DE-LA-REPONSE" },
   });
+
+/** Une charge schéma 3 valide d'environ `octets` octets (une réponse libre très longue). */
+const chargeDe = (octets: number) => {
+  const vide = CHARGE().length;
+  const c = JSON.parse(CHARGE()) as { donnees: Record<string, unknown> };
+  c.donnees["journee_type"] = "a".repeat(Math.max(0, octets - vide - 20));
+  return JSON.stringify(c);
+};
 
 const REEL = {
   QUESTIONNAIRE_AVANT_AUDIT_ENABLED: "true",
@@ -249,10 +258,71 @@ describe("réception des réponses", () => {
   it("corps trop gros : 413 (en-tête ET flux sans en-tête), rien d'écrit", async () => {
     allumer();
     const q = questionnaire();
-    const gros = "x".repeat(250_000);
-    expect((await post(q, gros, "", { "content-length": "250000" })).status).toBe(413);
+    // Une charge VALIDE de ~450 Ko : c'est bien la taille qui est refusée, pas la forme.
+    const gros = chargeDe(450_000);
+    expect(Buffer.byteLength(gros, "utf8")).toBeGreaterThan(CHARGE_MAX_OCTETS);
+    const n = String(Buffer.byteLength(gros, "utf8"));
+    expect((await post(q, gros, "", { "content-length": n })).status).toBe(413);
     expect((await post(q, gros)).status).toBe(413);
     expect(base.e).toHaveLength(0);
+  });
+
+  it("charge de ~300 Ko (sous le plafond de 400 Ko) : acceptée et gardée entière", async () => {
+    allumer();
+    const q = questionnaire();
+    const moyen = chargeDe(300_000);
+    const n = String(Buffer.byteLength(moyen, "utf8"));
+    expect((await post(q, moyen, "", { "content-length": n })).status).toBe(200);
+    expect(base.e).toHaveLength(1);
+    expect(dechiffrerParole(String(base.e[0]?.["donnees"]))).toBe(moyen);
+  });
+
+  it("schéma 4 complet (3 parcours) : enregistré puis relu champ par champ, identique", async () => {
+    allumer();
+    const q = questionnaire();
+    for (const mode of ["main", "emp", "it"] as const) {
+      const texte = JSON.stringify(CHARGES_SCHEMA_4[mode]);
+      expect((await post(q, texte)).status).toBe(200);
+    }
+    expect(base.e).toHaveLength(3);
+    (["main", "emp", "it"] as const).forEach((mode, i) => {
+      const ligne = base.e[i] as Ligne;
+      const stocke = String(ligne["donnees"]);
+      expect(stocke.startsWith("enc:v1:")).toBe(true);
+      // Le texte reçu, octet pour octet : réponses, calc, prefill, service, parcours, ref.
+      const relu = dechiffrerParole(stocke);
+      expect(relu).toBe(JSON.stringify(CHARGES_SCHEMA_4[mode]));
+      expect(JSON.parse(relu)).toStrictEqual(CHARGES_SCHEMA_4[mode]);
+      expect(ligne["mode"]).toBe(mode);
+    });
+    expect(base.e[1]?.["membre"]).toBe("m1");
+    const relu = JSON.parse(dechiffrerParole(String(base.e[0]?.["donnees"])));
+    expect(relu.prefill).toEqual(CHARGES_SCHEMA_4.main["prefill"]);
+    expect(Object.keys(relu.prefill)).toEqual(["confirmes", "modifies", "non_verifies", "vides"]);
+    expect(JSON.parse(dechiffrerParole(String(base.e[1]?.["donnees"]))).calc).toEqual(
+      CHARGES_SCHEMA_4.emp["calc"],
+    );
+    // La console relit toutes les réponses non vides, avec l'état du pré-remplissage.
+    const reponses = await lireReponses(q["id"] as string);
+    const donneesMain = CHARGES_SCHEMA_4.main["donnees"] as Record<string, unknown>;
+    const lignesMain = reponses[0]?.lignes ?? [];
+    for (const cle of Object.keys(donneesMain)) {
+      const v = donneesMain[cle];
+      const vide = v === "" || (Array.isArray(v) && v.length === 0);
+      if (!vide) expect(lignesMain.some((l) => l.cle === cle)).toBe(true);
+    }
+    expect(lignesMain.find((l) => l.cle === "ent_nom")?.prefill).toBe("confirme");
+    expect(lignesMain.find((l) => l.cle === "ent_ville")?.prefill).toBe("modifie");
+    expect(lignesMain.find((l) => l.cle === "ent_siret")?.prefill).toBe("non_verifie");
+    expect(lignesMain.find((l) => l.cle === "ent_site")?.prefill).toBe("vide");
+  });
+
+  it("schéma 3 toujours accepté, schéma 5 refusé (400)", async () => {
+    allumer();
+    const q = questionnaire();
+    expect((await post(q, CHARGE())).status).toBe(200);
+    expect((await post(q, CHARGE().replace('"schema":3', '"schema":5'))).status).toBe(400);
+    expect(base.e).toHaveLength(1);
   });
 
   it("charge invalide : 400", async () => {
