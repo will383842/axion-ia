@@ -198,7 +198,8 @@ ${rssSection ? `\n${rssSection}\n` : ""}
 ${kbContext}
 ${externalLinksCtx.markdownSection}${feedbackSection}
 ${glossaryContext ? `\n${glossaryContext}` : ""}
-${consigneAngle(input.jobId)}
+Pour le paragraphe final sur l'impact uniquement, ${consigneAngle(input.jobId)}
+L'introduction reste centrée sur l'information elle-même.
 ${sectionChiffresVerifies()}
 ## Avis d'expert
 "expertTake" = une prise de position de ${expert.name} (${expert.title}) : perspective d'expert concise et utile sur le sujet, sans chiffre inventé.

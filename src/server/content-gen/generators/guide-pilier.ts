@@ -32,7 +32,9 @@
  * Si une seule step 2 fail → soft : on continue avec un placeholder section
  * un corps vide (aucun texte « indisponible » dans l'article) pour ne pas perdre les
  * sections déjà générées (gaspillage tokens). Le job est marqué
- * `qualityScore -= 20` pour basculer en review queue.
+ * `qualityScore -= 10` par section en échec, et le guide est forcé en
+ * tier_3 sous le seuil de qualité : il part en relecture (le corps vide n'est plus
+ * repéré par le détecteur de texte d'administration).
  */
 
 import { generate as routerGenerate } from "../providers/provider-router";
@@ -53,6 +55,7 @@ import type { Generator, GeneratorBaseInput, GeneratorOutput } from "./types";
 import { ECONOMIC_DATA_BY_SLUG } from "@/content/villes/economic-data";
 import { injectBrandVoice } from "../brand/brand-voice";
 import { consigneAngle } from "../brand/positionnement";
+import { appliquerEchecsSections } from "./echecs-sections";
 import { REGLE_CHIFFRES_SOURCES, sectionChiffresVerifies } from "../kb/chiffres-verifies";
 import { pickInternalExpert, buildExpertQuote } from "../brand/expert-bank";
 import { getGlossaryContext } from "../brand/glossary-context";
@@ -362,7 +365,8 @@ Pas de sur-promesses ("garanti", "révolutionnaire" interdits).`;
 
     let qualityScore = qualityFromScores(seo.score, readability.score, doctrine.passed);
     // Pénalité section failures (chaque placeholder pénalise -10 pts max -50)
-    qualityScore = Math.max(0, qualityScore - Math.min(50, sectionFailures * 10));
+    const apresEchecs = appliquerEchecsSections(qualityScore, sectionFailures, QUALITY_THRESHOLD);
+    qualityScore = apresEchecs.qualityScore;
 
     const expertQuote = buildExpertQuote(expert, outline.expertTake);
 
@@ -390,7 +394,10 @@ Pas de sur-promesses ("garanti", "révolutionnaire" interdits).`;
       ...(outline.keyTakeaway?.trim() ? { keyTakeaway: outline.keyTakeaway.trim() } : {}),
       ...(expertQuote ? { expertQuote } : {}),
       indexationTier:
-        doctrine.passed && qualityScore >= QUALITY_THRESHOLD && qualityScore >= 70
+        !apresEchecs.forcerRelecture &&
+        doctrine.passed &&
+        qualityScore >= QUALITY_THRESHOLD &&
+        qualityScore >= 70
           ? "tier_2_noindex_follow"
           : "tier_3_noindex_nofollow",
       qualityScore,

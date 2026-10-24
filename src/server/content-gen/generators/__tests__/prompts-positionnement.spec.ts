@@ -11,6 +11,7 @@
 import { describe, it, expect } from "vitest";
 import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
+import { appliquerEchecsSections } from "../echecs-sections";
 import { detecterInterdits } from "@/lib/contenu/interdits-publication";
 
 const DIR = resolve(__dirname, "..");
@@ -67,8 +68,27 @@ describe("L8a : prompts des générateurs", () => {
 
   it("guide-pilier ne publie plus de texte « Section indisponible »", () => {
     const s = source("guide-pilier.ts");
-    expect(s).toContain('const PLACEHOLDER_SECTION_HTML = "";');
     expect(s).not.toContain("<em>Section indisponible");
+  });
+
+  it("guide-pilier : une section en échec plafonne la qualité et force la relecture (tier_3)", () => {
+    const un = appliquerEchecsSections(95, 1, 60);
+    expect(un.forcerRelecture).toBe(true);
+    expect(un.qualityScore).toBeLessThan(60);
+    expect(appliquerEchecsSections(95, 0, 60)).toEqual({
+      qualityScore: 95,
+      forcerRelecture: false,
+    });
+    expect(appliquerEchecsSections(30, 9, 60).qualityScore).toBe(0);
+    expect(source("guide-pilier.ts")).toContain("!apresEchecs.forcerRelecture");
+  });
+
+  it("blog-from-rss : l'angle d'entrée ne vise que le paragraphe d'impact, l'intro reste factuelle", () => {
+    const s = source("blog-from-rss.ts");
+    expect(s).toContain(
+      "Pour le paragraphe final sur l'impact uniquement, ${consigneAngle(input.jobId)}",
+    );
+    expect(s).toContain("L'introduction reste centrée sur l'information elle-même.");
   });
 
   it("v7-phase8-shared ne conseille plus de citer OPCO / France Travail", () => {
