@@ -13,6 +13,9 @@ import {
 } from "../positionnement";
 import { getBrandVoiceForContentType, injectBrandVoiceForType } from "../brand-voice";
 
+/** Étiquette interdite : TPE et PME accolées, sous toute graphie. */
+const ETIQUETTE_TPE_PME = /TPE\s*(\/|,|-|et)\s*PME/i;
+
 describe("angles d'entrée", () => {
   it("a 8 angles", () => {
     expect(ANGLES_ENTREE).toHaveLength(8);
@@ -47,7 +50,7 @@ describe("bloc de positionnement", () => {
 
   it("ne contient ni l'étiquette « TPE/PME » ni la phrase-slogan entière", () => {
     for (const bloc of [BLOC_POSITIONNEMENT, BLOC_POSITIONNEMENT_ACTUALITE]) {
-      expect(bloc).not.toContain("TPE/PME");
+      expect(bloc).not.toMatch(ETIQUETTE_TPE_PME);
       expect(bloc).not.toContain("nous si.");
       expect(bloc.toLowerCase()).not.toContain("aucun gain garanti");
     }
@@ -77,5 +80,11 @@ describe("brand-voice et positionnement", () => {
     const voix = getBrandVoiceForContentType("blog_from_rss");
     expect(voix).toContain(BLOC_POSITIONNEMENT_ACTUALITE);
     expect(voix).not.toContain(BLOC_POSITIONNEMENT);
+  });
+
+  it("la voix complète n'emploie jamais l'étiquette « TPE/PME »", () => {
+    for (const t of ["blog_article", "guide_pilier", "comparison", "blog_from_rss"]) {
+      expect(getBrandVoiceForContentType(t)).not.toMatch(ETIQUETTE_TPE_PME);
+    }
   });
 });
