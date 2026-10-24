@@ -14,7 +14,7 @@ import {
 import { getBrandVoiceForContentType, injectBrandVoiceForType } from "../brand-voice";
 
 /** Étiquette interdite : TPE et PME accolées, sous toute graphie. */
-const ETIQUETTE_TPE_PME = /TPE\s*(\/|,|-|et)\s*PME/i;
+const ETIQUETTE_TPE_PME = /bTPEs*(/|,|-|et)s*PMEb/i;
 
 describe("angles d'entrée", () => {
   it("a 8 angles", () => {
