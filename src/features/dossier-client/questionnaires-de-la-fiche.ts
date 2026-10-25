@@ -9,7 +9,7 @@
  */
 
 import { prisma } from "@/lib/prisma";
-import { dunClient } from "@/features/questionnaire-preaudit/serveur";
+import { dunClient } from "@/features/questionnaire-preaudit/cible";
 
 export interface QuestionnaireDeLaFiche {
   readonly id: string;
