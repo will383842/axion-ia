@@ -34,6 +34,9 @@
 
 import { FilDesEchanges } from "@/components/admin/dossier-client/FilDesEchanges";
 import { lireFilDesEchanges } from "@/features/dossier-client/fil-des-echanges";
+import { OngletEmails } from "@/components/admin/dossier-client/OngletEmails";
+import { OngletQuestionnaire } from "@/components/admin/dossier-client/OngletQuestionnaire";
+import { chargerEmails } from "@/features/admin-emails/query";
 import { BlocQuestionnaireFiche } from "@/components/admin/dossier-client/BlocQuestionnaireFiche";
 import { lireQuestionnairesDeLaFiche } from "@/features/dossier-client/questionnaires-de-la-fiche";
 import type { Metadata } from "next";
@@ -279,15 +282,24 @@ interface PageProps {
   }>;
 }
 
-const ONGLETS_DOSSIER = ["synthese", "projets", "echanges", "personnes"] as const;
+const ONGLETS_DOSSIER = [
+  "synthese",
+  "echanges",
+  "questionnaire",
+  "emails",
+  "projets",
+  "personnes",
+] as const;
 type Onglet = (typeof ONGLETS_DOSSIER)[number] | "facturation";
 
 const LIBELLE_ONGLET: Readonly<Record<Onglet, string>> = {
   synthese: "Résumé",
-  projets: "Prestations",
   echanges: "Rendez-vous",
+  questionnaire: "Questionnaire",
+  emails: "E-mails",
+  projets: "Prestations",
   personnes: "Personnes",
-  facturation: "Pièces et facturation",
+  facturation: "Devis et factures",
 };
 
 /** L'onglet demandé, ramené à ce que le rôle peut voir. */
@@ -447,6 +459,32 @@ export default async function FicheClient360Page({ params, searchParams }: PageP
           maintenant={maintenant}
         />
       </>
+    );
+  } else if (voitEchanges && onglet === "questionnaire") {
+    contenuDossier = (
+      <OngletQuestionnaire
+        questionnaires={await lireQuestionnairesDeLaFiche(id)}
+        clientId={id}
+        adminPrefix={adminPrefix}
+      />
+    );
+  } else if (voitEchanges && onglet === "emails") {
+    const courriers = await chargerEmails({
+      jours: 0,
+      statut: null,
+      gabarit: null,
+      destinataire: null,
+      sessionId: null,
+      clientId: id,
+      page: 1,
+    });
+    contenuDossier = (
+      <OngletEmails
+        lignes={courriers.lignes}
+        total={courriers.total}
+        clientId={id}
+        adminPrefix={adminPrefix}
+      />
     );
   } else if (voitEchanges && onglet === "personnes") {
     const [personnes, projets, fusions, fichesVivantes] = await Promise.all([

@@ -47,6 +47,21 @@ describe("clientsDesLignes", () => {
     expect(m.has("d")).toBe(false);
   });
 
+  it("rattache un questionnaire envoyé sans rendez-vous à sa fiche (client_id)", async () => {
+    prismaMock.questionnaireAvantAudit.findMany.mockResolvedValue([
+      { id: U(2), client: CLIENT, rencontre: null },
+    ]);
+    prismaMock.questionnaireAvantAuditEnvoi.findMany.mockResolvedValue([
+      { id: U(3), questionnaire: { client: CLIENT, rencontre: null } },
+    ]);
+    const m = await clientsDesLignes([
+      { id: "b", entityType: "QuestionnaireAvantAudit", entityId: U(2) },
+      { id: "c", entityType: "QuestionnaireAvantAuditEnvoi", entityId: U(3) },
+    ]);
+    expect(m.get("b")?.id).toBe(U(9));
+    expect(m.get("c")?.id).toBe(U(9));
+  });
+
   it("ne lit rien quand aucune ligne n'est rattachable, et ne plante pas sans base", async () => {
     expect((await clientsDesLignes([{ id: "x", entityType: null, entityId: null }])).size).toBe(0);
     expect(prismaMock.rencontre.findMany).not.toHaveBeenCalled();
@@ -62,7 +77,19 @@ describe("idsLiesAuClient", () => {
       { id: U(1), questionnaireAvantAudit: { id: U(2), envois: [{ id: U(3) }, { id: U(4) }] } },
       { id: U(5), questionnaireAvantAudit: null },
     ]);
+    prismaMock.questionnaireAvantAudit.findMany.mockResolvedValue([]);
     expect(await idsLiesAuClient(U(9))).toEqual([U(1), U(2), U(3), U(4), U(5)]);
+  });
+
+  it("liste aussi le questionnaire envoyé SANS rendez-vous (client_id) et ses réponses", async () => {
+    prismaMock.rencontre.findMany.mockResolvedValue([]);
+    prismaMock.questionnaireAvantAudit.findMany.mockResolvedValue([
+      { id: U(6), envois: [{ id: U(7) }] },
+    ]);
+    expect(await idsLiesAuClient(U(9))).toEqual([U(6), U(7)]);
+    expect(prismaMock.questionnaireAvantAudit.findMany).toHaveBeenCalledWith(
+      expect.objectContaining({ where: { clientId: U(9), rencontreId: null } }),
+    );
   });
 
   it("rend [] pour un identifiant qui n'est pas un UUID (zéro ligne, jamais tout le journal)", async () => {
@@ -159,6 +186,7 @@ describe("chargerEmails avec un filtre client", () => {
     journal.emailLog.findMany.mockResolvedValue([]);
     journal.emailLog.groupBy.mockResolvedValue([]);
     prismaMock.rencontre.findMany.mockResolvedValue([]);
+    prismaMock.questionnaireAvantAudit.findMany.mockResolvedValue([]);
     prismaMock.client.findUnique.mockResolvedValue(CLIENT);
     const { chargerEmails } = await import("../query");
     const r = await chargerEmails({

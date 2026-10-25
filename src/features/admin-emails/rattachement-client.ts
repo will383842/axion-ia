@@ -59,7 +59,11 @@ export async function clientsDesLignes(
         ? []
         : prisma.questionnaireAvantAudit.findMany({
             where: { id: { in: questionnaireIds } },
-            select: { id: true, rencontre: { select: { client: clientSelect } } },
+            select: {
+              id: true,
+              client: clientSelect,
+              rencontre: { select: { client: clientSelect } },
+            },
           }),
       envoiIds.length === 0
         ? []
@@ -67,7 +71,12 @@ export async function clientsDesLignes(
             where: { id: { in: envoiIds } },
             select: {
               id: true,
-              questionnaire: { select: { rencontre: { select: { client: clientSelect } } } },
+              questionnaire: {
+                select: {
+                  client: clientSelect,
+                  rencontre: { select: { client: clientSelect } },
+                },
+              },
             },
           }),
     ]);
@@ -77,8 +86,8 @@ export async function clientsDesLignes(
       if (c) parEntite.set(entiteId, { id: c.id, numero: c.numero, nom: c.raisonSociale });
     };
     for (const r of rencontres) poser(r.id, r.client);
-    for (const q of questionnaires) poser(q.id, q.rencontre?.client);
-    for (const e of envois) poser(e.id, e.questionnaire.rencontre?.client);
+    for (const q of questionnaires) poser(q.id, q.rencontre?.client ?? q.client);
+    for (const e of envois) poser(e.id, e.questionnaire.rencontre?.client ?? e.questionnaire.client);
     for (const l of lignes) {
       const c = l.entityId === null ? undefined : parEntite.get(l.entityId);
       if (c) resultat.set(l.id, c);
@@ -111,6 +120,15 @@ export async function idsLiesAuClient(clientId: string): Promise<string[]> {
       ids.push(q.id);
       for (const e of q.envois) ids.push(e.id);
     }
+  }
+  // Les questionnaires envoyés depuis la fiche SANS rendez-vous (`client_id`).
+  const sansRdv = await prisma.questionnaireAvantAudit.findMany({
+    where: { clientId, rencontreId: null },
+    select: { id: true, envois: { select: { id: true } } },
+  });
+  for (const q of sansRdv) {
+    ids.push(q.id);
+    for (const e of q.envois) ids.push(e.id);
   }
   return ids;
 }
