@@ -5,9 +5,10 @@
 // toujours la chose en toutes lettres. Règle : 3 teintes au plus par écran,
 // listes de travail sur fond blanc. Composant serveur, aucun JavaScript client.
 //
-// Les couleurs viennent de `admin.css` (`.admin-bloc--{teinte}`) : ne pas poser
-// d'utilitaire Tailwind de fond, de bordure ou de rayon via `className`, il
-// serait inerte (les classes `.admin-*` sont hors couche et l'emportent).
+// Les couleurs viennent de `admin.css` (`.admin-bloc--{teinte}`), dans la couche
+// `admin-dossier` déclarée après `utilities` : ne pas poser d'utilitaire Tailwind
+// de fond, de bordure, de marge ou de rayon via `className`, il serait sans effet.
+// L'espacement entre blocs se règle dans le parent.
 
 import { cn } from "@/lib/utils";
 

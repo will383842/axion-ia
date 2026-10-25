@@ -3042,37 +3042,49 @@ a.admin-card-inline {
  * [aria-disabled="true"])`, la même forme que celles de base pour que les
  * survols gagnent par spécificité.
  * =============================================================*/
-.admin-ton-dossier {
-  --color-admin-border: #dcd0c0;
-  --color-admin-border-strong: #857a69;
-  --color-admin-fg-soft: #3a332b;
-  --color-admin-fg-muted: #4a4238;
-  --color-admin-accent: #b8441a;
-  --color-admin-accent-track: #f8ece8;
-  --color-admin-ring: #1a4dd9;
-  --radius-admin-sm: 8px;
-  --radius-admin-md: 12px;
-  --text-admin-xs: 13px;
-  --text-admin-sm: 14px;
-  --text-admin-md: 15px;
-  --text-admin-xl: 30px;
-  --control-admin-h-sm: 36px;
-  --control-admin-h-md: 44px;
-  --control-admin-h-lg: 48px;
-  --shadow-admin-1: 0 2px 4px rgb(122 44 13 / 0.06), 0 12px 32px rgb(122 44 13 / 0.08);
-}
-@media (max-width: 639.98px) {
+/* Variables : dans la couche des jetons (une déclaration sur un descendant bat
+   de toute façon la valeur héritée du shell). */
+@layer admin-tokens {
   .admin-ton-dossier {
-    --text-admin-xl: 24px;
+    --color-admin-border: #dcd0c0;
+    --color-admin-border-strong: #857a69;
+    --color-admin-fg-soft: #3a332b;
+    --color-admin-fg-muted: #4a4238;
+    --color-admin-accent: #b8441a;
+    --color-admin-accent-track: #f8ece8;
+    --color-admin-ring: #1a4dd9;
+    --radius-admin-sm: 8px;
+    --radius-admin-md: 12px;
+    --text-admin-xs: 13px;
+    --text-admin-sm: 14px;
+    --text-admin-md: 15px;
+    --text-admin-xl: 30px;
+    --control-admin-h-sm: 36px;
+    --control-admin-h-md: 44px;
+    --control-admin-h-lg: 48px;
+    --shadow-admin-1: 0 2px 4px rgb(122 44 13 / 0.06), 0 12px 32px rgb(122 44 13 / 0.08);
+  }
+  @media (max-width: 639.98px) {
+    .admin-ton-dossier {
+      --text-admin-xl: 24px;
+    }
   }
 }
 
 /* Champs : bordure lisible (>= 3:1), 44 px, 16 px, placeholder lisible. */
+.admin-ton-dossier .admin-input:not(.admin-input-sm, .admin-input-mono, .admin-input-totp) {
+  font-size: 16px;
+}
 .admin-ton-dossier .admin-input {
   border-color: var(--color-admin-control-border);
   min-height: 44px;
-  font-size: 16px;
   border-radius: 8px;
+}
+.admin-ton-dossier .admin-input:hover:not(:disabled, [readonly]) {
+  border-color: var(--color-admin-fg-soft);
+}
+.admin-ton-dossier .admin-input:focus-visible {
+  border-color: var(--color-admin-accent);
 }
 .admin-ton-dossier .admin-input::placeholder {
   color: var(--color-admin-placeholder);
@@ -3086,19 +3098,32 @@ a.admin-card-inline {
 /* Boutons : ombre CTA, 15 px, graisse 700 ; ghost à bordure visible. */
 .admin-ton-dossier .admin-button {
   box-shadow: var(--shadow-admin-cta);
-  font-size: 15px;
   font-weight: 700;
+}
+.admin-ton-dossier .admin-button:focus-visible {
+  box-shadow:
+    0 0 0 var(--ring-admin-width) var(--color-admin-ring),
+    var(--shadow-admin-cta);
+}
+.admin-ton-dossier
+  :is(.admin-button, .admin-button-secondary, .admin-button-ghost):not(
+    .admin-button-sm,
+    .admin-button-xs
+  ) {
+  font-size: 15px;
 }
 .admin-ton-dossier .admin-button:hover:not(:disabled, [aria-disabled="true"]) {
   background-color: var(--color-admin-accent-strong);
 }
 .admin-ton-dossier .admin-button-secondary,
 .admin-ton-dossier .admin-button-ghost {
-  font-size: 15px;
   font-weight: 700;
 }
 .admin-ton-dossier .admin-button-ghost {
   border-color: var(--color-admin-ghost-border);
+}
+.admin-ton-dossier .admin-button-ghost-danger {
+  border-color: color-mix(in srgb, var(--color-admin-destructive) 35%, transparent);
 }
 .admin-ton-dossier .admin-button-ghost:hover:not(:disabled, [aria-disabled="true"]) {
   border-color: var(--color-admin-accent);
@@ -3153,9 +3178,10 @@ a.admin-card-inline {
   letter-spacing: 0;
 }
 
-/* Classes NEUVES du socle : dans une couche (les utilitaires Tailwind peuvent donc
-   les ajuster, contrairement aux règles hors couche). Aucune règle de base n'est
-   à battre ici. */
+/* Classes NEUVES du socle : dans une couche `admin-dossier`, déclarée ICI donc
+   après `utilities` : les utilitaires Tailwind ne les ajustent PAS (l'ordre des
+   couches n'est pas vérifiable depuis ce fichier). Marges et largeurs se règlent
+   dans le parent ou par un modificateur défini ici. Aucune règle de base à battre. */
 @layer admin-dossier {
   /* Pastille PLEINE (AdminBadge plein) : texte blanc sur fond foncé. */
   .admin-badge-plein {
@@ -3286,6 +3312,7 @@ a.admin-card-inline {
     overflow-wrap: anywhere;
   }
   .admin-apercu-email-bascule {
+    position: relative;
     display: flex;
     gap: 8px;
     padding: 8px 16px;

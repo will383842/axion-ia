@@ -1,8 +1,8 @@
 // Aperçu d'e-mail du socle « dossier » (D0, PLAN-DESIGN-CLIENTS).
 //
 // Enveloppe De / À / Objet, puis le corps HTML dans un cadre ISOLÉ :
-// `sandbox=""` (aucune permission : ni script, ni formulaire, ni lien actif,
-// pas d'accès à la page) et `srcDoc`. Le HTML d'un e-mail n'est donc JAMAIS
+// `sandbox=""` (aucune permission : ni script, ni formulaire, origine opaque,
+// pas d'accès à la page ; un lien peut encore faire naviguer le cadre lui-même) et `srcDoc`. Le HTML d'un e-mail n'est donc JAMAIS
 // injecté dans la page (pas de dangerouslySetInnerHTML).
 //
 // Hauteur FIXE (720 px, 560 sous 640 px) : le cadre ne fait pas sauter la page
@@ -47,7 +47,13 @@ export function AdminApercuEmail({
         <input type="radio" name={nom} id={`${nom}-tel`} value="telephone" />
         <label htmlFor={`${nom}-tel`}>Téléphone</label>
       </div>
-      <iframe className="admin-apercu-email-cadre" title={titre} sandbox="" srcDoc={html} />
+      <iframe
+        className="admin-apercu-email-cadre"
+        title={titre}
+        sandbox=""
+        referrerPolicy="no-referrer"
+        srcDoc={html}
+      />
     </div>
   );
 }
