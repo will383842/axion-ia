@@ -224,9 +224,8 @@ describe("lireQuestionnairesDeLaFiche", () => {
       { id: "recent", entityId: U(2), status: "bounced" },
       { id: "ancien", entityId: U(2), status: "sent" },
     ]);
-    const { lireQuestionnairesDeLaFiche } = await import(
-      "@/features/dossier-client/questionnaires-de-la-fiche"
-    );
+    const { lireQuestionnairesDeLaFiche } =
+      await import("@/features/dossier-client/questionnaires-de-la-fiche");
     const [q] = await lireQuestionnairesDeLaFiche(U(9));
     expect(q!.reponses).toEqual({
       dirigeant: 1,

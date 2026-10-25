@@ -119,7 +119,10 @@ export async function idsLiesAuClient(clientId: string): Promise<string[]> {
 export async function clientFiltre(clientId: string): Promise<ClientDuJournal | null> {
   if (!estUuid(clientId)) return null;
   const c = await prisma.client
-    .findUnique({ where: { id: clientId }, select: { id: true, numero: true, raisonSociale: true } })
+    .findUnique({
+      where: { id: clientId },
+      select: { id: true, numero: true, raisonSociale: true },
+    })
     .catch(() => null);
   return c === null ? null : { id: c.id, numero: c.numero, nom: c.raisonSociale };
 }
