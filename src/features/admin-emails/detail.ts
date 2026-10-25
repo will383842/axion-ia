@@ -156,7 +156,8 @@ export function raisonSansCopie(
   if (envoi < limite) {
     return {
       kind: "purgee",
-      phrase: "Copie absente : cet e-mail date de plus de 5 ans, la durée de conservation. Aucune copie n'est supprimée automatiquement.",
+      phrase:
+        "Copie absente : cet e-mail date de plus de 5 ans, la durée de conservation. Aucune copie n'est supprimée automatiquement.",
     };
   }
   if (premiereCopie === null || envoi < premiereCopie) {
