@@ -21,13 +21,13 @@ import {
   libelleDe,
   type Libelles,
 } from "@/features/questionnaire-preaudit/libelles";
+import { AdminButton } from "@/components/admin/ui/AdminButton";
 import { adminPath } from "@/lib/admin-path";
 
 const mutedCls = "text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]";
 const alerteCls =
   "my-[var(--space-admin-2)] rounded-[var(--radius-admin-sm)] border-2 border-[color:var(--color-admin-danger)] p-[var(--space-admin-2)] font-semibold text-[color:var(--color-admin-danger)]";
-const boutonCls =
-  "rounded-[var(--radius-admin-sm)] border border-[color:var(--color-admin-border)] px-[var(--space-admin-3)] py-[var(--space-admin-1)] text-[length:var(--text-admin-xs)] font-medium";
+const boutonCls = "admin-button-secondary";
 const celluleCls =
   "border border-[color:var(--color-admin-border)] px-[var(--space-admin-2)] py-[var(--space-admin-1)] align-top whitespace-pre-line";
 
@@ -73,6 +73,8 @@ export function ReponsePreaudit(props: {
   rencontreId: string | null;
   /** La fiche visée quand le questionnaire est envoyé sans rendez-vous (retour sur sa page). */
   clientId?: string | null;
+  /** Le questionnaire visé de la fiche : le retour du geste revient sur celui-là. */
+  questionnaireId?: string | null;
   /** Référence du questionnaire : avec le code `membre`, elle identifie un salarié (RGPD). */
   reference: string;
   /** Williams (super-administrateur) : seul à pouvoir effacer définitivement. */
@@ -118,15 +120,20 @@ export function ReponsePreaudit(props: {
               {props.rencontreId !== null ? (
                 <input type="hidden" name="rencontreId" value={props.rencontreId} />
               ) : props.clientId != null ? (
-                <input type="hidden" name="clientId" value={props.clientId} />
+                <>
+                  <input type="hidden" name="clientId" value={props.clientId} />
+                  {props.questionnaireId != null ? (
+                    <input type="hidden" name="questionnaireId" value={props.questionnaireId} />
+                  ) : null}
+                </>
               ) : (
                 <input type="hidden" name="retour" value="questionnaires" />
               )}
               <input type="hidden" name="ref" value={ref} />
               <input type="hidden" name="membre" value={r.membre ?? ""} />
-              <button type="submit" className={boutonCls}>
+              <AdminButton type="submit" variant="secondary">
                 Demande d&apos;effacement : mettre à l&apos;écart
-              </button>
+              </AdminButton>
             </form>
           ) : null}
         </div>
@@ -145,7 +152,12 @@ export function ReponsePreaudit(props: {
               {props.rencontreId !== null ? (
                 <input type="hidden" name="rencontreId" value={props.rencontreId} />
               ) : props.clientId != null ? (
-                <input type="hidden" name="clientId" value={props.clientId} />
+                <>
+                  <input type="hidden" name="clientId" value={props.clientId} />
+                  {props.questionnaireId != null ? (
+                    <input type="hidden" name="questionnaireId" value={props.questionnaireId} />
+                  ) : null}
+                </>
               ) : (
                 <input type="hidden" name="retour" value="questionnaires" />
               )}
@@ -155,11 +167,11 @@ export function ReponsePreaudit(props: {
                 name="confirmation"
                 placeholder="Écrivez EFFACER"
                 aria-label="Confirmation de l'effacement définitif"
-                className={boutonCls}
+                className="admin-input"
               />
-              <button type="submit" className={boutonCls}>
+              <AdminButton type="submit" variant="danger">
                 Effacer définitivement
-              </button>
+              </AdminButton>
             </form>
           ) : (
             <span> Williams seul peut effacer définitivement.</span>

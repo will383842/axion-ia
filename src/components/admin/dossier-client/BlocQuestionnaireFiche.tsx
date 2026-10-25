@@ -41,7 +41,7 @@ export function BlocQuestionnaireFiche({
   questionnaires: ReadonlyArray<QuestionnaireDeLaFiche>;
   adminPrefix: string;
   /** La fiche : un questionnaire envoyé sans rendez-vous s'ouvre dans sa page « Questionnaire ». */
-  ficheHref?: string;
+  ficheHref: string;
 }): React.ReactElement | null {
   if (questionnaires.length === 0) return null;
   const base = `/fr/${adminPrefix}`;
@@ -56,7 +56,7 @@ export function BlocQuestionnaireFiche({
           const total = r.dirigeant + r.referentInformatique + r.collaborateurs;
           const lienRdv =
             q.rencontreId === null
-              ? `${ficheHref ?? `${base}/qualiopi/clients`}/questionnaire`
+              ? `${ficheHref}/questionnaire?q=${q.id}`
               : `${base}/rendez-vous/rencontres/${q.rencontreId}`;
           return (
             <li key={q.id}>

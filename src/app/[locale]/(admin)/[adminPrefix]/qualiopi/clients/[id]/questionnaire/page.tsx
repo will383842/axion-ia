@@ -17,6 +17,7 @@ import { AdminPageHeader } from "@/components/admin/ui/AdminPageHeader";
 import { AdminPageShell } from "@/components/admin/ui/AdminPageShell";
 import { gardeLectureEchanges } from "@/features/dossier-client/acces";
 import { lireMessageDeRetour } from "@/features/dossier-client/message-de-retour";
+import { listerQuestionnairesDuClient } from "@/features/questionnaire-preaudit/serveur";
 import { prisma } from "@/lib/prisma";
 
 export const dynamic = "force-dynamic";
@@ -48,6 +49,9 @@ export default async function EnvoyerQuestionnairePage({ params, searchParams }:
     select: { id: true, raisonSociale: true, contactNom: true, contactEmail: true },
   });
   if (client === null) notFound();
+  // `?q=<id>` : le questionnaire visé (une fiche peut en avoir plusieurs). Sans lui, le plus récent.
+  const questionnaireId = typeof sp.q === "string" && UUID.test(sp.q) ? sp.q : undefined;
+  const tous = await listerQuestionnairesDuClient(id);
   const retourFiche = `/${locale}/${adminPrefix}/qualiopi/clients/${id}`;
   const texte = (cle: string, max: number): string | undefined =>
     typeof sp[cle] === "string" ? sp[cle]!.slice(0, max) : undefined;
@@ -73,8 +77,32 @@ export default async function EnvoyerQuestionnairePage({ params, searchParams }:
           {message}
         </p>
       ) : null}
+      {tous.length > 1 ? (
+        <nav aria-label="Questionnaires de cette fiche" className="mb-[var(--space-admin-4)]">
+          <p className="text-[length:var(--text-admin-sm)] font-medium">
+            Questionnaires de cette fiche ({tous.length})
+          </p>
+          <ul className="text-[length:var(--text-admin-sm)]">
+            {tous.map((t) => (
+              <li key={t.id}>
+                <Link
+                  href={`${retourFiche}/questionnaire?q=${t.id}`}
+                  className="admin-link"
+                  aria-current={t.id === (questionnaireId ?? tous[0]?.id) ? "page" : undefined}
+                >
+                  {t.envoyeLe === null
+                    ? `Brouillon du ${t.creeLe.toLocaleDateString("fr-FR", { timeZone: "Europe/Paris" })}`
+                    : `Envoyé le ${t.envoyeLe.toLocaleDateString("fr-FR", { timeZone: "Europe/Paris" })}`}
+                  {t.closLe !== null ? " — fermé" : ""} · réf. {t.ref}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </nav>
+      ) : null}
       <QuestionnairePreaudit
         clientId={client.id}
+        {...(questionnaireId !== undefined ? { questionnaireId } : {})}
         peutDeposer={acces.role === "super_admin"}
         titulaire={{ nom: client.contactNom, email: client.contactEmail }}
         debutPrevu={null}

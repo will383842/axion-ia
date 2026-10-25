@@ -97,14 +97,16 @@ export async function lireDeLaRencontre(rencontreId: string) {
 }
 
 /**
- * Le questionnaire envoyé à une fiche SANS rendez-vous (`client_id` posé, `rencontre_id` NULL),
- * le plus récent. Il peut y en avoir plusieurs au fil du temps : un envoi déjà parti n'est jamais
- * remplacé, un nouveau dépôt en crée un autre (aucune suppression).
+ * Le questionnaire envoyé à une fiche SANS rendez-vous (`client_id` posé, `rencontre_id` NULL).
+ * Il peut y en avoir plusieurs au fil du temps : un envoi déjà parti n'est jamais remplacé, un
+ * nouveau dépôt en crée un autre (aucune suppression). Avec `questionnaireId`, on vise CELUI-LÀ
+ * (et seulement s'il appartient à la fiche ou à une fiche qu'elle a absorbée) ; sans, le plus récent.
  */
-export async function lireDuClientSansRendezVous(clientId: string) {
+export async function lireDuClientSansRendezVous(clientId: string, questionnaireId?: string) {
   // Suit les fusions de fiches, comme la carte : même recherche des deux côtés (dépôt compris).
+  const directs = questionnairesDirectsDesFiches(await fichesCouvertes(clientId));
   return prisma.questionnaireAvantAudit.findFirst({
-    where: questionnairesDirectsDesFiches(await fichesCouvertes(clientId)),
+    where: questionnaireId === undefined ? directs : { ...directs, id: questionnaireId },
     orderBy: [{ creeLe: "desc" }, { id: "asc" }],
     select: {
       id: true,
@@ -115,6 +117,15 @@ export async function lireDuClientSansRendezVous(clientId: string) {
       closLe: true,
       expireLe: true,
     },
+  });
+}
+
+/** Tous les questionnaires envoyés sans rendez-vous à une fiche (récents d'abord) : aucun n'est caché. */
+export async function listerQuestionnairesDuClient(clientId: string) {
+  return prisma.questionnaireAvantAudit.findMany({
+    where: questionnairesDirectsDesFiches(await fichesCouvertes(clientId)),
+    orderBy: [{ creeLe: "desc" }, { id: "asc" }],
+    select: { id: true, ref: true, creeLe: true, envoyeLe: true, closLe: true },
   });
 }
 

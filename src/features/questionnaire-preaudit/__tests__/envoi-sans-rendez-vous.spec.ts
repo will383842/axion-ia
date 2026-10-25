@@ -44,6 +44,7 @@ import {
 import { cheminConsole } from "../suivi";
 import {
   deposerQuestionnaireClient,
+  listerQuestionnairesDuClient,
   listerQuestionnairesSansRencontre,
   lireDuClientSansRendezVous,
 } from "../serveur";
@@ -205,5 +206,38 @@ describe("deux dépôts en même temps", () => {
     const sql = String(bd.tx.$queryRaw.mock.calls[0]![0].join(" "));
     expect(sql).toMatch(/FROM clients WHERE id/);
     expect(sql).toMatch(/FOR UPDATE/);
+  });
+});
+
+describe("plusieurs questionnaires sur une fiche : chacun reste atteignable par son identifiant", () => {
+  const Q1 = "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa";
+
+  it("lire un questionnaire précis cherche CET identifiant, dans les fiches couvertes seulement", async () => {
+    bd.clientFusion.findMany.mockResolvedValue([]);
+    bd.questionnaireAvantAudit.findFirst.mockResolvedValue({ id: Q1 });
+    await lireDuClientSansRendezVous(CID, Q1);
+    const where = bd.questionnaireAvantAudit.findFirst.mock.calls[0]![0].where;
+    expect(where).toEqual({ ...questionnairesDirectsDesFiches([CID]), id: Q1 });
+  });
+
+  it("sans identifiant : le plus récent, comme avant", async () => {
+    bd.clientFusion.findMany.mockResolvedValue([]);
+    bd.questionnaireAvantAudit.findFirst.mockResolvedValue({ id: "recent" });
+    await lireDuClientSansRendezVous(CID);
+    const where = bd.questionnaireAvantAudit.findFirst.mock.calls[0]![0].where;
+    expect(where).toEqual(questionnairesDirectsDesFiches([CID]));
+  });
+
+  it("la liste de la fiche rend TOUS les questionnaires, envoyés et brouillons, sans en filtrer", async () => {
+    bd.clientFusion.findMany.mockResolvedValue([]);
+    bd.questionnaireAvantAudit.findMany.mockResolvedValue([
+      { id: "q2", ref: "r2", creeLe: new Date(), envoyeLe: null, closLe: null },
+      { id: Q1, ref: "r1", creeLe: new Date(0), envoyeLe: new Date(), closLe: null },
+    ]);
+    const liste = await listerQuestionnairesDuClient(CID);
+    expect(liste.map((q) => q.id)).toEqual(["q2", Q1]);
+    const appel = bd.questionnaireAvantAudit.findMany.mock.calls.at(-1)![0];
+    expect(appel.where).toEqual(questionnairesDirectsDesFiches([CID]));
+    expect(appel.take).toBeUndefined();
   });
 });

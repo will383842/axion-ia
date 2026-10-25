@@ -121,13 +121,20 @@ describe("BlocQuestionnaireFiche", () => {
   };
   it("n'affiche rien sans questionnaire", () => {
     expect(
-      renderToStaticMarkup(<BlocQuestionnaireFiche questionnaires={[]} adminPrefix="adm" />),
+      renderToStaticMarkup(
+        <BlocQuestionnaireFiche
+          questionnaires={[]}
+          adminPrefix="adm"
+          ficheHref="/fr/adm/qualiopi/clients/c"
+        />,
+      ),
     ).toBe("");
   });
   it("dit l'envoi, les réponses d'équipe et les liens (heure de Paris)", () => {
     const html = renderToStaticMarkup(
       <BlocQuestionnaireFiche
         adminPrefix="adm"
+        ficheHref="/fr/adm/qualiopi/clients/c"
         questionnaires={[
           {
             ...base,
@@ -149,6 +156,7 @@ describe("BlocQuestionnaireFiche", () => {
     const html = renderToStaticMarkup(
       <BlocQuestionnaireFiche
         adminPrefix="adm"
+        ficheHref="/fr/adm/qualiopi/clients/c"
         questionnaires={[
           { ...base, envoyeLe: null, invitationEmailLogId: null, invitationStatut: null },
         ]}

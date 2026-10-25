@@ -64,13 +64,19 @@ function pageRencontre(rencontreId: string): string {
  */
 type Cible =
   | { readonly genre: "rencontre"; readonly id: string }
-  | { readonly genre: "client"; readonly id: string };
+  | { readonly genre: "client"; readonly id: string; readonly questionnaireId?: string };
 
 function cibleDe(fd: FormData): Cible {
   const rencontreId = champ(fd, "rencontreId");
   if (uuid.safeParse(rencontreId).success) return { genre: "rencontre", id: rencontreId };
   const clientId = champ(fd, "clientId");
-  if (uuid.safeParse(clientId).success) return { genre: "client", id: clientId };
+  if (uuid.safeParse(clientId).success) {
+    // Plusieurs questionnaires par fiche : celui que le formulaire désigne, pas « le plus récent ».
+    const questionnaireId = champ(fd, "questionnaireId");
+    return uuid.safeParse(questionnaireId).success
+      ? { genre: "client", id: clientId, questionnaireId }
+      : { genre: "client", id: clientId };
+  }
   redirect(adminPath("fr", "/rendez-vous"));
 }
 
@@ -78,11 +84,16 @@ function cibleDe(fd: FormData): Cible {
 function pageDe(c: Cible): string {
   return c.genre === "rencontre"
     ? pageRencontre(c.id)
-    : adminPath("fr", `/qualiopi/clients/${c.id}/questionnaire`);
+    : adminPath(
+        "fr",
+        `/qualiopi/clients/${c.id}/questionnaire${c.questionnaireId ? `?q=${c.questionnaireId}` : ""}`,
+      );
 }
 
 function lireDeLaCible(c: Cible) {
-  return c.genre === "rencontre" ? lireDeLaRencontre(c.id) : lireDuClientSansRendezVous(c.id);
+  return c.genre === "rencontre"
+    ? lireDeLaRencontre(c.id)
+    : lireDuClientSansRendezVous(c.id, c.questionnaireId);
 }
 
 function retour(c: Cible, cle: "message" | "erreur", texte: string): never {
@@ -100,8 +111,14 @@ function pageDeRetour(fd: FormData): string {
   const rencontreId = champ(fd, "rencontreId");
   if (uuid.safeParse(rencontreId).success) return pageRencontre(rencontreId);
   const clientId = champ(fd, "clientId");
-  if (uuid.safeParse(clientId).success)
-    return adminPath("fr", `/qualiopi/clients/${clientId}/questionnaire`);
+  if (uuid.safeParse(clientId).success) {
+    const questionnaireId = champ(fd, "questionnaireId");
+    return pageDe(
+      uuid.safeParse(questionnaireId).success
+        ? { genre: "client", id: clientId, questionnaireId }
+        : { genre: "client", id: clientId },
+    );
+  }
   if (champ(fd, "retour") === "questionnaires") return PAGE_SANS_RENCONTRE;
   redirect(adminPath("fr", "/rendez-vous"));
 }

@@ -4,7 +4,10 @@
 // « Envoyer » : rien ne part tout seul. Les réponses arrivent par personne, regroupées ici,
 // avec « à traiter » tant qu'il ne les a pas marquées lues (pas d'e-mail interne).
 
+import { AdminApercuEmail } from "@/components/admin/ui/AdminApercuEmail";
 import { AdminBadge } from "@/components/admin/ui/AdminBadge";
+import { AdminBloc } from "@/components/admin/ui/AdminBloc";
+import { AdminButton } from "@/components/admin/ui/AdminButton";
 import { ReponsePreaudit } from "@/components/admin/dossier-client/ReponsePreaudit";
 import {
   arreterRelancesAction,
@@ -54,15 +57,10 @@ import {
 import { formatDateFrShort } from "@/lib/format-date-fr";
 import { fromParisLocalInput, timeInParis, toParisLocalInput } from "@/lib/calendar-grid";
 
-const carteCls =
-  "mb-[var(--space-admin-4)] rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] p-[var(--space-admin-4)]";
-const titreCls =
-  "mb-[var(--space-admin-3)] text-[length:var(--text-admin-base)] font-semibold text-[color:var(--color-admin-fg)]";
 const mutedCls = "text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]";
 const inputCls =
   "rounded-[var(--radius-admin-sm)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] px-[var(--space-admin-3)] py-[var(--space-admin-2)] text-[length:var(--text-admin-sm)]";
-const boutonCls =
-  "rounded-[var(--radius-admin-sm)] border border-[color:var(--color-admin-border)] px-[var(--space-admin-3)] py-[var(--space-admin-2)] text-[length:var(--text-admin-sm)] font-medium";
+const EXPEDITEUR = "Axion-IA <contact@axion-ia.com>";
 
 const LIBELLE_ARRET: Readonly<Record<string, string>> = {
   reponse_dirigeant: "le dirigeant a répondu",
@@ -99,6 +97,8 @@ export async function QuestionnairePreaudit(props: {
   rencontreId?: string;
   /** La fiche, quand le questionnaire est envoyé SANS rendez-vous. */
   clientId?: string;
+  /** Avec `clientId` : le questionnaire visé (plusieurs par fiche). Absent : le plus récent. */
+  questionnaireId?: string;
   /** Seul Williams (super_admin) dépose le HTML. */
   peutDeposer: boolean;
   titulaire: { nom: string | null; email: string | null } | null;
@@ -117,18 +117,28 @@ export async function QuestionnairePreaudit(props: {
     corps?: string;
   } | null;
 }) {
-  const { rencontreId, clientId } = props;
+  const { rencontreId, clientId, questionnaireId } = props;
   // Le champ caché qui dit aux actions quel questionnaire est visé (rendez-vous, sinon fiche).
   const cible =
     rencontreId !== undefined
       ? { name: "rencontreId", value: rencontreId }
       : { name: "clientId", value: clientId ?? "" };
+  // Le questionnaire précis (fiche sans rendez-vous) voyage avec chaque geste : les rappels d'un
+  // questionnaire déjà parti restent arrêtables même quand un autre a été déposé depuis.
+  const champsCible = (
+    <>
+      <input type="hidden" name={cible.name} value={cible.value} />
+      {rencontreId === undefined && questionnaireId !== undefined ? (
+        <input type="hidden" name="questionnaireId" value={questionnaireId} />
+      ) : null}
+    </>
+  );
   const q =
     rencontreId !== undefined
       ? await lireDeLaRencontre(rencontreId)
       : clientId === undefined
         ? null
-        : await lireDuClientSansRendezVous(clientId);
+        : await lireDuClientSansRendezVous(clientId, questionnaireId);
   const refus = refusEnvoiReel();
   const reponses = q === null ? [] : await lireReponses(q.id);
   const libelles =
@@ -214,28 +224,39 @@ export async function QuestionnairePreaudit(props: {
   }
 
   return (
-    <section className={carteCls} id="questionnaire-avant-audit">
-      <h2 className={titreCls}>
-        Questionnaire avant audit{" "}
-        {q === null ? null : q.envoyeLe === null ? (
-          <AdminBadge tone="neutral">brouillon</AdminBadge>
-        ) : (
-          <AdminBadge tone="success">envoyé le {quand(q.envoyeLe)}</AdminBadge>
-        )}{" "}
-        {q?.closLe != null ? (
-          <AdminBadge tone="outline">fermé</AdminBadge>
-        ) : q?.expireLe != null ? (
-          <AdminBadge tone="outline">expire le {quand(q.expireLe)}</AdminBadge>
-        ) : null}{" "}
-        {aTraiter ? <AdminBadge tone="warning">réponses à traiter</AdminBadge> : null}
-      </h2>
-
+    <AdminBloc
+      teinte="terracotta"
+      haut
+      id="questionnaire-avant-audit"
+      titre={
+        <>
+          Questionnaire avant audit{" "}
+          {q === null ? null : q.envoyeLe === null ? (
+            <AdminBadge tone="neutral">brouillon</AdminBadge>
+          ) : (
+            <AdminBadge tone="success">envoyé le {quand(q.envoyeLe)}</AdminBadge>
+          )}{" "}
+          {q?.closLe != null ? (
+            <AdminBadge tone="outline">fermé</AdminBadge>
+          ) : q?.expireLe != null ? (
+            <AdminBadge tone="outline">expire le {quand(q.expireLe)}</AdminBadge>
+          ) : null}{" "}
+          {aTraiter ? <AdminBadge tone="warning">réponses à traiter</AdminBadge> : null}
+        </>
+      }
+    >
+      <h3 className="admin-carte-titre flex items-center gap-[var(--space-admin-3)]">
+        <span className="admin-etape" aria-hidden="true">
+          1
+        </span>
+        Préparer
+      </h3>
       {props.peutDeposer ? (
         <form
           action={deposerQuestionnaireAction}
           className="mb-[var(--space-admin-3)] flex flex-wrap items-center gap-[var(--space-admin-2)]"
         >
-          <input type="hidden" name={cible.name} value={cible.value} />
+          {champsCible}
           <input
             type="file"
             name="fichier"
@@ -244,9 +265,9 @@ export async function QuestionnairePreaudit(props: {
             className={inputCls}
             aria-label="Fichier HTML du questionnaire"
           />
-          <button type="submit" className={boutonCls} disabled={q?.envoyeLe != null}>
+          <AdminButton type="submit" variant="secondary" disabled={q?.envoyeLe != null}>
             {q === null ? "Ajouter un questionnaire" : "Remplacer le questionnaire"}
-          </button>
+          </AdminButton>
           {q?.envoyeLe != null ? (
             <span className={mutedCls}>Déjà envoyé : il ne peut plus être remplacé.</span>
           ) : null}
@@ -349,9 +370,9 @@ export async function QuestionnairePreaudit(props: {
                 className={inputCls}
               />
             </div>
-            <button type="submit" className={boutonCls}>
+            <AdminButton type="submit" variant="secondary">
               Mettre à jour l&apos;aperçu
-            </button>
+            </AdminButton>
           </form>
 
           {erreurApercu !== null ? (
@@ -361,22 +382,34 @@ export async function QuestionnairePreaudit(props: {
           ) : null}
           {apercuMail !== null && ap !== null ? (
             <div className="mb-[var(--space-admin-3)]">
-              <p className="mb-[var(--space-admin-2)] text-[length:var(--text-admin-sm)]">
-                <b>À :</b> {ap.email} — <b>Objet :</b> {apercuMail.sujet}
-              </p>
-              <iframe
-                title="Aperçu exact de l'e-mail"
-                sandbox=""
-                srcDoc={apercuMail.html}
-                className="mb-[var(--space-admin-3)] h-[85vh] min-h-[700px] w-full rounded-[var(--radius-admin-sm)] border border-[color:var(--color-admin-border)]"
-              />
+              <h3 className="admin-carte-titre flex items-center gap-[var(--space-admin-3)]">
+                <span className="admin-etape" aria-hidden="true">
+                  2
+                </span>
+                Vérifier l&apos;aperçu
+              </h3>
+              <div className="mb-[var(--space-admin-4)]">
+                <AdminApercuEmail
+                  de={EXPEDITEUR}
+                  a={ap.email}
+                  objet={apercuMail.sujet}
+                  html={apercuMail.html}
+                  titre="Aperçu exact de l'e-mail"
+                />
+              </div>
+              <h3 className="admin-carte-titre flex items-center gap-[var(--space-admin-3)]">
+                <span className="admin-etape" aria-hidden="true">
+                  3
+                </span>
+                Envoyer
+              </h3>
               {refus !== null ? (
                 <p role="status" className="text-[length:var(--text-admin-sm)]">
                   {MESSAGE_REFUS[refus]}
                 </p>
               ) : (
                 <form action={envoyerQuestionnaireAction} data-bloc="envoi-questionnaire">
-                  <input type="hidden" name={cible.name} value={cible.value} />
+                  {champsCible}
                   <input type="hidden" name="destinataire" value={ap.email} />
                   <input type="hidden" name="prenom" value={ap.prenom} />
                   <input
@@ -409,9 +442,9 @@ export async function QuestionnairePreaudit(props: {
                   <p role="status" className={mutedCls} data-etat-relances={etatRelances}>
                     {ETAT_RELANCES_LISIBLE[etatRelances]}
                   </p>
-                  <button type="submit" className={boutonCls}>
+                  <AdminButton type="submit" size="lg">
                     Envoyer cet e-mail
-                  </button>
+                  </AdminButton>
                 </form>
               )}
               {apercusDuSuivi.length > 0 ? (
@@ -425,12 +458,15 @@ export async function QuestionnairePreaudit(props: {
                       <summary className="cursor-pointer text-[length:var(--text-admin-sm)]">
                         {a.libelle} — <b>Objet :</b> {a.sujet}
                       </summary>
-                      <iframe
-                        title={`Aperçu : ${a.libelle}`}
-                        sandbox=""
-                        srcDoc={a.html}
-                        className="mt-[var(--space-admin-2)] h-[380px] w-full rounded-[var(--radius-admin-sm)] border border-[color:var(--color-admin-border)]"
-                      />
+                      <div className="mt-[var(--space-admin-2)]">
+                        <AdminApercuEmail
+                          de={EXPEDITEUR}
+                          a={ap.email}
+                          objet={a.sujet}
+                          html={a.html}
+                          titre={`Aperçu : ${a.libelle}`}
+                        />
+                      </div>
                     </details>
                   ))}
                 </div>
@@ -441,50 +477,53 @@ export async function QuestionnairePreaudit(props: {
       ) : null}
 
       {copies.length > 0 ? (
-        <div className="mb-[var(--space-admin-3)]" data-bloc="copies-envoyees">
-          <h3 className="mb-[var(--space-admin-2)] text-[length:var(--text-admin-sm)] font-semibold">
-            Copie exacte de l&apos;e-mail parti
-          </h3>
-          <p className={mutedCls}>
-            Objet et texte tels que le destinataire les a reçus. Seul son lien personnel est masqué.
-          </p>
-          {copies.map((c) => (
-            <details
-              key={c.emailLogId}
-              className="mt-[var(--space-admin-2)]"
-              open={copies.length === 1}
-            >
-              <summary className="cursor-pointer text-[length:var(--text-admin-sm)]">
-                {c.envoyeLe ? `Parti le ${quand(c.envoyeLe)}` : "Parti"} — <b>À :</b>{" "}
-                {c.destinataire}
-                {c.objet !== null ? (
-                  <>
-                    {" "}
-                    — <b>Objet :</b> {c.objet}
-                  </>
-                ) : null}
-              </summary>
-              {c.html !== null ? (
-                <iframe
-                  title={`Copie de l'e-mail envoyé à ${c.destinataire}`}
-                  sandbox=""
-                  srcDoc={c.html}
-                  className="mt-[var(--space-admin-2)] h-[85vh] min-h-[700px] w-full rounded-[var(--radius-admin-sm)] border border-[color:var(--color-admin-border)]"
-                />
-              ) : (
-                <p className={mutedCls}>La copie de cet e-mail n&apos;a pas été conservée.</p>
-              )}
-              <p className={mutedCls}>
-                <a
-                  href={adminPath("fr", `/emails-envoyes/${c.emailLogId}`)}
-                  className="text-[color:var(--color-admin-accent)] underline-offset-2 hover:underline"
-                >
-                  Ouvrir dans les e-mails envoyés
-                </a>
-              </p>
-            </details>
-          ))}
-        </div>
+        <AdminBloc teinte="vert" niveau={3} titre="Copie exacte de l'e-mail parti">
+          <div data-bloc="copies-envoyees">
+            <p className={mutedCls}>
+              Objet et texte tels que le destinataire les a reçus. Seul son lien personnel est
+              masqué.
+            </p>
+            {copies.map((c) => (
+              <details
+                key={c.emailLogId}
+                className="mt-[var(--space-admin-2)]"
+                open={copies.length === 1}
+              >
+                <summary className="cursor-pointer text-[length:var(--text-admin-sm)]">
+                  {c.envoyeLe ? `Parti le ${quand(c.envoyeLe)}` : "Parti"} — <b>À :</b>{" "}
+                  {c.destinataire}
+                  {c.objet !== null ? (
+                    <>
+                      {" "}
+                      — <b>Objet :</b> {c.objet}
+                    </>
+                  ) : null}
+                </summary>
+                {c.html !== null ? (
+                  <div className="mt-[var(--space-admin-2)]">
+                    <AdminApercuEmail
+                      de={EXPEDITEUR}
+                      a={c.destinataire}
+                      objet={c.objet ?? "—"}
+                      html={c.html}
+                      titre={`Copie de l'e-mail envoyé à ${c.destinataire}`}
+                    />
+                  </div>
+                ) : (
+                  <p className={mutedCls}>La copie de cet e-mail n&apos;a pas été conservée.</p>
+                )}
+                <p className={mutedCls}>
+                  <a
+                    href={adminPath("fr", `/emails-envoyes/${c.emailLogId}`)}
+                    className="text-[color:var(--color-admin-accent)] underline-offset-2 hover:underline"
+                  >
+                    Ouvrir dans les e-mails envoyés
+                  </a>
+                </p>
+              </details>
+            ))}
+          </div>
+        </AdminBloc>
       ) : null}
 
       <details className="mb-[var(--space-admin-3)]" data-bloc="texte-de-base">
@@ -503,7 +542,7 @@ export async function QuestionnairePreaudit(props: {
             action={enregistrerGabaritInvitationAction}
             className="mt-[var(--space-admin-2)] flex flex-col gap-[var(--space-admin-2)]"
           >
-            <input type="hidden" name={cible.name} value={cible.value} />
+            {champsCible}
             <label className={mutedCls} htmlFor="base_objet">
               Objet de base (vide = objet automatique daté)
             </label>
@@ -526,12 +565,12 @@ export async function QuestionnairePreaudit(props: {
               className={inputCls}
             />
             <div className="flex gap-[var(--space-admin-2)]">
-              <button type="submit" className={boutonCls}>
+              <AdminButton type="submit" variant="secondary">
                 Enregistrer le texte de base
-              </button>
-              <button type="submit" name="reinitialiser" value="1" className={boutonCls}>
+              </AdminButton>
+              <AdminButton type="submit" variant="secondary" name="reinitialiser" value="1">
                 Revenir au texte d&apos;origine
-              </button>
+              </AdminButton>
             </div>
           </form>
         ) : (
@@ -547,7 +586,7 @@ export async function QuestionnairePreaudit(props: {
           data-bloc="essai-suivi"
           className="mb-[var(--space-admin-3)] flex flex-wrap items-center gap-[var(--space-admin-2)]"
         >
-          <input type="hidden" name={cible.name} value={cible.value} />
+          {champsCible}
           <select name="essai_de" className={inputCls} aria-label="E-mail à tester">
             {ESSAIS.map(([valeur, libelle]) => (
               <option key={valeur} value={valeur}>
@@ -555,9 +594,9 @@ export async function QuestionnairePreaudit(props: {
               </option>
             ))}
           </select>
-          <button type="submit" className={boutonCls}>
+          <AdminButton type="submit" variant="secondary">
             M&apos;envoyer un test
-          </button>
+          </AdminButton>
           <span className={mutedCls}>
             (à l&apos;adresse de test d&apos;Axion IA, objet « [TEST] », jamais au prospect)
           </span>
@@ -632,10 +671,10 @@ export async function QuestionnairePreaudit(props: {
           ) : null}
           {suivi.relancesDemandees && suivi.relancesArreteesLe === null ? (
             <form action={arreterRelancesAction} className="mt-[var(--space-admin-2)]">
-              <input type="hidden" name={cible.name} value={cible.value} />
-              <button type="submit" className={boutonCls}>
+              {champsCible}
+              <AdminButton type="submit" variant="ghost-danger">
                 Arrêter les rappels
-              </button>
+              </AdminButton>
             </form>
           ) : null}
         </div>
@@ -643,10 +682,10 @@ export async function QuestionnairePreaudit(props: {
 
       {q !== null && q.envoyeLe !== null && q.closLe === null ? (
         <form action={cloreQuestionnaireAction} className="mb-[var(--space-admin-3)]">
-          <input type="hidden" name={cible.name} value={cible.value} />
-          <button type="submit" className={boutonCls}>
+          {champsCible}
+          <AdminButton type="submit" variant="secondary">
             Fermer le questionnaire
-          </button>
+          </AdminButton>
         </form>
       ) : null}
 
@@ -697,6 +736,7 @@ export async function QuestionnairePreaudit(props: {
                   r={r}
                   rencontreId={rencontreId ?? null}
                   clientId={clientId ?? null}
+                  questionnaireId={rencontreId === undefined ? (questionnaireId ?? null) : null}
                   reference={q?.ref ?? ""}
                   peutEffacer={props.peutDeposer}
                   libelleMode={LIBELLE_MODE[r.mode]}
@@ -708,14 +748,14 @@ export async function QuestionnairePreaudit(props: {
           </ul>
           {aTraiter ? (
             <form action={marquerQuestionnaireLuAction} className="mt-[var(--space-admin-3)]">
-              <input type="hidden" name={cible.name} value={cible.value} />
-              <button type="submit" className={boutonCls}>
+              {champsCible}
+              <AdminButton type="submit" variant="secondary">
                 Marquer comme lues
-              </button>
+              </AdminButton>
             </form>
           ) : null}
         </div>
       ) : null}
-    </section>
+    </AdminBloc>
   );
 }
