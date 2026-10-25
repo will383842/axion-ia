@@ -43,6 +43,7 @@ const base = vi.hoisted(() => {
         fonction: "Titulaire",
         telephone: null,
         statut: "actif",
+        origine: "saisie",
         partiLe: null,
         updatedAt: new Date("2026-10-25T09:00:00Z"),
         adresses: [{ email: "marie@exemple.fr", nature: "pro", ajouteeLe: new Date() }],
@@ -57,9 +58,19 @@ const base = vi.hoisted(() => {
     factureFormation: { findMany: vi.fn(async (_a?: unknown) => [] as unknown[]) },
     questionnaireAvantAudit: { findMany: vi.fn(async (_a?: unknown) => [] as unknown[]) },
     crmDossierSynchro: { findUnique: vi.fn(async () => etat.synchro) },
+    $queryRaw: vi.fn(async () => [{ ok: base.horsConsole }]),
     $transaction: vi.fn(async (fn: (t: typeof tx) => Promise<unknown>) => fn(tx)),
   };
-  const base = { etat, sortie, upserts, tx, client, prisma, courant: client as unknown };
+  const base = {
+    etat,
+    sortie,
+    upserts,
+    tx,
+    client,
+    prisma,
+    courant: client as unknown,
+    horsConsole: false,
+  };
   return base;
 });
 
@@ -77,6 +88,7 @@ beforeEach(() => {
   vi.stubEnv("CRM_SYNC_ENABLED", "true");
   vi.stubEnv("CRM_SYNC_DOSSIER_ENABLED", "true");
   base.courant = base.client;
+  base.horsConsole = false;
 });
 afterEach(() => {
   vi.unstubAllEnvs();
@@ -129,6 +141,35 @@ describe("synchro automatique du dossier client", () => {
     );
     expect(versions).toEqual([1, 2]);
     expect(base.sortie[0]!["eventId"]).not.toBe(base.sortie[1]!["eventId"]);
+  });
+
+  it("facture établie hors console : le dossier part « client »", async () => {
+    base.horsConsole = true;
+    await synchroniserDossierClient(CLIENT, MAINTENANT);
+    const msg = base.sortie[0]!["payload"] as {
+      payload: { dossier: { statut: string; facture_emise: boolean } };
+    };
+    expect(msg.payload.dossier).toMatchObject({ statut: "client", facture_emise: true });
+  });
+
+  it("contact cité (mention) ou adresse personnelle : rien d'identifiant ne part", async () => {
+    const [c] = base.client.contacts;
+    base.courant = {
+      ...base.client,
+      contacts: [
+        { ...c!, id: "m", origine: "mention" },
+        {
+          ...c!,
+          id: "p",
+          adresses: [{ email: "marie@gmail.com", nature: "perso", ajouteeLe: new Date() }],
+        },
+      ],
+    };
+    await synchroniserDossierClient(CLIENT, MAINTENANT);
+    const texte = JSON.stringify(base.sortie[0]);
+    expect(texte).not.toContain("gmail");
+    expect(texte).not.toContain('"ref":"m"');
+    expect(texte).toContain('"ref":"p"');
   });
 
   it("un particulier ou une fiche introuvable : ignoré", async () => {

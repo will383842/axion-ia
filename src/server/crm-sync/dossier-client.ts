@@ -75,6 +75,7 @@ export async function synchroniserDossierClient(
 
     const version = (etat?.version ?? 0) + 1;
     const evenement = evenementDossierClient(lu.entree, version, lu.dernierChangement);
+    if (evenement === null) return "ignore";
 
     const ligneId = await prisma.$transaction(async (tx) => {
       const id = await enqueueCrmSyncEvent(evenement, {

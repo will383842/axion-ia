@@ -16,6 +16,7 @@ const evenement = evenementDossierClient(
   {
     clientId: "aaaaaaaa-1111-4111-8111-aaaaaaaaaaaa",
     numero: "AXI-CLI-004",
+    type: "entreprise",
     raisonSociale: "Société Fictive",
     siren: null,
     adresseRue: null,
@@ -24,13 +25,13 @@ const evenement = evenementDossierClient(
     telephone: null,
     effectif: null,
     factureEmise: false,
-    urlConsole: null,
+    factureHorsConsole: false,
     questionnaire: null,
     contacts: [],
   },
   1,
   new Date("2026-10-25T10:00:00Z"),
-);
+)!;
 
 afterEach(() => {
   vi.unstubAllEnvs();
@@ -57,5 +58,12 @@ describe("flux dossier client : verrou d'inertie", () => {
     vi.stubEnv("CRM_SYNC_DOSSIER_ENABLED", "true");
     expect(await enqueueCrmSyncEvent(evenement)).toBe("ligne-1");
     expect(creer).toHaveBeenCalledTimes(1);
+    // Le contenu de la ligne écrite : pas de personne, de consentement ni de tag.
+    const ecrit = (creer.mock.calls[0] as unknown as [{ data: Record<string, unknown> }])[0].data;
+    const texte = JSON.stringify(ecrit);
+    expect(texte).toContain("dossier_client_synchro");
+    for (const absent of ['"person"', '"consent"', '"candidate"', '"tags"']) {
+      expect(texte).not.toContain(absent);
+    }
   });
 });

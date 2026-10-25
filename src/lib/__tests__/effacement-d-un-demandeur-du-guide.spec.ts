@@ -104,6 +104,29 @@ beforeEach(() => {
       { id: "x2", status: "pending", payload: { person: { person_key: cle, email: DEMANDEUR } } },
       // Sans clé (filet) : retrouvée par l'adresse, forme normalisée.
       { id: "x3", status: "gave_up", payload: { person: { email: DEMANDEUR } } },
+      // Dossier client : adresse dans payload.payload.dossier.contacts[], sans `person`.
+      {
+        id: "x5",
+        status: "sent",
+        payload: {
+          payload: { dossier: { contacts: [{ ref: "c1", person_key: cle }, { ref: "c9" }] } },
+        },
+      },
+      {
+        id: "x6",
+        status: "pending",
+        payload: {
+          payload: { dossier: { contacts: [{ ref: "c2", email: DEMANDEUR.toLowerCase() }] } },
+        },
+      },
+      // Témoin : un dossier dont les contacts sont d'une AUTRE personne.
+      {
+        id: "x7",
+        status: "sent",
+        payload: {
+          payload: { dossier: { contacts: [{ ref: "c3", person_key: cleAutre, email: AUTRE }] } },
+        },
+      },
       // Témoin : une autre personne.
       { id: "x4", status: "sent", payload: { person: { person_key: cleAutre, email: AUTRE } } },
     ]),
@@ -127,7 +150,7 @@ describe("effacement d'un demandeur du guide", () => {
       copiesSupprimees: 1,
       copiesConserveesFormation: 0,
     });
-    expect(crm).toEqual({ supprimees: 3 });
+    expect(crm).toEqual({ supprimees: 5 });
 
     const fuites = toutesLesValeurs().filter((v) => v.includes(DEMANDEUR));
     expect(fuites).toEqual([]);
@@ -153,15 +176,15 @@ describe("effacement d'un demandeur du guide", () => {
 
   it("L6 — la file vers le CRM : toutes les lignes de la personne, quel que soit leur statut", async () => {
     const r = await eraseCrmOutboxForEmail(DEMANDEUR);
-    expect(r.supprimees).toBe(3);
-    expect(tables["crmSyncOutbox"]!.lignes.map((l) => l["id"])).toEqual(["x4"]);
+    expect(r.supprimees).toBe(5);
+    expect(tables["crmSyncOutbox"]!.lignes.map((l) => l["id"])).toEqual(["x7", "x4"]);
   });
 
   it("les lignes d'une AUTRE personne restent intactes", async () => {
     await eraseNewsletterForEmail(DEMANDEUR);
     await eraseEmailTracesForEmail(DEMANDEUR);
     await eraseCrmOutboxForEmail(DEMANDEUR);
-    expect(tables["crmSyncOutbox"]!.lignes.map((l) => l["id"])).toEqual(["x4"]);
+    expect(tables["crmSyncOutbox"]!.lignes.map((l) => l["id"])).toEqual(["x7", "x4"]);
     expect(tables["newsletterSubscriber"]!.lignes.map((l) => l["id"])).toEqual(["a2"]);
     expect(tables["guideRequest"]!.lignes.map((l) => l["id"])).toEqual(["g3"]);
     expect(tables["emailLog"]!.lignes.find((l) => l["id"] === "l2")?.["recipient"]).toBe(AUTRE);

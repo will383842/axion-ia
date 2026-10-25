@@ -3,8 +3,9 @@
  * 25/10/2026). Données FICTIVES. Le CRM a le test symétrique
  * (`DossierClientSynchroTest`, axion-crm-pro).
  */
-import { describe, expect, it } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
 
+import { empreinteSha256 } from "@/server/newsletter/exports";
 import {
   CLES_CONTACT_CRM,
   CLES_DOSSIER_CRM,
@@ -13,7 +14,8 @@ import {
   dossierPourCrm,
   empreinteDossier,
   entreprisePourCrm,
-  evenementDossierClient,
+  estEligibleAuCrm,
+  evenementDossierClient as evenementOuNul,
   eventIdDossierClient,
   separerNom,
   trancheEffectif,
@@ -50,10 +52,23 @@ const CLES_INTERDITES_CRM = [
   "outils",
 ];
 
+function evenementDossierClient(
+  e: EntreeInstantaneCrm,
+  version: number,
+  quand: Date,
+): NonNullable<ReturnType<typeof evenementOuNul>> {
+  const r = evenementOuNul(e, version, quand);
+  if (r === null) throw new Error("dossier non éligible");
+  return r;
+}
+
+afterEach(() => vi.unstubAllEnvs());
+
 function entree(surcharge: Partial<EntreeInstantaneCrm> = {}): EntreeInstantaneCrm {
   return {
     clientId: CLIENT,
     numero: "AXI-CLI-004",
+    type: "entreprise",
     raisonSociale: "Pharmacie Fictive",
     siren: "123456789",
     adresseRue: "1 rue des Tests",
@@ -62,7 +77,7 @@ function entree(surcharge: Partial<EntreeInstantaneCrm> = {}): EntreeInstantaneC
     telephone: "0102030405",
     effectif: 12,
     factureEmise: false,
-    urlConsole: "https://axion-ia.com/console/clients/x",
+    factureHorsConsole: false,
     questionnaire: {
       envoyeLe: new Date("2026-10-20T08:00:00Z"),
       recuLe: new Date("2026-10-22T08:00:00Z"),
@@ -75,6 +90,8 @@ function entree(surcharge: Partial<EntreeInstantaneCrm> = {}): EntreeInstantaneC
         fonction: "Titulaire",
         telephone: "0600000000",
         email: "Marie@Exemple.fr",
+        emailType: "pro",
+        origine: "present",
         emailHash: HASH,
         parti: false,
       },
@@ -151,7 +168,6 @@ describe("photo du dossier pour le CRM", () => {
         adresseRue: null,
         telephone: "  ",
         effectif: null,
-        urlConsole: null,
         questionnaire: { envoyeLe: null, recuLe: null, nbReponsesEquipe: null },
         contacts: [],
       }),
@@ -194,8 +210,62 @@ describe("photo du dossier pour le CRM", () => {
     expect(entreprisePourCrm(entree())).toMatchObject({ siren: "123456789", city: "Paris" });
   });
 
-  it("refuse une URL de console qui n'est pas en https", () => {
-    expect(dossierPourCrm(entree({ urlConsole: "http://x.fr" }))).not.toHaveProperty("url_console");
+  it("n'envoie jamais l'URL de la console (préfixe secret)", () => {
+    const e = evenementDossierClient(entree(), 1, new Date());
+    expect(JSON.stringify(e)).not.toContain("url_console");
+    expect(JSON.stringify(e)).not.toContain("admin-");
+  });
+
+  it("statut client dès une facture établie HORS console (Tiime)", () => {
+    expect(dossierPourCrm(entree({ factureHorsConsole: true }))).toMatchObject({
+      statut: "client",
+      facture_emise: true,
+    });
+  });
+
+  it("un particulier ne part pas : son nom n'est pas un nom d'entreprise", () => {
+    const p = entree({ type: "particulier", raisonSociale: "Jean Martin" });
+    expect(estEligibleAuCrm(p)).toBe(false);
+    expect(evenementOuNul(p, 1, new Date())).toBeNull();
+  });
+
+  it("un contact cité (origine mention) ne part pas", () => {
+    const base = entree().contacts[0]!;
+    const d = dossierPourCrm(
+      entree({ contacts: [{ ...base, id: "m", origine: "mention" }, base] }),
+    );
+    expect(d.contacts?.map((c) => c.ref)).toEqual(["c1"]);
+  });
+
+  it("une adresse personnelle ne part pas (le contact part sans e-mail ni clé)", () => {
+    const base = entree().contacts[0]!;
+    const d = dossierPourCrm(entree({ contacts: [{ ...base, emailType: "perso" }] }));
+    expect(d.contacts![0]).not.toHaveProperty("email");
+    expect(d.contacts![0]).not.toHaveProperty("person_key");
+  });
+
+  it("l'opposition gagne : un contact dont l'adresse est exclue ne part pas du tout", () => {
+    vi.stubEnv("CRM_SYNC_EXCLUSIONS_SHA256", empreinteSha256("marie@exemple.fr"));
+    const autre = { ...entree().contacts[0]!, id: "c2", nom: "Paul Durand", email: "p@exemple.fr" };
+    const d = dossierPourCrm(entree({ contacts: [entree().contacts[0]!, autre] }));
+    expect(d.contacts?.map((c) => c.ref)).toEqual(["c2"]);
+    expect(JSON.stringify(d)).not.toContain("Marie");
+  });
+
+  it("un numéro trop long est omis, jamais tronqué", () => {
+    const base = entree().contacts[0]!;
+    const long = "0".repeat(33);
+    const d = dossierPourCrm(entree({ telephone: long, contacts: [{ ...base, telephone: long }] }));
+    expect(d).not.toHaveProperty("telephone");
+    expect(d.contacts![0]).not.toHaveProperty("telephone");
+  });
+
+  it("l'ordre des contacts fournis ne change pas l'empreinte", () => {
+    const a = entree().contacts[0]!;
+    const b = { ...a, id: "c0", nom: "Paul Durand" };
+    const emp = (e: EntreeInstantaneCrm) =>
+      empreinteDossier(entreprisePourCrm(e), dossierPourCrm(e));
+    expect(emp(entree({ contacts: [a, b] }))).toBe(emp(entree({ contacts: [b, a] })));
   });
 
   it("tranche d'effectif : inconnu reste inconnu", () => {
@@ -214,9 +284,14 @@ describe("photo du dossier pour le CRM", () => {
     expect(separerNom("  ")).toEqual({});
   });
 
-  it("event_id déterministe par (client, version) ; empreinte stable, sensible au contenu", () => {
-    expect(eventIdDossierClient(CLIENT, 1)).toBe(eventIdDossierClient(CLIENT, 1));
-    expect(eventIdDossierClient(CLIENT, 1)).not.toBe(eventIdDossierClient(CLIENT, 2));
+  it("event_id déterministe par (client, version, empreinte) ; empreinte stable, sensible au contenu", () => {
+    expect(eventIdDossierClient(CLIENT, 1, "a")).toBe(eventIdDossierClient(CLIENT, 1, "a"));
+    expect(eventIdDossierClient(CLIENT, 1, "a")).not.toBe(eventIdDossierClient(CLIENT, 2, "a"));
+    // Même version, contenus différents (deux écrivains) : deux messages distincts.
+    expect(eventIdDossierClient(CLIENT, 1, "a")).not.toBe(eventIdDossierClient(CLIENT, 1, "b"));
+    const x = evenementDossierClient(entree(), 1, new Date());
+    const y = evenementDossierClient(entree({ adresseVille: "Lyon" }), 1, new Date());
+    expect(x.event_id).not.toBe(y.event_id);
     const a = entree();
     const emp = (e: EntreeInstantaneCrm) =>
       empreinteDossier(entreprisePourCrm(e), dossierPourCrm(e));
