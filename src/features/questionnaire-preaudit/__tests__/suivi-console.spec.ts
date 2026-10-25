@@ -106,6 +106,62 @@ describe("noterEnvoi", () => {
   });
 });
 
+describe("renvoi avec une nouvelle date d'audit", () => {
+  it("recalcule les relances pas encore parties ; une relance trop proche est annulée", async () => {
+    const j0 = new Date("2026-10-26T09:00:00Z");
+    const b = base(
+      [
+        {
+          id: "s1",
+          questionnaireId: QID,
+          relancesDemandees: true,
+          relancesArreteesLe: null,
+          premierEnvoiLe: j0,
+          dateAudit: null,
+        },
+      ],
+      [
+        {
+          cle: "r1",
+          questionnaireId: QID,
+          nature: "relance_1",
+          statut: "envoye",
+          prevuLe: new Date("2026-10-28T08:30:00Z"),
+        },
+        {
+          cle: "r2",
+          questionnaireId: QID,
+          nature: "relance_2",
+          statut: "prevu",
+          prevuLe: new Date("2026-11-02T08:30:00Z"),
+        },
+        {
+          cle: "r3",
+          questionnaireId: QID,
+          nature: "relance_3",
+          statut: "prevu",
+          prevuLe: new Date("2026-11-05T08:30:00Z"),
+        },
+      ],
+    );
+    // Audit avancé au mardi 3 novembre 8 h : la relance 2 (lundi 2/11 9 h 30) tombe à moins de
+    // 24 h, la relance 3 est avancée au vendredi 30/10.
+    await noterEnvoi(
+      QID,
+      { relances: true, dateAudit: new Date("2026-11-03T07:00:00Z"), lieuAudit: null },
+      "envoye",
+      new Date("2026-10-29T10:00:00Z"),
+      b as unknown as B,
+    );
+    expect(b.courriers[0]!["statut"]).toBe("envoye");
+    expect(b.courriers[1]).toMatchObject({ statut: "annule", motif: "audit_proche" });
+    expect(b.courriers[2]).toMatchObject({
+      statut: "prevu",
+      prevuLe: new Date("2026-10-30T08:30:00Z"),
+    });
+  });
+});
+
 describe("arreterRelances", () => {
   it("annule les relances prévues, prévient Telegram une fois, idempotent", async () => {
     const b = base(

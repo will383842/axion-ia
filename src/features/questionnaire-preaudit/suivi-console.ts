@@ -14,6 +14,7 @@
 import { prisma } from "@/lib/prisma";
 import type { PrismaClient } from "../../../prisma/generated/client";
 
+import { planifierRelances } from "./calendrier";
 import { NATURES_RELANCE } from "./suivi";
 
 type Base = Pick<PrismaClient, "questionnaireAvantAuditSuivi" | "questionnaireAvantAuditCourrier">;
@@ -53,7 +54,7 @@ export async function noterEnvoi(
   const lieu = choix.lieuAudit?.trim().slice(0, LIEU_MAX) || null;
   const existant = await base.questionnaireAvantAuditSuivi.findUnique({
     where: { questionnaireId },
-    select: { id: true, relancesArreteesLe: true },
+    select: { id: true, relancesArreteesLe: true, premierEnvoiLe: true, dateAudit: true },
   });
   if (existant === null) {
     await base.questionnaireAvantAuditSuivi.create({
@@ -65,6 +66,7 @@ export async function noterEnvoi(
       },
     });
   } else {
+    const avant = existant.dateAudit?.getTime() ?? null;
     await base.questionnaireAvantAuditSuivi.update({
       where: { id: existant.id },
       data: {
@@ -73,6 +75,21 @@ export async function noterEnvoi(
         ...(existant.relancesArreteesLe === null ? { relancesDemandees: choix.relances } : {}),
       },
     });
+    // Date de l'audit changée après le départ : les relances PAS ENCORE PARTIES sont recalculées
+    // (une relance qui tomberait à moins de 24 h du nouvel audit est annulée).
+    const apres = choix.dateAudit?.getTime() ?? null;
+    if (existant.premierEnvoiLe !== null && avant !== apres) {
+      const plan = planifierRelances(existant.premierEnvoiLe, choix.dateAudit);
+      for (const r of plan) {
+        await base.questionnaireAvantAuditCourrier.updateMany({
+          where: { questionnaireId, nature: `relance_${r.rang}`, statut: "prevu" },
+          data:
+            r.prevuLe === null
+              ? { statut: "annule", motif: "audit_proche", faitLe: maintenant }
+              : { prevuLe: r.prevuLe },
+        });
+      }
+    }
   }
   await base.questionnaireAvantAuditCourrier.createMany({
     data: [
