@@ -125,7 +125,16 @@ describe("questionnaire de pré-audit (2026-10-24)", () => {
       where: { destinataireHash: "hash" },
       data: { destinataireHash: null, motif: "effacement RGPD" },
     });
-    expect(transaction).toHaveBeenCalledWith(4);
+    // Ses relances encore prévues : annulées (elles n'ont pas d'empreinte), jamais supprimées.
+    expect(courrierUpdateMany).toHaveBeenCalledWith({
+      where: {
+        nature: { in: ["relance_1", "relance_2", "relance_3"] },
+        statut: "prevu",
+        questionnaire: { is: ou },
+      },
+      data: { statut: "annule", motif: "effacement RGPD" },
+    });
+    expect(transaction).toHaveBeenCalledWith(5);
     expect(preParentUpdateMany).toHaveBeenCalledWith({
       where: ou,
       data: { luLe: null, luParId: null, destinataire: null, destinataireHash: null },

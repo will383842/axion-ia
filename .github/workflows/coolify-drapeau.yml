@@ -106,8 +106,14 @@ jobs:
         env:
           CLE: ${{ inputs.cle }}
           VALEUR: ${{ inputs.valeur }}
+          CIBLE: ${{ inputs.cible }}
         run: |
           set -euo pipefail
+          # Les interrupteurs du suivi du questionnaire se posent TOUJOURS sur les deux applications :
+          # le worker agit, la console affiche le même état (sinon elle dirait « éteintes » à tort).
+          if [[ "$CLE" =~ ^QUESTIONNAIRE_(RELANCES|CONFIRMATIONS|TELEGRAM)_ENABLED$ ]] && [ "$CIBLE" != "les-deux" ]; then
+            echo "::error::$CLE se pose sur « les-deux »"; exit 1
+          fi
           if [ "$CLE" = "DOSSIER_FICHE_AUTO_DEPUIS" ]; then
             [[ "$VALEUR" =~ ^20[0-9]{2}-[0-9]{2}-[0-9]{2}T[0-9:]{8}(Z|[+-][0-9]{2}:[0-9]{2})$ ]] || { echo "::error::Date ISO attendue"; exit 1; }
           elif [ "$CLE" = "TELEGRAM_CHAT_ID_QUESTIONNAIRE_AUDIT" ]; then

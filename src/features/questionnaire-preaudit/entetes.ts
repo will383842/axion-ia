@@ -22,7 +22,9 @@ export const CSP_PAGE_PREAUDIT = [
 ].join("; ");
 
 export const ENTETES_PAGE_PREAUDIT = {
-  "Cache-Control": "no-store",
+  // `no-transform` : Cloudflare n'injecte plus son script dans le HTML (la CSP du bac à sable le
+  // bloquait, d'où une erreur dans la console du navigateur du prospect).
+  "Cache-Control": "no-store, no-transform",
   "X-Robots-Tag": "noindex, nofollow, noarchive",
   "Referrer-Policy": "no-referrer",
   "Content-Security-Policy": CSP_PAGE_PREAUDIT,

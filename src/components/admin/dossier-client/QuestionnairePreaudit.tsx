@@ -22,10 +22,14 @@ import {
   RETENTION_ANS,
 } from "@/features/questionnaire-preaudit/config";
 import { apercuEnvoi, apercusSuivi } from "@/features/questionnaire-preaudit/envoyer";
-import { modeRelances } from "@/features/questionnaire-preaudit/drapeaux-suivi";
+import {
+  ETAT_RELANCES_LISIBLE,
+  modeRelances,
+} from "@/features/questionnaire-preaudit/drapeaux-suivi";
 import { lireSuivi } from "@/features/questionnaire-preaudit/suivi-console";
 import {
   cheminEssaiPreaudit,
+  essaiPermis,
   lireDeLaRencontre,
   lireReponses,
 } from "@/features/questionnaire-preaudit/serveur";
@@ -116,10 +120,14 @@ export async function QuestionnairePreaudit(props: {
     reponses.length > 0 &&
     (q.luLe === null || reponses.some((r) => r.recuLe > (q.luLe as Date)));
   const chemin = q === null ? null : cheminEssaiPreaudit(q.id);
+  // Un lien clos ou expiré ne s'essaie plus (la page répond 404) : on ne montre pas le lien.
+  const essaiOuvert = q !== null && essaiPermis(q);
 
   const maintenant = new Date();
   const suivi = q === null ? null : await lireSuivi(q.id).catch(() => null);
-  const relancesAllumees = modeRelances() === "actif";
+  // Ces interrupteurs se posent TOUJOURS sur les deux applications (`coolify-drapeau.yml` le
+  // refuse autrement) : la console lit donc la même valeur que le worker.
+  const etatRelances = modeRelances();
   // Date de l'audit : celle de l'aperçu, sinon le rendez-vous s'il est à venir.
   const dateSaisie = props.apercu?.date ?? "";
   const dateAudit = dateSaisie !== "" ? fromParisLocalInput(dateSaisie) : null;
@@ -195,19 +203,24 @@ export async function QuestionnairePreaudit(props: {
 
       {q !== null && chemin !== null ? (
         <>
-          <p className="mb-[var(--space-admin-3)] text-[length:var(--text-admin-sm)]">
-            <a
-              href={chemin}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-[color:var(--color-admin-accent)] underline-offset-2 hover:underline"
+          {essaiOuvert ? (
+            <p
+              className="mb-[var(--space-admin-3)] text-[length:var(--text-admin-sm)]"
+              data-lien-essai
             >
-              Essayer le questionnaire
-            </a>{" "}
-            <span className={mutedCls}>
-              (mode essai : rien n&apos;est enregistré, personne n&apos;est prévenu)
-            </span>
-          </p>
+              <a
+                href={chemin}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-[color:var(--color-admin-accent)] underline-offset-2 hover:underline"
+              >
+                Essayer le questionnaire
+              </a>{" "}
+              <span className={mutedCls}>
+                (mode essai : rien n&apos;est enregistré, personne n&apos;est prévenu)
+              </span>
+            </p>
+          ) : null}
 
           <form
             method="get"
@@ -294,12 +307,9 @@ export async function QuestionnairePreaudit(props: {
                       </span>
                     </span>
                   </label>
-                  {!relancesAllumees ? (
-                    <p role="status" className={mutedCls}>
-                      Relances éteintes : rien ne partira tant que QUESTIONNAIRE_RELANCES_ENABLED
-                      n&apos;est pas allumé.
-                    </p>
-                  ) : null}
+                  <p role="status" className={mutedCls} data-etat-relances={etatRelances}>
+                    {ETAT_RELANCES_LISIBLE[etatRelances]}
+                  </p>
                   <button type="submit" className={boutonCls}>
                     Envoyer cet e-mail
                   </button>

@@ -18,6 +18,7 @@ import { NextResponse } from "next/server";
 
 import {
   BROUILLONS_MAX_PAR_QUESTIONNAIRE,
+  brouillonExiste,
   enregistrerBrouillon,
   lireBrouillon,
   personneDe,
@@ -45,6 +46,16 @@ export const LIMITE_BROUILLON_PAR_PERSONNE: RateLimitConfig = {
 /** Par lien : les 62 personnes que la page admet, toutes au rythme maximal (7 440), arrondi. */
 export const LIMITE_BROUILLON_PAR_LIEN: RateLimitConfig = {
   limit: 8000,
+  windowSec: 3600,
+  surPanne: "laisser-passer",
+};
+/**
+ * NOUVEAUX brouillons par lien (audit E2, point 3) : changer de code `m` à chaque envoi ne donne
+ * plus un quota neuf. 30 personnes qui commencent dans la même heure, c'est déjà un gros bureau ;
+ * au-delà, la page garde la saisie en local (le brouillon serveur n'est qu'un confort).
+ */
+export const LIMITE_NOUVEAUX_BROUILLONS_PAR_LIEN: RateLimitConfig = {
+  limit: 30,
   windowSec: 3600,
   surPanne: "laisser-passer",
 };
@@ -127,6 +138,13 @@ export async function POST(req: Request, ctx: Ctx): Promise<Response> {
   if (!(await debitPersonneOk(q, v.valeur.personne))) return LIMITE_ATTEINTE();
   if (enEssai(req)) return reponse(200, { ok: true, essai: true });
   if (!ouvert(q)) return reponse(404, { ok: false });
+  if (!(await brouillonExiste(q.id, v.valeur.personne))) {
+    const nouveaux = await checkRateLimit(
+      `questionnaire-preaudit-brouillon:nouveaux:${q.id}`,
+      LIMITE_NOUVEAUX_BROUILLONS_PAR_LIEN,
+    );
+    if (!nouveaux.allowed) return LIMITE_ATTEINTE();
+  }
   let r: Awaited<ReturnType<typeof enregistrerBrouillon>>;
   try {
     r = await enregistrerBrouillon(q.id, v.valeur);

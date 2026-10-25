@@ -34,8 +34,19 @@ export const objetOuRepli = (date: string, standard: string): string =>
   date.length <= OBJET_MAX ? date : standard;
 
 export const OBJET_INVITATION = "Préparons votre audit : votre questionnaire";
-export const BOUTON_INVITATION = "Accéder au questionnaire";
-export const NOTE_LIEN_PERSONNEL = "Ce lien vous est personnel : merci de ne pas le transférer.";
+export const BOUTON_INVITATION = "Ouvrir mon questionnaire";
+export const NOTE_LIEN_PERSONNEL = "Ce lien vous est personnel : merci de ne pas le transférer.";
+
+/** La formule de fin, rendue APRÈS le bouton (`apresCta`) : l'action d'abord, la signature ensuite. */
+export function SignatureCorps() {
+  return (
+    <Text style={emailStyles.paragraphStyle}>
+      À très bientôt,
+      <br />
+      Williams Jullin, Axion-IA
+    </Text>
+  );
+}
 
 export const questionnaireAvantAuditSubject = (
   _locale: Locale,
@@ -67,6 +78,7 @@ export function QuestionnaireAvantAuditEmail({
       title="Préparons votre audit ensemble"
       {...(lien ? { cta: { label: BOUTON_INVITATION, href: lien } } : {})}
       ctaSecret
+      apresCta={<SignatureCorps />}
       {...(lien ? { ctaNote: NOTE_LIEN_PERSONNEL } : {})}
       locale={locale}
     >
@@ -76,23 +88,18 @@ export function QuestionnaireAvantAuditEmail({
         questionnaire en ligne, pensé pour votre entreprise.
       </Text>
       <Text style={emailStyles.paragraphStyle}>
-        Il nous aide à comprendre votre quotidien : vos tâches, vos outils, ce qui vous prend du
+        Il nous aide à comprendre votre quotidien : vos tâches, vos outils, ce qui vous prend du
         temps. Plus vos réponses sont complètes, plus l&apos;audit sera précis, et plus les pistes
-        que nous vous présenterons seront utiles : du temps gagné, une meilleure rentabilité, de
+        que nous vous présenterons seront utiles : du temps gagné, une meilleure rentabilité, de
         quoi développer votre chiffre d&apos;affaires.
       </Text>
       <Text style={emailStyles.paragraphStyle}>
-        Vous pouvez faire une pause et revenir plus tard avec ce même bouton : ce que vous avez déjà
+        Vous pouvez faire une pause et revenir plus tard avec ce même bouton : ce que vous avez déjà
         saisi vous attend.
       </Text>
       <Text style={emailStyles.paragraphStyle}>
         Si vous travaillez avec une équipe, le questionnaire vous proposera un lien à transmettre à
-        vos collaborateurs : chacun répond de son côté.
-      </Text>
-      <Text style={emailStyles.paragraphStyle}>
-        À très bientôt,
-        <br />
-        Williams Jullin, Axion-IA
+        vos collaborateurs : chacun répond de son côté.
       </Text>
     </EmailLayout>
   );

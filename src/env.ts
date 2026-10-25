@@ -105,9 +105,11 @@ export const env = createEnv({
     QUESTIONNAIRE_PREAUDIT_RGPD_CONSERVATION: z.string().optional(),
     // Suivi du questionnaire (2026-10-26) : relances, confirmations, salon Telegram. Lus par
     // le WORKER. ABSENT = ÉTEINT ; "true" allume ; "essai" calcule sans rien écrire ni envoyer.
-    QUESTIONNAIRE_RELANCES_ENABLED: z.enum(["true", "false", "essai"]).optional(),
-    QUESTIONNAIRE_CONFIRMATIONS_ENABLED: z.enum(["true", "false", "essai"]).optional(),
-    QUESTIONNAIRE_TELEGRAM_ENABLED: z.enum(["true", "false", "essai"]).optional(),
+    // Texte libre (revue du 25/10) : une valeur mal saisie ne fait JAMAIS planter app ni worker ;
+    // seules « true » et « essai » allument (`drapeaux-suivi.ts`), tout le reste éteint.
+    QUESTIONNAIRE_RELANCES_ENABLED: z.string().optional(),
+    QUESTIONNAIRE_CONFIRMATIONS_ENABLED: z.string().optional(),
+    QUESTIONNAIRE_TELEGRAM_ENABLED: z.string().optional(),
     // Boîte d'Axion IA qui reçoit les essais de la console (jamais le prospect). Lue par le WORKER.
     // Texte libre (une faute de frappe ne doit jamais empêcher le démarrage) : `adresseEssai()`
     // la vérifie et l'essai échoue, visible au journal, si elle est invalide.

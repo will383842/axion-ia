@@ -142,7 +142,12 @@ vi.mock("next/navigation", () => ({
 }));
 
 import { prisma as prismaMock } from "@/lib/prisma";
-import { LIMITE_PAR_IP, POST, OPTIONS } from "@/app/api/questionnaire-preaudit/[id]/[jeton]/route";
+import {
+  LIMITE_PAR_IP,
+  LIMITE_PAR_JETON,
+  POST,
+  OPTIONS,
+} from "@/app/api/questionnaire-preaudit/[id]/[jeton]/route";
 import { GET } from "@/app/questionnaire/preaudit/[id]/[jeton]/route";
 import { dechiffrerParole } from "@/lib/chiffrer-parole";
 import { jetonPreaudit } from "@/server/visio/questionnaire-en-ligne/jeton";
@@ -476,6 +481,8 @@ describe("réception des réponses", () => {
       Math.max(...[...compteurs.entries()].filter(([k]) => k.includes(":ip:")).map(([, n]) => n)),
     ).toBe(62);
     expect(LIMITE_PAR_IP.limit).toBeGreaterThanOrEqual(90);
+    // Audit E2, point 3 : le lien ne se sature plus en 30 min (300 réponses au plus).
+    expect(LIMITE_PAR_JETON.limit).toBeLessThanOrEqual(80);
   });
 
   it("case « informations par e-mail » : gardée (oui/non/absente), AUCUN envoi, jamais un refus", async () => {
@@ -545,7 +552,8 @@ describe("la page publique", () => {
     expect(csp).toBe(CSP_PAGE_PREAUDIT);
     expect(csp).toContain("sandbox allow-scripts allow-forms");
     expect(csp).not.toContain("allow-same-origin");
-    expect(r.headers.get("cache-control")).toBe("no-store");
+    // `no-transform` : aucun script injecté par Cloudflare dans le bac à sable.
+    expect(r.headers.get("cache-control")).toBe("no-store, no-transform");
     expect(r.headers.get("referrer-policy")).toBe("no-referrer");
   });
 
@@ -566,6 +574,45 @@ describe("la page publique", () => {
     const r = await get(questionnaire({ envoyeLe: null }), "?essai=1&ref=refpreaudit1");
     expect(r.status).toBe(200);
     expect(await r.text()).toContain("ESSAI");
+  });
+
+  it("audit E2, point 5 : l'essai d'un lien CLOS ou EXPIRÉ répond la même 404 neutre", async () => {
+    const clos = await get(questionnaire({ closLe: new Date() }), "?essai=1&ref=refpreaudit1");
+    expect(clos.status).toBe(404);
+    expect(await clos.text()).not.toContain("CONFIG");
+    const expire = await get(
+      questionnaire({ expireLe: new Date(Date.now() - 1) }),
+      "?essai=1&ref=refpreaudit1",
+    );
+    expect(expire.status).toBe(404);
+  });
+
+  it("la raison sociale de la fiche est posée dans CONFIG.client, échappée", async () => {
+    allumer();
+    const nom = "OURY </script><b>CRÉATION";
+    const r = await get(
+      questionnaire({ rencontre: { clientId: "c1", client: { raisonSociale: nom } } }),
+      "?ref=refpreaudit1",
+    );
+    expect(r.status).toBe(200);
+    const page = await r.text();
+    // `jsonSur` écrit « < » et « > » en \u003c / \u003e : aucune balise ne sort du script.
+    const echappe = (c: string) => `\\u00${c}`;
+    expect(page).toContain(
+      `"client":"OURY ${echappe("3c")}/script${echappe("3e")}${echappe("3c")}b${echappe("3e")}CRÉATION"`,
+    );
+    expect(page).not.toContain("</script><b>");
+    // Sans fiche client : rien n'est injecté, le HTML garde son texte par défaut.
+    const sans = await (await get(questionnaire(), "?ref=refpreaudit1")).text();
+    expect(sans).not.toContain('"client"');
+    // Un lien au jeton faux ne rend rien, et surtout pas le nom du client.
+    const q = questionnaire({ rencontre: { clientId: "c1", client: { raisonSociale: nom } } });
+    const faux = await GET(
+      new Request("http://localhost/questionnaire/preaudit/x/y?ref=refpreaudit1"),
+      { params: Promise.resolve({ id: q["id"] as string, jeton: "faux" }) },
+    );
+    expect(faux.status).toBe(404);
+    expect(await faux.text()).not.toContain("OURY");
   });
 
   it("impose la référence commune par redirection", async () => {

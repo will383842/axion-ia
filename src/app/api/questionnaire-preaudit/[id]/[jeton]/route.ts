@@ -42,9 +42,15 @@ export const LIMITE_PAR_IP: RateLimitConfig = {
   windowSec: 900,
   surPanne: "laisser-passer",
 };
-/** Par lien : 62 personnes et leurs renvois dans l'heure, tous appareils confondus. */
+/**
+ * Par lien : 80 envois par heure (audit E2, point 3), nettement sous le plafond de
+ * `ENVOIS_MAX_PAR_QUESTIONNAIRE` (300) — un détenteur du lien met près de 4 h à le remplir, et
+ * Will a le temps de clore le lien. Pas 60 : une équipe de 60 collaborateurs, plus le dirigeant
+ * et le référent, doit pouvoir répondre dans la même heure (réunion d'équipe), avec de la marge
+ * pour un renvoi (test « 62 personnes … VRAIES limites »).
+ */
 export const LIMITE_PAR_JETON: RateLimitConfig = {
-  limit: 300,
+  limit: 80,
   windowSec: 3600,
   surPanne: "laisser-passer",
 };

@@ -5,6 +5,7 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import { chiffrerParole } from "@/lib/chiffrer-parole";
 import { hashEmailForLookup } from "@/lib/security/email-hash";
+import { codeDirigeantPreaudit } from "@/server/visio/questionnaire-en-ligne/jeton";
 
 import {
   jobIdDe,
@@ -260,8 +261,25 @@ const ALLUME = {
 };
 // Lundi 26 octobre 2026, 10 h à Paris (heure d hiver depuis la veille : UTC+1).
 const J0 = new Date("2026-10-26T09:00:00Z");
-const charge = (donnees: Record<string, unknown>, traitement = true) =>
-  chiffrerParole(JSON.stringify({ donnees, consentements: { traitement, infosEmail: false } }));
+const charge = (donnees: Record<string, unknown>, traitement = true, membre?: string) =>
+  chiffrerParole(
+    JSON.stringify({
+      donnees,
+      consentements: { traitement, infosEmail: false },
+      ...(membre !== undefined ? { membre } : {}),
+    }),
+  );
+/** Le code du dirigeant (lien `?m=`) : sans lui, une réponse « main » n'est PAS du dirigeant. */
+const CODE_DIR = codeDirigeantPreaudit(QID) as string;
+/** La réponse AUTHENTIFIÉE du dirigeant, avec la liste de son équipe. */
+const reponseDirigeant = (recuLe: Date, donnees: Record<string, unknown> = {}): Ligne => ({
+  id: "dir",
+  questionnaireId: QID,
+  mode: "main",
+  recuLe,
+  ecarteLe: null,
+  donnees: charge({ contact_prenom: "Sam", contact_nom: "Martin", ...donnees }, true, CODE_DIR),
+});
 
 let d: Donnees;
 let enfiler: ReturnType<typeof vi.fn> & Enfiler;
@@ -440,9 +458,32 @@ describe("J0 et relances", () => {
     expect((r1["prevuLe"] as Date).toISOString()).toBe("2026-10-29T08:30:00.000Z");
     expect(r1["tentatives"]).toBe(0);
   });
+
+  it("une relance reportée décale la suivante tombée le même jour : jamais deux le même jour", async () => {
+    await passer(new Date("2026-10-26T10:00:00Z"));
+    const [r1, r2, r3] = ["relance_1", "relance_2", "relance_3"].map((n) => parNature(n)[0]!);
+    const r3Avant = (r3!["prevuLe"] as Date).toISOString();
+    r1!["prevuLe"] = new Date("2026-10-28T19:00:00Z");
+    r2!["prevuLe"] = new Date("2026-10-29T08:30:00Z");
+    await passer(new Date("2026-10-28T19:05:00Z"));
+    expect((r1!["prevuLe"] as Date).toISOString()).toBe("2026-10-29T08:30:00.000Z");
+    // Vendredi 30 octobre, 9 h 30 à Paris.
+    expect((r2!["prevuLe"] as Date).toISOString()).toBe("2026-10-30T08:30:00.000Z");
+    expect((r3!["prevuLe"] as Date).toISOString()).toBe(r3Avant);
+  });
 });
 
 describe("arrêts", () => {
+  it("désinscription du destinataire : la relance due garde CE motif (jamais « will »)", async () => {
+    await passer(new Date("2026-10-26T10:00:00Z"));
+    d.suivis[0]!["relancesArreteesLe"] = new Date("2026-10-27T12:00:00Z");
+    d.suivis[0]!["relancesArretMotif"] = "desinscription";
+    await passer(new Date("2026-10-28T08:31:00Z"));
+    expect(parNature("relance_1")[0]!["statut"]).toBe("annule");
+    expect(parNature("relance_1")[0]!["motif"]).toBe("desinscription");
+    expect(d.suivis[0]!["relancesArretMotif"]).toBe("desinscription");
+  });
+
   it("le dirigeant répond : relances annulées (motif reponse_dirigeant) et Telegram prévenu", async () => {
     await passer(new Date("2026-10-26T10:00:00Z"));
     d.envois.push({
@@ -451,7 +492,7 @@ describe("arrêts", () => {
       mode: "main",
       recuLe: new Date("2026-10-27T10:00:00Z"),
       ecarteLe: null,
-      donnees: charge({ contact_prenom: "Sam", contact_nom: "Martin" }),
+      donnees: charge({ contact_prenom: "Sam", contact_nom: "Martin" }, true, CODE_DIR),
     });
     await passer(new Date("2026-10-27T10:05:00Z"));
     for (const n of ["relance_1", "relance_2", "relance_3"]) {
@@ -494,12 +535,16 @@ describe("réponses : confirmations et Telegram", () => {
       mode: "main",
       recuLe: new Date("2026-10-27T10:00:00Z"),
       ecarteLe: null,
-      donnees: charge({
-        contact_prenom: "Sam",
-        contact_nom: "Martin",
-        equipe: [{}, {}],
-        dat_it: "Un prestataire",
-      }),
+      donnees: charge(
+        {
+          contact_prenom: "Sam",
+          contact_nom: "Martin",
+          equipe: [{}, {}],
+          dat_it: "Un prestataire",
+        },
+        true,
+        CODE_DIR,
+      ),
     });
     await passer(new Date("2026-10-27T10:05:00Z"));
     const conf = enfiler.mock.calls.find((c) => c[0] === "questionnaire-avant-audit-confirmation")!;
@@ -523,6 +568,13 @@ describe("réponses : confirmations et Telegram", () => {
     await passer(new Date("2026-10-26T10:00:00Z"));
     const recu = new Date("2026-10-27T10:00:00Z");
     d.envois.push(
+      reponseDirigeant(new Date("2026-10-27T09:00:00Z"), {
+        equipe: [
+          { email: "flora@exemple-fictif.fr" },
+          { email: "x@exemple-fictif.fr" },
+          { email: "pas-une-adresse" },
+        ],
+      }),
       {
         id: "e1",
         questionnaireId: QID,
@@ -550,7 +602,9 @@ describe("réponses : confirmations et Telegram", () => {
     );
     await passer(new Date("2026-10-27T10:05:00Z"));
     const confs = enfiler.mock.calls.filter(
-      (c) => c[0] === "questionnaire-avant-audit-confirmation",
+      (c) =>
+        c[0] === "questionnaire-avant-audit-confirmation" &&
+        (c[3] as Ligne)["role"] === "collaborateur",
     );
     expect(confs.map((c) => c[1])).toEqual(["flora@exemple-fictif.fr"]);
     expect(confs[0]![3]).toMatchObject({ role: "collaborateur", prenom: "Flora" });
@@ -559,8 +613,113 @@ describe("réponses : confirmations et Telegram", () => {
       entityId: "e1",
     });
     expect(d.courriers.filter((c) => c["motif"] === "sans adresse utilisable")).toHaveLength(2);
-    // Les relances du dirigeant continuent : un collaborateur ne les arrête pas.
+  });
+
+  it("audit E2, point 2 : seule une adresse de la liste du dirigeant reçoit une confirmation, une fois", async () => {
+    await passer(new Date("2026-10-26T10:00:00Z"));
+    const recu = new Date("2026-10-27T10:00:00Z");
+    const collab = (id: string, email: string): Ligne => ({
+      id,
+      questionnaireId: QID,
+      mode: "membre",
+      recuLe: recu,
+      ecarteLe: null,
+      donnees: charge({ id_prenom: "Flora", id_email: email }),
+    });
+    // Avant la réponse du dirigeant : aucune liste, donc aucune confirmation (et les relances
+    // du dirigeant continuent : un collaborateur ne les arrête pas).
+    d.envois.push(collab("c0", "flora@exemple-fictif.fr"));
+    await passer(new Date("2026-10-27T10:05:00Z"));
+    expect(enfiler.mock.calls.some((c) => c[0] === "questionnaire-avant-audit-confirmation")).toBe(
+      false,
+    );
+    expect(d.courriers.find((c) => c["envoiId"] === "c0")!["motif"]).toBe(
+      "adresse absente de la liste du dirigeant",
+    );
     expect(parNature("relance_1")[0]!["statut"]).toBe("prevu");
+
+    // Le dirigeant répond avec sa liste ; une adresse hors liste, puis la même adresse deux fois.
+    d.envois.push(
+      reponseDirigeant(new Date("2026-10-27T11:00:00Z"), {
+        equipe: [{ email: "Flora@Exemple-Fictif.fr" }],
+      }),
+      collab("c1", "intrus@exemple-fictif.fr"),
+      collab("c2", "flora@exemple-fictif.fr"),
+      collab("c3", "flora@exemple-fictif.fr"),
+    );
+    for (const e of d.envois.slice(-3)) e["recuLe"] = new Date("2026-10-27T11:30:00Z");
+    await passer(new Date("2026-10-27T11:35:00Z"));
+    const versCollab = enfiler.mock.calls.filter(
+      (c) =>
+        c[0] === "questionnaire-avant-audit-confirmation" &&
+        (c[3] as Ligne)["role"] === "collaborateur",
+    );
+    expect(versCollab.map((c) => c[1])).toEqual(["flora@exemple-fictif.fr"]);
+    const motif = (id: string) => d.courriers.find((c) => c["envoiId"] === id)!["motif"];
+    expect(motif("c1")).toBe("adresse absente de la liste du dirigeant");
+    expect(motif("c3")).toBe("déjà confirmé à cette adresse");
+  });
+
+  it("audit E2, point 2 : 30 confirmations de collaborateurs au plus par questionnaire", async () => {
+    await passer(new Date("2026-10-26T10:00:00Z"));
+    const adresses = Array.from({ length: 31 }, (_, i) => `c${i}@exemple-fictif.fr`);
+    d.envois.push(
+      reponseDirigeant(new Date("2026-10-27T09:00:00Z"), {
+        equipe: adresses.map((email) => ({ email })),
+      }),
+    );
+    adresses.forEach((email, i) =>
+      d.envois.push({
+        id: `m${i}`,
+        questionnaireId: QID,
+        mode: "membre",
+        recuLe: new Date(Date.UTC(2026, 9, 27, 10, 0, i)),
+        ecarteLe: null,
+        donnees: charge({ id_email: email }),
+      }),
+    );
+    // Plusieurs passages : chaque passage n'envoie qu'un lot.
+    for (let i = 0; i < 6; i++) await passer(new Date(Date.UTC(2026, 9, 27, 10, 5 + i * 5)));
+    const versCollab = enfiler.mock.calls.filter(
+      (c) =>
+        c[0] === "questionnaire-avant-audit-confirmation" &&
+        (c[3] as Ligne)["role"] === "collaborateur",
+    );
+    expect(versCollab).toHaveLength(30);
+    expect(d.courriers.filter((c) => c["motif"] === "plafond atteint")).toHaveLength(1);
+  });
+
+  it("audit E2, point 4 : une réponse « main » SANS le code du dirigeant n'arrête rien, ne confirme rien", async () => {
+    await passer(new Date("2026-10-26T10:00:00Z"));
+    d.envois.push(
+      {
+        id: "f1",
+        questionnaireId: QID,
+        mode: "main",
+        recuLe: new Date("2026-10-27T10:00:00Z"),
+        ecarteLe: null,
+        donnees: charge({ contact_prenom: "Faux", equipe: [{ email: "z@exemple-fictif.fr" }] }),
+      },
+      {
+        id: "f2",
+        questionnaireId: QID,
+        mode: "main",
+        recuLe: new Date("2026-10-27T10:00:01Z"),
+        ecarteLe: null,
+        donnees: charge({ contact_prenom: "Faux" }, true, "x".repeat(24)),
+      },
+    );
+    await passer(new Date("2026-10-27T10:05:00Z"));
+    expect(parNature("relance_1")[0]!["statut"]).toBe("prevu");
+    expect(d.suivis[0]!["relancesArretMotif"]).toBeNull();
+    expect(enfiler.mock.calls.some((c) => c[0] === "questionnaire-avant-audit-confirmation")).toBe(
+      false,
+    );
+    for (const id of ["f1", "f2"]) {
+      expect(d.courriers.find((c) => c["envoiId"] === id && c["canal"] === "email")!["motif"]).toBe(
+        "réponse « dirigeant » sans son code",
+      );
+    }
   });
 
   it("à l'allumage, une réponse vieille de plus de 48 h ne reçoit rien", async () => {
@@ -641,6 +800,19 @@ describe("interrupteurs", () => {
     expect(notifier).not.toHaveBeenCalled();
   });
 
+  it("Telegram allumé après les confirmations : la ligne Telegram manquante est créée", async () => {
+    const sansTelegram = { ...ALLUME, QUESTIONNAIRE_TELEGRAM_ENABLED: "false" };
+    await passer(new Date("2026-10-26T10:00:00Z"), sansTelegram);
+    d.envois.push(reponseDirigeant(new Date("2026-10-27T10:00:00Z")));
+    await passer(new Date("2026-10-27T10:05:00Z"), sansTelegram);
+    expect(d.courriers.filter((c) => c["envoiId"] === "dir").map((c) => c["nature"])).toEqual([
+      "confirmation_dirigeant",
+    ]);
+    await passer(new Date("2026-10-27T10:10:00Z"));
+    const natures = d.courriers.filter((c) => c["envoiId"] === "dir").map((c) => c["nature"]);
+    expect(natures.sort()).toEqual(["confirmation_dirigeant", "telegram_reponse"]);
+  });
+
   it("relances seules : aucun Telegram, aucune confirmation", async () => {
     await passer(new Date("2026-10-26T10:00:00Z"), {
       QUESTIONNAIRE_AVANT_AUDIT_ENABLED: "true",
@@ -699,6 +871,27 @@ describe("essais demandés depuis la console", () => {
     expect(String(payload["lien"])).toContain("essai=1");
     // Jamais compté comme un envoi réel : pas de J0.
     expect(d.suivis[0]!["premierEnvoiLe"]).toBeNull();
+  });
+
+  it("avant le premier envoi, l'essai prend la date du rendez-vous : même objet que l'aperçu", async () => {
+    (d.questionnaires[0]!["rencontre"] as Ligne)["debutPrevu"] = new Date("2026-10-30T08:00:00Z");
+    essai("invitation");
+    await passer(new Date("2026-10-26T10:00:00Z"), {
+      QUESTIONNAIRE_AVANT_AUDIT_ENABLED: "true",
+      QUESTIONNAIRE_PREAUDIT_ADRESSE_ESSAI: "essai@axion-ia.com",
+    });
+    const [, , , payload, options] = enfiler.mock.calls[0]!;
+    expect(options.sujetForce).toBe("[ESSAI] Audit du 30 octobre : votre questionnaire");
+    expect(String(payload["auditTexte"])).toContain("30 octobre");
+    // Un rendez-vous passé n'est pas une date d'audit.
+    enfiler.mockClear();
+    (d.questionnaires[0]!["rencontre"] as Ligne)["debutPrevu"] = new Date("2026-10-20T08:00:00Z");
+    essai("relance_1");
+    await passer(new Date("2026-10-26T10:10:00Z"), {
+      QUESTIONNAIRE_AVANT_AUDIT_ENABLED: "true",
+      QUESTIONNAIRE_PREAUDIT_ADRESSE_ESSAI: "essai@axion-ia.com",
+    });
+    expect(enfiler.mock.calls[0]![3]["auditTexte"]).toBeUndefined();
   });
 
   it("sans adresse d'essai : échec, rien ne part (jamais au prospect)", async () => {

@@ -85,10 +85,21 @@ export function codeDirigeantPreaudit(id: string): string | null {
   return k === null ? null : signer(k, i, DOMAINE_PREAUDIT_DIRIGEANT).slice(0, 24);
 }
 
-export function codeDirigeantPreauditValide(id: string, code: string): boolean {
+/** Le code attendu est en base64url : tout autre caractère (accent, emoji…) est refusé d'emblée. */
+const CODE_DIRIGEANT = /^[A-Za-z0-9_-]{24}$/;
+
+/**
+ * Vrai si `code` est le code du dirigeant de ce questionnaire. Ne LÈVE JAMAIS (audit E2, point 6) :
+ * une forme inattendue rend `false`, donc la même réponse neutre. Les longueurs sont comparées en
+ * OCTETS avant `timingSafeEqual` (qui lève sur deux tampons de tailles différentes).
+ */
+export function codeDirigeantPreauditValide(id: string, code: unknown): boolean {
+  if (typeof code !== "string" || !CODE_DIRIGEANT.test(code)) return false;
   const attendu = codeDirigeantPreaudit(id);
-  if (attendu === null || code.length !== attendu.length) return false;
-  return timingSafeEqual(Buffer.from(attendu, "utf8"), Buffer.from(code, "utf8"));
+  if (attendu === null) return false;
+  const a = Buffer.from(attendu, "utf8");
+  const b = Buffer.from(code, "utf8");
+  return a.length === b.length && timingSafeEqual(a, b);
 }
 
 /**

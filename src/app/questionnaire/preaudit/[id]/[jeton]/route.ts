@@ -13,7 +13,11 @@
 import { mentionsRgpd, refusReel } from "@/features/questionnaire-preaudit/config";
 import { ENTETES_PAGE_PREAUDIT } from "@/features/questionnaire-preaudit/entetes";
 import { pagePourClient } from "@/features/questionnaire-preaudit/html";
-import { accepteDesReponses, lireParJeton } from "@/features/questionnaire-preaudit/serveur";
+import {
+  accepteDesReponses,
+  essaiPermis,
+  lireParJeton,
+} from "@/features/questionnaire-preaudit/serveur";
 
 export const dynamic = "force-dynamic";
 
@@ -34,6 +38,9 @@ export async function GET(
   const url = new URL(req.url);
   const essai = url.searchParams.get("essai") === "1";
   if (!essai && (refusReel() !== null || !accepteDesReponses(q))) return neutre();
+  // Audit E2, point 5 : l'essai sert au bouton « Essayer » de la console (lien pas encore envoyé,
+  // ou envoyé et ouvert). Un lien CLOS ou EXPIRÉ ne rend plus son HTML pré-rempli, même en essai.
+  if (essai && !essaiPermis(q)) return neutre();
 
   // Le `ref` est imposé par le serveur : dirigeant, collaborateurs et référent informatique
   // se regroupent sous la même référence (le HTML la lit dans `?ref=`).
@@ -49,7 +56,9 @@ export async function GET(
   const base = `/api/questionnaire-preaudit/${q.id}/${jeton}`;
   const page = pagePourClient(q.html, {
     endpoint: essai ? `${base}?essai=1` : base,
-    client: "",
+    // Le nom affiché sur l'accueil (« Questionnaire préparé pour … ») : la raison sociale de la
+    // fiche, passée par `jsonSur` (échappée). Vide : le HTML garde son texte par défaut.
+    client: (q.rencontre?.client?.raisonSociale ?? "").trim().slice(0, 120),
     contact: rgpd.contact,
     conservation: rgpd.conservation,
     essai,

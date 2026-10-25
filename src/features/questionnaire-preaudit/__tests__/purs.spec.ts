@@ -69,6 +69,13 @@ describe("le HTML de Will", () => {
     expect(validerHtml("<p>rien</p>").ok).toBe(false);
     expect(validerHtml(HTML.replace("schema: 3", "schema: 2")).ok).toBe(false);
     expect(validerHtml(HTML.replace("schema: 3", "schema: 4")).ok).toBe(true);
+    // Le refus d'un mauvais fichier parle à Will, sans jargon (vérification E1).
+    const refus = validerHtml("<html><body><script>var x = 1;</script></body></html>");
+    expect(refus.ok).toBe(false);
+    if (!refus.ok) {
+      expect(refus.motif).toContain("Ce fichier n'est pas un questionnaire Axion");
+      expect(refus.motif).not.toContain("CONFIG");
+    }
     expect(validerHtml(HTML.replace("schema: 3", "schema: 5")).ok).toBe(false);
     expect(validerHtml(HTML.replace("schema: 3", "schema: 34")).ok).toBe(false);
     expect(validerHtml(HTML + "x".repeat(900_000)).ok).toBe(false);

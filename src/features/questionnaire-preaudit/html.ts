@@ -25,7 +25,8 @@ export function validerHtml(html: string): ValidationHtml {
   if (!DECLARATION_CONFIG.test(html)) {
     return {
       ok: false,
-      motif: "Le bloc « const CONFIG = {…}; » du questionnaire est introuvable.",
+      motif:
+        "Ce fichier n'est pas un questionnaire Axion : déposez le fichier du questionnaire tel que vous l'avez reçu.",
     };
   }
   if (!/schema:\s*[34]\b/.test(html)) {

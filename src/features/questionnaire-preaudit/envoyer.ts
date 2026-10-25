@@ -98,7 +98,9 @@ export async function apercusSuivi(
         lienArret,
         brouillonEnCours: a.brouillon,
         role: a.nature === "confirmation_collaborateur" ? "collaborateur" : "dirigeant",
-        prenomRepondant: a.nature === "confirmation_collaborateur" ? "Prénom" : p,
+        // Le prénom du collaborateur n'est connu qu'à sa réponse : l'aperçu dit « Bonjour, »
+        // (jamais un « Bonjour Prénom » fictif que Will prendrait pour le vrai rendu).
+        prenomRepondant: a.nature === "confirmation_collaborateur" ? undefined : p,
         recuLe: new Date(),
         env: process.env,
       });

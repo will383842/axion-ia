@@ -33,12 +33,16 @@ import { SITE_URL } from "@/lib/site-url";
 import { questionnaireAvantAuditSubject } from "@/lib/email/templates/questionnaire-avant-audit";
 import { questionnaireAvantAuditRelanceSubject } from "@/lib/email/templates/questionnaire-avant-audit-relance";
 import { questionnaireAvantAuditConfirmationSubject } from "@/lib/email/templates/questionnaire-avant-audit-confirmation";
+import { dayKeyInParis } from "@/lib/calendar-grid";
 import { prenomEtInitiale } from "@/server/notifications/personne";
+import { codeDirigeantPreauditValide } from "@/server/visio/questionnaire-en-ligne/jeton";
 import type { NotifyInput, NotifyResult } from "@/server/notifications/types";
 import type { EmailJobName } from "@/server/queue/types";
 import type { PrismaClient } from "../../../prisma/generated/client";
 
 import {
+  a930,
+  ajouterJours,
   formaterAuditCourt,
   formaterAuditTexte,
   formaterJourMois,
@@ -46,6 +50,7 @@ import {
   planifierRelances,
   prochainCreneauRelance,
   dansCreneauRelance,
+  jourOuvreAPartirDe,
 } from "./calendrier";
 import { mentionsRgpd, refusReel } from "./config";
 import {
@@ -126,7 +131,11 @@ const ENTITE_ESSAI = "QuestionnaireAvantAuditEssai";
 const QUINZE_MIN = 15 * 60 * 1000;
 const UN_JOUR = 24 * 60 * 60 * 1000;
 const DUS_PAR_PASSAGE = 20;
-const CONFIRMATIONS_MAX_PAR_QUESTIONNAIRE = 70;
+/**
+ * Confirmations aux collaborateurs (audit E2, point 2) : plafond BAS par questionnaire, et
+ * seulement vers une adresse que le DIRIGEANT a saisie dans la liste de son équipe.
+ */
+const CONFIRMATIONS_COLLABORATEUR_MAX = 30;
 const TENTATIVES_EMAIL_MAX = 3;
 const TENTATIVES_TELEGRAM_MAX = 5;
 /** Un suivi sans départ constaté au bout de 45 jours (durée de vie du lien) n'est plus regardé. */
@@ -161,20 +170,62 @@ const ADRESSE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 function lireCharge(chiffre: string): {
   donnees: Record<string, unknown>;
   traitement: boolean;
+  membre: unknown;
 } | null {
   try {
     const o = JSON.parse(dechiffrerParole(chiffre)) as {
       donnees?: unknown;
       consentements?: { traitement?: unknown };
+      membre?: unknown;
     };
     const d =
       typeof o.donnees === "object" && o.donnees !== null && !Array.isArray(o.donnees)
         ? (o.donnees as Record<string, unknown>)
         : {};
-    return { donnees: d, traitement: o.consentements?.traitement === true };
+    return { donnees: d, traitement: o.consentements?.traitement === true, membre: o.membre };
   } catch {
     return null;
   }
+}
+
+/**
+ * La réponse vient-elle du DIRIGEANT ? Parcours `main` ET son code personnel valide (audit E2,
+ * point 4) — comme le brouillon et la fiche. Un salarié qui répond « dirigeant » sur le lien de
+ * base n'arrête pas les relances et ne reçoit pas la confirmation du dirigeant.
+ */
+function estDuDirigeant(questionnaireId: string, e: { mode: string; donnees: string }): boolean {
+  if (e.mode !== "main") return false;
+  return codeDirigeantPreauditValide(questionnaireId, lireCharge(e.donnees)?.membre);
+}
+
+/** Les adresses que le dirigeant a saisies pour son équipe (minuscules, valides). PUR. */
+export function adressesEquipe(donneesDirigeant: Record<string, unknown> | null): Set<string> {
+  const sortie = new Set<string>();
+  const equipe = donneesDirigeant?.["equipe"];
+  if (!Array.isArray(equipe)) return sortie;
+  for (const m of equipe) {
+    const a = texte((m as Record<string, unknown> | null)?.["email"], 200)?.toLowerCase();
+    if (a !== undefined && ADRESSE.test(a)) sortie.add(a);
+  }
+  return sortie;
+}
+
+/**
+ * L'adresse de confirmation d'un collaborateur : celle de sa réponse, SEULEMENT si le dirigeant
+ * l'a saisie dans la liste de son équipe et si la case de traitement est cochée ; sinon `null`.
+ */
+function adresseCollaborateur(
+  charge: ReturnType<typeof lireCharge>,
+  equipe: ReadonlySet<string>,
+): { adresse: string; motif: null } | { adresse: null; motif: string } {
+  if (charge === null || !charge.traitement) {
+    return { adresse: null, motif: "sans adresse utilisable" };
+  }
+  const a = texte(charge.donnees["id_email"], 200)?.toLowerCase();
+  if (a === undefined || !ADRESSE.test(a))
+    return { adresse: null, motif: "sans adresse utilisable" };
+  if (!equipe.has(a)) return { adresse: null, motif: "adresse absente de la liste du dirigeant" };
+  return { adresse: a, motif: null };
 }
 
 const INFORMATIQUE_INTERNE = ["Nous-mêmes, directement", "Personne en particulier"];
@@ -191,7 +242,11 @@ export function reponsesAttendues(donneesDirigeant: Record<string, unknown> | nu
 function premierMot(nom: string | null | undefined): string | undefined {
   const m = (nom ?? "").trim().split(/\s+/)[0];
   if (!m || m.includes("@") || m.length > 40) return undefined;
-  return m.charAt(0).toUpperCase() + m.slice(1).toLowerCase();
+  // « JEAN-PIERRE » → « Jean-Pierre » (chaque partie d'un prénom composé).
+  return m
+    .split("-")
+    .map((x) => x.charAt(0).toUpperCase() + x.slice(1).toLowerCase())
+    .join("-");
 }
 
 interface Contexte {
@@ -222,8 +277,12 @@ interface EtatQuestionnaire {
     readonly lieuAudit: string | null;
     readonly premierEnvoiLe: Date | null;
     readonly relancesArreteesLe: Date | null;
+    readonly relancesArretMotif: string | null;
   } | null;
   readonly dirigeantARepondu: boolean;
+  /** Début prévu du rendez-vous : la date que l'aperçu propose tant que le suivi n'en a pas. */
+  readonly debutRencontre: Date | null;
+  readonly equipe: ReadonlySet<string>;
   readonly donneesDirigeant: Record<string, unknown> | null;
   readonly recues: number;
 }
@@ -242,6 +301,7 @@ async function lireEtat(ctx: Contexte, questionnaireId: string): Promise<EtatQue
       rencontre: {
         select: {
           clientId: true,
+          debutPrevu: true,
           client: { select: { raisonSociale: true, contactNom: true, contactEmail: true } },
           calendlyEvent: { select: { inviteeName: true, inviteeEmail: true } },
         },
@@ -254,6 +314,7 @@ async function lireEtat(ctx: Contexte, questionnaireId: string): Promise<EtatQue
           lieuAudit: true,
           premierEnvoiLe: true,
           relancesArreteesLe: true,
+          relancesArretMotif: true,
         },
       },
       envois: {
@@ -270,7 +331,7 @@ async function lireEtat(ctx: Contexte, questionnaireId: string): Promise<EtatQue
   } catch {
     destinataire = null;
   }
-  const mains = q.envois.filter((e) => e.mode === "main");
+  const mains = q.envois.filter((e) => estDuDirigeant(q.id, e));
   const dernierMain = mains[mains.length - 1];
   const donneesDirigeant = dernierMain ? (lireCharge(dernierMain.donnees)?.donnees ?? null) : null;
   // Le prénom de l'e-mail : celui de la réservation ou du contact de la fiche, SEULEMENT si leur
@@ -301,7 +362,9 @@ async function lireEtat(ctx: Contexte, questionnaireId: string): Promise<EtatQue
     prenom,
     suivi: q.suivi,
     dirigeantARepondu: mains.length > 0,
+    debutRencontre: q.rencontre?.debutPrevu ?? null,
     donneesDirigeant,
+    equipe: adressesEquipe(donneesDirigeant),
     recues: q.envois.length,
   };
 }
@@ -382,15 +445,27 @@ async function passerEssais(ctx: Contexte): Promise<void> {
     const lien = `${SITE_URL}${chemin}`;
     // Le lien d'arrêt d'un essai ne doit rien écrire : la page lit `essai=1`.
     const lienArret = `${arret}?essai=1`;
-    const { template, payload } = gabaritEtPayload(etat, de, {
-      lien,
-      lienArret,
-      brouillonEnCours: false,
-      role: de === "confirmation_collaborateur" ? "collaborateur" : "dirigeant",
-      prenomRepondant: etat.prenom,
-      recuLe: ctx.maintenant,
-      env: ctx.env,
-    });
+    // Avant le premier envoi, le suivi n'a pas de date : l'essai prend celle que l'aperçu
+    // propose (le début prévu du rendez-vous, s'il est à venir), pour que son objet soit le
+    // même que celui de l'aperçu.
+    const debut = etat.debutRencontre;
+    const dateEssai =
+      etat.suivi?.dateAudit ??
+      (debut !== null && debut.getTime() > ctx.maintenant.getTime() ? debut : null);
+    const { template, payload } = gabaritEtPayload(
+      etat,
+      de,
+      {
+        lien,
+        lienArret,
+        brouillonEnCours: false,
+        role: de === "confirmation_collaborateur" ? "collaborateur" : "dirigeant",
+        prenomRepondant: etat.prenom,
+        recuLe: ctx.maintenant,
+        env: ctx.env,
+      },
+      dateEssai,
+    );
     const r = await ctx.enfiler(template, a, "fr", payload, {
       jobId: jobIdDe(c.cle),
       entityType: ENTITE_ESSAI,
@@ -491,12 +566,13 @@ function gabaritEtPayload(
   etat: EtatQuestionnaire,
   nature: string,
   o: Omit<DonneesCourrier, "prenom" | "societe" | "dateAudit" | "lieuAudit">,
+  dateAudit: Date | null = etat.suivi?.dateAudit ?? null,
 ): { template: EmailJobName; payload: Record<string, unknown> } {
   return payloadCourrier(nature, {
     ...o,
     prenom: etat.prenom,
     societe: etat.societe,
-    dateAudit: etat.suivi?.dateAudit ?? null,
+    dateAudit,
     lieuAudit: etat.suivi?.lieuAudit ?? null,
   });
 }
@@ -613,7 +689,6 @@ async function creerRelances(ctx: Contexte): Promise<void> {
         is: {
           closLe: null,
           courriers: { none: { nature: "relance_1" } },
-          envois: { none: { mode: "main", ecarteLe: null } },
         },
       },
     },
@@ -622,6 +697,8 @@ async function creerRelances(ctx: Contexte): Promise<void> {
   });
   for (const s of suivis) {
     const qid = s.questionnaireId as string;
+    // Le dirigeant a déjà répondu (avec SON code) : aucune relance.
+    if ((await lireEtat(ctx, qid))?.dirigeantARepondu !== false) continue;
     const plan = planifierRelances(s.premierEnvoiLe as Date, s.dateAudit);
     if (!ecrit(modes.relances)) {
       ctx.bilan.seraientCrees += plan.length;
@@ -699,13 +776,22 @@ async function passerReponses(ctx: Contexte): Promise<void> {
       // Jamais de rafale à l'allumage : 48 h au plus.
       recuLe: { gte: new Date(ctx.maintenant.getTime() - 2 * UN_JOUR) },
       questionnaire: { suivi: { isNot: null } },
-      courriers: {
-        none: {
-          nature: {
-            in: ["confirmation_dirigeant", "confirmation_collaborateur", "telegram_reponse"],
-          },
-        },
-      },
+      // Il MANQUE une ligne attendue (confirmation ou Telegram, selon les interrupteurs) : celle
+      // qui existe déjà est ignorée par `skipDuplicates` (clés `conf:` et `tg_rep:`).
+      OR: [
+        ...(actif(modes.confirmations)
+          ? [
+              {
+                courriers: {
+                  none: {
+                    nature: { in: ["confirmation_dirigeant", "confirmation_collaborateur"] },
+                  },
+                },
+              },
+            ]
+          : []),
+        ...(actif(modes.telegram) ? [{ courriers: { none: { nature: "telegram_reponse" } } }] : []),
+      ],
     },
     select: {
       id: true,
@@ -726,25 +812,35 @@ async function passerReponses(ctx: Contexte): Promise<void> {
     const lignes: NouveauCourrier[] = [];
     if (actif(modes.confirmations)) {
       const charge = lireCharge(e.donnees);
+      const duDirigeant = estDuDirigeant(e.questionnaireId, e);
       let adresse: string | null = null;
-      if (e.mode === "main") adresse = etat.destinataire;
-      else if (charge !== null && charge.traitement) {
-        const a = texte(charge.donnees["id_email"]);
-        adresse = a !== undefined && ADRESSE.test(a) ? a : null;
-      }
-      const deja = await ctx.base.questionnaireAvantAuditCourrier.count({
-        where: {
-          questionnaireId: e.questionnaireId,
-          nature: { in: ["confirmation_dirigeant", "confirmation_collaborateur"] },
-        },
-      });
+      let motif: string | null = null;
+      if (duDirigeant) adresse = etat.destinataire;
+      else if (e.mode === "main") motif = "réponse « dirigeant » sans son code";
+      else ({ adresse, motif } = adresseCollaborateur(charge, etat.equipe));
       const nature = e.mode === "main" ? "confirmation_dirigeant" : "confirmation_collaborateur";
-      const motif =
-        adresse === null
-          ? "sans adresse utilisable"
-          : deja >= CONFIRMATIONS_MAX_PAR_QUESTIONNAIRE
-            ? "plafond atteint"
-            : null;
+      if (motif === null && adresse === null) motif = "sans adresse utilisable";
+      if (motif === null && nature === "confirmation_collaborateur" && adresse !== null) {
+        const [deja, memeAdresse] = await Promise.all([
+          ctx.base.questionnaireAvantAuditCourrier.count({
+            where: {
+              questionnaireId: e.questionnaireId,
+              nature: "confirmation_collaborateur",
+              statut: { not: "annule" },
+            },
+          }),
+          ctx.base.questionnaireAvantAuditCourrier.count({
+            where: {
+              questionnaireId: e.questionnaireId,
+              nature: "confirmation_collaborateur",
+              destinataireHash: hashEmailForLookup(adresse),
+              statut: { not: "annule" },
+            },
+          }),
+        ]);
+        if (memeAdresse > 0) motif = "déjà confirmé à cette adresse";
+        else if (deja >= CONFIRMATIONS_COLLABORATEUR_MAX) motif = "plafond atteint";
+      }
       lignes.push({
         cle: `conf:${e.id}`,
         questionnaireId: e.questionnaireId,
@@ -968,7 +1064,12 @@ async function traiterUn(ctx: Contexte, c: Courrier): Promise<void> {
     return;
   }
   if (estRelance(c.nature)) {
-    const motif = await motifDArret(ctx, etat.id, etat.suivi?.relancesArreteesLe ? "will" : null);
+    // Le VRAI motif d'un arrêt déjà posé (désinscription du destinataire ≠ arrêt par Will).
+    const motif = await motifDArret(
+      ctx,
+      etat.id,
+      etat.suivi?.relancesArreteesLe ? (etat.suivi.relancesArretMotif ?? "will") : null,
+    );
     if (motif !== null) {
       await fin("annule", motif);
       await arreterRelancesAuPassage(ctx, etat.id, motif, true);
@@ -979,14 +1080,12 @@ async function traiterUn(ctx: Contexte, c: Courrier): Promise<void> {
       return;
     }
     if (!dansCreneauRelance(ctx.maintenant)) {
+      const report = prochainCreneauRelance(ctx.maintenant);
       await ctx.base.questionnaireAvantAuditCourrier.update({
         where: { id: c.id },
-        data: {
-          statut: "prevu",
-          prevuLe: prochainCreneauRelance(ctx.maintenant),
-          tentatives: c.tentatives,
-        },
+        data: { statut: "prevu", prevuLe: report, tentatives: c.tentatives },
       });
+      await decalerLesSuivantes(ctx, etat.id, Number(c.nature.slice(-1)), report);
       return;
     }
   } else if (retard > 2 * UN_JOUR) {
@@ -1028,9 +1127,8 @@ async function traiterUn(ctx: Contexte, c: Courrier): Promise<void> {
         select: { donnees: true, recuLe: true, ecarteLe: true },
       });
       const charge = e !== null && e.ecarteLe === null ? lireCharge(e.donnees) : null;
-      const a =
-        charge !== null && charge.traitement ? texte(charge.donnees["id_email"]) : undefined;
-      if (a !== undefined && ADRESSE.test(a)) destinataire = a;
+      // Revérifié à l'envoi : l'adresse doit TOUJOURS figurer dans la liste du dirigeant.
+      destinataire = adresseCollaborateur(charge, etat.equipe).adresse;
       if (e !== null) recuLe = e.recuLe;
       prenomRepondant = texte(charge?.donnees["id_prenom"], 60);
     }
@@ -1110,6 +1208,38 @@ async function traiterUn(ctx: Contexte, c: Courrier): Promise<void> {
   }
 }
 
+/**
+ * Après le report d'une relance : les suivantes encore prévues sont repoussées au besoin, pour
+ * qu'il n'y ait JAMAIS deux relances le même jour (chacune au moins un jour ouvré après la
+ * précédente, à 9 h 30).
+ */
+async function decalerLesSuivantes(
+  ctx: Contexte,
+  qid: string,
+  rang: number,
+  report: Date,
+): Promise<void> {
+  let jourPrecedent = dayKeyInParis(report);
+  for (const r of NATURES_RELANCE.slice(rang)) {
+    const c = await ctx.base.questionnaireAvantAuditCourrier.findFirst({
+      where: { questionnaireId: qid, nature: r, statut: "prevu" },
+      select: { id: true, prevuLe: true },
+    });
+    if (c === null) continue;
+    const jour = dayKeyInParis(c.prevuLe);
+    if (jour > jourPrecedent) {
+      jourPrecedent = jour;
+      continue;
+    }
+    const nouveau = jourOuvreAPartirDe(ajouterJours(jourPrecedent, 1));
+    await ctx.base.questionnaireAvantAuditCourrier.update({
+      where: { id: c.id },
+      data: { prevuLe: a930(nouveau) },
+    });
+    jourPrecedent = nouveau;
+  }
+}
+
 async function prochaineRelance(ctx: Contexte, qid: string): Promise<string | undefined> {
   const r = await ctx.base.questionnaireAvantAuditCourrier.findFirst({
     where: { questionnaireId: qid, nature: { in: [...NATURES_RELANCE] }, statut: "prevu" },
@@ -1136,7 +1266,7 @@ async function envoyerTelegram(
       });
       if (e !== null) {
         const d = lireCharge(e.donnees)?.donnees ?? {};
-        const main = e.mode === "main";
+        const main = estDuDirigeant(etat.id, e);
         parcours = main ? "dirigeant" : e.mode === "it" ? "referent_it" : "collaborateur";
         const p = texte(d[main ? "contact_prenom" : "id_prenom"], 100);
         const n = texte(d[main ? "contact_nom" : "id_nom"], 100);

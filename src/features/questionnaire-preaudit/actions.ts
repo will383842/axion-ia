@@ -28,6 +28,7 @@ import { fromParisLocalInput } from "@/lib/calendar-grid";
 
 import { envoyerQuestionnaire } from "./envoyer";
 import { preauditActif } from "./config";
+import { modeRelances } from "./drapeaux-suivi";
 import {
   arreterRelances,
   demanderEssai,
@@ -170,9 +171,13 @@ export async function envoyerQuestionnaireAction(fd: FormData): Promise<void> {
     "message",
     !suiviNote
       ? `${base} ⚠️ Le suivi n'a pas pu être noté : aucune relance ne partira.`
-      : relances
-        ? `${base} Les 3 relances sont programmées depuis le départ réel de l'e-mail.`
-        : `${base} Aucune relance programmée.`,
+      : !relances
+        ? `${base} Aucune relance programmée.`
+        : modeRelances() === "actif"
+          ? `${base} Les 3 relances sont programmées depuis le départ réel de l'e-mail.`
+          : modeRelances() === "essai"
+            ? `${base} Relances en essai : elles sont comptées, mais aucune ne part.`
+            : `${base} Relances demandées, mais éteintes pour le moment : aucune ne partira tant qu'elles ne sont pas allumées.`,
   );
 }
 
