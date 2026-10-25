@@ -18,7 +18,7 @@ import {
   separerNom,
   trancheEffectif,
   type EntreeInstantaneCrm,
-} from "@/features/dossier-client/instantane-crm";
+} from "@/server/crm-sync/instantane-dossier";
 
 const CLIENT = "aaaaaaaa-1111-4111-8111-aaaaaaaaaaaa";
 const HASH = "a".repeat(64);

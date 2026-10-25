@@ -10,7 +10,7 @@ vi.mock("@/lib/prisma", () => ({ prisma: { crmSyncOutbox: { create: creer } } })
 vi.mock("@/server/queue/queues", () => ({ crmSyncQueue: null }));
 
 import { enqueueCrmSyncEvent } from "@/server/crm-sync/enqueue";
-import { evenementDossierClient } from "@/features/dossier-client/instantane-crm";
+import { evenementDossierClient } from "@/server/crm-sync/instantane-dossier";
 
 const evenement = evenementDossierClient(
   {
