@@ -231,7 +231,7 @@ describe("synchro automatique du dossier client", () => {
     await balayerDossiersClients(MAINTENANT);
     expect(avert).toHaveBeenCalled();
     await balayerDossiersClients(MAINTENANT);
-    const appel = base.prisma.client.findMany.mock.calls[1]![0] as {
+    const appel = (base.prisma.client.findMany.mock.calls as unknown[][])[1]![0] as {
       where: { id?: { gt: string } };
     };
     expect(appel.where.id).toEqual({ gt: `id-${BALAYAGE_DOSSIERS_MAX - 1}` });
