@@ -25,6 +25,7 @@ import {
   AdminEmptyState,
   AdminBadge,
 } from "@/components/admin/ui";
+import { AdminButton } from "@/components/admin/ui/AdminButton";
 import { AccesRefuse } from "@/components/admin/ui/AccesRefuse";
 import { VueEmailSuivi } from "@/components/admin/visio/VueEmailSuivi";
 import { RejoindreVisioBouton } from "@/components/admin/contacts/RejoindreVisioBouton";
@@ -196,9 +197,9 @@ function DossierSurLaCarte({ d }: { d: DossierCarte }) {
         <form action={rangerRencontreAction}>
           <input type="hidden" name="rencontreId" value={x.rencontreId} />
           <input type="hidden" name="clientId" value={x.clientPropose.id} />
-          <button type="submit" className="admin-button-ghost">
+          <AdminButton type="submit" variant="secondary">
             Confirmer le client proposé : {x.clientPropose.raisonSociale}
-          </button>
+          </AdminButton>
         </form>
       ) : null}
     </div>

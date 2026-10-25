@@ -89,15 +89,9 @@ export function BrancheOpcoBloc({
         : null;
 
   return (
-    <section
-      aria-labelledby={`branche-opco-${client.id}`}
-      className="mb-[var(--space-admin-8)] rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] p-[var(--space-admin-5)]"
-    >
+    <section aria-labelledby={`branche-opco-${client.id}`} className="admin-carte">
       <div className="mb-[var(--space-admin-3)] flex flex-wrap items-center justify-between gap-[var(--space-admin-3)]">
-        <h2
-          id={`branche-opco-${client.id}`}
-          className="text-[length:var(--text-admin-base)] font-semibold text-[color:var(--color-admin-fg)]"
-        >
+        <h2 id={`branche-opco-${client.id}`} className="admin-carte-titre">
           Branche et OPCO
         </h2>
         {!peutEcrire ? <AdminBadge tone="outline">Lecture seule</AdminBadge> : null}
