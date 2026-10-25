@@ -94,6 +94,11 @@ export interface ContactPourCrm {
   readonly origine: string | null;
   /** `hashEmailForLookup(email)` — la clé qui traverse les deux systèmes. */
   readonly emailHash: string | null;
+  /**
+   * Opposée à la prospection (`email_oppositions`, via `adressesOpposees()` chez
+   * l'appelant, sur TOUTES ses adresses). OBLIGATOIRE : l'oublier ne compile pas.
+   */
+  readonly oppose: boolean;
   /** Parti de l'entreprise : jamais envoyé (rien ne se supprime, rien ne se réactive). */
   readonly parti: boolean;
 }
@@ -229,7 +234,9 @@ export function dossierPourCrm(entree: EntreeInstantaneCrm): DossierPourCrm {
   for (const c of ordonnes) {
     if (c.parti || c.origine === "mention" || vus.has(c.id)) continue;
     if (contacts.length >= MAX_CONTACTS_CRM) break;
-    // L'opposition gagne : la personne n'est pas envoyée du tout.
+    // L'opposition gagne : la personne n'est pas envoyée du tout. `oppose` vient du
+    // registre `email_oppositions` ; `estExclueDuCrm` (adresses de la maison) s'y ajoute.
+    if (c.oppose) continue;
     if (c.email !== null && estExclueDuCrm(c.email)) continue;
     const { prenom, nom } = separerNom(c.nom);
     if (prenom === undefined && nom === undefined) continue;
