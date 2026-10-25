@@ -45,6 +45,7 @@ import { Euro, CalendarDays, Users, Wallet } from "lucide-react";
 
 import { AdminPageShell } from "@/components/admin/ui/AdminPageShell";
 import { AdminPageHeader } from "@/components/admin/ui/AdminPageHeader";
+import { AdminBloc } from "@/components/admin/ui/AdminBloc";
 import { AdminStatCard } from "@/components/admin/ui/AdminStatCard";
 import { AdminBadge } from "@/components/admin/ui/AdminBadge";
 import { AdminButton } from "@/components/admin/ui/AdminButton";
@@ -489,10 +490,9 @@ export default async function FicheClient360Page({ params, searchParams }: PageP
     "font-mono text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-accent)] underline-offset-2 hover:underline";
   const listeCls = "space-y-[var(--space-admin-2)] text-[length:var(--text-admin-sm)]";
   const sectionCls = "mb-[var(--space-admin-8)]";
-  const blocCls =
-    "min-w-0 rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] p-[var(--space-admin-5)]";
-  const blocTitreCls =
-    "mb-[var(--space-admin-3)] text-[length:var(--text-admin-base)] font-semibold text-[color:var(--color-admin-fg)]";
+  // `mb-0!` : le `margin-bottom` de `.admin-carte` s'ajouterait au `gap` de la grille.
+  const blocCls = "admin-carte mb-0! min-w-0";
+  const blocTitreCls = "admin-carte-titre";
 
   // Adresse et pénalités : au bloc Société d'une entreprise, au bloc Contact
   // d'un particulier (lot A9).
@@ -608,9 +608,9 @@ export default async function FicheClient360Page({ params, searchParams }: PageP
                 className="mt-[var(--space-admin-1)]"
               >
                 <input type="hidden" name="clientId" value={client.id} />
-                <button type="submit" className="admin-button-ghost">
+                <AdminButton type="submit" variant="secondary">
                   Rafraîchir depuis l&apos;INSEE
-                </button>
+                </AdminButton>
               </form>
             ) : null}
             {messageReleveInsee !== null ? (
@@ -650,12 +650,13 @@ export default async function FicheClient360Page({ params, searchParams }: PageP
                   <>
                     <p className={`${infoValueCls} font-mono`}>{sirenLu}</p>
                     {sirenContraire ? (
-                      <p
-                        role="status"
-                        className="mt-[var(--space-admin-1)] text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-warning)]"
-                      >
-                        {AVERTISSEMENT_SIREN_CONTRAIRE}
-                      </p>
+                      <div className="mt-[var(--space-admin-2)]">
+                        <AdminBloc teinte="terracotta" niveau={3} titre="SIREN contredit le SIRET">
+                          <p role="status" className="text-[length:var(--text-admin-sm)]">
+                            {AVERTISSEMENT_SIREN_CONTRAIRE}
+                          </p>
+                        </AdminBloc>
+                      </div>
                     ) : null}
                   </>
                 ) : (
@@ -681,9 +682,9 @@ export default async function FicheClient360Page({ params, searchParams }: PageP
                             </>
                           ) : null}
                         </span>
-                        <button type="submit" className="admin-button-ghost">
+                        <AdminButton type="submit" variant="secondary">
                           Poser ce SIREN
-                        </button>
+                        </AdminButton>
                       </form>
                     ) : null}
                     {acces.peutEcrire && annuaire === null ? (
@@ -720,9 +721,9 @@ export default async function FicheClient360Page({ params, searchParams }: PageP
                               <span className="text-[color:var(--color-admin-fg-muted)]">
                                 {[prop.codePostal, prop.ville].filter(Boolean).join(" ")}
                               </span>
-                              <button type="submit" className="admin-button-ghost">
+                              <AdminButton type="submit" variant="secondary">
                                 C&apos;est elle
-                              </button>
+                              </AdminButton>
                             </form>
                           </li>
                         ))}
@@ -775,6 +776,14 @@ export default async function FicheClient360Page({ params, searchParams }: PageP
 
       {onglet === "facturation" ? (
         <>
+          {encoursDuCents > 0 ? (
+            <AdminBloc teinte="ambre" haut titre="Encours à encaisser">
+              <p className="text-[length:var(--text-admin-sm)]">
+                {eur(encoursDuCents)} restent dus sur les factures ouvertes de ce client.
+              </p>
+            </AdminBloc>
+          ) : null}
+
           {/* ── KPI ────────────────────────────────────────────────────────────── */}
           <div className="mb-[var(--space-admin-8)] grid grid-cols-1 gap-[var(--space-admin-5)] sm:grid-cols-4">
             <AdminStatCard label="CA cumulé" value={eur(client.caCents)} icon={Euro} />
@@ -970,17 +979,19 @@ export default async function FicheClient360Page({ params, searchParams }: PageP
             {nbEmailsAValider === 0 ? (
               <SectionVide message="Aucun e-mail en attente de validation." />
             ) : (
-              <p className="text-[length:var(--text-admin-sm)]">
-                <span className="font-semibold tabular-nums">{nbEmailsAValider}</span> e-mail
-                {nbEmailsAValider > 1 ? "s" : ""} en attente de validation —{" "}
-                <Link
-                  href={`${qBase}/emails`}
-                  className="text-[color:var(--color-admin-accent)] underline-offset-2 hover:underline"
-                >
-                  valider dans la boîte d&apos;envoi
-                </Link>
-                .
-              </p>
+              <AdminBloc teinte="terracotta" niveau={3} haut titre="E-mails à valider">
+                <p className="text-[length:var(--text-admin-sm)]">
+                  <span className="font-semibold tabular-nums">{nbEmailsAValider}</span> e-mail
+                  {nbEmailsAValider > 1 ? "s" : ""} en attente de validation —{" "}
+                  <Link
+                    href={`${qBase}/emails`}
+                    className="font-semibold text-[color:var(--bloc-title)] underline underline-offset-2"
+                  >
+                    valider dans la boîte d&apos;envoi
+                  </Link>
+                  .
+                </p>
+              </AdminBloc>
             )}
           </section>
         </>
