@@ -75,8 +75,38 @@ describe("lireFilDesEchanges", () => {
         questionnaire: { rencontreId: "r1" },
       },
     ]);
-    const fil = await lireFilDesEchanges("cl", "adm");
+    const { fil, sourcesEnPanne } = await lireFilDesEchanges("cl", "adm");
+    expect(sourcesEnPanne).toBe(0);
     expect(fil.map((x) => x.cle)).toEqual(["rdv:r1", "courrier:c1", "mail:l1", "outbox:o1"]);
+    expect(fil.find((x) => x.cle === "rdv:r1")?.etat).toBe("rendez-vous à venir");
+
+    // Ce que chaque source demande à la base (le coeur du filtre) et ce qu'elle ne lit JAMAIS.
+    const where = (m: { mock: { calls: unknown[][] } }): Record<string, unknown> =>
+      (m.mock.calls[0]![0] as { where: Record<string, unknown> }).where;
+    const select = (m: { mock: { calls: unknown[][] } }): Record<string, unknown> =>
+      (m.mock.calls[0]![0] as { select: Record<string, unknown> }).select;
+    expect(where(prismaMock.emailLog.findMany)).toEqual({ entityId: { in: ["r1", "q1"] } });
+    expect(where(prismaMock.emailOutbox.findMany)).toEqual({
+      clientId: "cl",
+      statut: { in: ["a_valider", "refuse"] },
+    });
+    const c = where(prismaMock.questionnaireAvantAuditCourrier.findMany);
+    expect(c["OR"]).toEqual([
+      { canal: "telegram" },
+      { statut: { in: ["prevu", "en_cours", "annule", "echec"] } },
+    ]);
+    expect(c["NOT"]).toEqual([{ canal: "journal" }, { nature: "essai" }]);
+    for (const m of [
+      prismaMock.rencontre.findMany,
+      prismaMock.emailLog.findMany,
+      prismaMock.emailOutbox.findMany,
+      prismaMock.questionnaireAvantAuditCourrier.findMany,
+    ]) {
+      const cles = Object.keys(select(m));
+      for (const interdit of ["recipient", "payload", "html", "text", "destinataireHash", "messagePersonnalise"]) {
+        expect(cles).not.toContain(interdit);
+      }
+    }
     const mail = fil.find((x) => x.cle === "mail:l1")!;
     expect(mail.titre).toBe("Avant votre audit");
     expect(mail.lien).toBe("/fr/adm/emails-envoyes/l1");
@@ -91,8 +121,13 @@ describe("lireFilDesEchanges", () => {
       { id: "o1", sujet: "S", statut: "a_valider", createdAt: new Date() },
     ]);
     prismaMock.questionnaireAvantAuditCourrier.findMany.mockRejectedValue(new Error("x"));
-    const fil = await lireFilDesEchanges("cl", "adm");
+    const warn = vi.spyOn(console, "warn").mockImplementation(() => undefined);
+    const { fil, sourcesEnPanne } = await lireFilDesEchanges("cl", "adm");
     expect(fil.map((x) => x.cle)).toEqual(["outbox:o1"]);
+    // La panne est comptée (et journalisée) : le fil ne passe pas pour « vide ».
+    expect(sourcesEnPanne).toBe(2);
+    expect(warn).toHaveBeenCalled();
+    warn.mockRestore();
   });
 });
 
@@ -103,6 +138,13 @@ describe("FilDesEchanges", () => {
     );
     expect(html).toContain("/fr/adm/emails-envoyes?client=cl");
     expect(html).toContain("11:05");
+  });
+  it("dit qu'il est incomplet quand une source est en panne, au lieu de « aucun échange »", () => {
+    const html = renderToStaticMarkup(
+      <FilDesEchanges fil={[]} sourcesEnPanne={2} clientId="cl" adminPrefix="adm" />,
+    );
+    expect(html).toContain("n&#x27;a pas pu être lue");
+    expect(html).not.toContain("Aucun échange");
   });
   it("dit quand il n'y a rien", () => {
     expect(

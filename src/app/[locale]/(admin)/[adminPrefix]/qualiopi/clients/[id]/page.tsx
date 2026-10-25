@@ -430,7 +430,12 @@ export default async function FicheClient360Page({ params, searchParams }: PageP
         />
         {/* Lot 1 fiche client, PR-3 : un fil unique (rendez-vous + e-mails + courriers du
             questionnaire), objet seulement. Le détail des comptes rendus reste dessous. */}
-        <FilDesEchanges fil={fil} clientId={id} adminPrefix={adminPrefix} />
+        <FilDesEchanges
+          fil={fil.fil}
+          sourcesEnPanne={fil.sourcesEnPanne}
+          clientId={id}
+          adminPrefix={adminPrefix}
+        />
         <OngletEchanges
           rencontres={rencontres}
           projets={projets}

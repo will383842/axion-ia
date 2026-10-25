@@ -10,6 +10,10 @@
  *   · les courriers du questionnaire non partis (prévus, annulés, retenus, en échec) et les
  *     messages Telegram : les courriers PARTIS sont déjà dans le journal des e-mails.
  *
+ * Limite dite : le fil porte les e-mails des RENDEZ-VOUS et du QUESTIONNAIRE de la fiche (rattachés par
+ * l'entité visée), plus tout e-mail de la file « à valider » de la fiche. Les autres familles (devis,
+ * factures, sessions) ne sont pas rattachées ici.
+ *
  * ⛔ Objet seulement : jamais le corps, jamais l'adresse du destinataire. Lecture seule.
  * Une lecture en panne rend sa part vide : le fil s'affiche avec ce qui reste.
  */
@@ -43,12 +47,29 @@ export function assemblerFil(parts: ReadonlyArray<ReadonlyArray<EchangeDuFil>>):
     .sort((a, b) => b.date.getTime() - a.date.getTime() || a.cle.localeCompare(b.cle));
 }
 
-export async function lireFilDesEchanges(
-  clientId: string,
-  adminPrefix: string,
-): Promise<EchangeDuFil[]> {
+export interface FilLu {
+  readonly fil: EchangeDuFil[];
+  /** Nombre de sources qui n'ont pas pu être lues : le fil est alors incomplet, et on le dit. */
+  readonly sourcesEnPanne: number;
+}
+
+const LIBELLE_STATUT_RENDEZ_VOUS: Readonly<Record<string, string>> = {
+  planifie: "à venir",
+  tenu: "a eu lieu",
+  annule: "annulé",
+  absent: "client absent",
+  reporte: "reporté",
+};
+
+export async function lireFilDesEchanges(clientId: string, adminPrefix: string): Promise<FilLu> {
   const base = `/fr/${adminPrefix}`;
-  const sans = async <T>(p: Promise<T[]>): Promise<T[]> => p.catch(() => [] as T[]);
+  let sourcesEnPanne = 0;
+  const sans = async <T>(p: Promise<T[]>): Promise<T[]> =>
+    p.catch((e: unknown) => {
+      sourcesEnPanne += 1;
+      console.warn("[fil-des-echanges] source illisible", e instanceof Error ? e.message : e);
+      return [] as T[];
+    });
 
   const rendezVous = sans(
     prisma.rencontre
@@ -65,7 +86,7 @@ export async function lireFilDesEchanges(
             genre: "rendez_vous",
             date: r.debutPrevu ?? r.createdAt,
             titre: r.titre,
-            etat: r.statut === null ? "rendez-vous" : `rendez-vous (${r.statut})`,
+            etat: r.statut === null ? "rendez-vous" : `rendez-vous ${LIBELLE_STATUT_RENDEZ_VOUS[r.statut] ?? r.statut}`,
             lien: `${base}/rendez-vous/rencontres/${r.id}`,
           }),
         ),
@@ -128,10 +149,13 @@ export async function lireFilDesEchanges(
       .findMany({
         where: {
           questionnaire: { rencontre: { clientId } },
-          OR: [{ canal: "telegram" }, { statut: { in: ["prevu", "en_cours", "annule", "retenu", "echec"] } }],
-          NOT: { canal: "journal" },
+          // « retenu » est exclu : l'e-mail retenu est déjà dans la file « à valider » (ligne
+          // « E-mail à valider »), puis dans le journal une fois validé. Les tests (nature « essai »)
+          // n'ont rien à faire dans le fil d'un client.
+          OR: [{ canal: "telegram" }, { statut: { in: ["prevu", "en_cours", "annule", "echec"] } }],
+          NOT: [{ canal: "journal" }, { nature: "essai" }],
         },
-        orderBy: { prevuLe: "desc" },
+        orderBy: [{ faitLe: { sort: "desc", nulls: "last" } }, { prevuLe: "desc" }],
         take: PAR_SOURCE,
         select: {
           id: true,
@@ -159,5 +183,6 @@ export async function lireFilDesEchanges(
       ),
   );
 
-  return assemblerFil(await Promise.all([rendezVous, emails, enAttente, courriers]));
+  const fil = assemblerFil(await Promise.all([rendezVous, emails, enAttente, courriers]));
+  return { fil, sourcesEnPanne };
 }
