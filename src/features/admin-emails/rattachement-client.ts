@@ -87,7 +87,8 @@ export async function clientsDesLignes(
     };
     for (const r of rencontres) poser(r.id, r.client);
     for (const q of questionnaires) poser(q.id, q.rencontre?.client ?? q.client);
-    for (const e of envois) poser(e.id, e.questionnaire.rencontre?.client ?? e.questionnaire.client);
+    for (const e of envois)
+      poser(e.id, e.questionnaire.rencontre?.client ?? e.questionnaire.client);
     for (const l of lignes) {
       const c = l.entityId === null ? undefined : parEntite.get(l.entityId);
       if (c) resultat.set(l.id, c);
