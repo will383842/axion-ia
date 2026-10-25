@@ -161,7 +161,7 @@ describe("synchro automatique du dossier client", () => {
         {
           ...c!,
           id: "p",
-          adresses: [{ email: "marie@gmail.com", nature: "perso", ajouteeLe: new Date() }],
+          adresses: [{ email: "marie@exemple.fr", nature: "perso", ajouteeLe: new Date() }],
         },
       ],
     };
