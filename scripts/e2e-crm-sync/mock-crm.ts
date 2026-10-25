@@ -42,6 +42,8 @@ const EVENT_TYPES = [
   // Lot L4-C du CRM / L4-S du site.
   "lead_magnet_requested",
   "email_hard_bounced",
+  // Synchro automatique du dossier client (25/10/2026).
+  "dossier_client_synchro",
 ];
 
 const FORM_TYPES = [
