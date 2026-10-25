@@ -122,7 +122,7 @@ export default async function QualiopiClientsPage({ params, searchParams }: Page
             defaultValue={recherche}
             placeholder="Raison sociale, SIRET, SIREN, n° de fiche, contact…"
             aria-label="Rechercher un client par raison sociale, SIRET, SIREN, numéro de fiche ou contact"
-            className="min-w-[16rem] flex-1 rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] px-[var(--space-admin-3)] py-[var(--space-admin-2)] text-[length:var(--text-admin-sm)]"
+            className="admin-input min-w-[16rem] flex-1"
           />
           <AdminButton type="submit" variant="secondary">
             Rechercher
@@ -265,22 +265,15 @@ export default async function QualiopiClientsPage({ params, searchParams }: Page
                     </AdminBadge>
                   </td>
                   <td className={cellCls}>
-                    <details>
-                      <summary className="cursor-pointer font-medium text-[color:var(--color-admin-accent)]">
-                        Modifier la branche
-                      </summary>
-                      <div className="mt-[var(--space-admin-2)]">
-                        <ClientBrancheForm
-                          id={client.id}
-                          idcc={client.idcc}
-                          taille={client.taille}
-                          suggestion={suggererOpco(client)}
-                          opco={client.opco}
-                          effectif={client.effectif}
-                          estParticulier={client.type === "particulier"}
-                        />
-                      </div>
-                    </details>
+                    <ClientBrancheForm
+                      id={client.id}
+                      idcc={client.idcc}
+                      taille={client.taille}
+                      suggestion={suggererOpco(client)}
+                      opco={client.opco}
+                      effectif={client.effectif}
+                      estParticulier={client.type === "particulier"}
+                    />
                   </td>
                 </tr>
               ))}
