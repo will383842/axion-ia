@@ -1,3 +1,4 @@
+import { profilDuTour, type ProfilDuTour } from "@/server/calendly/reponses-du-tour";
 import { hashEmailForLookup, normalizeEmail } from "@/lib/security/email-hash";
 import { familleHorsClients } from "@/server/calendly/appel-apporteur";
 import {
@@ -130,6 +131,12 @@ function lireNomTypeEvenement(payload: Record<string, unknown> | undefined): str
   return typeof slug === "string" && slug.trim() ? slug : null;
 }
 
+/** `{ profil }` pour la visio du Tour quand le formulaire en dit quelque chose, sinon rien. */
+function profilCrmDuTour(reponsesBrutes: unknown): { profil?: ProfilDuTour } {
+  const profil = profilDuTour(bornerReponsesCrm(reponsesBrutes));
+  return profil ? { profil } : {};
+}
+
 /**
  * Le payload d'un rendez-vous, mis au CONTRAT (chantier « Types de rendez-vous »,
  * 2026-10-04) : `eventTypeName`, `typeRendezVous` et `besoin` sont TOUJOURS
@@ -156,6 +163,9 @@ export function payloadRendezVousAuContrat(
     eventTypeName: nom ?? "Calendly",
     typeRendezVous: duTour ? "autre" : typeRendezVous,
     ...(duTour ? { circuit: "tour_de_france_ia" } : {}),
+    // Le profil lu dans le formulaire du Tour (secteur, taille, usage de l'IA…),
+    // ajouté à `reponses` sans rien retirer : clé libre, absente s'il n'y a rien.
+    ...(duTour ? profilCrmDuTour(reponsesBrutes) : {}),
     // Borné ici aussi, quel que soit l'appelant, et sans casser un emoji
     // (relecture A09) : un JSON invalide = 422 = rendez-vous perdu pour le CRM.
     besoin:
