@@ -63,7 +63,12 @@ describe("lireFilDesEchanges", () => {
       },
     ]);
     prismaMock.emailOutbox.findMany.mockResolvedValue([
-      { id: "o1", sujet: "Invitation : Audit", statut: "a_valider", createdAt: new Date("2026-10-25T09:30:00Z") },
+      {
+        id: "o1",
+        sujet: "Invitation : Audit",
+        statut: "a_valider",
+        createdAt: new Date("2026-10-25T09:30:00Z"),
+      },
     ]);
     prismaMock.questionnaireAvantAuditCourrier.findMany.mockResolvedValue([
       {
@@ -103,7 +108,14 @@ describe("lireFilDesEchanges", () => {
       prismaMock.questionnaireAvantAuditCourrier.findMany,
     ]) {
       const cles = Object.keys(select(m));
-      for (const interdit of ["recipient", "payload", "html", "text", "destinataireHash", "messagePersonnalise"]) {
+      for (const interdit of [
+        "recipient",
+        "payload",
+        "html",
+        "text",
+        "destinataireHash",
+        "messagePersonnalise",
+      ]) {
         expect(cles).not.toContain(interdit);
       }
     }
