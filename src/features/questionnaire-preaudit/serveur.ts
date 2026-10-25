@@ -23,6 +23,7 @@ import {
   type ChargeValide,
   type ReponseLisible,
 } from "./donnees";
+import { avecNouvelEssaiSurConflit } from "./conflit-concurrent";
 import { validerHtml } from "./html";
 import { lireLaCharge } from "./lecture";
 import { AUCUN_LIBELLE, libellesDuHtml, type Libelles } from "./libelles";
@@ -124,63 +125,65 @@ export async function deposerQuestionnaire(
 ): Promise<ResultatDepot> {
   const v = validerHtml(html);
   if (!v.ok) throw new MessagePourWill(v.motif);
-  return prisma.$transaction(async (tx): Promise<ResultatDepot> => {
-    const existant = await tx.questionnaireAvantAudit.findUnique({
-      where: { rencontreId },
-      select: { id: true, envoyeLe: true },
-    });
-    let ancienLienMort = false;
-    let emailsRejetes = 0;
-    if (existant !== null) {
-      await tx.$queryRaw`SELECT id FROM questionnaires_avant_audit WHERE id = ${existant.id}::uuid FOR UPDATE`;
-      if (existant.envoyeLe === null) {
-        await tx.questionnaireAvantAudit.update({ where: { id: existant.id }, data: { html } });
-        return { id: existant.id, ancienLienMort: false, emailsRejetes: 0 };
-      }
-      const refus = new MessagePourWill(
-        "Ce questionnaire a déjà reçu des réponses : il ne peut plus être remplacé. Pour écrire à " +
-          "quelqu'un d'autre, déposez un questionnaire sur la rencontre de cette personne.",
-      );
-      const reponses = await tx.questionnaireAvantAuditEnvoi.count({
-        where: { questionnaireId: existant.id },
+  return avecNouvelEssaiSurConflit(() =>
+    prisma.$transaction(async (tx): Promise<ResultatDepot> => {
+      const existant = await tx.questionnaireAvantAudit.findUnique({
+        where: { rencontreId },
+        select: { id: true, envoyeLe: true },
       });
-      if (reponses > 0) throw refus;
-      const brouillons = await tx.questionnaireAvantAuditBrouillon.count({
-        where: { questionnaireId: existant.id },
-      });
-      if (brouillons > 0) {
-        throw new MessagePourWill(
-          "Quelqu'un a déjà commencé à remplir ce questionnaire (brouillon enregistré) : le " +
-            "remplacer effacerait ce brouillon, il n'est donc pas remplacé. Attendez sa réponse, " +
-            "ou déposez un questionnaire sur la rencontre de la bonne personne.",
+      let ancienLienMort = false;
+      let emailsRejetes = 0;
+      if (existant !== null) {
+        await tx.$queryRaw`SELECT id FROM questionnaires_avant_audit WHERE id = ${existant.id}::uuid FOR UPDATE`;
+        if (existant.envoyeLe === null) {
+          await tx.questionnaireAvantAudit.update({ where: { id: existant.id }, data: { html } });
+          return { id: existant.id, ancienLienMort: false, emailsRejetes: 0 };
+        }
+        const refus = new MessagePourWill(
+          "Ce questionnaire a déjà reçu des réponses : il ne peut plus être remplacé. Pour écrire à " +
+            "quelqu'un d'autre, déposez un questionnaire sur la rencontre de cette personne.",
         );
+        const reponses = await tx.questionnaireAvantAuditEnvoi.count({
+          where: { questionnaireId: existant.id },
+        });
+        if (reponses > 0) throw refus;
+        const brouillons = await tx.questionnaireAvantAuditBrouillon.count({
+          where: { questionnaireId: existant.id },
+        });
+        if (brouillons > 0) {
+          throw new MessagePourWill(
+            "Quelqu'un a déjà commencé à remplir ce questionnaire (brouillon enregistré) : le " +
+              "remplacer effacerait ce brouillon, il n'est donc pas remplacé. Attendez sa réponse, " +
+              "ou déposez un questionnaire sur la rencontre de la bonne personne.",
+          );
+        }
+        const supprime = await tx.questionnaireAvantAudit.deleteMany({
+          where: { id: existant.id, envois: { none: {} }, brouillons: { none: {} } },
+        });
+        if (supprime.count === 0) throw refus;
+        // Les e-mails encore en attente portent l'ancien lien (mort) : REJETÉS, pas supprimés.
+        const rejetes = await tx.emailOutbox.updateMany({
+          where: {
+            entityType: "QuestionnaireAvantAudit",
+            entityId: existant.id,
+            statut: { in: ["a_valider", "approuve"] },
+          },
+          data: {
+            statut: "refuse",
+            refuseAt: new Date(),
+            refuseMotif: "Questionnaire redéposé : l'ancien lien n'existe plus.",
+          },
+        });
+        emailsRejetes = rejetes.count;
+        ancienLienMort = true;
       }
-      const supprime = await tx.questionnaireAvantAudit.deleteMany({
-        where: { id: existant.id, envois: { none: {} }, brouillons: { none: {} } },
+      const cree = await tx.questionnaireAvantAudit.create({
+        data: { rencontreId, html, ref: randomBytes(6).toString("hex") },
+        select: { id: true },
       });
-      if (supprime.count === 0) throw refus;
-      // Les e-mails encore en attente portent l'ancien lien (mort) : REJETÉS, pas supprimés.
-      const rejetes = await tx.emailOutbox.updateMany({
-        where: {
-          entityType: "QuestionnaireAvantAudit",
-          entityId: existant.id,
-          statut: { in: ["a_valider", "approuve"] },
-        },
-        data: {
-          statut: "refuse",
-          refuseAt: new Date(),
-          refuseMotif: "Questionnaire redéposé : l'ancien lien n'existe plus.",
-        },
-      });
-      emailsRejetes = rejetes.count;
-      ancienLienMort = true;
-    }
-    const cree = await tx.questionnaireAvantAudit.create({
-      data: { rencontreId, html, ref: randomBytes(6).toString("hex") },
-      select: { id: true },
-    });
-    return { id: cree.id, ancienLienMort, emailsRejetes };
-  });
+      return { id: cree.id, ancienLienMort, emailsRejetes };
+    }),
+  );
 }
 
 /** L'état d'avant un envoi, à rétablir tel quel si la mise en file échoue. */
@@ -281,68 +284,70 @@ export async function enregistrerReponse(
   charge: ChargeValide,
   maintenant: Date = new Date(),
 ): Promise<ResultatReponse> {
-  return prisma.$transaction(async (tx): Promise<ResultatReponse> => {
-    const verrou = await tx.$queryRaw<
-      { id: string }[]
-    >`SELECT id FROM questionnaires_avant_audit WHERE id = ${q.id}::uuid FOR UPDATE`;
-    if (verrou.length === 0) return "ferme";
-    const frais = await tx.questionnaireAvantAudit.findUnique({
-      where: { id: q.id },
-      select: { envoyeLe: true, closLe: true, expireLe: true },
-    });
-    if (frais === null || !accepteDesReponses(frais, maintenant)) return "ferme";
-    const membre = membreAGarder(q.id, charge.mode, charge.membre);
-    if (charge.envoyeLe !== null) {
-      const memes = await tx.questionnaireAvantAuditEnvoi.findMany({
-        where: {
+  return avecNouvelEssaiSurConflit(() =>
+    prisma.$transaction(async (tx): Promise<ResultatReponse> => {
+      const verrou = await tx.$queryRaw<
+        { id: string }[]
+      >`SELECT id FROM questionnaires_avant_audit WHERE id = ${q.id}::uuid FOR UPDATE`;
+      if (verrou.length === 0) return "ferme";
+      const frais = await tx.questionnaireAvantAudit.findUnique({
+        where: { id: q.id },
+        select: { envoyeLe: true, closLe: true, expireLe: true },
+      });
+      if (frais === null || !accepteDesReponses(frais, maintenant)) return "ferme";
+      const membre = membreAGarder(q.id, charge.mode, charge.membre);
+      if (charge.envoyeLe !== null) {
+        const memes = await tx.questionnaireAvantAuditEnvoi.findMany({
+          where: {
+            questionnaireId: q.id,
+            mode: charge.mode,
+            membre,
+            envoyeLeNavigateur: charge.envoyeLe,
+          },
+          select: { donnees: true },
+        });
+        // Doublon seulement si le CONTENU est identique, octet pour octet : une version modifiée
+        // portant le même `envoyeLe` n'est JAMAIS perdue (elle devient une nouvelle ligne).
+        const identique = memes.some((e) => {
+          try {
+            return dechiffrerParole(e.donnees) === charge.json;
+          } catch {
+            return false;
+          }
+        });
+        if (identique) return "doublon";
+      }
+      const n = await tx.questionnaireAvantAuditEnvoi.count({ where: { questionnaireId: q.id } });
+      if (n >= ENVOIS_MAX_PAR_QUESTIONNAIRE) return "trop";
+      await tx.questionnaireAvantAuditEnvoi.create({
+        data: {
           questionnaireId: q.id,
           mode: charge.mode,
           membre,
           envoyeLeNavigateur: charge.envoyeLe,
+          infosEmail: charge.infosEmail,
+          donnees: chiffrerParole(charge.json),
         },
-        select: { donnees: true },
       });
-      // Doublon seulement si le CONTENU est identique, octet pour octet : une version modifiée
-      // portant le même `envoyeLe` n'est JAMAIS perdue (elle devient une nouvelle ligne).
-      const identique = memes.some((e) => {
-        try {
-          return dechiffrerParole(e.donnees) === charge.json;
-        } catch {
-          return false;
-        }
-      });
-      if (identique) return "doublon";
-    }
-    const n = await tx.questionnaireAvantAuditEnvoi.count({ where: { questionnaireId: q.id } });
-    if (n >= ENVOIS_MAX_PAR_QUESTIONNAIRE) return "trop";
-    await tx.questionnaireAvantAuditEnvoi.create({
-      data: {
-        questionnaireId: q.id,
-        mode: charge.mode,
-        membre,
-        envoyeLeNavigateur: charge.envoyeLe,
-        infosEmail: charge.infosEmail,
-        donnees: chiffrerParole(charge.json),
-      },
-    });
-    // Réponse reçue : le brouillon de cette personne n'a plus lieu d'être (`brouillon.ts`).
-    // Dirigeant : seulement si la réponse est AUTHENTIFIÉE par son code.
-    const dirigeantAuthentifie =
-      charge.mode === "main" &&
-      charge.membre !== null &&
-      codeDirigeantPreauditValide(q.id, charge.membre);
-    if (charge.mode !== "main" || dirigeantAuthentifie) {
-      await tx.questionnaireAvantAuditBrouillon.deleteMany({
-        where:
-          charge.mode === "main"
-            ? { questionnaireId: q.id, mode: "main" }
-            : { questionnaireId: q.id, mode: charge.mode, membre: charge.membre ?? "" },
-      });
-    }
-    // Une nouvelle réponse repasse la fiche « à traiter » : la lecture précédente est périmée.
-    await tx.questionnaireAvantAudit.update({ where: { id: q.id }, data: { luLe: null } });
-    return "ok";
-  });
+      // Réponse reçue : le brouillon de cette personne n'a plus lieu d'être (`brouillon.ts`).
+      // Dirigeant : seulement si la réponse est AUTHENTIFIÉE par son code.
+      const dirigeantAuthentifie =
+        charge.mode === "main" &&
+        charge.membre !== null &&
+        codeDirigeantPreauditValide(q.id, charge.membre);
+      if (charge.mode !== "main" || dirigeantAuthentifie) {
+        await tx.questionnaireAvantAuditBrouillon.deleteMany({
+          where:
+            charge.mode === "main"
+              ? { questionnaireId: q.id, mode: "main" }
+              : { questionnaireId: q.id, mode: charge.mode, membre: charge.membre ?? "" },
+        });
+      }
+      // Une nouvelle réponse repasse la fiche « à traiter » : la lecture précédente est périmée.
+      await tx.questionnaireAvantAudit.update({ where: { id: q.id }, data: { luLe: null } });
+      return "ok";
+    }),
+  );
 }
 
 export async function marquerLu(id: string, userId: string): Promise<void> {
