@@ -9,7 +9,7 @@
 // guillemets. Aucun montant, aucun chiffre inventé, aucune promesse de résultat.
 // L'offre est dite en clair : audit et formation GRATUITS pour les entreprises de
 // l'étape, soirée à la charge de chacun, visio gratuite. Condition toujours visible
-// (DGCCRF) : gratuit, la ville s'ouvre de 5 entreprises côte à côte, sans frais
+// (DGCCRF) : gratuit, la ville s'ouvre dès 5 entreprises confirmées, sans frais
 // cachés. Le texte ne parle jamais de transaction à conclure : un test le garde.
 
 import { TOUR_PREFIX } from "@/features/tour-de-france/visibilite";
@@ -30,9 +30,9 @@ export const LIBELLE_CTA = "Je veux le Tour dans mon entreprise";
 export const MICRO_TEXTE_CTA = "Visio de 30 minutes · gratuite et sans engagement";
 
 /**
- * L'adresse du bouton, avec l'emplacement cliqué (`depuis`, mesuré en `utm_term`
+ * L'adresse du bouton, avec l'emplacement cliqué (`depuis`, mesuré en `utm_content`
  * chez Calendly). Les `utm_*` de l'arrivée sont ajoutés côté navigateur
- * (`CtaCollant.tsx`), pour que la page reste statique une fois ouverte.
+ * (`PiloteCta.tsx`), pour que la page reste statique une fois ouverte.
  */
 export function lienRendezVous(depuis: string): string {
   return `${CHEMIN_RENDEZ_VOUS}?depuis=${encodeURIComponent(depuis)}`;
@@ -43,7 +43,7 @@ export const OFFRE = "Un audit de 2 à 4 h et la formation de vos équipes, grat
 
 /** La condition qui accompagne « gratuit » — visible, jamais en note de bas de page. */
 export const CONDITION_GRATUITE =
-  "Gratuit pour les entreprises de l’étape. La ville s’ouvre dès que 5 entreprises ont confirmé, côte à côte, sans frais cachés.";
+  "Gratuit pour les entreprises de l’étape, sans frais cachés. La ville s’ouvre dès que 5 entreprises ont confirmé.";
 
 export const META = {
   titre: "Tour de France IA : audit et formation gratuits chez vous",
@@ -133,12 +133,12 @@ export const BENEFICES = {
     "Des équipes formées sur leurs propres tâches",
     "Un plan d’action pour la suite",
   ],
-  mention: "Estimations indicatives, sans engagement de résultat.",
+  mention: "Sans engagement de résultat.",
 } as const;
 
 export const FONDATEUR = {
   titre: "Qui organise ?",
-  ligne1: "Williams, fondateur du Tour de France IA et d’Axion-IA.",
+  ligne1: "Williams Jullin, fondateur du Tour de France IA et d’Axion-IA.",
   ligne2: "Il a imaginé le Tour pour faire venir l’IA dans les entreprises, chez elles.",
   lien: "Découvrir Williams",
   /** La fiche d'équipe d'Axion (`FOUNDER.pagePath`, servie en FR). */
@@ -156,12 +156,12 @@ export const FAQ = {
     {
       question: "Combien ça coûte ?",
       reponse:
-        "L’audit et la formation sont gratuits pour les entreprises de l’étape. La soirée réseau est à la charge de chacun. La visio de 30 minutes est gratuite. La ville s’ouvre dès que 5 entreprises ont confirmé, côte à côte, sans frais cachés.",
+        "L’audit et la formation sont gratuits pour les entreprises de l’étape. La soirée réseau est à la charge de chacun. La visio de 30 minutes est gratuite. La ville s’ouvre dès que 5 entreprises ont confirmé. Aucuns frais cachés.",
     },
     {
       question: "Pourquoi 5 entreprises ?",
       reponse:
-        "C’est le seuil pour qu’une étape ait lieu. Si votre ville n’atteint pas 5, vous restez en tête de liste pour la ville suivante.",
+        "C’est le seuil pour qu’une étape ait lieu. Si votre ville n’atteint pas 5, nous vous prévenons dès qu’une étape devient possible près de chez vous.",
     },
     {
       question: "Est-ce adapté à ma taille et à mon secteur ?",

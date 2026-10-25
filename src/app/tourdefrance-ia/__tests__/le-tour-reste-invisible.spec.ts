@@ -78,6 +78,8 @@ describe("🔑 le proxy capte la landing et ne la 301 jamais vers /fr", () => {
     expect(matcher.test("/tourdefrance-ia")).toBe(true);
     expect(matcher.test("/tourdefrance-ia/")).toBe(true);
     expect(matcher.test("/tourdefrance-ia/une-adresse-inconnue")).toBe(true);
+    expect(matcher.test("/tourdefrance-ia/opengraph-image.jpg")).toBe(true);
+    expect(matcher.test("/tourdefrance-ia/twitter-image.jpg")).toBe(true);
   });
 
   it("la règle 0-TDF passe AVANT 0a-bis (legacy) et 0bis (301 vers /fr)", () => {
@@ -382,17 +384,20 @@ describe("🔴 le contenu : mots interdits, typographie, SEO", () => {
     expect(texte.toLowerCase()).not.toContain(BRAND.taglineFr.toLowerCase());
   });
 
-  it("l'offre est COMMUNIQUÉE : « gratuit » exigé, toujours avec les 5 entreprises côte à côte, sans frais cachés", () => {
+  it("l'offre est COMMUNIQUÉE : « gratuit » exigé, toujours avec les 5 entreprises, sans frais cachés", () => {
     expect(texte).toMatch(/gratuit/i);
     expect(HEROS.sousTitre).toBe(
       "Un audit de 2 à 4 h et la formation de vos équipes, gratuits, chez vous.",
     );
     expect(CONDITION_GRATUITE).toMatch(/gratuit/i);
     expect(CONDITION_GRATUITE).toMatch(/5 entreprises/);
-    expect(CONDITION_GRATUITE).toMatch(/côte à côte/);
+    expect(META.description).toMatch(/5 entreprises/);
     expect(CONDITION_GRATUITE).toMatch(/sans frais cachés/);
     // La condition est visible : le héros l'affiche, elle n'est pas reléguée ailleurs.
-    expect(lire("src/app/tourdefrance-ia/page.tsx")).toContain("HEROS.condition");
+    const pageSource = lire("src/app/tourdefrance-ia/page.tsx");
+    expect(pageSource).toContain("HEROS.condition");
+    // …et elle suit immédiatement le sous-titre : « gratuit » et « 5 entreprises » restent ensemble.
+    expect(pageSource).toMatch(/\{HEROS\.sousTitre\}\s*<\/p>\s*<p[^>]*>\s*\{HEROS\.condition\}/);
     // Titre de page, description et FAQ portent l'offre.
     expect(META.titre).toMatch(/gratuit/i);
     expect(META.description).toMatch(/gratuit/i);
@@ -401,7 +406,7 @@ describe("🔴 le contenu : mots interdits, typographie, SEO", () => {
     expect(cout?.reponse).toMatch(/soirée réseau est à la charge de chacun/i);
     expect(cout?.reponse).toMatch(/visio de 30\s+minutes est gratuite/i);
     expect(cout?.reponse).toMatch(/5 entreprises/);
-    expect(cout?.reponse).toMatch(/sans frais cachés/);
+    expect(cout?.reponse).toMatch(/frais cachés/);
   });
 
   it("la frise a trois temps : audit gratuit le matin, formation gratuite l'après-midi, soirée à frais partagés", () => {
