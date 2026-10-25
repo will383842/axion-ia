@@ -74,6 +74,8 @@ describe("le questionnaire de pré-audit ne part que par un clic de Will", () =>
       ),
     ).map((f) => f.rel);
     expect(ecrivains.sort()).toEqual([
+      // Suppression MANUELLE depuis la console (Will, 25/10/2026) : super-admin + mot EFFACER.
+      "src/features/dossier-client/suppression-manuelle.ts",
       "src/features/questionnaire-preaudit/brouillon.ts",
       "src/features/questionnaire-preaudit/serveur.ts",
       "src/lib/rgpd-erase.ts",
@@ -113,6 +115,8 @@ describe("le questionnaire de pré-audit ne part que par un clic de Will", () =>
       ),
     ).map((f) => f.rel);
     expect(ecrivains.sort()).toEqual([
+      // Suppression MANUELLE depuis la console (Will, 25/10/2026) : super-admin + mot EFFACER.
+      "src/features/dossier-client/suppression-manuelle.ts",
       "src/features/questionnaire-preaudit/suivi-console.ts",
       "src/features/questionnaire-preaudit/suivi.ts",
       "src/lib/rgpd-erase.ts",

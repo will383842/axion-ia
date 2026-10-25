@@ -129,8 +129,11 @@ describe("conservation 5 ans : AUCUNE suppression automatique (décision de Will
 
   it("seuls des gestes de personnes suppriment (cliquet nominatif)", () => {
     // envoi réussi (brouillon de la personne), retrait de son accord (DELETE), redépôt de Will
-    // (questionnaire jamais envoyé), effacement RGPD de Will.
+    // (questionnaire jamais envoyé), effacement RGPD de Will, et (25/10/2026, demande EXPLICITE
+    // de Will : « il faut que la console sache supprimer ») la suppression MANUELLE depuis la
+    // console : super-administrateur seul, mot EFFACER, liste blanche, trace d'audit.
     const AUTORISES = [
+      "src/features/dossier-client/suppression-manuelle.ts",
       "src/features/questionnaire-preaudit/brouillon.ts",
       "src/features/questionnaire-preaudit/serveur.ts",
       "src/lib/rgpd-erase.ts",
@@ -140,6 +143,20 @@ describe("conservation 5 ans : AUCUNE suppression automatique (décision de Will
       .map(rel)
       .sort();
     expect(ecrivains.filter((p) => !AUTORISES.includes(p))).toEqual([]);
+  });
+
+  it("la suppression manuelle reste un geste : appelée par la seule action super-admin", () => {
+    const appelants = tous()
+      .filter((p) => /supprimerManuellement\(/.test(readFileSync(p, "utf8")))
+      .map(rel)
+      .sort();
+    expect(appelants).toEqual([
+      "src/features/dossier-client/actions-suppression.ts",
+      "src/features/dossier-client/suppression-manuelle.ts",
+    ]);
+    const action = lire("src/features/dossier-client/actions-suppression.ts");
+    expect(action).toContain('role !== "super_admin"');
+    expect(action).toContain("MOT_CONFIRMATION");
   });
 });
 

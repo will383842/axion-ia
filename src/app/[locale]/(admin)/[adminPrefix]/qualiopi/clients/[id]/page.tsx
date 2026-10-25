@@ -33,6 +33,8 @@
  */
 
 import type { Metadata } from "next";
+import { SuppressionManuelle } from "@/components/admin/dossier-client/SuppressionManuelle";
+import { adminPath } from "@/lib/admin-path";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Euro, CalendarDays, Users, Wallet } from "lucide-react";
@@ -268,6 +270,8 @@ interface PageProps {
     annuaire?: string;
     message?: string;
     releve?: string;
+    supprimer?: string;
+    sceau?: string;
   }>;
 }
 
@@ -531,6 +535,16 @@ export default async function FicheClient360Page({ params, searchParams }: PageP
       />
 
       <BandeauEtatFonds bandeau={bandeauFonds} />
+
+      {/* Suppression MANUELLE (Will, 25/10/2026) : super-administrateur seul, après confirmation. */}
+      <SuppressionManuelle
+        type="client"
+        id={client.id}
+        peutSupprimer={acces.role === "super_admin"}
+        page={adminPath("fr", `/qualiopi/clients/${client.id}`)}
+        ouvert={sp.supprimer === "client"}
+        erreur={erreur}
+      />
 
       {proches !== undefined ? (
         <FormateursProches resultat={proches} formateursBase={`${qBase}/formateurs`} />
