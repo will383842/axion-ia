@@ -1985,7 +1985,7 @@ function buildAdminNavSocle(adminPrefix: string): ReadonlyArray<AdminNavItem> {
     // corbeille d approbation et ne montre que 3 gabarits sur 44.
     {
       href: `${base}/emails-envoyes`,
-      label: "Envoyés",
+      label: "E-mails envoyés",
       icon: "MailCheck",
       group: "emails",
     },
