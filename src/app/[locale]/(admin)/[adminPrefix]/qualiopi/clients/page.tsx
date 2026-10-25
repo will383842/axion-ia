@@ -10,6 +10,9 @@ import Link from "next/link";
 
 import { AdminPageShell } from "@/components/admin/ui/AdminPageShell";
 import { AdminPageHeader } from "@/components/admin/ui/AdminPageHeader";
+import { AdminBadge } from "@/components/admin/ui/AdminBadge";
+import { AdminBloc } from "@/components/admin/ui/AdminBloc";
+import { AdminButton } from "@/components/admin/ui/AdminButton";
 import { AdminStatCard } from "@/components/admin/ui/AdminStatCard";
 import { ClientBrancheForm } from "@/components/admin/qualiopi/ClientBrancheForm";
 import { listClients } from "@/server/qualiopi/crm/clients";
@@ -35,6 +38,14 @@ const STATUT_LABELS: Record<string, string> = {
   client_actif: "Client actif",
   client_inactif: "Client inactif",
   perdu: "Perdu",
+};
+
+const TON_STATUT: Record<string, "neutral" | "warning" | "success"> = {
+  prospect: "neutral",
+  devis_envoye: "warning",
+  client_actif: "success",
+  client_inactif: "neutral",
+  perdu: "neutral",
 };
 
 // Le OPCO_LABELS local (5 entrées) a été supprimé : c'était un duplicat
@@ -89,31 +100,33 @@ export default async function QualiopiClientsPage({ params, searchParams }: Page
         description="CRM organisme de formation — entreprises (B2B) et particuliers (B2C). OPCO déduit de l'IDCC (source légale), à défaut du code NAF ; corrigeable par ligne."
       />
 
-      <div className="mb-[var(--space-admin-6)] flex flex-wrap items-center gap-[var(--space-admin-4)]">
-        <Link href={`/${locale}/${adminPrefix}/qualiopi/clients/new`} className="admin-button">
+      <div className="mb-[var(--space-admin-6)]">
+        <AdminButton href={`/${locale}/${adminPrefix}/qualiopi/clients/new`} size="lg">
           + Nouveau client
-        </Link>
+        </AdminButton>
+      </div>
 
-        {/*
-          Recherche en <form method="get"> : aucun JavaScript client.
-          Le terme vit dans l'URL, donc il se partage, se met en favori et
-          survit à un rechargement — trois choses qu'un filtre en état local
-          ne sait pas faire. C'est le serveur qui filtre, pas le navigateur :
-          avec 4 millions d'établissements collectés côté prospection, filtrer
-          après chargement ne tiendrait de toute façon pas.
-        */}
-        <form method="get" className="flex flex-1 gap-[var(--space-admin-2)]">
+      {/*
+        Recherche en <form method="get"> : aucun JavaScript client.
+        Le terme vit dans l'URL, donc il se partage, se met en favori et
+        survit à un rechargement — trois choses qu'un filtre en état local
+        ne sait pas faire. C'est le serveur qui filtre, pas le navigateur :
+        avec 4 millions d'établissements collectés côté prospection, filtrer
+        après chargement ne tiendrait de toute façon pas.
+      */}
+      <AdminBloc teinte="violet" titre="Chercher un client">
+        <form method="get" className="flex flex-wrap gap-[var(--space-admin-2)]">
           <input
             type="search"
             name="q"
             defaultValue={recherche}
-            placeholder="Rechercher : raison sociale, SIRET, SIREN, n° de fiche, contact…"
+            placeholder="Raison sociale, SIRET, SIREN, n° de fiche, contact…"
             aria-label="Rechercher un client par raison sociale, SIRET, SIREN, numéro de fiche ou contact"
-            className="min-w-[18rem] flex-1 rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] px-[var(--space-admin-3)] py-[var(--space-admin-2)] text-[length:var(--text-admin-sm)]"
+            className="min-w-[16rem] flex-1 rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] px-[var(--space-admin-3)] py-[var(--space-admin-2)] text-[length:var(--text-admin-sm)]"
           />
-          <button type="submit" className="admin-button-secondary">
+          <AdminButton type="submit" variant="secondary">
             Rechercher
-          </button>
+          </AdminButton>
           {recherche !== "" ? (
             <Link
               href={`/${locale}/${adminPrefix}/qualiopi/clients`}
@@ -123,7 +136,7 @@ export default async function QualiopiClientsPage({ params, searchParams }: Page
             </Link>
           ) : null}
         </form>
-      </div>
+      </AdminBloc>
 
       {recherche !== "" ? (
         <p className="mb-[var(--space-admin-4)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
@@ -153,9 +166,9 @@ export default async function QualiopiClientsPage({ params, searchParams }: Page
           title="Aucun client enregistré"
           description="Un client est nécessaire avant de créer une session ou d'émettre un devis."
           primaryAction={
-            <Link href={`/${locale}/${adminPrefix}/qualiopi/clients/new`} className="admin-button">
+            <AdminButton href={`/${locale}/${adminPrefix}/qualiopi/clients/new`}>
               + Nouveau client
-            </Link>
+            </AdminButton>
           }
         />
       ) : (
@@ -163,16 +176,13 @@ export default async function QualiopiClientsPage({ params, searchParams }: Page
           <table className="w-full border-collapse bg-[color:var(--color-admin-paper)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg)]">
             <thead className="border-b border-[color:var(--color-admin-border)]">
               <tr>
-                <th className={headCls}>Numéro</th>
-                <th className={headCls}>Raison sociale</th>
+                <th className={headCls}>Client</th>
                 <th className={headCls}>Type</th>
-                <th className={headCls}>SIRET</th>
-                <th className={headCls}>NAF</th>
-                <th className={headCls}>IDCC</th>
+                <th className={headCls}>Identifiants</th>
                 <th className={headCls}>Taille</th>
                 <th className={headCls}>OPCO inféré</th>
                 <th className={headCls}>Statut</th>
-                <th className={headCls}>Édition branche</th>
+                <th className={headCls}>Branche</th>
               </tr>
             </thead>
             <tbody>
@@ -184,9 +194,7 @@ export default async function QualiopiClientsPage({ params, searchParams }: Page
                   <td className={cellCls}>
                     <span className="font-mono text-[length:var(--text-admin-xs)]">
                       {client.numero}
-                    </span>
-                  </td>
-                  <td className={cellCls}>
+                    </span>{" "}
                     {/* Le nom ouvre la fiche 360° (vue d'ensemble : sessions,
                         devis, factures, encours). L'édition garde son accès
                         PROPRE juste à côté — la retirer referait de
@@ -220,25 +228,20 @@ export default async function QualiopiClientsPage({ params, searchParams }: Page
                     {client.type === "particulier" ? "Particulier" : "Entreprise"}
                   </td>
                   <td className={cellCls}>
-                    <span className="font-mono text-[length:var(--text-admin-xs)]">
-                      {client.siret ?? (
-                        <em className="text-[color:var(--color-admin-fg-muted)] not-italic">—</em>
-                      )}
-                    </span>
-                  </td>
-                  <td className={cellCls}>
-                    {client.nafCode ?? (
-                      <em className="text-[color:var(--color-admin-fg-muted)] not-italic">—</em>
-                    )}
-                  </td>
-                  <td className={cellCls}>
-                    {client.idcc ? (
-                      <span className="font-mono text-[length:var(--text-admin-xs)]">
-                        {client.idcc}
-                      </span>
-                    ) : (
-                      <em className="text-[color:var(--color-admin-fg-muted)] not-italic">—</em>
-                    )}
+                    <dl className="space-y-1 text-[length:var(--text-admin-xs)]">
+                      <div>
+                        <dt className="inline text-[color:var(--color-admin-fg-muted)]">SIRET </dt>
+                        <dd className="inline font-mono">{client.siret ?? "—"}</dd>
+                      </div>
+                      <div>
+                        <dt className="inline text-[color:var(--color-admin-fg-muted)]">NAF </dt>
+                        <dd className="inline">{client.nafCode ?? "—"}</dd>
+                      </div>
+                      <div>
+                        <dt className="inline text-[color:var(--color-admin-fg-muted)]">IDCC </dt>
+                        <dd className="inline font-mono">{client.idcc ?? "—"}</dd>
+                      </div>
+                    </dl>
                   </td>
                   <td className={cellCls}>
                     {client.taille ? (
@@ -257,34 +260,27 @@ export default async function QualiopiClientsPage({ params, searchParams }: Page
                     )}
                   </td>
                   <td className={cellCls}>
-                    {client.statut === "client_actif" ? (
-                      <span className="text-[color:var(--color-admin-success)]">
-                        ● {STATUT_LABELS[client.statut] ?? client.statut}
-                      </span>
-                    ) : client.statut === "prospect" ? (
-                      <span className="text-[color:var(--color-admin-fg-muted)]">
-                        ○ {STATUT_LABELS[client.statut] ?? client.statut}
-                      </span>
-                    ) : client.statut === "devis_envoye" ? (
-                      <span className="text-[color:var(--color-admin-warning)]">
-                        ◑ {STATUT_LABELS[client.statut] ?? client.statut}
-                      </span>
-                    ) : (
-                      <span className="text-[color:var(--color-admin-fg-muted)]">
-                        {STATUT_LABELS[client.statut] ?? client.statut}
-                      </span>
-                    )}
+                    <AdminBadge plein tone={TON_STATUT[client.statut] ?? "neutral"}>
+                      {STATUT_LABELS[client.statut] ?? client.statut}
+                    </AdminBadge>
                   </td>
                   <td className={cellCls}>
-                    <ClientBrancheForm
-                      id={client.id}
-                      idcc={client.idcc}
-                      taille={client.taille}
-                      suggestion={suggererOpco(client)}
-                      opco={client.opco}
-                      effectif={client.effectif}
-                      estParticulier={client.type === "particulier"}
-                    />
+                    <details>
+                      <summary className="cursor-pointer font-medium text-[color:var(--color-admin-accent)]">
+                        Modifier la branche
+                      </summary>
+                      <div className="mt-[var(--space-admin-2)]">
+                        <ClientBrancheForm
+                          id={client.id}
+                          idcc={client.idcc}
+                          taille={client.taille}
+                          suggestion={suggererOpco(client)}
+                          opco={client.opco}
+                          effectif={client.effectif}
+                          estParticulier={client.type === "particulier"}
+                        />
+                      </div>
+                    </details>
                   </td>
                 </tr>
               ))}
