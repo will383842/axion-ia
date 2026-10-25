@@ -55,16 +55,18 @@ export async function enregistrerGabaritBase(
     objet: assainirLigne(saisi.objet, OBJET_PERSO_MAX) || null,
     corps: surchargeOuNull(saisi.corps, CORPS_PAR_DEFAUT, CORPS_MAX),
   };
+  // Littéral (pas l'interface) : Prisma n'accepte qu'un objet JSON simple.
+  const value = { objet: base.objet, corps: base.corps };
   await prisma.setting.upsert({
     where: { key: CLE_GABARIT_INVITATION },
     create: {
       key: CLE_GABARIT_INVITATION,
-      value: base,
+      value,
       description:
         "Texte de base (objet et corps) de l'e-mail d'invitation au questionnaire avant audit.",
       updatedBy: userId,
     },
-    update: { value: base, updatedBy: userId },
+    update: { value, updatedBy: userId },
   });
   return base;
 }

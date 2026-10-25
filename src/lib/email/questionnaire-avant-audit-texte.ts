@@ -16,7 +16,8 @@ export const OBJET_PAR_DEFAUT = "Préparons votre audit : votre questionnaire";
 /** Bornes (caractères). L'objet reste lisible dans une boîte de réception. */
 export const OBJET_PERSO_MAX = 78;
 export const MESSAGE_MAX = 1200;
-export const CORPS_MAX = 4000;
+/** Borné aussi par l'adresse de la page d'aperçu (le texte y voyage) : 2 500 caractères y tiennent. */
+export const CORPS_MAX = 2500;
 export const PARAGRAPHES_MAX = 12;
 
 /**
@@ -30,7 +31,8 @@ export const CORPS_PAR_DEFAUT = [
   "Si vous travaillez avec une équipe, le questionnaire vous proposera un lien à transmettre à vos collaborateurs : chacun répond de son côté.",
 ].join("\n\n");
 
-const CONTROLES = /[\u0000-\u0008\u000B\u000C\u000E-\u001F\u007F\u2028\u2029]/g;
+const CONTROLES =
+  /[\u0000-\u0008\u000B\u000C\u000E-\u001F\u007F-\u009F\u2028\u2029\u202A-\u202E\u2066-\u2069]/g;
 
 /** Une ligne (objet) : une seule ligne, sans contrôle, bornée. Toute valeur non texte donne "". */
 export function assainirLigne(v: unknown, max: number): string {
@@ -80,7 +82,7 @@ export function surchargeOuNull(
 
 /** Le jeton {audit} remplacé par ce que l'appelant a pré-formaté (chaîne vide = retiré). */
 export function remplacerJetonAudit(paragraphe: string, prevu: string): string {
-  return paragraphe.split(JETON_AUDIT).join(prevu);
+  return paragraphe.replace(/\{\s*audit\s*\}/gi, prevu);
 }
 
 export interface GabaritBase {

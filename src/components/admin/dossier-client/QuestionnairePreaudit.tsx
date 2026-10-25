@@ -300,7 +300,7 @@ export async function QuestionnairePreaudit(props: {
               data-bloc="texte-email"
             >
               <label className={mutedCls} htmlFor="pa_objet">
-                Objet (laissez vide pour l&apos;objet automatique)
+                Objet (vide : objet de base, sinon objet automatique daté)
               </label>
               <input
                 id="pa_objet"
@@ -365,9 +365,13 @@ export async function QuestionnairePreaudit(props: {
                   <input type="hidden" name="rencontreId" value={rencontreId} />
                   <input type="hidden" name="destinataire" value={ap.email} />
                   <input type="hidden" name="prenom" value={ap.prenom} />
-                  <input type="hidden" name="texte_objet" value={ap.objet ?? ""} />
+                  <input
+                    type="hidden"
+                    name="texte_objet"
+                    value={ap.objet || (gabaritBase.objet ?? "")}
+                  />
                   <input type="hidden" name="texte_message" value={ap.message ?? ""} />
-                  <input type="hidden" name="texte_corps" value={ap.corps ?? ""} />
+                  <input type="hidden" name="texte_corps" value={ap.corps || corpsDeBase} />
                   <input type="hidden" name="date_audit" value={dateSaisie} />
                   <input type="hidden" name="lieu_audit" value={lieuAudit ?? ""} />
                   <label className="mb-[var(--space-admin-2)] flex items-start gap-[var(--space-admin-2)] text-[length:var(--text-admin-sm)]">

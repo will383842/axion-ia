@@ -108,3 +108,14 @@ describe("fusionnerTexte (client > base de Will > texte d'origine)", () => {
     });
   });
 });
+
+import { remplacerJetonAudit } from "../questionnaire-avant-audit-texte";
+
+describe("durcissements de la relecture", () => {
+  it("retire les contrôles C1 (NEL) et les inverseurs de sens", () => {
+    expect(assainirLigne("ab‮c", 50)).toBe("abc");
+  });
+  it("le jeton {audit} se reconnaît malgré la casse et les espaces", () => {
+    expect(remplacerJetonAudit("x{Audit}y{ audit }z", "!")).toBe("x!y!z");
+  });
+});

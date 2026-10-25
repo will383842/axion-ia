@@ -9,6 +9,7 @@ const m = vi.hoisted(() => ({
   upsert: vi.fn(async () => ({})),
   findMany: vi.fn(),
   casse: false,
+  acces: vi.fn(),
 }));
 
 vi.mock("@/lib/prisma", () => ({
@@ -24,6 +25,23 @@ vi.mock("@/lib/prisma", () => ({
   },
 }));
 
+vi.mock("@/features/dossier-client/acces", () => ({
+  exigerAccesEchanges: m.acces,
+  AccesRefuse: class extends Error {},
+}));
+vi.mock("next/cache", () => ({ revalidatePath: vi.fn() }));
+vi.mock("next/navigation", () => ({
+  redirect: (url: string) => {
+    throw new Error(`REDIRECT:${url}`);
+  },
+}));
+vi.mock("@/lib/admin-path", () => ({ adminPath: (_l: string, p: string) => `/admin${p}` }));
+vi.mock("@/lib/rgpd-erase", () => ({}));
+vi.mock("@/features/questionnaire-preaudit/envoyer", () => ({ envoyerQuestionnaire: vi.fn() }));
+vi.mock("@/features/questionnaire-preaudit/serveur", () => ({}));
+vi.mock("@/features/questionnaire-preaudit/suivi-console", () => ({ LIEU_MAX: 80 }));
+
+import { enregistrerGabaritInvitationAction } from "../actions";
 import { CORPS_PAR_DEFAUT } from "@/lib/email/questionnaire-avant-audit-texte";
 import {
   CLE_GABARIT_INVITATION,
@@ -118,5 +136,45 @@ describe("copies relues après coup", () => {
   it("ne lève jamais", async () => {
     m.findMany.mockRejectedValue(new Error("x"));
     expect(await lireCopiesInvitation("q1")).toEqual([]);
+  });
+});
+
+describe("enregistrerGabaritInvitationAction : l'écriture est réservée à Williams", () => {
+  const RDV = "22222222-2222-4222-8222-222222222222";
+  const form = (o: Record<string, string>) => {
+    const fd = new FormData();
+    fd.set("rencontreId", RDV);
+    for (const [k, v] of Object.entries(o)) fd.set(k, v);
+    return fd;
+  };
+  const lancer = async (fd: FormData): Promise<string> => {
+    try {
+      await enregistrerGabaritInvitationAction(fd);
+    } catch (e) {
+      return (e as Error).message;
+    }
+    return "";
+  };
+
+  it("un autre profil est refusé : rien n'est écrit", async () => {
+    m.acces.mockResolvedValue({ userId: "u2", role: "admin" });
+    const sortie = await lancer(form({ base_objet: "x", base_corps: "y" }));
+    expect(sortie).toMatch(/^REDIRECT:.*erreur=/);
+    expect(m.upsert).not.toHaveBeenCalled();
+  });
+
+  it("Williams écrit, avec son identifiant en updatedBy", async () => {
+    m.acces.mockResolvedValue({ userId: "u1", role: "super_admin" });
+    const sortie = await lancer(form({ base_objet: "Objet", base_corps: "Corps" }));
+    expect(sortie).toMatch(/^REDIRECT:.*message=/);
+    const arg = m.upsert.mock.calls[0] as unknown as [{ update: { updatedBy: string } }];
+    expect(arg[0].update.updatedBy).toBe("u1");
+  });
+
+  it("« revenir au texte d'origine » écrit des valeurs vides", async () => {
+    m.acces.mockResolvedValue({ userId: "u1", role: "super_admin" });
+    await lancer(form({ reinitialiser: "1", base_objet: "Objet", base_corps: "Corps" }));
+    const arg = m.upsert.mock.calls[0] as unknown as [{ update: { value: unknown } }];
+    expect(arg[0].update.value).toEqual({ objet: null, corps: null });
   });
 });
