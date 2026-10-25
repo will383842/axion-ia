@@ -35,7 +35,7 @@ import {
 } from "@/features/tour-de-france/porte";
 import { TOUR_PREFIX, TOUR_PUBLIC } from "@/features/tour-de-france/visibilite";
 
-import { FAQ, META, toutLeTexte } from "../contenu";
+import { CONDITION_GRATUITE, FAQ, HEROS, JOURNEE, META, toutLeTexte } from "../contenu";
 import { jsonLdDuTour } from "../jsonld";
 
 const RACINE = process.cwd();
@@ -343,6 +343,7 @@ describe("🔴 le contenu : mots interdits, typographie, SEO", () => {
   it("aucun mot interdit (texte ET sources)", () => {
     const interdits: RegExp[] = [
       /grenoble/i,
+      /r[ée]server/i,
       /devis/i,
       /palmar[eè]s/i,
       /ils en parlent/i,
@@ -381,13 +382,39 @@ describe("🔴 le contenu : mots interdits, typographie, SEO", () => {
     expect(texte.toLowerCase()).not.toContain(BRAND.taglineFr.toLowerCase());
   });
 
-  it("seule la VISIO est dite gratuite — jamais l'audit, la formation ni la journée", () => {
-    for (const phrase of texte.split(/(?<=[.!?])\s+|\n/)) {
-      if (/gratuit|offert/i.test(phrase)) {
-        expect(phrase, phrase).toMatch(/visio/i);
-        expect(phrase, phrase).not.toMatch(/audit|formation|journ[ée]e/i);
-      }
-    }
+  it("l'offre est COMMUNIQUÉE : « gratuit » exigé, toujours avec les 5 entreprises côte à côte, sans frais cachés", () => {
+    expect(texte).toMatch(/gratuit/i);
+    expect(HEROS.sousTitre).toBe(
+      "Un audit de 2 à 4 h et la formation de vos équipes, gratuits, chez vous.",
+    );
+    expect(CONDITION_GRATUITE).toMatch(/gratuit/i);
+    expect(CONDITION_GRATUITE).toMatch(/5 entreprises/);
+    expect(CONDITION_GRATUITE).toMatch(/côte à côte/);
+    expect(CONDITION_GRATUITE).toMatch(/sans frais cachés/);
+    // La condition est visible : le héros l'affiche, elle n'est pas reléguée ailleurs.
+    expect(lire("src/app/tourdefrance-ia/page.tsx")).toContain("HEROS.condition");
+    // Titre de page, description et FAQ portent l'offre.
+    expect(META.titre).toMatch(/gratuit/i);
+    expect(META.description).toMatch(/gratuit/i);
+    const cout = FAQ.questions.find((q) => /Combien/.test(q.question));
+    expect(cout?.reponse).toMatch(/audit et la formation sont gratuits/i);
+    expect(cout?.reponse).toMatch(/soirée réseau est à la charge de chacun/i);
+    expect(cout?.reponse).toMatch(/visio de 30\s+minutes est gratuite/i);
+    expect(cout?.reponse).toMatch(/5 entreprises/);
+    expect(cout?.reponse).toMatch(/sans frais cachés/);
+  });
+
+  it("la frise a trois temps : audit gratuit le matin, formation gratuite l'après-midi, soirée à frais partagés", () => {
+    expect(JOURNEE.moments.map((m) => m.titre)).toEqual([
+      "Audit gratuit le matin",
+      "Formation gratuite l’après-midi",
+      "Soirée réseau, chacun règle sa part",
+    ]);
+  });
+
+  it("jamais de vente à conclure ni de signature", () => {
+    expect(texte).not.toMatch(/signature|signer|\bvente\b|\bvendre\b|\bachat\b|tarif/i);
+    expect(sources).not.toMatch(/signature|\bvente\b|tarif/i);
   });
 
   it("typographie : apostrophe typographique, espace insécable avant : ; ? ! et « e-mail »", () => {
@@ -414,6 +441,14 @@ describe("🔴 le contenu : mots interdits, typographie, SEO", () => {
     ]);
     const serie = graphe[1] ?? {};
     expect(serie["organizer"]).toEqual({ "@id": expect.stringMatching(/\/#organization$/) });
+    // Le JSON-LD dit la même chose que le texte visible : gratuit, et la FAQ « coût » y figure.
+    expect(serie["isAccessibleForFree"]).toBe(true);
+    const faq = graphe[2] as {
+      mainEntity: Array<{ name: string; acceptedAnswer: { text: string } }>;
+    };
+    const cout = faq.mainEntity.find((q) => /Combien/.test(q.name));
+    expect(cout?.acceptedAnswer.text).toMatch(/gratuits/);
+    expect(cout?.acceptedAnswer.text).toMatch(/5 entreprises/);
     expect(serie["performer"]).toEqual({ "@id": expect.stringMatching(/#person$/) });
     const json = JSON.stringify(ld);
     expect(json).not.toMatch(/"@type":"(Person|Organization|Event|HowTo)"/);

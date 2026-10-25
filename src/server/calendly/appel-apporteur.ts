@@ -68,8 +68,8 @@ const TYPES_HORS_APPORTEUR = [
   "diagnostic",
   "echange_projet",
   "salon",
-  "tour_de_france_ia",
   "autre",
+  "tour_de_france_ia",
 ] as const;
 
 /** Clause historique, nom seul : « SEULEMENT les échanges apporteur ». */

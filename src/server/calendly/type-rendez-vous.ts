@@ -56,8 +56,8 @@ export const TYPES_RENDEZ_VOUS = [
   "echange_projet",
   "apporteur",
   "salon",
-  "tour_de_france_ia",
   "autre",
+  "tour_de_france_ia",
 ] as const;
 
 export type TypeRendezVous = (typeof TYPES_RENDEZ_VOUS)[number];
@@ -68,11 +68,11 @@ export const LIBELLES_TYPE_RENDEZ_VOUS: Readonly<Record<TypeRendezVous, string>>
   echange_projet: "Échange projet",
   apporteur: "Apporteur",
   salon: "Salon",
-  tour_de_france_ia: "Tour de France IA",
   autre: "Autre",
+  tour_de_france_ia: "Tour de France IA",
 };
 
-/** Vrai si la valeur est l'un des cinq types. */
+/** Vrai si la valeur est l'un des types classés. */
 export function estTypeRendezVous(valeur: unknown): valeur is TypeRendezVous {
   return typeof valeur === "string" && (TYPES_RENDEZ_VOUS as readonly string[]).includes(valeur);
 }
@@ -145,18 +145,23 @@ function normaliserNom(nom: string): string {
     .trim();
 }
 
+/**
+ * Le nom qui désigne la visio du Tour de France IA : « Tour de France IA », ou son
+ * slug « tour-de-france-ia ». Les tirets sont normalisés avant la comparaison.
+ */
+export function estVisioTourDeFranceIa(nom: string | null | undefined): boolean {
+  if (!nom || !nom.trim()) return false;
+  return normaliserNom(nom).includes("tour de france ia");
+}
+
 /** Morceaux de nom qui désignent un échange projet. « premier contact » = slug de l'iframe. */
 const MOTS_ECHANGE_PROJET = ["discutons de votre projet", "echange projet", "premier contact"];
-
-/** Vrai si le nom (normalisé) désigne la visio du Tour de France IA. */
-export function estVisioTourDeFranceIaParNom(nom: string | null | undefined): boolean {
-  return !!nom && normaliserNom(nom).includes("tour de france ia");
-}
 
 /**
  * Classement par le NOM seul — repli, et règle de la reprise SQL.
  *
- * Ordre : apporteur, salon (sans apporteur), diagnostic, échange projet, autre.
+ * Ordre : apporteur, salon (sans apporteur), Tour de France IA, diagnostic, échange
+ * projet, autre.
  * Les deux premiers réutilisent les règles existantes (`estAppelApporteur`,
  * `estRdvSalon`) pour qu'il n'existe qu'une définition de chaque mot-clé.
  */
@@ -164,8 +169,8 @@ export function classerParNom(nom: string | null | undefined): TypeRendezVous {
   if (!nom || !nom.trim()) return "autre";
   if (estAppelApporteur(nom)) return "apporteur";
   if (estRdvSalon(nom)) return "salon";
+  if (estVisioTourDeFranceIa(nom)) return "tour_de_france_ia";
   const n = normaliserNom(nom);
-  if (n.includes("tour de france ia")) return "tour_de_france_ia";
   if (n.includes("diagnostic")) return "diagnostic";
   if (MOTS_ECHANGE_PROJET.some((m) => n.includes(m))) return "echange_projet";
   return "autre";
@@ -213,6 +218,7 @@ export function tableDesTypesConnus(
     }
     const slug = chemin.split("/").pop() ?? "";
     if (slug.includes("salon")) table.set(uri, "salon");
+    else if (slug.includes("tour-de-france")) table.set(uri, "tour_de_france_ia");
   }
   return table;
 }
@@ -359,6 +365,29 @@ export function besoinDesReponses(questionsAndAnswers: unknown): string | null {
     }
   }
   return null;
+}
+
+/**
+ * La VILLE indiquée dans le formulaire de la visio du Tour de France IA : la
+ * réponse à la question dont le libellé contient « ville » (ou « localité »).
+ * Bornée comme le besoin. `null` s'il n'y en a pas.
+ */
+export function villeDesReponses(questionsAndAnswers: unknown): string | null {
+  if (!Array.isArray(questionsAndAnswers)) return null;
+  for (const qa of questionsAndAnswers) {
+    const o = objet(qa);
+    const q = o?.["question"];
+    const a = o?.["answer"];
+    if (typeof q !== "string" || typeof a !== "string" || !a.trim()) continue;
+    const libelle = normaliserNom(q);
+    if (/\b(ville|localite|commune)\b/.test(libelle)) return couperTexte(a.trim(), 80);
+  }
+  return null;
+}
+
+/** La ville lue dans `raw_payload` (ligne enrichie), ou `null`. */
+export function villeDuBrut(rawPayload: unknown): string | null {
+  return villeDesReponses(questionsDuBrut(rawPayload));
 }
 
 /** Le besoin lu dans `raw_payload` (ligne enrichie), ou `null`. */

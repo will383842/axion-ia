@@ -7,7 +7,10 @@
 // Règles de rédaction : vouvoiement, phrases courtes, apostrophe typographique
 // (’), espace insécable ( ) avant « : ; ? ! » et à l'intérieur des
 // guillemets. Aucun montant, aucun chiffre inventé, aucune promesse de résultat.
-// Seule la VISIO est dite gratuite — jamais l'audit ni la formation.
+// L'offre est dite en clair : audit et formation GRATUITS pour les entreprises de
+// l'étape, soirée à la charge de chacun, visio gratuite. Condition toujours visible
+// (DGCCRF) : gratuit, la ville s'ouvre de 5 entreprises côte à côte, sans frais
+// cachés. Le texte ne parle jamais de transaction à conclure : un test le garde.
 
 import { TOUR_PREFIX } from "@/features/tour-de-france/visibilite";
 
@@ -35,10 +38,17 @@ export function lienRendezVous(depuis: string): string {
   return `${CHEMIN_RENDEZ_VOUS}?depuis=${encodeURIComponent(depuis)}`;
 }
 
+/** L'offre, en une phrase : affichée en grand sous le titre. */
+export const OFFRE = "Un audit de 2 à 4 h et la formation de vos équipes, gratuits, chez vous.";
+
+/** La condition qui accompagne « gratuit » — visible, jamais en note de bas de page. */
+export const CONDITION_GRATUITE =
+  "Gratuit pour les entreprises de l’étape. La ville s’ouvre dès que 5 entreprises ont confirmé, côte à côte, sans frais cachés.";
+
 export const META = {
-  titre: "Tour de France IA : l’IA vient dans votre entreprise",
+  titre: "Tour de France IA : audit et formation gratuits chez vous",
   description:
-    "Une ville s’ouvre à notre passage dès 5 entreprises. Chez chacune : audit le matin, formation de vos équipes l’après-midi. Visio de 30 min.",
+    "Audit de 2 à 4 h et formation de vos équipes, gratuits, chez vous. La ville s’ouvre dès 5 entreprises confirmées, sans frais cachés.",
   /** Chemin canonique (sans barre finale : `trailingSlash` est faux sur tout le site). */
   chemin: TOUR_PREFIX,
   /**
@@ -57,35 +67,35 @@ export const HEROS = {
   titreAvant: "L’IA fait le ",
   titreAccent: "tour",
   titreApres: " de France.",
-  sousTitre:
-    "Une ville s’ouvre à notre passage dès que 5 entreprises ont confirmé. Chez chacune : un audit le matin, la formation de vos équipes l’après-midi.",
+  sousTitre: OFFRE,
+  condition: CONDITION_GRATUITE,
 } as const;
 
 /** La définition citable, en texte visible (GEO). */
 export const DEFINITION =
-  "Le Tour de France IA est un événement organisé par Axion-IA, fondé par Williams Jullin. Une ville s’ouvre dès que 5 entreprises ont confirmé leur participation. Chaque entreprise reçoit alors sa journée : un audit le matin (2 à 4 h), la formation de ses équipes l’après-midi (4 h). Le vendredi soir, une soirée réseau réunit les entreprises de l’étape.";
+  "Le Tour de France IA est un événement organisé par Axion-IA, fondé par Williams Jullin. Une ville s’ouvre dès que 5 entreprises ont confirmé leur participation. Chaque entreprise reçoit alors sa journée chez elle : un audit gratuit le matin (2 à 4 h), la formation gratuite de ses équipes l’après-midi (4 h). Le vendredi soir, une soirée réseau réunit les entreprises de l’étape, chacun règle sa part.";
 
 export const JOURNEE = {
   titre: "Votre journée",
   moments: [
     {
-      moment: "Matin",
-      titre: "L’audit chez vous",
-      duree: "2 à 4 h",
+      moment: "Temps 1",
+      titre: "Audit gratuit le matin",
+      duree: "2 à 4 h",
       texte:
         "Nous regardons comment votre entreprise travaille et repérons où l’IA vous fait gagner du temps.",
     },
     {
-      moment: "Après-midi",
-      titre: "La formation de vos équipes",
-      duree: "4 h",
+      moment: "Temps 2",
+      titre: "Formation gratuite l’après-midi",
+      duree: "4 h",
       texte: "Vos équipes repartent avec des usages concrets, pour leurs propres tâches.",
     },
     {
-      moment: "Vendredi soir",
-      titre: "La soirée réseau",
-      duree: "Réseau",
-      texte: "Retrouvez les autres entreprises de l’étape. Chacun règle sa part.",
+      moment: "Temps 3",
+      titre: "Soirée réseau, chacun règle sa part",
+      duree: "Vendredi soir",
+      texte: "Retrouvez les autres entreprises de l’étape, au restaurant.",
     },
   ],
 } as const;
@@ -141,12 +151,12 @@ export const FAQ = {
     {
       question: "C’est quoi le Tour de France IA ?",
       reponse:
-        "Un événement organisé par Axion-IA. Une ville s’ouvre dès que 5 entreprises ont confirmé. Chacune reçoit sa journée : un audit le matin, la formation de ses équipes l’après-midi.",
+        "Un événement organisé par Axion-IA. Une ville s’ouvre dès que 5 entreprises ont confirmé. Chacune reçoit sa journée chez elle : un audit gratuit le matin, la formation gratuite de ses équipes l’après-midi.",
     },
     {
       question: "Combien ça coûte ?",
       reponse:
-        "La visio de 30 minutes est gratuite et sans engagement. Nous détaillons les conditions de la journée lors de cet échange.",
+        "L’audit et la formation sont gratuits pour les entreprises de l’étape. La soirée réseau est à la charge de chacun. La visio de 30 minutes est gratuite. La ville s’ouvre dès que 5 entreprises ont confirmé, côte à côte, sans frais cachés.",
     },
     {
       question: "Pourquoi 5 entreprises ?",
@@ -199,6 +209,8 @@ export function toutLeTexte(): string {
     META.description,
     META.imageAlt,
     ...Object.values(HEROS),
+    OFFRE,
+    CONDITION_GRATUITE,
     DEFINITION,
     JOURNEE.titre,
     ...JOURNEE.moments.flatMap((m) => [m.moment, m.titre, m.duree, m.texte]),

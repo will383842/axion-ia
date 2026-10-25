@@ -80,6 +80,18 @@ export function lireDepuis(valeur: unknown): string | null {
   return v;
 }
 
+/** La source UTM du Tour de France IA : posée quand l'arrivée n'en porte aucune. */
+export const UTM_SOURCE_TOUR = "tour-de-france-ia";
+
+/**
+ * La source UTM à retenir pour un choix quand ni l'URL ni le cookie n'en portent.
+ * Seul le Tour en a une : ses réservations se retrouvent ainsi dans « Rendez-vous
+ * par origine » même sans campagne. Une source déjà connue n'est jamais remplacée.
+ */
+export function utmSourceParDefaut(choix: ChoixRendezVous): string | null {
+  return choix === "tour" ? UTM_SOURCE_TOUR : null;
+}
+
 /** Le type de rendez-vous visé par un choix. */
 export function typeDuChoix(choix: ChoixRendezVous): TypeRendezVous {
   return configDuChoix(choix).type;
@@ -349,22 +361,6 @@ export async function urlDeReprogrammation(rdv: RendezVousAReprogrammer): Promis
   // ici sur le type appel — ce que seul l'écran « sur place » du report masquait.
   const choix = choixDuTypeRendezVous(type);
   return choix ? urlConfigureeDuChoix(choix) : urlCalendlyAppel();
-}
-
-/** La source de provenance d'une réservation du Tour quand aucune UTM ne la dit. */
-export const UTM_SOURCE_TOUR = "tour-de-france-ia";
-
-/**
- * Une réservation du Tour de France IA sans `utm_source` (ni arrivée ni cookie)
- * porte tout de même sa source : « tour-de-france-ia ». Une source déjà posée
- * (une campagne) n'est jamais écrasée ; les autres choix ne changent pas.
- */
-export function avecSourceDuChoix<T extends { utmSource: string | null }>(
-  choix: ChoixRendezVous,
-  provenance: T,
-): T {
-  if (choix !== "tour" || provenance.utmSource) return provenance;
-  return { ...provenance, utmSource: UTM_SOURCE_TOUR };
 }
 
 /** Vrai si le nom de l'événement Calendly désigne la visio du Tour de France IA. */

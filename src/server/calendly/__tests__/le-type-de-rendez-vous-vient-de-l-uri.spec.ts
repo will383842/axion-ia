@@ -73,16 +73,16 @@ describe("le module est le miroir de l'enum Prisma", () => {
       "echange_projet",
       "apporteur",
       "salon",
-      "tour_de_france_ia",
       "autre",
+      "tour_de_france_ia",
     ]);
     expect(LIBELLES_TYPE_RENDEZ_VOUS).toEqual({
       diagnostic: "Diagnostic IA",
       echange_projet: "Échange projet",
       apporteur: "Apporteur",
       salon: "Salon",
-      tour_de_france_ia: "Tour de France IA",
       autre: "Autre",
+      tour_de_france_ia: "Tour de France IA",
     });
   });
 });

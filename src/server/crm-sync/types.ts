@@ -116,11 +116,10 @@ export type CrmFormType = (typeof CRM_FORM_TYPES)[number];
  *   · `besoin`         — réponse à la question « service » / « besoin », ou `null`.
  * Lot L5b (champ AJOUTÉ, rien de retiré) :
  *   · `reponses`       — les réponses du questionnaire, pour `diagnostic` et
- *                        `echange_projet` et `tour_de_france_ia` SEULEMENT (absent sinon) : au plus 10,
+ *                        `echange_projet` SEULEMENT (absent sinon) : au plus 10,
  *                        question ≤ 120 caractères, réponse ≤ 300, téléphone écarté.
  */
-export type CrmTypeRendezVous =
-  "diagnostic" | "echange_projet" | "salon" | "tour_de_france_ia" | "autre";
+export type CrmTypeRendezVous = "diagnostic" | "echange_projet" | "salon" | "autre";
 
 export interface CrmPayloadRendezVous {
   eventTypeName: string;

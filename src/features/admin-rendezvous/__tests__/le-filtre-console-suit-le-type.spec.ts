@@ -114,8 +114,8 @@ describe("listRendezVous — filtre par type", () => {
       echange_projet: 2,
       apporteur: 2,
       salon: 2,
-      tour_de_france_ia: 0,
       autre: 1,
+      tour_de_france_ia: 0,
     });
   });
 
@@ -154,8 +154,8 @@ describe("passeLeFiltre / compterParType", () => {
       echange_projet: 0,
       apporteur: 0,
       salon: 1,
-      tour_de_france_ia: 0,
       autre: 0,
+      tour_de_france_ia: 0,
     });
   });
 });

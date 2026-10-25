@@ -63,8 +63,8 @@ const TYPES_HORS_SALON = [
   "diagnostic",
   "echange_projet",
   "apporteur",
-  "tour_de_france_ia",
   "autre",
+  "tour_de_france_ia",
 ] as const;
 
 /** Clause historique, nom seul : « SEULEMENT les rendez-vous salon ». */

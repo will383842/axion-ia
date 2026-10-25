@@ -54,7 +54,11 @@ import type { TypeRendezVous } from "@/server/calendly/type-rendez-vous";
 export const CHOIX_RENDEZ_VOUS = ["diagnostic", "projet", "apporteur", "salon"] as const;
 
 /**
- * Les rendez-vous réservables SANS type propre en base — classés `autre`,
+ * Les rendez-vous réservables HORS des quatre historiques. L'échange formateur est
+ * classé `autre` ; la visio du Tour de France IA a, depuis le 2026-10-27, son type
+ * propre (`tour_de_france_ia`) — elle reste ici parce que la liste des quatre est
+ * figée par les tests du parcours, et `choixDuTypeRendezVous` la retrouve par son type.
+ * Historique : rendez-vous réservables SANS type propre en base — classés `autre`,
  * reconnus par le NOM de l'événement (2026-10-09, lot F-CAL-1 : l'échange
  * formateur ; l'enum n'a pas de valeur « formateur » et ce lot ne migre rien).
  * Ils ont leur page, leur adresse et leur lien d'e-mail, mais `autre` ne les
@@ -249,12 +253,10 @@ export const TYPES_RESERVABLES: Readonly<Record<ChoixRendezVous, ConfigRendezVou
     variable: "CALENDLY_FORMATEUR_URL",
   },
   // 2026-10-25 — la visio de la landing du Tour de France IA (`/tourdefrance-ia`).
-  // Type PROPRE en base (`tour_de_france_ia`, migration du 2026-10-27) : le nom de
-  // l'événement chez Calendly ne contient ni « apporteur » ni « formateur », donc la
-  // réservation reste dans les familles CLIENT — fiche prospect dans la console,
-  // CRM des ventes, et nos e-mails (confirmation, J-1, H-1). Les lignes écrites
-  // avant la migration restent `autre` : `estVisioTourParNom` les reconnaît encore.
-  // Lien privé : jamais listée sur l'écran du choix d'`/appel`.
+  // Type PROPRE `tour_de_france_ia` (migration du 2026-10-27) : la réservation reste
+  // dans les familles CLIENT — fiche prospect dans la console, CRM des ventes (sous
+  // `autre`, avec la clé `circuit`), et ses propres e-mails (confirmation, J-1,
+  // H-1). Lien privé : jamais listée sur l'écran du choix d'`/appel`.
   // 🔴 Aucun prix, et seule la VISIO est dite gratuite.
   tour: {
     choix: "tour",

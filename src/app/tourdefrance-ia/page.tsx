@@ -124,8 +124,11 @@ export default async function TourDeFranceIaPage() {
                 <span className="text-terracotta not-italic">{HEROS.titreAccent}</span>
                 {HEROS.titreApres}
               </h1>
-              <p className="text-fg-soft mt-6 max-w-xl text-lg leading-relaxed sm:text-xl">
+              <p className="text-fg mt-6 max-w-xl font-serif text-2xl leading-snug font-medium sm:text-3xl">
                 {HEROS.sousTitre}
+              </p>
+              <p className="text-fg-soft mt-4 max-w-xl text-base leading-relaxed">
+                {HEROS.condition}
               </p>
               <div className="mt-8 flex flex-col gap-3 sm:items-start">
                 <BoutonRendezVous depuis="tdf-heros" id={ID_CTA_HEROS} />

@@ -168,7 +168,10 @@ export interface PayloadAppel {
    * le message générique d'hier — jamais une erreur.
    */
   typeRendezVous?: string;
-  /** Le service choisi pour un échange projet (« Formation »…), s'il est connu. */
+  /**
+   * Le service choisi pour un échange projet (« Formation »…), s'il est connu ; pour
+   * la visio du Tour de France IA, la VILLE indiquée dans le formulaire.
+   */
   besoin?: string;
 }
 
@@ -203,9 +206,10 @@ interface VarianteType {
   readonly puceRienAPreparer: (besoin: string | null) => string;
 }
 
-const VARIANTES_FR: Readonly<
-  Record<"diagnostic" | "echange_projet" | "tour_de_france_ia", VarianteType>
-> = {
+/** Les types qui ont leur propre variante française. */
+type TypeAvecVariante = "diagnostic" | "echange_projet" | "tour_de_france_ia";
+
+const VARIANTES_FR: Readonly<Record<TypeAvecVariante, VarianteType>> = {
   diagnostic: {
     eyebrow: "Diagnostic IA gratuit",
     objetConfirme: "Diagnostic IA :",
@@ -249,24 +253,26 @@ const VARIANTES_FR: Readonly<
         ? `Rien à préparer : nous partons de votre projet et du service choisi (${b}).`
         : "Rien à préparer : nous partons de votre projet.",
   },
-  // Visio de 30 minutes du Tour de France IA (2026-10-25). Ton chaleureux,
-  // vouvoiement. On dit « participer », jamais un prix ni une promesse de résultat.
+  // La visio de 30 minutes du Tour de France IA (2026-10-25) : modèle de l'appel de
+  // découverte, ton chaleureux. Ici `besoin` porte la VILLE lue dans le formulaire.
+  // Rien de vendu, rien de chiffré : on annonce une prise de contact.
   tour_de_france_ia: {
     eyebrow: "Tour de France IA",
     objetConfirme: "Tour de France IA :",
     objetConfirmeSansDate: "Votre visio Tour de France IA est confirmée",
-    objetJ1: (h) =>
-      objetCompose("Rappel :", h ? `Tour de France IA demain, ${h}` : "Tour de France IA demain"),
+    objetJ1: (h) => objetCompose("Tour de France IA :", h ? `visio demain à ${h}` : "visio demain"),
     objetH1: (h) =>
-      objetCompose("Tour de France IA :", h ? `dans une heure, à ${h}` : "dans une heure"),
+      objetCompose("Tour de France IA :", h ? `visio dans 1 h, à ${h}` : "visio dans une heure"),
     titreJ1: "Votre visio Tour de France IA a lieu demain",
     titreH1: "Votre visio Tour de France IA a lieu dans une heure",
-    deroule: () =>
-      "Merci de votre intérêt pour le Tour de France IA, nous sommes ravis de vous retrouver. Pendant ces 30 minutes en visio, nous faisons connaissance, nous vous présentons le Tour, puis vous décidez, sans engagement, si vous souhaitez y participer.",
-    attendu: () =>
-      "Rien à préparer. Nous sommes ravis d'échanger avec vous sur le Tour de France IA.",
+    deroule: (b) =>
+      `Merci de votre intérêt pour le Tour de France IA. ${b ? `Votre ville : ${b}. ` : ""}Nous faisons connaissance, nous vous présentons le Tour, et vous décidez ensuite, à votre rythme, si vous confirmez votre participation.`,
+    attendu: (b) =>
+      b
+        ? `Rien à préparer. Nous faisons connaissance et nous vous présentons le Tour de France IA, pour votre ville : ${b}.`
+        : "Rien à préparer. Nous faisons connaissance et nous vous présentons le Tour de France IA.",
     puceRienAPreparer: () =>
-      "Rien d'autre à préparer : nous faisons connaissance et nous vous présentons le Tour de France IA.",
+      "Rien à préparer : nous faisons connaissance et nous vous présentons le Tour de France IA.",
   },
 };
 
@@ -718,6 +724,10 @@ function lignesRecap(
   const besoin =
     varianteDe(locale, p) && p.typeRendezVous === "echange_projet" ? besoinDe(p) : null;
   if (besoin) lignes.push({ libelle: "Service choisi", valeur: besoin });
+  // Tour de France IA : la ville indiquée dans le formulaire, portée par `besoin`.
+  const ville =
+    varianteDe(locale, p) && p.typeRendezVous === "tour_de_france_ia" ? besoinDe(p) : null;
+  if (ville) lignes.push({ libelle: "Votre ville", valeur: ville });
 
   const lieu = texteOuNull(p.lieu);
 

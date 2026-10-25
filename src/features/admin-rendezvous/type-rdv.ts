@@ -31,8 +31,8 @@ export const TEINTE_TYPE_RDV: Readonly<Record<TypeRendezVous, string | null>> = 
   echange_projet: "bleu",
   apporteur: "violet",
   salon: "magenta",
-  tour_de_france_ia: "teal",
   autre: null,
+  tour_de_france_ia: "vert",
 };
 
 /** Les types proposés en onglet, dans l'ordre d'affichage (« Autre » à part). */
@@ -66,8 +66,8 @@ export function passeLeFiltre(type: TypeRendezVous, filtre: PublicRdv | undefine
     return (
       type === "diagnostic" ||
       type === "echange_projet" ||
-      type === "tour_de_france_ia" ||
-      type === "autre"
+      type === "autre" ||
+      type === "tour_de_france_ia"
     );
   return type === filtre;
 }

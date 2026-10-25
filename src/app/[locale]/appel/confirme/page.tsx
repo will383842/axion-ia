@@ -262,9 +262,13 @@ export default async function ConfirmePage({ params, searchParams }: Props) {
   // des LIBELLÉS, et seulement pour un rendez-vous non classé — un `rdv=` forgé
   // ne peut rien faire d'autre que renommer l'écran.
   const formateur = (type === null || type === "autre") && choixTransmis === "formateur";
-  // La visio du Tour de France IA (2026-10-25), classée `autre` elle aussi : même
-  // règle, elle ne change que le NOM affiché (le reste est l'écran client).
-  const tour = (type === null || type === "autre") && choixTransmis === "tour";
+  // La visio du Tour de France IA (2026-10-25) a son type propre (`tour_de_france_ia`).
+  // Les réservations d'avant la migration sont encore `autre` : le choix transmis par
+  // notre formulaire les reconnaît, et ne peut rien faire d'autre que changer les
+  // textes de l'écran.
+  const tour =
+    type === "tour_de_france_ia" ||
+    ((type === null || type === "autre") && choixTransmis === "tour");
   // Lot B (M25) : nos e-mails de l'échange formateur (F3, F4) ne sont annoncés que
   // s'ils partent vraiment (suivi allumé, textes validés). Sinon, comme avant.
   const nosEmails = formateur ? await nosEmailsPourEchangeFormateur() : false;
@@ -342,7 +346,9 @@ function Confirme({
               ? nosEmails
                 ? "Vous allez recevoir notre confirmation par e-mail, puis l'invitation d'agenda avec le lien de la visioconférence."
                 : "Vous allez recevoir l'invitation d'agenda par e-mail, avec le lien de la visioconférence."
-              : "Vous allez recevoir un e-mail de confirmation, avec le lien pour annuler ou déplacer si besoin."
+              : tour
+                ? "Vous allez recevoir un e-mail de confirmation, avec le lien pour annuler ou déplacer si besoin. Pendant la visio, nous faisons connaissance et nous vous présentons le Tour de France IA."
+                : "Vous allez recevoir un e-mail de confirmation, avec le lien pour annuler ou déplacer si besoin."
           }
         />
       ) : (
@@ -385,6 +391,7 @@ function Confirme({
         format={detail?.format ?? "inconnu"}
         type={type}
         formateur={formateur}
+        tour={tour}
         nosEmails={nosEmails}
       />
     </>
@@ -534,11 +541,14 @@ function CeQuiSePasseMaintenant({
   format,
   type,
   formateur,
+  tour = false,
   nosEmails = false,
 }: {
   format: DetailEvenement["format"];
   type: TypeRendezVous | null;
   formateur: boolean;
+  /** Visio du Tour de France IA : une étape de plus, ce que la visio apporte. */
+  tour?: boolean;
   nosEmails?: boolean;
 }) {
   // 🔴 Un échange formateur ne reçoit AUCUN de nos e-mails — ni confirmation, ni
@@ -582,6 +592,17 @@ function CeQuiSePasseMaintenant({
   const etapes = formateur
     ? etapesFormateur
     : [
+        // La visio du Tour de France IA : rien à préparer, on le dit.
+        ...(tour
+          ? [
+              {
+                Picto: Video,
+                titre: "Une visio pour faire connaissance",
+                corps:
+                  "Rien à préparer. Nous vous présentons le Tour de France IA, puis vous décidez si vous confirmez votre participation.",
+              },
+            ]
+          : []),
         // Le diagnostic se PRÉPARE (chantier « Types de rendez-vous », L2) : on y
         // arrive avec des exemples concrets, c'est ce qui donne de bonnes pistes.
         ...(type === "diagnostic"
