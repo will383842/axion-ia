@@ -87,6 +87,13 @@ describe("l'action de suppression manuelle", () => {
     expect(u).toContain("/fr/admin/qualiopi/clients?message=Supprimé : 1 fiche client.");
   });
 
+  it("double clic : « déjà supprimé » vers la liste, jamais une page disparue (404)", async () => {
+    m.supprimer.mockResolvedValue({ ok: true, compteurs: [], dejaSupprime: true });
+    const u = await redirection(formulaire(base));
+    expect(u).toContain("/fr/admin/qualiopi/clients?message=Déjà supprimé");
+    expect(u).not.toContain(`clients/${ID}`);
+  });
+
   it("type ou identifiant inconnu, page extérieure : rien n'est appelé", async () => {
     expect(await redirection(formulaire({ ...base, type: "facture" }))).toBe(
       "REDIRECT:/fr/admin/rendez-vous",

@@ -12,6 +12,7 @@ import {
   ADRESSE_INTERNE,
   bilanSuppression,
   MESSAGE_BLOQUE,
+  STATUTS_ENVOI_REEL,
   supprimerManuellement,
 } from "../suppression-manuelle";
 
@@ -22,9 +23,16 @@ const RID = "22222222-2222-4222-8222-222222222222";
 const QID = "33333333-3333-4333-8333-333333333333";
 const ADMIN = "44444444-4444-4444-8444-444444444444";
 
+interface Fk {
+  table: string;
+  colonne: string;
+  cible?: string | null;
+  n?: number;
+}
+
 interface Etat {
   /** table visée → ses clés étrangères (ce que rend le catalogue). */
-  fks: Record<string, Array<{ table: string; colonne: string }>>;
+  fks: Record<string, Fk[]>;
   /** table liée → nombre de lignes HORS de nos lignes. */
   comptes: Record<string, number>;
   destinataire: string;
@@ -33,25 +41,42 @@ interface Etat {
   appels: string[];
   sql: Array<{ sql: string; params: unknown[] }>;
   trace: Ligne | null;
+  /** Journal ordonné : verrous (`verrou:<table>`), comptages (`compte:<table>`), suppressions. */
+  journal: string[];
+  /** Fiche / rencontre introuvables (double clic). */
+  disparu: boolean;
+  /** Ce que rendent les `deleteMany` (0 = rien supprimé). */
+  supprimeN: number;
 }
 
 let e: Etat;
 
 function fabriquer() {
-  const supprime = (nom: string) => vi.fn(async () => (e.appels.push(nom), { count: 1 }));
+  const supprime = (nom: string) =>
+    vi.fn(
+      async () => (e.appels.push(nom), e.journal.push(`supprime:${nom}`), { count: e.supprimeN }),
+    );
   const tx = {
-    $queryRaw: vi.fn(async (_s: TemplateStringsArray, table: string) => e.fks[table] ?? []),
+    $queryRaw: vi.fn(async (_s: TemplateStringsArray, table: string) =>
+      (e.fks[table] ?? []).map((f) => ({ cible: "id", n: 1, ...f })),
+    ),
     $queryRawUnsafe: vi.fn(async (sql: string, ...params: unknown[]) => {
-      e.sql.push({ sql, params });
       const table = /FROM (\S+) WHERE/.exec(sql)?.[1] ?? "";
+      if (sql.includes("FOR UPDATE")) {
+        e.journal.push(`verrou:${table}`);
+        return table === "rencontres" ? [{ id: RID }] : [{ id: "x" }];
+      }
+      e.sql.push({ sql, params });
+      e.journal.push(`compte:${table}`);
       return [{ n: e.comptes[table] ?? 0 }];
     }),
     client: {
-      findUnique: vi.fn(async () => ({
-        raisonSociale: "TEST-QUESTIONNAIRE",
-        contactEmail: "test@exemple-fictif.fr",
-      })),
-      delete: supprime("client"),
+      findUnique: vi.fn(async () =>
+        e.disparu
+          ? null
+          : { raisonSociale: "TEST-QUESTIONNAIRE", contactEmail: "test@exemple-fictif.fr" },
+      ),
+      deleteMany: supprime("client"),
     },
     clientContact: {
       findMany: vi.fn(async () => [{ id: "c1" }]),
@@ -95,7 +120,7 @@ function fabriquer() {
       count: vi.fn(async () => 4),
       deleteMany: supprime("courriers"),
     },
-    emailLog: { count: vi.fn(async () => e.emailsReels) },
+    emailLog: { count: vi.fn(async (_a: { where: Ligne }) => e.emailsReels) },
     activityLog: {
       create: vi.fn(async (a: { data: Ligne }) => {
         e.trace = a.data;
@@ -138,6 +163,9 @@ beforeEach(() => {
     appels: [],
     sql: [],
     trace: null,
+    journal: [],
+    disparu: false,
+    supprimeN: 1,
   };
 });
 
@@ -234,6 +262,109 @@ describe("suppression manuelle depuis la console", () => {
     for (const contenu of ["TEST-QUESTIONNAIRE", "test@exemple-fictif.fr", ADRESSE_INTERNE]) {
       expect(t).not.toContain(contenu);
     }
+  });
+
+  it("verrouille (FOR UPDATE) tout le périmètre AVANT de calculer le bilan", async () => {
+    const { base } = fabriquer();
+    await supprimerManuellement(
+      { type: "client", id: CID, acteurId: ADMIN, confirmation: "EFFACER" },
+      base,
+    );
+    const verrous = e.journal.filter((j) => j.startsWith("verrou:"));
+    expect(verrous).toEqual([
+      "verrou:clients",
+      "verrou:rencontres",
+      "verrou:client_contacts",
+      "verrou:questionnaires_avant_audit",
+      "verrou:rencontre_participants",
+      "verrou:rencontre_suivis",
+      "verrou:questionnaires_avant_audit_envois",
+    ]);
+    const dernierVerrou = e.journal.lastIndexOf(verrous[verrous.length - 1] as string);
+    const premierCompte = e.journal.findIndex((j) => j.startsWith("compte:"));
+    expect(dernierVerrou).toBeLessThan(premierCompte);
+  });
+
+  it("une ligne écrite par le worker (enregistrement, compte rendu…) est VUE : refus, rien supprimé", async () => {
+    e.fks["rencontres"]?.push(
+      { table: "enregistrements", colonne: "rencontre_id" },
+      { table: "traitements_visio", colonne: "rencontre_id" },
+      { table: "emails_suivi", colonne: "rencontre_id" },
+    );
+    e.fks["clients"]?.push(
+      { table: "client_idcc_controles", colonne: "client_id" },
+      { table: "email_automation_settings", colonne: "client_id" },
+    );
+    e.comptes = { enregistrements: 1, client_idcc_controles: 1, email_automation_settings: 1 };
+    const { base } = fabriquer();
+    const r = await supprimerManuellement(
+      { type: "client", id: CID, acteurId: ADMIN, confirmation: "EFFACER" },
+      base,
+    );
+    expect(r.ok).toBe(false);
+    if (!r.ok) {
+      expect(r.motif).toContain("enregistrement(s) de visio");
+      expect(r.motif).toContain("client_idcc_controles");
+      expect(r.motif).toContain("email_automation_settings");
+    }
+    expect(e.appels).toEqual([]);
+    expect(e.trace).toBeNull();
+  });
+
+  it("un e-mail envoyé, rebondi OU en attente vers un vrai prospect bloque (contacts compris)", async () => {
+    expect([...STATUTS_ENVOI_REEL].sort()).toEqual(["bounced", "pending", "sent"]);
+    const { tx, base } = fabriquer();
+    await bilanSuppression("client", CID, base);
+    const appels = tx.emailLog.count.mock.calls.map((c) => c[0].where);
+    for (const w of appels) {
+      expect(w["status"]).toEqual({ in: ["sent", "bounced", "pending"] });
+    }
+    // La fiche : son id ET ceux de ses contacts.
+    expect(
+      appels.some((w) => JSON.stringify(w["entityId"]) === JSON.stringify({ in: [CID, "c1"] })),
+    ).toBe(true);
+  });
+
+  it("une clé composée, ou qui vise une autre colonne qu'id, n'est pas devinée : refus", async () => {
+    e.fks["clients"]?.push(
+      { table: "lignes_composees", colonne: "client_id", n: 2 },
+      { table: "lignes_par_code", colonne: "client_code", cible: "code" },
+      { table: "lignes_cible_inconnue", colonne: "client_id", cible: null },
+    );
+    const { base } = fabriquer();
+    const bilan = await bilanSuppression("client", CID, base);
+    expect(bilan?.bloquants).toEqual(
+      expect.arrayContaining([
+        "lien non vérifiable depuis la console (table lignes_composees)",
+        "lien non vérifiable depuis la console (table lignes_par_code)",
+        "lien non vérifiable depuis la console (table lignes_cible_inconnue)",
+      ]),
+    );
+    // Jamais compté comme si la colonne visée était `id`.
+    expect(e.sql.some((x) => x.sql.includes("lignes_"))).toBe(false);
+  });
+
+  it("double clic : déjà supprimé, rien supprimé ni tracé", async () => {
+    e.disparu = true;
+    const { base } = fabriquer();
+    const r = await supprimerManuellement(
+      { type: "client", id: CID, acteurId: ADMIN, confirmation: "EFFACER" },
+      base,
+    );
+    expect(r).toEqual({ ok: true, compteurs: [], dejaSupprime: true });
+    expect(e.appels).toEqual([]);
+    expect(e.trace).toBeNull();
+  });
+
+  it("rien n'a été effacé par les suppressions (0 ligne) : aucune trace d'audit", async () => {
+    e.supprimeN = 0;
+    const { base } = fabriquer();
+    const r = await supprimerManuellement(
+      { type: "rencontre", id: RID, acteurId: ADMIN, confirmation: "EFFACER" },
+      base,
+    );
+    expect(r).toEqual({ ok: true, compteurs: [], dejaSupprime: true });
+    expect(e.trace).toBeNull();
   });
 
   it("questionnaire seul : la rencontre et la fiche restent", async () => {

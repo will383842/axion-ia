@@ -17,8 +17,17 @@
  *     Une cascade vers une table hors périmètre est donc impossible : elle n'aurait rien à suivre ;
  *   · un e-mail réellement parti vers une autre adresse que contact@axion-ia.com (un vrai
  *     prospect) bloque aussi : ces données passent par l'effacement RGPD, pas par ici ;
- *   · le bilan est RECALCULÉ dans la transaction de suppression (rien ne change entre l'écran et
- *     le clic sans être revu) ;
+ *   · le bilan est RECALCULÉ dans la transaction de suppression, APRÈS avoir verrouillé
+ *     (`SELECT … FOR UPDATE`) les lignes visées : fiche, rencontres, questionnaires, réponses,
+ *     participants, contacts. Une écriture concurrente du worker (enregistrement, traitement
+ *     de visio, compte rendu, e-mail de suivi, contrôle IDCC…) pose sur la ligne parente un
+ *     verrou `FOR KEY SHARE`, qui ATTEND notre fin : soit elle est déjà validée et le bilan la
+ *     voit (elle bloque), soit elle arrive après et échoue sur sa clé étrangère. Jamais une
+ *     ligne n'est emportée en silence par une cascade ;
+ *   · une clé étrangère qui ne vise pas la seule colonne attendue (`id`, clé composée…) n'est
+ *     pas devinée : elle BLOQUE (« lien non vérifiable ») ;
+ *   · un double clic ne trace rien : « déjà supprimé », aucune ligne d'audit si rien n'est
+ *     supprimé ;
  *   · une trace d'audit (`activity_logs`, jamais purgée) dit qui, quand, quoi et combien, SANS
  *     contenu (ni nom, ni adresse, ni réponse) ;
  *   · les e-mails déjà partis restent dans `email_logs` (rien n'y est touché).
@@ -78,21 +87,36 @@ const nomTable = (t: string) => NOMS_TABLES[t.replace(/"/g, "")] ?? `table ${t}`
 
 const ident = (s: string) => `"${s.replace(/"/g, '""')}"`;
 
+interface CleEtrangere {
+  readonly table: string;
+  readonly colonne: string;
+  /** La colonne VISÉE dans `table` (attendue : `id`, ou la clé primaire donnée). */
+  readonly cible: string | null;
+  /** Nombre de colonnes de la clé : seule une clé à UNE colonne est vérifiable ici. */
+  readonly n: number;
+}
+
 /**
- * Les clés étrangères qui visent `table` : la colonne qui pointe vers `id`, lue dans le catalogue
- * (clés composées comprises). Rien n'est supposé : une table ajoutée demain est vue demain.
+ * TOUTES les clés étrangères qui visent `table`, lues dans le catalogue : rien n'est supposé, une
+ * table ajoutée demain est vue demain. La première colonne de chaque côté, et leur nombre : une clé
+ * composée, ou qui vise une autre colonne que celle attendue, sera REFUSÉE (`liensHorsPerimetre`).
  */
-async function clesEtrangeres(
-  tx: Tx,
-  table: string,
-): Promise<ReadonlyArray<{ table: string; colonne: string }>> {
-  return tx.$queryRaw<{ table: string; colonne: string }[]>`
-    SELECT c.conrelid::regclass::text AS "table", a.attname AS colonne
+async function clesEtrangeres(tx: Tx, table: string): Promise<ReadonlyArray<CleEtrangere>> {
+  const lignes = await tx.$queryRaw<
+    Array<{ table: string; colonne: string; cible: string | null; n: number | null }>
+  >`
+    SELECT c.conrelid::regclass::text AS "table", a.attname AS colonne,
+           cible.attname AS cible, cardinality(c.conkey)::int AS n
     FROM pg_constraint c
-    JOIN pg_attribute cible ON cible.attrelid = c.confrelid AND cible.attname = 'id'
-    JOIN pg_attribute a ON a.attrelid = c.conrelid
-      AND a.attnum = c.conkey[COALESCE(array_position(c.confkey, cible.attnum), 1)]
+    JOIN pg_attribute a ON a.attrelid = c.conrelid AND a.attnum = c.conkey[1]
+    LEFT JOIN pg_attribute cible ON cible.attrelid = c.confrelid AND cible.attnum = c.confkey[1]
     WHERE c.contype = 'f' AND c.confrelid = to_regclass(${table})`;
+  return lignes.map((l) => ({
+    table: l.table,
+    colonne: l.colonne,
+    cible: l.cible ?? null,
+    n: Number(l.n ?? 0),
+  }));
 }
 
 /**
@@ -110,10 +134,17 @@ async function liensHorsPerimetre(
   table: string,
   ids: readonly string[],
   nos: Nos,
+  /** La colonne que les lignes à supprimer exposent aux clés étrangères (sa clé primaire). */
+  colonneCible = "id",
 ): Promise<string[]> {
   if (ids.length === 0) return [];
   const sortie: string[] = [];
   for (const fk of await clesEtrangeres(tx, table)) {
+    if (fk.n !== 1 || fk.cible !== colonneCible) {
+      // Clé composée, ou qui vise une autre colonne : on ne devine pas, on refuse.
+      sortie.push(`lien non vérifiable depuis la console (${nomTable(fk.table)})`);
+      continue;
+    }
     const regle = nos.get(`${fk.table.replace(/"/g, "")}.${fk.colonne}`);
     if (regle === true) continue;
     const exclusion =
@@ -129,13 +160,18 @@ async function liensHorsPerimetre(
   return sortie;
 }
 
-/** Un e-mail RÉEL (pas un essai) parti vers une autre adresse que contact@ : un vrai prospect. */
+/**
+ * Un e-mail RÉEL (pas un essai) parti, rebondi ou EN COURS d'envoi vers une autre adresse que
+ * contact@ : un vrai prospect. Seul un échec définitif (`failed`) ne compte pas.
+ */
+export const STATUTS_ENVOI_REEL = ["sent", "bounced", "pending"] as const;
+
 async function envoisReels(tx: Tx, ids: readonly string[]): Promise<number> {
   if (ids.length === 0) return 0;
   return tx.emailLog.count({
     where: {
       entityId: { in: [...ids] },
-      status: "sent",
+      status: { in: [...STATUTS_ENVOI_REEL] },
       NOT: [{ recipient: ADRESSE_INTERNE }, { entityType: "QuestionnaireAvantAuditEssai" }],
     },
   });
@@ -244,6 +280,12 @@ async function partiesRencontre(tx: Tx, rid: string, p: Parties): Promise<void> 
     ["rencontre_suivis.rencontre_id", TOUT],
   ]);
   p.bloquants.push(...(await liensHorsPerimetre(tx, "rencontres", [rid], nosR)));
+  // Le suivi de rendez-vous part par la cascade : ce qui le vise (clé `rencontre_id`) bloque.
+  if (r.suivi !== null) {
+    p.bloquants.push(
+      ...(await liensHorsPerimetre(tx, "rencontre_suivis", [rid], new Map(), "rencontre_id")),
+    );
+  }
   p.bloquants.push(
     ...(await liensHorsPerimetre(
       tx,
@@ -286,7 +328,8 @@ async function partiesClient(tx: Tx, cid: string, p: Parties): Promise<void> {
       new Map([["rencontre_participants.contact_id", nosRencontres]]),
     )),
   );
-  const reels = await envoisReels(tx, [cid]);
+  // Les e-mails rattachés à la fiche ET à chacun de ses contacts.
+  const reels = await envoisReels(tx, [cid, ...p.contactIds]);
   if (reels > 0) p.bloquants.push(`${reels} e-mail(s) parti(s) à un prospect réel`);
 }
 
@@ -362,8 +405,55 @@ export async function bilanSuppression(
 }
 
 export type ResultatSuppression =
-  | { readonly ok: true; readonly compteurs: ReadonlyArray<Compteur> }
+  | {
+      readonly ok: true;
+      readonly compteurs: ReadonlyArray<Compteur>;
+      /** Vrai si rien n'existait plus (double clic) : rien supprimé, rien tracé. */
+      readonly dejaSupprime?: boolean;
+    }
   | { readonly ok: false; readonly motif: string };
+
+const DEJA_SUPPRIME: ResultatSuppression = { ok: true, compteurs: [], dejaSupprime: true };
+
+/** `SELECT … FOR UPDATE` des lignes de `table` dont `colonne` vaut l'un des `ids` ; leurs ids. */
+async function verrouiller(
+  tx: Tx,
+  table: string,
+  colonne: string,
+  ids: readonly string[],
+  rendue = "id",
+): Promise<string[]> {
+  if (ids.length === 0) return [];
+  const lignes = await tx.$queryRawUnsafe<Array<{ id?: unknown }>>(
+    `SELECT ${ident(rendue)}::text AS id FROM ${table} WHERE ${ident(colonne)}::text = ANY($1::text[]) FOR UPDATE`,
+    [...ids],
+  );
+  return lignes.map((l) => l.id).filter((x): x is string => typeof x === "string");
+}
+
+/**
+ * Verrouille, du parent vers les enfants, tout ce que la suppression touche : aucune ligne fille
+ * ne peut plus s'y rattacher avant la fin de la transaction (voir l'en-tête).
+ */
+async function verrouillerLePerimetre(tx: Tx, type: TypeCible, id: string): Promise<void> {
+  let rids: string[] = [];
+  let qids: string[] = [];
+  if (type === "client") {
+    await verrouiller(tx, "clients", "id", [id]);
+    rids = await verrouiller(tx, "rencontres", "client_id", [id]);
+    await verrouiller(tx, "client_contacts", "client_id", [id]);
+  } else if (type === "rencontre") {
+    rids = await verrouiller(tx, "rencontres", "id", [id]);
+  } else {
+    qids = await verrouiller(tx, "questionnaires_avant_audit", "id", [id]);
+  }
+  if (rids.length > 0) {
+    qids = await verrouiller(tx, "questionnaires_avant_audit", "rencontre_id", rids);
+    await verrouiller(tx, "rencontre_participants", "rencontre_id", rids);
+    await verrouiller(tx, "rencontre_suivis", "rencontre_id", rids, "rencontre_id");
+  }
+  await verrouiller(tx, "questionnaires_avant_audit_envois", "questionnaire_id", qids);
+}
 
 /**
  * Supprime, après avoir REVU le bilan dans la même transaction. L'appelant a déjà vérifié le rôle
@@ -385,12 +475,18 @@ export async function supprimerManuellement(
   return base.$transaction(
     async (t): Promise<ResultatSuppression> => {
       const tx = t as Tx;
+      await verrouillerLePerimetre(tx, args.type, args.id);
       const calcul = await calculer(tx, args.type, args.id);
-      if (calcul === null) return { ok: false, motif: "Introuvable : rien n'a été supprimé." };
+      // Double clic, ou supprimé entre-temps : rien à faire, et rien à tracer.
+      if (calcul === null) return DEJA_SUPPRIME;
       const { bilan, parties: p } = calcul;
       if (bilan.bloquants.length > 0) {
         return { ok: false, motif: `${MESSAGE_BLOQUE} (${bilan.bloquants.join(" ; ")})` };
       }
+      let supprimees = 0;
+      const compter = (r: { count: number } | undefined) => {
+        supprimees += Number(r?.count ?? 0);
+      };
       const qids = p.questionnaireIds;
       if (qids.length > 0) {
         await tx.questionnaireAvantAuditCourrier.deleteMany({
@@ -405,17 +501,18 @@ export async function supprimerManuellement(
         await tx.questionnaireAvantAuditEnvoi.deleteMany({
           where: { questionnaireId: { in: qids } },
         });
-        await tx.questionnaireAvantAudit.deleteMany({ where: { id: { in: qids } } });
+        compter(await tx.questionnaireAvantAudit.deleteMany({ where: { id: { in: qids } } }));
       }
       const rids = p.rencontreIds;
       if (rids.length > 0) {
         // Participants et suivi de rendez-vous suivent par la cascade de la base (liste blanche).
-        await tx.rencontre.deleteMany({ where: { id: { in: rids } } });
+        compter(await tx.rencontre.deleteMany({ where: { id: { in: rids } } }));
       }
       if (args.type === "client") {
         await tx.clientContact.deleteMany({ where: { clientId: args.id } });
-        await tx.client.delete({ where: { id: args.id } });
+        compter(await tx.client.deleteMany({ where: { id: args.id } }));
       }
+      if (supprimees === 0) return DEJA_SUPPRIME;
       // Trace SANS contenu : qui, quand (createdAt), quoi, combien. Jamais purgée.
       await tx.activityLog.create({
         data: {

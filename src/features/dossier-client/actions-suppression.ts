@@ -45,6 +45,7 @@ export async function supprimerManuellementAction(fd: FormData): Promise<void> {
   const page = pageSure(champ(fd, "page"), repli);
   if (!TYPES.includes(type) || !uuid.safeParse(id).success) redirect(repli);
   let resume = "";
+  let deja = false;
   try {
     const { userId, role } = await exigerAccesEchanges();
     if (role !== "super_admin") {
@@ -60,6 +61,7 @@ export async function supprimerManuellementAction(fd: FormData): Promise<void> {
       confirmation: champ(fd, "confirmation"),
     });
     if (!r.ok) throw new MessagePourWill(r.motif);
+    deja = r.dejaSupprime === true;
     resume = r.compteurs
       .filter((c) => c.n > 0)
       .map((c) => `${c.n} ${c.libelle}`)
@@ -70,5 +72,11 @@ export async function supprimerManuellementAction(fd: FormData): Promise<void> {
   }
   const apres = APRES[type] === "" ? page : adminPath("fr", APRES[type]);
   revalidatePath(apres.split("?")[0] ?? apres);
-  redirect(avecMessageDeRetour(apres, "message", `Supprimé : ${resume}.`));
+  redirect(
+    avecMessageDeRetour(
+      apres,
+      "message",
+      deja ? "Déjà supprimé : rien d'autre à faire." : `Supprimé : ${resume}.`,
+    ),
+  );
 }
