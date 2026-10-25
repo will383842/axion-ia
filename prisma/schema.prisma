@@ -5228,6 +5228,8 @@ model Client {
   fusionsAbsorbee   ClientFusion[]     @relation("FusionAbsorbee")
   fusionsAbsorbante ClientFusion[]     @relation("FusionAbsorbante")
   testInterne       ClientTestInterne?
+  /// Questionnaires avant audit envoyés SANS rendez-vous (relation seule, aucune colonne sur `clients`).
+  questionnairesAvantAudit QuestionnaireAvantAudit[] @relation("QuestionnaireAvantAuditClient")
 
   @@index([statut])
   @@index([nafCode])
@@ -5236,9 +5238,6 @@ model Client {
   // Axion Partners, qui rattache un apporteur au SIREN. PAS d'unicité : une
   // fiche absorbée par une fusion garde ses pièces et son SIREN.
   @@index([siren])
-  /// Questionnaires avant audit envoyés SANS rendez-vous (relation seule, aucune colonne sur `clients`).
-  questionnairesAvantAudit QuestionnaireAvantAudit[] @relation("QuestionnaireAvantAuditClient")
-
   @@map("clients")
 }
 
