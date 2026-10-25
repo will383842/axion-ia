@@ -11,6 +11,7 @@ import { prisma } from "@/lib/prisma";
 import { hashEmailForLookup } from "@/lib/security/email-hash";
 import { sirenTransmis } from "@/server/partners-sync/producteurs/client";
 
+import { adressesOpposees } from "./oppositions-par-lot";
 import type { ContactPourCrm, EntreeInstantaneCrm } from "./instantane-dossier";
 
 function plusRecent(dates: ReadonlyArray<Date | null | undefined>, repli: Date): Date {
@@ -95,6 +96,12 @@ export async function lireEntreeDossier(
     0,
   );
 
+  // L'opposition gagne : registre `email_oppositions`, sur TOUTES les adresses de
+  // chaque contact (une personne opposée l'est quelle que soit l'adresse).
+  const opposees = await adressesOpposees(
+    client.contacts.flatMap((c) => c.adresses.map((a) => a.email)),
+  );
+
   const contacts: ContactPourCrm[] = client.contacts.map((c) => {
     // Pro d'abord ; une adresse non pro est repérée comme telle et ne part pas.
     const choisie = c.adresses.find((a) => a.nature === "pro") ?? c.adresses[0] ?? null;
@@ -108,6 +115,7 @@ export async function lireEntreeDossier(
       emailType: choisie === null ? null : choisie.nature === "pro" ? "pro" : "perso",
       origine: c.origine,
       emailHash: email === null ? null : hashEmailForLookup(email),
+      oppose: c.adresses.some((a) => opposees.has(a.email.trim().toLowerCase())),
       parti: c.statut !== "actif" || c.partiLe !== null,
     };
   });

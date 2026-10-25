@@ -57,6 +57,7 @@ const base = vi.hoisted(() => {
     },
     factureFormation: { findMany: vi.fn(async (_a?: unknown) => [] as unknown[]) },
     questionnaireAvantAudit: { findMany: vi.fn(async (_a?: unknown) => [] as unknown[]) },
+    emailOpposition: { findMany: vi.fn(async (_a?: unknown) => [] as unknown[]) },
     crmDossierSynchro: { findUnique: vi.fn(async () => etat.synchro) },
     $queryRaw: vi.fn(async () => [{ ok: base.horsConsole }]),
     $transaction: vi.fn(async (fn: (t: typeof tx) => Promise<unknown>) => fn(tx)),
@@ -77,8 +78,11 @@ const base = vi.hoisted(() => {
 vi.mock("@/lib/prisma", () => ({ prisma: base.prisma }));
 vi.mock("@/server/queue/queues", () => ({ crmSyncQueue: null }));
 
+import { hashEmailForLookup } from "@/lib/security/email-hash";
 import {
+  BALAYAGE_DOSSIERS_MAX,
   balayerDossiersClients,
+  reinitialiserCurseurBalayage,
   synchroniserDossierClient,
 } from "@/server/crm-sync/dossier-client";
 
@@ -89,6 +93,7 @@ beforeEach(() => {
   vi.stubEnv("CRM_SYNC_DOSSIER_ENABLED", "true");
   base.courant = base.client;
   base.horsConsole = false;
+  reinitialiserCurseurBalayage();
 });
 afterEach(() => {
   vi.unstubAllEnvs();
@@ -208,5 +213,28 @@ describe("synchro automatique du dossier client", () => {
 
   it("balayage : relit chaque client et compte les envois", async () => {
     expect(await balayerDossiersClients(MAINTENANT)).toEqual({ lus: 1, emis: 1, erreurs: 0 });
+  });
+
+  it("une personne qui s'est opposée (email_oppositions) ne part pas, adresse comprise", async () => {
+    const h = hashEmailForLookup("marie@exemple.fr");
+    base.prisma.emailOpposition.findMany.mockResolvedValueOnce([{ emailHash: h }]);
+    await synchroniserDossierClient(CLIENT, MAINTENANT);
+    const json = JSON.stringify(base.sortie[0]);
+    expect(json).not.toContain("Marie");
+    expect(json).not.toContain("marie@exemple.fr");
+  });
+
+  it("balayage au-delà du plafond : le passage suivant reprend après le dernier id relu", async () => {
+    const page = Array.from({ length: BALAYAGE_DOSSIERS_MAX }, (_, i) => ({ id: `id-${i}` }));
+    const avert = vi.spyOn(console, "warn").mockImplementation(() => {});
+    base.prisma.client.findMany.mockResolvedValueOnce(page);
+    await balayerDossiersClients(MAINTENANT);
+    expect(avert).toHaveBeenCalled();
+    await balayerDossiersClients(MAINTENANT);
+    const appel = (base.prisma.client.findMany.mock.calls as unknown[][])[1]![0] as {
+      where: { id?: { gt: string } };
+    };
+    expect(appel.where.id).toEqual({ gt: `id-${BALAYAGE_DOSSIERS_MAX - 1}` });
+    avert.mockRestore();
   });
 });

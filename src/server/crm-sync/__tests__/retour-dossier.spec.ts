@@ -11,9 +11,9 @@ const base = vi.hoisted(() => {
   const fiche = {
     type: "entreprise",
     nafCode: "8559A",
-    adresseRue: "1 rue des Tests",
-    adresseCodePostal: "75001",
-    adresseVille: "Paris",
+    idcc: null as string | null,
+    opcoIdentifie: null as string | null,
+    opco: null as string | null,
     updatedAt: new Date("2026-10-25T10:00:00Z"),
   };
   const maj: Array<Record<string, unknown>> = [];
@@ -51,6 +51,9 @@ vi.mock("@/lib/prisma", () => ({ prisma: base.prisma }));
 vi.mock("@/server/partners-sync/producteurs/client", () => ({
   chargeClientAvant: vi.fn(async () => null),
   emettreFaitClient: vi.fn(async () => undefined),
+}));
+vi.mock("@/server/qualiopi/crm/naf-opco", () => ({
+  inferOpcoDepuisTable: vi.fn(async () => "opco2i"),
 }));
 vi.mock("@/server/crm-sync/lire-dossier", () => ({
   lireEntreeDossier: vi.fn(async () => ({
@@ -91,7 +94,7 @@ function corps(surcharge: Record<string, unknown> = {}): Record<string, unknown>
     origin: "crm",
     occurred_at: "2026-10-25T11:00:00Z",
     subject_ref: `site:client:${CLIENT}`,
-    fields: { naf_code: "62.01Z", adresse_ville: "Lyon" },
+    fields: { naf_code: "62.01Z" },
     ...surcharge,
   };
 }
@@ -115,7 +118,7 @@ afterEach(() => {
 
 describe("contrat du retour", () => {
   it("accepte le message nominal et normalise le NAF", () => {
-    expect(message().fields).toEqual({ naf_code: "6201Z", adresse_ville: "Lyon" });
+    expect(message().fields).toEqual({ naf_code: "6201Z" });
   });
   it("refuse une clé inconnue, une origine autre que crm, une référence mal formée", () => {
     expect(parseRetourDossier(corps({ extra: 1 }))).toBeNull();
@@ -124,13 +127,17 @@ describe("contrat du retour", () => {
     expect(parseRetourDossier(corps({ event_type: "autre" }))).toBeNull();
   });
   it("refuse un champ hors de la liste fermée (score, étiquette, personne…)", () => {
+    for (const cle of ["adresse_rue", "adresse_code_postal", "adresse_ville"]) {
+      // L'adresse fait foi dans la console : jamais écrite depuis le CRM.
+      expect(parseRetourDossier(corps({ fields: { [cle]: "x" } }))).toBeNull();
+    }
     for (const cle of ["score", "tags", "lifecycle_stage", "email", "contacts", "montant"]) {
       expect(parseRetourDossier(corps({ fields: { [cle]: "x" } }))).toBeNull();
     }
   });
   it("une valeur vide ou invalide n'écrit rien (jamais de suppression)", () => {
     const m = message({
-      fields: { naf_code: "pas un naf", adresse_ville: "  ", adresse_rue: null },
+      fields: { naf_code: "pas un naf" },
     });
     expect(m.fields).toEqual({});
   });
@@ -140,7 +147,7 @@ describe("le plus récent gagne, sans suppression", () => {
   it("applique seulement les valeurs différentes, si le CRM est plus récent", () => {
     const data = colonnesAAppliquer(
       base.fiche,
-      { naf_code: "6201Z", adresse_ville: "Paris" },
+      { naf_code: "6201Z" },
       new Date("2026-10-25T11:00:00Z"),
     );
     expect(data).toEqual({ nafCode: "6201Z" });
@@ -158,11 +165,17 @@ describe("application", () => {
   it("écrit, laisse une trace d'audit sans valeur libre, pose l'anti-écho", async () => {
     base.synchro.empreinte = null; // différente de l'empreinte calculée ⇒ des changements en attente
     expect(await appliquerRetourDossier(message())).toBe("applique");
-    expect(base.maj).toEqual([{ nafCode: "6201Z", adresseVille: "Lyon" }]);
+    // Le NAF change et l'OPCO, non saisi, est recalculé comme dans la console.
+    expect(base.maj).toEqual([{ nafCode: "6201Z", opcoIdentifie: "opco2i", opco: "opco2i" }]);
     expect(base.audits[0]).toMatchObject({
       adminUserId: null,
       action: "client.mis_a_jour_depuis_crm",
-      changes: { origine: "crm", champs: ["nafCode", "adresseVille"] },
+      changes: {
+        origine: "crm",
+        champs: ["nafCode", "opcoIdentifie", "opco"],
+        avant: { nafCode: "8559A" },
+        apres: { nafCode: "6201Z" },
+      },
     });
     // Changement console en attente : seul `crmVuLe` et `crmEmpreinte` bougent, pas `empreinte`.
     expect(base.synchroMaj[0]).toHaveProperty("crmVuLe");
@@ -179,6 +192,18 @@ describe("application", () => {
     );
     expect(await appliquerRetourDossier(message())).toBe("applique");
     expect(base.synchroMaj[0]).toHaveProperty("empreinte");
+  });
+  it("un OPCO saisi à la main n'est jamais écrasé par le recalcul", async () => {
+    base.etat.fiche = { ...base.fiche, opcoIdentifie: "atlas" };
+    await appliquerRetourDossier(message());
+    expect(base.maj).toEqual([{ nafCode: "6201Z" }]);
+  });
+  it("une horloge du CRM en avance ne gagne pas contre une console plus récente", async () => {
+    base.etat.fiche = { ...base.fiche, updatedAt: new Date(Date.now() + 3_600_000) };
+    expect(await appliquerRetourDossier(message({ occurred_at: "2099-01-01T00:00:00Z" }))).toBe(
+      "inchange",
+    );
+    expect(base.maj).toHaveLength(0);
   });
   it("valeurs déjà identiques : inchangé, aucune écriture", async () => {
     expect(await appliquerRetourDossier(message({ fields: { naf_code: "8559A" } }))).toBe(

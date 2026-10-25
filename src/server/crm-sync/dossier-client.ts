@@ -47,6 +47,19 @@ export type IssueSynchroDossier = "emis" | "inchange" | "ignore" | "ferme" | "er
 /** Plafond de fiches relues par balayage. */
 export const BALAYAGE_DOSSIERS_MAX = 1000;
 
+/**
+ * Dernier `id` relu par le balayage : le passage suivant reprend après lui, puis
+ * repart du début quand la liste est épuisée. Sans lui, au-delà du plafond les
+ * mêmes premières fiches seraient relues pour toujours. Le worker n'a qu'un
+ * passage à la fois (`concurrency: 1`) ; un redémarrage repart du début, sans dommage.
+ */
+let curseurBalayage: string | null = null;
+
+/** Pour les tests : le balayage repart du début. */
+export function reinitialiserCurseurBalayage(): void {
+  curseurBalayage = null;
+}
+
 /** Colonnes de l'état de synchro, lues et écrites par ce module seulement. */
 interface EtatSynchro {
   readonly version: number;
@@ -110,11 +123,22 @@ export async function balayerDossiersClients(
 ): Promise<{ lus: number; emis: number; erreurs: number }> {
   if (!isCrmSyncDossierEnabled()) return { lus: 0, emis: 0, erreurs: 0 };
   const clients = await prisma.client.findMany({
-    where: { type: "entreprise" },
+    where: {
+      type: "entreprise",
+      ...(curseurBalayage === null ? {} : { id: { gt: curseurBalayage } }),
+    },
     orderBy: { id: "asc" },
     take: BALAYAGE_DOSSIERS_MAX,
     select: { id: true },
   });
+  if (clients.length >= BALAYAGE_DOSSIERS_MAX) {
+    curseurBalayage = clients[clients.length - 1]!.id;
+    console.warn(
+      `[crm-sync] balayage des dossiers : plafond de ${BALAYAGE_DOSSIERS_MAX} fiches atteint, la suite au prochain passage`,
+    );
+  } else {
+    curseurBalayage = null;
+  }
   let emis = 0;
   let erreurs = 0;
   for (const { id } of clients) {

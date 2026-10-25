@@ -265,10 +265,11 @@ describe("l'e-mail se lit en grand, se modifie, et sa copie se relit", () => {
     );
   });
 
-  it("l'aperçu est grand (plus de petit cadre de 420 px)", async () => {
+  it("l'aperçu est grand et isolé (cadre de l'aperçu d'e-mail, sandbox vide, hauteur fixe)", async () => {
     const { container } = await rendre(true);
     const cadre = container.querySelector('iframe[title^="Aperçu exact"]')!;
-    expect(cadre.className).toContain("min-h-[700px]");
+    expect(cadre.className).toContain("admin-apercu-email-cadre");
+    expect(cadre.getAttribute("sandbox")).toBe("");
     expect(cadre.className).not.toContain("h-[420px]");
   });
 

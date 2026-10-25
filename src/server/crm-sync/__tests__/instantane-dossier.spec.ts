@@ -93,6 +93,7 @@ function entree(surcharge: Partial<EntreeInstantaneCrm> = {}): EntreeInstantaneC
         emailType: "pro",
         origine: "present",
         emailHash: HASH,
+        oppose: false,
         parti: false,
       },
     ],
@@ -250,6 +251,16 @@ describe("photo du dossier pour le CRM", () => {
     const d = dossierPourCrm(entree({ contacts: [entree().contacts[0]!, autre] }));
     expect(d.contacts?.map((c) => c.ref)).toEqual(["c2"]);
     expect(JSON.stringify(d)).not.toContain("Marie");
+  });
+
+  it("une personne opposée à la prospection (registre) ne part pas du tout", () => {
+    const base = entree().contacts[0]!;
+    const autre = { ...base, id: "c2", nom: "Paul Durand", email: "p@exemple.fr" };
+    const d = dossierPourCrm(entree({ contacts: [{ ...base, oppose: true }, autre] }));
+    expect(d.contacts?.map((c) => c.ref)).toEqual(["c2"]);
+    const json = JSON.stringify(d);
+    expect(json).not.toContain("Marie");
+    expect(json).not.toContain("marie@exemple.fr");
   });
 
   it("un numéro trop long est omis, jamais tronqué", () => {

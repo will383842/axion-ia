@@ -9,25 +9,34 @@
  *   origin       "crm" (obligatoire : sans provenance, pas de protection d'écho)
  *   occurred_at  ISO 8601 — l'instant du changement DANS le CRM
  *   subject_ref  "site:client:<uuid>"
- *   fields       { naf_code?, adresse_rue?, adresse_code_postal?, adresse_ville? }
- *                — liste FERMÉE. Rien d'autre ne peut venir du CRM : ni score,
- *                étiquette, étape, ni donnée sur une personne.
+ *   fields       { naf_code? }
+ *                — liste FERMÉE à UNE clé : le NAF, sur lequel le CRM fait foi
+ *                (PLAN-SYNCHRO : console = identité, SIREN, adresse ; CRM = NAF).
+ *                L'adresse ne revient JAMAIS du CRM sans décision de Will : une
+ *                clé d'adresse est un contrat violé (422). Ni score, étiquette,
+ *                étape, ni donnée sur une personne.
  *
  * ── Règles ──────────────────────────────────────────────────────────────────
  *   · LE PLUS RÉCENT GAGNE : une valeur du CRM n'est appliquée que si
- *     `occurred_at` est postérieur à la dernière écriture de la fiche
- *     (`client.updatedAt`) ; sinon la console, plus récente, garde la sienne.
+ *     `occurred_at` (borné à « maintenant » : une horloge du CRM en avance ne
+ *     gagne pas à tous les coups) est postérieur à la dernière écriture de la
+ *     fiche (`client.updatedAt`) ; sinon la console, plus récente, garde la sienne.
+ *   · UN NAF NOUVEAU RECALCULE L'OPCO déduit, comme dans la console, sauf si
+ *     l'OPCO a été saisi à la main (`opcoIdentifie` non vide : jamais écrasé).
  *   · AUCUNE SUPPRESSION : une valeur absente, nulle ou vide ne change rien.
  *   · Fiche inconnue ou non « entreprise » : ignorée. Le CRM n'en crée jamais.
  *   · PAS D'ÉCHO : ce qui vient du CRM ne repart pas. Si le dossier n'avait
  *     aucun changement en attente d'envoi, son empreinte est mise à jour ; sinon
  *     seul `crm_vu_le` bouge et le prochain balayage enverra l'ensemble.
- *   · Une trace d'audit `client.mis_a_jour_depuis_crm` (noms des champs, jamais
- *     un texte libre) ; l'écriture passe par `emettreFaitClient` comme tout
+ *   · Une trace d'audit `client.mis_a_jour_depuis_crm` (champs, valeur avant et
+ *     après : données d'entreprise, jamais d'une personne ; l'ancienne valeur
+ *     ne se perd pas) ; l'écriture passe par `emettreFaitClient` comme tout
  *     écrivain de la fiche (cliquet des écrivains).
  */
 
 import { prisma } from "@/lib/prisma";
+import { inferOpcoDepuisTable } from "@/server/qualiopi/crm/naf-opco";
+import { isOpcoId, nomOpcoDuClient } from "@/server/qualiopi/financements/opco-referentiel";
 import { chargeClientAvant, emettreFaitClient } from "@/server/partners-sync/producteurs/client";
 
 import { lireEntreeDossier } from "./lire-dossier";
@@ -36,13 +45,8 @@ import { dossierPourCrm, empreinteDossier, entreprisePourCrm } from "./instantan
 export const ACTION_MIS_A_JOUR_DEPUIS_CRM = "client.mis_a_jour_depuis_crm";
 export const TYPE_RETOUR_DOSSIER = "company_dossier_changed";
 
-/** Les quatre champs que le CRM peut faire revenir — miroir de l'émetteur CRM. */
-export const CLES_RETOUR_DOSSIER = [
-  "naf_code",
-  "adresse_rue",
-  "adresse_code_postal",
-  "adresse_ville",
-] as const;
+/** Le seul champ que le CRM peut faire revenir. */
+export const CLES_RETOUR_DOSSIER = ["naf_code"] as const;
 export type CleRetourDossier = (typeof CLES_RETOUR_DOSSIER)[number];
 
 export interface RetourDossier {
@@ -56,29 +60,18 @@ export interface RetourDossier {
 
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/;
 const NAF = /^\d{4}[A-Z]$/;
-const CODE_POSTAL = /^[0-9A-Za-z -]{3,12}$/;
 
 /** Colonne de la fiche pour chaque clé du message. */
-const COLONNES: Record<
-  CleRetourDossier,
-  "nafCode" | "adresseRue" | "adresseCodePostal" | "adresseVille"
-> = {
+const COLONNES: Record<CleRetourDossier, "nafCode"> = {
   naf_code: "nafCode",
-  adresse_rue: "adresseRue",
-  adresse_code_postal: "adresseCodePostal",
-  adresse_ville: "adresseVille",
 };
 
 function nettoyer(cle: CleRetourDossier, valeur: unknown): string | null {
   if (typeof valeur !== "string") return null;
   const v = valeur.replace(/\s+/g, " ").trim();
   if (v === "") return null;
-  if (cle === "naf_code") {
-    const naf = v.replace(".", "").toUpperCase();
-    return NAF.test(naf) ? naf : null;
-  }
-  if (cle === "adresse_code_postal") return CODE_POSTAL.test(v) ? v : null;
-  return v.slice(0, cle === "adresse_rue" ? 300 : 120);
+  const naf = v.replace(".", "").toUpperCase();
+  return cle === "naf_code" && NAF.test(naf) ? naf : null;
 }
 
 /** Valide le corps. `null` : contrat violé (422). Clé inconnue ⇒ refus. */
@@ -130,9 +123,6 @@ export function parseRetourDossier(input: unknown): RetourDossier | null {
 export function colonnesAAppliquer(
   fiche: {
     readonly nafCode: string | null;
-    readonly adresseRue: string | null;
-    readonly adresseCodePostal: string | null;
-    readonly adresseVille: string | null;
     readonly updatedAt: Date;
   },
   fields: RetourDossier["fields"],
@@ -152,7 +142,8 @@ export function colonnesAAppliquer(
 export type IssueRetourDossier = "applique" | "inchange" | "ignore";
 
 export async function appliquerRetourDossier(msg: RetourDossier): Promise<IssueRetourDossier> {
-  const occurredAt = new Date(msg.occurred_at);
+  // Borné à maintenant : une horloge du CRM en avance ne gagne pas à tous les coups.
+  const occurredAt = new Date(Math.min(Date.parse(msg.occurred_at), Date.now()));
   const clientId = msg.clientId;
 
   // Empreinte AVANT : y avait-il un changement de la console en attente d'envoi ?
@@ -169,9 +160,9 @@ export async function appliquerRetourDossier(msg: RetourDossier): Promise<IssueR
       select: {
         type: true,
         nafCode: true,
-        adresseRue: true,
-        adresseCodePostal: true,
-        adresseVille: true,
+        idcc: true,
+        opcoIdentifie: true,
+        opco: true,
         updatedAt: true,
       },
     });
@@ -180,7 +171,17 @@ export async function appliquerRetourDossier(msg: RetourDossier): Promise<IssueR
     const champs = Object.keys(data);
     if (champs.length === 0) return [];
     const avant = await chargeClientAvant(tx, clientId);
-    await tx.client.update({ where: { id: clientId }, data });
+    // Même règle que la console : un NAF nouveau recalcule l'OPCO déduit, sauf
+    // s'il a été saisi (valeur posée = saisie, jamais écrasée).
+    let opcoDeduit: Record<string, string> = {};
+    if (data.nafCode !== undefined && nomOpcoDuClient(fiche) === "OPCO (à préciser)") {
+      const infere = await inferOpcoDepuisTable(tx, { idcc: fiche.idcc, naf: data.nafCode });
+      if (infere !== null) {
+        opcoDeduit = { opcoIdentifie: infere };
+        if (fiche.opco == null && isOpcoId(infere)) opcoDeduit["opco"] = infere;
+      }
+    }
+    await tx.client.update({ where: { id: clientId }, data: { ...data, ...opcoDeduit } });
     await emettreFaitClient(tx, clientId, { avant });
     await tx.activityLog.create({
       data: {
@@ -188,7 +189,13 @@ export async function appliquerRetourDossier(msg: RetourDossier): Promise<IssueR
         action: ACTION_MIS_A_JOUR_DEPUIS_CRM,
         targetType: "Client",
         targetId: clientId,
-        changes: { origine: "crm", eventId: msg.event_id, champs },
+        changes: {
+          origine: "crm",
+          eventId: msg.event_id,
+          champs: [...champs, ...Object.keys(opcoDeduit)],
+          avant: Object.fromEntries(champs.map((c) => [c, fiche[c as "nafCode"]])),
+          apres: data,
+        },
       },
     });
     return champs;
