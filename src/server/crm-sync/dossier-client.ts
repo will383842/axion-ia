@@ -27,8 +27,6 @@
 
 import { hashEmailForLookup } from "@/lib/security/email-hash";
 import { prisma } from "@/lib/prisma";
-import { adminPath } from "@/lib/admin-path";
-import { SITE_URL } from "@/lib/site-url";
 import {
   dossierPourCrm,
   empreinteDossier,
@@ -64,6 +62,20 @@ function plusRecent(dates: ReadonlyArray<Date | null | undefined>, repli: Date):
   return new Date(max === 0 ? repli.getTime() : Math.min(max, repli.getTime()));
 }
 
+/**
+ * Case « Facture établie hors console » (`client_factures_hors_console`, PR
+ * #1684). La table peut ne pas exister encore (la migration atterrit avant le
+ * code, mais pas forcément avant celui-ci) : absente ⇒ « non », jamais une
+ * erreur. Lecture seule, une colonne (l'existence de la ligne).
+ */
+async function factureHorsConsole(clientId: string): Promise<boolean> {
+  const lignes = await prisma.$queryRaw<Array<{ ok: boolean }>>`
+    SELECT CASE WHEN to_regclass('client_factures_hors_console') IS NULL THEN false
+           ELSE EXISTS (SELECT 1 FROM client_factures_hors_console WHERE client_id = ${clientId}::uuid)
+           END AS ok`;
+  return lignes[0]?.ok === true;
+}
+
 /** Lit un client et en fait l'entrée de la photo. `null` : à ne pas synchroniser. */
 export async function lireEntreeDossier(
   clientId: string,
@@ -90,6 +102,7 @@ export async function lireEntreeDossier(
           fonction: true,
           telephone: true,
           statut: true,
+          origine: true,
           partiLe: true,
           updatedAt: true,
           adresses: {
@@ -102,11 +115,12 @@ export async function lireEntreeDossier(
   });
   if (client === null || client.type !== "entreprise") return null;
 
-  const [factures, questionnaires] = await Promise.all([
+  const [factures, horsConsole, questionnaires] = await Promise.all([
     prisma.factureFormation.findMany({
       where: { clientId, statut: { notIn: ["brouillon", "annulee"] }, emiseAt: { not: null } },
       select: { emiseAt: true },
     }),
+    factureHorsConsole(clientId),
     prisma.questionnaireAvantAudit.findMany({
       where: { OR: [{ clientId }, { rencontre: { clientId } }] },
       select: {
@@ -125,6 +139,7 @@ export async function lireEntreeDossier(
   );
 
   const contacts: ContactPourCrm[] = client.contacts.map((c) => {
+    // Pro d'abord ; une adresse non pro est repérée comme telle et ne part pas.
     const choisie = c.adresses.find((a) => a.nature === "pro") ?? c.adresses[0] ?? null;
     const email = choisie?.email ?? null;
     return {
@@ -133,6 +148,8 @@ export async function lireEntreeDossier(
       fonction: c.fonction,
       telephone: c.telephone,
       email,
+      emailType: choisie === null ? null : choisie.nature === "pro" ? "pro" : "perso",
+      origine: c.origine,
       emailHash: email === null ? null : hashEmailForLookup(email),
       parti: c.statut !== "actif" || c.partiLe !== null,
     };
@@ -141,6 +158,7 @@ export async function lireEntreeDossier(
   const entree: EntreeInstantaneCrm = {
     clientId: client.id,
     numero: client.numero,
+    type: "entreprise",
     raisonSociale: client.raisonSociale,
     siren: sirenTransmis({ siren: client.siren, siret: client.siret }).siren,
     adresseRue: client.adresseRue,
@@ -149,7 +167,7 @@ export async function lireEntreeDossier(
     telephone: null,
     effectif: client.effectif,
     factureEmise: factures.length > 0,
-    urlConsole: `${SITE_URL}${adminPath("fr", `qualiopi/clients/${client.id}`)}`,
+    factureHorsConsole: horsConsole,
     questionnaire:
       questionnaires.length === 0
         ? null
@@ -198,6 +216,7 @@ export async function synchroniserDossierClient(
 
     const version = (etat?.version ?? 0) + 1;
     const evenement = evenementDossierClient(lu.entree, version, lu.dernierChangement);
+    if (evenement === null) return "ignore";
 
     const ligneId = await prisma.$transaction(async (tx) => {
       const id = await enqueueCrmSyncEvent(evenement, {
