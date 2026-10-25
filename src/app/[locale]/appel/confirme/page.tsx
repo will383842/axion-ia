@@ -262,6 +262,9 @@ export default async function ConfirmePage({ params, searchParams }: Props) {
   // des LIBELLÉS, et seulement pour un rendez-vous non classé — un `rdv=` forgé
   // ne peut rien faire d'autre que renommer l'écran.
   const formateur = (type === null || type === "autre") && choixTransmis === "formateur";
+  // La visio du Tour de France IA (2026-10-25), classée `autre` elle aussi : même
+  // règle, elle ne change que le NOM affiché (le reste est l'écran client).
+  const tour = (type === null || type === "autre") && choixTransmis === "tour";
   // Lot B (M25) : nos e-mails de l'échange formateur (F3, F4) ne sont annoncés que
   // s'ils partent vraiment (suivi allumé, textes validés). Sinon, comme avant.
   const nosEmails = formateur ? await nosEmailsPourEchangeFormateur() : false;
@@ -277,9 +280,15 @@ export default async function ConfirmePage({ params, searchParams }: Props) {
           {incertain ? (
             <EnCoursDeVerification />
           ) : aVerifier ? (
-            <ADeuxVerifier detail={detail} type={type} formateur={formateur} />
+            <ADeuxVerifier detail={detail} type={type} formateur={formateur} tour={tour} />
           ) : (
-            <Confirme detail={detail} type={type} formateur={formateur} nosEmails={nosEmails} />
+            <Confirme
+              detail={detail}
+              type={type}
+              formateur={formateur}
+              tour={tour}
+              nosEmails={nosEmails}
+            />
           )}
 
           <SortiesDeParcours secondaire={{ href: "/", label: "Retour à l'accueil" }} />
@@ -294,8 +303,9 @@ export default async function ConfirmePage({ params, searchParams }: Props) {
  * ou « Premier contact » quand le type n'est pas l'un des deux rendez-vous
  * publics (ou inconnu).
  */
-function nomDuRendezVous(type: TypeRendezVous | null, formateur = false): string {
+function nomDuRendezVous(type: TypeRendezVous | null, formateur = false, tour = false): string {
   if (formateur) return configDuChoix("formateur").nom;
+  if (tour) return configDuChoix("tour").nom;
   if (type === "diagnostic" || type === "echange_projet") return LIBELLES_TYPE_RENDEZ_VOUS[type];
   // L'échange apporteur et la rencontre au salon portent leur nom de la table des
   // types (2026-10-05) : « Premier contact » ne leur correspond pas.
@@ -307,15 +317,18 @@ function Confirme({
   detail,
   type,
   formateur,
+  tour = false,
   nosEmails = false,
 }: {
   detail: DetailEvenement | null;
   type: TypeRendezVous | null;
   formateur: boolean;
+  /** Visio du Tour de France IA (2026-10-25) : seul le nom affiché change. */
+  tour?: boolean;
   /** Lot B (M25) : échange formateur dont la confirmation et les rappels partent. */
   nosEmails?: boolean;
 }) {
-  const nom = nomDuRendezVous(type, formateur);
+  const nom = nomDuRendezVous(type, formateur, tour);
   return (
     <>
       {detail?.debut ? (
@@ -655,15 +668,17 @@ function ADeuxVerifier({
   detail,
   type,
   formateur,
+  tour = false,
 }: {
   detail: DetailEvenement | null;
   type: TypeRendezVous | null;
   formateur: boolean;
+  tour?: boolean;
 }) {
   return (
     <>
       <TeteDeParcours
-        surtitre={`${nomDuRendezVous(type, formateur)} · un point à confirmer`}
+        surtitre={`${nomDuRendezVous(type, formateur, tour)} · un point à confirmer`}
         icone={<AlertTriangle className="h-6 w-6" aria-hidden="true" />}
         ton="attention"
         titre="Votre rendez-vous est pris."

@@ -35,3 +35,10 @@ export const URL_CALENDLY_SALON_PAR_DEFAUT = "https://calendly.com/axion-ia/renc
  */
 export const URL_CALENDLY_FORMATEUR_PAR_DEFAUT =
   "https://calendly.com/axion-ia/echange-formateur-independant";
+/**
+ * Type « Tour de France IA » (visio de 30 min, landing `/tourdefrance-ia`,
+ * 2026-10-25). Classé `autre` en base, donc client : la réservation arrive dans
+ * la console comme un prospect. La variable `CALENDLY_TOUR_URL`, si elle est
+ * posée, l'emporte sur ce défaut.
+ */
+export const URL_CALENDLY_TOUR_PAR_DEFAUT = "https://calendly.com/axion-ia/tour-de-france-ia";

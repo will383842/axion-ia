@@ -340,10 +340,26 @@ export async function urlDeReprogrammation(rdv: RendezVousAReprogrammer): Promis
   if (type === "autre" && estEchangeFormateurParNom(rdv.eventTypeName)) {
     return urlConfigureeDuChoix("formateur");
   }
+  // La visio du Tour de France IA (2026-10-25), classée `autre` elle aussi : même
+  // reconnaissance par le nom, pour qu'un report la garde sur son propre calendrier.
+  if (type === "autre" && estVisioTourParNom(rdv.eventTypeName)) {
+    return urlConfigureeDuChoix("tour");
+  }
   // Apporteur, salon : leur propre adresse. Avant le 2026-10-05, un salon retombait
   // ici sur le type appel — ce que seul l'écran « sur place » du report masquait.
   const choix = choixDuTypeRendezVous(type);
   return choix ? urlConfigureeDuChoix(choix) : urlCalendlyAppel();
+}
+
+/** Vrai si le nom de l'événement Calendly désigne la visio du Tour de France IA. */
+export function estVisioTourParNom(nom: string | null | undefined): boolean {
+  if (!nom) return false;
+  return nom
+    .normalize("NFD")
+    .replace(/\p{Diacritic}/gu, "")
+    .toLowerCase()
+    .replace(/[-_]+/g, " ")
+    .includes("tour de france ia");
 }
 
 /** Le choix correspondant à un type stocké (`null` pour `autre`). */
