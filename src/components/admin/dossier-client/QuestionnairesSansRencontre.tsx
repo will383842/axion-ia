@@ -9,8 +9,7 @@ import { listerQuestionnairesSansRencontre } from "@/features/questionnaire-prea
 import { formatDateFrShort } from "@/lib/format-date-fr";
 
 const LIBELLE_MODE = { main: "Dirigeant", emp: "Collaborateur", it: "Référent informatique" };
-const carteCls =
-  "mb-[var(--space-admin-4)] rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] p-[var(--space-admin-4)]";
+const carteCls = "admin-carte";
 const mutedCls = "text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]";
 const alerteCls = "my-[var(--space-admin-2)] font-semibold text-[color:var(--color-admin-danger)]";
 
