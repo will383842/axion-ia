@@ -45,7 +45,7 @@ on:
           # la réception réelle des réponses et le bouton « Envoyer » de la console ; aucun
           # e-mail ne part jamais sans le clic de Will (conservation 5 ans, sans purge).
           - "QUESTIONNAIRE_AVANT_AUDIT_ENABLED"
-          # Suivi du questionnaire (2026-10-26). Cible : worker. Valeurs : true | false | essai
+          # Suivi du questionnaire (2026-10-26). Cible : les deux (le worker agit, la console affiche). Valeurs : true | false | essai
           # (« essai » compte sans rien écrire ni envoyer). Rien ne part sans l'envoi de Will.
           - "QUESTIONNAIRE_RELANCES_ENABLED"
           - "QUESTIONNAIRE_CONFIRMATIONS_ENABLED"

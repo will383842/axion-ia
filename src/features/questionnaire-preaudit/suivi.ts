@@ -424,31 +424,40 @@ function issueFile(r: ResultatFile): {
   return { statut: "prevu", motif: "file indisponible" };
 }
 
-/** Le gabarit et sa charge (pré-formatée : aucun calcul de fuseau au rendu). PUR. */
-function gabaritEtPayload(
-  etat: EtatQuestionnaire,
+/** Ce qu'il faut pour écrire un courrier (relu au moment d'envoyer, ou saisi pour l'aperçu). */
+export interface DonneesCourrier {
+  readonly prenom: string | undefined;
+  readonly societe: string;
+  readonly dateAudit: Date | null;
+  readonly lieuAudit: string | null;
+  readonly lien: string;
+  readonly lienArret: string;
+  readonly brouillonEnCours: boolean;
+  readonly role: "dirigeant" | "collaborateur";
+  readonly prenomRepondant: string | undefined;
+  readonly recuLe: Date;
+  readonly env: Env;
+}
+
+/**
+ * Le gabarit et sa charge d'un courrier (pré-formatée : aucun calcul de fuseau au rendu). PUR.
+ * Le même calcul sert l'envoi (worker) et l'aperçu de la console : Will voit ce qui partira.
+ */
+export function payloadCourrier(
   nature: string,
-  o: {
-    lien: string;
-    lienArret: string;
-    brouillonEnCours: boolean;
-    role: "dirigeant" | "collaborateur";
-    prenomRepondant: string | undefined;
-    recuLe: Date;
-    env: Env;
-  },
+  o: DonneesCourrier,
 ): { template: EmailJobName; payload: Record<string, unknown> } {
-  const audit = etat.suivi?.dateAudit ?? null;
+  const audit = o.dateAudit;
   const dates = audit
     ? { auditTexte: formaterAuditTexte(audit), auditCourt: formaterAuditCourt(audit) }
     : {};
-  const lieu = etat.suivi?.lieuAudit ? { lieuAudit: etat.suivi.lieuAudit } : {};
+  const lieu = o.lieuAudit ? { lieuAudit: o.lieuAudit } : {};
   if (estRelance(nature)) {
     return {
       template: TEMPLATE_RELANCE,
       payload: {
         rang: Number(nature.slice(-1)),
-        ...(etat.prenom ? { prenom: etat.prenom } : {}),
+        ...(o.prenom ? { prenom: o.prenom } : {}),
         lien: o.lien,
         lienArret: o.lienArret,
         ...dates,
@@ -464,7 +473,7 @@ function gabaritEtPayload(
       payload: {
         role: o.role,
         ...(o.prenomRepondant ? { prenom: o.prenomRepondant } : {}),
-        societe: etat.societe,
+        societe: o.societe,
         recuLeTexte: formaterAuditCourt(o.recuLe),
         ...(audit ? { auditCourt: formaterAuditCourt(audit) } : {}),
         conservation: m.conservation,
@@ -474,8 +483,22 @@ function gabaritEtPayload(
   }
   return {
     template: TEMPLATE_INVITATION,
-    payload: { ...(etat.prenom ? { prenom: etat.prenom } : {}), lien: o.lien, ...dates, ...lieu },
+    payload: { ...(o.prenom ? { prenom: o.prenom } : {}), lien: o.lien, ...dates, ...lieu },
   };
+}
+
+function gabaritEtPayload(
+  etat: EtatQuestionnaire,
+  nature: string,
+  o: Omit<DonneesCourrier, "prenom" | "societe" | "dateAudit" | "lieuAudit">,
+): { template: EmailJobName; payload: Record<string, unknown> } {
+  return payloadCourrier(nature, {
+    ...o,
+    prenom: etat.prenom,
+    societe: etat.societe,
+    dateAudit: etat.suivi?.dateAudit ?? null,
+    lieuAudit: etat.suivi?.lieuAudit ?? null,
+  });
 }
 
 function payloadTelegram(
@@ -764,7 +787,7 @@ type MotifArret =
   | "will"
   | "desinscription";
 
-async function arreterRelances(
+async function arreterRelancesAuPassage(
   ctx: Contexte,
   qid: string,
   motif: MotifArret,
@@ -816,7 +839,7 @@ async function passerArrets(ctx: Contexte): Promise<void> {
       qid,
       s.relancesArreteesLe !== null ? s.relancesArretMotif : null,
     );
-    if (motif !== null) await arreterRelances(ctx, qid, motif);
+    if (motif !== null) await arreterRelancesAuPassage(ctx, qid, motif);
   }
 }
 
@@ -933,16 +956,22 @@ async function traiterUn(ctx: Contexte, c: Courrier): Promise<void> {
     await fin("annule", "supprime");
     return;
   }
+  const retard = ctx.maintenant.getTime() - c.prevuLe.getTime();
   if (telegram) {
+    // Un message écrit par la console pendant que Telegram était éteint ne part pas des jours
+    // plus tard, à l'allumage : au-delà de 48 h, il est annulé.
+    if (retard > 2 * UN_JOUR) {
+      await fin("annule", "en_retard");
+      return;
+    }
     await envoyerTelegram(ctx, c, etat, fin);
     return;
   }
-  const retard = ctx.maintenant.getTime() - c.prevuLe.getTime();
   if (estRelance(c.nature)) {
     const motif = await motifDArret(ctx, etat.id, etat.suivi?.relancesArreteesLe ? "will" : null);
     if (motif !== null) {
       await fin("annule", motif);
-      await arreterRelances(ctx, etat.id, motif, true);
+      await arreterRelancesAuPassage(ctx, etat.id, motif, true);
       return;
     }
     if (retard > UN_JOUR) {
@@ -1052,7 +1081,7 @@ async function traiterUn(ctx: Contexte, c: Courrier): Promise<void> {
   await fin(issue.statut, issue.motif);
   if (issue.statut === "retenu" && r.retenu !== undefined && estRelance(c.nature)) {
     // Liste de suppression ou opposition : plus aucune relance pour ce questionnaire.
-    await arreterRelances(ctx, etat.id, "opposition");
+    await arreterRelancesAuPassage(ctx, etat.id, "opposition");
   }
   if (ecrit(ctx.bilan.modes.telegram)) {
     if (issue.statut === "envoye" && estRelance(c.nature)) {

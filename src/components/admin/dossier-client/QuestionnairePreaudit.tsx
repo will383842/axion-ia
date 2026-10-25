@@ -7,25 +7,30 @@
 import { AdminBadge } from "@/components/admin/ui/AdminBadge";
 import { ReponsePreaudit } from "@/components/admin/dossier-client/ReponsePreaudit";
 import {
+  arreterRelancesAction,
   cloreQuestionnaireAction,
+  demanderEssaiAction,
   deposerQuestionnaireAction,
   envoyerQuestionnaireAction,
   marquerQuestionnaireLuAction,
 } from "@/features/questionnaire-preaudit/actions";
+import { planifierRelances } from "@/features/questionnaire-preaudit/calendrier";
 import {
   conservationEchue,
   MESSAGE_REFUS,
   refusEnvoiReel,
   RETENTION_ANS,
 } from "@/features/questionnaire-preaudit/config";
-import { apercuEnvoi } from "@/features/questionnaire-preaudit/envoyer";
+import { apercuEnvoi, apercusSuivi } from "@/features/questionnaire-preaudit/envoyer";
+import { modeRelances } from "@/features/questionnaire-preaudit/drapeaux-suivi";
+import { lireSuivi } from "@/features/questionnaire-preaudit/suivi-console";
 import {
   cheminEssaiPreaudit,
   lireDeLaRencontre,
   lireReponses,
 } from "@/features/questionnaire-preaudit/serveur";
 import { formatDateFrShort } from "@/lib/format-date-fr";
-import { timeInParis } from "@/lib/calendar-grid";
+import { fromParisLocalInput, timeInParis, toParisLocalInput } from "@/lib/calendar-grid";
 
 const carteCls =
   "mb-[var(--space-admin-4)] rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] p-[var(--space-admin-4)]";
@@ -36,6 +41,50 @@ const inputCls =
   "rounded-[var(--radius-admin-sm)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] px-[var(--space-admin-3)] py-[var(--space-admin-2)] text-[length:var(--text-admin-sm)]";
 const boutonCls =
   "rounded-[var(--radius-admin-sm)] border border-[color:var(--color-admin-border)] px-[var(--space-admin-3)] py-[var(--space-admin-2)] text-[length:var(--text-admin-sm)] font-medium";
+
+/** Ce que Will lit dans le journal du suivi (nature technique → mots simples). */
+const LIBELLE_NATURE: Readonly<Record<string, string>> = {
+  invitation: "Invitation",
+  relance_1: "Relance 1",
+  relance_2: "Relance 2",
+  relance_3: "Relance 3",
+  confirmation_dirigeant: "Confirmation au dirigeant",
+  confirmation_collaborateur: "Confirmation à un collaborateur",
+  telegram_invitation: "Telegram : invitation partie",
+  telegram_reponse: "Telegram : réponse reçue",
+  telegram_relance: "Telegram : relance partie",
+  telegram_arret: "Telegram : relances arrêtées",
+  telegram_retenu: "Telegram : e-mail retenu",
+  essai: "Essai",
+};
+const LIBELLE_STATUT: Readonly<Record<string, string>> = {
+  prevu: "prévu",
+  en_cours: "en cours",
+  envoye: "parti",
+  retenu: "retenu",
+  annule: "annulé",
+  echec: "échec",
+  journal: "noté",
+};
+const LIBELLE_ARRET: Readonly<Record<string, string>> = {
+  reponse_dirigeant: "le dirigeant a répondu",
+  desinscription: "le destinataire a demandé l'arrêt",
+  will: "arrêtées par vous",
+  clos: "questionnaire clos",
+  expire: "questionnaire expiré",
+  supprime: "questionnaire supprimé",
+  rebond: "adresse en erreur",
+  opposition: "adresse retenue (opposition)",
+};
+const ESSAIS = [
+  ["invitation", "Invitation"],
+  ["relance_1", "Relance 1"],
+  ["relance_2", "Relance 2"],
+  ["relance_3", "Relance 3"],
+  ["confirmation_dirigeant", "Confirmation au dirigeant"],
+  ["confirmation_collaborateur", "Confirmation à un collaborateur"],
+  ["telegram_reponse", "Message Telegram « réponse reçue »"],
+] as const;
 
 const LIBELLE_MODE = {
   main: "Dirigeant",
@@ -52,8 +101,11 @@ export async function QuestionnairePreaudit(props: {
   /** Seul Williams (super_admin) dépose le HTML. */
   peutDeposer: boolean;
   titulaire: { nom: string | null; email: string | null } | null;
-  /** Adresse et prénom saisis pour l'aperçu (`?pa_email=&pa_prenom=`). */
-  apercu: { email: string; prenom: string } | null;
+  /** Début prévu du rendez-vous : préremplit la date de l'audit s'il est à venir. */
+  debutPrevu?: Date | null;
+  societe?: string | null;
+  /** Saisies de l'aperçu (`?pa_email=&pa_prenom=&pa_date=&pa_lieu=`). */
+  apercu: { email: string; prenom: string; date?: string; lieu?: string } | null;
 }) {
   const { rencontreId } = props;
   const q = await lireDeLaRencontre(rencontreId);
@@ -65,12 +117,35 @@ export async function QuestionnairePreaudit(props: {
     (q.luLe === null || reponses.some((r) => r.recuLe > (q.luLe as Date)));
   const chemin = q === null ? null : cheminEssaiPreaudit(q.id);
 
+  const maintenant = new Date();
+  const suivi = q === null ? null : await lireSuivi(q.id).catch(() => null);
+  const relancesAllumees = modeRelances() === "actif";
+  // Date de l'audit : celle de l'aperçu, sinon le rendez-vous s'il est à venir.
+  const dateSaisie = props.apercu?.date ?? "";
+  const dateAudit = dateSaisie !== "" ? fromParisLocalInput(dateSaisie) : null;
+  const datePropose =
+    dateSaisie !== ""
+      ? dateSaisie
+      : props.debutPrevu && props.debutPrevu.getTime() > maintenant.getTime()
+        ? toParisLocalInput(props.debutPrevu)
+        : "";
+  const lieuAudit = (props.apercu?.lieu ?? "").trim() || null;
+  const relancesPrevues = planifierRelances(maintenant, dateAudit);
+
   let apercuMail: { sujet: string; html: string } | null = null;
+  let apercusDuSuivi: ReadonlyArray<{ libelle: string; sujet: string; html: string }> = [];
   let erreurApercu: string | null = null;
   if (q !== null && props.apercu !== null && props.apercu.email !== "") {
     try {
-      const m = await apercuEnvoi(q.id, props.apercu.email, props.apercu.prenom);
+      const audit = { dateAudit, lieuAudit };
+      const m = await apercuEnvoi(q.id, props.apercu.email, props.apercu.prenom, audit);
       apercuMail = { sujet: m.subject, html: m.html };
+      apercusDuSuivi = (
+        await apercusSuivi(q.id, props.apercu.email, props.apercu.prenom, {
+          ...audit,
+          societe: props.societe ?? "",
+        })
+      ).map((a) => ({ libelle: a.libelle, sujet: a.email.subject, html: a.email.html }));
     } catch {
       erreurApercu = "L'aperçu n'a pas pu être préparé.";
     }
@@ -154,6 +229,21 @@ export async function QuestionnairePreaudit(props: {
               className={inputCls}
               aria-label="Prénom du destinataire"
             />
+            <input
+              name="pa_date"
+              type="datetime-local"
+              defaultValue={datePropose}
+              className={inputCls}
+              aria-label="Date et heure de l'audit"
+            />
+            <input
+              name="pa_lieu"
+              defaultValue={props.apercu?.lieu ?? ""}
+              maxLength={80}
+              placeholder="Lieu (ex. dans vos locaux)"
+              className={inputCls}
+              aria-label="Lieu de l'audit"
+            />
             <button type="submit" className={boutonCls}>
               Voir l&apos;aperçu de l&apos;e-mail
             </button>
@@ -180,18 +270,138 @@ export async function QuestionnairePreaudit(props: {
                   {MESSAGE_REFUS[refus]}
                 </p>
               ) : (
-                <form action={envoyerQuestionnaireAction}>
+                <form action={envoyerQuestionnaireAction} data-bloc="envoi-questionnaire">
                   <input type="hidden" name="rencontreId" value={rencontreId} />
                   <input type="hidden" name="destinataire" value={props.apercu.email} />
                   <input type="hidden" name="prenom" value={props.apercu.prenom} />
+                  <input type="hidden" name="date_audit" value={dateSaisie} />
+                  <input type="hidden" name="lieu_audit" value={lieuAudit ?? ""} />
+                  <label className="mb-[var(--space-admin-2)] flex items-start gap-[var(--space-admin-2)] text-[length:var(--text-admin-sm)]">
+                    <input type="checkbox" name="relances" value="1" defaultChecked />
+                    <span>
+                      Programmer les 3 relances automatiques (
+                      {relancesPrevues
+                        .map((r) =>
+                          r.prevuLe === null
+                            ? `relance ${r.rang} annulée : audit trop proche`
+                            : quand(r.prevuLe),
+                        )
+                        .join(", ")}
+                      ).{" "}
+                      <span className={mutedCls}>
+                        Dates recalculées depuis le départ réel de l&apos;e-mail ; elles
+                        s&apos;arrêtent dès que le dirigeant répond.
+                      </span>
+                    </span>
+                  </label>
+                  {!relancesAllumees ? (
+                    <p role="status" className={mutedCls}>
+                      Relances éteintes : rien ne partira tant que QUESTIONNAIRE_RELANCES_ENABLED
+                      n&apos;est pas allumé.
+                    </p>
+                  ) : null}
                   <button type="submit" className={boutonCls}>
                     Envoyer cet e-mail
                   </button>
                 </form>
               )}
+              {apercusDuSuivi.length > 0 ? (
+                <div className="mt-[var(--space-admin-3)]" data-bloc="apercus-suivi">
+                  <p className={mutedCls}>
+                    Les e-mails de suivi, tels qu&apos;ils partiraient (rien n&apos;est envoyé
+                    d&apos;ici) :
+                  </p>
+                  {apercusDuSuivi.map((a) => (
+                    <details key={a.libelle} className="mt-[var(--space-admin-2)]">
+                      <summary className="cursor-pointer text-[length:var(--text-admin-sm)]">
+                        {a.libelle} — <b>Objet :</b> {a.sujet}
+                      </summary>
+                      <iframe
+                        title={`Aperçu : ${a.libelle}`}
+                        sandbox=""
+                        srcDoc={a.html}
+                        className="mt-[var(--space-admin-2)] h-[380px] w-full rounded-[var(--radius-admin-sm)] border border-[color:var(--color-admin-border)]"
+                      />
+                    </details>
+                  ))}
+                </div>
+              ) : null}
             </div>
           ) : null}
         </>
+      ) : null}
+
+      {q !== null && refus === null ? (
+        <form
+          action={demanderEssaiAction}
+          data-bloc="essai-suivi"
+          className="mb-[var(--space-admin-3)] flex flex-wrap items-center gap-[var(--space-admin-2)]"
+        >
+          <input type="hidden" name="rencontreId" value={rencontreId} />
+          <select name="essai_de" className={inputCls} aria-label="E-mail à essayer">
+            {ESSAIS.map(([valeur, libelle]) => (
+              <option key={valeur} value={valeur}>
+                {libelle}
+              </option>
+            ))}
+          </select>
+          <button type="submit" className={boutonCls}>
+            M&apos;envoyer un essai
+          </button>
+          <span className={mutedCls}>
+            (à l&apos;adresse d&apos;essai d&apos;Axion IA, objet « [ESSAI] », jamais au prospect)
+          </span>
+        </form>
+      ) : null}
+
+      {suivi !== null ? (
+        <div className="mb-[var(--space-admin-3)]" data-bloc="suivi-questionnaire">
+          <h3 className="mb-[var(--space-admin-2)] text-[length:var(--text-admin-sm)] font-semibold">
+            Suivi
+          </h3>
+          <p className="text-[length:var(--text-admin-sm)]">
+            {suivi.premierEnvoiLe !== null
+              ? `Parti le ${quand(suivi.premierEnvoiLe)}.`
+              : "Départ réel de l'e-mail pas encore constaté."}{" "}
+            {suivi.relancesArreteesLe !== null
+              ? `Relances arrêtées le ${quand(suivi.relancesArreteesLe)} (${
+                  LIBELLE_ARRET[suivi.relancesArretMotif ?? ""] ?? "arrêtées"
+                }).`
+              : !suivi.relancesDemandees
+                ? "Aucune relance demandée."
+                : suivi.prochaine !== null
+                  ? `Prochaine relance : ${quand(suivi.prochaine)}.`
+                  : "Relances programmées au départ réel de l'e-mail."}
+            {suivi.dateAudit !== null ? ` Audit : ${quand(suivi.dateAudit)}` : ""}
+            {suivi.lieuAudit !== null ? `, ${suivi.lieuAudit}.` : suivi.dateAudit ? "." : ""}
+          </p>
+          <p className={mutedCls}>
+            Un rendez-vous annulé n&apos;arrête pas les relances : clôturez le questionnaire ou
+            arrêtez-les ici.
+          </p>
+          {suivi.journal.length > 0 ? (
+            <ul className="mt-[var(--space-admin-2)] text-[length:var(--text-admin-xs)]">
+              {suivi.journal.map((c) => (
+                <li key={c.id}>
+                  {LIBELLE_NATURE[c.nature] ?? c.nature}
+                  {c.essaiDe ? ` (${LIBELLE_NATURE[c.essaiDe] ?? c.essaiDe})` : ""} — prévu{" "}
+                  {quand(c.prevuLe)}
+                  {c.faitLe ? `, fait ${quand(c.faitLe)}` : ""} —{" "}
+                  {LIBELLE_STATUT[c.statut] ?? c.statut}
+                  {c.motif ? ` (${c.motif})` : ""}
+                </li>
+              ))}
+            </ul>
+          ) : null}
+          {suivi.relancesDemandees && suivi.relancesArreteesLe === null ? (
+            <form action={arreterRelancesAction} className="mt-[var(--space-admin-2)]">
+              <input type="hidden" name="rencontreId" value={rencontreId} />
+              <button type="submit" className={boutonCls}>
+                Arrêter les relances
+              </button>
+            </form>
+          ) : null}
+        </div>
       ) : null}
 
       {q !== null && q.envoyeLe !== null && q.closLe === null ? (
