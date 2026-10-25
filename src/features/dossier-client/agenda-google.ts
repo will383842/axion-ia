@@ -40,7 +40,7 @@ export async function poserDansGoogleAgenda(
   try {
     const { creerRendezVous } = await import("@/server/google-calendar/events");
     const { COULEUR_GOOGLE_CANAL } = await import("@/server/calendly/canal");
-    const note = [e.objet ? `Objet : ${e.objet}` : null, e.lieu ? `Lieu : ${e.lieu}` : null]
+    const note = [e.objet ? `Objet : ${e.objet}` : null]
       .filter((x): x is string => x !== null)
       .join("\n");
     const res = await creerRendezVous({
@@ -50,6 +50,7 @@ export async function poserDansGoogleAgenda(
       contact: e.contact ?? null,
       telephone: e.telephone ?? null,
       note: note === "" ? null : note,
+      lieu: e.lieu ?? null,
       couleur: COULEUR_GOOGLE_CANAL[CANAL[e.type]],
     });
     if (!res.ok || res.id === "") return false;
@@ -80,7 +81,8 @@ export async function retirerDeGoogleAgenda(
     if (r.statut !== "annule" && r.statut !== "reporte") return;
     const { retirerEvenement } = await import("@/server/google-calendar/events");
     const res = await retirerEvenement(r.googleEventId);
-    if (res.ok) {
+    // 404/410 : l'événement a déjà été retiré à la main, l'identifiant est périmé.
+    if (res.ok || res.detail?.includes("404") || res.detail?.includes("410")) {
       await db.$transaction((tx) =>
         tx.rencontre.update({ where: { id: rencontreId }, data: { googleEventId: null } }),
       );

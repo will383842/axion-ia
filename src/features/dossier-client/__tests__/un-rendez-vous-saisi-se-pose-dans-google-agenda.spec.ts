@@ -50,10 +50,9 @@ describe("Google Agenda", () => {
     });
     expect(ok).toBe(true);
     const arg = creerRendezVous.mock.calls[0]![0];
-    expect(arg.note).toContain("Lieu : Siège");
+    expect(arg.lieu).toBe("Siège");
     expect(arg.note).toContain("Objet : Devis");
     expect(arg.telephone).toBe("0600000000");
-    expect(arg).not.toHaveProperty("invites");
     expect(update).toHaveBeenCalledWith({ where: { id: "r1" }, data: { googleEventId: "ev1" } });
   });
 
@@ -81,6 +80,9 @@ describe("Google Agenda", () => {
     const b = fauxDb({ statut: "tenu", googleEventId: "ev1" });
     await retirerDeGoogleAgenda(b.db, "r1");
     expect(retirerEvenement).not.toHaveBeenCalled();
+    const c = fauxDb({ statut: "annule", googleEventId: "ev2" });
+    await retirerDeGoogleAgenda(c.db, "r1");
+    expect(retirerEvenement).toHaveBeenCalledWith("ev2");
   });
 });
 
@@ -100,5 +102,38 @@ describe("lieu et objet", () => {
     const r = base.tables["rencontre"]?.[0] as Record<string, unknown> | undefined;
     expect(r?.["lieu"]).toBe("Salle A");
     expect(r?.["objet"]).toBeNull();
+  });
+
+  it("rend le titre, la fin et les noms repris tels quels pour Google", async () => {
+    const f = fiche({ raisonSociale: "Fiche Fictive" });
+    const base = dossierEnMemoire({ client: [f] });
+    const r = await creerRencontre(base.client as never, {
+      clientId: f["id"] as string,
+      type: "telephone",
+      debut,
+      dureeMin: 75,
+      titre: "  Point  ",
+      parAdminId: ADMIN,
+    });
+    expect(r.titre).toBe("Point");
+    expect(r.finPrevue.toISOString()).toBe("2026-11-03T10:15:00.000Z");
+    expect(r.contactNoms).toEqual([]);
+  });
+
+  it("refuse une durée libre invalide sans rien créer", async () => {
+    const f = fiche({ raisonSociale: "Fiche Fictive" });
+    const base = dossierEnMemoire({ client: [f] });
+    for (const d of [0, 481, 7.5, Number.NaN]) {
+      await expect(
+        creerRencontre(base.client as never, {
+          clientId: f["id"] as string,
+          type: "telephone",
+          debut,
+          dureeMin: d,
+          parAdminId: ADMIN,
+        }),
+      ).rejects.toThrow();
+    }
+    expect(base.tables["rencontre"] ?? []).toHaveLength(0);
   });
 });

@@ -28,7 +28,7 @@ import { exigerAccesEchanges } from "./acces";
 import { assurerRencontrePourCalendly } from "./rencontre-calendly";
 import { relancerApresRattachement, validerRattachement } from "./rattacher";
 import { creerProspectDepuisRencontre } from "./creer-prospect";
-import { poserDansGoogleAgenda } from "./agenda-google";
+import { poserDansGoogleAgenda, retirerDeGoogleAgenda } from "./agenda-google";
 import { creerRencontre } from "./creer-rencontre";
 import { deplacerRencontre } from "./deplacer";
 import { fusionnerFiches } from "./fusionner";
@@ -219,6 +219,9 @@ export async function validerApresLAppelAction(fd: FormData): Promise<void> {
     },
   }).catch((e: unknown) => erreurVers(retour, e));
 
+  // Rendez-vous reporté : l'événement Google posé à la création est retiré
+  // (échec doux, hors transaction).
+  if (suivi.data.issue === "reporte") await retirerDeGoogleAgenda(prisma, rencontreId);
   revalidatePath(base("rendez-vous"));
   updateTag("admin:rendez-vous-a-faire");
   if (garde.suite === "devis") {
@@ -281,26 +284,21 @@ export async function creerRencontreAction(fd: FormData): Promise<void> {
   }
   // Google Agenda : le rendez-vous y apparaît et ferme le créneau en ligne.
   // Aucun e-mail ; échec doux (la rencontre est déjà créée).
-  const dureeMin = Number(texte(fd, "dureeLibre") || texte(fd, "duree") || "45");
-  const noms = await prisma.clientContact.findMany({
-    where: {
-      id: { in: fd.getAll("contact").filter((x): x is string => uuid.safeParse(x).success) },
-    },
-    select: { nom: true },
-  });
-  const poseDansGoogle = await poserDansGoogleAgenda(prisma, {
-    rencontreId: r.rencontreId,
-    titre:
-      texte(fd, "titre") ||
-      `Rendez-vous du ${debut.toLocaleDateString("fr-FR", { timeZone: "Europe/Paris" })}`,
-    debut,
-    fin: new Date(debut.getTime() + dureeMin * 60_000),
-    type,
-    lieu: texte(fd, "lieu") || null,
-    objet: texte(fd, "objet") || null,
-    contact: noms.map((n) => n.nom).join(", ") || null,
-    telephone: texte(fd, "telephone") || null,
-  });
+  // Jamais pour un rendez-vous de test : il ne doit pas fermer un vrai créneau.
+  const estTest = fd.get("testInterne") === "on";
+  const poseDansGoogle = estTest
+    ? true
+    : await poserDansGoogleAgenda(prisma, {
+        rencontreId: r.rencontreId,
+        titre: r.titre,
+        debut,
+        fin: r.finPrevue,
+        type,
+        lieu: texte(fd, "lieu") || null,
+        objet: texte(fd, "objet") || null,
+        contact: r.contactNoms.join(", ") || null,
+        telephone: texte(fd, "telephone").slice(0, 40) || null,
+      });
   revalidatePath(base(retour.split("?")[0] ?? retour));
   const page = base(`rendez-vous/rencontres/${r.rencontreId}`);
   redirect(

@@ -458,6 +458,8 @@ export interface CreerRendezVousInput {
   readonly telephone?: string | null;
   /** Note interne. Elle finit dans la description Google — donc sur l'iPhone. */
   readonly note?: string | null;
+  /** Lieu : champ `location` de Google (la page Agenda le lit). */
+  readonly lieu?: string | null;
   /**
    * `colorId` Google — la couleur du format (téléphone / visio).
    *
@@ -511,6 +513,7 @@ export async function creerRendezVous(input: CreerRendezVousInput): Promise<Goog
       start: { dateTime: input.debut.toISOString(), timeZone: "Europe/Paris" },
       end: { dateTime: input.fin.toISOString(), timeZone: "Europe/Paris" },
       transparency: "opaque",
+      ...(input.lieu ? { location: input.lieu } : {}),
       // Absent quand le format n'est pas établi : Google retombe alors sur la
       // couleur par défaut de l'agenda. Envoyer une couleur au hasard ferait
       // croire à une information qu'on n'a pas.
