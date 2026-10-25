@@ -10,6 +10,7 @@
  * le motif en clair.
  */
 
+import { AdminButton } from "@/components/admin/ui/AdminButton";
 import { formatDateFrShort } from "@/lib/format-date-fr";
 import {
   defaireFusionAction,
@@ -17,10 +18,8 @@ import {
 } from "@/features/dossier-client/actions-rencontres";
 import type { FicheCourte, FusionDeLaFiche } from "@/features/dossier-client/queries-rencontres";
 
-const carteCls =
-  "mb-[var(--space-admin-5)] rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] p-[var(--space-admin-5)]";
-const titreCls =
-  "mb-[var(--space-admin-3)] text-[length:var(--text-admin-base)] font-semibold text-[color:var(--color-admin-fg)]";
+const carteCls = "admin-carte";
+const titreCls = "admin-carte-titre";
 const mutedCls = "text-[color:var(--color-admin-fg-muted)]";
 const inputCls =
   "w-full rounded-[var(--radius-admin-sm)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] px-[var(--space-admin-3)] py-[var(--space-admin-2)] text-[length:var(--text-admin-sm)]";
@@ -37,9 +36,9 @@ function FormulaireDefaire({ fusionId, clientId }: { fusionId: string; clientId:
         Pourquoi défaire ? (10 caractères au moins)
         <input name="motif" required minLength={10} maxLength={300} className={inputCls} />
       </label>
-      <button type="submit" className="admin-button-ghost">
+      <AdminButton type="submit" variant="secondary">
         Défaire la fusion
-      </button>
+      </AdminButton>
     </form>
   );
 }
@@ -128,9 +127,9 @@ export function FusionDeFiches({
                   sens). Elle se défait depuis l&apos;une ou l&apos;autre fiche.
                 </p>
                 <div className="sm:col-span-2">
-                  <button type="submit" className="admin-button-ghost">
+                  <AdminButton type="submit" variant="secondary">
                     Fusionner
-                  </button>
+                  </AdminButton>
                 </div>
               </form>
             </details>

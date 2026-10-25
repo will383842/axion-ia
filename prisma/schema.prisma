@@ -5221,15 +5221,16 @@ model Client {
   // ── Dossier client (chantier visio, 2026-09-29) ──
   // Champs de RELATION seulement : aucune colonne n'est ajoutée à `clients`
   // (PA-1, PA-2). Les liens vivent dans les tables neuves.
-  contacts          ClientContact[]
-  projets           Projet[]
-  rencontres        Rencontre[]
-  faits             Fait[]
-  fusionsAbsorbee   ClientFusion[]     @relation("FusionAbsorbee")
-  fusionsAbsorbante ClientFusion[]     @relation("FusionAbsorbante")
-  testInterne       ClientTestInterne?
+  contacts                 ClientContact[]
+  projets                  Projet[]
+  rencontres               Rencontre[]
+  faits                    Fait[]
+  fusionsAbsorbee          ClientFusion[]            @relation("FusionAbsorbee")
+  fusionsAbsorbante        ClientFusion[]            @relation("FusionAbsorbante")
+  testInterne              ClientTestInterne?
   /// Questionnaires avant audit envoyés SANS rendez-vous (relation seule, aucune colonne sur `clients`).
   questionnairesAvantAudit QuestionnaireAvantAudit[] @relation("QuestionnaireAvantAuditClient")
+  crmDossierSynchro        CrmDossierSynchro?
   /// Facture établie hors console (relation seule, aucune colonne sur `clients`, ADR 0053).
   factureHorsConsole ClientFactureHorsConsole?
 
@@ -12680,6 +12681,27 @@ model CrmSyncOutbox {
   @@index([subjectRef])
   @@index([createdAt(sort: Desc)])
   @@map("crm_sync_outbox")
+}
+
+/// État de la synchro AUTOMATIQUE du dossier d'un client vers le CRM Pro (25/10/2026) : une ligne
+/// par client. `version` croît à chaque dossier émis (le CRM ignore une version ≤ à la dernière
+/// appliquée) ; `empreinte` est celle du dernier dossier émis (rien de changé ⇒ rien à émettre).
+/// `crmVuLe` / `crmEmpreinte` : dernier changement reçu DU CRM (sens inverse), pour que ce qui
+/// vient du CRM ne reparte pas. Aucune donnée sur une personne : des compteurs, des dates et des
+/// empreintes. Supprimée avec la fiche (CASCADE) : rien ne survit à l'effacement.
+/// rgpd: technique — compteur, dates et empreintes de synchro ; aucune donnée personnelle
+model CrmDossierSynchro {
+  clientId     String    @id @map("client_id") @db.Uuid
+  client       Client    @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  version      Int       @default(0)
+  empreinte    String?   @db.VarChar(64)
+  emisLe       DateTime? @map("emis_le") @db.Timestamptz(3)
+  crmVuLe      DateTime? @map("crm_vu_le") @db.Timestamptz(3)
+  crmEmpreinte String?   @map("crm_empreinte") @db.VarChar(64)
+  createdAt    DateTime  @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt    DateTime  @updatedAt @map("updated_at") @db.Timestamptz(3)
+
+  @@map("crm_dossier_synchro")
 }
 
 // ─────────────────────────────────────────────────────────────────────────────

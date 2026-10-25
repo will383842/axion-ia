@@ -11,6 +11,7 @@
  * mode pilote (`caseTestInterneVisible`) — et l'action la refuse ailleurs.
  */
 
+import { AdminButton } from "@/components/admin/ui/AdminButton";
 import { creerRencontreAction } from "@/features/dossier-client/actions-rencontres";
 import { DUREES_RENDEZ_VOUS } from "@/features/dossier-client/creer-rencontre";
 
@@ -139,9 +140,7 @@ export function NouveauRendezVous({
           Agenda (sans invitation) : le créneau se ferme à la réservation en ligne.
         </p>
         <div className="sm:col-span-2">
-          <button type="submit" className="admin-button">
-            Créer le rendez-vous
-          </button>
+          <AdminButton type="submit">Créer le rendez-vous</AdminButton>
         </div>
       </form>
     </details>
