@@ -380,6 +380,49 @@
     /* Ombres de survol pour les surfaces cliquables — un cran au-dessus de
        l'élévation au repos, sans « saut » de mise en page. */
     --shadow-admin-hover: 0 4px 10px rgb(0 0 0 / 0.06), 0 12px 24px rgb(0 0 0 / 0.08);
+
+    /* ----- Socle « dossier » (D0, 2026-10-25) — jetons NEUFS, inutilisés tant
+       que `.admin-ton-dossier` n'est pas posé (cf. fin de fichier, PLAN-DESIGN-
+       CLIENTS). Aucun rendu existant ne les lit : D0 ne change rien à l'écran.
+       Contrastes calculés (WCAG) : control-border 4,92:1, placeholder 6,06:1,
+       ghost-border 3,45:1 sur blanc. ----- */
+    --color-admin-control-border: #7a6f5f;
+    --color-admin-placeholder: #6b6155;
+    --color-admin-mocha: #2a2520;
+    --color-admin-ghost-border: #ca7353;
+    --shadow-admin-cta: 0 6px 16px rgb(194 74 27 / 0.28);
+    /* Pastilles PLEINES (texte blanc, ≥ 4,5:1). */
+    --color-admin-solid-success: #1f6b4a;
+    --color-admin-solid-warning: #8a5a0b;
+    --color-admin-solid-destructive: #b13a2b;
+    --color-admin-solid-info: #2f5f8f;
+    --color-admin-solid-neutral: #5e5548;
+    /* Blocs colorés : fond / bord / liseré / titre, par teinte. La couleur ne
+       porte jamais seule le sens (titre + libellé en toutes lettres). */
+    --color-admin-bloc-terracotta-bg: #fbe3d6;
+    --color-admin-bloc-terracotta-border: #efc3ae;
+    --color-admin-bloc-terracotta-accent: #b13a2b;
+    --color-admin-bloc-terracotta-title: #7a2c0d;
+    --color-admin-bloc-bleu-bg: #e1ebf7;
+    --color-admin-bloc-bleu-border: #b9cde6;
+    --color-admin-bloc-bleu-accent: #2f5f8f;
+    --color-admin-bloc-bleu-title: #173a5e;
+    --color-admin-bloc-vert-bg: #dfeee4;
+    --color-admin-bloc-vert-border: #b5d5c1;
+    --color-admin-bloc-vert-accent: #1f6b4a;
+    --color-admin-bloc-vert-title: #1f5a3e;
+    --color-admin-bloc-ambre-bg: #f8eac8;
+    --color-admin-bloc-ambre-border: #e3cd94;
+    --color-admin-bloc-ambre-accent: #8a5a0b;
+    --color-admin-bloc-ambre-title: #5a4106;
+    --color-admin-bloc-violet-bg: #ebe4f5;
+    --color-admin-bloc-violet-border: #cfc2e6;
+    --color-admin-bloc-violet-accent: #6a4c9c;
+    --color-admin-bloc-violet-title: #3d2766;
+    --color-admin-bloc-gris-bg: #ede8e1;
+    --color-admin-bloc-gris-border: #d4c9bb;
+    --color-admin-bloc-gris-accent: #5e5548;
+    --color-admin-bloc-gris-title: #2f2a24;
   }
 }
 
@@ -2981,4 +3024,338 @@ a.admin-card-inline {
   flex-direction: row;
   align-items: center;
   gap: var(--space-admin-2, 8px);
+}
+
+/* =============================================================
+ * « PEAU DOSSIER » — `.admin-ton-dossier` (D0, 2026-10-25, PLAN-DESIGN-CLIENTS)
+ *
+ * INACTIVE tant qu'aucun élément ne porte la classe : D0 ne change rien à
+ * l'écran. Elle est posée par deux `layout.tsx` (D1) sur la fiche client, la
+ * liste des clients et les rendez-vous. Elle REDÉFINIT les variables de la
+ * console sur son sous-arbre : tout ce qui est écrit à la main (`var(--color-
+ * admin-*)`) prend le nouveau style sans qu'on touche aux fichiers.
+ * Retour arrière : retirer les deux layouts.
+ *
+ * ⚠️ Les variables calculées par color-mix (ring, accent-track) sont
+ * résolues là où elles sont déclarées : il faut les redéfinir ici.
+ * Les règles « hors couche » ci-dessous reprennent, avec `:not(:disabled,
+ * [aria-disabled="true"])`, la même forme que celles de base pour que les
+ * survols gagnent par spécificité.
+ * =============================================================*/
+/* Variables : dans la couche des jetons (une déclaration sur un descendant bat
+   de toute façon la valeur héritée du shell). */
+@layer admin-tokens {
+  .admin-ton-dossier {
+    --color-admin-border: #dcd0c0;
+    --color-admin-border-strong: #857a69;
+    --color-admin-fg-soft: #3a332b;
+    --color-admin-fg-muted: #4a4238;
+    --color-admin-accent: #b8441a;
+    --color-admin-accent-track: #f8ece8;
+    --color-admin-ring: #1a4dd9;
+    --radius-admin-sm: 8px;
+    --radius-admin-md: 12px;
+    --text-admin-xs: 13px;
+    --text-admin-sm: 14px;
+    --text-admin-md: 15px;
+    --text-admin-xl: 30px;
+    --control-admin-h-sm: 36px;
+    --control-admin-h-md: 44px;
+    --control-admin-h-lg: 48px;
+    --shadow-admin-1: 0 2px 4px rgb(122 44 13 / 0.06), 0 12px 32px rgb(122 44 13 / 0.08);
+  }
+  @media (max-width: 639.98px) {
+    .admin-ton-dossier {
+      --text-admin-xl: 24px;
+    }
+  }
+}
+
+/* Champs : bordure lisible (>= 3:1), 44 px, 16 px, placeholder lisible. */
+.admin-ton-dossier .admin-input:not(.admin-input-sm, .admin-input-mono, .admin-input-totp) {
+  font-size: 16px;
+}
+.admin-ton-dossier .admin-input {
+  border-color: var(--color-admin-control-border);
+  min-height: 44px;
+  border-radius: 8px;
+}
+.admin-ton-dossier .admin-input:hover:not(:disabled, [readonly]) {
+  border-color: var(--color-admin-fg-soft);
+}
+.admin-ton-dossier .admin-input:focus-visible {
+  border-color: var(--color-admin-accent);
+}
+.admin-ton-dossier .admin-input::placeholder {
+  color: var(--color-admin-placeholder);
+}
+.admin-ton-dossier input[type="checkbox"],
+.admin-ton-dossier input[type="radio"] {
+  width: 20px;
+  height: 20px;
+}
+
+/* Boutons : ombre CTA, 15 px, graisse 700 ; ghost à bordure visible. */
+.admin-ton-dossier .admin-button {
+  box-shadow: var(--shadow-admin-cta);
+  font-weight: 700;
+}
+.admin-ton-dossier .admin-button:focus-visible {
+  box-shadow:
+    0 0 0 var(--ring-admin-width) var(--color-admin-ring),
+    var(--shadow-admin-cta);
+}
+.admin-ton-dossier
+  :is(.admin-button, .admin-button-secondary, .admin-button-ghost):not(
+    .admin-button-sm,
+    .admin-button-xs
+  ) {
+  font-size: 15px;
+}
+.admin-ton-dossier .admin-button:hover:not(:disabled, [aria-disabled="true"]) {
+  background-color: var(--color-admin-accent-strong);
+}
+.admin-ton-dossier .admin-button-secondary,
+.admin-ton-dossier .admin-button-ghost {
+  font-weight: 700;
+}
+.admin-ton-dossier .admin-button-ghost {
+  border-color: var(--color-admin-ghost-border);
+}
+.admin-ton-dossier .admin-button-ghost-danger {
+  border-color: color-mix(in srgb, var(--color-admin-destructive) 35%, transparent);
+}
+.admin-ton-dossier .admin-button-ghost:hover:not(:disabled, [aria-disabled="true"]) {
+  border-color: var(--color-admin-accent);
+}
+.admin-ton-dossier .admin-button-secondary:hover:not(:disabled, [aria-disabled="true"]) {
+  border-color: var(--color-admin-control-border);
+}
+/* Grand bouton : l'action principale d'une carte (48 px, 16 px, graisse 800). */
+.admin-button-lg {
+  min-height: 48px;
+  padding-inline: 24px;
+  font-size: 16px;
+  font-weight: 800;
+}
+.admin-ton-dossier .admin-button-lg {
+  font-size: 16px;
+  font-weight: 800;
+}
+
+/* Onglets de filtre : conteneur blanc bordé, actif = mocha + texte blanc. */
+.admin-ton-dossier .admin-filter-tabs > div {
+  background-color: var(--color-admin-paper);
+  border-color: var(--color-admin-border-strong);
+}
+.admin-ton-dossier .admin-filter-tabs a {
+  min-height: 44px;
+  font-weight: 700;
+}
+.admin-ton-dossier .admin-filter-tabs a[aria-current="page"] {
+  background-color: var(--color-admin-mocha);
+  color: #fff;
+  box-shadow: none;
+}
+
+/* Titres : la police Inter est GARDÉE (décision de Will, point 3 du plan) ; pas de
+   serif, ce que la garde « palette publique » interdit de toute façon. Cartes de
+   chiffres = bloc bleu à liseré haut. */
+.admin-ton-dossier .admin-stat-card {
+  background-color: var(--color-admin-bloc-bleu-bg);
+  border-color: var(--color-admin-bloc-bleu-border);
+  border-top: 4px solid var(--color-admin-bloc-bleu-accent);
+}
+.admin-ton-dossier .admin-table th {
+  font-size: 13px;
+  text-transform: none;
+  letter-spacing: 0;
+}
+.admin-ton-dossier .admin-badge-v2 {
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+/* Classes NEUVES du socle : dans une couche `admin-dossier`, déclarée ICI donc
+   après `utilities` : les utilitaires Tailwind ne les ajustent PAS (l'ordre des
+   couches n'est pas vérifiable depuis ce fichier). Marges et largeurs se règlent
+   dans le parent ou par un modificateur défini ici. Aucune règle de base à battre. */
+@layer admin-dossier {
+  /* Pastille PLEINE (AdminBadge plein) : texte blanc sur fond foncé. */
+  .admin-badge-plein {
+    color: #fff;
+  }
+  .admin-badge-plein.admin-badge-plein--success {
+    background-color: var(--color-admin-solid-success);
+  }
+  .admin-badge-plein.admin-badge-plein--warning {
+    background-color: var(--color-admin-solid-warning);
+  }
+  .admin-badge-plein.admin-badge-plein--destructive {
+    background-color: var(--color-admin-solid-destructive);
+  }
+  .admin-badge-plein.admin-badge-plein--info {
+    background-color: var(--color-admin-solid-info);
+  }
+  .admin-badge-plein.admin-badge-plein--neutral {
+    background-color: var(--color-admin-solid-neutral);
+  }
+
+  /* Carte « dossier » et blocs colorés. */
+  .admin-carte {
+    background-color: var(--color-admin-paper);
+    border: 1px solid var(--color-admin-border);
+    border-radius: 12px;
+    box-shadow: var(--shadow-admin-1);
+    padding: 24px;
+    margin-bottom: 24px;
+  }
+  .admin-carte-titre {
+    margin: 0 0 12px;
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--color-admin-fg);
+  }
+  .admin-bloc {
+    border: 1px solid var(--bloc-border);
+    border-radius: 12px;
+    background-color: var(--bloc-bg);
+    color: var(--color-admin-fg);
+    padding: 20px 24px;
+    margin-bottom: 24px;
+  }
+  .admin-bloc--haut {
+    border-top: 4px solid var(--bloc-accent);
+  }
+  .admin-bloc-titre {
+    margin: 0 0 8px;
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--bloc-title);
+  }
+  .admin-bloc--terracotta {
+    --bloc-bg: var(--color-admin-bloc-terracotta-bg);
+    --bloc-border: var(--color-admin-bloc-terracotta-border);
+    --bloc-accent: var(--color-admin-bloc-terracotta-accent);
+    --bloc-title: var(--color-admin-bloc-terracotta-title);
+  }
+  .admin-bloc--bleu {
+    --bloc-bg: var(--color-admin-bloc-bleu-bg);
+    --bloc-border: var(--color-admin-bloc-bleu-border);
+    --bloc-accent: var(--color-admin-bloc-bleu-accent);
+    --bloc-title: var(--color-admin-bloc-bleu-title);
+  }
+  .admin-bloc--vert {
+    --bloc-bg: var(--color-admin-bloc-vert-bg);
+    --bloc-border: var(--color-admin-bloc-vert-border);
+    --bloc-accent: var(--color-admin-bloc-vert-accent);
+    --bloc-title: var(--color-admin-bloc-vert-title);
+  }
+  .admin-bloc--ambre {
+    --bloc-bg: var(--color-admin-bloc-ambre-bg);
+    --bloc-border: var(--color-admin-bloc-ambre-border);
+    --bloc-accent: var(--color-admin-bloc-ambre-accent);
+    --bloc-title: var(--color-admin-bloc-ambre-title);
+  }
+  .admin-bloc--violet {
+    --bloc-bg: var(--color-admin-bloc-violet-bg);
+    --bloc-border: var(--color-admin-bloc-violet-border);
+    --bloc-accent: var(--color-admin-bloc-violet-accent);
+    --bloc-title: var(--color-admin-bloc-violet-title);
+  }
+  .admin-bloc--gris {
+    --bloc-bg: var(--color-admin-bloc-gris-bg);
+    --bloc-border: var(--color-admin-bloc-gris-border);
+    --bloc-accent: var(--color-admin-bloc-gris-accent);
+    --bloc-title: var(--color-admin-bloc-gris-title);
+  }
+  /* Pastille d'étape numérotée. */
+  .admin-etape {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    flex-shrink: 0;
+    border-radius: 999px;
+    background-color: var(--color-admin-mocha);
+    color: #fff;
+    font-weight: 700;
+  }
+
+  /* Aperçu d'e-mail : enveloppe De/À/Objet + cadre sandbox de hauteur FIXE
+     (CLS 0). La bascule Ordinateur/Téléphone est en CSS seul (radios cachés). */
+  .admin-apercu-email {
+    border: 1px solid var(--color-admin-border-strong);
+    border-radius: 12px;
+    background-color: var(--color-admin-paper);
+    overflow: hidden;
+  }
+  .admin-apercu-email-enveloppe {
+    margin: 0;
+    padding: 12px 16px;
+    background-color: var(--color-admin-surface-sunken);
+    border-bottom: 1px solid var(--color-admin-border);
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 4px 12px;
+    font-size: 14px;
+  }
+  .admin-apercu-email-enveloppe dt {
+    font-weight: 700;
+    color: var(--color-admin-fg-muted);
+  }
+  .admin-apercu-email-enveloppe dd {
+    margin: 0;
+    overflow-wrap: anywhere;
+  }
+  .admin-apercu-email-bascule {
+    position: relative;
+    display: flex;
+    gap: 8px;
+    padding: 8px 16px;
+    border-bottom: 1px solid var(--color-admin-border);
+  }
+  .admin-apercu-email-bascule input {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+  }
+  .admin-apercu-email-bascule label {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    padding: 0 16px;
+    border: 1px solid var(--color-admin-control-border);
+    border-radius: 8px;
+    font-weight: 700;
+    cursor: pointer;
+  }
+  .admin-apercu-email-bascule input:checked + label {
+    background-color: var(--color-admin-mocha);
+    color: #fff;
+  }
+  .admin-apercu-email-bascule input:focus-visible + label {
+    outline: 3px solid var(--color-admin-ring);
+    outline-offset: 2px;
+  }
+  .admin-apercu-email-cadre {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    height: 720px;
+    margin: 0 auto;
+    border: 0;
+    background-color: #fff;
+  }
+  .admin-apercu-email:has(input[value="telephone"]:checked) .admin-apercu-email-cadre {
+    max-width: 390px;
+  }
+  @media (max-width: 639.98px) {
+    .admin-apercu-email-cadre {
+      height: 560px;
+    }
+  }
 }

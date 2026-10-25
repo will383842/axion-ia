@@ -16,8 +16,19 @@ interface AdminBadgeProps {
   dot?: boolean;
   /** Anime le point (statuts en cours : processing/running/queued…). */
   pulse?: boolean;
+  /** Pastille PLEINE : fond foncé et texte blanc (statut qui doit se lire de loin).
+   *  Le ton « outline » n'a pas de version pleine : il garde son rendu. */
+  plein?: boolean;
   className?: string;
 }
+
+const TONE_PLEIN: Record<Exclude<AdminBadgeTone, "outline">, string> = {
+  neutral: "admin-badge-plein--neutral",
+  info: "admin-badge-plein--info",
+  success: "admin-badge-plein--success",
+  warning: "admin-badge-plein--warning",
+  destructive: "admin-badge-plein--destructive",
+};
 
 const TONE_CLASS: Record<AdminBadgeTone, string> = {
   neutral: "bg-[color:var(--color-admin-neutral-soft)] text-[color:var(--color-admin-neutral)]",
@@ -36,6 +47,7 @@ export function AdminBadge({
   compact = true,
   dot = false,
   pulse = false,
+  plein = false,
   className,
 }: AdminBadgeProps): React.ReactElement {
   return (
@@ -45,7 +57,7 @@ export function AdminBadge({
         compact
           ? "px-[var(--space-admin-3)] py-[var(--space-admin-1)] text-[length:var(--text-admin-xs)]"
           : "px-[var(--space-admin-4)] py-[var(--space-admin-2)] text-[length:var(--text-admin-sm)]",
-        TONE_CLASS[tone],
+        plein && tone !== "outline" ? ["admin-badge-plein", TONE_PLEIN[tone]] : TONE_CLASS[tone],
         className,
       )}
     >

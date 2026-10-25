@@ -35,8 +35,9 @@ const VARIANT_CLASS: Record<AdminButtonVariant, string> = {
 interface AdminButtonOwnProps {
   children: React.ReactNode;
   variant?: AdminButtonVariant;
-  /** `sm` réduit la hauteur au gabarit compact (listes, actions de ligne). */
-  size?: "sm" | "md";
+  /** `sm` réduit la hauteur au gabarit compact (listes, actions de ligne) ; `lg` est
+   *  le grand bouton de l'action principale d'une carte (48 px, socle « dossier »). */
+  size?: "sm" | "md" | "lg";
   /** Occupe toute la largeur disponible (formulaires verticaux étroits). */
   block?: boolean;
   /** Icône affichée avant le libellé. */
@@ -105,6 +106,7 @@ export function AdminButton({
   const classes = cn(
     VARIANT_CLASS[variant],
     size === "sm" && "admin-button-sm",
+    size === "lg" && "admin-button-lg",
     block && "admin-button-block",
     className,
   );
