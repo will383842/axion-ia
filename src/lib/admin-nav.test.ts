@@ -1017,6 +1017,7 @@ describe("menu rangé par fréquence d'usage (2026-09-28)", () => {
 
   it("les groupes suivent l'ordre d'usage demandé", () => {
     expect(ADMIN_NAV_GROUP_ORDER.map((g) => ADMIN_NAV_GROUP_LABELS[g])).toEqual([
+      "Clients",
       "Contacts & demandes",
       "Apporteurs d'affaires",
       "Recrutement salariés",
@@ -1133,21 +1134,20 @@ describe("menu rangé par fréquence d'usage (2026-09-28)", () => {
 // 31 lignes et CINQ portes vers une même session. La rubrique n'en montre plus
 // que 11 ; les vingt autres restent dans `buildAdminNav` (palette ⌘K, fil
 // d'Ariane, URL) mais portent `parent`, que la barre latérale filtre.
-describe("« Formations & prestations » : 11 entrées au plus (lot L4, 2026-09-30)", () => {
+describe("« Formations & prestations » : 10 entrées au plus (lot L4, 2026-09-30)", () => {
   const items = buildAdminNav("p");
   const qualiopi = items.filter((it) => it.group === "qualiopi");
   // Même filtre que `AdminSidebarNav` (it.parent == null), plus le tier : une
   // entrée `advanced` ne compte jamais parmi les entrées du mode simple.
   const visibles = qualiopi.filter((it) => it.parent == null && it.tier !== "advanced");
 
-  it("la barre latérale en mode simple n'affiche que les 11 entrées décidées", () => {
-    expect(visibles.length).toBeLessThanOrEqual(11);
+  it("la barre latérale en mode simple n'affiche que les 10 entrées décidées (« Clients (CRM) » est partie dans « Clients »)", () => {
+    expect(visibles.length).toBeLessThanOrEqual(10);
     expect(visibles.map((it) => it.label).sort()).toEqual(
       [
         "À traiter — formations",
         "Sessions",
         "Affaires",
-        "Clients (CRM)",
         "Devis",
         "Nouvelle vente",
         "Stagiaires",
@@ -1175,8 +1175,8 @@ describe("« Formations & prestations » : 11 entrées au plus (lot L4, 2026-09-
     }
   });
 
-  it("aucune entrée n'est perdue : les 34 écrans restent trouvables par la palette ⌘K", () => {
-    expect(qualiopi.length).toBe(34);
+  it("aucune entrée n'est perdue : les 33 écrans restent trouvables par la palette ⌘K", () => {
+    expect(qualiopi.length).toBe(33);
     // La palette cherche sur le libellé (cmdk) : une recherche par un mot du
     // libellé doit toujours retrouver l'écran masqué.
     const chercher = (q: string) =>
