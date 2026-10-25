@@ -25,6 +25,7 @@ import {
 } from "./donnees";
 import { validerHtml } from "./html";
 import { lireLaCharge } from "./lecture";
+import { AUCUN_LIBELLE, libellesDuHtml, type Libelles } from "./libelles";
 
 export { cheminEssaiPreaudit, cheminPreaudit, urlArretRelances, urlPreaudit } from "./liens";
 
@@ -391,6 +392,15 @@ export async function lireReponses(questionnaireId: string): Promise<ReponseLisi
       lecture: lireLaCharge(json, (m) => codeDirigeantPreauditValide(questionnaireId, m)),
     };
   });
+}
+
+/** Les questions en français, relues dans la copie déposée (vérification F, défaut E). */
+export async function libellesDuQuestionnaire(questionnaireId: string): Promise<Libelles> {
+  const q = await prisma.questionnaireAvantAudit.findUnique({
+    where: { id: questionnaireId },
+    select: { html: true },
+  });
+  return typeof q?.html === "string" ? libellesDuHtml(q.html) : AUCUN_LIBELLE;
 }
 
 export interface QuestionnaireSansRencontre {

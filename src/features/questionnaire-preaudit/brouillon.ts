@@ -189,6 +189,38 @@ function envoyeLeNavigateur(
   }
 }
 
+/** La réponse est-elle celle du DIRIGEANT, authentifiée par son code ? Ne lève jamais. */
+function estReponseDuDirigeant(questionnaireId: string, donneesChiffrees: string): boolean {
+  try {
+    const o = JSON.parse(dechiffrerParole(donneesChiffrees)) as { membre?: unknown };
+    return codeDirigeantPreauditValide(questionnaireId, o.membre);
+  } catch {
+    return false;
+  }
+}
+
+/**
+ * Vérification F, défaut B : la réponse du dirigeant est-elle déjà reçue ? Rend l'heure de
+ * réception (serveur) de la plus récente, ou `null`. Une réponse mise à l'écart ne compte pas.
+ * Seul le dirigeant est concerné : un collaborateur garde son brouillon jusqu'à son propre envoi.
+ */
+export async function dirigeantDejaRecu(
+  questionnaireId: string,
+  p: Personne,
+): Promise<Date | null> {
+  if (p.mode !== "main") return null;
+  const envois = await prisma.questionnaireAvantAuditEnvoi.findMany({
+    where: { questionnaireId, mode: "main", ecarteLe: null },
+    select: { donnees: true, recuLe: true },
+  });
+  let dernier: Date | null = null;
+  for (const e of envois) {
+    if (!estReponseDuDirigeant(questionnaireId, e.donnees)) continue;
+    if (dernier === null || e.recuLe.getTime() > dernier.getTime()) dernier = e.recuLe;
+  }
+  return dernier;
+}
+
 /**
  * Enregistre (ou remplace) le brouillon de cette personne. Refusé :
  *   · si celui déjà gardé est PLUS RÉCENT (un vieil onglet n'écrase pas un récent) ; à horodatage
@@ -197,7 +229,9 @@ function envoyeLeNavigateur(
  *     retard ne ressuscite pas le brouillon supprimé à l'envoi). Horloge du NAVIGATEUR contre
  *     horloge du NAVIGATEUR (`envoyeLe` de la réponse contre `horodatage` du brouillon), jamais
  *     l'heure du serveur contre celle du navigateur, qui peut être décalée ;
- *   · au-delà de `BROUILLONS_MAX_PAR_QUESTIONNAIRE` brouillons (`trop_de_brouillons`).
+ *   · au-delà de `BROUILLONS_MAX_PAR_QUESTIONNAIRE` brouillons (`trop_de_brouillons`) ;
+ *   · pour le DIRIGEANT, dès que sa réponse authentifiée est reçue, quel que soit l'horodatage
+ *     (vérification F, défaut B : son lien rouvert ne recrée plus de brouillon vide).
  * Même verrou que `enregistrerReponse` (`FOR UPDATE` sur le questionnaire) : un brouillon et une
  * réponse de ce questionnaire ne s'écrivent jamais en même temps.
  */
@@ -214,8 +248,14 @@ export async function enregistrerBrouillon(
     if (verrou.length === 0) return { statut: "ferme" };
     const envois = await tx.questionnaireAvantAuditEnvoi.findMany({
       where: reponsesDeLaPersonne(questionnaireId, v.personne),
-      select: { donnees: true },
+      select: { donnees: true, ecarteLe: true },
     });
+    if (
+      v.personne.mode === "main" &&
+      envois.some((e) => e.ecarteLe === null && estReponseDuDirigeant(questionnaireId, e.donnees))
+    ) {
+      return { statut: "deja_envoye" };
+    }
     const h = v.horodatage.getTime();
     const deLaPersonne = (d: string) => envoyeLeNavigateur(questionnaireId, v.personne, d);
     if (envois.some((e) => (deLaPersonne(e.donnees) ?? -Infinity) >= h)) {

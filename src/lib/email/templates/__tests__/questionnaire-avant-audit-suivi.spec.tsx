@@ -156,8 +156,15 @@ describe("les 7 e-mails du questionnaire avant audit", () => {
     });
     expect(oury.subject).toBe("Audit du 6 novembre : votre questionnaire");
     expect(texteVisible(oury.html)).toContain(
-      "Pour préparer notre audit, prévu le vendredi 6 novembre à 8 h 30 dans vos locaux, nous avons préparé",
+      "Pour préparer notre audit, prévu le vendredi 6 novembre à 8 h 30, dans vos locaux, nous avons préparé",
     );
+    // Vérification F : « à 10 h, en visio », jamais « à 10 h En visio ».
+    const visio = await renderEmailTemplate("questionnaire-avant-audit", "fr", {
+      lien: LIEN,
+      ...OURY,
+      lieuAudit: "En visio",
+    });
+    expect(texteVisible(visio.html)).toContain("à 8 h 30, en visio, nous avons préparé");
   });
 
   it("relances : lien d'arrêt « Ne plus recevoir de rappel », PAS de lien d'opposition", async () => {

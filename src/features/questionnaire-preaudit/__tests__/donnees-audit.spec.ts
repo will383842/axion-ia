@@ -94,6 +94,11 @@ describe("lecture complète d'une réponse (point 10, pur)", () => {
     expect(e["Schéma"]).toBe("4");
   });
 
+  it("vérification F : sur la réponse DU dirigeant, pas de « Rempli par le dirigeant : non »", () => {
+    const l = lireLaCharge(JSON.stringify({ ...CHARGE, mode: "main" }));
+    expect(l.entete.map((p) => p.libelle)).not.toContain("Rempli par le dirigeant");
+  });
+
   it("champs répétables en TABLEAUX libellés, sans les identifiants internes", () => {
     const l = lireLaCharge(JSON.stringify(CHARGE));
     const equipe = l.tableaux.find((t) => t.cle === "equipe");

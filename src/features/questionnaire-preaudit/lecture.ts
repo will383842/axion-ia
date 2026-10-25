@@ -211,7 +211,11 @@ export function lireLaCharge(
   const entete: Paire[] = [
     { libelle: "Parcours", valeur: PARCOURS[String(racine["mode"])] ?? enTexte(racine["mode"]) },
     { libelle: "Service", valeur: enTexte(racine["service"] ?? racine["service_categorie"]) },
-    { libelle: "Rempli par le dirigeant", valeur: enTexte(racine["rempliParLeDirigeant"]) },
+    // Sur la réponse DU dirigeant, « Rempli par le dirigeant : non » ne veut rien dire.
+    {
+      libelle: "Rempli par le dirigeant",
+      valeur: racine["mode"] === "main" ? "" : enTexte(racine["rempliParLeDirigeant"]),
+    },
     {
       libelle: "Consentement au traitement",
       valeur:

@@ -29,6 +29,17 @@ interface Payload {
 
 const texte = (v: unknown): string => (typeof v === "string" ? v.trim() : "");
 
+/**
+ * Le lieu après la date (vérification F) : « à 10 h, en visio », jamais « à 10 h En visio ». Une
+ * préposition tapée avec une majuscule (« En visio », « Dans vos locaux ») passe en minuscule. PUR.
+ */
+export function apresLaDate(lieu: string): string {
+  const l = lieu.trim();
+  if (l === "") return "";
+  const prep = /^(En|Dans|Chez|Au|Aux|À|Sur|Par)(?=\s|$)/u.test(l);
+  return `, ${prep ? l.charAt(0).toLowerCase() + l.slice(1) : l}`;
+}
+
 /** L'objet daté s'il tient dans `OBJET_MAX`, sinon l'objet standard. */
 export const objetOuRepli = (date: string, standard: string): string =>
   date.length <= OBJET_MAX ? date : standard;
@@ -70,7 +81,7 @@ export function QuestionnaireAvantAuditEmail({
   const lien = texte(p.lien);
   const auditTexte = texte(p.auditTexte);
   const lieu = texte(p.lieuAudit);
-  const prevu = auditTexte === "" ? "" : `, prévu le ${auditTexte}${lieu ? ` ${lieu}` : ""},`;
+  const prevu = auditTexte === "" ? "" : `, prévu le ${auditTexte}${apresLaDate(lieu)},`;
   return (
     <EmailLayout
       famille="C"

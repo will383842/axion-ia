@@ -14,10 +14,11 @@
 import { prisma } from "@/lib/prisma";
 import type { PrismaClient } from "../../../prisma/generated/client";
 
-import { planifierRelances } from "./calendrier";
+import { planifierRelances, type RelancePlanifiee } from "./calendrier";
 import { NATURES_RELANCE } from "./suivi";
 
-type Base = Pick<PrismaClient, "questionnaireAvantAuditSuivi" | "questionnaireAvantAuditCourrier">;
+type Base = Pick<PrismaClient, "questionnaireAvantAuditSuivi" | "questionnaireAvantAuditCourrier"> &
+  Partial<Pick<PrismaClient, "emailLog">>;
 
 export const LIEU_MAX = 80;
 
@@ -187,6 +188,13 @@ export interface SuiviLisible {
   readonly relancesArretMotif: string | null;
   readonly prochaine: Date | null;
   readonly journal: ReadonlyArray<LigneJournal>;
+  /**
+   * Vérification F, défaut C : le départ de l'invitation CONSTATÉ dans `email_logs`, même quand
+   * le worker ne l'a pas encore noté (mode essai : il n'écrit rien). `null` : pas encore parti.
+   */
+  readonly departConstate: Date | null;
+  /** Les relances qui SERAIENT prévues depuis ce départ (mode essai) ; vide sinon. */
+  readonly relancesSimulees: ReadonlyArray<RelancePlanifiee>;
 }
 
 /**
@@ -228,7 +236,26 @@ export async function lireSuivi(
       journal.find(
         (c) => (NATURES_RELANCE as readonly string[]).includes(c.nature) && c.statut === "prevu",
       )?.prevuLe ?? null;
-    return { ...s, prochaine, journal };
+    // Même lecture que le worker pour poser J0 : la première invitation réellement partie.
+    let departConstate = s.premierEnvoiLe;
+    if (departConstate === null && base.emailLog !== undefined) {
+      const log = await base.emailLog.findFirst({
+        where: {
+          template: "questionnaire-avant-audit",
+          entityType: "QuestionnaireAvantAudit",
+          entityId: questionnaireId,
+          status: "sent",
+        },
+        orderBy: { sentAt: "asc" },
+        select: { sentAt: true },
+      });
+      departConstate = log?.sentAt ?? null;
+    }
+    const relancesSimulees =
+      s.premierEnvoiLe === null && departConstate !== null && s.relancesDemandees
+        ? planifierRelances(departConstate, s.dateAudit)
+        : [];
+    return { ...s, prochaine, journal, departConstate, relancesSimulees };
   } catch (e) {
     const code = (e as { code?: unknown } | null)?.code;
     if (code === "P2021" || code === "P2022") return null;

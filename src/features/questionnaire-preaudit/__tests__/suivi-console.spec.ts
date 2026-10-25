@@ -229,4 +229,56 @@ describe("demanderEssai et lireSuivi", () => {
     expect(s?.prochaine?.toISOString()).toBe("2026-11-02T08:30:00.000Z");
     expect(s?.journal).toHaveLength(2);
   });
+
+  it("vérification F, défaut C : mode essai, départ constaté et relances qui SERAIENT prévues", async () => {
+    const b = base(
+      [
+        {
+          id: "s1",
+          questionnaireId: QID,
+          relancesDemandees: true,
+          dateAudit: new Date("2026-10-30T09:00:00Z"),
+          lieuAudit: null,
+          premierEnvoiLe: null,
+          relancesArreteesLe: null,
+          relancesArretMotif: null,
+        },
+      ],
+      [],
+    );
+    const findFirst = vi.fn(async () => ({ sentAt: new Date("2026-10-25T07:54:00Z") }));
+    const s = await lireSuivi(QID, { ...b, emailLog: { findFirst } } as unknown as B);
+    expect(findFirst).toHaveBeenCalledWith(
+      expect.objectContaining({
+        where: expect.objectContaining({ entityId: QID, status: "sent" }),
+      }),
+    );
+    expect(s?.departConstate?.toISOString()).toBe("2026-10-25T07:54:00.000Z");
+    // Envoi le dimanche 25/10 : J+2 = mardi 27/10, 9 h 30 ; la relance 2 tombe à moins de 24 h
+    // de l'audit du 30/10 (annulée), la relance 3 est ramenée avant l'audit.
+    const r = s?.relancesSimulees ?? [];
+    expect(r[0]?.prevuLe?.toISOString()).toBe("2026-10-27T08:30:00.000Z");
+    expect(r.some((x) => x.prevuLe === null)).toBe(true);
+    // Rien n'est écrit : simple lecture.
+    expect(b.suivis[0]!["premierEnvoiLe"]).toBeNull();
+  });
+
+  it("relances non demandées ou J0 déjà posé : aucune simulation", async () => {
+    const posé = base(
+      [
+        {
+          id: "s1",
+          questionnaireId: QID,
+          relancesDemandees: true,
+          premierEnvoiLe: new Date("2026-10-25T07:54:00Z"),
+          relancesArreteesLe: null,
+        },
+      ],
+      [],
+    );
+    const findFirst = vi.fn();
+    const s = await lireSuivi(QID, { ...posé, emailLog: { findFirst } } as unknown as B);
+    expect(findFirst).not.toHaveBeenCalled();
+    expect(s?.relancesSimulees).toEqual([]);
+  });
 });

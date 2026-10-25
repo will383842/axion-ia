@@ -14,6 +14,7 @@ import { EmailLayout, emailStyles } from "./_layout";
 import {
   BOUTON_INVITATION,
   NOTE_LIEN_PERSONNEL,
+  apresLaDate,
   objetOuRepli,
   SignatureCorps,
 } from "./questionnaire-avant-audit";
@@ -147,7 +148,7 @@ export function QuestionnaireAvantAuditRelanceEmail({
             C&apos;est mon dernier rappel au sujet du questionnaire.
           </Text>
           <Text style={emailStyles.paragraphStyle}>
-            {auditTexte ? `Notre audit a lieu le ${auditTexte}${lieu ? ` ${lieu}` : ""}. ` : ""}
+            {auditTexte ? `Notre audit a lieu le ${auditTexte}${apresLaDate(lieu)}. ` : ""}
             Si vous pouvez le remplir avant, nous arriverons avec une vision déjà claire de votre
             organisation, et le temps passé ensemble ira à l&apos;essentiel : vos priorités.
           </Text>
