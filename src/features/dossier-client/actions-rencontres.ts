@@ -294,8 +294,8 @@ export async function creerRencontreAction(fd: FormData): Promise<void> {
         debut,
         fin: r.finPrevue,
         type,
-        lieu: texte(fd, "lieu") || null,
-        objet: texte(fd, "objet") || null,
+        lieu: texte(fd, "lieu").slice(0, 200) || null,
+        objet: texte(fd, "objet").slice(0, 255) || null,
         contact: r.contactNoms.join(", ") || null,
         telephone: texte(fd, "telephone").slice(0, 40) || null,
       });

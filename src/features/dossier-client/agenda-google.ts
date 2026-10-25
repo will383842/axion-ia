@@ -55,9 +55,17 @@ export async function poserDansGoogleAgenda(
     });
     if (!res.ok || res.id === "") return false;
     const id = res.id;
-    await db.$transaction((tx) =>
-      tx.rencontre.update({ where: { id: e.rencontreId }, data: { googleEventId: id } }),
-    );
+    try {
+      await db.$transaction((tx) =>
+        tx.rencontre.update({ where: { id: e.rencontreId }, data: { googleEventId: id } }),
+      );
+    } catch (err) {
+      // Événement créé mais non relié : on le retire, pour que Will n'en crée pas un doublon.
+      console.warn("[agenda-google] identifiant non enregistré, événement retiré", err);
+      const { retirerEvenement } = await import("@/server/google-calendar/events");
+      await retirerEvenement(id).catch(() => undefined);
+      return false;
+    }
     return true;
   } catch (err) {
     console.warn("[agenda-google] pose du rendez-vous en échec", err);
@@ -82,7 +90,7 @@ export async function retirerDeGoogleAgenda(
     const { retirerEvenement } = await import("@/server/google-calendar/events");
     const res = await retirerEvenement(r.googleEventId);
     // 404/410 : l'événement a déjà été retiré à la main, l'identifiant est périmé.
-    if (res.ok || res.detail?.includes("404") || res.detail?.includes("410")) {
+    if (res.ok || /^http_(404|410)(?!\d)/.test(res.detail ?? "")) {
       await db.$transaction((tx) =>
         tx.rencontre.update({ where: { id: rencontreId }, data: { googleEventId: null } }),
       );

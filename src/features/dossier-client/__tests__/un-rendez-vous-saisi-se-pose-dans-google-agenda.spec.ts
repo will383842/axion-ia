@@ -86,6 +86,56 @@ describe("Google Agenda", () => {
   });
 });
 
+describe("cas d'erreur", () => {
+  it("créneau posé mais identifiant non enregistré : l'événement est retiré, pas de doublon", async () => {
+    creerRendezVous.mockResolvedValue({ ok: true, id: "ev9", htmlLink: null });
+    retirerEvenement.mockResolvedValue({ ok: true });
+    const db = { $transaction: () => Promise.reject(new Error("base")) } as never;
+    const ok = await poserDansGoogleAgenda(db, {
+      rencontreId: "r1",
+      titre: "t",
+      debut,
+      fin: debut,
+      type: "visio",
+    });
+    expect(ok).toBe(false);
+    expect(retirerEvenement).toHaveBeenCalledWith("ev9");
+  });
+
+  it("Google qui lève ne lève pas chez l'appelant", async () => {
+    creerRendezVous.mockRejectedValue(new Error("réseau"));
+    const { db } = fauxDb(null);
+    expect(
+      await poserDansGoogleAgenda(db, {
+        rencontreId: "r1",
+        titre: "t",
+        debut,
+        fin: debut,
+        type: "visio",
+      }),
+    ).toBe(false);
+  });
+
+  it("404 : l'identifiant périmé est vidé ; autre erreur : il est gardé", async () => {
+    retirerEvenement.mockResolvedValue({
+      ok: false,
+      reason: "api_error",
+      detail: "http_404 · Not Found",
+    });
+    const a = fauxDb({ statut: "reporte", googleEventId: "ev1" });
+    await retirerDeGoogleAgenda(a.db, "r1");
+    expect(a.update).toHaveBeenCalledWith({ where: { id: "r1" }, data: { googleEventId: null } });
+    retirerEvenement.mockResolvedValue({
+      ok: false,
+      reason: "api_error",
+      detail: "http_500 · x 404",
+    });
+    const b = fauxDb({ statut: "reporte", googleEventId: "ev1" });
+    await retirerDeGoogleAgenda(b.db, "r1");
+    expect(b.update).not.toHaveBeenCalled();
+  });
+});
+
 describe("lieu et objet", () => {
   it("sont écrits sur la rencontre, tronqués, vides = null", async () => {
     const f = fiche({ raisonSociale: "Fiche Fictive" });
