@@ -844,6 +844,34 @@ describe("l'envoi par clic", () => {
     expect(typeof q["destinataireHash"]).toBe("string");
   });
 
+  it("le texte modifié par Will part dans le payload, assaini ; le lien reste celui du questionnaire", async () => {
+    allumer();
+    const q = questionnaire({ envoyeLe: null });
+    await envoyerQuestionnaire({
+      ...args(q),
+      texte: {
+        objet: "Sam, votre audit\r\nBcc: x@y.fr",
+        message: "  Ravi de notre échange.  ",
+        corps: "Mon texte.\r\n\r\n\r\nSuite.",
+      },
+    });
+    const payload = base.enqueue.mock.calls[0]?.[3] as Record<string, unknown>;
+    expect(payload["objetPerso"]).toBe("Sam, votre audit Bcc: x@y.fr");
+    expect(payload["messagePerso"]).toBe("Ravi de notre échange.");
+    expect(payload["corpsPerso"]).toBe("Mon texte.\n\nSuite.");
+    expect(String(payload["lien"])).toContain(String(q["id"]));
+  });
+
+  it("sans texte modifié, le payload ne porte aucune surcharge", async () => {
+    allumer();
+    const q = questionnaire({ envoyeLe: null });
+    await envoyerQuestionnaire(args(q));
+    const payload = base.enqueue.mock.calls[0]?.[3] as Record<string, unknown>;
+    expect(payload).not.toHaveProperty("objetPerso");
+    expect(payload).not.toHaveProperty("messagePerso");
+    expect(payload).not.toHaveProperty("corpsPerso");
+  });
+
   it("double clic : un seul e-mail, et le jobId est celui de l'envoi réservé", async () => {
     allumer();
     const q = questionnaire({ envoyeLe: null });

@@ -16,6 +16,8 @@ const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
 /** Durée de conservation des copies, en mois — celle de la purge de rétention. */
 export const CONSERVATION_COPIES_MOIS = 12;
+/** Décision de Will (25/10/2026) : l'e-mail rattaché à une fiche client est gardé 5 ans. */
+export const CONSERVATION_COPIES_FICHE_MOIS = 60;
 
 export interface CopieEmail {
   subject: string;
@@ -131,7 +133,9 @@ export function raisonSansCopie(
   e: Pick<DetailEmail, "status" | "sentAt" | "createdAt">,
   premiereCopie: Date | null,
   maintenant: Date = new Date(),
+  rattacheAUneFiche = false,
 ): RaisonSansCopie {
+  const mois = rattacheAUneFiche ? CONSERVATION_COPIES_FICHE_MOIS : CONSERVATION_COPIES_MOIS;
   if (e.status !== "sent" && e.status !== "bounced") {
     return {
       kind: "pas-parti",
@@ -145,11 +149,11 @@ export function raisonSansCopie(
   }
   const envoi = e.sentAt ?? e.createdAt;
   const limite = new Date(maintenant);
-  limite.setUTCMonth(limite.getUTCMonth() - CONSERVATION_COPIES_MOIS);
+  limite.setUTCMonth(limite.getUTCMonth() - mois);
   if (envoi < limite) {
     return {
       kind: "purgee",
-      phrase: `Copie purgée : les copies sont conservées ${CONSERVATION_COPIES_MOIS} mois, puis supprimées.`,
+      phrase: `Copie purgée : les copies sont conservées ${rattacheAUneFiche ? "5 ans (e-mail rattaché à une fiche client)" : `${mois} mois`}, puis supprimées.`,
     };
   }
   if (premiereCopie === null || envoi < premiereCopie) {

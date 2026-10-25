@@ -16,6 +16,8 @@ import { MessagePourWill } from "@/features/dossier-client/message-affichable";
 import { MESSAGE_REFUS, refusEnvoiReel } from "./config";
 import { annulerEnvoi, reserverEnvoi, urlArretRelances, urlPreaudit } from "./serveur";
 import { payloadCourrier } from "./suivi";
+import { resoudreTexte } from "./gabarit-invitation";
+import type { TextePayload, TexteSaisi } from "@/lib/email/questionnaire-avant-audit-texte";
 
 const adresse = z.string().trim().toLowerCase().email().max(200);
 
@@ -30,8 +32,11 @@ function payloadInvitation(
   lien: string,
   prenom: string,
   audit: { dateAudit: Date | null; lieuAudit: string | null },
+  texte: TextePayload = {},
 ): Record<string, unknown> {
-  return payloadCourrier("invitation", {
+  // Le texte modifiable (objet, message, corps) s'ajoute au payload du calcul commun : l'aperçu et
+  // l'envoi passent par ici, donc Will voit EXACTEMENT ce qui part. Le lien n'est jamais modifiable.
+  const base = payloadCourrier("invitation", {
     prenom: prenom.trim().slice(0, 60) || undefined,
     societe: "",
     dateAudit: audit.dateAudit,
@@ -44,6 +49,7 @@ function payloadInvitation(
     recuLe: new Date(),
     env: process.env,
   }).payload;
+  return { ...base, ...texte };
 }
 
 /** L'e-mail EXACT qui partira (même rendu que l'envoi), pour l'aperçu de Will. */
@@ -55,11 +61,12 @@ export async function apercuEnvoi(
     dateAudit: null,
     lieuAudit: null,
   },
+  texte: TexteSaisi = {},
 ): Promise<RenderedEmail> {
   return renderEmailTemplate(
     "questionnaire-avant-audit",
     "fr",
-    payloadInvitation(lienOuRefus(questionnaireId), prenom, audit),
+    payloadInvitation(lienOuRefus(questionnaireId), prenom, audit, await resoudreTexte(texte)),
     { destinataire },
   );
 }
@@ -120,6 +127,8 @@ export async function envoyerQuestionnaire(args: {
   /** Date et lieu de l'audit, écrits dans l'e-mail (facultatifs). */
   readonly dateAudit?: Date | null;
   readonly lieuAudit?: string | null;
+  /** Texte modifié par Will avant ce premier envoi (objet, message personnel, corps). */
+  readonly texte?: TexteSaisi;
 }): Promise<"envoye" | "retenu_corbeille"> {
   const refus = refusEnvoiReel();
   if (refus !== null) throw new MessagePourWill(MESSAGE_REFUS[refus]);
@@ -131,6 +140,7 @@ export async function envoyerQuestionnaire(args: {
   });
   if (q === null) throw new MessagePourWill("Questionnaire introuvable.");
   const lien = lienOuRefus(q.id);
+  const texte = await resoudreTexte(args.texte ?? {});
   // Réservation AVANT la mise en file : un double clic (ou deux onglets) ne fait partir qu'un e-mail.
   const maintenant = new Date();
   const avant = await reserverEnvoi(q.id, a.data, maintenant);
@@ -146,10 +156,15 @@ export async function envoyerQuestionnaire(args: {
       "questionnaire-avant-audit",
       a.data,
       "fr",
-      payloadInvitation(lien, args.prenom, {
-        dateAudit: args.dateAudit ?? null,
-        lieuAudit: args.lieuAudit ?? null,
-      }),
+      payloadInvitation(
+        lien,
+        args.prenom,
+        {
+          dateAudit: args.dateAudit ?? null,
+          lieuAudit: args.lieuAudit ?? null,
+        },
+        texte,
+      ),
       {
         // Idempotent : le même envoi réservé ne produit jamais deux tâches.
         jobId: `preaudit-${q.id}-${maintenant.getTime()}`,

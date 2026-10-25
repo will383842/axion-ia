@@ -11,6 +11,7 @@ import {
   cloreQuestionnaireAction,
   demanderEssaiAction,
   deposerQuestionnaireAction,
+  enregistrerGabaritInvitationAction,
   envoyerQuestionnaireAction,
   marquerQuestionnaireLuAction,
 } from "@/features/questionnaire-preaudit/actions";
@@ -22,6 +23,15 @@ import {
   RETENTION_ANS,
 } from "@/features/questionnaire-preaudit/config";
 import { apercuEnvoi, apercusSuivi } from "@/features/questionnaire-preaudit/envoyer";
+import { lireCopiesInvitation } from "@/features/questionnaire-preaudit/copies-envoyees";
+import { lireGabaritBase } from "@/features/questionnaire-preaudit/gabarit-invitation";
+import { adminPath } from "@/lib/admin-path";
+import {
+  CORPS_PAR_DEFAUT,
+  MESSAGE_MAX,
+  OBJET_PERSO_MAX,
+  CORPS_MAX,
+} from "@/lib/email/questionnaire-avant-audit-texte";
 import {
   ETAT_RELANCES_LISIBLE,
   modeConfirmations,
@@ -92,7 +102,16 @@ export async function QuestionnairePreaudit(props: {
   debutPrevu?: Date | null;
   societe?: string | null;
   /** Saisies de l'aperçu (`?pa_email=&pa_prenom=&pa_date=&pa_lieu=`). */
-  apercu: { email: string; prenom: string; date?: string; lieu?: string } | null;
+  apercu: {
+    email: string;
+    prenom: string;
+    date?: string;
+    lieu?: string;
+    /** Texte modifié par Will (objet, message personnel, corps) : repris tel quel par l'envoi. */
+    objet?: string;
+    message?: string;
+    corps?: string;
+  } | null;
 }) {
   const { rencontreId } = props;
   const q = await lireDeLaRencontre(rencontreId);
@@ -116,14 +135,14 @@ export async function QuestionnairePreaudit(props: {
   // refuse autrement) : la console lit donc la même valeur que le worker.
   const etatRelances = modeRelances();
   // Date de l'audit : celle de l'aperçu, sinon le rendez-vous s'il est à venir.
-  const dateSaisie = props.apercu?.date ?? "";
+  const dateDuRendezVous =
+    props.debutPrevu && props.debutPrevu.getTime() > maintenant.getTime()
+      ? toParisLocalInput(props.debutPrevu)
+      : "";
+  // Sans saisie de Will (aperçu automatique), on part de la date du rendez-vous s'il est à venir.
+  const dateSaisie = props.apercu === null ? dateDuRendezVous : (props.apercu.date ?? "");
   const dateAudit = dateSaisie !== "" ? fromParisLocalInput(dateSaisie) : null;
-  const datePropose =
-    dateSaisie !== ""
-      ? dateSaisie
-      : props.debutPrevu && props.debutPrevu.getTime() > maintenant.getTime()
-        ? toParisLocalInput(props.debutPrevu)
-        : "";
+  const datePropose = dateSaisie !== "" ? dateSaisie : dateDuRendezVous;
   const lieuAudit = (props.apercu?.lieu ?? "").trim() || null;
   const relancesPrevues = planifierRelances(maintenant, dateAudit);
   // Vérification F, défaut C : en mode essai, ce qui SERAIT parti (dates comprises).
@@ -150,16 +169,27 @@ export async function QuestionnairePreaudit(props: {
         }
       : null;
 
+  const emailPropose = props.apercu?.email || props.titulaire?.email || "";
+  const prenomPropose = props.apercu?.prenom ?? (props.titulaire?.nom ?? "").split(" ")[0] ?? "";
+  // L'aperçu s'affiche DÈS QUE l'adresse est connue (celle du rendez-vous) : le bouton « Envoyer »
+  // n'est plus caché derrière un clic sur « Voir l'aperçu ». Rien ne part sans le clic sur « Envoyer ».
+  const ap: NonNullable<typeof props.apercu> | null =
+    props.apercu ?? (emailPropose !== "" ? { email: emailPropose, prenom: prenomPropose } : null);
+  const gabaritBase = await lireGabaritBase();
+  const corpsDeBase = gabaritBase.corps ?? CORPS_PAR_DEFAUT;
+  const texteSaisi = { objet: ap?.objet, message: ap?.message, corps: ap?.corps };
+  const copies = q === null ? [] : await lireCopiesInvitation(q.id);
+
   let apercuMail: { sujet: string; html: string } | null = null;
   let apercusDuSuivi: ReadonlyArray<{ libelle: string; sujet: string; html: string }> = [];
   let erreurApercu: string | null = null;
-  if (q !== null && props.apercu !== null && props.apercu.email !== "") {
+  if (q !== null && ap !== null && ap.email !== "") {
     try {
       const audit = { dateAudit, lieuAudit };
-      const m = await apercuEnvoi(q.id, props.apercu.email, props.apercu.prenom, audit);
+      const m = await apercuEnvoi(q.id, ap.email, ap.prenom, audit, texteSaisi);
       apercuMail = { sujet: m.subject, html: m.html };
       apercusDuSuivi = (
-        await apercusSuivi(q.id, props.apercu.email, props.apercu.prenom, {
+        await apercusSuivi(q.id, ap.email, ap.prenom, {
           ...audit,
           societe: props.societe ?? "",
         })
@@ -168,8 +198,6 @@ export async function QuestionnairePreaudit(props: {
       erreurApercu = "L'aperçu n'a pas pu être préparé.";
     }
   }
-  const emailPropose = props.apercu?.email || props.titulaire?.email || "";
-  const prenomPropose = props.apercu?.prenom ?? (props.titulaire?.nom ?? "").split(" ")[0] ?? "";
 
   return (
     <section className={carteCls} id="questionnaire-avant-audit">
@@ -267,8 +295,48 @@ export async function QuestionnairePreaudit(props: {
               className={inputCls}
               aria-label="Lieu de l'audit"
             />
+            <div
+              className="flex w-full flex-col gap-[var(--space-admin-2)]"
+              data-bloc="texte-email"
+            >
+              <label className={mutedCls} htmlFor="pa_objet">
+                Objet (vide : objet de base, sinon objet automatique daté)
+              </label>
+              <input
+                id="pa_objet"
+                name="pa_objet"
+                defaultValue={props.apercu?.objet ?? ""}
+                maxLength={OBJET_PERSO_MAX}
+                placeholder={apercuMail?.sujet ?? "Objet de l'e-mail"}
+                className={inputCls}
+              />
+              <label className={mutedCls} htmlFor="pa_message">
+                Mot personnel de Will, ajouté juste après « Bonjour » (facultatif)
+              </label>
+              <textarea
+                id="pa_message"
+                name="pa_message"
+                rows={3}
+                maxLength={MESSAGE_MAX}
+                defaultValue={props.apercu?.message ?? ""}
+                className={inputCls}
+              />
+              <label className={mutedCls} htmlFor="pa_corps">
+                Texte de l&apos;e-mail (modifiable en entier ; une ligne vide sépare deux
+                paragraphes ; {"{audit}"} devient la date et le lieu de l&apos;audit). Le bouton, le
+                lien personnel, la formule de fin et les mentions légales ne changent pas.
+              </label>
+              <textarea
+                id="pa_corps"
+                name="pa_corps"
+                rows={12}
+                maxLength={CORPS_MAX}
+                defaultValue={props.apercu?.corps ?? corpsDeBase}
+                className={inputCls}
+              />
+            </div>
             <button type="submit" className={boutonCls}>
-              Voir l&apos;aperçu de l&apos;e-mail
+              Mettre à jour l&apos;aperçu
             </button>
           </form>
 
@@ -277,16 +345,16 @@ export async function QuestionnairePreaudit(props: {
               {erreurApercu}
             </p>
           ) : null}
-          {apercuMail !== null && props.apercu !== null ? (
+          {apercuMail !== null && ap !== null ? (
             <div className="mb-[var(--space-admin-3)]">
               <p className="mb-[var(--space-admin-2)] text-[length:var(--text-admin-sm)]">
-                <b>À :</b> {props.apercu.email} — <b>Objet :</b> {apercuMail.sujet}
+                <b>À :</b> {ap.email} — <b>Objet :</b> {apercuMail.sujet}
               </p>
               <iframe
                 title="Aperçu exact de l'e-mail"
                 sandbox=""
                 srcDoc={apercuMail.html}
-                className="mb-[var(--space-admin-3)] h-[420px] w-full rounded-[var(--radius-admin-sm)] border border-[color:var(--color-admin-border)]"
+                className="mb-[var(--space-admin-3)] h-[85vh] min-h-[700px] w-full rounded-[var(--radius-admin-sm)] border border-[color:var(--color-admin-border)]"
               />
               {refus !== null ? (
                 <p role="status" className="text-[length:var(--text-admin-sm)]">
@@ -295,8 +363,15 @@ export async function QuestionnairePreaudit(props: {
               ) : (
                 <form action={envoyerQuestionnaireAction} data-bloc="envoi-questionnaire">
                   <input type="hidden" name="rencontreId" value={rencontreId} />
-                  <input type="hidden" name="destinataire" value={props.apercu.email} />
-                  <input type="hidden" name="prenom" value={props.apercu.prenom} />
+                  <input type="hidden" name="destinataire" value={ap.email} />
+                  <input type="hidden" name="prenom" value={ap.prenom} />
+                  <input
+                    type="hidden"
+                    name="texte_objet"
+                    value={ap.objet || (gabaritBase.objet ?? "")}
+                  />
+                  <input type="hidden" name="texte_message" value={ap.message ?? ""} />
+                  <input type="hidden" name="texte_corps" value={ap.corps || corpsDeBase} />
                   <input type="hidden" name="date_audit" value={dateSaisie} />
                   <input type="hidden" name="lieu_audit" value={lieuAudit ?? ""} />
                   <label className="mb-[var(--space-admin-2)] flex items-start gap-[var(--space-admin-2)] text-[length:var(--text-admin-sm)]">
@@ -350,6 +425,107 @@ export async function QuestionnairePreaudit(props: {
           ) : null}
         </>
       ) : null}
+
+      {copies.length > 0 ? (
+        <div className="mb-[var(--space-admin-3)]" data-bloc="copies-envoyees">
+          <h3 className="mb-[var(--space-admin-2)] text-[length:var(--text-admin-sm)] font-semibold">
+            Copie exacte de l&apos;e-mail parti
+          </h3>
+          <p className={mutedCls}>
+            Objet et texte tels que le destinataire les a reçus. Seul son lien personnel est masqué.
+          </p>
+          {copies.map((c) => (
+            <details
+              key={c.emailLogId}
+              className="mt-[var(--space-admin-2)]"
+              open={copies.length === 1}
+            >
+              <summary className="cursor-pointer text-[length:var(--text-admin-sm)]">
+                {c.envoyeLe ? `Parti le ${quand(c.envoyeLe)}` : "Parti"} — <b>À :</b>{" "}
+                {c.destinataire}
+                {c.objet !== null ? (
+                  <>
+                    {" "}
+                    — <b>Objet :</b> {c.objet}
+                  </>
+                ) : null}
+              </summary>
+              {c.html !== null ? (
+                <iframe
+                  title={`Copie de l'e-mail envoyé à ${c.destinataire}`}
+                  sandbox=""
+                  srcDoc={c.html}
+                  className="mt-[var(--space-admin-2)] h-[85vh] min-h-[700px] w-full rounded-[var(--radius-admin-sm)] border border-[color:var(--color-admin-border)]"
+                />
+              ) : (
+                <p className={mutedCls}>La copie de cet e-mail n&apos;a pas été conservée.</p>
+              )}
+              <p className={mutedCls}>
+                <a
+                  href={adminPath("fr", `/emails-envoyes/${c.emailLogId}`)}
+                  className="text-[color:var(--color-admin-accent)] underline-offset-2 hover:underline"
+                >
+                  Ouvrir dans les e-mails envoyés
+                </a>
+              </p>
+            </details>
+          ))}
+        </div>
+      ) : null}
+
+      <details className="mb-[var(--space-admin-3)]" data-bloc="texte-de-base">
+        <summary className="cursor-pointer text-[length:var(--text-admin-sm)] font-semibold">
+          Texte de base du premier e-mail (pour tous les clients)
+        </summary>
+        <p className={mutedCls}>
+          C&apos;est le texte proposé à chaque nouvel envoi ; vous pouvez ensuite le modifier pour
+          un client dans l&apos;aperçu.{" "}
+          {gabaritBase.corps === null && gabaritBase.objet === null
+            ? "Aucune modification : texte d'origine."
+            : "Texte modifié par vous."}
+        </p>
+        {props.peutDeposer ? (
+          <form
+            action={enregistrerGabaritInvitationAction}
+            className="mt-[var(--space-admin-2)] flex flex-col gap-[var(--space-admin-2)]"
+          >
+            <input type="hidden" name="rencontreId" value={rencontreId} />
+            <label className={mutedCls} htmlFor="base_objet">
+              Objet de base (vide = objet automatique daté)
+            </label>
+            <input
+              id="base_objet"
+              name="base_objet"
+              defaultValue={gabaritBase.objet ?? ""}
+              maxLength={OBJET_PERSO_MAX}
+              className={inputCls}
+            />
+            <label className={mutedCls} htmlFor="base_corps">
+              Texte de base ({"{audit}"} devient la date et le lieu de l&apos;audit)
+            </label>
+            <textarea
+              id="base_corps"
+              name="base_corps"
+              rows={12}
+              maxLength={CORPS_MAX}
+              defaultValue={corpsDeBase}
+              className={inputCls}
+            />
+            <div className="flex gap-[var(--space-admin-2)]">
+              <button type="submit" className={boutonCls}>
+                Enregistrer le texte de base
+              </button>
+              <button type="submit" name="reinitialiser" value="1" className={boutonCls}>
+                Revenir au texte d&apos;origine
+              </button>
+            </div>
+          </form>
+        ) : (
+          <pre className="mt-[var(--space-admin-2)] text-[length:var(--text-admin-sm)] whitespace-pre-wrap">
+            {corpsDeBase}
+          </pre>
+        )}
+      </details>
 
       {q !== null && refus === null ? (
         <form

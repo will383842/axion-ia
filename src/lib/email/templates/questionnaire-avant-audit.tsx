@@ -10,9 +10,20 @@
 //
 // ⛔ Jamais « J'aide », « Aucun gain garanti », « Grenoble » (ordres de Will).
 
+import { Fragment } from "react";
 import { Text } from "@react-email/components";
 import { EmailLayout, emailStyles } from "./_layout";
 import { OBJET_MAX } from "../objet-email";
+import {
+  CORPS_MAX,
+  CORPS_PAR_DEFAUT,
+  MESSAGE_MAX,
+  OBJET_PERSO_MAX,
+  assainirLigne,
+  assainirTexte,
+  enParagraphes,
+  remplacerJetonAudit,
+} from "../questionnaire-avant-audit-texte";
 import type { Locale } from "../../../../prisma/generated/client";
 
 interface Payload {
@@ -25,6 +36,14 @@ interface Payload {
   auditCourt?: string;
   /** « dans vos locaux » (texte de Will) */
   lieuAudit?: string;
+  /**
+   * Texte MODIFIABLE par Will avant le premier envoi (2026-10-25). TEXTE seulement : assaini ici
+   * même (une charge forgée ne passe pas), rendu échappé. `objetPerso` remplace l'objet,
+   * `messagePerso` s'insère après « Bonjour », `corpsPerso` remplace le corps (jeton {audit}).
+   */
+  objetPerso?: string;
+  messagePerso?: string;
+  corpsPerso?: string;
 }
 
 const texte = (v: unknown): string => (typeof v === "string" ? v.trim() : "");
@@ -59,10 +78,27 @@ export function SignatureCorps() {
   );
 }
 
+/** Un paragraphe de texte saisi : les retours à la ligne simples deviennent des <br />. */
+function ParagrapheSaisi({ contenu }: { contenu: string }) {
+  const lignes = contenu.split("\n");
+  return (
+    <Text style={emailStyles.paragraphStyle}>
+      {lignes.map((l, i) => (
+        <Fragment key={i}>
+          {i > 0 ? <br /> : null}
+          {l}
+        </Fragment>
+      ))}
+    </Text>
+  );
+}
+
 export const questionnaireAvantAuditSubject = (
   _locale: Locale,
   payload: Record<string, unknown>,
 ): string => {
+  const perso = assainirLigne((payload as Payload).objetPerso, OBJET_PERSO_MAX);
+  if (perso !== "") return perso;
   const court = texte((payload as Payload).auditCourt);
   return court === ""
     ? OBJET_INVITATION
@@ -82,6 +118,9 @@ export function QuestionnaireAvantAuditEmail({
   const auditTexte = texte(p.auditTexte);
   const lieu = texte(p.lieuAudit);
   const prevu = auditTexte === "" ? "" : `, prévu le ${auditTexte}${apresLaDate(lieu)},`;
+  const message = enParagraphes(assainirTexte(p.messagePerso, MESSAGE_MAX));
+  const corpsSaisi = enParagraphes(assainirTexte(p.corpsPerso, CORPS_MAX));
+  const corps = corpsSaisi.length > 0 ? corpsSaisi : enParagraphes(CORPS_PAR_DEFAUT);
   return (
     <EmailLayout
       famille="C"
@@ -94,24 +133,12 @@ export function QuestionnaireAvantAuditEmail({
       locale={locale}
     >
       <Text style={emailStyles.paragraphStyle}>{prenom ? `Bonjour ${prenom},` : "Bonjour,"}</Text>
-      <Text style={emailStyles.paragraphStyle}>
-        Merci pour notre échange. Pour préparer notre audit{prevu} nous avons préparé un
-        questionnaire en ligne, pensé pour votre entreprise.
-      </Text>
-      <Text style={emailStyles.paragraphStyle}>
-        Il nous aide à comprendre votre quotidien : vos tâches, vos outils, ce qui vous prend du
-        temps. Plus vos réponses sont complètes, plus l&apos;audit sera précis, et plus les pistes
-        que nous vous présenterons seront utiles : du temps gagné, une meilleure rentabilité, de
-        quoi développer votre chiffre d&apos;affaires.
-      </Text>
-      <Text style={emailStyles.paragraphStyle}>
-        Vous pouvez faire une pause et revenir plus tard avec ce même bouton : ce que vous avez déjà
-        saisi vous attend.
-      </Text>
-      <Text style={emailStyles.paragraphStyle}>
-        Si vous travaillez avec une équipe, le questionnaire vous proposera un lien à transmettre à
-        vos collaborateurs : chacun répond de son côté.
-      </Text>
+      {message.map((m, i) => (
+        <ParagrapheSaisi key={`m${i}`} contenu={m} />
+      ))}
+      {corps.map((c, i) => (
+        <ParagrapheSaisi key={`c${i}`} contenu={remplacerJetonAudit(c, prevu)} />
+      ))}
     </EmailLayout>
   );
 }
