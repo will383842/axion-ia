@@ -23,16 +23,29 @@
  * ou sans nom n'est pas envoyé : le CRM lit « absent » comme « ne change
  * rien », et ne supprime rien en retour.
  *
+ * ── Qui ne part pas ─────────────────────────────────────────────────────────
+ * · un PARTICULIER (sa « raison sociale » est son nom : donnée personnelle) ;
+ * · un contact d'origine `mention` (cité sans être présent : jamais informé) ;
+ * · un contact dont l'adresse est exclue (`estExclueDuCrm`, l'opposition gagne) ;
+ * · une adresse qui n'est pas PRO (jamais une adresse personnelle).
+ * Ces règles sont ICI, dans le passage obligé, pas chez l'appelant.
+ * `url_console` n'est jamais émise : elle porte le préfixe secret de la console.
+ * Un numéro trop long pour le CRM est OMIS, jamais tronqué (un numéro faux
+ * partirait sinon).
+ *
  * ── Idempotence ─────────────────────────────────────────────────────────────
- * `event_id` = UUID v5 de `dossier_client_synchro:<client>:<version>` : rejouer
- * la même version ne crée rien de plus (côté site : clé unique de l'outbox ;
- * côté CRM : `noop_idempotent`). `empreinteDossier` sert à ne pas émettre une
- * nouvelle version quand rien n'a changé.
+ * `event_id` = UUID v5 de `dossier_client_synchro:<client>:<version>:<empreinte>`.
+ * L'empreinte y figure pour que deux écrivains qui calculent la même version
+ * avec des contenus différents ne s'écartent pas l'un l'autre comme doublon ;
+ * rejouer le MÊME contenu ne crée rien de plus (côté site : clé unique de
+ * l'outbox ; côté CRM : `noop_idempotent`). `empreinteDossier` sert aussi à ne
+ * pas émettre une nouvelle version quand rien n'a changé.
  */
 
 import { createHash } from "node:crypto";
 
 import { eventIdDeterministe } from "./event-id";
+import { estExclueDuCrm } from "./exclusions";
 import { CRM_SYNC_SCHEMA_VERSION, type CrmSyncEvent } from "./types";
 
 /** Clés de `payload.dossier` — miroir de `DossierClient::CLES_DOSSIER`. */
@@ -74,8 +87,11 @@ export interface ContactPourCrm {
   readonly nom: string;
   readonly fonction: string | null;
   readonly telephone: string | null;
-  /** Adresse choisie par l'appelant (pro d'abord) ; `null` si aucune. */
+  /** Adresse du contact ; `null` si aucune. Ne part que si `emailType` vaut « pro ». */
   readonly email: string | null;
+  readonly emailType: "pro" | "perso" | null;
+  /** Origine du contact dans la console : `mention` = cité sans être présent. */
+  readonly origine: string | null;
   /** `hashEmailForLookup(email)` — la clé qui traverse les deux systèmes. */
   readonly emailHash: string | null;
   /** Parti de l'entreprise : jamais envoyé (rien ne se supprime, rien ne se réactive). */
@@ -86,6 +102,8 @@ export interface EntreeInstantaneCrm {
   readonly clientId: string;
   /** `AXI-CLI-<chiffres>`. */
   readonly numero: string;
+  /** `particulier` : jamais envoyé (la raison sociale est un nom de personne). */
+  readonly type: "entreprise" | "particulier";
   readonly raisonSociale: string;
   /** SIREN déjà contrôlé (9 chiffres) ou `null` : sans lui, le CRM arbitre. */
   readonly siren: string | null;
@@ -96,10 +114,13 @@ export interface EntreeInstantaneCrm {
   readonly telephone: string | null;
   /** Effectif au niveau SIREN ; seule la TRANCHE traverse. */
   readonly effectif: number | null;
-  /** Au moins une facture ÉMISE (ni brouillon ni annulée) pour ce client. */
+  /** Au moins une facture ÉMISE (ni brouillon ni annulée) dans la console. */
   readonly factureEmise: boolean;
-  /** URL https de la fiche dans la console. */
-  readonly urlConsole: string | null;
+  /**
+   * Case « Facture établie hors console » (table `client_factures_hors_console`) :
+   * un prospect devient client dès la première facture, où qu'elle ait été faite.
+   */
+  readonly factureHorsConsole: boolean;
   readonly questionnaire: {
     readonly envoyeLe: Date | null;
     readonly recuLe: Date | null;
@@ -116,7 +137,6 @@ export type DossierPourCrm = {
   telephone?: string;
   axi_cli?: string;
   effectif_tranche?: string;
-  url_console?: string;
   questionnaire?: { envoye_le?: string; recu_le?: string; nb_reponses_equipe?: number };
   contacts?: Array<{
     ref: string;
@@ -147,6 +167,17 @@ function propre(valeur: string | null | undefined, max: number): string | undefi
   return v === "" ? undefined : v.slice(0, max);
 }
 
+/** Valeur qui DÉPASSE le plafond du CRM : omise, jamais tronquée. */
+function propreSansCouper(valeur: string | null | undefined, max: number): string | undefined {
+  const v = propre(valeur, Number.MAX_SAFE_INTEGER);
+  return v === undefined || v.length > max ? undefined : v;
+}
+
+/** Vrai si le dossier peut traverser vers le CRM (pas un particulier). */
+export function estEligibleAuCrm(entree: Pick<EntreeInstantaneCrm, "type">): boolean {
+  return entree.type === "entreprise";
+}
+
 /**
  * La console garde « Prénom Nom » dans UN champ. Le premier mot est le prénom
  * quand il y en a plusieurs ; un mot seul est un NOM. Le CRM rapproche par
@@ -165,25 +196,20 @@ function dateIso(d: Date | null | undefined): string | undefined {
 
 /** Le dossier à envoyer, construit clé par clé (liste blanche). Pur. */
 export function dossierPourCrm(entree: EntreeInstantaneCrm): DossierPourCrm {
+  // Le CRM exige : statut « client » SI ET SEULEMENT SI facture_emise = true.
+  const factureEtablie = entree.factureEmise || entree.factureHorsConsole;
   const dossier: DossierPourCrm = {
-    statut: entree.factureEmise ? "client" : "prospect",
-    facture_emise: entree.factureEmise,
+    statut: factureEtablie ? "client" : "prospect",
+    facture_emise: factureEtablie,
   };
 
   const rue = propre(entree.adresseRue, 255);
   if (rue !== undefined) dossier.rue = rue;
-  const tel = propre(entree.telephone, 32);
+  const tel = propreSansCouper(entree.telephone, 32);
   if (tel !== undefined) dossier.telephone = tel;
   if (/^AXI-CLI-\d{1,10}$/.test(entree.numero)) dossier.axi_cli = entree.numero;
   const tranche = trancheEffectif(entree.effectif);
   if (tranche !== null) dossier.effectif_tranche = tranche;
-  if (
-    entree.urlConsole !== null &&
-    entree.urlConsole.startsWith("https://") &&
-    entree.urlConsole.length <= 500
-  ) {
-    dossier.url_console = entree.urlConsole;
-  }
 
   if (entree.questionnaire !== null) {
     const q: NonNullable<DossierPourCrm["questionnaire"]> = {};
@@ -198,21 +224,28 @@ export function dossierPourCrm(entree: EntreeInstantaneCrm): DossierPourCrm {
 
   const contacts: NonNullable<DossierPourCrm["contacts"]> = [];
   const vus = new Set<string>();
-  for (const c of entree.contacts) {
-    if (c.parti || vus.has(c.id) || contacts.length >= MAX_CONTACTS_CRM) continue;
+  // Ordre fixé ICI : deux lectures dans un ordre différent ne font pas deux versions.
+  const ordonnes = [...entree.contacts].sort((a, b) => (a.id < b.id ? -1 : a.id > b.id ? 1 : 0));
+  for (const c of ordonnes) {
+    if (c.parti || c.origine === "mention" || vus.has(c.id)) continue;
+    if (contacts.length >= MAX_CONTACTS_CRM) break;
+    // L'opposition gagne : la personne n'est pas envoyée du tout.
+    if (c.email !== null && estExclueDuCrm(c.email)) continue;
     const { prenom, nom } = separerNom(c.nom);
     if (prenom === undefined && nom === undefined) continue;
     vus.add(c.id);
     const envoye: NonNullable<DossierPourCrm["contacts"]>[number] = { ref: c.id.slice(0, 64) };
     if (prenom !== undefined) envoye.prenom = prenom;
     if (nom !== undefined) envoye.nom = nom;
-    const email = propre(c.email, 255)?.toLowerCase();
+    const email = c.emailType === "pro" ? propreSansCouper(c.email, 255)?.toLowerCase() : undefined;
     if (email !== undefined) envoye.email = email;
-    const t = propre(c.telephone, 32);
+    const t = propreSansCouper(c.telephone, 32);
     if (t !== undefined) envoye.telephone = t;
     const f = propre(c.fonction, 120);
     if (f !== undefined) envoye.fonction = f;
-    if (c.emailHash !== null && /^[0-9a-f]{64}$/.test(c.emailHash)) envoye.person_key = c.emailHash;
+    if (email !== undefined && c.emailHash !== null && /^[0-9a-f]{64}$/.test(c.emailHash)) {
+      envoye.person_key = c.emailHash;
+    }
     contacts.push(envoye);
   }
   if (contacts.length > 0) dossier.contacts = contacts;
@@ -259,9 +292,9 @@ export function empreinteDossier(
   return createHash("sha256").update(canonique({ entreprise, dossier })).digest("hex");
 }
 
-/** `event_id` d'une version du dossier d'un client. */
-export function eventIdDossierClient(clientId: string, version: number): string {
-  return eventIdDeterministe(`dossier_client_synchro:${clientId}:${version}`);
+/** `event_id` d'une version du dossier d'un client, pour un CONTENU donné. */
+export function eventIdDossierClient(clientId: string, version: number, empreinte: string): string {
+  return eventIdDeterministe(`dossier_client_synchro:${clientId}:${version}:${empreinte}`);
 }
 
 /**
@@ -273,20 +306,23 @@ export function evenementDossierClient(
   entree: EntreeInstantaneCrm,
   version: number,
   occurredAt: Date,
-): CrmSyncEvent {
+): CrmSyncEvent | null {
   if (!Number.isInteger(version) || version < 1) {
     throw new Error("La version d'un dossier est un entier ≥ 1.");
   }
+  if (!estEligibleAuCrm(entree)) return null;
+  const entreprise = entreprisePourCrm(entree);
+  const dossier = dossierPourCrm(entree);
   // `person` est requis par le type commun mais ABSENT pour ce message : le CRM
   // le refuse. D'où le passage par `unknown`, assumé ici et nulle part ailleurs.
   const message = {
     schema_version: CRM_SYNC_SCHEMA_VERSION,
-    event_id: eventIdDossierClient(entree.clientId, version),
+    event_id: eventIdDossierClient(entree.clientId, version, empreinteDossier(entreprise, dossier)),
     event_type: "dossier_client_synchro",
     occurred_at: occurredAt.toISOString(),
     subject_ref: `site:client:${entree.clientId}`,
-    company: entreprisePourCrm(entree),
-    payload: { dossier: { version, ...dossierPourCrm(entree) } },
+    company: entreprise,
+    payload: { dossier: { version, ...dossier } },
   };
   return message as unknown as CrmSyncEvent;
 }

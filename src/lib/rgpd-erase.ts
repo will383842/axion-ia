@@ -469,6 +469,21 @@ export async function eraseCrmOutboxForEmail(email: string): Promise<EraseCrmOut
       OR: [
         ...(empreinte ? [{ payload: { path: ["person", "person_key"], equals: empreinte } }] : []),
         ...formes.map((f) => ({ payload: { path: ["person", "email"], equals: f } })),
+        // Dossier client (`dossier_client_synchro`) : pas de `person`, les
+        // interlocuteurs sont dans `payload.payload.dossier.contacts[]`.
+        ...(empreinte
+          ? [
+              {
+                payload: {
+                  path: ["payload", "dossier", "contacts"],
+                  array_contains: [{ person_key: empreinte }],
+                },
+              },
+            ]
+          : []),
+        ...formes.map((f) => ({
+          payload: { path: ["payload", "dossier", "contacts"], array_contains: [{ email: f }] },
+        })),
       ],
     },
   });
