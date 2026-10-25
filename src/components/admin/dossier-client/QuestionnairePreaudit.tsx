@@ -24,12 +24,15 @@ import {
 import { apercuEnvoi, apercusSuivi } from "@/features/questionnaire-preaudit/envoyer";
 import {
   ETAT_RELANCES_LISIBLE,
+  modeConfirmations,
   modeRelances,
 } from "@/features/questionnaire-preaudit/drapeaux-suivi";
+import { CODE_DIRIGEANT_MASQUE } from "@/features/questionnaire-preaudit/lecture";
 import { lireSuivi } from "@/features/questionnaire-preaudit/suivi-console";
 import {
   cheminEssaiPreaudit,
   essaiPermis,
+  libellesDuQuestionnaire,
   lireDeLaRencontre,
   lireReponses,
 } from "@/features/questionnaire-preaudit/serveur";
@@ -115,6 +118,10 @@ export async function QuestionnairePreaudit(props: {
   const q = await lireDeLaRencontre(rencontreId);
   const refus = refusEnvoiReel();
   const reponses = q === null ? [] : await lireReponses(q.id);
+  const libelles =
+    q !== null && reponses.length > 0
+      ? await libellesDuQuestionnaire(q.id).catch(() => undefined)
+      : undefined;
   const aTraiter =
     q !== null &&
     reponses.length > 0 &&
@@ -139,6 +146,29 @@ export async function QuestionnairePreaudit(props: {
         : "";
   const lieuAudit = (props.apercu?.lieu ?? "").trim() || null;
   const relancesPrevues = planifierRelances(maintenant, dateAudit);
+  // Vérification F, défaut C : en mode essai, ce qui SERAIT parti (dates comprises).
+  const reponseDirigeant = reponses.find(
+    (r) =>
+      r.mode === "main" &&
+      r.ecarteLe === null &&
+      (r.lecture?.brut ?? "").includes(CODE_DIRIGEANT_MASQUE),
+  );
+  const modeConf = modeConfirmations();
+  const simulation =
+    suivi !== null &&
+    suivi.premierEnvoiLe === null &&
+    suivi.departConstate !== null &&
+    (etatRelances !== "actif" || modeConf !== "actif")
+      ? {
+          relances: etatRelances === "actif" ? [] : suivi.relancesSimulees,
+          confirmation:
+            modeConf === "actif"
+              ? "allumée : elle part à la réponse du dirigeant"
+              : reponseDirigeant !== undefined
+                ? `serait partie le ${quand(reponseDirigeant.recuLe)}, à sa réponse`
+                : "partirait dès sa réponse",
+        }
+      : null;
 
   let apercuMail: { sujet: string; html: string } | null = null;
   let apercusDuSuivi: ReadonlyArray<{ libelle: string; sujet: string; html: string }> = [];
@@ -372,7 +402,9 @@ export async function QuestionnairePreaudit(props: {
           <p className="text-[length:var(--text-admin-sm)]">
             {suivi.premierEnvoiLe !== null
               ? `Parti le ${quand(suivi.premierEnvoiLe)}.`
-              : "Départ réel de l'e-mail pas encore constaté."}{" "}
+              : suivi.departConstate !== null
+                ? `E-mail parti le ${quand(suivi.departConstate)} (départ constaté).`
+                : "Départ réel de l'e-mail pas encore constaté."}{" "}
             {suivi.relancesArreteesLe !== null
               ? `Relances arrêtées le ${quand(suivi.relancesArreteesLe)} (${
                   LIBELLE_ARRET[suivi.relancesArretMotif ?? ""] ?? "arrêtées"
@@ -381,10 +413,35 @@ export async function QuestionnairePreaudit(props: {
                 ? "Aucune relance demandée."
                 : suivi.prochaine !== null
                   ? `Prochaine relance : ${quand(suivi.prochaine)}.`
-                  : "Relances programmées au départ réel de l'e-mail."}
+                  : suivi.relancesSimulees.length > 0
+                    ? ""
+                    : "Relances programmées au départ réel de l'e-mail."}
             {suivi.dateAudit !== null ? ` Audit : ${quand(suivi.dateAudit)}` : ""}
             {suivi.lieuAudit !== null ? `, ${suivi.lieuAudit}.` : suivi.dateAudit ? "." : ""}
           </p>
+          {simulation !== null ? (
+            <div
+              role="status"
+              data-bloc="simulation-essai"
+              className="my-[var(--space-admin-2)] rounded-[var(--radius-admin-sm)] border border-[color:var(--color-admin-border)] p-[var(--space-admin-2)] text-[length:var(--text-admin-sm)]"
+            >
+              <p className="font-semibold">
+                Mode essai : voici ce qui serait parti. Rien ne part tant que ce n&apos;est pas
+                allumé.
+              </p>
+              <ul>
+                {simulation.relances.map((r) => (
+                  <li key={r.rang}>
+                    Relance {r.rang} :{" "}
+                    {r.prevuLe !== null
+                      ? `serait partie le ${quand(r.prevuLe)}`
+                      : "annulée (audit à moins de 24 h)"}
+                  </li>
+                ))}
+                <li>Confirmation au dirigeant : {simulation.confirmation}</li>
+              </ul>
+            </div>
+          ) : null}
           <p className={mutedCls}>
             Un rendez-vous annulé n&apos;arrête pas les relances : clôturez le questionnaire ou
             arrêtez-les ici.
@@ -473,6 +530,7 @@ export async function QuestionnairePreaudit(props: {
                   peutEffacer={props.peutDeposer}
                   libelleMode={LIBELLE_MODE[r.mode]}
                   quand={quand(r.recuLe)}
+                  {...(libelles ? { libelles } : {})}
                 />
               </li>
             ))}

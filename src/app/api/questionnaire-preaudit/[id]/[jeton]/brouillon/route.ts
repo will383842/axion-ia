@@ -2,7 +2,9 @@
 //
 // Contrat complet : `_PLAN-QUESTIONNAIRE-PREAUDIT-2026-10-24/CONTRAT-BROUILLON.md`.
 //   · POST   : enregistre `{ consent: true, horodatage, mode, membre, brouillon }` (chiffré) ;
-//   · GET    : `?mode=main|emp|it&m=<code>` rend le brouillon de cette personne ;
+//   · GET    : `?mode=main|emp|it&m=<code>` rend le brouillon de cette personne ; pour le
+//              dirigeant dont la réponse est déjà reçue : `{ ok: true, recu: true, recuLe: <ms>,
+//              brouillon: null, horodatage: null }` (la page affiche « déjà reçu ») ;
 //   · DELETE : mêmes paramètres, supprime le brouillon (retrait de l'accord).
 // Même jeton HMAC que la route des réponses (faux → 404 neutre), même plafond (`CHARGE_MAX_OCTETS`, 1 000 000 octets),
 // même CORS `null`. Débit : compteurs PROPRES au brouillon (un enregistrement automatique ne
@@ -19,6 +21,7 @@ import { NextResponse } from "next/server";
 import {
   BROUILLONS_MAX_PAR_QUESTIONNAIRE,
   brouillonExiste,
+  dirigeantDejaRecu,
   enregistrerBrouillon,
   lireBrouillon,
   personneDe,
@@ -163,7 +166,9 @@ export async function POST(req: Request, ctx: Ctx): Promise<Response> {
         "pour ce questionnaire). Gardez cette page ouverte jusqu'à l'envoi, ou téléchargez le PDF.",
     });
   }
-  if (r.statut === "deja_envoye") return reponse(409, { ok: false, motif: "deja_envoye" });
+  if (r.statut === "deja_envoye") {
+    return reponse(409, { ok: false, motif: "deja_envoye", recu: true });
+  }
   if (r.statut === "plus_ancien") {
     return reponse(409, { ok: false, motif: "plus_ancien", horodatage: r.horodatage.getTime() });
   }
@@ -188,9 +193,21 @@ export async function GET(req: Request, ctx: Ctx): Promise<Response> {
     return reponse(200, { ok: true, essai: true, brouillon: null, horodatage: null });
   }
   if (!ouvert(q)) return reponse(404, { ok: false });
+  // Vérification F, défaut B : le dirigeant qui rouvre son lien après l'envoi voit « déjà reçu ».
+  const recuLe = await dirigeantDejaRecu(q.id, p);
+  if (recuLe !== null) {
+    return reponse(200, {
+      ok: true,
+      recu: true,
+      recuLe: recuLe.getTime(),
+      brouillon: null,
+      horodatage: null,
+    });
+  }
   const b = await lireBrouillon(q.id, p);
   return reponse(200, {
     ok: true,
+    recu: false,
     brouillon: b?.brouillon ?? null,
     horodatage: b?.horodatage.getTime() ?? null,
   });

@@ -16,6 +16,11 @@ import {
 } from "@/features/questionnaire-preaudit/config";
 import { LIBELLE_PREFILL, type ReponseLisible } from "@/features/questionnaire-preaudit/donnees";
 import type { Tableau } from "@/features/questionnaire-preaudit/lecture";
+import {
+  AUCUN_LIBELLE,
+  libelleDe,
+  type Libelles,
+} from "@/features/questionnaire-preaudit/libelles";
 import { adminPath } from "@/lib/admin-path";
 
 const mutedCls = "text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]";
@@ -72,8 +77,12 @@ export function ReponsePreaudit(props: {
   peutEffacer: boolean;
   libelleMode: string;
   quand: string;
+  /** Les questions en français (copie déposée) ; sans elles, un repli lisible. */
+  libelles?: Libelles;
 }) {
   const { r, reference: ref } = props;
+  const libelles = props.libelles ?? AUCUN_LIBELLE;
+  const question = (cle: string) => libelleDe(cle, libelles, r.mode);
   const salarie = r.mode !== "main" && r.membre !== null;
   const exportHref =
     salarie && r.membre !== null
@@ -190,8 +199,10 @@ export function ReponsePreaudit(props: {
 
           <dl className="space-y-[var(--space-admin-1)]">
             {r.lecture.champs.map((l) => (
-              <div key={l.cle}>
-                <dt className={mutedCls}>{l.cle}</dt>
+              <div key={l.cle} data-champ={l.cle}>
+                <dt className={mutedCls} title={l.cle}>
+                  {question(l.cle)}
+                </dt>
                 <dd className="whitespace-pre-line">
                   {l.valeur}
                   {l.prefill !== undefined ? (
@@ -203,7 +214,10 @@ export function ReponsePreaudit(props: {
           </dl>
 
           {r.lecture.tableaux.map((t) => (
-            <TableauLisible key={t.cle} t={t} />
+            <TableauLisible
+              key={t.cle}
+              t={t.libelle === t.cle ? { ...t, libelle: question(t.cle) } : t}
+            />
           ))}
 
           {r.lecture.calc !== null ? (
@@ -229,7 +243,7 @@ export function ReponsePreaudit(props: {
               {r.lecture.prefill.map((b) => (
                 <li key={b.etat}>
                   {b.libelle} ({b.cles.length}) :{" "}
-                  {b.cles.length === 0 ? "aucune" : b.cles.join(", ")}
+                  {b.cles.length === 0 ? "aucune" : b.cles.map(question).join(" ; ")}
                 </li>
               ))}
             </ul>

@@ -185,7 +185,12 @@ describe("le brouillon est gardé et rendu", () => {
 
   it("sans brouillon : 200 avec `brouillon: null`", async () => {
     const q = questionnaire();
-    expect(await json(await relire(q))).toEqual({ ok: true, brouillon: null, horodatage: null });
+    expect(await json(await relire(q))).toEqual({
+      ok: true,
+      recu: false,
+      brouillon: null,
+      horodatage: null,
+    });
   });
 
   it("le lien envoyé au dirigeant porte SON code ; le lien de base n'en porte pas", () => {
@@ -580,12 +585,38 @@ describe("suppression", () => {
     expect((await json(tard))["motif"]).toBe("deja_envoye");
     expect(base.b).toHaveLength(0);
 
-    // Navigateur en RETARD de 2 h : un nouvel état après l'envoi passe, même si son horodatage
-    // est antérieur à l'heure de réception du serveur.
+    // Navigateur en RETARD de 2 h : un nouvel état d'un COLLABORATEUR après son envoi passe, même
+    // si son horodatage est antérieur à l'heure de réception du serveur. (Le dirigeant, lui, n'a
+    // plus de brouillon une fois sa réponse reçue : test suivant.)
     const q2 = questionnaire();
     const retard = Date.now() - 2 * 3_600_000;
-    expect((await envoyer(q2, reponse("main", dir(q2), retard))).status).toBe(200);
-    expect((await enregistrer(q2, corps(q2, { horodatage: retard + 60_000 }))).status).toBe(200);
+    expect((await envoyer(q2, reponse("emp", CODE, retard))).status).toBe(200);
+    expect(
+      (await enregistrer(q2, corps(q2, { mode: "emp", membre: CODE, horodatage: retard + 60_000 })))
+        .status,
+    ).toBe(200);
+  });
+
+  it("vérification F, défaut B : réponse du dirigeant reçue, son lien rouvert dit « déjà reçu »", async () => {
+    const q = questionnaire();
+    expect((await envoyer(q, reponse("main", dir(q), Date.now()))).status).toBe(200);
+    // GET : `recu: true` et l'heure de réception, aucun brouillon.
+    const g = await json(await relire(q));
+    expect(g).toMatchObject({ ok: true, recu: true, brouillon: null, horodatage: null });
+    expect(typeof g["recuLe"]).toBe("number");
+    // POST d'un état PLUS RÉCENT que l'envoi : refusé, rien n'est écrit.
+    const tard = await enregistrer(q, corps(q, { horodatage: Date.now() + 60_000 }));
+    expect(tard.status).toBe(409);
+    expect(await json(tard)).toMatchObject({ ok: false, motif: "deja_envoye", recu: true });
+    expect(base.b).toHaveLength(0);
+    // Un collaborateur du même lien garde son brouillon.
+    expect((await enregistrer(q, corps(q, { mode: "emp", membre: CODE }))).status).toBe(200);
+    expect(await json(await relire(q, `?mode=emp&m=${CODE}`))).toMatchObject({ recu: false });
+    // Une réponse « dirigeant » SANS son code n'empêche rien.
+    const q3 = questionnaire();
+    await envoyer(q3, reponse("main", "", Date.now()));
+    expect((await json(await relire(q3)))["recu"]).toBe(false);
+    expect((await enregistrer(q3, corps(q3))).status).toBe(200);
   });
 
   it("un envoi REFUSÉ (lien clos) ne supprime pas le brouillon", async () => {

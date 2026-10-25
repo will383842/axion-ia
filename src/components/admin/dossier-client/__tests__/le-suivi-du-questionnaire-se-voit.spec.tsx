@@ -11,6 +11,7 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 const m = vi.hoisted(() => ({
   suivi: vi.fn(),
   questionnaire: vi.fn(),
+  reponses: vi.fn(() => [] as unknown[]),
 }));
 
 vi.mock("@/features/questionnaire-preaudit/actions", () => ({
@@ -29,7 +30,11 @@ vi.mock("@/features/questionnaire-preaudit/serveur", () => ({
   essaiPermis: (q: { closLe: Date | null; expireLe: Date | null }) =>
     q.closLe === null && (q.expireLe === null || q.expireLe.getTime() > Date.now()),
   lireDeLaRencontre: m.questionnaire,
-  lireReponses: async () => [],
+  lireReponses: async () => m.reponses(),
+  libellesDuQuestionnaire: async () => ({
+    normal: new Map([["dat_fai", "Votre abonnement internet"]]),
+    it: new Map(),
+  }),
 }));
 vi.mock("@/features/questionnaire-preaudit/suivi-console", () => ({ lireSuivi: m.suivi }));
 vi.mock("@/features/questionnaire-preaudit/envoyer", () => ({
@@ -167,6 +172,67 @@ describe("le suivi du questionnaire se voit", () => {
     m.questionnaire.mockResolvedValue({ ...Q, expireLe: new Date("2020-01-01T00:00:00Z") });
     const expire = await rendre(false);
     expect(expire.container.querySelector("[data-lien-essai]")).toBeNull();
+  });
+
+  it("vérification F, défaut C : en mode essai, ce qui SERAIT parti, dates comprises", async () => {
+    process.env["QUESTIONNAIRE_RELANCES_ENABLED"] = "essai";
+    m.suivi.mockResolvedValue({
+      relancesDemandees: true,
+      dateAudit: null,
+      lieuAudit: null,
+      premierEnvoiLe: null,
+      relancesArreteesLe: null,
+      relancesArretMotif: null,
+      prochaine: null,
+      journal: [],
+      departConstate: new Date("2026-10-25T07:54:00Z"),
+      relancesSimulees: [
+        { rang: 1, prevuLe: new Date("2026-10-27T08:30:00Z") },
+        { rang: 2, prevuLe: null, motif: "audit_proche" },
+        { rang: 3, prevuLe: new Date("2026-10-29T08:30:00Z") },
+      ],
+    });
+    const { container } = await rendre(false);
+    const bloc = container.querySelector('[data-bloc="suivi-questionnaire"]')!;
+    expect(bloc.textContent).not.toContain("pas encore constaté");
+    expect(bloc.textContent).toContain("E-mail parti le 25/10/2026");
+    const sim = container.querySelector('[data-bloc="simulation-essai"]')!;
+    expect(sim.textContent).toContain("Mode essai");
+    expect(sim.textContent).toContain("Relance 1 : serait partie le 27/10/2026");
+    expect(sim.textContent).toContain("Relance 2 : annulée (audit à moins de 24 h)");
+    expect(sim.textContent).toContain("Relance 3 : serait partie le 29/10/2026");
+    expect(sim.textContent).toContain("Confirmation au dirigeant : partirait dès sa réponse");
+    delete process.env["QUESTIONNAIRE_RELANCES_ENABLED"];
+  });
+
+  it("vérification F, défaut E : les réponses montrent la question en français", async () => {
+    m.reponses.mockReturnValue([
+      {
+        id: "e1",
+        mode: "main",
+        membre: null,
+        recuLe: new Date("2026-10-25T08:00:00Z"),
+        ecarteLe: null,
+        infosEmail: true,
+        illisible: false,
+        lignes: [],
+        lecture: {
+          entete: [],
+          champs: [
+            { libelle: "dat_fai", valeur: "Orange Pro", cle: "dat_fai" },
+            { libelle: "tools_xyz", valeur: "Rien", cle: "tools_xyz" },
+          ],
+          tableaux: [],
+          calc: null,
+          prefill: [],
+          brut: "{}",
+        },
+      },
+    ]);
+    const { container } = await rendre(false);
+    const dt = [...container.querySelectorAll("[data-champ] dt")].map((d) => d.textContent);
+    expect(dt).toEqual(["Votre abonnement internet", "Outils : xyz"]);
+    m.reponses.mockReturnValue([]);
   });
 
   it("questionnaire éteint : aucun bouton d'essai", async () => {
