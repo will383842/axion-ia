@@ -125,6 +125,12 @@ export async function deposerQuestionnaire(
 ): Promise<ResultatDepot> {
   const v = validerHtml(html);
   if (!v.ok) throw new MessagePourWill(v.motif);
+  // Rejouable sans risque : la transaction n'écrit qu'en base (ni e-mail, ni file), et Postgres en
+  // annule TOUT sur un interblocage ; le nouvel essai repart de zéro (le `ref` est retiré).
+  return reessayerSiInterblocage(() => deposerUneFois(rencontreId, html));
+}
+
+async function deposerUneFois(rencontreId: string, html: string): Promise<ResultatDepot> {
   return prisma.$transaction(async (tx): Promise<ResultatDepot> => {
     const existant = await tx.questionnaireAvantAudit.findUnique({
       where: { rencontreId },
@@ -140,7 +146,7 @@ export async function deposerQuestionnaire(
       }
       const refus = new MessagePourWill(
         "Ce questionnaire a déjà reçu des réponses : il ne peut plus être remplacé. Pour écrire à " +
-          "quelqu'un d'autre, déposez un questionnaire sur la rencontre de cette personne.",
+          "quelqu'un d'autre, déposez un questionnaire sur le rendez-vous de cette personne.",
       );
       const reponses = await tx.questionnaireAvantAuditEnvoi.count({
         where: { questionnaireId: existant.id },
@@ -153,7 +159,7 @@ export async function deposerQuestionnaire(
         throw new MessagePourWill(
           "Quelqu'un a déjà commencé à remplir ce questionnaire (brouillon enregistré) : le " +
             "remplacer effacerait ce brouillon, il n'est donc pas remplacé. Attendez sa réponse, " +
-            "ou déposez un questionnaire sur la rencontre de la bonne personne.",
+            "ou déposez un questionnaire sur le rendez-vous de la bonne personne.",
         );
       }
       const supprime = await tx.questionnaireAvantAudit.deleteMany({
@@ -231,7 +237,7 @@ export async function reserverEnvoi(
     throw new MessagePourWill(
       "Ce questionnaire a déjà été envoyé à une autre adresse. Si l'adresse était fausse et que " +
         "personne n'a encore répondu, déposez-le de nouveau : l'ancien lien cessera de marcher. " +
-        "Pour écrire à quelqu'un d'autre, déposez un questionnaire sur la rencontre de cette " +
+        "Pour écrire à quelqu'un d'autre, déposez un questionnaire sur le rendez-vous de cette " +
         "personne.",
     );
   }
