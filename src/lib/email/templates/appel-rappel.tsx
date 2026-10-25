@@ -203,7 +203,9 @@ interface VarianteType {
   readonly puceRienAPreparer: (besoin: string | null) => string;
 }
 
-const VARIANTES_FR: Readonly<Record<"diagnostic" | "echange_projet", VarianteType>> = {
+const VARIANTES_FR: Readonly<
+  Record<"diagnostic" | "echange_projet" | "tour_de_france_ia", VarianteType>
+> = {
   diagnostic: {
     eyebrow: "Diagnostic IA gratuit",
     objetConfirme: "Diagnostic IA :",
@@ -247,12 +249,33 @@ const VARIANTES_FR: Readonly<Record<"diagnostic" | "echange_projet", VarianteTyp
         ? `Rien à préparer : nous partons de votre projet et du service choisi (${b}).`
         : "Rien à préparer : nous partons de votre projet.",
   },
+  // Visio de 30 minutes du Tour de France IA (2026-10-25). Ton chaleureux,
+  // vouvoiement. On dit « participer », jamais un prix ni une promesse de résultat.
+  tour_de_france_ia: {
+    eyebrow: "Tour de France IA",
+    objetConfirme: "Tour de France IA :",
+    objetConfirmeSansDate: "Votre visio Tour de France IA est confirmée",
+    objetJ1: (h) =>
+      objetCompose("Rappel :", h ? `Tour de France IA demain, ${h}` : "Tour de France IA demain"),
+    objetH1: (h) =>
+      objetCompose("Tour de France IA :", h ? `dans une heure, à ${h}` : "dans une heure"),
+    titreJ1: "Votre visio Tour de France IA a lieu demain",
+    titreH1: "Votre visio Tour de France IA a lieu dans une heure",
+    deroule: () =>
+      "Merci de votre intérêt pour le Tour de France IA, nous sommes ravis de vous retrouver. Pendant ces 30 minutes en visio, nous faisons connaissance, nous vous présentons le Tour, puis vous décidez, sans engagement, si vous souhaitez y participer.",
+    attendu: () =>
+      "Rien à préparer. Nous sommes ravis d'échanger avec vous sur le Tour de France IA.",
+    puceRienAPreparer: () =>
+      "Rien d'autre à préparer : nous faisons connaissance et nous vous présentons le Tour de France IA.",
+  },
 };
 
 /** La variante du type, ou `null` (type absent, autre, ou message anglais). */
 function varianteDe(locale: Locale, p: { typeRendezVous?: unknown }): VarianteType | null {
   if (locale !== "fr") return null;
-  return p.typeRendezVous === "diagnostic" || p.typeRendezVous === "echange_projet"
+  return p.typeRendezVous === "diagnostic" ||
+    p.typeRendezVous === "echange_projet" ||
+    p.typeRendezVous === "tour_de_france_ia"
     ? VARIANTES_FR[p.typeRendezVous]
     : null;
 }
