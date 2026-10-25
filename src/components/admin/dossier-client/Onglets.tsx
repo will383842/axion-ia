@@ -10,6 +10,7 @@
  * Tout est en texte brut : aucun HTML venant d'une donnée n'est interprété.
  */
 
+import { AdminButton } from "@/components/admin/ui/AdminButton";
 import Link from "next/link";
 
 import { AdminBadge } from "@/components/admin/ui/AdminBadge";
@@ -44,10 +45,8 @@ import { LIBELLE_ETAT_EMAIL_SUIVI } from "@/features/dossier-client/etat-email-s
 import { formatDateFrShort } from "@/lib/format-date-fr";
 import type { FaitType } from "../../../../prisma/generated/client";
 
-const titreCls =
-  "mb-[var(--space-admin-3)] text-[length:var(--text-admin-base)] font-semibold text-[color:var(--color-admin-fg)]";
-const carteCls =
-  "mb-[var(--space-admin-5)] rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] p-[var(--space-admin-5)]";
+const titreCls = "admin-carte-titre";
+const carteCls = "admin-carte";
 const mutedCls = "text-[color:var(--color-admin-fg-muted)]";
 const listeCls = "space-y-[var(--space-admin-2)] text-[length:var(--text-admin-sm)]";
 const lienCls = "text-[color:var(--color-admin-accent)] underline-offset-2 hover:underline";
@@ -101,9 +100,9 @@ export function LigneValeur({
             <form key={faitId} action={garderCetteValeurFormAction}>
               <input type="hidden" name="faitId" value={faitId} />
               <input type="hidden" name="retour" value={retour} />
-              <button type="submit" className="admin-button-ghost">
+              <AdminButton type="submit" variant="secondary">
                 Garder {valeur}
-              </button>
+              </AdminButton>
             </form>
           ))
         : null}
@@ -381,9 +380,7 @@ export function OngletProjets({
             </fieldset>
           ) : null}
           <div>
-            <button type="submit" className="admin-button">
-              Créer le projet
-            </button>
+            <AdminButton type="submit">Créer le projet</AdminButton>
           </div>
         </form>
       </section>
@@ -549,11 +546,11 @@ export function OngletPersonnes({
                       cette personne.
                     </span>
                   ) : null}
-                  <button type="submit" className="admin-button-ghost">
+                  <AdminButton type="submit" variant="secondary">
                     {p.oppositionIaLe === null
                       ? "Cette personne s'oppose au traitement par IA"
                       : "Lever l'opposition"}
-                  </button>
+                  </AdminButton>
                 </form>
               </li>
             ))}
@@ -590,9 +587,7 @@ export function OngletPersonnes({
             <input name="telephone" maxLength={40} className={inputCls} />
           </label>
           <div className="sm:col-span-2">
-            <button type="submit" className="admin-button">
-              Ajouter la personne
-            </button>
+            <AdminButton type="submit">Ajouter la personne</AdminButton>
           </div>
         </form>
       </section>
