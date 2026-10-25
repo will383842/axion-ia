@@ -327,7 +327,7 @@ export function titreQuestionnairePreaudit(p: QuestionnairePreauditTelegram): st
     case "reponse":
       return `${essai}Questionnaire avant audit : réponse reçue`;
     case "invitation":
-      return `${essai}Invitation partie`;
+      return `${essai}Premier e-mail parti`;
     case "relance":
       return `${essai}Relance ${p.rang ?? "?"} sur 3 partie`;
     case "arret":
@@ -366,7 +366,7 @@ export function formatQuestionnairePreaudit(p: QuestionnairePreauditTelegram): s
     formatKV("Société", p.societe),
     formatKV("Qui", qui),
     formatKV("Réponses", reponses),
-    formatKV(p.evenement === "invitation" ? "Relances prévues" : "Relances", p.prochaine),
+    formatKV(p.evenement === "invitation" ? "Rappels prévus" : "Relances", p.prochaine),
     p.evenement === "retenu" ? formatKV("Motif", p.motif) : null,
     formatKV("Voir", lienConsole(p.chemin)),
   ]

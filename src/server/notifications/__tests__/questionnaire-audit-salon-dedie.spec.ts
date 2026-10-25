@@ -2,7 +2,9 @@
 // (Clients, puis Système, puis le général : décision du 25/10/2026) et le message (10 lignes au
 // plus, ni adresse, ni nom complet, ni contenu de réponse). Jamais WhatsApp.
 
-import { afterEach, beforeEach, describe, expect, it } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+
+import { sendTelegramRaw } from "../channels/telegram";
 
 import { formatNotification } from "../format";
 import {
@@ -105,6 +107,33 @@ describe("message du questionnaire avant audit", () => {
         societe: "X",
         chemin: "c",
       }),
-    ).toContain("Relances prévues");
+    ).toContain("Rappels prévus");
+  });
+});
+
+describe("aperçu de lien du salon « Questionnaire audit »", () => {
+  const corpsEnvoye = async (sansApercuLien?: boolean) => {
+    const fetchMock = vi.fn(async () => new Response("{}", { status: 200 }));
+    vi.stubGlobal("fetch", fetchMock);
+    try {
+      await sendTelegramRaw({
+        text: "x",
+        chatId: "-100q",
+        botToken: "t",
+        ...(sansApercuLien ? { sansApercuLien } : {}),
+      });
+      const appels = fetchMock.mock.calls as unknown as Array<[string, { body: string }]>;
+      return JSON.parse(appels[0]![1].body) as Record<string, unknown>;
+    } finally {
+      vi.unstubAllGlobals();
+    }
+  };
+
+  it("coupe l'aperçu quand l'option est posée", async () => {
+    expect((await corpsEnvoye(true)).link_preview_options).toEqual({ is_disabled: true });
+  });
+
+  it("ne change pas les autres salons", async () => {
+    expect(await corpsEnvoye()).not.toHaveProperty("link_preview_options");
   });
 });
