@@ -13,7 +13,7 @@ import { afterEach, describe, it, expect } from "vitest";
 import {
   CHOIX_PUBLICS,
   CHOIX_RENDEZ_VOUS,
-  CHOIX_SANS_TYPE_PROPRE,
+  CHOIX_HORS_DES_QUATRE_HISTORIQUES,
   TOUS_LES_CHOIX,
   choixDeLaRoute,
   choixDuTypeRendezVous,
@@ -51,7 +51,7 @@ describe("l'adresse par défaut", () => {
 describe("la cinquième entrée", () => {
   it("existe, privée, classée « autre », en visio seulement", () => {
     expect(TOUS_LES_CHOIX).toContain("formateur");
-    expect(CHOIX_SANS_TYPE_PROPRE).toEqual(["formateur", "tour"]);
+    expect(CHOIX_HORS_DES_QUATRE_HISTORIQUES).toEqual(["formateur", "tour"]);
     const c = configDuChoix("formateur");
     expect(c.route).toBe("formateur-independant");
     expect(c.type).toBe("autre");
