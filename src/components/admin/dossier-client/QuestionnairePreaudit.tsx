@@ -56,7 +56,7 @@ const boutonCls =
 const LIBELLE_ARRET: Readonly<Record<string, string>> = {
   reponse_dirigeant: "le dirigeant a répondu",
   desinscription: "le destinataire a demandé l'arrêt",
-  will: "arrêtées par vous",
+  will: "arrêtés par vous",
   clos: "questionnaire fermé",
   expire: "questionnaire expiré",
   supprime: "questionnaire supprimé",
@@ -143,7 +143,7 @@ export async function QuestionnairePreaudit(props: {
           relances: etatRelances === "actif" ? [] : suivi.relancesSimulees,
           confirmation:
             modeConf === "actif"
-              ? "allumée : elle part à la réponse du dirigeant"
+              ? "active : elle part à la réponse du dirigeant"
               : reponseDirigeant !== undefined
                 ? `serait partie le ${quand(reponseDirigeant.recuLe)}, à sa réponse`
                 : "partirait dès sa réponse",
@@ -224,7 +224,7 @@ export async function QuestionnairePreaudit(props: {
                 rel="noopener noreferrer"
                 className="text-[color:var(--color-admin-accent)] underline-offset-2 hover:underline"
               >
-                Essayer le questionnaire
+                Tester le questionnaire
               </a>{" "}
               <span className={mutedCls}>
                 (mode test : rien n&apos;est enregistré, personne n&apos;est prévenu)
@@ -312,7 +312,7 @@ export async function QuestionnairePreaudit(props: {
                         .join(", ")}
                       ).{" "}
                       <span className={mutedCls}>
-                        Dates recalculées depuis le départ réel de l&apos;e-mail ; elles
+                        Dates recalculées depuis le départ réel de l&apos;e-mail ; ils
                         s&apos;arrêtent dès que le dirigeant répond.
                       </span>
                     </span>
@@ -381,13 +381,13 @@ export async function QuestionnairePreaudit(props: {
           </h3>
           <p className="text-[length:var(--text-admin-sm)]">
             {suivi.premierEnvoiLe !== null
-              ? `Parti le ${quand(suivi.premierEnvoiLe)}.`
+              ? `Envoyé le ${quand(suivi.premierEnvoiLe)}.`
               : suivi.departConstate !== null
-                ? `E-mail parti le ${quand(suivi.departConstate)} (départ constaté).`
+                ? `E-mail envoyé le ${quand(suivi.departConstate)} (départ constaté).`
                 : "Départ réel de l'e-mail pas encore constaté."}{" "}
             {suivi.relancesArreteesLe !== null
               ? `Rappels arrêtés le ${quand(suivi.relancesArreteesLe)} (${
-                  LIBELLE_ARRET[suivi.relancesArretMotif ?? ""] ?? "arrêtées"
+                  LIBELLE_ARRET[suivi.relancesArretMotif ?? ""] ?? "arrêtés"
                 }).`
               : !suivi.relancesDemandees
                 ? "Aucun rappel demandé."
@@ -407,7 +407,7 @@ export async function QuestionnairePreaudit(props: {
             >
               <p className="font-semibold">
                 Mode test : voici ce qui serait parti. Rien ne part tant que ce n&apos;est pas
-                allumé.
+                activé.
               </p>
               <ul>
                 {simulation.relances.map((r) => (

@@ -195,7 +195,7 @@ describe("le suivi du questionnaire se voit", () => {
     const { container } = await rendre(false);
     const bloc = container.querySelector('[data-bloc="suivi-questionnaire"]')!;
     expect(bloc.textContent).not.toContain("pas encore constaté");
-    expect(bloc.textContent).toContain("E-mail parti le 25/10/2026");
+    expect(bloc.textContent).toContain("E-mail envoyé le 25/10/2026");
     const sim = container.querySelector('[data-bloc="simulation-essai"]')!;
     expect(sim.textContent).toContain("Mode test");
     expect(sim.textContent).toContain("Rappel 1 : serait parti le 27/10/2026");

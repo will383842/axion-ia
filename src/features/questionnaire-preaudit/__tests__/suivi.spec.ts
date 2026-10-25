@@ -865,7 +865,7 @@ describe("essais demandés depuis la console", () => {
     const [gabarit, a, , payload, options] = enfiler.mock.calls[0]!;
     expect(gabarit).toBe("questionnaire-avant-audit-relance");
     expect(a).toBe("essai@axion-ia.com");
-    expect(options.sujetForce).toMatch(/^\[ESSAI\] /);
+    expect(options.sujetForce).toMatch(/^\[TEST\] /);
     expect(options.entityType).toBe("QuestionnaireAvantAuditEssai");
     expect(String(payload["lienArret"])).toMatch(/\?essai=1$/);
     expect(String(payload["lien"])).toContain("essai=1");

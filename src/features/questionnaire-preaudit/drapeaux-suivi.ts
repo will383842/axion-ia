@@ -34,8 +34,7 @@ export const modeTelegram = (env: Env = process.env): ModeSuivi =>
 export const ETAT_RELANCES_LISIBLE: Readonly<Record<ModeSuivi, string>> = {
   actif: "Rappels actifs : ils partiront aux dates prévues.",
   essai: "Rappels en test : ils sont comptés, mais aucun ne part.",
-  eteint:
-    "Rappels suspendus pour le moment : aucun ne partira tant qu'ils ne sont pas réactivés.",
+  eteint: "Rappels suspendus pour le moment : aucun ne partira tant qu'ils ne sont pas réactivés.",
 };
 
 /** L'adresse qui reçoit les essais (« M'envoyer un essai »), jamais une adresse du code. */

@@ -101,12 +101,12 @@ export async function deposerQuestionnaireAction(fd: FormData): Promise<void> {
     rencontreId,
     "message",
     ancienLienMort
-      ? "Questionnaire déposé de nouveau (brouillon) : l'ancien lien ne marche plus." +
+      ? "Questionnaire remplacé (brouillon) : l'ancien lien ne marche plus." +
           (emailsRejetes > 0
             ? ` ${emailsRejetes} e-mail(s) en attente avec l'ancien lien ont été rejetés.`
             : "") +
-          " Essayez le questionnaire avant de l'envoyer."
-      : "Questionnaire déposé (brouillon). Essayez-le avant de l'envoyer.",
+          " Testez le questionnaire avant de l'envoyer."
+      : "Questionnaire ajouté (brouillon). Testez-le avant de l'envoyer.",
   );
 }
 
@@ -188,7 +188,9 @@ export async function demanderEssaiAction(fd: FormData): Promise<void> {
   try {
     await exigerAccesEchanges();
     if (!preauditActif()) {
-      throw new MessagePourWill("L'envoi des questionnaires est suspendu : aucun test ne peut partir.");
+      throw new MessagePourWill(
+        "L'envoi des questionnaires est suspendu : aucun test ne peut partir.",
+      );
     }
     const essaiDe = champ(fd, "essai_de");
     if (!(ESSAIS_POSSIBLES as readonly string[]).includes(essaiDe)) {
