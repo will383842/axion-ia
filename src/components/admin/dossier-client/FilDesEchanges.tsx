@@ -58,7 +58,9 @@ export function FilDesEchanges({
       </p>
       {sourcesEnPanne > 0 ? (
         <p role="alert" className="admin-alert admin-alert-warning mb-[var(--space-admin-3)]">
-          <span>Une partie du fil n&apos;a pas pu être lue : il est incomplet. Rechargez la page.</span>
+          <span>
+            Une partie du fil n&apos;a pas pu être lue : il est incomplet. Rechargez la page.
+          </span>
         </p>
       ) : null}
       {fil.length === 0 && sourcesEnPanne === 0 ? (
