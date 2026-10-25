@@ -92,7 +92,7 @@ describe("⛔ un lecteur ne voit ni synthèse ni échanges", () => {
         const html = await rendreFiche(Page, onglet);
         for (const f of Object.values(d.lectures)) expect(f).not.toHaveBeenCalled();
         expect(html).not.toContain("Ce que fait la société");
-        expect(html).not.toContain("?onglet=echanges");
+        expect(html).not.toContain("?onglet=rendez-vous");
         expect(html).toContain(`votre rôle : ${LIBELLES[role]}`);
         expect(html).toContain("réservés à Williams et aux administrateurs");
       }
@@ -105,7 +105,7 @@ describe("⛔ un lecteur ne voit ni synthèse ni échanges", () => {
       d.session = { user: { id: "u1", role } };
       const html = await rendreFiche(Page, "synthese");
       expect(d.lectures.lireFaitsDuClient).toHaveBeenCalled();
-      expect(html).toContain("?onglet=echanges");
+      expect(html).toContain("?onglet=rendez-vous");
       expect(html).toContain("Ce que fait la société");
       expect(html).not.toContain("réservés à Williams et aux administrateurs");
     },
