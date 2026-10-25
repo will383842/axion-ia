@@ -46,14 +46,8 @@ export function BlocQuestionnaireFiche({
   if (questionnaires.length === 0) return null;
   const base = `/fr/${adminPrefix}`;
   return (
-    <section
-      aria-labelledby="questionnaire-fiche"
-      className="mb-[var(--space-admin-6)] rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] p-[var(--space-admin-4)]"
-    >
-      <h2
-        id="questionnaire-fiche"
-        className="mb-[var(--space-admin-3)] text-[length:var(--text-admin-base)] font-semibold"
-      >
+    <section aria-labelledby="questionnaire-fiche" className="admin-carte">
+      <h2 id="questionnaire-fiche" className="admin-carte-titre">
         Questionnaire avant audit
       </h2>
       <ul className="space-y-[var(--space-admin-4)] text-[length:var(--text-admin-sm)]">
