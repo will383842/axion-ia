@@ -37,12 +37,9 @@ export function FilDesEchanges({
   adminPrefix: string;
 }): React.ReactElement {
   return (
-    <section
-      aria-labelledby="fil-des-echanges"
-      className="mb-[var(--space-admin-4)] rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] p-[var(--space-admin-4)]"
-    >
+    <section aria-labelledby="fil-des-echanges" className="admin-carte">
       <div className="mb-[var(--space-admin-3)] flex flex-wrap items-baseline justify-between gap-[var(--space-admin-3)]">
-        <h2 id="fil-des-echanges" className="text-[length:var(--text-admin-base)] font-semibold">
+        <h2 id="fil-des-echanges" className="admin-carte-titre">
           Fil des échanges
         </h2>
         <Link
