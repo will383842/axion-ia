@@ -6,9 +6,10 @@
 // Jeton absent, faux, ou variable `TOUR_APERCU_JETON` non posée : 404, comme
 // n'importe quelle adresse inconnue.
 //
-// 🔴 Le jeton n'est écrit NULLE PART : ni dans le dépôt, ni dans un journal (cette
-// route ne journalise rien), ni dans le cookie. La comparaison porte sur les
-// empreintes, en temps constant.
+// 🔴 Le jeton n'est écrit ni dans le dépôt, ni dans le cookie, et cette route ne le
+// journalise pas. MAIS il voyage dans l'adresse (`?jeton=`) : les journaux du
+// serveur ou du proxy et l'historique du navigateur peuvent donc le garder. À
+// changer s'il a fuité. La comparaison porte sur les empreintes, en temps constant.
 //
 // Le 303 vise `/tourdefrance-ia` SANS barre finale : `trailingSlash` est faux sur
 // tout le site, et Next redirige `/tourdefrance-ia/` vers `/tourdefrance-ia`
