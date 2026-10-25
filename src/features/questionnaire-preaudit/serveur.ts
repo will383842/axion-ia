@@ -403,3 +403,44 @@ export async function lireReponses(questionnaireId: string): Promise<ReponseLisi
     };
   });
 }
+
+export interface QuestionnaireSansRencontre {
+  readonly id: string;
+  readonly ref: string;
+  readonly envoyeLe: Date | null;
+  readonly closLe: Date | null;
+  readonly reponses: ReadonlyArray<ReponseLisible>;
+}
+
+/**
+ * Les questionnaires dont la rencontre a été SUPPRIMÉE (`rencontre_id` à NULL depuis le
+ * 25/10/2026 : plus d'effacement en cascade) : LECTURE seule, pour que leurs réponses restent
+ * visibles, exportables et mises à l'écart à la demande. Rien n'est supprimé ici.
+ */
+export const SANS_RENCONTRE_PAR_PAGE = 25;
+
+export async function listerQuestionnairesSansRencontre(page = 1): Promise<{
+  readonly liste: QuestionnaireSansRencontre[];
+  readonly page: number;
+  readonly suivante: boolean;
+}> {
+  const p = Number.isInteger(page) && page >= 1 ? page : 1;
+  const qs = await prisma.questionnaireAvantAudit.findMany({
+    where: { rencontreId: null },
+    select: { id: true, ref: true, envoyeLe: true, closLe: true },
+    // Les envoyés d'abord (du plus récent), puis les jamais envoyés ; `id` départage (pages stables).
+    orderBy: [{ envoyeLe: { sort: "desc", nulls: "last" } }, { creeLe: "desc" }, { id: "asc" }],
+    skip: (p - 1) * SANS_RENCONTRE_PAR_PAGE,
+    take: SANS_RENCONTRE_PAR_PAGE + 1,
+  });
+  const liste = await Promise.all(
+    qs.slice(0, SANS_RENCONTRE_PAR_PAGE).map(async (q) => ({
+      id: q.id,
+      ref: q.ref,
+      envoyeLe: q.envoyeLe,
+      closLe: q.closLe,
+      reponses: await lireReponses(q.id),
+    })),
+  );
+  return { liste, page: p, suivante: qs.length > SANS_RENCONTRE_PAR_PAGE };
+}

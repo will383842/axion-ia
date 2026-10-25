@@ -183,6 +183,8 @@ describe("REQ-INT-007 — face VERTE : le dépôt réel", () => {
       expect(client.ecrivains.map((e) => `${e.fichier} (${e.fonction})`).sort()).toEqual([
         "src/features/dossier-client/defaire-fusion.ts (defaireDansUneTransaction › travail de db.$transaction())",
         "src/features/dossier-client/fusionner.ts (fusionnerFiches › travail de db.$transaction())",
+        // 25/10/2026 : champs VIDES de la fiche complétés depuis la réponse du dirigeant.
+        "src/features/questionnaire-preaudit/completer-fiche.ts (completerFicheDepuisReponse › travail de prisma.$transaction())",
         "src/lib/rgpd-erase.ts (eraseClientsForEmail › travail de prisma.$transaction())",
         "src/server/actions/qualiopi/clients.ts (updateClientAction › travail de prisma.$transaction())",
         "src/server/qualiopi/crm/porte-client.ts (creerOuRetrouverClient › travail de withNumberRetry() › travail de db.$transaction())",
@@ -195,7 +197,7 @@ describe("REQ-INT-007 — face VERTE : le dépôt réel", () => {
         "src/server/qualiopi/crm/effectif-insee.ts (rafraichirEffectifInsee)",
       ]);
       const { code, lignes } = rendu(b);
-      expect(lignes.at(-1)).toMatch(/5 écrivain\(s\) de client\.cree\|client\.mis_a_jour/);
+      expect(lignes.at(-1)).toMatch(/6 écrivain\(s\) de client\.cree\|client\.mis_a_jour/);
       expect(code).toBe(0);
     },
   );

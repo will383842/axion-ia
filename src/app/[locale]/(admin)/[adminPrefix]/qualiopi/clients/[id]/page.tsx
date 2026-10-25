@@ -77,6 +77,7 @@ import {
 import { motifSansAccesAuxEchanges, peutVoirLesEchanges } from "@/features/dossier-client/acces";
 import { consoliderFaits } from "@/features/dossier-client/consolider-faits";
 import { confirmerSirenFormAction } from "@/features/dossier-client/actions";
+import { sirenProposeParQuestionnaire } from "@/features/questionnaire-preaudit/completer-fiche";
 import {
   lireCaseTestVisible,
   lireFichesVivantes,
@@ -339,6 +340,13 @@ export default async function FicheClient360Page({ params, searchParams }: PageP
   const bandeauPartners = await bandeauPourLeRole(acces.role, sirenLu);
   const sirenContraire = estEntreprise && sirenContreditLeSiret(client);
   const sirenACompleter = estEntreprise && sirenLu === null;
+  // Le SIREN tapé par le prospect dans le questionnaire avant audit : PROPOSÉ, jamais posé
+  // sans le clic de Will (« Poser ce SIREN » passe par la porte unique et son verrou).
+  // Lecture d'appoint : une panne ici ne doit jamais empêcher la fiche de s'afficher.
+  const sirenPropose =
+    sirenACompleter && acces.peutEcrire
+      ? await sirenProposeParQuestionnaire(client.id).catch(() => null)
+      : null;
   const annuaire: ResultatAnnuaire | null =
     sirenACompleter && acces.peutEcrire && sp.annuaire === "1"
       ? await rechercherSiren(client.raisonSociale, client.adresseVille ?? null)
@@ -619,6 +627,29 @@ export default async function FicheClient360Page({ params, searchParams }: PageP
                     <AdminBadge tone="warning" className="self-start">
                       SIREN à compléter
                     </AdminBadge>
+                    {sirenPropose !== null ? (
+                      <form
+                        action={confirmerSirenFormAction}
+                        data-bloc="siren-propose-questionnaire"
+                        className="flex flex-wrap items-center gap-[var(--space-admin-2)] text-[length:var(--text-admin-xs)]"
+                      >
+                        <input type="hidden" name="clientId" value={client.id} />
+                        <input type="hidden" name="siren" value={sirenPropose.siren} />
+                        <span>
+                          Proposé par le questionnaire avant audit :{" "}
+                          <span className="font-mono">{sirenPropose.siren}</span>
+                          {sirenPropose.siret !== null ? (
+                            <>
+                              {" "}
+                              (SIRET <span className="font-mono">{sirenPropose.siret}</span>)
+                            </>
+                          ) : null}
+                        </span>
+                        <button type="submit" className="admin-button-ghost">
+                          Poser ce SIREN
+                        </button>
+                      </form>
+                    ) : null}
                     {acces.peutEcrire && annuaire === null ? (
                       <Link
                         href={`${ficheHref}?${ongletCourant ? `onglet=${ongletCourant}&` : ""}annuaire=1`}

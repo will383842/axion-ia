@@ -306,6 +306,25 @@ describe("actions de la console (point 12)", () => {
     expect(m.erase).not.toHaveBeenCalled();
   });
 
+  it("questionnaire SANS rencontre : les gestes reviennent à la liste des orphelins", async () => {
+    const a = await actions();
+    m.acces.mockResolvedValue({ userId: "u1", role: "admin" });
+    m.ecarter.mockResolvedValue(1);
+    const f = new FormData();
+    for (const [k, v] of Object.entries({ retour: "questionnaires", ref: "REF", membre: "m42" }))
+      f.set(k, v);
+    const msg = await redirige(a.ecarterReponsesMembreAction(f));
+    expect(m.ecarter).toHaveBeenCalledWith("REF", "m42");
+    expect(msg).toContain("/rendez-vous?vue=questionnaires&message=");
+    // Ni rencontre ni retour connu : renvoyé à la liste des rendez-vous, rien fait.
+    m.ecarter.mockClear();
+    const vide = new FormData();
+    vide.set("ref", "REF");
+    vide.set("membre", "m42");
+    expect(await redirige(a.ecarterReponsesMembreAction(vide))).toMatch(/\/rendez-vous$/);
+    expect(m.ecarter).not.toHaveBeenCalled();
+  });
+
   it("effacer : Williams, EFFACER, réponses écartées → effacement définitif", async () => {
     const a = await actions();
     m.acces.mockResolvedValue({ userId: "u1", role: "super_admin" });

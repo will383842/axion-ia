@@ -12,6 +12,7 @@
 import { NextResponse } from "next/server";
 
 import { refusReel } from "@/features/questionnaire-preaudit/config";
+import { completerFicheDepuisReponse } from "@/features/questionnaire-preaudit/completer-fiche";
 import { lireCorpsPlafonne, refusTropGros } from "@/features/questionnaire-preaudit/corps";
 import {
   CHARGE_MAX_OCTETS,
@@ -106,5 +107,12 @@ export async function POST(
   }
   // Renvoi identique d'une réponse déjà reçue : succès pour la page (409 « déjà reçu »).
   if (r === "doublon") return reponse(409, { ok: true, motif: "deja_recu" });
+  // La fiche prospect se complète (champs VIDES seulement) depuis la réponse du dirigeant.
+  // Best-effort : la réponse est déjà enregistrée, une panne ici ne la perd jamais.
+  try {
+    await completerFicheDepuisReponse(q.id, v.charge);
+  } catch {
+    console.warn("[questionnaire-preaudit] fiche non complétée (réponse gardée)");
+  }
   return reponse(200, { ok: true });
 }

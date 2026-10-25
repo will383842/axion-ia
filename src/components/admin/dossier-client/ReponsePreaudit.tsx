@@ -64,7 +64,8 @@ function TableauLisible({ t }: { t: Tableau }) {
 
 export function ReponsePreaudit(props: {
   r: ReponseLisible;
-  rencontreId: string;
+  /** `null` : questionnaire SANS rencontre (rencontre supprimée, réponses gardées). */
+  rencontreId: string | null;
   /** Référence du questionnaire : avec le code `membre`, elle identifie un salarié (RGPD). */
   reference: string;
   /** Williams (super-administrateur) : seul à pouvoir effacer définitivement. */
@@ -78,7 +79,7 @@ export function ReponsePreaudit(props: {
     salarie && r.membre !== null
       ? adminPath(
           "fr",
-          `/rendez-vous/rencontres/${props.rencontreId}/preaudit-export?ref=${encodeURIComponent(ref)}&membre=${encodeURIComponent(r.membre)}`,
+          `/rendez-vous/rencontres/${props.rencontreId ?? "sans-rencontre"}/preaudit-export?ref=${encodeURIComponent(ref)}&membre=${encodeURIComponent(r.membre)}`,
         )
       : null;
   return (
@@ -103,7 +104,11 @@ export function ReponsePreaudit(props: {
           ) : null}
           {r.ecarteLe === null ? (
             <form action={ecarterReponsesMembreAction}>
-              <input type="hidden" name="rencontreId" value={props.rencontreId} />
+              {props.rencontreId !== null ? (
+                <input type="hidden" name="rencontreId" value={props.rencontreId} />
+              ) : (
+                <input type="hidden" name="retour" value="questionnaires" />
+              )}
               <input type="hidden" name="ref" value={ref} />
               <input type="hidden" name="membre" value={r.membre ?? ""} />
               <button type="submit" className={boutonCls}>
@@ -124,7 +129,11 @@ export function ReponsePreaudit(props: {
               action={effacerReponsesMembreAction}
               className="mt-[var(--space-admin-2)] flex flex-wrap gap-[var(--space-admin-2)]"
             >
-              <input type="hidden" name="rencontreId" value={props.rencontreId} />
+              {props.rencontreId !== null ? (
+                <input type="hidden" name="rencontreId" value={props.rencontreId} />
+              ) : (
+                <input type="hidden" name="retour" value="questionnaires" />
+              )}
               <input type="hidden" name="ref" value={ref} />
               <input type="hidden" name="membre" value={r.membre ?? ""} />
               <input
