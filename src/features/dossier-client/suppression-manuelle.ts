@@ -377,7 +377,7 @@ async function entete(
   // Sans rendez-vous, la fiche visée directement donne son nom au questionnaire.
   const fiche = r?.client ?? q?.client ?? null;
   return {
-    nom: fiche?.raisonSociale ?? r?.titre ?? "Questionnaire sans rencontre",
+    nom: fiche?.raisonSociale ?? r?.titre ?? "Questionnaire sans rendez-vous",
     email: fiche?.contactEmail ?? null,
   };
 }

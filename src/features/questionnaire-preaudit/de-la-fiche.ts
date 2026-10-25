@@ -34,3 +34,31 @@ export function questionnairesDesFiches(clientIds: readonly string[]) {
     OR: [{ clientId: { in: [...clientIds] } }, { rencontre: { clientId: { in: [...clientIds] } } }],
   };
 }
+
+/**
+ * La fiche qui a absorbé `clientId` (fusions non défaites, de proche en proche), ou `clientId`
+ * lui-même. Sert à écrire sur la fiche que Will regarde, pas sur l'absorbée.
+ */
+export async function ficheVivante(clientId: string): Promise<string> {
+  const vues = new Set<string>([clientId]);
+  let courante = clientId;
+  for (let tour = 0; tour < 5; tour += 1) {
+    const fusion = await prisma.clientFusion.findFirst({
+      where: { absorbeId: courante, defaiteLe: null },
+      select: { absorbantId: true },
+    });
+    if (fusion === null || vues.has(fusion.absorbantId)) break;
+    courante = fusion.absorbantId;
+    vues.add(courante);
+  }
+  return courante;
+}
+
+/**
+ * Le filtre « les questionnaires SANS rendez-vous de ces fiches » : le MÊME pour la lecture
+ * (carte, « Envoyer ») et pour le dépôt, sinon un dépôt met à jour un questionnaire que la carte
+ * ne montre pas et « Envoyer » envoie un autre HTML que celui que Will vient de relire.
+ */
+export function questionnairesDirectsDesFiches(clientIds: readonly string[]) {
+  return { rencontreId: null, clientId: { in: [...clientIds] } };
+}

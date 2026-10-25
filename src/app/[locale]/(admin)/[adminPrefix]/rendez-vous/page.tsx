@@ -642,7 +642,7 @@ export default async function RendezVousPage({
                   { value: "circuit", label: "État du circuit", href: `${base}?vue=circuit` },
                   {
                     value: "questionnaires",
-                    label: "Questionnaires sans rencontre",
+                    label: "Questionnaires sans rendez-vous",
                     href: `${base}?vue=questionnaires`,
                   },
                 ]

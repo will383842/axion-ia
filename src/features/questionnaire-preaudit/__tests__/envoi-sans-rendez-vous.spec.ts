@@ -12,7 +12,6 @@ const ABSORBEE = "22222222-2222-4222-8222-222222222222";
 
 const bd = vi.hoisted(() => {
   const tx = {
-    client: { findUnique: vi.fn() },
     questionnaireAvantAudit: {
       findFirst: vi.fn(),
       updateMany: vi.fn(),
@@ -23,8 +22,8 @@ const bd = vi.hoisted(() => {
   };
   return {
     tx,
-    questionnaireAvantAudit: { findMany: vi.fn() },
-    clientFusion: { findMany: vi.fn() },
+    questionnaireAvantAudit: { findMany: vi.fn(), findFirst: vi.fn() },
+    clientFusion: { findMany: vi.fn(), findFirst: vi.fn() },
     $transaction: vi.fn(async (fn: (t: unknown) => unknown) => fn(tx)),
   };
 });
@@ -36,9 +35,18 @@ vi.mock("@/lib/rate-limit", () => ({ checkRateLimit: vi.fn() }));
 vi.mock("@/auth", () => ({ auth: vi.fn() }));
 vi.mock("../completer-fiche", () => ({ completerFicheDepuisQuestionnaire: vi.fn() }));
 
-import { fichesCouvertes, questionnairesDesFiches } from "../de-la-fiche";
+import {
+  fichesCouvertes,
+  ficheVivante,
+  questionnairesDesFiches,
+  questionnairesDirectsDesFiches,
+} from "../de-la-fiche";
 import { cheminConsole } from "../suivi";
-import { deposerQuestionnaireClient, listerQuestionnairesSansRencontre } from "../serveur";
+import {
+  deposerQuestionnaireClient,
+  listerQuestionnairesSansRencontre,
+  lireDuClientSansRendezVous,
+} from "../serveur";
 
 const HTML = `<!doctype html><html><head><title>Q</title></head><body>
 <script>
@@ -52,10 +60,13 @@ const payload = () => ({ schema: 3, mode: "main" });
 
 beforeEach(() => {
   vi.clearAllMocks();
-  bd.tx.client.findUnique.mockResolvedValue({ id: CID });
   bd.tx.questionnaireAvantAudit.create.mockResolvedValue({ id: "nouveau" });
   bd.tx.questionnaireAvantAudit.updateMany.mockResolvedValue({ count: 1 });
-  bd.tx.$queryRaw.mockResolvedValue([]);
+  // Verrou de la fiche : rend la ligne si elle existe.
+  bd.tx.$queryRaw.mockResolvedValue([{ id: CID }]);
+  bd.clientFusion.findMany.mockResolvedValue([]);
+  bd.clientFusion.findFirst.mockResolvedValue(null);
+  bd.questionnaireAvantAudit.findFirst.mockResolvedValue(null);
 });
 
 describe("dépôt du questionnaire d'une fiche", () => {
@@ -93,7 +104,7 @@ describe("dépôt du questionnaire d'une fiche", () => {
   });
 
   it("fiche introuvable : refus lisible, rien n'est créé", async () => {
-    bd.tx.client.findUnique.mockResolvedValue(null);
+    bd.tx.$queryRaw.mockResolvedValue([]);
     await expect(deposerQuestionnaireClient(CID, HTML)).rejects.toThrow(/introuvable/);
     expect(bd.tx.questionnaireAvantAudit.create).not.toHaveBeenCalled();
   });
@@ -141,5 +152,58 @@ describe("fusion de fiches", () => {
     expect(questionnairesDesFiches([CID])).toEqual({
       OR: [{ clientId: { in: [CID] } }, { rencontre: { clientId: { in: [CID] } } }],
     });
+  });
+});
+
+describe("après une fusion : le dépôt et la lecture visent le MÊME questionnaire", () => {
+  it("le dépôt cherche dans la fiche et dans les fiches absorbées, comme la lecture", async () => {
+    bd.clientFusion.findMany.mockResolvedValueOnce([{ absorbeId: ABSORBEE }]).mockResolvedValue([]);
+    bd.questionnaireAvantAudit.findFirst.mockResolvedValue({ id: "b", creeLe: new Date() });
+    await lireDuClientSansRendezVous(CID);
+    const lecture = bd.questionnaireAvantAudit.findFirst.mock.calls[0]![0].where;
+    expect(lecture).toEqual(questionnairesDirectsDesFiches([CID, ABSORBEE]));
+
+    bd.clientFusion.findMany.mockResolvedValueOnce([{ absorbeId: ABSORBEE }]).mockResolvedValue([]);
+    bd.tx.questionnaireAvantAudit.findFirst.mockResolvedValue({ id: "ancien", envoyeLe: null });
+    await deposerQuestionnaireClient(CID, HTML);
+    const depot = bd.tx.questionnaireAvantAudit.findFirst.mock.calls[0]![0].where;
+    expect(depot).toEqual(lecture);
+  });
+
+  it("le brouillon de la fiche absorbée est mis à jour, rien n'est créé en double", async () => {
+    bd.clientFusion.findMany.mockResolvedValueOnce([{ absorbeId: ABSORBEE }]).mockResolvedValue([]);
+    bd.tx.questionnaireAvantAudit.findFirst.mockResolvedValue({ id: "de-B", envoyeLe: null });
+    const r = await deposerQuestionnaireClient(CID, HTML);
+    expect(r).toEqual({ id: "de-B", nouveau: false });
+    expect(bd.tx.questionnaireAvantAudit.create).not.toHaveBeenCalled();
+  });
+
+  it("ficheVivante remonte à la fiche absorbante, et s'arrête sur une boucle", async () => {
+    bd.clientFusion.findFirst
+      .mockResolvedValueOnce({ absorbantId: CID })
+      .mockResolvedValueOnce(null);
+    expect(await ficheVivante(ABSORBEE)).toBe(CID);
+    bd.clientFusion.findFirst.mockReset();
+    bd.clientFusion.findFirst.mockResolvedValue({ absorbantId: ABSORBEE });
+    expect(await ficheVivante(ABSORBEE)).toBe(ABSORBEE);
+  });
+});
+
+describe("deux dépôts en même temps", () => {
+  it("la fiche est verrouillée (FOR UPDATE) AVANT de chercher un questionnaire existant", async () => {
+    const ordre: string[] = [];
+    bd.tx.$queryRaw.mockImplementation(async () => {
+      ordre.push("verrou");
+      return [{ id: CID }];
+    });
+    bd.tx.questionnaireAvantAudit.findFirst.mockImplementation(async () => {
+      ordre.push("lecture");
+      return null;
+    });
+    await deposerQuestionnaireClient(CID, HTML);
+    expect(ordre.slice(0, 2)).toEqual(["verrou", "lecture"]);
+    const sql = String(bd.tx.$queryRaw.mock.calls[0]![0].join(" "));
+    expect(sql).toMatch(/FROM clients WHERE id/);
+    expect(sql).toMatch(/FOR UPDATE/);
   });
 });

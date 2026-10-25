@@ -131,6 +131,31 @@ describe("lireFilDesEchanges", () => {
     expect(JSON.stringify(fil)).not.toMatch(/@/);
   });
 
+  it("les courriers d'un questionnaire envoyé SANS rendez-vous sont dans le fil de la fiche", async () => {
+    prismaMock.rencontre.findMany.mockResolvedValue([]);
+    idsMock.mockResolvedValue([]);
+    prismaMock.emailLog.findMany.mockResolvedValue([]);
+    prismaMock.emailOutbox.findMany.mockResolvedValue([]);
+    prismaMock.questionnaireAvantAuditCourrier.findMany.mockResolvedValue([
+      {
+        id: "c9",
+        nature: "invitation",
+        statut: "prevu",
+        prevuLe: new Date("2026-10-26T08:00:00Z"),
+        faitLe: null,
+        questionnaire: { rencontreId: null, clientId: "cid" },
+      },
+    ]);
+    const { fil } = await lireFilDesEchanges("cid", "adm");
+    // Le filtre cherche par rendez-vous OU par rattachement direct à la fiche.
+    const where = prismaMock.questionnaireAvantAuditCourrier.findMany.mock.calls[0]![0].where;
+    expect(where.questionnaire).toEqual({
+      OR: [{ clientId: { in: ["cid"] } }, { rencontre: { clientId: { in: ["cid"] } } }],
+    });
+    expect(fil).toHaveLength(1);
+    expect(fil[0]!.lien).toBe("/fr/adm/qualiopi/clients/cid/questionnaire");
+  });
+
   it("une source en panne ne vide pas le fil", async () => {
     prismaMock.rencontre.findMany.mockRejectedValue(new Error("x"));
     idsMock.mockResolvedValue([]);

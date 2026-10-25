@@ -24,7 +24,7 @@ export async function QuestionnairesSansRencontre(props: {
   const { liste, page, suivante } = await listerQuestionnairesSansRencontre(props.page ?? 1);
   const lienPage = (n: number) => `${props.base}?vue=questionnaires${n > 1 ? `&page=${n}` : ""}`;
   return (
-    <section aria-label="Questionnaires sans rencontre">
+    <section aria-label="Questionnaires sans rendez-vous">
       {props.erreur !== null ? (
         <p role="alert" className={alerteCls}>
           {props.erreur}
@@ -32,12 +32,14 @@ export async function QuestionnairesSansRencontre(props: {
       ) : null}
       {props.message !== null ? <p role="status">{props.message}</p> : null}
       <p className={mutedCls}>
-        Questionnaires dont la rencontre a été supprimée : leurs réponses sont gardées (
+        Questionnaires dont le rendez-vous a été supprimé : leurs réponses sont gardées (
         {RETENTION_ANS} ans, suppression à la main seulement).
       </p>
       {liste.length === 0 ? (
         <p>
-          {page > 1 ? "Aucun questionnaire sur cette page." : "Aucun questionnaire sans rencontre."}
+          {page > 1
+            ? "Aucun questionnaire sur cette page."
+            : "Aucun questionnaire sans rendez-vous."}
         </p>
       ) : (
         liste.map((q) => (
@@ -45,7 +47,7 @@ export async function QuestionnairesSansRencontre(props: {
             <p className="font-semibold">
               Référence {q.ref}
               {q.envoyeLe !== null ? ` — envoyé le ${formatDateFrShort(q.envoyeLe)}` : ""}
-              {q.closLe !== null ? " — clos" : ""} — {q.reponses.length} réponse(s)
+              {q.closLe !== null ? " — fermé" : ""} — {q.reponses.length} réponse(s)
             </p>
             {q.reponses.some((r) => conservationEchue(r.recuLe)) ? (
               <p role="alert" className={alerteCls}>

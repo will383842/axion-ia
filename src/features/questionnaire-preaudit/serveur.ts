@@ -23,6 +23,7 @@ import {
   type ChargeValide,
   type ReponseLisible,
 } from "./donnees";
+import { fichesCouvertes, questionnairesDirectsDesFiches } from "./de-la-fiche";
 import { validerHtml } from "./html";
 import { lireLaCharge } from "./lecture";
 import { AUCUN_LIBELLE, libellesDuHtml, type Libelles } from "./libelles";
@@ -101,8 +102,9 @@ export async function lireDeLaRencontre(rencontreId: string) {
  * remplacé, un nouveau dépôt en crée un autre (aucune suppression).
  */
 export async function lireDuClientSansRendezVous(clientId: string) {
+  // Suit les fusions de fiches, comme la carte : même recherche des deux côtés (dépôt compris).
   return prisma.questionnaireAvantAudit.findFirst({
-    where: { clientId, rencontreId: null },
+    where: questionnairesDirectsDesFiches(await fichesCouvertes(clientId)),
     orderBy: [{ creeLe: "desc" }, { id: "asc" }],
     select: {
       id: true,
@@ -127,11 +129,17 @@ export async function deposerQuestionnaireClient(
 ): Promise<{ readonly id: string; readonly nouveau: boolean }> {
   const v = validerHtml(html);
   if (!v.ok) throw new MessagePourWill(v.motif);
+  const couvertes = await fichesCouvertes(clientId);
   return prisma.$transaction(async (tx) => {
-    const client = await tx.client.findUnique({ where: { id: clientId }, select: { id: true } });
-    if (client === null) throw new MessagePourWill("Fiche client introuvable.");
+    // Verrou de la FICHE avant toute lecture : deux dépôts en même temps (double clic, deux
+    // onglets) se suivent au lieu de créer deux questionnaires. Aucune contrainte unique n'existe
+    // sur (client_id, rencontre_id NULL), et aucune migration n'est faite pour cela.
+    const verrou = await tx.$queryRaw<
+      { id: string }[]
+    >`SELECT id FROM clients WHERE id = ${clientId}::uuid FOR UPDATE`;
+    if (verrou.length === 0) throw new MessagePourWill("Fiche client introuvable.");
     const existant = await tx.questionnaireAvantAudit.findFirst({
-      where: { clientId, rencontreId: null },
+      where: questionnairesDirectsDesFiches(couvertes),
       orderBy: [{ creeLe: "desc" }, { id: "asc" }],
       select: { id: true, envoyeLe: true },
     });
