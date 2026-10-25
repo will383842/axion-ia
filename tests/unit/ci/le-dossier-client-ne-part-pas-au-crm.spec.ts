@@ -32,7 +32,7 @@ import {
  * peut lire que ces deux tables en `find*` ; tout autre accès, ou la lecture
  * d'une colonne de contenu, fait échouer la garde ci-dessous.
  */
-const FICHIER_DE_LA_SYNCHRO_DU_DOSSIER = "src/server/crm-sync/dossier-client.ts";
+const FICHIER_DE_LA_SYNCHRO_DU_DOSSIER = "src/server/crm-sync/lire-dossier.ts";
 const TABLES_LISIBLES_PAR_CE_FICHIER = ["clientContact", "questionnaireAvantAudit"];
 const COLONNES_DE_CONTENU = /\b(donnees|texte|reponse|reponses|notes|html|destinataire)\s*:\s*true/;
 
