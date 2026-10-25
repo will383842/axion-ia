@@ -21,7 +21,10 @@
 import { prisma } from "@/lib/prisma";
 import { idsLiesAuClient } from "@/features/admin-emails/rattachement-client";
 import { LIBELLES_STATUT_EMAIL } from "@/features/admin-emails/statut-libelles";
-import { LIBELLE_NATURE, LIBELLE_STATUT } from "@/features/questionnaire-preaudit/libelles-courrier";
+import {
+  LIBELLE_NATURE,
+  LIBELLE_STATUT,
+} from "@/features/questionnaire-preaudit/libelles-courrier";
 import type { EmailLogStatus } from "../../../prisma/generated/client";
 
 export type GenreEchange = "rendez_vous" | "email" | "email_en_attente" | "questionnaire";
@@ -80,16 +83,17 @@ export async function lireFilDesEchanges(clientId: string, adminPrefix: string):
         select: { id: true, titre: true, debutPrevu: true, createdAt: true, statut: true },
       })
       .then((rs) =>
-        rs.map(
-          (r): EchangeDuFil => ({
-            cle: `rdv:${r.id}`,
-            genre: "rendez_vous",
-            date: r.debutPrevu ?? r.createdAt,
-            titre: r.titre,
-            etat: r.statut === null ? "rendez-vous" : `rendez-vous ${LIBELLE_STATUT_RENDEZ_VOUS[r.statut] ?? r.statut}`,
-            lien: `${base}/rendez-vous/rencontres/${r.id}`,
-          }),
-        ),
+        rs.map((r): EchangeDuFil => ({
+          cle: `rdv:${r.id}`,
+          genre: "rendez_vous",
+          date: r.debutPrevu ?? r.createdAt,
+          titre: r.titre,
+          etat:
+            r.statut === null
+              ? "rendez-vous"
+              : `rendez-vous ${LIBELLE_STATUT_RENDEZ_VOUS[r.statut] ?? r.statut}`,
+          lien: `${base}/rendez-vous/rencontres/${r.id}`,
+        })),
       ),
   );
 
@@ -109,16 +113,14 @@ export async function lireFilDesEchanges(clientId: string, adminPrefix: string):
           contenu: { select: { subject: true } },
         },
       });
-      return logs.map(
-        (l): EchangeDuFil => ({
-          cle: `mail:${l.id}`,
-          genre: "email",
-          date: l.sentAt ?? l.createdAt,
-          titre: l.contenu?.subject ?? l.template,
-          etat: LIBELLES_STATUT_EMAIL[l.status as EmailLogStatus] ?? l.status,
-          lien: `${base}/emails-envoyes/${l.id}`,
-        }),
-      );
+      return logs.map((l): EchangeDuFil => ({
+        cle: `mail:${l.id}`,
+        genre: "email",
+        date: l.sentAt ?? l.createdAt,
+        titre: l.contenu?.subject ?? l.template,
+        etat: LIBELLES_STATUT_EMAIL[l.status as EmailLogStatus] ?? l.status,
+        lien: `${base}/emails-envoyes/${l.id}`,
+      }));
     }),
   );
 
@@ -131,16 +133,14 @@ export async function lireFilDesEchanges(clientId: string, adminPrefix: string):
         select: { id: true, sujet: true, statut: true, createdAt: true },
       })
       .then((os) =>
-        os.map(
-          (o): EchangeDuFil => ({
-            cle: `outbox:${o.id}`,
-            genre: "email_en_attente",
-            date: o.createdAt,
-            titre: o.sujet,
-            etat: o.statut === "a_valider" ? "En attente de votre validation" : "Écarté",
-            lien: `${base}/qualiopi/emails`,
-          }),
-        ),
+        os.map((o): EchangeDuFil => ({
+          cle: `outbox:${o.id}`,
+          genre: "email_en_attente",
+          date: o.createdAt,
+          titre: o.sujet,
+          etat: o.statut === "a_valider" ? "En attente de votre validation" : "Écarté",
+          lien: `${base}/qualiopi/emails`,
+        })),
       ),
   );
 
@@ -167,19 +167,17 @@ export async function lireFilDesEchanges(clientId: string, adminPrefix: string):
         },
       })
       .then((cs) =>
-        cs.map(
-          (c): EchangeDuFil => ({
-            cle: `courrier:${c.id}`,
-            genre: "questionnaire",
-            date: c.faitLe ?? c.prevuLe,
-            titre: `Questionnaire avant audit : ${LIBELLE_NATURE[c.nature] ?? c.nature}`,
-            etat: LIBELLE_STATUT[c.statut] ?? c.statut,
-            lien:
-              c.questionnaire?.rencontreId != null
-                ? `${base}/rendez-vous/rencontres/${c.questionnaire.rencontreId}`
-                : null,
-          }),
-        ),
+        cs.map((c): EchangeDuFil => ({
+          cle: `courrier:${c.id}`,
+          genre: "questionnaire",
+          date: c.faitLe ?? c.prevuLe,
+          titre: `Questionnaire avant audit : ${LIBELLE_NATURE[c.nature] ?? c.nature}`,
+          etat: LIBELLE_STATUT[c.statut] ?? c.statut,
+          lien:
+            c.questionnaire?.rencontreId != null
+              ? `${base}/rendez-vous/rencontres/${c.questionnaire.rencontreId}`
+              : null,
+        })),
       ),
   );
 
