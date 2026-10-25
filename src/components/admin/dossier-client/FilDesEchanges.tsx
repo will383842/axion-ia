@@ -26,10 +26,13 @@ const jourHeure = (d: Date): string =>
 
 export function FilDesEchanges({
   fil,
+  sourcesEnPanne = 0,
   clientId,
   adminPrefix,
 }: {
   fil: ReadonlyArray<EchangeDuFil>;
+  /** Sources de lecture en panne : le fil est incomplet. */
+  sourcesEnPanne?: number;
   clientId: string;
   adminPrefix: string;
 }): React.ReactElement {
@@ -49,11 +52,20 @@ export function FilDesEchanges({
           Tous les e-mails de cette fiche
         </Link>
       </div>
-      {fil.length === 0 ? (
+      <p className="mb-[var(--space-admin-3)] text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
+        Rendez-vous, e-mails des rendez-vous et du questionnaire, e-mails en attente de validation.
+        Les rendez-vous à venir sont en tête, puis le plus récent d&apos;abord.
+      </p>
+      {sourcesEnPanne > 0 ? (
+        <p role="alert" className="admin-alert admin-alert-warning mb-[var(--space-admin-3)]">
+          <span>Une partie du fil n&apos;a pas pu être lue : il est incomplet. Rechargez la page.</span>
+        </p>
+      ) : null}
+      {fil.length === 0 && sourcesEnPanne === 0 ? (
         <p className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
           Aucun échange rattaché à cette fiche pour l&apos;instant.
         </p>
-      ) : (
+      ) : fil.length === 0 ? null : (
         <ul className="space-y-[var(--space-admin-2)] text-[length:var(--text-admin-sm)]">
           {fil.map((e) => (
             <li
