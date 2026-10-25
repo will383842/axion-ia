@@ -32,6 +32,7 @@ export const TEINTE_TYPE_RDV: Readonly<Record<TypeRendezVous, string | null>> = 
   apporteur: "violet",
   salon: "magenta",
   autre: null,
+  tour_de_france_ia: "vert",
 };
 
 /** Les types proposés en onglet, dans l'ordre d'affichage (« Autre » à part). */
@@ -40,6 +41,7 @@ export const TYPES_FILTRABLES: readonly TypeRendezVous[] = [
   "echange_projet",
   "apporteur",
   "salon",
+  "tour_de_france_ia",
 ];
 
 /**
@@ -61,7 +63,12 @@ export function passeLeFiltre(type: TypeRendezVous, filtre: PublicRdv | undefine
   if (!filtre) return true;
   if (filtre === "apporteurs") return type === "apporteur";
   if (filtre === "clients")
-    return type === "diagnostic" || type === "echange_projet" || type === "autre";
+    return (
+      type === "diagnostic" ||
+      type === "echange_projet" ||
+      type === "autre" ||
+      type === "tour_de_france_ia"
+    );
   return type === filtre;
 }
 

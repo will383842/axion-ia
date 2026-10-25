@@ -441,6 +441,14 @@ describe("🔴 le contenu : mots interdits, typographie, SEO", () => {
     ]);
     const serie = graphe[1] ?? {};
     expect(serie["organizer"]).toEqual({ "@id": expect.stringMatching(/\/#organization$/) });
+    // Le JSON-LD dit la même chose que le texte visible : gratuit, et la FAQ « coût » y figure.
+    expect(serie["isAccessibleForFree"]).toBe(true);
+    const faq = graphe[2] as {
+      mainEntity: Array<{ name: string; acceptedAnswer: { text: string } }>;
+    };
+    const cout = faq.mainEntity.find((q) => /Combien/.test(q.name));
+    expect(cout?.acceptedAnswer.text).toMatch(/gratuits/);
+    expect(cout?.acceptedAnswer.text).toMatch(/5 entreprises/);
     expect(serie["performer"]).toEqual({ "@id": expect.stringMatching(/#person$/) });
     const json = JSON.stringify(ld);
     expect(json).not.toMatch(/"@type":"(Person|Organization|Event|HowTo)"/);

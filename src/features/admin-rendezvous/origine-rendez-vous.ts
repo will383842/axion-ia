@@ -31,6 +31,7 @@ export const SOURCES = [
   "apporteur",
   "ia",
   "email",
+  "tour_de_france_ia",
   "autre",
 ] as const;
 export type Source = (typeof SOURCES)[number];
@@ -45,6 +46,7 @@ export const LIBELLE_SOURCE: Readonly<Record<Origine, string>> = {
   apporteur: "Un apporteur d'affaires",
   ia: "ChatGPT ou une autre IA",
   email: "E-mail reçu",
+  tour_de_france_ia: "Tour de France IA",
   autre: "Autre / non classé",
   sans_reponse: "Sans réponse",
 };
@@ -69,6 +71,8 @@ export function estQuestionOrigine(question: string): boolean {
 export function classerReponse(reponse: string): Source {
   const r = normaliser(reponse);
   if (/apporteur/.test(r)) return "apporteur";
+  // Avant « ia » : « Tour de France IA » contient le mot « IA ».
+  if (/tour de france/.test(r)) return "tour_de_france_ia";
   if (/instagram/.test(r)) return "instagram";
   if (/linkedin/.test(r)) return "linkedin";
   if (/facebook|\bmeta\b/.test(r)) return "facebook";

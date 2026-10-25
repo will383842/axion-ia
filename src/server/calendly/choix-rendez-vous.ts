@@ -80,6 +80,18 @@ export function lireDepuis(valeur: unknown): string | null {
   return v;
 }
 
+/** La source UTM du Tour de France IA : posée quand l'arrivée n'en porte aucune. */
+export const UTM_SOURCE_TOUR = "tour-de-france-ia";
+
+/**
+ * La source UTM à retenir pour un choix quand ni l'URL ni le cookie n'en portent.
+ * Seul le Tour en a une : ses réservations se retrouvent ainsi dans « Rendez-vous
+ * par origine » même sans campagne. Une source déjà connue n'est jamais remplacée.
+ */
+export function utmSourceParDefaut(choix: ChoixRendezVous): string | null {
+  return choix === "tour" ? UTM_SOURCE_TOUR : null;
+}
+
 /** Le type de rendez-vous visé par un choix. */
 export function typeDuChoix(choix: ChoixRendezVous): TypeRendezVous {
   return configDuChoix(choix).type;

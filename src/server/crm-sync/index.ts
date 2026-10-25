@@ -148,10 +148,14 @@ export function payloadRendezVousAuContrat(
   // l'appelant, et seulement pour un rendez-vous client (diagnostic, échange
   // projet). Pour tout autre type la clé est retirée, même fournie.
   const { reponses: reponsesBrutes, ...reste } = payload ?? {};
+  // Le CRM ne connaît que quatre valeurs (`CrmTypeRendezVous`) : la visio du Tour
+  // de France IA lui part sous `autre`, avec la clé libre `circuit` qui la nomme.
+  const duTour = typeRendezVous === "tour_de_france_ia";
   return {
     ...reste,
     eventTypeName: nom ?? "Calendly",
-    typeRendezVous,
+    typeRendezVous: duTour ? "autre" : typeRendezVous,
+    ...(duTour ? { circuit: "tour_de_france_ia" } : {}),
     // Borné ici aussi, quel que soit l'appelant, et sans casser un emoji
     // (relecture A09) : un JSON invalide = 422 = rendez-vous perdu pour le CRM.
     besoin:
