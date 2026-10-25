@@ -16,7 +16,7 @@ import {
   type BarometerSnapshotPayload,
 } from "@/server/observatoire/snapshot";
 import { generateAndPersistAnalysis, readLatestAnalysis } from "@/server/observatoire/analysis";
-import { SNAPSHOT_KEY_LATEST } from "@/content/observatoire/study";
+import { SNAPSHOT_KEY_LATEST, SEUIL_REPONSES_REELLES } from "@/content/observatoire/study";
 
 export interface BarometerAdminStats {
   readonly totalResponses: number;
@@ -123,7 +123,7 @@ export async function regenerateBarometerAnalysis(): Promise<RegenerateAnalysisS
         ok: false,
         error:
           res.reason === "no-real-responses"
-            ? "Aucune réponse réelle — analyse impossible."
+            ? `Moins de ${SEUIL_REPONSES_REELLES} réponses réelles — analyse impossible.`
             : `Échec de génération (${res.reason}).`,
       };
     }
@@ -169,10 +169,10 @@ export async function generateBarometerArticle(insightKey?: string): Promise<Gen
     // `snap.totalResponses` qui inclut la fixture dev — sinon le seed pourrait
     // être publié comme une vraie étude (risque L121-2).
     const [snap, realResponses] = await Promise.all([readLatestSnapshot(), countRealResponses()]);
-    if (!snap || realResponses === 0) {
+    if (!snap || realResponses < SEUIL_REPONSES_REELLES) {
       return {
         ok: false,
-        error: "Aucune réponse réelle — impossible de générer un article sans chiffres vérifiés.",
+        error: `Moins de ${SEUIL_REPONSES_REELLES} réponses réelles (${realResponses}) — impossible de générer un article sans chiffres vérifiés.`,
       };
     }
     const primaryKeyword =
