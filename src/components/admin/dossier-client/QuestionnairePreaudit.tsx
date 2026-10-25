@@ -696,6 +696,7 @@ export async function QuestionnairePreaudit(props: {
                 <ReponsePreaudit
                   r={r}
                   rencontreId={rencontreId ?? null}
+                  clientId={clientId ?? null}
                   reference={q?.ref ?? ""}
                   peutEffacer={props.peutDeposer}
                   libelleMode={LIBELLE_MODE[r.mode]}

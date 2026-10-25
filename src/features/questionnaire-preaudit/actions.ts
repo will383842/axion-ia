@@ -99,6 +99,9 @@ const PAGE_SANS_RENCONTRE = adminPath("fr", "/rendez-vous?vue=questionnaires");
 function pageDeRetour(fd: FormData): string {
   const rencontreId = champ(fd, "rencontreId");
   if (uuid.safeParse(rencontreId).success) return pageRencontre(rencontreId);
+  const clientId = champ(fd, "clientId");
+  if (uuid.safeParse(clientId).success)
+    return adminPath("fr", `/qualiopi/clients/${clientId}/questionnaire`);
   if (champ(fd, "retour") === "questionnaires") return PAGE_SANS_RENCONTRE;
   redirect(adminPath("fr", "/rendez-vous"));
 }
