@@ -240,6 +240,10 @@ const CONSOMMATEURS_ASSUMES: ReadonlySet<string> = new Set([
   "src/app/[locale]/(admin)/[adminPrefix]/offres-emploi/page.tsx",
   "src/features/admin-job-offers/actions.ts",
   "src/server/careers/reponse-poste-pourvu.ts",
+  // Lot P15 (CH4-37/38), interrupteur `qualiopi.documents_organisme.actif` : une offre qui porte
+  //    des candidatures s'archive au lieu de se supprimer. Le fichier ne lit que la constante
+  //    `LOT_DOCUMENTS_ORGANISME` et `lireInterrupteurQualiopi` / `estActifPour` — rien d'autre.
+  "src/server/careers/garde-suppression-offre.ts",
   // Formulaire du formateur indépendant (lot L0c-1) : mêmes règles, interrupteur
   //    `formateurs.formulaire_freelance` (pages publiques de l'offre et de candidature,
   //    action de dépôt) ; elles ne lisent que `lireEtatsEntree` et `lireEtatsFormateurs`.
