@@ -12,6 +12,7 @@ const m = vi.hoisted(() => ({
   suivi: vi.fn(),
   questionnaire: vi.fn(),
   reponses: vi.fn(() => [] as unknown[]),
+  copies: vi.fn(() => [] as unknown[]),
 }));
 
 vi.mock("@/features/questionnaire-preaudit/actions", () => ({
@@ -20,6 +21,7 @@ vi.mock("@/features/questionnaire-preaudit/actions", () => ({
   demanderEssaiAction: vi.fn(),
   deposerQuestionnaireAction: vi.fn(),
   envoyerQuestionnaireAction: vi.fn(),
+  enregistrerGabaritInvitationAction: vi.fn(),
   marquerQuestionnaireLuAction: vi.fn(),
   ecarterReponsesMembreAction: vi.fn(),
   effacerReponsesMembreAction: vi.fn(),
@@ -35,6 +37,12 @@ vi.mock("@/features/questionnaire-preaudit/serveur", () => ({
     normal: new Map([["dat_fai", "Votre abonnement internet"]]),
     it: new Map(),
   }),
+}));
+vi.mock("@/features/questionnaire-preaudit/gabarit-invitation", () => ({
+  lireGabaritBase: async () => ({ objet: null, corps: null }),
+}));
+vi.mock("@/features/questionnaire-preaudit/copies-envoyees", () => ({
+  lireCopiesInvitation: async () => m.copies(),
 }));
 vi.mock("@/features/questionnaire-preaudit/suivi-console", () => ({ lireSuivi: m.suivi }));
 vi.mock("@/features/questionnaire-preaudit/envoyer", () => ({
@@ -83,6 +91,7 @@ beforeEach(() => {
   delete process.env["QUESTIONNAIRE_RELANCES_ENABLED"];
   m.questionnaire.mockResolvedValue(Q);
   m.suivi.mockResolvedValue(null);
+  m.copies.mockReturnValue([]);
 });
 
 describe("le suivi du questionnaire se voit", () => {
@@ -239,5 +248,108 @@ describe("le suivi du questionnaire se voit", () => {
     process.env["QUESTIONNAIRE_AVANT_AUDIT_ENABLED"] = "false";
     const { container } = await rendre(false);
     expect(container.querySelector('[data-bloc="essai-suivi"]')).toBeNull();
+  });
+});
+
+describe("l'e-mail se lit en grand, se modifie, et sa copie se relit", () => {
+  it("l'aperçu et le bouton d'envoi sont là SANS clic préalable (adresse du rendez-vous)", async () => {
+    const { container } = await rendre(false);
+    expect(container.querySelector('iframe[title^="Aperçu exact"]')).not.toBeNull();
+    const envoi = container.querySelector('[data-bloc="envoi-questionnaire"]')!;
+    expect((envoi.querySelector('input[name="destinataire"]') as HTMLInputElement).value).toBe(
+      "sam@exemple-fictif.fr",
+    );
+    // La date du rendez-vous à venir est reprise dans l'envoi.
+    expect((envoi.querySelector('input[name="date_audit"]') as HTMLInputElement).value).toBe(
+      "2099-11-06T08:30",
+    );
+  });
+
+  it("l'aperçu est grand (plus de petit cadre de 420 px)", async () => {
+    const { container } = await rendre(true);
+    const cadre = container.querySelector('iframe[title^="Aperçu exact"]')!;
+    expect(cadre.className).toContain("min-h-[700px]");
+    expect(cadre.className).not.toContain("h-[420px]");
+  });
+
+  it("objet, mot personnel et texte entier sont modifiables ; le texte vu est celui qui part", async () => {
+    const { container } = await rendre(true);
+    const form = container.querySelector('[data-bloc="texte-email"]')!;
+    expect(form.querySelector('input[name="pa_objet"]')).not.toBeNull();
+    expect(form.querySelector('textarea[name="pa_message"]')).not.toBeNull();
+    const corps = form.querySelector('textarea[name="pa_corps"]') as HTMLTextAreaElement;
+    expect(corps.defaultValue).toContain("Merci pour notre échange");
+    expect(corps.defaultValue).toContain("{audit}");
+    const envoi = container.querySelector('[data-bloc="envoi-questionnaire"]')!;
+    for (const nom of ["texte_objet", "texte_message", "texte_corps"]) {
+      expect(envoi.querySelector(`input[name="${nom}"]`)).not.toBeNull();
+    }
+  });
+
+  it("les textes saisis sont repris dans le formulaire d'envoi", async () => {
+    const { container } = await QuestionnairePreaudit({
+      rencontreId: "22222222-2222-4222-8222-222222222222",
+      peutDeposer: true,
+      titulaire: null,
+      apercu: {
+        email: "sam@exemple-fictif.fr",
+        prenom: "Sam",
+        objet: "Mon objet",
+        message: "Mon mot",
+        corps: "Mon texte",
+      },
+    }).then((el) => render(el));
+    const envoi = container.querySelector('[data-bloc="envoi-questionnaire"]')!;
+    const val = (n: string) =>
+      (envoi.querySelector(`input[name="${n}"]`) as HTMLInputElement).value;
+    expect(val("texte_objet")).toBe("Mon objet");
+    expect(val("texte_message")).toBe("Mon mot");
+    expect(val("texte_corps")).toBe("Mon texte");
+  });
+
+  it("le texte de base se lit et se modifie (Williams) ; un autre profil le lit seulement", async () => {
+    const { container } = await rendre(true);
+    const base = container.querySelector('[data-bloc="texte-de-base"]')!;
+    expect(base.querySelector('textarea[name="base_corps"]')).not.toBeNull();
+    expect(base.querySelector('button[name="reinitialiser"]')).not.toBeNull();
+    const { container: autre } = render(
+      await QuestionnairePreaudit({
+        rencontreId: "22222222-2222-4222-8222-222222222222",
+        peutDeposer: false,
+        titulaire: null,
+        apercu: null,
+      }),
+    );
+    const lecture = autre.querySelector('[data-bloc="texte-de-base"]')!;
+    expect(lecture.querySelector("textarea")).toBeNull();
+    expect(lecture.textContent).toContain("Merci pour notre échange");
+  });
+
+  it("la copie exacte de l'e-mail parti se relit, avec son objet", async () => {
+    m.copies.mockReturnValue([
+      {
+        emailLogId: "33333333-3333-4333-8333-333333333333",
+        envoyeLe: new Date("2026-10-25T13:00:00Z"),
+        destinataire: "sam@exemple-fictif.fr",
+        objet: "Audit du 6 novembre : votre questionnaire",
+        html: "<p>Texte parti</p>",
+      },
+      {
+        emailLogId: "44444444-4444-4444-8444-444444444444",
+        envoyeLe: new Date("2026-10-24T13:00:00Z"),
+        destinataire: "sam@exemple-fictif.fr",
+        objet: null,
+        html: null,
+      },
+    ]);
+    const { container } = await rendre(false);
+    const bloc = container.querySelector('[data-bloc="copies-envoyees"]')!;
+    expect(bloc.textContent).toContain("Audit du 6 novembre : votre questionnaire");
+    expect(bloc.querySelector("iframe")?.getAttribute("srcdoc")).toBe("<p>Texte parti</p>");
+    expect(bloc.querySelector("iframe")?.getAttribute("sandbox")).toBe("");
+    expect(bloc.textContent).toContain("n'a pas été conservée");
+    expect(bloc.querySelector("a")?.getAttribute("href")).toContain(
+      "33333333-3333-4333-8333-333333333333",
+    );
   });
 });

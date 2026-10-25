@@ -27,6 +27,7 @@ import {
 import { fromParisLocalInput } from "@/lib/calendar-grid";
 
 import { envoyerQuestionnaire } from "./envoyer";
+import { enregistrerGabaritBase } from "./gabarit-invitation";
 import { preauditActif } from "./config";
 import { modeRelances } from "./drapeaux-suivi";
 import {
@@ -151,6 +152,12 @@ export async function envoyerQuestionnaireAction(fd: FormData): Promise<void> {
       destinataire: champ(fd, "destinataire"),
       prenom: champ(fd, "prenom"),
       ...audit,
+      // Le texte vu à l'aperçu et modifié par Will (assaini côté serveur, jamais du HTML).
+      texte: {
+        objet: fd.get("texte_objet"),
+        message: fd.get("texte_message"),
+        corps: fd.get("texte_corps"),
+      },
     });
     // L'e-mail est en file : le suivi (relances, date, lieu) ne doit pas faire croire à un échec.
     try {
@@ -179,6 +186,37 @@ export async function envoyerQuestionnaireAction(fd: FormData): Promise<void> {
             ? `${base} Rappels en test : ils sont comptés, mais aucun ne part.`
             : `${base} Rappels demandés, mais suspendus pour le moment : aucun ne partira tant qu'ils ne sont pas réactivés.`,
   );
+}
+
+/**
+ * Le texte de BASE de l'e-mail d'invitation (valable pour tous les clients) : Williams seul.
+ * `reinitialiser=1` revient au texte d'origine (valeurs vides ; rien n'est supprimé).
+ */
+export async function enregistrerGabaritInvitationAction(fd: FormData): Promise<void> {
+  const rencontreId = champ(fd, "rencontreId");
+  if (!uuid.safeParse(rencontreId).success) redirect(adminPath("fr", "/rendez-vous"));
+  let message = "Texte de base enregistré : il sert pour les prochains envois.";
+  try {
+    const { role, userId } = await exigerAccesEchanges();
+    if (role !== "super_admin") {
+      throw new MessagePourWill(
+        "Seul Williams (super-administrateur) peut modifier le texte de base.",
+      );
+    }
+    if (champ(fd, "reinitialiser") === "1") {
+      await enregistrerGabaritBase({ objet: "", corps: "" }, userId);
+      message = "Texte de base remis au texte d'origine.";
+    } else {
+      await enregistrerGabaritBase(
+        { objet: fd.get("base_objet"), corps: fd.get("base_corps") },
+        userId,
+      );
+    }
+  } catch (e) {
+    retour(rencontreId, "erreur", messageAffichable(e));
+  }
+  revalidatePath(pageRencontre(rencontreId));
+  retour(rencontreId, "message", message);
 }
 
 /** « M'envoyer un test » : le worker l'envoie à l'adresse de test d'Axion IA, jamais au prospect. */

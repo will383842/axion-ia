@@ -206,6 +206,9 @@ export default async function RencontrePage({ params, searchParams }: PageProps)
                 prenom: typeof sp.pa_prenom === "string" ? sp.pa_prenom.trim().slice(0, 60) : "",
                 date: typeof sp.pa_date === "string" ? sp.pa_date.trim().slice(0, 16) : "",
                 lieu: typeof sp.pa_lieu === "string" ? sp.pa_lieu.trim().slice(0, 80) : "",
+                objet: typeof sp.pa_objet === "string" ? sp.pa_objet.slice(0, 200) : "",
+                message: typeof sp.pa_message === "string" ? sp.pa_message.slice(0, 1500) : "",
+                corps: typeof sp.pa_corps === "string" ? sp.pa_corps.slice(0, 4500) : "",
               }
             : null
         }
