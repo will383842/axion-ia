@@ -326,7 +326,11 @@ export default async function SuiviQualiteFormateurPage({ params, searchParams }
                       {m.niveau === "suspension" && !m.suspensionLevee ? (
                         <strong>
                           {" "}
-                          — nouvelles missions suspendues jusqu&apos;à une décision motivée.
+                          {m.annulee
+                            ? "— Mission annulée — suspension maintenue."
+                            : m.noteCorrigeeDepuis !== null
+                              ? `— Suspendu — note corrigée depuis à ${virgule(Math.round(m.noteCorrigeeDepuis * 100) / 100)}, décision motivée requise.`
+                              : "— nouvelles missions suspendues jusqu'à une décision motivée."}
                         </strong>
                       ) : m.niveau === "entretien" && !m.decisionPrise ? (
                         <strong> — entretien à prévoir.</strong>
