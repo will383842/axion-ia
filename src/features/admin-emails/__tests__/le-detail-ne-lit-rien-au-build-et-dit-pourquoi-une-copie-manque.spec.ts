@@ -127,3 +127,29 @@ describe("pourquoi une copie manque", () => {
     expect(r.kind).toBe("manquante");
   });
 });
+
+describe("un e-mail rattaché à une fiche client est gardé 5 ans", () => {
+  const il_y_a_2_ans = new Date("2024-10-20T10:00:00Z");
+  const ligne = { status: "sent" as const, sentAt: il_y_a_2_ans, createdAt: il_y_a_2_ans };
+  const MAINT = new Date("2026-10-25T10:00:00Z");
+
+  it("sans fiche : plus de 12 mois = copie purgée (12 mois dits)", () => {
+    const r = raisonSansCopie(ligne, new Date("2020-01-01T00:00:00Z"), MAINT, false);
+    expect(r.kind).toBe("purgee");
+    expect(r.phrase).toContain("12 mois");
+  });
+
+  it("avec fiche : 2 ans n'est pas une purge, et la durée dite est 5 ans", () => {
+    const r = raisonSansCopie(ligne, new Date("2020-01-01T00:00:00Z"), MAINT, true);
+    expect(r.kind).toBe("manquante");
+    const vieux = new Date("2020-01-01T00:00:00Z");
+    const p = raisonSansCopie(
+      { status: "sent", sentAt: vieux, createdAt: vieux },
+      null,
+      MAINT,
+      true,
+    );
+    expect(p.kind).toBe("purgee");
+    expect(p.phrase).toContain("5 ans");
+  });
+});
