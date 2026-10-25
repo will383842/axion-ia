@@ -36,6 +36,10 @@ import {
   lireDeLaRencontre,
   lireReponses,
 } from "@/features/questionnaire-preaudit/serveur";
+import {
+  LIBELLE_NATURE,
+  LIBELLE_STATUT,
+} from "@/features/questionnaire-preaudit/libelles-courrier";
 import { formatDateFrShort } from "@/lib/format-date-fr";
 import { fromParisLocalInput, timeInParis, toParisLocalInput } from "@/lib/calendar-grid";
 
@@ -49,30 +53,6 @@ const inputCls =
 const boutonCls =
   "rounded-[var(--radius-admin-sm)] border border-[color:var(--color-admin-border)] px-[var(--space-admin-3)] py-[var(--space-admin-2)] text-[length:var(--text-admin-sm)] font-medium";
 
-/** Ce que Will lit dans le journal du suivi (nature technique → mots simples). */
-const LIBELLE_NATURE: Readonly<Record<string, string>> = {
-  invitation: "Invitation",
-  relance_1: "Relance 1",
-  relance_2: "Relance 2",
-  relance_3: "Relance 3",
-  confirmation_dirigeant: "Confirmation au dirigeant",
-  confirmation_collaborateur: "Confirmation à un collaborateur",
-  telegram_invitation: "Telegram : invitation partie",
-  telegram_reponse: "Telegram : réponse reçue",
-  telegram_relance: "Telegram : relance partie",
-  telegram_arret: "Telegram : relances arrêtées",
-  telegram_retenu: "Telegram : e-mail retenu",
-  essai: "Essai",
-};
-const LIBELLE_STATUT: Readonly<Record<string, string>> = {
-  prevu: "prévu",
-  en_cours: "en cours",
-  envoye: "parti",
-  retenu: "retenu",
-  annule: "annulé",
-  echec: "échec",
-  journal: "noté",
-};
 const LIBELLE_ARRET: Readonly<Record<string, string>> = {
   reponse_dirigeant: "le dirigeant a répondu",
   desinscription: "le destinataire a demandé l'arrêt",
