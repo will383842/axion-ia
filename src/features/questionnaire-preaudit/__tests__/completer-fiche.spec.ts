@@ -19,10 +19,13 @@ const m = vi.hoisted(() => ({
   personne: vi.fn(),
   emettre: vi.fn(),
   contacts: [] as Array<{ nom: string }>,
+  verrou: vi.fn(async () => [{ id: "c" }]),
 }));
 
 vi.mock("@/lib/prisma", () => {
   const tx = {
+    // Verrou de la fiche (`SELECT … FOR UPDATE`) pris avant toute lecture : voir interblocage.spec.ts.
+    $queryRaw: m.verrou,
     client: {
       findUnique: async () => m.fiche,
       update: m.update,
@@ -293,5 +296,19 @@ describe("« Poser ce SIREN » : un clic de Will, par la porte unique", () => {
     );
     const corps = actions.slice(actions.indexOf("export async function confirmerSirenFormAction"));
     expect(corps.slice(0, 800)).toContain("updateClientAction({ id: clientId, siren })");
+  });
+});
+
+describe("la fiche est verrouillée avant d'être lue (interblocage 40P01)", () => {
+  it("le verrou de la fiche précède sa lecture, dans la même transaction", () => {
+    const src = readFileSync(
+      path.join(process.cwd(), "src/features/questionnaire-preaudit/completer-fiche.ts"),
+      "utf8",
+    );
+    const verrou = src.indexOf("FROM clients WHERE id = ${clientId}::uuid FOR UPDATE");
+    const lecture = src.indexOf("await tx.client.findUnique");
+    expect(verrou).toBeGreaterThan(-1);
+    expect(verrou).toBeLessThan(lecture);
+    expect(src).toContain("reessayerSiInterblocage(");
   });
 });
