@@ -125,10 +125,15 @@ function fabriquerBase(d: Donnees, panne?: { code: string }) {
 
   const base = {
     questionnaireAvantAuditSuivi: {
-      findMany: vi.fn(async (a: { where?: Record<string, unknown>; take?: number }) => {
-        panneSi();
-        return d.suivis.filter((s) => match("suivi", s, a.where)).slice(0, a.take ?? 1000);
-      }),
+      findMany: vi.fn(
+        async (a: { where?: Record<string, unknown>; take?: number; orderBy?: unknown }) => {
+          panneSi();
+          return tri(
+            d.suivis.filter((s) => match("suivi", s, a.where)),
+            a.orderBy,
+          ).slice(0, a.take ?? 1000);
+        },
+      ),
       updateMany: vi.fn(
         async (a: { where: Record<string, unknown>; data: Record<string, unknown> }) => {
           const l = d.suivis.filter((s) => match("suivi", s, a.where));
@@ -716,6 +721,83 @@ describe("essais demandés depuis la console", () => {
     essai("telegram_reponse");
     await passer(new Date("2026-10-26T10:00:00Z"), { QUESTIONNAIRE_AVANT_AUDIT_ENABLED: "true" });
     expect(notifier.mock.calls[0]![0].payload).toMatchObject({ essai: true, evenement: "reponse" });
+  });
+});
+
+describe("relecture : double envoi et famine", () => {
+  const ligneEnCours = (prisLe: Date) => ({
+    id: "bloquee",
+    cle: `relance_1:${QID}`,
+    questionnaireId: QID,
+    envoiId: null,
+    nature: "relance_1",
+    canal: "email",
+    statut: "en_cours",
+    prevuLe: new Date("2026-10-28T08:30:00Z"),
+    prisLe,
+    faitLe: null,
+    tentatives: 1,
+    motif: null,
+    destinataireHash: null,
+    essaiDe: null,
+  });
+
+  it("une ligne en cours depuis moins de 15 min n'est pas reprise", async () => {
+    d.suivis[0]!["premierEnvoiLe"] = J0;
+    d.courriers.push(ligneEnCours(new Date("2026-10-28T08:35:00Z")));
+    await passer(new Date("2026-10-28T08:40:00Z"));
+    expect(
+      enfiler.mock.calls.filter((c) => c[0] === "questionnaire-avant-audit-relance"),
+    ).toHaveLength(0);
+    expect(d.courriers.find((c) => c["id"] === "bloquee")!["statut"]).toBe("en_cours");
+  });
+
+  it("deux passages concurrents sur une ligne bloquée : un seul la reprend, un seul envoi", async () => {
+    d.suivis[0]!["premierEnvoiLe"] = J0;
+    d.courriers.push(ligneEnCours(new Date("2026-10-28T08:31:00Z")));
+    const base = fabriquerBase(d);
+    const t = new Date("2026-10-28T09:00:00Z");
+    await Promise.all([passer(t, ALLUME, base), passer(t, ALLUME, base)]);
+    expect(
+      enfiler.mock.calls.filter((c) => c[0] === "questionnaire-avant-audit-relance"),
+    ).toHaveLength(1);
+    expect(d.courriers.find((c) => c["id"] === "bloquee")!["statut"]).toBe("envoye");
+  });
+
+  it("plus de 100 vieux suivis jamais partis n'affament pas un suivi récent ; au-delà de 45 jours, ignorés", async () => {
+    // Les vieux en TÊTE de table : sans tri, ils rempliraient les 100 places.
+    for (let i = 0; i < 150; i++) {
+      d.suivis.unshift({
+        id: `vieux-${i}`,
+        questionnaireId: `vieux-q-${i}`,
+        relancesDemandees: true,
+        dateAudit: null,
+        lieuAudit: null,
+        premierEnvoiLe: null,
+        relancesArreteesLe: null,
+        relancesArretMotif: null,
+        creeLe: new Date(Date.UTC(2026, 9, 1, 0, i)),
+      });
+    }
+    d.suivis.unshift({
+      ...d.suivis[0]!,
+      id: "perime",
+      questionnaireId: "q-perime",
+      creeLe: new Date("2026-09-01T00:00:00Z"),
+    });
+    d.emailLogs.push({
+      id: "l9",
+      template: "questionnaire-avant-audit",
+      entityType: "QuestionnaireAvantAudit",
+      entityId: "q-perime",
+      status: "sent",
+      sentAt: J0,
+      jobId: "y",
+      bounceType: null,
+    });
+    await passer(new Date("2026-10-26T10:00:00Z"));
+    expect(d.suivis.find((s) => s["id"] === "s1")!["premierEnvoiLe"]).toEqual(J0);
+    expect(d.suivis.find((s) => s["id"] === "perime")!["premierEnvoiLe"]).toBeNull();
   });
 });
 

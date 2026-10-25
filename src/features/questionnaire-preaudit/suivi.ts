@@ -47,7 +47,7 @@ import {
   prochainCreneauRelance,
   dansCreneauRelance,
 } from "./calendrier";
-import { mentionsRgpd, preauditActif, refusReel } from "./config";
+import { mentionsRgpd, refusReel } from "./config";
 import {
   adresseEssai,
   modeConfirmations,
@@ -129,6 +129,8 @@ const DUS_PAR_PASSAGE = 20;
 const CONFIRMATIONS_MAX_PAR_QUESTIONNAIRE = 70;
 const TENTATIVES_EMAIL_MAX = 3;
 const TENTATIVES_TELEGRAM_MAX = 5;
+/** Un suivi sans départ constaté au bout de 45 jours (durée de vie du lien) n'est plus regardé. */
+const FENETRE_J0_JOURS = 45;
 
 export const NATURES_RELANCE = ["relance_1", "relance_2", "relance_3"] as const;
 type NatureRelance = (typeof NATURES_RELANCE)[number];
@@ -513,8 +515,14 @@ function payloadTelegram(
 
 /** Prise atomique : seul le passage qui fait passer la ligne `en_cours` la traite. */
 async function prendre(ctx: Contexte, id: string, statutAttendu: string): Promise<boolean> {
+  // Reprise d'une ligne `en_cours` bloquée : SEULEMENT si sa prise date de plus de 15 min, revérifié
+  // dans le même `updateMany` — deux passages concurrents ne la reprennent jamais tous les deux.
+  const reprise =
+    statutAttendu === "en_cours"
+      ? { prisLe: { lt: new Date(ctx.maintenant.getTime() - QUINZE_MIN) } }
+      : {};
   const r = await ctx.base.questionnaireAvantAuditCourrier.updateMany({
-    where: { id, statut: statutAttendu },
+    where: { id, statut: statutAttendu, ...reprise },
     data: { statut: "en_cours", prisLe: ctx.maintenant, tentatives: { increment: 1 } },
   });
   return r.count === 1;
@@ -526,7 +534,14 @@ async function passerJ0(ctx: Contexte): Promise<void> {
   const { modes } = ctx.bilan;
   if (!actif(modes.relances) && !actif(modes.telegram)) return;
   const suivis = await ctx.base.questionnaireAvantAuditSuivi.findMany({
-    where: { questionnaireId: { not: null }, premierEnvoiLe: null },
+    // Les plus récents d'abord, sur la durée de vie d'un lien : un stock de vieux suivis jamais
+    // partis (invitation retenue, rejetée) n'affame jamais les nouveaux.
+    where: {
+      questionnaireId: { not: null },
+      premierEnvoiLe: null,
+      creeLe: { gte: new Date(ctx.maintenant.getTime() - FENETRE_J0_JOURS * UN_JOUR) },
+    },
+    orderBy: { creeLe: "desc" },
     select: { id: true, questionnaireId: true, relancesDemandees: true },
     take: 100,
   });
@@ -1163,15 +1178,16 @@ export async function passerSuiviQuestionnaires(
     bilan,
   };
   try {
-    // E. Les essais de Will : seulement si le questionnaire est allumé, jamais au prospect.
-    if (preauditActif(env)) await passerEssais(ctx);
-    const { modes } = bilan;
-    if (!actif(modes.relances) && !actif(modes.confirmations) && !actif(modes.telegram))
-      return bilan;
+    // Questionnaire éteint : rien, pas même un essai.
     if (refusReel(env) !== null) {
       bilan.refuse = true;
       return bilan;
     }
+    // E. Les essais de Will : jamais au prospect, quels que soient les trois interrupteurs.
+    await passerEssais(ctx);
+    const { modes } = bilan;
+    if (!actif(modes.relances) && !actif(modes.confirmations) && !actif(modes.telegram))
+      return bilan;
     await passerJ0(ctx);
     await passerReponses(ctx);
     await passerArrets(ctx);
