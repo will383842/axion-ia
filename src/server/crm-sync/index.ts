@@ -3,6 +3,7 @@ import { hashEmailForLookup, normalizeEmail } from "@/lib/security/email-hash";
 import { familleHorsClients } from "@/server/calendly/appel-apporteur";
 import {
   classerParNom,
+  estVisioTourDeFranceIa,
   bornerReponsesCrm,
   BESOIN_MAX,
   couperTexte,
@@ -149,7 +150,12 @@ export function payloadRendezVousAuContrat(
 ): Record<string, unknown> & ChampsCrmRendezVous {
   const nom = lireNomTypeEvenement(payload);
   const brut = payload?.["typeRendezVous"];
-  const typeRendezVous = estTypeRendezVous(brut) ? brut : classerParNom(nom);
+  // Le repli d'écriture sans colonne `type` arrive en `autre` : si le nom (ou le slug)
+  // est celui du Tour, on reclasse par le nom.
+  const typeRendezVous =
+    estTypeRendezVous(brut) && !(brut === "autre" && estVisioTourDeFranceIa(nom))
+      ? brut
+      : classerParNom(nom);
   const besoin = payload?.["besoin"];
   // Lot L5b : les réponses du questionnaire, BORNÉES ici quel que soit
   // l'appelant, et seulement pour un rendez-vous client (diagnostic, échange
