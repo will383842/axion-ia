@@ -73,7 +73,14 @@ const ZONES = [
  * d'un cliquet : qu'il réclame sa propre mise à jour au lieu de vieillir en
  * silence. Plus aucune primitive de la console n'est livrée sans appelant.
  */
-const SANS_APPELANT_CONNUES: readonly string[] = [];
+/**
+ * 2026-10-25 — socle « dossier » (D0 de PLAN-DESIGN-CLIENTS) : `AdminBloc` et
+ * `AdminApercuEmail` sont livrées AVANT leurs écrans, volontairement, parce que
+ * D0 est un socle sans changement visible et que les écrans (D2 à D5) sont des
+ * PR séparées sur des fichiers pris par un autre chantier. Chaque PR d'écran
+ * RETIRE son entrée d'ici (le troisième test le réclame dès qu'elle est câblée).
+ */
+const SANS_APPELANT_CONNUES: readonly string[] = ["AdminBloc", "AdminApercuEmail"];
 
 /** Tous les fichiers `.tsx` de production sous une zone. */
 function fichiers(dossier: string, acc: string[] = []): string[] {

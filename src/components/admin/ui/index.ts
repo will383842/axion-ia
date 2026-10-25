@@ -108,3 +108,8 @@ export { AdminFormDirtyGuard } from "./AdminFormDirtyGuard";
 
 // Sprint correctif SP-01 — error UI inline formulaires
 export { AdminFormError } from "./AdminFormError";
+
+// Socle « dossier » (D0, PLAN-DESIGN-CLIENTS) — blocs colorés et aperçu d'e-mail.
+export { AdminBloc } from "./AdminBloc";
+export type { AdminBlocTeinte } from "./AdminBloc";
+export { AdminApercuEmail } from "./AdminApercuEmail";

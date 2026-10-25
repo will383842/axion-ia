@@ -105,4 +105,28 @@ describe("AdminStatusBadge", () => {
     const { container } = render(<AdminStatusBadge status="pending" type="invoice" />);
     expect(container.firstChild).toBeDefined();
   });
+
+  it("option plein : pastille pleine, texte blanc, une classe par ton", () => {
+    const tons = ["neutral", "info", "success", "warning", "destructive"] as const;
+    for (const tone of tons) {
+      const { container, unmount } = render(
+        <AdminBadge tone={tone} plein>
+          Statut
+        </AdminBadge>,
+      );
+      const el = container.querySelector(".admin-badge-v2");
+      expect(el?.className).toContain("admin-badge-plein");
+      expect(el?.className).toContain(`admin-badge-plein--${tone}`);
+      // Pas de fond doux : le fond plein vient de admin.css.
+      expect(el?.className).not.toContain("-soft)");
+      unmount();
+    }
+  });
+
+  it("sans plein, le rendu est inchangé", () => {
+    const { container } = render(<AdminBadge tone="success">OK</AdminBadge>);
+    expect(container.querySelector(".admin-badge-v2")?.className).not.toContain(
+      "admin-badge-plein",
+    );
+  });
 });
