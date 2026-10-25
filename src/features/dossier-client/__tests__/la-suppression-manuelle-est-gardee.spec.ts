@@ -100,6 +100,8 @@ function fabriquer() {
       deleteMany: supprime("rencontre"),
     },
     questionnaireAvantAudit: {
+      // Les questionnaires envoyés depuis la fiche SANS rendez-vous (`client_id`).
+      findMany: vi.fn(async (_a: { where: Ligne }) => [] as Array<{ id: string }>),
       findUnique: vi.fn(async (a: { select: Ligne }) =>
         "rencontreId" in a.select
           ? { rencontreId: RID }
@@ -274,6 +276,7 @@ describe("suppression manuelle depuis la console", () => {
     expect(verrous).toEqual([
       "verrou:clients",
       "verrou:rencontres",
+      "verrou:questionnaires_avant_audit",
       "verrou:client_contacts",
       "verrou:questionnaires_avant_audit",
       "verrou:rencontre_participants",

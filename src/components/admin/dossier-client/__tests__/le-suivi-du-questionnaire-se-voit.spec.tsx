@@ -32,6 +32,7 @@ vi.mock("@/features/questionnaire-preaudit/serveur", () => ({
   essaiPermis: (q: { closLe: Date | null; expireLe: Date | null }) =>
     q.closLe === null && (q.expireLe === null || q.expireLe.getTime() > Date.now()),
   lireDeLaRencontre: m.questionnaire,
+  lireDeLaCible: m.questionnaire,
   lireReponses: async () => m.reponses(),
   libellesDuQuestionnaire: async () => ({
     normal: new Map([["dat_fai", "Votre abonnement internet"]]),
@@ -70,7 +71,7 @@ const Q = {
 const rendre = async (apercu: boolean) =>
   render(
     await QuestionnairePreaudit({
-      rencontreId: "22222222-2222-4222-8222-222222222222",
+      cible: { rencontreId: "22222222-2222-4222-8222-222222222222" },
       peutDeposer: true,
       titulaire: { nom: "Sam Martin", email: "sam@exemple-fictif.fr" },
       debutPrevu: new Date("2099-11-06T07:30:00Z"),
@@ -288,7 +289,7 @@ describe("l'e-mail se lit en grand, se modifie, et sa copie se relit", () => {
 
   it("les textes saisis sont repris dans le formulaire d'envoi", async () => {
     const { container } = await QuestionnairePreaudit({
-      rencontreId: "22222222-2222-4222-8222-222222222222",
+      cible: { rencontreId: "22222222-2222-4222-8222-222222222222" },
       peutDeposer: true,
       titulaire: null,
       apercu: {
@@ -314,7 +315,7 @@ describe("l'e-mail se lit en grand, se modifie, et sa copie se relit", () => {
     expect(base.querySelector('button[name="reinitialiser"]')).not.toBeNull();
     const { container: autre } = render(
       await QuestionnairePreaudit({
-        rencontreId: "22222222-2222-4222-8222-222222222222",
+        cible: { rencontreId: "22222222-2222-4222-8222-222222222222" },
         peutDeposer: false,
         titulaire: null,
         apercu: null,

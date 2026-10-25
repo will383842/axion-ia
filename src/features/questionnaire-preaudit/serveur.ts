@@ -55,7 +55,10 @@ export async function lireParJeton(id: string, jeton: string) {
   return prisma.questionnaireAvantAudit.findUnique({
     where: { id: id.toLowerCase() },
     // La raison sociale s'affiche sur l'accueil du questionnaire (`CONFIG.client`).
-    include: { rencontre: { select: { client: { select: { raisonSociale: true } } } } },
+    include: {
+      rencontre: { select: { client: { select: { raisonSociale: true } } } },
+      client: { select: { raisonSociale: true } },
+    },
   });
 }
 
@@ -95,6 +98,31 @@ export async function lireDeLaRencontre(rencontreId: string) {
   });
 }
 
+export { dunClient, type CibleQuestionnaire } from "./cible";
+import { dunClient, type CibleQuestionnaire } from "./cible";
+
+export async function lireDuClient(clientId: string) {
+  return prisma.questionnaireAvantAudit.findFirst({
+    where: dunClient(clientId),
+    orderBy: [{ creeLe: "desc" }, { id: "asc" }],
+    select: {
+      id: true,
+      ref: true,
+      creeLe: true,
+      envoyeLe: true,
+      luLe: true,
+      closLe: true,
+      expireLe: true,
+    },
+  });
+}
+
+export async function lireDeLaCible(cible: CibleQuestionnaire) {
+  return "rencontreId" in cible
+    ? lireDeLaRencontre(cible.rencontreId)
+    : lireDuClient(cible.clientId);
+}
+
 export interface ResultatDepot {
   readonly id: string;
   /** Un questionnaire déjà envoyé (sans réponse) a été recréé : l'ancien lien ne marche plus. */
@@ -122,13 +150,32 @@ export async function deposerQuestionnaire(
   rencontreId: string,
   html: string,
 ): Promise<ResultatDepot> {
+  return deposerPour({ rencontreId }, html);
+}
+
+/** Le même dépôt, sur une fiche client et sans rendez-vous. */
+export async function deposerQuestionnairePourClient(
+  clientId: string,
+  html: string,
+): Promise<ResultatDepot> {
+  return deposerPour({ clientId }, html);
+}
+
+async function deposerPour(cible: CibleQuestionnaire, html: string): Promise<ResultatDepot> {
   const v = validerHtml(html);
   if (!v.ok) throw new MessagePourWill(v.motif);
   return prisma.$transaction(async (tx): Promise<ResultatDepot> => {
-    const existant = await tx.questionnaireAvantAudit.findUnique({
-      where: { rencontreId },
-      select: { id: true, envoyeLe: true },
-    });
+    const existant =
+      "rencontreId" in cible
+        ? await tx.questionnaireAvantAudit.findUnique({
+            where: { rencontreId: cible.rencontreId },
+            select: { id: true, envoyeLe: true },
+          })
+        : await tx.questionnaireAvantAudit.findFirst({
+            where: { rencontreId: null, clientId: cible.clientId },
+            orderBy: [{ creeLe: "desc" }, { id: "asc" }],
+            select: { id: true, envoyeLe: true },
+          });
     let ancienLienMort = false;
     let emailsRejetes = 0;
     if (existant !== null) {
@@ -176,7 +223,7 @@ export async function deposerQuestionnaire(
       ancienLienMort = true;
     }
     const cree = await tx.questionnaireAvantAudit.create({
-      data: { rencontreId, html, ref: randomBytes(6).toString("hex") },
+      data: { ...cible, html, ref: randomBytes(6).toString("hex") },
       select: { id: true },
     });
     return { id: cree.id, ancienLienMort, emailsRejetes };
@@ -408,6 +455,8 @@ export interface QuestionnaireSansRencontre {
   readonly ref: string;
   readonly envoyeLe: Date | null;
   readonly closLe: Date | null;
+  /** La fiche visée quand le questionnaire a été envoyé sans rendez-vous (sinon `null`). */
+  readonly client: { readonly id: string; readonly raisonSociale: string } | null;
   readonly reponses: ReadonlyArray<ReponseLisible>;
 }
 
@@ -426,7 +475,13 @@ export async function listerQuestionnairesSansRencontre(page = 1): Promise<{
   const p = Number.isInteger(page) && page >= 1 ? page : 1;
   const qs = await prisma.questionnaireAvantAudit.findMany({
     where: { rencontreId: null },
-    select: { id: true, ref: true, envoyeLe: true, closLe: true },
+    select: {
+      id: true,
+      ref: true,
+      envoyeLe: true,
+      closLe: true,
+      client: { select: { id: true, raisonSociale: true } },
+    },
     // Les envoyés d'abord (du plus récent), puis les jamais envoyés ; `id` départage (pages stables).
     orderBy: [{ envoyeLe: { sort: "desc", nulls: "last" } }, { creeLe: "desc" }, { id: "asc" }],
     skip: (p - 1) * SANS_RENCONTRE_PAR_PAGE,
@@ -438,6 +493,7 @@ export async function listerQuestionnairesSansRencontre(page = 1): Promise<{
       ref: q.ref,
       envoyeLe: q.envoyeLe,
       closLe: q.closLe,
+      client: q.client,
       reponses: await lireReponses(q.id),
     })),
   );

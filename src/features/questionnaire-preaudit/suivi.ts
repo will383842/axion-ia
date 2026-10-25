@@ -60,7 +60,7 @@ import {
   modeTelegram,
   type ModeSuivi,
 } from "./drapeaux-suivi";
-import { cheminEssaiPreaudit, urlArretRelances, urlPreaudit } from "./liens";
+import { cheminConsole, cheminEssaiPreaudit, urlArretRelances, urlPreaudit } from "./liens";
 
 type Env = Readonly<Record<string, string | undefined>>;
 
@@ -294,6 +294,8 @@ async function lireEtat(ctx: Contexte, questionnaireId: string): Promise<EtatQue
       id: true,
       ref: true,
       rencontreId: true,
+      clientId: true,
+      client: { select: { raisonSociale: true, contactNom: true, contactEmail: true } },
       destinataire: true,
       destinataireHash: true,
       closLe: true,
@@ -337,7 +339,7 @@ async function lireEtat(ctx: Contexte, questionnaireId: string): Promise<EtatQue
   // Le prénom de l'e-mail : celui de la réservation ou du contact de la fiche, SEULEMENT si leur
   // adresse est celle à qui Will a envoyé le lien. Sinon « Bonjour, ».
   const ev = q.rencontre?.calendlyEvent ?? null;
-  const client = q.rencontre?.client ?? null;
+  const client = q.rencontre?.client ?? q.client ?? null;
   const memeAdresse = (a: string | null | undefined) =>
     q.destinataireHash !== null && hashEmailForLookup(a ?? null) === q.destinataireHash;
   const prenom = memeAdresse(ev?.inviteeEmail)
@@ -353,7 +355,7 @@ async function lireEtat(ctx: Contexte, questionnaireId: string): Promise<EtatQue
     id: q.id,
     ref: q.ref,
     rencontreId: q.rencontreId,
-    clientId: q.rencontre?.clientId ?? null,
+    clientId: q.rencontre?.clientId ?? q.clientId ?? null,
     destinataire,
     destinataireHash: q.destinataireHash,
     closLe: q.closLe,
@@ -368,11 +370,6 @@ async function lireEtat(ctx: Contexte, questionnaireId: string): Promise<EtatQue
     recues: q.envois.length,
   };
 }
-
-const cheminConsole = (rencontreId: string | null) =>
-  rencontreId === null
-    ? "rendez-vous?vue=questionnaires"
-    : `rendez-vous/rencontres/${rencontreId}#questionnaire-avant-audit`;
 
 const ecrit = (m: ModeSuivi) => m === "actif";
 const actif = (m: ModeSuivi) => m !== "eteint";
@@ -605,7 +602,7 @@ function payloadTelegram(
     ...(extra.rang !== undefined ? { rang: extra.rang } : {}),
     ...(extra.motif ? { motif: extra.motif } : {}),
     ...(extra.prochaine ? { prochaine: extra.prochaine } : {}),
-    chemin: cheminConsole(etat.rencontreId),
+    chemin: cheminConsole(etat.rencontreId, etat.clientId),
   };
   return evenement === "reponse"
     ? { category: "QUESTIONNAIRE_PREAUDIT_REPONSE", payload }
