@@ -41,6 +41,8 @@ import { lireCircuitDeLaRencontre, lireCompteRendu } from "@/features/dossier-cl
 import { compteRenduEnregistre } from "@/features/dossier-client/compte-rendu-en-preparation";
 import { lireMessageDeRetour } from "@/features/dossier-client/message-de-retour";
 import { QuestionnairePreaudit } from "@/components/admin/dossier-client/QuestionnairePreaudit";
+import { SuppressionManuelle } from "@/components/admin/dossier-client/SuppressionManuelle";
+import { adminPath } from "@/lib/admin-path";
 import { prisma } from "@/lib/prisma";
 import { formatDateFrShort } from "@/lib/format-date-fr";
 import { timeInParis } from "@/lib/calendar-grid";
@@ -95,6 +97,15 @@ export default async function RencontrePage({ params, searchParams }: PageProps)
 
   const r = await lireRencontreDetaillee(rencontreId);
   if (r === null) notFound();
+  const pageIci = adminPath("fr", `/rendez-vous/rencontres/${r.id}`);
+  const questionnaireId =
+    acces.role === "super_admin"
+      ? ((
+          await prisma.questionnaireAvantAudit
+            .findUnique({ where: { rencontreId: r.id }, select: { id: true } })
+            .catch(() => null)
+        )?.id ?? null)
+      : null;
   // « Après l'appel » est une VUE de cette page (pas une page de plus :
   // cliquet de poids de la console, ADR 0058). Même garde, déjà posée.
   if (sp.vue === "apres-l-appel") {
@@ -334,6 +345,26 @@ export default async function RencontrePage({ params, searchParams }: PageProps)
           </form>
         </section>
       ) : null}
+
+      {/* Suppression MANUELLE (Will, 25/10/2026) : super-administrateur seul, après confirmation. */}
+      {questionnaireId !== null ? (
+        <SuppressionManuelle
+          type="questionnaire"
+          id={questionnaireId}
+          peutSupprimer={acces.role === "super_admin"}
+          page={pageIci}
+          ouvert={sp.supprimer === "questionnaire"}
+          erreur={erreur}
+        />
+      ) : null}
+      <SuppressionManuelle
+        type="rencontre"
+        id={r.id}
+        peutSupprimer={acces.role === "super_admin"}
+        page={pageIci}
+        ouvert={sp.supprimer === "rencontre"}
+        erreur={erreur}
+      />
     </AdminPageShell>
   );
 }
