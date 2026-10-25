@@ -32,8 +32,8 @@
 
 import { createHash } from "node:crypto";
 
-import { eventIdDeterministe } from "@/server/crm-sync/event-id";
-import { CRM_SYNC_SCHEMA_VERSION, type CrmSyncEvent } from "@/server/crm-sync/types";
+import { eventIdDeterministe } from "./event-id";
+import { CRM_SYNC_SCHEMA_VERSION, type CrmSyncEvent } from "./types";
 
 /** Clés de `payload.dossier` — miroir de `DossierClient::CLES_DOSSIER`. */
 export const CLES_DOSSIER_CRM = [
