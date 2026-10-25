@@ -490,7 +490,8 @@ export default async function FicheClient360Page({ params, searchParams }: PageP
     "font-mono text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-accent)] underline-offset-2 hover:underline";
   const listeCls = "space-y-[var(--space-admin-2)] text-[length:var(--text-admin-sm)]";
   const sectionCls = "mb-[var(--space-admin-8)]";
-  const blocCls = "admin-carte min-w-0";
+  // `mb-0!` : le `margin-bottom` de `.admin-carte` s'ajouterait au `gap` de la grille.
+  const blocCls = "admin-carte mb-0! min-w-0";
   const blocTitreCls = "admin-carte-titre";
 
   // Adresse et pénalités : au bloc Société d'une entreprise, au bloc Contact
@@ -978,13 +979,13 @@ export default async function FicheClient360Page({ params, searchParams }: PageP
             {nbEmailsAValider === 0 ? (
               <SectionVide message="Aucun e-mail en attente de validation." />
             ) : (
-              <AdminBloc teinte="terracotta" haut titre="E-mails à valider">
+              <AdminBloc teinte="terracotta" niveau={3} haut titre="E-mails à valider">
                 <p className="text-[length:var(--text-admin-sm)]">
                   <span className="font-semibold tabular-nums">{nbEmailsAValider}</span> e-mail
                   {nbEmailsAValider > 1 ? "s" : ""} en attente de validation —{" "}
                   <Link
                     href={`${qBase}/emails`}
-                    className="text-[color:var(--color-admin-accent)] underline-offset-2 hover:underline"
+                    className="font-semibold text-[color:var(--bloc-title)] underline underline-offset-2"
                   >
                     valider dans la boîte d&apos;envoi
                   </Link>
