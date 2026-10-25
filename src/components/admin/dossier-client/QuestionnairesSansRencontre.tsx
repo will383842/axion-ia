@@ -18,8 +18,12 @@ export async function QuestionnairesSansRencontre(props: {
   peutEffacer: boolean;
   erreur: string | null;
   message: string | null;
+  /** Numéro de page (1 par défaut) et adresse de la vue, pour « Page suivante ». */
+  page?: number;
+  base: string;
 }) {
-  const liste = await listerQuestionnairesSansRencontre();
+  const { liste, page, suivante } = await listerQuestionnairesSansRencontre(props.page ?? 1);
+  const lienPage = (n: number) => `${props.base}?vue=questionnaires${n > 1 ? `&page=${n}` : ""}`;
   return (
     <section aria-label="Questionnaires sans rencontre">
       {props.erreur !== null ? (
@@ -33,7 +37,9 @@ export async function QuestionnairesSansRencontre(props: {
         {RETENTION_ANS} ans, suppression à la main seulement).
       </p>
       {liste.length === 0 ? (
-        <p>Aucun questionnaire sans rencontre.</p>
+        <p>
+          {page > 1 ? "Aucun questionnaire sur cette page." : "Aucun questionnaire sans rencontre."}
+        </p>
       ) : (
         liste.map((q) => (
           <div key={q.id} className={carteCls}>
@@ -65,6 +71,13 @@ export async function QuestionnairesSansRencontre(props: {
           </div>
         ))
       )}
+      {page > 1 || suivante ? (
+        <nav aria-label="Pages" className="flex gap-[var(--space-admin-4)]">
+          {page > 1 ? <a href={lienPage(page - 1)}>Page précédente</a> : null}
+          <span className={mutedCls}>Page {page}</span>
+          {suivante ? <a href={lienPage(page + 1)}>Page suivante</a> : null}
+        </nav>
+      ) : null}
     </section>
   );
 }

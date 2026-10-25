@@ -20,6 +20,7 @@ const base = vi.hoisted(() => ({
   client: null as unknown,
   apresCount: null as null | (() => void),
   brouillons: 0,
+  completer: vi.fn(),
 }));
 
 function correspond(l: Ligne, where: Record<string, unknown>): boolean {
@@ -121,6 +122,10 @@ vi.mock("@/lib/prisma", () => ({
   },
 }));
 vi.mock("@/server/queue/queues", () => ({ enqueueEmail: base.enqueue }));
+// La complétion de la fiche a ses propres tests (`completer-fiche.spec.ts`) ; ici, sa PANNE.
+vi.mock("@/features/questionnaire-preaudit/completer-fiche", () => ({
+  completerFicheDepuisReponse: base.completer,
+}));
 vi.mock("@/lib/rate-limit", () => ({ checkRateLimit: base.limite }));
 vi.mock("@/lib/email/templates", () => ({ renderEmailTemplate: vi.fn() }));
 vi.mock("@/features/dossier-client/acces", () => ({ exigerAccesEchanges: base.acces }));
@@ -239,6 +244,7 @@ beforeEach(() => {
   base.limite.mockResolvedValue({ allowed: true });
   base.enqueue.mockResolvedValue({ enqueued: true });
   base.acces.mockResolvedValue({ userId: "u1", role: "super_admin" });
+  base.completer.mockResolvedValue({ statut: "ignoree", raison: "pas_le_dirigeant" });
 });
 
 describe("réception des réponses", () => {
@@ -396,6 +402,22 @@ describe("réception des réponses", () => {
     expect(base.e[0]).toMatchObject({ mode: "emp", membre: "m1" });
     expect(q["luLe"]).toBeNull();
     expect(base.enqueue).not.toHaveBeenCalled();
+  });
+
+  it("la complétion de la fiche plante : la réponse reste gardée et la route répond 200", async () => {
+    allumer();
+    const q = questionnaire();
+    base.completer.mockRejectedValue(new Error("panne de la fiche"));
+    const avertir = vi.spyOn(console, "warn").mockImplementation(() => {});
+    const r = await post(q, CHARGE("main"));
+    expect(r.status).toBe(200);
+    expect(await r.json()).toEqual({ ok: true });
+    expect(base.completer).toHaveBeenCalledOnce();
+    expect(base.e).toHaveLength(1);
+    expect(base.e[0]).toMatchObject({ mode: "main" });
+    // Le journal ne dit rien de la réponse ni de la panne au-delà du fait.
+    expect(String(avertir.mock.calls[0]?.[0])).not.toContain("panne de la fiche");
+    avertir.mockRestore();
   });
 
   it("brouillon, clos ou expiré : refusé", async () => {

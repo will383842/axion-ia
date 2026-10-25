@@ -687,6 +687,8 @@ export default async function RendezVousPage({
           peutEffacer={acces.role === "super_admin"}
           erreur={messageScelle(sp, "erreur")}
           message={messageScelle(sp, "message")}
+          page={Number.parseInt(typeof sp["page"] === "string" ? sp["page"] : "1", 10) || 1}
+          base={base}
         />
       ) : vue === "point" ? (
         <VuePoint

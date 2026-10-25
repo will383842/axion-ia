@@ -2,30 +2,39 @@
  * La fiche prospect se COMPLÈTE depuis la réponse du dirigeant au questionnaire (25/10/2026).
  *
  * Quand le dirigeant (réponse AUTHENTIFIÉE par son code) envoie ses réponses, les champs
- * OBJECTIFS que la fiche n'a pas encore sont copiés : SIRET et SIREN, adresse (rue, code postal,
- * ville), secteur, et la personne à contacter (ajoutée à la fiche, jamais à la place d'une autre).
+ * OBJECTIFS que la fiche n'a pas encore sont copiés : adresse (rue, code postal, ville), secteur,
+ * et la personne à contacter (ajoutée à la fiche, jamais à la place d'une autre).
  *
  *   · ⛔ JAMAIS un écrasement : un champ déjà rempli (par Will ou autrement) n'est pas touché ;
  *   · la raison sociale n'est jamais remplacée (une fiche en a toujours une) ;
- *   · le SIREN passe par le même verrou et la même recherche que la création
- *     (`exigerSirenLibre`) : s'il est déjà celui d'une autre fiche, il n'est PAS posé (rien
- *     n'est fusionné ; la trace le dit) ;
+ *   · ⛔ le SIREN et le SIRET tapés par le prospect ne sont JAMAIS posés (règle de la fiche
+ *     automatique : « jamais de SIREN sans clic de Will ») : ils sont NOTÉS dans la trace
+ *     (`sirenPropose`, `siretPropose`) et la fiche console propose « Poser ce SIREN », un clic
+ *     de Will qui passe par la porte unique et son verrou (`confirmerSirenFormAction`) ;
+ *   · ⛔ l'adresse e-mail tapée par le répondant ne range JAMAIS d'office un futur rendez-vous :
+ *     elle n'est reprise sur la fiche que si c'est celle à qui Will a envoyé le questionnaire ou
+ *     celle du titulaire de la réservation Calendly (déjà liées à cette fiche). Sinon la personne
+ *     est ajoutée SANS adresse (la trace le dit) ; l'adresse reste dans le questionnaire ;
+ *   · une adresse invalide est ignorée, le reste de la complétion continue ; une personne sans
+ *     adresse n'est pas ajoutée deux fois (même nom déjà sur la fiche) ;
  *   · non copiés, gardés dans le questionnaire : l'effectif (une TRANCHE, « 20 à 49 », alors que
  *     la fiche attend un nombre qui gouverne des seuils), les outils et les sites (aucun champ de
  *     la fiche) ;
  *   · une trace d'audit (`client.complete_depuis_questionnaire`) dit quoi, quand, d'où (référence,
- *     questionnaire, rencontre : le lien vers le questionnaire) ; sans auteur (geste automatique) ;
- *   · Axion Partners : `emettreFaitClient` dans la même transaction (cliquet des écrivains) ;
+ *     questionnaire, rencontre : le lien vers le questionnaire) ; sans auteur (geste automatique).
+ *     Elle n'est jamais purgée (aucune suppression du journal d'activité : garde
+ *     `retention-preuve-envoi.spec.ts`) ;
+ *   · Axion Partners : `emettreFaitClient` dans la même transaction, seulement si la fiche a
+ *     changé (cliquet des écrivains) ;
  *   · best-effort : une panne ici ne perd JAMAIS la réponse, déjà enregistrée (`route.ts`).
  */
 
+import { z } from "zod";
+
 import { prisma } from "@/lib/prisma";
+import { hashEmailForLookup } from "@/lib/security/email-hash";
 import { checkSirenFormat, checkSiretFormat, sirenDuSiret } from "@/lib/siret";
-import {
-  ajouterPersonneAFiche,
-  ErreurSirenDejaPris,
-  exigerSirenLibre,
-} from "@/server/qualiopi/crm/porte-client";
+import { ajouterPersonneAFiche } from "@/server/qualiopi/crm/porte-client";
 import { chargeClientAvant, emettreFaitClient } from "@/server/partners-sync/producteurs/client";
 import { codeDirigeantPreauditValide } from "@/server/visio/questionnaire-en-ligne/jeton";
 import { dansLaTransaction } from "@/features/dossier-client/base";
@@ -39,12 +48,14 @@ export interface ChampsObjectifs {
   readonly adresseCodePostal?: string;
   readonly adresseVille?: string;
   readonly secteur?: string;
-  readonly personne?: {
-    readonly nom?: string;
-    readonly email?: string;
-    readonly telephone?: string;
-    readonly fonction?: string;
-  };
+  readonly personne?: PersonneProposee;
+}
+
+interface PersonneProposee {
+  readonly nom?: string;
+  readonly email?: string;
+  readonly telephone?: string;
+  readonly fonction?: string;
 }
 
 /** Ce qui n'est jamais copié, gardé dans le questionnaire (le dire dans la trace). */
@@ -55,6 +66,8 @@ function texte(v: unknown, max: number): string | undefined {
   const t = v.trim();
   return t !== "" && t.length <= max ? t : undefined;
 }
+
+const adresseValide = (v: string) => z.string().email().safeParse(v).success;
 
 /** Les champs objectifs de la réponse (`donnees` du schéma 3 ou 4). PUR. */
 export function champsObjectifsDe(json: string): ChampsObjectifs {
@@ -92,7 +105,9 @@ export function champsObjectifsDe(json: string): ChampsObjectifs {
   const nom = [texte(d["contact_prenom"], 100), texte(d["contact_nom"], 100)]
     .filter((x): x is string => x !== undefined)
     .join(" ");
-  const email = texte(d["contact_email"], 200);
+  // Validée AVANT toute normalisation : une adresse invalide est ignorée, le reste continue.
+  const brutEmail = texte(d["contact_email"], 200);
+  const email = brutEmail !== undefined && adresseValide(brutEmail) ? brutEmail : undefined;
   const telephone = texte(d["contact_tel"], 40);
   const fonction = texte(d["contact_role"], 120);
   if (nom !== "" || email !== undefined) {
@@ -115,29 +130,63 @@ type FicheActuelle = Readonly<
 
 const vide = (v: string | null) => v === null || v.trim() === "";
 
-/** Seulement les champs que la fiche n'a PAS (jamais un écrasement). PUR. */
+/**
+ * Seulement les champs que la fiche n'a PAS (jamais un écrasement). ⛔ Ni `siret` ni `siren` :
+ * jamais posés sans le clic de Will (voir `sirenAProposer`). PUR.
+ */
 export function aCompleter(
   fiche: FicheActuelle,
   c: ChampsObjectifs,
-): Partial<Record<keyof FicheActuelle, string>> {
+): Partial<Record<"adresseRue" | "adresseCodePostal" | "adresseVille" | "secteur", string>> {
   const data: Record<string, string> = {};
-  for (const cle of [
-    "siret",
-    "siren",
-    "adresseRue",
-    "adresseCodePostal",
-    "adresseVille",
-    "secteur",
-  ] as const) {
+  for (const cle of ["adresseRue", "adresseCodePostal", "adresseVille", "secteur"] as const) {
     const v = c[cle];
     if (v !== undefined && vide(fiche[cle])) data[cle] = v;
   }
-  // Un SIRET seul sur une fiche qui a déjà un AUTRE SIREN : on ne pose pas d'identifiants
-  // incompatibles.
-  if (data["siret"] !== undefined && !vide(fiche.siren) && fiche.siren !== c.siren) {
-    delete data["siret"];
-  }
   return data;
+}
+
+/**
+ * Le SIREN (et le SIRET) à PROPOSER à Will : seulement si la fiche n'a encore ni SIREN ni SIRET.
+ * Rien n'est écrit : la trace le note, la fiche console offre « Poser ce SIREN ». PUR.
+ */
+export function sirenAProposer(
+  fiche: Pick<FicheActuelle, "siret" | "siren">,
+  c: ChampsObjectifs,
+): { readonly siren: string; readonly siret: string | null } | null {
+  if (c.siren === undefined || !vide(fiche.siren) || !vide(fiche.siret)) return null;
+  return { siren: c.siren, siret: c.siret ?? null };
+}
+
+/** Le même nom, sans casse, accents ni espaces superflus. PUR. */
+export function memeNom(a: string, b: string): boolean {
+  const n = (x: string) =>
+    x.normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase().replace(/\s+/g, " ").trim();
+  return n(a) !== "" && n(a) === n(b);
+}
+
+/**
+ * La personne à ajouter : son adresse n'est gardée que si elle est DÉJÀ liée à la fiche (celle
+ * à qui Will a envoyé le questionnaire, ou le titulaire Calendly). PUR.
+ */
+export function personneAAjouter(
+  personne: PersonneProposee | undefined,
+  adressesSures: ReadonlySet<string>,
+): { readonly personne: PersonneProposee | undefined; readonly adresseNonReprise: boolean } {
+  if (personne === undefined) return { personne: undefined, adresseNonReprise: false };
+  let adresseNonReprise = false;
+  let p: PersonneProposee = personne;
+  if (p.email !== undefined) {
+    const h = hashEmailForLookup(p.email);
+    if (h === null || !adressesSures.has(h)) {
+      adresseNonReprise = true;
+      const { email: _nonReprise, ...sansAdresse } = p;
+      p = sansAdresse;
+    }
+  }
+  if (p.nom === undefined && p.email === undefined)
+    return { personne: undefined, adresseNonReprise };
+  return { personne: p, adresseNonReprise };
 }
 
 export type IssueCompletion =
@@ -147,7 +196,10 @@ export type IssueCompletion =
       readonly clientId: string;
       readonly champs: ReadonlyArray<string>;
       readonly personneAjoutee: boolean;
-      readonly sirenDejaPris: boolean;
+      /** Le SIREN tapé par le prospect, proposé à Will (jamais posé), ou `null`. */
+      readonly sirenPropose: string | null;
+      /** L'adresse tapée n'est ni celle du destinataire ni celle du titulaire : non reprise. */
+      readonly adresseNonReprise: boolean;
     };
 
 /**
@@ -164,11 +216,23 @@ export async function completerFicheDepuisReponse(
   }
   const q = await prisma.questionnaireAvantAudit.findUnique({
     where: { id: questionnaireId },
-    select: { ref: true, rencontreId: true, rencontre: { select: { clientId: true } } },
+    select: {
+      ref: true,
+      rencontreId: true,
+      destinataireHash: true,
+      rencontre: { select: { clientId: true, calendlyEvent: { select: { inviteeEmail: true } } } },
+    },
   });
   const clientId = q?.rencontre?.clientId ?? null;
   if (q === null || clientId === null) return { statut: "ignoree", raison: "sans_fiche" };
   const champs = champsObjectifsDe(reponse.json);
+  const adressesSures = new Set(
+    [
+      q.destinataireHash,
+      hashEmailForLookup(q.rencontre?.calendlyEvent?.inviteeEmail ?? null),
+    ].filter((h): h is string => typeof h === "string" && h !== ""),
+  );
+  const { personne, adresseNonReprise } = personneAAjouter(champs.personne, adressesSures);
 
   return prisma.$transaction(async (tx): Promise<IssueCompletion> => {
     const fiche = await tx.client.findUnique({
@@ -183,43 +247,31 @@ export async function completerFicheDepuisReponse(
       },
     });
     if (fiche === null) return { statut: "ignoree", raison: "sans_fiche" };
-    const data: Record<string, string> = { ...aCompleter(fiche, champs) };
-    let sirenDejaPris = false;
-    if (data["siren"] !== undefined) {
-      try {
-        await exigerSirenLibre(tx, clientId, data["siren"]);
-      } catch (e) {
-        if (!(e instanceof ErreurSirenDejaPris)) throw e;
-        // Le SIREN est celui d'une AUTRE fiche : ni posé, ni fusionné. Will décide.
-        sirenDejaPris = true;
-        delete data["siren"];
-        delete data["siret"];
-      }
-    }
+    const data = aCompleter(fiche, champs);
+    const propose = sirenAProposer(fiche, champs);
     const avant = await chargeClientAvant(tx, clientId);
-    if (Object.keys(data).length > 0) {
-      await tx.client.update({
-        where: { id: clientId },
-        data: {
-          ...(data["siret"] !== undefined ? { siret: data["siret"] } : {}),
-          ...(data["siren"] !== undefined ? { siren: data["siren"] } : {}),
-          ...(data["adresseRue"] !== undefined ? { adresseRue: data["adresseRue"] } : {}),
-          ...(data["adresseCodePostal"] !== undefined
-            ? { adresseCodePostal: data["adresseCodePostal"] }
-            : {}),
-          ...(data["adresseVille"] !== undefined ? { adresseVille: data["adresseVille"] } : {}),
-          ...(data["secteur"] !== undefined ? { secteur: data["secteur"] } : {}),
-        },
-      });
+    const copies = Object.keys(data);
+    if (copies.length > 0) {
+      await tx.client.update({ where: { id: clientId }, data });
     }
     let personneAjoutee = false;
-    if (champs.personne !== undefined) {
-      const r = await ajouterPersonneAFiche(dansLaTransaction(tx), clientId, champs.personne, null);
-      personneAjoutee = r.cree;
+    if (personne !== undefined) {
+      // Sans adresse, la porte créerait une 2e personne au même nom : on la cherche d'abord.
+      const nom = personne.nom;
+      const dejaLa =
+        personne.email === undefined && nom !== undefined
+          ? (await tx.clientContact.findMany({ where: { clientId }, select: { nom: true } })).some(
+              (c) => memeNom(c.nom, nom),
+            )
+          : false;
+      if (!dejaLa) {
+        const r = await ajouterPersonneAFiche(dansLaTransaction(tx), clientId, personne, null);
+        personneAjoutee = r.cree;
+      }
     }
-    await emettreFaitClient(tx, clientId, { avant });
-    const copies = Object.keys(data);
-    if (copies.length > 0 || personneAjoutee || sirenDejaPris) {
+    // Axion Partners : un fait seulement si la fiche a changé.
+    if (copies.length > 0 || personneAjoutee) await emettreFaitClient(tx, clientId, { avant });
+    if (copies.length > 0 || personneAjoutee || propose !== null || adresseNonReprise) {
       await tx.activityLog.create({
         data: {
           adminUserId: null,
@@ -233,12 +285,48 @@ export async function completerFicheDepuisReponse(
             rencontreId: q.rencontreId,
             champs: copies,
             personneAjoutee,
-            sirenDejaPris,
+            sirenPropose: propose?.siren ?? null,
+            siretPropose: propose?.siret ?? null,
+            adresseNonReprise,
             nonCopies: [...NON_COPIES],
           },
         },
       });
     }
-    return { statut: "complete", clientId, champs: copies, personneAjoutee, sirenDejaPris };
+    return {
+      statut: "complete",
+      clientId,
+      champs: copies,
+      personneAjoutee,
+      sirenPropose: propose?.siren ?? null,
+      adresseNonReprise,
+    };
   });
+}
+
+/**
+ * Le dernier SIREN proposé par un questionnaire pour cette fiche (affiché à côté de « SIREN à
+ * compléter », avec « Poser ce SIREN »). Lecture seule, `null` si aucun.
+ */
+export async function sirenProposeParQuestionnaire(
+  clientId: string,
+): Promise<{ readonly siren: string; readonly siret: string | null; readonly le: Date } | null> {
+  const traces = await prisma.activityLog.findMany({
+    where: {
+      action: ACTION_COMPLETE_DEPUIS_QUESTIONNAIRE,
+      targetType: "Client",
+      targetId: clientId,
+    },
+    orderBy: { createdAt: "desc" },
+    take: 5,
+    select: { changes: true, createdAt: true },
+  });
+  for (const t of traces) {
+    const c = t.changes as { sirenPropose?: unknown; siretPropose?: unknown } | null;
+    const siren = typeof c?.sirenPropose === "string" ? c.sirenPropose : null;
+    if (siren === null || !checkSirenFormat(siren).ok) continue;
+    const siret = typeof c?.siretPropose === "string" ? c.siretPropose : null;
+    return { siren, siret, le: t.createdAt };
+  }
+  return null;
 }
