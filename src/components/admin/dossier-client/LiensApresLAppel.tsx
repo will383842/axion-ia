@@ -11,6 +11,7 @@
  * client (A2) — et l'action le revérifie.
  */
 
+import { AdminButton } from "@/components/admin/ui/AdminButton";
 import { ouvrirApresLAppelAction } from "@/features/dossier-client/actions-rencontres";
 
 export function LiensApresLAppel({ calendlyEventId }: { calendlyEventId: string }) {
@@ -19,16 +20,14 @@ export function LiensApresLAppel({ calendlyEventId }: { calendlyEventId: string 
       <form action={ouvrirApresLAppelAction}>
         <input type="hidden" name="calendlyEventId" value={calendlyEventId} />
         <input type="hidden" name="vers" value="apres" />
-        <button type="submit" className="admin-button">
-          Après l&apos;appel
-        </button>
+        <AdminButton type="submit">Après l&apos;appel</AdminButton>
       </form>
       <form action={ouvrirApresLAppelAction}>
         <input type="hidden" name="calendlyEventId" value={calendlyEventId} />
         <input type="hidden" name="vers" value="note" />
-        <button type="submit" className="admin-button-ghost">
+        <AdminButton type="submit" variant="secondary">
           Pas d&apos;enregistrement : note manuelle
-        </button>
+        </AdminButton>
       </form>
     </div>
   );
