@@ -58,6 +58,8 @@ export interface ElementDossier {
   readonly essai: boolean;
   /** Pièce remplacée : montrée, mais dans aucun chiffre. */
   readonly horsVoyants: boolean;
+  /** Modèle vierge : hors voyants comme une pièce remplacée, mais ce n'en est pas une. */
+  readonly modeleVierge?: boolean;
   /** Chemin du PDF dans le ZIP, pour une pièce. */
   readonly cheminPdf?: string | null;
   /** Clé de stockage du PDF (R2), pour que le ZIP aille le chercher. */
@@ -214,7 +216,7 @@ export function rendreDossier(m: ModeleDossierSession): DossierRendu {
   const reels = m.elements.filter((e) => !e.essai && !e.horsVoyants);
   const compte = (n: NatureElement): number => reels.filter((e) => e.nature === n).length;
   const essais = m.elements.filter((e) => e.essai).length;
-  const remplacees = m.elements.filter((e) => e.horsVoyants).length;
+  const remplacees = m.elements.filter((e) => e.horsVoyants && !e.modeleVierge).length;
   const chiffres = [
     `Chiffres réels : ${pluriel(compte("piece"), "pièce")}, ${pluriel(compte("email"), "e-mail")}, ${pluriel(compte("remise"), "remise")}, ${pluriel(compte("retour"), "retour")}, ${pluriel(compte("relance"), "relance")}.`,
   ];
