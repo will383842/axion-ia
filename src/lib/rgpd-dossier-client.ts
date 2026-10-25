@@ -184,6 +184,8 @@ export interface ExportDossierClient {
     readonly recuLe: Date;
     readonly parcours: string;
     readonly reponses: string;
+    /** Case « informations par e-mail » (oui, non, `null` = non posée), datée par `recuLe`. */
+    readonly infosEmail: boolean | null;
   }>;
   readonly avertissements: readonly string[];
 }
@@ -349,7 +351,7 @@ export async function exporterDossierClientPour(email: string): Promise<ExportDo
     // de ses salariés), retrouvées par la réservation du titulaire ou l'adresse d'envoi du lien.
     const reponsesPreaudit = await prisma.questionnaireAvantAuditEnvoi.findMany({
       where: envoisDuDirigeant(email, empreinte),
-      select: { mode: true, recuLe: true, donnees: true },
+      select: { mode: true, recuLe: true, donnees: true, infosEmail: true },
       orderBy: { recuLe: "asc" },
     });
 
@@ -475,7 +477,9 @@ export async function exporterDossierClientPour(email: string): Promise<ExportDo
       })),
       questionnairesPreaudit: reponsesPreaudit.flatMap((r) => {
         const reponses = lisible(r.donnees, avertir, "questionnairesPreaudit");
-        return reponses === null ? [] : [{ recuLe: r.recuLe, parcours: r.mode, reponses }];
+        return reponses === null
+          ? []
+          : [{ recuLe: r.recuLe, parcours: r.mode, reponses, infosEmail: r.infosEmail ?? null }];
       }),
       avertissements,
     };

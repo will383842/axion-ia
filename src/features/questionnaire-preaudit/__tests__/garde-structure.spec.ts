@@ -69,15 +69,36 @@ function sources(dossier: string, sortie: string[] = []): string[] {
     if (nom === "node_modules" || nom === "generated" || nom === "__tests__") continue;
     const p = path.join(dossier, nom);
     if (statSync(p).isDirectory()) sources(p, sortie);
-    else if (/\.(ts|tsx)$/.test(nom) && !/\.spec\.tsx?$/.test(nom)) sortie.push(p);
+    else if (/\.(ts|tsx|js|mjs|cjs)$/.test(nom) && !/\.(spec|test)\.[cm]?[jt]sx?$/.test(nom))
+      sortie.push(p);
   }
   return sortie;
 }
 
 describe("conservation 5 ans : AUCUNE suppression automatique (décision de Will, 25/10)", () => {
   const rel = (p: string) => path.relative(RACINE, p).replace(/\\/g, "/");
-  const tous = () => sources(path.join(RACINE, "src"));
-  const TABLES = /questionnaireAvantAudit(Envoi|Brouillon)?\s*\.\s*deleteMany\(/;
+  // `src/` ET `scripts/` : un script lancé à la main ou par une tâche planifiée compte aussi.
+  const tous = () => [
+    ...sources(path.join(RACINE, "src")),
+    ...sources(path.join(RACINE, "scripts")),
+  ];
+  // `.delete(`, `.deleteMany(` (client Prisma, transaction comprise) ET le SQL brut.
+  const TABLES = new RegExp(
+    [
+      /questionnaireAvantAudit(Envoi|Brouillon)?\s*\.\s*delete(Many)?\s*\(/.source,
+      /DELETE\s+FROM\s+"?questionnaires_avant_audit/.source,
+    ].join("|"),
+    "i",
+  );
+
+  it("le motif voit les trois formes de suppression", () => {
+    expect(TABLES.test("tx.questionnaireAvantAudit.delete({")).toBe(true);
+    expect(TABLES.test("prisma.questionnaireAvantAuditEnvoi .deleteMany(")).toBe(true);
+    expect(TABLES.test("prisma.questionnaireAvantAuditBrouillon.delete (")).toBe(true);
+    expect(TABLES.test('DELETE FROM "questionnaires_avant_audit_envois"')).toBe(true);
+    expect(TABLES.test("delete from questionnaires_avant_audit_brouillons")).toBe(true);
+    expect(TABLES.test("prisma.questionnaireAvantAudit.findMany(")).toBe(false);
+  });
 
   it("la conservation vaut 5 ans", () => {
     expect(RETENTION_ANS).toBe(5);
