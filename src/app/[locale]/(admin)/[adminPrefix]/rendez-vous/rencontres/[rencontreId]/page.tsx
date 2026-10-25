@@ -58,10 +58,8 @@ interface PageProps {
   searchParams: Promise<Record<string, string | undefined>>;
 }
 
-const carteCls =
-  "mb-[var(--space-admin-5)] rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] p-[var(--space-admin-5)]";
-const titreCls =
-  "mb-[var(--space-admin-3)] text-[length:var(--text-admin-base)] font-semibold text-[color:var(--color-admin-fg)]";
+const carteCls = "admin-carte";
+const titreCls = "admin-carte-titre";
 const mutedCls = "text-[color:var(--color-admin-fg-muted)]";
 const listeCls = "space-y-[var(--space-admin-2)] text-[length:var(--text-admin-sm)]";
 const lienCls = "text-[color:var(--color-admin-accent)] underline-offset-2 hover:underline";
@@ -342,9 +340,9 @@ export default async function RencontrePage({ params, searchParams }: PageProps)
                 ))}
               </select>
             </label>
-            <button type="submit" className="admin-button-ghost">
+            <AdminButton type="submit" variant="secondary">
               Déplacer
-            </button>
+            </AdminButton>
           </form>
         </section>
       ) : null}
