@@ -46,6 +46,45 @@ async function processJob(_job: Job<VisioBalayageJobData>): Promise<void> {
   if (balayageActive()) await passerDossierClient(prisma);
   // TOUJOURS, drapeau éteint compris, et même si le dossier client a levé.
   await passerEnregistreur(prisma, enregistreur);
+  // TOUJOURS aussi : le suivi du questionnaire avant audit lit ses propres interrupteurs.
+  await passerQuestionnairesPreaudit(prisma);
+}
+
+/**
+ * Le suivi du questionnaire avant audit (2026-10-26) : relances, confirmations, salon Telegram,
+ * essais (`passerSuiviQuestionnaires`, `src/features/questionnaire-preaudit/suivi.ts`). Ses trois
+ * interrupteurs (`QUESTIONNAIRE_RELANCES_ENABLED`, `QUESTIONNAIRE_CONFIRMATIONS_ENABLED`,
+ * `QUESTIONNAIRE_TELEGRAM_ENABLED`) sont lus par lui : éteints, il ne fait rien. Son propre `try` :
+ * une panne n'arrête ni le dossier client ni l'enregistreur. Des nombres seulement au journal.
+ */
+async function passerQuestionnairesPreaudit(
+  prisma: Parameters<
+    (typeof import("@/features/questionnaire-preaudit/suivi"))["passerSuiviQuestionnaires"]
+  >[0],
+): Promise<void> {
+  try {
+    const { passerSuiviQuestionnaires } = await import("@/features/questionnaire-preaudit/suivi");
+    const b = await passerSuiviQuestionnaires(prisma, { maintenant: new Date() });
+    const essai = Object.values(b.modes).includes("essai");
+    if (essai && (b.seraientCrees > 0 || b.seraientEnvoyes > 0)) {
+      console.warn(
+        `[visio-balayage-worker] questionnaire avant audit À BLANC : créerait ${b.seraientCrees}, ` +
+          `enverrait ${b.seraientEnvoyes}`,
+      );
+    }
+    if (b.crees + b.envoyes + b.annules + b.retenus + b.echecs + b.essais > 0) {
+      console.warn(
+        `[visio-balayage-worker] questionnaire avant audit : ${b.crees} prévu(s), ${b.envoyes} parti(s), ` +
+          `${b.annules} annulé(s), ${b.retenus} retenu(s), ${b.echecs} en échec, ${b.essais} essai(s)`,
+      );
+    }
+  } catch (err) {
+    console.error(
+      "[visio-balayage-worker] questionnaire avant audit en échec :",
+      err instanceof Error ? err.name : "inconnue",
+    );
+    captureWorkerError("visio-balayage", VISIO_BALAYAGE_QUEUE_NAME, undefined, err);
+  }
 }
 
 type BaseDossier = Parameters<(typeof import("@/server/visio/balayage"))["passerBalayage"]>[0];

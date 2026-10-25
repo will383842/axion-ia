@@ -10,6 +10,7 @@ import type {
   NotificationEvent,
   NotificationSeverity,
   PalierAlerteIncident,
+  QuestionnairePreauditTelegram,
 } from "./types";
 import {
   estCategorieClient,
@@ -64,6 +65,7 @@ const THEME: Record<TelegramGroup, { emoji: string; label: string }> = {
   messages: { emoji: "💬", label: "MESSAGE" },
   "crm-sync": { emoji: "🔗", label: "SYNCHRO CRM" },
   incidents: { emoji: "🚨", label: "INCIDENT DE DONNÉES" },
+  "questionnaire-audit": { emoji: "📝", label: "QUESTIONNAIRE AUDIT" },
   system: { emoji: "🔔", label: "SYSTÈME" },
 };
 
@@ -119,6 +121,8 @@ const TITLES: Record<NotificationCategory, string> = {
   APPORTEUR_REPLIED: "Un candidat apporteur a répondu",
   CANDIDAT_REPLIED: "Un candidat a répondu par e-mail",
   TRAINER_DOSSIER_RECU: "Dossier de formateur reçu, à vérifier",
+  QUESTIONNAIRE_PREAUDIT_REPONSE: "Questionnaire avant audit : réponse reçue",
+  QUESTIONNAIRE_PREAUDIT_SUIVI: "Questionnaire avant audit : suivi",
   TRAINER_PIECE_DEPOSEE: "Pièce déposée par un formateur",
   TRAINER_CHANGEMENT_DEMANDE: "Demande de changement de coordonnées d'un formateur",
   FORMATEUR_REPLIED: "Un formateur indépendant a répondu par e-mail",
@@ -295,7 +299,75 @@ function titreDe(event: NotificationEvent): string {
       besoin,
     );
   }
+  if (
+    event.category === "QUESTIONNAIRE_PREAUDIT_REPONSE" ||
+    event.category === "QUESTIONNAIRE_PREAUDIT_SUIVI"
+  ) {
+    return titreQuestionnairePreaudit(event.payload);
+  }
   return TITLES[event.category];
+}
+
+const MOTIFS_ARRET_LISIBLES: Readonly<Record<string, string>> = {
+  reponse_dirigeant: "réponse du dirigeant",
+  desinscription: "désinscription",
+  will: "arrêtées par Will",
+  clos: "questionnaire clos",
+  expire: "lien expiré",
+  supprime: "questionnaire redéposé ou supprimé",
+  rebond: "adresse en rebond",
+  opposition: "opposition",
+  audit_proche: "trop près de l'audit",
+};
+
+/** Le titre d'un événement du questionnaire avant audit (2026-10-26). PUR. */
+export function titreQuestionnairePreaudit(p: QuestionnairePreauditTelegram): string {
+  const essai = p.essai === true ? "ESSAI · " : "";
+  switch (p.evenement) {
+    case "reponse":
+      return `${essai}Questionnaire avant audit : réponse reçue`;
+    case "invitation":
+      return `${essai}Invitation partie`;
+    case "relance":
+      return `${essai}Relance ${p.rang ?? "?"} sur 3 partie`;
+    case "arret":
+      return `${essai}Relances arrêtées : ${MOTIFS_ARRET_LISIBLES[p.motif ?? ""] ?? "arrêt"}`;
+    case "retenu":
+      return `${essai}Envoi retenu`;
+  }
+}
+
+const PARCOURS_LISIBLE = {
+  dirigeant: "dirigeant",
+  collaborateur: "collaborateur",
+  referent_it: "référent informatique",
+} as const;
+
+/**
+ * Le corps (10 lignes au plus) : société, qui (prénom + initiale), réponses reçues sur
+ * attendues, prochaine relance, motif sans adresse, lien de la console. ADR 0010. PUR.
+ */
+export function formatQuestionnairePreaudit(p: QuestionnairePreauditTelegram): string {
+  const qui =
+    p.qui !== undefined && p.qui !== ""
+      ? `${p.qui}${p.parcours !== undefined ? ` (${PARCOURS_LISIBLE[p.parcours]})` : ""}`
+      : undefined;
+  const reponses =
+    p.recues === undefined
+      ? undefined
+      : `${p.recues} reçue${p.recues > 1 ? "s" : ""} sur ${p.attendues ?? "?"} attendue${
+          (p.attendues ?? 0) > 1 ? "s" : ""
+        } (dirigeant : ${p.dirigeantARepondu === true ? "a répondu" : "pas encore"})`;
+  return [
+    formatKV("Société", p.societe),
+    formatKV("Qui", qui),
+    formatKV("Réponses", reponses),
+    formatKV(p.evenement === "invitation" ? "Relances prévues" : "Relances", p.prochaine),
+    p.evenement === "retenu" ? formatKV("Motif", p.motif) : null,
+    formatKV("Voir", lienConsole(p.chemin)),
+  ]
+    .filter((v): v is string => v !== null)
+    .join("\n");
 }
 
 /** Longueur maximale du besoin recopié dans un titre d'alerte. */
@@ -698,6 +770,9 @@ function formatBody(event: NotificationEvent): string {
         .filter((v): v is string => v !== null)
         .join("\n");
     }
+    case "QUESTIONNAIRE_PREAUDIT_REPONSE":
+    case "QUESTIONNAIRE_PREAUDIT_SUIVI":
+      return formatQuestionnairePreaudit(event.payload);
     case "TRAINER_DOSSIER_RECU": {
       // Minimisée (L-ENV) : identifiant court, couleur du registre, lien. Rien d'autre.
       const p = event.payload;

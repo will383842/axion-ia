@@ -41,6 +41,7 @@ const queryRaw = vi.fn();
 const preDeleteMany = vi.fn();
 const preParentUpdateMany = vi.fn();
 const brouillonDeleteMany = vi.fn();
+const courrierUpdateMany = vi.fn();
 const transaction = vi.fn();
 vi.mock("@/lib/prisma", () => ({
   prisma: {
@@ -52,6 +53,10 @@ vi.mock("@/lib/prisma", () => ({
     questionnaireAvantAudit: { updateMany: (...a: unknown[]) => preParentUpdateMany(...a) },
     questionnaireAvantAuditBrouillon: {
       deleteMany: (...a: unknown[]) => brouillonDeleteMany(...a),
+    },
+    // Journal des courriers de suivi (2026-10-26) : ANONYMISÉ, jamais supprimé.
+    questionnaireAvantAuditCourrier: {
+      updateMany: (...a: unknown[]) => courrierUpdateMany(...a),
     },
     // Réponses et brouillon partent dans la MÊME transaction (forme tableau).
     $transaction: (ops: unknown[]) => {
@@ -111,7 +116,16 @@ describe("questionnaire de pré-audit (2026-10-24)", () => {
     expect(brouillonDeleteMany).toHaveBeenCalledWith({
       where: { mode: "main", questionnaire: ou },
     });
-    expect(transaction).toHaveBeenCalledWith(2);
+    // Ses courriers de suivi : ceux à venir annulés, l'empreinte retirée, rien supprimé.
+    expect(courrierUpdateMany).toHaveBeenCalledWith({
+      where: { destinataireHash: "hash", statut: "prevu" },
+      data: { statut: "annule", motif: "effacement RGPD" },
+    });
+    expect(courrierUpdateMany).toHaveBeenCalledWith({
+      where: { destinataireHash: "hash" },
+      data: { destinataireHash: null, motif: "effacement RGPD" },
+    });
+    expect(transaction).toHaveBeenCalledWith(4);
     expect(preParentUpdateMany).toHaveBeenCalledWith({
       where: ou,
       data: { luLe: null, luParId: null, destinataire: null, destinataireHash: null },
@@ -133,6 +147,18 @@ describe("questionnaire de pré-audit (2026-10-24)", () => {
     });
     expect(brouillonDeleteMany).toHaveBeenCalledWith({
       where: { mode: { in: ["emp", "it"] }, membre: "m42", questionnaire: { ref: "ref1" } },
+    });
+    // Sa confirmation au journal : anonymisée AVANT la suppression qui la détacherait.
+    expect(courrierUpdateMany).toHaveBeenCalledWith({
+      where: {
+        envoi: {
+          mode: { in: ["emp", "it"] },
+          membre: "m42",
+          questionnaire: { ref: "ref1" },
+          ecarteLe: { not: null },
+        },
+      },
+      data: { destinataireHash: null, motif: "effacement RGPD" },
     });
     preDeleteMany.mockClear();
     expect(await eraseQuestionnairePreauditMembre("", "m42")).toBe(0);

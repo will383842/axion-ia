@@ -98,6 +98,11 @@ export const EMAILS_AUTOMATIQUES_PAR_DEFAUT: readonly string[] = [
   // Un rappel retenu en validation manque le rendez-vous qu il devait preparer :
   // il part seul, exactement comme la convocation et le rappel J-7.
   "appel-rappel",
+  // Suivi du questionnaire avant audit (2026-10-26, décision 4) : le clic d'envoi de Will
+  // vaut validation (il couvre l'invitation ET ses relances, dates affichées avant le clic).
+  // Une relance relue en retard n'a plus de sens ; la confirmation suit la réponse.
+  "questionnaire-avant-audit-relance",
+  "questionnaire-avant-audit-confirmation",
   // 🔴 L'exemplaire signé part SEUL, et c'est un choix, pas un oubli.
   //
   // Le garer en corbeille recréerait exactement le défaut qu'il répare : la
@@ -215,6 +220,8 @@ export const LIBELLE_TEMPLATE_EMAIL: Record<string, string> = {
   "piece-exemplaire-signe": "Remise de l'exemplaire signé",
   "questionnaire-reponses-recues": "Questionnaire en ligne : réponses reçues (interne)",
   "questionnaire-avant-audit": "Questionnaire de pré-audit envoyé par Will",
+  "questionnaire-avant-audit-relance": "Relance du questionnaire de pré-audit (J+2, J+5, J+10)",
+  "questionnaire-avant-audit-confirmation": "Questionnaire de pré-audit : réponses bien arrivées",
   "apporteur-declaration-recue": "Alerte interne : entreprise déclarée par un apporteur",
   // Lot OPCO A8 — volontairement HORS des deux listes : défaut « auto » (envoi
   // automatique demandé par Will le 04/10), mais une règle « validation »,

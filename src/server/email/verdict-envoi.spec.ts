@@ -84,6 +84,9 @@ describe("estSollicitationSoumiseAOpposition — table de vérité", () => {
       // non retenu répondent à l'échange réservé, ils n'y sont pas.
       "apporteur-issue-absent",
       "lead-apporteur-relance",
+      // 2026-10-26 — les relances du questionnaire avant audit (l'invitation et la
+      // confirmation restent des messages de service).
+      "questionnaire-avant-audit-relance",
     ]);
   });
 });

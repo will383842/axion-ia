@@ -233,6 +233,14 @@ import {
   QuestionnaireAvantAuditEmail,
   questionnaireAvantAuditSubject,
 } from "./questionnaire-avant-audit";
+import {
+  QuestionnaireAvantAuditRelanceEmail,
+  questionnaireAvantAuditRelanceSubject,
+} from "./questionnaire-avant-audit-relance";
+import {
+  QuestionnaireAvantAuditConfirmationEmail,
+  questionnaireAvantAuditConfirmationSubject,
+} from "./questionnaire-avant-audit-confirmation";
 import { OpcoSuiviEntrepriseEmail, opcoSuiviEntrepriseSubject } from "./opco-suivi-entreprise";
 import { RecueilBesoinEmail, recueilBesoinSubject } from "./recueil-besoin";
 import {
@@ -681,6 +689,16 @@ const TEMPLATES: TemplateMap = {
   "questionnaire-avant-audit": {
     subject: questionnaireAvantAuditSubject,
     component: QuestionnaireAvantAuditEmail,
+  },
+  // Suivi du questionnaire avant audit (2026-10-26) — enfilés UNIQUEMENT par le balayage du
+  // worker (`features/questionnaire-preaudit/suivi.ts`), dans le cadre du clic de Will.
+  "questionnaire-avant-audit-relance": {
+    subject: questionnaireAvantAuditRelanceSubject,
+    component: QuestionnaireAvantAuditRelanceEmail,
+  },
+  "questionnaire-avant-audit-confirmation": {
+    subject: questionnaireAvantAuditConfirmationSubject,
+    component: QuestionnaireAvantAuditConfirmationEmail,
   },
   // QNC L03 — recueil du besoin, temps 1 : questionnaire envoyé à l'ENTREPRISE
   // (premier envoi et relances), `server/qualiopi/recueil/envoi-email.ts`.

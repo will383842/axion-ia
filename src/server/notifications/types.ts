@@ -599,6 +599,18 @@ export type NotificationEvent =
         registre: "vert" | "orange" | "rouge" | "muet";
       };
     }
+  // === Questionnaire avant audit (2026-10-26) : salon « Questionnaire audit » ===
+  // 🔴 MINIMISÉES (ADR 0010) : la société, le prénom et l'initiale seulement, des nombres, un
+  // motif sans adresse, un chemin RELATIF de la console. Ni adresse, ni nom complet, ni réponse.
+  // Envoyées UNIQUEMENT par le balayage du worker (`features/questionnaire-preaudit/suivi.ts`).
+  | {
+      category: "QUESTIONNAIRE_PREAUDIT_REPONSE";
+      payload: QuestionnairePreauditTelegram;
+    }
+  | {
+      category: "QUESTIONNAIRE_PREAUDIT_SUIVI";
+      payload: QuestionnairePreauditTelegram;
+    }
   // === Formateur indépendant : pièce déposée depuis son espace (lot E, F42) ===
   // 🔴 MINIMISÉE : ni nom, ni fichier. Un identifiant de fiche et le type de pièce.
   | {
@@ -789,4 +801,26 @@ export interface NotifyResult {
   deduped?: boolean;
   rateLimited?: boolean;
   channels: Partial<Record<NotificationChannel, "sent" | "queued" | "skipped" | "failed">>;
+}
+
+/** Charge des 2 catégories du questionnaire avant audit (2026-10-26). Voir l'ADR 0010. */
+export interface QuestionnairePreauditTelegram {
+  readonly evenement: "reponse" | "invitation" | "relance" | "arret" | "retenu";
+  /** Essai depuis la console : préfixe « ESSAI · ». */
+  readonly essai?: boolean;
+  readonly societe: string;
+  /** « Flora P. » (prénom + initiale, `prenomEtInitiale`). */
+  readonly qui?: string;
+  readonly parcours?: "dirigeant" | "collaborateur" | "referent_it";
+  readonly recues?: number;
+  /** `null` : inconnu tant que le dirigeant n'a pas répondu (« ? »). */
+  readonly attendues?: number | null;
+  readonly dirigeantARepondu?: boolean;
+  readonly rang?: number;
+  /** Motif SANS adresse (arrêt, retenue). */
+  readonly motif?: string;
+  /** Texte pré-formaté : « mer. 4 nov. à 9 h 30 », « 27/10, 30/10, 04/11 ». */
+  readonly prochaine?: string;
+  /** Chemin RELATIF de la console, rendu par `lienConsole`. */
+  readonly chemin: string;
 }

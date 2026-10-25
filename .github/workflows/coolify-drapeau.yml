@@ -6,7 +6,8 @@ name: Coolify · basculer un drapeau (site + worker)
 # ── Pourquoi une liste FERMÉE de clés ─────────────────────────────────────────
 # Les entrées d'un workflow_dispatch sont visibles dans l'interface GitHub et
 # dans les journaux. Ce workflow ne doit donc jamais servir à poser un secret :
-# la clé est choisie dans une liste, la valeur est `true` ou `false`, point.
+# la clé est choisie dans une liste, la valeur est validée selon la clé (`true`/`false`,
+# `essai`, une date, un identifiant de salon, une adresse d'essai d'Axion IA), point.
 # Pour un secret, voir `calendly-jeton-vers-coolify.yml`.
 #
 # ── Pourquoi les deux applications par défaut ─────────────────────────────────
@@ -44,8 +45,18 @@ on:
           # la réception réelle des réponses et le bouton « Envoyer » de la console ; aucun
           # e-mail ne part jamais sans le clic de Will (conservation 5 ans, sans purge).
           - "QUESTIONNAIRE_AVANT_AUDIT_ENABLED"
+          # Suivi du questionnaire (2026-10-26). Cible : worker. Valeurs : true | false | essai
+          # (« essai » compte sans rien écrire ni envoyer). Rien ne part sans l'envoi de Will.
+          - "QUESTIONNAIRE_RELANCES_ENABLED"
+          - "QUESTIONNAIRE_CONFIRMATIONS_ENABLED"
+          - "QUESTIONNAIRE_TELEGRAM_ENABLED"
+          # Salon Telegram « Questionnaire audit » (identifiant, ex. -1001234567890). Sans lui :
+          # Clients, puis Système. Cible : worker.
+          - "TELEGRAM_CHAT_ID_QUESTIONNAIRE_AUDIT"
+          # Boîte d'Axion IA qui reçoit les essais (« M'envoyer un essai »). Cible : les deux.
+          - "QUESTIONNAIRE_PREAUDIT_ADRESSE_ESSAI"
       valeur:
-        description: "Valeur : true, false, essai, ou une date ISO pour DOSSIER_FICHE_AUTO_DEPUIS"
+        description: "Valeur : true, false, essai, une date ISO (DOSSIER_FICHE_AUTO_DEPUIS), un identifiant de salon ou une adresse d'essai"
         required: true
         default: "true"
         type: string
@@ -99,7 +110,11 @@ jobs:
           set -euo pipefail
           if [ "$CLE" = "DOSSIER_FICHE_AUTO_DEPUIS" ]; then
             [[ "$VALEUR" =~ ^20[0-9]{2}-[0-9]{2}-[0-9]{2}T[0-9:]{8}(Z|[+-][0-9]{2}:[0-9]{2})$ ]] || { echo "::error::Date ISO attendue"; exit 1; }
-          elif [ "$CLE" = "DOSSIER_FICHE_AUTO" ]; then
+          elif [ "$CLE" = "TELEGRAM_CHAT_ID_QUESTIONNAIRE_AUDIT" ]; then
+            [[ "$VALEUR" =~ ^-?[0-9]+$ ]] || { echo "::error::Identifiant de salon Telegram attendu"; exit 1; }
+          elif [ "$CLE" = "QUESTIONNAIRE_PREAUDIT_ADRESSE_ESSAI" ]; then
+            [[ "$VALEUR" =~ ^[^[:space:]@]+@[^[:space:]@]+\.[^[:space:]@]+$ ]] || { echo "::error::Adresse e-mail attendue"; exit 1; }
+          elif [[ "$CLE" =~ ^(DOSSIER_FICHE_AUTO|QUESTIONNAIRE_RELANCES_ENABLED|QUESTIONNAIRE_CONFIRMATIONS_ENABLED|QUESTIONNAIRE_TELEGRAM_ENABLED)$ ]]; then
             [[ "$VALEUR" =~ ^(true|false|essai)$ ]] || { echo "::error::true, false ou essai"; exit 1; }
           else
             [[ "$VALEUR" =~ ^(true|false)$ ]] || { echo "::error::true ou false"; exit 1; }

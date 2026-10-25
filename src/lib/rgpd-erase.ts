@@ -850,7 +850,21 @@ export async function eraseCalendlyEventsForEmail(email: string): Promise<EraseC
   const empreintePreaudit = hashEmailForLookup(email);
   // Son brouillon en cours (2026-10-24, `rgpd: dossier-client`) part avec ses réponses, dans la
   // MÊME transaction : jamais l'un sans l'autre.
+  // Le journal de ses courriers de suivi (relances, confirmations : 2026-10-26) est ANONYMISÉ,
+  // jamais supprimé : l'empreinte part, ce qui restait à envoyer est annulé.
   await prisma.$transaction([
+    ...(empreintePreaudit === null
+      ? []
+      : [
+          prisma.questionnaireAvantAuditCourrier.updateMany({
+            where: { destinataireHash: empreintePreaudit, statut: "prevu" },
+            data: { statut: "annule", motif: "effacement RGPD" },
+          }),
+          prisma.questionnaireAvantAuditCourrier.updateMany({
+            where: { destinataireHash: empreintePreaudit },
+            data: { destinataireHash: null, motif: "effacement RGPD" },
+          }),
+        ]),
     prisma.questionnaireAvantAuditEnvoi.deleteMany({
       where: envoisDuDirigeant(email, empreintePreaudit),
     }),
@@ -1721,6 +1735,15 @@ export const EXCEPTIONS_EFFACEMENT_DOSSIER: ReadonlyArray<{
       "à la main, sous le même drapeau — seule voie que la base admet.",
   },
   {
+    // 2026-10-26 — le suivi du questionnaire avant audit : AUCUNE donnée personnelle (relances
+    // demandées, date et lieu de l'audit écrits par Will, dates d'envoi). Ses courriers, eux,
+    // portent l'empreinte du destinataire : anonymisés ci-dessus, jamais supprimés.
+    modele: "QuestionnaireAvantAuditSuivi",
+    motif:
+      "le suivi des e-mails du questionnaire avant audit (relances demandées, date de l'audit) : " +
+      "aucune donnée vous concernant, il reste attaché au questionnaire.",
+  },
+  {
     modele: "DocumentProjetContenu",
     motif:
       "les octets d'une pièce de `DocumentProjet` : même règle que la pièce (supprimés avant " +
@@ -2483,7 +2506,23 @@ export async function eraseQuestionnairePreauditMembre(
   if (ref.trim() === "" || membre.trim() === "") return 0;
   // Son brouillon en cours suit (2026-10-24), dans la MÊME transaction ; le compte rendu reste
   // celui des réponses.
-  const [r] = await prisma.$transaction([
+  const ecartees = {
+    mode: { in: ["emp", "it"] },
+    membre,
+    questionnaire: { ref },
+    ecarteLe: { not: null },
+  };
+  const [, , r] = await prisma.$transaction([
+    // Le journal des courriers nés de ces réponses (sa confirmation, 2026-10-26) : ANONYMISÉ
+    // avant la suppression (qui le détacherait), jamais supprimé.
+    prisma.questionnaireAvantAuditCourrier.updateMany({
+      where: { envoi: ecartees, statut: "prevu" },
+      data: { statut: "annule", motif: "effacement RGPD" },
+    }),
+    prisma.questionnaireAvantAuditCourrier.updateMany({
+      where: { envoi: ecartees },
+      data: { destinataireHash: null, motif: "effacement RGPD" },
+    }),
     // Seulement ce qui a été MIS À L'ÉCART : une réponse arrivée après l'écart n'est pas touchée.
     prisma.questionnaireAvantAuditEnvoi.deleteMany({
       where: {

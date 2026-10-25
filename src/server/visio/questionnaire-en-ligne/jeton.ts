@@ -91,6 +91,30 @@ export function codeDirigeantPreauditValide(id: string, code: string): boolean {
   return timingSafeEqual(Buffer.from(attendu, "utf8"), Buffer.from(code, "utf8"));
 }
 
+/**
+ * Jeton de la page « Ne plus recevoir de rappel » du pré-audit (2026-10-26) : domaine HMAC PROPRE,
+ * donc le jeton du questionnaire n'arrête pas les rappels, et le jeton d'arrêt n'ouvre pas le
+ * questionnaire.
+ */
+const DOMAINE_PREAUDIT_ARRET = "preaudit-arret:v1:";
+
+export function jetonArretRelancesPreaudit(id: string): string | null {
+  const i = id.toLowerCase();
+  if (!UUID.test(i)) return null;
+  const k = cle();
+  return k === null ? null : signer(k, i, DOMAINE_PREAUDIT_ARRET);
+}
+
+export function jetonArretRelancesPreauditValide(id: string, jeton: string): boolean {
+  const i = id.toLowerCase();
+  if (!UUID.test(i) || !JETON.test(jeton)) return false;
+  const k = cle();
+  if (k === null) return false;
+  const attendu = Buffer.from(signer(k, i, DOMAINE_PREAUDIT_ARRET), "utf8");
+  const recu = Buffer.from(jeton, "utf8");
+  return attendu.length === recu.length && timingSafeEqual(attendu, recu);
+}
+
 /** Le jeton d'un questionnaire, ou `null` (production sans secret, identifiant invalide). */
 export function jetonQuestionnaire(questionnaireId: string): string | null {
   const id = questionnaireId.toLowerCase();

@@ -83,6 +83,14 @@ const ROUTING: Record<NotificationCategory, RoutingEntry> = {
   APPORTEUR_REPLIED: { channels: ["telegram"], severity: "info" },
   CANDIDAT_REPLIED: { channels: ["telegram"], severity: "info" },
   TRAINER_DOSSIER_RECU: { channels: ["telegram"], severity: "info" },
+  // Questionnaire avant audit (2026-10-26) : une réponse SONNE (warn), le suivi est silencieux
+  // (info). Jamais error/critical (file asynchrone) ; hors WhatsApp.
+  QUESTIONNAIRE_PREAUDIT_REPONSE: {
+    channels: ["telegram"],
+    severity: "warn",
+    rateLimitPerHour: 30,
+  },
+  QUESTIONNAIRE_PREAUDIT_SUIVI: { channels: ["telegram"], severity: "info", rateLimitPerHour: 30 },
   TRAINER_PIECE_DEPOSEE: { channels: ["telegram"], severity: "info" },
   // Protection contre la fraude au changement de compte : chaque demande se voit.
   TRAINER_CHANGEMENT_DEMANDE: { channels: ["telegram"], severity: "warn" },
@@ -176,6 +184,8 @@ export type TelegramGroup =
   | "messages"
   | "crm-sync"
   | "incidents"
+  // Questionnaire avant audit (2026-10-26) : réponses reçues et suivi des relances.
+  | "questionnaire-audit"
   | "system";
 
 /**
@@ -222,6 +232,8 @@ const CATEGORY_GROUP: Record<NotificationCategory, TelegramGroup> = {
   // candidatures — jamais dans le salon des apporteurs (deux mondes distincts).
   CANDIDAT_REPLIED: "candidatures",
   TRAINER_DOSSIER_RECU: "candidatures",
+  QUESTIONNAIRE_PREAUDIT_REPONSE: "questionnaire-audit",
+  QUESTIONNAIRE_PREAUDIT_SUIVI: "questionnaire-audit",
   TRAINER_PIECE_DEPOSEE: "candidatures",
   TRAINER_CHANGEMENT_DEMANDE: "candidatures",
   FORMATEUR_REPLIED: "candidatures",
@@ -429,6 +441,7 @@ const CHAT_ID_ENV: Record<TelegramGroup, string> = {
   messages: "TELEGRAM_CHAT_ID_MESSAGES",
   "crm-sync": "TELEGRAM_CHAT_ID_CRM_SYNC",
   incidents: "TELEGRAM_CHAT_ID_INCIDENTS",
+  "questionnaire-audit": "TELEGRAM_CHAT_ID_QUESTIONNAIRE_AUDIT",
   system: "TELEGRAM_CHAT_ID_SYSTEM",
 };
 
@@ -474,6 +487,13 @@ const CHAT_ID_FALLBACKS: Record<TelegramGroup, readonly string[]> = {
   "crm-sync": ["TELEGRAM_CHAT_ID_SYSTEM", "TELEGRAM_CHAT_ID"],
   // Même repli que la synchro CRM : Système, puis le salon général.
   incidents: ["TELEGRAM_CHAT_ID_SYSTEM", "TELEGRAM_CHAT_ID"],
+  // Décision du 25/10/2026 : tant que le groupe « Questionnaire audit » n'existe pas, le salon
+  // Clients, puis Système, puis le général (le nouveau groupe n'est PAS bloquant).
+  "questionnaire-audit": [
+    "TELEGRAM_CHAT_ID_CLIENTS",
+    "TELEGRAM_CHAT_ID_SYSTEM",
+    "TELEGRAM_CHAT_ID",
+  ],
   system: ["TELEGRAM_CHAT_ID"],
 };
 

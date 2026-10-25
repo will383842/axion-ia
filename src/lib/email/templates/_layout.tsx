@@ -692,6 +692,13 @@ export interface EmailLayoutProps {
    */
   sansReseauxSociaux?: boolean;
   unsubscribeHref?: string;
+  /**
+   * Libellé du lien `unsubscribeHref` quand il ne s'agit pas d'un désabonnement de liste
+   * (2026-10-26 : « Ne plus recevoir de rappel » des relances du questionnaire avant audit).
+   */
+  unsubscribeLabel?: string;
+  /** Une phrase courte SOUS le bouton (ex. « Ce lien vous est personnel… »). Texte, pas un lien. */
+  ctaNote?: string;
   locale: "fr" | "en";
 }
 
@@ -803,6 +810,8 @@ export function EmailLayout({
   campagne,
   sansReseauxSociaux,
   unsubscribeHref,
+  unsubscribeLabel,
+  ctaNote,
   locale,
 }: EmailLayoutProps) {
   const t: { readonly [K in keyof (typeof TXT)["fr"]]: string } = TXT[locale];
@@ -902,6 +911,11 @@ export function EmailLayout({
                 <Button href={cta.href} style={ctaStyle} className="ax-cta">
                   {cta.label} &nbsp;→
                 </Button>
+                {ctaNote && (
+                  <Text style={{ margin: "8px 0 0 0", fontSize: "13px", color: C.muted }}>
+                    {ctaNote}
+                  </Text>
+                )}
                 {/*
                   Repli en texte brut — §3.8, rendu ICI pour les 44 gabarits.
 
@@ -1131,7 +1145,7 @@ export function EmailLayout({
                     href={unsubscribeHref}
                     style={{ color: C.muted, textDecoration: "underline" }}
                   >
-                    {t.unsubscribe}
+                    {unsubscribeLabel ?? t.unsubscribe}
                   </Link>
                 </>
               )}

@@ -51,14 +51,25 @@ export const EXCLUSIONS_EXPORT_DOSSIER: ReadonlyArray<{
     modele: "QuestionnaireAvantAuditBrouillon",
     motif:
       "votre brouillon en cours du questionnaire avant audit : il vous est rendu par votre propre " +
-      "lien tant que vous remplissez, et il est supprimé dès l'envoi de vos réponses ou après 30 " +
-      "jours sans modification.",
+      "lien tant que vous remplissez, et il est supprimé dès l'envoi de vos réponses.",
   },
   {
     modele: "QuestionnaireAvantAudit",
     motif:
       "la copie du questionnaire préparée pour vous : l'adresse d'envoi et vos réponses sont " +
       "rendues ci-dessus.",
+  },
+  {
+    modele: "QuestionnaireAvantAuditSuivi",
+    motif:
+      "le suivi des e-mails du questionnaire avant audit (relances demandées, date de l'audit) : " +
+      "des dates et des statuts, sans contenu ni adresse.",
+  },
+  {
+    modele: "QuestionnaireAvantAuditCourrier",
+    motif:
+      "le journal des e-mails de suivi du questionnaire avant audit (relances, confirmations) : " +
+      "des dates et des statuts, sans contenu ni adresse.",
   },
   {
     modele: "CompteRendu",

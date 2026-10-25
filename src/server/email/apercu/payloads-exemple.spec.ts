@@ -160,7 +160,10 @@ describe("le jeu de données d'exemple couvre tous les gabarits", () => {
     // a sa valeur d'exemple.
     // RELEVÉ À 79 (2026-10-24) : `questionnaire-avant-audit`, le lien du questionnaire de pré-audit
     // envoyé par clic de Will. Champs tous facultatifs.
-    expect(tous.length).toBe(79);
+    // RELEVÉ À 81 (2026-10-26) : `questionnaire-avant-audit-relance` et
+    // `questionnaire-avant-audit-confirmation`, le suivi du questionnaire (enfilés par le
+    // balayage du worker seulement). Champs tous facultatifs.
+    expect(tous.length).toBe(81);
   });
 
   it.each(tous.map((g) => g.nom))("%s : tous ses champs requis ont une valeur d'exemple", (nom) => {

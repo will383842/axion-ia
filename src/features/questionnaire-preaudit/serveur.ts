@@ -11,12 +11,9 @@ import { randomBytes } from "node:crypto";
 import { prisma } from "@/lib/prisma";
 import { chiffrerParole, dechiffrerParole } from "@/lib/chiffrer-parole";
 import { hashEmailForLookup } from "@/lib/security/email-hash";
-import { SITE_URL } from "@/lib/site-url";
 import { MessagePourWill } from "@/features/dossier-client/message-affichable";
 import {
-  codeDirigeantPreaudit,
   codeDirigeantPreauditValide,
-  jetonPreaudit,
   jetonPreauditValide,
 } from "@/server/visio/questionnaire-en-ligne/jeton";
 
@@ -29,38 +26,14 @@ import {
 import { validerHtml } from "./html";
 import { lireLaCharge } from "./lecture";
 
+export { cheminEssaiPreaudit, cheminPreaudit, urlArretRelances, urlPreaudit } from "./liens";
+
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/;
 
 /** Le lien reçoit des réponses 45 jours après l'envoi, sauf clôture plus tôt par Will. */
 export const VALIDITE_JOURS = 45;
 /** Deux envois du même questionnaire à moins de 60 s : le second est un double clic. */
 export const DELAI_ANTI_DOUBLE_CLIC_MS = 60_000;
-
-/** Le chemin public d'un questionnaire (page à jeton), ou `null` sans secret de production. */
-export function cheminPreaudit(id: string): string | null {
-  const jeton = jetonPreaudit(id);
-  return jeton === null ? null : `/questionnaire/preaudit/${id.toLowerCase()}/${jeton}`;
-}
-
-/**
- * Le lien ENVOYÉ AU DIRIGEANT : le chemin public + son code personnel `m` (brouillon, voir
- * `brouillon.ts`). Les liens des salariés sont fabriqués par la page, sans ce code.
- */
-export function urlPreaudit(id: string): string | null {
-  const chemin = cheminPreaudit(id);
-  const code = codeDirigeantPreaudit(id);
-  return chemin === null || code === null ? null : `${SITE_URL}${chemin}?m=${code}`;
-}
-
-/**
- * Le lien « Essayer » de la console : celui du dirigeant (son code `m`) en mode essai — Will
- * teste le parcours du dirigeant, brouillon compris, sans rien écrire.
- */
-export function cheminEssaiPreaudit(id: string): string | null {
-  const chemin = cheminPreaudit(id);
-  const code = codeDirigeantPreaudit(id);
-  return chemin === null || code === null ? null : `${chemin}?m=${code}&essai=1`;
-}
 
 /**
  * Le `membre` gardé avec une réponse : JAMAIS le code du dirigeant (il ouvre son brouillon) —

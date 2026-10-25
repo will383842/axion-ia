@@ -272,6 +272,10 @@ async function checkTelegram(): Promise<{ status: Status; detail: string | null 
   routing += process.env["TELEGRAM_CHAT_ID_CLIENTS"]
     ? " · Clients dédié (détail complet)"
     : " · Clients → routes d'avant (message allégé, TELEGRAM_CHAT_ID_CLIENTS absent)";
+  // Salon 📝 Questionnaire audit (2026-10-26) : sans lui, repli sur Clients, puis Système.
+  routing += process.env["TELEGRAM_CHAT_ID_QUESTIONNAIRE_AUDIT"]
+    ? " · Questionnaire audit dédié"
+    : " · Questionnaire audit → Clients, puis Système";
 
   try {
     const res = await fetch(`https://api.telegram.org/bot${token}/getMe`, {
