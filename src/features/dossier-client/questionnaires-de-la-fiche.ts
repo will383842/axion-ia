@@ -9,11 +9,13 @@
  */
 
 import { prisma } from "@/lib/prisma";
+import { dunClient } from "@/features/questionnaire-preaudit/serveur";
 
 export interface QuestionnaireDeLaFiche {
   readonly id: string;
-  readonly rencontreId: string;
-  readonly rencontreTitre: string;
+  /** `null` : questionnaire envoyé SANS rendez-vous (rattaché à la fiche par `client_id`). */
+  readonly rencontreId: string | null;
+  readonly rencontreTitre: string | null;
   readonly rencontreDebut: Date | null;
   readonly creeLe: Date;
   /** NULL = brouillon : rien n'est parti. */
@@ -37,7 +39,7 @@ export async function lireQuestionnairesDeLaFiche(
 ): Promise<ReadonlyArray<QuestionnaireDeLaFiche>> {
   try {
     const qs = await prisma.questionnaireAvantAudit.findMany({
-      where: { rencontre: { clientId } },
+      where: { OR: [{ rencontre: { clientId } }, dunClient(clientId)] },
       orderBy: { creeLe: "desc" },
       take: 20,
       select: {
@@ -68,14 +70,13 @@ export async function lireQuestionnairesDeLaFiche(
       }
     }
     return qs.flatMap((q): QuestionnaireDeLaFiche[] => {
-      if (q.rencontre === null) return [];
       const log = dernierLog.get(q.id) ?? null;
       return [
         {
           id: q.id,
-          rencontreId: q.rencontre.id,
-          rencontreTitre: q.rencontre.titre,
-          rencontreDebut: q.rencontre.debutPrevu,
+          rencontreId: q.rencontre?.id ?? null,
+          rencontreTitre: q.rencontre?.titre ?? null,
+          rencontreDebut: q.rencontre?.debutPrevu ?? null,
           creeLe: q.creeLe,
           envoyeLe: q.envoyeLe,
           expireLe: q.expireLe,

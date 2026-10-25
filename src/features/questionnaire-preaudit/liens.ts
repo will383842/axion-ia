@@ -45,3 +45,14 @@ export function cheminEssaiPreaudit(id: string): string | null {
   const code = codeDirigeantPreaudit(id);
   return chemin === null || code === null ? null : `${chemin}?m=${code}&essai=1`;
 }
+
+/**
+ * Où Will retrouve le questionnaire : son rendez-vous, sinon la page « Questionnaire » de la
+ * fiche (envoi sans rendez-vous), sinon la liste des questionnaires sans rencontre.
+ */
+export const cheminConsole = (rencontreId: string | null, clientId: string | null = null) =>
+  rencontreId !== null
+    ? `rendez-vous/rencontres/${rencontreId}#questionnaire-avant-audit`
+    : clientId !== null
+      ? `qualiopi/clients/${clientId}/questionnaire#questionnaire-avant-audit`
+      : "rendez-vous?vue=questionnaires";

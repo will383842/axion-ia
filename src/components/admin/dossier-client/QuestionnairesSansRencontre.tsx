@@ -33,8 +33,9 @@ export async function QuestionnairesSansRencontre(props: {
       ) : null}
       {props.message !== null ? <p role="status">{props.message}</p> : null}
       <p className={mutedCls}>
-        Questionnaires dont la rencontre a été supprimée : leurs réponses sont gardées (
-        {RETENTION_ANS} ans, suppression à la main seulement).
+        Questionnaires qui ne sont plus reliés à un rendez-vous (envoi depuis une fiche client, ou
+        rendez-vous supprimé) : leurs réponses sont gardées ({RETENTION_ANS} ans, suppression à la
+        main seulement).
       </p>
       {liste.length === 0 ? (
         <p>
@@ -48,6 +49,16 @@ export async function QuestionnairesSansRencontre(props: {
               {q.envoyeLe !== null ? ` — envoyé le ${formatDateFrShort(q.envoyeLe)}` : ""}
               {q.closLe !== null ? " — clos" : ""} — {q.reponses.length} réponse(s)
             </p>
+            {q.client !== null ? (
+              <p className={mutedCls}>
+                Fiche client :{" "}
+                <a
+                  href={`${props.base.replace(/\/rendez-vous\/?$/, "")}/qualiopi/clients/${q.client.id}/questionnaire`}
+                >
+                  {q.client.raisonSociale}
+                </a>
+              </p>
+            ) : null}
             {q.reponses.some((r) => conservationEchue(r.recuLe)) ? (
               <p role="alert" className={alerteCls}>
                 Échéance de conservation dépassée pour au moins une réponse : à supprimer à la main

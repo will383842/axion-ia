@@ -219,11 +219,12 @@ export async function completerFicheDepuisReponse(
     select: {
       ref: true,
       rencontreId: true,
+      clientId: true,
       destinataireHash: true,
       rencontre: { select: { clientId: true, calendlyEvent: { select: { inviteeEmail: true } } } },
     },
   });
-  const clientId = q?.rencontre?.clientId ?? null;
+  const clientId = q?.rencontre?.clientId ?? q?.clientId ?? null;
   if (q === null || clientId === null) return { statut: "ignoree", raison: "sans_fiche" };
   const champs = champsObjectifsDe(reponse.json);
   const adressesSures = new Set(

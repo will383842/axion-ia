@@ -38,7 +38,14 @@ import {
   noterEnvoi,
   type EssaiPossible,
 } from "./suivi-console";
-import { clore, deposerQuestionnaire, lireDeLaRencontre, marquerLu } from "./serveur";
+import {
+  clore,
+  deposerQuestionnaire,
+  deposerQuestionnairePourClient,
+  lireDeLaCible,
+  marquerLu,
+  type CibleQuestionnaire,
+} from "./serveur";
 
 const uuid = z.string().uuid();
 
@@ -51,8 +58,29 @@ function pageRencontre(rencontreId: string): string {
   return adminPath("fr", `/rendez-vous/rencontres/${rencontreId}`);
 }
 
-function retour(rencontreId: string, cle: "message" | "erreur", texte: string): never {
-  redirect(avecMessageDeRetour(pageRencontre(rencontreId), cle, texte));
+/** La page « Questionnaire » de la fiche : l'envoi SANS rendez-vous y vit. */
+function pageClient(clientId: string): string {
+  return adminPath("fr", `/qualiopi/clients/${clientId}/questionnaire`);
+}
+
+/**
+ * Le questionnaire visé par un formulaire : un rendez-vous (`rencontreId`) ou une fiche client
+ * sans rendez-vous (`clientId`). Rien d'autre : l'identifiant est toujours un UUID.
+ */
+function cibleDe(fd: FormData): CibleQuestionnaire {
+  const rencontreId = champ(fd, "rencontreId");
+  if (uuid.safeParse(rencontreId).success) return { rencontreId };
+  const clientId = champ(fd, "clientId");
+  if (uuid.safeParse(clientId).success) return { clientId };
+  redirect(adminPath("fr", "/rendez-vous"));
+}
+
+function pageCible(cible: CibleQuestionnaire): string {
+  return "rencontreId" in cible ? pageRencontre(cible.rencontreId) : pageClient(cible.clientId);
+}
+
+function retour(cible: CibleQuestionnaire, cle: "message" | "erreur", texte: string): never {
+  redirect(avecMessageDeRetour(pageCible(cible), cle, texte));
 }
 
 /** La vue « Questionnaires sans rencontre » (rencontre supprimée, réponses gardées). */
@@ -65,6 +93,8 @@ const PAGE_SANS_RENCONTRE = adminPath("fr", "/rendez-vous?vue=questionnaires");
 function pageDeRetour(fd: FormData): string {
   const rencontreId = champ(fd, "rencontreId");
   if (uuid.safeParse(rencontreId).success) return pageRencontre(rencontreId);
+  const clientId = champ(fd, "clientId");
+  if (uuid.safeParse(clientId).success) return pageClient(clientId);
   if (champ(fd, "retour") === "questionnaires") return PAGE_SANS_RENCONTRE;
   redirect(adminPath("fr", "/rendez-vous"));
 }
@@ -74,8 +104,7 @@ function retourVers(page: string, cle: "message" | "erreur", texte: string): nev
 }
 
 export async function deposerQuestionnaireAction(fd: FormData): Promise<void> {
-  const rencontreId = champ(fd, "rencontreId");
-  if (!uuid.safeParse(rencontreId).success) redirect(adminPath("fr", "/rendez-vous"));
+  const cible = cibleDe(fd);
   let ancienLienMort = false;
   let emailsRejetes = 0;
   try {
@@ -91,15 +120,19 @@ export async function deposerQuestionnaireAction(fd: FormData): Promise<void> {
       throw new MessagePourWill("Choisissez d'abord le questionnaire.");
     }
     if (f.size > 900_000) throw new MessagePourWill("Ce fichier est trop lourd (max. 900 Ko).");
-    const depot = await deposerQuestionnaire(rencontreId, await f.text());
+    const html = await f.text();
+    const depot =
+      "rencontreId" in cible
+        ? await deposerQuestionnaire(cible.rencontreId, html)
+        : await deposerQuestionnairePourClient(cible.clientId, html);
     ancienLienMort = depot.ancienLienMort;
     emailsRejetes = depot.emailsRejetes;
   } catch (e) {
-    retour(rencontreId, "erreur", messageAffichable(e));
+    retour(cible, "erreur", messageAffichable(e));
   }
-  revalidatePath(pageRencontre(rencontreId));
+  revalidatePath(pageCible(cible));
   retour(
-    rencontreId,
+    cible,
     "message",
     ancienLienMort
       ? "Questionnaire remplacé (brouillon) : l'ancien lien ne marche plus." +
@@ -136,14 +169,13 @@ function auditDuFormulaire(
 }
 
 export async function envoyerQuestionnaireAction(fd: FormData): Promise<void> {
-  const rencontreId = champ(fd, "rencontreId");
-  if (!uuid.safeParse(rencontreId).success) redirect(adminPath("fr", "/rendez-vous"));
+  const cible = cibleDe(fd);
   let issue: "envoye" | "retenu_corbeille" = "envoye";
   let suiviNote = true;
   const relances = champ(fd, "relances") === "1";
   try {
     await exigerAccesEchanges();
-    const q = await lireDeLaRencontre(rencontreId);
+    const q = await lireDeLaCible(cible);
     if (q === null) throw new MessagePourWill("Ajoutez d'abord le questionnaire.");
     const maintenant = new Date();
     const audit = auditDuFormulaire(fd, maintenant);
@@ -166,15 +198,15 @@ export async function envoyerQuestionnaireAction(fd: FormData): Promise<void> {
       suiviNote = false;
     }
   } catch (e) {
-    retour(rencontreId, "erreur", messageAffichable(e));
+    retour(cible, "erreur", messageAffichable(e));
   }
-  revalidatePath(pageRencontre(rencontreId));
+  revalidatePath(pageCible(cible));
   const base =
     issue === "retenu_corbeille"
       ? "E-mail prêt. Il partira quand vous l'aurez validé dans « E-mails à valider »."
       : "Questionnaire envoyé.";
   retour(
-    rencontreId,
+    cible,
     "message",
     !suiviNote
       ? `${base} ⚠️ Le suivi n'a pas pu être noté : aucun rappel ne partira.`
@@ -193,8 +225,7 @@ export async function envoyerQuestionnaireAction(fd: FormData): Promise<void> {
  * `reinitialiser=1` revient au texte d'origine (valeurs vides ; rien n'est supprimé).
  */
 export async function enregistrerGabaritInvitationAction(fd: FormData): Promise<void> {
-  const rencontreId = champ(fd, "rencontreId");
-  if (!uuid.safeParse(rencontreId).success) redirect(adminPath("fr", "/rendez-vous"));
+  const cible = cibleDe(fd);
   let message = "Texte de base enregistré : il sert pour les prochains envois.";
   try {
     const { role, userId } = await exigerAccesEchanges();
@@ -213,16 +244,15 @@ export async function enregistrerGabaritInvitationAction(fd: FormData): Promise<
       );
     }
   } catch (e) {
-    retour(rencontreId, "erreur", messageAffichable(e));
+    retour(cible, "erreur", messageAffichable(e));
   }
-  revalidatePath(pageRencontre(rencontreId));
-  retour(rencontreId, "message", message);
+  revalidatePath(pageCible(cible));
+  retour(cible, "message", message);
 }
 
 /** « M'envoyer un test » : le worker l'envoie à l'adresse de test d'Axion IA, jamais au prospect. */
 export async function demanderEssaiAction(fd: FormData): Promise<void> {
-  const rencontreId = champ(fd, "rencontreId");
-  if (!uuid.safeParse(rencontreId).success) redirect(adminPath("fr", "/rendez-vous"));
+  const cible = cibleDe(fd);
   try {
     await exigerAccesEchanges();
     if (!preauditActif()) {
@@ -234,35 +264,34 @@ export async function demanderEssaiAction(fd: FormData): Promise<void> {
     if (!(ESSAIS_POSSIBLES as readonly string[]).includes(essaiDe)) {
       throw new MessagePourWill("Test inconnu.");
     }
-    const q = await lireDeLaRencontre(rencontreId);
+    const q = await lireDeLaCible(cible);
     if (q === null) throw new MessagePourWill("Ajoutez d'abord le questionnaire.");
     await demanderEssai(q.id, essaiDe as EssaiPossible);
   } catch (e) {
-    retour(rencontreId, "erreur", messageAffichable(e));
+    retour(cible, "erreur", messageAffichable(e));
   }
-  revalidatePath(pageRencontre(rencontreId));
+  revalidatePath(pageCible(cible));
   retour(
-    rencontreId,
+    cible,
     "message",
     "Test demandé. Vous le recevrez dans 5 minutes à votre adresse, objet « [TEST] ». Le client ne reçoit rien.",
   );
 }
 
 export async function arreterRelancesAction(fd: FormData): Promise<void> {
-  const rencontreId = champ(fd, "rencontreId");
-  if (!uuid.safeParse(rencontreId).success) redirect(adminPath("fr", "/rendez-vous"));
+  const cible = cibleDe(fd);
   let arrete = false;
   try {
     await exigerAccesEchanges();
-    const q = await lireDeLaRencontre(rencontreId);
+    const q = await lireDeLaCible(cible);
     if (q === null) throw new MessagePourWill("Questionnaire introuvable.");
     arrete = await arreterRelances(q.id, "will");
   } catch (e) {
-    retour(rencontreId, "erreur", messageAffichable(e));
+    retour(cible, "erreur", messageAffichable(e));
   }
-  revalidatePath(pageRencontre(rencontreId));
+  revalidatePath(pageCible(cible));
   retour(
-    rencontreId,
+    cible,
     "message",
     arrete
       ? "Rappels arrêtés : plus aucun rappel ne partira."
@@ -271,31 +300,29 @@ export async function arreterRelancesAction(fd: FormData): Promise<void> {
 }
 
 export async function marquerQuestionnaireLuAction(fd: FormData): Promise<void> {
-  const rencontreId = champ(fd, "rencontreId");
-  if (!uuid.safeParse(rencontreId).success) redirect(adminPath("fr", "/rendez-vous"));
+  const cible = cibleDe(fd);
   try {
     const { userId } = await exigerAccesEchanges();
-    const q = await lireDeLaRencontre(rencontreId);
+    const q = await lireDeLaCible(cible);
     if (q !== null) await marquerLu(q.id, userId);
   } catch (e) {
-    retour(rencontreId, "erreur", messageAffichable(e));
+    retour(cible, "erreur", messageAffichable(e));
   }
-  revalidatePath(pageRencontre(rencontreId));
-  retour(rencontreId, "message", "Réponses marquées comme lues.");
+  revalidatePath(pageCible(cible));
+  retour(cible, "message", "Réponses marquées comme lues.");
 }
 
 export async function cloreQuestionnaireAction(fd: FormData): Promise<void> {
-  const rencontreId = champ(fd, "rencontreId");
-  if (!uuid.safeParse(rencontreId).success) redirect(adminPath("fr", "/rendez-vous"));
+  const cible = cibleDe(fd);
   try {
     await exigerAccesEchanges();
-    const q = await lireDeLaRencontre(rencontreId);
+    const q = await lireDeLaCible(cible);
     if (q !== null) await clore(q.id);
   } catch (e) {
-    retour(rencontreId, "erreur", messageAffichable(e));
+    retour(cible, "erreur", messageAffichable(e));
   }
-  revalidatePath(pageRencontre(rencontreId));
-  retour(rencontreId, "message", "Questionnaire fermé : il ne reçoit plus de réponses.");
+  revalidatePath(pageCible(cible));
+  retour(cible, "message", "Questionnaire fermé : il ne reçoit plus de réponses.");
 }
 
 /** La référence et le code d'un salarié, lus du formulaire de la console (bornés). */

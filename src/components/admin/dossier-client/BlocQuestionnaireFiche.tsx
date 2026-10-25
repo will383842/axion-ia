@@ -36,9 +36,11 @@ function libelleLienInvitation(statut: string | null): string {
 export function BlocQuestionnaireFiche({
   questionnaires,
   adminPrefix,
+  clientId,
 }: {
   questionnaires: ReadonlyArray<QuestionnaireDeLaFiche>;
   adminPrefix: string;
+  clientId: string;
 }): React.ReactElement | null {
   if (questionnaires.length === 0) return null;
   const base = `/fr/${adminPrefix}`;
@@ -57,11 +59,14 @@ export function BlocQuestionnaireFiche({
         {questionnaires.map((q) => {
           const r = q.reponses;
           const total = r.dirigeant + r.referentInformatique + r.collaborateurs;
-          const lienRdv = `${base}/rendez-vous/rencontres/${q.rencontreId}`;
+          const lienRdv =
+            q.rencontreId === null
+              ? `${base}/qualiopi/clients/${clientId}/questionnaire`
+              : `${base}/rendez-vous/rencontres/${q.rencontreId}`;
           return (
             <li key={q.id}>
               <p className="font-medium">
-                {q.rencontreTitre}
+                {q.rencontreTitre ?? "Envoi sans rendez-vous"}
                 {q.rencontreDebut ? ` · ${jourHeure(q.rencontreDebut)}` : ""}
               </p>
               <p>
@@ -80,7 +85,9 @@ export function BlocQuestionnaireFiche({
               ) : null}
               <p className="mt-[var(--space-admin-1)] flex flex-wrap gap-x-[var(--space-admin-4)]">
                 <Link href={lienRdv} className="admin-link">
-                  Ouvrir le rendez-vous et le questionnaire
+                  {q.rencontreId === null
+                    ? "Ouvrir le questionnaire"
+                    : "Ouvrir le rendez-vous et le questionnaire"}
                 </Link>
                 {q.invitationEmailLogId ? (
                   <Link

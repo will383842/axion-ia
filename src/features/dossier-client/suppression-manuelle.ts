@@ -304,6 +304,13 @@ async function partiesClient(tx: Tx, cid: string, p: Parties): Promise<void> {
     tx.clientContact.findMany({ where: { clientId: cid }, select: { id: true } }),
   ]);
   for (const r of rencontres) await partiesRencontre(tx, r.id, p);
+  // Les questionnaires envoyés depuis la fiche SANS rendez-vous (`client_id`, 25/10/2026) font
+  // partie de la fiche : ils partent avec elle, avec les mêmes garde-fous que les autres.
+  const sansRdv = await tx.questionnaireAvantAudit.findMany({
+    where: { clientId: cid, id: { notIn: p.questionnaireIds } },
+    select: { id: true },
+  });
+  for (const q of sansRdv) await partiesQuestionnaire(tx, q.id, p);
   p.contactIds.push(...contacts.map((c) => c.id));
   ajouter(p, "fiche client", 1);
   ajouter(p, "contact(s) de la fiche", contacts.length);
@@ -317,6 +324,7 @@ async function partiesClient(tx: Tx, cid: string, p: Parties): Promise<void> {
         ["rencontres.client_id", TOUT],
         ["client_contacts.client_id", TOUT],
         ["rencontre_participants.client_id", nosRencontres],
+        ["questionnaires_avant_audit.client_id", { colonne: "id", ids: p.questionnaireIds }],
       ]),
     )),
   );
@@ -441,6 +449,7 @@ async function verrouillerLePerimetre(tx: Tx, type: TypeCible, id: string): Prom
   if (type === "client") {
     await verrouiller(tx, "clients", "id", [id]);
     rids = await verrouiller(tx, "rencontres", "client_id", [id]);
+    qids = await verrouiller(tx, "questionnaires_avant_audit", "client_id", [id]);
     await verrouiller(tx, "client_contacts", "client_id", [id]);
   } else if (type === "rencontre") {
     rids = await verrouiller(tx, "rencontres", "id", [id]);
@@ -448,7 +457,10 @@ async function verrouillerLePerimetre(tx: Tx, type: TypeCible, id: string): Prom
     qids = await verrouiller(tx, "questionnaires_avant_audit", "id", [id]);
   }
   if (rids.length > 0) {
-    qids = await verrouiller(tx, "questionnaires_avant_audit", "rencontre_id", rids);
+    qids = [
+      ...qids,
+      ...(await verrouiller(tx, "questionnaires_avant_audit", "rencontre_id", rids)),
+    ];
     await verrouiller(tx, "rencontre_participants", "rencontre_id", rids);
     await verrouiller(tx, "rencontre_suivis", "rencontre_id", rids, "rencontre_id");
   }

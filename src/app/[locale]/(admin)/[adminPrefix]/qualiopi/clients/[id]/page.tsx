@@ -381,7 +381,11 @@ export default async function FicheClient360Page({ params, searchParams }: PageP
       <>
         {/* Lot 1 fiche client (25/10/2026) : le questionnaire avant audit se lit ICI, plus
             seulement sur la page de chaque rendez-vous. Lecture seule, aucun envoi. */}
-        <BlocQuestionnaireFiche questionnaires={questionnaires} adminPrefix={adminPrefix} />
+        <BlocQuestionnaireFiche
+          questionnaires={questionnaires}
+          adminPrefix={adminPrefix}
+          clientId={id}
+        />
         <OngletSynthese
           consolidation={consoliderFaits(faits, projets, maintenant)}
           projets={projets}
@@ -548,6 +552,9 @@ export default async function FicheClient360Page({ params, searchParams }: PageP
                 de vente démarre depuis la fiche, sans re-chercher le client. */}
             <AdminButton href={`${qBase}/vente/new?clientId=${client.id}`}>
               Nouvelle vente
+            </AdminButton>
+            <AdminButton variant="secondary" href={`${clientsBase}/${client.id}/questionnaire`}>
+              Envoyer un questionnaire
             </AdminButton>
             <AdminButton variant="secondary" href={`${clientsBase}/${client.id}/edit`}>
               Éditer

@@ -194,7 +194,7 @@ export default async function RencontrePage({ params, searchParams }: PageProps)
       ) : null}
 
       <QuestionnairePreaudit
-        rencontreId={r.id}
+        cible={{ rencontreId: r.id }}
         peutDeposer={acces.role === "super_admin"}
         titulaire={r.titulaire}
         debutPrevu={r.debutPrevu}
