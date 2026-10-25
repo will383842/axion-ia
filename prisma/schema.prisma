@@ -5230,6 +5230,8 @@ model Client {
   testInterne       ClientTestInterne?
   /// Questionnaires avant audit envoyés SANS rendez-vous (relation seule, aucune colonne sur `clients`).
   questionnairesAvantAudit QuestionnaireAvantAudit[] @relation("QuestionnaireAvantAuditClient")
+  /// Facture établie hors console (relation seule, aucune colonne sur `clients`, ADR 0053).
+  factureHorsConsole ClientFactureHorsConsole?
 
   @@index([statut])
   @@index([nafCode])
@@ -13867,10 +13869,50 @@ model Projet {
   /// Chantier QNC, L00 — sessions de formation issues de ce projet (clé portée
   /// par `training_sessions`, aucun objet SQL sur `projets`).
   sessionsFormation     TrainingSession[]    @relation("ProjetSessionsFormation")
+  /// Ce que le client a pris (type, étape forcée, montant) : relation seule, table `projet_suivis`.
+  suivi                 ProjetSuivi?
 
   @@unique([id, clientId])
   @@index([clientId, statut])
   @@map("projets")
+}
+
+/// Le suivi de ce que le client a PRIS pour une prestation (un `Projet`, vocabulaire « Prestation »
+/// dans la console) : son type, une étape forcée à la main, un montant. 1-1 avec `projets`, table
+/// neuve (ADR 0053 : aucune colonne ajoutée à `projets` ni à `clients`). 2026-10-26.
+///   · `type` : formation, audit, coaching, integration_automatisation, site_internet, conference,
+///     autre. Texte et non énumération : un type de plus ne doit pas demander une migration.
+///     Les valeurs permises vivent dans le code (une constante, testée), pas dans la base.
+///   · `etape_forcee` : NULL = l'étape est CALCULÉE (proposée, devisée, en cours, livrée, terminée) ;
+///     une valeur = Will l'a forcée à la main.
+///   · `montant_cents` : montant de la prestation, console seulement (jamais vers le CRM).
+/// Le détail libre d'un type « autre » se dit dans le titre du projet, déjà traité par le dossier.
+/// rgpd: technique — un type de prestation, une étape et un montant d'entreprise, aucune parole ni identité de personne
+model ProjetSuivi {
+  projetId     String   @id @map("projet_id") @db.Uuid
+  projet       Projet   @relation(fields: [projetId], references: [id], onDelete: Restrict)
+  type         String   @db.VarChar(30)
+  etapeForcee  String?  @map("etape_forcee") @db.VarChar(30)
+  montantCents Int?     @map("montant_cents")
+  creeLe       DateTime @default(now()) @map("cree_le")
+  majLe        DateTime @updatedAt @map("maj_le")
+
+  @@index([type])
+  @@map("projet_suivis")
+}
+
+/// « Facture établie hors console » (Tiime...) : Will coche la case et pose la date ; la fiche passe
+/// alors de prospect à client. 1-1 avec `clients`, table neuve (ADR 0053). Une ligne par fiche : la
+/// date est celle de la PREMIÈRE facture hors console. 2026-10-26.
+/// rgpd: technique — une date de facture d'entreprise, aucune parole ni identité de personne
+model ClientFactureHorsConsole {
+  clientId   String   @id @map("client_id") @db.Uuid
+  client     Client   @relation(fields: [clientId], references: [id], onDelete: Restrict)
+  etabliLe   DateTime @map("etabli_le") @db.Date
+  parAdminId String?  @map("par_admin_id") @db.Uuid
+  creeLe     DateTime @default(now()) @map("cree_le")
+
+  @@map("client_factures_hors_console")
 }
 
 enum ProjetStatut {
