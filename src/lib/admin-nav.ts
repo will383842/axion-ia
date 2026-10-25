@@ -43,6 +43,7 @@ export const ID_TRAME_ECHANGE_APPORTEUR = "trame-echange-apporteur";
 // « Appels réservés » du groupe `contacts`, désormais organisé par CANAL
 // D'ENTRÉE (appel / message / candidature / podcast) plutôt que par table.
 export type AdminNavGroup =
+  | "clients"
   | "main"
   | "contacts"
   | "apporteurs"
@@ -198,6 +199,12 @@ export interface AdminNavItem {
 //    position. Aucune page supprimée, aucune URL changée : seuls les groupes,
 //    leur ordre et les libellés du MENU bougent (les titres de page restent).
 export const ADMIN_NAV_GROUP_LABELS: Record<AdminNavGroup, string> = {
+  // Créé le 2026-10-25 (demande de Will) : la fiche client est le point d'entrée
+  // de tout le reste (rendez-vous, e-mails, questionnaire, prestations). Elle
+  // vivait dans « Formations & prestations », comme si un client n'existait que
+  // pour la formation. Seul le rangement dans le menu change : l'adresse
+  // `/qualiopi/clients` reste la même (58 fichiers, liens Telegram et e-mails).
+  clients: "Clients",
   // Ex-« Activité quotidienne » : ses sept écrans (pilotage, planning,
   // occupation, charge, affaires, prévisionnel) servent à planifier, pas au
   // quotidien. Le groupe descend sous le contenu.
@@ -385,6 +392,7 @@ export const GROUP_POLE_LABELS: Partial<Record<AdminNavGroup, Readonly<Record<st
 // génération, tunnels), puis ce qu'on consulte rarement, et la technique en
 // dernier.
 export const ADMIN_NAV_GROUP_ORDER: ReadonlyArray<AdminNavGroup> = [
+  "clients",
   "contacts",
   "apporteurs",
   "recrutement",
@@ -1427,11 +1435,12 @@ function buildAdminNavSocle(adminPrefix: string): ReadonlyArray<AdminNavItem> {
     //
     // Décision : `_AUDIT/RESERVATION-2026-08-26/UNE-SEULE-PORTE.md`.
     {
+      // Rangée dans le groupe « Clients » (2026-10-25). MÊME href : la route
+      // `qualiopi/clients` ne bouge pas.
       href: `${base}/qualiopi/clients`,
-      label: "Clients (CRM)",
+      label: "Fiches clients",
       icon: "Building2",
-      group: "qualiopi",
-      subGroup: "dossiers",
+      group: "clients",
     },
     {
       href: `${base}/qualiopi/devis`,
