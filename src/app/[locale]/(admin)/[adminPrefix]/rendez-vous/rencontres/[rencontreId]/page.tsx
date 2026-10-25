@@ -186,11 +186,15 @@ export default async function RencontrePage({ params, searchParams }: PageProps)
         rencontreId={r.id}
         peutDeposer={acces.role === "super_admin"}
         titulaire={r.titulaire}
+        debutPrevu={r.debutPrevu}
+        societe={r.client?.raisonSociale ?? null}
         apercu={
           typeof sp.pa_email === "string" && sp.pa_email.trim() !== ""
             ? {
                 email: sp.pa_email.trim().slice(0, 200),
                 prenom: typeof sp.pa_prenom === "string" ? sp.pa_prenom.trim().slice(0, 60) : "",
+                date: typeof sp.pa_date === "string" ? sp.pa_date.trim().slice(0, 16) : "",
+                lieu: typeof sp.pa_lieu === "string" ? sp.pa_lieu.trim().slice(0, 80) : "",
               }
             : null
         }

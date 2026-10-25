@@ -24,7 +24,18 @@ import {
   eraseQuestionnairePreauditMembre,
 } from "@/lib/rgpd-erase";
 
+import { fromParisLocalInput } from "@/lib/calendar-grid";
+
 import { envoyerQuestionnaire } from "./envoyer";
+import { preauditActif } from "./config";
+import {
+  arreterRelances,
+  demanderEssai,
+  ESSAIS_POSSIBLES,
+  LIEU_MAX,
+  noterEnvoi,
+  type EssaiPossible,
+} from "./suivi-console";
 import { clore, deposerQuestionnaire, lireDeLaRencontre, marquerLu } from "./serveur";
 
 const uuid = z.string().uuid();
@@ -98,19 +109,89 @@ export async function deposerQuestionnaireAction(fd: FormData): Promise<void> {
   );
 }
 
+/** Date et lieu de l'audit saisis par Will (date passée refusée, lieu borné). */
+function auditDuFormulaire(
+  fd: FormData,
+  maintenant: Date,
+): {
+  dateAudit: Date | null;
+  lieuAudit: string | null;
+} {
+  const brut = champ(fd, "date_audit");
+  let dateAudit: Date | null = null;
+  if (brut !== "") {
+    dateAudit = fromParisLocalInput(brut);
+    if (dateAudit === null) throw new MessagePourWill("La date de l'audit n'est pas valide.");
+    if (dateAudit.getTime() <= maintenant.getTime()) {
+      throw new MessagePourWill("La date de l'audit est déjà passée.");
+    }
+  }
+  const lieu = champ(fd, "lieu_audit");
+  if (lieu.length > LIEU_MAX) {
+    throw new MessagePourWill(`Le lieu de l'audit tient en ${LIEU_MAX} caractères au plus.`);
+  }
+  return { dateAudit, lieuAudit: lieu === "" ? null : lieu };
+}
+
 export async function envoyerQuestionnaireAction(fd: FormData): Promise<void> {
   const rencontreId = champ(fd, "rencontreId");
   if (!uuid.safeParse(rencontreId).success) redirect(adminPath("fr", "/rendez-vous"));
   let issue: "envoye" | "retenu_corbeille" = "envoye";
+  let suiviNote = true;
+  const relances = champ(fd, "relances") === "1";
   try {
     await exigerAccesEchanges();
     const q = await lireDeLaRencontre(rencontreId);
     if (q === null) throw new MessagePourWill("Déposez d'abord le questionnaire.");
+    const maintenant = new Date();
+    const audit = auditDuFormulaire(fd, maintenant);
     issue = await envoyerQuestionnaire({
       questionnaireId: q.id,
       destinataire: champ(fd, "destinataire"),
       prenom: champ(fd, "prenom"),
+      ...audit,
     });
+    // L'e-mail est en file : le suivi (relances, date, lieu) ne doit pas faire croire à un échec.
+    try {
+      await noterEnvoi(q.id, { relances, ...audit }, issue, maintenant);
+    } catch {
+      suiviNote = false;
+    }
+  } catch (e) {
+    retour(rencontreId, "erreur", messageAffichable(e));
+  }
+  revalidatePath(pageRencontre(rencontreId));
+  const base =
+    issue === "retenu_corbeille"
+      ? "E-mail retenu dans la corbeille « E-mails à valider » : il partira quand vous l'aurez validé."
+      : "Questionnaire envoyé.";
+  retour(
+    rencontreId,
+    "message",
+    !suiviNote
+      ? `${base} ⚠️ Le suivi n'a pas pu être noté : aucune relance ne partira.`
+      : relances
+        ? `${base} Les 3 relances sont programmées depuis le départ réel de l'e-mail.`
+        : `${base} Aucune relance programmée.`,
+  );
+}
+
+/** « M'envoyer un essai » : le worker l'envoie à l'adresse d'essai d'Axion IA, jamais au prospect. */
+export async function demanderEssaiAction(fd: FormData): Promise<void> {
+  const rencontreId = champ(fd, "rencontreId");
+  if (!uuid.safeParse(rencontreId).success) redirect(adminPath("fr", "/rendez-vous"));
+  try {
+    await exigerAccesEchanges();
+    if (!preauditActif()) {
+      throw new MessagePourWill("Le questionnaire est éteint : aucun essai ne peut partir.");
+    }
+    const essaiDe = champ(fd, "essai_de");
+    if (!(ESSAIS_POSSIBLES as readonly string[]).includes(essaiDe)) {
+      throw new MessagePourWill("Essai inconnu.");
+    }
+    const q = await lireDeLaRencontre(rencontreId);
+    if (q === null) throw new MessagePourWill("Déposez d'abord le questionnaire.");
+    await demanderEssai(q.id, essaiDe as EssaiPossible);
   } catch (e) {
     retour(rencontreId, "erreur", messageAffichable(e));
   }
@@ -118,9 +199,29 @@ export async function envoyerQuestionnaireAction(fd: FormData): Promise<void> {
   retour(
     rencontreId,
     "message",
-    issue === "retenu_corbeille"
-      ? "E-mail retenu dans la corbeille « E-mails à valider » : il partira quand vous l'aurez validé."
-      : "Questionnaire envoyé.",
+    "Essai demandé : il partira dans les 5 minutes à l'adresse d'essai, objet « [ESSAI] ».",
+  );
+}
+
+export async function arreterRelancesAction(fd: FormData): Promise<void> {
+  const rencontreId = champ(fd, "rencontreId");
+  if (!uuid.safeParse(rencontreId).success) redirect(adminPath("fr", "/rendez-vous"));
+  let arrete = false;
+  try {
+    await exigerAccesEchanges();
+    const q = await lireDeLaRencontre(rencontreId);
+    if (q === null) throw new MessagePourWill("Questionnaire introuvable.");
+    arrete = await arreterRelances(q.id, "will");
+  } catch (e) {
+    retour(rencontreId, "erreur", messageAffichable(e));
+  }
+  revalidatePath(pageRencontre(rencontreId));
+  retour(
+    rencontreId,
+    "message",
+    arrete
+      ? "Relances arrêtées : plus aucun rappel ne partira."
+      : "Les relances étaient déjà arrêtées.",
   );
 }
 

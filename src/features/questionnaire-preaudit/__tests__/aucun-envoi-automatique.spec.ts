@@ -10,7 +10,9 @@
  *   · les relances et confirmations ne partent que de `suivi.ts` (le balayage du worker), qui ne
  *     fait rien sans le suivi écrit par le clic « Envoyer » de Will ;
  *   · le worker de balayage est le SEUL fichier de la file qui connaît le questionnaire ;
- *   · seuls `suivi.ts` et l'effacement RGPD écrivent le suivi et les courriers ;
+ *   · seuls `suivi.ts` (worker), `suivi-console.ts` (clics de Will, lien d'arrêt du destinataire)
+ *     et l'effacement RGPD écrivent le suivi et les courriers ;
+ *   · l'arrêt des rappels n'est appelé que par la console et le POST de la page d'arrêt ;
  *   · la case « informations par e-mail » n'est lue que par une liste nominative (jamais par
  *     un expéditeur).
  */
@@ -111,6 +113,7 @@ describe("le questionnaire de pré-audit ne part que par un clic de Will", () =>
       ),
     ).map((f) => f.rel);
     expect(ecrivains.sort()).toEqual([
+      "src/features/questionnaire-preaudit/suivi-console.ts",
       "src/features/questionnaire-preaudit/suivi.ts",
       "src/lib/rgpd-erase.ts",
     ]);
@@ -124,5 +127,25 @@ describe("le questionnaire de pré-audit ne part que par un clic de Will", () =>
       "src/features/questionnaire-preaudit/serveur.ts",
       "src/lib/rgpd-dossier-client.ts",
     ]);
+  });
+
+  it("l'arrêt des rappels et les essais ne sont appelés que par la console et la page d'arrêt", () => {
+    const appel = (motif: RegExp) =>
+      FICHIERS.filter(
+        (f) =>
+          motif.test(f.src) &&
+          // Un homonyme d'un autre domaine (dépôt OPCO…) n'est pas concerné : seuls les fichiers
+          // qui importent ce module comptent.
+          /suivi-console["']/.test(f.src) &&
+          f.rel !== "src/features/questionnaire-preaudit/suivi-console.ts",
+      )
+        .map((f) => f.rel)
+        .sort();
+    expect(appel(/\barreterRelances\(/)).toEqual([
+      "src/app/questionnaire/rappels/[id]/[jeton]/actions.ts",
+      "src/features/questionnaire-preaudit/actions.ts",
+    ]);
+    expect(appel(/\bdemanderEssai\(/)).toEqual(["src/features/questionnaire-preaudit/actions.ts"]);
+    expect(appel(/\bnoterEnvoi\(/)).toEqual(["src/features/questionnaire-preaudit/actions.ts"]);
   });
 });

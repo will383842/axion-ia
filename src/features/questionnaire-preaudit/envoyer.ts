@@ -14,7 +14,8 @@ import { renderEmailTemplate, type RenderedEmail } from "@/lib/email/templates";
 import { MessagePourWill } from "@/features/dossier-client/message-affichable";
 
 import { MESSAGE_REFUS, refusEnvoiReel } from "./config";
-import { annulerEnvoi, reserverEnvoi, urlPreaudit } from "./serveur";
+import { annulerEnvoi, reserverEnvoi, urlArretRelances, urlPreaudit } from "./serveur";
+import { payloadCourrier } from "./suivi";
 
 const adresse = z.string().trim().toLowerCase().email().max(200);
 
@@ -24,17 +25,88 @@ function lienOuRefus(id: string): string {
   return lien;
 }
 
+/** Le payload de l'invitation : le même calcul que le worker (date et lieu de l'audit compris). */
+function payloadInvitation(
+  lien: string,
+  prenom: string,
+  audit: { dateAudit: Date | null; lieuAudit: string | null },
+): Record<string, unknown> {
+  return payloadCourrier("invitation", {
+    prenom: prenom.trim().slice(0, 60) || undefined,
+    societe: "",
+    dateAudit: audit.dateAudit,
+    lieuAudit: audit.lieuAudit,
+    lien,
+    lienArret: "",
+    brouillonEnCours: false,
+    role: "dirigeant",
+    prenomRepondant: undefined,
+    recuLe: new Date(),
+    env: process.env,
+  }).payload;
+}
+
 /** L'e-mail EXACT qui partira (même rendu que l'envoi), pour l'aperçu de Will. */
 export async function apercuEnvoi(
   questionnaireId: string,
   destinataire: string,
   prenom: string,
+  audit: { dateAudit: Date | null; lieuAudit: string | null } = {
+    dateAudit: null,
+    lieuAudit: null,
+  },
 ): Promise<RenderedEmail> {
   return renderEmailTemplate(
     "questionnaire-avant-audit",
     "fr",
-    { prenom, lien: lienOuRefus(questionnaireId) },
+    payloadInvitation(lienOuRefus(questionnaireId), prenom, audit),
     { destinataire },
+  );
+}
+
+/** Les e-mails de suivi tels qu'ils partiraient (rendu seul, RIEN n'est mis en file). */
+export const APERCUS_SUIVI = [
+  { nature: "relance_1", libelle: "Relance 1", brouillon: false },
+  { nature: "relance_2", libelle: "Relance 2", brouillon: false },
+  { nature: "relance_3", libelle: "Relance 3", brouillon: false },
+  { nature: "relance_2", libelle: "Relance (brouillon en cours)", brouillon: true },
+  { nature: "confirmation_dirigeant", libelle: "Confirmation au dirigeant", brouillon: false },
+  {
+    nature: "confirmation_collaborateur",
+    libelle: "Confirmation à un collaborateur",
+    brouillon: false,
+  },
+] as const;
+
+export async function apercusSuivi(
+  questionnaireId: string,
+  destinataire: string,
+  prenom: string,
+  audit: { dateAudit: Date | null; lieuAudit: string | null; societe: string },
+): Promise<ReadonlyArray<{ libelle: string; email: RenderedEmail }>> {
+  const lien = lienOuRefus(questionnaireId);
+  const lienArret = urlArretRelances(questionnaireId) ?? "";
+  const p = prenom.trim().slice(0, 60) || undefined;
+  return Promise.all(
+    APERCUS_SUIVI.map(async (a) => {
+      const { template, payload } = payloadCourrier(a.nature, {
+        prenom: p,
+        societe: audit.societe,
+        dateAudit: audit.dateAudit,
+        lieuAudit: audit.lieuAudit,
+        lien,
+        lienArret,
+        brouillonEnCours: a.brouillon,
+        role: a.nature === "confirmation_collaborateur" ? "collaborateur" : "dirigeant",
+        prenomRepondant: a.nature === "confirmation_collaborateur" ? "Prénom" : p,
+        recuLe: new Date(),
+        env: process.env,
+      });
+      return {
+        libelle: a.libelle,
+        email: await renderEmailTemplate(template, "fr", payload, { destinataire }),
+      };
+    }),
   );
 }
 
@@ -43,6 +115,9 @@ export async function envoyerQuestionnaire(args: {
   readonly questionnaireId: string;
   readonly destinataire: string;
   readonly prenom: string;
+  /** Date et lieu de l'audit, écrits dans l'e-mail (facultatifs). */
+  readonly dateAudit?: Date | null;
+  readonly lieuAudit?: string | null;
 }): Promise<"envoye" | "retenu_corbeille"> {
   const refus = refusEnvoiReel();
   if (refus !== null) throw new MessagePourWill(MESSAGE_REFUS[refus]);
@@ -69,7 +144,10 @@ export async function envoyerQuestionnaire(args: {
       "questionnaire-avant-audit",
       a.data,
       "fr",
-      { prenom: args.prenom.trim().slice(0, 60), lien },
+      payloadInvitation(lien, args.prenom, {
+        dateAudit: args.dateAudit ?? null,
+        lieuAudit: args.lieuAudit ?? null,
+      }),
       {
         // Idempotent : le même envoi réservé ne produit jamais deux tâches.
         jobId: `preaudit-${q.id}-${maintenant.getTime()}`,
