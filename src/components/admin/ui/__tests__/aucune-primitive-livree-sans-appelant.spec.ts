@@ -80,7 +80,7 @@ const ZONES = [
  * PR séparées sur des fichiers pris par un autre chantier. Chaque PR d'écran
  * RETIRE son entrée d'ici (le troisième test le réclame dès qu'elle est câblée).
  */
-const SANS_APPELANT_CONNUES: readonly string[] = ["AdminBloc", "AdminApercuEmail"];
+const SANS_APPELANT_CONNUES: readonly string[] = ["AdminApercuEmail"];
 
 /** Tous les fichiers `.tsx` de production sous une zone. */
 function fichiers(dossier: string, acc: string[] = []): string[] {

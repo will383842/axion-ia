@@ -15,6 +15,8 @@ import Link from "next/link";
 
 import { AdminFilterTabs } from "@/components/admin/ui/AdminFilterTabs";
 import { AdminEmptyState } from "@/components/admin/ui";
+import { AdminBloc } from "@/components/admin/ui/AdminBloc";
+import { AdminButton } from "@/components/admin/ui/AdminButton";
 import { rangerRencontreAction } from "@/features/dossier-client/actions-rencontres";
 import { lireRencontresAClasser } from "@/features/dossier-client/queries-rencontres";
 import { formatDateFrShort } from "@/lib/format-date-fr";
@@ -35,6 +37,12 @@ export async function AClasserVue({
 
   return (
     <>
+      <AdminBloc teinte="terracotta" haut titre="À classer">
+        <p className="text-[length:var(--text-admin-sm)]">
+          Ces rendez-vous ne sont rangés chez aucun client. Confirmez la fiche proposée d&apos;un
+          clic, ou ouvrez « Après l&apos;appel » pour en choisir une autre.
+        </p>
+      </AdminBloc>
       <AdminFilterTabs
         className="mb-[var(--space-admin-5)]"
         label="Liste"
@@ -80,9 +88,9 @@ export async function AClasserVue({
                     <input type="hidden" name="rencontreId" value={r.id} />
                     <input type="hidden" name="clientId" value={r.clientPropose.id} />
                     <input type="hidden" name="retour" value="a-classer" />
-                    <button type="submit" className="admin-button">
+                    <AdminButton type="submit">
                       Confirmer : {r.clientPropose.raisonSociale}
-                    </button>
+                    </AdminButton>
                   </form>
                 ) : (
                   <span className={`text-[length:var(--text-admin-sm)] ${mutedCls}`}>
