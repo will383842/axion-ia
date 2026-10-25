@@ -48,7 +48,7 @@ export default async function EnvoyerQuestionnairePage({ params, searchParams }:
     select: { id: true, raisonSociale: true, contactNom: true, contactEmail: true },
   });
   if (client === null) notFound();
-  const ficheHref = `${clientsBase}/${client.id}`;
+  const retourFiche = `/${locale}/${adminPrefix}/qualiopi/clients/${id}`;
   const texte = (cle: string, max: number): string | undefined =>
     typeof sp[cle] === "string" ? sp[cle]!.slice(0, max) : undefined;
 
@@ -56,7 +56,7 @@ export default async function EnvoyerQuestionnairePage({ params, searchParams }:
     <AdminPageShell width="wide">
       <div className="mb-[var(--space-admin-4)]">
         <Link
-          href={`${ficheHref}?onglet=questionnaire`}
+          href={retourFiche}
           className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-accent)] underline-offset-2 hover:underline"
         >
           ← {client.raisonSociale}
