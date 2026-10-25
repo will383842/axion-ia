@@ -81,3 +81,8 @@ describe("⛔ la responsable qualité voit toujours la facturation", () => {
     for (const attendu of FACTURATION) expect(html).toContain(attendu);
   });
 });
+
+// Lot 1 fiche client : le bloc « Questionnaire avant audit » lit la base ; ces specs ne la touchent pas.
+vi.mock("@/features/dossier-client/questionnaires-de-la-fiche", () => ({
+  lireQuestionnairesDeLaFiche: vi.fn().mockResolvedValue([]),
+}));

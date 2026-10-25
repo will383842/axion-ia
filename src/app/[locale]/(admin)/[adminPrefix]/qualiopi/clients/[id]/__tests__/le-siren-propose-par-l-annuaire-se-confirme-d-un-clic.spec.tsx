@@ -112,3 +112,8 @@ describe("le SIREN proposé par l'annuaire se confirme d'un clic", () => {
     expect(d.annuaire).not.toHaveBeenCalled();
   });
 });
+
+// Lot 1 fiche client : le bloc « Questionnaire avant audit » lit la base ; ces specs ne la touchent pas.
+vi.mock("@/features/dossier-client/questionnaires-de-la-fiche", () => ({
+  lireQuestionnairesDeLaFiche: vi.fn().mockResolvedValue([]),
+}));
