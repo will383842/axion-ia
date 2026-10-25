@@ -58,6 +58,10 @@ export interface EntreeCreerRencontre {
   /** Personnes de la fiche invitées. */
   readonly contactIds?: readonly string[];
   readonly testInterne?: boolean;
+  /** Lieu (adresse, salle) : texte libre, 200 caractères au plus. */
+  readonly lieu?: string | null;
+  /** Objet du rendez-vous : texte libre, 255 caractères au plus. */
+  readonly objet?: string | null;
   readonly parAdminId: string;
 }
 
@@ -148,6 +152,8 @@ export async function creerRencontre(
         type: e.type,
         estTestInterne: e.testInterne === true,
         titre,
+        lieu: (e.lieu ?? "").trim().slice(0, 200) || null,
+        objet: (e.objet ?? "").trim().slice(0, 255) || null,
         debutPrevu: e.debut,
         finPrevue: new Date(e.debut.getTime() + e.dureeMin * 60_000),
         statut: "planifie",

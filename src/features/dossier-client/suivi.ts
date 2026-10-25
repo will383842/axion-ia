@@ -108,7 +108,14 @@ export async function enregistrerSuivi(
 ): Promise<ResultatSuivi> {
   const valeurs = normaliserEntreeSuivi(e);
   const maintenant = e.maintenant ?? new Date();
-  return db.$transaction((tx) => enregistrerSuiviDans(tx, e, valeurs, maintenant));
+  const res = await db.$transaction((tx) => enregistrerSuiviDans(tx, e, valeurs, maintenant));
+  // Rendez-vous reporté : l'événement Google posé à la création est retiré.
+  // Hors transaction (appel réseau), échec doux.
+  if (res.rencontreId !== null && valeurs.issue === "reporte") {
+    const { retirerDeGoogleAgenda } = await import("./agenda-google");
+    await retirerDeGoogleAgenda(db, res.rencontreId);
+  }
+  return res;
 }
 
 /** Même chose, DANS la transaction de l'appelant (« Valider et préparer le devis »). */

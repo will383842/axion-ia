@@ -28,6 +28,7 @@ import { exigerAccesEchanges } from "./acces";
 import { assurerRencontrePourCalendly } from "./rencontre-calendly";
 import { relancerApresRattachement, validerRattachement } from "./rattacher";
 import { creerProspectDepuisRencontre } from "./creer-prospect";
+import { poserDansGoogleAgenda } from "./agenda-google";
 import { creerRencontre } from "./creer-rencontre";
 import { deplacerRencontre } from "./deplacer";
 import { fusionnerFiches } from "./fusionner";
@@ -250,7 +251,10 @@ export async function creerRencontreAction(fd: FormData): Promise<void> {
     projetId,
     type,
     debut,
-    dureeMin: Number(texte(fd, "duree") || "45"),
+    // Durée libre (minutes) prioritaire sur la liste.
+    dureeMin: Number(texte(fd, "dureeLibre") || texte(fd, "duree") || "45"),
+    lieu: texte(fd, "lieu") || null,
+    objet: texte(fd, "objet") || null,
     titre: texte(fd, "titre") || null,
     lienVisio: texte(fd, "lien") || null,
     contactIds: fd.getAll("contact").filter((x): x is string => typeof x === "string"),
@@ -275,8 +279,39 @@ export async function creerRencontreAction(fd: FormData): Promise<void> {
       },
     );
   }
+  // Google Agenda : le rendez-vous y apparaît et ferme le créneau en ligne.
+  // Aucun e-mail ; échec doux (la rencontre est déjà créée).
+  const dureeMin = Number(texte(fd, "dureeLibre") || texte(fd, "duree") || "45");
+  const noms = await prisma.clientContact.findMany({
+    where: {
+      id: { in: fd.getAll("contact").filter((x): x is string => uuid.safeParse(x).success) },
+    },
+    select: { nom: true },
+  });
+  const poseDansGoogle = await poserDansGoogleAgenda(prisma, {
+    rencontreId: r.rencontreId,
+    titre:
+      texte(fd, "titre") ||
+      `Rendez-vous du ${debut.toLocaleDateString("fr-FR", { timeZone: "Europe/Paris" })}`,
+    debut,
+    fin: new Date(debut.getTime() + dureeMin * 60_000),
+    type,
+    lieu: texte(fd, "lieu") || null,
+    objet: texte(fd, "objet") || null,
+    contact: noms.map((n) => n.nom).join(", ") || null,
+    telephone: texte(fd, "telephone") || null,
+  });
   revalidatePath(base(retour.split("?")[0] ?? retour));
-  redirect(base(`rendez-vous/rencontres/${r.rencontreId}`));
+  const page = base(`rendez-vous/rencontres/${r.rencontreId}`);
+  redirect(
+    poseDansGoogle
+      ? page
+      : avecMessageDeRetour(
+          page,
+          "message",
+          "Rendez-vous créé, mais il n'a pas pu être posé dans Google Agenda : le créneau reste ouvert à la réservation en ligne. Ajoutez-le à la main dans l'Agenda.",
+        ),
+  );
 }
 
 /** « Déplacer » une rencontre rangée chez le mauvais client. */
