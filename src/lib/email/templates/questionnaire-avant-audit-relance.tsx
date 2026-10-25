@@ -11,7 +11,12 @@
 
 import { Text } from "@react-email/components";
 import { EmailLayout, emailStyles } from "./_layout";
-import { BOUTON_INVITATION, NOTE_LIEN_PERSONNEL, objetOuRepli } from "./questionnaire-avant-audit";
+import {
+  BOUTON_INVITATION,
+  NOTE_LIEN_PERSONNEL,
+  objetOuRepli,
+  SignatureCorps,
+} from "./questionnaire-avant-audit";
 import type { Locale } from "../../../../prisma/generated/client";
 
 interface Payload {
@@ -81,7 +86,7 @@ export function QuestionnaireAvantAuditRelanceEmail({
     },
     2: {
       preview: "Vous pouvez y répondre en plusieurs fois, à votre rythme.",
-      title: "Où en êtes-vous ?",
+      title: "Où en êtes-vous ?",
     },
     3: {
       preview: "Un dernier message, puis nous en parlerons ensemble.",
@@ -96,6 +101,7 @@ export function QuestionnaireAvantAuditRelanceEmail({
       title={entete.title}
       {...(lien ? { cta: { label: bouton, href: lien } } : {})}
       ctaSecret
+      apresCta={<SignatureCorps />}
       {...(lien ? { ctaNote: NOTE_LIEN_PERSONNEL } : {})}
       {...(lienArret
         ? { unsubscribeHref: lienArret, unsubscribeLabel: LIBELLE_ARRET_RAPPELS }
@@ -111,24 +117,24 @@ export function QuestionnaireAvantAuditRelanceEmail({
           </Text>
           {brouillon ? (
             <Text style={emailStyles.paragraphStyle}>
-              Vous l&apos;avez déjà commencé : vous reprendrez exactement là où vous vous étiez
+              Vous l&apos;avez déjà commencé : vous reprendrez exactement là où vous vous étiez
               arrêté.
             </Text>
           ) : null}
           <Text style={emailStyles.paragraphStyle}>
-            Vos réponses nous permettent de cibler ce qui compte pour vous : les tâches à
+            Vos réponses nous permettent de cibler ce qui compte pour vous : les tâches à
             simplifier, le temps à récupérer, les pistes pour faire grandir votre activité.
           </Text>
         </>
       ) : rang === 2 ? (
         <>
           <Text style={emailStyles.paragraphStyle}>
-            Avez-vous pu ouvrir le questionnaire qui prépare notre audit ? Vous pouvez y répondre en
-            plusieurs fois : ce que vous avez saisi est gardé d&apos;une fois sur l&apos;autre.
+            Avez-vous pu ouvrir le questionnaire qui prépare notre audit ? Vous pouvez y répondre en
+            plusieurs fois : ce que vous avez saisi est gardé d&apos;une fois sur l&apos;autre.
           </Text>
           <Text style={emailStyles.paragraphStyle}>
             Si vous travaillez avec une équipe, vos collaborateurs peuvent aussi répondre de leur
-            côté, avec le lien que le questionnaire vous propose : leur regard sur le terrain rend
+            côté, avec le lien que le questionnaire vous propose : leur regard sur le terrain rend
             l&apos;audit plus juste.
           </Text>
           <Text style={emailStyles.paragraphStyle}>
@@ -143,19 +149,14 @@ export function QuestionnaireAvantAuditRelanceEmail({
           <Text style={emailStyles.paragraphStyle}>
             {auditTexte ? `Notre audit a lieu le ${auditTexte}${lieu ? ` ${lieu}` : ""}. ` : ""}
             Si vous pouvez le remplir avant, nous arriverons avec une vision déjà claire de votre
-            organisation, et le temps passé ensemble ira à l&apos;essentiel : vos priorités.
+            organisation, et le temps passé ensemble ira à l&apos;essentiel : vos priorités.
           </Text>
           <Text style={emailStyles.paragraphStyle}>
-            Sinon, aucune inquiétude : nous en parlerons de vive voix
+            Sinon, aucune inquiétude : nous en parlerons de vive voix
             {auditCourt ? ` le ${auditCourt}` : ""}.
           </Text>
         </>
       )}
-      <Text style={emailStyles.paragraphStyle}>
-        À très bientôt,
-        <br />
-        Williams Jullin, Axion-IA
-      </Text>
     </EmailLayout>
   );
 }

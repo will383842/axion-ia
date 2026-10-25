@@ -865,6 +865,16 @@ export async function eraseCalendlyEventsForEmail(email: string): Promise<EraseC
             data: { destinataireHash: null, motif: "effacement RGPD" },
           }),
         ]),
+    // Ses relances encore prévues (elles ne portent pas d'empreinte : elles visent l'adresse du
+    // questionnaire) sont ANNULÉES, jamais supprimées : plus rien ne part après l'effacement.
+    prisma.questionnaireAvantAuditCourrier.updateMany({
+      where: {
+        nature: { in: ["relance_1", "relance_2", "relance_3"] },
+        statut: "prevu",
+        questionnaire: { is: questionnairesDuDirigeant(email, empreintePreaudit) },
+      },
+      data: { statut: "annule", motif: "effacement RGPD" },
+    }),
     prisma.questionnaireAvantAuditEnvoi.deleteMany({
       where: envoisDuDirigeant(email, empreintePreaudit),
     }),

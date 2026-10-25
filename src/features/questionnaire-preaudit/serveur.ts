@@ -51,7 +51,11 @@ export function membreAGarder(
 /** Le questionnaire de ce lien, ou `null` si le jeton est faux ou le questionnaire inconnu. */
 export async function lireParJeton(id: string, jeton: string) {
   if (!UUID.test(id.toLowerCase()) || !jetonPreauditValide(id, jeton)) return null;
-  return prisma.questionnaireAvantAudit.findUnique({ where: { id: id.toLowerCase() } });
+  return prisma.questionnaireAvantAudit.findUnique({
+    where: { id: id.toLowerCase() },
+    // La raison sociale s'affiche sur l'accueil du questionnaire (`CONFIG.client`).
+    include: { rencontre: { select: { client: { select: { raisonSociale: true } } } } },
+  });
 }
 
 /** Le lien accepte-t-il encore des réponses réelles ? (envoyé, ni clos, ni expiré) */
@@ -60,6 +64,18 @@ export function accepteDesReponses(
   maintenant: Date = new Date(),
 ): boolean {
   if (q.envoyeLe === null || q.closLe !== null) return false;
+  return q.expireLe === null || q.expireLe.getTime() > maintenant.getTime();
+}
+
+/**
+ * Le mode essai (bouton « Essayer » de la console) : permis tant que le lien n'est ni clos ni
+ * expiré, envoyé ou non (audit E2, point 5). Un lien mort ne rend plus son HTML pré-rempli. PUR.
+ */
+export function essaiPermis(
+  q: { closLe: Date | null; expireLe: Date | null },
+  maintenant: Date = new Date(),
+): boolean {
+  if (q.closLe !== null) return false;
   return q.expireLe === null || q.expireLe.getTime() > maintenant.getTime();
 }
 

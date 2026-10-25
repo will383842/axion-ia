@@ -25,6 +25,9 @@ vi.mock("@/features/questionnaire-preaudit/actions", () => ({
 }));
 vi.mock("@/features/questionnaire-preaudit/serveur", () => ({
   cheminEssaiPreaudit: () => "/questionnaire/preaudit/x/y?essai=1",
+  // Même règle que le module réel : ni clos, ni expiré.
+  essaiPermis: (q: { closLe: Date | null; expireLe: Date | null }) =>
+    q.closLe === null && (q.expireLe === null || q.expireLe.getTime() > Date.now()),
   lireDeLaRencontre: m.questionnaire,
   lireReponses: async () => [],
 }));
@@ -84,7 +87,12 @@ describe("le suivi du questionnaire se voit", () => {
     const caseRelances = envoi.querySelector('input[name="relances"]') as HTMLInputElement;
     expect(caseRelances.defaultChecked).toBe(true);
     expect(envoi.textContent).toContain("Programmer les 3 relances automatiques");
-    expect(envoi.textContent).toContain("QUESTIONNAIRE_RELANCES_ENABLED");
+    // Une phrase lisible, jamais un nom de variable (vérification E1).
+    expect(envoi.textContent).not.toContain("QUESTIONNAIRE_RELANCES_ENABLED");
+    expect(envoi.querySelector("[data-etat-relances]")?.getAttribute("data-etat-relances")).toBe(
+      "eteint",
+    );
+    expect(envoi.textContent).toContain("Relances éteintes pour le moment");
     expect((envoi.querySelector('input[name="lieu_audit"]') as HTMLInputElement).value).toBe(
       "dans vos locaux",
     );
@@ -146,6 +154,19 @@ describe("le suivi du questionnaire se voit", () => {
     const bloc = container.querySelector('[data-bloc="suivi-questionnaire"]')!;
     expect(bloc.textContent).toContain("le dirigeant a répondu");
     expect(bloc.textContent).not.toContain("Arrêter les relances");
+  });
+
+  it("lien clos ou expiré : plus de lien « Essayer » (la page répondrait 404)", async () => {
+    const ouvert = await rendre(false);
+    expect(ouvert.container.querySelector("[data-lien-essai]")).not.toBeNull();
+    ouvert.unmount();
+    m.questionnaire.mockResolvedValue({ ...Q, closLe: new Date("2026-10-27T10:00:00Z") });
+    const clos = await rendre(false);
+    expect(clos.container.querySelector("[data-lien-essai]")).toBeNull();
+    clos.unmount();
+    m.questionnaire.mockResolvedValue({ ...Q, expireLe: new Date("2020-01-01T00:00:00Z") });
+    const expire = await rendre(false);
+    expect(expire.container.querySelector("[data-lien-essai]")).toBeNull();
   });
 
   it("questionnaire éteint : aucun bouton d'essai", async () => {

@@ -135,13 +135,17 @@ describe("les 7 e-mails du questionnaire avant audit", () => {
     });
   }
 
-  it("invitation : textes et bouton « Accéder au questionnaire », note sous le bouton", async () => {
+  it("invitation : textes et bouton « Ouvrir mon questionnaire », note sous le bouton", async () => {
     const std = await renderEmailTemplate("questionnaire-avant-audit", "fr", { lien: LIEN });
     expect(std.subject).toBe("Préparons votre audit : votre questionnaire");
     const t = texteVisible(std.html);
     expect(t).toContain("Bonjour,");
-    expect(t).toContain("Accéder au questionnaire");
+    expect(t).toContain("Ouvrir mon questionnaire");
     expect(t).toContain("Ce lien vous est personnel : merci de ne pas le transférer.");
+    // Le bouton d'abord, la signature ensuite (vérification E1).
+    expect(t.indexOf("Ouvrir mon questionnaire")).toBeLessThan(t.indexOf("À très bientôt,"));
+    // Espace insécable avant les deux-points, dans le HTML rendu.
+    expect(std.html).toMatch(/personnel( |&nbsp;|&#xa0;|&#160;):/);
     expect(t).toContain("Merci pour notre échange. Pour préparer notre audit nous avons préparé");
     expect(std.html).toContain(`href="${LIEN.replace(/&/g, "&amp;")}"`);
 
@@ -203,7 +207,9 @@ describe("les 7 e-mails du questionnaire avant audit", () => {
       rang: 1,
       lien: LIEN,
     });
-    expect(texteVisible(sans.html)).toContain("Accéder au questionnaire");
+    expect(texteVisible(sans.html)).toContain("Ouvrir mon questionnaire");
+    const ts = texteVisible(sans.html);
+    expect(ts.indexOf("Ouvrir mon questionnaire")).toBeLessThan(ts.indexOf("À très bientôt,"));
   });
 
   it("confirmations : sans bouton, conservation et contact ; collaborateur neutre", async () => {

@@ -397,6 +397,8 @@ describe("plafonds, jeton, débit", () => {
           `^questionnaire-preaudit-brouillon:personne:${q["id"] as string}:main:[0-9a-f]{16}$`,
         ),
       ),
+      // Audit E2, point 3 : un NOUVEAU brouillon compte aussi sur le lien entier.
+      `questionnaire-preaudit-brouillon:nouveaux:${q["id"] as string}`,
     ]);
     // Jamais un code de lien en clair dans une clé Redis (dirigeant ni salarié).
     await enregistrer(q, corps(q, { mode: "emp", membre: CODE }));
@@ -419,6 +421,26 @@ describe("plafonds, jeton, débit", () => {
       expect((await enregistrer(q, corps(q, { brouillon: `r${rang}` }))).status).toBe(429);
     }
     expect((await json(await relire(q)))["brouillon"]).not.toMatch(/^r\d$/);
+  });
+
+  it("nouveaux brouillons : 30 par heure et par lien ; un brouillon déjà là ne compte plus", async () => {
+    const q = questionnaire();
+    await enregistrer(q, corps(q));
+    const confs = base.limite.mock.calls.map((c) => c[1] as { limit: number });
+    expect(confs[3]?.limit).toBe(30);
+    // Le même brouillon, réenregistré : le compteur des nouveaux n'est plus consulté.
+    base.limite.mockClear();
+    await enregistrer(q, corps(q, { brouillon: "suite" }));
+    const cles = base.limite.mock.calls.map((c) => c[0] as string);
+    expect(cles.some((c) => c.includes(":nouveaux:"))).toBe(false);
+    // Une nouvelle personne, quand le quota du lien est atteint : 429, rien d'écrit.
+    const avant = base.b.length;
+    base.limite.mockImplementation(async (cle: string) => ({
+      allowed: !cle.includes(":nouveaux:"),
+    }));
+    const r = await enregistrer(q, corps(q, { mode: "emp", membre: CODE }));
+    expect(r.status).toBe(429);
+    expect(base.b).toHaveLength(avant);
   });
 
   it("éteint, brouillon de Will (non envoyé), clos ou expiré : 404, rien d'écrit", async () => {

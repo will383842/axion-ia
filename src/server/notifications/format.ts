@@ -355,8 +355,12 @@ export function formatQuestionnairePreaudit(p: QuestionnairePreauditTelegram): s
   const reponses =
     p.recues === undefined
       ? undefined
-      : `${p.recues} reçue${p.recues > 1 ? "s" : ""} sur ${p.attendues ?? "?"} attendue${
-          (p.attendues ?? 0) > 1 ? "s" : ""
+      : // Tant que le dirigeant n'a pas répondu, le nombre attendu est inconnu : on ne l'écrit pas
+        // (« sur ? attendue » ne voulait rien dire).
+        `${p.recues} reçue${p.recues > 1 ? "s" : ""}${
+          p.attendues === undefined || p.attendues === null
+            ? " (nombre attendu connu après la réponse du dirigeant)"
+            : ` sur ${p.attendues} attendue${p.attendues > 1 ? "s" : ""}`
         } (dirigeant : ${p.dirigeantARepondu === true ? "a répondu" : "pas encore"})`;
   return [
     formatKV("Société", p.societe),

@@ -91,7 +91,7 @@ describe("message du questionnaire avant audit", () => {
         { evenement: "reponse", societe: "X", recues: 1, attendues: null, chemin: "c" },
         "QUESTIONNAIRE_PREAUDIT_REPONSE",
       ),
-    ).toContain("1 reçue sur ? attendue");
+    ).toContain("1 reçue \\(nombre attendu connu après la réponse du dirigeant\\)");
     expect(
       corps({ evenement: "relance", rang: 2, essai: true, societe: "X", chemin: "c" }),
     ).toContain("ESSAI · Relance 2 sur 3 partie");

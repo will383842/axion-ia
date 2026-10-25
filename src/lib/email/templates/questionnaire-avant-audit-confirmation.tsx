@@ -59,7 +59,7 @@ export function QuestionnaireAvantAuditConfirmationEmail({
         <>
           <Text style={emailStyles.paragraphStyle}>
             Merci pour le temps que vous avez consacré au questionnaire. Vos réponses nous sont bien
-            parvenues{recuLe ? ` le ${recuLe}` : ""} ; elles vont nous servir à préparer notre audit
+            parvenues{recuLe ? ` le ${recuLe}` : ""} ; elles vont nous servir à préparer notre audit
             {auditCourt ? ` du ${auditCourt}` : ""}.
           </Text>
           <Text style={emailStyles.paragraphStyle}>
@@ -70,7 +70,7 @@ export function QuestionnaireAvantAuditConfirmationEmail({
       ) : (
         <Text style={emailStyles.paragraphStyle}>
           Merci d&apos;avoir répondu au questionnaire{societe ? ` préparé pour ${societe}` : ""}.
-          Vos réponses nous sont bien parvenues : elles nous aident à préparer l&apos;audit de votre
+          Vos réponses nous sont bien parvenues : elles nous aident à préparer l&apos;audit de votre
           entreprise.
         </Text>
       )}

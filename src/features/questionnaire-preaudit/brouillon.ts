@@ -253,6 +253,15 @@ export async function enregistrerBrouillon(
   });
 }
 
+/** Cette personne a-t-elle déjà un brouillon ? (lecture seule ; sert au débit des NOUVEAUX). */
+export async function brouillonExiste(questionnaireId: string, p: Personne): Promise<boolean> {
+  const b = await prisma.questionnaireAvantAuditBrouillon.findUnique({
+    where: cle(questionnaireId, p),
+    select: { questionnaireId: true },
+  });
+  return b !== null;
+}
+
 /** Le brouillon de cette personne, déchiffré, ou `null` (absent, illisible). */
 export async function lireBrouillon(
   questionnaireId: string,

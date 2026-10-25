@@ -30,6 +30,14 @@ export const modeConfirmations = (env: Env = process.env): ModeSuivi =>
 export const modeTelegram = (env: Env = process.env): ModeSuivi =>
   mode(env["QUESTIONNAIRE_TELEGRAM_ENABLED"]);
 
+/** Ce que Will lit sur l'état des relances : jamais un nom de variable. PUR. */
+export const ETAT_RELANCES_LISIBLE: Readonly<Record<ModeSuivi, string>> = {
+  actif: "Relances actives : elles partiront aux dates prévues.",
+  essai: "Relances en essai : elles sont comptées, mais aucune ne part.",
+  eteint:
+    "Relances éteintes pour le moment : aucune ne partira tant qu'elles ne sont pas allumées.",
+};
+
 /** L'adresse qui reçoit les essais (« M'envoyer un essai »), jamais une adresse du code. */
 export function adresseEssai(env: Env = process.env): string | null {
   const v = (env["QUESTIONNAIRE_PREAUDIT_ADRESSE_ESSAI"] ?? "").trim();

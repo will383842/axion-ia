@@ -14,7 +14,14 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
 
 import { SITE_URL } from "@/lib/site-url";
-import { cheminQuestionnaire, jetonQuestionnaire, jetonValide, urlQuestionnaire } from "../jeton";
+import {
+  cheminQuestionnaire,
+  codeDirigeantPreaudit,
+  codeDirigeantPreauditValide,
+  jetonQuestionnaire,
+  jetonValide,
+  urlQuestionnaire,
+} from "../jeton";
 
 const A = "6f1c2a3b-4d5e-4f60-8a7b-9c0d1e2f3a4b";
 const B = "0a1b2c3d-4e5f-4a6b-8c7d-8e9fa0b1c2d3";
@@ -85,5 +92,17 @@ describe("le jeton ouvre un seul questionnaire", () => {
     const j = jetonQuestionnaire(A) as string;
     expect(cheminQuestionnaire(A)).toBe(`/questionnaire/${A}/${j}`);
     expect(urlQuestionnaire(A)).toBe(`${SITE_URL.replace(/\/+$/, "")}/questionnaire/${A}/${j}`);
+  });
+
+  it("audit E2, point 6 : le code du dirigeant ne LÈVE jamais, quelle que soit sa forme", () => {
+    const id = "11111111-1111-4111-8111-111111111111";
+    const code = codeDirigeantPreaudit(id) as string;
+    expect(codeDirigeantPreauditValide(id, code)).toBe(true);
+    // 24 caractères, mais plus de 24 octets (accents, emoji) : `timingSafeEqual` aurait levé.
+    for (const faux of ["é".repeat(24), "😀".repeat(12), `${code.slice(0, 23)}é`, null, 42, {}]) {
+      expect(() => codeDirigeantPreauditValide(id, faux)).not.toThrow();
+      expect(codeDirigeantPreauditValide(id, faux)).toBe(false);
+    }
+    expect(codeDirigeantPreauditValide(id, code.slice(0, 23))).toBe(false);
   });
 });

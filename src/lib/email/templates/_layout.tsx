@@ -699,6 +699,11 @@ export interface EmailLayoutProps {
   unsubscribeLabel?: string;
   /** Une phrase courte SOUS le bouton (ex. « Ce lien vous est personnel… »). Texte, pas un lien. */
   ctaNote?: string;
+  /**
+   * Contenu rendu APRÈS le bouton (2026-10-26) : la formule de fin d'un message signé dans le
+   * corps (famille C, sans bloc signature) doit venir après l'action, pas avant.
+   */
+  apresCta?: ReactNode;
   locale: "fr" | "en";
 }
 
@@ -812,6 +817,7 @@ export function EmailLayout({
   unsubscribeHref,
   unsubscribeLabel,
   ctaNote,
+  apresCta,
   locale,
 }: EmailLayoutProps) {
   const t: { readonly [K in keyof (typeof TXT)["fr"]]: string } = TXT[locale];
@@ -937,6 +943,7 @@ export function EmailLayout({
                 )}
               </Section>
             )}
+            {apresCta}
             {lienEspace && cta?.href !== lienEspace && (
               <Section style={{ textAlign: "center", margin: "22px 0 4px 0" }}>
                 <Link
