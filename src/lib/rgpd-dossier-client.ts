@@ -184,6 +184,8 @@ export interface ExportDossierClient {
     readonly recuLe: Date;
     readonly parcours: string;
     readonly reponses: string;
+    /** Case « informations par e-mail » (oui, non, `null` = non posée), datée par `recuLe`. */
+    readonly infosEmail: boolean | null;
   }>;
   readonly avertissements: readonly string[];
 }
@@ -349,7 +351,7 @@ export async function exporterDossierClientPour(email: string): Promise<ExportDo
     // de ses salariés), retrouvées par la réservation du titulaire ou l'adresse d'envoi du lien.
     const reponsesPreaudit = await prisma.questionnaireAvantAuditEnvoi.findMany({
       where: envoisDuDirigeant(email, empreinte),
-      select: { mode: true, recuLe: true, donnees: true },
+      select: { mode: true, recuLe: true, donnees: true, infosEmail: true },
       orderBy: { recuLe: "asc" },
     });
 
@@ -475,7 +477,9 @@ export async function exporterDossierClientPour(email: string): Promise<ExportDo
       })),
       questionnairesPreaudit: reponsesPreaudit.flatMap((r) => {
         const reponses = lisible(r.donnees, avertir, "questionnairesPreaudit");
-        return reponses === null ? [] : [{ recuLe: r.recuLe, parcours: r.mode, reponses }];
+        return reponses === null
+          ? []
+          : [{ recuLe: r.recuLe, parcours: r.mode, reponses, infosEmail: r.infosEmail ?? null }];
       }),
       avertissements,
     };
@@ -501,6 +505,8 @@ export interface ExportReponsesPreauditMembre {
     readonly reponses: string | null;
     /** Mise à l'écart sur sa demande d'effacement (en attente de l'effacement définitif). */
     readonly ecarteLe: Date | null;
+    /** Case « informations par e-mail » (oui, non, `null` = non posée), datée par `recuLe`. */
+    readonly infosEmail: boolean | null;
   }>;
   readonly avertissements: readonly string[];
 }
@@ -525,7 +531,7 @@ export async function exporterReponsesPreauditMembre(
   }
   const lignes = await prisma.questionnaireAvantAuditEnvoi.findMany({
     where: { mode: { in: ["emp", "it"] }, membre, questionnaire: { ref } },
-    select: { recuLe: true, mode: true, donnees: true, ecarteLe: true },
+    select: { recuLe: true, mode: true, donnees: true, ecarteLe: true, infosEmail: true },
     orderBy: { recuLe: "asc" },
   });
   return {
@@ -536,6 +542,7 @@ export async function exporterReponsesPreauditMembre(
       parcours: l.mode,
       reponses: lisible(l.donnees, avertir, "questionnairesPreaudit"),
       ecarteLe: l.ecarteLe,
+      infosEmail: l.infosEmail ?? null,
     })),
     avertissements,
   };

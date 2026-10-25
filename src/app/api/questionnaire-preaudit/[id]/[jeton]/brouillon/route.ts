@@ -8,8 +8,8 @@
 // même CORS `null`. Débit : compteurs PROPRES au brouillon (un enregistrement automatique ne
 // consomme jamais le quota de l'envoi final) — 120/h par personne, plafonds plus larges par lien
 // et par IP pour qu'un bureau entier qui remplit en même temps ne soit jamais bloqué.
-// ⛔ Aucune purge ici : un brouillon inactif depuis 30 jours n'est plus rendu ; sa suppression
-// définitive attend la purge planifiée (`purgerBrouillonsInactifs`, non branchée).
+// ⛔ Aucune suppression automatique (conservation 5 ans, décision de Will du 25/10) : un
+// brouillon n'est supprimé qu'à l'envoi, à la demande de la personne (DELETE) ou par Will.
 // Rien n'est journalisé ici : ni corps, ni brouillon.
 
 import { createHash } from "node:crypto";

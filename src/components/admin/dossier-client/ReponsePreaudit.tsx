@@ -9,6 +9,11 @@ import {
   ecarterReponsesMembreAction,
   effacerReponsesMembreAction,
 } from "@/features/questionnaire-preaudit/actions";
+import {
+  conservationEchue,
+  echeanceConservation,
+  RETENTION_ANS,
+} from "@/features/questionnaire-preaudit/config";
 import { LIBELLE_PREFILL, type ReponseLisible } from "@/features/questionnaire-preaudit/donnees";
 import type { Tableau } from "@/features/questionnaire-preaudit/lecture";
 import { adminPath } from "@/lib/admin-path";
@@ -20,6 +25,10 @@ const boutonCls =
   "rounded-[var(--radius-admin-sm)] border border-[color:var(--color-admin-border)] px-[var(--space-admin-3)] py-[var(--space-admin-1)] text-[length:var(--text-admin-xs)] font-medium";
 const celluleCls =
   "border border-[color:var(--color-admin-border)] px-[var(--space-admin-2)] py-[var(--space-admin-1)] align-top whitespace-pre-line";
+
+function dateParis(d: Date): string {
+  return d.toLocaleDateString("fr-FR", { timeZone: "Europe/Paris" });
+}
 
 function TableauLisible({ t }: { t: Tableau }) {
   return (
@@ -131,6 +140,24 @@ export function ReponsePreaudit(props: {
           ) : (
             <span> Williams seul peut effacer définitivement.</span>
           )}
+        </div>
+      ) : null}
+
+      <p className={`mt-[var(--space-admin-2)] ${mutedCls}`}>
+        Accepte de recevoir des informations par e-mail :{" "}
+        {r.infosEmail === null
+          ? "non renseigné"
+          : `${r.infosEmail ? "oui" : "non"} (le ${dateParis(r.recuLe)})`}
+        . Aucun envoi ni abonnement automatique.
+      </p>
+      <p className={mutedCls}>
+        Conservation jusqu&apos;au {dateParis(echeanceConservation(r.recuLe))} ({RETENTION_ANS} ans)
+        : rien n&apos;est supprimé automatiquement.
+      </p>
+      {conservationEchue(r.recuLe) ? (
+        <div role="alert" className={alerteCls}>
+          Échéance de conservation dépassée : cette réponse est à supprimer À LA MAIN si plus rien
+          ne justifie de la garder. Rien n&apos;a été supprimé.
         </div>
       ) : null}
 

@@ -2,7 +2,7 @@
  * Gardes de structure du questionnaire de pré-audit (2026-10-24) :
  *   · la migration est ré-exécutable (aucun `ADD CONSTRAINT` nu) ;
  *   · les en-têtes de `next.config.ts` sont ceux de `entetes.ts` (bac à sable) ;
- *   · `PURGE_PLANIFIEE = true` n'est permis que si une tâche appelle vraiment la purge ;
+ *   · AUCUNE suppression automatique (conservation 5 ans, décision de Will du 25/10) ;
  *   · le jeton du pré-audit a son propre domaine HMAC ;
  *   · l'export et l'effacement passent par la portée « dirigeant seul ».
  */
@@ -13,7 +13,7 @@ import { describe, expect, it } from "vitest";
 
 import { jetonPreaudit, jetonPreauditValide } from "@/server/visio/questionnaire-en-ligne/jeton";
 import { jetonQuestionnaire, jetonValide } from "@/server/visio/questionnaire-en-ligne/jeton";
-import { PURGE_PLANIFIEE } from "../config";
+import { RETENTION_ANS } from "../config";
 import { CSP_PAGE_PREAUDIT } from "../entetes";
 import { envoisDuDirigeant } from "../portee-rgpd";
 
@@ -69,29 +69,77 @@ function sources(dossier: string, sortie: string[] = []): string[] {
     if (nom === "node_modules" || nom === "generated" || nom === "__tests__") continue;
     const p = path.join(dossier, nom);
     if (statSync(p).isDirectory()) sources(p, sortie);
-    else if (/\.(ts|tsx)$/.test(nom) && !/\.spec\.tsx?$/.test(nom)) sortie.push(p);
+    else if (/\.(ts|tsx|js|mjs|cjs)$/.test(nom) && !/\.(spec|test)\.[cm]?[jt]sx?$/.test(nom))
+      sortie.push(p);
   }
   return sortie;
 }
 
-describe("la purge de rétention", () => {
-  it("PURGE_PLANIFIEE ne passe à true que si une tâche du worker appelle la purge", () => {
-    const appelants = sources(path.join(RACINE, "src/server/queue")).filter((p) =>
-      /purgerReponsesAnciennes/.test(readFileSync(p, "utf8")),
-    );
-    if (PURGE_PLANIFIEE) expect(appelants.length).toBeGreaterThan(0);
-    else expect(PURGE_PLANIFIEE).toBe(false);
+describe("conservation 5 ans : AUCUNE suppression automatique (décision de Will, 25/10)", () => {
+  const rel = (p: string) => path.relative(RACINE, p).replace(/\\/g, "/");
+  // `src/` ET `scripts/` : un script lancé à la main ou par une tâche planifiée compte aussi.
+  const tous = () => [
+    ...sources(path.join(RACINE, "src")),
+    ...sources(path.join(RACINE, "scripts")),
+  ];
+  // `.delete(`, `.deleteMany(` (client Prisma, transaction comprise) ET le SQL brut.
+  const TABLES = new RegExp(
+    [
+      /questionnaireAvantAudit(Envoi|Brouillon)?\s*\.\s*delete(Many)?\s*\(/.source,
+      /DELETE\s+FROM\s+"?questionnaires_avant_audit/.source,
+    ].join("|"),
+    "i",
+  );
+
+  it("le motif voit les trois formes de suppression", () => {
+    expect(TABLES.test("tx.questionnaireAvantAudit.delete({")).toBe(true);
+    expect(TABLES.test("prisma.questionnaireAvantAuditEnvoi .deleteMany(")).toBe(true);
+    expect(TABLES.test("prisma.questionnaireAvantAuditBrouillon.delete (")).toBe(true);
+    expect(TABLES.test('DELETE FROM "questionnaires_avant_audit_envois"')).toBe(true);
+    expect(TABLES.test("delete from questionnaires_avant_audit_brouillons")).toBe(true);
+    expect(TABLES.test("prisma.questionnaireAvantAudit.findMany(")).toBe(false);
   });
 
-  it("brouillons : AUCUNE purge appelée tant que PURGE_PLANIFIEE est false, la tâche ensuite", () => {
-    const rel = (p: string) => path.relative(RACINE, p).replace(/\\/g, "/");
-    const appelants = sources(path.join(RACINE, "src"))
-      .filter((p) => /purgerBrouillonsInactifs\(/.test(readFileSync(p, "utf8")))
+  it("la conservation vaut 5 ans", () => {
+    expect(RETENTION_ANS).toBe(5);
+  });
+
+  it("aucune fonction de purge n'existe plus (réponses, envois, brouillons)", () => {
+    const avecPurge = tous()
+      .filter((p) =>
+        /purgerReponsesAnciennes|purgerBrouillonsInactifs|PURGE_PLANIFIEE/.test(
+          readFileSync(p, "utf8"),
+        ),
+      )
+      .map(rel);
+    expect(avecPurge).toEqual([]);
+  });
+
+  it("le worker, les tâches planifiées et les routes cron ne suppriment rien de ces tables", () => {
+    const planifies = tous()
       .map(rel)
-      .filter((p) => p !== "src/features/questionnaire-preaudit/brouillon.ts");
-    if (PURGE_PLANIFIEE)
-      expect(appelants.some((p) => p.startsWith("src/server/queue/"))).toBe(true);
-    else expect(appelants).toEqual([]);
+      .filter((p) => p.startsWith("src/server/queue/") || p.includes("/cron/"))
+      .filter((p) =>
+        /questionnaireAvantAudit|questionnaires_avant_audit/.test(
+          readFileSync(path.join(RACINE, p), "utf8"),
+        ),
+      );
+    expect(planifies).toEqual([]);
+  });
+
+  it("seuls des gestes de personnes suppriment (cliquet nominatif)", () => {
+    // envoi réussi (brouillon de la personne), retrait de son accord (DELETE), redépôt de Will
+    // (questionnaire jamais envoyé), effacement RGPD de Will.
+    const AUTORISES = [
+      "src/features/questionnaire-preaudit/brouillon.ts",
+      "src/features/questionnaire-preaudit/serveur.ts",
+      "src/lib/rgpd-erase.ts",
+    ];
+    const ecrivains = tous()
+      .filter((p) => TABLES.test(readFileSync(p, "utf8")))
+      .map(rel)
+      .sort();
+    expect(ecrivains.filter((p) => !AUTORISES.includes(p))).toEqual([]);
   });
 });
 

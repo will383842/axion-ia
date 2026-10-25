@@ -3,9 +3,9 @@
 // `/questionnaire/preaudit/<id>/<jeton>` sert le HTML de Will TEL QUEL, avec `CONFIG` injectée
 // (voir `features/questionnaire-preaudit/html.ts`), en BAC À SABLE (voir `entetes.ts`) : son
 // JavaScript n'a ni les cookies ni le stockage du site. `?essai=1` : mode essai (bandeau, rien
-// enregistré, aucune notification). Le réel exige l'interrupteur allumé, la notice RGPD
-// renseignée, la purge planifiée ET un questionnaire envoyé, ni clos ni expiré ; sinon la MÊME
-// réponse neutre 404, qui ne dit pas lequel.
+// enregistré, aucune notification). Le réel exige l'interrupteur allumé ET un questionnaire
+// envoyé, ni clos ni expiré ; sinon la MÊME réponse neutre 404, qui ne dit pas lequel. La notice
+// RGPD a ses valeurs par défaut dans le code (`config.ts`) : aucune variable à poser.
 //
 // Sous `/questionnaire/`, donc hors du proxy. `force-dynamic` : aucune requête à la base pendant
 // `next build` (contrat `stub.invalid`).
@@ -50,8 +50,8 @@ export async function GET(
   const page = pagePourClient(q.html, {
     endpoint: essai ? `${base}?essai=1` : base,
     client: "",
-    contact: rgpd?.contact ?? "",
-    conservation: rgpd?.conservation ?? "",
+    contact: rgpd.contact,
+    conservation: rgpd.conservation,
     essai,
   });
   return new Response(page, {

@@ -149,7 +149,7 @@ import {
 import { CSP_PAGE_PREAUDIT } from "../entetes";
 import { CHARGE_MAX_OCTETS, ENVOIS_MAX_PAR_QUESTIONNAIRE } from "../donnees";
 import { envoyerQuestionnaire } from "../envoyer";
-import { enregistrerReponse, lireReponses, purgerReponsesAnciennes } from "../serveur";
+import { enregistrerReponse, lireReponses } from "../serveur";
 import { CHARGES_SCHEMA_4 } from "./charges-schema-4.fixture";
 
 const RENCONTRE = "11111111-1111-4111-8111-111111111111";
@@ -183,15 +183,6 @@ const REEL = {
   QUESTIONNAIRE_PREAUDIT_RGPD_CONSERVATION: "3 ans",
 };
 const ENV0 = { ...process.env };
-/** Le réel est refusé tant que la purge n'est pas planifiée : on simule la PR qui la planifie. */
-vi.mock("../config", async (orig) => {
-  const m = await orig<typeof import("../config")>();
-  return {
-    ...m,
-    refusReel: (env?: Record<string, string | undefined>) => m.refusReel(env, true),
-    refusEnvoiReel: (env?: Record<string, string | undefined>) => m.refusReel(env, true),
-  };
-});
 
 function allumer() {
   Object.assign(process.env, REEL);
@@ -384,12 +375,13 @@ describe("réception des réponses", () => {
     expect(base.enqueue).not.toHaveBeenCalled();
   });
 
-  it("réel éteint, ou notice vide : refusé", async () => {
+  it("réel éteint : refusé ; allumé, l'interrupteur seul suffit (conservation 5 ans)", async () => {
     const q = questionnaire();
     expect((await post(q, CHARGE())).status).toBe(404);
-    process.env["QUESTIONNAIRE_AVANT_AUDIT_ENABLED"] = "true";
-    expect((await post(q, CHARGE())).status).toBe(404);
     expect(base.e).toHaveLength(0);
+    process.env["QUESTIONNAIRE_AVANT_AUDIT_ENABLED"] = "true";
+    expect((await post(q, CHARGE())).status).toBe(200);
+    expect(base.e).toHaveLength(1);
   });
 
   it("réel : enregistre CHIFFRÉ, repasse « à traiter », aucune notification", async () => {
@@ -433,6 +425,7 @@ describe("réception des réponses", () => {
       mode: "emp",
       membre: null,
       envoyeLe: null,
+      infosEmail: null,
       json: CHARGE(),
     });
     expect(r).toBe("trop");
@@ -461,6 +454,24 @@ describe("réception des réponses", () => {
       Math.max(...[...compteurs.entries()].filter(([k]) => k.includes(":ip:")).map(([, n]) => n)),
     ).toBe(62);
     expect(LIMITE_PAR_IP.limit).toBeGreaterThanOrEqual(90);
+  });
+
+  it("case « informations par e-mail » : gardée (oui/non/absente), AUCUN envoi, jamais un refus", async () => {
+    allumer();
+    const q = questionnaire();
+    const avec = (infosEmail: unknown, membre: string) =>
+      JSON.stringify({
+        ...JSON.parse(CHARGE("emp", membre)),
+        consentements: { traitement: true, infosEmail },
+      });
+    expect((await post(q, avec(true, "membre000001"))).status).toBe(200);
+    expect((await post(q, avec(false, "membre000002"))).status).toBe(200);
+    expect((await post(q, avec("oui", "membre000003"))).status).toBe(200);
+    expect((await post(q, CHARGE("emp", "membre000004"))).status).toBe(200);
+    expect(base.e.map((e) => e["infosEmail"])).toEqual([true, false, null, null]);
+    expect(base.enqueue).not.toHaveBeenCalled();
+    const lues = await lireReponses(q["id"] as string);
+    expect(lues.map((r) => r.infosEmail)).toEqual([true, false, null, null]);
   });
 
   it("renvoi IDENTIQUE (même envoyeLe) : 409 « déjà reçu », aucune seconde ligne, hors plafond", async () => {
@@ -540,6 +551,30 @@ describe("la page publique", () => {
     const r = await get(questionnaire(), "?s=1");
     expect(r.status).toBe(302);
     expect(r.headers.get("location")).toContain("ref=refpreaudit1");
+  });
+
+  it("lien collaborateur (`?s=1&m=…`, CONFIG.baseUrl vide) : page, puis envoi et brouillon au même jeton", async () => {
+    // Aucune variable RGPD posée : les valeurs par défaut du code suffisent au réel.
+    process.env["QUESTIONNAIRE_AVANT_AUDIT_ENABLED"] = "true";
+    delete process.env["QUESTIONNAIRE_PREAUDIT_RGPD_CONTACT"];
+    delete process.env["QUESTIONNAIRE_PREAUDIT_RGPD_CONSERVATION"];
+    const q = questionnaire();
+    const r0 = await get(q, "?s=1&m=a1b2c3d4e5f6");
+    expect(r0.status).toBe(302);
+    const loc = new URL(String(r0.headers.get("location")), "http://localhost");
+    expect(loc.searchParams.get("s")).toBe("1");
+    expect(loc.searchParams.get("m")).toBe("a1b2c3d4e5f6");
+    expect(loc.searchParams.get("ref")).toBe("refpreaudit1");
+    const r = await get(q, loc.search);
+    expect(r.status).toBe(200);
+    const html = await r.text();
+    const jeton = jetonPreaudit(q["id"] as string) as string;
+    expect(html).toContain(`/api/questionnaire-preaudit/${q["id"] as string}/${jeton}`);
+    expect(html).toContain("contact@axion-ia.com");
+    expect(html).toContain("5 ans, puis supprimées par notre équipe");
+    // L'envoi du collaborateur, au même jeton, passe.
+    expect((await post(q, CHARGE("emp", "a1b2c3d4e5f6"))).status).toBe(200);
+    expect(base.e[0]?.["membre"]).toBe("a1b2c3d4e5f6");
   });
 });
 
@@ -655,7 +690,7 @@ describe("les actions de la console", () => {
     // la ligne a disparu : le verrou ne trouve rien
     const r = await enregistrerReponse(
       { id: ancien["id"] as string },
-      { mode: "emp", membre: null, envoyeLe: null, json: CHARGE() },
+      { mode: "emp", membre: null, envoyeLe: null, infosEmail: null, json: CHARGE() },
     );
     expect(r).toBe("ferme");
     expect(base.e).toHaveLength(0);
@@ -719,11 +754,9 @@ describe("l'envoi par clic", () => {
     prenom: "Sam",
   });
 
-  it("refusé éteint, puis notice vide : rien en file", async () => {
+  it("refusé éteint : rien en file", async () => {
     const q = questionnaire({ envoyeLe: null });
     await expect(envoyerQuestionnaire(args(q))).rejects.toThrow(/éteint/);
-    process.env["QUESTIONNAIRE_AVANT_AUDIT_ENABLED"] = "true";
-    await expect(envoyerQuestionnaire(args(q))).rejects.toThrow(/RGPD/);
     expect(base.enqueue).not.toHaveBeenCalled();
   });
 
@@ -852,16 +885,5 @@ describe("l'envoi : corbeille de validation, rollback complet, changement d'adre
     allumer();
     const q = questionnaire({ envoyeLe: null });
     await expect(envoyerQuestionnaire(args(q, "n-importe@exemple.fr"))).resolves.toBe("envoye");
-  });
-});
-
-describe("la purge de rétention", () => {
-  it("supprime les réponses plus anciennes que la date, garde les autres", async () => {
-    base.e.push(
-      { id: "a", recuLe: new Date("2020-01-01") },
-      { id: "b", recuLe: new Date("2026-10-01") },
-    );
-    expect(await purgerReponsesAnciennes(new Date("2025-01-01"))).toBe(1);
-    expect(base.e.map((x) => x["id"])).toEqual(["b"]);
   });
 });

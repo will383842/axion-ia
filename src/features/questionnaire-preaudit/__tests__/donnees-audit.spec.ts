@@ -220,6 +220,7 @@ describe("RGPD d'un salarié (point 12)", () => {
         mode: "emp",
         donnees: chiffrerParole(JSON.stringify(CHARGE)),
         ecarteLe: quand,
+        infosEmail: true,
       },
     ]);
     const ex = await exporterReponsesPreauditMembre("REF", "a1b2c3d4e5f6");
@@ -231,6 +232,7 @@ describe("RGPD d'un salarié (point 12)", () => {
     expect(ex.reponses).toHaveLength(1);
     expect(JSON.parse(ex.reponses[0]?.reponses as string)).toEqual(CHARGE);
     expect(ex.reponses[0]?.ecarteLe).toEqual(quand);
+    expect(ex.reponses[0]?.infosEmail).toBe(true);
     const vide = await exporterReponsesPreauditMembre("", "x");
     expect(vide.reponses).toEqual([]);
     expect(vide.avertissements).toHaveLength(1);
