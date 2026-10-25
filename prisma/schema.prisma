@@ -5228,6 +5228,8 @@ model Client {
   fusionsAbsorbee   ClientFusion[]     @relation("FusionAbsorbee")
   fusionsAbsorbante ClientFusion[]     @relation("FusionAbsorbante")
   testInterne       ClientTestInterne?
+  /// Questionnaires avant audit envoyés SANS rendez-vous (relation seule, aucune colonne sur `clients`).
+  questionnairesAvantAudit QuestionnaireAvantAudit[] @relation("QuestionnaireAvantAuditClient")
 
   @@index([statut])
   @@index([nafCode])
@@ -14227,6 +14229,10 @@ model Rencontre {
   /// Code Meet « abc-defg-hij ». Non unique (lien personnel réutilisé).
   meetCode                      String?            @map("meet_code") @db.VarChar(20)
   titre                         String             @db.VarChar(255)
+  /// Lieu du rendez-vous saisi dans la console (adresse, « chez le client »...), 2026-10-25. Facultatif.
+  lieu                          String?            @db.VarChar(200)
+  /// Objet du rendez-vous saisi dans la console, 2026-10-25. Facultatif.
+  objet                         String?            @db.VarChar(255)
   debutPrevu                    DateTime?          @map("debut_prevu")
   finPrevue                     DateTime?          @map("fin_prevue")
   debutReel                     DateTime?          @map("debut_reel")
@@ -14533,6 +14539,11 @@ model QuestionnaireAvantAudit {
   /// RESTENT (2026-10-24 : la suppression d'une rencontre n'efface plus les réponses des salariés).
   rencontreId      String?    @unique @map("rencontre_id") @db.Uuid
   rencontre        Rencontre? @relation(fields: [rencontreId], references: [id], onDelete: SetNull)
+  /// Fiche client visée quand le questionnaire est envoyé SANS rendez-vous (2026-10-25, décision de
+  /// Will). NULL : on retrouve le client par la rencontre. Jamais en cascade : supprimer une fiche
+  /// laisse le questionnaire et ses réponses (SetNull), la suppression reste un geste de Will.
+  clientId         String?    @map("client_id") @db.Uuid
+  client           Client?    @relation("QuestionnaireAvantAuditClient", fields: [clientId], references: [id], onDelete: SetNull)
   html             String     @db.Text
   /// Regroupe les envois du dirigeant, des collaborateurs et du référent informatique.
   ref              String     @db.VarChar(40)
@@ -14557,6 +14568,7 @@ model QuestionnaireAvantAudit {
   courriers  QuestionnaireAvantAuditCourrier[]
 
   @@index([destinataireHash])
+  @@index([clientId])
   @@map("questionnaires_avant_audit")
 }
 
