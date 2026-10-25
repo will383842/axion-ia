@@ -11,6 +11,8 @@ const prismaMock = vi.hoisted(() => ({
   emailLog: { findMany: vi.fn() },
   emailOutbox: { findMany: vi.fn() },
   questionnaireAvantAuditCourrier: { findMany: vi.fn() },
+  // Fusions de fiches : aucune dans ces scénarios (la fiche ne couvre qu'elle-même).
+  clientFusion: { findMany: vi.fn(async () => []) },
 }));
 vi.mock("@/lib/prisma", () => ({ prisma: prismaMock }));
 const idsMock = vi.hoisted(() => vi.fn());
@@ -19,7 +21,10 @@ vi.mock("@/features/admin-emails/rattachement-client", () => ({ idsLiesAuClient:
 import { assemblerFil, lireFilDesEchanges, type EchangeDuFil } from "../fil-des-echanges";
 import { FilDesEchanges } from "@/components/admin/dossier-client/FilDesEchanges";
 
-beforeEach(() => vi.clearAllMocks());
+beforeEach(() => {
+  vi.clearAllMocks();
+  prismaMock.clientFusion.findMany.mockResolvedValue([]);
+});
 
 const e = (cle: string, iso: string): EchangeDuFil => ({
   cle,

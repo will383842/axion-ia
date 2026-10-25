@@ -95,6 +95,62 @@ export async function lireDeLaRencontre(rencontreId: string) {
   });
 }
 
+/**
+ * Le questionnaire envoyé à une fiche SANS rendez-vous (`client_id` posé, `rencontre_id` NULL),
+ * le plus récent. Il peut y en avoir plusieurs au fil du temps : un envoi déjà parti n'est jamais
+ * remplacé, un nouveau dépôt en crée un autre (aucune suppression).
+ */
+export async function lireDuClientSansRendezVous(clientId: string) {
+  return prisma.questionnaireAvantAudit.findFirst({
+    where: { clientId, rencontreId: null },
+    orderBy: [{ creeLe: "desc" }, { id: "asc" }],
+    select: {
+      id: true,
+      ref: true,
+      creeLe: true,
+      envoyeLe: true,
+      luLe: true,
+      closLe: true,
+      expireLe: true,
+    },
+  });
+}
+
+/**
+ * Dépôt du HTML pour une fiche sans rendez-vous. Rien d'envoyé : le brouillon est remplacé sur
+ * place. Déjà envoyé : le questionnaire parti reste tel quel (lien, réponses, brouillons) et un
+ * NOUVEAU questionnaire est créé — jamais de suppression ni de lien mort ici.
+ */
+export async function deposerQuestionnaireClient(
+  clientId: string,
+  html: string,
+): Promise<{ readonly id: string; readonly nouveau: boolean }> {
+  const v = validerHtml(html);
+  if (!v.ok) throw new MessagePourWill(v.motif);
+  return prisma.$transaction(async (tx) => {
+    const client = await tx.client.findUnique({ where: { id: clientId }, select: { id: true } });
+    if (client === null) throw new MessagePourWill("Fiche client introuvable.");
+    const existant = await tx.questionnaireAvantAudit.findFirst({
+      where: { clientId, rencontreId: null },
+      orderBy: [{ creeLe: "desc" }, { id: "asc" }],
+      select: { id: true, envoyeLe: true },
+    });
+    if (existant !== null && existant.envoyeLe === null) {
+      await tx.$queryRaw`SELECT id FROM questionnaires_avant_audit WHERE id = ${existant.id}::uuid FOR UPDATE`;
+      const maj = await tx.questionnaireAvantAudit.updateMany({
+        where: { id: existant.id, envoyeLe: null },
+        data: { html },
+      });
+      if (maj.count === 1) return { id: existant.id, nouveau: false };
+    }
+    const cree = await tx.questionnaireAvantAudit.create({
+      data: { clientId, html, ref: randomBytes(6).toString("hex") },
+      select: { id: true },
+    });
+    return { id: cree.id, nouveau: true };
+  });
+}
+
 export interface ResultatDepot {
   readonly id: string;
   /** Un questionnaire déjà envoyé (sans réponse) a été recréé : l'ancien lien ne marche plus. */
@@ -425,7 +481,8 @@ export async function listerQuestionnairesSansRencontre(page = 1): Promise<{
 }> {
   const p = Number.isInteger(page) && page >= 1 ? page : 1;
   const qs = await prisma.questionnaireAvantAudit.findMany({
-    where: { rencontreId: null },
+    // Ceux d'une fiche (envoyés sans rendez-vous) se lisent dans l'onglet Questionnaire de la fiche.
+    where: { rencontreId: null, clientId: null },
     select: { id: true, ref: true, envoyeLe: true, closLe: true },
     // Les envoyés d'abord (du plus récent), puis les jamais envoyés ; `id` départage (pages stables).
     orderBy: [{ envoyeLe: { sort: "desc", nulls: "last" } }, { creeLe: "desc" }, { id: "asc" }],

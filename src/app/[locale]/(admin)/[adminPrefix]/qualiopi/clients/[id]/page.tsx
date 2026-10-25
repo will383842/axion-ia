@@ -381,7 +381,11 @@ export default async function FicheClient360Page({ params, searchParams }: PageP
       <>
         {/* Lot 1 fiche client (25/10/2026) : le questionnaire avant audit se lit ICI, plus
             seulement sur la page de chaque rendez-vous. Lecture seule, aucun envoi. */}
-        <BlocQuestionnaireFiche questionnaires={questionnaires} adminPrefix={adminPrefix} />
+        <BlocQuestionnaireFiche
+          questionnaires={questionnaires}
+          adminPrefix={adminPrefix}
+          ficheHref={ficheHref}
+        />
         <OngletSynthese
           consolidation={consoliderFaits(faits, projets, maintenant)}
           projets={projets}
@@ -546,7 +550,17 @@ export default async function FicheClient360Page({ params, searchParams }: PageP
           <>
             {/* Le wizard pré-sélectionne le client (?clientId=) : le parcours
                 de vente démarre depuis la fiche, sans re-chercher le client. */}
-            <AdminButton href={`${qBase}/vente/new?clientId=${client.id}`}>
+            {/* Bouton principal (un seul plein à la fois) : l'envoi du questionnaire, SANS
+                rendez-vous. Il ouvre la page d'aperçu ; rien ne part sans le clic « Envoyer ». */}
+            {voitEchanges ? (
+              <AdminButton href={`${ficheHref}/questionnaire`}>
+                Envoyer le questionnaire
+              </AdminButton>
+            ) : null}
+            <AdminButton
+              variant={voitEchanges ? "secondary" : "primary"}
+              href={`${qBase}/vente/new?clientId=${client.id}`}
+            >
               Nouvelle vente
             </AdminButton>
             <AdminButton variant="secondary" href={`${clientsBase}/${client.id}/edit`}>

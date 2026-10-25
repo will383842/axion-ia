@@ -304,6 +304,14 @@ async function partiesClient(tx: Tx, cid: string, p: Parties): Promise<void> {
     tx.clientContact.findMany({ where: { clientId: cid }, select: { id: true } }),
   ]);
   for (const r of rencontres) await partiesRencontre(tx, r.id, p);
+  // Les questionnaires envoyés à cette fiche SANS rendez-vous : la clé étrangère les détacherait
+  // (SET NULL) et les laisserait orphelins ; ici c'est Will qui supprime la fiche, il voit donc
+  // leur compte au bilan, et un envoi réel à un prospect reste un bloquant (effacement RGPD).
+  const directs = await tx.questionnaireAvantAudit.findMany({
+    where: { clientId: cid, rencontreId: null },
+    select: { id: true },
+  });
+  for (const q of directs) await partiesQuestionnaire(tx, q.id, p);
   p.contactIds.push(...contacts.map((c) => c.id));
   ajouter(p, "fiche client", 1);
   ajouter(p, "contact(s) de la fiche", contacts.length);
@@ -315,6 +323,7 @@ async function partiesClient(tx: Tx, cid: string, p: Parties): Promise<void> {
       [cid],
       new Map<string, true | { colonne: string; ids: readonly string[] }>([
         ["rencontres.client_id", TOUT],
+        ["questionnaires_avant_audit.client_id", { colonne: "id", ids: p.questionnaireIds }],
         ["client_contacts.client_id", TOUT],
         ["rencontre_participants.client_id", nosRencontres],
       ]),
@@ -345,16 +354,18 @@ async function entete(
     });
     return c === null ? null : { nom: c.raisonSociale, email: c.contactEmail };
   }
-  const rencontreId =
+  const q =
     type === "rencontre"
-      ? id
-      : (
-          await tx.questionnaireAvantAudit.findUnique({
-            where: { id },
-            select: { rencontreId: true },
-          })
-        )?.rencontreId;
-  if (type === "questionnaire" && rencontreId === undefined) return null;
+      ? undefined
+      : await tx.questionnaireAvantAudit.findUnique({
+          where: { id },
+          select: {
+            rencontreId: true,
+            client: { select: { raisonSociale: true, contactEmail: true } },
+          },
+        });
+  if (type === "questionnaire" && q === null) return null;
+  const rencontreId = type === "rencontre" ? id : q?.rencontreId;
   const r =
     rencontreId === null || rencontreId === undefined
       ? null
@@ -363,9 +374,11 @@ async function entete(
           select: { titre: true, client: { select: { raisonSociale: true, contactEmail: true } } },
         });
   if (type === "rencontre" && r === null) return null;
+  // Sans rendez-vous, la fiche visée directement donne son nom au questionnaire.
+  const fiche = r?.client ?? q?.client ?? null;
   return {
-    nom: r?.client?.raisonSociale ?? r?.titre ?? "Questionnaire sans rencontre",
-    email: r?.client?.contactEmail ?? null,
+    nom: fiche?.raisonSociale ?? r?.titre ?? "Questionnaire sans rencontre",
+    email: fiche?.contactEmail ?? null,
   };
 }
 
@@ -441,6 +454,7 @@ async function verrouillerLePerimetre(tx: Tx, type: TypeCible, id: string): Prom
   if (type === "client") {
     await verrouiller(tx, "clients", "id", [id]);
     rids = await verrouiller(tx, "rencontres", "client_id", [id]);
+    qids = await verrouiller(tx, "questionnaires_avant_audit", "client_id", [id]);
     await verrouiller(tx, "client_contacts", "client_id", [id]);
   } else if (type === "rencontre") {
     rids = await verrouiller(tx, "rencontres", "id", [id]);
@@ -448,7 +462,10 @@ async function verrouillerLePerimetre(tx: Tx, type: TypeCible, id: string): Prom
     qids = await verrouiller(tx, "questionnaires_avant_audit", "id", [id]);
   }
   if (rids.length > 0) {
-    qids = await verrouiller(tx, "questionnaires_avant_audit", "rencontre_id", rids);
+    qids = [
+      ...qids,
+      ...(await verrouiller(tx, "questionnaires_avant_audit", "rencontre_id", rids)),
+    ];
     await verrouiller(tx, "rencontre_participants", "rencontre_id", rids);
     await verrouiller(tx, "rencontre_suivis", "rencontre_id", rids, "rencontre_id");
   }

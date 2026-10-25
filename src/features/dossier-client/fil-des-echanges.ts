@@ -19,6 +19,10 @@
  */
 
 import { prisma } from "@/lib/prisma";
+import {
+  fichesCouvertes,
+  questionnairesDesFiches,
+} from "@/features/questionnaire-preaudit/de-la-fiche";
 import { idsLiesAuClient } from "@/features/admin-emails/rattachement-client";
 import { LIBELLES_STATUT_EMAIL } from "@/features/admin-emails/statut-libelles";
 import {
@@ -145,40 +149,47 @@ export async function lireFilDesEchanges(clientId: string, adminPrefix: string):
   );
 
   const courriers = sans(
-    prisma.questionnaireAvantAuditCourrier
-      .findMany({
-        where: {
-          questionnaire: { rencontre: { clientId } },
-          // « retenu » est exclu : l'e-mail retenu est déjà dans la file « à valider » (ligne
-          // « E-mail à valider »), puis dans le journal une fois validé. Les tests (nature « essai »)
-          // n'ont rien à faire dans le fil d'un client.
-          OR: [{ canal: "telegram" }, { statut: { in: ["prevu", "en_cours", "annule", "echec"] } }],
-          NOT: [{ canal: "journal" }, { nature: "essai" }],
-        },
-        orderBy: [{ faitLe: { sort: "desc", nulls: "last" } }, { prevuLe: "desc" }],
-        take: PAR_SOURCE,
-        select: {
-          id: true,
-          nature: true,
-          statut: true,
-          prevuLe: true,
-          faitLe: true,
-          questionnaire: { select: { rencontreId: true } },
-        },
-      })
-      .then((cs) =>
-        cs.map((c): EchangeDuFil => ({
-          cle: `courrier:${c.id}`,
-          genre: "questionnaire",
-          date: c.faitLe ?? c.prevuLe,
-          titre: `Questionnaire avant audit : ${LIBELLE_NATURE[c.nature] ?? c.nature}`,
-          etat: LIBELLE_STATUT[c.statut] ?? c.statut,
-          lien:
-            c.questionnaire?.rencontreId != null
-              ? `${base}/rendez-vous/rencontres/${c.questionnaire.rencontreId}`
-              : null,
-        })),
-      ),
+    fichesCouvertes(clientId).then((couvertes) =>
+      prisma.questionnaireAvantAuditCourrier
+        .findMany({
+          where: {
+            questionnaire: questionnairesDesFiches(couvertes),
+            // « retenu » est exclu : l'e-mail retenu est déjà dans la file « à valider » (ligne
+            // « E-mail à valider »), puis dans le journal une fois validé. Les tests (nature « essai »)
+            // n'ont rien à faire dans le fil d'un client.
+            OR: [
+              { canal: "telegram" },
+              { statut: { in: ["prevu", "en_cours", "annule", "echec"] } },
+            ],
+            NOT: [{ canal: "journal" }, { nature: "essai" }],
+          },
+          orderBy: [{ faitLe: { sort: "desc", nulls: "last" } }, { prevuLe: "desc" }],
+          take: PAR_SOURCE,
+          select: {
+            id: true,
+            nature: true,
+            statut: true,
+            prevuLe: true,
+            faitLe: true,
+            questionnaire: { select: { rencontreId: true, clientId: true } },
+          },
+        })
+        .then((cs) =>
+          cs.map((c): EchangeDuFil => ({
+            cle: `courrier:${c.id}`,
+            genre: "questionnaire",
+            date: c.faitLe ?? c.prevuLe,
+            titre: `Questionnaire avant audit : ${LIBELLE_NATURE[c.nature] ?? c.nature}`,
+            etat: LIBELLE_STATUT[c.statut] ?? c.statut,
+            lien:
+              c.questionnaire?.rencontreId != null
+                ? `${base}/rendez-vous/rencontres/${c.questionnaire.rencontreId}`
+                : c.questionnaire?.clientId != null
+                  ? `${base}/qualiopi/clients/${c.questionnaire.clientId}/questionnaire`
+                  : null,
+          })),
+        ),
+    ),
   );
 
   const fil = assemblerFil(await Promise.all([rendezVous, emails, enAttente, courriers]));
