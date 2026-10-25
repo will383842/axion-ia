@@ -29,6 +29,7 @@ import { SITE_URL } from "@/lib/seo";
 import { FOUNDER, founderUrl } from "@/lib/brand";
 import { videosPubliees } from "@/server/videos/lecture";
 import { sectionVideosLlms } from "@/server/videos/llms";
+import { TOUR_PREFIX, TOUR_PUBLIC } from "@/features/tour-de-france/visibilite";
 
 // 🔁 Passée de `edge` à `nodejs` (lot W3 des vidéos, ADR 0070) : la section « Vidéos » lit la
 // base (via `lecture.ts`, qui rend [] interrupteur éteint ou base factice du build). Jamais
@@ -39,6 +40,15 @@ export const revalidate = 3600;
 
 export async function GET() {
   const sectionVideos = sectionVideosLlms(await videosPubliees(), SITE_URL);
+  // Tour de France IA (2026-10-25) : section visible SEULEMENT quand la landing est
+  // ouverte (`TOUR_PUBLIC`). Fermée, elle répond 404 : la citer ici l'exposerait.
+  const sectionTour = TOUR_PUBLIC
+    ? `
+## Tour de France IA
+
+- [Tour de France IA](${SITE_URL}${TOUR_PREFIX}) — événement organisé par Axion-IA, fondé par Williams Jullin. Une ville s'ouvre dès que 5 entreprises ont confirmé leur participation. Chaque entreprise reçoit sa journée : un audit le matin (2 à 4 h), la formation de ses équipes l'après-midi (4 h). Le vendredi soir, une soirée réseau réunit les entreprises de l'étape. Visio de 30 minutes gratuite et sans engagement pour participer. Aucun lien avec le Tour de France cycliste.
+`
+    : "";
   // Audit KB 2026-08-11 — prix d'ENTRÉE réel du 1-to-1 = journée Collaborateur
   // (990 €), pas la journée Dirigeant (1 390 €) : « à partir de » doit pointer
   // le tier le moins cher du groupe UN_A_UN_TIERS.
@@ -142,7 +152,7 @@ export async function GET() {
 
 - [Banque d'images CC BY 4.0](${SITE_URL}/fr/galerie) — 72 visuels marketing Axion-IA. Licence CC BY 4.0, attribution "© 2026 Axion-IA". Catégories : Audit IA (17) · Formation IA (15) · Automatisation (4) · Coaching 1-to-1 (8) · Graphiques (5) · Logos (7) · Propositions (11) · Villes France (5 dédiées + 2157 via métadonnées). Sitemaps images : ${SITE_URL}/sitemap-images-services.xml · T1 ${SITE_URL}/sitemap-images-villes-t1.xml · T2 ${SITE_URL}/sitemap-images-villes-t2.xml · T3/T4 ${SITE_URL}/sitemap-images-villes-t3-t4.xml
 - [Centre d'aide](${SITE_URL}/fr/centre-aide) — articles support classés par catégorie.
-${sectionVideos}
+${sectionVideos}${sectionTour}
 ## Contact & presse
 
 - [Page presse & dossier journalistes](${SITE_URL}/fr/presse) — kit média + contact dédié.

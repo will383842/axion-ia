@@ -44,6 +44,20 @@ function matcherDuProxy(): RegExp {
   return new RegExp("^" + (JSON.parse(litteral) as string) + "$");
 }
 
+/**
+ * Les routes non localisées que le proxy CAPTE VOLONTAIREMENT — parce qu'il les
+ * traite lui-même AVANT next-intl et avant la règle 0bis (jamais de 301 vers
+ * `/fr/…`). Chacune pointe vers SA garde, qui prouve cet ordre en lisant le
+ * proxy ; une entrée sans garde fait rougir le test ci-dessous.
+ *
+ *   · `/tourdefrance-ia` (2026-10-25) — règle 0-TDF : 404 tant que le Tour de
+ *     France IA est fermé, sauf cookie d'aperçu. L'exclure du matcher, ce serait
+ *     ouvrir la landing à tout le monde.
+ */
+const CAPTEES_VOLONTAIREMENT: Readonly<Record<string, string>> = {
+  "/tourdefrance-ia": "src/app/tourdefrance-ia/__tests__/le-tour-reste-invisible.spec.ts",
+};
+
 /** Chemins publics servis hors du segment `[locale]`. */
 function routesNonLocalisees(): string[] {
   return readdirSync(APP, { withFileTypes: true })
@@ -68,12 +82,22 @@ describe("le proxy laisse passer les routes non localisées", () => {
       "aucune route non localisée trouvée — le balayage est cassé",
     ).toBeGreaterThan(5);
 
-    const avalees = routes.filter((r) => matcher.test(r));
+    const avalees = routes.filter((r) => matcher.test(r) && !(r in CAPTEES_VOLONTAIREMENT));
     expect(
       avalees,
       "routes non localisées que next-intl va préfixer, donc 301 vers /fr/… puis 404 — " +
         "les exclure dans le matcher de src/proxy.ts",
     ).toEqual([]);
+  });
+
+  it("chaque route captée volontairement existe, est bien captée, et a sa garde", () => {
+    const matcher = matcherDuProxy();
+    const routes = routesNonLocalisees();
+    for (const [route, garde] of Object.entries(CAPTEES_VOLONTAIREMENT)) {
+      expect(routes, `${route} n'existe plus : retirer l'exception`).toContain(route);
+      expect(matcher.test(route), `${route} doit passer par le proxy`).toBe(true);
+      expect(existsSync(join(RACINE, garde)), `garde manquante : ${garde}`).toBe(true);
+    }
   });
 
   it("le matcher capture bien une route localisée ordinaire", () => {
