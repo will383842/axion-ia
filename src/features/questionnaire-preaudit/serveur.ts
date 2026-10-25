@@ -25,6 +25,7 @@ import {
 } from "./donnees";
 import { validerHtml } from "./html";
 import { lireLaCharge } from "./lecture";
+import { reessayerSiInterblocage } from "./interblocage";
 import { AUCUN_LIBELLE, libellesDuHtml, type Libelles } from "./libelles";
 
 export { cheminEssaiPreaudit, cheminPreaudit, urlArretRelances, urlPreaudit } from "./liens";
@@ -281,68 +282,70 @@ export async function enregistrerReponse(
   charge: ChargeValide,
   maintenant: Date = new Date(),
 ): Promise<ResultatReponse> {
-  return prisma.$transaction(async (tx): Promise<ResultatReponse> => {
-    const verrou = await tx.$queryRaw<
-      { id: string }[]
-    >`SELECT id FROM questionnaires_avant_audit WHERE id = ${q.id}::uuid FOR UPDATE`;
-    if (verrou.length === 0) return "ferme";
-    const frais = await tx.questionnaireAvantAudit.findUnique({
-      where: { id: q.id },
-      select: { envoyeLe: true, closLe: true, expireLe: true },
-    });
-    if (frais === null || !accepteDesReponses(frais, maintenant)) return "ferme";
-    const membre = membreAGarder(q.id, charge.mode, charge.membre);
-    if (charge.envoyeLe !== null) {
-      const memes = await tx.questionnaireAvantAuditEnvoi.findMany({
-        where: {
+  return reessayerSiInterblocage(() =>
+    prisma.$transaction(async (tx): Promise<ResultatReponse> => {
+      const verrou = await tx.$queryRaw<
+        { id: string }[]
+      >`SELECT id FROM questionnaires_avant_audit WHERE id = ${q.id}::uuid FOR UPDATE`;
+      if (verrou.length === 0) return "ferme";
+      const frais = await tx.questionnaireAvantAudit.findUnique({
+        where: { id: q.id },
+        select: { envoyeLe: true, closLe: true, expireLe: true },
+      });
+      if (frais === null || !accepteDesReponses(frais, maintenant)) return "ferme";
+      const membre = membreAGarder(q.id, charge.mode, charge.membre);
+      if (charge.envoyeLe !== null) {
+        const memes = await tx.questionnaireAvantAuditEnvoi.findMany({
+          where: {
+            questionnaireId: q.id,
+            mode: charge.mode,
+            membre,
+            envoyeLeNavigateur: charge.envoyeLe,
+          },
+          select: { donnees: true },
+        });
+        // Doublon seulement si le CONTENU est identique, octet pour octet : une version modifiée
+        // portant le même `envoyeLe` n'est JAMAIS perdue (elle devient une nouvelle ligne).
+        const identique = memes.some((e) => {
+          try {
+            return dechiffrerParole(e.donnees) === charge.json;
+          } catch {
+            return false;
+          }
+        });
+        if (identique) return "doublon";
+      }
+      const n = await tx.questionnaireAvantAuditEnvoi.count({ where: { questionnaireId: q.id } });
+      if (n >= ENVOIS_MAX_PAR_QUESTIONNAIRE) return "trop";
+      await tx.questionnaireAvantAuditEnvoi.create({
+        data: {
           questionnaireId: q.id,
           mode: charge.mode,
           membre,
           envoyeLeNavigateur: charge.envoyeLe,
+          infosEmail: charge.infosEmail,
+          donnees: chiffrerParole(charge.json),
         },
-        select: { donnees: true },
       });
-      // Doublon seulement si le CONTENU est identique, octet pour octet : une version modifiée
-      // portant le même `envoyeLe` n'est JAMAIS perdue (elle devient une nouvelle ligne).
-      const identique = memes.some((e) => {
-        try {
-          return dechiffrerParole(e.donnees) === charge.json;
-        } catch {
-          return false;
-        }
-      });
-      if (identique) return "doublon";
-    }
-    const n = await tx.questionnaireAvantAuditEnvoi.count({ where: { questionnaireId: q.id } });
-    if (n >= ENVOIS_MAX_PAR_QUESTIONNAIRE) return "trop";
-    await tx.questionnaireAvantAuditEnvoi.create({
-      data: {
-        questionnaireId: q.id,
-        mode: charge.mode,
-        membre,
-        envoyeLeNavigateur: charge.envoyeLe,
-        infosEmail: charge.infosEmail,
-        donnees: chiffrerParole(charge.json),
-      },
-    });
-    // Réponse reçue : le brouillon de cette personne n'a plus lieu d'être (`brouillon.ts`).
-    // Dirigeant : seulement si la réponse est AUTHENTIFIÉE par son code.
-    const dirigeantAuthentifie =
-      charge.mode === "main" &&
-      charge.membre !== null &&
-      codeDirigeantPreauditValide(q.id, charge.membre);
-    if (charge.mode !== "main" || dirigeantAuthentifie) {
-      await tx.questionnaireAvantAuditBrouillon.deleteMany({
-        where:
-          charge.mode === "main"
-            ? { questionnaireId: q.id, mode: "main" }
-            : { questionnaireId: q.id, mode: charge.mode, membre: charge.membre ?? "" },
-      });
-    }
-    // Une nouvelle réponse repasse la fiche « à traiter » : la lecture précédente est périmée.
-    await tx.questionnaireAvantAudit.update({ where: { id: q.id }, data: { luLe: null } });
-    return "ok";
-  });
+      // Réponse reçue : le brouillon de cette personne n'a plus lieu d'être (`brouillon.ts`).
+      // Dirigeant : seulement si la réponse est AUTHENTIFIÉE par son code.
+      const dirigeantAuthentifie =
+        charge.mode === "main" &&
+        charge.membre !== null &&
+        codeDirigeantPreauditValide(q.id, charge.membre);
+      if (charge.mode !== "main" || dirigeantAuthentifie) {
+        await tx.questionnaireAvantAuditBrouillon.deleteMany({
+          where:
+            charge.mode === "main"
+              ? { questionnaireId: q.id, mode: "main" }
+              : { questionnaireId: q.id, mode: charge.mode, membre: charge.membre ?? "" },
+        });
+      }
+      // Une nouvelle réponse repasse la fiche « à traiter » : la lecture précédente est périmée.
+      await tx.questionnaireAvantAudit.update({ where: { id: q.id }, data: { luLe: null } });
+      return "ok";
+    }),
+  );
 }
 
 export async function marquerLu(id: string, userId: string): Promise<void> {
