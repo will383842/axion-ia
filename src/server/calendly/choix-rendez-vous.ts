@@ -351,6 +351,22 @@ export async function urlDeReprogrammation(rdv: RendezVousAReprogrammer): Promis
   return choix ? urlConfigureeDuChoix(choix) : urlCalendlyAppel();
 }
 
+/** La source de provenance d'une réservation du Tour quand aucune UTM ne la dit. */
+export const UTM_SOURCE_TOUR = "tour-de-france-ia";
+
+/**
+ * Une réservation du Tour de France IA sans `utm_source` (ni arrivée ni cookie)
+ * porte tout de même sa source : « tour-de-france-ia ». Une source déjà posée
+ * (une campagne) n'est jamais écrasée ; les autres choix ne changent pas.
+ */
+export function avecSourceDuChoix<T extends { utmSource: string | null }>(
+  choix: ChoixRendezVous,
+  provenance: T,
+): T {
+  if (choix !== "tour" || provenance.utmSource) return provenance;
+  return { ...provenance, utmSource: UTM_SOURCE_TOUR };
+}
+
 /** Vrai si le nom de l'événement Calendly désigne la visio du Tour de France IA. */
 export function estVisioTourParNom(nom: string | null | undefined): boolean {
   if (!nom) return false;

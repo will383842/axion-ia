@@ -63,8 +63,14 @@ export function estAppelApporteur(nomTypeEvenement: string | null | undefined): 
 // au CRM des ventes. La colonne ne fait qu'AJOUTER : un type apporteur renommé
 // sans le mot-clé reste reconnu.
 
-/** Les quatre types qui ne sont pas un échange apporteur (miroir de l'enum Prisma). */
-const TYPES_HORS_APPORTEUR = ["diagnostic", "echange_projet", "salon", "autre"] as const;
+/** Les types qui ne sont pas un échange apporteur (miroir de l'enum Prisma). */
+const TYPES_HORS_APPORTEUR = [
+  "diagnostic",
+  "echange_projet",
+  "salon",
+  "tour_de_france_ia",
+  "autre",
+] as const;
 
 /** Clause historique, nom seul : « SEULEMENT les échanges apporteur ». */
 export const SEULS_APPELS_APPORTEUR_PAR_NOM = {

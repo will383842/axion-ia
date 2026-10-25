@@ -15,6 +15,7 @@
 import { estRendezVousApporteur } from "@/server/calendly/appel-apporteur";
 import {
   classerParNom,
+  estVisioTourDeFranceIaParNom,
   estTypeRendezVous,
   type TypeRendezVous,
 } from "@/server/calendly/type-rendez-vous";
@@ -24,6 +25,12 @@ export function typeEffectif(rdv: {
   readonly eventTypeName?: string | null | undefined;
 }): TypeRendezVous {
   if (estRendezVousApporteur(rdv)) return "apporteur";
-  if (estTypeRendezVous(rdv.typeRendezVous)) return rdv.typeRendezVous;
+  if (estTypeRendezVous(rdv.typeRendezVous)) {
+    // Écrite avant la migration du Tour (2026-10-27), la visio reste `autre` en base.
+    if (rdv.typeRendezVous === "autre" && estVisioTourDeFranceIaParNom(rdv.eventTypeName)) {
+      return "tour_de_france_ia";
+    }
+    return rdv.typeRendezVous;
+  }
   return classerParNom(rdv.eventTypeName);
 }

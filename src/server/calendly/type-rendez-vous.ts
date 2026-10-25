@@ -37,10 +37,11 @@ import {
   URL_CALENDLY_APPORTEUR_PAR_DEFAUT,
   URL_CALENDLY_DIAGNOSTIC_PAR_DEFAUT,
   URL_CALENDLY_SALON_PAR_DEFAUT,
+  URL_CALENDLY_TOUR_PAR_DEFAUT,
 } from "@/server/calendly/urls-par-defaut";
 
 /**
- * Les cinq types CLASSÉS — miroir de l'enum Prisma `TypeRendezVous`, MOINS
+ * Les six types CLASSÉS — miroir de l'enum Prisma `TypeRendezVous`, MOINS
  * `formateur`.
  *
  * ⚠️ `formateur` existe en base depuis le schéma n° 1 du chantier formateurs
@@ -55,6 +56,7 @@ export const TYPES_RENDEZ_VOUS = [
   "echange_projet",
   "apporteur",
   "salon",
+  "tour_de_france_ia",
   "autre",
 ] as const;
 
@@ -66,6 +68,7 @@ export const LIBELLES_TYPE_RENDEZ_VOUS: Readonly<Record<TypeRendezVous, string>>
   echange_projet: "Échange projet",
   apporteur: "Apporteur",
   salon: "Salon",
+  tour_de_france_ia: "Tour de France IA",
   autre: "Autre",
 };
 
@@ -88,6 +91,7 @@ export {
   URL_CALENDLY_APPORTEUR_PAR_DEFAUT,
   URL_CALENDLY_DIAGNOSTIC_PAR_DEFAUT,
   URL_CALENDLY_SALON_PAR_DEFAUT,
+  URL_CALENDLY_TOUR_PAR_DEFAUT,
 };
 
 function urlOuDefaut(valeur: string | undefined, defaut: string): string {
@@ -121,6 +125,10 @@ export function urlsDeReservationConfigurees(): ReadonlyArray<{
       url: urlOuDefaut(process.env.CALENDLY_SALON_URL, URL_CALENDLY_SALON_PAR_DEFAUT),
       type: "salon",
     },
+    {
+      url: urlOuDefaut(process.env.CALENDLY_TOUR_URL, URL_CALENDLY_TOUR_PAR_DEFAUT),
+      type: "tour_de_france_ia",
+    },
   ];
 }
 
@@ -140,6 +148,11 @@ function normaliserNom(nom: string): string {
 /** Morceaux de nom qui désignent un échange projet. « premier contact » = slug de l'iframe. */
 const MOTS_ECHANGE_PROJET = ["discutons de votre projet", "echange projet", "premier contact"];
 
+/** Vrai si le nom (normalisé) désigne la visio du Tour de France IA. */
+export function estVisioTourDeFranceIaParNom(nom: string | null | undefined): boolean {
+  return !!nom && normaliserNom(nom).includes("tour de france ia");
+}
+
 /**
  * Classement par le NOM seul — repli, et règle de la reprise SQL.
  *
@@ -152,6 +165,7 @@ export function classerParNom(nom: string | null | undefined): TypeRendezVous {
   if (estAppelApporteur(nom)) return "apporteur";
   if (estRdvSalon(nom)) return "salon";
   const n = normaliserNom(nom);
+  if (n.includes("tour de france ia")) return "tour_de_france_ia";
   if (n.includes("diagnostic")) return "diagnostic";
   if (MOTS_ECHANGE_PROJET.some((m) => n.includes(m))) return "echange_projet";
   return "autre";
@@ -401,7 +415,7 @@ export function reponsesDuBrut(rawPayload: unknown): ReponseCrm[] {
 
 /** Les types dont les réponses partent au CRM : les rendez-vous clients. */
 export function typePorteLesReponses(type: TypeRendezVous): boolean {
-  return type === "diagnostic" || type === "echange_projet";
+  return type === "diagnostic" || type === "echange_projet" || type === "tour_de_france_ia";
 }
 
 /** Les UTM du `tracking` de l'invité Calendly, bornées aux colonnes (100). */

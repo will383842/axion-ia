@@ -249,16 +249,17 @@ export const TYPES_RESERVABLES: Readonly<Record<ChoixRendezVous, ConfigRendezVou
     variable: "CALENDLY_FORMATEUR_URL",
   },
   // 2026-10-25 — la visio de la landing du Tour de France IA (`/tourdefrance-ia`).
-  // Classée `autre` (aucune migration dans ce lot) : le nom de l'événement chez
-  // Calendly ne contient ni « apporteur » ni « formateur », donc la réservation
-  // reste dans les familles CLIENT — fiche prospect dans la console, CRM des
-  // ventes, et nos e-mails client (confirmation, J-1, H-1), comme un premier
-  // contact. Lien privé : jamais listée sur l'écran du choix d'`/appel`.
+  // Type PROPRE en base (`tour_de_france_ia`, migration du 2026-10-27) : le nom de
+  // l'événement chez Calendly ne contient ni « apporteur » ni « formateur », donc la
+  // réservation reste dans les familles CLIENT — fiche prospect dans la console,
+  // CRM des ventes, et nos e-mails (confirmation, J-1, H-1). Les lignes écrites
+  // avant la migration restent `autre` : `estVisioTourParNom` les reconnaît encore.
+  // Lien privé : jamais listée sur l'écran du choix d'`/appel`.
   // 🔴 Aucun prix, et seule la VISIO est dite gratuite.
   tour: {
     choix: "tour",
     route: "tour-de-france-ia",
-    type: "autre",
+    type: "tour_de_france_ia",
     public: false,
     nom: "Tour de France IA",
     titre: "Votre visio Tour de France IA — 30 minutes",

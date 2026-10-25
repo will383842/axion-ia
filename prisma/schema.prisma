@@ -4592,6 +4592,10 @@ enum TypeRendezVous {
   /// Schéma n° 1 formateurs freelance (2026-10-10) : posée, AUCUN classement ne
   /// la produit encore (le miroir `TYPES_RENDEZ_VOUS` ne la porte pas).
   formateur
+  /// Visio de 30 min du Tour de France IA (landing `/tourdefrance-ia`, 2026-10-25).
+  /// Ajoutée AVANT toute lecture : le worker peut écrire cette valeur avant la
+  /// migration (repli `estColonneTypeRendezVousAbsente`).
+  tour_de_france_ia
 
   @@map("type_rendez_vous")
 }

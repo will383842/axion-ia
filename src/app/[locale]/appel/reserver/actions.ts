@@ -53,6 +53,7 @@ import {
   lireChoixRendezVous,
   lireDepuis,
   lireSuiviArrivee,
+  avecSourceDuChoix,
   parametresDuChoix,
   provenanceEnBloc,
   resoudreChoix,
@@ -250,7 +251,7 @@ export async function soumettreLaReservation(fd: FormData): Promise<void> {
     // La provenance en BLOC (L5a) : celle de l'arrivée recopiée par le
     // parcours si elle porte une UTM, sinon celle du cookie (réécrit à chaque
     // URL avec UTM, donc la DERNIÈRE vue). Jamais un mélange des deux.
-    ...provenanceEnBloc(suivi, utm),
+    ...avecSourceDuChoix(choix, provenanceEnBloc(suivi, utm)),
     // Les formats DE CE TYPE, jugés comme la page du formulaire les a annoncés.
     formats: formatsProposes(choix, et.lieux?.formats),
     adresseDuLieu: et.lieux?.adresse ?? null,

@@ -171,7 +171,7 @@ describe("🔴 chaque lien du parcours porte l'arrivée", () => {
     expect(actions).toContain("parametresDuChoix(choix, depuis, suivi)");
     expect(actions).toContain("lienDuCalendrier(locale, choix, depuis, suivi)");
     // La provenance de la réservation directe se prend en BLOC.
-    expect(actions).toContain("...provenanceEnBloc(suivi, utm)");
+    expect(actions).toContain("...avecSourceDuChoix(choix, provenanceEnBloc(suivi, utm))");
   });
 });
 
