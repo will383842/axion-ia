@@ -14227,6 +14227,10 @@ model Rencontre {
   /// Code Meet « abc-defg-hij ». Non unique (lien personnel réutilisé).
   meetCode                      String?            @map("meet_code") @db.VarChar(20)
   titre                         String             @db.VarChar(255)
+  /// Lieu du rendez-vous saisi dans la console (adresse, « chez le client »...), 2026-10-25. Facultatif.
+  lieu                          String?            @db.VarChar(200)
+  /// Objet du rendez-vous saisi dans la console, 2026-10-25. Facultatif.
+  objet                         String?            @db.VarChar(255)
   debutPrevu                    DateTime?          @map("debut_prevu")
   finPrevue                     DateTime?          @map("fin_prevue")
   debutReel                     DateTime?          @map("debut_reel")
