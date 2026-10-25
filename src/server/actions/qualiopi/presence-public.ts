@@ -40,7 +40,10 @@ export async function repondrePresenceAction(formData: FormData): Promise<void> 
   const limite = await checkRateLimit(`presence:rep:${empreinte}`, LIMITE_PAR_JETON);
   if (!limite.allowed) redirect(`${page}?e=trop_de_tentatives`);
 
-  await enregistrerReponsePresence(token, choix);
-  // Le refus éventuel est relu par la page (lien invalide, session commencée…) : un seul récit.
+  const r = await enregistrerReponsePresence(token, choix);
+  // Seul refus que la page ne peut pas relire : la demande a été envoyée mais sa trace manque
+  // (écriture échouée après l'e-mail). Sans raison dans l'adresse, la page se réaffichait muette.
+  if (!r.ok && r.raison === "aucune_demande") redirect(`${page}?e=aucune_demande`);
+  // Les autres refus sont relus par la page (lien invalide, session commencée…) : un seul récit.
   redirect(page);
 }

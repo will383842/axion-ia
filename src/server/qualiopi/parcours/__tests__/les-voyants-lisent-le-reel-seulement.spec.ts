@@ -15,10 +15,15 @@ const h = vi.hoisted(() => ({
   sessionUnique: vi.fn(),
   appreciations: vi.fn(),
   siteSetting: vi.fn(),
+  suivante: vi.fn(),
 }));
 vi.mock("@/lib/prisma", () => ({
   prisma: {
-    trainingSession: { findMany: h.sessions, findUnique: h.sessionUnique },
+    trainingSession: {
+      findMany: h.sessions,
+      findUnique: h.sessionUnique,
+      findFirst: h.suivante,
+    },
     enrollment: { findMany: h.enrollments },
     remiseRetour: { findMany: vi.fn().mockResolvedValue([]) },
     activityLog: { findFirst: vi.fn().mockResolvedValue(null), findMany: h.journal },
@@ -63,6 +68,7 @@ beforeEach(() => {
   });
   h.appreciations.mockReset().mockResolvedValue([]);
   h.siteSetting.mockReset().mockResolvedValue(null);
+  h.suivante.mockReset().mockResolvedValue(null);
 });
 
 const SESSION = {
@@ -293,6 +299,100 @@ describe("chargerTracesVoyants", () => {
       h.sessions.mockResolvedValue([SESSION]);
       await chargerTracesVoyants(["s1"], NOW);
       expect(h.appreciations.mock.calls[0]![0].where).toMatchObject({ id: { notIn: [essai] } });
+    });
+
+    describe("NC14 — réserves de relecture", () => {
+      const session = (o: Record<string, unknown>) => ({
+        clientId: "c1",
+        formateurPrincipalId: "t1",
+        financementType: "opco",
+        opcoSubrogation: false,
+        opcoStatut: "non_demande",
+        sessionFormateurs: [],
+        jours: [],
+        ...o,
+      });
+      const avisFinanceur = (date: string) => ({
+        source: "financeur",
+        enrollmentId: null,
+        clientId: "c1",
+        trainerId: null,
+        dateAppreciation: new Date(date),
+      });
+      const lire = async () => {
+        allumer("voyants");
+        h.sessions.mockResolvedValue([SESSION]);
+        return (await chargerTracesVoyants(["s1"], NOW)).get("s1")!.i30 as unknown as {
+          autresParties: {
+            entreprise: { concernee: boolean };
+            financeur: { tiers: string; avis: Date | null };
+          };
+        };
+      };
+
+      it("session sans clientId ni inscription rattachée à un client : entreprise « sans objet »", async () => {
+        h.sessionUnique.mockResolvedValue(session({ clientId: null, financementType: "direct" }));
+        h.enrollments.mockResolvedValue([
+          { id: "e1", clientId: null, financementType: null, questionnaires: [] },
+        ]);
+        expect((await lire()).autresParties.entreprise.concernee).toBe(false);
+      });
+
+      it("un client porté seulement par une inscription suffit à exiger l'entreprise", async () => {
+        h.sessionUnique.mockResolvedValue(session({ clientId: null, financementType: "direct" }));
+        h.enrollments.mockResolvedValue([
+          { id: "e1", clientId: "c9", financementType: null, questionnaires: [] },
+        ]);
+        expect((await lire()).autresParties.entreprise.concernee).toBe(true);
+      });
+
+      it("OPCO « refusé » seul ne fait pas un tiers « oui »", async () => {
+        h.sessionUnique.mockResolvedValue(
+          session({ financementType: "direct", opcoStatut: "refuse" }),
+        );
+        expect((await lire()).autresParties.financeur.tiers).toBe("non");
+      });
+
+      it("OPCO « refusé » mais subrogation déclarée : le tiers reste « oui »", async () => {
+        h.sessionUnique.mockResolvedValue(
+          session({ financementType: "direct", opcoStatut: "refuse", opcoSubrogation: true }),
+        );
+        expect((await lire()).autresParties.financeur.tiers).toBe("oui");
+      });
+
+      it("avis financeur rattaché au seul client : borné à fin + 37 j", async () => {
+        h.sessionUnique.mockResolvedValue(session({}));
+        h.appreciations.mockResolvedValue([avisFinanceur("2027-03-01T10:00:00Z")]);
+        expect((await lire()).autresParties.financeur.avis).toBeNull();
+      });
+
+      it("avis financeur du client dans la fenêtre : retenu", async () => {
+        h.sessionUnique.mockResolvedValue(session({}));
+        h.appreciations.mockResolvedValue([avisFinanceur("2026-12-01T10:00:00Z")]);
+        expect((await lire()).autresParties.financeur.avis).toEqual(
+          new Date("2026-12-01T10:00:00Z"),
+        );
+      });
+
+      it("avis financeur du client postérieur au début de la session suivante : écarté", async () => {
+        h.sessionUnique.mockResolvedValue(session({}));
+        h.suivante.mockResolvedValue({ dateDebut: new Date("2026-11-20T08:00:00Z") });
+        h.appreciations.mockResolvedValue([avisFinanceur("2026-12-01T10:00:00Z")]);
+        expect((await lire()).autresParties.financeur.avis).toBeNull();
+      });
+
+      it("avis financeur rattaché par l'inscription : retenu même hors fenêtre", async () => {
+        h.sessionUnique.mockResolvedValue(session({}));
+        h.enrollments.mockResolvedValue([
+          { id: "e1", clientId: null, financementType: null, questionnaires: [] },
+        ]);
+        h.appreciations.mockResolvedValue([
+          { ...avisFinanceur("2027-03-01T10:00:00Z"), enrollmentId: "e1" },
+        ]);
+        expect((await lire()).autresParties.financeur.avis).toEqual(
+          new Date("2027-03-01T10:00:00Z"),
+        );
+      });
     });
   });
 });
