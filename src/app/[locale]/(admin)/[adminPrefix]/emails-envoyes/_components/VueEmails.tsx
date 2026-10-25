@@ -36,6 +36,9 @@ const nb = (n: number): string => n.toLocaleString("fr-FR");
 const quand = (d: Date | null): string =>
   d
     ? new Date(d).toLocaleString("fr-FR", {
+        // Heure de Paris, et non celle du serveur (UTC) : sans cela la liste affichait une heure
+        // de moins que la page de l'envoi (constaté le 25/10/2026, passage à l'heure d'hiver).
+        timeZone: "Europe/Paris",
         day: "2-digit",
         month: "2-digit",
         hour: "2-digit",
@@ -240,6 +243,7 @@ export function VueEmails({
     if (f.gabarit) p.set("gabarit", f.gabarit);
     if (f.destinataire) p.set("destinataire", f.destinataire);
     if (f.sessionId) p.set("session", f.sessionId);
+    if (f.clientId) p.set("client", f.clientId);
     // Tout changement de filtre ramène en page 1 : rester en page 7 d'un jeu
     // qui n'en compte plus que 2 afficherait un tableau vide sans raison
     // visible.
@@ -256,7 +260,7 @@ export function VueEmails({
     },
     {
       key: "gabarit",
-      header: "Gabarit et destinataire",
+      header: "Gabarit, objet et destinataire",
       // 🔴 Les deux dans la MÊME cellule, et jamais masqués.
       // Version initiale : deux colonnes, le destinataire caché sous 640 px.
       // Vu à l'écran, une ligne en échec n'apprenait alors rien — savoir qu'un
@@ -269,8 +273,32 @@ export function VueEmails({
           <Link href={`${base}/${r.id}`} className="admin-link">
             {r.template}
           </Link>
+          {r.objet ? (
+            <>
+              <br />
+              <span className="text-[length:var(--text-admin-sm)]">{r.objet}</span>
+            </>
+          ) : null}
           <br />
           <span className="admin-meta-small break-all">{r.recipient}</span>
+          {r.client ? (
+            <>
+              {" · "}
+              <Link
+                href={`/fr/${adminPrefix}/qualiopi/clients/${r.client.id}`}
+                className="admin-link admin-meta-small"
+              >
+                {r.client.nom} ({r.client.numero})
+              </Link>{" "}
+              <Link
+                href={lien({ clientId: r.client.id, page: 1 })}
+                className="admin-link admin-meta-small"
+                title="Ne montrer que les e-mails de cette fiche client"
+              >
+                [filtrer]
+              </Link>
+            </>
+          ) : null}
           {/* Lot 3 : sous `lg`, la colonne Détail est masquée — or le motif
               d'un échec ou d'un rebond est l'information la plus actionnable
               de la ligne, et c'est au téléphone qu'on la lit en urgence. On
@@ -403,7 +431,9 @@ export function VueEmails({
           auditeur, c'est pire qu'un chiffre faux : un chiffre VRAI posé sur la
           mauvaise question, que personne ne songe à vérifier.
           Ils se restreignent désormais au périmètre — et le disent. */}
-      {filtres.destinataire !== null || filtres.sessionId !== null ? (
+      {filtres.destinataire !== null ||
+      filtres.sessionId !== null ||
+      (filtres.clientId ?? null) !== null ? (
         <p className="mt-[var(--space-admin-2)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
           Les compteurs ci-dessous portent sur le <strong>périmètre filtré</strong>, pas sur
           l&apos;ensemble du journal.
@@ -517,6 +547,7 @@ export function VueEmails({
         {filtres.sessionId ? (
           <input type="hidden" name="session" value={filtres.sessionId} />
         ) : null}
+        {filtres.clientId ? <input type="hidden" name="client" value={filtres.clientId} /> : null}
         <label className="flex flex-col gap-[var(--space-admin-1)]">
           <span className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
             Destinataire
@@ -543,6 +574,35 @@ export function VueEmails({
       {/* La session filtrée est NOMMÉE, jamais laissée en UUID : un auditeur doit
           lire « la formation du 5 septembre chez SCI Invest Sun », pas un
           identifiant technique dont il ne peut rien vérifier. */}
+      {/* La fiche client filtrée est NOMMÉE, avec un lien pour y retourner. */}
+      {donnees.client ? (
+        <p className="admin-alert admin-alert-info mt-[var(--space-admin-3)]">
+          <span>
+            Journal restreint à la fiche client{" "}
+            <Link
+              href={`/fr/${adminPrefix}/qualiopi/clients/${donnees.client.id}`}
+              className="admin-link"
+            >
+              {donnees.client.nom} ({donnees.client.numero})
+            </Link>
+            . Seuls les e-mails rattachés à ses rendez-vous et à son questionnaire avant audit y
+            figurent.{" "}
+            <Link href={lien({ clientId: null, page: 1 })} className="admin-link">
+              Retirer ce filtre
+            </Link>
+          </span>
+        </p>
+      ) : filtres.clientId ? (
+        <p className="admin-alert admin-alert-warning mt-[var(--space-admin-3)]">
+          <span>
+            Cette fiche client est introuvable : aucun e-mail n&apos;est affiché.{" "}
+            <Link href={lien({ clientId: null, page: 1 })} className="admin-link">
+              Retirer ce filtre
+            </Link>
+          </span>
+        </p>
+      ) : null}
+
       {donnees.session !== null ? (
         <p className="admin-alert admin-alert-info mt-[var(--space-admin-3)]">
           <span>
@@ -650,6 +710,8 @@ export function VueEmails({
                   statut: filtres.statut ?? undefined,
                   gabarit: filtres.gabarit ?? undefined,
                   destinataire: filtres.destinataire ?? undefined,
+                  session: filtres.sessionId ?? undefined,
+                  client: filtres.clientId ?? undefined,
                 }}
               />
             ) : null}

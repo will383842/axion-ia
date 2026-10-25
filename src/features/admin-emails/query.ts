@@ -20,6 +20,12 @@
  */
 
 import { prisma } from "@/lib/prisma";
+import {
+  clientFiltre,
+  clientsDesLignes,
+  idsLiesAuClient,
+  type ClientDuJournal,
+} from "./rattachement-client";
 // ⚠️ Tout vient du module PUR. Importer `whereEchecsDeLaSerie` depuis
 // `@/server/email/health` tirait `@/server/notifications` → `next-auth` →
 // `next/server` dans les tests d'écran, dont la collecte échouait avant le
@@ -91,6 +97,11 @@ export type FiltresEmails = {
    * à la main. Ici la session résout elle-même ses entités liées.
    */
   sessionId: string | null;
+  /**
+   * Fiche client dont on veut le journal (lot 1 fiche client, 25/10/2026). Facultatif : les
+   * appelants historiques n'ont pas à le fournir. Résolu comme la session, par les entités visées.
+   */
+  clientId?: string | null;
   page: number;
 };
 
@@ -120,6 +131,10 @@ export type LigneEmail = {
   jobId: string | null;
   bounceType: string | null;
   bounceReason: string | null;
+  /** Objet de l'e-mail tel qu'il est parti (copie conservée), ou `null` s'il n'y a pas de copie. */
+  objet?: string | null;
+  /** La fiche client visée par l'envoi, quand on sait la retrouver. */
+  client?: ClientDuJournal | null;
 };
 
 export type ChargementEmails = {
@@ -142,6 +157,8 @@ export type ChargementEmails = {
   gabarits: Array<{ nom: string; envois: number }>;
   /** La session filtrée, si le filtre porte sur une session. */
   session: SessionFiltree | null;
+  /** La fiche client filtrée, si le filtre porte sur un client. */
+  client?: ClientDuJournal | null;
 };
 
 /**
@@ -421,6 +438,7 @@ export async function chargerEmails(filtres: FiltresEmails): Promise<ChargementE
     parStatut: { envoyes: 0, echecs: 0, enAttente: 0, rebonds: 0, annules: 0, rebondsDurs: 0 },
     gabarits: [],
     session: null,
+    client: null,
   };
 
   const depuis = new Date();
@@ -482,6 +500,18 @@ export async function chargerEmails(filtres: FiltresEmails): Promise<ChargementE
     perimetre = { ...perimetre, entityId: { in: ids } };
   }
 
+  // Filtre par fiche client : même principe que la session (liste d'identifiants, vide = zéro
+  // ligne). Combiné à une session, on garde l'INTERSECTION des deux listes.
+  let clientNomme: ClientDuJournal | null = null;
+  if (filtres.clientId) {
+    clientNomme = await clientFiltre(filtres.clientId).catch(() => null);
+    const idsClient = await idsLiesAuClient(filtres.clientId).catch(() => [] as string[]);
+    const dejaFiltre = (perimetre["entityId"] as { in: string[] } | undefined)?.in;
+    const retenus =
+      dejaFiltre === undefined ? idsClient : idsClient.filter((i) => dejaFiltre.includes(i));
+    perimetre = { ...perimetre, entityId: { in: retenus } };
+  }
+
   const where = {
     ...perimetre,
     ...(filtres.statut ? { status: filtres.statut } : {}),
@@ -514,6 +544,8 @@ export async function chargerEmails(filtres: FiltresEmails): Promise<ChargementE
           jobId: true,
           bounceType: true,
           bounceReason: true,
+          // L'objet vit dans la copie (table à part) : une jointure 1-1 sur la clé primaire.
+          contenu: { select: { subject: true } },
         },
       }),
       // Compteurs de tête : calculés SANS le filtre de statut, sinon ils
@@ -542,8 +574,13 @@ export async function chargerEmails(filtres: FiltresEmails): Promise<ChargementE
     const compte = (s: EmailLogStatus): number =>
       parStatutBrut.find((r) => r.status === s)?._count._all ?? 0;
 
+    const clients = await clientsDesLignes(lignes);
     return {
-      lignes,
+      lignes: lignes.map(({ contenu, ...l }) => ({
+        ...l,
+        objet: contenu?.subject ?? null,
+        client: clients.get(l.id) ?? null,
+      })),
       total,
       page: filtres.page,
       pages: Math.max(1, Math.ceil(total / PAR_PAGE)),
@@ -565,6 +602,7 @@ export async function chargerEmails(filtres: FiltresEmails): Promise<ChargementE
       },
       gabarits: gabaritsBruts.map((g) => ({ nom: g.template, envois: g._count._all })),
       session,
+      client: clientNomme,
     };
   } catch {
     return vide;

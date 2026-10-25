@@ -32,6 +32,8 @@
  * Garde : `./__tests__/un-lecteur-ne-voit-ni-synthese-ni-echanges.spec.tsx`.
  */
 
+import { BlocQuestionnaireFiche } from "@/components/admin/dossier-client/BlocQuestionnaireFiche";
+import { lireQuestionnairesDeLaFiche } from "@/features/dossier-client/questionnaires-de-la-fiche";
 import type { Metadata } from "next";
 import { SuppressionManuelle } from "@/components/admin/dossier-client/SuppressionManuelle";
 import { adminPath } from "@/lib/admin-path";
@@ -368,14 +370,23 @@ export default async function FicheClient360Page({ params, searchParams }: PageP
 
   let contenuDossier: React.ReactNode = null;
   if (voitEchanges && onglet === "synthese") {
-    const [faits, projets] = await Promise.all([lireFaitsDuClient(id), lireProjetsDuClient(id)]);
+    const [faits, projets, questionnaires] = await Promise.all([
+      lireFaitsDuClient(id),
+      lireProjetsDuClient(id),
+      lireQuestionnairesDeLaFiche(id),
+    ]);
     contenuDossier = (
-      <OngletSynthese
-        consolidation={consoliderFaits(faits, projets, maintenant)}
-        projets={projets}
-        ficheHref={ficheHref}
-        erreur={erreur}
-      />
+      <>
+        {/* Lot 1 fiche client (25/10/2026) : le questionnaire avant audit se lit ICI, plus
+            seulement sur la page de chaque rendez-vous. Lecture seule, aucun envoi. */}
+        <BlocQuestionnaireFiche questionnaires={questionnaires} adminPrefix={adminPrefix} />
+        <OngletSynthese
+          consolidation={consoliderFaits(faits, projets, maintenant)}
+          projets={projets}
+          ficheHref={ficheHref}
+          erreur={erreur}
+        />
+      </>
     );
   } else if (voitEchanges && onglet === "projets") {
     const [projets, faitsARanger, nbDocuments] = await Promise.all([
