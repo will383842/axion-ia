@@ -2,6 +2,9 @@
 // (Clients, puis Système, puis le général : décision du 25/10/2026) et le message (10 lignes au
 // plus, ni adresse, ni nom complet, ni contenu de réponse). Jamais WhatsApp.
 
+import { readFileSync } from "node:fs";
+import { resolve } from "node:path";
+
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import { sendTelegramRaw } from "../channels/telegram";
@@ -57,7 +60,7 @@ describe("routage du questionnaire avant audit", () => {
 });
 
 describe("message du questionnaire avant audit", () => {
-  it("réponse reçue : société, prénom + initiale, réponses, prochaine relance, lien ; 10 lignes au plus", () => {
+  it("réponse reçue : société, prénom + initiale, réponses, prochain rappel, lien ; 10 lignes au plus", () => {
     const { text } = formatNotification(
       {
         category: "QUESTIONNAIRE_PREAUDIT_REPONSE",
@@ -96,10 +99,10 @@ describe("message du questionnaire avant audit", () => {
     ).toContain("1 reçue \\(nombre attendu connu après la réponse du dirigeant\\)");
     expect(
       corps({ evenement: "relance", rang: 2, essai: true, societe: "X", chemin: "c" }),
-    ).toContain("ESSAI · Relance 2 sur 3 partie");
+    ).toContain("ESSAI · Rappel 2 sur 3 parti");
     expect(
       corps({ evenement: "arret", motif: "reponse_dirigeant", societe: "X", chemin: "c" }),
-    ).toContain("Relances arrêtées : réponse du dirigeant");
+    ).toContain("Rappels arrêtés : réponse du dirigeant");
     expect(
       corps({
         evenement: "invitation",
@@ -135,5 +138,18 @@ describe("aperçu de lien du salon « Questionnaire audit »", () => {
 
   it("ne change pas les autres salons", async () => {
     expect(await corpsEnvoye()).not.toHaveProperty("link_preview_options");
+  });
+});
+
+describe("le choix de l'aperçu de lien se fait par salon, dans dispatchChannels", () => {
+  it("seules les catégories du salon « Questionnaire audit » coupent l'aperçu", () => {
+    expect(telegramGroupFor("QUESTIONNAIRE_PREAUDIT_REPONSE")).toBe("questionnaire-audit");
+    expect(telegramGroupFor("QUESTIONNAIRE_PREAUDIT_SUIVI")).toBe("questionnaire-audit");
+    expect(telegramGroupFor("CONTACT_FORM_SUBMITTED")).not.toBe("questionnaire-audit");
+  });
+
+  it("dispatchChannels compare le salon, pas la catégorie d'un seul questionnaire", () => {
+    const src = readFileSync(resolve(__dirname, "../index.ts"), "utf8");
+    expect(src).toContain('sansApercuLien: telegramGroupFor(category) === "questionnaire-audit"');
   });
 });
