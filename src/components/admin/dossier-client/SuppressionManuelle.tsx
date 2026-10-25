@@ -24,7 +24,7 @@ const QUOI: Readonly<Record<TypeCible, string>> = {
   client: "cette fiche client",
 };
 
-export async function SuppressionManuelle(props: {
+interface Proprietes {
   type: TypeCible;
   id: string;
   /** Super-administrateur : seul à voir et à utiliser ce bloc. */
@@ -35,7 +35,13 @@ export async function SuppressionManuelle(props: {
   ouvert: boolean;
   /** Raison d'un refus (message scellé de la page), affichée sur l'écran de confirmation. */
   erreur?: string | null;
-}) {
+}
+
+/**
+ * SYNCHRONE : fermé (ou sans droit), rien n'est lu et rien ne suspend le rendu de la page. Seul
+ * l'écran de confirmation, ouvert à la demande, lit la base (`EcranDeConfirmation`).
+ */
+export function SuppressionManuelle(props: Proprietes) {
   if (!props.peutSupprimer) return null;
   const lienOuvrir = `${props.page}?supprimer=${props.type}#suppression-${props.type}`;
   if (!props.ouvert) {
@@ -48,6 +54,10 @@ export async function SuppressionManuelle(props: {
       </p>
     );
   }
+  return <EcranDeConfirmation {...props} />;
+}
+
+async function EcranDeConfirmation(props: Proprietes) {
   const bilan = await bilanSuppression(props.type, props.id).catch(() => null);
   return (
     <section
