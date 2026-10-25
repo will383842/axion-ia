@@ -50,8 +50,9 @@ export function FilDesEchanges({
         </Link>
       </div>
       <p className="mb-[var(--space-admin-3)] text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
-        Rendez-vous, e-mails des rendez-vous et du questionnaire, e-mails en attente de validation.
-        Les rendez-vous à venir sont en tête, puis le plus récent d&apos;abord.
+        E-mails envoyés pour les rendez-vous et le questionnaire, e-mails en attente de validation :
+        le plus récent d&apos;abord. L&apos;objet et le contenu de chaque e-mail sont gardés 5 ans ;
+        rien n&apos;est supprimé automatiquement.
       </p>
       {sourcesEnPanne > 0 ? (
         <p role="alert" className="admin-alert admin-alert-warning mb-[var(--space-admin-3)]">
