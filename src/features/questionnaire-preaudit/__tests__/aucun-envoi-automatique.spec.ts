@@ -5,6 +5,14 @@
  *   · seule l'action « Envoyer » de la console appelle `envoyerQuestionnaire` ;
  *   · seuls `serveur.ts` (et l'effacement RGPD) écrivent dans les trois tables (`brouillon.ts` pour les brouillons) : si quelqu'un ajoute
  *     un autre chemin d'écriture, ce test rougit et dit lequel.
+ *
+ * Étendu SCIEMMENT le 2026-10-26 (relances, confirmations, Telegram) :
+ *   · les relances et confirmations ne partent que de `suivi.ts` (le balayage du worker), qui ne
+ *     fait rien sans le suivi écrit par le clic « Envoyer » de Will ;
+ *   · le worker de balayage est le SEUL fichier de la file qui connaît le questionnaire ;
+ *   · seuls `suivi.ts` et l'effacement RGPD écrivent le suivi et les courriers ;
+ *   · la case « informations par e-mail » n'est lue que par une liste nominative (jamais par
+ *     un expéditeur).
  */
 
 import { readdirSync, readFileSync, statSync } from "node:fs";
@@ -51,6 +59,7 @@ describe("le questionnaire de pré-audit ne part que par un clic de Will", () =>
         /^src\/server\/(queue|visio|calendly)\//.test(f.rel) &&
         /questionnaire-avant-audit|questionnaire-preaudit|questionnaireAvantAudit/i.test(f.src) &&
         f.rel !== "src/server/queue/types.ts" &&
+        f.rel !== "src/server/queue/workers/visio-balayage-worker.ts" &&
         f.rel !== "src/server/visio/questionnaire-en-ligne/jeton.ts",
     ).map((f) => f.rel);
     expect(intrus).toEqual([]);
@@ -66,6 +75,54 @@ describe("le questionnaire de pré-audit ne part que par un clic de Will", () =>
       "src/features/questionnaire-preaudit/brouillon.ts",
       "src/features/questionnaire-preaudit/serveur.ts",
       "src/lib/rgpd-erase.ts",
+    ]);
+  });
+
+  it("relances et confirmations : seul le suivi les nomme (hors gabarits et registres)", () => {
+    const REGISTRES = [
+      "src/lib/email/templates/index.tsx",
+      "src/server/email/apercu/catalogue.ts",
+      "src/server/email/outbox-policy.ts",
+      "src/server/email/verdict-envoi.ts",
+      "src/server/queue/types.ts",
+    ];
+    const appelants = FICHIERS.filter(
+      (f) =>
+        /["']questionnaire-avant-audit-(relance|confirmation)["']/.test(f.src) &&
+        !REGISTRES.includes(f.rel) &&
+        !f.rel.startsWith("src/lib/email/templates/questionnaire-avant-audit"),
+    ).map((f) => f.rel);
+    expect(appelants).toEqual(["src/features/questionnaire-preaudit/suivi.ts"]);
+  });
+
+  it("le suivi n'est appelé que par le balayage du worker", () => {
+    const appelants = FICHIERS.filter(
+      (f) =>
+        /\bpasserSuiviQuestionnaires\(/.test(f.src) &&
+        f.rel !== "src/features/questionnaire-preaudit/suivi.ts",
+    ).map((f) => f.rel);
+    expect(appelants).toEqual(["src/server/queue/workers/visio-balayage-worker.ts"]);
+  });
+
+  it("les écrivains du suivi et des courriers sont connus", () => {
+    const ecrivains = FICHIERS.filter((f) =>
+      /\.questionnaireAvantAudit(Suivi|Courrier)\.(create|createMany|update|updateMany|upsert|delete|deleteMany)\b/.test(
+        f.src,
+      ),
+    ).map((f) => f.rel);
+    expect(ecrivains.sort()).toEqual([
+      "src/features/questionnaire-preaudit/suivi.ts",
+      "src/lib/rgpd-erase.ts",
+    ]);
+  });
+
+  it("la case « informations par e-mail » n'est lue que par une liste nominative", () => {
+    const lecteurs = FICHIERS.filter((f) => /\binfosEmail\b/.test(f.src)).map((f) => f.rel);
+    expect(lecteurs.sort()).toEqual([
+      "src/components/admin/dossier-client/ReponsePreaudit.tsx",
+      "src/features/questionnaire-preaudit/donnees.ts",
+      "src/features/questionnaire-preaudit/serveur.ts",
+      "src/lib/rgpd-dossier-client.ts",
     ]);
   });
 });

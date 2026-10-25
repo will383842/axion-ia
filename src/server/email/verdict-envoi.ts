@@ -82,6 +82,10 @@ export const GABARITS_SOLLICITATION_SOUMIS_A_OPPOSITION: ReadonlySet<string> = n
   // proposition, donc une sollicitation. Retenu / non retenu, eux, RÉPONDENT à
   // l'échange que la personne a elle-même réservé : ils n'y sont pas.
   "apporteur-issue-absent",
+  // 2026-10-26 — les relances du questionnaire avant audit : l'opposition globale les arrête
+  // aussi. L'invitation (clic de Will) et la confirmation de réception restent des messages
+  // de service, hors de cette liste.
+  "questionnaire-avant-audit-relance",
 ]);
 
 /**

@@ -220,6 +220,10 @@ export type EmailJobName =
   | "questionnaire-reponses-recues"
   // Questionnaire de pré-audit (2026-10-24) — au prospect, par clic de Will uniquement.
   | "questionnaire-avant-audit"
+  // Suivi du questionnaire avant audit (2026-10-26) — relances 1 à 3 et confirmation de
+  // réception, enfilées UNIQUEMENT par le balayage du worker (`questionnaire-preaudit/suivi.ts`).
+  | "questionnaire-avant-audit-relance"
+  | "questionnaire-avant-audit-confirmation"
   // QNC L03 (2026-10-16) — recueil du besoin, temps 1 : questionnaire envoyé à
   // l'ENTREPRISE dès la demande, puis relancé (J+3, J+6 au plus).
   | "recueil-besoin"

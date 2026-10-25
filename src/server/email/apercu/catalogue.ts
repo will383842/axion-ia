@@ -684,6 +684,20 @@ export const CATALOGUE: Readonly<Record<EmailJobName, FicheEmail>> = {
     destinataire: "la personne à qui Will envoie le questionnaire",
     source: "features/questionnaire-preaudit/envoyer.ts",
   },
+  "questionnaire-avant-audit-relance": {
+    categorie: "rendez-vous",
+    quand:
+      "Relances J+2, J+5 et J+10 du questionnaire de pré-audit, seulement si Will les a cochées en cliquant « Envoyer » ; arrêtées dès la réponse du dirigeant, par le lien « Ne plus recevoir de rappel » ou par Will",
+    destinataire: "la personne à qui Will a envoyé le questionnaire",
+    source: "features/questionnaire-preaudit/suivi.ts",
+  },
+  "questionnaire-avant-audit-confirmation": {
+    categorie: "rendez-vous",
+    quand:
+      "Une personne vient d'envoyer ses réponses au questionnaire de pré-audit (dirigeant, collaborateur ou référent informatique) — texte neutre, sans bouton",
+    destinataire: "la personne qui a répondu",
+    source: "features/questionnaire-preaudit/suivi.ts",
+  },
   "questionnaire-reponses-recues": {
     categorie: "rendez-vous",
     quand:

@@ -14552,6 +14552,9 @@ model QuestionnaireAvantAudit {
 
   envois     QuestionnaireAvantAuditEnvoi[]
   brouillons QuestionnaireAvantAuditBrouillon[]
+  /// Suivi après le clic « Envoyer » et courriers (relances, confirmations, Telegram), 2026-10-26.
+  suivi      QuestionnaireAvantAuditSuivi?
+  courriers  QuestionnaireAvantAuditCourrier[]
 
   @@index([destinataireHash])
   @@map("questionnaires_avant_audit")
@@ -14561,26 +14564,28 @@ model QuestionnaireAvantAudit {
 /// questionnaire de pré-audit : la charge « schéma 3 » telle quelle, chiffrée.
 /// rgpd: dossier-client
 model QuestionnaireAvantAuditEnvoi {
-  id                 String                  @id @default(uuid()) @db.Uuid
-  questionnaireId    String                  @map("questionnaire_id") @db.Uuid
-  questionnaire      QuestionnaireAvantAudit @relation(fields: [questionnaireId], references: [id], onDelete: Cascade)
+  id                 String                            @id @default(uuid()) @db.Uuid
+  questionnaireId    String                            @map("questionnaire_id") @db.Uuid
+  questionnaire      QuestionnaireAvantAudit           @relation(fields: [questionnaireId], references: [id], onDelete: Cascade)
   /// main (dirigeant), emp (collaborateur), it (référent informatique).
-  mode               String                  @db.VarChar(8)
+  mode               String                            @db.VarChar(8)
   /// Code du collaborateur (`membre`), ou NULL.
-  membre             String?                 @db.VarChar(60)
-  recuLe             DateTime                @default(now()) @map("recu_le")
+  membre             String?                           @db.VarChar(60)
+  recuLe             DateTime                          @default(now()) @map("recu_le")
   /// (enc) JSON complet du schéma 3.
-  donnees            String                  @db.Text
+  donnees            String                            @db.Text
   /// `envoyeLe` de la charge (heure du NAVIGATEUR, texte tel quel) : clé d'idempotence d'un renvoi
   /// identique (questionnaire, mode, membre, envoyeLe). NULL pour une charge sans `envoyeLe`.
-  envoyeLeNavigateur String?                 @map("envoye_le_navigateur") @db.VarChar(40)
+  envoyeLeNavigateur String?                           @map("envoye_le_navigateur") @db.VarChar(40)
   /// Mise à l'écart sur demande d'effacement d'un salarié (2026-10-24) : la réponse n'est plus
   /// montrée ; son effacement définitif reste un clic de Will (`eraseQuestionnairePreauditMembre`).
-  ecarteLe           DateTime?               @map("ecarte_le")
+  ecarteLe           DateTime?                         @map("ecarte_le")
   /// Case SÉPARÉE « recevoir des informations par e-mail » (`consentements.infosEmail`, 25/10/2026) :
   /// vrai, faux, ou NULL si la charge ne la portait pas. Datée par `recuLe` (heure du serveur).
   /// ⛔ N'abonne personne et ne déclenche aucun envoi : une information pour Will, rien d'autre.
-  infosEmail         Boolean?                @map("infos_email")
+  infosEmail         Boolean?                          @map("infos_email")
+  /// Confirmations et notifications nées de cette réponse (2026-10-26).
+  courriers          QuestionnaireAvantAuditCourrier[]
 
   @@index([questionnaireId])
   @@index([questionnaireId, mode, envoyeLeNavigateur], map: "questionnaires_avant_audit_envois_idempotence_idx")
@@ -14591,7 +14596,7 @@ model QuestionnaireAvantAuditEnvoi {
 /// remplissage (2026-10-24) : le bac à sable n'a pas de stockage local, le brouillon permet de
 /// reprendre après une fermeture. Enregistré SEULEMENT après l'accord explicite de la personne
 /// (`consent: true`). Le dernier enregistrement gagne ; un plus ancien que celui gardé est refusé.
-/// Supprimé à l'envoi réussi de la réponse, à 30 jours d'inactivité, et avec la personne.
+/// Supprimé à l'envoi réussi de la réponse et avec la personne (jamais d'office : 25/10/2026).
 /// rgpd: dossier-client
 model QuestionnaireAvantAuditBrouillon {
   id              String                  @id @default(uuid()) @db.Uuid
@@ -14611,6 +14616,68 @@ model QuestionnaireAvantAuditBrouillon {
   @@unique([questionnaireId, mode, membre], map: "questionnaires_avant_audit_brouillons_personne_key")
   @@index([majLe])
   @@map("questionnaires_avant_audit_brouillons")
+}
+
+/// Suivi d'un questionnaire avant audit après le clic « Envoyer » (2026-10-26) : relances demandées
+/// par Will, date de l'audit, 1er envoi réel (J0), arrêt des relances. Aucune donnée personnelle.
+/// Écrit par la console (clic de Will) et par le balayage du worker (`suivi.ts`), jamais supprimé.
+/// rgpd: dossier-client
+model QuestionnaireAvantAuditSuivi {
+  id                 String                   @id @default(uuid()) @db.Uuid
+  /// NULL : questionnaire redéposé ou supprimé ; le suivi (journal) RESTE.
+  questionnaireId    String?                  @unique @map("questionnaire_id") @db.Uuid
+  questionnaire      QuestionnaireAvantAudit? @relation(fields: [questionnaireId], references: [id], onDelete: SetNull)
+  relancesDemandees  Boolean                  @default(false) @map("relances_demandees")
+  dateAudit          DateTime?                @map("date_audit")
+  /// Ex. « dans vos locaux ». Texte de Will, jamais saisi par le prospect.
+  lieuAudit          String?                  @map("lieu_audit") @db.VarChar(80)
+  /// J0 : premier `email_logs.sentAt` réel de l'invitation (posé par le worker).
+  premierEnvoiLe     DateTime?                @map("premier_envoi_le")
+  relancesArreteesLe DateTime?                @map("relances_arretees_le")
+  /// reponse_dirigeant | desinscription | will | clos | expire | supprime | rebond | opposition | audit_proche
+  relancesArretMotif String?                  @map("relances_arret_motif") @db.VarChar(40)
+  creeLe             DateTime                 @default(now()) @map("cree_le")
+  majLe              DateTime                 @default(now()) @updatedAt @map("maj_le")
+
+  @@map("questionnaires_avant_audit_suivis")
+}
+
+/// Un courrier (e-mail ou Telegram) prévu, fait ou annulé : planification ET journal d'audit
+/// (2026-10-26). Jamais supprimé par le code. `cle` = idempotence : un même courrier n'existe
+/// qu'une fois. Ni adresse ni contenu : l'empreinte du destinataire seulement.
+/// rgpd: dossier-client
+model QuestionnaireAvantAuditCourrier {
+  id               String                        @id @default(uuid()) @db.Uuid
+  cle              String                        @unique @db.VarChar(120)
+  questionnaireId  String?                       @map("questionnaire_id") @db.Uuid
+  questionnaire    QuestionnaireAvantAudit?      @relation(fields: [questionnaireId], references: [id], onDelete: SetNull)
+  envoiId          String?                       @map("envoi_id") @db.Uuid
+  envoi            QuestionnaireAvantAuditEnvoi? @relation(fields: [envoiId], references: [id], onDelete: SetNull)
+  /// invitation | relance_1 | relance_2 | relance_3 | confirmation_dirigeant | confirmation_collaborateur
+  /// | telegram_invitation | telegram_reponse | telegram_relance | telegram_arret | telegram_retenu | essai
+  nature           String                        @db.VarChar(28)
+  /// email | telegram | journal
+  canal            String                        @db.VarChar(10)
+  /// prevu | en_cours | envoye | retenu | annule | echec | journal
+  statut           String                        @db.VarChar(12)
+  prevuLe          DateTime                      @map("prevu_le")
+  prisLe           DateTime?                     @map("pris_le")
+  faitLe           DateTime?                     @map("fait_le")
+  tentatives       Int                           @default(0)
+  /// Motif lisible SANS donnée personnelle.
+  motif            String?                       @db.VarChar(200)
+  /// Empreinte de l'adresse (jamais l'adresse) : export et effacement RGPD.
+  destinataireHash String?                       @map("destinataire_hash") @db.VarChar(64)
+  /// Essais seulement : la nature imitée (invitation, relance_2, confirmation_collaborateur…).
+  essaiDe          String?                       @map("essai_de") @db.VarChar(28)
+  jobId            String?                       @map("job_id") @db.VarChar(200)
+  creeLe           DateTime                      @default(now()) @map("cree_le")
+
+  @@index([statut, prevuLe])
+  @@index([questionnaireId])
+  @@index([envoiId])
+  @@index([destinataireHash])
+  @@map("questionnaires_avant_audit_courriers")
 }
 
 /// Un brouillon d'e-mail de suivi d'une rencontre, et ce qu'il est devenu. Le

@@ -145,6 +145,8 @@ describe("telegramGroupFor", () => {
       "crm-sync",
       // 🚨 Salon réservé aux incidents de données (2026-10-11).
       "incidents",
+      // 📝 Salon du questionnaire avant audit (2026-10-26).
+      "questionnaire-audit",
       "system",
     ];
     expect(ALL_NOTIFICATION_CATEGORIES.length).toBeGreaterThan(30);

@@ -103,6 +103,15 @@ export const env = createEnv({
     QUESTIONNAIRE_AVANT_AUDIT_ENABLED: z.enum(["true", "false"]).optional(),
     QUESTIONNAIRE_PREAUDIT_RGPD_CONTACT: z.string().optional(),
     QUESTIONNAIRE_PREAUDIT_RGPD_CONSERVATION: z.string().optional(),
+    // Suivi du questionnaire (2026-10-26) : relances, confirmations, salon Telegram. Lus par
+    // le WORKER. ABSENT = ÉTEINT ; "true" allume ; "essai" calcule sans rien écrire ni envoyer.
+    QUESTIONNAIRE_RELANCES_ENABLED: z.enum(["true", "false", "essai"]).optional(),
+    QUESTIONNAIRE_CONFIRMATIONS_ENABLED: z.enum(["true", "false", "essai"]).optional(),
+    QUESTIONNAIRE_TELEGRAM_ENABLED: z.enum(["true", "false", "essai"]).optional(),
+    // Boîte d'Axion IA qui reçoit les essais de la console (jamais le prospect). Lue par le WORKER.
+    // Texte libre (une faute de frappe ne doit jamais empêcher le démarrage) : `adresseEssai()`
+    // la vérifie et l'essai échoue, visible au journal, si elle est invalide.
+    QUESTIONNAIRE_PREAUDIT_ADRESSE_ESSAI: z.string().optional(),
     // INT-T60-A — import mensuel de la table IDCC → OPCO (SIRO, data.gouv.fr),
     // lu par le WORKER (`opco-siro-import-worker.ts`). Absent : ACTIF (hors
     // tests) ; "false" coupe le téléchargement et l'import.
@@ -728,6 +737,10 @@ export const env = createEnv({
     QUESTIONNAIRE_AVANT_AUDIT_ENABLED: process.env.QUESTIONNAIRE_AVANT_AUDIT_ENABLED,
     QUESTIONNAIRE_PREAUDIT_RGPD_CONTACT: process.env.QUESTIONNAIRE_PREAUDIT_RGPD_CONTACT,
     QUESTIONNAIRE_PREAUDIT_RGPD_CONSERVATION: process.env.QUESTIONNAIRE_PREAUDIT_RGPD_CONSERVATION,
+    QUESTIONNAIRE_RELANCES_ENABLED: process.env.QUESTIONNAIRE_RELANCES_ENABLED,
+    QUESTIONNAIRE_CONFIRMATIONS_ENABLED: process.env.QUESTIONNAIRE_CONFIRMATIONS_ENABLED,
+    QUESTIONNAIRE_TELEGRAM_ENABLED: process.env.QUESTIONNAIRE_TELEGRAM_ENABLED,
+    QUESTIONNAIRE_PREAUDIT_ADRESSE_ESSAI: process.env.QUESTIONNAIRE_PREAUDIT_ADRESSE_ESSAI,
     IDCC_OPCO_IMPORT_ENABLED: process.env.IDCC_OPCO_IMPORT_ENABLED,
     VISIO_ADRESSES_DE_TEST: process.env.VISIO_ADRESSES_DE_TEST,
     CRM_SYNC_CANDIDATES_ENABLED: process.env.CRM_SYNC_CANDIDATES_ENABLED,
