@@ -152,3 +152,6 @@ describe("encadré « Formateurs proches »", () => {
 vi.mock("@/features/dossier-client/questionnaires-de-la-fiche", () => ({
   lireQuestionnairesDeLaFiche: vi.fn().mockResolvedValue([]),
 }));
+vi.mock("@/features/dossier-client/fil-des-echanges", () => ({
+  lireFilDesEchanges: vi.fn().mockResolvedValue([]),
+}));
