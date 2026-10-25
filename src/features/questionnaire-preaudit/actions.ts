@@ -82,14 +82,14 @@ export async function deposerQuestionnaireAction(fd: FormData): Promise<void> {
     const { role } = await exigerAccesEchanges();
     if (role !== "super_admin") {
       throw new MessagePourWill(
-        "Seul Williams (super-administrateur) peut déposer un questionnaire.",
+        "Seule la personne qui administre la console peut ajouter un questionnaire.",
       );
     }
     const f = fd.get("fichier");
     if (!(f instanceof File) || f.size === 0) {
-      throw new MessagePourWill("Choisissez le fichier HTML du questionnaire.");
+      throw new MessagePourWill("Choisissez d'abord le questionnaire.");
     }
-    if (f.size > 900_000) throw new MessagePourWill("Le fichier est trop gros.");
+    if (f.size > 900_000) throw new MessagePourWill("Ce fichier est trop lourd (max. 900 Ko).");
     const depot = await deposerQuestionnaire(rencontreId, await f.text());
     ancienLienMort = depot.ancienLienMort;
     emailsRejetes = depot.emailsRejetes;
@@ -143,7 +143,7 @@ export async function envoyerQuestionnaireAction(fd: FormData): Promise<void> {
   try {
     await exigerAccesEchanges();
     const q = await lireDeLaRencontre(rencontreId);
-    if (q === null) throw new MessagePourWill("Déposez d'abord le questionnaire.");
+    if (q === null) throw new MessagePourWill("Ajoutez d'abord le questionnaire.");
     const maintenant = new Date();
     const audit = auditDuFormulaire(fd, maintenant);
     issue = await envoyerQuestionnaire({
@@ -164,38 +164,38 @@ export async function envoyerQuestionnaireAction(fd: FormData): Promise<void> {
   revalidatePath(pageRencontre(rencontreId));
   const base =
     issue === "retenu_corbeille"
-      ? "E-mail retenu dans la corbeille « E-mails à valider » : il partira quand vous l'aurez validé."
+      ? "E-mail prêt. Il partira quand vous l'aurez validé dans « E-mails à valider »."
       : "Questionnaire envoyé.";
   retour(
     rencontreId,
     "message",
     !suiviNote
-      ? `${base} ⚠️ Le suivi n'a pas pu être noté : aucune relance ne partira.`
+      ? `${base} ⚠️ Le suivi n'a pas pu être noté : aucun rappel ne partira.`
       : !relances
-        ? `${base} Aucune relance programmée.`
+        ? `${base} Aucun rappel programmé.`
         : modeRelances() === "actif"
-          ? `${base} Les 3 relances sont programmées depuis le départ réel de l'e-mail.`
+          ? `${base} Les 3 rappels sont programmés depuis le départ réel de l'e-mail.`
           : modeRelances() === "essai"
-            ? `${base} Relances en essai : elles sont comptées, mais aucune ne part.`
-            : `${base} Relances demandées, mais éteintes pour le moment : aucune ne partira tant qu'elles ne sont pas allumées.`,
+            ? `${base} Rappels en test : ils sont comptés, mais aucun ne part.`
+            : `${base} Rappels demandés, mais suspendus pour le moment : aucun ne partira tant qu'ils ne sont pas réactivés.`,
   );
 }
 
-/** « M'envoyer un essai » : le worker l'envoie à l'adresse d'essai d'Axion IA, jamais au prospect. */
+/** « M'envoyer un test » : le worker l'envoie à l'adresse de test d'Axion IA, jamais au prospect. */
 export async function demanderEssaiAction(fd: FormData): Promise<void> {
   const rencontreId = champ(fd, "rencontreId");
   if (!uuid.safeParse(rencontreId).success) redirect(adminPath("fr", "/rendez-vous"));
   try {
     await exigerAccesEchanges();
     if (!preauditActif()) {
-      throw new MessagePourWill("Le questionnaire est éteint : aucun essai ne peut partir.");
+      throw new MessagePourWill("L'envoi des questionnaires est suspendu : aucun test ne peut partir.");
     }
     const essaiDe = champ(fd, "essai_de");
     if (!(ESSAIS_POSSIBLES as readonly string[]).includes(essaiDe)) {
-      throw new MessagePourWill("Essai inconnu.");
+      throw new MessagePourWill("Test inconnu.");
     }
     const q = await lireDeLaRencontre(rencontreId);
-    if (q === null) throw new MessagePourWill("Déposez d'abord le questionnaire.");
+    if (q === null) throw new MessagePourWill("Ajoutez d'abord le questionnaire.");
     await demanderEssai(q.id, essaiDe as EssaiPossible);
   } catch (e) {
     retour(rencontreId, "erreur", messageAffichable(e));
@@ -204,7 +204,7 @@ export async function demanderEssaiAction(fd: FormData): Promise<void> {
   retour(
     rencontreId,
     "message",
-    "Essai demandé : il partira dans les 5 minutes à l'adresse d'essai, objet « [ESSAI] ».",
+    "Test demandé. Vous le recevrez dans 5 minutes à votre adresse, objet « [TEST] ». Le client ne reçoit rien.",
   );
 }
 
@@ -225,8 +225,8 @@ export async function arreterRelancesAction(fd: FormData): Promise<void> {
     rencontreId,
     "message",
     arrete
-      ? "Relances arrêtées : plus aucun rappel ne partira."
-      : "Les relances étaient déjà arrêtées.",
+      ? "Rappels arrêtés : plus aucun rappel ne partira."
+      : "Les rappels étaient déjà arrêtés.",
   );
 }
 
@@ -255,7 +255,7 @@ export async function cloreQuestionnaireAction(fd: FormData): Promise<void> {
     retour(rencontreId, "erreur", messageAffichable(e));
   }
   revalidatePath(pageRencontre(rencontreId));
-  retour(rencontreId, "message", "Questionnaire clos : le lien ne reçoit plus de réponses.");
+  retour(rencontreId, "message", "Questionnaire fermé : il ne reçoit plus de réponses.");
 }
 
 /** La référence et le code d'un salarié, lus du formulaire de la console (bornés). */

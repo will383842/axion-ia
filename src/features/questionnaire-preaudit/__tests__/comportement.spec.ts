@@ -655,7 +655,7 @@ describe("les actions de la console", () => {
         formulaire({ rencontreId: RENCONTRE, fichier: new File([HTML], "q.html") }),
       ),
     );
-    expect(decodeURIComponent(url)).toContain("super-administrateur");
+    expect(decodeURIComponent(url)).toContain("administre la console");
     expect(base.q).toHaveLength(0);
   });
 
@@ -825,7 +825,7 @@ describe("l'envoi par clic", () => {
 
   it("refusé éteint : rien en file", async () => {
     const q = questionnaire({ envoyeLe: null });
-    await expect(envoyerQuestionnaire(args(q))).rejects.toThrow(/éteint/);
+    await expect(envoyerQuestionnaire(args(q))).rejects.toThrow(/suspendu/);
     expect(base.enqueue).not.toHaveBeenCalled();
   });
 

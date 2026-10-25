@@ -1,7 +1,7 @@
 /**
  * Le suivi du questionnaire avant audit se voit sur la fiche de la rencontre (2026-10-26) :
  * case des relances COCHÉE par défaut avec ses dates, date et lieu de l'audit, aperçus des
- * e-mails de suivi, « M'envoyer un essai », journal et « Arrêter les relances ».
+ * e-mails de suivi, « M'envoyer un test », journal et « Arrêter les rappels ».
  * Rien n'est envoyé d'ici : les actions sont simulées.
  */
 
@@ -41,7 +41,7 @@ vi.mock("@/features/questionnaire-preaudit/envoyer", () => ({
   apercuEnvoi: async () => ({ subject: "Votre questionnaire avant audit", html: "<p>x</p>" }),
   apercusSuivi: async () => [
     {
-      libelle: "Relance 1",
+      libelle: "Rappel 1",
       email: { subject: "Votre questionnaire vous attend", html: "<p>r</p>" },
     },
   ],
@@ -91,21 +91,21 @@ describe("le suivi du questionnaire se voit", () => {
     const envoi = container.querySelector('[data-bloc="envoi-questionnaire"]')!;
     const caseRelances = envoi.querySelector('input[name="relances"]') as HTMLInputElement;
     expect(caseRelances.defaultChecked).toBe(true);
-    expect(envoi.textContent).toContain("Programmer les 3 relances automatiques");
+    expect(envoi.textContent).toContain("Programmer les 3 rappels automatiques");
     // Une phrase lisible, jamais un nom de variable (vérification E1).
     expect(envoi.textContent).not.toContain("QUESTIONNAIRE_RELANCES_ENABLED");
     expect(envoi.querySelector("[data-etat-relances]")?.getAttribute("data-etat-relances")).toBe(
       "eteint",
     );
-    expect(envoi.textContent).toContain("Relances éteintes pour le moment");
+    expect(envoi.textContent).toContain("Rappels suspendus pour le moment");
     expect((envoi.querySelector('input[name="lieu_audit"]') as HTMLInputElement).value).toBe(
       "dans vos locaux",
     );
     expect(container.querySelector('[data-bloc="apercus-suivi"]')?.textContent).toContain(
-      "Relance 1",
+      "Rappel 1",
     );
     expect(container.querySelector('[data-bloc="essai-suivi"]')?.textContent).toContain(
-      "M'envoyer un essai",
+      "M'envoyer un test",
     );
   });
 
@@ -138,10 +138,10 @@ describe("le suivi du questionnaire se voit", () => {
     });
     const { container } = await rendre(false);
     const bloc = container.querySelector('[data-bloc="suivi-questionnaire"]')!;
-    expect(bloc.textContent).toContain("Prochaine relance");
-    expect(bloc.textContent).toContain("Relance 1");
+    expect(bloc.textContent).toContain("Prochain rappel");
+    expect(bloc.textContent).toContain("Rappel 1");
     expect(bloc.textContent).toContain("prévu");
-    expect(bloc.textContent).toContain("Arrêter les relances");
+    expect(bloc.textContent).toContain("Arrêter les rappels");
   });
 
   it("relances arrêtées : le motif en clair, plus de bouton", async () => {
@@ -158,7 +158,7 @@ describe("le suivi du questionnaire se voit", () => {
     const { container } = await rendre(false);
     const bloc = container.querySelector('[data-bloc="suivi-questionnaire"]')!;
     expect(bloc.textContent).toContain("le dirigeant a répondu");
-    expect(bloc.textContent).not.toContain("Arrêter les relances");
+    expect(bloc.textContent).not.toContain("Arrêter les rappels");
   });
 
   it("lien clos ou expiré : plus de lien « Essayer » (la page répondrait 404)", async () => {
@@ -197,10 +197,10 @@ describe("le suivi du questionnaire se voit", () => {
     expect(bloc.textContent).not.toContain("pas encore constaté");
     expect(bloc.textContent).toContain("E-mail parti le 25/10/2026");
     const sim = container.querySelector('[data-bloc="simulation-essai"]')!;
-    expect(sim.textContent).toContain("Mode essai");
-    expect(sim.textContent).toContain("Relance 1 : serait partie le 27/10/2026");
-    expect(sim.textContent).toContain("Relance 2 : annulée (audit à moins de 24 h)");
-    expect(sim.textContent).toContain("Relance 3 : serait partie le 29/10/2026");
+    expect(sim.textContent).toContain("Mode test");
+    expect(sim.textContent).toContain("Rappel 1 : serait parti le 27/10/2026");
+    expect(sim.textContent).toContain("Rappel 2 : annulé (audit à moins de 24 h)");
+    expect(sim.textContent).toContain("Rappel 3 : serait parti le 29/10/2026");
     expect(sim.textContent).toContain("Confirmation au dirigeant : partirait dès sa réponse");
     delete process.env["QUESTIONNAIRE_RELANCES_ENABLED"];
   });
