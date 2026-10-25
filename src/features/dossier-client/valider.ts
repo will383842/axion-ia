@@ -246,7 +246,7 @@ export async function validerApresLAppel(
       }
       if (f.portee === "a_ranger") {
         throw new ErreurValidation(
-          "Un fait coché n'est rangé ni dans l'entreprise ni dans un projet : choisissez un projet.",
+          "Un fait coché n'est rangé ni dans l'entreprise ni dans une prestation : choisissez une prestation.",
         );
       }
       if (f.statut === "valide") continue;

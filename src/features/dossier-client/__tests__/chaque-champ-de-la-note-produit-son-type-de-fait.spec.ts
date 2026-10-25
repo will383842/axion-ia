@@ -74,7 +74,7 @@ describe("chaque champ de la note produit son type de fait", () => {
   });
 
   it("contre-témoin : un besoin sans projet est refusé, en français", () => {
-    expect(() => faitsDeLaNote({ besoin: "Un audit" }, false)).toThrow(/projet/);
+    expect(() => faitsDeLaNote({ besoin: "Un audit" }, false)).toThrow(/prestation/);
   });
 
   it("une note vide est vide ; les clés suivent la cardinalité", () => {

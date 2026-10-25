@@ -457,8 +457,8 @@ export function CarteDocuments(p: PropsCarteDocuments): React.ReactElement {
 
       {aucun ? (
         <p className={`mb-[var(--space-admin-3)] text-[length:var(--text-admin-sm)] ${mutedCls}`}>
-          Rangez ici tout ce qui concerne ce projet : ce que vous avez envoyé au client (e-mail,
-          PDF, liens) et vos documents internes.
+          Rangez ici tout ce qui concerne cette prestation : ce que vous avez envoyé au client
+          (e-mail, PDF, liens) et vos documents internes.
         </p>
       ) : null}
 

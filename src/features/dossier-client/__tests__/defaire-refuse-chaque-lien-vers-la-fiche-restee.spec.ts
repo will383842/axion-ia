@@ -78,7 +78,7 @@ describe("⛔ « Défaire » refuse chaque lien vers la fiche restée, en le dis
       const rdv = t["rencontre"]?.find((l) => l["id"] === s.rencontreId);
       if (rdv) rdv["projetId"] = p;
     });
-    attendreRefus(x, /rendez-vous à rendre a été rangé dans un projet de la fiche restée/);
+    attendreRefus(x, /rendez-vous à rendre a été rangé dans une prestation de la fiche restée/);
   });
 
   it("(b) une personne de la fiche restée ajoutée à un rendez-vous rendu", async () => {
@@ -105,7 +105,7 @@ describe("⛔ « Défaire » refuse chaque lien vers la fiche restée, en le dis
         role: "decideur",
       });
     });
-    attendreRefus(x, /personne de la fiche restée a un rôle dans un projet à rendre/);
+    attendreRefus(x, /personne de la fiche restée a un rôle dans une prestation à rendre/);
   });
 
   it("(d) un fait d'un rendez-vous de la fiche restée rangé dans un projet rendu", async () => {
@@ -134,7 +134,7 @@ describe("⛔ « Défaire » refuse chaque lien vers la fiche restée, en le dis
     });
     attendreRefus(
       x,
-      /fait d'un rendez-vous de la fiche restée a été rangé dans un projet à rendre/,
+      /fait d'un rendez-vous de la fiche restée a été rangé dans une prestation à rendre/,
     );
   });
 

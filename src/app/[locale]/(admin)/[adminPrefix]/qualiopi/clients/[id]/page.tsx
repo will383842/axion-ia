@@ -283,9 +283,9 @@ const ONGLETS_DOSSIER = ["synthese", "projets", "echanges", "personnes"] as cons
 type Onglet = (typeof ONGLETS_DOSSIER)[number] | "facturation";
 
 const LIBELLE_ONGLET: Readonly<Record<Onglet, string>> = {
-  synthese: "Synthèse",
-  projets: "Projets",
-  echanges: "Échanges",
+  synthese: "Résumé",
+  projets: "Prestations",
+  echanges: "Rendez-vous",
   personnes: "Personnes",
   facturation: "Pièces et facturation",
 };

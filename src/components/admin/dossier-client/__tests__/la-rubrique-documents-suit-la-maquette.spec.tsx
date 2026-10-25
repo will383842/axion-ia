@@ -237,7 +237,7 @@ describe("la rubrique Documents suit la maquette", () => {
   it("projet vide : la phrase utile, le formulaire déjà ouvert, ni groupes ni archivés", () => {
     const html = rendre([]);
     expect(html).toContain(
-      "Rangez ici tout ce qui concerne ce projet : ce que vous avez envoyé au client (e-mail, PDF, liens) et vos documents internes.",
+      "Rangez ici tout ce qui concerne cette prestation : ce que vous avez envoyé au client (e-mail, PDF, liens) et vos documents internes.",
     );
     expect(html).toMatch(/<details[^>]*open=""[^>]*>\s*<summary[^>]*>\+ Ajouter un document/);
     expect(html).not.toContain("Envoyé au client ·");

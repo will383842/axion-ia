@@ -122,10 +122,10 @@ export function FusionDeFiches({
                   Si seule la fiche qui reste a un SIREN, le reporter sur celle-ci
                 </label>
                 <p className={`text-[length:var(--text-admin-xs)] sm:col-span-2 ${mutedCls}`}>
-                  Les personnes, les projets et les rendez-vous passent sur la fiche qui reste ; les
-                  devis et factures restent ici. Deux SIREN différents, ou un SIREN sur cette seule
-                  fiche : la fusion est refusée (dans le second cas, fusionnez dans l&apos;autre
-                  sens). Elle se défait depuis l&apos;une ou l&apos;autre fiche.
+                  Les personnes, les prestations et les rendez-vous passent sur la fiche qui reste ;
+                  les devis et factures restent ici. Deux SIREN différents, ou un SIREN sur cette
+                  seule fiche : la fusion est refusée (dans le second cas, fusionnez dans
+                  l&apos;autre sens). Elle se défait depuis l&apos;une ou l&apos;autre fiche.
                 </p>
                 <div className="sm:col-span-2">
                   <button type="submit" className="admin-button-ghost">

@@ -202,7 +202,7 @@ describe("⛔ deux projets évoqués sont rangés dans deux projets", () => {
         versProjetId: pB,
         parAdminId: ADMIN,
       }),
-    ).rejects.toThrow(/plusieurs projets/);
+    ).rejects.toThrow(/plusieurs prestations/);
     expect(base.tables["rencontre"]?.[0]?.["clientId"]).toBe(a["id"]);
   });
 });

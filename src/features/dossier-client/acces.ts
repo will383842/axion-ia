@@ -54,7 +54,7 @@ export function motifSansAccesAuxEchanges(role: string | null | undefined): stri
       ? LIBELLE_ROLE[role as RoleAdmin]
       : "inconnu";
   return (
-    `La synthèse, les projets, les échanges et les personnes du client portent ce que ` +
+    `Le résumé, les prestations, les rendez-vous et les personnes du client portent ce que ` +
     `le client a dit en rendez-vous. Ils sont réservés à Williams et aux administrateurs ` +
     `(votre rôle : ${libelle}).`
   );
