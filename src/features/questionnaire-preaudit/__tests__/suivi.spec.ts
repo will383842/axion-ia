@@ -855,7 +855,7 @@ describe("essais demandés depuis la console", () => {
       destinataireHash: null,
     });
 
-  it("partent à l'adresse d'essai SEULEMENT, objet [ESSAI], lien d'arrêt inerte", async () => {
+  it("partent à l'adresse d'essai SEULEMENT, objet [TEST], lien d'arrêt inerte", async () => {
     essai("relance_2");
     await passer(new Date("2026-10-26T10:00:00Z"), {
       QUESTIONNAIRE_AVANT_AUDIT_ENABLED: "true",
@@ -865,7 +865,7 @@ describe("essais demandés depuis la console", () => {
     const [gabarit, a, , payload, options] = enfiler.mock.calls[0]!;
     expect(gabarit).toBe("questionnaire-avant-audit-relance");
     expect(a).toBe("essai@axion-ia.com");
-    expect(options.sujetForce).toMatch(/^\[ESSAI\] /);
+    expect(options.sujetForce).toMatch(/^\[TEST\] /);
     expect(options.entityType).toBe("QuestionnaireAvantAuditEssai");
     expect(String(payload["lienArret"])).toMatch(/\?essai=1$/);
     expect(String(payload["lien"])).toContain("essai=1");
@@ -881,7 +881,7 @@ describe("essais demandés depuis la console", () => {
       QUESTIONNAIRE_PREAUDIT_ADRESSE_ESSAI: "essai@axion-ia.com",
     });
     const [, , , payload, options] = enfiler.mock.calls[0]!;
-    expect(options.sujetForce).toBe("[ESSAI] Audit du 30 octobre : votre questionnaire");
+    expect(options.sujetForce).toBe("[TEST] Audit du 30 octobre : votre questionnaire");
     expect(String(payload["auditTexte"])).toContain("30 octobre");
     // Un rendez-vous passé n'est pas une date d'audit.
     enfiler.mockClear();

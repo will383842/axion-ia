@@ -36,6 +36,10 @@ import {
   lireDeLaRencontre,
   lireReponses,
 } from "@/features/questionnaire-preaudit/serveur";
+import {
+  LIBELLE_NATURE,
+  LIBELLE_STATUT,
+} from "@/features/questionnaire-preaudit/libelles-courrier";
 import { formatDateFrShort } from "@/lib/format-date-fr";
 import { fromParisLocalInput, timeInParis, toParisLocalInput } from "@/lib/calendar-grid";
 
@@ -49,45 +53,21 @@ const inputCls =
 const boutonCls =
   "rounded-[var(--radius-admin-sm)] border border-[color:var(--color-admin-border)] px-[var(--space-admin-3)] py-[var(--space-admin-2)] text-[length:var(--text-admin-sm)] font-medium";
 
-/** Ce que Will lit dans le journal du suivi (nature technique → mots simples). */
-const LIBELLE_NATURE: Readonly<Record<string, string>> = {
-  invitation: "Invitation",
-  relance_1: "Relance 1",
-  relance_2: "Relance 2",
-  relance_3: "Relance 3",
-  confirmation_dirigeant: "Confirmation au dirigeant",
-  confirmation_collaborateur: "Confirmation à un collaborateur",
-  telegram_invitation: "Telegram : invitation partie",
-  telegram_reponse: "Telegram : réponse reçue",
-  telegram_relance: "Telegram : relance partie",
-  telegram_arret: "Telegram : relances arrêtées",
-  telegram_retenu: "Telegram : e-mail retenu",
-  essai: "Essai",
-};
-const LIBELLE_STATUT: Readonly<Record<string, string>> = {
-  prevu: "prévu",
-  en_cours: "en cours",
-  envoye: "parti",
-  retenu: "retenu",
-  annule: "annulé",
-  echec: "échec",
-  journal: "noté",
-};
 const LIBELLE_ARRET: Readonly<Record<string, string>> = {
   reponse_dirigeant: "le dirigeant a répondu",
   desinscription: "le destinataire a demandé l'arrêt",
-  will: "arrêtées par vous",
-  clos: "questionnaire clos",
+  will: "arrêtés par vous",
+  clos: "questionnaire fermé",
   expire: "questionnaire expiré",
   supprime: "questionnaire supprimé",
   rebond: "adresse en erreur",
   opposition: "adresse retenue (opposition)",
 };
 const ESSAIS = [
-  ["invitation", "Invitation"],
-  ["relance_1", "Relance 1"],
-  ["relance_2", "Relance 2"],
-  ["relance_3", "Relance 3"],
+  ["invitation", "Premier e-mail"],
+  ["relance_1", "Rappel 1"],
+  ["relance_2", "Rappel 2"],
+  ["relance_3", "Rappel 3"],
   ["confirmation_dirigeant", "Confirmation au dirigeant"],
   ["confirmation_collaborateur", "Confirmation à un collaborateur"],
   ["telegram_reponse", "Message Telegram « réponse reçue »"],
@@ -127,7 +107,7 @@ export async function QuestionnairePreaudit(props: {
     reponses.length > 0 &&
     (q.luLe === null || reponses.some((r) => r.recuLe > (q.luLe as Date)));
   const chemin = q === null ? null : cheminEssaiPreaudit(q.id);
-  // Un lien clos ou expiré ne s'essaie plus (la page répond 404) : on ne montre pas le lien.
+  // Un lien fermé ou expiré ne se teste plus (la page répond 404) : on ne montre pas le lien.
   const essaiOuvert = q !== null && essaiPermis(q);
 
   const maintenant = new Date();
@@ -163,7 +143,7 @@ export async function QuestionnairePreaudit(props: {
           relances: etatRelances === "actif" ? [] : suivi.relancesSimulees,
           confirmation:
             modeConf === "actif"
-              ? "allumée : elle part à la réponse du dirigeant"
+              ? "active : elle part à la réponse du dirigeant"
               : reponseDirigeant !== undefined
                 ? `serait partie le ${quand(reponseDirigeant.recuLe)}, à sa réponse`
                 : "partirait dès sa réponse",
@@ -201,7 +181,7 @@ export async function QuestionnairePreaudit(props: {
           <AdminBadge tone="success">envoyé le {quand(q.envoyeLe)}</AdminBadge>
         )}{" "}
         {q?.closLe != null ? (
-          <AdminBadge tone="outline">clos</AdminBadge>
+          <AdminBadge tone="outline">fermé</AdminBadge>
         ) : q?.expireLe != null ? (
           <AdminBadge tone="outline">expire le {quand(q.expireLe)}</AdminBadge>
         ) : null}{" "}
@@ -244,10 +224,10 @@ export async function QuestionnairePreaudit(props: {
                 rel="noopener noreferrer"
                 className="text-[color:var(--color-admin-accent)] underline-offset-2 hover:underline"
               >
-                Essayer le questionnaire
+                Tester le questionnaire
               </a>{" "}
               <span className={mutedCls}>
-                (mode essai : rien n&apos;est enregistré, personne n&apos;est prévenu)
+                (mode test : rien n&apos;est enregistré, personne n&apos;est prévenu)
               </span>
             </p>
           ) : null}
@@ -322,17 +302,17 @@ export async function QuestionnairePreaudit(props: {
                   <label className="mb-[var(--space-admin-2)] flex items-start gap-[var(--space-admin-2)] text-[length:var(--text-admin-sm)]">
                     <input type="checkbox" name="relances" value="1" defaultChecked />
                     <span>
-                      Programmer les 3 relances automatiques (
+                      Programmer les 3 rappels automatiques (
                       {relancesPrevues
                         .map((r) =>
                           r.prevuLe === null
-                            ? `relance ${r.rang} annulée : audit trop proche`
+                            ? `rappel ${r.rang} annulé : audit trop proche`
                             : quand(r.prevuLe),
                         )
                         .join(", ")}
                       ).{" "}
                       <span className={mutedCls}>
-                        Dates recalculées depuis le départ réel de l&apos;e-mail ; elles
+                        Dates recalculées depuis le départ réel de l&apos;e-mail ; ils
                         s&apos;arrêtent dès que le dirigeant répond.
                       </span>
                     </span>
@@ -378,7 +358,7 @@ export async function QuestionnairePreaudit(props: {
           className="mb-[var(--space-admin-3)] flex flex-wrap items-center gap-[var(--space-admin-2)]"
         >
           <input type="hidden" name="rencontreId" value={rencontreId} />
-          <select name="essai_de" className={inputCls} aria-label="E-mail à essayer">
+          <select name="essai_de" className={inputCls} aria-label="E-mail à tester">
             {ESSAIS.map(([valeur, libelle]) => (
               <option key={valeur} value={valeur}>
                 {libelle}
@@ -386,10 +366,10 @@ export async function QuestionnairePreaudit(props: {
             ))}
           </select>
           <button type="submit" className={boutonCls}>
-            M&apos;envoyer un essai
+            M&apos;envoyer un test
           </button>
           <span className={mutedCls}>
-            (à l&apos;adresse d&apos;essai d&apos;Axion IA, objet « [ESSAI] », jamais au prospect)
+            (à l&apos;adresse de test d&apos;Axion IA, objet « [TEST] », jamais au prospect)
           </span>
         </form>
       ) : null}
@@ -401,21 +381,21 @@ export async function QuestionnairePreaudit(props: {
           </h3>
           <p className="text-[length:var(--text-admin-sm)]">
             {suivi.premierEnvoiLe !== null
-              ? `Parti le ${quand(suivi.premierEnvoiLe)}.`
+              ? `Envoyé le ${quand(suivi.premierEnvoiLe)}.`
               : suivi.departConstate !== null
-                ? `E-mail parti le ${quand(suivi.departConstate)} (départ constaté).`
+                ? `E-mail envoyé le ${quand(suivi.departConstate)} (départ constaté).`
                 : "Départ réel de l'e-mail pas encore constaté."}{" "}
             {suivi.relancesArreteesLe !== null
-              ? `Relances arrêtées le ${quand(suivi.relancesArreteesLe)} (${
-                  LIBELLE_ARRET[suivi.relancesArretMotif ?? ""] ?? "arrêtées"
+              ? `Rappels arrêtés le ${quand(suivi.relancesArreteesLe)} (${
+                  LIBELLE_ARRET[suivi.relancesArretMotif ?? ""] ?? "arrêtés"
                 }).`
               : !suivi.relancesDemandees
-                ? "Aucune relance demandée."
+                ? "Aucun rappel demandé."
                 : suivi.prochaine !== null
-                  ? `Prochaine relance : ${quand(suivi.prochaine)}.`
+                  ? `Prochain rappel : ${quand(suivi.prochaine)}.`
                   : suivi.relancesSimulees.length > 0
                     ? ""
-                    : "Relances programmées au départ réel de l'e-mail."}
+                    : "Rappels programmés au départ réel de l'e-mail."}
             {suivi.dateAudit !== null ? ` Audit : ${quand(suivi.dateAudit)}` : ""}
             {suivi.lieuAudit !== null ? `, ${suivi.lieuAudit}.` : suivi.dateAudit ? "." : ""}
           </p>
@@ -426,16 +406,16 @@ export async function QuestionnairePreaudit(props: {
               className="my-[var(--space-admin-2)] rounded-[var(--radius-admin-sm)] border border-[color:var(--color-admin-border)] p-[var(--space-admin-2)] text-[length:var(--text-admin-sm)]"
             >
               <p className="font-semibold">
-                Mode essai : voici ce qui serait parti. Rien ne part tant que ce n&apos;est pas
-                allumé.
+                Mode test : voici ce qui serait parti. Rien ne part tant que ce n&apos;est pas
+                activé.
               </p>
               <ul>
                 {simulation.relances.map((r) => (
                   <li key={r.rang}>
-                    Relance {r.rang} :{" "}
+                    Rappel {r.rang} :{" "}
                     {r.prevuLe !== null
-                      ? `serait partie le ${quand(r.prevuLe)}`
-                      : "annulée (audit à moins de 24 h)"}
+                      ? `serait parti le ${quand(r.prevuLe)}`
+                      : "annulé (audit à moins de 24 h)"}
                   </li>
                 ))}
                 <li>Confirmation au dirigeant : {simulation.confirmation}</li>
@@ -443,7 +423,7 @@ export async function QuestionnairePreaudit(props: {
             </div>
           ) : null}
           <p className={mutedCls}>
-            Un rendez-vous annulé n&apos;arrête pas les relances : clôturez le questionnaire ou
+            Un rendez-vous annulé n&apos;arrête pas les rappels : fermez le questionnaire ou
             arrêtez-les ici.
           </p>
           {suivi.journal.length > 0 ? (
@@ -464,7 +444,7 @@ export async function QuestionnairePreaudit(props: {
             <form action={arreterRelancesAction} className="mt-[var(--space-admin-2)]">
               <input type="hidden" name="rencontreId" value={rencontreId} />
               <button type="submit" className={boutonCls}>
-                Arrêter les relances
+                Arrêter les rappels
               </button>
             </form>
           ) : null}
@@ -475,7 +455,7 @@ export async function QuestionnairePreaudit(props: {
         <form action={cloreQuestionnaireAction} className="mb-[var(--space-admin-3)]">
           <input type="hidden" name="rencontreId" value={rencontreId} />
           <button type="submit" className={boutonCls}>
-            Clore le questionnaire
+            Fermer le questionnaire
           </button>
         </form>
       ) : null}

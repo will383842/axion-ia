@@ -65,6 +65,5 @@ export function refusReel(env: Env = process.env): RefusEnvoi | null {
 export const refusEnvoiReel = refusReel;
 
 export const MESSAGE_REFUS: Readonly<Record<RefusEnvoi, string>> = {
-  eteint:
-    "Le questionnaire de pré-audit est éteint (QUESTIONNAIRE_AVANT_AUDIT_ENABLED). Rien ne peut partir.",
+  eteint: "L'envoi des questionnaires avant audit est suspendu. Rien n'est parti.",
 };

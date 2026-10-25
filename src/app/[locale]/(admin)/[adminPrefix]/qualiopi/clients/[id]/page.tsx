@@ -32,6 +32,8 @@
  * Garde : `./__tests__/un-lecteur-ne-voit-ni-synthese-ni-echanges.spec.tsx`.
  */
 
+import { FilDesEchanges } from "@/components/admin/dossier-client/FilDesEchanges";
+import { lireFilDesEchanges } from "@/features/dossier-client/fil-des-echanges";
 import { BlocQuestionnaireFiche } from "@/components/admin/dossier-client/BlocQuestionnaireFiche";
 import { lireQuestionnairesDeLaFiche } from "@/features/dossier-client/questionnaires-de-la-fiche";
 import type { Metadata } from "next";
@@ -406,11 +408,12 @@ export default async function FicheClient360Page({ params, searchParams }: PageP
       />
     );
   } else if (voitEchanges && onglet === "echanges") {
-    const [rencontres, projets, personnesCourtes, caseTest] = await Promise.all([
+    const [rencontres, projets, personnesCourtes, caseTest, fil] = await Promise.all([
       lireRencontresDuClient(id),
       lireProjetsDuClient(id),
       lirePersonnesCourtes(id),
       lireCaseTestVisible(id),
+      lireFilDesEchanges(id, adminPrefix),
     ]);
     contenuDossier = (
       <>
@@ -424,6 +427,14 @@ export default async function FicheClient360Page({ params, searchParams }: PageP
             toParisLocalInput(new Date(maintenant.getTime() + 24 * 3_600_000)).slice(0, 11) +
             "10:00"
           }
+        />
+        {/* Lot 1 fiche client, PR-3 : un fil unique (rendez-vous + e-mails + courriers du
+            questionnaire), objet seulement. Le détail des comptes rendus reste dessous. */}
+        <FilDesEchanges
+          fil={fil.fil}
+          sourcesEnPanne={fil.sourcesEnPanne}
+          clientId={id}
+          adminPrefix={adminPrefix}
         />
         <OngletEchanges
           rencontres={rencontres}

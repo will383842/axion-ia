@@ -32,10 +32,9 @@ export const modeTelegram = (env: Env = process.env): ModeSuivi =>
 
 /** Ce que Will lit sur l'état des relances : jamais un nom de variable. PUR. */
 export const ETAT_RELANCES_LISIBLE: Readonly<Record<ModeSuivi, string>> = {
-  actif: "Relances actives : elles partiront aux dates prévues.",
-  essai: "Relances en essai : elles sont comptées, mais aucune ne part.",
-  eteint:
-    "Relances éteintes pour le moment : aucune ne partira tant qu'elles ne sont pas allumées.",
+  actif: "Rappels actifs : ils partiront aux dates prévues.",
+  essai: "Rappels en test : ils sont comptés, mais aucun ne part.",
+  eteint: "Rappels suspendus pour le moment : aucun ne partira tant qu'ils ne sont pas réactivés.",
 };
 
 /** L'adresse qui reçoit les essais (« M'envoyer un essai »), jamais une adresse du code. */

@@ -470,7 +470,7 @@ async function passerEssais(ctx: Contexte): Promise<void> {
       jobId: jobIdDe(c.cle),
       entityType: ENTITE_ESSAI,
       entityId: etat.id,
-      sujetForce: `[ESSAI] ${sujetDe(template, payload)}`,
+      sujetForce: `[TEST] ${sujetDe(template, payload)}`,
     });
     const issue = issueFile(r);
     await fin(issue.statut, issue.motif);

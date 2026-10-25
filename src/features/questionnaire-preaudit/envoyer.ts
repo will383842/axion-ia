@@ -66,10 +66,10 @@ export async function apercuEnvoi(
 
 /** Les e-mails de suivi tels qu'ils partiraient (rendu seul, RIEN n'est mis en file). */
 export const APERCUS_SUIVI = [
-  { nature: "relance_1", libelle: "Relance 1", brouillon: false },
-  { nature: "relance_2", libelle: "Relance 2", brouillon: false },
-  { nature: "relance_3", libelle: "Relance 3", brouillon: false },
-  { nature: "relance_2", libelle: "Relance (brouillon en cours)", brouillon: true },
+  { nature: "relance_1", libelle: "Rappel 1", brouillon: false },
+  { nature: "relance_2", libelle: "Rappel 2", brouillon: false },
+  { nature: "relance_3", libelle: "Rappel 3", brouillon: false },
+  { nature: "relance_2", libelle: "Rappel (brouillon en cours)", brouillon: true },
   { nature: "confirmation_dirigeant", libelle: "Confirmation au dirigeant", brouillon: false },
   {
     nature: "confirmation_collaborateur",
@@ -166,7 +166,7 @@ export async function envoyerQuestionnaire(args: {
       echec = r.retenu
         ? `L'e-mail n'est pas parti : adresse retenue (${r.retenu}).`
         : r.corbeilleIndisponible
-          ? "La corbeille de validation est indisponible : rien n'est parti. Réessayez plus tard."
+          ? "Les e-mails à valider sont indisponibles : rien n'est parti. Réessayez plus tard."
           : r.essaiBloque
             ? "Envoi bloqué : cette adresse n'est pas autorisée pendant la session d'essai."
             : "L'e-mail n'a pas pu être mis en file. Réessayez.";
