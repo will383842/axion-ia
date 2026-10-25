@@ -140,3 +140,105 @@ describe("BlocQuestionnaireFiche", () => {
     expect(html).toContain("aperçu de l&#x27;e-mail qui partira");
   });
 });
+
+// ── Le filtre par client ne montre JAMAIS tout le journal ───────────────────────────────────
+describe("chargerEmails avec un filtre client", () => {
+  const journal = vi.hoisted(() => ({
+    emailLog: { count: vi.fn(), findMany: vi.fn(), groupBy: vi.fn() },
+    trainingSession: { findUnique: vi.fn() },
+  }));
+
+  it("un client sans entité rend where.entityId = { in: [] } (zéro ligne)", async () => {
+    vi.resetModules();
+    vi.doMock("@/lib/prisma", () => ({ prisma: { ...prismaMock, ...journal } }));
+    journal.emailLog.count.mockResolvedValue(0);
+    journal.emailLog.findMany.mockResolvedValue([]);
+    journal.emailLog.groupBy.mockResolvedValue([]);
+    prismaMock.rencontre.findMany.mockResolvedValue([]);
+    prismaMock.client.findUnique.mockResolvedValue(CLIENT);
+    const { chargerEmails } = await import("../query");
+    const r = await chargerEmails({
+      jours: 0,
+      statut: null,
+      gabarit: null,
+      destinataire: null,
+      sessionId: null,
+      clientId: U(9),
+      page: 1,
+    });
+    expect(journal.emailLog.findMany.mock.calls[0]![0].where.entityId).toEqual({ in: [] });
+    expect(r.client?.numero).toBe("AXI-CLI-005");
+  });
+
+  it("session et client disjoints : l'intersection est vide", async () => {
+    vi.resetModules();
+    vi.doMock("@/lib/prisma", () => ({ prisma: { ...prismaMock, ...journal } }));
+    journal.emailLog.count.mockResolvedValue(0);
+    journal.emailLog.findMany.mockResolvedValue([]);
+    journal.emailLog.groupBy.mockResolvedValue([]);
+    journal.trainingSession.findUnique.mockResolvedValue(null);
+    prismaMock.rencontre.findMany.mockResolvedValue([{ id: U(1), questionnaireAvantAudit: null }]);
+    prismaMock.client.findUnique.mockResolvedValue(CLIENT);
+    const { chargerEmails } = await import("../query");
+    await chargerEmails({
+      jours: 0,
+      statut: null,
+      gabarit: null,
+      destinataire: null,
+      sessionId: U(8),
+      clientId: U(9),
+      page: 1,
+    });
+    // La session introuvable donne [] : l'intersection avec [U(1)] reste vide.
+    expect(journal.emailLog.findMany.mock.calls[0]![0].where.entityId).toEqual({ in: [] });
+  });
+});
+
+// ── Le résumé du questionnaire sur la fiche ─────────────────────────────────────────────────
+describe("lireQuestionnairesDeLaFiche", () => {
+  it("compte les réponses non écartées, à traiter = reçues après la dernière lecture", async () => {
+    vi.resetModules();
+    const bd = {
+      questionnaireAvantAudit: { findMany: vi.fn() },
+      emailLog: { findMany: vi.fn() },
+    };
+    vi.doMock("@/lib/prisma", () => ({ prisma: bd }));
+    const lu = new Date("2026-10-25T12:00:00Z");
+    bd.questionnaireAvantAudit.findMany.mockResolvedValue([
+      {
+        id: U(2),
+        creeLe: new Date(),
+        envoyeLe: new Date(),
+        luLe: lu,
+        expireLe: null,
+        closLe: null,
+        rencontre: { id: U(1), titre: "Audit", debutPrevu: null },
+        envois: [
+          { mode: "main", recuLe: new Date("2026-10-25T11:00:00Z") },
+          { mode: "emp", recuLe: new Date("2026-10-25T13:00:00Z") },
+          { mode: "it", recuLe: new Date("2026-10-25T14:00:00Z") },
+        ],
+      },
+    ]);
+    bd.emailLog.findMany.mockResolvedValue([
+      { id: "recent", entityId: U(2), status: "bounced" },
+      { id: "ancien", entityId: U(2), status: "sent" },
+    ]);
+    const { lireQuestionnairesDeLaFiche } = await import(
+      "@/features/dossier-client/questionnaires-de-la-fiche"
+    );
+    const [q] = await lireQuestionnairesDeLaFiche(U(9));
+    expect(q!.reponses).toEqual({
+      dirigeant: 1,
+      referentInformatique: 1,
+      collaborateurs: 1,
+      aTraiter: 2,
+    });
+    // Le log le plus récent (premier de la liste triée par date décroissante) l'emporte.
+    expect(q!.invitationEmailLogId).toBe("recent");
+    // La requête écarte déjà les réponses mises à l'écart.
+    expect(bd.questionnaireAvantAudit.findMany.mock.calls[0]![0].select.envois.where).toEqual({
+      ecarteLe: null,
+    });
+  });
+});

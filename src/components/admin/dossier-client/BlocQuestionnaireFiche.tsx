@@ -17,6 +17,22 @@ const jourHeure = (d: Date): string =>
     minute: "2-digit",
   }).format(d);
 
+/** Le libellé dit ce qui est vrai : un échec ou un rebond n'est pas « en attente ». */
+function libelleLienInvitation(statut: string | null): string {
+  switch (statut) {
+    case "sent":
+      return "Voir l'e-mail d'invitation tel qu'il est parti";
+    case "bounced":
+      return "Voir l'e-mail d'invitation (rejeté par la boîte du destinataire)";
+    case "failed":
+      return "Voir l'e-mail d'invitation (échec d'envoi)";
+    case "cancelled":
+      return "Voir l'e-mail d'invitation (annulé)";
+    default:
+      return "Voir l'e-mail d'invitation (pas encore parti)";
+  }
+}
+
 export function BlocQuestionnaireFiche({
   questionnaires,
   adminPrefix,
@@ -71,9 +87,7 @@ export function BlocQuestionnaireFiche({
                     href={`${base}/emails-envoyes/${q.invitationEmailLogId}`}
                     className="admin-link"
                   >
-                    {q.invitationStatut === "sent"
-                      ? "Voir l'e-mail d'invitation tel qu'il est parti"
-                      : "Voir l'e-mail d'invitation (pas encore parti)"}
+                    {libelleLienInvitation(q.invitationStatut)}
                   </Link>
                 ) : (
                   <Link href={lienRdv} className="admin-link">

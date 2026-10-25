@@ -58,7 +58,7 @@ export default async function EmailsEnvoyesPage({
     // formation »). Un UUID ne dépasse pas 36 caractères ; au-delà c'est du
     // bruit, et `chargerEmails` rendra zéro ligne plutôt que le journal entier.
     sessionId: sp.session?.slice(0, 40) ?? null,
-    // Filtre par fiche client (lien « E-mails » de la fiche, lot 1 fiche client). Même garde que
+    // Filtre par fiche client (lien « [filtrer] » d'une ligne rattachée, lot 1 fiche client). Même garde que
     // la session : un identifiant erroné rend zéro ligne, jamais le journal entier.
     clientId: sp.client?.slice(0, 40) ?? null,
     page: lirePage(sp.page),
