@@ -25,6 +25,10 @@ import { VILLES } from "../src/content/villes";
 import type { Ville } from "../src/content/villes";
 import { generateVilleEconomicData } from "../src/server/content-gen/generators/landing-ville-economic-data";
 import { generateVilleHubCopy } from "../src/server/content-gen/generators/ville-hub-copy";
+import {
+  decisionApprobationAuto,
+  donneesEconomiquesDeLaMemoire,
+} from "../src/server/content-gen/villes/controle-ville";
 
 type Tier = 1 | 2 | 3 | 4;
 
@@ -187,15 +191,25 @@ async function processOneVille(
   });
   totalCostUsd += copyResult.totalCostUsd;
 
-  // Step 3 : auto-approve si quality OK
-  if (copyResult.qualityScore >= args.autoApproveThreshold) {
+  // Step 3 : approbation automatique, SEULEMENT si la décision pure le permet
+  // (audit 24/10/2026, option B de Will) : une faute de doctrine ou des données
+  // locales issues de la mémoire du modèle envoient la ville en relecture
+  // humaine (statut « generated », notes écrites par le générateur).
+  const decision = decisionApprobationAuto({
+    qualityScore: copyResult.qualityScore,
+    seuil: args.autoApproveThreshold,
+    donneesDeLaMemoire:
+      ecoGenerated || copyResult.donneesDeLaMemoire || donneesEconomiquesDeLaMemoire(ecoOverride),
+    nbFautesDoctrine: copyResult.fautesDoctrine.length,
+  });
+  if (decision.approuver) {
     await prisma.generatedVilleCopy.update({
       where: { villeSlug: slug },
       data: {
         status: "approved",
         reviewedBy: `auto:regen-complete:>=${args.autoApproveThreshold}`,
         reviewedAt: new Date(),
-        reviewNotes: `Auto-approved (score ${copyResult.qualityScore} >= ${args.autoApproveThreshold}) — regen-villes-complete.ts`,
+        reviewNotes: `${decision.motif} — regen-villes-complete.ts`,
       },
     });
     return {
@@ -213,7 +227,7 @@ async function processOneVille(
     ecoGenerated,
     qualityScore: copyResult.qualityScore,
     totalCostUsd,
-    errorMessage: `quality ${copyResult.qualityScore} < threshold ${args.autoApproveThreshold} (status=generated, manual review needed)`,
+    errorMessage: `${decision.motif} (status=generated, manual review needed)`,
   };
 }
 
