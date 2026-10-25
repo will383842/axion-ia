@@ -36,19 +36,9 @@ name: Banc formateurs
 # personnelles en clair dans la base du banc. Aucune clé n'est écrite ici.
 
 on:
-  pull_request:
-    paths:
-      - "src/server/qualiopi/formateurs-independants/**"
-      - "src/server/calendly/**"
-      - "src/lib/relances/**"
-      - "src/server/qualiopi/documents/signature/**"
-      - "src/app/api/calendly/**"
-      - "src/lib/careers/formateur-freelance*"
-      - "tests/e2e/formateurs/**"
-      - "tests/e2e/fixtures/formateurs/**"
-      - "tests/e2e/qualiopi/formateurs/**"
-      - "scripts/banc-formateurs/**"
-      - ".github/workflows/banc-formateurs.yml"
+  # 2026-10-25 : plus lancé sur les PR (informatif, 5 gros jobs, saturait la file des
+  # machines gratuites). Il tourne chaque nuit (nightly.yml) et à la demande :
+  # gh workflow run banc-formateurs.yml --ref <branche>
   workflow_call:
   workflow_dispatch:
 
