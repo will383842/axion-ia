@@ -55,7 +55,7 @@ function matcherDuProxy(): RegExp {
  *     ouvrir la landing à tout le monde.
  */
 const CAPTEES_VOLONTAIREMENT: Readonly<Record<string, string>> = {
-  "/tourdefrance-ia": "src/app/tourdefrance-ia/__tests__/le-tour-reste-invisible.spec.ts",
+  "/tourdefrance-ia": "src/app/tourdefrance-ia/__tests__/le-tour-est-ouvert.spec.ts",
 };
 
 /** Chemins publics servis hors du segment `[locale]`. */

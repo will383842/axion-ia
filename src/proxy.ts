@@ -187,11 +187,11 @@ const authPipeline = auth(async (req) => {
   //   NI par 0bis (qui la 301 vers `/fr/tourdefrance-ia`, qui n'existe pas), NI
   //   par next-intl.
   //
-  //   Tant que `TOUR_PUBLIC` est faux : 404 texte brut, `no-store`, `noindex`,
+  //   Si `TOUR_PUBLIC` est faux (Tour refermé ; il est ouvert depuis le 2026-10-25) : 404 texte brut, `no-store`, `noindex`,
   //   sauf cookie d'aperçu valide (`features/tour-de-france/porte.ts`). Ouvert :
   //   la page passe normalement. Dans les deux cas où elle passe, elle reçoit les
   //   en-têtes de sécurité de toute page (`poserEnTetesDeSecurite`).
-  //   Garde : `src/app/tourdefrance-ia/__tests__/le-tour-reste-invisible.spec.ts`.
+  //   Garde : `src/app/tourdefrance-ia/__tests__/le-tour-est-ouvert.spec.ts`.
   {
     const verdict = await verdictDeLaPorte({
       pathname: req.nextUrl.pathname,

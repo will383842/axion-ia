@@ -1,21 +1,21 @@
 // @vitest-environment node
 
 /**
- * LE TOUR DE FRANCE IA RESTE INVISIBLE TANT QU'IL EST FERMÉ (2026-10-25).
+ * LE TOUR DE FRANCE IA EST OUVERT AU PUBLIC (2026-10-25, ordre de Will).
  *
- * La landing `/tourdefrance-ia` est livrée FERMÉE (`TOUR_PUBLIC = false`). Ce
- * qui doit tenir jusqu'à la PR d'ouverture :
+ * La landing `/tourdefrance-ia` est ouverte (`TOUR_PUBLIC = true`). Ce qui doit
+ * tenir :
  *
- *   · le proxy la CAPTE (sinon rien ne la ferme) et ne la 301 JAMAIS vers `/fr`
- *     (`/fr/tourdefrance-ia` n'existe pas) — le motif réel du `matcher` est
- *     extrait et exécuté, comme pour le questionnaire ;
- *   · la porte répond 404 sans cookie, avec un faux cookie, ou sans jeton
- *     configuré ; elle laisse passer avec le bon cookie ;
- *   · la règle 0-TDF est appelée AVANT 0a-bis et 0bis dans le proxy ;
- *   · aucun sitemap ne cite la route, `llms.txt` non plus ;
+ *   · le proxy la CAPTE et ne la 301 JAMAIS vers `/fr` (`/fr/tourdefrance-ia`
+ *     n'existe pas) — le motif réel du `matcher` est extrait et exécuté ;
+ *   · la porte laisse passer tout le monde ; FERMÉE, elle répond 404 sans
+ *     cookie, avec un faux cookie ou sans jeton configuré (le retour arrière
+ *     reste prouvé : fonction pure et modules rechargés avec le drapeau faux) ;
+ *   · la page est indexable, canonique, à un seul H1, avec son JSON-LD et son
+ *     image de partage ; `/fr/appel/tour-de-france-ia` reste `noindex` ;
+ *   · le sitemap du Tour, l'index des sitemaps et `llms.txt` citent la route ;
  *   · le contenu ne porte aucun mot interdit, aucun prix, et la page n'importe
- *     aucun composant de la coquille d'Axion (en-tête, pied, next-intl, chatbot,
- *     mesure d'audience).
+ *     aucun composant de la coquille d'Axion.
  *
  * Angle mort assumé : la porte est testée comme module, et son câblage dans le
  * proxy comme texte — le proxy entier (Auth.js, next-intl) n'est pas exécuté ici.
@@ -63,8 +63,8 @@ function fichiers(dossier: string): string[] {
 const JETON = "jeton-de-test-qui-n-est-pas-celui-de-la-prod";
 
 describe("🔑 l'interrupteur", () => {
-  it("le Tour est livré FERMÉ, sous /tourdefrance-ia", () => {
-    expect(TOUR_PUBLIC).toBe(false);
+  it("le Tour est OUVERT, sous /tourdefrance-ia", () => {
+    expect(TOUR_PUBLIC).toBe(true);
     expect(TOUR_PREFIX).toBe("/tourdefrance-ia");
   });
 });
@@ -248,16 +248,16 @@ describe("🔴 la route d'aperçu /api/tourdefrance-ia/apercu", () => {
   });
 });
 
-describe("🔴 aucun sitemap ni llms.txt ne cite la route tant que fermé", () => {
-  it("le sitemap du Tour rend un urlset VIDE", async () => {
+describe("🔴 ouvert : le sitemap, l'index et llms.txt citent la route", () => {
+  it("le sitemap du Tour liste la page", async () => {
     const { GET } = await import("@/app/sitemap-tourdefrance-ia.xml/route");
     const xml = await GET().text();
     expect(xml).toContain("<urlset");
-    expect(xml).not.toContain("<url>");
-    expect(xml).not.toContain("tourdefrance-ia");
+    expect(xml.match(/<url>/g)).toHaveLength(1);
+    expect(xml).toMatch(/<loc>https?:\/\/[^<]+\/tourdefrance-ia<\/loc>/);
   });
 
-  it("l'index ne le liste que si TOUR_PUBLIC", () => {
+  it("l'index cite le sitemap du Tour (et ne le liste que si TOUR_PUBLIC)", () => {
     const index = sansCommentaires(lire("src/app/sitemap-index.xml/route.ts"));
     expect(index).toContain('if (path === "/sitemap-tourdefrance-ia.xml") return TOUR_PUBLIC;');
   });
@@ -283,10 +283,83 @@ describe("🔴 aucun sitemap ni llms.txt ne cite la route tant que fermé", () =
     }
   });
 
-  it("llms.txt ne cite le Tour que derrière l'interrupteur, et robots.ts ne le cite pas", () => {
+  it("llms.txt cite le Tour derrière l'interrupteur, et robots.ts ne le cite pas", async () => {
     const llms = sansCommentaires(lire("src/app/llms.txt/route.ts"));
     expect(llms).toMatch(/const sectionTour = TOUR_PUBLIC\s*\?/);
     expect(lire("src/app/robots.ts")).not.toMatch(/tourdefrance/);
+    expect(lire("src/app/llms.txt/route.ts")).toContain("## Tour de France IA");
+  });
+});
+
+describe("🔴 refermer le Tour (TOUR_PUBLIC = false) redonne 404 et retire la route", () => {
+  afterEach(() => {
+    vi.doUnmock("@/features/tour-de-france/visibilite");
+    vi.resetModules();
+  });
+
+  it("la porte pure : fermée sans cookie, 404 ; avec le bon cookie, aperçu ; ouverte, public", async () => {
+    const cookie = await empreinte(JETON);
+    const base = { pathname: TOUR_PREFIX, jeton: JETON };
+    expect(await verdictDeLaPorte({ ...base, ouvert: false, cookie: undefined })).toBe("refuser");
+    expect(await verdictDeLaPorte({ ...base, ouvert: false, cookie })).toBe("apercu");
+    expect(await verdictDeLaPorte({ ...base, ouvert: true, cookie: undefined })).toBe("public");
+  });
+
+  it("le sitemap du Tour redevient un urlset vide", async () => {
+    vi.resetModules();
+    vi.doMock("@/features/tour-de-france/visibilite", () => ({
+      TOUR_PUBLIC: false,
+      TOUR_PREFIX: "/tourdefrance-ia",
+    }));
+    const { GET } = await import("@/app/sitemap-tourdefrance-ia.xml/route");
+    const xml = await GET().text();
+    expect(xml).toContain("<urlset");
+    expect(xml).not.toContain("<url>");
+    expect(xml).not.toContain("tourdefrance-ia");
+  });
+});
+
+describe("🔴 la landing ouverte : indexable, canonique, partageable ; la page d'appel reste noindex", () => {
+  it("le layout rend la page indexable quand le Tour est ouvert", () => {
+    const layout = sansCommentaires(lire("src/app/tourdefrance-ia/layout.tsx"));
+    expect(layout).toContain("robots: TOUR_PUBLIC ?");
+    expect(layout).toContain("{ index: true, follow: true }");
+  });
+
+  it("canonique relative résolue contre la production, sans hreflang", () => {
+    const page = sansCommentaires(lire("src/app/tourdefrance-ia/page.tsx"));
+    expect(page).toContain("alternates: { canonical: URL_CANONIQUE }");
+    expect(page).not.toMatch(/languages\s*:/);
+    expect(META.chemin).toBe("/tourdefrance-ia");
+    expect(sansCommentaires(lire("src/app/tourdefrance-ia/layout.tsx"))).toContain(
+      "metadataBase: new URL(ORIGINE)",
+    );
+    const ld = JSON.stringify(jsonLdDuTour());
+    expect(ld).toContain(`${"/tourdefrance-ia"}#webpage`);
+  });
+
+  it("l'image de partage est servie par convention de fichier (1200×630)", () => {
+    for (const nom of ["opengraph-image.jpg", "twitter-image.jpg"]) {
+      const taille = statSync(join(RACINE, "src/app/tourdefrance-ia", nom)).size;
+      expect(taille, nom).toBeGreaterThan(5_000);
+      const octets = readFileSync(join(RACINE, "src/app/tourdefrance-ia", nom));
+      expect(octets[0]).toBe(0xff);
+      expect(octets[1]).toBe(0xd8);
+    }
+    expect(lire("src/app/tourdefrance-ia/opengraph-image.alt.txt").trim().length).toBeGreaterThan(
+      0,
+    );
+  });
+
+  it("/fr/appel/tour-de-france-ia reste noindex", () => {
+    const page = sansCommentaires(lire("src/app/[locale]/appel/[type]/page.tsx"));
+    expect(page.match(/robots: \{ index: false, follow: false \}/g)?.length).toBeGreaterThanOrEqual(
+      2,
+    );
+    expect(page).not.toMatch(/index: true/);
+    expect(lire("src/server/calendly/types-reservables.ts")).toContain(
+      'route: "tour-de-france-ia"',
+    );
   });
 });
 
@@ -317,7 +390,7 @@ describe("🔴 la page n'embarque rien de la coquille d'Axion", () => {
     expect(page.match(/<h1\b/g)).toHaveLength(1);
   });
 
-  it("fermé : la page est dynamique (connection), le layout la met en noindex", () => {
+  it("ouvert : la page est statique ; refermée, elle devient dynamique et noindex", () => {
     const page = sansCommentaires(lire("src/app/tourdefrance-ia/page.tsx"));
     expect(page).toContain("if (!TOUR_PUBLIC) await connection();");
     const layout = sansCommentaires(lire("src/app/tourdefrance-ia/layout.tsx"));

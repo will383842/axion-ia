@@ -1,7 +1,7 @@
 // Tour de France IA — TOUT le texte de la landing, en un seul endroit (2026-10-25).
 //
 // Pourquoi un module à part : le test des mots interdits
-// (`__tests__/le-tour-reste-invisible.spec.ts`) lit CE fichier et la page ; un
+// (`__tests__/le-tour-est-ouvert.spec.ts`) lit CE fichier et la page ; un
 // texte écrit ailleurs échapperait à la garde.
 //
 // Règles de rédaction : vouvoiement, phrases courtes, apostrophe typographique
