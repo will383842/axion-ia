@@ -104,6 +104,7 @@ describe("bandeau « Où en est ce client »", () => {
           date: new Date("2026-10-23T10:00:00Z"),
           titre: "Rappel 1",
           etat: "",
+          statutEmail: "sent",
           lien: null,
         },
       ],
@@ -118,5 +119,67 @@ describe("bandeau « Où en est ce client »", () => {
       nbDevis: 2,
     });
     expect(l[3]!.texte).toBe("1 prestation en cours · 2 devis");
+  });
+});
+
+describe("bandeau : une lecture en panne n'est pas « rien »", () => {
+  it("chaque ligne en panne dit « lecture impossible »", () => {
+    const l = construireBandeau({
+      ...vide,
+      enPanne: ["rendez_vous", "questionnaire", "email", "prestations"],
+    });
+    expect(l.map((x) => x.texte)).toEqual([
+      "lecture impossible",
+      "lecture impossible",
+      "lecture impossible",
+      "lecture impossible · aucun devis",
+    ]);
+  });
+
+  it("une source du fil illisible : « aucun e-mail envoyé » ne s'affiche pas", () => {
+    const l = construireBandeau({ ...vide, sourcesDuFilEnPanne: 1 });
+    expect(l[2]!.texte).toBe("lecture impossible");
+  });
+
+  it("une seule ligne en panne laisse les autres lisibles", () => {
+    const l = construireBandeau({ ...vide, enPanne: ["questionnaire"] });
+    expect(l[0]!.texte).toBe("aucun rendez-vous à venir");
+    expect(l[1]!.texte).toBe("lecture impossible");
+  });
+});
+
+describe("bandeau : « Dernier e-mail » ne compte que les e-mails PARTIS", () => {
+  const mail = (cle: string, jourISO: string, statutEmail: "sent" | "failed" | "bounced") => ({
+    cle,
+    genre: "email" as const,
+    date: new Date(jourISO),
+    titre: `Objet ${cle}`,
+    etat: statutEmail,
+    statutEmail,
+    lien: null,
+  });
+
+  it("saute l'échec et le rebond plus récents que le dernier envoi réussi", () => {
+    const l = construireBandeau({
+      ...vide,
+      fil: [
+        mail("c", "2026-10-24T10:00:00Z", "failed"),
+        mail("b", "2026-10-23T10:00:00Z", "bounced"),
+        mail("a", "2026-10-20T10:00:00Z", "sent"),
+      ],
+    });
+    expect(l[2]!.texte).toContain("Objet a");
+  });
+
+  it("que des échecs : aucun e-mail envoyé", () => {
+    const l = construireBandeau({ ...vide, fil: [mail("c", "2026-10-24T10:00:00Z", "failed")] });
+    expect(l[2]!.texte).toBe("aucun e-mail envoyé");
+  });
+});
+
+describe("bandeau : prestations hors « ouvert » ou « gagné »", () => {
+  it("ne dit pas « 0 prestation en cours » quand la fiche en a", () => {
+    const l = construireBandeau({ ...vide, prestations: [{ statut: "perdu" }] });
+    expect(l[3]!.texte).toBe("1 prestation (aucune en cours) · aucun devis");
   });
 });

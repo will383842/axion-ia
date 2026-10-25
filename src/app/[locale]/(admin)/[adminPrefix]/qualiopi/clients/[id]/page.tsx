@@ -392,29 +392,48 @@ export default async function FicheClient360Page({ params, searchParams }: PageP
       : undefined;
 
   // Bandeau « Où en est ce client » : mêmes lectures de dossier que les onglets, donc mêmes
-  // garde de rôle (rien n'est requêté hors `voitEchanges`). Une lecture en panne rend sa part
-  // vide : le bandeau ne doit jamais empêcher la fiche de s'afficher.
+  // garde de rôle (rien n'est requêté hors `voitEchanges`). Une lecture en panne ne bloque pas la
+  // fiche, mais elle ne se lit JAMAIS comme « rien » : la ligne dit « lecture impossible ».
+  // Les lectures réussies servent aussi aux onglets (une seule lecture par affichage) ; une
+  // lecture en panne y est refaite, pour que l'onglet montre la vraie erreur.
   let lignesBandeau: ReadonlyArray<LigneBandeau> | null = null;
+  let rendezVousLus: Awaited<ReturnType<typeof lireRencontresDuClient>> | null = null;
+  let questionnairesLus: Awaited<ReturnType<typeof lireQuestionnairesDeLaFiche>> | null = null;
+  let projetsLus: Awaited<ReturnType<typeof lireProjetsDuClient>> | null = null;
   if (voitEchanges) {
+    const enPanneBandeau: LigneBandeau["cle"][] = [];
+    const lire = async <T,>(cle: LigneBandeau["cle"], lecture: Promise<T>): Promise<T | null> =>
+      lecture.catch(() => {
+        enPanneBandeau.push(cle);
+        return null;
+      });
     const [rendezVous, questionnairesBandeau, filBandeau, prestationsBandeau] = await Promise.all([
-      lireRencontresDuClient(id).catch(() => []),
-      lireQuestionnairesDeLaFiche(id).catch(() => []),
-      lireFilDesEchanges(id, adminPrefix).catch(() => ({ fil: [], sourcesEnPanne: 1 })),
-      lireProjetsDuClient(id).catch(() => []),
+      lire("rendez_vous", lireRencontresDuClient(id)),
+      lire("questionnaire", lireQuestionnairesDeLaFiche(id)),
+      lire("email", lireFilDesEchanges(id, adminPrefix)),
+      lire("prestations", lireProjetsDuClient(id)),
     ]);
+    rendezVousLus = rendezVous;
+    questionnairesLus = questionnairesBandeau;
+    projetsLus = prestationsBandeau;
     lignesBandeau = construireBandeau({
       maintenant,
-      rendezVous,
-      questionnaires: questionnairesBandeau,
-      fil: filBandeau.fil,
-      prestations: prestationsBandeau,
+      rendezVous: rendezVous ?? [],
+      questionnaires: questionnairesBandeau ?? [],
+      fil: filBandeau?.fil ?? [],
+      prestations: prestationsBandeau ?? [],
       nbDevis: client.devis.length,
+      enPanne: enPanneBandeau,
+      sourcesDuFilEnPanne: filBandeau?.sourcesEnPanne ?? 0,
     });
   }
 
   let contenuDossier: React.ReactNode = null;
   if (voitEchanges && onglet === "resume") {
-    const [faits, projets] = await Promise.all([lireFaitsDuClient(id), lireProjetsDuClient(id)]);
+    const [faits, projets] = await Promise.all([
+      lireFaitsDuClient(id),
+      projetsLus ?? lireProjetsDuClient(id),
+    ]);
     contenuDossier = (
       <>
         <OngletSynthese
@@ -426,7 +445,7 @@ export default async function FicheClient360Page({ params, searchParams }: PageP
       </>
     );
   } else if (voitEchanges && onglet === "questionnaire") {
-    const questionnaires = await lireQuestionnairesDeLaFiche(id);
+    const questionnaires = questionnairesLus ?? (await lireQuestionnairesDeLaFiche(id));
     contenuDossier =
       questionnaires.length === 0 ? (
         <p className="mb-[var(--space-admin-6)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
@@ -437,9 +456,10 @@ export default async function FicheClient360Page({ params, searchParams }: PageP
       );
   } else if (voitEchanges && onglet === "emails") {
     const fil = await lireFilDesEchanges(id, adminPrefix);
+    // Les rendez-vous ont leur onglet : celui-ci ne montre que les courriers.
     contenuDossier = (
       <FilDesEchanges
-        fil={fil.fil}
+        fil={fil.fil.filter((x) => x.genre !== "rendez_vous")}
         sourcesEnPanne={fil.sourcesEnPanne}
         clientId={id}
         adminPrefix={adminPrefix}
@@ -447,7 +467,7 @@ export default async function FicheClient360Page({ params, searchParams }: PageP
     );
   } else if (voitEchanges && onglet === "prestations") {
     const [projets, faitsARanger, nbDocuments] = await Promise.all([
-      lireProjetsDuClient(id),
+      projetsLus ?? lireProjetsDuClient(id),
       lireFaitsARanger(id),
       compterDocumentsParProjet(id),
     ]);
@@ -464,8 +484,8 @@ export default async function FicheClient360Page({ params, searchParams }: PageP
     );
   } else if (voitEchanges && onglet === "rendez-vous") {
     const [rencontres, projets, personnesCourtes, caseTest] = await Promise.all([
-      lireRencontresDuClient(id),
-      lireProjetsDuClient(id),
+      rendezVousLus ?? lireRencontresDuClient(id),
+      projetsLus ?? lireProjetsDuClient(id),
       lirePersonnesCourtes(id),
       lireCaseTestVisible(id),
     ]);

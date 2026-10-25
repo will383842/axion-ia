@@ -24,7 +24,19 @@ export interface EntreeBandeau {
   readonly fil: ReadonlyArray<EchangeDuFil>;
   readonly prestations: ReadonlyArray<{ readonly statut: string }>;
   readonly nbDevis: number;
+  /**
+   * Les lectures qui n'ont pas répondu. Une lecture en panne n'est PAS « rien » : la ligne dit
+   * « lecture impossible » (sinon Will croirait qu'aucun questionnaire n'est parti et le renverrait).
+   */
+  readonly enPanne?: ReadonlyArray<LigneBandeau["cle"]>;
+  /** Sources du fil illisibles (`FilLu.sourcesEnPanne`) : « aucun e-mail » n'est alors pas sûr. */
+  readonly sourcesDuFilEnPanne?: number;
 }
+
+export const TEXTE_LECTURE_IMPOSSIBLE = "lecture impossible";
+
+const enPanne = (e: EntreeBandeau, cle: LigneBandeau["cle"]): boolean =>
+  e.enPanne?.includes(cle) === true;
 
 export interface LigneBandeau {
   readonly cle: "rendez_vous" | "questionnaire" | "email" | "prestations";
@@ -55,6 +67,14 @@ const pluriel = (n: number, un: string, plusieurs: string): string =>
   `${n} ${n > 1 ? plusieurs : un}`;
 
 function ligneRendezVous(e: EntreeBandeau): LigneBandeau {
+  if (enPanne(e, "rendez_vous")) {
+    return {
+      cle: "rendez_vous",
+      libelle: "Prochain rendez-vous",
+      texte: TEXTE_LECTURE_IMPOSSIBLE,
+      onglet: "rendez-vous",
+    };
+  }
   const aVenir = e.rendezVous
     .filter(
       (r) =>
@@ -77,6 +97,14 @@ function ligneRendezVous(e: EntreeBandeau): LigneBandeau {
 }
 
 function ligneQuestionnaire(e: EntreeBandeau): LigneBandeau {
+  if (enPanne(e, "questionnaire")) {
+    return {
+      cle: "questionnaire",
+      libelle: "Questionnaire",
+      texte: TEXTE_LECTURE_IMPOSSIBLE,
+      onglet: "questionnaire",
+    };
+  }
   const envoyes = e.questionnaires
     .filter((q) => q.envoyeLe !== null)
     .sort((a, b) => b.envoyeLe!.getTime() - a.envoyeLe!.getTime());
@@ -95,24 +123,32 @@ function ligneQuestionnaire(e: EntreeBandeau): LigneBandeau {
 }
 
 function ligneEmail(e: EntreeBandeau): LigneBandeau {
-  // Le fil est trié du plus récent au plus ancien ; on garde le dernier e-mail PARTI.
+  const incomplet = enPanne(e, "email") || (e.sourcesDuFilEnPanne ?? 0) > 0;
+  // Le fil est trié du plus récent au plus ancien ; on garde le dernier e-mail PARTI : un e-mail
+  // en échec, rebondi, annulé ou encore en attente n'est pas « parti ».
   const parti = e.fil.find(
-    (x) => x.genre === "email" && x.date.getTime() <= e.maintenant.getTime(),
+    (x) =>
+      x.genre === "email" && x.statutEmail === "sent" && x.date.getTime() <= e.maintenant.getTime(),
   );
-  return {
-    cle: "email",
-    libelle: "Dernier e-mail",
-    texte: parti === undefined ? "aucun e-mail envoyé" : `${parti.titre} · ${jour(parti.date)}`,
-    onglet: "emails",
-  };
+  let texte: string;
+  if (parti !== undefined) {
+    texte = `${parti.titre} · ${jour(parti.date)}`;
+    if (incomplet) texte += " · lecture incomplète";
+  } else {
+    texte = incomplet ? TEXTE_LECTURE_IMPOSSIBLE : "aucun e-mail envoyé";
+  }
+  return { cle: "email", libelle: "Dernier e-mail", texte, onglet: "emails" };
 }
 
 function lignePrestations(e: EntreeBandeau): LigneBandeau {
   const enCours = e.prestations.filter((p) => p.statut === "ouvert" || p.statut === "gagne").length;
-  const prestations =
-    e.prestations.length === 0
+  const prestations = enPanne(e, "prestations")
+    ? TEXTE_LECTURE_IMPOSSIBLE
+    : e.prestations.length === 0
       ? "aucune prestation"
-      : `${pluriel(enCours, "prestation en cours", "prestations en cours")}`;
+      : enCours === 0
+        ? `${pluriel(e.prestations.length, "prestation", "prestations")} (aucune en cours)`
+        : pluriel(enCours, "prestation en cours", "prestations en cours");
   const devis = e.nbDevis === 0 ? "aucun devis" : pluriel(e.nbDevis, "devis", "devis");
   return {
     cle: "prestations",
