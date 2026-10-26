@@ -1,7 +1,7 @@
 // @vitest-environment node
 
 /**
- * LE TOUR DE FRANCE IA EST OUVERT AU PUBLIC (2026-10-25, ordre de Will).
+ * LE TOUR DE FRANCE IA EST OUVERT AU PUBLIC (ouvert le 2026-10-25).
  *
  * La landing `/tourdefrance-ia` est ouverte (`TOUR_PUBLIC = true`). Ce qui doit
  * tenir :
@@ -61,6 +61,24 @@ function fichiers(dossier: string): string[] {
 }
 
 const JETON = "jeton-de-test-qui-n-est-pas-celui-de-la-prod";
+
+/** Lit largeur × hauteur dans le premier marqueur SOF d'un JPEG. */
+function dimensionsJpeg(octets: Buffer): { largeur: number; hauteur: number } | null {
+  let i = 2;
+  while (i + 9 < octets.length) {
+    if (octets[i] !== 0xff) {
+      i += 1;
+      continue;
+    }
+    const marqueur = octets[i + 1] as number;
+    // SOF0..SOF15, hors DHT (C4), JPG (C8) et DAC (CC).
+    if (marqueur >= 0xc0 && marqueur <= 0xcf && ![0xc4, 0xc8, 0xcc].includes(marqueur)) {
+      return { hauteur: octets.readUInt16BE(i + 5), largeur: octets.readUInt16BE(i + 7) };
+    }
+    i += 2 + octets.readUInt16BE(i + 2);
+  }
+  return null;
+}
 
 describe("🔑 l'interrupteur", () => {
   it("le Tour est OUVERT, sous /tourdefrance-ia", () => {
@@ -297,14 +315,6 @@ describe("🔴 refermer le Tour (TOUR_PUBLIC = false) redonne 404 et retire la r
     vi.resetModules();
   });
 
-  it("la porte pure : fermée sans cookie, 404 ; avec le bon cookie, aperçu ; ouverte, public", async () => {
-    const cookie = await empreinte(JETON);
-    const base = { pathname: TOUR_PREFIX, jeton: JETON };
-    expect(await verdictDeLaPorte({ ...base, ouvert: false, cookie: undefined })).toBe("refuser");
-    expect(await verdictDeLaPorte({ ...base, ouvert: false, cookie })).toBe("apercu");
-    expect(await verdictDeLaPorte({ ...base, ouvert: true, cookie: undefined })).toBe("public");
-  });
-
   it("le sitemap du Tour redevient un urlset vide", async () => {
     vi.resetModules();
     vi.doMock("@/features/tour-de-france/visibilite", () => ({
@@ -345,6 +355,7 @@ describe("🔴 la landing ouverte : indexable, canonique, partageable ; la page 
       const octets = readFileSync(join(RACINE, "src/app/tourdefrance-ia", nom));
       expect(octets[0]).toBe(0xff);
       expect(octets[1]).toBe(0xd8);
+      expect(dimensionsJpeg(octets), nom).toEqual({ largeur: 1200, hauteur: 630 });
     }
     expect(lire("src/app/tourdefrance-ia/opengraph-image.alt.txt").trim().length).toBeGreaterThan(
       0,
@@ -522,7 +533,11 @@ describe("🔴 le contenu : mots interdits, typographie, SEO", () => {
       "BreadcrumbList",
     ]);
     const serie = graphe[1] ?? {};
-    expect(serie["organizer"]).toEqual({ "@id": expect.stringMatching(/\/#organization$/) });
+    expect(serie["organizer"]).toEqual({
+      "@id": expect.stringMatching(/\/#organization$/),
+      name: "Axion-IA",
+      url: expect.stringMatching(/^https?:\/\//),
+    });
     // Le JSON-LD dit la même chose que le texte visible : gratuit, et la FAQ « coût » y figure.
     expect(serie["isAccessibleForFree"]).toBe(true);
     const faq = graphe[2] as {

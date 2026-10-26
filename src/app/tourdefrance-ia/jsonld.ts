@@ -4,17 +4,22 @@
 //
 // 🔑 Aucun nœud `Organization` ni `Person` n'est RECRÉÉ ici : l'organisateur et
 // l'intervenant sont cités par leur `@id` canonique (`SITE_URL/#organization`,
-// `FOUNDER_PERSON_ID`), décrits une fois pour toutes sur le site. Pas de `Event`
+// `FOUNDER_PERSON_ID`), décrits une fois pour toutes sur le site. L'organisateur
+// porte en plus `name` et `url` : la page n'émet pas le nœud qu'il référence. Pas de `Event`
 // daté (aucune date n'est fixée), pas de `HowTo`, pas de `speakable`.
 
-import { FOUNDER_PERSON_ID } from "@/lib/brand";
+import { BRAND, FOUNDER_PERSON_ID } from "@/lib/brand";
 import { SITE_URL } from "@/lib/site-url";
 
 import { DEFINITION, FAQ, META, NOM_DU_TOUR } from "./contenu";
 
 export function jsonLdDuTour(): Record<string, unknown> {
   const url = `${SITE_URL}${META.chemin}`;
-  const organisation = { "@id": `${SITE_URL}/#organization` };
+  const organisation = {
+    "@id": `${SITE_URL}/#organization`,
+    name: BRAND.name,
+    url: SITE_URL,
+  };
   return {
     "@context": "https://schema.org",
     "@graph": [
