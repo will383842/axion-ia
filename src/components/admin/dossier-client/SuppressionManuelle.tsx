@@ -58,12 +58,14 @@ export function SuppressionManuelle(props: Proprietes) {
 async function EcranDeConfirmation(props: Proprietes) {
   // La cause d'un échec de lecture est gardée (journal du serveur + une ligne sur cet écran, réservé
   // au super-administrateur) : « Introuvable ou illisible » seul ne dit pas pourquoi.
-  let cause: string | null = null;
-  const bilan = await bilanSuppression(props.type, props.id).catch((e: unknown) => {
-    cause = e instanceof Error ? `${e.name} : ${e.message}`.slice(0, 400) : String(e).slice(0, 400);
-    console.error("[suppression-manuelle] bilan illisible", props.type, props.id, cause);
-    return null;
-  });
+  const { bilan, cause } = await bilanSuppression(props.type, props.id).then(
+    (b) => ({ bilan: b, cause: null as string | null }),
+    (e: unknown) => {
+      const texte = (e instanceof Error ? `${e.name} : ${e.message}` : String(e)).slice(0, 400);
+      console.error("[suppression-manuelle] bilan illisible", props.type, props.id, texte);
+      return { bilan: null, cause: texte as string | null };
+    },
+  );
   return (
     <AdminBloc
       teinte="terracotta"
