@@ -51,7 +51,7 @@ describe("l'adresse par défaut", () => {
 describe("la cinquième entrée", () => {
   it("existe, privée, classée « autre », en visio seulement", () => {
     expect(TOUS_LES_CHOIX).toContain("formateur");
-    expect(CHOIX_SANS_TYPE_PROPRE).toEqual(["formateur"]);
+    expect(CHOIX_SANS_TYPE_PROPRE).toEqual(["formateur", "tour"]);
     const c = configDuChoix("formateur");
     expect(c.route).toBe("formateur-independant");
     expect(c.type).toBe("autre");
@@ -83,7 +83,14 @@ describe("les quatre entrées existantes ne bougent pas", () => {
 
   it("CHOIX_RENDEZ_VOUS (les choix à type propre) inchangé, et en tête de TOUS_LES_CHOIX", () => {
     expect(CHOIX_RENDEZ_VOUS).toEqual(["diagnostic", "projet", "apporteur", "salon"]);
-    expect(TOUS_LES_CHOIX).toEqual(["diagnostic", "projet", "apporteur", "salon", "formateur"]);
+    expect(TOUS_LES_CHOIX).toEqual([
+      "diagnostic",
+      "projet",
+      "apporteur",
+      "salon",
+      "formateur",
+      "tour",
+    ]);
   });
 
   it.each([

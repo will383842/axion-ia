@@ -109,7 +109,14 @@ describe("listRendezVous — filtre par type", () => {
   it("sans filtre : tout, et les compteurs par type", async () => {
     const { rows, parType } = await listRendezVous({});
     expect(rows).toHaveLength(LIGNES.length);
-    expect(parType).toEqual({ diagnostic: 1, echange_projet: 2, apporteur: 2, salon: 2, autre: 1 });
+    expect(parType).toEqual({
+      diagnostic: 1,
+      echange_projet: 2,
+      apporteur: 2,
+      salon: 2,
+      autre: 1,
+      tour_de_france_ia: 0,
+    });
   });
 
   it("les compteurs ignorent le filtre de type (chaque onglet annonce son contenu)", async () => {
@@ -148,6 +155,7 @@ describe("passeLeFiltre / compterParType", () => {
       apporteur: 0,
       salon: 1,
       autre: 0,
+      tour_de_france_ia: 0,
     });
   });
 });

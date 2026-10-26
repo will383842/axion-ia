@@ -39,6 +39,117 @@ import { RESSOURCES_COOKIE_NAME } from "./server/ressources/routes";
 // symbole qualiopi et reste scannée par `pnpm qualiopi:isolation-check`.
 // Import RELATIF comme ses deux voisins — pas d'alias.
 import { PORTAIL_COOKIE_NAME, localeSiPortailProtege } from "./server/portail/routes";
+// Tour de France IA — interrupteur et porte d'aperçu, modules PURS (Web Crypto seulement).
+import { TOUR_PUBLIC } from "./features/tour-de-france/visibilite";
+import {
+  COOKIE_APERCU,
+  ENTETES_TOUR_FERME,
+  reponseTourIntrouvable,
+  verdictDeLaPorte,
+} from "./features/tour-de-france/porte";
+
+// 3. En-têtes de sécurité (CSP per-path + COEP toujours + X-* OWASP), posés sur
+// la réponse d'une page. Extraits du pipeline le 2026-10-25 pour que la landing du
+// Tour de France IA (règle 0-TDF), qui ne passe pas par next-intl, reçoive
+// EXACTEMENT les mêmes — comportement des autres routes inchangé.
+function poserEnTetesDeSecurite(req: NextRequest, response: Response, nonce: string): void {
+  const strict = isStrictCspPath(req.nextUrl.pathname);
+  // Route d'embed widget → framable partout (frame-ancestors *) + pas de
+  // X-Frame-Options DENY (sinon le navigateur refuse l'iframe quoi qu'en dise
+  // la CSP). next.config.ts exclut aussi ce chemin de son X-Frame-Options.
+  const embed = isEmbedPath(req.nextUrl.pathname);
+  // 🔴 2026-08-22 — `upgrade-insecure-requests` casse les prefetch RSC quand le
+  // site est servi en HTTP nu (build de production en CI). Chromium n'upgrade
+  // pas une requête directe vers `http://localhost`, mais il upgrade la CIBLE
+  // D'UNE REDIRECTION — et les gardes Edge du pipeline en émettent. Sur une origine
+  // de bouclage la directive n'a aucune valeur de sécurité : on l'omet là, et
+  // seulement là. Le critère est l'HÔTE, jamais le schéma : derrière Coolify le
+  // dernier saut est en clair, et gater sur le schéma la retirerait EN PROD.
+  const origineBouclage = estHoteDeBouclage(
+    req.headers.get("x-forwarded-host") ?? req.headers.get("host") ?? req.nextUrl.hostname,
+  );
+  response.headers.set(
+    "Content-Security-Policy",
+    buildCspHeader({ nonce, strict, embed, origineBouclage }),
+  );
+  // COEP `unsafe-none` site-wide (audit Calendly 2026-07-07).
+  //
+  // Historique : on posait `credentialless` partout, puis `unsafe-none` sur le
+  // SEUL chemin `/appel` (PR 182) pour que l'iframe credentialée Calendly
+  // reçoive ses cookies. Ce correctif ne tenait QUE sur un chargement direct
+  // ou un F5 de /appel — car COEP est une propriété du DOCUMENT, fixée à sa
+  // création réseau. En navigation SPA (next/link), aucun nouveau document
+  // n'est créé : la page d'arrivée (ex. accueil, servie en `credentialless`)
+  // garde sa COEP, et l'iframe Calendly injectée ensuite est chargée SANS
+  // credentials → « calendly.com n'autorise pas la connexion ». D'où le bug
+  // INTERMITTENT « il faut F5 » : F5 recharge le document → `unsafe-none`.
+  //
+  // `credentialless` n'apportait AUCUN bénéfice réel ici : `crossOriginIsolated`
+  // exige COOP same-origin + COEP, mais AUCUN code n'utilise SharedArrayBuffer
+  // ni `crossOriginIsolated` (grep = 0). On supprime donc l'isolation inutile
+  // et on pose `unsafe-none` PARTOUT — strictement plus permissif que
+  // `credentialless`, donc sans risque de régresser l'incident require-corp de
+  // 2026-05-09 (Plausible/Turnstile/fonts). Les embeds tiers credentialés
+  // (Calendly, Stripe, YouTube) fonctionnent alors quel que soit le mode de
+  // navigation (SPA ou chargement direct).
+  response.headers.set("Cross-Origin-Embedder-Policy", "unsafe-none");
+  // Audit 2026-05-15 P1-16 — X-* OWASP headers explicites en defense-in-depth.
+  // CSP `frame-ancestors 'none'` couvre déjà le clickjacking côté navigateurs
+  // modernes, mais X-Frame-Options: DENY garantit le comportement sur les
+  // browsers legacy + scanners de sécurité (OWASP ZAP) qui le checkent.
+  response.headers.set("X-Content-Type-Options", "nosniff");
+  // X-Frame-Options DENY partout SAUF la route d'embed (qui doit être framable).
+  if (!embed) response.headers.set("X-Frame-Options", "DENY");
+  response.headers.set("Referrer-Policy", "strict-origin-when-cross-origin");
+  // Permissions-Policy minimaliste : on bloque les capabilities qu'on n'utilise
+  // pas pour réduire la surface d'attaque + les warnings Lighthouse.
+  response.headers.set(
+    "Permissions-Policy",
+    "camera=(), microphone=(), geolocation=(), interest-cohort=(), payment=(self), usb=(), magnetometer=(), accelerometer=(), gyroscope=()",
+  );
+  // Forward le nonce sur la response aussi pour tooling (ex. browser ext audit).
+  response.headers.set("x-nonce", nonce);
+
+  // 3bis. X-Robots-Tag HTTP pour stubs pSEO anti-doorway (HCU 2024).
+  //
+  // RESSUSCITÉ de `middleware.ts` racine (audit indexation 2026-07-31) : ce
+  // fichier était du CODE MORT — Next 16 ne charge les conventions
+  // middleware/proxy que depuis `src/`, or il vivait à la racine du projet.
+  // Le header n'a donc JAMAIS été servi en prod malgré son commentaire
+  // « divise le coût crawl budget par ~5 ».
+  //
+  // Doublonne le `<meta robots noindex>` posé par `generateMetadata()` côté
+  // Server Component. Le header HTTP permet à Googlebot de voir le `noindex`
+  // SANS rendre le HTML complet → gain crawl budget sur les stubs pSEO
+  // (villes non pilotes, services×ville sans copy dédiée). `follow` préservé
+  // pour que le link juice traverse les stubs vers les pages pilotes et les
+  // hubs. Whitelist edge-safe : `lib/seo-noindex-routes.ts` (superset sûr,
+  // sync test `seo-noindex-routes.test.ts` — jamais de noindex sur une page
+  // indexable). Header statique par URL → aucun impact cache CDN.
+  if (isNoindexStubRoute(req.nextUrl.pathname)) {
+    response.headers.set("X-Robots-Tag", "noindex, follow");
+  }
+
+  // 3ter. Attribution UTM (ressuscité de `middleware.ts` racine, cf. 3bis) :
+  // cookie `axion_utm` (30 j) quand l'URL porte des paramètres utm_* (arrivée
+  // Google Ads / LinkedIn / newsletter). Fire UNIQUEMENT sur URL à query
+  // utm_* : les réponses concernées ne sont de toute façon pas des candidates
+  // utiles au cache CDN (variantes de query), donc pas de régression sur le
+  // fix crawl-perf Set-Cookie ci-dessous — qui whiteliste ce cookie.
+  //
+  // ⚠️ Les cookies `axion_ref_city`/`axion_ref_region` du middleware mort ne
+  // sont PAS portés : les poser sur chaque page ville (GET public sans query)
+  // remettrait un `Set-Cookie` sur toute la surface pSEO → Cloudflare
+  // repasserait en BYPASS (cf. bloc « Crawl perf ⭐ » ci-dessous), défaisant
+  // le déblocage du cache CDN du 2026-06-17. L'attribution ville/région
+  // reste donc dormante (comme elle l'a toujours été en prod, le middleware
+  // n'ayant jamais tourné) — la réactiver = décision produit à arbitrer
+  // contre le cache (piste : pose côté client).
+  const utm = parseUtmFromUrl(req.nextUrl.searchParams);
+  if (Object.keys(utm).length > 0) {
+    response.headers.append("set-cookie", buildUtmSetCookie(utm));
+  }
+}
 
 const handleI18nRouting = createIntlMiddleware(routing);
 const { auth } = NextAuth(authConfig);
@@ -68,6 +179,39 @@ const authPipeline = auth(async (req) => {
   //     consolide définitivement vers `/fr` (audit indexation 2026-06-17).
   if (req.nextUrl.pathname === "/") {
     return NextResponse.redirect(new URL(`/fr${req.nextUrl.search}`, req.url), 301);
+  }
+
+  // 0-TDF. Landing du Tour de France IA (2026-10-25) — `/tourdefrance-ia`, SANS
+  //   préfixe de langue (adresse imprimée dans les posts réseau). Elle vit hors de
+  //   `[locale]` (`src/app/tourdefrance-ia/`) : elle ne passe donc NI par 0a-bis
+  //   NI par 0bis (qui la 301 vers `/fr/tourdefrance-ia`, qui n'existe pas), NI
+  //   par next-intl.
+  //
+  //   Tant que `TOUR_PUBLIC` est faux : 404 texte brut, `no-store`, `noindex`,
+  //   sauf cookie d'aperçu valide (`features/tour-de-france/porte.ts`). Ouvert :
+  //   la page passe normalement. Dans les deux cas où elle passe, elle reçoit les
+  //   en-têtes de sécurité de toute page (`poserEnTetesDeSecurite`).
+  //   Garde : `src/app/tourdefrance-ia/__tests__/le-tour-reste-invisible.spec.ts`.
+  {
+    const verdict = await verdictDeLaPorte({
+      pathname: req.nextUrl.pathname,
+      ouvert: TOUR_PUBLIC,
+      cookie: req.cookies.get(COOKIE_APERCU)?.value,
+      jeton: process.env.TOUR_APERCU_JETON,
+    });
+    if (verdict === "refuser") return reponseTourIntrouvable();
+    if (verdict !== "hors-tour") {
+      const nonce = generateNonce();
+      req.headers.set("x-nonce", nonce);
+      const response = NextResponse.next({ request: { headers: req.headers } });
+      poserEnTetesDeSecurite(req as unknown as NextRequest, response, nonce);
+      if (verdict === "apercu") {
+        for (const [cle, valeur] of Object.entries(ENTETES_TOUR_FERME)) {
+          response.headers.set(cle, valeur);
+        }
+      }
+      return response;
+    }
   }
 
   // 0a-ter. 410 Gone — famille fantôme `/ia-<ville>` (audit GSC 2026-08-01).
@@ -295,104 +439,7 @@ const authPipeline = auth(async (req) => {
   const response = handleI18nRouting(req as unknown as NextRequest);
 
   // 3. Securite headers (CSP per-path + COEP toujours + X-* OWASP).
-  if (response) {
-    const strict = isStrictCspPath(req.nextUrl.pathname);
-    // Route d'embed widget → framable partout (frame-ancestors *) + pas de
-    // X-Frame-Options DENY (sinon le navigateur refuse l'iframe quoi qu'en dise
-    // la CSP). next.config.ts exclut aussi ce chemin de son X-Frame-Options.
-    const embed = isEmbedPath(req.nextUrl.pathname);
-    // 🔴 2026-08-22 — `upgrade-insecure-requests` casse les prefetch RSC quand le
-    // site est servi en HTTP nu (build de production en CI). Chromium n'upgrade
-    // pas une requête directe vers `http://localhost`, mais il upgrade la CIBLE
-    // D'UNE REDIRECTION — et la garde Edge ci-dessus en émet une. Sur une origine
-    // de bouclage la directive n'a aucune valeur de sécurité : on l'omet là, et
-    // seulement là. Le critère est l'HÔTE, jamais le schéma : derrière Coolify le
-    // dernier saut est en clair, et gater sur le schéma la retirerait EN PROD.
-    const origineBouclage = estHoteDeBouclage(
-      req.headers.get("x-forwarded-host") ?? req.headers.get("host") ?? req.nextUrl.hostname,
-    );
-    response.headers.set(
-      "Content-Security-Policy",
-      buildCspHeader({ nonce, strict, embed, origineBouclage }),
-    );
-    // COEP `unsafe-none` site-wide (audit Calendly 2026-07-07).
-    //
-    // Historique : on posait `credentialless` partout, puis `unsafe-none` sur le
-    // SEUL chemin `/appel` (PR 182) pour que l'iframe credentialée Calendly
-    // reçoive ses cookies. Ce correctif ne tenait QUE sur un chargement direct
-    // ou un F5 de /appel — car COEP est une propriété du DOCUMENT, fixée à sa
-    // création réseau. En navigation SPA (next/link), aucun nouveau document
-    // n'est créé : la page d'arrivée (ex. accueil, servie en `credentialless`)
-    // garde sa COEP, et l'iframe Calendly injectée ensuite est chargée SANS
-    // credentials → « calendly.com n'autorise pas la connexion ». D'où le bug
-    // INTERMITTENT « il faut F5 » : F5 recharge le document → `unsafe-none`.
-    //
-    // `credentialless` n'apportait AUCUN bénéfice réel ici : `crossOriginIsolated`
-    // exige COOP same-origin + COEP, mais AUCUN code n'utilise SharedArrayBuffer
-    // ni `crossOriginIsolated` (grep = 0). On supprime donc l'isolation inutile
-    // et on pose `unsafe-none` PARTOUT — strictement plus permissif que
-    // `credentialless`, donc sans risque de régresser l'incident require-corp de
-    // 2026-05-09 (Plausible/Turnstile/fonts). Les embeds tiers credentialés
-    // (Calendly, Stripe, YouTube) fonctionnent alors quel que soit le mode de
-    // navigation (SPA ou chargement direct).
-    response.headers.set("Cross-Origin-Embedder-Policy", "unsafe-none");
-    // Audit 2026-05-15 P1-16 — X-* OWASP headers explicites en defense-in-depth.
-    // CSP `frame-ancestors 'none'` couvre déjà le clickjacking côté navigateurs
-    // modernes, mais X-Frame-Options: DENY garantit le comportement sur les
-    // browsers legacy + scanners de sécurité (OWASP ZAP) qui le checkent.
-    response.headers.set("X-Content-Type-Options", "nosniff");
-    // X-Frame-Options DENY partout SAUF la route d'embed (qui doit être framable).
-    if (!embed) response.headers.set("X-Frame-Options", "DENY");
-    response.headers.set("Referrer-Policy", "strict-origin-when-cross-origin");
-    // Permissions-Policy minimaliste : on bloque les capabilities qu'on n'utilise
-    // pas pour réduire la surface d'attaque + les warnings Lighthouse.
-    response.headers.set(
-      "Permissions-Policy",
-      "camera=(), microphone=(), geolocation=(), interest-cohort=(), payment=(self), usb=(), magnetometer=(), accelerometer=(), gyroscope=()",
-    );
-    // Forward le nonce sur la response aussi pour tooling (ex. browser ext audit).
-    response.headers.set("x-nonce", nonce);
-
-    // 3bis. X-Robots-Tag HTTP pour stubs pSEO anti-doorway (HCU 2024).
-    //
-    // RESSUSCITÉ de `middleware.ts` racine (audit indexation 2026-07-31) : ce
-    // fichier était du CODE MORT — Next 16 ne charge les conventions
-    // middleware/proxy que depuis `src/`, or il vivait à la racine du projet.
-    // Le header n'a donc JAMAIS été servi en prod malgré son commentaire
-    // « divise le coût crawl budget par ~5 ».
-    //
-    // Doublonne le `<meta robots noindex>` posé par `generateMetadata()` côté
-    // Server Component. Le header HTTP permet à Googlebot de voir le `noindex`
-    // SANS rendre le HTML complet → gain crawl budget sur les stubs pSEO
-    // (villes non pilotes, services×ville sans copy dédiée). `follow` préservé
-    // pour que le link juice traverse les stubs vers les pages pilotes et les
-    // hubs. Whitelist edge-safe : `lib/seo-noindex-routes.ts` (superset sûr,
-    // sync test `seo-noindex-routes.test.ts` — jamais de noindex sur une page
-    // indexable). Header statique par URL → aucun impact cache CDN.
-    if (isNoindexStubRoute(req.nextUrl.pathname)) {
-      response.headers.set("X-Robots-Tag", "noindex, follow");
-    }
-
-    // 3ter. Attribution UTM (ressuscité de `middleware.ts` racine, cf. 3bis) :
-    // cookie `axion_utm` (30 j) quand l'URL porte des paramètres utm_* (arrivée
-    // Google Ads / LinkedIn / newsletter). Fire UNIQUEMENT sur URL à query
-    // utm_* : les réponses concernées ne sont de toute façon pas des candidates
-    // utiles au cache CDN (variantes de query), donc pas de régression sur le
-    // fix crawl-perf Set-Cookie ci-dessous — qui whiteliste ce cookie.
-    //
-    // ⚠️ Les cookies `axion_ref_city`/`axion_ref_region` du middleware mort ne
-    // sont PAS portés : les poser sur chaque page ville (GET public sans query)
-    // remettrait un `Set-Cookie` sur toute la surface pSEO → Cloudflare
-    // repasserait en BYPASS (cf. bloc « Crawl perf ⭐ » ci-dessous), défaisant
-    // le déblocage du cache CDN du 2026-06-17. L'attribution ville/région
-    // reste donc dormante (comme elle l'a toujours été en prod, le middleware
-    // n'ayant jamais tourné) — la réactiver = décision produit à arbitrer
-    // contre le cache (piste : pose côté client).
-    const utm = parseUtmFromUrl(req.nextUrl.searchParams);
-    if (Object.keys(utm).length > 0) {
-      response.headers.append("set-cookie", buildUtmSetCookie(utm));
-    }
-  }
+  if (response) poserEnTetesDeSecurite(req as unknown as NextRequest, response, nonce);
   return response;
 });
 
@@ -578,6 +625,6 @@ export const config = {
     // `formateur/dossier/` exclu (lot L5, formateurs indépendants) : même raison, même
     // en-têtes (`next.config.ts`). `/fr/formateurs` et `/fr/espace-formateur/…` restent
     // couverts (le motif exige `formateur/dossier/` en tête).
-    "/((?!api/|widget/|qr/|videos/|medias/|questionnaire/|document/|apporteur/dossier/|formateur/dossier/|maintenance|_next/static|_next/image|favicon\\.ico|sitemap|opengraph-image|twitter-image|manifest\\.webmanifest|\\.well-known/|^icon$|^apple-icon$|(?!(?:fr|en)/).*\\.txt$|(?!(?:fr|en)/).*\\.(?:png|jpg|jpeg|svg|webp|avif|ico|woff2|woff|pdf|html|vcf)$).*)",
+    "/((?!api/|widget/|qr/|videos/|medias/|questionnaire/|document/|apporteur/dossier/|formateur/dossier/|maintenance|_next/static|_next/image|favicon\\.ico|sitemap|opengraph-image|twitter-image|manifest\\.webmanifest|\\.well-known/|^icon$|^apple-icon$|(?!(?:fr|en)/).*\\.txt$|(?!(?:fr|en|tourdefrance-ia)/).*\\.(?:png|jpg|jpeg|svg|webp|avif|ico|woff2|woff|pdf|html|vcf)$).*)",
   ],
 };
