@@ -26,6 +26,7 @@ import {
   lireChoixRendezVous,
   lireDepuis,
   lireSuiviArrivee,
+  utmSourceParDefaut,
   lienDuCalendrier,
   parametresDuChoix,
   parametresDuRetour,
@@ -198,7 +199,9 @@ export default async function AppelPage({ params, searchParams }: Props) {
   } = {
     pageUrl: `${SITE_URL}${choix ? lienDuCalendrier(locale, choix, depuis, suivi) : `/${locale}/appel`}`,
   };
+  const sourceDefaut = choix ? utmSourceParDefaut(choix) : null;
   if (suivi.utm_source) trackingContext.utmSource = suivi.utm_source;
+  else if (sourceDefaut) trackingContext.utmSource = sourceDefaut;
   if (suivi.utm_campaign) trackingContext.utmCampaign = suivi.utm_campaign;
   if (suivi.utm_medium) trackingContext.utmMedium = suivi.utm_medium;
   if (suivi.ref) trackingContext.referrer = suivi.ref;

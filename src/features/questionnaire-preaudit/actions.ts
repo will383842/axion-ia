@@ -131,6 +131,7 @@ export async function deposerQuestionnaireAction(fd: FormData): Promise<void> {
   const cible = cibleDe(fd);
   let ancienLienMort = false;
   let emailsRejetes = 0;
+  let creeId: string | undefined;
   try {
     // Le HTML déposé porte du JavaScript servi aux prospects : réservé à Williams.
     const { role } = await exigerAccesEchanges();
@@ -145,7 +146,7 @@ export async function deposerQuestionnaireAction(fd: FormData): Promise<void> {
     }
     if (f.size > 900_000) throw new MessagePourWill("Ce fichier est trop lourd (max. 900 Ko).");
     if (cible.genre === "client") {
-      await deposerQuestionnaireClient(cible.id, await f.text());
+      creeId = (await deposerQuestionnaireClient(cible.id, await f.text())).id;
     } else {
       const depot = await deposerQuestionnaire(cible.id, await f.text());
       ancienLienMort = depot.ancienLienMort;
@@ -154,9 +155,15 @@ export async function deposerQuestionnaireAction(fd: FormData): Promise<void> {
   } catch (e) {
     retour(cible, "erreur", messageAffichable(e));
   }
-  revalidatePath(pageDe(cible));
+  // Le questionnaire d'une fiche vient d'être créé : on revient sur LUI, pas sur celui d'où est
+  // parti le formulaire, sinon « Envoyer » renverrait l'ancien au client.
+  const apres: Cible =
+    cible.genre === "client" && creeId !== undefined
+      ? { genre: "client", id: cible.id, questionnaireId: creeId }
+      : cible;
+  revalidatePath(pageDe(apres));
   retour(
-    cible,
+    apres,
     "message",
     ancienLienMort
       ? "Questionnaire remplacé (brouillon) : l'ancien lien ne marche plus." +

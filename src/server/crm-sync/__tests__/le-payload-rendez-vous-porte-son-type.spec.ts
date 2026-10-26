@@ -214,3 +214,36 @@ describe("🔴 une coupe ne casse jamais un emoji (relecture A09)", () => {
     expect((payloadEmis()["besoin"] as string).length).toBeLessThanOrEqual(300);
   });
 });
+
+describe("la visio du Tour retombée en « autre » est reclassée par le nom", () => {
+  it("type « autre » mais nom du Tour : le payload porte la clé circuit", async () => {
+    await syncCalendlyEventToCrm({
+      kind: "booked",
+      subjectRef: "site:calendly_event:tour",
+      person: personne,
+      payload: { eventTypeName: "Tour de France IA", typeRendezVous: "autre" },
+    });
+    expect(payloadEmis()["typeRendezVous"]).toBe("autre");
+    expect(payloadEmis()["circuit"]).toBe("tour_de_france_ia");
+  });
+
+  it("type « autre » et slug du Tour : même reclassement", async () => {
+    await syncCalendlyEventToCrm({
+      kind: "booked",
+      subjectRef: "site:calendly_event:tour-slug",
+      person: personne,
+      payload: { eventTypeName: "tour-de-france-ia", typeRendezVous: "autre" },
+    });
+    expect(payloadEmis()["circuit"]).toBe("tour_de_france_ia");
+  });
+
+  it("type « autre » au nom ordinaire : reste « autre », sans circuit", async () => {
+    await syncCalendlyEventToCrm({
+      kind: "booked",
+      subjectRef: "site:calendly_event:autre",
+      person: personne,
+      payload: { eventTypeName: "Échange de 15 minutes", typeRendezVous: "autre" },
+    });
+    expect(payloadEmis()["circuit"]).toBeUndefined();
+  });
+});
