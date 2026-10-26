@@ -3,7 +3,10 @@
    CSS SEUL : aucune bibliothèque, aucun JavaScript. Toute animation s'éteint
    sous `prefers-reduced-motion` (bloc en fin de fichier) et montre alors l'état
    final, lisible. Aucune animation ne déplace la mise en page (CLS nul) : seules
-   `opacity`, `transform` et `fill` bougent. */
+   `opacity`, `transform` et `fill` bougent.
+   Aucune boucle infinie : chaque animation se joue DEUX fois (le `2` de chaque
+   déclaration), puis s'arrête sur son état final grâce à `both` — points
+   remplis, coche et halo visibles. Le même état que sous mouvement réduit. */
 
 /* ── Bouton principal ─────────────────────────────────────────────────────── */
 
@@ -43,6 +46,13 @@
   box-shadow: 0 0 0 6px var(--color-primary);
 }
 
+.boutonCompact {
+  min-height: 2.75rem; /* 44 px : la zone tactile minimale */
+  padding: 0.5rem 1.125rem;
+  font-size: 0.9375rem;
+  box-shadow: none;
+}
+
 .fleche {
   fill: none;
   stroke: currentColor;
@@ -62,43 +72,40 @@
   fill: transparent;
   stroke: var(--color-mocha-fg-muted);
   stroke-width: 1.5;
-  animation: remplir 4.8s ease-in-out infinite;
+  animation: remplir 2.4s ease-in-out 2 both;
 }
 
 .jaugePoint:nth-of-type(2) {
-  animation-delay: 0.3s;
+  animation-delay: 0.12s;
 }
 .jaugePoint:nth-of-type(3) {
-  animation-delay: 0.6s;
+  animation-delay: 0.24s;
 }
 .jaugePoint:nth-of-type(4) {
-  animation-delay: 0.9s;
+  animation-delay: 0.36s;
 }
 .jaugePoint:nth-of-type(5) {
-  animation-delay: 1.2s;
+  animation-delay: 0.48s;
 }
 
+/* L'état final (100 %) est l'état rempli : c'est lui qui reste à l'écran. */
 @keyframes remplir {
   0%,
-  8% {
+  10% {
     fill: transparent;
     stroke: var(--color-mocha-fg-muted);
   }
-  16%,
-  88% {
+  25%,
+  100% {
     fill: var(--color-mocha-fg);
     stroke: var(--color-mocha-fg);
-  }
-  100% {
-    fill: transparent;
-    stroke: var(--color-mocha-fg-muted);
   }
 }
 
 .jaugeCoche {
   transform-box: fill-box;
   transform-origin: center;
-  animation: ouvrir 4.8s ease-out infinite;
+  animation: ouvrir 2.4s ease-out 2 both;
 }
 
 .jaugeCoche circle {
@@ -115,18 +122,14 @@
 
 @keyframes ouvrir {
   0%,
-  34% {
+  55% {
     opacity: 0;
     transform: scale(0.6);
   }
-  42%,
-  88% {
+  70%,
+  100% {
     opacity: 1;
     transform: scale(1);
-  }
-  100% {
-    opacity: 0;
-    transform: scale(0.6);
   }
 }
 
@@ -161,27 +164,27 @@
   fill: var(--color-terracotta-soft);
   transform-box: fill-box;
   transform-origin: center;
-  animation: halo 4.8s ease-out infinite;
+  animation: halo 2.4s ease-out 2 both;
 }
 
 .carteEntreprise {
   fill: var(--color-paper);
   stroke: var(--color-terracotta);
   stroke-width: 1.5;
-  animation: entreprise 4.8s ease-in-out infinite;
+  animation: entreprise 2.4s ease-in-out 2 both;
 }
 
 .carteEntreprise:nth-of-type(3) {
-  animation-delay: 0.3s;
+  animation-delay: 0.12s;
 }
 .carteEntreprise:nth-of-type(4) {
-  animation-delay: 0.6s;
+  animation-delay: 0.24s;
 }
 .carteEntreprise:nth-of-type(5) {
-  animation-delay: 0.9s;
+  animation-delay: 0.36s;
 }
 .carteEntreprise:nth-of-type(6) {
-  animation-delay: 1.2s;
+  animation-delay: 0.48s;
 }
 
 .carteVille {
@@ -192,32 +195,25 @@
 
 @keyframes entreprise {
   0%,
-  8% {
+  10% {
     fill: var(--color-paper);
   }
-  16%,
-  88% {
-    fill: var(--color-terracotta);
-  }
+  25%,
   100% {
-    fill: var(--color-paper);
+    fill: var(--color-terracotta);
   }
 }
 
 @keyframes halo {
   0%,
-  34% {
+  55% {
     opacity: 0;
     transform: scale(0.5);
   }
-  44%,
-  88% {
+  70%,
+  100% {
     opacity: 1;
     transform: scale(1);
-  }
-  100% {
-    opacity: 0;
-    transform: scale(0.5);
   }
 }
 
@@ -252,15 +248,12 @@
 
 @keyframes entreprise-sombre {
   0%,
-  8% {
+  10% {
     fill: var(--color-mocha-soft);
   }
-  16%,
-  88% {
-    fill: var(--color-terracotta-on-mocha);
-  }
+  25%,
   100% {
-    fill: var(--color-mocha-soft);
+    fill: var(--color-terracotta-on-mocha);
   }
 }
 
@@ -282,35 +275,22 @@
   stroke: var(--color-terracotta);
 }
 
-/* ── Frise de la journée : le fil qui relie les trois temps ─────────────────── */
+/* ── La journée : les durées en très grands caractères ───────────────────── */
 
-.frise > li {
-  position: relative;
+.duree {
+  /* Fluide mais borné : « Vendredi soir » passe à la ligne plutôt que de déborder. */
+  font-size: clamp(3rem, 12vw, 6.5rem);
 }
 
-/* Fil vertical (mobile) : de la pastille au temps suivant. */
-.frise > li:not(:last-child)::after {
-  content: "";
-  position: absolute;
-  left: calc(2rem - 1px);
-  top: 4.5rem;
-  bottom: -1.5rem;
-  width: 2px;
-  background: radial-gradient(circle, var(--color-border-strong) 1px, transparent 1.4px) center
-    top / 2px 9px repeat-y;
+/* ── Le problème, sur la bande terracotta : pictos en ivoire ────────────────── */
+
+.constat {
+  display: inline-flex;
+  color: var(--color-mocha-fg);
 }
 
-@media (min-width: 48rem) {
-  .frise > li:not(:last-child)::after {
-    left: 4.5rem;
-    right: -1.5rem;
-    top: calc(2rem - 1px);
-    bottom: auto;
-    width: auto;
-    height: 2px;
-    background: radial-gradient(circle, var(--color-border-strong) 1px, transparent 1.4px) left
-      center / 9px 2px repeat-x;
-  }
+.constat .pictoAccent {
+  stroke: var(--color-terracotta-soft);
 }
 
 /* ── Comment ça marche : le tracé en pointillé entre les pastilles ──────────── */

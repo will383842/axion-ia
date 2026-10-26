@@ -1,19 +1,19 @@
 // `/tourdefrance-ia` — la landing du Tour de France IA (2026-10-25, refonte
 // « page de conversion » le 2026-10-26).
 //
-// Tunnel : post Facebook ou Instagram (UTM, `fbclid`) → cette page → « Participer »
+// Tunnel : post Facebook ou Instagram (UTM) → cette page → « Participer »
 // → `/fr/appel/tour-de-france-ia` (la visio, type `tour` de
 // `types-reservables.ts`) → Calendly → fiche prospect dans la console.
 //
 // Écrite pour ce trafic-là : mobile d'abord, navigateur intégré de Facebook,
 // 4G, trois secondes d'attention. Donc : la promesse, l'offre, sa condition et
 // le bouton tiennent dans le premier écran d'un téléphone ; UNE seule action
-// (« Participer ») répétée, aucun menu ; un fond sombre au héros pour rompre
+// (« Participer ») répétée à quatre emplacements fixes (`EMPLACEMENTS_CTA`), aucun menu ; un fond sombre au héros pour rompre
 // avec le fil d'actualité (`--color-ink`, réservé par la charte aux pages
 // d'atterrissage publicitaires).
 //
 // Composants SERVEUR seulement, sauf `PiloteCta` (bouton collant + recopie des
-// `utm_*` et du `fbclid`). Aucun composant d'en-tête ou de pied de page d'Axion,
+// `utm_*`). Aucun composant d'en-tête ou de pied de page d'Axion,
 // aucun next-intl, aucun script tiers, aucune mesure d'audience. Les dessins
 // sont des SVG en ligne, animés en CSS seul ; la FAQ est un `details`/`summary`
 // natif. Tout le texte vit dans `contenu.ts`.
@@ -46,6 +46,7 @@ import {
   PRINCIPE,
   PROBLEME,
   lienRendezVous,
+  type EmplacementCta,
 } from "./contenu";
 import { jsonLdDuTour } from "./jsonld";
 import {
@@ -91,6 +92,7 @@ const TITRE_SECTION =
 const SECTION = "py-16 sm:py-24";
 const ID_CTA_HEROS = "tdf-cta-heros";
 const ID_CTA_COLLANT = "tdf-cta-collant";
+const ID_APPEL_FINAL = "tdf-appel-final";
 
 /**
  * La photo du fondateur, servie par l'optimiseur d'images de Next SANS le
@@ -103,25 +105,31 @@ const LARGEURS_PHOTO = [128, 256, 384] as const;
 const urlPhoto = (largeur: number) =>
   `/_next/image?url=${encodeURIComponent(FONDATEUR.photo)}&w=${largeur}&q=75`;
 
-/** Le bouton principal : pilule bleue, 52 px de haut, libellé unique, flèche. */
+/**
+ * Le bouton principal : pilule bleue, 52 px de haut, libellé unique, flèche.
+ * `compact` : la petite pilule du bandeau (44 px de haut, sans flèche).
+ */
 function BoutonParticiper({
   depuis,
   id,
   pleineLargeur = false,
+  compact = false,
 }: {
-  depuis: string;
+  depuis: EmplacementCta;
   id?: string;
   pleineLargeur?: boolean;
+  compact?: boolean;
 }) {
+  const largeur = compact ? "" : pleineLargeur ? "w-full" : "w-full sm:w-auto";
   return (
     <a
       href={lienRendezVous(depuis)}
       id={id}
       data-tdf-cta=""
-      className={`${styles.bouton} rounded-full ${pleineLargeur ? "w-full" : "w-full sm:w-auto"}`}
+      className={`${styles.bouton} ${compact ? styles.boutonCompact : ""} rounded-full ${largeur}`}
     >
       {LIBELLE_CTA}
-      <Fleche />
+      {compact ? null : <Fleche />}
     </a>
   );
 }
@@ -139,9 +147,12 @@ export default async function TourDeFranceIaPage() {
       <main className="pb-24 md:pb-0">
         {/* 1. Héros — fond encre, tient dans le premier écran d'un téléphone. */}
         <section className="bg-ink text-mocha-fg" aria-labelledby="tdf-titre">
-          <header className={`${CONTENEUR} flex min-h-14 items-center gap-3 pt-2`}>
+          <header className={`${CONTENEUR} flex min-h-16 items-center gap-3 pt-2`}>
             <p className="font-serif text-lg font-medium">{NOM_DU_TOUR}</p>
-            <p className="text-mocha-fg-muted text-sm">· {PIED.organise}</p>
+            <p className="text-mocha-fg-muted hidden text-sm sm:block">· {PIED.organise}</p>
+            <div className="ml-auto">
+              <BoutonParticiper depuis="tdf-bandeau" compact />
+            </div>
           </header>
 
           <div
@@ -198,54 +209,71 @@ export default async function TourDeFranceIaPage() {
           </div>
         </section>
 
-        {/* 3. Le problème du dirigeant. */}
-        <section className={SECTION} aria-labelledby="tdf-probleme">
+        {/* 3. Le problème du dirigeant — bande de CONTRASTE terracotta, pleine
+            largeur, sans cartes : la page change de registre après le héros. */}
+        <section
+          className={`bg-terracotta-deep text-mocha-fg ${SECTION}`}
+          aria-labelledby="tdf-probleme"
+        >
           <div className={CONTENEUR}>
-            <h2 id="tdf-probleme" className={`${TITRE_SECTION} max-w-3xl`}>
+            <h2
+              id="tdf-probleme"
+              className="max-w-4xl font-serif text-[2rem] leading-[1.1] font-medium tracking-tight text-balance sm:text-5xl lg:text-[3.5rem]"
+            >
               {PROBLEME.titre}
             </h2>
-            <ul className="mt-10 grid gap-4 md:grid-cols-3 md:gap-6">
+            <ul className="border-mocha-fg/30 mt-12 grid border-t md:grid-cols-3">
               {PROBLEME.constats.map((c, i) => (
-                <li key={c.titre} className="border-border bg-paper rounded-2xl border p-6">
-                  <span className="text-fg-soft">
+                <li
+                  key={c.titre}
+                  className="border-mocha-fg/30 border-b py-7 md:border-b-0 md:py-8 md:pr-8 md:not-first:border-l md:not-first:pl-8"
+                >
+                  <span className={styles.constat}>
                     <IllustrationConstat index={i} />
                   </span>
-                  <h3 className="text-fg mt-4 text-lg font-semibold">{c.titre}</h3>
-                  <p className="text-fg-soft mt-1.5">{c.texte}</p>
+                  <h3 className="mt-4 text-lg font-semibold">{c.titre}</h3>
+                  <p className="mt-1.5">{c.texte}</p>
                 </li>
               ))}
             </ul>
-            <p className="text-fg mt-10 max-w-2xl font-serif text-2xl leading-snug sm:text-[1.75rem]">
+            <p className="mt-12 max-w-2xl font-serif text-2xl leading-snug sm:text-[1.75rem]">
               {PROBLEME.chute}
             </p>
           </div>
         </section>
 
-        {/* 4. La journée en trois temps — frise illustrée. */}
-        <section className={`bg-sand ${SECTION}`} aria-labelledby="tdf-journee">
+        {/* 4. La journée en trois temps — section TYPOGRAPHIQUE pleine largeur :
+            les durées du concept en très grands caractères, des filets, aucune carte. */}
+        <section className={SECTION} aria-labelledby="tdf-journee">
           <div className={CONTENEUR}>
-            <h2 id="tdf-journee" className={TITRE_SECTION}>
+            <h2
+              id="tdf-journee"
+              className="max-w-3xl font-serif text-[2.25rem] leading-[1.05] font-medium tracking-tight sm:text-6xl"
+            >
               {JOURNEE.titre}
             </h2>
-            <ol className={`${styles.frise} mt-10 grid gap-6 md:grid-cols-3 md:gap-6`}>
+            <ol className="border-fg mt-12 border-t-2">
               {JOURNEE.moments.map((m, i) => (
-                <li key={m.moment} className="flex gap-5 md:flex-col md:gap-0">
-                  <span
-                    className={`z-[1] grid h-16 w-16 shrink-0 place-items-center rounded-full ${i === 2 ? "bg-mocha text-mocha-fg" : "bg-paper text-fg"} shadow-[0_0_0_6px_var(--color-sand)]`}
+                <li
+                  key={m.moment}
+                  className="border-border-strong grid gap-x-10 gap-y-3 border-b py-8 sm:py-10 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,1fr)] lg:items-end"
+                >
+                  <p
+                    className={`${styles.duree} font-serif leading-[0.95] font-medium tracking-tight ${i === 2 ? "text-terracotta" : "text-fg"}`}
                   >
-                    <IllustrationMoment index={i} />
-                  </span>
-                  <div className="md:mt-6">
-                    <p className="flex flex-wrap items-baseline gap-x-3">
-                      <span className={REPERE}>{m.moment}</span>
-                      <span className="text-terracotta font-mono text-sm font-semibold">
-                        {m.duree}
-                      </span>
-                    </p>
-                    <h3 className="text-fg mt-1.5 font-serif text-[1.5rem] leading-snug font-medium">
-                      {m.titre}
-                    </h3>
-                    <p className="text-fg-soft mt-2">{m.texte}</p>
+                    {m.duree}
+                  </p>
+                  <div className="flex items-start gap-4">
+                    <span className="text-fg-soft mt-1 shrink-0">
+                      <IllustrationMoment index={i} />
+                    </span>
+                    <div>
+                      <p className={REPERE}>{m.moment}</p>
+                      <h3 className="text-fg mt-1 font-serif text-[1.5rem] leading-snug font-medium">
+                        {m.titre}
+                      </h3>
+                      <p className="text-fg-soft mt-2">{m.texte}</p>
+                    </div>
                   </div>
                 </li>
               ))}
@@ -254,7 +282,7 @@ export default async function TourDeFranceIaPage() {
         </section>
 
         {/* 5. Le principe d'une étape, et comment ça marche en 4 étapes. */}
-        <section className={SECTION} aria-labelledby="tdf-principe">
+        <section className={`bg-sand ${SECTION}`} aria-labelledby="tdf-principe">
           <div className={CONTENEUR}>
             <div className="max-w-3xl">
               <h2 id="tdf-principe" className={TITRE_SECTION}>
@@ -262,18 +290,18 @@ export default async function TourDeFranceIaPage() {
               </h2>
               <p className="text-fg-soft mt-4 text-lg leading-relaxed">{PRINCIPE.texte}</p>
             </div>
-            <h3 id="tdf-etapes" className={`${REPERE} mt-14`}>
+            <h3 id="tdf-comment" className={`${REPERE} mt-14`}>
               {ETAPES.titre}
             </h3>
             <ol
-              aria-labelledby="tdf-etapes"
+              aria-labelledby="tdf-comment"
               className={`${styles.parcours} mt-8 grid gap-10 lg:grid-cols-4 lg:gap-8`}
             >
               {ETAPES.liste.map((etape, i) => (
                 <li key={etape} className="relative min-h-11 pl-16 lg:pt-16 lg:pl-0">
                   <span
                     aria-hidden="true"
-                    className={`absolute top-0 left-0 z-[1] grid h-11 w-11 place-items-center rounded-full border-[1.5px] font-mono text-[0.95rem] ${i === ETAPES.liste.length - 1 ? "border-terracotta bg-terracotta text-white" : "border-fg bg-bg text-ink"}`}
+                    className={`absolute top-0 left-0 z-[1] grid h-11 w-11 place-items-center rounded-full border-[1.5px] font-mono text-[0.95rem] ${i === ETAPES.liste.length - 1 ? "border-terracotta bg-terracotta text-white" : "border-fg bg-sand text-ink"}`}
                   >
                     {String(i + 1).padStart(2, "0")}
                   </span>
@@ -281,18 +309,11 @@ export default async function TourDeFranceIaPage() {
                 </li>
               ))}
             </ol>
-            <div className="mt-12 flex flex-col gap-2.5 sm:items-start">
-              <BoutonParticiper depuis="tdf-etapes" />
-              <p className="text-fg-muted text-sm sm:pl-2">{MICRO_TEXTE_CTA}</p>
-            </div>
           </div>
         </section>
 
         {/* 6. Pour qui — toutes tailles, tous secteurs. */}
-        <section
-          className={`bg-paper border-border border-y ${SECTION}`}
-          aria-labelledby="tdf-pour-qui"
-        >
+        <section className={SECTION} aria-labelledby="tdf-pour-qui">
           <div className={`${CONTENEUR} grid gap-8 lg:grid-cols-[1fr_1.6fr] lg:gap-14`}>
             <div>
               <h2 id="tdf-pour-qui" className={TITRE_SECTION}>
@@ -315,7 +336,7 @@ export default async function TourDeFranceIaPage() {
                 {POUR_QUI.secteurs.map((s, i) => (
                   <li
                     key={s}
-                    className="border-border bg-bg text-fg flex min-h-24 flex-col justify-between gap-3 rounded-xl border p-4"
+                    className="border-border bg-paper text-fg flex min-h-24 flex-col justify-between gap-3 rounded-xl border p-4"
                   >
                     <span className="text-terracotta">
                       <PictoSecteur index={i} />
@@ -330,7 +351,10 @@ export default async function TourDeFranceIaPage() {
         </section>
 
         {/* 7. Ce que vous en retirez — sans promesse chiffrée. */}
-        <section className={SECTION} aria-labelledby="tdf-benefices">
+        <section
+          className={`bg-paper border-border border-y ${SECTION}`}
+          aria-labelledby="tdf-benefices"
+        >
           <div className={CONTENEUR}>
             <h2 id="tdf-benefices" className={TITRE_SECTION}>
               {BENEFICES.titre}
@@ -397,9 +421,9 @@ export default async function TourDeFranceIaPage() {
               {FAQ.questions.map((q) => (
                 <details key={q.question} className={styles.question}>
                   <summary>
-                    <h3 className="text-fg font-serif text-xl leading-snug font-medium">
+                    <span className="text-fg font-serif text-xl leading-snug font-medium">
                       {q.question}
-                    </h3>
+                    </span>
                     <span className={styles.signe} aria-hidden="true" />
                   </summary>
                   <p className="text-fg-soft pr-12 pb-6 text-base leading-relaxed">{q.reponse}</p>
@@ -410,12 +434,12 @@ export default async function TourDeFranceIaPage() {
         </section>
 
         {/* 10. Appel final — fond encre, comme le héros. */}
-        <section className="bg-ink text-mocha-fg" aria-labelledby="tdf-appel-final">
+        <section className="bg-ink text-mocha-fg" aria-labelledby={ID_APPEL_FINAL}>
           <div className={`${CONTENEUR} py-16 sm:py-24`}>
             <div className="mx-auto flex max-w-2xl flex-col items-center text-center">
               <Coche taille={40} surSombre />
               <h2
-                id="tdf-appel-final"
+                id={ID_APPEL_FINAL}
                 className="mt-6 font-serif text-[2rem] leading-tight font-medium tracking-tight sm:text-5xl"
               >
                 {APPEL_FINAL.titre}
@@ -448,7 +472,7 @@ export default async function TourDeFranceIaPage() {
         <p className="mt-3">{PIED.nonAffiliation}</p>
       </footer>
 
-      {/* Bouton collant, mobile seulement, après le héros (piloté par `PiloteCta`). */}
+      {/* Bouton collant, mobile seulement, entre le bouton du héros et l’appel final (`PiloteCta`). */}
       <div
         id={ID_CTA_COLLANT}
         data-visible="false"
@@ -457,7 +481,7 @@ export default async function TourDeFranceIaPage() {
       >
         <BoutonParticiper depuis="tdf-collant" pleineLargeur />
       </div>
-      <PiloteCta idHeros={ID_CTA_HEROS} idCollant={ID_CTA_COLLANT} />
+      <PiloteCta idHeros={ID_CTA_HEROS} idFinal={ID_APPEL_FINAL} idCollant={ID_CTA_COLLANT} />
     </>
   );
 }

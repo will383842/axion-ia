@@ -10,7 +10,9 @@
 // (’), espace insécable ( ) avant « : ; ? ! » et à l'intérieur des
 // guillemets. Aucun montant, aucun chiffre inventé, aucune promesse de résultat.
 // L'offre est dite en clair : audit et formation GRATUITS pour les entreprises de
-// l'étape, soirée à la charge de chacun, visio gratuite. Condition toujours visible
+// l'étape, soirée à la charge de chacun. « Gratuit » est RÉSERVÉ à l'audit et à la
+// formation : la visio n'est dite que « sans engagement » (`MICRO_TEXTE_CTA`, seul
+// endroit où la changer). Condition toujours visible
 // (DGCCRF) : gratuit, la ville s'ouvre dès 5 entreprises confirmées, sans frais
 // cachés. Le texte ne parle jamais de transaction à conclure : un test le garde.
 //
@@ -31,15 +33,27 @@ export const CHEMIN_RENDEZ_VOUS = "/fr/appel/tour-de-france-ia";
 /** Le libellé UNIQUE de tous les boutons : une seule action sur la page. */
 export const LIBELLE_CTA = "Participer";
 
-/** Le micro-texte sous chaque bouton principal. */
-export const MICRO_TEXTE_CTA = "Visio de 30 minutes · gratuite et sans engagement";
+/**
+ * Le micro-texte sous chaque bouton principal — la SEULE phrase qui décrit la
+ * visio (affichée sous les deux grands boutons). Sans « gratuite » : le mot est réservé à l'audit
+ * et à la formation du Tour.
+ */
+export const MICRO_TEXTE_CTA = "Visio de 30 minutes · sans engagement";
 
 /**
- * L'adresse du bouton, avec l'emplacement cliqué (`depuis`, mesuré en `utm_term`
- * chez Calendly). Les `utm_*` et le `fbclid` de l'arrivée sont ajoutés côté
- * navigateur (`PiloteCta.tsx`), pour que la page reste statique.
+ * Les emplacements des boutons, mesurés en `utm_term` chez Calendly puis lus par
+ * la console. Liste FERMÉE : la console ne connaît que ces quatre-là, un
+ * emplacement inventé y tomberait en « inconnu ».
  */
-export function lienRendezVous(depuis: string): string {
+export const EMPLACEMENTS_CTA = ["tdf-heros", "tdf-bandeau", "tdf-final", "tdf-collant"] as const;
+export type EmplacementCta = (typeof EMPLACEMENTS_CTA)[number];
+
+/**
+ * L'adresse du bouton, avec l'emplacement cliqué (`depuis`). Les `utm_*` de
+ * l'arrivée sont ajoutés côté navigateur (`PiloteCta.tsx`), pour que la page
+ * reste statique.
+ */
+export function lienRendezVous(depuis: EmplacementCta): string {
   return `${CHEMIN_RENDEZ_VOUS}?depuis=${encodeURIComponent(depuis)}`;
 }
 
@@ -89,11 +103,11 @@ export const EN_BREF = "En bref";
 
 /** Le problème du dirigeant : à faire SENTIR, sans slogan. */
 export const PROBLEME = {
-  titre: "L’IA est partout. Sauf dans votre semaine de travail.",
+  titre: "Chaque semaine, un nouvel outil d’IA. Dans votre entreprise, rien n’a encore changé ?",
   constats: [
     {
-      titre: "Un nouvel outil chaque semaine",
-      texte: "Vous n’avez ni le temps de tout essayer, ni celui de trier ce qui compte.",
+      titre: "Trop d’outils pour tout essayer",
+      texte: "Vous n’avez pas le temps de trier ce qui compte pour votre métier.",
     },
     {
       titre: "Des essais chacun dans son coin",
@@ -115,13 +129,13 @@ export const JOURNEE = {
       titre: "Audit gratuit le matin",
       duree: "2 à 4 h",
       texte:
-        "Nous regardons comment votre entreprise travaille et repérons où l’IA vous fait gagner du temps.",
+        "Nous regardons comment votre entreprise travaille et repérons où l’IA peut s’appliquer.",
     },
     {
       moment: "Temps 2",
       titre: "Formation gratuite l’après-midi",
       duree: "4 h",
-      texte: "Vos équipes repartent avec des usages concrets, pour leurs propres tâches.",
+      texte: "Vos équipes s’exercent sur leurs propres tâches, avec des outils d’IA.",
     },
     {
       moment: "Temps 3",
@@ -174,7 +188,7 @@ export const BENEFICES = {
   liste: [
     {
       titre: "Un regard extérieur sur votre organisation",
-      texte: "Quelqu’un qui ne connaît pas vos habitudes voit ce que vous ne voyez plus.",
+      texte: "Un regard neuf, sans vos habitudes.",
     },
     {
       titre: "Des cas d’usage adaptés à votre métier",
@@ -182,7 +196,7 @@ export const BENEFICES = {
     },
     {
       titre: "Des équipes formées sur leurs propres tâches",
-      texte: "Chacun repart avec des usages qu’il peut refaire dès le lendemain.",
+      texte: "La formation part des tâches que vos équipes font chaque jour.",
     },
     {
       titre: "Un plan d’action pour la suite",
@@ -217,7 +231,7 @@ export const FAQ = {
     {
       question: "Combien ça coûte ?",
       reponse:
-        "L’audit et la formation sont gratuits pour les entreprises de l’étape. La soirée réseau est à la charge de chacun. La visio de 30 minutes est gratuite. La ville s’ouvre dès que 5 entreprises ont confirmé. Aucuns frais cachés.",
+        "L’audit et la formation sont gratuits pour les entreprises de l’étape. La soirée réseau est à la charge de chacun. La ville s’ouvre dès que 5 entreprises ont confirmé. Aucuns frais cachés.",
     },
     {
       question: "Pourquoi 5 entreprises ?",

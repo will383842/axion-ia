@@ -492,7 +492,8 @@ describe("🔴 le contenu : mots interdits, typographie, SEO", () => {
     const cout = FAQ.questions.find((q) => /Combien/.test(q.question));
     expect(cout?.reponse).toMatch(/audit et la formation sont gratuits/i);
     expect(cout?.reponse).toMatch(/soirée réseau est à la charge de chacun/i);
-    expect(cout?.reponse).toMatch(/visio de 30\s+minutes est gratuite/i);
+    // « Gratuit » est réservé à l'audit et à la formation : la visio n'est pas dite gratuite.
+    expect(cout?.reponse).not.toMatch(/visio/i);
     expect(cout?.reponse).toMatch(/5 entreprises/);
     expect(cout?.reponse).toMatch(/frais cachés/);
   });
