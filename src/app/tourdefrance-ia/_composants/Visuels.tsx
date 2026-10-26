@@ -8,7 +8,7 @@
 // 🔑 Aucun texte visible dans ces dessins : le texte vit dans `contenu.ts`, seul
 // fichier relu par le test des mots interdits. La carte ne nomme AUCUNE ville et
 // n'affiche aucun chiffre : ses points sont des villes POSSIBLES, et le seul
-// point qui se remplit illustre le principe (5 places confirmées, l'étape se tient).
+// point qui se remplit illustre le principe (5 entreprises confirmées, l'étape se tient).
 
 import styles from "../tour.module.css";
 
@@ -65,7 +65,7 @@ const POINTS = [
   { x: 196, y: 254 },
   { x: 301, y: 263 },
 ];
-/** Le point qui illustre le principe : il se remplit jusqu'à 5, puis s'ouvre. */
+/** Le point qui illustre le principe : ses 5 entreprises se confirment, puis l'étape se tient. */
 const DEMO = { x: 240, y: 264 };
 /** Le tracé en pointillé qui relie les repères (passe par le point de démonstration). */
 const TRACE =

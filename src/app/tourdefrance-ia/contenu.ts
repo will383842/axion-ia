@@ -1,6 +1,6 @@
 // Tour de France IA — TOUT le texte de la landing, en un seul endroit (2026-10-25,
 // refonte « landing de conversion » le 2026-10-26, réécriture « offre » le
-// 2026-10-26 après relecture de Will).
+// 2026-10-26 après relecture, premier écran « mobile d'abord » le même jour).
 //
 // Pourquoi un module à part : le test des mots interdits
 // (`__tests__/le-tour-est-ouvert.spec.ts`) lit CE fichier et la page ; un
@@ -10,11 +10,13 @@
 // Ce que la page dit, du point de vue de l'entreprise : le Tour vient CHEZ ELLE,
 // de la TPE à l'ETI, tous secteurs ; elle reçoit un AUDIT offert qui chiffre ce
 // que l'IA peut lui apporter (temps, rentabilité, chiffre d'affaires) et une
-// FORMATION de 4 h offerte à ses équipes, qui l'aide à répondre à l'exigence de
-// formation de l'AI Act (formule prudente : ni obligation, ni attestation, ni
-// promesse de conformité). Une étape = une semaine dans une ville, et 5 PLACES
-// par ville, AU PLUS (décision du 2026-10-26) : les places sont attribuées dans
-// l'ordre des confirmations, l'étape se tient quand les 5 sont confirmées, et
+// FORMATION D'ÉQUIPE de 4 h offerte, EN INTRA-ENTREPRISE ET EN PRÉSENTIEL (dans
+// ses locaux, avec son équipe), qui l'aide à répondre à l'exigence de formation
+// de l'AI Act (formule prudente : ni obligation, ni attestation, ni promesse de
+// conformité). Une étape = une semaine dans une ville, et 5 ENTREPRISES par
+// ville, AU PLUS (décision du 2026-10-26, précisée le même jour : on écrit
+// « 5 entreprises par ville », jamais « 5 places ») : chaque place est confirmée
+// dans l'ordre des confirmations, l'étape se tient quand les 5 le sont, et
 // au-delà l'entreprise passe sur liste d'attente pour une prochaine étape (sans
 // date promise). Écrire seulement « dès 5 entreprises » laissait croire que
 // TOUTE entreprise intéressée aurait son audit et sa formation : la page ne
@@ -29,29 +31,37 @@
 // « sans engagement » (`MICRO_TEXTE_CTA`). Jamais de vocabulaire d'événement, de
 // billetterie ou de transaction : un test le garde.
 //
-// Les seuls chiffres de la page sont ceux du CONCEPT (5 places, 2 à 4 h,
+// Les seuls chiffres de la page sont ceux du CONCEPT (5 entreprises, 2 à 4 h,
 // 4 h, 30 minutes) : aucun compteur, aucune statistique.
+//
+// Premier écran d'un téléphone (360 × 640, trafic Facebook, LinkedIn, Instagram) :
+// le H1, `PROMESSE`, le bouton, `REASSURANCE` et `BENEFICE` — rien d'autre. Le
+// reste du héros (accroche, offre détaillée, condition, carte) vient sous le pli.
 
 import { TOUR_PREFIX } from "@/features/tour-de-france/visibilite";
 
 /** Le nom du Tour. */
 export const NOM_DU_TOUR = "Tour de France IA";
 
-/** Le nombre de places d'une étape (par ville), un maximum — un fait du concept, pas un compteur. */
-export const PLACES_PAR_VILLE = 5;
+/** Le nombre d'entreprises d'une étape (par ville), un maximum — un fait du concept, pas un compteur. */
+export const ENTREPRISES_PAR_VILLE = 5;
 
 /** La page de rendez-vous visio de 30 minutes (type `tour` de `types-reservables.ts`). */
 export const CHEMIN_RENDEZ_VOUS = "/fr/appel/tour-de-france-ia";
 
-/** Le libellé des grands boutons : ce que l'entreprise obtient. Une seule action sur la page. */
-export const LIBELLE_CTA = "Je veux mon audit offert";
+/**
+ * Le libellé des grands boutons : ce que l'entreprise obtient — l'audit ET la
+ * formation (« Mon audit offert » seul faisait disparaître la formation). Une
+ * seule action sur la page. À 360 px, il passe sur deux lignes centrées.
+ */
+export const LIBELLE_CTA = "Je veux mon audit et ma formation offerts";
 
-/** Le même, en court : l'en-tête et le bandeau, où la place manque à 360 px. */
-export const LIBELLE_CTA_COURT = "Mon audit offert";
+/** Le même, en court : l'en-tête, le bandeau et la barre collante, où la place manque à 360 px. */
+export const LIBELLE_CTA_COURT = "Audit + formation offerts";
 
 /**
  * Le micro-texte sous chaque bouton principal — la SEULE phrase qui décrit la
- * visio (affichée sous les deux grands boutons). Sans « gratuite » : le mot est réservé à l'audit
+ * visio (affichée sous le bouton de l'appel final ; sous le héros, `REASSURANCE` la remplace). Sans « gratuite » : le mot est réservé à l'audit
  * et à la formation du Tour.
  */
 export const MICRO_TEXTE_CTA = "Visio de 30 minutes · sans engagement";
@@ -80,15 +90,35 @@ export function lienRendezVous(depuis: EmplacementCta): string {
 }
 
 /**
- * La règle d'une étape, écrite UNE fois : héros, bandeau, FAQ et appel final la
- * citent. 5 places par ville, un MAXIMUM : jamais formulée comme un seuil seul.
+ * La règle d'une étape, écrite UNE fois : héros, bandeau, FAQ et appel final la
+ * citent. 5 entreprises par ville, un MAXIMUM : jamais formulée comme un seuil seul.
  */
 export const REGLE_ETAPE =
-  "5 places par ville, attribuées dans l’ordre des confirmations. L’étape se tient quand les 5 places sont confirmées. Au-delà, liste d’attente pour une prochaine étape.";
+  "5 entreprises par ville, au plus. Chaque place est confirmée dans l’ordre des confirmations, et l’étape se tient quand les 5 entreprises sont confirmées. Au-delà, liste d’attente pour une prochaine étape.";
 
-/** L'offre, en une phrase : affichée en grand sous le titre. */
+/** L'offre, en une phrase : affichée en grand sous le titre. */
 export const OFFRE =
-  "Un audit offert qui chiffre ce que l’IA peut rapporter à votre entreprise, et une formation de 4 h offerte à vos équipes. Chez vous.";
+  "Un audit offert qui chiffre ce que l’IA peut rapporter à votre entreprise, puis une formation de 4 h offerte à votre équipe, en intra-entreprise et en présentiel, dans vos locaux.";
+
+/**
+ * La promesse du premier écran mobile, juste sous le H1 : l'offre comprise en
+ * une ligne — l'audit ET la formation d'équipe offerts, en présentiel, chez le
+ * lecteur. La condition (`CONDITION_GRATUITE`) suit sous le pli, et
+ * `REASSURANCE`, sous le bouton, dit déjà les 5 entreprises par ville.
+ */
+export const PROMESSE =
+  "Audit offert + formation de votre équipe offerte, en présentiel chez\u00a0vous.";
+
+/** La micro-ligne sous le bouton du héros : la rareté (un fait de l'offre), et la visio sans engagement. */
+export const REASSURANCE = "5 entreprises par ville · sans engagement";
+
+/**
+ * Le bénéfice concret, en une ligne, sous la micro-ligne : ce que l'audit
+ * CHIFFRE pour l'entreprise. Aucun résultat promis, aucun chiffre avancé :
+ * c'est l'audit qui les donne.
+ */
+export const BENEFICE =
+  "L’audit chiffre le temps gagné, la rentabilité et le chiffre d’affaires que l’IA peut apporter à votre entreprise.";
 
 /** La condition qui accompagne « offert » — visible, jamais en note de bas de page. */
 export const CONDITION_GRATUITE = `Offerts aux entreprises de l’étape, une fois leur place confirmée, sans frais cachés. ${REGLE_ETAPE}`;
@@ -96,7 +126,7 @@ export const CONDITION_GRATUITE = `Offerts aux entreprises de l’étape, une fo
 export const META = {
   titre: "Tour de France IA : audit et formation offerts chez vous",
   description:
-    "Un audit offert qui chiffre ce que l’IA peut vous rapporter, et 4 h de formation offertes à vos équipes. Places limitées : 5 par ville.",
+    "Audit offert qui chiffre ce que l’IA peut vous rapporter, et formation de 4 h offerte à votre équipe, en présentiel chez vous. 5 entreprises par ville.",
   /** Chemin canonique (sans barre finale : `trailingSlash` est faux sur tout le site). */
   chemin: TOUR_PREFIX,
   /**
@@ -106,7 +136,7 @@ export const META = {
    */
   image: `${TOUR_PREFIX}/opengraph-image.jpg`,
   imageAlt:
-    "Tour de France IA, organisé par Axion-IA : sur fond sombre aux couleurs d’Axion-IA, « Vous entendez parler d’IA partout et ne savez plus par où commencer ? Nous, si. » Audit offert, formation de 4 h offerte, de la TPE à l’ETI.",
+    "Tour de France IA, organisé par Axion-IA : sur fond sombre aux couleurs d’Axion-IA, « Vous entendez parler d’IA partout et ne savez plus par où commencer ? Nous, si. » Audit offert, formation de 4 h offerte, de la TPE à l’ETI.",
 } as const;
 
 /** L'en-tête du tunnel : le logo, et c'est tout (le bouton porte `LIBELLE_CTA_COURT`). */
@@ -121,23 +151,26 @@ export const HEROS = {
   /** Le surtitre : le Tour se nomme, et dit qu'il se déplace. */
   surtitre: "Tour de France IA · de la TPE à l’ETI",
   /**
-   * Le H1, accroche imposée par Will, en trois morceaux : seul « Nous, si. » prend
+   * Le H1, accroche validée (inchangée), en trois morceaux : seul « Nous, si. » prend
    * l'accent. Le lecteur se reconnaît, puis Axion-IA répond.
    */
   titreAvant: "Vous entendez parler d’IA partout et ne savez plus par où commencer ? ",
   titreAccent: "Nous, si.",
   titreApres: "",
-  /** Le sous-titre fort, juste sous le H1 : le Tour VIENT chez le lecteur. */
+  /** Le sous-titre fort, juste sous le pli mobile : le Tour VIENT chez le lecteur. */
   accroche: "L’IA vient travailler dans votre entreprise.",
+  promesse: PROMESSE,
+  reassurance: REASSURANCE,
+  benefice: BENEFICE,
   sousTitre: OFFRE,
   condition: CONDITION_GRATUITE,
   /** Les trois pastilles sous le titre : l'offre en un coup d'œil. */
-  pastilles: ["Audit offert", "Formation 4 h offerte", "Tous secteurs"],
+  pastilles: ["Audit offert", "Formation d’équipe offerte", "En présentiel, chez vous"],
 } as const;
 
 /** La définition citable, en texte visible (GEO). */
 export const DEFINITION =
-  "Le Tour de France IA, organisé par Axion-IA et fondé par Williams Jullin, vient dans les entreprises qui le souhaitent, de la TPE à l’ETI, tous secteurs. Chaque entreprise de l’étape reçoit chez elle un audit offert de son activité, qui chiffre ce que l’IA peut lui apporter en temps, en rentabilité et en chiffre d’affaires, puis une formation de 4 h offerte à ses équipes, qui l’aide à répondre à l’exigence de formation de l’AI Act. Une étape dure une semaine dans une ville et compte 5 places, attribuées dans l’ordre des confirmations : elle se tient quand les 5 places sont confirmées, et au-delà, les entreprises passent sur liste d’attente pour une prochaine étape. Le vendredi soir, une soirée réseau est ouverte à toutes les entreprises de l’étape.";
+  "Le Tour de France IA, organisé par Axion-IA et fondé par Williams Jullin, vient dans les entreprises qui le souhaitent, de la TPE à l’ETI, tous secteurs. Chaque entreprise de l’étape reçoit chez elle un audit offert de son activité, qui chiffre ce que l’IA peut lui apporter en temps, en rentabilité et en chiffre d’affaires, puis une formation de 4 h offerte à son équipe, en intra-entreprise et en présentiel, dans ses locaux, qui l’aide à répondre à l’exigence de formation de l’AI Act. Une étape dure une semaine dans une ville et accueille 5 entreprises au plus, dont les places sont confirmées dans l’ordre des confirmations : elle se tient quand les 5 entreprises sont confirmées, et au-delà, les entreprises passent sur liste d’attente pour une prochaine étape. Le vendredi soir, une soirée réseau est ouverte à toutes les entreprises de l’étape.";
 
 export const EN_BREF = "En bref";
 
@@ -176,10 +209,10 @@ export const OFFRE_DETAIL = {
     },
     {
       etiquette: "Offerte",
-      titre: "La formation de vos équipes",
-      duree: "4 h",
+      titre: "La formation de votre équipe",
+      duree: "4 h, en présentiel",
       texte:
-        "Vos équipes s’exercent sur leurs propres tâches, avec des outils d’IA, dans vos locaux.",
+        "En intra-entreprise, dans vos locaux : votre équipe s’exerce sur ses propres tâches, avec des outils d’IA.",
       recu: "Elle vous aide à répondre à l’exigence de formation de l’AI Act : des équipes qui savent se servir de l’IA, et s’en servir bien.",
     },
     {
@@ -222,9 +255,9 @@ export const LEVIERS = {
   ],
 } as const;
 
-/** Le bandeau d'accent du milieu de page : les places limitées, et la règle de l'étape. */
+/** Le bandeau d'accent du milieu de page : la rareté honnête, et la règle de l'étape. */
 export const BANDEAU = {
-  titre: "Places limitées : 5 par ville.",
+  titre: "Seulement 5 entreprises par ville.",
   texte: REGLE_ETAPE,
 } as const;
 
@@ -232,16 +265,16 @@ export const BANDEAU = {
 export const PRINCIPE = {
   legende: "Illustration du principe. Les points ne représentent pas des villes annoncées.",
   /** Texte alternatif de la carte (la carte elle-même n'a aucun texte). */
-  alt: "Carte de France stylisée. Des points marquent des villes possibles. L’un d’eux se remplit jusqu’à 5 places confirmées, puis l’étape se tient.",
+  alt: "Carte de France stylisée. Des points marquent des villes possibles. L’un d’eux se remplit jusqu’à 5 entreprises confirmées, puis l’étape se tient.",
 } as const;
 
 export const ETAPES = {
   titre: "Comment ça marche",
+  /** Trois étapes courtes, une carte chacune. */
   liste: [
-    "Vous choisissez un créneau de visio de 30 minutes",
-    "Nous découvrons votre entreprise et vous confirmez la venue du Tour chez vous",
-    "Les 5 places de votre ville sont attribuées dans l’ordre des confirmations : quand elles sont toutes confirmées, l’étape se tient et vous êtes prévenu",
-    "Nous venons chez vous : l’audit, puis la formation de vos équipes",
+    "Une visio de 30 minutes pour faire connaissance",
+    "Vous confirmez votre place : 5 entreprises par ville, dans l’ordre des confirmations",
+    "Nous venons chez vous : l’audit, puis la formation de votre équipe, en présentiel",
   ],
 } as const;
 
@@ -287,7 +320,7 @@ export const FAQ = {
     {
       question: "C’est quoi le Tour de France IA ?",
       reponse:
-        "Un tour de France organisé par Axion-IA, qui vient dans les entreprises qui le souhaitent. Chacune reçoit chez elle un audit offert de son activité, puis une formation de 4 h offerte à ses équipes.",
+        "Un tour de France organisé par Axion-IA, qui vient dans les entreprises qui le souhaitent. Chacune reçoit chez elle un audit offert de son activité, puis une formation de 4 h offerte à son équipe, en intra-entreprise et en présentiel.",
     },
     {
       question: "Qu’est-ce qui est offert ?",
@@ -306,7 +339,7 @@ export const FAQ = {
     {
       question: "Combien d’entreprises par ville ?",
       reponse:
-        "5 places par ville, au plus : le Tour s’installe une semaine dans la ville et passe chez chaque entreprise de l’étape. Les places sont attribuées dans l’ordre des confirmations, et l’étape se tient quand les 5 places sont confirmées. Au-delà, votre entreprise passe sur liste d’attente pour une prochaine étape, et nous vous prévenons quand elle devient possible près de chez vous.",
+        "5 entreprises par ville, au plus : le Tour s’installe une semaine dans la ville et passe chez chaque entreprise de l’étape. Chaque place est confirmée dans l’ordre des confirmations, et l’étape se tient quand les 5 entreprises sont confirmées. Au-delà, votre entreprise passe sur liste d’attente pour une prochaine étape, et nous vous prévenons quand elle devient possible près de chez vous.",
     },
     {
       question: "Est-ce pour mon entreprise ?",
@@ -316,7 +349,7 @@ export const FAQ = {
     {
       question: "Où cela se passe-t-il ?",
       reponse:
-        "Chez vous, dans vos locaux. Le vendredi soir, la soirée réseau a lieu dans la ville de l’étape, ouverte à toutes les entreprises de l’étape.",
+        "Chez vous, dans vos locaux : l’audit et la formation de votre équipe se font en présentiel, en intra-entreprise. Le vendredi soir, la soirée réseau a lieu dans la ville de l’étape, ouverte à toutes les entreprises de l’étape.",
     },
     {
       question: "Quel lien avec le Tour de France cycliste ?",
@@ -362,10 +395,16 @@ export function toutLeTexte(): string {
     HEROS.titreAccent,
     HEROS.titreApres,
     HEROS.accroche,
+    HEROS.promesse,
+    HEROS.reassurance,
+    HEROS.benefice,
     HEROS.sousTitre,
     HEROS.condition,
     ...HEROS.pastilles,
     OFFRE,
+    PROMESSE,
+    REASSURANCE,
+    BENEFICE,
     CONDITION_GRATUITE,
     REGLE_ETAPE,
     EN_BREF,

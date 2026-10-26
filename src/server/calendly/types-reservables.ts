@@ -269,7 +269,7 @@ export const TYPES_RESERVABLES: Readonly<Record<ChoixRendezVous, ConfigRendezVou
     premiereEtape: PREMIERE_ETAPE_VISIO,
     deuxiemeEtape: CONFIRMATION_CLIENT,
     troisiemeEtape:
-      "Nous découvrons votre entreprise, nous vous présentons l'audit et la formation offerts du Tour de France IA, et vous décidez si vous confirmez sa venue chez vous.",
+      "Nous découvrons votre entreprise, nous vous présentons l'audit et la formation offerts du Tour de France IA, et vous décidez si vous confirmez votre place.",
     formats: ["visio"],
     urlParDefaut: URL_CALENDLY_TOUR_PAR_DEFAUT,
     variable: "CALENDLY_TOUR_URL",

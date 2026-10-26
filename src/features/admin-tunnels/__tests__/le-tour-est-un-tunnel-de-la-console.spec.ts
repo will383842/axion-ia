@@ -1,5 +1,5 @@
 // Le Tour de France IA est un tunnel de la console, au même rang que les autres
-// (2026-10-26, question de Will : « le Tour est-il dans la console avec les
+// (2026-10-26, question posée : « le Tour est-il dans la console avec les
 // autres tunnels ? »).
 //
 // Ce fichier verrouille le CHEMIN entier, du bouton de la landing à l'écran :
@@ -82,7 +82,7 @@ describe("1. du bouton à la page de rendez-vous : `depuis` et UTM", () => {
     expect(utmSourceParDefaut("tour")).toBe("tour-de-france-ia");
   });
 
-  it("la page de rendez-vous du Tour, et elle seule, émet l'arrivée (clic « Je veux mon audit offert »)", () => {
+  it("la page de rendez-vous du Tour, et elle seule, émet l'arrivée (clic « Je veux mon audit et ma formation offerts »)", () => {
     const page = lire("src/app/[locale]/appel/page.tsx");
     expect(page).toMatch(
       /choix === "tour" \? \(\s*<ArriveeReservationMesure landing="tour-de-france-ia" placement=\{depuis\} \/>/,

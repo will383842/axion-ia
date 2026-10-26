@@ -25,10 +25,14 @@
   gap: 0.625rem;
   /* Pilule : `rounded-full` côté JSX (le contrôle des rayons refuse 9999px ici). */
   background: var(--color-primary);
-  padding: 0.875rem 1.875rem;
+  /* Mobile d'abord : à 360 px, « Je veux mon audit et ma formation offerts » passe
+     sur deux lignes, CENTRÉES, sans déborder (mesuré : 67 px de haut). */
+  padding: 0.75rem 1.25rem;
   color: var(--color-primary-fg);
   font-size: 1.0625rem;
   font-weight: 700;
+  line-height: 1.25;
+  text-align: center;
   letter-spacing: -0.01em;
   text-decoration: none;
   box-shadow:
@@ -85,10 +89,24 @@
     transform: scale(1);
   }
 }
+@media (min-width: 40rem) {
+  .bouton {
+    padding: 0.875rem 1.875rem;
+  }
+}
+
 .boutonCompact {
   min-height: 2.75rem; /* 44 px : la zone tactile minimale */
-  padding: 0.5rem 1.125rem;
-  font-size: 0.9375rem;
+  padding: 0.5rem 0.875rem;
+  font-size: 0.875rem;
+  white-space: nowrap;
+}
+
+@media (min-width: 40rem) {
+  .boutonCompact {
+    padding: 0.5rem 1.125rem;
+    font-size: 0.9375rem;
+  }
 }
 
 .fleche {
