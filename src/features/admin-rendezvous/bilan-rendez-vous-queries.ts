@@ -37,6 +37,8 @@ export async function lireBilanRendezVous(
   maintenant: Date = new Date(),
 ): Promise<BilanRendezVous> {
   const depuis = new Date(maintenant.getTime() - jours * 86_400_000);
+  // Le CASE s'applique à tous les types de rendez-vous : un rendez-vous arrivé avec
+  // depuis=tdf-* est étiqueté tour:… (cas marginal accepté).
   const lignes = await prisma.$queryRaw<LigneBilanBrute[]>`
     SELECT
       e.type_rendez_vous::text AS "typeRendezVous",

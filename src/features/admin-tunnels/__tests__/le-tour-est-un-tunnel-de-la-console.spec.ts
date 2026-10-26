@@ -4,7 +4,8 @@
 //
 // Ce fichier verrouille le CHEMIN entier, du bouton de la landing à l'écran :
 //   1. le bouton porte `depuis=tdf-…`, que la page de rendez-vous recopie dans
-//      l'`utm_content` (`tour:tdf-…`) et complète d'une source UTM par défaut ;
+//      l'`utm_term` et complète d'une source UTM par défaut (`tour:tdf-…` ne vaut
+//      que pour le mode de secours de l'iframe) ;
 //   2. le rendez-vous se classe `tour_de_france_ia`, famille CLIENT ;
 //   3. la console le montre : ligne dans « Par tunnel », onglet propre, compteurs
 //      clics → rendez-vous pris → maintenus, libellé lisible de chaque bouton ;
@@ -198,6 +199,9 @@ describe("le tableau du tunnel : clics → rendez-vous pris → maintenus", () =
   it("le bouton venu de utm_term (tdf-heros) prime sur un utm_content de post ; sans rien : « Non renseigné »", () => {
     const requete = lire("src/features/admin-rendezvous/bilan-rendez-vous-queries.ts");
     expect(requete).toContain("'utm_term' ~ '^tdf-[a-z0-9-]+$'");
+    expect(requete).toContain("THEN 'tour:' ||");
+    expect(requete).toContain("ELSE e.utm_content");
+    expect(requete).toContain("raw_payload -> 'invitee' -> 'tracking' ->> 'utm_term'");
     // La requête réécrit utm_content en `tour:<utm_term>` : l'agrégat doit y lire le bouton.
     const bilan = agregerBilan([
       ligne("tour:tdf-heros", "active", 1), // post123 remplacé par le CASE SQL
