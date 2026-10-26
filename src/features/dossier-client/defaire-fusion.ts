@@ -82,7 +82,7 @@ function estRefusDeLaBase(e: unknown): boolean {
 
 export const MESSAGE_LIEN_REFUSE_PAR_LA_BASE =
   "Cette fusion ne peut pas être défaite : un élément à rendre a reçu depuis un lien vers la " +
-  "fiche restée (projet, personne ou fait). Retirez d'abord ce lien, puis réessayez.";
+  "fiche restée (prestation, personne ou fait). Retirez d'abord ce lien, puis réessayez.";
 
 export async function defaireFusion(
   db: BaseTransactionnelle,
@@ -159,7 +159,7 @@ async function defaireDansUneTransaction(
         select: { projetId: true },
       });
       if (roles.some((r) => !projetsRendus.has(r.projetId))) {
-        liens.push("une personne à rendre a un rôle dans un projet de la fiche restée");
+        liens.push("une personne à rendre a un rôle dans une prestation de la fiche restée");
       }
     }
     const personnesRendues = new Set(contacts);
@@ -171,7 +171,7 @@ async function defaireDansUneTransaction(
         select: { id: true },
       });
       if (rdvDuProjet.some((r) => !rendues.has(r.id))) {
-        liens.push("un projet à rendre a reçu un rendez-vous créé après la fusion");
+        liens.push("une prestation à rendre a reçu un rendez-vous créé après la fusion");
       }
       // (c) une personne de la fiche restée a un rôle dans un projet rendu.
       const rolesDuProjet = await tx.projetContact.findMany({
@@ -179,7 +179,7 @@ async function defaireDansUneTransaction(
         select: { contactId: true },
       });
       if (rolesDuProjet.some((r) => resteeSiPresente(r.contactId))) {
-        liens.push("une personne de la fiche restée a un rôle dans un projet à rendre");
+        liens.push("une personne de la fiche restée a un rôle dans une prestation à rendre");
       }
       // (d) un fait d'un rendez-vous resté, rangé dans un projet rendu (AXV03).
       const faitsRanges = await tx.fait.findMany({
@@ -188,7 +188,7 @@ async function defaireDansUneTransaction(
       });
       if (faitsRanges.some((x) => x.rencontreId !== null && !rendues.has(x.rencontreId))) {
         liens.push(
-          "un fait d'un rendez-vous de la fiche restée a été rangé dans un projet à rendre",
+          "un fait d'un rendez-vous de la fiche restée a été rangé dans une prestation à rendre",
         );
       }
     }
@@ -199,7 +199,7 @@ async function defaireDansUneTransaction(
       });
       if (faits.some((x) => x.projetId !== null && !projetsRendus.has(x.projetId))) {
         liens.push(
-          "un fait d'un rendez-vous à rendre a été rangé dans un projet de la fiche restée",
+          "un fait d'un rendez-vous à rendre a été rangé dans une prestation de la fiche restée",
         );
       }
       // (a) un rendez-vous rendu, rangé depuis dans un projet resté.
@@ -208,7 +208,7 @@ async function defaireDansUneTransaction(
         select: { projetId: true },
       });
       if (rdvRendus.some((r) => r.projetId !== null && !projetsRendus.has(r.projetId))) {
-        liens.push("un rendez-vous à rendre a été rangé dans un projet de la fiche restée");
+        liens.push("un rendez-vous à rendre a été rangé dans une prestation de la fiche restée");
       }
       // (b) une personne de la fiche restée ajoutée à un rendez-vous rendu.
       const presents = await tx.rencontreParticipant.findMany({

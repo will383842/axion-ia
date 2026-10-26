@@ -194,8 +194,8 @@ export async function fusionnerFiches(
       const lies = await tx.projetDevis.count({ where: { projetId: { in: projetIds } } });
       if (lies > 0) {
         throw new ErreurFusion(
-          "Un projet de la fiche absorbée est relié à un devis : un devis émis reste sur sa fiche, " +
-            "son projet ne peut pas la quitter. Retirez d'abord ce lien, ou gardez les deux fiches.",
+          "Une prestation de la fiche absorbée est reliée à un devis : un devis émis reste sur sa fiche, " +
+            "sa prestation ne peut pas la quitter. Retirez d'abord ce lien, ou gardez les deux fiches.",
         );
       }
     }

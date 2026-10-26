@@ -18,7 +18,7 @@ const mutedCls = "text-[length:var(--text-admin-xs)] text-[color:var(--color-adm
 
 const QUOI: Readonly<Record<TypeCible, string>> = {
   questionnaire: "le questionnaire et toutes ses réponses",
-  rencontre: "cette rencontre",
+  rencontre: "ce rendez-vous",
   client: "cette fiche client",
 };
 

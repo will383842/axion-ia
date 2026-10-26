@@ -221,9 +221,9 @@ export function OngletSynthese({
 
       {projets.length === 0 ? (
         <section className={carteCls}>
-          <h2 className={titreCls}>Projets</h2>
+          <h2 className={titreCls}>Prestations</h2>
           <p className={`text-[length:var(--text-admin-sm)] ${mutedCls}`}>
-            Aucun projet. Créez-en un dans l&apos;onglet « Projets ».
+            Aucune prestation. Créez-en une dans l&apos;onglet « Prestations ».
           </p>
         </section>
       ) : (
@@ -250,7 +250,7 @@ export function OngletSynthese({
               <ListeValeurs
                 portee={portee}
                 types={TYPES_BLOC_PROJET}
-                vide="Rien de validé pour ce projet."
+                vide="Rien de validé pour cette prestation."
                 retour={ficheHref}
               />
               <h3 className="mt-[var(--space-admin-4)] mb-[var(--space-admin-2)] text-[length:var(--text-admin-sm)] font-semibold">
@@ -270,10 +270,10 @@ export function OngletSynthese({
           {consolidation.nbProposes > 1 ? "s" : ""} pas encore validée
           {consolidation.nbProposes > 1 ? "s" : ""} ·{" "}
           <span className="font-semibold tabular-nums">{consolidation.nbARanger}</span> à ranger
-          dans un projet{" "}
+          dans une prestation{" "}
           {consolidation.nbARanger > 0 ? (
             <Link href={`${ficheHref}?onglet=projets`} className={lienCls}>
-              (créer ou choisir un projet)
+              (créer ou choisir une prestation)
             </Link>
           ) : null}
         </p>
@@ -307,10 +307,10 @@ export function OngletProjets({
   return (
     <div>
       <section className={carteCls}>
-        <h2 className={titreCls}>Projets</h2>
+        <h2 className={titreCls}>Prestations</h2>
         {projets.length === 0 ? (
           <p className={`text-[length:var(--text-admin-sm)] ${mutedCls}`}>
-            Aucun projet pour l&apos;instant.
+            Aucune prestation pour l&apos;instant.
           </p>
         ) : (
           <ul className={listeCls}>
@@ -351,7 +351,7 @@ export function OngletProjets({
       </section>
 
       <section className={carteCls} id="nouveau-projet">
-        <h2 className={titreCls}>Nouveau projet</h2>
+        <h2 className={titreCls}>Nouvelle prestation</h2>
         {erreur !== null ? (
           <p className="mb-[var(--space-admin-3)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-error)]">
             {erreur}
@@ -360,13 +360,13 @@ export function OngletProjets({
         <form action={creerProjetFormAction} className="flex flex-col gap-[var(--space-admin-3)]">
           <input type="hidden" name="clientId" value={clientId} />
           <label className="flex flex-col gap-1 text-[length:var(--text-admin-sm)]">
-            Titre du projet (par exemple « Formation IA des équipes RH, automne »)
+            Titre de la prestation (par exemple « Formation IA des équipes RH, automne »)
             <input name="titre" required maxLength={200} className={inputCls} />
           </label>
           {faitsARanger.length > 0 ? (
             <fieldset className="text-[length:var(--text-admin-sm)]">
               <legend className="mb-[var(--space-admin-2)] font-medium">
-                Informations à ranger dans ce projet
+                Informations à ranger dans cette prestation
               </legend>
               {faitsARanger.map((f) => (
                 <label key={f.id} className="flex items-baseline gap-[var(--space-admin-2)]">
@@ -380,7 +380,7 @@ export function OngletProjets({
             </fieldset>
           ) : null}
           <div>
-            <AdminButton type="submit">Créer le projet</AdminButton>
+            <AdminButton type="submit">Créer la prestation</AdminButton>
           </div>
         </form>
       </section>
@@ -406,7 +406,7 @@ export function OngletEchanges({
   if (rencontres.length === 0) {
     return (
       <section className={carteCls}>
-        <h2 className={titreCls}>Échanges</h2>
+        <h2 className={titreCls}>Rendez-vous</h2>
         <p className={`text-[length:var(--text-admin-sm)] ${mutedCls}`}>
           Aucun rendez-vous rangé sur cette fiche pour l&apos;instant.
         </p>
@@ -415,7 +415,7 @@ export function OngletEchanges({
   }
   return (
     <section className={carteCls}>
-      <h2 className={titreCls}>Échanges</h2>
+      <h2 className={titreCls}>Rendez-vous</h2>
       <ul className="space-y-[var(--space-admin-4)] text-[length:var(--text-admin-sm)]">
         {rencontres.map((r) => {
           const projet = projets.find((p) => p.id === r.projetId);
@@ -441,7 +441,7 @@ export function OngletEchanges({
                 </span>
                 <AdminBadge tone="outline">{statut}</AdminBadge>
                 {projet !== undefined ? (
-                  <span className={mutedCls}>Projet : {projet.titre}</span>
+                  <span className={mutedCls}>Prestation : {projet.titre}</span>
                 ) : null}
                 {r.estTestInterne ? <AdminBadge tone="warning">test interne</AdminBadge> : null}
                 {!aVenir && r.compteRenduValide === null ? (
@@ -510,7 +510,9 @@ export function OngletPersonnes({
                   {p.statut === "parti" ? (
                     <AdminBadge tone="neutral">a quitté l&apos;entreprise</AdminBadge>
                   ) : null}
-                  {!p.rencontree ? <AdminBadge tone="outline">jamais rencontrée</AdminBadge> : null}
+                  {!p.rencontree ? (
+                    <AdminBadge tone="outline">jamais vue en rendez-vous</AdminBadge>
+                  ) : null}
                 </div>
                 {p.adresses.length > 0 ? (
                   <p className="mt-[var(--space-admin-1)]">
@@ -524,7 +526,7 @@ export function OngletPersonnes({
                     {p.roles
                       .map((r) => {
                         const projet = projets.find((x) => x.id === r.projetId);
-                        return `${projet?.titre ?? "projet"} : ${LIBELLE_ROLE_PROJET[r.role]}`;
+                        return `${projet?.titre ?? "prestation"} : ${LIBELLE_ROLE_PROJET[r.role]}`;
                       })
                       .join(" · ")}
                   </p>
