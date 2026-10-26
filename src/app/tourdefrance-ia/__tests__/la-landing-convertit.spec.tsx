@@ -609,8 +609,9 @@ describe("🔴 le vocabulaire de la landing", () => {
   });
 
   it("ni promesse de résultat ni construction du slogan d'Axion (« partout… sauf »)", () => {
-    // « partout » n'est permis que dans l'accroche de Will, le H1.
-    expect(texte.replace(HEROS.titreAvant, "")).not.toMatch(/\bpartout\b/i);
+    // « partout » n'est permis que dans l'accroche de Will : le H1, et le texte
+    // alternatif de l'image de partage, qui la recopie.
+    expect(texte.replaceAll(HEROS.titreAvant, "")).not.toMatch(/\bpartout\b/i);
     expect(texte).not.toMatch(/\bsauf\b/i);
     expect(texte).not.toMatch(/d[èe]s le lendemain|ce que vous ne voyez plus|gagner du temps/i);
     // L'audit « chiffre » ou « met en évidence » : il ne garantit rien.

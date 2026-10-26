@@ -8,8 +8,9 @@
 // `types-reservables.ts`) → Calendly → console.
 //
 // Écrite pour ce trafic-là : mobile d'abord, navigateur intégré de Facebook,
-// 4G, trois secondes d'attention. Donc : la promesse, l'offre, sa condition et
-// le bouton tiennent dans le premier écran d'un téléphone ; UNE seule action,
+// 4G, trois secondes d'attention. Donc : la promesse, l'offre et le bouton
+// tiennent dans le premier écran d'un téléphone (360 × 640) — la condition de
+// l'offre passe juste sous le bouton sous `sm`, au-dessus ailleurs ; UNE seule action,
 // répétée à cinq emplacements fixes (`EMPLACEMENTS_CTA`), aucun menu.
 //
 // Charte : celle du site (`globals.css`). En-tête terracotta et logo en badge
@@ -177,6 +178,7 @@ export default async function TourDeFranceIaPage() {
         <div className={`${CONTENEUR} flex min-h-16 items-center gap-3 py-2.5`}>
           <p
             className="bg-paper text-fg shadow-subtle inline-flex items-baseline rounded-lg px-3 py-2 font-serif text-[1.375rem] leading-none font-medium tracking-tight"
+            role="img"
             aria-label={ENTETE.logo}
           >
             {ENTETE.marque}
@@ -230,12 +232,18 @@ export default async function TourDeFranceIaPage() {
               <p className="mt-5 max-w-xl text-lg leading-snug font-semibold sm:text-xl">
                 {HEROS.sousTitre}
               </p>
-              <p className="text-mocha-fg-muted mt-3 max-w-xl text-[0.9375rem] leading-relaxed">
+              <p className="text-mocha-fg-muted mt-3 hidden max-w-xl text-[0.9375rem] leading-relaxed sm:block">
                 {HEROS.condition}
               </p>
               <div className="mt-6 flex flex-col gap-2.5 sm:mt-8 sm:items-start">
                 <BoutonAudit depuis="tdf-heros" id={ID_CTA_HEROS} />
                 <p className="text-mocha-fg-muted text-sm sm:pl-2">{MICRO_TEXTE_CTA}</p>
+                {/* Sous `sm`, la condition passe juste SOUS le bouton : à 360 × 640 elle
+                    le poussait sous la ligne de flottaison. Une seule des deux copies est
+                    affichée (`display: none` pour l'autre), elle n'est donc lue qu'une fois. */}
+                <p className="text-mocha-fg-muted mt-1 max-w-xl text-[0.9375rem] leading-relaxed sm:hidden">
+                  {HEROS.condition}
+                </p>
               </div>
             </div>
 

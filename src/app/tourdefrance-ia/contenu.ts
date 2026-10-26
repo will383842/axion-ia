@@ -99,12 +99,12 @@ export const META = {
    */
   image: `${TOUR_PREFIX}/opengraph-image.jpg`,
   imageAlt:
-    "Tour de France IA, organisé par Axion-IA : une carte de France stylisée, une étape s’ouvre à 5 entreprises.",
+    "Tour de France IA, organisé par Axion-IA : sur fond sombre aux couleurs d’Axion-IA, « Vous entendez parler d’IA partout et ne savez plus par où commencer ? Nous, si. » Audit offert, formation de 4 h offerte, de la TPE à l’ETI.",
 } as const;
 
 /** L'en-tête du tunnel : le logo, et c'est tout (le bouton porte `LIBELLE_CTA_COURT`). */
 export const ENTETE = {
-  /** Nom accessible du logo (le dessin dit « Axion-IA » en lettres). */
+  /** Nom accessible du logo (`role="img"` : le tiret dessiné est décoratif, le nom le porte). */
   logo: "Axion-IA",
   marque: "Axion",
   marqueAccent: "IA",
@@ -299,7 +299,7 @@ export const FAQ = {
     {
       question: "Pourquoi 5 entreprises ?",
       reponse:
-        "C’est le seuil pour qu’une étape ait lieu : le Tour s’installe une semaine dans la ville. Si votre secteur n’atteint pas encore 5, nous vous prévenons dès que l’étape devient possible près de chez vous.",
+        "C’est le seuil pour qu’une étape ait lieu : le Tour s’installe une semaine dans la ville. Tant que votre secteur géographique n’atteint pas 5 entreprises, nous vous prévenons dès que l’étape devient possible près de chez vous.",
     },
     {
       question: "Est-ce pour mon entreprise ?",
