@@ -332,7 +332,12 @@ describe("suppression manuelle depuis la console", () => {
     const t = JSON.stringify(e.trace);
     expect(t).toContain('"réponse(s), dirigeant compris":2');
     expect(t).toContain('"doubleValidation":true');
-    for (const contenu of ["TEST-QUESTIONNAIRE", "test@exemple-fictif.fr", ADRESSE_INTERNE, NUMERO]) {
+    for (const contenu of [
+      "TEST-QUESTIONNAIRE",
+      "test@exemple-fictif.fr",
+      ADRESSE_INTERNE,
+      NUMERO,
+    ]) {
       expect(t).not.toContain(contenu);
     }
   });
@@ -401,7 +406,9 @@ describe("suppression manuelle depuis la console", () => {
     const b0 = await bilanSuppression("client", CID, base);
     expect(b0?.bloquants).toEqual([]);
     expect(
-      e.sql.some((x) => x.sql.includes(`FROM emails_suivi WHERE "contact_id"::text = ANY($1::text[])`)),
+      e.sql.some((x) =>
+        x.sql.includes(`FROM emails_suivi WHERE "contact_id"::text = ANY($1::text[])`),
+      ),
     ).toBe(true);
     e.comptes = { emails_suivi: 1 };
     const b1 = await bilanSuppression("client", CID, fabriquer().base);

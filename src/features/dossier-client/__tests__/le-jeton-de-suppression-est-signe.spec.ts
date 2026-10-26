@@ -73,9 +73,30 @@ describe("le jeton de suppression", () => {
   });
 
   it("l'empreinte ne dépend pas de l'ordre des compteurs, mais change avec un compteur", () => {
-    const a = { type: "client", id: CID, compteurs: [{ libelle: "x", n: 1 }, { libelle: "y", n: 2 }] };
-    const b = { type: "client", id: CID, compteurs: [{ libelle: "y", n: 2 }, { libelle: "x", n: 1 }] };
-    const c = { type: "client", id: CID, compteurs: [{ libelle: "x", n: 1 }, { libelle: "y", n: 3 }] };
+    const a = {
+      type: "client",
+      id: CID,
+      compteurs: [
+        { libelle: "x", n: 1 },
+        { libelle: "y", n: 2 },
+      ],
+    };
+    const b = {
+      type: "client",
+      id: CID,
+      compteurs: [
+        { libelle: "y", n: 2 },
+        { libelle: "x", n: 1 },
+      ],
+    };
+    const c = {
+      type: "client",
+      id: CID,
+      compteurs: [
+        { libelle: "x", n: 1 },
+        { libelle: "y", n: 3 },
+      ],
+    };
     expect(empreinteBilan(a)).toBe(empreinteBilan(b));
     expect(empreinteBilan(a)).not.toBe(empreinteBilan(c));
     expect(empreinteBilan(a)).toHaveLength(22);

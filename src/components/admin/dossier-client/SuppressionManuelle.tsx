@@ -12,10 +12,7 @@ import {
   preparerSuppressionAction,
   supprimerManuellementAction,
 } from "@/features/dossier-client/actions-suppression";
-import {
-  empreinteBilan,
-  lireJetonSuppression,
-} from "@/features/dossier-client/suppression-jeton";
+import { empreinteBilan, lireJetonSuppression } from "@/features/dossier-client/suppression-jeton";
 import {
   bilanSuppression,
   MESSAGE_BLOQUE,
@@ -163,7 +160,8 @@ async function EcranDeConfirmation(props: Proprietes) {
                 <input type="hidden" name="jeton" value={props.jeton} />
                 <p className="w-full font-semibold">Validation 2 sur 2 : dernière étape</p>
                 <p className="w-full">
-                  Pour confirmer, recopiez {props.type === "client" ? "le numéro de la fiche" : "le code de contrôle"} :{" "}
+                  Pour confirmer, recopiez{" "}
+                  {props.type === "client" ? "le numéro de la fiche" : "le code de contrôle"} :{" "}
                   <strong data-code-suppression>{bilan.code}</strong>
                 </p>
                 <input

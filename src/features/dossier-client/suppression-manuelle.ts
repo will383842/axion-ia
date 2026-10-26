@@ -374,9 +374,7 @@ async function partiesClient(tx: Tx, cid: string, p: Parties): Promise<void> {
     )),
   );
   // Un e-mail de suivi qui vise un e-mail refusé : on ne le détache pas en silence.
-  p.bloquants.push(
-    ...(await liensHorsPerimetre(tx, "email_outbox", p.outboxRefuseIds, new Map())),
-  );
+  p.bloquants.push(...(await liensHorsPerimetre(tx, "email_outbox", p.outboxRefuseIds, new Map())));
   // Les e-mails rattachés à la fiche ET à chacun de ses contacts.
   const reels = await envoisReels(tx, [cid, ...p.contactIds]);
   if (reels > 0) p.bloquants.push(`${reels} e-mail(s) parti(s) à un prospect réel`);
@@ -392,9 +390,7 @@ async function entete(
       where: { id },
       select: { raisonSociale: true, contactEmail: true, numero: true },
     });
-    return c === null
-      ? null
-      : { nom: c.raisonSociale, email: c.contactEmail, code: c.numero };
+    return c === null ? null : { nom: c.raisonSociale, email: c.contactEmail, code: c.numero };
   }
   const q =
     type === "rencontre"
@@ -531,7 +527,9 @@ export async function preparerSuppression(
   },
   base: { $transaction: typeof prisma.$transaction } = prisma,
   maintenant: number = Date.now(),
-): Promise<{ readonly ok: true; readonly jeton: string } | { readonly ok: false; readonly motif: string }> {
+): Promise<
+  { readonly ok: true; readonly jeton: string } | { readonly ok: false; readonly motif: string }
+> {
   if (args.confirmation !== MOT_CONFIRMATION) {
     return { ok: false, motif: `Écrivez ${MOT_CONFIRMATION} pour confirmer.` };
   }
@@ -574,7 +572,10 @@ export async function supprimerManuellement(
   if (!lu.ok) return { ok: false, motif: lu.motif };
   const { contenu } = lu;
   if (contenu.t !== args.type || contenu.i !== args.id || contenu.a !== args.acteurId) {
-    return { ok: false, motif: "Cette validation ne vaut pas pour cette suppression : recommencez." };
+    return {
+      ok: false,
+      motif: "Cette validation ne vaut pas pour cette suppression : recommencez.",
+    };
   }
   return base.$transaction(
     async (t): Promise<ResultatSuppression> => {

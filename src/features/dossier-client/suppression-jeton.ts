@@ -83,7 +83,9 @@ export const MOTIF_JETON_INVALIDE =
 export function lireJetonSuppression(
   jeton: string,
   maintenant: number = Date.now(),
-): { readonly ok: true; readonly contenu: ContenuJeton } | { readonly ok: false; readonly motif: string } {
+):
+  | { readonly ok: true; readonly contenu: ContenuJeton }
+  | { readonly ok: false; readonly motif: string } {
   const k = cle();
   if (k === null) {
     return {
