@@ -149,11 +149,12 @@ async function liensHorsPerimetre(
     if (regle === true) continue;
     const exclusion =
       regle === undefined ? "" : ` AND NOT (${ident(regle.colonne)}::text = ANY($2::text[]))`;
-    const lignes = await tx.$queryRawUnsafe<{ n: number }[]>(
-      `SELECT count(*)::int AS n FROM ${fk.table} WHERE ${ident(fk.colonne)}::text = ANY($1::text[])${exclusion}`,
-      [...ids],
-      regle === undefined ? [] : [...regle.ids],
-    );
+    // Un paramètre en trop (`$2` absent de la requête) fait refuser l'appel par Postgres.
+    const requete = `SELECT count(*)::int AS n FROM ${fk.table} WHERE ${ident(fk.colonne)}::text = ANY($1::text[])${exclusion}`;
+    const lignes =
+      regle === undefined
+        ? await tx.$queryRawUnsafe<{ n: number }[]>(requete, [...ids])
+        : await tx.$queryRawUnsafe<{ n: number }[]>(requete, [...ids], [...regle.ids]);
     const n = Number(lignes[0]?.n ?? 0);
     if (n > 0) sortie.push(`${n} ${nomTable(fk.table)} lié(e)s`);
   }
