@@ -327,11 +327,11 @@ export function titreQuestionnairePreaudit(p: QuestionnairePreauditTelegram): st
     case "reponse":
       return `${essai}Questionnaire avant audit : réponse reçue`;
     case "invitation":
-      return `${essai}Invitation partie`;
+      return `${essai}Premier e-mail parti`;
     case "relance":
-      return `${essai}Relance ${p.rang ?? "?"} sur 3 partie`;
+      return `${essai}Rappel ${p.rang ?? "?"} sur 3 parti`;
     case "arret":
-      return `${essai}Relances arrêtées : ${MOTIFS_ARRET_LISIBLES[p.motif ?? ""] ?? "arrêt"}`;
+      return `${essai}Rappels arrêtés : ${MOTIFS_ARRET_LISIBLES[p.motif ?? ""] ?? "arrêt"}`;
     case "retenu":
       return `${essai}Envoi retenu`;
   }
@@ -345,7 +345,7 @@ const PARCOURS_LISIBLE = {
 
 /**
  * Le corps (10 lignes au plus) : société, qui (prénom + initiale), réponses reçues sur
- * attendues, prochaine relance, motif sans adresse, lien de la console. ADR 0010. PUR.
+ * attendues, prochain rappel, motif sans adresse, lien de la console. ADR 0010. PUR.
  */
 export function formatQuestionnairePreaudit(p: QuestionnairePreauditTelegram): string {
   const qui =
@@ -366,7 +366,7 @@ export function formatQuestionnairePreaudit(p: QuestionnairePreauditTelegram): s
     formatKV("Société", p.societe),
     formatKV("Qui", qui),
     formatKV("Réponses", reponses),
-    formatKV(p.evenement === "invitation" ? "Relances prévues" : "Relances", p.prochaine),
+    formatKV(p.evenement === "invitation" ? "Rappels prévus" : "Rappels", p.prochaine),
     p.evenement === "retenu" ? formatKV("Motif", p.motif) : null,
     formatKV("Voir", lienConsole(p.chemin)),
   ]
@@ -400,6 +400,8 @@ export function titreReservation(
     }
     case "salon":
       return salonDuNom(nomType) === "gofab" ? "Salon GOFAB réservé" : "Rendez-vous salon réservé";
+    case "tour_de_france_ia":
+      return "Tour de France IA réservé";
     case "autre":
       return "Appel client réservé";
   }

@@ -67,13 +67,14 @@ afterEach(() => {
 });
 
 describe("le module est le miroir de l'enum Prisma", () => {
-  it("cinq types, chacun avec son libellé français", () => {
+  it("six types, chacun avec son libellé français", () => {
     expect([...TYPES_RENDEZ_VOUS]).toEqual([
       "diagnostic",
       "echange_projet",
       "apporteur",
       "salon",
       "autre",
+      "tour_de_france_ia",
     ]);
     expect(LIBELLES_TYPE_RENDEZ_VOUS).toEqual({
       diagnostic: "Diagnostic IA",
@@ -81,6 +82,7 @@ describe("le module est le miroir de l'enum Prisma", () => {
       apporteur: "Apporteur",
       salon: "Salon",
       autre: "Autre",
+      tour_de_france_ia: "Tour de France IA",
     });
   });
 });

@@ -26,6 +26,7 @@ import { chiffrerParole, dechiffrerParole } from "@/lib/chiffrer-parole";
 import { codeDirigeantPreauditValide } from "@/server/visio/questionnaire-en-ligne/jeton";
 
 import type { ModeReponse } from "./donnees";
+import { reessayerSiInterblocage } from "./interblocage";
 
 /**
  * Un brouillon que personne n'a touché depuis 30 jours ne compte plus dans le plafond et ne
@@ -241,56 +242,58 @@ export async function enregistrerBrouillon(
   maintenant: Date = new Date(),
 ): Promise<ResultatEnregistrement> {
   const donnees = chiffrerParole(v.brouillon);
-  return prisma.$transaction(async (tx): Promise<ResultatEnregistrement> => {
-    const verrou = await tx.$queryRaw<
-      { id: string }[]
-    >`SELECT id FROM questionnaires_avant_audit WHERE id = ${questionnaireId}::uuid FOR UPDATE`;
-    if (verrou.length === 0) return { statut: "ferme" };
-    const envois = await tx.questionnaireAvantAuditEnvoi.findMany({
-      where: reponsesDeLaPersonne(questionnaireId, v.personne),
-      select: { donnees: true, ecarteLe: true },
-    });
-    if (
-      v.personne.mode === "main" &&
-      envois.some((e) => e.ecarteLe === null && estReponseDuDirigeant(questionnaireId, e.donnees))
-    ) {
-      return { statut: "deja_envoye" };
-    }
-    const h = v.horodatage.getTime();
-    const deLaPersonne = (d: string) => envoyeLeNavigateur(questionnaireId, v.personne, d);
-    if (envois.some((e) => (deLaPersonne(e.donnees) ?? -Infinity) >= h)) {
-      return { statut: "deja_envoye" };
-    }
-    const existant = await tx.questionnaireAvantAuditBrouillon.findUnique({
-      where: cle(questionnaireId, v.personne),
-      select: { horodatage: true, majLe: true },
-    });
-    if (existant === null) {
-      // Seuls les brouillons VIVANTS (modifiés depuis moins de 30 jours) comptent.
-      const n = await tx.questionnaireAvantAuditBrouillon.count({
-        where: { questionnaireId, majLe: { gte: limiteInactivite(maintenant) } },
+  return reessayerSiInterblocage(() =>
+    prisma.$transaction(async (tx): Promise<ResultatEnregistrement> => {
+      const verrou = await tx.$queryRaw<
+        { id: string }[]
+      >`SELECT id FROM questionnaires_avant_audit WHERE id = ${questionnaireId}::uuid FOR UPDATE`;
+      if (verrou.length === 0) return { statut: "ferme" };
+      const envois = await tx.questionnaireAvantAuditEnvoi.findMany({
+        where: reponsesDeLaPersonne(questionnaireId, v.personne),
+        select: { donnees: true, ecarteLe: true },
       });
-      if (n >= BROUILLONS_MAX_PAR_QUESTIONNAIRE) return { statut: "trop_de_brouillons" };
-    }
-    const vivant =
-      existant !== null && existant.majLe.getTime() >= limiteInactivite(maintenant).getTime();
-    if (vivant && existant.horodatage.getTime() > v.horodatage.getTime()) {
-      return { statut: "plus_ancien", horodatage: existant.horodatage };
-    }
-    await tx.questionnaireAvantAuditBrouillon.upsert({
-      where: cle(questionnaireId, v.personne),
-      create: {
-        questionnaireId,
-        mode: v.personne.mode,
-        membre: v.personne.membre,
-        horodatage: v.horodatage,
-        majLe: maintenant,
-        donnees,
-      },
-      update: { horodatage: v.horodatage, majLe: maintenant, donnees },
-    });
-    return { statut: "ok", horodatage: v.horodatage };
-  });
+      if (
+        v.personne.mode === "main" &&
+        envois.some((e) => e.ecarteLe === null && estReponseDuDirigeant(questionnaireId, e.donnees))
+      ) {
+        return { statut: "deja_envoye" };
+      }
+      const h = v.horodatage.getTime();
+      const deLaPersonne = (d: string) => envoyeLeNavigateur(questionnaireId, v.personne, d);
+      if (envois.some((e) => (deLaPersonne(e.donnees) ?? -Infinity) >= h)) {
+        return { statut: "deja_envoye" };
+      }
+      const existant = await tx.questionnaireAvantAuditBrouillon.findUnique({
+        where: cle(questionnaireId, v.personne),
+        select: { horodatage: true, majLe: true },
+      });
+      if (existant === null) {
+        // Seuls les brouillons VIVANTS (modifiés depuis moins de 30 jours) comptent.
+        const n = await tx.questionnaireAvantAuditBrouillon.count({
+          where: { questionnaireId, majLe: { gte: limiteInactivite(maintenant) } },
+        });
+        if (n >= BROUILLONS_MAX_PAR_QUESTIONNAIRE) return { statut: "trop_de_brouillons" };
+      }
+      const vivant =
+        existant !== null && existant.majLe.getTime() >= limiteInactivite(maintenant).getTime();
+      if (vivant && existant.horodatage.getTime() > v.horodatage.getTime()) {
+        return { statut: "plus_ancien", horodatage: existant.horodatage };
+      }
+      await tx.questionnaireAvantAuditBrouillon.upsert({
+        where: cle(questionnaireId, v.personne),
+        create: {
+          questionnaireId,
+          mode: v.personne.mode,
+          membre: v.personne.membre,
+          horodatage: v.horodatage,
+          majLe: maintenant,
+          donnees,
+        },
+        update: { horodatage: v.horodatage, majLe: maintenant, donnees },
+      });
+      return { statut: "ok", horodatage: v.horodatage };
+    }),
+  );
 }
 
 /** Cette personne a-t-elle déjà un brouillon ? (lecture seule ; sert au débit des NOUVEAUX). */

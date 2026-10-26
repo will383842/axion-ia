@@ -19,6 +19,7 @@
  */
 
 import type { BaseTransactionnelle } from "./base";
+import { estInterblocage } from "@/features/questionnaire-preaudit/interblocage";
 import { TYPES_DE_FAITS } from "@/server/visio/types-de-faits";
 
 export class ErreurTrancher extends Error {}
@@ -33,14 +34,7 @@ export interface ResultatTrancher {
   readonly remplaces: number;
 }
 
-/** Deux clics croisés : Postgres lève un interblocage (40P01) ou un conflit (40001). */
-function estConflitConcurrent(x: unknown): boolean {
-  if (typeof x !== "object" || x === null) return false;
-  const c = x as { code?: unknown; meta?: { code?: unknown }; message?: unknown };
-  if (c.code === "P2034" || c.code === "40P01" || c.code === "40001") return true;
-  if (c.meta?.code === "40P01" || c.meta?.code === "40001") return true;
-  return typeof c.message === "string" && /deadlock|40P01/i.test(c.message);
-}
+const estConflitConcurrent = estInterblocage;
 
 export async function garderCetteValeur(
   db: BaseTransactionnelle,

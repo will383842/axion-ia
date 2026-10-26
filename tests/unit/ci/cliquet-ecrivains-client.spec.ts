@@ -184,7 +184,7 @@ describe("REQ-INT-007 — face VERTE : le dépôt réel", () => {
         "src/features/dossier-client/defaire-fusion.ts (defaireDansUneTransaction › travail de db.$transaction())",
         "src/features/dossier-client/fusionner.ts (fusionnerFiches › travail de db.$transaction())",
         // 25/10/2026 : champs VIDES de la fiche complétés depuis la réponse du dirigeant.
-        "src/features/questionnaire-preaudit/completer-fiche.ts (completerFicheDepuisReponse › travail de prisma.$transaction())",
+        "src/features/questionnaire-preaudit/completer-fiche.ts (completerFicheDepuisReponse › travail de reessayerSiInterblocage() › travail de prisma.$transaction())",
         "src/lib/rgpd-erase.ts (eraseClientsForEmail › travail de prisma.$transaction())",
         "src/server/actions/qualiopi/clients.ts (updateClientAction › travail de prisma.$transaction())",
         "src/server/crm-sync/retour-dossier.ts (appliquerRetourDossier › travail de prisma.$transaction())",
