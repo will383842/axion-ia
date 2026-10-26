@@ -114,12 +114,14 @@ export const HEROS = {
   /** Le surtitre : le Tour se nomme, et dit qu'il se déplace. */
   surtitre: "Tour de France IA · de la TPE à l’ETI",
   /**
-   * Le H1 en trois morceaux : seul « dans votre entreprise » prend l'accent. Le
-   * Tour VIENT chez le lecteur ; sans reprendre le slogan d'Axion-IA.
+   * Le H1, accroche imposée par Will, en trois morceaux : seul « Nous, si. » prend
+   * l'accent. Le lecteur se reconnaît, puis Axion-IA répond.
    */
-  titreAvant: "L’IA vient travailler ",
-  titreAccent: "dans votre entreprise",
-  titreApres: ".",
+  titreAvant: "Vous entendez parler d’IA partout et ne savez plus par où commencer ? ",
+  titreAccent: "Nous, si.",
+  titreApres: "",
+  /** Le sous-titre fort, juste sous le H1 : le Tour VIENT chez le lecteur. */
+  accroche: "L’IA vient travailler dans votre entreprise.",
   sousTitre: OFFRE,
   condition: CONDITION_GRATUITE,
   /** Les trois pastilles sous le titre : l'offre en un coup d'œil. */
@@ -352,6 +354,7 @@ export function toutLeTexte(): string {
     HEROS.titreAvant,
     HEROS.titreAccent,
     HEROS.titreApres,
+    HEROS.accroche,
     HEROS.sousTitre,
     HEROS.condition,
     ...HEROS.pastilles,

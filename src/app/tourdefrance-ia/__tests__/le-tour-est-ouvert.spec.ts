@@ -452,11 +452,8 @@ describe("🔴 le contenu : mots interdits, typographie, SEO", () => {
       /r[ée]serv[ée] aux (TPE|PME)/i,
       /candidat/i,
       /marque d[ée]pos[ée]e/i,
-      /entendez parler/i,
-      /par o[uù] commencer/i,
       /®/u,
       /d[ée]pos[ée]/i,
-      /nous, si\./i,
       /\d\s?(€|euros?\b|EUR\b|HT\b|TTC\b)/i,
       /\bprix\b/i,
       /\bjaune\b/i,
@@ -472,6 +469,16 @@ describe("🔴 le contenu : mots interdits, typographie, SEO", () => {
       expect(texte, String(motif)).not.toMatch(motif);
       expect(sources, String(motif)).not.toMatch(motif);
     }
+  });
+
+  it("le H1 est l'accroche de Will, l'ancien titre devient le sous-titre fort", () => {
+    expect(`${HEROS.titreAvant}${HEROS.titreAccent}${HEROS.titreApres}`).toBe(
+      "Vous entendez parler d’IA partout et ne savez plus par où commencer ? Nous, si.",
+    );
+    expect(HEROS.titreAccent).toBe("Nous, si.");
+    expect(HEROS.accroche).toBe("L’IA vient travailler dans votre entreprise.");
+    const page = lire("src/app/tourdefrance-ia/page.tsx");
+    expect(page).toMatch(/<\/h1>\s*<p[^>]*>\s*\{HEROS\.accroche\}/);
   });
 
   it("le slogan d'Axion-IA n'apparaît pas", async () => {

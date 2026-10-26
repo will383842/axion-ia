@@ -205,7 +205,7 @@ export default async function TourDeFranceIaPage() {
               </p>
               <h1
                 id="tdf-titre"
-                className="mt-5 font-serif text-[2rem] leading-[1.06] font-medium tracking-tight text-balance sm:text-5xl lg:text-[3.75rem]"
+                className="mt-5 font-serif text-[clamp(1.5rem,6.6vw,3.25rem)] leading-[1.08] font-medium tracking-tight text-balance"
               >
                 {HEROS.titreAvant}
                 <span className="text-terracotta-on-mocha decoration-terracotta italic underline decoration-[0.12em] underline-offset-[0.14em]">
@@ -213,6 +213,9 @@ export default async function TourDeFranceIaPage() {
                 </span>
                 {HEROS.titreApres}
               </h1>
+              <p className="mt-4 font-serif text-xl leading-snug font-medium sm:text-2xl lg:text-[1.75rem]">
+                {HEROS.accroche}
+              </p>
               <ul className="mt-5 hidden flex-wrap gap-2 sm:flex" aria-label={HEROS.surtitre}>
                 {HEROS.pastilles.map((p) => (
                   <li

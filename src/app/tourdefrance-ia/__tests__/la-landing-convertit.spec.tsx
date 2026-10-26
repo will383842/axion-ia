@@ -35,6 +35,7 @@ import {
   EMPLACEMENTS_CTA,
   FAQ,
   FONDATEUR,
+  HEROS,
   LIBELLE_CTA,
   LIBELLE_CTA_COURT,
   MICRO_TEXTE_CTA,
@@ -608,7 +609,8 @@ describe("🔴 le vocabulaire de la landing", () => {
   });
 
   it("ni promesse de résultat ni construction du slogan d'Axion (« partout… sauf »)", () => {
-    expect(texte).not.toMatch(/\bpartout\b/i);
+    // « partout » n'est permis que dans l'accroche de Will, le H1.
+    expect(texte.replace(HEROS.titreAvant, "")).not.toMatch(/\bpartout\b/i);
     expect(texte).not.toMatch(/\bsauf\b/i);
     expect(texte).not.toMatch(/d[èe]s le lendemain|ce que vous ne voyez plus|gagner du temps/i);
     // L'audit « chiffre » ou « met en évidence » : il ne garantit rien.
