@@ -34,6 +34,8 @@
 
 import { FilDesEchanges } from "@/components/admin/dossier-client/FilDesEchanges";
 import { lireFilDesEchanges } from "@/features/dossier-client/fil-des-echanges";
+import { FactureHorsConsole } from "@/components/admin/dossier-client/FactureHorsConsole";
+import { prisma } from "@/lib/prisma";
 import { BandeauOuEnEst } from "@/components/admin/dossier-client/BandeauOuEnEst";
 import { construireBandeau, type LigneBandeau } from "@/features/dossier-client/bandeau-ou-en-est";
 import { BlocQuestionnaireFiche } from "@/components/admin/dossier-client/BlocQuestionnaireFiche";
@@ -98,7 +100,7 @@ import { FusionDeFiches } from "@/components/admin/dossier-client/FusionDeFiches
 import { BrancheOpcoBloc } from "@/components/admin/qualiopi/BrancheOpcoBloc";
 import { lireMessageDeRetour } from "@/features/dossier-client/message-de-retour";
 import { compterDocumentsParProjet } from "@/features/dossier-client/documents/queries";
-import { toParisLocalInput } from "@/lib/calendar-grid";
+import { dayKeyInParis, toParisLocalInput } from "@/lib/calendar-grid";
 import {
   rechercherSiren,
   type ResultatAnnuaire,
@@ -535,6 +537,15 @@ export default async function FicheClient360Page({ params, searchParams }: PageP
     );
   }
 
+  // « Facture établie hors console » : lecture d'appoint (une panne ne cache pas l'onglet).
+  const factureHorsConsoleLe =
+    voitEchanges && onglet === "devis-factures"
+      ? await prisma.clientFactureHorsConsole
+          .findUnique({ where: { clientId: client.id }, select: { etabliLe: true } })
+          .then((l) => l?.etabliLe ?? null)
+          .catch(() => null)
+      : null;
+
   const encoursDuCents = calculerEncoursDuCents(client.facturesFormation);
   // La requête ramène TOUTES les factures (l'encours l'exige) ; l'affichage,
   // lui, s'aligne sur les autres sections : les 10 dernières.
@@ -860,6 +871,16 @@ export default async function FicheClient360Page({ params, searchParams }: PageP
 
       {onglet === "devis-factures" ? (
         <>
+          {voitEchanges ? (
+            <FactureHorsConsole
+              clientId={client.id}
+              etabliLe={factureHorsConsoleLe}
+              peutEcrire={acces.peutEcrire}
+              aujourdhui={dayKeyInParis(maintenant)}
+              message={lireMessageDeRetour(sp, "message")}
+              erreur={null /* l'erreur s'affiche déjà en tête de l'onglet */}
+            />
+          ) : null}
           {encoursDuCents > 0 ? (
             <AdminBloc teinte="ambre" haut titre="Encours à encaisser">
               <p className="text-[length:var(--text-admin-sm)]">
