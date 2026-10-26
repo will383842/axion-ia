@@ -1202,6 +1202,11 @@ jobs:
     # la protection de `main`, sinon il rougira sans jamais rien bloquer.
     # ─────────────────────────────────────────────────────────────────────────
     name: Gate C · Docker smoke test
+    # 2026-10-25 : plus lancé sur les PR. Il ne peut pas rougir (continue-on-error),
+    # n'est pas exigé pour fusionner et dure ~30 min de machine par push : il saturait
+    # la file des machines gratuites. Il tourne toujours sur main/staging, en file de
+    # fusion et à la demande.
+    if: github.event_name != 'pull_request'
     runs-on: ubuntu-latest
     # 30 → 60 (2026-06-02) : une fois l'ENOSPC réglé (step free-disk ci-dessus),
     # le `docker build` complet (compile + 18k pages SSG ~12min + copie standalone
