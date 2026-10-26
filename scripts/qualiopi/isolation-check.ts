@@ -146,6 +146,12 @@ const ALLOWED_PATTERNS: ReadonlyArray<RegExp> = [
  * pour rien.
  */
 const CONSOMMATEURS_ASSUMES: ReadonlySet<string> = new Set([
+  // Synchro console ↔ CRM (étape 6, 26/10/2026) — le NAF qui revient du CRM doit recalculer
+  // l'OPCO déduit EXACTEMENT comme la saisie en console (`inferOpcoDepuisTable`, `nomOpcoDuClient`,
+  // `isOpcoId`) : une seule règle, jamais un OPCO saisi écrasé. Déplacer cette fonction dans
+  // `src/server/qualiopi` ne change rien (la garde compte tout import du domaine) ; le fichier
+  // n'importe que ces deux modules, rien d'autre. Nommé seul.
+  "src/server/crm-sync/retour-dossier.ts",
   // Chantier QNC, lot L05 — le libellé de la modalité « hybride » a UNE seule source
   // (`libelles-enumerations`, constante pure, sans lecture de base ni d'interrupteur) :
   // la fiche formation publique, la convocation et la console disent la même chose.

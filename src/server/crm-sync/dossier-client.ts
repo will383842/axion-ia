@@ -125,6 +125,7 @@ export async function balayerDossiersClients(
   const clients = await prisma.client.findMany({
     where: {
       type: "entreprise",
+      fusionsAbsorbee: { none: { defaiteLe: null } },
       ...(curseurBalayage === null ? {} : { id: { gt: curseurBalayage } }),
     },
     orderBy: { id: "asc" },

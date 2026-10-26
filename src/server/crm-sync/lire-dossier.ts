@@ -26,10 +26,10 @@ function plusRecent(dates: ReadonlyArray<Date | null | undefined>, repli: Date):
  * code, mais pas forcément avant celui-ci) : absente ⇒ « non », jamais une
  * erreur. Lecture seule, une colonne (l'existence de la ligne).
  */
-async function factureHorsConsole(clientId: string): Promise<boolean> {
+async function factureHorsConsole(clientIds: readonly string[]): Promise<boolean> {
   const lignes = await prisma.$queryRaw<Array<{ ok: boolean }>>`
     SELECT CASE WHEN to_regclass('client_factures_hors_console') IS NULL THEN false
-           ELSE EXISTS (SELECT 1 FROM client_factures_hors_console WHERE client_id = ${clientId}::uuid)
+           ELSE EXISTS (SELECT 1 FROM client_factures_hors_console WHERE client_id = ANY(${clientIds as string[]}::uuid[]))
            END AS ok`;
   return lignes[0]?.ok === true;
 }
@@ -53,6 +53,10 @@ export async function lireEntreeDossier(
       adresseVille: true,
       effectif: true,
       updatedAt: true,
+      // Fusion non défaite : cette fiche est absorbée (rien n'est émis) ou absorbante
+      // (elle lit aussi les pièces des fiches qu'elle a absorbées).
+      fusionsAbsorbee: { where: { defaiteLe: null }, select: { id: true } },
+      fusionsAbsorbante: { where: { defaiteLe: null }, select: { absorbeId: true } },
       contacts: {
         select: {
           id: true,
@@ -72,15 +76,19 @@ export async function lireEntreeDossier(
     },
   });
   if (client === null || client.type !== "entreprise") return null;
+  // Une fiche absorbée est un doublon fusionné : elle ne part pas comme dossier à part.
+  if (client.fusionsAbsorbee.length > 0) return null;
+  // Factures, case hors console et questionnaires : la fiche ET ses fiches absorbées.
+  const ids = [clientId, ...client.fusionsAbsorbante.map((f) => f.absorbeId)];
 
   const [factures, horsConsole, questionnaires] = await Promise.all([
     prisma.factureFormation.findMany({
-      where: { clientId, statut: { notIn: ["brouillon", "annulee"] }, emiseAt: { not: null } },
+      where: { clientId: { in: ids }, statut: { notIn: ["brouillon", "annulee"] }, emiseAt: { not: null } },
       select: { emiseAt: true },
     }),
-    factureHorsConsole(clientId),
+    factureHorsConsole(ids),
     prisma.questionnaireAvantAudit.findMany({
-      where: { OR: [{ clientId }, { rencontre: { clientId } }] },
+      where: { OR: [{ clientId: { in: ids } }, { rencontre: { clientId: { in: ids } } }] },
       select: {
         envoyeLe: true,
         // Des dates et des modes : jamais `donnees`.

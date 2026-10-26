@@ -36,6 +36,8 @@ const base = vi.hoisted(() => {
     adresseVille: "Paris",
     effectif: 12,
     updatedAt: new Date("2026-10-25T08:00:00Z"),
+    fusionsAbsorbee: [] as unknown[],
+    fusionsAbsorbante: [] as unknown[],
     contacts: [
       {
         id: "c1",
@@ -236,5 +238,31 @@ describe("synchro automatique du dossier client", () => {
     };
     expect(appel.where.id).toEqual({ gt: `id-${BALAYAGE_DOSSIERS_MAX - 1}` });
     avert.mockRestore();
+  });
+
+  it("fiche absorbée par une fusion : rien n'est émis, ni balayé", async () => {
+    base.courant = { ...base.client, fusionsAbsorbee: [{ id: "f1" }] };
+    expect(await synchroniserDossierClient(CLIENT, MAINTENANT)).toBe("ignore");
+    expect(base.sortie).toHaveLength(0);
+    await balayerDossiersClients(MAINTENANT);
+    const appel = (base.prisma.client.findMany.mock.calls as unknown[][])[0]![0] as {
+      where: { fusionsAbsorbee?: unknown };
+    };
+    expect(appel.where.fusionsAbsorbee).toEqual({ none: { defaiteLe: null } });
+  });
+
+  it("la facture d'une fiche absorbée rend l'absorbante client (factures lues sur les deux)", async () => {
+    const ABSORBEE = "bbbbbbbb-2222-4222-8222-bbbbbbbbbbbb";
+    base.courant = { ...base.client, fusionsAbsorbante: [{ absorbeId: ABSORBEE }] };
+    base.prisma.factureFormation.findMany.mockResolvedValueOnce([
+      { emiseAt: new Date("2026-10-24T10:00:00Z") },
+    ] as never);
+    await synchroniserDossierClient(CLIENT, MAINTENANT);
+    const filtre = base.prisma.factureFormation.findMany.mock.calls[0]![0] as {
+      where: { clientId: { in: string[] } };
+    };
+    expect(filtre.where.clientId.in).toEqual([CLIENT, ABSORBEE]);
+    const msg = base.sortie[0]!["payload"] as { payload: { dossier: { statut: string } } };
+    expect(msg.payload.dossier.statut).toBe("client");
   });
 });
