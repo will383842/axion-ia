@@ -31,6 +31,8 @@ describe.each([
     /contenu/i,
     /Si vous êtes arrivé par un lien/,
     /terme/i,
+    /emplacement du bouton/,
+    /^Si vous prenez ensuite/,
   ],
   [
     "en",
@@ -43,6 +45,8 @@ describe.each([
     /content/i,
     /If you arrived through a campaign link/,
     /term/i,
+    /position of the button/,
+    /^If you then book/,
   ],
 ] as const)(
   "politique de cookies (%s)",
@@ -57,6 +61,8 @@ describe.each([
     contenu,
     debutRdv,
     terme,
+    emplacement,
+    debutPhraseCookie,
   ) => {
     const sections = page![lang].sections;
     const necessaires = sections.find((s) => s.title === titreNecessaires);
@@ -107,6 +113,18 @@ describe.each([
       expect(rdv).toBeDefined();
       expect(rdv).not.toMatch(terme);
       expect(rdv).toMatch(contenu);
+    });
+
+    it("le rendez-vous annonce l'emplacement du bouton, enregistré dans tous les cas", () => {
+      const calendly = sections.find((s) => s.title === titreCalendly);
+      expect(calendly!.body).toMatch(emplacement);
+    });
+
+    it("la phrase de la section cookie sur le rendez-vous parle du contenu, pas du terme", () => {
+      const phrase = utm!.body.split(/(?<=\.)\s+/).find((p) => debutPhraseCookie.test(p));
+      expect(phrase).toBeDefined();
+      expect(phrase).toMatch(contenu);
+      expect(phrase).not.toMatch(terme);
     });
   },
 );
