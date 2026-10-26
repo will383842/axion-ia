@@ -6,6 +6,7 @@ import {
   CookieConsent,
   SCRIPT_AVANT_HYDRATATION,
   __resetConsentSnapshotForTests,
+  envoyerProvenanceApresAccord,
   readAnalyticsConsent,
   resetAnalyticsConsent,
   writeAnalyticsConsent,
@@ -130,7 +131,7 @@ describe("<CookieConsent> — affichage", () => {
   it("s'affiche quand aucun choix n'est enregistré", () => {
     render(<CookieConsent />);
     expect(banner()).not.toBeNull();
-    expect(screen.getByText("Cookies analytics")).toBeTruthy();
+    expect(screen.getByText("Cookies de mesure")).toBeTruthy();
   });
 
   it("ne s'affiche pas si un choix est déjà enregistré", () => {
@@ -316,7 +317,7 @@ describe("<CookieConsent> — compact au téléphone", () => {
   it("le titre reste lisible par les lecteurs d'écran (aria-labelledby) même masqué", () => {
     render(<CookieConsent />);
     const titre = document.getElementById("cookie-consent-title");
-    expect(titre?.textContent).toBe("Cookies analytics");
+    expect(titre?.textContent).toBe("Cookies de mesure");
     expect(banner()?.getAttribute("aria-labelledby")).toBe("cookie-consent-title");
   });
 });
@@ -356,5 +357,90 @@ describe("<CookieConsent> — police système (régression CLS du 2026-09-02)", 
     // 0,052 sur /fr, 0,062 sur /contact, 0,049 sur /appel — au-dessus du seuil.
     expect(html).toMatch(/font-family:[^"]*system-ui/);
     expect(html).not.toMatch(/font-family:[^"]*Manrope/);
+  });
+});
+
+describe("<CookieConsent> — cookie de provenance axion_utm APRÈS consentement (2026-10-26)", () => {
+  const ROUTE = "/api/utm-consent";
+  let appels: Array<{ url: string; corps: unknown }>;
+
+  function adresse(chemin: string) {
+    window.history.replaceState(null, "", chemin);
+  }
+
+  beforeEach(() => {
+    appels = [];
+    delete (window as unknown as Record<string, unknown>).__axionProvenanceEnvoyee;
+    vi.spyOn(globalThis, "fetch").mockImplementation(async (url, init) => {
+      appels.push({ url: String(url), corps: init?.body ? JSON.parse(String(init.body)) : null });
+      return new Response(null, { status: 204 });
+    });
+  });
+
+  afterEach(() => {
+    adresse("/");
+    document.body.innerHTML = "";
+  });
+
+  const versLaRoute = () => appels.filter((a) => a.url === ROUTE);
+
+  it("rien n'est envoyé ni gardé à l'affichage, même avec des utm_* dans l'adresse", () => {
+    adresse("/fr/appel?utm_source=linkedin&utm_campaign=tour");
+    render(<CookieConsent />);
+    expect(versLaRoute()).toHaveLength(0);
+    expect(window.sessionStorage.length).toBe(0);
+    expect(document.cookie).not.toMatch(/axion_utm/);
+  });
+
+  it("« Refuser » n'appelle pas la route et ne dépose rien", async () => {
+    adresse("/fr/appel?utm_source=linkedin&utm_campaign=tour");
+    render(<CookieConsent />);
+    await act(async () => screen.getByRole("button", { name: "Refuser" }).click());
+    expect(versLaRoute()).toHaveLength(0);
+    expect(document.cookie).not.toMatch(/axion_utm/);
+  });
+
+  it("« Accepter » envoie les utm_* de l'adresse courante, et seulement eux", async () => {
+    adresse("/fr/appel?utm_source=linkedin&utm_campaign=tour&utm_term=ia&autre=x");
+    render(<CookieConsent />);
+    await act(async () => screen.getByRole("button", { name: "Accepter" }).click());
+    expect(versLaRoute()).toEqual([
+      { url: ROUTE, corps: { utm_source: "linkedin", utm_campaign: "tour", utm_term: "ia" } },
+    ]);
+  });
+
+  it("« Accepter » sans utm_* dans l'adresse n'appelle pas la route", async () => {
+    adresse("/fr/a-propos");
+    render(<CookieConsent />);
+    await act(async () => screen.getByRole("button", { name: "Accepter" }).click());
+    expect(versLaRoute()).toHaveLength(0);
+  });
+
+  it("AVANT l'hydratation, le script en ligne envoie aussi après « Accepter », jamais après « Refuser »", () => {
+    adresse("/fr/appel?utm_source=google");
+    let hote = monterAvantHydratation();
+    (hote.querySelector('[data-consent="declined"]') as HTMLButtonElement).click();
+    expect(versLaRoute()).toHaveLength(0);
+
+    document.body.innerHTML = "";
+    window.localStorage.clear();
+    clearCookie();
+    hote = monterAvantHydratation();
+    (hote.querySelector('[data-consent="accepted"]') as HTMLButtonElement).click();
+    expect(versLaRoute()).toEqual([{ url: ROUTE, corps: { utm_source: "google" } }]);
+  });
+
+  it("script en ligne puis React sur le même clic : un seul envoi", () => {
+    adresse("/fr/appel?utm_source=google");
+    const hote = monterAvantHydratation();
+    (hote.querySelector('[data-consent="accepted"]') as HTMLButtonElement).click();
+    // Ce que fait ensuite le `onClick` React du bandeau hydraté.
+    envoyerProvenanceApresAccord();
+    expect(versLaRoute()).toHaveLength(1);
+  });
+
+  it("le bandeau annonce la mesure de la provenance des campagnes", () => {
+    render(<CookieConsent />);
+    expect(banner()?.textContent).toMatch(/mesure de la provenance des campagnes/);
   });
 });

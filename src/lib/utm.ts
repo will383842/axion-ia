@@ -21,7 +21,8 @@ export interface UtmParams {
   utm_content?: string;
 }
 
-const UTM_KEYS: ReadonlyArray<keyof UtmParams> = [
+/** Liste blanche des cinq clés — aussi lue par la bannière (`CookieConsent`). */
+export const UTM_KEYS: ReadonlyArray<keyof UtmParams> = [
   "utm_source",
   "utm_medium",
   "utm_campaign",
@@ -95,8 +96,9 @@ export function deserializeUtmCookie(value: string): UtmParams {
 }
 
 /**
- * Header `Set-Cookie` à émettre depuis middleware/Server Action quand on
- * détecte des UTM params dans l'URL (et pas déjà cookies).
+ * Header `Set-Cookie` du cookie de provenance. Émis UNIQUEMENT par
+ * `POST /api/utm-consent`, que la bannière appelle après « Accepter » : le
+ * cookie n'est pas strictement nécessaire (décision de Will, 2026-10-26).
  *
  * Attribution window : 30 jours (standard marketing).
  *

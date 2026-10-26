@@ -31,7 +31,7 @@ describe.each([
     /contenu/i,
     /Si vous êtes arrivé par un lien/,
     /terme/i,
-    /emplacement du bouton/,
+    /^L'emplacement du bouton/,
     /^Si vous prenez ensuite/,
   ],
   [
@@ -45,7 +45,7 @@ describe.each([
     /content/i,
     /If you arrived through a campaign link/,
     /term/i,
-    /position of the button/,
+    /^The position of the button/,
     /^If you then book/,
   ],
 ] as const)(
@@ -116,8 +116,37 @@ describe.each([
     });
 
     it("le rendez-vous annonce l'emplacement du bouton, enregistré dans tous les cas", () => {
+      // Une PHRASE à part entière : si la mention revient dans la condition de
+      // campagne (« Si vous êtes arrivé… »), elle ne commence plus la phrase.
       const calendly = sections.find((s) => s.title === titreCalendly);
-      expect(calendly!.body).toMatch(emplacement);
+      const phrases = calendly!.body.split(/(?<=\.)\s+/);
+      expect(phrases.some((p) => emplacement.test(p))).toBe(true);
+    });
+
+    it("le cookie n'est déposé qu'après l'accord donné dans la bannière, et le refus suffit à s'y opposer", () => {
+      expect(utm!.body).toMatch(
+        lang === "fr"
+          ? /^Le cookie axion_utm n'est déposé qu'après votre accord dans la bannière cookies/
+          : /^The axion_utm cookie is set only after you agree in the cookie banner/,
+      );
+      expect(utm!.body).toMatch(
+        lang === "fr" ? /« Refuser » dans la bannière/ : /“Decline” in the banner/,
+      );
+      expect(utm!.body).toMatch(/strictement nécessaire|strictly necessary/);
+    });
+
+    it("plus aucune phrase ne dit le cookie déposé sans accord, ni « pas exempté de consentement »", () => {
+      const tout = sections.map((s) => s.body).join("\n");
+      expect(tout).not.toMatch(/n'est déposé que si le lien par lequel vous arrivez/);
+      expect(tout).not.toMatch(/is set only if the link you arrive through/);
+      expect(tout).not.toMatch(/peut toutefois être déposé lorsque l'adresse/);
+      expect(tout).not.toMatch(/may be set when the address carries/);
+      expect(tout).not.toMatch(/n'est pas exempté de consentement|is not exempt from consent/);
+    });
+
+    it("l'IP n'est pas conservée en base pour la mesure du Tour", () => {
+      const calendly = sections.find((s) => s.title === titreCalendly);
+      expect(calendly!.body).toMatch(sansBase);
     });
 
     it("la phrase de la section cookie sur le rendez-vous parle du contenu, pas du terme", () => {
