@@ -1,6 +1,6 @@
 // Tour de France IA — TOUT le texte de la landing, en un seul endroit (2026-10-25,
 // refonte « landing de conversion » le 2026-10-26, réécriture « offre » le
-// 2026-10-26 après relecture de Will).
+// 2026-10-26 après relecture, premier écran « mobile d'abord » le même jour).
 //
 // Pourquoi un module à part : le test des mots interdits
 // (`__tests__/le-tour-est-ouvert.spec.ts`) lit CE fichier et la page ; un
@@ -31,6 +31,10 @@
 //
 // Les seuls chiffres de la page sont ceux du CONCEPT (5 places, 2 à 4 h,
 // 4 h, 30 minutes) : aucun compteur, aucune statistique.
+//
+// Premier écran d'un téléphone (360 × 640, trafic Facebook, LinkedIn, Instagram) :
+// le H1, `PROMESSE`, le bouton et `REASSURANCE` — rien d'autre. Le reste du
+// héros (accroche, offre détaillée, condition, carte) vient juste sous le pli.
 
 import { TOUR_PREFIX } from "@/features/tour-de-france/visibilite";
 
@@ -43,11 +47,15 @@ export const PLACES_PAR_VILLE = 5;
 /** La page de rendez-vous visio de 30 minutes (type `tour` de `types-reservables.ts`). */
 export const CHEMIN_RENDEZ_VOUS = "/fr/appel/tour-de-france-ia";
 
-/** Le libellé des grands boutons : ce que l'entreprise obtient. Une seule action sur la page. */
-export const LIBELLE_CTA = "Je veux mon audit offert";
+/**
+ * Le libellé des grands boutons : ce que l'entreprise obtient — l'audit ET la
+ * formation (« Mon audit offert » seul faisait disparaître la formation). Une
+ * seule action sur la page. À 360 px, il passe sur deux lignes centrées.
+ */
+export const LIBELLE_CTA = "Je veux mon audit et ma formation offerts";
 
-/** Le même, en court : l'en-tête et le bandeau, où la place manque à 360 px. */
-export const LIBELLE_CTA_COURT = "Mon audit offert";
+/** Le même, en court : l'en-tête, le bandeau et la barre collante, où la place manque à 360 px. */
+export const LIBELLE_CTA_COURT = "Audit + formation offerts";
 
 /**
  * Le micro-texte sous chaque bouton principal — la SEULE phrase qui décrit la
@@ -90,6 +98,17 @@ export const REGLE_ETAPE =
 export const OFFRE =
   "Un audit offert qui chiffre ce que l’IA peut rapporter à votre entreprise, et une formation de 4 h offerte à vos équipes. Chez vous.";
 
+/**
+ * La promesse du premier écran mobile, juste sous le H1 : l'offre comprise en
+ * une ligne. La condition (`CONDITION_GRATUITE`) suit sous le pli, et
+ * `REASSURANCE`, sous le bouton, dit déjà les 5 places.
+ */
+export const PROMESSE =
+  "Audit + formation de 4 h sur l’IA pour votre équipe. Offerts, chez\u00a0vous.";
+
+/** La micro-ligne sous le bouton du héros : les places limitées, et la visio sans engagement. */
+export const REASSURANCE = "5 places par ville · sans engagement";
+
 /** La condition qui accompagne « offert » — visible, jamais en note de bas de page. */
 export const CONDITION_GRATUITE = `Offerts aux entreprises de l’étape, une fois leur place confirmée, sans frais cachés. ${REGLE_ETAPE}`;
 
@@ -121,14 +140,16 @@ export const HEROS = {
   /** Le surtitre : le Tour se nomme, et dit qu'il se déplace. */
   surtitre: "Tour de France IA · de la TPE à l’ETI",
   /**
-   * Le H1, accroche imposée par Will, en trois morceaux : seul « Nous, si. » prend
+   * Le H1, accroche validée (inchangée), en trois morceaux : seul « Nous, si. » prend
    * l'accent. Le lecteur se reconnaît, puis Axion-IA répond.
    */
   titreAvant: "Vous entendez parler d’IA partout et ne savez plus par où commencer ? ",
   titreAccent: "Nous, si.",
   titreApres: "",
-  /** Le sous-titre fort, juste sous le H1 : le Tour VIENT chez le lecteur. */
+  /** Le sous-titre fort, juste sous le pli mobile : le Tour VIENT chez le lecteur. */
   accroche: "L’IA vient travailler dans votre entreprise.",
+  promesse: PROMESSE,
+  reassurance: REASSURANCE,
   sousTitre: OFFRE,
   condition: CONDITION_GRATUITE,
   /** Les trois pastilles sous le titre : l'offre en un coup d'œil. */
@@ -239,7 +260,7 @@ export const ETAPES = {
   titre: "Comment ça marche",
   liste: [
     "Vous choisissez un créneau de visio de 30 minutes",
-    "Nous découvrons votre entreprise et vous confirmez la venue du Tour chez vous",
+    "Nous découvrons votre entreprise et vous confirmez votre place",
     "Les 5 places de votre ville sont attribuées dans l’ordre des confirmations : quand elles sont toutes confirmées, l’étape se tient et vous êtes prévenu",
     "Nous venons chez vous : l’audit, puis la formation de vos équipes",
   ],
@@ -362,10 +383,14 @@ export function toutLeTexte(): string {
     HEROS.titreAccent,
     HEROS.titreApres,
     HEROS.accroche,
+    HEROS.promesse,
+    HEROS.reassurance,
     HEROS.sousTitre,
     HEROS.condition,
     ...HEROS.pastilles,
     OFFRE,
+    PROMESSE,
+    REASSURANCE,
     CONDITION_GRATUITE,
     REGLE_ETAPE,
     EN_BREF,

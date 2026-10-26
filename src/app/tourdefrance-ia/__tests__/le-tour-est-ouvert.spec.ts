@@ -473,14 +473,16 @@ describe("🔴 le contenu : mots interdits, typographie, SEO", () => {
     }
   });
 
-  it("le H1 est l'accroche de Will, l'ancien titre devient le sous-titre fort", () => {
+  it("le H1 est l'accroche validée, suivi de la promesse ; l'ancien titre devient le sous-titre fort", () => {
     expect(`${HEROS.titreAvant}${HEROS.titreAccent}${HEROS.titreApres}`).toBe(
       "Vous entendez parler d’IA partout et ne savez plus par où commencer ? Nous, si.",
     );
     expect(HEROS.titreAccent).toBe("Nous, si.");
     expect(HEROS.accroche).toBe("L’IA vient travailler dans votre entreprise.");
     const page = lire("src/app/tourdefrance-ia/page.tsx");
-    expect(page).toMatch(/<\/h1>\s*<p[^>]*>\s*\{HEROS\.accroche\}/);
+    // Premier écran mobile : la promesse suit le H1 ; l'accroche passe sous le pli.
+    expect(page).toMatch(/<\/h1>\s*<p[^>]*>\s*\{HEROS\.promesse\}/);
+    expect(page).toContain("{HEROS.accroche}");
   });
 
   it("le slogan d'Axion-IA n'apparaît pas", async () => {

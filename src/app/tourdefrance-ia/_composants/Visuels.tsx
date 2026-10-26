@@ -65,7 +65,7 @@ const POINTS = [
   { x: 196, y: 254 },
   { x: 301, y: 263 },
 ];
-/** Le point qui illustre le principe : il se remplit jusqu'à 5, puis s'ouvre. */
+/** Le point qui illustre le principe : ses 5 places se confirment, puis l'étape se tient. */
 const DEMO = { x: 240, y: 264 };
 /** Le tracé en pointillé qui relie les repères (passe par le point de démonstration). */
 const TRACE =

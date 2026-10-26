@@ -33,8 +33,8 @@
  ascent/descent-override = métrique hhea / unitsPerEm / size-adjust (exprimés avant ajustement, comme next/font).
  next/font fige les faces fixes 400 et 600 (Manrope) : le 500 s'affiche donc en wght 400.
  next/font calibre sinon son repli sur l'instance PAR DÉFAUT du fichier variable : Manrope = wght 200,
- Fraunces = wght 900 → au swap le hero reflue (CLS prod 0,22-0,27 sur /formations, /implantations/*/
-paris).
+ Fraunces = wght 900 → au swap le hero reflue (CLS prod 0,22-0,27 sur /formations, /implantations/…/paris).
+ ⚠️ Jamais « étoile + barre oblique » dans ce commentaire : il le fermait, et le navigateur jetait la face Manrope 400 qui suit.
  adjustFontFallback est donc coupé dans layout.tsx et ces faces prennent le relais (--font-sans / --font-serif). */
 @font-face {
   font-family: "Manrope Fallback";

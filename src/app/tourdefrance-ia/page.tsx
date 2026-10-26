@@ -1,20 +1,23 @@
 // `/tourdefrance-ia` — la landing du Tour de France IA (2026-10-25, refonte
 // « page de conversion » le 2026-10-26, puis « aux couleurs d'Axion » le même
-// jour, après relecture de Will : la page était jugée fade et son discours
-// d'événement faux).
+// jour, après relecture : la page était jugée fade et son discours d'événement
+// faux ; premier écran « mobile d'abord » le même jour encore).
 //
-// Tunnel : post Facebook ou Instagram (UTM) → cette page → « Je veux mon audit
-// offert » → `/fr/appel/tour-de-france-ia` (la visio, type `tour` de
-// `types-reservables.ts`) → Calendly → console.
+// Tunnel : post Facebook, LinkedIn ou Instagram (UTM) → cette page → « Je veux
+// mon audit et ma formation offerts » → `/fr/appel/tour-de-france-ia` (la visio,
+// type `tour` de `types-reservables.ts`) → Calendly → console.
 //
-// Écrite pour ce trafic-là : mobile d'abord, navigateur intégré de Facebook,
-// 4G, trois secondes d'attention. Donc : la promesse, l'offre et le bouton
-// tiennent dans le premier écran d'un téléphone (360 × 640) — la condition de
-// l'offre passe juste sous le bouton sous `sm`, au-dessus ailleurs ; UNE seule action,
-// répétée à cinq emplacements fixes (`EMPLACEMENTS_CTA`), aucun menu.
+// Écrite pour ce trafic-là : mobile d'abord, navigateur intégré des réseaux,
+// 4G, trois secondes d'attention. Donc le premier écran d'un téléphone
+// (360 × 640) ne montre QUE quatre choses, dans cet ordre : le H1, la promesse
+// en une ligne, le bouton, la micro-ligne « 5 places par ville · sans
+// engagement ». L'accroche, l'offre détaillée, sa condition, les pastilles et la
+// carte viennent juste sous le pli (à droite sur grand écran). UNE seule
+// action, répétée à cinq emplacements fixes (`EMPLACEMENTS_CTA`), aucun menu.
 //
 // Charte : celle du site (`globals.css`). En-tête terracotta et logo en badge
-// ivoire, comme l'en-tête d'Axion ; héros mocha à lueurs terracotta et bleue ;
+// ivoire, rendus comme l'en-tête d'Axion (`bg-terracotta/95` sur l'ivoire de la
+// page) ; héros mocha à lueurs terracotta et bleue ;
 // boutons bleu primaire pleins ; sections alternées clair / sable / mocha /
 // terracotta ; cartes en relief (`--shadow-card`). Tout passe par des utilitaires
 // Tailwind dès que possible (cf. `FOND_MARQUE`).
@@ -99,18 +102,21 @@ const CONTENEUR = "mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8";
 const REPERE = "font-mono text-sm tracking-[0.08em] text-fg-muted uppercase";
 /** Le surtitre du héros : en Manrope (repli métrique, préchargée), JAMAIS en Inconsolata
  * au-dessus de la ligne de flottaison — sa bascule de police décalait le titre. */
-const REPERE_SOMBRE = "text-sm font-semibold tracking-[0.06em] text-terracotta-on-mocha uppercase";
+const REPERE_SOMBRE =
+  "text-xs font-semibold tracking-[0.06em] text-terracotta-on-mocha uppercase sm:text-sm";
 const TITRE_SECTION =
   "font-serif text-[1.875rem] leading-[1.12] font-medium tracking-tight text-fg sm:text-[2.5rem]";
-const SECTION = "py-16 sm:py-24";
+const SECTION = "py-12 sm:py-24";
 /**
  * Le fond de marque du héros et de l'appel final : le mocha d'Axion, une lueur
- * terracotta en haut à droite, une lueur bleu primaire en bas à gauche. En
+ * terracotta en haut à droite, une lueur bleu primaire en bas à gauche. La lueur
+ * terracotta est DOUCE (30 %) : à 62 %, mêlée au mocha juste sous l'en-tête, elle
+ * peignait un orange brun, éloigné du terracotta de marque. En
  * utilitaire Tailwind plutôt qu'en classe du module CSS : chaque classe du module
  * ajoute son nom à la table livrée au navigateur avec le chunk de la page.
  */
 const FOND_MARQUE =
-  "bg-mocha bg-[radial-gradient(48rem_26rem_at_88%_-8%,color-mix(in_srgb,var(--color-terracotta)_62%,transparent),transparent_62%),radial-gradient(36rem_22rem_at_-12%_108%,color-mix(in_srgb,var(--color-primary)_38%,transparent),transparent_62%)]";
+  "bg-mocha bg-[radial-gradient(48rem_26rem_at_88%_-8%,color-mix(in_srgb,var(--color-terracotta)_30%,transparent),transparent_62%),radial-gradient(36rem_22rem_at_-12%_108%,color-mix(in_srgb,var(--color-primary)_38%,transparent),transparent_62%)]";
 const ID_CTA_HEROS = "tdf-cta-heros";
 const ID_CTA_COLLANT = "tdf-cta-collant";
 const ID_APPEL_FINAL = "tdf-appel-final";
@@ -132,9 +138,10 @@ const urlPhoto = (largeur: number) =>
 const PICTO_OFFRE = [0, 1, 3, 2] as const;
 
 /**
- * Le bouton principal : pilule bleue pleine, 56 px de haut, libellé de l'offre,
- * flèche et halo. `compact` : la petite pilule de l'en-tête et du bandeau (44 px
- * de haut, libellé court, sans flèche ni halo).
+ * Le bouton principal : pilule bleue pleine, 56 px de haut au moins, libellé de
+ * l'offre (deux lignes centrées à 360 px), flèche et halo. `compact` : la petite
+ * pilule de l'en-tête et du bandeau (44 px de haut, libellé court, sans flèche ni
+ * halo). `pleineLargeur` : la barre collante — libellé court, sur une ligne.
  */
 function BoutonAudit({
   depuis,
@@ -156,7 +163,7 @@ function BoutonAudit({
       className={`${styles.bouton} ${compact ? styles.boutonCompact : ""} rounded-full ${largeur}`}
     >
       {compact || pleineLargeur ? null : <span className={styles.halo} aria-hidden="true" />}
-      {compact ? LIBELLE_CTA_COURT : LIBELLE_CTA}
+      {compact || pleineLargeur ? LIBELLE_CTA_COURT : LIBELLE_CTA}
       {compact ? null : <Fleche />}
     </a>
   );
@@ -174,10 +181,10 @@ export default async function TourDeFranceIaPage() {
 
       {/* 0. En-tête du tunnel — terracotta comme l'en-tête du site, le logo, UN
           bouton. Aucun menu, aucun lien qui ferait sortir du tunnel. */}
-      <header className="bg-terracotta border-terracotta-deep border-b">
+      <header className="bg-terracotta/95 border-terracotta-deep border-b">
         <div className={`${CONTENEUR} flex min-h-16 items-center gap-3 py-2.5`}>
           <p
-            className="bg-paper text-fg shadow-subtle inline-flex items-baseline rounded-lg px-3 py-2 font-serif text-[1.375rem] leading-none font-medium tracking-tight"
+            className="bg-paper text-fg shadow-subtle inline-flex shrink-0 items-baseline rounded-lg px-2.5 py-2 font-serif text-lg leading-none font-medium tracking-tight sm:px-3 sm:text-[1.375rem]"
             role="img"
             aria-label={ENTETE.logo}
           >
@@ -194,20 +201,20 @@ export default async function TourDeFranceIaPage() {
       </header>
 
       <main className="pb-24 md:pb-0">
-        {/* 1. Héros — mocha de marque à lueurs terracotta et bleue, tient dans
-            le premier écran d'un téléphone. */}
+        {/* 1. Héros — mocha de marque à lueurs terracotta et bleue. Premier écran
+            mobile : H1, promesse, bouton, micro-ligne. Le reste juste sous le pli. */}
         <section className={`${FOND_MARQUE} text-mocha-fg`} aria-labelledby="tdf-titre">
           <div
-            className={`${CONTENEUR} grid gap-10 pt-7 pb-12 sm:pt-12 sm:pb-20 lg:grid-cols-[1.15fr_1fr] lg:items-center lg:gap-14 lg:pt-16 lg:pb-24`}
+            className={`${CONTENEUR} grid gap-10 pt-6 pb-12 sm:pt-12 sm:pb-20 lg:grid-cols-[1.15fr_1fr] lg:items-center lg:gap-14 lg:pt-16 lg:pb-24`}
           >
             <div>
               <p className={`${REPERE_SOMBRE} flex items-center gap-3`}>
-                <Jauge className="shrink-0" />
+                <Jauge className="hidden shrink-0 sm:block" />
                 {HEROS.surtitre}
               </p>
               <h1
                 id="tdf-titre"
-                className="mt-5 font-serif text-[clamp(1.5rem,6.6vw,3.25rem)] leading-[1.08] font-medium tracking-tight text-balance"
+                className="mt-3 font-serif text-[clamp(1.75rem,7.6vw,3.25rem)] leading-[1.08] font-medium tracking-tight text-balance sm:mt-5"
               >
                 {HEROS.titreAvant}
                 <span className="text-terracotta-on-mocha decoration-terracotta italic underline decoration-[0.12em] underline-offset-[0.14em]">
@@ -215,40 +222,46 @@ export default async function TourDeFranceIaPage() {
                 </span>
                 {HEROS.titreApres}
               </h1>
-              <p className="mt-4 font-serif text-xl leading-snug font-medium sm:text-2xl lg:text-[1.75rem]">
-                {HEROS.accroche}
+              <p className="mt-4 max-w-xl text-lg leading-snug font-semibold sm:text-xl">
+                {HEROS.promesse}
               </p>
-              <ul className="mt-5 hidden flex-wrap gap-2 sm:flex" aria-label={HEROS.surtitre}>
-                {HEROS.pastilles.map((p) => (
-                  <li
-                    key={p}
-                    className={`border-mocha-fg/30 bg-mocha-fg/10 inline-flex min-h-9 items-center gap-2 rounded-full border px-3 text-sm font-semibold`}
-                  >
-                    <Coche taille={18} surSombre />
-                    {p}
-                  </li>
-                ))}
-              </ul>
-              <p className="mt-5 max-w-xl text-lg leading-snug font-semibold sm:text-xl">
-                {HEROS.sousTitre}
-              </p>
-              <p className="text-mocha-fg-muted mt-3 hidden max-w-xl text-[0.9375rem] leading-relaxed sm:block">
-                {HEROS.condition}
-              </p>
-              <div className="mt-6 flex flex-col gap-2.5 sm:mt-8 sm:items-start">
+              <div className="mt-5 flex flex-col gap-2.5 sm:mt-8 sm:items-start">
                 <BoutonAudit depuis="tdf-heros" id={ID_CTA_HEROS} />
-                <p className="text-mocha-fg-muted text-sm sm:pl-2">{MICRO_TEXTE_CTA}</p>
-                {/* Sous `sm`, la condition passe juste SOUS le bouton : à 360 × 640 elle
-                    le poussait sous la ligne de flottaison. Une seule des deux copies est
-                    affichée (`display: none` pour l'autre), elle n'est donc lue qu'une fois. */}
-                <p className="text-mocha-fg-muted mt-1 max-w-xl text-[0.9375rem] leading-relaxed sm:hidden">
+                <p className="text-mocha-fg-muted text-center text-sm sm:pl-2 sm:text-left">
+                  {HEROS.reassurance}
+                </p>
+              </div>
+
+              {/* Sous le pli mobile : l'accroche, l'offre détaillée et SA condition
+                  (« offert » et « 5 places » restent ensemble), puis les pastilles. */}
+              <div className="border-mocha-fg/20 mt-10 border-t pt-8 sm:mt-12">
+                <p className="font-serif text-2xl leading-snug font-medium lg:text-[1.75rem]">
+                  {HEROS.accroche}
+                </p>
+                <p className="mt-3 max-w-xl text-base leading-relaxed sm:text-lg">
+                  {HEROS.sousTitre}
+                </p>
+                <p className="text-mocha-fg-muted mt-3 max-w-xl text-base leading-relaxed">
                   {HEROS.condition}
                 </p>
+                <ul className="mt-5 flex flex-wrap gap-2" aria-label={HEROS.surtitre}>
+                  {HEROS.pastilles.map((p) => (
+                    <li
+                      key={p}
+                      className={`border-mocha-fg/30 bg-mocha-fg/10 inline-flex min-h-9 items-center gap-2 rounded-full border px-3 text-sm font-semibold`}
+                    >
+                      <Coche taille={18} surSombre />
+                      {p}
+                    </li>
+                  ))}
+                </ul>
               </div>
             </div>
 
+            {/* Après le bouton dans le flux : sur téléphone, la carte ne pousse jamais
+                le bouton hors du premier écran ; elle y est aussi plus petite. */}
             <figure
-              className={`bg-ink/45 border-border-on-mocha shadow-elevated mx-auto w-full max-w-[380px] rounded-2xl border p-5 lg:max-w-[480px]`}
+              className={`bg-ink/45 border-border-on-mocha shadow-elevated mx-auto w-full max-w-[300px] rounded-2xl border p-4 sm:max-w-[380px] sm:p-5 lg:max-w-[480px]`}
             >
               <CarteFrance
                 surSombre
@@ -263,29 +276,17 @@ export default async function TourDeFranceIaPage() {
           </div>
         </section>
 
-        {/* 2. Définition citable, en texte visible (GEO). */}
-        <section className="border-border bg-paper border-b" aria-labelledby="tdf-en-bref">
-          <div className={`${CONTENEUR} py-10 sm:py-14`}>
-            <div className="border-terracotta mx-auto max-w-3xl border-l-4 pl-5">
-              <h2 id="tdf-en-bref" className={REPERE}>
-                {EN_BREF}
-              </h2>
-              <p className="text-fg mt-3 text-base leading-relaxed sm:text-lg">{DEFINITION}</p>
-            </div>
-          </div>
-        </section>
-
         {/* 3. Ce que le Tour apporte — quatre cartes en relief sur le sable. */}
         <section className={`bg-sand ${SECTION}`} aria-labelledby="tdf-offre">
           <div className={CONTENEUR}>
             <h2 id="tdf-offre" className={`${TITRE_SECTION} max-w-3xl`}>
               {OFFRE_DETAIL.titre}
             </h2>
-            <ul className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+            <ul className="mt-8 grid gap-4 sm:mt-10 sm:grid-cols-2 sm:gap-5 lg:grid-cols-4">
               {OFFRE_DETAIL.cartes.map((c, i) => (
                 <li
                   key={c.titre}
-                  className={`${i % 2 ? "border-primary" : "border-terracotta"} bg-paper shadow-card hover:shadow-elevated flex flex-col rounded-2xl border-t-4 p-6 transition duration-200 hover:-translate-y-1 motion-reduce:transition-none motion-reduce:hover:translate-y-0`}
+                  className={`${i % 2 ? "border-primary" : "border-terracotta"} bg-paper shadow-card hover:shadow-elevated flex flex-col rounded-2xl border-t-4 p-5 transition duration-200 hover:-translate-y-1 motion-reduce:transition-none motion-reduce:hover:translate-y-0 sm:p-6`}
                 >
                   <div className="flex items-start justify-between gap-3">
                     <span className="text-fg">
@@ -301,8 +302,10 @@ export default async function TourDeFranceIaPage() {
                   <h3 className="text-fg mt-1 font-serif text-[1.5rem] leading-snug font-medium">
                     {c.titre}
                   </h3>
-                  <p className="text-fg-soft mt-2">{c.texte}</p>
-                  <p className="border-border-strong text-fg mt-auto border-t border-dashed pt-4 font-semibold">
+                  {/* Sur téléphone, la carte se lit en trois temps : durée, titre, ce que
+                      l'on reçoit. Le détail reste dans le HTML (indexé), affiché dès `sm`. */}
+                  <p className="text-fg-soft mt-2 hidden sm:block">{c.texte}</p>
+                  <p className="border-border-strong text-fg mt-4 border-t border-dashed pt-4 font-semibold sm:mt-auto">
                     {c.recu}
                   </p>
                 </li>
@@ -311,9 +314,9 @@ export default async function TourDeFranceIaPage() {
           </div>
         </section>
 
-        {/* 4. Le problème du dirigeant — bande de CONTRASTE terracotta profond. */}
+        {/* 4. Le problème du dirigeant — bande de CONTRASTE au terracotta de marque. */}
         <section
-          className={`bg-terracotta-deep text-mocha-fg ${SECTION}`}
+          className={`bg-terracotta text-mocha-fg ${SECTION}`}
           aria-labelledby="tdf-probleme"
         >
           <div className={CONTENEUR}>
@@ -381,10 +384,7 @@ export default async function TourDeFranceIaPage() {
         </section>
 
         {/* 6. Bandeau d'accent — la règle d'ouverture, présentée comme une chance. */}
-        <section
-          className="from-terracotta-deep via-terracotta to-terracotta text-mocha-fg bg-linear-100"
-          aria-labelledby="tdf-bandeau"
-        >
+        <section className="bg-terracotta text-mocha-fg" aria-labelledby="tdf-bandeau">
           <div
             className={`${CONTENEUR} flex flex-col gap-5 py-10 sm:flex-row sm:items-center sm:justify-between sm:py-12`}
           >
@@ -435,7 +435,7 @@ export default async function TourDeFranceIaPage() {
                     </span>
                     <span>
                       <span className="text-fg block font-semibold">{e.secteur}</span>
-                      <span className="text-fg-soft mt-0.5 block text-[0.9375rem] leading-snug">
+                      <span className="text-fg-soft mt-0.5 block text-base leading-snug">
                         {e.gain}
                       </span>
                     </span>
@@ -508,6 +508,19 @@ export default async function TourDeFranceIaPage() {
                   {FONDATEUR.lien}
                 </a>
               </p>
+            </div>
+          </div>
+        </section>
+
+        {/* Définition citable, en texte visible (GEO) — plus en tête de page : sur
+            téléphone, ce long paragraphe repoussait les cartes de l'offre. */}
+        <section className="border-border bg-paper border-b" aria-labelledby="tdf-en-bref">
+          <div className={`${CONTENEUR} py-10 sm:py-14`}>
+            <div className="border-terracotta mx-auto max-w-3xl border-l-4 pl-5">
+              <h2 id="tdf-en-bref" className={REPERE}>
+                {EN_BREF}
+              </h2>
+              <p className="text-fg mt-3 text-base leading-relaxed sm:text-lg">{DEFINITION}</p>
             </div>
           </div>
         </section>

@@ -1,5 +1,5 @@
 // Tour de France IA — données structurées de la landing (2026-10-25 ; nœud du
-// Tour passé de `EventSeries` à `Service` le 2026-10-26, décision de Will).
+// Tour passé de `EventSeries` à `Service` : décision du 2026-10-26).
 //
 // Un seul `@graph` : WebPage, Service, FAQPage, BreadcrumbList.
 //
