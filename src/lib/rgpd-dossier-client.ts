@@ -60,6 +60,12 @@ export const EXCLUSIONS_EXPORT_DOSSIER: ReadonlyArray<{
       "rendues ci-dessus.",
   },
   {
+    modele: "QuestionnaireAvantAuditOuverture",
+    motif:
+      "les ouvertures du lien du questionnaire avant audit : des dates, un nombre et l'étape " +
+      "atteinte, sans adresse IP, sans navigateur et sans contenu, rattachés au questionnaire.",
+  },
+  {
     modele: "QuestionnaireAvantAuditSuivi",
     motif:
       "le suivi des e-mails du questionnaire avant audit (relances demandées, date de l'audit) : " +

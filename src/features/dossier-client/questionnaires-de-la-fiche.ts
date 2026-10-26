@@ -13,6 +13,8 @@ import {
   fichesCouvertes,
   questionnairesDesFiches,
 } from "@/features/questionnaire-preaudit/de-la-fiche";
+import { suiviActif, type SuiviOuvertures } from "@/features/questionnaire-preaudit/ouvertures";
+import { lireSuiviDesQuestionnaires } from "@/features/questionnaire-preaudit/suivi-ouvertures";
 
 export interface QuestionnaireDeLaFiche {
   readonly id: string;
@@ -35,6 +37,12 @@ export interface QuestionnaireDeLaFiche {
   /** La copie de l'invitation dans « E-mails envoyés » (la plus récente), si elle existe. */
   readonly invitationEmailLogId: string | null;
   readonly invitationStatut: string | null;
+  /**
+   * Ouvertures du lien et brouillons en cours (2026-10-27). `null` : les deux interrupteurs du
+   * suivi sont éteints, ou la lecture a échoué (`suiviEnPanne`) — jamais lu comme « jamais ouvert ».
+   */
+  readonly suivi?: SuiviOuvertures | null;
+  readonly suiviEnPanne?: boolean;
 }
 
 export async function lireQuestionnairesDeLaFiche(
@@ -66,6 +74,19 @@ export async function lireQuestionnairesDeLaFiche(
       orderBy: { createdAt: "desc" },
       select: { id: true, entityId: true, status: true },
     });
+    // Le suivi des ouvertures a sa PROPRE garde : sa panne (table pas encore migrée) n'efface
+    // pas le bloc, elle se dit.
+    let suivis: ReadonlyMap<string, SuiviOuvertures> | null = null;
+    let suiviEnPanne = false;
+    if (suiviActif()) {
+      try {
+        suivis = await lireSuiviDesQuestionnaires(
+          qs.filter((q) => q.envoyeLe !== null).map((q) => q.id),
+        );
+      } catch {
+        suiviEnPanne = true;
+      }
+    }
     const dernierLog = new Map<string, { id: string; status: string }>();
     for (const l of logs) {
       if (l.entityId !== null && !dernierLog.has(l.entityId)) {
@@ -91,6 +112,8 @@ export async function lireQuestionnairesDeLaFiche(
         },
         invitationEmailLogId: log?.id ?? null,
         invitationStatut: log?.status ?? null,
+        suivi: suivis?.get(q.id) ?? null,
+        suiviEnPanne,
       };
     });
   } catch {

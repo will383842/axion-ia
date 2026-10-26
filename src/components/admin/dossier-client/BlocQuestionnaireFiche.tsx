@@ -6,6 +6,13 @@
 import Link from "next/link";
 
 import type { QuestionnaireDeLaFiche } from "@/features/dossier-client/questionnaires-de-la-fiche";
+import {
+  lignesSuivi,
+  personneLisible,
+  TEXTE_JAMAIS_OUVERT,
+} from "@/features/questionnaire-preaudit/ouvertures";
+
+import { LireBrouillonPreaudit, type ActionLireBrouillon } from "./LireBrouillonPreaudit";
 
 const jourHeure = (d: Date): string =>
   new Intl.DateTimeFormat("fr-FR", {
@@ -37,11 +44,20 @@ export function BlocQuestionnaireFiche({
   questionnaires,
   adminPrefix,
   ficheHref,
+  afficherOuvertures = false,
+  lireBrouillon,
 }: {
   questionnaires: ReadonlyArray<QuestionnaireDeLaFiche>;
   adminPrefix: string;
   /** La fiche : un questionnaire envoyé sans rendez-vous s'ouvre dans sa page « Questionnaire ». */
   ficheHref: string;
+  /** Interrupteur `QUESTIONNAIRE_SUIVI_ENABLED` : ouvertures et avancée. */
+  afficherOuvertures?: boolean;
+  /**
+   * L'action « Lire le brouillon », passée par la page au super-administrateur seulement, interrupteur
+   * `QUESTIONNAIRE_SUIVI_ENABLED` allumé (l'action revérifie). Absente : pas de bouton.
+   */
+  lireBrouillon?: ActionLireBrouillon;
 }): React.ReactElement | null {
   if (questionnaires.length === 0) return null;
   const base = `/fr/${adminPrefix}`;
@@ -78,6 +94,13 @@ export function BlocQuestionnaireFiche({
                   {r.aTraiter > 0 ? ` ${r.aTraiter} à traiter.` : ""}
                 </p>
               ) : null}
+              {q.envoyeLe !== null ? (
+                <SuiviDuLien
+                  q={q}
+                  afficherOuvertures={afficherOuvertures}
+                  lireBrouillon={lireBrouillon}
+                />
+              ) : null}
               <p className="mt-[var(--space-admin-1)] flex flex-wrap gap-x-[var(--space-admin-4)]">
                 <Link href={lienRdv} className="admin-link">
                   {q.rencontreId === null
@@ -102,5 +125,67 @@ export function BlocQuestionnaireFiche({
         })}
       </ul>
     </section>
+  );
+}
+
+/**
+ * Ouvertures, avancée et brouillons d'un questionnaire envoyé (2026-10-27). Rien quand les deux
+ * interrupteurs sont éteints. Une lecture en panne le DIT : jamais « jamais ouvert » à tort.
+ */
+function SuiviDuLien({
+  q,
+  afficherOuvertures,
+  lireBrouillon,
+}: {
+  q: QuestionnaireDeLaFiche;
+  afficherOuvertures: boolean;
+  lireBrouillon: ActionLireBrouillon | undefined;
+}): React.ReactElement | null {
+  if (!afficherOuvertures && lireBrouillon === undefined) return null;
+  if (q.suiviEnPanne === true) {
+    return <p>Suivi des ouvertures : lecture impossible pour le moment.</p>;
+  }
+  const suivi = q.suivi;
+  if (suivi == null) return null;
+  if (afficherOuvertures) {
+    const lignes = lignesSuivi(suivi);
+    return (
+      <div className="mt-[var(--space-admin-2)]" data-bloc="suivi-ouvertures">
+        <p className="font-medium">Ouvertures et avancée</p>
+        <p className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
+          ouvertures de Will comprises
+        </p>
+        {lignes.length === 0 ? (
+          <p>{TEXTE_JAMAIS_OUVERT}</p>
+        ) : (
+          <ul className="space-y-[var(--space-admin-1)]">
+            {lignes.map((l) => (
+              <li key={l.cle}>
+                <span className="font-medium">{l.personne}</span> : {l.texte}
+                {lireBrouillon !== undefined && l.brouillonId !== null ? (
+                  <LireBrouillonPreaudit brouillonId={l.brouillonId} action={lireBrouillon} />
+                ) : null}
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
+    );
+  }
+  // Seule la lecture des brouillons est allumée : la liste des brouillons, sans les ouvertures.
+  if (lireBrouillon === undefined || suivi.brouillons.length === 0) return null;
+  return (
+    <div className="mt-[var(--space-admin-2)]" data-bloc="suivi-brouillons">
+      <p className="font-medium">Brouillons en cours</p>
+      <ul className="space-y-[var(--space-admin-1)]">
+        {suivi.brouillons.map((b) => (
+          <li key={b.id}>
+            <span className="font-medium">{personneLisible(b.mode, b.membre)}</span> : enregistré le{" "}
+            {jourHeure(b.majLe)}
+            <LireBrouillonPreaudit brouillonId={b.id} action={lireBrouillon} />
+          </li>
+        ))}
+      </ul>
+    </div>
   );
 }

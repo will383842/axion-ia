@@ -17,6 +17,9 @@ const prismaMock = vi.hoisted(() => ({
   clientFusion: { findMany: vi.fn() },
 }));
 vi.mock("@/lib/prisma", () => ({ prisma: prismaMock }));
+vi.mock("@/features/questionnaire-preaudit/actions-suivi-ouvertures", () => ({
+  lireBrouillonAction: vi.fn(),
+}));
 
 import { clientsDesLignes, idsLiesAuClient } from "../rattachement-client";
 import { BlocQuestionnaireFiche } from "@/components/admin/dossier-client/BlocQuestionnaireFiche";

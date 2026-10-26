@@ -14631,6 +14631,8 @@ model QuestionnaireAvantAudit {
 
   envois     QuestionnaireAvantAuditEnvoi[]
   brouillons QuestionnaireAvantAuditBrouillon[]
+  /// Ouvertures du lien par chaque personne (2026-10-27, drapeau `QUESTIONNAIRE_SUIVI_OUVERTURES_ENABLED`).
+  ouvertures QuestionnaireAvantAuditOuverture[]
   /// Suivi après le clic « Envoyer » et courriers (relances, confirmations, Telegram), 2026-10-26.
   suivi      QuestionnaireAvantAuditSuivi?
   courriers  QuestionnaireAvantAuditCourrier[]
@@ -14696,6 +14698,30 @@ model QuestionnaireAvantAuditBrouillon {
   @@unique([questionnaireId, mode, membre], map: "questionnaires_avant_audit_brouillons_personne_key")
   @@index([majLe])
   @@map("questionnaires_avant_audit_brouillons")
+}
+
+/// Les OUVERTURES du lien du questionnaire avant audit par UNE personne (2026-10-27) : première et
+/// dernière ouverture, nombre (rechargements à moins de 30 min = une ouverture), dernière étape
+/// atteinte (1 = page d'accueil vue, 2 = a commencé à répondre). Notées par la page après son
+/// chargement réel, jamais au rendu serveur. AUCUNE IP, aucun cookie, aucun navigateur, aucun contenu.
+/// Écrit par `suivi-ouvertures.ts` seulement ; jamais supprimé (part avec son questionnaire).
+/// rgpd: dossier-client
+model QuestionnaireAvantAuditOuverture {
+  id                    String                  @id @default(uuid()) @db.Uuid
+  questionnaireId       String                  @map("questionnaire_id") @db.Uuid
+  questionnaire         QuestionnaireAvantAudit @relation(fields: [questionnaireId], references: [id], onDelete: Cascade)
+  /// main (dirigeant), emp (collaborateur), it (référent informatique), perso (lien personnel,
+  /// parcours non dit), lien (lien commun, sans code personnel).
+  mode                  String                  @db.VarChar(8)
+  /// Code du lien personnel (`m`), comme le brouillon ; chaîne vide pour le dirigeant et le lien commun.
+  membre                String                  @default("") @db.VarChar(60)
+  premiereOuverture     DateTime                @map("premiere_ouverture")
+  derniereOuverture     DateTime                @map("derniere_ouverture")
+  nombre                Int                     @default(1)
+  derniereEtapeAtteinte Int                     @default(1) @map("derniere_etape_atteinte")
+
+  @@unique([questionnaireId, mode, membre], map: "questionnaires_avant_audit_ouvertures_personne_key")
+  @@map("questionnaires_avant_audit_ouvertures")
 }
 
 /// Suivi d'un questionnaire avant audit après le clic « Envoyer » (2026-10-26) : relances demandées

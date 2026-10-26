@@ -38,6 +38,8 @@ import { BandeauOuEnEst } from "@/components/admin/dossier-client/BandeauOuEnEst
 import { construireBandeau, type LigneBandeau } from "@/features/dossier-client/bandeau-ou-en-est";
 import { BlocQuestionnaireFiche } from "@/components/admin/dossier-client/BlocQuestionnaireFiche";
 import { lireQuestionnairesDeLaFiche } from "@/features/dossier-client/questionnaires-de-la-fiche";
+import { suiviActif } from "@/features/questionnaire-preaudit/ouvertures";
+import { lireBrouillonAction } from "@/features/questionnaire-preaudit/actions-suivi-ouvertures";
 import type { Metadata } from "next";
 import { RetraitPersonne } from "@/components/admin/dossier-client/RetraitPersonne";
 import { SuppressionManuelle } from "@/components/admin/dossier-client/SuppressionManuelle";
@@ -427,6 +429,7 @@ export default async function FicheClient360Page({ params, searchParams }: PageP
       fil: filBandeau?.fil ?? [],
       prestations: prestationsBandeau ?? [],
       nbDevis: client.devis.length,
+      suiviOuvertures: suiviActif(),
       enPanne: enPanneBandeau,
       sourcesDuFilEnPanne: filBandeau?.sourcesEnPanne ?? 0,
     });
@@ -460,6 +463,11 @@ export default async function FicheClient360Page({ params, searchParams }: PageP
           questionnaires={questionnaires}
           adminPrefix={adminPrefix}
           ficheHref={ficheHref}
+          afficherOuvertures={suiviActif()}
+          // Le contenu d'un brouillon : super-administrateur ET interrupteur (l'action revérifie).
+          {...(acces.role === "super_admin" && suiviActif()
+            ? { lireBrouillon: lireBrouillonAction }
+            : {})}
         />
       );
   } else if (voitEchanges && onglet === "emails") {

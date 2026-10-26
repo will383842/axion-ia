@@ -1760,6 +1760,15 @@ export const EXCEPTIONS_EFFACEMENT_DOSSIER: ReadonlyArray<{
       "à la main, sous le même drapeau — seule voie que la base admet.",
   },
   {
+    // 2026-10-27 — les ouvertures du lien : dates, nombre, étape. Ni adresse, ni IP, ni contenu ;
+    // aucune colonne ne désigne la personne (le dirigeant n'y a pas même son code). Elles partent
+    // avec leur questionnaire (cascade) ; jamais supprimées à part (aucune suppression ajoutée).
+    modele: "QuestionnaireAvantAuditOuverture",
+    motif:
+      "les ouvertures du lien du questionnaire avant audit (dates, nombre, étape atteinte) : " +
+      "aucune adresse, aucune IP, aucun contenu ; elles restent attachées au questionnaire.",
+  },
+  {
     // 2026-10-26 — le suivi du questionnaire avant audit : AUCUNE donnée personnelle (relances
     // demandées, date et lieu de l'audit écrits par Will, dates d'envoi). Ses courriers, eux,
     // portent l'empreinte du destinataire : anonymisés ci-dessus, jamais supprimés.
