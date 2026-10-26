@@ -355,6 +355,7 @@ export default async function RencontrePage({ params, searchParams }: PageProps)
           peutSupprimer={acces.role === "super_admin"}
           page={pageIci}
           ouvert={sp.supprimer === "questionnaire"}
+          jeton={sp["jeton"] ?? null}
           erreur={erreur}
         />
       ) : null}
@@ -364,6 +365,7 @@ export default async function RencontrePage({ params, searchParams }: PageProps)
         peutSupprimer={acces.role === "super_admin"}
         page={pageIci}
         ouvert={sp.supprimer === "rencontre"}
+        jeton={sp["jeton"] ?? null}
         erreur={erreur}
       />
     </AdminPageShell>

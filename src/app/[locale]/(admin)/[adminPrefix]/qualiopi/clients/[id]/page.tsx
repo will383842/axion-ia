@@ -278,6 +278,7 @@ interface PageProps {
     message?: string;
     releve?: string;
     supprimer?: string;
+    jeton?: string;
     sceau?: string;
   }>;
 }
@@ -645,6 +646,7 @@ export default async function FicheClient360Page({ params, searchParams }: PageP
         peutSupprimer={acces.role === "super_admin"}
         page={adminPath("fr", `/qualiopi/clients/${client.id}`)}
         ouvert={sp.supprimer === "client"}
+        jeton={sp.jeton ?? null}
         erreur={erreur}
       />
 

@@ -2,11 +2,17 @@
 //
 // Fermé : un lien « Supprimer… » (rien n'est lu en base). Ouvert (`?supprimer=<type>`) : l'écran de
 // confirmation — nom, e-mail, ce qui sera supprimé (compteurs), ce qui l'empêche — et le
-// formulaire avec le mot EFFACER. Super-administrateur seul : sinon rien n'est affiché.
+// formulaire avec le mot EFFACER (validation 1 sur 2). Avec le jeton signé de la 1re étape
+// (`&jeton=`), la validation 2 sur 2 : recopie du numéro de la fiche. Super-administrateur seul :
+// sinon rien n'est affiché.
 
 import { AdminBloc } from "@/components/admin/ui/AdminBloc";
 import { AdminButton } from "@/components/admin/ui/AdminButton";
-import { supprimerManuellementAction } from "@/features/dossier-client/actions-suppression";
+import {
+  preparerSuppressionAction,
+  supprimerManuellementAction,
+} from "@/features/dossier-client/actions-suppression";
+import { empreinteBilan, lireJetonSuppression } from "@/features/dossier-client/suppression-jeton";
 import {
   bilanSuppression,
   MESSAGE_BLOQUE,
@@ -33,6 +39,8 @@ interface Proprietes {
   ouvert: boolean;
   /** Raison d'un refus (message scellé de la page), affichée sur l'écran de confirmation. */
   erreur?: string | null;
+  /** Le jeton signé de la 1re validation (`&jeton=`) : ouvre la 2e étape. */
+  jeton?: string | null;
 }
 
 /**
@@ -66,6 +74,23 @@ async function EcranDeConfirmation(props: Proprietes) {
       return { bilan: null, cause: texte as string | null };
     },
   );
+  // 2e étape : seulement si le jeton est valide, vise cette cible et que le bilan n'a pas changé.
+  const lu = props.jeton ? lireJetonSuppression(props.jeton) : null;
+  const jetonBon =
+    lu !== null &&
+    lu.ok &&
+    bilan !== null &&
+    lu.contenu.t === props.type &&
+    lu.contenu.i === props.id &&
+    lu.contenu.b === empreinteBilan(bilan);
+  const alerteJeton =
+    lu === null
+      ? null
+      : !lu.ok
+        ? lu.motif
+        : !jetonBon && bilan !== null
+          ? "Ce qui serait supprimé a changé : recommencez."
+          : null;
   return (
     <AdminBloc
       teinte="terracotta"
@@ -81,6 +106,11 @@ async function EcranDeConfirmation(props: Proprietes) {
             className="mb-[var(--space-admin-2)] font-semibold"
           >
             {props.erreur}
+          </p>
+        ) : null}
+        {alerteJeton ? (
+          <p role="alert" data-erreur-jeton className="mb-[var(--space-admin-2)] font-semibold">
+            {alerteJeton}
           </p>
         ) : null}
         {bilan === null ? (
@@ -119,9 +149,39 @@ async function EcranDeConfirmation(props: Proprietes) {
                   ))}
                 </ul>
               </div>
-            ) : (
+            ) : jetonBon && props.jeton ? (
               <form
                 action={supprimerManuellementAction}
+                className="mt-[var(--space-admin-3)] flex flex-wrap items-center gap-[var(--space-admin-2)]"
+              >
+                <input type="hidden" name="type" value={props.type} />
+                <input type="hidden" name="id" value={props.id} />
+                <input type="hidden" name="page" value={props.page} />
+                <input type="hidden" name="jeton" value={props.jeton} />
+                <p className="w-full font-semibold">Validation 2 sur 2 : dernière étape</p>
+                <p className="w-full">
+                  Pour confirmer, recopiez{" "}
+                  {props.type === "client" ? "le numéro de la fiche" : "le code de contrôle"} :{" "}
+                  <strong data-code-suppression>{bilan.code}</strong>
+                </p>
+                <input
+                  name="code"
+                  required
+                  autoComplete="off"
+                  placeholder="Recopiez le numéro"
+                  aria-label="Recopie du numéro"
+                  className="admin-input"
+                />
+                <AdminButton type="submit" variant="danger">
+                  Supprimer définitivement
+                </AdminButton>
+                <p className={`w-full ${mutedCls}`}>
+                  Valable 5 minutes. Après ce clic, rien ne peut être annulé.
+                </p>
+              </form>
+            ) : (
+              <form
+                action={preparerSuppressionAction}
                 className="mt-[var(--space-admin-3)] flex flex-wrap items-center gap-[var(--space-admin-2)]"
               >
                 <input type="hidden" name="type" value={props.type} />
@@ -136,7 +196,7 @@ async function EcranDeConfirmation(props: Proprietes) {
                   className="admin-input"
                 />
                 <AdminButton type="submit" variant="danger">
-                  Supprimer définitivement
+                  Continuer : validation 1 sur 2
                 </AdminButton>
               </form>
             )}
