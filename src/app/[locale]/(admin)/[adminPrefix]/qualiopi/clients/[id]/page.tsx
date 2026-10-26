@@ -454,10 +454,10 @@ export default async function FicheClient360Page({ params, searchParams }: PageP
         </p>
       ) : (
         <BlocQuestionnaireFiche
-            questionnaires={questionnaires}
-            adminPrefix={adminPrefix}
-            ficheHref={ficheHref}
-          />
+          questionnaires={questionnaires}
+          adminPrefix={adminPrefix}
+          ficheHref={ficheHref}
+        />
       );
   } else if (voitEchanges && onglet === "emails") {
     const fil = await lireFilDesEchanges(id, adminPrefix);
