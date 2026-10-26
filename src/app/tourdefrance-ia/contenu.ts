@@ -61,7 +61,7 @@ export const LIBELLE_CTA_COURT = "Audit + formation offerts";
 
 /**
  * Le micro-texte sous chaque bouton principal — la SEULE phrase qui décrit la
- * visio (affichée sous les deux grands boutons). Sans « gratuite » : le mot est réservé à l'audit
+ * visio (affichée sous le bouton de l'appel final ; sous le héros, `REASSURANCE` la remplace). Sans « gratuite » : le mot est réservé à l'audit
  * et à la formation du Tour.
  */
 export const MICRO_TEXTE_CTA = "Visio de 30 minutes · sans engagement";
