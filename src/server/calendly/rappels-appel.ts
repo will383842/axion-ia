@@ -76,7 +76,11 @@ import {
   SEULS_RDV_SALON_PAR_NOM,
   salonDuNom,
 } from "@/server/calendly/rdv-salon";
-import { besoinDuBrut, estColonneTypeRendezVousAbsente } from "@/server/calendly/type-rendez-vous";
+import {
+  besoinDuBrut,
+  estColonneTypeRendezVousAbsente,
+  villeDuBrut,
+} from "@/server/calendly/type-rendez-vous";
 import { typeEffectif } from "@/server/calendly/type-effectif";
 import { enqueueEmail } from "@/server/queue/queues";
 import { lienConsole, prenomEtInitialeDepuisNomComplet } from "@/server/notifications/personne";
@@ -381,7 +385,13 @@ export function champsTypeClient(rdv: {
   readonly rawPayload?: unknown;
 }): { typeRendezVous: string; besoin?: string } {
   const type = typeEffectif(rdv);
-  const besoin = type === "echange_projet" ? besoinDuBrut(rdv.rawPayload) : null;
+  // Échange projet : le service choisi. Tour de France IA : la ville (même champ du gabarit).
+  const besoin =
+    type === "echange_projet"
+      ? besoinDuBrut(rdv.rawPayload)
+      : type === "tour_de_france_ia"
+        ? villeDuBrut(rdv.rawPayload)
+        : null;
   return { typeRendezVous: type, ...(besoin ? { besoin } : {}) };
 }
 

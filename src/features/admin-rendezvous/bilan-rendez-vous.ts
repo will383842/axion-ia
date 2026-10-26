@@ -153,8 +153,17 @@ function ajouter(c: CompteursBilan, l: LigneBilanBrute): void {
   if (l.fiche && l.client) c.clients += n;
 }
 
-/** Ordre d'affichage ; « Autre » n'apparaît que s'il porte au moins un rendez-vous. */
-const TYPES_DU_BILAN = ["diagnostic", "echange_projet", "salon", "autre"] as const;
+/**
+ * Ordre d'affichage ; « Tour de France IA » et « Autre » n'apparaissent que s'ils
+ * portent au moins un rendez-vous.
+ */
+const TYPES_DU_BILAN = [
+  "diagnostic",
+  "echange_projet",
+  "salon",
+  "tour_de_france_ia",
+  "autre",
+] as const;
 
 /** Agrège les lignes groupées par type puis par emplacement. */
 export function agregerBilan(lignes: readonly LigneBilanBrute[]): BilanRendezVous {
@@ -190,7 +199,7 @@ export function agregerBilan(lignes: readonly LigneBilanBrute[]): BilanRendezVou
   for (const t of TYPES_DU_BILAN) {
     const g = parType.get(t);
     if (!g) continue;
-    if (t === "autre" && g.total.reserves === 0) continue;
+    if ((t === "autre" || t === "tour_de_france_ia") && g.total.reserves === 0) continue;
     types.push({
       type: t,
       total: g.total,

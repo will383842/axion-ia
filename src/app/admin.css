@@ -124,6 +124,7 @@
     --color-admin-id-or: #9c7a0c;
     --color-admin-id-bleu: #1a4dd9;
     --color-admin-id-magenta: #bb2d6d;
+    --color-admin-id-vert: #4a7d12;
     --color-admin-id-terracotta-soft: color-mix(
       in srgb,
       var(--color-admin-terracotta) 12%,
@@ -134,6 +135,7 @@
     --color-admin-id-or-soft: color-mix(in srgb, #9c7a0c 14%, transparent);
     --color-admin-id-bleu-soft: color-mix(in srgb, #1a4dd9 10%, transparent);
     --color-admin-id-magenta-soft: color-mix(in srgb, #bb2d6d 10%, transparent);
+    --color-admin-id-vert-soft: color-mix(in srgb, #4a7d12 12%, transparent);
     --color-admin-accent-fg: #ffffff;
 
     --color-admin-info: #1a4dd9; /* = --color-primary public, CTA primaire admin */

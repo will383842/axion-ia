@@ -178,6 +178,8 @@ export interface OptionsValidation {
   /** Injectable pour les tests ; l'horloge réelle par défaut. */
   readonly maintenant?: Date;
   readonly utmSource?: string | null;
+  /** Source retenue quand l'arrivée n'en porte aucune (le Tour de France IA). */
+  readonly utmSourceParDefaut?: string | null;
   readonly utmMedium?: string | null;
   readonly utmCampaign?: string | null;
   /** `utm_content` d'arrivée, tel que reçu, voir `choix-rendez-vous.ts`. */
@@ -367,7 +369,7 @@ export function validerFormulaire(fd: FormData, o: OptionsValidation): ResultatV
       telephone: normaliserTelephone(telephone),
       ...(reponses.length > 0 ? { reponses } : {}),
       ...(invites.length > 0 ? { invites } : {}),
-      utmSource: o.utmSource ?? null,
+      utmSource: o.utmSource ?? o.utmSourceParDefaut ?? null,
       utmMedium: o.utmMedium ?? null,
       utmCampaign: o.utmCampaign ?? null,
       utmContent: o.utmContent ?? null,
