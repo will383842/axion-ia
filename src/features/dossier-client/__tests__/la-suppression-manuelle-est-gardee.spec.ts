@@ -233,6 +233,16 @@ describe("suppression manuelle depuis la console", () => {
     }
   });
 
+  it("une table sans règle est comptée avec UN seul paramètre (Postgres refuse un paramètre en trop)", async () => {
+    e.fks["clients"]?.push({ table: "projet_suivis", colonne: "client_id" });
+    const { base } = fabriquer();
+    const bilan = await bilanSuppression("client", CID, base);
+    expect(bilan).not.toBeNull();
+    const lignes = e.sql.filter((x) => x.sql.includes("FROM projet_suivis"));
+    expect(lignes.length).toBeGreaterThan(0);
+    for (const x of lignes) expect(x.params).toHaveLength(1);
+  });
+
   it("succès complet : tout le périmètre, dans l'ordre, puis une trace SANS contenu", async () => {
     const { tx, base } = fabriquer();
     const r = await supprimerManuellement(
