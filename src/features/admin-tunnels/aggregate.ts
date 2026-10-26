@@ -385,8 +385,12 @@ export function agregerTunnels(lignes: readonly LigneTunnel[]): SyntheseTunnels 
   const sessionsTunnels = [...grouper(lignes).values()];
   // Les sessions du Tour (page de réservation, sans questionnaire) ne vivent que
   // dans `parTunnel` : dans les autres totaux elles feraient baisser les taux du
-  // tunnel diagnostic (campagnes, appareils, entonnoirs…).
-  const toutes = sessionsTunnels.filter((s) => s.tunnelEntree !== "tour");
+  // tunnel diagnostic (campagnes, appareils, entonnoirs…). Une session qui
+  // commence sur le Tour puis ouvre le questionnaire dans le même onglet reste
+  // comptée : elle porte au moins un événement du tunnel diagnostic.
+  const toutes = sessionsTunnels.filter(
+    (s) => s.tunnelEntree !== "tour" || s.evenements.has(E.demarre),
+  );
   const vuesPub = toutes.filter((s) => s.aVuLaPub);
   const ouvertes = toutes.filter((s) => s.evenements.has(E.demarre));
 
