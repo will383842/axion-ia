@@ -26,6 +26,9 @@ export const CHEMIN_RENDEZ_VOUS = "/fr/appel/tour-de-france-ia";
 /** Le libellé unique du bouton principal. */
 export const LIBELLE_CTA = "Je veux le Tour dans mon entreprise";
 
+/** Le mot du bouton du bandeau du haut. */
+export const LIBELLE_BANDEAU = "Participer";
+
 /** Le micro-texte sous chaque bouton principal. */
 export const MICRO_TEXTE_CTA = "Visio de 30 minutes · gratuite et sans engagement";
 

@@ -29,6 +29,7 @@ import {
   FONDATEUR,
   HEROS,
   JOURNEE,
+  LIBELLE_BANDEAU,
   LIBELLE_CTA,
   META,
   MICRO_TEXTE_CTA,
@@ -105,7 +106,7 @@ export default async function TourDeFranceIaPage() {
             data-tdf-cta=""
             className="bg-primary text-primary-fg hover:bg-primary-hover focus-visible:ring-primary inline-flex min-h-11 items-center rounded-full px-4 text-sm font-semibold focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
           >
-            Participer
+            {LIBELLE_BANDEAU}
           </a>
         </div>
       </header>
