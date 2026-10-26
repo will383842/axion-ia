@@ -61,7 +61,9 @@ export const metadata: Metadata = {
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
-  themeColor: "#faf8f3", // hex-ok: ivoire de la charte, dupliqué de globals.css --color-bg (Next exige un littéral)
+  // Le héros est sur fond encre : la barre du navigateur (et celle du navigateur
+  // intégré de Facebook, quand il la colore) le prolonge au lieu de le couper.
+  themeColor: "#14100e", // hex-ok: encre de la charte, dupliquée de globals.css --color-ink (Next exige un littéral)
   colorScheme: "light",
 };
 
