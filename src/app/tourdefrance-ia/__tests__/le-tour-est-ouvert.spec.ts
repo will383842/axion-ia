@@ -35,7 +35,15 @@ import {
 } from "@/features/tour-de-france/porte";
 import { TOUR_PREFIX, TOUR_PUBLIC } from "@/features/tour-de-france/visibilite";
 
-import { CONDITION_GRATUITE, FAQ, HEROS, JOURNEE, META, toutLeTexte } from "../contenu";
+import {
+  CONDITION_GRATUITE,
+  FAQ,
+  HEROS,
+  META,
+  OFFRE_DETAIL,
+  REGLE_ETAPE,
+  toutLeTexte,
+} from "../contenu";
 import { jsonLdDuTour } from "../jsonld";
 
 const RACINE = process.cwd();
@@ -472,38 +480,55 @@ describe("🔴 le contenu : mots interdits, typographie, SEO", () => {
     expect(texte.toLowerCase()).not.toContain(BRAND.taglineFr.toLowerCase());
   });
 
-  it("l'offre est COMMUNIQUÉE : « gratuit » exigé, toujours avec les 5 entreprises, sans frais cachés", () => {
-    expect(texte).toMatch(/gratuit/i);
+  it("l'offre est COMMUNIQUÉE : « offert » exigé, toujours avec les 5 entreprises, sans frais cachés", () => {
+    expect(texte).toMatch(/offert/i);
     expect(HEROS.sousTitre).toBe(
-      "Un audit de 2 à 4 h et la formation de vos équipes, gratuits, chez vous.",
+      "Un audit offert qui chiffre ce que l’IA peut rapporter à votre entreprise, et une formation de 4 h offerte à vos équipes. Chez vous.",
     );
-    expect(CONDITION_GRATUITE).toMatch(/gratuit/i);
-    expect(CONDITION_GRATUITE).toMatch(/5 entreprises/);
+    expect(REGLE_ETAPE).toBe(
+      "Votre étape s’ouvre dès que 5 entreprises de votre secteur géographique ont confirmé.",
+    );
+    expect(CONDITION_GRATUITE).toMatch(/offerts/i);
+    expect(CONDITION_GRATUITE).toContain(REGLE_ETAPE);
     expect(META.description).toMatch(/5 entreprises/);
     expect(CONDITION_GRATUITE).toMatch(/sans frais cachés/);
     // La condition est visible : le héros l'affiche, elle n'est pas reléguée ailleurs.
     const pageSource = lire("src/app/tourdefrance-ia/page.tsx");
     expect(pageSource).toContain("HEROS.condition");
-    // …et elle suit immédiatement le sous-titre : « gratuit » et « 5 entreprises » restent ensemble.
+    // …et elle suit immédiatement le sous-titre : « offert » et « 5 entreprises » restent ensemble.
     expect(pageSource).toMatch(/\{HEROS\.sousTitre\}\s*<\/p>\s*<p[^>]*>\s*\{HEROS\.condition\}/);
     // Titre de page, description et FAQ portent l'offre.
-    expect(META.titre).toMatch(/gratuit/i);
-    expect(META.description).toMatch(/gratuit/i);
-    const cout = FAQ.questions.find((q) => /Combien/.test(q.question));
-    expect(cout?.reponse).toMatch(/audit et la formation sont gratuits/i);
-    expect(cout?.reponse).toMatch(/soirée réseau est à la charge de chacun/i);
-    // « Gratuit » est réservé à l'audit et à la formation : la visio n'est pas dite gratuite.
-    expect(cout?.reponse).not.toMatch(/visio/i);
-    expect(cout?.reponse).toMatch(/5 entreprises/);
-    expect(cout?.reponse).toMatch(/frais cachés/);
+    expect(META.titre).toMatch(/offerts/i);
+    expect(META.description).toMatch(/offert/i);
+    const offert = FAQ.questions.find((q) => /offert/.test(q.question));
+    expect(offert?.reponse).toMatch(/audit et la formation sont offerts/i);
+    // « Offert » est réservé à l'audit et à la formation : la visio n'est pas dite offerte.
+    expect(offert?.reponse).not.toMatch(/visio/i);
+    expect(offert?.reponse).toMatch(/5 entreprises/);
+    expect(offert?.reponse).toMatch(/frais cachés/);
   });
 
-  it("la frise a trois temps : audit gratuit le matin, formation gratuite l'après-midi, soirée à frais partagés", () => {
-    expect(JOURNEE.moments.map((m) => m.titre)).toEqual([
-      "Audit gratuit le matin",
-      "Formation gratuite l’après-midi",
-      "Soirée réseau, chacun règle sa part",
-    ]);
+  it("🔴 jamais un mot sur qui règle la soirée ou le repas : elle est OUVERTE à toutes les entreprises", () => {
+    const tout = `${texte}\n${JSON.stringify(jsonLdDuTour())}\n${lire("src/app/llms.txt/route.ts")}`;
+    expect(tout).not.toMatch(
+      /chacun r[èe]gle|[àa] la charge de chacun|sa part|frais partag[ée]s|paie|payant|addition|repas/i,
+    );
+    const soiree = OFFRE_DETAIL.cartes.find((c) => /soirée/i.test(c.titre));
+    expect(soiree?.recu).toBe("Ouverte à toutes les entreprises de l’étape.");
+  });
+
+  it("🔴 ce n'est pas un événement auquel on s'inscrit : aucun vocabulaire d'événement ni de billetterie", () => {
+    const tout = `${texte}\n${lire("src/app/llms.txt/route.ts")}`;
+    expect(tout).not.toMatch(
+      /participer|[ée]v[ée]nement|inscri(re|ption|vez|t)|ticket|billet|place[s]? (limitée|restante)/i,
+    );
+  });
+
+  it("🔴 l'AI Act dit avec prudence : « vous aide à répondre », jamais d'obligation ni de conformité promise", () => {
+    expect(texte).toMatch(/vous aide à répondre à l’exigence de formation de l’AI Act/);
+    expect(texte).not.toMatch(
+      /obligatoire|obligation|certifi|attestation|conforme à l|en conformit[ée] totale|garanti/i,
+    );
   });
 
   it("jamais de vente à conclure ni de signature", () => {
@@ -518,10 +543,10 @@ describe("🔴 le contenu : mots interdits, typographie, SEO", () => {
     expect(texte).not.toMatch(/\bemail\b|\bmail\b/i);
   });
 
-  it("titre ≤ 60, description ≤ 155, canonique absolue, six Q/R", () => {
+  it("titre ≤ 60, description ≤ 155, canonique absolue, huit Q/R", () => {
     expect(META.titre.length).toBeLessThanOrEqual(60);
     expect(META.description.length).toBeLessThanOrEqual(155);
-    expect(FAQ.questions).toHaveLength(6);
+    expect(FAQ.questions).toHaveLength(8);
   });
 
   it("JSON-LD : WebPage, EventSeries, FAQPage, BreadcrumbList — sans Person recréé ni Event daté", () => {
@@ -539,14 +564,14 @@ describe("🔴 le contenu : mots interdits, typographie, SEO", () => {
       name: "Axion-IA",
       url: expect.stringMatching(/^https?:\/\//),
     });
-    // Le JSON-LD dit la même chose que le texte visible : gratuit, et la FAQ « coût » y figure.
+    // Le JSON-LD dit la même chose que le texte visible : offert, et la FAQ « offert » y figure.
     expect(serie["isAccessibleForFree"]).toBe(true);
     const faq = graphe[2] as {
       mainEntity: Array<{ name: string; acceptedAnswer: { text: string } }>;
     };
-    const cout = faq.mainEntity.find((q) => /Combien/.test(q.name));
-    expect(cout?.acceptedAnswer.text).toMatch(/gratuits/);
-    expect(cout?.acceptedAnswer.text).toMatch(/5 entreprises/);
+    const offert = faq.mainEntity.find((q) => /offert/.test(q.name));
+    expect(offert?.acceptedAnswer.text).toMatch(/offerts/);
+    expect(offert?.acceptedAnswer.text).toMatch(/5 entreprises/);
     expect(serie["performer"]).toEqual({ "@id": expect.stringMatching(/#person$/) });
     const json = JSON.stringify(ld);
     expect(json).not.toMatch(/"@type":"(Person|Organization|Event|HowTo)"/);

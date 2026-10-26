@@ -116,7 +116,7 @@ export function CarteFrance({
   );
 }
 
-/** Les illustrations des trois temps de la journée (48 × 48, trait). */
+/** Les illustrations de l’offre (48 × 48, trait) : 0 audit, 1 formation, 2 soirée réseau, 3 étape. */
 export function IllustrationMoment({ index }: { index: number }) {
   const communs = {
     width: 48,
@@ -146,6 +146,16 @@ export function IllustrationMoment({ index }: { index: number }) {
         <circle cx="16" cy="33" r="3.5" />
         <circle cx="32" cy="33" r="3.5" />
         <path d="M9 42a7 7 0 0 1 14 0M25 42a7 7 0 0 1 14 0" />
+      </svg>
+    );
+  }
+  if (index === 3) {
+    // L'étape : un repère posé sur une ville, et ses rues.
+    return (
+      <svg {...communs}>
+        <path d="M24 40s-11-10.2-11-19a11 11 0 0 1 22 0c0 8.8-11 19-11 19z" />
+        <circle cx="24" cy="21" r="4" className={styles.pictoAccent} />
+        <path d="M6 44h36M10 44l4-6M38 44l-4-6" />
       </svg>
     );
   }
