@@ -1,16 +1,22 @@
 // `/tourdefrance-ia` — la landing du Tour de France IA (2026-10-25, refonte
-// « page de conversion » le 2026-10-26).
+// « page de conversion » le 2026-10-26, réécriture « offre aux couleurs
+// d'Axion » le 2026-10-26 sur le retour de Will).
 //
-// Tunnel : post Facebook ou Instagram (UTM) → cette page → « Participer »
-// → `/fr/appel/tour-de-france-ia` (la visio, type `tour` de
-// `types-reservables.ts`) → Calendly → fiche prospect dans la console.
+// Tunnel : post Facebook ou Instagram (UTM) → cette page → « Je veux mon audit
+// offert » → `/fr/appel/tour-de-france-ia` (la visio, type `tour` de
+// `types-reservables.ts`) → Calendly → fiche dans la console.
 //
 // Écrite pour ce trafic-là : mobile d'abord, navigateur intégré de Facebook,
-// 4G, trois secondes d'attention. Donc : la promesse, l'offre, sa condition et
+// 4G, trois secondes d'attention. Donc : l'accroche, l'offre, sa condition et
 // le bouton tiennent dans le premier écran d'un téléphone ; UNE seule action
-// (« Participer ») répétée à quatre emplacements fixes (`EMPLACEMENTS_CTA`), aucun menu ; un fond sombre au héros pour rompre
-// avec le fil d'actualité (`--color-ink`, réservé par la charte aux pages
-// d'atterrissage publicitaires).
+// répétée à cinq emplacements fixes (`EMPLACEMENTS_CTA`), aucun menu.
+//
+// Charte d'Axion-IA appliquée franchement (tokens de `globals.css`) : l'en-tête
+// terracotta du site (`--color-terracotta`) avec le logo sur pastille ivoire
+// (`--color-paper`), le bouton plein bleu à halo (`--color-primary`), le héros
+// sur encre à halo terracotta (`.bg-vsl`, réservé aux pages d'atterrissage
+// publicitaires), puis des sections alternées : clair, sombre de marque
+// (`.bg-mocha-rich`), accent terracotta, sable.
 //
 // Composants SERVEUR seulement, sauf `PiloteCta` (bouton collant + recopie des
 // `utm_*`). Aucun composant d'en-tête ou de pied de page d'Axion,
@@ -29,22 +35,24 @@ import { TOUR_PUBLIC } from "@/features/tour-de-france/visibilite";
 
 import {
   APPEL_FINAL,
-  BENEFICES,
+  AUDIT,
+  BANDEAU,
+  DEDANS,
   DEFINITION,
   EN_BREF,
+  ENTETE,
   ETAPES,
   FAQ,
   FONDATEUR,
+  FORMATION,
   HEROS,
-  JOURNEE,
   LIBELLE_CTA,
+  LIBELLE_CTA_COURT,
   META,
   MICRO_TEXTE_CTA,
-  NOM_DU_TOUR,
   PIED,
   POUR_QUI,
   PRINCIPE,
-  PROBLEME,
   lienRendezVous,
   type EmplacementCta,
 } from "./contenu";
@@ -53,8 +61,8 @@ import {
   CarteFrance,
   Coche,
   Fleche,
-  IllustrationConstat,
-  IllustrationMoment,
+  IllustrationGain,
+  IllustrationOffre,
   Jauge,
   PictoSecteur,
 } from "./_composants/Visuels";
@@ -74,21 +82,21 @@ export const metadata: Metadata = {
     locale: "fr_FR",
     url: URL_CANONIQUE,
     siteName: "Axion-IA",
-    title: META.titre,
+    title: META.titrePartage,
     description: META.description,
   },
   // Images : convention de fichier (`opengraph-image.jpg`, `twitter-image.jpg`).
   twitter: {
     card: "summary_large_image",
-    title: META.titre,
+    title: META.titrePartage,
     description: META.description,
   },
 };
 
 const CONTENEUR = "mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8";
-const REPERE = "font-mono text-sm tracking-[0.08em] text-fg-muted uppercase";
+const SUR_TITRE = "font-mono text-sm font-semibold tracking-[0.12em] uppercase";
 const TITRE_SECTION =
-  "font-serif text-[1.875rem] leading-[1.12] font-medium tracking-tight text-fg sm:text-[2.5rem]";
+  "font-serif text-[2rem] leading-[1.08] font-medium tracking-tight text-balance sm:text-5xl";
 const SECTION = "py-16 sm:py-24";
 const ID_CTA_HEROS = "tdf-cta-heros";
 const ID_CTA_COLLANT = "tdf-cta-collant";
@@ -108,19 +116,22 @@ const urlPhoto = (largeur: number) =>
   `/_next/image?url=${encodeURIComponent(FONDATEUR.photo)}&w=${largeur}&q=75`;
 
 /**
- * Le bouton principal : pilule bleue, 52 px de haut, libellé unique, flèche.
- * `compact` : la petite pilule du bandeau (44 px de haut, sans flèche).
+ * Le bouton d'action : pilule bleue pleine, 52 px de haut, flèche.
+ * `compact` : la pilule de l'en-tête (44 px de haut, libellé court, sans flèche).
+ * `vif` : le bouton du héros, dont le halo s'allume deux fois à l'arrivée.
  */
-function BoutonParticiper({
+function BoutonAudit({
   depuis,
   id,
   pleineLargeur = false,
   compact = false,
+  vif = false,
 }: {
   depuis: EmplacementCta;
   id?: string;
   pleineLargeur?: boolean;
   compact?: boolean;
+  vif?: boolean;
 }) {
   const largeur = compact ? "" : pleineLargeur ? "w-full" : "w-full sm:w-auto";
   return (
@@ -128,9 +139,9 @@ function BoutonParticiper({
       href={lienRendezVous(depuis)}
       id={id}
       data-tdf-cta=""
-      className={`${styles.bouton} ${compact ? styles.boutonCompact : ""} rounded-full ${largeur}`}
+      className={`${styles.bouton} ${compact ? styles.boutonCompact : ""} ${vif ? styles.boutonVif : ""} rounded-full ${largeur}`}
     >
-      {LIBELLE_CTA}
+      {compact ? LIBELLE_CTA_COURT : LIBELLE_CTA}
       {compact ? null : <Fleche />}
     </a>
   );
@@ -146,46 +157,60 @@ export default async function TourDeFranceIaPage() {
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLd }} />
 
-      <main className="pb-24 md:pb-0">
-        {/* 1. Héros — fond encre, tient dans le premier écran d'un téléphone. */}
-        <section className="bg-ink text-mocha-fg" aria-labelledby="tdf-titre">
-          <header className={`${CONTENEUR} flex min-h-16 items-center gap-3 pt-2`}>
-            <p className="font-serif text-lg font-medium">{NOM_DU_TOUR}</p>
-            <p className="text-mocha-fg-muted hidden text-sm sm:block">· {PIED.organise}</p>
-            <div className="ml-auto">
-              <BoutonParticiper depuis="tdf-bandeau" compact />
-            </div>
-          </header>
+      {/* 0. En-tête de tunnel — la bande terracotta du site, le logo, UNE action. */}
+      <header className="bg-terracotta border-terracotta-deep text-mocha-fg border-b md:sticky md:top-0 md:z-40">
+        <div className={`${CONTENEUR} flex min-h-16 items-center justify-between gap-3 py-2`}>
+          <p className="bg-paper text-fg shadow-subtle inline-flex shrink-0 items-center rounded-xl px-3.5 py-1.5">
+            <span className="sr-only">{ENTETE.logo}</span>
+            <span
+              aria-hidden="true"
+              className="font-serif text-xl leading-none font-medium tracking-tight"
+            >
+              Axion<span className="text-fg/70 mx-0.5">-</span>
+              <span className="text-terracotta italic">IA</span>
+            </span>
+          </p>
+          <BoutonAudit depuis="tdf-entete" compact />
+        </div>
+      </header>
 
+      <main className="pb-24 md:pb-0">
+        {/* 1. Héros — encre à halo terracotta, tient dans le premier écran d'un téléphone. */}
+        <section className="bg-vsl text-mocha-fg" aria-labelledby="tdf-titre">
           <div
-            className={`${CONTENEUR} grid gap-10 pt-5 pb-12 sm:pt-10 sm:pb-20 lg:grid-cols-[1.15fr_1fr] lg:items-center lg:gap-14 lg:pt-14 lg:pb-24`}
+            className={`${CONTENEUR} grid gap-10 pt-7 pb-12 sm:pt-12 sm:pb-20 lg:grid-cols-[1.2fr_1fr] lg:items-center lg:gap-14 lg:pt-16 lg:pb-24`}
           >
-            <div>
-              <p className="text-mocha-fg flex items-center gap-3 text-sm font-semibold">
-                <Jauge className="shrink-0" />
-                {HEROS.jauge}
+            <div className={styles.entree}>
+              <p className="border-terracotta-on-mocha/60 text-terracotta-on-mocha inline-flex items-center gap-2 rounded-full border px-3 py-1 text-sm font-semibold">
+                <span aria-hidden="true" className={styles.pastille} />
+                {HEROS.surTitre}
               </p>
               <h1
                 id="tdf-titre"
-                className="mt-5 font-serif text-[2rem] leading-[1.08] font-medium tracking-tight text-balance sm:text-5xl lg:text-[3.5rem]"
+                className="mt-5 font-serif text-[2rem] leading-[1.08] font-medium tracking-tight text-balance sm:text-5xl lg:text-[3.4rem]"
               >
-                {HEROS.titreAvant}
-                <span className="text-terracotta-on-mocha">{HEROS.titreAccent}</span>
-                {HEROS.titreApres}
+                {HEROS.titre}{" "}
+                <span className={`${styles.surligne} text-terracotta-on-mocha italic`}>
+                  {HEROS.titreAccent}
+                </span>
               </h1>
-              <p className="mt-4 max-w-xl text-lg leading-snug font-semibold sm:mt-6 sm:text-xl">
+              <p className="mt-5 max-w-xl text-lg leading-snug font-semibold sm:mt-6 sm:text-xl">
                 {HEROS.sousTitre}
               </p>
               <p className="text-mocha-fg-muted mt-3 max-w-xl text-[0.9375rem] leading-relaxed">
                 {HEROS.condition}
               </p>
               <div className="mt-6 flex flex-col gap-2.5 sm:mt-8 sm:items-start">
-                <BoutonParticiper depuis="tdf-heros" id={ID_CTA_HEROS} />
+                <BoutonAudit depuis="tdf-heros" id={ID_CTA_HEROS} vif />
                 <p className="text-mocha-fg-muted text-sm sm:pl-2">{MICRO_TEXTE_CTA}</p>
               </div>
             </div>
 
             <figure className="mx-auto w-full max-w-[360px] lg:max-w-[460px]">
+              <p className="text-mocha-fg mb-4 flex items-center justify-center gap-3 text-sm font-semibold">
+                <Jauge className="shrink-0" />
+                {HEROS.jauge}
+              </p>
               <CarteFrance
                 surSombre
                 titre={PRINCIPE.alt}
@@ -199,100 +224,125 @@ export default async function TourDeFranceIaPage() {
           </div>
         </section>
 
-        {/* 2. Définition citable, en texte visible (GEO). */}
-        <section className="border-border border-b" aria-labelledby="tdf-en-bref">
-          <div className={`${CONTENEUR} py-10 sm:py-14`}>
-            <div className="mx-auto max-w-3xl">
-              <h2 id="tdf-en-bref" className={REPERE}>
-                {EN_BREF}
+        {/* 2. Ce qu'il y a dedans — fond clair, quatre cartes en relief. */}
+        <section className={`bg-halo-warm ${SECTION}`} aria-labelledby="tdf-dedans">
+          <div className={CONTENEUR}>
+            <p className={`${SUR_TITRE} text-terracotta`}>{DEDANS.surTitre}</p>
+            <h2 id="tdf-dedans" className={`${TITRE_SECTION} text-fg mt-3 max-w-3xl`}>
+              {DEDANS.titre}
+            </h2>
+            <ul className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+              {DEDANS.cartes.map((c, i) => (
+                <li
+                  key={c.titre}
+                  className={`${styles.carteOffre} bg-paper border-border shadow-card relative flex flex-col overflow-hidden rounded-2xl border p-6`}
+                >
+                  <span
+                    aria-hidden="true"
+                    className={`absolute inset-x-0 top-0 h-1.5 ${i < 2 ? "bg-terracotta" : "bg-primary"}`}
+                  />
+                  <span className="flex items-start justify-between gap-3">
+                    <span className={i < 2 ? "text-terracotta" : "text-primary"}>
+                      <IllustrationOffre index={i} />
+                    </span>
+                    <span
+                      className={`rounded-full px-3 py-1 text-xs font-bold tracking-wide uppercase ${i < 2 ? "bg-terracotta text-mocha-fg" : "bg-primary-soft text-primary"}`}
+                    >
+                      {c.etiquette}
+                    </span>
+                  </span>
+                  <h3 className="text-fg mt-5 font-serif text-[1.5rem] leading-snug font-medium">
+                    {c.titre}
+                  </h3>
+                  <p className="text-terracotta mt-1 text-sm font-bold">{c.duree}</p>
+                  <p className="text-fg-soft mt-3 leading-relaxed">{c.texte}</p>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </section>
+
+        {/* 3. Bandeau — accent terracotta pleine largeur : la jauge, dite comme une chance. */}
+        <section className="bg-terracotta text-mocha-fg" aria-labelledby="tdf-bandeau">
+          <div
+            className={`${CONTENEUR} flex flex-col gap-6 py-12 sm:py-14 lg:flex-row lg:items-center lg:justify-between lg:gap-12`}
+          >
+            <div className="max-w-2xl">
+              <h2
+                id="tdf-bandeau"
+                className="font-serif text-[1.75rem] leading-tight font-medium tracking-tight text-balance sm:text-4xl"
+              >
+                {BANDEAU.titre}
               </h2>
-              <p className="text-fg mt-3 text-base leading-relaxed sm:text-lg">{DEFINITION}</p>
+              <p className="mt-3 text-lg">{BANDEAU.texte}</p>
+            </div>
+            <div className="shrink-0">
+              <BoutonAudit depuis="tdf-bandeau" />
             </div>
           </div>
         </section>
 
-        {/* 3. Le problème du dirigeant — bande de CONTRASTE terracotta, pleine
-            largeur, sans cartes : la page change de registre après le héros. */}
-        <section
-          className={`bg-terracotta-deep text-mocha-fg ${SECTION}`}
-          aria-labelledby="tdf-probleme"
-        >
+        {/* 4. L'audit — sombre de marque : les trois gains qu'il chiffre. */}
+        <section className={`bg-mocha-rich text-mocha-fg ${SECTION}`} aria-labelledby="tdf-audit">
           <div className={CONTENEUR}>
-            <h2
-              id="tdf-probleme"
-              className="max-w-4xl font-serif text-[2rem] leading-[1.1] font-medium tracking-tight text-balance sm:text-5xl lg:text-[3.5rem]"
-            >
-              {PROBLEME.titre}
+            <p className={`${SUR_TITRE} text-terracotta-on-mocha`}>{AUDIT.surTitre}</p>
+            <h2 id="tdf-audit" className={`${TITRE_SECTION} mt-3 max-w-4xl`}>
+              {AUDIT.titre}
             </h2>
-            <ul className="border-mocha-fg/30 mt-12 grid border-t md:grid-cols-3">
-              {PROBLEME.constats.map((c, i) => (
+            <p className="text-mocha-fg-muted mt-5 max-w-2xl text-lg leading-relaxed">
+              {AUDIT.texte}
+            </p>
+            <ul className="mt-10 grid gap-5 md:grid-cols-3">
+              {AUDIT.gains.map((g, i) => (
                 <li
-                  key={c.titre}
-                  className="border-mocha-fg/30 border-b py-7 md:border-b-0 md:py-8 md:pr-8 md:not-first:border-l md:not-first:pl-8"
+                  key={g.titre}
+                  className={`${styles.carteOffre} border-border-on-mocha bg-mocha-soft rounded-2xl border p-6`}
                 >
-                  <span className={styles.constat}>
-                    <IllustrationConstat index={i} />
+                  <span className={styles.gain}>
+                    <IllustrationGain index={i} />
                   </span>
-                  <h3 className="mt-4 text-lg font-semibold">{c.titre}</h3>
-                  <p className="mt-1.5">{c.texte}</p>
+                  <h3 className="mt-4 font-serif text-[1.75rem] leading-tight font-medium">
+                    {g.titre}
+                  </h3>
+                  <p className="text-mocha-fg-muted mt-2">{g.texte}</p>
                 </li>
               ))}
             </ul>
-            <p className="mt-12 max-w-2xl font-serif text-2xl leading-snug sm:text-[1.75rem]">
-              {PROBLEME.chute}
-            </p>
+            <p className="text-mocha-fg-muted mt-8 text-sm">{AUDIT.mention}</p>
           </div>
         </section>
 
-        {/* 4. La journée en trois temps — section TYPOGRAPHIQUE pleine largeur :
-            les durées du concept en très grands caractères, des filets, aucune carte. */}
-        <section className={SECTION} aria-labelledby="tdf-journee">
-          <div className={CONTENEUR}>
-            <h2
-              id="tdf-journee"
-              className="max-w-3xl font-serif text-[2.25rem] leading-[1.05] font-medium tracking-tight sm:text-6xl"
-            >
-              {JOURNEE.titre}
-            </h2>
-            <ol className="border-fg mt-12 border-t-2">
-              {JOURNEE.moments.map((m, i) => (
-                <li
-                  key={m.moment}
-                  className="border-border-strong grid gap-x-10 gap-y-3 border-b py-8 sm:py-10 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,1fr)] lg:items-end"
-                >
-                  <p
-                    className={`${styles.duree} font-serif leading-[0.95] font-medium tracking-tight ${i === 2 ? "text-terracotta" : "text-fg"}`}
-                  >
-                    {m.duree}
-                  </p>
-                  <div className="flex items-start gap-4">
-                    <span className="text-fg-soft mt-1 shrink-0">
-                      <IllustrationMoment index={i} />
-                    </span>
-                    <div>
-                      <p className={REPERE}>{m.moment}</p>
-                      <h3 className="text-fg mt-1 font-serif text-[1.5rem] leading-snug font-medium">
-                        {m.titre}
-                      </h3>
-                      <p className="text-fg-soft mt-2">{m.texte}</p>
-                    </div>
-                  </div>
-                </li>
-              ))}
-            </ol>
+        {/* 5. La formation offerte, et l'AI Act. */}
+        <section className={`bg-paper ${SECTION}`} aria-labelledby="tdf-formation">
+          <div
+            className={`${CONTENEUR} grid gap-10 lg:grid-cols-[1.1fr_1fr] lg:items-center lg:gap-14`}
+          >
+            <div>
+              <p className={`${SUR_TITRE} text-terracotta`}>{FORMATION.surTitre}</p>
+              <h2 id="tdf-formation" className={`${TITRE_SECTION} text-fg mt-3`}>
+                {FORMATION.titre}
+              </h2>
+              <p className="text-fg-soft mt-5 text-lg leading-relaxed">{FORMATION.texte}</p>
+            </div>
+            <div className="border-primary bg-primary-soft shadow-card rounded-2xl border-l-4 p-6 sm:p-8">
+              <Coche taille={32} />
+              <p className="text-fg mt-4 text-lg leading-relaxed font-semibold">
+                {FORMATION.aiAct}
+              </p>
+            </div>
           </div>
         </section>
 
-        {/* 5. Le principe d'une étape, et comment ça marche en 4 étapes. */}
+        {/* 6. Le principe d'une étape, et comment ça marche en 4 étapes. */}
         <section className={`bg-sand ${SECTION}`} aria-labelledby="tdf-principe">
           <div className={CONTENEUR}>
             <div className="max-w-3xl">
-              <h2 id="tdf-principe" className={TITRE_SECTION}>
+              <h2 id="tdf-principe" className={`${TITRE_SECTION} text-fg`}>
                 {PRINCIPE.titre}
               </h2>
               <p className="text-fg-soft mt-4 text-lg leading-relaxed">{PRINCIPE.texte}</p>
             </div>
-            <h3 id="tdf-comment" className={`${REPERE} mt-14`}>
+            <h3 id="tdf-comment" className={`${SUR_TITRE} text-terracotta mt-14`}>
               {ETAPES.titre}
             </h3>
             <ol
@@ -303,7 +353,7 @@ export default async function TourDeFranceIaPage() {
                 <li key={etape} className="relative min-h-11 pl-16 lg:pt-16 lg:pl-0">
                   <span
                     aria-hidden="true"
-                    className={`absolute top-0 left-0 z-[1] grid h-11 w-11 place-items-center rounded-full border-[1.5px] font-mono text-[0.95rem] ${i === ETAPES.liste.length - 1 ? "border-terracotta bg-terracotta text-white" : "border-fg bg-sand text-ink"}`}
+                    className={`absolute top-0 left-0 z-[1] grid h-11 w-11 place-items-center rounded-full font-mono text-[0.95rem] font-bold ${i === ETAPES.liste.length - 1 ? "bg-terracotta text-mocha-fg" : "bg-primary text-primary-fg"}`}
                   >
                     {String(i + 1).padStart(2, "0")}
                   </span>
@@ -314,65 +364,43 @@ export default async function TourDeFranceIaPage() {
           </div>
         </section>
 
-        {/* 6. Pour qui — toutes tailles, tous secteurs. */}
+        {/* 7. Pour qui — de la TPE à l'ETI, et ce que l'audit chiffre par secteur. */}
         <section className={SECTION} aria-labelledby="tdf-pour-qui">
-          <div className={`${CONTENEUR} grid gap-8 lg:grid-cols-[1fr_1.6fr] lg:gap-14`}>
-            <div>
-              <h2 id="tdf-pour-qui" className={TITRE_SECTION}>
-                {POUR_QUI.titre}
-              </h2>
-              <p className="text-fg mt-4 font-serif text-2xl leading-snug">{POUR_QUI.phrase}</p>
-              <ul className="mt-6 flex flex-wrap gap-2" aria-label={POUR_QUI.phrase}>
+          <div className={CONTENEUR}>
+            <div className="flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
+              <div>
+                <h2 id="tdf-pour-qui" className={`${TITRE_SECTION} text-fg`}>
+                  {POUR_QUI.titre}
+                </h2>
+                <p className="text-fg mt-3 font-serif text-2xl leading-snug">{POUR_QUI.phrase}</p>
+              </div>
+              <ul className="flex flex-wrap gap-2" aria-label={POUR_QUI.phrase}>
                 {POUR_QUI.tailles.map((t) => (
                   <li
                     key={t}
-                    className="border-border-strong text-fg rounded-full border px-3.5 py-1.5 text-sm font-semibold"
+                    className="bg-ink text-mocha-fg rounded-full px-4 py-1.5 text-sm font-bold"
                   >
                     {t}
                   </li>
                 ))}
               </ul>
             </div>
-            <div>
-              <ul className="grid grid-cols-2 gap-3 sm:grid-cols-4">
-                {POUR_QUI.secteurs.map((s, i) => (
-                  <li
-                    key={s}
-                    className="border-border bg-paper text-fg flex min-h-24 flex-col justify-between gap-3 rounded-xl border p-4"
-                  >
-                    <span className="text-terracotta">
-                      <PictoSecteur index={i} />
-                    </span>
-                    <span className="text-[0.9375rem] leading-tight font-semibold">{s}</span>
-                  </li>
-                ))}
-              </ul>
-              <p className="text-fg-soft mt-4">{POUR_QUI.suite}</p>
-            </div>
-          </div>
-        </section>
-
-        {/* 7. Ce que vous en retirez — sans promesse chiffrée. */}
-        <section
-          className={`bg-paper border-border border-y ${SECTION}`}
-          aria-labelledby="tdf-benefices"
-        >
-          <div className={CONTENEUR}>
-            <h2 id="tdf-benefices" className={TITRE_SECTION}>
-              {BENEFICES.titre}
-            </h2>
-            <ul className="mt-10 grid gap-x-10 gap-y-8 sm:grid-cols-2">
-              {BENEFICES.liste.map((b) => (
-                <li key={b.titre} className="flex items-start gap-4">
-                  <Coche className="mt-0.5 shrink-0" />
-                  <div>
-                    <h3 className="text-fg text-lg font-semibold">{b.titre}</h3>
-                    <p className="text-fg-soft mt-1">{b.texte}</p>
-                  </div>
+            <p className="text-fg-soft mt-8 text-lg">{POUR_QUI.intro}</p>
+            <ul className="mt-5 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+              {POUR_QUI.secteurs.map((s, i) => (
+                <li
+                  key={s.nom}
+                  className={`${styles.carteOffre} border-border bg-paper shadow-subtle flex flex-col gap-3 rounded-xl border p-5`}
+                >
+                  <span className="text-terracotta">
+                    <PictoSecteur index={i} />
+                  </span>
+                  <span className="text-fg text-base leading-tight font-bold">{s.nom}</span>
+                  <span className="text-fg-soft text-[0.9375rem] leading-snug">{s.exemple}</span>
                 </li>
               ))}
             </ul>
-            <p className="text-fg-muted mt-8 text-sm">{BENEFICES.mention}</p>
+            <p className="text-fg-soft mt-5">{POUR_QUI.suite}</p>
           </div>
         </section>
 
@@ -389,10 +417,10 @@ export default async function TourDeFranceIaPage() {
               alt={FONDATEUR.photoAlt}
               loading="lazy"
               decoding="async"
-              className="bg-sand-deep h-28 w-28 shrink-0 rounded-full object-cover sm:h-40 sm:w-40"
+              className="bg-sand-deep ring-terracotta h-28 w-28 shrink-0 rounded-full object-cover ring-4 ring-offset-4 sm:h-40 sm:w-40"
             />
             <div className="max-w-2xl">
-              <h2 id="tdf-fondateur" className={REPERE}>
+              <h2 id="tdf-fondateur" className={`${SUR_TITRE} text-terracotta`}>
                 {FONDATEUR.titre}
               </h2>
               <p className="text-fg mt-2 font-serif text-[1.75rem] leading-tight font-medium">
@@ -404,7 +432,7 @@ export default async function TourDeFranceIaPage() {
               <p className="mt-2">
                 <a
                   href={FONDATEUR.chemin}
-                  className="text-fg decoration-border-strong hover:decoration-terracotta focus-visible:outline-primary inline-flex min-h-12 items-center font-semibold underline decoration-2 underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-2"
+                  className="text-fg decoration-terracotta hover:text-terracotta focus-visible:outline-primary inline-flex min-h-12 items-center font-semibold underline decoration-2 underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-2"
                 >
                   {FONDATEUR.lien}
                 </a>
@@ -416,7 +444,7 @@ export default async function TourDeFranceIaPage() {
         {/* 9. Questions fréquentes — accordéon natif (FAQPage dans le JSON-LD). */}
         <section className={SECTION} aria-labelledby="tdf-faq">
           <div className={`${CONTENEUR} max-w-3xl`}>
-            <h2 id="tdf-faq" className={TITRE_SECTION}>
+            <h2 id="tdf-faq" className={`${TITRE_SECTION} text-fg`}>
               {FAQ.titre}
             </h2>
             <div className="divide-border border-border mt-8 divide-y border-y">
@@ -435,10 +463,22 @@ export default async function TourDeFranceIaPage() {
           </div>
         </section>
 
-        {/* 10. Appel final — fond encre, comme le héros. */}
+        {/* 10. En bref — la définition citable, en texte visible (GEO). */}
+        <section className="border-border border-t" aria-labelledby="tdf-en-bref">
+          <div className={`${CONTENEUR} py-10 sm:py-14`}>
+            <div className="mx-auto max-w-3xl">
+              <h2 id="tdf-en-bref" className={`${SUR_TITRE} text-fg-muted`}>
+                {EN_BREF}
+              </h2>
+              <p className="text-fg mt-3 text-base leading-relaxed">{DEFINITION}</p>
+            </div>
+          </div>
+        </section>
+
+        {/* 11. Appel final — encre à halo terracotta, comme le héros. */}
         <section
           id={ID_SECTION_FINALE}
-          className="bg-ink text-mocha-fg"
+          className="bg-vsl text-mocha-fg"
           aria-labelledby={ID_APPEL_FINAL}
         >
           <div className={`${CONTENEUR} py-16 sm:py-24`}>
@@ -446,13 +486,13 @@ export default async function TourDeFranceIaPage() {
               <Coche taille={40} surSombre />
               <h2
                 id={ID_APPEL_FINAL}
-                className="mt-6 font-serif text-[2rem] leading-tight font-medium tracking-tight sm:text-5xl"
+                className="mt-6 font-serif text-[2rem] leading-tight font-medium tracking-tight text-balance sm:text-5xl"
               >
                 {APPEL_FINAL.titre}
               </h2>
               <p className="text-mocha-fg-muted mt-4 text-lg">{APPEL_FINAL.texte}</p>
               <div className="mt-8 flex w-full flex-col items-center gap-2.5">
-                <BoutonParticiper depuis="tdf-final" />
+                <BoutonAudit depuis="tdf-final" />
                 <p className="text-mocha-fg-muted text-sm">{MICRO_TEXTE_CTA}</p>
               </div>
             </div>
@@ -460,7 +500,7 @@ export default async function TourDeFranceIaPage() {
         </section>
       </main>
 
-      {/* 11. Pied de page propre au Tour. */}
+      {/* 12. Pied de page propre au Tour. */}
       <footer className={`${CONTENEUR} text-fg-muted pt-10 pb-28 text-sm md:pb-12`}>
         <p className="text-fg font-semibold">{PIED.organise}</p>
         <ul className="mt-3 flex flex-wrap gap-x-5">
@@ -485,7 +525,7 @@ export default async function TourDeFranceIaPage() {
         inert
         className={`${styles.collant} border-border bg-bg/95 fixed inset-x-0 bottom-0 z-40 translate-y-full border-t px-4 pt-3 opacity-0 backdrop-blur transition duration-200 data-[visible=true]:translate-y-0 data-[visible=true]:opacity-100 motion-reduce:transition-none md:hidden`}
       >
-        <BoutonParticiper depuis="tdf-collant" pleineLargeur />
+        <BoutonAudit depuis="tdf-collant" pleineLargeur />
       </div>
       <PiloteCta idHeros={ID_CTA_HEROS} idFinal={ID_SECTION_FINALE} idCollant={ID_CTA_COLLANT} />
     </>

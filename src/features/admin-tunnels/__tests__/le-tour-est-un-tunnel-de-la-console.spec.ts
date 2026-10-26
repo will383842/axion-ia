@@ -66,14 +66,14 @@ describe("1. du bouton à la page de rendez-vous : `depuis` et UTM", () => {
   });
 
   it("…le repère du bouton est recopié dans l'utm_content du mode de secours de l'iframe, avec une source par défaut", () => {
-    for (const depuis of ["tdf-heros", "tdf-final", "tdf-bandeau", "tdf-collant"]) {
+    for (const depuis of ["tdf-entete", "tdf-heros", "tdf-final", "tdf-bandeau", "tdf-collant"]) {
       expect(utmContentDuChoix("tour", depuis)).toBe(`tour:${depuis}`);
       expect(boutonDeUtmContent(utmContentDuChoix("tour", depuis))).toBe(depuis);
     }
     expect(utmSourceParDefaut("tour")).toBe("tour-de-france-ia");
   });
 
-  it("la page de rendez-vous du Tour, et elle seule, émet l'arrivée (clic « Participer »)", () => {
+  it("la page de rendez-vous du Tour, et elle seule, émet l'arrivée (clic sur le bouton de la landing)", () => {
     const page = lire("src/app/[locale]/appel/page.tsx");
     expect(page).toMatch(
       /choix === "tour" \? \(\s*<ArriveeReservationMesure landing="tour-de-france-ia" placement=\{depuis\} \/>/,
@@ -130,6 +130,7 @@ describe("3. la console montre le Tour comme les autres tunnels", () => {
   });
 
   it("les boutons de la landing ont un libellé lisible dans les bilans", () => {
+    expect(libelleEmplacement("tour:tdf-entete")).toBe("Tour de France IA (en-tête)");
     expect(libelleEmplacement("tour:tdf-heros")).toBe("Tour de France IA (haut de page)");
     expect(libelleEmplacement("tour:tdf-final")).toBe("Tour de France IA (bas de page)");
     expect(libelleEmplacement("tour:tdf-bandeau")).toBe("Tour de France IA (bandeau)");

@@ -46,7 +46,7 @@ export function jsonLdDuTour(): Record<string, unknown> {
         organizer: organisation,
         performer: { "@id": FOUNDER_PERSON_ID },
         eventAttendanceMode: "https://schema.org/OfflineEventAttendanceMode",
-        // Dit comme le texte visible : gratuit pour les entreprises de l’étape.
+        // Dit comme le texte visible : audit et formation offerts aux entreprises de l’étape.
         isAccessibleForFree: true,
         location: { "@type": "Country", name: "France" },
       },

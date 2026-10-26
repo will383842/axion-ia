@@ -45,7 +45,7 @@ export function VueTour({
     { key: "bouton", header: "Bouton de la landing", cell: (l) => l.libelle, width: "46%" },
     {
       key: "arrivees",
-      header: "Clics « Participer »",
+      header: "Clics « audit offert »",
       align: "right",
       cell: (l) => nombre(l.arrivees),
     },
@@ -98,7 +98,7 @@ export function VueTour({
           meta="Par choix : la page ne porte aucune mesure d'audience (politique de confidentialité)"
         />
         <AdminStatCard
-          label="Clics « Participer »"
+          label="Clics « audit offert »"
           value={nombre(tableau.arrivees)}
           meta="Arrivées sur la page de rendez-vous du Tour, une par visite"
         />
@@ -108,7 +108,7 @@ export function VueTour({
           meta={
             tableau.transformation === null
               ? "Visio de 30 minutes, type « Tour de France IA »"
-              : `${tableau.transformation} % des clics « Participer »`
+              : `${tableau.transformation} % des clics « audit offert »`
           }
           tone={rdv && rdv.pris > 0 ? "success" : "default"}
           href={appelsTour}

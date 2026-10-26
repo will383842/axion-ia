@@ -1,5 +1,6 @@
 // Tour de France IA — TOUT le texte de la landing, en un seul endroit (2026-10-25,
-// refonte « landing de conversion » le 2026-10-26).
+// refonte « landing de conversion » le 2026-10-26, réécriture « offre » le
+// 2026-10-26 sur le retour de Will).
 //
 // Pourquoi un module à part : le test des mots interdits
 // (`__tests__/le-tour-est-ouvert.spec.ts`) lit CE fichier et la page ; un
@@ -7,21 +8,27 @@
 // (`_composants/`) ne portent AUCUN texte visible : ils le reçoivent d'ici.
 //
 // Règles de rédaction : vouvoiement, phrases courtes, apostrophe typographique
-// (’), espace insécable ( ) avant « : ; ? ! » et à l'intérieur des
+// (’), espace insécable ( ) avant « : ; ? ! » et à l'intérieur des
 // guillemets. Aucun montant, aucun chiffre inventé, aucune promesse de résultat.
-// L'offre est dite en clair : audit et formation GRATUITS pour les entreprises de
-// l'étape, soirée à la charge de chacun. « Gratuit » est RÉSERVÉ à l'audit et à la
-// formation : la visio n'est dite que « sans engagement » (`MICRO_TEXTE_CTA`, seul
-// endroit où la changer). Condition toujours visible
-// (DGCCRF) : gratuit, la ville s'ouvre dès 5 entreprises confirmées, sans frais
-// cachés. Le texte ne parle jamais de transaction à conclure : un test le garde.
+//
+// Ce que la page fait SENTIR, du point de vue de l'entreprise : le Tour vient
+// CHEZ ELLE, avec un audit offert qui chiffre ce que l'IA lui ferait gagner, et
+// 4 h de formation offertes à ses équipes. Ce n'est pas un rendez-vous où l'on
+// se déplace : aucun vocabulaire d'événement, d'inscription ni de billet.
+// « Offert » (ou « gratuit ») est RÉSERVÉ à l'audit et à la formation : la visio
+// n'est dite que « sans engagement » (`MICRO_TEXTE_CTA`, seul endroit où la
+// changer). Condition toujours visible (DGCCRF) : offerts aux entreprises de
+// l'étape, sans frais cachés, la ville s'ouvre dès 5 entreprises confirmées. La
+// soirée du vendredi est dite ouverte aux entreprises de l'étape, sans jamais
+// dire qui paie quoi. L'AI Act est cité avec prudence : la formation « aide à
+// répondre » à son exigence, jamais plus.
 //
 // Les seuls chiffres de la page sont ceux du CONCEPT (5 entreprises, 2 à 4 h,
 // 4 h, 30 minutes, une semaine) : aucun compteur, aucune statistique.
 
 import { TOUR_PREFIX } from "@/features/tour-de-france/visibilite";
 
-/** Le nom de l'événement. */
+/** Le nom du Tour. */
 export const NOM_DU_TOUR = "Tour de France IA";
 
 /** Le seuil d'ouverture d'une ville — un fait du concept, pas un compteur. */
@@ -30,22 +37,33 @@ export const SEUIL_OUVERTURE = 5;
 /** La page de rendez-vous visio de 30 minutes (type `tour` de `types-reservables.ts`). */
 export const CHEMIN_RENDEZ_VOUS = "/fr/appel/tour-de-france-ia";
 
-/** Le libellé UNIQUE de tous les boutons : une seule action sur la page. */
-export const LIBELLE_CTA = "Participer";
+/**
+ * Le libellé des grands boutons : ce que l'entreprise OBTIENT. Une seule action
+ * sur la page, dite de la même façon partout.
+ */
+export const LIBELLE_CTA = "Je veux mon audit offert";
+
+/** La même action, en court : la pilule de l'en-tête (téléphone de 360 px). */
+export const LIBELLE_CTA_COURT = "Mon audit offert";
 
 /**
- * Le micro-texte sous chaque bouton principal — la SEULE phrase qui décrit la
- * visio (affichée sous les deux grands boutons). Sans « gratuite » : le mot est réservé à l'audit
- * et à la formation du Tour.
+ * Le micro-texte sous chaque grand bouton — la SEULE phrase qui décrit la visio.
+ * Sans « gratuite » : le mot est réservé à l'audit et à la formation du Tour.
  */
 export const MICRO_TEXTE_CTA = "Visio de 30 minutes · sans engagement";
 
 /**
  * Les emplacements des boutons, mesurés en `utm_term` chez Calendly puis lus par
- * la console. Liste FERMÉE : la console ne connaît que ces quatre-là, un
- * emplacement inventé y tomberait en « inconnu ».
+ * la console. Liste FERMÉE : la console ne connaît que ces cinq-là
+ * (`libelleEmplacement`), un emplacement inventé y tomberait en valeur brute.
  */
-export const EMPLACEMENTS_CTA = ["tdf-heros", "tdf-bandeau", "tdf-final", "tdf-collant"] as const;
+export const EMPLACEMENTS_CTA = [
+  "tdf-entete",
+  "tdf-heros",
+  "tdf-bandeau",
+  "tdf-final",
+  "tdf-collant",
+] as const;
 export type EmplacementCta = (typeof EMPLACEMENTS_CTA)[number];
 
 /**
@@ -57,17 +75,26 @@ export function lienRendezVous(depuis: EmplacementCta): string {
   return `${CHEMIN_RENDEZ_VOUS}?depuis=${encodeURIComponent(depuis)}`;
 }
 
-/** L'offre, en une phrase : affichée en grand sous le titre. */
-export const OFFRE = "Un audit de 2 à 4 h et la formation de vos équipes, gratuits, chez vous.";
+/** L'accroche imposée par Will : H1 de la page et titre de partage. */
+export const ACCROCHE = {
+  question: "Vous entendez parler d’IA partout et ne savez plus par où commencer ?",
+  reponse: "Nous, si.",
+} as const;
 
-/** La condition qui accompagne « gratuit » — visible, jamais en note de bas de page. */
-export const CONDITION_GRATUITE =
-  "Gratuit pour les entreprises de l’étape, sans frais cachés. La ville s’ouvre dès que 5 entreprises ont confirmé.";
+/** L'offre, en une phrase : affichée en grand sous le titre. */
+export const OFFRE =
+  "Le Tour de France IA vient dans votre entreprise : un audit offert qui chiffre ce que l’IA vous ferait gagner, et 4 h de formation offertes à vos équipes.";
+
+/** La condition qui accompagne « offert » — visible, jamais en note de bas de page. */
+export const CONDITION_OFFERTE =
+  "Offerts aux entreprises de l’étape, sans frais cachés. Le Tour s’arrête dans votre ville dès que 5 entreprises ont confirmé.";
 
 export const META = {
-  titre: "Tour de France IA : audit et formation gratuits chez vous",
+  titre: "Tour de France IA : audit et formation IA offerts chez vous",
   description:
-    "Audit de 2 à 4 h et formation de vos équipes, gratuits, chez vous. La ville s’ouvre dès 5 entreprises confirmées, sans frais cachés.",
+    "Un audit offert qui chiffre ce que l’IA vous ferait gagner, et 4 h de formation offertes à vos équipes. Dès 5 entreprises confirmées dans votre ville.",
+  /** Titre de partage (Facebook, LinkedIn) : l'accroche de Will, telle quelle. */
+  titrePartage: `${ACCROCHE.question} ${ACCROCHE.reponse}`,
   /** Chemin canonique (sans barre finale : `trailingSlash` est faux sur tout le site). */
   chemin: TOUR_PREFIX,
   /**
@@ -80,70 +107,102 @@ export const META = {
     "Tour de France IA, organisé par Axion-IA : une carte de France stylisée, une ville s’ouvre à 5 entreprises.",
 } as const;
 
+/** L'en-tête de tunnel : le logo et une seule action. */
+export const ENTETE = {
+  /** Nom accessible du logo (le logo n'est pas un lien : aucune sortie du tunnel). */
+  logo: "Axion-IA",
+} as const;
+
 export const HEROS = {
-  /** La jauge du héros : le concept en deux secondes (5 points, l'étape s'ouvre). */
-  jauge: "5 entreprises confirmées, l’étape s’ouvre",
-  /**
-   * Le H1 en trois morceaux : seul « au travail » prend l'accent. Il répond à
-   * l'accroche d'un post (« Et si l’IA venait chez vous ? ») par le BÉNÉFICE
-   * du dirigeant, sans reprendre le slogan d'Axion-IA.
-   */
-  titreAvant: "Une journée pour mettre l’IA ",
-  titreAccent: "au travail",
-  titreApres: " dans votre entreprise.",
+  /** Le sur-titre : qui vient, en une ligne. */
+  surTitre: `${NOM_DU_TOUR} · par Axion-IA`,
+  titre: ACCROCHE.question,
+  titreAccent: ACCROCHE.reponse,
   sousTitre: OFFRE,
-  condition: CONDITION_GRATUITE,
+  condition: CONDITION_OFFERTE,
+  /** La jauge du héros : le concept en deux secondes (5 points, l'étape s'ouvre). */
+  jauge: "5 entreprises confirmées, le Tour s’arrête chez vous",
 } as const;
 
 /** La définition citable, en texte visible (GEO). */
 export const DEFINITION =
-  "Le Tour de France IA est un événement organisé par Axion-IA, fondé par Williams Jullin. Une ville s’ouvre dès que 5 entreprises ont confirmé leur participation. Chaque entreprise reçoit alors sa journée chez elle : un audit gratuit le matin (2 à 4 h), la formation gratuite de ses équipes l’après-midi (4 h). Le vendredi soir, une soirée réseau réunit les entreprises de l’étape, chacun règle sa part.";
+  "Le Tour de France IA est une tournée d’Axion-IA, fondée par Williams Jullin, dans les entreprises qui le souhaitent, de la TPE à l’ETI, tous secteurs. Une étape, c’est une semaine dans une ville, ouverte dès que 5 entreprises ont confirmé. Chaque entreprise reçoit chez elle un audit offert de son activité (2 à 4 h), qui chiffre ce que l’IA lui ferait gagner en temps, en rentabilité et en chiffre d’affaires, puis une formation offerte de 4 h pour ses équipes. Le vendredi soir, une soirée réseau réunit les entreprises de l’étape.";
 
 export const EN_BREF = "En bref";
 
-/** Le problème du dirigeant : à faire SENTIR, sans slogan. */
-export const PROBLEME = {
-  titre: "Parmi tous les outils d’IA, lesquels servent votre métier ?",
-  constats: [
+/** Ce qu'il y a dedans : les quatre choses que l'entreprise reçoit. */
+export const DEDANS = {
+  surTitre: "Ce qu’il y a dedans",
+  titre: "Le Tour vient chez vous. Avec tout ça.",
+  cartes: [
     {
-      titre: "Trop d’outils pour tout essayer",
-      texte: "Vous n’avez pas le temps de trier ce qui compte pour votre métier.",
+      etiquette: "Offert",
+      titre: "L’audit de votre activité",
+      duree: "2 à 4 h, chez vous",
+      texte:
+        "Nous regardons comment votre entreprise travaille, puis nous chiffrons ce que l’IA vous ferait gagner : temps, rentabilité, chiffre d’affaires.",
     },
     {
-      titre: "Des essais chacun dans son coin",
-      texte: "Quelqu’un teste, puis oublie. Rien ne devient une habitude d’équipe.",
+      etiquette: "Offerte",
+      titre: "La formation de vos équipes",
+      duree: "4 h, chez vous",
+      texte:
+        "Vos équipes s’exercent sur leurs propres tâches, avec des outils d’IA. Du concret, pas de théorie hors sol.",
     },
     {
-      titre: "Une question qui reste ouverte",
-      texte: "Qu’est-ce que ça change, concrètement, pour votre entreprise ?",
+      etiquette: "Près de chez vous",
+      titre: "Une étape dans votre ville",
+      duree: "Une semaine",
+      texte:
+        "Le Tour s’installe une semaine dans votre ville et passe une journée dans chaque entreprise de l’étape.",
+    },
+    {
+      etiquette: "Vendredi soir",
+      titre: "La soirée réseau",
+      duree: "Fin de semaine",
+      texte:
+        "Les dirigeants de l’étape se retrouvent pour échanger ce qu’ils ont vu. Ouverte à toutes les entreprises de l’étape.",
     },
   ],
-  chute: "Le Tour vient chez vous pour y répondre, à partir de votre activité réelle.",
 } as const;
 
-export const JOURNEE = {
-  titre: "Votre journée, en trois temps",
-  moments: [
+/** Le bandeau du milieu : la jauge, présentée comme une chance. */
+export const BANDEAU = {
+  titre: "Il suffit de 5 entreprises pour que le Tour s’arrête dans votre ville.",
+  texte: "Faites partie des premières : votre audit et votre formation sont offerts.",
+} as const;
+
+/** Ce que l'audit met sur la table : les trois gains, sans aucun chiffre inventé. */
+export const AUDIT = {
+  surTitre: "L’audit offert",
+  titre: "Combien l’IA vous ferait gagner, chez vous, chiffré.",
+  texte:
+    "Pas une démonstration générale : l’audit part de vos tâches, de vos outils et de vos chiffres. Vous voyez où l’IA s’applique, comment, et ce que cela représente pour votre entreprise.",
+  gains: [
     {
-      moment: "Temps 1",
-      titre: "Audit gratuit le matin",
-      duree: "2 à 4 h",
-      texte:
-        "Nous regardons comment votre entreprise travaille et repérons où l’IA peut s’appliquer.",
+      titre: "Du temps",
+      texte: "Les heures que vos équipes pourraient récupérer, tâche par tâche.",
     },
     {
-      moment: "Temps 2",
-      titre: "Formation gratuite l’après-midi",
-      duree: "4 h",
-      texte: "Vos équipes s’exercent sur leurs propres tâches, avec des outils d’IA.",
+      titre: "De la rentabilité",
+      texte: "Ce que cela changerait à vos marges, une fois l’IA à sa place.",
     },
     {
-      moment: "Temps 3",
-      titre: "Soirée réseau, chacun règle sa part",
-      duree: "Vendredi soir",
-      texte: "Retrouvez les autres entreprises de l’étape, au restaurant.",
+      titre: "Du chiffre d’affaires",
+      texte: "Les pistes pour mieux répondre, relancer et servir vos clients.",
     },
   ],
+  mention: "Des estimations construites sur votre activité réelle, pas des promesses.",
+} as const;
+
+/** La formation offerte, et l'AI Act — formulé avec prudence. */
+export const FORMATION = {
+  surTitre: "La formation offerte",
+  titre: "4 h pour que vos équipes prennent l’IA en main.",
+  texte:
+    "Sur leurs propres tâches, à leur poste, avec un formateur d’Axion-IA. Chacun repart en sachant quoi faire lundi matin.",
+  aiAct:
+    "L’AI Act demande aux entreprises qui utilisent l’IA de veiller à la maîtrise de l’IA par leurs équipes. Cette formation vous aide à répondre à cette exigence.",
 } as const;
 
 /** La carte : le principe d'une étape, sans aucune ville nommée. */
@@ -159,55 +218,40 @@ export const PRINCIPE = {
 export const ETAPES = {
   titre: "Comment ça marche",
   liste: [
-    "Vous choisissez un créneau de visio (30 min)",
-    "Nous faisons connaissance et vous confirmez votre participation",
+    "Vous choisissez un créneau de visio (30 min)",
+    "Nous faisons connaissance et vous confirmez que le Tour passe chez vous",
     "À 5 entreprises confirmées, la ville s’ouvre et vous êtes prévenu",
-    "Nous venons chez vous : votre journée",
+    "Nous venons chez vous : audit, puis formation",
   ],
 } as const;
 
 export const POUR_QUI = {
   titre: "Pour qui ?",
-  phrase: "De l’indépendant au grand groupe. Tous secteurs.",
-  tailles: ["Indépendant", "TPE", "PME", "ETI", "Grand groupe"],
+  phrase: "De la TPE à l’ETI. Tous secteurs.",
+  tailles: ["TPE", "PME", "ETI"],
+  /** Ce que l'audit chiffre ou met en évidence, secteur par secteur — sans chiffre. */
+  intro: "Quelques exemples de ce que l’audit chiffre ou met en évidence :",
   secteurs: [
-    "Commerce",
-    "Industrie",
-    "Santé",
-    "Bâtiment",
-    "Services",
-    "Associations",
-    "Hôtellerie-restauration",
-    "Transport",
+    {
+      nom: "Commerce",
+      exemple: "le temps passé sur les fiches produits et les réponses aux clients",
+    },
+    { nom: "Industrie", exemple: "les ressaisies entre commandes, stocks et bons de livraison" },
+    { nom: "Santé", exemple: "le temps administratif pris sur le temps de soin" },
+    { nom: "Bâtiment", exemple: "les heures de chiffrage et de suivi de chantier" },
+    { nom: "Services", exemple: "les comptes rendus, les relances et la facturation" },
+    { nom: "Associations", exemple: "les heures d’administratif de l’équipe et des bénévoles" },
+    {
+      nom: "Hôtellerie-restauration",
+      exemple: "les plannings et les réponses aux demandes des clients",
+    },
+    { nom: "Transport", exemple: "l’organisation des tournées et le suivi des documents" },
   ],
   suite: "Votre secteur n’est pas dans la liste ? Il est concerné aussi.",
 } as const;
 
-export const BENEFICES = {
-  titre: "Ce que vous en retirez",
-  liste: [
-    {
-      titre: "Un regard extérieur sur votre organisation",
-      texte: "Un regard neuf, sans vos habitudes.",
-    },
-    {
-      titre: "Des cas d’usage adaptés à votre métier",
-      texte: "Pas une démonstration générale : vos documents, vos tâches, vos clients.",
-    },
-    {
-      titre: "Des équipes formées sur leurs propres tâches",
-      texte: "La formation part des tâches que vos équipes font chaque jour.",
-    },
-    {
-      titre: "Un plan d’action pour la suite",
-      texte: "Ce qu’il faut faire d’abord, et ce qui peut attendre.",
-    },
-  ],
-  mention: "Sans engagement de résultat.",
-} as const;
-
 export const FONDATEUR = {
-  titre: "Qui organise ?",
+  titre: "Qui vient chez vous ?",
   nom: "Williams Jullin",
   role: "Fondateur du Tour de France IA et d’Axion-IA",
   ligne2: "Il a imaginé le Tour pour faire venir l’IA dans les entreprises, chez elles.",
@@ -224,29 +268,39 @@ export const FAQ = {
   titre: "Questions fréquentes",
   questions: [
     {
-      question: "C’est quoi le Tour de France IA ?",
+      question: "C’est quoi, le Tour de France IA ?",
       reponse:
-        "Un événement organisé par Axion-IA. Une ville s’ouvre dès que 5 entreprises ont confirmé. Chacune reçoit sa journée chez elle : un audit gratuit le matin, la formation gratuite de ses équipes l’après-midi.",
+        "Une tournée d’Axion-IA dans les entreprises qui le souhaitent. Le Tour s’arrête une semaine dans une ville dès que 5 entreprises ont confirmé. Chacune reçoit chez elle un audit offert de son activité, puis une formation offerte de 4 h pour ses équipes.",
     },
     {
-      question: "Combien ça coûte ?",
+      question: "L’audit et la formation sont-ils vraiment offerts ?",
       reponse:
-        "L’audit et la formation sont gratuits pour les entreprises de l’étape. La soirée réseau est à la charge de chacun. La ville s’ouvre dès que 5 entreprises ont confirmé. Aucuns frais cachés.",
+        "Oui. L’audit et la formation sont offerts aux entreprises de l’étape, sans frais cachés. La ville s’ouvre dès que 5 entreprises ont confirmé.",
     },
     {
-      question: "Pourquoi 5 entreprises ?",
+      question: "Que m’apporte l’audit, concrètement ?",
       reponse:
-        "C’est le seuil pour qu’une étape ait lieu. Si votre ville n’atteint pas 5, nous vous prévenons dès qu’une étape devient possible près de chez vous.",
+        "Il part de votre activité réelle et chiffre où l’IA vous ferait gagner : le temps de vos équipes, votre rentabilité, votre chiffre d’affaires. Ce sont des estimations construites avec vous, pas des promesses.",
+    },
+    {
+      question: "La formation m’aide-t-elle pour l’AI Act ?",
+      reponse:
+        "Elle vous aide à répondre à l’exigence de maîtrise de l’IA que l’AI Act pose aux entreprises qui l’utilisent. Elle ne vaut pas, à elle seule, mise en conformité.",
     },
     {
       question: "Est-ce adapté à ma taille et à mon secteur ?",
       reponse:
-        "Oui. De l’indépendant au grand groupe, tous secteurs. L’audit et la formation partent de votre activité réelle.",
+        "Oui. De la TPE à l’ETI, tous secteurs. L’audit et la formation partent de votre activité réelle.",
     },
     {
-      question: "Où cela se passe-t-il ?",
+      question: "Pourquoi 5 entreprises ?",
       reponse:
-        "Chez vous, dans vos locaux. La soirée réseau du vendredi a lieu au restaurant, dans la ville de l’étape.",
+        "C’est le seuil pour que le Tour s’arrête dans une ville. Si la vôtre n’y est pas encore, nous vous prévenons dès qu’une étape devient possible près de chez vous.",
+    },
+    {
+      question: "Et la soirée du vendredi ?",
+      reponse:
+        "Une soirée réseau dans la ville de l’étape, ouverte à toutes les entreprises de l’étape. Les dirigeants y échangent ce qu’ils ont vu dans la semaine.",
     },
     {
       question: "Quel lien avec le Tour de France cycliste ?",
@@ -257,9 +311,9 @@ export const FAQ = {
 } as const;
 
 export const APPEL_FINAL = {
-  titre: "Faites venir le Tour chez vous.",
+  titre: "Faites venir le Tour dans votre entreprise.",
   texte:
-    "Une visio de 30 minutes pour faire connaissance. Dès que votre ville compte 5 entreprises confirmées, nous venons.",
+    "Une visio de 30 minutes pour faire connaissance. Dès que votre ville compte 5 entreprises confirmées, nous venons avec votre audit et votre formation.",
 } as const;
 
 export const PIED = {
@@ -282,31 +336,39 @@ export const PIED = {
 export function toutLeTexte(): string {
   return [
     LIBELLE_CTA,
+    LIBELLE_CTA_COURT,
     MICRO_TEXTE_CTA,
+    ...Object.values(ACCROCHE),
     META.titre,
     META.description,
+    META.titrePartage,
     META.imageAlt,
+    ENTETE.logo,
     ...Object.values(HEROS),
     OFFRE,
-    CONDITION_GRATUITE,
+    CONDITION_OFFERTE,
     EN_BREF,
     DEFINITION,
-    PROBLEME.titre,
-    ...PROBLEME.constats.flatMap((c) => [c.titre, c.texte]),
-    PROBLEME.chute,
-    JOURNEE.titre,
-    ...JOURNEE.moments.flatMap((m) => [m.moment, m.titre, m.duree, m.texte]),
+    DEDANS.surTitre,
+    DEDANS.titre,
+    ...DEDANS.cartes.flatMap((c) => [c.etiquette, c.titre, c.duree, c.texte]),
+    BANDEAU.titre,
+    BANDEAU.texte,
+    AUDIT.surTitre,
+    AUDIT.titre,
+    AUDIT.texte,
+    ...AUDIT.gains.flatMap((g) => [g.titre, g.texte]),
+    AUDIT.mention,
+    ...Object.values(FORMATION),
     ...Object.values(PRINCIPE),
     ETAPES.titre,
     ...ETAPES.liste,
     POUR_QUI.titre,
     POUR_QUI.phrase,
     ...POUR_QUI.tailles,
-    ...POUR_QUI.secteurs,
+    POUR_QUI.intro,
+    ...POUR_QUI.secteurs.flatMap((s) => [s.nom, s.exemple]),
     POUR_QUI.suite,
-    BENEFICES.titre,
-    ...BENEFICES.liste.flatMap((b) => [b.titre, b.texte]),
-    BENEFICES.mention,
     FONDATEUR.titre,
     FONDATEUR.nom,
     FONDATEUR.role,

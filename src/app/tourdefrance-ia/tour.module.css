@@ -1,16 +1,19 @@
 /* Tour de France IA — ce que Tailwind ne dit pas bien : les dessins SVG, leurs
-   micro-animations, l'accordéon de la FAQ et le tracé de « Comment ça marche ».
+   micro-animations, les boutons et les cartes en relief, l'accordéon de la FAQ
+   et le tracé de « Comment ça marche ».
    CSS SEUL : aucune bibliothèque, aucun JavaScript. Toute animation s'éteint
    sous `prefers-reduced-motion` (bloc en fin de fichier) et montre alors l'état
    final, lisible. Aucune animation ne déplace la mise en page (CLS nul) : seules
    `opacity`, `transform` et `fill` bougent.
-   Aucune boucle infinie : chaque animation se joue DEUX fois (le `2` de chaque
-   déclaration), puis s'arrête sur son état final grâce à `both` — points
-   remplis, coche et halo visibles. Le même état que sous mouvement réduit. */
+   Aucune boucle infinie : chaque animation se joue une ou deux fois (le `1` ou
+   le `2` de chaque déclaration), puis s'arrête sur son état final grâce à
+   `both` — points remplis, coche, halo et soulignement visibles. Le même état
+   que sous mouvement réduit. */
 
 /* ── Bouton principal ─────────────────────────────────────────────────────── */
 
 .bouton {
+  position: relative;
   display: inline-flex;
   min-height: 3.25rem; /* 52 px : au-delà des 48 px de zone tactile */
   align-items: center;
@@ -21,10 +24,14 @@
   padding: 0.75rem 1.75rem;
   color: var(--color-primary-fg);
   font-size: 1.0625rem;
-  font-weight: 600;
+  font-weight: 700;
   letter-spacing: -0.01em;
+  text-align: center;
   text-decoration: none;
-  box-shadow: 0 10px 24px -12px color-mix(in srgb, var(--color-primary) 70%, transparent);
+  /* Liseré ivoire : le bleu se détache aussi sur la bande terracotta et sur l'encre. */
+  box-shadow:
+    0 0 0 2px color-mix(in srgb, var(--color-mocha-fg) 40%, transparent),
+    0 14px 30px -12px color-mix(in srgb, var(--color-primary) 85%, transparent);
   transition:
     background-color 160ms ease,
     transform 160ms ease,
@@ -33,7 +40,10 @@
 
 .bouton:hover {
   background: var(--color-primary-hover);
-  transform: translateY(-1px);
+  transform: translateY(-2px);
+  box-shadow:
+    0 0 0 2px color-mix(in srgb, var(--color-mocha-fg) 70%, transparent),
+    0 18px 36px -12px color-mix(in srgb, var(--color-primary) 95%, transparent);
 }
 
 .bouton:active {
@@ -46,11 +56,34 @@
   box-shadow: 0 0 0 6px var(--color-primary);
 }
 
+/* Bouton du héros : un halo bleu s'en échappe deux fois à l'arrivée, puis s'éteint.
+   Pseudo-élément : l'ombre du bouton (survol, focus) reste libre. */
+.boutonVif::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  box-shadow: 0 0 0 0 color-mix(in srgb, var(--color-primary) 70%, transparent);
+  pointer-events: none;
+  animation: appel 1.8s ease-out 0.6s 2 both;
+}
+
+@keyframes appel {
+  0% {
+    opacity: 1;
+    box-shadow: 0 0 0 0 color-mix(in srgb, var(--color-primary) 70%, transparent);
+  }
+  100% {
+    opacity: 0;
+    box-shadow: 0 0 0 12px color-mix(in srgb, var(--color-primary) 0%, transparent);
+  }
+}
+
 .boutonCompact {
   min-height: 2.75rem; /* 44 px : la zone tactile minimale */
   padding: 0.5rem 1.125rem;
   font-size: 0.9375rem;
-  box-shadow: none;
+  white-space: nowrap;
 }
 
 .fleche {
@@ -275,22 +308,67 @@
   stroke: var(--color-terracotta);
 }
 
-/* ── La journée : les durées en très grands caractères ───────────────────── */
+/* ── Héros : la pastille du sur-titre et le soulignement de « Nous, si. » ─── */
 
-.duree {
-  /* Fluide mais borné : « Vendredi soir » passe à la ligne plutôt que de déborder. */
-  font-size: clamp(3rem, 12vw, 6.5rem);
+.pastille {
+  display: inline-block;
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  background: var(--color-terracotta-on-mocha);
+  animation: battre 1.2s ease-in-out 2 both;
 }
 
-/* ── Le problème, sur la bande terracotta : pictos en ivoire ────────────────── */
+@keyframes battre {
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.35;
+    transform: scale(1.6);
+  }
+}
 
-.constat {
+/* Le soulignement se trace une fois : `background-size` ne touche pas la mise en page. */
+.surligne {
+  background: linear-gradient(currentColor, currentColor) left bottom / 100% 0.07em no-repeat;
+  padding-bottom: 0.04em;
+  animation: souligner 0.9s ease-out 0.4s 1 both;
+}
+
+@keyframes souligner {
+  0% {
+    background-size: 0% 0.07em;
+  }
+  100% {
+    background-size: 100% 0.07em;
+  }
+}
+
+/* ── Cartes en relief : elles se soulèvent au survol (transition, pas d'animation) ── */
+
+.carteOffre {
+  transition:
+    transform 200ms ease,
+    box-shadow 200ms ease;
+}
+
+.carteOffre:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-elevated);
+}
+
+/* ── L'audit, sur le sombre de marque : pictos terracotta, accent ivoire ───── */
+
+.gain {
   display: inline-flex;
-  color: var(--color-mocha-fg);
+  color: var(--color-terracotta-on-mocha);
 }
 
-.constat .pictoAccent {
-  stroke: var(--color-terracotta-soft);
+.gain .pictoAccent {
+  stroke: var(--color-mocha-fg);
 }
 
 /* ── Comment ça marche : le tracé en pointillé entre les pastilles ──────────── */
@@ -394,8 +472,15 @@
   .jaugePoint,
   .jaugeCoche,
   .carteHalo,
-  .carteEntreprise {
+  .carteEntreprise,
+  .pastille,
+  .surligne,
+  .boutonVif::after {
     animation: none;
+  }
+
+  .boutonVif::after {
+    opacity: 0;
   }
 
   .jaugePoint {
@@ -414,12 +499,14 @@
   .bouton,
   .fleche,
   .signe,
-  .signe::after {
+  .signe::after,
+  .carteOffre {
     transition: none;
   }
 
   .bouton:hover,
-  .bouton:hover .fleche {
+  .bouton:hover .fleche,
+  .carteOffre:hover {
     transform: none;
   }
 }

@@ -47,7 +47,7 @@ export async function GET() {
     ? `
 ## Tour de France IA
 
-- [Tour de France IA](${SITE_URL}${TOUR_PREFIX}) — événement organisé par Axion-IA, fondé par Williams Jullin. Une ville s'ouvre dès que 5 entreprises ont confirmé leur participation. Chaque entreprise reçoit sa journée : un audit le matin (2 à 4 h), la formation de ses équipes l'après-midi (4 h). Le vendredi soir, une soirée réseau réunit les entreprises de l'étape. Visio de 30 minutes gratuite et sans engagement pour participer. Aucun lien avec le Tour de France cycliste.
+- [Tour de France IA](${SITE_URL}${TOUR_PREFIX}) — tournée d'Axion-IA, fondée par Williams Jullin, dans les entreprises qui le souhaitent, de la TPE à l'ETI, tous secteurs. Une étape, c'est une semaine dans une ville, ouverte dès que 5 entreprises ont confirmé. Chaque entreprise reçoit chez elle un audit offert de son activité (2 à 4 h), qui chiffre ce que l'IA lui ferait gagner en temps, en rentabilité et en chiffre d'affaires, puis une formation offerte de 4 h pour ses équipes, qui l'aide à répondre à l'exigence de maîtrise de l'IA de l'AI Act. Le vendredi soir, une soirée réseau réunit les entreprises de l'étape. Premier pas : une visio de 30 minutes, sans engagement. Aucun lien avec le Tour de France cycliste.
 `
     : "";
   // Audit KB 2026-08-11 — prix d'ENTRÉE réel du 1-to-1 = journée Collaborateur

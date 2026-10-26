@@ -5,7 +5,7 @@
  *
  * Le parcours, et ce que chaque marche mesure VRAIMENT :
  *
- *   landing `/tourdefrance-ia`  →  bouton « Participer »  →  page de réservation
+ *   landing `/tourdefrance-ia`  →  bouton « Je veux mon audit offert »  →  page de réservation
  *   `/fr/appel/tour-de-france-ia?depuis=tdf-…`  →  rendez-vous pris  →  maintenu
  *   →  honoré.
  *
@@ -16,7 +16,7 @@
  * place. Changer cela est une décision de Will, pas un détail de code.
  *
  * Deux sources, deux unités, dites à l'écran :
- *   · les ARRIVÉES sur la page de réservation (= clics « Participer ») viennent
+ *   · les ARRIVÉES sur la page de réservation (= clics sur le bouton de la landing) viennent
  *     des balises anonymes (`funnel_events`, tunnel `tour`) et se comptent en
  *     SESSIONS ;
  *   · les RENDEZ-VOUS viennent de `calendly_events` (type `tour_de_france_ia`)

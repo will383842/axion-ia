@@ -116,8 +116,8 @@ export function CarteFrance({
   );
 }
 
-/** Les illustrations des trois temps de la journée (48 × 48, trait). */
-export function IllustrationMoment({ index }: { index: number }) {
+/** Les illustrations de ce qu'il y a dedans (48 × 48, trait), dans l'ordre de `DEDANS.cartes`. */
+export function IllustrationOffre({ index }: { index: number }) {
   const communs = {
     width: 48,
     height: 48,
@@ -126,19 +126,18 @@ export function IllustrationMoment({ index }: { index: number }) {
     ...DECORATIF,
   };
   if (index === 0) {
-    // Matin : un soleil qui se lève derrière une loupe (l'audit).
+    // L'audit : un tableau de bord sous la loupe.
     return (
       <svg {...communs}>
-        <path d="M6 34h36" />
-        <path d="M12 34a12 12 0 0 1 24 0" className={styles.pictoAccent} />
-        <path d="M24 12v-4M10.5 19.5l-2.8-2.8M37.5 19.5l2.8-2.8" />
-        <circle cx="30" cy="30" r="6" />
-        <path d="M34.5 34.5l5 5" />
+        <rect x="6" y="8" width="26" height="22" rx="2" />
+        <path d="M11 24v-5M17 24v-9M23 24v-7" className={styles.pictoAccent} />
+        <circle cx="32" cy="32" r="7" />
+        <path d="M37 37l5 5" />
       </svg>
     );
   }
   if (index === 1) {
-    // Après-midi : un écran et deux personnes (la formation).
+    // La formation : un écran et deux personnes.
     return (
       <svg {...communs}>
         <rect x="10" y="8" width="28" height="18" rx="2" />
@@ -149,7 +148,17 @@ export function IllustrationMoment({ index }: { index: number }) {
       </svg>
     );
   }
-  // Vendredi soir : deux verres qui trinquent (la soirée réseau).
+  if (index === 2) {
+    // L'étape : un repère posé sur la ville.
+    return (
+      <svg {...communs}>
+        <path d="M24 42s-12-11-12-21a12 12 0 0 1 24 0c0 10-12 21-12 21z" />
+        <circle cx="24" cy="21" r="4.5" className={styles.pictoAccent} />
+        <path d="M8 44h32" />
+      </svg>
+    );
+  }
+  // La soirée réseau : deux verres qui trinquent.
   return (
     <svg {...communs}>
       <path d="M13 10h10l-1 10a4 4 0 0 1-8 0z" />
@@ -160,8 +169,8 @@ export function IllustrationMoment({ index }: { index: number }) {
   );
 }
 
-/** Les trois constats du problème : dispersion, essais isolés, question. */
-export function IllustrationConstat({ index }: { index: number }) {
+/** Les trois gains que l'audit chiffre : temps, rentabilité, chiffre d'affaires (40 × 40). */
+export function IllustrationGain({ index }: { index: number }) {
   const communs = {
     width: 40,
     height: 40,
@@ -170,30 +179,31 @@ export function IllustrationConstat({ index }: { index: number }) {
     ...DECORATIF,
   };
   if (index === 0) {
+    // Le temps : une horloge.
     return (
       <svg {...communs}>
-        <rect x="5" y="7" width="12" height="10" rx="2" />
-        <rect x="23" y="5" width="12" height="10" rx="2" />
-        <rect x="7" y="23" width="12" height="10" rx="2" />
-        <rect x="23" y="21" width="12" height="10" rx="2" className={styles.pictoAccent} />
+        <circle cx="20" cy="21" r="14" />
+        <path d="M20 13v8l5 4" className={styles.pictoAccent} />
+        <path d="M16 4h8" />
       </svg>
     );
   }
   if (index === 1) {
+    // La rentabilité : une pièce et sa marge.
     return (
       <svg {...communs}>
-        <circle cx="10" cy="12" r="4" />
-        <circle cx="30" cy="12" r="4" />
-        <path d="M3 30a7 7 0 0 1 14 0M23 30a7 7 0 0 1 14 0" />
-        <path d="M20 8v26" strokeDasharray="2 4" className={styles.pictoAccent} />
+        <ellipse cx="20" cy="12" rx="12" ry="5" />
+        <path d="M8 12v8c0 2.8 5.4 5 12 5s12-2.2 12-5v-8" />
+        <path d="M8 20v8c0 2.8 5.4 5 12 5s12-2.2 12-5v-8" className={styles.pictoAccent} />
       </svg>
     );
   }
+  // Le chiffre d'affaires : une courbe qui monte.
   return (
     <svg {...communs}>
-      <circle cx="20" cy="20" r="15" />
-      <path d="M15.5 15.5a4.5 4.5 0 1 1 6.5 4c-1.4.8-2 1.6-2 3.2" className={styles.pictoAccent} />
-      <circle cx="20" cy="28" r="0.8" />
+      <path d="M5 34h30M5 34V6" />
+      <path d="M9 28l8-8 6 5 11-13" className={styles.pictoAccent} />
+      <path d="M28 12h6v6" className={styles.pictoAccent} />
     </svg>
   );
 }

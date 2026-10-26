@@ -1,12 +1,16 @@
 /**
- * LA LANDING DU TOUR EST UNE PAGE DE CONVERSION (refonte du 2026-10-26).
+ * LA LANDING DU TOUR EST UNE PAGE DE CONVERSION (refonte du 2026-10-26,
+ * réécriture « offre aux couleurs d'Axion » le même jour, retour de Will).
  *
  * Trafic visé : un post Facebook ou Instagram, sur téléphone, dans le navigateur
  * intégré, en 4G. Ce qui doit tenir, en plus de `le-tour-est-ouvert.spec.ts` :
  *
- *   · UNE seule action, « Participer », vers la visio du Tour ; aucun menu ;
- *   · quatre emplacements de bouton, ceux que la console connaît (tdf-heros,
- *     tdf-bandeau, tdf-final, tdf-collant) — pas un de plus ;
+ *   · UNE seule action, « Je veux mon audit offert », vers la visio du Tour ;
+ *     un en-tête de tunnel (logo + ce bouton), aucun menu ;
+ *   · cinq emplacements de bouton, ceux que la console connaît (tdf-entete,
+ *     tdf-heros, tdf-bandeau, tdf-final, tdf-collant) — pas un de plus ;
+ *   · la charte d'Axion appliquée : bande terracotta, bouton bleu plein, héros
+ *     sur encre, sections alternées ;
  *   · le suivi d'arrivée (`utm_*` seulement) passe de la page aux boutons, puis
  *     de `/fr/appel/…` à Calendly — exécuté, pas lu ;
  *   · le bouton collant ne se montre qu'entre le bouton du héros et l'appel final ;
@@ -19,6 +23,9 @@
  *   · le vocabulaire : aucun mot du cyclisme, aucun emoji, aucun chiffre hors
  *     de ceux du concept (5 entreprises, 2 à 4 h, 4 h, 30 minutes).
  *
+ * Ce que « aucune animation en boucle infinie » veut dire ici : chaque animation
+ * se joue une ou deux fois, puis s'arrête sur son état final.
+ *
  * Angle mort assumé : jsdom n'a pas de mise en page. « Le bouton tient dans le
  * premier écran à 360 px » se vérifie dans un navigateur (cf. la PR), pas ici.
  */
@@ -27,16 +34,18 @@ import { join } from "node:path";
 import { act, cleanup, render } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
+import { libelleEmplacement } from "@/features/admin-rendezvous/bilan-rendez-vous";
 import { avecUtmContent, lireSuiviArrivee } from "@/server/calendly/choix-rendez-vous";
 
 import {
+  ACCROCHE,
   CHEMIN_RENDEZ_VOUS,
   EMPLACEMENTS_CTA,
   FAQ,
   FONDATEUR,
   LIBELLE_CTA,
+  LIBELLE_CTA_COURT,
   MICRO_TEXTE_CTA,
-  PROBLEME,
   lienRendezVous,
   toutLeTexte,
 } from "../contenu";
@@ -46,8 +55,8 @@ import {
   CarteFrance,
   Coche,
   Fleche,
-  IllustrationConstat,
-  IllustrationMoment,
+  IllustrationGain,
+  IllustrationOffre,
   Jauge,
   PictoSecteur,
 } from "../_composants/Visuels";
@@ -67,38 +76,72 @@ const VISUELS = lire(`${DOSSIER}/_composants/Visuels.tsx`);
 const CSS = lire(`${DOSSIER}/tour.module.css`);
 const SOURCES = [PAGE, VISUELS, lire(`${DOSSIER}/contenu.ts`)].join("\n");
 
-describe("🔑 une seule action : Participer", () => {
-  it("le libellé unique est « Participer », et il mène à la visio du Tour", () => {
-    expect(LIBELLE_CTA).toBe("Participer");
+describe("🔑 une seule action : le bouton dit ce que l'entreprise obtient", () => {
+  it("le libellé est « Je veux mon audit offert » (court : « Mon audit offert »), et il mène à la visio du Tour", () => {
+    expect(LIBELLE_CTA).toBe("Je veux mon audit offert");
+    expect(LIBELLE_CTA_COURT).toBe("Mon audit offert");
     expect(lienRendezVous("tdf-heros")).toBe(`${CHEMIN_RENDEZ_VOUS}?depuis=tdf-heros`);
+    expect(lienRendezVous("tdf-entete")).toBe(`${CHEMIN_RENDEZ_VOUS}?depuis=tdf-entete`);
   });
 
-  it("chaque lien de la page qui n'est pas du pied de page est un bouton Participer", () => {
+  it("chaque lien de la page qui n'est pas du pied de page est le bouton de l'audit", () => {
     const code = sansCommentaires(PAGE);
     // Tous les boutons passent par le même composant, avec un emplacement `tdf-…`.
-    const emplacements = [...code.matchAll(/<BoutonParticiper\s+depuis="([^"]+)"/g)].map(
-      (m) => m[1],
-    );
-    // Exactement les quatre que la console connaît, chacun une fois — aucun inventé.
+    const emplacements = [...code.matchAll(/<BoutonAudit\s+depuis="([^"]+)"/g)].map((m) => m[1]);
+    // Exactement les cinq que la console connaît, chacun une fois — aucun inventé.
     expect([...emplacements].sort()).toEqual([...EMPLACEMENTS_CTA].sort());
-    expect(EMPLACEMENTS_CTA).toEqual(["tdf-heros", "tdf-bandeau", "tdf-final", "tdf-collant"]);
+    expect(EMPLACEMENTS_CTA).toEqual([
+      "tdf-entete",
+      "tdf-heros",
+      "tdf-bandeau",
+      "tdf-final",
+      "tdf-collant",
+    ]);
     expect(code).not.toContain("tdf-etapes");
     // Les seuls autres liens : la fiche du fondateur et le pied de page.
     const autres = [...code.matchAll(/href=\{([^}]+)\}/g)].map((m) => m[1]);
     expect(autres).toEqual(["lienRendezVous(depuis)", "FONDATEUR.chemin", "l.href"]);
   });
 
-  it("le bandeau du héros porte la petite pilule « Participer » (tdf-bandeau), 44 px minimum", () => {
+  it("la console a un libellé lisible pour CHAQUE emplacement (aucun ne tombe en valeur brute)", () => {
+    for (const e of EMPLACEMENTS_CTA) {
+      expect(libelleEmplacement(`tour:${e}`), e).toMatch(/^Tour de France IA \(.+\)$/);
+    }
+    expect(libelleEmplacement("tour:tdf-entete")).toBe("Tour de France IA (en-tête)");
+  });
+
+  it("l'en-tête de tunnel : la bande terracotta, le logo d'Axion, UN bouton (tdf-entete), aucun menu", () => {
     const code = sansCommentaires(PAGE);
-    const bandeau = code.slice(code.indexOf("<header"), code.indexOf("</header>"));
-    expect(bandeau).toMatch(/<BoutonParticiper\s+depuis="tdf-bandeau"\s+compact\s*\/>/);
-    expect(bandeau).toContain("ml-auto");
-    // Le bandeau est AVANT le H1 : c'est bien celui du haut de page.
+    const entete = code.slice(code.indexOf("<header"), code.indexOf("</header>"));
+    expect(entete).toContain("bg-terracotta");
+    expect(entete).toContain("{ENTETE.logo}");
+    expect(entete).toMatch(/<BoutonAudit\s+depuis="tdf-entete"\s+compact\s*\/>/);
+    expect(entete.match(/<BoutonAudit\b/g)).toHaveLength(1);
+    // Le logo n'est pas un lien : on ne sort pas du tunnel.
+    expect(entete).not.toMatch(/<a\b|<Link\b/);
+    // L'en-tête est AVANT le H1 : c'est bien celui du haut de page.
     expect(code.indexOf("</header>")).toBeLessThan(code.indexOf("<h1"));
     // La pilule compacte garde une zone tactile de 44 px et porte `data-tdf-cta` (utm recopiés).
     const compact = CSS.match(/\.boutonCompact\s*\{([^}]*)\}/)?.[1] ?? "";
     expect(compact).toMatch(/min-height:\s*2\.75rem/);
     expect(code).toMatch(/data-tdf-cta=""/);
+  });
+
+  it("la charte d'Axion est appliquée : bouton bleu plein, héros sur encre, sections alternées", () => {
+    const bouton = CSS.match(/\.bouton\s*\{([^}]*)\}/)?.[1] ?? "";
+    expect(bouton).toMatch(/background:\s*var\(--color-primary\)/);
+    const code = sansCommentaires(PAGE);
+    // Héros et appel final sur l'encre à halo terracotta des pages d'atterrissage.
+    expect(code.match(/className="bg-vsl text-mocha-fg"/g)?.length).toBeGreaterThanOrEqual(2);
+    // Clair, accent terracotta, sombre de marque, sable : les quatre registres sont là.
+    for (const fond of [
+      "bg-halo-warm",
+      "bg-terracotta text-mocha-fg",
+      "bg-mocha-rich",
+      "bg-sand",
+    ]) {
+      expect(code, fond).toContain(fond);
+    }
   });
 
   it("aucun menu de navigation, aucun carrousel, aucun défilement horizontal", () => {
@@ -108,7 +151,7 @@ describe("🔑 une seule action : Participer", () => {
     expect(lire(`${DOSSIER}/layout.tsx`)).toContain("overflow-x-clip");
   });
 
-  it("le héros dit l'offre, sa condition et le bouton AVANT le dessin (ordre de lecture)", () => {
+  it("le héros dit l'accroche, l'offre, sa condition et le bouton AVANT le dessin (ordre de lecture)", () => {
     const i = (s: string) => PAGE.indexOf(s);
     expect(i("<h1")).toBeGreaterThan(-1);
     expect(i("<h1")).toBeLessThan(i("{HEROS.sousTitre}"));
@@ -414,16 +457,6 @@ describe("🔴 la carte : chaque repère est à l'intérieur du contour", () => 
   });
 });
 
-describe("🔴 le titre du problème est une question de tri, sans opposition", () => {
-  it("pas de construction « X… Y ? » qui oppose le dehors au dedans", () => {
-    const titre = PROBLEME.titre;
-    expect(titre).toMatch(/\?$/);
-    expect(titre).not.toMatch(/\.\s+(Dans|Chez|Et)\b/);
-    expect(titre).not.toMatch(/rien n[’']a|encore chang/i);
-    expect(titre.split(/[.!]/).length).toBe(1);
-  });
-});
-
 describe("🔴 le JavaScript reste minimal, le rendu stable (CLS nul)", () => {
   it("aucun module qui tirerait du JS client : next/image, next/script, UI partagée", () => {
     const imports = [...SOURCES.matchAll(/from\s+["']([^"']+)["']/g)].map((m) => m[1] ?? "");
@@ -434,11 +467,11 @@ describe("🔴 le JavaScript reste minimal, le rendu stable (CLS nul)", () => {
     }
   });
 
-  it("la FAQ est un accordéon natif details/summary, six fois, sans titre DANS le summary", () => {
+  it("la FAQ est un accordéon natif details/summary, huit fois, sans titre DANS le summary", () => {
     expect(PAGE).toContain("<details");
     expect(PAGE).toContain("<summary>");
     expect(PAGE).toMatch(/FAQ\.questions\.map/);
-    expect(FAQ.questions).toHaveLength(6);
+    expect(FAQ.questions).toHaveLength(8);
     // Un `summary` a le rôle de bouton : un titre à l'intérieur y est invalide.
     for (const m of PAGE.matchAll(/<summary>([\s\S]*?)<\/summary>/g)) {
       expect(m[1]).not.toMatch(/<h[1-6]\b/);
@@ -447,7 +480,9 @@ describe("🔴 le JavaScript reste minimal, le rendu stable (CLS nul)", () => {
   });
 
   it("toute animation s'arrête sous prefers-reduced-motion", () => {
-    const anime = [...CSS.matchAll(/\.([A-Za-z]+)\s*\{[^}]*animation:/g)].map((m) => m[1]);
+    const anime = [...CSS.matchAll(/\.([A-Za-z]+)(?:::?[\w-]+)?\s*\{[^}]*animation:/g)].map(
+      (m) => m[1],
+    );
     expect(anime.length).toBeGreaterThan(2);
     const reduit = CSS.slice(CSS.indexOf("@media (prefers-reduced-motion: reduce)"));
     expect(reduit.length).toBeGreaterThan(0);
@@ -459,7 +494,7 @@ describe("🔴 le JavaScript reste minimal, le rendu stable (CLS nul)", () => {
     const jouees = declarations.filter((d) => d.trim() !== "none");
     expect(jouees.length).toBe(new Set(anime).size);
     for (const d of jouees) {
-      expect(d, d).toMatch(/\s2\s+both$/);
+      expect(d, d).toMatch(/\s[12]\s+both$/);
     }
     // Les animations ne touchent pas la mise en page.
     for (const bloc of CSS.matchAll(/@keyframes[^{]+\{([\s\S]*?)\n\}/g)) {
@@ -473,11 +508,11 @@ describe("🔴 le JavaScript reste minimal, le rendu stable (CLS nul)", () => {
         <Jauge />
         <CarteFrance titre="Carte" titreId="t" />
         <CarteFrance titre="Carte" titreId="t2" surSombre />
-        {[0, 1, 2].map((i) => (
-          <IllustrationMoment key={`m${i}`} index={i} />
+        {[0, 1, 2, 3].map((i) => (
+          <IllustrationOffre key={`o${i}`} index={i} />
         ))}
         {[0, 1, 2].map((i) => (
-          <IllustrationConstat key={`c${i}`} index={i} />
+          <IllustrationGain key={`g${i}`} index={i} />
         ))}
         {[0, 1, 2, 3, 4, 5, 6, 7].map((i) => (
           <PictoSecteur key={`s${i}`} index={i} />
@@ -488,7 +523,7 @@ describe("🔴 le JavaScript reste minimal, le rendu stable (CLS nul)", () => {
       </>,
     );
     const svgs = [...container.querySelectorAll("svg")];
-    expect(svgs).toHaveLength(20);
+    expect(svgs).toHaveLength(21);
     for (const svg of svgs) {
       for (const dim of ["width", "height"]) {
         const v = svg.getAttribute(dim) ?? "";
@@ -564,15 +599,18 @@ describe("🔴 le vocabulaire de la landing", () => {
     for (const c of chiffres) expect(["1", "2", "3", "4", "5", "30"], c).toContain(c);
   });
 
-  it("« gratuit » n'est dit que de l'audit et de la formation : la visio est « sans engagement »", () => {
+  it("« offert » n'est dit que de l'audit et de la formation : la visio est « sans engagement »", () => {
     expect(MICRO_TEXTE_CTA).toBe("Visio de 30 minutes · sans engagement");
-    expect(texte).not.toMatch(/visio[^.]*gratuite|gratuite et sans engagement/i);
+    expect(texte).not.toMatch(
+      /visio[^.]*(gratuite|offerte)|(gratuite|offerte) et sans engagement/i,
+    );
     // La phrase est écrite UNE fois (contenu.ts) ; la page la cite sous ses deux grands boutons.
     expect(PAGE.match(/\{MICRO_TEXTE_CTA\}/g)).toHaveLength(2);
   });
 
-  it("ni promesse de résultat ni construction du slogan d'Axion (« partout… sauf »)", () => {
-    expect(texte).not.toMatch(/\bpartout\b/i);
+  it("ni promesse de résultat ; « partout » n'est permis QUE dans l'accroche imposée par Will", () => {
+    const horsAccroche = texte.replaceAll(ACCROCHE.question, "");
+    expect(horsAccroche).not.toMatch(/\bpartout\b/i);
     expect(texte).not.toMatch(/\bsauf\b/i);
     expect(texte).not.toMatch(/d[èe]s le lendemain|ce que vous ne voyez plus|gagner du temps/i);
   });

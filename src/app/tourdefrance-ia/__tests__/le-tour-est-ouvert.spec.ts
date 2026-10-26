@@ -15,7 +15,10 @@
  *     image de partage ; `/fr/appel/tour-de-france-ia` reste `noindex` ;
  *   · le sitemap du Tour, l'index des sitemaps et `llms.txt` citent la route ;
  *   · le contenu ne porte aucun mot interdit, aucun prix, et la page n'importe
- *     aucun composant de la coquille d'Axion.
+ *     aucun composant de la coquille d'Axion ;
+ *   · l'accroche imposée par Will (2026-10-26) est le H1, et l'offre dite est la
+ *     vraie : audit offert, formation de 4 h offerte, étape d'une semaine dans la
+ *     ville, soirée réseau — jamais « événement », jamais qui paie quoi.
  *
  * Angle mort assumé : la porte est testée comme module, et son câblage dans le
  * proxy comme texte — le proxy entier (Auth.js, next-intl) n'est pas exécuté ici.
@@ -35,7 +38,16 @@ import {
 } from "@/features/tour-de-france/porte";
 import { TOUR_PREFIX, TOUR_PUBLIC } from "@/features/tour-de-france/visibilite";
 
-import { CONDITION_GRATUITE, FAQ, HEROS, JOURNEE, META, toutLeTexte } from "../contenu";
+import {
+  ACCROCHE,
+  CONDITION_OFFERTE,
+  DEDANS,
+  FAQ,
+  FORMATION,
+  HEROS,
+  META,
+  toutLeTexte,
+} from "../contenu";
 import { jsonLdDuTour } from "../jsonld";
 
 const RACINE = process.cwd();
@@ -441,14 +453,12 @@ describe("🔴 le contenu : mots interdits, typographie, SEO", () => {
       /\bspark/i,
       /✨/u,
       /obligatoire/i,
+      /certifi/i,
       /r[ée]serv[ée] aux (TPE|PME)/i,
       /candidat/i,
       /marque d[ée]pos[ée]e/i,
-      /entendez parler/i,
-      /par o[uù] commencer/i,
       /®/u,
       /d[ée]pos[ée]/i,
-      /nous, si\./i,
       /\d\s?(€|euros?\b|EUR\b|HT\b|TTC\b)/i,
       /\bprix\b/i,
       /\bjaune\b/i,
@@ -466,44 +476,95 @@ describe("🔴 le contenu : mots interdits, typographie, SEO", () => {
     }
   });
 
+  it("retour de Will : ni événement, ni inscription, ni qui paie la soirée (texte ET code, hors commentaires)", () => {
+    const code = sansCommentaires(sources);
+    const interdits: RegExp[] = [
+      /particip/i,
+      /[ée]v[ée]nement/i,
+      /inscri/i,
+      /\bticket/i,
+      /\bbillet/i,
+      /chacun r[èe]gle/i,
+      /[àa] la charge de/i,
+      /sa part\b/i,
+      /\brepas\b/i,
+      /restaurant/i,
+      /prospect/i,
+      /remise/i,
+    ];
+    for (const motif of interdits) {
+      expect(texte, String(motif)).not.toMatch(motif);
+      expect(code, String(motif)).not.toMatch(motif);
+    }
+  });
+
   it("le slogan d'Axion-IA n'apparaît pas", async () => {
     const { BRAND } = await import("@/lib/brand");
     expect(BRAND.taglineFr.length).toBeGreaterThan(0);
     expect(texte.toLowerCase()).not.toContain(BRAND.taglineFr.toLowerCase());
   });
 
-  it("l'offre est COMMUNIQUÉE : « gratuit » exigé, toujours avec les 5 entreprises, sans frais cachés", () => {
-    expect(texte).toMatch(/gratuit/i);
-    expect(HEROS.sousTitre).toBe(
-      "Un audit de 2 à 4 h et la formation de vos équipes, gratuits, chez vous.",
+  it("l'accroche imposée par Will est le H1, entière, avec ses accents", () => {
+    expect(`${ACCROCHE.question} ${ACCROCHE.reponse}`).toBe(
+      "Vous entendez parler d’IA partout et ne savez plus par où commencer\u00a0? Nous, si.",
     );
-    expect(CONDITION_GRATUITE).toMatch(/gratuit/i);
-    expect(CONDITION_GRATUITE).toMatch(/5 entreprises/);
+    expect(HEROS.titre).toBe(ACCROCHE.question);
+    expect(HEROS.titreAccent).toBe(ACCROCHE.reponse);
+    const page = lire("src/app/tourdefrance-ia/page.tsx");
+    const h1 = page.slice(page.indexOf("<h1"), page.indexOf("</h1>"));
+    expect(h1).toContain("{HEROS.titre}");
+    expect(h1).toContain("{HEROS.titreAccent}");
+    // Le titre de partage la reprend telle quelle.
+    expect(META.titrePartage).toBe(`${ACCROCHE.question} ${ACCROCHE.reponse}`);
+    expect(page).toContain("title: META.titrePartage");
+  });
+
+  it("l'offre est COMMUNIQUÉE : audit et formation offerts, toujours avec les 5 entreprises, sans frais cachés", () => {
+    expect(texte).toMatch(/offert/i);
+    expect(HEROS.sousTitre).toMatch(/audit offert/);
+    expect(HEROS.sousTitre).toMatch(/4\u00a0h de formation offertes/);
+    expect(CONDITION_OFFERTE).toMatch(/Offerts/);
+    expect(CONDITION_OFFERTE).toMatch(/5 entreprises/);
     expect(META.description).toMatch(/5 entreprises/);
-    expect(CONDITION_GRATUITE).toMatch(/sans frais cachés/);
+    expect(CONDITION_OFFERTE).toMatch(/sans frais cachés/);
     // La condition est visible : le héros l'affiche, elle n'est pas reléguée ailleurs.
     const pageSource = lire("src/app/tourdefrance-ia/page.tsx");
     expect(pageSource).toContain("HEROS.condition");
-    // …et elle suit immédiatement le sous-titre : « gratuit » et « 5 entreprises » restent ensemble.
+    // …et elle suit immédiatement le sous-titre : « offert » et « 5 entreprises » restent ensemble.
     expect(pageSource).toMatch(/\{HEROS\.sousTitre\}\s*<\/p>\s*<p[^>]*>\s*\{HEROS\.condition\}/);
     // Titre de page, description et FAQ portent l'offre.
-    expect(META.titre).toMatch(/gratuit/i);
-    expect(META.description).toMatch(/gratuit/i);
-    const cout = FAQ.questions.find((q) => /Combien/.test(q.question));
-    expect(cout?.reponse).toMatch(/audit et la formation sont gratuits/i);
-    expect(cout?.reponse).toMatch(/soirée réseau est à la charge de chacun/i);
-    // « Gratuit » est réservé à l'audit et à la formation : la visio n'est pas dite gratuite.
-    expect(cout?.reponse).not.toMatch(/visio/i);
-    expect(cout?.reponse).toMatch(/5 entreprises/);
-    expect(cout?.reponse).toMatch(/frais cachés/);
+    expect(META.titre).toMatch(/offerts/i);
+    expect(META.description).toMatch(/offert/i);
+    const offert = FAQ.questions.find((q) => /vraiment offerts/.test(q.question));
+    expect(offert?.reponse).toMatch(/audit et la formation sont offerts/i);
+    // « Offert » est réservé à l'audit et à la formation : la visio n'est pas dite offerte.
+    expect(offert?.reponse).not.toMatch(/visio/i);
+    expect(offert?.reponse).toMatch(/5 entreprises/);
+    expect(offert?.reponse).toMatch(/frais cachés/);
   });
 
-  it("la frise a trois temps : audit gratuit le matin, formation gratuite l'après-midi, soirée à frais partagés", () => {
-    expect(JOURNEE.moments.map((m) => m.titre)).toEqual([
-      "Audit gratuit le matin",
-      "Formation gratuite l’après-midi",
-      "Soirée réseau, chacun règle sa part",
+  it("ce qu'il y a dedans : audit, formation de 4 h, étape dans la ville, soirée réseau", () => {
+    expect(DEDANS.cartes.map((c) => c.titre)).toEqual([
+      "L’audit de votre activité",
+      "La formation de vos équipes",
+      "Une étape dans votre ville",
+      "La soirée réseau",
     ]);
+    expect(DEDANS.cartes[1]?.duree).toMatch(/^4\u00a0h/);
+    // La soirée est ouverte à toutes les entreprises de l'étape — jamais qui paie quoi.
+    expect(DEDANS.cartes[3]?.texte).toMatch(/Ouverte à toutes les entreprises de l’étape/);
+  });
+
+  it("l'AI Act est cité avec prudence : la formation « aide à répondre », sans plus", () => {
+    expect(FORMATION.aiAct).toMatch(/vous aide à répondre/);
+    const ia = FAQ.questions.find((q) => /AI Act/.test(q.question));
+    expect(ia?.reponse).toMatch(/aide à répondre/);
+    expect(ia?.reponse).toMatch(/ne vaut pas, à elle seule, mise en conformité/);
+    expect(texte).not.toMatch(/conforme|conformité totale|garanti/i);
+  });
+
+  it("aucun mot de vente : ni prospect, ni prix, ni remise, ni signature", () => {
+    expect(texte).not.toMatch(/prospect|\bco[uû]t|tarif|remise|devis|\bprix\b/i);
   });
 
   it("jamais de vente à conclure ni de signature", () => {
@@ -518,10 +579,10 @@ describe("🔴 le contenu : mots interdits, typographie, SEO", () => {
     expect(texte).not.toMatch(/\bemail\b|\bmail\b/i);
   });
 
-  it("titre ≤ 60, description ≤ 155, canonique absolue, six Q/R", () => {
+  it("titre ≤ 60, description ≤ 155, canonique absolue, huit Q/R", () => {
     expect(META.titre.length).toBeLessThanOrEqual(60);
     expect(META.description.length).toBeLessThanOrEqual(155);
-    expect(FAQ.questions).toHaveLength(6);
+    expect(FAQ.questions).toHaveLength(8);
   });
 
   it("JSON-LD : WebPage, EventSeries, FAQPage, BreadcrumbList — sans Person recréé ni Event daté", () => {
@@ -539,14 +600,18 @@ describe("🔴 le contenu : mots interdits, typographie, SEO", () => {
       name: "Axion-IA",
       url: expect.stringMatching(/^https?:\/\//),
     });
-    // Le JSON-LD dit la même chose que le texte visible : gratuit, et la FAQ « coût » y figure.
+    // Le JSON-LD dit la même chose que le texte visible : offert, et la FAQ « offert » y figure.
     expect(serie["isAccessibleForFree"]).toBe(true);
     const faq = graphe[2] as {
       mainEntity: Array<{ name: string; acceptedAnswer: { text: string } }>;
     };
-    const cout = faq.mainEntity.find((q) => /Combien/.test(q.name));
-    expect(cout?.acceptedAnswer.text).toMatch(/gratuits/);
-    expect(cout?.acceptedAnswer.text).toMatch(/5 entreprises/);
+    const offert = faq.mainEntity.find((q) => /vraiment offerts/.test(q.name));
+    expect(offert?.acceptedAnswer.text).toMatch(/offerts/);
+    expect(offert?.acceptedAnswer.text).toMatch(/5 entreprises/);
+    // Ni repas, ni partage des frais, ni vocabulaire d'événement dans les données structurées.
+    expect(JSON.stringify(ld)).not.toMatch(
+      /chacun r[èe]gle|à la charge de|restaurant|[ée]v[ée]nement/i,
+    );
     expect(serie["performer"]).toEqual({ "@id": expect.stringMatching(/#person$/) });
     const json = JSON.stringify(ld);
     expect(json).not.toMatch(/"@type":"(Person|Organization|Event|HowTo)"/);
