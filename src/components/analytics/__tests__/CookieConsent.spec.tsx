@@ -362,7 +362,7 @@ describe("<CookieConsent> — police système (régression CLS du 2026-09-02)", 
 
 describe("<CookieConsent> — cookie de provenance axion_utm APRÈS consentement (2026-10-26)", () => {
   const ROUTE = "/api/utm-consent";
-  let appels: Array<{ url: string; corps: unknown }>;
+  let appels: Array<{ url: string; methode: string; corps: unknown }>;
 
   function adresse(chemin: string) {
     window.history.replaceState(null, "", chemin);
@@ -372,7 +372,11 @@ describe("<CookieConsent> — cookie de provenance axion_utm APRÈS consentement
     appels = [];
     delete (window as unknown as Record<string, unknown>).__axionProvenanceEnvoyee;
     vi.spyOn(globalThis, "fetch").mockImplementation(async (url, init) => {
-      appels.push({ url: String(url), corps: init?.body ? JSON.parse(String(init.body)) : null });
+      appels.push({
+        url: String(url),
+        methode: init?.method ?? "GET",
+        corps: init?.body ? JSON.parse(String(init.body)) : null,
+      });
       return new Response(null, { status: 204 });
     });
   });
@@ -382,7 +386,11 @@ describe("<CookieConsent> — cookie de provenance axion_utm APRÈS consentement
     document.body.innerHTML = "";
   });
 
-  const versLaRoute = () => appels.filter((a) => a.url === ROUTE);
+  const versLaRoute = () =>
+    appels
+      .filter((a) => a.url === ROUTE && a.methode === "POST")
+      .map(({ url, corps }) => ({ url, corps }));
+  const effacements = () => appels.filter((a) => a.url === ROUTE && a.methode === "DELETE");
 
   it("rien n'est envoyé ni gardé à l'affichage, même avec des utm_* dans l'adresse", () => {
     adresse("/fr/appel?utm_source=linkedin&utm_campaign=tour");
@@ -392,12 +400,39 @@ describe("<CookieConsent> — cookie de provenance axion_utm APRÈS consentement
     expect(document.cookie).not.toMatch(/axion_utm/);
   });
 
-  it("« Refuser » n'appelle pas la route et ne dépose rien", async () => {
+  it("« Refuser » ne pose rien et appelle DELETE pour effacer un cookie antérieur", async () => {
     adresse("/fr/appel?utm_source=linkedin&utm_campaign=tour");
     render(<CookieConsent />);
     await act(async () => screen.getByRole("button", { name: "Refuser" }).click());
     expect(versLaRoute()).toHaveLength(0);
+    expect(effacements()).toHaveLength(1);
     expect(document.cookie).not.toMatch(/axion_utm/);
+  });
+
+  it("retrait : « Préférences cookies » (réinitialiser) puis « Refuser » appellent DELETE", async () => {
+    adresse("/fr/appel?utm_source=linkedin");
+    render(<CookieConsent />);
+    await act(async () => screen.getByRole("button", { name: "Accepter" }).click());
+    expect(versLaRoute()).toHaveLength(1);
+    expect(effacements()).toHaveLength(0);
+
+    // « Réinitialiser mon choix » de la page Préférences cookies.
+    act(() => resetAnalyticsConsent());
+    expect(effacements()).toHaveLength(1);
+    expect(banner()).not.toBeNull();
+
+    await act(async () => screen.getByRole("button", { name: "Refuser" }).click());
+    expect(effacements()).toHaveLength(2);
+    expect(versLaRoute()).toHaveLength(1);
+  });
+
+  it("après un retrait, un nouvel « Accepter » sur la même page renvoie la provenance", async () => {
+    adresse("/fr/appel?utm_source=linkedin");
+    render(<CookieConsent />);
+    await act(async () => screen.getByRole("button", { name: "Accepter" }).click());
+    act(() => resetAnalyticsConsent());
+    await act(async () => screen.getByRole("button", { name: "Accepter" }).click());
+    expect(versLaRoute()).toHaveLength(2);
   });
 
   it("« Accepter » envoie les utm_* de l'adresse courante, et seulement eux", async () => {
@@ -416,11 +451,12 @@ describe("<CookieConsent> — cookie de provenance axion_utm APRÈS consentement
     expect(versLaRoute()).toHaveLength(0);
   });
 
-  it("AVANT l'hydratation, le script en ligne envoie aussi après « Accepter », jamais après « Refuser »", () => {
+  it("AVANT l'hydratation, le script en ligne envoie après « Accepter », efface après « Refuser »", () => {
     adresse("/fr/appel?utm_source=google");
     let hote = monterAvantHydratation();
     (hote.querySelector('[data-consent="declined"]') as HTMLButtonElement).click();
     expect(versLaRoute()).toHaveLength(0);
+    expect(effacements()).toHaveLength(1);
 
     document.body.innerHTML = "";
     window.localStorage.clear();

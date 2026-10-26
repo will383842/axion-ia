@@ -14,7 +14,15 @@
 //   - limitation de débit par IP, comme `api/funnel` ;
 //   - valeurs filtrées par `parseUtmFromUrl` — la même liste blanche (5 clés)
 //     et la même longueur maximale que partout ailleurs ;
-//   - aucun `utm_*` valide → aucun cookie.
+//   - aucun `utm_*` valide → aucun cookie ;
+//   - corps lu en entier (`req.text()`) et refusé au-delà de 4 Ko AVANT
+//     `JSON.parse` : `content-length` est déclaratif, il peut manquer ou mentir.
+//
+// ── DELETE : retrait du consentement ──────────────────────────────────────
+// Le cookie est HttpOnly : le JavaScript de la page ne peut pas l'effacer.
+// « Refuser » (bandeau ou préférences) et « Réinitialiser mon choix » appellent
+// donc `DELETE`, qui répond par un Set-Cookie expiré. Mêmes gardes d'origine et
+// de débit que `POST`.
 //
 // ── Vie privée ────────────────────────────────────────────────────────────
 // 🔴 Rien n'est écrit en base. L'IP ne sert que de clé de limitation de débit.
@@ -22,7 +30,7 @@
 import type { NextRequest } from "next/server";
 import { checkRateLimit } from "@/lib/rate-limit";
 import { getClientIp } from "@/lib/client-ip";
-import { buildUtmSetCookie, parseUtmFromUrl } from "@/lib/utm";
+import { buildUtmSetCookie, buildUtmClearCookie, parseUtmFromUrl } from "@/lib/utm";
 
 /** Cinq valeurs de 200 caractères au plus : 4 Ko est déjà généreux. */
 const MAX_BODY_BYTES = 4096;
@@ -43,21 +51,37 @@ function memeSite(req: NextRequest): boolean {
   }
 }
 
-export async function POST(req: NextRequest): Promise<Response> {
+/** Origine puis débit : `null` si la requête peut passer, sinon le refus. */
+async function garde(req: NextRequest): Promise<Response | null> {
   if (!memeSite(req)) return new Response(null, { status: 403, headers: SANS_CACHE });
-
   const ip = await getClientIp();
   const rl = await checkRateLimit(`utm-consent:${ip}`, RATE_LIMIT);
   if (!rl.allowed) return new Response(null, { status: 429, headers: SANS_CACHE });
+  return null;
+}
+
+export async function POST(req: NextRequest): Promise<Response> {
+  const refus = await garde(req);
+  if (refus) return refus;
 
   const annonce = Number(req.headers.get("content-length") ?? "0");
   if (Number.isFinite(annonce) && annonce > MAX_BODY_BYTES) {
     return new Response(null, { status: 413, headers: SANS_CACHE });
   }
 
+  let texte: string;
+  try {
+    texte = await req.text();
+  } catch {
+    return new Response(null, { status: 400, headers: SANS_CACHE });
+  }
+  if (new TextEncoder().encode(texte).byteLength > MAX_BODY_BYTES) {
+    return new Response(null, { status: 413, headers: SANS_CACHE });
+  }
+
   let brut: unknown;
   try {
-    brut = await req.json();
+    brut = JSON.parse(texte);
   } catch {
     return new Response(null, { status: 400, headers: SANS_CACHE });
   }
@@ -78,5 +102,15 @@ export async function POST(req: NextRequest): Promise<Response> {
   return new Response(null, {
     status: 204,
     headers: { ...SANS_CACHE, "Set-Cookie": buildUtmSetCookie(utm) },
+  });
+}
+
+/** Retrait du consentement : efface le cookie HttpOnly que la page ne peut pas toucher. */
+export async function DELETE(req: NextRequest): Promise<Response> {
+  const refus = await garde(req);
+  if (refus) return refus;
+  return new Response(null, {
+    status: 204,
+    headers: { ...SANS_CACHE, "Set-Cookie": buildUtmClearCookie() },
   });
 }

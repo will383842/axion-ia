@@ -8,7 +8,9 @@
  *   2. `POST /api/utm-consent` le pose seulement avec des `utm_*` valides ET
  *      une origine du même site, et rejette tout le reste sans rien déposer ;
  *   3. les lecteurs du cookie (`api/funnel`, `provenanceEnBloc`) le relisent
- *      toujours quand il existe.
+ *      quand il porte le marqueur `v: 2` de la route, et ignorent un reliquat
+ *      posé sans accord par l'ancien proxy ;
+ *   4. `DELETE /api/utm-consent` l'efface (retrait du consentement).
  */
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
@@ -32,7 +34,7 @@ vi.mock("next/headers", () => ({
   }),
 }));
 
-import { POST } from "../route";
+import { DELETE, POST } from "../route";
 import { POST as POST_FUNNEL } from "../../funnel/route";
 import { provenanceEnBloc } from "@/server/calendly/choix-rendez-vous";
 import { readUtmCookie, serializeUtmCookie } from "@/lib/utm";
@@ -161,13 +163,80 @@ describe("POST /api/utm-consent", () => {
     expect(res.headers.get("set-cookie")).toBeNull();
   });
 
-  it("n'écrit rien en base", async () => {
-    await POST(requete({ utm_source: "linkedin" }));
-    expect(h.cree).not.toHaveBeenCalled();
+  it("corps réel démesuré sous un content-length menteur → 413 avant JSON.parse", async () => {
+    const corps = JSON.stringify({ utm_source: "linkedin", bourrage: "a".repeat(5000) });
+    const res = await POST(requete(corps, { "content-length": "40" }));
+    expect(res.status).toBe(413);
+    expect(res.headers.get("set-cookie")).toBeNull();
+  });
+
+  it("n'écrit rien en base : la route n'importe pas Prisma", () => {
+    const source = readFileSync(join(process.cwd(), "src/app/api/utm-consent/route.ts"), "utf8");
+    const code = source.replace(/^\s*\/\/.*$/gm, " ");
+    expect(code).not.toMatch(/@\/lib\/prisma|@prisma\/client/);
   });
 });
 
-describe("les lecteurs relisent toujours le cookie quand il existe", () => {
+describe("DELETE /api/utm-consent — retrait du consentement", () => {
+  function suppression(entetes: Record<string, string> = { origin: `https://${HOTE}` }) {
+    return new NextRequest(`https://${HOTE}/api/utm-consent`, {
+      method: "DELETE",
+      headers: { host: HOTE, ...entetes },
+    });
+  }
+
+  it("efface le cookie : Max-Age=0, mêmes attributs, sans cache", async () => {
+    const res = await DELETE(suppression());
+    expect(res.status).toBe(204);
+    expect(res.headers.get("cache-control")).toBe("no-store");
+    const entete = res.headers.get("set-cookie") ?? "";
+    expect(entete).toMatch(/^axion_utm=;/);
+    expect(entete).toMatch(/Max-Age=0/);
+    expect(entete).toMatch(/Path=\//);
+    expect(entete).toMatch(/SameSite=Lax/);
+    expect(entete).toMatch(/Secure/);
+    expect(entete).toMatch(/HttpOnly/);
+  });
+
+  it.each([
+    ["origine étrangère", { origin: "https://evil.example" }],
+    ["sans en-tête Origin", {}],
+  ])("rejette une %s sans rien toucher", async (_, entetes) => {
+    const res = await DELETE(suppression(entetes));
+    expect(res.status).toBe(403);
+    expect(res.headers.get("set-cookie")).toBeNull();
+  });
+
+  it("limitation de débit → 429", async () => {
+    h.autorise = false;
+    const res = await DELETE(suppression());
+    expect(res.status).toBe(429);
+    expect(res.headers.get("set-cookie")).toBeNull();
+  });
+});
+
+describe("seule une valeur posée par la route est relue", () => {
+  const b64url = (json: string) =>
+    Buffer.from(json, "utf-8")
+      .toString("base64")
+      .replace(/\+/g, "-")
+      .replace(/\//g, "_")
+      .replace(/=+$/, "");
+
+  it("un ancien cookie du proxy, sans marqueur, donne {}", () => {
+    // Exactement ce que posait l'ancien proxy pour `?utm_source=x`.
+    expect(b64url('{"utm_source":"x"}')).toBe("eyJ1dG1fc291cmNlIjoieCJ9");
+    expect(readUtmCookie("eyJ1dG1fc291cmNlIjoieCJ9")).toEqual({});
+    expect(readUtmCookie(b64url('{"utm_source":"x","v":1}'))).toEqual({});
+  });
+
+  it("le cookie posé par la route est relu", async () => {
+    const res = await POST(requete({ utm_source: "linkedin" }));
+    expect(readUtmCookie(valeurDuCookie(res) ?? "")).toEqual({ utm_source: "linkedin" });
+  });
+});
+
+describe("les lecteurs relisent le cookie quand il existe", () => {
   it("api/funnel enregistre la campagne lue dans le cookie", async () => {
     h.cookieUtm = serializeUtmCookie({
       utm_source: "linkedin",

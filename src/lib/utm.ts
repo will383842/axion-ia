@@ -13,6 +13,14 @@
 const UTM_COOKIE = "axion_utm";
 const COOKIE_TTL_DAYS = 30; // standard attribution window
 
+/**
+ * Marqueur des valeurs posées APRÈS consentement (`POST /api/utm-consent`,
+ * 2026-10-26). L'ancien proxy posait le même cookie, 30 jours, SANS accord et
+ * sans ce champ : `deserializeUtmCookie` ignore toute valeur qui ne le porte
+ * pas, si bien qu'un reliquat de l'ancien régime n'est plus jamais lu.
+ */
+const UTM_COOKIE_VERSION = 2;
+
 export interface UtmParams {
   utm_source?: string;
   utm_medium?: string;
@@ -56,10 +64,11 @@ export function parseUtmFromUrl(input: URLSearchParams | URL | string): UtmParam
 
 /**
  * Sérialise UtmParams en cookie value (base64url de JSON).
- * Format léger pour respecter la limite cookie 4KB.
+ * Format léger pour respecter la limite cookie 4KB. Porte `v: 2` : seule une
+ * valeur marquée est relue (cf. `UTM_COOKIE_VERSION`).
  */
 export function serializeUtmCookie(utm: UtmParams): string {
-  const json = JSON.stringify(utm);
+  const json = JSON.stringify({ ...utm, v: UTM_COOKIE_VERSION });
   // Use btoa (Edge runtime + browser) — base64 simple suffit ici (pas signé).
   if (typeof btoa === "function") {
     return btoa(json).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
@@ -81,7 +90,11 @@ export function deserializeUtmCookie(value: string): UtmParams {
     const json =
       typeof atob === "function" ? atob(padded) : Buffer.from(padded, "base64").toString("utf-8");
     const parsed = JSON.parse(json) as unknown;
-    if (parsed && typeof parsed === "object") {
+    if (
+      parsed &&
+      typeof parsed === "object" &&
+      (parsed as Record<string, unknown>).v === UTM_COOKIE_VERSION
+    ) {
       const out: UtmParams = {};
       for (const key of UTM_KEYS) {
         const v = (parsed as Record<string, unknown>)[key];
@@ -112,6 +125,11 @@ export function buildUtmSetCookie(utm: UtmParams): string {
   const value = serializeUtmCookie(utm);
   const maxAge = COOKIE_TTL_DAYS * 24 * 60 * 60;
   return `${UTM_COOKIE}=${value}; Max-Age=${maxAge}; Path=/; SameSite=Lax; Secure; HttpOnly`;
+}
+
+/** Header `Set-Cookie` qui efface le cookie — `DELETE /api/utm-consent`. */
+export function buildUtmClearCookie(): string {
+  return `${UTM_COOKIE}=; Max-Age=0; Path=/; SameSite=Lax; Secure; HttpOnly`;
 }
 
 /**

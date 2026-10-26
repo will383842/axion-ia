@@ -187,6 +187,9 @@ export function writeAnalyticsConsent(value: ConsentChoice): void {
   if (typeof window === "undefined") return;
   snapshot = value;
   persist(value, Date.now());
+  // Un refus (bandeau ou « Préférences cookies ») efface aussi le cookie de
+  // provenance qu'un « Accepter » antérieur aurait posé.
+  if (value === "declined") effacerProvenance();
   emit();
 }
 
@@ -195,6 +198,7 @@ export function resetAnalyticsConsent(): void {
   if (typeof window === "undefined") return;
   snapshot = "unknown";
   clearPersisted();
+  effacerProvenance();
   emit();
 }
 
@@ -300,7 +304,9 @@ export const SCRIPT_AVANT_HYDRATATION = [
   "try{localStorage.setItem(K,v);localStorage.setItem(T,String(ts))}catch(e){}",
   'try{document.cookie=K+"="+encodeURIComponent(v+"|"+ts)+"; path=/; max-age="+Math.floor(E/1000)+"; SameSite=Lax"+(location.protocol==="https:"?"; Secure":"")}catch(e){}',
   "el.hidden=true;try{window.dispatchEvent(new CustomEvent(V))}catch(e){}",
-  'if(v==="accepted")prov()}',
+  'if(v==="accepted")prov();else del()}',
+  // Même effacement que `effacerProvenance`.
+  `function del(){try{delete window[${JSON.stringify(DRAPEAU_PROVENANCE)}];fetch(${JSON.stringify(ROUTE_PROVENANCE)},{method:"DELETE",credentials:"same-origin",keepalive:true}).catch(function(){})}catch(e){}}`,
   // Même envoi que `envoyerProvenanceApresAccord`, même drapeau, mêmes clés.
   `function prov(){try{if(window[${JSON.stringify(DRAPEAU_PROVENANCE)}])return;var q=new URLSearchParams(location.search),o={},n=0,C=${JSON.stringify(UTM_KEYS)};`,
   "for(var j=0;j<C.length;j++){var x=q.get(C[j]);if(x){o[C[j]]=x;n++}}",
@@ -343,6 +349,27 @@ export function envoyerProvenanceApresAccord(): void {
     }).catch(() => {});
   } catch {
     // Fail-soft — une mesure perdue, jamais un bandeau bloqué.
+  }
+}
+
+/**
+ * Retrait du consentement → `DELETE /api/utm-consent`. Le cookie `axion_utm`
+ * est HttpOnly : seul le serveur peut l'effacer. Appelé par « Refuser » (via
+ * `writeAnalyticsConsent("declined")`) et par `resetAnalyticsConsent`, en
+ * React comme dans le script en ligne. Le drapeau d'envoi est levé : un
+ * « Accepter » ultérieur sur la même page renvoie la provenance.
+ * Sans effet nuisible si aucun cookie n'existe : la réponse l'expire.
+ */
+export function effacerProvenance(): void {
+  try {
+    delete (window as unknown as Record<string, unknown>)[DRAPEAU_PROVENANCE];
+    void fetch(ROUTE_PROVENANCE, {
+      method: "DELETE",
+      credentials: "same-origin",
+      keepalive: true,
+    }).catch(() => {});
+  } catch {
+    // Fail-soft — jamais un bandeau bloqué.
   }
 }
 
