@@ -94,6 +94,9 @@ const NOMS_TABLES: Readonly<Record<string, string>> = {
   formations: "formation(s)",
   training_sessions: "session(s) de formation",
   rencontres: "rencontre(s)",
+  rencontre_participants: "participation(s) à un rendez-vous",
+  projet_contacts: "rôle(s) dans une prestation",
+  questionnaires_cadrage: "questionnaire(s) de cadrage adressé(s)",
 };
 
 const nomTable = (t: string) => NOMS_TABLES[t.replace(/"/g, "")] ?? `table ${t}`;
@@ -136,13 +139,13 @@ async function clesEtrangeres(tx: Tx, table: string): Promise<ReadonlyArray<CleE
  * `"table.colonne"` → les lignes liées qui sont À NOUS : `true` (toutes), ou celles dont
  * `colonne` vaut l'un des `ids` (ex. les participants de NOS rencontres).
  */
-type Nos = ReadonlyMap<
+export type Nos = ReadonlyMap<
   string,
   true | { readonly colonne: string; readonly ids: readonly string[] }
 >;
 
-/** Les lignes liées à `ids` HORS de la liste blanche, par table. */
-async function liensHorsPerimetre(
+/** Les lignes liées à `ids` HORS de la liste blanche, par table (sert aussi à `retrait-personne`). */
+export async function liensHorsPerimetre(
   tx: Tx,
   table: string,
   ids: readonly string[],

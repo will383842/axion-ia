@@ -480,16 +480,27 @@ export function OngletPersonnes({
   personnes,
   projets,
   erreur,
+  message = null,
+  retrait,
 }: {
   clientId: string;
   personnes: ReadonlyArray<PersonneDuDossier>;
   projets: ReadonlyArray<ProjetDuDossier>;
   erreur: string | null;
+  /** Retour scellé d'un retrait réussi (« Personne retirée : … »). */
+  message?: string | null;
+  /** Le bloc « Retirer cette personne » (rendu par la page : il lit la base une fois ouvert). */
+  retrait?: (personneId: string) => React.ReactNode;
 }): React.ReactElement {
   return (
     <div>
       <section className={carteCls}>
         <h2 className={titreCls}>Personnes</h2>
+        {message !== null ? (
+          <p role="status" className="mb-[var(--space-admin-3)] text-[length:var(--text-admin-sm)]">
+            {message}
+          </p>
+        ) : null}
         {personnes.length === 0 ? (
           <p className={`text-[length:var(--text-admin-sm)] ${mutedCls}`}>
             Aucune personne sur cette fiche.
@@ -554,6 +565,7 @@ export function OngletPersonnes({
                       : "Lever l'opposition"}
                   </AdminButton>
                 </form>
+                {retrait ? retrait(p.id) : null}
               </li>
             ))}
           </ul>

@@ -15,10 +15,13 @@ export const DUREE_JETON_SUPPRESSION_MS = 5 * 60_000;
 
 const DOMAINE = "suppression-manuelle:v1\n";
 const FORME = /^[A-Za-z0-9_-]{1,800}\.[A-Za-z0-9_-]{43}$/;
-const TYPES: ReadonlyArray<string> = ["questionnaire", "rencontre", "client"];
+const TYPES: ReadonlyArray<string> = ["questionnaire", "rencontre", "client", "personne"];
+
+/** Les cibles d'un jeton : celles de la suppression manuelle, et une PERSONNE retirée d'une fiche. */
+export type TypeJeton = TypeCible | "personne";
 
 export interface ContenuJeton {
-  readonly t: TypeCible;
+  readonly t: TypeJeton;
   /** La cible. */
   readonly i: string;
   /** L'acteur (super-administrateur). */
@@ -57,7 +60,7 @@ export function empreinteBilan(b: {
 
 export function creerJetonSuppression(
   c: {
-    readonly type: TypeCible;
+    readonly type: TypeJeton;
     readonly id: string;
     readonly acteurId: string;
     readonly empreinte: string;
@@ -124,7 +127,7 @@ export function lireJetonSuppression(
   }
   return {
     ok: true,
-    contenu: { t: o.t as TypeCible, i: o.i, a: o.a, b: o.b, e: o.e },
+    contenu: { t: o.t as TypeJeton, i: o.i, a: o.a, b: o.b, e: o.e },
   };
 }
 
