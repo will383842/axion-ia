@@ -1393,11 +1393,9 @@ export async function bootRepeatableJobs(): Promise<void> {
   // déterministe), mais personne ne saurait plus lequel fait foi.
   if (apporteurCronsQueue) {
     const programme = [
-      {
-        type: "relance-invitation" as const,
-        pattern: PATTERN_RELANCES_INVITATION,
-        jobId: "apporteur-relance-invitation-cron",
-      },
+      // 2026-10-26 (ordre de Will) : le passage quotidien des rappels J+3 / J+7 est
+      // RETIRÉ du programme — la purge ci-dessous l'ôte de la file au démarrage du
+      // worker. Plus aucun rappel d'invitation ne part, même après une mise en ligne.
       {
         type: "reponses-entrantes" as const,
         pattern: PATTERN_REPONSES_ENTRANTES,
