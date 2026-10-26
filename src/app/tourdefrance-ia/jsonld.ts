@@ -1,17 +1,31 @@
-// Tour de France IA — données structurées de la landing (2026-10-25).
+// Tour de France IA — données structurées de la landing (2026-10-25 ; nœud du
+// Tour passé de `EventSeries` à `Service` le 2026-10-26, décision de Will).
 //
-// Un seul `@graph` : WebPage, EventSeries, FAQPage, BreadcrumbList.
+// Un seul `@graph` : WebPage, Service, FAQPage, BreadcrumbList.
 //
-// 🔑 Aucun nœud `Organization` ni `Person` n'est RECRÉÉ ici : l'organisateur et
-// l'intervenant sont cités par leur `@id` canonique (`SITE_URL/#organization`,
-// `FOUNDER_PERSON_ID`), décrits une fois pour toutes sur le site. L'organisateur
-// porte en plus `name` et `url` : la page n'émet pas le nœud qu'il référence. Pas de `Event`
-// daté (aucune date n'est fixée), pas de `HowTo`, pas de `speakable`.
+// 🔑 Le Tour n'est PAS un événement : c'est une offre faite AUX ENTREPRISES
+// (audit offert + formation de 4 h offerte, de la TPE à l'ETI). Il garde son nom
+// et l'idée d'un tour qui va de ville en ville, mais il est décrit comme un
+// `Service` : aucune propriété d'`Event` (ni `startDate`, ni `location`, ni
+// `eventAttendanceMode`, ni `subEvent`, ni `performer`). La gratuité se dit par
+// une `Offer` à 0 €, comme le texte visible (« offerts aux entreprises de l'étape »).
+//
+// Aucun nœud `Organization` ni `Person` n'est RECRÉÉ ici : le prestataire est
+// cité par son `@id` canonique (`SITE_URL/#organization`), décrit une fois pour
+// toutes sur le site, avec en plus `name` et `url` (la page n'émet pas le nœud
+// qu'il référence). Pas de `HowTo`, pas de `speakable`.
 
-import { BRAND, FOUNDER_PERSON_ID } from "@/lib/brand";
+import { BRAND } from "@/lib/brand";
 import { SITE_URL } from "@/lib/site-url";
 
 import { DEFINITION, FAQ, META, NOM_DU_TOUR } from "./contenu";
+
+/**
+ * La description du `Service` : le nom de tour de France, puis la définition
+ * VISIBLE de la page (`DEFINITION`), sans rien y ajouter — aucune promesse que
+ * la page ne fait pas.
+ */
+export const DESCRIPTION_DU_SERVICE = `Le tour de France de l’IA d’Axion-IA, d’une ville à l’autre. ${DEFINITION}`;
 
 export function jsonLdDuTour(): Record<string, unknown> {
   const url = `${SITE_URL}${META.chemin}`;
@@ -37,18 +51,22 @@ export function jsonLdDuTour(): Record<string, unknown> {
         breadcrumb: { "@id": `${url}#breadcrumb` },
       },
       {
-        "@type": "EventSeries",
+        "@type": "Service",
         "@id": `${url}#tour`,
         name: NOM_DU_TOUR,
-        description: DEFINITION,
+        serviceType: "Audit et formation en intelligence artificielle pour les entreprises",
+        description: DESCRIPTION_DU_SERVICE,
         url,
-        inLanguage: "fr-FR",
-        organizer: organisation,
-        performer: { "@id": FOUNDER_PERSON_ID },
-        eventAttendanceMode: "https://schema.org/OfflineEventAttendanceMode",
-        // Dit comme le texte visible : gratuit pour les entreprises de l’étape.
-        isAccessibleForFree: true,
-        location: { "@type": "Country", name: "France" },
+        provider: organisation,
+        areaServed: { "@type": "Country", name: "France" },
+        audience: { "@type": "BusinessAudience", name: "Entreprises, de la TPE à l’ETI" },
+        // Dit comme le texte visible : offerts aux entreprises de l’étape.
+        offers: {
+          "@type": "Offer",
+          price: "0",
+          priceCurrency: "EUR",
+          description: "Audit et formation de 4 h offerts aux entreprises de l’étape",
+        },
       },
       {
         "@type": "FAQPage",

@@ -556,32 +556,94 @@ describe("🔴 le contenu : mots interdits, typographie, SEO", () => {
     expect(FAQ.questions).toHaveLength(8);
   });
 
-  it("JSON-LD : WebPage, EventSeries, FAQPage, BreadcrumbList — sans Person recréé ni Event daté", () => {
+  it("JSON-LD : WebPage, Service, FAQPage, BreadcrumbList — sans Person ni Organization recréés", () => {
     const ld = jsonLdDuTour();
     const graphe = ld["@graph"] as Array<Record<string, unknown>>;
     expect(graphe.map((n) => n["@type"])).toEqual([
       "WebPage",
-      "EventSeries",
+      "Service",
       "FAQPage",
       "BreadcrumbList",
     ]);
-    const serie = graphe[1] ?? {};
-    expect(serie["organizer"]).toEqual({
+    const service = graphe[1] ?? {};
+    expect(service["provider"]).toEqual({
       "@id": expect.stringMatching(/\/#organization$/),
       name: "Axion-IA",
       url: expect.stringMatching(/^https?:\/\//),
     });
     // Le JSON-LD dit la même chose que le texte visible : offert, et la FAQ « offert » y figure.
-    expect(serie["isAccessibleForFree"]).toBe(true);
     const faq = graphe[2] as {
       mainEntity: Array<{ name: string; acceptedAnswer: { text: string } }>;
     };
     const offert = faq.mainEntity.find((q) => /offert/.test(q.name));
     expect(offert?.acceptedAnswer.text).toMatch(/offerts/);
     expect(offert?.acceptedAnswer.text).toMatch(/5 entreprises/);
-    expect(serie["performer"]).toEqual({ "@id": expect.stringMatching(/#person$/) });
     const json = JSON.stringify(ld);
-    expect(json).not.toMatch(/"@type":"(Person|Organization|Event|HowTo)"/);
-    expect(json).not.toMatch(/startDate|speakable/);
+    expect(json).not.toMatch(/"@type":"(Person|Organization|HowTo)"/);
+    expect(json).not.toMatch(/speakable/);
+  });
+});
+
+describe("🔴 le Tour est une OFFRE aux entreprises, pas un événement (JSON-LD, 2026-10-26)", () => {
+  const ld = jsonLdDuTour();
+  const graphe = ld["@graph"] as Array<Record<string, unknown>>;
+  const service = graphe.find((n) => n["@id"] === `${String(graphe[0]?.["url"])}#tour`) ?? {};
+  const json = JSON.stringify(ld);
+
+  it("le nœud du Tour est un Service nommé « Tour de France IA », servi aux entreprises en France", () => {
+    expect(service["@type"]).toBe("Service");
+    expect(service["name"]).toBe("Tour de France IA");
+    expect(service["serviceType"]).toBe(
+      "Audit et formation en intelligence artificielle pour les entreprises",
+    );
+    expect(service["areaServed"]).toEqual({ "@type": "Country", name: "France" });
+    expect(service["audience"]).toEqual({
+      "@type": "BusinessAudience",
+      name: "Entreprises, de la TPE à l’ETI",
+    });
+  });
+
+  it("la description garde l'idée du tour : « tour de France de l'IA », chez les entreprises, une semaine par ville, dès 5 entreprises", () => {
+    const description = String(service["description"]);
+    expect(description).toMatch(/tour de France de l[’']IA/);
+    expect(description).toMatch(/vient dans les entreprises/);
+    expect(description).toMatch(/une semaine dans une ville/);
+    expect(description).toMatch(/dès que 5 entreprises/);
+    expect(description).toMatch(/audit offert/);
+    expect(description).toMatch(/formation de 4 h offerte/);
+    expect(description).toMatch(/aide à répondre à l’exigence de formation de l’AI Act/);
+  });
+
+  it("l'offre est gratuite : prix 0 en euros, audit et formation offerts aux entreprises de l'étape", () => {
+    expect(service["offers"]).toEqual({
+      "@type": "Offer",
+      price: "0",
+      priceCurrency: "EUR",
+      description: "Audit et formation de 4 h offerts aux entreprises de l’étape",
+    });
+  });
+
+  it("🔴 aucun type « Event » (EventSeries, Event…), aucune propriété d'événement", () => {
+    expect(json).not.toMatch(/"@type":"[A-Za-z]*Event[A-Za-z]*"/);
+    expect(json).not.toMatch(
+      /startDate|endDate|eventAttendanceMode|eventStatus|subEvent|superEvent|"location"|"performer"|"organizer"/,
+    );
+  });
+
+  it("🔴 aucun mot interdit dans le JSON-LD", () => {
+    const interdits: RegExp[] = [
+      /grenoble/i,
+      /certifi[ée]+ qualiopi/i,
+      /qualiopi/i,
+      /obligatoire/i,
+      /aucun gain garanti/i,
+      /devis/i,
+      /candidater/i,
+      /r[ée]server/i,
+      /chacun r[èe]gle sa part/i,
+      /[ée]v[ée]nement/i,
+      /certifi/i,
+    ];
+    for (const motif of interdits) expect(json, String(motif)).not.toMatch(motif);
   });
 });
