@@ -12,6 +12,7 @@ import { buildProductMetadata, buildServiceJsonLd, SITE_URL } from "@/lib/seo";
 import { CalendlyInlineWidget } from "@/components/booking/CalendlyInlineWidget";
 import { reservationDirecteActive } from "@/server/calendly/formulaire-reservation";
 import { CalendlyEventCapture } from "@/components/booking/CalendlyEventCapture";
+import { ArriveeReservationMesure } from "@/components/lp/ArriveeReservationMesure";
 import {
   ArrowLeft,
   ArrowRight,
@@ -248,6 +249,11 @@ export default async function AppelPage({ params, searchParams }: Props) {
           non identifiable pour les technologies d'assistance ET pour les
           extracteurs de contenu principal des moteurs. */}
       <div>
+        {/* Tour de France IA (2026-10-26) : l'arrivée ici EST le clic « Participer »
+            de la landing, qui ne porte aucune mesure. Console : Tunnels → Tour. */}
+        {choix === "tour" ? (
+          <ArriveeReservationMesure landing="tour-de-france-ia" placement={depuis} />
+        ) : null}
         {choix ? (
           <Calendrier
             choix={choix}

@@ -49,7 +49,9 @@ export function VueEnsemble({
           href={
             r.cle === "apporteur"
               ? `${base}/apporteurs`
-              : `${base}/prospects?fenetre=${jours}&tunnel=${r.cle}`
+              : r.cle === "tour"
+                ? `${base}/tour?fenetre=${jours}`
+                : `${base}/prospects?fenetre=${jours}&tunnel=${r.cle}`
           }
           className="admin-link"
         >

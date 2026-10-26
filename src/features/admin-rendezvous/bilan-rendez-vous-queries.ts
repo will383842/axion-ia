@@ -32,7 +32,8 @@ import {
 export const LIGNES_BILAN_MAX = 5000;
 
 export async function lireBilanRendezVous(
-  jours: PeriodeBilan,
+  // `PeriodeBilan` (30, 90) pour l'écran des appels ; le tunnel du Tour lit aussi 7 jours.
+  jours: PeriodeBilan | number,
   maintenant: Date = new Date(),
 ): Promise<BilanRendezVous> {
   const depuis = new Date(maintenant.getTime() - jours * 86_400_000);

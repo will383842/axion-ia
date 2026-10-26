@@ -125,7 +125,7 @@ export type SyntheseTunnels = {
 };
 
 /**
- * Les trois pages de tunnel du site, dans l'ordre du parcours.
+ * Les pages de tunnel du site, dans l'ordre du parcours.
  *
  * 🔴 SOURCE UNIQUE. Ce tableau sert à trois choses à la fois : nommer les
  * lignes, fabriquer le lien qui ouvre la page publique depuis la console, et —
@@ -150,6 +150,9 @@ export const TUNNELS_CONNUS: ReadonlyArray<{
   { cle: "simulateur", libelle: "Questionnaire nu", chemin: "/fr/simulateur" },
   { cle: "roi", libelle: "Questionnaire public", chemin: "/fr/roi" },
   { cle: "apporteur", libelle: "Recrutement d'apporteurs", chemin: "/fr/apporteur-affaires" },
+  // Tour de France IA (2026-10-26) : ses balises viennent de la page de RÉSERVATION
+  // (la landing n'en porte aucune) ; le lien ouvre la landing, la porte d'entrée.
+  { cle: "tour", libelle: "Tour de France IA", chemin: "/tourdefrance-ia" },
 ];
 
 /** Noms lisibles des tunnels. Une clé inconnue s'affiche telle quelle. */

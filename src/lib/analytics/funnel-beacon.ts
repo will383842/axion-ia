@@ -57,6 +57,11 @@ export function funnelKeyFromPath(pathname: string | null | undefined): FunnelKe
   // (`/video`, `/merci`). Segment ENTIER : la page SEO
   // `/apporteur-affaires-independant-…` n'est pas un tunnel payant.
   if (segments.includes("apporteur-affaires")) return "apporteur";
+  // Tour de France IA : la page de RÉSERVATION seulement (`/fr/appel/tour-de-france-ia`).
+  // Jamais la landing `/tourdefrance-ia`, qui ne porte aucune mesure (voir
+  // `FUNNEL_KEYS`). Segment ENTIER, et sous `/appel` : rien d'autre ne le porte.
+  const iAppel = segments.indexOf("appel");
+  if (iAppel !== -1 && segments[iAppel + 1] === "tour-de-france-ia") return "tour";
   if (segments.includes("diagnostic")) return "diagnostic";
   if (segments.includes("simulateur")) return "simulateur";
   if (segments.includes("roi")) return "roi";

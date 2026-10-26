@@ -42,7 +42,12 @@ import { z } from "zod";
  * (`simulateur`, `Simulateur`, `simu`) qui disperseraient les agrégats sans
  * jamais lever d'erreur.
  */
-export const FUNNEL_KEYS = ["diagnostic", "simulateur", "roi", "apporteur"] as const;
+// `tour` (2026-10-26) : la page de réservation du Tour de France IA
+// (`/fr/appel/tour-de-france-ia`). La landing `/tourdefrance-ia` ne porte, elle,
+// AUCUNE balise (choix verrouillé par `le-tour-est-ouvert.spec.ts` et écrit dans
+// la politique de confidentialité) : l'arrivée sur la réservation est le clic
+// « Participer » mesuré.
+export const FUNNEL_KEYS = ["diagnostic", "simulateur", "roi", "apporteur", "tour"] as const;
 export type FunnelKey = (typeof FUNNEL_KEYS)[number];
 
 /**
