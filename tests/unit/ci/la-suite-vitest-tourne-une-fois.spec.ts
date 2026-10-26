@@ -134,13 +134,14 @@ describe("la suite Vitest tourne une fois, en 3 morceaux fusionnés par « Gate 
     expect(morceaux).not.toMatch(/continue-on-error/);
     // Clés de niveau JOB (4 espaces) : le `if:` de l'étape d'upload est légitime.
     expect(morceaux).not.toMatch(/^ {4}needs:/m);
-    expect(morceaux).not.toMatch(/^ {4}if:/m);
+    // Seule condition admise : pas sur un push vers main (la PR l'a déjà passé ; passage quotidien planifié).
+    expect(morceaux).toMatch(/^ {4}if: github\.event_name != 'push'\s*$/m);
   });
 
   it("la fusion attend la matrice, tourne toujours, et rougit si elle n'est pas success", () => {
     expect(couverture).not.toMatch(/continue-on-error/);
     expect(couverture).toMatch(/^ {4}needs: gate-a-couverture-morceau\s*$/m);
-    expect(couverture).toMatch(/^ {4}if: always\(\)\s*$/m);
+    expect(couverture).toMatch(/^ {4}if: always\(\) && github\.event_name != 'push'\s*$/m);
     expect(couverture).toContain("RESULTAT: ${{ needs.gate-a-couverture-morceau.result }}");
     expect(couverture).toMatch(/if \[ "\$\{RESULTAT\}" != "success" \]; then[\s\S]*?exit 1/);
   });
