@@ -679,7 +679,7 @@ export default async function FicheClient360Page({ params, searchParams }: PageP
         </p>
       ) : null}
 
-      {onglet === "resume" ? (
+      {onglet === "resume" || onglet === "devis-factures" ? (
         <>
           {/* ── Branche et OPCO (lot OPCO A7b) : IDCC, effectif, OPCO, enveloppe,
             adhérent ; « Modifier » sur place. Rien pour un particulier. ────────── */}
