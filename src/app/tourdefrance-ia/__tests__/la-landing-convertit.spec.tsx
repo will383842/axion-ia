@@ -387,6 +387,31 @@ describe("🔴 la carte : chaque repère est à l'intérieur du contour", () => 
       expect(dedans(x, y), `${x},${y} hors du contour`).toBe(true);
     }
   });
+
+  it("chaque repère (hors point de démonstration) est à au moins 6 unités du bord", () => {
+    const { container } = render(<CarteFrance titre="t" titreId="t5" />);
+    const reperes = [...container.querySelectorAll("svg > circle")].map(
+      (c) => [Number(c.getAttribute("cx")), Number(c.getAttribute("cy"))] as [number, number],
+    );
+    expect(reperes.length).toBeGreaterThan(7);
+    const distSegment = (x: number, y: number, a: [number, number], b: [number, number]) => {
+      const dx = b[0] - a[0];
+      const dy = b[1] - a[1];
+      const t = Math.max(
+        0,
+        Math.min(1, ((x - a[0]) * dx + (y - a[1]) * dy) / (dx * dx + dy * dy || 1)),
+      );
+      return Math.hypot(x - a[0] - t * dx, y - a[1] - t * dy);
+    };
+    for (const [x, y] of reperes) {
+      const bord = Math.min(
+        ...polygone.map((p, i) =>
+          distSegment(x, y, p, polygone[(i + 1) % polygone.length] as [number, number]),
+        ),
+      );
+      expect(bord, `${x},${y} trop près du bord`).toBeGreaterThanOrEqual(6);
+    }
+  });
 });
 
 describe("🔴 le titre du problème est une question de tri, sans opposition", () => {
