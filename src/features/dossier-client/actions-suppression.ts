@@ -21,6 +21,7 @@ import {
   supprimerManuellement,
   type TypeCible,
 } from "./suppression-manuelle";
+import { preparerRetraitPersonne, retirerPersonne } from "./retrait-personne";
 
 const uuid = z.string().uuid();
 const TYPES: ReadonlyArray<TypeCible> = ["questionnaire", "rencontre", "client"];
@@ -111,4 +112,80 @@ export async function supprimerManuellementAction(fd: FormData): Promise<void> {
       deja ? "Déjà supprimé : rien d'autre à faire." : `Supprimé : ${resume}.`,
     ),
   );
+}
+
+// ── Retirer UNE personne d'une fiche (ordre de Will du 26/10/2026) ─────────────────────────────
+// Même double validation ; on revient sur l'onglet « Personnes » de la fiche (`page`).
+
+const ongletPersonnes = (page: string) => `${page}?onglet=personnes`;
+
+/** 1re validation du retrait : le mot EFFACER, puis l'écran de la 2e étape (jeton signé). */
+export async function preparerRetraitPersonneAction(fd: FormData): Promise<void> {
+  const contactId = champ(fd, "contactId");
+  const clientId = champ(fd, "clientId");
+  const repli = adminPath("fr", "/qualiopi/clients");
+  const page = pageSure(champ(fd, "page"), repli);
+  if (!uuid.safeParse(contactId).success || !uuid.safeParse(clientId).success) redirect(repli);
+  const ecran = `${ongletPersonnes(page)}&retirer=${contactId}`;
+  let jeton = "";
+  try {
+    const { userId, role } = await exigerAccesEchanges();
+    if (role !== "super_admin") {
+      throw new MessagePourWill("Seul Williams (super-administrateur) peut retirer une personne.");
+    }
+    if (champ(fd, "confirmation") !== MOT_CONFIRMATION) {
+      throw new MessagePourWill(`Écrivez ${MOT_CONFIRMATION} pour confirmer le retrait.`);
+    }
+    const r = await preparerRetraitPersonne({
+      contactId,
+      clientId,
+      acteurId: userId,
+      confirmation: champ(fd, "confirmation"),
+    });
+    if (!r.ok) throw new MessagePourWill(r.motif);
+    jeton = r.jeton;
+  } catch (e) {
+    redirect(avecMessageDeRetour(ecran, "erreur", messageAffichable(e)));
+  }
+  redirect(`${ecran}&jeton=${encodeURIComponent(jeton)}#retrait-${contactId}`);
+}
+
+/** 2e validation du retrait : le jeton et le code recopié ; tout refus ramène à la 1re étape. */
+export async function retirerPersonneAction(fd: FormData): Promise<void> {
+  const contactId = champ(fd, "contactId");
+  const clientId = champ(fd, "clientId");
+  const repli = adminPath("fr", "/qualiopi/clients");
+  const page = pageSure(champ(fd, "page"), repli);
+  if (!uuid.safeParse(contactId).success || !uuid.safeParse(clientId).success) redirect(repli);
+  let texte = "";
+  try {
+    const { userId, role } = await exigerAccesEchanges();
+    if (role !== "super_admin") {
+      throw new MessagePourWill("Seul Williams (super-administrateur) peut retirer une personne.");
+    }
+    const jeton = champ(fd, "jeton");
+    const code = champ(fd, "code");
+    if (jeton === "") throw new MessagePourWill("Recommencez : la première validation manque.");
+    if (code === "")
+      throw new MessagePourWill("Recopiez le code ou le nom affiché pour confirmer.");
+    const r = await retirerPersonne({ contactId, clientId, acteurId: userId, jeton, code });
+    if (!r.ok) throw new MessagePourWill(r.motif);
+    texte =
+      r.dejaRetiree === true
+        ? "Déjà retirée : rien d'autre à faire."
+        : `Personne retirée : ${r.compteurs
+            .filter((c) => c.n > 0)
+            .map((c) => `${c.n} ${c.libelle}`)
+            .join(", ")}.`;
+  } catch (e) {
+    redirect(
+      avecMessageDeRetour(
+        `${ongletPersonnes(page)}&retirer=${contactId}`,
+        "erreur",
+        messageAffichable(e),
+      ),
+    );
+  }
+  revalidatePath(page);
+  redirect(avecMessageDeRetour(ongletPersonnes(page), "message", texte));
 }

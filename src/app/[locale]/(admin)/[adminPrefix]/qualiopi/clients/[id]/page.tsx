@@ -39,6 +39,7 @@ import { construireBandeau, type LigneBandeau } from "@/features/dossier-client/
 import { BlocQuestionnaireFiche } from "@/components/admin/dossier-client/BlocQuestionnaireFiche";
 import { lireQuestionnairesDeLaFiche } from "@/features/dossier-client/questionnaires-de-la-fiche";
 import type { Metadata } from "next";
+import { RetraitPersonne } from "@/components/admin/dossier-client/RetraitPersonne";
 import { SuppressionManuelle } from "@/components/admin/dossier-client/SuppressionManuelle";
 import { adminPath } from "@/lib/admin-path";
 import Link from "next/link";
@@ -278,6 +279,7 @@ interface PageProps {
     message?: string;
     releve?: string;
     supprimer?: string;
+    retirer?: string;
     jeton?: string;
     sceau?: string;
   }>;
@@ -525,7 +527,26 @@ export default async function FicheClient360Page({ params, searchParams }: PageP
     ]);
     contenuDossier = (
       <>
-        <OngletPersonnes clientId={id} personnes={personnes} projets={projets} erreur={erreur} />
+        <OngletPersonnes
+          clientId={id}
+          personnes={personnes}
+          projets={projets}
+          // Le refus d'un retrait s'affiche dans son écran, pas sous « Ajouter une personne ».
+          erreur={sp.retirer ? null : erreur}
+          message={lireMessageDeRetour(sp, "message")}
+          retrait={(personneId) => (
+            // Ordre de Will (26/10/2026) : retirer UNE personne, super-administrateur seul.
+            <RetraitPersonne
+              contactId={personneId}
+              clientId={id}
+              peutRetirer={acces.role === "super_admin"}
+              page={adminPath("fr", `/qualiopi/clients/${id}`)}
+              ouvert={sp.retirer === personneId}
+              erreur={sp.retirer === personneId ? erreur : null}
+              jeton={sp.retirer === personneId ? (sp.jeton ?? null) : null}
+            />
+          )}
+        />
         {/* Chantier visio (PR 4, A3) : fusion déclenchée par Will, réversible. */}
         <FusionDeFiches
           clientId={id}
