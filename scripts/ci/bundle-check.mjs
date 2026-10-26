@@ -201,7 +201,7 @@ console.log("");
 
 // ══════════════════════════════════════════════════════════════════════════
 // PARTITION — le contrôle qui DISCRIMINE. Cf. en-tête, « ≥ 1 fichier ne suffit
-// pas ». Ces quatre buckets se partagent la population des `page-*.js` : chaque
+// pas ». Ces cinq buckets (dont `/tourdefrance-ia`, 2026-10-25) se partagent la population des `page-*.js` : chaque
 // chunk de page appartient à un et un seul d'entre eux.
 // ══════════════════════════════════════════════════════════════════════════
 const PARTITION = {
@@ -209,6 +209,7 @@ const PARTITION = {
   parts: [
     "Routes /appel",
     "Routes /apporteur/dossier",
+    "Routes /tourdefrance-ia",
     "SOMME des page chunks PUBLICS",
     "SOMME des page chunks de la CONSOLE ADMIN",
   ],

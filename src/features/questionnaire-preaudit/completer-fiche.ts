@@ -38,6 +38,7 @@ import { ajouterPersonneAFiche } from "@/server/qualiopi/crm/porte-client";
 import { chargeClientAvant, emettreFaitClient } from "@/server/partners-sync/producteurs/client";
 import { codeDirigeantPreauditValide } from "@/server/visio/questionnaire-en-ligne/jeton";
 import { dansLaTransaction } from "@/features/dossier-client/base";
+import { reessayerSiInterblocage } from "./interblocage";
 
 export const ACTION_COMPLETE_DEPUIS_QUESTIONNAIRE = "client.complete_depuis_questionnaire";
 
@@ -234,74 +235,80 @@ export async function completerFicheDepuisReponse(
   );
   const { personne, adresseNonReprise } = personneAAjouter(champs.personne, adressesSures);
 
-  return prisma.$transaction(async (tx): Promise<IssueCompletion> => {
-    const fiche = await tx.client.findUnique({
-      where: { id: clientId },
-      select: {
-        siret: true,
-        siren: true,
-        adresseRue: true,
-        adresseCodePostal: true,
-        adresseVille: true,
-        secteur: true,
-      },
-    });
-    if (fiche === null) return { statut: "ignoree", raison: "sans_fiche" };
-    const data = aCompleter(fiche, champs);
-    const propose = sirenAProposer(fiche, champs);
-    const avant = await chargeClientAvant(tx, clientId);
-    const copies = Object.keys(data);
-    if (copies.length > 0) {
-      await tx.client.update({ where: { id: clientId }, data });
-    }
-    let personneAjoutee = false;
-    if (personne !== undefined) {
-      // Sans adresse, la porte créerait une 2e personne au même nom : on la cherche d'abord.
-      const nom = personne.nom;
-      const dejaLa =
-        personne.email === undefined && nom !== undefined
-          ? (await tx.clientContact.findMany({ where: { clientId }, select: { nom: true } })).some(
-              (c) => memeNom(c.nom, nom),
-            )
-          : false;
-      if (!dejaLa) {
-        const r = await ajouterPersonneAFiche(dansLaTransaction(tx), clientId, personne, null);
-        personneAjoutee = r.cree;
-      }
-    }
-    // Axion Partners : un fait seulement si la fiche a changé.
-    if (copies.length > 0 || personneAjoutee) await emettreFaitClient(tx, clientId, { avant });
-    if (copies.length > 0 || personneAjoutee || propose !== null || adresseNonReprise) {
-      await tx.activityLog.create({
-        data: {
-          adminUserId: null,
-          action: ACTION_COMPLETE_DEPUIS_QUESTIONNAIRE,
-          targetType: "Client",
-          targetId: clientId,
-          changes: {
-            origine: "questionnaire",
-            questionnaireId,
-            ref: q.ref,
-            rencontreId: q.rencontreId,
-            champs: copies,
-            personneAjoutee,
-            sirenPropose: propose?.siren ?? null,
-            siretPropose: propose?.siret ?? null,
-            adresseNonReprise,
-            nonCopies: [...NON_COPIES],
-          },
+  return reessayerSiInterblocage(() =>
+    prisma.$transaction(async (tx): Promise<IssueCompletion> => {
+      // Verrou de la fiche AVANT toute lecture ou écriture : deux réponses du dirigeant (renvoi modifié)
+      // ou un enregistrement de la console sur la même fiche passent l'une après l'autre, dans le même
+      // ordre (fiche, puis personnes) — c'est le croisement inverse qui produisait l'interblocage 40P01.
+      await tx.$queryRaw`SELECT id FROM clients WHERE id = ${clientId}::uuid FOR UPDATE`;
+      const fiche = await tx.client.findUnique({
+        where: { id: clientId },
+        select: {
+          siret: true,
+          siren: true,
+          adresseRue: true,
+          adresseCodePostal: true,
+          adresseVille: true,
+          secteur: true,
         },
       });
-    }
-    return {
-      statut: "complete",
-      clientId,
-      champs: copies,
-      personneAjoutee,
-      sirenPropose: propose?.siren ?? null,
-      adresseNonReprise,
-    };
-  });
+      if (fiche === null) return { statut: "ignoree", raison: "sans_fiche" };
+      const data = aCompleter(fiche, champs);
+      const propose = sirenAProposer(fiche, champs);
+      const avant = await chargeClientAvant(tx, clientId);
+      const copies = Object.keys(data);
+      if (copies.length > 0) {
+        await tx.client.update({ where: { id: clientId }, data });
+      }
+      let personneAjoutee = false;
+      if (personne !== undefined) {
+        // Sans adresse, la porte créerait une 2e personne au même nom : on la cherche d'abord.
+        const nom = personne.nom;
+        const dejaLa =
+          personne.email === undefined && nom !== undefined
+            ? (
+                await tx.clientContact.findMany({ where: { clientId }, select: { nom: true } })
+              ).some((c) => memeNom(c.nom, nom))
+            : false;
+        if (!dejaLa) {
+          const r = await ajouterPersonneAFiche(dansLaTransaction(tx), clientId, personne, null);
+          personneAjoutee = r.cree;
+        }
+      }
+      // Axion Partners : un fait seulement si la fiche a changé.
+      if (copies.length > 0 || personneAjoutee) await emettreFaitClient(tx, clientId, { avant });
+      if (copies.length > 0 || personneAjoutee || propose !== null || adresseNonReprise) {
+        await tx.activityLog.create({
+          data: {
+            adminUserId: null,
+            action: ACTION_COMPLETE_DEPUIS_QUESTIONNAIRE,
+            targetType: "Client",
+            targetId: clientId,
+            changes: {
+              origine: "questionnaire",
+              questionnaireId,
+              ref: q.ref,
+              rencontreId: q.rencontreId,
+              champs: copies,
+              personneAjoutee,
+              sirenPropose: propose?.siren ?? null,
+              siretPropose: propose?.siret ?? null,
+              adresseNonReprise,
+              nonCopies: [...NON_COPIES],
+            },
+          },
+        });
+      }
+      return {
+        statut: "complete",
+        clientId,
+        champs: copies,
+        personneAjoutee,
+        sirenPropose: propose?.siren ?? null,
+        adresseNonReprise,
+      };
+    }),
+  );
 }
 
 /**

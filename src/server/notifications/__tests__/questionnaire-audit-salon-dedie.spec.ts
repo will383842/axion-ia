@@ -2,7 +2,12 @@
 // (Clients, puis Système, puis le général : décision du 25/10/2026) et le message (10 lignes au
 // plus, ni adresse, ni nom complet, ni contenu de réponse). Jamais WhatsApp.
 
-import { afterEach, beforeEach, describe, expect, it } from "vitest";
+import { readFileSync } from "node:fs";
+import { resolve } from "node:path";
+
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+
+import { sendTelegramRaw } from "../channels/telegram";
 
 import { formatNotification } from "../format";
 import {
@@ -55,7 +60,7 @@ describe("routage du questionnaire avant audit", () => {
 });
 
 describe("message du questionnaire avant audit", () => {
-  it("réponse reçue : société, prénom + initiale, réponses, prochaine relance, lien ; 10 lignes au plus", () => {
+  it("réponse reçue : société, prénom + initiale, réponses, prochain rappel, lien ; 10 lignes au plus", () => {
     const { text } = formatNotification(
       {
         category: "QUESTIONNAIRE_PREAUDIT_REPONSE",
@@ -94,10 +99,10 @@ describe("message du questionnaire avant audit", () => {
     ).toContain("1 reçue \\(nombre attendu connu après la réponse du dirigeant\\)");
     expect(
       corps({ evenement: "relance", rang: 2, essai: true, societe: "X", chemin: "c" }),
-    ).toContain("ESSAI · Relance 2 sur 3 partie");
+    ).toContain("ESSAI · Rappel 2 sur 3 parti");
     expect(
       corps({ evenement: "arret", motif: "reponse_dirigeant", societe: "X", chemin: "c" }),
-    ).toContain("Relances arrêtées : réponse du dirigeant");
+    ).toContain("Rappels arrêtés : réponse du dirigeant");
     expect(
       corps({
         evenement: "invitation",
@@ -105,6 +110,46 @@ describe("message du questionnaire avant audit", () => {
         societe: "X",
         chemin: "c",
       }),
-    ).toContain("Relances prévues");
+    ).toContain("Rappels prévus");
+  });
+});
+
+describe("aperçu de lien du salon « Questionnaire audit »", () => {
+  const corpsEnvoye = async (sansApercuLien?: boolean) => {
+    const fetchMock = vi.fn(async () => new Response("{}", { status: 200 }));
+    vi.stubGlobal("fetch", fetchMock);
+    try {
+      await sendTelegramRaw({
+        text: "x",
+        chatId: "-100q",
+        botToken: "t",
+        ...(sansApercuLien ? { sansApercuLien } : {}),
+      });
+      const appels = fetchMock.mock.calls as unknown as Array<[string, { body: string }]>;
+      return JSON.parse(appels[0]![1].body) as Record<string, unknown>;
+    } finally {
+      vi.unstubAllGlobals();
+    }
+  };
+
+  it("coupe l'aperçu quand l'option est posée", async () => {
+    expect((await corpsEnvoye(true)).link_preview_options).toEqual({ is_disabled: true });
+  });
+
+  it("ne change pas les autres salons", async () => {
+    expect(await corpsEnvoye()).not.toHaveProperty("link_preview_options");
+  });
+});
+
+describe("le choix de l'aperçu de lien se fait par salon, dans dispatchChannels", () => {
+  it("seules les catégories du salon « Questionnaire audit » coupent l'aperçu", () => {
+    expect(telegramGroupFor("QUESTIONNAIRE_PREAUDIT_REPONSE")).toBe("questionnaire-audit");
+    expect(telegramGroupFor("QUESTIONNAIRE_PREAUDIT_SUIVI")).toBe("questionnaire-audit");
+    expect(telegramGroupFor("CONTACT_FORM_SUBMITTED")).not.toBe("questionnaire-audit");
+  });
+
+  it("dispatchChannels compare le salon, pas la catégorie d'un seul questionnaire", () => {
+    const src = readFileSync(resolve(__dirname, "../index.ts"), "utf8");
+    expect(src).toContain('sansApercuLien: telegramGroupFor(category) === "questionnaire-audit"');
   });
 });
