@@ -40,6 +40,8 @@ export interface EchangeDuFil {
   readonly titre: string;
   /** « Envoyé », « Annulé », « prévu »... */
   readonly etat: string;
+  /** Statut d'envoi, pour les seules lignes `email` (journal) : « sent » = parti pour de bon. */
+  readonly statutEmail?: EmailLogStatus;
   /** Adresse interne de la copie ou de la page, ou `null`. */
   readonly lien: string | null;
 }
@@ -123,6 +125,7 @@ export async function lireFilDesEchanges(clientId: string, adminPrefix: string):
         date: l.sentAt ?? l.createdAt,
         titre: l.contenu?.subject ?? l.template,
         etat: LIBELLES_STATUT_EMAIL[l.status as EmailLogStatus] ?? l.status,
+        statutEmail: l.status as EmailLogStatus,
         lien: `${base}/emails-envoyes/${l.id}`,
       }));
     }),

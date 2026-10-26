@@ -19,7 +19,7 @@
  *
  * Server Component — auth + redirect, force-dynamic, noindex.
  *
- * ## Dossier client (chantier visio, PR 3) — cinq onglets
+ * ## Dossier client (chantier visio, PR 3) — sept onglets (Résumé, Rendez-vous, Questionnaire, E-mails, Prestations, Personnes, Devis et factures)
  *
  * « Pièces et facturation » (tout ce qui précède, inchangé) reste ouvert à tous
  * les rôles de la console : `gardePage("consultation")` reste EN TÊTE.
@@ -34,6 +34,8 @@
 
 import { FilDesEchanges } from "@/components/admin/dossier-client/FilDesEchanges";
 import { lireFilDesEchanges } from "@/features/dossier-client/fil-des-echanges";
+import { BandeauOuEnEst } from "@/components/admin/dossier-client/BandeauOuEnEst";
+import { construireBandeau, type LigneBandeau } from "@/features/dossier-client/bandeau-ou-en-est";
 import { BlocQuestionnaireFiche } from "@/components/admin/dossier-client/BlocQuestionnaireFiche";
 import { lireQuestionnairesDeLaFiche } from "@/features/dossier-client/questionnaires-de-la-fiche";
 import type { Metadata } from "next";
@@ -280,24 +282,43 @@ interface PageProps {
   }>;
 }
 
-const ONGLETS_DOSSIER = ["synthese", "projets", "echanges", "personnes"] as const;
-type Onglet = (typeof ONGLETS_DOSSIER)[number] | "facturation";
+const ONGLETS_DOSSIER = [
+  "resume",
+  "rendez-vous",
+  "questionnaire",
+  "emails",
+  "prestations",
+  "personnes",
+] as const;
+type Onglet = (typeof ONGLETS_DOSSIER)[number] | "devis-factures";
 
 const LIBELLE_ONGLET: Readonly<Record<Onglet, string>> = {
-  synthese: "Synthèse",
-  projets: "Projets",
-  echanges: "Échanges",
+  resume: "Résumé",
+  "rendez-vous": "Rendez-vous",
+  questionnaire: "Questionnaire",
+  emails: "E-mails",
+  prestations: "Prestations",
   personnes: "Personnes",
-  facturation: "Pièces et facturation",
+  "devis-factures": "Devis et factures",
+};
+
+/**
+ * Les anciens noms d'onglets (adresses déjà enregistrées : redirections des actions, liens des
+ * pages de rendez-vous, e-mails) mènent au nouvel onglet. Aucune adresse ne casse.
+ */
+const ANCIENS_ONGLETS: Readonly<Record<string, Onglet>> = {
+  synthese: "resume",
+  echanges: "rendez-vous",
+  projets: "prestations",
+  facturation: "devis-factures",
 };
 
 /** L'onglet demandé, ramené à ce que le rôle peut voir. */
 function ongletAffiche(demande: string | undefined, voitEchanges: boolean): Onglet {
-  if (!voitEchanges) return "facturation";
-  if (demande === "facturation") return "facturation";
-  return (ONGLETS_DOSSIER as ReadonlyArray<string>).includes(demande ?? "")
-    ? (demande as Onglet)
-    : "synthese";
+  if (!voitEchanges) return "devis-factures";
+  const d = ANCIENS_ONGLETS[demande ?? ""] ?? demande;
+  if (d === "devis-factures") return "devis-factures";
+  return (ONGLETS_DOSSIER as ReadonlyArray<string>).includes(d ?? "") ? (d as Onglet) : "resume";
 }
 
 export default async function FicheClient360Page({ params, searchParams }: PageProps) {
@@ -371,22 +392,51 @@ export default async function FicheClient360Page({ params, searchParams }: PageP
       ? await lireFormateursProches(client.id, maintenant)
       : undefined;
 
+  // Bandeau « Où en est ce client » : mêmes lectures de dossier que les onglets, donc mêmes
+  // garde de rôle (rien n'est requêté hors `voitEchanges`). Une lecture en panne ne bloque pas la
+  // fiche, mais elle ne se lit JAMAIS comme « rien » : la ligne dit « lecture impossible ».
+  // Les lectures réussies servent aussi aux onglets (une seule lecture par affichage) ; une
+  // lecture en panne y est refaite, pour que l'onglet montre la vraie erreur.
+  let lignesBandeau: ReadonlyArray<LigneBandeau> | null = null;
+  let rendezVousLus: Awaited<ReturnType<typeof lireRencontresDuClient>> | null = null;
+  let questionnairesLus: Awaited<ReturnType<typeof lireQuestionnairesDeLaFiche>> | null = null;
+  let projetsLus: Awaited<ReturnType<typeof lireProjetsDuClient>> | null = null;
+  if (voitEchanges) {
+    const enPanneBandeau: LigneBandeau["cle"][] = [];
+    const lire = async <T,>(cle: LigneBandeau["cle"], lecture: Promise<T>): Promise<T | null> =>
+      lecture.catch(() => {
+        enPanneBandeau.push(cle);
+        return null;
+      });
+    const [rendezVous, questionnairesBandeau, filBandeau, prestationsBandeau] = await Promise.all([
+      lire("rendez_vous", lireRencontresDuClient(id)),
+      lire("questionnaire", lireQuestionnairesDeLaFiche(id)),
+      lire("email", lireFilDesEchanges(id, adminPrefix)),
+      lire("prestations", lireProjetsDuClient(id)),
+    ]);
+    rendezVousLus = rendezVous;
+    questionnairesLus = questionnairesBandeau;
+    projetsLus = prestationsBandeau;
+    lignesBandeau = construireBandeau({
+      maintenant,
+      rendezVous: rendezVous ?? [],
+      questionnaires: questionnairesBandeau ?? [],
+      fil: filBandeau?.fil ?? [],
+      prestations: prestationsBandeau ?? [],
+      nbDevis: client.devis.length,
+      enPanne: enPanneBandeau,
+      sourcesDuFilEnPanne: filBandeau?.sourcesEnPanne ?? 0,
+    });
+  }
+
   let contenuDossier: React.ReactNode = null;
-  if (voitEchanges && onglet === "synthese") {
-    const [faits, projets, questionnaires] = await Promise.all([
+  if (voitEchanges && onglet === "resume") {
+    const [faits, projets] = await Promise.all([
       lireFaitsDuClient(id),
-      lireProjetsDuClient(id),
-      lireQuestionnairesDeLaFiche(id),
+      projetsLus ?? lireProjetsDuClient(id),
     ]);
     contenuDossier = (
       <>
-        {/* Lot 1 fiche client (25/10/2026) : le questionnaire avant audit se lit ICI, plus
-            seulement sur la page de chaque rendez-vous. Lecture seule, aucun envoi. */}
-        <BlocQuestionnaireFiche
-          questionnaires={questionnaires}
-          adminPrefix={adminPrefix}
-          ficheHref={ficheHref}
-        />
         <OngletSynthese
           consolidation={consoliderFaits(faits, projets, maintenant)}
           projets={projets}
@@ -395,9 +445,34 @@ export default async function FicheClient360Page({ params, searchParams }: PageP
         />
       </>
     );
-  } else if (voitEchanges && onglet === "projets") {
+  } else if (voitEchanges && onglet === "questionnaire") {
+    const questionnaires = questionnairesLus ?? (await lireQuestionnairesDeLaFiche(id));
+    contenuDossier =
+      questionnaires.length === 0 ? (
+        <p className="mb-[var(--space-admin-6)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
+          Aucun questionnaire n&apos;a été envoyé à ce client.
+        </p>
+      ) : (
+        <BlocQuestionnaireFiche
+            questionnaires={questionnaires}
+            adminPrefix={adminPrefix}
+            ficheHref={ficheHref}
+          />
+      );
+  } else if (voitEchanges && onglet === "emails") {
+    const fil = await lireFilDesEchanges(id, adminPrefix);
+    // Les rendez-vous ont leur onglet : celui-ci ne montre que les courriers.
+    contenuDossier = (
+      <FilDesEchanges
+        fil={fil.fil.filter((x) => x.genre !== "rendez_vous")}
+        sourcesEnPanne={fil.sourcesEnPanne}
+        clientId={id}
+        adminPrefix={adminPrefix}
+      />
+    );
+  } else if (voitEchanges && onglet === "prestations") {
     const [projets, faitsARanger, nbDocuments] = await Promise.all([
-      lireProjetsDuClient(id),
+      projetsLus ?? lireProjetsDuClient(id),
       lireFaitsARanger(id),
       compterDocumentsParProjet(id),
     ]);
@@ -412,13 +487,12 @@ export default async function FicheClient360Page({ params, searchParams }: PageP
         nbDocuments={nbDocuments}
       />
     );
-  } else if (voitEchanges && onglet === "echanges") {
-    const [rencontres, projets, personnesCourtes, caseTest, fil] = await Promise.all([
-      lireRencontresDuClient(id),
-      lireProjetsDuClient(id),
+  } else if (voitEchanges && onglet === "rendez-vous") {
+    const [rencontres, projets, personnesCourtes, caseTest] = await Promise.all([
+      rendezVousLus ?? lireRencontresDuClient(id),
+      projetsLus ?? lireProjetsDuClient(id),
       lirePersonnesCourtes(id),
       lireCaseTestVisible(id),
-      lireFilDesEchanges(id, adminPrefix),
     ]);
     contenuDossier = (
       <>
@@ -432,14 +506,6 @@ export default async function FicheClient360Page({ params, searchParams }: PageP
             toParisLocalInput(new Date(maintenant.getTime() + 24 * 3_600_000)).slice(0, 11) +
             "10:00"
           }
-        />
-        {/* Lot 1 fiche client, PR-3 : un fil unique (rendez-vous + e-mails + courriers du
-            questionnaire), objet seulement. Le détail des comptes rendus reste dessous. */}
-        <FilDesEchanges
-          fil={fil.fil}
-          sourcesEnPanne={fil.sourcesEnPanne}
-          clientId={id}
-          adminPrefix={adminPrefix}
         />
         <OngletEchanges
           rencontres={rencontres}
@@ -586,12 +652,16 @@ export default async function FicheClient360Page({ params, searchParams }: PageP
         <FormateursProches resultat={proches} formateursBase={`${qBase}/formateurs`} />
       ) : null}
 
+      {lignesBandeau !== null ? (
+        <BandeauOuEnEst lignes={lignesBandeau} ficheHref={ficheHref} />
+      ) : null}
+
       {/* ── Onglets du dossier client (A2 : administrateurs seulement) ─────── */}
       {voitEchanges ? (
         <AdminFilterTabs
           className="mb-[var(--space-admin-6)]"
           current={onglet}
-          options={([...ONGLETS_DOSSIER, "facturation"] as const).map((o) => ({
+          options={([...ONGLETS_DOSSIER, "devis-factures"] as const).map((o) => ({
             value: o,
             label: LIBELLE_ONGLET[o],
             href: `${ficheHref}?onglet=${o}`,
@@ -603,7 +673,7 @@ export default async function FicheClient360Page({ params, searchParams }: PageP
         </p>
       )}
 
-      {erreur !== null && onglet === "facturation" ? (
+      {erreur !== null && onglet === "devis-factures" ? (
         <p className="mb-[var(--space-admin-4)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-error)]">
           {erreur}
         </p>
@@ -788,7 +858,7 @@ export default async function FicheClient360Page({ params, searchParams }: PageP
 
       {contenuDossier}
 
-      {onglet === "facturation" ? (
+      {onglet === "devis-factures" ? (
         <>
           {encoursDuCents > 0 ? (
             <AdminBloc teinte="ambre" haut titre="Encours à encaisser">
