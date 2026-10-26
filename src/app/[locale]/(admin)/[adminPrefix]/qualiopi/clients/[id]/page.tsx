@@ -679,181 +679,190 @@ export default async function FicheClient360Page({ params, searchParams }: PageP
         </p>
       ) : null}
 
-      {/* ── Branche et OPCO (lot OPCO A7b) : IDCC, effectif, OPCO, enveloppe,
-          adhérent ; « Modifier » sur place. Rien pour un particulier. ────────── */}
-      <BrancheOpcoBloc
-        client={client}
-        peutEcrire={acces.peutEcrire}
-        complementEffectif={
-          <>
-            {acces.peutEcrire && sirenLu !== null && client.effectifSource !== "saisie" ? (
-              <form
-                action={rafraichirEffectifInseeFormAction}
-                className="mt-[var(--space-admin-1)]"
-              >
-                <input type="hidden" name="clientId" value={client.id} />
-                <AdminButton type="submit" variant="secondary">
-                  Rafraîchir depuis l&apos;INSEE
-                </AdminButton>
-              </form>
-            ) : null}
-            {messageReleveInsee !== null ? (
-              <p
-                role="status"
-                className="mt-[var(--space-admin-1)] text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-soft)]"
-              >
-                {messageReleveInsee}
-              </p>
-            ) : null}
-          </>
-        }
-      />
-
-      {/* ── Société | Contact (lot A9) ─────────────────────────────────────────
-          Deux blocs : aucun identifiant de la société ne doit sembler appartenir
-          à la personne. Un particulier n'a que le bloc Contact. L'effectif et
-          l'OPCO se lisent dans « Branche et OPCO », une seule fois. ─────────── */}
-      <div className={`${sectionCls} grid gap-[var(--space-admin-4)] lg:grid-cols-[3fr_2fr]`}>
-        {estEntreprise ? (
-          <section data-bloc="societe" aria-labelledby="bloc-societe" className={blocCls}>
-            <h2 id="bloc-societe" className={blocTitreCls}>
-              Société
-            </h2>
-            <div className="grid grid-cols-1 gap-[var(--space-admin-4)] sm:grid-cols-2">
-              <div className="sm:col-span-2">
-                <p className={infoLabelCls}>Raison sociale</p>
-                <p className={infoValueCls}>{client.raisonSociale}</p>
-              </div>
-              <div>
-                <p className={infoLabelCls}>SIRET</p>
-                <p className={`${infoValueCls} font-mono`}>{client.siret ?? "—"}</p>
-              </div>
-              <div>
-                <p className={infoLabelCls}>SIREN</p>
-                {sirenLu !== null ? (
-                  <>
-                    <p className={`${infoValueCls} font-mono`}>{sirenLu}</p>
-                    {sirenContraire ? (
-                      <div className="mt-[var(--space-admin-2)]">
-                        <AdminBloc teinte="terracotta" niveau={3} titre="SIREN contredit le SIRET">
-                          <p role="status" className="text-[length:var(--text-admin-sm)]">
-                            {AVERTISSEMENT_SIREN_CONTRAIRE}
-                          </p>
-                        </AdminBloc>
-                      </div>
-                    ) : null}
-                  </>
-                ) : (
-                  <div className="mt-[var(--space-admin-1)] flex flex-col gap-[var(--space-admin-1)]">
-                    <AdminBadge tone="warning" className="self-start">
-                      SIREN à compléter
-                    </AdminBadge>
-                    {sirenPropose !== null ? (
-                      <form
-                        action={confirmerSirenFormAction}
-                        data-bloc="siren-propose-questionnaire"
-                        className="flex flex-wrap items-center gap-[var(--space-admin-2)] text-[length:var(--text-admin-xs)]"
-                      >
-                        <input type="hidden" name="clientId" value={client.id} />
-                        <input type="hidden" name="siren" value={sirenPropose.siren} />
-                        <span>
-                          Proposé par le questionnaire avant audit :{" "}
-                          <span className="font-mono">{sirenPropose.siren}</span>
-                          {sirenPropose.siret !== null ? (
-                            <>
-                              {" "}
-                              (SIRET <span className="font-mono">{sirenPropose.siret}</span>)
-                            </>
-                          ) : null}
-                        </span>
-                        <AdminButton type="submit" variant="secondary">
-                          Poser ce SIREN
-                        </AdminButton>
-                      </form>
-                    ) : null}
-                    {acces.peutEcrire && annuaire === null ? (
-                      <Link
-                        href={`${ficheHref}?${ongletCourant ? `onglet=${ongletCourant}&` : ""}annuaire=1`}
-                        className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-accent)] underline-offset-2 hover:underline"
-                      >
-                        Chercher le SIREN dans l&apos;annuaire
-                      </Link>
-                    ) : null}
-                    {annuaire !== null && !annuaire.ok ? (
-                      <p className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-soft)]">
-                        L&apos;annuaire des entreprises ne répond pas pour l&apos;instant. Saisissez
-                        le SIRET dans « Éditer » (le SIREN en sera tiré), ou réessayez plus tard.
-                      </p>
-                    ) : null}
-                    {annuaire !== null && annuaire.ok && annuaire.propositions.length === 0 ? (
-                      <p className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-soft)]">
-                        Aucune entreprise trouvée à ce nom.
-                      </p>
-                    ) : null}
-                    {annuaire !== null && annuaire.ok && annuaire.propositions.length > 0 ? (
-                      <ul className="space-y-[var(--space-admin-1)] text-[length:var(--text-admin-xs)]">
-                        {annuaire.propositions.map((prop) => (
-                          <li key={prop.siren}>
-                            <form
-                              action={confirmerSirenFormAction}
-                              className="flex flex-wrap items-center gap-[var(--space-admin-2)]"
-                            >
-                              <input type="hidden" name="clientId" value={client.id} />
-                              <input type="hidden" name="siren" value={prop.siren} />
-                              <span className="font-mono">{prop.siren}</span>
-                              <span>{prop.nom}</span>
-                              <span className="text-[color:var(--color-admin-fg-muted)]">
-                                {[prop.codePostal, prop.ville].filter(Boolean).join(" ")}
-                              </span>
-                              <AdminButton type="submit" variant="secondary">
-                                C&apos;est elle
-                              </AdminButton>
-                            </form>
-                          </li>
-                        ))}
-                      </ul>
-                    ) : null}
-                  </div>
-                )}
-              </div>
-              {adresseEtPenalites}
-            </div>
-          </section>
-        ) : null}
-
-        <section data-bloc="contact" aria-labelledby="bloc-contact" className={blocCls}>
-          <h2 id="bloc-contact" className={blocTitreCls}>
-            Contact
-          </h2>
-          <div className="grid grid-cols-1 gap-[var(--space-admin-4)] sm:grid-cols-2">
-            <div>
-              <p className={infoLabelCls}>Nom</p>
-              <p className={infoValueCls}>{client.contactNom || "—"}</p>
-            </div>
-            <div>
-              <p className={infoLabelCls}>Rôle</p>
-              <p className={infoValueCls}>{client.contactFonction || "—"}</p>
-            </div>
-            <div className="min-w-0">
-              <p className={infoLabelCls}>E-mail</p>
-              <p className={`${infoValueCls} truncate`}>{client.contactEmail || "—"}</p>
-            </div>
-            <div>
-              <p className={infoLabelCls}>Téléphone</p>
-              <p className={infoValueCls}>{client.contactTelephone || "—"}</p>
-            </div>
-            {!estEntreprise ? adresseEtPenalites : null}
-          </div>
-        </section>
-      </div>
-
-      {estEntreprise ? (
-        <section className={sectionCls}>
-          <DejaPrisEnChargeOpco
-            opcoLibelle={opcoClient !== null ? OPCO_LABELS[opcoClient] : null}
-            lignes={priseEnChargeOpco}
+      {onglet === "resume" ? (
+        <>
+          {/* ── Branche et OPCO (lot OPCO A7b) : IDCC, effectif, OPCO, enveloppe,
+            adhérent ; « Modifier » sur place. Rien pour un particulier. ────────── */}
+          <BrancheOpcoBloc
+            client={client}
+            peutEcrire={acces.peutEcrire}
+            complementEffectif={
+              <>
+                {acces.peutEcrire && sirenLu !== null && client.effectifSource !== "saisie" ? (
+                  <form
+                    action={rafraichirEffectifInseeFormAction}
+                    className="mt-[var(--space-admin-1)]"
+                  >
+                    <input type="hidden" name="clientId" value={client.id} />
+                    <AdminButton type="submit" variant="secondary">
+                      Rafraîchir depuis l&apos;INSEE
+                    </AdminButton>
+                  </form>
+                ) : null}
+                {messageReleveInsee !== null ? (
+                  <p
+                    role="status"
+                    className="mt-[var(--space-admin-1)] text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-soft)]"
+                  >
+                    {messageReleveInsee}
+                  </p>
+                ) : null}
+              </>
+            }
           />
-        </section>
+
+          {/* ── Société | Contact (lot A9) ─────────────────────────────────────────
+            Deux blocs : aucun identifiant de la société ne doit sembler appartenir
+            à la personne. Un particulier n'a que le bloc Contact. L'effectif et
+            l'OPCO se lisent dans « Branche et OPCO », une seule fois. ─────────── */}
+          <div className={`${sectionCls} grid gap-[var(--space-admin-4)] lg:grid-cols-[3fr_2fr]`}>
+            {estEntreprise ? (
+              <section data-bloc="societe" aria-labelledby="bloc-societe" className={blocCls}>
+                <h2 id="bloc-societe" className={blocTitreCls}>
+                  Société
+                </h2>
+                <div className="grid grid-cols-1 gap-[var(--space-admin-4)] sm:grid-cols-2">
+                  <div className="sm:col-span-2">
+                    <p className={infoLabelCls}>Raison sociale</p>
+                    <p className={infoValueCls}>{client.raisonSociale}</p>
+                  </div>
+                  <div>
+                    <p className={infoLabelCls}>SIRET</p>
+                    <p className={`${infoValueCls} font-mono`}>{client.siret ?? "—"}</p>
+                  </div>
+                  <div>
+                    <p className={infoLabelCls}>SIREN</p>
+                    {sirenLu !== null ? (
+                      <>
+                        <p className={`${infoValueCls} font-mono`}>{sirenLu}</p>
+                        {sirenContraire ? (
+                          <div className="mt-[var(--space-admin-2)]">
+                            <AdminBloc
+                              teinte="terracotta"
+                              niveau={3}
+                              titre="SIREN contredit le SIRET"
+                            >
+                              <p role="status" className="text-[length:var(--text-admin-sm)]">
+                                {AVERTISSEMENT_SIREN_CONTRAIRE}
+                              </p>
+                            </AdminBloc>
+                          </div>
+                        ) : null}
+                      </>
+                    ) : (
+                      <div className="mt-[var(--space-admin-1)] flex flex-col gap-[var(--space-admin-1)]">
+                        <AdminBadge tone="warning" className="self-start">
+                          SIREN à compléter
+                        </AdminBadge>
+                        {sirenPropose !== null ? (
+                          <form
+                            action={confirmerSirenFormAction}
+                            data-bloc="siren-propose-questionnaire"
+                            className="flex flex-wrap items-center gap-[var(--space-admin-2)] text-[length:var(--text-admin-xs)]"
+                          >
+                            <input type="hidden" name="clientId" value={client.id} />
+                            <input type="hidden" name="siren" value={sirenPropose.siren} />
+                            <span>
+                              Proposé par le questionnaire avant audit :{" "}
+                              <span className="font-mono">{sirenPropose.siren}</span>
+                              {sirenPropose.siret !== null ? (
+                                <>
+                                  {" "}
+                                  (SIRET <span className="font-mono">{sirenPropose.siret}</span>)
+                                </>
+                              ) : null}
+                            </span>
+                            <AdminButton type="submit" variant="secondary">
+                              Poser ce SIREN
+                            </AdminButton>
+                          </form>
+                        ) : null}
+                        {acces.peutEcrire && annuaire === null ? (
+                          <Link
+                            href={`${ficheHref}?${ongletCourant ? `onglet=${ongletCourant}&` : ""}annuaire=1`}
+                            className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-accent)] underline-offset-2 hover:underline"
+                          >
+                            Chercher le SIREN dans l&apos;annuaire
+                          </Link>
+                        ) : null}
+                        {annuaire !== null && !annuaire.ok ? (
+                          <p className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-soft)]">
+                            L&apos;annuaire des entreprises ne répond pas pour l&apos;instant.
+                            Saisissez le SIRET dans « Éditer » (le SIREN en sera tiré), ou réessayez
+                            plus tard.
+                          </p>
+                        ) : null}
+                        {annuaire !== null && annuaire.ok && annuaire.propositions.length === 0 ? (
+                          <p className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-soft)]">
+                            Aucune entreprise trouvée à ce nom.
+                          </p>
+                        ) : null}
+                        {annuaire !== null && annuaire.ok && annuaire.propositions.length > 0 ? (
+                          <ul className="space-y-[var(--space-admin-1)] text-[length:var(--text-admin-xs)]">
+                            {annuaire.propositions.map((prop) => (
+                              <li key={prop.siren}>
+                                <form
+                                  action={confirmerSirenFormAction}
+                                  className="flex flex-wrap items-center gap-[var(--space-admin-2)]"
+                                >
+                                  <input type="hidden" name="clientId" value={client.id} />
+                                  <input type="hidden" name="siren" value={prop.siren} />
+                                  <span className="font-mono">{prop.siren}</span>
+                                  <span>{prop.nom}</span>
+                                  <span className="text-[color:var(--color-admin-fg-muted)]">
+                                    {[prop.codePostal, prop.ville].filter(Boolean).join(" ")}
+                                  </span>
+                                  <AdminButton type="submit" variant="secondary">
+                                    C&apos;est elle
+                                  </AdminButton>
+                                </form>
+                              </li>
+                            ))}
+                          </ul>
+                        ) : null}
+                      </div>
+                    )}
+                  </div>
+                  {adresseEtPenalites}
+                </div>
+              </section>
+            ) : null}
+
+            <section data-bloc="contact" aria-labelledby="bloc-contact" className={blocCls}>
+              <h2 id="bloc-contact" className={blocTitreCls}>
+                Contact
+              </h2>
+              <div className="grid grid-cols-1 gap-[var(--space-admin-4)] sm:grid-cols-2">
+                <div>
+                  <p className={infoLabelCls}>Nom</p>
+                  <p className={infoValueCls}>{client.contactNom || "—"}</p>
+                </div>
+                <div>
+                  <p className={infoLabelCls}>Rôle</p>
+                  <p className={infoValueCls}>{client.contactFonction || "—"}</p>
+                </div>
+                <div className="min-w-0">
+                  <p className={infoLabelCls}>E-mail</p>
+                  <p className={`${infoValueCls} truncate`}>{client.contactEmail || "—"}</p>
+                </div>
+                <div>
+                  <p className={infoLabelCls}>Téléphone</p>
+                  <p className={infoValueCls}>{client.contactTelephone || "—"}</p>
+                </div>
+                {!estEntreprise ? adresseEtPenalites : null}
+              </div>
+            </section>
+          </div>
+
+          {estEntreprise ? (
+            <section className={sectionCls}>
+              <DejaPrisEnChargeOpco
+                opcoLibelle={opcoClient !== null ? OPCO_LABELS[opcoClient] : null}
+                lignes={priseEnChargeOpco}
+              />
+            </section>
+          ) : null}
+        </>
       ) : null}
 
       {contenuDossier}
