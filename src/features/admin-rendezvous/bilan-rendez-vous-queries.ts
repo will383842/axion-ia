@@ -32,15 +32,22 @@ import {
 export const LIGNES_BILAN_MAX = 5000;
 
 export async function lireBilanRendezVous(
-  jours: PeriodeBilan,
+  // `PeriodeBilan` (30, 90) pour l'écran des appels ; le tunnel du Tour lit aussi 7 jours.
+  jours: PeriodeBilan | number,
   maintenant: Date = new Date(),
 ): Promise<BilanRendezVous> {
   const depuis = new Date(maintenant.getTime() - jours * 86_400_000);
+  // Le CASE s'applique à tous les types de rendez-vous : un rendez-vous arrivé avec
+  // depuis=tdf-* est étiqueté tour:… (cas marginal accepté).
   const lignes = await prisma.$queryRaw<LigneBilanBrute[]>`
     SELECT
       e.type_rendez_vous::text AS "typeRendezVous",
       e.event_type_name AS "eventTypeName",
-      e.utm_content AS "utmContent",
+      CASE
+        WHEN e.raw_payload -> 'invitee' -> 'tracking' ->> 'utm_term' ~ '^tdf-[a-z0-9-]+$'
+          THEN 'tour:' || (e.raw_payload -> 'invitee' -> 'tracking' ->> 'utm_term')
+        ELSE e.utm_content
+      END AS "utmContent",
       e.status::text AS "status",
       s.issue::text AS "issue",
       (c.id IS NOT NULL) AS "fiche",
