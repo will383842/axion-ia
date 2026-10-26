@@ -60,16 +60,16 @@ const POINTS = [
   { x: 290, y: 120 },
   { x: 300, y: 170 },
   { x: 240, y: 175 },
-  { x: 170, y: 160 },
+  { x: 185, y: 178 },
   { x: 160, y: 215 },
   { x: 200, y: 255 },
-  { x: 260, y: 292 },
+  { x: 268, y: 262 },
 ];
 /** Le point qui illustre le principe : il se remplit jusqu'à 5, puis s'ouvre. */
 const DEMO = { x: 240, y: 264 };
 /** Le tracé en pointillé qui relie les repères (passe par le point de démonstration). */
 const TRACE =
-  "M160 110 C182 112 267 110 290 120 C313 130 308 161 300 170 C292 179 262 177 240 175 C218 173 183 153 170 160 C157 167 155 199 160 215 C165 231 187 247 200 255 C213 263 230 258 240 264 C250 270 257 287 260 292";
+  "M160 110 C182 112 267 110 290 120 C313 130 308 161 300 170 C292 179 262 177 240 175 C218 173 200 170 185 178 C172 186 155 199 160 215 C165 231 187 247 200 255 C213 263 230 258 240 264 C250 268 258 268 268 262";
 
 /** La carte de France stylisée. `titreId` : l'id du texte alternatif (`<title>`). */
 export function CarteFrance({

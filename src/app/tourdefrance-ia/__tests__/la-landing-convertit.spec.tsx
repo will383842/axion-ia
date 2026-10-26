@@ -329,6 +329,8 @@ describe("🔴 la carte : aucun repère ne tombe sur une grande ville", () => {
     ["Toulouse", 192, 305],
     ["Marseille", 300, 308],
     ["Clermont-Ferrand", 236, 220],
+    ["Montpellier", 258, 302],
+    ["Nice", 349, 299],
   ];
 
   it("chaque cercle de la carte est à plus de 40 unités de ces villes", () => {
@@ -346,6 +348,41 @@ describe("🔴 la carte : aucun repère ne tombe sur une grande ville", () => {
       for (const [nom, vx, vy] of VILLES) {
         expect(Math.hypot(x - vx, y - vy), `${x},${y} près de ${nom}`).toBeGreaterThan(40);
       }
+    }
+  });
+});
+
+describe("🔴 la carte : chaque repère est à l'intérieur du contour", () => {
+  // Ray casting sur le sous-chemin principal de FRANCE (la Corse est un autre chemin).
+  const nombres = /const FRANCE =\s*"M([^"]+?)Z"/.exec(VISUELS)?.[1] ?? "";
+  const n = nombres.split(/\s+/).map(Number);
+  const polygone: Array<[number, number]> = [];
+  for (let i = 0; i + 1 < n.length; i += 2) polygone.push([n[i] as number, n[i + 1] as number]);
+  const dedans = (x: number, y: number) => {
+    let in_ = false;
+    for (let i = 0, j = polygone.length - 1; i < polygone.length; j = i++) {
+      const [xi, yi] = polygone[i] as [number, number];
+      const [xj, yj] = polygone[j] as [number, number];
+      if (yi > y !== yj > y && x < ((xj - xi) * (y - yi)) / (yj - yi) + xi) in_ = !in_;
+    }
+    return in_;
+  };
+
+  it("le contour FRANCE est lu (plusieurs centaines de sommets)", () => {
+    expect(polygone.length).toBeGreaterThan(200);
+  });
+
+  it("repères et point de démonstration sont dans la France continentale", () => {
+    const { container } = render(<CarteFrance titre="t" titreId="t4" />);
+    const cercles = [...container.querySelectorAll("svg > circle")];
+    const demo = /translate\((\d+) (\d+)\)/.exec(
+      container.querySelector("svg > g:not(:first-of-type)")?.getAttribute("transform") ?? "",
+    );
+    const points = cercles.map((c) => [Number(c.getAttribute("cx")), Number(c.getAttribute("cy"))]);
+    points.push([Number(demo?.[1]), Number(demo?.[2])]);
+    expect(points.length).toBeGreaterThan(8);
+    for (const [x, y] of points as Array<[number, number]>) {
+      expect(dedans(x, y), `${x},${y} hors du contour`).toBe(true);
     }
   });
 });
