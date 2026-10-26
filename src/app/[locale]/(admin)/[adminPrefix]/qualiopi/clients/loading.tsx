@@ -22,7 +22,7 @@ import { AdminLoadingState } from "@/components/admin/ui";
 export default function Loading(): React.ReactElement {
   return (
     <div className="mx-auto w-full max-w-[1280px] px-[var(--space-admin-6)] py-[var(--space-admin-7)]">
-      <AdminLoadingState variant="table" count={8} cols={5} ariaLabel="Chargement des clients" />
+      <AdminLoadingState variant="table" count={8} cols={7} ariaLabel="Chargement des clients" />
     </div>
   );
 }

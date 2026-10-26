@@ -672,9 +672,9 @@ test.describe("@parcours-qualiopi 5 — entreprise et particulier, côte à côt
           "fiche ne s'y lit pas.",
       ).toHaveCount(1, { timeout: 30_000 });
 
-      // Colonnes : 0 = Numéro (:179), 1 = Raison sociale (:185), 2 = Type (:214).
+      // Colonnes : 0 = Client (numéro + raison sociale), 1 = Type, 2 = Identifiants.
       await expect(
-        ligne.locator("td").nth(2),
+        ligne.locator("td").nth(1),
         `la fiche « ${marqueur} » est enregistrée avec le mauvais type. La colonne relit ` +
           "`Client.type` depuis la base (clients/page.tsx:214-216) : c'est la SEULE preuve " +
           "que le choix a survécu à l'action serveur. `type` est `.optional()` côté Zod " +
