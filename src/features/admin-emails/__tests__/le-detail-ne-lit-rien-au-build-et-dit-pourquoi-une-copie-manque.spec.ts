@@ -106,8 +106,8 @@ describe("pourquoi une copie manque", () => {
     expect(r.phrase).toBe("Copie non conservée (envoi antérieur à la conservation des copies).");
   });
 
-  it("plus de 12 mois : purgée", () => {
-    const vieux = new Date("2025-09-01T00:00:00Z");
+  it("plus de 5 ans : copie absente", () => {
+    const vieux = new Date("2020-09-01T00:00:00Z");
     expect(
       raisonSansCopie({ status: "sent", sentAt: vieux, createdAt: vieux }, PREMIERE, MAINTENANT)
         .kind,
@@ -128,28 +128,25 @@ describe("pourquoi une copie manque", () => {
   });
 });
 
-describe("un e-mail rattaché à une fiche client est gardé 5 ans", () => {
-  const il_y_a_2_ans = new Date("2024-10-20T10:00:00Z");
-  const ligne = { status: "sent" as const, sentAt: il_y_a_2_ans, createdAt: il_y_a_2_ans };
+describe("tous les e-mails sont gardés 5 ans", () => {
   const MAINT = new Date("2026-10-25T10:00:00Z");
+  const il_y_a_2_ans = new Date("2024-10-20T10:00:00Z");
 
-  it("sans fiche : plus de 12 mois = copie purgée (12 mois dits)", () => {
-    const r = raisonSansCopie(ligne, new Date("2020-01-01T00:00:00Z"), MAINT, false);
-    expect(r.kind).toBe("purgee");
-    expect(r.phrase).toContain("12 mois");
+  it("2 ans n'est pas une purge : la copie manquante est une copie manquante", () => {
+    const r = raisonSansCopie(
+      { status: "sent", sentAt: il_y_a_2_ans, createdAt: il_y_a_2_ans },
+      new Date("2020-01-01T00:00:00Z"),
+      MAINT,
+    );
+    expect(r.kind).toBe("manquante");
   });
 
-  it("avec fiche : 2 ans n'est pas une purge, et la durée dite est 5 ans", () => {
-    const r = raisonSansCopie(ligne, new Date("2020-01-01T00:00:00Z"), MAINT, true);
-    expect(r.kind).toBe("manquante");
+  it("plus de 5 ans : la durée dite est 5 ans, jamais 12 mois, et rien n'est supprimé seul", () => {
     const vieux = new Date("2020-01-01T00:00:00Z");
-    const p = raisonSansCopie(
-      { status: "sent", sentAt: vieux, createdAt: vieux },
-      null,
-      MAINT,
-      true,
-    );
+    const p = raisonSansCopie({ status: "sent", sentAt: vieux, createdAt: vieux }, null, MAINT);
     expect(p.kind).toBe("purgee");
     expect(p.phrase).toContain("5 ans");
+    expect(p.phrase).not.toContain("12 mois");
+    expect(p.phrase).toContain("Aucune copie n'est supprimée automatiquement");
   });
 });

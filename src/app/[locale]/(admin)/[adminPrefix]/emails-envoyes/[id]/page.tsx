@@ -30,7 +30,6 @@ import {
   reconstituerInvitation,
   type ApercuReconstitue,
 } from "@/features/admin-emails/reconstitution-invitation";
-import { clientsDesLignes } from "@/features/admin-emails/rattachement-client";
 import { VueDetailEmail } from "../_components/VueDetailEmail";
 
 // Jamais pré-rendue : au build la base est un stub (`stub.invalid`), et le
@@ -69,12 +68,7 @@ export default async function EmailEnvoyeDetailPage({
   let raison: RaisonSansCopie | null = null;
   let apercu: ApercuReconstitue | null = null;
   if (email.copie === null) {
-    const rattache = (
-      await clientsDesLignes([
-        { id: email.id, entityType: email.entityType, entityId: email.entityId },
-      ])
-    ).has(email.id);
-    raison = raisonSansCopie(email, await datePremiereCopie(), new Date(), rattache);
+    raison = raisonSansCopie(email, await datePremiereCopie());
     if (estReconstituable(email)) apercu = await reconstituerInvitation(email);
   }
 
