@@ -18,8 +18,8 @@ const bd = vi.hoisted(() => ({
   $transaction: vi.fn(async (fn: (t: unknown) => unknown) => fn(tx)),
 }));
 vi.mock("@/lib/prisma", () => ({ prisma: bd }));
-vi.mock("@/server/actions/qualiopi/_guards", () => ({
-  requireAdminWrite: vi.fn(async () => ({ userId: ADMIN })),
+vi.mock("@/features/dossier-client/acces", () => ({
+  exigerAccesEchanges: vi.fn(async () => ({ userId: ADMIN, role: "super_admin" })),
 }));
 vi.mock("next/cache", () => ({ revalidatePath: vi.fn() }));
 vi.mock("next/navigation", () => ({

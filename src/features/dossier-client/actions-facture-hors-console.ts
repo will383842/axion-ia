@@ -1,7 +1,8 @@
 /**
  * Action serveur « Facture établie hors console » (fiche client, étape 4, 2026-10-26).
  *
- * Elle vérifie ELLE-MÊME la session et le droit d'écrire (`requireAdminWrite`) : une Server Action
+ * Elle vérifie ELLE-MÊME la session et le rôle (`exigerAccesEchanges`, comme les autres actions du
+ * dossier client, sans importer le domaine Qualiopi) : une Server Action
  * s'appelle directement. Dans UNE transaction : la ligne `client_factures_hors_console` (la date,
  * corrigeable), puis — seulement si la fiche est un prospect ou a reçu un devis — le passage à
  * « client actif », tracé `client.devient_client`. Le statut ne redescend jamais, rien n'est
@@ -19,7 +20,7 @@ import { z } from "zod";
 import { prisma } from "@/lib/prisma";
 import { adminPath } from "@/lib/admin-path";
 import { dayKeyInParis } from "@/lib/calendar-grid";
-import { requireAdminWrite } from "@/server/actions/qualiopi/_guards";
+import { exigerAccesEchanges } from "@/features/dossier-client/acces";
 import { avecMessageDeRetour } from "@/features/dossier-client/message-de-retour";
 import {
   statutApresFactureHorsConsole,
@@ -39,7 +40,7 @@ export async function factureHorsConsoleAction(fd: FormData): Promise<void> {
   const retour = `${adminPath("fr", `qualiopi/clients/${clientId}`)}?onglet=devis-factures`;
   const echec = (texte: string): never => redirect(avecMessageDeRetour(retour, "erreur", texte));
 
-  const session = await requireAdminWrite();
+  const session = await exigerAccesEchanges();
   if (champ(fd, "facture_hors_console") !== "1") echec("Cochez la case pour l'enregistrer.");
   const jour = validerJourFacture(champ(fd, "date"), dayKeyInParis(new Date()));
   const jourFacture = jour.ok ? jour.jour : echec(jour.motif);
