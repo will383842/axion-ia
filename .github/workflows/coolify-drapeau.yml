@@ -55,6 +55,11 @@ on:
           - "TELEGRAM_CHAT_ID_QUESTIONNAIRE_AUDIT"
           # Boîte d'Axion IA qui reçoit les essais (« M'envoyer un essai »). Cible : les deux.
           - "QUESTIONNAIRE_PREAUDIT_ADRESSE_ESSAI"
+          # Synchro du dossier client avec le CRM Pro (2026-10-26). Valeurs : true | false.
+          # SYNC : le site ENVOIE le dossier au CRM (cible : les-deux, le worker balaie). INBOUND : le CRM
+          # RENVOIE le code NAF (cible : site, route signée). Aucune suppression propagée.
+          - "CRM_SYNC_DOSSIER_ENABLED"
+          - "CRM_INBOUND_DOSSIER_ENABLED"
       valeur:
         description: "Valeur : true, false, essai, une date ISO (DOSSIER_FICHE_AUTO_DEPUIS), un identifiant de salon ou une adresse d'essai"
         required: true
