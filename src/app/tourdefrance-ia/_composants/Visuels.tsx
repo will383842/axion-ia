@@ -56,20 +56,20 @@ const CORSE =
  * et aucun n'est annoncé (cf. la légende).
  */
 const POINTS = [
+  { x: 183, y: 70 },
   { x: 160, y: 110 },
-  { x: 290, y: 120 },
-  { x: 300, y: 170 },
+  { x: 290, y: 115 },
+  { x: 333, y: 170 },
   { x: 240, y: 175 },
-  { x: 185, y: 178 },
   { x: 160, y: 215 },
-  { x: 200, y: 255 },
-  { x: 268, y: 262 },
+  { x: 196, y: 254 },
+  { x: 301, y: 263 },
 ];
 /** Le point qui illustre le principe : il se remplit jusqu'à 5, puis s'ouvre. */
 const DEMO = { x: 240, y: 264 };
 /** Le tracé en pointillé qui relie les repères (passe par le point de démonstration). */
 const TRACE =
-  "M160 110 C182 112 267 110 290 120 C313 130 308 161 300 170 C292 179 262 177 240 175 C218 173 200 170 185 178 C172 186 155 199 160 215 C165 231 187 247 200 255 C213 263 230 258 240 264 C250 268 258 268 268 262";
+  "M183 70 C180 75 148 105 160 110 C172 115 270 108 290 115 C310 122 339 163 333 170 C327 177 260 170 240 175 C220 180 165 206 160 215 C155 224 187 248 196 254 C205 260 228 263 240 264 C252 265 294 263 301 263";
 
 /** La carte de France stylisée. `titreId` : l'id du texte alternatif (`<title>`). */
 export function CarteFrance({

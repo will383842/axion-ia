@@ -331,6 +331,8 @@ describe("🔴 la carte : aucun repère ne tombe sur une grande ville", () => {
     ["Clermont-Ferrand", 236, 220],
     ["Montpellier", 258, 302],
     ["Nice", 349, 299],
+    ["Tours", 172, 157],
+    ["Dijon", 289, 160],
   ];
 
   it("chaque cercle de la carte est à plus de 40 unités de ces villes", () => {
