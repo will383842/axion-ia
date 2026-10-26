@@ -26,12 +26,11 @@ describe("le programme du worker", () => {
     );
   });
 
-  it("🔴 la file `apporteur-crons` garde EXACTEMENT ses cinq passages, sans celui des candidats", () => {
+  it("🔴 la file `apporteur-crons` garde EXACTEMENT ses quatre passages (rappels d'invitation retirés le 26/10), sans celui des candidats", () => {
     const debut = queues.indexOf("if (apporteurCronsQueue) {");
     const programme = queues.slice(debut, queues.indexOf("];", debut));
     const types = [...programme.matchAll(/type: "([^"]+)" as const/g)].map((m) => m[1]);
     expect(types).toEqual([
-      "relance-invitation",
       "reponses-entrantes",
       "invitation-auto",
       "reseau-quotidien",
