@@ -143,12 +143,25 @@ describe("🔑 une seule action : l'audit offert", () => {
     expect(lire(`${DOSSIER}/layout.tsx`)).toContain("overflow-x-clip");
   });
 
-  it("le héros dit l'offre, sa condition et le bouton AVANT le dessin (ordre de lecture)", () => {
+  it("condition avant le bouton à partir de sm, juste sous le bouton sur mobile", () => {
     const i = (s: string) => PAGE.indexOf(s);
     expect(i("<h1")).toBeGreaterThan(-1);
     expect(i("<h1")).toBeLessThan(i("{HEROS.sousTitre}"));
-    expect(i("{HEROS.condition}")).toBeLessThan(i("id={ID_CTA_HEROS}"));
-    expect(i("id={ID_CTA_HEROS}")).toBeLessThan(i("<CarteFrance"));
+    // La condition existe en DEUX copies, une seule affichée selon la largeur.
+    expect(PAGE.match(/\{HEROS\.condition\}/g)).toHaveLength(2);
+    const large = i("{HEROS.condition}");
+    const mobile = PAGE.indexOf("{HEROS.condition}", large + 1);
+    const balise = (pos: number) => PAGE.slice(PAGE.lastIndexOf("<p", pos), pos);
+    const cta = i("id={ID_CTA_HEROS}");
+    // Écrans larges : la copie `hidden sm:block`, AVANT le bouton.
+    expect(balise(large)).toMatch(/className="[^"]*\bhidden\b[^"]*"/);
+    expect(balise(large)).toContain("sm:block");
+    expect(large).toBeLessThan(cta);
+    // Mobile : la copie `sm:hidden`, APRÈS le bouton et AVANT le dessin.
+    expect(balise(mobile)).toContain("sm:hidden");
+    expect(mobile).toBeGreaterThan(cta);
+    expect(mobile).toBeLessThan(i("<CarteFrance"));
+    expect(cta).toBeLessThan(i("<CarteFrance"));
     // Le bouton du héros reste le premier GRAND bouton de la page.
     expect(i('depuis="tdf-heros"')).toBeLessThan(i('depuis="tdf-bandeau"'));
   });
@@ -609,8 +622,10 @@ describe("🔴 le vocabulaire de la landing", () => {
   });
 
   it("ni promesse de résultat ni construction du slogan d'Axion (« partout… sauf »)", () => {
-    // « partout » n'est permis que dans l'accroche de Will, le H1.
-    expect(texte.replace(HEROS.titreAvant, "")).not.toMatch(/\bpartout\b/i);
+    // « partout » n'est permis que dans l'accroche de Will : le H1, et le texte
+    // alternatif de l'image de partage, qui la recopie.
+    expect(texte.split(HEROS.titreAvant).length - 1).toBe(2);
+    expect(texte.replaceAll(HEROS.titreAvant, "")).not.toMatch(/\bpartout\b/i);
     expect(texte).not.toMatch(/\bsauf\b/i);
     expect(texte).not.toMatch(/d[èe]s le lendemain|ce que vous ne voyez plus|gagner du temps/i);
     // L'audit « chiffre » ou « met en évidence » : il ne garantit rien.
