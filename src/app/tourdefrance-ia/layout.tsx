@@ -3,8 +3,8 @@
 //
 // Pourquoi hors de la coquille du site : `[locale]/layout.tsx` monte l'en-tête
 // et le pied de page d'Axion, next-intl, le chatbot et les scripts de mesure. La
-// landing n'en veut AUCUN : c'est une page d'événement, mobile d'abord, sans
-// script tiers. Elle a son propre bandeau et son propre pied de page.
+// landing n'en veut AUCUN : c'est une page d'offre aux entreprises, mobile
+// d'abord, sans script tiers. Elle a son propre bandeau et son propre pied de page.
 //
 // Le proxy ne la 301 PAS vers `/fr/…` : sa règle 0-TDF la sert telle quelle (et
 // répond 404 tant que `TOUR_PUBLIC` est faux, sauf aperçu par cookie).
