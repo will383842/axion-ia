@@ -202,6 +202,12 @@ export interface TelegramChannelOptions {
    * L'appelant découpe d'abord (`decouperPourTelegram`).
    */
   brut?: boolean;
+  /**
+   * Désactive l'aperçu du lien (`link_preview_options.is_disabled`). Réservé au
+   * salon « Questionnaire audit » : le lien de la console y est en pied de
+   * message et l'aperçu orange n'apporte rien. Les autres salons gardent l'aperçu.
+   */
+  sansApercuLien?: boolean;
 }
 
 /** Délai maximal accepté sur un 429 avant l'unique nouvel essai. */
@@ -295,6 +301,7 @@ export async function sendTelegramRaw(opts: TelegramChannelOptions): Promise<boo
       ? { text: opts.text }
       : { text: preparerPourTelegram(opts.text), parse_mode: "MarkdownV2" }),
     disable_notification: opts.silent ?? false,
+    ...(opts.sansApercuLien ? { link_preview_options: { is_disabled: true } } : {}),
   });
   try {
     let cible = chatId;

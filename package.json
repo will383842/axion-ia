@@ -274,11 +274,18 @@
       "running": false
     },
     {
+      "name": "Routes /tourdefrance-ia (landing du Tour de France IA, hors [locale]) <= 75 KB gz cumulé",
+      "path": ".next/static/chunks/app/tourdefrance-ia/**/page-*.js",
+      "limit": "75 KB",
+      "running": false
+    },
+    {
       "name": "SOMME des page chunks PUBLICS (hors /appel, hors console admin) — cliquet anti-croissance, PAS un budget par route",
       "path": [
         ".next/static/chunks/app/**/page-*.js",
         "!.next/static/chunks/app/**/appel/**",
         "!.next/static/chunks/app/apporteur/**",
+        "!.next/static/chunks/app/tourdefrance-ia/**",
         "!.next/static/chunks/app/**/[(]admin[)]/**"
       ],
       "limit": "292 KB",

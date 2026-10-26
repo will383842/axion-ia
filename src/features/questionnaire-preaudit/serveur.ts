@@ -25,6 +25,7 @@ import {
 } from "./donnees";
 import { validerHtml } from "./html";
 import { lireLaCharge } from "./lecture";
+import { reessayerSiInterblocage } from "./interblocage";
 import { AUCUN_LIBELLE, libellesDuHtml, type Libelles } from "./libelles";
 
 export { cheminEssaiPreaudit, cheminPreaudit, urlArretRelances, urlPreaudit } from "./liens";
@@ -124,6 +125,12 @@ export async function deposerQuestionnaire(
 ): Promise<ResultatDepot> {
   const v = validerHtml(html);
   if (!v.ok) throw new MessagePourWill(v.motif);
+  // Rejouable sans risque : la transaction n'écrit qu'en base (ni e-mail, ni file), et Postgres en
+  // annule TOUT sur un interblocage ; le nouvel essai repart de zéro (le `ref` est retiré).
+  return reessayerSiInterblocage(() => deposerUneFois(rencontreId, html));
+}
+
+async function deposerUneFois(rencontreId: string, html: string): Promise<ResultatDepot> {
   return prisma.$transaction(async (tx): Promise<ResultatDepot> => {
     const existant = await tx.questionnaireAvantAudit.findUnique({
       where: { rencontreId },
@@ -139,7 +146,7 @@ export async function deposerQuestionnaire(
       }
       const refus = new MessagePourWill(
         "Ce questionnaire a déjà reçu des réponses : il ne peut plus être remplacé. Pour écrire à " +
-          "quelqu'un d'autre, déposez un questionnaire sur la rencontre de cette personne.",
+          "quelqu'un d'autre, déposez un questionnaire sur le rendez-vous de cette personne.",
       );
       const reponses = await tx.questionnaireAvantAuditEnvoi.count({
         where: { questionnaireId: existant.id },
@@ -152,7 +159,7 @@ export async function deposerQuestionnaire(
         throw new MessagePourWill(
           "Quelqu'un a déjà commencé à remplir ce questionnaire (brouillon enregistré) : le " +
             "remplacer effacerait ce brouillon, il n'est donc pas remplacé. Attendez sa réponse, " +
-            "ou déposez un questionnaire sur la rencontre de la bonne personne.",
+            "ou déposez un questionnaire sur le rendez-vous de la bonne personne.",
         );
       }
       const supprime = await tx.questionnaireAvantAudit.deleteMany({
@@ -230,7 +237,7 @@ export async function reserverEnvoi(
     throw new MessagePourWill(
       "Ce questionnaire a déjà été envoyé à une autre adresse. Si l'adresse était fausse et que " +
         "personne n'a encore répondu, déposez-le de nouveau : l'ancien lien cessera de marcher. " +
-        "Pour écrire à quelqu'un d'autre, déposez un questionnaire sur la rencontre de cette " +
+        "Pour écrire à quelqu'un d'autre, déposez un questionnaire sur le rendez-vous de cette " +
         "personne.",
     );
   }
@@ -281,68 +288,70 @@ export async function enregistrerReponse(
   charge: ChargeValide,
   maintenant: Date = new Date(),
 ): Promise<ResultatReponse> {
-  return prisma.$transaction(async (tx): Promise<ResultatReponse> => {
-    const verrou = await tx.$queryRaw<
-      { id: string }[]
-    >`SELECT id FROM questionnaires_avant_audit WHERE id = ${q.id}::uuid FOR UPDATE`;
-    if (verrou.length === 0) return "ferme";
-    const frais = await tx.questionnaireAvantAudit.findUnique({
-      where: { id: q.id },
-      select: { envoyeLe: true, closLe: true, expireLe: true },
-    });
-    if (frais === null || !accepteDesReponses(frais, maintenant)) return "ferme";
-    const membre = membreAGarder(q.id, charge.mode, charge.membre);
-    if (charge.envoyeLe !== null) {
-      const memes = await tx.questionnaireAvantAuditEnvoi.findMany({
-        where: {
+  return reessayerSiInterblocage(() =>
+    prisma.$transaction(async (tx): Promise<ResultatReponse> => {
+      const verrou = await tx.$queryRaw<
+        { id: string }[]
+      >`SELECT id FROM questionnaires_avant_audit WHERE id = ${q.id}::uuid FOR UPDATE`;
+      if (verrou.length === 0) return "ferme";
+      const frais = await tx.questionnaireAvantAudit.findUnique({
+        where: { id: q.id },
+        select: { envoyeLe: true, closLe: true, expireLe: true },
+      });
+      if (frais === null || !accepteDesReponses(frais, maintenant)) return "ferme";
+      const membre = membreAGarder(q.id, charge.mode, charge.membre);
+      if (charge.envoyeLe !== null) {
+        const memes = await tx.questionnaireAvantAuditEnvoi.findMany({
+          where: {
+            questionnaireId: q.id,
+            mode: charge.mode,
+            membre,
+            envoyeLeNavigateur: charge.envoyeLe,
+          },
+          select: { donnees: true },
+        });
+        // Doublon seulement si le CONTENU est identique, octet pour octet : une version modifiée
+        // portant le même `envoyeLe` n'est JAMAIS perdue (elle devient une nouvelle ligne).
+        const identique = memes.some((e) => {
+          try {
+            return dechiffrerParole(e.donnees) === charge.json;
+          } catch {
+            return false;
+          }
+        });
+        if (identique) return "doublon";
+      }
+      const n = await tx.questionnaireAvantAuditEnvoi.count({ where: { questionnaireId: q.id } });
+      if (n >= ENVOIS_MAX_PAR_QUESTIONNAIRE) return "trop";
+      await tx.questionnaireAvantAuditEnvoi.create({
+        data: {
           questionnaireId: q.id,
           mode: charge.mode,
           membre,
           envoyeLeNavigateur: charge.envoyeLe,
+          infosEmail: charge.infosEmail,
+          donnees: chiffrerParole(charge.json),
         },
-        select: { donnees: true },
       });
-      // Doublon seulement si le CONTENU est identique, octet pour octet : une version modifiée
-      // portant le même `envoyeLe` n'est JAMAIS perdue (elle devient une nouvelle ligne).
-      const identique = memes.some((e) => {
-        try {
-          return dechiffrerParole(e.donnees) === charge.json;
-        } catch {
-          return false;
-        }
-      });
-      if (identique) return "doublon";
-    }
-    const n = await tx.questionnaireAvantAuditEnvoi.count({ where: { questionnaireId: q.id } });
-    if (n >= ENVOIS_MAX_PAR_QUESTIONNAIRE) return "trop";
-    await tx.questionnaireAvantAuditEnvoi.create({
-      data: {
-        questionnaireId: q.id,
-        mode: charge.mode,
-        membre,
-        envoyeLeNavigateur: charge.envoyeLe,
-        infosEmail: charge.infosEmail,
-        donnees: chiffrerParole(charge.json),
-      },
-    });
-    // Réponse reçue : le brouillon de cette personne n'a plus lieu d'être (`brouillon.ts`).
-    // Dirigeant : seulement si la réponse est AUTHENTIFIÉE par son code.
-    const dirigeantAuthentifie =
-      charge.mode === "main" &&
-      charge.membre !== null &&
-      codeDirigeantPreauditValide(q.id, charge.membre);
-    if (charge.mode !== "main" || dirigeantAuthentifie) {
-      await tx.questionnaireAvantAuditBrouillon.deleteMany({
-        where:
-          charge.mode === "main"
-            ? { questionnaireId: q.id, mode: "main" }
-            : { questionnaireId: q.id, mode: charge.mode, membre: charge.membre ?? "" },
-      });
-    }
-    // Une nouvelle réponse repasse la fiche « à traiter » : la lecture précédente est périmée.
-    await tx.questionnaireAvantAudit.update({ where: { id: q.id }, data: { luLe: null } });
-    return "ok";
-  });
+      // Réponse reçue : le brouillon de cette personne n'a plus lieu d'être (`brouillon.ts`).
+      // Dirigeant : seulement si la réponse est AUTHENTIFIÉE par son code.
+      const dirigeantAuthentifie =
+        charge.mode === "main" &&
+        charge.membre !== null &&
+        codeDirigeantPreauditValide(q.id, charge.membre);
+      if (charge.mode !== "main" || dirigeantAuthentifie) {
+        await tx.questionnaireAvantAuditBrouillon.deleteMany({
+          where:
+            charge.mode === "main"
+              ? { questionnaireId: q.id, mode: "main" }
+              : { questionnaireId: q.id, mode: charge.mode, membre: charge.membre ?? "" },
+        });
+      }
+      // Une nouvelle réponse repasse la fiche « à traiter » : la lecture précédente est périmée.
+      await tx.questionnaireAvantAudit.update({ where: { id: q.id }, data: { luLe: null } });
+      return "ok";
+    }),
+  );
 }
 
 export async function marquerLu(id: string, userId: string): Promise<void> {

@@ -79,7 +79,7 @@ export async function noterEnvoi(
     // Date de l'audit changée après le départ : les relances PAS ENCORE PARTIES sont recalculées
     // (une relance qui tomberait à moins de 24 h du nouvel audit est annulée).
     const apres = choix.dateAudit?.getTime() ?? null;
-    if (existant.premierEnvoiLe !== null && avant !== apres) {
+    if (existant.premierEnvoiLe != null && avant !== apres) {
       const plan = planifierRelances(existant.premierEnvoiLe, choix.dateAudit);
       for (const r of plan) {
         await base.questionnaireAvantAuditCourrier.updateMany({

@@ -58,8 +58,14 @@ export function salonDuNom(nomTypeEvenement: string | null | undefined): CleSalo
 // (slug « …salon… »), et la priorité apporteur est tenue par
 // `HORS_APPELS_APPORTEUR`, que les passages salon ajoutent toujours.
 
-/** Les quatre types qui ne sont pas un salon (miroir de l'enum Prisma). */
-const TYPES_HORS_SALON = ["diagnostic", "echange_projet", "apporteur", "autre"] as const;
+/** Les types qui ne sont pas un salon (miroir de l'enum Prisma). */
+const TYPES_HORS_SALON = [
+  "diagnostic",
+  "echange_projet",
+  "apporteur",
+  "autre",
+  "tour_de_france_ia",
+] as const;
 
 /** Clause historique, nom seul : « SEULEMENT les rendez-vous salon ». */
 export const SEULS_RDV_SALON_PAR_NOM = {

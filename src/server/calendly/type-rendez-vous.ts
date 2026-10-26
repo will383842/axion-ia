@@ -37,10 +37,11 @@ import {
   URL_CALENDLY_APPORTEUR_PAR_DEFAUT,
   URL_CALENDLY_DIAGNOSTIC_PAR_DEFAUT,
   URL_CALENDLY_SALON_PAR_DEFAUT,
+  URL_CALENDLY_TOUR_PAR_DEFAUT,
 } from "@/server/calendly/urls-par-defaut";
 
 /**
- * Les cinq types CLASSÉS — miroir de l'enum Prisma `TypeRendezVous`, MOINS
+ * Les six types CLASSÉS — miroir de l'enum Prisma `TypeRendezVous`, MOINS
  * `formateur`.
  *
  * ⚠️ `formateur` existe en base depuis le schéma n° 1 du chantier formateurs
@@ -56,6 +57,7 @@ export const TYPES_RENDEZ_VOUS = [
   "apporteur",
   "salon",
   "autre",
+  "tour_de_france_ia",
 ] as const;
 
 export type TypeRendezVous = (typeof TYPES_RENDEZ_VOUS)[number];
@@ -67,9 +69,10 @@ export const LIBELLES_TYPE_RENDEZ_VOUS: Readonly<Record<TypeRendezVous, string>>
   apporteur: "Apporteur",
   salon: "Salon",
   autre: "Autre",
+  tour_de_france_ia: "Tour de France IA",
 };
 
-/** Vrai si la valeur est l'un des cinq types. */
+/** Vrai si la valeur est l'un des types classés. */
 export function estTypeRendezVous(valeur: unknown): valeur is TypeRendezVous {
   return typeof valeur === "string" && (TYPES_RENDEZ_VOUS as readonly string[]).includes(valeur);
 }
@@ -88,6 +91,7 @@ export {
   URL_CALENDLY_APPORTEUR_PAR_DEFAUT,
   URL_CALENDLY_DIAGNOSTIC_PAR_DEFAUT,
   URL_CALENDLY_SALON_PAR_DEFAUT,
+  URL_CALENDLY_TOUR_PAR_DEFAUT,
 };
 
 function urlOuDefaut(valeur: string | undefined, defaut: string): string {
@@ -121,6 +125,10 @@ export function urlsDeReservationConfigurees(): ReadonlyArray<{
       url: urlOuDefaut(process.env.CALENDLY_SALON_URL, URL_CALENDLY_SALON_PAR_DEFAUT),
       type: "salon",
     },
+    {
+      url: urlOuDefaut(process.env.CALENDLY_TOUR_URL, URL_CALENDLY_TOUR_PAR_DEFAUT),
+      type: "tour_de_france_ia",
+    },
   ];
 }
 
@@ -137,13 +145,23 @@ function normaliserNom(nom: string): string {
     .trim();
 }
 
+/**
+ * Le nom qui désigne la visio du Tour de France IA : « Tour de France IA », ou son
+ * slug « tour-de-france-ia ». Les tirets sont normalisés avant la comparaison.
+ */
+export function estVisioTourDeFranceIa(nom: string | null | undefined): boolean {
+  if (!nom || !nom.trim()) return false;
+  return normaliserNom(nom).includes("tour de france ia");
+}
+
 /** Morceaux de nom qui désignent un échange projet. « premier contact » = slug de l'iframe. */
 const MOTS_ECHANGE_PROJET = ["discutons de votre projet", "echange projet", "premier contact"];
 
 /**
  * Classement par le NOM seul — repli, et règle de la reprise SQL.
  *
- * Ordre : apporteur, salon (sans apporteur), diagnostic, échange projet, autre.
+ * Ordre : apporteur, salon (sans apporteur), Tour de France IA, diagnostic, échange
+ * projet, autre.
  * Les deux premiers réutilisent les règles existantes (`estAppelApporteur`,
  * `estRdvSalon`) pour qu'il n'existe qu'une définition de chaque mot-clé.
  */
@@ -151,6 +169,7 @@ export function classerParNom(nom: string | null | undefined): TypeRendezVous {
   if (!nom || !nom.trim()) return "autre";
   if (estAppelApporteur(nom)) return "apporteur";
   if (estRdvSalon(nom)) return "salon";
+  if (estVisioTourDeFranceIa(nom)) return "tour_de_france_ia";
   const n = normaliserNom(nom);
   if (n.includes("diagnostic")) return "diagnostic";
   if (MOTS_ECHANGE_PROJET.some((m) => n.includes(m))) return "echange_projet";
@@ -199,6 +218,7 @@ export function tableDesTypesConnus(
     }
     const slug = chemin.split("/").pop() ?? "";
     if (slug.includes("salon")) table.set(uri, "salon");
+    else if (slug.includes("tour-de-france")) table.set(uri, "tour_de_france_ia");
   }
   return table;
 }
@@ -347,6 +367,29 @@ export function besoinDesReponses(questionsAndAnswers: unknown): string | null {
   return null;
 }
 
+/**
+ * La VILLE indiquée dans le formulaire de la visio du Tour de France IA : la
+ * réponse à la question dont le libellé contient « ville » (ou « localité »).
+ * Bornée comme le besoin. `null` s'il n'y en a pas.
+ */
+export function villeDesReponses(questionsAndAnswers: unknown): string | null {
+  if (!Array.isArray(questionsAndAnswers)) return null;
+  for (const qa of questionsAndAnswers) {
+    const o = objet(qa);
+    const q = o?.["question"];
+    const a = o?.["answer"];
+    if (typeof q !== "string" || typeof a !== "string" || !a.trim()) continue;
+    const libelle = normaliserNom(q);
+    if (/\b(ville|localite|commune)\b/.test(libelle)) return couperTexte(a.trim(), 80);
+  }
+  return null;
+}
+
+/** La ville lue dans `raw_payload` (ligne enrichie), ou `null`. */
+export function villeDuBrut(rawPayload: unknown): string | null {
+  return villeDesReponses(questionsDuBrut(rawPayload));
+}
+
 /** Le besoin lu dans `raw_payload` (ligne enrichie), ou `null`. */
 export function besoinDuBrut(rawPayload: unknown): string | null {
   return besoinDesReponses(questionsDuBrut(rawPayload));
@@ -401,7 +444,7 @@ export function reponsesDuBrut(rawPayload: unknown): ReponseCrm[] {
 
 /** Les types dont les réponses partent au CRM : les rendez-vous clients. */
 export function typePorteLesReponses(type: TypeRendezVous): boolean {
-  return type === "diagnostic" || type === "echange_projet";
+  return type === "diagnostic" || type === "echange_projet" || type === "tour_de_france_ia";
 }
 
 /** Les UTM du `tracking` de l'invité Calendly, bornées aux colonnes (100). */

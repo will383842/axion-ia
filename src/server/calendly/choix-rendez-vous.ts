@@ -34,6 +34,7 @@ import { estEchangeFormateurParNom } from "@/server/calendly/echange-formateur";
 import {
   classerParNom,
   estTypeRendezVous,
+  estVisioTourDeFranceIa,
   uriDeTypeValide,
   type TypeRendezVous,
 } from "@/server/calendly/type-rendez-vous";
@@ -78,6 +79,18 @@ export function lireDepuis(valeur: unknown): string | null {
   const v = valeur.trim().toLowerCase();
   if (!v || v.length > DEPUIS_MAX || !/^[a-z0-9][a-z0-9-]*$/.test(v)) return null;
   return v;
+}
+
+/** La source UTM du Tour de France IA : posée quand l'arrivée n'en porte aucune. */
+export const UTM_SOURCE_TOUR = "tour-de-france-ia";
+
+/**
+ * La source UTM à retenir pour un choix quand ni l'URL ni le cookie n'en portent.
+ * Seul le Tour en a une : ses réservations se retrouvent ainsi dans « Rendez-vous
+ * par origine » même sans campagne. Une source déjà connue n'est jamais remplacée.
+ */
+export function utmSourceParDefaut(choix: ChoixRendezVous): string | null {
+  return choix === "tour" ? UTM_SOURCE_TOUR : null;
 }
 
 /** Le type de rendez-vous visé par un choix. */
@@ -339,6 +352,11 @@ export async function urlDeReprogrammation(rdv: RendezVousAReprogrammer): Promis
   // seul son nom le reconnaît. Sans ce cas, il serait reprogrammé sur le type appel.
   if (type === "autre" && estEchangeFormateurParNom(rdv.eventTypeName)) {
     return urlConfigureeDuChoix("formateur");
+  }
+  // La visio du Tour de France IA (2026-10-25), classée `autre` elle aussi : même
+  // reconnaissance par le nom, pour qu'un report la garde sur son propre calendrier.
+  if (type === "autre" && estVisioTourDeFranceIa(rdv.eventTypeName)) {
+    return urlConfigureeDuChoix("tour");
   }
   // Apporteur, salon : leur propre adresse. Avant le 2026-10-05, un salon retombait
   // ici sur le type appel — ce que seul l'écran « sur place » du report masquait.
