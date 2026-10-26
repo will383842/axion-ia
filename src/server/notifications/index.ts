@@ -28,6 +28,7 @@ import {
   getRouting,
   groupeDeRepliClient,
   resolveSalonClients,
+  telegramGroupFor,
   shouldDispatchAsync,
   shouldNotifyWhatsApp,
   resolveTelegramTarget,
@@ -163,6 +164,7 @@ async function dispatchChannels(
           sendTelegramRaw({
             text: formattedText,
             silent: severity === "info",
+            sansApercuLien: telegramGroupFor(category) === "questionnaire-audit",
             chatId: target.chatId,
             botToken: target.botToken,
           })
