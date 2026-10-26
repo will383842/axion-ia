@@ -10,7 +10,7 @@
 //      clics → rendez-vous pris → maintenus, libellé lisible de chaque bouton ;
 //   4. 🔴 la landing, elle, ne porte toujours AUCUNE mesure.
 
-import { readFileSync } from "node:fs";
+import { readFileSync, readdirSync, statSync } from "node:fs";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 
@@ -23,7 +23,7 @@ import {
   boutonDeUtmContent,
   construireTableauTour,
 } from "@/features/admin-tunnels/tour-entonnoir";
-import { funnelKeyFromPath } from "@/lib/analytics/funnel-beacon";
+import { funnelKeyFromPath, sendFunnelBeacon } from "@/lib/analytics/funnel-beacon";
 import { funnelEventSchema } from "@/lib/schemas/funnel-event-schema";
 import { estAppelApporteur } from "@/server/calendly/appel-apporteur";
 import {
@@ -38,6 +38,15 @@ import { choixDeLaRoute } from "@/server/calendly/types-reservables";
 const RACINE = join(__dirname, "../../../..");
 const lire = (chemin: string): string => readFileSync(join(RACINE, chemin), "utf8");
 const TUNNELS = "src/app/[locale]/(admin)/[adminPrefix]/tunnels";
+
+/** Toutes les sources de la landing, hors tests (même parcours que `le-tour-est-ouvert`). */
+function sourcesLanding(dossier: string): string[] {
+  return readdirSync(join(RACINE, dossier)).flatMap((nom) => {
+    const chemin = `${dossier}/${nom}`;
+    if (nom === "__tests__") return [];
+    return statSync(join(RACINE, chemin)).isDirectory() ? sourcesLanding(chemin) : [chemin];
+  });
+}
 
 describe("1. du bouton à la page de rendez-vous : `depuis` et UTM", () => {
   it("le bouton mène à la page du Tour avec son repère", () => {
@@ -212,10 +221,70 @@ describe("le tableau du tunnel : clics → rendez-vous pris → maintenus", () =
 describe("4. 🔴 la landing ne porte toujours aucune mesure", () => {
   it("ni balise ni tunnel pour /tourdefrance-ia", () => {
     expect(funnelKeyFromPath("/tourdefrance-ia")).toBeNull();
-    const layout = lire("src/app/tourdefrance-ia/layout.tsx");
-    const page = lire("src/app/tourdefrance-ia/page.tsx");
-    for (const code of [layout, page]) {
-      expect(code).not.toMatch(/ArriveeReservationMesure|trackFunnel|funnel-beacon/);
+    const sources = sourcesLanding("src/app/tourdefrance-ia").filter((f) => /\.tsx?$/.test(f));
+    expect(sources.length).toBeGreaterThan(1);
+    for (const f of sources) {
+      expect(lire(f), f).not.toMatch(/ArriveeReservationMesure|trackFunnel|funnel-beacon/);
+    }
+  });
+});
+
+describe("5. les sessions du Tour restent dans leur tunnel", () => {
+  const tour = (id: string) => ({
+    funnel: "tour",
+    event: "Call Booking Viewed",
+    sessionId: id,
+    step: null,
+    stepIndex: null,
+    deviceType: "mobile",
+    utmSource: null,
+    utmCampaign: "aout-tpe",
+    gainBucket: null,
+    sector: null,
+    createdAt: new Date("2026-08-01T10:00:00.000Z"),
+  });
+  const sim = (id: string, event: string) => ({ ...tour(id), funnel: "simulateur", event });
+
+  it("une session « tour » avec campagne ne change pas la partRapport de la campagne", () => {
+    const base = [sim("a", "Simulator Started"), sim("a", "Simulator Report Requested")];
+    const avant = agregerTunnels(base);
+    const apres = agregerTunnels([...base, tour("t1"), tour("t2")]);
+    expect(apres.parCampagne).toEqual(avant.parCampagne);
+    expect(apres.parCampagne[0]!.partRapport).toBe(100);
+    expect(apres.sessions).toBe(avant.sessions);
+    expect(apres.parAppareil).toEqual(avant.parAppareil);
+    expect(apres.entonnoirs).toEqual(avant.entonnoirs);
+    expect(apres.parTunnel.find((t) => t.cle === "tour")!.sessions).toBe(2);
+  });
+
+  it("la balise de consentement n'est pas journalisée sous le tunnel tour", () => {
+    const envoyes: string[] = [];
+    const anciens = { w: globalThis.window, n: globalThis.navigator, d: globalThis.document };
+    const stockage = new Map<string, string>();
+    Object.assign(globalThis, {
+      window: {
+        location: { pathname: "/fr/appel/tour-de-france-ia" },
+        innerWidth: 1200,
+        sessionStorage: {
+          getItem: (k: string) => stockage.get(k) ?? null,
+          setItem: (k: string, v: string) => void stockage.set(k, v),
+        },
+      },
+      document: { documentElement: { lang: "fr" } },
+    });
+    Object.defineProperty(globalThis, "navigator", {
+      configurable: true,
+      value: { sendBeacon: (_u: string, b: Blob) => envoyes.push(String(b.size)) },
+    });
+    try {
+      sendFunnelBeacon("Consent Banner Answered", { step: "accepted" });
+      expect(envoyes).toHaveLength(0);
+      expect(stockage.size).toBe(0);
+      sendFunnelBeacon("Call Booking Viewed", { landing: "tour-de-france-ia" });
+      expect(envoyes).toHaveLength(1);
+    } finally {
+      Object.assign(globalThis, { window: anciens.w, document: anciens.d });
+      Object.defineProperty(globalThis, "navigator", { configurable: true, value: anciens.n });
     }
   });
 });

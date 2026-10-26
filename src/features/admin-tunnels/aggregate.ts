@@ -382,7 +382,11 @@ function parTunnel(sessions: readonly Session[]): StatsTunnel[] {
 
 /** Transforme les balises brutes en synthèse affichable. */
 export function agregerTunnels(lignes: readonly LigneTunnel[]): SyntheseTunnels {
-  const toutes = [...grouper(lignes).values()];
+  const sessionsTunnels = [...grouper(lignes).values()];
+  // Les sessions du Tour (page de réservation, sans questionnaire) ne vivent que
+  // dans `parTunnel` : dans les autres totaux elles feraient baisser les taux du
+  // tunnel diagnostic (campagnes, appareils, entonnoirs…).
+  const toutes = sessionsTunnels.filter((s) => s.tunnelEntree !== "tour");
   const vuesPub = toutes.filter((s) => s.aVuLaPub);
   const ouvertes = toutes.filter((s) => s.evenements.has(E.demarre));
 
@@ -395,7 +399,7 @@ export function agregerTunnels(lignes: readonly LigneTunnel[]): SyntheseTunnels 
     questionnairesTermines: toutes.filter(a(E.termine)).length,
     rapportsDemandes: toutes.filter(a(E.rapport)).length,
     rappelsDemandes: toutes.filter(a(E.rappel)).length,
-    parTunnel: parTunnel(toutes),
+    parTunnel: parTunnel(sessionsTunnels),
     entonnoirs: [
       entonnoir(
         "Depuis la page publicitaire",

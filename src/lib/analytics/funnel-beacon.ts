@@ -116,6 +116,10 @@ export function sendFunnelBeacon(event: FunnelEvent, props: FunnelProps = {}): v
 
   const funnel = funnelKeyFromPath(window.location?.pathname);
   if (!funnel) return;
+  // Tour de France IA : seule l'arrivée sur la page de réservation se mesure.
+  // Le bandeau de cookies peut s'y afficher, mais sa réponse n'a pas à être
+  // journalisée sous ce tunnel.
+  if (funnel === "tour" && event !== "Call Booking Viewed") return;
 
   const id = sessionId();
   if (!id) return;

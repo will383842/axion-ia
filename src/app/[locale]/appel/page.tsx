@@ -251,6 +251,9 @@ export default async function AppelPage({ params, searchParams }: Props) {
       <div>
         {/* Tour de France IA (2026-10-26) : l'arrivée ici EST le clic « Participer »
             de la landing, qui ne porte aucune mesure. Console : Tunnels → Tour. */}
+        {/* `/fr/appel?rdv=tour` monte aussi ce composant, mais `funnelKeyFromPath`
+            ne reconnaît que `/appel/tour-de-france-ia` : l'arrivée y est perdue.
+            Accepté — aucun lien interne ne mène à cette URL. */}
         {choix === "tour" ? (
           <ArriveeReservationMesure landing="tour-de-france-ia" placement={depuis} />
         ) : null}
