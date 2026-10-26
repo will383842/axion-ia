@@ -64,6 +64,8 @@ on:
     - cron: "7 23 * * *"
     - cron: "7 1 * * *"
     - cron: "7 3 * * *"
+    # 2026-10-26 (Will) : + 2 h 07 (le cron « 7 0 » de l'hiver, déjà listé plus bas, la couvre en été) et 8 h 07 (06:07 UTC) ; 5 h 07 existe déjà.
+    - cron: "7 6 * * *"
     # Heure d'hiver (UTC+1) : 12 h, 17 h, 22 h à Paris.
     - cron: "7 11 * * *"
     - cron: "7 16 * * *"
@@ -72,6 +74,8 @@ on:
     - cron: "7 0 * * *"
     - cron: "7 2 * * *"
     - cron: "7 4 * * *"
+    # 2026-10-26 (Will) : + 2 h 07 (le cron « 7 1 » de l'été, déjà listé plus haut, la couvre en hiver) et 8 h 07 (07:07 UTC).
+    - cron: "7 7 * * *"
   workflow_dispatch:
     inputs:
       skip_deploy:
@@ -151,7 +155,7 @@ jobs:
           fi
           decalage=$(TZ=Europe/Paris date +%z)
           case "${decalage}:${heure_utc}" in
-            +0200:10|+0200:15|+0200:20|+0200:23|+0200:1|+0200:3|+0100:11|+0100:16|+0100:21|+0100:0|+0100:2|+0100:4) ;;
+            +0200:10|+0200:15|+0200:20|+0200:23|+0200:0|+0200:1|+0200:3|+0200:6|+0100:11|+0100:16|+0100:21|+0100:0|+0100:1|+0100:2|+0100:4|+0100:7) ;;
             *)
               echo "::notice::Cron « ${CRON} » hors saison (Paris ${decalage}) : rien à faire."
               echo "go=false" >> "$GITHUB_OUTPUT"; exit 0 ;;
