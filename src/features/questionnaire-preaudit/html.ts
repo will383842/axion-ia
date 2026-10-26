@@ -50,6 +50,11 @@ export interface OptionsPage {
   readonly contact: string;
   readonly conservation: string;
   readonly essai: boolean;
+  /**
+   * Ajout en bas de page (notice et balise du suivi des ouvertures, `balise-ouverture.ts`), inséré
+   * avant le DERNIER `</body>`. Absent ou vide : la page de Will est servie comme avant.
+   */
+  readonly finDePage?: string;
 }
 
 const BANDEAU_ESSAI =
@@ -74,10 +79,11 @@ Object.assign(CONFIG, ${jsonSur(base)});
     `CONFIG.rgpd = Object.assign(CONFIG.rgpd || {}, ${jsonSur(rgpd)});
 `;
   let page = html.replace(DECLARATION_CONFIG, (m) => m + injection);
-  if (o.essai) {
+  const fin = (o.essai ? BANDEAU_ESSAI : "") + (o.finDePage ?? "");
+  if (fin !== "") {
     // Le DERNIER </body> : une chaîne « </body> » dans le script de Will ne doit pas le recevoir.
     const i = page.lastIndexOf("</body>");
-    if (i >= 0) page = page.slice(0, i) + BANDEAU_ESSAI + page.slice(i);
+    if (i >= 0) page = page.slice(0, i) + fin + page.slice(i);
   }
   return page;
 }

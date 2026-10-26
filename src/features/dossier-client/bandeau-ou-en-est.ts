@@ -7,6 +7,8 @@
  * ⛔ Ni adresse de destinataire ni corps d'e-mail : des dates, des états et des comptes.
  */
 
+import { resumeBandeau } from "@/features/questionnaire-preaudit/ouvertures";
+
 import type { EchangeDuFil } from "./fil-des-echanges";
 import type { QuestionnaireDeLaFiche } from "./questionnaires-de-la-fiche";
 
@@ -19,8 +21,11 @@ export interface EntreeBandeau {
     readonly estTestInterne: boolean;
   }>;
   readonly questionnaires: ReadonlyArray<
-    Pick<QuestionnaireDeLaFiche, "envoyeLe" | "closLe" | "reponses">
+    Pick<QuestionnaireDeLaFiche, "envoyeLe" | "closLe" | "reponses"> &
+      Partial<Pick<QuestionnaireDeLaFiche, "suivi" | "suiviEnPanne">>
   >;
+  /** Interrupteur `QUESTIONNAIRE_SUIVI_OUVERTURES_ENABLED` : ouvertures et avancée dans la ligne. */
+  readonly suiviOuvertures?: boolean;
   readonly fil: ReadonlyArray<EchangeDuFil>;
   readonly prestations: ReadonlyArray<{ readonly statut: string }>;
   readonly nbDevis: number;
@@ -118,6 +123,11 @@ function ligneQuestionnaire(e: EntreeBandeau): LigneBandeau {
     if (aLire > 0) texte += ` · ${pluriel(aLire, "réponse à lire", "réponses à lire")}`;
     else if (e.questionnaires.some((q) => q.reponses.dirigeant > 0)) texte += " · réponses lues";
     else texte += " · pas de réponse";
+    // Ouvertures et avancée du DERNIER questionnaire envoyé (2026-10-27), interrupteur allumé.
+    if (e.suiviOuvertures === true) {
+      if (dernier.suiviEnPanne === true) texte += " · ouvertures : lecture impossible";
+      else if (dernier.suivi != null) texte += ` · ${resumeBandeau(dernier.suivi)}`;
+    }
   }
   return { cle: "questionnaire", libelle: "Questionnaire", texte, onglet: "questionnaire" };
 }

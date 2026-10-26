@@ -50,6 +50,11 @@ on:
           - "QUESTIONNAIRE_RELANCES_ENABLED"
           - "QUESTIONNAIRE_CONFIRMATIONS_ENABLED"
           - "QUESTIONNAIRE_TELEGRAM_ENABLED"
+          # Suivi des ouvertures du questionnaire (2026-10-27). Cible : site (la page et la console
+          # les lisent ; le worker ne les lit pas). Valeurs : true | false. Chacun ajoute aussi une
+          # phrase à la notice de la page (`notice-suivi.ts`, texte à valider par Will avant d'allumer).
+          - "QUESTIONNAIRE_SUIVI_OUVERTURES_ENABLED"
+          - "QUESTIONNAIRE_SUIVI_BROUILLON_VISIBLE"
           # Salon Telegram « Questionnaire audit » (identifiant, ex. -1001234567890). Sans lui :
           # Clients, puis Système. Cible : worker.
           - "TELEGRAM_CHAT_ID_QUESTIONNAIRE_AUDIT"
