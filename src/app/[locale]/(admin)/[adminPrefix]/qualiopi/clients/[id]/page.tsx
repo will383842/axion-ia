@@ -42,6 +42,7 @@ import {
   brouillonVisible,
   suiviOuverturesActif,
 } from "@/features/questionnaire-preaudit/ouvertures";
+import { lireBrouillonAction } from "@/features/questionnaire-preaudit/actions-suivi-ouvertures";
 import type { Metadata } from "next";
 import { RetraitPersonne } from "@/components/admin/dossier-client/RetraitPersonne";
 import { SuppressionManuelle } from "@/components/admin/dossier-client/SuppressionManuelle";
@@ -467,7 +468,9 @@ export default async function FicheClient360Page({ params, searchParams }: PageP
           ficheHref={ficheHref}
           afficherOuvertures={suiviOuverturesActif()}
           // Le contenu d'un brouillon : super-administrateur ET interrupteur (l'action revérifie).
-          peutLireBrouillon={acces.role === "super_admin" && brouillonVisible()}
+          {...(acces.role === "super_admin" && brouillonVisible()
+            ? { lireBrouillon: lireBrouillonAction }
+            : {})}
         />
       );
   } else if (voitEchanges && onglet === "emails") {

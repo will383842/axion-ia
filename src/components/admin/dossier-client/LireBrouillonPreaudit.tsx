@@ -6,10 +6,13 @@
 
 import { useActionState } from "react";
 
-import {
-  lireBrouillonAction,
-  type EtatLectureBrouillon,
-} from "@/features/questionnaire-preaudit/actions-suivi-ouvertures";
+// Type seulement : l'action est PASSÉE par la page (le bloc n'importe ni l'action ni l'authentification).
+import type { EtatLectureBrouillon } from "@/features/questionnaire-preaudit/actions-suivi-ouvertures";
+
+export type ActionLireBrouillon = (
+  etat: EtatLectureBrouillon,
+  fd: FormData,
+) => Promise<EtatLectureBrouillon>;
 
 const jourHeure = (iso: string): string =>
   new Intl.DateTimeFormat("fr-FR", {
@@ -23,13 +26,14 @@ const jourHeure = (iso: string): string =>
 
 export function LireBrouillonPreaudit({
   brouillonId,
+  action,
 }: {
   brouillonId: string;
+  action: ActionLireBrouillon;
 }): React.ReactElement {
-  const [etat, lire, enCours] = useActionState<EtatLectureBrouillon, FormData>(
-    lireBrouillonAction,
-    { etat: "initial" },
-  );
+  const [etat, lire, enCours] = useActionState<EtatLectureBrouillon, FormData>(action, {
+    etat: "initial",
+  });
   return (
     <div className="mt-[var(--space-admin-1)]">
       {etat.etat !== "lu" ? (

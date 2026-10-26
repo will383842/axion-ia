@@ -12,7 +12,7 @@ import {
   TEXTE_JAMAIS_OUVERT,
 } from "@/features/questionnaire-preaudit/ouvertures";
 
-import { LireBrouillonPreaudit } from "./LireBrouillonPreaudit";
+import { LireBrouillonPreaudit, type ActionLireBrouillon } from "./LireBrouillonPreaudit";
 
 const jourHeure = (d: Date): string =>
   new Intl.DateTimeFormat("fr-FR", {
@@ -45,7 +45,7 @@ export function BlocQuestionnaireFiche({
   adminPrefix,
   ficheHref,
   afficherOuvertures = false,
-  peutLireBrouillon = false,
+  lireBrouillon,
 }: {
   questionnaires: ReadonlyArray<QuestionnaireDeLaFiche>;
   adminPrefix: string;
@@ -53,8 +53,11 @@ export function BlocQuestionnaireFiche({
   ficheHref: string;
   /** Interrupteur `QUESTIONNAIRE_SUIVI_OUVERTURES_ENABLED` : ouvertures et avancée. */
   afficherOuvertures?: boolean;
-  /** Super-administrateur ET `QUESTIONNAIRE_SUIVI_BROUILLON_VISIBLE` : bouton « Lire le brouillon ». */
-  peutLireBrouillon?: boolean;
+  /**
+   * L'action « Lire le brouillon », passée par la page au super-administrateur seulement, interrupteur
+   * `QUESTIONNAIRE_SUIVI_BROUILLON_VISIBLE` allumé (l'action revérifie les deux). Absente : pas de bouton.
+   */
+  lireBrouillon?: ActionLireBrouillon;
 }): React.ReactElement | null {
   if (questionnaires.length === 0) return null;
   const base = `/fr/${adminPrefix}`;
@@ -95,7 +98,7 @@ export function BlocQuestionnaireFiche({
                 <SuiviDuLien
                   q={q}
                   afficherOuvertures={afficherOuvertures}
-                  peutLireBrouillon={peutLireBrouillon}
+                  lireBrouillon={lireBrouillon}
                 />
               ) : null}
               <p className="mt-[var(--space-admin-1)] flex flex-wrap gap-x-[var(--space-admin-4)]">
@@ -132,13 +135,13 @@ export function BlocQuestionnaireFiche({
 function SuiviDuLien({
   q,
   afficherOuvertures,
-  peutLireBrouillon,
+  lireBrouillon,
 }: {
   q: QuestionnaireDeLaFiche;
   afficherOuvertures: boolean;
-  peutLireBrouillon: boolean;
+  lireBrouillon: ActionLireBrouillon | undefined;
 }): React.ReactElement | null {
-  if (!afficherOuvertures && !peutLireBrouillon) return null;
+  if (!afficherOuvertures && lireBrouillon === undefined) return null;
   if (q.suiviEnPanne === true) {
     return <p>Suivi des ouvertures : lecture impossible pour le moment.</p>;
   }
@@ -156,8 +159,8 @@ function SuiviDuLien({
             {lignes.map((l) => (
               <li key={l.cle}>
                 <span className="font-medium">{l.personne}</span> : {l.texte}
-                {peutLireBrouillon && l.brouillonId !== null ? (
-                  <LireBrouillonPreaudit brouillonId={l.brouillonId} />
+                {lireBrouillon !== undefined && l.brouillonId !== null ? (
+                  <LireBrouillonPreaudit brouillonId={l.brouillonId} action={lireBrouillon} />
                 ) : null}
               </li>
             ))}
@@ -167,7 +170,7 @@ function SuiviDuLien({
     );
   }
   // Seule la lecture des brouillons est allumée : la liste des brouillons, sans les ouvertures.
-  if (suivi.brouillons.length === 0) return null;
+  if (lireBrouillon === undefined || suivi.brouillons.length === 0) return null;
   return (
     <div className="mt-[var(--space-admin-2)]" data-bloc="suivi-brouillons">
       <p className="font-medium">Brouillons en cours</p>
@@ -176,7 +179,7 @@ function SuiviDuLien({
           <li key={b.id}>
             <span className="font-medium">{personneLisible(b.mode, b.membre)}</span> : enregistré le{" "}
             {jourHeure(b.majLe)}
-            <LireBrouillonPreaudit brouillonId={b.id} />
+            <LireBrouillonPreaudit brouillonId={b.id} action={lireBrouillon} />
           </li>
         ))}
       </ul>

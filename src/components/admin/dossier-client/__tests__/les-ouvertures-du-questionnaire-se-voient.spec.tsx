@@ -7,9 +7,7 @@
 import { render } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 
-vi.mock("@/features/questionnaire-preaudit/actions-suivi-ouvertures", () => ({
-  lireBrouillonAction: vi.fn(),
-}));
+// Le bloc ne doit importer ni l'action ni l'authentification : aucun simulacre de `@/auth` ici.
 
 import { construireBandeau } from "@/features/dossier-client/bandeau-ou-en-est";
 import type { QuestionnaireDeLaFiche } from "@/features/dossier-client/questionnaires-de-la-fiche";
@@ -73,7 +71,7 @@ const bloc = (s: SuiviOuvertures | null, o: { ouv?: boolean; lire?: boolean } = 
       adminPrefix="console"
       ficheHref="/fr/console/qualiopi/clients/c1"
       afficherOuvertures={o.ouv ?? true}
-      peutLireBrouillon={o.lire ?? false}
+      {...(o.lire ? { lireBrouillon: vi.fn() } : {})}
     />,
   ).container.textContent ?? "";
 
