@@ -65,7 +65,8 @@ export function jsonLdDuTour(): Record<string, unknown> {
           "@type": "Offer",
           price: "0",
           priceCurrency: "EUR",
-          description: "Audit et formation de 4 h offerts aux entreprises de l’étape",
+          description:
+            "Audit et formation de 4 h offerts aux entreprises de l’étape, 5 places par ville",
         },
       },
       {

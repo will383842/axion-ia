@@ -36,7 +36,9 @@ import {
 import { TOUR_PREFIX, TOUR_PUBLIC } from "@/features/tour-de-france/visibilite";
 
 import {
+  BANDEAU,
   CONDITION_GRATUITE,
+  DEFINITION,
   FAQ,
   HEROS,
   META,
@@ -44,7 +46,7 @@ import {
   REGLE_ETAPE,
   toutLeTexte,
 } from "../contenu";
-import { jsonLdDuTour } from "../jsonld";
+import { DESCRIPTION_DU_SERVICE, jsonLdDuTour } from "../jsonld";
 
 const RACINE = process.cwd();
 const lire = (chemin: string) => readFileSync(join(RACINE, chemin), "utf8");
@@ -487,22 +489,22 @@ describe("🔴 le contenu : mots interdits, typographie, SEO", () => {
     expect(texte.toLowerCase()).not.toContain(BRAND.taglineFr.toLowerCase());
   });
 
-  it("l'offre est COMMUNIQUÉE : « offert » exigé, toujours avec les 5 entreprises, sans frais cachés", () => {
+  it("l'offre est COMMUNIQUÉE : « offert » exigé, toujours avec les 5 places par ville, sans frais cachés", () => {
     expect(texte).toMatch(/offert/i);
     expect(HEROS.sousTitre).toBe(
       "Un audit offert qui chiffre ce que l’IA peut rapporter à votre entreprise, et une formation de 4 h offerte à vos équipes. Chez vous.",
     );
     expect(REGLE_ETAPE).toBe(
-      "Votre étape s’ouvre dès que 5 entreprises de votre secteur géographique ont confirmé.",
+      "5 places par ville, attribuées dans l’ordre des confirmations. L’étape se tient quand les 5 places sont confirmées. Au-delà, liste d’attente pour une prochaine étape.",
     );
     expect(CONDITION_GRATUITE).toMatch(/offerts/i);
     expect(CONDITION_GRATUITE).toContain(REGLE_ETAPE);
-    expect(META.description).toMatch(/5 entreprises/);
+    expect(META.description).toMatch(/Places limitées\u00a0: 5 par ville/);
     expect(CONDITION_GRATUITE).toMatch(/sans frais cachés/);
     // La condition est visible : le héros l'affiche, elle n'est pas reléguée ailleurs.
     const pageSource = lire("src/app/tourdefrance-ia/page.tsx");
     expect(pageSource).toContain("HEROS.condition");
-    // …et elle suit immédiatement le sous-titre : « offert » et « 5 entreprises » restent ensemble.
+    // …et elle suit immédiatement le sous-titre : « offert » et « 5 places » restent ensemble.
     expect(pageSource).toMatch(/\{HEROS\.sousTitre\}\s*<\/p>\s*<p[^>]*>\s*\{HEROS\.condition\}/);
     // Titre de page, description et FAQ portent l'offre.
     expect(META.titre).toMatch(/offerts/i);
@@ -511,7 +513,8 @@ describe("🔴 le contenu : mots interdits, typographie, SEO", () => {
     expect(offert?.reponse).toMatch(/audit et la formation sont offerts/i);
     // « Offert » est réservé à l'audit et à la formation : la visio n'est pas dite offerte.
     expect(offert?.reponse).not.toMatch(/visio/i);
-    expect(offert?.reponse).toMatch(/5 entreprises/);
+    expect(offert?.reponse).toMatch(/une fois leur place confirmée/);
+    expect(offert?.reponse).toMatch(/5 places par ville/);
     expect(offert?.reponse).toMatch(/frais cachés/);
   });
 
@@ -527,7 +530,9 @@ describe("🔴 le contenu : mots interdits, typographie, SEO", () => {
   it("🔴 ce n'est pas un événement auquel on s'inscrit : aucun vocabulaire d'événement ni de billetterie", () => {
     const tout = `${texte}\n${lire("src/app/llms.txt/route.ts")}`;
     expect(tout).not.toMatch(
-      /participer|[ée]v[ée]nement|inscri(re|ption|vez|t)|ticket|billet|place[s]? (limitée|restante)/i,
+      // « Places limitées » est permis depuis le 2026-10-26 (5 places par ville, un fait
+      // de l'offre) ; le compte à rebours de billetterie (« places restantes ») ne l'est pas.
+      /participer|[ée]v[ée]nement|inscri(re|ption|vez|t)|ticket|billet|places? restantes?|derni[èe]res places/i,
     );
   });
 
@@ -577,7 +582,7 @@ describe("🔴 le contenu : mots interdits, typographie, SEO", () => {
     };
     const offert = faq.mainEntity.find((q) => /offert/.test(q.name));
     expect(offert?.acceptedAnswer.text).toMatch(/offerts/);
-    expect(offert?.acceptedAnswer.text).toMatch(/5 entreprises/);
+    expect(offert?.acceptedAnswer.text).toMatch(/5 places par ville/);
     const json = JSON.stringify(ld);
     expect(json).not.toMatch(/"@type":"(Person|Organization|HowTo)"/);
     expect(json).not.toMatch(/speakable/);
@@ -603,12 +608,13 @@ describe("🔴 le Tour est une OFFRE aux entreprises, pas un événement (JSON-L
     });
   });
 
-  it("la description garde l'idée du tour : « tour de France de l'IA », chez les entreprises, une semaine par ville, dès 5 entreprises", () => {
+  it("la description garde l'idée du tour : « tour de France de l'IA », chez les entreprises, une semaine par ville, 5 places", () => {
     const description = String(service["description"]);
     expect(description).toMatch(/tour de France de l[’']IA/);
     expect(description).toMatch(/vient dans les entreprises/);
     expect(description).toMatch(/une semaine dans une ville/);
-    expect(description).toMatch(/dès que 5 entreprises/);
+    expect(description).toMatch(/compte 5 places, attribuées dans l’ordre des confirmations/);
+    expect(description).toMatch(/liste d’attente pour une prochaine étape/);
     expect(description).toMatch(/audit offert/);
     expect(description).toMatch(/formation de 4 h offerte/);
     expect(description).toMatch(/aide à répondre à l’exigence de formation de l’AI Act/);
@@ -619,7 +625,8 @@ describe("🔴 le Tour est une OFFRE aux entreprises, pas un événement (JSON-L
       "@type": "Offer",
       price: "0",
       priceCurrency: "EUR",
-      description: "Audit et formation de 4 h offerts aux entreprises de l’étape",
+      description:
+        "Audit et formation de 4 h offerts aux entreprises de l’étape, 5 places par ville",
     });
   });
 
@@ -645,5 +652,52 @@ describe("🔴 le Tour est une OFFRE aux entreprises, pas un événement (JSON-L
       /certifi/i,
     ];
     for (const motif of interdits) expect(json, String(motif)).not.toMatch(motif);
+  });
+});
+
+describe("🔴 5 places par ville, AU PLUS : jamais un seuil seul (2026-10-26)", () => {
+  // Écrire seulement « dès 5 entreprises » laissait croire que toute entreprise
+  // intéressée recevrait l'audit et la formation offerts. Le plafond est dit partout
+  // où la règle de l'étape l'est : texte visible, JSON-LD et llms.txt.
+  const texte = toutLeTexte();
+  const json = JSON.stringify(jsonLdDuTour());
+  const llms = lire("src/app/llms.txt/route.ts");
+  const minimumSeul =
+    /d[èe]s (que )?5|n[’']atteint pas 5|seuil de 5|ouverte d[èe]s|s[’']ouvre d[èe]s/i;
+
+  it("le texte visible dit « 5 places », « places limitées » et « liste d’attente »", () => {
+    expect(texte).toMatch(/5 places par ville/);
+    expect(texte).toMatch(/Places limitées/);
+    expect(texte).toMatch(/liste d’attente pour une prochaine étape/);
+    expect(texte).toMatch(/dans l’ordre des confirmations/);
+    expect(texte).toMatch(/L’étape se tient quand les 5 places sont confirmées/);
+    expect(BANDEAU.titre).toBe("Places limitées\u00a0: 5 par ville.");
+  });
+
+  it("aucune formulation de minimum seul, nulle part", () => {
+    expect(texte).not.toMatch(minimumSeul);
+    expect(json).not.toMatch(minimumSeul);
+    expect(llms).not.toMatch(minimumSeul);
+  });
+
+  it("la FAQ répond « Combien d’entreprises par ville ? », et le JSON-LD porte la même réponse", () => {
+    const q = FAQ.questions.find((x) => x.question === "Combien d’entreprises par ville\u00a0?");
+    expect(q?.reponse).toMatch(/^5 places par ville, au plus/);
+    expect(q?.reponse).toMatch(/dans l’ordre des confirmations/);
+    expect(q?.reponse).toMatch(/liste d’attente pour une prochaine étape/);
+    expect(json).toContain(JSON.stringify(q?.reponse ?? "").slice(1, -1));
+  });
+
+  it("le JSON-LD reprend la définition visible, plafond compris ; llms.txt dit la même règle", () => {
+    expect(DESCRIPTION_DU_SERVICE).toContain(DEFINITION);
+    expect(DEFINITION).toMatch(/compte 5 places/);
+    expect(llms).toMatch(/compte 5 places au plus, attribuées dans l'ordre des confirmations/);
+    expect(llms).toMatch(/liste d'attente pour une prochaine étape/);
+  });
+
+  it("rien n'est promis avant la confirmation d'une place", () => {
+    expect(CONDITION_GRATUITE).toMatch(/une fois leur place confirmée/);
+    expect(DEFINITION).toMatch(/Chaque entreprise de l’étape reçoit/);
+    expect(llms).toMatch(/une fois leur place confirmée/);
   });
 });

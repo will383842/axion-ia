@@ -8,7 +8,7 @@
 // 🔑 Aucun texte visible dans ces dessins : le texte vit dans `contenu.ts`, seul
 // fichier relu par le test des mots interdits. La carte ne nomme AUCUNE ville et
 // n'affiche aucun chiffre : ses points sont des villes POSSIBLES, et le seul
-// point qui se remplit illustre le principe (5 entreprises, l'étape s'ouvre).
+// point qui se remplit illustre le principe (5 places confirmées, l'étape se tient).
 
 import styles from "../tour.module.css";
 

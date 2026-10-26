@@ -12,10 +12,14 @@
 // que l'IA peut lui apporter (temps, rentabilité, chiffre d'affaires) et une
 // FORMATION de 4 h offerte à ses équipes, qui l'aide à répondre à l'exigence de
 // formation de l'AI Act (formule prudente : ni obligation, ni attestation, ni
-// promesse de conformité). Une étape = une semaine dans une ville, ouverte dès
-// 5 entreprises confirmées du même secteur géographique ; soirée réseau le
-// vendredi, ouverte à toutes les entreprises de l'étape (jamais un mot sur qui
-// règle quoi).
+// promesse de conformité). Une étape = une semaine dans une ville, et 5 PLACES
+// par ville, AU PLUS (décision du 2026-10-26) : les places sont attribuées dans
+// l'ordre des confirmations, l'étape se tient quand les 5 sont confirmées, et
+// au-delà l'entreprise passe sur liste d'attente pour une prochaine étape (sans
+// date promise). Écrire seulement « dès 5 entreprises » laissait croire que
+// TOUTE entreprise intéressée aurait son audit et sa formation : la page ne
+// promet rien avant la confirmation d'une place. Soirée réseau le vendredi,
+// ouverte à toutes les entreprises de l'étape (jamais un mot sur qui règle quoi).
 //
 // Règles de rédaction : vouvoiement, phrases courtes, apostrophe typographique
 // (’), espace insécable ( ) avant « : ; ? ! » et à l'intérieur des
@@ -25,7 +29,7 @@
 // « sans engagement » (`MICRO_TEXTE_CTA`). Jamais de vocabulaire d'événement, de
 // billetterie ou de transaction : un test le garde.
 //
-// Les seuls chiffres de la page sont ceux du CONCEPT (5 entreprises, 2 à 4 h,
+// Les seuls chiffres de la page sont ceux du CONCEPT (5 places, 2 à 4 h,
 // 4 h, 30 minutes) : aucun compteur, aucune statistique.
 
 import { TOUR_PREFIX } from "@/features/tour-de-france/visibilite";
@@ -33,8 +37,8 @@ import { TOUR_PREFIX } from "@/features/tour-de-france/visibilite";
 /** Le nom du Tour. */
 export const NOM_DU_TOUR = "Tour de France IA";
 
-/** Le seuil d'ouverture d'une étape — un fait du concept, pas un compteur. */
-export const SEUIL_OUVERTURE = 5;
+/** Le nombre de places d'une étape (par ville), un maximum — un fait du concept, pas un compteur. */
+export const PLACES_PAR_VILLE = 5;
 
 /** La page de rendez-vous visio de 30 minutes (type `tour` de `types-reservables.ts`). */
 export const CHEMIN_RENDEZ_VOUS = "/fr/appel/tour-de-france-ia";
@@ -75,21 +79,24 @@ export function lienRendezVous(depuis: EmplacementCta): string {
   return `${CHEMIN_RENDEZ_VOUS}?depuis=${encodeURIComponent(depuis)}`;
 }
 
-/** La règle d'ouverture d'une étape, écrite UNE fois : héros, bandeau, FAQ et appel final la citent. */
+/**
+ * La règle d'une étape, écrite UNE fois : héros, bandeau, FAQ et appel final la
+ * citent. 5 places par ville, un MAXIMUM : jamais formulée comme un seuil seul.
+ */
 export const REGLE_ETAPE =
-  "Votre étape s’ouvre dès que 5 entreprises de votre secteur géographique ont confirmé.";
+  "5 places par ville, attribuées dans l’ordre des confirmations. L’étape se tient quand les 5 places sont confirmées. Au-delà, liste d’attente pour une prochaine étape.";
 
 /** L'offre, en une phrase : affichée en grand sous le titre. */
 export const OFFRE =
   "Un audit offert qui chiffre ce que l’IA peut rapporter à votre entreprise, et une formation de 4 h offerte à vos équipes. Chez vous.";
 
 /** La condition qui accompagne « offert » — visible, jamais en note de bas de page. */
-export const CONDITION_GRATUITE = `Offerts aux entreprises de l’étape, sans frais cachés. ${REGLE_ETAPE}`;
+export const CONDITION_GRATUITE = `Offerts aux entreprises de l’étape, une fois leur place confirmée, sans frais cachés. ${REGLE_ETAPE}`;
 
 export const META = {
   titre: "Tour de France IA : audit et formation offerts chez vous",
   description:
-    "Un audit offert qui chiffre ce que l’IA peut vous rapporter, et 4 h de formation offertes à vos équipes. Étape ouverte dès 5 entreprises confirmées.",
+    "Un audit offert qui chiffre ce que l’IA peut vous rapporter, et 4 h de formation offertes à vos équipes. Places limitées : 5 par ville.",
   /** Chemin canonique (sans barre finale : `trailingSlash` est faux sur tout le site). */
   chemin: TOUR_PREFIX,
   /**
@@ -130,7 +137,7 @@ export const HEROS = {
 
 /** La définition citable, en texte visible (GEO). */
 export const DEFINITION =
-  "Le Tour de France IA, organisé par Axion-IA et fondé par Williams Jullin, vient dans les entreprises qui le souhaitent, de la TPE à l’ETI, tous secteurs. Chaque entreprise reçoit chez elle un audit offert de son activité, qui chiffre ce que l’IA peut lui apporter en temps, en rentabilité et en chiffre d’affaires, puis une formation de 4 h offerte à ses équipes, qui l’aide à répondre à l’exigence de formation de l’AI Act. Une étape dure une semaine dans une ville : elle s’ouvre dès que 5 entreprises du secteur géographique ont confirmé. Le vendredi soir, une soirée réseau est ouverte à toutes les entreprises de l’étape.";
+  "Le Tour de France IA, organisé par Axion-IA et fondé par Williams Jullin, vient dans les entreprises qui le souhaitent, de la TPE à l’ETI, tous secteurs. Chaque entreprise de l’étape reçoit chez elle un audit offert de son activité, qui chiffre ce que l’IA peut lui apporter en temps, en rentabilité et en chiffre d’affaires, puis une formation de 4 h offerte à ses équipes, qui l’aide à répondre à l’exigence de formation de l’AI Act. Une étape dure une semaine dans une ville et compte 5 places, attribuées dans l’ordre des confirmations : elle se tient quand les 5 places sont confirmées, et au-delà, les entreprises passent sur liste d’attente pour une prochaine étape. Le vendredi soir, une soirée réseau est ouverte à toutes les entreprises de l’étape.";
 
 export const EN_BREF = "En bref";
 
@@ -215,9 +222,9 @@ export const LEVIERS = {
   ],
 } as const;
 
-/** Le bandeau d'accent du milieu de page : la règle d'ouverture, présentée comme une chance. */
+/** Le bandeau d'accent du milieu de page : les places limitées, et la règle de l'étape. */
 export const BANDEAU = {
-  titre: "Les premières entreprises ouvrent l’étape de leur ville.",
+  titre: "Places limitées : 5 par ville.",
   texte: REGLE_ETAPE,
 } as const;
 
@@ -225,7 +232,7 @@ export const BANDEAU = {
 export const PRINCIPE = {
   legende: "Illustration du principe. Les points ne représentent pas des villes annoncées.",
   /** Texte alternatif de la carte (la carte elle-même n'a aucun texte). */
-  alt: "Carte de France stylisée. Des points marquent des villes possibles. L’un d’eux se remplit jusqu’à 5 entreprises, puis s’ouvre.",
+  alt: "Carte de France stylisée. Des points marquent des villes possibles. L’un d’eux se remplit jusqu’à 5 places confirmées, puis l’étape se tient.",
 } as const;
 
 export const ETAPES = {
@@ -233,7 +240,7 @@ export const ETAPES = {
   liste: [
     "Vous choisissez un créneau de visio de 30 minutes",
     "Nous découvrons votre entreprise et vous confirmez la venue du Tour chez vous",
-    "Dès 5 entreprises confirmées près de chez vous, l’étape s’ouvre et vous êtes prévenu",
+    "Les 5 places de votre ville sont attribuées dans l’ordre des confirmations : quand elles sont toutes confirmées, l’étape se tient et vous êtes prévenu",
     "Nous venons chez vous : l’audit, puis la formation de vos équipes",
   ],
 } as const;
@@ -284,7 +291,7 @@ export const FAQ = {
     },
     {
       question: "Qu’est-ce qui est offert ?",
-      reponse: `L’audit et la formation sont offerts aux entreprises de l’étape. Aucuns frais cachés. ${REGLE_ETAPE}`,
+      reponse: `L’audit et la formation sont offerts aux entreprises de l’étape, une fois leur place confirmée. Aucuns frais cachés. ${REGLE_ETAPE}`,
     },
     {
       question: "Que regarde l’audit, et que recevez-vous ?",
@@ -297,9 +304,9 @@ export const FAQ = {
         "Oui. L’AI Act demande aux entreprises qui utilisent l’IA de veiller à ce que leurs équipes la maîtrisent suffisamment. La formation de 4 h vous aide à répondre à cette exigence de formation. Elle ne remplace pas une analyse complète de votre conformité.",
     },
     {
-      question: "Pourquoi 5 entreprises ?",
+      question: "Combien d’entreprises par ville ?",
       reponse:
-        "C’est le seuil pour qu’une étape ait lieu : le Tour s’installe une semaine dans la ville. Tant que votre secteur géographique n’atteint pas 5 entreprises, nous vous prévenons dès que l’étape devient possible près de chez vous.",
+        "5 places par ville, au plus : le Tour s’installe une semaine dans la ville et passe chez chaque entreprise de l’étape. Les places sont attribuées dans l’ordre des confirmations, et l’étape se tient quand les 5 places sont confirmées. Au-delà, votre entreprise passe sur liste d’attente pour une prochaine étape, et nous vous prévenons quand elle devient possible près de chez vous.",
     },
     {
       question: "Est-ce pour mon entreprise ?",
