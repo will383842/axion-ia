@@ -41,7 +41,11 @@ export async function lireBilanRendezVous(
     SELECT
       e.type_rendez_vous::text AS "typeRendezVous",
       e.event_type_name AS "eventTypeName",
-      e.utm_content AS "utmContent",
+      CASE
+        WHEN e.raw_payload -> 'invitee' -> 'tracking' ->> 'utm_term' ~ '^tdf-[a-z0-9-]+$'
+          THEN 'tour:' || (e.raw_payload -> 'invitee' -> 'tracking' ->> 'utm_term')
+        ELSE e.utm_content
+      END AS "utmContent",
       e.status::text AS "status",
       s.issue::text AS "issue",
       (c.id IS NOT NULL) AS "fiche",

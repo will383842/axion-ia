@@ -200,7 +200,7 @@ describe("agregerTunnels — statistiques par tunnel", () => {
     // sans questionnaire (une session Tour qui ouvre le questionnaire est déjà dans `sessions`).
     const avecTour = agregerTunnels([
       ...lignes,
-      balise("t", "Landing Viewed", {
+      balise("t", "Call Booking Viewed", {
         funnel: "tour",
         createdAt: new Date("2026-08-01T13:00:00Z"),
       }),

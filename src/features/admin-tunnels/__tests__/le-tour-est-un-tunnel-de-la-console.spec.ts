@@ -64,7 +64,7 @@ describe("1. du bouton à la page de rendez-vous : `depuis` et UTM", () => {
     expect(typeDuChoix("tour")).toBe("tour_de_france_ia");
   });
 
-  it("…le recopie dans l'utm_content envoyé à Calendly, avec une source par défaut", () => {
+  it("…le repère du bouton est recopié dans l'utm_content du mode de secours de l'iframe, avec une source par défaut", () => {
     for (const depuis of ["tdf-heros", "tdf-final", "tdf-bandeau", "tdf-collant"]) {
       expect(utmContentDuChoix("tour", depuis)).toBe(`tour:${depuis}`);
       expect(boutonDeUtmContent(utmContentDuChoix("tour", depuis))).toBe(depuis);
@@ -193,6 +193,22 @@ describe("le tableau du tunnel : clics → rendez-vous pris → maintenus", () =
     expect(parCle["tdf-collant"]).toMatchObject({ arrivees: 1, pris: 0 });
     expect(parCle["∅"]).toMatchObject({ libelle: "Non renseigné", arrivees: 1, pris: 0 });
     expect(parCle["tdf-heros"]?.libelle).toBe("Tour de France IA (haut de page)");
+  });
+
+  it("le bouton venu de utm_term (tdf-heros) prime sur un utm_content de post ; sans rien : « Non renseigné »", () => {
+    const requete = lire("src/features/admin-rendezvous/bilan-rendez-vous-queries.ts");
+    expect(requete).toContain("'utm_term' ~ '^tdf-[a-z0-9-]+$'");
+    // La requête réécrit utm_content en `tour:<utm_term>` : l'agrégat doit y lire le bouton.
+    const bilan = agregerBilan([
+      ligne("tour:tdf-heros", "active", 1), // post123 remplacé par le CASE SQL
+      ligne(null, "active", 1),
+    ]);
+    const tour = bilan.types.find((t) => t.type === "tour_de_france_ia");
+    const t = construireTableauTour([], tour);
+    const parCle = Object.fromEntries(t.parBouton.map((l) => [l.cle ?? "∅", l]));
+    expect(parCle["tdf-heros"]).toMatchObject({ pris: 1 });
+    expect(parCle["∅"]).toMatchObject({ libelle: "Non renseigné", pris: 1 });
+    expect(boutonDeUtmContent("post123")).toBeNull();
   });
 
   it("aucun rendez-vous : zéro (le bilan omet le Tour), jamais « non mesuré »", () => {
