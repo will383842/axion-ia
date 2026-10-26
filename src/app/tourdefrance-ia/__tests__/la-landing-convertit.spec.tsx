@@ -4,9 +4,10 @@
  * Trafic visé : un post Facebook ou Instagram, sur téléphone, dans le navigateur
  * intégré, en 4G. Ce qui doit tenir, en plus de `le-tour-est-ouvert.spec.ts` :
  *
- *   · UNE seule action, « Participer », vers la visio du Tour ; aucun menu ;
- *   · quatre emplacements de bouton, ceux que la console connaît (tdf-heros,
- *     tdf-bandeau, tdf-final, tdf-collant) — pas un de plus ;
+ *   · UNE seule action, « Je veux mon audit offert », vers la visio du Tour ;
+ *     un en-tête de tunnel (logo + ce bouton), aucun menu ;
+ *   · cinq emplacements de bouton, ceux que la console connaît (tdf-entete,
+ *     tdf-heros, tdf-bandeau, tdf-final, tdf-collant) — pas un de plus ;
  *   · le suivi d'arrivée (`utm_*` seulement) passe de la page aux boutons, puis
  *     de `/fr/appel/…` à Calendly — exécuté, pas lu ;
  *   · le bouton collant ne se montre qu'entre le bouton du héros et l'appel final ;
@@ -34,7 +35,9 @@ import {
   EMPLACEMENTS_CTA,
   FAQ,
   FONDATEUR,
+  HEROS,
   LIBELLE_CTA,
+  LIBELLE_CTA_COURT,
   MICRO_TEXTE_CTA,
   PROBLEME,
   lienRendezVous,
@@ -67,38 +70,70 @@ const VISUELS = lire(`${DOSSIER}/_composants/Visuels.tsx`);
 const CSS = lire(`${DOSSIER}/tour.module.css`);
 const SOURCES = [PAGE, VISUELS, lire(`${DOSSIER}/contenu.ts`)].join("\n");
 
-describe("🔑 une seule action : Participer", () => {
-  it("le libellé unique est « Participer », et il mène à la visio du Tour", () => {
-    expect(LIBELLE_CTA).toBe("Participer");
+describe("🔑 une seule action : l'audit offert", () => {
+  it("le libellé dit ce que l'entreprise obtient, et il mène à la visio du Tour", () => {
+    expect(LIBELLE_CTA).toBe("Je veux mon audit offert");
+    expect(LIBELLE_CTA_COURT).toBe("Mon audit offert");
+    expect(`${LIBELLE_CTA} ${LIBELLE_CTA_COURT}`).not.toMatch(
+      /participer|candidat|r[ée]serv|inscri/i,
+    );
     expect(lienRendezVous("tdf-heros")).toBe(`${CHEMIN_RENDEZ_VOUS}?depuis=tdf-heros`);
+    expect(lienRendezVous("tdf-entete")).toBe(`${CHEMIN_RENDEZ_VOUS}?depuis=tdf-entete`);
   });
 
-  it("chaque lien de la page qui n'est pas du pied de page est un bouton Participer", () => {
+  it("chaque lien de la page qui n'est pas du pied de page est un bouton d'audit", () => {
     const code = sansCommentaires(PAGE);
     // Tous les boutons passent par le même composant, avec un emplacement `tdf-…`.
-    const emplacements = [...code.matchAll(/<BoutonParticiper\s+depuis="([^"]+)"/g)].map(
-      (m) => m[1],
-    );
-    // Exactement les quatre que la console connaît, chacun une fois — aucun inventé.
+    const emplacements = [...code.matchAll(/<BoutonAudit\s+depuis="([^"]+)"/g)].map((m) => m[1]);
+    // Exactement les cinq que la console connaît, chacun une fois — aucun inventé.
     expect([...emplacements].sort()).toEqual([...EMPLACEMENTS_CTA].sort());
-    expect(EMPLACEMENTS_CTA).toEqual(["tdf-heros", "tdf-bandeau", "tdf-final", "tdf-collant"]);
+    expect(EMPLACEMENTS_CTA).toEqual([
+      "tdf-entete",
+      "tdf-heros",
+      "tdf-bandeau",
+      "tdf-final",
+      "tdf-collant",
+    ]);
     expect(code).not.toContain("tdf-etapes");
     // Les seuls autres liens : la fiche du fondateur et le pied de page.
     const autres = [...code.matchAll(/href=\{([^}]+)\}/g)].map((m) => m[1]);
     expect(autres).toEqual(["lienRendezVous(depuis)", "FONDATEUR.chemin", "l.href"]);
   });
 
-  it("le bandeau du héros porte la petite pilule « Participer » (tdf-bandeau), 44 px minimum", () => {
+  it("l'en-tête du tunnel : le logo et UN bouton (tdf-entete, 44 px minimum), aucun menu, aucun lien de sortie", () => {
     const code = sansCommentaires(PAGE);
-    const bandeau = code.slice(code.indexOf("<header"), code.indexOf("</header>"));
-    expect(bandeau).toMatch(/<BoutonParticiper\s+depuis="tdf-bandeau"\s+compact\s*\/>/);
-    expect(bandeau).toContain("ml-auto");
-    // Le bandeau est AVANT le H1 : c'est bien celui du haut de page.
+    const entete = code.slice(code.indexOf("<header"), code.indexOf("</header>"));
+    expect(entete).toMatch(/<BoutonAudit\s+depuis="tdf-entete"\s+compact\s*\/>/);
+    expect(entete).toContain("ENTETE.marque");
+    expect(entete).toContain("ml-auto");
+    // Le logo n'est pas un lien : rien ne fait sortir du tunnel par le haut.
+    expect(entete).not.toMatch(/<a\b|href=/);
+    expect(entete.match(/<BoutonAudit/g)).toHaveLength(1);
+    // L'en-tête est AVANT le héros et son H1 : c'est bien le haut de page.
     expect(code.indexOf("</header>")).toBeLessThan(code.indexOf("<h1"));
+    expect(code.indexOf("</header>")).toBeLessThan(code.indexOf("<main"));
     // La pilule compacte garde une zone tactile de 44 px et porte `data-tdf-cta` (utm recopiés).
     const compact = CSS.match(/\.boutonCompact\s*\{([^}]*)\}/)?.[1] ?? "";
     expect(compact).toMatch(/min-height:\s*2\.75rem/);
     expect(code).toMatch(/data-tdf-cta=""/);
+  });
+
+  it("le bandeau d'accent porte la pilule compacte (tdf-bandeau), après le héros", () => {
+    const code = sansCommentaires(PAGE);
+    const i = code.indexOf('depuis="tdf-bandeau"');
+    expect(i).toBeGreaterThan(code.indexOf('depuis="tdf-heros"'));
+    expect(code).toMatch(/<BoutonAudit\s+depuis="tdf-bandeau"\s+compact\s*\/>/);
+  });
+
+  it("la charte d'Axion : jetons de globals.css seulement, terracotta en tête, bouton bleu primaire plein", () => {
+    // Aucune couleur écrite en dur dans la feuille du Tour ni dans la page.
+    expect(CSS).not.toMatch(/#[0-9a-fA-F]{3,8}\b|rgba?\(/);
+    expect(sansCommentaires(PAGE)).not.toMatch(/#[0-9a-fA-F]{3,8}\b|rgba?\(/);
+    expect(PAGE).toMatch(/<header className="bg-terracotta\b/);
+    expect(CSS).toMatch(/\.bouton\s*\{[^}]*background:\s*var\(--color-primary\)/);
+    expect(PAGE).toMatch(/const FOND_MARQUE =\s*"bg-mocha /);
+    expect(PAGE).toContain("var(--color-terracotta)");
+    expect(PAGE.match(/\$\{FOND_MARQUE\} text-mocha-fg/g)).toHaveLength(2);
   });
 
   it("aucun menu de navigation, aucun carrousel, aucun défilement horizontal", () => {
@@ -114,6 +149,8 @@ describe("🔑 une seule action : Participer", () => {
     expect(i("<h1")).toBeLessThan(i("{HEROS.sousTitre}"));
     expect(i("{HEROS.condition}")).toBeLessThan(i("id={ID_CTA_HEROS}"));
     expect(i("id={ID_CTA_HEROS}")).toBeLessThan(i("<CarteFrance"));
+    // Le bouton du héros reste le premier GRAND bouton de la page.
+    expect(i('depuis="tdf-heros"')).toBeLessThan(i('depuis="tdf-bandeau"'));
   });
 });
 
@@ -434,11 +471,11 @@ describe("🔴 le JavaScript reste minimal, le rendu stable (CLS nul)", () => {
     }
   });
 
-  it("la FAQ est un accordéon natif details/summary, six fois, sans titre DANS le summary", () => {
+  it("la FAQ est un accordéon natif details/summary, huit fois, sans titre DANS le summary", () => {
     expect(PAGE).toContain("<details");
     expect(PAGE).toContain("<summary>");
     expect(PAGE).toMatch(/FAQ\.questions\.map/);
-    expect(FAQ.questions).toHaveLength(6);
+    expect(FAQ.questions).toHaveLength(8);
     // Un `summary` a le rôle de bouton : un titre à l'intérieur y est invalide.
     for (const m of PAGE.matchAll(/<summary>([\s\S]*?)<\/summary>/g)) {
       expect(m[1]).not.toMatch(/<h[1-6]\b/);
@@ -473,7 +510,7 @@ describe("🔴 le JavaScript reste minimal, le rendu stable (CLS nul)", () => {
         <Jauge />
         <CarteFrance titre="Carte" titreId="t" />
         <CarteFrance titre="Carte" titreId="t2" surSombre />
-        {[0, 1, 2].map((i) => (
+        {[0, 1, 2, 3].map((i) => (
           <IllustrationMoment key={`m${i}`} index={i} />
         ))}
         {[0, 1, 2].map((i) => (
@@ -488,7 +525,7 @@ describe("🔴 le JavaScript reste minimal, le rendu stable (CLS nul)", () => {
       </>,
     );
     const svgs = [...container.querySelectorAll("svg")];
-    expect(svgs).toHaveLength(20);
+    expect(svgs).toHaveLength(21);
     for (const svg of svgs) {
       for (const dim of ["width", "height"]) {
         const v = svg.getAttribute(dim) ?? "";
@@ -572,9 +609,13 @@ describe("🔴 le vocabulaire de la landing", () => {
   });
 
   it("ni promesse de résultat ni construction du slogan d'Axion (« partout… sauf »)", () => {
-    expect(texte).not.toMatch(/\bpartout\b/i);
+    // « partout » n'est permis que dans l'accroche de Will, le H1.
+    expect(texte.replace(HEROS.titreAvant, "")).not.toMatch(/\bpartout\b/i);
     expect(texte).not.toMatch(/\bsauf\b/i);
     expect(texte).not.toMatch(/d[èe]s le lendemain|ce que vous ne voyez plus|gagner du temps/i);
+    // L'audit « chiffre » ou « met en évidence » : il ne garantit rien.
+    expect(texte).not.toMatch(/garanti|assur[ée]|à coup sûr|sans engagement de r[ée]sultat/i);
+    expect(texte).toMatch(/L’audit met en évidence|peut mettre en évidence/);
   });
 
   it("la carte ne nomme aucune ville et le dit", () => {

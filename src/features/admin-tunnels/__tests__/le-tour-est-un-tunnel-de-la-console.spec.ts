@@ -36,6 +36,15 @@ import {
 import { classerParNom, typePorteLesReponses } from "@/server/calendly/type-rendez-vous";
 import { choixDeLaRoute } from "@/server/calendly/types-reservables";
 
+/** Les emplacements de la landing (`EMPLACEMENTS_CTA` de `src/app/tourdefrance-ia/contenu.ts`). */
+const EMPLACEMENTS_CTA = [
+  "tdf-entete",
+  "tdf-heros",
+  "tdf-bandeau",
+  "tdf-final",
+  "tdf-collant",
+] as const;
+
 const RACINE = join(__dirname, "../../../..");
 const lire = (chemin: string): string => readFileSync(join(RACINE, chemin), "utf8");
 const TUNNELS = "src/app/[locale]/(admin)/[adminPrefix]/tunnels";
@@ -66,7 +75,7 @@ describe("1. du bouton à la page de rendez-vous : `depuis` et UTM", () => {
   });
 
   it("…le repère du bouton est recopié dans l'utm_content du mode de secours de l'iframe, avec une source par défaut", () => {
-    for (const depuis of ["tdf-heros", "tdf-final", "tdf-bandeau", "tdf-collant"]) {
+    for (const depuis of EMPLACEMENTS_CTA) {
       expect(utmContentDuChoix("tour", depuis)).toBe(`tour:${depuis}`);
       expect(boutonDeUtmContent(utmContentDuChoix("tour", depuis))).toBe(depuis);
     }
@@ -130,6 +139,7 @@ describe("3. la console montre le Tour comme les autres tunnels", () => {
   });
 
   it("les boutons de la landing ont un libellé lisible dans les bilans", () => {
+    expect(libelleEmplacement("tour:tdf-entete")).toBe("Tour de France IA (en-tête)");
     expect(libelleEmplacement("tour:tdf-heros")).toBe("Tour de France IA (haut de page)");
     expect(libelleEmplacement("tour:tdf-final")).toBe("Tour de France IA (bas de page)");
     expect(libelleEmplacement("tour:tdf-bandeau")).toBe("Tour de France IA (bandeau)");
@@ -137,6 +147,12 @@ describe("3. la console montre le Tour comme les autres tunnels", () => {
       "Tour de France IA (bouton collant, mobile)",
     );
     expect(libelleEmplacement("tour")).toBe("Page rendez-vous");
+    // Chaque emplacement de la landing a son libellé : aucun ne tombe en valeur brute.
+    const contenu = readFileSync(join(process.cwd(), "src/app/tourdefrance-ia/contenu.ts"), "utf8");
+    for (const depuis of EMPLACEMENTS_CTA) expect(contenu).toContain(`"${depuis}"`);
+    for (const depuis of EMPLACEMENTS_CTA) {
+      expect(libelleEmplacement(`tour:${depuis}`), depuis).toMatch(/^Tour de France IA \(/);
+    }
     // Contre-témoins : les autres boutons ne bougent pas.
     expect(libelleEmplacement("diagnostic:accueil-hero")).toBe("Accueil (haut de page)");
     expect(libelleEmplacement("projet")).toBe("Page rendez-vous");

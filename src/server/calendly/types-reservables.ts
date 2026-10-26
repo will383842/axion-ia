@@ -256,7 +256,8 @@ export const TYPES_RESERVABLES: Readonly<Record<ChoixRendezVous, ConfigRendezVou
   // dans les familles CLIENT — fiche prospect dans la console, CRM des ventes (sous
   // `autre`, avec la clé `circuit`), et ses propres e-mails (confirmation, J-1,
   // H-1). Lien privé : jamais listée sur l'écran du choix d'`/appel`.
-  // 🔴 Aucun prix, et seule la VISIO est dite gratuite.
+  // 🔴 Aucun prix. « Gratuit » et « offert » sont réservés, sur la landing, à
+  // l'audit et à la formation : la visio n'est dite que « sans engagement ».
   tour: {
     choix: "tour",
     route: "tour-de-france-ia",
@@ -264,11 +265,11 @@ export const TYPES_RESERVABLES: Readonly<Record<ChoixRendezVous, ConfigRendezVou
     public: false,
     nom: "Tour de France IA",
     titre: "Votre visio Tour de France IA — 30 minutes",
-    promesse: "Visio gratuite et sans engagement",
+    promesse: "Visio de 30 minutes, sans engagement",
     premiereEtape: PREMIERE_ETAPE_VISIO,
     deuxiemeEtape: CONFIRMATION_CLIENT,
     troisiemeEtape:
-      "Nous faisons connaissance, nous vous présentons le Tour de France IA et vous décidez si vous confirmez votre participation.",
+      "Nous découvrons votre entreprise, nous vous présentons l'audit et la formation offerts du Tour de France IA, et vous décidez si vous confirmez sa venue chez vous.",
     formats: ["visio"],
     urlParDefaut: URL_CALENDLY_TOUR_PAR_DEFAUT,
     variable: "CALENDLY_TOUR_URL",

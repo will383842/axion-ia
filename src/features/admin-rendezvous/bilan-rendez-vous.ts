@@ -119,6 +119,7 @@ const LIBELLES_EMPLACEMENT: Readonly<Record<string, string>> = {
   "page-integration": "Page intégration",
   faq: "FAQ",
   // Les boutons de la landing du Tour de France IA (`/tourdefrance-ia`, `depuis=`).
+  "tdf-entete": "Tour de France IA (en-tête)",
   "tdf-heros": "Tour de France IA (haut de page)",
   "tdf-final": "Tour de France IA (bas de page)",
   "tdf-bandeau": "Tour de France IA (bandeau)",
