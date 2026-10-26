@@ -29,6 +29,8 @@ describe.each([
     /pas conservée en base de données/,
     /^Exception : /,
     /contenu/i,
+    /Si vous êtes arrivé par un lien/,
+    /terme/i,
   ],
   [
     "en",
@@ -39,10 +41,23 @@ describe.each([
     /not stored in the database/,
     /^Exception: /,
     /content/i,
+    /If you arrived through a campaign link/,
+    /term/i,
   ],
 ] as const)(
   "politique de cookies (%s)",
-  (lang, titreNecessaires, titreUtm, titreCalendly, formule, sansBase, debutException, contenu) => {
+  (
+    lang,
+    titreNecessaires,
+    titreUtm,
+    titreCalendly,
+    formule,
+    sansBase,
+    debutException,
+    contenu,
+    debutRdv,
+    terme,
+  ) => {
     const sections = page![lang].sections;
     const necessaires = sections.find((s) => s.title === titreNecessaires);
     const utm = sections.find((s) => s.title === titreUtm);
@@ -84,6 +99,14 @@ describe.each([
       expect(exception).toBeDefined();
       expect(exception).toMatch(sansBase);
       expect(exception).not.toMatch(contenu);
+    });
+
+    it("le rendez-vous enregistre source, support, nom et contenu, jamais le terme du cookie", () => {
+      const calendly = sections.find((s) => s.title === titreCalendly);
+      const rdv = calendly!.body.split("\n\n").find((p) => debutRdv.test(p));
+      expect(rdv).toBeDefined();
+      expect(rdv).not.toMatch(terme);
+      expect(rdv).toMatch(contenu);
     });
   },
 );
