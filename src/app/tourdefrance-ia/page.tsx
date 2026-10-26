@@ -9,9 +9,10 @@
 //
 // Écrite pour ce trafic-là : mobile d'abord, navigateur intégré des réseaux,
 // 4G, trois secondes d'attention. Donc le premier écran d'un téléphone
-// (360 × 640) ne montre QUE quatre choses, dans cet ordre : le H1, la promesse
-// en une ligne, le bouton, la micro-ligne « 5 places par ville · sans
-// engagement ». L'accroche, l'offre détaillée, sa condition, les pastilles et la
+// (360 × 640) ne montre QUE cinq choses, dans cet ordre : le H1, la promesse
+// en une ligne (audit + formation d'équipe offerts, en présentiel chez vous), le
+// bouton, la micro-ligne « 5 entreprises par ville · sans engagement », et le
+// bénéfice (ce que l'audit chiffre). L'accroche, l'offre détaillée, sa condition, les pastilles et la
 // carte viennent juste sous le pli (à droite sur grand écran). UNE seule
 // action, répétée à cinq emplacements fixes (`EMPLACEMENTS_CTA`), aucun menu.
 //
@@ -202,7 +203,7 @@ export default async function TourDeFranceIaPage() {
 
       <main className="pb-24 md:pb-0">
         {/* 1. Héros — mocha de marque à lueurs terracotta et bleue. Premier écran
-            mobile : H1, promesse, bouton, micro-ligne. Le reste juste sous le pli. */}
+            mobile : H1, promesse, bouton, micro-ligne, bénéfice. Le reste sous le pli. */}
         <section className={`${FOND_MARQUE} text-mocha-fg`} aria-labelledby="tdf-titre">
           <div
             className={`${CONTENEUR} grid gap-10 pt-6 pb-12 sm:pt-12 sm:pb-20 lg:grid-cols-[1.15fr_1fr] lg:items-center lg:gap-14 lg:pt-16 lg:pb-24`}
@@ -214,7 +215,7 @@ export default async function TourDeFranceIaPage() {
               </p>
               <h1
                 id="tdf-titre"
-                className="mt-3 font-serif text-[clamp(1.75rem,7.6vw,3.25rem)] leading-[1.08] font-medium tracking-tight text-balance sm:mt-5"
+                className="mt-3 font-serif text-[clamp(2rem,8.4vw,3.25rem)] leading-[1.08] font-medium tracking-tight text-balance sm:mt-5"
               >
                 {HEROS.titreAvant}
                 <span className="text-terracotta-on-mocha decoration-terracotta italic underline decoration-[0.12em] underline-offset-[0.14em]">
@@ -231,9 +232,10 @@ export default async function TourDeFranceIaPage() {
                   {HEROS.reassurance}
                 </p>
               </div>
+              <p className="mt-4 max-w-xl text-base leading-snug">{HEROS.benefice}</p>
 
               {/* Sous le pli mobile : l'accroche, l'offre détaillée et SA condition
-                  (« offert » et « 5 places » restent ensemble), puis les pastilles. */}
+                  (« offert » et « 5 entreprises par ville » restent ensemble), puis les pastilles. */}
               <div className="border-mocha-fg/20 mt-10 border-t pt-8 sm:mt-12">
                 <p className="font-serif text-2xl leading-snug font-medium lg:text-[1.75rem]">
                   {HEROS.accroche}
@@ -447,7 +449,7 @@ export default async function TourDeFranceIaPage() {
           </div>
         </section>
 
-        {/* 8. Comment ça marche, en 4 étapes. */}
+        {/* 8. Comment ça marche, en 3 étapes courtes. */}
         <section className={`bg-sand ${SECTION}`} aria-labelledby="tdf-comment">
           <div className={CONTENEUR}>
             <h2 id="tdf-comment" className={TITRE_SECTION}>
@@ -455,7 +457,7 @@ export default async function TourDeFranceIaPage() {
             </h2>
             <ol
               aria-labelledby="tdf-comment"
-              className={`${styles.parcours} mt-10 grid gap-10 lg:grid-cols-4 lg:gap-8`}
+              className={`${styles.parcours} mt-10 grid gap-10 lg:grid-cols-3 lg:gap-8`}
             >
               {ETAPES.liste.map((etape, i) => (
                 <li key={etape} className="relative min-h-11 pl-16 lg:pt-16 lg:pl-0">

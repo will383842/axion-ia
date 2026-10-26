@@ -7,7 +7,8 @@
  *   · UNE seule action, « Je veux mon audit et ma formation offerts », vers la
  *     visio du Tour — le libellé nomme l'audit ET la formation ;
  *   · le premier écran d'un téléphone : H1, promesse, bouton, micro-ligne des
- *     5 places — le reste du héros passe dessous, la carte après le bouton ;
+ *     5 entreprises par ville, bénéfice — le reste du héros passe dessous, la
+ *     carte après le bouton ;
  *     un en-tête de tunnel (logo + ce bouton), aucun menu ;
  *   · cinq emplacements de bouton, ceux que la console connaît (tdf-entete,
  *     tdf-heros, tdf-bandeau, tdf-final, tdf-collant) — pas un de plus ;
@@ -21,7 +22,7 @@
  *   · CLS nul : chaque dessin et la photo portent largeur et hauteur NUMÉRIQUES ;
  *   · aucune animation en boucle infinie ;
  *   · le vocabulaire : aucun mot du cyclisme, aucun emoji, aucun chiffre hors
- *     de ceux du concept (5 places, 2 à 4 h, 4 h, 30 minutes).
+ *     de ceux du concept (5 entreprises, 2 à 4 h, 4 h, 30 minutes).
  *
  * Angle mort assumé : jsdom n'a pas de mise en page. « Le bouton tient dans le
  * premier écran à 360 px » se vérifie dans un navigateur (cf. la PR), pas ici.
@@ -34,8 +35,10 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 import { avecUtmContent, lireSuiviArrivee } from "@/server/calendly/choix-rendez-vous";
 
 import {
+  BENEFICE,
   CHEMIN_RENDEZ_VOUS,
   EMPLACEMENTS_CTA,
+  ETAPES,
   FAQ,
   FONDATEUR,
   HEROS,
@@ -170,7 +173,7 @@ describe("🔑 une seule action : l'audit et la formation offerts", () => {
     expect(lire(`${DOSSIER}/layout.tsx`)).toContain("overflow-x-clip");
   });
 
-  it("premier écran mobile : H1, promesse, bouton, micro-ligne — puis l'accroche, l'offre, sa condition et la carte", () => {
+  it("premier écran mobile : H1, promesse, bouton, micro-ligne, bénéfice — puis l'accroche, l'offre, sa condition et la carte", () => {
     const code = sansCommentaires(PAGE);
     const i = (t: string) => {
       const n = code.indexOf(t);
@@ -182,6 +185,7 @@ describe("🔑 une seule action : l'audit et la formation offerts", () => {
       "{HEROS.promesse}",
       "id={ID_CTA_HEROS}",
       "{HEROS.reassurance}",
+      "{HEROS.benefice}",
       "{HEROS.accroche}",
       "{HEROS.sousTitre}",
       "{HEROS.condition}",
@@ -190,7 +194,12 @@ describe("🔑 une seule action : l'audit et la formation offerts", () => {
     ].map(i);
     expect([...ordre].sort((x, y) => x - y)).toEqual(ordre);
     // Chaque morceau du héros est écrit UNE fois : plus de copie par largeur d'écran.
-    for (const t of ["{HEROS.condition}", "{HEROS.promesse}", "{HEROS.reassurance}"]) {
+    for (const t of [
+      "{HEROS.condition}",
+      "{HEROS.promesse}",
+      "{HEROS.reassurance}",
+      "{HEROS.benefice}",
+    ]) {
       expect(code.split(t).length - 1, t).toBe(1);
     }
     // Rien n'est caché sur mobile dans le héros, hormis la jauge décorative du surtitre.
@@ -206,10 +215,33 @@ describe("🔑 une seule action : l'audit et la formation offerts", () => {
     expect(HEROS.promesse).toBe(PROMESSE);
     expect(HEROS.reassurance).toBe(REASSURANCE);
     expect(PROMESSE).toBe(
-      "Audit + formation de 4 h sur l’IA pour votre équipe. Offerts, chez\u00a0vous.",
+      "Audit offert + formation de votre équipe offerte, en présentiel chez\u00a0vous.",
     );
-    expect(REASSURANCE).toBe("5 places par ville · sans engagement");
+    expect(REASSURANCE).toBe("5 entreprises par ville · sans engagement");
     expect(PROMESSE.length).toBeLessThanOrEqual(80);
+    // Le bénéfice : ce que l'audit CHIFFRE, en une ligne, sans résultat promis.
+    expect(HEROS.benefice).toBe(BENEFICE);
+    expect(BENEFICE).toBe(
+      "L’audit chiffre le temps gagné, la rentabilité et le chiffre d’affaires que l’IA peut apporter à votre entreprise.",
+    );
+    expect(BENEFICE).toMatch(/peut apporter/);
+    expect(BENEFICE.length).toBeLessThanOrEqual(120);
+  });
+
+  it("lisible sur téléphone : H1 à 32 px au moins, bénéfice à 16 px", () => {
+    const h1 = sansCommentaires(PAGE).match(/<h1[\s\S]*?className="([^"]+)"/)?.[1] ?? "";
+    expect(h1).toMatch(/text-\[clamp\(2rem,/);
+    expect(sansCommentaires(PAGE)).toMatch(
+      /<p className="mt-4 max-w-xl text-base leading-snug">\{HEROS\.benefice\}<\/p>/,
+    );
+  });
+
+  it("« Comment ça marche » : trois étapes courtes, sur trois colonnes sur grand écran", () => {
+    expect(ETAPES.liste).toHaveLength(3);
+    for (const e of ETAPES.liste) expect(e.length, e).toBeLessThanOrEqual(90);
+    expect(sansCommentaires(PAGE)).toMatch(
+      /\$\{styles\.parcours\} mt-10 grid gap-10 lg:grid-cols-3/,
+    );
   });
 
   it("le bouton passe proprement sur deux lignes à 360 px : centré, 56 px au moins", () => {
@@ -682,7 +714,7 @@ describe("🔴 le vocabulaire de la landing", () => {
     expect(MICRO_TEXTE_CTA).toBe("Visio de 30 minutes · sans engagement");
     expect(texte).not.toMatch(/visio[^.]*gratuite|gratuite et sans engagement/i);
     // La phrase est écrite UNE fois (contenu.ts) ; la page la cite sous le bouton final
-    // (sous celui du héros, la micro-ligne dit les 5 places, et « sans engagement »).
+    // (sous celui du héros, la micro-ligne dit les 5 entreprises par ville, et « sans engagement »).
     expect(PAGE.match(/\{MICRO_TEXTE_CTA\}/g)).toHaveLength(1);
     expect(REASSURANCE).toMatch(/sans engagement$/);
   });

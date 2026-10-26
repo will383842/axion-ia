@@ -1,5 +1,5 @@
 // Le Tour de France IA est un tunnel de la console, au même rang que les autres
-// (2026-10-26, question de Will : « le Tour est-il dans la console avec les
+// (2026-10-26, question posée : « le Tour est-il dans la console avec les
 // autres tunnels ? »).
 //
 // Ce fichier verrouille le CHEMIN entier, du bouton de la landing à l'écran :

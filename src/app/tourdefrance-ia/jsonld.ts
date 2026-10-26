@@ -4,11 +4,12 @@
 // Un seul `@graph` : WebPage, Service, FAQPage, BreadcrumbList.
 //
 // 🔑 Le Tour n'est PAS un événement : c'est une offre faite AUX ENTREPRISES
-// (audit offert + formation de 4 h offerte, de la TPE à l'ETI). Il garde son nom
+// (audit offert + formation d'équipe de 4 h offerte, en présentiel, de la TPE à l'ETI). Il garde son nom
 // et l'idée d'un tour qui va de ville en ville, mais il est décrit comme un
 // `Service` : aucune propriété d'`Event` (ni `startDate`, ni `location`, ni
 // `eventAttendanceMode`, ni `subEvent`, ni `performer`). La gratuité se dit par
-// une `Offer` à 0 €, comme le texte visible (« offerts aux entreprises de l'étape »).
+// une `Offer` à 0 €, comme le texte visible (« offerts aux entreprises de l'étape »,
+// 5 entreprises par ville, formation en intra-entreprise et en présentiel).
 //
 // Aucun nœud `Organization` ni `Person` n'est RECRÉÉ ici : le prestataire est
 // cité par son `@id` canonique (`SITE_URL/#organization`), décrit une fois pour
@@ -66,7 +67,7 @@ export function jsonLdDuTour(): Record<string, unknown> {
           price: "0",
           priceCurrency: "EUR",
           description:
-            "Audit et formation de 4 h offerts aux entreprises de l’étape, 5 places par ville",
+            "Audit et formation d’équipe de 4 h offerts, en intra-entreprise et en présentiel, aux entreprises de l’étape : 5 entreprises par ville",
         },
       },
       {

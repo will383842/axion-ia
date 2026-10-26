@@ -13,7 +13,7 @@
  * aucune balise ni mesure d'audience (verrou `le-tour-est-ouvert.spec.ts`, et la
  * politique de confidentialité l'écrit : elle « ne collecte elle-même aucune
  * donnée supplémentaire »). L'écran le dit ; il n'affiche jamais un zéro à la
- * place. Changer cela est une décision de Will, pas un détail de code.
+ * place. Changer cela est une décision du propriétaire, pas un détail de code.
  *
  * Deux sources, deux unités, dites à l'écran :
  *   · les ARRIVÉES sur la page de réservation (= clics « Je veux mon audit et ma formation offerts »,
