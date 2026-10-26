@@ -387,7 +387,7 @@ export function agregerTunnels(lignes: readonly LigneTunnel[]): SyntheseTunnels 
   // dans `parTunnel` : dans les autres totaux elles feraient baisser les taux du
   // tunnel diagnostic (campagnes, appareils, entonnoirs…). Une session qui
   // commence sur le Tour puis ouvre le questionnaire dans le même onglet reste
-  // comptée : elle porte au moins un événement du tunnel diagnostic.
+  // comptée : elle a ouvert le questionnaire (Simulator Started).
   const toutes = sessionsTunnels.filter(
     (s) => s.tunnelEntree !== "tour" || s.evenements.has(E.demarre),
   );

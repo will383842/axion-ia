@@ -167,7 +167,7 @@ describe("agregerTunnels — statistiques par tunnel", () => {
     expect([...TUNNELS_CONNUS].map((t) => t.cle).sort()).toEqual([...FUNNEL_KEYS].sort());
   });
 
-  it("SOMME exactement au nombre de sessions hors Tour — la propriété qui rend les taux justes", () => {
+  it("SOMME exactement au nombre de sessions hors Tour — et excède `sessions` d'exactement le nombre de sessions Tour sans questionnaire", () => {
     // Compter une session dans chaque tunnel touché ferait une somme
     // supérieure au total, et tout pourcentage bâti dessus serait faux sans
     // qu'aucun chiffre n'ait l'air aberrant.
@@ -196,7 +196,8 @@ describe("agregerTunnels — statistiques par tunnel", () => {
     expect(somme).toBe(3);
 
     // Une session du Tour vit dans `parTunnel` mais pas dans les totaux :
-    // la somme excède alors `sessions` d'exactement le nombre de sessions Tour.
+    // la somme excède alors `sessions` d'exactement le nombre de sessions Tour
+    // sans questionnaire (une session Tour qui ouvre le questionnaire est déjà dans `sessions`).
     const avecTour = agregerTunnels([
       ...lignes,
       balise("t", "Landing Viewed", {
@@ -210,7 +211,7 @@ describe("agregerTunnels — statistiques par tunnel", () => {
 
   it("une session Tour puis questionnaire dans le même onglet reste comptée", () => {
     const s = agregerTunnels([
-      balise("t", "Landing Viewed", {
+      balise("t", "Call Booking Viewed", {
         funnel: "tour",
         createdAt: new Date("2026-08-01T10:00:00Z"),
       }),
@@ -221,6 +222,7 @@ describe("agregerTunnels — statistiques par tunnel", () => {
     ]);
     expect(s.questionnairesOuverts).toBe(1);
     expect(s.sessions).toBe(1);
+    expect(s.sessionsPub).toBe(0);
   });
 
   it("ne dépend PAS de l'ordre des lignes reçues", () => {
