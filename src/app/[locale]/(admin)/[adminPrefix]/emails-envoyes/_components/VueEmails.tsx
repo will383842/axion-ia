@@ -375,7 +375,7 @@ export function VueEmails({
     <>
       <AdminPageHeader
         title="E-mails envoyés"
-        description="Tout ce qui est réellement parti : gabarit, destinataire, résultat."
+        description="Le journal de tous les e-mails réellement partis, tous clients confondus : modèle, destinataire, résultat. Pour un seul client, ouvrez l'onglet « E-mails » de sa fiche."
         actions={
           <div className="flex flex-wrap items-center gap-[var(--space-admin-2)]">
             <nav aria-label="Période" className="flex flex-wrap gap-[var(--space-admin-2)]">
@@ -587,6 +587,12 @@ export function VueEmails({
             </Link>
             . Seuls les e-mails rattachés à ses rendez-vous et à son questionnaire avant audit y
             figurent.{" "}
+            <Link
+              href={`/fr/${adminPrefix}/qualiopi/clients/${donnees.client.id}?onglet=emails`}
+              className="admin-link"
+            >
+              Ouvrir l&apos;onglet « E-mails » de la fiche
+            </Link>{" "}
             <Link href={lien({ clientId: null, page: 1 })} className="admin-link">
               Retirer ce filtre
             </Link>
