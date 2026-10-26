@@ -633,11 +633,11 @@ describe("🔴 le Tour est une OFFRE aux entreprises, pas un événement (JSON-L
   it("🔴 aucun mot interdit dans le JSON-LD", () => {
     const interdits: RegExp[] = [
       /grenoble/i,
-      /certifi[ée]+ qualiopi/i,
       /qualiopi/i,
       /obligatoire/i,
       /aucun gain garanti/i,
       /devis/i,
+      /prix/i,
       /candidater/i,
       /r[ée]server/i,
       /chacun r[èe]gle sa part/i,
