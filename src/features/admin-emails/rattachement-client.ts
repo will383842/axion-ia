@@ -13,6 +13,7 @@
  */
 
 import { prisma } from "@/lib/prisma";
+import { fichesCouvertes } from "@/features/questionnaire-preaudit/de-la-fiche";
 
 export type ClientDuJournal = { id: string; numero: string; nom: string };
 
@@ -59,7 +60,11 @@ export async function clientsDesLignes(
         ? []
         : prisma.questionnaireAvantAudit.findMany({
             where: { id: { in: questionnaireIds } },
-            select: { id: true, rencontre: { select: { client: clientSelect } } },
+            select: {
+              id: true,
+              client: clientSelect,
+              rencontre: { select: { client: clientSelect } },
+            },
           }),
       envoiIds.length === 0
         ? []
@@ -67,7 +72,9 @@ export async function clientsDesLignes(
             where: { id: { in: envoiIds } },
             select: {
               id: true,
-              questionnaire: { select: { rencontre: { select: { client: clientSelect } } } },
+              questionnaire: {
+                select: { client: clientSelect, rencontre: { select: { client: clientSelect } } },
+              },
             },
           }),
     ]);
@@ -77,8 +84,9 @@ export async function clientsDesLignes(
       if (c) parEntite.set(entiteId, { id: c.id, numero: c.numero, nom: c.raisonSociale });
     };
     for (const r of rencontres) poser(r.id, r.client);
-    for (const q of questionnaires) poser(q.id, q.rencontre?.client);
-    for (const e of envois) poser(e.id, e.questionnaire.rencontre?.client);
+    for (const q of questionnaires) poser(q.id, q.rencontre?.client ?? q.client);
+    for (const e of envois)
+      poser(e.id, e.questionnaire.rencontre?.client ?? e.questionnaire.client);
     for (const l of lignes) {
       const c = l.entityId === null ? undefined : parEntite.get(l.entityId);
       if (c) resultat.set(l.id, c);
@@ -104,6 +112,15 @@ export async function idsLiesAuClient(clientId: string): Promise<string[]> {
     },
   });
   const ids: string[] = [];
+  // Les questionnaires envoyés SANS rendez-vous (rattachés à la fiche directement), et leurs réponses.
+  const directs = await prisma.questionnaireAvantAudit.findMany({
+    where: { rencontreId: null, clientId: { in: await fichesCouvertes(clientId) } },
+    select: { id: true, envois: { select: { id: true } } },
+  });
+  for (const q of directs) {
+    ids.push(q.id);
+    for (const e of q.envois) ids.push(e.id);
+  }
   for (const r of rencontres) {
     ids.push(r.id);
     const q = r.questionnaireAvantAudit;

@@ -71,6 +71,10 @@ export function ReponsePreaudit(props: {
   r: ReponseLisible;
   /** `null` : questionnaire SANS rencontre (rencontre supprimée, réponses gardées). */
   rencontreId: string | null;
+  /** La fiche visée quand le questionnaire est envoyé sans rendez-vous (retour sur sa page). */
+  clientId?: string | null;
+  /** Le questionnaire visé de la fiche : le retour du geste revient sur celui-là. */
+  questionnaireId?: string | null;
   /** Référence du questionnaire : avec le code `membre`, elle identifie un salarié (RGPD). */
   reference: string;
   /** Williams (super-administrateur) : seul à pouvoir effacer définitivement. */
@@ -115,6 +119,13 @@ export function ReponsePreaudit(props: {
             <form action={ecarterReponsesMembreAction}>
               {props.rencontreId !== null ? (
                 <input type="hidden" name="rencontreId" value={props.rencontreId} />
+              ) : props.clientId != null ? (
+                <>
+                  <input type="hidden" name="clientId" value={props.clientId} />
+                  {props.questionnaireId != null ? (
+                    <input type="hidden" name="questionnaireId" value={props.questionnaireId} />
+                  ) : null}
+                </>
               ) : (
                 <input type="hidden" name="retour" value="questionnaires" />
               )}
@@ -140,6 +151,13 @@ export function ReponsePreaudit(props: {
             >
               {props.rencontreId !== null ? (
                 <input type="hidden" name="rencontreId" value={props.rencontreId} />
+              ) : props.clientId != null ? (
+                <>
+                  <input type="hidden" name="clientId" value={props.clientId} />
+                  {props.questionnaireId != null ? (
+                    <input type="hidden" name="questionnaireId" value={props.questionnaireId} />
+                  ) : null}
+                </>
               ) : (
                 <input type="hidden" name="retour" value="questionnaires" />
               )}

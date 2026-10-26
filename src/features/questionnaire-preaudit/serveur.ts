@@ -23,6 +23,7 @@ import {
   type ChargeValide,
   type ReponseLisible,
 } from "./donnees";
+import { fichesCouvertes, questionnairesDirectsDesFiches } from "./de-la-fiche";
 import { validerHtml } from "./html";
 import { lireLaCharge } from "./lecture";
 import { reessayerSiInterblocage } from "./interblocage";
@@ -93,6 +94,80 @@ export async function lireDeLaRencontre(rencontreId: string) {
       closLe: true,
       expireLe: true,
     },
+  });
+}
+
+/**
+ * Le questionnaire envoyé à une fiche SANS rendez-vous (`client_id` posé, `rencontre_id` NULL).
+ * Il peut y en avoir plusieurs au fil du temps : un envoi déjà parti n'est jamais remplacé, un
+ * nouveau dépôt en crée un autre (aucune suppression). Avec `questionnaireId`, on vise CELUI-LÀ
+ * (et seulement s'il appartient à la fiche ou à une fiche qu'elle a absorbée) ; sans, le plus récent.
+ */
+export async function lireDuClientSansRendezVous(clientId: string, questionnaireId?: string) {
+  // Suit les fusions de fiches, comme la carte : même recherche des deux côtés (dépôt compris).
+  const directs = questionnairesDirectsDesFiches(await fichesCouvertes(clientId));
+  return prisma.questionnaireAvantAudit.findFirst({
+    where: questionnaireId === undefined ? directs : { ...directs, id: questionnaireId },
+    orderBy: [{ creeLe: "desc" }, { id: "asc" }],
+    select: {
+      id: true,
+      ref: true,
+      creeLe: true,
+      envoyeLe: true,
+      luLe: true,
+      closLe: true,
+      expireLe: true,
+    },
+  });
+}
+
+/** Tous les questionnaires envoyés sans rendez-vous à une fiche (récents d'abord) : aucun n'est caché. */
+export async function listerQuestionnairesDuClient(clientId: string) {
+  return prisma.questionnaireAvantAudit.findMany({
+    where: questionnairesDirectsDesFiches(await fichesCouvertes(clientId)),
+    orderBy: [{ creeLe: "desc" }, { id: "asc" }],
+    select: { id: true, ref: true, creeLe: true, envoyeLe: true, closLe: true },
+  });
+}
+
+/**
+ * Dépôt du HTML pour une fiche sans rendez-vous. Rien d'envoyé : le brouillon est remplacé sur
+ * place. Déjà envoyé : le questionnaire parti reste tel quel (lien, réponses, brouillons) et un
+ * NOUVEAU questionnaire est créé — jamais de suppression ni de lien mort ici.
+ */
+export async function deposerQuestionnaireClient(
+  clientId: string,
+  html: string,
+): Promise<{ readonly id: string; readonly nouveau: boolean }> {
+  const v = validerHtml(html);
+  if (!v.ok) throw new MessagePourWill(v.motif);
+  const couvertes = await fichesCouvertes(clientId);
+  return prisma.$transaction(async (tx) => {
+    // Verrou de la FICHE avant toute lecture : deux dépôts en même temps (double clic, deux
+    // onglets) se suivent au lieu de créer deux questionnaires. Aucune contrainte unique n'existe
+    // sur (client_id, rencontre_id NULL), et aucune migration n'est faite pour cela.
+    const verrou = await tx.$queryRaw<
+      { id: string }[]
+    >`SELECT id FROM clients WHERE id = ${clientId}::uuid FOR UPDATE`;
+    if (verrou.length === 0) throw new MessagePourWill("Fiche client introuvable.");
+    const existant = await tx.questionnaireAvantAudit.findFirst({
+      where: questionnairesDirectsDesFiches(couvertes),
+      orderBy: [{ creeLe: "desc" }, { id: "asc" }],
+      select: { id: true, envoyeLe: true },
+    });
+    if (existant !== null && existant.envoyeLe === null) {
+      await tx.$queryRaw`SELECT id FROM questionnaires_avant_audit WHERE id = ${existant.id}::uuid FOR UPDATE`;
+      const maj = await tx.questionnaireAvantAudit.updateMany({
+        where: { id: existant.id, envoyeLe: null },
+        data: { html },
+      });
+      if (maj.count === 1) return { id: existant.id, nouveau: false };
+    }
+    const cree = await tx.questionnaireAvantAudit.create({
+      data: { clientId, html, ref: randomBytes(6).toString("hex") },
+      select: { id: true },
+    });
+    return { id: cree.id, nouveau: true };
   });
 }
 
@@ -434,7 +509,8 @@ export async function listerQuestionnairesSansRencontre(page = 1): Promise<{
 }> {
   const p = Number.isInteger(page) && page >= 1 ? page : 1;
   const qs = await prisma.questionnaireAvantAudit.findMany({
-    where: { rencontreId: null },
+    // Ceux d'une fiche (envoyés sans rendez-vous) se lisent dans l'onglet Questionnaire de la fiche.
+    where: { rencontreId: null, clientId: null },
     select: { id: true, ref: true, envoyeLe: true, closLe: true },
     // Les envoyés d'abord (du plus récent), puis les jamais envoyés ; `id` départage (pages stables).
     orderBy: [{ envoyeLe: { sort: "desc", nulls: "last" } }, { creeLe: "desc" }, { id: "asc" }],

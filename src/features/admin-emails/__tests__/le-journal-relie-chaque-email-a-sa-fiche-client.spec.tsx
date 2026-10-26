@@ -14,6 +14,7 @@ const prismaMock = vi.hoisted(() => ({
   questionnaireAvantAudit: { findMany: vi.fn() },
   questionnaireAvantAuditEnvoi: { findMany: vi.fn() },
   client: { findUnique: vi.fn() },
+  clientFusion: { findMany: vi.fn() },
 }));
 vi.mock("@/lib/prisma", () => ({ prisma: prismaMock }));
 
@@ -62,7 +63,24 @@ describe("idsLiesAuClient", () => {
       { id: U(1), questionnaireAvantAudit: { id: U(2), envois: [{ id: U(3) }, { id: U(4) }] } },
       { id: U(5), questionnaireAvantAudit: null },
     ]);
+    prismaMock.clientFusion.findMany.mockResolvedValueOnce([]);
+    prismaMock.questionnaireAvantAudit.findMany.mockResolvedValueOnce([]);
     expect(await idsLiesAuClient(U(9))).toEqual([U(1), U(2), U(3), U(4), U(5)]);
+  });
+
+  it("couvre aussi les questionnaires envoyés SANS rendez-vous, de la fiche et des fiches absorbées", async () => {
+    prismaMock.rencontre.findMany.mockResolvedValueOnce([]);
+    prismaMock.clientFusion.findMany
+      .mockResolvedValueOnce([{ absorbeId: U(8) }])
+      .mockResolvedValueOnce([]);
+    prismaMock.questionnaireAvantAudit.findMany.mockResolvedValueOnce([
+      { id: U(6), envois: [{ id: U(7) }] },
+    ]);
+    expect(await idsLiesAuClient(U(9))).toEqual([U(6), U(7)]);
+    expect(prismaMock.questionnaireAvantAudit.findMany.mock.calls[0]![0].where).toEqual({
+      rencontreId: null,
+      clientId: { in: [U(9), U(8)] },
+    });
   });
 
   it("rend [] pour un identifiant qui n'est pas un UUID (zéro ligne, jamais tout le journal)", async () => {
@@ -103,13 +121,20 @@ describe("BlocQuestionnaireFiche", () => {
   };
   it("n'affiche rien sans questionnaire", () => {
     expect(
-      renderToStaticMarkup(<BlocQuestionnaireFiche questionnaires={[]} adminPrefix="adm" />),
+      renderToStaticMarkup(
+        <BlocQuestionnaireFiche
+          questionnaires={[]}
+          adminPrefix="adm"
+          ficheHref="/fr/adm/qualiopi/clients/c"
+        />,
+      ),
     ).toBe("");
   });
   it("dit l'envoi, les réponses d'équipe et les liens (heure de Paris)", () => {
     const html = renderToStaticMarkup(
       <BlocQuestionnaireFiche
         adminPrefix="adm"
+        ficheHref="/fr/adm/qualiopi/clients/c"
         questionnaires={[
           {
             ...base,
@@ -131,6 +156,7 @@ describe("BlocQuestionnaireFiche", () => {
     const html = renderToStaticMarkup(
       <BlocQuestionnaireFiche
         adminPrefix="adm"
+        ficheHref="/fr/adm/qualiopi/clients/c"
         questionnaires={[
           { ...base, envoyeLe: null, invitationEmailLogId: null, invitationStatut: null },
         ]}
@@ -201,6 +227,7 @@ describe("lireQuestionnairesDeLaFiche", () => {
     const bd = {
       questionnaireAvantAudit: { findMany: vi.fn() },
       emailLog: { findMany: vi.fn() },
+      clientFusion: { findMany: vi.fn(async () => []) },
     };
     vi.doMock("@/lib/prisma", () => ({ prisma: bd }));
     const lu = new Date("2026-10-25T12:00:00Z");

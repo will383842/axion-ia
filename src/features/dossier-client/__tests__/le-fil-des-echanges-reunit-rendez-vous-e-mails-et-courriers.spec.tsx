@@ -11,6 +11,8 @@ const prismaMock = vi.hoisted(() => ({
   emailLog: { findMany: vi.fn() },
   emailOutbox: { findMany: vi.fn() },
   questionnaireAvantAuditCourrier: { findMany: vi.fn() },
+  // Fusions de fiches : aucune dans ces scénarios (la fiche ne couvre qu'elle-même).
+  clientFusion: { findMany: vi.fn(async () => []) },
 }));
 vi.mock("@/lib/prisma", () => ({ prisma: prismaMock }));
 const idsMock = vi.hoisted(() => vi.fn());
@@ -19,7 +21,10 @@ vi.mock("@/features/admin-emails/rattachement-client", () => ({ idsLiesAuClient:
 import { assemblerFil, lireFilDesEchanges, type EchangeDuFil } from "../fil-des-echanges";
 import { FilDesEchanges } from "@/components/admin/dossier-client/FilDesEchanges";
 
-beforeEach(() => vi.clearAllMocks());
+beforeEach(() => {
+  vi.clearAllMocks();
+  prismaMock.clientFusion.findMany.mockResolvedValue([]);
+});
 
 const e = (cle: string, iso: string): EchangeDuFil => ({
   cle,
@@ -124,6 +129,31 @@ describe("lireFilDesEchanges", () => {
     expect(mail.lien).toBe("/fr/adm/emails-envoyes/l1");
     expect(fil.find((x) => x.cle === "courrier:c1")?.etat).toBe("annulé");
     expect(JSON.stringify(fil)).not.toMatch(/@/);
+  });
+
+  it("les courriers d'un questionnaire envoyé SANS rendez-vous sont dans le fil de la fiche", async () => {
+    prismaMock.rencontre.findMany.mockResolvedValue([]);
+    idsMock.mockResolvedValue([]);
+    prismaMock.emailLog.findMany.mockResolvedValue([]);
+    prismaMock.emailOutbox.findMany.mockResolvedValue([]);
+    prismaMock.questionnaireAvantAuditCourrier.findMany.mockResolvedValue([
+      {
+        id: "c9",
+        nature: "invitation",
+        statut: "prevu",
+        prevuLe: new Date("2026-10-26T08:00:00Z"),
+        faitLe: null,
+        questionnaire: { rencontreId: null, clientId: "cid" },
+      },
+    ]);
+    const { fil } = await lireFilDesEchanges("cid", "adm");
+    // Le filtre cherche par rendez-vous OU par rattachement direct à la fiche.
+    const where = prismaMock.questionnaireAvantAuditCourrier.findMany.mock.calls[0]![0].where;
+    expect(where.questionnaire).toEqual({
+      OR: [{ clientId: { in: ["cid"] } }, { rencontre: { clientId: { in: ["cid"] } } }],
+    });
+    expect(fil).toHaveLength(1);
+    expect(fil[0]!.lien).toBe("/fr/adm/qualiopi/clients/cid/questionnaire");
   });
 
   it("une source en panne ne vide pas le fil", async () => {

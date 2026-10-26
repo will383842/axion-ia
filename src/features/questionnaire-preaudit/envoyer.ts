@@ -136,7 +136,7 @@ export async function envoyerQuestionnaire(args: {
   if (!a.success) throw new MessagePourWill("Cette adresse e-mail n'est pas valide.");
   const q = await prisma.questionnaireAvantAudit.findUnique({
     where: { id: args.questionnaireId },
-    select: { id: true, rencontre: { select: { clientId: true } } },
+    select: { id: true, clientId: true, rencontre: { select: { clientId: true } } },
   });
   if (q === null) throw new MessagePourWill("Questionnaire introuvable.");
   const lien = lienOuRefus(q.id);
@@ -170,7 +170,7 @@ export async function envoyerQuestionnaire(args: {
         jobId: `preaudit-${q.id}-${maintenant.getTime()}`,
         entityType: "QuestionnaireAvantAudit",
         entityId: q.id,
-        clientId: q.rencontre?.clientId ?? null,
+        clientId: q.rencontre?.clientId ?? q.clientId ?? null,
       },
     );
     // Retenu dans la corbeille « E-mails à valider » : l'e-mail EXISTE et partira à la validation

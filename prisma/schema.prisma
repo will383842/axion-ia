@@ -14607,8 +14607,9 @@ model QuestionnaireAvantAudit {
   rencontreId      String?    @unique @map("rencontre_id") @db.Uuid
   rencontre        Rencontre? @relation(fields: [rencontreId], references: [id], onDelete: SetNull)
   /// Fiche client visée quand le questionnaire est envoyé SANS rendez-vous (2026-10-25, décision de
-  /// Will). NULL : on retrouve le client par la rencontre. Jamais en cascade : supprimer une fiche
-  /// laisse le questionnaire et ses réponses (SetNull), la suppression reste un geste de Will.
+  /// Will). NULL : on retrouve le client par la rencontre. Jamais en cascade en base (SetNull).
+  /// La suppression MANUELLE d'une fiche (geste de Will, avec confirmation) emporte ses questionnaires
+  /// `client_id` encore sans envoi réel ; un envoi réel à un prospect la bloque (effacement RGPD).
   clientId         String?    @map("client_id") @db.Uuid
   client           Client?    @relation("QuestionnaireAvantAuditClient", fields: [clientId], references: [id], onDelete: SetNull)
   html             String     @db.Text

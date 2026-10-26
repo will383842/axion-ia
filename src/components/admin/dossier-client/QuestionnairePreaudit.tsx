@@ -47,6 +47,7 @@ import {
   essaiPermis,
   libellesDuQuestionnaire,
   lireDeLaRencontre,
+  lireDuClientSansRendezVous,
   lireReponses,
 } from "@/features/questionnaire-preaudit/serveur";
 import {
@@ -92,7 +93,12 @@ function quand(d: Date): string {
 }
 
 export async function QuestionnairePreaudit(props: {
-  rencontreId: string;
+  /** Le rendez-vous du questionnaire. Absent : le questionnaire est celui d'une FICHE (`clientId`). */
+  rencontreId?: string;
+  /** La fiche, quand le questionnaire est envoyé SANS rendez-vous. */
+  clientId?: string;
+  /** Avec `clientId` : le questionnaire visé (plusieurs par fiche). Absent : le plus récent. */
+  questionnaireId?: string;
   /** Seul Williams (super_admin) dépose le HTML. */
   peutDeposer: boolean;
   titulaire: { nom: string | null; email: string | null } | null;
@@ -111,8 +117,28 @@ export async function QuestionnairePreaudit(props: {
     corps?: string;
   } | null;
 }) {
-  const { rencontreId } = props;
-  const q = await lireDeLaRencontre(rencontreId);
+  const { rencontreId, clientId, questionnaireId } = props;
+  // Le champ caché qui dit aux actions quel questionnaire est visé (rendez-vous, sinon fiche).
+  const cible =
+    rencontreId !== undefined
+      ? { name: "rencontreId", value: rencontreId }
+      : { name: "clientId", value: clientId ?? "" };
+  // Le questionnaire précis (fiche sans rendez-vous) voyage avec chaque geste : les rappels d'un
+  // questionnaire déjà parti restent arrêtables même quand un autre a été déposé depuis.
+  const champsCible = (
+    <>
+      <input type="hidden" name={cible.name} value={cible.value} />
+      {rencontreId === undefined && questionnaireId !== undefined ? (
+        <input type="hidden" name="questionnaireId" value={questionnaireId} />
+      ) : null}
+    </>
+  );
+  const q =
+    rencontreId !== undefined
+      ? await lireDeLaRencontre(rencontreId)
+      : clientId === undefined
+        ? null
+        : await lireDuClientSansRendezVous(clientId, questionnaireId);
   const refus = refusEnvoiReel();
   const reponses = q === null ? [] : await lireReponses(q.id);
   const libelles =
@@ -230,7 +256,7 @@ export async function QuestionnairePreaudit(props: {
           action={deposerQuestionnaireAction}
           className="mb-[var(--space-admin-3)] flex flex-wrap items-center gap-[var(--space-admin-2)]"
         >
-          <input type="hidden" name="rencontreId" value={rencontreId} />
+          {champsCible}
           <input
             type="file"
             name="fichier"
@@ -383,7 +409,7 @@ export async function QuestionnairePreaudit(props: {
                 </p>
               ) : (
                 <form action={envoyerQuestionnaireAction} data-bloc="envoi-questionnaire">
-                  <input type="hidden" name="rencontreId" value={rencontreId} />
+                  {champsCible}
                   <input type="hidden" name="destinataire" value={ap.email} />
                   <input type="hidden" name="prenom" value={ap.prenom} />
                   <input
@@ -516,7 +542,7 @@ export async function QuestionnairePreaudit(props: {
             action={enregistrerGabaritInvitationAction}
             className="mt-[var(--space-admin-2)] flex flex-col gap-[var(--space-admin-2)]"
           >
-            <input type="hidden" name="rencontreId" value={rencontreId} />
+            {champsCible}
             <label className={mutedCls} htmlFor="base_objet">
               Objet de base (vide = objet automatique daté)
             </label>
@@ -560,7 +586,7 @@ export async function QuestionnairePreaudit(props: {
           data-bloc="essai-suivi"
           className="mb-[var(--space-admin-3)] flex flex-wrap items-center gap-[var(--space-admin-2)]"
         >
-          <input type="hidden" name="rencontreId" value={rencontreId} />
+          {champsCible}
           <select name="essai_de" className={inputCls} aria-label="E-mail à tester">
             {ESSAIS.map(([valeur, libelle]) => (
               <option key={valeur} value={valeur}>
@@ -645,7 +671,7 @@ export async function QuestionnairePreaudit(props: {
           ) : null}
           {suivi.relancesDemandees && suivi.relancesArreteesLe === null ? (
             <form action={arreterRelancesAction} className="mt-[var(--space-admin-2)]">
-              <input type="hidden" name="rencontreId" value={rencontreId} />
+              {champsCible}
               <AdminButton type="submit" variant="ghost-danger">
                 Arrêter les rappels
               </AdminButton>
@@ -656,7 +682,7 @@ export async function QuestionnairePreaudit(props: {
 
       {q !== null && q.envoyeLe !== null && q.closLe === null ? (
         <form action={cloreQuestionnaireAction} className="mb-[var(--space-admin-3)]">
-          <input type="hidden" name="rencontreId" value={rencontreId} />
+          {champsCible}
           <AdminButton type="submit" variant="secondary">
             Fermer le questionnaire
           </AdminButton>
@@ -708,7 +734,9 @@ export async function QuestionnairePreaudit(props: {
               <li key={r.id}>
                 <ReponsePreaudit
                   r={r}
-                  rencontreId={rencontreId}
+                  rencontreId={rencontreId ?? null}
+                  clientId={clientId ?? null}
+                  questionnaireId={rencontreId === undefined ? (questionnaireId ?? null) : null}
                   reference={q?.ref ?? ""}
                   peutEffacer={props.peutDeposer}
                   libelleMode={LIBELLE_MODE[r.mode]}
@@ -720,7 +748,7 @@ export async function QuestionnairePreaudit(props: {
           </ul>
           {aTraiter ? (
             <form action={marquerQuestionnaireLuAction} className="mt-[var(--space-admin-3)]">
-              <input type="hidden" name="rencontreId" value={rencontreId} />
+              {champsCible}
               <AdminButton type="submit" variant="secondary">
                 Marquer comme lues
               </AdminButton>

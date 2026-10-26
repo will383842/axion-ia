@@ -453,7 +453,11 @@ export default async function FicheClient360Page({ params, searchParams }: PageP
           Aucun questionnaire n&apos;a été envoyé à ce client.
         </p>
       ) : (
-        <BlocQuestionnaireFiche questionnaires={questionnaires} adminPrefix={adminPrefix} />
+        <BlocQuestionnaireFiche
+          questionnaires={questionnaires}
+          adminPrefix={adminPrefix}
+          ficheHref={ficheHref}
+        />
       );
   } else if (voitEchanges && onglet === "emails") {
     const fil = await lireFilDesEchanges(id, adminPrefix);
@@ -612,7 +616,17 @@ export default async function FicheClient360Page({ params, searchParams }: PageP
           <>
             {/* Le wizard pré-sélectionne le client (?clientId=) : le parcours
                 de vente démarre depuis la fiche, sans re-chercher le client. */}
-            <AdminButton href={`${qBase}/vente/new?clientId=${client.id}`}>
+            {/* Bouton principal (un seul plein à la fois) : l'envoi du questionnaire, SANS
+                rendez-vous. Il ouvre la page d'aperçu ; rien ne part sans le clic « Envoyer ». */}
+            {voitEchanges ? (
+              <AdminButton href={`${ficheHref}/questionnaire`}>
+                Envoyer le questionnaire
+              </AdminButton>
+            ) : null}
+            <AdminButton
+              variant={voitEchanges ? "secondary" : "primary"}
+              href={`${qBase}/vente/new?clientId=${client.id}`}
+            >
               Nouvelle vente
             </AdminButton>
             <AdminButton variant="secondary" href={`${clientsBase}/${client.id}/edit`}>

@@ -9,11 +9,16 @@
  */
 
 import { prisma } from "@/lib/prisma";
+import {
+  fichesCouvertes,
+  questionnairesDesFiches,
+} from "@/features/questionnaire-preaudit/de-la-fiche";
 
 export interface QuestionnaireDeLaFiche {
   readonly id: string;
-  readonly rencontreId: string;
-  readonly rencontreTitre: string;
+  /** NULL : envoyé SANS rendez-vous (rattaché à la fiche directement). */
+  readonly rencontreId: string | null;
+  readonly rencontreTitre: string | null;
   readonly rencontreDebut: Date | null;
   readonly creeLe: Date;
   /** NULL = brouillon : rien n'est parti. */
@@ -37,7 +42,7 @@ export async function lireQuestionnairesDeLaFiche(
 ): Promise<ReadonlyArray<QuestionnaireDeLaFiche>> {
   try {
     const qs = await prisma.questionnaireAvantAudit.findMany({
-      where: { rencontre: { clientId } },
+      where: questionnairesDesFiches(await fichesCouvertes(clientId)),
       orderBy: { creeLe: "desc" },
       take: 20,
       select: {
@@ -67,29 +72,26 @@ export async function lireQuestionnairesDeLaFiche(
         dernierLog.set(l.entityId, { id: l.id, status: l.status });
       }
     }
-    return qs.flatMap((q): QuestionnaireDeLaFiche[] => {
-      if (q.rencontre === null) return [];
+    return qs.map((q): QuestionnaireDeLaFiche => {
       const log = dernierLog.get(q.id) ?? null;
-      return [
-        {
-          id: q.id,
-          rencontreId: q.rencontre.id,
-          rencontreTitre: q.rencontre.titre,
-          rencontreDebut: q.rencontre.debutPrevu,
-          creeLe: q.creeLe,
-          envoyeLe: q.envoyeLe,
-          expireLe: q.expireLe,
-          closLe: q.closLe,
-          reponses: {
-            dirigeant: q.envois.filter((e) => e.mode === "main").length,
-            referentInformatique: q.envois.filter((e) => e.mode === "it").length,
-            collaborateurs: q.envois.filter((e) => e.mode === "emp").length,
-            aTraiter: q.envois.filter((e) => q.luLe === null || e.recuLe > q.luLe).length,
-          },
-          invitationEmailLogId: log?.id ?? null,
-          invitationStatut: log?.status ?? null,
+      return {
+        id: q.id,
+        rencontreId: q.rencontre?.id ?? null,
+        rencontreTitre: q.rencontre?.titre ?? null,
+        rencontreDebut: q.rencontre?.debutPrevu ?? null,
+        creeLe: q.creeLe,
+        envoyeLe: q.envoyeLe,
+        expireLe: q.expireLe,
+        closLe: q.closLe,
+        reponses: {
+          dirigeant: q.envois.filter((e) => e.mode === "main").length,
+          referentInformatique: q.envois.filter((e) => e.mode === "it").length,
+          collaborateurs: q.envois.filter((e) => e.mode === "emp").length,
+          aTraiter: q.envois.filter((e) => q.luLe === null || e.recuLe > q.luLe).length,
         },
-      ];
+        invitationEmailLogId: log?.id ?? null,
+        invitationStatut: log?.status ?? null,
+      };
     });
   } catch {
     // Une panne de lecture ne doit jamais empêcher la fiche de s'afficher.

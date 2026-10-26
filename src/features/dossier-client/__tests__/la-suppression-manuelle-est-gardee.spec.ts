@@ -102,9 +102,11 @@ function fabriquer() {
     questionnaireAvantAudit: {
       findUnique: vi.fn(async (a: { select: Ligne }) =>
         "rencontreId" in a.select
-          ? { rencontreId: RID }
+          ? { rencontreId: RID, client: null }
           : { id: QID, destinataire: chiffrerParole(e.destinataire), envoyeLe: e.envoyeLe },
       ),
+      // Aucun questionnaire envoyé « sans rendez-vous » à cette fiche dans ces scénarios.
+      findMany: vi.fn(async () => []),
       deleteMany: supprime("questionnaire"),
     },
     questionnaireAvantAuditEnvoi: {
@@ -274,6 +276,8 @@ describe("suppression manuelle depuis la console", () => {
     expect(verrous).toEqual([
       "verrou:clients",
       "verrou:rencontres",
+      // Les questionnaires envoyés à la fiche SANS rendez-vous (clé client_id), puis ceux des rendez-vous.
+      "verrou:questionnaires_avant_audit",
       "verrou:client_contacts",
       "verrou:questionnaires_avant_audit",
       "verrou:rencontre_participants",

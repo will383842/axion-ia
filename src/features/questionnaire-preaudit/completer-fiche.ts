@@ -38,6 +38,7 @@ import { ajouterPersonneAFiche } from "@/server/qualiopi/crm/porte-client";
 import { chargeClientAvant, emettreFaitClient } from "@/server/partners-sync/producteurs/client";
 import { codeDirigeantPreauditValide } from "@/server/visio/questionnaire-en-ligne/jeton";
 import { dansLaTransaction } from "@/features/dossier-client/base";
+import { ficheVivante } from "./de-la-fiche";
 import { reessayerSiInterblocage } from "./interblocage";
 
 export const ACTION_COMPLETE_DEPUIS_QUESTIONNAIRE = "client.complete_depuis_questionnaire";
@@ -220,11 +221,14 @@ export async function completerFicheDepuisReponse(
     select: {
       ref: true,
       rencontreId: true,
+      clientId: true,
       destinataireHash: true,
       rencontre: { select: { clientId: true, calendlyEvent: { select: { inviteeEmail: true } } } },
     },
   });
-  const clientId = q?.rencontre?.clientId ?? null;
+  // Sans rendez-vous, la fiche visée a pu être absorbée depuis : on écrit sur celle que Will regarde.
+  const clientId =
+    q?.rencontre?.clientId ?? (q?.clientId != null ? await ficheVivante(q.clientId) : null);
   if (q === null || clientId === null) return { statut: "ignoree", raison: "sans_fiche" };
   const champs = champsObjectifsDe(reponse.json);
   const adressesSures = new Set(
