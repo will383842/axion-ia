@@ -27,6 +27,9 @@ interface Etat {
     telephone: string | null;
     numero: string;
     contactEmailFiche: string | null;
+    contactNomFiche: string | null;
+    oppositionIaLe: Date | null;
+    clientId: string;
   } | null;
   autres: number;
   /** Table liée par clé étrangère → lignes qui visent la personne. */
@@ -40,7 +43,9 @@ interface Etat {
       | "surPlace"
       | "coachings"
       | "envois"
-      | "enAttente",
+      | "enAttente"
+      | "courriers"
+      | "signatures",
       number
     >
   >;
@@ -79,12 +84,17 @@ function fabriquer() {
           ? null
           : {
               id: PID,
-              clientId: CID,
+              clientId: e.contact.clientId,
               nom: NOM,
+              oppositionIaLe: e.contact.oppositionIaLe,
               telephone: e.contact.telephone,
               estContactFacturation: e.contact.estContactFacturation,
               adresses: [{ email: "Essai@Exemple-Fictif.fr", emailHash: "h1" }],
-              client: { numero: e.contact.numero, contactEmail: e.contact.contactEmailFiche },
+              client: {
+                numero: e.contact.numero,
+                contactEmail: e.contact.contactEmailFiche,
+                contactNom: e.contact.contactNomFiche,
+              },
             },
       ),
       count: vi.fn(async () => e.autres),
@@ -101,6 +111,9 @@ function fabriquer() {
     coachingSession: { count: n("coachings") },
     emailLog: { count: n("envois") },
     emailOutbox: { count: n("enAttente") },
+    questionnaireAvantAuditCourrier: { count: n("courriers") },
+    documentSignature: { count: n("signatures") },
+    documentSignatureToken: { count: vi.fn(async () => 0) },
     activityLog: {
       create: vi.fn(async (a: { data: Record<string, unknown> }) => {
         e.trace = a.data;
@@ -124,6 +137,9 @@ beforeEach(() => {
       telephone: "0600000000",
       numero: "AXI-CLI-003",
       contactEmailFiche: "facturation@exemple-fictif.fr",
+      contactNomFiche: "Autre Personne",
+      oppositionIaLe: null,
+      clientId: CID,
     },
     autres: 1,
     fks: [],
@@ -137,7 +153,7 @@ beforeEach(() => {
 
 const premiere = async () => {
   const r = await preparerRetraitPersonne(
-    { contactId: PID, acteurId: ADMIN, confirmation: "EFFACER" },
+    { contactId: PID, clientId: CID, acteurId: ADMIN, confirmation: "EFFACER" },
     base,
   );
   if (!r.ok) throw new Error(r.motif);
@@ -159,7 +175,10 @@ describe("feu vert", () => {
   it("double validation : verrous, adresses puis personne, trace SANS nom ni adresse", async () => {
     const jeton = await premiere();
     expect(e.journal.filter((j) => j.startsWith("supprime"))).toEqual([]);
-    const r = await retirerPersonne({ contactId: PID, acteurId: ADMIN, jeton, code: CODE }, base);
+    const r = await retirerPersonne(
+      { contactId: PID, clientId: CID, acteurId: ADMIN, jeton, code: CODE },
+      base,
+    );
     expect(r).toMatchObject({ ok: true, clientId: CID });
     const ordre = e.journal.filter((j) => !j.startsWith("compte"));
     expect(ordre).toEqual([
@@ -184,7 +203,7 @@ describe("feu vert", () => {
   it("le nom de la personne vaut aussi comme recopie (casse et espaces ignorés)", async () => {
     const jeton = await premiere();
     const r = await retirerPersonne(
-      { contactId: PID, acteurId: ADMIN, jeton, code: " personne essai " },
+      { contactId: PID, clientId: CID, acteurId: ADMIN, jeton, code: " personne essai " },
       base,
     );
     expect(r.ok).toBe(true);
@@ -193,7 +212,10 @@ describe("feu vert", () => {
   it("double clic : déjà retirée, rien supprimé, rien tracé", async () => {
     const jeton = await premiere();
     e.contact = null;
-    const r = await retirerPersonne({ contactId: PID, acteurId: ADMIN, jeton, code: CODE }, base);
+    const r = await retirerPersonne(
+      { contactId: PID, clientId: CID, acteurId: ADMIN, jeton, code: CODE },
+      base,
+    );
     expect(r).toMatchObject({ ok: true, dejaRetiree: true });
     expect(e.trace).toBeNull();
     expect(e.journal).not.toContain("supprime:personne");
@@ -203,7 +225,7 @@ describe("feu vert", () => {
 describe("refus : la personne est liée à ce qu'on ne doit pas perdre", () => {
   const refuse = async (attendu: string) => {
     const r = await preparerRetraitPersonne(
-      { contactId: PID, acteurId: ADMIN, confirmation: "EFFACER" },
+      { contactId: PID, clientId: CID, acteurId: ADMIN, confirmation: "EFFACER" },
       base,
     );
     expect(r.ok).toBe(false);
@@ -222,6 +244,43 @@ describe("refus : la personne est liée à ce qu'on ne doit pas perdre", () => {
   it("contact de facturation (son adresse est recopiée sur la fiche)", async () => {
     e.contact!.contactEmailFiche = "essai@exemple-fictif.fr";
     await refuse("contact de facturation");
+  });
+
+  it("contact de facturation (son nom est recopié sur la fiche)", async () => {
+    e.contact!.contactNomFiche = "  personne ESSAI ";
+    await refuse("contact de facturation");
+  });
+
+  it("opposition à l'IA enregistrée (art. 21) : à garder", async () => {
+    e.contact!.oppositionIaLe = new Date("2026-01-01");
+    await refuse("opposition à l'IA enregistrée (art. 21)");
+  });
+
+  it("courrier du questionnaire avant audit adressé à elle", async () => {
+    e.comptes.courriers = 2;
+    await refuse("2 courrier(s) du questionnaire avant audit");
+  });
+
+  it("signataire d'un document", async () => {
+    e.comptes.signatures = 1;
+    await refuse("signataire de 1 document(s) à signer");
+  });
+
+  it("IDOR : un contactId d'une AUTRE fiche est refusé aux deux étapes", async () => {
+    const AUTRE = "99999999-9999-4999-8999-999999999999";
+    const r = await preparerRetraitPersonne(
+      { contactId: PID, clientId: AUTRE, acteurId: ADMIN, confirmation: "EFFACER" },
+      base,
+    );
+    expect(r.ok).toBe(false);
+    const jeton = await premiere();
+    const r2 = await retirerPersonne(
+      { contactId: PID, clientId: AUTRE, acteurId: ADMIN, jeton, code: CODE },
+      base,
+    );
+    expect(r2).toMatchObject({ ok: false, motif: expect.stringContaining("n'appartient pas") });
+    expect(e.journal.some((j) => j.startsWith("supprime"))).toBe(false);
+    expect(e.trace).toBeNull();
   });
 
   it("dernière personne de la fiche", async () => {
@@ -263,7 +322,10 @@ describe("refus : la personne est liée à ce qu'on ne doit pas perdre", () => {
   it("une adresse liée APRÈS la 1re étape bloque aussi la 2e : rien supprimé", async () => {
     const jeton = await premiere();
     e.comptes.envois = 1;
-    const r = await retirerPersonne({ contactId: PID, acteurId: ADMIN, jeton, code: CODE }, base);
+    const r = await retirerPersonne(
+      { contactId: PID, clientId: CID, acteurId: ADMIN, jeton, code: CODE },
+      base,
+    );
     expect(r.ok).toBe(false);
     expect(e.journal).not.toContain("supprime:personne");
     expect(e.trace).toBeNull();
@@ -272,11 +334,15 @@ describe("refus : la personne est liée à ce qu'on ne doit pas perdre", () => {
 
 describe("jeton et recopie", () => {
   const essai = (jeton: string, code = CODE, maintenant?: number) =>
-    retirerPersonne({ contactId: PID, acteurId: ADMIN, jeton, code }, base, maintenant);
+    retirerPersonne(
+      { contactId: PID, clientId: CID, acteurId: ADMIN, jeton, code },
+      base,
+      maintenant,
+    );
 
   it("sans le mot EFFACER : aucun jeton", async () => {
     const r = await preparerRetraitPersonne(
-      { contactId: PID, acteurId: ADMIN, confirmation: "oui" },
+      { contactId: PID, clientId: CID, acteurId: ADMIN, confirmation: "oui" },
       base,
     );
     expect(r.ok).toBe(false);
@@ -312,7 +378,13 @@ describe("jeton et recopie", () => {
     expect(await essai(deFiche)).toMatchObject({ ok: false });
     const jeton = await premiere();
     const r = await retirerPersonne(
-      { contactId: PID, acteurId: "66666666-6666-4666-8666-666666666666", jeton, code: CODE },
+      {
+        contactId: PID,
+        clientId: CID,
+        acteurId: "66666666-6666-4666-8666-666666666666",
+        jeton,
+        code: CODE,
+      },
       base,
     );
     expect(r.ok).toBe(false);

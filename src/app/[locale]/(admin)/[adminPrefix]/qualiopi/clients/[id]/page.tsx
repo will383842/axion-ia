@@ -538,6 +538,7 @@ export default async function FicheClient360Page({ params, searchParams }: PageP
             // Ordre de Will (26/10/2026) : retirer UNE personne, super-administrateur seul.
             <RetraitPersonne
               contactId={personneId}
+              clientId={id}
               peutRetirer={acces.role === "super_admin"}
               page={adminPath("fr", `/qualiopi/clients/${id}`)}
               ouvert={sp.retirer === personneId}

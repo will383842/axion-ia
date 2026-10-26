@@ -36,6 +36,7 @@ vi.mock("next/navigation", () => ({
 import { preparerRetraitPersonneAction, retirerPersonneAction } from "../actions-suppression";
 
 const PID = "55555555-5555-4555-8555-555555555555";
+const CLI = "11111111-1111-4111-8111-111111111111";
 const PAGE = "/fr/admin/qualiopi/clients/11111111-1111-4111-8111-111111111111";
 
 const formulaire = (champs: Record<string, string>) => {
@@ -72,11 +73,11 @@ describe("mauvais rôle : ni jeton, ni retrait", () => {
   it.each(["admin", "responsable_qualite", "lecteur"])("%s", async (role) => {
     m.acces.mockResolvedValue({ userId: "u2", role });
     const a = await redirection(
-      formulaire({ contactId: PID, page: PAGE, confirmation: "EFFACER" }),
+      formulaire({ contactId: PID, clientId: CLI, page: PAGE, confirmation: "EFFACER" }),
       preparerRetraitPersonneAction,
     );
     const b = await redirection(
-      formulaire({ contactId: PID, page: PAGE, jeton: "j.s", code: "X" }),
+      formulaire({ contactId: PID, clientId: CLI, page: PAGE, jeton: "j.s", code: "X" }),
       retirerPersonneAction,
     );
     for (const u of [a, b]) {
@@ -88,16 +89,31 @@ describe("mauvais rôle : ni jeton, ni retrait", () => {
   });
 });
 
+describe("fiche d'origine (IDOR)", () => {
+  it("sans clientId valide : redirigé, rien appelé", async () => {
+    await redirection(
+      formulaire({ contactId: PID, page: PAGE, confirmation: "EFFACER" }),
+      preparerRetraitPersonneAction,
+    );
+    await redirection(
+      formulaire({ contactId: PID, clientId: "x", page: PAGE, jeton: "j.s", code: "X" }),
+      retirerPersonneAction,
+    );
+    expect(m.preparer).not.toHaveBeenCalled();
+    expect(m.retirer).not.toHaveBeenCalled();
+  });
+});
+
 describe("double validation", () => {
   it("1re étape sans EFFACER : refusée ; avec : écran de la 2e étape", async () => {
     const non = await redirection(
-      formulaire({ contactId: PID, page: PAGE, confirmation: "effacer" }),
+      formulaire({ contactId: PID, clientId: CLI, page: PAGE, confirmation: "effacer" }),
       preparerRetraitPersonneAction,
     );
     expect(non).toContain("Écrivez EFFACER pour confirmer le retrait.");
     expect(m.preparer).not.toHaveBeenCalled();
     const oui = await redirection(
-      formulaire({ contactId: PID, page: PAGE, confirmation: "EFFACER" }),
+      formulaire({ contactId: PID, clientId: CLI, page: PAGE, confirmation: "EFFACER" }),
       preparerRetraitPersonneAction,
     );
     expect(oui).toBe(
@@ -107,9 +123,12 @@ describe("double validation", () => {
   });
 
   it("2e étape sans jeton ou sans code : rien n'est appelé", async () => {
-    await redirection(formulaire({ contactId: PID, page: PAGE, code: "X" }), retirerPersonneAction);
     await redirection(
-      formulaire({ contactId: PID, page: PAGE, jeton: "j.s" }),
+      formulaire({ contactId: PID, clientId: CLI, page: PAGE, code: "X" }),
+      retirerPersonneAction,
+    );
+    await redirection(
+      formulaire({ contactId: PID, clientId: CLI, page: PAGE, jeton: "j.s" }),
       retirerPersonneAction,
     );
     expect(m.retirer).not.toHaveBeenCalled();
@@ -117,11 +136,12 @@ describe("double validation", () => {
 
   it("2e étape complète : retrait, retour sur l'onglet Personnes", async () => {
     const u = await redirection(
-      formulaire({ contactId: PID, page: PAGE, jeton: "j.s", code: "55555555" }),
+      formulaire({ contactId: PID, clientId: CLI, page: PAGE, jeton: "j.s", code: "55555555" }),
       retirerPersonneAction,
     );
     expect(m.retirer).toHaveBeenCalledWith({
       contactId: PID,
+      clientId: CLI,
       acteurId: "u1",
       jeton: "j.s",
       code: "55555555",
@@ -131,7 +151,12 @@ describe("double validation", () => {
 
   it("une page extérieure n'est jamais suivie", async () => {
     const u = await redirection(
-      formulaire({ contactId: PID, page: "https://ailleurs.example", confirmation: "EFFACER" }),
+      formulaire({
+        contactId: PID,
+        clientId: CLI,
+        page: "https://ailleurs.example",
+        confirmation: "EFFACER",
+      }),
       preparerRetraitPersonneAction,
     );
     expect(u.startsWith("REDIRECT:/fr/admin/qualiopi/clients?onglet=personnes")).toBe(true);

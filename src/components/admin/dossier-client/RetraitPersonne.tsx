@@ -23,6 +23,8 @@ const formCls = "mt-[var(--space-admin-3)] flex flex-wrap items-center gap-[var(
 
 interface Proprietes {
   contactId: string;
+  /** La fiche de la page : vérifiée côté serveur (la personne doit lui appartenir). */
+  clientId: string;
   /** Super-administrateur : seul à voir et à utiliser ce bloc. */
   peutRetirer: boolean;
   /** La fiche, SANS paramètre (`?onglet=personnes&retirer=` y est ajouté). */
@@ -131,6 +133,7 @@ async function EcranDeRetrait(props: Proprietes) {
           ) : jetonBon && props.jeton ? (
             <form action={retirerPersonneAction} className={formCls}>
               <input type="hidden" name="contactId" value={props.contactId} />
+              <input type="hidden" name="clientId" value={props.clientId} />
               <input type="hidden" name="page" value={props.page} />
               <input type="hidden" name="jeton" value={props.jeton} />
               <p className="w-full font-semibold">Validation 2 sur 2 : dernière étape</p>
@@ -156,6 +159,7 @@ async function EcranDeRetrait(props: Proprietes) {
           ) : (
             <form action={preparerRetraitPersonneAction} className={formCls}>
               <input type="hidden" name="contactId" value={props.contactId} />
+              <input type="hidden" name="clientId" value={props.clientId} />
               <input type="hidden" name="page" value={props.page} />
               <input
                 name="confirmation"

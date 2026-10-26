@@ -75,8 +75,9 @@ async function calculer(tx: Tx, contactId: string): Promise<BilanRetraitPersonne
       nom: true,
       telephone: true,
       estContactFacturation: true,
+      oppositionIaLe: true,
       adresses: { select: { email: true, emailHash: true } },
-      client: { select: { numero: true, contactEmail: true } },
+      client: { select: { numero: true, contactEmail: true, contactNom: true } },
     },
   });
   if (c === null) return null;
@@ -94,6 +95,15 @@ async function calculer(tx: Tx, contactId: string): Promise<BilanRetraitPersonne
     bloquants.push(
       "contact de facturation de la fiche (factures et devis) : désignez-en un autre d'abord",
     );
+  }
+  const memeNomFacturation = nom !== "" && minuscule(c.client.contactNom ?? "") === minuscule(nom);
+  if (memeNomFacturation && !c.estContactFacturation && !copieFacturation) {
+    bloquants.push(
+      "contact de facturation de la fiche (factures et devis) : désignez-en un autre d'abord",
+    );
+  }
+  if (c.oppositionIaLe !== null) {
+    bloquants.push("opposition à l'IA enregistrée (art. 21) : à garder");
   }
   const autres = await tx.clientContact.count({
     where: { clientId: c.clientId, id: { not: c.id } },
@@ -113,6 +123,9 @@ async function calculer(tx: Tx, contactId: string): Promise<BilanRetraitPersonne
   const parAdresse = emails.map((e) => ({
     recipient: { equals: e, mode: "insensitive" as const },
   }));
+  const parSignataire = emails.map((e) => ({
+    signataireEmail: { equals: e, mode: "insensitive" as const },
+  }));
   const memeNom = { equals: nom, mode: "insensitive" as const };
   const [
     participations,
@@ -123,6 +136,8 @@ async function calculer(tx: Tx, contactId: string): Promise<BilanRetraitPersonne
     coachings,
     envois,
     enAttente,
+    courriers,
+    signatures,
   ] = await Promise.all([
     hashes.length === 0
       ? 0
@@ -162,6 +177,17 @@ async function calculer(tx: Tx, contactId: string): Promise<BilanRetraitPersonne
         NOT: { recipient: { equals: ADRESSE_INTERNE, mode: "insensitive" } },
       },
     }),
+    hashes.length === 0
+      ? 0
+      : tx.questionnaireAvantAuditCourrier.count({
+          where: { destinataireHash: { in: hashes }, statut: { not: "annule" } },
+        }),
+    emails.length === 0
+      ? 0
+      : Promise.all([
+          tx.documentSignature.count({ where: { OR: parSignataire } }),
+          tx.documentSignatureToken.count({ where: { OR: parSignataire } }),
+        ]).then(([a, b]) => a + b),
   ]);
   if (participations > 0) {
     bloquants.push(`${participations} participation(s) à un rendez-vous (par son adresse)`);
@@ -171,6 +197,12 @@ async function calculer(tx: Tx, contactId: string): Promise<BilanRetraitPersonne
       `${questionnaires} questionnaire(s) adressé(s) à cette personne, réponses comprises`,
     );
   }
+  if (courriers > 0) {
+    bloquants.push(
+      `${courriers} courrier(s) du questionnaire avant audit adressé(s) à cette personne`,
+    );
+  }
+  if (signatures > 0) bloquants.push(`signataire de ${signatures} document(s) à signer`);
   if (factures > 0) bloquants.push(`${factures} facture(s) à son nom`);
   if (stagiaires > 0) bloquants.push(`${stagiaires} inscription(s) à une session de formation`);
   if (surPlace > 0) bloquants.push(`contact sur place de ${surPlace} session(s) de formation`);
@@ -213,7 +245,12 @@ const refus = (b: BilanRetraitPersonne) => `${MESSAGE_RETRAIT_BLOQUE} (${b.bloqu
 
 /** 1re validation : mot EFFACER + bilan sans bloquant → jeton signé (5 minutes). Rien n'est supprimé. */
 export async function preparerRetraitPersonne(
-  args: { readonly contactId: string; readonly acteurId: string; readonly confirmation: string },
+  args: {
+    readonly contactId: string;
+    readonly clientId: string;
+    readonly acteurId: string;
+    readonly confirmation: string;
+  },
   base: { $transaction: typeof prisma.$transaction } = prisma,
   maintenant: number = Date.now(),
 ): Promise<
@@ -223,7 +260,9 @@ export async function preparerRetraitPersonne(
     return { ok: false, motif: `Écrivez ${MOT_CONFIRMATION} pour confirmer.` };
   }
   const bilan = await bilanRetraitPersonne(args.contactId, base);
-  if (bilan === null) return { ok: false, motif: "Personne introuvable : rien à retirer." };
+  if (bilan === null || bilan.clientId !== args.clientId) {
+    return { ok: false, motif: "Personne introuvable : rien à retirer." };
+  }
   if (bilan.bloquants.length > 0) return { ok: false, motif: refus(bilan) };
   const jeton = creerJetonSuppression(
     { type: "personne", id: bilan.contactId, acteurId: args.acteurId, empreinte: empreinte(bilan) },
@@ -262,6 +301,7 @@ function codeAccepte(saisi: string, b: BilanRetraitPersonne): boolean {
 export async function retirerPersonne(
   args: {
     readonly contactId: string;
+    readonly clientId: string;
     readonly acteurId: string;
     readonly jeton: string;
     readonly code: string;
@@ -285,6 +325,12 @@ export async function retirerPersonne(
       await tx.$queryRaw`SELECT id FROM client_contact_adresses WHERE contact_id = ${args.contactId}::uuid FOR UPDATE`;
       const bilan = await calculer(tx, args.contactId);
       if (bilan === null) return { ok: true, compteurs: [], clientId: null, dejaRetiree: true };
+      if (bilan.clientId !== args.clientId) {
+        return {
+          ok: false,
+          motif: "Cette personne n'appartient pas à cette fiche : rien supprimé.",
+        };
+      }
       if (bilan.bloquants.length > 0) return { ok: false, motif: refus(bilan) };
       if (!codeAccepte(args.code, bilan)) {
         return { ok: false, motif: "Le code recopié ne correspond pas. Rien n'a été supprimé." };

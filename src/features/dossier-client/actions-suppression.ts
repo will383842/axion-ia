@@ -122,9 +122,10 @@ const ongletPersonnes = (page: string) => `${page}?onglet=personnes`;
 /** 1re validation du retrait : le mot EFFACER, puis l'écran de la 2e étape (jeton signé). */
 export async function preparerRetraitPersonneAction(fd: FormData): Promise<void> {
   const contactId = champ(fd, "contactId");
+  const clientId = champ(fd, "clientId");
   const repli = adminPath("fr", "/qualiopi/clients");
   const page = pageSure(champ(fd, "page"), repli);
-  if (!uuid.safeParse(contactId).success) redirect(repli);
+  if (!uuid.safeParse(contactId).success || !uuid.safeParse(clientId).success) redirect(repli);
   const ecran = `${ongletPersonnes(page)}&retirer=${contactId}`;
   let jeton = "";
   try {
@@ -137,6 +138,7 @@ export async function preparerRetraitPersonneAction(fd: FormData): Promise<void>
     }
     const r = await preparerRetraitPersonne({
       contactId,
+      clientId,
       acteurId: userId,
       confirmation: champ(fd, "confirmation"),
     });
@@ -151,9 +153,10 @@ export async function preparerRetraitPersonneAction(fd: FormData): Promise<void>
 /** 2e validation du retrait : le jeton et le code recopié ; tout refus ramène à la 1re étape. */
 export async function retirerPersonneAction(fd: FormData): Promise<void> {
   const contactId = champ(fd, "contactId");
+  const clientId = champ(fd, "clientId");
   const repli = adminPath("fr", "/qualiopi/clients");
   const page = pageSure(champ(fd, "page"), repli);
-  if (!uuid.safeParse(contactId).success) redirect(repli);
+  if (!uuid.safeParse(contactId).success || !uuid.safeParse(clientId).success) redirect(repli);
   let texte = "";
   try {
     const { userId, role } = await exigerAccesEchanges();
@@ -165,7 +168,7 @@ export async function retirerPersonneAction(fd: FormData): Promise<void> {
     if (jeton === "") throw new MessagePourWill("Recommencez : la première validation manque.");
     if (code === "")
       throw new MessagePourWill("Recopiez le code ou le nom affiché pour confirmer.");
-    const r = await retirerPersonne({ contactId, acteurId: userId, jeton, code });
+    const r = await retirerPersonne({ contactId, clientId, acteurId: userId, jeton, code });
     if (!r.ok) throw new MessagePourWill(r.motif);
     texte =
       r.dejaRetiree === true
