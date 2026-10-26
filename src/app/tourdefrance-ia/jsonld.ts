@@ -22,8 +22,8 @@ import { DEFINITION, FAQ, META, NOM_DU_TOUR } from "./contenu";
 
 /**
  * La description du `Service` : le nom de tour de France, puis la définition
- * VISIBLE de la page (`DEFINITION`), sans rien y ajouter — aucune promesse que
- * la page ne fait pas.
+ * VISIBLE de la page (`DEFINITION`), précédée de la seule phrase de nom du
+ * tour — aucune promesse que la page ne fait pas.
  */
 export const DESCRIPTION_DU_SERVICE = `Le tour de France de l’IA d’Axion-IA, d’une ville à l’autre. ${DEFINITION}`;
 
