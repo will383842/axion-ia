@@ -1,8 +1,300 @@
-/* Tour de France IA — le tracé en pointillé qui relie les étapes de « Comment ça
-   marche » (repris de la maquette `tour-ia-site`). Décoratif : pseudo-élément,
-   aucune place prise dans la mise en page. */
+/* Tour de France IA — ce que Tailwind ne dit pas bien : les dessins SVG, leurs
+   micro-animations, l'accordéon de la FAQ et le tracé de « Comment ça marche ».
+   CSS SEUL : aucune bibliothèque, aucun JavaScript. Toute animation s'éteint
+   sous `prefers-reduced-motion` (bloc en fin de fichier) et montre alors l'état
+   final, lisible. Aucune animation ne déplace la mise en page (CLS nul) : seules
+   `opacity`, `transform` et `fill` bougent.
+   Aucune boucle infinie : chaque animation se joue DEUX fois (le `2` de chaque
+   déclaration), puis s'arrête sur son état final grâce à `both` — points
+   remplis, coche et halo visibles. Le même état que sous mouvement réduit. */
 
-/* Tracé vertical (mobile) : du bas d'une pastille au haut de la suivante. */
+/* ── Bouton principal ─────────────────────────────────────────────────────── */
+
+.bouton {
+  display: inline-flex;
+  min-height: 3.25rem; /* 52 px : au-delà des 48 px de zone tactile */
+  align-items: center;
+  justify-content: center;
+  gap: 0.625rem;
+  /* Pilule : `rounded-full` côté JSX (le contrôle des rayons refuse 9999px ici). */
+  background: var(--color-primary);
+  padding: 0.75rem 1.75rem;
+  color: var(--color-primary-fg);
+  font-size: 1.0625rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  text-decoration: none;
+  box-shadow: 0 10px 24px -12px color-mix(in srgb, var(--color-primary) 70%, transparent);
+  transition:
+    background-color 160ms ease,
+    transform 160ms ease,
+    box-shadow 160ms ease;
+}
+
+.bouton:hover {
+  background: var(--color-primary-hover);
+  transform: translateY(-1px);
+}
+
+.bouton:active {
+  transform: translateY(0);
+}
+
+.bouton:focus-visible {
+  outline: 3px solid var(--color-primary-fg);
+  outline-offset: 2px;
+  box-shadow: 0 0 0 6px var(--color-primary);
+}
+
+.boutonCompact {
+  min-height: 2.75rem; /* 44 px : la zone tactile minimale */
+  padding: 0.5rem 1.125rem;
+  font-size: 0.9375rem;
+  box-shadow: none;
+}
+
+.fleche {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transition: transform 160ms ease;
+}
+
+.bouton:hover .fleche {
+  transform: translateX(3px);
+}
+
+/* ── Jauge du héros : 5 points qui se remplissent, puis la coche ────────────── */
+
+.jaugePoint {
+  fill: transparent;
+  stroke: var(--color-mocha-fg-muted);
+  stroke-width: 1.5;
+  animation: remplir 2.4s ease-in-out 2 both;
+}
+
+.jaugePoint:nth-of-type(2) {
+  animation-delay: 0.12s;
+}
+.jaugePoint:nth-of-type(3) {
+  animation-delay: 0.24s;
+}
+.jaugePoint:nth-of-type(4) {
+  animation-delay: 0.36s;
+}
+.jaugePoint:nth-of-type(5) {
+  animation-delay: 0.48s;
+}
+
+/* L'état final (100 %) est l'état rempli : c'est lui qui reste à l'écran. */
+@keyframes remplir {
+  0%,
+  10% {
+    fill: transparent;
+    stroke: var(--color-mocha-fg-muted);
+  }
+  25%,
+  100% {
+    fill: var(--color-mocha-fg);
+    stroke: var(--color-mocha-fg);
+  }
+}
+
+.jaugeCoche {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: ouvrir 2.4s ease-out 2 both;
+}
+
+.jaugeCoche circle {
+  fill: var(--color-terracotta-on-mocha);
+}
+
+.jaugeCoche path {
+  fill: none;
+  stroke: var(--color-ink);
+  stroke-width: 2.2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+@keyframes ouvrir {
+  0%,
+  55% {
+    opacity: 0;
+    transform: scale(0.6);
+  }
+  70%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* ── Carte de France ───────────────────────────────────────────────────────── */
+
+.carte {
+  overflow: visible;
+}
+
+.carteFond path {
+  fill: var(--color-paper);
+  stroke: var(--color-border-strong);
+  stroke-width: 1.5;
+  stroke-linejoin: round;
+}
+
+.carteTrace {
+  fill: none;
+  stroke: var(--color-fg-soft);
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-dasharray: 0.5 8;
+}
+
+.cartePoint {
+  fill: var(--color-paper);
+  stroke: var(--color-fg);
+  stroke-width: 1.5;
+}
+
+.carteHalo {
+  fill: var(--color-terracotta-soft);
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: halo 2.4s ease-out 2 both;
+}
+
+.carteEntreprise {
+  fill: var(--color-paper);
+  stroke: var(--color-terracotta);
+  stroke-width: 1.5;
+  animation: entreprise 2.4s ease-in-out 2 both;
+}
+
+.carteEntreprise:nth-of-type(3) {
+  animation-delay: 0.12s;
+}
+.carteEntreprise:nth-of-type(4) {
+  animation-delay: 0.24s;
+}
+.carteEntreprise:nth-of-type(5) {
+  animation-delay: 0.36s;
+}
+.carteEntreprise:nth-of-type(6) {
+  animation-delay: 0.48s;
+}
+
+.carteVille {
+  fill: var(--color-terracotta);
+  stroke: var(--color-paper);
+  stroke-width: 2;
+}
+
+@keyframes entreprise {
+  0%,
+  10% {
+    fill: var(--color-paper);
+  }
+  25%,
+  100% {
+    fill: var(--color-terracotta);
+  }
+}
+
+@keyframes halo {
+  0%,
+  55% {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+  70%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Sur fond sombre (héros) : la France reste claire, les repères se lisent. */
+.carteSombre .carteFond path {
+  fill: var(--color-mocha-soft);
+  stroke: var(--color-border-on-mocha);
+}
+
+.carteSombre .carteTrace {
+  stroke: var(--color-mocha-fg-muted);
+}
+
+.carteSombre .cartePoint {
+  fill: var(--color-mocha-soft);
+  stroke: var(--color-mocha-fg);
+}
+
+.carteSombre .carteHalo {
+  fill: color-mix(in srgb, var(--color-terracotta-on-mocha) 22%, transparent);
+}
+
+.carteSombre .carteEntreprise {
+  fill: var(--color-mocha-soft);
+  stroke: var(--color-terracotta-on-mocha);
+}
+
+.carteSombre .carteVille {
+  fill: var(--color-terracotta-on-mocha);
+  stroke: var(--color-ink);
+}
+
+@keyframes entreprise-sombre {
+  0%,
+  10% {
+    fill: var(--color-mocha-soft);
+  }
+  25%,
+  100% {
+    fill: var(--color-terracotta-on-mocha);
+  }
+}
+
+.carteSombre .carteEntreprise {
+  animation-name: entreprise-sombre;
+}
+
+/* ── Pictogrammes (trait, couleur héritée) ─────────────────────────────────── */
+
+.picto {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.75;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.pictoAccent {
+  stroke: var(--color-terracotta);
+}
+
+/* ── La journée : les durées en très grands caractères ───────────────────── */
+
+.duree {
+  /* Fluide mais borné : « Vendredi soir » passe à la ligne plutôt que de déborder. */
+  font-size: clamp(3rem, 12vw, 6.5rem);
+}
+
+/* ── Le problème, sur la bande terracotta : pictos en ivoire ────────────────── */
+
+.constat {
+  display: inline-flex;
+  color: var(--color-mocha-fg);
+}
+
+.constat .pictoAccent {
+  stroke: var(--color-terracotta-soft);
+}
+
+/* ── Comment ça marche : le tracé en pointillé entre les pastilles ──────────── */
+
 .parcours > li:not(:last-child)::before {
   content: "";
   position: absolute;
@@ -14,7 +306,6 @@
     9px repeat-y;
 }
 
-/* Tracé horizontal (bureau). */
 @media (min-width: 64rem) {
   .parcours > li:not(:last-child)::before {
     left: 2.75rem;
@@ -25,5 +316,110 @@
     height: 2px;
     background: radial-gradient(circle, var(--color-fg-soft) 1px, transparent 1.4px) left center /
       9px 2px repeat-x;
+  }
+}
+
+/* ── FAQ : accordéon natif `details`/`summary` ─────────────────────────────── */
+
+.question > summary {
+  display: flex;
+  min-height: 3.5rem;
+  cursor: pointer;
+  list-style: none;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding-block: 1rem;
+}
+
+.question > summary::-webkit-details-marker {
+  display: none;
+}
+
+.question > summary:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 4px;
+  border-radius: 0.375rem;
+}
+
+.signe {
+  position: relative;
+  flex: none;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  border: 1.5px solid var(--color-border-strong);
+  transition:
+    transform 200ms ease,
+    background-color 200ms ease;
+}
+
+.signe::before,
+.signe::after {
+  content: "";
+  position: absolute;
+  inset: 50% auto auto 50%;
+  width: 0.75rem;
+  height: 1.5px;
+  background: var(--color-fg);
+  transform: translate(-50%, -50%);
+}
+
+.signe::after {
+  transform: translate(-50%, -50%) rotate(90deg);
+  transition: transform 200ms ease;
+}
+
+.question[open] .signe {
+  background: var(--color-sand);
+}
+
+.question[open] .signe::after {
+  transform: translate(-50%, -50%) rotate(0deg);
+}
+
+.question > summary:hover .signe {
+  border-color: var(--color-fg);
+}
+
+/* ── Bouton collant (mobile) : posé sous le pouce, au-dessus de la barre système ── */
+
+.collant {
+  padding-bottom: max(0.75rem, env(safe-area-inset-bottom));
+}
+
+/* ── Mouvement réduit : l'état final, immobile ─────────────────────────────── */
+
+@media (prefers-reduced-motion: reduce) {
+  .jaugePoint,
+  .jaugeCoche,
+  .carteHalo,
+  .carteEntreprise {
+    animation: none;
+  }
+
+  .jaugePoint {
+    fill: var(--color-mocha-fg);
+    stroke: var(--color-mocha-fg);
+  }
+
+  .carteEntreprise {
+    fill: var(--color-terracotta);
+  }
+
+  .carteSombre .carteEntreprise {
+    fill: var(--color-terracotta-on-mocha);
+  }
+
+  .bouton,
+  .fleche,
+  .signe,
+  .signe::after {
+    transition: none;
+  }
+
+  .bouton:hover,
+  .bouton:hover .fleche {
+    transform: none;
   }
 }
