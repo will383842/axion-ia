@@ -13,11 +13,7 @@ import {
   fichesCouvertes,
   questionnairesDesFiches,
 } from "@/features/questionnaire-preaudit/de-la-fiche";
-import {
-  brouillonVisible,
-  suiviOuverturesActif,
-  type SuiviOuvertures,
-} from "@/features/questionnaire-preaudit/ouvertures";
+import { suiviActif, type SuiviOuvertures } from "@/features/questionnaire-preaudit/ouvertures";
 import { lireSuiviDesQuestionnaires } from "@/features/questionnaire-preaudit/suivi-ouvertures";
 
 export interface QuestionnaireDeLaFiche {
@@ -82,7 +78,7 @@ export async function lireQuestionnairesDeLaFiche(
     // pas le bloc, elle se dit.
     let suivis: ReadonlyMap<string, SuiviOuvertures> | null = null;
     let suiviEnPanne = false;
-    if (suiviOuverturesActif() || brouillonVisible()) {
+    if (suiviActif()) {
       try {
         suivis = await lireSuiviDesQuestionnaires(
           qs.filter((q) => q.envoyeLe !== null).map((q) => q.id),

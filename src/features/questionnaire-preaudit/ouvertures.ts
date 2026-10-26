@@ -6,10 +6,11 @@
  * nombre de réponses remplies) et, pour lui seul, ce qui a déjà été rempli.
  *
  * Deux interrupteurs lus côté serveur, ABSENT = ÉTEINT (seule la valeur exacte "true" allume) :
- *   · `QUESTIONNAIRE_SUIVI_OUVERTURES_ENABLED` : la page note ses ouvertures, la console les
- *     affiche avec l'avancée des brouillons ;
- *   · `QUESTIONNAIRE_SUIVI_BROUILLON_VISIBLE` : le super-administrateur peut lire le CONTENU d'un
- *     brouillon (action serveur tracée), et la notice de la page le dit.
+ *   · `QUESTIONNAIRE_SUIVI_ENABLED` : la page note ses ouvertures, la console les affiche avec
+ *     l'avancée des brouillons, et le super-administrateur peut lire le CONTENU d'un brouillon
+ *     (action serveur tracée) ;
+ *   · `QUESTIONNAIRE_SUIVI_NOTICE_VISIBLE` : ne commande QUE le texte d'information de la page
+ *     (décision de Will : le texte reste éteint pour Oury alors que le suivi est allumé).
  *
  * Une ouverture n'est notée que par la page elle-même, APRÈS son chargement réel (balise
  * `balise-ouverture.ts`) : un scanner de messagerie qui télécharge le lien sans exécuter le
@@ -23,11 +24,11 @@ import { libelleDe, type Libelles } from "./libelles";
 
 type Env = Readonly<Record<string, string | undefined>>;
 
-export const suiviOuverturesActif = (env: Env = process.env): boolean =>
-  env["QUESTIONNAIRE_SUIVI_OUVERTURES_ENABLED"] === "true";
+export const suiviActif = (env: Env = process.env): boolean =>
+  env["QUESTIONNAIRE_SUIVI_ENABLED"] === "true";
 
-export const brouillonVisible = (env: Env = process.env): boolean =>
-  env["QUESTIONNAIRE_SUIVI_BROUILLON_VISIBLE"] === "true";
+export const noticeVisible = (env: Env = process.env): boolean =>
+  env["QUESTIONNAIRE_SUIVI_NOTICE_VISIBLE"] === "true";
 
 /** Plusieurs rechargements à moins de 30 minutes d'intervalle = une seule ouverture. */
 export const FENETRE_DEDOUBLONNAGE_MS = 30 * 60_000;

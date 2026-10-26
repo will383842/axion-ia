@@ -51,11 +51,11 @@ export function BlocQuestionnaireFiche({
   adminPrefix: string;
   /** La fiche : un questionnaire envoyé sans rendez-vous s'ouvre dans sa page « Questionnaire ». */
   ficheHref: string;
-  /** Interrupteur `QUESTIONNAIRE_SUIVI_OUVERTURES_ENABLED` : ouvertures et avancée. */
+  /** Interrupteur `QUESTIONNAIRE_SUIVI_ENABLED` : ouvertures et avancée. */
   afficherOuvertures?: boolean;
   /**
    * L'action « Lire le brouillon », passée par la page au super-administrateur seulement, interrupteur
-   * `QUESTIONNAIRE_SUIVI_BROUILLON_VISIBLE` allumé (l'action revérifie les deux). Absente : pas de bouton.
+   * `QUESTIONNAIRE_SUIVI_ENABLED` allumé (l'action revérifie). Absente : pas de bouton.
    */
   lireBrouillon?: ActionLireBrouillon;
 }): React.ReactElement | null {
@@ -152,6 +152,9 @@ function SuiviDuLien({
     return (
       <div className="mt-[var(--space-admin-2)]" data-bloc="suivi-ouvertures">
         <p className="font-medium">Ouvertures et avancée</p>
+        <p className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
+          ouvertures de Will comprises
+        </p>
         {lignes.length === 0 ? (
           <p>{TEXTE_JAMAIS_OUVERT}</p>
         ) : (

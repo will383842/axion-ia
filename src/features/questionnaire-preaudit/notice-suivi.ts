@@ -7,12 +7,14 @@
  * questionnaire (dirigeant, collaborateurs, référent informatique), en bas de la page.
  *
  * Statut : proposé ; à valider par Will (pas de juriste : c'est Will qui valide). Tant qu'il n'est
- * pas validé, laisser les deux interrupteurs ÉTEINTS : rien de ce texte n'est affiché.
+ * pas validé, laisser `QUESTIONNAIRE_SUIVI_NOTICE_VISIBLE` ÉTEINT : rien de ce texte n'est affiché.
  *
- *   · le paragraphe « ouvertures » s'affiche quand `QUESTIONNAIRE_SUIVI_OUVERTURES_ENABLED=true`
- *     (les ouvertures ne sont notées que s'il est affiché : on ne note rien sans le dire) ;
- *   · le paragraphe « brouillon » s'affiche quand `QUESTIONNAIRE_SUIVI_BROUILLON_VISIBLE=true`
- *     (Will ne peut lire un brouillon que s'il est affiché).
+ * Règle (décision de Will, 2026-10-27) : le texte est un interrupteur PROPRE,
+ * `QUESTIONNAIRE_SUIVI_NOTICE_VISIBLE` (absent = éteint, seule la valeur "true" allume). Il est
+ * indépendant du suivi (`QUESTIONNAIRE_SUIVI_ENABLED`) : le suivi peut être allumé alors que le
+ * texte reste éteint (cas d'Oury). Réserve RGPD : suivre et lire un brouillon sans annoncer le
+ * suivi heurte l'obligation d'informer (art. 13) ; c'est une décision de Will, assumée.
+ * Quand le texte est allumé, les deux phrases (ouvertures et brouillon) s'affichent ensemble.
  *
  * Pour corriger le texte : modifier les deux phrases ci-dessous, rien d'autre. Module PUR.
  */

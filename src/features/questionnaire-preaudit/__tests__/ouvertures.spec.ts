@@ -14,7 +14,7 @@ import { pagePourClient } from "../html";
 import { PHRASE_BROUILLON, PHRASE_OUVERTURES, phrasesNoticeSuivi } from "../notice-suivi";
 import {
   avanceeDuBrouillon,
-  brouillonVisible,
+  noticeVisible,
   champsDuBrouillon,
   estRobot,
   FENETRE_DEDOUBLONNAGE_MS,
@@ -22,7 +22,7 @@ import {
   personneDeLOuverture,
   prochaineOuverture,
   resumeBandeau,
-  suiviOuverturesActif,
+  suiviActif,
   TEXTE_SANS_BROUILLON,
   validerSignal,
   type SuiviOuvertures,
@@ -43,13 +43,13 @@ describe("les interrupteurs : absent = éteint", () => {
     ["TRUE", false],
     ["1", false],
     ["true", true],
-  ])("QUESTIONNAIRE_SUIVI_OUVERTURES_ENABLED=%s → %s", (v, attendu) => {
-    expect(suiviOuverturesActif({ QUESTIONNAIRE_SUIVI_OUVERTURES_ENABLED: v })).toBe(attendu);
-    expect(brouillonVisible({ QUESTIONNAIRE_SUIVI_BROUILLON_VISIBLE: v })).toBe(attendu);
+  ])("QUESTIONNAIRE_SUIVI_ENABLED / NOTICE_VISIBLE=%s → %s", (v, attendu) => {
+    expect(suiviActif({ QUESTIONNAIRE_SUIVI_ENABLED: v })).toBe(attendu);
+    expect(noticeVisible({ QUESTIONNAIRE_SUIVI_NOTICE_VISIBLE: v })).toBe(attendu);
   });
   it("les deux sont indépendants", () => {
-    expect(brouillonVisible({ QUESTIONNAIRE_SUIVI_OUVERTURES_ENABLED: "true" })).toBe(false);
-    expect(suiviOuverturesActif({ QUESTIONNAIRE_SUIVI_BROUILLON_VISIBLE: "true" })).toBe(false);
+    expect(noticeVisible({ QUESTIONNAIRE_SUIVI_ENABLED: "true" })).toBe(false);
+    expect(suiviActif({ QUESTIONNAIRE_SUIVI_NOTICE_VISIBLE: "true" })).toBe(false);
   });
 });
 

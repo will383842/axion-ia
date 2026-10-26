@@ -20,6 +20,7 @@ const base = vi.hoisted(() => ({
   seq: 0,
   session: null as null | { user: { id: string; role: string } },
   traceEnPanne: false,
+  limite: false,
 }));
 
 const egal = (l: Ligne, where: Ligne): boolean =>
@@ -44,6 +45,7 @@ vi.mock("@/lib/prisma", () => ({
         return l ? { ...l } : null;
       },
       findMany: async ({ where }: { where: Ligne }) => base.o.filter((x) => egal(x, where)),
+      count: async ({ where }: { where: Ligne }) => base.o.filter((x) => egal(x, where)).length,
       createMany: async ({ data }: { data: Ligne[] }) => {
         let count = 0;
         for (const d of data) {
@@ -87,7 +89,7 @@ vi.mock("@/lib/prisma", () => ({
   },
 }));
 vi.mock("@/lib/rate-limit", () => ({
-  checkRateLimit: async () => ({ allowed: true }),
+  checkRateLimit: async () => ({ allowed: !base.limite }),
 }));
 vi.mock("@/auth", () => ({ auth: async () => base.session }));
 
@@ -155,6 +157,7 @@ beforeEach(() => {
   base.traces = [];
   base.session = null;
   base.traceEnPanne = false;
+  base.limite = false;
   vi.useRealTimers();
 });
 
@@ -188,16 +191,71 @@ describe("drapeau éteint = rien enregistré ni affiché", () => {
 
 describe("drapeau allumé", () => {
   beforeEach(() => {
-    process.env["QUESTIONNAIRE_SUIVI_OUVERTURES_ENABLED"] = "true";
+    process.env["QUESTIONNAIRE_SUIVI_ENABLED"] = "true";
   });
 
-  it("la page porte la balise et la phrase « ouvertures » (pas celle du brouillon)", async () => {
+  it("suivi allumé + texte éteint : la balise est présente, AUCUN texte d'information", async () => {
     const q = questionnaire();
     const html = await page(q);
     expect(html).toContain(`/api/questionnaire-preaudit/${id(q)}/`);
     expect(html).toContain("/ouverture");
-    expect(html).toContain(PHRASE_OUVERTURES.replace(/'/g, "'"));
+    expect(html).not.toContain("Suivi de ce questionnaire");
     expect(html).not.toContain("peut le lire avant");
+    expect(html).not.toContain("note la date et le nombre");
+  });
+
+  it("suivi allumé + texte allumé : balise ET les deux phrases", async () => {
+    process.env["QUESTIONNAIRE_SUIVI_NOTICE_VISIBLE"] = "true";
+    const q = questionnaire();
+    const html = await page(q);
+    expect(html).toContain("/ouverture");
+    expect(html).toContain("Suivi de ce questionnaire");
+    expect(html).toContain("peut le lire avant");
+    expect(html).toContain("note la date et le nombre");
+  });
+
+  it("texte allumé seul (suivi éteint) : pas de balise", async () => {
+    process.env["QUESTIONNAIRE_SUIVI_ENABLED"] = "false";
+    process.env["QUESTIONNAIRE_SUIVI_NOTICE_VISIBLE"] = "true";
+    const q = questionnaire();
+    expect(await page(q)).not.toContain("/ouverture");
+  });
+
+  it("limite de débit dépassée : 429 et rien n'est noté", async () => {
+    const q = questionnaire();
+    base.limite = true;
+    expect((await signal(q)).status).toBe(429);
+    expect(base.o).toEqual([]);
+  });
+
+  it("la limite par lien est de 200 par heure et refuse sur panne", () => {
+    expect(routeOuverture.LIMITE_OUVERTURES_PAR_LIEN).toMatchObject({
+      limit: 200,
+      windowSec: 3600,
+      surPanne: "refuser",
+    });
+  });
+
+  it("plafond de lignes par questionnaire : la 101e personne n'est pas notée", async () => {
+    const q = questionnaire();
+    for (let i = 0; i < 100; i++) {
+      base.o.push({
+        id: `x${i}`,
+        questionnaireId: id(q),
+        mode: "perso",
+        membre: `membre${String(i).padStart(6, "0")}ab`,
+        nombre: 1,
+        derniereOuverture: new Date(),
+        premiereOuverture: new Date(),
+        derniereEtapeAtteinte: 1,
+      });
+    }
+    const r = await json(await signal(q, { m: "zzzzzzzzzzzz9", s: "1" }));
+    expect(r).toMatchObject({ ok: true, note: false, motif: "plafond" });
+    expect(base.o).toHaveLength(100);
+    // Une personne déjà connue continue d'être suivie.
+    const connue = await json(await signal(q, { m: "membre000001ab", s: "perso", t: 3300 }));
+    expect(connue).toMatchObject({ ok: true, note: true });
   });
 
   it("en ESSAI, la page n'a pas de balise et la route ne note rien", async () => {
@@ -334,7 +392,7 @@ describe("le contenu d'un brouillon : super-administrateur exigé", () => {
   });
 
   it("un administrateur qui n'est pas super-administrateur est refusé, sans trace", async () => {
-    process.env["QUESTIONNAIRE_SUIVI_BROUILLON_VISIBLE"] = "true";
+    process.env["QUESTIONNAIRE_SUIVI_ENABLED"] = "true";
     base.session = { user: { id: "u2", role: "admin" } };
     const r = await lireBrouillonAction({ etat: "initial" }, fd());
     expect(r).toMatchObject({ etat: "refuse" });
@@ -343,7 +401,7 @@ describe("le contenu d'un brouillon : super-administrateur exigé", () => {
   });
 
   it("le super-administrateur lit, et la trace dit qui et quoi, jamais le contenu", async () => {
-    process.env["QUESTIONNAIRE_SUIVI_BROUILLON_VISIBLE"] = "true";
+    process.env["QUESTIONNAIRE_SUIVI_ENABLED"] = "true";
     base.session = { user: { id: "u1", role: "super_admin" } };
     const r = await lireBrouillonAction({ etat: "initial" }, fd());
     expect(r).toMatchObject({
@@ -362,7 +420,7 @@ describe("le contenu d'un brouillon : super-administrateur exigé", () => {
   });
 
   it("sans trace écrite, rien n'est rendu", async () => {
-    process.env["QUESTIONNAIRE_SUIVI_BROUILLON_VISIBLE"] = "true";
+    process.env["QUESTIONNAIRE_SUIVI_ENABLED"] = "true";
     base.session = { user: { id: "u1", role: "super_admin" } };
     base.traceEnPanne = true;
     const r = await lireBrouillonAction({ etat: "initial" }, fd());
@@ -370,10 +428,11 @@ describe("le contenu d'un brouillon : super-administrateur exigé", () => {
     expect(JSON.stringify(r)).not.toContain("SECRET-Y");
   });
 
-  it("la page dit que le brouillon peut être lu, seulement drapeau allumé", async () => {
+  it("la page dit que le brouillon peut être lu, seulement texte allumé", async () => {
     const q = base.q[0]!;
+    process.env["QUESTIONNAIRE_SUIVI_ENABLED"] = "true";
     expect(await page(q)).not.toContain("peut le lire avant");
-    process.env["QUESTIONNAIRE_SUIVI_BROUILLON_VISIBLE"] = "true";
+    process.env["QUESTIONNAIRE_SUIVI_NOTICE_VISIBLE"] = "true";
     expect(await page(q)).toContain("peut le lire avant");
   });
 });

@@ -24,7 +24,7 @@ export interface EntreeBandeau {
     Pick<QuestionnaireDeLaFiche, "envoyeLe" | "closLe" | "reponses"> &
       Partial<Pick<QuestionnaireDeLaFiche, "suivi" | "suiviEnPanne">>
   >;
-  /** Interrupteur `QUESTIONNAIRE_SUIVI_OUVERTURES_ENABLED` : ouvertures et avancée dans la ligne. */
+  /** Interrupteur `QUESTIONNAIRE_SUIVI_ENABLED` : ouvertures et avancée dans la ligne. */
   readonly suiviOuvertures?: boolean;
   readonly fil: ReadonlyArray<EchangeDuFil>;
   readonly prestations: ReadonlyArray<{ readonly statut: string }>;

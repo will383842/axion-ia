@@ -112,10 +112,11 @@ export const env = createEnv({
     QUESTIONNAIRE_TELEGRAM_ENABLED: z.string().optional(),
     // Suivi des ouvertures du questionnaire (2026-10-27), lus par le SITE. ABSENT = ÉTEINT ; seule
     // « true » allume (`ouvertures.ts`). Texte libre pour la même raison que ci-dessus.
-    //   · OUVERTURES : la page note ses ouvertures (et le dit), la fiche les affiche avec l'avancée ;
-    //   · BROUILLON_VISIBLE : le super-administrateur lit un brouillon (tracé), la page le dit.
-    QUESTIONNAIRE_SUIVI_OUVERTURES_ENABLED: z.string().optional(),
-    QUESTIONNAIRE_SUIVI_BROUILLON_VISIBLE: z.string().optional(),
+    //   · SUIVI_ENABLED : la page note ses ouvertures, la fiche les affiche avec l'avancée, le
+    //     super-administrateur lit un brouillon (tracé) ;
+    //   · SUIVI_NOTICE_VISIBLE : ne commande QUE le texte d'information de la page.
+    QUESTIONNAIRE_SUIVI_ENABLED: z.string().optional(),
+    QUESTIONNAIRE_SUIVI_NOTICE_VISIBLE: z.string().optional(),
     // Boîte d'Axion IA qui reçoit les essais de la console (jamais le prospect). Lue par le WORKER.
     // Texte libre (une faute de frappe ne doit jamais empêcher le démarrage) : `adresseEssai()`
     // la vérifie et l'essai échoue, visible au journal, si elle est invalide.
@@ -752,8 +753,8 @@ export const env = createEnv({
     QUESTIONNAIRE_RELANCES_ENABLED: process.env.QUESTIONNAIRE_RELANCES_ENABLED,
     QUESTIONNAIRE_CONFIRMATIONS_ENABLED: process.env.QUESTIONNAIRE_CONFIRMATIONS_ENABLED,
     QUESTIONNAIRE_TELEGRAM_ENABLED: process.env.QUESTIONNAIRE_TELEGRAM_ENABLED,
-    QUESTIONNAIRE_SUIVI_OUVERTURES_ENABLED: process.env.QUESTIONNAIRE_SUIVI_OUVERTURES_ENABLED,
-    QUESTIONNAIRE_SUIVI_BROUILLON_VISIBLE: process.env.QUESTIONNAIRE_SUIVI_BROUILLON_VISIBLE,
+    QUESTIONNAIRE_SUIVI_ENABLED: process.env.QUESTIONNAIRE_SUIVI_ENABLED,
+    QUESTIONNAIRE_SUIVI_NOTICE_VISIBLE: process.env.QUESTIONNAIRE_SUIVI_NOTICE_VISIBLE,
     QUESTIONNAIRE_PREAUDIT_ADRESSE_ESSAI: process.env.QUESTIONNAIRE_PREAUDIT_ADRESSE_ESSAI,
     IDCC_OPCO_IMPORT_ENABLED: process.env.IDCC_OPCO_IMPORT_ENABLED,
     VISIO_ADRESSES_DE_TEST: process.env.VISIO_ADRESSES_DE_TEST,

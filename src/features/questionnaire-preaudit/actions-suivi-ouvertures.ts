@@ -2,7 +2,7 @@
 
 /**
  * « Lire le brouillon » (2026-10-27) : le contenu d'un brouillon du questionnaire avant audit, pour
- * le SUPER-ADMINISTRATEUR seul, sous l'interrupteur `QUESTIONNAIRE_SUIVI_BROUILLON_VISIBLE`.
+ * le SUPER-ADMINISTRATEUR seul, sous l'interrupteur `QUESTIONNAIRE_SUIVI_ENABLED`.
  *
  *   · le rôle est vérifié ICI (masquer le bouton n'est pas interdire) ;
  *   · chaque lecture laisse une trace (`activity_logs`, jamais purgée) : qui, quand, quel
@@ -16,7 +16,7 @@ import { z } from "zod";
 import { AccesRefuse, exigerAccesEchanges } from "@/features/dossier-client/acces";
 import { prisma } from "@/lib/prisma";
 
-import { brouillonVisible, personneLisible, type ChampLu } from "./ouvertures";
+import { suiviActif, personneLisible, type ChampLu } from "./ouvertures";
 import { lireBrouillonPourConsole } from "./suivi-ouvertures";
 
 export type EtatLectureBrouillon =
@@ -38,7 +38,7 @@ export async function lireBrouillonAction(
   _prec: EtatLectureBrouillon,
   fd: FormData,
 ): Promise<EtatLectureBrouillon> {
-  if (!brouillonVisible()) {
+  if (!suiviActif()) {
     return { etat: "refuse", message: "La lecture des brouillons n'est pas activée." };
   }
   let userId: string;

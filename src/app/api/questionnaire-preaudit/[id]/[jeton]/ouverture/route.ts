@@ -3,7 +3,7 @@
 //
 //   · POST `{ m, s, etape, t }` en `text/plain` (requête simple, sans prévol), même jeton HMAC que
 //     les réponses (faux → 404 neutre), même CORS `null` ;
-//   · rien n'est noté si : l'interrupteur `QUESTIONNAIRE_SUIVI_OUVERTURES_ENABLED` est éteint,
+//   · rien n'est noté si : l'interrupteur `QUESTIONNAIRE_SUIVI_ENABLED` est éteint,
 //     le réel est refusé ou le lien n'accepte plus de réponses, c'est un ESSAI, le navigateur se
 //     déclare robot, la page se signale avant 3 s, ou le code du lien est mal formé ;
 //   · aucune IP, aucun cookie, aucun navigateur n'est gardé ni journalisé. Le débit est compté
@@ -18,7 +18,7 @@ import { ENTETES_CORS_PREAUDIT } from "@/features/questionnaire-preaudit/entetes
 import {
   CORPS_OUVERTURE_MAX_OCTETS,
   estRobot,
-  suiviOuverturesActif,
+  suiviActif,
   validerSignal,
 } from "@/features/questionnaire-preaudit/ouvertures";
 import { accepteDesReponses, lireParJeton } from "@/features/questionnaire-preaudit/serveur";
@@ -27,11 +27,11 @@ import { checkRateLimit, type RateLimitConfig } from "@/lib/rate-limit";
 
 export const dynamic = "force-dynamic";
 
-/** Par lien : 62 personnes qui rechargent souvent restent loin de ce plafond. */
+/** Par lien : 200 ouvertures par heure et par lien suffisent largement à 62 personnes. */
 export const LIMITE_OUVERTURES_PAR_LIEN: RateLimitConfig = {
-  limit: 600,
+  limit: 200,
   windowSec: 3600,
-  surPanne: "laisser-passer",
+  surPanne: "refuser",
 };
 
 const ENTETES = {
@@ -51,7 +51,7 @@ export function OPTIONS(): Response {
 }
 
 export async function POST(req: Request, ctx: Ctx): Promise<Response> {
-  if (!suiviOuverturesActif()) return reponse(404, { ok: false });
+  if (!suiviActif()) return reponse(404, { ok: false });
   const { id, jeton } = await ctx.params;
   const q = await lireParJeton(id, jeton);
   if (q === null) return reponse(404, { ok: false });
@@ -73,6 +73,7 @@ export async function POST(req: Request, ctx: Ctx): Promise<Response> {
   if (!v.ok) return reponse(200, { ok: true, note: false, motif: v.motif });
   try {
     const r = await noterOuverture(q.id, v.valeur.personne, v.valeur.etape);
+    if (r === "plafond") return reponse(200, { ok: true, note: false, motif: "plafond" });
     return reponse(200, { ok: true, note: r !== "conflit", nouvelle: r === "nouvelle" });
   } catch {
     // Table pas encore migrée, questionnaire supprimé entre-temps : la page n'en sait rien.

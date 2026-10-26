@@ -33,7 +33,10 @@ type BaseOuvertures = Pick<
   | "questionnaireAvantAudit"
 >;
 
-export type ResultatOuverture = "nouvelle" | "meme" | "conflit";
+export type ResultatOuverture = "nouvelle" | "meme" | "conflit" | "plafond";
+
+/** Lignes d'ouverture au plus par questionnaire (62 personnes au plus en pratique) : anti-abus. */
+export const PLAFOND_LIGNES_PAR_QUESTIONNAIRE = 100;
 
 export async function noterOuverture(
   questionnaireId: string,
@@ -51,6 +54,12 @@ export async function noterOuverture(
       select: { id: true, nombre: true, derniereOuverture: true, derniereEtapeAtteinte: true },
     });
     if (existant === null) {
+      // Les codes personnels sont libres (12 à 60 caractères) : sans plafond, un lien valide
+      // pourrait faire écrire des lignes à l'infini. Rien n'est supprimé, on refuse d'en ajouter.
+      const lignes = await base.questionnaireAvantAuditOuverture.count({
+        where: { questionnaireId },
+      });
+      if (lignes >= PLAFOND_LIGNES_PAR_QUESTIONNAIRE) return "plafond";
       const n = prochaineOuverture(null, etape, maintenant);
       const cree = await base.questionnaireAvantAuditOuverture.createMany({
         data: [

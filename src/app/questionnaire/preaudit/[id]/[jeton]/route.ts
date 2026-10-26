@@ -18,10 +18,7 @@ import {
   phrasesNoticeSuivi,
   TITRE_NOTICE_SUIVI,
 } from "@/features/questionnaire-preaudit/notice-suivi";
-import {
-  brouillonVisible,
-  suiviOuverturesActif,
-} from "@/features/questionnaire-preaudit/ouvertures";
+import { noticeVisible, suiviActif } from "@/features/questionnaire-preaudit/ouvertures";
 import {
   accepteDesReponses,
   essaiPermis,
@@ -65,11 +62,11 @@ export async function GET(
   const base = `/api/questionnaire-preaudit/${q.id}/${jeton}`;
   // Suivi des ouvertures (2026-10-27) : la notice dit ce qui est noté, la balise le note. En
   // ESSAI, rien n'est noté (la notice reste visible pour que Will la relise telle quelle).
-  const ouvertures = suiviOuverturesActif();
+  const ouvertures = suiviActif();
   const finDePage = ajoutsSuivi({
     endpoint: ouvertures && !essai ? `${base}/ouverture` : null,
     titre: TITRE_NOTICE_SUIVI,
-    phrases: phrasesNoticeSuivi({ ouvertures, brouillon: brouillonVisible() }),
+    phrases: noticeVisible() ? phrasesNoticeSuivi({ ouvertures: true, brouillon: true }) : [],
   });
   const page = pagePourClient(q.html, {
     endpoint: essai ? `${base}?essai=1` : base,
