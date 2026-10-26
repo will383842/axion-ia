@@ -93,6 +93,8 @@ const SECTION = "py-16 sm:py-24";
 const ID_CTA_HEROS = "tdf-cta-heros";
 const ID_CTA_COLLANT = "tdf-cta-collant";
 const ID_APPEL_FINAL = "tdf-appel-final";
+/** La section entière : c'est elle que `PiloteCta` observe (le collant se cache dès qu'elle entre à l'écran). */
+const ID_SECTION_FINALE = "tdf-section-finale";
 
 /**
  * La photo du fondateur, servie par l'optimiseur d'images de Next SANS le
@@ -434,7 +436,11 @@ export default async function TourDeFranceIaPage() {
         </section>
 
         {/* 10. Appel final — fond encre, comme le héros. */}
-        <section className="bg-ink text-mocha-fg" aria-labelledby={ID_APPEL_FINAL}>
+        <section
+          id={ID_SECTION_FINALE}
+          className="bg-ink text-mocha-fg"
+          aria-labelledby={ID_APPEL_FINAL}
+        >
           <div className={`${CONTENEUR} py-16 sm:py-24`}>
             <div className="mx-auto flex max-w-2xl flex-col items-center text-center">
               <Coche taille={40} surSombre />
@@ -481,7 +487,7 @@ export default async function TourDeFranceIaPage() {
       >
         <BoutonParticiper depuis="tdf-collant" pleineLargeur />
       </div>
-      <PiloteCta idHeros={ID_CTA_HEROS} idFinal={ID_APPEL_FINAL} idCollant={ID_CTA_COLLANT} />
+      <PiloteCta idHeros={ID_CTA_HEROS} idFinal={ID_SECTION_FINALE} idCollant={ID_CTA_COLLANT} />
     </>
   );
 }

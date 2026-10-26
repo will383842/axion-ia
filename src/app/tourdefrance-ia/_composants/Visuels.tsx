@@ -29,9 +29,12 @@ export function Jauge({ className = "" }: PropsSvg) {
       {[0, 1, 2, 3, 4].map((i) => (
         <circle key={i} cx={10 + i * 20} cy="12" r="7" className={styles.jaugePoint} />
       ))}
-      <g className={styles.jaugeCoche} transform="translate(108 0)">
-        <circle cx="12" cy="12" r="11" />
-        <path d="M7 12.5l3.2 3.2 6.6-7" />
+      {/* Décalage et animation sur deux <g> : l'animation CSS écraserait l'attribut `transform`. */}
+      <g transform="translate(108 0)">
+        <g className={styles.jaugeCoche}>
+          <circle cx="12" cy="12" r="11" />
+          <path d="M7 12.5l3.2 3.2 6.6-7" />
+        </g>
       </g>
     </svg>
   );
@@ -48,25 +51,25 @@ const CORSE =
   "M384 360 384 359 387 357 384 353 387 351 388 345 390 346 399 339 404 342 405 329 407 328 409 335 408 343 410 346 411 362 407 370 407 380 403 383 405 384 402 390 402 393 398 391 398 388 397 389 390 385 390 382 394 380 387 378 390 375 391 372 389 371 385 372 385 369 389 366 384 362Z";
 
 /**
- * Villes POSSIBLES, sans nom : simples repères répartis sur le territoire,
- * projetés comme le contour. Aucune n'est annoncée (cf. la légende).
+ * Repères POSSIBLES, sans nom : un semis régulier à l'intérieur du contour,
+ * volontairement hors des grandes villes. Aucun ne désigne une ville reconnaissable
+ * et aucun n'est annoncé (cf. la légende).
  */
 const POINTS = [
-  { x: 236, y: 30 },
-  { x: 217, y: 100 },
-  { x: 362, y: 111 },
-  { x: 108, y: 129 },
-  { x: 112, y: 164 },
-  { x: 284, y: 221 },
-  { x: 138, y: 257 },
-  { x: 192, y: 305 },
-  { x: 300, y: 308 },
+  { x: 160, y: 110 },
+  { x: 290, y: 120 },
+  { x: 300, y: 170 },
+  { x: 240, y: 175 },
+  { x: 170, y: 160 },
+  { x: 160, y: 215 },
+  { x: 200, y: 255 },
+  { x: 260, y: 292 },
 ];
 /** Le point qui illustre le principe : il se remplit jusqu'à 5, puis s'ouvre. */
-const DEMO = { x: 236, y: 220 };
+const DEMO = { x: 240, y: 264 };
 /** Le tracé en pointillé qui relie les repères (passe par le point de démonstration). */
 const TRACE =
-  "M236 30 C233 42 217 68 217 100 C217 132 225 200 236 220 C247 240 273 206 284 221 C295 236 315 294 300 308 C285 322 219 314 192 305 C165 297 151 281 138 257 C125 234 117 185 112 164 C107 143 109 135 108 129";
+  "M160 110 C182 112 267 110 290 120 C313 130 308 161 300 170 C292 179 262 177 240 175 C218 173 183 153 170 160 C157 167 155 199 160 215 C165 231 187 247 200 255 C213 263 230 258 240 264 C250 270 257 287 260 292";
 
 /** La carte de France stylisée. `titreId` : l'id du texte alternatif (`<title>`). */
 export function CarteFrance({

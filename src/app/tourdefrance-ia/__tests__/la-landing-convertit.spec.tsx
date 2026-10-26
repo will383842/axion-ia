@@ -36,10 +36,12 @@ import {
   FONDATEUR,
   LIBELLE_CTA,
   MICRO_TEXTE_CTA,
+  PROBLEME,
   lienRendezVous,
   toutLeTexte,
 } from "../contenu";
 import { PiloteCta } from "../_composants/PiloteCta";
+import styles from "../tour.module.css";
 import {
   CarteFrance,
   Coche,
@@ -50,6 +52,7 @@ import {
   PictoSecteur,
 } from "../_composants/Visuels";
 
+const CSS_ESCAPE = (s: string) => s.replace(/[^\w-]/g, "\\$&");
 const RACINE = process.cwd();
 const DOSSIER = "src/app/tourdefrance-ia";
 const lire = (chemin: string) => readFileSync(join(RACINE, chemin), "utf8");
@@ -127,7 +130,7 @@ describe("🔴 le suivi d'arrivée passe jusqu'à Calendly", () => {
         <a href={lienRendezVous("tdf-heros")} id="heros" data-tdf-cta="">
           {LIBELLE_CTA}
         </a>
-        <h2 id="final" />
+        <section id="final" />
         <div id="collant" />
         <PiloteCta idHeros="heros" idFinal="final" idCollant="collant" />
       </>,
@@ -208,7 +211,7 @@ describe("🔴 le bouton collant : entre le bouton du héros et l'appel final", 
         <a href={lienRendezVous("tdf-heros")} id="heros" data-tdf-cta="">
           {LIBELLE_CTA}
         </a>
-        <h2 id="final" />
+        <section id="final" />
         <div id="collant" data-visible="false" />
         <PiloteCta idHeros="heros" idFinal="final" idCollant="collant" />
       </>,
@@ -260,11 +263,100 @@ describe("🔴 le bouton collant : entre le bouton du héros et l'appel final", 
     expect(collant.dataset["visible"]).toBe("true");
   });
 
-  it("la page câble l'appel final par son id, celui du titre de la dernière section", () => {
+  it("la page câble l'appel final par l'id de la SECTION entière, pas celui de son titre", () => {
     const code = sansCommentaires(PAGE);
-    expect(code).toMatch(/const ID_APPEL_FINAL = "tdf-appel-final";/);
-    expect(code).toContain("id={ID_APPEL_FINAL}");
-    expect(code).toMatch(/<PiloteCta[^>]*idFinal=\{ID_APPEL_FINAL\}/);
+    expect(code).toMatch(/const ID_SECTION_FINALE = "tdf-section-finale";/);
+    expect(code).toMatch(
+      /<section\s+id=\{ID_SECTION_FINALE\}[^>]*aria-labelledby=\{ID_APPEL_FINAL\}/,
+    );
+    expect(code).toMatch(/<PiloteCta[^>]*idFinal=\{ID_SECTION_FINALE\}/);
+  });
+});
+
+describe("🔴 un élément SVG animé ne porte pas d'attribut `transform`", () => {
+  // Une animation CSS sur `transform` ÉCRASE l'attribut SVG du même nom : le
+  // décalage `translate(108 0)` de la coche était perdu et elle recouvrait le
+  // premier point de la jauge. Décalage et animation vivent sur deux éléments.
+  const classesAnimees = [
+    ...CSS.matchAll(/\.([A-Za-z][\w-]*)(?::[\w()-]+)?\s*\{[^}]*\banimation\s*:/g),
+  ].map((m) => m[1] ?? "");
+
+  it("le CSS déclare bien des classes animées (le test ne tourne pas à vide)", () => {
+    expect(classesAnimees).toEqual(
+      expect.arrayContaining(["jaugeCoche", "carteHalo", "carteEntreprise"]),
+    );
+  });
+
+  it("aucun élément rendu des Visuels, animé par sa classe, ne porte `transform`", () => {
+    const { container } = render(
+      <>
+        <Jauge />
+        <CarteFrance titre="t" titreId="t" />
+        <CarteFrance titre="t" titreId="t2" surSombre />
+      </>,
+    );
+    let vus = 0;
+    for (const nom of classesAnimees) {
+      const classe = (styles as Record<string, string>)[nom];
+      if (!classe) continue;
+      for (const el of container.querySelectorAll(`.${CSS_ESCAPE(classe)}`)) {
+        vus++;
+        expect(el.hasAttribute("transform"), `.${nom} porte un attribut transform`).toBe(false);
+      }
+    }
+    expect(vus).toBeGreaterThan(0);
+  });
+
+  it("la coche de la jauge est décalée par un <g> parent, à x = 108", () => {
+    const { container } = render(<Jauge />);
+    const coche = container.querySelector(
+      `.${CSS_ESCAPE((styles as Record<string, string>)["jaugeCoche"] ?? "jaugeCoche")}`,
+    );
+    expect(coche?.parentElement?.getAttribute("transform")).toBe("translate(108 0)");
+  });
+});
+
+describe("🔴 la carte : aucun repère ne tombe sur une grande ville", () => {
+  // Villes projetées comme le contour (équirectangulaire à 46,5° N, 430 × 410).
+  const VILLES: Array<[string, number, number]> = [
+    ["Lille", 236, 30],
+    ["Paris", 217, 100],
+    ["Strasbourg", 362, 111],
+    ["Rennes", 108, 129],
+    ["Nantes", 112, 164],
+    ["Lyon", 284, 221],
+    ["Bordeaux", 138, 257],
+    ["Toulouse", 192, 305],
+    ["Marseille", 300, 308],
+    ["Clermont-Ferrand", 236, 220],
+  ];
+
+  it("chaque cercle de la carte est à plus de 40 unités de ces villes", () => {
+    const { container } = render(<CarteFrance titre="t" titreId="t3" />);
+    const cercles = [...container.querySelectorAll("svg > circle, svg > g:not(:first-of-type)")];
+    expect(cercles.length).toBeGreaterThan(0);
+    const point = (c: Element) => {
+      if (c.tagName === "circle")
+        return [Number(c.getAttribute("cx")), Number(c.getAttribute("cy"))];
+      const m = /translate\((\d+) (\d+)\)/.exec(c.getAttribute("transform") ?? "");
+      return [Number(m?.[1]), Number(m?.[2])];
+    };
+    for (const c of cercles) {
+      const [x, y] = point(c) as [number, number];
+      for (const [nom, vx, vy] of VILLES) {
+        expect(Math.hypot(x - vx, y - vy), `${x},${y} près de ${nom}`).toBeGreaterThan(40);
+      }
+    }
+  });
+});
+
+describe("🔴 le titre du problème est une question de tri, sans opposition", () => {
+  it("pas de construction « X… Y ? » qui oppose le dehors au dedans", () => {
+    const titre = PROBLEME.titre;
+    expect(titre).toMatch(/\?$/);
+    expect(titre).not.toMatch(/\.\s+(Dans|Chez|Et)\b/);
+    expect(titre).not.toMatch(/rien n[’']a|encore chang/i);
+    expect(titre.split(/[.!]/).length).toBe(1);
   });
 });
 

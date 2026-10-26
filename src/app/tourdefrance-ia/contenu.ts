@@ -103,7 +103,7 @@ export const EN_BREF = "En bref";
 
 /** Le problème du dirigeant : à faire SENTIR, sans slogan. */
 export const PROBLEME = {
-  titre: "Chaque semaine, un nouvel outil d’IA. Dans votre entreprise, rien n’a encore changé ?",
+  titre: "Parmi tous les outils d’IA, lesquels servent votre métier ?",
   constats: [
     {
       titre: "Trop d’outils pour tout essayer",
