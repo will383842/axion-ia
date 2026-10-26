@@ -44,6 +44,18 @@ export function isCrmSyncGuideEnabled(): boolean {
   return isCrmSyncEnabled() && process.env.CRM_SYNC_GUIDE_ENABLED === "true";
 }
 
+/**
+ * Quatrième verrou (25/10/2026) : la synchro AUTOMATIQUE du dossier client de
+ * la console vers le CRM (`dossier_client_synchro`). FERMÉ par défaut. À ouvrir
+ * seulement APRÈS `migrate` côté CRM ET ouverture de `CRM_INGEST_DOSSIER_ENABLED`
+ * (sinon le CRM répond 503 et les lignes s'accumulent).
+ *
+ * Soumis au drapeau MAÎTRE : `CRM_SYNC_ENABLED` fermé ⇒ fermé.
+ */
+export function isCrmSyncDossierEnabled(): boolean {
+  return isCrmSyncEnabled() && process.env.CRM_SYNC_DOSSIER_ENABLED === "true";
+}
+
 /** URL de l'endpoint d'ingestion du CRM (`…/api/internal/site-sync`). */
 export function crmSyncUrl(): string | null {
   const url = process.env.CRM_SYNC_URL?.trim();

@@ -134,6 +134,8 @@ export const env = createEnv({
     // par défaut ; ne s'ouvre qu'après le drapeau `crm.ingest.personnes_enabled`
     // du CRM, contrôlé sur un premier événement réel. Web ET worker.
     CRM_SYNC_GUIDE_ENABLED: z.enum(["true", "false"]).optional(),
+    // Synchro AUTOMATIQUE du dossier client (25/10/2026) : FERMÉ par défaut.
+    CRM_SYNC_DOSSIER_ENABLED: z.enum(["true", "false"]).optional(),
     // Exclusions PERSISTANTES du flux lettre et guide (lot L4-S, décision D4) :
     // empreintes SHA-256 de l'adresse normalisée (trim + minuscules), séparées
     // par des virgules. Jamais une adresse en clair. Voir `crm-sync/exclusions.ts`.
@@ -747,6 +749,7 @@ export const env = createEnv({
     VISIO_ADRESSES_DE_TEST: process.env.VISIO_ADRESSES_DE_TEST,
     CRM_SYNC_CANDIDATES_ENABLED: process.env.CRM_SYNC_CANDIDATES_ENABLED,
     CRM_SYNC_GUIDE_ENABLED: process.env.CRM_SYNC_GUIDE_ENABLED,
+    CRM_SYNC_DOSSIER_ENABLED: process.env.CRM_SYNC_DOSSIER_ENABLED,
     CRM_SYNC_EXCLUSIONS_SHA256: process.env.CRM_SYNC_EXCLUSIONS_SHA256,
     CRM_SYNC_URL: process.env.CRM_SYNC_URL,
     SITE_SYNC_HMAC_SECRET: process.env.SITE_SYNC_HMAC_SECRET,
