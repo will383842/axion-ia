@@ -325,7 +325,7 @@ export async function GET(): Promise<Response> {
     // `images-en.xml` est vide tant qu'EN est désactivé (301→FR) → ne pas le
     // lister (sinon urlset vide flaggé par GSC). Réapparaît si EN réactivé.
     if (path === "/sitemaps/images-en.xml") return EN_LOCALE_ENABLED;
-    // Tour de France IA fermé → landing en 404 → pas de sitemap du Tour.
+    // Tour de France IA refermé → landing en 404 → pas de sitemap du Tour.
     if (path === "/sitemap-tourdefrance-ia.xml") return TOUR_PUBLIC;
     return true;
   });

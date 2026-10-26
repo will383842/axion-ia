@@ -1,7 +1,7 @@
 // Tour de France IA — TOUT le texte de la landing, en un seul endroit (2026-10-25).
 //
 // Pourquoi un module à part : le test des mots interdits
-// (`__tests__/le-tour-reste-invisible.spec.ts`) lit CE fichier et la page ; un
+// (`__tests__/le-tour-est-ouvert.spec.ts`) lit CE fichier et la page ; un
 // texte écrit ailleurs échapperait à la garde.
 //
 // Règles de rédaction : vouvoiement, phrases courtes, apostrophe typographique
@@ -25,6 +25,9 @@ export const CHEMIN_RENDEZ_VOUS = "/fr/appel/tour-de-france-ia";
 
 /** Le libellé unique du bouton principal. */
 export const LIBELLE_CTA = "Je veux le Tour dans mon entreprise";
+
+/** Le mot du bouton du bandeau du haut. */
+export const LIBELLE_BANDEAU = "Participer";
 
 /** Le micro-texte sous chaque bouton principal. */
 export const MICRO_TEXTE_CTA = "Visio de 30 minutes · gratuite et sans engagement";

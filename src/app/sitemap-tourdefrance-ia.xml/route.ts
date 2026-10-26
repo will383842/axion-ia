@@ -1,9 +1,9 @@
 // Sitemap de la landing du Tour de France IA (2026-10-25).
 //
-// Tant que `TOUR_PUBLIC` est faux : `<urlset>` VIDE, et `sitemap-index.xml` ne
-// le liste pas (un urlset vide listé serait signalé par la Search Console). Le
-// jour de l'ouverture (PR `TOUR_PUBLIC = true`), l'URL y entre d'elle-même et
-// l'index le liste — rien d'autre à toucher.
+// Tour ouvert (`TOUR_PUBLIC = true`) : l'URL de la landing y figure et
+// `sitemap-index.xml` le liste. Si le Tour est refermé : `<urlset>` VIDE, et
+// l'index ne le liste plus (un urlset vide listé serait signalé par la Search
+// Console) — rien d'autre à toucher.
 //
 // La route est sous `sitemap…` : le `matcher` du proxy l'exclut déjà.
 

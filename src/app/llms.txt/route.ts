@@ -41,7 +41,8 @@ export const revalidate = 3600;
 export async function GET() {
   const sectionVideos = sectionVideosLlms(await videosPubliees(), SITE_URL);
   // Tour de France IA (2026-10-25) : section visible SEULEMENT quand la landing est
-  // ouverte (`TOUR_PUBLIC`). Fermée, elle répond 404 : la citer ici l'exposerait.
+  // ouverte (`TOUR_PUBLIC`, vrai depuis l'ouverture). Refermée, elle répond 404 : la citer
+  // ici l'exposerait.
   const sectionTour = TOUR_PUBLIC
     ? `
 ## Tour de France IA

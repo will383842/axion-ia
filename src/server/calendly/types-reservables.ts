@@ -58,16 +58,15 @@ export const CHOIX_RENDEZ_VOUS = ["diagnostic", "projet", "apporteur", "salon"] 
  * classé `autre` ; la visio du Tour de France IA a, depuis le 2026-10-27, son type
  * propre (`tour_de_france_ia`) — elle reste ici parce que la liste des quatre est
  * figée par les tests du parcours, et `choixDuTypeRendezVous` la retrouve par son type.
- * Historique : rendez-vous réservables SANS type propre en base — classés `autre`,
- * reconnus par le NOM de l'événement (2026-10-09, lot F-CAL-1 : l'échange
- * formateur ; l'enum n'a pas de valeur « formateur » et ce lot ne migre rien).
- * Ils ont leur page, leur adresse et leur lien d'e-mail, mais `autre` ne les
- * désigne JAMAIS (`choixDuTypeRendezVous`).
+ * Le nom dit la vérité : « formateur » n'a PAS de type propre en base (classé
+ * `autre`, reconnu par le NOM de l'événement — 2026-10-09, lot F-CAL-1), alors que
+ * « tour » en a un. Les deux ont leur page, leur adresse et leur lien d'e-mail, et
+ * `autre` ne désigne JAMAIS « formateur » (`choixDuTypeRendezVous`).
  */
-export const CHOIX_SANS_TYPE_PROPRE = ["formateur", "tour"] as const;
+export const CHOIX_HORS_DES_QUATRE_HISTORIQUES = ["formateur", "tour"] as const;
 
 /** Les six rendez-vous réservables sur le site : pages, routes, adresses Calendly. */
-export const TOUS_LES_CHOIX = [...CHOIX_RENDEZ_VOUS, ...CHOIX_SANS_TYPE_PROPRE] as const;
+export const TOUS_LES_CHOIX = [...CHOIX_RENDEZ_VOUS, ...CHOIX_HORS_DES_QUATRE_HISTORIQUES] as const;
 export type ChoixRendezVous = (typeof TOUS_LES_CHOIX)[number];
 
 /**
