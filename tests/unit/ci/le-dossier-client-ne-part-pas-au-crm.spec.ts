@@ -24,6 +24,18 @@ import {
   sourcesSous,
 } from "./sources-du-circuit-visio";
 
+/**
+ * EXCEPTION UNIQUE, voulue par Will (25/10/2026) : la synchro AUTOMATIQUE du
+ * dossier client envoie au CRM des champs OBJECTIFS (identité, adresse,
+ * contacts, statut, état du questionnaire) — jamais une parole, un fait, un
+ * compte rendu, une réponse ni un montant. Elle vit dans UN fichier, qui ne
+ * peut lire que ces deux tables en `find*` ; tout autre accès, ou la lecture
+ * d'une colonne de contenu, fait échouer la garde ci-dessous.
+ */
+const FICHIER_DE_LA_SYNCHRO_DU_DOSSIER = "src/server/crm-sync/dossier-client.ts";
+const TABLES_LISIBLES_PAR_CE_FICHIER = ["clientContact", "questionnaireAvantAudit"];
+const COLONNES_DE_CONTENU = /\b(donnees|texte|reponse|reponses|notes|html|destinataire)\s*:\s*true/;
+
 const IMPORT_CRM =
   /(?:\bfrom\s*|\bimport\s*\(?\s*|\brequire\s*\(\s*)["'`][^"'`]*server\/crm-sync(?:\/[^"'`]*)?["'`]/;
 
@@ -56,7 +68,19 @@ describe("le dossier client ne part pas au CRM", () => {
     const fichiers = sourcesSous(["src/server/crm-sync"]);
     expect(fichiers).toContain("src/server/crm-sync/enqueue.ts");
     const motif = lectureDuDossier();
-    const fautifs = fichiers.filter((f) => motif.test(sansCommentaires(lire(f))));
+    const fautifs = fichiers
+      .filter((f) => f !== FICHIER_DE_LA_SYNCHRO_DU_DOSSIER)
+      .filter((f) => motif.test(sansCommentaires(lire(f))));
     expect(fautifs, "la synchro CRM lit le dossier client (PA-12) :").toEqual([]);
+  });
+
+  it("l'exception : un seul fichier, deux tables, aucune colonne de contenu", () => {
+    const source = sansCommentaires(lire(FICHIER_DE_LA_SYNCHRO_DU_DOSSIER));
+    const lues = [...source.matchAll(new RegExp(lectureDuDossier().source, "g"))].map((m) => m[1]);
+    for (const table of lues) expect(TABLES_LISIBLES_PAR_CE_FICHIER).toContain(table);
+    expect(lues.length).toBeGreaterThan(0);
+    expect(COLONNES_DE_CONTENU.test(source)).toBe(false);
+    // Contre-témoin : la colonne qui contient les réponses est reconnue.
+    expect(COLONNES_DE_CONTENU.test("select: { donnees: true }")).toBe(true);
   });
 });

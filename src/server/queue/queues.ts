@@ -1320,6 +1320,21 @@ export async function bootRepeatableJobs(): Promise<void> {
       { type: "reconcile" },
       { repeat: { pattern: "30 4 * * *" }, jobId: "crm-sync-reconcile-cron" },
     );
+
+    // ── Synchro AUTOMATIQUE du dossier client (25/10/2026) ────────────────
+    // Toutes les 15 minutes : relit les dossiers clients et pose en outbox ceux
+    // qui ont changé depuis le dernier envoi (le sweep ci-dessus les émet).
+    // Drapeau `CRM_SYNC_DOSSIER_ENABLED` fermé ⇒ le passage ne lit rien.
+    await crmSyncQueue.removeRepeatable(
+      "dossiers",
+      { pattern: "*/15 * * * *" },
+      "crm-sync-dossiers-cron",
+    );
+    await crmSyncQueue.add(
+      "dossiers",
+      { type: "dossiers" },
+      { repeat: { pattern: "*/15 * * * *" }, jobId: "crm-sync-dossiers-cron" },
+    );
   }
 
   // ── Lot L4 — intégration au vivier à J+30 ────────────────────────────────
