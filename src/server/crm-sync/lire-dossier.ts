@@ -83,7 +83,11 @@ export async function lireEntreeDossier(
 
   const [factures, horsConsole, questionnaires] = await Promise.all([
     prisma.factureFormation.findMany({
-      where: { clientId: { in: ids }, statut: { notIn: ["brouillon", "annulee"] }, emiseAt: { not: null } },
+      where: {
+        clientId: { in: ids },
+        statut: { notIn: ["brouillon", "annulee"] },
+        emiseAt: { not: null },
+      },
       select: { emiseAt: true },
     }),
     factureHorsConsole(ids),
