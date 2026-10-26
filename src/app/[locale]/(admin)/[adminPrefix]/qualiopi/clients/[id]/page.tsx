@@ -36,6 +36,11 @@ import { FilDesEchanges } from "@/components/admin/dossier-client/FilDesEchanges
 import { lireFilDesEchanges } from "@/features/dossier-client/fil-des-echanges";
 import { FactureHorsConsole } from "@/components/admin/dossier-client/FactureHorsConsole";
 import { prisma } from "@/lib/prisma";
+import { SuiviPrestations } from "@/components/admin/dossier-client/SuiviPrestations";
+import {
+  assemblerPrestations,
+  lireSuivisDesProjets,
+} from "@/features/dossier-client/suivi-prestations";
 import { BandeauOuEnEst } from "@/components/admin/dossier-client/BandeauOuEnEst";
 import { construireBandeau, type LigneBandeau } from "@/features/dossier-client/bandeau-ou-en-est";
 import { BlocQuestionnaireFiche } from "@/components/admin/dossier-client/BlocQuestionnaireFiche";
@@ -492,16 +497,29 @@ export default async function FicheClient360Page({ params, searchParams }: PageP
       lireFaitsARanger(id),
       compterDocumentsParProjet(id),
     ]);
+    // Ce que le client a pris (type, étape, montant) : lecture d'appoint, une panne ne cache rien.
+    const suivis = await lireSuivisDesProjets(projets.map((p) => p.id));
     contenuDossier = (
-      <OngletProjets
-        clientId={id}
-        projets={projets}
-        faitsARanger={faitsARanger}
-        ficheHref={ficheHref}
-        qBase={qBase}
-        erreur={erreur}
-        nbDocuments={nbDocuments}
-      />
+      <>
+        {suivis !== null ? (
+          <SuiviPrestations
+            clientId={id}
+            prestations={assemblerPrestations(projets, suivis)}
+            ficheHref={ficheHref}
+            message={lireMessageDeRetour(sp, "message")}
+            erreur={null /* l'erreur s'affiche déjà dans l'onglet, juste en dessous */}
+          />
+        ) : null}
+        <OngletProjets
+          clientId={id}
+          projets={projets}
+          faitsARanger={faitsARanger}
+          ficheHref={ficheHref}
+          qBase={qBase}
+          erreur={erreur}
+          nbDocuments={nbDocuments}
+        />
+      </>
     );
   } else if (voitEchanges && onglet === "rendez-vous") {
     const [rencontres, projets, personnesCourtes, caseTest] = await Promise.all([
