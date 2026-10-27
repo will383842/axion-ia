@@ -70,7 +70,10 @@ export const viewport: Viewport = {
 
 export default function TourLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="fr" className={`${manrope.variable} ${fraunces.variable} ${inconsolata.variable}`}>
+    <html
+      lang="fr"
+      className={`${manrope.variable} ${fraunces.variable} ${inconsolata.variable} max-md:scroll-pb-28`}
+    >
       <body className="bg-bg text-fg min-h-screen overflow-x-clip font-sans antialiased">
         {children}
       </body>
