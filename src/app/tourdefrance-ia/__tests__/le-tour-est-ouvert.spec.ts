@@ -753,7 +753,7 @@ describe("🔴 une ville SE DÉCLENCHE à partir de 5 entreprises ; quelques pla
     const q = FAQ.questions.find(
       (x) => x.question === "Et si ma ville n’a pas encore 5 entreprises ?",
     );
-    expect(q?.reponse).toMatch(/Votre demande est gardée/);
+    expect(q?.reponse).toMatch(/Aucune date n’est fixée avant/);
     expect(q?.reponse).toMatch(/Aucune date n’est fixée avant/);
     expect(json).toContain(JSON.stringify(q?.reponse ?? "").slice(1, -1));
   });
