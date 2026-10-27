@@ -82,7 +82,7 @@ describe("1. du bouton à la page de rendez-vous : `depuis` et UTM", () => {
     expect(utmSourceParDefaut("tour")).toBe("tour-de-france-ia");
   });
 
-  it("la page de rendez-vous du Tour, et elle seule, émet l'arrivée (clic « Je veux mon audit et ma formation offerts »)", () => {
+  it("la page de rendez-vous du Tour, et elle seule, émet l'arrivée (clic « Je veux ma journée offerte »)", () => {
     const page = lire("src/app/[locale]/appel/page.tsx");
     expect(page).toMatch(
       /choix === "tour" \? \(\s*<ArriveeReservationMesure landing="tour-de-france-ia" placement=\{depuis\} \/>/,

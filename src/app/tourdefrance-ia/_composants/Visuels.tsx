@@ -8,7 +8,10 @@
 // 🔑 Aucun texte visible dans ces dessins : le texte vit dans `contenu.ts`, seul
 // fichier relu par le test des mots interdits. La carte ne nomme AUCUNE ville et
 // n'affiche aucun chiffre : ses points sont des villes POSSIBLES, et le seul
-// point qui se remplit illustre le principe (5 entreprises confirmées, l'étape se tient).
+// point qui se remplit illustre le principe (5 entreprises, la ville se déclenche).
+//
+// Refonte visuelle du 2026-10-27 : la page dit presque tout par ces dessins. Chaque
+// bloc en porte un qui domine (scène de la journée, carte, frise de pictogrammes).
 
 import styles from "../tour.module.css";
 
@@ -16,13 +19,13 @@ type PropsSvg = { className?: string };
 
 const DECORATIF = { "aria-hidden": true, focusable: false } as const;
 
-/** La jauge du héros : cinq points qui se remplissent, puis la coche. */
-export function Jauge({ className = "" }: PropsSvg) {
+/** La jauge : cinq points qui se remplissent, puis la coche. `echelle` agrandit le dessin entier. */
+export function Jauge({ className = "", echelle = 1 }: PropsSvg & { echelle?: number }) {
   return (
     <svg
       className={`${styles.jauge} ${className}`}
-      width="132"
-      height="24"
+      width={132 * echelle}
+      height={24 * echelle}
       viewBox="0 0 132 24"
       {...DECORATIF}
     >
@@ -116,11 +119,14 @@ export function CarteFrance({
   );
 }
 
-/** Les illustrations de l’offre (48 × 48, trait) : 0 audit, 1 formation, 2 soirée réseau, 3 étape. */
-export function IllustrationMoment({ index }: { index: number }) {
+/**
+ * Les illustrations des moments (48 × 48, trait) : 0 audit, 1 formation, 2 vendredi
+ * soir, 3 étape. `taille` : le côté rendu, en pixels (le dessin garde son viewBox).
+ */
+export function IllustrationMoment({ index, taille = 48 }: { index: number; taille?: number }) {
   const communs = {
-    width: 48,
-    height: 48,
+    width: taille,
+    height: taille,
     viewBox: "0 0 48 48",
     className: styles.picto,
     ...DECORATIF,
@@ -159,7 +165,7 @@ export function IllustrationMoment({ index }: { index: number }) {
       </svg>
     );
   }
-  // Vendredi soir : deux verres qui trinquent (la soirée réseau).
+  // Vendredi soir : deux verres qui trinquent (le repas réseau).
   return (
     <svg {...communs}>
       <path d="M13 10h10l-1 10a4 4 0 0 1-8 0z" />
@@ -170,45 +176,7 @@ export function IllustrationMoment({ index }: { index: number }) {
   );
 }
 
-/** Les trois constats du problème : dispersion, essais isolés, question. */
-export function IllustrationConstat({ index }: { index: number }) {
-  const communs = {
-    width: 40,
-    height: 40,
-    viewBox: "0 0 40 40",
-    className: styles.picto,
-    ...DECORATIF,
-  };
-  if (index === 0) {
-    return (
-      <svg {...communs}>
-        <rect x="5" y="7" width="12" height="10" rx="2" />
-        <rect x="23" y="5" width="12" height="10" rx="2" />
-        <rect x="7" y="23" width="12" height="10" rx="2" />
-        <rect x="23" y="21" width="12" height="10" rx="2" className={styles.pictoAccent} />
-      </svg>
-    );
-  }
-  if (index === 1) {
-    return (
-      <svg {...communs}>
-        <circle cx="10" cy="12" r="4" />
-        <circle cx="30" cy="12" r="4" />
-        <path d="M3 30a7 7 0 0 1 14 0M23 30a7 7 0 0 1 14 0" />
-        <path d="M20 8v26" strokeDasharray="2 4" className={styles.pictoAccent} />
-      </svg>
-    );
-  }
-  return (
-    <svg {...communs}>
-      <circle cx="20" cy="20" r="15" />
-      <path d="M15.5 15.5a4.5 4.5 0 1 1 6.5 4c-1.4.8-2 1.6-2 3.2" className={styles.pictoAccent} />
-      <circle cx="20" cy="28" r="0.8" />
-    </svg>
-  );
-}
-
-/** Pictogrammes des secteurs, dans l'ordre de `POUR_QUI.secteurs` (24 × 24, trait). */
+/** Pictogrammes de secteurs (24 × 24, trait). La page n'en montre plus qu'un : la maison (« chez vous »). */
 const SECTEURS: string[] = [
   // Commerce : un sac.
   "M5 8h14l-1 12H6zM9 8a3 3 0 0 1 6 0",
@@ -228,10 +196,104 @@ const SECTEURS: string[] = [
   "M2 7h11v10H2zM13 10h4l3 3v4h-7M6 19.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3zM17 19.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z",
 ];
 
-export function PictoSecteur({ index }: { index: number }) {
+export function PictoSecteur({ index, taille = 24 }: { index: number; taille?: number }) {
   return (
-    <svg width="24" height="24" viewBox="0 0 24 24" className={styles.picto} {...DECORATIF}>
+    <svg width={taille} height={taille} viewBox="0 0 24 24" className={styles.picto} {...DECORATIF}>
       <path d={SECTEURS[index] ?? SECTEURS[4]} />
+    </svg>
+  );
+}
+
+/**
+ * La scène de la journée (328 × 140) : un bâtiment d'entreprise sous l'arc du jour,
+ * le soleil du matin à gauche, la lune du vendredi soir à droite. Les fenêtres
+ * s'allument l'une après l'autre (CSS, `fill`), puis la lune apparaît (`opacity`).
+ * Aucun élément animé ne porte d'attribut `transform`.
+ */
+export function SceneEntreprise({ className = "" }: PropsSvg) {
+  const fenetres = [50, 70, 90].flatMap((y) => [126, 155, 184].map((x) => ({ x, y })));
+  return (
+    <svg className={className} width="328" height="140" viewBox="0 0 328 140" {...DECORATIF}>
+      {/* L'arc du jour, du matin au soir. Couleurs : jetons de `globals.css`. */}
+      <path
+        d="M20 128A144 110 0 0 1 308 128"
+        fill="none"
+        stroke="var(--color-fg-soft)"
+        strokeWidth="1.5"
+        strokeDasharray="1 7"
+        strokeLinecap="round"
+      />
+      <g
+        fill="var(--color-terracotta)"
+        stroke="var(--color-terracotta)"
+        strokeWidth="2"
+        strokeLinecap="round"
+      >
+        <circle cx="39" cy="73" r="10" />
+        <path d="M39 56v-5M22 73h-5M27 61l-3.5-3.5M51 61l3.5-3.5" />
+      </g>
+      <path className={styles.sceneLune} d="M293 63a11 11 0 1 0 6 19 9 9 0 0 1-6-19z" />
+      {/* Le sol, les voisins, l'entreprise. */}
+      <path
+        d="M8 128h312"
+        stroke="var(--color-border-strong)"
+        strokeWidth="2"
+        strokeLinecap="round"
+      />
+      <g fill="var(--color-sand-deep)">
+        <rect x="72" y="84" width="34" height="44" rx="2" />
+        <rect x="222" y="96" width="38" height="32" rx="2" />
+      </g>
+      <rect x="112" y="38" width="104" height="90" rx="3" fill="var(--color-mocha)" />
+      <path
+        d="M106 40h116"
+        stroke="var(--color-terracotta)"
+        strokeWidth="4"
+        strokeLinecap="round"
+      />
+      {fenetres.map((f) => (
+        <rect
+          key={`${f.x}-${f.y}`}
+          className={styles.sceneFenetre}
+          x={f.x}
+          y={f.y}
+          width="18"
+          height="12"
+          rx="1.5"
+        />
+      ))}
+      <rect x="154" y="108" width="20" height="20" rx="1.5" fill="var(--color-primary)" />
+    </svg>
+  );
+}
+
+/** Ce que l'audit chiffre (24 × 24, trait) : 0 temps, 1 rentabilité, 2 chiffre d'affaires. */
+const LEVIERS: string[] = [
+  // Temps : une horloge.
+  "M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18zM12 7v5l3.5 2",
+  // Rentabilité : une courbe qui monte sur un axe.
+  "M4 4v16h16M7 15l4-4 3 3 5-6M15 8h4v4",
+  // Chiffre d'affaires : des barres qui montent.
+  "M5 20v-5M10 20v-8M15 20v-11M20 20V5M3 20h18",
+];
+
+export function PictoLevier({ index, taille = 24 }: { index: number; taille?: number }) {
+  return (
+    <svg width={taille} height={taille} viewBox="0 0 24 24" className={styles.picto} {...DECORATIF}>
+      <path d={LEVIERS[index] ?? LEVIERS[0]} />
+    </svg>
+  );
+}
+
+/** La visio (48 × 48, trait) : un écran, un visage, la caméra. */
+export function PictoVisio({ taille = 48 }: { taille?: number }) {
+  return (
+    <svg width={taille} height={taille} viewBox="0 0 48 48" className={styles.picto} {...DECORATIF}>
+      <rect x="6" y="9" width="36" height="24" rx="2.5" />
+      <circle cx="24" cy="19" r="4" className={styles.pictoAccent} />
+      <path d="M16 31a8 8 0 0 1 16 0" className={styles.pictoAccent} />
+      <path d="M18 40h12M24 33v7" />
+      <circle cx="24" cy="12" r="0.8" />
     </svg>
   );
 }

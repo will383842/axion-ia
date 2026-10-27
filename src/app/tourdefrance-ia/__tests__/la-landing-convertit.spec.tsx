@@ -1,15 +1,17 @@
 /**
- * LA LANDING DU TOUR EST UNE PAGE DE CONVERSION (refonte du 2026-10-26).
+ * LA LANDING DU TOUR EST UNE PAGE DE CONVERSION, ET UNE PAGE VISUELLE (refonte
+ * « page de conversion » du 2026-10-26, refonte visuelle « une journée offerte »
+ * du 2026-10-27).
  *
  * Trafic visé : un post Facebook ou Instagram, sur téléphone, dans le navigateur
  * intégré, en 4G. Ce qui doit tenir, en plus de `le-tour-est-ouvert.spec.ts` :
  *
- *   · UNE seule action, « Je veux mon audit et ma formation offerts », vers la
- *     visio du Tour — le libellé nomme l'audit ET la formation ;
- *   · le premier écran d'un téléphone : H1, promesse, bouton, micro-ligne des
- *     5 entreprises par ville, bénéfice — le reste du héros passe dessous, la
- *     carte après le bouton ;
- *     un en-tête de tunnel (logo + ce bouton), aucun menu ;
+ *   · UNE seule action, « Je veux ma journée offerte », vers la visio du Tour ;
+ *   · le premier écran d'un téléphone : puce, H1, promesse, frise de trois disques
+ *     dessinés, bouton, et SOUS LE BOUTON, dans la même boîte, les conditions —
+ *     la carte vient après le bouton dans le flux ;
+ *   · très peu de texte : ~150 mots visibles hors FAQ, des titres de 6 mots au
+ *     plus, un dessin par bloc ;
  *   · cinq emplacements de bouton, ceux que la console connaît (tdf-entete,
  *     tdf-heros, tdf-bandeau, tdf-final, tdf-collant) — pas un de plus ;
  *   · le suivi d'arrivée (`utm_*` seulement) passe de la page aux boutons, puis
@@ -18,16 +20,16 @@
  *   · le JavaScript reste minimal : aucun `next/image`, `next/script`, ni
  *     composant d'interface partagé qui tirerait du JS ; la FAQ est un
  *     `details` natif ; les animations sont en CSS et respectent le mouvement
- *     réduit ;
- *   · CLS nul : chaque dessin et la photo portent largeur et hauteur NUMÉRIQUES ;
+ *     réduit ; aucune image matricielle ;
+ *   · CLS nul : chaque dessin porte largeur et hauteur NUMÉRIQUES ;
  *   · aucune animation en boucle infinie ;
  *   · le vocabulaire : aucun mot du cyclisme, aucun emoji, aucun chiffre hors
- *     de ceux du concept (5 entreprises, 2 à 4 h, 4 h, 30 minutes).
+ *     de ceux du concept (3 étapes, 4 h, 5 entreprises, 30 minutes).
  *
  * Angle mort assumé : jsdom n'a pas de mise en page. « Le bouton tient dans le
  * premier écran à 360 px » se vérifie dans un navigateur (cf. la PR), pas ici.
  */
-import { existsSync, readFileSync } from "node:fs";
+import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { act, cleanup, render } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
@@ -35,20 +37,20 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 import { avecUtmContent, lireSuiviArrivee } from "@/server/calendly/choix-rendez-vous";
 
 import {
-  BENEFICE,
   CHEMIN_RENDEZ_VOUS,
+  CONDITIONS,
   EMPLACEMENTS_CTA,
   ETAPES,
   FAQ,
-  FONDATEUR,
   HEROS,
+  JOURNEE,
   LIBELLE_CTA,
   LIBELLE_CTA_COURT,
   MICRO_TEXTE_CTA,
-  PROBLEME,
   PROMESSE,
-  REASSURANCE,
+  VENDREDI,
   lienRendezVous,
+  texteVisibleHorsFaq,
   toutLeTexte,
 } from "../contenu";
 import { PiloteCta } from "../_composants/PiloteCta";
@@ -57,10 +59,12 @@ import {
   CarteFrance,
   Coche,
   Fleche,
-  IllustrationConstat,
   IllustrationMoment,
   Jauge,
+  PictoLevier,
   PictoSecteur,
+  PictoVisio,
+  SceneEntreprise,
 } from "../_composants/Visuels";
 
 const CSS_ESCAPE = (s: string) => s.replace(/[^\w-]/g, "\\$&");
@@ -77,17 +81,13 @@ const PAGE = lire(`${DOSSIER}/page.tsx`);
 const VISUELS = lire(`${DOSSIER}/_composants/Visuels.tsx`);
 const CSS = lire(`${DOSSIER}/tour.module.css`);
 const SOURCES = [PAGE, VISUELS, lire(`${DOSSIER}/contenu.ts`)].join("\n");
+const mots = (t: string) => t.split(/\s+/).filter((m) => /[\p{L}\d]/u.test(m)).length;
 
-describe("🔑 une seule action : l'audit et la formation offerts", () => {
+describe("🔑 une seule action : ma journée offerte", () => {
   it("le libellé dit ce que l'entreprise obtient, et il mène à la visio du Tour", () => {
-    expect(LIBELLE_CTA).toBe("Je veux mon audit et ma formation offerts");
-    expect(LIBELLE_CTA_COURT).toBe("Audit + formation offerts");
-    // La formation ne disparaît d'aucun bouton : chaque libellé nomme les deux.
-    for (const l of [LIBELLE_CTA, LIBELLE_CTA_COURT]) {
-      expect(l).toMatch(/audit/i);
-      expect(l).toMatch(/formation/i);
-      expect(l).toMatch(/offerts$/);
-    }
+    expect(LIBELLE_CTA).toBe("Je veux ma journée offerte");
+    expect(LIBELLE_CTA_COURT).toBe("Ma journée offerte");
+    for (const l of [LIBELLE_CTA, LIBELLE_CTA_COURT]) expect(l).toMatch(/journée offerte$/);
     // Court : l'en-tête et la barre collante tiennent sur une ligne à 360 px.
     expect(LIBELLE_CTA_COURT.length).toBeLessThanOrEqual(25);
     // La barre collante porte le libellé court, les grands boutons le long.
@@ -101,9 +101,8 @@ describe("🔑 une seule action : l'audit et la formation offerts", () => {
     expect(lienRendezVous("tdf-entete")).toBe(`${CHEMIN_RENDEZ_VOUS}?depuis=tdf-entete`);
   });
 
-  it("chaque lien de la page qui n'est pas du pied de page est un bouton d'audit", () => {
+  it("chaque lien de la page qui n'est pas du pied de page est un bouton de la journée", () => {
     const code = sansCommentaires(PAGE);
-    // Tous les boutons passent par le même composant, avec un emplacement `tdf-…`.
     const emplacements = [...code.matchAll(/<BoutonAudit\s+depuis="([^"]+)"/g)].map((m) => m[1]);
     // Exactement les cinq que la console connaît, chacun une fois — aucun inventé.
     expect([...emplacements].sort()).toEqual([...EMPLACEMENTS_CTA].sort());
@@ -115,9 +114,13 @@ describe("🔑 une seule action : l'audit et la formation offerts", () => {
       "tdf-collant",
     ]);
     expect(code).not.toContain("tdf-etapes");
-    // Les seuls autres liens : la fiche du fondateur et le pied de page.
+    // Les seuls autres liens : la fiche du fondateur (FAQ « Qui organise ? ») et le pied de page.
     const autres = [...code.matchAll(/href=\{([^}]+)\}/g)].map((m) => m[1]);
-    expect(autres).toEqual(["lienRendezVous(depuis)", "FONDATEUR.chemin", "l.href"]);
+    expect(autres).toEqual(["lienRendezVous(depuis)", "q.lien.chemin", "l.href"]);
+    const qui = FAQ.questions.find((q) => q.lien);
+    expect(qui?.question).toBe("Qui organise\u00a0?");
+    expect(qui?.reponse).toMatch(/Axion-IA, fondée par Williams Jullin/);
+    expect(qui?.lien).toEqual({ libelle: "Découvrir Williams", chemin: "/fr/equipe/williams" });
   });
 
   it("l'en-tête du tunnel : le logo et UN bouton (tdf-entete, 44 px minimum), aucun menu, aucun lien de sortie", () => {
@@ -126,39 +129,40 @@ describe("🔑 une seule action : l'audit et la formation offerts", () => {
     expect(entete).toMatch(/<BoutonAudit\s+depuis="tdf-entete"\s+compact\s*\/>/);
     expect(entete).toContain("ENTETE.marque");
     expect(entete).toContain("ml-auto");
-    // Le logo n'est pas un lien : rien ne fait sortir du tunnel par le haut.
     expect(entete).not.toMatch(/<a\b|href=/);
     expect(entete.match(/<BoutonAudit/g)).toHaveLength(1);
-    // L'en-tête est AVANT le héros et son H1 : c'est bien le haut de page.
     expect(code.indexOf("</header>")).toBeLessThan(code.indexOf("<h1"));
     expect(code.indexOf("</header>")).toBeLessThan(code.indexOf("<main"));
-    // La pilule compacte garde une zone tactile de 44 px et porte `data-tdf-cta` (utm recopiés).
     const compact = CSS.match(/\.boutonCompact\s*\{([^}]*)\}/)?.[1] ?? "";
     expect(compact).toMatch(/min-height:\s*2\.75rem/);
     expect(code).toMatch(/data-tdf-cta=""/);
   });
 
-  it("le bandeau d'accent porte la pilule compacte (tdf-bandeau), après le héros", () => {
+  it("le bloc « Votre journée offerte » porte la pilule compacte (tdf-bandeau), après le héros", () => {
     const code = sansCommentaires(PAGE);
     const i = code.indexOf('depuis="tdf-bandeau"');
     expect(i).toBeGreaterThan(code.indexOf('depuis="tdf-heros"'));
+    expect(i).toBeGreaterThan(code.indexOf("{JOURNEE.titre}"));
+    expect(i).toBeLessThan(code.indexOf("{VENDREDI.titre}"));
     expect(code).toMatch(/<BoutonAudit\s+depuis="tdf-bandeau"\s+compact\s*\/>/);
   });
 
   it("la charte d'Axion : jetons de globals.css seulement, terracotta en tête, bouton bleu primaire plein", () => {
-    // Aucune couleur écrite en dur dans la feuille du Tour ni dans la page.
+    // Aucune couleur écrite en dur dans la feuille du Tour, la page ni les dessins.
     expect(CSS).not.toMatch(/#[0-9a-fA-F]{3,8}\b|rgba?\(/);
     expect(sansCommentaires(PAGE)).not.toMatch(/#[0-9a-fA-F]{3,8}\b|rgba?\(/);
-    // L'en-tête rendu comme celui du site (`Header.tsx` : terracotta à 95 % sur l'ivoire).
+    expect(sansCommentaires(VISUELS)).not.toMatch(/#[0-9a-fA-F]{3,8}\b|rgba?\(|hsla?\(/);
+    // Les couleurs écrites dans les dessins sont toutes des jetons.
+    for (const m of VISUELS.matchAll(/(?:fill|stroke)="([^"]+)"/g)) {
+      expect(m[1], m[1]).toMatch(/^(none|var\(--color-[a-z-]+\))$/);
+    }
     expect(PAGE).toMatch(/<header className="bg-terracotta\/95 /);
-    // Le terracotta de MARQUE partout : plus de bande au terracotta profond (orange
-    // brun), plus de dégradé qui y plonge, une lueur du héros douce.
     const code = sansCommentaires(PAGE);
     expect(code).not.toMatch(/bg-terracotta-deep|from-terracotta-deep/);
+    // Le vendredi soir : la bande au terracotta de marque.
     expect(code).toMatch(
-      /<section className="bg-terracotta text-mocha-fg" aria-labelledby="tdf-bandeau">/,
+      /<section\s+className=\{`bg-terracotta text-mocha-fg \$\{SECTION\}`\}\s+aria-labelledby="tdf-vendredi"/,
     );
-    expect(code).toMatch(/className=\{`bg-terracotta text-mocha-fg \$\{SECTION\}`\}/);
     expect(PAGE).toContain("var(--color-terracotta)_30%");
     expect(CSS).toMatch(/\.bouton\s*\{[^}]*background:\s*var\(--color-primary\)/);
     expect(PAGE).toMatch(/const FOND_MARQUE =\s*"bg-mocha /);
@@ -173,7 +177,7 @@ describe("🔑 une seule action : l'audit et la formation offerts", () => {
     expect(lire(`${DOSSIER}/layout.tsx`)).toContain("overflow-x-clip");
   });
 
-  it("premier écran mobile : H1, promesse, bouton, micro-ligne, bénéfice — puis l'accroche, l'offre, sa condition et la carte", () => {
+  it("premier écran mobile : puce, H1, promesse, frise, bouton, conditions — puis la carte", () => {
     const code = sansCommentaires(PAGE);
     const i = (t: string) => {
       const n = code.indexOf(t);
@@ -181,85 +185,140 @@ describe("🔑 une seule action : l'audit et la formation offerts", () => {
       return n;
     };
     const ordre = [
+      "{HEROS.surtitre}",
       "<h1",
       "{HEROS.promesse}",
+      "HEROS.frise.map",
       "id={ID_CTA_HEROS}",
-      "{HEROS.reassurance}",
-      "{HEROS.benefice}",
-      "{HEROS.accroche}",
-      "{HEROS.sousTitre}",
-      "{HEROS.condition}",
-      "HEROS.pastilles.map",
+      "{HEROS.conditions}",
       "<CarteFrance",
     ].map(i);
     expect([...ordre].sort((x, y) => x - y)).toEqual(ordre);
-    // Chaque morceau du héros est écrit UNE fois : plus de copie par largeur d'écran.
-    for (const t of [
-      "{HEROS.condition}",
-      "{HEROS.promesse}",
-      "{HEROS.reassurance}",
-      "{HEROS.benefice}",
-    ]) {
+    for (const t of ["{HEROS.promesse}", "{HEROS.conditions}", "HEROS.frise.map"]) {
       expect(code.split(t).length - 1, t).toBe(1);
     }
-    // Rien n'est caché sur mobile dans le héros, hormis la jauge décorative du surtitre.
-    const heros = code.slice(i("<h1"), i("<CarteFrance"));
-    expect(heros).not.toMatch(/\bhidden\b/);
+    // Rien n'est caché sur mobile dans le héros.
+    expect(code.slice(i("{HEROS.surtitre}"), i("<CarteFrance"))).not.toMatch(/\bhidden\b/);
+    // Aucune police à chasse fixe au-dessus du pli : le surtitre est une puce en Manrope.
+    expect(code.slice(code.indexOf("<main"), i("<CarteFrance"))).not.toMatch(/font-mono/);
     // La carte est plus petite sur téléphone.
     expect(code).toMatch(/max-w-\[300px\][^"`]*sm:max-w-\[380px\]/);
-    // Le bouton du héros reste le premier GRAND bouton de la page.
     expect(i('depuis="tdf-heros"')).toBeLessThan(i('depuis="tdf-bandeau"'));
   });
 
-  it("la promesse et la micro-ligne : courtes, l'offre comprise d'un coup d'œil", () => {
-    expect(HEROS.promesse).toBe(PROMESSE);
-    expect(HEROS.reassurance).toBe(REASSURANCE);
-    expect(PROMESSE).toBe(
-      "Audit offert + formation de votre équipe offerte, en présentiel chez\u00a0vous.",
+  it("🔴 les conditions sont dans le MÊME bloc que le bouton du héros, en clair (≥ 12 px)", () => {
+    const code = sansCommentaires(PAGE);
+    // La boîte qui contient le bouton du héros contient aussi les conditions, et rien d'autre.
+    const bloc =
+      /<div className="[^"]*">\s*<BoutonAudit depuis="tdf-heros" id=\{ID_CTA_HEROS\} \/>\s*<p className="([^"]+)">\s*\{HEROS\.conditions\}\s*<\/p>\s*<\/div>/.exec(
+        code,
+      );
+    expect(bloc, "bouton et conditions dans la même boîte").not.toBeNull();
+    const classes = bloc?.[1] ?? "";
+    // 13 px, jamais `text-xs` (12 px) ni moins, jamais repliées, pas en gris sur le mocha.
+    expect(classes).toContain("text-[0.8125rem]");
+    expect(classes).not.toMatch(/\btext-(xs|\[0\.[0-6])/);
+    expect(classes).toContain("text-mocha-fg");
+    expect(classes).not.toContain("text-mocha-fg-muted");
+    expect(code).not.toMatch(/<details[^>]*>[\s\S]{0,400}HEROS\.conditions/);
+    // L'appel final les répète, sous son bouton.
+    expect(code).toMatch(
+      /<BoutonAudit depuis="tdf-final" \/>\s*<p[^>]*>\{MICRO_TEXTE_CTA\}<\/p>\s*<p[^>]*>\{CONDITIONS\}<\/p>/,
     );
-    expect(REASSURANCE).toBe("5 entreprises par ville · sans engagement");
-    expect(PROMESSE.length).toBeLessThanOrEqual(80);
-    // Le bénéfice : ce que l'audit CHIFFRE, en une ligne, sans résultat promis.
-    expect(HEROS.benefice).toBe(BENEFICE);
-    expect(BENEFICE).toBe(
-      "L’audit chiffre le temps gagné, la rentabilité et le chiffre d’affaires que l’IA peut apporter à votre entreprise.",
-    );
-    expect(BENEFICE).toMatch(/peut apporter/);
-    expect(BENEFICE.length).toBeLessThanOrEqual(120);
+    expect(HEROS.conditions).toBe(CONDITIONS);
   });
 
-  it("lisible sur téléphone : H1 à 32 px au moins, bénéfice à 16 px", () => {
+  it("🔴 la ligne de conditions : quelques places, à partir de 5 entreprises, sans étoile ni plafond", () => {
+    expect(CONDITIONS).toContain("quelques places par ville");
+    expect(CONDITIONS).toContain("à partir de 5 entreprises");
+    expect(CONDITIONS).not.toMatch(/\*/);
+    expect(CONDITIONS).not.toMatch(/\bau plus\b|liste d[’']attente|seulement/i);
+    // Aucune étoile de renvoi nulle part dans le texte.
+    expect(toutLeTexte()).not.toMatch(/\*/);
+  });
+
+  it("la promesse et la frise : la journée offerte, comprise d'un coup d'œil", () => {
+    expect(HEROS.promesse).toBe(PROMESSE);
+    expect(PROMESSE).toMatch(/^Une journée offerte dans votre entreprise/);
+    expect(PROMESSE).toMatch(/audit \+ formation IA de votre équipe\.$/);
+    expect(PROMESSE.length).toBeLessThanOrEqual(90);
+    expect(HEROS.frise).toEqual(["Audit", "Formation d’équipe", "Vendredi soir"]);
+    // La frise est une liste ordonnée nommée, à trois disques dessinés.
+    const code = sansCommentaires(PAGE);
+    expect(code).toMatch(/<ol\s+aria-label=\{HEROS\.friseTitre\}/);
+    expect(code).toMatch(
+      /<IllustrationMoment index=\{PICTOS_FRISE\[i\] \?\? 0\} taille=\{30\} \/>/,
+    );
+  });
+
+  it("lisible sur téléphone : H1 à 32 px au moins, bouton à 56 px", () => {
     const h1 = sansCommentaires(PAGE).match(/<h1[\s\S]*?className="([^"]+)"/)?.[1] ?? "";
     expect(h1).toMatch(/text-\[clamp\(2rem,/);
-    expect(sansCommentaires(PAGE)).toMatch(
-      /<p className="mt-4 max-w-xl text-base leading-snug">\{HEROS\.benefice\}<\/p>/,
-    );
-  });
-
-  it("« Comment ça marche » : trois étapes courtes, sur trois colonnes sur grand écran", () => {
-    expect(ETAPES.liste).toHaveLength(3);
-    for (const e of ETAPES.liste) expect(e.length, e).toBeLessThanOrEqual(90);
-    expect(sansCommentaires(PAGE)).toMatch(
-      /\$\{styles\.parcours\} mt-10 grid gap-10 lg:grid-cols-3/,
-    );
-  });
-
-  it("le bouton passe proprement sur deux lignes à 360 px : centré, 56 px au moins", () => {
+    expect(h1).toContain("font-serif");
     const bouton = CSS.match(/\.bouton\s*\{([^}]*)\}/)?.[1] ?? "";
     expect(bouton).toMatch(/text-align:\s*center/);
     expect(bouton).toMatch(/min-height:\s*3\.5rem/);
     expect(bouton).toMatch(/line-height:\s*1\.25/);
-    // La pilule compacte ne se coupe jamais : son libellé court tient sur une ligne.
     expect(CSS.match(/\.boutonCompact\s*\{([^}]*)\}/)?.[1] ?? "").toMatch(/white-space:\s*nowrap/);
   });
 
-  it("téléphone : moins de texte dans les cartes de l'offre, « En bref » descend avant la FAQ", () => {
+  it("🔴 très peu de texte : ~150 mots visibles hors FAQ, titres de 6 mots au plus", () => {
+    const n = mots(texteVisibleHorsFaq());
+    // Budget ~150 mots de texte rédigé. Mesuré le 2026-10-27 : 187, dont 16 de
+    // libellés de bouton et 20 pour la SECONDE copie des conditions (appel final),
+    // imposée. Avant la refonte : 926. Cliquet : ajouter une phrase, c'est en retirer une.
+    expect(n, `${n} mots`).toBeLessThanOrEqual(190);
+    for (const titre of [ETAPES.titre, JOURNEE.titre, VENDREDI.titre, FAQ.titre]) {
+      expect(mots(titre), titre).toBeLessThanOrEqual(6);
+    }
+    for (const e of ETAPES.liste) expect(mots(e), e).toBeLessThanOrEqual(6);
+    // FAQ : six questions courtes, réponses d'une à trois phrases.
+    expect(FAQ.questions).toHaveLength(6);
+    for (const q of FAQ.questions) {
+      expect(
+        q.reponse.split(/[.!?](\s|$)/).filter((p) => p.trim().length > 1).length,
+      ).toBeLessThanOrEqual(4);
+    }
+  });
+
+  it("les blocs supprimés ne reviennent pas", () => {
     const code = sansCommentaires(PAGE);
-    // Le détail de chaque carte reste dans le HTML (indexé), affiché dès `sm`.
-    expect(code).toMatch(/<p className="text-fg-soft mt-2 hidden sm:block">\{c\.texte\}<\/p>/);
-    // La définition citable reste visible, mais après « Comment ça marche ».
-    expect(code.indexOf("{DEFINITION}")).toBeGreaterThan(code.indexOf("{ETAPES.titre}"));
-    expect(code.indexOf("{DEFINITION}")).toBeLessThan(code.indexOf("{FAQ.titre}"));
+    for (const ancien of [
+      "OFFRE_DETAIL",
+      "PROBLEME",
+      "LEVIERS.",
+      "BANDEAU",
+      "POUR_QUI",
+      "FONDATEUR",
+      "EN_BREF",
+      "{DEFINITION}",
+      "REASSURANCE",
+      "BENEFICE",
+      "REGLE_ETAPE",
+      "CONDITION_GRATUITE",
+      "<img",
+    ]) {
+      expect(code, ancien).not.toContain(ancien);
+    }
+  });
+
+  it("« En 3 étapes » : trois pastilles dessinées ; la journée : matin et après-midi, sans horaire", () => {
+    expect(ETAPES.liste).toEqual([
+      "Une visio de 30 minutes",
+      "Le Tour arrive dans votre ville",
+      "Votre journée offerte, chez vous",
+    ]);
+    expect(sansCommentaires(PAGE)).toMatch(/\$\{styles\.parcours\} mt-8 grid gap-8 lg:grid-cols-3/);
+    expect(JOURNEE.moments.map((m) => m.moment)).toEqual(["Matin", "Après-midi"]);
+    expect(JOURNEE.moments.map((m) => m.texte)).toEqual([
+      "Ce que l’IA peut vous apporter, chiffré.",
+      "Votre équipe s’exerce sur ses propres tâches.",
+    ]);
+    expect(JOURNEE.forme).toBe("4 h, en intra-entreprise et en présentiel.");
+    expect(JOURNEE.aiAct).toBe("Elle vous aide à répondre à l’exigence de formation de l’AI Act.");
+    expect(texteVisibleHorsFaq()).not.toMatch(/\d+\s?h\s?\d+|\d{1,2}:\d{2}|\d+\s?heures/);
+    // La scène de la journée domine le bloc.
+    expect(sansCommentaires(PAGE)).toContain("<SceneEntreprise");
   });
 });
 
@@ -429,7 +488,13 @@ describe("🔴 un élément SVG animé ne porte pas d'attribut `transform`", () 
 
   it("le CSS déclare bien des classes animées (le test ne tourne pas à vide)", () => {
     expect(classesAnimees).toEqual(
-      expect.arrayContaining(["jaugeCoche", "carteHalo", "carteEntreprise"]),
+      expect.arrayContaining([
+        "jaugeCoche",
+        "carteHalo",
+        "carteEntreprise",
+        "sceneFenetre",
+        "sceneLune",
+      ]),
     );
   });
 
@@ -437,8 +502,10 @@ describe("🔴 un élément SVG animé ne porte pas d'attribut `transform`", () 
     const { container } = render(
       <>
         <Jauge />
+        <Jauge echelle={1.5} />
         <CarteFrance titre="t" titreId="t" />
         <CarteFrance titre="t" titreId="t2" surSombre />
+        <SceneEntreprise />
       </>,
     );
     let vus = 0;
@@ -560,16 +627,6 @@ describe("🔴 la carte : chaque repère est à l'intérieur du contour", () => 
   });
 });
 
-describe("🔴 le titre du problème est une question de tri, sans opposition", () => {
-  it("pas de construction « X… Y ? » qui oppose le dehors au dedans", () => {
-    const titre = PROBLEME.titre;
-    expect(titre).toMatch(/\?$/);
-    expect(titre).not.toMatch(/\.\s+(Dans|Chez|Et)\b/);
-    expect(titre).not.toMatch(/rien n[’']a|encore chang/i);
-    expect(titre.split(/[.!]/).length).toBe(1);
-  });
-});
-
 describe("🔴 le JavaScript reste minimal, le rendu stable (CLS nul)", () => {
   it("aucun module qui tirerait du JS client : next/image, next/script, UI partagée", () => {
     const imports = [...SOURCES.matchAll(/from\s+["']([^"']+)["']/g)].map((m) => m[1] ?? "");
@@ -580,11 +637,11 @@ describe("🔴 le JavaScript reste minimal, le rendu stable (CLS nul)", () => {
     }
   });
 
-  it("la FAQ est un accordéon natif details/summary, huit fois, sans titre DANS le summary", () => {
+  it("la FAQ est un accordéon natif details/summary, six fois, sans titre DANS le summary", () => {
     expect(PAGE).toContain("<details");
     expect(PAGE).toContain("<summary>");
     expect(PAGE).toMatch(/FAQ\.questions\.map/);
-    expect(FAQ.questions).toHaveLength(8);
+    expect(FAQ.questions).toHaveLength(6);
     // Un `summary` a le rôle de bouton : un titre à l'intérieur y est invalide.
     for (const m of PAGE.matchAll(/<summary>([\s\S]*?)<\/summary>/g)) {
       expect(m[1]).not.toMatch(/<h[1-6]\b/);
@@ -619,22 +676,29 @@ describe("🔴 le JavaScript reste minimal, le rendu stable (CLS nul)", () => {
         <Jauge />
         <CarteFrance titre="Carte" titreId="t" />
         <CarteFrance titre="Carte" titreId="t2" surSombre />
+        <Jauge echelle={1.5} />
         {[0, 1, 2, 3].map((i) => (
           <IllustrationMoment key={`m${i}`} index={i} />
         ))}
         {[0, 1, 2].map((i) => (
-          <IllustrationConstat key={`c${i}`} index={i} />
+          <IllustrationMoment key={`t${i}`} index={i} taille={30} />
         ))}
         {[0, 1, 2, 3, 4, 5, 6, 7].map((i) => (
           <PictoSecteur key={`s${i}`} index={i} />
         ))}
+        <PictoSecteur index={3} taille={28} />
+        {[0, 1, 2].map((i) => (
+          <PictoLevier key={`l${i}`} index={i} taille={18} />
+        ))}
+        <PictoVisio taille={32} />
+        <SceneEntreprise />
         <Fleche />
         <Coche />
         <Coche taille={40} surSombre />
       </>,
     );
     const svgs = [...container.querySelectorAll("svg")];
-    expect(svgs).toHaveLength(21);
+    expect(svgs).toHaveLength(28);
     for (const svg of svgs) {
       for (const dim of ["width", "height"]) {
         const v = svg.getAttribute(dim) ?? "";
@@ -650,31 +714,24 @@ describe("🔴 le JavaScript reste minimal, le rendu stable (CLS nul)", () => {
     cleanup();
   });
 
-  it("la photo porte width ET height numériques (littéraux), carrés comme l'image affichée", () => {
-    const imgs = [...PAGE.matchAll(/<img\b([\s\S]*?)\/>/g)].map((m) => m[1] ?? "");
-    expect(imgs).toHaveLength(1);
-    const img = imgs[0] ?? "";
-    const largeur = img.match(/\swidth=\{(\d+)\}/)?.[1];
-    const hauteur = img.match(/\sheight=\{(\d+)\}/)?.[1];
-    expect(largeur).toBe("160");
-    expect(hauteur).toBe("160");
-    expect(img).toContain('loading="lazy"');
+  it("aucune image matricielle : ni <img>, ni nouveau fichier image dans le dossier", () => {
+    expect(PAGE).not.toMatch(/<img\b|<picture\b|background-image:\s*url/);
+    expect(CSS).not.toMatch(/url\(/);
   });
 
-  it("la photo du fondateur est la photo publique du site, servie par l'optimiseur aux largeurs par défaut", () => {
-    expect(existsSync(join(RACINE, "public", FONDATEUR.photo))).toBe(true);
-    // C'est bien la photo publiée par la page « À propos » (même fichier, autre format).
-    expect(lire("src/app/[locale]/a-propos/page.tsx")).toContain(
-      "/illustrations/home-founder-william.",
+  it("la scène de la journée : les fenêtres s'allument, la lune paraît — par classe, sans `transform`", () => {
+    const { container } = render(<SceneEntreprise />);
+    const fenetres = container.querySelectorAll(
+      `.${CSS_ESCAPE((styles as Record<string, string>)["sceneFenetre"] ?? "sceneFenetre")}`,
     );
-    // Les largeurs demandées existent dans `imageSizes` PAR DÉFAUT, que la config ne redéfinit pas.
-    const config = lire("next.config.ts");
-    expect(config).not.toMatch(/imageSizes|deviceSizes|qualities|unoptimized/);
-    const largeurs = PAGE.match(/LARGEURS_PHOTO = \[([^\]]+)\]/)?.[1] ?? "";
-    for (const l of largeurs.split(",").map((s) => Number(s.trim()))) {
-      expect([16, 32, 48, 64, 96, 128, 256, 384]).toContain(l);
-    }
-    expect(PAGE).toContain("&q=75");
+    expect(fenetres).toHaveLength(9);
+    expect(
+      container.querySelectorAll(
+        `.${CSS_ESCAPE((styles as Record<string, string>)["sceneLune"] ?? "sceneLune")}`,
+      ),
+    ).toHaveLength(1);
+    expect(container.querySelector("svg")?.getAttribute("aria-hidden")).toBe("true");
+    cleanup();
   });
 });
 
@@ -696,6 +753,8 @@ describe("🔴 le vocabulaire de la landing", () => {
       /\bsignature\b/i,
       /\bobligatoire\b/i,
       /[ée]tincelle/i,
+      /\bv[ée]lo/i,
+      /\bASO\b/,
       /\p{Extended_Pictographic}/u,
     ];
     for (const motif of interdits) {
@@ -710,13 +769,11 @@ describe("🔴 le vocabulaire de la landing", () => {
     for (const c of chiffres) expect(["1", "2", "3", "4", "5", "30"], c).toContain(c);
   });
 
-  it("« gratuit » n'est dit que de l'audit et de la formation : la visio est « sans engagement »", () => {
+  it("« offert » et « gratuit » ne disent jamais la visio : elle est « sans engagement »", () => {
     expect(MICRO_TEXTE_CTA).toBe("Visio de 30 minutes · sans engagement");
-    expect(texte).not.toMatch(/visio[^.]*gratuite|gratuite et sans engagement/i);
-    // La phrase est écrite UNE fois (contenu.ts) ; la page la cite sous le bouton final
-    // (sous celui du héros, la micro-ligne dit les 5 entreprises par ville, et « sans engagement »).
+    expect(texte).not.toMatch(/visio[^.\n]*(gratuite|offerte)|gratuite et sans engagement/i);
+    // La phrase est écrite UNE fois (contenu.ts) ; la page la cite sous le bouton final.
     expect(PAGE.match(/\{MICRO_TEXTE_CTA\}/g)).toHaveLength(1);
-    expect(REASSURANCE).toMatch(/sans engagement$/);
   });
 
   it("ni promesse de résultat ni construction du slogan d'Axion (« partout… sauf »)", () => {
@@ -728,11 +785,11 @@ describe("🔴 le vocabulaire de la landing", () => {
     expect(texte).not.toMatch(/d[èe]s le lendemain|ce que vous ne voyez plus|gagner du temps/i);
     // L'audit « chiffre » ou « met en évidence » : il ne garantit rien.
     expect(texte).not.toMatch(/garanti|assur[ée]|à coup sûr|sans engagement de r[ée]sultat/i);
-    expect(texte).toMatch(/L’audit met en évidence|peut mettre en évidence/);
+    expect(texte).toMatch(/Ce que l’IA peut vous apporter, chiffré\./);
   });
 
-  it("la carte ne nomme aucune ville et le dit", () => {
-    expect(VISUELS).not.toMatch(/<text\b/);
+  it("la carte ne nomme aucune ville et le dit ; les dessins ne portent aucun texte", () => {
+    expect(VISUELS).not.toMatch(/<text\b|<tspan\b|<foreignObject\b/);
     expect(texte).toMatch(/ne représentent pas des villes annoncées/);
   });
 });
