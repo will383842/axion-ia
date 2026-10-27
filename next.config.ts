@@ -361,8 +361,8 @@ const nextConfig: NextConfig = {
       },
       // Tour France IA (2026-10-27) : la landing quitte `/tourdefrance-ia` pour
       // `/tour-france-ia`, et sa page de visio `/fr/appel/tour-de-france-ia` pour
-      // `/fr/appel/tour-france-ia`. Les anciennes adresses n'ont jamais été publiées :
-      // ces 308 sont un filet de sécurité. Les redirections de `next.config`
+      // `/fr/appel/tour-france-ia`. Les anciennes adresses ont été publiées du 26 au
+      // 27/10 : ne JAMAIS retirer ces 308. Les redirections de `next.config`
       // passent AVANT le proxy : la règle 0bis ne les localise pas en
       // `/fr/tourdefrance-ia`. Gardées par `src/app/tour-france-ia/__tests__/`.
       {
@@ -378,6 +378,11 @@ const nextConfig: NextConfig = {
       {
         source: "/fr/appel/tour-de-france-ia",
         destination: "/fr/appel/tour-france-ia",
+        permanent: true,
+      },
+      {
+        source: "/sitemap-tourdefrance-ia.xml",
+        destination: "/sitemap-tour-france-ia.xml",
         permanent: true,
       },
       // Tunnel apporteurs : `/facebook` → `/apporteur-affaires` (Will 2026-09-04).

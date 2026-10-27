@@ -447,8 +447,8 @@ function sectionTourLlms(): string {
 describe("🔴 le contenu : mots interdits, typographie, SEO", () => {
   const texte = toutLeTexte();
   // Le nom de fichier `types-reservables.ts` (cité en commentaire) n'est pas du texte.
-  // `conditions-generales/conditions.ts` est HORS de cette garde : il porte les
-  // montants et le détail juridique (garde propre : `les-conditions-generales.spec.ts`).
+  // `conditions-generales/conditions.ts` est HORS de cette garde : il porte le
+  // détail juridique (garde propre : `les-conditions-generales.spec.tsx`).
   const sources = ["src/app/tour-france-ia/contenu.ts", "src/app/tour-france-ia/page.tsx"]
     .map(lire)
     .join("\n")

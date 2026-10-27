@@ -274,7 +274,7 @@
       "running": false
     },
     {
-      "name": "Routes /tour-france-ia (landing du Tour de France IA, hors [locale]) <= 75 KB gz cumulé",
+      "name": "Routes /tour-france-ia (landing du Tour France IA, hors [locale]) <= 75 KB gz cumulé",
       "path": ".next/static/chunks/app/tour-france-ia/**/page-*.js",
       "limit": "75 KB",
       "running": false

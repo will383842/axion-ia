@@ -16,7 +16,7 @@
 // Ce fichier est HORS de la garde des mots interdits de la landing : c'est ici, et
 // seulement ici, que vivent le tarif, « filmée » et le détail juridique. Aucun
 // montant chiffré, ici non plus : le tarif Tour se convient avec l'entreprise.
-// `__tests__/les-conditions-generales.spec.ts` garde ses propres interdits.
+// `__tests__/les-conditions-generales.spec.tsx` garde ses propres interdits.
 
 /** La version affichée sous le titre (date ISO de la dernière modification). */
 export const VERSION_CG = "2026-10-27";
@@ -119,7 +119,7 @@ export const ARTICLES: readonly Article[] = [
     numero: 8,
     titre: "Semaine du Tour, date et annulation",
     blocs: [
-      "Le Tour France IA se déroule sur une semaine complète dans chaque ville : une entreprise par jour, du lundi au vendredi, puis le dîner du vendredi soir. Le jour d’intervention est fixé par AXION IA en fonction de l’organisation de la semaine. L’entreprise peut indiquer ses contraintes lors de la visio, mais aucun report n’est possible en dehors de la semaine prévue.",
+      "Le Tour France IA se déroule sur une semaine complète dans chaque ville : une entreprise par jour, du lundi au vendredi, puis le dîner du vendredi soir. Journée offerte : le jour d’intervention est fixé par AXION IA en fonction de l’organisation de la semaine. L’entreprise peut indiquer ses contraintes lors de la visio, mais aucun report n’est possible en dehors de la semaine prévue.",
       "Journée offerte : en cas d’annulation, l’entreprise prévient AXION IA dès que possible ; sa place est alors attribuée à une autre entreprise, et elle perd son droit à la journée offerte.",
       "Journée payante : annulée au moins 14 jours avant, la journée est, au choix de l’entreprise, remboursée ou conservée sous forme de crédit ; annulée moins de 14 jours avant, elle n’est pas remboursée, mais la somme reste déductible, dans les mêmes conditions, d’une commande passée dans les 6 mois suivant la date prévue de la journée.",
     ],
@@ -158,7 +158,7 @@ export const ARTICLES: readonly Article[] = [
     numero: 13,
     titre: "Frais de déplacement",
     blocs: [
-      "Inclus pendant le Tour France IA, ils sont facturés en supplément pour toute intervention en dehors du Tour.",
+      "Inclus pour les journées du Tour France IA, offertes ou au tarif Tour, y compris la semaine suivant son passage ; facturés en supplément pour toute intervention en dehors du Tour.",
     ],
   },
   {
