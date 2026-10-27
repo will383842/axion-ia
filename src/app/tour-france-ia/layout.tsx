@@ -61,15 +61,19 @@ export const metadata: Metadata = {
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
-  // Le héros est sur fond encre : la barre du navigateur (et celle du navigateur
-  // intégré de Facebook, quand il la colore) le prolonge au lieu de le couper.
-  themeColor: "#14100e", // hex-ok: encre de la charte, dupliquée de globals.css --color-ink (Next exige un littéral)
+  // Le héros est sur le crème d'Axion (refonte du 2026-10-27) : la barre du
+  // navigateur (et celle du navigateur intégré de Facebook, quand il la colore) le
+  // prolonge au lieu de le couper.
+  themeColor: "#faf8f3", // hex-ok: crème de la charte, dupliqué de globals.css --color-bg (Next exige un littéral)
   colorScheme: "light",
 };
 
 export default function TourLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="fr" className={`${manrope.variable} ${fraunces.variable} ${inconsolata.variable}`}>
+    <html
+      lang="fr"
+      className={`${manrope.variable} ${fraunces.variable} ${inconsolata.variable} max-md:scroll-pb-28`}
+    >
       <body className="bg-bg text-fg min-h-screen overflow-x-clip font-sans antialiased">
         {children}
       </body>

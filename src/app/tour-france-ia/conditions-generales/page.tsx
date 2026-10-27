@@ -85,10 +85,11 @@ export default async function ConditionsGeneralesDuTour() {
 
   return (
     <>
-      <header className="bg-terracotta/95 border-terracotta-deep border-b print:hidden">
+      {/* Le même en-tête que la landing : crème dépoli, le logo, une seule action (le retour). */}
+      <header className="border-border/70 bg-bg/90 border-b backdrop-blur print:hidden">
         <div className={`${CONTENEUR} flex min-h-16 items-center gap-3 py-2.5`}>
           <p
-            className="bg-paper text-fg shadow-subtle inline-flex shrink-0 items-baseline rounded-lg px-2.5 py-2 font-serif text-lg leading-none font-medium tracking-tight sm:px-3 sm:text-[1.375rem]"
+            className="text-fg inline-flex shrink-0 items-baseline font-serif text-[1.375rem] leading-none font-medium tracking-tight sm:text-2xl"
             role="img"
             aria-label={ENTETE.logo}
           >
@@ -100,7 +101,7 @@ export default async function ConditionsGeneralesDuTour() {
           </p>
           <a
             href={META.chemin}
-            className="bg-paper text-fg focus-visible:outline-paper ml-auto inline-flex min-h-11 items-center rounded-full px-4 text-sm font-semibold focus-visible:outline-2 focus-visible:outline-offset-2"
+            className="border-border bg-paper text-fg hover:border-border-strong focus-visible:outline-primary shadow-subtle ml-auto inline-flex min-h-11 items-center rounded-full border px-4 text-sm font-semibold focus-visible:outline-2 focus-visible:outline-offset-2"
           >
             {LIBELLES_CG.retour}
           </a>
@@ -109,8 +110,11 @@ export default async function ConditionsGeneralesDuTour() {
 
       <main className={`${CONTENEUR} py-10 sm:py-16`}>
         <div className="max-w-[68ch]">
-          <p className="text-terracotta text-sm font-bold tracking-wide uppercase">{NOM_DU_TOUR}</p>
-          <h1 className="text-fg mt-2 font-serif text-[2rem] leading-tight font-medium tracking-tight text-balance sm:text-[2.5rem]">
+          <p className="border-border bg-paper/80 text-fg inline-flex min-h-7 items-center gap-2 rounded-full border px-3 text-xs font-semibold tracking-[0.05em] uppercase print:border-0 print:px-0">
+            <span aria-hidden="true" className="bg-terracotta h-2 w-2 rounded-full print:hidden" />
+            {NOM_DU_TOUR}
+          </p>
+          <h1 className="text-fg mt-4 font-serif text-[2rem] leading-tight font-medium tracking-tight text-balance sm:text-[2.5rem]">
             {TITRE_CG}
           </h1>
           <p className="text-fg-soft mt-3">
@@ -120,7 +124,7 @@ export default async function ConditionsGeneralesDuTour() {
 
         <div className="mt-8 lg:grid lg:grid-cols-[16rem_minmax(0,68ch)] lg:gap-12">
           {/* Sommaire : replié sur téléphone, colonne collante sur grand écran. */}
-          <details className="border-border rounded-xl border p-4 lg:hidden print:hidden">
+          <details className="border-border bg-paper rounded-xl border p-4 lg:hidden print:hidden">
             <summary className="text-fg min-h-11 cursor-pointer font-semibold">
               {LIBELLES_CG.sommaire}
             </summary>
@@ -159,7 +163,9 @@ export default async function ConditionsGeneralesDuTour() {
         </div>
       </main>
 
-      <footer className={`${CONTENEUR} text-fg-muted pt-6 pb-12 text-sm print:hidden`}>
+      <footer
+        className={`${CONTENEUR} border-border text-fg-muted border-t pt-8 pb-12 text-sm print:hidden`}
+      >
         <p className="text-fg font-semibold">{PIED.organise}</p>
         <p className="mt-3 flex flex-wrap gap-x-5">
           <a href={META.chemin} className={`${LIEN} inline-flex min-h-11 items-center`}>

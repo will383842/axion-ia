@@ -313,3 +313,29 @@ export function PictoTour({ nom, taille = 48 }: { nom: NomPictoTour; taille?: nu
     </svg>
   );
 }
+
+/**
+ * La vague qui ouvre ou ferme une section pleine couleur (1440 × 48, étirée en
+ * largeur). Sa couleur est `currentColor` : la section qu'elle annonce la donne
+ * (`text-terracotta`…). `retournee` : la vague du bas, tête en bas.
+ */
+export function Vague({ className = "", retournee = false }: PropsSvg & { retournee?: boolean }) {
+  return (
+    <svg
+      className={`${styles.vague} ${className}`}
+      width="1440"
+      height="48"
+      viewBox="0 0 1440 48"
+      preserveAspectRatio="none"
+      {...DECORATIF}
+    >
+      <path
+        d={
+          retournee
+            ? "M0 0h1440v14c-180 22-360 34-720 20S180 8 0 30z"
+            : "M0 48h1440V34c-180-22-360-34-720-20S180 40 0 18z"
+        }
+      />
+    </svg>
+  );
+}
