@@ -136,6 +136,14 @@ export const EXCLUSIONS_EXPORT_DOSSIER: ReadonlyArray<{
       "les fichiers joints à vos messages envoyés par le formulaire de contact (cahier des " +
       "charges, devis…) : copie, tels que reçus, sur demande à contact@axion-ia.com.",
   },
+  {
+    // Tour France IA (2026-10-27) : la mini-demande avant la visio, chiffrée à IV aléatoire.
+    modele: "TourDemande",
+    motif:
+      "vos demandes du Tour France IA (nom, e-mail, téléphone, ville, statut) sont rendues dans la " +
+      "partie « tourFranceIa » de cet export, lues par l'empreinte de votre adresse " +
+      "(`features/tour-de-france/rgpd.ts`, appelé par la même route).",
+  },
 ];
 
 /** Le texte de la notice, pour `notice.excludedTables` de l'export. */

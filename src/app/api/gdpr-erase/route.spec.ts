@@ -32,6 +32,9 @@ vi.mock("@/server/careers/candidature-rgpd", () => ({
 vi.mock("@/features/podcast-request/rgpd", () => ({
   effacerDemandesPodcastPour: async () => ({ supprimees: 0, tronque: false }),
 }));
+vi.mock("@/features/tour-de-france/rgpd", () => ({
+  anonymiserDemandesTour: async () => ({ anonymisees: 0 }),
+}));
 vi.mock("@/lib/prisma", () => ({
   prisma: { activityLog: { create: (...a: unknown[]) => journal.create(...a) } },
 }));

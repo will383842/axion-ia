@@ -291,7 +291,7 @@ export function finDeTelephone(tel: string | null | undefined): string | null {
 }
 
 /** Les fiches dont le téléphone (fiche ou personne) finit par les mêmes 9 chiffres. */
-async function fichesAuMemeTelephone(db: Tx, tel: string | null): Promise<string[]> {
+export async function fichesAuMemeTelephone(db: Tx, tel: string | null): Promise<string[]> {
   const fin = finDeTelephone(tel);
   if (fin === null) return [];
   const [fiches, personnes] = await Promise.all([

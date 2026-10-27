@@ -144,6 +144,14 @@ export function VueTour({
       </section>
 
       <p className="admin-meta mt-[var(--space-admin-6)]">
+        Les personnes qui ont rempli la mini-demande sans (encore) prendre rendez-vous sont dans{" "}
+        <Link href={`${base}/demandes`} className="admin-link">
+          Demandes du Tour France IA
+        </Link>
+        .
+      </p>
+
+      <p className="admin-meta mt-[var(--space-admin-6)]">
         Les rendez-vous se comptent comme dans « Ce que rapporte chaque rendez-vous » : un
         rendez-vous déplacé ne compte qu&apos;une fois, une annulation reste une annulation, un
         rendez-vous passé sans point fait reste « maintenu ». Les personnes, elles, sont dans{" "}

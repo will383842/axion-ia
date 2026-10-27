@@ -224,6 +224,15 @@ const INVENTAIRE: ReadonlyArray<{ modele: string; statut: Statut; note: string }
       "NI exemptée. Fallait en outre lui donner un `emailHash` : l'adresse est " +
       "chiffrée à IV aléatoire, la ligne était INTROUVABLE.",
   },
+  {
+    modele: "TourDemande",
+    statut: "traite",
+    note:
+      "ANONYMISÉE (jamais supprimée : ordre du propriétaire) par `anonymiserDemandesTour` — " +
+      "Tour France IA, 2026-10-27. Nom, e-mail et téléphone sont chiffrés à IV aléatoire : la " +
+      "ligne est retrouvée par `emailHash`, écrit à la création. Les clés de comptage par ville " +
+      "sont gardées pour que le compteur ne recule pas (décision D3 du plan).",
+  },
   // BookingOption : entrée RETIRÉE le 2026-08-26 — le modèle a disparu du
   // schéma avec le système Booking (table vide en dev et en prod, mesuré).
   // Le cliquet ci-dessous vérifie justement qu'aucun modèle inventorié ne
@@ -452,6 +461,8 @@ describe("aucune table portant une adresse n'échappe au RGPD en silence", () =>
       // empreinte + un balayage borne. Sans cette ligne, le cliquet refuserait
       // un `traite` EXACT -- il l'a deja fait une fois pour `Trainee`.
       "src/features/podcast-request/rgpd.ts",
+      // Tour France IA (2026-10-27) : même raison, adresse chiffrée + empreinte. Anonymisation.
+      "src/features/tour-de-france/rgpd.ts",
     ]
       .map((f) => readFileSync(join(process.cwd(), f), "utf8"))
       .join("\n");
