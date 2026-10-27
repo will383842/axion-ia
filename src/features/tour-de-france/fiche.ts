@@ -1,23 +1,28 @@
 /**
  * Tour France IA : une demande et la fiche prospect de la console (PR-2a).
  *
- * C'est le SEUL module de ce dossier qui touche une fiche `Client`. Règles, dans l'ordre :
+ * C'est le SEUL module de ce dossier qui touche une fiche `Client`. Règle de fer : une demande
+ * PUBLIQUE n'écrit JAMAIS sur une fiche existante. N'importe qui peut taper l'adresse d'un client
+ * dans le formulaire : si la demande remplissait la fiche toute seule, un inconnu pourrait y
+ * injecter un nom ou un numéro. Donc, dans l'ordre :
  *
- *   1. On cherche les fiches qui ressemblent à la personne par la PORTE UNIQUE
- *      (`src/server/qualiopi/crm/porte-client.ts` : même e-mail, même fin d'adresse professionnelle,
- *      même nom dans la même ville) et par le téléphone (les 9 derniers chiffres).
- *   2. Exactement UNE fiche, au signal « même e-mail », et aucune autre fiche proche : la fiche est
- *      SÛRE. On la COMPLÈTE, en n'écrivant que ce qui est vide (la ville ; la personne si elle
- *      manque ; le téléphone et le nom d'une personne qui n'en a pas), jamais le statut, la source,
- *      la raison sociale ni le SIREN, et on laisse une trace « Demande Tour France IA, ville X ».
- *   3. Un doute (même téléphone, même nom et même ville, même domaine, plusieurs fiches) : RIEN
- *      n'est écrit sur une fiche. La demande passe « à arbitrer », avec le lien vers chaque fiche
- *      proche, et l'équipe tranche.
- *   4. Aucune fiche : pas de création automatique (les quatre champs ne donnent pas l'entreprise,
- *      or une fiche exige une raison sociale). La demande reste « sans fiche » ; le bouton de la
- *      console « Créer la fiche prospect » passe par la porte unique, avec une raison sociale tapée
- *      par l'équipe.
+ *   1. À l'envoi (`rattacherDemande`) on CHERCHE les fiches qui ressemblent à la personne, par la
+ *      PORTE UNIQUE (`src/server/qualiopi/crm/porte-client.ts` : même e-mail, même fin d'adresse
+ *      professionnelle, même nom dans la même ville) et par le téléphone (les 9 derniers chiffres).
+ *      On n'ÉCRIT que sur la demande : « à arbitrer » avec la liste des fiches proches et le signal
+ *      de chacune (même e-mail, même téléphone…), ou « sans fiche ». Aucune fiche n'est touchée.
+ *   2. Un humain tranche dans la console. « Compléter la fiche » (`completerFicheDepuisDemande`) :
+ *      sur une fiche proche de la demande, il remplit seulement ce qui est VIDE (la ville du
+ *      référentiel ; la personne si elle manque ; le téléphone et le nom d'une personne qui n'en a
+ *      pas), jamais le statut, la source, la raison sociale ni le SIREN, et laisse une trace
+ *      « Demande Tour France IA, ville X ». La ville saisie en texte libre n'est JAMAIS écrite sur
+ *      une fiche : seulement le nom du référentiel des villes.
+ *   3. Aucune fiche : pas de création automatique (les quatre champs ne donnent pas l'entreprise,
+ *      or une fiche exige une raison sociale). Le bouton « Créer la fiche prospect »
+ *      (`creerFicheDepuisDemande`) passe par la porte unique, avec une raison sociale tapée par
+ *      l'équipe.
  *
+ * Une demande effacée à la demande de la personne ou écartée par l'équipe n'écrit rien nulle part.
  * Aucune fiche n'est supprimée ni fusionnée ici. Les colonnes `contact*` de la fiche ne sont
  * JAMAIS écrites directement (seule `definirContactFacturation` le fait) : une personne se
  * rattache par `ajouterPersonneAFiche`.
@@ -27,10 +32,9 @@
  * Axion Partners (`emettreFaitClient`) sont dans la même transaction.
  */
 
-import { dansLaTransaction } from "@/features/dossier-client/base";
+import { dansLaTransaction, type Tx } from "@/features/dossier-client/base";
 import { fichesAuMemeTelephone } from "@/features/dossier-client/fiche-auto";
 import { reessayerSiInterblocage } from "@/features/questionnaire-preaudit/interblocage";
-import { decryptPii } from "@/lib/pii-crypto";
 import { prisma } from "@/lib/prisma";
 import { chargeClientAvant, emettreFaitClient } from "@/server/partners-sync/producteurs/client";
 import { NOM_A_COMPLETER } from "@/server/qualiopi/crm/contact-facturation";
@@ -42,9 +46,21 @@ import {
   trouverFichesProches,
   type FicheProche,
 } from "@/server/qualiopi/crm/porte-client";
-import { versRattachement, type FicheProcheStockee, type Rattachement } from "./types";
+import { dechiffrerChamp } from "./chiffrement";
+import {
+  LONGUEUR_MAX_MOTIF,
+  MESSAGE_DEMANDE_ECARTEE,
+  MESSAGE_DEMANDE_EFFACEE,
+  MESSAGE_DEMANDE_INTROUVABLE,
+} from "./messages";
+import {
+  lireFichesProches,
+  versRattachement,
+  type FicheProcheStockee,
+  type Rattachement,
+} from "./types";
 
-/** Trace posée sur une fiche COMPLÉTÉE par une demande. */
+/** Trace posée sur une fiche COMPLÉTÉE à la main depuis une demande. */
 export const ACTION_DEMANDE_SUR_FICHE = "client.demande_tour_france_ia";
 
 /** Trace posée sur une fiche CRÉÉE depuis une demande. */
@@ -92,29 +108,27 @@ export function fusionnerProches(
 }
 
 export type DecisionRattachement =
-  | { readonly issue: "completer"; readonly ficheId: string }
   | { readonly issue: "arbitrer"; readonly proches: ReadonlyArray<FicheProcheStockee> }
   | { readonly issue: "aucune" };
 
 /**
- * Que faire de la demande ? Une seule fiche, reconnue à l'adresse e-mail et à rien d'autre : on la
- * complète. Toute autre ressemblance : on arbitre, sans rien écrire. Aucune : pas de fiche. PUR.
+ * Que faire de la demande ? Toute fiche proche, même reconnue à l'adresse e-mail et à rien d'autre :
+ * on arbitre, SANS rien écrire sur une fiche (la demande est publique, l'adresse peut être celle de
+ * quelqu'un d'autre). Aucune fiche proche : pas de fiche. PUR.
  */
 export function decider(proches: ReadonlyArray<FicheProcheStockee>): DecisionRattachement {
-  const [premiere, ...autres] = proches;
-  if (premiere === undefined) return { issue: "aucune" };
-  if (autres.length === 0 && premiere.signal === "email") {
-    return { issue: "completer", ficheId: premiere.ficheId };
-  }
-  return { issue: "arbitrer", proches };
+  return proches.length === 0 ? { issue: "aucune" } : { issue: "arbitrer", proches };
 }
 
-/** Les champs de la fiche que la demande peut remplir : seulement ce qui est VIDE. PUR. */
+/**
+ * Les champs de la fiche que la demande peut remplir : seulement ce qui est VIDE, et seulement avec
+ * le nom de la ville du RÉFÉRENTIEL (`villeNom`), jamais le texte libre tapé par la personne. PUR.
+ */
 export function champsACompleter(
   fiche: { readonly adresseVille: string | null },
-  ville: string | null,
+  villeNom: string | null,
 ): { adresseVille?: string } {
-  const propre = (ville ?? "").trim().slice(0, 120);
+  const propre = (villeNom ?? "").trim().slice(0, 120);
   const vide = fiche.adresseVille === null || fiche.adresseVille.trim() === "";
   return vide && propre !== "" ? { adresseVille: propre } : {};
 }
@@ -128,16 +142,19 @@ interface DemandeClaire {
   readonly nom: string;
   readonly email: string;
   readonly telephone: string;
-  /** Le nom du référentiel, sinon la ville telle que tapée. */
+  /** Le nom du référentiel, sinon la ville telle que tapée (pour comparer et pour la trace). */
   readonly ville: string;
+  /** Le nom du référentiel : la SEULE ville qui peut être écrite sur une fiche. */
   readonly villeNom: string | null;
+  readonly statut: string;
   readonly depuis: string | null;
   readonly utm: Readonly<Record<string, string>>;
   readonly rattachement: Rattachement;
   readonly clientId: string | null;
+  readonly fichesProches: ReadonlyArray<FicheProcheStockee>;
 }
 
-async function lireDemandeClaire(demandeId: string): Promise<DemandeClaire> {
+async function lireDemandeClaire(demandeId: string): Promise<DemandeClaire | null> {
   const d = await prisma.tourDemande.findUnique({
     where: { id: demandeId },
     select: {
@@ -147,6 +164,7 @@ async function lireDemandeClaire(demandeId: string): Promise<DemandeClaire> {
       telephone: true,
       villeSaisie: true,
       villeNom: true,
+      statut: true,
       depuis: true,
       utmSource: true,
       utmMedium: true,
@@ -154,9 +172,10 @@ async function lireDemandeClaire(demandeId: string): Promise<DemandeClaire> {
       utmContent: true,
       rattachement: true,
       clientId: true,
+      fichesProches: true,
     },
   });
-  if (d === null) throw new Error(`demande du Tour introuvable : ${demandeId}`);
+  if (d === null) return null;
   const utm: Record<string, string> = {};
   if (d.utmSource !== null) utm["source"] = d.utmSource;
   if (d.utmMedium !== null) utm["medium"] = d.utmMedium;
@@ -164,20 +183,33 @@ async function lireDemandeClaire(demandeId: string): Promise<DemandeClaire> {
   if (d.utmContent !== null) utm["content"] = d.utmContent;
   return {
     id: d.id,
-    nom: decryptPii(d.nom),
-    email: decryptPii(d.email),
-    telephone: decryptPii(d.telephone),
+    nom: dechiffrerChamp("nom", d.nom),
+    email: dechiffrerChamp("email", d.email),
+    telephone: dechiffrerChamp("telephone", d.telephone),
     ville: d.villeNom ?? d.villeSaisie,
     villeNom: d.villeNom,
+    statut: d.statut,
     depuis: d.depuis,
     utm,
     rattachement: versRattachement(d.rattachement),
     clientId: d.clientId,
+    fichesProches: lireFichesProches(d.fichesProches),
   };
 }
 
+/** Le verrou de la ligne de la demande, relue dans la transaction (statut et fiche à jour). */
+async function verrouillerDemande(
+  tx: Tx,
+  demandeId: string,
+): Promise<{ readonly statut: string; readonly clientId: string | null } | null> {
+  const lignes = await tx.$queryRaw<Array<{ statut: string; client_id: string | null }>>`
+    SELECT statut, client_id FROM tour_demandes WHERE id = ${demandeId}::uuid FOR UPDATE`;
+  const ligne = lignes[0];
+  return ligne === undefined ? null : { statut: ligne.statut, clientId: ligne.client_id };
+}
+
 // ─────────────────────────────────────────────────────────────────────────────
-// Rattacher une demande à une fiche (à l'envoi)
+// Chercher les fiches proches (à l'envoi) — n'écrit que sur la demande
 // ─────────────────────────────────────────────────────────────────────────────
 
 export interface ResultatRattachement {
@@ -196,13 +228,14 @@ async function fichesVivantes(ids: ReadonlyArray<string>): Promise<FicheAuMemeTe
 }
 
 /**
- * Cherche la fiche de la personne et agit selon `decider`. Voir l'en-tête. Idempotente : une
- * demande déjà rattachée est rendue telle quelle. Les recherches ne touchent à rien ; seule la
- * complétion d'une fiche SÛRE écrit, dans une transaction.
+ * Cherche les fiches proches de la personne et range la demande « à arbitrer » ou « sans fiche ».
+ * Voir l'en-tête : AUCUNE fiche n'est écrite. Idempotente : une demande déjà rangée est rendue
+ * telle quelle, de même qu'une demande effacée à la demande de la personne.
  */
 export async function rattacherDemande(demandeId: string): Promise<ResultatRattachement> {
   const d = await lireDemandeClaire(demandeId);
-  if (d.rattachement !== "a_verifier") {
+  if (d === null) throw new Error(`demande du Tour introuvable : ${demandeId}`);
+  if (d.rattachement !== "a_verifier" || d.statut === "effacee_rgpd") {
     return { rattachement: d.rattachement, clientId: d.clientId };
   }
 
@@ -215,82 +248,6 @@ export async function rattacherDemande(demandeId: string): Promise<ResultatRatta
   const liste = fusionnerProches(proches, await fichesVivantes(idsTelephone));
   const decision = decider(liste);
 
-  if (decision.issue === "completer") {
-    const ficheId = decision.ficheId;
-    const completee = await reessayerSiInterblocage(() =>
-      prisma.$transaction(async (tx) => {
-        // Verrou de la fiche AVANT toute lecture ou écriture (même ordre que la complétion du
-        // questionnaire : fiche, puis personnes) — deux gestes sur la même fiche passent l'un après l'autre.
-        await tx.$queryRaw`SELECT id FROM clients WHERE id = ${ficheId}::uuid FOR UPDATE`;
-        const fiche = await tx.client.findUnique({
-          where: { id: ficheId },
-          select: { adresseVille: true },
-        });
-        if (fiche === null) return false;
-
-        const data = champsACompleter(fiche, d.ville);
-        const champs = Object.keys(data);
-        const avant = await chargeClientAvant(tx, ficheId);
-        if (champs.length > 0) {
-          await tx.client.update({ where: { id: ficheId }, data });
-        }
-
-        // La personne : retrouvée par son adresse, sinon ajoutée à la fiche (jamais à la place d'une autre).
-        const personne = await ajouterPersonneAFiche(
-          dansLaTransaction(tx),
-          ficheId,
-          { nom: d.nom, email: d.email, telephone: d.telephone },
-          null,
-        );
-        if (!personne.cree) {
-          // Une personne déjà connue : on ne remplit que ce qui lui manque.
-          const connue = await tx.clientContact.findUnique({
-            where: { id: personne.contactId },
-            select: { nom: true, telephone: true },
-          });
-          const manque = {
-            ...(connue !== null && (connue.telephone ?? "").trim() === ""
-              ? { telephone: d.telephone }
-              : {}),
-            ...(connue !== null && connue.nom === NOM_A_COMPLETER ? { nom: d.nom } : {}),
-          };
-          if (Object.keys(manque).length > 0) {
-            await tx.clientContact.update({ where: { id: personne.contactId }, data: manque });
-          }
-        }
-
-        if (champs.length > 0) await emettreFaitClient(tx, ficheId, { avant });
-
-        await tx.activityLog.create({
-          data: {
-            adminUserId: null,
-            action: ACTION_DEMANDE_SUR_FICHE,
-            targetType: "Client",
-            targetId: ficheId,
-            changes: {
-              libelle: `Demande Tour France IA, ville ${d.ville}`,
-              demandeId: d.id,
-              ville: d.ville,
-              champs,
-              personneAjoutee: personne.cree,
-              depuis: d.depuis,
-              utm: d.utm,
-            },
-          },
-        });
-        await tx.tourDemande.update({
-          where: { id: d.id },
-          data: { rattachement: "fiche_completee", clientId: ficheId },
-        });
-        return true;
-      }),
-    );
-    if (completee) return { rattachement: "fiche_completee", clientId: ficheId };
-    // La fiche a disparu entre la recherche et le verrou : on traite la demande comme sans fiche.
-    await prisma.tourDemande.update({ where: { id: d.id }, data: { rattachement: "sans_fiche" } });
-    return { rattachement: "sans_fiche", clientId: null };
-  }
-
   if (decision.issue === "arbitrer") {
     await prisma.tourDemande.update({
       where: { id: d.id },
@@ -301,6 +258,118 @@ export async function rattacherDemande(demandeId: string): Promise<ResultatRatta
 
   await prisma.tourDemande.update({ where: { id: d.id }, data: { rattachement: "sans_fiche" } });
   return { rattachement: "sans_fiche", clientId: null };
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Compléter une fiche proche (bouton de la console)
+// ─────────────────────────────────────────────────────────────────────────────
+
+export type RaisonRefusCompletion =
+  | "introuvable"
+  | "efface"
+  | "ecartee"
+  | "fiche_non_proche"
+  | "fiche_disparue";
+
+export type ResultatCompletion =
+  | { readonly statut: "completee"; readonly clientId: string }
+  | { readonly statut: "deja_rattachee"; readonly clientId: string | null }
+  | { readonly statut: "refuse"; readonly raison: RaisonRefusCompletion };
+
+/**
+ * « Compléter la fiche » : à la demande d'un humain, sur UNE fiche proche de la demande (une fiche
+ * qui n'est pas dans la liste de la demande est refusée). Remplit seulement ce qui est vide, dans
+ * une transaction qui verrouille la demande puis la fiche. Voir l'en-tête.
+ */
+export async function completerFicheDepuisDemande(
+  demandeId: string,
+  ficheId: string,
+  acteurId: string | null,
+): Promise<ResultatCompletion> {
+  const d = await lireDemandeClaire(demandeId);
+  if (d === null) return { statut: "refuse", raison: "introuvable" };
+  if (d.statut === "effacee_rgpd") return { statut: "refuse", raison: "efface" };
+  if (d.statut === "ecartee") return { statut: "refuse", raison: "ecartee" };
+  if (d.clientId !== null) return { statut: "deja_rattachee", clientId: d.clientId };
+  if (!d.fichesProches.some((f) => f.ficheId === ficheId)) {
+    return { statut: "refuse", raison: "fiche_non_proche" };
+  }
+
+  return reessayerSiInterblocage(() =>
+    prisma.$transaction(async (tx): Promise<ResultatCompletion> => {
+      // Verrou de la demande, relue (statut et fiche à jour), PUIS de la fiche, avant toute lecture
+      // ou écriture (même ordre que la complétion du questionnaire : fiche, puis personnes).
+      const verrou = await verrouillerDemande(tx, d.id);
+      if (verrou === null) return { statut: "refuse", raison: "introuvable" };
+      if (verrou.statut === "effacee_rgpd") return { statut: "refuse", raison: "efface" };
+      if (verrou.statut === "ecartee") return { statut: "refuse", raison: "ecartee" };
+      if (verrou.clientId !== null) {
+        return { statut: "deja_rattachee", clientId: verrou.clientId };
+      }
+      await tx.$queryRaw`SELECT id FROM clients WHERE id = ${ficheId}::uuid FOR UPDATE`;
+      const fiche = await tx.client.findFirst({
+        where: { id: ficheId, fusionsAbsorbee: { none: { defaiteLe: null } } },
+        select: { adresseVille: true },
+      });
+      if (fiche === null) return { statut: "refuse", raison: "fiche_disparue" };
+
+      const data = champsACompleter(fiche, d.villeNom);
+      const champs = Object.keys(data);
+      const avant = await chargeClientAvant(tx, ficheId);
+      if (champs.length > 0) {
+        await tx.client.update({ where: { id: ficheId }, data });
+      }
+
+      // La personne : retrouvée par son adresse, sinon ajoutée à la fiche (jamais à la place d'une autre).
+      const personne = await ajouterPersonneAFiche(
+        dansLaTransaction(tx),
+        ficheId,
+        { nom: d.nom, email: d.email, telephone: d.telephone },
+        acteurId,
+      );
+      if (!personne.cree) {
+        // Une personne déjà connue : on ne remplit que ce qui lui manque.
+        const connue = await tx.clientContact.findUnique({
+          where: { id: personne.contactId },
+          select: { nom: true, telephone: true },
+        });
+        const manque = {
+          ...(connue !== null && (connue.telephone ?? "").trim() === ""
+            ? { telephone: d.telephone }
+            : {}),
+          ...(connue !== null && connue.nom === NOM_A_COMPLETER ? { nom: d.nom } : {}),
+        };
+        if (Object.keys(manque).length > 0) {
+          await tx.clientContact.update({ where: { id: personne.contactId }, data: manque });
+        }
+      }
+
+      if (champs.length > 0) await emettreFaitClient(tx, ficheId, { avant });
+
+      await tx.activityLog.create({
+        data: {
+          adminUserId: acteurId,
+          action: ACTION_DEMANDE_SUR_FICHE,
+          targetType: "Client",
+          targetId: ficheId,
+          changes: {
+            libelle: `Demande Tour France IA, ville ${d.ville}`,
+            demandeId: d.id,
+            ville: d.ville,
+            champs,
+            personneAjoutee: personne.cree,
+            depuis: d.depuis,
+            utm: d.utm,
+          },
+        },
+      });
+      await tx.tourDemande.update({
+        where: { id: d.id },
+        data: { rattachement: "fiche_completee", clientId: ficheId },
+      });
+      return { statut: "completee", clientId: ficheId };
+    }),
+  );
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -323,7 +392,9 @@ export type ResultatCreationFiche =
 /**
  * « Créer la fiche prospect » : par la PORTE UNIQUE (verrous, anti-doublon de SIREN et d'adresse),
  * source « Tour France IA », la personne de la demande comme contact. La demande passe « fiche
- * créée ». Rien n'est créé si la demande a déjà une fiche, ni si la porte refuse.
+ * créée ». Rien n'est créé si la demande a déjà une fiche, si elle a été effacée à la demande de la
+ * personne ou écartée, ni si la porte refuse. La ligne de la demande est verrouillée dans la
+ * transaction : deux clics simultanés ne créent pas deux fiches.
  */
 export async function creerFicheDepuisDemande(
   demandeId: string,
@@ -334,20 +405,35 @@ export async function creerFicheDepuisDemande(
   if (raisonSociale === "") {
     return { statut: "refuse", message: "Donnez un nom à la fiche." };
   }
+  const motif = (entree.motif ?? "").trim().slice(0, LONGUEUR_MAX_MOTIF);
   const d = await lireDemandeClaire(demandeId);
+  if (d === null) return { statut: "refuse", message: MESSAGE_DEMANDE_INTROUVABLE };
+  if (d.statut === "effacee_rgpd") return { statut: "refuse", message: MESSAGE_DEMANDE_EFFACEE };
+  if (d.statut === "ecartee") return { statut: "refuse", message: MESSAGE_DEMANDE_ECARTEE };
   if (d.clientId !== null) return { statut: "deja_rattachee", clientId: d.clientId };
 
   return prisma.$transaction(async (tx): Promise<ResultatCreationFiche> => {
+    const verrou = await verrouillerDemande(tx, d.id);
+    if (verrou === null) return { statut: "refuse", message: MESSAGE_DEMANDE_INTROUVABLE };
+    if (verrou.statut === "effacee_rgpd") {
+      return { statut: "refuse", message: MESSAGE_DEMANDE_EFFACEE };
+    }
+    if (verrou.statut === "ecartee") {
+      return { statut: "refuse", message: MESSAGE_DEMANDE_ECARTEE };
+    }
+    if (verrou.clientId !== null) return { statut: "deja_rattachee", clientId: verrou.clientId };
+
     const r = await creerOuRetrouverClient(
       dansLaTransaction(tx),
       {
         type: entree.type,
         raisonSociale,
-        adresseVille: d.ville.slice(0, 120),
+        // Seulement le nom du référentiel des villes, jamais le texte libre de la personne.
+        ...(d.villeNom !== null ? { adresseVille: d.villeNom.slice(0, 120) } : {}),
         source: SOURCE_FICHE_TOUR,
       },
       { nom: d.nom, email: d.email, telephone: d.telephone },
-      { parAdminId: acteurId, motifCreationForcee: entree.motif ?? null },
+      { parAdminId: acteurId, motifCreationForcee: motif === "" ? null : motif },
     );
     if (r.statut !== "cree") return { statut: "refuse", message: r.message };
 

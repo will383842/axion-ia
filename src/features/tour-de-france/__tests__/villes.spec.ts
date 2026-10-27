@@ -24,7 +24,8 @@ describe("villes : la clé de comptage", () => {
 
   it("une ville ambiguë (Saint-Denis) n'a pas de nom : elle ne s'affichera jamais", () => {
     const v = resoudreVille("Saint-Denis");
-    expect(v?.cle).toBe("?saint-denis");
+    // Hors référentiel ou ambiguë : la clé garde le texte normalisé (mots séparés par une espace).
+    expect(v?.cle).toBe("?saint denis");
     expect(v?.nom).toBeNull();
   });
 

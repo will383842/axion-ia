@@ -138,11 +138,12 @@ export const EXCLUSIONS_EXPORT_DOSSIER: ReadonlyArray<{
   },
   {
     // Tour France IA (2026-10-27) : la mini-demande avant la visio, chiffrée à IV aléatoire.
+    // Elle est exportée, mais PAS dans la partie « dossier client » : par une lecture à part.
     modele: "TourDemande",
     motif:
-      "vos demandes du Tour France IA (nom, e-mail, téléphone, ville, statut) sont rendues dans la " +
-      "partie « tourFranceIa » de cet export, lues par l'empreinte de votre adresse " +
-      "(`features/tour-de-france/rgpd.ts`, appelé par la même route).",
+      "ces demandes ne sont pas dans la partie « dossier client » : vos demandes du Tour France " +
+      "IA (nom, e-mail, téléphone, ville, statut) sont rendues à part, dans la partie " +
+      "« tourFranceIa » de cet export, retrouvées par l'empreinte de votre adresse.",
   },
 ];
 

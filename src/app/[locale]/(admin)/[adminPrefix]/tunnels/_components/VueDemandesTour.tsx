@@ -16,6 +16,7 @@ import {
   type AdminTableColumn,
 } from "@/components/admin/ui";
 import {
+  completerFiche,
   creerFicheProspect,
   ecarter,
   marquerRelancee,
@@ -73,7 +74,9 @@ function Actions({ d }: { d: DemandeConsole }): React.ReactElement {
     return <span className="admin-meta">Aucun geste possible</span>;
   }
   const peutCreerLaFiche =
-    d.clientId === null && (d.rattachement === "sans_fiche" || d.rattachement === "a_arbitrer");
+    d.clientId === null &&
+    d.statut !== "ecartee" &&
+    (d.rattachement === "sans_fiche" || d.rattachement === "a_arbitrer");
   return (
     <div className="flex flex-col gap-[var(--space-admin-2)]">
       <div className="flex flex-wrap gap-[var(--space-admin-2)]">
@@ -140,6 +143,12 @@ function CelluleFiche({
   adminPrefix: string;
 }): React.ReactElement {
   const fiche = (id: string): string => `/fr/${adminPrefix}/qualiopi/clients/${id}`;
+  // Une demande publique n'écrit jamais seule sur une fiche : l'équipe complète, à la main.
+  const peutCompleter =
+    d.clientId === null &&
+    d.rattachement === "a_arbitrer" &&
+    d.statut !== "ecartee" &&
+    d.statut !== "effacee_rgpd";
   return (
     <div className="flex flex-col gap-[var(--space-admin-1)]">
       <span>{LIBELLE_RATTACHEMENT[d.rattachement]}</span>
@@ -156,9 +165,23 @@ function CelluleFiche({
                 {f.numero} · {f.raisonSociale}
               </Link>{" "}
               ({LIBELLE_SIGNAL[f.signal]})
+              {peutCompleter ? (
+                <form action={completerFiche}>
+                  <input type="hidden" name="id" value={d.id} />
+                  <input type="hidden" name="ficheId" value={f.ficheId} />
+                  <button type="submit" className="admin-button-ghost">
+                    Compléter la fiche
+                  </button>
+                </form>
+              ) : null}
             </li>
           ))}
         </ul>
+      ) : null}
+      {peutCompleter && d.fichesProches.length > 0 ? (
+        <span className="admin-meta">
+          « Compléter la fiche » ne remplit que ce qui est vide, à votre demande.
+        </span>
       ) : null}
     </div>
   );

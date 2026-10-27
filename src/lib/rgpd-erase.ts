@@ -1800,12 +1800,14 @@ export const EXCEPTIONS_EFFACEMENT_DOSSIER: ReadonlyArray<{
       "par la cascade du dossier ET par l'empreinte de l'adresse.",
   },
   {
-    // Tour France IA (2026-10-27) : ANONYMISÉE (jamais supprimée) par `anonymiserDemandesTour`.
+    // Tour France IA (2026-10-27) : VIDÉE (jamais supprimée) par `anonymiserDemandesTour`.
     modele: "TourDemande",
     motif:
-      "anonymisée, non supprimée, par `anonymiserDemandesTour` (`features/tour-de-france/rgpd.ts`, " +
-      "appelé par la route d'effacement) : nom, e-mail et téléphone remplacés, empreintes " +
-      "retirées ; les clés de comptage par ville sont gardées pour que le compteur ne recule pas.",
+      "vidée, non supprimée, par `anonymiserDemandesTour` (`features/tour-de-france/rgpd.ts`, " +
+      "appelé par la route d'effacement) : nom, e-mail, téléphone, ville tapée, provenance et " +
+      "repères de campagne remplacés ou retirés, empreintes retirées, clés de comptage remplacées " +
+      "par une valeur opaque propre à la ligne ; la ligne et son drapeau « compte » restent pour " +
+      "que le compteur d'une ville ne recule pas.",
   },
 ];
 

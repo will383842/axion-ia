@@ -24,6 +24,7 @@ vi.mock("@/features/tour-de-france/statuts", () => ({
   ecarter: vi.fn(),
   remettreRecue: vi.fn(),
   creerFicheProspect: vi.fn(),
+  completerFiche: vi.fn(),
 }));
 vi.mock("@/features/admin-calendly/acces", () => ({
   gardeLectureAppels: async () => d.garde,
@@ -159,6 +160,46 @@ describe("vue : les demandes", () => {
     expect(html).toContain("même nom dans la même ville");
   });
 
+  it("propose « Compléter la fiche » sur chaque fiche proche d'une demande à arbitrer", () => {
+    const proches = [
+      { ficheId: "f1", numero: "C-12", raisonSociale: "Société Exemple", signal: "email" },
+      { ficheId: "f2", numero: "C-13", raisonSociale: "Autre Société", signal: "telephone" },
+    ] as const;
+    const html = rendre({
+      liste: {
+        demandes: [demande("z", { rattachement: "a_arbitrer", fichesProches: proches })],
+        tronquee: false,
+        rapprochementIndisponible: false,
+      },
+    });
+    expect(html.match(/Compléter la fiche/g)).toHaveLength(3);
+    expect(html).toContain('name="ficheId" value="f1"');
+    expect(html).toContain('name="ficheId" value="f2"');
+    expect(html).toContain("ne remplit que ce qui est vide");
+  });
+
+  it("pas de « Compléter la fiche » pour une demande écartée, effacée ou déjà rattachée", () => {
+    const proches = [
+      { ficheId: "f1", numero: "C-12", raisonSociale: "Société Exemple", signal: "email" },
+    ] as const;
+    for (const extra of [
+      { statut: "ecartee" },
+      { statut: "effacee_rgpd" },
+      { clientId: "f9" },
+    ] as const) {
+      const html = rendre({
+        liste: {
+          demandes: [
+            demande("z", { rattachement: "a_arbitrer", fichesProches: proches, ...extra }),
+          ],
+          tronquee: false,
+          rapprochementIndisponible: false,
+        },
+      });
+      expect(html, JSON.stringify(extra)).not.toContain("Compléter la fiche");
+    }
+  });
+
   it("aucun mot interdit de la landing dans les textes de la console", () => {
     const html = rendre().toLowerCase();
     for (const mot of [
@@ -186,6 +227,31 @@ describe("page : la garde passe avant toute lecture", () => {
     expect(html).toContain("Rôle insuffisant pour ces demandes.");
     expect(d.lireDemandesConsole).not.toHaveBeenCalled();
     expect(d.compteurParVille).not.toHaveBeenCalled();
+  });
+
+  it("affiche le message d'un code connu, et RIEN pour un texte forgé dans l'adresse", async () => {
+    d.garde = { autorise: true, role: "ADMIN" };
+    const connu = renderToStaticMarkup(
+      await Page({
+        params: Promise.resolve({ adminPrefix: "adm" }),
+        searchParams: Promise.resolve({ ok: "ecartee", erreur: "demande_inconnue" }),
+      }),
+    );
+    expect(connu).toContain("Demande écartée.");
+    expect(connu).toContain("Demande inconnue.");
+    const forge = renderToStaticMarkup(
+      await Page({
+        params: Promise.resolve({ adminPrefix: "adm" }),
+        searchParams: Promise.resolve({
+          ok: "Votre compte est suspendu, appelez le 0102030405",
+          erreur: "<b>texte choisi par un tiers</b>",
+        }),
+      }),
+    );
+    expect(forge).not.toContain("suspendu");
+    expect(forge).not.toContain("texte choisi par un tiers");
+    expect(forge).not.toContain('role="alert"');
+    expect(forge).not.toContain('role="status"');
   });
 
   it("avec droit : lit les demandes avec le filtre de l'adresse", async () => {

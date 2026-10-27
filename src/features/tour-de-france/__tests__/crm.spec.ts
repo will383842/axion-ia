@@ -18,7 +18,9 @@ const demande = {
   utmContent: null,
 };
 
-beforeEach(() => sync.mockClear());
+beforeEach(() => {
+  sync.mockClear();
+});
 
 describe("envoi de la demande au CRM Pro", () => {
   it("passe par la synchro existante : formulaire « autre », source tour-france-ia", async () => {
@@ -28,11 +30,15 @@ describe("envoi de la demande au CRM Pro", () => {
     expect(arg["formType"]).toBe("autre");
     expect(arg["sourceSlug"]).toBe("tour-france-ia");
     expect(SOURCE_CRM_TOUR).toBe("tour-france-ia");
-    expect(arg["person"]).toEqual({
-      email: "alice@societe-exemple.fr",
-      fullName: "Alice Martin",
-      phone: "0612345678",
-    });
+  });
+
+  it("seule l'adresse part sous la clé de la personne : ni nom, ni téléphone, ni entreprise", async () => {
+    await envoyerAuCrm(demande);
+    const arg = (sync.mock.calls[0] as unknown as [Record<string, unknown>])[0];
+    // Un visiteur peut taper l'adresse d'un client : son nom et son numéro ne doivent pas pouvoir
+    // écraser ceux d'une personne déjà connue du CRM.
+    expect(arg["person"]).toEqual({ email: "alice@societe-exemple.fr" });
+    expect(arg).not.toHaveProperty("company");
   });
 
   it("ne pose ni consentement ni étiquette (la base légale est la demande de la personne)", async () => {
@@ -51,12 +57,14 @@ describe("envoi de la demande au CRM Pro", () => {
     expect(a).toBe(b);
   });
 
-  it("la charge porte la ville et les repères de campagne présents, rien d'autre", async () => {
+  it("la charge porte la ville, le nom et le téléphone TAPÉS, et les repères de campagne présents", async () => {
     await envoyerAuCrm(demande);
     const arg = (sync.mock.calls[0] as unknown as [{ payload: Record<string, unknown> }])[0];
     expect(arg.payload).toEqual({
       circuit: "tour_france_ia",
       ville: "Lyon",
+      nom_saisi: "Alice Martin",
+      telephone_saisi: "0612345678",
       depuis: "linkedin",
       utm_source: "linkedin",
       utm_campaign: "tour",

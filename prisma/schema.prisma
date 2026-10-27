@@ -17778,11 +17778,16 @@ model SiteVideoReception {
 ///
 /// · `nom`, `email`, `telephone` sont CHIFFRÉS (`encryptPii`, IV aléatoire) : on les retrouve par
 ///   `emailHash` (jamais par `where: { email }`). Le détail du droit d'accès et d'effacement est
-///   dans `src/features/tour-de-france/rgpd.ts` (l'effacement ANONYMISE, il ne supprime rien).
+///   dans `src/features/tour-de-france/rgpd.ts` (l'effacement VIDE la ligne, il ne la supprime pas :
+///   coordonnées remplacées, clés de comptage rendues opaques, la ligne et `compte` restent).
+/// · Le téléphone n'est stocké sous AUCUNE autre forme que le chiffré : ni fin de numéro, ni empreinte
+///   lisible (la colonne `telephone_fin` n'existe pas). Seule sa clé de comptage, un HMAC, en dérive.
 /// · AUCUNE suppression de ligne dans le code (garde `statuts.spec.ts`) : on change un statut.
 /// · Les trois clés de comptage (`cleComptage*`) sont UNIQUES et posées seulement quand la
 ///   demande compte pour sa ville ; une clé déjà prise donne une demande « doublon » (`compte`
-///   faux, clés nulles). Le compteur public ne compte que les lignes `compte = true`.
+///   faux, clés nulles). Chaque clé est `villeCle:HMAC` (clé dérivée de `PII_ENCRYPTION_KEY`,
+///   un libellé de domaine par type de clé) : rien de lisible. Une demande écartée par l'équipe
+///   perd ses clés et son `compte`. Le compteur public ne compte que les lignes `compte = true`.
 /// · Le statut « rendez-vous pris » n'est jamais stocké : il est calculé à la lecture, par
 ///   l'empreinte de l'e-mail du rendez-vous Calendly (aucune colonne sur `calendly_events`).
 /// · Statuts en VARCHAR (comme les tables voisines) : aucune énumération Postgres, la migration
@@ -17797,9 +17802,7 @@ model TourDemande {
   telephone              String    @db.Text
   /// `hashEmailForLookup(email)` : clé du rendez-vous, de la fiche, du CRM et du RGPD. Nulle après effacement.
   emailHash              String?   @map("email_hash") @db.VarChar(64)
-  /// Les 9 derniers chiffres du téléphone, ou nul s'il est illisible.
-  telephoneFin           String?   @map("telephone_fin") @db.VarChar(9)
-  /// La ville telle que tapée.
+  /// La ville telle que tapée (texte libre : jamais écrite sur une fiche ; « [effacé] » après un effacement).
   villeSaisie            String    @map("ville_saisie") @db.VarChar(80)
   /// Clé du référentiel des villes, ou `?<texte normalisé>` hors référentiel ou ambiguë.
   villeCle               String    @map("ville_cle") @db.VarChar(100)
@@ -17811,12 +17814,12 @@ model TourDemande {
   statutChangeParId      String?   @map("statut_change_par_id") @db.Uuid
   /// Vrai si la demande compte pour sa ville (aucune clé de comptage n'était déjà prise).
   compte                 Boolean   @default(false)
-  /// `villeCle:emailHash` — une personne ne compte qu'une fois par ville.
+  /// `villeCle:HMAC(adresse canonique)` — une personne ne compte qu'une fois par ville. `efface:<id>:p` après un effacement.
   cleComptagePersonne    String?   @unique(map: "tour_demandes_cle_comptage_personne_key") @map("cle_comptage_personne") @db.VarChar(170)
-  /// `villeCle:domaine` — domaine PROFESSIONNEL seulement, jamais un webmail.
-  cleComptageDomaine     String?   @unique(map: "tour_demandes_cle_comptage_domaine_key") @map("cle_comptage_domaine") @db.VarChar(360)
-  /// `villeCle:telephoneFin`.
-  cleComptageTelephone   String?   @unique(map: "tour_demandes_cle_comptage_telephone_key") @map("cle_comptage_telephone") @db.VarChar(120)
+  /// `villeCle:HMAC(domaine)` — domaine PROFESSIONNEL seulement, jamais un webmail. `efface:<id>:d` après un effacement.
+  cleComptageDomaine     String?   @unique(map: "tour_demandes_cle_comptage_domaine_key") @map("cle_comptage_domaine") @db.VarChar(170)
+  /// `villeCle:HMAC(9 derniers chiffres)`. `efface:<id>:t` après un effacement.
+  cleComptageTelephone   String?   @unique(map: "tour_demandes_cle_comptage_telephone_key") @map("cle_comptage_telephone") @db.VarChar(170)
   /// La demande qui tenait déjà la clé, pour un doublon.
   doublonDeId            String?   @map("doublon_de_id") @db.Uuid
   /// a_verifier | fiche_completee | a_arbitrer | sans_fiche | fiche_creee

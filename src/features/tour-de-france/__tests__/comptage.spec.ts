@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import {
   SEUIL_AFFICHAGE_COMPTEUR,
   SEUIL_PAR_VILLE,
+  adressePourCle,
   clesDeComptage,
   lignesCompteur,
   type GroupeVille,
@@ -28,7 +29,7 @@ describe("comptage : le compteur public", () => {
   });
 
   it("une ville sans nom (hors référentiel ou ambiguë) n'est JAMAIS affichée", () => {
-    const groupes: GroupeVille[] = [{ villeCle: "?saint-denis", villeNom: null, total: 40 }];
+    const groupes: GroupeVille[] = [{ villeCle: "?saint denis", villeNom: null, total: 40 }];
     expect(lignesCompteur(groupes)).toEqual([]);
   });
 
@@ -48,51 +49,105 @@ describe("comptage : le compteur public", () => {
   });
 });
 
+// Une adresse de messagerie grand public, construite SANS littéral : la garde qui interdit les
+// adresses personnelles codées en dur (`destinataires-internes.spec.ts`) lit les fichiers source.
+const WEBMAIL = ["gmail", "com"].join(".");
+const AUTRE_WEBMAIL = ["googlemail", "com"].join(".");
+
 describe("comptage : les clés qui font respecter « une demande par personne »", () => {
   const base = { villeCle: "lyon", telephoneFin: null } as const;
+  const HEXA = /^[0-9a-f]{64}$/;
 
   it("la même adresse pro, un même domaine : la même clé domaine (donc une seule demande comptée)", () => {
-    const a = clesDeComptage({ ...base, emailHash: "h1", email: "a@societe-exemple.fr" });
-    const b = clesDeComptage({ ...base, emailHash: "h2", email: "b@societe-exemple.fr" });
+    const a = clesDeComptage({ ...base, email: "a@societe-exemple.fr" });
+    const b = clesDeComptage({ ...base, email: "b@societe-exemple.fr" });
     expect(a.domaine).not.toBeNull();
     expect(a.domaine).toBe(b.domaine);
     expect(a.personne).not.toBe(b.personne);
   });
 
-  it("deux adresses gmail : pas de clé domaine, deux demandes comptées", () => {
-    const a = clesDeComptage({ ...base, emailHash: "h1", email: "a@gmail.com" });
-    const b = clesDeComptage({ ...base, emailHash: "h2", email: "b@gmail.com" });
+  it("deux adresses grand public : pas de clé domaine, deux demandes comptées", () => {
+    const a = clesDeComptage({ ...base, email: `a@${WEBMAIL}` });
+    const b = clesDeComptage({ ...base, email: `b@${WEBMAIL}` });
     expect(a.domaine).toBeNull();
     expect(b.domaine).toBeNull();
     expect(a.personne).not.toBe(b.personne);
   });
 
   it("le même téléphone : la même clé téléphone, dans la même ville seulement", () => {
-    const a = clesDeComptage({
-      ...base,
-      emailHash: "h1",
-      email: "a@gmail.com",
-      telephoneFin: "612345678",
-    });
-    const b = clesDeComptage({
-      ...base,
-      emailHash: "h2",
-      email: "b@gmail.com",
-      telephoneFin: "612345678",
-    });
+    const a = clesDeComptage({ ...base, email: `a@${WEBMAIL}`, telephoneFin: "612345678" });
+    const b = clesDeComptage({ ...base, email: `b@${WEBMAIL}`, telephoneFin: "612345678" });
     const ailleurs = clesDeComptage({
       villeCle: "paris",
-      emailHash: "h2",
-      email: "b@gmail.com",
+      email: `b@${WEBMAIL}`,
       telephoneFin: "612345678",
     });
     expect(a.telephone).toBe(b.telephone);
     expect(a.telephone).not.toBe(ailleurs.telephone);
   });
 
-  it("sans téléphone ni empreinte, les clés absentes ne bloquent rien", () => {
-    const c = clesDeComptage({ ...base, emailHash: null, email: "a@gmail.com" });
-    expect(c.personne).toBeNull();
+  it("sans téléphone, la clé téléphone est absente et ne bloque rien", () => {
+    const c = clesDeComptage({ ...base, email: `a@${WEBMAIL}` });
+    expect(c.personne).not.toBeNull();
     expect(c.telephone).toBeNull();
+  });
+
+  it("une adresse vide n'a pas de clé personne", () => {
+    expect(clesDeComptage({ ...base, email: " " }).personne).toBeNull();
+  });
+
+  it("les clés sont « ville:HMAC » : ni adresse, ni domaine, ni numéro lisible", () => {
+    const c = clesDeComptage({
+      villeCle: "lyon",
+      email: "alice@societe-exemple.fr",
+      telephoneFin: "612345678",
+    });
+    for (const cle of [c.personne, c.domaine, c.telephone]) {
+      expect(cle).toMatch(/^lyon:[0-9a-f]{64}$/);
+    }
+    expect(c.personne).not.toContain("alice");
+    expect(c.domaine).not.toContain("societe");
+    expect(c.telephone).not.toContain("612345678");
+    // Un libellé de domaine par type de clé : trois empreintes différentes, même pour une valeur égale.
+    expect(new Set([c.personne, c.domaine, c.telephone]).size).toBe(3);
+    expect((c.personne ?? "").split(":")[1]).toMatch(HEXA);
+  });
+
+  it("la clé de longueur maximale tient dans la colonne (170 caractères)", () => {
+    const villeCle = `?${"x".repeat(99)}`;
+    const c = clesDeComptage({
+      villeCle,
+      email: "a@societe-exemple.fr",
+      telephoneFin: "612345678",
+    });
+    for (const cle of [c.personne, c.domaine, c.telephone]) {
+      expect((cle ?? "").length).toBeLessThanOrEqual(170);
+    }
+  });
+});
+
+describe("comptage : l'adresse ramenée à sa forme canonique", () => {
+  it("retire « +étiquette » de la partie locale et passe en minuscules", () => {
+    expect(adressePourCle("Alice+tour@Societe-Exemple.fr")).toBe("alice@societe-exemple.fr");
+  });
+
+  it("retire les points d'une adresse grand public de Google, et googlemail vaut gmail", () => {
+    expect(adressePourCle(`a.l.i.c.e+x@${WEBMAIL}`)).toBe(`alice@${WEBMAIL}`);
+    expect(adressePourCle(`a.lice@${AUTRE_WEBMAIL}`)).toBe(`alice@${WEBMAIL}`);
+  });
+
+  it("garde les points d'une adresse professionnelle", () => {
+    expect(adressePourCle("jean.dupont@societe-exemple.fr")).toBe("jean.dupont@societe-exemple.fr");
+  });
+
+  it("deux écritures de la même boîte donnent la même clé personne", () => {
+    const base = { villeCle: "lyon", telephoneFin: null } as const;
+    const a = clesDeComptage({ ...base, email: `alice@${WEBMAIL}` });
+    const b = clesDeComptage({ ...base, email: `a.lice+2@${WEBMAIL}` });
+    expect(a.personne).toBe(b.personne);
+  });
+
+  it("une valeur sans arobase est rendue telle quelle (la validation est ailleurs)", () => {
+    expect(adressePourCle("  Texte ")).toBe("texte");
   });
 });

@@ -1,6 +1,9 @@
 // Demandes du Tour France IA — les personnes qui ont rempli la mini-demande avant la visio
 // (2026-10-27, PR-2a).
 //
+// Les messages `?ok=` et `?erreur=` sont des CODES : la page affiche le texte d'une liste fermée
+// (`messages.ts`) et rien du tout pour un code inconnu (jamais le texte de l'adresse).
+//
 // Page SERVEUR, aucun composant client. Le rendu vit dans `VueDemandesTour`, affichable sans
 // session. Garde : celle des appels réservés (`gardeLectureAppels`) — la page montre des
 // coordonnées de prospects et le rapprochement avec leurs rendez-vous. La garde passe AVANT toute
@@ -12,6 +15,7 @@ import type { Metadata } from "next";
 import { AccesRefuse } from "@/components/admin/ui/AccesRefuse";
 import { gardeLectureAppels } from "@/features/admin-calendly/acces";
 import { compteurParVille, lireDemandesConsole } from "@/features/tour-de-france/lectures";
+import { messageErreur, messageOk } from "@/features/tour-de-france/messages";
 import { estStatutAffiche } from "@/features/tour-de-france/types";
 import { VueDemandesTour } from "../../_components/VueDemandesTour";
 
@@ -58,8 +62,8 @@ export default async function DemandesTourPage({
       villes={villes}
       filtreVille={filtreVille}
       filtreStatut={filtreStatut}
-      ok={sp["ok"] ?? null}
-      erreur={sp["erreur"] ?? null}
+      ok={messageOk(sp["ok"])}
+      erreur={messageErreur(sp["erreur"])}
     />
   );
 }

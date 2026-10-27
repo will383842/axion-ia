@@ -74,4 +74,18 @@ describe("migration tour_demandes : additive", () => {
     const uniques = [...sql.matchAll(/CREATE UNIQUE INDEX/gi)];
     expect(uniques).toHaveLength(3);
   });
+
+  it("ne garde le téléphone sous aucune autre forme que le chiffré (pas de fin de numéro)", () => {
+    expect(sql).not.toMatch(/telephone_fin/i);
+  });
+
+  it("les trois clés de comptage (des HMAC `ville:empreinte`) tiennent en 170 caractères", () => {
+    for (const colonne of [
+      "cle_comptage_personne",
+      "cle_comptage_domaine",
+      "cle_comptage_telephone",
+    ]) {
+      expect(sql, colonne).toMatch(new RegExp(`"${colonne}"\\s+VARCHAR\\(170\\)`));
+    }
+  });
 });

@@ -1,5 +1,7 @@
 -- Tour France IA (2026-10-27), PR-2a : le registre des demandes faites AVANT le rendez-vous en visio
--- (e-mail, ville, nom, téléphone). Nom, e-mail et téléphone y sont CHIFFRÉS par l'application.
+-- (e-mail, ville, nom, téléphone). Nom, e-mail et téléphone y sont CHIFFRÉS par l'application ;
+-- le téléphone n'est gardé sous AUCUNE autre forme (pas de colonne « fin de numéro »). Les trois clés
+-- de comptage sont des HMAC (`ville:empreinte`, 170 caractères au plus), jamais une valeur lisible.
 -- ADDITIVE : une table neuve, aucune table existante modifiée (la clé étrangère vers `clients` ne
 -- touche aucune colonne de `clients`), aucune ligne existante touchée, aucune énumération Postgres
 -- (statuts en VARCHAR), aucune forme de job BullMQ : le worker ne lit pas cette table. Les deux
@@ -18,7 +20,6 @@ CREATE TABLE IF NOT EXISTS "tour_demandes" (
     "email" TEXT NOT NULL,
     "telephone" TEXT NOT NULL,
     "email_hash" VARCHAR(64),
-    "telephone_fin" VARCHAR(9),
     "ville_saisie" VARCHAR(80) NOT NULL,
     "ville_cle" VARCHAR(100) NOT NULL,
     "ville_nom" VARCHAR(100),
@@ -27,8 +28,8 @@ CREATE TABLE IF NOT EXISTS "tour_demandes" (
     "statut_change_par_id" UUID,
     "compte" BOOLEAN NOT NULL DEFAULT false,
     "cle_comptage_personne" VARCHAR(170),
-    "cle_comptage_domaine" VARCHAR(360),
-    "cle_comptage_telephone" VARCHAR(120),
+    "cle_comptage_domaine" VARCHAR(170),
+    "cle_comptage_telephone" VARCHAR(170),
     "doublon_de_id" UUID,
     "rattachement" VARCHAR(20) NOT NULL DEFAULT 'a_verifier',
     "client_id" UUID,

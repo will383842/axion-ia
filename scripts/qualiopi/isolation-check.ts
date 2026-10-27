@@ -720,6 +720,14 @@ const CONSOMMATEURS_ASSUMES: ReadonlySet<string> = new Set([
   //    vraie porte. Aucune seconde porte, aucune table nouvelle.
   "src/features/dossier-client/fiche-auto.ts",
   "src/features/dossier-client/__tests__/la-fiche-prospect-se-cree-toute-seule-au-rendez-vous-calendly.spec.ts",
+  // ── Demandes du Tour France IA (2026-10-27, PR-2a) : deux arêtes, nommées seules.
+  //    · `fiche.ts` : porte unique des fiches (`crm/porte-client.ts`: recherche des fiches proches,
+  //      création, ajout d'une personne) et `NOM_A_COMPLETER` (`crm/contact-facturation.ts`) — aucune
+  //      seconde porte, aucune table nouvelle ; une demande publique n'y écrit jamais seule.
+  //    · `villes.ts` : `normaliserVille` (`crm/normaliser-nom.ts`), fonction PURE, la même
+  //      normalisation que l'anti-doublon des fiches.
+  "src/features/tour-de-france/fiche.ts",
+  "src/features/tour-de-france/villes.ts",
   // ── Fiche complétée depuis la réponse du dirigeant au questionnaire (2026-10-25) :
   //    champs VIDES seulement ; le SIREN n'est JAMAIS posé (proposé à Will, qui le pose
   //    d'un clic par la porte unique), la personne passe par `ajouterPersonneAFiche`.

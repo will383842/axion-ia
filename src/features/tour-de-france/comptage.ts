@@ -2,19 +2,30 @@
  * Tour France IA : compter les demandes par ville, sans doublon (PR-2a).
  *
  * « 5 demandes ouvrent une ville » : le compteur doit être HONNÊTE. Une demande ne compte pas si :
- *   · la même personne a déjà demandé pour cette ville (clé `ville:empreinte de l'e-mail`) ;
- *   · une autre personne de la même entreprise a déjà demandé (clé `ville:domaine`, domaine
- *     PROFESSIONNEL seulement : deux adresses gmail sont deux personnes) ;
- *   · le même téléphone a déjà demandé (clé `ville:9 derniers chiffres`).
+ *   · la même personne a déjà demandé pour cette ville (clé `ville:empreinte de l'adresse`) ;
+ *   · une autre personne de la même entreprise a déjà demandé (clé `ville:empreinte du domaine`,
+ *     domaine PROFESSIONNEL seulement : deux adresses gmail sont deux personnes) ;
+ *   · le même téléphone a déjà demandé (clé `ville:empreinte des 9 derniers chiffres`).
  *
  * Les clés sont posées sur la ligne et rendues UNIQUES par la base : deux demandes simultanées ne
  * passent pas toutes les deux (la seconde reçoit une erreur d'unicité et devient un « doublon »,
  * voir `enregistrer.ts`). Ce module ne fait que fabriquer les clés et mettre le compteur en forme.
  *
- * Module PUR : le seuil d'affichage et le plafond d'une ville sont des constantes réglables.
+ * Chaque clé est `ville:HMAC` (voir `chiffrement.ts`) : ni adresse, ni domaine, ni numéro lisible.
+ * La clé « personne » est calculée sur l'adresse RAMENÉE à sa forme canonique (`adressePourCle` :
+ * sans « +étiquette », sans points chez gmail) : `alice+1@…` et `alice+2@…` sont la même personne.
+ *
+ * Le seuil d'affichage et le plafond d'une ville sont des constantes réglables. Les fonctions de
+ * clé ne lisent que la variable d'environnement `PII_ENCRYPTION_KEY`.
  */
 
 import { domaineDe, natureAdresse } from "@/lib/email/nature-adresse";
+import {
+  LIBELLE_CLE_DOMAINE,
+  LIBELLE_CLE_PERSONNE,
+  LIBELLE_CLE_TELEPHONE,
+  empreinteTour,
+} from "./chiffrement";
 
 /** Le compteur public ne montre une ville qu'à partir de ce nombre de demandes comptées. */
 export const SEUIL_AFFICHAGE_COMPTEUR = 3;
@@ -25,17 +36,31 @@ export const SEUIL_PAR_VILLE = 5;
 /** Au plus ce nombre de villes dans le compteur public. */
 export const MAX_LIGNES_COMPTEUR = 6;
 
-/** Longueur maximale du domaine dans une clé (colonne `cle_comptage_domaine`). */
-const LONGUEUR_MAX_DOMAINE = 253;
-
 export interface EntreeCles {
   readonly villeCle: string;
-  /** `hashEmailForLookup(email)`. */
-  readonly emailHash: string | null;
   /** L'adresse normalisée (minuscules). */
   readonly email: string;
-  /** Les 9 derniers chiffres du téléphone, ou `null`. */
+  /** Les 9 derniers chiffres du téléphone, ou `null` (jamais stockés : seulement pour la clé). */
   readonly telephoneFin: string | null;
+}
+
+/**
+ * L'adresse sous sa forme canonique, pour la clé « une demande par personne » : minuscules, sans
+ * « +étiquette » dans la partie locale, sans points chez gmail ; `googlemail.com` vaut `gmail.com`.
+ * Ne sert QU'À la clé : l'adresse enregistrée et l'empreinte de recherche restent celles saisies.
+ * PUR.
+ */
+export function adressePourCle(email: string): string {
+  const adresse = email.trim().toLowerCase();
+  const arobase = adresse.lastIndexOf("@");
+  if (arobase < 1) return adresse;
+  let local = adresse.slice(0, arobase);
+  let domaine = adresse.slice(arobase + 1);
+  const plus = local.indexOf("+");
+  if (plus > 0) local = local.slice(0, plus);
+  if (domaine === "googlemail.com") domaine = "gmail.com";
+  if (domaine === "gmail.com") local = local.replace(/\./g, "");
+  return `${local}@${domaine}`;
 }
 
 export interface ClesComptage {
@@ -44,14 +69,19 @@ export interface ClesComptage {
   readonly telephone: string | null;
 }
 
-/** Les trois clés de comptage d'une demande. Une clé absente (`null`) ne bloque rien. PUR. */
+/** Les trois clés de comptage d'une demande. Une clé absente (`null`) ne bloque rien. */
 export function clesDeComptage(e: EntreeCles): ClesComptage {
-  const pro = natureAdresse(e.email) === "pro";
-  const domaine = pro ? domaineDe(e.email).slice(0, LONGUEUR_MAX_DOMAINE) : "";
+  const adresse = adressePourCle(e.email);
+  const pro = natureAdresse(adresse) === "pro";
+  const domaine = pro ? domaineDe(adresse) : "";
   return {
-    personne: e.emailHash !== null ? `${e.villeCle}:${e.emailHash}` : null,
-    domaine: domaine !== "" ? `${e.villeCle}:${domaine}` : null,
-    telephone: e.telephoneFin !== null ? `${e.villeCle}:${e.telephoneFin}` : null,
+    personne:
+      adresse !== "" ? `${e.villeCle}:${empreinteTour(LIBELLE_CLE_PERSONNE, adresse)}` : null,
+    domaine: domaine !== "" ? `${e.villeCle}:${empreinteTour(LIBELLE_CLE_DOMAINE, domaine)}` : null,
+    telephone:
+      e.telephoneFin !== null
+        ? `${e.villeCle}:${empreinteTour(LIBELLE_CLE_TELEPHONE, e.telephoneFin)}`
+        : null,
   };
 }
 

@@ -6,6 +6,12 @@
  * ce dossier). Une demande effacée à la demande de la personne (`effacee_rgpd`) ne change plus
  * de statut. Chaque changement laisse une trace `ActivityLog`, dans la même transaction.
  *
+ * « Écarter » libère aussi la place : les trois clés de comptage sont retirées (`null`, que les
+ * index uniques de Postgres admettent en nombre illimité) et `compte` passe à faux. Sans cela, une
+ * fausse demande écartée garderait la clé de la personne, de son entreprise ou de son téléphone et
+ * empêcherait la vraie demande de compter. « Remettre en attente » ne remet PAS la demande dans le
+ * compteur (les clés ont été retirées) : si la demande était bonne, la personne peut la refaire.
+ *
  * Module neutre (ni session ni Next) : la garde de rôle est dans `statuts.ts`, qui l'appelle.
  */
 
@@ -31,7 +37,19 @@ export async function changerStatutDemande(
     if (d.statut === vers) return "inchange";
     await tx.tourDemande.update({
       where: { id },
-      data: { statut: vers, statutChangeLe: new Date(), statutChangeParId: parId },
+      data: {
+        statut: vers,
+        statutChangeLe: new Date(),
+        statutChangeParId: parId,
+        ...(vers === "ecartee"
+          ? {
+              compte: false,
+              cleComptagePersonne: null,
+              cleComptageDomaine: null,
+              cleComptageTelephone: null,
+            }
+          : {}),
+      },
     });
     await tx.activityLog.create({
       data: {

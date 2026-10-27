@@ -249,8 +249,9 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     // rencontres ; les comptes rendus qui la citent sont vidés pour être
     // réécrits sans elle. Les preuves d'accord restent (art. 17(3)(e)).
     effacerCibleParAdresses([email], { motif: "art17" }),
-    // Tour France IA (2026-10-27) : les demandes sont ANONYMISÉES, jamais supprimées ; leurs clés
-    // de comptage sont gardées (le compteur d'une ville ne recule pas). Cf. `tour-de-france/rgpd.ts`.
+    // Tour France IA (2026-10-27) : les demandes sont VIDÉES, jamais supprimées ; leurs clés de
+    // comptage deviennent opaques et la ligne reste comptée (le compteur d'une ville ne recule pas).
+    // Cf. `tour-de-france/rgpd.ts`.
     anonymiserDemandesTour(email),
   ]);
 

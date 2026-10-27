@@ -13,7 +13,10 @@ vi.mock("@/lib/prisma", () => ({
     calendlyEvent: { findMany: m.rdv },
   },
 }));
-vi.mock("@/lib/pii-crypto", () => ({ decryptPii: m.decrypt }));
+vi.mock("@/lib/pii-crypto", () => ({
+  decryptPii: m.decrypt,
+  encryptPii: (v: string) => `enc:${v}`,
+}));
 
 import { hashEmailForLookup } from "@/lib/security/email-hash";
 import { compteurParVille, lireCompteursPublics, lireDemandesConsole } from "../lectures";
@@ -84,9 +87,36 @@ describe("lectures : la console", () => {
     ]);
     expect(r.demandes[0]?.email).toBe("alice@exemple.fr");
     expect(r.rapprochementIndisponible).toBe(false);
-    const rdv = m.rdv.mock.calls[0]?.[0] as { where: Record<string, unknown> };
+    const rdv = m.rdv.mock.calls[0]?.[0] as {
+      where: Record<string, unknown>;
+      take?: unknown;
+    };
     expect(rdv.where["typeRendezVous"]).toBe("tour_de_france_ia");
     expect(rdv.where["status"]).toEqual({ not: "canceled" });
+    // Les rendez-vous sont cherchés POUR les adresses affichées, sans plafond arbitraire.
+    expect(rdv.where["inviteeEmail"]).toEqual({ in: ["alice@exemple.fr", "bob@exemple.fr"] });
+    expect(rdv).not.toHaveProperty("take");
+  });
+
+  it("ne cherche aucun rendez-vous pour une liste vide ou une demande vidée à la demande de la personne", async () => {
+    m.findMany.mockResolvedValue([]);
+    await lireDemandesConsole();
+    expect(m.rdv).not.toHaveBeenCalled();
+    m.findMany.mockResolvedValue([ligne("x", "efface@exemple.fr", { emailHash: null })]);
+    const r = await lireDemandesConsole();
+    expect(m.rdv).not.toHaveBeenCalled();
+    expect(r.rapprochementIndisponible).toBe(false);
+  });
+
+  it("une adresse illisible n'empêche pas de chercher les autres rendez-vous", async () => {
+    m.findMany.mockResolvedValue([ligne("a", "alice@exemple.fr"), ligne("b", "bob@exemple.fr")]);
+    m.decrypt.mockImplementation((v: string) => {
+      if (v === "enc:alice@exemple.fr") throw new Error("illisible");
+      return v.replace(/^enc:/, "");
+    });
+    await lireDemandesConsole();
+    const rdv = m.rdv.mock.calls[0]?.[0] as { where: Record<string, unknown> };
+    expect(rdv.where["inviteeEmail"]).toEqual({ in: ["bob@exemple.fr"] });
   });
 
   it("une panne de la lecture des rendez-vous est dite, sans casser la liste", async () => {
@@ -106,7 +136,22 @@ describe("lectures : la console", () => {
     const r = await lireDemandesConsole({ statut: "ecartee", ville: "lyon" });
     expect(r.demandes.map((d) => d.id)).toEqual(["b"]);
     const arg = m.findMany.mock.calls[0]?.[0] as { where: Record<string, unknown> };
-    expect(arg.where).toEqual({ villeCle: "lyon" });
+    // Le filtre de statut est dans la requête : il s'applique AVANT le plafond de 500 lignes.
+    expect(arg.where).toEqual({ villeCle: "lyon", statut: { in: ["ecartee"] } });
+  });
+
+  it("« rendez-vous pris » vient d'une demande reçue ou relancée : les deux sont lues", async () => {
+    m.findMany.mockResolvedValue([]);
+    await lireDemandesConsole({ statut: "rdv_pris" });
+    const arg = m.findMany.mock.calls[0]?.[0] as { where: Record<string, unknown> };
+    expect(arg.where).toEqual({ statut: { in: ["recue", "relancee_main"] } });
+  });
+
+  it("sans filtre, aucune condition de statut ni de ville", async () => {
+    m.findMany.mockResolvedValue([]);
+    await lireDemandesConsole();
+    const arg = m.findMany.mock.calls[0]?.[0] as { where: Record<string, unknown> };
+    expect(arg.where).toEqual({});
   });
 
   it("une valeur chiffrée illisible s'affiche « illisible », sans lever", async () => {

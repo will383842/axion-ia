@@ -6,19 +6,20 @@
  *
  *   · `lireCompteursPublics` : les demandes COMPTÉES par ville, pour le futur compteur public
  *     (PR-2b). Écarte les demandes écartées par l'équipe ; garde les demandes dont la personne a
- *     demandé l'effacement (leur clé de comptage est gardée, le compteur ne recule pas) ;
+ *     demandé l'effacement (leur ligne reste comptée, le compteur ne recule pas) ;
  *   · `lireDemandesConsole` : la liste de la console, nom, e-mail et téléphone déchiffrés, avec le
- *     statut « rendez-vous pris » CALCULÉ en comparant l'empreinte de l'e-mail à celle des
- *     rendez-vous Calendly du Tour (aucune colonne sur `calendly_events`) ;
+ *     statut « rendez-vous pris » CALCULÉ : on cherche les rendez-vous du Tour DES ADRESSES des
+ *     demandes affichées (`inviteeEmail IN (…)`, colonne insensible à la casse) et on compare les
+ *     empreintes (aucune colonne sur `calendly_events`, aucun plafond arbitraire) ;
  *   · `compteurParVille` : le compteur de la console (toutes les demandes, et celles qui comptent).
  *
  * ⛔ La console qui appelle `lireDemandesConsole` doit avoir passé `gardeLectureAppels` : ce module
  * rend des coordonnées en clair et ne vérifie pas qui regarde.
  */
 
-import { decryptPii } from "@/lib/pii-crypto";
 import { prisma } from "@/lib/prisma";
 import { hashEmailForLookup } from "@/lib/security/email-hash";
+import { dechiffrerChamp, lireChamp } from "./chiffrement";
 import type { GroupeVille } from "./comptage";
 import { statutAffiche } from "./rapprochement";
 import {
@@ -31,9 +32,6 @@ import {
 
 /** Au plus ce nombre de demandes lues pour la console (la liste dit si elle est tronquée). */
 export const PLAFOND_DEMANDES_CONSOLE = 500;
-
-/** Au plus ce nombre de rendez-vous du Tour relus pour le rapprochement. */
-const PLAFOND_RENDEZ_VOUS = 5000;
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Le compteur public (PR-2b)
@@ -96,17 +94,22 @@ export interface ListeConsole {
   readonly rapprochementIndisponible: boolean;
 }
 
-/** Les empreintes d'e-mail des rendez-vous du Tour (hors annulés). `null` si la lecture échoue. */
-async function empreintesDesRendezVousDuTour(): Promise<Set<string> | null> {
+/**
+ * Les empreintes d'e-mail des rendez-vous du Tour (hors annulés) pour CES adresses. `null` si la
+ * lecture échoue. Aucune adresse : rien à chercher, pas de requête.
+ */
+async function empreintesDesRendezVousDuTour(
+  adresses: ReadonlyArray<string>,
+): Promise<Set<string> | null> {
+  if (adresses.length === 0) return new Set<string>();
   try {
     const rendezVous = await prisma.calendlyEvent.findMany({
       where: {
         typeRendezVous: "tour_de_france_ia",
         status: { not: "canceled" },
-        inviteeEmail: { not: null },
+        inviteeEmail: { in: [...adresses] },
       },
       select: { inviteeEmail: true },
-      take: PLAFOND_RENDEZ_VOUS,
     });
     const empreintes = new Set<string>();
     for (const r of rendezVous) {
@@ -119,19 +122,38 @@ async function empreintesDesRendezVousDuTour(): Promise<Set<string> | null> {
   }
 }
 
-/** Déchiffre sans jamais lever : une valeur illisible s'affiche « illisible ». */
-function clair(valeur: string): string {
-  try {
-    return decryptPii(valeur);
-  } catch {
-    return "illisible";
+/** Les adresses lisibles des demandes (celles dont l'empreinte existe : pas les demandes vidées). */
+function adressesLisibles(
+  lignes: ReadonlyArray<{ readonly email: string; readonly emailHash: string | null }>,
+): string[] {
+  const adresses = new Set<string>();
+  for (const l of lignes) {
+    if (l.emailHash === null) continue;
+    try {
+      adresses.add(dechiffrerChamp("email", l.email));
+    } catch {
+      // Une adresse illisible ne se rapproche d'aucun rendez-vous.
+    }
   }
+  return [...adresses];
+}
+
+/**
+ * Les statuts STOCKÉS à lire pour afficher ce statut : le filtre s'applique dans la requête, AVANT
+ * le plafond. « Rendez-vous pris » est calculé : il peut venir d'une demande reçue ou relancée.
+ */
+function statutsStockes(statut: StatutAffiche | null | undefined): string[] | null {
+  if (!statut) return null;
+  return statut === "rdv_pris" ? ["recue", "relancee_main"] : [statut];
 }
 
 /** Les lignes brutes de la liste (la plus récente d'abord), une de plus que le plafond. */
-function lireLignes(ville: string | null | undefined) {
+function lireLignes(ville: string | null | undefined, statuts: string[] | null) {
   return prisma.tourDemande.findMany({
-    where: ville ? { villeCle: ville } : {},
+    where: {
+      ...(ville ? { villeCle: ville } : {}),
+      ...(statuts !== null ? { statut: { in: statuts } } : {}),
+    },
     orderBy: { creeLe: "desc" },
     take: PLAFOND_DEMANDES_CONSOLE + 1,
     select: {
@@ -158,18 +180,19 @@ function lireLignes(ville: string | null | undefined) {
 export async function lireDemandesConsole(filtre: FiltreConsole = {}): Promise<ListeConsole> {
   let lignes: Awaited<ReturnType<typeof lireLignes>>;
   try {
-    lignes = await lireLignes(filtre.ville);
+    lignes = await lireLignes(filtre.ville, statutsStockes(filtre.statut));
   } catch {
     return { demandes: [], tronquee: false, rapprochementIndisponible: false };
   }
   const tronquee = lignes.length > PLAFOND_DEMANDES_CONSOLE;
-  const empreintes = await empreintesDesRendezVousDuTour();
+  const affichees = lignes.slice(0, PLAFOND_DEMANDES_CONSOLE);
+  const empreintes = await empreintesDesRendezVousDuTour(adressesLisibles(affichees));
 
-  const demandes: DemandeConsole[] = lignes.slice(0, PLAFOND_DEMANDES_CONSOLE).map((l) => ({
+  const demandes: DemandeConsole[] = affichees.map((l) => ({
     id: l.id,
-    nom: clair(l.nom),
-    email: clair(l.email),
-    telephone: clair(l.telephone),
+    nom: lireChamp("nom", l.nom),
+    email: lireChamp("email", l.email),
+    telephone: lireChamp("telephone", l.telephone),
     villeCle: l.villeCle,
     ville: l.villeNom ?? l.villeSaisie,
     creeLe: l.creeLe,
