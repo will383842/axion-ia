@@ -412,6 +412,7 @@ export default async function TourDeFranceIaPage() {
                   <p>{`«\u00a0${FONDATEUR.citation}\u00a0»`}</p>
                 </blockquote>
                 <figcaption className="mt-3">
+                  <p className="text-fg-soft text-sm">{FONDATEUR.legende}</p>
                   <a
                     href={FONDATEUR.lien.chemin}
                     className="text-fg decoration-border-strong hover:decoration-terracotta focus-visible:outline-primary inline-flex min-h-11 items-center font-semibold underline decoration-2 underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-2"

@@ -202,14 +202,20 @@ export const ETAPES = {
   liste: ["Votre demande, en 1 minute", "Une visio de 30 minutes", "Retenu ? Votre jour est fixé"],
 } as const;
 
-/** Qui vient chez vous : le fondateur, sa photo, une phrase, sa fiche. */
+/**
+ * Qui vient chez vous : la photo du fondateur, une phrase, sa fiche. La phrase est
+ * dite par l'ÉQUIPE (« on ») : celui qui vient peut être le fondateur ou l'un de
+ * ses équipiers, et la légende le dit (`legende`). Jamais de « je ».
+ */
 export const FONDATEUR = {
   titre: "Qui vient chez vous",
   /** Illustration existante du site (1000 × 1000), servie telle quelle à 96 px, en différé. */
   photo: "/illustrations/william-fondateur-axion-ia.webp",
   alt: "Williams Jullin, fondateur d’Axion-IA",
   citation:
-    "Je viens chez vous, je regarde comment vous travaillez, et je vous montre ce que l’IA peut faire dès demain.",
+    "On vient chez vous, on regarde comment vous travaillez, et on vous montre ce que l’IA peut faire dès demain.",
+  /** Sous la citation : qui la dit, en vrai (le fondateur OU un membre de son équipe). */
+  legende: "Williams Jullin, fondateur d’Axion-IA, ou un membre de son équipe",
   /** La fiche d'équipe d'Axion (`FOUNDER.pagePath`, servie en FR). */
   lien: { libelle: "Découvrir Williams", chemin: "/fr/equipe/williams" },
 } as const;
@@ -298,6 +304,7 @@ export function texteVisibleHorsFaq(): string {
     ...ETAPES.liste,
     FONDATEUR.titre,
     FONDATEUR.citation,
+    FONDATEUR.legende,
     FONDATEUR.lien.libelle,
     APPEL_FINAL.titre,
   ].join("\n");

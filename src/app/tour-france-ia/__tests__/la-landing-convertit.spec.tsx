@@ -319,9 +319,11 @@ describe("🔑 une seule action : ma journée offerte", () => {
     // Mesuré le 2026-10-27 : 188 mots rédigés.
     expect(n, `${n} mots`).toBeLessThanOrEqual(200);
     // Avec le logo, chaque libellé de bouton et chaque micro-texte, à chaque affichage :
-    // 215 mesurés le 2026-10-27. Cliquet : ajouter un bouton ou une phrase, c'est en retirer.
+    // 215 mesurés le 2026-10-27, 224 depuis la légende « … ou un membre de son équipe »
+    // (9 mots, demandée par le propriétaire : la citation n'est plus attribuée au seul
+    // fondateur). Cliquet : ajouter un bouton ou une phrase, c'est en retirer.
     const total = n + mots(texteDesBoutons());
-    expect(total, `${total} mots`).toBeLessThanOrEqual(215);
+    expect(total, `${total} mots`).toBeLessThanOrEqual(224);
     for (const titre of [
       VILLE.titre,
       GAINS.titre,
@@ -408,13 +410,26 @@ describe("🔑 une seule action : ma journée offerte", () => {
     cleanup();
   });
 
-  it("le fondateur : sa photo ronde de 96 px, sa phrase mot pour mot, sa fiche", () => {
+  it("qui vient chez vous : la photo ronde du fondateur, la phrase de l'équipe mot pour mot, sa légende vraie, la fiche", () => {
     expect(FONDATEUR.titre).toBe("Qui vient chez vous");
+    // La phrase est dite par l'équipe : celui qui vient est le fondateur OU l'un de ses équipiers.
     expect(FONDATEUR.citation).toBe(
-      "Je viens chez vous, je regarde comment vous travaillez, et je vous montre ce que l’IA peut faire dès demain.",
+      "On vient chez vous, on regarde comment vous travaillez, et on vous montre ce que l’IA peut faire dès demain.",
+    );
+    expect(FONDATEUR.legende).toBe(
+      "Williams Jullin, fondateur d’Axion-IA, ou un membre de son équipe",
     );
     expect(FONDATEUR.alt).toBe("Williams Jullin, fondateur d’Axion-IA");
     expect(FONDATEUR.photo).toBe("/illustrations/william-fondateur-axion-ia.webp");
+    // Plus aucun « je » de l'entreprise : la page parle en « on » / « nous ». Le seul « je »
+    // du texte est celui du VISITEUR (une question de la FAQ), comme « Ma journée offerte ».
+    const premierePersonne = /(^|[^\p{L}])(je|j’|moi|mon|mes)(?=[^\p{L}]|$)/iu;
+    expect(texteVisibleHorsFaq()).not.toMatch(premierePersonne);
+    expect(FONDATEUR.citation).toMatch(/^On vient chez vous/);
+    const questionsEnJe = FAQ.questions.filter((q) => premierePersonne.test(q.question));
+    expect(questionsEnJe).toHaveLength(1);
+    expect(questionsEnJe[0]?.question).toMatch(/^Et si je ne suis pas retenu/);
+    for (const q of FAQ.questions) expect(q.reponse, q.question).not.toMatch(premierePersonne);
     // Le fichier existe déjà (illustration du site) : aucun fichier image n'est créé.
     expect(readFileSync(join(RACINE, "public", FONDATEUR.photo)).length).toBeGreaterThan(1_000);
   });
