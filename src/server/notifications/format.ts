@@ -401,7 +401,7 @@ export function titreReservation(
     case "salon":
       return salonDuNom(nomType) === "gofab" ? "Salon GOFAB réservé" : "Rendez-vous salon réservé";
     case "tour_de_france_ia":
-      return "Tour de France IA réservé";
+      return "Tour France IA réservé";
     case "autre":
       return "Appel client réservé";
   }

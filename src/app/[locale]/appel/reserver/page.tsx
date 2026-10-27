@@ -145,7 +145,10 @@ export default async function ReserverPage({ params, searchParams }: Props) {
   // Les questions et l'event_type DU BON TYPE ; diagnostic introuvable chez
   // Calendly → type appel, sans bruit (`choix-rendez-vous.ts`).
   const resolu = await resoudreChoix(choix);
-  const et = await resoudreEventTypePourReservation(resolu.url);
+  // Visio du Tour : la ville est demandée, donc jamais masquée (`questions.ts`).
+  const et = await resoudreEventTypePourReservation(resolu.url, {
+    sansMasquage: choix === "tour",
+  });
   if (!et) {
     // Jeton absent, API muette, ou une question qu'on ne sait pas poser : le
     // contrat de repli s'applique, et il est écrit dans `questions.ts`.

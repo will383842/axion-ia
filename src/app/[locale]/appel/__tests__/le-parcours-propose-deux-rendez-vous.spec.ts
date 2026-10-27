@@ -113,7 +113,8 @@ describe("🔴 aucune page du parcours ne relit l'URL Calendly en direct", () =>
     expect(actions).toContain("resoudreChoix(choix)");
     expect(actions).toContain("...provenanceEnBloc(suivi, utm)");
     const pageReserver = sansCommentaires(lire("src/app/[locale]/appel/reserver/page.tsx"));
-    expect(pageReserver).toContain("resoudreEventTypePourReservation(resolu.url)");
+    // Le type choisi décide aussi du masquage (la visio du Tour demande la ville).
+    expect(pageReserver).toMatch(/resoudreEventTypePourReservation\(resolu\.url, \{/);
     expect(pageReserver).toContain("champsCaches=");
   });
 });

@@ -1,4 +1,4 @@
-// Sitemap de la landing du Tour de France IA (2026-10-25).
+// Sitemap de la landing du Tour France IA (2026-10-25).
 //
 // Tour ouvert (`TOUR_PUBLIC = true`) : l'URL de la landing y figure et
 // `sitemap-index.xml` le liste. Si le Tour est refermé : `<urlset>` VIDE, et

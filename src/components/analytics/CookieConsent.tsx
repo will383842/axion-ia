@@ -378,7 +378,7 @@ export function effacerProvenance(): void {
  * l'événement anonyme « Consent Banner Answered » : sans ce taux d'acceptation,
  * on ne saurait pas quelle part des visiteurs d'une publicité le pixel peut
  * voir. La balise en base ne part que sur les pages des tunnels (`funnelKeyFromPath`),
- * jamais sous le Tour de France IA (seule « Call Booking Viewed » y est journalisée) ; Plausible, lui, est sans cookie. ⚠️ Un clic donné
+ * jamais sous le Tour France IA (seule « Call Booking Viewed » y est journalisée) ; Plausible, lui, est sans cookie. ⚠️ Un clic donné
  * AVANT l'hydratation est traité par le script en ligne, pas par React : il
  * n'est pas compté (rare, et sans effet sur la décision).
  */

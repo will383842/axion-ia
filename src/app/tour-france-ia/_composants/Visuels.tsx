@@ -1,4 +1,4 @@
-// Tour de France IA — les illustrations de la landing, en SVG serveur (aucun JS).
+// Tour France IA — les illustrations de la landing, en SVG serveur (aucun JS).
 //
 // Toutes originales, dessinées ici : aucune photo de banque d'images, aucune
 // génération externe. Dimensions fixes (`width`/`height` + `viewBox`) : la place
@@ -11,7 +11,8 @@
 // point qui se remplit illustre le principe (5 entreprises, la ville se déclenche).
 //
 // Refonte visuelle du 2026-10-27 : la page dit presque tout par ces dessins. Chaque
-// bloc en porte un qui domine (scène de la journée, carte, frise de pictogrammes).
+// bloc en porte un (frise du héros, carte, pictogrammes des gains, des ambassadeurs
+// et des étapes). Les pictogrammes du Tour (`PictoTour`) ne sont pas animés.
 
 import styles from "../tour.module.css";
 
@@ -176,7 +177,11 @@ export function IllustrationMoment({ index, taille = 48 }: { index: number; tail
   );
 }
 
-/** Pictogrammes de secteurs (24 × 24, trait). La page n'en montre plus qu'un : la maison (« chez vous »). */
+/**
+ * Pictogrammes de secteurs (24 × 24, trait) : la maison (« 4 h chez vous ») dans la
+ * frise du héros, et cinq secteurs possibles dans les places en pointillé des
+ * ambassadeurs — des secteurs, jamais des logos ni des entreprises réelles.
+ */
 const SECTEURS: string[] = [
   // Commerce : un sac.
   "M5 8h14l-1 12H6zM9 8a3 3 0 0 1 6 0",
@@ -204,87 +209,6 @@ export function PictoSecteur({ index, taille = 24 }: { index: number; taille?: n
   );
 }
 
-/**
- * La scène de la journée (328 × 140) : un bâtiment d'entreprise sous l'arc du jour,
- * le soleil du matin à gauche, la lune du vendredi soir à droite. Les fenêtres
- * s'allument l'une après l'autre (CSS, `fill`), puis la lune apparaît (`opacity`).
- * Aucun élément animé ne porte d'attribut `transform`.
- */
-export function SceneEntreprise({ className = "" }: PropsSvg) {
-  const fenetres = [50, 70, 90].flatMap((y) => [126, 155, 184].map((x) => ({ x, y })));
-  return (
-    <svg className={className} width="328" height="140" viewBox="0 0 328 140" {...DECORATIF}>
-      {/* L'arc du jour, du matin au soir. Couleurs : jetons de `globals.css`. */}
-      <path
-        d="M20 128A144 110 0 0 1 308 128"
-        fill="none"
-        stroke="var(--color-fg-soft)"
-        strokeWidth="1.5"
-        strokeDasharray="1 7"
-        strokeLinecap="round"
-      />
-      <g
-        fill="var(--color-terracotta)"
-        stroke="var(--color-terracotta)"
-        strokeWidth="2"
-        strokeLinecap="round"
-      >
-        <circle cx="39" cy="73" r="10" />
-        <path d="M39 56v-5M22 73h-5M27 61l-3.5-3.5M51 61l3.5-3.5" />
-      </g>
-      <path className={styles.sceneLune} d="M293 63a11 11 0 1 0 6 19 9 9 0 0 1-6-19z" />
-      {/* Le sol, les voisins, l'entreprise. */}
-      <path
-        d="M8 128h312"
-        stroke="var(--color-border-strong)"
-        strokeWidth="2"
-        strokeLinecap="round"
-      />
-      <g fill="var(--color-sand-deep)">
-        <rect x="72" y="84" width="34" height="44" rx="2" />
-        <rect x="222" y="96" width="38" height="32" rx="2" />
-      </g>
-      <rect x="112" y="38" width="104" height="90" rx="3" fill="var(--color-mocha)" />
-      <path
-        d="M106 40h116"
-        stroke="var(--color-terracotta)"
-        strokeWidth="4"
-        strokeLinecap="round"
-      />
-      {fenetres.map((f) => (
-        <rect
-          key={`${f.x}-${f.y}`}
-          className={styles.sceneFenetre}
-          x={f.x}
-          y={f.y}
-          width="18"
-          height="12"
-          rx="1.5"
-        />
-      ))}
-      <rect x="154" y="108" width="20" height="20" rx="1.5" fill="var(--color-primary)" />
-    </svg>
-  );
-}
-
-/** Ce que l'audit chiffre (24 × 24, trait) : 0 temps, 1 rentabilité, 2 chiffre d'affaires. */
-const LEVIERS: string[] = [
-  // Temps : une horloge.
-  "M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18zM12 7v5l3.5 2",
-  // Rentabilité : une courbe qui monte sur un axe.
-  "M4 4v16h16M7 15l4-4 3 3 5-6M15 8h4v4",
-  // Chiffre d'affaires : des barres qui montent.
-  "M5 20v-5M10 20v-8M15 20v-11M20 20V5M3 20h18",
-];
-
-export function PictoLevier({ index, taille = 24 }: { index: number; taille?: number }) {
-  return (
-    <svg width={taille} height={taille} viewBox="0 0 24 24" className={styles.picto} {...DECORATIF}>
-      <path d={LEVIERS[index] ?? LEVIERS[0]} />
-    </svg>
-  );
-}
-
 /** La visio (48 × 48, trait) : un écran, un visage, la caméra. */
 export function PictoVisio({ taille = 48 }: { taille?: number }) {
   return (
@@ -307,32 +231,85 @@ export function Fleche() {
   );
 }
 
-/** La coche terracotta. `surSombre` : la teinte lisible sur fond sombre. */
-export function Coche({
-  taille = 24,
-  surSombre = false,
-  className = "",
-}: {
-  taille?: number;
-  surSombre?: boolean;
-  className?: string;
-}) {
+/** Les pictogrammes du Tour (48 × 48, trait, couleur héritée), un par nom. */
+export type NomPictoTour = "heures" | "automatisation" | "equipe" | "site" | "micro" | "calendrier";
+
+/**
+ * Les pictogrammes du Tour : `heures` (une horloge et une loupe — l'audit),
+ * `automatisation` (une prise et un éclair), `equipe` (deux personnes et un livre
+ * ouvert — la formation), `site` (une fenêtre de navigateur — la page sur le
+ * site), `micro` (le podcast), `calendrier` (le jour fixé). Les verres du dîner
+ * sont ceux d'`IllustrationMoment` (index 2), jamais redessinés.
+ */
+export function PictoTour({ nom, taille = 48 }: { nom: NomPictoTour; taille?: number }) {
+  const communs = {
+    width: taille,
+    height: taille,
+    viewBox: "0 0 48 48",
+    className: styles.picto,
+    ...DECORATIF,
+  };
+  if (nom === "heures") {
+    return (
+      <svg {...communs}>
+        <circle cx="19" cy="19" r="12" />
+        <path d="M19 12v7l5 3" />
+        <circle cx="32" cy="32" r="7" className={styles.pictoAccent} />
+        <path d="M37 37l6 6" className={styles.pictoAccent} />
+      </svg>
+    );
+  }
+  if (nom === "automatisation") {
+    return (
+      <svg {...communs}>
+        <path d="M17 6v9M31 6v9" />
+        <path d="M11 15h26v8a13 13 0 0 1-26 0z" />
+        <path d="M24 36v7" />
+        <path d="M26 18l-5 8h6l-5 8" className={styles.pictoAccent} />
+      </svg>
+    );
+  }
+  if (nom === "equipe") {
+    return (
+      <svg {...communs}>
+        <circle cx="13" cy="11" r="4" />
+        <circle cx="35" cy="11" r="4" />
+        <path d="M6 25a7 7 0 0 1 14 0M28 25a7 7 0 0 1 14 0" />
+        <path
+          d="M7 31c6-1.5 12-1 17 2c5-3 11-3.5 17-2v11c-6-1.5-12-1-17 2c-5-3-11-3.5-17-2z"
+          className={styles.pictoAccent}
+        />
+        <path d="M24 33v11" className={styles.pictoAccent} />
+      </svg>
+    );
+  }
+  if (nom === "site") {
+    return (
+      <svg {...communs}>
+        <rect x="6" y="9" width="36" height="30" rx="3" />
+        <path d="M6 17h36" />
+        <path d="M11 13h.01M15 13h.01M19 13h.01" />
+        <path d="M13 25h14M13 31h9" className={styles.pictoAccent} />
+        <path d="M31 30l4-4M30.5 26.5h4.5v4.5" className={styles.pictoAccent} />
+      </svg>
+    );
+  }
+  if (nom === "micro") {
+    return (
+      <svg {...communs}>
+        <rect x="18" y="5" width="12" height="21" rx="6" />
+        <path d="M11 21a13 13 0 0 0 26 0" />
+        <path d="M24 34v8M17 42h14" />
+        <path d="M6 16v6M42 16v6" className={styles.pictoAccent} />
+      </svg>
+    );
+  }
+  // Le calendrier, et la coche du jour fixé.
   return (
-    <svg className={className} width={taille} height={taille} viewBox="0 0 28 28" {...DECORATIF}>
-      <circle
-        cx="14"
-        cy="14"
-        r="13"
-        fill={surSombre ? "var(--color-terracotta-on-mocha)" : "var(--color-terracotta)"}
-      />
-      <path
-        d="M8.5 14.5l3.6 3.6 7.4-8"
-        fill="none"
-        stroke={surSombre ? "var(--color-ink)" : "var(--color-paper)"}
-        strokeWidth="2.4"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
+    <svg {...communs}>
+      <rect x="7" y="10" width="34" height="31" rx="3" />
+      <path d="M7 18h34M16 6v8M32 6v8" />
+      <path d="M17 29l5 5 9-10" className={styles.pictoAccent} />
     </svg>
   );
 }

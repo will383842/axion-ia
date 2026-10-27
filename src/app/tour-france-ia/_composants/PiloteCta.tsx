@@ -1,7 +1,7 @@
 "use client";
 // use-client: IntersectionObserver du bouton collant et recopie des utm_* de l'adresse d'arrivée.
 
-// Tour de France IA — le SEUL composant client de la landing (2026-10-25).
+// Tour France IA — le SEUL composant client de la landing (2026-10-25).
 //
 // Il ne rend rien. Au montage, il :
 //   1. recopie les `utm_*` de l'adresse d'arrivée sur chaque bouton de

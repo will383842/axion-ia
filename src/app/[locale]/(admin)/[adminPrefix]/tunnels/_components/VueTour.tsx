@@ -1,4 +1,4 @@
-// Corps visuel du tunnel Tour de France IA (2026-10-26).
+// Corps visuel du tunnel Tour France IA (2026-10-26).
 //
 // Séparé de la page, comme les autres vues de tunnel : il ne dépend que de ses
 // propriétés, donc s'affiche — et se vérifie — sans session.
@@ -62,8 +62,8 @@ export function VueTour({
   return (
     <>
       <AdminPageHeader
-        title="Tunnel Tour de France IA"
-        description="De la landing /tourdefrance-ia à la visio de 30 minutes tenue."
+        title="Tunnel Tour France IA"
+        description="De la landing /tour-france-ia à la visio de 30 minutes tenue."
         actions={
           <nav aria-label="Période" className="flex gap-[var(--space-admin-2)]">
             {FENETRES.map((f) => (
@@ -107,7 +107,7 @@ export function VueTour({
           value={rdv === null ? "non mesuré" : rdv.pris.toLocaleString("fr-FR")}
           meta={
             tableau.transformation === null
-              ? "Visio de 30 minutes, type « Tour de France IA »"
+              ? "Visio de 30 minutes, type « Tour France IA »"
               : `${tableau.transformation} % des clics « Participer »`
           }
           tone={rdv && rdv.pris > 0 ? "success" : "default"}
@@ -138,7 +138,7 @@ export function VueTour({
           columns={colonnes}
           rows={tableau.parBouton}
           getRowId={(l) => l.cle ?? "non-renseigne"}
-          caption="Clics et rendez-vous du Tour de France IA, par bouton"
+          caption="Clics et rendez-vous du Tour France IA, par bouton"
           emptyState={<p className="admin-meta">Aucun clic ni rendez-vous sur la période.</p>}
         />
       </section>
@@ -148,7 +148,7 @@ export function VueTour({
         rendez-vous déplacé ne compte qu&apos;une fois, une annulation reste une annulation, un
         rendez-vous passé sans point fait reste « maintenu ». Les personnes, elles, sont dans{" "}
         <Link href={rdvTour} className="admin-link">
-          Rendez-vous → Tour de France IA
+          Rendez-vous → Tour France IA
         </Link>{" "}
         et dans{" "}
         <Link href={appelsTour} className="admin-link">

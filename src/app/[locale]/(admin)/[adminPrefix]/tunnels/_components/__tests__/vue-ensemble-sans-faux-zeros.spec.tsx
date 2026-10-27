@@ -1,4 +1,4 @@
-// La ligne « Tour de France IA » (et apporteur) n'a jamais de questionnaire : y
+// La ligne « Tour France IA » (et apporteur) n'a jamais de questionnaire : y
 // afficher 0 serait une mesure inventée. Elle renvoie vers son onglet.
 
 import { renderToStaticMarkup } from "react-dom/server";
@@ -22,7 +22,7 @@ describe("VueEnsemble — tunnels sans questionnaire", () => {
       const i = html.indexOf(`>${libelle.replace("'", "&#x27;")}`, html.indexOf("<tbody"));
       return html.slice(i, html.indexOf("</tr>", i));
     };
-    for (const l of ["Tour de France IA", "Recrutement d'apporteurs"]) {
+    for (const l of ["Tour France IA", "Recrutement d'apporteurs"]) {
       const tr = ligne(l);
       expect(tr).toContain("voir l&#x27;onglet");
       expect((tr.match(/voir l&#x27;onglet/g) ?? []).length).toBe(4);

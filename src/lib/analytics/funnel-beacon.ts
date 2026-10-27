@@ -57,11 +57,11 @@ export function funnelKeyFromPath(pathname: string | null | undefined): FunnelKe
   // (`/video`, `/merci`). Segment ENTIER : la page SEO
   // `/apporteur-affaires-independant-…` n'est pas un tunnel payant.
   if (segments.includes("apporteur-affaires")) return "apporteur";
-  // Tour de France IA : la page de RÉSERVATION seulement (`/fr/appel/tour-de-france-ia`).
-  // Jamais la landing `/tourdefrance-ia`, qui ne porte aucune mesure (voir
+  // Tour France IA : la page de RÉSERVATION seulement (`/fr/appel/tour-france-ia`).
+  // Jamais la landing `/tour-france-ia`, qui ne porte aucune mesure (voir
   // `FUNNEL_KEYS`). Segment ENTIER, et sous `/appel` : rien d'autre ne le porte.
   const iAppel = segments.indexOf("appel");
-  if (iAppel !== -1 && segments[iAppel + 1] === "tour-de-france-ia") return "tour";
+  if (iAppel !== -1 && segments[iAppel + 1] === "tour-france-ia") return "tour";
   if (segments.includes("diagnostic")) return "diagnostic";
   if (segments.includes("simulateur")) return "simulateur";
   if (segments.includes("roi")) return "roi";
@@ -116,7 +116,7 @@ export function sendFunnelBeacon(event: FunnelEvent, props: FunnelProps = {}): v
 
   const funnel = funnelKeyFromPath(window.location?.pathname);
   if (!funnel) return;
-  // Tour de France IA : seule l'arrivée sur la page de réservation se mesure.
+  // Tour France IA : seule l'arrivée sur la page de réservation se mesure.
   // Le bandeau de cookies peut s'y afficher, mais sa réponse n'a pas à être
   // journalisée sous ce tunnel.
   if (funnel === "tour" && event !== "Call Booking Viewed") return;

@@ -1,6 +1,6 @@
 // Les SIX rendez-vous que le site sait réserver lui-même — une seule table.
 //
-// 2026-10-25 : sixième entrée, la visio du Tour de France IA (`tour`), classée
+// 2026-10-25 : sixième entrée, la visio du Tour France IA (`tour`), classée
 // `autre` comme l'échange formateur mais restée CLIENT (son nom ne porte aucun
 // des mots-clés hors clients).
 //
@@ -55,7 +55,7 @@ export const CHOIX_RENDEZ_VOUS = ["diagnostic", "projet", "apporteur", "salon"] 
 
 /**
  * Les rendez-vous réservables HORS des quatre historiques. L'échange formateur est
- * classé `autre` ; la visio du Tour de France IA a, depuis le 2026-10-27, son type
+ * classé `autre` ; la visio du Tour France IA a, depuis le 2026-10-27, son type
  * propre (`tour_de_france_ia`) — elle reste ici parce que la liste des quatre est
  * figée par les tests du parcours, et `choixDuTypeRendezVous` la retrouve par son type.
  * Le nom dit la vérité : « formateur » n'a PAS de type propre en base (classé
@@ -251,7 +251,7 @@ export const TYPES_RESERVABLES: Readonly<Record<ChoixRendezVous, ConfigRendezVou
     urlParDefaut: URL_CALENDLY_FORMATEUR_PAR_DEFAUT,
     variable: "CALENDLY_FORMATEUR_URL",
   },
-  // 2026-10-25 — la visio de la landing du Tour de France IA (`/tourdefrance-ia`).
+  // 2026-10-25 — la visio de la landing du Tour France IA (`/tour-france-ia`).
   // Type PROPRE `tour_de_france_ia` (migration du 2026-10-27) : la réservation reste
   // dans les familles CLIENT — fiche prospect dans la console, CRM des ventes (sous
   // `autre`, avec la clé `circuit`), et ses propres e-mails (confirmation, J-1,
@@ -260,16 +260,16 @@ export const TYPES_RESERVABLES: Readonly<Record<ChoixRendezVous, ConfigRendezVou
   // l'audit et à la formation : la visio n'est dite que « sans engagement ».
   tour: {
     choix: "tour",
-    route: "tour-de-france-ia",
+    route: "tour-france-ia",
     type: "tour_de_france_ia",
     public: false,
-    nom: "Tour de France IA",
-    titre: "Votre visio Tour de France IA — 30 minutes",
+    nom: "Tour France IA",
+    titre: "Votre visio Tour France IA — 30 minutes",
     promesse: "Visio de 30 minutes, sans engagement",
     premiereEtape: PREMIERE_ETAPE_VISIO,
     deuxiemeEtape: CONFIRMATION_CLIENT,
     troisiemeEtape:
-      "Nous découvrons votre entreprise, nous vous présentons l'audit et la formation offerts du Tour de France IA, et vous décidez si vous confirmez votre place.",
+      "Nous découvrons votre entreprise, nous vous présentons la journée et son podcast, puis nous vous disons si votre entreprise est retenue.",
     formats: ["visio"],
     urlParDefaut: URL_CALENDLY_TOUR_PAR_DEFAUT,
     variable: "CALENDLY_TOUR_URL",

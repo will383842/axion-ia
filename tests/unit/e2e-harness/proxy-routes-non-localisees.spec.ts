@@ -50,12 +50,12 @@ function matcherDuProxy(): RegExp {
  * `/fr/…`). Chacune pointe vers SA garde, qui prouve cet ordre en lisant le
  * proxy ; une entrée sans garde fait rougir le test ci-dessous.
  *
- *   · `/tourdefrance-ia` (2026-10-25) — règle 0-TDF : 404 tant que le Tour de
+ *   · `/tour-france-ia` (2026-10-25) — règle 0-TDF : 404 tant que le Tour de
  *     France IA est fermé, sauf cookie d'aperçu. L'exclure du matcher, ce serait
  *     ouvrir la landing à tout le monde.
  */
 const CAPTEES_VOLONTAIREMENT: Readonly<Record<string, string>> = {
-  "/tourdefrance-ia": "src/app/tourdefrance-ia/__tests__/le-tour-est-ouvert.spec.ts",
+  "/tour-france-ia": "src/app/tour-france-ia/__tests__/le-tour-est-ouvert.spec.ts",
 };
 
 /** Chemins publics servis hors du segment `[locale]`. */

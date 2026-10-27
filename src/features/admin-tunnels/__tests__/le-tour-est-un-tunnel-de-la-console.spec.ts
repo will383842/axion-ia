@@ -1,4 +1,4 @@
-// Le Tour de France IA est un tunnel de la console, au même rang que les autres
+// Le Tour France IA est un tunnel de la console, au même rang que les autres
 // (2026-10-26, question posée : « le Tour est-il dans la console avec les
 // autres tunnels ? »).
 //
@@ -36,7 +36,7 @@ import {
 import { classerParNom, typePorteLesReponses } from "@/server/calendly/type-rendez-vous";
 import { choixDeLaRoute } from "@/server/calendly/types-reservables";
 
-/** Les emplacements de la landing (`EMPLACEMENTS_CTA` de `src/app/tourdefrance-ia/contenu.ts`). */
+/** Les emplacements de la landing (`EMPLACEMENTS_CTA` de `src/app/tour-france-ia/contenu.ts`). */
 const EMPLACEMENTS_CTA = [
   "tdf-entete",
   "tdf-heros",
@@ -61,16 +61,17 @@ function sourcesLanding(dossier: string): string[] {
 describe("1. du bouton à la page de rendez-vous : `depuis` et UTM", () => {
   it("le bouton mène à la page du Tour avec son repère", () => {
     // Lu dans la source (une spec de `features/` n'importe pas `app/`).
-    const contenu = lire("src/app/tourdefrance-ia/contenu.ts");
-    expect(contenu).toContain('CHEMIN_RENDEZ_VOUS = "/fr/appel/tour-de-france-ia"');
+    const contenu = lire("src/app/tour-france-ia/contenu.ts");
+    expect(contenu).toContain('CHEMIN_RENDEZ_VOUS = "/fr/appel/tour-france-ia"');
     expect(contenu).toContain("`${CHEMIN_RENDEZ_VOUS}?depuis=${encodeURIComponent(depuis)}`");
-    const url = new URL("/fr/appel/tour-de-france-ia?depuis=tdf-heros", "https://exemple.invalid");
+    const url = new URL("/fr/appel/tour-france-ia?depuis=tdf-heros", "https://exemple.invalid");
     // La page de rendez-vous accepte le repère tel quel…
     expect(lireDepuis(url.searchParams.get("depuis"))).toBe("tdf-heros");
   });
 
   it("la page sert le choix `tour`, classé `tour_de_france_ia`", () => {
-    expect(choixDeLaRoute("tour-de-france-ia")).toBe("tour");
+    expect(choixDeLaRoute("tour-france-ia")).toBe("tour");
+    expect(choixDeLaRoute("tour-de-france-ia")).toBeNull();
     expect(typeDuChoix("tour")).toBe("tour_de_france_ia");
   });
 
@@ -82,20 +83,20 @@ describe("1. du bouton à la page de rendez-vous : `depuis` et UTM", () => {
     expect(utmSourceParDefaut("tour")).toBe("tour-de-france-ia");
   });
 
-  it("la page de rendez-vous du Tour, et elle seule, émet l'arrivée (clic « Je veux ma journée offerte »)", () => {
+  it("la page de rendez-vous du Tour, et elle seule, émet l'arrivée (clic « Demander ma journée offerte »)", () => {
     const page = lire("src/app/[locale]/appel/page.tsx");
     expect(page).toMatch(
-      /choix === "tour" \? \(\s*<ArriveeReservationMesure landing="tour-de-france-ia" placement=\{depuis\} \/>/,
+      /choix === "tour" \? \(\s*<ArriveeReservationMesure landing="tour-france-ia" placement=\{depuis\} \/>/,
     );
-    expect(funnelKeyFromPath("/fr/appel/tour-de-france-ia")).toBe("tour");
+    expect(funnelKeyFromPath("/fr/appel/tour-france-ia")).toBe("tour");
     // La balise qu'elle produit passe le schéma strict de l'API.
     expect(
       funnelEventSchema.safeParse({
         funnel: "tour",
         event: "Call Booking Viewed",
         sessionId: "s-12345678",
-        route: "/fr/appel/tour-de-france-ia",
-        landing: "tour-de-france-ia",
+        route: "/fr/appel/tour-france-ia",
+        landing: "tour-france-ia",
         placement: "tdf-heros",
       }).success,
     ).toBe(true);
@@ -104,9 +105,9 @@ describe("1. du bouton à la page de rendez-vous : `depuis` et UTM", () => {
 
 describe("2. le classement du rendez-vous", () => {
   it("le nom Calendly du Tour donne `tour_de_france_ia`, famille client", () => {
-    expect(classerParNom("Tour de France IA")).toBe("tour_de_france_ia");
+    expect(classerParNom("Tour France IA")).toBe("tour_de_france_ia");
     expect(classerParNom("tour-de-france-ia")).toBe("tour_de_france_ia");
-    expect(estAppelApporteur("Tour de France IA")).toBe(false);
+    expect(estAppelApporteur("Tour France IA")).toBe(false);
     expect(passeLeFiltre("tour_de_france_ia", "clients")).toBe(true);
     expect(passeLeFiltre("tour_de_france_ia", "apporteurs")).toBe(false);
     expect(typePorteLesReponses("tour_de_france_ia")).toBe(true);
@@ -114,22 +115,22 @@ describe("2. le classement du rendez-vous", () => {
 });
 
 describe("3. la console montre le Tour comme les autres tunnels", () => {
-  it("une ligne « Tour de France IA » dans « Par tunnel », même à zéro", () => {
+  it("une ligne « Tour France IA » dans « Par tunnel », même à zéro", () => {
     expect(TUNNELS_CONNUS.find((t) => t.cle === "tour")).toEqual({
       cle: "tour",
-      libelle: "Tour de France IA",
-      chemin: "/tourdefrance-ia",
+      libelle: "Tour France IA",
+      chemin: "/tour-france-ia",
     });
     const ligne = agregerTunnels([]).parTunnel.find((t) => t.cle === "tour");
-    expect(ligne?.libelle).toBe("Tour de France IA (/tourdefrance-ia)");
+    expect(ligne?.libelle).toBe("Tour France IA (/tour-france-ia)");
     expect(ligne?.sessions).toBe(0);
     expect(lireTunnel("tour")).toBe("tour");
   });
 
-  it("un onglet « Tunnel Tour de France IA », et la ligne y mène", () => {
+  it("un onglet « Tunnel Tour France IA », et la ligne y mène", () => {
     const layout = lire(`${TUNNELS}/layout.tsx`);
     expect(layout).toContain(
-      '{ id: "tour", label: "Tunnel Tour de France IA", href: `${base}/tour` }',
+      '{ id: "tour", label: "Tunnel Tour France IA", href: `${base}/tour` }',
     );
     expect(layout).toContain('else if (chemin.includes("/tunnels/tour")) actif = "tour";');
     expect(lire(`${TUNNELS}/_components/VueEnsemble.tsx`)).toContain(
@@ -139,19 +140,17 @@ describe("3. la console montre le Tour comme les autres tunnels", () => {
   });
 
   it("les boutons de la landing ont un libellé lisible dans les bilans", () => {
-    expect(libelleEmplacement("tour:tdf-entete")).toBe("Tour de France IA (en-tête)");
-    expect(libelleEmplacement("tour:tdf-heros")).toBe("Tour de France IA (haut de page)");
-    expect(libelleEmplacement("tour:tdf-final")).toBe("Tour de France IA (bas de page)");
-    expect(libelleEmplacement("tour:tdf-bandeau")).toBe("Tour de France IA (bandeau)");
-    expect(libelleEmplacement("tour:tdf-collant")).toBe(
-      "Tour de France IA (bouton collant, mobile)",
-    );
+    expect(libelleEmplacement("tour:tdf-entete")).toBe("Tour France IA (en-tête)");
+    expect(libelleEmplacement("tour:tdf-heros")).toBe("Tour France IA (haut de page)");
+    expect(libelleEmplacement("tour:tdf-final")).toBe("Tour France IA (bas de page)");
+    expect(libelleEmplacement("tour:tdf-bandeau")).toBe("Tour France IA (bandeau)");
+    expect(libelleEmplacement("tour:tdf-collant")).toBe("Tour France IA (bouton collant, mobile)");
     expect(libelleEmplacement("tour")).toBe("Page rendez-vous");
     // Chaque emplacement de la landing a son libellé : aucun ne tombe en valeur brute.
-    const contenu = readFileSync(join(process.cwd(), "src/app/tourdefrance-ia/contenu.ts"), "utf8");
+    const contenu = readFileSync(join(process.cwd(), "src/app/tour-france-ia/contenu.ts"), "utf8");
     for (const depuis of EMPLACEMENTS_CTA) expect(contenu).toContain(`"${depuis}"`);
     for (const depuis of EMPLACEMENTS_CTA) {
-      expect(libelleEmplacement(`tour:${depuis}`), depuis).toMatch(/^Tour de France IA \(/);
+      expect(libelleEmplacement(`tour:${depuis}`), depuis).toMatch(/^Tour France IA \(/);
     }
     // Contre-témoins : les autres boutons ne bougent pas.
     expect(libelleEmplacement("diagnostic:accueil-hero")).toBe("Accueil (haut de page)");
@@ -167,7 +166,7 @@ describe("le tableau du tunnel : clics → rendez-vous pris → maintenus", () =
     issue: string | null = null,
   ) => ({
     typeRendezVous: "tour_de_france_ia",
-    eventTypeName: "Tour de France IA",
+    eventTypeName: "Tour France IA",
     utmContent,
     status,
     issue,
@@ -209,7 +208,7 @@ describe("le tableau du tunnel : clics → rendez-vous pris → maintenus", () =
     expect(parCle["tdf-final"]).toMatchObject({ arrivees: 2, pris: 1, maintenus: 1 });
     expect(parCle["tdf-collant"]).toMatchObject({ arrivees: 1, pris: 0 });
     expect(parCle["∅"]).toMatchObject({ libelle: "Non renseigné", arrivees: 1, pris: 0 });
-    expect(parCle["tdf-heros"]?.libelle).toBe("Tour de France IA (haut de page)");
+    expect(parCle["tdf-heros"]?.libelle).toBe("Tour France IA (haut de page)");
   });
 
   it("le bouton venu de utm_term (tdf-heros) prime sur un utm_content de post ; sans rien : « Non renseigné »", () => {
@@ -255,9 +254,9 @@ describe("le tableau du tunnel : clics → rendez-vous pris → maintenus", () =
 });
 
 describe("4. 🔴 la landing ne porte toujours aucune mesure", () => {
-  it("ni balise ni tunnel pour /tourdefrance-ia", () => {
-    expect(funnelKeyFromPath("/tourdefrance-ia")).toBeNull();
-    const sources = sourcesLanding("src/app/tourdefrance-ia").filter((f) => /\.tsx?$/.test(f));
+  it("ni balise ni tunnel pour /tour-france-ia", () => {
+    expect(funnelKeyFromPath("/tour-france-ia")).toBeNull();
+    const sources = sourcesLanding("src/app/tour-france-ia").filter((f) => /\.tsx?$/.test(f));
     expect(sources.length).toBeGreaterThan(1);
     for (const f of sources) {
       expect(lire(f), f).not.toMatch(/ArriveeReservationMesure|trackFunnel|funnel-beacon/);
@@ -299,7 +298,7 @@ describe("5. les sessions du Tour restent dans leur tunnel", () => {
     const stockage = new Map<string, string>();
     Object.assign(globalThis, {
       window: {
-        location: { pathname: "/fr/appel/tour-de-france-ia" },
+        location: { pathname: "/fr/appel/tour-france-ia" },
         innerWidth: 1200,
         sessionStorage: {
           getItem: (k: string) => stockage.get(k) ?? null,
@@ -316,7 +315,7 @@ describe("5. les sessions du Tour restent dans leur tunnel", () => {
       sendFunnelBeacon("Consent Banner Answered", { step: "accepted" });
       expect(envoyes).toHaveLength(0);
       expect(stockage.size).toBe(0);
-      sendFunnelBeacon("Call Booking Viewed", { landing: "tour-de-france-ia" });
+      sendFunnelBeacon("Call Booking Viewed", { landing: "tour-france-ia" });
       expect(envoyes).toHaveLength(1);
     } finally {
       Object.assign(globalThis, { window: anciens.w, document: anciens.d });

@@ -1,4 +1,4 @@
-// Tunnel Tour de France IA — de la landing au rendez-vous tenu (2026-10-26).
+// Tunnel Tour France IA — de la landing au rendez-vous tenu (2026-10-26).
 //
 // Page SERVEUR, aucun composant client. Le rendu vit dans `VueTour`, affichable
 // sans session. Garde : celle des appels réservés (`gardeLectureAppels`) — les
@@ -16,7 +16,7 @@ import { VueTour } from "../_components/VueTour";
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
-  title: "Tunnel Tour de France IA",
+  title: "Tunnel Tour France IA",
   robots: { index: false, follow: false },
 };
 

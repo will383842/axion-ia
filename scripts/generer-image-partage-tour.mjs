@@ -1,5 +1,5 @@
-// Régénère l'image de partage du Tour de France IA (1200 × 630, JPEG) :
-// `src/app/tourdefrance-ia/opengraph-image.jpg` et `twitter-image.jpg`.
+// Régénère l'image de partage du Tour France IA (1200 × 630, JPEG) :
+// `src/app/tour-france-ia/opengraph-image.jpg` et `twitter-image.jpg`.
 // Usage : node scripts/generer-image-partage-tour.mjs   (puis mettre à jour les `*.alt.txt`)
 //
 // SVG rendu par `sharp` (déjà dépendance du dépôt) ; les polices viennent de
@@ -46,7 +46,7 @@ const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" v
 
   <g font-family="Manrope" font-weight="700" fill="${C.ivoire}">
     <rect x="80" y="64" width="16" height="16" rx="8" fill="${C.terracottaSurMocha}"/>
-    <text x="110" y="79" font-size="22" letter-spacing="3">TOUR DE FRANCE IA</text>
+    <text x="110" y="79" font-size="22" letter-spacing="3">TOUR FRANCE IA</text>
     <text x="1120" y="79" font-size="22" text-anchor="end" fill="${C.ivoireAttenue}" font-weight="500">Axion-IA</text>
   </g>
 
@@ -59,7 +59,7 @@ const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" v
 
   <rect x="80" y="468" width="1040" height="2" fill="${C.ivoire}" fill-opacity="0.18"/>
   <text xml:space="preserve" x="80" y="528" font-family="Manrope" font-weight="700" font-size="32" fill="${C.ivoire}">Audit offert<tspan fill="${C.terracottaSurMocha}">  ·  </tspan>Formation de 4 h offerte<tspan fill="${C.terracottaSurMocha}">  ·  </tspan>De la TPE à l’ETI</text>
-  <text x="80" y="578" font-family="Manrope" font-weight="500" font-size="24" fill="${C.ivoireAttenue}">Tour de France IA, organisé par Axion-IA</text>
+  <text x="80" y="578" font-family="Manrope" font-weight="500" font-size="24" fill="${C.ivoireAttenue}">Tour France IA, organisé par Axion-IA</text>
 </svg>`;
 
 const jpeg = await sharp(Buffer.from(svg), { density: 72 })
@@ -67,7 +67,7 @@ const jpeg = await sharp(Buffer.from(svg), { density: 72 })
   .jpeg({ quality: 86, mozjpeg: true, chromaSubsampling: "4:4:4" })
   .toBuffer();
 for (const nom of ["opengraph-image.jpg", "twitter-image.jpg"]) {
-  const cible = join(RACINE, "src/app/tourdefrance-ia", nom);
+  const cible = join(RACINE, "src/app/tour-france-ia", nom);
   writeFileSync(cible, jpeg);
   console.log(`${nom} : ${(statSync(cible).size / 1024).toFixed(1)} Ko`);
 }

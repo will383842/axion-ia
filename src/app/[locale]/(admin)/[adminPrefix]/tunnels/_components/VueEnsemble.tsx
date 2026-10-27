@@ -185,7 +185,7 @@ export function VueEnsemble({
         <p className="admin-lede">
           Chaque session est comptée dans le tunnel où elle a <strong>commencé</strong>. Un visiteur
           qui arrive par la page publicitaire puis enchaîne sur le questionnaire reste attribué à la
-          page publicitaire : c&apos;est elle qui l&apos;a amené. Les sessions du Tour de France IA
+          page publicitaire : c&apos;est elle qui l&apos;a amené. Les sessions du Tour France IA
           (page de réservation, sans questionnaire) n&apos;apparaissent que dans cette table : elles
           ne sont pas comptées dans les totaux, entonnoirs et répartitions ci-dessous.
         </p>
