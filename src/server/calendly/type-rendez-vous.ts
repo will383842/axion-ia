@@ -69,7 +69,7 @@ export const LIBELLES_TYPE_RENDEZ_VOUS: Readonly<Record<TypeRendezVous, string>>
   apporteur: "Apporteur",
   salon: "Salon",
   autre: "Autre",
-  tour_de_france_ia: "Tour de France IA",
+  tour_de_france_ia: "Tour France IA",
 };
 
 /** Vrai si la valeur est l'un des types classés. */
@@ -146,12 +146,14 @@ function normaliserNom(nom: string): string {
 }
 
 /**
- * Le nom qui désigne la visio du Tour de France IA : « Tour de France IA », ou son
- * slug « tour-de-france-ia ». Les tirets sont normalisés avant la comparaison.
+ * Le nom qui désigne la visio du Tour France IA : « Tour France IA » (nom depuis le
+ * 2026-10-27), l'ancien « Tour de France IA », ou le slug Calendly inchangé
+ * « tour-de-france-ia ». Les tirets sont normalisés avant la comparaison.
  */
 export function estVisioTourDeFranceIa(nom: string | null | undefined): boolean {
   if (!nom || !nom.trim()) return false;
-  return normaliserNom(nom).includes("tour de france ia");
+  const n = normaliserNom(nom);
+  return n.includes("tour france ia") || n.includes("tour de france ia");
 }
 
 /** Morceaux de nom qui désignent un échange projet. « premier contact » = slug de l'iframe. */
@@ -160,7 +162,7 @@ const MOTS_ECHANGE_PROJET = ["discutons de votre projet", "echange projet", "pre
 /**
  * Classement par le NOM seul — repli, et règle de la reprise SQL.
  *
- * Ordre : apporteur, salon (sans apporteur), Tour de France IA, diagnostic, échange
+ * Ordre : apporteur, salon (sans apporteur), Tour France IA, diagnostic, échange
  * projet, autre.
  * Les deux premiers réutilisent les règles existantes (`estAppelApporteur`,
  * `estRdvSalon`) pour qu'il n'existe qu'une définition de chaque mot-clé.
@@ -368,7 +370,7 @@ export function besoinDesReponses(questionsAndAnswers: unknown): string | null {
 }
 
 /**
- * La VILLE indiquée dans le formulaire de la visio du Tour de France IA : la
+ * La VILLE indiquée dans le formulaire de la visio du Tour France IA : la
  * réponse à la question dont le libellé contient « ville » (ou « localité »).
  * Bornée comme le besoin. `null` s'il n'y en a pas.
  */

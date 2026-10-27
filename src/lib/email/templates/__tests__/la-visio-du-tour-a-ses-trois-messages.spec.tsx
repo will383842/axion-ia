@@ -1,5 +1,5 @@
 /**
- * La visio du Tour de France IA a ses trois messages propres (2026-10-25) :
+ * La visio du Tour France IA a ses trois messages propres (2026-10-25) :
  * confirmation, rappel la veille, rappel une heure avant. Modèle : l'appel de
  * découverte, ton chaleureux, vouvoiement. Ils passent par le gabarit existant
  * `appel-rappel` — donc par ses règles existantes (objet ≤ 45 caractères, liens
@@ -32,7 +32,7 @@ describe("objets", () => {
   it.each(MOMENTS)("%s : objet court, propre au Tour", async (moment) => {
     const { subject } = await rendre(moment);
     expect(subject.length).toBeLessThanOrEqual(OBJET_MAX);
-    expect(subject).toMatch(/Tour de France IA/);
+    expect(subject).toMatch(/Tour France IA/);
   });
 
   it("sans date ni heure, l'objet de confirmation reste vrai", async () => {
@@ -42,7 +42,7 @@ describe("objets", () => {
       moment: "confirmation",
       typeRendezVous: "tour_de_france_ia",
     });
-    expect(subject).toBe("Votre visio Tour de France IA est confirmée");
+    expect(subject).toBe("Votre visio Tour France IA est confirmée");
     expect(subject).not.toMatch(/undefined/);
   });
 
@@ -56,7 +56,7 @@ describe("corps", () => {
   it.each(MOMENTS)("%s : parle du Tour, vouvoie, garde annuler et reporter", async (moment) => {
     const rendu = await rendre(moment);
     const t = `${rendu.html} ${rendu.text ?? ""}`;
-    expect(t).toMatch(/Tour de France IA/);
+    expect(t).toMatch(/Tour France IA/);
     expect(t).toContain(BASE.cancelUrl);
     expect(t).toContain(BASE.rescheduleUrl);
     expect(t).not.toMatch(/\b(tu|ton|ta|tes)\b/i);
@@ -70,10 +70,8 @@ describe("corps", () => {
   });
 
   it("rappels : titres propres au Tour", async () => {
-    expect((await rendre("j1")).html).toMatch(/Votre visio Tour de France IA a lieu demain/);
-    expect((await rendre("h1")).html).toMatch(
-      /Votre visio Tour de France IA a lieu dans une heure/,
-    );
+    expect((await rendre("j1")).html).toMatch(/Votre visio Tour France IA a lieu demain/);
+    expect((await rendre("h1")).html).toMatch(/Votre visio Tour France IA a lieu dans une heure/);
   });
 
   it("la ville du formulaire est reprise quand on la connaît", async () => {
@@ -99,6 +97,6 @@ describe("corps", () => {
       typeRendezVous: "autre",
       moment: "confirmation",
     });
-    expect(rendu.subject).not.toMatch(/Tour de France IA/);
+    expect(rendu.subject).not.toMatch(/Tour France IA/);
   });
 });

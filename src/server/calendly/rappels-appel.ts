@@ -385,7 +385,7 @@ export function champsTypeClient(rdv: {
   readonly rawPayload?: unknown;
 }): { typeRendezVous: string; besoin?: string } {
   const type = typeEffectif(rdv);
-  // Échange projet : le service choisi. Tour de France IA : la ville (même champ du gabarit).
+  // Échange projet : le service choisi. Tour France IA : la ville (même champ du gabarit).
   const besoin =
     type === "echange_projet"
       ? besoinDuBrut(rdv.rawPayload)

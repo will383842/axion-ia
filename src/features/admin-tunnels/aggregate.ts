@@ -150,9 +150,9 @@ export const TUNNELS_CONNUS: ReadonlyArray<{
   { cle: "simulateur", libelle: "Questionnaire nu", chemin: "/fr/simulateur" },
   { cle: "roi", libelle: "Questionnaire public", chemin: "/fr/roi" },
   { cle: "apporteur", libelle: "Recrutement d'apporteurs", chemin: "/fr/apporteur-affaires" },
-  // Tour de France IA (2026-10-26) : ses balises viennent de la page de RÉSERVATION
+  // Tour France IA (2026-10-26) : ses balises viennent de la page de RÉSERVATION
   // (la landing n'en porte aucune) ; le lien ouvre la landing, la porte d'entrée.
-  { cle: "tour", libelle: "Tour de France IA", chemin: "/tourdefrance-ia" },
+  { cle: "tour", libelle: "Tour France IA", chemin: "/tour-france-ia" },
 ];
 
 /** Noms lisibles des tunnels. Une clé inconnue s'affiche telle quelle. */

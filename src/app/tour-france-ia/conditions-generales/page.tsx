@@ -1,4 +1,4 @@
-// `/tourdefrance-ia/conditions-generales` — les conditions générales du Tour de
+// `/tour-france-ia/conditions-generales` — les conditions générales du Tour
 // France IA (2026-10-27). Une page de LECTURE, liée sous chaque grand bouton de la
 // landing et depuis son pied de page.
 //

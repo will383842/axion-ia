@@ -1,4 +1,4 @@
-// Toute adresse inconnue sous `/tourdefrance-ia/…` → la 404 PROPRE au Tour
+// Toute adresse inconnue sous `/tour-france-ia/…` → la 404 PROPRE au Tour
 // (`../not-found.tsx`). Sans ce segment, Next rendrait la 404 racine du site.
 
 import { notFound } from "next/navigation";

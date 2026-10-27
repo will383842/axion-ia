@@ -1,4 +1,4 @@
-// Tour de France IA — l'emplacement de la vidéo du héros (composant SERVEUR, aucun
+// Tour France IA — l'emplacement de la vidéo du héros (composant SERVEUR, aucun
 // script). La vidéo viendra ; la page est complète sans elle.
 //
 //   · `video` nul : la boîte porte la frise dessinée du héros (`children`), et la

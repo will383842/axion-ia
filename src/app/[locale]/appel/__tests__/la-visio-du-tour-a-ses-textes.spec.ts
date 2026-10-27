@@ -1,6 +1,6 @@
 /**
  * Les textes de l'écran de confirmation et l'attribution propres à la visio du
- * Tour de France IA (2026-10-25). Garde de SOURCE, comme les autres gardes du
+ * Tour France IA (2026-10-25). Garde de SOURCE, comme les autres gardes du
  * parcours : la page est un composant serveur asynchrone.
  */
 import { readFileSync } from "node:fs";
@@ -19,7 +19,7 @@ describe("l'écran /appel/confirme", () => {
 
   it("porte un texte propre au Tour, sans promesse de résultat ni de prestation", () => {
     expect(CONFIRME).toContain("Une visio pour faire connaissance");
-    expect(CONFIRME).toContain("nous vous présentons le Tour de France IA");
+    expect(CONFIRME).toContain("nous vous présentons le Tour France IA");
     expect(CONFIRME).toContain("confirmez votre participation");
     const bloc = CONFIRME.slice(CONFIRME.indexOf("Une visio pour faire connaissance") - 200);
     expect(bloc.slice(0, 600)).not.toMatch(/devis|prix|signature|gratuit/i);

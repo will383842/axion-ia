@@ -108,6 +108,19 @@ export function champDeLaPosition(position: number): string {
 export const QUESTIONS_MASQUEES: readonly string[] = ["Ville de l'entreprise"];
 
 /**
+ * 2026-10-27 — la visio du Tour France IA (choix `tour`, type `tour_de_france_ia`)
+ * DEMANDE la ville : c'est elle qui décide dans quelle ville l'entreprise compte
+ * (« Ville de votre entreprise », obligatoire chez Calendly). Pour ce type, et pour
+ * lui seul, rien n'est masqué : la réponse part avec le rendez-vous et se lit
+ * ensuite comme les autres champs (`villeDuBrut`, fiche, console, synchro). Les
+ * autres types gardent le masquage.
+ */
+export interface OptionsLecture {
+  /** Vrai pour la visio du Tour : aucune question n'est masquée, la ville comprise. */
+  readonly sansMasquage?: boolean;
+}
+
+/**
  * Compare deux libellés sans buter sur la casse, les accents ou la ponctuation.
  * Exportée pour le report (`report.ts`), qui apparie les réponses d'un ancien
  * rendez-vous aux questions ACTUELLES de l'event-type.
@@ -124,7 +137,12 @@ export function normaliserLibelle(s: string): string {
 const MASQUEES_NORMALISEES = new Set(QUESTIONS_MASQUEES.map(normaliserLibelle));
 
 /** Cette question active et FACULTATIVE est-elle de celles qu'on ne pose plus ? */
-export function questionMasquee(libelle: string, requise: boolean): boolean {
+export function questionMasquee(
+  libelle: string,
+  requise: boolean,
+  options: OptionsLecture = {},
+): boolean {
+  if (options.sansMasquage) return false;
   return !requise && MASQUEES_NORMALISEES.has(normaliserLibelle(libelle));
 }
 
@@ -143,7 +161,10 @@ function texte(o: Record<string, unknown>, cle: string): string | null {
  * Pure et sans réseau : c'est ici que vivent toutes les décisions, donc c'est
  * ici qu'on peut les éprouver sans dépendre de Calendly.
  */
-export function lireLesQuestions(customQuestions: unknown): LectureQuestions {
+export function lireLesQuestions(
+  customQuestions: unknown,
+  options: OptionsLecture = {},
+): LectureQuestions {
   if (!Array.isArray(customQuestions)) {
     // Un event-type sans question est parfaitement légitime — et l'absence de
     // la clé se lit comme « aucune », pas comme une panne.
@@ -217,7 +238,7 @@ export function lireLesQuestions(customQuestions: unknown): LectureQuestions {
     // délibéré : une question masquée dont le TYPE est inconnu doit quand même
     // fermer le formulaire. Sinon, ajouter un libellé à `QUESTIONS_MASQUEES`
     // reviendrait à désarmer la règle du fichier pour cette question-là.
-    if (questionMasquee(libelle, q["required"] === true)) continue;
+    if (questionMasquee(libelle, q["required"] === true, options)) continue;
 
     questions.push({
       libelle,

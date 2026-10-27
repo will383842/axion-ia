@@ -1,10 +1,10 @@
-// Tour de France IA — la porte d'aperçu (2026-10-25).
+// Tour France IA — la porte d'aperçu (2026-10-25).
 //
-// Tant que `TOUR_PUBLIC` est faux, `/tourdefrance-ia…` n'existe pour personne,
+// Tant que `TOUR_PUBLIC` est faux, `/tour-france-ia…` n'existe pour personne,
 // sauf pour qui porte le cookie d'aperçu `tdf_apercu`. Ce cookie ne contient
 // pas le jeton : il contient son EMPREINTE SHA-256 (hexadécimale). Le jeton
 // lui-même ne vit que dans la variable `TOUR_APERCU_JETON` du serveur, et ne
-// passe qu'une fois, dans l'adresse `/api/tourdefrance-ia/apercu?jeton=…`.
+// passe qu'une fois, dans l'adresse `/api/tour-france-ia/apercu?jeton=…`.
 //
 // 🔴 Variable absente ou vide : la porte reste FERMÉE pour tout le monde. Une
 // empreinte de chaîne vide serait un cookie que n'importe qui peut fabriquer.
@@ -20,7 +20,7 @@ export const COOKIE_APERCU = "tdf_apercu";
 /** Durée de vie du cookie d'aperçu : 30 jours. */
 export const DUREE_APERCU_SECONDES = 30 * 24 * 60 * 60;
 
-/** Vrai pour `/tourdefrance-ia` et tout ce qui est en dessous — jamais `/tourdefrance-ia-x`. */
+/** Vrai pour `/tour-france-ia` et tout ce qui est en dessous — jamais `/tour-france-ia-x`. */
 export function estCheminDuTour(pathname: string): boolean {
   return pathname === TOUR_PREFIX || pathname.startsWith(`${TOUR_PREFIX}/`);
 }

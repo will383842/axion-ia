@@ -1,5 +1,5 @@
-// 404 propre au Tour de France IA : la coquille du Tour (aucun en-tête d'Axion),
-// `noindex`, un seul lien utile. Rendue par `notFound()` sous `/tourdefrance-ia`
+// 404 propre au Tour France IA : la coquille du Tour (aucun en-tête d'Axion),
+// `noindex`, un seul lien utile. Rendue par `notFound()` sous `/tour-france-ia`
 // (`[...reste]/page.tsx` y envoie toute adresse inconnue du Tour).
 //
 // ⚠️ Tant que le Tour est fermé, un visiteur sans aperçu n'arrive jamais ici : le
@@ -23,10 +23,10 @@ export default function TourIntrouvable() {
         Cette page n’existe pas.
       </h1>
       <Link
-        href="/tourdefrance-ia"
+        href="/tour-france-ia"
         className="text-fg decoration-border-strong hover:decoration-terracotta mt-6 inline-flex min-h-11 items-center underline decoration-1 underline-offset-4"
       >
-        Retour au Tour de France IA
+        Retour au Tour France IA
       </Link>
     </main>
   );

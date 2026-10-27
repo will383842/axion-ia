@@ -1,18 +1,18 @@
 // @vitest-environment node
 
 /**
- * LE TOUR DE FRANCE IA EST OUVERT AU PUBLIC (ouvert le 2026-10-25).
+ * LE TOUR FRANCE IA EST OUVERT AU PUBLIC (ouvert le 2026-10-25).
  *
- * La landing `/tourdefrance-ia` est ouverte (`TOUR_PUBLIC = true`). Ce qui doit
+ * La landing `/tour-france-ia` est ouverte (`TOUR_PUBLIC = true`). Ce qui doit
  * tenir :
  *
- *   · le proxy la CAPTE et ne la 301 JAMAIS vers `/fr` (`/fr/tourdefrance-ia`
+ *   · le proxy la CAPTE et ne la 301 JAMAIS vers `/fr` (`/fr/tour-france-ia`
  *     n'existe pas) — le motif réel du `matcher` est extrait et exécuté ;
  *   · la porte laisse passer tout le monde ; FERMÉE, elle répond 404 sans
  *     cookie, avec un faux cookie ou sans jeton configuré (le retour arrière
  *     reste prouvé : fonction pure et modules rechargés avec le drapeau faux) ;
  *   · la page est indexable, canonique, à un seul H1, avec son JSON-LD et son
- *     image de partage ; `/fr/appel/tour-de-france-ia` reste `noindex` ;
+ *     image de partage ; `/fr/appel/tour-france-ia` reste `noindex` ;
  *   · le sitemap du Tour, l'index des sitemaps et `llms.txt` citent la route ;
  *   · le contenu ne porte aucun mot interdit, aucun prix, et la page n'importe
  *     aucun composant de la coquille d'Axion ;
@@ -39,17 +39,23 @@ import {
   verdictDeLaPorte,
 } from "@/features/tour-de-france/porte";
 import { TOUR_PREFIX, TOUR_PUBLIC } from "@/features/tour-de-france/visibilite";
+import { choixDeLaRoute, TYPES_RESERVABLES } from "@/server/calendly/types-reservables";
 
 import {
   APPEL_FINAL,
   CONDITIONS,
   DEFINITION,
+  CHEMIN_CONDITIONS,
+  CHEMIN_RENDEZ_VOUS,
   FAQ,
   HEROS,
   META,
+  NOM_DU_TOUR,
+  PIED,
   PROMESSE,
   toutLeTexte,
 } from "../contenu";
+import { toutLeTexteDesConditions } from "../conditions-generales/conditions";
 import { DESCRIPTION_DE_L_OFFRE, DESCRIPTION_DU_SERVICE, jsonLdDuTour } from "../jsonld";
 
 const RACINE = process.cwd();
@@ -95,9 +101,9 @@ function dimensionsJpeg(octets: Buffer): { largeur: number; hauteur: number } | 
 }
 
 describe("🔑 l'interrupteur", () => {
-  it("le Tour est OUVERT, sous /tourdefrance-ia", () => {
+  it("le Tour est OUVERT, sous /tour-france-ia", () => {
     expect(TOUR_PUBLIC).toBe(true);
-    expect(TOUR_PREFIX).toBe("/tourdefrance-ia");
+    expect(TOUR_PREFIX).toBe("/tour-france-ia");
   });
 });
 
@@ -106,12 +112,12 @@ describe("🔑 le proxy capte la landing et ne la 301 jamais vers /fr", () => {
   // Source BRUTE : le proxy cite `/medias/*` en commentaire, ce qui tromperait `sansCommentaires`.
   const proxy = lire("src/proxy.ts");
 
-  it("le matcher capte /tourdefrance-ia et ses sous-chemins", () => {
-    expect(matcher.test("/tourdefrance-ia")).toBe(true);
-    expect(matcher.test("/tourdefrance-ia/")).toBe(true);
-    expect(matcher.test("/tourdefrance-ia/une-adresse-inconnue")).toBe(true);
-    expect(matcher.test("/tourdefrance-ia/opengraph-image.jpg")).toBe(true);
-    expect(matcher.test("/tourdefrance-ia/twitter-image.jpg")).toBe(true);
+  it("le matcher capte /tour-france-ia et ses sous-chemins", () => {
+    expect(matcher.test("/tour-france-ia")).toBe(true);
+    expect(matcher.test("/tour-france-ia/")).toBe(true);
+    expect(matcher.test("/tour-france-ia/une-adresse-inconnue")).toBe(true);
+    expect(matcher.test("/tour-france-ia/opengraph-image.jpg")).toBe(true);
+    expect(matcher.test("/tour-france-ia/twitter-image.jpg")).toBe(true);
   });
 
   it("la règle 0-TDF passe AVANT 0a-bis (legacy) et 0bis (301 vers /fr)", () => {
@@ -137,10 +143,10 @@ describe("🔑 le proxy capte la landing et ne la 301 jamais vers /fr", () => {
   });
 
   it("contre-témoin : une route voisine n'est pas prise pour le Tour", () => {
-    expect(estCheminDuTour("/tourdefrance-ia")).toBe(true);
-    expect(estCheminDuTour("/tourdefrance-ia/x")).toBe(true);
-    expect(estCheminDuTour("/tourdefrance-ia-2026")).toBe(false);
-    expect(estCheminDuTour("/fr/tourdefrance-ia")).toBe(false);
+    expect(estCheminDuTour("/tour-france-ia")).toBe(true);
+    expect(estCheminDuTour("/tour-france-ia/x")).toBe(true);
+    expect(estCheminDuTour("/tour-france-ia-2026")).toBe(false);
+    expect(estCheminDuTour("/fr/tour-france-ia")).toBe(false);
     expect(estCheminDuTour("/")).toBe(false);
   });
 });
@@ -218,14 +224,14 @@ describe("🔴 la porte d'aperçu", () => {
   });
 });
 
-describe("🔴 la route d'aperçu /api/tourdefrance-ia/apercu", () => {
+describe("🔴 la route d'aperçu /api/tour-france-ia/apercu", () => {
   afterEach(() => {
     vi.unstubAllEnvs();
   });
 
   async function appeler(query: string): Promise<Response> {
-    const { GET } = await import("@/app/api/tourdefrance-ia/apercu/route");
-    return GET(new Request(`https://axion-ia.com/api/tourdefrance-ia/apercu${query}`));
+    const { GET } = await import("@/app/api/tour-france-ia/apercu/route");
+    return GET(new Request(`https://axion-ia.com/api/tour-france-ia/apercu${query}`));
   }
 
   it("404 sans variable configurée, même avec un jeton", async () => {
@@ -275,23 +281,23 @@ describe("🔴 la route d'aperçu /api/tourdefrance-ia/apercu", () => {
   });
 
   it("la route ne journalise rien", () => {
-    const code = sansCommentaires(lire("src/app/api/tourdefrance-ia/apercu/route.ts"));
+    const code = sansCommentaires(lire("src/app/api/tour-france-ia/apercu/route.ts"));
     expect(code).not.toMatch(/console\.|logger|captureException/);
   });
 });
 
 describe("🔴 ouvert : le sitemap, l'index et llms.txt citent la route", () => {
   it("le sitemap du Tour liste la page", async () => {
-    const { GET } = await import("@/app/sitemap-tourdefrance-ia.xml/route");
+    const { GET } = await import("@/app/sitemap-tour-france-ia.xml/route");
     const xml = await GET().text();
     expect(xml).toContain("<urlset");
     expect(xml.match(/<url>/g)).toHaveLength(1);
-    expect(xml).toMatch(/<loc>https?:\/\/[^<]+\/tourdefrance-ia<\/loc>/);
+    expect(xml).toMatch(/<loc>https?:\/\/[^<]+\/tour-france-ia<\/loc>/);
   });
 
   it("l'index cite le sitemap du Tour (et ne le liste que si TOUR_PUBLIC)", () => {
     const index = sansCommentaires(lire("src/app/sitemap-index.xml/route.ts"));
-    expect(index).toContain('if (path === "/sitemap-tourdefrance-ia.xml") return TOUR_PUBLIC;');
+    expect(index).toContain('if (path === "/sitemap-tour-france-ia.xml") return TOUR_PUBLIC;');
   });
 
   it("aucune autre source de sitemap ne cite la route", () => {
@@ -299,7 +305,7 @@ describe("🔴 ouvert : le sitemap, l'index et llms.txt citent la route", () => 
     const sources = [
       join(app, "sitemap.ts"),
       ...readdirSync(app)
-        .filter((n) => n.startsWith("sitemap") && n !== "sitemap-tourdefrance-ia.xml")
+        .filter((n) => n.startsWith("sitemap") && n !== "sitemap-tour-france-ia.xml")
         .flatMap((n) => {
           const p = join(app, n);
           return statSync(p).isDirectory() ? fichiers(p) : [p];
@@ -310,16 +316,16 @@ describe("🔴 ouvert : le sitemap, l'index et llms.txt citent la route", () => 
     for (const f of sources) {
       const code = readFileSync(f, "utf8")
         .replace(/^\s*\/\/.*$/gm, " ")
-        .replaceAll('"/sitemap-tourdefrance-ia.xml"', "");
-      expect(code, f).not.toMatch(/tourdefrance-ia/);
+        .replaceAll('"/sitemap-tour-france-ia.xml"', "");
+      expect(code, f).not.toMatch(/tour-france-ia/);
     }
   });
 
   it("llms.txt cite le Tour derrière l'interrupteur, et robots.ts ne le cite pas", async () => {
     const llms = sansCommentaires(lire("src/app/llms.txt/route.ts"));
     expect(llms).toMatch(/const sectionTour = TOUR_PUBLIC\s*\?/);
-    expect(lire("src/app/robots.ts")).not.toMatch(/tourdefrance/);
-    expect(lire("src/app/llms.txt/route.ts")).toContain("## Tour de France IA");
+    expect(lire("src/app/robots.ts")).not.toMatch(/tour-?(de-?)?france/);
+    expect(lire("src/app/llms.txt/route.ts")).toContain("## Tour France IA");
   });
 });
 
@@ -333,63 +339,59 @@ describe("🔴 refermer le Tour (TOUR_PUBLIC = false) redonne 404 et retire la r
     vi.resetModules();
     vi.doMock("@/features/tour-de-france/visibilite", () => ({
       TOUR_PUBLIC: false,
-      TOUR_PREFIX: "/tourdefrance-ia",
+      TOUR_PREFIX: "/tour-france-ia",
     }));
-    const { GET } = await import("@/app/sitemap-tourdefrance-ia.xml/route");
+    const { GET } = await import("@/app/sitemap-tour-france-ia.xml/route");
     const xml = await GET().text();
     expect(xml).toContain("<urlset");
     expect(xml).not.toContain("<url>");
-    expect(xml).not.toContain("tourdefrance-ia");
+    expect(xml).not.toContain("tour-france-ia");
   });
 });
 
 describe("🔴 la landing ouverte : indexable, canonique, partageable ; la page d'appel reste noindex", () => {
   it("le layout rend la page indexable quand le Tour est ouvert", () => {
-    const layout = sansCommentaires(lire("src/app/tourdefrance-ia/layout.tsx"));
+    const layout = sansCommentaires(lire("src/app/tour-france-ia/layout.tsx"));
     expect(layout).toContain("robots: TOUR_PUBLIC ?");
     expect(layout).toContain("{ index: true, follow: true }");
   });
 
   it("canonique relative résolue contre la production, sans hreflang", () => {
-    const page = sansCommentaires(lire("src/app/tourdefrance-ia/page.tsx"));
+    const page = sansCommentaires(lire("src/app/tour-france-ia/page.tsx"));
     expect(page).toContain("alternates: { canonical: URL_CANONIQUE }");
     expect(page).not.toMatch(/languages\s*:/);
-    expect(META.chemin).toBe("/tourdefrance-ia");
-    expect(sansCommentaires(lire("src/app/tourdefrance-ia/layout.tsx"))).toContain(
+    expect(META.chemin).toBe("/tour-france-ia");
+    expect(sansCommentaires(lire("src/app/tour-france-ia/layout.tsx"))).toContain(
       "metadataBase: new URL(ORIGINE)",
     );
     const ld = JSON.stringify(jsonLdDuTour());
-    expect(ld).toContain(`${"/tourdefrance-ia"}#webpage`);
+    expect(ld).toContain(`${"/tour-france-ia"}#webpage`);
   });
 
   it("l'image de partage est servie par convention de fichier (1200×630)", () => {
     for (const nom of ["opengraph-image.jpg", "twitter-image.jpg"]) {
-      const taille = statSync(join(RACINE, "src/app/tourdefrance-ia", nom)).size;
+      const taille = statSync(join(RACINE, "src/app/tour-france-ia", nom)).size;
       expect(taille, nom).toBeGreaterThan(5_000);
-      const octets = readFileSync(join(RACINE, "src/app/tourdefrance-ia", nom));
+      const octets = readFileSync(join(RACINE, "src/app/tour-france-ia", nom));
       expect(octets[0]).toBe(0xff);
       expect(octets[1]).toBe(0xd8);
       expect(dimensionsJpeg(octets), nom).toEqual({ largeur: 1200, hauteur: 630 });
     }
-    expect(lire("src/app/tourdefrance-ia/opengraph-image.alt.txt").trim().length).toBeGreaterThan(
-      0,
-    );
+    expect(lire("src/app/tour-france-ia/opengraph-image.alt.txt").trim().length).toBeGreaterThan(0);
   });
 
-  it("/fr/appel/tour-de-france-ia reste noindex", () => {
+  it("/fr/appel/tour-france-ia reste noindex", () => {
     const page = sansCommentaires(lire("src/app/[locale]/appel/[type]/page.tsx"));
     expect(page.match(/robots: \{ index: false, follow: false \}/g)?.length).toBeGreaterThanOrEqual(
       2,
     );
     expect(page).not.toMatch(/index: true/);
-    expect(lire("src/server/calendly/types-reservables.ts")).toContain(
-      'route: "tour-de-france-ia"',
-    );
+    expect(lire("src/server/calendly/types-reservables.ts")).toContain('route: "tour-france-ia"');
   });
 });
 
 describe("🔴 la page n'embarque rien de la coquille d'Axion", () => {
-  const dossier = join(RACINE, "src/app/tourdefrance-ia");
+  const dossier = join(RACINE, "src/app/tour-france-ia");
   const sources = fichiers(dossier).filter(
     (f) => /\.(tsx?|css)$/.test(f) && !f.includes("__tests__"),
   );
@@ -411,14 +413,14 @@ describe("🔴 la page n'embarque rien de la coquille d'Axion", () => {
   it("un seul composant client, et un seul H1", () => {
     const clients = sources.filter((f) => readFileSync(f, "utf8").startsWith('"use client"'));
     expect(clients.map((f) => f.replace(`${dossier}/`, ""))).toEqual(["_composants/PiloteCta.tsx"]);
-    const page = lire("src/app/tourdefrance-ia/page.tsx");
+    const page = lire("src/app/tour-france-ia/page.tsx");
     expect(page.match(/<h1\b/g)).toHaveLength(1);
   });
 
   it("ouvert : la page est statique ; refermée, elle devient dynamique et noindex", () => {
-    const page = sansCommentaires(lire("src/app/tourdefrance-ia/page.tsx"));
+    const page = sansCommentaires(lire("src/app/tour-france-ia/page.tsx"));
     expect(page).toContain("if (!TOUR_PUBLIC) await connection();");
-    const layout = sansCommentaires(lire("src/app/tourdefrance-ia/layout.tsx"));
+    const layout = sansCommentaires(lire("src/app/tour-france-ia/layout.tsx"));
     expect(layout).toMatch(
       /robots: TOUR_PUBLIC \? \{ index: true, follow: true \} : \{ index: false, follow: false \}/,
     );
@@ -426,18 +428,18 @@ describe("🔴 la page n'embarque rien de la coquille d'Axion", () => {
   });
 
   it("le bouton mène à la visio du Tour, par le parcours de rendez-vous du site", () => {
-    const page = lire("src/app/tourdefrance-ia/page.tsx");
+    const page = lire("src/app/tour-france-ia/page.tsx");
     expect(page).toContain("lienRendezVous(");
-    expect(lire("src/app/tourdefrance-ia/contenu.ts")).toContain(
-      'CHEMIN_RENDEZ_VOUS = "/fr/appel/tour-de-france-ia"',
+    expect(lire("src/app/tour-france-ia/contenu.ts")).toContain(
+      'CHEMIN_RENDEZ_VOUS = "/fr/appel/tour-france-ia"',
     );
   });
 });
 
-/** La section « Tour de France IA » de llms.txt, seule : le reste du fichier parle d'autres offres. */
+/** La section « Tour France IA » de llms.txt, seule : le reste du fichier parle d'autres offres. */
 function sectionTourLlms(): string {
   const llms = lire("src/app/llms.txt/route.ts");
-  const debut = llms.indexOf("## Tour de France IA");
+  const debut = llms.indexOf("## Tour France IA");
   expect(debut).toBeGreaterThan(-1);
   return llms.slice(debut, llms.indexOf("`", debut));
 }
@@ -447,7 +449,7 @@ describe("🔴 le contenu : mots interdits, typographie, SEO", () => {
   // Le nom de fichier `types-reservables.ts` (cité en commentaire) n'est pas du texte.
   // `conditions-generales/conditions.ts` est HORS de cette garde : il porte les
   // montants et le détail juridique (garde propre : `les-conditions-generales.spec.ts`).
-  const sources = ["src/app/tourdefrance-ia/contenu.ts", "src/app/tourdefrance-ia/page.tsx"]
+  const sources = ["src/app/tour-france-ia/contenu.ts", "src/app/tour-france-ia/page.tsx"]
     .map(lire)
     .join("\n")
     .replaceAll("types-reservables", "");
@@ -509,6 +511,9 @@ describe("🔴 le contenu : mots interdits, typographie, SEO", () => {
       /\bbillet/i,
       /participer/i,
       /[ée]v[ée]nement/i,
+      // Corrections du propriétaire (2026-10-27) : le repas de midi n'est dit nulle part.
+      /d[ée]jeuner/i,
+      /repas de midi/i,
     ];
     for (const motif of interdits) {
       expect(texte, String(motif)).not.toMatch(motif);
@@ -534,8 +539,8 @@ describe("🔴 le contenu : mots interdits, typographie, SEO", () => {
     expect(HEROS.promesse).toBe(
       "Une journée offerte dans votre entreprise : audit + formation IA de votre équipe.",
     );
-    expect(HEROS.surtitre).toBe("Le Tour de France IA arrive dans votre ville");
-    const page = lire("src/app/tourdefrance-ia/page.tsx");
+    expect(HEROS.surtitre).toBe("Le Tour France IA arrive dans votre ville");
+    const page = lire("src/app/tour-france-ia/page.tsx");
     expect(page).toMatch(/<\/h1>\s*<p[^>]*>\s*\{HEROS\.promesse\}/);
   });
 
@@ -555,7 +560,7 @@ describe("🔴 le contenu : mots interdits, typographie, SEO", () => {
       "Une journée offerte dans votre entreprise : audit + formation IA de votre équipe. 5 entreprises retenues par ville.",
     );
     // Les conditions sont affichées sous le bouton du héros ET sous celui de l'appel final.
-    const page = lire("src/app/tourdefrance-ia/page.tsx");
+    const page = lire("src/app/tour-france-ia/page.tsx");
     expect(page).toContain("{HEROS.conditions}");
     expect(page).toContain("{APPEL_FINAL.conditions}");
     expect(APPEL_FINAL.conditions).toMatch(/retenues/);
@@ -619,7 +624,9 @@ describe("🔴 le contenu : mots interdits, typographie, SEO", () => {
       expect(texte.slice(m.index, (m.index ?? 0) + 10)).toBe("tarif Tour");
     }
     const nonRetenu = FAQ.questions.find((q) => q.question === "Et si je ne suis pas retenu ?");
-    expect(nonRetenu?.reponse).toMatch(/tarif Tour, montant précisé dans les conditions générales/);
+    expect(nonRetenu?.reponse).toMatch(
+      /tarif Tour, convenu avec vous \(voir les conditions générales\)/,
+    );
   });
 
   it("typographie : apostrophe typographique, espace insécable avant : ; ? ! et « e-mail »", () => {
@@ -630,7 +637,7 @@ describe("🔴 le contenu : mots interdits, typographie, SEO", () => {
   });
 
   it("titre ≤ 60, description < 155, six Q/R", () => {
-    expect(META.titre).toBe("Tour de France IA\u00a0: une journée offerte chez vous");
+    expect(META.titre).toBe("Tour France IA dans votre ville\u00a0: une journée offerte");
     expect(META.titre.length).toBeLessThanOrEqual(60);
     expect(META.description.length).toBeLessThan(155);
     expect(FAQ.questions).toHaveLength(6);
@@ -670,9 +677,9 @@ describe("🔴 le Tour est une OFFRE aux entreprises, pas un événement (JSON-L
   const service = graphe.find((n) => n["@id"] === `${String(graphe[0]?.["url"])}#tour`) ?? {};
   const json = JSON.stringify(ld);
 
-  it("le nœud du Tour est un Service nommé « Tour de France IA », servi aux entreprises en France", () => {
+  it("le nœud du Tour est un Service nommé « Tour France IA », servi aux entreprises en France", () => {
     expect(service["@type"]).toBe("Service");
-    expect(service["name"]).toBe("Tour de France IA");
+    expect(service["name"]).toBe("Tour France IA");
     expect(service["serviceType"]).toBe(
       "Audit et formation en intelligence artificielle pour les entreprises",
     );
@@ -686,7 +693,7 @@ describe("🔴 le Tour est une OFFRE aux entreprises, pas un événement (JSON-L
   it("la description reprend la définition : la ville des 5 demandes, la sélection, le podcast", () => {
     const description = String(service["description"]);
     expect(DESCRIPTION_DU_SERVICE).toContain(DEFINITION);
-    expect(description).toMatch(/tour de France de l[’']IA/);
+    expect(description).toMatch(/^Le Tour France IA d’Axion-IA, d’une ville à l’autre\./);
     expect(description).toMatch(
       /formation de 4 h de leur équipe, en intra-entreprise et en présentiel/,
     );
@@ -742,6 +749,8 @@ describe("🔴 le Tour est une OFFRE aux entreprises, pas un événement (JSON-L
       /\bau plus\b/i,
       /liste d[’']attente/i,
       /seulement 5/i,
+      /d[ée]jeuner/i,
+      /repas de midi/i,
     ];
     for (const motif of interdits) expect(json, String(motif)).not.toMatch(motif);
   });
@@ -804,9 +813,106 @@ describe("🔴 une ville S'OUVRE dès 5 demandes ; 5 journées offertes par vill
       "Le dîner du vendredi est-il compris ?",
     ]);
     // La non-affiliation reste dans le pied de page.
-    expect(lire("src/app/tourdefrance-ia/page.tsx")).toContain("{PIED.nonAffiliation}");
+    expect(lire("src/app/tour-france-ia/page.tsx")).toContain("{PIED.nonAffiliation}");
     for (const q of FAQ.questions) {
       expect(json).toContain(JSON.stringify(q.reponse).slice(1, -1));
     }
+  });
+});
+
+describe("🔴 le nom « Tour France IA » et l'adresse /tour-france-ia (corrections du 2026-10-27)", () => {
+  // Le nom évite toute confusion avec le Tour de France cycliste : « Tour de France »
+  // ne reste QUE dans la phrase de non-affiliation du pied de page.
+  const NON_AFFILIATION = PIED.nonAffiliation;
+  const surfaces = (): ReadonlyArray<readonly [string, string]> => [
+    ["landing (texte visible, méta, FAQ)", toutLeTexte()],
+    ["FAQ", FAQ.questions.map((q) => `${q.question}\n${q.reponse}`).join("\n")],
+    ["JSON-LD", JSON.stringify(jsonLdDuTour())],
+    ["llms.txt", sectionTourLlms()],
+    ["conditions générales", toutLeTexteDesConditions()],
+  ];
+
+  it("aucune surface ne dit « Tour de France IA » ni « Tour de France de l’IA »", () => {
+    for (const [nom, s] of surfaces()) {
+      expect(s, nom).not.toMatch(/Tour de France IA/i);
+      expect(s, nom).not.toMatch(/Tour de France de l[’']IA/i);
+    }
+  });
+
+  it("« Tour de France » n'apparaît que dans la phrase de non-affiliation", () => {
+    expect(NON_AFFILIATION).toMatch(/aucun lien avec le Tour de France cycliste/);
+    expect(NON_AFFILIATION).toMatch(/^Le Tour France IA /);
+    // llms.txt redit la non-affiliation en une phrase courte : la même, pour un moteur.
+    const NON_AFFILIATION_LLMS = "Aucun lien avec le Tour de France cycliste.";
+    expect(sectionTourLlms()).toContain(NON_AFFILIATION_LLMS);
+    for (const [nom, s] of surfaces()) {
+      const reste = s.replaceAll(NON_AFFILIATION, "").replaceAll(NON_AFFILIATION_LLMS, "");
+      expect(reste, nom).not.toMatch(/Tour de France/i);
+    }
+    expect(toutLeTexte().split(NON_AFFILIATION).length - 1).toBe(1);
+  });
+
+  it("le nom et son accroche : « Tour France IA », « dans votre ville »", () => {
+    expect(NOM_DU_TOUR).toBe("Tour France IA");
+    expect(HEROS.surtitre).toBe("Le Tour France IA arrive dans votre ville");
+    expect(META.titre).toMatch(/^Tour France IA dans votre ville/);
+    expect(META.imageAlt).toMatch(/^Tour France IA, organisé par Axion-IA/);
+  });
+
+  it("le repas de midi n'est dit nulle part ; le dîner du vendredi reste", () => {
+    for (const [nom, s] of surfaces()) {
+      expect(s, nom).not.toMatch(/d[ée]jeuner/i);
+      expect(s, nom).not.toMatch(/repas de midi/i);
+    }
+    expect(FAQ.questions[0]?.reponse).toBe(
+      "Oui\u00a0: l’audit et la formation, pour les 5 entreprises retenues par ville.",
+    );
+  });
+
+  it("aucun montant sur la landing : ni « € » chiffré ni « HT »", () => {
+    for (const s of [toutLeTexte(), JSON.stringify(jsonLdDuTour())]) {
+      expect(s).not.toMatch(/\d+\s?€/);
+      expect(s).not.toMatch(/\bHT\b/);
+    }
+  });
+
+  it("l'adresse est /tour-france-ia, la visio /fr/appel/tour-france-ia", () => {
+    expect(TOUR_PREFIX).toBe("/tour-france-ia");
+    expect(META.chemin).toBe("/tour-france-ia");
+    expect(CHEMIN_RENDEZ_VOUS).toBe("/fr/appel/tour-france-ia");
+    expect(CHEMIN_CONDITIONS).toBe("/tour-france-ia/conditions-generales");
+    expect(TYPES_RESERVABLES.tour.route).toBe("tour-france-ia");
+    expect(choixDeLaRoute("tour-france-ia")).toBe("tour");
+    expect(choixDeLaRoute("tour-de-france-ia")).toBeNull();
+  });
+
+  it("🔴 src/app ne cite plus les anciennes adresses (hors redirections, slug Calendly et identifiant interne)", () => {
+    const anciens = /tourdefrance-ia|tour-de-france-ia/;
+    const fautifs = fichiers(join(RACINE, "src/app"))
+      .filter((f) => !f.includes(`${join("src", "app", "tour-france-ia", "__tests__")}`))
+      .filter((f) => anciens.test(readFileSync(f, "utf8")));
+    expect(fautifs).toEqual([]);
+  });
+
+  it("🔴 les anciennes adresses répondent par une redirection PERMANENTE vers les nouvelles", async () => {
+    const config = (await import("../../../../next.config")).default;
+    const regles = (await config.redirects?.()) ?? [];
+    const attendues = [
+      ["/tourdefrance-ia", "/tour-france-ia"],
+      ["/tourdefrance-ia/:path*", "/tour-france-ia/:path*"],
+      ["/fr/appel/tour-de-france-ia", "/fr/appel/tour-france-ia"],
+    ] as const;
+    for (const [source, destination] of attendues) {
+      const regle = regles.find((x) => x.source === source);
+      expect(regle, source).toBeDefined();
+      expect(regle?.destination, source).toBe(destination);
+      // `permanent: true` → 308 chez Next (le code exact n'est pas fixé à la main).
+      expect(regle && "permanent" in regle ? regle.permanent : undefined, source).toBe(true);
+    }
+    // Le motif `:path*` porte bien le sous-chemin des conditions générales.
+    const sousChemin = regles.find((x) => x.source === "/tourdefrance-ia/:path*");
+    expect(sousChemin?.destination.replace(":path*", "conditions-generales")).toBe(
+      "/tour-france-ia/conditions-generales",
+    );
   });
 });

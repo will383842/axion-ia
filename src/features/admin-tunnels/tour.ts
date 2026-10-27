@@ -1,5 +1,5 @@
 /**
- * Chargement du tableau « Tunnel Tour de France IA » (2026-10-26).
+ * Chargement du tableau « Tunnel Tour France IA » (2026-10-26).
  *
  * Séparé de l'agrégation (`tour-entonnoir.ts`, pure et testée) : ce fichier ne
  * fait que LIRE, par deux lectures isolées. Chacune a son propre `try` : une

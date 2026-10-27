@@ -161,8 +161,8 @@ export function payloadRendezVousAuContrat(
   // l'appelant, et seulement pour un rendez-vous client (diagnostic, échange
   // projet). Pour tout autre type la clé est retirée, même fournie.
   const { reponses: reponsesBrutes, ...reste } = payload ?? {};
-  // Le CRM ne connaît que quatre valeurs (`CrmTypeRendezVous`) : la visio du Tour
-  // de France IA lui part sous `autre`, avec la clé libre `circuit` qui la nomme.
+  // Le CRM ne connaît que quatre valeurs (`CrmTypeRendezVous`) : la visio du Tour France IA
+  // lui part sous `autre`, avec la clé libre `circuit` qui la nomme.
   const duTour = typeRendezVous === "tour_de_france_ia";
   return {
     ...reste,

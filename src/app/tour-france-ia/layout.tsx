@@ -1,4 +1,4 @@
-// Coquille de la landing du Tour de France IA (2026-10-25) — hors de `[locale]/`,
+// Coquille de la landing du Tour France IA (2026-10-25) — hors de `[locale]/`,
 // comme le questionnaire et `/maintenance`.
 //
 // Pourquoi hors de la coquille du site : `[locale]/layout.tsx` monte l'en-tête

@@ -46,7 +46,7 @@
 // URL par intervalle, donc un seul appel réseau par intervalle.
 
 import { CALENDLY_API_BASE } from "./api";
-import { lireLesQuestions, type QuestionEventType } from "./questions";
+import { lireLesQuestions, type OptionsLecture, type QuestionEventType } from "./questions";
 import { lieuxDeLEvenement, type LieuxDeLEvenement } from "./lieux-evenement";
 
 /**
@@ -805,7 +805,11 @@ export async function fetchAvailableSlots({
  * amputé produirait une réservation qui a l'air complète et à laquelle il
  * manque une réponse obligatoire. Voir `questions.ts`.
  */
-export async function resoudreEventTypePourReservation(schedulingUrl: string): Promise<{
+export async function resoudreEventTypePourReservation(
+  schedulingUrl: string,
+  /** `{ sansMasquage: true }` pour la visio du Tour : la ville y est demandée (`questions.ts`). */
+  options: OptionsLecture = {},
+): Promise<{
   readonly uri: string;
   readonly questions: readonly QuestionEventType[];
   readonly dureeMinutes?: number;
@@ -828,7 +832,7 @@ export async function resoudreEventTypePourReservation(schedulingUrl: string): P
     return null;
   }
 
-  const lecture = lireLesQuestions(resolved.customQuestions);
+  const lecture = lireLesQuestions(resolved.customQuestions, options);
   if (!lecture.ok) {
     // 🔴 Ce journal est le SEUL endroit où l'on apprendra qu'une question
     // ajoutée chez Calendly a fermé notre formulaire. Sans lui, le repli vers

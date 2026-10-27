@@ -24,7 +24,7 @@ export const LIBELLE_TYPE_RDV: Readonly<Record<TypeRendezVous, string>> = LIBELL
  * Apporteur reste violet (sa pastille depuis le 19/09). Les autres évitent le
  * teal (visio) et le terracotta (blocages de l'agenda) ; bleu = la couleur des
  * réservations dans l'agenda, prise par l'échange projet, le type historique.
- * Le Tour de France IA prend un vert olive (jaune-vert, `#4a7d12`), assez loin du
+ * Le Tour France IA prend un vert olive (jaune-vert, `#4a7d12`), assez loin du
  * teal de la visio pour que les deux pastilles ne se confondent pas.
  * « Autre » n'a pas de couleur : il ne doit pas attirer l'œil.
  */

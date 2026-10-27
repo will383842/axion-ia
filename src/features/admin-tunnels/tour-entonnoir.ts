@@ -1,12 +1,12 @@
 /**
- * Tunnel Tour de France IA — l'AGRÉGATION, pure et testée (2026-10-26).
+ * Tunnel Tour France IA — l'AGRÉGATION, pure et testée (2026-10-26).
  *
  * Aucune lecture base ici : `tour.ts` charge, ce module calcule.
  *
  * Le parcours, et ce que chaque marche mesure VRAIMENT :
  *
- *   landing `/tourdefrance-ia`  →  bouton « Demander ma journée offerte »  →  page de réservation
- *   `/fr/appel/tour-de-france-ia?depuis=tdf-…`  →  rendez-vous pris  →  maintenu
+ *   landing `/tour-france-ia`  →  bouton « Demander ma journée offerte »  →  page de réservation
+ *   `/fr/appel/tour-france-ia?depuis=tdf-…`  →  rendez-vous pris  →  maintenu
  *   →  honoré.
  *
  * 🔴 LES VISITES DE LA LANDING NE SONT PAS MESURÉES, PAR CHOIX. La page ne porte

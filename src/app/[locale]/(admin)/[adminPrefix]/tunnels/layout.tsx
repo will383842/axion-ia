@@ -5,7 +5,7 @@
 //   ├── Tunnel diagnostic & simulateur → de la pub au rapport : où l'on perd les gens
 //   ├── Tunnel de vente     → du prospect au règlement
 //   ├── Tunnel apporteurs   → de la publicité à l'apporteur actif, coût compris
-//   └── Tunnel Tour de France IA → du bouton « Participer » à la visio tenue
+//   └── Tunnel Tour France IA → du bouton « Participer » à la visio tenue
 //
 // Groupe distinct de « Boîte de réception » à dessein : celle-ci montre les
 // gens qui ONT écrit, celui-ci montre ceux qu'on a PERDUS en route.
@@ -49,7 +49,7 @@ export default async function TunnelsLayout({
     { id: "prospects", label: "Tunnel diagnostic & simulateur", href: `${base}/prospects` },
     { id: "vente", label: "Tunnel de vente", href: `${base}/vente` },
     { id: "apporteurs", label: "Tunnel apporteurs", href: `${base}/apporteurs` },
-    { id: "tour", label: "Tunnel Tour de France IA", href: `${base}/tour` },
+    { id: "tour", label: "Tunnel Tour France IA", href: `${base}/tour` },
   ];
 
   return (

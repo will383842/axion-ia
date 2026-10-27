@@ -82,7 +82,7 @@ describe("le module est le miroir de l'enum Prisma", () => {
       apporteur: "Apporteur",
       salon: "Salon",
       autre: "Autre",
-      tour_de_france_ia: "Tour de France IA",
+      tour_de_france_ia: "Tour France IA",
     });
   });
 });

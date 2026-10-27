@@ -46,7 +46,7 @@ export const LIBELLE_SOURCE: Readonly<Record<Origine, string>> = {
   apporteur: "Un apporteur d'affaires",
   ia: "ChatGPT ou une autre IA",
   email: "E-mail reçu",
-  tour_de_france_ia: "Tour de France IA",
+  tour_de_france_ia: "Tour France IA",
   autre: "Autre / non classé",
   sans_reponse: "Sans réponse",
 };
@@ -71,8 +71,9 @@ export function estQuestionOrigine(question: string): boolean {
 export function classerReponse(reponse: string): Source {
   const r = normaliser(reponse);
   if (/apporteur/.test(r)) return "apporteur";
-  // Avant « ia » : « Tour de France IA » contient le mot « IA ».
-  if (/tour de france/.test(r)) return "tour_de_france_ia";
+  // Avant « ia » : « Tour France IA » contient le mot « IA ».
+  // « Tour France IA » (nom depuis le 2026-10-27) comme l'ancien « Tour de France IA ».
+  if (/\btour (de )?france\b/.test(r)) return "tour_de_france_ia";
   if (/instagram/.test(r)) return "instagram";
   if (/linkedin/.test(r)) return "linkedin";
   if (/facebook|\bmeta\b/.test(r)) return "facebook";

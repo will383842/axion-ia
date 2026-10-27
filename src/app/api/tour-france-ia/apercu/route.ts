@@ -1,8 +1,8 @@
-// /api/tourdefrance-ia/apercu?jeton=… — ouvre l'aperçu de la landing du Tour de
+// /api/tour-france-ia/apercu?jeton=… — ouvre l'aperçu de la landing du Tour
 // France IA tant qu'elle est fermée au public (2026-10-25).
 //
 // Jeton bon : pose le cookie `tdf_apercu` = EMPREINTE SHA-256 du jeton (jamais le
-// jeton lui-même), limité à `/tourdefrance-ia`, 30 jours, puis 303 vers la landing.
+// jeton lui-même), limité à `/tour-france-ia`, 30 jours, puis 303 vers la landing.
 // Jeton absent, faux, ou variable `TOUR_APERCU_JETON` non posée : 404, comme
 // n'importe quelle adresse inconnue.
 //
@@ -11,8 +11,8 @@
 // serveur ou du proxy et l'historique du navigateur peuvent donc le garder. À
 // changer s'il a fuité. La comparaison porte sur les empreintes, en temps constant.
 //
-// Le 303 vise `/tourdefrance-ia` SANS barre finale : `trailingSlash` est faux sur
-// tout le site, et Next redirige `/tourdefrance-ia/` vers `/tourdefrance-ia`
+// Le 303 vise `/tour-france-ia` SANS barre finale : `trailingSlash` est faux sur
+// tout le site, et Next redirige `/tour-france-ia/` vers `/tour-france-ia`
 // avant même le proxy. Viser directement la forme finale évite un saut.
 //
 // `api/` est hors du `matcher` du proxy : la porte d'aperçu ne s'applique pas ici.

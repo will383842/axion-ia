@@ -1,14 +1,17 @@
 /**
  * LES CONDITIONS GÉNÉRALES DU TOUR (2026-10-27).
  *
- * `/tourdefrance-ia/conditions-generales` est liée sous chaque grand bouton de la
+ * `/tour-france-ia/conditions-generales` est liée sous chaque grand bouton de la
  * landing et depuis son pied de page. Ce qui doit tenir :
  *
- *   · 20 articles, chacun sous un `h2 id="article-N"`, jamais repliés ;
+ *   · 19 articles (l'article du midi retiré le 2026-10-27), chacun sous un
+ *     `h2 id="article-N"`, jamais repliés ;
  *   · la version affichée sous le titre ; la page ni indexée ni dans un sitemap ;
- *   · le seul montant est le tarif Tour (490 € HT) ; le tarif hors Tour n'y est
- *     plus, ni « Grenoble », ni « cliente », ni aucune promesse de conformité ou de
- *     certification (hors la phrase de l'article 17 qui la NIE) ;
+ *   · AUCUN montant chiffré (correction du propriétaire, 2026-10-27) : le tarif
+ *     Tour est « convenu avec l’entreprise », la journée payante fixée la semaine
+ *     suivant le passage du Tour ; ni « Grenoble », ni « cliente », ni aucune
+ *     promesse de conformité ou de certification (hors la phrase de l'article 16
+ *     qui la NIE) ; ni déjeuner ni repas de midi ;
  *   · les adaptations listées dans la PR (à valider par le propriétaire avant
  *     toute publicité) sont bien écrites.
  *
@@ -23,6 +26,8 @@ import { describe, expect, it } from "vitest";
 import ConditionsGeneralesDuTour, { metadata } from "../conditions-generales/page";
 import {
   ARTICLES,
+  LIBELLES_CG,
+  META_CG,
   TITRE_CG,
   VERSION_CG,
   toutLeTexteDesConditions,
@@ -38,15 +43,15 @@ const article = (n: number) =>
     .join("\n");
 
 /** La seule phrase où « certification » et « conformité » sont dites : pour les NIER. */
-const NEGATION_ART_17 = "Elle n’est ni une certification ni une garantie de conformité.";
+const NEGATION_ART_16 = "Elle n’est ni une certification ni une garantie de conformité.";
 
 describe("🔑 la page des conditions générales", () => {
-  it("20 articles, chacun sous un h2 à id, dans l'ordre, jamais repliés", async () => {
+  it("19 articles, chacun sous un h2 à id, dans l'ordre, jamais repliés", async () => {
     const { container } = render(await ConditionsGeneralesDuTour());
     const titres = [...container.querySelectorAll("h2")];
-    expect(titres).toHaveLength(20);
+    expect(titres).toHaveLength(19);
     expect(titres.map((h) => h.id)).toEqual(ARTICLES.map((a) => `article-${a.numero}`));
-    expect(ARTICLES.map((a) => a.numero)).toEqual(Array.from({ length: 20 }, (_, i) => i + 1));
+    expect(ARTICLES.map((a) => a.numero)).toEqual(Array.from({ length: 19 }, (_, i) => i + 1));
     for (const h of titres) {
       expect(h.className).toMatch(/scroll-mt-/);
       expect(h.closest("details"), h.id).toBeNull();
@@ -60,10 +65,10 @@ describe("🔑 la page des conditions générales", () => {
     // Le sommaire : un details FERMÉ (téléphone) et une colonne (grand écran), vers chaque article.
     const sommaire = container.querySelector("details");
     expect(sommaire?.hasAttribute("open")).toBe(false);
-    expect(sommaire?.querySelectorAll('a[href^="#article-"]')).toHaveLength(20);
-    expect(container.querySelectorAll('nav a[href^="#article-"]')).toHaveLength(20);
+    expect(sommaire?.querySelectorAll('a[href^="#article-"]')).toHaveLength(19);
+    expect(container.querySelectorAll('nav a[href^="#article-"]')).toHaveLength(19);
     // Le retour au Tour, et aucun script.
-    expect(container.querySelector('a[href="/tourdefrance-ia"]')).not.toBeNull();
+    expect(container.querySelector('a[href="/tour-france-ia"]')).not.toBeNull();
     expect(container.querySelectorAll("script, img, video")).toHaveLength(0);
     cleanup();
   });
@@ -72,7 +77,7 @@ describe("🔑 la page des conditions générales", () => {
     expect(VERSION_CG).toBe("2026-10-27");
     expect(metadata.robots).toEqual({ index: false, follow: true });
     expect(metadata.alternates).toEqual({ canonical: CHEMIN_CONDITIONS });
-    const page = lire("src/app/tourdefrance-ia/conditions-generales/page.tsx");
+    const page = lire("src/app/tour-france-ia/conditions-generales/page.tsx");
     expect(page).toContain("text-[1.0625rem]");
     expect(page).toContain("max-w-[68ch]");
     expect(page).toMatch(/print:hidden/);
@@ -84,16 +89,18 @@ describe("🔑 la page des conditions générales", () => {
 });
 
 describe("🔴 le texte des conditions : montants, mots interdits, adaptations", () => {
-  it("le seul montant est le tarif Tour (490 € HT) ; ni 690, ni Grenoble, ni cliente, ni Qualiopi", () => {
-    expect(texte).toContain("490 € HT");
-    expect(texte).not.toMatch(/690/);
+  it("aucun montant chiffré (tarif convenu) ; ni 490, ni 690, ni Grenoble, ni cliente, ni Qualiopi", () => {
+    expect(texte).not.toMatch(/\d+\s?€/);
+    expect(texte).not.toMatch(/€/);
+    expect(texte).not.toMatch(/\bHT\b/);
+    expect(texte).not.toMatch(/490|690/);
     expect(texte).not.toMatch(/grenoble/i);
     expect(texte).not.toMatch(/cliente/i);
     expect(texte).not.toMatch(/qualiopi/i);
     expect(texte).not.toMatch(/conforme/i);
     // « certifi » n'apparaît que dans la phrase qui NIE toute certification.
-    expect(article(17)).toContain(NEGATION_ART_17);
-    expect(texte.replace(NEGATION_ART_17, "")).not.toMatch(/certifi/i);
+    expect(article(16)).toContain(NEGATION_ART_16);
+    expect(texte.replace(NEGATION_ART_16, "")).not.toMatch(/certifi/i);
     expect(texte).not.toMatch(/inscription|candidature/i);
   });
 
@@ -105,35 +112,63 @@ describe("🔴 le texte des conditions : montants, mots interdits, adaptations",
       "Le refus ou le retrait d’un salarié n’a aucune conséquence, ni pour lui ni pour la gratuité.",
     );
     expect(article(4)).toMatch(/conditions générales de vente d’AXION IA/);
-    expect(article(6)).toMatch(/plafonnée au montant HT de la facture de solde/);
+    expect(article(6)).toMatch(/intégralement déduit de la première commande/);
+    expect(article(6)).toMatch(/s’applique sur la facture de solde/);
+    expect(article(6)).toMatch(/plafonnée au montant hors taxes de cette facture/);
     expect(article(6)).toMatch(/n’est pas cessible/);
     expect(article(6)).toMatch(/une seule fois par entreprise/);
     expect(article(7)).toMatch(
       /les sommes versées sont remboursées sous 14 jours ou la journée est reportée, au choix de l’entreprise/,
     );
-    expect(article(10)).toMatch(/à la charge de l’entreprise/);
-    expect(article(11)).toMatch(/facultatif et n’est pas compris dans la journée offerte/);
-    expect(article(11)).toMatch(/Chacun y paie sa part/);
-    expect(article(12)).toMatch(
-      /comme entreprise accompagnée lors du Tour de France IA \(journée offerte\)/,
+    expect(article(10)).toMatch(/facultatif et n’est pas compris dans la journée offerte/);
+    expect(article(10)).toMatch(/Chacun y paie sa part/);
+    expect(article(11)).toMatch(
+      /comme entreprise accompagnée lors du Tour France IA \(journée offerte\)/,
     );
-    expect(article(12)).toContain(
+    expect(article(11)).toContain(
       "«\u00a0Journée offerte par Axion-IA dans le cadre du Tour\u00a0»",
     );
-    expect(article(13)).toContain('rel="sponsored"');
-    expect(article(17)).toMatch(/article 4 du règlement \(UE\) 2024\/1689/);
-    expect(article(17)).toMatch(
+    expect(article(12)).toContain('rel="sponsored"');
+    expect(article(16)).toMatch(/article 4 du règlement \(UE\) 2024\/1689/);
+    expect(article(16)).toMatch(
       /Une attestation de fin de formation est remise à chaque participant/,
     );
-    expect(article(19)).toMatch(/celle acceptée lors de la demande/);
-    expect(article(19)).toMatch(/retirer sa demande sans frais/);
-    expect(article(20)).toMatch(/tribunal de commerce du ressort du siège social d’AXION IA SAS/);
-    expect(article(20)).toMatch(/30 jours/);
+    expect(article(18)).toMatch(/celle acceptée lors de la demande/);
+    expect(article(18)).toMatch(/retirer sa demande sans frais/);
+    expect(article(19)).toMatch(/tribunal de commerce du ressort du siège social d’AXION IA SAS/);
+    expect(article(19)).toMatch(/30 jours/);
+  });
+
+  it("🔴 la journée payante (corrections du 2026-10-27) : tarif convenu, semaine suivante, 100 % d’avance", () => {
+    expect(texte).toContain("convenu avec l’entreprise");
+    expect(texte).toContain("semaine suivant");
+    expect(article(4)).toContain(
+      "à un tarif convenu avec l’entreprise avant la confirmation de la date",
+    );
+    expect(article(4)).toContain(
+      "La journée est fixée la semaine suivant le passage du Tour dans la ville, ou à une date convenue.",
+    );
+    expect(article(5)).toMatch(/payables à 100\s%\sd’avance, à la confirmation de la date/);
+  });
+
+  it("🔴 le repas de midi n’est dit nulle part (corrections du 2026-10-27)", () => {
+    expect(texte).not.toMatch(/d[ée]jeuner/i);
+    expect(texte).not.toMatch(/repas de midi/i);
+    expect(ARTICLES.map((a) => a.titre)).not.toContain("Repas de midi");
+    // Le dîner du vendredi, lui, reste : facultatif et hors offre.
+    expect(ARTICLES.map((a) => a.titre)).toContain("Dîner du vendredi soir");
+  });
+
+  it("🔴 le nom : « Tour France IA », jamais « Tour de France IA » ni « … de l’IA en entreprise »", () => {
+    expect(texte).not.toMatch(/Tour de France IA/i);
+    expect(texte).not.toMatch(/Tour de France de l[’']IA/i);
+    expect(texte).not.toMatch(/Tour de France/i);
+    expect(TITRE_CG).toBe("Conditions générales du Tour France IA — AXION IA SAS");
+    expect(META_CG.titre).toBe("Conditions générales du Tour France IA");
+    expect(LIBELLES_CG.retour).toBe("Retour au Tour");
   });
 
   it("la page des conditions n'est dans aucun sitemap", () => {
-    expect(lire("src/app/sitemap-tourdefrance-ia.xml/route.ts")).not.toMatch(
-      /conditions-generales/,
-    );
+    expect(lire("src/app/sitemap-tour-france-ia.xml/route.ts")).not.toMatch(/conditions-generales/);
   });
 });

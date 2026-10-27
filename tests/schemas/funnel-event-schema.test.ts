@@ -151,7 +151,7 @@ describe("vocabulaire", () => {
     // `/roi` sert le MÊME questionnaire que `/simulateur` : l'oublier ferait
     // rejeter en silence toutes les balises du site public.
     // `apporteur` (2026-10-05) : tunnel de recrutement d'apporteurs.
-    // `tour` (2026-10-26) : la page de réservation du Tour de France IA.
+    // `tour` (2026-10-26) : la page de réservation du Tour France IA.
     expect(FUNNEL_KEYS).toEqual(["diagnostic", "simulateur", "roi", "apporteur", "tour"]);
     // 8 événements d'origine + 6 du tunnel apporteurs.
     expect(FUNNEL_EVENT_NAMES).toHaveLength(14);

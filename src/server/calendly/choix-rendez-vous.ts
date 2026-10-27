@@ -81,7 +81,9 @@ export function lireDepuis(valeur: unknown): string | null {
   return v;
 }
 
-/** La source UTM du Tour de France IA : posée quand l'arrivée n'en porte aucune. */
+/** La source UTM du Tour France IA : posée quand l'arrivée n'en porte aucune. */
+// Valeur INTERNE (comme les emplacements `tdf-*`), gardée au renommage du 2026-10-27 :
+// elle n'est pas une adresse, et la changer couperait la console de l'historique.
 export const UTM_SOURCE_TOUR = "tour-de-france-ia";
 
 /**
@@ -353,7 +355,7 @@ export async function urlDeReprogrammation(rdv: RendezVousAReprogrammer): Promis
   if (type === "autre" && estEchangeFormateurParNom(rdv.eventTypeName)) {
     return urlConfigureeDuChoix("formateur");
   }
-  // La visio du Tour de France IA (2026-10-25), classée `autre` elle aussi : même
+  // La visio du Tour France IA (2026-10-25), classée `autre` elle aussi : même
   // reconnaissance par le nom, pour qu'un report la garde sur son propre calendrier.
   if (type === "autre" && estVisioTourDeFranceIa(rdv.eventTypeName)) {
     return urlConfigureeDuChoix("tour");

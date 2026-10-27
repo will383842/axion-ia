@@ -1,5 +1,5 @@
 /**
- * Le Tour de France IA a son PROPRE type de rendez-vous (2026-10-25) : `tour_de_france_ia`.
+ * Le Tour France IA a son PROPRE type de rendez-vous (2026-10-25) : `tour_de_france_ia`.
  *
  * Avant : la visio de 30 minutes était classée `autre`, donc confondue avec tout appel
  * non classé (même libellé, même titre d'alerte, mêmes statistiques). Ce témoin tient :
@@ -50,16 +50,20 @@ describe("le type existe et se nomme", () => {
   it("figure parmi les types classés, avec son libellé", () => {
     expect(TYPES_RENDEZ_VOUS).toContain("tour_de_france_ia");
     expect(estTypeRendezVous("tour_de_france_ia")).toBe(true);
-    expect(LIBELLES_TYPE_RENDEZ_VOUS.tour_de_france_ia).toBe("Tour de France IA");
+    expect(LIBELLES_TYPE_RENDEZ_VOUS.tour_de_france_ia).toBe("Tour France IA");
   });
 });
 
 describe("le classement", () => {
   it("par le nom, avec ou sans tirets, accents et casse", () => {
     for (const nom of [
+      "Tour France IA",
+      // L'ancien nom (avant le 2026-10-27) et le slug Calendly, inchangé, restent reconnus.
       "Tour de France IA",
       "tour-de-france-ia",
+      "tour-france-ia",
       "Visio TOUR DE FRANCE IA – 30 min",
+      "Visio TOUR FRANCE IA – 30 min",
     ]) {
       expect(classerParNom(nom), nom).toBe("tour_de_france_ia");
       expect(estVisioTourDeFranceIa(nom), nom).toBe(true);
@@ -94,7 +98,7 @@ describe("le classement", () => {
     expect(typeEffectif({ typeRendezVous: "tour_de_france_ia", eventTypeName: "X" })).toBe(
       "tour_de_france_ia",
     );
-    expect(typeEffectif({ typeRendezVous: null, eventTypeName: "Tour de France IA" })).toBe(
+    expect(typeEffectif({ typeRendezVous: null, eventTypeName: "Tour France IA" })).toBe(
       "tour_de_france_ia",
     );
   });
@@ -117,7 +121,7 @@ describe("🔑 le Tour reste CLIENT : e-mails, CRM des ventes, fiche", () => {
     expect(
       familleHorsClients({
         typeRendezVous: "tour_de_france_ia",
-        eventTypeName: "Tour de France IA",
+        eventTypeName: "Tour France IA",
       }),
     ).toBeNull();
   });
@@ -139,7 +143,7 @@ describe("🔑 le Tour reste CLIENT : e-mails, CRM des ventes, fiche", () => {
 describe("le contrat CRM", () => {
   it("part sous `autre` (liste fermée du CRM), nommé par la clé libre `circuit`", () => {
     const p = payloadRendezVousAuContrat({
-      eventTypeName: "Tour de France IA",
+      eventTypeName: "Tour France IA",
       typeRendezVous: "tour_de_france_ia",
       reponses: [{ question: "Votre ville ?", reponse: "Lyon" }],
     });
@@ -149,7 +153,7 @@ describe("le contrat CRM", () => {
   });
 
   it("un type absent est reclassé par le nom", () => {
-    const p = payloadRendezVousAuContrat({ eventTypeName: "Tour de France IA" });
+    const p = payloadRendezVousAuContrat({ eventTypeName: "Tour France IA" });
     expect(p["circuit"]).toBe("tour_de_france_ia");
   });
 
@@ -212,7 +216,7 @@ describe("la console", () => {
     expect(agregerBilan([]).types.map((t) => t.type)).not.toContain("tour_de_france_ia");
     const ligne = {
       typeRendezVous: "tour_de_france_ia",
-      eventTypeName: "Tour de France IA",
+      eventTypeName: "Tour France IA",
       status: "active",
       issue: null,
       utmContent: null,
@@ -226,18 +230,19 @@ describe("la console", () => {
     expect(duTour?.total.reserves).toBe(2);
   });
 
-  it("l'origine : « Tour de France IA » n'est pas lu comme « ChatGPT ou une autre IA »", () => {
+  it("l'origine : « Tour France IA » n'est pas lu comme « ChatGPT ou une autre IA »", () => {
+    expect(classerReponse("Le Tour France IA")).toBe("tour_de_france_ia");
     expect(classerReponse("Le Tour de France IA")).toBe("tour_de_france_ia");
     expect(classerReponse("ChatGPT")).toBe("ia");
     expect(SOURCES).toContain("tour_de_france_ia");
-    expect(LIBELLE_SOURCE.tour_de_france_ia).toBe("Tour de France IA");
+    expect(LIBELLE_SOURCE.tour_de_france_ia).toBe("Tour France IA");
   });
 });
 
 describe("l'alerte Telegram", () => {
   it("a son titre réservé, distinct de l'appel client", () => {
-    expect(titreReservation("tour_de_france_ia", "Tour de France IA", null)).toBe(
-      "Tour de France IA réservé",
+    expect(titreReservation("tour_de_france_ia", "Tour France IA", null)).toBe(
+      "Tour France IA réservé",
     );
     expect(titreReservation("autre", "Autre", null)).toBe("Appel client réservé");
   });

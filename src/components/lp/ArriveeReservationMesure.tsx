@@ -3,10 +3,10 @@
 
 // « Call Booking Viewed » à l'arrivée sur une page de RÉSERVATION (2026-10-26).
 //
-// Sert le Tour de France IA : sa landing (`/tourdefrance-ia`) ne porte aucune
+// Sert le Tour France IA : sa landing (`/tour-france-ia`) ne porte aucune
 // mesure — choix verrouillé par `le-tour-est-ouvert.spec.ts` et écrit dans la
 // politique de confidentialité. Le clic « Participer » se mesure donc là où il
-// arrive : `/fr/appel/tour-de-france-ia?depuis=tdf-…`. `placement` reprend le
+// arrive : `/fr/appel/tour-france-ia?depuis=tdf-…`. `placement` reprend le
 // `depuis` du bouton (`tdf-heros`, `tdf-final`…), le même repère que
 // l'`utm_content` posé chez Calendly : la console relie ainsi les arrivées et
 // les rendez-vous bouton par bouton.

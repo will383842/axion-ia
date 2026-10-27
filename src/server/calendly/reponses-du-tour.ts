@@ -1,4 +1,4 @@
-// Lire le formulaire de la visio du Tour de France IA (2026-10-25).
+// Lire le formulaire de la visio du Tour France IA (2026-10-25).
 //
 // Le formulaire est calqué sur celui du Diagnostic IA : secteur, nom de
 // l'entreprise, « comment nous avez-vous connu », taille, tâches qui prennent le

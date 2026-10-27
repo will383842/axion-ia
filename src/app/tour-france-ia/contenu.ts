@@ -1,4 +1,4 @@
-// Tour de France IA — TOUT le texte de la landing, en un seul endroit (2026-10-25,
+// Tour France IA — TOUT le texte de la landing, en un seul endroit (2026-10-25,
 // refonte « landing de conversion » le 2026-10-26, refonte VISUELLE le 2026-10-27,
 // nouveau modèle « 5 journées offertes par ville, sur sélection » le 2026-10-27).
 //
@@ -7,15 +7,16 @@
 // texte écrit ailleurs échapperait à la garde. Les composants visuels
 // (`_composants/`) ne portent AUCUN texte visible : ils le reçoivent d'ici. Les
 // conditions générales ont leur propre module (`conditions-generales/conditions.ts`),
-// hors de cette garde : elles seules disent les montants et le détail juridique.
+// hors de cette garde : elles seules disent le tarif et le détail juridique.
 //
 // Le modèle, du point de vue de l'entreprise : une ville s'ouvre dès 5 demandes.
 // Chaque ville a 5 journées OFFERTES (un audit, puis une formation de 4 h de
 // l'équipe, en intra-entreprise et en présentiel), attribuées sur sélection (une
 // visio, puis un court questionnaire), EN ÉCHANGE d'un podcast tourné chez
-// l'entreprise. Sinon, la même journée existe à un tarif Tour (montant dans les
-// conditions générales). Le dîner du vendredi soir est facultatif et n'est PAS
-// compris dans la journée offerte : il n'apparaît jamais dans la frise du héros.
+// l'entreprise. Sinon, la même journée existe à un tarif Tour (convenu avec
+// l'entreprise, sans montant publié : voir les conditions générales). Le dîner du
+// vendredi soir est facultatif et n'est PAS compris dans la journée offerte : il
+// n'apparaît jamais dans la frise du héros.
 //
 // 🔑 La contrepartie est dite sur la page, en un mot doux (« podcast ») : sous
 // chaque grand bouton, dans la même boîte que lui. Elle n'est jamais tue (ce
@@ -40,13 +41,13 @@
 import { TOUR_PREFIX } from "@/features/tour-de-france/visibilite";
 
 /** Le nom du Tour. */
-export const NOM_DU_TOUR = "Tour de France IA";
+export const NOM_DU_TOUR = "Tour France IA";
 
 /** Le seuil qui OUVRE une ville, et le nombre de journées offertes par ville. Jamais un compteur. */
 export const SEUIL_PAR_VILLE = 5;
 
 /** La page de rendez-vous visio de 30 minutes (type `tour` de `types-reservables.ts`). */
-export const CHEMIN_RENDEZ_VOUS = "/fr/appel/tour-de-france-ia";
+export const CHEMIN_RENDEZ_VOUS = "/fr/appel/tour-france-ia";
 
 /** Les conditions générales du Tour (`conditions-generales/page.tsx`). */
 export const CHEMIN_CONDITIONS = `${TOUR_PREFIX}/conditions-generales`;
@@ -113,7 +114,7 @@ export const PROMESSE =
   "Une journée offerte dans votre entreprise : audit + formation IA de votre équipe.";
 
 export const META = {
-  titre: "Tour de France IA : une journée offerte chez vous",
+  titre: "Tour France IA dans votre ville : une journée offerte",
   description:
     "Une journée offerte dans votre entreprise : audit + formation IA de votre équipe. 5 entreprises retenues par ville.",
   /** Chemin canonique (sans barre finale : `trailingSlash` est faux sur tout le site). */
@@ -126,7 +127,7 @@ export const META = {
    */
   image: `${TOUR_PREFIX}/opengraph-image.jpg`,
   imageAlt:
-    "Tour de France IA, organisé par Axion-IA : sur fond sombre aux couleurs d’Axion-IA, « Vous entendez parler d’IA partout et ne savez plus par où commencer ? Nous, si. » Audit offert, formation de 4 h offerte, de la TPE à l’ETI.",
+    "Tour France IA, organisé par Axion-IA : sur fond sombre aux couleurs d’Axion-IA, « Vous entendez parler d’IA partout et ne savez plus par où commencer ? Nous, si. » Audit offert, formation de 4 h offerte, de la TPE à l’ETI.",
 } as const;
 
 /** L'en-tête du tunnel : le logo, et c'est tout (le bouton porte `LIBELLE_CTA_COURT`). */
@@ -139,7 +140,7 @@ export const ENTETE = {
 
 export const HEROS = {
   /** La puce au-dessus du titre (Manrope : jamais d'Inconsolata au-dessus du pli). */
-  surtitre: "Le Tour de France IA arrive dans votre ville",
+  surtitre: "Le Tour France IA arrive dans votre ville",
   /**
    * Le H1, accroche validée (inchangée), en trois morceaux : seul « Nous, si. » prend
    * l'accent. Le lecteur se reconnaît, puis Axion-IA répond.
@@ -160,7 +161,7 @@ export const HEROS = {
  * Elle ne dit rien que la page visible, sa FAQ et ses conditions ne disent.
  */
 export const DEFINITION =
-  "Le Tour de France IA, organisé par Axion-IA et fondé par Williams Jullin, offre une journée à des entreprises de la TPE à l’ETI, tous secteurs : un audit de leur activité, qui chiffre ce que l’IA peut leur apporter, puis une formation de 4 h de leur équipe, en intra-entreprise et en présentiel, qui les aide à répondre à l’exigence de formation de l’AI Act. Le Tour va de ville en ville : une ville s’ouvre dès 5 demandes, puis une semaine, une entreprise par jour. La journée est offerte aux 5 entreprises retenues par ville, après une visio et un court questionnaire, en échange d’un podcast tourné chez elles ; les autres peuvent recevoir la même journée à un tarif Tour. Le vendredi soir, un dîner des dirigeants, facultatif et non compris dans la journée offerte.";
+  "Le Tour France IA, organisé par Axion-IA et fondé par Williams Jullin, offre une journée à des entreprises de la TPE à l’ETI, tous secteurs : un audit de leur activité, qui chiffre ce que l’IA peut leur apporter, puis une formation de 4 h de leur équipe, en intra-entreprise et en présentiel, qui les aide à répondre à l’exigence de formation de l’AI Act. Le Tour va de ville en ville : une ville s’ouvre dès 5 demandes, puis une semaine, une entreprise par jour. La journée est offerte aux 5 entreprises retenues par ville, après une visio et un court questionnaire, en échange d’un podcast tourné chez elles ; les autres peuvent recevoir la même journée à un tarif Tour. Le vendredi soir, un dîner des dirigeants, facultatif et non compris dans la journée offerte.";
 
 /** La ville : le seuil, la semaine, et la carte — sans aucune ville nommée. */
 export const VILLE = {
@@ -220,8 +221,7 @@ export const FAQ: { titre: string; questions: readonly QuestionReponse[] } = {
   questions: [
     {
       question: "C’est vraiment offert ?",
-      reponse:
-        "Oui : l’audit et la formation, pour les 5 entreprises retenues par ville. Seul le déjeuner de notre équipe reste à votre charge.",
+      reponse: "Oui : l’audit et la formation, pour les 5 entreprises retenues par ville.",
     },
     {
       question: "Y a-t-il une contrepartie ?",
@@ -231,7 +231,7 @@ export const FAQ: { titre: string; questions: readonly QuestionReponse[] } = {
     {
       question: "Et si je ne suis pas retenu ?",
       reponse:
-        "Nous vous proposons la même journée à un tarif Tour, montant précisé dans les conditions générales. C’est aussi possible si vous préférez ne pas être filmé.",
+        "Nous vous proposons la même journée à un tarif Tour, convenu avec vous (voir les conditions générales). C’est aussi possible si vous préférez ne pas être filmé.",
     },
     {
       question: "Comment les entreprises sont-elles choisies ?",
@@ -260,7 +260,7 @@ export const APPEL_FINAL = {
 export const PIED = {
   organise: "Organisé par Axion-IA",
   nonAffiliation:
-    "Le Tour de France IA n’a aucun lien avec le Tour de France cycliste ni avec son organisateur.",
+    "Le Tour France IA n’a aucun lien avec le Tour de France cycliste ni avec son organisateur.",
   liens: [
     { libelle: "Conditions générales du Tour", href: CHEMIN_CONDITIONS },
     { libelle: "À propos d’Axion-IA", href: "https://axion-ia.com/fr/a-propos" },

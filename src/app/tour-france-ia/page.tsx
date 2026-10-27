@@ -1,9 +1,9 @@
-// `/tourdefrance-ia` — la landing du Tour de France IA (2026-10-25, refonte
+// `/tour-france-ia` — la landing du Tour France IA (2026-10-25, refonte
 // « page de conversion » le 2026-10-26, refonte VISUELLE le 2026-10-27, nouveau
 // modèle « 5 journées offertes par ville, sur sélection » le 2026-10-27).
 //
 // Tunnel : post Facebook, LinkedIn ou Instagram (UTM) → cette page → « Demander
-// ma journée offerte » → `/fr/appel/tour-de-france-ia` (la visio, type `tour` de
+// ma journée offerte » → `/fr/appel/tour-france-ia` (la visio, type `tour` de
 // `types-reservables.ts`) → Calendly → console.
 //
 // Écrite pour ce trafic-là : mobile d'abord, navigateur intégré des réseaux, 4G,

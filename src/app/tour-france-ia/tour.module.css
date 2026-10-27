@@ -1,4 +1,4 @@
-/* Tour de France IA — ce que Tailwind ne dit pas bien : le bouton et son halo,
+/* Tour France IA — ce que Tailwind ne dit pas bien : le bouton et son halo,
    les dessins SVG et leurs micro-animations (jauge, carte), l'accordéon de la FAQ et le tracé des frises. Toutes les
    couleurs sont des jetons de `globals.css`.
    CSS SEUL : aucune bibliothèque, aucun JavaScript. Toute animation s'éteint

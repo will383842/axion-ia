@@ -38,7 +38,7 @@ import { RESSOURCES_COOKIE_NAME } from "./server/ressources/routes";
 // symbole qualiopi et reste scannée par `pnpm qualiopi:isolation-check`.
 // Import RELATIF comme ses deux voisins — pas d'alias.
 import { PORTAIL_COOKIE_NAME, localeSiPortailProtege } from "./server/portail/routes";
-// Tour de France IA — interrupteur et porte d'aperçu, modules PURS (Web Crypto seulement).
+// Tour France IA — interrupteur et porte d'aperçu, modules PURS (Web Crypto seulement).
 import { TOUR_PUBLIC } from "./features/tour-de-france/visibilite";
 import {
   COOKIE_APERCU,
@@ -49,7 +49,7 @@ import {
 
 // 3. En-têtes de sécurité (CSP per-path + COEP toujours + X-* OWASP), posés sur
 // la réponse d'une page. Extraits du pipeline le 2026-10-25 pour que la landing du
-// Tour de France IA (règle 0-TDF), qui ne passe pas par next-intl, reçoive
+// Tour France IA (règle 0-TDF), qui ne passe pas par next-intl, reçoive
 // EXACTEMENT les mêmes — comportement des autres routes inchangé.
 function poserEnTetesDeSecurite(req: NextRequest, response: Response, nonce: string): void {
   const strict = isStrictCspPath(req.nextUrl.pathname);
@@ -173,17 +173,17 @@ const authPipeline = auth(async (req) => {
     return NextResponse.redirect(new URL(`/fr${req.nextUrl.search}`, req.url), 301);
   }
 
-  // 0-TDF. Landing du Tour de France IA (2026-10-25) — `/tourdefrance-ia`, SANS
+  // 0-TDF. Landing du Tour France IA (2026-10-25) — `/tour-france-ia`, SANS
   //   préfixe de langue (adresse imprimée dans les posts réseau). Elle vit hors de
-  //   `[locale]` (`src/app/tourdefrance-ia/`) : elle ne passe donc NI par 0a-bis
-  //   NI par 0bis (qui la 301 vers `/fr/tourdefrance-ia`, qui n'existe pas), NI
+  //   `[locale]` (`src/app/tour-france-ia/`) : elle ne passe donc NI par 0a-bis
+  //   NI par 0bis (qui la 301 vers `/fr/tour-france-ia`, qui n'existe pas), NI
   //   par next-intl.
   //
   //   Si `TOUR_PUBLIC` est faux (Tour refermé ; il est ouvert depuis le 2026-10-25) : 404 texte brut, `no-store`, `noindex`,
   //   sauf cookie d'aperçu valide (`features/tour-de-france/porte.ts`). Ouvert :
   //   la page passe normalement. Dans les deux cas où elle passe, elle reçoit les
   //   en-têtes de sécurité de toute page (`poserEnTetesDeSecurite`).
-  //   Garde : `src/app/tourdefrance-ia/__tests__/le-tour-est-ouvert.spec.ts`.
+  //   Garde : `src/app/tour-france-ia/__tests__/le-tour-est-ouvert.spec.ts`.
   {
     const verdict = await verdictDeLaPorte({
       pathname: req.nextUrl.pathname,
@@ -618,6 +618,6 @@ export const config = {
     // `formateur/dossier/` exclu (lot L5, formateurs indépendants) : même raison, même
     // en-têtes (`next.config.ts`). `/fr/formateurs` et `/fr/espace-formateur/…` restent
     // couverts (le motif exige `formateur/dossier/` en tête).
-    "/((?!api/|widget/|qr/|videos/|medias/|questionnaire/|document/|apporteur/dossier/|formateur/dossier/|maintenance|_next/static|_next/image|favicon\\.ico|sitemap|opengraph-image|twitter-image|manifest\\.webmanifest|\\.well-known/|^icon$|^apple-icon$|(?!(?:fr|en)/).*\\.txt$|(?!(?:fr|en|tourdefrance-ia)/).*\\.(?:png|jpg|jpeg|svg|webp|avif|ico|woff2|woff|pdf|html|vcf)$).*)",
+    "/((?!api/|widget/|qr/|videos/|medias/|questionnaire/|document/|apporteur/dossier/|formateur/dossier/|maintenance|_next/static|_next/image|favicon\\.ico|sitemap|opengraph-image|twitter-image|manifest\\.webmanifest|\\.well-known/|^icon$|^apple-icon$|(?!(?:fr|en)/).*\\.txt$|(?!(?:fr|en|tour-france-ia)/).*\\.(?:png|jpg|jpeg|svg|webp|avif|ico|woff2|woff|pdf|html|vcf)$).*)",
   ],
 };

@@ -1,4 +1,4 @@
-// Tour de France IA — données structurées de la landing (2026-10-25 ; nœud du
+// Tour France IA — données structurées de la landing (2026-10-25 ; nœud du
 // Tour passé de `EventSeries` à `Service` : décision du 2026-10-26).
 //
 // Un seul `@graph` : WebPage, Service, FAQPage, BreadcrumbList.
@@ -26,11 +26,11 @@ import { SITE_URL } from "@/lib/site-url";
 import { CONDITIONS, DEFINITION, FAQ, META, NOM_DU_TOUR, PROMESSE } from "./contenu";
 
 /**
- * La description du `Service` : le nom de tour de France, puis la définition
+ * La description du `Service` : le nom du Tour, puis la définition
  * VISIBLE de la page (`DEFINITION`), précédée de la seule phrase de nom du
  * tour — aucune promesse que la page ne fait pas.
  */
-export const DESCRIPTION_DU_SERVICE = `Le tour de France de l’IA d’Axion-IA, d’une ville à l’autre. ${DEFINITION}`;
+export const DESCRIPTION_DU_SERVICE = `Le Tour France IA d’Axion-IA, d’une ville à l’autre. ${DEFINITION}`;
 
 /** L'offre : la promesse et les conditions VISIBLES (retenues, podcast, 5 demandes), mot pour mot. */
 export const DESCRIPTION_DE_L_OFFRE = `${PROMESSE} En intra-entreprise et en présentiel. ${CONDITIONS}`;

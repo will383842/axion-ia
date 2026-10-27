@@ -359,6 +359,27 @@ const nextConfig: NextConfig = {
         destination: "/fr/appel",
         permanent: true,
       },
+      // Tour France IA (2026-10-27) : la landing quitte `/tourdefrance-ia` pour
+      // `/tour-france-ia`, et sa page de visio `/fr/appel/tour-de-france-ia` pour
+      // `/fr/appel/tour-france-ia`. Les anciennes adresses n'ont jamais été publiées :
+      // ces 308 sont un filet de sécurité. Les redirections de `next.config`
+      // passent AVANT le proxy : la règle 0bis ne les localise pas en
+      // `/fr/tourdefrance-ia`. Gardées par `src/app/tour-france-ia/__tests__/`.
+      {
+        source: "/tourdefrance-ia",
+        destination: "/tour-france-ia",
+        permanent: true,
+      },
+      {
+        source: "/tourdefrance-ia/:path*",
+        destination: "/tour-france-ia/:path*",
+        permanent: true,
+      },
+      {
+        source: "/fr/appel/tour-de-france-ia",
+        destination: "/fr/appel/tour-france-ia",
+        permanent: true,
+      },
       // Tunnel apporteurs : `/facebook` → `/apporteur-affaires` (Will 2026-09-04).
       // L'URL partait dans les publicités Meta ; le mot « facebook » n'y disait
       // rien au prospect et ne qualifiait pas le sujet. La redirection est

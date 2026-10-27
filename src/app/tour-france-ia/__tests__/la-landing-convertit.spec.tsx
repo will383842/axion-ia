@@ -78,7 +78,7 @@ import {
 
 const CSS_ESCAPE = (s: string) => s.replace(/[^\w-]/g, "\\$&");
 const RACINE = process.cwd();
-const DOSSIER = "src/app/tourdefrance-ia";
+const DOSSIER = "src/app/tour-france-ia";
 const lire = (chemin: string) => readFileSync(join(RACINE, chemin), "utf8");
 const sansCommentaires = (s: string) =>
   s
@@ -141,10 +141,10 @@ describe("🔑 une seule action : ma journée offerte", () => {
       libelle: "Découvrir Williams",
       chemin: "/fr/equipe/williams",
     });
-    expect(CHEMIN_CONDITIONS).toBe("/tourdefrance-ia/conditions-generales");
+    expect(CHEMIN_CONDITIONS).toBe("/tour-france-ia/conditions-generales");
     expect(PIED.liens[0]).toEqual({
       libelle: "Conditions générales du Tour",
-      href: "/tourdefrance-ia/conditions-generales",
+      href: "/tour-france-ia/conditions-generales",
     });
   });
 
@@ -427,7 +427,7 @@ describe("🔴 le suivi d'arrivée passe jusqu'à Calendly", () => {
   });
 
   function rendreAvec(query: string): HTMLAnchorElement {
-    window.history.replaceState(null, "", `/tourdefrance-ia${query}`);
+    window.history.replaceState(null, "", `/tour-france-ia${query}`);
     const { container } = render(
       <>
         <a href={lienRendezVous("tdf-heros")} id="heros" data-tdf-cta="">
@@ -456,7 +456,7 @@ describe("🔴 le suivi d'arrivée passe jusqu'à Calendly", () => {
     expect(url.searchParams.get("fbclid")).toBeNull();
     expect(sansCommentaires(lire(`${DOSSIER}/_composants/PiloteCta.tsx`))).not.toMatch(/fbclid/i);
 
-    // …puis `/fr/appel/tour-de-france-ia` les relit, et Calendly les reçoit.
+    // …puis `/fr/appel/tour-france-ia` les relit, et Calendly les reçoit.
     const suivi = lireSuiviArrivee(Object.fromEntries(url.searchParams));
     expect(suivi).toMatchObject({
       utm_source: "facebook",

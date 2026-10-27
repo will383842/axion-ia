@@ -1,4 +1,4 @@
-// Tour de France IA — les illustrations de la landing, en SVG serveur (aucun JS).
+// Tour France IA — les illustrations de la landing, en SVG serveur (aucun JS).
 //
 // Toutes originales, dessinées ici : aucune photo de banque d'images, aucune
 // génération externe. Dimensions fixes (`width`/`height` + `viewBox`) : la place
