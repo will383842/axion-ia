@@ -206,8 +206,7 @@ export const FAQ: { titre: string; questions: readonly QuestionReponse[] } = {
     },
     {
       question: "Et si ma ville n’a pas encore 5 entreprises ?",
-      reponse:
-        "Votre ville se déclenche à partir de 5 entreprises. Aucune date n’est fixée avant.",
+      reponse: "Votre ville se déclenche à partir de 5 entreprises. Aucune date n’est fixée avant.",
     },
     {
       question: "La formation aide-t-elle pour l’AI Act ?",
