@@ -33,8 +33,8 @@
  */
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
-import { act, cleanup, render } from "@testing-library/react";
-import { afterEach, describe, expect, it, vi } from "vitest";
+import { cleanup, render } from "@testing-library/react";
+import { afterEach, describe, expect, it } from "vitest";
 
 import { avecUtmContent, lireSuiviArrivee } from "@/server/calendly/choix-rendez-vous";
 
@@ -172,7 +172,7 @@ describe("🔑 une seule action : ma journée offerte", () => {
     expect(code).toMatch(/<BoutonAudit\s+depuis="tdf-bandeau"\s+compact\s*\/>/);
   });
 
-  it("la charte d'Axion : jetons de globals.css seulement, terracotta en tête, bouton bleu primaire plein", () => {
+  it("la charte d'Axion : jetons de globals.css seulement, UNE couleur d'action (bleu primaire plein), le terracotta en accent", () => {
     // Aucune couleur écrite en dur dans la feuille du Tour, la page ni les dessins.
     expect(CSS).not.toMatch(/#[0-9a-fA-F]{3,8}\b|rgba?\(/);
     expect(sansCommentaires(PAGE)).not.toMatch(/#[0-9a-fA-F]{3,8}\b|rgba?\(/);
@@ -182,18 +182,24 @@ describe("🔑 une seule action : ma journée offerte", () => {
     for (const m of VISUELS.matchAll(/(?:fill|stroke)="([^"]+)"/g)) {
       expect(m[1], m[1]).toMatch(/^(none|var\(--color-[a-z-]+\))$/);
     }
-    expect(PAGE).toMatch(/<header className="bg-terracotta\/95 /);
+    // Refonte « 2027 » : en-tête crème dépoli, héros et appel final CLAIRS (plus de fond
+    // quasi noir), le terracotta en accent et en UNE bande pleine, le bleu pour l'action.
+    expect(PAGE).toMatch(/<header className="border-border\/70 bg-bg\/90 border-b backdrop-blur">/);
     const code = sansCommentaires(PAGE);
-    expect(code).not.toMatch(/bg-terracotta-deep|from-terracotta-deep/);
-    // Les ambassadeurs : la bande au terracotta de marque (celle de l'ancien vendredi soir).
+    expect(code).not.toMatch(/bg-terracotta-deep|from-terracotta-deep|bg-(mocha|ink)(?![\w-])/);
+    // Les ambassadeurs : LA bande au terracotta de marque, entre deux vagues.
     expect(code).toMatch(
       /<section\s+className=\{`bg-terracotta text-mocha-fg \$\{SECTION\}`\}\s+aria-labelledby="tdf-ambassadeurs"/,
     );
-    expect(PAGE).toContain("var(--color-terracotta)_30%");
+    expect(code.match(/<Vague\b/g)).toHaveLength(2);
+    expect(code.match(/bg-terracotta text-mocha-fg \$\{SECTION\}/g)).toHaveLength(1);
     expect(CSS).toMatch(/\.bouton\s*\{[^}]*background:\s*var\(--color-primary\)/);
-    expect(PAGE).toMatch(/const FOND_MARQUE =\s*"bg-mocha /);
-    expect(PAGE).toContain("var(--color-terracotta)");
-    expect(PAGE.match(/\$\{FOND_MARQUE\} text-mocha-fg/g)).toHaveLength(2);
+    // Le bleu plein n'habille QUE l'action : aucun autre fond `bg-primary` que la pastille
+    // du jour fixé (dernière étape, celle du rendez-vous).
+    expect(code.match(/\bbg-primary\b(?![-/])/g)).toHaveLength(1);
+    expect(PAGE).toMatch(/const FOND_LUMINEUX =\s*"bg-bg /);
+    expect(PAGE).toContain("var(--color-terracotta)_16%");
+    expect(PAGE.match(/\$\{FOND_LUMINEUX\} text-fg/g)).toHaveLength(2);
   });
 
   it("aucun menu de navigation, aucun carrousel, aucun défilement horizontal", () => {
@@ -257,12 +263,13 @@ describe("🔑 une seule action : ma journée offerte", () => {
         code,
       );
     expect(final, "appel final : bouton, micro-texte, conditions et lien").not.toBeNull();
-    // 13 px, jamais `text-xs` (12 px) ni moins, jamais repliées, pas en gris sur le mocha.
+    // 13 px, jamais `text-xs` (12 px) ni moins, jamais repliées, en gris-brun lisible sur
+    // le crème (`fg-soft` : 8,1:1), jamais en gris pâle.
     const classes = /const TEXTE_CONDITIONS = "([^"]+)"/.exec(code)?.[1] ?? "";
     expect(classes).toContain("text-[0.8125rem]");
     expect(classes).not.toMatch(/\btext-(xs|\[0\.[0-6])/);
-    expect(classes).toContain("text-mocha-fg");
-    expect(classes).not.toContain("text-mocha-fg-muted");
+    expect(classes).toContain("text-fg-soft");
+    expect(classes).not.toMatch(/text-fg-muted|text-mocha/);
     expect(code).not.toMatch(/<details[^>]*>[\s\S]{0,400}HEROS\.conditions/);
     expect(HEROS.conditions).toBe(CONDITIONS);
     for (const c of [CONDITIONS, APPEL_FINAL.conditions]) {
@@ -448,9 +455,7 @@ describe("🔴 le suivi d'arrivée passe jusqu'à Calendly", () => {
         <a href={lienRendezVous("tdf-heros")} id="heros" data-tdf-cta="">
           {LIBELLE_CTA}
         </a>
-        <section id="final" />
-        <div id="collant" />
-        <PiloteCta idHeros="heros" idFinal="final" idCollant="collant" />
+        <PiloteCta />
       </>,
     );
     return container.querySelector("a") as HTMLAnchorElement;
@@ -499,95 +504,47 @@ describe("🔴 le suivi d'arrivée passe jusqu'à Calendly", () => {
   });
 });
 
-describe("🔴 le bouton collant : entre le bouton du héros et l'appel final", () => {
-  type Entree = { target: Element; isIntersecting: boolean; top: number };
-  let rappel: ((entrees: IntersectionObserverEntry[]) => void) | null = null;
-  const observees: Element[] = [];
-
-  afterEach(() => {
+describe("🔴 la barre collante : entre le héros et l'appel final, en CSS seul", () => {
+  // Refonte du 2026-10-27 : plus d'observateur ni de script. La barre est
+  // `position: sticky; bottom: 0`, DERNIER enfant du bloc qui va de la ville à la
+  // FAQ : elle ne peut pas paraître avant que ce bloc entre à l'écran (le héros est
+  // dépassé), ni le quitter (elle s'arrête avant l'appel final et le pied de page).
+  it("elle est le dernier enfant du bloc ville → FAQ, juste avant l'appel final", async () => {
+    const { container } = await rendrePage();
+    const collant = container.querySelector("#tdf-cta-collant") as HTMLElement;
+    expect(collant).not.toBeNull();
+    const bloc = collant.parentElement as HTMLElement;
+    expect(bloc.lastElementChild).toBe(collant);
+    expect(bloc.firstElementChild?.getAttribute("aria-labelledby")).toBe("tdf-ville");
+    expect(bloc.querySelector('section[aria-labelledby="tdf-faq"]')).not.toBeNull();
+    expect(bloc.querySelector("h1, #tdf-section-finale")).toBeNull();
+    expect(bloc.nextElementSibling?.id).toBe("tdf-section-finale");
+    // Aucun ancêtre ne coupe le collant (un `overflow` caché l'empêcherait de coller).
+    for (let el: HTMLElement | null = bloc; el; el = el.parentElement) {
+      expect(el.className, el.tagName).not.toMatch(/overflow-(hidden|auto|scroll)/);
+    }
+    // Le seul bouton qu'elle porte : le libellé court, emplacement tdf-collant.
+    const liens = collant.querySelectorAll("a");
+    expect(liens).toHaveLength(1);
+    expect(liens[0]?.getAttribute("href")).toBe(lienRendezVous("tdf-collant"));
+    expect(liens[0]?.textContent).toBe(LIBELLE_CTA_COURT);
     cleanup();
-    vi.unstubAllGlobals();
-    rappel = null;
-    observees.length = 0;
   });
 
-  function monter() {
-    vi.stubGlobal(
-      "IntersectionObserver",
-      class {
-        constructor(cb: (entrees: IntersectionObserverEntry[]) => void) {
-          rappel = cb;
-        }
-        observe(el: Element) {
-          observees.push(el);
-        }
-        disconnect() {}
-      },
-    );
-    const { container } = render(
-      <>
-        <a href={lienRendezVous("tdf-heros")} id="heros" data-tdf-cta="">
-          {LIBELLE_CTA}
-        </a>
-        <section id="final" />
-        <div id="collant" data-visible="false" />
-        <PiloteCta idHeros="heros" idFinal="final" idCollant="collant" />
-      </>,
-    );
-    const el = (id: string) => container.querySelector(`#${id}`) as HTMLElement;
-    const signaler = (...entrees: Entree[]) =>
-      act(() =>
-        rappel?.(
-          entrees.map(
-            (e) =>
-              ({
-                target: e.target,
-                isIntersecting: e.isIntersecting,
-                boundingClientRect: { top: e.top },
-              }) as unknown as IntersectionObserverEntry,
-          ),
-        ),
-      );
-    return { heros: el("heros"), final: el("final"), collant: el("collant"), signaler };
-  }
-
-  it("observe les DEUX cibles : le bouton du héros et l'appel final", () => {
-    const { heros, final } = monter();
-    expect(observees).toEqual([heros, final]);
-  });
-
-  it("caché au héros, visible au milieu, caché dès que l'appel final est à l'écran (et après)", () => {
-    const { heros, final, collant, signaler } = monter();
-    // Arrivée : le héros est à l'écran, l'appel final loin en dessous.
-    signaler(
-      { target: heros, isIntersecting: true, top: 200 },
-      { target: final, isIntersecting: false, top: 4000 },
-    );
-    expect(collant.dataset["visible"]).toBe("false");
-    expect(collant.hasAttribute("inert")).toBe(true);
-    // Le bouton du héros passe au-dessus de l'écran : le collant apparaît.
-    signaler({ target: heros, isIntersecting: false, top: -80 });
-    expect(collant.dataset["visible"]).toBe("true");
-    expect(collant.hasAttribute("inert")).toBe(false);
-    // L'appel final entre à l'écran : le collant se cache (un seul rappel, pour la cible finale).
-    signaler({ target: final, isIntersecting: true, top: 500 });
-    expect(collant.dataset["visible"]).toBe("false");
-    expect(collant.hasAttribute("inert")).toBe(true);
-    // Plus bas, l'appel final est passé au-dessus (pied de page) : toujours caché.
-    signaler({ target: final, isIntersecting: false, top: -300 });
-    expect(collant.dataset["visible"]).toBe("false");
-    // On remonte au milieu de la page : il revient.
-    signaler({ target: final, isIntersecting: false, top: 2500 });
-    expect(collant.dataset["visible"]).toBe("true");
-  });
-
-  it("la page câble l'appel final par l'id de la SECTION entière, pas celui de son titre", () => {
+  it("sticky en bas, mobile seulement, au-dessus de la zone système, sans aucun script", () => {
     const code = sansCommentaires(PAGE);
-    expect(code).toMatch(/const ID_SECTION_FINALE = "tdf-section-finale";/);
-    expect(code).toMatch(
-      /<section\s+id=\{ID_SECTION_FINALE\}[^>]*aria-labelledby=\{ID_APPEL_FINAL\}/,
-    );
-    expect(code).toMatch(/<PiloteCta[^>]*idFinal=\{ID_SECTION_FINALE\}/);
+    const classes = /id=\{ID_CTA_COLLANT\}\s+className=\{`([^`]+)`\}/.exec(code)?.[1] ?? "";
+    expect(classes).toMatch(/\bsticky bottom-0\b/);
+    expect(classes).toMatch(/\bmd:hidden\b/);
+    expect(classes).toMatch(/\bz-40\b/);
+    expect(classes).not.toMatch(/\bfixed\b|translate-y|opacity-0|data-\[visible/);
+    expect(code).not.toMatch(/\binert\b|data-visible/);
+    const collant = CSS.match(/\.collant\s*\{([^}]*)\}/)?.[1] ?? "";
+    expect(collant).toMatch(/env\(safe-area-inset-bottom\)/);
+    // Le seul composant client ne fait plus que recopier les utm_* : aucun observateur.
+    const pilote = sansCommentaires(lire(`${DOSSIER}/_composants/PiloteCta.tsx`));
+    expect(pilote).not.toMatch(/IntersectionObserver|scroll|getElementById|dataset/);
+    expect(code).toMatch(/<PiloteCta \/>/);
   });
 });
 
@@ -767,14 +724,20 @@ describe("🔴 le JavaScript reste minimal, le rendu stable (CLS nul)", () => {
     expect(reduit.length).toBeGreaterThan(0);
     for (const classe of anime) expect(reduit, classe).toContain(`.${classe}`);
     expect(reduit).toContain("animation: none");
-    // Aucune boucle sans fin : chaque animation se joue un nombre FINI de fois, puis s'arrête.
+    // Aucune boucle sans fin : chaque animation se joue UNE fois, puis s'arrête sur son
+    // état final (`1 both`). Et aucune ne dure plus de 600 ms (refonte du 2026-10-27).
     expect(CSS).not.toMatch(/infinite/);
     const declarations = [...CSS.matchAll(/\banimation:\s*([^;]+);/g)].map((m) => m[1] ?? "");
     const jouees = declarations.filter((d) => d.trim() !== "none");
     expect(jouees.length).toBe(new Set(anime).size);
     for (const d of jouees) {
-      expect(d, d).toMatch(/\s2\s+both$/);
+      expect(d, d).toMatch(/\s1\s+both$/);
+      const duree = /^[\w-]+\s+(\d+(?:\.\d+)?)(ms|s)\b/.exec(d.trim());
+      expect(duree, d).not.toBeNull();
+      const ms = Number(duree?.[1]) * (duree?.[2] === "s" ? 1000 : 1);
+      expect(ms, d).toBeLessThanOrEqual(600);
     }
+    expect(CSS).not.toMatch(/animation-duration|animation-iteration-count/);
     // Les animations ne touchent pas la mise en page.
     for (const bloc of CSS.matchAll(/@keyframes[^{]+\{([\s\S]*?)\n\}/g)) {
       expect(bloc[1]).not.toMatch(/\b(width|height|top|left|margin|padding)\s*:/);
@@ -827,7 +790,7 @@ describe("🔴 le JavaScript reste minimal, le rendu stable (CLS nul)", () => {
     cleanup();
   });
 
-  it("UNE seule image matricielle : la photo du fondateur, native, en différé, 96 × 96", async () => {
+  it("UNE seule image matricielle : la photo du fondateur, native, en différé, 128 × 128", async () => {
     // Dans le code : une seule balise <img>, aucune <picture>, aucune image en CSS.
     expect(sansCommentaires(PAGE).match(/<img\b/g)).toHaveLength(1);
     expect(PAGE).not.toMatch(/<picture\b|background-image:\s*url/);
@@ -840,10 +803,11 @@ describe("🔴 le JavaScript reste minimal, le rendu stable (CLS nul)", () => {
     expect(img.getAttribute("src")).toBe("/illustrations/william-fondateur-axion-ia.webp");
     expect(img.getAttribute("loading")).toBe("lazy");
     expect(img.getAttribute("decoding")).toBe("async");
-    expect(img.getAttribute("width")).toBe("96");
-    expect(img.getAttribute("height")).toBe("96");
+    expect(img.getAttribute("width")).toBe("128");
+    expect(img.getAttribute("height")).toBe("128");
     expect(img.getAttribute("alt")).toBe(FONDATEUR.alt);
     expect(img.className).toContain("rounded-full");
+    expect(img.className).toMatch(/\bh-32 w-32\b/);
     // Le LCP reste le texte du H1 : l'image vient bien après lui.
     const h1 = container.querySelector("h1") as HTMLElement;
     expect(h1.compareDocumentPosition(img) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();

@@ -209,7 +209,7 @@ export const ETAPES = {
  */
 export const FONDATEUR = {
   titre: "Qui vient chez vous",
-  /** Illustration existante du site (1000 × 1000), servie telle quelle à 96 px, en différé. */
+  /** Illustration existante du site (1000 × 1000), servie telle quelle à 128 px, en différé. */
   photo: "/illustrations/william-fondateur-axion-ia.webp",
   alt: "Williams Jullin, fondateur d’Axion-IA",
   citation:
