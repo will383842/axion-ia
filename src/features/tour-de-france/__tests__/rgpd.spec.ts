@@ -25,7 +25,7 @@ vi.mock("@/lib/pii-crypto", () => ({
   decryptPii: m.decrypt,
 }));
 
-import { Prisma } from "@prisma/client";
+import { Prisma } from "../../../../prisma/generated/client";
 import { hashEmailForLookup } from "@/lib/security/email-hash";
 import {
   VALEUR_EFFACEE,
