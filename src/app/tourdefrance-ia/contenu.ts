@@ -132,7 +132,7 @@ export const HEROS = {
   promesse: PROMESSE,
   /** La frise du premier écran : trois disques dessinés, un mot chacun. */
   friseTitre: "Votre journée offerte, puis le vendredi soir",
-  frise: ["Audit", "Formation d’équipe", "Vendredi soir"],
+  frise: ["Audit", "Formation d’équipe", "Puis, vendredi soir"],
   conditions: CONDITIONS,
 } as const;
 
@@ -156,7 +156,7 @@ export const ETAPES = {
   titre: "En 3 étapes",
   liste: [
     "Une visio de 30 minutes",
-    "Le Tour arrive dans votre ville",
+    "Votre ville se déclenche",
     "Votre journée offerte, chez vous",
   ],
 } as const;
@@ -207,7 +207,7 @@ export const FAQ: { titre: string; questions: readonly QuestionReponse[] } = {
     {
       question: "Et si ma ville n’a pas encore 5 entreprises ?",
       reponse:
-        "Votre demande est gardée, et nous vous prévenons quand votre ville se déclenche. Aucune date n’est fixée avant.",
+        "Votre ville se déclenche à partir de 5 entreprises. Aucune date n’est fixée avant.",
     },
     {
       question: "La formation aide-t-elle pour l’AI Act ?",
