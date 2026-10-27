@@ -8,7 +8,7 @@
 // du propriétaire du 2026-10-27) — le tarif hors Tour renvoie aux conditions
 // générales de vente d'AXION IA —, la déduction intégrale et plafonnée, le
 // remboursement en cas de report d'une ville, le dîner facultatif et non compris
-// (l'article sur le midi est retiré le 2026-10-27 : 19 articles),
+// (les articles sur le midi et le déplacement sont retirés le 2026-10-27 : 18 articles),
 // la mention « Journée offerte par Axion-IA dans le cadre du Tour », le lien en
 // `rel="sponsored"`, l'article sur l'AI Act sans promesse de conformité, la
 // version applicable et la juridiction du siège social.
@@ -156,48 +156,41 @@ export const ARTICLES: readonly Article[] = [
   },
   {
     numero: 13,
-    titre: "Frais de déplacement",
-    blocs: [
-      "Inclus pour les journées du Tour France IA, offertes ou au tarif Tour, y compris la semaine suivant son passage ; facturés en supplément pour toute intervention en dehors du Tour.",
-    ],
-  },
-  {
-    numero: 14,
     titre: "Confidentialité",
     blocs: [
       "Les informations découvertes pendant l’audit restent confidentielles. Aucun document, écran ou donnée sensible n’est filmé ou diffusé. Les données personnelles sont traitées dans le respect du RGPD.",
     ],
   },
   {
-    numero: 15,
+    numero: 14,
     titre: "Rapport d’audit",
     blocs: [
       "L’entreprise reçoit le rapport d’audit et ses recommandations, qu’elle utilise librement pour ses besoins internes. Les outils, méthodes et automatisations d’AXION IA restent la propriété d’AXION IA.",
     ],
   },
   {
-    numero: 16,
+    numero: 15,
     titre: "AI Act",
     blocs: [
       "La formation contribue aux mesures que l’entreprise peut prendre au titre de l’article 4 du règlement (UE) 2024/1689. Elle n’est ni une certification ni une garantie de conformité. Une attestation de fin de formation est remise à chaque participant.",
     ],
   },
   {
-    numero: 17,
+    numero: 16,
     titre: "Responsabilité",
     blocs: [
       "AXION IA formule des recommandations ; les décisions prises ensuite et leur mise en œuvre restent sous la responsabilité de l’entreprise.",
     ],
   },
   {
-    numero: 18,
+    numero: 17,
     titre: "Modification des conditions",
     blocs: [
       "AXION IA peut faire évoluer les présentes conditions. La version applicable est celle acceptée lors de la demande ; si elle change avant la confirmation écrite de la journée, la nouvelle version est soumise à l’entreprise, qui peut la refuser et retirer sa demande sans frais.",
     ],
   },
   {
-    numero: 19,
+    numero: 18,
     titre: "Droit applicable",
     blocs: [
       "Les présentes conditions sont soumises au droit français. En cas de litige, les parties recherchent d’abord un accord amiable pendant 30 jours. À défaut, le litige relève du tribunal de commerce du ressort du siège social d’AXION IA SAS (voir les mentions légales).",
