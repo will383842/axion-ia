@@ -56,6 +56,8 @@ on:
           # ne commande QUE le texte d'information de la page (`notice-suivi.ts`, à valider par Will).
           - "QUESTIONNAIRE_SUIVI_ENABLED"
           - "QUESTIONNAIRE_SUIVI_NOTICE_VISIBLE"
+          # Copie complète des réponses d'un questionnaire (super-administrateur) : ÉTEINT par défaut.
+          - "QUESTIONNAIRE_EXPORT_COMPLET_ENABLED"
           # Salon Telegram « Questionnaire audit » (identifiant, ex. -1001234567890). Sans lui :
           # Clients, puis Système. Cible : worker.
           - "TELEGRAM_CHAT_ID_QUESTIONNAIRE_AUDIT"

@@ -117,6 +117,8 @@ export const env = createEnv({
     //   · SUIVI_NOTICE_VISIBLE : ne commande QUE le texte d'information de la page.
     QUESTIONNAIRE_SUIVI_ENABLED: z.string().optional(),
     QUESTIONNAIRE_SUIVI_NOTICE_VISIBLE: z.string().optional(),
+    // Copie complète des réponses d'un questionnaire (super-administrateur) : ABSENT = ÉTEINT.
+    QUESTIONNAIRE_EXPORT_COMPLET_ENABLED: z.string().optional(),
     // Boîte d'Axion IA qui reçoit les essais de la console (jamais le prospect). Lue par le WORKER.
     // Texte libre (une faute de frappe ne doit jamais empêcher le démarrage) : `adresseEssai()`
     // la vérifie et l'essai échoue, visible au journal, si elle est invalide.
@@ -755,6 +757,7 @@ export const env = createEnv({
     QUESTIONNAIRE_TELEGRAM_ENABLED: process.env.QUESTIONNAIRE_TELEGRAM_ENABLED,
     QUESTIONNAIRE_SUIVI_ENABLED: process.env.QUESTIONNAIRE_SUIVI_ENABLED,
     QUESTIONNAIRE_SUIVI_NOTICE_VISIBLE: process.env.QUESTIONNAIRE_SUIVI_NOTICE_VISIBLE,
+    QUESTIONNAIRE_EXPORT_COMPLET_ENABLED: process.env.QUESTIONNAIRE_EXPORT_COMPLET_ENABLED,
     QUESTIONNAIRE_PREAUDIT_ADRESSE_ESSAI: process.env.QUESTIONNAIRE_PREAUDIT_ADRESSE_ESSAI,
     IDCC_OPCO_IMPORT_ENABLED: process.env.IDCC_OPCO_IMPORT_ENABLED,
     VISIO_ADRESSES_DE_TEST: process.env.VISIO_ADRESSES_DE_TEST,
