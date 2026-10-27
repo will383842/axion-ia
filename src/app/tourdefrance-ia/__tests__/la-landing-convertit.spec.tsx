@@ -242,7 +242,7 @@ describe("🔑 une seule action : ma journée offerte", () => {
     expect(PROMESSE).toMatch(/^Une journée offerte dans votre entreprise/);
     expect(PROMESSE).toMatch(/audit \+ formation IA de votre équipe\.$/);
     expect(PROMESSE.length).toBeLessThanOrEqual(90);
-    expect(HEROS.frise).toEqual(["Audit", "Formation d’équipe", "Vendredi soir"]);
+    expect(HEROS.frise).toEqual(["Audit", "Formation d’équipe", "Puis, vendredi soir"]);
     // La frise est une liste ordonnée nommée, à trois disques dessinés.
     const code = sansCommentaires(PAGE);
     expect(code).toMatch(/<ol\s+aria-label=\{HEROS\.friseTitre\}/);
@@ -305,7 +305,7 @@ describe("🔑 une seule action : ma journée offerte", () => {
   it("« En 3 étapes » : trois pastilles dessinées ; la journée : matin et après-midi, sans horaire", () => {
     expect(ETAPES.liste).toEqual([
       "Une visio de 30 minutes",
-      "Le Tour arrive dans votre ville",
+      "Votre ville se déclenche",
       "Votre journée offerte, chez vous",
     ]);
     expect(sansCommentaires(PAGE)).toMatch(/\$\{styles\.parcours\} mt-8 grid gap-8 lg:grid-cols-3/);
