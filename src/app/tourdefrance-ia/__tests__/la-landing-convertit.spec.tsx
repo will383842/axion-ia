@@ -1,17 +1,18 @@
 /**
  * LA LANDING DU TOUR EST UNE PAGE DE CONVERSION, ET UNE PAGE VISUELLE (refonte
- * « page de conversion » du 2026-10-26, refonte visuelle « une journée offerte »
- * du 2026-10-27).
+ * « page de conversion » du 2026-10-26, refonte visuelle du 2026-10-27, modèle
+ * « 5 journées offertes par ville, sur sélection » du 2026-10-27).
  *
  * Trafic visé : un post Facebook ou Instagram, sur téléphone, dans le navigateur
  * intégré, en 4G. Ce qui doit tenir, en plus de `le-tour-est-ouvert.spec.ts` :
  *
- *   · UNE seule action, « Je veux ma journée offerte », vers la visio du Tour ;
- *   · le premier écran d'un téléphone : puce, H1, promesse, frise de trois disques
- *     dessinés, bouton, et SOUS LE BOUTON, dans la même boîte, les conditions —
- *     la carte vient après le bouton dans le flux ;
- *   · très peu de texte : ~150 mots visibles hors FAQ, des titres de 6 mots au
- *     plus, un dessin par bloc ;
+ *   · UNE seule action, « Demander ma journée offerte », vers la visio du Tour ;
+ *   · le premier écran d'un téléphone : puce, H1, promesse, l'emplacement de la
+ *     vidéo (la frise tant qu'elle n'est pas là), bouton, micro-texte, et SOUS LE
+ *     BOUTON, dans la même boîte, les conditions et leur lien ;
+ *   · la contrepartie (« podcast ») sous CHAQUE grand bouton, jamais « filmé » ;
+ *   · très peu de texte : 200 mots visibles au plus hors FAQ, conditions et pied,
+ *     des titres de 6 mots au plus, un dessin par bloc ;
  *   · cinq emplacements de bouton, ceux que la console connaît (tdf-entete,
  *     tdf-heros, tdf-bandeau, tdf-final, tdf-collant) — pas un de plus ;
  *   · le suivi d'arrivée (`utm_*` seulement) passe de la page aux boutons, puis
@@ -20,14 +21,15 @@
  *   · le JavaScript reste minimal : aucun `next/image`, `next/script`, ni
  *     composant d'interface partagé qui tirerait du JS ; la FAQ est un
  *     `details` natif ; les animations sont en CSS et respectent le mouvement
- *     réduit ; aucune image matricielle ;
+ *     réduit ; UNE seule image matricielle (le fondateur, en différé) ; aucune
+ *     balise `video` tant que `VIDEO_HEROS` est nul ;
  *   · CLS nul : chaque dessin porte largeur et hauteur NUMÉRIQUES ;
  *   · aucune animation en boucle infinie ;
  *   · le vocabulaire : aucun mot du cyclisme, aucun emoji, aucun chiffre hors
- *     de ceux du concept (3 étapes, 4 h, 5 entreprises, 30 minutes).
+ *     de ceux du concept.
  *
  * Angle mort assumé : jsdom n'a pas de mise en page. « Le bouton tient dans le
- * premier écran à 360 px » se vérifie dans un navigateur (cf. la PR), pas ici.
+ * premier écran à 360 × 640 » se vérifie dans un navigateur (cf. la PR), pas ici.
  */
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
@@ -36,35 +38,42 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 
 import { avecUtmContent, lireSuiviArrivee } from "@/server/calendly/choix-rendez-vous";
 
+import TourDeFranceIaPage from "../page";
 import {
+  AMBASSADEURS,
+  APPEL_FINAL,
+  CHEMIN_CONDITIONS,
   CHEMIN_RENDEZ_VOUS,
   CONDITIONS,
   EMPLACEMENTS_CTA,
   ETAPES,
   FAQ,
+  FONDATEUR,
+  GAINS,
   HEROS,
-  JOURNEE,
   LIBELLE_CTA,
   LIBELLE_CTA_COURT,
   MICRO_TEXTE_CTA,
+  PIED,
   PROMESSE,
-  VENDREDI,
+  VIDEO_HEROS,
+  VILLE,
   lienRendezVous,
+  texteDesBoutons,
   texteVisibleHorsFaq,
   toutLeTexte,
 } from "../contenu";
+import { EmplacementVideo } from "../_composants/EmplacementVideo";
 import { PiloteCta } from "../_composants/PiloteCta";
 import styles from "../tour.module.css";
 import {
   CarteFrance,
-  Coche,
   Fleche,
   IllustrationMoment,
   Jauge,
-  PictoLevier,
   PictoSecteur,
+  PictoTour,
   PictoVisio,
-  SceneEntreprise,
 } from "../_composants/Visuels";
 
 const CSS_ESCAPE = (s: string) => s.replace(/[^\w-]/g, "\\$&");
@@ -79,13 +88,19 @@ const sansCommentaires = (s: string) =>
 
 const PAGE = lire(`${DOSSIER}/page.tsx`);
 const VISUELS = lire(`${DOSSIER}/_composants/Visuels.tsx`);
+const VIDEO = lire(`${DOSSIER}/_composants/EmplacementVideo.tsx`);
 const CSS = lire(`${DOSSIER}/tour.module.css`);
-const SOURCES = [PAGE, VISUELS, lire(`${DOSSIER}/contenu.ts`)].join("\n");
+const SOURCES = [PAGE, VISUELS, VIDEO, lire(`${DOSSIER}/contenu.ts`)].join("\n");
 const mots = (t: string) => t.split(/\s+/).filter((m) => /[\p{L}\d]/u.test(m)).length;
 
+/** La page entière, rendue (composant serveur asynchrone : le Tour est ouvert, aucune requête). */
+async function rendrePage() {
+  return render(await TourDeFranceIaPage());
+}
+
 describe("🔑 une seule action : ma journée offerte", () => {
-  it("le libellé dit ce que l'entreprise obtient, et il mène à la visio du Tour", () => {
-    expect(LIBELLE_CTA).toBe("Je veux ma journée offerte");
+  it("le libellé dit ce que l'entreprise demande, et il mène à la visio du Tour", () => {
+    expect(LIBELLE_CTA).toBe("Demander ma journée offerte");
     expect(LIBELLE_CTA_COURT).toBe("Ma journée offerte");
     for (const l of [LIBELLE_CTA, LIBELLE_CTA_COURT]) expect(l).toMatch(/journée offerte$/);
     // Court : l'en-tête et la barre collante tiennent sur une ligne à 360 px.
@@ -95,13 +110,13 @@ describe("🔑 une seule action : ma journée offerte", () => {
       /\{compact \|\| pleineLargeur \? LIBELLE_CTA_COURT : LIBELLE_CTA\}/,
     );
     expect(`${LIBELLE_CTA} ${LIBELLE_CTA_COURT}`).not.toMatch(
-      /participer|candidat|r[ée]serv|inscri/i,
+      /participer|candidat|r[ée]serv|inscri|film|tourn/i,
     );
     expect(lienRendezVous("tdf-heros")).toBe(`${CHEMIN_RENDEZ_VOUS}?depuis=tdf-heros`);
     expect(lienRendezVous("tdf-entete")).toBe(`${CHEMIN_RENDEZ_VOUS}?depuis=tdf-entete`);
   });
 
-  it("chaque lien de la page qui n'est pas du pied de page est un bouton de la journée", () => {
+  it("chaque lien de la page qui n'est pas du pied de page est un bouton, les conditions ou la fiche du fondateur", () => {
     const code = sansCommentaires(PAGE);
     const emplacements = [...code.matchAll(/<BoutonAudit\s+depuis="([^"]+)"/g)].map((m) => m[1]);
     // Exactement les cinq que la console connaît, chacun une fois — aucun inventé.
@@ -114,13 +129,23 @@ describe("🔑 une seule action : ma journée offerte", () => {
       "tdf-collant",
     ]);
     expect(code).not.toContain("tdf-etapes");
-    // Les seuls autres liens : la fiche du fondateur (FAQ « Qui organise ? ») et le pied de page.
     const autres = [...code.matchAll(/href=\{([^}]+)\}/g)].map((m) => m[1]);
-    expect(autres).toEqual(["lienRendezVous(depuis)", "q.lien.chemin", "l.href"]);
-    const qui = FAQ.questions.find((q) => q.lien);
-    expect(qui?.question).toBe("Qui organise\u00a0?");
-    expect(qui?.reponse).toMatch(/Axion-IA, fondée par Williams Jullin/);
-    expect(qui?.lien).toEqual({ libelle: "Découvrir Williams", chemin: "/fr/equipe/williams" });
+    expect(autres).toEqual([
+      "lienRendezVous(depuis)",
+      "LIEN_CONDITIONS.chemin",
+      "FONDATEUR.lien.chemin",
+      "LIEN_CONDITIONS.chemin",
+      "l.href",
+    ]);
+    expect(FONDATEUR.lien).toEqual({
+      libelle: "Découvrir Williams",
+      chemin: "/fr/equipe/williams",
+    });
+    expect(CHEMIN_CONDITIONS).toBe("/tourdefrance-ia/conditions-generales");
+    expect(PIED.liens[0]).toEqual({
+      libelle: "Conditions générales du Tour",
+      href: "/tourdefrance-ia/conditions-generales",
+    });
   });
 
   it("l'en-tête du tunnel : le logo et UN bouton (tdf-entete, 44 px minimum), aucun menu, aucun lien de sortie", () => {
@@ -138,12 +163,12 @@ describe("🔑 une seule action : ma journée offerte", () => {
     expect(code).toMatch(/data-tdf-cta=""/);
   });
 
-  it("le bloc « Votre journée offerte » porte la pilule compacte (tdf-bandeau), après le héros", () => {
+  it("le bloc « Ce que vous gagnez » porte la pilule compacte (tdf-bandeau), après le héros", () => {
     const code = sansCommentaires(PAGE);
     const i = code.indexOf('depuis="tdf-bandeau"');
     expect(i).toBeGreaterThan(code.indexOf('depuis="tdf-heros"'));
-    expect(i).toBeGreaterThan(code.indexOf("{JOURNEE.titre}"));
-    expect(i).toBeLessThan(code.indexOf("{VENDREDI.titre}"));
+    expect(i).toBeGreaterThan(code.indexOf("{GAINS.titre}"));
+    expect(i).toBeLessThan(code.indexOf("{AMBASSADEURS.titre}"));
     expect(code).toMatch(/<BoutonAudit\s+depuis="tdf-bandeau"\s+compact\s*\/>/);
   });
 
@@ -152,6 +177,7 @@ describe("🔑 une seule action : ma journée offerte", () => {
     expect(CSS).not.toMatch(/#[0-9a-fA-F]{3,8}\b|rgba?\(/);
     expect(sansCommentaires(PAGE)).not.toMatch(/#[0-9a-fA-F]{3,8}\b|rgba?\(/);
     expect(sansCommentaires(VISUELS)).not.toMatch(/#[0-9a-fA-F]{3,8}\b|rgba?\(|hsla?\(/);
+    expect(sansCommentaires(VIDEO)).not.toMatch(/#[0-9a-fA-F]{3,8}\b|rgba?\(|hsla?\(/);
     // Les couleurs écrites dans les dessins sont toutes des jetons.
     for (const m of VISUELS.matchAll(/(?:fill|stroke)="([^"]+)"/g)) {
       expect(m[1], m[1]).toMatch(/^(none|var\(--color-[a-z-]+\))$/);
@@ -159,9 +185,9 @@ describe("🔑 une seule action : ma journée offerte", () => {
     expect(PAGE).toMatch(/<header className="bg-terracotta\/95 /);
     const code = sansCommentaires(PAGE);
     expect(code).not.toMatch(/bg-terracotta-deep|from-terracotta-deep/);
-    // Le vendredi soir : la bande au terracotta de marque.
+    // Les ambassadeurs : la bande au terracotta de marque (celle de l'ancien vendredi soir).
     expect(code).toMatch(
-      /<section\s+className=\{`bg-terracotta text-mocha-fg \$\{SECTION\}`\}\s+aria-labelledby="tdf-vendredi"/,
+      /<section\s+className=\{`bg-terracotta text-mocha-fg \$\{SECTION\}`\}\s+aria-labelledby="tdf-ambassadeurs"/,
     );
     expect(PAGE).toContain("var(--color-terracotta)_30%");
     expect(CSS).toMatch(/\.bouton\s*\{[^}]*background:\s*var\(--color-primary\)/);
@@ -177,7 +203,7 @@ describe("🔑 une seule action : ma journée offerte", () => {
     expect(lire(`${DOSSIER}/layout.tsx`)).toContain("overflow-x-clip");
   });
 
-  it("premier écran mobile : puce, H1, promesse, frise, bouton, conditions — puis la carte", () => {
+  it("l'ordre de la page : en-tête, héros, ville, gains, ambassadeurs, étapes, fondateur, FAQ, appel final, pied", () => {
     const code = sansCommentaires(PAGE);
     const i = (t: string) => {
       const n = code.indexOf(t);
@@ -185,70 +211,96 @@ describe("🔑 une seule action : ma journée offerte", () => {
       return n;
     };
     const ordre = [
+      "<header",
       "{HEROS.surtitre}",
       "<h1",
       "{HEROS.promesse}",
+      "<EmplacementVideo",
       "HEROS.frise.map",
       "id={ID_CTA_HEROS}",
+      "{MICRO_TEXTE_CTA}",
       "{HEROS.conditions}",
+      "{VILLE.titre}",
       "<CarteFrance",
+      "{GAINS.titre}",
+      "{AMBASSADEURS.titre}",
+      "{ETAPES.titre}",
+      "{FONDATEUR.titre}",
+      "{FAQ.titre}",
+      "{APPEL_FINAL.titre}",
+      "<footer",
     ].map(i);
     expect([...ordre].sort((x, y) => x - y)).toEqual(ordre);
-    for (const t of ["{HEROS.promesse}", "{HEROS.conditions}", "HEROS.frise.map"]) {
+    for (const t of ["{HEROS.promesse}", "{HEROS.conditions}", "HEROS.frise.map", "<CarteFrance"]) {
       expect(code.split(t).length - 1, t).toBe(1);
     }
     // Rien n'est caché sur mobile dans le héros.
-    expect(code.slice(i("{HEROS.surtitre}"), i("<CarteFrance"))).not.toMatch(/\bhidden\b/);
+    expect(code.slice(i("{HEROS.surtitre}"), i("{VILLE.titre}"))).not.toMatch(/\bhidden\b/);
     // Aucune police à chasse fixe au-dessus du pli : le surtitre est une puce en Manrope.
-    expect(code.slice(code.indexOf("<main"), i("<CarteFrance"))).not.toMatch(/font-mono/);
+    expect(code.slice(code.indexOf("<main"), i("{VILLE.titre}"))).not.toMatch(/font-mono/);
     // La carte est plus petite sur téléphone.
     expect(code).toMatch(/max-w-\[300px\][^"`]*sm:max-w-\[380px\]/);
-    expect(i('depuis="tdf-heros"')).toBeLessThan(i('depuis="tdf-bandeau"'));
   });
 
-  it("🔴 les conditions sont dans le MÊME bloc que le bouton du héros, en clair (≥ 12 px)", () => {
+  it("🔴 sous CHAQUE grand bouton : le micro-texte, puis les conditions (retenues, podcast) et leur lien, en clair (≥ 12 px)", () => {
     const code = sansCommentaires(PAGE);
-    // La boîte qui contient le bouton du héros contient aussi les conditions, et rien d'autre.
-    const bloc =
-      /<div className="[^"]*">\s*<BoutonAudit depuis="tdf-heros" id=\{ID_CTA_HEROS\} \/>\s*<p className="([^"]+)">\s*\{HEROS\.conditions\}\s*<\/p>\s*<\/div>/.exec(
+    const heros =
+      /<BoutonAudit depuis="tdf-heros" id=\{ID_CTA_HEROS\} \/>\s*<p[^>]*>\s*\{MICRO_TEXTE_CTA\}\s*<\/p>\s*<p className=\{`\$\{TEXTE_CONDITIONS\}[^`]*`\}>\s*\{HEROS\.conditions\}\{" "\}\s*<a href=\{LIEN_CONDITIONS\.chemin\}/.exec(
         code,
       );
-    expect(bloc, "bouton et conditions dans la même boîte").not.toBeNull();
-    const classes = bloc?.[1] ?? "";
+    expect(
+      heros,
+      "héros : bouton, micro-texte, conditions et lien dans la même boîte",
+    ).not.toBeNull();
+    const final =
+      /<BoutonAudit depuis="tdf-final" \/>\s*<p[^>]*>\{MICRO_TEXTE_CTA\}<\/p>\s*<p className=\{TEXTE_CONDITIONS\}>\s*\{APPEL_FINAL\.conditions\}\{" "\}\s*<a href=\{LIEN_CONDITIONS\.chemin\}/.exec(
+        code,
+      );
+    expect(final, "appel final : bouton, micro-texte, conditions et lien").not.toBeNull();
     // 13 px, jamais `text-xs` (12 px) ni moins, jamais repliées, pas en gris sur le mocha.
+    const classes = /const TEXTE_CONDITIONS = "([^"]+)"/.exec(code)?.[1] ?? "";
     expect(classes).toContain("text-[0.8125rem]");
     expect(classes).not.toMatch(/\btext-(xs|\[0\.[0-6])/);
     expect(classes).toContain("text-mocha-fg");
     expect(classes).not.toContain("text-mocha-fg-muted");
     expect(code).not.toMatch(/<details[^>]*>[\s\S]{0,400}HEROS\.conditions/);
-    // L'appel final les répète, sous son bouton.
-    expect(code).toMatch(
-      /<BoutonAudit depuis="tdf-final" \/>\s*<p[^>]*>\{MICRO_TEXTE_CTA\}<\/p>\s*<p[^>]*>\{CONDITIONS\}<\/p>/,
-    );
     expect(HEROS.conditions).toBe(CONDITIONS);
+    for (const c of [CONDITIONS, APPEL_FINAL.conditions]) {
+      expect(c).toMatch(/retenues/);
+      expect(c).toMatch(/podcast/);
+      expect(c).not.toMatch(/film|tourn|\*/i);
+    }
+    expect(PAGE.match(/\{MICRO_TEXTE_CTA\}/g)).toHaveLength(2);
   });
 
-  it("🔴 la ligne de conditions : quelques places, à partir de 5 entreprises, sans étoile ni plafond", () => {
-    expect(CONDITIONS).toContain("quelques places par ville");
-    expect(CONDITIONS).toContain("à partir de 5 entreprises");
-    expect(CONDITIONS).not.toMatch(/\*/);
-    expect(CONDITIONS).not.toMatch(/\bau plus\b|liste d[’']attente|seulement/i);
-    // Aucune étoile de renvoi nulle part dans le texte.
-    expect(toutLeTexte()).not.toMatch(/\*/);
+  it("🔴 rendue : les conditions et leur lien suivent les deux grands boutons, dans la même boîte", async () => {
+    const { container } = await rendrePage();
+    for (const id of ["tdf-cta-heros", null]) {
+      const bouton = id
+        ? container.querySelector(`#${id}`)
+        : container.querySelector('a[href$="depuis=tdf-final"]');
+      const boite = bouton?.parentElement;
+      expect(boite?.textContent).toContain(MICRO_TEXTE_CTA);
+      expect(boite?.textContent).toMatch(/retenues[^]*podcast/);
+      expect(boite?.querySelector(`a[href="${CHEMIN_CONDITIONS}"]`)?.textContent).toBe(
+        "Conditions générales",
+      );
+      expect(boite?.textContent).not.toMatch(/filmé|tournage/);
+    }
+    cleanup();
   });
 
-  it("la promesse et la frise : la journée offerte, comprise d'un coup d'œil", () => {
+  it("la promesse et la frise : la journée offerte, comprise d'un coup d'œil, sans le vendredi", () => {
     expect(HEROS.promesse).toBe(PROMESSE);
     expect(PROMESSE).toMatch(/^Une journée offerte dans votre entreprise/);
     expect(PROMESSE).toMatch(/audit \+ formation IA de votre équipe\.$/);
     expect(PROMESSE.length).toBeLessThanOrEqual(90);
-    expect(HEROS.frise).toEqual(["Audit", "Formation d’équipe", "Puis, vendredi soir"]);
+    expect(HEROS.frise).toEqual(["Audit", "Formation", "4 h chez vous"]);
+    expect(HEROS.frise.join(" ")).not.toMatch(/vendredi/i);
     // La frise est une liste ordonnée nommée, à trois disques dessinés.
     const code = sansCommentaires(PAGE);
     expect(code).toMatch(/<ol\s+aria-label=\{HEROS\.friseTitre\}/);
-    expect(code).toMatch(
-      /<IllustrationMoment index=\{PICTOS_FRISE\[i\] \?\? 0\} taille=\{30\} \/>/,
-    );
+    expect(code).toMatch(/<PictoFrise index=\{i\} \/>/);
   });
 
   it("lisible sur téléphone : H1 à 32 px au moins, bouton à 56 px", () => {
@@ -262,22 +314,33 @@ describe("🔑 une seule action : ma journée offerte", () => {
     expect(CSS.match(/\.boutonCompact\s*\{([^}]*)\}/)?.[1] ?? "").toMatch(/white-space:\s*nowrap/);
   });
 
-  it("🔴 très peu de texte : ~150 mots visibles hors FAQ, titres de 6 mots au plus", () => {
+  it("🔴 très peu de texte : 200 mots visibles au plus hors FAQ, conditions et pied ; titres de 6 mots au plus", () => {
     const n = mots(texteVisibleHorsFaq());
-    // Budget ~150 mots de texte rédigé. Mesuré le 2026-10-27 : 187, dont 16 de
-    // libellés de bouton et 20 pour la SECONDE copie des conditions (appel final),
-    // imposée. Avant la refonte : 926. Cliquet : ajouter une phrase, c'est en retirer une.
-    expect(n, `${n} mots`).toBeLessThanOrEqual(190);
-    for (const titre of [ETAPES.titre, JOURNEE.titre, VENDREDI.titre, FAQ.titre]) {
+    // Mesuré le 2026-10-27 : 188 mots rédigés.
+    expect(n, `${n} mots`).toBeLessThanOrEqual(200);
+    // Avec le logo, chaque libellé de bouton et chaque micro-texte, à chaque affichage :
+    // 215 mesurés le 2026-10-27. Cliquet : ajouter un bouton ou une phrase, c'est en retirer.
+    const total = n + mots(texteDesBoutons());
+    expect(total, `${total} mots`).toBeLessThanOrEqual(215);
+    for (const titre of [
+      VILLE.titre,
+      GAINS.titre,
+      AMBASSADEURS.titre,
+      ETAPES.titre,
+      FONDATEUR.titre,
+      FAQ.titre,
+      APPEL_FINAL.titre,
+    ]) {
       expect(mots(titre), titre).toBeLessThanOrEqual(6);
     }
     for (const e of ETAPES.liste) expect(mots(e), e).toBeLessThanOrEqual(6);
-    // FAQ : six questions courtes, réponses d'une à trois phrases.
+    // FAQ : six questions courtes, réponses de deux phrases au plus.
     expect(FAQ.questions).toHaveLength(6);
     for (const q of FAQ.questions) {
       expect(
         q.reponse.split(/[.!?](\s|$)/).filter((p) => p.trim().length > 1).length,
-      ).toBeLessThanOrEqual(4);
+        q.question,
+      ).toBeLessThanOrEqual(2);
     }
   });
 
@@ -289,36 +352,71 @@ describe("🔑 une seule action : ma journée offerte", () => {
       "LEVIERS.",
       "BANDEAU",
       "POUR_QUI",
-      "FONDATEUR",
       "EN_BREF",
       "{DEFINITION}",
       "REASSURANCE",
       "BENEFICE",
       "REGLE_ETAPE",
       "CONDITION_GRATUITE",
-      "<img",
+      "JOURNEE",
+      "VENDREDI",
+      "SceneEntreprise",
+      "PictoLevier",
     ]) {
       expect(code, ancien).not.toContain(ancien);
     }
+    expect(SOURCES).not.toMatch(/SceneEntreprise|PictoLevier|sceneFenetre|sceneLune/);
+    expect(CSS).not.toMatch(/sceneFenetre|sceneLune|@keyframes (allumer|paraitre)/);
   });
 
-  it("« En 3 étapes » : trois pastilles dessinées ; la journée : matin et après-midi, sans horaire", () => {
+  it("« En 3 étapes », « Ce que vous gagnez », les ambassadeurs : le texte du propriétaire, mot pour mot", () => {
     expect(ETAPES.liste).toEqual([
+      "Votre demande, en 1 minute",
       "Une visio de 30 minutes",
-      "Votre ville se déclenche",
-      "Votre journée offerte, chez vous",
+      "Retenu ? Votre jour est fixé",
     ]);
     expect(sansCommentaires(PAGE)).toMatch(/\$\{styles\.parcours\} mt-8 grid gap-8 lg:grid-cols-3/);
-    expect(JOURNEE.moments.map((m) => m.moment)).toEqual(["Matin", "Après-midi"]);
-    expect(JOURNEE.moments.map((m) => m.texte)).toEqual([
-      "Ce que l’IA peut vous apporter, chiffré.",
-      "Votre équipe s’exerce sur ses propres tâches.",
+    expect(GAINS.cartes.map((c) => c.titre)).toEqual([
+      "On trouve vos heures perdues.",
+      "On vous montre votre première automatisation.",
+      "Votre équipe formée à l’IA.",
     ]);
-    expect(JOURNEE.forme).toBe("4 h, en intra-entreprise et en présentiel.");
-    expect(JOURNEE.aiAct).toBe("Elle vous aide à répondre à l’exigence de formation de l’AI Act.");
+    expect(GAINS.cartes[2]?.texte).toMatch(/jusqu’à 15 personnes/);
+    expect(AMBASSADEURS.titre).toBe("5 entreprises, visages de leur ville");
+    expect(AMBASSADEURS.avantages).toEqual([
+      "Votre page sur notre site, avec un lien vers le vôtre",
+      "Votre dirigeant dans notre podcast",
+      "Le dîner des dirigeants, vendredi soir (facultatif)",
+    ]);
+    expect(VILLE.titre).toBe("Votre ville s’ouvre dès 5 demandes");
+    expect(VILLE.semaine).toBe("Puis une semaine : une entreprise par jour, du lundi au vendredi.");
+    expect(VILLE.legende).toBe("Illustration : aucune ville n’est encore annoncée.");
+    expect(APPEL_FINAL.titre).toBe("5 journées offertes par ville.");
     expect(texteVisibleHorsFaq()).not.toMatch(/\d+\s?h\s?\d+|\d{1,2}:\d{2}|\d+\s?heures/);
-    // La scène de la journée domine le bloc.
-    expect(sansCommentaires(PAGE)).toContain("<SceneEntreprise");
+  });
+
+  it("🔴 les ambassadeurs : cinq badges en pointillé, des pictos de secteurs — aucun logo, aucune personne", async () => {
+    const code = sansCommentaires(PAGE);
+    expect(code).toMatch(/const SECTEURS_BADGES = \[[\d, ]+\] as const;/);
+    const n = /const SECTEURS_BADGES = \[([\d, ]+)\]/.exec(code)?.[1]?.split(",").length;
+    expect(n).toBe(5);
+    expect(code).toMatch(/border-2 border-dashed/);
+    const { container } = await rendrePage();
+    const section = container.querySelector('section[aria-labelledby="tdf-ambassadeurs"]');
+    expect(section?.querySelectorAll("img")).toHaveLength(0);
+    expect(section?.querySelectorAll('ul[aria-hidden="true"] > li svg')).toHaveLength(5);
+    cleanup();
+  });
+
+  it("le fondateur : sa photo ronde de 96 px, sa phrase mot pour mot, sa fiche", () => {
+    expect(FONDATEUR.titre).toBe("Qui vient chez vous");
+    expect(FONDATEUR.citation).toBe(
+      "Je viens chez vous, je regarde comment vous travaillez, et je vous montre ce que l’IA peut faire dès demain.",
+    );
+    expect(FONDATEUR.alt).toBe("Williams Jullin, fondateur d’Axion-IA");
+    expect(FONDATEUR.photo).toBe("/illustrations/william-fondateur-axion-ia.webp");
+    // Le fichier existe déjà (illustration du site) : aucun fichier image n'est créé.
+    expect(readFileSync(join(RACINE, "public", FONDATEUR.photo)).length).toBeGreaterThan(1_000);
   });
 });
 
@@ -488,13 +586,7 @@ describe("🔴 un élément SVG animé ne porte pas d'attribut `transform`", () 
 
   it("le CSS déclare bien des classes animées (le test ne tourne pas à vide)", () => {
     expect(classesAnimees).toEqual(
-      expect.arrayContaining([
-        "jaugeCoche",
-        "carteHalo",
-        "carteEntreprise",
-        "sceneFenetre",
-        "sceneLune",
-      ]),
+      expect.arrayContaining(["jaugeCoche", "carteHalo", "carteEntreprise", "jaugePoint"]),
     );
   });
 
@@ -505,7 +597,11 @@ describe("🔴 un élément SVG animé ne porte pas d'attribut `transform`", () 
         <Jauge echelle={1.5} />
         <CarteFrance titre="t" titreId="t" />
         <CarteFrance titre="t" titreId="t2" surSombre />
-        <SceneEntreprise />
+        {(["heures", "automatisation", "equipe", "site", "micro", "calendrier"] as const).map(
+          (nom) => (
+            <PictoTour key={nom} nom={nom} />
+          ),
+        )}
       </>,
     );
     let vus = 0;
@@ -680,25 +776,27 @@ describe("🔴 le JavaScript reste minimal, le rendu stable (CLS nul)", () => {
         {[0, 1, 2, 3].map((i) => (
           <IllustrationMoment key={`m${i}`} index={i} />
         ))}
-        {[0, 1, 2].map((i) => (
+        {[0, 1].map((i) => (
           <IllustrationMoment key={`t${i}`} index={i} taille={30} />
         ))}
         {[0, 1, 2, 3, 4, 5, 6, 7].map((i) => (
           <PictoSecteur key={`s${i}`} index={i} />
         ))}
-        <PictoSecteur index={3} taille={28} />
-        {[0, 1, 2].map((i) => (
-          <PictoLevier key={`l${i}`} index={i} taille={18} />
-        ))}
+        <PictoSecteur index={3} taille={26} />
+        {(["heures", "automatisation", "equipe", "site", "micro", "calendrier"] as const).map(
+          (nom) => (
+            <PictoTour key={nom} nom={nom} />
+          ),
+        )}
+        <PictoTour nom="calendrier" taille={32} />
         <PictoVisio taille={32} />
-        <SceneEntreprise />
         <Fleche />
-        <Coche />
-        <Coche taille={40} surSombre />
       </>,
     );
     const svgs = [...container.querySelectorAll("svg")];
     expect(svgs).toHaveLength(28);
+    // Les pictogrammes du Tour : 48 px par défaut, aucun texte, aucune couleur en dur.
+    for (const svg of svgs.slice(-9, -3)) expect(svg.getAttribute("width")).toBe("48");
     for (const svg of svgs) {
       for (const dim of ["width", "height"]) {
         const v = svg.getAttribute(dim) ?? "";
@@ -714,23 +812,76 @@ describe("🔴 le JavaScript reste minimal, le rendu stable (CLS nul)", () => {
     cleanup();
   });
 
-  it("aucune image matricielle : ni <img>, ni nouveau fichier image dans le dossier", () => {
-    expect(PAGE).not.toMatch(/<img\b|<picture\b|background-image:\s*url/);
+  it("UNE seule image matricielle : la photo du fondateur, native, en différé, 96 × 96", async () => {
+    // Dans le code : une seule balise <img>, aucune <picture>, aucune image en CSS.
+    expect(sansCommentaires(PAGE).match(/<img\b/g)).toHaveLength(1);
+    expect(PAGE).not.toMatch(/<picture\b|background-image:\s*url/);
     expect(CSS).not.toMatch(/url\(/);
+    // Rendue : une seule <img>, celle du fondateur, sous le pli.
+    const { container } = await rendrePage();
+    const images = [...container.querySelectorAll("img")];
+    expect(images).toHaveLength(1);
+    const img = images[0] as HTMLImageElement;
+    expect(img.getAttribute("src")).toBe("/illustrations/william-fondateur-axion-ia.webp");
+    expect(img.getAttribute("loading")).toBe("lazy");
+    expect(img.getAttribute("decoding")).toBe("async");
+    expect(img.getAttribute("width")).toBe("96");
+    expect(img.getAttribute("height")).toBe("96");
+    expect(img.getAttribute("alt")).toBe(FONDATEUR.alt);
+    expect(img.className).toContain("rounded-full");
+    // Le LCP reste le texte du H1 : l'image vient bien après lui.
+    const h1 = container.querySelector("h1") as HTMLElement;
+    expect(h1.compareDocumentPosition(img) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+    expect(container.querySelectorAll("h1")).toHaveLength(1);
+    cleanup();
   });
 
-  it("la scène de la journée : les fenêtres s'allument, la lune paraît — par classe, sans `transform`", () => {
-    const { container } = render(<SceneEntreprise />);
-    const fenetres = container.querySelectorAll(
-      `.${CSS_ESCAPE((styles as Record<string, string>)["sceneFenetre"] ?? "sceneFenetre")}`,
+  it("🔴 aucune balise <video> tant que VIDEO_HEROS est nul : la boîte porte la frise", async () => {
+    expect(VIDEO_HEROS).toBeNull();
+    const { container } = await rendrePage();
+    expect(container.querySelectorAll("video, iframe")).toHaveLength(0);
+    const frise = container.querySelector(`ol[aria-label="${HEROS.friseTitre}"]`);
+    expect(frise?.querySelectorAll("li")).toHaveLength(3);
+    expect(frise?.parentElement?.className).toMatch(/sm:aspect-video/);
+    cleanup();
+  });
+
+  it("l'emplacement vidéo : sans vidéo, ses enfants ; avec, un <video> natif sous-titré, sans script", () => {
+    const vide = render(
+      <EmplacementVideo video={null} titre="Titre">
+        <p>frise</p>
+      </EmplacementVideo>,
     );
-    expect(fenetres).toHaveLength(9);
-    expect(
-      container.querySelectorAll(
-        `.${CSS_ESCAPE((styles as Record<string, string>)["sceneLune"] ?? "sceneLune")}`,
-      ),
-    ).toHaveLength(1);
-    expect(container.querySelector("svg")?.getAttribute("aria-hidden")).toBe("true");
+    expect(vide.container.querySelector("video")).toBeNull();
+    expect(vide.container.textContent).toBe("frise");
+    cleanup();
+
+    const { container } = render(
+      <EmplacementVideo
+        video={{ mp4: "/videos/tour.mp4", poster: "/videos/tour.webp", vtt: "/videos/tour.vtt" }}
+        titre="Le Tour en vidéo"
+      >
+        <p>frise</p>
+      </EmplacementVideo>,
+    );
+    const video = container.querySelector("video") as HTMLVideoElement;
+    expect(video).not.toBeNull();
+    expect(container.textContent).not.toContain("frise");
+    expect(video.hasAttribute("controls")).toBe(true);
+    expect(video.hasAttribute("playsinline")).toBe(true);
+    expect(video.muted).toBe(true);
+    expect(video.getAttribute("preload")).toBe("none");
+    expect(video.getAttribute("poster")).toBe("/videos/tour.webp");
+    expect(video.getAttribute("aria-label")).toBe("Le Tour en vidéo");
+    expect(video.querySelector("source")?.getAttribute("src")).toBe("/videos/tour.mp4");
+    const piste = video.querySelector("track");
+    expect(piste?.getAttribute("kind")).toBe("captions");
+    expect(piste?.getAttribute("srclang")).toBe("fr");
+    expect(piste?.hasAttribute("default")).toBe(true);
+    expect(piste?.getAttribute("src")).toBe("/videos/tour.vtt");
+    // La boîte réserve sa place en 16/9 : CLS nul.
+    expect(video.parentElement?.className).toMatch(/\baspect-video\b/);
+    expect(sansCommentaires(VIDEO)).not.toMatch(/youtube|vimeo|<iframe|<script|"use client"/i);
     cleanup();
   });
 });
@@ -766,14 +917,14 @@ describe("🔴 le vocabulaire de la landing", () => {
 
   it("aucun chiffre hors de ceux du concept : pas de compteur, pas de statistique", () => {
     const chiffres = new Set(texte.match(/\d+/g) ?? []);
-    for (const c of chiffres) expect(["1", "2", "3", "4", "5", "30"], c).toContain(c);
+    for (const c of chiffres) expect(["1", "3", "4", "5", "15", "30"], c).toContain(c);
   });
 
   it("« offert » et « gratuit » ne disent jamais la visio : elle est « sans engagement »", () => {
     expect(MICRO_TEXTE_CTA).toBe("Visio de 30 minutes · sans engagement");
     expect(texte).not.toMatch(/visio[^.\n]*(gratuite|offerte)|gratuite et sans engagement/i);
-    // La phrase est écrite UNE fois (contenu.ts) ; la page la cite sous le bouton final.
-    expect(PAGE.match(/\{MICRO_TEXTE_CTA\}/g)).toHaveLength(1);
+    // La phrase est écrite UNE fois (contenu.ts) ; la page la cite sous les deux grands boutons.
+    expect(PAGE.match(/\{MICRO_TEXTE_CTA\}/g)).toHaveLength(2);
   });
 
   it("ni promesse de résultat ni construction du slogan d'Axion (« partout… sauf »)", () => {
@@ -785,11 +936,11 @@ describe("🔴 le vocabulaire de la landing", () => {
     expect(texte).not.toMatch(/d[èe]s le lendemain|ce que vous ne voyez plus|gagner du temps/i);
     // L'audit « chiffre » ou « met en évidence » : il ne garantit rien.
     expect(texte).not.toMatch(/garanti|assur[ée]|à coup sûr|sans engagement de r[ée]sultat/i);
-    expect(texte).toMatch(/Ce que l’IA peut vous apporter, chiffré\./);
+    expect(texte).toMatch(/L’audit du matin, chiffré\./);
   });
 
   it("la carte ne nomme aucune ville et le dit ; les dessins ne portent aucun texte", () => {
     expect(VISUELS).not.toMatch(/<text\b|<tspan\b|<foreignObject\b/);
-    expect(texte).toMatch(/ne représentent pas des villes annoncées/);
+    expect(texte).toMatch(/aucune ville n’est encore annoncée/);
   });
 });

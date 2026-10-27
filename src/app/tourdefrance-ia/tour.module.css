@@ -1,6 +1,5 @@
 /* Tour de France IA — ce que Tailwind ne dit pas bien : le bouton et son halo,
-   les dessins SVG et leurs micro-animations (jauge, carte, fenêtres de la scène
-   de la journée), l'accordéon de la FAQ et le tracé des frises. Toutes les
+   les dessins SVG et leurs micro-animations (jauge, carte), l'accordéon de la FAQ et le tracé des frises. Toutes les
    couleurs sont des jetons de `globals.css`.
    CSS SEUL : aucune bibliothèque, aucun JavaScript. Toute animation s'éteint
    sous `prefers-reduced-motion` (bloc en fin de fichier) et montre alors l'état
@@ -25,7 +24,7 @@
   gap: 0.625rem;
   /* Pilule : `rounded-full` côté JSX (le contrôle des rayons refuse 9999px ici). */
   background: var(--color-primary);
-  /* Mobile d'abord : à 360 px, « Je veux ma journée offerte » tient sur une ligne ;
+  /* Mobile d'abord : à 360 px, « Demander ma journée offerte » tient sur une ligne ;
      s'il passait sur deux (police agrandie), elles restent CENTRÉES, sans déborder. */
   padding: 0.75rem 1.25rem;
   color: var(--color-primary-fg);
@@ -333,7 +332,7 @@
   stroke: var(--accent-picto, var(--color-terracotta));
 }
 
-/* ── Les frises (étapes, journée) : le pointillé entre les pastilles ─────────────
+/* ── La frise des étapes : le pointillé entre les pastilles ─────────────
    Vertical sur téléphone ; horizontal dès 64rem pour les étapes. */
 
 .parcours > li:not(:last-child)::before {
@@ -357,58 +356,6 @@
     height: 2px;
     background: radial-gradient(circle, var(--color-fg-soft) 1px, transparent 1.4px) left center /
       9px 2px repeat-x;
-  }
-}
-
-/* ── La scène de la journée : les fenêtres s'allument, puis la lune paraît ───── */
-
-.sceneFenetre {
-  fill: var(--color-mocha-soft);
-  animation: allumer 2.4s ease-in-out 2 both;
-}
-
-.sceneFenetre:nth-of-type(3),
-.sceneFenetre:nth-of-type(7) {
-  animation-delay: 0.15s;
-}
-.sceneFenetre:nth-of-type(4),
-.sceneFenetre:nth-of-type(8) {
-  animation-delay: 0.3s;
-}
-.sceneFenetre:nth-of-type(5),
-.sceneFenetre:nth-of-type(9) {
-  animation-delay: 0.45s;
-}
-.sceneFenetre:nth-of-type(6),
-.sceneFenetre:nth-of-type(10) {
-  animation-delay: 0.6s;
-}
-
-/* L'état final (100 %) est l'état allumé : c'est lui qui reste à l'écran. */
-@keyframes allumer {
-  0%,
-  15% {
-    fill: var(--color-mocha-soft);
-  }
-  35%,
-  100% {
-    fill: var(--color-terracotta-on-mocha);
-  }
-}
-
-.sceneLune {
-  fill: var(--color-mocha);
-  animation: paraitre 2.4s ease-out 2 both;
-}
-
-@keyframes paraitre {
-  0%,
-  50% {
-    opacity: 0;
-  }
-  75%,
-  100% {
-    opacity: 1;
   }
 }
 
@@ -488,14 +435,8 @@
   .jaugeCoche,
   .carteHalo,
   .carteEntreprise,
-  .sceneFenetre,
-  .sceneLune,
   .halo {
     animation: none;
-  }
-
-  .sceneFenetre {
-    fill: var(--color-terracotta-on-mocha);
   }
 
   .halo {

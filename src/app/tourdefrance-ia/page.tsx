@@ -1,22 +1,23 @@
 // `/tourdefrance-ia` — la landing du Tour de France IA (2026-10-25, refonte
-// « page de conversion » le 2026-10-26, refonte VISUELLE « une journée offerte »
-// le 2026-10-27 : la page était jugée bien trop textuelle, surtout sur téléphone).
+// « page de conversion » le 2026-10-26, refonte VISUELLE le 2026-10-27, nouveau
+// modèle « 5 journées offertes par ville, sur sélection » le 2026-10-27).
 //
-// Tunnel : post Facebook, LinkedIn ou Instagram (UTM) → cette page → « Je veux
+// Tunnel : post Facebook, LinkedIn ou Instagram (UTM) → cette page → « Demander
 // ma journée offerte » → `/fr/appel/tour-de-france-ia` (la visio, type `tour` de
 // `types-reservables.ts`) → Calendly → console.
 //
 // Écrite pour ce trafic-là : mobile d'abord, navigateur intégré des réseaux, 4G,
-// trois secondes d'attention. Très peu de texte, un dessin qui domine chaque bloc :
-//   1. premier écran : la puce du Tour, le H1, la promesse, une frise de trois
-//      disques dessinés (audit, formation d'équipe, vendredi soir), le bouton
-//      pleine largeur, et SOUS LUI, dans la même boîte, les conditions en petit ;
-//      la carte de France suit juste sous le pli (à droite sur grand écran) ;
-//   2. « En 3 étapes » : trois pastilles dessinées ;
-//   3. « Votre journée offerte » : la scène de la journée, puis la frise du matin
-//      (l'audit) et de l'après-midi (la formation) ;
-//   4. « Le vendredi soir », sur le terracotta ;
-//   5. la FAQ (six questions), puis l'appel final et ses conditions.
+// trois secondes d'attention. Très peu de texte, un dessin par bloc :
+//   1. premier écran : la puce, le H1, la promesse, l'emplacement de la vidéo (qui
+//      porte, tant qu'elle n'est pas là, une frise de trois disques : audit,
+//      formation, 4 h chez vous), le bouton pleine largeur, le micro-texte, et SOUS
+//      LUI, dans la même boîte, les conditions en petit et leur lien ;
+//   2. « Votre ville s'ouvre dès 5 demandes » : la carte de France ;
+//   3. « Ce que vous gagnez » : trois cartes dessinées ;
+//   4. « 5 entreprises, visages de leur ville », sur le terracotta ;
+//   5. « En 3 étapes » : trois pastilles dessinées ;
+//   6. « Qui vient chez vous » : le fondateur ;
+//   7. la FAQ (six questions), puis l'appel final et ses conditions.
 // UNE seule action, répétée à cinq emplacements fixes (`EMPLACEMENTS_CTA`), aucun menu.
 //
 // Charte : celle du site (`globals.css`). En-tête terracotta et logo en badge
@@ -25,9 +26,10 @@
 //
 // Composants SERVEUR seulement, sauf `PiloteCta` (bouton collant + recopie des
 // `utm_*`). Aucun composant d'en-tête ou de pied de page d'Axion, aucun next-intl,
-// aucun script tiers, aucune mesure d'audience, aucune image matricielle. Les
-// dessins sont des SVG en ligne (`_composants/Visuels.tsx`), animés en CSS seul ;
-// la FAQ est un `details`/`summary` natif. Tout le texte vit dans `contenu.ts`.
+// aucun script tiers, aucune mesure d'audience. Les dessins sont des SVG en ligne
+// (`_composants/Visuels.tsx`), animés en CSS seul ; la FAQ est un `details`/`summary`
+// natif. UNE seule image matricielle : la photo du fondateur, sous le pli, en
+// différé. Tout le texte vit dans `contenu.ts`.
 //
 // 🔑 Fermé (`TOUR_PUBLIC` faux) : la page appelle `connection()` — rendu à la
 // requête, jamais prérendu ni mis en cache. Ouvert : seul l'interrupteur
@@ -39,34 +41,35 @@ import { connection } from "next/server";
 import { TOUR_PUBLIC } from "@/features/tour-de-france/visibilite";
 
 import {
+  AMBASSADEURS,
   APPEL_FINAL,
-  CONDITIONS,
   ENTETE,
   ETAPES,
   FAQ,
+  FONDATEUR,
+  GAINS,
   HEROS,
-  JOURNEE,
   LIBELLE_CTA,
   LIBELLE_CTA_COURT,
+  LIEN_CONDITIONS,
   META,
   MICRO_TEXTE_CTA,
   PIED,
-  PRINCIPE,
-  VENDREDI,
+  VIDEO_HEROS,
+  VILLE,
   lienRendezVous,
   type EmplacementCta,
 } from "./contenu";
 import { jsonLdDuTour } from "./jsonld";
+import { EmplacementVideo } from "./_composants/EmplacementVideo";
 import {
   CarteFrance,
-  Coche,
   Fleche,
   IllustrationMoment,
   Jauge,
-  PictoLevier,
   PictoSecteur,
+  PictoTour,
   PictoVisio,
-  SceneEntreprise,
 } from "./_composants/Visuels";
 import { PiloteCta } from "./_composants/PiloteCta";
 import styles from "./tour.module.css";
@@ -109,6 +112,10 @@ const SECTION = "py-12 sm:py-24";
  */
 const FOND_MARQUE =
   "bg-mocha bg-[radial-gradient(48rem_26rem_at_88%_-8%,color-mix(in_srgb,var(--color-terracotta)_30%,transparent),transparent_62%),radial-gradient(36rem_22rem_at_-12%_108%,color-mix(in_srgb,var(--color-primary)_38%,transparent),transparent_62%)]";
+/** Les conditions sous un grand bouton : 13 px, jamais repliées, jamais en gris sur le mocha. */
+const TEXTE_CONDITIONS = "text-mocha-fg text-[0.8125rem] leading-snug";
+const LIEN_SUR_SOMBRE =
+  "decoration-mocha-fg/60 hover:decoration-mocha-fg focus-visible:outline-mocha-fg font-semibold underline underline-offset-2 focus-visible:outline-2 focus-visible:outline-offset-2";
 const ID_CTA_HEROS = "tdf-cta-heros";
 const ID_CTA_COLLANT = "tdf-cta-collant";
 const ID_APPEL_FINAL = "tdf-appel-final";
@@ -116,18 +123,34 @@ const ID_APPEL_FINAL = "tdf-appel-final";
 const ID_SECTION_FINALE = "tdf-section-finale";
 
 /** Le dessin de chaque disque de la frise du héros, dans l'ordre de `HEROS.frise`. */
-const PICTOS_FRISE = [0, 1, 2] as const;
+function PictoFrise({ index }: { index: number }) {
+  if (index === 2) return <PictoSecteur index={3} taille={26} />;
+  return <IllustrationMoment index={index} taille={30} />;
+}
+
+/** Le dessin de chaque carte de « Ce que vous gagnez », dans l'ordre de `GAINS.cartes`. */
+const PICTOS_GAINS = ["heures", "automatisation", "equipe"] as const;
+
+/** Le dessin de chaque avantage des ambassadeurs, dans l'ordre d'`AMBASSADEURS.avantages`. */
+function PictoAmbassadeur({ index }: { index: number }) {
+  if (index === 0) return <PictoTour nom="site" />;
+  if (index === 1) return <PictoTour nom="micro" />;
+  return <IllustrationMoment index={2} taille={48} />;
+}
+
+/** Les cinq places de la ville, en pointillé : un secteur possible chacune, jamais un logo. */
+const SECTEURS_BADGES = [0, 1, 2, 3, 6] as const;
 
 /** Le dessin de chaque pastille de « En 3 étapes », dans l'ordre d'`ETAPES.liste`. */
 function PictoEtape({ index }: { index: number }) {
-  if (index === 0) return <PictoVisio taille={32} />;
-  if (index === 1) return <IllustrationMoment index={3} taille={32} />;
-  return <PictoSecteur index={3} taille={28} />;
+  if (index === 0) return <IllustrationMoment index={3} taille={32} />;
+  if (index === 1) return <PictoVisio taille={32} />;
+  return <PictoTour nom="calendrier" taille={32} />;
 }
 
 /**
  * Le bouton principal : pilule bleue pleine, 56 px de haut au moins, flèche et
- * halo. `compact` : la petite pilule de l'en-tête et du bloc « journée » (44 px de
+ * halo. `compact` : la petite pilule de l'en-tête et du bloc « gains » (44 px de
  * haut, libellé court, sans flèche ni halo). `pleineLargeur` : la barre collante —
  * libellé court, sur une ligne.
  */
@@ -190,16 +213,14 @@ export default async function TourDeFranceIaPage() {
 
       <main className="pb-24 md:pb-0">
         {/* 1. Héros — mocha de marque à lueurs terracotta et bleue. Premier écran
-            mobile : puce, H1, promesse, frise de trois disques, bouton et conditions.
-            La carte vient juste sous le pli (à droite sur grand écran). */}
+            mobile (360 × 640) : puce, H1, promesse, frise, bouton, micro-texte et
+            conditions, sans défiler. La carte n'est PLUS dans le héros : elle a son bloc. */}
         <section className={`${FOND_MARQUE} text-mocha-fg`} aria-labelledby="tdf-titre">
-          <div
-            className={`${CONTENEUR} grid gap-8 pt-5 pb-12 sm:pt-12 sm:pb-20 lg:grid-cols-[1.15fr_1fr] lg:items-center lg:gap-14 lg:pt-16 lg:pb-24`}
-          >
-            <div>
+          <div className={`${CONTENEUR} pt-5 pb-12 sm:pt-12 sm:pb-20 lg:pt-16 lg:pb-24`}>
+            <div className="max-w-3xl">
               {/* Puce en Manrope (repli métrique, préchargée) : JAMAIS d'Inconsolata
                   au-dessus de la ligne de flottaison — sa bascule de police décalait le titre. */}
-              <p className="border-mocha-fg/30 bg-mocha-fg/10 text-mocha-fg inline-flex min-h-7 items-center gap-2 rounded-full border px-3 text-xs font-semibold tracking-[0.06em] uppercase sm:text-sm">
+              <p className="border-mocha-fg/30 bg-mocha-fg/10 text-mocha-fg inline-flex min-h-7 items-center gap-2 rounded-full border px-3 text-[0.6875rem] font-semibold tracking-[0.02em] whitespace-nowrap uppercase sm:text-sm sm:tracking-[0.04em]">
                 <span aria-hidden="true" className="bg-terracotta-on-mocha h-2 w-2 rounded-full" />
                 {HEROS.surtitre}
               </p>
@@ -216,50 +237,132 @@ export default async function TourDeFranceIaPage() {
               <p className="mt-3 max-w-xl text-lg leading-snug font-semibold sm:mt-4 sm:text-xl">
                 {HEROS.promesse}
               </p>
-              <ol
-                aria-label={HEROS.friseTitre}
-                className="mt-4 grid max-w-md grid-cols-3 gap-2 [--accent-picto:var(--color-terracotta-on-mocha)] sm:mt-6"
-              >
-                {HEROS.frise.map((moment, i) => (
-                  <li
-                    key={moment}
-                    className="flex flex-col items-center gap-1.5 text-center text-sm leading-tight font-semibold"
+              <div className="mt-4 sm:mt-6">
+                <EmplacementVideo video={VIDEO_HEROS} titre={HEROS.friseTitre}>
+                  <ol
+                    aria-label={HEROS.friseTitre}
+                    className="grid w-full max-w-md grid-cols-3 gap-2 [--accent-picto:var(--color-terracotta-on-mocha)]"
                   >
-                    <span className="border-mocha-fg/25 bg-mocha-fg/10 grid h-12 w-12 place-items-center rounded-full border">
-                      <IllustrationMoment index={PICTOS_FRISE[i] ?? 0} taille={30} />
-                    </span>
-                    {moment}
-                  </li>
-                ))}
-              </ol>
-              {/* Le bouton et SES conditions, dans la même boîte : la limite se lit
+                    {HEROS.frise.map((moment, i) => (
+                      <li
+                        key={moment}
+                        className="flex flex-col items-center gap-1 text-center text-sm leading-tight font-semibold whitespace-nowrap"
+                      >
+                        <span className="border-mocha-fg/25 bg-mocha-fg/10 grid h-11 w-11 place-items-center rounded-full border">
+                          <PictoFrise index={i} />
+                        </span>
+                        {moment}
+                      </li>
+                    ))}
+                  </ol>
+                </EmplacementVideo>
+              </div>
+              {/* Le bouton et SES conditions, dans la même boîte : la contrepartie se lit
                   d'un même regard que la promesse, jamais repliée, jamais en astérisque. */}
-              <div className="mt-5 flex max-w-md flex-col gap-2 sm:mt-8 sm:items-start">
+              <div className="mt-4 flex max-w-md flex-col gap-1.5 sm:mt-8 sm:items-start">
                 <BoutonAudit depuis="tdf-heros" id={ID_CTA_HEROS} />
-                <p className="text-mocha-fg text-center text-[0.8125rem] leading-snug sm:pl-2 sm:text-left">
-                  {HEROS.conditions}
+                <p className="text-mocha-fg-muted text-center text-sm sm:pl-2 sm:text-left">
+                  {MICRO_TEXTE_CTA}
+                </p>
+                <p className={`${TEXTE_CONDITIONS} text-center sm:pl-2 sm:text-left`}>
+                  {HEROS.conditions}{" "}
+                  <a href={LIEN_CONDITIONS.chemin} className={LIEN_SUR_SOMBRE}>
+                    {LIEN_CONDITIONS.libelle}
+                  </a>
                 </p>
               </div>
             </div>
+          </div>
+        </section>
 
-            {/* Après le bouton dans le flux : sur téléphone, la carte ne pousse jamais
-                le bouton hors du premier écran. */}
-            <figure className="bg-ink/45 border-border-on-mocha shadow-elevated mx-auto w-full max-w-[300px] rounded-2xl border p-4 sm:max-w-[380px] sm:p-5 lg:max-w-[480px]">
-              <CarteFrance
-                surSombre
-                titre={PRINCIPE.alt}
-                titreId="tdf-carte-titre"
-                className="h-auto w-full"
-              />
-              <figcaption className="text-mocha-fg-muted mt-3 text-center text-xs">
-                {PRINCIPE.legende}
+        {/* 2. La ville — le seuil, la semaine, la carte (le seul tracé de la France de la page). */}
+        <section className={SECTION} aria-labelledby="tdf-ville">
+          <div
+            className={`${CONTENEUR} grid gap-8 lg:grid-cols-[1fr_1.1fr] lg:items-center lg:gap-14`}
+          >
+            <div>
+              <h2 id="tdf-ville" className={TITRE_SECTION}>
+                {VILLE.titre}
+              </h2>
+              <p className="text-fg-soft mt-3 text-lg">{VILLE.semaine}</p>
+            </div>
+            <figure className="bg-sand border-border mx-auto w-full max-w-[300px] rounded-2xl border p-4 sm:max-w-[380px] sm:p-5 lg:max-w-[480px]">
+              <CarteFrance titre={VILLE.alt} titreId="tdf-carte-titre" className="h-auto w-full" />
+              <figcaption className="text-fg-soft mt-3 text-center text-xs">
+                {VILLE.legende}
               </figcaption>
             </figure>
           </div>
         </section>
 
-        {/* 2. En 3 étapes — trois pastilles dessinées, reliées par un pointillé. */}
-        <section className={`bg-sand ${SECTION}`} aria-labelledby="tdf-parcours">
+        {/* 3. Ce que vous gagnez — trois cartes, un dessin chacune, puis la pilule compacte. */}
+        <section className={`bg-sand ${SECTION}`} aria-labelledby="tdf-gains">
+          <div className={CONTENEUR}>
+            <h2 id="tdf-gains" className={TITRE_SECTION}>
+              {GAINS.titre}
+            </h2>
+            <ul className="mt-8 grid gap-4 md:grid-cols-3">
+              {GAINS.cartes.map((c, i) => (
+                <li
+                  key={c.titre}
+                  className="border-border bg-paper shadow-card flex items-start gap-4 rounded-2xl border p-5 md:flex-col"
+                >
+                  <span className="text-fg shrink-0">
+                    <PictoTour nom={PICTOS_GAINS[i] ?? "heures"} />
+                  </span>
+                  <div>
+                    <h3 className="text-fg font-serif text-xl leading-snug font-medium">
+                      {c.titre}
+                    </h3>
+                    <p className="text-fg-soft mt-1">{c.texte}</p>
+                  </div>
+                </li>
+              ))}
+            </ul>
+            <div className="mt-8">
+              <BoutonAudit depuis="tdf-bandeau" compact />
+            </div>
+          </div>
+        </section>
+
+        {/* 4. Les ambassadeurs — bande au terracotta de marque : ce que les 5 retenues
+            reçoivent en plus, et leurs cinq places en pointillé (aucun logo, personne d'inventé). */}
+        <section
+          className={`bg-terracotta text-mocha-fg ${SECTION}`}
+          aria-labelledby="tdf-ambassadeurs"
+        >
+          <div className={CONTENEUR}>
+            <h2
+              id="tdf-ambassadeurs"
+              className="font-serif text-[1.875rem] leading-tight font-medium tracking-tight sm:text-5xl"
+            >
+              {AMBASSADEURS.titre}
+            </h2>
+            <ul className="mt-8 grid gap-5 [--accent-picto:var(--color-terracotta-soft)] md:grid-cols-3">
+              {AMBASSADEURS.avantages.map((a, i) => (
+                <li key={a} className="flex items-center gap-4 text-lg leading-snug font-semibold">
+                  <span className="bg-mocha-fg/15 grid h-16 w-16 shrink-0 place-items-center rounded-full">
+                    <PictoAmbassadeur index={i} />
+                  </span>
+                  {a}
+                </li>
+              ))}
+            </ul>
+            <ul aria-hidden="true" className="mt-10 flex flex-wrap gap-3">
+              {SECTEURS_BADGES.map((s) => (
+                <li
+                  key={s}
+                  className="border-mocha-fg/70 grid h-14 w-14 place-items-center rounded-full border-2 border-dashed"
+                >
+                  <PictoSecteur index={s} />
+                </li>
+              ))}
+            </ul>
+          </div>
+        </section>
+
+        {/* 5. En 3 étapes — trois pastilles dessinées, reliées par un pointillé. */}
+        <section className={SECTION} aria-labelledby="tdf-parcours">
           <div className={CONTENEUR}>
             <h2 id="tdf-parcours" className={TITRE_SECTION}>
               {ETAPES.titre}
@@ -286,88 +389,42 @@ export default async function TourDeFranceIaPage() {
           </div>
         </section>
 
-        {/* 3. Votre journée offerte — la scène, puis le matin et l'après-midi. */}
-        <section className={SECTION} aria-labelledby="tdf-journee">
-          <div
-            className={`${CONTENEUR} grid gap-8 lg:grid-cols-[1fr_1.1fr] lg:items-center lg:gap-14`}
-          >
-            <div>
-              <h2 id="tdf-journee" className={TITRE_SECTION}>
-                {JOURNEE.titre}
-              </h2>
-              <div className="bg-sand mt-6 rounded-2xl p-4">
-                <SceneEntreprise className="h-auto w-full" />
+        {/* 6. Qui vient chez vous — la seule image matricielle : sous le pli, en différé,
+            dimensions fixes (CLS nul). Jamais le LCP : le LCP est le texte du H1. */}
+        <section className={`bg-sand ${SECTION}`} aria-labelledby="tdf-fondateur">
+          <div className={`${CONTENEUR} max-w-3xl`}>
+            <h2 id="tdf-fondateur" className={TITRE_SECTION}>
+              {FONDATEUR.titre}
+            </h2>
+            <figure className="mt-8 flex flex-col gap-5 sm:flex-row sm:items-start">
+              {/* eslint-disable-next-line @next/next/no-img-element -- une seule photo, 96 px, en différé : next/image ajouterait du JS client */}
+              <img
+                src={FONDATEUR.photo}
+                alt={FONDATEUR.alt}
+                width={96}
+                height={96}
+                loading="lazy"
+                decoding="async"
+                className="h-24 w-24 shrink-0 rounded-full object-cover"
+              />
+              <div>
+                <blockquote className="text-fg font-serif text-xl leading-snug sm:text-2xl">
+                  <p>{`«\u00a0${FONDATEUR.citation}\u00a0»`}</p>
+                </blockquote>
+                <figcaption className="mt-3">
+                  <a
+                    href={FONDATEUR.lien.chemin}
+                    className="text-fg decoration-border-strong hover:decoration-terracotta focus-visible:outline-primary inline-flex min-h-11 items-center font-semibold underline decoration-2 underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-2"
+                  >
+                    {FONDATEUR.lien.libelle}
+                  </a>
+                </figcaption>
               </div>
-            </div>
-            <div>
-              <ol aria-labelledby="tdf-journee" className={`${styles.parcours} grid gap-8`}>
-                {JOURNEE.moments.map((m, i) => (
-                  <li key={m.titre} className="relative flex items-start gap-4">
-                    <span className="bg-terracotta-soft text-fg relative z-[1] grid h-14 w-14 shrink-0 place-items-center rounded-full">
-                      <IllustrationMoment index={i} taille={34} />
-                    </span>
-                    <div className="border-border bg-paper shadow-card min-w-0 flex-1 rounded-2xl border p-4 sm:p-5">
-                      <p className="text-terracotta text-sm font-bold tracking-wide uppercase">
-                        {m.moment}
-                      </p>
-                      <h3 className="text-fg mt-1 font-serif text-2xl leading-snug font-medium">
-                        {m.titre}
-                      </h3>
-                      <p className="text-fg-soft mt-1">{m.texte}</p>
-                      {i === 0 ? (
-                        <ul className="mt-3 flex flex-wrap gap-2">
-                          {JOURNEE.leviers.map((l, j) => (
-                            <li
-                              key={l}
-                              className="bg-sand text-fg inline-flex min-h-9 items-center gap-1.5 rounded-full px-3 text-sm font-semibold"
-                            >
-                              <PictoLevier index={j} taille={18} />
-                              {l}
-                            </li>
-                          ))}
-                        </ul>
-                      ) : (
-                        <>
-                          <p className="text-fg mt-3 text-sm font-semibold">{JOURNEE.forme}</p>
-                          <p className="text-fg mt-2 flex items-start gap-2 text-sm">
-                            <Coche taille={18} className="mt-0.5 shrink-0" />
-                            {JOURNEE.aiAct}
-                          </p>
-                        </>
-                      )}
-                    </div>
-                  </li>
-                ))}
-              </ol>
-              <div className="mt-6 pl-[4.5rem]">
-                <BoutonAudit depuis="tdf-bandeau" compact />
-              </div>
-            </div>
+            </figure>
           </div>
         </section>
 
-        {/* 4. Le vendredi soir — bande au terracotta de marque, un dessin, une ligne. */}
-        <section
-          className={`bg-terracotta text-mocha-fg ${SECTION}`}
-          aria-labelledby="tdf-vendredi"
-        >
-          <div className={`${CONTENEUR} flex items-center gap-5 sm:gap-8`}>
-            <span className="bg-mocha-fg/15 grid h-20 w-20 shrink-0 place-items-center rounded-full [--accent-picto:var(--color-terracotta-soft)] sm:h-28 sm:w-28">
-              <IllustrationMoment index={2} taille={56} />
-            </span>
-            <div>
-              <h2
-                id="tdf-vendredi"
-                className="font-serif text-[1.875rem] leading-tight font-medium tracking-tight sm:text-5xl"
-              >
-                {VENDREDI.titre}
-              </h2>
-              <p className="mt-2 text-lg">{VENDREDI.texte}</p>
-            </div>
-          </div>
-        </section>
-
-        {/* 5. Questions fréquentes — accordéon natif (FAQPage dans le JSON-LD). */}
+        {/* 7. Questions fréquentes — accordéon natif (FAQPage dans le JSON-LD). */}
         <section className={SECTION} aria-labelledby="tdf-faq">
           <div className={`${CONTENEUR} max-w-3xl`}>
             <h2 id="tdf-faq" className={TITRE_SECTION}>
@@ -382,27 +439,14 @@ export default async function TourDeFranceIaPage() {
                     </span>
                     <span className={styles.signe} aria-hidden="true" />
                   </summary>
-                  <p className="text-fg-soft pr-12 pb-6 text-base leading-relaxed">
-                    {q.reponse}
-                    {q.lien ? (
-                      <>
-                        {" "}
-                        <a
-                          href={q.lien.chemin}
-                          className="text-fg decoration-border-strong hover:decoration-terracotta focus-visible:outline-primary inline-flex min-h-11 items-center font-semibold underline decoration-2 underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-2"
-                        >
-                          {q.lien.libelle}
-                        </a>
-                      </>
-                    ) : null}
-                  </p>
+                  <p className="text-fg-soft pr-12 pb-6 text-base leading-relaxed">{q.reponse}</p>
                 </details>
               ))}
             </div>
           </div>
         </section>
 
-        {/* 6. Appel final — le même mocha à lueurs que le héros : la page se referme comme elle s'ouvre. */}
+        {/* 8. Appel final — le même mocha à lueurs que le héros : la page se referme comme elle s'ouvre. */}
         <section
           id={ID_SECTION_FINALE}
           className={`${FOND_MARQUE} text-mocha-fg`}
@@ -417,17 +461,22 @@ export default async function TourDeFranceIaPage() {
               >
                 {APPEL_FINAL.titre}
               </h2>
-              <div className="mt-8 flex w-full max-w-md flex-col items-center gap-2.5">
+              <div className="mt-8 flex w-full max-w-md flex-col items-center gap-2">
                 <BoutonAudit depuis="tdf-final" />
                 <p className="text-mocha-fg-muted text-sm">{MICRO_TEXTE_CTA}</p>
-                <p className="text-mocha-fg text-[0.8125rem] leading-snug">{CONDITIONS}</p>
+                <p className={TEXTE_CONDITIONS}>
+                  {APPEL_FINAL.conditions}{" "}
+                  <a href={LIEN_CONDITIONS.chemin} className={LIEN_SUR_SOMBRE}>
+                    {LIEN_CONDITIONS.libelle}
+                  </a>
+                </p>
               </div>
             </div>
           </div>
         </section>
       </main>
 
-      {/* 12. Pied de page propre au Tour. */}
+      {/* Pied de page propre au Tour. */}
       <footer className={`${CONTENEUR} text-fg-muted pt-10 pb-28 text-sm md:pb-12`}>
         <p className="text-fg font-semibold">{PIED.organise}</p>
         <ul className="mt-3 flex flex-wrap gap-x-5">

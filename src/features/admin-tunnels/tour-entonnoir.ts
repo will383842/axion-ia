@@ -5,7 +5,7 @@
  *
  * Le parcours, et ce que chaque marche mesure VRAIMENT :
  *
- *   landing `/tourdefrance-ia`  →  bouton « Je veux ma journée offerte »  →  page de réservation
+ *   landing `/tourdefrance-ia`  →  bouton « Demander ma journée offerte »  →  page de réservation
  *   `/fr/appel/tour-de-france-ia?depuis=tdf-…`  →  rendez-vous pris  →  maintenu
  *   →  honoré.
  *
@@ -16,7 +16,7 @@
  * place. Changer cela est une décision du propriétaire, pas un détail de code.
  *
  * Deux sources, deux unités, dites à l'écran :
- *   · les ARRIVÉES sur la page de réservation (= clics « Je veux ma journée offerte »,
+ *   · les ARRIVÉES sur la page de réservation (= clics « Demander ma journée offerte »,
  *     qui demandent la venue du Tour chez vous) viennent
  *     des balises anonymes (`funnel_events`, tunnel `tour`) et se comptent en
  *     SESSIONS ;

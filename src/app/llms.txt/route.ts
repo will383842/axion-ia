@@ -40,14 +40,15 @@ export const revalidate = 3600;
 
 export async function GET() {
   const sectionVideos = sectionVideosLlms(await videosPubliees(), SITE_URL);
-  // Tour de France IA (2026-10-25) : section visible SEULEMENT quand la landing est
+  // Tour de France IA (2026-10-25 ; modèle « 5 journées offertes par ville, sur
+  // sélection, en échange d'un podcast » le 2026-10-27) : section visible SEULEMENT quand la landing est
   // ouverte (`TOUR_PUBLIC`, vrai depuis l'ouverture). Refermée, elle répond 404 : la citer
   // ici l'exposerait.
   const sectionTour = TOUR_PUBLIC
     ? `
 ## Tour de France IA
 
-- [Tour de France IA](${SITE_URL}${TOUR_PREFIX}) — organisé par Axion-IA, fondé par Williams Jullin. Une journée offerte dans l'entreprise, de la TPE à l'ETI, tous secteurs : un audit de son activité, qui chiffre ce que l'IA peut lui apporter, puis une formation de 4 h de son équipe, en intra-entreprise et en présentiel, qui l'aide à répondre à l'exigence de formation de l'AI Act. Le Tour va de ville en ville. Limité à quelques places par ville : une ville se déclenche à partir de 5 entreprises, et aucune date n'est fixée avant. Le vendredi soir, un repas réseau entre entrepreneurs de la ville. Pour démarrer : une visio de 30 minutes, sans engagement. Aucun lien avec le Tour de France cycliste.
+- [Tour de France IA](${SITE_URL}${TOUR_PREFIX}) — organisé par Axion-IA, fondé par Williams Jullin. Une journée offerte dans l'entreprise, de la TPE à l'ETI, tous secteurs : un audit de son activité, qui chiffre ce que l'IA peut lui apporter, puis une formation de 4 h de son équipe, en intra-entreprise et en présentiel, qui l'aide à répondre à l'exigence de formation de l'AI Act. Le Tour va de ville en ville : une ville s'ouvre dès 5 demandes, puis une semaine, une entreprise par jour. La journée est offerte aux 5 entreprises retenues par ville, en échange d'un podcast tourné chez elles ; la sélection se fait sur une visio de 30 minutes, sans engagement, puis un court questionnaire. Sinon, la même journée est proposée à un tarif Tour. Le vendredi soir, un dîner des dirigeants, facultatif et non compris dans la journée offerte. Conditions générales : ${SITE_URL}${TOUR_PREFIX}/conditions-generales. Aucun lien avec le Tour de France cycliste.
 `
     : "";
   // Audit KB 2026-08-11 — prix d'ENTRÉE réel du 1-to-1 = journée Collaborateur

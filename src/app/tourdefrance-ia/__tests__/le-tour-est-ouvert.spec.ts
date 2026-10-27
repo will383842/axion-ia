@@ -16,9 +16,11 @@
  *   · le sitemap du Tour, l'index des sitemaps et `llms.txt` citent la route ;
  *   · le contenu ne porte aucun mot interdit, aucun prix, et la page n'importe
  *     aucun composant de la coquille d'Axion ;
- *   · le cap du 2026-10-27 : « une journée offerte » (audit + formation), une ville
- *     qui se déclenche à partir de 5 entreprises, « quelques places par ville »
- *     sans chiffre de plafond, le repas du vendredi sans aucune promesse.
+ *   · le modèle du 2026-10-27 : « une journée offerte » (audit + formation) aux 5
+ *     entreprises retenues par ville, après une visio, en échange d'un podcast ;
+ *     une ville qui s'ouvre dès 5 demandes ; sinon un tarif Tour, sans montant sur
+ *     la landing ; le dîner du vendredi facultatif et non compris ; « filmé »
+ *     seulement dans la FAQ.
  *
  * Angle mort assumé : la porte est testée comme module, et son câblage dans le
  * proxy comme texte — le proxy entier (Auth.js, next-intl) n'est pas exécuté ici.
@@ -39,13 +41,13 @@ import {
 import { TOUR_PREFIX, TOUR_PUBLIC } from "@/features/tour-de-france/visibilite";
 
 import {
+  APPEL_FINAL,
   CONDITIONS,
   DEFINITION,
   FAQ,
   HEROS,
   META,
   PROMESSE,
-  VENDREDI,
   toutLeTexte,
 } from "../contenu";
 import { DESCRIPTION_DE_L_OFFRE, DESCRIPTION_DU_SERVICE, jsonLdDuTour } from "../jsonld";
@@ -443,6 +445,8 @@ function sectionTourLlms(): string {
 describe("🔴 le contenu : mots interdits, typographie, SEO", () => {
   const texte = toutLeTexte();
   // Le nom de fichier `types-reservables.ts` (cité en commentaire) n'est pas du texte.
+  // `conditions-generales/conditions.ts` est HORS de cette garde : il porte les
+  // montants et le détail juridique (garde propre : `les-conditions-generales.spec.ts`).
   const sources = ["src/app/tourdefrance-ia/contenu.ts", "src/app/tourdefrance-ia/page.tsx"]
     .map(lire)
     .join("\n")
@@ -468,7 +472,9 @@ describe("🔴 le contenu : mots interdits, typographie, SEO", () => {
       /marque d[ée]pos[ée]e/i,
       /®/u,
       /d[ée]pos[ée]/i,
-      /\d\s?(€|euros?\b|EUR\b|HT\b|TTC\b)/i,
+      /€/u,
+      /\bHT\b/,
+      /\d\s?(euros?\b|EUR\b|TTC\b)/i,
       /\bprix\b/i,
       /\bjaune\b/i,
       /maillot/i,
@@ -481,7 +487,12 @@ describe("🔴 le contenu : mots interdits, typographie, SEO", () => {
       /t[ée]moignage/i,
       /\bdéjà \d+/i,
       /\d+\s+entreprises (inscrites|participent|ont rejoint)/i,
-      // L'ancienne règle (2026-10-26), retirée le 2026-10-27 : plus nulle part.
+      /certifi/i,
+      /attestation/i,
+      /\bpaie/i,
+      /sa part/i,
+      /pas une de plus/i,
+      // Les anciennes règles (« 5 au plus », puis « quelques places »), retirées : plus nulle part.
       /seulement 5/i,
       /\bau plus\b/i,
       /derni[èe]res places/i,
@@ -505,14 +516,25 @@ describe("🔴 le contenu : mots interdits, typographie, SEO", () => {
     }
   });
 
+  it("« filmé » n'est dit que dans la FAQ — jamais près d'un bouton, jamais hors FAQ", () => {
+    const horsFaq = toutLeTexte().replace(
+      FAQ.questions.map((q) => `${q.question}\n${q.reponse}`).join("\n"),
+      "",
+    );
+    expect(horsFaq).not.toMatch(/film[ée]|tournage/i);
+    expect(CONDITIONS).not.toMatch(/film|tourn/i);
+    expect(FAQ.questions.some((q) => /filmé/.test(q.reponse))).toBe(true);
+  });
+
   it("le H1 est l'accroche validée, suivi de la promesse « journée offerte »", () => {
     expect(`${HEROS.titreAvant}${HEROS.titreAccent}${HEROS.titreApres}`).toBe(
-      "Vous entendez parler d’IA partout et ne savez plus par où commencer\u00a0? Nous, si.",
+      "Vous entendez parler d’IA partout et ne savez plus par où commencer ? Nous, si.",
     );
     expect(HEROS.titreAccent).toBe("Nous, si.");
     expect(HEROS.promesse).toBe(
       "Une journée offerte dans votre entreprise : audit + formation IA de votre équipe.",
     );
+    expect(HEROS.surtitre).toBe("Le Tour de France IA arrive dans votre ville");
     const page = lire("src/app/tourdefrance-ia/page.tsx");
     expect(page).toMatch(/<\/h1>\s*<p[^>]*>\s*\{HEROS\.promesse\}/);
   });
@@ -523,50 +545,56 @@ describe("🔴 le contenu : mots interdits, typographie, SEO", () => {
     expect(texte.toLowerCase()).not.toContain(BRAND.taglineFr.toLowerCase());
   });
 
-  it("l'offre est COMMUNIQUÉE : une journée offerte, toujours avec ses conditions", () => {
+  it("l'offre est COMMUNIQUÉE : une journée offerte, toujours avec sa sélection et sa contrepartie", () => {
     expect(texte).toMatch(/journée offerte/);
     expect(CONDITIONS).toBe(
-      "Limité à quelques places par ville. Une ville se déclenche à partir de 5 entreprises ; aucune date n’est fixée avant.",
+      "Offerte aux 5 entreprises retenues par ville, après une visio, en échange d’un podcast chez vous. Votre ville s’ouvre dès 5 demandes.",
     );
     expect(META.titre).toMatch(/journée offerte/);
-    expect(META.description).toMatch(/journée offerte/);
-    expect(META.description).toMatch(/quelques places par ville/);
+    expect(META.description).toBe(
+      "Une journée offerte dans votre entreprise : audit + formation IA de votre équipe. 5 entreprises retenues par ville.",
+    );
     // Les conditions sont affichées sous le bouton du héros ET sous celui de l'appel final.
     const page = lire("src/app/tourdefrance-ia/page.tsx");
     expect(page).toContain("{HEROS.conditions}");
-    expect(page).toContain("{CONDITIONS}");
-    // La FAQ « offert » les porte, et ne dit pas la visio offerte.
-    const offert = FAQ.questions.find((q) => /offert/.test(q.question));
-    expect(offert?.reponse).toContain(CONDITIONS);
+    expect(page).toContain("{APPEL_FINAL.conditions}");
+    expect(APPEL_FINAL.conditions).toMatch(/retenues/);
+    expect(APPEL_FINAL.conditions).toMatch(/podcast/);
+    // La FAQ « offert » dit qui, et ne dit pas la visio offerte.
+    const offert = FAQ.questions.find((q) => q.question === "C’est vraiment offert ?");
+    expect(offert?.reponse).toMatch(/5 entreprises retenues par ville/);
     expect(offert?.reponse).not.toMatch(/visio/i);
   });
 
   it("🔴 « offert » ne qualifie que la journée, l'audit et la formation — jamais la visio, jamais le repas", () => {
     for (const m of texte.matchAll(/offert(e|s|es)?/gi)) {
       const avant = texte.slice(Math.max(0, (m.index ?? 0) - 40), m.index);
-      // Seule exception : la question de la FAQ « Qu’est-ce qui est offert ? ».
-      expect(avant, avant).toMatch(/(journée|audit|formation)[^.\n]*$|\nQu’est-ce qui est $/i);
+      // Exceptions : la question « C’est vraiment offert ? » et les conditions, qui
+      // ouvrent sur « Offerte aux 5 entreprises retenues » (la journée, sous son bouton).
+      const ici = texte.slice(m.index, (m.index ?? 0) + 40);
+      if (/\nC’est vraiment $/.test(avant) || ici.startsWith("Offerte aux 5 entreprises retenues"))
+        continue;
+      expect(avant, avant).toMatch(/(journée|audit|formation)[^.\n]*$/i);
     }
-    expect(texte).not.toMatch(/visio[^.\n]*(offert|gratuit)|repas[^.\n]*(offert|gratuit)/i);
-    expect(texte).not.toMatch(/(offert|gratuit)[^.\n]*(visio|repas)/i);
+    expect(texte).not.toMatch(/visio\s+(offerte|gratuite)|(repas|dîner)\s+(offert|gratuit)/i);
+    expect(texte).not.toMatch(/(offert|gratuit)e?s? (la )?visio/i);
   });
 
-  it("🔴 le repas du vendredi : nommé, sans AUCUNE promesse (ni qui règle, ni montant)", () => {
+  it("🔴 le dîner du vendredi : facultatif, NON compris, jamais dans la frise ni dans l'offre", () => {
     const tout = `${texte}\n${JSON.stringify(jsonLdDuTour())}\n${lire("src/app/llms.txt/route.ts")}`;
     expect(tout).not.toMatch(
       /chacun r[èe]gle|[àa] la charge de chacun|sa part|frais partag[ée]s|paie|payant|addition/i,
     );
     expect(`${texte}\n${sectionTourLlms()}`).not.toMatch(/frais|gratuit/i);
-    expect(VENDREDI.texte).toBe("Un repas réseau entre entrepreneurs de la ville.");
-    // « repas » n'apparaît que dans cette phrase (et sa copie de la définition et de llms.txt).
-    for (const m of texte.matchAll(/repas/gi)) {
-      expect(texte.slice(m.index, (m.index ?? 0) + 45)).toBe(
-        "repas réseau entre entrepreneurs de la ville.",
-      );
-    }
+    expect(HEROS.frise.join(" ")).not.toMatch(/vendredi|soir|dîner|repas/i);
+    const q = FAQ.questions.find((x) => x.question === "Le dîner du vendredi est-il compris ?");
+    expect(q?.reponse).toBe(
+      "Non. Le repas réseau du vendredi soir est facultatif et n’est pas compris dans la journée offerte.",
+    );
+    expect(texte).toMatch(/vendredi soir \(facultatif\)/);
     // Le vendredi soir n'est jamais dans l'offre du JSON-LD.
     const graphe = jsonLdDuTour()["@graph"] as Array<Record<string, unknown>>;
-    expect(JSON.stringify(graphe[1]?.["offers"])).not.toMatch(/repas|vendredi|soir/i);
+    expect(JSON.stringify(graphe[1]?.["offers"])).not.toMatch(/repas|dîner|vendredi|soir/i);
   });
 
   it("🔴 ce n'est pas un événement auquel on s'inscrit : aucun vocabulaire d'événement ni de billetterie", () => {
@@ -576,18 +604,22 @@ describe("🔴 le contenu : mots interdits, typographie, SEO", () => {
     );
   });
 
-  it("🔴 l'AI Act dit avec prudence : « vous aide à répondre », jamais d'obligation ni de conformité promise", () => {
-    expect(texte).toMatch(/vous aide à répondre à l’exigence de formation de l’AI Act/);
+  it("🔴 l'AI Act dit avec prudence : « aide à répondre », jamais d'obligation ni de conformité promise", () => {
+    expect(texte).toMatch(/aide à répondre à l’exigence de formation de l’AI Act/);
     expect(texte).not.toMatch(
       /obligatoire|obligation|certifi|attestation|conforme à l|conforme (à l[’'])?AI Act|en conformit[ée] totale|garanti/i,
     );
-    const q = FAQ.questions.find((x) => /AI Act/.test(x.question));
-    expect(q?.reponse).toMatch(/ne remplace pas une analyse de votre conformité/);
   });
 
-  it("jamais de vente à conclure ni de signature", () => {
-    expect(texte).not.toMatch(/signature|signer|\bvente\b|\bvendre\b|\bachat\b|tarif/i);
-    expect(sources).not.toMatch(/signature|\bvente\b|tarif/i);
+  it("jamais de vente à conclure ni de signature ; « tarif » n'est dit que pour le tarif Tour", () => {
+    expect(texte).not.toMatch(/signature|signer|\bvente\b|\bvendre\b|\bachat\b/i);
+    expect(sources).not.toMatch(/signature|\bvente\b/i);
+    // « tarif » : seulement « un tarif Tour », renvoyé aux conditions générales, sans montant.
+    for (const m of texte.matchAll(/tarif/gi)) {
+      expect(texte.slice(m.index, (m.index ?? 0) + 10)).toBe("tarif Tour");
+    }
+    const nonRetenu = FAQ.questions.find((q) => q.question === "Et si je ne suis pas retenu ?");
+    expect(nonRetenu?.reponse).toMatch(/tarif Tour, montant précisé dans les conditions générales/);
   });
 
   it("typographie : apostrophe typographique, espace insécable avant : ; ? ! et « e-mail »", () => {
@@ -598,7 +630,7 @@ describe("🔴 le contenu : mots interdits, typographie, SEO", () => {
   });
 
   it("titre ≤ 60, description < 155, six Q/R", () => {
-    expect(META.titre).toBe("Tour de France IA : une journée offerte chez vous");
+    expect(META.titre).toBe("Tour de France IA\u00a0: une journée offerte chez vous");
     expect(META.titre.length).toBeLessThanOrEqual(60);
     expect(META.description.length).toBeLessThan(155);
     expect(FAQ.questions).toHaveLength(6);
@@ -619,13 +651,13 @@ describe("🔴 le contenu : mots interdits, typographie, SEO", () => {
       name: "Axion-IA",
       url: expect.stringMatching(/^https?:\/\//),
     });
-    // Le JSON-LD dit la même chose que le texte visible : la FAQ « offert » y figure, conditions comprises.
+    // Le JSON-LD dit la même chose que le texte visible : les six questions, mot pour mot.
     const faq = graphe[2] as {
       mainEntity: Array<{ name: string; acceptedAnswer: { text: string } }>;
     };
-    expect(faq.mainEntity).toHaveLength(6);
-    const offert = faq.mainEntity.find((q) => /offert/.test(q.name));
-    expect(offert?.acceptedAnswer.text).toContain(CONDITIONS);
+    expect(faq.mainEntity.map((q) => [q.name, q.acceptedAnswer.text])).toEqual(
+      FAQ.questions.map((q) => [q.question, q.reponse]),
+    );
     const json = JSON.stringify(ld);
     expect(json).not.toMatch(/"@type":"(Person|Organization|HowTo)"/);
     expect(json).not.toMatch(/speakable/);
@@ -651,18 +683,18 @@ describe("🔴 le Tour est une OFFRE aux entreprises, pas un événement (JSON-L
     });
   });
 
-  it("la description reprend la définition : le tour de ville en ville, la journée offerte, ses conditions", () => {
+  it("la description reprend la définition : la ville des 5 demandes, la sélection, le podcast", () => {
     const description = String(service["description"]);
     expect(DESCRIPTION_DU_SERVICE).toContain(DEFINITION);
     expect(description).toMatch(/tour de France de l[’']IA/);
-    expect(description).toMatch(/offre une journée aux entreprises/);
     expect(description).toMatch(
       /formation de 4 h de leur équipe, en intra-entreprise et en présentiel/,
     );
     expect(description).toMatch(/aide à répondre à l’exigence de formation de l’AI Act/);
-    expect(description).toMatch(/quelques places par ville/);
-    expect(description).toMatch(/se déclenche à partir de 5 entreprises/);
-    expect(description).toMatch(/aucune date n’est fixée avant/);
+    expect(description).toMatch(/une ville s’ouvre dès 5 demandes/);
+    expect(description).toMatch(/offerte aux 5 entreprises retenues par ville/);
+    expect(description).toMatch(/en échange d’un podcast/);
+    expect(description).toMatch(/facultatif et non compris dans la journée offerte/);
   });
 
   it("l'offre est gratuite : prix 0 en euros, entreprises en France, sans disponibilité ni date", () => {
@@ -677,6 +709,8 @@ describe("🔴 le Tour est une OFFRE aux entreprises, pas un événement (JSON-L
     // La description de l'offre est le texte VISIBLE : la promesse et les conditions.
     expect(DESCRIPTION_DE_L_OFFRE).toContain(PROMESSE);
     expect(DESCRIPTION_DE_L_OFFRE).toContain(CONDITIONS);
+    expect(DESCRIPTION_DE_L_OFFRE).toMatch(/retenues/);
+    expect(DESCRIPTION_DE_L_OFFRE).toMatch(/podcast/);
     expect(JSON.stringify(service["offers"])).not.toMatch(
       /availability|validFrom|validThrough|availabilityStarts|availabilityEnds|\b20\d\d\b/,
     );
@@ -699,9 +733,12 @@ describe("🔴 le Tour est une OFFRE aux entreprises, pas un événement (JSON-L
       /prix/i,
       /candidat/i,
       /r[ée]serv/i,
-      /chacun r[èe]gle sa part/i,
+      /sa part/i,
       /[ée]v[ée]nement/i,
       /certifi/i,
+      /attestation/i,
+      /€/u,
+      /\bHT\b/,
       /\bau plus\b/i,
       /liste d[’']attente/i,
       /seulement 5/i,
@@ -710,17 +747,19 @@ describe("🔴 le Tour est une OFFRE aux entreprises, pas un événement (JSON-L
   });
 });
 
-describe("🔴 une ville SE DÉCLENCHE à partir de 5 entreprises ; quelques places par ville (2026-10-27)", () => {
-  // Le cap du 2026-10-27 remplace la règle « 5 au plus » : 5 est un SEUIL de
-  // déclenchement, l'audit n'est pas plafonné à 5, et la limite se dit sans chiffre.
+describe("🔴 une ville S'OUVRE dès 5 demandes ; 5 journées offertes par ville, sur sélection (2026-10-27)", () => {
+  // Le modèle du 2026-10-27 remplace « quelques places par ville » : 5 demandes
+  // ouvrent une ville, 5 entreprises y sont retenues après une visio, en échange
+  // d'un podcast. Aucun compteur, aucune liste d'attente, aucun plafond écrit en lettres.
   const texte = toutLeTexte();
   const json = JSON.stringify(jsonLdDuTour());
   const llms = sectionTourLlms();
 
-  it("les conditions : « quelques places par ville », « à partir de 5 entreprises », sans étoile ni plafond chiffré", () => {
-    expect(CONDITIONS).toMatch(/quelques places par ville/);
-    expect(CONDITIONS).toMatch(/à partir de 5 entreprises/);
-    expect(CONDITIONS).toMatch(/aucune date n’est fixée avant/);
+  it("les conditions : retenues, podcast, ville ouverte dès 5 demandes — sans étoile, sans « filmé »", () => {
+    expect(CONDITIONS).toMatch(/retenues/);
+    expect(CONDITIONS).toMatch(/podcast/);
+    expect(CONDITIONS).toMatch(/s’ouvre dès 5 demandes/);
+    expect(CONDITIONS).not.toMatch(/filmé/i);
     for (const [nom, s] of [
       ["conditions", CONDITIONS],
       ["texte", texte],
@@ -729,32 +768,45 @@ describe("🔴 une ville SE DÉCLENCHE à partir de 5 entreprises ; quelques pla
     ] as const) {
       expect(s, nom).not.toMatch(/\*/);
       expect(s, nom).not.toMatch(
-        /\bau plus\b|liste d[’']attente|seulement \d|\d\s?places?\b|places limit[ée]es/i,
+        /\bau plus\b|liste d[’']attente|seulement \d|\d\s?places?\b|places limit[ée]es|quelques places/i,
+      );
+      // Un plafond écrit en lettres plutôt qu'en chiffres reste un plafond.
+      expect(s, nom).not.toMatch(
+        /\b(deux|trois|quatre|cinq|six|dix) (places|entreprises par ville au plus)/i,
       );
     }
   });
 
-  it("le texte, le JSON-LD et llms.txt disent la même règle", () => {
+  it("le texte, le JSON-LD et llms.txt disent le même modèle", () => {
     for (const [nom, s] of [
       ["texte", texte],
       ["JSON-LD", json],
       ["llms.txt", llms],
     ] as const) {
-      expect(s, nom).toMatch(/quelques places par ville/);
-      expect(s, nom).toMatch(/se déclenche à partir de 5 entreprises/);
-      expect(s, nom).toMatch(/aucune date n[’']est fixée avant/);
+      expect(s, nom).toMatch(/s[’']ouvre dès 5 demandes/);
+      expect(s, nom).toMatch(/5 entreprises retenues par ville/);
+      expect(s, nom).toMatch(/podcast/);
       expect(s, nom).toMatch(/en intra-entreprise et en présentiel/);
-      expect(s, nom).toMatch(/repas réseau entre entrepreneurs de la ville/);
+      expect(s, nom).toMatch(/tarif Tour/);
     }
     expect(llms).toMatch(/Une journée offerte dans l'entreprise/);
+    expect(llms).toMatch(/conditions-generales/);
   });
 
-  it("la FAQ répond « Et si ma ville n’a pas encore 5 entreprises ? », sans date promise", () => {
-    const q = FAQ.questions.find(
-      (x) => x.question === "Et si ma ville n’a pas encore 5 entreprises ?",
-    );
-    expect(q?.reponse).toMatch(/Aucune date n’est fixée avant/);
-    expect(q?.reponse).toMatch(/Aucune date n’est fixée avant/);
-    expect(json).toContain(JSON.stringify(q?.reponse ?? "").slice(1, -1));
+  it("la FAQ ne porte plus la question « pas encore 5 entreprises » ni celle du Tour cycliste", () => {
+    const questions = FAQ.questions.map((q) => q.question);
+    expect(questions).toEqual([
+      "C’est vraiment offert ?",
+      "Y a-t-il une contrepartie ?",
+      "Et si je ne suis pas retenu ?",
+      "Comment les entreprises sont-elles choisies ?",
+      "Combien de temps, et qui participe ?",
+      "Le dîner du vendredi est-il compris ?",
+    ]);
+    // La non-affiliation reste dans le pied de page.
+    expect(lire("src/app/tourdefrance-ia/page.tsx")).toContain("{PIED.nonAffiliation}");
+    for (const q of FAQ.questions) {
+      expect(json).toContain(JSON.stringify(q.reponse).slice(1, -1));
+    }
   });
 });

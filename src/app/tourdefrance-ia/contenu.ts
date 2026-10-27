@@ -1,62 +1,65 @@
 // Tour de France IA — TOUT le texte de la landing, en un seul endroit (2026-10-25,
-// refonte « landing de conversion » le 2026-10-26, refonte VISUELLE « une journée
-// offerte » le 2026-10-27).
+// refonte « landing de conversion » le 2026-10-26, refonte VISUELLE le 2026-10-27,
+// nouveau modèle « 5 journées offertes par ville, sur sélection » le 2026-10-27).
 //
 // Pourquoi un module à part : le test des mots interdits
 // (`__tests__/le-tour-est-ouvert.spec.ts`) lit CE fichier et la page ; un
 // texte écrit ailleurs échapperait à la garde. Les composants visuels
-// (`_composants/`) ne portent AUCUN texte visible : ils le reçoivent d'ici.
+// (`_composants/`) ne portent AUCUN texte visible : ils le reçoivent d'ici. Les
+// conditions générales ont leur propre module (`conditions-generales/conditions.ts`),
+// hors de cette garde : elles seules disent les montants et le détail juridique.
 //
-// Ce que la page dit, du point de vue de l'entreprise, et RIEN d'autre : le Tour
-// lui offre UNE JOURNÉE chez elle — un audit de son activité, puis une formation
-// de 4 h de son équipe, en intra-entreprise et en présentiel, qui l'aide à
-// répondre à l'exigence de formation de l'AI Act (formule prudente : ni
-// obligation, ni attestation, ni promesse de conformité). Le Tour va de ville en
-// ville ; une ville se déclenche à partir de 5 entreprises, et aucune date n'est
-// fixée avant. Le vendredi soir : un repas réseau entre entrepreneurs de la ville,
-// sans un mot de plus (ni qui règle, ni montant).
+// Le modèle, du point de vue de l'entreprise : une ville s'ouvre dès 5 demandes.
+// Chaque ville a 5 journées OFFERTES (un audit, puis une formation de 4 h de
+// l'équipe, en intra-entreprise et en présentiel), attribuées sur sélection (une
+// visio, puis un court questionnaire), EN ÉCHANGE d'un podcast tourné chez
+// l'entreprise. Sinon, la même journée existe à un tarif Tour (montant dans les
+// conditions générales). Le dîner du vendredi soir est facultatif et n'est PAS
+// compris dans la journée offerte : il n'apparaît jamais dans la frise du héros.
 //
-// 🔑 La condition (`CONDITIONS`) est écrite UNE fois, en toutes lettres, sans
-// astérisque : sous le bouton du premier écran, dans la même boîte que lui, sous
-// le bouton de l'appel final, et dans la FAQ. Aucun chiffre de plafond : « quelques
-// places par ville ». Le 5 est un seuil de déclenchement, jamais un maximum.
+// 🔑 La contrepartie est dite sur la page, en un mot doux (« podcast ») : sous
+// chaque grand bouton, dans la même boîte que lui. Elle n'est jamais tue (ce
+// serait une publicité trompeuse), et jamais dite en mots qui font peur près du
+// bouton : « filmé » n'apparaît que dans la FAQ (et les conditions générales).
 //
-// 🔑 Très peu de texte (refonte du 2026-10-27, la page était jugée bien trop
-// textuelle sur téléphone) : ~150 mots visibles hors FAQ, un dessin par bloc,
-// des titres de 6 mots maximum, une ligne de soutien. Ajouter une phrase ici, c'est
-// la retirer ailleurs.
+// 🔑 Très peu de texte : 200 mots visibles maximum hors FAQ, conditions et pied
+// de page, des titres de 6 mots maximum. Ajouter une phrase ici, c'est la retirer
+// ailleurs.
 //
 // Règles de rédaction : vouvoiement, phrases courtes, apostrophe typographique
-// (’), espace insécable ( ) avant « : ; ? ! » et à l'intérieur des
-// guillemets. Aucun montant, aucun chiffre inventé, aucune promesse de résultat :
-// l'audit « chiffre », il ne promet pas. « Offert » ne qualifie QUE la journée,
-// c'est-à-dire l'audit et la formation : jamais la visio (« sans engagement »,
-// `MICRO_TEXTE_CTA`), jamais le repas. Jamais de vocabulaire de salon, de
-// guichet ou de transaction : un test le garde (liste dans les tests).
+// (’), espace insécable ( ) avant « : ; ? ! ». Aucun montant sur la landing,
+// aucun chiffre inventé, aucune promesse de résultat : l'audit « chiffre », il ne
+// promet pas. « Offert » ne qualifie QUE la journée (l'audit et la formation) :
+// jamais la visio (« sans engagement », `MICRO_TEXTE_CTA`), jamais le dîner.
+// Jamais de vocabulaire de salon, de guichet ou de transaction : un test le garde.
 //
-// Les seuls chiffres de la page sont ceux du CONCEPT (3 étapes, 4 h, 5 entreprises,
-// 30 minutes) : aucun compteur, aucune statistique, aucun horaire.
+// Les seuls chiffres de la page sont ceux du CONCEPT (3 étapes, 4 h, 5 demandes,
+// 5 entreprises, 15 personnes, 30 minutes, 1 minute) : aucun compteur par ville,
+// aucune statistique, aucun horaire.
 
 import { TOUR_PREFIX } from "@/features/tour-de-france/visibilite";
 
 /** Le nom du Tour. */
 export const NOM_DU_TOUR = "Tour de France IA";
 
-/** Le seuil qui DÉCLENCHE une ville — un fait du concept, jamais un maximum ni un compteur. */
+/** Le seuil qui OUVRE une ville, et le nombre de journées offertes par ville. Jamais un compteur. */
 export const SEUIL_PAR_VILLE = 5;
 
 /** La page de rendez-vous visio de 30 minutes (type `tour` de `types-reservables.ts`). */
 export const CHEMIN_RENDEZ_VOUS = "/fr/appel/tour-de-france-ia";
 
-/** Le libellé des grands boutons : ce que l'entreprise obtient. Une seule action sur la page. */
-export const LIBELLE_CTA = "Je veux ma journée offerte";
+/** Les conditions générales du Tour (`conditions-generales/page.tsx`). */
+export const CHEMIN_CONDITIONS = `${TOUR_PREFIX}/conditions-generales`;
 
-/** Le même, en court : l'en-tête, le bloc « journée » et la barre collante. */
+/** Le libellé des grands boutons : ce que l'entreprise demande. Une seule action sur la page. */
+export const LIBELLE_CTA = "Demander ma journée offerte";
+
+/** Le même, en court : l'en-tête, le bloc « gains » et la barre collante. */
 export const LIBELLE_CTA_COURT = "Ma journée offerte";
 
 /**
- * Le micro-texte sous le bouton de l'appel final — la SEULE phrase qui décrit la
- * visio. Sans « gratuite » ni « offerte » : ces mots ne qualifient que la journée.
+ * Le micro-texte sous chaque grand bouton — la SEULE phrase qui décrit la visio.
+ * Sans « gratuite » ni « offerte » : ces mots ne qualifient que la journée.
  */
 export const MICRO_TEXTE_CTA = "Visio de 30 minutes · sans engagement";
 
@@ -85,10 +88,25 @@ export function lienRendezVous(depuis: EmplacementCta): string {
 
 /**
  * Les conditions, en petit mais lisibles (13 px, contraste AA), sans astérisque,
- * jamais repliées : dans le même champ visuel que la promesse et le bouton.
+ * jamais repliées, dans la même boîte que le bouton du héros : qui est retenu,
+ * comment, en échange de quoi, et quand une ville s'ouvre.
  */
 export const CONDITIONS =
-  "Limité à quelques places par ville. Une ville se déclenche à partir de 5 entreprises ; aucune date n’est fixée avant.";
+  "Offerte aux 5 entreprises retenues par ville, après une visio, en échange d’un podcast chez vous. Votre ville s’ouvre dès 5 demandes.";
+
+/** Le lien qui suit les conditions, partout où elles sont dites. */
+export const LIEN_CONDITIONS = {
+  libelle: "Conditions générales",
+  chemin: CHEMIN_CONDITIONS,
+} as const;
+
+/**
+ * La vidéo du héros : elle viendra. Tant qu'elle vaut `null`, l'emplacement
+ * (`_composants/EmplacementVideo.tsx`) montre la frise dessinée, et la page ne
+ * porte AUCUNE balise `video`. Le jour venu : un MP4, son affiche, ses
+ * sous-titres en français — jamais de lecteur tiers.
+ */
+export const VIDEO_HEROS: null | { mp4: string; poster: string; vtt: string } = null;
 
 /** La promesse, juste sous le H1 : ce qu'il faut retenir de la page. */
 export const PROMESSE =
@@ -97,7 +115,7 @@ export const PROMESSE =
 export const META = {
   titre: "Tour de France IA : une journée offerte chez vous",
   description:
-    "Une journée offerte dans votre entreprise : audit + formation IA de votre équipe, en présentiel. Limité à quelques places par ville.",
+    "Une journée offerte dans votre entreprise : audit + formation IA de votre équipe. 5 entreprises retenues par ville.",
   /** Chemin canonique (sans barre finale : `trailingSlash` est faux sur tout le site). */
   chemin: TOUR_PREFIX,
   /**
@@ -121,7 +139,7 @@ export const ENTETE = {
 
 export const HEROS = {
   /** La puce au-dessus du titre (Manrope : jamais d'Inconsolata au-dessus du pli). */
-  surtitre: NOM_DU_TOUR,
+  surtitre: "Le Tour de France IA arrive dans votre ville",
   /**
    * Le H1, accroche validée (inchangée), en trois morceaux : seul « Nous, si. » prend
    * l'accent. Le lecteur se reconnaît, puis Axion-IA répond.
@@ -130,105 +148,113 @@ export const HEROS = {
   titreAccent: "Nous, si.",
   titreApres: "",
   promesse: PROMESSE,
-  /** La frise du premier écran : trois disques dessinés, un mot chacun. */
-  friseTitre: "Votre journée offerte, puis le vendredi soir",
-  frise: ["Audit", "Formation d’équipe", "Puis, vendredi soir"],
+  /** La frise du premier écran : trois disques dessinés. Le vendredi soir n'y est JAMAIS. */
+  friseTitre: "Votre journée offerte",
+  frise: ["Audit", "Formation", "4 h chez vous"],
   conditions: CONDITIONS,
 } as const;
 
 /**
  * La définition citable — NON affichée (la page est visuelle) : elle nourrit la
  * description du `Service` du JSON-LD, et `llms.txt` dit la même chose.
- * Elle ne dit rien que la page visible ne dise.
+ * Elle ne dit rien que la page visible, sa FAQ et ses conditions ne disent.
  */
 export const DEFINITION =
-  "Le Tour de France IA, organisé par Axion-IA et fondé par Williams Jullin, offre une journée aux entreprises qui le souhaitent, de la TPE à l’ETI, tous secteurs : un audit de leur activité, qui chiffre ce que l’IA peut leur apporter, puis une formation de 4 h de leur équipe, en intra-entreprise et en présentiel, qui les aide à répondre à l’exigence de formation de l’AI Act. Le Tour va de ville en ville. Limité à quelques places par ville : une ville se déclenche à partir de 5 entreprises, et aucune date n’est fixée avant. Le vendredi soir, un repas réseau entre entrepreneurs de la ville.";
+  "Le Tour de France IA, organisé par Axion-IA et fondé par Williams Jullin, offre une journée à des entreprises de la TPE à l’ETI, tous secteurs : un audit de leur activité, qui chiffre ce que l’IA peut leur apporter, puis une formation de 4 h de leur équipe, en intra-entreprise et en présentiel, qui les aide à répondre à l’exigence de formation de l’AI Act. Le Tour va de ville en ville : une ville s’ouvre dès 5 demandes, puis une semaine, une entreprise par jour. La journée est offerte aux 5 entreprises retenues par ville, après une visio et un court questionnaire, en échange d’un podcast tourné chez elles ; les autres peuvent recevoir la même journée à un tarif Tour. Le vendredi soir, un dîner des dirigeants, facultatif et non compris dans la journée offerte.";
 
-/** La carte : le principe, sans aucune ville nommée. */
-export const PRINCIPE = {
-  legende: "Illustration\u00a0: les points ne représentent pas des villes annoncées.",
+/** La ville : le seuil, la semaine, et la carte — sans aucune ville nommée. */
+export const VILLE = {
+  titre: "Votre ville s’ouvre dès 5 demandes",
+  semaine: "Puis une semaine : une entreprise par jour, du lundi au vendredi.",
+  legende: "Illustration : aucune ville n’est encore annoncée.",
   /** Texte alternatif de la carte (la carte elle-même n'a aucun texte). */
-  alt: "Carte de France stylisée. Des points marquent des villes possibles. L’un d’eux se remplit jusqu’à 5 entreprises, puis la ville se déclenche.",
+  alt: "Carte de France stylisée. Des points marquent des villes possibles. L’un d’eux reçoit 5 demandes, puis la ville s’ouvre.",
+} as const;
+
+/** Ce que l'entreprise gagne : trois cartes, un dessin chacune. */
+export const GAINS = {
+  titre: "Ce que vous gagnez",
+  cartes: [
+    { titre: "On trouve vos heures perdues.", texte: "L’audit du matin, chiffré." },
+    { titre: "On vous montre votre première automatisation.", texte: "Sur vos propres tâches." },
+    {
+      titre: "Votre équipe formée à l’IA.",
+      texte:
+        "4 h chez vous, jusqu’à 15 personnes. Elle aide à répondre à l’exigence de formation de l’AI Act.",
+    },
+  ],
+} as const;
+
+/** Les 5 entreprises retenues : ce qu'elles reçoivent en plus. Aucun logo, aucune personne inventée. */
+export const AMBASSADEURS = {
+  titre: "5 entreprises, visages de leur ville",
+  avantages: [
+    "Votre page sur notre site, avec un lien vers le vôtre",
+    "Votre dirigeant dans notre podcast",
+    "Le dîner des dirigeants, vendredi soir (facultatif)",
+  ],
 } as const;
 
 /** En 3 étapes : une pastille dessinée et une ligne chacune. */
 export const ETAPES = {
   titre: "En 3 étapes",
-  liste: [
-    "Une visio de 30 minutes",
-    "Votre ville se déclenche",
-    "Votre journée offerte, chez vous",
-  ],
+  liste: ["Votre demande, en 1 minute", "Une visio de 30 minutes", "Retenu ? Votre jour est fixé"],
 } as const;
 
-/** La journée : le matin l'audit, l'après-midi la formation. Aucun horaire chiffré. */
-export const JOURNEE = {
-  titre: "Votre journée offerte",
-  moments: [
-    { moment: "Matin", titre: "L’audit", texte: "Ce que l’IA peut vous apporter, chiffré." },
-    {
-      moment: "Après-midi",
-      titre: "La formation",
-      texte: "Votre équipe s’exerce sur ses propres tâches.",
-    },
-  ],
-  /** Sous l'audit : ce qu'il chiffre, en trois mots dessinés. */
-  leviers: ["Temps", "Rentabilité", "Chiffre d’affaires"],
-  /** Sous la formation : sa forme, puis l'AI Act, dit avec prudence. */
-  forme: "4 h, en intra-entreprise et en présentiel.",
-  aiAct: "Elle vous aide à répondre à l’exigence de formation de l’AI Act.",
+/** Qui vient chez vous : le fondateur, sa photo, une phrase, sa fiche. */
+export const FONDATEUR = {
+  titre: "Qui vient chez vous",
+  /** Illustration existante du site (1000 × 1000), servie telle quelle à 96 px, en différé. */
+  photo: "/illustrations/william-fondateur-axion-ia.webp",
+  alt: "Williams Jullin, fondateur d’Axion-IA",
+  citation:
+    "Je viens chez vous, je regarde comment vous travaillez, et je vous montre ce que l’IA peut faire dès demain.",
+  /** La fiche d'équipe d'Axion (`FOUNDER.pagePath`, servie en FR). */
+  lien: { libelle: "Découvrir Williams", chemin: "/fr/equipe/williams" },
 } as const;
 
-/** Le vendredi soir : un fait, sans aucune promesse (ni qui règle, ni montant). */
-export const VENDREDI = {
-  titre: "Le vendredi soir",
-  texte: "Un repas réseau entre entrepreneurs de la ville.",
-} as const;
-
-type QuestionReponse = {
-  question: string;
-  reponse: string;
-  /** Un lien sous la réponse (la fiche du fondateur). */
-  lien?: { libelle: string; chemin: string };
-};
+type QuestionReponse = { question: string; reponse: string };
 
 export const FAQ: { titre: string; questions: readonly QuestionReponse[] } = {
   titre: "Questions fréquentes",
   questions: [
     {
-      question: "Qu’est-ce qui est offert ?",
-      reponse: `Une journée dans votre entreprise : l’audit de votre activité, puis une formation de 4 h de votre équipe, en intra-entreprise et en présentiel. ${CONDITIONS}`,
-    },
-    {
-      question: "Pour quelles entreprises ?",
+      question: "C’est vraiment offert ?",
       reponse:
-        "De la TPE à l’ETI, tous secteurs. L’audit et la formation partent de votre activité.",
+        "Oui : l’audit et la formation, pour les 5 entreprises retenues par ville. Seul le déjeuner de notre équipe reste à votre charge.",
     },
     {
-      question: "Et si ma ville n’a pas encore 5 entreprises ?",
-      reponse: "Votre ville se déclenche à partir de 5 entreprises. Aucune date n’est fixée avant.",
-    },
-    {
-      question: "La formation aide-t-elle pour l’AI Act ?",
+      question: "Y a-t-il une contrepartie ?",
       reponse:
-        "Elle vous aide à répondre à l’exigence de formation de l’AI Act. Elle ne remplace pas une analyse de votre conformité.",
+        "Un podcast avec le dirigeant, et quelques mots de salariés volontaires, tournés pendant la journée. Rien de confidentiel n’est filmé, et la journée reste possible sans tournage (voir les conditions générales).",
     },
     {
-      question: "Qui organise ?",
-      reponse: "Axion-IA, fondée par Williams Jullin.",
-      /** La fiche d'équipe d'Axion (`FOUNDER.pagePath`, servie en FR). */
-      lien: { libelle: "Découvrir Williams", chemin: "/fr/equipe/williams" },
-    },
-    {
-      question: "Quel lien avec le Tour de France cycliste ?",
+      question: "Et si je ne suis pas retenu ?",
       reponse:
-        "Aucun. Le Tour de France IA n’a aucun lien avec le Tour de France cycliste ni avec son organisateur.",
+        "Nous vous proposons la même journée à un tarif Tour, montant précisé dans les conditions générales. C’est aussi possible si vous préférez ne pas être filmé.",
+    },
+    {
+      question: "Comment les entreprises sont-elles choisies ?",
+      reponse:
+        "Après la visio et un court questionnaire, selon des critères publiés dans les conditions générales, pas selon l’ordre d’arrivée.",
+    },
+    {
+      question: "Combien de temps, et qui participe ?",
+      reponse:
+        "Une journée : l’audit le matin avec le dirigeant ou un responsable, la formation l’après-midi pour jusqu’à 15 personnes.",
+    },
+    {
+      question: "Le dîner du vendredi est-il compris ?",
+      reponse:
+        "Non. Le repas réseau du vendredi soir est facultatif et n’est pas compris dans la journée offerte.",
     },
   ],
 };
 
 export const APPEL_FINAL = {
-  titre: "Faites venir l’IA chez vous.",
+  titre: "5 journées offertes par ville.",
+  /** Sous le bouton final : les conditions, en court, puis le lien vers les conditions générales. */
+  conditions: "5 entreprises retenues par ville, en échange d’un podcast.",
 } as const;
 
 export const PIED = {
@@ -236,6 +262,7 @@ export const PIED = {
   nonAffiliation:
     "Le Tour de France IA n’a aucun lien avec le Tour de France cycliste ni avec son organisateur.",
   liens: [
+    { libelle: "Conditions générales du Tour", href: CHEMIN_CONDITIONS },
     { libelle: "À propos d’Axion-IA", href: "https://axion-ia.com/fr/a-propos" },
     { libelle: "Contact", href: "https://axion-ia.com/fr/contact" },
     { libelle: "Mentions légales", href: "https://axion-ia.com/fr/mentions-legales" },
@@ -248,36 +275,54 @@ export const PIED = {
 } as const;
 
 /**
- * Le texte VISIBLE hors FAQ et hors pied de page, dans l'ordre de la page — celui
- * dont on tient le budget (~150 mots). Les conditions y comptent deux fois : elles
- * sont affichées deux fois (premier écran, appel final).
+ * Le texte RÉDIGÉ visible hors FAQ, hors conditions et hors pied de page, dans
+ * l'ordre de la page — celui dont on tient le budget (200 mots maximum). Les
+ * libellés des boutons, leurs micro-textes et le logo sont comptés à part
+ * (`texteDesBoutons`) : ils se répètent à chaque emplacement.
  */
 export function texteVisibleHorsFaq(): string {
   return [
-    ENTETE.logo,
-    LIBELLE_CTA_COURT,
     HEROS.surtitre,
     HEROS.titreAvant,
     HEROS.titreAccent,
     HEROS.promesse,
     ...HEROS.frise,
-    LIBELLE_CTA,
-    HEROS.conditions,
-    PRINCIPE.legende,
+    VILLE.titre,
+    VILLE.semaine,
+    VILLE.legende,
+    GAINS.titre,
+    ...GAINS.cartes.flatMap((c) => [c.titre, c.texte]),
+    AMBASSADEURS.titre,
+    ...AMBASSADEURS.avantages,
     ETAPES.titre,
     ...ETAPES.liste,
-    JOURNEE.titre,
-    ...JOURNEE.moments.flatMap((m) => [m.moment, m.titre, m.texte]),
-    ...JOURNEE.leviers,
-    JOURNEE.forme,
-    JOURNEE.aiAct,
-    LIBELLE_CTA_COURT,
-    VENDREDI.titre,
-    VENDREDI.texte,
+    FONDATEUR.titre,
+    FONDATEUR.citation,
+    FONDATEUR.lien.libelle,
     APPEL_FINAL.titre,
+  ].join("\n");
+}
+
+/** Le logo, puis chaque bouton et son micro-texte, à chaque affichage (en-tête, héros, gains, appel final). */
+export function texteDesBoutons(): string {
+  return [
+    ENTETE.logo,
+    LIBELLE_CTA_COURT,
     LIBELLE_CTA,
     MICRO_TEXTE_CTA,
-    CONDITIONS,
+    LIBELLE_CTA_COURT,
+    LIBELLE_CTA,
+    MICRO_TEXTE_CTA,
+  ].join("\n");
+}
+
+/** Les conditions telles qu'affichées sur la landing : sous le bouton du héros, puis sous le bouton final. */
+export function texteDesConditions(): string {
+  return [
+    HEROS.conditions,
+    LIEN_CONDITIONS.libelle,
+    APPEL_FINAL.conditions,
+    LIEN_CONDITIONS.libelle,
   ].join("\n");
 }
 
@@ -285,15 +330,18 @@ export function texteVisibleHorsFaq(): string {
 export function toutLeTexte(): string {
   return [
     texteVisibleHorsFaq(),
+    texteDesBoutons(),
+    texteDesConditions(),
     META.titre,
     META.description,
     META.imageAlt,
     ...Object.values(ENTETE),
     HEROS.friseTitre,
     DEFINITION,
-    PRINCIPE.alt,
+    VILLE.alt,
+    FONDATEUR.alt,
     FAQ.titre,
-    ...FAQ.questions.flatMap((q) => [q.question, q.reponse, q.lien?.libelle ?? ""]),
+    ...FAQ.questions.flatMap((q) => [q.question, q.reponse]),
     PIED.organise,
     PIED.nonAffiliation,
     ...PIED.liens.map((l) => l.libelle),
