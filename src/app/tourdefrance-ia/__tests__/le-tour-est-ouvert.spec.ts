@@ -15,7 +15,10 @@
  *     image de partage ; `/fr/appel/tour-de-france-ia` reste `noindex` ;
  *   · le sitemap du Tour, l'index des sitemaps et `llms.txt` citent la route ;
  *   · le contenu ne porte aucun mot interdit, aucun prix, et la page n'importe
- *     aucun composant de la coquille d'Axion.
+ *     aucun composant de la coquille d'Axion ;
+ *   · le cap du 2026-10-27 : « une journée offerte » (audit + formation), une ville
+ *     qui se déclenche à partir de 5 entreprises, « quelques places par ville »
+ *     sans chiffre de plafond, le repas du vendredi sans aucune promesse.
  *
  * Angle mort assumé : la porte est testée comme module, et son câblage dans le
  * proxy comme texte — le proxy entier (Auth.js, next-intl) n'est pas exécuté ici.
@@ -36,17 +39,16 @@ import {
 import { TOUR_PREFIX, TOUR_PUBLIC } from "@/features/tour-de-france/visibilite";
 
 import {
-  BANDEAU,
-  CONDITION_GRATUITE,
+  CONDITIONS,
   DEFINITION,
   FAQ,
   HEROS,
   META,
-  OFFRE_DETAIL,
-  REGLE_ETAPE,
+  PROMESSE,
+  VENDREDI,
   toutLeTexte,
 } from "../contenu";
-import { DESCRIPTION_DU_SERVICE, jsonLdDuTour } from "../jsonld";
+import { DESCRIPTION_DE_L_OFFRE, DESCRIPTION_DU_SERVICE, jsonLdDuTour } from "../jsonld";
 
 const RACINE = process.cwd();
 const lire = (chemin: string) => readFileSync(join(RACINE, chemin), "utf8");
@@ -430,20 +432,30 @@ describe("🔴 la page n'embarque rien de la coquille d'Axion", () => {
   });
 });
 
+/** La section « Tour de France IA » de llms.txt, seule : le reste du fichier parle d'autres offres. */
+function sectionTourLlms(): string {
+  const llms = lire("src/app/llms.txt/route.ts");
+  const debut = llms.indexOf("## Tour de France IA");
+  expect(debut).toBeGreaterThan(-1);
+  return llms.slice(debut, llms.indexOf("`", debut));
+}
+
 describe("🔴 le contenu : mots interdits, typographie, SEO", () => {
   const texte = toutLeTexte();
+  // Le nom de fichier `types-reservables.ts` (cité en commentaire) n'est pas du texte.
   const sources = ["src/app/tourdefrance-ia/contenu.ts", "src/app/tourdefrance-ia/page.tsx"]
     .map(lire)
-    .join("\n");
+    .join("\n")
+    .replaceAll("types-reservables", "");
 
-  it("aucun mot interdit (texte ET sources)", () => {
+  it("aucun mot interdit (texte ET sources, commentaires compris)", () => {
     const interdits: RegExp[] = [
       /grenoble/i,
-      /r[ée]server/i,
+      /r[ée]serv/i,
       /devis/i,
       /palmar[eè]s/i,
       /ils en parlent/i,
-      /aucun gain garanti/i,
+      /garanti/i,
       /qualiopi/i,
       /\bCPF\b/,
       /\bOPCO\b/i,
@@ -462,10 +474,30 @@ describe("🔴 le contenu : mots interdits, typographie, SEO", () => {
       /maillot/i,
       /v[ée]lo/i,
       /peloton/i,
+      /\bASO\b/,
+      /partenaire/i,
+      /officiel/i,
       /\bavis\b/i,
       /t[ée]moignage/i,
       /\bdéjà \d+/i,
       /\d+\s+entreprises (inscrites|participent|ont rejoint)/i,
+      // L'ancienne règle (2026-10-26), retirée le 2026-10-27 : plus nulle part.
+      /seulement 5/i,
+      /\bau plus\b/i,
+      /derni[èe]res places/i,
+      /liste d[’']attente/i,
+      /date garantie/i,
+      /100\s?%\s?gratuit/i,
+      /sans aucune condition/i,
+      /d[’']une valeur de/i,
+      /sans contrepartie/i,
+      /repas offert/i,
+      /gagner du temps/i,
+      /\binscri/i,
+      /\bticket/i,
+      /\bbillet/i,
+      /participer/i,
+      /[ée]v[ée]nement/i,
     ];
     for (const motif of interdits) {
       expect(texte, String(motif)).not.toMatch(motif);
@@ -473,16 +505,16 @@ describe("🔴 le contenu : mots interdits, typographie, SEO", () => {
     }
   });
 
-  it("le H1 est l'accroche validée, suivi de la promesse ; l'ancien titre devient le sous-titre fort", () => {
+  it("le H1 est l'accroche validée, suivi de la promesse « journée offerte »", () => {
     expect(`${HEROS.titreAvant}${HEROS.titreAccent}${HEROS.titreApres}`).toBe(
-      "Vous entendez parler d’IA partout et ne savez plus par où commencer ? Nous, si.",
+      "Vous entendez parler d’IA partout et ne savez plus par où commencer\u00a0? Nous, si.",
     );
     expect(HEROS.titreAccent).toBe("Nous, si.");
-    expect(HEROS.accroche).toBe("L’IA vient travailler dans votre entreprise.");
+    expect(HEROS.promesse).toBe(
+      "Une journée offerte dans votre entreprise : audit + formation IA de votre équipe.",
+    );
     const page = lire("src/app/tourdefrance-ia/page.tsx");
-    // Premier écran mobile : la promesse suit le H1 ; l'accroche passe sous le pli.
     expect(page).toMatch(/<\/h1>\s*<p[^>]*>\s*\{HEROS\.promesse\}/);
-    expect(page).toContain("{HEROS.accroche}");
   });
 
   it("le slogan d'Axion-IA n'apparaît pas", async () => {
@@ -491,50 +523,55 @@ describe("🔴 le contenu : mots interdits, typographie, SEO", () => {
     expect(texte.toLowerCase()).not.toContain(BRAND.taglineFr.toLowerCase());
   });
 
-  it("l'offre est COMMUNIQUÉE : « offert » exigé, toujours avec les 5 entreprises par ville, sans frais cachés", () => {
-    expect(texte).toMatch(/offert/i);
-    expect(HEROS.sousTitre).toBe(
-      "Un audit offert qui chiffre ce que l’IA peut rapporter à votre entreprise, puis une formation de 4 h offerte à votre équipe, en intra-entreprise et en présentiel, dans vos locaux.",
+  it("l'offre est COMMUNIQUÉE : une journée offerte, toujours avec ses conditions", () => {
+    expect(texte).toMatch(/journée offerte/);
+    expect(CONDITIONS).toBe(
+      "Limité à quelques places par ville. Une ville se déclenche à partir de 5 entreprises ; aucune date n’est fixée avant.",
     );
-    expect(REGLE_ETAPE).toBe(
-      "5 entreprises par ville, au plus. Chaque place est confirmée dans l’ordre des confirmations, et l’étape se tient quand les 5 entreprises sont confirmées. Au-delà, liste d’attente pour une prochaine étape.",
-    );
-    expect(CONDITION_GRATUITE).toMatch(/offerts/i);
-    expect(CONDITION_GRATUITE).toContain(REGLE_ETAPE);
-    expect(META.description).toMatch(/5 entreprises par ville\.$/);
-    expect(META.description).toMatch(/en présentiel chez vous/);
-    expect(CONDITION_GRATUITE).toMatch(/sans frais cachés/);
-    // La condition est visible : le héros l'affiche, elle n'est pas reléguée ailleurs.
-    const pageSource = lire("src/app/tourdefrance-ia/page.tsx");
-    expect(pageSource).toContain("HEROS.condition");
-    // …et elle suit immédiatement le sous-titre : « offert » et « 5 entreprises par ville » restent ensemble.
-    expect(pageSource).toMatch(/\{HEROS\.sousTitre\}\s*<\/p>\s*<p[^>]*>\s*\{HEROS\.condition\}/);
-    // Titre de page, description et FAQ portent l'offre.
-    expect(META.titre).toMatch(/offerts/i);
-    expect(META.description).toMatch(/offert/i);
+    expect(META.titre).toMatch(/journée offerte/);
+    expect(META.description).toMatch(/journée offerte/);
+    expect(META.description).toMatch(/quelques places par ville/);
+    // Les conditions sont affichées sous le bouton du héros ET sous celui de l'appel final.
+    const page = lire("src/app/tourdefrance-ia/page.tsx");
+    expect(page).toContain("{HEROS.conditions}");
+    expect(page).toContain("{CONDITIONS}");
+    // La FAQ « offert » les porte, et ne dit pas la visio offerte.
     const offert = FAQ.questions.find((q) => /offert/.test(q.question));
-    expect(offert?.reponse).toMatch(/audit et la formation sont offerts/i);
-    // « Offert » est réservé à l'audit et à la formation : la visio n'est pas dite offerte.
+    expect(offert?.reponse).toContain(CONDITIONS);
     expect(offert?.reponse).not.toMatch(/visio/i);
-    expect(offert?.reponse).toMatch(/une fois leur place confirmée/);
-    expect(offert?.reponse).toMatch(/5 entreprises par ville/);
-    expect(offert?.reponse).toMatch(/frais cachés/);
   });
 
-  it("🔴 jamais un mot sur qui règle la soirée ou le repas : elle est OUVERTE à toutes les entreprises", () => {
+  it("🔴 « offert » ne qualifie que la journée, l'audit et la formation — jamais la visio, jamais le repas", () => {
+    for (const m of texte.matchAll(/offert(e|s|es)?/gi)) {
+      const avant = texte.slice(Math.max(0, (m.index ?? 0) - 40), m.index);
+      // Seule exception : la question de la FAQ « Qu’est-ce qui est offert ? ».
+      expect(avant, avant).toMatch(/(journée|audit|formation)[^.\n]*$|\nQu’est-ce qui est $/i);
+    }
+    expect(texte).not.toMatch(/visio[^.\n]*(offert|gratuit)|repas[^.\n]*(offert|gratuit)/i);
+    expect(texte).not.toMatch(/(offert|gratuit)[^.\n]*(visio|repas)/i);
+  });
+
+  it("🔴 le repas du vendredi : nommé, sans AUCUNE promesse (ni qui règle, ni montant)", () => {
     const tout = `${texte}\n${JSON.stringify(jsonLdDuTour())}\n${lire("src/app/llms.txt/route.ts")}`;
     expect(tout).not.toMatch(
-      /chacun r[èe]gle|[àa] la charge de chacun|sa part|frais partag[ée]s|paie|payant|addition|repas/i,
+      /chacun r[èe]gle|[àa] la charge de chacun|sa part|frais partag[ée]s|paie|payant|addition/i,
     );
-    const soiree = OFFRE_DETAIL.cartes.find((c) => /soirée/i.test(c.titre));
-    expect(soiree?.recu).toBe("Ouverte à toutes les entreprises de l’étape.");
+    expect(`${texte}\n${sectionTourLlms()}`).not.toMatch(/frais|gratuit/i);
+    expect(VENDREDI.texte).toBe("Un repas réseau entre entrepreneurs de la ville.");
+    // « repas » n'apparaît que dans cette phrase (et sa copie de la définition et de llms.txt).
+    for (const m of texte.matchAll(/repas/gi)) {
+      expect(texte.slice(m.index, (m.index ?? 0) + 45)).toBe(
+        "repas réseau entre entrepreneurs de la ville.",
+      );
+    }
+    // Le vendredi soir n'est jamais dans l'offre du JSON-LD.
+    const graphe = jsonLdDuTour()["@graph"] as Array<Record<string, unknown>>;
+    expect(JSON.stringify(graphe[1]?.["offers"])).not.toMatch(/repas|vendredi|soir/i);
   });
 
   it("🔴 ce n'est pas un événement auquel on s'inscrit : aucun vocabulaire d'événement ni de billetterie", () => {
     const tout = `${texte}\n${lire("src/app/llms.txt/route.ts")}`;
     expect(tout).not.toMatch(
-      // « 5 entreprises par ville » est un fait de l'offre ; le compte à rebours de
-      // billetterie (« places restantes ») ne l'est pas.
       /participer|[ée]v[ée]nement|inscri(re|ption|vez|t)|ticket|billet|places? restantes?|derni[èe]res places/i,
     );
   });
@@ -542,8 +579,10 @@ describe("🔴 le contenu : mots interdits, typographie, SEO", () => {
   it("🔴 l'AI Act dit avec prudence : « vous aide à répondre », jamais d'obligation ni de conformité promise", () => {
     expect(texte).toMatch(/vous aide à répondre à l’exigence de formation de l’AI Act/);
     expect(texte).not.toMatch(
-      /obligatoire|obligation|certifi|attestation|conforme à l|en conformit[ée] totale|garanti/i,
+      /obligatoire|obligation|certifi|attestation|conforme à l|conforme (à l[’'])?AI Act|en conformit[ée] totale|garanti/i,
     );
+    const q = FAQ.questions.find((x) => /AI Act/.test(x.question));
+    expect(q?.reponse).toMatch(/ne remplace pas une analyse de votre conformité/);
   });
 
   it("jamais de vente à conclure ni de signature", () => {
@@ -558,10 +597,11 @@ describe("🔴 le contenu : mots interdits, typographie, SEO", () => {
     expect(texte).not.toMatch(/\bemail\b|\bmail\b/i);
   });
 
-  it("titre ≤ 60, description ≤ 155, canonique absolue, huit Q/R", () => {
+  it("titre ≤ 60, description < 155, six Q/R", () => {
+    expect(META.titre).toBe("Tour de France IA : une journée offerte chez vous");
     expect(META.titre.length).toBeLessThanOrEqual(60);
-    expect(META.description.length).toBeLessThanOrEqual(155);
-    expect(FAQ.questions).toHaveLength(8);
+    expect(META.description.length).toBeLessThan(155);
+    expect(FAQ.questions).toHaveLength(6);
   });
 
   it("JSON-LD : WebPage, Service, FAQPage, BreadcrumbList — sans Person ni Organization recréés", () => {
@@ -579,20 +619,20 @@ describe("🔴 le contenu : mots interdits, typographie, SEO", () => {
       name: "Axion-IA",
       url: expect.stringMatching(/^https?:\/\//),
     });
-    // Le JSON-LD dit la même chose que le texte visible : offert, et la FAQ « offert » y figure.
+    // Le JSON-LD dit la même chose que le texte visible : la FAQ « offert » y figure, conditions comprises.
     const faq = graphe[2] as {
       mainEntity: Array<{ name: string; acceptedAnswer: { text: string } }>;
     };
+    expect(faq.mainEntity).toHaveLength(6);
     const offert = faq.mainEntity.find((q) => /offert/.test(q.name));
-    expect(offert?.acceptedAnswer.text).toMatch(/offerts/);
-    expect(offert?.acceptedAnswer.text).toMatch(/5 entreprises par ville/);
+    expect(offert?.acceptedAnswer.text).toContain(CONDITIONS);
     const json = JSON.stringify(ld);
     expect(json).not.toMatch(/"@type":"(Person|Organization|HowTo)"/);
     expect(json).not.toMatch(/speakable/);
   });
 });
 
-describe("🔴 le Tour est une OFFRE aux entreprises, pas un événement (JSON-LD, 2026-10-26)", () => {
+describe("🔴 le Tour est une OFFRE aux entreprises, pas un événement (JSON-LD)", () => {
   const ld = jsonLdDuTour();
   const graphe = ld["@graph"] as Array<Record<string, unknown>>;
   const service = graphe.find((n) => n["@id"] === `${String(graphe[0]?.["url"])}#tour`) ?? {};
@@ -611,31 +651,35 @@ describe("🔴 le Tour est une OFFRE aux entreprises, pas un événement (JSON-L
     });
   });
 
-  it("la description garde l'idée du tour : « tour de France de l'IA », chez les entreprises, une semaine par ville, 5 entreprises", () => {
+  it("la description reprend la définition : le tour de ville en ville, la journée offerte, ses conditions", () => {
     const description = String(service["description"]);
+    expect(DESCRIPTION_DU_SERVICE).toContain(DEFINITION);
     expect(description).toMatch(/tour de France de l[’']IA/);
-    expect(description).toMatch(/vient dans les entreprises/);
-    expect(description).toMatch(/une semaine dans une ville/);
+    expect(description).toMatch(/offre une journée aux entreprises/);
     expect(description).toMatch(
-      /accueille 5 entreprises au plus, dont les places sont confirmées dans l’ordre des confirmations/,
+      /formation de 4 h de leur équipe, en intra-entreprise et en présentiel/,
     );
-    expect(description).toMatch(
-      /formation de 4 h offerte à son équipe, en intra-entreprise et en présentiel/,
-    );
-    expect(description).toMatch(/liste d’attente pour une prochaine étape/);
-    expect(description).toMatch(/audit offert/);
-    expect(description).toMatch(/formation de 4 h offerte/);
     expect(description).toMatch(/aide à répondre à l’exigence de formation de l’AI Act/);
+    expect(description).toMatch(/quelques places par ville/);
+    expect(description).toMatch(/se déclenche à partir de 5 entreprises/);
+    expect(description).toMatch(/aucune date n’est fixée avant/);
   });
 
-  it("l'offre est gratuite : prix 0 en euros, audit et formation offerts aux entreprises de l'étape", () => {
+  it("l'offre est gratuite : prix 0 en euros, entreprises en France, sans disponibilité ni date", () => {
     expect(service["offers"]).toEqual({
       "@type": "Offer",
       price: "0",
       priceCurrency: "EUR",
-      description:
-        "Audit et formation d’équipe de 4 h offerts, en intra-entreprise et en présentiel, aux entreprises de l’étape : 5 entreprises par ville",
+      eligibleRegion: { "@type": "Country", name: "France" },
+      eligibleCustomerType: "http://purl.org/goodrelations/v1#Business",
+      description: DESCRIPTION_DE_L_OFFRE,
     });
+    // La description de l'offre est le texte VISIBLE : la promesse et les conditions.
+    expect(DESCRIPTION_DE_L_OFFRE).toContain(PROMESSE);
+    expect(DESCRIPTION_DE_L_OFFRE).toContain(CONDITIONS);
+    expect(JSON.stringify(service["offers"])).not.toMatch(
+      /availability|validFrom|validThrough|availabilityStarts|availabilityEnds|\b20\d\d\b/,
+    );
   });
 
   it("🔴 aucun type « Event » (EventSeries, Event…), aucune propriété d'événement", () => {
@@ -650,85 +694,67 @@ describe("🔴 le Tour est une OFFRE aux entreprises, pas un événement (JSON-L
       /grenoble/i,
       /qualiopi/i,
       /obligatoire/i,
-      /aucun gain garanti/i,
+      /garanti/i,
       /devis/i,
-      /prix/i,
-      /candidater/i,
-      /r[ée]server/i,
+      /prix/i,
+      /candidat/i,
+      /r[ée]serv/i,
       /chacun r[èe]gle sa part/i,
       /[ée]v[ée]nement/i,
       /certifi/i,
+      /\bau plus\b/i,
+      /liste d[’']attente/i,
+      /seulement 5/i,
     ];
     for (const motif of interdits) expect(json, String(motif)).not.toMatch(motif);
   });
 });
 
-describe("🔴 5 entreprises par ville, AU PLUS : jamais un seuil seul (2026-10-26)", () => {
-  // Écrire seulement « dès 5 entreprises » laissait croire que toute entreprise
-  // intéressée recevrait l'audit et la formation offerts. Le plafond est dit partout
-  // où la règle de l'étape l'est : texte visible, JSON-LD et llms.txt.
+describe("🔴 une ville SE DÉCLENCHE à partir de 5 entreprises ; quelques places par ville (2026-10-27)", () => {
+  // Le cap du 2026-10-27 remplace la règle « 5 au plus » : 5 est un SEUIL de
+  // déclenchement, l'audit n'est pas plafonné à 5, et la limite se dit sans chiffre.
   const texte = toutLeTexte();
   const json = JSON.stringify(jsonLdDuTour());
-  const llms = lire("src/app/llms.txt/route.ts");
-  const minimumSeul =
-    /d[èe]s (que )?5|n[’']atteint pas 5|seuil de 5|ouverte d[èe]s|s[’']ouvre d[èe]s/i;
+  const llms = sectionTourLlms();
 
-  it("le texte visible dit « 5 entreprises par ville », « liste d’attente », et plus jamais « 5 places »", () => {
-    expect(texte).toMatch(/5 entreprises par ville/);
-    expect(texte).toMatch(/liste d’attente pour une prochaine étape/);
-    expect(texte).toMatch(/dans l’ordre des confirmations/);
-    expect(texte).toMatch(/l’étape se tient quand les 5 entreprises sont confirmées/);
-    expect(BANDEAU.titre).toBe("Seulement 5 entreprises par ville.");
-    // Précision de l'offre (2026-10-26) : on compte des ENTREPRISES, pas des places.
+  it("les conditions : « quelques places par ville », « à partir de 5 entreprises », sans étoile ni plafond chiffré", () => {
+    expect(CONDITIONS).toMatch(/quelques places par ville/);
+    expect(CONDITIONS).toMatch(/à partir de 5 entreprises/);
+    expect(CONDITIONS).toMatch(/aucune date n’est fixée avant/);
     for (const [nom, s] of [
+      ["conditions", CONDITIONS],
       ["texte", texte],
       ["JSON-LD", json],
       ["llms.txt", llms],
     ] as const) {
-      expect(s, nom).not.toMatch(/\d\s?places?\b|places limit[ée]es/i);
+      expect(s, nom).not.toMatch(/\*/);
+      expect(s, nom).not.toMatch(
+        /\bau plus\b|liste d[’']attente|seulement \d|\d\s?places?\b|places limit[ée]es/i,
+      );
     }
   });
 
-  it("la formation est dite d'ÉQUIPE, en INTRA-ENTREPRISE et en PRÉSENTIEL, partout", () => {
+  it("le texte, le JSON-LD et llms.txt disent la même règle", () => {
     for (const [nom, s] of [
       ["texte", texte],
       ["JSON-LD", json],
       ["llms.txt", llms],
     ] as const) {
+      expect(s, nom).toMatch(/quelques places par ville/);
+      expect(s, nom).toMatch(/se déclenche à partir de 5 entreprises/);
+      expect(s, nom).toMatch(/aucune date n[’']est fixée avant/);
       expect(s, nom).toMatch(/en intra-entreprise et en présentiel/);
+      expect(s, nom).toMatch(/repas réseau entre entrepreneurs de la ville/);
     }
-    expect(HEROS.promesse).toMatch(
-      /^Audit offert \+ formation de votre équipe offerte, en présentiel/,
+    expect(llms).toMatch(/Une journée offerte dans l'entreprise/);
+  });
+
+  it("la FAQ répond « Et si ma ville n’a pas encore 5 entreprises ? », sans date promise", () => {
+    const q = FAQ.questions.find(
+      (x) => x.question === "Et si ma ville n’a pas encore 5 entreprises ?",
     );
-    expect(texte).toMatch(/dans vos locaux/);
-  });
-
-  it("aucune formulation de minimum seul, nulle part", () => {
-    expect(texte).not.toMatch(minimumSeul);
-    expect(json).not.toMatch(minimumSeul);
-    expect(llms).not.toMatch(minimumSeul);
-  });
-
-  it("la FAQ répond « Combien d’entreprises par ville ? », et le JSON-LD porte la même réponse", () => {
-    const q = FAQ.questions.find((x) => x.question === "Combien d’entreprises par ville\u00a0?");
-    expect(q?.reponse).toMatch(/^5 entreprises par ville, au plus/);
-    expect(q?.reponse).toMatch(/dans l’ordre des confirmations/);
-    expect(q?.reponse).toMatch(/liste d’attente pour une prochaine étape/);
+    expect(q?.reponse).toMatch(/Aucune date n’est fixée avant/);
+    expect(q?.reponse).toMatch(/Aucune date n’est fixée avant/);
     expect(json).toContain(JSON.stringify(q?.reponse ?? "").slice(1, -1));
-  });
-
-  it("le JSON-LD reprend la définition visible, plafond compris ; llms.txt dit la même règle", () => {
-    expect(DESCRIPTION_DU_SERVICE).toContain(DEFINITION);
-    expect(DEFINITION).toMatch(/accueille 5 entreprises au plus/);
-    expect(llms).toMatch(
-      /accueille 5 entreprises par ville au plus, dont les places sont confirmées dans l'ordre des confirmations/,
-    );
-    expect(llms).toMatch(/liste d'attente pour une prochaine étape/);
-  });
-
-  it("rien n'est promis avant la confirmation d'une place", () => {
-    expect(CONDITION_GRATUITE).toMatch(/une fois leur place confirmée/);
-    expect(DEFINITION).toMatch(/Chaque entreprise de l’étape reçoit/);
-    expect(llms).toMatch(/une fois leur place confirmée/);
   });
 });

@@ -3,13 +3,14 @@
 //
 // Un seul `@graph` : WebPage, Service, FAQPage, BreadcrumbList.
 //
-// 🔑 Le Tour n'est PAS un événement : c'est une offre faite AUX ENTREPRISES
-// (audit offert + formation d'équipe de 4 h offerte, en présentiel, de la TPE à l'ETI). Il garde son nom
-// et l'idée d'un tour qui va de ville en ville, mais il est décrit comme un
-// `Service` : aucune propriété d'`Event` (ni `startDate`, ni `location`, ni
-// `eventAttendanceMode`, ni `subEvent`, ni `performer`). La gratuité se dit par
-// une `Offer` à 0 €, comme le texte visible (« offerts aux entreprises de l'étape »,
-// 5 entreprises par ville, formation en intra-entreprise et en présentiel).
+// 🔑 Le Tour n'est PAS un événement : c'est une offre faite AUX ENTREPRISES — une
+// journée offerte chez elles (audit + formation d'équipe de 4 h, en intra-entreprise
+// et en présentiel, de la TPE à l'ETI). Il garde son nom et l'idée d'un tour qui va
+// de ville en ville, mais il est décrit comme un `Service` : aucune propriété
+// d'`Event` (ni `startDate`, ni `location`, ni `eventAttendanceMode`, ni `subEvent`,
+// ni `performer`). La gratuité se dit par une `Offer` à 0 €, réservée aux entreprises
+// en France, SANS `availability` ni date : aucune date n'est fixée avant qu'une ville
+// se déclenche. Le vendredi soir n'est jamais dans l'`Offer`.
 //
 // Aucun nœud `Organization` ni `Person` n'est RECRÉÉ ici : le prestataire est
 // cité par son `@id` canonique (`SITE_URL/#organization`), décrit une fois pour
@@ -19,7 +20,7 @@
 import { BRAND } from "@/lib/brand";
 import { SITE_URL } from "@/lib/site-url";
 
-import { DEFINITION, FAQ, META, NOM_DU_TOUR } from "./contenu";
+import { CONDITIONS, DEFINITION, FAQ, META, NOM_DU_TOUR, PROMESSE } from "./contenu";
 
 /**
  * La description du `Service` : le nom de tour de France, puis la définition
@@ -27,6 +28,9 @@ import { DEFINITION, FAQ, META, NOM_DU_TOUR } from "./contenu";
  * tour — aucune promesse que la page ne fait pas.
  */
 export const DESCRIPTION_DU_SERVICE = `Le tour de France de l’IA d’Axion-IA, d’une ville à l’autre. ${DEFINITION}`;
+
+/** L'offre : la promesse et les conditions VISIBLES, mot pour mot. */
+export const DESCRIPTION_DE_L_OFFRE = `${PROMESSE} En intra-entreprise et en présentiel. ${CONDITIONS}`;
 
 export function jsonLdDuTour(): Record<string, unknown> {
   const url = `${SITE_URL}${META.chemin}`;
@@ -61,13 +65,14 @@ export function jsonLdDuTour(): Record<string, unknown> {
         provider: organisation,
         areaServed: { "@type": "Country", name: "France" },
         audience: { "@type": "BusinessAudience", name: "Entreprises, de la TPE à l’ETI" },
-        // Dit comme le texte visible : offerts aux entreprises de l’étape.
+        // Dit comme le texte visible : la journée offerte, et sa limite.
         offers: {
           "@type": "Offer",
           price: "0",
           priceCurrency: "EUR",
-          description:
-            "Audit et formation d’équipe de 4 h offerts, en intra-entreprise et en présentiel, aux entreprises de l’étape : 5 entreprises par ville",
+          eligibleRegion: { "@type": "Country", name: "France" },
+          eligibleCustomerType: "http://purl.org/goodrelations/v1#Business",
+          description: DESCRIPTION_DE_L_OFFRE,
         },
       },
       {
