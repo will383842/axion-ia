@@ -131,7 +131,14 @@ export async function lireSuiviParPersonne(
     }),
     base.questionnaireAvantAuditBrouillon.findMany({
       where: { questionnaireId: { in: liste } },
-      select: { id: true, questionnaireId: true, mode: true, membre: true, majLe: true, donnees: true },
+      select: {
+        id: true,
+        questionnaireId: true,
+        mode: true,
+        membre: true,
+        majLe: true,
+        donnees: true,
+      },
     }),
   ]);
 
@@ -188,8 +195,7 @@ export async function lireSuiviParPersonne(
         majLe: b.majLe,
         instantane: lireChiffre(b.donnees),
       })),
-      ouvertures:
-        ouvertures === null ? null : ouvertures.filter((o) => o.questionnaireId === q.id),
+      ouvertures: ouvertures === null ? null : ouvertures.filter((o) => o.questionnaireId === q.id),
       estCodeDirigeant: (m) => codeDirigeantPreauditValide(q.id, m),
       squelette: squelettes.get(q.id) ?? null,
       luLe: q.luLe,

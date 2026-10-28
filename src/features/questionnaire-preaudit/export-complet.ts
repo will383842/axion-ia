@@ -32,9 +32,7 @@ export const exportCompletActif = (env: Env = process.env): boolean =>
 
 type BaseExport = Pick<
   PrismaClient,
-  | "questionnaireAvantAudit"
-  | "questionnaireAvantAuditEnvoi"
-  | "questionnaireAvantAuditBrouillon"
+  "questionnaireAvantAudit" | "questionnaireAvantAuditEnvoi" | "questionnaireAvantAuditBrouillon"
 >;
 
 export interface ReponseExportee {
@@ -86,7 +84,10 @@ function masquer(v: unknown, estCodeDirigeant: (m: string) => boolean): unknown 
   if (Array.isArray(v)) return v.map((x) => masquer(x, estCodeDirigeant));
   if (typeof v === "object" && v !== null) {
     return Object.fromEntries(
-      Object.entries(v as Record<string, unknown>).map(([k, x]) => [k, masquer(x, estCodeDirigeant)]),
+      Object.entries(v as Record<string, unknown>).map(([k, x]) => [
+        k,
+        masquer(x, estCodeDirigeant),
+      ]),
     );
   }
   return v;

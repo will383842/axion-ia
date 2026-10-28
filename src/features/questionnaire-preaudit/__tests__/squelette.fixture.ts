@@ -47,4 +47,6 @@ const SECTIONS = [
   { id: "u", only: "it", title: "Seulement référent", fields: [ F("text", "u_1", "U") ]},
   { id: "send", title: "Envoi", fields: [ F("text", "z_envoi", "Ne compte pas") ]},
 ];
-</script></body></html>`.replaceAll("§", "`").replaceAll("¤", "$");
+</script></body></html>`
+  .replaceAll("§", "`")
+  .replaceAll("¤", "$");

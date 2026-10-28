@@ -71,11 +71,7 @@ export type EtatLigne =
   | "lien_sans_code";
 
 export type RoleLigne =
-  | "dirigeant"
-  | "collaborateur"
-  | "non_retrouvee"
-  | "referent"
-  | "journee_dirigeant";
+  "dirigeant" | "collaborateur" | "non_retrouvee" | "referent" | "journee_dirigeant";
 
 /** D'où vient le nom : l'équipe déclarée, la réponse de la personne, ou son brouillon (réservé). */
 export type SourceNom = "equipe" | "reponse" | "brouillon";
@@ -153,12 +149,7 @@ const texte = (v: unknown): string => (typeof v === "string" ? v.trim() : "");
 const CODE = /^[A-Za-z0-9_-]{12,60}$/;
 
 const sansAccents = (s: string): string =>
-  s
-    .normalize("NFD")
-    .replace(/[̀-ͯ]/g, "")
-    .toLowerCase()
-    .replace(/\s+/g, " ")
-    .trim();
+  s.normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase().replace(/\s+/g, " ").trim();
 
 const codeCourt = (code: string): string => `…${code.slice(-4)}`;
 
@@ -419,7 +410,9 @@ export function suivreParPersonne(e: EntreePersonnes): SuiviParPersonne {
       }
     } else if (seau.reponses.length === 0 && seau.brouillon?.instantane != null) {
       const pre = Array.isArray(seau.brouillon.instantane["pre"])
-        ? new Set((seau.brouillon.instantane["pre"] as unknown[]).filter((x) => typeof x === "string"))
+        ? new Set(
+            (seau.brouillon.instantane["pre"] as unknown[]).filter((x) => typeof x === "string"),
+          )
         : new Set<string>();
       taux = tauxDeReponses(
         valeursDuBrouillon(seau.brouillon.instantane),

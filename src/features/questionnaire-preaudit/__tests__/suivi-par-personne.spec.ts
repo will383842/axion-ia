@@ -73,7 +73,13 @@ function fabrique(opts: { ouverturesErreur?: unknown; envoye?: boolean } = {}) {
       findMany: async ({ select }: { select: Ligne }) => {
         if (select["html"] === true) {
           compteurs.html++;
-          return [{ id: QID, html: HTML_SYNTHETIQUE, envoyeLe: opts.envoye === false ? null : new Date() }];
+          return [
+            {
+              id: QID,
+              html: HTML_SYNTHETIQUE,
+              envoyeLe: opts.envoye === false ? null : new Date(),
+            },
+          ];
         }
         return [
           {

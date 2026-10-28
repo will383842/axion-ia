@@ -321,11 +321,7 @@ function analyserChamps(
     if (only !== null && only !== mode) continue;
     if (sortie.has(id)) continue; // le premier id gagne
     const lvl3 = aLaCle(options, "lvl3");
-    const niveau = niveau1?.has(id)
-      ? 1
-      : only === "it" || lvl3
-        ? 3
-        : (sec.lvl ?? 2);
+    const niveau = niveau1?.has(id) ? 1 : only === "it" || lvl3 ? 3 : (sec.lvl ?? 2);
     sortie.set(id, { conditionnel: aLaCle(options, "show"), niveau });
   }
 }
@@ -404,7 +400,8 @@ export function squeletteDuHtml(html: string): Squelette | null {
       const champs = new Map<string, ChampLu>();
       const compteur = { n: 0 };
       for (const sec of sections) {
-        const visible = mode === "it" ? sec.it || sec.only === "it" : !sec.only || sec.only === mode;
+        const visible =
+          mode === "it" ? sec.it || sec.only === "it" : !sec.only || sec.only === mode;
         if (!visible) continue;
         analyserChamps(sec.corps, mode, sec, niveau1, assistants, champs, compteur, 0);
       }
@@ -498,7 +495,11 @@ export function tauxDeReponses(
     if (remplie(id)) enPlus++;
   }
   const pourcentage =
-    total === 0 ? null : remplies < total ? Math.min(99, Math.round((100 * remplies) / total)) : 100;
+    total === 0
+      ? null
+      : remplies < total
+        ? Math.min(99, Math.round((100 * remplies) / total))
+        : 100;
   return {
     essentiellesRemplies: remplies,
     essentiellesTotal: total,

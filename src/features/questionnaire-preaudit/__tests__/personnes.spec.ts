@@ -48,7 +48,11 @@ const brouillonCollab = (code: string, data: Record<string, unknown> = {}): Entr
   mode: "emp",
   membre: code,
   majLe: T(26),
-  instantane: { data: { id_prenom: "Alice", id_nom: "Martin", b_1: "x", ...data }, more: 0, pre: [] },
+  instantane: {
+    data: { id_prenom: "Alice", id_nom: "Martin", b_1: "x", ...data },
+    more: 0,
+    pre: [],
+  },
 });
 
 function suivre(
@@ -96,14 +100,19 @@ describe("scénario Oury : dirigeant reçu, 4 déclarés, 1 brouillon rapproché
 describe("cas de l'équipe", () => {
   it("« Non, pas pour cette personne » : pas de lien prévu, hors total", () => {
     const s = suivre({
-      reponses: [dirigeant({}, { equipe: equipe(["Oui", "Oui", "Oui", "Non, pas pour cette personne"]) })],
+      reponses: [
+        dirigeant({}, { equipe: equipe(["Oui", "Oui", "Oui", "Non, pas pour cette personne"]) }),
+      ],
     });
     expect(s.collab).toMatchObject({ declares: 4, sansLienPrevu: 1, attendus: 3, manquants: 3 });
     expect(ligneEquipe(s)).toContain("· 1 sans lien (choix du dirigeant)");
     expect(s.collaborateurs[3]?.etat).toBe("pas_de_lien_prevu");
   });
   it("fiche sans prénom ni nom : comptée à part, pas de ligne", () => {
-    const eq = [...equipe(), { id: "eeeeeeeeeee5", prenom: "", nom: "", role: "X", journee: "Oui" }];
+    const eq = [
+      ...equipe(),
+      { id: "eeeeeeeeeee5", prenom: "", nom: "", role: "X", journee: "Oui" },
+    ];
     const s = suivre({ reponses: [dirigeant({}, { equipe: eq })] });
     expect(s.fichesSansNom).toBe(1);
     expect(s.collab.declares).toBe(4);
@@ -177,7 +186,10 @@ describe("cas de l'équipe", () => {
 });
 
 describe("réponses des collaborateurs", () => {
-  const reponseCollab = (code: string | null, over: Partial<EntreeReponse> = {}): EntreeReponse => ({
+  const reponseCollab = (
+    code: string | null,
+    over: Partial<EntreeReponse> = {},
+  ): EntreeReponse => ({
     id: `r-${code ?? "x"}`,
     mode: "emp",
     membreColonne: code,

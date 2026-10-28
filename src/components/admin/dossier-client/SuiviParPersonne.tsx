@@ -175,7 +175,7 @@ function ConservationEtSauvegarde({
   const c = p.controle;
   const sauvegarde = q.derniereSauvegarde;
   const age =
-    sauvegarde instanceof Date ? (Date.now() - sauvegarde.getTime()) / HEURE_MS : null;
+    sauvegarde instanceof Date ? (new Date().getTime() - sauvegarde.getTime()) / HEURE_MS : null;
   const alerte =
     c.illisibles > 0 ||
     sauvegarde === undefined ||

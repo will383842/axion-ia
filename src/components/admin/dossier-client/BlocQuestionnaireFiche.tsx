@@ -87,9 +87,7 @@ export function BlocQuestionnaireFiche({
                   : `Envoyé le ${jourHeure(q.envoyeLe)}.`}
                 {q.closLe ? ` Clos le ${jourHeure(q.closLe)}.` : ""}
               </p>
-              {q.envoyeLe !== null && r.aTraiter > 0 ? (
-                <p>{r.aTraiter} à traiter.</p>
-              ) : null}
+              {q.envoyeLe !== null && r.aTraiter > 0 ? <p>{r.aTraiter} à traiter.</p> : null}
               {q.envoyeLe !== null ? (
                 <SuiviParPersonne
                   q={q}

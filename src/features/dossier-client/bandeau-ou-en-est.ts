@@ -128,7 +128,8 @@ function ligneQuestionnaire(e: EntreeBandeau): LigneBandeau {
       const pasLues = [p.dirigeant, ...p.collaborateurs, ...p.referents].filter(
         (l) => l.pasEncoreLue,
       ).length;
-      if (pasLues > 0) texte += ` · ${pluriel(pasLues, "réponse pas encore lue", "réponses pas encore lues")}`;
+      if (pasLues > 0)
+        texte += ` · ${pluriel(pasLues, "réponse pas encore lue", "réponses pas encore lues")}`;
     } else if (p != null) {
       texte += ` · dirigeant : ${motsDEtat(p.dirigeant.etat)} · équipe pas encore déclarée`;
     } else if (aLire > 0) {
