@@ -265,11 +265,7 @@ export async function rattacherDemande(demandeId: string): Promise<ResultatRatta
 // ─────────────────────────────────────────────────────────────────────────────
 
 export type RaisonRefusCompletion =
-  | "introuvable"
-  | "efface"
-  | "ecartee"
-  | "fiche_non_proche"
-  | "fiche_disparue";
+  "introuvable" | "efface" | "ecartee" | "fiche_non_proche" | "fiche_disparue";
 
 export type ResultatCompletion =
   | { readonly statut: "completee"; readonly clientId: string }
