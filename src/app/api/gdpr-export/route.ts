@@ -27,6 +27,7 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { exporterCandidaturesPour } from "@/server/careers/candidature-rgpd";
 import { trouverDemandesPodcast } from "@/features/podcast-request/rgpd";
+import { exporterDemandesTour } from "@/features/tour-de-france/rgpd";
 import { decryptPii, decryptPiiObject } from "@/lib/pii-crypto";
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
@@ -241,6 +242,9 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   // candidatures avant elles. Un export qui omet une table que le site detient
   // n'est pas un export partiel : c'est une reponse fausse a l'art. 15.
   const podcast = await trouverDemandesPodcast(email);
+  // Tour France IA (2026-10-27) : la mini-demande avant la visio, chiffrée à IV aléatoire,
+  // retrouvée par l'empreinte de l'adresse (`features/tour-de-france/rgpd.ts`).
+  const demandesTour = await exporterDemandesTour(email);
 
   // Sprint Correctif S+1 (P0-S1-2) : KB data RGPD art. 15 (bookmarks).
   const kb = await exportKbDataForEmail(email);
@@ -502,6 +506,8 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     candidatures: candidatures.candidatures,
     /** Demandes de tournage de podcast deposees via le formulaire public. */
     podcast: podcast.demandes,
+    /** Demandes du Tour France IA (mini-demande faite avant la visio). */
+    tourFranceIa: demandesTour,
     /**
      * Rendez-vous réservés depuis /appel.
      *

@@ -34,6 +34,7 @@ import {
   formateurIndependantASignalerPour,
 } from "@/lib/rgpd-formateur-independant";
 import { effacerDemandesPodcastPour } from "@/features/podcast-request/rgpd";
+import { anonymiserDemandesTour } from "@/features/tour-de-france/rgpd";
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
 import { verifyGdprToken } from "@/lib/gdpr-token";
@@ -159,6 +160,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     reseauApporteurResult,
     reponsesEntrantesResult,
     dossierClientResult,
+    demandesTourResult,
   ] = await Promise.all([
     eraseSubmissionsForEmail(email),
     eraseNewsletterForEmail(email),
@@ -247,6 +249,10 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     // rencontres ; les comptes rendus qui la citent sont vidés pour être
     // réécrits sans elle. Les preuves d'accord restent (art. 17(3)(e)).
     effacerCibleParAdresses([email], { motif: "art17" }),
+    // Tour France IA (2026-10-27) : les demandes sont VIDÉES, jamais supprimées ; leurs clés de
+    // comptage deviennent opaques et la ligne reste comptée (le compteur d'une ville ne recule pas).
+    // Cf. `tour-de-france/rgpd.ts`.
+    anonymiserDemandesTour(email),
   ]);
 
   // ART. 17 BI-SYSTÈME (lot L4) — le CRM efface par `person_key` dans les deux
@@ -294,6 +300,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
         reponsesEntrantesSupprimees: reponsesEntrantesResult.supprimees,
         piecesJointesContactSupprimees: piecesJointesResult.supprimees,
         dossierClient: dossierClientResult,
+        demandesTourAnonymisees: demandesTourResult.anonymisees,
         reseauApporteur: { ...reseauApporteurResult },
         formateurIndependant,
         candidaturesRetenues: candidaturesRetenues.size,
@@ -403,6 +410,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
       reponsesEntrantesSupprimees: reponsesEntrantesResult.supprimees,
       crmOutboxSupprimes: crmOutboxResult.supprimees,
       podcastSupprimes: podcastResult.supprimees,
+      demandesTourAnonymisees: demandesTourResult.anonymisees,
       jetonsSignatureRevoques: signatureTokensResult.revoques,
       jetonsSignaturePseudonymises: signatureTokensResult.pseudonymises,
       // Le repli dechiffrant est BORNE, ici comme pour les candidatures. S'il a

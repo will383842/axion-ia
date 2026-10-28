@@ -1799,6 +1799,16 @@ export const EXCEPTIONS_EFFACEMENT_DOSSIER: ReadonlyArray<{
       "`effacerCandidaturesPour` (`candidature-rgpd.ts`, appelé par la même route), " +
       "par la cascade du dossier ET par l'empreinte de l'adresse.",
   },
+  {
+    // Tour France IA (2026-10-27) : VIDÉE (jamais supprimée) par `anonymiserDemandesTour`.
+    modele: "TourDemande",
+    motif:
+      "vidée, non supprimée, par `anonymiserDemandesTour` (`features/tour-de-france/rgpd.ts`, " +
+      "appelé par la route d'effacement) : nom, e-mail, téléphone, ville tapée, provenance et " +
+      "repères de campagne remplacés ou retirés, empreintes retirées, clés de comptage remplacées " +
+      "par une valeur opaque propre à la ligne ; la ligne et son drapeau « compte » restent pour " +
+      "que le compteur d'une ville ne recule pas.",
+  },
 ];
 
 // ═════════════════════════════════════════════════════════════════════════════
