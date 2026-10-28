@@ -62,6 +62,7 @@ import {
   identiteDuJetonVsl,
   PARAM_JETON_VSL,
 } from "@/features/commercial-application/identite-reservation-vsl";
+import { champVilleDuTour, identiteDuJetonTour } from "@/features/tour-de-france/identite-visio";
 import { identiteDuJetonReservation } from "@/server/qualiopi/formateurs-independants/identite-reservation";
 
 /**
@@ -175,6 +176,12 @@ export default async function ReserverPage({ params, searchParams }: Props) {
   // un jeton faux ou expiré ne change rien au formulaire.
   // Lot B (M25) : échange formateur ouvert depuis F1 ou F7, même règle (jeton signé,
   // candidature de formateur freelance seulement ; sinon formulaire vide).
+  // Visio du Tour France IA : le jeton de la mini-demande (`?j=`, domaine `tour-demande-v1`) propose
+  // le nom, l'e-mail, le téléphone et la ville. Un jeton d'un autre parcours (page vidéo des
+  // apporteurs) ne s'y lit pas, et réciproquement ; un jeton faux : formulaire vide, sans erreur.
+  const identiteTour =
+    !reprise && choix === "tour" ? await identiteDuJetonTour(sp[PARAM_JETON_VSL]) : null;
+  const champVille = identiteTour ? champVilleDuTour(et.questions) : null;
   const prerempli =
     (!reprise && choix === "apporteur" ? await identiteDuJetonVsl(sp[PARAM_JETON_VSL]) : null) ??
     (!reprise && choix === "formateur"
@@ -252,16 +259,29 @@ export default async function ReserverPage({ params, searchParams }: Props) {
             questions={et.questions}
             {...(reprise
               ? { erreurs: reprise.erreurs, valeurs: reprise.valeurs }
-              : prerempli
+              : identiteTour
                 ? {
                     valeurs: {
-                      [CHAMPS.nom]: prerempli.nom,
-                      [CHAMPS.email]: prerempli.email,
-                      // Le téléphone de l'étape 2, s'il est sur la fiche ; modifiable.
-                      ...(prerempli.telephone ? { [CHAMPS.telephone]: prerempli.telephone } : {}),
+                      [CHAMPS.nom]: identiteTour.nom,
+                      [CHAMPS.email]: identiteTour.email,
+                      ...(identiteTour.telephone
+                        ? { [CHAMPS.telephone]: identiteTour.telephone }
+                        : {}),
+                      ...(champVille && identiteTour.ville
+                        ? { [champVille]: identiteTour.ville }
+                        : {}),
                     },
                   }
-                : {})}
+                : prerempli
+                  ? {
+                      valeurs: {
+                        [CHAMPS.nom]: prerempli.nom,
+                        [CHAMPS.email]: prerempli.email,
+                        // Le téléphone de l'étape 2, s'il est sur la fiche ; modifiable.
+                        ...(prerempli.telephone ? { [CHAMPS.telephone]: prerempli.telephone } : {}),
+                      },
+                    }
+                  : {})}
             replidUrl={avecUtmContent(resolu.url, suivi)}
             action={soumettreLaReservation}
             // Les formats DE CE TYPE — le même jugement que l'action
