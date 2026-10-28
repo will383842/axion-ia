@@ -13,8 +13,8 @@
  *      de chacune (même e-mail, même téléphone…), ou « sans fiche ». Aucune fiche n'est touchée.
  *   2. Un humain tranche dans la console. « Compléter la fiche » (`completerFicheDepuisDemande`) :
  *      sur une fiche proche de la demande, il remplit seulement ce qui est VIDE (la ville du
- *      référentiel ; la personne si elle manque ; le téléphone et le nom d'une personne qui n'en a
- *      pas), jamais le statut, la source, la raison sociale ni le SIREN, et laisse une trace
+ *      référentiel ; la personne si elle manque ; une personne déjà connue n'est jamais modifiée),
+ *      jamais le statut, la source, la raison sociale ni le SIREN, et laisse une trace
  *      « Demande Tour France IA, ville X ». La ville saisie en texte libre n'est JAMAIS écrite sur
  *      une fiche : seulement le nom du référentiel des villes.
  *   3. Aucune fiche : pas de création automatique (les quatre champs ne donnent pas l'entreprise,
@@ -37,7 +37,6 @@ import { fichesAuMemeTelephone } from "@/features/dossier-client/fiche-auto";
 import { reessayerSiInterblocage } from "@/features/questionnaire-preaudit/interblocage";
 import { prisma } from "@/lib/prisma";
 import { chargeClientAvant, emettreFaitClient } from "@/server/partners-sync/producteurs/client";
-import { NOM_A_COMPLETER } from "@/server/qualiopi/crm/contact-facturation";
 import {
   ajouterPersonneAFiche,
   chargerFichesCandidates,
@@ -154,6 +153,12 @@ interface DemandeClaire {
   readonly fichesProches: ReadonlyArray<FicheProcheStockee>;
 }
 
+/** La ville d'une trace posée sur une fiche : le référentiel, jamais le texte libre tapé. */
+const VILLE_HORS_REFERENTIEL = "ville hors référentiel";
+function villeTrace(d: { readonly villeNom: string | null }): string {
+  return d.villeNom ?? VILLE_HORS_REFERENTIEL;
+}
+
 async function lireDemandeClaire(demandeId: string): Promise<DemandeClaire | null> {
   const d = await prisma.tourDemande.findUnique({
     where: { id: demandeId },
@@ -228,6 +233,25 @@ async function fichesVivantes(ids: ReadonlyArray<string>): Promise<FicheAuMemeTe
 }
 
 /**
+ * Pose le rattachement SEULEMENT si la demande est encore « à vérifier » et pas effacée : un
+ * effacement ou un geste d'humain survenu depuis la lecture n'est jamais défait. Sinon, relit et
+ * rend l'état courant.
+ */
+async function rangerDemande(
+  d: DemandeClaire,
+  data: { rattachement: "a_arbitrer" | "sans_fiche"; fichesProches?: FicheProcheStockee[] },
+): Promise<ResultatRattachement> {
+  const { count } = await prisma.tourDemande.updateMany({
+    where: { id: d.id, rattachement: "a_verifier", statut: { not: "effacee_rgpd" } },
+    data,
+  });
+  if (count === 1) return { rattachement: data.rattachement, clientId: null };
+  const courante = await lireDemandeClaire(d.id);
+  if (courante === null) throw new Error(`demande du Tour introuvable : ${d.id}`);
+  return { rattachement: courante.rattachement, clientId: courante.clientId };
+}
+
+/**
  * Cherche les fiches proches de la personne et range la demande « à arbitrer » ou « sans fiche ».
  * Voir l'en-tête : AUCUNE fiche n'est écrite. Idempotente : une demande déjà rangée est rendue
  * telle quelle, de même qu'une demande effacée à la demande de la personne.
@@ -249,15 +273,10 @@ export async function rattacherDemande(demandeId: string): Promise<ResultatRatta
   const decision = decider(liste);
 
   if (decision.issue === "arbitrer") {
-    await prisma.tourDemande.update({
-      where: { id: d.id },
-      data: { rattachement: "a_arbitrer", fichesProches: [...decision.proches] },
-    });
-    return { rattachement: "a_arbitrer", clientId: null };
+    return rangerDemande(d, { rattachement: "a_arbitrer", fichesProches: [...decision.proches] });
   }
 
-  await prisma.tourDemande.update({ where: { id: d.id }, data: { rattachement: "sans_fiche" } });
-  return { rattachement: "sans_fiche", clientId: null };
+  return rangerDemande(d, { rattachement: "sans_fiche" });
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -323,22 +342,8 @@ export async function completerFicheDepuisDemande(
         { nom: d.nom, email: d.email, telephone: d.telephone },
         acteurId,
       );
-      if (!personne.cree) {
-        // Une personne déjà connue : on ne remplit que ce qui lui manque.
-        const connue = await tx.clientContact.findUnique({
-          where: { id: personne.contactId },
-          select: { nom: true, telephone: true },
-        });
-        const manque = {
-          ...(connue !== null && (connue.telephone ?? "").trim() === ""
-            ? { telephone: d.telephone }
-            : {}),
-          ...(connue !== null && connue.nom === NOM_A_COMPLETER ? { nom: d.nom } : {}),
-        };
-        if (Object.keys(manque).length > 0) {
-          await tx.clientContact.update({ where: { id: personne.contactId }, data: manque });
-        }
-      }
+      // Une personne déjà connue n'est jamais modifiée par une demande publique non vérifiée
+      // (et ses copies `contact*` de la fiche resteraient hors de la porte unique).
 
       if (champs.length > 0) await emettreFaitClient(tx, ficheId, { avant });
 
@@ -349,9 +354,9 @@ export async function completerFicheDepuisDemande(
           targetType: "Client",
           targetId: ficheId,
           changes: {
-            libelle: `Demande Tour France IA, ville ${d.ville}`,
+            libelle: `Demande Tour France IA, ville ${villeTrace(d)}`,
             demandeId: d.id,
-            ville: d.ville,
+            ville: villeTrace(d),
             champs,
             personneAjoutee: personne.cree,
             depuis: d.depuis,
@@ -408,50 +413,52 @@ export async function creerFicheDepuisDemande(
   if (d.statut === "ecartee") return { statut: "refuse", message: MESSAGE_DEMANDE_ECARTEE };
   if (d.clientId !== null) return { statut: "deja_rattachee", clientId: d.clientId };
 
-  return prisma.$transaction(async (tx): Promise<ResultatCreationFiche> => {
-    const verrou = await verrouillerDemande(tx, d.id);
-    if (verrou === null) return { statut: "refuse", message: MESSAGE_DEMANDE_INTROUVABLE };
-    if (verrou.statut === "effacee_rgpd") {
-      return { statut: "refuse", message: MESSAGE_DEMANDE_EFFACEE };
-    }
-    if (verrou.statut === "ecartee") {
-      return { statut: "refuse", message: MESSAGE_DEMANDE_ECARTEE };
-    }
-    if (verrou.clientId !== null) return { statut: "deja_rattachee", clientId: verrou.clientId };
+  return reessayerSiInterblocage(() =>
+    prisma.$transaction(async (tx): Promise<ResultatCreationFiche> => {
+      const verrou = await verrouillerDemande(tx, d.id);
+      if (verrou === null) return { statut: "refuse", message: MESSAGE_DEMANDE_INTROUVABLE };
+      if (verrou.statut === "effacee_rgpd") {
+        return { statut: "refuse", message: MESSAGE_DEMANDE_EFFACEE };
+      }
+      if (verrou.statut === "ecartee") {
+        return { statut: "refuse", message: MESSAGE_DEMANDE_ECARTEE };
+      }
+      if (verrou.clientId !== null) return { statut: "deja_rattachee", clientId: verrou.clientId };
 
-    const r = await creerOuRetrouverClient(
-      dansLaTransaction(tx),
-      {
-        type: entree.type,
-        raisonSociale,
-        // Seulement le nom du référentiel des villes, jamais le texte libre de la personne.
-        ...(d.villeNom !== null ? { adresseVille: d.villeNom.slice(0, 120) } : {}),
-        source: SOURCE_FICHE_TOUR,
-      },
-      { nom: d.nom, email: d.email, telephone: d.telephone },
-      { parAdminId: acteurId, motifCreationForcee: motif === "" ? null : motif },
-    );
-    if (r.statut !== "cree") return { statut: "refuse", message: r.message };
-
-    await tx.activityLog.create({
-      data: {
-        adminUserId: acteurId,
-        action: ACTION_FICHE_CREEE_DEPUIS_DEMANDE,
-        targetType: "Client",
-        targetId: r.id,
-        changes: {
-          libelle: `Demande Tour France IA, ville ${d.ville}`,
-          demandeId: d.id,
-          ville: d.ville,
-          depuis: d.depuis,
-          utm: d.utm,
+      const r = await creerOuRetrouverClient(
+        dansLaTransaction(tx),
+        {
+          type: entree.type,
+          raisonSociale,
+          // Seulement le nom du référentiel des villes, jamais le texte libre de la personne.
+          ...(d.villeNom !== null ? { adresseVille: d.villeNom.slice(0, 120) } : {}),
+          source: SOURCE_FICHE_TOUR,
         },
-      },
-    });
-    await tx.tourDemande.update({
-      where: { id: d.id },
-      data: { rattachement: "fiche_creee", clientId: r.id },
-    });
-    return { statut: "cree", clientId: r.id, numero: r.numero };
-  });
+        { nom: d.nom, email: d.email, telephone: d.telephone },
+        { parAdminId: acteurId, motifCreationForcee: motif === "" ? null : motif },
+      );
+      if (r.statut !== "cree") return { statut: "refuse", message: r.message };
+
+      await tx.activityLog.create({
+        data: {
+          adminUserId: acteurId,
+          action: ACTION_FICHE_CREEE_DEPUIS_DEMANDE,
+          targetType: "Client",
+          targetId: r.id,
+          changes: {
+            libelle: `Demande Tour France IA, ville ${villeTrace(d)}`,
+            demandeId: d.id,
+            ville: villeTrace(d),
+            depuis: d.depuis,
+            utm: d.utm,
+          },
+        },
+      });
+      await tx.tourDemande.update({
+        where: { id: d.id },
+        data: { rattachement: "fiche_creee", clientId: r.id },
+      });
+      return { statut: "cree", clientId: r.id, numero: r.numero };
+    }),
+  );
 }

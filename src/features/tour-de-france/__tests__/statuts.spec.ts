@@ -4,7 +4,7 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 
 const m = vi.hoisted(() => {
   const tx = {
-    tourDemande: { findUnique: vi.fn(), update: vi.fn(async () => ({})) },
+    tourDemande: { findUnique: vi.fn(), updateMany: vi.fn(async () => ({ count: 1 })) },
     activityLog: { create: vi.fn(async () => ({})) },
   };
   return {
@@ -76,7 +76,7 @@ describe("gestes : changer un statut, rien d'autre", () => {
   it("pose le statut et laisse une trace dans la même transaction", async () => {
     await expect(changerStatutDemande(ID, "relancee_main", "u1")).resolves.toBe("ok");
     const maj = (
-      m.tx.tourDemande.update.mock.calls[0] as unknown as [{ data: Record<string, unknown> }]
+      m.tx.tourDemande.updateMany.mock.calls[0] as unknown as [{ data: Record<string, unknown> }]
     )[0];
     expect(maj.data["statut"]).toBe("relancee_main");
     expect(m.tx.activityLog.create).toHaveBeenCalledTimes(1);
@@ -85,13 +85,23 @@ describe("gestes : changer un statut, rien d'autre", () => {
   it("une demande effacée à la demande de la personne ne change plus", async () => {
     m.tx.tourDemande.findUnique.mockResolvedValue({ statut: "effacee_rgpd" });
     await expect(changerStatutDemande(ID, "recue", "u1")).resolves.toBe("efface");
-    expect(m.tx.tourDemande.update).not.toHaveBeenCalled();
+    expect(m.tx.tourDemande.updateMany).not.toHaveBeenCalled();
+  });
+
+  it("un effacement survenu entre la lecture et l'écriture n'est pas défait (updateMany conditionnel)", async () => {
+    m.tx.tourDemande.updateMany.mockResolvedValueOnce({ count: 0 });
+    await expect(changerStatutDemande(ID, "relancee_main", "u1")).resolves.toBe("efface");
+    const maj = (
+      m.tx.tourDemande.updateMany.mock.calls[0] as unknown as [{ where: Record<string, unknown> }]
+    )[0];
+    expect(maj.where).toEqual({ id: ID, statut: { not: "effacee_rgpd" } });
+    expect(m.tx.activityLog.create).not.toHaveBeenCalled();
   });
 
   it("« Écarter » libère la place : clés de comptage retirées, la demande ne compte plus", async () => {
     await expect(changerStatutDemande(ID, "ecartee", "u1")).resolves.toBe("ok");
     const maj = (
-      m.tx.tourDemande.update.mock.calls[0] as unknown as [{ data: Record<string, unknown> }]
+      m.tx.tourDemande.updateMany.mock.calls[0] as unknown as [{ data: Record<string, unknown> }]
     )[0];
     expect(maj.data["statut"]).toBe("ecartee");
     expect(maj.data["compte"]).toBe(false);
@@ -103,7 +113,7 @@ describe("gestes : changer un statut, rien d'autre", () => {
   it("les autres gestes ne touchent ni `compte` ni les clés de comptage", async () => {
     await changerStatutDemande(ID, "relancee_main", "u1");
     const maj = (
-      m.tx.tourDemande.update.mock.calls[0] as unknown as [{ data: Record<string, unknown> }]
+      m.tx.tourDemande.updateMany.mock.calls[0] as unknown as [{ data: Record<string, unknown> }]
     )[0];
     for (const cle of [
       "compte",
@@ -119,7 +129,7 @@ describe("gestes : changer un statut, rien d'autre", () => {
     await expect(changerStatutDemande(ID, "recue", "u1")).resolves.toBe("inchange");
     m.tx.tourDemande.findUnique.mockResolvedValue(null);
     await expect(changerStatutDemande(ID, "ecartee", "u1")).resolves.toBe("introuvable");
-    expect(m.tx.tourDemande.update).not.toHaveBeenCalled();
+    expect(m.tx.tourDemande.updateMany).not.toHaveBeenCalled();
   });
 });
 
@@ -130,7 +140,7 @@ describe("boutons de la console", () => {
     m.tx.tourDemande.findUnique.mockResolvedValue({ statut: "relancee_main" });
     await redirige(ecarter(formulaire({ id: ID })));
     await redirige(remettreRecue(formulaire({ id: ID })));
-    const statuts = m.tx.tourDemande.update.mock.calls.map(
+    const statuts = m.tx.tourDemande.updateMany.mock.calls.map(
       (c) => (c as unknown as [{ data: { statut: string } }])[0].data.statut,
     );
     expect(statuts).toEqual(["relancee_main", "ecartee", "recue"]);

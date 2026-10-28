@@ -35,8 +35,10 @@ export async function changerStatutDemande(
     if (d === null) return "introuvable";
     if (d.statut === "effacee_rgpd") return "efface";
     if (d.statut === vers) return "inchange";
-    await tx.tourDemande.update({
-      where: { id },
+    // Condition dans l'écriture elle-même : un effacement à la demande de la personne survenu entre
+    // la lecture et ici ne doit pas être défait (la ligne effacée ne repasse jamais en `recue`).
+    const { count } = await tx.tourDemande.updateMany({
+      where: { id, statut: { not: "effacee_rgpd" } },
       data: {
         statut: vers,
         statutChangeLe: new Date(),
@@ -51,6 +53,7 @@ export async function changerStatutDemande(
           : {}),
       },
     });
+    if (count === 0) return "efface";
     await tx.activityLog.create({
       data: {
         adminUserId: parId,

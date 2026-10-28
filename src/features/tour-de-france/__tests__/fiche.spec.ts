@@ -15,7 +15,11 @@ const m = vi.hoisted(() => {
   return {
     tx,
     prisma: {
-      tourDemande: { findUnique: vi.fn(), update: vi.fn(async () => ({})) },
+      tourDemande: {
+        findUnique: vi.fn(),
+        update: vi.fn(async () => ({})),
+        updateMany: vi.fn(async () => ({ count: 1 })),
+      },
       client: { findMany: vi.fn(async () => []) },
       $transaction: vi.fn(async (cb: (t: typeof tx) => unknown) => cb(tx)),
     },
@@ -152,7 +156,7 @@ describe("rattacherDemande : cherche, n'écrit sur AUCUNE fiche", () => {
     expect(m.ajouterPersonneAFiche).not.toHaveBeenCalled();
     expect(m.emettreFaitClient).not.toHaveBeenCalled();
     const maj = (
-      m.prisma.tourDemande.update.mock.calls[0] as unknown as [
+      m.prisma.tourDemande.updateMany.mock.calls[0] as unknown as [
         { data: { rattachement: string; fichesProches: Array<Record<string, unknown>> } },
       ]
     )[0];
@@ -169,7 +173,7 @@ describe("rattacherDemande : cherche, n'écrit sur AUCUNE fiche", () => {
     expect(m.prisma.$transaction).not.toHaveBeenCalled();
     expect(m.tx.client.update).not.toHaveBeenCalled();
     const maj = (
-      m.prisma.tourDemande.update.mock.calls[0] as unknown as [
+      m.prisma.tourDemande.updateMany.mock.calls[0] as unknown as [
         { data: { rattachement: string; fichesProches: Array<{ ficheId: string }> } },
       ]
     )[0];
@@ -213,7 +217,27 @@ describe("rattacherDemande : cherche, n'écrit sur AUCUNE fiche", () => {
     m.prisma.tourDemande.findUnique.mockResolvedValue({ ...ligne, statut: "effacee_rgpd" });
     await rattacherDemande("d1");
     expect(m.trouverFichesProches).not.toHaveBeenCalled();
-    expect(m.prisma.tourDemande.update).not.toHaveBeenCalled();
+    expect(m.prisma.tourDemande.updateMany).not.toHaveBeenCalled();
+  });
+});
+
+describe("rattacherDemande : course avec un effacement", () => {
+  it("l'écriture est conditionnée (à vérifier, pas effacée) et ne défait pas un effacement", async () => {
+    m.trouverFichesProches.mockReturnValue([proche("email")]);
+    m.prisma.tourDemande.updateMany.mockResolvedValueOnce({ count: 0 });
+    m.prisma.tourDemande.findUnique
+      .mockResolvedValueOnce(ligne)
+      .mockResolvedValueOnce({ ...ligne, statut: "effacee_rgpd" });
+    const r = await rattacherDemande("d1");
+    expect(r).toEqual({ rattachement: "a_verifier", clientId: null });
+    const appel = m.prisma.tourDemande.updateMany.mock.calls[0] as unknown as [
+      { where: Record<string, unknown> },
+    ];
+    expect(appel[0].where).toEqual({
+      id: "d1",
+      rattachement: "a_verifier",
+      statut: { not: "effacee_rgpd" },
+    });
   });
 });
 
@@ -283,14 +307,34 @@ describe("completerFicheDepuisDemande : « Compléter la fiche », à la demande
     expect(m.emettreFaitClient).not.toHaveBeenCalled();
   });
 
-  it("une personne déjà connue : on ne remplit que ce qui lui manque", async () => {
+  it("une personne déjà connue, contact de facturation sans téléphone : ni ClientContact ni Client.contact* ne bougent", async () => {
     m.ajouterPersonneAFiche.mockResolvedValue({ contactId: "c9", cree: false });
     m.tx.clientContact.findUnique.mockResolvedValue({ nom: "(à compléter)", telephone: " " });
+    const r = await completerFicheDepuisDemande("d1", "f1", "u1");
+    expect(r).toEqual({ statut: "completee", clientId: "f1" });
+    expect(m.tx.clientContact.update).not.toHaveBeenCalled();
+    for (const appel of m.tx.client.update.mock.calls as unknown as Array<
+      [{ data: Record<string, unknown> }]
+    >) {
+      expect(Object.keys(appel[0].data).filter((k) => k.startsWith("contact"))).toEqual([]);
+    }
+  });
+
+  it("la trace posée sur la fiche ne porte jamais la ville tapée à la main", async () => {
+    m.prisma.tourDemande.findUnique.mockResolvedValue({
+      ...arbitree,
+      villeSaisie: "chez M. Untel",
+      villeNom: null,
+    });
     await completerFicheDepuisDemande("d1", "f1", "u1");
-    const maj = (
-      m.tx.clientContact.update.mock.calls[0] as unknown as [{ data: Record<string, unknown> }]
-    )[0].data;
-    expect(maj).toEqual({ telephone: "0612345678", nom: "Alice Martin" });
+    const trace = (
+      m.tx.activityLog.create.mock.calls[0] as unknown as [
+        { data: { changes: { libelle: string; ville: string } } },
+      ]
+    )[0].data.changes;
+    expect(trace.libelle).toBe("Demande Tour France IA, ville ville hors référentiel");
+    expect(trace.ville).toBe("ville hors référentiel");
+    expect(JSON.stringify(trace)).not.toContain("Untel");
   });
 
   it("une fiche qui n'est pas parmi les fiches proches de la demande est refusée", async () => {
@@ -391,6 +435,27 @@ describe("creerFicheDepuisDemande", () => {
     });
     await creerFicheDepuisDemande("d1", entree, "u1");
     expect(appelDeLaPorte().donnees).not.toHaveProperty("adresseVille");
+  });
+
+  it("la trace de la fiche créée ne porte pas la ville tapée à la main", async () => {
+    m.prisma.tourDemande.findUnique.mockResolvedValue({
+      ...ligne,
+      villeSaisie: "chez M. Untel",
+      villeNom: null,
+    });
+    await creerFicheDepuisDemande("d1", entree, "u1");
+    const trace = (
+      m.tx.activityLog.create.mock.calls[0] as unknown as [
+        { data: { changes: { libelle: string; ville: string } } },
+      ]
+    )[0].data.changes;
+    expect(trace.ville).toBe("ville hors référentiel");
+    expect(JSON.stringify(trace)).not.toContain("Untel");
+  });
+
+  it("est ré-essayée en cas d'interblocage (comme la complétion)", async () => {
+    await creerFicheDepuisDemande("d1", entree, "u1");
+    expect(m.prisma.$transaction).toHaveBeenCalledTimes(1);
   });
 
   it("le motif est limité à 300 caractères", async () => {
