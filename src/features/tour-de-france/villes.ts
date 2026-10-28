@@ -76,3 +76,17 @@ export function resoudreVille(saisie: string): VilleResolue | null {
   }
   return { cle: `?${normalisee}`.slice(0, LONGUEUR_MAX_CLE), nom: null };
 }
+
+/**
+ * Les villes que la mini-demande SUGGÈRE (`<datalist>`) : les noms du référentiel, sans doublon, par
+ * ordre alphabétique. Une suggestion n'est jamais une limite : toute ville tapée est acceptée
+ * (`resoudreVille`). La ville du siège n'est pas suggérée : le Tour passe chez les autres.
+ */
+export function nomsDesVillesSuggerees(): string[] {
+  const siege = "grenoble";
+  const noms = new Set<string>();
+  for (const ville of REFERENTIEL) {
+    if (normaliserSaisieVille(ville.name) !== siege) noms.add(ville.name);
+  }
+  return [...noms].sort((a, b) => a.localeCompare(b, "fr"));
+}

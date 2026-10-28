@@ -30,6 +30,8 @@ import { readFileSync, readdirSync, statSync } from "node:fs";
 import { join } from "node:path";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
+import { MOTS_INTERDITS } from "./mots-interdits";
+
 import {
   COOKIE_APERCU,
   egalEnTempsConstant,
@@ -427,9 +429,12 @@ describe("🔴 la page n'embarque rien de la coquille d'Axion", () => {
     expect(layout).toMatch(/<html\s+lang="fr"/);
   });
 
-  it("le bouton mène à la visio du Tour, par le parcours de rendez-vous du site", () => {
+  it("le bouton mène à la mini-demande, qui mène à la visio du Tour par le parcours de rendez-vous du site", () => {
     const page = lire("src/app/tour-france-ia/page.tsx");
-    expect(page).toContain("lienRendezVous(");
+    expect(page).toContain("lienDemande(");
+    expect(page).not.toContain("lienRendezVous(");
+    const actions = lire("src/app/tour-france-ia/demande/actions.ts");
+    expect(actions).toMatch(/lienRendezVous\(|CHEMIN_RENDEZ_VOUS/);
     expect(lire("src/app/tour-france-ia/contenu.ts")).toContain(
       'CHEMIN_RENDEZ_VOUS = "/fr/appel/tour-france-ia"',
     );
@@ -455,66 +460,7 @@ describe("🔴 le contenu : mots interdits, typographie, SEO", () => {
     .replaceAll("types-reservables", "");
 
   it("aucun mot interdit (texte ET sources, commentaires compris)", () => {
-    const interdits: RegExp[] = [
-      /grenoble/i,
-      /r[ée]serv/i,
-      /devis/i,
-      /palmar[eè]s/i,
-      /ils en parlent/i,
-      /garanti/i,
-      /qualiopi/i,
-      /\bCPF\b/,
-      /\bOPCO\b/i,
-      /[ée]tincelle/i,
-      /\bspark/i,
-      /✨/u,
-      /obligatoire/i,
-      /r[ée]serv[ée] aux (TPE|PME)/i,
-      /candidat/i,
-      /marque d[ée]pos[ée]e/i,
-      /®/u,
-      /d[ée]pos[ée]/i,
-      /€/u,
-      /\bHT\b/,
-      /\d\s?(euros?\b|EUR\b|TTC\b)/i,
-      /\bprix\b/i,
-      /\bjaune\b/i,
-      /maillot/i,
-      /v[ée]lo/i,
-      /peloton/i,
-      /\bASO\b/,
-      /partenaire/i,
-      /officiel/i,
-      /\bavis\b/i,
-      /t[ée]moignage/i,
-      /\bdéjà \d+/i,
-      /\d+\s+entreprises (inscrites|participent|ont rejoint)/i,
-      /certifi/i,
-      /attestation/i,
-      /\bpaie/i,
-      /sa part/i,
-      /pas une de plus/i,
-      // Les anciennes règles (« 5 au plus », puis « quelques places »), retirées : plus nulle part.
-      /seulement 5/i,
-      /\bau plus\b/i,
-      /derni[èe]res places/i,
-      /liste d[’']attente/i,
-      /date garantie/i,
-      /100\s?%\s?gratuit/i,
-      /sans aucune condition/i,
-      /d[’']une valeur de/i,
-      /sans contrepartie/i,
-      /repas offert/i,
-      /gagner du temps/i,
-      /\binscri/i,
-      /\bticket/i,
-      /\bbillet/i,
-      /participer/i,
-      /[ée]v[ée]nement/i,
-      // Corrections du propriétaire (2026-10-27) : le repas de midi n'est dit nulle part.
-      /d[ée]jeuner/i,
-      /repas de midi/i,
-    ];
+    const interdits: RegExp[] = MOTS_INTERDITS;
     for (const motif of interdits) {
       expect(texte, String(motif)).not.toMatch(motif);
       expect(sources, String(motif)).not.toMatch(motif);

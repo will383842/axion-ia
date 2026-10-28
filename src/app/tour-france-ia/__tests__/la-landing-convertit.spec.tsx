@@ -34,15 +34,22 @@
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { cleanup, render } from "@testing-library/react";
-import { afterEach, describe, expect, it } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
 
 import { avecUtmContent, lireSuiviArrivee } from "@/server/calendly/choix-rendez-vous";
+
+// Le compteur de villes lit la base : ici, aucune ville n'atteint le seuil, il ne rend rien
+// (son propre test : `compteur-villes.spec.tsx`).
+vi.mock("@/features/tour-de-france/lectures", () => ({
+  lireCompteursPublics: vi.fn(async () => []),
+}));
 
 import TourDeFranceIaPage from "../page";
 import {
   AMBASSADEURS,
   APPEL_FINAL,
   CHEMIN_CONDITIONS,
+  CHEMIN_DEMANDE,
   CHEMIN_RENDEZ_VOUS,
   CONDITIONS,
   EMPLACEMENTS_CTA,
@@ -58,6 +65,7 @@ import {
   PROMESSE,
   VIDEO_HEROS,
   VILLE,
+  lienDemande,
   lienRendezVous,
   texteDesBoutons,
   texteVisibleHorsFaq,
@@ -112,6 +120,8 @@ describe("🔑 une seule action : ma journée offerte", () => {
     expect(`${LIBELLE_CTA} ${LIBELLE_CTA_COURT}`).not.toMatch(
       /participer|candidat|r[ée]serv|inscri|film|tourn/i,
     );
+    expect(lienDemande("tdf-heros")).toBe(`${CHEMIN_DEMANDE}?depuis=tdf-heros`);
+    expect(lienDemande("tdf-entete")).toBe(`${CHEMIN_DEMANDE}?depuis=tdf-entete`);
     expect(lienRendezVous("tdf-heros")).toBe(`${CHEMIN_RENDEZ_VOUS}?depuis=tdf-heros`);
     expect(lienRendezVous("tdf-entete")).toBe(`${CHEMIN_RENDEZ_VOUS}?depuis=tdf-entete`);
   });
@@ -131,7 +141,7 @@ describe("🔑 une seule action : ma journée offerte", () => {
     expect(code).not.toContain("tdf-etapes");
     const autres = [...code.matchAll(/href=\{([^}]+)\}/g)].map((m) => m[1]);
     expect(autres).toEqual([
-      "lienRendezVous(depuis)",
+      "lienDemande(depuis)",
       "LIEN_CONDITIONS.chemin",
       "FONDATEUR.lien.chemin",
       "LIEN_CONDITIONS.chemin",
@@ -452,7 +462,7 @@ describe("🔴 le suivi d'arrivée passe jusqu'à Calendly", () => {
     window.history.replaceState(null, "", `/tour-france-ia${query}`);
     const { container } = render(
       <>
-        <a href={lienRendezVous("tdf-heros")} id="heros" data-tdf-cta="">
+        <a href={lienDemande("tdf-heros")} id="heros" data-tdf-cta="">
           {LIBELLE_CTA}
         </a>
         <PiloteCta />
@@ -466,7 +476,7 @@ describe("🔴 le suivi d'arrivée passe jusqu'à Calendly", () => {
       "?utm_source=facebook&utm_medium=paid-social&utm_campaign=tour-ia&utm_content=post-3&fbclid=IwAR0Zx_9-ab&utm_term=ignore",
     );
     const url = new URL(lien.getAttribute("href") ?? "", "https://axion-ia.com");
-    expect(url.pathname).toBe(CHEMIN_RENDEZ_VOUS);
+    expect(url.pathname).toBe(CHEMIN_DEMANDE);
     expect(url.searchParams.get("depuis")).toBe("tdf-heros");
     expect(url.searchParams.get("utm_source")).toBe("facebook");
     expect(url.searchParams.get("utm_medium")).toBe("paid-social");
@@ -526,7 +536,7 @@ describe("🔴 la barre collante : entre le héros et l'appel final, en CSS seul
     // Le seul bouton qu'elle porte : le libellé court, emplacement tdf-collant.
     const liens = collant.querySelectorAll("a");
     expect(liens).toHaveLength(1);
-    expect(liens[0]?.getAttribute("href")).toBe(lienRendezVous("tdf-collant"));
+    expect(liens[0]?.getAttribute("href")).toBe(lienDemande("tdf-collant"));
     expect(liens[0]?.textContent).toBe(LIBELLE_CTA_COURT);
     cleanup();
   });
