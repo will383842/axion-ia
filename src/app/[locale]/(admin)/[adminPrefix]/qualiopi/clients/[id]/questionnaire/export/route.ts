@@ -41,8 +41,8 @@ export async function GET(
   const session = await auth();
   const user = session?.user as { id?: string; role?: string | null } | undefined;
   if (!user?.id) return refus(401, "Session expirée : reconnectez-vous.");
-  if (user.role !== "super_admin") return refus(403, "Réservé au super-administrateur.");
   if (!exportCompletActif()) return refus(404, "Introuvable.");
+  if (user.role !== "super_admin") return refus(403, "Réservé au super-administrateur.");
 
   const { id } = await params;
   const q = (new URL(req.url).searchParams.get("q") ?? "").trim().toLowerCase();

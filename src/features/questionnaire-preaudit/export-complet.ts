@@ -80,7 +80,12 @@ const iso = (d: Date | null): string | null => (d === null ? null : d.toISOStrin
 
 /** Remplace, partout, une valeur entière qui est le code du dirigeant. */
 function masquer(v: unknown, estCodeDirigeant: (m: string) => boolean): unknown {
-  if (typeof v === "string") return CODE.test(v) && estCodeDirigeant(v) ? CODE_DIRIGEANT_MASQUE : v;
+  // Aussi au milieu d'un texte (URL ?m=…, note) : on remplace chaque suite qui ressemble à un code.
+  if (typeof v === "string") {
+    return v.replace(/[A-Za-z0-9_-]{12,60}/g, (m) =>
+      CODE.test(m) && estCodeDirigeant(m) ? CODE_DIRIGEANT_MASQUE : m,
+    );
+  }
   if (Array.isArray(v)) return v.map((x) => masquer(x, estCodeDirigeant));
   if (typeof v === "object" && v !== null) {
     return Object.fromEntries(

@@ -186,15 +186,18 @@ export async function lireSuiviParPersonne(
       };
     });
     const mesBrouillons = brouillons.filter((x) => x.questionnaireId === q.id);
+    const brouillonsLus = mesBrouillons.map((b) => ({
+      id: b.id,
+      mode: b.mode,
+      membre: b.membre,
+      majLe: b.majLe,
+      instantane: lireChiffre(b.donnees),
+    }));
+    // Un brouillon illisible déclenche aussi l'alerte de conservation, comme dans l'export.
+    illisibles += brouillonsLus.filter((b) => b.instantane === null).length;
     const suivi = suivreParPersonne({
       reponses,
-      brouillons: mesBrouillons.map((b) => ({
-        id: b.id,
-        mode: b.mode,
-        membre: b.membre,
-        majLe: b.majLe,
-        instantane: lireChiffre(b.donnees),
-      })),
+      brouillons: brouillonsLus,
       ouvertures: ouvertures === null ? null : ouvertures.filter((o) => o.questionnaireId === q.id),
       estCodeDirigeant: (m) => codeDirigeantPreauditValide(q.id, m),
       squelette: squelettes.get(q.id) ?? null,

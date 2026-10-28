@@ -132,13 +132,14 @@ function lignesAMontrer(s: Suivi, voitBrouillons: boolean): Ligne[] {
   const nomVisible = (l: LignePersonne): string | null => {
     if (l.nom === null) return null;
     if (l.sourceNom === "brouillon" && !voitBrouillons) return null;
+    // Équipe lue dans le brouillon du dirigeant : ses noms sont du brouillon, même étiquetés « equipe ».
+    if (l.sourceNom === "equipe" && s.equipe.source === "brouillon" && !voitBrouillons) return null;
     return l.nom;
   };
   const titre = (l: LignePersonne): string => {
     const nom = nomVisible(l);
     const fonction = nom !== null && l.fonction ? ` · ${l.fonction}` : "";
     const code = l.codeCourt === null ? "sans code" : `lien ${l.codeCourt}`;
-    const nomOuAnonyme = nom ?? `Collaborateur ${++anonyme}`;
     switch (l.role) {
       case "dirigeant":
         return l.aVerifier ? "Dirigeant (réponse reçue sans son code : à vérifier)" : "Dirigeant";
@@ -151,7 +152,7 @@ function lignesAMontrer(s: Suivi, voitBrouillons: boolean): Ligne[] {
       case "non_retrouvee":
         return `Personne non retrouvée dans l'équipe (${code})${nom !== null ? ` : ${nom}` : ""}`;
       default:
-        return `${nomOuAnonyme}${fonction}${
+        return `${nom ?? `Collaborateur ${++anonyme}`}${fonction}${
           l.rapprochement === "nom" ? " (rapprochée par le nom, à vérifier)" : ""
         }`;
     }
@@ -271,7 +272,7 @@ export function SuiviParPersonne({
       <div data-bloc="suivi-par-personne" className="space-y-[var(--space-admin-2)]">
         <p className="font-medium">{phraseEnTete(s)}</p>
         {s.equipe.connue ? <p>{ligneEquipe(s)}</p> : null}
-        {s.effectif !== null ? (
+        {s.effectif !== null && (s.equipe.source !== "brouillon" || voitBrouillons) ? (
           <p className="text-[length:var(--text-admin-xs)]">
             Effectif indiqué par le dirigeant : {s.effectif.tranche}
             {s.effectif.remarque === "liste_incomplete"

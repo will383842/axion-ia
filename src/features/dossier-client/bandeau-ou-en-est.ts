@@ -130,8 +130,10 @@ function ligneQuestionnaire(e: EntreeBandeau): LigneBandeau {
       ).length;
       if (pasLues > 0)
         texte += ` · ${pluriel(pasLues, "réponse pas encore lue", "réponses pas encore lues")}`;
+      else if (aLire > 0) texte += ` · ${pluriel(aLire, "réponse à lire", "réponses à lire")}`;
     } else if (p != null) {
       texte += ` · dirigeant : ${motsDEtat(p.dirigeant.etat)} · équipe pas encore déclarée`;
+      if (aLire > 0) texte += ` · ${pluriel(aLire, "réponse à lire", "réponses à lire")}`;
     } else if (aLire > 0) {
       texte += ` · ${pluriel(aLire, "réponse à lire", "réponses à lire")}`;
     } else if (e.questionnaires.some((q) => q.reponses.dirigeant > 0)) texte += " · réponses lues";

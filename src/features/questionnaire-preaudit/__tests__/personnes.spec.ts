@@ -206,14 +206,16 @@ describe("réponses des collaborateurs", () => {
   it("reçue par code : taux sur les essentielles du parcours", () => {
     const s = suivre({ reponses: [dirigeant(), reponseCollab(CODES[1] as string)] });
     const l = s.collaborateurs.find((x) => x.nom === "Bruno Durand");
-    expect(l).toMatchObject({ etat: "recu", pasEncoreLue: true, nbEnvois: 1 });
+    expect(l).toMatchObject({ etat: "recu", pasEncoreLue: false, nbEnvois: 1 });
     expect(l?.taux?.essentiellesRemplies).toBe(2);
     expect(s.collab).toMatchObject({ recus: 1, manquants: 3 });
   });
   it("jamais lue / lue", () => {
     const rs = [dirigeant(), reponseCollab(CODES[1] as string)];
     expect(suivre({ reponses: rs, luLe: T(28) }).collaborateurs[1]?.pasEncoreLue).toBe(false);
-    expect(suivre({ reponses: rs, luLe: null }).collaborateurs[1]?.pasEncoreLue).toBe(true);
+    // Sans date de lecture, aucune ligne n'est dite « pas lue » : le « à traiter » du questionnaire suffit.
+    expect(suivre({ reponses: rs, luLe: null }).collaborateurs[1]?.pasEncoreLue).toBe(false);
+    expect(suivre({ reponses: rs, luLe: T(1) }).collaborateurs[1]?.pasEncoreLue).toBe(true);
   });
   it("réponse écartée : état écarté, ni taux ni compte en reçu", () => {
     const s = suivre({

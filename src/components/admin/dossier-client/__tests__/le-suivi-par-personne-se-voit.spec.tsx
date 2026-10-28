@@ -135,7 +135,7 @@ describe("en-tête et lignes", () => {
   });
   it("badges", () => {
     expect(t).toContain("Reçue le");
-    expect(t).toContain("pas encore lue");
+    expect(t).toContain("1 à traiter");
     expect(t).toContain("Pas de nouvelles");
   });
   it("l'effectif et l'échéance du lien", () => {
@@ -168,6 +168,25 @@ describe("noms tirés d'un brouillon : réservés au super-administrateur", () =
   it("« Lire le brouillon » seulement quand la fiche l'autorise", () => {
     expect(bloc(donnees)).not.toContain("Lire le brouillon");
     expect(bloc(donnees, { lire: true })).toContain("Lire le brouillon");
+  });
+});
+
+describe("équipe lue dans le brouillon du dirigeant : noms réservés au super-administrateur", () => {
+  const brouillonEquipe: EntreeBrouillon = {
+    id: "bd",
+    mode: "main",
+    membre: "",
+    majLe: new Date("2026-10-27T09:00:00Z"),
+    instantane: { data: { equipe } },
+  } as unknown as EntreeBrouillon;
+  const donnees = q(lu({ reponses: [], brouillons: [brouillonEquipe] }));
+  it("aucun nom ni effectif sans le droit", () => {
+    const t = bloc(donnees);
+    expect(t).not.toContain("Alice Martin");
+    expect(t).not.toContain("Comptable");
+  });
+  it("montrés avec le droit", () => {
+    expect(bloc(donnees, { noms: true })).toContain("Alice Martin");
   });
 });
 
@@ -254,7 +273,7 @@ describe("bandeau « Où en est ce client »", () => {
     }).find((l) => l.cle === "questionnaire")!.texte;
   it("qui a répondu, sur combien, ce qui n'est pas lu", () => {
     expect(bandeau(lu({ reponses: [reponseDirigeant] }))).toBe(
-      "envoyé le 25 oct. · 1 sur 6 reçus · 1 réponse pas encore lue",
+      "envoyé le 25 oct. · 1 sur 6 reçus · 1 réponse à lire",
     );
   });
   it("en cours de remplissage", () => {

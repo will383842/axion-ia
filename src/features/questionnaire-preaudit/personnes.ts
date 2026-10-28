@@ -332,8 +332,10 @@ export function suivreParPersonne(e: EntreePersonnes): SuiviParPersonne {
     ajout(existant.seau);
   };
   const rangerReferent = (code: string, ajout: (s: Seau) => void): void => {
-    const s = referents.get(code) ?? seauVide();
-    referents.set(code, s);
+    // Jamais le code du dirigeant, même en parcours référent : on le range « sans code ».
+    const cle = estCodeDirigeant(code) ? "" : code;
+    const s = referents.get(cle) ?? seauVide();
+    referents.set(cle, s);
     ajout(s);
   };
 
@@ -406,7 +408,18 @@ export function suivreParPersonne(e: EntreePersonnes): SuiviParPersonne {
     let taux: TauxDeReponses | null = null;
     if (derniere !== null) {
       if (derniere.charge !== null) {
-        taux = tauxDeReponses(valeursDeLaCharge(derniere.charge), squelette, mode);
+        // Mêmes champs pré-remplis exclus que pour un brouillon : le taux ne saute pas à l'envoi.
+        const preEnvoi = Array.isArray(derniere.charge["pre"])
+          ? new Set(
+              (derniere.charge["pre"] as unknown[]).filter((x) => typeof x === "string"),
+            )
+          : new Set<string>();
+        taux = tauxDeReponses(
+          valeursDeLaCharge(derniere.charge),
+          squelette,
+          mode,
+          preEnvoi as ReadonlySet<string>,
+        );
       }
     } else if (seau.reponses.length === 0 && seau.brouillon?.instantane != null) {
       const pre = Array.isArray(seau.brouillon.instantane["pre"])
@@ -434,7 +447,8 @@ export function suivreParPersonne(e: EntreePersonnes): SuiviParPersonne {
       recuLe: derniere?.recuLe ?? null,
       nbEnvois: valides.length,
       pasEncoreLue:
-        derniere !== null && (e.luLe === null || derniere.recuLe.getTime() > e.luLe.getTime()),
+        // Sans date de lecture, on ne sait pas laquelle est lue : le « à traiter » du questionnaire suffit.
+        derniere !== null && e.luLe !== null && derniere.recuLe.getTime() > e.luLe.getTime(),
       brouillonId: seau.brouillon?.id ?? null,
       brouillonMajLe: seau.brouillon?.majLe ?? null,
       ouverture:
@@ -586,7 +600,8 @@ export function suivreParPersonne(e: EntreePersonnes): SuiviParPersonne {
     // Personne hors liste : attendue seulement si elle a répondu ou commencé.
     return l.etat === "recu" || l.etat === "ecartee" || l.etat === "en_cours";
   };
-  const attendusLignes = toutesCollab.filter(compte);
+  // Une réponse mise de côté (effacement demandé) ne reste pas « manquante » à vie.
+  const attendusLignes = toutesCollab.filter((l) => l.etat !== "ecartee" && compte(l));
   const recus = attendusLignes.filter((l) => l.etat === "recu").length;
   const enCours = attendusLignes.filter((l) => l.etat === "en_cours").length;
   const ouverts = attendusLignes.filter((l) => l.etat === "ouvert").length;

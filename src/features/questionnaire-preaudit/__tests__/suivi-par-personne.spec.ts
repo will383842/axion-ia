@@ -118,7 +118,7 @@ describe("lireSuiviParPersonne", () => {
     expect(sortie).not.toContain("CODEDIRIGEANT00000000");
     expect(r.suivi.dirigeant.etat).toBe("recu");
     expect(r.suivi.collaborateurs[0]?.etat).toBe("ecartee");
-    expect(r.controle).toEqual({ reponses: 2, ecartees: 1, illisibles: 0, brouillons: 1 });
+    expect(r.controle).toEqual({ reponses: 2, ecartees: 1, illisibles: 1, brouillons: 1 });
   });
 
   it("un brouillon illisible garde sa ligne (état « en cours ») et ne casse rien", async () => {
