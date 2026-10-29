@@ -22,6 +22,9 @@ const d = vi.hoisted(() => ({
   annuaire: vi.fn(),
 }));
 
+vi.mock("@/components/admin/dossier-client/fiche/emplacements", async () => ({
+  ...(await import("./_emplacements-vides")).emplacementsVides,
+}));
 vi.mock("@/auth", () => ({ auth: () => Promise.resolve(d.session) }));
 vi.mock("next/navigation", () => ({
   redirect: (url: string) => {
