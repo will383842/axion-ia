@@ -81,6 +81,8 @@ vi.mock("@/lib/prisma", () => {
     "clientTestInterne",
     "rencontre",
     "projet",
+    // Suivi de prestation : la purge du pilote le supprime AVANT le projet (clé étrangère).
+    "projetSuivi",
     "documentProjet",
     "documentProjetContenu",
     "rencontreParticipant",
