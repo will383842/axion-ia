@@ -26,7 +26,7 @@ export function RelanceDevis(props: {
   if (!ctx.voitEchanges || !ctx.peutEcrire || envoyes.length === 0) return null;
 
   return (
-    <div className="mb-3 rounded-lg border border-slate-200 bg-slate-50 p-3 text-sm">
+    <div className="mb-3 rounded-lg border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-surface-sunken)] p-3 text-[length:var(--text-admin-sm)]">
       <h3 className="mb-2 flex items-center gap-2 font-medium">
         <Mail className="h-4 w-4" aria-hidden="true" />
         Relancer un devis envoyé
@@ -45,7 +45,7 @@ export function RelanceDevis(props: {
           </li>
         ))}
       </ul>
-      <p className="mt-2 text-[13px] text-slate-600">
+      <p className="mt-2 text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
         La relance est préparée en brouillon : rien ne part sans votre validation.{" "}
         <Link href={`${ctx.qBase}/emails`} className="underline">
           Relire la relance prête
