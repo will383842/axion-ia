@@ -35,10 +35,12 @@
  next/font calibre sinon son repli sur l'instance PAR DÉFAUT du fichier variable : Manrope = wght 200,
  Fraunces = wght 900 → au swap le hero reflue (CLS prod 0,22-0,27 sur /formations, /implantations/…/paris).
  ⚠️ Jamais « étoile + barre oblique » dans ce commentaire : il le fermait, et le navigateur jetait la face Manrope 400 qui suit.
+ Chrome n'accepte qu'un nom EXACT pour local() (pas de substitution fontconfig) : sans les noms Liberation, la face
+ échouait en silence sur Linux (runner Lighthouse) et sur Android, et le CLS restait à 0,27 (run 40848411969).
  adjustFontFallback est donc coupé dans layout.tsx et ces faces prennent le relais (--font-sans / --font-serif). */
 @font-face {
   font-family: "Manrope Fallback";
-  src: local("Arial");
+  src: local("Arial"), local("ArialMT"), local("Liberation Sans"), local("LiberationSans");
   font-weight: 400 500;
   font-style: normal;
   size-adjust: 103.76%;
@@ -48,7 +50,7 @@
 }
 @font-face {
   font-family: "Manrope Fallback";
-  src: local("Arial Bold");
+  src: local("Arial Bold"), local("Arial-BoldMT"), local("Liberation Sans Bold"), local("LiberationSans-Bold");
   font-weight: 600 800;
   font-style: normal;
   size-adjust: 99.27%;
@@ -58,7 +60,7 @@
 }
 @font-face {
   font-family: "Fraunces Fallback";
-  src: local("Times New Roman");
+  src: local("Times New Roman"), local("TimesNewRomanPSMT"), local("Liberation Serif"), local("LiberationSerif");
   font-weight: 400;
   font-style: normal;
   size-adjust: 115.46%;
@@ -68,7 +70,7 @@
 }
 @font-face {
   font-family: "Fraunces Fallback";
-  src: local("Times New Roman");
+  src: local("Times New Roman"), local("TimesNewRomanPSMT"), local("Liberation Serif"), local("LiberationSerif");
   font-weight: 500;
   font-style: normal;
   size-adjust: 117.37%;
@@ -78,7 +80,7 @@
 }
 @font-face {
   font-family: "Fraunces Fallback";
-  src: local("Times New Roman Bold");
+  src: local("Times New Roman Bold"), local("TimesNewRomanPS-BoldMT"), local("Liberation Serif Bold"), local("LiberationSerif-Bold");
   font-weight: 600 900;
   font-style: normal;
   size-adjust: 112.22%;
@@ -88,7 +90,7 @@
 }
 @font-face {
   font-family: "Fraunces Fallback";
-  src: local("Times New Roman Italic");
+  src: local("Times New Roman Italic"), local("TimesNewRomanPS-ItalicMT"), local("Liberation Serif Italic"), local("LiberationSerif-Italic");
   font-weight: 400;
   font-style: italic;
   size-adjust: 111.67%;
@@ -98,7 +100,7 @@
 }
 @font-face {
   font-family: "Fraunces Fallback";
-  src: local("Times New Roman Italic");
+  src: local("Times New Roman Italic"), local("TimesNewRomanPS-ItalicMT"), local("Liberation Serif Italic"), local("LiberationSerif-Italic");
   font-weight: 500;
   font-style: italic;
   size-adjust: 114.32%;
@@ -108,7 +110,7 @@
 }
 @font-face {
   font-family: "Fraunces Fallback";
-  src: local("Times New Roman Bold Italic");
+  src: local("Times New Roman Bold Italic"), local("TimesNewRomanPS-BoldItalicMT"), local("Liberation Serif Bold Italic"), local("LiberationSerif-BoldItalic");
   font-weight: 600 900;
   font-style: italic;
   size-adjust: 114.07%;
