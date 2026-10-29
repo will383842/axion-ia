@@ -7,6 +7,9 @@
 import { resteDuNetCents } from "@/server/qualiopi/crm/clients";
 import { estFactureOuverte } from "@/server/qualiopi/financements/statuts-facture";
 
+// Point d'entrée UNIQUE du domaine pour les cartes et tuiles du lot B7 : elles ne l'importent pas elles-mêmes.
+export { estFactureOuverte, resteDuNetCents };
+
 export interface FacturePourArgent {
   statut: string;
   avoirDeId: string | null;

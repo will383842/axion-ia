@@ -8,12 +8,12 @@ import { Bell } from "lucide-react";
 
 import { AdminBadge } from "@/components/admin/ui/AdminBadge";
 import { AdminButton } from "@/components/admin/ui/AdminButton";
-import { resteDuNetCents } from "@/server/qualiopi/crm/clients";
-import { estFactureOuverte } from "@/server/qualiopi/financements/statuts-facture";
 import { htEtTtc } from "./montants";
 import {
   dateCourte,
+  estFactureOuverte,
   encaisseCents,
+  resteDuNetCents,
   montantHt,
   montantTtc,
   paiementPartiel,

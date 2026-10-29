@@ -9,13 +9,13 @@ import { AdminStatCard } from "@/components/admin/ui/AdminStatCard";
 import { htEtTtc } from "./montants";
 import {
   dateCourte,
+  estFactureOuverte,
   dejaFactureCents,
   devisEnAttente,
   montantHt,
   montantTtc,
   type FacturePourArgent,
 } from "@/features/dossier-client/fiche/argent-de-la-fiche";
-import { estFactureOuverte } from "@/server/qualiopi/financements/statuts-facture";
 import { formatDateFrShort } from "@/lib/format-date-fr";
 
 type FactureAvecEcheance = FacturePourArgent & { echeanceAt: Date | null };
