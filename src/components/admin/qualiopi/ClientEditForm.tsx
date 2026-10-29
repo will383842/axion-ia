@@ -51,6 +51,7 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { updateClientAction } from "@/server/actions/qualiopi/clients";
 import { checkSiretFormat } from "@/lib/siret";
+import { DELAI_PAIEMENT_MAX_JOURS } from "@/server/qualiopi/financements/conditions-client";
 import { AdminBloc } from "@/components/admin/ui/AdminBloc";
 
 export interface ClientEditValues {
@@ -205,7 +206,11 @@ export function ClientEditForm({
           ? { adresseCodePostal: texteOuNull("adresseCodePostal") }
           : {}),
         ...(change("adresseVille") ? { adresseVille: texteOuNull("adresseVille") } : {}),
-        ...(adresseChangee ? { adresse: adresseLibre } : {}),
+        // 🔴 L'ancienne adresse libre n'est recomposée QUE si la rue est saisie :
+        // l'écran de création y range la rue seule, et la réécrire sans rue
+        // (ville ou code postal seuls) la perdrait. Trois champs vidés : rien
+        // n'est envoyé pour `adresse`, jamais `""`.
+        ...(adresseChangee && v.adresseRue.trim() !== "" ? { adresse: adresseLibre } : {}),
         ...(change("secteur") ? { secteur: v.secteur.trim() } : {}),
         ...(change("source") ? { source: v.source.trim() } : {}),
         ...(change("contactNom") ? { contactNom: v.contactNom.trim() } : {}),
@@ -262,7 +267,7 @@ export function ClientEditForm({
   const aideCls = "text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]";
   const gridCls = "grid gap-[var(--space-admin-4)] sm:grid-cols-2";
   const blocsCls = "flex flex-col gap-[var(--space-admin-4)]";
-  const adresseVide = v.adresseRue === "" && v.adresseCodePostal === "" && v.adresseVille === "";
+  const rueVide = v.adresseRue.trim() === "";
 
   return (
     <form onSubmit={handleSubmit} className={blocsCls}>
@@ -428,10 +433,11 @@ export function ClientEditForm({
               className={inputCls}
             />
           </div>
-          {adresseVide && lecture?.adresseHistorique ? (
+          {rueVide && lecture?.adresseHistorique ? (
             <p className={`${aideCls} sm:col-span-2`}>
               Adresse saisie jusqu&apos;ici en texte libre : {lecture.adresseHistorique}.
-              Recopiez-la dans les trois champs ci-dessus.
+              Recopiez-la dans les trois champs ci-dessus ; elle reste conservée tant que la rue est
+              vide.
             </p>
           ) : null}
         </div>
@@ -533,7 +539,7 @@ export function ClientEditForm({
               id="edit-delai"
               type="number"
               min={0}
-              max={120}
+              max={DELAI_PAIEMENT_MAX_JOURS}
               step={1}
               inputMode="numeric"
               value={v.delaiPaiementJours}
@@ -541,7 +547,7 @@ export function ClientEditForm({
               disabled={isPending}
               className={inputCls}
             />
-            <p className={aideCls}>De 0 à 120 jours. Laissez vide pour le délai habituel.</p>
+            <p className={aideCls}>De 0 à 60 jours. Laissez vide pour le délai habituel.</p>
           </div>
 
           <div className={fieldCls}>
@@ -578,6 +584,9 @@ export function ClientEditForm({
               <option value="acompte_solde">Acompte puis solde</option>
               <option value="solde_unique">Solde unique</option>
             </select>
+            {v.modeFacturation === "solde_unique" ? (
+              <p className={aideCls}>En solde unique, l&apos;acompte n&apos;est pas appliqué.</p>
+            ) : null}
           </div>
 
           <label

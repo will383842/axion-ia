@@ -83,12 +83,12 @@ describe("Modifier la fiche — champs complets (lot A2)", () => {
     expect("error" in ok).toBe(false);
   });
 
-  it("accepte l'acompte de 0 % et de 100 %, le délai de 0 et de 120 jours", async () => {
+  it("accepte l'acompte de 0 % et de 100 %, le délai de 0 et de 60 jours", async () => {
     for (const input of [
       { tauxAcomptePct: 0 },
       { tauxAcomptePct: 100 },
       { delaiPaiementJours: 0 },
-      { delaiPaiementJours: 120 },
+      { delaiPaiementJours: 60 },
     ]) {
       const r = await updateClientAction({ id: ID, ...input });
       expect("error" in r, JSON.stringify(input)).toBe(false);
@@ -103,8 +103,8 @@ describe("Modifier la fiche — champs complets (lot A2)", () => {
     expect(mockUpdate).not.toHaveBeenCalled();
   });
 
-  it("refuse un délai négatif, de plus de 120 jours ou décimal", async () => {
-    for (const delaiPaiementJours of [-1, 121, 30.5]) {
+  it("refuse un délai négatif, de plus de 60 jours ou décimal", async () => {
+    for (const delaiPaiementJours of [-1, 61, 30.5]) {
       const r = await updateClientAction({ id: ID, delaiPaiementJours });
       expect("error" in r, String(delaiPaiementJours)).toBe(true);
     }
@@ -133,8 +133,43 @@ describe("Modifier la fiche — champs complets (lot A2)", () => {
   });
 
   it("un particulier ne peut pas recevoir un numéro de TVA", async () => {
-    const r = await updateClientAction({ id: ID, type: "particulier", tvaIntracom: "FR1" });
+    const r = await updateClientAction({
+      id: ID,
+      type: "particulier",
+      tvaIntracom: "FR12345678901",
+    });
     expect("error" in r).toBe(true);
     expect(mockUpdate).not.toHaveBeenCalled();
+  });
+
+  it("une TVA sans `type` dans la charge est refusée si la fiche en base est un particulier", async () => {
+    mockFindUnique.mockResolvedValue({ type: "particulier" });
+    const r = await updateClientAction({ id: ID, tvaIntracom: "FR12345678901" });
+    expect("error" in r).toBe(true);
+    if ("error" in r) expect(r.error).toContain("numéro de TVA");
+    expect(mockUpdate).not.toHaveBeenCalled();
+  });
+
+  it("normalise la TVA (espaces, minuscules) et refuse un numéro français mal formé", async () => {
+    const ok = await updateClientAction({ id: ID, tvaIntracom: "fr12 345678901" });
+    expect("error" in ok).toBe(false);
+    expect(donneesEcrites()).toMatchObject({ tvaIntracom: "FR12345678901" });
+    for (const tvaIntracom of ["FR123", "FR1234567890123"]) {
+      const r = await updateClientAction({ id: ID, tvaIntracom });
+      expect("error" in r, tvaIntracom).toBe(true);
+    }
+    const etranger = await updateClientAction({ id: ID, tvaIntracom: "DE123456789" });
+    expect("error" in etranger).toBe(false);
+  });
+
+  it("code postal : 5 chiffres, mais un code étranger est gardé", async () => {
+    for (const adresseCodePostal of ["69003", "SW1A 1AA", "1000"]) {
+      const r = await updateClientAction({ id: ID, adresseCodePostal });
+      expect("error" in r, adresseCodePostal).toBe(adresseCodePostal === "1000");
+    }
+    for (const adresseCodePostal of ["690", "690031"]) {
+      const r = await updateClientAction({ id: ID, adresseCodePostal });
+      expect("error" in r, adresseCodePostal).toBe(true);
+    }
   });
 });

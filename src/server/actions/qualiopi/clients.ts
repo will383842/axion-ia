@@ -26,6 +26,7 @@ import { requireAdminWrite, logQualiopiActivity } from "@/server/actions/qualiop
 import { inferOpcoDepuisTable } from "@/server/qualiopi/crm/naf-opco";
 import { OPCO_IDS, isOpcoId, type OpcoId } from "@/server/qualiopi/financements/opco-referentiel";
 import { parisDateISO } from "@/server/qualiopi/presence/time";
+import { DELAI_PAIEMENT_MAX_JOURS } from "@/server/qualiopi/financements/conditions-client";
 import { definirContactFacturation } from "@/server/qualiopi/crm/contact-facturation";
 import {
   rafraichirEffectifInsee,
@@ -206,15 +207,32 @@ const updateClientSchema = z
      * Fiche Modifier (lot A2) : champs déjà en base, jusque-là sans écrivain
      * console. `null` efface (la chaîne vide est traitée côté écran).
      */
-    tvaIntracom: z.string().max(40).nullable().optional(),
+    tvaIntracom: z
+      .string()
+      .max(40)
+      .transform((t) => t.replace(/\s/g, "").toUpperCase())
+      .refine(
+        (t) => !t.startsWith("FR") || /^FR[0-9A-Z]{2}\d{9}$/.test(t),
+        "Numéro de TVA : FR suivi de 11 caractères (ex. FR12 345678901).",
+      )
+      .nullable()
+      .optional(),
     adresseRue: z.string().max(300).nullable().optional(),
-    adresseCodePostal: z.string().max(12).nullable().optional(),
+    adresseCodePostal: z
+      .string()
+      .max(12)
+      .refine((t) => /^\d{5}$/.test(t) || !/^\d+$/.test(t), "Code postal : 5 chiffres.")
+      .nullable()
+      .optional(),
     adresseVille: z.string().max(120).nullable().optional(),
     delaiPaiementJours: z
       .number({ invalid_type_error: "Délai de paiement : un nombre de jours est attendu." })
       .int("Délai de paiement : un nombre entier de jours est attendu.")
       .min(0, "Délai de paiement : il ne peut pas être négatif.")
-      .max(120, "Délai de paiement : 120 jours au plus.")
+      .max(
+        DELAI_PAIEMENT_MAX_JOURS,
+        "Délai de paiement : 60 jours au plus (art. L441-10 du code de commerce).",
+      )
       .nullable()
       .optional(),
     /** Acompte de 0 à 100 % toujours possible (décision de Will). */
@@ -554,6 +572,7 @@ export async function updateClientAction(
   const identifiantEntreprise =
     (typeof sirenAEcrire === "string" && sirenAEcrire !== "") ||
     (typeof fields.siret === "string" && fields.siret !== "") ||
+    (typeof fields.tvaIntracom === "string" && fields.tvaIntracom.trim() !== "") ||
     typeof fields.effectif === "number" ||
     typeof fields.opco === "string" ||
     typeof fields.opcoEnveloppeAnnuelleCents === "number" ||
@@ -567,7 +586,7 @@ export async function updateClientAction(
     if (typeEnBase === "particulier") {
       return {
         error:
-          "Cette fiche est celle d'un particulier : un SIREN, un SIRET, un effectif ou un OPCO ne s'y pose pas. " +
+          "Cette fiche est celle d'un particulier : un SIREN, un SIRET, un numéro de TVA, un effectif ou un OPCO ne s'y pose pas. " +
           "Changez d'abord le type du client si c'est une entreprise.",
       };
     }
