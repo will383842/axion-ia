@@ -254,9 +254,14 @@ export function VueDemandesTour({
         title="Demandes du Tour France IA"
         description="Les personnes qui ont rempli la mini-demande avant la visio. Une demande reste ici avec son statut ; « rendez-vous pris » s'affiche dès que la même adresse e-mail a un rendez-vous du Tour."
         actions={
-          <Link href={retourTunnel} className="admin-button-ghost">
-            Retour au tunnel
-          </Link>
+          <div className="flex gap-[var(--space-admin-2)]">
+            <Link href={`${retourTunnel}/villes`} className="admin-button-ghost">
+              Vue par ville
+            </Link>
+            <Link href={retourTunnel} className="admin-button-ghost">
+              Retour au tunnel
+            </Link>
+          </div>
         }
       />
 
@@ -319,7 +324,13 @@ export function VueDemandesTour({
                   {v.ville}
                 </Link>{" "}
                 : {v.comptees} comptée{v.comptees > 1 ? "s" : ""} sur {v.demandes} demande
-                {v.demandes > 1 ? "s" : ""}
+                {v.demandes > 1 ? "s" : ""} ·{" "}
+                <Link
+                  href={`${retourTunnel}/villes/fiche?ville=${encodeURIComponent(v.villeCle)}`}
+                  className="admin-link"
+                >
+                  Voir la ville
+                </Link>
               </li>
             ))}
           </ul>

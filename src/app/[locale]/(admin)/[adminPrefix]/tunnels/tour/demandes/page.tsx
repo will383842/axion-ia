@@ -16,6 +16,7 @@ import { AccesRefuse } from "@/components/admin/ui/AccesRefuse";
 import { gardeLectureAppels } from "@/features/admin-calendly/acces";
 import { compteurParVille, lireDemandesConsole } from "@/features/tour-de-france/lectures";
 import { messageErreur, messageOk } from "@/features/tour-de-france/messages";
+import { villeDeLAdresse } from "@/features/tour-de-france/parametres";
 import { estStatutAffiche } from "@/features/tour-de-france/types";
 import { VueDemandesTour } from "../../_components/VueDemandesTour";
 
@@ -29,12 +30,6 @@ export const metadata: Metadata = {
 interface PageProps {
   params: Promise<{ adminPrefix: string }>;
   searchParams: Promise<Record<string, string | undefined>>;
-}
-
-/** Une clé de ville de l'adresse : courte, sans caractère de contrôle ; sinon on l'ignore. */
-function villeDeLAdresse(v: string | undefined): string | null {
-  if (v === undefined || v.length === 0 || v.length > 100) return null;
-  return /^[\p{L}\p{N}?\- ]+$/u.test(v) ? v : null;
 }
 
 export default async function DemandesTourPage({
