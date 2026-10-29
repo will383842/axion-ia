@@ -32,6 +32,7 @@ import { signalerHoneypot } from "@/lib/security/honeypot-observable";
 import { hashIp } from "@/lib/security/ip-hash";
 import { normalizeEmail } from "@/lib/security/email-hash";
 import { lireSuiviArrivee } from "@/server/calendly/choix-rendez-vous";
+import { attendreDureeMinimale } from "./attente";
 import { CHEMIN_DEMANDE, CHEMIN_RENDEZ_VOUS, META } from "../contenu";
 
 /** 5 demandes par heure et par adresse IP ; compteur en panne : refus. */
@@ -82,11 +83,24 @@ function versLErreur(suivi: URLSearchParams, erreur: "champs" | "trop"): string 
   return `${CHEMIN_DEMANDE}?${p.toString()}`;
 }
 
+/** Le salage absent n'est signalé qu'une fois par processus. */
+let saleAbsentSignale = false;
+
 function empreinteDeLIp(ip: string): string {
   try {
     return hashIp(ip) ?? "inconnue";
   } catch {
-    // Salage absent en production : le compteur reste utile avec une clé commune.
+    // Salage absent en production : le compteur reste utile avec une clé commune, mais on le dit.
+    if (!saleAbsentSignale) {
+      saleAbsentSignale = true;
+      Sentry.captureMessage(
+        "IP_HASH_SALT manquant : la limite de la mini-demande utilise une clé commune",
+        {
+          level: "error",
+          tags: { module: "tour-demande", etape: "empreinte-ip" },
+        },
+      );
+    }
     return "inconnue";
   }
 }
@@ -97,12 +111,14 @@ function texte(fd: FormData, nom: string): string {
 }
 
 export async function envoyerDemandeTour(formData: FormData): Promise<void> {
+  const debut = Date.now();
   const suivi = parametresDeSuivi(formData);
 
   // 1. Le leurre.
   const leurre = formData.get("website");
   if (leurre) {
     await signalerHoneypot("tour-demande", leurre);
+    await attendreDureeMinimale(debut);
     redirect(versLaVisio(suivi));
   }
 
@@ -139,6 +155,7 @@ export async function envoyerDemandeTour(formData: FormData): Promise<void> {
     Sentry.captureException(e, { tags: { module: "tour-demande", etape: "action" } });
   }
 
-  // 5. La visio, avec ou sans jeton.
+  // 5. La visio, avec ou sans jeton, après la même durée minimale quelle que soit l'adresse.
+  await attendreDureeMinimale(debut);
   redirect(versLaVisio(suivi, jeton));
 }

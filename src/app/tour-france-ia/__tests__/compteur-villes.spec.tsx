@@ -39,6 +39,15 @@ describe("le compteur de villes", () => {
     expect(container.querySelector("[data-tdf-compteur]")).toBeNull();
   });
 
+  it("la ville du siège n'est jamais affichée, même au plafond", async () => {
+    lireCompteursPublics.mockResolvedValue([
+      { villeCle: "grenoble", villeNom: "Grenoble", total: 5 },
+    ]);
+    const { container } = render(await TourDeFranceIaPage());
+    expect(container.querySelector("[data-tdf-compteur]")).toBeNull();
+    expect(container.textContent).not.toMatch(/gren/i);
+  });
+
   it("une ville à 3 demandes : « Lyon : 3 demandes sur 5 »", async () => {
     lireCompteursPublics.mockResolvedValue([{ villeCle: "lyon", villeNom: "Lyon", total: 3 }]);
     const { container } = render(await TourDeFranceIaPage());

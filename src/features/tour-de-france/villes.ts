@@ -59,6 +59,12 @@ const INDEX: ReadonlyMap<string, { readonly nom: string; readonly nombre: number
   return index;
 })();
 
+/**
+ * Clé (saisie normalisée) de la ville du siège : elle n'apparaît JAMAIS dans la communication
+ * publique (ni suggestion, ni compteur). Reste dans `src/features`, jamais dans `src/app/tour-france-ia`.
+ */
+export const CLE_VILLE_DU_SIEGE = "grenoble";
+
 export interface VilleResolue {
   /** Clé de comptage : `lyon`, `saint-etienne` ; `?annecy` hors référentiel ou ambiguë. */
   readonly cle: string;
@@ -83,10 +89,9 @@ export function resoudreVille(saisie: string): VilleResolue | null {
  * (`resoudreVille`). La ville du siège n'est pas suggérée : le Tour passe chez les autres.
  */
 export function nomsDesVillesSuggerees(): string[] {
-  const siege = "grenoble";
   const noms = new Set<string>();
   for (const ville of REFERENTIEL) {
-    if (normaliserSaisieVille(ville.name) !== siege) noms.add(ville.name);
+    if (normaliserSaisieVille(ville.name) !== CLE_VILLE_DU_SIEGE) noms.add(ville.name);
   }
   return [...noms].sort((a, b) => a.localeCompare(b, "fr"));
 }

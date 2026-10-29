@@ -33,6 +33,11 @@ describe("comptage : le compteur public", () => {
     expect(lignesCompteur(groupes)).toEqual([]);
   });
 
+  it("la ville du siège n'est JAMAIS affichée, par sa clé comme par son nom", () => {
+    expect(lignesCompteur([{ villeCle: "grenoble", villeNom: "Grenoble", total: 5 }])).toEqual([]);
+    expect(lignesCompteur([{ villeCle: "autre", villeNom: "GRENOBLE", total: 5 }])).toEqual([]);
+  });
+
   it("trie de la plus demandée à la moins demandée, six villes au plus", () => {
     const groupes: GroupeVille[] = [
       { villeCle: "paris", villeNom: "Paris", total: 3 },

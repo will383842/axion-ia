@@ -4,7 +4,7 @@
 // aucun JavaScript client, aucun cookie, aucun script tiers. Le formulaire est natif et mène à
 // l'action `envoyerDemandeTour` (`actions.ts`), qui enregistre puis redirige vers la visio.
 //
-//   · ni indexée ni suivie ; `Referrer-Policy: no-referrer` posée par la balise `meta` de la page
+//   · ni indexée ni suivie ; `Referrer-Policy: same-origin` posée par la balise `meta` de la page
 //     (champ `referrer` des métadonnées) ;
 //   · lit `depuis` et `utm_*` dans l'adresse (même forme que `lireSuiviArrivee`) et les porte en
 //     champs cachés : la visio les recevra ;
@@ -25,8 +25,9 @@ import { envoyerDemandeTour } from "./actions";
 export const metadata: Metadata = {
   title: { absolute: `Ma demande · ${NOM_DU_TOUR}` },
   robots: { index: false, follow: false },
-  // La demande ne dit pas d'où l'on vient quand on la quitte.
-  referrer: "no-referrer",
+  // `same-origin`, jamais `no-referrer` : le navigateur enverrait `Origin: null` sur le POST et
+  // Next refuserait l'action serveur (voir `next.config.ts`).
+  referrer: "same-origin",
 };
 
 const LIBELLE_BOUTON = "Choisir mon créneau de visio";
@@ -92,6 +93,7 @@ export default async function DemandePage({ searchParams }: Props) {
           <input
             id="tdf-nom"
             name="nom"
+            autoFocus={erreur === "champs"}
             type="text"
             autoComplete="name"
             required
@@ -123,7 +125,8 @@ export default async function DemandePage({ searchParams }: Props) {
             type="tel"
             autoComplete="tel"
             required
-            pattern="[0-9 +().\-]{8,20}"
+            pattern="(?=(?:[^0-9]*[0-9]){9})[0-9 +().\-]{8,20}"
+            title="Au moins 9 chiffres (espaces, +, points et tirets acceptés)"
             maxLength={20}
             inputMode="tel"
             className={CHAMP}

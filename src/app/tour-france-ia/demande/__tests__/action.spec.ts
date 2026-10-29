@@ -17,6 +17,8 @@ const mocks = vi.hoisted(() => ({
   signalerHoneypot: vi.fn(),
   revalidatePath: vi.fn(),
   captureException: vi.fn(),
+  captureMessage: vi.fn((..._a: unknown[]) => undefined),
+  attendre: vi.fn(async (..._a: unknown[]) => {}),
 }));
 
 vi.mock("next/navigation", () => ({
@@ -25,7 +27,11 @@ vi.mock("next/navigation", () => ({
   },
 }));
 vi.mock("next/cache", () => ({ revalidatePath: mocks.revalidatePath }));
-vi.mock("@sentry/nextjs", () => ({ captureException: mocks.captureException }));
+vi.mock("@sentry/nextjs", () => ({
+  captureException: mocks.captureException,
+  captureMessage: mocks.captureMessage,
+}));
+vi.mock("../attente", () => ({ attendreDureeMinimale: mocks.attendre }));
 vi.mock("@/features/tour-de-france/enregistrer", () => ({
   enregistrerDemande: mocks.enregistrerDemande,
 }));
@@ -157,6 +163,30 @@ describe("la mini-demande du Tour", () => {
     expect(url.pathname).toBe("/fr/appel/tour-france-ia");
     expect(url.searchParams.get("depuis")).toBe("tdf-heros");
     expect(url.searchParams.get("j")).toBeNull();
+  });
+
+  it("adresse connue ou neuve : même redirection, après la même attente minimale", async () => {
+    const neuve = await destination(formulaire());
+    mocks.enregistrerDemande.mockResolvedValue({ id: ID, compte: false, rattachement: "fiche" });
+    const connue = await destination(formulaire());
+    expect(connue.pathname).toBe(neuve.pathname);
+    expect([...connue.searchParams.keys()]).toEqual([...neuve.searchParams.keys()]);
+    expect(mocks.attendre).toHaveBeenCalledTimes(2);
+    expect(mocks.attendre.mock.calls[0]?.[0]).toEqual(expect.any(Number));
+  });
+
+  it("IP_HASH_SALT manquant en production : signalé à Sentry, une seule fois par processus", async () => {
+    vi.stubEnv("NODE_ENV", "production");
+    vi.stubEnv("IP_HASH_SALT", "");
+    delete process.env.IP_HASH_SALT;
+    try {
+      await destination(formulaire());
+      await destination(formulaire());
+    } finally {
+      vi.unstubAllEnvs();
+    }
+    expect(mocks.captureMessage).toHaveBeenCalledTimes(1);
+    expect(mocks.captureMessage.mock.calls[0]?.[0]).toMatch(/IP_HASH_SALT/);
   });
 
   it("une valeur de suivi non conforme est abandonnée, jamais recopiée", async () => {

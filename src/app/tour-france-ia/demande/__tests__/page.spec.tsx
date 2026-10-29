@@ -42,7 +42,10 @@ describe("la page de la demande", () => {
     expect(champ("email").type).toBe("email");
     expect(champ("email").maxLength).toBe(254);
     expect(champ("telephone").type).toBe("tel");
-    expect(champ("telephone").getAttribute("pattern")).toBe("[0-9 +().\\-]{8,20}");
+    expect(champ("telephone").getAttribute("pattern")).toBe(
+      "(?=(?:[^0-9]*[0-9]){9})[0-9 +().\\-]{8,20}",
+    );
+    expect(champ("telephone").getAttribute("title")).toMatch(/9 chiffres/);
     expect(champ("ville").maxLength).toBe(80);
     expect(container.querySelectorAll("datalist#tdf-villes option").length).toBeGreaterThan(100);
     // Le leurre, et le bouton.
@@ -99,7 +102,7 @@ describe("la page de la demande", () => {
 
   it("jamais indexée, aucun référent transmis, aucun JavaScript client", async () => {
     expect(metadata.robots).toEqual({ index: false, follow: false });
-    expect(metadata.referrer).toBe("no-referrer");
+    expect(metadata.referrer).toBe("same-origin");
     const source = lire(`${DOSSIER}/demande/page.tsx`);
     expect(source).not.toMatch(/["']use client["']/);
     expect(source).not.toMatch(/cookies|localStorage|useState|useEffect/);
