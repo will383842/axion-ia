@@ -1132,6 +1132,8 @@ async function supprimerDonneesPilote(
   const documentIds = documents.map((d) => d.id);
   await tx.documentProjetContenu.deleteMany({ where: { documentId: { in: documentIds } } });
   await tx.documentProjet.deleteMany({ where: { id: { in: documentIds } } });
+  // Suivi de prestation (type, étape, montant) : données de test, purgées sur ordre.
+  await tx.projetSuivi.deleteMany({ where: { projetId: { in: [...p.projetIds] } } });
   await tx.projet.deleteMany({ where: { id: { in: [...p.projetIds] } } });
   await tx.clientContact.deleteMany({ where: { id: { in: [...p.contactIds] } } });
   return { faits: faits.count, preuvesAccord: preuves.count, documentIds };
