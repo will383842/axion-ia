@@ -172,7 +172,7 @@ describe("creerContactManuelAction", () => {
 });
 
 describe("🔴 art. 14 — origine de l'adresse (2026-09-19)", () => {
-  const LIEN = "https://calendly.com/axion-ia/echange-apporteur";
+  const LIEN = "https://calendly.com/axion-ia/echange-apporteur-affaires";
 
   it("REFUSE une adresse relevée sur l'annonce d'un tiers : rien n'est créé", async () => {
     const r = await creerContactManuelAction({ ...valide, origine: "site-annonces" });

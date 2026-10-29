@@ -533,7 +533,8 @@ describe("étape 2 — completerLeadVsl", () => {
   });
 
   it("R1/R2 : annule la branche A (A1, A2, A3) et envoie B1 une seule fois, avec le bouton de réservation", async () => {
-    process.env["CALENDLY_APPORTEUR_URL"] = "https://calendly.com/axion-ia/echange-apporteur";
+    process.env["CALENDLY_APPORTEUR_URL"] =
+      "https://calendly.com/axion-ia/echange-apporteur-affaires";
     ligneParId = ligneVsl();
     vi.setSystemTime(MAINTENANT + 30_000);
     await completer(creerJeton({ lead: ID_LEAD, maintenant: MAINTENANT }));
@@ -548,7 +549,9 @@ describe("étape 2 — completerLeadVsl", () => {
     );
     const b1 = jobsPoses().find((j) => j.gabarit === "lead-apporteur-recu");
     expect(b1?.payload["variante"]).toBe("vsl-etape2");
-    expect(b1?.payload["calendlyUrl"]).toBe("https://calendly.com/axion-ia/echange-apporteur");
+    expect(b1?.payload["calendlyUrl"]).toBe(
+      "https://calendly.com/axion-ia/echange-apporteur-affaires",
+    );
     expect(b1?.options.jobId).toBe("lead-apporteur-vsl-etape2-hnadiaexamplecom");
     expect(b1?.options.delayMs).toBe(15 * 60 * 1000); // 15 min, retiré si la personne réserve
     // Aucune adresse dans la clé de tâche.
@@ -556,7 +559,8 @@ describe("étape 2 — completerLeadVsl", () => {
   });
 
   it("B1 porte un jeton de RÉSERVATION valide 10 jours, qui désigne la ligne et ne dit rien d'autre", async () => {
-    process.env["CALENDLY_APPORTEUR_URL"] = "https://calendly.com/axion-ia/echange-apporteur";
+    process.env["CALENDLY_APPORTEUR_URL"] =
+      "https://calendly.com/axion-ia/echange-apporteur-affaires";
     ligneParId = ligneVsl();
     vi.setSystemTime(MAINTENANT + 30_000);
     await completer(creerJeton({ lead: ID_LEAD, maintenant: MAINTENANT }));

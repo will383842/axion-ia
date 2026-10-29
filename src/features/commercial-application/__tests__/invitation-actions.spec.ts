@@ -33,7 +33,7 @@ import { envoyerInvitationDepuisFicheAction } from "../invitation-actions";
 
 const ID = "11111111-1111-4111-8111-111111111111";
 const ID2 = "22222222-2222-4222-8222-222222222222";
-const LIEN = "https://calendly.com/axion-ia/echange-apporteur";
+const LIEN = "https://calendly.com/axion-ia/echange-apporteur-affaires";
 
 async function redirectionDe(f: FormData): Promise<string> {
   try {

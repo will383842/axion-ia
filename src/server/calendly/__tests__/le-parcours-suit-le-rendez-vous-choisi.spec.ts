@@ -38,7 +38,7 @@ const PROJET = "https://calendly.com/axion-ia/premier-contact";
 const DIAG = "https://calendly.com/axion-ia/diagnostic-ia";
 // Le défaut est le slug donné par Will le 2026-10-05 (`echange-apporteur`) ; l'ancien
 // (`…-affaires`) n'est gardé que pour le classement.
-const APPORTEUR = "https://calendly.com/axion-ia/echange-apporteur";
+const APPORTEUR = "https://calendly.com/axion-ia/echange-apporteur-affaires";
 const SALON = "https://calendly.com/axion-ia/rencontre-salon-gofab";
 
 const URI_PROJET = "https://api.calendly.com/event_types/PROJET";

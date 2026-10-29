@@ -27,7 +27,9 @@ describe("le réécrivain de liens laisse intactes les pages du tunnel vidéo", 
   });
 
   it("contre-témoin : une adresse Calendly de l'échange apporteur, elle, est bien réécrite", () => {
-    const lien = lienDeReservationDuSite("https://calendly.com/axion-ia/echange-apporteur");
+    const lien = lienDeReservationDuSite(
+      "https://calendly.com/axion-ia/echange-apporteur-affaires",
+    );
     expect(new URL(lien).pathname).toBe("/fr/appel/apporteur");
   });
 });
