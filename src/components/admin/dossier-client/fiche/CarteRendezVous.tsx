@@ -10,7 +10,15 @@
  */
 
 import Link from "next/link";
-import { CalendarCheck, CalendarClock, FileSearch, MapPin, Phone, Video } from "lucide-react";
+import {
+  CalendarCheck,
+  CalendarClock,
+  Building2,
+  FileSearch,
+  MapPin,
+  Phone,
+  Video,
+} from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 
 import { AdminBadge } from "@/components/admin/ui/AdminBadge";
@@ -24,7 +32,7 @@ import type { RencontreType } from "../../../../../prisma/generated/client";
 const ICONE_TYPE: Readonly<Record<RencontreType, LucideIcon>> = {
   visio: Video,
   telephone: Phone,
-  presentiel: MapPin,
+  presentiel: Building2,
   inconnu: CalendarClock,
 };
 
@@ -64,6 +72,8 @@ export function CarteRendezVous({
 }): React.ReactElement {
   const aVenir = r.debutPrevu !== null && r.debutPrevu.getTime() > maintenant.getTime();
   const statutCle = r.statut ?? (aVenir ? "planifie" : r.issue === "absent" ? "absent" : "tenu");
+  const prevu = aVenir && (r.statut === null || r.statut === "planifie");
+  const datePassee = !aVenir && r.statut === "planifie";
   const sansCompteRendu = STATUTS_SANS_COMPTE_RENDU.has(statutCle);
   const aRelire = !aVenir && !sansCompteRendu && r.compteRenduValide === null;
   const Icone = ICONE_TYPE[r.type];
@@ -77,11 +87,13 @@ export function CarteRendezVous({
     >
       <div className="flex flex-wrap items-center gap-[var(--space-admin-3)]">
         <h3 className="font-medium">{titre}</h3>
-        {aVenir ? (
+        {prevu ? (
           <AdminBadge tone="info">
             <CalendarClock size={14} aria-hidden="true" />
             Prévu
           </AdminBadge>
+        ) : datePassee ? (
+          <AdminBadge tone="outline">Date passée</AdminBadge>
         ) : statutCle === "tenu" ? (
           <AdminBadge tone="success">
             <CalendarCheck size={14} aria-hidden="true" />A eu lieu
@@ -92,7 +104,7 @@ export function CarteRendezVous({
         {aRelire ? (
           <span
             data-a-relire
-            className="inline-flex items-center gap-[var(--space-admin-2)] rounded-full border border-[color:var(--color-admin-bloc-terracotta-border)] bg-[color:var(--color-admin-bloc-terracotta-bg)] px-[var(--space-admin-3)] py-[var(--space-admin-1)] text-[length:var(--text-admin-xs)] font-semibold text-[color:var(--color-admin-bloc-terracotta-title)]"
+            className="inline-flex items-center gap-[var(--space-admin-2)] rounded-full border border-[color:var(--color-admin-bloc-terracotta-border)] bg-[color:var(--color-admin-bloc-terracotta-bg)] px-[var(--space-admin-3)] py-[var(--space-admin-1)] text-[length:var(--text-admin-sm)] font-semibold text-[color:var(--color-admin-bloc-terracotta-title)]"
           >
             <FileSearch size={14} aria-hidden="true" />
             Compte rendu à relire

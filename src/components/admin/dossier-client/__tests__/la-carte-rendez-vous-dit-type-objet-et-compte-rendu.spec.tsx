@@ -89,6 +89,7 @@ describe("la carte de rendez-vous", () => {
     expect(ok.querySelector("[data-a-relire]")).toBeNull();
     const non = c.querySelector("[data-rencontre=non]")!;
     expect(non.textContent).not.toContain("En bref");
+    expect(non.querySelector("[data-a-relire]")).not.toBeNull();
   });
 
   it("pose « Compte rendu à relire » sur un passé non validé, jamais sur un à venir", () => {
@@ -103,6 +104,37 @@ describe("la carte de rendez-vous", () => {
     const futur = c.querySelector("[data-rencontre=futur]")!;
     expect(futur.textContent).not.toContain("à relire");
     expect(futur.textContent).toContain("Prévu");
+  });
+
+  it("ne dit pas « Prévu » d'un rendez-vous futur annulé ou reporté", () => {
+    const c = rendre([
+      rdv({
+        id: "annule",
+        debutPrevu: new Date("2026-10-25T08:00:00Z"),
+        statut: "annule",
+        issue: null,
+      }),
+      rdv({
+        id: "reporte",
+        debutPrevu: new Date("2026-10-26T08:00:00Z"),
+        statut: "reporte",
+        issue: null,
+      }),
+    ]);
+    const annule = c.querySelector("[data-rencontre=annule]")!.textContent ?? "";
+    expect(annule).toContain("Annulé");
+    expect(annule).not.toContain("Prévu");
+    const reporte = c.querySelector("[data-rencontre=reporte]")!.textContent ?? "";
+    expect(reporte).toContain("Reporté");
+    expect(reporte).not.toContain("Prévu");
+  });
+
+  it("dit « Date passée » d'un rendez-vous passé resté planifié, sans dire « À venir »", () => {
+    const c = rendre([rdv({ id: "oublie", statut: "planifie", issue: null })]);
+    const t = c.querySelector("[data-rencontre=oublie]")!.textContent ?? "";
+    expect(t).toContain("Date passée");
+    expect(t).not.toContain("À venir");
+    expect(t).not.toContain("A eu lieu");
   });
 
   it("range du prochain au plus ancien", () => {
