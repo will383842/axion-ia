@@ -714,9 +714,6 @@ const CONSOMMATEURS_ASSUMES: ReadonlySet<string> = new Set([
   //    Les pages et leurs tests vivent, eux, sous `qualiopi/clients/[id]/`.
   "src/features/dossier-client/actions.ts",
   "src/features/dossier-client/creer-projet.ts",
-  // Lot B9 (relance de devis en brouillon) : l'action revérifie le rôle d'écriture et journalise
-  // via les gardes qualiopi (`requireAdminWrite`, `logQualiopiActivity`), comme `actions.ts`.
-  "src/features/dossier-client/fiche/actions-relance-devis.ts",
   "scripts/visio/reprendre-contacts.ts",
   // ── Dossier client, PR 4 (2026-09-29). Trois arêtes de plus, même nature :
   //    · « Créer la fiche prospect » et le client fictif du pilote passent par
