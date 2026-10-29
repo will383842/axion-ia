@@ -377,8 +377,13 @@ describe("résumé en clair : cas limites", () => {
       ),
       { ouv: false },
     );
-    expect(t).not.toContain("pas commencé");
+    expect(t).not.toMatch(/pas commencé/i);
     expect(t).not.toContain("Lien commun");
+    expect(t).toContain("ouvertures non suivies");
+  });
+  it("lecture des ouvertures en panne : même prudence, jamais « pas commencé »", () => {
+    const t = resume(q(lu({ reponses: [reponseDirigeant], ouvertures: null })), { ouv: true });
+    expect(t).not.toMatch(/pas commencé/i);
     expect(t).toContain("ouvertures non suivies");
   });
   it("équipe inconnue : « Pas reçu » et le dit", () => {

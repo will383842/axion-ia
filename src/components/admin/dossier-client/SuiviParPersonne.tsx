@@ -209,8 +209,9 @@ function statutEnClair(
       if (l.role === "referent") {
         return {
           tone: "outline",
-          texte:
-            "Pas commencé (facultatif : le dirigeant peut remplir la partie technique lui-même)",
+          texte: suivies
+            ? "Pas commencé (facultatif : le dirigeant peut remplir la partie technique lui-même)"
+            : "Pas de nouvelles (facultatif ; ouvertures non suivies)",
           detail,
         };
       }
