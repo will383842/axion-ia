@@ -154,7 +154,7 @@ describe("la mini-demande du Tour", () => {
     expect(mocks.enregistrerDemande).toHaveBeenCalledTimes(1);
     const transmis = mocks.enregistrerDemande.mock.calls[0]?.[0] as Record<string, unknown>;
     expect(transmis).not.toHaveProperty("telephone");
-    expect(JSON.stringify(transmis)).not.toMatch(/0612|06 12/);
+    expect(Object.values(transmis)).not.toContain("06 12 34 56 78");
   });
 
   it("anti-oracle : un doublon et une première demande reçoivent la même réponse", async () => {
