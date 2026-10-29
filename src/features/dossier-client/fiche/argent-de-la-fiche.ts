@@ -112,6 +112,11 @@ export function montantHt(cents: number): string {
   return `${montantEnEuros(cents)}\u00a0€\u00a0HT`; // price-exempt
 }
 
+/** Montant dont on ignore s'il est HT ou TTC (facture sans TTC en base) : ni l'un ni l'autre n'est affiché. */
+export function montantTtcNonRenseigne(cents: number): string {
+  return `${montantEnEuros(cents)}\u00a0€ (TTC non renseigné)`; // price-exempt
+}
+
 export function montantTtc(cents: number): string {
   return `${montantEnEuros(cents)}\u00a0€\u00a0TTC`; // price-exempt
 }

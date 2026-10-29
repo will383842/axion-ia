@@ -13,10 +13,10 @@ import {
   dateCourte,
   estFactureOuverte,
   encaisseCents,
-  montantEnEuros,
   resteDuNetCents,
   montantHt,
   montantTtc,
+  montantTtcNonRenseigne,
   paiementPartiel,
   type FacturePourArgent,
 } from "@/features/dossier-client/fiche/argent-de-la-fiche";
@@ -109,8 +109,7 @@ export function CartesFactures({
         const ouverteDue = !estAvoir && estFactureOuverte(f.statut) && reste > 0;
         const avant = f.echeanceAt ? ` avant le ${dateCourte(f.echeanceAt)}` : "";
         // Sans TTC en base, le chiffre mêle HT et TTC : on ne l'étiquette ni HT ni TTC, on le dit.
-        const somme = (c: number): string =>
-          ttcConnu ? montantTtc(c) : `${montantEnEuros(c)}\u00a0€ (TTC non renseigné)`;
+        const somme = (c: number): string => (ttcConnu ? montantTtc(c) : montantTtcNonRenseigne(c));
         return (
           <li key={f.id} className={carteCls}>
             <div className="flex flex-wrap items-center justify-between gap-[var(--space-admin-2)]">
