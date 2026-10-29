@@ -20,9 +20,11 @@ export const FILTRES_ACTIVITE: ReadonlyArray<{ lecture: FiltreActivite; libelle:
   { lecture: "argent", libelle: "Argent" },
 ];
 
-const TYPE_DU_FILTRE: Readonly<Record<Exclude<FiltreActivite, "tout">, TypeActivite>> = {
+const TYPE_DU_FILTRE: Readonly<
+  Record<Exclude<FiltreActivite, "tout">, TypeActivite | ReadonlyArray<TypeActivite>>
+> = {
   "rendez-vous": "rendez_vous",
-  emails: "email",
+  emails: ["email", "message"],
   notes: "note",
   taches: "tache",
   argent: "argent",
@@ -72,6 +74,12 @@ export function assemblerChronologie(
     .sort((a, b) => b.date.getTime() - a.date.getTime() || a.cle.localeCompare(b.cle));
 }
 
+/** Un message Telegram est un échange comme un e-mail : le filtre « E-mails » les garde tous deux. */
+function leFiltreContient(filtre: Exclude<FiltreActivite, "tout">, type: TypeActivite): boolean {
+  const t = TYPE_DU_FILTRE[filtre];
+  return typeof t === "string" ? t === type : t.includes(type);
+}
+
 /** Lit `?filtre=` : toute valeur inconnue retombe sur « Tout ». */
 export function lireFiltre(brut: string | undefined): FiltreActivite {
   return FILTRES_ACTIVITE.some((f) => f.lecture === brut) ? (brut as FiltreActivite) : "tout";
@@ -83,7 +91,7 @@ export function filtrer(
   filtre: FiltreActivite,
 ): EvenementActivite[] {
   if (filtre === "tout") return evenements.slice();
-  return evenements.filter((e) => e.type === TYPE_DU_FILTRE[filtre]);
+  return evenements.filter((e) => leFiltreContient(filtre, e.type));
 }
 
 /**
@@ -113,8 +121,8 @@ export function compterParFiltre(
     argent: 0,
   };
   for (const e of evenements) {
-    for (const [f, t] of Object.entries(TYPE_DU_FILTRE)) {
-      if (t === e.type) n[f as keyof typeof TYPE_DU_FILTRE] += 1;
+    for (const f of Object.keys(TYPE_DU_FILTRE) as Array<keyof typeof TYPE_DU_FILTRE>) {
+      if (leFiltreContient(f, e.type)) n[f] += 1;
     }
   }
   return n;

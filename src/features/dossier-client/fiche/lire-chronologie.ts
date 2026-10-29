@@ -230,7 +230,10 @@ export async function lireChronologie(
           cle: `devis:${d.id}`,
           type: "argent",
           date: d.sentAt as Date,
-          titre: `Devis envoyé n° ${d.numero}`,
+          titre:
+            d.statut === "refuse" || d.statut === "expire"
+              ? `Devis n° ${d.numero}`
+              : `Devis envoyé n° ${d.numero}`,
           etat: ETAT_DEVIS[d.statut] ?? "Devis envoyé",
           nuance: "argent",
           lien: null,
@@ -265,26 +268,33 @@ export async function lireChronologie(
     prisma.payment
       .findMany({
         where: {
-          status: "succeeded",
-          type: { not: "refund" },
+          status: { in: ["succeeded", "refunded"] },
           paidAt: { not: null },
           factureFormation: { clientId },
         },
         orderBy: { paidAt: "desc" },
         take: PAR_SOURCE,
-        select: { id: true, amountCents: true, paidAt: true, mode: true },
+        select: { id: true, amountCents: true, paidAt: true, mode: true, type: true, status: true },
       })
       .then((ps) =>
-        ps.map((p): EvenementActivite => ({
-          cle: `paiement:${p.id}`,
-          type: "argent",
-          date: p.paidAt as Date,
-          titre: "Paiement reçu",
-          etat: (p.mode !== null && MODE_PAIEMENT[p.mode]) || "Encaissé",
-          nuance: "argent",
-          lien: null,
-          montant: { cents: p.amountCents, base: "ttc" },
-        })),
+        ps.map((p): EvenementActivite => {
+          const remboursement = p.type === "refund";
+          const rembourse = p.status === "refunded";
+          return {
+            cle: `paiement:${p.id}`,
+            type: "argent",
+            date: p.paidAt as Date,
+            titre: remboursement ? "Remboursement" : "Paiement reçu",
+            etat: rembourse
+              ? "Remboursé"
+              : (p.mode !== null && MODE_PAIEMENT[p.mode]) ||
+                (remboursement ? "Versé" : "Encaissé"),
+            nuance: rembourse ? "neutre" : "argent",
+            lien: null,
+            ...(remboursement ? { mot: "Remboursement" } : {}),
+            montant: { cents: Math.abs(p.amountCents), base: "ttc" },
+          };
+        }),
       ),
   );
 

@@ -137,7 +137,7 @@ describe("lireChronologie — notes", () => {
 });
 
 describe("lireChronologie — argent", () => {
-  it("les paiements sont en TTC, hors remboursements, et lus avec le bon filtre", async () => {
+  it("les paiements sont en TTC et lus avec le bon filtre", async () => {
     prismaMock["payment"]!["findMany"]!.mockResolvedValue([
       { id: "p1", amountCents: 72000, paidAt: MAINTENANT, mode: "sepa_credit_transfer" },
     ]);
@@ -146,7 +146,58 @@ describe("lireChronologie — argent", () => {
     expect(r.evenements[0]?.titre).toBe("Paiement reçu");
     expect(r.evenements[0]?.etat).toBe("Virement");
     const where = prismaMock["payment"]!["findMany"]!.mock.calls[0]![0].where;
-    expect(where).toMatchObject({ status: "succeeded", type: { not: "refund" } });
+    expect(where).toMatchObject({ status: { in: ["succeeded", "refunded"] } });
+    expect(where).not.toHaveProperty("type");
+  });
+  it("les remboursements restent dans la chronologie, sous leur propre mot, en TTC", async () => {
+    prismaMock["payment"]!["findMany"]!.mockResolvedValue([
+      {
+        id: "r1",
+        amountCents: 30000,
+        paidAt: MAINTENANT,
+        mode: null,
+        type: "refund",
+        status: "succeeded",
+      },
+      {
+        id: "p2",
+        amountCents: 72000,
+        paidAt: MAINTENANT,
+        mode: "card",
+        type: "deposit",
+        status: "refunded",
+      },
+    ]);
+    const r = await lire();
+    const r1 = r.evenements.find((e) => e.cle === "paiement:r1");
+    expect(r1?.titre).toBe("Remboursement");
+    expect(r1?.mot).toBe("Remboursement");
+    expect(r1?.montant).toEqual({ cents: 30000, base: "ttc" });
+    const p2 = r.evenements.find((e) => e.cle === "paiement:p2");
+    expect(p2?.etat).toBe("Remboursé");
+    expect(p2?.titre).toBe("Paiement reçu");
+  });
+  it("le titre d'un devis refusé ou expiré ne dit pas « envoyé »", async () => {
+    const d = (id: string, statut: string) => ({
+      id,
+      numero: `D-${id}`,
+      statut,
+      montantTotalHtCents: 1000,
+      sentAt: new Date("2026-10-10T08:00:00Z"),
+      acceptedAt: null,
+    });
+    prismaMock["devis"]!["findMany"]!.mockResolvedValue([
+      d("3", "refuse"),
+      d("4", "expire"),
+      d("1", "envoye"),
+    ]);
+    const r = await lire();
+    const t = Object.fromEntries(r.evenements.map((e) => [e.cle, e.titre]));
+    expect(t).toEqual({
+      "devis:3": "Devis n° D-3",
+      "devis:4": "Devis n° D-4",
+      "devis:1": "Devis envoyé n° D-1",
+    });
   });
   it("les devis sont lus par date d'envoi, tous statuts envoyés, 100 au plus", async () => {
     const d = (id: string, statut: string) => ({

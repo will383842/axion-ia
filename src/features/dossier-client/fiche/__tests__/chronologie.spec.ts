@@ -85,6 +85,11 @@ describe("filtrer", () => {
   ] as const)("filtre %s", (f, attendu) => {
     expect(filtrer(tous, f).map((e) => e.cle)).toEqual(attendu);
   });
+  it("le filtre E-mails garde aussi les messages Telegram, et les compte", () => {
+    const avecMessage = [...tous, ev("tg", "2026-09-29T10:00:00Z", "message")];
+    expect(filtrer(avecMessage, "emails").map((e) => e.cle)).toEqual(["m", "tg"]);
+    expect(compterParFiltre(avecMessage).emails).toBe(2);
+  });
   it("garde l'ordre chronologique dans le filtre Notes (les épinglées ne sont pas déplacées)", () => {
     expect(filtrer(tous, "notes").map((e) => e.cle)).toEqual(["n1", "n2"]);
   });
