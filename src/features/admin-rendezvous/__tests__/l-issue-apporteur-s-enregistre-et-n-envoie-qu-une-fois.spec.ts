@@ -82,7 +82,7 @@ vi.mock("@/features/commercial-application/relances-lead-apporteur", () => ({
   annulerRelancesLeadApporteur: (...a: unknown[]) => annulerRelancesLeadApporteur(...a),
 }));
 vi.mock("@/features/commercial-application/relances-invitation-apporteur", () => ({
-  lienReservation: () => "https://calendly.com/axion-ia/echange-apporteur",
+  lienReservation: () => "https://calendly.com/axion-ia/echange-apporteur-affaires",
 }));
 const renderEmailTemplate = vi.fn();
 vi.mock("@/lib/email/templates", () => ({
@@ -318,7 +318,7 @@ describe("l'envoi confirmé", () => {
       "fr",
       {
         contactName: "Camille Martin",
-        calendlyUrl: "https://calendly.com/axion-ia/echange-apporteur",
+        calendlyUrl: "https://calendly.com/axion-ia/echange-apporteur-affaires",
         dateEchange: "mardi 22 septembre",
       },
       expect.objectContaining({ entityType: "Submission", entityId: "sub_1" }),

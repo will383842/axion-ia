@@ -37,7 +37,7 @@ describe("l'adresse par défaut", () => {
   it("calque de l'apporteur, sur le slug réel du compte", () => {
     expect(URL_CALENDLY_FORMATEUR_PAR_DEFAUT).toBe(URL_FORMATEUR);
     expect(URL_CALENDLY_APPORTEUR_PAR_DEFAUT).toBe(
-      "https://calendly.com/axion-ia/echange-apporteur",
+      "https://calendly.com/axion-ia/echange-apporteur-affaires",
     );
   });
 

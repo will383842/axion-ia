@@ -353,7 +353,7 @@ export function FormulaireContactManuel({
               className={CHAMP}
               value={c.calendlyUrl}
               onChange={(e) => set({ calendlyUrl: e.target.value })}
-              placeholder="https://calendly.com/axion-ia/echange-apporteur"
+              placeholder="https://calendly.com/axion-ia/echange-apporteur-affaires"
             />
           </div>
         ) : null}

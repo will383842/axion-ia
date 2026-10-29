@@ -69,7 +69,10 @@ const AVEC_CRENEAUX = {
     {
       dateKey: "2030-03-04",
       slots: [
-        { startIso: SLOT, schedulingUrl: "https://calendly.com/axion-ia/echange-apporteur/x" },
+        {
+          startIso: SLOT,
+          schedulingUrl: "https://calendly.com/axion-ia/echange-apporteur-affaires/x",
+        },
       ],
     },
   ],
