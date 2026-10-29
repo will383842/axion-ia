@@ -33,26 +33,47 @@
  * omettant la clé quand rien n'a bougé, la ré-inférence serveur reste armée ».
  * On ne le contourne pas par une autre porte.
  *
- * ⚠️ Cet écran ne touche NI l'OPCO, NI l'IDCC, NI la taille : ils restent sur
- * `ClientBrancheForm`, qui porte leur logique. Deux écrans écrivant la même
- * donnée avec deux règles différentes, c'est l'endroit où les deux copies
- * divergent en silence.
+ * ⚠️ Cet écran ne touche NI l'OPCO, NI l'IDCC, NI la taille, NI l'effectif : ils
+ * restent sur `ClientBrancheForm`, qui porte leur logique. Deux écrans écrivant
+ * la même donnée avec deux règles différentes, c'est l'endroit où les deux
+ * copies divergent en silence. Le nombre de salariés s'affiche ici en lecture.
+ *
+ * ## Lot A2 — formulaire complet
+ *
+ * Entreprise, adresse en trois champs, origine du client, contact, facturation :
+ * tout passe par `updateClientAction`, aucun nouvel écrivain de `clients`.
+ * « Secteur public » reste en lecture : il déclenche le dépôt Chorus Pro
+ * (`facture-libre.ts`), donc il ne se change pas d'ici.
  */
 
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 import { updateClientAction } from "@/server/actions/qualiopi/clients";
 import { checkSiretFormat } from "@/lib/siret";
+import { DELAI_PAIEMENT_MAX_JOURS } from "@/server/qualiopi/financements/conditions-client";
+import { AdminBloc } from "@/components/admin/ui/AdminBloc";
 
 export interface ClientEditValues {
   raisonSociale: string;
   siret: string;
+  tvaIntracom: string;
   nafCode: string;
-  adresse: string;
+  secteur: string;
+  source: string;
+  adresseRue: string;
+  adresseCodePostal: string;
+  adresseVille: string;
   contactNom: string;
   contactEmail: string;
   contactTelephone: string;
   contactFonction: string;
+  /** Nombre de jours, en chaîne (« » = non défini). */
+  delaiPaiementJours: string;
+  /** Pourcentage entier, en chaîne (« » = non défini). */
+  tauxAcomptePct: string;
+  /** `acompte_solde` | `solde_unique` | « » = non défini. */
+  modeFacturation: string;
 }
 
 /**
@@ -67,6 +88,17 @@ export interface ClientEditFlags {
   penalitesRetardActives: boolean;
 }
 
+/** Valeurs affichées en lecture seule (écrites ailleurs). */
+export interface ClientEditLecture {
+  siren: string | null;
+  effectif: number | null;
+  estPublic: boolean;
+  /** Ancienne adresse en texte libre, montrée tant que les 3 champs sont vides. */
+  adresseHistorique: string | null;
+  /** Lien vers la fiche, onglet Résumé (bloc « Branche et OPCO »). */
+  brancheHref: string;
+}
+
 export interface ClientEditFormProps {
   clientId: string;
   /** `true` pour un particulier : les champs entreprise sont masqués. */
@@ -74,17 +106,25 @@ export interface ClientEditFormProps {
   initial: ClientEditValues;
   /** Réglages booléens (pénalités de retard). Défaut : tout à faux. */
   initialFlags?: ClientEditFlags;
+  lecture?: ClientEditLecture;
   /** Où revenir après enregistrement. */
   retourHref: string;
 }
 
 const FLAGS_PAR_DEFAUT: ClientEditFlags = { penalitesRetardActives: false };
 
+/** Chaîne de saisie → entier, ou `null` si vide ; `NaN` si non numérique. */
+function entierOuNull(saisie: string): number | null {
+  const t = saisie.trim();
+  return t === "" ? null : Number(t);
+}
+
 export function ClientEditForm({
   clientId,
   estParticulier,
   initial,
   initialFlags = FLAGS_PAR_DEFAUT,
+  lecture,
   retourHref,
 }: ClientEditFormProps): React.ReactElement {
   const router = useRouter();
@@ -130,20 +170,55 @@ export function ClientEditForm({
 
     /** Vrai si ce champ a bougé — seul cas où on le transmet. */
     const change = (k: keyof ClientEditValues) => v[k].trim() !== initial[k].trim();
+    /** Texte vidé volontairement → `null` (efface), jamais `""`. */
+    const texteOuNull = (k: keyof ClientEditValues) => (v[k].trim() === "" ? null : v[k].trim());
+
+    // Les chiffres sont contrôlés ici AVANT l'envoi : `Number("abc")` donnerait
+    // `NaN`, que le schéma refuse avec un message moins clair.
+    const delai = entierOuNull(v.delaiPaiementJours);
+    const acompte = entierOuNull(v.tauxAcomptePct);
+    if (change("delaiPaiementJours") && delai !== null && !Number.isInteger(delai)) {
+      setError("Délai de paiement : un nombre entier de jours est attendu.");
+      return;
+    }
+    if (change("tauxAcomptePct") && acompte !== null && !Number.isInteger(acompte)) {
+      setError("Acompte : un pourcentage entier est attendu.");
+      return;
+    }
+
+    const adresseChangee =
+      change("adresseRue") || change("adresseCodePostal") || change("adresseVille");
+    // L'ancienne adresse en texte libre suit les trois champs : deux vérités
+    // différentes sur la même adresse seraient lues par des écrans différents.
+    const adresseLibre = [
+      v.adresseRue.trim(),
+      `${v.adresseCodePostal.trim()} ${v.adresseVille.trim()}`.trim(),
+    ]
+      .filter((x) => x !== "")
+      .join(", ");
 
     startTransition(async () => {
       const result = await updateClientAction({
         id: clientId,
         ...(change("raisonSociale") ? { raisonSociale: v.raisonSociale.trim() } : {}),
-        ...(change("adresse") ? { adresse: v.adresse.trim() } : {}),
+        ...(change("adresseRue") ? { adresseRue: texteOuNull("adresseRue") } : {}),
+        ...(change("adresseCodePostal")
+          ? { adresseCodePostal: texteOuNull("adresseCodePostal") }
+          : {}),
+        ...(change("adresseVille") ? { adresseVille: texteOuNull("adresseVille") } : {}),
+        // 🔴 L'ancienne adresse libre n'est recomposée QUE si la rue est saisie :
+        // l'écran de création y range la rue seule, et la réécrire sans rue
+        // (ville ou code postal seuls) la perdrait. Trois champs vidés : rien
+        // n'est envoyé pour `adresse`, jamais `""`.
+        ...(adresseChangee && v.adresseRue.trim() !== "" ? { adresse: adresseLibre } : {}),
+        ...(change("secteur") ? { secteur: v.secteur.trim() } : {}),
+        ...(change("source") ? { source: v.source.trim() } : {}),
         ...(change("contactNom") ? { contactNom: v.contactNom.trim() } : {}),
         // 🔴 Vidé volontairement → `null`, pas `""`. Le schéma refuse `""`
         // (`.email()`), et une chaîne vide écrite en base ne serait pas
         // « pas d'adresse » : `devis.ts` teste `contactEmail !== null`, et un
         // `""` passerait ce test pour échouer plus loin, à l'envoi.
-        ...(change("contactEmail")
-          ? { contactEmail: v.contactEmail.trim() === "" ? null : v.contactEmail.trim() }
-          : {}),
+        ...(change("contactEmail") ? { contactEmail: texteOuNull("contactEmail") } : {}),
         ...(change("contactTelephone") ? { contactTelephone: v.contactTelephone.trim() } : {}),
         ...(change("contactFonction") ? { contactFonction: v.contactFonction.trim() } : {}),
         // Champs entreprise uniquement — jamais transmis pour un particulier,
@@ -152,7 +227,22 @@ export function ClientEditForm({
         ...(!estParticulier && change("siret")
           ? { siret: siretSaisi === "" ? null : siretSaisi }
           : {}),
+        ...(!estParticulier && change("tvaIntracom")
+          ? { tvaIntracom: texteOuNull("tvaIntracom") }
+          : {}),
+        // 🔴 Le NAF n'est transmis que s'il a bougé : l'envoyer relancerait la
+        // ré-inférence OPCO (voir l'en-tête).
         ...(!estParticulier && change("nafCode") ? { nafCode: v.nafCode.trim() } : {}),
+        ...(change("delaiPaiementJours") ? { delaiPaiementJours: delai } : {}),
+        ...(change("tauxAcomptePct") ? { tauxAcomptePct: acompte } : {}),
+        ...(change("modeFacturation")
+          ? {
+              modeFacturation:
+                v.modeFacturation === "acompte_solde" || v.modeFacturation === "solde_unique"
+                  ? v.modeFacturation
+                  : null,
+            }
+          : {}),
         // Même règle différentielle que les champs texte : transmis seulement
         // si l'utilisateur y a touché.
         ...(flags.penalitesRetardActives !== initialFlags.penalitesRetardActives
@@ -172,187 +262,366 @@ export function ClientEditForm({
   const labelCls =
     "block text-[length:var(--text-admin-xs)] font-semibold uppercase tracking-wide text-[color:var(--color-admin-fg-muted)] mb-[var(--space-admin-1)]";
   const inputCls =
-    "w-full rounded-[var(--radius-admin-sm)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] px-[var(--space-admin-3)] py-[var(--space-admin-2)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg)] focus:outline-none focus:ring-1 focus:ring-[color:var(--color-admin-accent)]";
+    "min-h-11 w-full rounded-[var(--radius-admin-sm)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] px-[var(--space-admin-3)] py-[var(--space-admin-2)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg)] focus:outline-none focus:ring-1 focus:ring-[color:var(--color-admin-accent)]";
   const fieldCls = "flex flex-col gap-[var(--space-admin-1)]";
+  const aideCls = "text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]";
+  const gridCls = "grid gap-[var(--space-admin-4)] sm:grid-cols-2";
+  const blocsCls = "flex flex-col gap-[var(--space-admin-4)]";
+  const rueVide = v.adresseRue.trim() === "";
 
   return (
-    <form
-      onSubmit={handleSubmit}
-      className="rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] p-[var(--space-admin-5)]"
-    >
-      <div className="grid gap-[var(--space-admin-4)] sm:grid-cols-2">
-        <div className={`${fieldCls} sm:col-span-2`}>
-          <label className={labelCls} htmlFor="edit-raisonSociale">
-            {estParticulier ? "Prénom et nom" : "Raison sociale"}{" "}
-            <span className="text-[color:var(--color-admin-error)]">*</span>
-          </label>
-          <input
-            id="edit-raisonSociale"
-            value={v.raisonSociale}
-            onChange={(e) => set("raisonSociale", e.target.value)}
-            disabled={isPending}
-            required
-            className={inputCls}
-          />
-        </div>
+    <form onSubmit={handleSubmit} className={blocsCls}>
+      <AdminBloc teinte="gris" titre={estParticulier ? "Le client" : "Entreprise"}>
+        <div className={gridCls}>
+          <div className={`${fieldCls} sm:col-span-2`}>
+            <label className={labelCls} htmlFor="edit-raisonSociale">
+              {estParticulier ? "Prénom et nom" : "Nom de l\u2019entreprise"}{" "}
+              <span className="text-[color:var(--color-admin-error)]">*</span>
+            </label>
+            <input
+              id="edit-raisonSociale"
+              value={v.raisonSociale}
+              onChange={(e) => set("raisonSociale", e.target.value)}
+              disabled={isPending}
+              required
+              className={inputCls}
+            />
+          </div>
 
-        {!estParticulier && (
-          <>
-            <div className={fieldCls}>
-              <label className={labelCls} htmlFor="edit-siret">
-                SIRET
-              </label>
-              <input
-                id="edit-siret"
-                value={v.siret}
-                onChange={(e) => set("siret", e.target.value)}
-                disabled={isPending}
-                className={inputCls}
-                inputMode="numeric"
-              />
-              {siretErreur !== null && (
-                <p className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-warning)]">
-                  {siretErreur}
+          {!estParticulier && (
+            <>
+              <div className={fieldCls}>
+                <label className={labelCls} htmlFor="edit-siret">
+                  SIRET
+                </label>
+                <input
+                  id="edit-siret"
+                  value={v.siret}
+                  onChange={(e) => set("siret", e.target.value)}
+                  disabled={isPending}
+                  className={inputCls}
+                  inputMode="numeric"
+                />
+                {siretErreur !== null && (
+                  <p className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-warning)]">
+                    {siretErreur}
+                  </p>
+                )}
+              </div>
+
+              <div className={fieldCls}>
+                <p className={labelCls}>SIREN</p>
+                <p className="min-h-11 py-[var(--space-admin-2)] text-[length:var(--text-admin-sm)]">
+                  {lecture?.siren ?? "Non renseigné"}
                 </p>
-              )}
-            </div>
+                <p className={aideCls}>
+                  Les 9 premiers chiffres du SIRET : il se met à jour avec lui.
+                </p>
+              </div>
 
-            <div className={fieldCls}>
-              <label className={labelCls} htmlFor="edit-naf">
-                Code NAF
-              </label>
-              <input
-                id="edit-naf"
-                value={v.nafCode}
-                onChange={(e) => set("nafCode", e.target.value)}
-                disabled={isPending}
-                className={inputCls}
-              />
-              <p className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
-                Modifier le NAF relance le calcul de l&apos;OPCO — uniquement si aucun OPCO n&apos;a
-                été saisi manuellement.
-              </p>
-            </div>
-          </>
-        )}
+              <div className={fieldCls}>
+                <label className={labelCls} htmlFor="edit-tva">
+                  Numéro de TVA
+                </label>
+                <input
+                  id="edit-tva"
+                  value={v.tvaIntracom}
+                  onChange={(e) => set("tvaIntracom", e.target.value)}
+                  disabled={isPending}
+                  className={inputCls}
+                />
+                <p className={aideCls}>Numéro de TVA intracommunautaire, s&apos;il est connu.</p>
+              </div>
 
-        <div className={`${fieldCls} sm:col-span-2`}>
-          <label className={labelCls} htmlFor="edit-adresse">
-            Adresse
-          </label>
-          <input
-            id="edit-adresse"
-            value={v.adresse}
-            onChange={(e) => set("adresse", e.target.value)}
-            disabled={isPending}
-            className={inputCls}
-          />
+              <div className={fieldCls}>
+                <label className={labelCls} htmlFor="edit-naf">
+                  Code NAF
+                </label>
+                <input
+                  id="edit-naf"
+                  value={v.nafCode}
+                  onChange={(e) => set("nafCode", e.target.value)}
+                  disabled={isPending}
+                  className={inputCls}
+                />
+                <p className={aideCls}>
+                  Modifier le NAF relance le calcul de l&apos;OPCO — uniquement si aucun OPCO
+                  n&apos;a été saisi manuellement.
+                </p>
+              </div>
+            </>
+          )}
+
+          <div className={fieldCls}>
+            <label className={labelCls} htmlFor="edit-secteur">
+              Secteur d&apos;activité
+            </label>
+            <input
+              id="edit-secteur"
+              value={v.secteur}
+              onChange={(e) => set("secteur", e.target.value)}
+              disabled={isPending}
+              className={inputCls}
+            />
+          </div>
+
+          {!estParticulier && lecture !== undefined && (
+            <>
+              <div className={fieldCls}>
+                <p className={labelCls}>Nombre de salariés</p>
+                <p className="text-[length:var(--text-admin-sm)]">
+                  {lecture.effectif === null ? "Non renseigné" : lecture.effectif}
+                </p>
+                <Link
+                  href={lecture.brancheHref}
+                  className="inline-flex min-h-11 items-center text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-accent)] underline underline-offset-2"
+                >
+                  Modifier dans Branche et OPCO
+                </Link>
+              </div>
+
+              <div className={fieldCls}>
+                <p className={labelCls}>Secteur public</p>
+                <p className="text-[length:var(--text-admin-sm)]">
+                  {lecture.estPublic ? "Oui" : "Non"}
+                </p>
+                <p className={aideCls}>
+                  Il décide du dépôt des factures sur Chorus Pro : il se change avec Will.
+                </p>
+              </div>
+            </>
+          )}
         </div>
+      </AdminBloc>
 
-        <div className={fieldCls}>
-          <label className={labelCls} htmlFor="edit-contactNom">
-            Nom du contact
-          </label>
-          <input
-            id="edit-contactNom"
-            value={v.contactNom}
-            onChange={(e) => set("contactNom", e.target.value)}
-            disabled={isPending}
-            className={inputCls}
-          />
+      <AdminBloc teinte="gris" titre="Adresse">
+        <div className={gridCls}>
+          <div className={`${fieldCls} sm:col-span-2`}>
+            <label className={labelCls} htmlFor="edit-adresseRue">
+              Numéro et rue
+            </label>
+            <input
+              id="edit-adresseRue"
+              value={v.adresseRue}
+              onChange={(e) => set("adresseRue", e.target.value)}
+              disabled={isPending}
+              className={inputCls}
+            />
+          </div>
+          <div className={fieldCls}>
+            <label className={labelCls} htmlFor="edit-adresseCodePostal">
+              Code postal
+            </label>
+            <input
+              id="edit-adresseCodePostal"
+              value={v.adresseCodePostal}
+              onChange={(e) => set("adresseCodePostal", e.target.value)}
+              disabled={isPending}
+              className={inputCls}
+              inputMode="numeric"
+            />
+          </div>
+          <div className={fieldCls}>
+            <label className={labelCls} htmlFor="edit-adresseVille">
+              Ville
+            </label>
+            <input
+              id="edit-adresseVille"
+              value={v.adresseVille}
+              onChange={(e) => set("adresseVille", e.target.value)}
+              disabled={isPending}
+              className={inputCls}
+            />
+          </div>
+          {rueVide && lecture?.adresseHistorique ? (
+            <p className={`${aideCls} sm:col-span-2`}>
+              Adresse saisie jusqu&apos;ici en texte libre : {lecture.adresseHistorique}.
+              Recopiez-la dans les trois champs ci-dessus ; elle reste conservée tant que la rue est
+              vide.
+            </p>
+          ) : null}
         </div>
+      </AdminBloc>
 
+      <AdminBloc teinte="gris" titre="Comment ce client est arrivé">
         <div className={fieldCls}>
-          <label className={labelCls} htmlFor="edit-contactFonction">
-            Fonction du contact
+          <label className={labelCls} htmlFor="edit-source">
+            Origine
           </label>
           <input
-            id="edit-contactFonction"
-            value={v.contactFonction}
-            onChange={(e) => set("contactFonction", e.target.value)}
+            id="edit-source"
+            value={v.source}
+            onChange={(e) => set("source", e.target.value)}
             disabled={isPending}
             className={inputCls}
           />
-          <p className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
-            Figée comme qualité du signataire au moment de la signature du devis — c&apos;est elle
-            qui atteste le pouvoir d&apos;engager la structure.
+          <p className={aideCls}>
+            Par exemple : bouche-à-oreille, site, salon, recommandation d&apos;un client.
           </p>
         </div>
+      </AdminBloc>
 
-        <div className={fieldCls}>
-          <label className={labelCls} htmlFor="edit-contactEmail">
-            E-mail du contact
-          </label>
-          <input
-            id="edit-contactEmail"
-            type="email"
-            value={v.contactEmail}
-            onChange={(e) => set("contactEmail", e.target.value)}
-            disabled={isPending}
-            className={inputCls}
-          />
-          {/* Dit AVANT l'erreur, pas après : sans adresse, l'envoi du devis
-              marche mais part sans lien de signature, et l'admin ne l'apprend
-              que dans une note de retour. */}
-          <p className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
-            Sans adresse, le devis part sans lien de signature — le client ne peut pas signer en
-            ligne.
-          </p>
+      <AdminBloc teinte="gris" titre="Contact principal">
+        <div className={gridCls}>
+          <div className={fieldCls}>
+            <label className={labelCls} htmlFor="edit-contactNom">
+              Nom et prénom
+            </label>
+            <input
+              id="edit-contactNom"
+              value={v.contactNom}
+              onChange={(e) => set("contactNom", e.target.value)}
+              disabled={isPending}
+              className={inputCls}
+            />
+          </div>
+
+          <div className={fieldCls}>
+            <label className={labelCls} htmlFor="edit-contactFonction">
+              Fonction
+            </label>
+            <input
+              id="edit-contactFonction"
+              value={v.contactFonction}
+              onChange={(e) => set("contactFonction", e.target.value)}
+              disabled={isPending}
+              className={inputCls}
+            />
+            <p className={aideCls}>
+              Figée comme qualité du signataire au moment de la signature du devis — c&apos;est elle
+              qui atteste le pouvoir d&apos;engager la structure.
+            </p>
+          </div>
+
+          <div className={fieldCls}>
+            <label className={labelCls} htmlFor="edit-contactEmail">
+              E-mail
+            </label>
+            <input
+              id="edit-contactEmail"
+              type="email"
+              value={v.contactEmail}
+              onChange={(e) => set("contactEmail", e.target.value)}
+              disabled={isPending}
+              className={inputCls}
+            />
+            {/* Dit AVANT l'erreur, pas après : sans adresse, l'envoi du devis
+                marche mais part sans lien de signature, et l'admin ne l'apprend
+                que dans une note de retour. */}
+            <p className={aideCls}>
+              Sans adresse, le devis part sans lien de signature — le client ne peut pas signer en
+              ligne.
+            </p>
+          </div>
+
+          <div className={fieldCls}>
+            <label className={labelCls} htmlFor="edit-contactTelephone">
+              Téléphone
+            </label>
+            <input
+              id="edit-contactTelephone"
+              value={v.contactTelephone}
+              onChange={(e) => set("contactTelephone", e.target.value)}
+              disabled={isPending}
+              className={inputCls}
+            />
+          </div>
         </div>
+      </AdminBloc>
 
-        <div className={fieldCls}>
-          <label className={labelCls} htmlFor="edit-contactTelephone">
-            Téléphone du contact
-          </label>
-          <input
-            id="edit-contactTelephone"
-            value={v.contactTelephone}
-            onChange={(e) => set("contactTelephone", e.target.value)}
-            disabled={isPending}
-            className={inputCls}
-          />
-        </div>
-      </div>
+      <AdminBloc teinte="gris" titre="Facturation">
+        <div className={gridCls}>
+          <div className={fieldCls}>
+            <label className={labelCls} htmlFor="edit-delai">
+              Délai de paiement (jours)
+            </label>
+            <input
+              id="edit-delai"
+              type="number"
+              min={0}
+              max={DELAI_PAIEMENT_MAX_JOURS}
+              step={1}
+              inputMode="numeric"
+              value={v.delaiPaiementJours}
+              onChange={(e) => set("delaiPaiementJours", e.target.value)}
+              disabled={isPending}
+              className={inputCls}
+            />
+            <p className={aideCls}>De 0 à 60 jours. Laissez vide pour le délai habituel.</p>
+          </div>
 
-      {/* ── Recouvrement ────────────────────────────────────────────────────
-          Séparé de l'identité et du contact : ce n'est pas une coordonnée,
-          c'est une décision commerciale, et elle mérite d'être vue comme telle
-          au moment où on la prend. */}
-      <fieldset className="mt-[var(--space-admin-5)] border-t border-[color:var(--color-admin-border)] pt-[var(--space-admin-4)]">
-        <legend className="sr-only">Recouvrement</legend>
-        <p className={labelCls}>Recouvrement</p>
-        <label
-          htmlFor="edit-penalites-retard"
-          className="flex items-start gap-[var(--space-admin-3)] text-[length:var(--text-admin-sm)]"
-        >
-          <input
-            id="edit-penalites-retard"
-            type="checkbox"
-            checked={flags.penalitesRetardActives}
-            onChange={(e) => setFlag("penalitesRetardActives", e.target.checked)}
-            disabled={isPending}
-            aria-describedby="edit-penalites-retard-aide"
-            className="mt-[var(--space-admin-1)]"
-          />
-          <span>
-            Appliquer les pénalités de retard à ce client
-            <span
-              id="edit-penalites-retard-aide"
-              className="mt-[var(--space-admin-1)] block text-[length:var(--text-admin-xs)] font-normal text-[color:var(--color-admin-fg-muted)]"
+          <div className={fieldCls}>
+            <label className={labelCls} htmlFor="edit-acompte">
+              Acompte (%)
+            </label>
+            <input
+              id="edit-acompte"
+              type="number"
+              min={0}
+              max={100}
+              step={1}
+              inputMode="numeric"
+              value={v.tauxAcomptePct}
+              onChange={(e) => set("tauxAcomptePct", e.target.value)}
+              disabled={isPending}
+              className={inputCls}
+            />
+            <p className={aideCls}>De 0 à 100 %. Laissez vide pour l&apos;acompte habituel.</p>
+          </div>
+
+          <div className={`${fieldCls} sm:col-span-2`}>
+            <label className={labelCls} htmlFor="edit-mode">
+              Mode de facturation
+            </label>
+            <select
+              id="edit-mode"
+              value={v.modeFacturation}
+              onChange={(e) => set("modeFacturation", e.target.value)}
+              disabled={isPending}
+              className={inputCls}
             >
-              Désactivé par défaut. N&apos;activez ceci que pour un client précis : les pénalités
-              chiffrées apparaîtront alors dans le texte des relances qui lui sont adressées. Les
-              mentions légales de pénalités restent imprimées sur toutes les factures dans tous les
-              cas, que cette case soit cochée ou non.
+              <option value="">Non défini</option>
+              <option value="acompte_solde">Acompte puis solde</option>
+              <option value="solde_unique">Solde unique</option>
+            </select>
+            {v.modeFacturation === "solde_unique" ? (
+              <p className={aideCls}>En solde unique, l&apos;acompte n&apos;est pas appliqué.</p>
+            ) : null}
+          </div>
+
+          <label
+            htmlFor="edit-penalites-retard"
+            className="flex min-h-11 items-start gap-[var(--space-admin-3)] text-[length:var(--text-admin-sm)] sm:col-span-2"
+          >
+            <input
+              id="edit-penalites-retard"
+              type="checkbox"
+              checked={flags.penalitesRetardActives}
+              onChange={(e) => setFlag("penalitesRetardActives", e.target.checked)}
+              disabled={isPending}
+              aria-describedby="edit-penalites-retard-aide"
+              className="mt-[var(--space-admin-1)]"
+            />
+            <span>
+              Appliquer les pénalités de retard à ce client
+              <span
+                id="edit-penalites-retard-aide"
+                className="mt-[var(--space-admin-1)] block text-[length:var(--text-admin-xs)] font-normal text-[color:var(--color-admin-fg-muted)]"
+              >
+                Désactivé par défaut. N&apos;activez ceci que pour un client précis : les pénalités
+                chiffrées apparaîtront alors dans le texte des relances qui lui sont adressées. Les
+                mentions légales de pénalités restent imprimées sur toutes les factures dans tous
+                les cas, que cette case soit cochée ou non.
+              </span>
             </span>
-          </span>
-        </label>
-      </fieldset>
+          </label>
+        </div>
+      </AdminBloc>
 
       {error !== null && (
         <p
           role="alert"
-          className="mt-[var(--space-admin-4)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-error)]"
+          className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-error)]"
         >
           {error}
         </p>
@@ -360,7 +629,7 @@ export function ClientEditForm({
       {ok && (
         <p
           role="status"
-          className="mt-[var(--space-admin-4)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-success)]"
+          className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-success)]"
         >
           Fiche enregistrée.
         </p>
@@ -368,23 +637,23 @@ export function ClientEditForm({
       {ok && avertissement !== null && (
         <p
           role="status"
-          className="mt-[var(--space-admin-2)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-warning)]"
+          className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-warning)]"
         >
           {avertissement}
         </p>
       )}
 
-      <div className="mt-[var(--space-admin-5)] flex items-center gap-[var(--space-admin-4)]">
+      <div className="flex items-center gap-[var(--space-admin-4)]">
         <button
           type="submit"
           disabled={isPending || !modifie}
-          className="rounded-[var(--radius-admin-sm)] bg-[color:var(--color-admin-fg)] px-[var(--space-admin-4)] py-[var(--space-admin-2)] text-[length:var(--text-admin-sm)] font-medium text-[color:var(--color-admin-paper)] disabled:opacity-40"
+          className="min-h-11 rounded-[var(--radius-admin-sm)] bg-[color:var(--color-admin-fg)] px-[var(--space-admin-4)] py-[var(--space-admin-2)] text-[length:var(--text-admin-sm)] font-medium text-[color:var(--color-admin-paper)] disabled:opacity-40"
         >
           {isPending ? "Enregistrement…" : "Enregistrer"}
         </button>
         <a
           href={retourHref}
-          className="text-[length:var(--text-admin-sm)] underline underline-offset-4"
+          className="inline-flex min-h-11 items-center text-[length:var(--text-admin-sm)] underline underline-offset-4"
         >
           Retour
         </a>
