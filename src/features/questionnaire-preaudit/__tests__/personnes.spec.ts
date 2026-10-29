@@ -404,3 +404,27 @@ describe("référent informatique : attendu seulement s'il a commencé", () => {
     expect(s.collaborateurs.some((l) => l.role === "non_retrouvee")).toBe(false);
   });
 });
+
+describe("lien commun (sans code personnel) : information seule, hors du total", () => {
+  const lien = (nombre: number, derniere: number): EntreeOuverture => ({
+    mode: "lien",
+    membre: "",
+    premiereOuverture: T(26),
+    derniereOuverture: T(derniere),
+    nombre,
+    derniereEtapeAtteinte: 0,
+  });
+
+  it("cumule les ouvertures et garde la plus récente, sans toucher aux comptes", () => {
+    const sans = suivre({ reponses: [dirigeant()] });
+    const avec = suivre({ reponses: [dirigeant()], ouvertures: [lien(2, 27), lien(3, 28)] });
+    expect(avec.lienCommun).toEqual({ nombre: 5, derniere: T(28) });
+    expect(avec.total).toEqual(sans.total);
+    expect(avec.collab).toEqual(sans.collab);
+    expect(avec.collaborateurs.some((l) => l.role === "non_retrouvee")).toBe(false);
+  });
+
+  it("aucune ouverture du lien commun : rien à montrer", () => {
+    expect(suivre({ reponses: [dirigeant()] }).lienCommun).toBeNull();
+  });
+});

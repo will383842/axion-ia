@@ -166,6 +166,204 @@ function lignesAMontrer(s: Suivi, voitBrouillons: boolean): Ligne[] {
   return toutes.map((l) => ({ l, titre: titre(l) }));
 }
 
+/** Les ouvertures sont-elles lues ? Sinon, « n'a pas commencé » serait dit sans preuve. */
+const ouverturesSuivies = (s: Suivi, afficherOuvertures: boolean): boolean =>
+  afficherOuvertures && !s.ouverturesIndisponibles;
+
+/** Où en est UNE personne, en une phrase claire : terminé, brouillon, ouvert sans rien enregistrer, pas commencé. */
+function statutEnClair(
+  l: LignePersonne,
+  s: Suivi,
+  afficherOuvertures: boolean,
+): { tone: "success" | "warning" | "neutral" | "outline"; texte: string; detail: string[] } {
+  const suivies = ouverturesSuivies(s, afficherOuvertures);
+  const detail: string[] = [];
+  if (l.brouillonMajLe && l.etat !== "recu") {
+    detail.push(`brouillon enregistré le ${jourHeure(l.brouillonMajLe)}`);
+  }
+  if (suivies && l.ouverture !== null) {
+    const n = l.ouverture.nombre;
+    detail.push(
+      `dernière ouverture de son lien le ${jourHeure(l.ouverture.derniere)} (${n} fois au total)`,
+    );
+  }
+  switch (l.etat) {
+    case "recu":
+      return {
+        tone: "success",
+        texte: l.recuLe ? `Terminé : reçu le ${jourHeure(l.recuLe)}` : "Terminé : reçu",
+        detail,
+      };
+    case "ecartee":
+      return { tone: "outline", texte: "Réponse mise de côté", detail };
+    case "en_cours":
+      return { tone: "warning", texte: "Brouillon en cours", detail };
+    case "ouvert":
+      return { tone: "neutral", texte: "A ouvert son lien, rien d'enregistré", detail };
+    case "pas_de_lien_prevu":
+      return { tone: "outline", texte: "Pas de lien (choix du dirigeant)", detail };
+    case "lien_sans_code":
+      return { tone: "outline", texte: "Lien sans code : suivi impossible", detail };
+    default:
+      if (l.role === "dirigeant") return { tone: "outline", texte: "Pas reçu", detail };
+      if (l.role === "referent") {
+        return {
+          tone: "outline",
+          texte: suivies
+            ? "Pas commencé (facultatif : le dirigeant peut remplir la partie technique lui-même)"
+            : "Pas de nouvelles (facultatif ; ouvertures non suivies)",
+          detail,
+        };
+      }
+      return {
+        tone: "outline",
+        texte: suivies ? "N'a pas commencé" : "Pas de nouvelles (ouvertures non suivies)",
+        detail,
+      };
+  }
+}
+
+function LigneEnClair({
+  ligne,
+  s,
+  afficherOuvertures,
+}: {
+  ligne: Ligne;
+  s: Suivi;
+  afficherOuvertures: boolean;
+}): React.ReactElement {
+  const st = statutEnClair(ligne.l, s, afficherOuvertures);
+  return (
+    <li className="flex flex-wrap items-baseline gap-x-[var(--space-admin-2)] gap-y-1">
+      <span className="font-medium">{ligne.titre}</span>
+      <AdminBadge tone={st.tone}>{st.texte}</AdminBadge>
+      {st.detail.length > 0 ? (
+        <span className="text-[length:var(--text-admin-xs)]">{st.detail.join(" · ")}</span>
+      ) : null}
+    </li>
+  );
+}
+
+/** « 3 terminés · 1 en brouillon · … » : calculé sur les lignes affichées, la somme retombe sur le total déclaré. */
+function phraseDesComptes(declarees: Ligne[], horsListe: number, suivies: boolean): string {
+  const nb = (...etats: string[]): number =>
+    declarees.filter(({ l }) => etats.includes(l.etat)).length;
+  const recus = nb("recu");
+  const enCours = nb("en_cours");
+  const ouverts = nb("ouvert");
+  const pas = nb("pas_de_nouvelles");
+  const sansLien = nb("pas_de_lien_prevu", "lien_sans_code");
+  const ecartees = nb("ecartee");
+  const morceaux = [`${recus} terminé${recus > 1 ? "s" : ""}`, `${enCours} en brouillon`];
+  if (ouverts > 0) {
+    morceaux.push(
+      `${ouverts} ${ouverts > 1 ? "ont ouvert leur lien" : "a ouvert son lien"} sans rien enregistrer`,
+    );
+  }
+  if (pas > 0) {
+    morceaux.push(
+      suivies
+        ? `${pas} ${pas > 1 ? "n'ont pas commencé" : "n'a pas commencé"}`
+        : `${pas} sans nouvelles (ouvertures non suivies)`,
+    );
+  }
+  if (sansLien > 0) morceaux.push(`${sansLien} sans lien`);
+  if (ecartees > 0) {
+    morceaux.push(
+      `${ecartees} réponse${ecartees > 1 ? "s" : ""} mise${ecartees > 1 ? "s" : ""} de côté`,
+    );
+  }
+  if (horsListe > 0) morceaux.push(`+ ${horsListe} hors de la liste`);
+  return morceaux.join(" · ");
+}
+
+/** Le résumé en langage clair : questionnaire général, équipe déclarée, référent. Lecture seule. */
+function ResumeEnClair({
+  lignes,
+  s,
+  q,
+  afficherOuvertures,
+}: {
+  lignes: Ligne[];
+  s: Suivi;
+  q: QuestionnaireDeLaFiche;
+  afficherOuvertures: boolean;
+}): React.ReactElement {
+  const suivies = ouverturesSuivies(s, afficherOuvertures);
+  const dirigeant = lignes.find(({ l }) => l.role === "dirigeant");
+  const equipe = lignes.filter(({ l }) => l.role === "collaborateur" || l.role === "non_retrouvee");
+  const declarees = equipe.filter(({ l }) => l.role === "collaborateur");
+  const referents = lignes.filter(({ l }) => l.role === "referent");
+  return (
+    <div data-bloc="resume-en-clair" className="space-y-[var(--space-admin-3)]">
+      <section>
+        <h4 className="font-medium">1. Questionnaire général (le dirigeant)</h4>
+        <ul className="mt-1 space-y-1">
+          {dirigeant !== undefined ? (
+            <LigneEnClair ligne={dirigeant} s={s} afficherOuvertures={afficherOuvertures} />
+          ) : null}
+        </ul>
+        <p className="text-[length:var(--text-admin-xs)]">{texteDuLienDirigeant(q)}</p>
+        {dirigeant?.l.taux != null ? (
+          <p className="text-[length:var(--text-admin-xs)]">{texteDuTaux(dirigeant.l)}</p>
+        ) : null}
+      </section>
+      <section>
+        <h4 className="font-medium">
+          2. Équipe déclarée par le dirigeant
+          {s.equipe.connue
+            ? ` : ${declarees.length} personne${declarees.length > 1 ? "s" : ""}`
+            : ""}
+        </h4>
+        {equipe.length === 0 ? (
+          <p className="text-[length:var(--text-admin-xs)]">
+            {s.equipe.connue
+              ? "Aucune personne à suivre pour le moment."
+              : "Le dirigeant n'a pas encore déclaré son équipe."}
+          </p>
+        ) : (
+          <>
+            <p className="text-[length:var(--text-admin-xs)]">
+              {phraseDesComptes(declarees, equipe.length - declarees.length, suivies)}
+            </p>
+            <ul className="mt-1 space-y-1">
+              {equipe.map((ligne) => (
+                <LigneEnClair
+                  key={ligne.l.cle}
+                  ligne={ligne}
+                  s={s}
+                  afficherOuvertures={afficherOuvertures}
+                />
+              ))}
+            </ul>
+          </>
+        )}
+        {suivies && s.lienCommun !== null ? (
+          <p className="mt-1 text-[length:var(--text-admin-xs)]">
+            Lien commun (sans code personnel) : ouvert {s.lienCommun.nombre} fois, dernière le{" "}
+            {jourHeure(s.lienCommun.derniere)} (hors du total).
+          </p>
+        ) : null}
+      </section>
+      {referents.length > 0 ? (
+        <section>
+          <h4 className="font-medium">3. Référent informatique</h4>
+          <ul className="mt-1 space-y-1">
+            {referents.map((ligne) => (
+              <LigneEnClair
+                key={ligne.l.cle}
+                ligne={ligne}
+                s={s}
+                afficherOuvertures={afficherOuvertures}
+              />
+            ))}
+          </ul>
+        </section>
+      ) : null}
+    </div>
+  );
+}
+
 function ConservationEtSauvegarde({
   q,
   p,
@@ -271,6 +469,8 @@ export function SuiviParPersonne({
     >
       <div data-bloc="suivi-par-personne" className="space-y-[var(--space-admin-2)]">
         <p className="font-medium">{phraseEnTete(s)}</p>
+        <ResumeEnClair lignes={lignes} s={s} q={q} afficherOuvertures={afficherOuvertures} />
+        <p className="font-medium">Détail, personne par personne</p>
         {s.equipe.connue ? <p>{ligneEquipe(s)}</p> : null}
         {s.effectif !== null && (s.equipe.source !== "brouillon" || voitBrouillons) ? (
           <p className="text-[length:var(--text-admin-xs)]">
