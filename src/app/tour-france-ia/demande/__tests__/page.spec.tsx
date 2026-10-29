@@ -7,9 +7,23 @@ import { join } from "node:path";
 import { cleanup, render } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
+import { BOUTON_ENVOI, CHAMP_HAUT } from "@/components/booking/classes-formulaire";
+
 import { MOTS_INTERDITS } from "../../__tests__/mots-interdits";
 
+// Les mots interdits du Tour, plus ceux que la mini-demande ne dit pas non plus.
+const MOTS_INTERDITS_DEMANDE = [
+  ...MOTS_INTERDITS,
+  /\brepas\b/i,
+  /d[ée]placement/i,
+  /\bmontant\b/i,
+  /aucun gain/i,
+];
+
 vi.mock("../actions", () => ({ envoyerDemandeTour: vi.fn() }));
+vi.mock("@/features/tour-de-france/lectures", () => ({
+  lireCompteursPublics: vi.fn(async () => []),
+}));
 
 import DemandePage, { metadata } from "../page";
 
@@ -52,17 +66,26 @@ describe("la page de la demande", () => {
     );
   });
 
-  it("bouton terracotta (texte clair), contour des champs marqué, focus terracotta", async () => {
+  it("bouton partagé avec l'étape 2 (texte mocha, jamais paper), champs partagés, h1 et fil d'étapes", async () => {
     const { container } = await rendre();
     const bouton = container.querySelector('button[type="submit"]');
+    expect(bouton?.className).toBe(BOUTON_ENVOI);
     expect(bouton?.className).toMatch(/\bbg-terracotta\b/);
-    expect(bouton?.className).toMatch(/\btext-paper\b/);
+    expect(bouton?.className).toMatch(/\btext-mocha-fg\b/);
+    expect(bouton?.className).not.toMatch(/\btext-paper\b/);
     expect(bouton?.className).not.toMatch(/bg-primary/);
     for (const nom of ["nom", "email", "ville"]) {
-      const cl = container.querySelector(`input[name="${nom}"]`)?.className ?? "";
-      expect(cl, nom).toMatch(/\bborder-border-field\b/);
-      expect(cl, nom).toMatch(/\bmin-h-12\b/);
-      expect(cl, nom).toMatch(/focus-visible:outline-terracotta/);
+      expect(container.querySelector(`input[name="${nom}"]`)?.className, nom).toBe(CHAMP_HAUT);
+    }
+    expect(container.querySelector("h1")?.textContent).toBe("Votre journée offerte commence ici");
+    expect(container.querySelector("main")?.className).toMatch(/\bbg-canvas\b/);
+    expect(container.querySelector('[aria-current="step"]')?.textContent).toBe("Votre demande");
+    // Les trois champs requis portent un astérisque décoratif.
+    for (const id of ["tdf-nom", "tdf-email", "tdf-ville"]) {
+      expect(
+        container.querySelector(`label[for="${id}"] span[aria-hidden="true"]`),
+        id,
+      ).not.toBeNull();
     }
   });
 
@@ -123,10 +146,13 @@ describe("la page de la demande", () => {
   it("aucun mot interdit, ni dans le texte rendu ni dans les sources (commentaires compris)", async () => {
     const { container } = await rendre({ erreur: "champs" });
     const rendu = container.textContent ?? "";
-    const sources = ["demande/page.tsx", "demande/actions.ts", "_composants/CompteurVilles.tsx"]
-      .map((f) => lire(`${DOSSIER}/${f}`))
-      .join("\n");
-    for (const motif of MOTS_INTERDITS) {
+    const sources = [
+      lire(`${DOSSIER}/demande/page.tsx`),
+      lire(`${DOSSIER}/demande/actions.ts`),
+      lire(`${DOSSIER}/_composants/CompteurVilles.tsx`),
+      lire("src/components/tour/FilEtapesTour.tsx"),
+    ].join("\n");
+    for (const motif of MOTS_INTERDITS_DEMANDE) {
       expect(rendu, String(motif)).not.toMatch(motif);
       expect(sources, String(motif)).not.toMatch(motif);
     }
