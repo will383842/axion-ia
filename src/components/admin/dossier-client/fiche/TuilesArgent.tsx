@@ -14,6 +14,7 @@ import {
   devisEnAttente,
   montantHt,
   montantTtc,
+  montantTtcNonRenseigne,
   resteDuNetCents,
   type FacturePourArgent,
 } from "@/features/dossier-client/fiche/argent-de-la-fiche";
@@ -49,11 +50,26 @@ export function TuilesArgent({
   const echeanceTexte = plusAncienne
     ? ` · ${enRetard ? "en retard depuis le" : "à payer avant le"} ${dateCourte(plusAncienne)}`
     : "";
-  const nbDuesSansTtc = dues.filter((f) => f.montantTtcCents === null).length;
-  const sansTtcTexte =
-    nbDuesSansTtc > 0
-      ? ` · dont ${nbDuesSansTtc} facture${nbDuesSansTtc > 1 ? "s" : ""} sans TTC`
-      : "";
+  const nbDuesSansTtc = dues.filter(
+    (f) =>
+      f.montantTtcCents === null ||
+      f.avoirs.some((a) => a.statut !== "annulee" && a.montantTtcCents === null),
+  ).length;
+  const sansTtc = nbDuesSansTtc > 0;
+  const pluriel = nbDuesSansTtc > 1 ? "s" : "";
+  const tvaTexte = sansTtc
+    ? `TVA incluse sauf sur ${nbDuesSansTtc} facture${pluriel} sans TTC`
+    : "TVA incluse";
+  // Sans TTC sur une facture due, le total mêle HT et TTC : on ne l'étiquette pas TTC.
+  const somme = (c: number): string => (sansTtc ? montantTtcNonRenseigne(c) : montantTtc(c));
+  const encoursPositif = encoursDuCents > 0;
+  const duCents = dues.reduce((acc, f) => acc + resteDuNetCents(f), 0);
+  const nbDues = dues.length;
+  // Les restes se compensent : un trop-perçu sur une facture ne solde pas une autre facture encore due.
+  const encoreDuTexte =
+    !encoursPositif && nbDues > 0
+      ? `dont ${somme(duCents)} encore dus sur ${nbDues} facture${nbDues > 1 ? "s" : ""}`
+      : null;
 
   const metaDeja = [
     deja.nbSansTtc > 0
@@ -77,16 +93,16 @@ export function TuilesArgent({
       <AdminStatCard
         label="Reste à encaisser"
         value={
-          encoursDuCents < 0
-            ? `Trop-perçu : ${montantTtc(-encoursDuCents)}`
-            : montantTtc(encoursDuCents)
+          encoursDuCents < 0 ? `Trop-perçu : ${somme(-encoursDuCents)}` : somme(encoursDuCents)
         }
         meta={
-          encoursDuCents > 0
-            ? `Encours dû, TVA incluse${echeanceTexte}${sansTtcTexte}`
-            : "Encours dû : rien"
+          encoursPositif
+            ? `Encours dû, ${tvaTexte}${echeanceTexte}`
+            : encoreDuTexte
+              ? `${encoursDuCents < 0 ? "Encours dû : rien · " : ""}${encoreDuTexte}${echeanceTexte}`
+              : "Encours dû : rien"
         }
-        tone={encoursDuCents > 0 ? "warning" : "success"}
+        tone={encoursPositif || encoreDuTexte ? "warning" : "success"}
         icon={Wallet}
       />
       <AdminStatCard

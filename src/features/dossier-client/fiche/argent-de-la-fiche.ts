@@ -47,7 +47,7 @@ export function dejaFactureCents(factures: readonly FacturePourArgent[]): DejaFa
     ttcCents += f.montantTtcCents ?? f.montantHtCents;
     if (f.montantTtcCents === null) nbSansTtc += 1;
     for (const a of f.avoirs) {
-      if (a.statut === "annulee") continue;
+      if (!estFactureEmise(a.statut)) continue;
       htCents += a.montantHtCents;
       ttcCents += a.montantTtcCents ?? a.montantHtCents;
       if (a.montantTtcCents === null) nbSansTtc += 1;

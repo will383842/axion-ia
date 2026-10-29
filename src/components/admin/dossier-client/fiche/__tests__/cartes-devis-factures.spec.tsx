@@ -1,5 +1,5 @@
 import { renderToStaticMarkup } from "react-dom/server";
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 
 import { CartesDevis, CartesFactures } from "../CartesPieces";
 import { TuilesArgent } from "../TuilesArgent";
@@ -243,6 +243,58 @@ describe("cartes devis et factures", () => {
         />,
       ),
     );
-    expect(tuiles).toContain("dont 1 facture sans TTC");
+    expect(tuiles).toContain("TVA incluse sauf sur 1 facture sans TTC");
+    expect(tuiles).toContain("480 € (TTC non renseigné)");
+    expect(tuiles).not.toContain("480 € TTC");
+    expect(tuiles).not.toContain("TVA incluse, ");
+  });
+  it("carte en retard : « en retard depuis le », y compris à 23 h 30 à Paris", () => {
+    vi.useFakeTimers();
+    try {
+      // 23 h 30 à Paris le 15 oct. 2026 = 21 h 30 UTC : l'échéance du 15 est encore à venir ce jour-là.
+      vi.setSystemTime(new Date("2026-10-15T21:30:00Z"));
+      const echeance = new Date("2026-10-15T09:00:00Z");
+      const f = { ...partielle, statut: "emise", payments: [], echeanceAt: echeance };
+      const memeJour = plat(
+        renderToStaticMarkup(<CartesFactures qBase="/q" statuts={statuts} factures={[f]} />),
+      );
+      expect(memeJour).toContain("avant le 15 oct.");
+      // 00 h 30 à Paris le 16 : la date est passée.
+      vi.setSystemTime(new Date("2026-10-15T22:30:00Z"));
+      const lendemain = plat(
+        renderToStaticMarkup(<CartesFactures qBase="/q" statuts={statuts} factures={[f]} />),
+      );
+      expect(lendemain).toContain("en retard depuis le 15 oct.");
+      expect(lendemain).not.toContain("encaisser avant le");
+    } finally {
+      vi.useRealTimers();
+    }
+  });
+  it("facture A due + facture B en trop-perçu : l'encours nul ou négatif dit ce qui reste dû", () => {
+    const a = {
+      ...partielle,
+      id: "a",
+      statut: "emise",
+      payments: [{ amountCents: 134000, status: "succeeded" }],
+    };
+    const b = {
+      ...partielle,
+      id: "b",
+      statut: "emise",
+      payments: [{ amountCents: 164000, status: "succeeded" }],
+    };
+    const h = plat(
+      renderToStaticMarkup(
+        <TuilesArgent
+          encoursDuCents={-10000}
+          factures={[a, b]}
+          devis={[]}
+          devisPlafonnes={false}
+          factureHorsConsoleLe={null}
+        />,
+      ),
+    );
+    expect(h).toContain("Trop-perçu : 100 € TTC");
+    expect(h).toContain("dont 100 € TTC encore dus sur 1 facture");
   });
 });

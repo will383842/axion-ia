@@ -8,6 +8,7 @@ import { Bell } from "lucide-react";
 
 import { AdminBadge } from "@/components/admin/ui/AdminBadge";
 import { AdminButton } from "@/components/admin/ui/AdminButton";
+import { dayKeyInParis } from "@/lib/calendar-grid";
 import { htEtTtc } from "./montants";
 import {
   dateCourte,
@@ -27,7 +28,7 @@ export type CorrespondanceStatut = Record<string, { label: string; tone: TonStat
 const carteCls =
   "rounded-[var(--radius-admin-md,8px)] border border-[color:var(--color-admin-border)] bg-white p-[var(--space-admin-4)]";
 const lienNumeroCls =
-  "font-mono text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-accent)] underline-offset-2 hover:underline";
+  "inline-flex min-h-[44px] items-center font-mono text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-accent)] underline-offset-2 hover:underline";
 const petitCls = "text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]";
 
 function Statut({
@@ -107,7 +108,11 @@ export function CartesFactures({
         const partiel = paiementPartiel(f);
         const reste = resteDuNetCents(f);
         const ouverteDue = !estAvoir && estFactureOuverte(f.statut) && reste > 0;
-        const avant = f.echeanceAt ? ` avant le ${dateCourte(f.echeanceAt)}` : "";
+        const echeanceDepassee =
+          f.echeanceAt !== null && dayKeyInParis(f.echeanceAt) < dayKeyInParis(new Date());
+        const avant = f.echeanceAt
+          ? `${echeanceDepassee ? ", en retard depuis le" : " avant le"} ${dateCourte(f.echeanceAt)}`
+          : "";
         // Sans TTC en base, le chiffre mêle HT et TTC : on ne l'étiquette ni HT ni TTC, on le dit.
         const somme = (c: number): string => (ttcConnu ? montantTtc(c) : montantTtcNonRenseigne(c));
         return (
