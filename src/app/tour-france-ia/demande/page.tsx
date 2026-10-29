@@ -1,6 +1,7 @@
 // `/tour-france-ia/demande` — la mini-demande qui précède la visio (PR-2b).
 //
-// Trois champs (nom, e-mail, ville), puis le calendrier de la visio. Composant SERVEUR :
+// Trois champs (nom, e-mail, ville), puis le calendrier de la visio, dans le design de l'étape 2
+// (`FilEtapesTour`, classes de `classes-formulaire.ts`). Composant SERVEUR :
 // aucun JavaScript client, aucun cookie, aucun script tiers. Le formulaire est natif et mène à
 // l'action `envoyerDemandeTour` (`actions.ts`), qui enregistre puis redirige vers la visio.
 //
@@ -13,13 +14,18 @@
 
 import type { Metadata } from "next";
 import { connection } from "next/server";
+import { ArrowRight, ShieldCheck } from "lucide-react";
 
 import { TOUR_PUBLIC } from "@/features/tour-de-france/visibilite";
 import { nomsDesVillesSuggerees } from "@/features/tour-de-france/villes";
 import { HoneypotField } from "@/components/forms/HoneypotField";
+import { BOUTON_ENVOI, CHAMP_HAUT, LIBELLE } from "@/components/booking/classes-formulaire";
+import { FilEtapesTour } from "@/components/tour/FilEtapesTour";
 import { lireSuiviArrivee } from "@/server/calendly/choix-rendez-vous";
 
-import { CHEMIN_CONDITIONS, CONDITIONS, MICRO_TEXTE_CTA, NOM_DU_TOUR } from "../contenu";
+import { CompteurVilles } from "../_composants/CompteurVilles";
+import { PictoTour, PictoVisio } from "../_composants/Visuels";
+import { CHEMIN_CONDITIONS, CONDITIONS, ETAPES, MICRO_TEXTE_CTA, NOM_DU_TOUR } from "../contenu";
 import { envoyerDemandeTour } from "./actions";
 
 export const metadata: Metadata = {
@@ -44,12 +50,25 @@ const MESSAGES_ERREUR = {
   trop: "Trop de demandes depuis cette connexion. Réessayez dans une heure.",
 } as const;
 
-// Contrastes (jetons de `globals.css`, calculés) : texte `fg` sur `paper` 17:1 ; contour des champs
-// `border-field` 3,9:1 sur `paper` (WCAG 1.4.11) ; bouton `paper` sur `terracotta` 5,8:1 (AA),
-// 8,3:1 au survol (`terracotta-deep`) ; anneau de focus `terracotta` 5,8:1 sur `paper`.
-const LABEL = "text-fg block text-base font-bold";
-const CHAMP =
-  "border-border-field bg-paper text-fg focus:border-terracotta focus-visible:outline-terracotta mt-1.5 block min-h-12 w-full rounded-lg border-2 px-4 text-base focus-visible:outline-[3px] focus-visible:outline-offset-2";
+// Les classes des champs, du libellé et du bouton viennent de `classes-formulaire.ts`, partagées
+// avec l'étape 2 : contour `border-border-strong` sur `paper`, anneau de focus `terracotta`,
+// bouton `text-mocha-fg` sur `bg-terracotta` (5,24:1, appariement du design system, jamais
+// `text-paper`).
+
+/** Le dessin de chaque ligne de « En 3 étapes », dans l'ordre d'`ETAPES.liste`. */
+function PictoLigne({ index }: { index: number }) {
+  if (index === 0) return <PictoTour nom="heures" taille={28} />;
+  if (index === 1) return <PictoVisio taille={28} />;
+  return <PictoTour nom="calendrier" taille={28} />;
+}
+
+function Requis() {
+  return (
+    <span className="text-terracotta-deep ml-1" aria-hidden="true">
+      *
+    </span>
+  );
+}
 
 interface Props {
   searchParams: Promise<Record<string, string | string[] | undefined>>;
@@ -63,36 +82,63 @@ export default async function DemandePage({ searchParams }: Props) {
   );
   const erreur = sp["erreur"] === "champs" || sp["erreur"] === "trop" ? sp["erreur"] : null;
   const villes = nomsDesVillesSuggerees();
+  // Composant serveur asynchrone : appelé ici, il rend son élément, ou rien sous le seuil.
+  const compteur = await CompteurVilles();
 
   return (
-    <main className="bg-sand w-full px-4 py-10 sm:px-6 sm:py-16">
+    <main className="bg-canvas w-full px-4 pt-6 pb-16 sm:px-6 sm:pt-10">
       <div className="mx-auto w-full max-w-xl">
-        <h1 className="text-fg font-serif text-[clamp(1.875rem,1.35rem+2.2vw,3rem)] leading-[1.08] font-semibold tracking-tight text-balance">
-          Votre journée offerte, en trois champs
+        <FilEtapesTour etapeCourante={1} />
+
+        <h1
+          className="text-fg mt-2.5 mb-1.5 text-[clamp(1.625rem,5.5vw,2.125rem)] leading-tight font-semibold tracking-tight"
+          style={{ fontFamily: "var(--font-serif)" }}
+        >
+          Votre journée offerte commence ici
         </h1>
-        <p className="text-fg mt-3 text-lg">Ensuite, vous choisissez le créneau de votre visio.</p>
+        <p className="text-fg-soft mb-5 text-[15px] leading-relaxed">
+          Une minute, trois champs, puis vous choisissez votre visio.
+        </p>
+
+        <div className="border-terracotta/35 bg-terracotta-soft mb-5 rounded-2xl border p-4 sm:p-5">
+          <p className="text-fg text-sm font-semibold">{ETAPES.titre}</p>
+          <ol className="mt-3 grid gap-3">
+            {ETAPES.liste.map((etape, i) => (
+              <li key={etape} className="text-fg flex items-center gap-3 text-[15px]">
+                <span className="bg-paper text-terracotta-deep grid h-10 w-10 shrink-0 place-items-center rounded-full">
+                  <PictoLigne index={i} />
+                </span>
+                {etape}
+              </li>
+            ))}
+          </ol>
+          {compteur ? (
+            <>
+              <p className="text-fg mt-4 text-sm font-semibold">Les villes les plus demandées</p>
+              {compteur}
+            </>
+          ) : null}
+        </div>
 
         {erreur ? (
           <p
             role="alert"
-            className="border-terracotta bg-terracotta-soft text-fg mt-6 rounded-lg border-2 px-4 py-3 font-medium"
+            className="border-terracotta bg-terracotta-soft text-fg mb-5 rounded-lg border-2 px-4 py-3 font-medium"
           >
             {MESSAGES_ERREUR[erreur]}
           </p>
         ) : null}
 
-        <form
-          action={envoyerDemandeTour}
-          className="bg-paper border-sand-deep shadow-card mt-8 grid gap-5 rounded-2xl border p-5 sm:p-8"
-        >
+        <form action={envoyerDemandeTour} className="space-y-5">
           {CHAMPS_CACHES.map((cle) => {
             const v = suivi[cle];
             return v ? <input key={cle} type="hidden" name={cle} value={v} /> : null;
           })}
 
           <div>
-            <label htmlFor="tdf-nom" className={LABEL}>
+            <label htmlFor="tdf-nom" className={LIBELLE}>
               Nom
+              <Requis />
             </label>
             <input
               id="tdf-nom"
@@ -102,12 +148,13 @@ export default async function DemandePage({ searchParams }: Props) {
               autoComplete="name"
               required
               maxLength={80}
-              className={CHAMP}
+              className={CHAMP_HAUT}
             />
           </div>
           <div>
-            <label htmlFor="tdf-email" className={LABEL}>
+            <label htmlFor="tdf-email" className={LIBELLE}>
               E-mail
+              <Requis />
             </label>
             <input
               id="tdf-email"
@@ -116,12 +163,13 @@ export default async function DemandePage({ searchParams }: Props) {
               autoComplete="email"
               required
               maxLength={254}
-              className={CHAMP}
+              className={CHAMP_HAUT}
             />
           </div>
           <div>
-            <label htmlFor="tdf-ville" className={LABEL}>
+            <label htmlFor="tdf-ville" className={LIBELLE}>
               Ville
+              <Requis />
             </label>
             <input
               id="tdf-ville"
@@ -131,7 +179,7 @@ export default async function DemandePage({ searchParams }: Props) {
               required
               maxLength={80}
               list="tdf-villes"
-              className={CHAMP}
+              className={CHAMP_HAUT}
             />
             <datalist id="tdf-villes">
               {villes.map((v) => (
@@ -142,15 +190,16 @@ export default async function DemandePage({ searchParams }: Props) {
 
           <HoneypotField />
 
-          <div className="flex flex-col gap-1.5">
-            <button
-              type="submit"
-              className="bg-terracotta text-paper hover:bg-terracotta-deep focus-visible:outline-terracotta min-h-14 w-full rounded-full px-6 text-lg font-bold transition-colors focus-visible:outline-[3px] focus-visible:outline-offset-2 motion-reduce:transition-none"
-            >
+          <div className="space-y-3 pt-1">
+            <button type="submit" className={BOUTON_ENVOI}>
               {LIBELLE_BOUTON}
+              <ArrowRight className="h-4 w-4" aria-hidden="true" />
             </button>
-            <p className="text-fg-soft text-center text-sm font-medium">{MICRO_TEXTE_CTA}</p>
-            <p className="text-fg-soft text-center text-[0.8125rem]">
+            <p className="text-fg-soft flex flex-wrap items-center justify-center gap-x-2 gap-y-1 text-center text-[13px]">
+              <ShieldCheck className="text-sage h-4 w-4 shrink-0" aria-hidden="true" />
+              {MICRO_TEXTE_CTA}
+            </p>
+            <p className="text-fg-soft text-center text-[13px]">
               {CONDITIONS}{" "}
               <a
                 href={CHEMIN_CONDITIONS}

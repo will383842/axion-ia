@@ -33,6 +33,7 @@ import { ArrowLeft, Check } from "lucide-react";
 import { routing } from "@/i18n/routing";
 import { Container } from "@/components/layout/Container";
 import { FormulaireReservation } from "@/components/booking/FormulaireReservation";
+import { FilEtapesTour } from "@/components/tour/FilEtapesTour";
 import { RemonterAuMessage } from "@/components/booking/RemonterAuMessage";
 import { resoudreEventTypePourReservation } from "@/server/calendly/availability";
 import { lireLaRepriseDuCreneau } from "@/server/calendly/reprise-formulaire";
@@ -213,30 +214,47 @@ export default async function ReserverPage({ params, searchParams }: Props) {
 
               Rendu en `<ol>` : l'ordre est l'information, et un lecteur d'écran
               annonce « liste de 3 éléments » plutôt qu'une suite de mots. */}
-          <ol className="text-fg-muted mt-4 flex items-center gap-2 text-[11px] font-semibold tracking-wide uppercase">
-            <li className="text-sage flex items-center gap-1.5">
-              <Check className="h-3.5 w-3.5" aria-hidden="true" />
-              Créneau
-            </li>
-            <li aria-hidden="true" className="bg-border-strong h-px w-4 shrink-0" />
-            <li className="text-terracotta-deep">Vos coordonnées</li>
-            <li aria-hidden="true" className="bg-border-strong h-px w-4 shrink-0" />
-            <li>C&apos;est réservé</li>
-          </ol>
+          {choix === "tour" ? (
+            <>
+              <FilEtapesTour etapeCourante={2} />
+              <h1
+                className="text-fg mt-2.5 mb-1.5 text-[clamp(1.625rem,5.5vw,2.125rem)] leading-tight font-semibold tracking-tight"
+                style={{ fontFamily: "var(--font-serif)" }}
+              >
+                Votre visio de {et.dureeMinutes ?? 30} minutes
+              </h1>
+              <p className="text-fg-soft mb-5 text-[15px] leading-relaxed">
+                Plus qu&apos;une minute : vos coordonnées, dont un téléphone pour vous joindre.
+              </p>
+            </>
+          ) : (
+            <>
+              <ol className="text-fg-muted mt-4 flex items-center gap-2 text-[11px] font-semibold tracking-wide uppercase">
+                <li className="text-sage flex items-center gap-1.5">
+                  <Check className="h-3.5 w-3.5" aria-hidden="true" />
+                  Créneau
+                </li>
+                <li aria-hidden="true" className="bg-border-strong h-px w-4 shrink-0" />
+                <li className="text-terracotta-deep">Vos coordonnées</li>
+                <li aria-hidden="true" className="bg-border-strong h-px w-4 shrink-0" />
+                <li>C&apos;est réservé</li>
+              </ol>
 
-          <h1
-            className="text-fg mt-2.5 mb-1.5 text-[clamp(1.625rem,5.5vw,2.125rem)] leading-tight font-semibold tracking-tight"
-            style={{ fontFamily: "var(--font-serif)" }}
-          >
-            Plus qu&apos;une minute et c&apos;est réservé
-          </h1>
-          {/* 🔑 Le sous-titre chiffre l'effort restant AVANT de rassurer sur
-              l'engagement. « Dernière étape » ne disait pas combien de temps ;
-              « une minute » se compare à l'envie d'abandonner. */}
-          <p className="text-fg-soft mb-5 text-[15px] leading-relaxed">
-            Une minute, pas de carte bancaire, aucun engagement — et vous pourrez annuler ou
-            déplacer d&apos;un clic depuis l&apos;e-mail de confirmation.
-          </p>
+              <h1
+                className="text-fg mt-2.5 mb-1.5 text-[clamp(1.625rem,5.5vw,2.125rem)] leading-tight font-semibold tracking-tight"
+                style={{ fontFamily: "var(--font-serif)" }}
+              >
+                Plus qu&apos;une minute et c&apos;est réservé
+              </h1>
+              {/* 🔑 Le sous-titre chiffre l'effort restant AVANT de rassurer sur
+                l'engagement. « Dernière étape » ne disait pas combien de temps ;
+                « une minute » se compare à l'envie d'abandonner. */}
+              <p className="text-fg-soft mb-5 text-[15px] leading-relaxed">
+                Une minute, pas de carte bancaire, aucun engagement — et vous pourrez annuler ou
+                déplacer d&apos;un clic depuis l&apos;e-mail de confirmation.
+              </p>
+            </>
+          )}
 
           {/* ⚠️ Quand la reprise n'a pas pu tout garder, on le DIT. Un champ vide
               sans explication ferait croire à une perte de données ; un champ
@@ -284,6 +302,7 @@ export default async function ReserverPage({ params, searchParams }: Props) {
             // Les formats DE CE TYPE — le même jugement que l'action
             // (`formatsProposes`), jamais une liste recopiée ici.
             formats={formatsProposes(choix, et.lieux?.formats)}
+            {...(choix === "tour" ? { libelleEnvoi: "Confirmer ma visio" } : {})}
             locale={locale}
             champLocale={CHAMP_LOCALE}
             champLeurre={CHAMP_LEURRE}
