@@ -361,16 +361,15 @@ export function suivreParPersonne(e: EntreePersonnes): SuiviParPersonne {
       });
     }
   }
-  let lienCommun: { nombre: number; derniere: Date } | null = null;
+  // Lien commun (sans code personnel) : on cumule, on ne le range chez personne.
+  let nombreLienCommun = 0;
+  let derniereLienCommun: Date | null = null;
   for (const o of e.ouvertures ?? []) {
     if (o.mode === "lien") {
-      lienCommun = {
-        nombre: (lienCommun?.nombre ?? 0) + o.nombre,
-        derniere:
-          lienCommun === null || o.derniereOuverture > lienCommun.derniere
-            ? o.derniereOuverture
-            : lienCommun.derniere,
-      };
+      nombreLienCommun += o.nombre;
+      if (derniereLienCommun === null || o.derniereOuverture > derniereLienCommun) {
+        derniereLienCommun = o.derniereOuverture;
+      }
       continue;
     }
     if (o.mode === "main" || o.membre === "") continue;
@@ -672,7 +671,10 @@ export function suivreParPersonne(e: EntreePersonnes): SuiviParPersonne {
     effectif,
     fichesSansNom: lue.sansNom,
     ouverturesIndisponibles: e.ouvertures === null,
-    lienCommun,
+    lienCommun:
+      derniereLienCommun === null
+        ? null
+        : { nombre: nombreLienCommun, derniere: derniereLienCommun },
   };
 }
 
