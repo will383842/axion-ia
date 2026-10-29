@@ -161,6 +161,10 @@ const CONSOMMATEURS_ASSUMES: ReadonlySet<string> = new Set([
   // Même lot — `fiche/contexte.ts` partage la lecture du client 360 entre la page et les emplacements
   // (`getClient360` sous `React.cache`) : une requête par affichage. Rien d'autre du domaine.
   "src/components/admin/dossier-client/fiche/contexte.ts",
+  // Fiche client, lot B1 (29/10/2026) — la tuile « Reste à encaisser » doit afficher EXACTEMENT l'encours de
+  // la fiche (`calculerEncoursDuCents`, règle unique du reste dû) et lit le type `Client360` ; la recopier
+  // donnerait deux règles. Rien d'autre du domaine. Nommé seul.
+  "src/features/dossier-client/fiche/lire-en-tete.ts",
   // Chantier QNC, lot L05 — le libellé de la modalité « hybride » a UNE seule source
   // (`libelles-enumerations`, constante pure, sans lecture de base ni d'interrupteur) :
   // la fiche formation publique, la convocation et la console disent la même chose.
