@@ -111,6 +111,28 @@ export const EXCLUSIONS_EXPORT_DOSSIER: ReadonlyArray<{
       "manuelle sous un mois, tiers occultés (contact@axion-ia.com).",
   },
   {
+    // 2026-10-29 — fiche client : tables créées SANS écrivain (migration seule), donc vides. Le lot
+    // qui les écrit DOIT remplacer ces entrées par la lecture réelle (notes déchiffrées).
+    modele: "ClientTache",
+    motif:
+      "tâches d'une fiche : table encore sans écrivain ; export à brancher dans le lot qui l'écrit.",
+  },
+  {
+    modele: "ClientNote",
+    motif:
+      "notes d'une fiche (chiffrées) : table encore sans écrivain ; export à brancher dans le lot qui l'écrit.",
+  },
+  {
+    modele: "ClientProfil",
+    motif:
+      "profil d'une fiche : table encore sans écrivain ; export à brancher dans le lot qui l'écrit.",
+  },
+  {
+    modele: "ClientEtiquette",
+    motif:
+      "étiquettes d'une fiche : table encore sans écrivain ; export à brancher dans le lot qui l'écrit.",
+  },
+  {
     modele: "DocumentProjetContenu",
     motif: "le contenu des fichiers des documents de projet ci-dessus (même réponse manuelle).",
   },

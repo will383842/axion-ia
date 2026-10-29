@@ -5236,6 +5236,11 @@ model Client {
   crmDossierSynchro        CrmDossierSynchro?
   /// Facture établie hors console (relation seule, aucune colonne sur `clients`, ADR 0053).
   factureHorsConsole ClientFactureHorsConsole?
+  /// Fiche client en 7 onglets (relations seules, aucune colonne sur `clients`, ADR 0053) : tâches, notes, profil, étiquettes.
+  taches     ClientTache[]
+  notes      ClientNote[]
+  profil     ClientProfil?
+  etiquettes ClientEtiquette[]
   /// Demandes du Tour France IA rattachées à la fiche (relation seule, aucune colonne sur `clients`).
   tourDemandes TourDemande[] @relation("TourDemandeClient")
 
@@ -13898,6 +13903,9 @@ model Projet {
   sessionsFormation     TrainingSession[]    @relation("ProjetSessionsFormation")
   /// Ce que le client a pris (type, étape forcée, montant) : relation seule, table `projet_suivis`.
   suivi                 ProjetSuivi?
+  /// Tâches et notes de la fiche rattachées à ce projet (relations seules ; SET NULL si le projet disparaît).
+  clientTaches          ClientTache[]
+  clientNotes           ClientNote[]
 
   @@unique([id, clientId])
   @@index([clientId, statut])
@@ -13921,6 +13929,10 @@ model ProjetSuivi {
   type         String   @db.VarChar(30)
   etapeForcee  String?  @map("etape_forcee") @db.VarChar(30)
   montantCents Int?     @map("montant_cents")
+  /// Probabilité de signature, 0 à 100 (CHECK en base). NULL = non estimée. Ajoutée le 2026-10-29.
+  probabilitePct  Int?      @map("probabilite_pct") @db.SmallInt
+  /// Date de clôture prévue (jour). NULL = non estimée.
+  cloturePrevueLe DateTime? @map("cloture_prevue_le") @db.Date
   creeLe       DateTime @default(now()) @map("cree_le")
   majLe        DateTime @updatedAt @map("maj_le")
 
@@ -13940,6 +13952,78 @@ model ClientFactureHorsConsole {
   creeLe     DateTime @default(now()) @map("cree_le")
 
   @@map("client_factures_hors_console")
+}
+
+/// Une tâche de suivi sur une fiche client (à faire, échéance, responsable). Table neuve, ADR 0053 :
+/// aucune colonne ajoutée à `clients`. `origine` : manuelle, rencontre, relance, questionnaire
+/// (texte fermé par CHECK). L'intitulé peut citer une personne : traité avec le dossier. 2026-10-29.
+/// MIGRATION SEULE : aucun écrivain dans cette PR.
+/// rgpd: dossier-client
+model ClientTache {
+  id               String    @id @default(uuid()) @db.Uuid
+  clientId         String    @map("client_id") @db.Uuid
+  client           Client    @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  projetId         String?   @map("projet_id") @db.Uuid
+  projet           Projet?   @relation(fields: [projetId], references: [id], onDelete: SetNull)
+  contactId        String?   @map("contact_id") @db.Uuid
+  intitule         String    @db.VarChar(300)
+  echeanceLe       DateTime  @map("echeance_le") @db.Date
+  responsableLabel String    @map("responsable_label") @db.VarChar(80)
+  faiteLe          DateTime? @map("faite_le")
+  origine          String    @default("manuelle") @db.VarChar(20)
+  createdAt        DateTime  @default(now()) @map("created_at")
+  updatedAt        DateTime  @updatedAt @map("updated_at")
+
+  @@index([clientId, echeanceLe])
+  @@index([projetId])
+  @@map("client_taches")
+}
+
+/// Une note sur une fiche client. `contenu_chiffre` : CHIFFRÉ comme les paroles du dossier (jamais de
+/// clair en base ; le code d'écriture viendra dans un lot suivant). 2026-10-29.
+/// rgpd: dossier-client
+model ClientNote {
+  id             String   @id @default(uuid()) @db.Uuid
+  clientId       String   @map("client_id") @db.Uuid
+  client         Client   @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  projetId       String?  @map("projet_id") @db.Uuid
+  projet         Projet?  @relation(fields: [projetId], references: [id], onDelete: SetNull)
+  contenuChiffre String   @map("contenu_chiffre")
+  auteurLabel    String   @map("auteur_label") @db.VarChar(80)
+  epinglee       Boolean  @default(false)
+  createdAt      DateTime @default(now()) @map("created_at")
+  updatedAt      DateTime @updatedAt @map("updated_at")
+
+  @@index([clientId, createdAt])
+  @@index([projetId])
+  @@map("client_notes")
+}
+
+/// Le profil de suivi d'une fiche (1-1 avec `clients`) : responsable, archivage. 2026-10-29.
+/// rgpd: dossier-client
+model ClientProfil {
+  clientId         String    @id @map("client_id") @db.Uuid
+  client           Client    @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  responsableLabel String?   @map("responsable_label") @db.VarChar(80)
+  archiveLe        DateTime? @map("archive_le")
+  archiveMotif     String?   @map("archive_motif") @db.VarChar(200)
+  createdAt        DateTime  @default(now()) @map("created_at")
+  updatedAt        DateTime  @updatedAt @map("updated_at")
+
+  @@map("client_profils")
+}
+
+/// Une étiquette libre posée sur une fiche. Unique par (fiche, libellé). 2026-10-29.
+/// rgpd: dossier-client
+model ClientEtiquette {
+  id        String   @id @default(uuid()) @db.Uuid
+  clientId  String   @map("client_id") @db.Uuid
+  client    Client   @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  libelle   String   @db.VarChar(60)
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@unique([clientId, libelle])
+  @@map("client_etiquettes")
 }
 
 enum ProjetStatut {
