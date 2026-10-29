@@ -428,3 +428,92 @@ describe("lien commun (sans code personnel) : information seule, hors du total",
     expect(suivre({ reponses: [dirigeant()] }).lienCommun).toBeNull();
   });
 });
+
+describe("adresse e-mail professionnelle (visible de Will seul, lien « Écrire »)", () => {
+  const avecEmail = (email: unknown) => equipe().map((p, i) => (i === 1 ? { ...p, email } : p));
+  const reponseEmp = (donnees: Record<string, unknown>): EntreeReponse => ({
+    id: "r-mail",
+    mode: "emp",
+    membreColonne: CODES[1] as string,
+    recuLe: T(27),
+    ecartee: false,
+    charge: {
+      mode: "emp",
+      membre: CODES[1],
+      collaborateur: { prenom: "Bruno", nom: "Durand", fonction: "F", membre: CODES[1] },
+      donnees: { b_1: "x", ...donnees },
+    },
+  });
+  const bruno = (s: SuiviParPersonne) => s.collaborateurs.find((l) => l.nom === "Bruno Durand");
+
+  it("l'adresse de la fiche équipe est lue, en minuscules", () => {
+    const s = suivre({
+      reponses: [dirigeant({}, { equipe: avecEmail(" Bruno@Exemple-Fictif.FR ") })],
+    });
+    expect(bruno(s)).toMatchObject({ email: "bruno@exemple-fictif.fr", sourceEmail: "equipe" });
+    expect(s.collaborateurs[0]).toMatchObject({ email: null, sourceEmail: null });
+  });
+  it("une adresse invalide donne null", () => {
+    for (const mauvaise of ["pas-une-adresse", "a@b", "a b@c.fr", 42, `${"x".repeat(200)}@e.fr`]) {
+      const s = suivre({ reponses: [dirigeant({}, { equipe: avecEmail(mauvaise) })] });
+      expect(bruno(s)).toMatchObject({ email: null, sourceEmail: null });
+    }
+  });
+  it("l'adresse saisie par la personne prime sur celle du dirigeant", () => {
+    const s = suivre({
+      reponses: [
+        dirigeant({}, { equipe: avecEmail("dirigeant@exemple-fictif.fr") }),
+        reponseEmp({ id_email_emp: "bruno.pro@exemple-fictif.fr" }),
+      ],
+    });
+    expect(bruno(s)).toMatchObject({
+      email: "bruno.pro@exemple-fictif.fr",
+      sourceEmail: "reponse",
+    });
+  });
+  it("une réponse collaborateur qui porte id_email (champ en ligne) est lue", () => {
+    const s = suivre({
+      reponses: [dirigeant(), reponseEmp({ id_email: "Bruno.Pro@Exemple-Fictif.fr" })],
+    });
+    expect(bruno(s)).toMatchObject({
+      email: "bruno.pro@exemple-fictif.fr",
+      sourceEmail: "reponse",
+    });
+  });
+  it("une adresse invalide dans la réponse laisse celle du dirigeant", () => {
+    const s = suivre({
+      reponses: [
+        dirigeant({}, { equipe: avecEmail("dirigeant@exemple-fictif.fr") }),
+        reponseEmp({ id_email_emp: "nimporte quoi" }),
+      ],
+    });
+    expect(bruno(s)).toMatchObject({ email: "dirigeant@exemple-fictif.fr", sourceEmail: "equipe" });
+  });
+  it("le dirigeant n'a jamais d'adresse, même s'il en a saisi une", () => {
+    const s = suivre({
+      reponses: [
+        dirigeant({}, { id_email_emp: "dir@exemple-fictif.fr", id_email: "dir@exemple-fictif.fr" }),
+      ],
+    });
+    expect(s.dirigeant).toMatchObject({ email: null, sourceEmail: null });
+  });
+  it("le référent informatique : id_email", () => {
+    const recue: EntreeReponse = {
+      id: "r-ref-mail",
+      mode: "it",
+      membreColonne: "refcode00001",
+      recuLe: T(27),
+      ecartee: false,
+      charge: {
+        mode: "it",
+        membre: "refcode00001",
+        donnees: { id_prenom: "Marc", id_nom: "Dubois", id_email: "Marc@Exemple-Fictif.fr" },
+      },
+    };
+    const s = suivre({ reponses: [dirigeant(), recue] });
+    expect(s.referents[0]).toMatchObject({
+      email: "marc@exemple-fictif.fr",
+      sourceEmail: "reponse",
+    });
+  });
+});

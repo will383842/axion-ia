@@ -465,6 +465,7 @@ export default async function FicheClient360Page({ params, searchParams }: PageP
           ficheHref={ficheHref}
           afficherOuvertures={suiviActif()}
           voitBrouillons={acces.role === "super_admin" && suiviActif()}
+          voitAdresses={acces.role === "super_admin"}
           peutExporter={acces.role === "super_admin" && exportCompletActif()}
           // Le contenu d'un brouillon : super-administrateur ET interrupteur (l'action revérifie).
           {...(acces.role === "super_admin" && suiviActif()

@@ -56,6 +56,13 @@ describe("le suivi par personne ne fait que lire", () => {
     }
   });
 
+  it("SuiviParPersonne.tsx : le lien « Écrire » est un mailto, aucun envoi ni action serveur", () => {
+    const s = lire("src/components/admin/dossier-client/SuiviParPersonne.tsx");
+    expect(s).toContain("mailto:");
+    expect(s).not.toMatch(/enqueueEmail|envoyerQuestionnaire|sendEmail|<form|fetch\(/);
+    expect(s).not.toMatch(/console\s*\./);
+  });
+
   it("export-complet.ts n'écrit même pas dans activityLog", () => {
     expect(lire("src/features/questionnaire-preaudit/export-complet.ts")).not.toMatch(
       /activityLog/,

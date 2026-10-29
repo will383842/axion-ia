@@ -6,7 +6,10 @@
  * comptait des réponses sans dire de qui, et divisait par toutes les questions du fichier.
  *
  * Ce module ne lit ni ne montre le CONTENU des réponses : il s'en sert pour COMPTER (taux) et pour
- * lire l'identité déclarée (prénom, nom, fonction). Sa sortie ne contient que des états, des dates,
+ * lire l'identité déclarée (prénom, nom, fonction) et l'adresse e-mail professionnelle facultative
+ * (celle du dirigeant pour un collaborateur, ou celle que la personne a saisie ; la sienne prime).
+ * Cette adresse n'est montrée qu'à Will seul, pour un lien « Écrire » (mailto) : rien n'est envoyé.
+ * Sa sortie ne contient que des états, des dates,
  * des comptes, une tranche d'effectif et des identités avec leur source. ⛔ Elle ne contient JAMAIS
  * le code du dirigeant ; les autres codes y figurent sous la forme « …abcd » (4 caractères).
  */
@@ -82,6 +85,10 @@ export interface LignePersonne {
   readonly nom: string | null;
   readonly fonction: string | null;
   readonly sourceNom: SourceNom | null;
+  /** Adresse e-mail professionnelle valide (facultative) ; jamais pour le dirigeant. */
+  readonly email: string | null;
+  /** D'où vient l'adresse : la fiche équipe du dirigeant, ou la réponse de la personne (prime). */
+  readonly sourceEmail: "equipe" | "reponse" | null;
   /** « …abcd » : jamais le code du dirigeant. */
   readonly codeCourt: string | null;
   /** « nom » : rapprochée par le nom, à vérifier. `sansCode` : réponse reçue sans code personnel. */
@@ -165,6 +172,25 @@ export function valeursDuBrouillon(instantane: Dico | null): Dico {
   return instantane;
 }
 
+const EMAIL_VALIDE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+
+/** Une adresse e-mail valide (minuscules, 200 caractères max), sinon null. */
+function emailValide(brut: unknown): string | null {
+  if (typeof brut !== "string") return null;
+  const a = brut.trim().toLowerCase();
+  return a.length > 0 && a.length <= 200 && EMAIL_VALIDE.test(a) ? a : null;
+}
+
+/** L'adresse saisie par la personne : `id_email` (comme suivi.ts), `id_email_emp` aussi lu pour un collaborateur. */
+function emailDeLaReponse(charge: Dico | null, role: RoleLigne): string | null {
+  if (charge === null) return null;
+  const d = valeursDeLaCharge(charge);
+  if (role === "referent") return emailValide(d["id_email"]);
+  if (role === "collaborateur" || role === "non_retrouvee")
+    return emailValide(d["id_email_emp"]) ?? emailValide(d["id_email"]);
+  return null;
+}
+
 const valeursDeLaCharge = (charge: Dico | null): Dico => objet(charge?.["donnees"]) ?? {};
 
 interface Identite {
@@ -233,6 +259,7 @@ const aDeLActivite = (s: Seau): boolean =>
 interface Declaree {
   readonly identite: Identite;
   readonly code: string | null;
+  readonly email: string | null;
   readonly lienPrevu: boolean;
   readonly seau: Seau;
 }
@@ -257,6 +284,7 @@ function lireEquipe(
     personnes.push({
       identite: { prenom, nom, fonction: texte(e["role"]) },
       code: CODE.test(id) && !estCodeDirigeant(id) ? id : null,
+      email: emailValide(e["email"]),
       lienPrevu: !/^Non/.test(texte(e["journee"])),
       seau: seauVide(),
     });
@@ -404,7 +432,12 @@ export function suivreParPersonne(e: EntreePersonnes): SuiviParPersonne {
     role: RoleLigne,
     mode: ParcoursSquelette,
     seau: Seau,
-    ident: { nom: string | null; fonction: string | null; source: SourceNom | null },
+    ident: {
+      nom: string | null;
+      fonction: string | null;
+      source: SourceNom | null;
+      email?: string | null;
+    },
     vide: EtatLigne,
     code: string | null,
     sansCodePerso: boolean,
@@ -453,12 +486,25 @@ export function suivreParPersonne(e: EntreePersonnes): SuiviParPersonne {
         pre as ReadonlySet<string>,
       );
     }
+    // L'adresse venue de la personne prime sur celle du dirigeant ; jamais pour le dirigeant.
+    let email = ident.email ?? null;
+    let sourceEmail: "equipe" | "reponse" | null = email === null ? null : "equipe";
+    for (const r of parRecence(seau.reponses.filter((x) => !x.ecartee))) {
+      const a = emailDeLaReponse(r.charge, role);
+      if (a !== null) {
+        email = a;
+        sourceEmail = "reponse";
+        break;
+      }
+    }
     return {
       cle,
       role,
       nom: ident.nom,
       fonction: ident.fonction,
       sourceNom: ident.source,
+      email,
+      sourceEmail,
       codeCourt: code === null ? null : codeCourt(code),
       rapprochement: seau.rapprochement,
       sansCode: sansCodePerso,
@@ -523,7 +569,12 @@ export function suivreParPersonne(e: EntreePersonnes): SuiviParPersonne {
         "collaborateur",
         "emp",
         p.seau,
-        { nom: nomComplet(p.identite), fonction: p.identite.fonction || null, source: "equipe" },
+        {
+          nom: nomComplet(p.identite),
+          fonction: p.identite.fonction || null,
+          source: "equipe",
+          email: p.email,
+        },
         vide,
         p.code,
         false,
