@@ -209,7 +209,13 @@ export function VueDemandesTour({
         <div className="flex flex-col">
           <strong>{d.nom}</strong>
           <span className="admin-meta">{d.email}</span>
-          <span className="admin-meta">{d.telephone}</span>
+          <span className="admin-meta">
+            {d.telephone.trim() !== ""
+              ? d.telephone
+              : d.telephoneVisio
+                ? `${d.telephoneVisio} (visio)`
+                : "Téléphone : à la visio"}
+          </span>
         </div>
       ),
     },
@@ -275,7 +281,7 @@ export function VueDemandesTour({
         <AdminStatCard
           label="Demandes comptées"
           value={totalComptees.toLocaleString("fr-FR")}
-          meta="Une par personne, par entreprise et par téléphone, dans chaque ville"
+          meta="Une par personne et par entreprise, dans chaque ville"
         />
         <AdminStatCard
           label="Villes"

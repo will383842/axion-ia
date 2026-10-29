@@ -42,6 +42,7 @@ const demande = (id: string, extra: Partial<DemandeConsole> = {}): DemandeConsol
   nom: `Personne ${id}`,
   email: `${id}@exemple.fr`,
   telephone: "0612345678",
+  telephoneVisio: null,
   villeCle: "lyon",
   ville: "Lyon",
   creeLe: new Date("2026-10-27T10:00:00Z"),
@@ -94,6 +95,22 @@ describe("vue : les demandes", () => {
     expect(html).toContain("Lyon");
     expect(html).toContain("Annecy");
     expect(html).toContain("3 comptées sur 3 demandes");
+  });
+
+  it("affiche le téléphone saisi, sinon celui de la visio, sinon « à la visio »", () => {
+    const seul = (extra: Partial<DemandeConsole>) =>
+      rendre({
+        liste: {
+          demandes: [demande("z", extra)],
+          tronquee: false,
+          rapprochementIndisponible: false,
+        },
+      });
+    expect(seul({})).toContain("0612345678");
+    const visio = seul({ telephone: "", telephoneVisio: "+33611223344" });
+    expect(visio).toContain("+33611223344 (visio)");
+    expect(seul({ telephone: "", telephoneVisio: null })).toContain("Téléphone : à la visio");
+    expect(rendre()).toContain("Une par personne et par entreprise, dans chaque ville");
   });
 
   it("le filtre par ville est un lien vers la page filtrée", () => {
