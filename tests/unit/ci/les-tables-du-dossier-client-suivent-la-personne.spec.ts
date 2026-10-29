@@ -141,14 +141,20 @@ describe("les tables du dossier client suivent la personne", () => {
     // Lot A1 (2026-10-29) : plus aucune table n'est « sans écrivain » (ClientTache est neutralisée
     // par l'effacement ; notes, profil, étiquettes sont des exclusions motivées). Une future table
     // créée par migration seule s'ajoute à `TABLES_SANS_ECRIVAIN` ET à une exception « sans écrivain ».
-    const TABLES_SANS_ECRIVAIN: readonly string[] = [];
-    expect(sansEcrivain.map((m) => m[1]).sort()).toEqual([...TABLES_SANS_ECRIVAIN].sort());
-    const accesseurs = TABLES_SANS_ECRIVAIN.map((m) => m.charAt(0).toLowerCase() + m.slice(1));
+    // Paires { modele, table } : `table` = nom `@@map` du modèle (pour détecter aussi le SQL brut).
+    const TABLES_SANS_ECRIVAIN: readonly { modele: string; table: string }[] = [];
+    expect(sansEcrivain.map((m) => m[1]).sort()).toEqual(
+      TABLES_SANS_ECRIVAIN.map((t) => t.modele).sort(),
+    );
+    const accesseurs = TABLES_SANS_ECRIVAIN.map(
+      (t) => t.modele.charAt(0).toLowerCase() + t.modele.slice(1),
+    );
+    const tables = TABLES_SANS_ECRIVAIN.map((t) => t.table);
     const ecrivain =
       accesseurs.length === 0
         ? /(?!)/
         : new RegExp(
-            `\\.(${accesseurs.join("|")})\\.(create|createMany|upsert|update|updateMany)\\b`,
+            `\.(${accesseurs.join("|")})\.(create|createMany|upsert|update|updateMany)\b|INSERT INTO "(${tables.join("|")})"`,
           );
     const fichiers: string[] = [];
     const marche = (dir: string): void => {

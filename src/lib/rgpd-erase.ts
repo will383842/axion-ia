@@ -1302,9 +1302,10 @@ const EFFACEMENT_VIDE: EffacementCibleResultat = {
  *     (ADR 0056) ; la réécriture d'un compte rendu `a_regenerer` ne doit pas
  *     s'en servir (à tenir dans la PR du circuit, PR 6) ;
  *   · un texte libre saisi par Will qui NOMMERAIT la personne (titre de
- *     projet, motif d'un journal) n'est pas réécrit : l'effaceur ne peut pas
- *     savoir quel nom y figure. Un titre de projet, Will le corrige à la
- *     main ; le motif d'un journal, lui, ne se réécrit PAS (trigger
+ *     projet, note de fiche `client_notes`, intitulé d'une tâche qui n'est pas
+ *     rattachée à elle, motif d'un journal) n'est pas réécrit : l'effaceur ne
+ *     peut pas savoir quel nom y figure. Un titre de projet, une note ou un
+ *     intitulé de tâche, Will le corrige à la main ; le motif d'un journal, lui, ne se réécrit PAS (trigger
  *     `visio_journal_ajout_seul`, ajout seul sans exception, même sous le
  *     drapeau) : il reste tel quel.
  */
@@ -2230,6 +2231,10 @@ const MOTIFS_SUPPRESSION_COMPTE_RENDU: ReadonlySet<MotifEffacement> = new Set<Mo
  * questionnaires par fiche, preuves d'accord par rencontre).
  *
  * ANGLES MORTS DÉCLARÉS (repris dans R33) :
+ *   · un texte libre qui nommerait la personne (titre de projet, note de
+ *     fiche `client_notes`, intitulé d'une tâche qui n'est pas rattachée à
+ *     elle) n'est pas réécrit : une note ou un intitulé de tâche, Will le
+ *     corrige à la main ;
  *   · une participation SANS fiche personne (rendez-vous « à classer »,
  *     retrouvée à l'origine par sa seule empreinte d'adresse) n'est pas
  *     journalisée : son nom affiché revient. Ses segments et ses faits, eux,
@@ -2388,6 +2393,7 @@ export async function rejouerEffacements(
       }),
       db.emailSuivi.count({ where: { contactId: { in: contactsEffaces } } }),
       db.projetContact.count({ where: { contactId: { in: contactsEffaces } } }),
+      db.clientTache.count({ where: { contactId: { in: contactsEffaces } } }),
       // Pilote : exactement ce que `supprimerDonneesPilote` supprime.
       db.fait.count({
         where: {

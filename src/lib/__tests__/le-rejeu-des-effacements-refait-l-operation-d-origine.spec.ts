@@ -126,6 +126,10 @@ function restaurer(): void {
       journal("rencontres", "r-conservation", "conservation"),
     ],
     clientTestInterne: [{ clientId: "c-test" }],
+    clientTache: [
+      { id: "t-alice", contactId: "alice", intitule: "Rappeler Alice" },
+      { id: "t-bob", contactId: "bob", intitule: "Rappeler Bob" },
+    ],
     rencontre: [
       { id: "r-pilote", clientId: "c-vrai" },
       { id: "r-vraie", clientId: "c-vrai" },
@@ -222,6 +226,17 @@ describe("le rejeu des effacements refait l'opération d'origine", () => {
     expect((etat.tables["emailSuivi"] ?? []).map((e) => e["id"])).toEqual(["e-bob"]);
     expect(etat.tables["preRemplissage"]?.[0]).toMatchObject({ valeurProposee: "" });
     expect(etat.tables["projetContact"]).toEqual([]);
+    // Tâches de fiche : neutralisées (jamais supprimées) pour la personne effacée seulement.
+    const taches = etat.tables["clientTache"] ?? [];
+    expect(taches.find((t) => t["id"] === "t-alice")).toEqual({
+      id: "t-alice",
+      contactId: null,
+      intitule: "Tâche d'une personne effacée",
+    });
+    expect(taches.find((t) => t["id"] === "t-bob")).toMatchObject({
+      contactId: "bob",
+      intitule: "Rappeler Bob",
+    });
     expect(etat.tables["clientContactAdresse"]).toEqual([]);
     const p = etat.tables["rencontreParticipant"] ?? [];
     expect(p.filter((x) => x["contactId"] === "alice").map((x) => x["nomAffiche"])).toEqual([
