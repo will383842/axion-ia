@@ -7,7 +7,10 @@ import { prisma } from "@/lib/prisma";
 import { TEXTE_LECTURE_IMPOSSIBLE } from "@/features/dossier-client/bandeau-ou-en-est";
 import { lirePersonnesDuClient } from "@/features/dossier-client/queries";
 import { lireDatesDeDepart } from "@/features/dossier-client/fiche/depart-personne";
-import { nomOpcoDuClient, opcoDuClient } from "@/server/qualiopi/financements/opco-referentiel";
+import {
+  nomOpcoDuClient,
+  referenceOpcoDuClient,
+} from "@/server/qualiopi/financements/opco-referentiel";
 import { CarteDecision, type PersonneDeLaCarte } from "./CarteDecision";
 import type { ContexteFiche } from "./contexte";
 
@@ -31,9 +34,7 @@ export async function personnesDecision(ctx: ContexteFiche): Promise<React.React
       roles: [...new Set(p.roles.map((r) => r.role))],
     }));
     const opco =
-      client !== null && (opcoDuClient(client) !== null || client.opcoIdentifie?.trim())
-        ? nomOpcoDuClient(client)
-        : null;
+      client !== null && referenceOpcoDuClient(client) !== null ? nomOpcoDuClient(client) : null;
     return <CarteDecision personnes={gens} opco={opco} />;
   } catch {
     return (
