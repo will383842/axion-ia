@@ -50,7 +50,9 @@
 }
 @font-face {
   font-family: "Manrope Fallback";
-  src: local("Arial Bold"), local("Arial-BoldMT"), local("Liberation Sans Bold"), local("LiberationSans-Bold");
+  src:
+    local("Arial Bold"), local("Arial-BoldMT"), local("Liberation Sans Bold"),
+    local("LiberationSans-Bold");
   font-weight: 600 800;
   font-style: normal;
   size-adjust: 99.27%;
@@ -60,7 +62,9 @@
 }
 @font-face {
   font-family: "Fraunces Fallback";
-  src: local("Times New Roman"), local("TimesNewRomanPSMT"), local("Liberation Serif"), local("LiberationSerif");
+  src:
+    local("Times New Roman"), local("TimesNewRomanPSMT"), local("Liberation Serif"),
+    local("LiberationSerif");
   font-weight: 400;
   font-style: normal;
   size-adjust: 115.46%;
@@ -70,7 +74,9 @@
 }
 @font-face {
   font-family: "Fraunces Fallback";
-  src: local("Times New Roman"), local("TimesNewRomanPSMT"), local("Liberation Serif"), local("LiberationSerif");
+  src:
+    local("Times New Roman"), local("TimesNewRomanPSMT"), local("Liberation Serif"),
+    local("LiberationSerif");
   font-weight: 500;
   font-style: normal;
   size-adjust: 117.37%;
@@ -80,7 +86,9 @@
 }
 @font-face {
   font-family: "Fraunces Fallback";
-  src: local("Times New Roman Bold"), local("TimesNewRomanPS-BoldMT"), local("Liberation Serif Bold"), local("LiberationSerif-Bold");
+  src:
+    local("Times New Roman Bold"), local("TimesNewRomanPS-BoldMT"), local("Liberation Serif Bold"),
+    local("LiberationSerif-Bold");
   font-weight: 600 900;
   font-style: normal;
   size-adjust: 112.22%;
@@ -90,7 +98,9 @@
 }
 @font-face {
   font-family: "Fraunces Fallback";
-  src: local("Times New Roman Italic"), local("TimesNewRomanPS-ItalicMT"), local("Liberation Serif Italic"), local("LiberationSerif-Italic");
+  src:
+    local("Times New Roman Italic"), local("TimesNewRomanPS-ItalicMT"),
+    local("Liberation Serif Italic"), local("LiberationSerif-Italic");
   font-weight: 400;
   font-style: italic;
   size-adjust: 111.67%;
@@ -100,7 +110,9 @@
 }
 @font-face {
   font-family: "Fraunces Fallback";
-  src: local("Times New Roman Italic"), local("TimesNewRomanPS-ItalicMT"), local("Liberation Serif Italic"), local("LiberationSerif-Italic");
+  src:
+    local("Times New Roman Italic"), local("TimesNewRomanPS-ItalicMT"),
+    local("Liberation Serif Italic"), local("LiberationSerif-Italic");
   font-weight: 500;
   font-style: italic;
   size-adjust: 114.32%;
@@ -110,7 +122,9 @@
 }
 @font-face {
   font-family: "Fraunces Fallback";
-  src: local("Times New Roman Bold Italic"), local("TimesNewRomanPS-BoldItalicMT"), local("Liberation Serif Bold Italic"), local("LiberationSerif-BoldItalic");
+  src:
+    local("Times New Roman Bold Italic"), local("TimesNewRomanPS-BoldItalicMT"),
+    local("Liberation Serif Bold Italic"), local("LiberationSerif-BoldItalic");
   font-weight: 600 900;
   font-style: italic;
   size-adjust: 114.07%;
