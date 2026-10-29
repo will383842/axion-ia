@@ -17,6 +17,8 @@ const m = vi.hoisted(() => ({
   echanges: vi.fn(),
   log: vi.fn(),
   transport: vi.fn(),
+  liste: vi.fn(),
+  refuser: vi.fn(),
 }));
 
 vi.mock("next/navigation", () => ({
@@ -26,14 +28,21 @@ vi.mock("next/navigation", () => ({
 }));
 vi.mock("next/cache", () => ({ revalidatePath: vi.fn(), updateTag: vi.fn() }));
 vi.mock("@/lib/prisma", () => ({
-  prisma: { devis: { findFirst: m.devis }, emailOutbox: { findFirst: m.outbox } },
+  prisma: {
+    devis: { findFirst: m.devis },
+    emailOutbox: { findFirst: m.outbox, findMany: m.liste, updateMany: m.refuser },
+  },
 }));
 vi.mock("@/server/actions/qualiopi/_guards", () => ({
   requireAdminWrite: m.garde,
   logQualiopiActivity: m.log,
 }));
 vi.mock("@/server/email/outbox-service", () => ({ garerPourValidation: m.garer }));
-vi.mock("@/server/email/send", () => ({ sendEmail: m.transport, enqueueEmail: m.transport }));
+vi.mock("@/server/queue/queues", () => ({ enqueueEmail: m.transport }));
+vi.mock("nodemailer", () => ({
+  default: { createTransport: () => ({ sendMail: m.transport }) },
+  createTransport: () => ({ sendMail: m.transport }),
+}));
 vi.mock("../../acces", () => ({
   AccesRefuse: class AccesRefuse extends Error {},
   exigerAccesEchanges: m.echanges,
@@ -44,6 +53,7 @@ import {
   construireRelanceDevis,
   ERREUR_CONTACT_ABSENT,
   ERREUR_DEVIS_INTROUVABLE,
+  ERREUR_DEVIS_PERIME,
   ERREUR_GARAGE,
   MESSAGE_RELANCE_PRETE,
 } from "../relance-devis";
@@ -70,7 +80,12 @@ const DEVIS_ENVOYE = {
   id: DEVIS,
   numero: "AXI-DEV-2026-014",
   sentAt: new Date("2026-10-01T10:00:00Z"),
-  client: { raisonSociale: "Atelier Martin", contactEmail: "compta@martin.example" },
+  dateValidite: new Date(Date.now() + 86_400_000),
+  client: {
+    raisonSociale: "Atelier Martin",
+    contactNom: null,
+    contactEmail: "compta@martin.example",
+  },
 };
 
 beforeEach(() => {
@@ -82,6 +97,8 @@ beforeEach(() => {
   );
   m.outbox.mockResolvedValue(null);
   m.garer.mockResolvedValue("outbox-1");
+  m.liste.mockResolvedValue([{ id: "outbox-1", createdAt: new Date() }]);
+  m.refuser.mockResolvedValue({ count: 0 });
 });
 
 describe("relance de devis (lot B9)", () => {
@@ -96,6 +113,8 @@ describe("relance de devis (lot B9)", () => {
       entityType: "Devis",
       entityId: DEVIS,
     });
+    expect(arg.jobId).toBe(`relance-devis:${DEVIS}`);
+    expect(url).toContain("onglet=devis-factures");
     expect(url).toContain("message=");
     expect(m.transport).not.toHaveBeenCalled();
     expect(m.log).toHaveBeenCalledTimes(1);
@@ -142,6 +161,44 @@ describe("relance de devis (lot B9)", () => {
     expect(url).toContain("erreur=");
     expect(m.devis).not.toHaveBeenCalled();
     expect(m.garer).not.toHaveBeenCalled();
+  });
+
+  it("refuse le rôle en lecture seule : base non lue, rien garé", async () => {
+    m.garde.mockRejectedValue(new Error("lecture seule"));
+    const url = await lancer();
+    expect(url).toContain("erreur=");
+    expect(m.devis).not.toHaveBeenCalled();
+    expect(m.outbox).not.toHaveBeenCalled();
+    expect(m.garer).not.toHaveBeenCalled();
+    expect(m.transport).not.toHaveBeenCalled();
+  });
+
+  it("devis envoyé mais périmé : erreur claire, rien garé", async () => {
+    m.devis.mockResolvedValue({ ...DEVIS_ENVOYE, dateValidite: new Date(Date.now() - 1000) });
+    const url = await lancer();
+    expect(url).toContain(ERREUR_DEVIS_PERIME);
+    expect(m.garer).not.toHaveBeenCalled();
+  });
+
+  it("double clic : deux appels simultanés, le surplus est refusé (jamais supprimé)", async () => {
+    // Le contrôle préalable laisse passer les deux appels (pas atomique).
+    m.outbox.mockResolvedValue(null);
+    m.garer.mockResolvedValueOnce("outbox-1").mockResolvedValueOnce("outbox-2");
+    m.liste.mockResolvedValue([
+      { id: "outbox-1", createdAt: new Date(1000) },
+      { id: "outbox-2", createdAt: new Date(2000) },
+    ]);
+    const [a, b] = await Promise.all([lancer(), lancer()]);
+    expect(m.garer).toHaveBeenCalledTimes(2);
+    expect(a).toContain(MESSAGE_RELANCE_PRETE);
+    expect(b).toContain(MESSAGE_RELANCE_PRETE);
+    expect(m.refuser).toHaveBeenCalledWith(
+      expect.objectContaining({
+        where: expect.objectContaining({ id: { in: ["outbox-2"] } }),
+        data: expect.objectContaining({ statut: "refuse" }),
+      }),
+    );
+    expect(m.transport).not.toHaveBeenCalled();
   });
 
   it("contact absent : erreur, rien garé", async () => {

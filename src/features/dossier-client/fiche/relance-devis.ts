@@ -14,12 +14,18 @@ export const TEMPLATE_RELANCE_DEVIS = "relance-devis-client";
 /** Type de l'entité visée dans l'outbox (même valeur que l'envoi du devis, `facturation-emails.ts`). */
 export const ENTITE_DEVIS = "Devis";
 
+/** Messages scellés de retour (module pur : un fichier « use server » ne peut pas les exporter). */
 export const MESSAGE_RELANCE_PRETE =
   "Une relance est déjà prête pour ce devis : relisez-la dans les e-mails à valider.";
 export const MESSAGE_RELANCE_GAREE =
   "Relance préparée : elle attend votre relecture dans les e-mails à valider. Rien n'est envoyé.";
 export const ERREUR_GARAGE = "La relance n'a pas pu être préparée. Rien n'a été envoyé. Réessayez.";
 export const ERREUR_DEVIS_INTROUVABLE = "Ce devis n'est pas un devis envoyé de ce client.";
+export const ERREUR_DEVIS_PERIME =
+  "La date de validité de ce devis est dépassée : relancer un devis périmé n'a pas de sens.";
+
+/** Clé d'idempotence du brouillon : un seul par devis. */
+export const jobIdRelanceDevis = (devisId: string): string => `relance-devis:${devisId}`;
 
 export const ERREUR_CONTACT_ABSENT = "Ajoutez l'e-mail du contact dans Modifier la fiche.";
 
@@ -27,6 +33,8 @@ export interface EntreeRelanceDevis {
   readonly numero: string;
   readonly envoyeLe: Date | null;
   readonly raisonSociale: string;
+  /** Nom du contact ; à défaut la raison sociale (comme l'envoi du devis). */
+  readonly contactNom?: string | null;
   /** `client.contactEmail` : le seul destinataire possible. */
   readonly contactEmail: string | null | undefined;
 }
@@ -67,7 +75,7 @@ export function construireRelanceDevis(e: EntreeRelanceDevis): SortieRelanceDevi
     destinataire,
     sujet: sujetRelanceDevis(e.numero),
     payload: {
-      destinataireNom: e.raisonSociale,
+      destinataireNom: (e.contactNom ?? "").trim() || e.raisonSociale,
       numero: e.numero,
       dateEnvoi: e.envoyeLe ? dateFr(e.envoyeLe) : "",
     },

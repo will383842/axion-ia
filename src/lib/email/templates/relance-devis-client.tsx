@@ -13,6 +13,8 @@ interface Payload {
   numero: string;
   /** Date d'envoi du devis, déjà formatée (JJ/MM/AAAA). */
   dateEnvoi?: string;
+  /** Bloc libre ajouté par l'admin avant validation. */
+  messagePersonnalise?: string;
 }
 
 export const relanceDevisClientSubject = (
@@ -49,9 +51,12 @@ export function RelanceDevisClientEmail({
         {depuis}. Avez-vous pu en prendre connaissance ?
       </Text>
       <Text style={emailStyles.paragraphStyle}>
-        Si une question reste en suspens sur son contenu ou ses modalités, répondez simplement à cet
-        e-mail : nous sommes à votre écoute.
+        Si une question reste en suspens sur son contenu ou ses modalités, nous sommes à votre
+        écoute.
       </Text>
+      {p.messagePersonnalise ? (
+        <Text style={emailStyles.paragraphStyle}>{p.messagePersonnalise}</Text>
+      ) : null}
       <Text style={emailStyles.paragraphStyle}>
         Bien cordialement,
         <br />

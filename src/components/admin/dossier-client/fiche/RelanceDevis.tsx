@@ -9,6 +9,7 @@ import { Mail } from "lucide-react";
 
 import { AdminButton } from "@/components/admin/ui/AdminButton";
 import { preparerRelanceDevisAction } from "@/features/dossier-client/fiche/actions-relance-devis";
+import { MESSAGE_RELANCE_PRETE } from "@/features/dossier-client/fiche/relance-devis";
 import type { ContexteFiche } from "./contexte";
 
 export function RelanceDevis(props: {
@@ -26,7 +27,7 @@ export function RelanceDevis(props: {
   if (!ctx.voitEchanges || !ctx.peutEcrire || envoyes.length === 0) return null;
 
   return (
-    <div className="mb-3 rounded-lg border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-surface-sunken)] p-3 text-[length:var(--text-admin-sm)]">
+    <div className="mb-3 rounded-lg border border-[color:var(--color-admin-bloc-gris-border)] bg-[color:var(--color-admin-bloc-gris-bg)] p-3 text-sm">
       <h3 className="mb-2 flex items-center gap-2 font-medium">
         <Mail className="h-4 w-4" aria-hidden="true" />
         Relancer un devis envoyé
@@ -45,10 +46,12 @@ export function RelanceDevis(props: {
           </li>
         ))}
       </ul>
-      <p className="mt-2 text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
+      <p className="mt-2 text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
         La relance est préparée en brouillon : rien ne part sans votre validation.{" "}
         <Link href={`${ctx.qBase}/emails`} className="underline">
-          Relire la relance prête
+          {ctx.message === MESSAGE_RELANCE_PRETE
+            ? "Relire la relance prête"
+            : "Voir les e-mails à valider"}
         </Link>
       </p>
     </div>

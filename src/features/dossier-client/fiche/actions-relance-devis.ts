@@ -7,7 +7,7 @@
  * Le rôle est revérifié ici (une action s'appelle directement) ; le devis doit être DU client
  * et au statut `envoye` ; un brouillon déjà à valider pour ce devis n'est pas doublé.
  *
- * ⚠️ Module `"use server"` : il n'exporte QUE des fonctions asynchrones.
+ * ⚠️ Module `"use server"` : il n'exporte QUE des fonctions asynchrones (constantes dans `relance-devis.ts`).
  */
 
 "use server";
@@ -27,7 +27,9 @@ import {
   construireRelanceDevis,
   ENTITE_DEVIS,
   ERREUR_DEVIS_INTROUVABLE,
+  ERREUR_DEVIS_PERIME,
   ERREUR_GARAGE,
+  jobIdRelanceDevis,
   MESSAGE_RELANCE_GAREE,
   MESSAGE_RELANCE_PRETE,
   TEMPLATE_RELANCE_DEVIS,
@@ -39,7 +41,7 @@ function retour(
   clientId: string,
   cle: "message" | "erreur",
   texte: string,
-  onglet = "facturation",
+  onglet = "devis-factures",
 ): never {
   const base = adminPath("fr", `qualiopi/clients/${clientId}`);
   redirect(avecMessageDeRetour(`${base}?onglet=${onglet}`, cle, texte));
@@ -75,10 +77,12 @@ export async function preparerRelanceDevisAction(fd: FormData): Promise<void> {
         id: true,
         numero: true,
         sentAt: true,
-        client: { select: { raisonSociale: true, contactEmail: true } },
+        dateValidite: true,
+        client: { select: { raisonSociale: true, contactNom: true, contactEmail: true } },
       },
     });
     if (!devis) return retour(cid, "erreur", ERREUR_DEVIS_INTROUVABLE);
+    if (devis.dateValidite < new Date()) return retour(cid, "erreur", ERREUR_DEVIS_PERIME);
 
     // Anti-doublon : un brouillon déjà à valider pour ce devis.
     const existant = await prisma.emailOutbox.findFirst({
@@ -96,6 +100,7 @@ export async function preparerRelanceDevisAction(fd: FormData): Promise<void> {
       numero: devis.numero,
       envoyeLe: devis.sentAt,
       raisonSociale: devis.client.raisonSociale,
+      contactNom: devis.client.contactNom,
       contactEmail: devis.client.contactEmail,
     });
     if (!relance.ok) return retour(cid, "erreur", relance.erreur);
@@ -109,9 +114,35 @@ export async function preparerRelanceDevisAction(fd: FormData): Promise<void> {
       clientId: cid,
       entityType: ENTITE_DEVIS,
       entityId: devis.id,
+      jobId: jobIdRelanceDevis(devis.id),
     });
     // Jamais d'envoi de repli : une relance non garée n'existe pas.
     if (outboxId === null) return retour(cid, "erreur", ERREUR_GARAGE);
+
+    // Le contrôle ci-dessus n'est pas atomique (aucun index unique) : après le garage, on
+    // recompte. S'il y a plus d'un brouillon, le plus récent est refusé (jamais supprimé).
+    const brouillons = await prisma.emailOutbox.findMany({
+      where: {
+        template: TEMPLATE_RELANCE_DEVIS,
+        entityType: ENTITE_DEVIS,
+        entityId: devis.id,
+        statut: "a_valider",
+      },
+      select: { id: true, createdAt: true },
+      orderBy: [{ createdAt: "asc" }, { id: "asc" }],
+    });
+    if (brouillons.length > 1) {
+      const surplus = brouillons.slice(1).map((b) => b.id);
+      await prisma.emailOutbox.updateMany({
+        where: { id: { in: surplus }, statut: "a_valider" },
+        data: {
+          statut: "refuse",
+          refuseAt: new Date(),
+          refuseMotif: "Doublon de relance (double clic) : un seul brouillon est conservé.",
+        },
+      });
+      return retour(cid, "message", MESSAGE_RELANCE_PRETE);
+    }
 
     await logQualiopiActivity({
       action: "dossier-client.relance-devis.preparee",
