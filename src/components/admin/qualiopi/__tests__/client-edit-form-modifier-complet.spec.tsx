@@ -12,7 +12,7 @@ vi.mock("@/server/actions/qualiopi/clients", () => ({ updateClientAction: vi.fn(
 
 import { updateClientAction } from "@/server/actions/qualiopi/clients";
 
-import { ClientEditForm, type ClientEditValues } from "../ClientEditForm";
+import { ClientEditForm, type ClientEditLecture, type ClientEditValues } from "../ClientEditForm";
 
 const INITIAL: ClientEditValues = {
   raisonSociale: "Acme",
@@ -33,7 +33,7 @@ const INITIAL: ClientEditValues = {
   modeFacturation: "",
 };
 
-const LECTURE = {
+const LECTURE: ClientEditLecture = {
   siren: "123456789",
   effectif: 12,
   estPublic: false,
