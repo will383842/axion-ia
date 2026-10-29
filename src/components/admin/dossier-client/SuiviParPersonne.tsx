@@ -166,19 +166,26 @@ function lignesAMontrer(s: Suivi, voitBrouillons: boolean): Ligne[] {
   return toutes.map((l) => ({ l, titre: titre(l) }));
 }
 
+/** Les ouvertures sont-elles lues ? Sinon, « n'a pas commencé » serait dit sans preuve. */
+const ouverturesSuivies = (s: Suivi, afficherOuvertures: boolean): boolean =>
+  afficherOuvertures && !s.ouverturesIndisponibles;
+
 /** Où en est UNE personne, en une phrase claire : terminé, brouillon, ouvert sans rien enregistrer, pas commencé. */
 function statutEnClair(
   l: LignePersonne,
   s: Suivi,
   afficherOuvertures: boolean,
 ): { tone: "success" | "warning" | "neutral" | "outline"; texte: string; detail: string[] } {
+  const suivies = ouverturesSuivies(s, afficherOuvertures);
   const detail: string[] = [];
   if (l.brouillonMajLe && l.etat !== "recu") {
     detail.push(`brouillon enregistré le ${jourHeure(l.brouillonMajLe)}`);
   }
-  if (afficherOuvertures && !s.ouverturesIndisponibles && l.ouverture !== null) {
+  if (suivies && l.ouverture !== null) {
     const n = l.ouverture.nombre;
-    detail.push(`a ouvert son lien le ${jourHeure(l.ouverture.derniere)} (${n} fois au total)`);
+    detail.push(
+      `dernière ouverture de son lien le ${jourHeure(l.ouverture.derniere)} (${n} fois au total)`,
+    );
   }
   switch (l.etat) {
     case "recu":
@@ -198,7 +205,20 @@ function statutEnClair(
     case "lien_sans_code":
       return { tone: "outline", texte: "Lien sans code : suivi impossible", detail };
     default:
-      return { tone: "outline", texte: "N'a pas commencé", detail };
+      if (l.role === "dirigeant") return { tone: "outline", texte: "Pas reçu", detail };
+      if (l.role === "referent") {
+        return {
+          tone: "outline",
+          texte:
+            "Pas commencé (facultatif : le dirigeant peut remplir la partie technique lui-même)",
+          detail,
+        };
+      }
+      return {
+        tone: "outline",
+        texte: suivies ? "N'a pas commencé" : "Pas de nouvelles (ouvertures non suivies)",
+        detail,
+      };
   }
 }
 
@@ -223,6 +243,39 @@ function LigneEnClair({
   );
 }
 
+/** « 3 terminés · 1 en brouillon · … » : calculé sur les lignes affichées, la somme retombe sur le total déclaré. */
+function phraseDesComptes(declarees: Ligne[], horsListe: number, suivies: boolean): string {
+  const nb = (...etats: string[]): number =>
+    declarees.filter(({ l }) => etats.includes(l.etat)).length;
+  const recus = nb("recu");
+  const enCours = nb("en_cours");
+  const ouverts = nb("ouvert");
+  const pas = nb("pas_de_nouvelles");
+  const sansLien = nb("pas_de_lien_prevu", "lien_sans_code");
+  const ecartees = nb("ecartee");
+  const morceaux = [`${recus} terminé${recus > 1 ? "s" : ""}`, `${enCours} en brouillon`];
+  if (ouverts > 0) {
+    morceaux.push(
+      `${ouverts} ${ouverts > 1 ? "ont ouvert leur lien" : "a ouvert son lien"} sans rien enregistrer`,
+    );
+  }
+  if (pas > 0) {
+    morceaux.push(
+      suivies
+        ? `${pas} ${pas > 1 ? "n'ont pas commencé" : "n'a pas commencé"}`
+        : `${pas} sans nouvelles (ouvertures non suivies)`,
+    );
+  }
+  if (sansLien > 0) morceaux.push(`${sansLien} sans lien`);
+  if (ecartees > 0) {
+    morceaux.push(
+      `${ecartees} réponse${ecartees > 1 ? "s" : ""} mise${ecartees > 1 ? "s" : ""} de côté`,
+    );
+  }
+  if (horsListe > 0) morceaux.push(`+ ${horsListe} hors de la liste`);
+  return morceaux.join(" · ");
+}
+
 /** Le résumé en langage clair : questionnaire général, équipe déclarée, référent. Lecture seule. */
 function ResumeEnClair({
   lignes,
@@ -235,12 +288,11 @@ function ResumeEnClair({
   q: QuestionnaireDeLaFiche;
   afficherOuvertures: boolean;
 }): React.ReactElement {
+  const suivies = ouverturesSuivies(s, afficherOuvertures);
   const dirigeant = lignes.find(({ l }) => l.role === "dirigeant");
   const equipe = lignes.filter(({ l }) => l.role === "collaborateur" || l.role === "non_retrouvee");
+  const declarees = equipe.filter(({ l }) => l.role === "collaborateur");
   const referents = lignes.filter(({ l }) => l.role === "referent");
-  const pasCommence = equipe.filter(
-    ({ l }) => l.role === "collaborateur" && l.etat === "pas_de_nouvelles",
-  ).length;
   return (
     <div data-bloc="resume-en-clair" className="space-y-[var(--space-admin-3)]">
       <section>
@@ -259,7 +311,7 @@ function ResumeEnClair({
         <h4 className="font-medium">
           2. Équipe déclarée par le dirigeant
           {s.equipe.connue
-            ? ` : ${s.collab.declares} personne${s.collab.declares > 1 ? "s" : ""}`
+            ? ` : ${declarees.length} personne${declarees.length > 1 ? "s" : ""}`
             : ""}
         </h4>
         {equipe.length === 0 ? (
@@ -271,8 +323,7 @@ function ResumeEnClair({
         ) : (
           <>
             <p className="text-[length:var(--text-admin-xs)]">
-              {s.collab.recus} terminé{s.collab.recus > 1 ? "s" : ""} · {s.collab.enCours} en
-              brouillon · {pasCommence} n&apos;ont pas commencé
+              {phraseDesComptes(declarees, equipe.length - declarees.length, suivies)}
             </p>
             <ul className="mt-1 space-y-1">
               {equipe.map((ligne) => (
@@ -286,6 +337,12 @@ function ResumeEnClair({
             </ul>
           </>
         )}
+        {suivies && s.lienCommun !== null ? (
+          <p className="mt-1 text-[length:var(--text-admin-xs)]">
+            Lien commun (sans code personnel) : ouvert {s.lienCommun.nombre} fois, dernière le{" "}
+            {jourHeure(s.lienCommun.derniere)} (hors du total).
+          </p>
+        ) : null}
       </section>
       {referents.length > 0 ? (
         <section>
@@ -422,12 +479,6 @@ export function SuiviParPersonne({
               : s.effectif.remarque === "liste_depasse"
                 ? " · la liste dépasse l'effectif indiqué"
                 : ""}
-          </p>
-        ) : null}
-        {afficherOuvertures && !s.ouverturesIndisponibles && s.lienCommun !== null ? (
-          <p className="text-[length:var(--text-admin-xs)]">
-            Lien commun (sans code personnel) : ouvert {s.lienCommun.nombre} fois, dernière le{" "}
-            {jourHeure(s.lienCommun.derniere)} (hors du total).
           </p>
         ) : null}
         {s.fichesSansNom > 0 ? (

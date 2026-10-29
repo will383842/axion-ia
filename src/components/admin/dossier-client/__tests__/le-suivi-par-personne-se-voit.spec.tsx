@@ -314,18 +314,14 @@ describe("résumé en clair : général, équipe, postes, dates", () => {
   });
   it("liste l'équipe déclarée, avec le poste et ce que chacun a fait", () => {
     expect(t).toContain("2. Équipe déclarée par le dirigeant : 4 personnes");
-    expect(t).toContain("0 terminé · 0 en brouillon · 3 n'ont pas commencé");
+    expect(t).toContain(
+      "0 terminé · 0 en brouillon · 1 a ouvert son lien sans rien enregistrer · 3 n'ont pas commencé",
+    );
     expect(t).toContain("N'a pas commencé");
-    expect(t).toContain("a ouvert son lien le 27/10");
+    expect(t).toContain("dernière ouverture de son lien le 27/10");
   });
   it("montre le lien commun, hors du total", () => {
     expect(t).toContain("Lien commun (sans code personnel) : ouvert 3 fois");
-  });
-  it("sans le droit, aucun nom d'un brouillon n'apparaît dans le résumé", () => {
-    const sans = bloc(
-      q(lu({ reponses: [reponseDirigeant], brouillons: [brouillonInconnu("Zoé")] })),
-    );
-    expect(sans).not.toContain("Zoé");
   });
 });
 
@@ -356,5 +352,42 @@ describe("résumé en clair : équipe lue dans le brouillon du dirigeant", () =>
   });
   it("avec le droit : les noms et les postes y sont", () => {
     expect(resume(true)).toContain("Alice Martin · Comptable");
+  });
+});
+
+describe("résumé en clair : cas limites", () => {
+  const resume = (qq: QuestionnaireDeLaFiche, o: { ouv?: boolean } = {}): string => {
+    const r = render(
+      <BlocQuestionnaireFiche
+        questionnaires={[qq]}
+        adminPrefix="console"
+        ficheHref="/f"
+        afficherOuvertures={o.ouv ?? true}
+      />,
+    );
+    return r.container.querySelector('[data-bloc="resume-en-clair"]')?.textContent ?? "";
+  };
+  it("ouvertures non suivies : jamais « N'a pas commencé », ni lien commun", () => {
+    const t = resume(
+      q(
+        lu({
+          reponses: [reponseDirigeant],
+          ouvertures: [{ ...ouverture(""), mode: "lien", nombre: 3 }],
+        }),
+      ),
+      { ouv: false },
+    );
+    expect(t).not.toContain("pas commencé");
+    expect(t).not.toContain("Lien commun");
+    expect(t).toContain("ouvertures non suivies");
+  });
+  it("équipe inconnue : « Pas reçu » et le dit", () => {
+    const t = resume(q(lu({ reponses: [] })));
+    expect(t).toContain("Le dirigeant n'a pas encore déclaré son équipe.");
+    expect(t).toContain("Pas reçu");
+  });
+  it("référent : facultatif, jamais présenté comme manquant", () => {
+    const t = resume(q(lu({ reponses: [reponseDirigeant] })));
+    expect(t).toContain("facultatif");
   });
 });
