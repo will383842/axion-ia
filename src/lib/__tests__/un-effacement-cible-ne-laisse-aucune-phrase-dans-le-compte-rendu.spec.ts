@@ -98,6 +98,7 @@ vi.mock("@/lib/prisma", () => {
     questionnaireQuestion: modele("questionnaireQuestion"),
     emailSuivi: modele("emailSuivi"),
     projetContact: modele("projetContact"),
+    clientTache: modele("clientTache"),
     effacementJournal: modele("effacementJournal"),
   };
   return {

@@ -53,6 +53,7 @@ vi.mock("@/lib/prisma", () => {
     questionnaireQuestion: modele("questionnaireQuestion"),
     emailSuivi: modele("emailSuivi"),
     projetContact: modele("projetContact"),
+    clientTache: modele("clientTache"),
     effacementJournal: modele("effacementJournal"),
   };
   return { prisma: { ...tx, $transaction: async (fn: (t: unknown) => unknown) => fn(tx) } };
