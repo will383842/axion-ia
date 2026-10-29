@@ -5,29 +5,21 @@
  */
 
 import Link from "next/link";
-import { Euro, CalendarDays, Users, Wallet } from "lucide-react";
 
 import { FactureHorsConsole } from "@/components/admin/dossier-client/FactureHorsConsole";
 import { AdminBloc } from "@/components/admin/ui/AdminBloc";
-import { AdminStatCard } from "@/components/admin/ui/AdminStatCard";
 import { AdminBadge } from "@/components/admin/ui/AdminBadge";
 import { BandeauAttributionPartners } from "@/components/admin/qualiopi/BandeauAttributionPartners";
-import { resteDuNetCents, type Client360 } from "@/server/qualiopi/crm/clients";
+import type { Client360 } from "@/server/qualiopi/crm/clients";
 import type { bandeauPourLeRole } from "@/server/partners/client-attributions";
 import { formatDateFrShort } from "@/lib/format-date-fr";
 import { dayKeyInParis } from "@/lib/calendar-grid";
 import type { ContexteFiche } from "./contexte";
 import { RelanceDevis } from "./RelanceDevis";
+import { CartesDevis, CartesFactures } from "./CartesPieces";
+import { TuilesArgent } from "./TuilesArgent";
 
 type BadgeTone = "neutral" | "info" | "success" | "warning" | "destructive";
-
-const PRESTATION_STATUT: Record<string, { label: string; tone: BadgeTone }> = {
-  planifiee: { label: "Planifiée", tone: "info" },
-  en_cours: { label: "En cours", tone: "warning" },
-  realisee: { label: "Réalisée", tone: "success" },
-  annulee: { label: "Annulée", tone: "destructive" },
-  reportee: { label: "Reportée", tone: "warning" },
-};
 
 const DEVIS_STATUT: Record<string, { label: string; tone: BadgeTone }> = {
   brouillon: { label: "Brouillon", tone: "neutral" },
@@ -49,7 +41,7 @@ const FACTURE_STATUT: Record<string, { label: string; tone: BadgeTone }> = {
 
 const DOSSIER_STATUT: Record<string, { label: string; tone: BadgeTone }> = {
   a_monter: { label: "À monter", tone: "warning" },
-  envoye: { label: "Envoyé", tone: "info" },
+  envoye: { label: "Demande en cours", tone: "info" },
   accord_recu: { label: "Accord reçu", tone: "success" },
   refuse: { label: "Refusé", tone: "destructive" },
   facture: { label: "Facturé", tone: "info" },
@@ -93,14 +85,6 @@ const DOC_LABELS: Record<string, string> = {
   inventaire_moyens: "Inventaire des moyens pédagogiques",
   contrat_sous_traitance: "Contrat de sous-traitance",
 };
-
-function eur(cents: number): string {
-  return new Intl.NumberFormat("fr-FR", {
-    style: "currency",
-    currency: "EUR",
-    minimumFractionDigits: 2,
-  }).format(cents / 100);
-}
 
 function StatutBadge({
   map,
@@ -154,8 +138,8 @@ const sectionCls = "mb-[var(--space-admin-8)]";
 const listeCls = "space-y-[var(--space-admin-2)] text-[length:var(--text-admin-sm)]";
 const ligneCls = "flex flex-wrap items-center gap-[var(--space-admin-3)]";
 const ligneMutedCls = "text-[color:var(--color-admin-fg-muted)]";
-const lienMonoCls =
-  "font-mono text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-accent)] underline-offset-2 hover:underline";
+const lienTexteCls =
+  "text-[color:var(--color-admin-accent)] underline underline-offset-2 hover:no-underline";
 
 export function OngletDevisFactures({
   ctx,
@@ -175,6 +159,8 @@ export function OngletDevisFactures({
   nbEmailsAValider: number;
 }): React.ReactElement {
   const qBase = ctx.qBase;
+  const sessionsEnCours = client.sessions.filter((s) => s.statut === "en_cours").length;
+  const missionsTerminees = client.auditMissions.filter((m) => m.statut === "realisee").length;
   return (
     <>
       {ctx.voitEchanges ? (
@@ -187,99 +173,15 @@ export function OngletDevisFactures({
           erreur={null /* l'erreur s'affiche déjà en tête de l'onglet */}
         />
       ) : null}
-      {encoursDuCents > 0 ? (
-        <AdminBloc teinte="ambre" haut titre="Encours à encaisser">
-          <p className="text-[length:var(--text-admin-sm)]">
-            {eur(encoursDuCents)} restent dus sur les factures ouvertes de ce client.
-          </p>
-        </AdminBloc>
-      ) : null}
+      <TuilesArgent
+        encoursDuCents={encoursDuCents}
+        factures={factures}
+        devis={client.devis}
+        devisPlafonnes={client.devis.length >= 10}
+        factureHorsConsoleLe={factureHorsConsoleLe}
+      />
 
-      {/* ── KPI ────────────────────────────────────────────────────────────── */}
-      <div className="mb-[var(--space-admin-8)] grid grid-cols-1 gap-[var(--space-admin-5)] sm:grid-cols-4">
-        <AdminStatCard label="CA cumulé" value={eur(client.caCents)} icon={Euro} />
-        <AdminStatCard label="Sessions" value={client.nbSessions} icon={CalendarDays} />
-        <AdminStatCard label="Stagiaires" value={client.nbStagiaires} icon={Users} />
-        {/* Encours = restes dus nets des factures OUVERTES (avoirs déduits,
-            encaissements `succeeded` soustraits) — pas un agrégat dénormalisé. */}
-        <AdminStatCard
-          label="Encours dû"
-          value={eur(encoursDuCents)}
-          tone={encoursDuCents > 0 ? "destructive" : "default"}
-          icon={Wallet}
-        />
-      </div>
-
-      {/* ── a. Sessions de formation ───────────────────────────────────────── */}
-      <section className={sectionCls}>
-        <SectionTitre titre="Sessions de formation" toutVoirHref={`${qBase}/sessions`} />
-        {client.sessions.length === 0 ? (
-          <SectionVide message="Aucune session de formation." />
-        ) : (
-          <ul className={listeCls}>
-            {client.sessions.map((s) => (
-              <li key={s.id} className={ligneCls}>
-                <Link href={`${qBase}/sessions/${s.id}`} className={lienMonoCls}>
-                  {s.numero}
-                </Link>
-                <span className="font-medium">{s.titreSession}</span>
-                <span className={ligneMutedCls}>
-                  {formatDateFrShort(s.dateDebut)} → {formatDateFrShort(s.dateFin)}
-                </span>
-                <StatutBadge map={PRESTATION_STATUT} statut={s.statut} />
-              </li>
-            ))}
-          </ul>
-        )}
-      </section>
-
-      {/* ── b. Contrats de coaching (pas de fiche dédiée → texte simple) ───── */}
-      <section className={sectionCls}>
-        <SectionTitre titre="Contrats de coaching" />
-        {client.coachingContracts.length === 0 ? (
-          <SectionVide message="Aucun contrat de coaching." />
-        ) : (
-          <ul className={listeCls}>
-            {client.coachingContracts.map((c) => (
-              <li key={c.id} className={ligneCls}>
-                <span className="font-mono text-[length:var(--text-admin-xs)]">{c.numero}</span>
-                <span className="tabular-nums">{eur(c.montantHtCents)} HT</span>
-                <span className={ligneMutedCls}>
-                  {c.interventionSlug}
-                  {c.dateSigneeAt
-                    ? ` · signé le ${formatDateFrShort(c.dateSigneeAt)}`
-                    : " · non signé"}
-                </span>
-              </li>
-            ))}
-          </ul>
-        )}
-      </section>
-
-      {/* ── c. Missions d'audit ────────────────────────────────────────────── */}
-      <section className={sectionCls}>
-        <SectionTitre titre="Missions d'audit" toutVoirHref={`${qBase}/audits`} />
-        {client.auditMissions.length === 0 ? (
-          <SectionVide message="Aucune mission d'audit." />
-        ) : (
-          <ul className={listeCls}>
-            {client.auditMissions.map((m) => (
-              <li key={m.id} className={ligneCls}>
-                <Link href={`${qBase}/audits/${m.id}`} className={lienMonoCls}>
-                  {m.numero}
-                </Link>
-                <span className="font-medium">{m.titre}</span>
-                <span className={ligneMutedCls}>
-                  {formatDateFrShort(m.dateDebut)} → {formatDateFrShort(m.dateFin)}
-                </span>
-                <StatutBadge map={PRESTATION_STATUT} statut={m.statut} />
-              </li>
-            ))}
-          </ul>
-        )}
-      </section>
-
-      {/* ── d. Devis ───────────────────────────────────────────────────────── */}
+      {/* ── Devis ──────────────────────────────────────────────────────────── */}
       <section className={sectionCls}>
         <SectionTitre titre="Devis" toutVoirHref={`${qBase}/devis`} />
         <BandeauAttributionPartners texte={bandeauPartners} />
@@ -288,52 +190,55 @@ export function OngletDevisFactures({
         {client.devis.length === 0 ? (
           <SectionVide message="Aucun devis." />
         ) : (
-          <ul className={listeCls}>
-            {client.devis.map((d) => (
-              <li key={d.id} className={ligneCls}>
-                <Link href={`${qBase}/devis/${d.id}`} className={lienMonoCls}>
-                  {d.numero}
-                </Link>
-                <span className="tabular-nums">{eur(d.montantTotalHtCents)} HT</span>
-                <span className={ligneMutedCls}>{formatDateFrShort(d.createdAt)}</span>
-                <StatutBadge map={DEVIS_STATUT} statut={d.statut} />
-              </li>
-            ))}
-          </ul>
+          <CartesDevis devis={client.devis} qBase={qBase} statuts={DEVIS_STATUT} />
         )}
       </section>
 
-      {/* ── e. Factures ────────────────────────────────────────────────────── */}
+      {/* ── Factures ───────────────────────────────────────────────────────── */}
       <section className={sectionCls}>
         <SectionTitre titre="Factures" toutVoirHref={`${qBase}/facturation`} />
         {factures.length === 0 ? (
           <SectionVide message="Aucune facture." />
         ) : (
-          <ul className={listeCls}>
-            {factures.map((f) => {
-              const reste = resteDuNetCents(f);
-              const estAvoir = f.avoirDeId !== null;
-              return (
-                <li key={f.id} className={ligneCls}>
-                  <Link href={`${qBase}/facturation/${f.id}`} className={lienMonoCls}>
-                    {f.numero}
-                  </Link>
-                  {estAvoir ? <AdminBadge tone="outline">Avoir</AdminBadge> : null}
-                  <span className="tabular-nums">{eur(f.montantTtcCents ?? f.montantHtCents)}</span>
-                  <span className={ligneMutedCls}>
-                    {formatDateFrShort(f.emiseAt ?? f.createdAt)}
-                  </span>
-                  <StatutBadge map={FACTURE_STATUT} statut={f.statut} />
-                  {!estAvoir && reste > 0 && f.statut !== "brouillon" && f.statut !== "annulee" ? (
-                    <span className="text-[color:var(--color-admin-warning)] tabular-nums">
-                      reste dû {eur(reste)}
-                    </span>
-                  ) : null}
-                </li>
-              );
-            })}
-          </ul>
+          <CartesFactures factures={factures} qBase={qBase} statuts={FACTURE_STATUT} />
         )}
+      </section>
+
+      {/* ── Formations, coaching et audits : une carte ─────────────────────── */}
+      <section className={sectionCls}>
+        <SectionTitre titre="Formations, coaching et audits" />
+        <div className="rounded-[var(--radius-admin-md,8px)] border border-[color:var(--color-admin-border)] bg-white p-[var(--space-admin-4)]">
+          <ul className={listeCls}>
+            <li>
+              <span className="font-semibold tabular-nums">{sessionsEnCours}</span> session
+              {sessionsEnCours > 1 ? "s" : ""} en cours sur{" "}
+              <span className="font-semibold tabular-nums">{client.nbSessions}</span> ·{" "}
+              <span className="font-semibold tabular-nums">{client.nbStagiaires}</span> stagiaire
+              {client.nbStagiaires > 1 ? "s" : ""} ·{" "}
+              <Link href={`${qBase}/sessions`} className={lienTexteCls}>
+                Voir les sessions
+              </Link>
+            </li>
+            <li>
+              <span className="font-semibold tabular-nums">{client.coachingContracts.length}</span>{" "}
+              contrat{client.coachingContracts.length > 1 ? "s" : ""} de coaching
+            </li>
+            <li>
+              <span className="font-semibold tabular-nums">{missionsTerminees}</span> mission
+              {missionsTerminees > 1 ? "s" : ""} d&apos;audit terminée
+              {missionsTerminees > 1 ? "s" : ""} sur{" "}
+              <span className="font-semibold tabular-nums">{client.auditMissions.length}</span> ·{" "}
+              <Link href={`${qBase}/audits`} className={lienTexteCls}>
+                Voir les audits
+              </Link>
+            </li>
+          </ul>
+          {client.sessions.length >= 10 || client.auditMissions.length >= 10 ? (
+            <p className="mt-[var(--space-admin-2)] text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
+              Sessions en cours et audits : parmi les 10 plus récents.
+            </p>
+          ) : null}
+        </div>
       </section>
 
       {/* ── f. Documents générés (pas de registre dédié → pas de « Tout voir ») */}
@@ -369,7 +274,7 @@ export function OngletDevisFactures({
                 <span className={ligneMutedCls}>
                   {d.financeurNom ?? "Financeur à préciser"}
                   {d.echeanceFinanceurAt
-                    ? ` · échéance ${formatDateFrShort(d.echeanceFinanceurAt)}`
+                    ? ` · avant le ${formatDateFrShort(d.echeanceFinanceurAt)}`
                     : ""}
                 </span>
                 <StatutBadge map={DOSSIER_STATUT} statut={d.statut} />
