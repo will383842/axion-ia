@@ -214,7 +214,9 @@ export function VueDemandesTour({
               ? d.telephone
               : d.telephoneVisio
                 ? `${d.telephoneVisio} (visio)`
-                : "Téléphone : à la visio"}
+                : d.statut === "effacee_rgpd"
+                  ? "—"
+                  : "Téléphone : à la visio"}
           </span>
         </div>
       ),
