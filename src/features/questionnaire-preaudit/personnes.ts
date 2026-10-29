@@ -137,6 +137,8 @@ export interface SuiviParPersonne {
   /** Fiches de l'équipe sans prénom ni nom : aucune ligne possible. */
   readonly fichesSansNom: number;
   readonly ouverturesIndisponibles: boolean;
+  /** Ouvertures du lien commun (sans code personnel) : information seule, HORS du total X sur Y. */
+  readonly lienCommun: { readonly nombre: number; readonly derniere: Date } | null;
 }
 
 // ── Petits outils ───────────────────────────────────────────────────────────
@@ -359,8 +361,19 @@ export function suivreParPersonne(e: EntreePersonnes): SuiviParPersonne {
       });
     }
   }
+  let lienCommun: { nombre: number; derniere: Date } | null = null;
   for (const o of e.ouvertures ?? []) {
-    if (o.mode === "lien" || o.mode === "main" || o.membre === "") continue;
+    if (o.mode === "lien") {
+      lienCommun = {
+        nombre: (lienCommun?.nombre ?? 0) + o.nombre,
+        derniere:
+          lienCommun === null || o.derniereOuverture > lienCommun.derniere
+            ? o.derniereOuverture
+            : lienCommun.derniere,
+      };
+      continue;
+    }
+    if (o.mode === "main" || o.membre === "") continue;
     const pourReferent = o.mode === "it" || (o.mode === "perso" && o.membre.startsWith("it-"));
     // Un lien « perso » au parcours inconnu, ouvert avec le code d'un référent déjà connu : chez ce référent.
     if (pourReferent || referents.has(o.membre)) {
@@ -659,6 +672,7 @@ export function suivreParPersonne(e: EntreePersonnes): SuiviParPersonne {
     effectif,
     fichesSansNom: lue.sansNom,
     ouverturesIndisponibles: e.ouvertures === null,
+    lienCommun,
   };
 }
 

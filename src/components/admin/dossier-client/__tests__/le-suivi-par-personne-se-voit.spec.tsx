@@ -298,3 +298,33 @@ describe("bandeau « Où en est ce client »", () => {
     expect(bandeau({ parPersonne: null })).toBe("envoyé le 25 oct. · 1 réponse à lire");
   });
 });
+
+describe("résumé en clair : général, équipe, postes, dates", () => {
+  const t = bloc(
+    q(
+      lu({
+        reponses: [reponseDirigeant],
+        ouvertures: [ouverture(equipe[0]!.id), { ...ouverture(""), mode: "lien", nombre: 3 }],
+      }),
+    ),
+  );
+  it("dit clairement si le questionnaire général est terminé", () => {
+    expect(t).toContain("1. Questionnaire général (le dirigeant)");
+    expect(t).toContain("Terminé : reçu le");
+  });
+  it("liste l'équipe déclarée, avec le poste et ce que chacun a fait", () => {
+    expect(t).toContain("2. Équipe déclarée par le dirigeant : 4 personnes");
+    expect(t).toContain("0 terminé · 0 en brouillon · 3 n'ont pas commencé");
+    expect(t).toContain("N'a pas commencé");
+    expect(t).toContain("a ouvert son lien le 27/10");
+  });
+  it("montre le lien commun, hors du total", () => {
+    expect(t).toContain("Lien commun (sans code personnel) : ouvert 3 fois");
+  });
+  it("sans le droit, aucun nom d'un brouillon n'apparaît dans le résumé", () => {
+    const sans = bloc(
+      q(lu({ reponses: [reponseDirigeant], brouillons: [brouillonInconnu("Zoé")] })),
+    );
+    expect(sans).not.toContain("Zoé");
+  });
+});
