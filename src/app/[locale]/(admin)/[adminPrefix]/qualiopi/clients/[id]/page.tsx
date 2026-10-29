@@ -239,6 +239,9 @@ export default async function FicheClient360Page({ params, searchParams }: PageP
   }
   const sp = (await searchParams) ?? {};
 
+  // Le rôle est consulté AVANT toute lecture du dossier (régime A2, voir plus bas).
+  const voitEchanges = peutVoirLesEchanges(acces.role);
+
   const client = await E.lireClient360Cache(id);
   if (!client) notFound();
 
@@ -249,7 +252,6 @@ export default async function FicheClient360Page({ params, searchParams }: PageP
   // ── Dossier client : régime FILTRE (décision A2) ─────────────────────────
   // 🔴 La vérification du rôle PRÉCÈDE toute lecture du dossier : hors de la
   // liste, aucune requête n'est faite (pas seulement aucun rendu).
-  const voitEchanges = peutVoirLesEchanges(acces.role);
   const onglet = ongletAffiche(sp.onglet, voitEchanges);
   // N1 : seuls les messages scellés par nos actions s'affichent (un lien forgé, rien).
   const erreur = lireMessageDeRetour(sp, "erreur");
