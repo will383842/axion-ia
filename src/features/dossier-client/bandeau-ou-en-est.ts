@@ -7,7 +7,7 @@
  * ⛔ Ni adresse de destinataire ni corps d'e-mail : des dates, des états et des comptes.
  */
 
-import { resumeBandeau } from "@/features/questionnaire-preaudit/ouvertures";
+import { motsDEtat } from "@/features/questionnaire-preaudit/personnes";
 
 import type { EchangeDuFil } from "./fil-des-echanges";
 import type { QuestionnaireDeLaFiche } from "./questionnaires-de-la-fiche";
@@ -22,10 +22,8 @@ export interface EntreeBandeau {
   }>;
   readonly questionnaires: ReadonlyArray<
     Pick<QuestionnaireDeLaFiche, "envoyeLe" | "closLe" | "reponses"> &
-      Partial<Pick<QuestionnaireDeLaFiche, "suivi" | "suiviEnPanne">>
+      Partial<Pick<QuestionnaireDeLaFiche, "parPersonne" | "parPersonneEnPanne">>
   >;
-  /** Interrupteur `QUESTIONNAIRE_SUIVI_ENABLED` : ouvertures et avancée dans la ligne. */
-  readonly suiviOuvertures?: boolean;
   readonly fil: ReadonlyArray<EchangeDuFil>;
   readonly prestations: ReadonlyArray<{ readonly statut: string }>;
   readonly nbDevis: number;
@@ -120,14 +118,26 @@ function ligneQuestionnaire(e: EntreeBandeau): LigneBandeau {
   } else {
     const dernier = envoyes[0]!;
     texte = `envoyé le ${jour(dernier.envoyeLe!)}`;
-    if (aLire > 0) texte += ` · ${pluriel(aLire, "réponse à lire", "réponses à lire")}`;
-    else if (e.questionnaires.some((q) => q.reponses.dirigeant > 0)) texte += " · réponses lues";
+    const p = dernier.parPersonne?.suivi;
+    if (dernier.parPersonneEnPanne === true) {
+      texte += " · suivi par personne : lecture impossible";
+    } else if (p != null && p.equipe.connue) {
+      // Qui a répondu sur combien (2026-10-27) : le suivi personne par personne remplace le simple compte.
+      texte += ` · ${p.total.recus} sur ${p.total.attendus} reçus`;
+      if (p.collab.enCours > 0) texte += ` · ${p.collab.enCours} en train de remplir`;
+      const pasLues = [p.dirigeant, ...p.collaborateurs, ...p.referents].filter(
+        (l) => l.pasEncoreLue,
+      ).length;
+      if (pasLues > 0)
+        texte += ` · ${pluriel(pasLues, "réponse pas encore lue", "réponses pas encore lues")}`;
+      else if (aLire > 0) texte += ` · ${pluriel(aLire, "réponse à lire", "réponses à lire")}`;
+    } else if (p != null) {
+      texte += ` · dirigeant : ${motsDEtat(p.dirigeant.etat)} · équipe pas encore déclarée`;
+      if (aLire > 0) texte += ` · ${pluriel(aLire, "réponse à lire", "réponses à lire")}`;
+    } else if (aLire > 0) {
+      texte += ` · ${pluriel(aLire, "réponse à lire", "réponses à lire")}`;
+    } else if (e.questionnaires.some((q) => q.reponses.dirigeant > 0)) texte += " · réponses lues";
     else texte += " · pas de réponse";
-    // Ouvertures et avancée du DERNIER questionnaire envoyé (2026-10-27), interrupteur allumé.
-    if (e.suiviOuvertures === true) {
-      if (dernier.suiviEnPanne === true) texte += " · ouvertures : lecture impossible";
-      else if (dernier.suivi != null) texte += ` · ${resumeBandeau(dernier.suivi)}`;
-    }
   }
   return { cle: "questionnaire", libelle: "Questionnaire", texte, onglet: "questionnaire" };
 }
