@@ -13820,6 +13820,8 @@ model ClientContact {
   updatedAt             DateTime       @updatedAt @map("updated_at")
 
   adresses ClientContactAdresse[]
+  /// Tâches de la fiche qui visent cette personne (relation seule ; SET NULL).
+  clientTaches ClientTache[]
 
   @@unique([id, clientId])
   @@index([clientId])
@@ -13963,9 +13965,12 @@ model ClientTache {
   id               String    @id @default(uuid()) @db.Uuid
   clientId         String    @map("client_id") @db.Uuid
   client           Client    @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  /// Clé composée (SQL brut) : projet du même client.
   projetId         String?   @map("projet_id") @db.Uuid
   projet           Projet?   @relation(fields: [projetId], references: [id], onDelete: SetNull)
+  /// Clé composée (SQL brut) : la personne est du même client.
   contactId        String?   @map("contact_id") @db.Uuid
+  contact          ClientContact? @relation(fields: [contactId], references: [id], onDelete: SetNull)
   intitule         String    @db.VarChar(300)
   echeanceLe       DateTime  @map("echeance_le") @db.Date
   responsableLabel String    @map("responsable_label") @db.VarChar(80)
@@ -13986,6 +13991,7 @@ model ClientNote {
   id             String   @id @default(uuid()) @db.Uuid
   clientId       String   @map("client_id") @db.Uuid
   client         Client   @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  /// Clé composée (SQL brut) : projet du même client.
   projetId       String?  @map("projet_id") @db.Uuid
   projet         Projet?  @relation(fields: [projetId], references: [id], onDelete: SetNull)
   contenuChiffre String   @map("contenu_chiffre")

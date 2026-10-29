@@ -1802,8 +1802,10 @@ export const EXCEPTIONS_EFFACEMENT_DOSSIER: ReadonlyArray<{
   {
     // 2026-10-29 — fiche client (tâches, notes, profil, étiquettes) : tables créées SANS écrivain
     // (migration seule). Elles sont vides tant que le lot qui les écrit n'est pas livré ; ce lot
-    // DOIT remplacer ces quatre entrées par l'effacement réel (et l'export), sous peine d'être
-    // refusé par la garde `les-tables-du-dossier-client-suivent-la-personne`.
+    // DOIT remplacer ces quatre entrées par l'effacement réel (et l'export). La garde
+    // `les-tables-du-dossier-client-suivent-la-personne` (test « une exception "sans écrivain" n'a
+    // pas d'écrivain ») rougit dès que du code sous `src/` écrit dans ces tables (create,
+    // createMany, upsert, update, updateMany ou INSERT INTO) : le lot qui écrit retire ces entrées.
     modele: "ClientTache",
     motif:
       "tâches de suivi d'une fiche : table encore sans écrivain (aucune ligne ne peut exister) ; " +

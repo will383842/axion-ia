@@ -8,6 +8,7 @@
 -- Retour arrière (JAMAIS exécuté par défaut) :
 --   DROP TABLE "client_etiquettes"; DROP TABLE "client_profils"; DROP TABLE "client_notes";
 --   DROP TABLE "client_taches";
+--   ALTER TABLE "projet_suivis" DROP CONSTRAINT "projet_suivis_probabilite_pct_check";
 --   ALTER TABLE "projet_suivis" DROP COLUMN "probabilite_pct", DROP COLUMN "cloture_prevue_le";
 
 CREATE TABLE IF NOT EXISTS "client_taches" (
@@ -97,6 +98,23 @@ BEGIN
   IF NOT EXISTS (SELECT 1 FROM pg_constraint WHERE conname = 'client_etiquettes_client_id_fkey') THEN
     ALTER TABLE "client_etiquettes" ADD CONSTRAINT "client_etiquettes_client_id_fkey"
       FOREIGN KEY ("client_id") REFERENCES "clients"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+  END IF;
+  -- Même client tenu par la base (ADR 0053 §5) : clés composées, SET NULL sur la seule colonne facultative.
+  IF NOT EXISTS (SELECT 1 FROM pg_constraint WHERE conname = 'client_taches_contact_id_fkey') THEN
+    ALTER TABLE "client_taches" ADD CONSTRAINT "client_taches_contact_id_fkey"
+      FOREIGN KEY ("contact_id") REFERENCES "client_contacts"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+  END IF;
+  IF NOT EXISTS (SELECT 1 FROM pg_constraint WHERE conname = 'client_taches_projet_meme_client') THEN
+    ALTER TABLE "client_taches" ADD CONSTRAINT "client_taches_projet_meme_client"
+      FOREIGN KEY ("projet_id", "client_id") REFERENCES "projets"("id", "client_id") ON DELETE SET NULL ("projet_id") ON UPDATE CASCADE DEFERRABLE INITIALLY IMMEDIATE;
+  END IF;
+  IF NOT EXISTS (SELECT 1 FROM pg_constraint WHERE conname = 'client_taches_contact_meme_client') THEN
+    ALTER TABLE "client_taches" ADD CONSTRAINT "client_taches_contact_meme_client"
+      FOREIGN KEY ("contact_id", "client_id") REFERENCES "client_contacts"("id", "client_id") ON DELETE SET NULL ("contact_id") ON UPDATE CASCADE DEFERRABLE INITIALLY IMMEDIATE;
+  END IF;
+  IF NOT EXISTS (SELECT 1 FROM pg_constraint WHERE conname = 'client_notes_projet_meme_client') THEN
+    ALTER TABLE "client_notes" ADD CONSTRAINT "client_notes_projet_meme_client"
+      FOREIGN KEY ("projet_id", "client_id") REFERENCES "projets"("id", "client_id") ON DELETE SET NULL ("projet_id") ON UPDATE CASCADE DEFERRABLE INITIALLY IMMEDIATE;
   END IF;
   IF NOT EXISTS (SELECT 1 FROM pg_constraint WHERE conname = 'projet_suivis_probabilite_pct_check') THEN
     ALTER TABLE "projet_suivis" ADD CONSTRAINT "projet_suivis_probabilite_pct_check"
