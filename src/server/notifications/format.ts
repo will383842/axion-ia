@@ -66,6 +66,7 @@ const THEME: Record<TelegramGroup, { emoji: string; label: string }> = {
   "crm-sync": { emoji: "🔗", label: "SYNCHRO CRM" },
   incidents: { emoji: "🚨", label: "INCIDENT DE DONNÉES" },
   "questionnaire-audit": { emoji: "📝", label: "QUESTIONNAIRE AUDIT" },
+  tour: { emoji: "🚌", label: "TOUR FRANCE IA" },
   system: { emoji: "🔔", label: "SYSTÈME" },
 };
 
@@ -101,6 +102,8 @@ const TITLES: Record<NotificationCategory, string> = {
   NEWSLETTER_CONFIRMED: "Newsletter — opt-in confirmé",
   NEWSLETTER_UNSUBSCRIBED: "Newsletter — désinscription",
   GUIDE_REQUESTED: "Guide IA — demande",
+  TOUR_DEMANDE_RECUE: "Tour France IA : nouvelle demande",
+  TOUR_VILLE_OUVERTE: "Tour France IA : VILLE OUVERTE (5 sur 5)",
   GUIDE_RECAP: "Guide IA — récapitulatif du jour",
   BOOKING_CREATED: "Nouvelle réservation",
   BOOKING_CANCELLED: "Réservation annulée",
@@ -771,6 +774,30 @@ function formatBody(event: NotificationEvent): string {
         formatKV(
           "Voir en console",
           lienConsole(`contacts/candidatures/${p.applicationId}#reponses-recues`),
+        ),
+      ]
+        .filter((v): v is string => v !== null)
+        .join("\n");
+    }
+    case "TOUR_DEMANDE_RECUE":
+    case "TOUR_VILLE_OUVERTE": {
+      // Minimisée : ville du référentiel, nombres, lien. Ni nom, ni adresse, ni ville saisie.
+      const p = event.payload;
+      const compte =
+        event.category === "TOUR_DEMANDE_RECUE"
+          ? formatKV("Compte pour la ville", event.payload.compte ? "oui" : "non (déjà comptée)")
+          : null;
+      return [
+        formatKV("Ville", p.ville),
+        formatKV("Demandes comptées", `${p.comptees} sur ${p.seuil}`),
+        compte,
+        formatKV(
+          "Voir en console",
+          lienConsole(
+            p.villeCle === null
+              ? "tunnels/tour/villes"
+              : `tunnels/tour/villes/fiche?ville=${encodeURIComponent(p.villeCle)}`,
+          ),
         ),
       ]
         .filter((v): v is string => v !== null)

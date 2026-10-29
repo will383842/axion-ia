@@ -53,6 +53,10 @@ export interface DemandeEnregistree {
   /** Vrai si la demande compte pour sa ville. */
   readonly compte: boolean;
   readonly rattachement: Rattachement;
+  /** Clé de la ville (`?<texte>` hors référentiel : ne jamais l'afficher ni l'envoyer). */
+  readonly villeCle: string;
+  /** Nom du référentiel ; nul = ville hors liste. */
+  readonly villeNom: string | null;
 }
 
 /** Une donnée indispensable manque ou est refusée : l'appelant l'a mal validée. */
@@ -198,5 +202,5 @@ export async function enregistrerDemande(entree: EntreeDemande): Promise<Demande
     Sentry.captureException(e, { tags: { module: "tour-demande", etape: "crm" } });
   }
 
-  return { id, compte, rattachement };
+  return { id, compte, rattachement, villeCle: ville.cle, villeNom: ville.nom };
 }

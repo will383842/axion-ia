@@ -37,7 +37,13 @@ beforeEach(() => {
 describe("enregistrerDemande", () => {
   it("écrit la demande chiffrée, comptée, avec ses deux clés de comptage (des HMAC)", async () => {
     const r = await enregistrerDemande(entree);
-    expect(r).toEqual({ id: "d1", compte: true, rattachement: "sans_fiche" });
+    expect(r).toEqual({
+      id: "d1",
+      compte: true,
+      rattachement: "sans_fiche",
+      villeCle: "lyon",
+      villeNom: "Lyon",
+    });
     const { data } = m.create.mock.calls[0]?.[0] as { data: Record<string, unknown> };
     expect(data["nom"]).toBe("enc:Alice Martin");
     expect(data["email"]).toBe("enc:alice@societe-exemple.fr");
@@ -99,7 +105,13 @@ describe("enregistrerDemande", () => {
     m.rattacherDemande.mockRejectedValue(new Error("fiche"));
     m.envoyerAuCrm.mockRejectedValue(new Error("crm"));
     const r = await enregistrerDemande(entree);
-    expect(r).toEqual({ id: "d1", compte: true, rattachement: "a_verifier" });
+    expect(r).toEqual({
+      id: "d1",
+      compte: true,
+      rattachement: "a_verifier",
+      villeCle: "lyon",
+      villeNom: "Lyon",
+    });
     expect(m.captureException).toHaveBeenCalledTimes(2);
   });
 

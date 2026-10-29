@@ -374,6 +374,24 @@ export type NotificationEvent =
       category: "NEWSLETTER_PENDING" | "NEWSLETTER_CONFIRMED" | "NEWSLETTER_UNSUBSCRIBED";
       payload: { email: string; locale?: "fr" | "en" };
     }
+  // === Tour France IA (2026-10-29) : salon « Tour » ===
+  // 🔴 MINIMISÉES : la ville du référentiel (ou « ville hors liste »), des nombres, un booléen.
+  // Jamais de nom, d'e-mail, de téléphone, d'IP ni de ville saisie. Envoyées APRÈS la réponse
+  // par `features/tour-de-france/alertes.ts`. `villeCle` nul = ville hors liste (pas de fiche).
+  | {
+      category: "TOUR_DEMANDE_RECUE";
+      payload: {
+        ville: string;
+        villeCle: string | null;
+        comptees: number;
+        seuil: number;
+        compte: boolean;
+      };
+    }
+  | {
+      category: "TOUR_VILLE_OUVERTE";
+      payload: { ville: string; villeCle: string; comptees: number; seuil: number };
+    }
   // === Guide IA (lot L2, 2026-09-24) ===
   //
   // `email` est TOUJOURS masqué à l'appel (`redactEmail`, ADR 0010) : le hub

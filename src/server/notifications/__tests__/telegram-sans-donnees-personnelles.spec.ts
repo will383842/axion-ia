@@ -142,6 +142,14 @@ const PAYLOADS: Record<NotificationCategory, Record<string, unknown>> = {
     envoi: "parti",
     nouvelle: true,
   },
+  TOUR_DEMANDE_RECUE: {
+    ville: "Lyon",
+    villeCle: "lyon",
+    comptees: 3,
+    seuil: 5,
+    compte: true,
+  },
+  TOUR_VILLE_OUVERTE: { ville: "Lyon", villeCle: "lyon", comptees: 5, seuil: 5 },
   GUIDE_RECAP: { demandes: 1, envois: 1, clics: 0, enAttente: 0, inscriptionsLettre: 0 },
   BOOKING_CREATED: {
     bookingId: "bk_1",
