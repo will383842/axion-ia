@@ -49,7 +49,7 @@ export const SEUIL_PAR_VILLE = 5;
 /** La page de rendez-vous visio de 30 minutes (type `tour` de `types-reservables.ts`). */
 export const CHEMIN_RENDEZ_VOUS = "/fr/appel/tour-france-ia";
 
-/** La mini-demande qui précède la visio (`demande/page.tsx`) : quatre champs, puis le calendrier. */
+/** La mini-demande qui précède la visio (`demande/page.tsx`) : trois champs, puis le calendrier. */
 export const CHEMIN_DEMANDE = `${TOUR_PREFIX}/demande`;
 
 /** Les conditions générales du Tour (`conditions-generales/page.tsx`). */

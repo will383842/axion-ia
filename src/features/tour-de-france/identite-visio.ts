@@ -1,9 +1,10 @@
 // Tour France IA : préremplir la visio avec la mini-demande (PR-2b).
 //
-// Le visiteur qui vient de remplir ses quatre champs arrive au formulaire de la visio avec le jeton
+// Le visiteur qui vient de remplir ses trois champs arrive au formulaire de la visio avec le jeton
 // `?j=` (`jeton-demande.ts`, domaine `tour-demande-v1`, DISTINCT de celui de la page vidéo des
 // apporteurs). Ce module retrouve la demande, déchiffre ses champs et rend de quoi proposer le nom,
-// l'e-mail, le téléphone et la ville comme valeurs par défaut, toutes modifiables.
+// l'e-mail et la ville comme valeurs par défaut, toutes modifiables. Le téléphone n'est pas
+// proposé : il n'est plus demandé à la mini-demande, le visiteur le saisit à la réservation.
 //
 // Jamais d'exception, jamais d'erreur affichée : un jeton faux, expiré ou d'un autre parcours, une
 // demande effacée, une valeur illisible, une base en panne → `null`, et le formulaire reste vide.
@@ -16,7 +17,6 @@ import { lireJetonDemande } from "./jeton-demande";
 export interface IdentiteTour {
   readonly nom: string;
   readonly email: string;
-  readonly telephone: string;
   readonly ville: string;
 }
 
@@ -27,7 +27,7 @@ function utilisable(valeur: string): string {
 }
 
 /**
- * Les quatre champs de la demande retrouvés par le jeton, ou `null`. Une demande dont l'effacement
+ * Les trois champs de la demande retrouvés par le jeton, ou `null`. Une demande dont l'effacement
  * a été demandé n'est jamais proposée.
  */
 export async function identiteDuJetonTour(valeur: unknown): Promise<IdentiteTour | null> {
@@ -39,7 +39,6 @@ export async function identiteDuJetonTour(valeur: unknown): Promise<IdentiteTour
       select: {
         nom: true,
         email: true,
-        telephone: true,
         villeSaisie: true,
         villeNom: true,
         statut: true,
@@ -51,7 +50,6 @@ export async function identiteDuJetonTour(valeur: unknown): Promise<IdentiteTour
     return {
       nom: utilisable(lireChamp("nom", d.nom)),
       email,
-      telephone: utilisable(lireChamp("telephone", d.telephone)),
       ville: utilisable(d.villeNom ?? d.villeSaisie),
     };
   } catch {

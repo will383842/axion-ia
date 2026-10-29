@@ -1,5 +1,5 @@
 /**
- * La page de la mini-demande : composant serveur, quatre champs, aucun mot interdit.
+ * La page de la mini-demande : composant serveur, trois champs, aucun mot interdit, jamais de téléphone.
  */
 
 import { readFileSync } from "node:fs";
@@ -23,14 +23,13 @@ async function rendre(sp: Record<string, string | string[] | undefined> = {}) {
 afterEach(cleanup);
 
 describe("la page de la demande", () => {
-  it("quatre champs étiquetés, avec les bons attributs", async () => {
+  it("trois champs étiquetés, avec les bons attributs", async () => {
     const { container } = await rendre();
     const champ = (nom: string) =>
       container.querySelector(`input[name="${nom}"]`) as HTMLInputElement;
     for (const [nom, auto] of [
       ["nom", "name"],
       ["email", "email"],
-      ["telephone", "tel"],
       ["ville", "address-level2"],
     ] as const) {
       const el = champ(nom);
@@ -41,11 +40,9 @@ describe("la page de la demande", () => {
     expect(champ("nom").maxLength).toBe(80);
     expect(champ("email").type).toBe("email");
     expect(champ("email").maxLength).toBe(254);
-    expect(champ("telephone").type).toBe("tel");
-    expect(champ("telephone").getAttribute("pattern")).toBe(
-      "(?=(?:[^0-9]*[0-9]){9})[0-9 +().\\-]{8,20}",
-    );
-    expect(champ("telephone").getAttribute("title")).toMatch(/9 chiffres/);
+    // Le téléphone n'est plus demandé ici : il l'est à l'étape suivante.
+    expect(container.querySelector('input[name="telephone"]')).toBeNull();
+    expect(container.querySelectorAll("form input:not([type=hidden])").length).toBe(4);
     expect(champ("ville").maxLength).toBe(80);
     expect(container.querySelectorAll("datalist#tdf-villes option").length).toBeGreaterThan(100);
     // Le leurre, et le bouton.
@@ -61,7 +58,7 @@ describe("la page de la demande", () => {
     expect(bouton?.className).toMatch(/\bbg-terracotta\b/);
     expect(bouton?.className).toMatch(/\btext-paper\b/);
     expect(bouton?.className).not.toMatch(/bg-primary/);
-    for (const nom of ["nom", "email", "telephone", "ville"]) {
+    for (const nom of ["nom", "email", "ville"]) {
       const cl = container.querySelector(`input[name="${nom}"]`)?.className ?? "";
       expect(cl, nom).toMatch(/\bborder-border-field\b/);
       expect(cl, nom).toMatch(/\bmin-h-12\b/);
@@ -99,6 +96,7 @@ describe("la page de la demande", () => {
     expect(texte).toMatch(/Axion IA/);
     expect(texte).toMatch(/empreintes chiffrées/);
     expect(texte).toMatch(/effacement/);
+    expect(texte).toMatch(/téléphone vous sera demandé à l’étape suivante/);
     expect(
       container.querySelector('a[href="/tour-france-ia/conditions-generales"]'),
     ).not.toBeNull();

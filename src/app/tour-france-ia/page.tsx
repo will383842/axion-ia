@@ -3,7 +3,7 @@
 // modèle « 5 journées offertes par ville, sur sélection » le 2026-10-27).
 //
 // Tunnel : post Facebook, LinkedIn ou Instagram (UTM) → cette page → « Demander
-// ma journée offerte » → `/tour-france-ia/demande` (quatre champs) →
+// ma journée offerte » → `/tour-france-ia/demande` (trois champs) →
 // `/fr/appel/tour-france-ia` (la visio, type `tour` de `types-reservables.ts`) → Calendly → console.
 //
 // Écrite pour ce trafic-là : mobile d'abord, navigateur intégré des réseaux, 4G,

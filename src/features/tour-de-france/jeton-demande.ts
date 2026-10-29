@@ -1,7 +1,7 @@
 // Tour France IA : le jeton qui relie la mini-demande à la page du rendez-vous (PR-2a).
 //
 // Après l'envoi de la demande, le visiteur est envoyé vers le calendrier ; la page du rendez-vous
-// pourra y retrouver ses quatre champs. Entre les deux, le navigateur ne porte que ce jeton : il
+// pourra y retrouver ses trois champs. Entre les deux, le navigateur ne porte que ce jeton : il
 // prouve « cette demande est bien celle de cette visite ».
 //
 // 🔑 Le jeton est LISIBLE (base64) par qui le reçoit : il ne porte QUE l'identifiant de la demande
