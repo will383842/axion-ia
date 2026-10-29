@@ -27,8 +27,7 @@ export const emplacementsVides = {
 
 /** Emplacements vides, mais avec le VRAI onglet Devis et factures (déplacé dans `fiche/`). */
 export async function emplacementsAvecOngletReel() {
-  const { OngletDevisFactures } = await import(
-    "@/components/admin/dossier-client/fiche/OngletDevisFactures"
-  );
+  const { OngletDevisFactures } =
+    await import("@/components/admin/dossier-client/fiche/OngletDevisFactures");
   return { ...emplacementsVides, OngletDevisFactures };
 }
