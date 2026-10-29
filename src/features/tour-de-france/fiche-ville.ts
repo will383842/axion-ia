@@ -36,7 +36,7 @@ export interface VisioTour {
 /** Une visio du Tour telle qu'elle est lue en base (colonnes utiles seulement). */
 export interface VisioBrute {
   readonly id: string;
-  readonly inviteeEmail: string;
+  readonly inviteeEmail: string | null;
   readonly startTime: Date | null;
   readonly status: string;
   readonly rawPayload: unknown;

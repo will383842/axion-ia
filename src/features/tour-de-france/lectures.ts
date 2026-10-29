@@ -295,7 +295,7 @@ export async function lireFicheVille(villeCle: string): Promise<FicheVille> {
   }
   let visios: Array<{
     id: string;
-    inviteeEmail: string;
+    inviteeEmail: string | null;
     startTime: Date | null;
     status: string;
     rawPayload: unknown;

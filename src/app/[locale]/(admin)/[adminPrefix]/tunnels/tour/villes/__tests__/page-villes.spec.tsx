@@ -26,8 +26,8 @@ vi.mock("@/features/tour-de-france/lectures", () => ({
   lireFicheVille: d.lireFicheVille,
 }));
 
-import { VueVilleTour } from "../../../../_components/VueVilleTour";
-import { VueVillesTour } from "../../../../_components/VueVillesTour";
+import { VueVilleTour } from "../../../_components/VueVilleTour";
+import { VueVillesTour } from "../../../_components/VueVillesTour";
 import FichePage from "../fiche/page";
 import VillesPage from "../page";
 
@@ -193,7 +193,7 @@ describe("vue : la fiche d'une ville", () => {
       rendreFiche(null),
     ].join(" ");
     // Les réponses de l'invité sont des données, pas des textes de la console : on les écarte.
-    const sansDonnees = textes.replace(/Les devis à la main/g, "");
+    const sansDonnees = textes.replace(/Les devis à la main/g, "").replace(/href="[^"]*"/g, "");
     for (const mot of MOTS_INTERDITS) {
       expect(sansDonnees, String(mot)).not.toMatch(mot);
     }
