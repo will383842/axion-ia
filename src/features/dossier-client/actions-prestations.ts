@@ -21,6 +21,7 @@ import {
   estEtapePrestation,
   estTypePrestation,
   eurosEnCentimes,
+  messageMontantInvalide,
 } from "@/features/dossier-client/prestations";
 
 const uuid = z.string().uuid();
@@ -33,9 +34,9 @@ const champ = (fd: FormData, cle: string): string => {
 export async function enregistrerSuiviPrestationAction(fd: FormData): Promise<void> {
   const clientId = champ(fd, "clientId");
   if (!uuid.safeParse(clientId).success) redirect(adminPath("fr", "qualiopi/clients"));
-  const retour = `${adminPath("fr", `qualiopi/clients/${clientId}`)}?onglet=prestations`;
+  const retour = `${adminPath("fr", `qualiopi/clients/${clientId}`)}?onglet=prestations&bloc=suivi`;
   const echec = (texte: string): never => redirect(avecMessageDeRetour(retour, "erreur", texte));
-  await exigerAccesEchanges();
+  const session = await exigerAccesEchanges();
 
   const projetId = champ(fd, "projetId");
   if (!uuid.safeParse(projetId).success) echec("Prestation inconnue.");
@@ -44,8 +45,9 @@ export async function enregistrerSuiviPrestationAction(fd: FormData): Promise<vo
   const etape = champ(fd, "etape");
   // Vide = « calculée » : on retire le forçage, rien d'autre.
   if (etape !== "" && !estEtapePrestation(etape)) echec("Cette étape n'existe pas.");
-  const montant = eurosEnCentimes(champ(fd, "montant"));
-  if (montant === undefined) echec("Le montant n'est pas valide (euros, deux décimales au plus).");
+  const saisieMontant = champ(fd, "montant");
+  const montant = eurosEnCentimes(saisieMontant);
+  if (montant === undefined) echec(messageMontantInvalide(saisieMontant));
 
   const projet = await prisma.projet.findUnique({
     where: { id: projetId },
@@ -55,10 +57,32 @@ export async function enregistrerSuiviPrestationAction(fd: FormData): Promise<vo
 
   const donnees = { type, etapeForcee: etape === "" ? null : etape, montantCents: montant ?? null };
   try {
-    await prisma.projetSuivi.upsert({
-      where: { projetId },
-      create: { projetId, ...donnees },
-      update: donnees,
+    await prisma.$transaction(async (tx) => {
+      const avant = await tx.projetSuivi.findUnique({
+        where: { projetId },
+        select: { type: true, etapeForcee: true, montantCents: true },
+      });
+      await tx.projetSuivi.upsert({
+        where: { projetId },
+        create: { projetId, ...donnees },
+        update: donnees,
+      });
+      await tx.activityLog.create({
+        data: {
+          adminUserId: session.userId,
+          action: "prestation.suivi_modifie",
+          targetType: "projet",
+          targetId: projetId,
+          changes: {
+            avant: avant ?? null,
+            apres: {
+              type: donnees.type,
+              etapeForcee: donnees.etapeForcee,
+              montantCents: donnees.montantCents,
+            },
+          },
+        },
+      });
     });
   } catch {
     echec("L'enregistrement n'a pas pu être fait. Réessayez dans un instant.");

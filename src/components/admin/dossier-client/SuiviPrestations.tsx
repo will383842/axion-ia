@@ -109,7 +109,7 @@ export function SuiviPrestations({
                   </select>
                 </label>
                 <label className="flex flex-col text-[length:var(--text-admin-xs)]">
-                  Montant (€, console seulement)
+                  Montant HT (€, reste dans la console)
                   <input
                     name="montant"
                     inputMode="decimal"

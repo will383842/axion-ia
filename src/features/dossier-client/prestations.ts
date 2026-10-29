@@ -31,26 +31,22 @@ export const LIBELLE_TYPE_PRESTATION: Readonly<Record<TypePrestation, string>> =
 };
 
 export const ETAPES_PRESTATION = [
-  "proposee",
-  "devisee",
-  "en_cours",
-  "livree",
+  "besoin",
+  "devis_envoye",
+  "accepte",
   "terminee",
   "en_pause",
   "perdue",
-  "abandonnee",
 ] as const;
 export type EtapePrestation = (typeof ETAPES_PRESTATION)[number];
 
 export const LIBELLE_ETAPE_PRESTATION: Readonly<Record<EtapePrestation, string>> = {
-  proposee: "Proposée",
-  devisee: "Devisée",
-  en_cours: "En cours",
-  livree: "Livrée",
+  besoin: "Besoin",
+  devis_envoye: "Devis envoyé",
+  accepte: "Accepté",
   terminee: "Terminée",
   en_pause: "En pause",
   perdue: "Perdue",
-  abandonnee: "Abandonnée",
 };
 
 export const estTypePrestation = (v: unknown): v is TypePrestation =>
@@ -59,7 +55,7 @@ export const estTypePrestation = (v: unknown): v is TypePrestation =>
 export const estEtapePrestation = (v: unknown): v is EtapePrestation =>
   typeof v === "string" && (ETAPES_PRESTATION as readonly string[]).includes(v);
 
-/** L'étape déduite du projet et de ses devis. « Livrée » n'est jamais déduite : Will la pose. */
+/** L'étape déduite du projet et de ses devis : Besoin, Devis envoyé ou Accepté sauf statut final. */
 export function etapeCalculee(
   statutProjet: string,
   statutsDevis: ReadonlyArray<string>,
@@ -68,15 +64,17 @@ export function etapeCalculee(
     case "en_pause":
       return "en_pause";
     case "perdu":
-      return "perdue";
     case "abandonne":
-      return "abandonnee";
+      return "perdue";
     case "termine":
       return "terminee";
     case "gagne":
-      return "en_cours";
+      return "accepte";
     default:
-      return statutsDevis.some((s) => s === "envoye" || s === "accepte") ? "devisee" : "proposee";
+      if (statutsDevis.some((s) => s === "accepte" || s === "transforme_convention")) {
+        return "accepte";
+      }
+      return statutsDevis.some((s) => s === "envoye") ? "devis_envoye" : "besoin";
   }
 }
 
@@ -90,12 +88,27 @@ export function etapeAffichee(
   return { etape: etapeCalculee(statutProjet, statutsDevis), forcee: false };
 }
 
+const nettoyerMontant = (saisie: string): string => saisie.replace(/[\s  ]/g, "").replace(",", ".");
+
 /** « 1 500,50 » ou « 1500.5 » (euros) -> centimes ; vide -> null ; négatif ou illisible -> `undefined`. */
 export function eurosEnCentimes(saisie: string): number | null | undefined {
-  const brut = saisie.replace(/[\s ]/g, "").replace(",", ".");
+  const brut = nettoyerMontant(saisie);
   if (brut === "") return null;
-  if (!/^\d{1,9}(\.\d{1,2})?$/.test(brut)) return undefined;
+  // Écriture française des milliers collée (« 1.500 ») : ambiguë, on refuse.
+  if (/^\d{1,3}\.\d{3}$/.test(brut)) return undefined;
+  // 7 chiffres au plus : les centimes tiennent dans un INTEGER de la base.
+  if (!/^\d{1,7}(\.\d{1,2})?$/.test(brut)) return undefined;
   return Math.round(Number(brut) * 100);
+}
+
+/** Le message à montrer quand `eurosEnCentimes` refuse la saisie. */
+export function messageMontantInvalide(saisie: string): string {
+  const brut = nettoyerMontant(saisie);
+  if (/^\d{1,3}\.\d{3}$/.test(brut)) return "Montant ambigu : écrivez 1500 ou 1 500.";
+  if (/^\d{8,}(\.\d+)?$/.test(brut)) {
+    return "Montant trop grand : 9 999 999 € au plus.";
+  }
+  return "Le montant n'est pas valide (euros, deux décimales au plus).";
 }
 
 export function centimesEnEuros(cents: number | null): string {

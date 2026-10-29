@@ -11,12 +11,16 @@ const PID = "22222222-2222-4222-8222-222222222222";
 
 const bd = vi.hoisted(() => ({
   projet: { findUnique: vi.fn() },
-  projetSuivi: { upsert: vi.fn(), delete: vi.fn(), deleteMany: vi.fn() },
+  projetSuivi: { findUnique: vi.fn(), upsert: vi.fn(), delete: vi.fn(), deleteMany: vi.fn() },
+  activityLog: { create: vi.fn() },
+  $transaction: vi.fn(),
+}));
+const acces = vi.hoisted(() => ({
+  exigerAccesEchanges: vi.fn(),
+  AccesRefuse: class AccesRefuse extends Error {},
 }));
 vi.mock("@/lib/prisma", () => ({ prisma: bd }));
-vi.mock("@/features/dossier-client/acces", () => ({
-  exigerAccesEchanges: vi.fn(async () => ({})),
-}));
+vi.mock("@/features/dossier-client/acces", () => acces);
 vi.mock("next/cache", () => ({ revalidatePath: vi.fn() }));
 vi.mock("next/navigation", () => ({
   redirect: (url: string) => {
@@ -34,6 +38,7 @@ import {
   etapeAffichee,
   etapeCalculee,
   eurosEnCentimes,
+  messageMontantInvalide,
   TYPES_PRESTATION,
 } from "../prestations";
 import { assemblerPrestations } from "../suivi-prestations";
@@ -55,6 +60,9 @@ beforeEach(() => {
   vi.clearAllMocks();
   bd.projet.findUnique.mockResolvedValue({ clientId: CID });
   bd.projetSuivi.upsert.mockResolvedValue({});
+  bd.projetSuivi.findUnique.mockResolvedValue(null);
+  bd.$transaction.mockImplementation(async (fn: (tx: typeof bd) => Promise<unknown>) => fn(bd));
+  acces.exigerAccesEchanges.mockResolvedValue({ userId: "admin-1", role: "admin" });
 });
 
 describe("types et étapes", () => {
@@ -71,20 +79,22 @@ describe("types et étapes", () => {
   });
 
   it("l'étape se calcule depuis le projet et ses devis", () => {
-    expect(etapeCalculee("ouvert", [])).toBe("proposee");
-    expect(etapeCalculee("ouvert", ["brouillon"])).toBe("proposee");
-    expect(etapeCalculee("ouvert", ["envoye"])).toBe("devisee");
-    expect(etapeCalculee("gagne", ["accepte"])).toBe("en_cours");
+    expect(etapeCalculee("ouvert", [])).toBe("besoin");
+    expect(etapeCalculee("ouvert", ["brouillon"])).toBe("besoin");
+    expect(etapeCalculee("ouvert", ["envoye"])).toBe("devis_envoye");
+    expect(etapeCalculee("ouvert", ["accepte"])).toBe("accepte");
+    expect(etapeCalculee("ouvert", ["envoye", "transforme_convention"])).toBe("accepte");
+    expect(etapeCalculee("gagne", [])).toBe("accepte");
     expect(etapeCalculee("termine", [])).toBe("terminee");
     expect(etapeCalculee("en_pause", [])).toBe("en_pause");
     expect(etapeCalculee("perdu", [])).toBe("perdue");
-    expect(etapeCalculee("abandonne", [])).toBe("abandonnee");
+    expect(etapeCalculee("abandonne", [])).toBe("perdue");
   });
 
   it("l'étape forcée par Will l'emporte ; une valeur inconnue est ignorée", () => {
-    expect(etapeAffichee("livree", "gagne", [])).toEqual({ etape: "livree", forcee: true });
+    expect(etapeAffichee("terminee", "gagne", [])).toEqual({ etape: "terminee", forcee: true });
     expect(etapeAffichee("n'importe quoi", "gagne", [])).toEqual({
-      etape: "en_cours",
+      etape: "accepte",
       forcee: false,
     });
   });
@@ -95,6 +105,12 @@ describe("types et étapes", () => {
     expect(eurosEnCentimes("")).toBeNull();
     expect(eurosEnCentimes("-3")).toBeUndefined();
     expect(eurosEnCentimes("abc")).toBeUndefined();
+    expect(eurosEnCentimes("9999999.99")).toBe(999999999);
+    expect(eurosEnCentimes("99999999")).toBeUndefined();
+    expect(messageMontantInvalide("99999999")).toContain("trop grand");
+    expect(eurosEnCentimes("1.500")).toBeUndefined();
+    expect(messageMontantInvalide("1.500")).toContain("écrivez 1500 ou 1 500");
+    expect(eurosEnCentimes("1 500")).toBe(150000);
     expect(centimesEnEuros(150050)).toBe("1500,50");
     expect(centimesEnEuros(null)).toBe("");
   });
@@ -105,23 +121,65 @@ describe("types et étapes", () => {
         { id: "a", numero: "P-1", titre: "A", statut: "ouvert", devis: [{ statut: "envoye" }] },
         { id: "b", numero: "P-2", titre: "B", statut: "gagne", devis: [] },
       ],
-      new Map([["b", { type: "site_internet", etapeForcee: "livree", montantCents: 90000 }]]),
+      new Map([["b", { type: "site_internet", etapeForcee: "terminee", montantCents: 90000 }]]),
     );
-    expect(r[0]).toMatchObject({ type: null, etape: "devisee", etapeForcee: false });
-    expect(r[1]).toMatchObject({ type: "site_internet", etape: "livree", etapeForcee: true });
+    expect(r[0]).toMatchObject({ type: null, etape: "devis_envoye", etapeForcee: false });
+    expect(r[1]).toMatchObject({ type: "site_internet", etape: "terminee", etapeForcee: true });
   });
 });
 
 describe("enregistrerSuiviPrestationAction", () => {
   it("enregistre type, étape et montant puis revient à l'onglet avec un message", async () => {
-    const r = await issue(formulaire({ type: "conference", etape: "livree", montant: "1200,5" }));
-    expect(r).toContain("onglet=prestations");
+    const r = await issue(formulaire({ type: "conference", etape: "terminee", montant: "1200,5" }));
+    expect(r).toContain("onglet=prestations&bloc=suivi");
     expect(r).toContain("message=Prestation enregistrée.");
     expect(bd.projetSuivi.upsert).toHaveBeenCalledWith({
       where: { projetId: PID },
-      create: { projetId: PID, type: "conference", etapeForcee: "livree", montantCents: 120050 },
-      update: { type: "conference", etapeForcee: "livree", montantCents: 120050 },
+      create: { projetId: PID, type: "conference", etapeForcee: "terminee", montantCents: 120050 },
+      update: { type: "conference", etapeForcee: "terminee", montantCents: 120050 },
     });
+  });
+
+  it("trace dans la même transaction : prestation.suivi_modifie avec avant et après", async () => {
+    bd.projetSuivi.findUnique.mockResolvedValue({
+      type: "audit",
+      etapeForcee: null,
+      montantCents: 1000,
+    });
+    await issue(formulaire({ type: "formation", etape: "accepte", montant: "20" }));
+    expect(bd.$transaction).toHaveBeenCalledTimes(1);
+    expect(bd.activityLog.create).toHaveBeenCalledWith({
+      data: {
+        adminUserId: "admin-1",
+        action: "prestation.suivi_modifie",
+        targetType: "projet",
+        targetId: PID,
+        changes: {
+          avant: { type: "audit", etapeForcee: null, montantCents: 1000 },
+          apres: { type: "formation", etapeForcee: "accepte", montantCents: 2000 },
+        },
+      },
+    });
+  });
+
+  it("accès refusé : ni lecture du projet ni écriture", async () => {
+    acces.exigerAccesEchanges.mockRejectedValue(new acces.AccesRefuse("non"));
+    expect(await issue(formulaire({}))).toBe("non");
+    expect(bd.projet.findUnique).not.toHaveBeenCalled();
+    expect(bd.projetSuivi.upsert).not.toHaveBeenCalled();
+    expect(bd.activityLog.create).not.toHaveBeenCalled();
+  });
+
+  it("projet introuvable : refus, rien n'est écrit", async () => {
+    bd.projet.findUnique.mockResolvedValue(null);
+    expect(await issue(formulaire({}))).toContain("erreur=Prestation inconnue.");
+    expect(bd.projetSuivi.upsert).not.toHaveBeenCalled();
+  });
+
+  it("montant trop grand ou milliers à la française : message clair", async () => {
+    expect(await issue(formulaire({ montant: "99999999" }))).toContain("trop grand");
+    expect(await issue(formulaire({ montant: "1.500" }))).toContain("écrivez 1500 ou 1 500");
+    expect(bd.projetSuivi.upsert).not.toHaveBeenCalled();
   });
 
   it("étape vide = calculée : le forçage est retiré, rien n'est supprimé", async () => {

@@ -284,6 +284,7 @@ interface PageProps {
   params: Promise<{ locale: "fr" | "en"; adminPrefix: string; id: string }>;
   searchParams?: Promise<{
     onglet?: string;
+    bloc?: string;
     erreur?: string;
     annuaire?: string;
     message?: string;
@@ -506,8 +507,8 @@ export default async function FicheClient360Page({ params, searchParams }: PageP
             clientId={id}
             prestations={assemblerPrestations(projets, suivis)}
             ficheHref={ficheHref}
-            message={lireMessageDeRetour(sp, "message")}
-            erreur={null /* l'erreur s'affiche déjà dans l'onglet, juste en dessous */}
+            message={sp.bloc === "suivi" ? lireMessageDeRetour(sp, "message") : null}
+            erreur={sp.bloc === "suivi" ? erreur : null}
           />
         ) : null}
         <OngletProjets
@@ -516,7 +517,7 @@ export default async function FicheClient360Page({ params, searchParams }: PageP
           faitsARanger={faitsARanger}
           ficheHref={ficheHref}
           qBase={qBase}
-          erreur={erreur}
+          erreur={sp.bloc === "suivi" ? null : erreur}
           nbDocuments={nbDocuments}
         />
       </>
