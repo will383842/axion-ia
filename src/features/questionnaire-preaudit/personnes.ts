@@ -410,9 +410,7 @@ export function suivreParPersonne(e: EntreePersonnes): SuiviParPersonne {
       if (derniere.charge !== null) {
         // Mêmes champs pré-remplis exclus que pour un brouillon : le taux ne saute pas à l'envoi.
         const preEnvoi = Array.isArray(derniere.charge["pre"])
-          ? new Set(
-              (derniere.charge["pre"] as unknown[]).filter((x) => typeof x === "string"),
-            )
+          ? new Set((derniere.charge["pre"] as unknown[]).filter((x) => typeof x === "string"))
           : new Set<string>();
         taux = tauxDeReponses(
           valeursDeLaCharge(derniere.charge),

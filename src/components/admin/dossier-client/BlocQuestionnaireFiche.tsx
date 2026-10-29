@@ -87,7 +87,17 @@ export function BlocQuestionnaireFiche({
                   : `Envoyé le ${jourHeure(q.envoyeLe)}.`}
                 {q.closLe ? ` Clos le ${jourHeure(q.closLe)}.` : ""}
               </p>
-              {q.envoyeLe !== null && r.aTraiter > 0 ? <p>{r.aTraiter} à traiter.</p> : null}
+              {q.envoyeLe !== null && q.parPersonne != null && r.aTraiter > 0 ? (
+                <p>{r.aTraiter} à traiter.</p>
+              ) : null}
+              {q.envoyeLe !== null && q.parPersonne == null ? (
+                <p>
+                  {r.dirigeant + r.referentInformatique + r.collaborateurs === 0
+                    ? "Aucune réponse reçue pour l'instant."
+                    : `Réponses reçues : dirigeant ${r.dirigeant}, collaborateurs ${r.collaborateurs}, référent informatique ${r.referentInformatique}.`}
+                  {r.aTraiter > 0 ? ` ${r.aTraiter} à traiter.` : ""}
+                </p>
+              ) : null}
               {q.envoyeLe !== null ? (
                 <SuiviParPersonne
                   q={q}
