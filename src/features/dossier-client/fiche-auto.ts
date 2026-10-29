@@ -290,18 +290,33 @@ export function finDeTelephone(tel: string | null | undefined): string | null {
   return chiffres.length >= 9 ? chiffres.slice(-9) : null;
 }
 
-/** Les fiches dont le téléphone (fiche ou personne) finit par les mêmes 9 chiffres. */
-async function fichesAuMemeTelephone(db: Tx, tel: string | null): Promise<string[]> {
+/** Au plus ce nombre de numéros relus par table avant la comparaison exacte en mémoire. */
+const PLAFOND_CANDIDATS_TELEPHONE = 1000;
+
+/**
+ * Les fiches dont le téléphone (fiche ou personne) finit par les mêmes 9 chiffres.
+ *
+ * La base ne relit que les numéros qui FINISSENT par les deux derniers chiffres du numéro cherché
+ * (`endsWith`, au plus `PLAFOND_CANDIDATS_TELEPHONE` par table) : avant, tous les numéros du dépôt
+ * étaient chargés à chaque appel. Deux chiffres et non quatre : un numéro écrit « 06 12 34 56 78 »
+ * ou « 0612 345 678 » coupe ses quatre derniers chiffres par une espace, mais jamais les deux
+ * derniers. La comparaison exacte (`finDeTelephone`) reste faite en mémoire : le résultat est celui
+ * d'avant pour tout numéro dont les deux derniers chiffres se suivent.
+ */
+export async function fichesAuMemeTelephone(db: Tx, tel: string | null): Promise<string[]> {
   const fin = finDeTelephone(tel);
   if (fin === null) return [];
+  const deuxDerniers = fin.slice(-2);
   const [fiches, personnes] = await Promise.all([
     db.client.findMany({
-      where: { contactTelephone: { not: null } },
+      where: { contactTelephone: { endsWith: deuxDerniers } },
       select: { id: true, contactTelephone: true },
+      take: PLAFOND_CANDIDATS_TELEPHONE,
     }),
     db.clientContact.findMany({
-      where: { telephone: { not: null } },
+      where: { telephone: { endsWith: deuxDerniers } },
       select: { clientId: true, telephone: true },
+      take: PLAFOND_CANDIDATS_TELEPHONE,
     }),
   ]);
   const ids = new Set<string>();

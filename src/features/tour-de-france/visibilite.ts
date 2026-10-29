@@ -1,20 +1,23 @@
-// Tour de France IA — l'interrupteur d'ouverture (2026-10-25).
+// Tour France IA — l'interrupteur d'ouverture (ouvert au public le 2026-10-25).
 //
 // L'interrupteur vit dans le CODE, pas dans une variable d'environnement :
-// l'ouverture au public est une petite PR relue (`TOUR_PUBLIC = true`), jamais
-// un réglage qu'on bascule sur le serveur sans trace.
+// l'ouverture et la fermeture du Tour sont une petite PR relue (`TOUR_PUBLIC`),
+// jamais un réglage qu'on bascule sur le serveur sans trace.
 //
-// Tant qu'il est faux :
-//   · le proxy répond 404 à tout `/tourdefrance-ia…`, sauf aperçu par cookie
-//     (`porte.ts`) ;
-//   · la page est dynamique et `noindex` ;
-//   · aucun sitemap, ni `llms.txt`, ne cite la route.
+// Le Tour est OUVERT (`TOUR_PUBLIC = true`) :
+//   · le proxy sert `/tour-france-ia…` à tout le monde (la porte d'aperçu par
+//     cookie, `porte.ts`, ne sert plus qu'à la refermer) ;
+//   · la page est statique et indexable ;
+//   · `sitemap-tour-france-ia.xml`, `sitemap-index.xml` et `llms.txt` citent la route.
+//
+// Repasser à `false` referme tout d'un bloc : 404 sauf aperçu par cookie, page
+// dynamique et `noindex`, route retirée des sitemaps et de `llms.txt`.
 //
 // Module PUR (aucun import) : le proxy, les pages, les sitemaps et les tests
 // l'importent.
 
-/** Faux tant que le Tour n'est pas ouvert au public. L'ouverture est une PR. */
-export const TOUR_PUBLIC: boolean = false;
+/** Vrai : le Tour est ouvert au public. Le fermer, comme l'ouvrir, est une PR. */
+export const TOUR_PUBLIC: boolean = true;
 
 /** Le chemin de la landing, sans préfixe de langue. */
-export const TOUR_PREFIX = "/tourdefrance-ia";
+export const TOUR_PREFIX = "/tour-france-ia";

@@ -120,9 +120,9 @@ const CUSTOM_SITEMAPS: ReadonlyArray<string> = [
   // l'interrupteur est allumé ET qu'au moins une vidéo est publiée (sinon la route répond 404).
   // `lastmod` = dernière modification d'une vidéo. Cf. `app/sitemap-videos.xml/route.ts`.
   "/sitemap-videos.xml",
-  // Landing du Tour de France IA (2026-10-25) — listé CONDITIONNELLEMENT : seulement
+  // Landing du Tour France IA (2026-10-25) — listé CONDITIONNELLEMENT : seulement
   // quand `TOUR_PUBLIC` est vrai (la route rend un urlset vide tant qu'il est faux).
-  "/sitemap-tourdefrance-ia.xml",
+  "/sitemap-tour-france-ia.xml",
 ];
 
 // Rendu DYNAMIQUE au runtime (2026-07-06). Auparavant `force-static` : l'index
@@ -325,8 +325,8 @@ export async function GET(): Promise<Response> {
     // `images-en.xml` est vide tant qu'EN est désactivé (301→FR) → ne pas le
     // lister (sinon urlset vide flaggé par GSC). Réapparaît si EN réactivé.
     if (path === "/sitemaps/images-en.xml") return EN_LOCALE_ENABLED;
-    // Tour de France IA fermé → landing en 404 → pas de sitemap du Tour.
-    if (path === "/sitemap-tourdefrance-ia.xml") return TOUR_PUBLIC;
+    // Tour France IA refermé → landing en 404 → pas de sitemap du Tour.
+    if (path === "/sitemap-tour-france-ia.xml") return TOUR_PUBLIC;
     return true;
   });
 

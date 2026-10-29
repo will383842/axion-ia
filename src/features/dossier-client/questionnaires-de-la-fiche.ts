@@ -3,8 +3,8 @@
  *
  * Avant : le statut et les réponses n'étaient lisibles que sur la page de CHAQUE rendez-vous
  * (verif/I-trace-fiche.md). Ici : un résumé par questionnaire de la fiche, en lecture seule.
- * Aucune réponse n'est lue ni déchiffrée : seulement des comptes (colonnes en clair `mode`,
- * `recuLe`, `ecarteLe`). Une panne de lecture (migration absente, base de build) rend [] : la
+ * Les réponses sont déchiffrées EN MÉMOIRE par `lireSuiviParPersonne` pour être comptées (jamais
+ * rendues ni journalisées). Une panne de lecture (migration absente, base de build) rend [] : la
  * fiche s'affiche sans le bloc.
  */
 
@@ -13,6 +13,10 @@ import {
   fichesCouvertes,
   questionnairesDesFiches,
 } from "@/features/questionnaire-preaudit/de-la-fiche";
+import {
+  lireSuiviParPersonne,
+  type SuiviLu,
+} from "@/features/questionnaire-preaudit/suivi-par-personne";
 
 export interface QuestionnaireDeLaFiche {
   readonly id: string;
@@ -35,6 +39,17 @@ export interface QuestionnaireDeLaFiche {
   /** La copie de l'invitation dans « E-mails envoyés » (la plus récente), si elle existe. */
   readonly invitationEmailLogId: string | null;
   readonly invitationStatut: string | null;
+  /**
+   * Le suivi PERSONNE PAR PERSONNE (2026-10-27), pour un questionnaire envoyé. `null` : pas
+   * envoyé, ou lecture en panne (`parPersonneEnPanne`) — jamais lu comme « personne n'a répondu ».
+   */
+  readonly parPersonne?: SuiviLu | null;
+  readonly parPersonneEnPanne?: boolean;
+  /**
+   * Dernière sauvegarde réussie de la base (même valeur pour tous les questionnaires de la page) :
+   * une date, `null` (aucune trace) ou `"illisible"` (lecture impossible).
+   */
+  readonly derniereSauvegarde?: Date | null | "illisible";
 }
 
 export async function lireQuestionnairesDeLaFiche(
@@ -66,6 +81,31 @@ export async function lireQuestionnairesDeLaFiche(
       orderBy: { createdAt: "desc" },
       select: { id: true, entityId: true, status: true },
     });
+    // Le suivi par personne a sa PROPRE garde : sa panne n'efface pas le bloc, elle se dit.
+    // Lecture seule ; les ouvertures n'y sont lues que si `QUESTIONNAIRE_SUIVI_ENABLED` est allumé.
+    let suivis: ReadonlyMap<string, SuiviLu> | null = null;
+    let parPersonneEnPanne = false;
+    const envoyes = qs.filter((q) => q.envoyeLe !== null).map((q) => q.id);
+    if (envoyes.length > 0) {
+      try {
+        suivis = await lireSuiviParPersonne(envoyes);
+      } catch {
+        parPersonneEnPanne = true;
+      }
+    }
+    let derniereSauvegarde: Date | null | "illisible" = null;
+    if (envoyes.length > 0) {
+      try {
+        const b = await prisma.backupRun.findFirst({
+          where: { component: "postgres", status: "success", finishedAt: { not: null } },
+          orderBy: { finishedAt: "desc" },
+          select: { finishedAt: true },
+        });
+        derniereSauvegarde = b?.finishedAt ?? null;
+      } catch {
+        derniereSauvegarde = "illisible";
+      }
+    }
     const dernierLog = new Map<string, { id: string; status: string }>();
     for (const l of logs) {
       if (l.entityId !== null && !dernierLog.has(l.entityId)) {
@@ -91,6 +131,9 @@ export async function lireQuestionnairesDeLaFiche(
         },
         invitationEmailLogId: log?.id ?? null,
         invitationStatut: log?.status ?? null,
+        parPersonne: suivis?.get(q.id) ?? null,
+        parPersonneEnPanne: q.envoyeLe !== null && parPersonneEnPanne,
+        derniereSauvegarde,
       };
     });
   } catch {

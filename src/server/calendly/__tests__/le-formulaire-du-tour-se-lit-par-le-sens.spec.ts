@@ -1,4 +1,4 @@
-// Le formulaire de la visio du Tour de France IA se lit par le SENS des questions
+// Le formulaire de la visio du Tour France IA se lit par le SENS des questions
 // (2026-10-25) : secteur, entreprise, origine, taille, tâches, usage de l'IA.
 // Aucun libellé n'est écrit dans le code : un libellé reformulé chez Calendly
 // reste reconnu, une question inconnue est ignorée.
@@ -78,7 +78,7 @@ describe("le payload CRM de la visio du Tour", () => {
 
   it("porte le profil en plus des réponses, sous `autre` + `circuit`", () => {
     const p = payloadRendezVousAuContrat({
-      eventTypeName: "Tour de France IA",
+      eventTypeName: "Tour France IA",
       typeRendezVous: "tour_de_france_ia",
       reponses,
     });
@@ -90,7 +90,7 @@ describe("le payload CRM de la visio du Tour", () => {
 
   it("sans réponse lisible, aucune clé `profil`", () => {
     const p = payloadRendezVousAuContrat({
-      eventTypeName: "Tour de France IA",
+      eventTypeName: "Tour France IA",
       typeRendezVous: "tour_de_france_ia",
     });
     expect("profil" in p).toBe(false);

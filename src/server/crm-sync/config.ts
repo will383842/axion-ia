@@ -56,6 +56,16 @@ export function isCrmSyncDossierEnabled(): boolean {
   return isCrmSyncEnabled() && process.env.CRM_SYNC_DOSSIER_ENABLED === "true";
 }
 
+/**
+ * Cinquième verrou (25/10/2026) : le RETOUR automatique du CRM vers le dossier
+ * client de la console (`POST /api/internal/crm-dossier-webhook`). FERMÉ par
+ * défaut : fermé, la route répond 503 (le CRM réessaie sans consommer d'essai)
+ * et rien n'est écrit. Indépendant de `CRM_SYNC_DOSSIER_ENABLED` (sens inverse).
+ */
+export function isCrmInboundDossierEnabled(): boolean {
+  return process.env.CRM_INBOUND_DOSSIER_ENABLED === "true";
+}
+
 /** URL de l'endpoint d'ingestion du CRM (`…/api/internal/site-sync`). */
 export function crmSyncUrl(): string | null {
   const url = process.env.CRM_SYNC_URL?.trim();

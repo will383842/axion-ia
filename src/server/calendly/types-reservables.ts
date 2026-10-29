@@ -1,6 +1,6 @@
 // Les SIX rendez-vous que le site sait réserver lui-même — une seule table.
 //
-// 2026-10-25 : sixième entrée, la visio du Tour de France IA (`tour`), classée
+// 2026-10-25 : sixième entrée, la visio du Tour France IA (`tour`), classée
 // `autre` comme l'échange formateur mais restée CLIENT (son nom ne porte aucun
 // des mots-clés hors clients).
 //
@@ -55,19 +55,18 @@ export const CHOIX_RENDEZ_VOUS = ["diagnostic", "projet", "apporteur", "salon"] 
 
 /**
  * Les rendez-vous réservables HORS des quatre historiques. L'échange formateur est
- * classé `autre` ; la visio du Tour de France IA a, depuis le 2026-10-27, son type
+ * classé `autre` ; la visio du Tour France IA a, depuis le 2026-10-27, son type
  * propre (`tour_de_france_ia`) — elle reste ici parce que la liste des quatre est
  * figée par les tests du parcours, et `choixDuTypeRendezVous` la retrouve par son type.
- * Historique : rendez-vous réservables SANS type propre en base — classés `autre`,
- * reconnus par le NOM de l'événement (2026-10-09, lot F-CAL-1 : l'échange
- * formateur ; l'enum n'a pas de valeur « formateur » et ce lot ne migre rien).
- * Ils ont leur page, leur adresse et leur lien d'e-mail, mais `autre` ne les
- * désigne JAMAIS (`choixDuTypeRendezVous`).
+ * Le nom dit la vérité : « formateur » n'a PAS de type propre en base (classé
+ * `autre`, reconnu par le NOM de l'événement — 2026-10-09, lot F-CAL-1), alors que
+ * « tour » en a un. Les deux ont leur page, leur adresse et leur lien d'e-mail, et
+ * `autre` ne désigne JAMAIS « formateur » (`choixDuTypeRendezVous`).
  */
-export const CHOIX_SANS_TYPE_PROPRE = ["formateur", "tour"] as const;
+export const CHOIX_HORS_DES_QUATRE_HISTORIQUES = ["formateur", "tour"] as const;
 
 /** Les six rendez-vous réservables sur le site : pages, routes, adresses Calendly. */
-export const TOUS_LES_CHOIX = [...CHOIX_RENDEZ_VOUS, ...CHOIX_SANS_TYPE_PROPRE] as const;
+export const TOUS_LES_CHOIX = [...CHOIX_RENDEZ_VOUS, ...CHOIX_HORS_DES_QUATRE_HISTORIQUES] as const;
 export type ChoixRendezVous = (typeof TOUS_LES_CHOIX)[number];
 
 /**
@@ -252,24 +251,25 @@ export const TYPES_RESERVABLES: Readonly<Record<ChoixRendezVous, ConfigRendezVou
     urlParDefaut: URL_CALENDLY_FORMATEUR_PAR_DEFAUT,
     variable: "CALENDLY_FORMATEUR_URL",
   },
-  // 2026-10-25 — la visio de la landing du Tour de France IA (`/tourdefrance-ia`).
+  // 2026-10-25 — la visio de la landing du Tour France IA (`/tour-france-ia`).
   // Type PROPRE `tour_de_france_ia` (migration du 2026-10-27) : la réservation reste
   // dans les familles CLIENT — fiche prospect dans la console, CRM des ventes (sous
   // `autre`, avec la clé `circuit`), et ses propres e-mails (confirmation, J-1,
   // H-1). Lien privé : jamais listée sur l'écran du choix d'`/appel`.
-  // 🔴 Aucun prix, et seule la VISIO est dite gratuite.
+  // 🔴 Aucun prix. « Gratuit » et « offert » sont réservés, sur la landing, à
+  // l'audit et à la formation : la visio n'est dite que « sans engagement ».
   tour: {
     choix: "tour",
-    route: "tour-de-france-ia",
+    route: "tour-france-ia",
     type: "tour_de_france_ia",
     public: false,
-    nom: "Tour de France IA",
-    titre: "Votre visio Tour de France IA — 30 minutes",
-    promesse: "Visio gratuite et sans engagement",
+    nom: "Tour France IA",
+    titre: "Votre visio Tour France IA — 30 minutes",
+    promesse: "Visio de 30 minutes, sans engagement",
     premiereEtape: PREMIERE_ETAPE_VISIO,
     deuxiemeEtape: CONFIRMATION_CLIENT,
     troisiemeEtape:
-      "Nous faisons connaissance, nous vous présentons le Tour de France IA et vous décidez si vous confirmez votre participation.",
+      "Nous découvrons votre entreprise, nous vous présentons la journée et son podcast, puis nous vous disons si votre entreprise est retenue.",
     formats: ["visio"],
     urlParDefaut: URL_CALENDLY_TOUR_PAR_DEFAUT,
     variable: "CALENDLY_TOUR_URL",

@@ -133,6 +133,35 @@ describe("les tables du dossier client suivent la personne", () => {
     ).toEqual([]);
   });
 
+  it("une exception « sans écrivain » n'a pas d'écrivain", () => {
+    const src = lire(MODULE_EFFACEMENT);
+    const sansEcrivain = [
+      ...src.matchAll(/modele:\s*"(\w+)",\s*motif:\s*((?:"[^"\n]*"\s*\+?\s*)+)/g),
+    ].filter((m) => (m[2] as string).includes("sans écrivain"));
+    expect(sansEcrivain.map((m) => m[1])).toEqual(
+      expect.arrayContaining(["ClientTache", "ClientNote", "ClientProfil", "ClientEtiquette"]),
+    );
+    const ecrivain =
+      /\.(clientTache|clientNote|clientProfil|clientEtiquette)\.(create|createMany|upsert|update|updateMany)\b|INSERT INTO "client_(taches|notes|profils|etiquettes)"/;
+    const fichiers: string[] = [];
+    const marche = (dir: string): void => {
+      for (const e of readdirSync(dir, { withFileTypes: true })) {
+        const p = path.join(dir, e.name);
+        if (e.isDirectory()) {
+          if (e.name !== "__tests__" && e.name !== "node_modules") marche(p);
+        } else if (/\.(ts|tsx)$/.test(e.name) && !/\.(spec|test)\.tsx?$/.test(e.name)) {
+          fichiers.push(p);
+        }
+      }
+    };
+    marche(path.join(RACINE, "src"));
+    const fautifs = fichiers.filter((f) => ecrivain.test(readFileSync(f, "utf8")));
+    expect(
+      fautifs,
+      "du code écrit dans une table déclarée « sans écrivain » : brancher l'export et l'effacement réels, puis retirer l'exception",
+    ).toEqual([]);
+  });
+
   it("la route d'export appelle bien le module du dossier client", () => {
     expect(lire(ROUTE_EXPORT)).toContain("@/lib/rgpd-dossier-client");
     expect(lire(ROUTE_EXPORT)).toMatch(/exporterDossierClientPour\(email\)/);

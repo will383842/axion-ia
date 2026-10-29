@@ -17,6 +17,17 @@ import { FENETRES } from "@/features/admin-tunnels/query";
 import type { StatsTunnel, SyntheseTunnels } from "@/features/admin-tunnels/aggregate";
 import { EntonnoirVue } from "./EntonnoirVue";
 
+/** Tunnels dont les sessions n'ont jamais de questionnaire : un 0 y serait faux, pas mesuré. */
+const SANS_QUESTIONNAIRE: ReadonlySet<string> = new Set(["tour", "apporteur"]);
+
+function ouEnVoirOnglet(r: StatsTunnel, valeur: number): React.ReactNode {
+  return SANS_QUESTIONNAIRE.has(r.cle) ? (
+    <span className="admin-meta-small">voir l&apos;onglet</span>
+  ) : (
+    valeur.toLocaleString("fr-FR")
+  );
+}
+
 export function VueEnsemble({
   synthese,
   jours,
@@ -49,7 +60,9 @@ export function VueEnsemble({
           href={
             r.cle === "apporteur"
               ? `${base}/apporteurs`
-              : `${base}/prospects?fenetre=${jours}&tunnel=${r.cle}`
+              : r.cle === "tour"
+                ? `${base}/tour?fenetre=${jours}`
+                : `${base}/prospects?fenetre=${jours}&tunnel=${r.cle}`
           }
           className="admin-link"
         >
@@ -68,21 +81,21 @@ export function VueEnsemble({
       key: "ouverts",
       header: "Questionnaires",
       align: "right",
-      cell: (r) => r.questionnairesOuverts.toLocaleString("fr-FR"),
+      cell: (r) => ouEnVoirOnglet(r, r.questionnairesOuverts),
       hiddenBelow: "sm",
     },
     {
       key: "termines",
       header: "Terminés",
       align: "right",
-      cell: (r) => r.questionnairesTermines.toLocaleString("fr-FR"),
+      cell: (r) => ouEnVoirOnglet(r, r.questionnairesTermines),
       hiddenBelow: "sm",
     },
     {
       key: "rapports",
       header: "Rapports",
       align: "right",
-      cell: (r) => r.rapportsDemandes.toLocaleString("fr-FR"),
+      cell: (r) => ouEnVoirOnglet(r, r.rapportsDemandes),
       // Masquée sous 640 px : à quatre colonnes, la conversion — la seule qui
       // sert à décider — se retrouvait coupée au bord droit. Le cadre défile,
       // donc rien n'était perdu, mais un tableau tronqué se lit comme un
@@ -97,7 +110,13 @@ export function VueEnsemble({
       // Sous 5 sessions, un pourcentage n'est que du bruit affiché avec
       // assurance. On préfère le dire.
       cell: (r) =>
-        r.sessions < 5 ? <span className="admin-meta-small">trop peu</span> : `${r.partRapport} %`,
+        SANS_QUESTIONNAIRE.has(r.cle) ? (
+          <span className="admin-meta-small">voir l&apos;onglet</span>
+        ) : r.sessions < 5 ? (
+          <span className="admin-meta-small">trop peu</span>
+        ) : (
+          `${r.partRapport} %`
+        ),
     },
   ];
 
@@ -166,8 +185,9 @@ export function VueEnsemble({
         <p className="admin-lede">
           Chaque session est comptée dans le tunnel où elle a <strong>commencé</strong>. Un visiteur
           qui arrive par la page publicitaire puis enchaîne sur le questionnaire reste attribué à la
-          page publicitaire : c&apos;est elle qui l&apos;a amené. La somme des lignes égale donc
-          exactement le nombre de sessions.
+          page publicitaire : c&apos;est elle qui l&apos;a amené. Les sessions du Tour France IA
+          (page de réservation, sans questionnaire) n&apos;apparaissent que dans cette table : elles
+          ne sont pas comptées dans les totaux, entonnoirs et répartitions ci-dessous.
         </p>
         {/* 🔴 Les trois pages sont TOUJOURS listées, à zéro s'il le faut. Le
             tableau ne montrait auparavant que les tunnels ayant au moins une

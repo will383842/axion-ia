@@ -118,10 +118,16 @@ const LIBELLES_EMPLACEMENT: Readonly<Record<string, string>> = {
   "page-coaching": "Page coaching",
   "page-integration": "Page intégration",
   faq: "FAQ",
+  // Les boutons de la landing du Tour France IA (`/tour-france-ia`, `depuis=`).
+  "tdf-entete": "Tour France IA (en-tête)",
+  "tdf-heros": "Tour France IA (haut de page)",
+  "tdf-final": "Tour France IA (bas de page)",
+  "tdf-bandeau": "Tour France IA (bandeau)",
+  "tdf-collant": "Tour France IA (bouton collant, mobile)",
 };
 
 /** Les valeurs posées par le bouton de `/appel` quand aucun emplacement n'est connu. */
-const CHOIX_SANS_EMPLACEMENT = new Set(["diagnostic", "projet"]);
+const CHOIX_SANS_EMPLACEMENT = new Set(["diagnostic", "projet", "tour"]);
 
 function normaliserUtm(utm: string | null | undefined): string | null {
   const v = utm?.trim().toLowerCase();
@@ -154,7 +160,7 @@ function ajouter(c: CompteursBilan, l: LigneBilanBrute): void {
 }
 
 /**
- * Ordre d'affichage ; « Tour de France IA » et « Autre » n'apparaissent que s'ils
+ * Ordre d'affichage ; « Tour France IA » et « Autre » n'apparaissent que s'ils
  * portent au moins un rendez-vous.
  */
 const TYPES_DU_BILAN = [

@@ -146,6 +146,12 @@ const ALLOWED_PATTERNS: ReadonlyArray<RegExp> = [
  * pour rien.
  */
 const CONSOMMATEURS_ASSUMES: ReadonlySet<string> = new Set([
+  // Synchro console ↔ CRM (étape 6, 26/10/2026) — le NAF qui revient du CRM doit recalculer
+  // l'OPCO déduit EXACTEMENT comme la saisie en console (`inferOpcoDepuisTable`, `nomOpcoDuClient`,
+  // `isOpcoId`) : une seule règle, jamais un OPCO saisi écrasé. Déplacer cette fonction dans
+  // `src/server/qualiopi` ne change rien (la garde compte tout import du domaine) ; le fichier
+  // n'importe que ces deux modules, rien d'autre. Nommé seul.
+  "src/server/crm-sync/retour-dossier.ts",
   // Chantier QNC, lot L05 — le libellé de la modalité « hybride » a UNE seule source
   // (`libelles-enumerations`, constante pure, sans lecture de base ni d'interrupteur) :
   // la fiche formation publique, la convocation et la console disent la même chose.
@@ -714,6 +720,14 @@ const CONSOMMATEURS_ASSUMES: ReadonlySet<string> = new Set([
   //    vraie porte. Aucune seconde porte, aucune table nouvelle.
   "src/features/dossier-client/fiche-auto.ts",
   "src/features/dossier-client/__tests__/la-fiche-prospect-se-cree-toute-seule-au-rendez-vous-calendly.spec.ts",
+  // ── Demandes du Tour France IA (2026-10-27, PR-2a) : deux arêtes, nommées seules.
+  //    · `fiche.ts` : porte unique des fiches (`crm/porte-client.ts`: recherche des fiches proches,
+  //      création, ajout d'une personne) et `NOM_A_COMPLETER` (`crm/contact-facturation.ts`) — aucune
+  //      seconde porte, aucune table nouvelle ; une demande publique n'y écrit jamais seule.
+  //    · `villes.ts` : `normaliserVille` (`crm/normaliser-nom.ts`), fonction PURE, la même
+  //      normalisation que l'anti-doublon des fiches.
+  "src/features/tour-de-france/fiche.ts",
+  "src/features/tour-de-france/villes.ts",
   // ── Fiche complétée depuis la réponse du dirigeant au questionnaire (2026-10-25) :
   //    champs VIDES seulement ; le SIREN n'est JAMAIS posé (proposé à Will, qui le pose
   //    d'un clic par la porte unique), la personne passe par `ajouterPersonneAFiche`.

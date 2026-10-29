@@ -5236,6 +5236,13 @@ model Client {
   crmDossierSynchro        CrmDossierSynchro?
   /// Facture établie hors console (relation seule, aucune colonne sur `clients`, ADR 0053).
   factureHorsConsole ClientFactureHorsConsole?
+  /// Fiche client en 7 onglets (relations seules, aucune colonne sur `clients`, ADR 0053) : tâches, notes, profil, étiquettes.
+  taches     ClientTache[]
+  notesDatees ClientNote[]
+  profil     ClientProfil?
+  etiquettes ClientEtiquette[]
+  /// Demandes du Tour France IA rattachées à la fiche (relation seule, aucune colonne sur `clients`).
+  tourDemandes TourDemande[] @relation("TourDemandeClient")
 
   @@index([statut])
   @@index([nafCode])
@@ -13813,6 +13820,8 @@ model ClientContact {
   updatedAt             DateTime       @updatedAt @map("updated_at")
 
   adresses ClientContactAdresse[]
+  /// Tâches de la fiche qui visent cette personne (relation seule ; SET NULL).
+  clientTaches ClientTache[]
 
   @@unique([id, clientId])
   @@index([clientId])
@@ -13896,6 +13905,9 @@ model Projet {
   sessionsFormation     TrainingSession[]    @relation("ProjetSessionsFormation")
   /// Ce que le client a pris (type, étape forcée, montant) : relation seule, table `projet_suivis`.
   suivi                 ProjetSuivi?
+  /// Tâches et notes de la fiche rattachées à ce projet (relations seules ; SET NULL si le projet disparaît).
+  clientTaches          ClientTache[]
+  clientNotes           ClientNote[]
 
   @@unique([id, clientId])
   @@index([clientId, statut])
@@ -13919,6 +13931,10 @@ model ProjetSuivi {
   type         String   @db.VarChar(30)
   etapeForcee  String?  @map("etape_forcee") @db.VarChar(30)
   montantCents Int?     @map("montant_cents")
+  /// Probabilité de signature, 0 à 100 (CHECK en base). NULL = non estimée. Ajoutée le 2026-10-29.
+  probabilitePct  Int?      @map("probabilite_pct") @db.SmallInt
+  /// Date de clôture prévue (jour). NULL = non estimée.
+  cloturePrevueLe DateTime? @map("cloture_prevue_le") @db.Date
   creeLe       DateTime @default(now()) @map("cree_le")
   majLe        DateTime @updatedAt @map("maj_le")
 
@@ -13938,6 +13954,82 @@ model ClientFactureHorsConsole {
   creeLe     DateTime @default(now()) @map("cree_le")
 
   @@map("client_factures_hors_console")
+}
+
+/// Une tâche de suivi sur une fiche client (à faire, échéance, responsable). Table neuve, ADR 0053 :
+/// aucune colonne ajoutée à `clients`. `origine` : manuelle, rencontre, relance, questionnaire
+/// (texte fermé par CHECK). L'intitulé peut citer une personne : traité avec le dossier. 2026-10-29.
+/// MIGRATION SEULE : aucun écrivain dans cette PR.
+/// rgpd: dossier-client
+model ClientTache {
+  id               String    @id @default(uuid()) @db.Uuid
+  clientId         String    @map("client_id") @db.Uuid
+  client           Client    @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  /// Clé composée (SQL brut) : projet du même client.
+  projetId         String?   @map("projet_id") @db.Uuid
+  projet           Projet?   @relation(fields: [projetId], references: [id], onDelete: SetNull)
+  /// Clé composée (SQL brut) : la personne est du même client.
+  contactId        String?   @map("contact_id") @db.Uuid
+  contact          ClientContact? @relation(fields: [contactId], references: [id], onDelete: SetNull)
+  intitule         String    @db.VarChar(300)
+  echeanceLe       DateTime  @map("echeance_le") @db.Date
+  responsableLabel String    @map("responsable_label") @db.VarChar(80)
+  faiteLe          DateTime? @map("faite_le")
+  origine          String    @default("manuelle") @db.VarChar(20)
+  createdAt        DateTime  @default(now()) @map("created_at")
+  updatedAt        DateTime  @updatedAt @map("updated_at")
+
+  @@index([clientId, echeanceLe])
+  @@index([projetId])
+  @@map("client_taches")
+}
+
+/// Une note sur une fiche client. `contenu_chiffre` : CHIFFRÉ comme les paroles du dossier (jamais de
+/// clair en base ; le code d'écriture viendra dans un lot suivant). 2026-10-29.
+/// rgpd: dossier-client
+model ClientNote {
+  id             String   @id @default(uuid()) @db.Uuid
+  clientId       String   @map("client_id") @db.Uuid
+  client         Client   @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  /// Clé composée (SQL brut) : projet du même client.
+  projetId       String?  @map("projet_id") @db.Uuid
+  projet         Projet?  @relation(fields: [projetId], references: [id], onDelete: SetNull)
+  contenuChiffre String   @map("contenu_chiffre")
+  auteurLabel    String   @map("auteur_label") @db.VarChar(80)
+  epinglee       Boolean  @default(false)
+  createdAt      DateTime @default(now()) @map("created_at")
+  updatedAt      DateTime @updatedAt @map("updated_at")
+
+  @@index([clientId, createdAt])
+  @@index([projetId])
+  @@map("client_notes")
+}
+
+/// Le profil de suivi d'une fiche (1-1 avec `clients`) : responsable, archivage. 2026-10-29.
+/// rgpd: dossier-client
+model ClientProfil {
+  clientId         String    @id @map("client_id") @db.Uuid
+  client           Client    @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  responsableLabel String?   @map("responsable_label") @db.VarChar(80)
+  archiveLe        DateTime? @map("archive_le")
+  archiveMotif     String?   @map("archive_motif") @db.VarChar(200)
+  createdAt        DateTime  @default(now()) @map("created_at")
+  updatedAt        DateTime  @updatedAt @map("updated_at")
+
+  @@map("client_profils")
+}
+
+/// Une étiquette libre posée sur une fiche. Unique par (fiche, libellé). 2026-10-29.
+/// rgpd: dossier-client
+model ClientEtiquette {
+  id        String   @id @default(uuid()) @db.Uuid
+  clientId  String   @map("client_id") @db.Uuid
+  client    Client   @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  libelle   String   @db.VarChar(60)
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@unique([clientId, libelle])
+  @@map("client_etiquettes")
 }
 
 enum ProjetStatut {
@@ -14631,6 +14723,8 @@ model QuestionnaireAvantAudit {
 
   envois     QuestionnaireAvantAuditEnvoi[]
   brouillons QuestionnaireAvantAuditBrouillon[]
+  /// Ouvertures du lien par chaque personne (2026-10-27, drapeau `QUESTIONNAIRE_SUIVI_OUVERTURES_ENABLED`).
+  ouvertures QuestionnaireAvantAuditOuverture[]
   /// Suivi après le clic « Envoyer » et courriers (relances, confirmations, Telegram), 2026-10-26.
   suivi      QuestionnaireAvantAuditSuivi?
   courriers  QuestionnaireAvantAuditCourrier[]
@@ -14696,6 +14790,30 @@ model QuestionnaireAvantAuditBrouillon {
   @@unique([questionnaireId, mode, membre], map: "questionnaires_avant_audit_brouillons_personne_key")
   @@index([majLe])
   @@map("questionnaires_avant_audit_brouillons")
+}
+
+/// Les OUVERTURES du lien du questionnaire avant audit par UNE personne (2026-10-27) : première et
+/// dernière ouverture, nombre (rechargements à moins de 30 min = une ouverture), dernière étape
+/// atteinte (1 = page d'accueil vue, 2 = a commencé à répondre). Notées par la page après son
+/// chargement réel, jamais au rendu serveur. AUCUNE IP, aucun cookie, aucun navigateur, aucun contenu.
+/// Écrit par `suivi-ouvertures.ts` seulement ; jamais supprimé (part avec son questionnaire).
+/// rgpd: dossier-client
+model QuestionnaireAvantAuditOuverture {
+  id                    String                  @id @default(uuid()) @db.Uuid
+  questionnaireId       String                  @map("questionnaire_id") @db.Uuid
+  questionnaire         QuestionnaireAvantAudit @relation(fields: [questionnaireId], references: [id], onDelete: Cascade)
+  /// main (dirigeant), emp (collaborateur), it (référent informatique), perso (lien personnel,
+  /// parcours non dit), lien (lien commun, sans code personnel).
+  mode                  String                  @db.VarChar(8)
+  /// Code du lien personnel (`m`), comme le brouillon ; chaîne vide pour le dirigeant et le lien commun.
+  membre                String                  @default("") @db.VarChar(60)
+  premiereOuverture     DateTime                @map("premiere_ouverture")
+  derniereOuverture     DateTime                @map("derniere_ouverture")
+  nombre                Int                     @default(1)
+  derniereEtapeAtteinte Int                     @default(1) @map("derniere_etape_atteinte")
+
+  @@unique([questionnaireId, mode, membre], map: "questionnaires_avant_audit_ouvertures_personne_key")
+  @@map("questionnaires_avant_audit_ouvertures")
 }
 
 /// Suivi d'un questionnaire avant audit après le clic « Envoyer » (2026-10-26) : relances demandées
@@ -17742,4 +17860,76 @@ model SiteVideoReception {
 
   @@index([recueLe], map: "site_video_receptions_recue_le_idx")
   @@map("site_video_receptions")
+}
+
+/// rgpd: dossier-client
+/// Une demande du Tour France IA : la mini-demande faite AVANT le rendez-vous en visio
+/// (e-mail, ville, nom, téléphone). Table ajoutée par PR-2a ; le formulaire public est PR-2b.
+///
+/// · `nom`, `email`, `telephone` sont CHIFFRÉS (`encryptPii`, IV aléatoire) : on les retrouve par
+///   `emailHash` (jamais par `where: { email }`). Le détail du droit d'accès et d'effacement est
+///   dans `src/features/tour-de-france/rgpd.ts` (l'effacement VIDE la ligne, il ne la supprime pas :
+///   coordonnées remplacées, clés de comptage rendues opaques, la ligne et `compte` restent).
+/// · Le téléphone n'est stocké sous AUCUNE autre forme que le chiffré : ni fin de numéro, ni empreinte
+///   lisible (la colonne `telephone_fin` n'existe pas). Seule sa clé de comptage, un HMAC, en dérive.
+/// · AUCUNE suppression de ligne dans le code (garde `statuts.spec.ts`) : on change un statut.
+/// · Les trois clés de comptage (`cleComptage*`) sont UNIQUES et posées seulement quand la
+///   demande compte pour sa ville ; une clé déjà prise donne une demande « doublon » (`compte`
+///   faux, clés nulles). Chaque clé est `villeCle:HMAC` (clé dérivée de `PII_ENCRYPTION_KEY`,
+///   un libellé de domaine par type de clé) : rien de lisible. Une demande écartée par l'équipe
+///   perd ses clés et son `compte`. Le compteur public ne compte que les lignes `compte = true`.
+/// · Le statut « rendez-vous pris » n'est jamais stocké : il est calculé à la lecture, par
+///   l'empreinte de l'e-mail du rendez-vous Calendly (aucune colonne sur `calendly_events`).
+/// · Statuts en VARCHAR (comme les tables voisines) : aucune énumération Postgres, la migration
+///   reste additive et sans effet sur l'ancien conteneur pendant la bascule.
+model TourDemande {
+  id                     String    @id @default(uuid()) @db.Uuid
+  /// Chiffré (`encryptPii`).
+  nom                    String    @db.Text
+  /// Chiffrée (`encryptPii`).
+  email                  String    @db.Text
+  /// Chiffré (`encryptPii`).
+  telephone              String    @db.Text
+  /// `hashEmailForLookup(email)` : clé du rendez-vous, de la fiche, du CRM et du RGPD. Nulle après effacement.
+  emailHash              String?   @map("email_hash") @db.VarChar(64)
+  /// La ville telle que tapée (texte libre : jamais écrite sur une fiche ; « [effacé] » après un effacement).
+  villeSaisie            String    @map("ville_saisie") @db.VarChar(80)
+  /// Clé du référentiel des villes, ou `?<texte normalisé>` hors référentiel ou ambiguë.
+  villeCle               String    @map("ville_cle") @db.VarChar(100)
+  /// Nom du référentiel ; nul = jamais affichée en public.
+  villeNom               String?   @map("ville_nom") @db.VarChar(100)
+  /// recue | relancee_main | ecartee | effacee_rgpd
+  statut                 String    @default("recue") @db.VarChar(20)
+  statutChangeLe         DateTime? @map("statut_change_le")
+  statutChangeParId      String?   @map("statut_change_par_id") @db.Uuid
+  /// Vrai si la demande compte pour sa ville (aucune clé de comptage n'était déjà prise).
+  compte                 Boolean   @default(false)
+  /// `villeCle:HMAC(adresse canonique)` — une personne ne compte qu'une fois par ville. `efface:<id>:p` après un effacement.
+  cleComptagePersonne    String?   @unique(map: "tour_demandes_cle_comptage_personne_key") @map("cle_comptage_personne") @db.VarChar(170)
+  /// `villeCle:HMAC(domaine)` — domaine PROFESSIONNEL seulement, jamais un webmail. `efface:<id>:d` après un effacement.
+  cleComptageDomaine     String?   @unique(map: "tour_demandes_cle_comptage_domaine_key") @map("cle_comptage_domaine") @db.VarChar(170)
+  /// `villeCle:HMAC(9 derniers chiffres)`. `efface:<id>:t` après un effacement.
+  cleComptageTelephone   String?   @unique(map: "tour_demandes_cle_comptage_telephone_key") @map("cle_comptage_telephone") @db.VarChar(170)
+  /// La demande qui tenait déjà la clé, pour un doublon.
+  doublonDeId            String?   @map("doublon_de_id") @db.Uuid
+  /// a_verifier | fiche_completee | a_arbitrer | sans_fiche | fiche_creee
+  rattachement           String    @default("a_verifier") @db.VarChar(20)
+  clientId               String?   @map("client_id") @db.Uuid
+  client                 Client?   @relation("TourDemandeClient", fields: [clientId], references: [id], onDelete: SetNull)
+  /// `[{ ficheId, numero, raisonSociale, signal }]` : les fiches proches d'une demande « à arbitrer ». Jamais une fusion.
+  fichesProches          Json?     @map("fiches_proches")
+  depuis                 String?   @db.VarChar(60)
+  utmSource              String?   @map("utm_source") @db.VarChar(60)
+  utmMedium              String?   @map("utm_medium") @db.VarChar(60)
+  utmCampaign            String?   @map("utm_campaign") @db.VarChar(60)
+  utmContent             String?   @map("utm_content") @db.VarChar(60)
+  /// Empreinte de l'adresse IP (jamais l'adresse). Nulle après effacement.
+  ipHash                 String?   @map("ip_hash") @db.VarChar(64)
+  creeLe                 DateTime  @default(now()) @map("cree_le")
+
+  @@index([villeCle, compte], map: "tour_demandes_ville_cle_compte_idx")
+  @@index([emailHash], map: "tour_demandes_email_hash_idx")
+  @@index([creeLe], map: "tour_demandes_cree_le_idx")
+  @@index([clientId], map: "tour_demandes_client_id_idx")
+  @@map("tour_demandes")
 }

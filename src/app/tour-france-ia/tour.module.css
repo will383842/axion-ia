@@ -1,0 +1,568 @@
+/* Tour France IA — ce que Tailwind ne dit pas bien : le bouton et son halo, la
+   carte « aperçu » du héros, les dessins SVG et leurs micro-animations (jauge,
+   carte, pastilles), la frise des étapes, l'accordéon de la FAQ, les vagues entre
+   sections et la barre d'action collante. Toutes les couleurs sont des jetons de
+   `globals.css`.
+
+   La palette (refonte « 2027 » du 2026-10-27) tient en six jetons, pas un de plus :
+     · encre        `--color-fg`          texte, titres
+     · crème chaud  `--color-bg`, `--color-sand`   fonds alternés
+     · papier       `--color-paper`       cartes
+     · terracotta   `--color-terracotta`  L'ACCENT de marque (mot « Nous, si. »,
+                    pastilles, la bande des ambassadeurs) — jamais un bouton
+     · action       `--color-primary`     TOUS les boutons, et rien d'autre de plein
+     · accents doux `--color-terracotta-soft`, `--color-primary-soft`
+   Plus de fond quasi noir : le héros est clair et chaud, la seule section pleine
+   couleur est la bande terracotta.
+
+   CSS SEUL : aucune bibliothèque, aucun JavaScript. Toute animation dure 600 ms
+   au plus, se joue UNE fois (`1 both`), ne touche que `opacity`, `transform` et
+   `fill` (CLS nul), et s'éteint sous `prefers-reduced-motion` (bloc en fin de
+   fichier) — l'état final, lisible, est alors montré d'emblée. Aucune n'est
+   obligatoire : le contenu est complet sans elles. */
+
+/* ── Bouton principal : bleu primaire PLEIN, la couleur d'action du site ──────
+   Le bleu des boutons d'Axion (`--color-primary`, celui de « Réserver un appel »).
+   Blanc sur ce bleu : 6,8:1 (AA). Sur le crème du héros, le bouton se détache
+   par sa masse et son ombre bleutée ; le terracotta reste l'accent du titre. */
+
+.bouton {
+  position: relative;
+  isolation: isolate;
+  display: inline-flex;
+  min-height: 3.5rem; /* 56 px : au-delà des 48 px de zone tactile */
+  align-items: center;
+  justify-content: center;
+  gap: 0.625rem;
+  /* Pilule : `rounded-full` côté JSX (le contrôle des rayons refuse 9999px ici). */
+  background: var(--color-primary);
+  /* Mobile d'abord : à 360 px, « Demander ma journée offerte » tient sur une ligne ;
+     s'il passait sur deux (police agrandie), elles restent CENTRÉES, sans déborder. */
+  padding: 0.75rem 1.25rem;
+  color: var(--color-primary-fg);
+  font-size: 1.0625rem;
+  font-weight: 700;
+  line-height: 1.25;
+  text-align: center;
+  letter-spacing: -0.01em;
+  text-decoration: none;
+  box-shadow:
+    inset 0 1px 0 color-mix(in srgb, var(--color-primary-fg) 22%, transparent),
+    0 1px 2px color-mix(in srgb, var(--color-primary) 40%, transparent),
+    0 14px 30px -12px color-mix(in srgb, var(--color-primary) 80%, transparent);
+  transition:
+    background-color 160ms ease,
+    transform 160ms ease,
+    box-shadow 160ms ease;
+}
+
+.bouton:hover {
+  background: var(--color-primary-hover);
+  transform: translateY(-2px);
+  box-shadow:
+    inset 0 1px 0 color-mix(in srgb, var(--color-primary-fg) 22%, transparent),
+    0 2px 4px color-mix(in srgb, var(--color-primary) 40%, transparent),
+    0 20px 36px -14px color-mix(in srgb, var(--color-primary) 90%, transparent);
+}
+
+.bouton:active {
+  transform: translateY(0);
+}
+
+/* Anneau de focus visible sur TOUS les fonds de la page (crème, papier, terracotta). */
+.bouton:focus-visible {
+  outline: 3px solid var(--color-fg);
+  outline-offset: 3px;
+}
+
+/* Le halo qui s'élargit une fois autour des grands boutons, puis s'efface. */
+.halo {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  background: var(--color-primary);
+  pointer-events: none;
+  animation: onde 600ms ease-out 900ms 1 both;
+}
+
+@keyframes onde {
+  0% {
+    opacity: 0.4;
+    transform: scale(1);
+  }
+  /* L'état final revient à la taille du bouton : un halo resté agrandi débordait
+     de 14 px à 360 px de large. */
+  90% {
+    opacity: 0;
+    transform: scale(1.12, 1.4);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1);
+  }
+}
+
+@media (min-width: 40rem) {
+  .bouton {
+    min-height: 3.75rem; /* 60 px dès la tablette */
+    padding: 0.875rem 2rem;
+    font-size: 1.125rem;
+  }
+}
+
+.boutonCompact {
+  min-height: 2.75rem; /* 44 px : la zone tactile minimale */
+  padding: 0.5rem 0.875rem;
+  font-size: 0.875rem;
+  white-space: nowrap;
+}
+
+@media (min-width: 40rem) {
+  .boutonCompact {
+    min-height: 2.75rem;
+    padding: 0.5rem 1.125rem;
+    font-size: 0.9375rem;
+  }
+}
+
+.fleche {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transition: transform 160ms ease;
+}
+
+.bouton:hover .fleche {
+  transform: translateX(3px);
+}
+
+/* ── La frise du héros (carte « aperçu ») : trois pastilles reliées ───────────
+   Les pastilles éclosent l'une après l'autre (450 ms chacune), une seule fois. */
+
+.frise {
+  position: relative;
+}
+
+/* Le fil qui relie les trois pastilles, derrière elles (centre à centre). */
+.frise::before {
+  content: "";
+  position: absolute;
+  top: calc(var(--pastille) / 2 - 1px);
+  left: calc(100% / 6);
+  right: calc(100% / 6);
+  height: 2px;
+  background: radial-gradient(circle, var(--color-border-strong) 1px, transparent 1.4px) left
+    center / 8px 2px repeat-x;
+}
+
+.pastille {
+  position: relative;
+  animation: eclore 450ms cubic-bezier(0.2, 0.8, 0.2, 1) 150ms 1 both;
+}
+
+.frise > li:nth-child(2) .pastille {
+  animation-delay: 300ms;
+}
+
+.frise > li:nth-child(3) .pastille {
+  animation-delay: 450ms;
+}
+
+@keyframes eclore {
+  0% {
+    opacity: 0.35;
+    transform: scale(0.82);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* ── Jauge de l'appel final : 5 points qui se remplissent, puis la coche ──── */
+
+.jaugePoint {
+  fill: transparent;
+  stroke: var(--color-terracotta);
+  stroke-width: 1.5;
+  animation: remplir 300ms ease-out 1 both;
+}
+
+.jaugePoint:nth-of-type(2) {
+  animation-delay: 100ms;
+}
+.jaugePoint:nth-of-type(3) {
+  animation-delay: 200ms;
+}
+.jaugePoint:nth-of-type(4) {
+  animation-delay: 300ms;
+}
+.jaugePoint:nth-of-type(5) {
+  animation-delay: 400ms;
+}
+
+/* L'état final (100 %) est l'état rempli : c'est lui qui reste à l'écran. */
+@keyframes remplir {
+  0% {
+    fill: transparent;
+  }
+  100% {
+    fill: var(--color-terracotta);
+  }
+}
+
+.jaugeCoche {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: ouvrir 400ms cubic-bezier(0.2, 0.8, 0.2, 1) 600ms 1 both;
+}
+
+.jaugeCoche circle {
+  fill: var(--color-primary);
+}
+
+.jaugeCoche path {
+  fill: none;
+  stroke: var(--color-primary-fg);
+  stroke-width: 2.2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+@keyframes ouvrir {
+  0% {
+    opacity: 0;
+    transform: scale(0.6);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* ── Carte de France ───────────────────────────────────────────────────────── */
+
+.carte {
+  overflow: visible;
+}
+
+.carteFond path {
+  fill: var(--color-bg);
+  stroke: var(--color-border-strong);
+  stroke-width: 1.5;
+  stroke-linejoin: round;
+}
+
+.carteTrace {
+  fill: none;
+  stroke: var(--color-fg-soft);
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-dasharray: 0.5 8;
+}
+
+.cartePoint {
+  fill: var(--color-paper);
+  stroke: var(--color-fg);
+  stroke-width: 1.5;
+}
+
+.carteHalo {
+  fill: var(--color-terracotta-soft);
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: halo 500ms ease-out 700ms 1 both;
+}
+
+.carteEntreprise {
+  fill: var(--color-paper);
+  stroke: var(--color-terracotta);
+  stroke-width: 1.5;
+  animation: entreprise 300ms ease-out 1 both;
+}
+
+.carteEntreprise:nth-of-type(3) {
+  animation-delay: 100ms;
+}
+.carteEntreprise:nth-of-type(4) {
+  animation-delay: 200ms;
+}
+.carteEntreprise:nth-of-type(5) {
+  animation-delay: 300ms;
+}
+.carteEntreprise:nth-of-type(6) {
+  animation-delay: 400ms;
+}
+
+.carteVille {
+  fill: var(--color-terracotta);
+  stroke: var(--color-paper);
+  stroke-width: 2;
+}
+
+@keyframes entreprise {
+  0% {
+    fill: var(--color-paper);
+  }
+  100% {
+    fill: var(--color-terracotta);
+  }
+}
+
+@keyframes halo {
+  0% {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Sur fond sombre : la France reste claire, les repères se lisent. */
+.carteSombre .carteFond path {
+  fill: var(--color-mocha-soft);
+  stroke: var(--color-border-on-mocha);
+}
+
+.carteSombre .carteTrace {
+  stroke: var(--color-mocha-fg-muted);
+}
+
+.carteSombre .cartePoint {
+  fill: var(--color-mocha-soft);
+  stroke: var(--color-mocha-fg);
+}
+
+.carteSombre .carteHalo {
+  fill: color-mix(in srgb, var(--color-terracotta-on-mocha) 22%, transparent);
+}
+
+.carteSombre .carteEntreprise {
+  fill: var(--color-mocha-soft);
+  stroke: var(--color-terracotta-on-mocha);
+}
+
+.carteSombre .carteVille {
+  fill: var(--color-terracotta-on-mocha);
+  stroke: var(--color-ink);
+}
+
+@keyframes entreprise-sombre {
+  0% {
+    fill: var(--color-mocha-soft);
+  }
+  100% {
+    fill: var(--color-terracotta-on-mocha);
+  }
+}
+
+.carteSombre .carteEntreprise {
+  animation-name: entreprise-sombre;
+}
+
+/* ── Pictogrammes (trait de 1,75 partout, couleur héritée) ─────────────────── */
+
+.picto {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.75;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.pictoAccent {
+  /* Sur fond terracotta ou bleu, le parent redéfinit `--accent-picto` (utilitaire
+     Tailwind) : pas de classe de module de plus. */
+  stroke: var(--accent-picto, var(--color-terracotta));
+}
+
+/* ── Vagues entre sections : la couleur de la section qu'elles annoncent ────── */
+
+.vague {
+  display: block;
+  fill: currentColor;
+}
+
+/* ── La frise des étapes : pastilles numérotées, reliées par un pointillé ──────
+   Vertical sur téléphone ; horizontal dès 64rem. Le numéro est un compteur CSS
+   (la liste ordonnée porte déjà l'ordre pour les lecteurs d'écran). */
+
+.parcours {
+  counter-reset: etape;
+}
+
+.parcours > li {
+  counter-increment: etape;
+}
+
+.parcours > li:not(:last-child)::before {
+  content: "";
+  position: absolute;
+  left: calc(2rem - 1px);
+  top: 4.5rem;
+  bottom: -1.5rem;
+  width: 2px;
+  background: radial-gradient(circle, var(--color-terracotta) 1.1px, transparent 1.5px) center top /
+    2px 9px repeat-y;
+}
+
+@media (min-width: 64rem) {
+  .parcours[data-sens="ligne"] > li:not(:last-child)::before {
+    left: 5rem;
+    right: -1.5rem;
+    top: calc(2rem - 1px);
+    bottom: auto;
+    width: auto;
+    height: 2px;
+    background: radial-gradient(circle, var(--color-terracotta) 1.1px, transparent 1.5px) left
+      center / 9px 2px repeat-x;
+  }
+}
+
+/* Le numéro de l'étape, en pastille posée sur le coin du disque. */
+.numero::after {
+  content: counter(etape);
+  position: absolute;
+  top: -0.25rem;
+  right: -0.25rem;
+  display: grid;
+  width: 1.5rem;
+  height: 1.5rem;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--color-paper);
+  box-shadow: 0 0 0 2px var(--color-bg);
+  color: var(--color-fg);
+  font-size: 0.75rem;
+  font-weight: 800;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ── FAQ : accordéon natif `details`/`summary`, marqueur dessiné ───────────── */
+
+.question > summary {
+  display: flex;
+  min-height: 3.5rem;
+  cursor: pointer;
+  list-style: none;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1rem 1.25rem;
+}
+
+.question > summary::-webkit-details-marker {
+  display: none;
+}
+
+.question > summary:focus-visible {
+  outline: 3px solid var(--color-primary);
+  outline-offset: 2px;
+  border-radius: inherit;
+}
+
+.signe {
+  position: relative;
+  flex: none;
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 50%;
+  background: var(--color-primary-soft);
+  transition:
+    transform 200ms ease,
+    background-color 200ms ease;
+}
+
+.signe::before,
+.signe::after {
+  content: "";
+  position: absolute;
+  inset: 50% auto auto 50%;
+  width: 0.75rem;
+  height: 2px;
+  border-radius: 1px;
+  background: var(--color-primary);
+  transform: translate(-50%, -50%);
+}
+
+.signe::after {
+  transform: translate(-50%, -50%) rotate(90deg);
+  transition: transform 200ms ease;
+}
+
+.question[open] .signe {
+  background: var(--color-primary);
+}
+
+.question[open] .signe::before,
+.question[open] .signe::after {
+  background: var(--color-primary-fg);
+}
+
+.question[open] .signe::after {
+  transform: translate(-50%, -50%) rotate(0deg);
+}
+
+.question > summary:hover .signe {
+  transform: scale(1.06);
+}
+
+/* ── Barre d'action collante (mobile) — CSS SEUL ──────────────────────────────
+   `position: sticky; bottom: 0`, DERNIER enfant du bloc qui va de la ville à la
+   FAQ : elle n'apparaît qu'une fois le héros dépassé (le haut du bloc est alors
+   entré à l'écran) et s'arrête d'elle-même avant l'appel final — elle ne masque
+   donc jamais ni le bouton final, ni ses conditions, ni le pied de page. Elle est
+   dans le flux : sa place est gardée (CLS nul), aucun script ne la montre. La
+   page n'a pas de bande de cookies (aucun traceur, aucun script tiers). */
+
+.collant {
+  padding-bottom: max(0.75rem, env(safe-area-inset-bottom));
+}
+
+/* ── Mouvement réduit : l'état final, immobile ─────────────────────────────── */
+
+@media (prefers-reduced-motion: reduce) {
+  .jaugePoint,
+  .jaugeCoche,
+  .carteHalo,
+  .carteEntreprise,
+  .pastille,
+  .halo {
+    animation: none;
+  }
+
+  .halo {
+    opacity: 0;
+  }
+
+  .jaugePoint {
+    fill: var(--color-terracotta);
+  }
+
+  .carteEntreprise {
+    fill: var(--color-terracotta);
+  }
+
+  .carteSombre .carteEntreprise {
+    fill: var(--color-terracotta-on-mocha);
+  }
+
+  .bouton,
+  .fleche,
+  .signe,
+  .signe::after {
+    transition: none;
+  }
+
+  .bouton:hover,
+  .bouton:hover .fleche,
+  .question > summary:hover .signe {
+    transform: none;
+  }
+}

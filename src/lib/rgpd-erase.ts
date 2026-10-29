@@ -1760,6 +1760,15 @@ export const EXCEPTIONS_EFFACEMENT_DOSSIER: ReadonlyArray<{
       "à la main, sous le même drapeau — seule voie que la base admet.",
   },
   {
+    // 2026-10-27 — les ouvertures du lien : dates, nombre, étape. Ni adresse, ni IP, ni contenu ;
+    // aucune colonne ne désigne la personne (le dirigeant n'y a pas même son code). Elles partent
+    // avec leur questionnaire (cascade) ; jamais supprimées à part (aucune suppression ajoutée).
+    modele: "QuestionnaireAvantAuditOuverture",
+    motif:
+      "les ouvertures du lien du questionnaire avant audit (dates, nombre, étape atteinte) : " +
+      "aucune adresse, aucune IP, aucun contenu ; elles restent attachées au questionnaire.",
+  },
+  {
     // 2026-10-26 — le suivi du questionnaire avant audit : AUCUNE donnée personnelle (relances
     // demandées, date et lieu de l'audit écrits par Will, dates d'envoi). Ses courriers, eux,
     // portent l'empreinte du destinataire : anonymisés ci-dessus, jamais supprimés.
@@ -1789,6 +1798,46 @@ export const EXCEPTIONS_EFFACEMENT_DOSSIER: ReadonlyArray<{
       "réponse par e-mail d'un candidat : effacée avec sa candidature par " +
       "`effacerCandidaturesPour` (`candidature-rgpd.ts`, appelé par la même route), " +
       "par la cascade du dossier ET par l'empreinte de l'adresse.",
+  },
+  {
+    // 2026-10-29 — fiche client (tâches, notes, profil, étiquettes) : tables créées SANS écrivain
+    // (migration seule). Elles sont vides tant que le lot qui les écrit n'est pas livré ; ce lot
+    // DOIT remplacer ces quatre entrées par l'effacement réel (et l'export). La garde
+    // `les-tables-du-dossier-client-suivent-la-personne` (test « une exception "sans écrivain" n'a
+    // pas d'écrivain ») rougit dès que du code sous `src/` écrit dans ces tables (create,
+    // createMany, upsert, update, updateMany ou INSERT INTO) : le lot qui écrit retire ces entrées.
+    modele: "ClientTache",
+    motif:
+      "tâches de suivi d'une fiche : table encore sans écrivain (aucune ligne ne peut exister) ; " +
+      "effacement à brancher dans le lot qui l'écrit.",
+  },
+  {
+    modele: "ClientNote",
+    motif:
+      "notes d'une fiche (contenu chiffré) : table encore sans écrivain (aucune ligne ne peut " +
+      "exister) ; effacement à brancher dans le lot qui l'écrit.",
+  },
+  {
+    modele: "ClientProfil",
+    motif:
+      "responsable et archivage d'une fiche : table encore sans écrivain (aucune ligne ne peut " +
+      "exister) ; effacement à brancher dans le lot qui l'écrit.",
+  },
+  {
+    modele: "ClientEtiquette",
+    motif:
+      "étiquettes d'une fiche : table encore sans écrivain (aucune ligne ne peut exister) ; " +
+      "effacement à brancher dans le lot qui l'écrit.",
+  },
+  {
+    // Tour France IA (2026-10-27) : VIDÉE (jamais supprimée) par `anonymiserDemandesTour`.
+    modele: "TourDemande",
+    motif:
+      "vidée, non supprimée, par `anonymiserDemandesTour` (`features/tour-de-france/rgpd.ts`, " +
+      "appelé par la route d'effacement) : nom, e-mail, téléphone, ville tapée, provenance et " +
+      "repères de campagne remplacés ou retirés, empreintes retirées, clés de comptage remplacées " +
+      "par une valeur opaque propre à la ligne ; la ligne et son drapeau « compte » restent pour " +
+      "que le compteur d'une ville ne recule pas.",
   },
 ];
 
@@ -2520,7 +2569,9 @@ export async function ecarterQuestionnairePreauditMembre(
 /**
  * Effacement DÉFINITIF des réponses d'UN salarié ou du référent informatique au questionnaire de
  * pré-audit (2026-10-24) : il n'a pas d'adresse dans nos tables, le code `membre` (affiché par la
- * console à côté de sa réponse) et la référence du questionnaire l'identifient.
+ * console à côté de sa réponse) et la référence du questionnaire l'identifient. L'adresse qu'il a
+ * saisie lui-même est dans sa réponse chiffrée et part avec elle ; celle que le dirigeant a saisie
+ * dans la liste de son équipe reste dans la réponse du dirigeant, que cette fonction ne touche pas.
  * ⛔ Clic de Will SEULEMENT (console, super-administrateur), après la mise à l'écart
  * (`ecarterQuestionnairePreauditMembre`) : jamais appelé par une tâche ni automatiquement.
  */

@@ -125,7 +125,7 @@ export type SyntheseTunnels = {
 };
 
 /**
- * Les trois pages de tunnel du site, dans l'ordre du parcours.
+ * Les pages de tunnel du site, dans l'ordre du parcours.
  *
  * 🔴 SOURCE UNIQUE. Ce tableau sert à trois choses à la fois : nommer les
  * lignes, fabriquer le lien qui ouvre la page publique depuis la console, et —
@@ -150,6 +150,9 @@ export const TUNNELS_CONNUS: ReadonlyArray<{
   { cle: "simulateur", libelle: "Questionnaire nu", chemin: "/fr/simulateur" },
   { cle: "roi", libelle: "Questionnaire public", chemin: "/fr/roi" },
   { cle: "apporteur", libelle: "Recrutement d'apporteurs", chemin: "/fr/apporteur-affaires" },
+  // Tour France IA (2026-10-26) : ses balises viennent de la page de RÉSERVATION
+  // (la landing n'en porte aucune) ; le lien ouvre la landing, la porte d'entrée.
+  { cle: "tour", libelle: "Tour France IA", chemin: "/tour-france-ia" },
 ];
 
 /** Noms lisibles des tunnels. Une clé inconnue s'affiche telle quelle. */
@@ -379,7 +382,15 @@ function parTunnel(sessions: readonly Session[]): StatsTunnel[] {
 
 /** Transforme les balises brutes en synthèse affichable. */
 export function agregerTunnels(lignes: readonly LigneTunnel[]): SyntheseTunnels {
-  const toutes = [...grouper(lignes).values()];
+  const sessionsTunnels = [...grouper(lignes).values()];
+  // Les sessions du Tour (page de réservation, sans questionnaire) ne vivent que
+  // dans `parTunnel` : dans les autres totaux elles feraient baisser les taux du
+  // tunnel diagnostic (campagnes, appareils, entonnoirs…). Une session qui
+  // commence sur le Tour puis ouvre le questionnaire dans le même onglet reste
+  // comptée : elle a ouvert le questionnaire (Simulator Started).
+  const toutes = sessionsTunnels.filter(
+    (s) => s.tunnelEntree !== "tour" || s.evenements.has(E.demarre),
+  );
   const vuesPub = toutes.filter((s) => s.aVuLaPub);
   const ouvertes = toutes.filter((s) => s.evenements.has(E.demarre));
 
@@ -392,7 +403,7 @@ export function agregerTunnels(lignes: readonly LigneTunnel[]): SyntheseTunnels 
     questionnairesTermines: toutes.filter(a(E.termine)).length,
     rapportsDemandes: toutes.filter(a(E.rapport)).length,
     rappelsDemandes: toutes.filter(a(E.rappel)).length,
-    parTunnel: parTunnel(toutes),
+    parTunnel: parTunnel(sessionsTunnels),
     entonnoirs: [
       entonnoir(
         "Depuis la page publicitaire",

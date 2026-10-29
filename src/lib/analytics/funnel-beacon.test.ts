@@ -39,6 +39,19 @@ describe("funnelKeyFromPath", () => {
     expect(funnelKeyFromPath("/fr/devenir-commercial-ia/candidature")).toBeNull();
   });
 
+  it("reconnaît la page de réservation du Tour France IA, et elle seule", () => {
+    expect(funnelKeyFromPath("/fr/appel/tour-france-ia")).toBe("tour");
+    expect(funnelKeyFromPath("/appel/tour-france-ia")).toBe("tour");
+    // 🔴 La landing ne porte AUCUNE mesure (politique de confidentialité) : même
+    // si une balise y partait par erreur, elle n'aurait pas de tunnel.
+    expect(funnelKeyFromPath("/tour-france-ia")).toBeNull();
+    expect(funnelKeyFromPath("/tour-france-ia/tour-france-ia")).toBeNull();
+    // Les autres pages de réservation ne changent pas de tunnel.
+    expect(funnelKeyFromPath("/fr/appel")).toBeNull();
+    expect(funnelKeyFromPath("/fr/appel/echange-projet")).toBeNull();
+    expect(funnelKeyFromPath("/fr/blog/tour-france-ia")).toBeNull();
+  });
+
   it("ne se laisse pas piéger par une correspondance PARTIELLE", () => {
     // Le piège concret : `/interventions/diagnostic-express` est une page de
     // service sans rapport. Un `includes` nu l'aurait comptée comme du tunnel

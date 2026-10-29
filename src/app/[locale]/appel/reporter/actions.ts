@@ -90,7 +90,9 @@ export async function reporterDepuisLeLien(fd: FormData): Promise<void> {
   // 🔴 CORRIGÉ le 2026-10-04 (chantier « Types de rendez-vous », L2) : le report
   // reprogrammait TOUJOURS sur le type appel — un diagnostic déplacé devenait un
   // échange projet. Il garde désormais son type d'ORIGINE.
-  const et = await resoudreEventTypePourReservation(await urlDeReprogrammation(rdv));
+  const et = await resoudreEventTypePourReservation(await urlDeReprogrammation(rdv), {
+    sansMasquage: rdv.typeRendezVous === "tour_de_france_ia",
+  });
   if (!et) redirect(retour("&echec=refus"));
 
   // Le lien ancien → nouveau est journalisé pour le dossier client (chantier

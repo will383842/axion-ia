@@ -221,7 +221,7 @@ describe("la visio du Tour retombée en « autre » est reclassée par le nom", 
       kind: "booked",
       subjectRef: "site:calendly_event:tour",
       person: personne,
-      payload: { eventTypeName: "Tour de France IA", typeRendezVous: "autre" },
+      payload: { eventTypeName: "Tour France IA", typeRendezVous: "autre" },
     });
     expect(payloadEmis()["typeRendezVous"]).toBe("autre");
     expect(payloadEmis()["circuit"]).toBe("tour_de_france_ia");

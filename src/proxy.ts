@@ -29,7 +29,6 @@ import { isEnLocaleDisabled, mapEnToFr } from "./lib/i18n/en-to-fr-redirect";
 import { resolveLegacyRedirect } from "./lib/legacy-redirects";
 import { reponseGoneSiRetiree } from "./lib/videos/retirees-edge";
 import { isNoindexStubRoute } from "./lib/seo-noindex-routes";
-import { parseUtmFromUrl, buildUtmSetCookie } from "./lib/utm";
 import { verifyFormateurSession } from "./lib/formateur-session";
 import { FORMATEUR_COOKIE_NAME } from "./server/formateur/routes";
 import { RESSOURCES_COOKIE_NAME } from "./server/ressources/routes";
@@ -39,7 +38,7 @@ import { RESSOURCES_COOKIE_NAME } from "./server/ressources/routes";
 // symbole qualiopi et reste scannée par `pnpm qualiopi:isolation-check`.
 // Import RELATIF comme ses deux voisins — pas d'alias.
 import { PORTAIL_COOKIE_NAME, localeSiPortailProtege } from "./server/portail/routes";
-// Tour de France IA — interrupteur et porte d'aperçu, modules PURS (Web Crypto seulement).
+// Tour France IA — interrupteur et porte d'aperçu, modules PURS (Web Crypto seulement).
 import { TOUR_PUBLIC } from "./features/tour-de-france/visibilite";
 import {
   COOKIE_APERCU,
@@ -50,7 +49,7 @@ import {
 
 // 3. En-têtes de sécurité (CSP per-path + COEP toujours + X-* OWASP), posés sur
 // la réponse d'une page. Extraits du pipeline le 2026-10-25 pour que la landing du
-// Tour de France IA (règle 0-TDF), qui ne passe pas par next-intl, reçoive
+// Tour France IA (règle 0-TDF), qui ne passe pas par next-intl, reçoive
 // EXACTEMENT les mêmes — comportement des autres routes inchangé.
 function poserEnTetesDeSecurite(req: NextRequest, response: Response, nonce: string): void {
   const strict = isStrictCspPath(req.nextUrl.pathname);
@@ -130,25 +129,18 @@ function poserEnTetesDeSecurite(req: NextRequest, response: Response, nonce: str
     response.headers.set("X-Robots-Tag", "noindex, follow");
   }
 
-  // 3ter. Attribution UTM (ressuscité de `middleware.ts` racine, cf. 3bis) :
-  // cookie `axion_utm` (30 j) quand l'URL porte des paramètres utm_* (arrivée
-  // Google Ads / LinkedIn / newsletter). Fire UNIQUEMENT sur URL à query
-  // utm_* : les réponses concernées ne sont de toute façon pas des candidates
-  // utiles au cache CDN (variantes de query), donc pas de régression sur le
-  // fix crawl-perf Set-Cookie ci-dessous — qui whiteliste ce cookie.
+  // 3ter. Attribution UTM — le proxy NE POSE PLUS le cookie `axion_utm`.
+  // Décision de Will (2026-10-26) : ce cookie rattache une campagne à un
+  // rendez-vous nominatif, il n'est pas strictement nécessaire, donc il ne se
+  // dépose qu'APRÈS le consentement. C'est la bannière qui, après « Accepter »,
+  // envoie les utm_* de l'adresse courante à `POST /api/utm-consent`.
+  // L'attribution d'un rendez-vous pris dans la même visite n'en dépend pas :
+  // /appel relit les utm_* dans l'URL (`PARAMS_SUIVI`).
   //
   // ⚠️ Les cookies `axion_ref_city`/`axion_ref_region` du middleware mort ne
-  // sont PAS portés : les poser sur chaque page ville (GET public sans query)
-  // remettrait un `Set-Cookie` sur toute la surface pSEO → Cloudflare
-  // repasserait en BYPASS (cf. bloc « Crawl perf ⭐ » ci-dessous), défaisant
-  // le déblocage du cache CDN du 2026-06-17. L'attribution ville/région
-  // reste donc dormante (comme elle l'a toujours été en prod, le middleware
-  // n'ayant jamais tourné) — la réactiver = décision produit à arbitrer
-  // contre le cache (piste : pose côté client).
-  const utm = parseUtmFromUrl(req.nextUrl.searchParams);
-  if (Object.keys(utm).length > 0) {
-    response.headers.append("set-cookie", buildUtmSetCookie(utm));
-  }
+  // sont PAS portés non plus : les poser sur chaque page ville (GET public sans
+  // query) remettrait un `Set-Cookie` sur toute la surface pSEO → Cloudflare
+  // repasserait en BYPASS (cf. bloc « Crawl perf ⭐ » ci-dessous).
 }
 
 const handleI18nRouting = createIntlMiddleware(routing);
@@ -181,17 +173,17 @@ const authPipeline = auth(async (req) => {
     return NextResponse.redirect(new URL(`/fr${req.nextUrl.search}`, req.url), 301);
   }
 
-  // 0-TDF. Landing du Tour de France IA (2026-10-25) — `/tourdefrance-ia`, SANS
+  // 0-TDF. Landing du Tour France IA (2026-10-25) — `/tour-france-ia`, SANS
   //   préfixe de langue (adresse imprimée dans les posts réseau). Elle vit hors de
-  //   `[locale]` (`src/app/tourdefrance-ia/`) : elle ne passe donc NI par 0a-bis
-  //   NI par 0bis (qui la 301 vers `/fr/tourdefrance-ia`, qui n'existe pas), NI
+  //   `[locale]` (`src/app/tour-france-ia/`) : elle ne passe donc NI par 0a-bis
+  //   NI par 0bis (qui la 301 vers `/fr/tour-france-ia`, qui n'existe pas), NI
   //   par next-intl.
   //
-  //   Tant que `TOUR_PUBLIC` est faux : 404 texte brut, `no-store`, `noindex`,
+  //   Si `TOUR_PUBLIC` est faux (Tour refermé ; il est ouvert depuis le 2026-10-25) : 404 texte brut, `no-store`, `noindex`,
   //   sauf cookie d'aperçu valide (`features/tour-de-france/porte.ts`). Ouvert :
   //   la page passe normalement. Dans les deux cas où elle passe, elle reçoit les
   //   en-têtes de sécurité de toute page (`poserEnTetesDeSecurite`).
-  //   Garde : `src/app/tourdefrance-ia/__tests__/le-tour-reste-invisible.spec.ts`.
+  //   Garde : `src/app/tour-france-ia/__tests__/le-tour-est-ouvert.spec.ts`.
   {
     const verdict = await verdictDeLaPorte({
       pathname: req.nextUrl.pathname,
@@ -481,11 +473,12 @@ export default async function proxy(req: NextRequest, ev: NextFetchEvent) {
         const setCookies = res.headers.getSetCookie();
         if (setCookies.length > 0) {
           res.headers.delete("set-cookie");
-          // Réinjecte UNIQUEMENT le cookie de session (préserve les sessions connectées)
-          // + `axion_utm` (attribution paid, posé seulement sur URL ?utm_* — cf. 3ter) ;
-          // retire csrf/callback/NEXT_LOCALE qui bloquent le cache CDN.
+          // Réinjecte UNIQUEMENT le cookie de session (préserve les sessions connectées) ;
+          // retire csrf/callback/NEXT_LOCALE qui bloquent le cache CDN. `axion_utm`
+          // n'est plus réinjecté : il ne se pose qu'après consentement, par
+          // `POST /api/utm-consent` (cf. 3ter), jamais sur une page.
           for (const cookie of setCookies) {
-            if (/session-token/i.test(cookie) || cookie.startsWith("axion_utm=")) {
+            if (/session-token/i.test(cookie)) {
               res.headers.append("set-cookie", cookie);
             }
           }
@@ -625,6 +618,6 @@ export const config = {
     // `formateur/dossier/` exclu (lot L5, formateurs indépendants) : même raison, même
     // en-têtes (`next.config.ts`). `/fr/formateurs` et `/fr/espace-formateur/…` restent
     // couverts (le motif exige `formateur/dossier/` en tête).
-    "/((?!api/|widget/|qr/|videos/|medias/|questionnaire/|document/|apporteur/dossier/|formateur/dossier/|maintenance|_next/static|_next/image|favicon\\.ico|sitemap|opengraph-image|twitter-image|manifest\\.webmanifest|\\.well-known/|^icon$|^apple-icon$|(?!(?:fr|en)/).*\\.txt$|(?!(?:fr|en|tourdefrance-ia)/).*\\.(?:png|jpg|jpeg|svg|webp|avif|ico|woff2|woff|pdf|html|vcf)$).*)",
+    "/((?!api/|widget/|qr/|videos/|medias/|questionnaire/|document/|apporteur/dossier/|formateur/dossier/|maintenance|_next/static|_next/image|favicon\\.ico|sitemap|opengraph-image|twitter-image|manifest\\.webmanifest|\\.well-known/|^icon$|^apple-icon$|(?!(?:fr|en)/).*\\.txt$|(?!(?:fr|en|tour-france-ia)/).*\\.(?:png|jpg|jpeg|svg|webp|avif|ico|woff2|woff|pdf|html|vcf)$).*)",
   ],
 };

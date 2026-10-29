@@ -7,6 +7,9 @@ import Link from "next/link";
 
 import type { QuestionnaireDeLaFiche } from "@/features/dossier-client/questionnaires-de-la-fiche";
 
+import type { ActionLireBrouillon } from "./LireBrouillonPreaudit";
+import { SuiviParPersonne } from "./SuiviParPersonne";
+
 const jourHeure = (d: Date): string =>
   new Intl.DateTimeFormat("fr-FR", {
     timeZone: "Europe/Paris",
@@ -37,11 +40,28 @@ export function BlocQuestionnaireFiche({
   questionnaires,
   adminPrefix,
   ficheHref,
+  afficherOuvertures = false,
+  lireBrouillon,
+  voitBrouillons = false,
+  voitAdresses = false,
+  peutExporter = false,
 }: {
   questionnaires: ReadonlyArray<QuestionnaireDeLaFiche>;
   adminPrefix: string;
   /** La fiche : un questionnaire envoyé sans rendez-vous s'ouvre dans sa page « Questionnaire ». */
   ficheHref: string;
+  /** Interrupteur `QUESTIONNAIRE_SUIVI_ENABLED` : ouvertures et avancée. */
+  afficherOuvertures?: boolean;
+  /**
+   * L'action « Lire le brouillon », passée par la page au super-administrateur seulement, interrupteur
+   * `QUESTIONNAIRE_SUIVI_ENABLED` allumé (l'action revérifie). Absente : pas de bouton.
+   */
+  lireBrouillon?: ActionLireBrouillon;
+  /** Super-administrateur, interrupteur du suivi allumé : voit aussi les noms tirés d'un brouillon. */
+  voitBrouillons?: boolean;
+  voitAdresses?: boolean;
+  /** Super-administrateur, interrupteur d'export allumé : lien « Télécharger une copie ». */
+  peutExporter?: boolean;
 }): React.ReactElement | null {
   if (questionnaires.length === 0) return null;
   const base = `/fr/${adminPrefix}`;
@@ -53,7 +73,6 @@ export function BlocQuestionnaireFiche({
       <ul className="space-y-[var(--space-admin-4)] text-[length:var(--text-admin-sm)]">
         {questionnaires.map((q) => {
           const r = q.reponses;
-          const total = r.dirigeant + r.referentInformatique + r.collaborateurs;
           const lienRdv =
             q.rencontreId === null
               ? `${ficheHref}/questionnaire?q=${q.id}`
@@ -70,13 +89,27 @@ export function BlocQuestionnaireFiche({
                   : `Envoyé le ${jourHeure(q.envoyeLe)}.`}
                 {q.closLe ? ` Clos le ${jourHeure(q.closLe)}.` : ""}
               </p>
-              {q.envoyeLe !== null ? (
+              {q.envoyeLe !== null && q.parPersonne != null && r.aTraiter > 0 ? (
+                <p>{r.aTraiter} à traiter.</p>
+              ) : null}
+              {q.envoyeLe !== null && q.parPersonne == null ? (
                 <p>
-                  {total === 0
+                  {r.dirigeant + r.referentInformatique + r.collaborateurs === 0
                     ? "Aucune réponse reçue pour l'instant."
                     : `Réponses reçues : dirigeant ${r.dirigeant}, collaborateurs ${r.collaborateurs}, référent informatique ${r.referentInformatique}.`}
                   {r.aTraiter > 0 ? ` ${r.aTraiter} à traiter.` : ""}
                 </p>
+              ) : null}
+              {q.envoyeLe !== null ? (
+                <SuiviParPersonne
+                  q={q}
+                  ficheHref={ficheHref}
+                  afficherOuvertures={afficherOuvertures}
+                  voitBrouillons={voitBrouillons}
+                  voitAdresses={voitAdresses}
+                  peutExporter={peutExporter}
+                  lireBrouillon={lireBrouillon}
+                />
               ) : null}
               <p className="mt-[var(--space-admin-1)] flex flex-wrap gap-x-[var(--space-admin-4)]">
                 <Link href={lienRdv} className="admin-link">

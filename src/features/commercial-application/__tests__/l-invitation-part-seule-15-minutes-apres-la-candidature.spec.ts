@@ -96,7 +96,7 @@ describe("ficheEligible — le périmètre", () => {
   it("jamais la saisie manuelle : Will garde sa case", () => {
     expect(ficheEligible({ ...APPORTEUR, origine: "saisie-manuelle" })).toBe(false);
   });
-  it("une fiche « Proposer le réseau » faite à la main n'est pas reprise ; la création automatique, si", () => {
+  it("🔴 26/10 : une fiche née d'une candidature à une offre d'emploi n'est JAMAIS invitée seule", () => {
     expect(ficheEligible({ ...APPORTEUR, origine: "candidature-offre-emploi" })).toBe(false);
     expect(
       ficheEligible({
@@ -104,8 +104,8 @@ describe("ficheEligible — le périmètre", () => {
         origine: "candidature-offre-emploi",
         creationAutomatique: true,
       }),
-    ).toBe(true);
-    expect(ficheEligible(OFFRE_AUTO)).toBe(true);
+    ).toBe(false);
+    expect(ficheEligible(OFFRE_AUTO)).toBe(false);
   });
   it("une fiche déjà traitée par le passage ne l'est jamais deux fois", () => {
     expect(ficheEligible({ ...DOSSIER_COMPLET, invitationAuto: { issue: "envoyee" } })).toBe(false);
@@ -119,11 +119,8 @@ describe("passerInvitationsAuto", () => {
     expect(where.submittedAt.lte.getTime()).toBe(MAINTENANT.getTime() - DELAI_INVITATION_AUTO_MS);
     expect(where.submittedAt.gte.getTime()).toBeGreaterThanOrEqual(DEBUT_INVITATION_AUTO.getTime());
     expect(where.status).toEqual({ in: ["new", "in_progress"] });
-    const whereOffres = d.jobFindMany.mock.calls[0]?.[0]?.where;
-    expect(whereOffres.offer).toEqual({ category: "commercial" });
-    expect(whereOffres.submittedAt.lte.getTime()).toBe(
-      MAINTENANT.getTime() - DELAI_INVITATION_AUTO_MS,
-    );
+    // 26/10 : les candidatures aux offres d'emploi ne sont plus lues du tout.
+    expect(d.jobFindMany).not.toHaveBeenCalled();
   });
 
   it("invite une fiche du site, sans administrateur, et la marque", async () => {
@@ -137,14 +134,11 @@ describe("passerInvitationsAuto", () => {
     expect(data.details.invitationAuto.issue).toBe("envoyee");
   });
 
-  it("ne lit en base que les dossiers complets et les fiches d'offre automatiques", async () => {
+  it("ne lit en base que les dossiers complets du réseau", async () => {
     await passerInvitationsAuto(MAINTENANT);
     const and = d.subFindMany.mock.calls[0]?.[0]?.where.AND;
     expect(and).toContainEqual({
-      OR: [
-        { details: { path: ["source"], equals: "/devenir-commercial-ia/candidature" } },
-        { details: { path: ["creationAutomatique"], equals: true } },
-      ],
+      details: { path: ["source"], equals: "/devenir-commercial-ia/candidature" },
     });
   });
 
@@ -174,10 +168,10 @@ describe("passerInvitationsAuto", () => {
     expect(r.envoyees).toBe(1);
   });
 
-  it("une fiche d'offre commerciale à reprendre (échec passager) est toujours invitée", async () => {
+  it("🔴 26/10 : une fiche d'offre commerciale n'est plus reprise, même marquée création automatique", async () => {
     d.subFindMany.mockResolvedValue([{ id: "offre", details: OFFRE_AUTO }]);
     await passerInvitationsAuto(MAINTENANT);
-    expect(d.envoyer).toHaveBeenCalledWith(expect.objectContaining({ submissionId: "offre" }));
+    expect(d.envoyer).not.toHaveBeenCalled();
   });
 
   it("une saisie manuelle n'est jamais envoyée", async () => {
@@ -222,95 +216,15 @@ describe("passerInvitationsAuto", () => {
     expect(d.subUpdate).not.toHaveBeenCalled();
   });
 
-  it("une candidature à une offre commerciale devient une fiche, invitée, et la candidature le dit", async () => {
+  it("🔴 26/10 (ordre de Will) : une candidature à une offre d'emploi ne reçoit AUCUNE invitation au réseau", async () => {
     d.jobFindMany.mockResolvedValue([{ id: "ja1" }]);
-    d.creer.mockResolvedValue({ ok: true, submissionId: "s-auto" });
     const r = await passerInvitationsAuto(MAINTENANT);
-    expect(d.creer).toHaveBeenCalledWith(
-      expect.objectContaining({ applicationId: "ja1", acteurId: null, automatique: true }),
-    );
-    expect(d.envoyer).toHaveBeenCalledWith(
-      expect.objectContaining({ submissionId: "s-auto", adminId: null }),
-    );
-    expect(r.fichesCreees).toBe(1);
-    expect(r.envoyees).toBe(1);
-    expect(d.consigner).toHaveBeenCalledWith(
-      expect.objectContaining({ applicationId: "ja1", authorId: null }),
-    );
-  });
-
-  describe("offre commerciale d'une personne qui a DÉJÀ une fiche (29/09)", () => {
-    const FICHE_VIVANTE = { deletedAt: null, archivedAt: null, status: "new" };
-
-    it("un premier contact antérieur n'empêche plus l'invitation : sa fiche est invitée", async () => {
-      d.jobFindMany.mockResolvedValue([{ id: "ja2" }]);
-      d.creer.mockResolvedValue({ ok: false, erreur: "doublon", submissionId: "lead" });
-      d.subFindUnique.mockResolvedValue({ ...FICHE_VIVANTE, details: PREMIER_CONTACT });
-      const r = await passerInvitationsAuto(MAINTENANT);
-      expect(d.envoyer).toHaveBeenCalledTimes(1);
-      expect(d.envoyer).toHaveBeenCalledWith(
-        expect.objectContaining({ submissionId: "lead", adminId: null }),
-      );
-      expect(r.envoyees).toBe(1);
-      expect(r.fichesCreees).toBe(0);
-      // Marquée : le passage suivant ne la reprend pas.
-      const data = d.subUpdate.mock.calls[0]?.[0]?.data;
-      expect(data.details.invitationAuto.issue).toBe("envoyee");
-      expect(d.consigner).toHaveBeenCalledWith(expect.objectContaining({ applicationId: "ja2" }));
-    });
-
-    it("même chose pour un contact capturé à l'écran 1", async () => {
-      d.jobFindMany.mockResolvedValue([{ id: "ja3" }]);
-      d.creer.mockResolvedValue({ ok: false, erreur: "doublon", submissionId: "e1" });
-      d.subFindUnique.mockResolvedValue({ ...FICHE_VIVANTE, details: ECRAN_1 });
-      await passerInvitationsAuto(MAINTENANT);
-      expect(d.envoyer).toHaveBeenCalledWith(expect.objectContaining({ submissionId: "e1" }));
-    });
-
-    it("une fiche déjà passée par l'invitation automatique n'est pas reprise à chaque passage", async () => {
-      d.jobFindMany.mockResolvedValue([{ id: "ja4" }]);
-      d.creer.mockResolvedValue({ ok: false, erreur: "doublon", submissionId: "lead" });
-      d.subFindUnique.mockResolvedValue({
-        ...FICHE_VIVANTE,
-        details: { ...PREMIER_CONTACT, invitationAuto: { issue: "envoyee" } },
-      });
-      await passerInvitationsAuto(MAINTENANT);
-      expect(d.envoyer).not.toHaveBeenCalled();
-      expect(d.subUpdate).not.toHaveBeenCalled();
-    });
-
-    it("une fiche archivée, effacée ou rangée par Will n'est pas invitée", async () => {
-      d.jobFindMany.mockResolvedValue([{ id: "ja5" }]);
-      d.creer.mockResolvedValue({ ok: false, erreur: "doublon", submissionId: "lead" });
-      for (const etat of [
-        { ...FICHE_VIVANTE, archivedAt: new Date() },
-        { ...FICHE_VIVANTE, deletedAt: new Date() },
-        { ...FICHE_VIVANTE, status: "archived" },
-      ]) {
-        d.subFindUnique.mockResolvedValue({ ...etat, details: PREMIER_CONTACT });
-        await passerInvitationsAuto(MAINTENANT);
-      }
-      expect(d.envoyer).not.toHaveBeenCalled();
-    });
-
-    it("la personne déjà invitée n'en reçoit pas une seconde : le refus est marqué", async () => {
-      d.jobFindMany.mockResolvedValue([{ id: "ja6" }]);
-      d.creer.mockResolvedValue({ ok: false, erreur: "doublon", submissionId: "lead" });
-      d.subFindUnique.mockResolvedValue({ ...FICHE_VIVANTE, details: PREMIER_CONTACT });
-      d.envoyer.mockResolvedValue({ ok: false, erreur: "deja-invitee", message: "x" });
-      const r = await passerInvitationsAuto(MAINTENANT);
-      expect(r.envoyees).toBe(0);
-      expect(r.ecartees["deja-invitee"]).toBe(1);
-      expect(d.subUpdate).toHaveBeenCalledTimes(1);
-    });
-
-    it("un autre refus de création (candidature illisible) n'envoie rien", async () => {
-      d.jobFindMany.mockResolvedValue([{ id: "ja7" }]);
-      d.creer.mockResolvedValue({ ok: false, erreur: "illisible" });
-      const r = await passerInvitationsAuto(MAINTENANT);
-      expect(d.envoyer).not.toHaveBeenCalled();
-      expect(r.ecartees["candidature-illisible"]).toBe(1);
-    });
+    expect(d.jobFindMany).not.toHaveBeenCalled();
+    expect(d.creer).not.toHaveBeenCalled();
+    expect(d.envoyer).not.toHaveBeenCalled();
+    expect(d.consigner).not.toHaveBeenCalled();
+    expect(r.fichesCreees).toBe(0);
+    expect(r.envoyees).toBe(0);
   });
 
   it("sans lien Calendly configuré, rien ne part", async () => {

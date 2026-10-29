@@ -185,9 +185,12 @@ const nextConfig: NextConfig = {
     //
     // Le worker isole la compilation dans un processus Node séparé : le pic de
     // la compilation ne partage plus le heap du processus principal. C'est le
-    // levier qui manquait, et il ne touche PAS au plafond de 6144 Mo — plafond
-    // qu'il ne faut surtout pas relever, la phase SSG faisant déjà culminer le
-    // runner 16 Go à ~15-16 Go de RSS.
+    // levier qui manquait, et il ne touche PAS au plafond de tas (Dockerfile).
+    // Ce plafond a été relevé de 6144 à 8192 Mo le 29/10/2026 : le compile
+    // webpack plantait (OOM à 5,73 Go / 6 Go, runs 40855519281 et 40865229540),
+    // le pic runner mesuré à 6 Go était de 9,5 Go sur 15,6 Go, et le site n'a
+    // plus que 2829 pages SSG (contre 17,6k). L'ancienne mise en garde « ~15-16
+    // Go de RSS » datait de l'époque des 17,6k pages.
     //
     // ⚠️ La doc note une incompatibilité possible avec certains plugins webpack
     // personnalisés. Ici la config custom se borne à `config.cache = false` :
@@ -357,6 +360,32 @@ const nextConfig: NextConfig = {
       {
         source: "/fr/reserver",
         destination: "/fr/appel",
+        permanent: true,
+      },
+      // Tour France IA (2026-10-27) : la landing quitte `/tourdefrance-ia` pour
+      // `/tour-france-ia`, et sa page de visio `/fr/appel/tour-de-france-ia` pour
+      // `/fr/appel/tour-france-ia`. Les anciennes adresses ont été publiées du 26 au
+      // 27/10 : ne JAMAIS retirer ces 308. Les redirections de `next.config`
+      // passent AVANT le proxy : la règle 0bis ne les localise pas en
+      // `/fr/tourdefrance-ia`. Gardées par `src/app/tour-france-ia/__tests__/`.
+      {
+        source: "/tourdefrance-ia",
+        destination: "/tour-france-ia",
+        permanent: true,
+      },
+      {
+        source: "/tourdefrance-ia/:path*",
+        destination: "/tour-france-ia/:path*",
+        permanent: true,
+      },
+      {
+        source: "/fr/appel/tour-de-france-ia",
+        destination: "/fr/appel/tour-france-ia",
+        permanent: true,
+      },
+      {
+        source: "/sitemap-tourdefrance-ia.xml",
+        destination: "/sitemap-tour-france-ia.xml",
         permanent: true,
       },
       // Tunnel apporteurs : `/facebook` → `/apporteur-affaires` (Will 2026-09-04).

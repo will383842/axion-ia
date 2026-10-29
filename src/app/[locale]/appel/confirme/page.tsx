@@ -262,7 +262,7 @@ export default async function ConfirmePage({ params, searchParams }: Props) {
   // des LIBELLÉS, et seulement pour un rendez-vous non classé — un `rdv=` forgé
   // ne peut rien faire d'autre que renommer l'écran.
   const formateur = (type === null || type === "autre") && choixTransmis === "formateur";
-  // La visio du Tour de France IA (2026-10-25) a son type propre (`tour_de_france_ia`).
+  // La visio du Tour France IA (2026-10-25) a son type propre (`tour_de_france_ia`).
   // Les réservations d'avant la migration sont encore `autre` : le choix transmis par
   // notre formulaire les reconnaît, et ne peut rien faire d'autre que changer les
   // textes de l'écran.
@@ -327,7 +327,7 @@ function Confirme({
   detail: DetailEvenement | null;
   type: TypeRendezVous | null;
   formateur: boolean;
-  /** Visio du Tour de France IA (2026-10-25) : seul le nom affiché change. */
+  /** Visio du Tour France IA (2026-10-25) : seul le nom affiché change. */
   tour?: boolean;
   /** Lot B (M25) : échange formateur dont la confirmation et les rappels partent. */
   nosEmails?: boolean;
@@ -347,7 +347,7 @@ function Confirme({
                 ? "Vous allez recevoir notre confirmation par e-mail, puis l'invitation d'agenda avec le lien de la visioconférence."
                 : "Vous allez recevoir l'invitation d'agenda par e-mail, avec le lien de la visioconférence."
               : tour
-                ? "Vous allez recevoir un e-mail de confirmation, avec le lien pour annuler ou déplacer si besoin. Pendant la visio, nous faisons connaissance et nous vous présentons le Tour de France IA."
+                ? "Vous allez recevoir un e-mail de confirmation, avec le lien pour annuler ou déplacer si besoin. Pendant la visio, nous faisons connaissance et nous vous présentons le Tour France IA."
                 : "Vous allez recevoir un e-mail de confirmation, avec le lien pour annuler ou déplacer si besoin."
           }
         />
@@ -547,7 +547,7 @@ function CeQuiSePasseMaintenant({
   format: DetailEvenement["format"];
   type: TypeRendezVous | null;
   formateur: boolean;
-  /** Visio du Tour de France IA : une étape de plus, ce que la visio apporte. */
+  /** Visio du Tour France IA : une étape de plus, ce que la visio apporte. */
   tour?: boolean;
   nosEmails?: boolean;
 }) {
@@ -592,14 +592,14 @@ function CeQuiSePasseMaintenant({
   const etapes = formateur
     ? etapesFormateur
     : [
-        // La visio du Tour de France IA : rien à préparer, on le dit.
+        // La visio du Tour France IA : rien à préparer, on le dit.
         ...(tour
           ? [
               {
                 Picto: Video,
                 titre: "Une visio pour faire connaissance",
                 corps:
-                  "Rien à préparer. Nous vous présentons le Tour de France IA, puis vous décidez si vous confirmez votre participation.",
+                  "Rien à préparer. Nous vous présentons le Tour France IA, puis vous décidez si vous confirmez votre participation.",
               },
             ]
           : []),

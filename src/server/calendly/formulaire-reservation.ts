@@ -178,7 +178,7 @@ export interface OptionsValidation {
   /** Injectable pour les tests ; l'horloge réelle par défaut. */
   readonly maintenant?: Date;
   readonly utmSource?: string | null;
-  /** Source retenue quand l'arrivée n'en porte aucune (le Tour de France IA). */
+  /** Source retenue quand l'arrivée n'en porte aucune (le Tour France IA). */
   readonly utmSourceParDefaut?: string | null;
   readonly utmMedium?: string | null;
   readonly utmCampaign?: string | null;

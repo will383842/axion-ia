@@ -13,6 +13,12 @@
 import { mentionsRgpd, refusReel } from "@/features/questionnaire-preaudit/config";
 import { ENTETES_PAGE_PREAUDIT } from "@/features/questionnaire-preaudit/entetes";
 import { pagePourClient } from "@/features/questionnaire-preaudit/html";
+import { ajoutsSuivi } from "@/features/questionnaire-preaudit/balise-ouverture";
+import {
+  phrasesNoticeSuivi,
+  TITRE_NOTICE_SUIVI,
+} from "@/features/questionnaire-preaudit/notice-suivi";
+import { noticeVisible, suiviActif } from "@/features/questionnaire-preaudit/ouvertures";
 import {
   accepteDesReponses,
   essaiPermis,
@@ -54,6 +60,14 @@ export async function GET(
 
   const rgpd = mentionsRgpd();
   const base = `/api/questionnaire-preaudit/${q.id}/${jeton}`;
+  // Suivi des ouvertures (2026-10-27) : la notice dit ce qui est noté, la balise le note. En
+  // ESSAI, rien n'est noté (la notice reste visible pour que Will la relise telle quelle).
+  const ouvertures = suiviActif();
+  const finDePage = ajoutsSuivi({
+    endpoint: ouvertures && !essai ? `${base}/ouverture` : null,
+    titre: TITRE_NOTICE_SUIVI,
+    phrases: noticeVisible() ? phrasesNoticeSuivi({ ouvertures: true, brouillon: true }) : [],
+  });
   const page = pagePourClient(q.html, {
     endpoint: essai ? `${base}?essai=1` : base,
     // Le nom affiché sur l'accueil (« Questionnaire préparé pour … ») : la raison sociale de la
@@ -62,6 +76,7 @@ export async function GET(
     contact: rgpd.contact,
     conservation: rgpd.conservation,
     essai,
+    finDePage,
   });
   return new Response(page, {
     status: 200,

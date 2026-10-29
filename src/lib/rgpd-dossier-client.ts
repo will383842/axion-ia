@@ -60,6 +60,12 @@ export const EXCLUSIONS_EXPORT_DOSSIER: ReadonlyArray<{
       "rendues ci-dessus.",
   },
   {
+    modele: "QuestionnaireAvantAuditOuverture",
+    motif:
+      "les ouvertures du lien du questionnaire avant audit : des dates, un nombre et l'étape " +
+      "atteinte, sans adresse IP, sans navigateur et sans contenu, rattachés au questionnaire.",
+  },
+  {
     modele: "QuestionnaireAvantAuditSuivi",
     motif:
       "le suivi des e-mails du questionnaire avant audit (relances demandées, date de l'audit) : " +
@@ -105,6 +111,29 @@ export const EXCLUSIONS_EXPORT_DOSSIER: ReadonlyArray<{
       "manuelle sous un mois, tiers occultés (contact@axion-ia.com).",
   },
   {
+    // 2026-10-29 — fiche client : tables créées avant le code qui les écrit (migration seule),
+    // donc vides. Le lot qui les écrit DOIT remplacer ces entrées par la lecture réelle (notes
+    // déchiffrées). Les motifs sont rendus à la personne dans son export : texte lisible.
+    modele: "ClientTache",
+    motif:
+      "tâches de suivi d'une fiche : fonction pas encore en service, aucune donnée enregistrée à ce jour.",
+  },
+  {
+    modele: "ClientNote",
+    motif:
+      "notes d'une fiche : fonction pas encore en service, aucune donnée enregistrée à ce jour.",
+  },
+  {
+    modele: "ClientProfil",
+    motif:
+      "profil de suivi d'une fiche : fonction pas encore en service, aucune donnée enregistrée à ce jour.",
+  },
+  {
+    modele: "ClientEtiquette",
+    motif:
+      "étiquettes d'une fiche : fonction pas encore en service, aucune donnée enregistrée à ce jour.",
+  },
+  {
     modele: "DocumentProjetContenu",
     motif: "le contenu des fichiers des documents de projet ci-dessus (même réponse manuelle).",
   },
@@ -129,6 +158,15 @@ export const EXCLUSIONS_EXPORT_DOSSIER: ReadonlyArray<{
     motif:
       "les fichiers joints à vos messages envoyés par le formulaire de contact (cahier des " +
       "charges, devis…) : copie, tels que reçus, sur demande à contact@axion-ia.com.",
+  },
+  {
+    // Tour France IA (2026-10-27) : la mini-demande avant la visio, chiffrée à IV aléatoire.
+    // Elle est exportée, mais PAS dans la partie « dossier client » : par une lecture à part.
+    modele: "TourDemande",
+    motif:
+      "ces demandes ne sont pas dans la partie « dossier client » : vos demandes du Tour France " +
+      "IA (nom, e-mail, téléphone, ville, statut) sont rendues à part, dans la partie " +
+      "« tourFranceIa » de cet export, retrouvées par l'empreinte de votre adresse.",
   },
 ];
 

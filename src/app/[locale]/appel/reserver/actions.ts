@@ -226,7 +226,9 @@ export async function soumettreLaReservation(fd: FormData): Promise<void> {
     );
   }
 
-  const et = await resoudreEventTypePourReservation((await resoudreChoix(choix)).url);
+  const et = await resoudreEventTypePourReservation((await resoudreChoix(choix)).url, {
+    sansMasquage: choix === "tour",
+  });
   if (!et) {
     // Ni jeton, ni event-type lisible, ou une question qu'on ne sait pas poser.
     // Le contrat de repli du module : on renvoie vers le calendrier, qui saura
@@ -252,7 +254,7 @@ export async function soumettreLaReservation(fd: FormData): Promise<void> {
     // parcours si elle porte une UTM, sinon celle du cookie (réécrit à chaque
     // URL avec UTM, donc la DERNIÈRE vue). Jamais un mélange des deux.
     ...provenanceEnBloc(suivi, utm),
-    // Le Tour de France IA se reconnaît à sa source même sans campagne.
+    // Le Tour France IA se reconnaît à sa source même sans campagne.
     utmSourceParDefaut: utmSourceParDefaut(choix),
     // Les formats DE CE TYPE, jugés comme la page du formulaire les a annoncés.
     formats: formatsProposes(choix, et.lieux?.formats),

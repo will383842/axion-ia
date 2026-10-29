@@ -75,7 +75,8 @@ export async function POST(req: NextRequest): Promise<Response> {
   }
   const balise = parse.data;
 
-  // L'attribution est relue CÔTÉ SERVEUR depuis le cookie déposé à l'arrivée,
+  // L'attribution est relue CÔTÉ SERVEUR depuis le cookie `axion_utm` — déposé
+  // seulement après consentement (`api/utm-consent`), donc souvent absent —,
   // et non reçue du client. Deux raisons : le client ne connaît plus les
   // paramètres d'URL après une navigation interne, et une valeur envoyée par
   // le client serait falsifiable — ce qui fausserait l'attribution des

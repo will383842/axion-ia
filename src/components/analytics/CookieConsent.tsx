@@ -46,6 +46,7 @@ import { isRouteTunnelFacebook } from "@/lib/analytics/tunnel-facebook-routes";
 import { ID_BANNIERE_CONSENTEMENT } from "@/lib/analytics/surface-console";
 import { Link } from "@/i18n/navigation";
 import { trackFunnel } from "@/lib/tracking";
+import { UTM_KEYS } from "@/lib/utm";
 
 // 🔴 v2 (2026-10-10, RGPD). La v1 a été posée par un bandeau qui ne nommait QUE
 // Microsoft Clarity ; le pixel Meta est arrivé le 2026-09-03 (PR 963) sans changer
@@ -186,6 +187,9 @@ export function writeAnalyticsConsent(value: ConsentChoice): void {
   if (typeof window === "undefined") return;
   snapshot = value;
   persist(value, Date.now());
+  // Un refus (bandeau ou « Préférences cookies ») efface aussi le cookie de
+  // provenance qu'un « Accepter » antérieur aurait posé.
+  if (value === "declined") effacerProvenance();
   emit();
 }
 
@@ -194,6 +198,7 @@ export function resetAnalyticsConsent(): void {
   if (typeof window === "undefined") return;
   snapshot = "unknown";
   clearPersisted();
+  effacerProvenance();
   emit();
 }
 
@@ -281,6 +286,9 @@ export function useIsHydrated(): boolean {
 // (Server Component) doit pouvoir le lire pour masquer le bandeau sur la
 // console, et il ne peut pas importer un module « use client » pour cela.
 const BANNER_ID = ID_BANNIERE_CONSENTEMENT;
+// Cookie de provenance après « Accepter » : cf. `envoyerProvenanceApresAccord`.
+const ROUTE_PROVENANCE = "/api/utm-consent";
+const DRAPEAU_PROVENANCE = "__axionProvenanceEnvoyee";
 
 export const SCRIPT_AVANT_HYDRATATION = [
   "(function(){",
@@ -295,23 +303,88 @@ export const SCRIPT_AVANT_HYDRATATION = [
   "function poser(v){var ts=Date.now();",
   "try{localStorage.setItem(K,v);localStorage.setItem(T,String(ts))}catch(e){}",
   'try{document.cookie=K+"="+encodeURIComponent(v+"|"+ts)+"; path=/; max-age="+Math.floor(E/1000)+"; SameSite=Lax"+(location.protocol==="https:"?"; Secure":"")}catch(e){}',
-  "el.hidden=true;try{window.dispatchEvent(new CustomEvent(V))}catch(e){}}",
+  "el.hidden=true;try{window.dispatchEvent(new CustomEvent(V))}catch(e){}",
+  'if(v==="accepted")prov();else del()}',
+  // Même effacement que `effacerProvenance`.
+  `function del(){try{delete window[${JSON.stringify(DRAPEAU_PROVENANCE)}];fetch(${JSON.stringify(ROUTE_PROVENANCE)},{method:"DELETE",credentials:"same-origin",keepalive:true}).catch(function(){})}catch(e){}}`,
+  // Même envoi que `envoyerProvenanceApresAccord`, même drapeau, mêmes clés.
+  `function prov(){try{if(window[${JSON.stringify(DRAPEAU_PROVENANCE)}])return;var q=new URLSearchParams(location.search),o={},n=0,C=${JSON.stringify(UTM_KEYS)};`,
+  "for(var j=0;j<C.length;j++){var x=q.get(C[j]);if(x){o[C[j]]=x;n++}}",
+  `if(!n)return;window[${JSON.stringify(DRAPEAU_PROVENANCE)}]=true;fetch(${JSON.stringify(ROUTE_PROVENANCE)},{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify(o),credentials:"same-origin",keepalive:true}).catch(function(){})}catch(e){}}`,
   'var bs=el.querySelectorAll("[data-consent]");',
   'for(var i=0;i<bs.length;i++){(function(b){b.addEventListener("click",function(){poser(b.getAttribute("data-consent"))})})(bs[i])}',
   "})();",
 ].join("");
 
 /**
+ * 🔴 Cookie de provenance `axion_utm` APRÈS consentement (décision de Will,
+ * 2026-10-26). Le proxy ne le pose plus à l'arrivée : c'est la bannière qui,
+ * après « Accepter » — et seulement là —, envoie les `utm_*` de l'adresse
+ * COURANTE à `POST /api/utm-consent`, qui filtre et pose le cookie HttpOnly.
+ * Rien n'est gardé avant le clic (ni stockage de session, ni mémoire) : si
+ * l'adresse n'a plus d'`utm_*` au moment du clic, rien n'est déposé.
+ *
+ * Le drapeau `window` évite le double envoi quand le bandeau rendu au serveur
+ * est hydraté : le clic déclenche alors l'écouteur du script en ligne ET le
+ * `onClick` React, dans cet ordre.
+ */
+export function envoyerProvenanceApresAccord(): void {
+  try {
+    const w = window as unknown as Record<string, unknown>;
+    if (w[DRAPEAU_PROVENANCE]) return;
+    const q = new URLSearchParams(window.location.search);
+    const utm: Record<string, string> = {};
+    for (const cle of UTM_KEYS) {
+      const v = q.get(cle);
+      if (v) utm[cle] = v;
+    }
+    if (Object.keys(utm).length === 0) return;
+    w[DRAPEAU_PROVENANCE] = true;
+    void fetch(ROUTE_PROVENANCE, {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify(utm),
+      credentials: "same-origin",
+      keepalive: true,
+    }).catch(() => {});
+  } catch {
+    // Fail-soft — une mesure perdue, jamais un bandeau bloqué.
+  }
+}
+
+/**
+ * Retrait du consentement → `DELETE /api/utm-consent`. Le cookie `axion_utm`
+ * est HttpOnly : seul le serveur peut l'effacer. Appelé par « Refuser » (via
+ * `writeAnalyticsConsent("declined")`) et par `resetAnalyticsConsent`, en
+ * React comme dans le script en ligne. Le drapeau d'envoi est levé : un
+ * « Accepter » ultérieur sur la même page renvoie la provenance.
+ * Sans effet nuisible si aucun cookie n'existe : la réponse l'expire.
+ */
+export function effacerProvenance(): void {
+  try {
+    delete (window as unknown as Record<string, unknown>)[DRAPEAU_PROVENANCE];
+    void fetch(ROUTE_PROVENANCE, {
+      method: "DELETE",
+      credentials: "same-origin",
+      keepalive: true,
+    }).catch(() => {});
+  } catch {
+    // Fail-soft — jamais un bandeau bloqué.
+  }
+}
+
+/**
  * Réponse donnée AU BANDEAU (et non dans « Préférences cookies »). Émet
  * l'événement anonyme « Consent Banner Answered » : sans ce taux d'acceptation,
  * on ne saurait pas quelle part des visiteurs d'une publicité le pixel peut
- * voir. La balise en base ne part que sur les pages du tunnel apporteurs
- * (`funnelKeyFromPath`) ; Plausible, lui, est sans cookie. ⚠️ Un clic donné
+ * voir. La balise en base ne part que sur les pages des tunnels (`funnelKeyFromPath`),
+ * jamais sous le Tour France IA (seule « Call Booking Viewed » y est journalisée) ; Plausible, lui, est sans cookie. ⚠️ Un clic donné
  * AVANT l'hydratation est traité par le script en ligne, pas par React : il
  * n'est pas compté (rare, et sans effet sur la décision).
  */
 function repondreAuBandeau(choix: ConsentChoice): void {
   writeAnalyticsConsent(choix);
+  if (choix === "accepted") envoyerProvenanceApresAccord();
   trackFunnel("Consent Banner Answered", { step: choix });
 }
 
@@ -395,7 +468,7 @@ export function CookieConsent() {
               id="cookie-consent-title"
               className="text-fg sr-only text-base font-semibold tracking-tight sm:not-sr-only"
             >
-              {isFr ? "Cookies analytics" : "Analytics cookies"}
+              {isFr ? "Cookies de mesure" : "Measurement cookies"}
             </p>
             <p
               id="cookie-consent-body"
@@ -403,11 +476,11 @@ export function CookieConsent() {
             >
               {avecMeta
                 ? isFr
-                  ? "Plausible (anonyme, UE, sans cookie) est toujours actif. Acceptez-vous en plus le pixel Meta (mesure de la campagne Facebook et reciblage, cookies _fbp et _fbc, transfert UE vers les USA sous clauses types) et Microsoft Clarity (heatmaps et replay anonymisés) ? "
-                  : "Plausible (anonymous, EU, cookie-less) is always active. Do you also accept the Meta pixel (Facebook campaign measurement and retargeting, _fbp and _fbc cookies, EU to US transfer under SCC) and Microsoft Clarity (anonymized heatmaps and replay)? "
+                  ? "Plausible (anonyme, UE, sans cookie) est toujours actif. Acceptez-vous en plus le pixel Meta (mesure de la campagne Facebook et reciblage, cookies _fbp et _fbc, transfert UE vers les USA sous clauses types), Microsoft Clarity (heatmaps et replay anonymisés) et la mesure de la provenance des campagnes ? "
+                  : "Plausible (anonymous, EU, cookie-less) is always active. Do you also accept the Meta pixel (Facebook campaign measurement and retargeting, _fbp and _fbc cookies, EU to US transfer under SCC), Microsoft Clarity (anonymized heatmaps and replay) and campaign-origin measurement? "
                 : isFr
-                  ? "Plausible (anonyme, UE, sans cookie) est toujours actif. Acceptez-vous en plus Microsoft Clarity (heatmaps et replay anonymisés, transfert UE → US sous SCC) ? "
-                  : "Plausible (anonymous, EU, cookie-less) is always active. Do you also accept Microsoft Clarity (anonymized heatmaps and replay, EU → US transfer under SCC)? "}
+                  ? "Plausible (anonyme, sans cookie) reste actif. Acceptez-vous Microsoft Clarity (replay anonymisé, UE → US sous SCC) et la mesure de la provenance des campagnes ? "
+                  : "Plausible (anonymous, cookie-less) stays on. Do you accept Microsoft Clarity (anonymized replay, EU → US under SCC) and campaign-origin measurement? "}
               <Link
                 href="/cookies"
                 className="text-terracotta-deep hover:text-terracotta underline"

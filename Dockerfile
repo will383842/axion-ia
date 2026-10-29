@@ -178,7 +178,11 @@ ENV COREPACK_INTEGRITY_KEYS=0
 # si webpack compile peak > 6 GB, fail clean "JavaScript heap out of memory"
 # au lieu d'OOM silencieux → diagnostic facilité. À ajuster (ou switch
 # ubuntu-latest-large) selon résultat run #4.
-ENV NODE_OPTIONS=--max-old-space-size=6144
+# 2026-10-29 : OOM du compile webpack à 5,73 Go / 6 Go (runs 40855519281,
+# 40865229540) ; pic runner mesuré 9,5 Go sur 15,6 Go à 6 Go de tas ; 2829 pages
+# SSG (et non plus 17,6k) ; surveiller la durée « Compiled in » (inquiétant au-delà
+# de 6 min) ; si le pic runner dépasse ~14 Go, repasser à 7168 et réduire le compile.
+ENV NODE_OPTIONS=--max-old-space-size=8192
 ENV NEXT_PRIVATE_WORKER_THREADS=1
 RUN corepack enable && corepack prepare pnpm@10.33.4 --activate
 # Generate Prisma client + build
