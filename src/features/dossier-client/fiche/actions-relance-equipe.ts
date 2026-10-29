@@ -31,12 +31,18 @@ import {
 } from "@/features/questionnaire-preaudit/de-la-fiche";
 import { lireSuiviParPersonne } from "@/features/questionnaire-preaudit/suivi-par-personne";
 import { garerPourValidation } from "@/server/email/outbox-service";
-import { entreeDepuisSuivi, prenomDe } from "./questionnaire-en-bref";
+import { entreeDepuisSuivi, estComplet, prenomDe } from "./questionnaire-en-bref";
 
 const uuid = z.string().uuid();
 
 const TEMPLATE = "questionnaire-relance-equipe";
-const TYPE_ENTITE = "questionnaire_preaudit";
+// Valeur de `entityType` partagée avec envoyer.ts, suivi.ts, serveur.ts, rattachement-client.ts et
+// rgpd-dossier-client.ts. (Écart au cahier des charges, qui disait « questionnaire_preaudit ».)
+const TYPE_ENTITE = "QuestionnaireAvantAudit";
+
+/** Le jour de Paris (AAAA-MM-JJ) : sert à l'expiration et à la clé anti-double-clic. */
+const jourDeParis = (d: Date): string =>
+  new Intl.DateTimeFormat("sv-SE", { timeZone: "Europe/Paris" }).format(d);
 
 const champ = (fd: FormData, cle: string): string => {
   const v = fd.get(cle);
@@ -64,6 +70,9 @@ async function preparer(
     if (q === null) return { erreur: "Questionnaire introuvable sur cette fiche." };
     if (q.envoyeLe === null) return { erreur: "Ce questionnaire n'est pas encore envoyé." };
     if (q.closLe !== null) return { erreur: "Ce questionnaire est clos." };
+    if (q.expireLe !== null && jourDeParis(q.expireLe) < jourDeParis(new Date())) {
+      return { erreur: "Lien expiré : rien n'a été préparé." };
+    }
 
     const deja = await prisma.emailOutbox.findFirst({
       where: { template: TEMPLATE, entityType: TYPE_ENTITE, entityId: q.id, statut: "a_valider" },
@@ -77,8 +86,12 @@ async function preparer(
     const suivi = (await lireSuiviParPersonne([q.id])).get(q.id)?.suivi;
     if (suivi === undefined) return illisible;
     const entree = entreeDepuisSuivi(suivi);
-    if (entree.manquants.length + entree.manquantsSansNom === 0) {
+    if (estComplet(entree)) {
       return { erreur: "Toutes les réponses sont arrivées : rien à relancer." };
+    }
+    // Le dirigeant ne figure jamais dans la liste : il ne lit pas « il manque » en parlant de lui.
+    if (entree.manquants.length + entree.manquantsSansNom === 0) {
+      return { erreur: "Aucun collaborateur ne manque : rien à relancer auprès de l'équipe." };
     }
     return {
       adresse,
@@ -134,6 +147,8 @@ export async function demanderAuDirigeantDeRelancerSonEquipeAction(fd: FormData)
     clientId,
     entityType: TYPE_ENTITE,
     entityId: questionnaireId,
+    // Un double clic ne pose pas deux brouillons le même jour.
+    jobId: `relance-equipe:${questionnaireId}:${jourDeParis(new Date())}`,
   });
   // `null` : le message n'a PAS pu être mis de côté. On le dit ; on n'envoie jamais directement.
   if (id === null) echec("Le message n'a pas pu être préparé : rien n'a été envoyé.");

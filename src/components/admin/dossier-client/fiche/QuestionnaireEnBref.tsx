@@ -16,12 +16,20 @@ import { demanderAuDirigeantDeRelancerSonEquipeAction } from "@/features/dossier
 import {
   PHRASE_RELANCES_AUTOMATIQUES,
   entreeDepuisSuivi,
+  estComplet,
   phraseDateLimite,
   phraseEnBref,
   prenomDe,
 } from "@/features/dossier-client/fiche/questionnaire-en-bref";
 import { prisma } from "@/lib/prisma";
 import type { ContexteFiche } from "./contexte";
+
+const jourLong = (d: Date): string =>
+  new Intl.DateTimeFormat("fr-FR", {
+    day: "numeric",
+    month: "long",
+    timeZone: "Europe/Paris",
+  }).format(d);
 
 const LECTURE_IMPOSSIBLE = `${TEXTE_LECTURE_IMPOSSIBLE.charAt(0).toUpperCase()}${TEXTE_LECTURE_IMPOSSIBLE.slice(1)}.`;
 
@@ -30,7 +38,7 @@ async function messageDejaPret(questionnaireId: string): Promise<boolean | null>
     const l = await prisma.emailOutbox.findFirst({
       where: {
         template: "questionnaire-relance-equipe",
-        entityType: "questionnaire_preaudit",
+        entityType: "QuestionnaireAvantAudit",
         entityId: questionnaireId,
         statut: "a_valider",
       },
@@ -58,11 +66,17 @@ export async function questionnaireEnBref(ctx: ContexteFiche): Promise<React.Rea
   }
   const suivi = q.parPersonne.suivi;
   const entree = entreeDepuisSuivi(suivi);
-  const complet = entree.attendus > 0 && entree.manquants.length + entree.manquantsSansNom === 0;
   const limite = phraseDateLimite(q.expireLe);
+  const complet = estComplet(entree);
+  const jour = (d: Date) =>
+    new Intl.DateTimeFormat("sv-SE", { timeZone: "Europe/Paris" }).format(d);
+  const expire = q.expireLe !== null && jour(q.expireLe) < jour(new Date());
+  const limiteDite =
+    q.expireLe === null ? null : expire ? `Lien expiré le ${jourLong(q.expireLe)}.` : limite;
   const prenomDirigeant =
     suivi.dirigeant.sourceNom === "brouillon" ? null : prenomDe(suivi.dirigeant.nom);
-  const pret = ctx.role === "super_admin" && !complet ? await messageDejaPret(q.id) : false;
+  const pret =
+    ctx.role === "super_admin" && !complet && !expire ? await messageDejaPret(q.id) : false;
 
   return (
     <AdminBloc
@@ -78,13 +92,21 @@ export async function questionnaireEnBref(ctx: ContexteFiche): Promise<React.Rea
       <p data-bloc="questionnaire-en-bref" className="font-medium">
         {phraseEnBref(entree)}
       </p>
-      {limite !== null ? <p>{limite}</p> : null}
+      {limiteDite !== null ? <p>{limiteDite}</p> : null}
       <p className="text-[length:var(--text-admin-xs)]">{PHRASE_RELANCES_AUTOMATIQUES}</p>
-      {ctx.role === "super_admin" && !complet ? (
+      {entree.dirigeantManque === true ? (
+        <p className="text-[length:var(--text-admin-xs)]">
+          Le dirigeant n&apos;a pas encore répondu.
+        </p>
+      ) : null}
+      {ctx.role === "super_admin" && !complet && !expire ? (
         pret === true ? (
           <p className="mt-[var(--space-admin-2)]">
             <MailCheck aria-hidden="true" className="inline h-4 w-4" />{" "}
-            <Link className="admin-link" href={`${ctx.qBase}/emails`}>
+            <Link
+              className="admin-link inline-flex min-h-[44px] items-center"
+              href={`${ctx.qBase}/emails`}
+            >
               Relire le message prêt
             </Link>
           </p>

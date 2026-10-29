@@ -61,6 +61,9 @@ export const EMAILS_A_VALIDER_PAR_DEFAUT: readonly string[] = [
   "facture-envoi",
   // Lot A8c — préparé seul à l'encaissement : il part au client, donc relu.
   "facture-pieces-remboursement-opco",
+  // Lot B10 — brouillon au dirigeant, toujours relu par Will. L'approbation passe par
+  // `bypassValidation` (email-outbox.ts) : elle ne re-gare pas.
+  "questionnaire-relance-equipe",
 ] as const;
 
 /**

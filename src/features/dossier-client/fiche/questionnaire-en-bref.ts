@@ -4,7 +4,12 @@
  * viennent de la liste déclarée par le dirigeant lui-même (comme le suivi par personne).
  */
 
-import type { LignePersonne, SuiviParPersonne } from "@/features/questionnaire-preaudit/personnes";
+import {
+  collaborateurAttendu,
+  referentActif,
+  type LignePersonne,
+  type SuiviParPersonne,
+} from "@/features/questionnaire-preaudit/personnes";
 
 export interface EntreeEnBref {
   readonly attendus: number;
@@ -13,6 +18,8 @@ export interface EntreeEnBref {
   readonly manquants: ReadonlyArray<string>;
   /** Personnes qui manquent mais dont le nom n'est pas montrable à ce lecteur. */
   readonly manquantsSansNom: number;
+  /** Le dirigeant n'a pas répondu (à part : il ne figure jamais dans `manquants`). */
+  readonly dirigeantManque?: boolean;
 }
 
 /** « Paul », « Paul et Léa », « Paul, Léa et Emma ». */
@@ -23,14 +30,15 @@ export function enumerer(noms: ReadonlyArray<string>): string {
 
 /** « 2 réponses sur 5. Il manque Paul, Léa et Emma. » ; complet : « Toutes les réponses sont arrivées. » */
 export function phraseEnBref(e: EntreeEnBref): string {
-  const nbManquants = e.manquants.length + e.manquantsSansNom;
+  const dirigeant = e.dirigeantManque === true ? 1 : 0;
+  const nbManquants = e.manquants.length + e.manquantsSansNom + dirigeant;
   if (e.attendus > 0 && e.recus >= e.attendus && nbManquants === 0) {
     return "Toutes les réponses sont arrivées.";
   }
   if (e.attendus === 0) return "Aucune réponse n'est encore attendue.";
   const debut = `${e.recus} réponse${e.recus > 1 ? "s" : ""} sur ${e.attendus}.`;
   if (nbManquants === 0) return debut;
-  const morceaux = [...e.manquants];
+  const morceaux = [...(dirigeant === 1 ? ["le dirigeant"] : []), ...e.manquants];
   if (e.manquantsSansNom > 0) {
     morceaux.push(
       `${e.manquantsSansNom} autre${e.manquantsSansNom > 1 ? "s" : ""} personne${e.manquantsSansNom > 1 ? "s" : ""}`,
@@ -59,17 +67,24 @@ export function prenomDe(nom: string | null): string | null {
   return mot === "" ? null : mot;
 }
 
+/** Vrai quand toutes les réponses attendues sont là : même test que le suivi (`recus >= attendus`). */
+export const estComplet = (e: EntreeEnBref): boolean => e.attendus > 0 && e.recus >= e.attendus;
+
 /**
- * Compte à partir du suivi par personne. Les noms tirés d'un brouillon ne sont jamais utilisés
- * (réservés), ceux de la liste déclarée ou d'une réponse le sont.
+ * Compte à partir du suivi par personne, avec LA règle de `personnes.ts` : les personnes attendues
+ * sont le dirigeant, les collaborateurs attendus (`collaborateurAttendu`), et un référent seulement
+ * s'il a commencé (`referentActif`). Une ligne `ecartee` (effacement demandé) n'est JAMAIS nommée.
+ * Les noms tirés d'un brouillon ne sont jamais utilisés ; ceux de la liste déclarée ou d'une
+ * réponse le sont.
  */
 export function entreeDepuisSuivi(s: SuiviParPersonne): EntreeEnBref {
-  const attendues: ReadonlyArray<LignePersonne> = [
-    s.dirigeant,
-    ...s.collaborateurs,
-    ...s.referents,
-  ].filter((l) => l.etat !== "pas_de_lien_prevu" && l.etat !== "lien_sans_code");
-  const manque = attendues.filter((l) => l.etat !== "recu");
+  const manque: LignePersonne[] = s.collaborateurs.filter(
+    (l) => l.etat !== "ecartee" && l.etat !== "recu" && collaborateurAttendu(l),
+  );
+  if (referentActif(s.referents) && !s.referents.some((l) => l.etat === "recu")) {
+    const r = s.referents.find((l) => l.etat === "en_cours" || l.etat === "ouvert");
+    if (r !== undefined) manque.push(r);
+  }
   const manquants: string[] = [];
   let sansNom = 0;
   for (const l of manque) {
@@ -82,5 +97,6 @@ export function entreeDepuisSuivi(s: SuiviParPersonne): EntreeEnBref {
     recus: s.total.recus,
     manquants,
     manquantsSansNom: sansNom,
+    dirigeantManque: s.dirigeant.etat !== "recu",
   };
 }

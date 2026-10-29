@@ -7,6 +7,7 @@ import {
   phraseEnBref,
   prenomDe,
 } from "../questionnaire-en-bref";
+import { suiviReel } from "./suivi-reel.fixture";
 
 const e = (recus: number, attendus: number, manquants: string[] = [], sansNom = 0) => ({
   attendus,
@@ -85,7 +86,61 @@ describe("entreeDepuisSuivi", () => {
       attendus: 5,
       recus: 2,
       manquants: ["Paul", "Léa"],
-      manquantsSansNom: 1,
+      manquantsSansNom: 0,
+      dirigeantManque: false,
     });
+  });
+});
+
+describe("entreeDepuisSuivi sur un vrai suivi (personnes.ts)", () => {
+  it("tout reçu + ligne référent vide : « Toutes les réponses sont arrivées »", () => {
+    const s = suiviReel({ recus: [0, 1, 2] });
+    // La ligne référent `r0` existe toujours (nom null, pas_de_nouvelles) mais n'est pas attendue.
+    expect(s.referents).toHaveLength(1);
+    expect(s.referents[0]).toMatchObject({ nom: null, etat: "pas_de_nouvelles", role: "referent" });
+    const e = entreeDepuisSuivi(s);
+    expect(e.manquants).toEqual([]);
+    expect(e.manquantsSansNom).toBe(0);
+    expect(e.dirigeantManque).toBe(false);
+    expect(e.recus).toBe(e.attendus);
+    expect(phraseEnBref(e)).toBe("Toutes les réponses sont arrivées.");
+  });
+
+  it("une ligne écartée (effacement) n'est jamais nommée comme manquante", () => {
+    const s = suiviReel({ recus: [0, 2], ecartes: [1] });
+    expect(s.collaborateurs[1]?.etat).toBe("ecartee");
+    const e = entreeDepuisSuivi(s);
+    expect(e.manquants).toEqual([]);
+    expect(e.manquantsSansNom).toBe(0);
+    expect(JSON.stringify(e)).not.toContain("Bruno");
+    expect(phraseEnBref(e)).toBe("Toutes les réponses sont arrivées.");
+  });
+
+  it("une personne hors liste seulement « ouverte » n'est ni comptée ni nommée", () => {
+    const s = suiviReel({
+      recus: [0, 1, 2],
+      ouvertures: [
+        {
+          mode: "emp",
+          membre: "inconnu000001",
+          premiereOuverture: new Date(),
+          derniereOuverture: new Date(),
+          nombre: 1,
+          derniereEtapeAtteinte: 1,
+        },
+      ],
+    });
+    const e = entreeDepuisSuivi(s);
+    expect(e.manquantsSansNom).toBe(0);
+    expect(e.recus).toBe(e.attendus);
+    expect(phraseEnBref(e)).toBe("Toutes les réponses sont arrivées.");
+  });
+
+  it("un manquant réel est nommé, le dirigeant absent est dit à part", () => {
+    const e = entreeDepuisSuivi(suiviReel({ recus: [0, 2] }));
+    expect(e.manquants).toEqual(["Bruno"]);
+    const sans = entreeDepuisSuivi(suiviReel({ recus: [], sansDirigeant: true }));
+    expect(sans.dirigeantManque).toBe(true);
+    expect(sans.manquants).toEqual([]);
   });
 });

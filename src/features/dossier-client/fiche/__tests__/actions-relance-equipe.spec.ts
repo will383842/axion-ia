@@ -33,6 +33,7 @@ vi.mock("@/features/questionnaire-preaudit/suivi-par-personne", () => ({
 vi.mock("@/server/email/outbox-service", () => ({ garerPourValidation: m.garer }));
 
 import { demanderAuDirigeantDeRelancerSonEquipeAction as agir } from "../actions-relance-equipe";
+import { suiviReel } from "./suivi-reel.fixture";
 
 const CLIENT = "11111111-1111-4111-8111-111111111111";
 const QUEST = "22222222-2222-4222-8222-222222222222";
@@ -91,7 +92,8 @@ describe("demander au dirigeant de relancer son équipe", () => {
     const arg = m.garer.mock.calls[0]![0];
     expect(arg.recipient).toBe("anne@client.fr");
     expect(arg.template).toBe("questionnaire-relance-equipe");
-    expect(arg.entityType).toBe("questionnaire_preaudit");
+    expect(arg.entityType).toBe("QuestionnaireAvantAudit");
+    expect(arg.jobId).toMatch(/^relance-equipe:2222.*:\d{4}-\d{2}-\d{2}$/);
     expect(arg.entityId).toBe(QUEST);
     expect(arg.payload).toEqual({
       prenom: "Anne",
@@ -134,6 +136,54 @@ describe("demander au dirigeant de relancer son équipe", () => {
       }),
     });
     expect(await lancer()).toContain("rien à relancer");
+    expect(m.garer).not.toHaveBeenCalled();
+  });
+
+  it("vrai suivi, tout reçu + ligne référent vide : rien à relancer, rien garé", async () => {
+    m.suivi.mockResolvedValue({ get: () => ({ suivi: suiviReel({ recus: [0, 1, 2] }) }) });
+    expect(await lancer()).toContain("rien à relancer");
+    expect(m.garer).not.toHaveBeenCalled();
+  });
+
+  it("vrai suivi : une ligne écartée n'est jamais nommée dans le brouillon", async () => {
+    m.suivi.mockResolvedValue({ get: () => ({ suivi: suiviReel({ recus: [0], ecartes: [1] }) }) });
+    await lancer();
+    const arg = m.garer.mock.calls[0]![0];
+    expect(arg.payload.manquants).toEqual(["Chloé"]);
+    expect(JSON.stringify(arg)).not.toContain("Bruno");
+  });
+
+  it("le dirigeant n'est jamais dans la liste du brouillon", async () => {
+    m.suivi.mockResolvedValue({
+      get: () => ({
+        suivi: {
+          dirigeant: {
+            nom: "Anne Durand",
+            etat: "pas_de_nouvelles",
+            role: "dirigeant",
+            sourceNom: "equipe",
+          },
+          collaborateurs: [ligne("Bruno Durand", "pas_de_nouvelles"), ligne("Chloé Petit", "recu")],
+          referents: [],
+          total: { attendus: 3, recus: 1 },
+        },
+      }),
+    });
+    await lancer();
+    const arg = m.garer.mock.calls[0]![0];
+    expect(arg.payload.manquants).toEqual(["Bruno"]);
+    expect(JSON.stringify(arg.payload.manquants)).not.toContain("Anne");
+  });
+
+  it("lien expiré : erreur claire, rien préparé", async () => {
+    m.qFind.mockResolvedValue({
+      id: QUEST,
+      destinataire: "enc:anne@client.fr",
+      envoyeLe: new Date(),
+      closLe: null,
+      expireLe: new Date("2020-01-01T10:00:00Z"),
+    });
+    expect(await lancer()).toContain("Lien expiré : rien n'a été préparé");
     expect(m.garer).not.toHaveBeenCalled();
   });
 

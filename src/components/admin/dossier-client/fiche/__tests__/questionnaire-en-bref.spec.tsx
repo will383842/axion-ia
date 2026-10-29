@@ -10,6 +10,7 @@ vi.mock("@/features/dossier-client/fiche/actions-relance-equipe", () => ({
   demanderAuDirigeantDeRelancerSonEquipeAction: async () => {},
 }));
 
+import { suiviReel } from "@/features/dossier-client/fiche/__tests__/suivi-reel.fixture";
 import type { ContexteFiche } from "../contexte";
 import { questionnaireEnBref } from "../QuestionnaireEnBref";
 
@@ -71,6 +72,7 @@ describe("QuestionnaireEnBref", () => {
     m.outbox.mockResolvedValue({ id: "o1" });
     const html = await rendre(ctx("super_admin"));
     expect(html).toContain("Relire le message prêt");
+    expect(html).toContain("min-h-[44px]");
     expect(html).not.toContain("de relancer son équipe");
   });
 
@@ -78,6 +80,37 @@ describe("QuestionnaireEnBref", () => {
     m.lire.mockResolvedValue([questionnaire([ligne("Paul", "recu")], 2)]);
     const html = await rendre(ctx("super_admin"));
     expect(html).toContain("Toutes les réponses sont arrivées.");
+    expect(html).not.toContain("<button");
+  });
+
+  it("vrai suivi tout reçu avec ligne référent vide : fin, aucun bouton", async () => {
+    m.lire.mockResolvedValue([
+      { ...questionnaire([], 0), parPersonne: { suivi: suiviReel({ recus: [0, 1, 2] }) } },
+    ]);
+    const html = await rendre(ctx("super_admin"));
+    expect(html).toContain("Toutes les réponses sont arrivées.");
+    expect(html).not.toContain("<button");
+    expect(html).not.toContain("Il manque");
+  });
+
+  it("une personne écartée n'est pas nommée", async () => {
+    m.lire.mockResolvedValue([
+      { ...questionnaire([], 0), parPersonne: { suivi: suiviReel({ recus: [0], ecartes: [1] }) } },
+    ]);
+    const html = await rendre(ctx("super_admin"));
+    expect(html).toContain("Il manque Chloé.");
+    expect(html).not.toContain("Bruno");
+  });
+
+  it("lien expiré non clos : « Lien expiré le … », aucun bouton", async () => {
+    m.lire.mockResolvedValue([
+      {
+        ...questionnaire([ligne("Paul", "pas_de_nouvelles")], 1),
+        expireLe: new Date("2020-01-01T10:00:00Z"),
+      },
+    ]);
+    const html = await rendre(ctx("super_admin"));
+    expect(html).toContain("Lien expiré le 1 janvier.");
     expect(html).not.toContain("<button");
   });
 
