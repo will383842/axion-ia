@@ -1033,11 +1033,14 @@ async function rencontresOuSeuleVoixClient(
   });
 }
 
+/** Intitulé d'une tâche de fiche dont la personne a été effacée. */
+const TACHE_NEUTRALISEE = "Tâche d'une personne effacée";
+
 /**
  * Ce qui suit une personne effacée sans être journalisé ligne à ligne : les
  * questions qu'on lui a adressées (vidées), le corps pré-rempli de ses e-mails
  * de suivi (vidé avant que le lien ne parte), ses e-mails de suivi et ses rôles
- * dans les projets (supprimés). Rend le nombre de questions vidées.
+ * dans les projets (supprimés), ses tâches de fiche (neutralisées). Rend le nombre de questions vidées.
  */
 async function effacerCeQuiSuitLesPersonnes(
   tx: Prisma.TransactionClient,
@@ -1059,6 +1062,12 @@ async function effacerCeQuiSuitLesPersonnes(
   await tx.preRemplissage.updateMany({
     where: { cible: "email_suivi", cibleId: { in: emailsSuivi.map((e) => e.id) } },
     data: PRE_REMPLISSAGE_VIDE,
+  });
+  // Ses tâches de fiche (2026-10-29, lot A1) : neutralisées, jamais supprimées — la tâche (date,
+  // état, responsable interne) reste, sans la personne ni ce que l'intitulé pouvait dire d'elle.
+  await tx.clientTache.updateMany({
+    where: { contactId: { in: ids } },
+    data: { contactId: null, intitule: TACHE_NEUTRALISEE },
   });
   await tx.emailSuivi.deleteMany({ where: { contactId: { in: ids } } });
   await tx.projetContact.deleteMany({ where: { contactId: { in: ids } } });
@@ -1802,34 +1811,27 @@ export const EXCEPTIONS_EFFACEMENT_DOSSIER: ReadonlyArray<{
       "par la cascade du dossier ET par l'empreinte de l'adresse.",
   },
   {
-    // 2026-10-29 — fiche client (tâches, notes, profil, étiquettes) : tables créées SANS écrivain
-    // (migration seule). Elles sont vides tant que le lot qui les écrit n'est pas livré ; ce lot
-    // DOIT remplacer ces quatre entrées par l'effacement réel (et l'export). La garde
-    // `les-tables-du-dossier-client-suivent-la-personne` (test « une exception "sans écrivain" n'a
-    // pas d'écrivain ») rougit dès que du code sous `src/` écrit dans ces tables (create,
-    // createMany, upsert, update, updateMany ou INSERT INTO) : le lot qui écrit retire ces entrées.
-    modele: "ClientTache",
-    motif:
-      "tâches de suivi d'une fiche : table encore sans écrivain (aucune ligne ne peut exister) ; " +
-      "effacement à brancher dans le lot qui l'écrit.",
-  },
-  {
+    // 2026-10-29 (lot A1) — `ClientTache` est NEUTRALISÉE (pas exception) : voir
+    // `effacerCeQuiSuitLesPersonnes`. Les trois autres tables sont des données de la FICHE
+    // d'entreprise, sans colonne qui les rattache à une personne.
     modele: "ClientNote",
     motif:
-      "notes d'une fiche (contenu chiffré) : table encore sans écrivain (aucune ligne ne peut " +
-      "exister) ; effacement à brancher dans le lot qui l'écrit.",
+      "notes internes de la fiche d'entreprise (contenu chiffré) : aucune colonne ne les rattache " +
+      "à une personne, donc l'effacement ciblé par adresse ne peut pas savoir lesquelles la " +
+      "citent ; jamais supprimées automatiquement (ordre permanent), Will les corrige à la main " +
+      "sur demande, comme un titre de projet (angle mort déclaré ci-dessus).",
   },
   {
     modele: "ClientProfil",
     motif:
-      "responsable et archivage d'une fiche : table encore sans écrivain (aucune ligne ne peut " +
-      "exister) ; effacement à brancher dans le lot qui l'écrit.",
+      "responsable interne et archivage de la fiche d'entreprise : donnée de la fiche, aucune " +
+      "donnée de la personne.",
   },
   {
     modele: "ClientEtiquette",
     motif:
-      "étiquettes d'une fiche : table encore sans écrivain (aucune ligne ne peut exister) ; " +
-      "effacement à brancher dans le lot qui l'écrit.",
+      "étiquettes de classement de la fiche d'entreprise : donnée de la fiche, aucune donnée de " +
+      "la personne.",
   },
   {
     // Tour France IA (2026-10-27) : VIDÉE (jamais supprimée) par `anonymiserDemandesTour`.

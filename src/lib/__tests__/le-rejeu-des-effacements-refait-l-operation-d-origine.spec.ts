@@ -90,6 +90,7 @@ vi.mock("@/lib/prisma", () => {
     "questionnaireQuestion",
     "emailSuivi",
     "projetContact",
+    "clientTache",
     "preRemplissage",
     "enregistrementConsentement",
   ];

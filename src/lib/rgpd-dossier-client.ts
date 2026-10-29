@@ -111,27 +111,27 @@ export const EXCLUSIONS_EXPORT_DOSSIER: ReadonlyArray<{
       "manuelle sous un mois, tiers occultés (contact@axion-ia.com).",
   },
   {
-    // 2026-10-29 — fiche client : tables créées avant le code qui les écrit (migration seule),
-    // donc vides. Le lot qui les écrit DOIT remplacer ces entrées par la lecture réelle (notes
-    // déchiffrées). Les motifs sont rendus à la personne dans son export : texte lisible.
-    modele: "ClientTache",
-    motif:
-      "tâches de suivi d'une fiche : fonction pas encore en service, aucune donnée enregistrée à ce jour.",
-  },
-  {
+    // 2026-10-29 (lot A1) — les notes d'une fiche n'ont AUCUNE colonne qui les rattache à une
+    // personne (elles appartiennent à la fiche d'entreprise) et leur texte, chiffré, peut citer
+    // d'autres personnes. Règle EXISTANTE la plus proche : celle de `DocumentProjet` et de
+    // `CompteRendu` ci-dessus (écrits de la fiche, tiers possibles) — exclusion déclarée, réponse
+    // manuelle sous un mois. Aucune note n'est lue ici, donc aucun déchiffrement ni clair en journal.
     modele: "ClientNote",
     motif:
-      "notes d'une fiche : fonction pas encore en service, aucune donnée enregistrée à ce jour.",
+      "les notes internes de la fiche d'entreprise concernent l'entreprise et peuvent citer " +
+      "d'autres personnes : réponse manuelle sous un mois, tiers occultés (contact@axion-ia.com).",
   },
   {
     modele: "ClientProfil",
     motif:
-      "profil de suivi d'une fiche : fonction pas encore en service, aucune donnée enregistrée à ce jour.",
+      "responsable interne et archivage de la fiche d'entreprise : donnée de la fiche, aucune " +
+      "donnée vous concernant.",
   },
   {
     modele: "ClientEtiquette",
     motif:
-      "étiquettes d'une fiche : fonction pas encore en service, aucune donnée enregistrée à ce jour.",
+      "étiquettes de classement de la fiche d'entreprise : donnée de la fiche, aucune donnée " +
+      "vous concernant.",
   },
   {
     modele: "DocumentProjetContenu",
@@ -223,6 +223,12 @@ export interface ExportDossierClient {
     readonly questions: ReadonlyArray<{ readonly texte: string; readonly reponse: string | null }>;
   }>;
   readonly emailsSuiviPrepares: ReadonlyArray<{ readonly preparesLe: Date }>;
+  /** Tâches de suivi de la fiche liées à cette personne (`client_taches.contact_id`). */
+  readonly tachesVousConcernant: ReadonlyArray<{
+    readonly intitule: string;
+    readonly echeanceLe: Date;
+    readonly faiteLe: Date | null;
+  }>;
   /** Questionnaires de pré-audit envoyés à cette adresse : l'adresse d'envoi (droit d'accès). */
   readonly questionnairesPreauditEnvoyes: ReadonlyArray<{
     readonly envoyeLe: Date | null;
@@ -249,6 +255,7 @@ const VIDE: ExportDossierClient = {
   preuvesAccord: [],
   questionnairesRecus: [],
   emailsSuiviPrepares: [],
+  tachesVousConcernant: [],
   questionnairesPreauditEnvoyes: [],
   questionnairesPreaudit: [],
   avertissements: [],
@@ -433,6 +440,17 @@ export async function exporterDossierClientPour(email: string): Promise<ExportDo
             select: { creeLe: true },
           });
 
+    // Les tâches de la fiche liées à SES fiches personne seulement (jamais celles d'une autre
+    // personne ni d'une autre fiche) : `responsableLabel` est un libellé interne, pas rendu.
+    const taches =
+      contactIds.length === 0
+        ? []
+        : await prisma.clientTache.findMany({
+            where: { contactId: { in: contactIds } },
+            select: { intitule: true, echeanceLe: true, faiteLe: true },
+            orderBy: { echeanceLe: "asc" },
+          });
+
     const siens = new Set(contactIds);
     // « Elle l'a dit » exige un locuteur VALIDÉ (plan §3.15 : « ses citations
     // (locuteur validé) ») : `contactLocuteurId` n'est posé qu'après la
@@ -517,6 +535,11 @@ export async function exporterDossierClientPour(email: string): Promise<ExportDo
           })),
       })),
       emailsSuiviPrepares: emails.map((e) => ({ preparesLe: e.creeLe })),
+      tachesVousConcernant: taches.map((t) => ({
+        intitule: t.intitule,
+        echeanceLe: t.echeanceLe,
+        faiteLe: t.faiteLe,
+      })),
       questionnairesPreauditEnvoyes: preauditEnvoyes.map((p) => ({
         envoyeLe: p.envoyeLe,
         adresseEnvoi:

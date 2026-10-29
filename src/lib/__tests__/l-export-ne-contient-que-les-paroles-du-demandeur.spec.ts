@@ -66,6 +66,7 @@ vi.mock("@/lib/prisma", () => ({
       ],
     },
     projetContact: { findMany: async () => [] },
+    clientTache: { findMany: async () => [] },
     projet: { findMany: async () => [] },
     transcriptionSegment: { findMany: async () => donnees.segments },
     fait: { findMany: async () => donnees.faits },
