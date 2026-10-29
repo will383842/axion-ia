@@ -120,6 +120,15 @@ describe("vue : les demandes", () => {
     expect(filtre).toContain("Toutes les villes");
   });
 
+  it("chaque ville a un lien « Voir la ville » vers sa fiche, et l'en-tête un bouton « Vue par ville »", () => {
+    const html = rendre();
+    expect(html).toContain("/fr/adm/tunnels/tour/villes/fiche?ville=lyon");
+    expect(html).toContain("/fr/adm/tunnels/tour/villes/fiche?ville=annecy");
+    expect(html.match(/Voir la ville/g)).toHaveLength(2);
+    expect(html).toContain("Vue par ville");
+    expect(html).toContain('href="/fr/adm/tunnels/tour/villes"');
+  });
+
   it("propose « J'ai relancé », « Écarter » et « Créer la fiche prospect »", () => {
     const html = rendre();
     expect(html).toContain("J&#x27;ai relancé");

@@ -65,20 +65,25 @@ export function VueTour({
         title="Tunnel Tour France IA"
         description="De la landing /tour-france-ia à la visio de 30 minutes tenue."
         actions={
-          <nav aria-label="Période" className="flex gap-[var(--space-admin-2)]">
-            {FENETRES.map((f) => (
-              <Link
-                key={f.jours}
-                href={`${base}?fenetre=${f.jours}`}
-                className={
-                  f.jours === jours ? "admin-button admin-button-sm" : "admin-button-ghost"
-                }
-                aria-current={f.jours === jours ? "page" : undefined}
-              >
-                {f.libelle}
-              </Link>
-            ))}
-          </nav>
+          <div className="flex flex-wrap gap-[var(--space-admin-2)]">
+            <Link href={`${base}/villes`} className="admin-button-ghost">
+              Vue par ville
+            </Link>
+            <nav aria-label="Période" className="flex gap-[var(--space-admin-2)]">
+              {FENETRES.map((f) => (
+                <Link
+                  key={f.jours}
+                  href={`${base}?fenetre=${f.jours}`}
+                  className={
+                    f.jours === jours ? "admin-button admin-button-sm" : "admin-button-ghost"
+                  }
+                  aria-current={f.jours === jours ? "page" : undefined}
+                >
+                  {f.libelle}
+                </Link>
+              ))}
+            </nav>
+          </div>
         }
       />
 

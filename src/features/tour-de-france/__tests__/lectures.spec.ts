@@ -19,7 +19,12 @@ vi.mock("@/lib/pii-crypto", () => ({
 }));
 
 import { hashEmailForLookup } from "@/lib/security/email-hash";
-import { compteurParVille, lireCompteursPublics, lireDemandesConsole } from "../lectures";
+import {
+  compteurParVille,
+  lireCompteursPublics,
+  lireDemandesConsole,
+  lireFicheVille,
+} from "../lectures";
 
 const ligne = (id: string, email: string, extra: Record<string, unknown> = {}) => ({
   id,
@@ -199,5 +204,68 @@ describe("lectures : le compteur de la console", () => {
     const r = await compteurParVille();
     expect(r[0]).toEqual({ villeCle: "lyon", ville: "Lyon", demandes: 5, comptees: 3 });
     expect(r[1]).toEqual({ villeCle: "?annecy", ville: "annecy", demandes: 1, comptees: 1 });
+  });
+});
+
+describe("lectures : la fiche d'une ville", () => {
+  it("base en panne : une fiche vide, sans exception", async () => {
+    m.findMany.mockRejectedValue(new Error("table absente"));
+    m.rdv.mockRejectedValue(new Error("calendly_events"));
+    const f = await lireFicheVille("lyon");
+    expect(f.personnes).toEqual([]);
+    expect(f.visiosSansDemande).toEqual([]);
+    expect(f.comptees).toBe(0);
+    expect(f.ouverte).toBe(false);
+    expect(f.visiosIndisponibles).toBe(true);
+  });
+
+  it("lit les demandes de la ville et les visios du Tour (tous statuts), sans écriture", async () => {
+    m.findMany.mockResolvedValue([ligne("a", "alice@exemple.fr")]);
+    m.rdv.mockResolvedValue([
+      {
+        id: "v1",
+        inviteeEmail: "Alice@Exemple.fr",
+        startTime: new Date("2099-01-01T09:00:00Z"),
+        status: "active",
+        rawPayload: {
+          invitee: {
+            questions_and_answers: [
+              { question: "Quel est votre secteur d'activité ?", answer: "Commerce" },
+            ],
+          },
+        },
+      },
+    ]);
+    const f = await lireFicheVille("lyon");
+    expect(f.visiosIndisponibles).toBe(false);
+    expect(f.personnes[0]?.demande.statut).toBe("rdv_pris");
+    expect(f.personnes[0]?.visio?.profil?.secteur).toBe("Commerce");
+    expect(f.visiosPrises).toBe(1);
+    const demandes = m.findMany.mock.calls[0]?.[0] as { where: Record<string, unknown> };
+    expect(demandes.where).toEqual({ villeCle: "lyon" });
+    const visios = m.rdv.mock.calls[0]?.[0] as {
+      where: Record<string, unknown>;
+      take: number;
+      orderBy: unknown;
+      select: Record<string, unknown>;
+    };
+    expect(visios.where).toEqual({ typeRendezVous: "tour_de_france_ia" });
+    expect(visios.take).toBe(300);
+    expect(visios.orderBy).toEqual({ startTime: "desc" });
+    expect(visios.select).toEqual({
+      id: true,
+      inviteeEmail: true,
+      startTime: true,
+      status: true,
+      rawPayload: true,
+    });
+  });
+
+  it("une panne des visios seules laisse les demandes et le dit", async () => {
+    m.findMany.mockResolvedValue([ligne("a", "alice@exemple.fr")]);
+    m.rdv.mockRejectedValue(new Error("calendly_events"));
+    const f = await lireFicheVille("lyon");
+    expect(f.personnes).toHaveLength(1);
+    expect(f.visiosIndisponibles).toBe(true);
   });
 });

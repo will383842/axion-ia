@@ -11,7 +11,8 @@
  *     statut « rendez-vous pris » CALCULÉ : on cherche les rendez-vous du Tour DES ADRESSES des
  *     demandes affichées (`inviteeEmail IN (…)`, colonne insensible à la casse) et on compare les
  *     empreintes (aucune colonne sur `calendly_events`, aucun plafond arbitraire) ;
- *   · `compteurParVille` : le compteur de la console (toutes les demandes, et celles qui comptent).
+ *   · `compteurParVille` : le compteur de la console (toutes les demandes, et celles qui comptent) ;
+ *   · `lireFicheVille` : la fiche d'une ville, mini-demandes et visios rapprochées (lecture seule).
  *
  * ⛔ La console qui appelle `lireDemandesConsole` doit avoir passé `gardeLectureAppels` : ce module
  * rend des coordonnées en clair et ne vérifie pas qui regarde.
@@ -21,6 +22,7 @@ import { prisma } from "@/lib/prisma";
 import { hashEmailForLookup } from "@/lib/security/email-hash";
 import { dechiffrerChamp, lireChamp } from "./chiffrement";
 import type { GroupeVille } from "./comptage";
+import { assemblerFicheVille, type DemandeFiche, type FicheVille } from "./fiche-ville";
 import { statutAffiche } from "./rapprochement";
 import {
   lireFichesProches,
@@ -266,4 +268,80 @@ export async function compteurParVille(): Promise<LigneVilleConsole[]> {
   } catch {
     return [];
   }
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// La fiche d'une ville
+// ─────────────────────────────────────────────────────────────────────────────
+
+/** Au plus ce nombre de visios du Tour lues pour une fiche de ville (la fiche dit si elle est tronquée). */
+export const PLAFOND_VISIOS_FICHE = 300;
+
+/**
+ * La fiche d'une ville : ses mini-demandes, et pour chacune la visio rapprochée par l'empreinte de
+ * l'e-mail avec les réponses de l'étape 2 (lues dans `raw_payload`, jamais copiées). Lecture
+ * seule. Chaque lecture a son `try` : une panne rend une fiche vide ou sans visios
+ * (`visiosIndisponibles`), jamais une exception.
+ *
+ * ⛔ La page qui l'appelle doit avoir passé `gardeLectureAppels` : ce module rend des coordonnées en
+ * clair et ne vérifie pas qui regarde.
+ */
+export async function lireFicheVille(villeCle: string): Promise<FicheVille> {
+  let lignes: Awaited<ReturnType<typeof lireLignes>> = [];
+  try {
+    lignes = await lireLignes(villeCle, null);
+  } catch {
+    lignes = [];
+  }
+  let visios: Array<{
+    id: string;
+    inviteeEmail: string;
+    startTime: Date | null;
+    status: string;
+    rawPayload: unknown;
+  }> = [];
+  let visiosIndisponibles = false;
+  try {
+    visios = await prisma.calendlyEvent.findMany({
+      where: { typeRendezVous: "tour_de_france_ia" },
+      orderBy: { startTime: "desc" },
+      take: PLAFOND_VISIOS_FICHE,
+      select: { id: true, inviteeEmail: true, startTime: true, status: true, rawPayload: true },
+    });
+  } catch {
+    visiosIndisponibles = true;
+    visios = [];
+  }
+
+  const empreintesPrises = new Set<string>();
+  for (const v of visios) {
+    if (v.status === "canceled") continue;
+    const h = hashEmailForLookup(v.inviteeEmail);
+    if (h !== null) empreintesPrises.add(h);
+  }
+
+  const affichees = lignes.slice(0, PLAFOND_DEMANDES_CONSOLE);
+  const demandes: DemandeFiche[] = affichees.map((l) => ({
+    id: l.id,
+    nom: lireChamp("nom", l.nom),
+    email: lireChamp("email", l.email),
+    telephone: lireChamp("telephone", l.telephone),
+    telephoneVisio: null,
+    villeCle: l.villeCle,
+    ville: l.villeNom ?? l.villeSaisie,
+    creeLe: l.creeLe,
+    statut: statutAffiche(l, empreintesPrises),
+    rattachement: versRattachement(l.rattachement),
+    clientId: l.clientId,
+    fichesProches: lireFichesProches(l.fichesProches),
+    compte: l.compte,
+    doublon: l.doublonDeId !== null,
+    depuis: l.depuis,
+    emailHash: l.emailHash,
+  }));
+
+  return assemblerFicheVille(demandes, visios, villeCle, {
+    tronquee: lignes.length > PLAFOND_DEMANDES_CONSOLE || visios.length >= PLAFOND_VISIOS_FICHE,
+    visiosIndisponibles,
+  });
 }
