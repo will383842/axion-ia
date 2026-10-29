@@ -111,6 +111,29 @@ export const EXCLUSIONS_EXPORT_DOSSIER: ReadonlyArray<{
       "manuelle sous un mois, tiers occultés (contact@axion-ia.com).",
   },
   {
+    // 2026-10-29 — fiche client : tables créées avant le code qui les écrit (migration seule),
+    // donc vides. Le lot qui les écrit DOIT remplacer ces entrées par la lecture réelle (notes
+    // déchiffrées). Les motifs sont rendus à la personne dans son export : texte lisible.
+    modele: "ClientTache",
+    motif:
+      "tâches de suivi d'une fiche : fonction pas encore en service, aucune donnée enregistrée à ce jour.",
+  },
+  {
+    modele: "ClientNote",
+    motif:
+      "notes d'une fiche : fonction pas encore en service, aucune donnée enregistrée à ce jour.",
+  },
+  {
+    modele: "ClientProfil",
+    motif:
+      "profil de suivi d'une fiche : fonction pas encore en service, aucune donnée enregistrée à ce jour.",
+  },
+  {
+    modele: "ClientEtiquette",
+    motif:
+      "étiquettes d'une fiche : fonction pas encore en service, aucune donnée enregistrée à ce jour.",
+  },
+  {
     modele: "DocumentProjetContenu",
     motif: "le contenu des fichiers des documents de projet ci-dessus (même réponse manuelle).",
   },

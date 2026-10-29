@@ -1800,6 +1800,36 @@ export const EXCEPTIONS_EFFACEMENT_DOSSIER: ReadonlyArray<{
       "par la cascade du dossier ET par l'empreinte de l'adresse.",
   },
   {
+    // 2026-10-29 — fiche client (tâches, notes, profil, étiquettes) : tables créées SANS écrivain
+    // (migration seule). Elles sont vides tant que le lot qui les écrit n'est pas livré ; ce lot
+    // DOIT remplacer ces quatre entrées par l'effacement réel (et l'export). La garde
+    // `les-tables-du-dossier-client-suivent-la-personne` (test « une exception "sans écrivain" n'a
+    // pas d'écrivain ») rougit dès que du code sous `src/` écrit dans ces tables (create,
+    // createMany, upsert, update, updateMany ou INSERT INTO) : le lot qui écrit retire ces entrées.
+    modele: "ClientTache",
+    motif:
+      "tâches de suivi d'une fiche : table encore sans écrivain (aucune ligne ne peut exister) ; " +
+      "effacement à brancher dans le lot qui l'écrit.",
+  },
+  {
+    modele: "ClientNote",
+    motif:
+      "notes d'une fiche (contenu chiffré) : table encore sans écrivain (aucune ligne ne peut " +
+      "exister) ; effacement à brancher dans le lot qui l'écrit.",
+  },
+  {
+    modele: "ClientProfil",
+    motif:
+      "responsable et archivage d'une fiche : table encore sans écrivain (aucune ligne ne peut " +
+      "exister) ; effacement à brancher dans le lot qui l'écrit.",
+  },
+  {
+    modele: "ClientEtiquette",
+    motif:
+      "étiquettes d'une fiche : table encore sans écrivain (aucune ligne ne peut exister) ; " +
+      "effacement à brancher dans le lot qui l'écrit.",
+  },
+  {
     // Tour France IA (2026-10-27) : VIDÉE (jamais supprimée) par `anonymiserDemandesTour`.
     modele: "TourDemande",
     motif:
