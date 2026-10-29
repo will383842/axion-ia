@@ -147,6 +147,7 @@ describe("telegramGroupFor", () => {
       "incidents",
       // 📝 Salon du questionnaire avant audit (2026-10-26).
       "questionnaire-audit",
+      "tour",
       "system",
     ];
     expect(ALL_NOTIFICATION_CATEGORIES.length).toBeGreaterThan(30);

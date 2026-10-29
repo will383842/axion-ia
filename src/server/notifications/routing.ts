@@ -58,6 +58,10 @@ const ROUTING: Record<NotificationCategory, RoutingEntry> = {
   // bruit. Le récapitulatif quotidien de la sentinelle (`GUIDE_RECAP`) donne
   // alors les nombres exacts — rien n'est perdu, seul le détail unitaire l'est.
   GUIDE_REQUESTED: { channels: ["telegram"], severity: "info", rateLimitPerHour: 10 },
+  // Tour France IA (2026-10-29) : une mini-demande et une ville qui atteint le seuil. Telegram
+  // seul, jamais WhatsApp. La visio prise a déjà son alerte (CLIENT_CALL_BOOKED) : pas doublée.
+  TOUR_DEMANDE_RECUE: { channels: ["telegram"], severity: "warn", rateLimitPerHour: 20 },
+  TOUR_VILLE_OUVERTE: { channels: ["telegram"], severity: "warn", rateLimitPerHour: 6 },
   GUIDE_RECAP: { channels: ["telegram"], severity: "info" },
 
   // --- Booking interne ---
@@ -186,6 +190,8 @@ export type TelegramGroup =
   | "incidents"
   // Questionnaire avant audit (2026-10-26) : réponses reçues et suivi des relances.
   | "questionnaire-audit"
+  // Tour France IA (2026-10-29) : mini-demandes et villes ouvertes.
+  | "tour"
   | "system";
 
 /**
@@ -299,6 +305,8 @@ const CATEGORY_GROUP: Record<NotificationCategory, TelegramGroup> = {
   NEWSLETTER_CONFIRMED: "system",
   NEWSLETTER_UNSUBSCRIBED: "system",
   GUIDE_REQUESTED: "system",
+  TOUR_DEMANDE_RECUE: "tour",
+  TOUR_VILLE_OUVERTE: "tour",
   GUIDE_RECAP: "system",
   ADMIN_REPLIED_TO_SUBMISSION: "system",
   DEPLOY_SUCCESS: "system",
@@ -442,6 +450,7 @@ const CHAT_ID_ENV: Record<TelegramGroup, string> = {
   "crm-sync": "TELEGRAM_CHAT_ID_CRM_SYNC",
   incidents: "TELEGRAM_CHAT_ID_INCIDENTS",
   "questionnaire-audit": "TELEGRAM_CHAT_ID_QUESTIONNAIRE_AUDIT",
+  tour: "TELEGRAM_CHAT_ID_TOUR",
   system: "TELEGRAM_CHAT_ID_SYSTEM",
 };
 
@@ -494,6 +503,8 @@ const CHAT_ID_FALLBACKS: Record<TelegramGroup, readonly string[]> = {
     "TELEGRAM_CHAT_ID_SYSTEM",
     "TELEGRAM_CHAT_ID",
   ],
+  // Tour France IA (2026-10-29) : même repli que le questionnaire (Clients, Système, général).
+  tour: ["TELEGRAM_CHAT_ID_CLIENTS", "TELEGRAM_CHAT_ID_SYSTEM", "TELEGRAM_CHAT_ID"],
   system: ["TELEGRAM_CHAT_ID"],
 };
 

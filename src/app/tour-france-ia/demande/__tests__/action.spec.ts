@@ -19,6 +19,7 @@ const mocks = vi.hoisted(() => ({
   captureException: vi.fn(),
   captureMessage: vi.fn((..._a: unknown[]) => undefined),
   attendre: vi.fn(async (..._a: unknown[]) => {}),
+  programmerAlerteDemande: vi.fn((..._a: unknown[]) => undefined),
 }));
 
 vi.mock("next/navigation", () => ({
@@ -34,6 +35,9 @@ vi.mock("@sentry/nextjs", () => ({
 vi.mock("../attente", () => ({ attendreDureeMinimale: mocks.attendre }));
 vi.mock("@/features/tour-de-france/enregistrer", () => ({
   enregistrerDemande: mocks.enregistrerDemande,
+}));
+vi.mock("@/features/tour-de-france/alertes", () => ({
+  programmerAlerteDemande: mocks.programmerAlerteDemande,
 }));
 vi.mock("@/lib/rate-limit", () => ({ checkRateLimit: mocks.checkRateLimit }));
 vi.mock("@/lib/security/honeypot-observable", () => ({
@@ -76,7 +80,13 @@ async function destination(fd: FormData): Promise<URL> {
 beforeEach(() => {
   vi.clearAllMocks();
   mocks.checkRateLimit.mockResolvedValue({ allowed: true, panne: false });
-  mocks.enregistrerDemande.mockResolvedValue({ id: ID, compte: true, rattachement: "a_verifier" });
+  mocks.enregistrerDemande.mockResolvedValue({
+    id: ID,
+    compte: true,
+    rattachement: "a_verifier",
+    villeCle: "lyon",
+    villeNom: "Lyon",
+  });
 });
 
 describe("la mini-demande du Tour", () => {
@@ -203,6 +213,46 @@ describe("la mini-demande du Tour", () => {
     const url = await destination(formulaire({ depuis: "Pas Valide!", utm_source: "a b" }));
     expect(url.searchParams.get("depuis")).toBeNull();
     expect(url.searchParams.get("utm_source")).toBeNull();
+  });
+});
+
+describe("l'alerte Telegram, programmée APRÈS la réponse", () => {
+  it("leurre, limite, champs invalides : l'alerte n'est jamais programmée", async () => {
+    await destination(formulaire({ website: "https://robot.example" }));
+    mocks.checkRateLimit.mockResolvedValue({ allowed: false, panne: false });
+    await destination(formulaire());
+    mocks.checkRateLimit.mockResolvedValue({ allowed: true, panne: false });
+    await destination(formulaire({ email: "pas-un-email" }));
+    expect(mocks.programmerAlerteDemande).not.toHaveBeenCalled();
+  });
+
+  it("base en panne : pas d'alerte (rien d'enregistré)", async () => {
+    mocks.enregistrerDemande.mockRejectedValue(new Error("base injoignable"));
+    await destination(formulaire());
+    expect(mocks.programmerAlerteDemande).not.toHaveBeenCalled();
+  });
+
+  it("succès : programmée une fois avec la demande enregistrée, redirection identique", async () => {
+    const avec = await destination(formulaire());
+    expect(mocks.programmerAlerteDemande).toHaveBeenCalledTimes(1);
+    expect(mocks.programmerAlerteDemande.mock.calls[0]?.[0]).toMatchObject({
+      id: ID,
+      villeCle: "lyon",
+    });
+    mocks.programmerAlerteDemande.mockImplementation(() => undefined);
+    const sans = await destination(formulaire());
+    expect(sans.pathname).toBe(avec.pathname);
+    expect([...sans.searchParams.keys()]).toEqual([...avec.searchParams.keys()]);
+  });
+
+  it("programmerAlerteDemande qui lève (cas forcé) : même redirection, jeton intact", async () => {
+    mocks.programmerAlerteDemande.mockImplementation(() => {
+      throw new Error("alerte cassée");
+    });
+    const url = await destination(formulaire());
+    expect(url.pathname).toBe("/fr/appel/tour-france-ia");
+    expect(lireJetonDemande(url.searchParams.get("j"))).toEqual({ id: ID });
+    expect(mocks.attendre).toHaveBeenCalledTimes(1);
   });
 });
 

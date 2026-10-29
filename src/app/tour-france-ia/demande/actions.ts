@@ -16,13 +16,14 @@
 //
 // 🔑 Anti-oracle : la redirection ne dépend NI de l'existence d'une fiche, NI de la nouveauté de
 // l'adresse, NI du comptage de la ville (doublon ou non) : deux envois identiques reçoivent la même
-// réponse. Aucun cookie, aucun e-mail, aucune notification ici.
+// réponse. Aucun cookie ni e-mail ; une alerte Telegram sans donnée personnelle part APRÈS la réponse (alertes.ts), elle ne change ni la redirection ni la durée.
 
 import * as Sentry from "@sentry/nextjs";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { z } from "zod";
 
+import { programmerAlerteDemande } from "@/features/tour-de-france/alertes";
 import { enregistrerDemande } from "@/features/tour-de-france/enregistrer";
 import { creerJetonDemande } from "@/features/tour-de-france/jeton-demande";
 import { getClientIp } from "@/lib/client-ip";
@@ -148,6 +149,7 @@ export async function envoyerDemandeTour(formData: FormData): Promise<void> {
     });
     jeton = creerJetonDemande(d.id);
     revalidatePath(META.chemin);
+    programmerAlerteDemande(d);
   } catch (e) {
     Sentry.captureException(e, { tags: { module: "tour-demande", etape: "action" } });
   }

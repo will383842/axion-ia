@@ -371,3 +371,50 @@ describe("candidature vidéo freelance : le message Telegram arrive entier", () 
     expect(envoye).toContain("Voir en console");
   });
 });
+
+describe("Tour France IA : alertes minimisées", () => {
+  const texte = (event: Parameters<typeof formatNotification>[0]) =>
+    formatNotification(event, "warn").text;
+
+  it("nouvelle demande : ville, compteur, compte oui, lien vers la fiche de la ville", () => {
+    const t = texte({
+      category: "TOUR_DEMANDE_RECUE",
+      payload: { ville: "Lyon", villeCle: "lyon", comptees: 3, seuil: 5, compte: true },
+    });
+    expect(t).toContain("Tour France IA : nouvelle demande");
+    expect(t).toContain("Lyon");
+    expect(t).toContain("3 sur 5");
+    expect(t).toContain("Compte pour la ville");
+    expect(t).toContain("oui");
+    expect(t).toContain("tunnels/tour/demandes");
+    expect(t).not.toContain("fiche");
+    expect(t).toContain(String.raw`ville\=lyon`);
+  });
+
+  it("doublon : « non (déjà comptée) » ; ville hors liste : lien vers la liste des villes", () => {
+    const t = texte({
+      category: "TOUR_DEMANDE_RECUE",
+      payload: {
+        ville: "ville hors liste (à vérifier)",
+        villeCle: null,
+        comptees: 0,
+        seuil: 5,
+        compte: false,
+      },
+    });
+    expect(t).toContain(String.raw`non \(déjà comptée\)`);
+    expect(t).toContain("ville hors liste");
+    expect(t).toContain("tunnels/tour/demandes");
+    expect(t).not.toContain("fiche");
+  });
+
+  it("ville ouverte : titre dédié et compteur", () => {
+    const t = texte({
+      category: "TOUR_VILLE_OUVERTE",
+      payload: { ville: "Lyon", villeCle: "lyon", comptees: 5, seuil: 5 },
+    });
+    expect(t).toContain("VILLE OUVERTE");
+    expect(t).not.toContain("(5 sur 5)");
+    expect(t).toContain("5 sur 5");
+  });
+});
