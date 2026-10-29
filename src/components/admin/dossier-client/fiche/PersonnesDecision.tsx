@@ -6,31 +6,36 @@
 import { prisma } from "@/lib/prisma";
 import { TEXTE_LECTURE_IMPOSSIBLE } from "@/features/dossier-client/bandeau-ou-en-est";
 import { lirePersonnesDuClient } from "@/features/dossier-client/queries";
-import { lireDatesDeDepart } from "@/features/dossier-client/fiche/depart-personne";
 import {
   nomOpcoDuClient,
   referenceOpcoDuClient,
 } from "@/server/qualiopi/financements/opco-referentiel";
 import { CarteDecision, type PersonneDeLaCarte } from "./CarteDecision";
 import type { ContexteFiche } from "./contexte";
+import { lireDepartsCache, panneDejaDite } from "./etats-depart";
 
 export async function personnesDecision(ctx: ContexteFiche): Promise<React.ReactElement | null> {
   if (!ctx.voitEchanges) return null;
   try {
-    const [personnes, departs, client] = await Promise.all([
+    const [personnes, lecture, client] = await Promise.all([
       lirePersonnesDuClient(ctx.clientId),
-      lireDatesDeDepart(prisma, ctx.clientId),
+      lireDepartsCache(ctx.clientId),
       prisma.client.findUnique({
         where: { id: ctx.clientId },
         select: { opco: true, opcoIdentifie: true },
       }),
     ]);
+    if (!lecture.ok) {
+      // La carte le dit : les boutons « Noter le départ » ne le répètent pas.
+      panneDejaDite().dite = true;
+      throw new Error("lecture des départs impossible");
+    }
     const gens: PersonneDeLaCarte[] = personnes.map((p) => ({
       id: p.id,
       nom: p.nom,
       fonction: p.fonction,
       statut: p.statut,
-      partiLe: departs.get(p.id) ?? null,
+      partiLe: lecture.etats.get(p.id)?.partiLe ?? null,
       roles: [...new Set(p.roles.map((r) => r.role))],
     }));
     const opco =

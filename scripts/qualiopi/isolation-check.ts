@@ -158,7 +158,8 @@ const CONSOMMATEURS_ASSUMES: ReadonlySet<string> = new Set([
   // applique `TAUX_TVA_STANDARD` (SSOT de la TVA), jamais un taux recopié. Rien d'autre du domaine. Nommés seuls.
   "src/components/admin/dossier-client/fiche/OngletDevisFactures.tsx",
   "src/components/admin/dossier-client/fiche/montants.ts",
-  // Fiche client, lot B5 (29/10/2026) — la carte « Qui décide » dit « Financement : <OPCO> » avec la
+  // Fiche client, lot B5 (29/10/2026) — AJOUT À LA LISTE PARTAGÉE (d'autres lots y ajoutent aussi des
+  // lignes) : nécessaire, ces deux fichiers lisent le domaine par les règles communes. La carte « Qui décide » dit « Financement : <OPCO> » avec la
   // MÊME règle que le reste de la console (`opcoDuClient`, `nomOpcoDuClient` : opco-referentiel), jamais
   // recopiée. Rien d'autre du domaine. Nommé seul.
   "src/components/admin/dossier-client/fiche/PersonnesDecision.tsx",

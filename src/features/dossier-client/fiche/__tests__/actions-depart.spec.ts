@@ -3,8 +3,8 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 
 const h = vi.hoisted(() => ({
   exiger: vi.fn(),
-  noter: vi.fn(async () => undefined),
-  annuler: vi.fn(async () => undefined),
+  noter: vi.fn(async () => ({ issue: "fait", contactFacturation: false })),
+  annuler: vi.fn(async () => "fait"),
 }));
 vi.mock("@/features/dossier-client/acces", () => ({ exigerAccesEchanges: h.exiger }));
 vi.mock("@/features/dossier-client/message-affichable", () => ({
@@ -57,6 +57,34 @@ describe("actions de départ", () => {
     expect(h.noter).toHaveBeenCalledTimes(1);
     expect(u).toContain("onglet=personnes");
     expect(u).toContain("message=");
+  });
+
+  it("contact de facturation : le message ne promet pas l'arrêt des factures", async () => {
+    h.exiger.mockResolvedValue({ userId: "u", role: "super_admin" });
+    h.noter.mockResolvedValueOnce({ issue: "fait", contactFacturation: true });
+    const u = decodeURIComponent(
+      await url(
+        noterDepartFormAction(form({ clientId: ID, contactId: ID, partiLe: "2026-10-15" })),
+      ),
+    ).replace(/\+/g, " ");
+    expect(u).toContain("les factures partent encore à son adresse");
+    expect(u).not.toContain("plus aucun envoi");
+  });
+
+  it("déjà noté / déjà active : message dédié", async () => {
+    h.exiger.mockResolvedValue({ userId: "u", role: "super_admin" });
+    h.noter.mockResolvedValueOnce({ issue: "deja", contactFacturation: false });
+    h.annuler.mockResolvedValueOnce("deja");
+    const a = decodeURIComponent(
+      await url(
+        noterDepartFormAction(form({ clientId: ID, contactId: ID, partiLe: "2026-10-15" })),
+      ),
+    ).replace(/\+/g, " ");
+    const b = decodeURIComponent(
+      await url(annulerDepartFormAction(form({ clientId: ID, contactId: ID }))),
+    ).replace(/\+/g, " ");
+    expect(a).toContain("Départ déjà noté");
+    expect(b).toContain("Personne déjà active");
   });
 
   it("annuler : rôle revérifié aussi", async () => {

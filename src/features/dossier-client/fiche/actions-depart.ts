@@ -48,20 +48,24 @@ async function agir(
 
 export async function noterDepartFormAction(fd: FormData): Promise<void> {
   await agir(fd, async ({ contactId, clientId, acteur }) => {
-    await noterDepart(prisma, {
+    const { issue, contactFacturation } = await noterDepart(prisma, {
       contactId,
       clientId,
       partiLe: champ(fd, "partiLe"),
       maintenant: new Date(),
       acteur,
     });
-    return "Départ noté. La personne reste sur la fiche ; plus aucun envoi ne lui sera fait.";
+    if (issue === "deja") return "Départ déjà noté.";
+    return contactFacturation
+      ? "Départ noté. C'est le contact de facturation : les factures partent encore à son adresse, désignez un autre contact."
+      : "Départ noté. La personne reste sur la fiche. Plus d'envoi de suivi du questionnaire ni de synchro vers le CRM pour cette personne.";
   });
 }
 
 export async function annulerDepartFormAction(fd: FormData): Promise<void> {
   await agir(fd, async ({ contactId, clientId, acteur }) => {
-    await annulerDepart(prisma, { contactId, clientId, acteur });
+    const issue = await annulerDepart(prisma, { contactId, clientId, acteur });
+    if (issue === "deja") return "Personne déjà active.";
     return "Départ annulé : la personne est de nouveau active.";
   });
 }

@@ -31,7 +31,10 @@ describe("carte « Qui décide »", () => {
 
   it("n'affiche que les rôles qui existent en base (ni influence, ni bloque)", () => {
     const html = renderToStaticMarkup(
-      <CarteDecision personnes={[P("1", "Anne Durand", ["decideur"])]} opco={null} />,
+      <CarteDecision
+        personnes={[P("1", "Anne Durand", ["decideur", "influenceur", "bloqueur"])]}
+        opco={null}
+      />,
     );
     expect(html).toContain("décide");
     expect(html).not.toMatch(/influence|bloque/i);
