@@ -445,10 +445,16 @@ export function SuiviParPersonne({
       cell: ({ l, titre }) => (
         <>
           <span className="font-medium">{titre}</span>
-          {voitAdresses && l.email !== null ? (
+          {voitAdresses &&
+          l.email !== null &&
+          !(l.sourceEmail === "equipe" && s.equipe.source === "brouillon" && !voitBrouillons) ? (
             <span className="block text-[length:var(--text-admin-xs)]">
-              {l.email}{" "}
-              <a className="admin-link" href={`mailto:${encodeURIComponent(l.email)}`}>
+              {l.email} (
+              {l.sourceEmail === "reponse" ? "saisie par la personne" : "liste du dirigeant"}){" "}
+              <a
+                className="admin-link"
+                href={`mailto:${l.email.split("@").map(encodeURIComponent).join("@")}`}
+              >
                 Écrire
               </a>
             </span>
@@ -514,7 +520,7 @@ export function SuiviParPersonne({
           getRowId={({ l }) => l.cle}
           caption="Réponses attendues, personne par personne"
         />
-        {voitAdresses ? (
+        {voitAdresses && lignes.some(({ l }) => l.email !== null) ? (
           <p className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
             Les adresses ne sont visibles que de vous. Rien n&apos;est envoyé par le système : «
             Écrire » ouvre votre messagerie.

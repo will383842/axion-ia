@@ -181,12 +181,13 @@ function emailValide(brut: unknown): string | null {
   return a.length > 0 && a.length <= 200 && EMAIL_VALIDE.test(a) ? a : null;
 }
 
-/** L'adresse saisie par la personne : `id_email_emp` (collaborateur), `id_email` (référent). */
+/** L'adresse saisie par la personne : `id_email` (comme suivi.ts), `id_email_emp` aussi lu pour un collaborateur. */
 function emailDeLaReponse(charge: Dico | null, role: RoleLigne): string | null {
   if (charge === null) return null;
   const d = valeursDeLaCharge(charge);
   if (role === "referent") return emailValide(d["id_email"]);
-  if (role === "collaborateur" || role === "non_retrouvee") return emailValide(d["id_email_emp"]);
+  if (role === "collaborateur" || role === "non_retrouvee")
+    return emailValide(d["id_email_emp"]) ?? emailValide(d["id_email"]);
   return null;
 }
 

@@ -471,6 +471,15 @@ describe("adresse e-mail professionnelle (visible de Will seul, lien « Écrire 
       sourceEmail: "reponse",
     });
   });
+  it("une réponse collaborateur qui porte id_email (champ en ligne) est lue", () => {
+    const s = suivre({
+      reponses: [dirigeant(), reponseEmp({ id_email: "Bruno.Pro@Exemple-Fictif.fr" })],
+    });
+    expect(bruno(s)).toMatchObject({
+      email: "bruno.pro@exemple-fictif.fr",
+      sourceEmail: "reponse",
+    });
+  });
   it("une adresse invalide dans la réponse laisse celle du dirigeant", () => {
     const s = suivre({
       reponses: [
