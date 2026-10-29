@@ -71,6 +71,8 @@ export interface DemandeConsole {
   readonly nom: string;
   readonly email: string;
   readonly telephone: string;
+  /** Téléphone saisi à la visio (Calendly), rattaché à la lecture ; `null` si aucun. */
+  readonly telephoneVisio: string | null;
   readonly villeCle: string;
   /** Le nom du référentiel, sinon la ville telle que tapée. */
   readonly ville: string;
@@ -94,14 +96,21 @@ export interface ListeConsole {
   readonly rapprochementIndisponible: boolean;
 }
 
+/** Les rendez-vous du Tour rattachés à la lecture : empreintes d'e-mail et téléphones saisis à la visio. */
+interface RendezVousDuTour {
+  readonly empreintes: Set<string>;
+  /** Empreinte d'e-mail vers le téléphone saisi chez Calendly (le plus récent non vide gagne). */
+  readonly telephones: Map<string, string>;
+}
+
 /**
- * Les empreintes d'e-mail des rendez-vous du Tour (hors annulés) pour CES adresses. `null` si la
- * lecture échoue. Aucune adresse : rien à chercher, pas de requête.
+ * Les rendez-vous du Tour (hors annulés) pour CES adresses : empreintes d'e-mail et téléphones
+ * (lecture seule). `null` si la lecture échoue. Aucune adresse : rien à chercher, pas de requête.
  */
 async function empreintesDesRendezVousDuTour(
   adresses: ReadonlyArray<string>,
-): Promise<Set<string> | null> {
-  if (adresses.length === 0) return new Set<string>();
+): Promise<RendezVousDuTour | null> {
+  if (adresses.length === 0) return { empreintes: new Set<string>(), telephones: new Map() };
   try {
     const rendezVous = await prisma.calendlyEvent.findMany({
       where: {
@@ -109,14 +118,19 @@ async function empreintesDesRendezVousDuTour(
         status: { not: "canceled" },
         inviteeEmail: { in: [...adresses] },
       },
-      select: { inviteeEmail: true },
+      select: { inviteeEmail: true, inviteePhone: true },
+      orderBy: { startTime: "desc" },
     });
     const empreintes = new Set<string>();
+    const telephones = new Map<string, string>();
     for (const r of rendezVous) {
       const h = hashEmailForLookup(r.inviteeEmail);
-      if (h !== null) empreintes.add(h);
+      if (h === null) continue;
+      empreintes.add(h);
+      const tel = r.inviteePhone?.trim();
+      if (tel && !telephones.has(h)) telephones.set(h, tel);
     }
-    return empreintes;
+    return { empreintes, telephones };
   } catch {
     return null;
   }
@@ -186,13 +200,19 @@ export async function lireDemandesConsole(filtre: FiltreConsole = {}): Promise<L
   }
   const tronquee = lignes.length > PLAFOND_DEMANDES_CONSOLE;
   const affichees = lignes.slice(0, PLAFOND_DEMANDES_CONSOLE);
-  const empreintes = await empreintesDesRendezVousDuTour(adressesLisibles(affichees));
+  const rendezVous = await empreintesDesRendezVousDuTour(adressesLisibles(affichees));
+  const empreintes = rendezVous?.empreintes ?? null;
 
   const demandes: DemandeConsole[] = affichees.map((l) => ({
     id: l.id,
     nom: lireChamp("nom", l.nom),
     email: lireChamp("email", l.email),
     telephone: lireChamp("telephone", l.telephone),
+    // Rattaché à la lecture (aucune écriture) ; jamais pour une demande effacée.
+    telephoneVisio:
+      l.statut === "effacee_rgpd" || l.emailHash === null
+        ? null
+        : (rendezVous?.telephones.get(l.emailHash) ?? null),
     villeCle: l.villeCle,
     ville: l.villeNom ?? l.villeSaisie,
     creeLe: l.creeLe,
@@ -217,7 +237,7 @@ export interface LigneVilleConsole {
   readonly ville: string;
   /** Toutes les demandes de la ville (hors écartées). */
   readonly demandes: number;
-  /** Celles qui comptent (une par personne, entreprise et téléphone). */
+  /** Celles qui comptent (une par personne et par entreprise). */
   readonly comptees: number;
 }
 

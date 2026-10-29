@@ -125,7 +125,32 @@ describe("lectures : la console", () => {
     const r = await lireDemandesConsole();
     expect(r.demandes).toHaveLength(1);
     expect(r.demandes[0]?.statut).toBe("recue");
+    expect(r.demandes[0]?.telephoneVisio).toBeNull();
     expect(r.rapprochementIndisponible).toBe(true);
+  });
+
+  it("place le téléphone de la visio sur la demande de même empreinte d'e-mail, sans écriture", async () => {
+    m.findMany.mockResolvedValue([
+      ligne("a", "alice@exemple.fr", { telephone: "enc:" }),
+      ligne("b", "bob@exemple.fr"),
+    ]);
+    m.rdv.mockResolvedValue([
+      { inviteeEmail: "Alice@Exemple.fr", inviteePhone: "  " },
+      { inviteeEmail: "Alice@Exemple.fr", inviteePhone: "+33611223344" },
+      { inviteeEmail: "Alice@Exemple.fr", inviteePhone: "+33699999999" },
+    ]);
+    const r = await lireDemandesConsole();
+    expect(r.demandes.map((d) => d.telephoneVisio)).toEqual(["+33611223344", null]);
+    const rdv = m.rdv.mock.calls[0]?.[0] as { select: unknown; orderBy: unknown };
+    expect(rdv.select).toEqual({ inviteeEmail: true, inviteePhone: true });
+    expect(rdv.orderBy).toEqual({ startTime: "desc" });
+  });
+
+  it("une demande effacée (effacee_rgpd) ne reçoit aucun téléphone de visio", async () => {
+    m.findMany.mockResolvedValue([ligne("a", "alice@exemple.fr", { statut: "effacee_rgpd" })]);
+    m.rdv.mockResolvedValue([{ inviteeEmail: "alice@exemple.fr", inviteePhone: "+33611223344" }]);
+    const r = await lireDemandesConsole();
+    expect(r.demandes[0]?.telephoneVisio).toBeNull();
   });
 
   it("filtre par statut affiché et par ville", async () => {
