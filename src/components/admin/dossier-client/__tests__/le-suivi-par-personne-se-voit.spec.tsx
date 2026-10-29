@@ -328,3 +328,33 @@ describe("résumé en clair : général, équipe, postes, dates", () => {
     expect(sans).not.toContain("Zoé");
   });
 });
+
+describe("résumé en clair : équipe lue dans le brouillon du dirigeant", () => {
+  const brouillonEquipe = {
+    id: "bd2",
+    mode: "main",
+    membre: "",
+    majLe: new Date("2026-10-27T09:00:00Z"),
+    instantane: { data: { equipe } },
+  } as unknown as EntreeBrouillon;
+  const resume = (noms: boolean): string => {
+    const r = render(
+      <BlocQuestionnaireFiche
+        questionnaires={[q(lu({ reponses: [], brouillons: [brouillonEquipe] }))]}
+        adminPrefix="console"
+        ficheHref="/f"
+        afficherOuvertures
+        voitBrouillons={noms}
+      />,
+    );
+    return r.container.querySelector('[data-bloc="resume-en-clair"]')?.textContent ?? "";
+  };
+  it("sans le droit : ni nom ni poste dans le résumé", () => {
+    const t = resume(false);
+    expect(t).not.toContain("Alice Martin");
+    expect(t).not.toContain("Comptable");
+  });
+  it("avec le droit : les noms et les postes y sont", () => {
+    expect(resume(true)).toContain("Alice Martin · Comptable");
+  });
+});

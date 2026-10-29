@@ -238,7 +238,9 @@ function ResumeEnClair({
   const dirigeant = lignes.find(({ l }) => l.role === "dirigeant");
   const equipe = lignes.filter(({ l }) => l.role === "collaborateur" || l.role === "non_retrouvee");
   const referents = lignes.filter(({ l }) => l.role === "referent");
-  const pasCommence = equipe.filter(({ l }) => l.etat === "pas_de_nouvelles").length;
+  const pasCommence = equipe.filter(
+    ({ l }) => l.role === "collaborateur" && l.etat === "pas_de_nouvelles",
+  ).length;
   return (
     <div data-bloc="resume-en-clair" className="space-y-[var(--space-admin-3)]">
       <section>
