@@ -38,7 +38,7 @@ import { CHEMIN_DEMANDE, CHEMIN_RENDEZ_VOUS, META } from "../contenu";
 const LIMITE_DEMANDES: RateLimitConfig = { limit: 10, windowSec: 3600, surPanne: "refuser" };
 
 // Un `telephone` posté par une ancienne page est ignoré (zod retire les clés inconnues) : le
-// téléphone est demandé à l'étape suivante (la réservation de la visio).
+// téléphone est demandé à l'étape suivante (le choix du créneau de la visio).
 const ENTREE = z.object({
   nom: z.string().trim().min(1).max(80),
   email: z.string().trim().max(254).email(),
