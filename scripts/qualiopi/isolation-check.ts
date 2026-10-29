@@ -152,6 +152,15 @@ const CONSOMMATEURS_ASSUMES: ReadonlySet<string> = new Set([
   // `src/server/qualiopi` ne change rien (la garde compte tout import du domaine) ; le fichier
   // n'importe que ces deux modules, rien d'autre. Nommé seul.
   "src/server/crm-sync/retour-dossier.ts",
+  // Fiche client, lot 0 (29/10/2026) — le bloc « Devis et factures » a été DÉPLACÉ tel quel de la page
+  // (zone qualiopi) dans `fiche/OngletDevisFactures.tsx` pour que les lots suivants ne touchent plus la
+  // page : il lit le type `Client360` et `resteDuNetCents` (règle unique du reste dû). `fiche/montants.ts`
+  // applique `TAUX_TVA_STANDARD` (SSOT de la TVA), jamais un taux recopié. Rien d'autre du domaine. Nommés seuls.
+  "src/components/admin/dossier-client/fiche/OngletDevisFactures.tsx",
+  "src/components/admin/dossier-client/fiche/montants.ts",
+  // Même lot — `fiche/contexte.ts` partage la lecture du client 360 entre la page et les emplacements
+  // (`getClient360` sous `React.cache`) : une requête par affichage. Rien d'autre du domaine.
+  "src/components/admin/dossier-client/fiche/contexte.ts",
   // Chantier QNC, lot L05 — le libellé de la modalité « hybride » a UNE seule source
   // (`libelles-enumerations`, constante pure, sans lecture de base ni d'interrupteur) :
   // la fiche formation publique, la convocation et la console disent la même chose.

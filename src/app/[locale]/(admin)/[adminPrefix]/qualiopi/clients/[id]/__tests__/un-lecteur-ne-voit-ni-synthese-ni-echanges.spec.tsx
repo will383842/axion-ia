@@ -30,8 +30,25 @@ const d = vi.hoisted(() => ({
     lireRencontresDuClient: vi.fn(),
     lirePersonnesDuClient: vi.fn(),
   },
+  // Lot 0 : chaque emplacement de lecture est un espion ; un lecteur sans `voitEchanges` ne doit
+  // en appeler AUCUN (la lecture est gardée par le rôle, pas seulement le rendu).
+  emplacements: {
+    enTeteFiche: vi.fn(async () => null),
+    compteursOnglets: vi.fn(async () => ({})),
+    ongletActivite: vi.fn(async () => null),
+    resumeTaches: vi.fn(async () => null),
+    resumeNotes: vi.fn(async () => null),
+    resumePrestations: vi.fn(async () => null),
+    personnesDecision: vi.fn(async () => null),
+    questionnaireEnBref: vi.fn(async () => null),
+    archivageFiche: vi.fn(async () => null),
+  },
 }));
 
+vi.mock("@/components/admin/dossier-client/fiche/emplacements", async () => ({
+  ...(await import("./_emplacements-vides")).emplacementsVides,
+  ...d.emplacements,
+}));
 vi.mock("@/auth", () => ({ auth: () => Promise.resolve(d.session) }));
 vi.mock("next/navigation", () => ({
   redirect: (url: string) => {
@@ -91,6 +108,9 @@ describe("⛔ un lecteur ne voit ni synthèse ni échanges", () => {
       for (const onglet of [undefined, "synthese", "echanges", "personnes", "projets"]) {
         const html = await rendreFiche(Page, onglet);
         for (const f of Object.values(d.lectures)) expect(f).not.toHaveBeenCalled();
+        for (const [nom, f] of Object.entries(d.emplacements)) {
+          expect(f, `emplacement ${nom} appelé pour le rôle ${role}`).not.toHaveBeenCalled();
+        }
         expect(html).not.toContain("Ce que fait la société");
         expect(html).not.toContain("?onglet=rendez-vous");
         expect(html).toContain(`votre rôle : ${LIBELLES[role]}`);
@@ -105,6 +125,11 @@ describe("⛔ un lecteur ne voit ni synthèse ni échanges", () => {
       d.session = { user: { id: "u1", role } };
       const html = await rendreFiche(Page, "synthese");
       expect(d.lectures.lireFaitsDuClient).toHaveBeenCalled();
+      // Contre-témoin des espions : l'en-tête, l'archivage et les compteurs sont bien lus.
+      expect(d.emplacements.enTeteFiche).toHaveBeenCalledTimes(1);
+      expect(d.emplacements.archivageFiche).toHaveBeenCalledTimes(1);
+      expect(d.emplacements.compteursOnglets).toHaveBeenCalledTimes(1);
+      expect(d.emplacements.resumeTaches).toHaveBeenCalledTimes(1);
       expect(html).toContain("?onglet=rendez-vous");
       expect(html).toContain("Ce que fait la société");
       expect(html).not.toContain("réservés à Williams et aux administrateurs");
