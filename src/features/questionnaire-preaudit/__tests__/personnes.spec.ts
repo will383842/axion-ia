@@ -318,3 +318,36 @@ describe("journée du dirigeant, référent, ouvertures", () => {
     expect(s.collab.ouvertsSeulement).toBe(1);
   });
 });
+
+describe("taux d'un collaborateur : le brouillon et l'envoi comptent pareil les cases pré-remplies", () => {
+  const donnees = { b_1: "x", m_1: "y" };
+  const tauxDuCollab = (s: SuiviParPersonne): number | undefined =>
+    s.collaborateurs.find((l) => l.taux !== null)?.taux?.pourcentage;
+  const envoye = (extra: Record<string, unknown>): EntreeReponse => ({
+    id: "r-collab",
+    mode: "emp",
+    membreColonne: CODES[0] as string,
+    recuLe: T(27),
+    ecartee: false,
+    charge: { mode: "emp", membre: CODES[0], donnees, ...extra },
+  });
+
+  it("une case jamais vérifiée (prefill.non_verifies) ne compte pas à l'envoi", () => {
+    const brouillon = suivre({
+      reponses: [dirigeant()],
+      brouillons: [
+        {
+          ...brouillonCollab(CODES[0] as string),
+          instantane: { data: donnees, more: 0, pre: ["b_1"] },
+        },
+      ],
+    });
+    const apresEnvoi = suivre({
+      reponses: [dirigeant(), envoye({ prefill: { non_verifies: ["b_1"] } })],
+    });
+    const sansPrefill = suivre({ reponses: [dirigeant(), envoye({})] });
+
+    expect(tauxDuCollab(apresEnvoi)).toBe(tauxDuCollab(brouillon));
+    expect(tauxDuCollab(apresEnvoi) as number).toBeLessThan(tauxDuCollab(sansPrefill) as number);
+  });
+});
