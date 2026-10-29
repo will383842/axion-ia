@@ -9,7 +9,12 @@ import { renderToStaticMarkup } from "react-dom/server";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import { MOTS_INTERDITS } from "@/app/tour-france-ia/__tests__/mots-interdits";
-import type { DemandeFiche, FicheVille, VisioTour } from "@/features/tour-de-france/fiche-ville";
+import type {
+  DemandeFiche,
+  EtatCrm,
+  FicheVille,
+  VisioTour,
+} from "@/features/tour-de-france/fiche-ville";
 import type { LigneVilleConsole } from "@/features/tour-de-france/lectures";
 
 const d = vi.hoisted(() => ({
@@ -67,6 +72,13 @@ const visio = (id: string, extra: Partial<VisioTour> = {}): VisioTour => ({
   ...extra,
 });
 
+const crm = (statut: EtatCrm["statut"], crmResult: string | null = null): EtatCrm => ({
+  statut,
+  crmResult,
+  envoyeLe: null,
+  tentatives: 0,
+});
+
 const fiche = (extra: Partial<FicheVille> = {}): FicheVille => ({
   villeCle: "lyon",
   ville: "Lyon",
@@ -80,12 +92,22 @@ const fiche = (extra: Partial<FicheVille> = {}): FicheVille => ({
       demande: demande("a", { statut: "rdv_pris", clientId: "f1" }),
       compte: true,
       visio: visio("v1"),
+      crmDemande: crm("sent", "pending_match"),
+      crmVisio: crm("failed"),
     },
-    { demande: demande("b"), compte: true, visio: null },
+    {
+      demande: demande("b"),
+      compte: true,
+      visio: null,
+      crmDemande: crm("absente"),
+      crmVisio: null,
+    },
     {
       demande: demande("x", { statut: "effacee_rgpd", nom: "[effacé]", emailHash: null }),
       compte: true,
       visio: null,
+      crmDemande: crm("absente"),
+      crmVisio: null,
     },
   ],
   visiosSansDemande: [visio("v9")],
@@ -152,6 +174,8 @@ describe("vue : la fiche d'une ville", () => {
             demande: demande("x", { statut: "effacee_rgpd", nom: "[effacé]", emailHash: null }),
             compte: true,
             visio: visio("v1"),
+            crmDemande: crm("sent"),
+            crmVisio: crm("sent"),
           },
         ],
         visiosSansDemande: [],
@@ -162,7 +186,13 @@ describe("vue : la fiche d'une ville", () => {
     const annulee = rendreFiche(
       fiche({
         personnes: [
-          { demande: demande("a"), compte: true, visio: visio("v1", { statut: "annulee" }) },
+          {
+            demande: demande("a"),
+            compte: true,
+            visio: visio("v1", { statut: "annulee" }),
+            crmDemande: crm("pending"),
+            crmVisio: crm("pending"),
+          },
         ],
         visiosSansDemande: [],
       }),
@@ -175,6 +205,30 @@ describe("vue : la fiche d'une ville", () => {
     const inconnue = rendreFiche(null);
     expect(inconnue).toContain("Ville inconnue");
     expect(inconnue).toContain("/fr/adm/tunnels/tour/villes");
+  });
+
+  it("dit PAR PERSONNE l'état d'envoi au CRM Pro, avec le lien vers la synchro", () => {
+    const html = rendreFiche(fiche());
+    expect(html).toContain("CRM Pro");
+    expect(html).toContain("CRM : envoyée");
+    expect(html).toContain("CRM : échec, sera rejouée");
+    expect(html).toContain("CRM : non envoyée");
+    expect(html).toContain("reçue par le CRM, rattachement en attente");
+    expect(html).toContain("/fr/adm/synchro-crm");
+    const tous = rendreFiche(
+      fiche({
+        personnes: (["pending", "gave_up", "indisponible"] as const).map((statut, i) => ({
+          demande: demande(`z${i}`),
+          compte: true,
+          visio: null,
+          crmDemande: crm(statut),
+          crmVisio: null,
+        })),
+      }),
+    );
+    expect(tous).toContain("CRM : en attente");
+    expect(tous).toContain("CRM : abandon, à traiter (voir Synchro CRM)");
+    expect(tous).toContain("CRM : état indisponible");
   });
 
   it("n'offre AUCUN bouton de suppression ni aucun formulaire", () => {

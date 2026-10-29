@@ -4,6 +4,7 @@ const m = vi.hoisted(() => ({
   groupBy: vi.fn(),
   findMany: vi.fn(),
   rdv: vi.fn(),
+  crm: vi.fn(),
   decrypt: vi.fn((v: string) => v.replace(/^enc:/, "")),
 }));
 
@@ -11,6 +12,7 @@ vi.mock("@/lib/prisma", () => ({
   prisma: {
     tourDemande: { groupBy: m.groupBy, findMany: m.findMany },
     calendlyEvent: { findMany: m.rdv },
+    crmSyncOutbox: { findMany: m.crm },
   },
 }));
 vi.mock("@/lib/pii-crypto", () => ({
@@ -21,6 +23,7 @@ vi.mock("@/lib/pii-crypto", () => ({
 import { hashEmailForLookup } from "@/lib/security/email-hash";
 import {
   compteurParVille,
+  etatsCrm,
   lireCompteursPublics,
   lireDemandesConsole,
   lireFicheVille,
@@ -50,6 +53,7 @@ beforeEach(() => {
   vi.clearAllMocks();
   m.decrypt.mockImplementation((v: string) => v.replace(/^enc:/, ""));
   m.rdv.mockResolvedValue([]);
+  m.crm.mockResolvedValue([]);
 });
 
 describe("lectures : une base qui échoue rend une liste vide, jamais une page en erreur", () => {
@@ -267,5 +271,143 @@ describe("lectures : la fiche d'une ville", () => {
     const f = await lireFicheVille("lyon");
     expect(f.personnes).toHaveLength(1);
     expect(f.visiosIndisponibles).toBe(true);
+  });
+});
+
+describe("lectures : l'état d'envoi au CRM Pro", () => {
+  it("ne sélectionne jamais le corps ni l'erreur (données personnelles en clair)", async () => {
+    m.crm.mockResolvedValue([]);
+    await etatsCrm(["site:tour-demande:a"]);
+    const arg = m.crm.mock.calls[0]?.[0] as {
+      where: Record<string, unknown>;
+      select: Record<string, unknown>;
+    };
+    expect(arg.where).toEqual({ subjectRef: { in: ["site:tour-demande:a"] } });
+    expect(arg.select).toEqual({
+      subjectRef: true,
+      status: true,
+      crmResult: true,
+      sentAt: true,
+      attempts: true,
+    });
+    expect(arg.select).not.toHaveProperty("payload");
+    expect(arg.select).not.toHaveProperty("lastError");
+  });
+
+  it("aucune référence : aucune requête ; panne : null, sans exception", async () => {
+    await expect(etatsCrm([])).resolves.toEqual([]);
+    expect(m.crm).not.toHaveBeenCalled();
+    m.crm.mockRejectedValue(new Error("crm_sync_outbox"));
+    await expect(etatsCrm(["site:tour-demande:a"])).resolves.toBeNull();
+  });
+
+  it("la fiche lit les références de la demande et de chaque visio, et place l'état par personne", async () => {
+    m.findMany.mockResolvedValue([ligne("a", "alice@exemple.fr"), ligne("b", "bob@exemple.fr")]);
+    m.rdv.mockResolvedValue([
+      {
+        id: "v1",
+        inviteeEmail: "alice@exemple.fr",
+        startTime: new Date("2099-01-01T09:00:00Z"),
+        status: "active",
+        rawPayload: {},
+      },
+    ]);
+    m.crm.mockResolvedValue([
+      {
+        subjectRef: "site:tour-demande:a",
+        status: "sent",
+        crmResult: "pending_match",
+        sentAt: new Date("2026-10-28T08:00:00Z"),
+        attempts: 1,
+      },
+      {
+        subjectRef: "site:calendly_event:v1",
+        status: "failed",
+        crmResult: null,
+        sentAt: null,
+        attempts: 3,
+      },
+    ]);
+    const f = await lireFicheVille("lyon");
+    const arg = m.crm.mock.calls[0]?.[0] as { where: { subjectRef: { in: string[] } } };
+    expect(arg.where.subjectRef.in).toEqual([
+      "site:tour-demande:a",
+      "site:tour-demande:b",
+      "site:calendly_event:v1",
+    ]);
+    expect(f.personnes[0]?.crmDemande.statut).toBe("sent");
+    expect(f.personnes[0]?.crmDemande.crmResult).toBe("pending_match");
+    expect(f.personnes[0]?.crmVisio?.statut).toBe("failed");
+    expect(f.personnes[1]?.crmDemande.statut).toBe("absente");
+  });
+
+  it("une panne de l'outbox laisse la fiche et dit « état indisponible »", async () => {
+    m.findMany.mockResolvedValue([ligne("a", "alice@exemple.fr")]);
+    m.crm.mockRejectedValue(new Error("crm_sync_outbox"));
+    const f = await lireFicheVille("lyon");
+    expect(f.personnes).toHaveLength(1);
+    expect(f.personnes[0]?.crmDemande.statut).toBe("indisponible");
+  });
+});
+
+describe("lectures : la fiche d'une ville, rendez-vous pris et visios d'une autre ville", () => {
+  it("« rendez-vous pris » vient des adresses affichées, pas des 300 visios les plus récentes", async () => {
+    m.findMany.mockResolvedValue([ligne("a", "alice@exemple.fr")]);
+    // La liste des 300 visios n'a pas la visio d'Alice ; la recherche par adresse, si.
+    m.rdv.mockImplementation(async (arg: { where: Record<string, unknown> }) =>
+      arg.where["inviteeEmail"] !== undefined
+        ? [{ inviteeEmail: "Alice@Exemple.fr", inviteePhone: null }]
+        : [],
+    );
+    const f = await lireFicheVille("lyon");
+    expect(f.personnes[0]?.demande.statut).toBe("rdv_pris");
+    const parAdresse = m.rdv.mock.calls
+      .map((c) => c[0] as { where: Record<string, unknown> })
+      .find((a) => a.where["inviteeEmail"] !== undefined);
+    expect(parAdresse?.where["inviteeEmail"]).toEqual({ in: ["alice@exemple.fr"] });
+    expect(parAdresse?.where["status"]).toEqual({ not: "canceled" });
+  });
+
+  it("une panne de cette recherche se rabat sur les visios déjà lues", async () => {
+    m.findMany.mockResolvedValue([ligne("a", "alice@exemple.fr")]);
+    m.rdv.mockImplementation(async (arg: { where: Record<string, unknown> }) => {
+      if (arg.where["inviteeEmail"] !== undefined) throw new Error("calendly_events");
+      return [
+        {
+          id: "v1",
+          inviteeEmail: "alice@exemple.fr",
+          startTime: new Date("2099-01-01T09:00:00Z"),
+          status: "active",
+          rawPayload: {},
+        },
+      ];
+    });
+    const f = await lireFicheVille("lyon");
+    expect(f.personnes[0]?.demande.statut).toBe("rdv_pris");
+  });
+
+  it("une visio qui déclare la ville mais dont l'adresse est celle d'une demande d'une autre ville n'est pas orpheline", async () => {
+    // La ville lue (lyon) n'a aucune demande ; l'adresse de la visio est celle d'une demande ailleurs.
+    m.findMany.mockImplementation(async (arg: { select: Record<string, unknown> }) =>
+      Object.keys(arg.select).length === 1
+        ? [{ emailHash: hashEmailForLookup("zoe@exemple.fr") }]
+        : [],
+    );
+    m.rdv.mockResolvedValue([
+      {
+        id: "v7",
+        inviteeEmail: "zoe@exemple.fr",
+        startTime: new Date("2099-01-01T09:00:00Z"),
+        status: "active",
+        rawPayload: {
+          invitee: {
+            questions_and_answers: [{ question: "Ville de l'entreprise", answer: "Lyon" }],
+          },
+        },
+      },
+    ]);
+    const f = await lireFicheVille("lyon");
+    expect(f.visiosSansDemande).toEqual([]);
+    expect(f.visiosPrises).toBe(0);
   });
 });

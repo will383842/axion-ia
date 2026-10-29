@@ -14,11 +14,14 @@ import {
   AdminTable,
   type AdminTableColumn,
 } from "@/components/admin/ui";
-import type {
-  FicheVille,
-  PersonneVille,
-  StatutVisio,
-  VisioTour,
+import {
+  LIBELLE_CRM,
+  libelleResultatCrm,
+  type EtatCrm,
+  type FicheVille,
+  type PersonneVille,
+  type StatutVisio,
+  type VisioTour,
 } from "@/features/tour-de-france/fiche-ville";
 import { LIBELLE_STATUT_AFFICHE, type StatutAffiche } from "@/features/tour-de-france/types";
 import { JaugeVille } from "./VueVillesTour";
@@ -31,6 +34,17 @@ const TON_STATUT: Readonly<
   recue: "warning",
   ecartee: "outline",
   effacee_rgpd: "outline",
+};
+
+const TON_CRM: Readonly<
+  Record<EtatCrm["statut"], "neutral" | "info" | "success" | "warning" | "destructive" | "outline">
+> = {
+  sent: "success",
+  pending: "info",
+  failed: "warning",
+  gave_up: "destructive",
+  absente: "outline",
+  indisponible: "outline",
 };
 
 const LIBELLE_VISIO: Readonly<Record<StatutVisio, string>> = {
@@ -75,6 +89,17 @@ function Reponses({ visio }: { visio: VisioTour }): React.ReactElement {
         ))}
       </dl>
     </details>
+  );
+}
+
+function BadgeCrm({ titre, etat }: { titre: string; etat: EtatCrm }): React.ReactElement {
+  const resultat = libelleResultatCrm(etat.crmResult);
+  return (
+    <div className="flex flex-col gap-[var(--space-admin-1)]">
+      <span className="admin-meta">{titre}</span>
+      <AdminBadge tone={TON_CRM[etat.statut]}>{LIBELLE_CRM[etat.statut]}</AdminBadge>
+      {resultat !== null ? <span className="admin-meta">{resultat}</span> : null}
+    </div>
   );
 }
 
@@ -152,6 +177,24 @@ export function VueVilleTour({ adminPrefix, fiche }: PropsVueVilleTour): React.R
           <span className="admin-meta">Lecture indisponible</span>
         ) : (
           <CelluleVisio visio={p.visio} adminPrefix={adminPrefix} />
+        ),
+    },
+    {
+      key: "crm",
+      header: "CRM Pro",
+      cell: (p) =>
+        efface(p) ? (
+          <span>—</span>
+        ) : (
+          <div className="flex flex-col gap-[var(--space-admin-2)]">
+            <BadgeCrm titre="Demande" etat={p.crmDemande} />
+            {p.crmVisio !== null && !fiche.visiosIndisponibles ? (
+              <BadgeCrm titre="Visio" etat={p.crmVisio} />
+            ) : null}
+            <Link href={`/fr/${adminPrefix}/synchro-crm`} className="admin-link">
+              Synchro CRM
+            </Link>
+          </div>
         ),
     },
     {

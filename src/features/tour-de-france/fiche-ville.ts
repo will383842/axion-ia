@@ -11,7 +11,11 @@
  *  · une visio sans demande est rattachée à la ville si la ville qu'elle déclare se résout vers la
  *    même clé ;
  *  · une visio annulée est affichée « annulée » et n'entre pas dans « visios prises » ;
- *  · une visio effacée (`_erasedAt`) n'a aucune réponse.
+ *  · une visio effacée (`_erasedAt`) n'a aucune réponse ;
+ *  · une visio dont l'adresse correspond à une demande d'une AUTRE ville du Tour n'est pas une
+ *    « visio sans mini-demande » de la ville qu'elle déclare ;
+ *  · l'état d'envoi au CRM Pro est dit PAR PERSONNE (demande, et visio si elle existe), lu dans
+ *    l'outbox sans le corps ni l'erreur (jamais de donnée personnelle).
  */
 
 import { entrepriseDeclaree } from "@/features/admin-rendezvous/a-venir";
@@ -23,6 +27,80 @@ import type { DemandeConsole } from "./lectures";
 import { resoudreVille } from "./villes";
 
 export type StatutVisio = "prevue" | "annulee" | "passee";
+
+/** Une ligne de l'outbox CRM, réduite à ce que la fiche a le droit de lire (ni corps, ni erreur). */
+export interface LigneCrm {
+  readonly subjectRef: string;
+  readonly status: string;
+  readonly crmResult: string | null;
+  readonly sentAt: Date | null;
+  readonly attempts: number;
+}
+
+export type StatutCrm = "sent" | "pending" | "failed" | "gave_up";
+
+/** L'état d'envoi d'un enregistrement au CRM Pro : un statut de l'outbox, ou « absente » / « indisponible ». */
+export interface EtatCrm {
+  readonly statut: StatutCrm | "absente" | "indisponible";
+  /** Réponse du CRM telle quelle (`created`, `pending_match`…) ; `null` si aucune. */
+  readonly crmResult: string | null;
+  readonly envoyeLe: Date | null;
+  readonly tentatives: number;
+}
+
+export const LIBELLE_CRM: Readonly<Record<EtatCrm["statut"], string>> = {
+  sent: "CRM : envoyée",
+  pending: "CRM : en attente",
+  failed: "CRM : échec, sera rejouée",
+  gave_up: "CRM : abandon, à traiter (voir Synchro CRM)",
+  absente: "CRM : non envoyée",
+  indisponible: "CRM : état indisponible",
+};
+
+/** Le texte court d'une réponse du CRM ; `pending_match` est dit en clair, le reste tel quel. */
+export function libelleResultatCrm(crmResult: string | null): string | null {
+  if (crmResult === null || crmResult.trim() === "") return null;
+  return crmResult === "pending_match" ? "reçue par le CRM, rattachement en attente" : crmResult;
+}
+
+/** La référence de la demande dans l'outbox (`crm.ts`). */
+export const refCrmDemande = (id: string): string => `site:tour-demande:${id}`;
+/** La référence d'une visio dans l'outbox (route Calendly et découverte). */
+export const refCrmVisio = (id: string): string => `site:calendly_event:${id}`;
+
+// Plusieurs lignes pour une même référence (ex. visio réservée puis annulée) : la plus à traiter
+// l'emporte, pour qu'un abandon ne soit jamais masqué par un envoi réussi.
+const GRAVITE: Readonly<Record<StatutCrm, number>> = { sent: 0, pending: 1, failed: 2, gave_up: 3 };
+
+function statutCrm(x: string): StatutCrm | null {
+  return x === "sent" || x === "pending" || x === "failed" || x === "gave_up" ? x : null;
+}
+
+/**
+ * L'état d'une référence. `lignes === null` : la lecture de l'outbox a échoué (« indisponible »).
+ * Aucune ligne pour la référence : « absente » (« non envoyée »).
+ */
+export function etatCrmDe(lignes: ReadonlyArray<LigneCrm> | null, ref: string): EtatCrm {
+  if (lignes === null) {
+    return { statut: "indisponible", crmResult: null, envoyeLe: null, tentatives: 0 };
+  }
+  let retenue: { ligne: LigneCrm; statut: StatutCrm } | null = null;
+  for (const ligne of lignes) {
+    if (ligne.subjectRef !== ref) continue;
+    const statut = statutCrm(ligne.status);
+    if (statut === null) continue;
+    if (retenue === null || GRAVITE[statut] > GRAVITE[retenue.statut]) retenue = { ligne, statut };
+  }
+  if (retenue === null) {
+    return { statut: "absente", crmResult: null, envoyeLe: null, tentatives: 0 };
+  }
+  return {
+    statut: retenue.statut,
+    crmResult: retenue.ligne.crmResult,
+    envoyeLe: retenue.ligne.sentAt,
+    tentatives: retenue.ligne.attempts,
+  };
+}
 
 export interface VisioTour {
   readonly id: string;
@@ -51,6 +129,10 @@ export interface PersonneVille {
   readonly compte: boolean;
   /** `null` : pas de visio rapprochée (« pas encore »). */
   readonly visio: VisioTour | null;
+  /** L'état d'envoi de la mini-demande au CRM Pro. */
+  readonly crmDemande: EtatCrm;
+  /** L'état d'envoi de la visio rapprochée ; `null` si elle n'a pas de visio. */
+  readonly crmVisio: EtatCrm | null;
 }
 
 export interface FicheVille {
@@ -109,17 +191,25 @@ export function assemblerFicheVille(
     readonly tronquee?: boolean;
     readonly visiosIndisponibles?: boolean;
     readonly maintenant?: Date;
+    /** Lignes de l'outbox CRM ; `null` : lecture en panne ; absent : aucune ligne. */
+    readonly lignesCrm?: ReadonlyArray<LigneCrm> | null;
+    /** Empreintes d'e-mail des demandes de TOUT le Tour (pour écarter les visios d'une autre ville). */
+    readonly empreintesDemandesDuTour?: ReadonlySet<string>;
   } = {},
 ): FicheVille {
   const maintenant = options.maintenant ?? new Date();
   const visiosParEmpreinte = new Map<string, VisioTour[]>();
   const toutes: VisioTour[] = [];
   const villeDeVisio = new Map<string, string | null>();
+  const empreinteDeVisio = new Map<string, string | null>();
+  const lignesCrm = options.lignesCrm === undefined ? [] : options.lignesCrm;
+  const empreintesDuTour = options.empreintesDemandesDuTour ?? new Set<string>();
 
   for (const brute of visios) {
     const visio = versVisio(brute, maintenant);
     toutes.push(visio);
     const h = hashEmailForLookup(brute.inviteeEmail);
+    empreinteDeVisio.set(visio.id, h);
     villeDeVisio.set(
       visio.id,
       resoudreVille(entrepriseDeclaree(brute.rawPayload).ville ?? "")?.cle ?? null,
@@ -138,14 +228,23 @@ export function assemblerFicheVille(
       : [];
     const visio = meilleureVisio(trouvees);
     for (const v of trouvees) rapprochees.add(v.id);
-    return { demande, compte: demande.compte && !demande.doublon, visio };
+    return {
+      demande,
+      compte: demande.compte && !demande.doublon,
+      visio,
+      crmDemande: etatCrmDe(lignesCrm, refCrmDemande(demande.id)),
+      crmVisio: visio === null ? null : etatCrmDe(lignesCrm, refCrmVisio(visio.id)),
+    };
   });
 
   // Une visio dont l'adresse correspond à une demande de CETTE ville est déjà rattachée ; les autres
-  // sont rattachées par la ville qu'elles déclarent.
-  const visiosSansDemande = toutes.filter(
-    (v) => !rapprochees.has(v.id) && villeDeVisio.get(v.id) === villeCle,
-  );
+  // sont rattachées par la ville qu'elles déclarent, sauf si leur adresse correspond à une demande
+  // d'une AUTRE ville du Tour (elle appartient alors à cette autre fiche).
+  const visiosSansDemande = toutes.filter((v) => {
+    if (rapprochees.has(v.id) || villeDeVisio.get(v.id) !== villeCle) return false;
+    const h = empreinteDeVisio.get(v.id) ?? null;
+    return h === null || !empreintesDuTour.has(h);
+  });
 
   const lues = demandes.filter((d) => d.statut !== "ecartee");
   const comptees = personnes.filter((p) => p.compte && p.demande.statut !== "ecartee").length;
