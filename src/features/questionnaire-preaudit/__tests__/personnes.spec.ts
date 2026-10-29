@@ -77,7 +77,7 @@ describe("scénario Oury : dirigeant reçu, 4 déclarés, 1 brouillon rapproché
   const s = suivre({ reponses: [dirigeant()], brouillons: [brouillonCollab(CODES[0] as string)] });
   it("phrase d'en-tête", () => {
     expect(phraseEnTete(s)).toBe(
-      "1 sur 6 reçus : il manque 4 collaborateurs (dont 1 en train de remplir) et le référent informatique (si la partie technique lui a été confiée).",
+      "1 sur 5 reçus : il manque 4 collaborateurs (dont 1 en train de remplir).",
     );
   });
   it("ligne équipe", () => {

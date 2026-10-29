@@ -97,7 +97,7 @@ export async function lireQuestionnairesDeLaFiche(
     if (envoyes.length > 0) {
       try {
         const b = await prisma.backupRun.findFirst({
-          where: { component: "postgres", status: "success" },
+          where: { component: "postgres", status: "success", finishedAt: { not: null } },
           orderBy: { finishedAt: "desc" },
           select: { finishedAt: true },
         });

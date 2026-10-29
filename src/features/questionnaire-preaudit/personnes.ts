@@ -362,8 +362,10 @@ export function suivreParPersonne(e: EntreePersonnes): SuiviParPersonne {
   for (const o of e.ouvertures ?? []) {
     if (o.mode === "lien" || o.mode === "main" || o.membre === "") continue;
     const pourReferent = o.mode === "it" || (o.mode === "perso" && o.membre.startsWith("it-"));
-    if (pourReferent) rangerReferent(o.membre, (s) => (s.ouverture = plusRecente(s.ouverture, o)));
-    else rangerCollab(o.membre, (s) => (s.ouverture = plusRecente(s.ouverture, o)));
+    // Un lien « perso » au parcours inconnu, ouvert avec le code d'un référent déjà connu : chez ce référent.
+    if (pourReferent || referents.has(o.membre)) {
+      rangerReferent(o.membre, (s) => (s.ouverture = plusRecente(s.ouverture, o)));
+    } else rangerCollab(o.membre, (s) => (s.ouverture = plusRecente(s.ouverture, o)));
   }
 
   // 4. Réponses sans code : rapprochement par le nom, seulement s'il n'y a pas d'ambiguïté.
@@ -409,8 +411,15 @@ export function suivreParPersonne(e: EntreePersonnes): SuiviParPersonne {
     if (derniere !== null) {
       if (derniere.charge !== null) {
         // Mêmes champs pré-remplis exclus que pour un brouillon : le taux ne saute pas à l'envoi.
-        const preEnvoi = Array.isArray(derniere.charge["pre"])
-          ? new Set((derniere.charge["pre"] as unknown[]).filter((x) => typeof x === "string"))
+        // À l'envoi final, les cases jamais vérifiées sont dans prefill.non_verifies (et non dans « pre »).
+        const prefill = derniere.charge["prefill"];
+        const nonVerifies =
+          typeof prefill === "object" && prefill !== null
+            ? (prefill as Record<string, unknown>)["non_verifies"]
+            : undefined;
+        const listePre = Array.isArray(nonVerifies) ? nonVerifies : derniere.charge["pre"];
+        const preEnvoi = Array.isArray(listePre)
+          ? new Set((listePre as unknown[]).filter((x) => typeof x === "string"))
           : new Set<string>();
         taux = tauxDeReponses(
           valeursDeLaCharge(derniere.charge),
@@ -616,8 +625,13 @@ export function suivreParPersonne(e: EntreePersonnes): SuiviParPersonne {
     manquants: attendusLignes.length - recus - enCours,
   };
   const referentRecu = lignesReferent.some((l) => l.etat === "recu");
+  // Le référent n'est attendu que s'il a commencé : le dirigeant peut remplir la partie technique lui-même.
+  const referentActif = lignesReferent.some(
+    (l) =>
+      l.etat === "recu" || l.etat === "ecartee" || l.etat === "en_cours" || l.etat === "ouvert",
+  );
   const total: ComptesTotal = {
-    attendus: 1 + collab.attendus + 1,
+    attendus: 1 + collab.attendus + (referentActif ? 1 : 0),
     recus: (ligneDirigeant.etat === "recu" ? 1 : 0) + recus + (referentRecu ? 1 : 0),
   };
 
@@ -685,8 +699,9 @@ export function phraseEnTete(s: SuiviParPersonne): string {
         (s.collab.enCours > 0 ? ` (dont ${s.collab.enCours} en train de remplir)` : ""),
     );
   }
-  if (!s.referents.some((l) => l.etat === "recu")) {
-    manque.push("le référent informatique (si la partie technique lui a été confiée)");
+  const referentCommence = s.referents.some((l) => l.etat !== "pas_de_nouvelles");
+  if (referentCommence && !s.referents.some((l) => l.etat === "recu")) {
+    manque.push("le référent informatique");
   }
   if (manque.length === 0) return `Tout est reçu : ${s.total.recus} sur ${s.total.attendus}.`;
   return `${s.total.recus} sur ${s.total.attendus} reçus : il manque ${joindre(manque)}.`;

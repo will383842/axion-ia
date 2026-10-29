@@ -122,9 +122,7 @@ describe("en-tête et lignes", () => {
   const t = bloc(q({ ...lu({ reponses: [reponseDirigeant] }) }));
   it("dit combien sont reçus et ce qu'il manque", () => {
     expect(t).toContain("Où en sont les réponses");
-    expect(t).toContain(
-      "1 sur 6 reçus : il manque 4 collaborateurs et le référent informatique (si la partie technique lui a été confiée).",
-    );
+    expect(t).toContain("1 sur 5 reçus : il manque 4 collaborateurs.");
     expect(t).toContain("Collaborateurs : déclarés 4 · reçus 0 · en cours 0 · manquants 4");
   });
   it("une ligne par personne déclarée, avec sa fonction", () => {
