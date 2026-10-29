@@ -12,7 +12,8 @@
  *     demandes affichées (`inviteeEmail IN (…)`, colonne insensible à la casse) et on compare les
  *     empreintes (aucune colonne sur `calendly_events`, aucun plafond arbitraire) ;
  *   · `compteurParVille` : le compteur de la console (toutes les demandes, et celles qui comptent) ;
- *   · `lireFicheVille` : la fiche d'une ville, mini-demandes et visios rapprochées (lecture seule).
+ *   · `lireFicheVille` : la fiche d'une ville, mini-demandes et visios rapprochées (lecture seule) ;
+ *   · `etatsCrm` : l'état d'envoi au CRM Pro (outbox), sans le corps ni l'erreur.
  *
  * ⛔ La console qui appelle `lireDemandesConsole` doit avoir passé `gardeLectureAppels` : ce module
  * rend des coordonnées en clair et ne vérifie pas qui regarde.
@@ -22,7 +23,14 @@ import { prisma } from "@/lib/prisma";
 import { hashEmailForLookup } from "@/lib/security/email-hash";
 import { dechiffrerChamp, lireChamp } from "./chiffrement";
 import type { GroupeVille } from "./comptage";
-import { assemblerFicheVille, type DemandeFiche, type FicheVille } from "./fiche-ville";
+import {
+  assemblerFicheVille,
+  refCrmDemande,
+  refCrmVisio,
+  type DemandeFiche,
+  type FicheVille,
+  type LigneCrm,
+} from "./fiche-ville";
 import { statutAffiche } from "./rapprochement";
 import {
   lireFichesProches,
@@ -277,6 +285,46 @@ export async function compteurParVille(): Promise<LigneVilleConsole[]> {
 /** Au plus ce nombre de visios du Tour lues pour une fiche de ville (la fiche dit si elle est tronquée). */
 export const PLAFOND_VISIOS_FICHE = 300;
 
+/** Au plus ce nombre d'empreintes d'e-mail de demandes lues pour écarter les visios d'une autre ville. */
+const PLAFOND_EMPREINTES_DEMANDES = 5000;
+
+/**
+ * L'état d'envoi au CRM Pro des enregistrements `refs` (`site:tour-demande:<id>`,
+ * `site:calendly_event:<id>`). Lecture seule de `crm_sync_outbox`.
+ *
+ * ⛔ On ne sélectionne JAMAIS `payload` (coordonnées en clair) ni `lastError` : seuls le statut, la
+ * réponse du CRM, la date d'envoi et le nombre de tentatives sortent. `null` si la lecture échoue.
+ */
+export async function etatsCrm(refs: string[]): Promise<LigneCrm[] | null> {
+  if (refs.length === 0) return [];
+  try {
+    return await prisma.crmSyncOutbox.findMany({
+      where: { subjectRef: { in: refs } },
+      select: { subjectRef: true, status: true, crmResult: true, sentAt: true, attempts: true },
+    });
+  } catch {
+    return null;
+  }
+}
+
+/** Les empreintes d'e-mail des demandes de TOUT le Tour (hors effacées). Vide si la lecture échoue. */
+async function empreintesDesDemandesDuTour(): Promise<Set<string>> {
+  try {
+    const lignes = await prisma.tourDemande.findMany({
+      where: { emailHash: { not: null } },
+      select: { emailHash: true },
+      take: PLAFOND_EMPREINTES_DEMANDES,
+    });
+    const empreintes = new Set<string>();
+    for (const l of lignes) {
+      if (l.emailHash !== null) empreintes.add(l.emailHash);
+    }
+    return empreintes;
+  } catch {
+    return new Set<string>();
+  }
+}
+
 /**
  * La fiche d'une ville : ses mini-demandes, et pour chacune la visio rapprochée par l'empreinte de
  * l'e-mail avec les réponses de l'étape 2 (lues dans `raw_payload`, jamais copiées). Lecture
@@ -313,14 +361,28 @@ export async function lireFicheVille(villeCle: string): Promise<FicheVille> {
     visios = [];
   }
 
-  const empreintesPrises = new Set<string>();
-  for (const v of visios) {
-    if (v.status === "canceled") continue;
-    const h = hashEmailForLookup(v.inviteeEmail);
-    if (h !== null) empreintesPrises.add(h);
+  const affichees = lignes.slice(0, PLAFOND_DEMANDES_CONSOLE);
+
+  // « Rendez-vous pris » : comme la page des demandes, par les adresses AFFICHÉES (aucun plafond de
+  // 300). Si cette lecture échoue, on se rabat sur les visios déjà lues.
+  const rendezVous = await empreintesDesRendezVousDuTour(adressesLisibles(affichees));
+  let empreintesPrises: Set<string>;
+  if (rendezVous !== null) {
+    empreintesPrises = rendezVous.empreintes;
+  } else {
+    empreintesPrises = new Set<string>();
+    for (const v of visios) {
+      if (v.status === "canceled") continue;
+      const h = hashEmailForLookup(v.inviteeEmail);
+      if (h !== null) empreintesPrises.add(h);
+    }
   }
 
-  const affichees = lignes.slice(0, PLAFOND_DEMANDES_CONSOLE);
+  const empreintesDemandesDuTour = await empreintesDesDemandesDuTour();
+  const lignesCrm = await etatsCrm([
+    ...affichees.map((l) => refCrmDemande(l.id)),
+    ...visios.map((v) => refCrmVisio(v.id)),
+  ]);
   const demandes: DemandeFiche[] = affichees.map((l) => ({
     id: l.id,
     nom: lireChamp("nom", l.nom),
@@ -343,5 +405,7 @@ export async function lireFicheVille(villeCle: string): Promise<FicheVille> {
   return assemblerFicheVille(demandes, visios, villeCle, {
     tronquee: lignes.length > PLAFOND_DEMANDES_CONSOLE || visios.length >= PLAFOND_VISIOS_FICHE,
     visiosIndisponibles,
+    lignesCrm,
+    empreintesDemandesDuTour,
   });
 }
