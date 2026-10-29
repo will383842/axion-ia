@@ -91,7 +91,7 @@
             "cumulative-layout-shift": [
               "error",
               {
-                "maxNumericValue": 0.25
+                "maxNumericValue": 0.12
               }
             ],
             "total-blocking-time": [
@@ -140,7 +140,7 @@
             "cumulative-layout-shift": [
               "error",
               {
-                "maxNumericValue": 0.2
+                "maxNumericValue": 0.12
               }
             ],
             "total-blocking-time": [
@@ -238,7 +238,7 @@
             "cumulative-layout-shift": [
               "error",
               {
-                "maxNumericValue": 0.22
+                "maxNumericValue": 0.05
               }
             ],
             "total-blocking-time": [
