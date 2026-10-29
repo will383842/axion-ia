@@ -42,7 +42,11 @@ import {
   lireSuivisDesProjets,
 } from "@/features/dossier-client/suivi-prestations";
 import { BandeauOuEnEst } from "@/components/admin/dossier-client/BandeauOuEnEst";
-import { construireBandeau, type LigneBandeau } from "@/features/dossier-client/bandeau-ou-en-est";
+import {
+  construireBandeau,
+  TEXTE_LECTURE_IMPOSSIBLE,
+  type LigneBandeau,
+} from "@/features/dossier-client/bandeau-ou-en-est";
 import { BlocQuestionnaireFiche } from "@/components/admin/dossier-client/BlocQuestionnaireFiche";
 import { lireQuestionnairesDeLaFiche } from "@/features/dossier-client/questionnaires-de-la-fiche";
 import { exportCompletActif } from "@/features/questionnaire-preaudit/export-complet";
@@ -59,7 +63,7 @@ import { AdminPageHeader } from "@/components/admin/ui/AdminPageHeader";
 import { AdminBloc } from "@/components/admin/ui/AdminBloc";
 import { AdminBadge } from "@/components/admin/ui/AdminBadge";
 import { AdminButton } from "@/components/admin/ui/AdminButton";
-import { getClient360, calculerEncoursDuCents } from "@/server/qualiopi/crm/clients";
+import { calculerEncoursDuCents } from "@/server/qualiopi/crm/clients";
 import { opcoDuClient, OPCO_LABELS } from "@/server/qualiopi/financements/opco-referentiel";
 import {
   anneeParis,
@@ -114,6 +118,33 @@ import {
 } from "@/features/dossier-client/queries";
 
 export const dynamic = "force-dynamic";
+
+const COMPTEURS_VIDES: Readonly<Record<string, E.CompteurOnglet>> = {};
+
+/**
+ * Abri d'un emplacement : si sa lecture échoue, la fiche reste affichée et la place dit « Lecture
+ * impossible » (jamais un trou muet). Avec `repli`, c'est cette valeur qui est rendue (compteurs).
+ */
+async function abri<T>(lecture: () => Promise<T>): Promise<T | React.ReactElement>;
+async function abri<T, R>(lecture: () => Promise<T>, repli: R): Promise<T | R>;
+async function abri<T, R>(
+  lecture: () => Promise<T>,
+  repli?: R,
+): Promise<T | R | React.ReactElement> {
+  try {
+    return await lecture();
+  } catch {
+    if (repli !== undefined) return repli;
+    return (
+      <AdminBloc teinte="gris" niveau={3} titre="Lecture impossible">
+        <p role="status" className="text-[length:var(--text-admin-sm)]">
+          Cette partie de la fiche : {TEXTE_LECTURE_IMPOSSIBLE}. Rechargez la page ; le reste de la
+          fiche reste fiable.
+        </p>
+      </AdminBloc>
+    );
+  }
+}
 export const metadata: Metadata = {
   title: "Qualiopi — Fiche client | Axion-IA Admin",
   robots: { index: false, follow: false },
@@ -208,7 +239,7 @@ export default async function FicheClient360Page({ params, searchParams }: PageP
   }
   const sp = (await searchParams) ?? {};
 
-  const client = await getClient360(id);
+  const client = await E.lireClient360Cache(id);
   if (!client) notFound();
 
   const qBase = `/${locale}/${adminPrefix}/qualiopi`;
@@ -328,9 +359,9 @@ export default async function FicheClient360Page({ params, searchParams }: PageP
       await Promise.all([
         lireFaitsDuClient(id),
         projetsLus ?? lireProjetsDuClient(id),
-        E.resumeTaches(ctx),
-        E.resumePrestations(ctx),
-        E.resumeNotes(ctx),
+        abri(() => E.resumeTaches(ctx)),
+        abri(() => E.resumePrestations(ctx)),
+        abri(() => E.resumeNotes(ctx)),
       ]);
     contenuDossier = (
       <>
@@ -350,10 +381,10 @@ export default async function FicheClient360Page({ params, searchParams }: PageP
     );
   } else if (voitEchanges && onglet === "activite") {
     // EMPLACEMENT:ONGLET-ACTIVITE (lot B2)
-    contenuDossier = await E.ongletActivite(ctx);
+    contenuDossier = await abri(() => E.ongletActivite(ctx));
   } else if (voitEchanges && onglet === "questionnaire") {
     const questionnaires = questionnairesLus ?? (await lireQuestionnairesDeLaFiche(id));
-    const enBref = await E.questionnaireEnBref(ctx);
+    const enBref = await abri(() => E.questionnaireEnBref(ctx));
     contenuDossier = (
       <>
         {/* EMPLACEMENT:QUESTIONNAIRE-EN-BREF (lot B10) */}
@@ -454,7 +485,7 @@ export default async function FicheClient360Page({ params, searchParams }: PageP
       lireProjetsDuClient(id),
       lireFusionsDeLaFiche(id),
       lireFichesVivantes(),
-      E.personnesDecision(ctx),
+      abri(() => E.personnesDecision(ctx)),
     ]);
     contenuDossier = (
       <>
@@ -494,10 +525,14 @@ export default async function FicheClient360Page({ params, searchParams }: PageP
   const factures = client.facturesFormation.slice(0, 10);
 
   // Valeurs des emplacements de l'en-tête : rien n'est lu hors `voitEchanges` (régime A2).
-  const enTete = voitEchanges ? await E.enTeteFiche(ctx) : null;
-  const archivage = voitEchanges ? await E.archivageFiche(ctx) : null;
-  // EMPLACEMENT:COMPTEURS (lot B1)
-  const compteurs = voitEchanges ? await E.compteursOnglets(ctx) : {};
+  const [enTete, archivage, compteurs] = voitEchanges
+    ? await Promise.all([
+        abri(() => E.enTeteFiche(ctx)),
+        abri(() => E.archivageFiche(ctx)),
+        // EMPLACEMENT:COMPTEURS (lot B1)
+        abri(() => E.compteursOnglets(ctx), COMPTEURS_VIDES),
+      ])
+    : ([null, null, COMPTEURS_VIDES] as const);
 
   const statutClient = CLIENT_STATUT[client.statut];
   const adresseStructuree = [
@@ -570,8 +605,9 @@ export default async function FicheClient360Page({ params, searchParams }: PageP
           <>
             {/* Le wizard pré-sélectionne le client (?clientId=) : le parcours
                 de vente démarre depuis la fiche, sans re-chercher le client. */}
-            {/* Bouton principal (un seul plein à la fois) : l'envoi du questionnaire, SANS
-                rendez-vous. Il ouvre la page d'aperçu ; rien ne part sans le clic « Envoyer ». */}
+            {/* Envoi du questionnaire, SANS rendez-vous : bouton secondaire (aucun bouton plein quand le
+                lecteur voit les échanges). Il ouvre la page d'aperçu ; rien ne part sans le clic
+                « Envoyer ». */}
             {voitEchanges ? (
               <AdminButton variant="secondary" href={`${ficheHref}/questionnaire`}>
                 Envoyer le questionnaire

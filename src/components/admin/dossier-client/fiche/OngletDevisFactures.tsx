@@ -284,7 +284,7 @@ export function OngletDevisFactures({
         <SectionTitre titre="Devis" toutVoirHref={`${qBase}/devis`} />
         <BandeauAttributionPartners texte={bandeauPartners} />
         {/* EMPLACEMENT:RELANCE-DEVIS (lot B9) */}
-        <RelanceDevis ctx={ctx} devis={client.devis} />
+        {ctx.voitEchanges ? <RelanceDevis ctx={ctx} devis={client.devis} /> : null}
         {client.devis.length === 0 ? (
           <SectionVide message="Aucun devis." />
         ) : (

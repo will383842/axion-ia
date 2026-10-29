@@ -1,13 +1,10 @@
 /**
  * Les emplacements de la fiche client, tous vides (lot 0). Les tests de la page simulent
- * `fiche/emplacements` avec cet objet : les fonctions async rendent `null`, les composants
- * déplacés (`ActionsDeLaPersonne`, `OngletDevisFactures`, `RelanceDevis`) sont les vrais.
- * Seul le lot 0 modifie ce fichier.
+ * `fiche/emplacements` avec cet objet : les fonctions async rendent `null`, et les trois composants
+ * (`ActionsDeLaPersonne`, `OngletDevisFactures`, `RelanceDevis`) sont des BOUCHONS qui rendent `null`.
+ * Les specs qui ont besoin du vrai onglet Devis et factures prennent `emplacementsAvecOngletReel()`.
+ * `lireClient360Cache` relaie vers `getClient360` (simulé ou non par la spec). Seul le lot 0 modifie ce fichier.
  */
-
-import { ActionsDeLaPersonne } from "@/components/admin/dossier-client/fiche/ActionsDeLaPersonne";
-import { OngletDevisFactures } from "@/components/admin/dossier-client/fiche/OngletDevisFactures";
-import { RelanceDevis } from "@/components/admin/dossier-client/fiche/RelanceDevis";
 
 export const emplacementsVides = {
   enTeteFiche: async () => null,
@@ -21,7 +18,17 @@ export const emplacementsVides = {
   personnesDecision: async () => null,
   questionnaireEnBref: async () => null,
   archivageFiche: async () => null,
-  ActionsDeLaPersonne,
-  OngletDevisFactures,
-  RelanceDevis,
+  lireClient360Cache: async (id: string) =>
+    (await import("@/server/qualiopi/crm/clients")).getClient360(id),
+  ActionsDeLaPersonne: (): null => null,
+  OngletDevisFactures: (): null => null,
+  RelanceDevis: (): null => null,
 };
+
+/** Emplacements vides, mais avec le VRAI onglet Devis et factures (déplacé dans `fiche/`). */
+export async function emplacementsAvecOngletReel() {
+  const { OngletDevisFactures } = await import(
+    "@/components/admin/dossier-client/fiche/OngletDevisFactures"
+  );
+  return { ...emplacementsVides, OngletDevisFactures };
+}

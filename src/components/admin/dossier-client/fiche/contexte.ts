@@ -4,7 +4,15 @@
  * et seulement si `voitEchanges` (régime A2).
  */
 
+import { cache } from "react";
 import type { RoleAdmin } from "@/server/auth/habilitations";
+import { getClient360 } from "@/server/qualiopi/crm/clients";
+
+/**
+ * Lecture du client 360 mise en cache PAR REQUÊTE (React `cache`) : la page et les emplacements
+ * (B1…) la partagent, la requête lourde n'est faite qu'une fois par affichage.
+ */
+export const lireClient360Cache = cache((id: string) => getClient360(id));
 
 export interface ContexteFiche {
   readonly clientId: string;

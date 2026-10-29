@@ -10,7 +10,7 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 const d = vi.hoisted(() => ({ session: null as unknown }));
 
 vi.mock("@/components/admin/dossier-client/fiche/emplacements", async () => ({
-  ...(await import("./_emplacements-vides")).emplacementsVides,
+  ...(await (await import("./_emplacements-vides")).emplacementsAvecOngletReel()),
 }));
 vi.mock("@/auth", () => ({ auth: () => Promise.resolve(d.session) }));
 vi.mock("next/navigation", () => ({
@@ -53,6 +53,7 @@ import { rendreFiche } from "./_fiche-client-rendu";
 
 beforeEach(() => vi.clearAllMocks());
 
+// Titres de section (balise h2) : « Devis » seul se trouverait dans n'importe quel texte.
 const SECTIONS = [
   "Sessions de formation",
   "Contrats de coaching",
@@ -68,7 +69,7 @@ describe("l'onglet Devis et factures, emplacements vides", () => {
   it("rend les huit sections", async () => {
     d.session = { user: { id: "u1", role: "admin" } };
     const html = await rendreFiche(Page, "devis-factures");
-    for (const titre of SECTIONS) expect(html).toContain(titre);
+    for (const titre of SECTIONS) expect(html).toMatch(new RegExp(`<h2[^>]*>${titre}</h2>`));
   });
 });
 
