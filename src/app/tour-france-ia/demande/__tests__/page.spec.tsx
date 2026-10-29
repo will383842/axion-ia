@@ -58,13 +58,13 @@ describe("la page de la demande", () => {
   it("bouton terracotta (texte clair), contour des champs marqué, focus terracotta", async () => {
     const { container } = await rendre();
     const bouton = container.querySelector('button[type="submit"]');
-    expect(bouton?.className).toMatch(/bg-terracotta/);
-    expect(bouton?.className).toMatch(/text-paper/);
+    expect(bouton?.className).toMatch(/\bbg-terracotta\b/);
+    expect(bouton?.className).toMatch(/\btext-paper\b/);
     expect(bouton?.className).not.toMatch(/bg-primary/);
     for (const nom of ["nom", "email", "telephone", "ville"]) {
       const cl = container.querySelector(`input[name="${nom}"]`)?.className ?? "";
-      expect(cl, nom).toMatch(/border-border-field/);
-      expect(cl, nom).toMatch(/min-h-12/);
+      expect(cl, nom).toMatch(/\bborder-border-field\b/);
+      expect(cl, nom).toMatch(/\bmin-h-12\b/);
       expect(cl, nom).toMatch(/focus-visible:outline-terracotta/);
     }
   });
