@@ -1,4 +1,4 @@
-// Tour France IA : la durée minimale d'une demande réussie (anti-oracle).
+// Tour France IA : la durée minimale de chaque réponse (réussite, champs invalides, limite atteinte) (anti-oracle).
 //
 // Une adresse déjà connue prend un autre chemin en base qu'une adresse neuve, donc un autre temps.
 // L'action attend jusqu'à `DUREE_MINIMALE_MS` depuis son début avant de rediriger : la réponse a la
