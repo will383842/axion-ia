@@ -7,7 +7,7 @@
 //   1. champ leurre rempli → trace (`signalerHoneypot`), puis la MÊME redirection que pour tout le
 //      monde, SANS rien enregistrer : le robot n'apprend rien, et un humain pris au piège arrive
 //      quand même au calendrier (la visio, elle, se prend ensuite sans cette demande) ;
-//   2. 5 demandes, pas plus, par heure et par empreinte d'adresse IP. Si le compteur (Redis) est en
+//   2. 10 demandes, pas plus, par heure et par empreinte d'adresse IP. Si le compteur (Redis) est en
 //      panne, on REFUSE : sans lui, rien ne limite l'inondation de la table ;
 //   3. validation (longueurs, e-mail, téléphone) → `?erreur=champs`, sans aucune donnée dans l'URL ;
 //   4. enregistrement (`enregistrerDemande`) puis jeton signé de 30 minutes ; une panne de la base
@@ -35,8 +35,8 @@ import { lireSuiviArrivee } from "@/server/calendly/choix-rendez-vous";
 import { attendreDureeMinimale } from "./attente";
 import { CHEMIN_DEMANDE, CHEMIN_RENDEZ_VOUS, META } from "../contenu";
 
-/** 5 demandes par heure et par adresse IP ; compteur en panne : refus. */
-const LIMITE_DEMANDES: RateLimitConfig = { limit: 5, windowSec: 3600, surPanne: "refuser" };
+/** 10 demandes par heure et par adresse IP ; compteur en panne : refus. */
+const LIMITE_DEMANDES: RateLimitConfig = { limit: 10, windowSec: 3600, surPanne: "refuser" };
 
 const FORME_TELEPHONE = /^[0-9 +().-]{8,20}$/;
 
@@ -125,7 +125,10 @@ export async function envoyerDemandeTour(formData: FormData): Promise<void> {
   // 2. La limite.
   const ipHash = empreinteDeLIp(await getClientIp());
   const limite = await checkRateLimit(`tour-demande:${ipHash}`, LIMITE_DEMANDES);
-  if (!limite.allowed) redirect(versLErreur(suivi, "trop"));
+  if (!limite.allowed) {
+    await attendreDureeMinimale(debut);
+    redirect(versLErreur(suivi, "trop"));
+  }
 
   // 3. La validation.
   const lue = ENTREE.safeParse({
@@ -134,7 +137,10 @@ export async function envoyerDemandeTour(formData: FormData): Promise<void> {
     telephone: texte(formData, "telephone"),
     ville: texte(formData, "ville"),
   });
-  if (!lue.success) redirect(versLErreur(suivi, "champs"));
+  if (!lue.success) {
+    await attendreDureeMinimale(debut);
+    redirect(versLErreur(suivi, "champs"));
+  }
   const entree = lue.data;
 
   // 4. L'enregistrement. Jamais de `redirect` dans ce bloc.

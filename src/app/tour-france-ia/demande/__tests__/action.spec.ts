@@ -97,19 +97,21 @@ describe("la mini-demande du Tour", () => {
     expect(url.pathname).toBe("/tour-france-ia/demande");
     expect(url.searchParams.get("erreur")).toBe("trop");
     expect(mocks.enregistrerDemande).not.toHaveBeenCalled();
+    expect(mocks.attendre).toHaveBeenCalledTimes(1);
   });
 
   it("Redis en panne : la limite est demandée en mode « refuser », et le refus tient", async () => {
     mocks.checkRateLimit.mockResolvedValue({ allowed: false, panne: true });
     const url = await destination(formulaire());
     expect(url.searchParams.get("erreur")).toBe("trop");
+    expect(mocks.attendre).toHaveBeenCalledTimes(1);
     const [cle, config] = mocks.checkRateLimit.mock.calls[0] as [
       string,
       { limit: number; windowSec: number; surPanne: string },
     ];
     expect(cle).toMatch(/^tour-demande:/);
     expect(cle).not.toContain("203.0.113.7");
-    expect(config).toMatchObject({ limit: 5, windowSec: 3600, surPanne: "refuser" });
+    expect(config).toMatchObject({ limit: 10, windowSec: 3600, surPanne: "refuser" });
   });
 
   it.each([
@@ -125,6 +127,7 @@ describe("la mini-demande du Tour", () => {
     expect(url.searchParams.get("erreur")).toBe("champs");
     expect(url.search).not.toMatch(/Claire|Exemple|Lyon|0612|06%2012/);
     expect(mocks.enregistrerDemande).not.toHaveBeenCalled();
+    expect(mocks.attendre).toHaveBeenCalledTimes(1);
   });
 
   it("succès : enregistre, signe un jeton, redirige avec depuis, utm et j", async () => {
@@ -163,6 +166,7 @@ describe("la mini-demande du Tour", () => {
     expect(url.pathname).toBe("/fr/appel/tour-france-ia");
     expect(url.searchParams.get("depuis")).toBe("tdf-heros");
     expect(url.searchParams.get("j")).toBeNull();
+    expect(mocks.attendre).toHaveBeenCalledTimes(1);
   });
 
   it("adresse connue ou neuve : même redirection, après la même attente minimale", async () => {
