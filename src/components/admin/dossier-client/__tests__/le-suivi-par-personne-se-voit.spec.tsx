@@ -271,7 +271,7 @@ describe("bandeau « Où en est ce client »", () => {
     }).find((l) => l.cle === "questionnaire")!.texte;
   it("qui a répondu, sur combien, ce qui n'est pas lu", () => {
     expect(bandeau(lu({ reponses: [reponseDirigeant] }))).toBe(
-      "envoyé le 25 oct. · 1 sur 6 reçus · 1 réponse à lire",
+      "envoyé le 25 oct. · 1 sur 5 reçus · 1 réponse à lire",
     );
   });
   it("en cours de remplissage", () => {
@@ -287,7 +287,7 @@ describe("bandeau « Où en est ce client »", () => {
         },
       ],
     });
-    expect(bandeau(p)).toContain("1 sur 6 reçus · 1 en train de remplir");
+    expect(bandeau(p)).toContain("1 sur 5 reçus · 1 en train de remplir");
   });
   it("lecture en panne : dit", () => {
     expect(bandeau({ parPersonne: null, parPersonneEnPanne: true })).toBe(

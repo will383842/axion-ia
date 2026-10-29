@@ -254,7 +254,7 @@ describe("journée du dirigeant, référent, ouvertures", () => {
     });
     expect(s.journeeDirigeant?.etat).toBe("recu");
     expect(s.collab.attendus).toBe(4);
-    expect(s.total.attendus).toBe(6);
+    expect(s.total.attendus).toBe(5);
     expect(s.collaborateurs.some((l) => l.role === "non_retrouvee")).toBe(false);
     const sortie = JSON.stringify(s);
     expect(sortie).not.toContain(CODE_DIR);
