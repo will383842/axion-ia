@@ -129,6 +129,7 @@ const DESTINATAIRE_PAR_GABARIT: Readonly<Record<string, Destinataire>> = {
   "qualiopi-enquete-entreprise": "entreprise",
   "convention-envoi": "entreprise",
   "devis-envoi": "entreprise",
+  "relance-devis-client": "entreprise",
   "facture-envoi": "entreprise",
   "facture-pieces-remboursement-opco": "entreprise",
   "opco-suivi-entreprise": "entreprise",

@@ -111,6 +111,7 @@ import {
   QualiopiRelanceImpayeeEmail,
   qualiopiRelanceImpayeeSubject,
 } from "./qualiopi-relance-impayee";
+import { RelanceDevisClientEmail, relanceDevisClientSubject } from "./relance-devis-client";
 import {
   QualiopiAlerteInterneEmail,
   qualiopiAlerteInterneSubject,
@@ -520,6 +521,11 @@ const TEMPLATES: TemplateMap = {
   },
   // Hub facturation — envois MANUELS admin (PDF joint par le worker, clé R2).
   "devis-envoi": { subject: devisEnvoiSubject, component: DevisEnvoiEmail },
+  // Lot B9 : relance de devis, toujours garée « à valider » par l'action de la fiche client.
+  "relance-devis-client": {
+    subject: relanceDevisClientSubject,
+    component: RelanceDevisClientEmail,
+  },
   "convention-envoi": { subject: conventionEnvoiSubject, component: ConventionEnvoiEmail },
   "piece-exemplaire-signe": {
     subject: pieceExemplaireSigneSubject,
