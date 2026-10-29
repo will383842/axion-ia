@@ -103,7 +103,7 @@ const TITLES: Record<NotificationCategory, string> = {
   NEWSLETTER_UNSUBSCRIBED: "Newsletter — désinscription",
   GUIDE_REQUESTED: "Guide IA — demande",
   TOUR_DEMANDE_RECUE: "Tour France IA : nouvelle demande",
-  TOUR_VILLE_OUVERTE: "Tour France IA : VILLE OUVERTE (5 sur 5)",
+  TOUR_VILLE_OUVERTE: "Tour France IA : VILLE OUVERTE",
   GUIDE_RECAP: "Guide IA — récapitulatif du jour",
   BOOKING_CREATED: "Nouvelle réservation",
   BOOKING_CANCELLED: "Réservation annulée",
@@ -795,8 +795,8 @@ function formatBody(event: NotificationEvent): string {
           "Voir en console",
           lienConsole(
             p.villeCle === null
-              ? "tunnels/tour/villes"
-              : `tunnels/tour/villes/fiche?ville=${encodeURIComponent(p.villeCle)}`,
+              ? "tunnels/tour/demandes"
+              : `tunnels/tour/demandes?ville=${encodeURIComponent(p.villeCle)}`,
           ),
         ),
       ]

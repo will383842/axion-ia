@@ -386,8 +386,9 @@ describe("Tour France IA : alertes minimisées", () => {
     expect(t).toContain("3 sur 5");
     expect(t).toContain("Compte pour la ville");
     expect(t).toContain("oui");
-    expect(t).toContain("tunnels/tour/villes/fiche");
-    expect(t).toContain("ville\=lyon");
+    expect(t).toContain("tunnels/tour/demandes");
+    expect(t).not.toContain("fiche");
+    expect(t).toContain(String.raw`ville\=lyon`);
   });
 
   it("doublon : « non (déjà comptée) » ; ville hors liste : lien vers la liste des villes", () => {
@@ -401,9 +402,9 @@ describe("Tour France IA : alertes minimisées", () => {
         compte: false,
       },
     });
-    expect(t).toContain("non \(déjà comptée\)");
+    expect(t).toContain(String.raw`non \(déjà comptée\)`);
     expect(t).toContain("ville hors liste");
-    expect(t).toContain("tunnels/tour/villes");
+    expect(t).toContain("tunnels/tour/demandes");
     expect(t).not.toContain("fiche");
   });
 
@@ -413,6 +414,7 @@ describe("Tour France IA : alertes minimisées", () => {
       payload: { ville: "Lyon", villeCle: "lyon", comptees: 5, seuil: 5 },
     });
     expect(t).toContain("VILLE OUVERTE");
+    expect(t).not.toContain("(5 sur 5)");
     expect(t).toContain("5 sur 5");
   });
 });

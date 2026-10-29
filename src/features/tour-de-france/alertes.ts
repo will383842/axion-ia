@@ -13,8 +13,8 @@
  * 🔑 L'envoi part APRÈS la réponse (`after`), et rien ici ne lève jamais : l'action ne change ni
  * sa redirection ni sa durée (anti-oracle). Sans migration : le compte se relit dans la table.
  *
- * ⚠️ Interrupteur `TOUR_TELEGRAM_ENABLED` : ALLUMÉ PAR DÉFAUT, seule la valeur "false" l'éteint
- * (décision de Will ; le reste du dépôt fait l'inverse).
+ * ⚠️ Interrupteur `TOUR_TELEGRAM_ENABLED` : ALLUMÉ PAR DÉFAUT, seule la valeur « false » l'éteint
+ * (casse et espaces ignorés ; décision de Will ; le reste du dépôt fait l'inverse).
  */
 
 import * as Sentry from "@sentry/nextjs";
@@ -25,7 +25,7 @@ import { notify } from "@/server/notifications";
 import { SEUIL_PAR_VILLE } from "./comptage";
 import type { DemandeEnregistree } from "./enregistrer";
 
-/** Vrai tant que `TOUR_TELEGRAM_ENABLED` n'est pas exactement « false ». */
+/** Vrai sauf si `TOUR_TELEGRAM_ENABLED` vaut « false » (casse et espaces ignorés). */
 export function tourTelegramActif(): boolean {
   return (process.env.TOUR_TELEGRAM_ENABLED ?? "").trim().toLowerCase() !== "false";
 }
