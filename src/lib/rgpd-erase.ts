@@ -2538,7 +2538,7 @@ export async function ecarterQuestionnairePreauditMembre(
 
 /**
  * Effacement DÉFINITIF des réponses d'UN salarié ou du référent informatique au questionnaire de
- * pré-audit (2026-10-24) : il n'a pas d'adresse dans nos tables, le code `membre` (affiché par la
+ * pré-audit (2026-10-24) : il n'a pas d'adresse dans nos tables (l'éventuelle adresse pro est dans sa réponse chiffrée et part avec elle à l'effacement), le code `membre` (affiché par la
  * console à côté de sa réponse) et la référence du questionnaire l'identifient.
  * ⛔ Clic de Will SEULEMENT (console, super-administrateur), après la mise à l'écart
  * (`ecarterQuestionnairePreauditMembre`) : jamais appelé par une tâche ni automatiquement.

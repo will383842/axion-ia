@@ -414,6 +414,7 @@ export function SuiviParPersonne({
   ficheHref,
   afficherOuvertures,
   voitBrouillons,
+  voitAdresses,
   peutExporter,
   lireBrouillon,
 }: {
@@ -423,6 +424,8 @@ export function SuiviParPersonne({
   afficherOuvertures: boolean;
   /** Super-administrateur, interrupteur allumé : peut voir les noms tirés d'un brouillon. */
   voitBrouillons: boolean;
+  /** Super-administrateur : voit l'adresse e-mail pro et le lien « Écrire » (mailto, rien n'est envoyé). */
+  voitAdresses: boolean;
   /** Super-administrateur, interrupteur d'export allumé. */
   peutExporter: boolean;
   lireBrouillon: ActionLireBrouillon | undefined;
@@ -439,7 +442,19 @@ export function SuiviParPersonne({
     {
       key: "personne",
       header: "Personne",
-      cell: ({ titre }) => <span className="font-medium">{titre}</span>,
+      cell: ({ l, titre }) => (
+        <>
+          <span className="font-medium">{titre}</span>
+          {voitAdresses && l.email !== null ? (
+            <span className="block text-[length:var(--text-admin-xs)]">
+              {l.email}{" "}
+              <a className="admin-link" href={`mailto:${encodeURIComponent(l.email)}`}>
+                Écrire
+              </a>
+            </span>
+          ) : null}
+        </>
+      ),
     },
     { key: "lien", header: "Lien", cell: ({ l }) => texteDuLien(l, q) },
     { key: "ouvert", header: "Ouvert", cell: ({ l }) => texteOuvert(l, s, afficherOuvertures) },
@@ -499,6 +514,12 @@ export function SuiviParPersonne({
           getRowId={({ l }) => l.cle}
           caption="Réponses attendues, personne par personne"
         />
+        {voitAdresses ? (
+          <p className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
+            Les adresses ne sont visibles que de vous. Rien n&apos;est envoyé par le système : «
+            Écrire » ouvre votre messagerie.
+          </p>
+        ) : null}
         <p className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
           Taux = questions essentielles de son parcours (celles que tout le monde voit sans cliquer
           « Aller plus loin »).

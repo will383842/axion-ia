@@ -396,3 +396,43 @@ describe("résumé en clair : cas limites", () => {
     expect(t).toContain("facultatif");
   });
 });
+
+describe("adresse e-mail et lien « Écrire » (Will seul)", () => {
+  const equipeMail = equipe.map((p, i) =>
+    i === 1 ? { ...p, email: "bruno@exemple-fictif.fr" } : p,
+  );
+  const rep: EntreeReponse = {
+    ...reponseDirigeant,
+    charge: { membre: CODE_DIR, donnees: { equipe: equipeMail, ent_effectif: "20 à 49" } },
+  };
+  const rendu = (voitAdresses: boolean) =>
+    render(
+      <BlocQuestionnaireFiche
+        questionnaires={[q({ ...lu({ reponses: [rep] }) })]}
+        adminPrefix="console"
+        ficheHref="/fr/console/qualiopi/clients/c1"
+        afficherOuvertures
+        voitAdresses={voitAdresses}
+        peutExporter={false}
+      />,
+    ).container;
+
+  it("visible avec un lien mailto pour Will", () => {
+    const c = rendu(true);
+    expect(c.textContent).toContain("bruno@exemple-fictif.fr");
+    expect(c.textContent).toContain("Les adresses ne sont visibles que de vous.");
+    const a = Array.from(c.querySelectorAll("a")).find((x) => x.textContent === "Écrire");
+    expect(a?.getAttribute("href")?.startsWith("mailto:")).toBe(true);
+    expect(a?.getAttribute("href")).toContain(encodeURIComponent("bruno@exemple-fictif.fr"));
+  });
+  it("cachée pour les autres", () => {
+    const c = rendu(false);
+    expect(c.textContent).not.toContain("bruno@exemple-fictif.fr");
+    expect(c.textContent).not.toContain("Les adresses ne sont visibles");
+    expect(
+      Array.from(c.querySelectorAll("a")).some((x) =>
+        x.getAttribute("href")?.startsWith("mailto:"),
+      ),
+    ).toBe(false);
+  });
+});

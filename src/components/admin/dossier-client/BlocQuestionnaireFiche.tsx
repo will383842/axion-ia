@@ -43,6 +43,7 @@ export function BlocQuestionnaireFiche({
   afficherOuvertures = false,
   lireBrouillon,
   voitBrouillons = false,
+  voitAdresses = false,
   peutExporter = false,
 }: {
   questionnaires: ReadonlyArray<QuestionnaireDeLaFiche>;
@@ -58,6 +59,7 @@ export function BlocQuestionnaireFiche({
   lireBrouillon?: ActionLireBrouillon;
   /** Super-administrateur, interrupteur du suivi allumé : voit aussi les noms tirés d'un brouillon. */
   voitBrouillons?: boolean;
+  voitAdresses?: boolean;
   /** Super-administrateur, interrupteur d'export allumé : lien « Télécharger une copie ». */
   peutExporter?: boolean;
 }): React.ReactElement | null {
@@ -104,6 +106,7 @@ export function BlocQuestionnaireFiche({
                   ficheHref={ficheHref}
                   afficherOuvertures={afficherOuvertures}
                   voitBrouillons={voitBrouillons}
+                  voitAdresses={voitAdresses}
                   peutExporter={peutExporter}
                   lireBrouillon={lireBrouillon}
                 />
