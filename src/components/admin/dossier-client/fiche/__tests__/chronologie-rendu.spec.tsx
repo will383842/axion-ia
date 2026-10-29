@@ -65,7 +65,46 @@ describe("Chronologie", () => {
     ]);
     expect(html).toContain("à Camille Roux");
     expect(html).toContain("Voir la copie");
-    expect(html).not.toMatch(/@/);
+  });
+  it("une adresse et un corps présents dans la donnée n'arrivent jamais au HTML", () => {
+    const piege = {
+      ...ev("email", {
+        destinataire: "Camille Roux",
+        lien: "/fr/adm/emails-envoyes/1",
+        libelleLien: "Voir la copie",
+      }),
+      recipient: "camille@exemple.fr",
+      corps: "CORPS-PIEGE confidentiel",
+      html: "<p>CORPS-PIEGE</p>",
+    } as EvenementActivite;
+    const out = rendre([piege]);
+    expect(out).toContain("à Camille Roux");
+    expect(out).not.toContain("camille@exemple.fr");
+    expect(out).not.toContain("CORPS-PIEGE");
+    expect(out).not.toMatch(/@/);
+  });
+  it("notes épinglées : bloc à part, jours non répétés, clés distinctes", () => {
+    const epi = ev("note", {
+      cle: "n-epi",
+      epinglee: true,
+      date: new Date("2026-10-03T14:00:00Z"),
+    });
+    const jours = grouperParJour(
+      [
+        ev("note", { cle: "n1", date: new Date("2026-10-05T10:00:00Z") }),
+        ev("note", { cle: "n2", date: new Date("2026-10-03T09:00:00Z") }),
+      ],
+      ref,
+    );
+    const html = renderToStaticMarkup(<Chronologie jours={jours} epinglees={[epi]} />);
+    expect(html.indexOf("Épinglées")).toBeGreaterThan(-1);
+    expect(html.indexOf("Épinglées")).toBeLessThan(html.indexOf("5 oct."));
+    expect(html.match(/3 oct\./g)).toHaveLength(1);
+  });
+  it("un message Telegram n'est jamais appelé « E-mail »", () => {
+    const html = rendre([ev("message", { mot: "Message Telegram" })]);
+    expect(html).toContain("<span>Message Telegram</span>");
+    expect(html).not.toContain("<span>E-mail</span>");
   });
 });
 
@@ -83,6 +122,7 @@ describe("FiltresActivite", () => {
 
 describe("Onglet E-mails", () => {
   const e = (cle: string, plus: Partial<EchangeDuFil>): EchangeDuFil => ({
+    ...{ recipient: "camille@exemple.fr", corps: "CORPS-PIEGE" },
     cle,
     genre: "email",
     date: new Date("2026-10-25T10:05:00Z"),
@@ -114,6 +154,7 @@ describe("Onglet E-mails", () => {
       />,
     );
     expect(html).not.toMatch(/@/);
+    expect(html).not.toContain("CORPS-PIEGE");
     expect(html).toContain("à Camille Roux");
     expect(html).toContain("Voir la copie");
     expect(html).toContain("Objet 1");

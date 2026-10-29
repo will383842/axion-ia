@@ -9,6 +9,7 @@ export const TEINTE_NUANCE: Readonly<Record<NuanceActivite, string>> = {
   fait: t("vert"),
   a_valider: t("terracotta"),
   a_faire: t("terracotta"),
+  probleme: t("terracotta"),
   en_retard: t("terracotta"),
   neutre: t("gris"),
   argent: t("ambre"),

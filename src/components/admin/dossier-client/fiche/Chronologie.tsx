@@ -3,7 +3,7 @@
 // ET un mot, jamais la couleur seule. Jamais d'adresse e-mail ni de corps de message.
 
 import Link from "next/link";
-import { CalendarDays, ListChecks, Mail, StickyNote, Wallet } from "lucide-react";
+import { CalendarDays, ListChecks, Mail, MessageSquare, StickyNote, Wallet } from "lucide-react";
 
 import type {
   EvenementActivite,
@@ -16,6 +16,7 @@ import { TEINTE_NUANCE } from "./teintes-activite";
 const ICONE = {
   rendez_vous: CalendarDays,
   email: Mail,
+  message: MessageSquare,
   note: StickyNote,
   tache: ListChecks,
   argent: Wallet,
@@ -24,6 +25,7 @@ const ICONE = {
 const MOT: Readonly<Record<TypeActivite, string>> = {
   rendez_vous: "Rendez-vous",
   email: "E-mail",
+  message: "Message",
   note: "Note",
   tache: "Tâche",
   argent: "Argent",
@@ -50,13 +52,13 @@ const heure = (d: Date): string =>
 
 function Montant({ m }: { m: NonNullable<EvenementActivite["montant"]> }): React.ReactElement {
   if (m.base === "ttc") {
-    return <span className="font-medium tabular-nums">{ttcSeul(m.cents)}</span>;
+    return <span className="block font-medium tabular-nums">{ttcSeul(m.cents)}</span>;
   }
   const { ht, ttc } = htEtTtc(m.cents);
   return (
-    <span className="tabular-nums">
-      <span className="font-medium">{ht}</span>{" "}
-      <span className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
+    <span className="block tabular-nums">
+      <span className="font-medium">{ht}</span>
+      <span className="block text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
         {ttc}
       </span>
     </span>
@@ -71,7 +73,7 @@ function Ligne({ e }: { e: EvenementActivite }): React.ReactElement {
         className={`inline-flex min-h-[44px] items-center gap-[var(--space-admin-2)] rounded-full border px-[var(--space-admin-3)] ${TEINTE_NUANCE[e.nuance]}`}
       >
         <Icone size={14} aria-hidden="true" />
-        <span>{MOT[e.type]}</span>
+        <span>{e.mot ?? MOT[e.type]}</span>
       </span>
       <div className="min-w-0 flex-1">
         <p className="font-medium break-words">{e.titre}</p>
@@ -93,14 +95,35 @@ function Ligne({ e }: { e: EvenementActivite }): React.ReactElement {
   );
 }
 
+function Jours({ jours }: { jours: ReadonlyArray<JourDeChronologie> }): React.ReactElement {
+  return (
+    <ol aria-label="Activité de la fiche" className="space-y-[var(--space-admin-4)]">
+      {jours.map((j, i) => (
+        <li key={`${j.jour}-${i}`}>
+          <h3 className="text-[length:var(--text-admin-sm)] font-semibold">{j.libelle}</h3>
+          <ul className="divide-y divide-[color:var(--color-admin-border)]">
+            {j.evenements.map((e) => (
+              <Ligne key={e.cle} e={e} />
+            ))}
+          </ul>
+        </li>
+      ))}
+    </ol>
+  );
+}
+
 export function Chronologie({
   jours,
+  epinglees = [],
   sourcesEnPanne = 0,
 }: {
   jours: ReadonlyArray<JourDeChronologie>;
+  /** Notes épinglées (filtre Notes) : bloc à part, liste plate, avant le regroupement par jour. */
+  epinglees?: ReadonlyArray<EvenementActivite>;
   /** Sources en panne : la chronologie est incomplète, et on le dit. */
   sourcesEnPanne?: number;
 }): React.ReactElement {
+  const vide = jours.length === 0 && epinglees.length === 0;
   return (
     <div>
       {sourcesEnPanne > 0 ? (
@@ -108,25 +131,28 @@ export function Chronologie({
           <span>Une partie de l&apos;activité n&apos;a pas pu être lue.</span>
         </p>
       ) : null}
-      {jours.length === 0 ? (
+      {vide ? (
         sourcesEnPanne > 0 ? null : (
           <p className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
             Aucune activité pour l&apos;instant.
           </p>
         )
       ) : (
-        <ol aria-label="Activité de la fiche" className="space-y-[var(--space-admin-4)]">
-          {jours.map((j) => (
-            <li key={j.jour}>
-              <h3 className="text-[length:var(--text-admin-sm)] font-semibold">{j.libelle}</h3>
+        <>
+          {epinglees.length > 0 ? (
+            <section aria-labelledby="notes-epinglees" className="mb-[var(--space-admin-4)]">
+              <h3 id="notes-epinglees" className="text-[length:var(--text-admin-sm)] font-semibold">
+                Épinglées
+              </h3>
               <ul className="divide-y divide-[color:var(--color-admin-border)]">
-                {j.evenements.map((e) => (
+                {epinglees.map((e) => (
                   <Ligne key={e.cle} e={e} />
                 ))}
               </ul>
-            </li>
-          ))}
-        </ol>
+            </section>
+          ) : null}
+          {jours.length > 0 ? <Jours jours={jours} /> : null}
+        </>
       )}
     </div>
   );

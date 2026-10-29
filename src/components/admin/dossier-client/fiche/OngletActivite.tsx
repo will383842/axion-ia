@@ -7,12 +7,13 @@
 import type { ContexteFiche } from "./contexte";
 import { Chronologie } from "./Chronologie";
 import { FiltresActivite } from "./FiltresActivite";
-import { lireChronologie } from "@/features/dossier-client/fiche/lire-chronologie";
+import { PAR_SOURCE, lireChronologie } from "@/features/dossier-client/fiche/lire-chronologie";
 import {
   compterParFiltre,
   filtrer,
   grouperParJour,
   lireFiltre,
+  separerEpinglees,
 } from "@/features/dossier-client/fiche/chronologie";
 
 export async function ongletActivite(ctx: ContexteFiche): Promise<React.ReactElement | null> {
@@ -23,7 +24,11 @@ export async function ongletActivite(ctx: ContexteFiche): Promise<React.ReactEle
     ctx.adminPrefix,
     ctx.maintenant,
   );
-  const jours = grouperParJour(filtrer(evenements, filtre), ctx.maintenant);
+  const gardes = filtrer(evenements, filtre);
+  // Filtre « Notes » : les épinglées forment un bloc à part ; les autres restent par jour.
+  const { epinglees, autres } =
+    filtre === "notes" ? separerEpinglees(gardes) : { epinglees: [], autres: gardes };
+  const jours = grouperParJour(autres, ctx.maintenant);
   return (
     <section aria-labelledby="activite-titre" className="admin-carte">
       <h2 id="activite-titre" className="admin-carte-titre mb-[var(--space-admin-3)]">
@@ -34,7 +39,10 @@ export async function ongletActivite(ctx: ContexteFiche): Promise<React.ReactEle
         actif={filtre}
         compteurs={compterParFiltre(evenements)}
       />
-      <Chronologie jours={jours} sourcesEnPanne={sourcesEnPanne} />
+      <p className="mb-[var(--space-admin-3)] text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
+        Les compteurs s&apos;arrêtent à {PAR_SOURCE} éléments par source.
+      </p>
+      <Chronologie jours={jours} epinglees={epinglees} sourcesEnPanne={sourcesEnPanne} />
     </section>
   );
 }

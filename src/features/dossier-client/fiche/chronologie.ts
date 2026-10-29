@@ -7,7 +7,7 @@
  * ni le corps. Le texte d'une note n'arrive ici que déjà déchiffré par la lecture.
  */
 
-export type TypeActivite = "rendez_vous" | "email" | "note" | "tache" | "argent";
+export type TypeActivite = "rendez_vous" | "email" | "message" | "note" | "tache" | "argent";
 
 export type FiltreActivite = "tout" | "rendez-vous" | "emails" | "notes" | "taches" | "argent";
 
@@ -34,6 +34,7 @@ export type NuanceActivite =
   | "fait" // vert
   | "a_valider" // terracotta
   | "a_faire" // terracotta
+  | "probleme" // terracotta : échec d'envoi, rebond, client absent
   | "en_retard" // terracotta
   | "neutre" // gris
   | "argent"; // ambre
@@ -48,6 +49,8 @@ export interface EvenementActivite {
   readonly nuance: NuanceActivite;
   /** Adresse interne (copie d'un e-mail, page du rendez-vous...), ou `null`. */
   readonly lien: string | null;
+  /** Mot affiché à la place du mot du type (« Message Telegram »), quand le type seul ne dit pas tout. */
+  readonly mot?: string;
   /** Libellé du lien quand il y en a un (« Voir la copie »). */
   readonly libelleLien?: string;
   /** NOM du destinataire d'un e-mail, si connu. Jamais l'adresse. */
@@ -74,21 +77,27 @@ export function lireFiltre(brut: string | undefined): FiltreActivite {
   return FILTRES_ACTIVITE.some((f) => f.lecture === brut) ? (brut as FiltreActivite) : "tout";
 }
 
-/**
- * Garde les événements du filtre. Dans « Notes », les notes épinglées passent en tête (le plus
- * récent d'abord parmi elles), puis les autres.
- */
+/** Garde les événements du filtre (l'ordre chronologique est conservé). */
 export function filtrer(
   evenements: ReadonlyArray<EvenementActivite>,
   filtre: FiltreActivite,
 ): EvenementActivite[] {
   if (filtre === "tout") return evenements.slice();
-  const gardes = evenements.filter((e) => e.type === TYPE_DU_FILTRE[filtre]);
-  if (filtre !== "notes") return gardes;
-  return [
-    ...gardes.filter((n) => n.epinglee === true),
-    ...gardes.filter((n) => n.epinglee !== true),
-  ];
+  return evenements.filter((e) => e.type === TYPE_DU_FILTRE[filtre]);
+}
+
+/**
+ * Sépare les notes épinglées (bloc à part, en tête) des autres, qui restent groupées par jour :
+ * les mélanger casserait l'ordre chronologique et répéterait des jours.
+ */
+export function separerEpinglees(evenements: ReadonlyArray<EvenementActivite>): {
+  epinglees: EvenementActivite[];
+  autres: EvenementActivite[];
+} {
+  return {
+    epinglees: evenements.filter((e) => e.epinglee === true),
+    autres: evenements.filter((e) => e.epinglee !== true),
+  };
 }
 
 /** Compte par filtre (pour la pastille des liens). */

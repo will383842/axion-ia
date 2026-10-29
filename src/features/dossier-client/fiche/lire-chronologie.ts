@@ -12,58 +12,52 @@
 
 import { prisma } from "@/lib/prisma";
 import { dechiffrerParoleOuNull } from "@/lib/chiffrer-parole";
-import { lireFilDesEchanges } from "@/features/dossier-client/fil-des-echanges";
+import {
+  LIBELLE_STATUT_RENDEZ_VOUS,
+  lireFilDesEchanges,
+} from "@/features/dossier-client/fil-des-echanges";
+import { nomsDesDestinataires } from "@/features/dossier-client/fiche/noms-destinataires";
 import { lireClient360Cache } from "@/components/admin/dossier-client/fiche/contexte";
 import {
   assemblerChronologie,
   etatTache,
   type EvenementActivite,
+  type NuanceActivite,
 } from "@/features/dossier-client/fiche/chronologie";
 
-const PAR_SOURCE = 100;
+/** Plafond de lecture par source : les compteurs s'arrêtent là, et l'interface le dit. */
+export const PAR_SOURCE = 100;
+
+const ETAT_DEVIS: Readonly<Record<string, string>> = {
+  envoye: "Devis envoyé",
+  accepte: "Devis accepté",
+  refuse: "Devis refusé",
+  expire: "Devis expiré",
+  transforme_convention: "Devis signé · convention créée",
+};
 
 export interface ChronologieLue {
   readonly evenements: EvenementActivite[];
   readonly sourcesEnPanne: number;
 }
 
-/** Le NOM de chaque destinataire connu de la fiche, par clé d'événement. Jamais l'adresse. */
-async function nomsDesDestinataires(
-  clientId: string,
-  cles: ReadonlyArray<string>,
-): Promise<Map<string, string>> {
-  const idsLog = cles.filter((c) => c.startsWith("mail:")).map((c) => c.slice(5));
-  const idsOutbox = cles.filter((c) => c.startsWith("outbox:")).map((c) => c.slice(7));
-  const [logs, outbox, adresses] = await Promise.all([
-    idsLog.length === 0
-      ? []
-      : prisma.emailLog.findMany({
-          where: { id: { in: idsLog } },
-          select: { id: true, recipient: true },
-        }),
-    idsOutbox.length === 0
-      ? []
-      : prisma.emailOutbox.findMany({
-          where: { id: { in: idsOutbox } },
-          select: { id: true, recipient: true },
-        }),
-    prisma.clientContactAdresse.findMany({
-      where: { contact: { clientId } },
-      select: { email: true, contact: { select: { nom: true } } },
-    }),
-  ]);
-  const nomParAdresse = new Map(adresses.map((a) => [a.email.toLowerCase(), a.contact.nom]));
-  const noms = new Map<string, string>();
-  for (const l of logs) {
-    const nom = nomParAdresse.get(l.recipient.toLowerCase());
-    if (nom !== undefined) noms.set(`mail:${l.id}`, nom);
-  }
-  for (const o of outbox) {
-    const nom = nomParAdresse.get(o.recipient.toLowerCase());
-    if (nom !== undefined) noms.set(`outbox:${o.id}`, nom);
-  }
-  return noms;
+const ETAT_RENDEZ_VOUS = (statut: string): string =>
+  `rendez-vous ${LIBELLE_STATUT_RENDEZ_VOUS[statut]}`;
+
+/** Couleur d'un rendez-vous, par correspondance EXACTE sur les libellés du fil (jamais `endsWith`). */
+export function nuanceRendezVous(etat: string): NuanceActivite {
+  if (etat === ETAT_RENDEZ_VOUS("planifie")) return "prevu";
+  if (etat === ETAT_RENDEZ_VOUS("tenu")) return "fait";
+  if (etat === ETAT_RENDEZ_VOUS("absent")) return "probleme";
+  return "neutre"; // annulé, reporté, sans statut
 }
+
+const MODE_PAIEMENT: Readonly<Record<string, string>> = {
+  card: "Carte bancaire",
+  sepa_credit_transfer: "Virement",
+  cheque: "Chèque",
+  cash: "Espèces",
+};
 
 export async function lireChronologie(
   clientId: string,
@@ -97,7 +91,7 @@ export async function lireChronologie(
             date: x.date,
             titre: x.titre,
             etat: x.etat,
-            nuance: x.etat.endsWith("a eu lieu") ? "fait" : "prevu",
+            nuance: nuanceRendezVous(x.etat),
             lien: x.lien,
             libelleLien: "Ouvrir le rendez-vous",
           };
@@ -123,21 +117,29 @@ export async function lireChronologie(
             date: x.date,
             titre: x.titre,
             etat: x.etat,
-            nuance: x.statutEmail === "sent" ? "fait" : "neutre",
+            nuance:
+              x.statutEmail === "sent"
+                ? "fait"
+                : x.statutEmail === "failed" || x.statutEmail === "bounced"
+                  ? "probleme"
+                  : "neutre",
             lien: x.lien,
             libelleLien: "Voir la copie",
             destinataire: noms.get(x.cle) ?? null,
           };
         }
+        // Courrier du questionnaire : un message Telegram n'est jamais un « E-mail ».
+        const telegram = x.canal === "telegram";
         return {
           cle: x.cle,
-          type: "email",
+          type: telegram ? "message" : "email",
           date: x.date,
           titre: x.titre,
           etat: x.etat,
-          nuance: "neutre",
+          nuance: x.statutCourrier === "echec" ? "probleme" : "neutre",
           lien: x.lien,
           libelleLien: "Ouvrir",
+          ...(telegram ? { mot: "Message Telegram" } : {}),
         };
       });
     }),
@@ -207,45 +209,70 @@ export async function lireChronologie(
       ),
   );
 
-  // 4. Argent : devis et factures de la fiche 360 (déjà lue pour la page), paiements encaissés.
-  const devisEtFactures = sans(
-    lireClient360Cache(clientId).then((c) => {
-      if (c === null) return [];
-      const devis = c.devis
-        .filter((d) => d.statut === "envoye" || d.statut === "accepte")
-        .map((d): EvenementActivite => ({
+  // 4a. Devis : lecture dédiée (la fiche 360 n'en garde que 10 et ne dit pas la date d'envoi).
+  const devis = sans(
+    prisma.devis
+      .findMany({
+        where: { clientId, sentAt: { not: null } },
+        orderBy: { sentAt: "desc" },
+        take: PAR_SOURCE,
+        select: {
+          id: true,
+          numero: true,
+          statut: true,
+          montantTotalHtCents: true,
+          sentAt: true,
+          acceptedAt: true,
+        },
+      })
+      .then((ds) =>
+        ds.map((d): EvenementActivite => ({
           cle: `devis:${d.id}`,
           type: "argent",
-          date: d.createdAt,
+          date: d.sentAt as Date,
           titre: `Devis envoyé n° ${d.numero}`,
-          etat: d.statut === "accepte" ? "Devis accepté" : "Devis envoyé",
+          etat: ETAT_DEVIS[d.statut] ?? "Devis envoyé",
           nuance: "argent",
           lien: null,
           montant: { cents: d.montantTotalHtCents, base: "ht" },
-        }));
-      const factures = c.facturesFormation
+        })),
+      ),
+  );
+
+  // 4b. Factures de la fiche 360 (déjà lue pour la page).
+  const factures = sans(
+    lireClient360Cache(clientId).then((c) => {
+      if (c === null) return [];
+      return c.facturesFormation
         .filter((f) => f.avoirDeId === null && f.emiseAt !== null && f.statut !== "brouillon")
-        .map((f): EvenementActivite => ({
-          cle: `facture:${f.id}`,
-          type: "argent",
-          date: f.emiseAt as Date,
-          titre: `Facture envoyée n° ${f.numero}`,
-          etat: "Facture envoyée",
-          nuance: "argent",
-          lien: null,
-          montant: { cents: f.montantHtCents, base: "ht" },
-        }));
-      return [...devis, ...factures];
+        .map((f): EvenementActivite => {
+          const annulee = f.statut === "annulee";
+          return {
+            cle: `facture:${f.id}`,
+            type: "argent",
+            date: f.emiseAt as Date,
+            titre: annulee ? `Facture n° ${f.numero}` : `Facture envoyée n° ${f.numero}`,
+            etat: annulee ? "Facture annulée" : "Facture envoyée",
+            nuance: annulee ? "neutre" : "argent",
+            lien: null,
+            montant: { cents: f.montantHtCents, base: "ht" },
+          };
+        });
     }),
   );
 
   const paiements = sans(
     prisma.payment
       .findMany({
-        where: { status: "succeeded", paidAt: { not: null }, factureFormation: { clientId } },
+        where: {
+          status: "succeeded",
+          type: { not: "refund" },
+          paidAt: { not: null },
+          factureFormation: { clientId },
+        },
         orderBy: { paidAt: "desc" },
         take: PAR_SOURCE,
-        select: { id: true, amountCents: true, paidAt: true },
+        select: { id: true, amountCents: true, paidAt: true, mode: true },
       })
       .then((ps) =>
         ps.map((p): EvenementActivite => ({
@@ -253,7 +280,7 @@ export async function lireChronologie(
           type: "argent",
           date: p.paidAt as Date,
           titre: "Paiement reçu",
-          etat: "Paiement reçu",
+          etat: (p.mode !== null && MODE_PAIEMENT[p.mode]) || "Encaissé",
           nuance: "argent",
           lien: null,
           montant: { cents: p.amountCents, base: "ttc" },
@@ -262,7 +289,7 @@ export async function lireChronologie(
   );
 
   const evenements = assemblerChronologie(
-    await Promise.all([fil, taches, notes, devisEtFactures, paiements]),
+    await Promise.all([fil, taches, notes, devis, factures, paiements]),
   );
   return { evenements, sourcesEnPanne };
 }

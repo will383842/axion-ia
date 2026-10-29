@@ -6,6 +6,7 @@ import {
   filtrer,
   grouperParJour,
   lireFiltre,
+  separerEpinglees,
   type EvenementActivite,
 } from "../chronologie";
 
@@ -84,8 +85,8 @@ describe("filtrer", () => {
   ] as const)("filtre %s", (f, attendu) => {
     expect(filtrer(tous, f).map((e) => e.cle)).toEqual(attendu);
   });
-  it("met les notes épinglées en tête du filtre Notes", () => {
-    expect(filtrer(tous, "notes").map((e) => e.cle)).toEqual(["n2", "n1"]);
+  it("garde l'ordre chronologique dans le filtre Notes (les épinglées ne sont pas déplacées)", () => {
+    expect(filtrer(tous, "notes").map((e) => e.cle)).toEqual(["n1", "n2"]);
   });
   it("compte par filtre", () => {
     expect(compterParFiltre(tous)).toMatchObject({ tout: 6, notes: 2, argent: 1 });
@@ -124,5 +125,22 @@ describe("etatTache", () => {
     expect(
       etatTache({ echeanceLe: new Date("2026-10-29"), faiteLe: null }, maintenant).nuance,
     ).toBe("a_faire");
+  });
+});
+
+describe("notes épinglées : bloc à part, jours non répétés", () => {
+  const ref = new Date("2026-10-29T12:00:00Z");
+  const notes = [
+    ev("recente", "2026-10-05T10:00:00Z", "note"),
+    ev("epinglee", "2026-10-03T14:00:00Z", "note", { epinglee: true }),
+    ev("ancienne", "2026-10-03T09:00:00Z", "note"),
+  ];
+  it("sépare les épinglées, puis groupe les autres : un jour = un groupe, du plus récent au plus ancien", () => {
+    const { epinglees, autres } = separerEpinglees(filtrer(notes, "notes"));
+    expect(epinglees.map((e) => e.cle)).toEqual(["epinglee"]);
+    const jours = grouperParJour(autres, ref);
+    expect(jours.map((j) => j.jour)).toEqual(["2026-10-05", "2026-10-03"]);
+    expect(new Set(jours.map((j) => j.jour)).size).toBe(jours.length);
+    expect(jours[1]?.evenements.map((e) => e.cle)).toEqual(["ancienne"]);
   });
 });
