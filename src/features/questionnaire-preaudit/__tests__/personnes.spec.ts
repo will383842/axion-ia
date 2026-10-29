@@ -322,7 +322,7 @@ describe("journée du dirigeant, référent, ouvertures", () => {
 describe("taux d'un collaborateur : le brouillon et l'envoi comptent pareil les cases pré-remplies", () => {
   const donnees = { b_1: "x", m_1: "y" };
   const tauxDuCollab = (s: SuiviParPersonne): number | undefined =>
-    s.collaborateurs.find((l) => l.taux !== null)?.taux?.pourcentage;
+    s.collaborateurs.find((l) => l.taux !== null)?.taux?.pourcentage ?? undefined;
   const envoye = (extra: Record<string, unknown>): EntreeReponse => ({
     id: "r-collab",
     mode: "emp",
