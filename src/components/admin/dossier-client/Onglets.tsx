@@ -23,7 +23,6 @@ import {
   LIBELLE_ROLE_PROJET,
   LIBELLE_RUBRIQUE,
   LIBELLE_STATUT_PROJET,
-  LIBELLE_STATUT_RENCONTRE,
   LIBELLE_TYPE_FAIT,
   MENTION_ETAT,
   valeurLisible,
@@ -41,9 +40,12 @@ import {
   creerProjetFormAction,
   garderCetteValeurFormAction,
 } from "@/features/dossier-client/actions";
-import { LIBELLE_ETAT_EMAIL_SUIVI } from "@/features/dossier-client/etat-email-suivi";
 import { formatDateFrShort } from "@/lib/format-date-fr";
 import type { FaitType } from "../../../../prisma/generated/client";
+import {
+  CarteRendezVous,
+  rangerDuProchainAuPlusAncien,
+} from "@/components/admin/dossier-client/fiche/CarteRendezVous";
 
 const titreCls = "admin-carte-titre";
 const carteCls = "admin-carte";
@@ -417,55 +419,15 @@ export function OngletEchanges({
     <section className={carteCls}>
       <h2 className={titreCls}>Rendez-vous</h2>
       <ul className="space-y-[var(--space-admin-4)] text-[length:var(--text-admin-sm)]">
-        {rencontres.map((r) => {
-          const projet = projets.find((p) => p.id === r.projetId);
-          const aVenir = r.debutPrevu !== null && r.debutPrevu.getTime() > maintenant.getTime();
-          const statut =
-            r.statut !== null
-              ? LIBELLE_STATUT_RENCONTRE[r.statut]
-              : aVenir
-                ? LIBELLE_STATUT_RENCONTRE.planifie
-                : r.issue === "absent"
-                  ? LIBELLE_STATUT_RENCONTRE.absent
-                  : LIBELLE_STATUT_RENCONTRE.tenu;
-          return (
-            <li
-              key={r.id}
-              data-rencontre={r.id}
-              className="border-b border-[color:var(--color-admin-border)] pb-[var(--space-admin-3)]"
-            >
-              <div className="flex flex-wrap items-center gap-[var(--space-admin-3)]">
-                <span className="font-medium">{r.titre}</span>
-                <span className={mutedCls}>
-                  {r.debutPrevu !== null ? formatDateFrShort(r.debutPrevu) : "date inconnue"}
-                </span>
-                <AdminBadge tone="outline">{statut}</AdminBadge>
-                {projet !== undefined ? (
-                  <span className={mutedCls}>Prestation : {projet.titre}</span>
-                ) : null}
-                {r.estTestInterne ? <AdminBadge tone="warning">test interne</AdminBadge> : null}
-                {!aVenir && r.compteRenduValide === null ? (
-                  <AdminBadge tone="warning">sans compte rendu validé</AdminBadge>
-                ) : null}
-                <Link href={`${rendezVousBase}/rencontres/${r.id}`} className={lienCls}>
-                  Compte rendu →
-                </Link>
-              </div>
-              {r.compteRenduValide !== null ? (
-                <p className="mt-[var(--space-admin-2)] whitespace-pre-line">
-                  <span className="font-medium">En bref : </span>
-                  {r.compteRenduValide.enBref ?? "(compte rendu validé, sans résumé)"}
-                </p>
-              ) : null}
-              {r.emailsSuivi.map((e, i) => (
-                <p key={i} className={`mt-[var(--space-admin-1)] ${mutedCls}`}>
-                  E-mail de suivi du {formatDateFrShort(e.creeLe)} :{" "}
-                  {LIBELLE_ETAT_EMAIL_SUIVI[e.etat]}
-                </p>
-              ))}
-            </li>
-          );
-        })}
+        {rangerDuProchainAuPlusAncien(rencontres, maintenant).map((r) => (
+          <CarteRendezVous
+            key={r.id}
+            rencontre={r}
+            prestationTitre={projets.find((p) => p.id === r.projetId)?.titre ?? null}
+            rendezVousBase={rendezVousBase}
+            maintenant={maintenant}
+          />
+        ))}
       </ul>
     </section>
   );
