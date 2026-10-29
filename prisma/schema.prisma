@@ -5238,7 +5238,7 @@ model Client {
   factureHorsConsole ClientFactureHorsConsole?
   /// Fiche client en 7 onglets (relations seules, aucune colonne sur `clients`, ADR 0053) : tâches, notes, profil, étiquettes.
   taches     ClientTache[]
-  notes      ClientNote[]
+  notesDatees ClientNote[]
   profil     ClientProfil?
   etiquettes ClientEtiquette[]
   /// Demandes du Tour France IA rattachées à la fiche (relation seule, aucune colonne sur `clients`).
