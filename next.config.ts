@@ -185,9 +185,12 @@ const nextConfig: NextConfig = {
     //
     // Le worker isole la compilation dans un processus Node séparé : le pic de
     // la compilation ne partage plus le heap du processus principal. C'est le
-    // levier qui manquait, et il ne touche PAS au plafond de 6144 Mo — plafond
-    // qu'il ne faut surtout pas relever, la phase SSG faisant déjà culminer le
-    // runner 16 Go à ~15-16 Go de RSS.
+    // levier qui manquait, et il ne touche PAS au plafond de tas (Dockerfile).
+    // Ce plafond a été relevé de 6144 à 8192 Mo le 29/10/2026 : le compile
+    // webpack plantait (OOM à 5,73 Go / 6 Go, runs 40855519281 et 40865229540),
+    // le pic runner mesuré à 6 Go était de 9,5 Go sur 15,6 Go, et le site n'a
+    // plus que 2829 pages SSG (contre 17,6k). L'ancienne mise en garde « ~15-16
+    // Go de RSS » datait de l'époque des 17,6k pages.
     //
     // ⚠️ La doc note une incompatibilité possible avec certains plugins webpack
     // personnalisés. Ici la config custom se borne à `config.cache = false` :
