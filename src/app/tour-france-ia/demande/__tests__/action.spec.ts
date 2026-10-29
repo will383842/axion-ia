@@ -104,6 +104,7 @@ describe("la mini-demande du Tour", () => {
     mocks.checkRateLimit.mockResolvedValue({ allowed: false, panne: true });
     const url = await destination(formulaire());
     expect(url.searchParams.get("erreur")).toBe("trop");
+    expect(mocks.attendre).toHaveBeenCalledTimes(1);
     const [cle, config] = mocks.checkRateLimit.mock.calls[0] as [
       string,
       { limit: number; windowSec: number; surPanne: string },
