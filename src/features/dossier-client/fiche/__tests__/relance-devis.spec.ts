@@ -39,13 +39,14 @@ vi.mock("../../acces", () => ({
   exigerAccesEchanges: m.echanges,
 }));
 
+import { preparerRelanceDevisAction } from "../actions-relance-devis";
 import {
-  ERREUR_GARAGE,
+  construireRelanceDevis,
+  ERREUR_CONTACT_ABSENT,
   ERREUR_DEVIS_INTROUVABLE,
+  ERREUR_GARAGE,
   MESSAGE_RELANCE_PRETE,
-  preparerRelanceDevisAction,
-} from "../actions-relance-devis";
-import { construireRelanceDevis, ERREUR_CONTACT_ABSENT } from "../relance-devis";
+} from "../relance-devis";
 
 function formulaire(clientId = CLIENT, devisId = DEVIS): FormData {
   const fd = new FormData();

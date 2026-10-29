@@ -23,16 +23,17 @@ import { garerPourValidation } from "@/server/email/outbox-service";
 import { exigerAccesEchanges } from "../acces";
 import { messageAffichable } from "../message-affichable";
 import { avecMessageDeRetour } from "../message-de-retour";
-import { construireRelanceDevis, ENTITE_DEVIS, TEMPLATE_RELANCE_DEVIS } from "./relance-devis";
+import {
+  construireRelanceDevis,
+  ENTITE_DEVIS,
+  ERREUR_DEVIS_INTROUVABLE,
+  ERREUR_GARAGE,
+  MESSAGE_RELANCE_GAREE,
+  MESSAGE_RELANCE_PRETE,
+  TEMPLATE_RELANCE_DEVIS,
+} from "./relance-devis";
 
 const uuid = z.string().uuid();
-
-export const MESSAGE_RELANCE_PRETE =
-  "Une relance est déjà prête pour ce devis : relisez-la dans les e-mails à valider.";
-export const MESSAGE_RELANCE_GAREE =
-  "Relance préparée : elle attend votre relecture dans les e-mails à valider. Rien n'est envoyé.";
-export const ERREUR_GARAGE = "La relance n'a pas pu être préparée. Rien n'a été envoyé. Réessayez.";
-export const ERREUR_DEVIS_INTROUVABLE = "Ce devis n'est pas un devis envoyé de ce client.";
 
 function retour(
   clientId: string,

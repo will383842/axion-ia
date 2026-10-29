@@ -14,6 +14,13 @@ export const TEMPLATE_RELANCE_DEVIS = "relance-devis-client";
 /** Type de l'entité visée dans l'outbox (même valeur que l'envoi du devis, `facturation-emails.ts`). */
 export const ENTITE_DEVIS = "Devis";
 
+export const MESSAGE_RELANCE_PRETE =
+  "Une relance est déjà prête pour ce devis : relisez-la dans les e-mails à valider.";
+export const MESSAGE_RELANCE_GAREE =
+  "Relance préparée : elle attend votre relecture dans les e-mails à valider. Rien n'est envoyé.";
+export const ERREUR_GARAGE = "La relance n'a pas pu être préparée. Rien n'a été envoyé. Réessayez.";
+export const ERREUR_DEVIS_INTROUVABLE = "Ce devis n'est pas un devis envoyé de ce client.";
+
 export const ERREUR_CONTACT_ABSENT = "Ajoutez l'e-mail du contact dans Modifier la fiche.";
 
 export interface EntreeRelanceDevis {
