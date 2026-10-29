@@ -13,6 +13,7 @@ import {
   dateCourte,
   estFactureOuverte,
   encaisseCents,
+  montantEnEuros,
   resteDuNetCents,
   montantHt,
   montantTtc,
@@ -107,8 +108,9 @@ export function CartesFactures({
         const reste = resteDuNetCents(f);
         const ouverteDue = !estAvoir && estFactureOuverte(f.statut) && reste > 0;
         const avant = f.echeanceAt ? ` avant le ${dateCourte(f.echeanceAt)}` : "";
-        // Sans TTC en base, le reste dû repose sur le HT : on le dit au lieu d'écrire « TTC ».
-        const somme = (c: number): string => (ttcConnu ? montantTtc(c) : montantHt(c));
+        // Sans TTC en base, le chiffre mêle HT et TTC : on ne l'étiquette ni HT ni TTC, on le dit.
+        const somme = (c: number): string =>
+          ttcConnu ? montantTtc(c) : `${montantEnEuros(c)}\u00a0€ (TTC non renseigné)`;
         return (
           <li key={f.id} className={carteCls}>
             <div className="flex flex-wrap items-center justify-between gap-[var(--space-admin-2)]">
@@ -144,7 +146,7 @@ export function CartesFactures({
                 <AdminButton
                   href={`${qBase}/facturation/${f.id}`}
                   variant="secondary"
-                  size="sm"
+                  size="md"
                   icon={Bell}
                 >
                   Envoyer un rappel

@@ -14,9 +14,11 @@ import {
   devisEnAttente,
   montantHt,
   montantTtc,
+  resteDuNetCents,
   type FacturePourArgent,
 } from "@/features/dossier-client/fiche/argent-de-la-fiche";
 import { formatDateFrShort } from "@/lib/format-date-fr";
+import { dayKeyInParis } from "@/lib/calendar-grid";
 
 type FactureAvecEcheance = FacturePourArgent & { echeanceAt: Date | null };
 
@@ -36,10 +38,22 @@ export function TuilesArgent({
 }): React.ReactElement {
   const deja = dejaFactureCents(factures);
   const attente = devisEnAttente(devis);
-  const echeances = factures
-    .filter((f) => f.avoirDeId === null && estFactureOuverte(f.statut) && f.echeanceAt !== null)
+  const dues = factures.filter(
+    (f) => f.avoirDeId === null && estFactureOuverte(f.statut) && resteDuNetCents(f) > 0,
+  );
+  const echeances = dues
+    .filter((f) => f.echeanceAt !== null)
     .map((f) => (f.echeanceAt as Date).getTime());
-  const avant = echeances.length > 0 ? dateCourte(new Date(Math.min(...echeances))) : null;
+  const plusAncienne = echeances.length > 0 ? new Date(Math.min(...echeances)) : null;
+  const enRetard = plusAncienne !== null && dayKeyInParis(plusAncienne) < dayKeyInParis(new Date());
+  const echeanceTexte = plusAncienne
+    ? ` · ${enRetard ? "en retard depuis le" : "à payer avant le"} ${dateCourte(plusAncienne)}`
+    : "";
+  const nbDuesSansTtc = dues.filter((f) => f.montantTtcCents === null).length;
+  const sansTtcTexte =
+    nbDuesSansTtc > 0
+      ? ` · dont ${nbDuesSansTtc} facture${nbDuesSansTtc > 1 ? "s" : ""} sans TTC`
+      : "";
 
   const metaDeja = [
     deja.nbSansTtc > 0
@@ -62,10 +76,14 @@ export function TuilesArgent({
       />
       <AdminStatCard
         label="Reste à encaisser"
-        value={montantTtc(encoursDuCents)}
+        value={
+          encoursDuCents < 0
+            ? `Trop-perçu : ${montantTtc(-encoursDuCents)}`
+            : montantTtc(encoursDuCents)
+        }
         meta={
           encoursDuCents > 0
-            ? `Encours dû, TVA incluse${avant ? ` · à payer avant le ${avant}` : ""}`
+            ? `Encours dû, TVA incluse${echeanceTexte}${sansTtcTexte}`
             : "Encours dû : rien"
         }
         tone={encoursDuCents > 0 ? "warning" : "success"}

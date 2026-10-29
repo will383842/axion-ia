@@ -139,7 +139,7 @@ const listeCls = "space-y-[var(--space-admin-2)] text-[length:var(--text-admin-s
 const ligneCls = "flex flex-wrap items-center gap-[var(--space-admin-3)]";
 const ligneMutedCls = "text-[color:var(--color-admin-fg-muted)]";
 const lienTexteCls =
-  "text-[color:var(--color-admin-accent)] underline underline-offset-2 hover:no-underline";
+  "inline-flex min-h-[44px] items-center text-[color:var(--color-admin-accent)] underline underline-offset-2 hover:no-underline";
 
 export function OngletDevisFactures({
   ctx,
@@ -175,7 +175,7 @@ export function OngletDevisFactures({
       ) : null}
       <TuilesArgent
         encoursDuCents={encoursDuCents}
-        factures={factures}
+        factures={client.facturesFormation}
         devis={client.devis}
         devisPlafonnes={client.devis.length >= 10}
         factureHorsConsoleLe={factureHorsConsoleLe}
@@ -212,9 +212,7 @@ export function OngletDevisFactures({
             <li>
               <span className="font-semibold tabular-nums">{sessionsEnCours}</span> session
               {sessionsEnCours > 1 ? "s" : ""} en cours sur{" "}
-              <span className="font-semibold tabular-nums">{client.nbSessions}</span> ·{" "}
-              <span className="font-semibold tabular-nums">{client.nbStagiaires}</span> stagiaire
-              {client.nbStagiaires > 1 ? "s" : ""} ·{" "}
+              <span className="font-semibold tabular-nums">{client.sessions.length}</span> ·{" "}
               <Link href={`${qBase}/sessions`} className={lienTexteCls}>
                 Voir les sessions
               </Link>

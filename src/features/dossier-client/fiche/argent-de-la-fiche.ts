@@ -116,7 +116,19 @@ export function montantTtc(cents: number): string {
   return `${montantEnEuros(cents)}\u00a0€\u00a0TTC`; // price-exempt
 }
 
-/** « 16 oct. » (Europe/Paris). */
+const FORMAT_DATE_COURTE_AVEC_ANNEE = new Intl.DateTimeFormat("fr-FR", {
+  timeZone: "Europe/Paris",
+  day: "numeric",
+  month: "short",
+  year: "numeric",
+});
+const FORMAT_ANNEE = new Intl.DateTimeFormat("fr-FR", {
+  timeZone: "Europe/Paris",
+  year: "numeric",
+});
+
+/** « 16 oct. » (Europe/Paris), avec l'année (« 16 oct. 2025 ») hors année en cours. */
 export function dateCourte(d: Date): string {
-  return FORMAT_DATE_COURTE.format(d);
+  const horsAnneeEnCours = FORMAT_ANNEE.format(d) !== FORMAT_ANNEE.format(new Date());
+  return (horsAnneeEnCours ? FORMAT_DATE_COURTE_AVEC_ANNEE : FORMAT_DATE_COURTE).format(d);
 }
