@@ -5,7 +5,7 @@
 // prouve « cette demande est bien celle de cette visite ».
 //
 // 🔑 Le jeton est LISIBLE (base64) par qui le reçoit : il ne porte QUE l'identifiant de la demande
-// (jamais un nom, une adresse, un téléphone ni une ville), signé, valable 2 heures. Il circule dans
+// (jamais un nom, une adresse, un téléphone ni une ville), signé, valable 30 minutes. Il circule dans
 // une adresse web et dans des journaux.
 //
 // Format : `<base64url(JSON)>.<HMAC-SHA256 en hexa>`, comme le jeton du tunnel apporteurs
@@ -20,8 +20,8 @@ import crypto from "node:crypto";
 const DOMAINE = "tour-demande-v1";
 const REPLI_DEV = "axionia-tour-demande-dev-only-not-for-production";
 
-/** Durée de vie du jeton : 2 heures. */
-export const DUREE_JETON_DEMANDE_MS = 2 * 60 * 60 * 1000;
+/** Durée de vie du jeton : 30 minutes (le temps de choisir un créneau, pas de revenir le lendemain). */
+export const DUREE_JETON_DEMANDE_MS = 30 * 60 * 1000;
 
 const FORME_UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 

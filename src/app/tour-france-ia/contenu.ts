@@ -49,6 +49,9 @@ export const SEUIL_PAR_VILLE = 5;
 /** La page de rendez-vous visio de 30 minutes (type `tour` de `types-reservables.ts`). */
 export const CHEMIN_RENDEZ_VOUS = "/fr/appel/tour-france-ia";
 
+/** La mini-demande qui précède la visio (`demande/page.tsx`) : quatre champs, puis le calendrier. */
+export const CHEMIN_DEMANDE = `${TOUR_PREFIX}/demande`;
+
 /** Les conditions générales du Tour (`conditions-generales/page.tsx`). */
 export const CHEMIN_CONDITIONS = `${TOUR_PREFIX}/conditions-generales`;
 
@@ -85,6 +88,15 @@ export type EmplacementCta = (typeof EMPLACEMENTS_CTA)[number];
  */
 export function lienRendezVous(depuis: EmplacementCta): string {
   return `${CHEMIN_RENDEZ_VOUS}?depuis=${encodeURIComponent(depuis)}`;
+}
+
+/**
+ * L'adresse des boutons de la landing : la mini-demande, avec l'emplacement cliqué (`depuis`).
+ * Les `utm_*` de l'arrivée y sont ajoutés côté navigateur (`PiloteCta.tsx`) ; la page de la
+ * demande les recopie jusqu'à la visio (`lienRendezVous`).
+ */
+export function lienDemande(depuis: EmplacementCta): string {
+  return `${CHEMIN_DEMANDE}?depuis=${encodeURIComponent(depuis)}`;
 }
 
 /**

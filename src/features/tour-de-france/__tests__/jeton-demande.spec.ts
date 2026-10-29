@@ -10,6 +10,13 @@ describe("jeton de la demande", () => {
     expect(lireJetonDemande(creerJetonDemande(ID, T0), T0 + 1000)).toEqual({ id: ID });
   });
 
+  it("le jeton vaut 30 minutes : valide à 29 min, expiré après 31", () => {
+    expect(DUREE_JETON_DEMANDE_MS).toBe(30 * 60 * 1000);
+    const jeton = creerJetonDemande(ID, T0);
+    expect(lireJetonDemande(jeton, T0 + 29 * 60 * 1000)).toEqual({ id: ID });
+    expect(lireJetonDemande(jeton, T0 + 31 * 60 * 1000)).toBeNull();
+  });
+
   it("un jeton expiré est refusé", () => {
     const jeton = creerJetonDemande(ID, T0);
     expect(lireJetonDemande(jeton, T0 + DUREE_JETON_DEMANDE_MS + 1)).toBeNull();

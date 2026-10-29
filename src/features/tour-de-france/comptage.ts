@@ -26,6 +26,7 @@ import {
   LIBELLE_CLE_TELEPHONE,
   empreinteTour,
 } from "./chiffrement";
+import { CLE_VILLE_DU_SIEGE, normaliserSaisieVille } from "./villes";
 
 /** Le compteur public ne montre une ville qu'à partir de ce nombre de demandes comptées. */
 export const SEUIL_AFFICHAGE_COMPTEUR = 3;
@@ -109,6 +110,12 @@ export function lignesCompteur(groupes: ReadonlyArray<GroupeVille>): LigneCompte
   const lignes: LigneCompteur[] = [];
   for (const g of groupes) {
     if (g.villeNom === null || g.total < SEUIL_AFFICHAGE_COMPTEUR) continue;
+    // La ville du siège ne s'affiche jamais, même si quelqu'un la tape.
+    if (
+      g.villeCle === CLE_VILLE_DU_SIEGE ||
+      normaliserSaisieVille(g.villeNom) === CLE_VILLE_DU_SIEGE
+    )
+      continue;
     const total = Math.min(g.total, SEUIL_PAR_VILLE);
     lignes.push({
       ville: g.villeNom,

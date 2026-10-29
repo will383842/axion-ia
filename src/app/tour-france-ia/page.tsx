@@ -3,8 +3,8 @@
 // modèle « 5 journées offertes par ville, sur sélection » le 2026-10-27).
 //
 // Tunnel : post Facebook, LinkedIn ou Instagram (UTM) → cette page → « Demander
-// ma journée offerte » → `/fr/appel/tour-france-ia` (la visio, type `tour` de
-// `types-reservables.ts`) → Calendly → console.
+// ma journée offerte » → `/tour-france-ia/demande` (quatre champs) →
+// `/fr/appel/tour-france-ia` (la visio, type `tour` de `types-reservables.ts`) → Calendly → console.
 //
 // Écrite pour ce trafic-là : mobile d'abord, navigateur intégré des réseaux, 4G,
 // trois secondes d'attention. Très peu de texte, un dessin par bloc :
@@ -62,7 +62,7 @@ import {
   PIED,
   VIDEO_HEROS,
   VILLE,
-  lienRendezVous,
+  lienDemande,
   type EmplacementCta,
 } from "./contenu";
 import { jsonLdDuTour } from "./jsonld";
@@ -77,8 +77,12 @@ import {
   PictoVisio,
   Vague,
 } from "./_composants/Visuels";
+import { CompteurVilles } from "./_composants/CompteurVilles";
 import { PiloteCta } from "./_composants/PiloteCta";
 import styles from "./tour.module.css";
+
+// Le compteur de villes (`CompteurVilles`) se relit toutes les 5 minutes.
+export const revalidate = 300;
 
 // Relative : résolue contre le `metadataBase` du layout (production, jamais localhost).
 const URL_CANONIQUE = META.chemin;
@@ -179,7 +183,7 @@ function BoutonAudit({
   const largeur = compact ? "" : pleineLargeur ? "w-full" : "w-full sm:w-auto";
   return (
     <a
-      href={lienRendezVous(depuis)}
+      href={lienDemande(depuis)}
       id={id}
       data-tdf-cta=""
       className={`${styles.bouton} ${compact ? styles.boutonCompact : ""} rounded-full ${largeur}`}
@@ -193,6 +197,9 @@ function BoutonAudit({
 
 export default async function TourDeFranceIaPage() {
   if (!TOUR_PUBLIC) await connection();
+
+  // Le compteur est un composant serveur asynchrone : appelé ici, il rend son élément (ou rien).
+  const compteur = await CompteurVilles();
 
   // « < » échappé : un texte ne peut pas fermer la balise `script`.
   const jsonLd = JSON.stringify(jsonLdDuTour()).replace(/</g, "\\u003c");
@@ -303,6 +310,7 @@ export default async function TourDeFranceIaPage() {
                   {VILLE.titre}
                 </h2>
                 <p className="text-fg-soft mt-4 text-lg sm:text-xl">{VILLE.semaine}</p>
+                {compteur}
               </div>
               <figure className="from-terracotta-soft/70 to-primary-soft/60 mx-auto w-full max-w-[300px] rounded-2xl bg-linear-to-br p-2 sm:max-w-[380px] lg:max-w-[480px]">
                 <div className="bg-paper/85 rounded-xl p-4 sm:p-6">
