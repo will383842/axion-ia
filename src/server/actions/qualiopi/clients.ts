@@ -88,6 +88,8 @@ const CHAMPS_ENTREPRISE = [
   "effectif",
   "opcoAdhesionOffreMobilites",
   "opcoVersementVolontaire",
+  // Fiche Modifier (lot A2) : le numéro de TVA identifie une entreprise.
+  "tvaIntracom",
 ] as const;
 
 function refuserChampsEntreprisePourParticulier(
@@ -200,6 +202,30 @@ const updateClientSchema = z
     secteur: z.string().max(200).optional(),
     taille: z.enum(COMPANY_SIZES).optional(),
     adresse: z.string().optional(),
+    /**
+     * Fiche Modifier (lot A2) : champs déjà en base, jusque-là sans écrivain
+     * console. `null` efface (la chaîne vide est traitée côté écran).
+     */
+    tvaIntracom: z.string().max(40).nullable().optional(),
+    adresseRue: z.string().max(300).nullable().optional(),
+    adresseCodePostal: z.string().max(12).nullable().optional(),
+    adresseVille: z.string().max(120).nullable().optional(),
+    delaiPaiementJours: z
+      .number({ invalid_type_error: "Délai de paiement : un nombre de jours est attendu." })
+      .int("Délai de paiement : un nombre entier de jours est attendu.")
+      .min(0, "Délai de paiement : il ne peut pas être négatif.")
+      .max(120, "Délai de paiement : 120 jours au plus.")
+      .nullable()
+      .optional(),
+    /** Acompte de 0 à 100 % toujours possible (décision de Will). */
+    tauxAcomptePct: z
+      .number({ invalid_type_error: "Acompte : un pourcentage est attendu." })
+      .int("Acompte : un pourcentage entier est attendu.")
+      .min(0, "Acompte : il ne peut pas être négatif.")
+      .max(100, "Acompte : 100 % au plus.")
+      .nullable()
+      .optional(),
+    modeFacturation: z.enum(["acompte_solde", "solde_unique"]).nullable().optional(),
     contactNom: z.string().max(200).optional(),
     /**
      * `.nullable()` en PLUS, exactement pour le motif déjà écrit sur `siret` : la
@@ -659,6 +685,19 @@ export async function updateClientAction(
           ...(fields.secteur !== undefined ? { secteur: fields.secteur } : {}),
           ...(fields.taille !== undefined ? { taille: fields.taille } : {}),
           ...(fields.adresse !== undefined ? { adresse: fields.adresse } : {}),
+          ...(fields.tvaIntracom !== undefined ? { tvaIntracom: fields.tvaIntracom } : {}),
+          ...(fields.adresseRue !== undefined ? { adresseRue: fields.adresseRue } : {}),
+          ...(fields.adresseCodePostal !== undefined
+            ? { adresseCodePostal: fields.adresseCodePostal }
+            : {}),
+          ...(fields.adresseVille !== undefined ? { adresseVille: fields.adresseVille } : {}),
+          ...(fields.delaiPaiementJours !== undefined
+            ? { delaiPaiementJours: fields.delaiPaiementJours }
+            : {}),
+          ...(fields.tauxAcomptePct !== undefined ? { tauxAcomptePct: fields.tauxAcomptePct } : {}),
+          ...(fields.modeFacturation !== undefined
+            ? { modeFacturation: fields.modeFacturation }
+            : {}),
           ...(opcoAEcrire !== undefined ? { opcoIdentifie: opcoAEcrire } : {}),
           ...(fields.opcoNumeroAdherent !== undefined
             ? { opcoNumeroAdherent: fields.opcoNumeroAdherent }
