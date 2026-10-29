@@ -5,11 +5,16 @@
  */
 
 import Link from "next/link";
-import { ArrowRight, CheckCircle2, ListTodo, Mail } from "lucide-react";
+import { ArrowRight, CalendarDays, CheckCircle2, ListTodo, Mail, Send } from "lucide-react";
 
 import { AdminBloc } from "@/components/admin/ui/AdminBloc";
 import { AdminButton } from "@/components/admin/ui/AdminButton";
-import type { Lecture, TacheOuverte } from "@/features/dossier-client/fiche/lire-en-tete";
+import type {
+  DernierEmail,
+  Lecture,
+  ProchainRendezVous,
+  TacheOuverte,
+} from "@/features/dossier-client/fiche/lire-en-tete";
 
 export const TEXTE_PANNE = "Lecture impossible";
 
@@ -20,9 +25,51 @@ const jour = (d: Date): string =>
     month: "short",
   }).format(d);
 
+const jourHeure = (d: Date): string =>
+  new Intl.DateTimeFormat("fr-FR", {
+    timeZone: "Europe/Paris",
+    weekday: "short",
+    day: "numeric",
+    month: "short",
+    hour: "2-digit",
+    minute: "2-digit",
+  }).format(d);
+
+/** Deux lignes discrètes : prochain rendez-vous (hors test interne) et dernier e-mail parti. */
+function LignesContexte(props: {
+  prochainRendezVous: Lecture<ProchainRendezVous | null>;
+  dernierEmail: Lecture<DernierEmail>;
+}): React.ReactElement {
+  const { prochainRendezVous: rdv, dernierEmail: mail } = props;
+  const texteRdv = !rdv.ok
+    ? TEXTE_PANNE
+    : rdv.valeur === null
+      ? "aucun rendez-vous à venir"
+      : `${jourHeure(rdv.valeur.debutPrevu)} · ${rdv.valeur.titre}`;
+  const texteMail = !mail.ok
+    ? TEXTE_PANNE
+    : mail.valeur.le === null
+      ? "aucun e-mail envoyé"
+      : `${jour(mail.valeur.le)}${mail.valeur.incomplet ? " · lecture incomplète" : ""}`;
+  return (
+    <div className="mt-[var(--space-admin-3)] flex flex-col gap-[var(--space-admin-1)] text-sm opacity-80">
+      <p className="flex items-center gap-[var(--space-admin-2)]">
+        <CalendarDays size={14} aria-hidden="true" />
+        <span>Prochain rendez-vous : {texteRdv}</span>
+      </p>
+      <p className="flex items-center gap-[var(--space-admin-2)]">
+        <Send size={14} aria-hidden="true" />
+        <span>Dernier e-mail : {texteMail}</span>
+      </p>
+    </div>
+  );
+}
+
 export function CarteProchaineAction(props: {
   tache: Lecture<TacheOuverte | null>;
   nbEmailsAValider: Lecture<number>;
+  prochainRendezVous: Lecture<ProchainRendezVous | null>;
+  dernierEmail: Lecture<DernierEmail>;
   qBase: string;
   ficheHref: string;
   activitePrete: boolean;
@@ -32,39 +79,52 @@ export function CarteProchaineAction(props: {
     ? `${props.ficheHref}?onglet=activite&filtre=taches`
     : `${props.ficheHref}?onglet=resume`;
 
-  if (!tache.ok || !nbEmailsAValider.ok) {
+  const nbEmails = nbEmailsAValider.ok ? nbEmailsAValider.valeur : null;
+  // Les e-mails à valider restent actionnables même si la lecture des tâches est en panne.
+  const emailsAValider = nbEmails !== null && nbEmails > 0;
+
+  if ((!tache.ok && !emailsAValider) || (tache.ok && nbEmails === null)) {
     return (
       <AdminBloc teinte="gris" titre="Prochaine action">
         <p role="alert">{TEXTE_PANNE}</p>
       </AdminBloc>
     );
   }
-  const nbEmails = nbEmailsAValider.valeur;
-  const t = tache.valeur;
+  const t = tache.ok ? tache.valeur : null;
 
-  if (t === null && nbEmails === 0) {
+  if (tache.ok && t === null && nbEmails === 0) {
     return (
       <AdminBloc teinte="vert" titre="Prochaine action">
         <p className="flex items-center gap-[var(--space-admin-2)]">
           <CheckCircle2 size={16} aria-hidden="true" />
           <span>Rien à faire pour ce client aujourd&apos;hui.</span>
         </p>
+        <LignesContexte
+          prochainRendezVous={props.prochainRendezVous}
+          dernierEmail={props.dernierEmail}
+        />
       </AdminBloc>
     );
   }
 
   return (
     <AdminBloc teinte="terracotta" titre="Prochaine action">
+      {!tache.ok ? (
+        <p role="alert" className="flex items-center gap-[var(--space-admin-2)]">
+          <ListTodo size={16} aria-hidden="true" />
+          <span>Tâches : {TEXTE_PANNE.toLowerCase()}</span>
+        </p>
+      ) : null}
       {t !== null ? (
         <p className="flex items-center gap-[var(--space-admin-2)]">
           <ListTodo size={16} aria-hidden="true" />
           <span>
-            <strong>{t.intitule}</strong> · avant le {jour(t.echeanceLe)} · responsable{" "}
-            {t.responsable}
+            <strong>{t.intitule}</strong> · {t.enRetard ? "en retard depuis le" : "avant le"}{" "}
+            {jour(t.echeanceLe)} · responsable {t.responsable}
           </span>
         </p>
       ) : null}
-      {nbEmails > 0 ? (
+      {emailsAValider ? (
         <p className="flex items-center gap-[var(--space-admin-2)]">
           <Mail size={16} aria-hidden="true" />
           <span>
@@ -72,8 +132,12 @@ export function CarteProchaineAction(props: {
           </span>
         </p>
       ) : null}
+      <LignesContexte
+        prochainRendezVous={props.prochainRendezVous}
+        dernierEmail={props.dernierEmail}
+      />
       <div className="mt-[var(--space-admin-3)] flex flex-wrap items-center gap-[var(--space-admin-4)]">
-        {nbEmails > 0 ? (
+        {emailsAValider ? (
           <AdminButton href={`${props.qBase}/emails`} variant="primary" iconAfter={ArrowRight}>
             Relire et valider
           </AdminButton>

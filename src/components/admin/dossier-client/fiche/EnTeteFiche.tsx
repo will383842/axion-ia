@@ -52,6 +52,8 @@ export async function enTeteFiche(ctx: ContexteFiche): Promise<React.ReactElemen
       <CarteProchaineAction
         tache={enTete.prochaineTache}
         nbEmailsAValider={enTete.nbEmailsAValider}
+        prochainRendezVous={enTete.prochainRendezVous}
+        dernierEmail={enTete.dernierEmail}
         qBase={ctx.qBase}
         ficheHref={ctx.ficheHref}
         activitePrete={ONGLET_ACTIVITE_PRET}

@@ -14,6 +14,7 @@ import {
 import { lireQuestionnairesDeLaFiche } from "@/features/dossier-client/questionnaires-de-la-fiche";
 import { prisma } from "@/lib/prisma";
 import { calculerEncoursDuCents } from "@/server/qualiopi/crm/clients";
+import { estFactureOuverte } from "@/server/qualiopi/financements/statuts-facture";
 
 /** Ce que la lecture de l'en-tête demande au contexte de la fiche (structurel : `features/` ne remonte pas vers `components/`). */
 export interface ContexteEnTete {
@@ -41,6 +42,20 @@ export interface TacheOuverte {
   readonly intitule: string;
   readonly echeanceLe: Date;
   readonly responsable: string;
+  /** Échéance (jour de Paris) antérieure à aujourd'hui. */
+  readonly enRetard: boolean;
+}
+
+export interface ProchainRendezVous {
+  readonly debutPrevu: Date;
+  readonly titre: string;
+}
+
+export interface DernierEmail {
+  /** `null` : aucun e-mail parti. */
+  readonly le: Date | null;
+  /** Une source du fil n'a pas pu être lue : la date peut être incomplète. */
+  readonly incomplet: boolean;
 }
 
 export interface QuestionnaireEnTete {
@@ -54,9 +69,11 @@ export interface EnTete {
   readonly prochaineTache: Lecture<TacheOuverte | null>;
   readonly nbTachesOuvertes: Lecture<number>;
   readonly nbEmailsAValider: Lecture<number>;
+  readonly prochainRendezVous: Lecture<ProchainRendezVous | null>;
+  readonly dernierEmail: Lecture<DernierEmail>;
   readonly pipeline: Lecture<PipelineCalcule>;
   readonly sante: Lecture<SanteDuCompte>;
-  readonly encours: Lecture<{ ttcCents: number; avantLe: Date | null }>;
+  readonly encours: Lecture<{ ttcCents: number; avantLe: Date | null; enRetard: boolean }>;
   /** `null` dans la lecture : aucun questionnaire envoyé. */
   readonly questionnaire: Lecture<QuestionnaireEnTete | null>;
   readonly nbRendezVous: Lecture<number>;
@@ -66,7 +83,7 @@ export interface EnTete {
 }
 
 /** Minuit (UTC) du jour civil de Paris : `echeance_le` est une colonne DATE. */
-function aujourdhuiParis(maintenant: Date): Date {
+export function aujourdhuiParis(maintenant: Date): Date {
   const s = new Intl.DateTimeFormat("en-CA", { timeZone: "Europe/Paris" }).format(maintenant);
   return new Date(`${s}T00:00:00.000Z`);
 }
@@ -88,6 +105,7 @@ async function construire(ctx: ContexteEnTete, lireClient: LireClient): Promise<
     rendezVous,
     fil,
     projets,
+    pipelineBrut,
     questionnaires,
     nbPersonnes,
     nbDevis,
@@ -100,7 +118,12 @@ async function construire(ctx: ContexteEnTete, lireClient: LireClient): Promise<
       });
       return t === null
         ? null
-        : { intitule: t.intitule, echeanceLe: t.echeanceLe, responsable: t.responsableLabel };
+        : {
+            intitule: t.intitule,
+            echeanceLe: t.echeanceLe,
+            responsable: t.responsableLabel,
+            enRetard: t.echeanceLe.getTime() < aujourdhui.getTime(),
+          };
     }),
     proteger(() => prisma.clientTache.count({ where: { clientId: id, faiteLe: null } })),
     proteger(() =>
@@ -111,6 +134,8 @@ async function construire(ctx: ContexteEnTete, lireClient: LireClient): Promise<
     proteger(() => prisma.emailOutbox.count({ where: { clientId: id, statut: "a_valider" } })),
     proteger(() => lireRencontresDuClient(id)),
     proteger(() => lireFilDesEchanges(id, ctx.adminPrefix)),
+    proteger(() => lireProjetsDuClient(id)),
+    // La panne de `projet_suivis` ne touche que le pipeline : le compteur « Prestations » ne dépend que des projets.
     proteger(async () => {
       const ps = await lireProjetsDuClient(id);
       const suivis = await lireSuivisDesProjets(ps.map((p) => p.id));
@@ -135,29 +160,42 @@ async function construire(ctx: ContexteEnTete, lireClient: LireClient): Promise<
   ]);
 
   const sante: Lecture<SanteDuCompte> =
-    rendezVous.ok && fil.ok && nbTachesEnRetard.ok && client.ok
+    rendezVous.ok && fil.ok && fil.valeur.sourcesEnPanne === 0 && nbTachesEnRetard.ok && client.ok
       ? {
           ok: true,
           valeur: santeDuCompte({
             maintenant: ctx.maintenant,
             dernierEchangeLe: dernierEchange(rendezVous.valeur, fil.valeur.fil, ctx.maintenant),
-            nbFacturesEnRetard: client.valeur.facturesFormation.filter(
-              (f) => f.avoirDeId === null && f.statut === "en_retard",
-            ).length,
+            nbFacturesEnRetard: nbFacturesEnRetard(client.valeur.facturesFormation, aujourdhui),
             nbTachesEnRetard: nbTachesEnRetard.valeur,
           }),
         }
       : { ok: false };
 
   const encours: EnTete["encours"] = client.ok
-    ? {
-        ok: true,
-        valeur: {
-          ttcCents: calculerEncoursDuCents(client.valeur.facturesFormation),
-          avantLe: plusProcheEcheance(client.valeur.facturesFormation),
-        },
-      }
+    ? (() => {
+        const avantLe = plusProcheEcheance(client.valeur.facturesFormation);
+        return {
+          ok: true as const,
+          valeur: {
+            ttcCents: calculerEncoursDuCents(client.valeur.facturesFormation),
+            avantLe,
+            enRetard: avantLe !== null && aujourdhuiParis(avantLe).getTime() < aujourdhui.getTime(),
+          },
+        };
+      })()
     : { ok: false };
+
+  const prochainRdv: EnTete["prochainRendezVous"] = rendezVous.ok
+    ? { ok: true, valeur: prochainRendezVous(rendezVous.valeur, ctx.maintenant) }
+    : { ok: false };
+
+  const dernierEmail: EnTete["dernierEmail"] = (() => {
+    if (!fil.ok) return { ok: false };
+    const le = dernierEmailParti(fil.valeur.fil, ctx.maintenant);
+    const incomplet = fil.valeur.sourcesEnPanne > 0;
+    return le === null && incomplet ? { ok: false } : { ok: true, valeur: { le, incomplet } };
+  })();
 
   const questionnaire: EnTete["questionnaire"] = questionnaires.ok
     ? { ok: true, valeur: resumerQuestionnaire(questionnaires.valeur) }
@@ -168,7 +206,11 @@ async function construire(ctx: ContexteEnTete, lireClient: LireClient): Promise<
     prochaineTache,
     nbTachesOuvertes,
     nbEmailsAValider,
-    pipeline: projets.ok ? { ok: true, valeur: calculerPipeline(projets.valeur) } : { ok: false },
+    prochainRendezVous: prochainRdv,
+    dernierEmail,
+    pipeline: pipelineBrut.ok
+      ? { ok: true, valeur: calculerPipeline(pipelineBrut.valeur) }
+      : { ok: false },
     sante,
     encours,
     questionnaire,
@@ -184,29 +226,80 @@ async function construire(ctx: ContexteEnTete, lireClient: LireClient): Promise<
 
 /** Dernier rendez-vous tenu OU dernier e-mail parti (`statutEmail === "sent"`), le plus récent. */
 export function dernierEchange(
-  rendezVous: ReadonlyArray<{ statut: string | null; debutPrevu: Date | null }>,
+  rendezVous: ReadonlyArray<{
+    statut: string | null;
+    debutPrevu: Date | null;
+    estTestInterne: boolean;
+  }>,
   fil: ReadonlyArray<{ genre: string; statutEmail?: string; date: Date }>,
   maintenant: Date,
 ): Date | null {
   const dates = [
     ...rendezVous
-      .filter((r) => r.statut === "tenu" && r.debutPrevu !== null)
+      .filter((r) => r.statut === "tenu" && r.debutPrevu !== null && !r.estTestInterne)
       .map((r) => r.debutPrevu!),
     ...fil.filter((x) => x.genre === "email" && x.statutEmail === "sent").map((x) => x.date),
   ].filter((d) => d.getTime() <= maintenant.getTime());
   return dates.length === 0 ? null : new Date(Math.max(...dates.map((d) => d.getTime())));
 }
 
-function plusProcheEcheance(
-  factures: ReadonlyArray<{ statut: string; avoirDeId: string | null; echeanceAt: Date | null }>,
+type FactureEnTete = { statut: string; avoirDeId: string | null; echeanceAt: Date | null };
+
+/** Dernier e-mail PARTI (`statutEmail === "sent"`), jamais dans le futur. */
+export function dernierEmailParti(
+  fil: ReadonlyArray<{ genre: string; statutEmail?: string; date: Date }>,
+  maintenant: Date,
 ): Date | null {
-  const dates = factures
+  const dates = fil
+    .filter((x) => x.genre === "email" && x.statutEmail === "sent")
+    .map((x) => x.date.getTime())
+    .filter((t) => t <= maintenant.getTime());
+  return dates.length === 0 ? null : new Date(Math.max(...dates));
+}
+
+/** Premier rendez-vous à venir (planifié, hors test interne), le plus proche d'abord. */
+export function prochainRendezVous(
+  rendezVous: ReadonlyArray<{
+    statut: string | null;
+    debutPrevu: Date | null;
+    titre: string;
+    estTestInterne: boolean;
+  }>,
+  maintenant: Date,
+): ProchainRendezVous | null {
+  const aVenir = rendezVous
     .filter(
-      (f) =>
-        f.avoirDeId === null &&
-        ["emise", "partiellement_payee", "en_retard"].includes(f.statut) &&
-        f.echeanceAt !== null,
+      (r) =>
+        !r.estTestInterne &&
+        r.debutPrevu !== null &&
+        r.debutPrevu.getTime() >= maintenant.getTime() &&
+        (r.statut === null || r.statut === "planifie"),
     )
+    .sort((a, b) => a.debutPrevu!.getTime() - b.debutPrevu!.getTime());
+  const r = aVenir[0];
+  return r === undefined ? null : { debutPrevu: r.debutPrevu!, titre: r.titre };
+}
+
+/**
+ * Factures en retard : le statut `en_retard` est posé par une tâche planifiée, donc une facture
+ * ouverte dont l'échéance (jour de Paris) est passée compte aussi.
+ */
+export function nbFacturesEnRetard(
+  factures: ReadonlyArray<FactureEnTete>,
+  aujourdhui: Date,
+): number {
+  return factures.filter(
+    (f) =>
+      f.avoirDeId === null &&
+      estFactureOuverte(f.statut) &&
+      (f.statut === "en_retard" ||
+        (f.echeanceAt !== null && aujourdhuiParis(f.echeanceAt).getTime() < aujourdhui.getTime())),
+  ).length;
+}
+
+export function plusProcheEcheance(factures: ReadonlyArray<FactureEnTete>): Date | null {
+  const dates = factures
+    .filter((f) => f.avoirDeId === null && estFactureOuverte(f.statut) && f.echeanceAt !== null)
     .map((f) => f.echeanceAt!.getTime());
   return dates.length === 0 ? null : new Date(Math.min(...dates));
 }

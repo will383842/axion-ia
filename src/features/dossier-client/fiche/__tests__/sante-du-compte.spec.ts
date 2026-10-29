@@ -14,6 +14,24 @@ describe("santeDuCompte", () => {
       raisons: [],
     });
   });
+  it("14 jours : à surveiller, avec la raison", () => {
+    expect(santeDuCompte({ ...base, dernierEchangeLe: ilYA(14) })).toEqual({
+      niveau: "a_surveiller",
+      raisons: ["aucun échange depuis 14 jours"],
+    });
+  });
+  it("échange à 23 h 30 à Paris, 0 h 30 treize jours plus tard : 14 jours civils, à surveiller", () => {
+    // 22:30 UTC le 02/11 = 23h30 à Paris (UTC+1, heure d'hiver) ; 23:30 UTC le 15/11 = 0h30 le 16/11.
+    // 13 jours et 1 h écoulés, mais 14 jours civils : le jour de Paris fait foi.
+    const dernierEchangeLe = new Date("2026-11-02T22:30:00Z");
+    expect(
+      santeDuCompte({ ...base, maintenant: new Date("2026-11-15T23:30:00Z"), dernierEchangeLe }),
+    ).toEqual({ niveau: "a_surveiller", raisons: ["aucun échange depuis 14 jours"] });
+    // Une heure plus tôt (23 h 30 le 15/11) : 13 jours civils, bonne.
+    expect(
+      santeDuCompte({ ...base, maintenant: new Date("2026-11-15T22:30:00Z"), dernierEchangeLe }),
+    ).toEqual({ niveau: "bonne", raisons: [] });
+  });
   it("15 jours : à surveiller, avec la raison", () => {
     expect(santeDuCompte({ ...base, dernierEchangeLe: ilYA(15) })).toEqual({
       niveau: "a_surveiller",

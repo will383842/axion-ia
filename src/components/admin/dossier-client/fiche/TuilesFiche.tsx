@@ -98,7 +98,9 @@ export function TuilesFiche(props: {
         value={ttcSeul(e.encours.valeur.ttcCents)}
         {...(e.encours.valeur.avantLe === null
           ? {}
-          : { meta: `à payer avant le ${jour(e.encours.valeur.avantLe)}` })}
+          : {
+              meta: `${e.encours.valeur.enRetard ? "en retard depuis le" : "à payer avant le"} ${jour(e.encours.valeur.avantLe)}`,
+            })}
         tone="warning"
         icon={Euro}
         href={`${ficheHref}?onglet=devis-factures`}
