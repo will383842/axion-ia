@@ -351,3 +351,56 @@ describe("taux d'un collaborateur : le brouillon et l'envoi comptent pareil les 
     expect(tauxDuCollab(apresEnvoi) as number).toBeLessThan(tauxDuCollab(sansPrefill) as number);
   });
 });
+
+describe("référent informatique : attendu seulement s'il a commencé", () => {
+  const CODE_REF = "refcode00001";
+  const brouillonRef = (): EntreeBrouillon => ({
+    id: "b-ref",
+    mode: "it",
+    membre: "it-refcode00001",
+    majLe: T(26),
+    instantane: { data: {}, more: 0, pre: [] },
+  });
+  const ouverture = (membre: string): EntreeOuverture => ({
+    mode: "perso",
+    membre,
+    premiereOuverture: T(26),
+    derniereOuverture: T(27),
+    nombre: 1,
+    derniereEtapeAtteinte: 1,
+  });
+
+  it("un brouillon du référent le rend attendu et cité dans l'en-tête", () => {
+    const s = suivre({ reponses: [dirigeant()], brouillons: [brouillonRef()] });
+    expect(s.total.attendus).toBe(6);
+    expect(phraseEnTete(s)).toContain("le référent informatique");
+  });
+
+  it("une réponse mise de côté ne le garde pas attendu à vie", () => {
+    const ecartee: EntreeReponse = {
+      id: "r-ref",
+      mode: "it",
+      membreColonne: CODE_REF,
+      recuLe: T(27),
+      ecartee: true,
+      charge: { mode: "it", membre: CODE_REF, donnees: {} },
+    };
+    const s = suivre({ reponses: [dirigeant(), ecartee] });
+    expect(s.total.attendus).toBe(5);
+    expect(phraseEnTete(s)).not.toContain("le référent informatique");
+  });
+
+  it("un lien perso ouvert avec le code d'un référent connu va sur sa ligne", () => {
+    const recue: EntreeReponse = {
+      id: "r-ref2",
+      mode: "it",
+      membreColonne: CODE_REF,
+      recuLe: T(27),
+      ecartee: false,
+      charge: { mode: "it", membre: CODE_REF, donnees: {} },
+    };
+    const s = suivre({ reponses: [dirigeant(), recue], ouvertures: [ouverture(CODE_REF)] });
+    expect(s.referents[0]?.ouverture).not.toBeNull();
+    expect(s.collaborateurs.some((l) => l.role === "non_retrouvee")).toBe(false);
+  });
+});

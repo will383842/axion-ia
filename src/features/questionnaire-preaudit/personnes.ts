@@ -627,8 +627,7 @@ export function suivreParPersonne(e: EntreePersonnes): SuiviParPersonne {
   const referentRecu = lignesReferent.some((l) => l.etat === "recu");
   // Le référent n'est attendu que s'il a commencé : le dirigeant peut remplir la partie technique lui-même.
   const referentActif = lignesReferent.some(
-    (l) =>
-      l.etat === "recu" || l.etat === "ecartee" || l.etat === "en_cours" || l.etat === "ouvert",
+    (l) => l.etat === "recu" || l.etat === "en_cours" || l.etat === "ouvert",
   );
   const total: ComptesTotal = {
     attendus: 1 + collab.attendus + (referentActif ? 1 : 0),
@@ -699,7 +698,7 @@ export function phraseEnTete(s: SuiviParPersonne): string {
         (s.collab.enCours > 0 ? ` (dont ${s.collab.enCours} en train de remplir)` : ""),
     );
   }
-  const referentCommence = s.referents.some((l) => l.etat !== "pas_de_nouvelles");
+  const referentCommence = s.referents.some((l) => l.etat === "en_cours" || l.etat === "ouvert");
   if (referentCommence && !s.referents.some((l) => l.etat === "recu")) {
     manque.push("le référent informatique");
   }
