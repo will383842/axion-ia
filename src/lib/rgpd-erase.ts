@@ -2312,6 +2312,7 @@ export async function rejouerEffacements(
     | "questionnaireQuestion"
     | "emailSuivi"
     | "projetContact"
+    | "clientTache"
     | "enregistrementConsentement"
   >;
 
