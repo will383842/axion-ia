@@ -238,6 +238,10 @@ import {
   questionnaireAvantAuditRelanceSubject,
 } from "./questionnaire-avant-audit-relance";
 import {
+  QuestionnaireRelanceEquipeEmail,
+  questionnaireRelanceEquipeSubject,
+} from "./questionnaire-relance-equipe";
+import {
   QuestionnaireAvantAuditConfirmationEmail,
   questionnaireAvantAuditConfirmationSubject,
 } from "./questionnaire-avant-audit-confirmation";
@@ -695,6 +699,11 @@ const TEMPLATES: TemplateMap = {
   "questionnaire-avant-audit-relance": {
     subject: questionnaireAvantAuditRelanceSubject,
     component: QuestionnaireAvantAuditRelanceEmail,
+  },
+  // Lot B10 (2026-10-29) — brouillon au dirigeant seul, garé « à valider », jamais enfilé seul.
+  "questionnaire-relance-equipe": {
+    subject: questionnaireRelanceEquipeSubject,
+    component: QuestionnaireRelanceEquipeEmail,
   },
   "questionnaire-avant-audit-confirmation": {
     subject: questionnaireAvantAuditConfirmationSubject,

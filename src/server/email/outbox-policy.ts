@@ -222,6 +222,8 @@ export const LIBELLE_TEMPLATE_EMAIL: Record<string, string> = {
   "questionnaire-avant-audit": "Questionnaire de pré-audit envoyé par Will",
   "questionnaire-avant-audit-relance": "Relance du questionnaire de pré-audit (J+2, J+5, J+10)",
   "questionnaire-avant-audit-confirmation": "Questionnaire de pré-audit : réponses bien arrivées",
+  "questionnaire-relance-equipe":
+    "Questionnaire de pré-audit : demande au dirigeant de relancer son équipe",
   "apporteur-declaration-recue": "Alerte interne : entreprise déclarée par un apporteur",
   // Lot OPCO A8 — volontairement HORS des deux listes : défaut « auto » (envoi
   // automatique demandé par Will le 04/10), mais une règle « validation »,
