@@ -158,6 +158,13 @@ const CONSOMMATEURS_ASSUMES: ReadonlySet<string> = new Set([
   // applique `TAUX_TVA_STANDARD` (SSOT de la TVA), jamais un taux recopié. Rien d'autre du domaine. Nommés seuls.
   "src/components/admin/dossier-client/fiche/OngletDevisFactures.tsx",
   "src/components/admin/dossier-client/fiche/montants.ts",
+  // Fiche client, lot B5 (29/10/2026) — la carte « Qui décide » dit « Financement : <OPCO> » avec la
+  // MÊME règle que le reste de la console (`opcoDuClient`, `nomOpcoDuClient` : opco-referentiel), jamais
+  // recopiée. Rien d'autre du domaine. Nommé seul.
+  "src/components/admin/dossier-client/fiche/PersonnesDecision.tsx",
+  // Même lot — « Noter le départ » trace l'action dans le journal d'audit commun (`logQualiopiActivity`,
+  // `_guards`), comme `features/dossier-client/actions.ts`. Rien d'autre du domaine. Nommé seul.
+  "src/features/dossier-client/fiche/depart-personne.ts",
   // Même lot — `fiche/contexte.ts` partage la lecture du client 360 entre la page et les emplacements
   // (`getClient360` sous `React.cache`) : une requête par affichage. Rien d'autre du domaine.
   "src/components/admin/dossier-client/fiche/contexte.ts",
