@@ -177,7 +177,7 @@ export default async function ReserverPage({ params, searchParams }: Props) {
   // Lot B (M25) : échange formateur ouvert depuis F1 ou F7, même règle (jeton signé,
   // candidature de formateur freelance seulement ; sinon formulaire vide).
   // Visio du Tour France IA : le jeton de la mini-demande (`?j=`, domaine `tour-demande-v1`) propose
-  // le nom, l'e-mail, le téléphone et la ville. Un jeton d'un autre parcours (page vidéo des
+  // le nom, l'e-mail et la ville (jamais le téléphone : il est saisi ici, à l'étape 2). Un jeton d'un autre parcours (page vidéo des
   // apporteurs) ne s'y lit pas, et réciproquement ; un jeton faux : formulaire vide, sans erreur.
   const identiteTour =
     !reprise && choix === "tour" ? await identiteDuJetonTour(sp[PARAM_JETON_VSL]) : null;
@@ -264,9 +264,6 @@ export default async function ReserverPage({ params, searchParams }: Props) {
                     valeurs: {
                       [CHAMPS.nom]: identiteTour.nom,
                       [CHAMPS.email]: identiteTour.email,
-                      ...(identiteTour.telephone
-                        ? { [CHAMPS.telephone]: identiteTour.telephone }
-                        : {}),
                       ...(champVille && identiteTour.ville
                         ? { [champVille]: identiteTour.ville }
                         : {}),

@@ -1,6 +1,6 @@
 // `/tour-france-ia/demande` — la mini-demande qui précède la visio (PR-2b).
 //
-// Quatre champs (nom, e-mail, téléphone, ville), puis le calendrier de la visio. Composant SERVEUR :
+// Trois champs (nom, e-mail, ville), puis le calendrier de la visio. Composant SERVEUR :
 // aucun JavaScript client, aucun cookie, aucun script tiers. Le formulaire est natif et mène à
 // l'action `envoyerDemandeTour` (`actions.ts`), qui enregistre puis redirige vers la visio.
 //
@@ -40,8 +40,7 @@ const CHAMPS_CACHES = [
 ] as const;
 
 const MESSAGES_ERREUR = {
-  champs:
-    "Un champ est à corriger : vérifiez votre nom, votre e-mail, votre téléphone et votre ville.",
+  champs: "Un champ est à corriger : vérifiez votre nom, votre e-mail et votre ville.",
   trop: "Trop de demandes depuis cette connexion. Réessayez dans une heure.",
 } as const;
 
@@ -69,7 +68,7 @@ export default async function DemandePage({ searchParams }: Props) {
     <main className="bg-sand w-full px-4 py-10 sm:px-6 sm:py-16">
       <div className="mx-auto w-full max-w-xl">
         <h1 className="text-fg font-serif text-[clamp(1.875rem,1.35rem+2.2vw,3rem)] leading-[1.08] font-semibold tracking-tight text-balance">
-          Votre journée offerte, en quatre champs
+          Votre journée offerte, en trois champs
         </h1>
         <p className="text-fg mt-3 text-lg">Ensuite, vous choisissez le créneau de votre visio.</p>
 
@@ -121,23 +120,6 @@ export default async function DemandePage({ searchParams }: Props) {
             />
           </div>
           <div>
-            <label htmlFor="tdf-telephone" className={LABEL}>
-              Téléphone
-            </label>
-            <input
-              id="tdf-telephone"
-              name="telephone"
-              type="tel"
-              autoComplete="tel"
-              required
-              pattern="(?=(?:[^0-9]*[0-9]){9})[0-9 +().\-]{8,20}"
-              title="Au moins 9 chiffres (espaces, +, points et tirets acceptés)"
-              maxLength={20}
-              inputMode="tel"
-              className={CHAMP}
-            />
-          </div>
-          <div>
             <label htmlFor="tdf-ville" className={LABEL}>
               Ville
             </label>
@@ -182,9 +164,9 @@ export default async function DemandePage({ searchParams }: Props) {
 
         <p className="text-fg-soft mt-8 text-sm leading-snug">
           Axion IA, responsable du traitement, utilise ces informations pour organiser votre visio
-          et compter les demandes de chaque ville. Votre téléphone et les clés de comptage sont
-          conservés sous forme d’empreintes chiffrées. Vous pouvez demander l’effacement de vos
-          données à tout moment.
+          et compter les demandes de chaque ville. Les clés de comptage sont conservées sous forme
+          d’empreintes chiffrées. Votre téléphone vous sera demandé à l’étape suivante, pour la
+          visio. Vous pouvez demander l’effacement de vos données à tout moment.
         </p>
       </div>
     </main>

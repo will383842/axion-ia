@@ -4,15 +4,16 @@
  * `enregistrerDemande` est l'unique chemin d'écriture d'une demande. Dans l'ordre :
  *
  *   1. les champs sont NETTOYÉS et validés : nom et ville sans caractère de contrôle ni d'inversion
- *      du sens d'écriture, e-mail valide et borné, téléphone lisible (9 chiffres au moins) ; tout
+ *      du sens d'écriture, e-mail valide et borné ; tout
  *      champ qui commence par `enc:` est refusé (il ferait passer du texte pour un chiffré) ;
  *   2. la ville est ramenée à sa clé (`villes.ts`) ; une ville vide est refusée ;
- *   3. nom, e-mail et téléphone sont CHIFFRÉS (`chiffrement.ts` : clé exigée, donnée authentifiée
- *      propre au champ ; IV aléatoire, on ne les retrouve que par `emailHash`). Le téléphone n'est
- *      gardé sous AUCUNE autre forme : ses seuls dérivés sont des HMAC (clé de comptage) ;
- *   4. la ligne est créée avec `compte: true` et ses trois clés de comptage UNIQUES (HMAC). Si une
- *      clé est déjà prise (la même personne, la même entreprise ou le même téléphone a déjà demandé
- *      pour cette ville), la base refuse (P2002) : la demande est alors enregistrée SANS clé,
+ *   3. nom et e-mail sont CHIFFRÉS (`chiffrement.ts` : clé exigée, donnée authentifiée propre
+ *      au champ ; IV aléatoire, on ne les retrouve que par `emailHash`). Le téléphone n'est plus
+ *      demandé à cette étape (il l'est à la réservation de la visio) : la colonne, restée
+ *      obligatoire, reçoit `TELEPHONE_NON_DEMANDE` ;
+ *   4. la ligne est créée avec `compte: true` et ses DEUX clés de comptage UNIQUES (HMAC : personne,
+ *      entreprise ; la clé téléphone n'est plus posée depuis le 29/10). Si une clé est déjà prise
+ *      (la même personne ou la même entreprise a déjà demandé pour cette ville), la base refuse (P2002) : la demande est alors enregistrée SANS clé,
  *      `compte: false`, avec `doublonDeId` — elle reste visible dans la console, elle ne gonfle pas
  *      le compteur. Deux demandes simultanées ne passent donc jamais toutes les deux ;
  *   5. la fiche prospect (`fiche.ts`, qui n'écrit sur aucune fiche existante) puis le CRM Pro
@@ -25,7 +26,6 @@
 import * as Sentry from "@sentry/nextjs";
 import { z } from "zod";
 
-import { finDeTelephone } from "@/features/dossier-client/fiche-auto";
 import { prisma } from "@/lib/prisma";
 import { hashEmailForLookup, normalizeEmail } from "@/lib/security/email-hash";
 import { chiffrerChamp } from "./chiffrement";
@@ -38,7 +38,6 @@ import { resoudreVille } from "./villes";
 export interface EntreeDemande {
   readonly nom: string;
   readonly email: string;
-  readonly telephone: string;
   readonly ville: string;
   readonly depuis?: string | null;
   readonly utmSource?: string | null;
@@ -58,7 +57,7 @@ export interface DemandeEnregistree {
 
 /** Une donnée indispensable manque ou est refusée : l'appelant l'a mal validée. */
 export class ErreurDemande extends Error {
-  constructor(readonly champ: "nom" | "email" | "telephone" | "ville") {
+  constructor(readonly champ: "nom" | "email" | "ville") {
     super(`demande du Tour : ${champ} manquant ou refusé`);
     this.name = "ErreurDemande";
   }
@@ -66,15 +65,20 @@ export class ErreurDemande extends Error {
 
 const LONGUEUR_MAX_NOM = 120;
 const LONGUEUR_MAX_VILLE = 80;
-const LONGUEUR_MAX_TELEPHONE = 40;
 const LONGUEUR_MAX_EMAIL = 254;
+
+/**
+ * Le téléphone n'est plus demandé à l'étape 1 : la colonne `telephone` reste obligatoire (aucune
+ * migration), les nouvelles demandes y mettent cette chaîne vide.
+ */
+export const TELEPHONE_NON_DEMANDE = "";
 
 const ADRESSE_VALIDE = z.string().email().max(LONGUEUR_MAX_EMAIL);
 
 /** Les caractères de contrôle et d'inversion du sens d'écriture (jamais dans un nom ni une ville). */
 const CARACTERES_INTERDITS = /[\p{Cc}\u200B-\u200F\u202A-\u202E\u2066-\u2069\uFEFF]/gu;
 
-/** Un texte libre (nom, ville, téléphone) nettoyé : forme NFKC, un espace entre les mots, sans contrôle. */
+/** Un texte libre (nom, ville) nettoyé : forme NFKC, un espace entre les mots, sans contrôle. */
 function propre(texte: string, max: number): string {
   return texte
     .normalize("NFKC")
@@ -111,19 +115,8 @@ export async function enregistrerDemande(entree: EntreeDemande): Promise<Demande
   if (ressembleAUnChiffre(email) || !ADRESSE_VALIDE.safeParse(email).success) {
     throw new ErreurDemande("email");
   }
-  const telephone = propre(entree.telephone, LONGUEUR_MAX_TELEPHONE);
-  const telephoneFin = finDeTelephone(telephone);
-  // Un numéro illisible (moins de 9 chiffres) ne permet ni de rappeler ni de compter : refusé.
-  if (
-    telephoneFin === null ||
-    ressembleAUnChiffre(entree.telephone) ||
-    ressembleAUnChiffre(telephone)
-  ) {
-    throw new ErreurDemande("telephone");
-  }
-
   const emailHash = hashEmailForLookup(email);
-  const cles = clesDeComptage({ villeCle: ville.cle, email, telephoneFin });
+  const cles = clesDeComptage({ villeCle: ville.cle, email, telephoneFin: null });
   const depuis = courte(entree.depuis, 60);
   const utmSource = courte(entree.utmSource, 60);
   const utmMedium = courte(entree.utmMedium, 60);
@@ -133,7 +126,7 @@ export async function enregistrerDemande(entree: EntreeDemande): Promise<Demande
   const base = {
     nom: chiffrerChamp("nom", nom),
     email: chiffrerChamp("email", email),
-    telephone: chiffrerChamp("telephone", telephone),
+    telephone: TELEPHONE_NON_DEMANDE,
     emailHash,
     villeSaisie,
     villeCle: ville.cle,
@@ -155,7 +148,6 @@ export async function enregistrerDemande(entree: EntreeDemande): Promise<Demande
         compte: true,
         cleComptagePersonne: cles.personne,
         cleComptageDomaine: cles.domaine,
-        cleComptageTelephone: cles.telephone,
       },
       select: { id: true },
     });
@@ -167,7 +159,6 @@ export async function enregistrerDemande(entree: EntreeDemande): Promise<Demande
     const ou = [
       ...(cles.personne !== null ? [{ cleComptagePersonne: cles.personne }] : []),
       ...(cles.domaine !== null ? [{ cleComptageDomaine: cles.domaine }] : []),
-      ...(cles.telephone !== null ? [{ cleComptageTelephone: cles.telephone }] : []),
     ];
     const tenant =
       ou.length > 0
@@ -196,7 +187,6 @@ export async function enregistrerDemande(entree: EntreeDemande): Promise<Demande
       id,
       nom,
       email,
-      telephone,
       ville: ville.nom ?? villeSaisie,
       depuis,
       utmSource,

@@ -41,7 +41,10 @@ export interface EntreeCles {
   readonly villeCle: string;
   /** L'adresse normalisée (minuscules). */
   readonly email: string;
-  /** Les 9 derniers chiffres du téléphone, ou `null` (jamais stockés : seulement pour la clé). */
+  /**
+   * Les 9 derniers chiffres du téléphone, ou `null` (jamais stockés : seulement pour la clé). Les
+   * demandes de l'étape 1 n'en ont plus (le téléphone vient à l'étape 2) : toujours `null`.
+   */
   readonly telephoneFin: string | null;
 }
 
@@ -70,7 +73,10 @@ export interface ClesComptage {
   readonly telephone: string | null;
 }
 
-/** Les trois clés de comptage d'une demande. Une clé absente (`null`) ne bloque rien. */
+/**
+ * Les clés de comptage d'une demande. Une clé absente (`null`) ne bloque rien : depuis le 29/10, la
+ * clé téléphone est toujours `null` (le téléphone n'est plus demandé à la mini-demande).
+ */
 export function clesDeComptage(e: EntreeCles): ClesComptage {
   const adresse = adressePourCle(e.email);
   const pro = natureAdresse(adresse) === "pro";

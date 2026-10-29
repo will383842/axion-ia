@@ -50,7 +50,6 @@ function formulaire(surcharge: Record<string, string> = {}): FormData {
   const base: Record<string, string> = {
     nom: "Claire Martin",
     email: "Claire@Exemple.fr",
-    telephone: "06 12 34 56 78",
     ville: "Lyon",
     depuis: "tdf-heros",
     utm_source: "facebook",
@@ -118,8 +117,6 @@ describe("la mini-demande du Tour", () => {
     ["nom vide", { nom: "  " }],
     ["nom trop long", { nom: "x".repeat(81) }],
     ["e-mail faux", { email: "pas-un-email" }],
-    ["téléphone trop court", { telephone: "0612" }],
-    ["téléphone avec des lettres", { telephone: "06 12 34 56 ab" }],
     ["ville vide", { ville: "" }],
   ])("%s : ?erreur=champs, aucune donnée dans l'adresse", async (_nom, surcharge) => {
     const url = await destination(formulaire(surcharge));
@@ -147,8 +144,17 @@ describe("la mini-demande du Tour", () => {
     expect(url.searchParams.get("utm_source")).toBe("facebook");
     expect(url.searchParams.get("utm_campaign")).toBe("tour-ia");
     expect(lireJetonDemande(url.searchParams.get("j"))).toEqual({ id: ID });
-    // Ni le nom, ni l'adresse, ni le téléphone ne voyagent dans l'adresse.
+    // Ni le nom ni l'adresse ne voyagent dans l'adresse.
     expect(url.search).not.toMatch(/Claire|exemple|0612|06%2012/i);
+  });
+
+  it("un téléphone posté par une ancienne page est ignoré et n'est jamais transmis", async () => {
+    const url = await destination(formulaire({ telephone: "06 12 34 56 78" }));
+    expect(url.searchParams.get("erreur")).toBeNull();
+    expect(mocks.enregistrerDemande).toHaveBeenCalledTimes(1);
+    const transmis = mocks.enregistrerDemande.mock.calls[0]?.[0] as Record<string, unknown>;
+    expect(transmis).not.toHaveProperty("telephone");
+    expect(Object.values(transmis)).not.toContain("06 12 34 56 78");
   });
 
   it("anti-oracle : un doublon et une première demande reçoivent la même réponse", async () => {

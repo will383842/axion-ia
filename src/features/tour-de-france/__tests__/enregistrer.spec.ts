@@ -13,22 +13,15 @@ vi.mock("@/lib/prisma", () => ({
   prisma: { tourDemande: { create: m.create, findFirst: m.findFirst } },
 }));
 vi.mock("@/lib/pii-crypto", () => ({ encryptPii: m.encryptPii }));
-vi.mock("@/features/dossier-client/fiche-auto", () => ({
-  finDeTelephone: (t: string) => {
-    const chiffres = t.replace(/\D/g, "");
-    return chiffres.length >= 9 ? chiffres.slice(-9) : null;
-  },
-}));
 vi.mock("../fiche", () => ({ rattacherDemande: m.rattacherDemande }));
 vi.mock("../crm", () => ({ envoyerAuCrm: m.envoyerAuCrm }));
 vi.mock("@sentry/nextjs", () => ({ captureException: m.captureException }));
 
-import { ErreurDemande, enregistrerDemande } from "../enregistrer";
+import { ErreurDemande, TELEPHONE_NON_DEMANDE, enregistrerDemande } from "../enregistrer";
 
 const entree = {
   nom: "Alice Martin",
   email: "Alice@Societe-Exemple.fr",
-  telephone: "06 12 34 56 78",
   ville: "LYON",
 };
 
@@ -42,22 +35,23 @@ beforeEach(() => {
 });
 
 describe("enregistrerDemande", () => {
-  it("écrit la demande chiffrée, comptée, avec ses trois clés de comptage (des HMAC)", async () => {
+  it("écrit la demande chiffrée, comptée, avec ses deux clés de comptage (des HMAC)", async () => {
     const r = await enregistrerDemande(entree);
     expect(r).toEqual({ id: "d1", compte: true, rattachement: "sans_fiche" });
     const { data } = m.create.mock.calls[0]?.[0] as { data: Record<string, unknown> };
     expect(data["nom"]).toBe("enc:Alice Martin");
     expect(data["email"]).toBe("enc:alice@societe-exemple.fr");
-    expect(data["telephone"]).toBe("enc:06 12 34 56 78");
+    // Le téléphone n'est plus demandé à l'étape 1 : la colonne reçoit la constante, rien de chiffré.
+    expect(TELEPHONE_NON_DEMANDE).toBe("");
+    expect(data["telephone"]).toBe("");
     expect(data["villeCle"]).toBe("lyon");
     expect(data["villeNom"]).toBe("Lyon");
     expect(data["compte"]).toBe(true);
     expect(String(data["cleComptagePersonne"])).toMatch(HMAC_LYON);
     expect(String(data["cleComptageDomaine"])).toMatch(HMAC_LYON);
-    expect(String(data["cleComptageTelephone"])).toMatch(HMAC_LYON);
+    expect(data["cleComptageTelephone"] ?? null).toBeNull();
     // Rien de lisible dans les clés, et aucune colonne « fin de numéro ».
     expect(String(data["cleComptageDomaine"])).not.toContain("societe-exemple");
-    expect(String(data["cleComptageTelephone"])).not.toContain("612345678");
     expect(data).not.toHaveProperty("telephoneFin");
   });
 
@@ -67,7 +61,6 @@ describe("enregistrerDemande", () => {
     expect(options).toEqual([
       ["Alice Martin", { cleExigee: true, aad: "tour_demandes:nom" }],
       ["alice@societe-exemple.fr", { cleExigee: true, aad: "tour_demandes:email" }],
-      ["06 12 34 56 78", { cleExigee: true, aad: "tour_demandes:telephone" }],
     ]);
   });
 
@@ -115,17 +108,15 @@ describe("enregistrerDemande", () => {
     expect(m.envoyerAuCrm).toHaveBeenCalledWith(
       expect.objectContaining({ id: "d1", ville: "Lyon", email: "alice@societe-exemple.fr" }),
     );
+    expect(m.envoyerAuCrm.mock.calls[0]?.[0]).not.toHaveProperty("telephone");
   });
 
-  it("refuse une ville, un nom, un e-mail ou un téléphone vide", async () => {
+  it("refuse une ville, un nom ou un e-mail vide", async () => {
     await expect(enregistrerDemande({ ...entree, ville: " " })).rejects.toBeInstanceOf(
       ErreurDemande,
     );
     await expect(enregistrerDemande({ ...entree, nom: " " })).rejects.toBeInstanceOf(ErreurDemande);
     await expect(enregistrerDemande({ ...entree, email: " " })).rejects.toBeInstanceOf(
-      ErreurDemande,
-    );
-    await expect(enregistrerDemande({ ...entree, telephone: " " })).rejects.toBeInstanceOf(
       ErreurDemande,
     );
     expect(m.create).not.toHaveBeenCalled();
@@ -137,9 +128,6 @@ describe("enregistrerDemande : ce qu'un visiteur ne peut pas faire passer", () =
     for (const faux of ["enc:v1:abc", "ENC:V2:abc", "  Enc:v1:abc", "ｅｎｃ:v1:abc"]) {
       await expect(enregistrerDemande({ ...entree, nom: faux })).rejects.toMatchObject({
         champ: "nom",
-      });
-      await expect(enregistrerDemande({ ...entree, telephone: faux })).rejects.toMatchObject({
-        champ: "telephone",
       });
     }
     await expect(enregistrerDemande({ ...entree, email: "enc:v1:abc" })).rejects.toMatchObject({
@@ -157,16 +145,6 @@ describe("enregistrerDemande : ce qu'un visiteur ne peut pas faire passer", () =
     const trop = `${"a".repeat(250)}@societe-exemple.fr`;
     await expect(enregistrerDemande({ ...entree, email: trop })).rejects.toMatchObject({
       champ: "email",
-    });
-    expect(m.create).not.toHaveBeenCalled();
-  });
-
-  it("refuse un téléphone illisible (moins de 9 chiffres)", async () => {
-    await expect(enregistrerDemande({ ...entree, telephone: "06 12" })).rejects.toMatchObject({
-      champ: "telephone",
-    });
-    await expect(enregistrerDemande({ ...entree, telephone: "abc" })).rejects.toMatchObject({
-      champ: "telephone",
     });
     expect(m.create).not.toHaveBeenCalled();
   });

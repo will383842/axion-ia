@@ -34,15 +34,17 @@ beforeEach(() => {
 });
 
 describe("préremplir la visio du Tour", () => {
-  it("un jeton du Tour valide rend nom, e-mail, téléphone et ville", async () => {
+  it("un jeton du Tour valide rend nom, e-mail et ville, jamais le téléphone", async () => {
     m.findUnique.mockResolvedValue(demande());
     expect(await identiteDuJetonTour(creerJetonDemande(ID))).toEqual({
       nom: "Claire Martin",
       email: "claire@exemple.fr",
-      telephone: "06 12 34 56 78",
       ville: "Lyon",
     });
     expect(m.findUnique.mock.calls[0]?.[0]).toMatchObject({ where: { id: ID } });
+    // Le téléphone n'est ni lu en base ni rendu : il est saisi à l'étape 2.
+    const select = (m.findUnique.mock.calls[0]?.[0] as { select: Record<string, unknown> }).select;
+    expect(select).not.toHaveProperty("telephone");
   });
 
   it("hors référentiel : la ville est celle que la personne a tapée", async () => {
@@ -86,8 +88,8 @@ describe("préremplir la visio du Tour", () => {
   });
 
   it("une valeur illisible n'est jamais proposée", async () => {
-    m.findUnique.mockResolvedValue(demande({ telephone: "illisible" }));
-    expect((await identiteDuJetonTour(creerJetonDemande(ID)))?.telephone).toBe("");
+    m.findUnique.mockResolvedValue(demande({ nom: "illisible" }));
+    expect((await identiteDuJetonTour(creerJetonDemande(ID)))?.nom).toBe("");
   });
 });
 

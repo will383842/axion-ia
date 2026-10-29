@@ -91,6 +91,12 @@ describe("comptage : les clés qui font respecter « une demande par personne »
     expect(a.telephone).not.toBe(ailleurs.telephone);
   });
 
+  it("telephoneFin: null donne une clé téléphone null", () => {
+    expect(
+      clesDeComptage({ ...base, email: `a@${WEBMAIL}`, telephoneFin: null }).telephone,
+    ).toBeNull();
+  });
+
   it("sans téléphone, la clé téléphone est absente et ne bloque rien", () => {
     const c = clesDeComptage({ ...base, email: `a@${WEBMAIL}` });
     expect(c.personne).not.toBeNull();

@@ -2,14 +2,14 @@
 
 // Tour France IA : l'action de la mini-demande (PR-2b).
 //
-// Quatre champs (nom, e-mail, téléphone, ville) avant le calendrier de la visio. Dans l'ordre :
+// Trois champs (nom, e-mail, ville) avant le calendrier de la visio. Dans l'ordre :
 //
 //   1. champ leurre rempli → trace (`signalerHoneypot`), puis la MÊME redirection que pour tout le
 //      monde, SANS rien enregistrer : le robot n'apprend rien, et un humain pris au piège arrive
 //      quand même au calendrier (la visio, elle, se prend ensuite sans cette demande) ;
 //   2. 10 demandes, pas plus, par heure et par empreinte d'adresse IP. Si le compteur (Redis) est en
 //      panne, on REFUSE : sans lui, rien ne limite l'inondation de la table ;
-//   3. validation (longueurs, e-mail, téléphone) → `?erreur=champs`, sans aucune donnée dans l'URL ;
+//   3. validation (longueurs, e-mail) → `?erreur=champs`, sans aucune donnée dans l'URL ;
 //   4. enregistrement (`enregistrerDemande`) puis jeton signé de 30 minutes ; une panne de la base
 //      est signalée à Sentry et ne bloque jamais la personne : elle va au calendrier sans jeton ;
 //   5. la redirection est HORS du `try` : `redirect` lève, elle ne doit jamais être avalée.
@@ -25,7 +25,6 @@ import { z } from "zod";
 
 import { enregistrerDemande } from "@/features/tour-de-france/enregistrer";
 import { creerJetonDemande } from "@/features/tour-de-france/jeton-demande";
-import { finDeTelephone } from "@/features/dossier-client/fiche-auto";
 import { getClientIp } from "@/lib/client-ip";
 import { checkRateLimit, type RateLimitConfig } from "@/lib/rate-limit";
 import { signalerHoneypot } from "@/lib/security/honeypot-observable";
@@ -38,18 +37,11 @@ import { CHEMIN_DEMANDE, CHEMIN_RENDEZ_VOUS, META } from "../contenu";
 /** 10 demandes par heure et par adresse IP ; compteur en panne : refus. */
 const LIMITE_DEMANDES: RateLimitConfig = { limit: 10, windowSec: 3600, surPanne: "refuser" };
 
-const FORME_TELEPHONE = /^[0-9 +().-]{8,20}$/;
-
+// Un `telephone` posté par une ancienne page est ignoré (zod retire les clés inconnues) : le
+// téléphone est demandé à l'étape suivante (le choix du créneau de la visio).
 const ENTREE = z.object({
   nom: z.string().trim().min(1).max(80),
   email: z.string().trim().max(254).email(),
-  telephone: z
-    .string()
-    .trim()
-    .regex(FORME_TELEPHONE)
-    // Le même seuil qu'`enregistrerDemande` (9 chiffres) : sinon la demande passerait ici et serait
-    // refusée plus loin, en silence.
-    .refine((t) => finDeTelephone(t) !== null),
   ville: z.string().trim().min(1).max(80),
 });
 
@@ -134,7 +126,6 @@ export async function envoyerDemandeTour(formData: FormData): Promise<void> {
   const lue = ENTREE.safeParse({
     nom: texte(formData, "nom"),
     email: normalizeEmail(texte(formData, "email")),
-    telephone: texte(formData, "telephone"),
     ville: texte(formData, "ville"),
   });
   if (!lue.success) {

@@ -9,7 +9,6 @@ const demande = {
   id: "3f2b8c1e-5d4a-4b7e-9c1d-0a1b2c3d4e5f",
   nom: "Alice Martin",
   email: "alice@societe-exemple.fr",
-  telephone: "0612345678",
   ville: "Lyon",
   depuis: "linkedin",
   utmSource: "linkedin",
@@ -57,14 +56,13 @@ describe("envoi de la demande au CRM Pro", () => {
     expect(a).toBe(b);
   });
 
-  it("la charge porte la ville, le nom et le téléphone TAPÉS, et les repères de campagne présents", async () => {
+  it("la charge porte la ville et le nom TAPÉS, jamais de téléphone, et les repères de campagne présents", async () => {
     await envoyerAuCrm(demande);
     const arg = (sync.mock.calls[0] as unknown as [{ payload: Record<string, unknown> }])[0];
     expect(arg.payload).toEqual({
       circuit: "tour_france_ia",
       ville: "Lyon",
       nom_saisi: "Alice Martin",
-      telephone_saisi: "0612345678",
       depuis: "linkedin",
       utm_source: "linkedin",
       utm_campaign: "tour",

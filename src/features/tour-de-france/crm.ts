@@ -7,10 +7,10 @@
  *
  *   · la clé de la personne est l'empreinte de l'e-mail — la MÊME que celle du futur rendez-vous
  *     (`calendly_booked`) : une seule personne côté CRM quand elle prend ensuite son rendez-vous ;
- *   · seule l'ADRESSE part sous la clé de la personne. Le nom et le téléphone tapés dans le
- *     formulaire public (jamais vérifiés : n'importe qui peut taper l'adresse d'un client) partent
- *     dans la charge libre `payload`, sous `nom_saisi` et `telephone_saisi` : ils ne peuvent pas
- *     écraser le nom ou le numéro d'une personne déjà connue du CRM. Même raison pour la ville,
+ *   · seule l'ADRESSE part sous la clé de la personne. Le nom tapé dans le formulaire
+ *     public (jamais vérifié : n'importe qui peut taper l'adresse d'un client) part dans la charge
+ *     libre `payload`, sous `nom_saisi` : il ne peut pas écraser le nom d'une personne déjà connue
+ *     du CRM. Même raison pour la ville,
  *     qui part dans `payload` et non dans la fiche de l'entreprise ;
  *   · ni `consent` ni `tags` : la base légale est la demande de la personne (mesures
  *     précontractuelles), pas un consentement marketing ; aucune valeur n'est ajoutée à
@@ -31,7 +31,6 @@ export interface DemandePourCrm {
   readonly id: string;
   readonly nom: string;
   readonly email: string;
-  readonly telephone: string;
   /** Le nom du référentiel, sinon la ville telle que tapée. */
   readonly ville: string;
   readonly depuis: string | null;
@@ -58,7 +57,6 @@ export async function envoyerAuCrm(d: DemandePourCrm): Promise<void> {
       circuit: "tour_france_ia",
       ville: d.ville,
       nom_saisi: d.nom,
-      telephone_saisi: d.telephone,
       ...(d.depuis !== null ? { depuis: d.depuis } : {}),
       ...utm,
     },
