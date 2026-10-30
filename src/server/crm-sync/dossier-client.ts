@@ -21,8 +21,9 @@
  *   · ne lève jamais : un échec se rejoue au prochain balayage.
  *
  * ── Ce qui est lu ───────────────────────────────────────────────────────────
- * Colonnes en clair seulement. Les réponses des questionnaires ne sont ni
- * sélectionnées ni déchiffrées : on ne compte que des lignes.
+ * Colonnes en clair seulement. Seule exception, autorisée par Will : le nombre de
+ * personnes attendues du questionnaire, compté en mémoire dans `lire-dossier.ts` (les
+ * réponses sont déchiffrées puis perdues, seul un entier sort).
  */
 
 import { prisma } from "@/lib/prisma";

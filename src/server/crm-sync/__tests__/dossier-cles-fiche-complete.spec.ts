@@ -26,6 +26,10 @@ vi.mock("@/lib/prisma", () => ({ prisma: prismaFactice }));
 vi.mock("@/lib/security/email-hash", () => ({
   hashEmailForLookup: (e: string) => "a".repeat(64) + e.length,
 }));
+const lireSuiviFactice = vi.hoisted(() => vi.fn());
+vi.mock("@/features/questionnaire-preaudit/suivi-par-personne", () => ({
+  lireSuiviParPersonne: lireSuiviFactice,
+}));
 vi.mock("@/server/partners-sync/producteurs/client", () => ({
   sirenTransmis: () => ({ siren: "123456789" }),
 }));
@@ -377,8 +381,10 @@ describe("lecture du dossier : fiche complète", () => {
     p.$queryRaw.mockResolvedValue([{ ok: false }]);
     p.questionnaireAvantAudit.findMany.mockResolvedValue([]);
     p.questionnaireAvantAudit.findFirst.mockResolvedValue({
+      id: "q1",
       expireLe: new Date("2026-11-20T00:00:00Z"),
     });
+    lireSuiviFactice.mockResolvedValue(new Map());
     p.emailOpposition.findMany.mockResolvedValue([]);
     p.clientProfil.findUnique.mockResolvedValue(null);
     p.clientTache.findFirst.mockResolvedValue({
@@ -518,5 +524,89 @@ describe("lecture du dossier : fiche complète", () => {
     expect(empreinteDossier(entreprisePourCrm(a), dossierPourCrm(a))).toBe(
       empreinteDossier(entreprisePourCrm(b), dossierPourCrm(b)),
     );
+  });
+
+  describe("attendus du questionnaire (option A : un entier, rien d'autre)", () => {
+    const suivi = (attendus: number, recus = 1, illisibles = 0) =>
+      lireSuiviFactice.mockResolvedValue(
+        new Map([
+          [
+            "q1",
+            {
+              suivi: {
+                total: { attendus, recus },
+                // Données nominatives factices : rien de tout cela ne doit sortir.
+                dirigeant: { nom: "Jeanne Secrète", email: "jeanne.secrete@exemple.test" },
+                collaborateurs: [{ nom: "Paul Confidentiel", email: "paul@exemple.test" }],
+              },
+              controle: { illisibles },
+            },
+          ],
+        ]),
+      );
+
+    it("envoyé et non terminé : équipe de 4 + référent = 5 attendus", async () => {
+      suivi(5);
+      expect((await dossier()).questionnaire).toMatchObject({ attendus: 5 });
+      expect(lireSuiviFactice).toHaveBeenCalledWith(["q1"]);
+    });
+
+    it("non envoyé : aucune lecture des réponses, clé omise", async () => {
+      p.questionnaireAvantAudit.findFirst.mockResolvedValue(null);
+      const d = await dossier();
+      expect(lireSuiviFactice).not.toHaveBeenCalled();
+      expect(JSON.stringify(d)).not.toContain("attendus");
+    });
+
+    it("terminé : clé omise", async () => {
+      suivi(5, 5);
+      expect(JSON.stringify(await dossier())).not.toContain("attendus");
+    });
+
+    it("équipe vide (0 attendu) : clé omise", async () => {
+      suivi(0, 0);
+      expect(JSON.stringify(await dossier())).not.toContain("attendus");
+    });
+
+    it("1001 attendus : clé omise, jamais tronquée", async () => {
+      suivi(1001);
+      expect(JSON.stringify(await dossier())).not.toContain("attendus");
+    });
+
+    it("équipe réduite au dirigeant (1 attendu, 0 reçu) : la clé part", async () => {
+      suivi(1, 0);
+      expect((await dossier()).questionnaire).toMatchObject({ attendus: 1 });
+    });
+
+    it("une réponse illisible omet la clé : jamais un chiffre faux", async () => {
+      suivi(5, 1, 1);
+      expect(JSON.stringify(await dossier())).not.toContain("attendus");
+    });
+
+    it("aucun nom ni e-mail du suivi ne sort dans le dossier", async () => {
+      suivi(5);
+      const texte = JSON.stringify(await dossier());
+      expect(texte).toContain('"attendus":5');
+      for (const interdit of ["Secrète", "Confidentiel", "exemple.test"]) {
+        expect(texte).not.toContain(interdit);
+      }
+    });
+
+    it("une panne de lecture omet la clé et le reste part", async () => {
+      lireSuiviFactice.mockRejectedValue(new Error("illisible"));
+      const d = await dossier();
+      expect(d.questionnaire).toMatchObject({ date_limite: "2026-11-20" });
+      expect(JSON.stringify(d)).not.toContain("attendus");
+    });
+
+    it("le dossier reste identique aux autres clés", async () => {
+      const sans = await dossier();
+      suivi(5);
+      const avec = await dossier();
+      const { questionnaire: qAvec, ...resteAvec } = avec;
+      const { questionnaire: qSans, ...resteSans } = sans;
+      expect(resteAvec).toEqual(resteSans);
+      expect(qAvec).toEqual({ ...qSans, attendus: 5 });
+    });
   });
 });
