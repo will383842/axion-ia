@@ -527,9 +527,22 @@ describe("lecture du dossier : fiche complète", () => {
   });
 
   describe("attendus du questionnaire (option A : un entier, rien d'autre)", () => {
-    const suivi = (attendus: number, recus = 1) =>
+    const suivi = (attendus: number, recus = 1, illisibles = 0) =>
       lireSuiviFactice.mockResolvedValue(
-        new Map([["q1", { suivi: { total: { attendus, recus } } }]]),
+        new Map([
+          [
+            "q1",
+            {
+              suivi: {
+                total: { attendus, recus },
+                // Données nominatives factices : rien de tout cela ne doit sortir.
+                dirigeant: { nom: "Jeanne Secrète", email: "jeanne.secrete@exemple.test" },
+                collaborateurs: [{ nom: "Paul Confidentiel", email: "paul@exemple.test" }],
+              },
+              controle: { illisibles },
+            },
+          ],
+        ]),
       );
 
     it("envoyé et non terminé : équipe de 4 + référent = 5 attendus", async () => {
@@ -558,6 +571,25 @@ describe("lecture du dossier : fiche complète", () => {
     it("1001 attendus : clé omise, jamais tronquée", async () => {
       suivi(1001);
       expect(JSON.stringify(await dossier())).not.toContain("attendus");
+    });
+
+    it("équipe réduite au dirigeant (1 attendu, 0 reçu) : la clé part", async () => {
+      suivi(1, 0);
+      expect((await dossier()).questionnaire).toMatchObject({ attendus: 1 });
+    });
+
+    it("une réponse illisible omet la clé : jamais un chiffre faux", async () => {
+      suivi(5, 1, 1);
+      expect(JSON.stringify(await dossier())).not.toContain("attendus");
+    });
+
+    it("aucun nom ni e-mail du suivi ne sort dans le dossier", async () => {
+      suivi(5);
+      const texte = JSON.stringify(await dossier());
+      expect(texte).toContain('"attendus":5');
+      for (const interdit of ["Secrète", "Confidentiel", "exemple.test"]) {
+        expect(texte).not.toContain(interdit);
+      }
     });
 
     it("une panne de lecture omet la clé et le reste part", async () => {
