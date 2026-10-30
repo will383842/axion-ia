@@ -166,6 +166,10 @@ const CONSOMMATEURS_ASSUMES: ReadonlySet<string> = new Set([
   // Même lot — « Noter le départ » trace l'action dans le journal d'audit commun (`logQualiopiActivity`,
   // `_guards`), comme `features/dossier-client/actions.ts`. Rien d'autre du domaine. Nommé seul.
   "src/features/dossier-client/fiche/depart-personne.ts",
+  // Fiche client, lot B6 (30/10/2026) — profil et étiquettes tracent leurs actes dans le journal d'audit
+  // commun (`logQualiopiActivity`, `_guards`), comme « Noter le départ ». Rien d'autre du domaine. Nommés seuls.
+  "src/features/dossier-client/fiche/profil.ts",
+  "src/features/dossier-client/fiche/etiquettes.ts",
   // Même lot — `fiche/contexte.ts` partage la lecture du client 360 entre la page et les emplacements
   // (`getClient360` sous `React.cache`) : une requête par affichage. Rien d'autre du domaine.
   "src/components/admin/dossier-client/fiche/contexte.ts",

@@ -25,6 +25,9 @@ import { Hash, Users, FileText, CheckCircle2 } from "lucide-react";
 import { AdminEmptyState } from "@/components/admin/ui";
 import { AccesRefuse } from "@/components/admin/ui/AccesRefuse";
 import { gardePage } from "@/server/auth/garde-page";
+import { prisma } from "@/lib/prisma";
+import { separerLesArchivees } from "@/features/dossier-client/fiche/archivage-liste";
+import { TEXTE_LECTURE_IMPOSSIBLE } from "@/features/dossier-client/bandeau-ou-en-est";
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
@@ -64,12 +67,12 @@ const TAILLE_LABELS: Record<string, string> = {
 
 interface PageProps {
   params: Promise<{ locale: "fr" | "en"; adminPrefix: string }>;
-  searchParams: Promise<{ q?: string }>;
+  searchParams: Promise<{ q?: string; archives?: string }>;
 }
 
 export default async function QualiopiClientsPage({ params, searchParams }: PageProps) {
   const { locale, adminPrefix } = await params;
-  const { q } = await searchParams;
+  const { q, archives } = await searchParams;
   const acces = await gardePage("consultation", `/${locale}/${adminPrefix}/login`);
   if (!acces.autorise) {
     return <AccesRefuse motif={acces.motif} retourHref={`/${locale}/${adminPrefix}`} />;
@@ -77,7 +80,13 @@ export default async function QualiopiClientsPage({ params, searchParams }: Page
 
   const recherche = (q ?? "").trim();
   // R3 : les fiches d'essai du pilote visio n'apparaissent que sur recherche.
-  const clients = await listClients(recherche === "" ? { horsFichesDEssai: true } : { recherche });
+  const tous = await listClients(recherche === "" ? { horsFichesDEssai: true } : { recherche });
+
+  // Lot B6 : les fiches archivées sont masquées par défaut (`?archives=1` les montre seules).
+  const partage = await separerLesArchivees(prisma, tous);
+  const voirArchives = archives === "1";
+  const clients = voirArchives ? partage.archivees : partage.actives;
+  const hrefListe = `/${locale}/${adminPrefix}/qualiopi/clients`;
 
   // 🔴 Les compteurs portent sur le RÉSULTAT AFFICHÉ, et le libellé le dit.
   //
@@ -85,9 +94,10 @@ export default async function QualiopiClientsPage({ params, searchParams }: Page
   // l'écran : on ne sait plus si la recherche a filtré ou si des fiches ont
   // disparu. Un compteur qui ne décrit pas ce qu'on voit est pire que pas de
   // compteur.
-  const prospects = clients.filter((c) => c.statut === "prospect").length;
-  const actifs = clients.filter((c) => c.statut === "client_actif").length;
-  const devisEnvoyes = clients.filter((c) => c.statut === "devis_envoye").length;
+  const compte = partage.actives;
+  const prospects = compte.filter((c) => c.statut === "prospect").length;
+  const actifs = compte.filter((c) => c.statut === "client_actif").length;
+  const devisEnvoyes = compte.filter((c) => c.statut === "devis_envoye").length;
 
   const cellCls = "px-[var(--space-admin-4)] py-[var(--space-admin-3)] align-top";
   const headCls =
@@ -124,6 +134,7 @@ export default async function QualiopiClientsPage({ params, searchParams }: Page
             aria-label="Rechercher un client par raison sociale, SIRET, SIREN, numéro de fiche ou contact"
             className="admin-input min-w-[16rem] flex-1"
           />
+          {voirArchives ? <input type="hidden" name="archives" value="1" /> : null}
           <AdminButton type="submit" variant="secondary">
             Rechercher
           </AdminButton>
@@ -141,15 +152,63 @@ export default async function QualiopiClientsPage({ params, searchParams }: Page
       {recherche !== "" ? (
         <p className="mb-[var(--space-admin-4)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
           {clients.length === 0
-            ? `Aucun client ne correspond à « ${recherche} ». Vérifiez l'orthographe avant d'en créer un nouveau : un doublon coûte plus cher qu'une recherche ratée.`
+            ? `Aucun client ne correspond à « ${recherche} »${
+                !voirArchives && partage.archivees.length > 0
+                  ? `, dont ${partage.archivees.length} fiche${partage.archivees.length > 1 ? "s" : ""} archivée${partage.archivees.length > 1 ? "s" : ""}`
+                  : ""
+              }. Vérifiez l'orthographe avant d'en créer un nouveau : un doublon coûte plus cher qu'une recherche ratée.`
             : `${clients.length} résultat${clients.length > 1 ? "s" : ""} pour « ${recherche} ».`}
+          {clients.length === 0 && !voirArchives && partage.archivees.length > 0 ? (
+            <>
+              {" "}
+              <Link
+                href={`${hrefListe}?archives=1&q=${encodeURIComponent(recherche)}`}
+                className="inline-flex min-h-11 items-center underline"
+              >
+                Voir les archivées
+              </Link>
+            </>
+          ) : null}
+        </p>
+      ) : null}
+
+      {partage.lectureImpossible ? (
+        <p className="mb-[var(--space-admin-4)] text-[length:var(--text-admin-sm)]">
+          {`Archives : ${TEXTE_LECTURE_IMPOSSIBLE}`}
+        </p>
+      ) : voirArchives ? (
+        <p className="mb-[var(--space-admin-4)] text-[length:var(--text-admin-sm)]">
+          {`Fiches archivées (${partage.archivees.length}). `}
+          <Link
+            href={recherche === "" ? hrefListe : `${hrefListe}?q=${encodeURIComponent(recherche)}`}
+            className="inline-flex min-h-11 items-center underline"
+          >
+            Revenir aux clients
+          </Link>
+        </p>
+      ) : partage.archivees.length > 0 ? (
+        <p className="mb-[var(--space-admin-4)] text-[length:var(--text-admin-sm)]">
+          <Link
+            href={`${hrefListe}?archives=1${recherche === "" ? "" : `&q=${encodeURIComponent(recherche)}`}`}
+            className="inline-flex min-h-11 items-center underline"
+          >
+            {`Voir les archivées (${partage.archivees.length})`}
+          </Link>
         </p>
       ) : null}
 
       <div className="mb-[var(--space-admin-6)] grid grid-cols-1 gap-[var(--space-admin-5)] sm:grid-cols-4">
         <AdminStatCard
-          label={recherche === "" ? "Total" : "Résultats"}
-          value={clients.length}
+          label={
+            voirArchives
+              ? recherche === ""
+                ? "Total (hors archivées)"
+                : "Résultats (hors archivées)"
+              : recherche === ""
+                ? "Total"
+                : "Résultats"
+          }
+          value={compte.length}
           icon={Hash}
         />
         <AdminStatCard label="Prospects" value={prospects} icon={Users} />
@@ -161,7 +220,9 @@ export default async function QualiopiClientsPage({ params, searchParams }: Page
           L'IDCC (déclencheur du barème OPCO par dossier) et la taille sont éditables par ligne
           via ClientBrancheForm → updateClientAction ; la saisie complète (enveloppe, adhérent,
           offre Mobilités, versement volontaire) est dans le bloc « Branche et OPCO » de la fiche. */}
-      {clients.length === 0 ? (
+      {clients.length === 0 && tous.length > 0 ? null : clients.length === 0 && voirArchives ? (
+        <AdminEmptyState title="Aucune fiche archivée" />
+      ) : clients.length === 0 ? (
         <AdminEmptyState
           title="Aucun client enregistré"
           description="Un client est nécessaire avant de créer une session ou d'émettre un devis."
