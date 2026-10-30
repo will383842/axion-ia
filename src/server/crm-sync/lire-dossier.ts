@@ -3,8 +3,9 @@
  * Module de lecture seul, SANS file d'attente ni émission : le retour du CRM
  * (`retour-dossier.ts`) l'importe sans tirer BullMQ dans sa route.
  *
- * Colonnes en clair seulement. Les réponses des questionnaires ne sont ni
- * sélectionnées ni déchiffrées : on ne compte que des lignes.
+ * Colonnes en clair seulement, sauf UNE exception autorisée (option A de Will) : le nombre de
+ * personnes attendues du questionnaire en cours, compté par `lireSuiviParPersonne` (déchiffrement
+ * en mémoire, rien conservé ni journalisé ; seul un entier sort).
  */
 
 import type { FactureFormationStatut } from "../../../prisma/generated/client";
@@ -14,6 +15,7 @@ import { sirenTransmis } from "@/server/partners-sync/producteurs/client";
 
 import { HORS_RENCONTRES_DE_TEST } from "@/features/dossier-client/client-test";
 import { santeDuCompte } from "@/features/dossier-client/fiche/sante-du-compte";
+import { lireSuiviParPersonne } from "@/features/questionnaire-preaudit/suivi-par-personne";
 
 import { erreurSansDonnees } from "./enqueue";
 import { adressesOpposees } from "./oppositions-par-lot";
@@ -172,11 +174,23 @@ async function lireFicheComplete(
           OR: [{ clientId: { in: [...ids] } }, { rencontre: { clientId: { in: [...ids] } } }],
         },
         orderBy: [{ envoyeLe: "desc" }, { id: "asc" }],
-        // Une date : jamais `donnees` ni `html`.
-        select: { expireLe: true },
+        // Une date et l'identifiant : jamais `donnees` ni `html`.
+        select: { id: true, expireLe: true },
       }),
     ),
   ]);
+
+  // Attendus : le calcul de l'écran (`suivreParPersonne().total`), pour le seul questionnaire
+  // envoyé et non terminé. Les réponses sont déchiffrées EN MÉMOIRE pour compter, puis perdues :
+  // seul l'entier sort (déjà borné 1..1000 par `nombreAttendus`). Lecture seule, jamais journalisée.
+  const attendus =
+    questionnaire === undefined || questionnaire === null
+      ? undefined
+      : await proteger(async () => {
+          const total = (await lireSuiviParPersonne([questionnaire.id])).get(questionnaire.id)
+            ?.suivi.total;
+          return total !== undefined && total.recus < total.attendus ? total.attendus : undefined;
+        });
 
   const fiche: { -readonly [K in keyof FicheCompletePourCrm]: FicheCompletePourCrm[K] } = {};
 
@@ -195,6 +209,7 @@ async function lireFicheComplete(
   if (nbEmails !== undefined) fiche.nbEmailsConsole = nbEmails;
   if (nbNotes !== undefined) fiche.nbNotesConsole = nbNotes;
   if (questionnaire !== undefined) fiche.questionnaireDateLimite = questionnaire?.expireLe ?? null;
+  if (attendus !== undefined) fiche.questionnaireAttendus = attendus;
 
   // Santé : seulement si TOUTES ses entrées sont lues (une entrée manquante ne vaut pas « bonne »).
   if (
