@@ -23,6 +23,7 @@ import {
   eurosEnCentimes,
   messageMontantInvalide,
 } from "@/features/dossier-client/prestations";
+import { lireChancesSaisies, lireClotureSaisie } from "@/features/dossier-client/fiche/pondere";
 
 const uuid = z.string().uuid();
 
@@ -49,18 +50,46 @@ export async function enregistrerSuiviPrestationAction(fd: FormData): Promise<vo
   const montant = eurosEnCentimes(saisieMontant);
   if (montant === undefined) echec(messageMontantInvalide(saisieMontant));
 
+  // Chances (0 à 100) et clôture prévue : vide = non estimées ; champ absent du formulaire = inchangé.
+  const chances = fd.has("probabilitePct")
+    ? lireChancesSaisies(champ(fd, "probabilitePct"))
+    : undefined;
+  if (fd.has("probabilitePct") && chances === undefined) {
+    echec("Les chances de signer s'écrivent en nombre entier, de 0 à 100.");
+  }
+  const cloture = fd.has("cloturePrevueLe")
+    ? lireClotureSaisie(champ(fd, "cloturePrevueLe"))
+    : undefined;
+  if (fd.has("cloturePrevueLe") && cloture === undefined) {
+    echec("La date de clôture prévue n'est pas valide.");
+  }
+
   const projet = await prisma.projet.findUnique({
     where: { id: projetId },
     select: { clientId: true },
   });
   if (projet === null || projet.clientId !== clientId) echec("Prestation inconnue.");
 
-  const donnees = { type, etapeForcee: etape === "" ? null : etape, montantCents: montant ?? null };
+  const donnees = {
+    type,
+    etapeForcee: etape === "" ? null : etape,
+    montantCents: montant ?? null,
+    ...(chances === undefined ? {} : { probabilitePct: chances }),
+    ...(cloture === undefined
+      ? {}
+      : { cloturePrevueLe: cloture === null ? null : new Date(`${cloture}T00:00:00.000Z`) }),
+  };
   try {
     await prisma.$transaction(async (tx) => {
       const avant = await tx.projetSuivi.findUnique({
         where: { projetId },
-        select: { type: true, etapeForcee: true, montantCents: true },
+        select: {
+          type: true,
+          etapeForcee: true,
+          montantCents: true,
+          probabilitePct: true,
+          cloturePrevueLe: true,
+        },
       });
       await tx.projetSuivi.upsert({
         where: { projetId },
@@ -79,6 +108,8 @@ export async function enregistrerSuiviPrestationAction(fd: FormData): Promise<vo
               type: donnees.type,
               etapeForcee: donnees.etapeForcee,
               montantCents: donnees.montantCents,
+              ...(chances === undefined ? {} : { probabilitePct: chances }),
+              ...(cloture === undefined ? {} : { cloturePrevueLe: cloture }),
             },
           },
         },
