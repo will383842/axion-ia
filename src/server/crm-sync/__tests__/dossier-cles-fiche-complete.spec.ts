@@ -164,6 +164,11 @@ describe("photo du dossier : clés de la fiche complète", () => {
     for (const k of Object.keys(d.questionnaire!)) expect(CLES_QUESTIONNAIRE_CRM).toContain(k);
   });
 
+  it("n'ajoute jamais prochaine_le à taches_ouvertes quand le compte est 0", () => {
+    const d = dossierPourCrm(entree({ fiche: { ...FICHE_PLEINE, nbTachesOuvertes: 0 } }));
+    expect(d.taches_ouvertes).toEqual({ nb: 0 });
+  });
+
   it("omet chaque clé vide ou invalide, jamais null", () => {
     const vide = dossierPourCrm(
       entree({

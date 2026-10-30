@@ -298,7 +298,9 @@ function completerFiche(dossier: DossierPourCrm, fiche: FicheCompletePourCrm): v
   const nbTaches = nombre(fiche.nbTachesOuvertes);
   if (nbTaches !== undefined) {
     dossier.taches_ouvertes = { nb: nbTaches };
-    // `{ nb: 0, prochaine_le }` est un état impossible : sans tâche ouverte, pas de date.
+    // `{ nb: 0, prochaine_le }` est un état à ne jamais envoyer : sans tâche ouverte, pas de date.
+    // Il reste atteignable par une course rare entre `count` et `findFirst` (non transactionnels
+    // dans `lire-dossier.ts`) ; la condition `nbTaches > 0` l'écarte.
     if (nbTaches > 0 && jourAction !== undefined) dossier.taches_ouvertes.prochaine_le = jourAction;
   }
   const nbEmails = nombre(fiche.nbEmailsConsole);
