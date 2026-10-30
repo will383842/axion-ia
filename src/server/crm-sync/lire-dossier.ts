@@ -7,12 +7,12 @@
  * sélectionnées ni déchiffrées : on ne compte que des lignes.
  */
 
+import type { FactureFormationStatut } from "../../../prisma/generated/client";
 import { prisma } from "@/lib/prisma";
 import { hashEmailForLookup } from "@/lib/security/email-hash";
 import { sirenTransmis } from "@/server/partners-sync/producteurs/client";
 
 import { santeDuCompte } from "@/features/dossier-client/fiche/sante-du-compte";
-import { estFactureOuverte } from "@/server/qualiopi/financements/statuts-facture";
 
 import { adressesOpposees } from "./oppositions-par-lot";
 import type {
@@ -40,6 +40,19 @@ function aujourdhuiParis(maintenant: Date): Date {
   const s = new Intl.DateTimeFormat("en-CA", { timeZone: "Europe/Paris" }).format(maintenant);
   return new Date(`${s}T00:00:00.000Z`);
 }
+
+/**
+ * Factures ouvertes (émises, non soldées) : miroir de `STATUTS_FACTURE_OUVERTE`
+ * (`qualiopi/financements/statuts-facture.ts`), recopié ici car la synchro ne
+ * franchit pas le cloisonnement du domaine Qualiopi. Typé sur l'enum Prisma.
+ */
+const STATUTS_FACTURE_OUVERTE = [
+  "emise",
+  "partiellement_payee",
+  "en_retard",
+] as const satisfies readonly FactureFormationStatut[];
+const estFactureOuverte = (statut: string): boolean =>
+  (STATUTS_FACTURE_OUVERTE as readonly string[]).includes(statut);
 
 const ETAPE_DU_STATUT: Readonly<Record<string, EtapeCrm | undefined>> = {
   prospect: "prospect",
