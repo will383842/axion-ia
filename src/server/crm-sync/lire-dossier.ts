@@ -7,12 +7,223 @@
  * sélectionnées ni déchiffrées : on ne compte que des lignes.
  */
 
+import type { FactureFormationStatut } from "../../../prisma/generated/client";
 import { prisma } from "@/lib/prisma";
 import { hashEmailForLookup } from "@/lib/security/email-hash";
 import { sirenTransmis } from "@/server/partners-sync/producteurs/client";
 
+import { HORS_RENCONTRES_DE_TEST } from "@/features/dossier-client/client-test";
+import { santeDuCompte } from "@/features/dossier-client/fiche/sante-du-compte";
+
+import { erreurSansDonnees } from "./enqueue";
 import { adressesOpposees } from "./oppositions-par-lot";
-import type { ContactPourCrm, EntreeInstantaneCrm } from "./instantane-dossier";
+import type {
+  ContactPourCrm,
+  EntreeInstantaneCrm,
+  EtapeCrm,
+  FicheCompletePourCrm,
+  RoleDecisionCrm,
+} from "./instantane-dossier";
+import { jourParis } from "./instantane-dossier";
+
+/**
+ * Une lecture de la fiche complète : une panne rend `undefined` (la clé est OMISE),
+ * elle n'arrête jamais l'envoi du reste du dossier.
+ */
+async function proteger<T>(lecture: () => Promise<T>): Promise<T | undefined> {
+  try {
+    return await lecture();
+  } catch (e) {
+    // Jamais le message brut de l'erreur : il peut contenir des données.
+    console.warn("[crm-sync] lecture fiche complète omise :", erreurSansDonnees(e));
+    return undefined;
+  }
+}
+
+/** Minuit (UTC) du jour civil de Paris : `echeance_le` est une colonne DATE. */
+function aujourdhuiParis(maintenant: Date): Date {
+  return new Date(`${jourParis(maintenant) ?? ""}T00:00:00.000Z`);
+}
+
+/**
+ * Factures ouvertes (émises, non soldées) : miroir de `STATUTS_FACTURE_OUVERTE`
+ * (`qualiopi/financements/statuts-facture.ts`), recopié ici car la synchro ne
+ * franchit pas le cloisonnement du domaine Qualiopi. Typé sur l'enum Prisma.
+ */
+const STATUTS_FACTURE_OUVERTE = [
+  "emise",
+  "partiellement_payee",
+  "en_retard",
+] as const satisfies readonly FactureFormationStatut[];
+const estFactureOuverte = (statut: string): boolean =>
+  (STATUTS_FACTURE_OUVERTE as readonly string[]).includes(statut);
+
+const ETAPE_DU_STATUT: Readonly<Record<string, EtapeCrm | undefined>> = {
+  prospect: "prospect",
+  devis_envoye: "devis_envoye",
+  client_actif: "client",
+  client_inactif: "client",
+  // « perdu » n'a pas d'équivalent côté CRM : la clé est omise, pas inventée.
+};
+
+/** Du plus décisif au moins décisif : un contact a UN rôle envoyé, toujours le même. */
+const ORDRE_ROLES: readonly RoleDecisionCrm[] = [
+  "decideur",
+  "financeur",
+  "influenceur",
+  "bloqueur",
+  "referent",
+  "utilisateur",
+  "autre",
+];
+
+function roleDuCrm(role: string): RoleDecisionCrm {
+  return (ORDRE_ROLES as readonly string[]).includes(role) ? (role as RoleDecisionCrm) : "autre";
+}
+
+/** Rôle de chaque personne (le plus décisif de ses prestations) ; `undefined` si illisible. */
+async function lireRoles(
+  ids: readonly string[],
+): Promise<Map<string, RoleDecisionCrm> | undefined> {
+  return proteger(async () => {
+    const lignes = await prisma.projetContact.findMany({
+      where: { clientId: { in: [...ids] } },
+      select: { contactId: true, role: true },
+    });
+    const roles = new Map<string, RoleDecisionCrm>();
+    for (const l of lignes) {
+      const r = roleDuCrm(l.role);
+      const actuel = roles.get(l.contactId);
+      if (actuel === undefined || ORDRE_ROLES.indexOf(r) < ORDRE_ROLES.indexOf(actuel)) {
+        roles.set(l.contactId, r);
+      }
+    }
+    return roles;
+  });
+}
+
+/**
+ * Les clés de la fiche complète (lot C1). Chaque lecture est PROTÉGÉE
+ * séparément : en panne, sa clé manque et le reste part. Rien de textuel n'est
+ * sélectionné (ni intitulé, ni note, ni étiquette, ni responsable, ni montant).
+ */
+async function lireFicheComplete(
+  clientId: string,
+  ids: readonly string[],
+  statutClient: string,
+  maintenant: Date,
+  facturesFormation:
+    | ReadonlyArray<{ statut: string; avoirDeId: string | null; echeanceAt: Date | null }>
+    | undefined,
+  rendezVousTenus: Date | null | undefined,
+): Promise<FicheCompletePourCrm> {
+  const aujourdhui = aujourdhuiParis(maintenant);
+  const ouvertes = { clientId, faiteLe: null } as const;
+
+  const [
+    profil,
+    prochaine,
+    nbOuvertes,
+    nbEnRetard,
+    nbEmails,
+    nbNotes,
+    dernierEmail,
+    cloture,
+    questionnaire,
+  ] = await Promise.all([
+    proteger(() =>
+      prisma.clientProfil.findUnique({ where: { clientId }, select: { archiveLe: true } }),
+    ),
+    proteger(() =>
+      prisma.clientTache.findFirst({
+        where: ouvertes,
+        orderBy: [{ echeanceLe: "asc" }, { createdAt: "asc" }, { id: "asc" }],
+        // L'origine (relance, manuelle…) : jamais l'intitulé.
+        select: { origine: true, echeanceLe: true },
+      }),
+    ),
+    proteger(() => prisma.clientTache.count({ where: ouvertes })),
+    proteger(() =>
+      prisma.clientTache.count({ where: { ...ouvertes, echeanceLe: { lt: aujourdhui } } }),
+    ),
+    proteger(() => prisma.emailOutbox.count({ where: { clientId, statut: "envoye" } })),
+    proteger(() => prisma.clientNote.count({ where: { clientId } })),
+    proteger(() =>
+      prisma.emailOutbox.findFirst({
+        where: { clientId, statut: "envoye", envoyeAt: { not: null, lte: maintenant } },
+        orderBy: { envoyeAt: "desc" },
+        select: { envoyeAt: true },
+      }),
+    ),
+    proteger(() =>
+      prisma.projetSuivi.findFirst({
+        where: {
+          cloturePrevueLe: { not: null },
+          projet: { clientId: { in: [...ids] }, statut: { in: ["ouvert", "gagne"] } },
+        },
+        orderBy: { cloturePrevueLe: "asc" },
+        select: { cloturePrevueLe: true },
+      }),
+    ),
+    proteger(() =>
+      prisma.questionnaireAvantAudit.findFirst({
+        where: {
+          envoyeLe: { not: null },
+          OR: [{ clientId: { in: [...ids] } }, { rencontre: { clientId: { in: [...ids] } } }],
+        },
+        orderBy: [{ envoyeLe: "desc" }, { id: "asc" }],
+        // Une date : jamais `donnees` ni `html`.
+        select: { expireLe: true },
+      }),
+    ),
+  ]);
+
+  const fiche: { -readonly [K in keyof FicheCompletePourCrm]: FicheCompletePourCrm[K] } = {};
+
+  // Étape : « archive » gagne sur le statut ; profil illisible ⇒ clé omise (pas de devinette).
+  if (profil !== undefined) {
+    fiche.etape = profil?.archiveLe ? "archive" : (ETAPE_DU_STATUT[statutClient] ?? null);
+  }
+  if (cloture !== undefined) fiche.cloturePrevue = cloture?.cloturePrevueLe ?? null;
+  if (prochaine !== undefined) {
+    fiche.prochaineTache =
+      prochaine === null ? null : { origine: prochaine.origine, echeanceLe: prochaine.echeanceLe };
+  }
+  // Lecture réussie à 0 ⇒ `nb: 0` (le CRM remplace le bloc, la prochaine date repart vide) ;
+  // seule une PANNE omet la clé.
+  if (nbOuvertes !== undefined) fiche.nbTachesOuvertes = nbOuvertes;
+  if (nbEmails !== undefined) fiche.nbEmailsConsole = nbEmails;
+  if (nbNotes !== undefined) fiche.nbNotesConsole = nbNotes;
+  if (questionnaire !== undefined) fiche.questionnaireDateLimite = questionnaire?.expireLe ?? null;
+
+  // Santé : seulement si TOUTES ses entrées sont lues (une entrée manquante ne vaut pas « bonne »).
+  if (
+    nbEnRetard !== undefined &&
+    dernierEmail !== undefined &&
+    facturesFormation !== undefined &&
+    rendezVousTenus !== undefined
+  ) {
+    const dates = [rendezVousTenus, dernierEmail?.envoyeAt ?? null].filter(
+      (d): d is Date => d instanceof Date,
+    );
+    const nbFacturesEnRetard = facturesFormation.filter(
+      (f) =>
+        f.avoirDeId === null &&
+        estFactureOuverte(f.statut) &&
+        (f.statut === "en_retard" ||
+          (f.echeanceAt !== null &&
+            aujourdhuiParis(f.echeanceAt).getTime() < aujourdhui.getTime())),
+    ).length;
+    fiche.sante = santeDuCompte({
+      maintenant,
+      dernierEchangeLe:
+        dates.length === 0 ? null : new Date(Math.max(...dates.map((d) => d.getTime()))),
+      nbFacturesEnRetard,
+      nbTachesEnRetard: nbEnRetard,
+    }).niveau;
+  }
+  return fiche;
+}
 
 function plusRecent(dates: ReadonlyArray<Date | null | undefined>, repli: Date): Date {
   let max = 0;
@@ -52,6 +263,7 @@ export async function lireEntreeDossier(
       adresseCodePostal: true,
       adresseVille: true,
       effectif: true,
+      statut: true,
       updatedAt: true,
       // Fusion non défaite : cette fiche est absorbée (rien n'est émis) ou absorbante
       // (elle lit aussi les pièces des fiches qu'elle a absorbées).
@@ -114,6 +326,38 @@ export async function lireEntreeDossier(
     client.contacts.flatMap((c) => c.adresses.map((a) => a.email)),
   );
 
+  // Fiche complète : lectures PROTÉGÉES, une panne omet sa clé sans arrêter l'envoi.
+  const [facturesFormation, rendezVousTenus, roles] = await Promise.all([
+    proteger(() =>
+      prisma.factureFormation.findMany({
+        where: { clientId: { in: ids } },
+        select: { statut: true, avoirDeId: true, echeanceAt: true },
+      }),
+    ),
+    proteger(async () => {
+      const r = await prisma.rencontre.findFirst({
+        where: {
+          clientId: { in: ids },
+          statut: "tenu",
+          ...HORS_RENCONTRES_DE_TEST,
+          debutPrevu: { not: null, lte: maintenant },
+        },
+        orderBy: { debutPrevu: "desc" },
+        select: { debutPrevu: true },
+      });
+      return r?.debutPrevu ?? null;
+    }),
+    lireRoles(ids),
+  ]);
+  const fiche = await lireFicheComplete(
+    clientId,
+    ids,
+    client.statut,
+    maintenant,
+    facturesFormation,
+    rendezVousTenus,
+  );
+
   const contacts: ContactPourCrm[] = client.contacts.map((c) => {
     // Pro d'abord ; une adresse non pro est repérée comme telle et ne part pas.
     const choisie = c.adresses.find((a) => a.nature === "pro") ?? c.adresses[0] ?? null;
@@ -129,6 +373,7 @@ export async function lireEntreeDossier(
       emailHash: email === null ? null : hashEmailForLookup(email),
       oppose: c.adresses.some((a) => opposees.has(a.email.trim().toLowerCase())),
       parti: c.statut !== "actif" || c.partiLe !== null,
+      roleDecision: roles?.get(c.id) ?? null,
     };
   });
 
@@ -156,6 +401,7 @@ export async function lireEntreeDossier(
             nbReponsesEquipe: equipe,
           },
     contacts,
+    fiche,
   };
 
   const dernierChangement = plusRecent(
