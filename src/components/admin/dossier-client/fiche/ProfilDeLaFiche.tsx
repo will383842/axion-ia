@@ -40,7 +40,7 @@ export async function profilDeLaFiche(clientId: string): Promise<React.ReactElem
   ]);
 
   const cachee = <input type="hidden" name="clientId" value={clientId} />;
-  const champCls = "admin-input min-h-11 w-full";
+  const champCls = "admin-input";
 
   return (
     <div className="mt-[var(--space-admin-6)] space-y-[var(--space-admin-5)]">
