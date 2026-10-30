@@ -744,6 +744,11 @@ const CONSOMMATEURS_ASSUMES: ReadonlySet<string> = new Set([
   //    compris) et lit les fiches proches par ses fonctions ; sa spec appelle la
   //    vraie porte. Aucune seconde porte, aucune table nouvelle.
   "src/features/dossier-client/fiche-auto.ts",
+  // ── Fiche client, lot B9 (29/10/2026) : « Préparer une relance » d'un devis envoyé. Une seule arête,
+  //    la même que `actions.ts` : la garde d'écriture de la console et la trace d'audit
+  //    (`_guards` : `requireAdminWrite`, `logQualiopiActivity`). L'action ne fait que garer un brouillon
+  //    « à valider » (`email/outbox-service`) ; elle n'envoie rien. Nommée seule.
+  "src/features/dossier-client/fiche/actions-relance-devis.ts",
   "src/features/dossier-client/__tests__/la-fiche-prospect-se-cree-toute-seule-au-rendez-vous-calendly.spec.ts",
   // ── Demandes du Tour France IA (2026-10-27, PR-2a) : deux arêtes, nommées seules.
   //    · `fiche.ts` : porte unique des fiches (`crm/porte-client.ts`: recherche des fiches proches,

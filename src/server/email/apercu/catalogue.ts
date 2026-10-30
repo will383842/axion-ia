@@ -373,6 +373,13 @@ export const CATALOGUE: Readonly<Record<EmailJobName, FicheEmail>> = {
     destinataire: "le client",
     source: "server/actions/qualiopi/facturation-emails.ts",
   },
+  "relance-devis-client": {
+    categorie: "commerce",
+    quand:
+      "Relance d'un devis envoyé, préparée à la main depuis la fiche client — toujours relue avant envoi",
+    destinataire: "le contact de facturation du client",
+    source: "features/dossier-client/fiche/relance-devis.ts",
+  },
   "convention-envoi": {
     categorie: "commerce",
     quand: "Envoi de la convention à signer — passe par la corbeille",
