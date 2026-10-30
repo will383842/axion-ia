@@ -61,18 +61,13 @@ export function CarteNotes(props: {
                 ) : null}
               </div>
               <p className="mt-[var(--space-admin-1)] text-[length:var(--text-admin-sm)] whitespace-pre-wrap">
-                {n.texte ?? "Texte illisible : la clé de chiffrement est absente."}
+                {n.texte ?? "Texte illisible (déchiffrement impossible)."}
               </p>
               {peutEcrire ? (
                 <form action={basculerEpingleFormAction} className="mt-[var(--space-admin-2)]">
                   <input type="hidden" name="clientId" value={clientId} />
                   <input type="hidden" name="noteId" value={n.id} />
-                  <AdminButton
-                    type="submit"
-                    variant="secondary"
-                    icon={n.epinglee ? PinOff : Pin}
-                    className="min-h-11"
-                  >
+                  <AdminButton type="submit" variant="secondary" icon={n.epinglee ? PinOff : Pin}>
                     {n.epinglee ? "Détacher" : "Épingler"}
                   </AdminButton>
                 </form>
@@ -123,7 +118,7 @@ export function CarteNotes(props: {
                 </select>
               </label>
             ) : null}
-            <AdminButton type="submit" variant="secondary" className="min-h-11">
+            <AdminButton type="submit" variant="secondary">
               Enregistrer la note
             </AdminButton>
             <p className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">

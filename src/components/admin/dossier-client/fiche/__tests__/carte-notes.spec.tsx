@@ -41,7 +41,6 @@ describe("CarteNotes", () => {
     expect(html).toContain("Épingler");
     expect(html).toContain("Will");
     expect(html).toContain("Ajouter une note");
-    expect(html).toContain("min-h-11");
   });
 
   it("sans droit d'écriture : ni bouton ni formulaire", () => {

@@ -22,6 +22,7 @@ const h = vi.hoisted(() => ({
   maj: [] as Array<Record<string, unknown>>,
   notes: [] as Array<Record<string, unknown>>,
   projets: new Map<string, string>(),
+  fusionnes: new Set<string>(),
   panneLecture: false,
 }));
 
@@ -48,7 +49,9 @@ function fausseBase(): BaseNotes {
     projet: {
       findUnique: async ({ where }: { where: { id: string } }) => {
         const c = h.projets.get(where.id);
-        return c === undefined ? null : { clientId: c };
+        return c === undefined
+          ? null
+          : { clientId: c, fusionneDansId: h.fusionnes.has(where.id) ? "autre" : null };
       },
     },
     clientNote: {
@@ -71,6 +74,7 @@ beforeEach(() => {
   h.maj.length = 0;
   h.notes.length = 0;
   h.projets.clear();
+  h.fusionnes.clear();
   h.panneLecture = false;
   vi.stubEnv("PII_ENCRYPTION_KEY", CLE);
 });
@@ -130,6 +134,44 @@ describe("ajouterNote", () => {
       }),
     ).rejects.toBeInstanceOf(ErreurNoteFiche);
     expect(h.creations).toHaveLength(1);
+  });
+});
+
+describe("ajouterNote : garde-fous", () => {
+  it("accepte 2 000 caractères une fois les 10 sauts de ligne \\r\\n (comptés pour 1 chacun)", async () => {
+    const texte = ("x".repeat(98) + "\r\n").repeat(10) + "x".repeat(1010); // 2 010 bruts, 2 000 normalisés
+    await ajouterNote(fausseBase(), {
+      clientId: CLIENT,
+      texte,
+      projetId: null,
+      acteur: ACTEUR,
+    });
+    expect(h.creations).toHaveLength(1);
+  });
+
+  it("refuse un texte commençant par enc:v1: avec un message dédié", async () => {
+    const p = ajouterNote(fausseBase(), {
+      clientId: CLIENT,
+      texte: "enc:v1:abc",
+      projetId: null,
+      acteur: ACTEUR,
+    });
+    await expect(p).rejects.toThrow('Ce texte ne peut pas commencer par "enc:v1:".');
+    expect(h.creations).toHaveLength(0);
+  });
+
+  it("refuse une prestation fusionnée dans une autre", async () => {
+    h.projets.set(PROJET, CLIENT);
+    h.fusionnes.add(PROJET);
+    await expect(
+      ajouterNote(fausseBase(), {
+        clientId: CLIENT,
+        texte: "ok",
+        projetId: PROJET,
+        acteur: ACTEUR,
+      }),
+    ).rejects.toBeInstanceOf(ErreurNoteFiche);
+    expect(h.creations).toHaveLength(0);
   });
 });
 

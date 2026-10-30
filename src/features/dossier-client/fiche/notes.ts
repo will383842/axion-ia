@@ -36,8 +36,8 @@ export interface BaseNotes {
   projet: {
     findUnique(args: {
       where: { id: string };
-      select: { clientId: true };
-    }): Promise<{ clientId: string } | null>;
+      select: { clientId: true; fusionneDansId: true };
+    }): Promise<{ clientId: string; fusionneDansId: string | null } | null>;
   };
   clientNote: {
     findFirst(args: {
@@ -83,17 +83,21 @@ export async function ajouterNote(
     acteur: ActeurNote;
   },
 ): Promise<{ id: string }> {
-  const texte = args.texte.trim();
+  // Le navigateur envoie les sauts de ligne en \r\n (2 caractères) : on compte comme `maxLength`.
+  const texte = args.texte.replace(/\r\n?/g, "\n").trim();
   if (texte === "") throw new ErreurNoteFiche("Écrivez le texte de la note.");
   if (texte.length > NOTE_LONGUEUR_MAX) {
     throw new ErreurNoteFiche(`La note est trop longue (${NOTE_LONGUEUR_MAX} caractères au plus).`);
   }
+  if (texte.startsWith("enc:v1:")) {
+    throw new ErreurNoteFiche('Ce texte ne peut pas commencer par "enc:v1:".');
+  }
   if (args.projetId !== null) {
     const projet = await db.projet.findUnique({
       where: { id: args.projetId },
-      select: { clientId: true },
+      select: { clientId: true, fusionneDansId: true },
     });
-    if (projet === null || projet.clientId !== args.clientId) {
+    if (projet === null || projet.clientId !== args.clientId || projet.fusionneDansId !== null) {
       throw new ErreurNoteFiche("Cette prestation n'appartient pas à cette fiche.");
     }
   }
@@ -214,7 +218,8 @@ export async function lireNotes(db: BaseNotes, clientId: string): Promise<Lectur
       };
     });
     return { ok: true, notes, total: lignes.length };
-  } catch {
+  } catch (e) {
+    console.error("[notes] lecture en échec", (e as Error)?.name);
     return { ok: false };
   }
 }
