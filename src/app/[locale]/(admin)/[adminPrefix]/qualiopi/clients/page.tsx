@@ -25,6 +25,9 @@ import { Hash, Users, FileText, CheckCircle2 } from "lucide-react";
 import { AdminEmptyState } from "@/components/admin/ui";
 import { AccesRefuse } from "@/components/admin/ui/AccesRefuse";
 import { gardePage } from "@/server/auth/garde-page";
+import { prisma } from "@/lib/prisma";
+import { separerLesArchivees } from "@/features/dossier-client/fiche/archivage-liste";
+import { TEXTE_LECTURE_IMPOSSIBLE } from "@/features/dossier-client/bandeau-ou-en-est";
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
@@ -64,12 +67,12 @@ const TAILLE_LABELS: Record<string, string> = {
 
 interface PageProps {
   params: Promise<{ locale: "fr" | "en"; adminPrefix: string }>;
-  searchParams: Promise<{ q?: string }>;
+  searchParams: Promise<{ q?: string; archives?: string }>;
 }
 
 export default async function QualiopiClientsPage({ params, searchParams }: PageProps) {
   const { locale, adminPrefix } = await params;
-  const { q } = await searchParams;
+  const { q, archives } = await searchParams;
   const acces = await gardePage("consultation", `/${locale}/${adminPrefix}/login`);
   if (!acces.autorise) {
     return <AccesRefuse motif={acces.motif} retourHref={`/${locale}/${adminPrefix}`} />;
@@ -77,7 +80,13 @@ export default async function QualiopiClientsPage({ params, searchParams }: Page
 
   const recherche = (q ?? "").trim();
   // R3 : les fiches d'essai du pilote visio n'apparaissent que sur recherche.
-  const clients = await listClients(recherche === "" ? { horsFichesDEssai: true } : { recherche });
+  const tous = await listClients(recherche === "" ? { horsFichesDEssai: true } : { recherche });
+
+  // Lot B6 : les fiches archivées sont masquées par défaut (`?archives=1` les montre seules).
+  const partage = await separerLesArchivees(prisma, tous);
+  const voirArchives = archives === "1";
+  const clients = voirArchives ? partage.archivees : partage.actives;
+  const hrefListe = `/${locale}/${adminPrefix}/qualiopi/clients`;
 
   // 🔴 Les compteurs portent sur le RÉSULTAT AFFICHÉ, et le libellé le dit.
   //
@@ -85,9 +94,10 @@ export default async function QualiopiClientsPage({ params, searchParams }: Page
   // l'écran : on ne sait plus si la recherche a filtré ou si des fiches ont
   // disparu. Un compteur qui ne décrit pas ce qu'on voit est pire que pas de
   // compteur.
-  const prospects = clients.filter((c) => c.statut === "prospect").length;
-  const actifs = clients.filter((c) => c.statut === "client_actif").length;
-  const devisEnvoyes = clients.filter((c) => c.statut === "devis_envoye").length;
+  const compte = partage.actives;
+  const prospects = compte.filter((c) => c.statut === "prospect").length;
+  const actifs = compte.filter((c) => c.statut === "client_actif").length;
+  const devisEnvoyes = compte.filter((c) => c.statut === "devis_envoye").length;
 
   const cellCls = "px-[var(--space-admin-4)] py-[var(--space-admin-3)] align-top";
   const headCls =
@@ -124,6 +134,7 @@ export default async function QualiopiClientsPage({ params, searchParams }: Page
             aria-label="Rechercher un client par raison sociale, SIRET, SIREN, numéro de fiche ou contact"
             className="admin-input min-w-[16rem] flex-1"
           />
+          {voirArchives ? <input type="hidden" name="archives" value="1" /> : null}
           <AdminButton type="submit" variant="secondary">
             Rechercher
           </AdminButton>
@@ -146,10 +157,35 @@ export default async function QualiopiClientsPage({ params, searchParams }: Page
         </p>
       ) : null}
 
+      {partage.lectureImpossible ? (
+        <p className="mb-[var(--space-admin-4)] text-[length:var(--text-admin-sm)]">
+          {`Archives : ${TEXTE_LECTURE_IMPOSSIBLE}`}
+        </p>
+      ) : voirArchives ? (
+        <p className="mb-[var(--space-admin-4)] text-[length:var(--text-admin-sm)]">
+          {`Fiches archivées (${partage.archivees.length}). `}
+          <Link
+            href={recherche === "" ? hrefListe : `${hrefListe}?q=${encodeURIComponent(recherche)}`}
+            className="inline-flex min-h-11 items-center underline"
+          >
+            Revenir aux clients
+          </Link>
+        </p>
+      ) : partage.archivees.length > 0 ? (
+        <p className="mb-[var(--space-admin-4)] text-[length:var(--text-admin-sm)]">
+          <Link
+            href={`${hrefListe}?archives=1${recherche === "" ? "" : `&q=${encodeURIComponent(recherche)}`}`}
+            className="inline-flex min-h-11 items-center underline"
+          >
+            {`Voir les archivées (${partage.archivees.length})`}
+          </Link>
+        </p>
+      ) : null}
+
       <div className="mb-[var(--space-admin-6)] grid grid-cols-1 gap-[var(--space-admin-5)] sm:grid-cols-4">
         <AdminStatCard
           label={recherche === "" ? "Total" : "Résultats"}
-          value={clients.length}
+          value={compte.length}
           icon={Hash}
         />
         <AdminStatCard label="Prospects" value={prospects} icon={Users} />
