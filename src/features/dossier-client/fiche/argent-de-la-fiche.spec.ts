@@ -6,6 +6,7 @@ import {
   montantHt,
   montantTtc,
   paiementPartiel,
+  resteMelangeHtTtc,
   type FacturePourArgent,
 } from "./argent-de-la-fiche";
 
@@ -93,5 +94,23 @@ describe("formats", () => {
   it("suffixes HT / TTC et espaces insécables", () => {
     expect(montantHt(120000)).toBe("1 200 € HT");
     expect(montantTtc(144050)).toBe("1 440,50 € TTC");
+  });
+});
+
+describe("resteMelangeHtTtc", () => {
+  const base = {
+    montantTtcCents: 1200 as number | null,
+    avoirs: [] as FacturePourArgent["avoirs"],
+  };
+  it("faux quand tout a un TTC", () => {
+    expect(resteMelangeHtTtc(base)).toBe(false);
+  });
+  it("vrai quand la facture n'a pas de TTC", () => {
+    expect(resteMelangeHtTtc({ ...base, montantTtcCents: null })).toBe(true);
+  });
+  it("vrai pour un avoir non annulé sans TTC, faux s'il est annulé", () => {
+    const avoir = { montantHtCents: -100, montantTtcCents: null, statut: "emise" };
+    expect(resteMelangeHtTtc({ ...base, avoirs: [avoir] })).toBe(true);
+    expect(resteMelangeHtTtc({ ...base, avoirs: [{ ...avoir, statut: "annulee" }] })).toBe(false);
   });
 });

@@ -19,6 +19,7 @@ import {
   montantTtc,
   montantTtcNonRenseigne,
   paiementPartiel,
+  resteMelangeHtTtc,
   type FacturePourArgent,
 } from "@/features/dossier-client/fiche/argent-de-la-fiche";
 
@@ -108,13 +109,15 @@ export function CartesFactures({
         const partiel = paiementPartiel(f);
         const reste = resteDuNetCents(f);
         const ouverteDue = !estAvoir && estFactureOuverte(f.statut) && reste > 0;
+        const tropPercu = !estAvoir && estFactureOuverte(f.statut) && reste < 0;
         const echeanceDepassee =
           f.echeanceAt !== null && dayKeyInParis(f.echeanceAt) < dayKeyInParis(new Date());
         const avant = f.echeanceAt
           ? `${echeanceDepassee ? ", en retard depuis le" : " avant le"} ${dateCourte(f.echeanceAt)}`
           : "";
         // Sans TTC en base, le chiffre mêle HT et TTC : on ne l'étiquette ni HT ni TTC, on le dit.
-        const somme = (c: number): string => (ttcConnu ? montantTtc(c) : montantTtcNonRenseigne(c));
+        const somme = (c: number): string =>
+          resteMelangeHtTtc(f) ? montantTtcNonRenseigne(c) : montantTtc(c);
         return (
           <li key={f.id} className={carteCls}>
             <div className="flex flex-wrap items-center justify-between gap-[var(--space-admin-2)]">
@@ -143,6 +146,10 @@ export function CartesFactures({
             ) : ouverteDue && encaisseCents(f) === 0 ? (
               <p className="mt-[var(--space-admin-2)] text-[length:var(--text-admin-sm)] tabular-nums">
                 {somme(reste)} restent à encaisser{avant}.
+              </p>
+            ) : tropPercu ? (
+              <p className="mt-[var(--space-admin-2)] text-[length:var(--text-admin-sm)] tabular-nums">
+                Trop-perçu : {somme(-reste)}.
               </p>
             ) : null}
             {ouverteDue && (partiel !== null || f.statut === "en_retard") ? (

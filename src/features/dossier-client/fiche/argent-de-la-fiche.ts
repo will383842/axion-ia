@@ -1,7 +1,8 @@
 /**
  * Argent de la fiche client (lot B7) : fonctions PURES, affichage seul, aucune écriture.
- * Les règles d'avoir sont celles de `resteDuNetCents` (avoirs non annulés, montants NÉGATIFS en base) ;
- * « reste dû » vient toujours de `resteDuNetCents` / `calculerEncoursDuCents`, jamais recalculé ici.
+ * « Reste dû » vient toujours de `resteDuNetCents` / `calculerEncoursDuCents` (avoirs non annulés,
+ * montants NÉGATIFS en base), jamais recalculé ici. `dejaFactureCents` a sa propre règle : elle ne compte
+ * que les pièces émises (ni brouillon ni annulée), avoirs compris.
  */
 
 import { resteDuNetCents } from "@/server/qualiopi/crm/clients";
@@ -17,6 +18,19 @@ export interface FacturePourArgent {
   montantTtcCents: number | null;
   payments: { amountCents: number; status: string }[];
   avoirs: { montantHtCents: number; montantTtcCents: number | null; statut: string }[];
+}
+
+/**
+ * Le reste dû de la facture mêle HT et TTC : son TTC est NULL, ou un avoir non annulé qui la corrige n'a pas
+ * de TTC (`resteDuNetCents` replie alors sur le HT). Un tel montant ne s'étiquette jamais TTC.
+ */
+export function resteMelangeHtTtc(
+  f: Pick<FacturePourArgent, "montantTtcCents" | "avoirs">,
+): boolean {
+  return (
+    f.montantTtcCents === null ||
+    f.avoirs.some((a) => a.statut !== "annulee" && a.montantTtcCents === null)
+  );
 }
 
 /** Facture réellement émise : ni brouillon, ni annulée. */

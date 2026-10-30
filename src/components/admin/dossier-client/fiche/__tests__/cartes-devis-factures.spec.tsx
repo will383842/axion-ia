@@ -1,5 +1,5 @@
 import { renderToStaticMarkup } from "react-dom/server";
-import { describe, expect, it, vi } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import { CartesDevis, CartesFactures } from "../CartesPieces";
 import { TuilesArgent } from "../TuilesArgent";
@@ -22,6 +22,14 @@ const partielle = {
 };
 
 describe("cartes devis et factures", () => {
+  // Horloge figée : l'échéance de la fixture `partielle` (5 nov. 2026) ne doit pas faire basculer les textes.
+  beforeEach(() => {
+    vi.useFakeTimers();
+    vi.setSystemTime(new Date("2026-10-15T10:00:00Z"));
+  });
+  afterEach(() => {
+    vi.useRealTimers();
+  });
   it("chaque montant a HT et son TTC", () => {
     const h = renderToStaticMarkup(
       <CartesDevis
@@ -295,6 +303,93 @@ describe("cartes devis et factures", () => {
       ),
     );
     expect(h).toContain("Trop-perçu : 100 € TTC");
-    expect(h).toContain("dont 100 € TTC encore dus sur 1 facture");
+    expect(h).toContain("100 € TTC encore dus sur 1 facture · trop-perçu de 200 € TTC sur 1 autre");
+    expect(h).not.toContain("Encours dû : rien");
+    expect(h).not.toContain("dont ");
+  });
+  it("encours exactement 0 avec une facture encore due : ne se contredit pas", () => {
+    const a = { ...partielle, id: "a", statut: "emise", payments: [] };
+    const b = {
+      ...partielle,
+      id: "b",
+      statut: "emise",
+      payments: [{ amountCents: 144000 + 144000, status: "succeeded" }],
+    };
+    const h = plat(
+      renderToStaticMarkup(
+        <TuilesArgent
+          encoursDuCents={0}
+          factures={[{ ...a, payments: [{ amountCents: 44000, status: "succeeded" }] }, b]}
+          devis={[]}
+          devisPlafonnes={false}
+          factureHorsConsoleLe={null}
+        />,
+      ),
+    );
+    expect(h).toContain("0 € TTC");
+    expect(h).toContain("encore dus sur 1 facture · trop-perçu de 1 440 € TTC sur 1 autre");
+    expect(h).not.toContain("Encours dû : rien");
+  });
+  it("facture ouverte sans TTC et trop payée : jamais un TTC inventé", () => {
+    const f = {
+      ...partielle,
+      statut: "emise",
+      montantHtCents: 100000,
+      montantTtcCents: null,
+      payments: [{ amountCents: 120000, status: "succeeded" }],
+    };
+    const tuiles = plat(
+      renderToStaticMarkup(
+        <TuilesArgent
+          encoursDuCents={-20000}
+          factures={[f]}
+          devis={[]}
+          devisPlafonnes={false}
+          factureHorsConsoleLe={null}
+        />,
+      ),
+    );
+    expect(tuiles).toContain("Trop-perçu : 200 € (TTC non renseigné)");
+    expect(tuiles).not.toContain("200 € TTC");
+    const carte = plat(
+      renderToStaticMarkup(<CartesFactures qBase="/q" statuts={statuts} factures={[f]} />),
+    );
+    expect(carte).toContain("Trop-perçu : 200 € (TTC non renseigné)");
+  });
+  it("carte d'une facture trop payée : affiche le trop-perçu en TTC", () => {
+    const f = {
+      ...partielle,
+      statut: "emise",
+      payments: [{ amountCents: 164000, status: "succeeded" }],
+    };
+    const h = plat(
+      renderToStaticMarkup(<CartesFactures qBase="/q" statuts={statuts} factures={[f]} />),
+    );
+    expect(h).toContain("Trop-perçu : 200 € TTC");
+  });
+  it("avoir sans TTC sur une facture avec TTC : reste non étiqueté TTC, carte et tuile", () => {
+    const f = {
+      ...partielle,
+      statut: "emise",
+      payments: [],
+      avoirs: [{ montantHtCents: -10000, montantTtcCents: null, statut: "emise" }],
+    };
+    const carte = plat(
+      renderToStaticMarkup(<CartesFactures qBase="/q" statuts={statuts} factures={[f]} />),
+    );
+    expect(carte).toContain("1 340 € (TTC non renseigné) restent à encaisser");
+    const tuiles = plat(
+      renderToStaticMarkup(
+        <TuilesArgent
+          encoursDuCents={134000}
+          factures={[f]}
+          devis={[]}
+          devisPlafonnes={false}
+          factureHorsConsoleLe={null}
+        />,
+      ),
+    );
+    expect(tuiles).toContain("1 340 € (TTC non renseigné)");
+    expect(tuiles).not.toContain("1 340 € TTC");
   });
 });

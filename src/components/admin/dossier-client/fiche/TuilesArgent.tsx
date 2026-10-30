@@ -16,6 +16,7 @@ import {
   montantTtc,
   montantTtcNonRenseigne,
   resteDuNetCents,
+  resteMelangeHtTtc,
   type FacturePourArgent,
 } from "@/features/dossier-client/fiche/argent-de-la-fiche";
 import { formatDateFrShort } from "@/lib/format-date-fr";
@@ -50,25 +51,30 @@ export function TuilesArgent({
   const echeanceTexte = plusAncienne
     ? ` · ${enRetard ? "en retard depuis le" : "à payer avant le"} ${dateCourte(plusAncienne)}`
     : "";
-  const nbDuesSansTtc = dues.filter(
-    (f) =>
-      f.montantTtcCents === null ||
-      f.avoirs.some((a) => a.statut !== "annulee" && a.montantTtcCents === null),
-  ).length;
-  const sansTtc = nbDuesSansTtc > 0;
-  const pluriel = nbDuesSansTtc > 1 ? "s" : "";
+  // Même périmètre que l'encours (toutes les factures ouvertes) : une facture ouverte sans TTC, même trop
+  // payée, rend le total HT/TTC mêlé.
+  const ouvertes = factures.filter((f) => f.avoirDeId === null && estFactureOuverte(f.statut));
+  const nbMelange = ouvertes.filter(resteMelangeHtTtc).length;
+  const sansTtc = nbMelange > 0;
+  const pluriel = nbMelange > 1 ? "s" : "";
   const tvaTexte = sansTtc
-    ? `TVA incluse sauf sur ${nbDuesSansTtc} facture${pluriel} sans TTC`
+    ? `TVA incluse sauf sur ${nbMelange} facture${pluriel} sans TTC`
     : "TVA incluse";
-  // Sans TTC sur une facture due, le total mêle HT et TTC : on ne l'étiquette pas TTC.
+  // Sans TTC sur une facture ouverte, le total mêle HT et TTC : on ne l'étiquette pas TTC.
   const somme = (c: number): string => (sansTtc ? montantTtcNonRenseigne(c) : montantTtc(c));
   const encoursPositif = encoursDuCents > 0;
   const duCents = dues.reduce((acc, f) => acc + resteDuNetCents(f), 0);
   const nbDues = dues.length;
+  const tropPercus = ouvertes.filter((f) => resteDuNetCents(f) < 0);
+  const tropPercuCents = tropPercus.reduce((acc, f) => acc - resteDuNetCents(f), 0);
   // Les restes se compensent : un trop-perçu sur une facture ne solde pas une autre facture encore due.
   const encoreDuTexte =
     !encoursPositif && nbDues > 0
-      ? `dont ${somme(duCents)} encore dus sur ${nbDues} facture${nbDues > 1 ? "s" : ""}`
+      ? `${somme(duCents)} encore dus sur ${nbDues} facture${nbDues > 1 ? "s" : ""}${
+          tropPercus.length > 0
+            ? ` · trop-perçu de ${somme(tropPercuCents)} sur ${tropPercus.length} autre${tropPercus.length > 1 ? "s" : ""}`
+            : ""
+        }`
       : null;
 
   const metaDeja = [
@@ -99,7 +105,7 @@ export function TuilesArgent({
           encoursPositif
             ? `Encours dû, ${tvaTexte}${echeanceTexte}`
             : encoreDuTexte
-              ? `${encoursDuCents < 0 ? "Encours dû : rien · " : ""}${encoreDuTexte}${echeanceTexte}`
+              ? `${encoreDuTexte}${echeanceTexte}`
               : "Encours dû : rien"
         }
         tone={encoursPositif || encoreDuTexte ? "warning" : "success"}
