@@ -190,7 +190,7 @@ export type DossierPourCrm = {
   etape?: EtapeCrm;
   cloture_prevue?: string;
   sante?: SanteCrm;
-  prochaine_action?: { type: "relance" | "autre"; date: string };
+  prochaine_action?: { type: "relance" | "rendez_vous" | "autre"; date: string };
   taches_ouvertes?: { nb: number; prochaine_le?: string };
   nb_emails_console?: number;
   nb_notes_console?: number;
@@ -263,9 +263,22 @@ function jourIso(d: Date | null | undefined): string | undefined {
   return d instanceof Date && !Number.isNaN(d.getTime()) ? d.toISOString().slice(0, 10) : undefined;
 }
 
+/** Jour civil de Paris (AAAA-MM-JJ) d'un horodatage complet ; `undefined` si invalide. */
+export function jourParis(d: Date | null | undefined): string | undefined {
+  return d instanceof Date && !Number.isNaN(d.getTime())
+    ? new Intl.DateTimeFormat("en-CA", { timeZone: "Europe/Paris" }).format(d)
+    : undefined;
+}
+
 /** Entier ≥ 0 ou `undefined` : un nombre invalide est omis, jamais corrigé. */
 function nombre(n: number | null | undefined): number | undefined {
   return typeof n === "number" && Number.isInteger(n) && n >= 0 ? n : undefined;
+}
+
+/** Type d'action côté CRM, déduit de l'ORIGINE de la tâche. */
+function typeAction(origine: string): "relance" | "rendez_vous" | "autre" {
+  if (origine === "relance") return "relance";
+  return origine === "rencontre" ? "rendez_vous" : "autre";
 }
 
 /** Les clés facultatives de la fiche complète, posées seulement si la valeur existe. */
@@ -278,7 +291,7 @@ function completerFiche(dossier: DossierPourCrm, fiche: FicheCompletePourCrm): v
   if (fiche.prochaineTache && jourAction !== undefined) {
     // Le type vient de l'ORIGINE de la tâche, jamais de son intitulé.
     dossier.prochaine_action = {
-      type: fiche.prochaineTache.origine === "relance" ? "relance" : "autre",
+      type: typeAction(fiche.prochaineTache.origine),
       date: jourAction,
     };
   }
@@ -325,7 +338,8 @@ export function dossierPourCrm(entree: EntreeInstantaneCrm): DossierPourCrm {
   // Les deux clés nouvelles du questionnaire vivent dans la fiche complète : un
   // questionnaire sans état (aucun envoi) peut quand même avoir une date limite.
   const attendus = nombre(entree.fiche?.questionnaireAttendus);
-  const dateLimite = jourIso(entree.fiche?.questionnaireDateLimite);
+  // Horodatage complet (`expireLe`) : le jour se lit à Paris, pas en UTC.
+  const dateLimite = jourParis(entree.fiche?.questionnaireDateLimite);
   if (attendus !== undefined || dateLimite !== undefined) {
     const q = dossier.questionnaire ?? {};
     if (attendus !== undefined) q.attendus = attendus;

@@ -136,7 +136,16 @@ describe("photo du dossier : clés de la fiche complète", () => {
       "attendus",
       "date_limite",
     ]);
-    expect([...CLES_CONTACT_CRM]).toContain("role_decision");
+    expect([...CLES_CONTACT_CRM]).toEqual([
+      "ref",
+      "prenom",
+      "nom",
+      "email",
+      "telephone",
+      "fonction",
+      "person_key",
+      "role_decision",
+    ]);
   });
 
   it("porte chaque clé quand la valeur existe, et seulement des clés de la liste", () => {
@@ -200,7 +209,8 @@ describe("photo du dossier : clés de la fiche complète", () => {
         }),
       ).prochaine_action;
     expect(tache("relance")).toEqual({ type: "relance", date: "2026-11-03" });
-    for (const o of ["manuelle", "rencontre", "questionnaire"]) {
+    expect(tache("rencontre")).toEqual({ type: "rendez_vous", date: "2026-11-03" });
+    for (const o of ["manuelle", "questionnaire"]) {
       expect(tache(o)).toEqual({ type: "autre", date: "2026-11-03" });
     }
     expect(JSON.stringify(dossierPourCrm(entree({ fiche: FICHE_PLEINE })))).not.toContain(
@@ -406,6 +416,29 @@ describe("lecture du dossier : fiche complète", () => {
     const d = await dossier();
     expect(d.sante).toBe("a_surveiller");
     expect(d.taches_ouvertes).toEqual({ nb: 2, prochaine_le: "2026-11-03" });
+  });
+
+  it("0 tâche lue avec succès envoie nb: 0 ; une panne omet la clé", async () => {
+    const d = await dossier();
+    expect(d.taches_ouvertes).toEqual({ nb: 0, prochaine_le: "2026-11-03" });
+    p.clientTache.count.mockRejectedValue(new Error("panne"));
+    expect(Object.keys(await dossier())).not.toContain("taches_ouvertes");
+  });
+
+  it("date_limite se lit en jour de Paris, sans filtre expireLe ; départages par id", async () => {
+    p.questionnaireAvantAudit.findFirst.mockResolvedValue({
+      expireLe: new Date("2026-11-19T23:30:00Z"),
+    });
+    expect((await dossier()).questionnaire).toMatchObject({ date_limite: "2026-11-20" });
+    const arg = p.questionnaireAvantAudit.findFirst.mock.calls[0]![0];
+    expect(JSON.stringify(arg.where)).not.toContain("expireLe");
+    expect(arg.orderBy).toContainEqual({ id: "asc" });
+    expect(p.clientTache.findFirst.mock.calls[0]![0].orderBy).toContainEqual({ id: "asc" });
+  });
+
+  it("la santé ignore les rendez-vous de test interne", async () => {
+    await dossier();
+    expect(p.rencontre.findFirst.mock.calls[0]![0].where).toMatchObject({ estTestInterne: false });
   });
 
   it("une lecture en panne OMET sa clé et l'envoi part quand même", async () => {

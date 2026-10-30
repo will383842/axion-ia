@@ -11,9 +11,11 @@ import { prisma } from "@/lib/prisma";
 import { hashEmailForLookup } from "@/lib/security/email-hash";
 import { sirenTransmis } from "@/server/partners-sync/producteurs/client";
 
+import { HORS_RENCONTRES_DE_TEST } from "@/features/dossier-client/client-test";
 import { santeDuCompte } from "@/features/dossier-client/fiche/sante-du-compte";
 import { estFactureOuverte } from "@/server/qualiopi/financements/statuts-facture";
 
+import { erreurSansDonnees } from "./enqueue";
 import { adressesOpposees } from "./oppositions-par-lot";
 import type {
   ContactPourCrm,
@@ -22,6 +24,7 @@ import type {
   FicheCompletePourCrm,
   RoleDecisionCrm,
 } from "./instantane-dossier";
+import { jourParis } from "./instantane-dossier";
 
 /**
  * Une lecture de la fiche complète : une panne rend `undefined` (la clé est OMISE),
@@ -30,15 +33,16 @@ import type {
 async function proteger<T>(lecture: () => Promise<T>): Promise<T | undefined> {
   try {
     return await lecture();
-  } catch {
+  } catch (e) {
+    // Jamais le message brut de l'erreur : il peut contenir des données.
+    console.warn("[crm-sync] lecture fiche complète omise :", erreurSansDonnees(e));
     return undefined;
   }
 }
 
 /** Minuit (UTC) du jour civil de Paris : `echeance_le` est une colonne DATE. */
 function aujourdhuiParis(maintenant: Date): Date {
-  const s = new Intl.DateTimeFormat("en-CA", { timeZone: "Europe/Paris" }).format(maintenant);
-  return new Date(`${s}T00:00:00.000Z`);
+  return new Date(`${jourParis(maintenant) ?? ""}T00:00:00.000Z`);
 }
 
 const ETAPE_DU_STATUT: Readonly<Record<string, EtapeCrm | undefined>> = {
@@ -120,7 +124,7 @@ async function lireFicheComplete(
     proteger(() =>
       prisma.clientTache.findFirst({
         where: ouvertes,
-        orderBy: [{ echeanceLe: "asc" }, { createdAt: "asc" }],
+        orderBy: [{ echeanceLe: "asc" }, { createdAt: "asc" }, { id: "asc" }],
         // L'origine (relance, manuelle…) : jamais l'intitulé.
         select: { origine: true, echeanceLe: true },
       }),
@@ -152,10 +156,9 @@ async function lireFicheComplete(
       prisma.questionnaireAvantAudit.findFirst({
         where: {
           envoyeLe: { not: null },
-          expireLe: { not: null },
           OR: [{ clientId: { in: [...ids] } }, { rencontre: { clientId: { in: [...ids] } } }],
         },
-        orderBy: { envoyeLe: "desc" },
+        orderBy: [{ envoyeLe: "desc" }, { id: "asc" }],
         // Une date : jamais `donnees` ni `html`.
         select: { expireLe: true },
       }),
@@ -173,8 +176,9 @@ async function lireFicheComplete(
     fiche.prochaineTache =
       prochaine === null ? null : { origine: prochaine.origine, echeanceLe: prochaine.echeanceLe };
   }
-  // Une tâche ouverte sans nombre, ou l'inverse, serait incohérent : 0 tâche ⇒ clé omise.
-  if (nbOuvertes !== undefined && nbOuvertes > 0) fiche.nbTachesOuvertes = nbOuvertes;
+  // Lecture réussie à 0 ⇒ `nb: 0` (le CRM remplace le bloc, la prochaine date repart vide) ;
+  // seule une PANNE omet la clé.
+  if (nbOuvertes !== undefined) fiche.nbTachesOuvertes = nbOuvertes;
   if (nbEmails !== undefined) fiche.nbEmailsConsole = nbEmails;
   if (nbNotes !== undefined) fiche.nbNotesConsole = nbNotes;
   if (questionnaire !== undefined) fiche.questionnaireDateLimite = questionnaire?.expireLe ?? null;
@@ -322,6 +326,7 @@ export async function lireEntreeDossier(
         where: {
           clientId: { in: ids },
           statut: "tenu",
+          ...HORS_RENCONTRES_DE_TEST,
           debutPrevu: { not: null, lte: maintenant },
         },
         orderBy: { debutPrevu: "desc" },
