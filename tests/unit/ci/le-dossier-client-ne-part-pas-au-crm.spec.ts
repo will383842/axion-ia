@@ -33,7 +33,18 @@ import {
  * d'une colonne de contenu, fait échouer la garde ci-dessous.
  */
 const FICHIER_DE_LA_SYNCHRO_DU_DOSSIER = "src/server/crm-sync/lire-dossier.ts";
-const TABLES_LISIBLES_PAR_CE_FICHIER = ["clientContact", "questionnaireAvantAudit"];
+// Lot C1 (fiche complète) : tâches, notes, profil et rôles ne sont lus que pour des NOMBRES, des
+// dates et des états (`count`, `findFirst` sur `origine`/`echeanceLe`/`archiveLe`/`role`/`debutPrevu`) ; jamais
+// un intitulé, un texte de note ni un libellé. `COLONNES_DE_CONTENU` ci-dessous le garde.
+const TABLES_LISIBLES_PAR_CE_FICHIER = [
+  "clientContact",
+  "questionnaireAvantAudit",
+  "clientTache",
+  "clientNote",
+  "clientProfil",
+  "projetContact",
+  "rencontre",
+];
 const COLONNES_DE_CONTENU = /\b(donnees|texte|reponse|reponses|notes|html|destinataire)\s*:\s*true/;
 
 const IMPORT_CRM =
@@ -74,7 +85,7 @@ describe("le dossier client ne part pas au CRM", () => {
     expect(fautifs, "la synchro CRM lit le dossier client (PA-12) :").toEqual([]);
   });
 
-  it("l'exception : un seul fichier, deux tables, aucune colonne de contenu", () => {
+  it("l'exception : un seul fichier, des tables nommées, aucune colonne de contenu", () => {
     const source = sansCommentaires(lire(FICHIER_DE_LA_SYNCHRO_DU_DOSSIER));
     const lues = [...source.matchAll(new RegExp(lectureDuDossier().source, "g"))].map((m) => m[1]);
     for (const table of lues) expect(TABLES_LISIBLES_PAR_CE_FICHIER).toContain(table);

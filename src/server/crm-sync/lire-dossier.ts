@@ -7,13 +7,13 @@
  * sélectionnées ni déchiffrées : on ne compte que des lignes.
  */
 
+import type { FactureFormationStatut } from "../../../prisma/generated/client";
 import { prisma } from "@/lib/prisma";
 import { hashEmailForLookup } from "@/lib/security/email-hash";
 import { sirenTransmis } from "@/server/partners-sync/producteurs/client";
 
 import { HORS_RENCONTRES_DE_TEST } from "@/features/dossier-client/client-test";
 import { santeDuCompte } from "@/features/dossier-client/fiche/sante-du-compte";
-import { estFactureOuverte } from "@/server/qualiopi/financements/statuts-facture";
 
 import { erreurSansDonnees } from "./enqueue";
 import { adressesOpposees } from "./oppositions-par-lot";
@@ -44,6 +44,19 @@ async function proteger<T>(lecture: () => Promise<T>): Promise<T | undefined> {
 function aujourdhuiParis(maintenant: Date): Date {
   return new Date(`${jourParis(maintenant) ?? ""}T00:00:00.000Z`);
 }
+
+/**
+ * Factures ouvertes (émises, non soldées) : miroir de `STATUTS_FACTURE_OUVERTE`
+ * (`qualiopi/financements/statuts-facture.ts`), recopié ici car la synchro ne
+ * franchit pas le cloisonnement du domaine Qualiopi. Typé sur l'enum Prisma.
+ */
+const STATUTS_FACTURE_OUVERTE = [
+  "emise",
+  "partiellement_payee",
+  "en_retard",
+] as const satisfies readonly FactureFormationStatut[];
+const estFactureOuverte = (statut: string): boolean =>
+  (STATUTS_FACTURE_OUVERTE as readonly string[]).includes(statut);
 
 const ETAPE_DU_STATUT: Readonly<Record<string, EtapeCrm | undefined>> = {
   prospect: "prospect",
