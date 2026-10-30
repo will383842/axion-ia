@@ -14,12 +14,14 @@ import { lireQuestionnairesDeLaFiche } from "@/features/dossier-client/questionn
 import { demanderAuDirigeantDeRelancerSonEquipeAction } from "@/features/dossier-client/fiche/actions-relance-equipe";
 import {
   PHRASE_RELANCES_AUTOMATIQUES,
+  PHRASE_RELANCES_ETEINTES,
   entreeDepuisSuivi,
   estComplet,
   phraseDateLimite,
   phraseEnBref,
   prenomDe,
 } from "@/features/dossier-client/fiche/questionnaire-en-bref";
+import { modeRelances } from "@/features/questionnaire-preaudit/drapeaux-suivi";
 import { prisma } from "@/lib/prisma";
 import { BoutonDemandeRelance } from "./BoutonDemandeRelance";
 import type { ContexteFiche } from "./contexte";
@@ -78,6 +80,8 @@ export async function questionnaireEnBref(ctx: ContexteFiche): Promise<React.Rea
   // n'est jamais dans la liste).
   const aRelancer = entree.manquants.length + entree.manquantsSansNom > 0;
   const proposer = ctx.role === "super_admin" && !complet && !expire && aRelancer;
+  // Lu côté serveur, comme `QuestionnairePreaudit` : seule la valeur « true » fait partir les relances.
+  const relancesAllumees = modeRelances() === "actif";
   const pret = proposer ? await messageDejaPret(q.id) : false;
 
   return (
@@ -95,7 +99,9 @@ export async function questionnaireEnBref(ctx: ContexteFiche): Promise<React.Rea
         {phraseEnBref(entree)}
       </p>
       {limiteDite !== null ? <p>{limiteDite}</p> : null}
-      <p className="text-[length:var(--text-admin-xs)]">{PHRASE_RELANCES_AUTOMATIQUES}</p>
+      <p className="text-[length:var(--text-admin-xs)]">
+        {relancesAllumees ? PHRASE_RELANCES_AUTOMATIQUES : PHRASE_RELANCES_ETEINTES}
+      </p>
       {proposer ? (
         pret === true ? (
           <p className="mt-[var(--space-admin-2)]">

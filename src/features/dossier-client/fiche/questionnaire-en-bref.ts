@@ -61,6 +61,8 @@ export function phraseDateLimite(expireLe: Date | null): string | null {
 export const PHRASE_RELANCES_AUTOMATIQUES =
   "Les relances automatiques partent au dirigeant (J+2, J+5, J+10).";
 
+export const PHRASE_RELANCES_ETEINTES = "Les relances automatiques sont éteintes pour le moment.";
+
 /** Le premier mot du nom (« Paul Martin » → « Paul »), ou `null`. */
 export function prenomDe(nom: string | null): string | null {
   const mot = (nom ?? "").trim().split(/\s+/)[0] ?? "";

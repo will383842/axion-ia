@@ -5,7 +5,7 @@
 // dirigeant, jamais un collaborateur. Aucune réponse n'y figure, aucun lien de collaborateur ;
 // il peut nommer les personnes qui manquent, puisque c'est la liste du dirigeant lui-même.
 //
-// ⛔ Jamais « J'aide », « Aucun gain garanti », « Grenoble » (ordres de Will).
+// ⛔ Ton et formulations : suivre les ordres de Will (pas de promesse de résultat, pas de lieu).
 
 import { Text } from "@react-email/components";
 import { EmailLayout, emailStyles } from "./_layout";

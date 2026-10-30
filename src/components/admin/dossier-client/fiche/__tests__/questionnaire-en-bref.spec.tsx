@@ -1,5 +1,5 @@
 import { renderToStaticMarkup } from "react-dom/server";
-import { beforeEach, describe, expect, it, vi } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 const m = vi.hoisted(() => ({ lire: vi.fn(), outbox: vi.fn() }));
 vi.mock("@/features/dossier-client/questionnaires-de-la-fiche", () => ({
@@ -20,9 +20,11 @@ const ligne = (nom: string, etat: string) => ({
   role: "collaborateur",
   sourceNom: "equipe",
 });
+// Horloge figée : l'expiration (5 nov. 10 h UTC) est comparée à l'heure, jamais à la date réelle.
+const MAINTENANT = new Date("2026-11-01T10:00:00Z");
 const questionnaire = (collabs: ReturnType<typeof ligne>[], recus: number) => ({
   id: "q1",
-  envoyeLe: new Date(),
+  envoyeLe: new Date("2026-10-28T10:00:00Z"),
   closLe: null,
   expireLe: new Date("2026-11-05T10:00:00Z"),
   parPersonne: {
@@ -34,7 +36,7 @@ const questionnaire = (collabs: ReturnType<typeof ligne>[], recus: number) => ({
     },
   },
 });
-const ctx = (role: string, voit = true, maintenant = new Date()): ContexteFiche =>
+const ctx = (role: string, voit = true, maintenant = MAINTENANT): ContexteFiche =>
   ({
     clientId: "c1",
     qBase: "/fr/x/qualiopi",
@@ -50,7 +52,15 @@ const rendre = async (c: ContexteFiche) => {
 
 beforeEach(() => {
   vi.resetAllMocks();
+  vi.useFakeTimers({ toFake: ["Date"] });
+  vi.setSystemTime(MAINTENANT);
+  delete process.env["QUESTIONNAIRE_RELANCES_ENABLED"];
   m.outbox.mockResolvedValue(null);
+});
+
+afterEach(() => {
+  vi.useRealTimers();
+  delete process.env["QUESTIONNAIRE_RELANCES_ENABLED"];
 });
 
 describe("QuestionnaireEnBref", () => {
@@ -61,11 +71,25 @@ describe("QuestionnaireEnBref", () => {
     const html = await rendre(ctx("super_admin"));
     expect(html).toContain("2 réponses sur 3. Il manque Paul.");
     expect(html).toContain("Jusqu&#x27;au 5 nov.");
-    expect(html).toContain("J+2, J+5, J+10");
     expect(html).toContain("Demander à Anne de relancer son équipe");
     // Aucun bouton de relance d'un collaborateur, aucun envoi du questionnaire à un collaborateur.
     expect(html).not.toMatch(/Relancer Paul|Relancer Léa|Envoyer le questionnaire/);
     expect(html).not.toContain("admin-button-primary");
+  });
+
+  it("relances allumées : la phrase des relances automatiques est affichée", async () => {
+    process.env["QUESTIONNAIRE_RELANCES_ENABLED"] = "true";
+    m.lire.mockResolvedValue([questionnaire([ligne("Paul", "pas_de_nouvelles")], 1)]);
+    const html = await rendre(ctx("super_admin"));
+    expect(html).toContain("J+2, J+5, J+10");
+    expect(html).not.toContain("éteintes");
+  });
+
+  it("relances éteintes (interrupteur absent) : « éteintes pour le moment », aucune promesse", async () => {
+    m.lire.mockResolvedValue([questionnaire([ligne("Paul", "pas_de_nouvelles")], 1)]);
+    const html = await rendre(ctx("super_admin"));
+    expect(html).toContain("Les relances automatiques sont éteintes pour le moment.");
+    expect(html).not.toContain("J+2");
   });
 
   it("un message déjà prêt : lien pour le relire, pas de second bouton", async () => {
@@ -113,6 +137,13 @@ describe("QuestionnaireEnBref", () => {
     const html = await rendre(ctx("super_admin"));
     expect(html).toContain("Lien expiré le 1 janvier.");
     expect(html).not.toContain("<button");
+  });
+
+  it("le jour même, avant l'heure d'expiration : lien encore valide, bouton proposé", async () => {
+    m.lire.mockResolvedValue([questionnaire([ligne("Paul", "pas_de_nouvelles")], 1)]);
+    const html = await rendre(ctx("super_admin", true, new Date("2026-11-05T09:00:00Z")));
+    expect(html).not.toContain("Lien expiré");
+    expect(html).toContain("de relancer son équipe");
   });
 
   it("le jour même, une heure après l'expiration : lien expiré, aucun bouton", async () => {

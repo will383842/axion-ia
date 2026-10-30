@@ -1,10 +1,12 @@
-import { beforeEach, describe, expect, it, vi } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 const m = vi.hoisted(() => ({
   auth: vi.fn(),
   garer: vi.fn(),
   qFind: vi.fn(),
   outboxFind: vi.fn(),
+  verrou: vi.fn(),
+  ordre: [] as string[],
   suivi: vi.fn(),
   chaine: { p: Promise.resolve() as Promise<void> },
 }));
@@ -25,7 +27,7 @@ vi.mock("@/lib/prisma", () => ({
     // Transaction « sérialisée » comme le verrou consultatif : un appel à la fois.
     $transaction: (fn: (tx: unknown) => Promise<void>) => {
       const course = m.chaine.p.then(() =>
-        fn({ $executeRaw: async () => 1, emailOutbox: { findFirst: m.outboxFind } }),
+        fn({ $executeRaw: m.verrou, emailOutbox: { findFirst: m.outboxFind } }),
       );
       m.chaine.p = course.then(
         () => undefined,
@@ -81,8 +83,16 @@ async function lancer(): Promise<string> {
   return "";
 }
 
+// Horloge figée : l'action compare l'expiration (5 nov. 10 h UTC) à `new Date()`.
 beforeEach(() => {
   vi.resetAllMocks();
+  vi.useFakeTimers({ toFake: ["Date"] });
+  vi.setSystemTime(new Date("2026-11-01T10:00:00Z"));
+  m.ordre.length = 0;
+  m.verrou.mockImplementation(async () => {
+    m.ordre.push("verrou");
+    return 1;
+  });
   m.chaine.p = Promise.resolve();
   m.auth.mockResolvedValue({ user: { id: "u1", role: "super_admin" } });
   m.qFind.mockResolvedValue({
@@ -95,6 +105,10 @@ beforeEach(() => {
   m.outboxFind.mockResolvedValue(null);
   m.suivi.mockResolvedValue(suiviAvecManquants());
   m.garer.mockResolvedValue("outbox-1");
+});
+
+afterEach(() => {
+  vi.useRealTimers();
 });
 
 const NOW = "2026-11-05T11:00:00Z";
@@ -127,13 +141,21 @@ describe("demander au dirigeant de relancer son équipe", () => {
 
   it("deux appels simultanés : un seul brouillon a_valider", async () => {
     const poses: string[] = [];
-    m.outboxFind.mockImplementation(async () => (poses.length > 0 ? { id: poses[0] } : null));
+    m.outboxFind.mockImplementation(async () => {
+      m.ordre.push("lecture");
+      return poses.length > 0 ? { id: poses[0] } : null;
+    });
     m.garer.mockImplementation(async () => {
       await new Promise((r) => setTimeout(r, 10));
       poses.push("outbox-1");
       return "outbox-1";
     });
     const issues = await Promise.all([lancer(), lancer()]);
+    // Le verrou est réellement pris : une fois par appel, avant la lecture du brouillon existant.
+    expect(m.verrou).toHaveBeenCalledTimes(2);
+    const gabarit = m.verrou.mock.calls[0]![0] as readonly string[];
+    expect(gabarit.join("")).toContain("pg_advisory_xact_lock");
+    expect(m.ordre).toEqual(["verrou", "lecture", "verrou", "lecture"]);
     expect(m.garer).toHaveBeenCalledTimes(1);
     expect(poses).toHaveLength(1);
     expect(issues.filter((x) => x.includes("Message prêt"))).toHaveLength(1);
@@ -217,8 +239,20 @@ describe("demander au dirigeant de relancer son équipe", () => {
     expect(m.garer).not.toHaveBeenCalled();
   });
 
+  it("le jour même, avant l'heure d'expiration : accepté", async () => {
+    vi.setSystemTime(new Date("2026-11-05T09:00:00Z"));
+    m.qFind.mockResolvedValue({
+      id: QUEST,
+      destinataire: "enc:anne@client.fr",
+      envoyeLe: new Date("2026-10-01T10:00:00Z"),
+      closLe: null,
+      expireLe: new Date("2026-11-05T10:00:00Z"),
+    });
+    expect(await lancer()).toContain("Message prêt");
+    expect(m.garer).toHaveBeenCalledTimes(1);
+  });
+
   it("le jour même, une heure après l'expiration : refusé", async () => {
-    vi.useFakeTimers({ toFake: ["Date"] });
     vi.setSystemTime(new Date(NOW));
     m.qFind.mockResolvedValue({
       id: QUEST,
@@ -227,12 +261,8 @@ describe("demander au dirigeant de relancer son équipe", () => {
       closLe: null,
       expireLe: new Date("2026-11-05T10:00:00Z"),
     });
-    try {
-      expect(await lancer()).toContain("Lien expiré : rien n'a été préparé");
-      expect(m.garer).not.toHaveBeenCalled();
-    } finally {
-      vi.useRealTimers();
-    }
+    expect(await lancer()).toContain("Lien expiré : rien n'a été préparé");
+    expect(m.garer).not.toHaveBeenCalled();
   });
 
   it("n'importe aucun moyen d'envoi direct", async () => {

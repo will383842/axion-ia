@@ -132,7 +132,8 @@ export async function demanderAuDirigeantDeRelancerSonEquipeAction(fd: FormData)
   // Deux clics rapprochés : la vérification « déjà un brouillon ? » et le garage se font sous un
   // verrou de transaction propre à ce questionnaire (sans migration : `EmailOutbox.jobId` n'est
   // pas unique). Le verrou est tenu jusqu'à la fin du garage ; le second appel attend, relit, et
-  // trouve le brouillon du premier. `redirect` reste hors de la transaction (il lève).
+  // trouve le brouillon du premier. Le verrou tient une connexion pendant que `garerPourValidation`
+  // en prend une seconde (risque négligeable : action réservée au super-administrateur). `redirect` reste hors de la transaction (il lève).
   const sortie: { id: string | null; dejaPret: boolean } = { id: null, dejaPret: false };
   try {
     await prisma.$transaction(
