@@ -211,7 +211,10 @@ describe("rendu de l'onglet Prestations", () => {
     }
   });
   it("0 % : pondéré à 0 € HT", () => {
-    expect(rendre(presta({ probabilitePct: 0 }))).toContain("0 € HT");
+    const h = rendre(presta({ montantCents: 450000, probabilitePct: 0 }));
+    expect(h).toMatch(
+      /Montant pondéré<\/dt><dd><span>0[\s\u00a0\u202f]€[\s\u00a0\u202f]HT<\/span>/,
+    );
   });
   it("champs du formulaire existant, zones tactiles et thème clair", () => {
     const h = rendre(presta());

@@ -61,7 +61,11 @@ export function CarteNotes(props: {
                 ) : null}
               </div>
               <p className="mt-[var(--space-admin-1)] text-[length:var(--text-admin-sm)] whitespace-pre-wrap">
-                {n.texte ?? "Texte illisible (déchiffrement impossible)."}
+                {n.texte === null
+                  ? "Texte illisible (déchiffrement impossible)."
+                  : n.texte === ""
+                    ? "Texte effacé."
+                    : n.texte}
               </p>
               {peutEcrire ? (
                 <form action={basculerEpingleFormAction} className="mt-[var(--space-admin-2)]">

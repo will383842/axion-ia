@@ -103,7 +103,16 @@ export async function enregistrerSuiviPrestationAction(fd: FormData): Promise<vo
           targetType: "projet",
           targetId: projetId,
           changes: {
-            avant: avant ?? null,
+            avant:
+              avant === null
+                ? null
+                : {
+                    ...avant,
+                    cloturePrevueLe:
+                      avant.cloturePrevueLe instanceof Date
+                        ? avant.cloturePrevueLe.toISOString().slice(0, 10)
+                        : avant.cloturePrevueLe,
+                  },
             apres: {
               type: donnees.type,
               etapeForcee: donnees.etapeForcee,

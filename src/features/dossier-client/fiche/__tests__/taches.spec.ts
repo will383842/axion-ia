@@ -1,5 +1,5 @@
 // @vitest-environment node
-import { beforeEach, describe, expect, it, vi } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 const h = vi.hoisted(() => ({ journal: vi.fn(async () => undefined) }));
 vi.mock("@/features/dossier-client/message-affichable", () => ({
@@ -43,6 +43,10 @@ beforeEach(() => {
   vi.setSystemTime(new Date("2026-10-30T12:00:00Z"));
 });
 
+afterEach(() => {
+  vi.useRealTimers();
+});
+
 describe("creerTache", () => {
   it("crée une tâche manuelle, responsable « Will » par défaut, et la trace", async () => {
     const db = base();
@@ -67,7 +71,7 @@ describe("creerTache", () => {
       "Cette personne n'est pas sur cette fiche.",
     );
     expect(db.clientContact.findFirst).toHaveBeenCalledWith(
-      expect.objectContaining({ where: { id: AUTRE, clientId: C } }),
+      expect.objectContaining({ where: { id: AUTRE, clientId: C, statut: "actif" } }),
     );
     expect(db.clientTache.create).not.toHaveBeenCalled();
   });
@@ -131,8 +135,13 @@ describe("marquerFaite et rouvrir", () => {
 
   it("aucun delete n'existe dans le service", async () => {
     const { readFileSync } = await import("node:fs");
-    const src = readFileSync("src/features/dossier-client/fiche/taches.ts", "utf8");
-    expect(src).not.toMatch(/\.delete(Many)?\(/);
+    for (const f of [
+      "src/features/dossier-client/fiche/taches.ts",
+      "src/features/dossier-client/fiche/actions-taches.ts",
+      "src/components/admin/dossier-client/fiche/ResumeTaches.tsx",
+    ]) {
+      expect(readFileSync(f, "utf8"), f).not.toMatch(/\.delete(Many)?\(/);
+    }
   });
 });
 

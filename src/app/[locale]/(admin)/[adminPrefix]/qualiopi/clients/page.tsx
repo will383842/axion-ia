@@ -152,9 +152,9 @@ export default async function QualiopiClientsPage({ params, searchParams }: Page
       {recherche !== "" ? (
         <p className="mb-[var(--space-admin-4)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
           {clients.length === 0
-            ? `Aucun client ne correspond à « ${recherche} »${
+            ? `Aucun client ${voirArchives ? "archivé" : "actif"} ne correspond à « ${recherche} »${
                 !voirArchives && partage.archivees.length > 0
-                  ? `, dont ${partage.archivees.length} fiche${partage.archivees.length > 1 ? "s" : ""} archivée${partage.archivees.length > 1 ? "s" : ""}`
+                  ? ` ; ${partage.archivees.length} fiche${partage.archivees.length > 1 ? "s archivées correspondent" : " archivée correspond"}`
                   : ""
               }. Vérifiez l'orthographe avant d'en créer un nouveau : un doublon coûte plus cher qu'une recherche ratée.`
             : `${clients.length} résultat${clients.length > 1 ? "s" : ""} pour « ${recherche} ».`}
@@ -211,18 +211,32 @@ export default async function QualiopiClientsPage({ params, searchParams }: Page
           value={compte.length}
           icon={Hash}
         />
-        <AdminStatCard label="Prospects" value={prospects} icon={Users} />
-        <AdminStatCard label="Devis envoyés" value={devisEnvoyes} tone="warning" icon={FileText} />
-        <AdminStatCard label="Clients actifs" value={actifs} tone="success" icon={CheckCircle2} />
+        <AdminStatCard
+          label={voirArchives ? "Prospects (hors archivées)" : "Prospects"}
+          value={prospects}
+          icon={Users}
+        />
+        <AdminStatCard
+          label={voirArchives ? "Devis envoyés (hors archivées)" : "Devis envoyés"}
+          value={devisEnvoyes}
+          tone="warning"
+          icon={FileText}
+        />
+        <AdminStatCard
+          label={voirArchives ? "Clients actifs (hors archivées)" : "Clients actifs"}
+          value={actifs}
+          tone="success"
+          icon={CheckCircle2}
+        />
       </div>
 
       {/* Note : création d'un client via createClientAction (src/server/actions/qualiopi/clients.ts).
           L'IDCC (déclencheur du barème OPCO par dossier) et la taille sont éditables par ligne
           via ClientBrancheForm → updateClientAction ; la saisie complète (enveloppe, adhérent,
           offre Mobilités, versement volontaire) est dans le bloc « Branche et OPCO » de la fiche. */}
-      {clients.length === 0 && tous.length > 0 ? null : clients.length === 0 && voirArchives ? (
+      {voirArchives && clients.length === 0 ? (
         <AdminEmptyState title="Aucune fiche archivée" />
-      ) : clients.length === 0 ? (
+      ) : clients.length === 0 && tous.length > 0 ? null : clients.length === 0 ? (
         <AdminEmptyState
           title="Aucun client enregistré"
           description="Un client est nécessaire avant de créer une session ou d'émettre un devis."

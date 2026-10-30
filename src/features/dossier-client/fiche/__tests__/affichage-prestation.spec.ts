@@ -1,6 +1,6 @@
 /** Lot B8 : frise des quatre étapes et libellés. */
 
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 
 import {
   estEtapeFinale,
@@ -43,9 +43,24 @@ describe("libellés", () => {
     expect(libelleChances(null)).toBe("non estimées");
   });
   it("clôture, jour de Paris sans décalage", () => {
-    expect(libelleCloture("2026-12-15")).toBe("15 déc.");
-    expect(libelleCloture("2026-01-01")).toBe("1 janv.");
-    expect(libelleCloture(null)).toBe("non estimée");
+    vi.useFakeTimers({ toFake: ["Date"] });
+    vi.setSystemTime(new Date("2026-10-30T10:00:00.000Z"));
+    try {
+      expect(libelleCloture("2026-12-15")).toBe("15 déc.");
+      expect(libelleCloture("2026-01-01")).toBe("1 janv.");
+      expect(libelleCloture(null)).toBe("non estimée");
+    } finally {
+      vi.useRealTimers();
+    }
+  });
+  it("clôture : l'année s'ajoute quand elle diffère de l'année en cours", () => {
+    vi.useFakeTimers({ toFake: ["Date"] });
+    vi.setSystemTime(new Date("2026-10-30T10:00:00.000Z"));
+    try {
+      expect(libelleCloture("2027-01-15")).toBe("15 janv. 2027");
+    } finally {
+      vi.useRealTimers();
+    }
   });
   it("étapes finales", () => {
     expect(estEtapeFinale("terminee")).toBe(true);

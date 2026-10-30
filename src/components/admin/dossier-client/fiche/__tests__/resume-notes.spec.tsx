@@ -41,8 +41,10 @@ describe("resumeNotes", () => {
 
   it("lecture en échec : le rendu annonce « Lecture impossible »", async () => {
     h.notesFindMany.mockRejectedValue(new Error("panne"));
-    vi.spyOn(console, "error").mockImplementation(() => undefined);
+    const espion = vi.spyOn(console, "error").mockImplementation(() => undefined);
     const el = await resumeNotes(ctx(true));
     expect(renderToStaticMarkup(el as React.ReactElement)).toMatch(/lecture impossible/i);
+    expect(espion).toHaveBeenCalledWith("[notes] lecture en échec", "Error");
+    espion.mockRestore();
   });
 });

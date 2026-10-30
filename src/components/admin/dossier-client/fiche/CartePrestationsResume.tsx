@@ -57,14 +57,17 @@ export function CartePrestationsResume({
                   "Montant non noté"
                 ) : (
                   <>
-                    {htEtTtc(p.montantCents).ht}{" "}
-                    <span className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
-                      ({htEtTtc(p.montantCents).ttc})
+                    {htEtTtc(p.montantCents).ht}
+                    <span className="block text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
+                      {htEtTtc(p.montantCents).ttc}
                     </span>
                   </>
                 )}
                 {" · "}Chances de signer : {libelleChances(p.probabilitePct)}
-                {" · "}Clôture prévue le {libelleCloture(p.cloturePrevueLe)}
+                {" · "}
+                {p.cloturePrevueLe === null
+                  ? "Clôture prévue : non estimée"
+                  : `Clôture prévue le ${libelleCloture(p.cloturePrevueLe)}`}
               </p>
             </li>
           ))}
