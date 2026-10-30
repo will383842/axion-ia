@@ -145,6 +145,7 @@ describe("enregistrerSuiviPrestationAction", () => {
       type: "audit",
       etapeForcee: null,
       montantCents: 1000,
+      cloturePrevueLe: new Date("2026-12-15T00:00:00.000Z"),
     });
     await issue(formulaire({ type: "formation", etape: "accepte", montant: "20" }));
     expect(bd.$transaction).toHaveBeenCalledTimes(1);
@@ -155,7 +156,12 @@ describe("enregistrerSuiviPrestationAction", () => {
         targetType: "projet",
         targetId: PID,
         changes: {
-          avant: { type: "audit", etapeForcee: null, montantCents: 1000 },
+          avant: {
+            type: "audit",
+            etapeForcee: null,
+            montantCents: 1000,
+            cloturePrevueLe: "2026-12-15",
+          },
           apres: { type: "formation", etapeForcee: "accepte", montantCents: 2000 },
         },
       },

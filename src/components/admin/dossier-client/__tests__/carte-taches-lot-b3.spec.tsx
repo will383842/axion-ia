@@ -1,6 +1,6 @@
 // @vitest-environment node
 import { renderToStaticMarkup } from "react-dom/server";
-import { describe, expect, it, vi } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
 
 vi.mock("@/features/dossier-client/fiche/actions-taches", () => ({
   ajouterTacheFormAction: vi.fn(),
@@ -47,10 +47,14 @@ const rendre = (jour: string, o: Partial<Parameters<typeof CarteTaches>[0]> = {}
     />,
   );
 
+afterEach(() => {
+  vi.useRealTimers();
+});
+
 describe("carte Tâches", () => {
   it("dit En retard / Aujourd'hui / À venir à minuit Paris (horloge figée)", () => {
     vi.useFakeTimers({ toFake: ["Date"] });
-    // 30/10 22 h 00 UTC = 31/10 00 h 00 à Paris (heure d'été finie le 25/10 : UTC+1).
+    // 30/10 23 h 00 UTC = 31/10 00 h 00 à Paris (heure d'été finie le 25/10 : UTC+1).
     vi.setSystemTime(new Date("2026-10-30T23:00:00Z"));
     const html = rendre(jourDeParis(new Date()));
     expect(html).toContain("En retard");

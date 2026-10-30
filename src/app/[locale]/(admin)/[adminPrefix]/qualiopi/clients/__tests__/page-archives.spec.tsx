@@ -38,7 +38,9 @@ describe("liste des clients : fiches archivées", () => {
     h.tous = [fiche];
     h.partage = { actives: [], archivees: [fiche], lectureImpossible: false };
     const html = await rendre({ q: "Acme" });
-    expect(html).toContain("dont 1 fiche archivée");
+    expect(html).toContain(
+      "Aucune fiche active ne correspond à « Acme » ; 1 fiche archivée correspond.",
+    );
     expect(html).toContain("Voir les archivées");
     expect(html).not.toContain("Aucun client enregistré");
   });
@@ -58,5 +60,29 @@ describe("liste des clients : fiches archivées", () => {
     h.tous = [fiche];
     h.partage = { actives: [], archivees: [fiche], lectureImpossible: false };
     expect(await rendre({ archives: "1" })).toContain("Total (hors archivées)");
+  });
+
+  it("la vue des archives libelle aussi les cartes de statut « hors archivées »", async () => {
+    h.tous = [fiche];
+    h.partage = { actives: [], archivees: [fiche], lectureImpossible: false };
+    const html = await rendre({ archives: "1" });
+    for (const l of ["Prospects", "Devis envoyés", "Clients actifs"]) {
+      expect(html).toContain(`${l} (hors archivées)`);
+    }
+  });
+
+  it("archives illisibles : « lecture impossible », jamais « Aucune fiche archivée »", async () => {
+    h.tous = [fiche];
+    h.partage = { actives: [fiche], archivees: [], lectureImpossible: true };
+    const html = await rendre({ archives: "1" });
+    expect(html).toContain("lecture impossible");
+    expect(html).not.toContain("Aucune fiche archivée");
+  });
+
+  it("vue des archives sans aucune archivée mais avec des clients : « Aucune fiche archivée »", async () => {
+    h.tous = [fiche];
+    h.partage = { actives: [fiche], archivees: [], lectureImpossible: false };
+    const html = await rendre({ archives: "1" });
+    expect(html).toContain("Aucune fiche archivée");
   });
 });

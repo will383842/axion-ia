@@ -68,4 +68,18 @@ describe("CarteNotes", () => {
     );
     expect(html).toContain("Texte illisible");
   });
+
+  it("une note vidée par effacement RGPD affiche « Texte effacé »", () => {
+    const html = renderToStaticMarkup(
+      <CarteNotes
+        clientId={ID}
+        notes={[note("a", false, "")]}
+        total={1}
+        prestations={[]}
+        peutEcrire={false}
+      />,
+    );
+    expect(html).toContain("Texte effacé.");
+    expect(html).not.toContain("Texte illisible");
+  });
 });

@@ -54,7 +54,7 @@ beforeEach(() => {
 });
 
 describe("ProfilDeLaFiche : gardes", () => {
-  it.each([[undefined], ["editor"], ["lecteur"]])(
+  it.each([[undefined], ["editor"], ["reader"]])(
     "rôle %s : rend null sans rien lire",
     async (role) => {
       h.auth.mockResolvedValue(role === undefined ? null : { user: { role } });

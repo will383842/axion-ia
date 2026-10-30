@@ -38,12 +38,19 @@ export const estEtapeFinale = (etape: EtapePrestation): boolean =>
 export const libelleChances = (pct: number | null): string =>
   pct === null ? "non estimées" : `${pct} %`;
 
-/** « 15 déc. » (jour réel de la saisie, fuseau de Paris) ; `null` : « non estimée ». */
+/**
+ * « 15 déc. » (jour réel de la saisie, fuseau de Paris), avec l'année quand elle diffère de
+ * l'année en cours (« 15 janv. 2027 ») ; `null` : « non estimée ».
+ */
 export function libelleCloture(jour: string | null): string {
   if (jour === null) return "non estimée";
+  const date = new Date(`${jour}T12:00:00.000Z`);
+  const annee = (d: Date): string =>
+    new Intl.DateTimeFormat("fr-FR", { year: "numeric", timeZone: "Europe/Paris" }).format(d);
   return new Intl.DateTimeFormat("fr-FR", {
     day: "numeric",
     month: "short",
+    ...(annee(date) === annee(new Date()) ? {} : { year: "numeric" as const }),
     timeZone: "Europe/Paris",
-  }).format(new Date(`${jour}T12:00:00.000Z`));
+  }).format(date);
 }

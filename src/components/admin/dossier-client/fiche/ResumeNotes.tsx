@@ -3,6 +3,7 @@
  * Notes datées et chiffrées dans l'onglet Résumé. Rien n'est lu hors `voitEchanges`.
  */
 
+import { AdminBloc } from "@/components/admin/ui/AdminBloc";
 import { prisma } from "@/lib/prisma";
 import { TEXTE_LECTURE_IMPOSSIBLE } from "@/features/dossier-client/bandeau-ou-en-est";
 import { lireNotes, type BaseNotes } from "@/features/dossier-client/fiche/notes";
@@ -14,10 +15,11 @@ export async function resumeNotes(ctx: ContexteFiche): Promise<React.ReactElemen
   const lecture = await lireNotes(prisma as unknown as BaseNotes, ctx.clientId);
   if (!lecture.ok) {
     return (
-      <section data-notes-illisibles>
-        <h2>Notes</h2>
-        <p>{`Notes : ${TEXTE_LECTURE_IMPOSSIBLE}`}</p>
-      </section>
+      <AdminBloc teinte="gris" niveau={2} titre="Notes">
+        <p role="status" data-notes-illisibles>
+          Notes : {TEXTE_LECTURE_IMPOSSIBLE}. Rechargez la page.
+        </p>
+      </AdminBloc>
     );
   }
   let prestations: PrestationChoisissable[] = [];

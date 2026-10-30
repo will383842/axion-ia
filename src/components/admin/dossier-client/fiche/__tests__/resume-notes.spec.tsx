@@ -1,5 +1,5 @@
 import { renderToStaticMarkup } from "react-dom/server";
-import { beforeEach, describe, expect, it, vi } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 const h = vi.hoisted(() => ({
   notesFindMany: vi.fn(),
@@ -32,6 +32,8 @@ beforeEach(() => {
   h.projetFindMany.mockReset();
 });
 
+afterEach(() => vi.restoreAllMocks());
+
 describe("resumeNotes", () => {
   it("sans droit de voir les échanges : rien n'est rendu ni lu", async () => {
     expect(await resumeNotes(ctx(false))).toBeNull();
@@ -41,8 +43,9 @@ describe("resumeNotes", () => {
 
   it("lecture en échec : le rendu annonce « Lecture impossible »", async () => {
     h.notesFindMany.mockRejectedValue(new Error("panne"));
-    vi.spyOn(console, "error").mockImplementation(() => undefined);
+    const espion = vi.spyOn(console, "error").mockImplementation(() => undefined);
     const el = await resumeNotes(ctx(true));
     expect(renderToStaticMarkup(el as React.ReactElement)).toMatch(/lecture impossible/i);
+    expect(espion).toHaveBeenCalledWith("[notes] lecture en échec", "Error");
   });
 });

@@ -113,6 +113,13 @@ describe("actions du profil", () => {
     expect(h.ajouter).not.toHaveBeenCalled();
   });
 
+  it("ajouter une étiquette : un clientId qui n'est pas un UUID est refusé, la couche données n'est pas appelée", async () => {
+    h.exiger.mockResolvedValue({ userId: "u", role: "admin" });
+    const r = await ajouterEtiquetteAction(ETAT, form({ clientId: "pas-un-uuid", libelle: "VIP" }));
+    expect(r.erreur).not.toBeNull();
+    expect(h.ajouter).not.toHaveBeenCalled();
+  });
+
   it("retirer une étiquette sans accès est refusé", async () => {
     h.exiger.mockRejectedValue(new Error("Accès refusé"));
     const r = await retirerEtiquetteAction(ETAT, form({ clientId: ID, etiquetteId: ID }));

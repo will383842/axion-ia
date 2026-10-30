@@ -137,7 +137,7 @@ export async function creerTache(
   }
   if (p.contactId !== null) {
     const c = await db.clientContact.findFirst({
-      where: { id: p.contactId, clientId: p.clientId },
+      where: { id: p.contactId, clientId: p.clientId, statut: "actif" },
       select: { id: true },
     });
     if (c === null) throw new ErreurTache("Cette personne n'est pas sur cette fiche.");

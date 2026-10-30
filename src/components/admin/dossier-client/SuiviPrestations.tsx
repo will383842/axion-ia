@@ -205,7 +205,7 @@ export function SuiviPrestations({
                         className={inputCls}
                       />
                     </label>
-                    <button type="submit" className="admin-button-secondary min-h-11">
+                    <button type="submit" className="admin-button-secondary">
                       Enregistrer
                     </button>
                   </form>
