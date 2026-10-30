@@ -698,6 +698,13 @@ export const CATALOGUE: Readonly<Record<EmailJobName, FicheEmail>> = {
     destinataire: "la personne à qui Will a envoyé le questionnaire",
     source: "features/questionnaire-preaudit/suivi.ts",
   },
+  "questionnaire-relance-equipe": {
+    categorie: "rendez-vous",
+    quand:
+      "Quand Will clique « Demander au dirigeant de relancer son équipe » sur la fiche client : un brouillon garé « à valider », relu par Will avant tout envoi — jamais automatique",
+    destinataire: "le dirigeant seul (jamais un collaborateur)",
+    source: "features/dossier-client/fiche/actions-relance-equipe.ts",
+  },
   "questionnaire-avant-audit-confirmation": {
     categorie: "rendez-vous",
     quand:

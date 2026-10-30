@@ -222,6 +222,24 @@ function identiteDuBrouillon(b: EntreeBrouillon): Identite | null {
 
 const nomComplet = (i: Identite): string => [i.prenom, i.nom].filter((x) => x !== "").join(" ");
 
+/**
+ * Un collaborateur (de la liste ou hors liste) est-il ATTENDU ? Règle unique du décompte, reprise
+ * telle quelle par « le questionnaire en bref » (lot B10) pour dire qui manque.
+ * Ne retire PAS les lignes `ecartee` : l'appelant s'en charge (effacement demandé).
+ */
+export function collaborateurAttendu(l: LignePersonne): boolean {
+  if (l.role === "collaborateur" && l.sourceNom === "equipe") {
+    return l.etat !== "pas_de_lien_prevu" && l.etat !== "lien_sans_code";
+  }
+  // Personne hors liste : attendue seulement si elle a répondu ou commencé.
+  return l.etat === "recu" || l.etat === "ecartee" || l.etat === "en_cours";
+}
+
+/** Le référent n'est attendu que s'il a commencé : le dirigeant peut remplir la partie technique lui-même. */
+export function referentActif(referents: ReadonlyArray<LignePersonne>): boolean {
+  return referents.some((l) => l.etat === "recu" || l.etat === "en_cours" || l.etat === "ouvert");
+}
+
 /** Le code d'une réponse : la colonne, sinon celui que la charge porte. */
 function codeDeLaReponse(r: EntreeReponse): string | null {
   if (r.membreColonne !== null && r.membreColonne !== "") return r.membreColonne;
@@ -663,13 +681,7 @@ export function suivreParPersonne(e: EntreePersonnes): SuiviParPersonne {
 
   // 6. Comptes.
   const toutesCollab = [...lignesCollab, ...horsListe];
-  const compte = (l: LignePersonne): boolean => {
-    if (l.role === "collaborateur" && l.sourceNom === "equipe") {
-      return l.etat !== "pas_de_lien_prevu" && l.etat !== "lien_sans_code";
-    }
-    // Personne hors liste : attendue seulement si elle a répondu ou commencé.
-    return l.etat === "recu" || l.etat === "ecartee" || l.etat === "en_cours";
-  };
+  const compte = collaborateurAttendu;
   // Une réponse mise de côté (effacement demandé) ne reste pas « manquante » à vie.
   const attendusLignes = toutesCollab.filter((l) => l.etat !== "ecartee" && compte(l));
   const recus = attendusLignes.filter((l) => l.etat === "recu").length;
@@ -689,11 +701,9 @@ export function suivreParPersonne(e: EntreePersonnes): SuiviParPersonne {
   };
   const referentRecu = lignesReferent.some((l) => l.etat === "recu");
   // Le référent n'est attendu que s'il a commencé : le dirigeant peut remplir la partie technique lui-même.
-  const referentActif = lignesReferent.some(
-    (l) => l.etat === "recu" || l.etat === "en_cours" || l.etat === "ouvert",
-  );
+  const referentActifOui = referentActif(lignesReferent);
   const total: ComptesTotal = {
-    attendus: 1 + collab.attendus + (referentActif ? 1 : 0),
+    attendus: 1 + collab.attendus + (referentActifOui ? 1 : 0),
     recus: (ligneDirigeant.etat === "recu" ? 1 : 0) + recus + (referentRecu ? 1 : 0),
   };
 

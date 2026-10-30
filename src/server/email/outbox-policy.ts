@@ -62,6 +62,9 @@ export const EMAILS_A_VALIDER_PAR_DEFAUT: readonly string[] = [
   "facture-envoi",
   // Lot A8c — préparé seul à l'encaissement : il part au client, donc relu.
   "facture-pieces-remboursement-opco",
+  // Lot B10 — brouillon au dirigeant, toujours relu par Will. L'approbation passe par
+  // `bypassValidation` (email-outbox.ts) : elle ne re-gare pas.
+  "questionnaire-relance-equipe",
 ] as const;
 
 /**
@@ -224,6 +227,8 @@ export const LIBELLE_TEMPLATE_EMAIL: Record<string, string> = {
   "questionnaire-avant-audit": "Questionnaire de pré-audit envoyé par Will",
   "questionnaire-avant-audit-relance": "Relance du questionnaire de pré-audit (J+2, J+5, J+10)",
   "questionnaire-avant-audit-confirmation": "Questionnaire de pré-audit : réponses bien arrivées",
+  "questionnaire-relance-equipe":
+    "Questionnaire de pré-audit : demande au dirigeant de relancer son équipe",
   "apporteur-declaration-recue": "Alerte interne : entreprise déclarée par un apporteur",
   // Lot OPCO A8 — volontairement HORS des deux listes : défaut « auto » (envoi
   // automatique demandé par Will le 04/10), mais une règle « validation »,

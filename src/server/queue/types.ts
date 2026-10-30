@@ -225,6 +225,8 @@ export type EmailJobName =
   // réception, enfilées UNIQUEMENT par le balayage du worker (`questionnaire-preaudit/suivi.ts`).
   | "questionnaire-avant-audit-relance"
   | "questionnaire-avant-audit-confirmation"
+  // Lot B10 (2026-10-29) — brouillon au dirigeant, garé « à valider » depuis la fiche client.
+  | "questionnaire-relance-equipe"
   // QNC L03 (2026-10-16) — recueil du besoin, temps 1 : questionnaire envoyé à
   // l'ENTREPRISE dès la demande, puis relancé (J+3, J+6 au plus).
   | "recueil-besoin"

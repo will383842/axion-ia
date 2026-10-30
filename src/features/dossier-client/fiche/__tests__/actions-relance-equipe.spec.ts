@@ -1,0 +1,273 @@
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+
+const m = vi.hoisted(() => ({
+  auth: vi.fn(),
+  garer: vi.fn(),
+  qFind: vi.fn(),
+  outboxFind: vi.fn(),
+  verrou: vi.fn(),
+  ordre: [] as string[],
+  suivi: vi.fn(),
+  chaine: { p: Promise.resolve() as Promise<void> },
+}));
+
+vi.mock("next/navigation", () => ({
+  redirect: (url: string) => {
+    throw new Error(`REDIRECT:${url}`);
+  },
+}));
+vi.mock("@/auth", () => ({ auth: m.auth }));
+vi.mock("@/lib/chiffrer-parole", () => ({
+  dechiffrerParole: (v: string) => v.replace("enc:", ""),
+}));
+vi.mock("@/lib/prisma", () => ({
+  prisma: {
+    questionnaireAvantAudit: { findFirst: m.qFind },
+    emailOutbox: { findFirst: m.outboxFind },
+    // Transaction « sérialisée » comme le verrou consultatif : un appel à la fois.
+    $transaction: (fn: (tx: unknown) => Promise<void>) => {
+      const course = m.chaine.p.then(() =>
+        fn({ $executeRaw: m.verrou, emailOutbox: { findFirst: m.outboxFind } }),
+      );
+      m.chaine.p = course.then(
+        () => undefined,
+        () => undefined,
+      );
+      return course;
+    },
+  },
+}));
+vi.mock("@/features/questionnaire-preaudit/de-la-fiche", () => ({
+  fichesCouvertes: async (id: string) => [id],
+  questionnairesDesFiches: (ids: string[]) => ({ clientId: { in: ids } }),
+}));
+vi.mock("@/features/questionnaire-preaudit/suivi-par-personne", () => ({
+  lireSuiviParPersonne: m.suivi,
+}));
+vi.mock("@/server/email/outbox-service", () => ({ garerPourValidation: m.garer }));
+
+import { demanderAuDirigeantDeRelancerSonEquipeAction as agir } from "../actions-relance-equipe";
+import { suiviReel } from "./suivi-reel.fixture";
+
+const CLIENT = "11111111-1111-4111-8111-111111111111";
+const QUEST = "22222222-2222-4222-8222-222222222222";
+const fd = () => {
+  const f = new FormData();
+  f.set("clientId", CLIENT);
+  f.set("questionnaireId", QUEST);
+  return f;
+};
+const ligne = (nom: string, etat: string) => ({
+  nom,
+  etat,
+  role: "collaborateur",
+  sourceNom: "equipe",
+});
+const suiviAvecManquants = () => ({
+  get: () => ({
+    suivi: {
+      dirigeant: { nom: "Anne Durand", etat: "recu", role: "dirigeant", sourceNom: "equipe" },
+      collaborateurs: [ligne("Paul Martin", "pas_de_nouvelles"), ligne("Léa Roux", "recu")],
+      referents: [],
+      total: { attendus: 3, recus: 2 },
+    },
+  }),
+});
+
+async function lancer(): Promise<string> {
+  try {
+    await agir(fd());
+  } catch (e) {
+    return decodeURIComponent((e as Error).message);
+  }
+  return "";
+}
+
+// Horloge figée : l'action compare l'expiration (5 nov. 10 h UTC) à `new Date()`.
+beforeEach(() => {
+  vi.resetAllMocks();
+  vi.useFakeTimers({ toFake: ["Date"] });
+  vi.setSystemTime(new Date("2026-11-01T10:00:00Z"));
+  m.ordre.length = 0;
+  m.verrou.mockImplementation(async () => {
+    m.ordre.push("verrou");
+    return 1;
+  });
+  m.chaine.p = Promise.resolve();
+  m.auth.mockResolvedValue({ user: { id: "u1", role: "super_admin" } });
+  m.qFind.mockResolvedValue({
+    id: QUEST,
+    destinataire: "enc:Anne@Client.fr",
+    envoyeLe: new Date(),
+    closLe: null,
+    expireLe: new Date("2026-11-05T10:00:00Z"),
+  });
+  m.outboxFind.mockResolvedValue(null);
+  m.suivi.mockResolvedValue(suiviAvecManquants());
+  m.garer.mockResolvedValue("outbox-1");
+});
+
+afterEach(() => {
+  vi.useRealTimers();
+});
+
+const NOW = "2026-11-05T11:00:00Z";
+
+describe("demander au dirigeant de relancer son équipe", () => {
+  it("gare un brouillon au dirigeant SEUL, sans réponse, et n'envoie rien", async () => {
+    const sortie = await lancer();
+    expect(sortie).toContain("Message prêt");
+    expect(m.garer).toHaveBeenCalledTimes(1);
+    const arg = m.garer.mock.calls[0]![0];
+    expect(arg.recipient).toBe("anne@client.fr");
+    expect(arg.template).toBe("questionnaire-relance-equipe");
+    expect(arg.entityType).toBe("QuestionnaireAvantAudit");
+    expect(arg.jobId).toMatch(/^relance-equipe:2222.*:\d{4}-\d{2}-\d{2}$/);
+    expect(arg.entityId).toBe(QUEST);
+    expect(arg.payload).toEqual({
+      prenom: "Anne",
+      manquants: ["Paul"],
+      auditCourt: "5 novembre",
+    });
+    // Le brouillon n'a aucune adresse de collaborateur ni lien.
+    expect(JSON.stringify(arg)).not.toMatch(/\blien\b|http/);
+  });
+
+  it("refuse un doublon déjà à valider", async () => {
+    m.outboxFind.mockResolvedValue({ id: "deja" });
+    expect(await lancer()).toContain("déjà prêt");
+    expect(m.garer).not.toHaveBeenCalled();
+  });
+
+  it("deux appels simultanés : un seul brouillon a_valider", async () => {
+    const poses: string[] = [];
+    m.outboxFind.mockImplementation(async () => {
+      m.ordre.push("lecture");
+      return poses.length > 0 ? { id: poses[0] } : null;
+    });
+    m.garer.mockImplementation(async () => {
+      await new Promise((r) => setTimeout(r, 10));
+      poses.push("outbox-1");
+      return "outbox-1";
+    });
+    const issues = await Promise.all([lancer(), lancer()]);
+    // Le verrou est réellement pris : une fois par appel, avant la lecture du brouillon existant.
+    expect(m.verrou).toHaveBeenCalledTimes(2);
+    const gabarit = m.verrou.mock.calls[0]![0] as readonly string[];
+    expect(gabarit.join("")).toContain("pg_advisory_xact_lock");
+    expect(m.ordre).toEqual(["verrou", "lecture", "verrou", "lecture"]);
+    expect(m.garer).toHaveBeenCalledTimes(1);
+    expect(poses).toHaveLength(1);
+    expect(issues.filter((x) => x.includes("Message prêt"))).toHaveLength(1);
+    expect(issues.filter((x) => x.includes("déjà prêt"))).toHaveLength(1);
+  });
+
+  it("refuse un rôle qui n'est pas super-administrateur", async () => {
+    m.auth.mockResolvedValue({ user: { id: "u2", role: "admin" } });
+    expect(await lancer()).toContain("Réservé au super-administrateur");
+    expect(m.garer).not.toHaveBeenCalled();
+    expect(m.qFind).not.toHaveBeenCalled();
+  });
+
+  it("garerPourValidation null : erreur affichée, rien d'envoyé", async () => {
+    m.garer.mockResolvedValue(null);
+    const sortie = await lancer();
+    expect(sortie).toContain("rien n'a été envoyé");
+    expect(sortie).toContain("erreur=");
+  });
+
+  it("rien à relancer quand tout est arrivé", async () => {
+    m.suivi.mockResolvedValue({
+      get: () => ({
+        suivi: {
+          dirigeant: { nom: "Anne", etat: "recu", role: "dirigeant", sourceNom: "equipe" },
+          collaborateurs: [ligne("Paul", "recu")],
+          referents: [],
+          total: { attendus: 2, recus: 2 },
+        },
+      }),
+    });
+    expect(await lancer()).toContain("rien à relancer");
+    expect(m.garer).not.toHaveBeenCalled();
+  });
+
+  it("vrai suivi, tout reçu + ligne référent vide : rien à relancer, rien garé", async () => {
+    m.suivi.mockResolvedValue({ get: () => ({ suivi: suiviReel({ recus: [0, 1, 2] }) }) });
+    expect(await lancer()).toContain("rien à relancer");
+    expect(m.garer).not.toHaveBeenCalled();
+  });
+
+  it("vrai suivi : une ligne écartée n'est jamais nommée dans le brouillon", async () => {
+    m.suivi.mockResolvedValue({ get: () => ({ suivi: suiviReel({ recus: [0], ecartes: [1] }) }) });
+    await lancer();
+    const arg = m.garer.mock.calls[0]![0];
+    expect(arg.payload.manquants).toEqual(["Chloé"]);
+    expect(JSON.stringify(arg)).not.toContain("Bruno");
+  });
+
+  it("le dirigeant n'est jamais dans la liste du brouillon", async () => {
+    m.suivi.mockResolvedValue({
+      get: () => ({
+        suivi: {
+          dirigeant: {
+            nom: "Anne Durand",
+            etat: "pas_de_nouvelles",
+            role: "dirigeant",
+            sourceNom: "equipe",
+          },
+          collaborateurs: [ligne("Bruno Durand", "pas_de_nouvelles"), ligne("Chloé Petit", "recu")],
+          referents: [],
+          total: { attendus: 3, recus: 1 },
+        },
+      }),
+    });
+    await lancer();
+    const arg = m.garer.mock.calls[0]![0];
+    expect(arg.payload.manquants).toEqual(["Bruno"]);
+    expect(JSON.stringify(arg.payload.manquants)).not.toContain("Anne");
+  });
+
+  it("lien expiré : erreur claire, rien préparé", async () => {
+    m.qFind.mockResolvedValue({
+      id: QUEST,
+      destinataire: "enc:anne@client.fr",
+      envoyeLe: new Date(),
+      closLe: null,
+      expireLe: new Date("2020-01-01T10:00:00Z"),
+    });
+    expect(await lancer()).toContain("Lien expiré : rien n'a été préparé");
+    expect(m.garer).not.toHaveBeenCalled();
+  });
+
+  it("le jour même, avant l'heure d'expiration : accepté", async () => {
+    vi.setSystemTime(new Date("2026-11-05T09:00:00Z"));
+    m.qFind.mockResolvedValue({
+      id: QUEST,
+      destinataire: "enc:anne@client.fr",
+      envoyeLe: new Date("2026-10-01T10:00:00Z"),
+      closLe: null,
+      expireLe: new Date("2026-11-05T10:00:00Z"),
+    });
+    expect(await lancer()).toContain("Message prêt");
+    expect(m.garer).toHaveBeenCalledTimes(1);
+  });
+
+  it("le jour même, une heure après l'expiration : refusé", async () => {
+    vi.setSystemTime(new Date(NOW));
+    m.qFind.mockResolvedValue({
+      id: QUEST,
+      destinataire: "enc:anne@client.fr",
+      envoyeLe: new Date("2026-10-01T10:00:00Z"),
+      closLe: null,
+      expireLe: new Date("2026-11-05T10:00:00Z"),
+    });
+    expect(await lancer()).toContain("Lien expiré : rien n'a été préparé");
+    expect(m.garer).not.toHaveBeenCalled();
+  });
+
+  it("n'importe aucun moyen d'envoi direct", async () => {
+    const { readFileSync } = await import("node:fs");
+    const src = readFileSync("src/features/dossier-client/fiche/actions-relance-equipe.ts", "utf8");
+    expect(src).not.toMatch(/enqueueEmail\(|sendMail|nodemailer|resend|queues"/i);
+  });
+});

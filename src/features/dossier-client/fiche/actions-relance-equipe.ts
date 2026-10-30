@@ -1,0 +1,187 @@
+/**
+ * Action serveur du lot B10 : « Demander au dirigeant de relancer son équipe ».
+ *
+ * Elle crée un BROUILLON d'e-mail AU DIRIGEANT SEUL, garé « à valider » (`garerPourValidation`) :
+ * Will le relit et le valide dans la boîte des e-mails. RIEN n'est envoyé ici, jamais : si le
+ * garage échoue (`null`), on AFFICHE une erreur, on n'envoie pas « normalement ». Le brouillon ne
+ * porte aucune réponse (on a seulement COMPTÉ) et aucun lien de collaborateur.
+ *
+ * (Le gabarit n'est jamais passé à `enqueueEmail` ici : c'est l'approbation de Will, dans la boîte,
+ * qui le met en file.)
+ *
+ * Le rôle est revérifié ici (super-administrateur, comme l'export du questionnaire) : masquer le
+ * bouton n'est pas interdire. Rien n'est supprimé.
+ *
+ * ⚠️ Module `"use server"` : il n'exporte QUE des fonctions asynchrones.
+ */
+
+"use server";
+
+import { redirect } from "next/navigation";
+import { z } from "zod";
+
+import { auth } from "@/auth";
+import { adminPath } from "@/lib/admin-path";
+import { dechiffrerParole } from "@/lib/chiffrer-parole";
+import { prisma } from "@/lib/prisma";
+import { avecMessageDeRetour } from "@/features/dossier-client/message-de-retour";
+import {
+  fichesCouvertes,
+  questionnairesDesFiches,
+} from "@/features/questionnaire-preaudit/de-la-fiche";
+import { lireSuiviParPersonne } from "@/features/questionnaire-preaudit/suivi-par-personne";
+import { garerPourValidation } from "@/server/email/outbox-service";
+import { entreeDepuisSuivi, estComplet, prenomDe } from "./questionnaire-en-bref";
+
+const uuid = z.string().uuid();
+
+const TEMPLATE = "questionnaire-relance-equipe";
+// Valeur de `entityType` partagée avec envoyer.ts, suivi.ts, serveur.ts, rattachement-client.ts et
+// rgpd-dossier-client.ts. (Écart au cahier des charges, qui disait « questionnaire_preaudit ».)
+const TYPE_ENTITE = "QuestionnaireAvantAudit";
+
+/** Le jour de Paris (AAAA-MM-JJ) : sert à la clé anti-double-clic. */
+const jourDeParis = (d: Date): string =>
+  new Intl.DateTimeFormat("sv-SE", { timeZone: "Europe/Paris" }).format(d);
+
+const champ = (fd: FormData, cle: string): string => {
+  const v = fd.get(cle);
+  return typeof v === "string" ? v.trim().toLowerCase() : "";
+};
+
+interface Prepare {
+  readonly adresse: string;
+  readonly prenomDirigeant: string | null;
+  readonly manquants: string[];
+  readonly auditCourt: string;
+}
+
+/** Lit ce qu'il faut au brouillon, ou dit pourquoi on ne le prépare pas. Aucune écriture. */
+async function preparer(
+  clientId: string,
+  questionnaireId: string,
+): Promise<Prepare | { readonly erreur: string }> {
+  const illisible = { erreur: "Lecture impossible : aucun message préparé." } as const;
+  try {
+    const q = await prisma.questionnaireAvantAudit.findFirst({
+      where: { id: questionnaireId, ...questionnairesDesFiches(await fichesCouvertes(clientId)) },
+      select: { id: true, destinataire: true, envoyeLe: true, closLe: true, expireLe: true },
+    });
+    if (q === null) return { erreur: "Questionnaire introuvable sur cette fiche." };
+    if (q.envoyeLe === null) return { erreur: "Ce questionnaire n'est pas encore envoyé." };
+    if (q.closLe !== null) return { erreur: "Ce questionnaire est clos." };
+    // À l'heure près, comme `accepteDesReponses` (questionnaire-preaudit/serveur.ts).
+    if (q.expireLe !== null && q.expireLe.getTime() <= new Date().getTime()) {
+      return { erreur: "Lien expiré : rien n'a été préparé." };
+    }
+
+    if (q.destinataire === null) return { erreur: "L'adresse du dirigeant est introuvable." };
+    const adresse = dechiffrerParole(q.destinataire).trim().toLowerCase();
+
+    const suivi = (await lireSuiviParPersonne([q.id])).get(q.id)?.suivi;
+    if (suivi === undefined) return illisible;
+    const entree = entreeDepuisSuivi(suivi);
+    if (estComplet(entree)) {
+      return { erreur: "Toutes les réponses sont arrivées : rien à relancer." };
+    }
+    // Le dirigeant ne figure jamais dans la liste : il ne lit pas « il manque » en parlant de lui.
+    if (entree.manquants.length + entree.manquantsSansNom === 0) {
+      return { erreur: "Aucun collaborateur ne manque : rien à relancer auprès de l'équipe." };
+    }
+    return {
+      adresse,
+      prenomDirigeant:
+        suivi.dirigeant.sourceNom === "brouillon" ? null : prenomDe(suivi.dirigeant.nom),
+      manquants: [...entree.manquants],
+      auditCourt:
+        q.expireLe === null
+          ? ""
+          : new Intl.DateTimeFormat("fr-FR", {
+              day: "numeric",
+              month: "long",
+              timeZone: "Europe/Paris",
+            }).format(q.expireLe),
+    };
+  } catch {
+    return illisible;
+  }
+}
+
+export async function demanderAuDirigeantDeRelancerSonEquipeAction(fd: FormData): Promise<void> {
+  const clientId = champ(fd, "clientId");
+  const questionnaireId = champ(fd, "questionnaireId");
+  if (!uuid.safeParse(clientId).success) redirect(adminPath("fr", "qualiopi/clients"));
+  const retour = `${adminPath("fr", `qualiopi/clients/${clientId}`)}?onglet=questionnaire`;
+  const echec = (texte: string): never => redirect(avecMessageDeRetour(retour, "erreur", texte));
+
+  const session = await auth();
+  const user = session?.user as { id?: string; role?: string | null } | undefined;
+  if (!user?.id) echec("Session expirée : reconnectez-vous.");
+  if (user?.role !== "super_admin") echec("Réservé au super-administrateur.");
+  if (!uuid.safeParse(questionnaireId).success) echec("Questionnaire inconnu.");
+
+  // Le questionnaire doit appartenir à CETTE fiche (ou à une fiche qu'elle a absorbée).
+  // `redirect` lève une exception : jamais à l'intérieur du `try` (elle y serait avalée).
+  const lu = await preparer(clientId, questionnaireId);
+  if ("erreur" in lu) return echec(lu.erreur);
+  const { adresse, prenomDirigeant, manquants, auditCourt } = lu;
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(adresse)) {
+    return echec("L'adresse du dirigeant est illisible.");
+  }
+
+  // Deux clics rapprochés : la vérification « déjà un brouillon ? » et le garage se font sous un
+  // verrou de transaction propre à ce questionnaire (sans migration : `EmailOutbox.jobId` n'est
+  // pas unique). Le verrou est tenu jusqu'à la fin du garage ; le second appel attend, relit, et
+  // trouve le brouillon du premier. Le verrou tient une connexion pendant que `garerPourValidation`
+  // en prend une seconde (risque négligeable : action réservée au super-administrateur). `redirect` reste hors de la transaction (il lève).
+  const sortie: { id: string | null; dejaPret: boolean } = { id: null, dejaPret: false };
+  try {
+    await prisma.$transaction(
+      async (tx) => {
+        await tx.$executeRaw`SELECT pg_advisory_xact_lock(hashtext(${questionnaireId}))`;
+        const deja = await tx.emailOutbox.findFirst({
+          where: {
+            template: TEMPLATE,
+            entityType: TYPE_ENTITE,
+            entityId: questionnaireId,
+            statut: "a_valider",
+          },
+          select: { id: true },
+        });
+        if (deja !== null) {
+          sortie.dejaPret = true;
+          return;
+        }
+        sortie.id = await garerPourValidation({
+          template: TEMPLATE,
+          recipient: adresse,
+          locale: "fr",
+          payload: {
+            ...(prenomDirigeant !== null ? { prenom: prenomDirigeant } : {}),
+            manquants,
+            ...(auditCourt !== "" ? { auditCourt } : {}),
+          },
+          sujet: "Votre équipe et le questionnaire",
+          clientId,
+          entityType: TYPE_ENTITE,
+          entityId: questionnaireId,
+          // Le jour de Paris dans la clé : deux jours, deux brouillons possibles.
+          jobId: `relance-equipe:${questionnaireId}:${jourDeParis(new Date())}`,
+        });
+      },
+      { timeout: 15_000 },
+    );
+  } catch {
+    return echec("Le message n'a pas pu être préparé : rien n'a été envoyé.");
+  }
+  if (sortie.dejaPret) return echec("Un message est déjà prêt : relisez-le dans la boîte.");
+  // `null` : le message n'a PAS pu être mis de côté. On le dit ; on n'envoie jamais directement.
+  if (sortie.id === null) echec("Le message n'a pas pu être préparé : rien n'a été envoyé.");
+  redirect(
+    avecMessageDeRetour(
+      retour,
+      "message",
+      "Message prêt pour le dirigeant : relisez-le dans la boîte avant tout envoi.",
+    ),
+  );
+}
