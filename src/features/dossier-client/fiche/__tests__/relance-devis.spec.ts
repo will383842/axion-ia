@@ -39,6 +39,7 @@ vi.mock("@/server/actions/qualiopi/_guards", () => ({
 }));
 vi.mock("@/server/email/outbox-service", () => ({ garerPourValidation: m.garer }));
 vi.mock("@/server/queue/queues", () => ({ enqueueEmail: m.transport }));
+vi.mock("@/lib/email/client", () => ({ sendEmail: m.transport }));
 vi.mock("nodemailer", () => ({
   default: { createTransport: () => ({ sendMail: m.transport }) },
   createTransport: () => ({ sendMail: m.transport }),
@@ -55,6 +56,7 @@ import {
   ERREUR_DEVIS_INTROUVABLE,
   ERREUR_DEVIS_PERIME,
   ERREUR_GARAGE,
+  MESSAGE_RELANCE_GAREE,
   MESSAGE_RELANCE_PRETE,
 } from "../relance-devis";
 
@@ -190,8 +192,10 @@ describe("relance de devis (lot B9)", () => {
     ]);
     const [a, b] = await Promise.all([lancer(), lancer()]);
     expect(m.garer).toHaveBeenCalledTimes(2);
-    expect(a).toContain(MESSAGE_RELANCE_PRETE);
-    expect(b).toContain(MESSAGE_RELANCE_PRETE);
+    const urls = [a, b];
+    expect(urls.filter((u) => u.includes(MESSAGE_RELANCE_PRETE))).toHaveLength(1);
+    expect(urls.filter((u) => u.includes(MESSAGE_RELANCE_GAREE))).toHaveLength(1);
+    expect(m.log).toHaveBeenCalledTimes(1);
     expect(m.refuser).toHaveBeenCalledWith(
       expect.objectContaining({
         where: expect.objectContaining({ id: { in: ["outbox-2"] } }),

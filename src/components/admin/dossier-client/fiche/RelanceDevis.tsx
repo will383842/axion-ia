@@ -48,7 +48,7 @@ export function RelanceDevis(props: {
       </ul>
       <p className="mt-2 text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
         La relance est préparée en brouillon : rien ne part sans votre validation.{" "}
-        <Link href={`${ctx.qBase}/emails`} className="underline">
+        <Link href={`${ctx.qBase}/emails`} className="inline-flex min-h-11 items-center underline">
           {ctx.message === MESSAGE_RELANCE_PRETE
             ? "Relire la relance prête"
             : "Voir les e-mails à valider"}

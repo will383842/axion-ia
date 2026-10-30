@@ -141,7 +141,8 @@ export async function preparerRelanceDevisAction(fd: FormData): Promise<void> {
           refuseMotif: "Doublon de relance (double clic) : un seul brouillon est conservé.",
         },
       });
-      return retour(cid, "message", MESSAGE_RELANCE_PRETE);
+      // Seul l'appel qui a garé le brouillon conservé journalise ; l'autre dit « prête ».
+      if (outboxId !== brouillons[0]?.id) return retour(cid, "message", MESSAGE_RELANCE_PRETE);
     }
 
     await logQualiopiActivity({
