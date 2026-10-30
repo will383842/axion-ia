@@ -83,7 +83,7 @@ export function CarteProchaineAction(props: {
   // Les e-mails à valider restent actionnables même si la lecture des tâches est en panne.
   const emailsAValider = nbEmails !== null && nbEmails > 0;
 
-  if ((!tache.ok && !emailsAValider) || (tache.ok && nbEmails === null)) {
+  if (!tache.ok && !emailsAValider) {
     return (
       <AdminBloc teinte="gris" titre="Prochaine action">
         <p role="alert">{TEXTE_PANNE}</p>
@@ -122,6 +122,12 @@ export function CarteProchaineAction(props: {
             <strong>{t.intitule}</strong> · {t.enRetard ? "en retard depuis le" : "avant le"}{" "}
             {jour(t.echeanceLe)} · responsable {t.responsable}
           </span>
+        </p>
+      ) : null}
+      {nbEmails === null ? (
+        <p role="alert" className="flex items-center gap-[var(--space-admin-2)]">
+          <Mail size={16} aria-hidden="true" />
+          <span>E-mails à valider : {TEXTE_PANNE.toLowerCase()}</span>
         </p>
       ) : null}
       {emailsAValider ? (

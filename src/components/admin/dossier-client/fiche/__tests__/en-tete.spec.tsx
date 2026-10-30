@@ -60,7 +60,21 @@ describe("CarteProchaineAction", () => {
   });
   it("lecture en panne : « Lecture impossible »", () => {
     expect(carte("panne", 0)).toContain("Lecture impossible");
-    expect(carte(tache, null)).toContain("Lecture impossible");
+  });
+  it("seule la lecture des e-mails en panne : la tâche, la ligne de panne et le contexte restent", () => {
+    const h = carte(tache, null);
+    expect(h).toContain("Rappeler le dirigeant");
+    expect(h).toContain("E-mails à valider : lecture impossible");
+    expect(h).toContain("Prochain rendez-vous");
+    expect(h).toContain("Dernier e-mail");
+    expect(h).toContain("Voir la tâche");
+    expect(pleins(h)).toBe(1);
+  });
+  it("dernier e-mail à lecture incomplète : la mention s'affiche", () => {
+    const h = carte(tache, 0, false, {
+      mail: { ok: true, valeur: { le: new Date("2026-10-20T10:00:00Z"), incomplet: true } },
+    });
+    expect(h).toContain("Dernier e-mail : 20 oct. · lecture incomplète");
   });
   it("tâches illisibles mais e-mails à valider lisibles : le bouton reste", () => {
     const h = carte("panne", 2);

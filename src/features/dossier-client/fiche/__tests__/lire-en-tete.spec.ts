@@ -31,6 +31,8 @@ vi.mock("@/features/dossier-client/questionnaires-de-la-fiche", () => ({
 }));
 vi.mock("@/server/qualiopi/crm/clients", () => ({ calculerEncoursDuCents: () => 0 }));
 
+import { lireProjetsDuClient, lireRencontresDuClient } from "@/features/dossier-client/queries";
+
 import {
   dernierEchange,
   dernierEmailParti,
@@ -140,5 +142,31 @@ describe("factures", () => {
     expect(
       plusProcheEcheance([f("payee", "2026-01-01T00:00:00Z"), f("emise", "2026-11-01T00:00:00Z")]),
     ).toEqual(new Date("2026-11-01T00:00:00Z"));
+  });
+});
+
+describe("lireEnTete — lectures partagées", () => {
+  beforeEach(() => {
+    fil.valeur = { fil: [], sourcesEnPanne: 0 };
+    suivis.valeur = [];
+    vi.mocked(lireProjetsDuClient).mockClear();
+  });
+  it("nbRendezVous exclut les rendez-vous de test interne", async () => {
+    vi.mocked(lireRencontresDuClient).mockResolvedValueOnce([
+      { statut: "tenu", debutPrevu: null, titre: "A", estTestInterne: false },
+      { statut: "tenu", debutPrevu: null, titre: "B", estTestInterne: true },
+    ] as never);
+    const e = await lireEnTete(ctx(), async () => client);
+    expect(e!.nbRendezVous).toEqual({ ok: true, valeur: 1 });
+  });
+  it("lit les projets une seule fois pour le compteur et le pipeline", async () => {
+    await lireEnTete(ctx(), async () => client);
+    expect(lireProjetsDuClient).toHaveBeenCalledTimes(1);
+  });
+  it("projets illisibles : compteur et pipeline en panne", async () => {
+    vi.mocked(lireProjetsDuClient).mockRejectedValueOnce(new Error("panne"));
+    const e = await lireEnTete(ctx(), async () => client);
+    expect(e!.nbPrestations).toEqual({ ok: false });
+    expect(e!.pipeline).toEqual({ ok: false });
   });
 });

@@ -97,6 +97,9 @@ async function construire(ctx: ContexteEnTete, lireClient: LireClient): Promise<
     return c;
   });
 
+  // Les projets sont lus UNE fois : le compteur « Prestations » et le pipeline partagent cette lecture.
+  const projetsLus = proteger(() => lireProjetsDuClient(id));
+
   const [
     prochaineTache,
     nbTachesOuvertes,
@@ -134,10 +137,12 @@ async function construire(ctx: ContexteEnTete, lireClient: LireClient): Promise<
     proteger(() => prisma.emailOutbox.count({ where: { clientId: id, statut: "a_valider" } })),
     proteger(() => lireRencontresDuClient(id)),
     proteger(() => lireFilDesEchanges(id, ctx.adminPrefix)),
-    proteger(() => lireProjetsDuClient(id)),
+    projetsLus,
     // La panne de `projet_suivis` ne touche que le pipeline : le compteur « Prestations » ne dépend que des projets.
     proteger(async () => {
-      const ps = await lireProjetsDuClient(id);
+      const lus = await projetsLus;
+      if (!lus.ok) throw new Error("projets illisibles");
+      const ps = lus.valeur;
       const suivis = await lireSuivisDesProjets(ps.map((p) => p.id));
       if (suivis === null) throw new Error("suivis illisibles");
       const chances =
@@ -214,7 +219,9 @@ async function construire(ctx: ContexteEnTete, lireClient: LireClient): Promise<
     sante,
     encours,
     questionnaire,
-    nbRendezVous: rendezVous.ok ? { ok: true, valeur: rendezVous.valeur.length } : { ok: false },
+    nbRendezVous: rendezVous.ok
+      ? { ok: true, valeur: rendezVous.valeur.filter((r) => !r.estTestInterne).length }
+      : { ok: false },
     nbPrestations: projets.ok ? { ok: true, valeur: projets.valeur.length } : { ok: false },
     nbPersonnes,
     nbDevisEtFactures:
