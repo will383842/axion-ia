@@ -14124,6 +14124,10 @@ enum RoleDansProjet {
   prescripteur
   /// Autre rôle.
   autre
+  /// Influence la décision.
+  influenceur
+  /// Freine la décision.
+  bloqueur
 
   @@map("role_dans_projet")
 }

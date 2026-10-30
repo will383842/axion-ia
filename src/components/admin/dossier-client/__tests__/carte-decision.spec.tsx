@@ -29,7 +29,7 @@ describe("carte « Qui décide »", () => {
     expect(html).not.toContain(">Atlas<");
   });
 
-  it("n'affiche que les rôles qui existent en base (ni influence, ni bloque)", () => {
+  it("affiche les rôles influenceur et bloqueur depuis le lot C3", () => {
     const html = renderToStaticMarkup(
       <CarteDecision
         personnes={[P("1", "Anne Durand", ["decideur", "influenceur", "bloqueur"])]}
@@ -37,7 +37,8 @@ describe("carte « Qui décide »", () => {
       />,
     );
     expect(html).toContain("décide");
-    expect(html).not.toMatch(/influence|bloque/i);
+    expect(html).toContain("influence la décision");
+    expect(html).toContain("freine la décision");
   });
 
   it("une personne partie est grisée avec sa date", () => {
