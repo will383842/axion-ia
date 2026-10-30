@@ -60,6 +60,14 @@ export const CLES_DOSSIER_CRM = [
   "url_console",
   "questionnaire",
   "contacts",
+  // Fiche complète (lot C1) : facultatives, omises quand vides.
+  "etape",
+  "cloture_prevue",
+  "prochaine_action",
+  "taches_ouvertes",
+  "nb_emails_console",
+  "nb_notes_console",
+  "sante",
 ] as const;
 
 /** Clés d'un contact — miroir de `DossierClient::CLES_CONTACT`. */
@@ -71,10 +79,43 @@ export const CLES_CONTACT_CRM = [
   "telephone",
   "fonction",
   "person_key",
+  "role_decision",
 ] as const;
 
 /** Clés de `questionnaire` — miroir de `DossierClient::CLES_QUESTIONNAIRE`. */
-export const CLES_QUESTIONNAIRE_CRM = ["envoye_le", "recu_le", "nb_reponses_equipe"] as const;
+export const CLES_QUESTIONNAIRE_CRM = [
+  "envoye_le",
+  "recu_le",
+  "nb_reponses_equipe",
+  "attendus",
+  "date_limite",
+] as const;
+
+/** Valeurs permises par le CRM (`DossierClient::ETAPES`, `SANTES`, `ACTIONS`, `ROLES_DECISION`). */
+export type EtapeCrm = "prospect" | "devis_envoye" | "client" | "archive";
+export type SanteCrm = "bonne" | "a_surveiller";
+export type RoleDecisionCrm =
+  "decideur" | "financeur" | "referent" | "utilisateur" | "influenceur" | "bloqueur" | "autre";
+
+/**
+ * La fiche complète : seulement des ÉTATS, des dates et des nombres. Chaque
+ * champ est facultatif ET `null` = « non lu / vide » : il est alors OMIS du
+ * message (le CRM lit « absent » comme « ne change rien »). Jamais d'intitulé
+ * de tâche, de texte de note, de montant, d'étiquette ni de responsable.
+ */
+export interface FicheCompletePourCrm {
+  readonly etape?: EtapeCrm | null;
+  /** Jour (colonne DATE) de clôture prévue la plus proche des prestations en cours. */
+  readonly cloturePrevue?: Date | null;
+  readonly sante?: SanteCrm | null;
+  /** Plus proche tâche ouverte : son ORIGINE et son jour, jamais son intitulé. */
+  readonly prochaineTache?: { readonly origine: string; readonly echeanceLe: Date } | null;
+  readonly nbTachesOuvertes?: number | null;
+  readonly nbEmailsConsole?: number | null;
+  readonly nbNotesConsole?: number | null;
+  readonly questionnaireAttendus?: number | null;
+  readonly questionnaireDateLimite?: Date | null;
+}
 
 /** Clés de `company` que le CRM accepte pour un dossier. */
 export const CLES_ENTREPRISE_CRM = ["siren", "name", "postcode", "city"] as const;
@@ -101,6 +142,8 @@ export interface ContactPourCrm {
   readonly oppose: boolean;
   /** Parti de l'entreprise : jamais envoyé (rien ne se supprime, rien ne se réactive). */
   readonly parti: boolean;
+  /** Rôle de décision (le plus décisif de ses prestations) ; `null` ou absent : omis. */
+  readonly roleDecision?: RoleDecisionCrm | null;
 }
 
 export interface EntreeInstantaneCrm {
@@ -132,6 +175,8 @@ export interface EntreeInstantaneCrm {
     readonly nbReponsesEquipe: number | null;
   } | null;
   readonly contacts: readonly ContactPourCrm[];
+  /** Fiche complète (lot C1) ; absente ⇒ aucune des clés nouvelles ne part. */
+  readonly fiche?: FicheCompletePourCrm;
 }
 
 /** Le dossier tel qu'il voyage, SANS `version` (qui n'entre pas dans l'empreinte). */
@@ -142,7 +187,20 @@ export type DossierPourCrm = {
   telephone?: string;
   axi_cli?: string;
   effectif_tranche?: string;
-  questionnaire?: { envoye_le?: string; recu_le?: string; nb_reponses_equipe?: number };
+  etape?: EtapeCrm;
+  cloture_prevue?: string;
+  sante?: SanteCrm;
+  prochaine_action?: { type: "relance" | "autre"; date: string };
+  taches_ouvertes?: { nb: number; prochaine_le?: string };
+  nb_emails_console?: number;
+  nb_notes_console?: number;
+  questionnaire?: {
+    envoye_le?: string;
+    recu_le?: string;
+    nb_reponses_equipe?: number;
+    attendus?: number;
+    date_limite?: string;
+  };
   contacts?: Array<{
     ref: string;
     prenom?: string;
@@ -151,6 +209,7 @@ export type DossierPourCrm = {
     telephone?: string;
     fonction?: string;
     person_key?: string;
+    role_decision?: RoleDecisionCrm;
   }>;
 };
 
@@ -199,6 +258,41 @@ function dateIso(d: Date | null | undefined): string | undefined {
   return d instanceof Date && !Number.isNaN(d.getTime()) ? d.toISOString() : undefined;
 }
 
+/** Jour AAAA-MM-JJ d'une colonne DATE (minuit UTC) ; `undefined` si invalide. */
+function jourIso(d: Date | null | undefined): string | undefined {
+  return d instanceof Date && !Number.isNaN(d.getTime()) ? d.toISOString().slice(0, 10) : undefined;
+}
+
+/** Entier ≥ 0 ou `undefined` : un nombre invalide est omis, jamais corrigé. */
+function nombre(n: number | null | undefined): number | undefined {
+  return typeof n === "number" && Number.isInteger(n) && n >= 0 ? n : undefined;
+}
+
+/** Les clés facultatives de la fiche complète, posées seulement si la valeur existe. */
+function completerFiche(dossier: DossierPourCrm, fiche: FicheCompletePourCrm): void {
+  if (fiche.etape) dossier.etape = fiche.etape;
+  const cloture = jourIso(fiche.cloturePrevue);
+  if (cloture !== undefined) dossier.cloture_prevue = cloture;
+  if (fiche.sante) dossier.sante = fiche.sante;
+  const jourAction = jourIso(fiche.prochaineTache?.echeanceLe);
+  if (fiche.prochaineTache && jourAction !== undefined) {
+    // Le type vient de l'ORIGINE de la tâche, jamais de son intitulé.
+    dossier.prochaine_action = {
+      type: fiche.prochaineTache.origine === "relance" ? "relance" : "autre",
+      date: jourAction,
+    };
+  }
+  const nbTaches = nombre(fiche.nbTachesOuvertes);
+  if (nbTaches !== undefined) {
+    dossier.taches_ouvertes = { nb: nbTaches };
+    if (jourAction !== undefined) dossier.taches_ouvertes.prochaine_le = jourAction;
+  }
+  const nbEmails = nombre(fiche.nbEmailsConsole);
+  if (nbEmails !== undefined) dossier.nb_emails_console = nbEmails;
+  const nbNotes = nombre(fiche.nbNotesConsole);
+  if (nbNotes !== undefined) dossier.nb_notes_console = nbNotes;
+}
+
 /** Le dossier à envoyer, construit clé par clé (liste blanche). Pur. */
 export function dossierPourCrm(entree: EntreeInstantaneCrm): DossierPourCrm {
   // Le CRM exige : statut « client » SI ET SEULEMENT SI facture_emise = true.
@@ -207,6 +301,8 @@ export function dossierPourCrm(entree: EntreeInstantaneCrm): DossierPourCrm {
     statut: factureEtablie ? "client" : "prospect",
     facture_emise: factureEtablie,
   };
+
+  if (entree.fiche !== undefined) completerFiche(dossier, entree.fiche);
 
   const rue = propre(entree.adresseRue, 255);
   if (rue !== undefined) dossier.rue = rue;
@@ -225,6 +321,16 @@ export function dossierPourCrm(entree: EntreeInstantaneCrm): DossierPourCrm {
     const nb = entree.questionnaire.nbReponsesEquipe;
     if (nb !== null && Number.isInteger(nb) && nb >= 0) q.nb_reponses_equipe = nb;
     if (Object.keys(q).length > 0) dossier.questionnaire = q;
+  }
+  // Les deux clés nouvelles du questionnaire vivent dans la fiche complète : un
+  // questionnaire sans état (aucun envoi) peut quand même avoir une date limite.
+  const attendus = nombre(entree.fiche?.questionnaireAttendus);
+  const dateLimite = jourIso(entree.fiche?.questionnaireDateLimite);
+  if (attendus !== undefined || dateLimite !== undefined) {
+    const q = dossier.questionnaire ?? {};
+    if (attendus !== undefined) q.attendus = attendus;
+    if (dateLimite !== undefined) q.date_limite = dateLimite;
+    dossier.questionnaire = q;
   }
 
   const contacts: NonNullable<DossierPourCrm["contacts"]> = [];
@@ -253,6 +359,7 @@ export function dossierPourCrm(entree: EntreeInstantaneCrm): DossierPourCrm {
     if (email !== undefined && c.emailHash !== null && /^[0-9a-f]{64}$/.test(c.emailHash)) {
       envoye.person_key = c.emailHash;
     }
+    if (c.roleDecision) envoye.role_decision = c.roleDecision;
     contacts.push(envoye);
   }
   if (contacts.length > 0) dossier.contacts = contacts;
