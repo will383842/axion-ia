@@ -187,9 +187,11 @@ async function lireFicheComplete(
     questionnaire === undefined || questionnaire === null
       ? undefined
       : await proteger(async () => {
-          const total = (await lireSuiviParPersonne([questionnaire.id])).get(questionnaire.id)
-            ?.suivi.total;
-          return total !== undefined && total.recus < total.attendus ? total.attendus : undefined;
+          const lu = (await lireSuiviParPersonne([questionnaire.id])).get(questionnaire.id);
+          // Une réponse illisible fausserait le compte : mieux vaut omettre la clé que mentir.
+          if (lu === undefined || lu.controle.illisibles > 0) return undefined;
+          const total = lu.suivi.total;
+          return total.recus < total.attendus ? total.attendus : undefined;
         });
 
   const fiche: { -readonly [K in keyof FicheCompletePourCrm]: FicheCompletePourCrm[K] } = {};
