@@ -49,6 +49,8 @@ function fausseBase() {
           });
         },
       ),
+      delete: vi.fn(async () => {}),
+      deleteMany: vi.fn(async () => ({ count: 0 })),
     },
     clientEtiquette: {
       findMany: vi.fn(async () => etiquettes),
@@ -129,8 +131,13 @@ describe("archivage", () => {
   });
 
   it("n'emploie jamais delete sur la fiche", async () => {
-    const { brut } = fausseBase();
-    expect(Object.keys(brut.clientProfil)).not.toContain("delete");
+    const { db, brut } = fausseBase();
+    await definirResponsable(db, { clientId: CLIENT, libelle: "Camille", acteur: ADMIN });
+    await archiver(db, { clientId: CLIENT, motif: "fin", maintenant: new Date(), acteur: SUPER });
+    await desarchiver(db, { clientId: CLIENT, acteur: SUPER });
+    await definirResponsable(db, { clientId: CLIENT, libelle: "", acteur: ADMIN });
+    expect(brut.clientProfil.delete).not.toHaveBeenCalled();
+    expect(brut.clientProfil.deleteMany).not.toHaveBeenCalled();
   });
 
   it("motif de plus de 200 caractères refusé", async () => {

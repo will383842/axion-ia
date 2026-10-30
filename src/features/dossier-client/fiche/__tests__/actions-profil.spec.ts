@@ -6,6 +6,8 @@ const h = vi.hoisted(() => ({
   archiver: vi.fn(async () => "fait"),
   desarchiver: vi.fn(async () => "fait"),
   responsable: vi.fn(async () => {}),
+  ajouter: vi.fn(async () => {}),
+  retirer: vi.fn(async () => true),
 }));
 vi.mock("@/features/dossier-client/acces", () => ({ exigerAccesEchanges: h.exiger }));
 vi.mock("@/features/dossier-client/message-affichable", () => ({
@@ -20,7 +22,7 @@ vi.mock("../profil", () => ({
   desarchiver: h.desarchiver,
   definirResponsable: h.responsable,
 }));
-vi.mock("../etiquettes", () => ({ ajouterEtiquette: vi.fn(), retirerEtiquette: vi.fn() }));
+vi.mock("../etiquettes", () => ({ ajouterEtiquette: h.ajouter, retirerEtiquette: h.retirer }));
 vi.mock("next/navigation", () => ({
   redirect: (u: string) => {
     throw Object.assign(new Error("REDIRECT"), { url: u });
@@ -28,9 +30,11 @@ vi.mock("next/navigation", () => ({
 }));
 
 import {
+  ajouterEtiquetteAction,
   archiverAction,
   definirResponsableAction,
   desarchiverAction,
+  retirerEtiquetteAction,
   sortirDesArchivesFormAction,
 } from "../actions-profil";
 
@@ -47,6 +51,8 @@ beforeEach(() => {
   h.archiver.mockClear();
   h.desarchiver.mockClear();
   h.responsable.mockClear();
+  h.ajouter.mockClear();
+  h.retirer.mockClear();
 });
 
 describe("actions du profil", () => {
@@ -98,5 +104,36 @@ describe("actions du profil", () => {
     );
     expect(u).toContain("message=");
     expect(h.desarchiver).toHaveBeenCalledTimes(1);
+  });
+
+  it("ajouter une étiquette sans accès est refusé avant toute écriture", async () => {
+    h.exiger.mockRejectedValue(new Error("Accès refusé"));
+    const r = await ajouterEtiquetteAction(ETAT, form({ clientId: ID, libelle: "VIP" }));
+    expect(r.erreur).toBe("Accès refusé");
+    expect(h.ajouter).not.toHaveBeenCalled();
+  });
+
+  it("retirer une étiquette sans accès est refusé", async () => {
+    h.exiger.mockRejectedValue(new Error("Accès refusé"));
+    const r = await retirerEtiquetteAction(ETAT, form({ clientId: ID, etiquetteId: ID }));
+    expect(r.erreur).toBe("Accès refusé");
+    expect(h.retirer).not.toHaveBeenCalled();
+  });
+
+  it("un clientId qui n'est pas un UUID est refusé, la couche données n'est pas appelée", async () => {
+    h.exiger.mockResolvedValue({ userId: "u", role: "admin" });
+    const r = await retirerEtiquetteAction(
+      ETAT,
+      form({ clientId: "pas-un-uuid", etiquetteId: ID }),
+    );
+    expect(r.erreur).not.toBeNull();
+    expect(h.retirer).not.toHaveBeenCalled();
+  });
+
+  it("un etiquetteId qui n'est pas un UUID est refusé, la couche données n'est pas appelée", async () => {
+    h.exiger.mockResolvedValue({ userId: "u", role: "admin" });
+    const r = await retirerEtiquetteAction(ETAT, form({ clientId: ID, etiquetteId: "x" }));
+    expect(r.erreur).toBe("Étiquette inconnue.");
+    expect(h.retirer).not.toHaveBeenCalled();
   });
 });

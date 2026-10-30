@@ -14,12 +14,18 @@ const ETAT_INITIAL: EtatProfil = { message: null, erreur: null };
 export function FormulaireProfil(props: {
   action: (avant: EtatProfil, fd: FormData) => Promise<EtatProfil>;
   className?: string;
+  /** Si fourni, les champs sont enveloppés ici et les messages restent hors de cette enveloppe. */
+  classeChamps?: string;
   children: React.ReactNode;
 }): React.ReactElement {
   const [etat, soumettre] = useActionState(props.action, ETAT_INITIAL);
   return (
     <form action={soumettre} className={props.className}>
-      {props.children}
+      {props.classeChamps !== undefined ? (
+        <div className={props.classeChamps}>{props.children}</div>
+      ) : (
+        props.children
+      )}
       {etat.erreur !== null ? (
         <p role="alert" className="w-full text-[length:var(--text-admin-sm)] font-medium">
           {`Non enregistré : ${etat.erreur}`}

@@ -91,7 +91,8 @@ export async function profilDeLaFiche(clientId: string): Promise<React.ReactElem
                   <li key={e.id}>
                     <FormulaireProfil
                       action={retirerEtiquetteAction}
-                      className="inline-flex items-center gap-2 rounded-full border border-[color:var(--color-admin-border)] px-3 text-[length:var(--text-admin-sm)]"
+                      className="flex flex-wrap items-center gap-[var(--space-admin-2)]"
+                      classeChamps="inline-flex items-center gap-2 rounded-full border border-[color:var(--color-admin-border)] px-3 text-[length:var(--text-admin-sm)]"
                     >
                       {cachee}
                       <input type="hidden" name="etiquetteId" value={e.id} />

@@ -152,8 +152,23 @@ export default async function QualiopiClientsPage({ params, searchParams }: Page
       {recherche !== "" ? (
         <p className="mb-[var(--space-admin-4)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
           {clients.length === 0
-            ? `Aucun client ne correspond à « ${recherche} ». Vérifiez l'orthographe avant d'en créer un nouveau : un doublon coûte plus cher qu'une recherche ratée.`
+            ? `Aucun client ne correspond à « ${recherche} »${
+                !voirArchives && partage.archivees.length > 0
+                  ? `, dont ${partage.archivees.length} fiche${partage.archivees.length > 1 ? "s" : ""} archivée${partage.archivees.length > 1 ? "s" : ""}`
+                  : ""
+              }. Vérifiez l'orthographe avant d'en créer un nouveau : un doublon coûte plus cher qu'une recherche ratée.`
             : `${clients.length} résultat${clients.length > 1 ? "s" : ""} pour « ${recherche} ».`}
+          {clients.length === 0 && !voirArchives && partage.archivees.length > 0 ? (
+            <>
+              {" "}
+              <Link
+                href={`${hrefListe}?archives=1&q=${encodeURIComponent(recherche)}`}
+                className="inline-flex min-h-11 items-center underline"
+              >
+                Voir les archivées
+              </Link>
+            </>
+          ) : null}
         </p>
       ) : null}
 
@@ -184,7 +199,15 @@ export default async function QualiopiClientsPage({ params, searchParams }: Page
 
       <div className="mb-[var(--space-admin-6)] grid grid-cols-1 gap-[var(--space-admin-5)] sm:grid-cols-4">
         <AdminStatCard
-          label={recherche === "" ? "Total" : "Résultats"}
+          label={
+            voirArchives
+              ? recherche === ""
+                ? "Total (hors archivées)"
+                : "Résultats (hors archivées)"
+              : recherche === ""
+                ? "Total"
+                : "Résultats"
+          }
           value={compte.length}
           icon={Hash}
         />
@@ -197,7 +220,9 @@ export default async function QualiopiClientsPage({ params, searchParams }: Page
           L'IDCC (déclencheur du barème OPCO par dossier) et la taille sont éditables par ligne
           via ClientBrancheForm → updateClientAction ; la saisie complète (enveloppe, adhérent,
           offre Mobilités, versement volontaire) est dans le bloc « Branche et OPCO » de la fiche. */}
-      {clients.length === 0 ? (
+      {clients.length === 0 && tous.length > 0 ? null : clients.length === 0 && voirArchives ? (
+        <AdminEmptyState title="Aucune fiche archivée" />
+      ) : clients.length === 0 ? (
         <AdminEmptyState
           title="Aucun client enregistré"
           description="Un client est nécessaire avant de créer une session ou d'émettre un devis."
