@@ -85,4 +85,21 @@ describe("liste des clients : fiches archivées", () => {
     const html = await rendre({ archives: "1" });
     expect(html).toContain("Aucune fiche archivée");
   });
+
+  it("recherche dans les archives sans résultat : « Aucune fiche archivée ne correspond »", async () => {
+    h.partage = { actives: [], archivees: [], lectureImpossible: false };
+    const html = await rendre({ q: "Acme", archives: "1" });
+    expect(html).toContain("Aucune fiche archivée ne correspond");
+  });
+
+  it("recherche dans des archives illisibles : message de panne et lien de retour, pas d'orthographe", async () => {
+    h.tous = [fiche];
+    h.partage = { actives: [fiche], archivees: [], lectureImpossible: true };
+    const html = await rendre({ q: "Acme", archives: "1" });
+    expect(html).toContain("Archives : lecture impossible pour le moment.");
+    expect(html).toContain("Revenir aux clients");
+    expect(html).not.toContain("Aucune fiche archivée");
+    expect(html).not.toContain("Vérifiez l&#x27;orthographe");
+    expect(html).not.toContain("Vérifiez l'orthographe");
+  });
 });

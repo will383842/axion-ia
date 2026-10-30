@@ -186,7 +186,8 @@ describe("rendu de l'onglet Prestations", () => {
   it("montant HT + TTC, chances, clôture et pondéré 2 700 € HT", () => {
     const h = rendre(presta());
     expect(h).toContain("4 500 € HT");
-    expect(h).toContain("5 400 € TTC");
+    expect(h).toMatch(new RegExp("<span>4 500 € HT</span><span[^>]*>5 400 € TTC</span></dd>"));
+    expect(h).not.toContain("(5");
     expect(h).toContain("Chances de signer");
     expect(h).toContain("60 %");
     expect(h).toContain("15 déc.");

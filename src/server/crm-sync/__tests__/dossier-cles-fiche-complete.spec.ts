@@ -197,7 +197,7 @@ describe("photo du dossier : clés de la fiche complète", () => {
     expect(Object.keys(dossierPourCrm(entree()))).not.toContain("etape");
   });
 
-  it("la prochaine action ne porte jamais l'intitulé : relance si l'origine est relance, sinon autre", () => {
+  it("la prochaine action ne porte jamais l'intitulé : relance si l'origine est relance, rendez_vous si rencontre, sinon autre", () => {
     const tache = (origine: string) =>
       dossierPourCrm(
         entree({
@@ -419,8 +419,9 @@ describe("lecture du dossier : fiche complète", () => {
   });
 
   it("0 tâche lue avec succès envoie nb: 0 ; une panne omet la clé", async () => {
+    p.clientTache.findFirst.mockResolvedValue(null);
     const d = await dossier();
-    expect(d.taches_ouvertes).toEqual({ nb: 0, prochaine_le: "2026-11-03" });
+    expect(d.taches_ouvertes).toEqual({ nb: 0 });
     p.clientTache.count.mockRejectedValue(new Error("panne"));
     expect(Object.keys(await dossier())).not.toContain("taches_ouvertes");
   });
