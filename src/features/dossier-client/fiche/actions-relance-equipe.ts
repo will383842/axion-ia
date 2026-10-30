@@ -40,7 +40,7 @@ const TEMPLATE = "questionnaire-relance-equipe";
 // rgpd-dossier-client.ts. (Écart au cahier des charges, qui disait « questionnaire_preaudit ».)
 const TYPE_ENTITE = "QuestionnaireAvantAudit";
 
-/** Le jour de Paris (AAAA-MM-JJ) : sert à l'expiration et à la clé anti-double-clic. */
+/** Le jour de Paris (AAAA-MM-JJ) : sert à la clé anti-double-clic. */
 const jourDeParis = (d: Date): string =>
   new Intl.DateTimeFormat("sv-SE", { timeZone: "Europe/Paris" }).format(d);
 
@@ -70,15 +70,10 @@ async function preparer(
     if (q === null) return { erreur: "Questionnaire introuvable sur cette fiche." };
     if (q.envoyeLe === null) return { erreur: "Ce questionnaire n'est pas encore envoyé." };
     if (q.closLe !== null) return { erreur: "Ce questionnaire est clos." };
-    if (q.expireLe !== null && jourDeParis(q.expireLe) < jourDeParis(new Date())) {
+    // À l'heure près, comme `accepteDesReponses` (questionnaire-preaudit/serveur.ts).
+    if (q.expireLe !== null && q.expireLe.getTime() <= new Date().getTime()) {
       return { erreur: "Lien expiré : rien n'a été préparé." };
     }
-
-    const deja = await prisma.emailOutbox.findFirst({
-      where: { template: TEMPLATE, entityType: TYPE_ENTITE, entityId: q.id, statut: "a_valider" },
-      select: { id: true },
-    });
-    if (deja !== null) return { erreur: "Un message est déjà prêt : relisez-le dans la boîte." };
 
     if (q.destinataire === null) return { erreur: "L'adresse du dirigeant est introuvable." };
     const adresse = dechiffrerParole(q.destinataire).trim().toLowerCase();
@@ -134,24 +129,53 @@ export async function demanderAuDirigeantDeRelancerSonEquipeAction(fd: FormData)
     return echec("L'adresse du dirigeant est illisible.");
   }
 
-  const id = await garerPourValidation({
-    template: TEMPLATE,
-    recipient: adresse,
-    locale: "fr",
-    payload: {
-      ...(prenomDirigeant !== null ? { prenom: prenomDirigeant } : {}),
-      manquants,
-      ...(auditCourt !== "" ? { auditCourt } : {}),
-    },
-    sujet: "Votre équipe et le questionnaire",
-    clientId,
-    entityType: TYPE_ENTITE,
-    entityId: questionnaireId,
-    // Un double clic ne pose pas deux brouillons le même jour.
-    jobId: `relance-equipe:${questionnaireId}:${jourDeParis(new Date())}`,
-  });
+  // Deux clics rapprochés : la vérification « déjà un brouillon ? » et le garage se font sous un
+  // verrou de transaction propre à ce questionnaire (sans migration : `EmailOutbox.jobId` n'est
+  // pas unique). Le verrou est tenu jusqu'à la fin du garage ; le second appel attend, relit, et
+  // trouve le brouillon du premier. `redirect` reste hors de la transaction (il lève).
+  const sortie: { id: string | null; dejaPret: boolean } = { id: null, dejaPret: false };
+  try {
+    await prisma.$transaction(
+      async (tx) => {
+        await tx.$executeRaw`SELECT pg_advisory_xact_lock(hashtext(${questionnaireId}))`;
+        const deja = await tx.emailOutbox.findFirst({
+          where: {
+            template: TEMPLATE,
+            entityType: TYPE_ENTITE,
+            entityId: questionnaireId,
+            statut: "a_valider",
+          },
+          select: { id: true },
+        });
+        if (deja !== null) {
+          sortie.dejaPret = true;
+          return;
+        }
+        sortie.id = await garerPourValidation({
+          template: TEMPLATE,
+          recipient: adresse,
+          locale: "fr",
+          payload: {
+            ...(prenomDirigeant !== null ? { prenom: prenomDirigeant } : {}),
+            manquants,
+            ...(auditCourt !== "" ? { auditCourt } : {}),
+          },
+          sujet: "Votre équipe et le questionnaire",
+          clientId,
+          entityType: TYPE_ENTITE,
+          entityId: questionnaireId,
+          // Le jour de Paris dans la clé : deux jours, deux brouillons possibles.
+          jobId: `relance-equipe:${questionnaireId}:${jourDeParis(new Date())}`,
+        });
+      },
+      { timeout: 15_000 },
+    );
+  } catch {
+    return echec("Le message n'a pas pu être préparé : rien n'a été envoyé.");
+  }
+  if (sortie.dejaPret) return echec("Un message est déjà prêt : relisez-le dans la boîte.");
   // `null` : le message n'a PAS pu être mis de côté. On le dit ; on n'envoie jamais directement.
-  if (id === null) echec("Le message n'a pas pu être préparé : rien n'a été envoyé.");
+  if (sortie.id === null) echec("Le message n'a pas pu être préparé : rien n'a été envoyé.");
   redirect(
     avecMessageDeRetour(
       retour,

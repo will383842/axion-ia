@@ -6,6 +6,7 @@ const m = vi.hoisted(() => ({
   qFind: vi.fn(),
   outboxFind: vi.fn(),
   suivi: vi.fn(),
+  chaine: { p: Promise.resolve() as Promise<void> },
 }));
 
 vi.mock("next/navigation", () => ({
@@ -21,6 +22,17 @@ vi.mock("@/lib/prisma", () => ({
   prisma: {
     questionnaireAvantAudit: { findFirst: m.qFind },
     emailOutbox: { findFirst: m.outboxFind },
+    // Transaction « sérialisée » comme le verrou consultatif : un appel à la fois.
+    $transaction: (fn: (tx: unknown) => Promise<void>) => {
+      const course = m.chaine.p.then(() =>
+        fn({ $executeRaw: async () => 1, emailOutbox: { findFirst: m.outboxFind } }),
+      );
+      m.chaine.p = course.then(
+        () => undefined,
+        () => undefined,
+      );
+      return course;
+    },
   },
 }));
 vi.mock("@/features/questionnaire-preaudit/de-la-fiche", () => ({
@@ -71,6 +83,7 @@ async function lancer(): Promise<string> {
 
 beforeEach(() => {
   vi.resetAllMocks();
+  m.chaine.p = Promise.resolve();
   m.auth.mockResolvedValue({ user: { id: "u1", role: "super_admin" } });
   m.qFind.mockResolvedValue({
     id: QUEST,
@@ -83,6 +96,8 @@ beforeEach(() => {
   m.suivi.mockResolvedValue(suiviAvecManquants());
   m.garer.mockResolvedValue("outbox-1");
 });
+
+const NOW = "2026-11-05T11:00:00Z";
 
 describe("demander au dirigeant de relancer son équipe", () => {
   it("gare un brouillon au dirigeant SEUL, sans réponse, et n'envoie rien", async () => {
@@ -108,6 +123,21 @@ describe("demander au dirigeant de relancer son équipe", () => {
     m.outboxFind.mockResolvedValue({ id: "deja" });
     expect(await lancer()).toContain("déjà prêt");
     expect(m.garer).not.toHaveBeenCalled();
+  });
+
+  it("deux appels simultanés : un seul brouillon a_valider", async () => {
+    const poses: string[] = [];
+    m.outboxFind.mockImplementation(async () => (poses.length > 0 ? { id: poses[0] } : null));
+    m.garer.mockImplementation(async () => {
+      await new Promise((r) => setTimeout(r, 10));
+      poses.push("outbox-1");
+      return "outbox-1";
+    });
+    const issues = await Promise.all([lancer(), lancer()]);
+    expect(m.garer).toHaveBeenCalledTimes(1);
+    expect(poses).toHaveLength(1);
+    expect(issues.filter((x) => x.includes("Message prêt"))).toHaveLength(1);
+    expect(issues.filter((x) => x.includes("déjà prêt"))).toHaveLength(1);
   });
 
   it("refuse un rôle qui n'est pas super-administrateur", async () => {
@@ -185,6 +215,24 @@ describe("demander au dirigeant de relancer son équipe", () => {
     });
     expect(await lancer()).toContain("Lien expiré : rien n'a été préparé");
     expect(m.garer).not.toHaveBeenCalled();
+  });
+
+  it("le jour même, une heure après l'expiration : refusé", async () => {
+    vi.useFakeTimers({ toFake: ["Date"] });
+    vi.setSystemTime(new Date(NOW));
+    m.qFind.mockResolvedValue({
+      id: QUEST,
+      destinataire: "enc:anne@client.fr",
+      envoyeLe: new Date("2026-10-01T10:00:00Z"),
+      closLe: null,
+      expireLe: new Date("2026-11-05T10:00:00Z"),
+    });
+    try {
+      expect(await lancer()).toContain("Lien expiré : rien n'a été préparé");
+      expect(m.garer).not.toHaveBeenCalled();
+    } finally {
+      vi.useRealTimers();
+    }
   });
 
   it("n'importe aucun moyen d'envoi direct", async () => {

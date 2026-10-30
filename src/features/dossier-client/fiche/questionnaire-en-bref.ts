@@ -47,7 +47,7 @@ export function phraseEnBref(e: EntreeEnBref): string {
   return `${debut} Il manque ${enumerer(morceaux)}.`;
 }
 
-/** « À rendre avant le 5 nov. » (jour de Paris) ; `null` si aucune date connue. */
+/** « Jusqu'au 5 nov. » (jour de Paris) ; `null` si aucune date connue. */
 export function phraseDateLimite(expireLe: Date | null): string | null {
   if (expireLe === null) return null;
   const jour = new Intl.DateTimeFormat("fr-FR", {
@@ -55,7 +55,7 @@ export function phraseDateLimite(expireLe: Date | null): string | null {
     month: "short",
     timeZone: "Europe/Paris",
   }).format(expireLe);
-  return `À rendre avant le ${jour}${jour.endsWith(".") ? "" : "."}`;
+  return `Jusqu'au ${jour}${jour.endsWith(".") ? "" : "."}`;
 }
 
 export const PHRASE_RELANCES_AUTOMATIQUES =

@@ -34,12 +34,13 @@ const questionnaire = (collabs: ReturnType<typeof ligne>[], recus: number) => ({
     },
   },
 });
-const ctx = (role: string, voit = true): ContexteFiche =>
+const ctx = (role: string, voit = true, maintenant = new Date()): ContexteFiche =>
   ({
     clientId: "c1",
     qBase: "/fr/x/qualiopi",
     role,
     voitEchanges: voit,
+    maintenant,
   }) as unknown as ContexteFiche;
 
 const rendre = async (c: ContexteFiche) => {
@@ -59,7 +60,7 @@ describe("QuestionnaireEnBref", () => {
     ]);
     const html = await rendre(ctx("super_admin"));
     expect(html).toContain("2 réponses sur 3. Il manque Paul.");
-    expect(html).toContain("À rendre avant le 5 nov.");
+    expect(html).toContain("Jusqu&#x27;au 5 nov.");
     expect(html).toContain("J+2, J+5, J+10");
     expect(html).toContain("Demander à Anne de relancer son équipe");
     // Aucun bouton de relance d'un collaborateur, aucun envoi du questionnaire à un collaborateur.
@@ -111,6 +112,23 @@ describe("QuestionnaireEnBref", () => {
     ]);
     const html = await rendre(ctx("super_admin"));
     expect(html).toContain("Lien expiré le 1 janvier.");
+    expect(html).not.toContain("<button");
+  });
+
+  it("le jour même, une heure après l'expiration : lien expiré, aucun bouton", async () => {
+    m.lire.mockResolvedValue([questionnaire([ligne("Paul", "pas_de_nouvelles")], 1)]);
+    const html = await rendre(ctx("super_admin", true, new Date("2026-11-05T11:00:00Z")));
+    expect(html).toContain("Lien expiré le 5 novembre.");
+    expect(html).not.toContain("<button");
+  });
+
+  it("seul le dirigeant manque : annoncé une fois, aucun bouton", async () => {
+    const q = questionnaire([ligne("Paul", "recu")], 1);
+    q.parPersonne.suivi.dirigeant.etat = "pas_de_nouvelles";
+    m.lire.mockResolvedValue([q]);
+    const html = await rendre(ctx("super_admin"));
+    expect(html).toContain("Il manque le dirigeant.");
+    expect(html).not.toContain("n&#x27;a pas encore répondu");
     expect(html).not.toContain("<button");
   });
 

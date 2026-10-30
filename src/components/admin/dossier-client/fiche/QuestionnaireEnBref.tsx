@@ -6,10 +6,9 @@
  */
 
 import Link from "next/link";
-import { ClipboardList, MailCheck, Send } from "lucide-react";
+import { ClipboardList, MailCheck } from "lucide-react";
 
 import { AdminBloc } from "@/components/admin/ui/AdminBloc";
-import { AdminButton } from "@/components/admin/ui/AdminButton";
 import { TEXTE_LECTURE_IMPOSSIBLE } from "@/features/dossier-client/bandeau-ou-en-est";
 import { lireQuestionnairesDeLaFiche } from "@/features/dossier-client/questionnaires-de-la-fiche";
 import { demanderAuDirigeantDeRelancerSonEquipeAction } from "@/features/dossier-client/fiche/actions-relance-equipe";
@@ -22,6 +21,7 @@ import {
   prenomDe,
 } from "@/features/dossier-client/fiche/questionnaire-en-bref";
 import { prisma } from "@/lib/prisma";
+import { BoutonDemandeRelance } from "./BoutonDemandeRelance";
 import type { ContexteFiche } from "./contexte";
 
 const jourLong = (d: Date): string =>
@@ -68,15 +68,17 @@ export async function questionnaireEnBref(ctx: ContexteFiche): Promise<React.Rea
   const entree = entreeDepuisSuivi(suivi);
   const limite = phraseDateLimite(q.expireLe);
   const complet = estComplet(entree);
-  const jour = (d: Date) =>
-    new Intl.DateTimeFormat("sv-SE", { timeZone: "Europe/Paris" }).format(d);
-  const expire = q.expireLe !== null && jour(q.expireLe) < jour(new Date());
+  // À l'heure près, comme `accepteDesReponses` : pas au jour.
+  const expire = q.expireLe !== null && q.expireLe.getTime() <= ctx.maintenant.getTime();
   const limiteDite =
     q.expireLe === null ? null : expire ? `Lien expiré le ${jourLong(q.expireLe)}.` : limite;
   const prenomDirigeant =
     suivi.dirigeant.sourceNom === "brouillon" ? null : prenomDe(suivi.dirigeant.nom);
-  const pret =
-    ctx.role === "super_admin" && !complet && !expire ? await messageDejaPret(q.id) : false;
+  // Même condition que l'action : il faut au moins un collaborateur à relancer (le dirigeant
+  // n'est jamais dans la liste).
+  const aRelancer = entree.manquants.length + entree.manquantsSansNom > 0;
+  const proposer = ctx.role === "super_admin" && !complet && !expire && aRelancer;
+  const pret = proposer ? await messageDejaPret(q.id) : false;
 
   return (
     <AdminBloc
@@ -94,12 +96,7 @@ export async function questionnaireEnBref(ctx: ContexteFiche): Promise<React.Rea
       </p>
       {limiteDite !== null ? <p>{limiteDite}</p> : null}
       <p className="text-[length:var(--text-admin-xs)]">{PHRASE_RELANCES_AUTOMATIQUES}</p>
-      {entree.dirigeantManque === true ? (
-        <p className="text-[length:var(--text-admin-xs)]">
-          Le dirigeant n&apos;a pas encore répondu.
-        </p>
-      ) : null}
-      {ctx.role === "super_admin" && !complet && !expire ? (
+      {proposer ? (
         pret === true ? (
           <p className="mt-[var(--space-admin-2)]">
             <MailCheck aria-hidden="true" className="inline h-4 w-4" />{" "}
@@ -119,10 +116,10 @@ export async function questionnaireEnBref(ctx: ContexteFiche): Promise<React.Rea
           >
             <input type="hidden" name="clientId" value={ctx.clientId} />
             <input type="hidden" name="questionnaireId" value={q.id} />
-            <AdminButton type="submit" variant="secondary" icon={Send}>
+            <BoutonDemandeRelance>
               {prenomDirigeant !== null ? `Demander à ${prenomDirigeant}` : "Demander au dirigeant"}{" "}
               de relancer son équipe
-            </AdminButton>
+            </BoutonDemandeRelance>
           </form>
         )
       ) : null}

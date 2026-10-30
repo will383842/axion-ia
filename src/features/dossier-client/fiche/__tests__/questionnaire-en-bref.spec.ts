@@ -44,9 +44,9 @@ describe("phraseEnBref", () => {
 
 describe("phraseDateLimite", () => {
   it("jour de Paris", () => {
-    expect(phraseDateLimite(new Date("2026-11-05T10:00:00Z"))).toBe("À rendre avant le 5 nov.");
+    expect(phraseDateLimite(new Date("2026-11-05T10:00:00Z"))).toBe("Jusqu'au 5 nov.");
     // 23 h UTC = le lendemain à Paris.
-    expect(phraseDateLimite(new Date("2026-11-04T23:30:00Z"))).toBe("À rendre avant le 5 nov.");
+    expect(phraseDateLimite(new Date("2026-11-04T23:30:00Z"))).toBe("Jusqu'au 5 nov.");
   });
   it("aucune date : rien", () => {
     expect(phraseDateLimite(null)).toBeNull();
