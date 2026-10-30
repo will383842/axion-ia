@@ -177,6 +177,10 @@ const CONSOMMATEURS_ASSUMES: ReadonlySet<string> = new Set([
   // `resteDuNetCents` (règle unique du reste dû) et `estFactureOuverte` (source unique des statuts
   // ouverts). Ce fichier est le SEUL point d'entrée ; les cartes et tuiles passent par lui. Nommé seul.
   "src/features/dossier-client/fiche/argent-de-la-fiche.ts",
+  // Fiche client, lot B3 (30/10/2026) — « Ajouter / Marquer faite / Rouvrir » une tâche trace l'action dans le
+  // journal d'audit commun (`logQualiopiActivity`, `_guards`), comme `depart-personne.ts`. Rien d'autre
+  // du domaine. Nommé seul.
+  "src/features/dossier-client/fiche/taches.ts",
   // Chantier QNC, lot L05 — le libellé de la modalité « hybride » a UNE seule source
   // (`libelles-enumerations`, constante pure, sans lecture de base ni d'interrupteur) :
   // la fiche formation publique, la convocation et la console disent la même chose.
