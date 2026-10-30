@@ -58,7 +58,8 @@ export function CartePrestationsResume({
                 ) : (
                   <>
                     {htEtTtc(p.montantCents).ht}
-                    <span className="block text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
+                    {" · "}
+                    <span className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
                       {htEtTtc(p.montantCents).ttc}
                     </span>
                   </>

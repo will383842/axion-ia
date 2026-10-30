@@ -245,6 +245,18 @@ describe("carte du Résumé", () => {
     expect(h).toContain('href="/fiche?onglet=prestations"');
     expect(h).toContain("Voir les prestations");
   });
+
+  it("clôture non estimée : « Clôture prévue : non estimée », TTC affiché, pas de séparateur orphelin", () => {
+    const h = renderToStaticMarkup(
+      <CartePrestationsResume
+        ficheHref="/fiche"
+        prestations={[presta({ cloturePrevueLe: null })]}
+      />,
+    );
+    expect(h).toContain("Clôture prévue : non estimée");
+    expect(h).not.toContain("Clôture prévue le non estimée");
+    expect(h).toContain("5 400 € TTC");
+  });
 });
 
 describe("emplacement du Résumé", () => {

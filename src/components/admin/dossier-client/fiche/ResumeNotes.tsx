@@ -16,7 +16,9 @@ export async function resumeNotes(ctx: ContexteFiche): Promise<React.ReactElemen
   if (!lecture.ok) {
     return (
       <AdminBloc teinte="gris" niveau={2} titre="Notes">
-        <p data-notes-illisibles>{TEXTE_LECTURE_IMPOSSIBLE}</p>
+        <p role="status" data-notes-illisibles>
+          Notes : {TEXTE_LECTURE_IMPOSSIBLE}. Rechargez la page.
+        </p>
       </AdminBloc>
     );
   }

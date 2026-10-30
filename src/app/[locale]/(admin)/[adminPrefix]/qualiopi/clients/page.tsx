@@ -152,7 +152,7 @@ export default async function QualiopiClientsPage({ params, searchParams }: Page
       {recherche !== "" ? (
         <p className="mb-[var(--space-admin-4)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
           {clients.length === 0
-            ? `Aucun client ${voirArchives ? "archivé" : "actif"} ne correspond à « ${recherche} »${
+            ? `${voirArchives ? "Aucune fiche archivée" : "Aucune fiche active"} ne correspond à « ${recherche} »${
                 !voirArchives && partage.archivees.length > 0
                   ? ` ; ${partage.archivees.length} fiche${partage.archivees.length > 1 ? "s archivées correspondent" : " archivée correspond"}`
                   : ""
@@ -234,8 +234,10 @@ export default async function QualiopiClientsPage({ params, searchParams }: Page
           L'IDCC (déclencheur du barème OPCO par dossier) et la taille sont éditables par ligne
           via ClientBrancheForm → updateClientAction ; la saisie complète (enveloppe, adhérent,
           offre Mobilités, versement volontaire) est dans le bloc « Branche et OPCO » de la fiche. */}
-      {voirArchives && clients.length === 0 ? (
-        <AdminEmptyState title="Aucune fiche archivée" />
+      {voirArchives && clients.length === 0 && !partage.lectureImpossible ? (
+        <AdminEmptyState
+          title={recherche === "" ? "Aucune fiche archivée" : "Aucune fiche archivée ne correspond"}
+        />
       ) : clients.length === 0 && tous.length > 0 ? null : clients.length === 0 ? (
         <AdminEmptyState
           title="Aucun client enregistré"
