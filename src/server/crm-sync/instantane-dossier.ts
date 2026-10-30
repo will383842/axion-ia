@@ -275,6 +275,17 @@ function nombre(n: number | null | undefined): number | undefined {
   return typeof n === "number" && Number.isInteger(n) && n >= 0 ? n : undefined;
 }
 
+/** Plage acceptée par le CRM pour `questionnaire.attendus` : hors plage, tout le message est refusé. */
+const ATTENDUS_MIN = 1;
+const ATTENDUS_MAX = 1000;
+
+/** Entier de 1 à 1000 ou `undefined` : 0, 1001, 2.5, NaN, null sont omis, jamais corrigés. */
+function nombreAttendus(n: number | null | undefined): number | undefined {
+  return typeof n === "number" && Number.isInteger(n) && n >= ATTENDUS_MIN && n <= ATTENDUS_MAX
+    ? n
+    : undefined;
+}
+
 /** Type d'action côté CRM, déduit de l'ORIGINE de la tâche. */
 function typeAction(origine: string): "relance" | "rendez_vous" | "autre" {
   if (origine === "relance") return "relance";
@@ -340,7 +351,7 @@ export function dossierPourCrm(entree: EntreeInstantaneCrm): DossierPourCrm {
   }
   // Les deux clés nouvelles du questionnaire vivent dans la fiche complète : un
   // questionnaire sans état (aucun envoi) peut quand même avoir une date limite.
-  const attendus = nombre(entree.fiche?.questionnaireAttendus);
+  const attendus = nombreAttendus(entree.fiche?.questionnaireAttendus);
   // Horodatage complet (`expireLe`) : le jour se lit à Paris, pas en UTC.
   const dateLimite = jourParis(entree.fiche?.questionnaireDateLimite);
   if (attendus !== undefined || dateLimite !== undefined) {

@@ -164,6 +164,34 @@ describe("photo du dossier : clés de la fiche complète", () => {
     for (const k of Object.keys(d.questionnaire!)) expect(CLES_QUESTIONNAIRE_CRM).toContain(k);
   });
 
+  it("`attendus` : seuls les entiers de 1 à 1000 partent (0, 1001, 2.5, NaN, null omis)", () => {
+    const sans = dossierPourCrm(
+      entree({ fiche: { ...FICHE_PLEINE, questionnaireAttendus: null } }),
+    );
+    for (const [valeur, part] of [
+      [0, false],
+      [1, true],
+      [5, true],
+      [1000, true],
+      [1001, false],
+      [2.5, false],
+      [Number.NaN, false],
+      [null, false],
+    ] as const) {
+      const e = entree({ fiche: { ...FICHE_PLEINE, questionnaireAttendus: valeur } });
+      const d = dossierPourCrm(e);
+      if (part) expect(d.questionnaire?.attendus).toBe(valeur);
+      else {
+        expect(d.questionnaire?.attendus).toBeUndefined();
+        // Sans `attendus`, le dossier est identique à celui d'avant : même empreinte.
+        expect(d).toEqual(sans);
+        expect(empreinteDossier(entreprisePourCrm(e), d)).toBe(
+          empreinteDossier(entreprisePourCrm(e), sans),
+        );
+      }
+    }
+  });
+
   it("n'ajoute jamais prochaine_le à taches_ouvertes quand le compte est 0", () => {
     const d = dossierPourCrm(entree({ fiche: { ...FICHE_PLEINE, nbTachesOuvertes: 0 } }));
     expect(d.taches_ouvertes).toEqual({ nb: 0 });
