@@ -5,6 +5,7 @@
 
 import { RetraitPersonne } from "@/components/admin/dossier-client/RetraitPersonne";
 import { adminPath } from "@/lib/admin-path";
+import { BoutonDepart } from "./BoutonDepart";
 import type { ContexteFiche } from "./contexte";
 
 export function ActionsDeLaPersonne(props: {
@@ -14,15 +15,18 @@ export function ActionsDeLaPersonne(props: {
   const { ctx, personneId } = props;
   const retire = ctx.sp["retirer"] === personneId;
   return (
-    // Ordre de Will (26/10/2026) : retirer UNE personne, super-administrateur seul.
-    <RetraitPersonne
-      contactId={personneId}
-      clientId={ctx.clientId}
-      peutRetirer={ctx.role === "super_admin"}
-      page={adminPath("fr", `/qualiopi/clients/${ctx.clientId}`)}
-      ouvert={retire}
-      erreur={retire ? ctx.erreur : null}
-      jeton={retire ? (ctx.sp["jeton"] ?? null) : null}
-    />
+    <>
+      <BoutonDepart clientId={ctx.clientId} personneId={personneId} maintenant={ctx.maintenant} />
+      {/* Ordre de Will (26/10/2026) : retirer UNE personne, super-administrateur seul. */}
+      <RetraitPersonne
+        contactId={personneId}
+        clientId={ctx.clientId}
+        peutRetirer={ctx.role === "super_admin"}
+        page={adminPath("fr", `/qualiopi/clients/${ctx.clientId}`)}
+        ouvert={retire}
+        erreur={retire ? ctx.erreur : null}
+        jeton={retire ? (ctx.sp["jeton"] ?? null) : null}
+      />
+    </>
   );
 }

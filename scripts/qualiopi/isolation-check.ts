@@ -158,9 +158,25 @@ const CONSOMMATEURS_ASSUMES: ReadonlySet<string> = new Set([
   // applique `TAUX_TVA_STANDARD` (SSOT de la TVA), jamais un taux recopié. Rien d'autre du domaine. Nommés seuls.
   "src/components/admin/dossier-client/fiche/OngletDevisFactures.tsx",
   "src/components/admin/dossier-client/fiche/montants.ts",
+  // Fiche client, lot B5 (29/10/2026) — AJOUT À LA LISTE PARTAGÉE (d'autres lots y ajoutent aussi des
+  // lignes) : nécessaire, ces deux fichiers lisent le domaine par les règles communes. La carte « Qui décide » dit « Financement : <OPCO> » avec la
+  // MÊME règle que le reste de la console (`opcoDuClient`, `nomOpcoDuClient` : opco-referentiel), jamais
+  // recopiée. Rien d'autre du domaine. Nommé seul.
+  "src/components/admin/dossier-client/fiche/PersonnesDecision.tsx",
+  // Même lot — « Noter le départ » trace l'action dans le journal d'audit commun (`logQualiopiActivity`,
+  // `_guards`), comme `features/dossier-client/actions.ts`. Rien d'autre du domaine. Nommé seul.
+  "src/features/dossier-client/fiche/depart-personne.ts",
   // Même lot — `fiche/contexte.ts` partage la lecture du client 360 entre la page et les emplacements
   // (`getClient360` sous `React.cache`) : une requête par affichage. Rien d'autre du domaine.
   "src/components/admin/dossier-client/fiche/contexte.ts",
+  // Fiche client, lot B1 (29/10/2026) — la tuile « Reste à encaisser » doit afficher EXACTEMENT l'encours de
+  // la fiche (`calculerEncoursDuCents`, règle unique du reste dû) et lit le type `Client360` ; la recopier
+  // donnerait deux règles. Rien d'autre du domaine. Nommé seul.
+  "src/features/dossier-client/fiche/lire-en-tete.ts",
+  // Fiche client, lot B7 (29/10/2026) — l'argent de l'onglet Devis et factures (affichage seul) :
+  // `resteDuNetCents` (règle unique du reste dû) et `estFactureOuverte` (source unique des statuts
+  // ouverts). Ce fichier est le SEUL point d'entrée ; les cartes et tuiles passent par lui. Nommé seul.
+  "src/features/dossier-client/fiche/argent-de-la-fiche.ts",
   // Chantier QNC, lot L05 — le libellé de la modalité « hybride » a UNE seule source
   // (`libelles-enumerations`, constante pure, sans lecture de base ni d'interrupteur) :
   // la fiche formation publique, la convocation et la console disent la même chose.
@@ -728,6 +744,11 @@ const CONSOMMATEURS_ASSUMES: ReadonlySet<string> = new Set([
   //    compris) et lit les fiches proches par ses fonctions ; sa spec appelle la
   //    vraie porte. Aucune seconde porte, aucune table nouvelle.
   "src/features/dossier-client/fiche-auto.ts",
+  // ── Fiche client, lot B9 (29/10/2026) : « Préparer une relance » d'un devis envoyé. Une seule arête,
+  //    la même que `actions.ts` : la garde d'écriture de la console et la trace d'audit
+  //    (`_guards` : `requireAdminWrite`, `logQualiopiActivity`). L'action ne fait que garer un brouillon
+  //    « à valider » (`email/outbox-service`) ; elle n'envoie rien. Nommée seule.
+  "src/features/dossier-client/fiche/actions-relance-devis.ts",
   "src/features/dossier-client/__tests__/la-fiche-prospect-se-cree-toute-seule-au-rendez-vous-calendly.spec.ts",
   // ── Demandes du Tour France IA (2026-10-27, PR-2a) : deux arêtes, nommées seules.
   //    · `fiche.ts` : porte unique des fiches (`crm/porte-client.ts`: recherche des fiches proches,

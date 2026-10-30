@@ -6,6 +6,8 @@ import Link from "next/link";
 
 import { AdminBadge } from "@/components/admin/ui/AdminBadge";
 import type { EchangeDuFil, GenreEchange } from "@/features/dossier-client/fil-des-echanges";
+import { NomDestinataire } from "./fiche/NomDestinataire";
+import { compterEmails, TuilesEmails } from "./fiche/TuilesEmails";
 
 const GENRE: Readonly<Record<GenreEchange, string>> = {
   rendez_vous: "Rendez-vous",
@@ -29,18 +31,26 @@ export function FilDesEchanges({
   sourcesEnPanne = 0,
   clientId,
   adminPrefix,
+  destinataires,
 }: {
   fil: ReadonlyArray<EchangeDuFil>;
   /** Sources de lecture en panne : le fil est incomplet. */
   sourcesEnPanne?: number;
   clientId: string;
   adminPrefix: string;
+  /** NOM du destinataire par clé de ligne, quand il est connu. Jamais l'adresse. */
+  destinataires?: Readonly<Record<string, string>>;
 }): React.ReactElement {
+  const { envoyes, aValider } = compterEmails(fil);
+  const clesAvecNom = fil
+    .filter((x) => x.genre === "email" || x.genre === "email_en_attente")
+    .map((x) => x.cle)
+    .join(",");
   return (
     <section aria-labelledby="fil-des-echanges" className="admin-carte">
       <div className="mb-[var(--space-admin-3)] flex flex-wrap items-baseline justify-between gap-[var(--space-admin-3)]">
         <h2 id="fil-des-echanges" className="admin-carte-titre">
-          Fil des échanges
+          E-mails et courriers de cette fiche
         </h2>
         <Link
           href={`/fr/${adminPrefix}/emails-envoyes?client=${clientId}&fenetre=0`}
@@ -54,6 +64,7 @@ export function FilDesEchanges({
         le plus récent d&apos;abord. L&apos;objet et le contenu de chaque e-mail sont gardés 5 ans ;
         rien n&apos;est supprimé automatiquement.
       </p>
+      <TuilesEmails envoyes={envoyes} aValider={aValider} />
       {sourcesEnPanne > 0 ? (
         <p role="alert" className="admin-alert admin-alert-warning mb-[var(--space-admin-3)]">
           <span>
@@ -75,15 +86,31 @@ export function FilDesEchanges({
               <span className="text-[color:var(--color-admin-fg-muted)] tabular-nums">
                 {jourHeure(e.date)}
               </span>
-              <AdminBadge tone="outline">{GENRE[e.genre]}</AdminBadge>
-              {e.lien !== null ? (
+              <AdminBadge tone="outline">
+                {e.canal === "telegram" ? "Message Telegram" : GENRE[e.genre]}
+              </AdminBadge>
+              {e.lien !== null && e.genre !== "email" ? (
                 <Link href={e.lien} className="admin-link">
                   {e.titre}
                 </Link>
               ) : (
                 <span>{e.titre}</span>
               )}
+              {destinataires !== undefined ? (
+                destinataires[e.cle] != null ? (
+                  <span className="text-[color:var(--color-admin-fg-muted)]">
+                    à {destinataires[e.cle]}
+                  </span>
+                ) : null
+              ) : e.genre === "email" || e.genre === "email_en_attente" ? (
+                <NomDestinataire clientId={clientId} cles={clesAvecNom} cle={e.cle} />
+              ) : null}
               <span className="text-[color:var(--color-admin-fg-muted)]">{e.etat}</span>
+              {e.lien !== null && e.genre === "email" ? (
+                <Link href={e.lien} className="admin-link inline-flex min-h-[44px] items-center">
+                  Voir la copie
+                </Link>
+              ) : null}
             </li>
           ))}
         </ul>

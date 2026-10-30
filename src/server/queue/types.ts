@@ -145,6 +145,7 @@ export type EmailJobName =
   | "ressources-magic-link"
   // Hub facturation — envois MANUELS (admin) de devis/facture avec PDF joint
   | "devis-envoi"
+  | "relance-devis-client"
   | "facture-envoi"
   // Lot A8c — remboursement OPCO : après le règlement complet de sa facture,
   // l'entreprise reçoit la facture acquittée et le certificat de réalisation.

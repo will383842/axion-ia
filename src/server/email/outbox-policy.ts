@@ -57,6 +57,7 @@ export const EMAILS_A_VALIDER_PAR_DEFAUT: readonly string[] = [
   // ⚠️ NE PAS remettre ce template ici sans supprimer la confirmation en amont :
   // deux garages successifs sur un même envoi, c'est un envoi qui n'a pas lieu.
   "devis-envoi",
+  "relance-devis-client",
   "convention-envoi",
   "facture-envoi",
   // Lot A8c — préparé seul à l'encaissement : il part au client, donc relu.
@@ -194,6 +195,7 @@ export const LIBELLE_TEMPLATE_EMAIL: Record<string, string> = {
   "apporteur-virement-fait": "Apporteur : virement de commission confirmé",
   "apporteur-lien-espace": "Apporteur : lien de son espace, à sa demande",
   "devis-envoi": "Envoi d'un devis",
+  "relance-devis-client": "Relance d'un devis sans réponse",
   "convention-envoi": "Envoi d'une convention",
   "recueil-besoin": "Recueil du besoin : questionnaire envoyé à l'entreprise (et relances)",
   "facture-envoi": "Envoi d'une facture",

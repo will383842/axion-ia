@@ -176,7 +176,13 @@ describe("lireFilDesEchanges", () => {
 describe("FilDesEchanges", () => {
   it("rend le fil et le lien vers le journal filtré par client", () => {
     const html = renderToStaticMarkup(
-      <FilDesEchanges fil={[e("x", "2026-10-25T10:05:00Z")]} clientId="cl" adminPrefix="adm" />,
+      // Les noms sont lus par un composant asynchrone (non rendu ici) : on les donne déjà lus.
+      <FilDesEchanges
+        fil={[e("x", "2026-10-25T10:05:00Z")]}
+        clientId="cl"
+        adminPrefix="adm"
+        destinataires={{}}
+      />,
     );
     expect(html).toContain("/fr/adm/emails-envoyes?client=cl");
     expect(html).toContain("11:05");
