@@ -158,6 +158,14 @@ const CONSOMMATEURS_ASSUMES: ReadonlySet<string> = new Set([
   // applique `TAUX_TVA_STANDARD` (SSOT de la TVA), jamais un taux recopié. Rien d'autre du domaine. Nommés seuls.
   "src/components/admin/dossier-client/fiche/OngletDevisFactures.tsx",
   "src/components/admin/dossier-client/fiche/montants.ts",
+  // Fiche client, lot B5 (29/10/2026) — AJOUT À LA LISTE PARTAGÉE (d'autres lots y ajoutent aussi des
+  // lignes) : nécessaire, ces deux fichiers lisent le domaine par les règles communes. La carte « Qui décide » dit « Financement : <OPCO> » avec la
+  // MÊME règle que le reste de la console (`opcoDuClient`, `nomOpcoDuClient` : opco-referentiel), jamais
+  // recopiée. Rien d'autre du domaine. Nommé seul.
+  "src/components/admin/dossier-client/fiche/PersonnesDecision.tsx",
+  // Même lot — « Noter le départ » trace l'action dans le journal d'audit commun (`logQualiopiActivity`,
+  // `_guards`), comme `features/dossier-client/actions.ts`. Rien d'autre du domaine. Nommé seul.
+  "src/features/dossier-client/fiche/depart-personne.ts",
   // Même lot — `fiche/contexte.ts` partage la lecture du client 360 entre la page et les emplacements
   // (`getClient360` sous `React.cache`) : une requête par affichage. Rien d'autre du domaine.
   "src/components/admin/dossier-client/fiche/contexte.ts",
@@ -165,6 +173,10 @@ const CONSOMMATEURS_ASSUMES: ReadonlySet<string> = new Set([
   // la fiche (`calculerEncoursDuCents`, règle unique du reste dû) et lit le type `Client360` ; la recopier
   // donnerait deux règles. Rien d'autre du domaine. Nommé seul.
   "src/features/dossier-client/fiche/lire-en-tete.ts",
+  // Fiche client, lot B7 (29/10/2026) — l'argent de l'onglet Devis et factures (affichage seul) :
+  // `resteDuNetCents` (règle unique du reste dû) et `estFactureOuverte` (source unique des statuts
+  // ouverts). Ce fichier est le SEUL point d'entrée ; les cartes et tuiles passent par lui. Nommé seul.
+  "src/features/dossier-client/fiche/argent-de-la-fiche.ts",
   // Chantier QNC, lot L05 — le libellé de la modalité « hybride » a UNE seule source
   // (`libelles-enumerations`, constante pure, sans lecture de base ni d'interrupteur) :
   // la fiche formation publique, la convocation et la console disent la même chose.

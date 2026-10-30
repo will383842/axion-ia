@@ -55,9 +55,8 @@ beforeEach(() => vi.clearAllMocks());
 
 // Titres de section (balise h2) : « Devis » seul se trouverait dans n'importe quel texte.
 const SECTIONS = [
-  "Sessions de formation",
-  "Contrats de coaching",
-  "Missions d&#x27;audit",
+  // Lot B7 : sessions, coaching et audits tiennent désormais dans UNE carte.
+  "Formations, coaching et audits",
   "Devis",
   "Factures",
   "Documents générés",
@@ -66,7 +65,7 @@ const SECTIONS = [
 ];
 
 describe("l'onglet Devis et factures, emplacements vides", () => {
-  it("rend les huit sections", async () => {
+  it("rend ses sections (six depuis le lot B7)", async () => {
     d.session = { user: { id: "u1", role: "admin" } };
     const html = await rendreFiche(Page, "devis-factures");
     for (const titre of SECTIONS) expect(html).toMatch(new RegExp(`<h2[^>]*>${titre}</h2>`));

@@ -18,6 +18,8 @@
  * Une lecture en panne rend sa part vide : le fil s'affiche avec ce qui reste.
  */
 
+import { cache } from "react";
+
 import { prisma } from "@/lib/prisma";
 import {
   fichesCouvertes,
@@ -42,6 +44,9 @@ export interface EchangeDuFil {
   readonly etat: string;
   /** Statut d'envoi, pour les seules lignes `email` (journal) : « sent » = parti pour de bon. */
   readonly statutEmail?: EmailLogStatus;
+  /** Courriers du questionnaire seulement : canal (« email », « telegram »...) et statut brut. */
+  readonly canal?: string;
+  readonly statutCourrier?: string;
   /** Adresse interne de la copie ou de la page, ou `null`. */
   readonly lien: string | null;
 }
@@ -62,7 +67,7 @@ export interface FilLu {
   readonly sourcesEnPanne: number;
 }
 
-const LIBELLE_STATUT_RENDEZ_VOUS: Readonly<Record<string, string>> = {
+export const LIBELLE_STATUT_RENDEZ_VOUS: Readonly<Record<string, string>> = {
   planifie: "à venir",
   tenu: "a eu lieu",
   annule: "annulé",
@@ -70,7 +75,10 @@ const LIBELLE_STATUT_RENDEZ_VOUS: Readonly<Record<string, string>> = {
   reporte: "reporté",
 };
 
-export async function lireFilDesEchanges(clientId: string, adminPrefix: string): Promise<FilLu> {
+/** Une seule lecture par requête, même quand le bandeau et l'onglet la demandent tous deux. */
+export const lireFilDesEchanges = cache(lireFilBrut);
+
+async function lireFilBrut(clientId: string, adminPrefix: string): Promise<FilLu> {
   const base = `/fr/${adminPrefix}`;
   let sourcesEnPanne = 0;
   const sans = async <T>(p: Promise<T[]>): Promise<T[]> =>
@@ -171,6 +179,7 @@ export async function lireFilDesEchanges(clientId: string, adminPrefix: string):
           select: {
             id: true,
             nature: true,
+            canal: true,
             statut: true,
             prevuLe: true,
             faitLe: true,
@@ -184,6 +193,8 @@ export async function lireFilDesEchanges(clientId: string, adminPrefix: string):
             date: c.faitLe ?? c.prevuLe,
             titre: `Questionnaire avant audit : ${LIBELLE_NATURE[c.nature] ?? c.nature}`,
             etat: LIBELLE_STATUT[c.statut] ?? c.statut,
+            canal: c.canal,
+            statutCourrier: c.statut,
             lien:
               c.questionnaire?.rencontreId != null
                 ? `${base}/rendez-vous/rencontres/${c.questionnaire.rencontreId}`
