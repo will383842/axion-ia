@@ -169,6 +169,10 @@ const CONSOMMATEURS_ASSUMES: ReadonlySet<string> = new Set([
   // Même lot — `fiche/contexte.ts` partage la lecture du client 360 entre la page et les emplacements
   // (`getClient360` sous `React.cache`) : une requête par affichage. Rien d'autre du domaine.
   "src/components/admin/dossier-client/fiche/contexte.ts",
+  // Fiche client, lot B1 (29/10/2026) — la tuile « Reste à encaisser » doit afficher EXACTEMENT l'encours de
+  // la fiche (`calculerEncoursDuCents`, règle unique du reste dû) et lit le type `Client360` ; la recopier
+  // donnerait deux règles. Rien d'autre du domaine. Nommé seul.
+  "src/features/dossier-client/fiche/lire-en-tete.ts",
   // Fiche client, lot B7 (29/10/2026) — l'argent de l'onglet Devis et factures (affichage seul) :
   // `resteDuNetCents` (règle unique du reste dû) et `estFactureOuverte` (source unique des statuts
   // ouverts). Ce fichier est le SEUL point d'entrée ; les cartes et tuiles passent par lui. Nommé seul.
