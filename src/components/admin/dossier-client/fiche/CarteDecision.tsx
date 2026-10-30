@@ -1,7 +1,16 @@
 // Carte « Qui décide » (lot B5). Composant serveur PUR : reçoit ses données, ne lit rien.
 // Un rôle n'est ni bon ni mauvais : teinte grise, l'icône et le mot portent le sens.
 
-import { Gavel, GraduationCap, Handshake, MessageCircle, UserRound, Wallet } from "lucide-react";
+import {
+  Gavel,
+  GraduationCap,
+  Handshake,
+  Hand,
+  MessageCircle,
+  Sparkles,
+  UserRound,
+  Wallet,
+} from "lucide-react";
 
 import { AdminBloc } from "@/components/admin/ui/AdminBloc";
 import { LIBELLE_ROLE_PROJET } from "@/features/dossier-client/libelles";
@@ -24,6 +33,8 @@ const ORDRE: ReadonlyArray<RoleDeLaCarte> = [
   "referent",
   "utilisateur",
   "prescripteur",
+  "influenceur",
+  "bloqueur",
   "autre",
 ];
 
@@ -33,6 +44,8 @@ const ICONE = {
   referent: MessageCircle,
   utilisateur: GraduationCap,
   prescripteur: Handshake,
+  influenceur: Sparkles,
+  bloqueur: Hand,
   autre: UserRound,
 } as const satisfies Record<RoleDeLaCarte, unknown>;
 
