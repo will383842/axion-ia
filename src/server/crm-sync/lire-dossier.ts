@@ -50,7 +50,7 @@ function aujourdhuiParis(maintenant: Date): Date {
  * (`qualiopi/financements/statuts-facture.ts`), recopié ici car la synchro ne
  * franchit pas le cloisonnement du domaine Qualiopi. Typé sur l'enum Prisma.
  */
-const STATUTS_FACTURE_OUVERTE = [
+export const STATUTS_FACTURE_OUVERTE = [
   "emise",
   "partiellement_payee",
   "en_retard",

@@ -298,7 +298,8 @@ function completerFiche(dossier: DossierPourCrm, fiche: FicheCompletePourCrm): v
   const nbTaches = nombre(fiche.nbTachesOuvertes);
   if (nbTaches !== undefined) {
     dossier.taches_ouvertes = { nb: nbTaches };
-    if (jourAction !== undefined) dossier.taches_ouvertes.prochaine_le = jourAction;
+    // `{ nb: 0, prochaine_le }` est un état impossible : sans tâche ouverte, pas de date.
+    if (nbTaches > 0 && jourAction !== undefined) dossier.taches_ouvertes.prochaine_le = jourAction;
   }
   const nbEmails = nombre(fiche.nbEmailsConsole);
   if (nbEmails !== undefined) dossier.nb_emails_console = nbEmails;

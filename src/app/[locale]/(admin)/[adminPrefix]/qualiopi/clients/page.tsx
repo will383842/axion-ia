@@ -149,7 +149,7 @@ export default async function QualiopiClientsPage({ params, searchParams }: Page
         </form>
       </AdminBloc>
 
-      {recherche !== "" ? (
+      {recherche !== "" && !(voirArchives && partage.lectureImpossible) ? (
         <p className="mb-[var(--space-admin-4)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
           {clients.length === 0
             ? `${voirArchives ? "Aucune fiche archivée" : "Aucune fiche active"} ne correspond à « ${recherche} »${
@@ -174,7 +174,17 @@ export default async function QualiopiClientsPage({ params, searchParams }: Page
 
       {partage.lectureImpossible ? (
         <p className="mb-[var(--space-admin-4)] text-[length:var(--text-admin-sm)]">
-          {`Archives : ${TEXTE_LECTURE_IMPOSSIBLE}`}
+          {`Archives : ${TEXTE_LECTURE_IMPOSSIBLE} pour le moment. `}
+          {voirArchives ? (
+            <Link
+              href={
+                recherche === "" ? hrefListe : `${hrefListe}?q=${encodeURIComponent(recherche)}`
+              }
+              className="inline-flex min-h-11 items-center underline"
+            >
+              Revenir aux clients
+            </Link>
+          ) : null}
         </p>
       ) : voirArchives ? (
         <p className="mb-[var(--space-admin-4)] text-[length:var(--text-admin-sm)]">
