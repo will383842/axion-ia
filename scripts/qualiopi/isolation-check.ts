@@ -152,9 +152,6 @@ const CONSOMMATEURS_ASSUMES: ReadonlySet<string> = new Set([
   // `src/server/qualiopi` ne change rien (la garde compte tout import du domaine) ; le fichier
   // n'importe que ces deux modules, rien d'autre. Nommé seul.
   "src/server/crm-sync/retour-dossier.ts",
-  // Synchro console ↔ CRM, fiche complète (lot C1) — lit le statut des factures pour la santé
-  // envoyée au CRM (`estFactureOuverte`), aucun montant. Nommé seul.
-  "src/server/crm-sync/lire-dossier.ts",
   // Fiche client, lot 0 (29/10/2026) — le bloc « Devis et factures » a été DÉPLACÉ tel quel de la page
   // (zone qualiopi) dans `fiche/OngletDevisFactures.tsx` pour que les lots suivants ne touchent plus la
   // page : il lit le type `Client360` et `resteDuNetCents` (règle unique du reste dû). `fiche/montants.ts`
