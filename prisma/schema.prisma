@@ -1759,6 +1759,11 @@ enum GuideRequestOrigine {
   /// Un administrateur a déclenché l'envoi depuis la console (lot L3).
   /// ⚠️ Jamais repris par le rattrapage automatique.
   admin
+  /// PV-1 (2026-11-01) — la personne a demandé le guide dans un MESSAGE PRIVÉ
+  /// d'un réseau (parcours « mot en commentaire → message privé → e-mail »).
+  /// Posée AVANT le code qui l'écrit (le worker atterrit avant l'application).
+  /// Le rattrapage la traite comme `formulaire` (tout sauf `admin`).
+  message_prive
 }
 
 model GuideRequest {

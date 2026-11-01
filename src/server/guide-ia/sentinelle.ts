@@ -47,7 +47,7 @@ export async function releverSentinelle(maintenant: Date = new Date()): Promise<
       prisma.emailLog.count({
         where: { template: GABARIT_GUIDE, status: "failed", failedAt: { gte: depuis } },
       }),
-      prisma.guideRequest.count({ where: { sentAt: null, origine: "formulaire" } }),
+      prisma.guideRequest.count({ where: { sentAt: null, origine: { not: "admin" } } }),
       prisma.guideRequest.count({ where: { firstClickAt: { gte: depuis } } }),
       // Inscriptions à la lettre du jour (amendement de Will : plus de double
       // opt-in, donc plus rien « à confirmer »).
