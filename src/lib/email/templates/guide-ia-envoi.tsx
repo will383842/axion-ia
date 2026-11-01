@@ -35,6 +35,7 @@ import { Button, Link, Section, Text } from "@react-email/components";
 import { EmailLayout, emailStyles } from "./_layout";
 import type { Locale } from "../../../../prisma/generated/client";
 import { GUIDE_IA_PAGES } from "@/content/guide-ia";
+import { TEXTE_CONFIRMATION_RESEAU } from "@/content/guides-reseau";
 import { CADENCE_LETTRE, TEXTE_REINSCRIPTION } from "@/content/guide-ia-formulaire";
 
 interface Payload {
@@ -43,6 +44,8 @@ interface Payload {
   confirmToken?: string;
   /** Inscrite à la lettre : lien de désinscription visible + en-tête One-Click. */
   unsubscribeToken?: string;
+  /** PV-1 — double accord d'une demande venue d'un réseau : bloc « confirmez d'un clic ». */
+  doubleAccordToken?: string;
   reprise?: boolean;
 }
 
@@ -130,7 +133,7 @@ export function GuideIaEnvoiEmail({
       // Deux liens d'ACTION dans le corps (le guide, et la lettre) : la rangée
       // de réseaux sociaux (lien de notoriété) cède sa place, comme sur les
       // e-mails du réseau d'apporteurs (§5.4).
-      sansReseauxSociaux={Boolean(p.confirmToken || p.unsubscribeToken)}
+      sansReseauxSociaux={Boolean(p.confirmToken || p.unsubscribeToken || p.doubleAccordToken)}
       locale={locale}
     >
       {p.reprise === true ? <Text style={emailStyles.paragraphStyle}>{t.reprise}</Text> : null}
@@ -170,6 +173,22 @@ export function GuideIaEnvoiEmail({
             </Link>
           </Text>
         </Section>
+      ) : p.doubleAccordToken ? (
+        // ⛔ BROUILLON (PV-1) : texte à valider par l'opérateur — `content/guides-reseau.ts`.
+        // Un clic sur le bouton ouvre la page de confirmation ; seul son POST inscrit.
+        <Section style={{ margin: "8px 0 4px 0" }}>
+          <Text style={{ ...emailStyles.paragraphStyle, fontWeight: 700 }}>
+            {TEXTE_CONFIRMATION_RESEAU[locale].titre}
+          </Text>
+          <Text style={emailStyles.paragraphStyle}>{TEXTE_CONFIRMATION_RESEAU[locale].corps}</Text>
+          <Button
+            href={urlConfirmationLettre(baseUrl, locale, p.doubleAccordToken)}
+            style={boutonSecondaire}
+            className="ax-cta"
+          >
+            {TEXTE_CONFIRMATION_RESEAU[locale].cta}
+          </Button>
+        </Section>
       ) : p.confirmToken ? (
         <Section style={{ margin: "8px 0 4px 0" }}>
           <Text style={{ ...emailStyles.paragraphStyle, fontWeight: 700 }}>{t.lettreTitre}</Text>
@@ -184,7 +203,11 @@ export function GuideIaEnvoiEmail({
         </Section>
       ) : null}
       <Text style={{ ...emailStyles.paragraphStyle, color: emailStyles.COLORS.textMuted }}>
-        {p.unsubscribeToken ? t.noteInscrite : t.note}
+        {p.unsubscribeToken
+          ? t.noteInscrite
+          : p.doubleAccordToken
+            ? TEXTE_CONFIRMATION_RESEAU[locale].note
+            : t.note}
       </Text>
     </EmailLayout>
   );

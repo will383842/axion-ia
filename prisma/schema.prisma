@@ -17871,6 +17871,24 @@ model SiteVideoReception {
   @@map("site_video_receptions")
 }
 
+/// PV-1 (2026-11-01) — journal des demandes SIGNÉES du Studio pour le parcours « mot en
+/// commentaire → message privé → e-mail → guide ». Clé d'idempotence = identifiant du run Zernio
+/// (`cle_idempotence`) ; nonce unique = anti-rejeu. La réponse enregistrée est rejouée telle quelle.
+/// Ne porte JAMAIS l'adresse e-mail (ni le corps, seulement son empreinte SHA-256).
+/// rgpd: technique — journal d'idempotence des appels signés du Studio : identifiant de run, nonce, empreinte du corps et réponse ; ni adresse ni donnée de personne
+model GuideReseauReception {
+  id             String   @id @default(uuid()) @db.Uuid
+  cleIdempotence String   @unique @map("cle_idempotence") @db.VarChar(80)
+  nonce          String   @unique @db.Char(32)
+  corpsSha256    String   @map("corps_sha256") @db.Char(64)
+  reponseStatut  Int      @map("reponse_statut")
+  reponseCorps   Json     @map("reponse_corps")
+  recueLe        DateTime @default(now()) @map("recue_le") @db.Timestamptz(3)
+
+  @@index([recueLe], map: "guide_reseau_receptions_recue_le_idx")
+  @@map("guide_reseau_receptions")
+}
+
 /// rgpd: dossier-client
 /// Une demande du Tour France IA : la mini-demande faite AVANT le rendez-vous en visio
 /// (e-mail, ville, nom, téléphone). Table ajoutée par PR-2a ; le formulaire public est PR-2b.

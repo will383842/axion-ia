@@ -187,17 +187,19 @@ export async function rattraperGuides(maintenant: Date = new Date()): Promise<Ra
         },
         {
           confirmToken: lettre.confirmToken ?? null,
+          doubleAccordToken: lettre.doubleAccordToken ?? null,
           unsubscribeToken: lettre.unsubscribeToken ?? null,
           maintenant,
         },
       );
       if (r === "en-file") {
         relancees++;
-        if (lettre.confirmToken) {
+        const jetonConfirmation = lettre.confirmToken ?? lettre.doubleAccordToken;
+        if (jetonConfirmation) {
           confirmationsViaGuide++;
           await prisma.newsletterSubscriber
             .updateMany({
-              where: { email: c.email, confirmToken: lettre.confirmToken },
+              where: { email: c.email, confirmToken: jetonConfirmation },
               data: { confirmSentAt: maintenant },
             })
             .catch(() => undefined);
