@@ -20,6 +20,14 @@
  *   · une réservation reprise après 2 min qui porte la marque est CLOSE (réponse rejouée),
  *     jamais retraitée : pas de second e-mail.
  *
+ * ⚠️ SECRET PARTAGÉ AVEC LES VIDÉOS. `controlerEntree` (`src/server/videos/entree.ts`) exige
+ * aussi `VIDEOS_SITE_ENABLED=true`, vérifie la signature avec `VIDEOS_STUDIO_HMAC_SECRET` et
+ * partage le seau de débit `internal:videos:<ip>`. Choix assumé pour ce lot : la signature
+ * couvre méthode + chemin + empreinte du corps, donc une requête vidéo ne se rejoue pas ici
+ * (ni l'inverse). Contrepartie : une fuite du secret ouvre les DEUX routes. Séparer secret,
+ * drapeau et préfixe de débit (paramètres de `controlerEntree`) est le suivi recommandé,
+ * avant d'allumer `GUIDES_RESEAU_ENABLED`.
+ *
  * Seuls les traitements ABOUTIS sont journalisés : un corps invalide (422) ou une adresse
  * refusée ne consomment pas la clé, pour que le Studio puisse rappeler avec l'adresse corrigée.
  */
