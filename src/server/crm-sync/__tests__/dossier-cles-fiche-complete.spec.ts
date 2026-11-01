@@ -168,18 +168,21 @@ describe("photo du dossier : clés de la fiche complète", () => {
     for (const k of Object.keys(d.questionnaire!)) expect(CLES_QUESTIONNAIRE_CRM).toContain(k);
   });
 
-  it("`attendus` : seuls les entiers de 1 à 1000 partent (0, 1001, 2.5, NaN, null omis)", () => {
+  it("`attendus` : seuls les entiers de 1 à 1000 partent (0, -1, 1001, 2.5, NaN, ±Infinity, null omis)", () => {
     const sans = dossierPourCrm(
       entree({ fiche: { ...FICHE_PLEINE, questionnaireAttendus: null } }),
     );
     for (const [valeur, part] of [
       [0, false],
+      [-1, false],
       [1, true],
       [5, true],
       [1000, true],
       [1001, false],
       [2.5, false],
       [Number.NaN, false],
+      [Number.POSITIVE_INFINITY, false],
+      [Number.NEGATIVE_INFINITY, false],
       [null, false],
     ] as const) {
       const e = entree({ fiche: { ...FICHE_PLEINE, questionnaireAttendus: valeur } });
