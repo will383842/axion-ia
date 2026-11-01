@@ -139,6 +139,9 @@ async function demanderDoubleAccord(d: DemandeGuideReseau, opposee: boolean): Pr
     case "confirmed":
       return "oui_deja_confirme";
     case "pending": {
+      // Le « Oui » le plus récent fait foi : une ligne `pending` ANCIENNE (ancien double
+      // opt-in) est réécrite avec la référence et la version du texte réseau de CETTE
+      // demande. Choix assumé ; elle reste `pending` tant que la personne n'a pas cliqué.
       // Jeton gardé s'il existe : le lien d'un e-mail précédent reste valable.
       await prisma.newsletterSubscriber.updateMany({
         where: { id: existant.id, status: "pending" },
@@ -163,9 +166,23 @@ async function demanderDoubleAccord(d: DemandeGuideReseau, opposee: boolean): Pr
   }
 }
 
+export interface CrochetsTraitement {
+  /**
+   * Appelé DÈS que l'e-mail du guide est en file (`en-file` ou `en-validation`), avant tout
+   * autre effet : l'appelant y écrit la marque « e-mail en file » du journal d'idempotence.
+   */
+  readonly apresMiseEnFile?: (r: {
+    readonly demandeId: string;
+    readonly nouvelle: boolean;
+    readonly guide: ResultatEnvoiGuide;
+    readonly accord: EtatAccord;
+  }) => Promise<void>;
+}
+
 export async function traiterDemande(
   d: DemandeGuideReseau,
   maintenant: Date = new Date(),
+  crochets: CrochetsTraitement = {},
 ): Promise<ResultatTraitement> {
   // Le domaine reçoit-il des e-mails ? « inconnu » (panne DNS) laisse passer.
   if ((await domaineRecoitDesEmails(d.email)) === "non") {
@@ -201,14 +218,29 @@ export async function traiterDemande(
     },
     {
       confirmToken: dansLEmail.confirmToken ?? null,
-      doubleAccordToken: dansLEmail.doubleAccordToken ?? null,
+      // Le bloc « Oui, je confirme » n'est transmis que si CETTE demande dit « Oui » et que
+      // l'adresse n'est pas écartée : une ancienne ligne `pending` réseau ne suffit pas
+      // (opposition ultérieure, ou « Non » dit cette fois-ci).
+      doubleAccordToken:
+        accord === "oui_en_attente_de_clic" ? (dansLEmail.doubleAccordToken ?? null) : null,
       unsubscribeToken: dansLEmail.unsubscribeToken ?? null,
       maintenant,
     },
   );
 
+  if (guide === "en-file" || guide === "en-validation") {
+    await crochets.apresMiseEnFile?.({
+      demandeId: demande.id,
+      nouvelle: demande.nouvelle,
+      guide,
+      accord,
+    });
+  }
+
   // La trace d'envoi du bloc de confirmation suit l'envoi réel de l'e-mail.
-  const jeton = dansLEmail.doubleAccordToken ?? dansLEmail.confirmToken;
+  const jeton =
+    (accord === "oui_en_attente_de_clic" ? dansLEmail.doubleAccordToken : undefined) ??
+    dansLEmail.confirmToken;
   if (jeton && guide === "en-file") {
     await prisma.newsletterSubscriber
       .updateMany({

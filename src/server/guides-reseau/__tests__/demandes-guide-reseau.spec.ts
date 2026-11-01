@@ -21,6 +21,7 @@ const bd = vi.hoisted(() => ({
   envois: [] as unknown[][],
   enfile: { reponse: { enqueued: true } as Record<string, unknown> },
   logs: { destinataire: 0, heure: 0 },
+  echecFinal: false,
   n: 0,
 }));
 
@@ -92,6 +93,10 @@ vi.mock("@/lib/prisma", () => ({
         return {};
       },
       updateMany: async ({ where, data }: { where: Ligne; data: Ligne }) => {
+        if (bd.echecFinal && data.reponseStatut === 200) {
+          bd.echecFinal = false; // une seule panne : l'enregistrement du catch passe
+          throw new Error("panne du journal");
+        }
         bd.journal.filter((j) => egal(j, where)).forEach((j) => Object.assign(j, data));
         return {};
       },
@@ -325,6 +330,51 @@ describe("idempotence (clé = identifiant du run)", () => {
     expect(bd.preuves).toHaveLength(1);
   });
 
+  it("exception APRÈS la mise en file, puis nouvel appel → UN seul enqueueEmail (clé jamais libérée)", async () => {
+    // Le journal plante UNE fois, à l'écriture de la réponse finale, après la mise en file.
+    bd.echecFinal = true;
+    const a = await appel();
+    expect(a.status).toBe(200);
+    expect(bd.envois).toHaveLength(1);
+    expect(bd.journal).toHaveLength(1);
+    expect(bd.journal[0]!.reponseStatut).toBe(200);
+    const b = await appel();
+    expect(b.headers.get("x-axion-rejeu")).toBe("1");
+    expect(bd.envois).toHaveLength(1);
+  });
+
+  it("réservation reprise après 2 min : si la marque « e-mail en file » existe, rien n'est remis en file", async () => {
+    bd.journal.push({
+      id: "j0",
+      cleIdempotence: corpsBase.cleIdempotence,
+      nonce: "c".repeat(32),
+      corpsSha256: sha256Hex(JSON.stringify(corpsBase)),
+      reponseStatut: 0,
+      reponseCorps: { marque: "email_en_file", ok: true, demandeId: "d1", guide: "en-file" },
+      recueLe: new Date(Date.now() - 5 * 60_000),
+    });
+    const r = await appel();
+    expect(r.status).toBe(200);
+    expect(r.headers.get("x-axion-rejeu")).toBe("1");
+    expect(bd.envois).toHaveLength(0);
+    expect(bd.journal[0]).toMatchObject({ reponseStatut: 200 });
+    expect(bd.journal[0]!.reponseCorps).not.toHaveProperty("marque");
+  });
+
+  it("réservation périmée SANS marque → reprise normale (un envoi)", async () => {
+    bd.journal.push({
+      id: "j0",
+      cleIdempotence: corpsBase.cleIdempotence,
+      nonce: "d".repeat(32),
+      corpsSha256: sha256Hex(JSON.stringify(corpsBase)),
+      reponseStatut: 0,
+      reponseCorps: {},
+      recueLe: new Date(Date.now() - 5 * 60_000),
+    });
+    expect((await appel()).status).toBe(200);
+    expect(bd.envois).toHaveLength(1);
+  });
+
   it("même run, corps différent → 409 cle_reutilisee", async () => {
     await appel();
     const r = await appel({ ...corpsBase, mot: "devis" });
@@ -403,6 +453,47 @@ describe("accord : double accord", () => {
       formRef: "newsletter-reseau-message-prive",
       consentVersion: "m2-brouillon-v1",
     });
+  });
+
+  it("adresse OPPOSÉE avec une ligne `pending` réseau existante → l'e-mail ne porte PAS le bouton", async () => {
+    bd.abonnes.push({
+      id: "a0",
+      email: ADRESSE,
+      status: "pending",
+      confirmToken: "t".repeat(40),
+      unsubscribeToken: "u".repeat(40),
+      consentFormRef: "newsletter-reseau-message-prive",
+    });
+    bd.opposees.add(ADRESSE);
+    const r = await appel(OUI);
+    expect(((await r.json()) as Ligne).accord).toBe("ecarte");
+    expect(bd.envois).toHaveLength(1);
+    expect((bd.envois[0]![3] as Ligne).doubleAccordToken).toBeUndefined();
+  });
+
+  it("accord « non » avec une ligne `pending` réseau existante → l'e-mail ne porte PAS le bouton", async () => {
+    bd.abonnes.push({
+      id: "a0",
+      email: ADRESSE,
+      status: "pending",
+      confirmToken: "t".repeat(40),
+      unsubscribeToken: "u".repeat(40),
+      consentFormRef: "newsletter-reseau-message-prive",
+    });
+    await appel({ ...corpsBase, accord: "non" });
+    expect(bd.envois).toHaveLength(1);
+    expect((bd.envois[0]![3] as Ligne).doubleAccordToken).toBeUndefined();
+  });
+
+  it("confirmerLettre refuse une adresse opposée (jeton pending valide)", async () => {
+    await appel(OUI);
+    bd.opposees.add(ADRESSE);
+    const c = await confirmerLettre(bd.abonnes[0]!.confirmToken as string, {
+      maintenant: new Date(),
+    });
+    expect(c.ok).toBe(false);
+    expect(bd.abonnes[0]!.status).toBe("pending");
+    expect(bd.preuves.map((p) => p.action)).toEqual(["information"]);
   });
 
   it("adresse déjà abonnée → rien ne change", async () => {
