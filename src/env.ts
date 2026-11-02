@@ -120,7 +120,8 @@ export const env = createEnv({
     // Copie complète des réponses d'un questionnaire (super-administrateur) : ABSENT = ÉTEINT.
     QUESTIONNAIRE_EXPORT_COMPLET_ENABLED: z.string().optional(),
     // Rapport d'analyse avant audit (2026-11-02) : bouton « Lancer l'analyse complète » de la fiche
-    // client (super-administrateur). ABSENT = ÉTEINT. Les rapports déjà faits restent lisibles.
+    // client (super-administrateur). Cible : les deux (le site lance, le worker traite).
+    // ABSENT = ÉTEINT. Les rapports déjà faits restent lisibles.
     RAPPORT_AVANT_AUDIT_ENABLED: z.string().optional(),
     // Alerte Telegram du Tour France IA (2026-10-29) : nouvelle mini-demande et ville qui atteint
     // 5 demandes comptées. Lu par le SITE (`features/tour-de-france/alertes.ts`). ⚠️ EXCEPTION à la

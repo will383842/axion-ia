@@ -1,7 +1,7 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import { creerAccesEnMemoire } from "../memoire";
-import { base, CLIENT, ficheVide, proposition, resume, RAPPORT } from "./fixtures";
+import { AUTRE_CLIENT, base, CLIENT, ficheVide, proposition, resume, RAPPORT } from "./fixtures";
 
 const etat = vi.hoisted(() => ({
   role: "super_admin" as string | null,
@@ -29,8 +29,12 @@ vi.mock("../lecture", () => ({
 }));
 vi.mock("../interrupteur", () => ({ rapportAvantAuditActif: () => true }));
 
-const { completerFicheAction, lancerAnalyseAction, validerPdfClientAction } =
-  await import("../actions");
+const {
+  completerFicheAction,
+  lancerAnalyseAction,
+  poserSirenDepuisRapportAction,
+  validerPdfClientAction,
+} = await import("../actions");
 
 function formulaire(champs: Record<string, string | string[]>): FormData {
   const f = new FormData();
@@ -161,5 +165,45 @@ describe("« Lancer l'analyse complète » (Server Action)", () => {
     const r = await lancerAnalyseAction({ clientId: CLIENT });
     expect(r.ok).toBe(true);
     expect(logQualiopiActivity).not.toHaveBeenCalled();
+  });
+});
+
+describe("« Poser ce SIREN » (Server Action propre au rapport)", () => {
+  it("relit la proposition DANS LE RAPPORT, écrit par la porte unique, et trace", async () => {
+    const r = await poserSirenDepuisRapportAction(CLIENT, RAPPORT, "p2");
+    expect(r).toEqual({ ok: true, texte: "SIREN posé sur la fiche." });
+    expect(updateClientAction).toHaveBeenCalledWith({ id: CLIENT, siren: "123456789" });
+    expect(logQualiopiActivity).toHaveBeenCalledWith(
+      expect.objectContaining({
+        action: "client.complete_depuis_rapport",
+        changes: expect.objectContaining({ champs: [expect.objectContaining({ champ: "siren" })] }),
+      }),
+    );
+  });
+
+  it("⛔ refuse si la fiche a déjà un SIREN", async () => {
+    etat.fiche = ficheVide({ siren: "987654321" });
+    const r = await poserSirenDepuisRapportAction(CLIENT, RAPPORT, "p2");
+    expect(r.ok).toBe(false);
+    expect(updateClientAction).not.toHaveBeenCalled();
+  });
+
+  it("⛔ une clé qui ne désigne pas un SIREN du rapport n'écrit rien", async () => {
+    for (const cle of ["p0", "p9", "x"]) {
+      expect((await poserSirenDepuisRapportAction(CLIENT, RAPPORT, cle)).ok).toBe(false);
+    }
+    expect(updateClientAction).not.toHaveBeenCalled();
+  });
+
+  it("⛔ super-administrateur seul ; rapport d'un autre client ; identifiant non UUID", async () => {
+    etat.role = "admin";
+    expect(await poserSirenDepuisRapportAction(CLIENT, RAPPORT, "p2")).toEqual({
+      ok: false,
+      texte: "Réservé au super-administrateur.",
+    });
+    etat.role = "super_admin";
+    expect((await poserSirenDepuisRapportAction(AUTRE_CLIENT, RAPPORT, "p2")).ok).toBe(false);
+    expect((await poserSirenDepuisRapportAction(CLIENT, "r1", "p2")).ok).toBe(false);
+    expect(updateClientAction).not.toHaveBeenCalled();
   });
 });

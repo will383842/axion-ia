@@ -9,10 +9,9 @@
 // Toutes les décisions sont dans `features/rapport-avant-audit/ecran/logique.ts` (pur, testé).
 
 import { AdminBloc } from "@/components/admin/ui/AdminBloc";
-import { AdminButton } from "@/components/admin/ui/AdminButton";
-import { confirmerSirenFormAction } from "@/features/dossier-client/actions";
 import {
   completerFicheAction,
+  poserSirenDepuisRapportAction,
   validerPdfClientAction,
 } from "@/features/rapport-avant-audit/ecran/actions";
 import type { PassageRetire, ResumeRapport } from "@/features/rapport-avant-audit/ecran/contrat";
@@ -229,21 +228,18 @@ function CompleterLaFiche({
         </>
       )}
       {sirens.map((l) => (
-        <form
+        // La VALEUR n'est pas dans le formulaire : l'action la relit dans le rapport, par sa clé.
+        <FormulaireRapport
           key={`siren-${l.cle}`}
-          action={confirmerSirenFormAction}
-          className="flex flex-wrap items-center gap-[var(--space-admin-2)] text-[length:var(--text-admin-xs)]"
+          action={poserSirenDepuisRapportAction.bind(null, clientId, rapportId, l.cle)}
+          libelle="Poser ce SIREN"
+          libelleEnCours="Écriture…"
         >
-          <input type="hidden" name="clientId" value={clientId} />
-          <input type="hidden" name="siren" value={l.valeurAEcrire ?? ""} />
-          <span>
+          <p className="text-[length:var(--text-admin-xs)]">
             SIREN proposé par l&apos;analyse : <span className="font-mono">{l.valeurAEcrire}</span>{" "}
             ({l.source}). Vérifiez-le avant de le poser.
-          </span>
-          <AdminButton type="submit" variant="secondary">
-            Poser ce SIREN
-          </AdminButton>
-        </form>
+          </p>
+        </FormulaireRapport>
       ))}
     </div>
   );

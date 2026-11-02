@@ -20,7 +20,6 @@ export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/;
-const ID_RAPPORT = /^[0-9A-Za-z_-]{1,100}$/;
 
 function refus(statut: number, texte: string): NextResponse {
   return new NextResponse(texte, {
@@ -41,9 +40,9 @@ export async function GET(
   const { id } = await params;
   const clientId = id.toLowerCase();
   const sp = new URL(req.url).searchParams;
-  const rapportId = (sp.get("r") ?? "").trim();
+  const rapportId = (sp.get("r") ?? "").trim().toLowerCase();
   const format = sp.get("f");
-  if (!UUID.test(clientId) || !ID_RAPPORT.test(rapportId)) return refus(400, "Demande invalide.");
+  if (!UUID.test(clientId) || !UUID.test(rapportId)) return refus(400, "Demande invalide.");
 
   const acces = accesRapports();
   const rapport = (await acces.listerRapports(clientId)).find((r) => r.id === rapportId) ?? null;

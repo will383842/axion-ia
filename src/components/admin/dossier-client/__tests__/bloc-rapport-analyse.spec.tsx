@@ -23,8 +23,8 @@ vi.mock("@/features/rapport-avant-audit/ecran/actions", () => ({
   lancerAnalyseAction: vi.fn(),
   validerPdfClientAction: vi.fn(),
   completerFicheAction: vi.fn(),
+  poserSirenDepuisRapportAction: vi.fn(),
 }));
-vi.mock("@/features/dossier-client/actions", () => ({ confirmerSirenFormAction: vi.fn() }));
 
 const { BlocRapportAnalyse } = await import("../BlocRapportAnalyse");
 
@@ -162,5 +162,17 @@ describe("BlocRapportAnalyse", () => {
     const bouton = screen.getByRole("button", { name: "Valider le PDF client" });
     expect(titre.compareDocumentPosition(bouton) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
     expect(screen.getByText(/Un passage à reformuler/)).toBeTruthy();
+  });
+
+  it("« Poser ce SIREN » n'envoie pas la valeur dans le formulaire", () => {
+    const propositions = listerPropositions(
+      [proposition({ champ: "SIREN", valeur: "123456789" })],
+      ficheVide(),
+    );
+    const { container } = render(
+      <BlocRapportAnalyse ecran={ecran({ propositions })} clientId={CLIENT} ficheHref={FICHE} />,
+    );
+    expect(screen.getByRole("button", { name: "Poser ce SIREN" })).toBeTruthy();
+    expect(container.querySelector('input[name="siren"]')).toBeNull();
   });
 });

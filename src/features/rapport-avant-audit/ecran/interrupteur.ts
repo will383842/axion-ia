@@ -4,9 +4,9 @@
  *
  * Il ne commande QUE le lancement : les rapports déjà faits restent lisibles et téléchargeables
  * par le super-administrateur, interrupteur éteint.
+ *
+ * Une seule règle, celle de `config.ts` (lue aussi par l'action de lancement et le worker) :
+ * ré-exportée ici, jamais recopiée.
  */
 
-type Env = Readonly<Record<string, string | undefined>>;
-
-export const rapportAvantAuditActif = (env: Env = process.env): boolean =>
-  env["RAPPORT_AVANT_AUDIT_ENABLED"] === "true";
+export { rapportAvantAuditActif } from "../config";

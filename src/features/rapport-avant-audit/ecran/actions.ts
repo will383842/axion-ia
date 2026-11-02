@@ -8,7 +8,10 @@
  *   · `completerFicheAction` — « Compléter la fiche » : écrit les champs cochés, SEULEMENT
  *     s'ils sont vides au moment du clic, par la porte unique `updateClientAction`. Jamais
  *     d'écrasement ; le SIREN n'y passe jamais (il a son bouton). Trace
- *     `client.complete_depuis_rapport`.
+ *     `client.complete_depuis_rapport` ;
+ *   · `poserSirenDepuisRapportAction` — « Poser ce SIREN » : relit la proposition DANS LE
+ *     RAPPORT (jamais un champ caché du formulaire), relit la fiche et refuse si le SIREN n'est
+ *     pas vide, puis écrit par `updateClientAction`. Même trace, `champs: [{ champ: "siren" }]`.
  *
  * Tous réservés au super-administrateur, revérifié ICI (une Server Action est un point d'entrée
  * HTTP public : la page qui cache le bouton ne protège rien).
@@ -30,15 +33,18 @@ import { accesRapports } from "./brancher";
 import { rapportAvantAuditActif } from "./interrupteur";
 import { datesDesReponses, lireFicheActuelle } from "./lecture";
 import {
+  decisionCompletion,
   decisionValidationPdf,
   etatBoutonLancer,
   LIBELLES_CHAMPS,
+  listerPropositions,
   planifierCompletion,
   RESERVE_SUPER_ADMIN,
 } from "./logique";
 
 const Uuid = z.string().uuid();
-const IdRapport = z.string().min(1).max(100);
+/** Un identifiant de rapport est un UUID (clé de `rapports_avant_audit`). */
+const IdRapport = Uuid;
 
 const ficheDe = (clientId: string): string => adminPath("fr", `qualiopi/clients/${clientId}`);
 
@@ -144,7 +150,7 @@ export async function completerFicheAction(formData: FormData): Promise<Retour> 
 
   const acces = accesRapports();
   const rapport = (await acces.listerRapports(clientId)).find((r) => r.id === rapportId) ?? null;
-  const d = decisionValidationPdf({ role: session.role, rapport });
+  const d = decisionCompletion({ role: session.role, rapport });
   if (!d.ok) return { ok: false, texte: d.texte };
 
   // Les VALEURS viennent du rapport relu ici, jamais du formulaire ; la fiche est relue AU CLIC.
@@ -183,4 +189,63 @@ export async function completerFicheAction(formData: FormData): Promise<Retour> 
   const ignores =
     plan.refuses.length > 0 ? ` ${plan.refuses.length} ligne(s) laissée(s) de côté.` : "";
   return { ok: true, texte: `Fiche complétée : ${noms}.${ignores}` };
+}
+
+// ── Poser le SIREN proposé par le rapport ────────────────────────────────────
+
+export async function poserSirenDepuisRapportAction(
+  clientIdSaisi: string,
+  rapportIdSaisi: string,
+  cleSaisie: string,
+): Promise<Retour> {
+  const session = await superAdminOuNull();
+  if (session === null) return { ok: false, texte: RESERVE_SUPER_ADMIN };
+  const clientId = Uuid.safeParse(clientIdSaisi);
+  const rapportId = IdRapport.safeParse(rapportIdSaisi);
+  const cle = typeof cleSaisie === "string" && /^p\d{1,4}$/.test(cleSaisie) ? cleSaisie : null;
+  if (!clientId.success || !rapportId.success || cle === null) {
+    return { ok: false, texte: "Demande invalide." };
+  }
+
+  const acces = accesRapports();
+  const rapport =
+    (await acces.listerRapports(clientId.data)).find((r) => r.id === rapportId.data) ?? null;
+  const d = decisionCompletion({ role: session.role, rapport });
+  if (!d.ok) return { ok: false, texte: d.texte };
+
+  // La valeur vient du RAPPORT relu ici ; la fiche est relue AU CLIC.
+  const [propositions, fiche] = await Promise.all([
+    acces.lirePropositions(clientId.data, rapportId.data),
+    lireFicheActuelle(clientId.data),
+  ]);
+  if (fiche === null) return { ok: false, texte: "Fiche client introuvable." };
+  if (fiche.siren !== null && fiche.siren.trim() !== "") {
+    return {
+      ok: false,
+      texte: "Rien n'a été écrit : la fiche a déjà un SIREN, il n'est jamais remplacé.",
+    };
+  }
+  const ligne = listerPropositions(propositions, fiche).find((l) => l.cle === cle);
+  if (ligne === undefined || ligne.etat !== "siren" || ligne.valeurAEcrire === null) {
+    return { ok: false, texte: "Rien n'a été écrit : ce rapport ne propose pas ce SIREN." };
+  }
+
+  // La porte unique : mêmes contrôles qu'« Éditer » (cohérence avec le SIRET, droits d'écriture).
+  const r = await updateClientAction({ id: clientId.data, siren: ligne.valeurAEcrire });
+  if ("error" in r) return { ok: false, texte: `Rien n'a été écrit : ${r.error}` };
+
+  await logQualiopiActivity({
+    action: "client.complete_depuis_rapport",
+    targetType: "Client",
+    targetId: clientId.data,
+    changes: {
+      rapportId: rapportId.data,
+      version: rapport?.version ?? null,
+      champs: [{ champ: "siren", source: ligne.source }],
+      refuses: 0,
+    },
+    session,
+  });
+  revalidatePath(ficheDe(clientId.data));
+  return { ok: true, texte: "SIREN posé sur la fiche." };
 }

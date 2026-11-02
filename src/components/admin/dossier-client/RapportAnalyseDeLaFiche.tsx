@@ -40,7 +40,13 @@ async function lire(clientId: string) {
       acces: accesRapports(),
     });
     return { ecran, Bloc: bloc.BlocRapportAnalyse };
-  } catch {
+  } catch (e) {
+    // Journalisée, jamais avalée en silence : le NOM de l'erreur et le client, aucun contenu.
+    console.error(
+      `[rapport-avant-audit] lecture du bloc impossible : client=${clientId} ${
+        e instanceof Error ? e.name : "erreur inconnue"
+      }`,
+    );
     return null;
   }
 }
