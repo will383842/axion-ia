@@ -146,6 +146,13 @@ const ALLOWED_PATTERNS: ReadonlyArray<RegExp> = [
  * pour rien.
  */
 const CONSOMMATEURS_ASSUMES: ReadonlySet<string> = new Set([
+  // Rapport avant audit, PDF client (02/11/2026) — le rendu réutilise la charte de marque et les polices
+  // des PDF du domaine (`brand-tokens`, `registerQualiopiPdfFonts`, `assainirEspacesPdf`), importés et
+  // jamais recopiés (un prédicat recopié diverge : les fines insécables s'impriment « / »). Même choix que
+  // `plan-production-pdf.tsx`. Le test importe `collect-pdf-text` (utilitaire de test des PDF). Rien
+  // d'autre du domaine. Nommés seuls.
+  "src/features/rapport-avant-audit/sorties/pdf-client.tsx",
+  "src/features/rapport-avant-audit/__tests__/sorties.spec.tsx",
   // Synchro console ↔ CRM (étape 6, 26/10/2026) — le NAF qui revient du CRM doit recalculer
   // l'OPCO déduit EXACTEMENT comme la saisie en console (`inferOpcoDepuisTable`, `nomOpcoDuClient`,
   // `isOpcoId`) : une seule règle, jamais un OPCO saisi écrasé. Déplacer cette fonction dans
