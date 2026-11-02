@@ -1,7 +1,7 @@
 /**
  * Journal d'activité de l'audit présentiel : une ligne `ActivityLog`, sans requête ni session.
  * Best-effort (un journal raté n'annule jamais l'acte) mais l'échec est signalé ; jamais de contenu,
- * de jeton ni de corps dans `changes`. Module propre à l'audit (hors zone content-gen).
+ * de jeton ni de corps dans `changes`. Module propre à l'audit (écrivain séparé de la génération de contenu).
  */
 import { prisma } from "@/lib/prisma";
 
