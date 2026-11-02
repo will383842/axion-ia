@@ -215,6 +215,47 @@ describe("rapports écartés et bases illisibles", () => {
     expect(ligne).not.toMatch(/devis|soirées|Société/);
   });
 
+  it("base indéchiffrable : null, journalisée par son NOM seul, et l'historique reste lisible", async () => {
+    const erreur = vi.spyOn(console, "error").mockImplementation(() => undefined);
+    const sain = await rapportTermine(A);
+    const corrompu = await rapportTermine(A, { baseAudit: "Société d'exemple : devis en clair" });
+    const tronque = await rapportTermine(A, { baseAudit: "enc:v1:tronque" });
+    for (const id of [corrompu, tronque]) {
+      expect(await ACCES_BRANCHE.lireBase(A, id)).toBeNull();
+      expect(await ACCES_BRANCHE.lirePropositions(A, id)).toEqual([]);
+      expect(await ACCES_BRANCHE.apercuPdf(A, id)).toBeNull();
+      expect(await ACCES_BRANCHE.telecharger(A, id, "base-json")).toBeNull();
+    }
+    // Le rapport sain et la liste complète restent lisibles.
+    expect(await ACCES_BRANCHE.lireBase(A, sain)).not.toBeNull();
+    expect((await ACCES_BRANCHE.listerRapports(A)).map((r) => r.id).sort()).toEqual(
+      [sain, corrompu, tronque].sort(),
+    );
+    expect(erreur).toHaveBeenCalled();
+    for (const [ligne] of erreur.mock.calls) {
+      expect(String(ligne)).toMatch(/base illisible \(\w+\) : rapport=/);
+      expect(String(ligne)).not.toMatch(/devis|Société|tronque|enc:v1|chiffr/);
+    }
+  });
+
+  it("une panne de la base de données n'est PAS déguisée en « rapport illisible »", async () => {
+    const id = await rapportTermine(A);
+    const panne = Object.assign(new Error("connexion perdue"), {
+      name: "PrismaClientKnownRequestError",
+    });
+    const findUnique = table.findUnique;
+    let appels = 0;
+    (table as Record<string, unknown>).findUnique = async (
+      args: Parameters<typeof findUnique>[0],
+    ) => {
+      appels += 1;
+      // 1er appel : l'état (cloison) ; 2e : la lecture de la base, qui tombe en panne.
+      if (appels === 2) throw panne;
+      return findUnique(args);
+    };
+    await expect(ACCES_BRANCHE.lireBase(A, id)).rejects.toBe(panne);
+  });
+
   it("base absente (rapport en cours) : null", async () => {
     const { id } = await table.create({
       data: { clientId: A, questionnaireIds: [Q1], lanceParId: WILL, statut: "en_cours" },

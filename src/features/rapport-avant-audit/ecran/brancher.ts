@@ -14,6 +14,10 @@
  *   · une base illisible (`RapportEcarte`, `RapportIntrouvable`, `BaseAbsente`,
  *     `EmpreinteAlteree`, `BaseHorsContrat`) rend `null`. Une empreinte altérée est
  *     journalisée — identifiants seulement, jamais le contenu ;
+ *   · toute AUTRE erreur de lecture de la base (déchiffrement : clé changée, valeur tronquée…)
+ *     rend aussi `null`, journalisée par son NOM et les identifiants : un rapport corrompu ne
+ *     masque jamais tout l'historique de la fiche. Seule une erreur de la base de données
+ *     (`PrismaClient…`) remonte, pour ne pas faire passer une panne pour « aucun rapport » ;
  *   · `pdfChemin` n'est JAMAIS lu : le PDF client est régénéré depuis la base vérifiée, et
  *     `@react-pdf` n'est chargé (import dynamique) qu'au TÉLÉCHARGEMENT. L'aperçu (« ce que le PDF
  *     retirerait »), lu à chaque affichage de la fiche, n'utilise que les fonctions pures
@@ -93,7 +97,11 @@ async function baseDuClient(
       console.error(`${JOURNAL} empreinte altérée : rapport=${rapportId} client=${clientId}`);
     }
     if (ILLISIBLES.some((C) => e instanceof C)) return null;
-    throw e;
+    const nom = e instanceof Error ? e.name : "inconnue";
+    if (nom.startsWith("PrismaClient")) throw e;
+    // Déchiffrement impossible : le NOM seulement (jamais `e.message`, qui pourrait citer la valeur).
+    console.error(`${JOURNAL} base illisible (${nom}) : rapport=${rapportId} client=${clientId}`);
+    return null;
   }
 }
 
