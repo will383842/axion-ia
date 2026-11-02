@@ -2557,6 +2557,42 @@ export async function eraseReseauApporteurForEmail(
   return { apporteur: "efface", presentationsAnonymisees: presentations.count };
 }
 
+/** Motif posé sur un rapport avant audit mis à l'écart par une demande d'effacement. */
+export const MOTIF_ECART_RAPPORT_RGPD = "demande d'effacement RGPD (art. 17) du dirigeant";
+
+/**
+ * Rapports d'analyse avant audit établis sur les questionnaires du DIRIGEANT qui demande
+ * l'effacement (2026-11-02) : MIS À L'ÉCART, JAMAIS SUPPRIMÉS (règle de Will : aucune purge de
+ * données clients). La base n'est plus déchiffrée par la console (`lireBaseAudit` refuse une ligne
+ * écartée) ; un lancement encore en attente ou en cours est ANNULÉ (le worker ne peut plus y
+ * écrire). L'appelant ALERTE Will, qui décide de la suite.
+ *
+ * ⚠️ À appeler AVANT `eraseCalendlyEventsForEmail` : celui-ci retire l'adresse et l'empreinte par
+ * lesquelles on retrouve les questionnaires du dirigeant.
+ */
+export async function ecarterRapportsAvantAuditPourEmail(
+  email: string,
+  maintenant: Date = new Date(),
+): Promise<{ readonly ecartes: number; readonly annules: number }> {
+  const qs = await prisma.questionnaireAvantAudit.findMany({
+    where: questionnairesDuDirigeant(email, hashEmailForLookup(email)),
+    select: { id: true },
+  });
+  if (qs.length === 0) return { ecartes: 0, annules: 0 };
+  const sur = { questionnaireIds: { hasSome: qs.map((q) => q.id) } };
+  const [annules, ecartes] = await prisma.$transaction([
+    prisma.rapportAvantAudit.updateMany({
+      where: { ...sur, statut: { in: ["en_attente", "en_cours"] } },
+      data: { statut: "annule", etape: "Annulé : demande d'effacement", finLe: maintenant },
+    }),
+    prisma.rapportAvantAudit.updateMany({
+      where: { ...sur, ecarteLe: null },
+      data: { ecarteLe: maintenant, ecarteMotif: MOTIF_ECART_RAPPORT_RGPD },
+    }),
+  ]);
+  return { ecartes: ecartes.count, annules: annules.count };
+}
+
 /**
  * DEMANDE d'effacement d'un salarié ou du référent informatique au questionnaire de pré-audit
  * (audit des données du 24/10/2026, point 12) : ses réponses sont MISES À L'ÉCART (plus montrées
