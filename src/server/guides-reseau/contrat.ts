@@ -53,8 +53,35 @@ export const SchemaDemandeGuideReseau = z
 
 export type DemandeGuideReseau = z.infer<typeof SchemaDemandeGuideReseau>;
 
+/** Valeur du champ `type` qui bascule la requête vers le chemin d'effacement (PV-1 bis). */
+export const TYPE_DEMANDE_EFFACEMENT = "demande_effacement";
+
+/**
+ * DEMANDE D'EFFACEMENT reçue en message privé (PV-1 bis). Schéma strict, volontairement court :
+ * ni guide, ni mot-clé, ni accord. Elle ne déclenche QU'UNE alerte à l'opérateur et la mise à
+ * l'écart de l'adresse ; AUCUNE suppression. Une requête SANS `type` suit le schéma historique.
+ */
+export const SchemaDemandeEffacement = z
+  .object({
+    schemaVersion: z.literal(1),
+    type: z.literal(TYPE_DEMANDE_EFFACEMENT),
+    cleIdempotence: z.string().regex(/^[A-Za-z0-9_-]{8,80}$/),
+    email: z
+      .string()
+      .trim()
+      .max(254)
+      .email()
+      .transform((e) => e.toLowerCase()),
+    reseau: z.enum(RESEAUX_GUIDE),
+    occurredAt: z.string().datetime().optional(),
+  })
+  .strict();
+
+export type DemandeEffacement = z.infer<typeof SchemaDemandeEffacement>;
+
 export type AnalyseDemande =
-  | { readonly ok: true; readonly demande: DemandeGuideReseau }
+  | { readonly ok: true; readonly demande: DemandeGuideReseau; readonly effacement?: undefined }
+  | { readonly ok: true; readonly effacement: DemandeEffacement; readonly demande?: undefined }
   | {
       readonly ok: false;
       readonly erreur: "json_invalide" | "schema_invalide";
@@ -77,6 +104,20 @@ export function analyserCorps(corps: Buffer): AnalyseDemande {
     brut = JSON.parse(corps.toString("utf8"));
   } catch {
     return { ok: false, erreur: "json_invalide", champs: [] };
+  }
+  // Le champ `type` n'existe que pour l'effacement : sans lui, comportement historique inchangé
+  // (et toute autre valeur de `type` est rejetée par le schéma strict historique).
+  if (
+    typeof brut === "object" &&
+    brut !== null &&
+    (brut as Record<string, unknown>)["type"] === TYPE_DEMANDE_EFFACEMENT
+  ) {
+    const e = SchemaDemandeEffacement.safeParse(brut);
+    if (!e.success) {
+      const champs = [...new Set(e.error.issues.map((i) => String(i.path[0] ?? "corps")))];
+      return { ok: false, erreur: "schema_invalide", champs };
+    }
+    return { ok: true, effacement: e.data };
   }
   const r = SchemaDemandeGuideReseau.safeParse(brut);
   if (!r.success) {

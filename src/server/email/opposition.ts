@@ -149,8 +149,8 @@ export async function enregistrerOppositionPourAdresse(
     return { ok: true, email, dejaOpposee: false };
   } catch (e) {
     console.error(
-      `[email-opposition] enregistrement impossible pour ${email} :`,
-      e instanceof Error ? e.message : String(e),
+      "[email-opposition] enregistrement impossible :",
+      e instanceof Error ? e.name : "erreur",
     );
     return { ok: false, error: "internal" };
   }

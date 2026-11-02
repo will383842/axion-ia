@@ -50,6 +50,7 @@ import type { EntreeSignee } from "@/server/videos/entree";
 import { reponseJson } from "@/server/videos/reponse";
 import { analyserCorps } from "./contrat";
 import { traiterDemande } from "./traitement";
+import { traiterEffacement } from "./effacement";
 
 const RESERVATION_PERIMEE_MS = 2 * 60_000;
 const MARQUE_EMAIL_EN_FILE = "email_en_file";
@@ -106,7 +107,9 @@ export async function recevoirDemande(e: EntreeSignee): Promise<Response> {
   if (!analyse.ok) {
     return reponseJson(422, { ok: false, erreur: analyse.erreur, champs: analyse.champs });
   }
-  const d = analyse.demande;
+  // PV-1 bis : `type: "demande_effacement"` → alerte à l'opérateur, aucune suppression.
+  const effacement = analyse.effacement;
+  const d = effacement ?? analyse.demande!;
   const maintenant = Date.now();
 
   // Le nonce a-t-il déjà servi pour une AUTRE clé ? (même clé : traité ci-dessous.)
@@ -140,7 +143,25 @@ export async function recevoirDemande(e: EntreeSignee): Promise<Response> {
   // si cette écriture échoue, le catch sait déjà que l'e-mail est parti).
   let enFile: Record<string, unknown> | null = null;
   try {
-    const r = await traiterDemande(d, new Date(), {
+    if (effacement !== undefined) {
+      const re = await traiterEffacement(effacement, new Date(), {
+        apresAlerte: async (m) => {
+          enFile = { ...m };
+          await prisma.guideReseauReception.updateMany({
+            where: { cleIdempotence: d.cleIdempotence, reponseStatut: 0 },
+            data: {
+              reponseCorps: { marque: MARQUE_EMAIL_EN_FILE, ...m } as Prisma.InputJsonValue,
+            },
+          });
+        },
+      });
+      await prisma.guideReseauReception.updateMany({
+        where: { cleIdempotence: d.cleIdempotence },
+        data: { reponseStatut: 200, reponseCorps: re as unknown as Prisma.InputJsonValue },
+      });
+      return reponseJson(200, re);
+    }
+    const r = await traiterDemande(analyse.demande!, new Date(), {
       apresMiseEnFile: async (m) => {
         enFile = {
           ok: true,
