@@ -4,15 +4,16 @@ import type { FicheActuelle } from "../logique";
 
 export const CLIENT = "11111111-1111-4111-8111-111111111111";
 export const AUTRE_CLIENT = "22222222-2222-4222-8222-222222222222";
+/** Identifiant de rapport par défaut (un UUID, comme en base). */
+export const RAPPORT = "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa";
 
 export function resume(p: Partial<ResumeRapport> = {}): ResumeRapport {
   return {
-    id: "r1",
+    id: RAPPORT,
     version: 1,
     statut: "termine",
     etape: "Terminé",
-    etapesFaites: 6,
-    etapesTotal: 6,
+    progression: 100,
     jetonsEntree: 12_000,
     jetonsSortie: 3_000,
     lanceLe: new Date("2026-11-01T10:00:00Z"),

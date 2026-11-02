@@ -1,7 +1,7 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import { creerAccesEnMemoire } from "../memoire";
-import { base, CLIENT, ficheVide, proposition, resume } from "./fixtures";
+import { base, CLIENT, ficheVide, proposition, resume, RAPPORT } from "./fixtures";
 
 const etat = vi.hoisted(() => ({
   role: "super_admin" as string | null,
@@ -61,14 +61,14 @@ describe("« Compléter la fiche » (Server Action)", () => {
   it("refuse tout rôle autre que super-administrateur, sans rien écrire", async () => {
     etat.role = "admin";
     expect(
-      await completerFicheAction(formulaire({ clientId: CLIENT, rapportId: "r1", cle: "p0" })),
+      await completerFicheAction(formulaire({ clientId: CLIENT, rapportId: RAPPORT, cle: "p0" })),
     ).toEqual({ ok: false, texte: "Réservé au super-administrateur." });
     expect(updateClientAction).not.toHaveBeenCalled();
   });
 
   it("n'écrit QUE les champs vides, par `updateClientAction`, et trace", async () => {
     const r = await completerFicheAction(
-      formulaire({ clientId: CLIENT, rapportId: "r1", cle: ["p0", "p1", "p2"] }),
+      formulaire({ clientId: CLIENT, rapportId: RAPPORT, cle: ["p0", "p1", "p2"] }),
     );
     expect(r).toEqual({
       ok: true,
@@ -83,7 +83,7 @@ describe("« Compléter la fiche » (Server Action)", () => {
 
   it("⛔ rien coché d'écrivable (champ rempli, SIREN) : aucune écriture", async () => {
     const r = await completerFicheAction(
-      formulaire({ clientId: CLIENT, rapportId: "r1", cle: ["p1", "p2"] }),
+      formulaire({ clientId: CLIENT, rapportId: RAPPORT, cle: ["p1", "p2"] }),
     );
     expect(r.ok).toBe(false);
     expect(r.texte).toMatch(/^Rien n'a été écrit/);
@@ -92,14 +92,14 @@ describe("« Compléter la fiche » (Server Action)", () => {
   });
 
   it("rien coché : aucune écriture", async () => {
-    const r = await completerFicheAction(formulaire({ clientId: CLIENT, rapportId: "r1" }));
+    const r = await completerFicheAction(formulaire({ clientId: CLIENT, rapportId: RAPPORT }));
     expect(r.ok).toBe(false);
     expect(updateClientAction).not.toHaveBeenCalled();
   });
 
   it("les valeurs viennent du rapport, jamais du formulaire", async () => {
     await completerFicheAction(
-      formulaire({ clientId: CLIENT, rapportId: "r1", cle: "p0", secteur: "Valeur forgée" }),
+      formulaire({ clientId: CLIENT, rapportId: RAPPORT, cle: "p0", secteur: "Valeur forgée" }),
     );
     expect(updateClientAction).toHaveBeenCalledWith({ id: CLIENT, secteur: "Confection textile" });
   });
@@ -108,7 +108,7 @@ describe("« Compléter la fiche » (Server Action)", () => {
     const r = await completerFicheAction(
       formulaire({
         clientId: "33333333-3333-4333-8333-333333333333",
-        rapportId: "r1",
+        rapportId: RAPPORT,
         cle: "p0",
       }),
     );
@@ -119,7 +119,7 @@ describe("« Compléter la fiche » (Server Action)", () => {
   it("un refus de la porte unique est rapporté, sans trace", async () => {
     updateClientAction.mockResolvedValueOnce({ error: "Secteur refusé." } as never);
     expect(
-      await completerFicheAction(formulaire({ clientId: CLIENT, rapportId: "r1", cle: "p0" })),
+      await completerFicheAction(formulaire({ clientId: CLIENT, rapportId: RAPPORT, cle: "p0" })),
     ).toEqual({ ok: false, texte: "Rien n'a été écrit : Secteur refusé." });
     expect(logQualiopiActivity).not.toHaveBeenCalled();
   });
@@ -128,12 +128,12 @@ describe("« Compléter la fiche » (Server Action)", () => {
 describe("« Valider le PDF client » (Server Action)", () => {
   it("super-administrateur seul", async () => {
     etat.role = "editor";
-    const r = await validerPdfClientAction(formulaire({ clientId: CLIENT, rapportId: "r1" }));
+    const r = await validerPdfClientAction(formulaire({ clientId: CLIENT, rapportId: RAPPORT }));
     expect(r).toEqual({ ok: false, texte: "Réservé au super-administrateur." });
   });
 
   it("valide, trace, et dit que rien n'a été envoyé", async () => {
-    const r = await validerPdfClientAction(formulaire({ clientId: CLIENT, rapportId: "r1" }));
+    const r = await validerPdfClientAction(formulaire({ clientId: CLIENT, rapportId: RAPPORT }));
     expect(r.ok).toBe(true);
     expect(r.texte).toContain("Rien n'a été envoyé au client");
     expect(logQualiopiActivity).toHaveBeenCalledWith(
@@ -157,11 +157,9 @@ describe("« Lancer l'analyse complète » (Server Action)", () => {
     expect(r.ok).toBe(false);
   });
 
-  it("lance et trace", async () => {
+  it("lance, sans seconde trace (l'accès écrit `rapport-avant-audit.lancer`)", async () => {
     const r = await lancerAnalyseAction({ clientId: CLIENT });
     expect(r.ok).toBe(true);
-    expect(logQualiopiActivity).toHaveBeenCalledWith(
-      expect.objectContaining({ action: "rapport-avant-audit.lance" }),
-    );
+    expect(logQualiopiActivity).not.toHaveBeenCalled();
   });
 });

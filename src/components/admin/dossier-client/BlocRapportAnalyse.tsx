@@ -15,7 +15,7 @@ import {
   completerFicheAction,
   validerPdfClientAction,
 } from "@/features/rapport-avant-audit/ecran/actions";
-import type { ResumeRapport } from "@/features/rapport-avant-audit/ecran/contrat";
+import type { PassageRetire, ResumeRapport } from "@/features/rapport-avant-audit/ecran/contrat";
 import type { EcranRapport } from "@/features/rapport-avant-audit/ecran/lecture";
 import {
   libelleJetons,
@@ -47,7 +47,7 @@ function Progression({ r }: { r: ResumeRapport }): React.ReactElement {
     <div className="space-y-[var(--space-admin-1)]">
       <p>
         Version {r.version} — {libelleStatut(r)}
-        {r.etape !== null ? ` · étape : ${r.etape}` : ""} ({r.etapesFaites}/{r.etapesTotal})
+        {r.etape !== null ? ` · étape : ${r.etape}` : ""} ({pct} %)
       </p>
       <progress value={pct} max={100} aria-label={`Avancement de la version ${r.version}`}>
         {pct} %
@@ -57,14 +57,44 @@ function Progression({ r }: { r: ResumeRapport }): React.ReactElement {
   );
 }
 
+function PassagesARelire({
+  retires,
+}: {
+  retires: ReadonlyArray<PassageRetire> | null;
+}): React.ReactElement | null {
+  if (retires === null || retires.length === 0) return null;
+  return (
+    <AdminBloc
+      teinte="ambre"
+      niveau={4}
+      titre="Passages retirés du PDF client : à relire avant d'envoyer"
+    >
+      <p className={PETIT}>
+        Ces passages contenaient un mot à ne pas écrire au client : ils ont été retirés du PDF.
+        Relisez-les, et reformulez-les vous-même si besoin.
+      </p>
+      <ul className="list-disc pl-[var(--space-admin-4)]">
+        {retires.map((p, i) => (
+          <li key={`${p.ou}-${i}`}>
+            <span className="font-medium">{p.ou}</span> : {p.texte}{" "}
+            <span className={PETIT}>({p.mots.join(", ")})</span>
+          </li>
+        ))}
+      </ul>
+    </AdminBloc>
+  );
+}
+
 function Telechargements({
   r,
   clientId,
   ficheHref,
+  retiresPdf,
 }: {
   r: ResumeRapport;
   clientId: string;
   ficheHref: string;
+  retiresPdf: ReadonlyArray<PassageRetire> | null;
 }): React.ReactElement {
   const lien = (f: string): string =>
     `${ficheHref}/rapport-analyse?r=${encodeURIComponent(r.id)}&f=${f}`;
@@ -101,18 +131,21 @@ function Telechargements({
           automatiquement : c&apos;est vous qui le transmettez au client.
         </p>
       ) : (
-        <FormulaireRapport
-          action={validerPdfClientAction}
-          libelle="Valider le PDF client"
-          libelleEnCours="Validation…"
-        >
-          <input type="hidden" name="clientId" value={clientId} />
-          <input type="hidden" name="rapportId" value={r.id} />
-          <p className={PETIT}>
-            Relisez la base d&apos;audit d&apos;abord. Une fois validé, le PDF devient
-            téléchargeable ; rien n&apos;est envoyé au client.
-          </p>
-        </FormulaireRapport>
+        <>
+          <PassagesARelire retires={retiresPdf} />
+          <FormulaireRapport
+            action={validerPdfClientAction}
+            libelle="Valider le PDF client"
+            libelleEnCours="Validation…"
+          >
+            <input type="hidden" name="clientId" value={clientId} />
+            <input type="hidden" name="rapportId" value={r.id} />
+            <p className={PETIT}>
+              Relisez la base d&apos;audit d&apos;abord. Une fois validé, le PDF devient
+              téléchargeable ; rien n&apos;est envoyé au client.
+            </p>
+          </FormulaireRapport>
+        </>
       )}
     </div>
   );
@@ -276,12 +309,14 @@ export function BlocRapportAnalyse({
               : ""}. {libelleStatut(courant)}.{" "}
             <span className={PETIT}>{libelleJetons(courant)}.</span>
           </p>
-          {courant.statut === "incomplet" && courant.erreur !== null ? (
-            <p className={PETIT}>Ce qui manque : {courant.erreur}</p>
-          ) : null}
           {ecran.superAdmin ? (
             <>
-              <Telechargements r={courant} clientId={clientId} ficheHref={ficheHref} />
+              <Telechargements
+                r={courant}
+                clientId={clientId}
+                ficheHref={ficheHref}
+                retiresPdf={ecran.retiresPdf}
+              />
               {ecran.propositions.length > 0 ? (
                 <CompleterLaFiche
                   lignes={ecran.propositions}

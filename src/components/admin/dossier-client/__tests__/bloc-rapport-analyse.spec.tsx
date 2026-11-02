@@ -14,6 +14,7 @@ import {
 import {
   ficheVide,
   proposition,
+  RAPPORT,
   resume,
 } from "@/features/rapport-avant-audit/ecran/__tests__/fixtures";
 
@@ -43,8 +44,9 @@ function ecran(p: Partial<EcranRapport> = {}): EcranRapport {
       rapports,
     }),
     rapports,
-    courant: rapports.find((r) => r.statut === "termine" || r.statut === "incomplet") ?? null,
+    courant: rapports.find((r) => r.statut === "termine") ?? null,
     propositions: [],
+    retiresPdf: null,
     ...p,
   };
 }
@@ -53,7 +55,7 @@ describe("BlocRapportAnalyse", () => {
   it("avant validation : pas de lien PDF client, mais le bouton « Valider le PDF client »", () => {
     render(<BlocRapportAnalyse ecran={ecran()} clientId={CLIENT} ficheHref={FICHE} />);
     expect(screen.getByRole("link", { name: "Base d'audit (.json)" }).getAttribute("href")).toBe(
-      `${FICHE}/rapport-analyse?r=r1&f=base-json`,
+      `${FICHE}/rapport-analyse?r=${RAPPORT}&f=base-json`,
     );
     expect(screen.getByRole("link", { name: "Fiche de chaque personne (.md)" })).toBeTruthy();
     expect(screen.queryByRole("link", { name: "PDF client" })).toBeNull();
@@ -130,7 +132,7 @@ describe("BlocRapportAnalyse", () => {
       version: 2,
       statut: "en_cours",
       etape: "Recherches et analyses",
-      etapesFaites: 2,
+      progression: 33,
       jetonsEntree: 1500,
       jetonsSortie: 200,
     });
@@ -141,8 +143,24 @@ describe("BlocRapportAnalyse", () => {
         ficheHref={FICHE}
       />,
     );
-    expect(screen.getByText(/étape : Recherches et analyses/)).toBeTruthy();
+    expect(screen.getByText(/étape : Recherches et analyses \(33 %\)/)).toBeTruthy();
     expect(screen.getAllByText(/1\s500 jetons lus, 200 jetons écrits/).length).toBeGreaterThan(0);
     expect(screen.getByRole("heading", { name: "Historique des versions" })).toBeTruthy();
+  });
+
+  it("passages retirés du PDF : listés au-dessus de « Valider le PDF client »", () => {
+    render(
+      <BlocRapportAnalyse
+        ecran={ecran({
+          retiresPdf: [{ ou: "piste", texte: "Un passage à reformuler", mots: ["« interdit »"] }],
+        })}
+        clientId={CLIENT}
+        ficheHref={FICHE}
+      />,
+    );
+    const titre = screen.getByRole("heading", { name: /à relire avant d'envoyer/ });
+    const bouton = screen.getByRole("button", { name: "Valider le PDF client" });
+    expect(titre.compareDocumentPosition(bouton) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+    expect(screen.getByText(/Un passage à reformuler/)).toBeTruthy();
   });
 });

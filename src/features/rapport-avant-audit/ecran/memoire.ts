@@ -2,7 +2,7 @@
  * `AccesRapports` EN MÉMOIRE — pour les tests de l'écran (aucune base, aucun réseau).
  *
  * Se comporte comme le vrai code est attendu se comporter : un rapport n'appartient qu'à son
- * client, seule une base validée (`termine` / `incomplet`) se lit et se télécharge, le PDF client
+ * client, seule une base validée (`termine`) se lit et se télécharge, le PDF client
  * ne se télécharge qu'après validation, et un lancement crée une nouvelle version « en attente ».
  */
 
@@ -86,6 +86,10 @@ export function creerAccesEnMemoire(
               : `# ${r.base.meta.raisonSociale}\n`,
       };
     },
+    async apercuPdf(clientId, rapportId) {
+      const r = duClient(clientId, rapportId);
+      return lisible(r) ? { retiresPourRelecture: [] } : null;
+    },
     async validerPdf(clientId, rapportId, par) {
       const r = duClient(clientId, rapportId);
       if (!lisible(r)) return { ok: false, raison: "Rapport introuvable ou pas terminé." };
@@ -109,8 +113,7 @@ export function creerAccesEnMemoire(
           version: duMeme.reduce((m, r) => Math.max(m, r.resume.version), 0) + 1,
           statut: "en_attente",
           etape: null,
-          etapesFaites: 0,
-          etapesTotal: 6,
+          progression: 0,
           jetonsEntree: 0,
           jetonsSortie: 0,
           lanceLe: maintenant(),

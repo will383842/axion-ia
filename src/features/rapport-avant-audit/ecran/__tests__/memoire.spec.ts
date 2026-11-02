@@ -1,8 +1,7 @@
 import { describe, expect, it } from "vitest";
 
-import { ACCES_NON_BRANCHE, accesRapports } from "../brancher";
 import { creerAccesEnMemoire } from "../memoire";
-import { AUTRE_CLIENT, base, CLIENT, proposition, resume } from "./fixtures";
+import { AUTRE_CLIENT, base, CLIENT, proposition, resume, RAPPORT } from "./fixtures";
 
 const termine = () => ({ clientId: CLIENT, resume: resume(), base: base([proposition()]) });
 
@@ -24,9 +23,9 @@ describe("accès en mémoire (contrat `AccesRapports`)", () => {
 
   it("une base ne se lit que par son client", async () => {
     const a = creerAccesEnMemoire({ rapports: [termine()] });
-    expect(await a.lireBase(CLIENT, "r1")).not.toBeNull();
-    expect(await a.lireBase(AUTRE_CLIENT, "r1")).toBeNull();
-    expect(await a.lirePropositions(AUTRE_CLIENT, "r1")).toEqual([]);
+    expect(await a.lireBase(CLIENT, RAPPORT)).not.toBeNull();
+    expect(await a.lireBase(AUTRE_CLIENT, RAPPORT)).toBeNull();
+    expect(await a.lirePropositions(AUTRE_CLIENT, RAPPORT)).toEqual([]);
   });
 
   it("le PDF client ne sort qu'après validation", async () => {
@@ -34,11 +33,11 @@ describe("accès en mémoire (contrat `AccesRapports`)", () => {
       rapports: [termine()],
       maintenant: () => new Date("2026-11-02T09:00:00Z"),
     });
-    expect(await a.telecharger(CLIENT, "r1", "pdf-client")).toBeNull();
-    expect(await a.validerPdf(CLIENT, "r1", "will")).toEqual({ ok: true });
+    expect(await a.telecharger(CLIENT, RAPPORT, "pdf-client")).toBeNull();
+    expect(await a.validerPdf(CLIENT, RAPPORT, "will")).toEqual({ ok: true });
     const [r] = await a.listerRapports(CLIENT);
     expect(r?.pdfValidePar).toBe("will");
-    const f = await a.telecharger(CLIENT, "r1", "pdf-client");
+    const f = await a.telecharger(CLIENT, RAPPORT, "pdf-client");
     expect(f?.nom).toBe("rapport-client-v1.pdf");
     expect(f?.type).toBe("application/pdf");
   });
@@ -50,16 +49,5 @@ describe("accès en mémoire (contrat `AccesRapports`)", () => {
     const [dernier] = await a.listerRapports(CLIENT);
     expect(dernier).toMatchObject({ version: 2, statut: "en_attente" });
     expect((await a.lancer(CLIENT, "will")).ok).toBe(false);
-  });
-});
-
-describe("raccord (`brancher.ts`)", () => {
-  it("tant que le vrai code n'est pas raccordé : rien à lire, rien à lancer", async () => {
-    const a = accesRapports();
-    expect(a).toBe(ACCES_NON_BRANCHE);
-    expect(a.branche).toBe(false);
-    expect(await a.listerRapports(CLIENT)).toEqual([]);
-    expect((await a.lancer(CLIENT, "will")).ok).toBe(false);
-    expect(await a.telecharger(CLIENT, "r1", "base-json")).toBeNull();
   });
 });

@@ -10,8 +10,7 @@
  *
  * Implémentations :
  *   · `memoire.ts` — en mémoire, pour les tests ;
- *   · `brancher.ts` — aujourd'hui l'accès « pas encore installé » (rien à lire, rien à lancer) ;
- *     demain le vrai code.
+ *   · `brancher.ts` — le vrai code (persistance et sorties), raccordé le 2026-11-02.
  *
  * ⛔ Aucune méthode ici n'écrit sur la fiche du client. La complétion de la fiche passe par la
  * porte existante (`updateClientAction`), depuis `actions.ts`, sur clic explicite.
@@ -19,18 +18,15 @@
 
 import type { BaseAudit } from "../base-audit-schema";
 
-/** Où en est un rapport. `termine` et `incomplet` ont une base VALIDÉE (contrat respecté). */
-export const STATUTS_RAPPORT = [
-  "en_attente",
-  "en_cours",
-  "termine",
-  "incomplet",
-  "echoue",
-] as const;
+/**
+ * Où en est un rapport. Seul `termine` a une base VALIDÉE (contrat respecté). Les statuts
+ * `erreur` et `annule` de la persistance s'affichent tous deux `echoue`.
+ */
+export const STATUTS_RAPPORT = ["en_attente", "en_cours", "termine", "echoue"] as const;
 export type StatutRapport = (typeof STATUTS_RAPPORT)[number];
 
 /** Un rapport dont la base a passé le contrat : on peut la lire et la télécharger. */
-export const STATUTS_AVEC_BASE: ReadonlyArray<StatutRapport> = ["termine", "incomplet"];
+export const STATUTS_AVEC_BASE: ReadonlyArray<StatutRapport> = ["termine"];
 /** Un rapport qui tourne encore. */
 export const STATUTS_EN_COURS: ReadonlyArray<StatutRapport> = ["en_attente", "en_cours"];
 
@@ -42,8 +38,8 @@ export interface ResumeRapport {
   readonly statut: StatutRapport;
   /** Libellé de l'étape en cours (« Recherches et analyses »), ou `null` avant la première. */
   readonly etape: string | null;
-  readonly etapesFaites: number;
-  readonly etapesTotal: number;
+  /** Avancement 0-99 tant que le rapport tourne (100 n'est atteint qu'à `termine`). */
+  readonly progression: number;
   readonly jetonsEntree: number;
   readonly jetonsSortie: number;
   readonly lanceLe: Date;
@@ -77,13 +73,18 @@ export interface FichierRapport {
 
 export type PropositionFiche = BaseAudit["propositions_fiche"][number];
 
+/** Un passage retiré du PDF client pour relecture (mot interdit), tel que l'écran l'affiche. */
+export interface PassageRetire {
+  /** Où il était : « besoin », « citation », « élément », « piste »… */
+  readonly ou: string;
+  readonly texte: string;
+  readonly mots: ReadonlyArray<string>;
+}
+
 export type ResultatAcces = { readonly ok: true } | { readonly ok: false; readonly raison: string };
 
 export interface AccesRapports {
-  /**
-   * Faux tant que le vrai code (PR « persistance » et « sorties ») n'est pas raccordé : l'écran
-   * le dit, et le bouton reste éteint.
-   */
+  /** Faux pour un accès « pas encore installé » : l'écran le dit, et le bouton reste éteint. */
   readonly branche: boolean;
   /** Les rapports du client, le PLUS RÉCENT d'abord. Liste vide : aucun rapport. */
   listerRapports(clientId: string): Promise<ReadonlyArray<ResumeRapport>>;
@@ -100,9 +101,20 @@ export interface AccesRapports {
     rapportId: string,
     format: FormatTelechargement,
   ): Promise<FichierRapport | null>;
+  /**
+   * Ce que le PDF client retirerait pour relecture, AVANT sa validation ; `null` si le rapport
+   * n'est pas un rapport terminé de CE client.
+   */
+  apercuPdf(
+    clientId: string,
+    rapportId: string,
+  ): Promise<{ readonly retiresPourRelecture: ReadonlyArray<PassageRetire> } | null>;
   /** Marque le PDF client comme validé (date et auteur). N'ENVOIE RIEN à personne. */
   validerPdf(clientId: string, rapportId: string, par: string): Promise<ResultatAcces>;
-  /** Lance une nouvelle version du rapport. Rend vite : le travail se fait en arrière-plan. */
+  /**
+   * Lance une nouvelle version du rapport. Rend vite : le travail se fait en arrière-plan.
+   * L'accès trace lui-même le lancement (une seule trace : `rapport-avant-audit.lancer`).
+   */
   lancer(
     clientId: string,
     par: string,

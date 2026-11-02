@@ -1,13 +1,14 @@
 /**
  * Écran « Rapport d'analyse » — les trois gestes de Will (Server Actions).
  *
- *   · `lancerAnalyseAction` — le bouton « Lancer l'analyse complète » (îlot client) ;
+ *   · `lancerAnalyseAction` — le bouton « Lancer l'analyse complète » (îlot client). La trace
+ *     du lancement est écrite par l'accès (`rapport-avant-audit.lancer`), une seule fois ;
  *   · `validerPdfClientAction` — « Valider le PDF client ». Rend le PDF téléchargeable ;
  *     ⛔ n'envoie RIEN à personne (aucun envoi automatique, jamais) ;
  *   · `completerFicheAction` — « Compléter la fiche » : écrit les champs cochés, SEULEMENT
  *     s'ils sont vides au moment du clic, par la porte unique `updateClientAction`. Jamais
- *     d'écrasement ; le SIREN n'y passe jamais (il a son bouton : `confirmerSirenFormAction`).
- *     Trace `client.complete_depuis_rapport`.
+ *     d'écrasement ; le SIREN n'y passe jamais (il a son bouton). Trace
+ *     `client.complete_depuis_rapport`.
  *
  * Tous réservés au super-administrateur, revérifié ICI (une Server Action est un point d'entrée
  * HTTP public : la page qui cache le bouton ne protège rien).
@@ -74,15 +75,9 @@ export async function lancerAnalyseAction(saisie: {
   });
   if (!bouton.actif) return { ok: false, erreur: bouton.raison ?? "Lancement impossible." };
 
+  // L'accès trace lui-même le lancement (`rapport-avant-audit.lancer`) : pas de seconde trace.
   const r = await acces.lancer(clientId, session.userId);
   if (!r.ok) return { ok: false, erreur: r.raison };
-  await logQualiopiActivity({
-    action: "rapport-avant-audit.lance",
-    targetType: "Client",
-    targetId: clientId,
-    changes: { rapportId: r.rapportId },
-    session,
-  });
   revalidatePath(ficheDe(clientId));
   return {
     ok: true,

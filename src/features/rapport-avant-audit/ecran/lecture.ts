@@ -12,7 +12,7 @@ import {
   questionnairesDesFiches,
 } from "@/features/questionnaire-preaudit/de-la-fiche";
 
-import type { AccesRapports, ResumeRapport } from "./contrat";
+import type { AccesRapports, PassageRetire, ResumeRapport } from "./contrat";
 import {
   CHAMPS_FICHE,
   dernierRapportLisible,
@@ -64,6 +64,11 @@ export interface EcranRapport {
   /** Le rapport dont on propose les téléchargements et la liste « Compléter la fiche ». */
   readonly courant: ResumeRapport | null;
   readonly propositions: ReadonlyArray<LigneProposition>;
+  /**
+   * Les passages que le PDF client retirerait (à relire avant d'envoyer) — lus seulement pour
+   * le super-administrateur et tant que le PDF n'est pas validé ; `null` sinon.
+   */
+  readonly retiresPdf: ReadonlyArray<PassageRetire> | null;
 }
 
 export async function lireEcranRapport(e: {
@@ -80,12 +85,17 @@ export async function lireEcranRapport(e: {
   const courant = dernierRapportLisible(rapports);
   // Les propositions ne se lisent que pour qui peut les appliquer.
   let propositions: ReadonlyArray<LigneProposition> = [];
+  let retiresPdf: ReadonlyArray<PassageRetire> | null = null;
   if (superAdmin && courant !== null) {
-    const [brutes, fiche] = await Promise.all([
+    const [brutes, fiche, apercu] = await Promise.all([
       e.acces.lirePropositions(e.clientId, courant.id),
       lireFicheActuelle(e.clientId),
+      courant.pdfValideLe === null
+        ? e.acces.apercuPdf(e.clientId, courant.id)
+        : Promise.resolve(null),
     ]);
     if (fiche !== null) propositions = listerPropositions(brutes, fiche);
+    retiresPdf = apercu?.retiresPourRelecture ?? null;
   }
   return {
     superAdmin,
@@ -100,5 +110,6 @@ export async function lireEcranRapport(e: {
     rapports,
     courant,
     propositions,
+    retiresPdf,
   };
 }

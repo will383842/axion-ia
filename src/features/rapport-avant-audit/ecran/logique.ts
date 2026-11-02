@@ -6,7 +6,7 @@
  *   · `decisionTelechargement` / `decisionValidationPdf` : réservés au super-administrateur ;
  *   · `listerPropositions` / `planifierCompletion` : la liste « Compléter la fiche » et ce qu'un
  *     clic écrirait. ⛔ Un champ déjà rempli n'est JAMAIS remplacé ; le SIREN n'est jamais écrit
- *     par cette liste (il a son propre bouton, la porte `confirmerSirenFormAction`) ; le SIRET,
+ *     par cette liste (il a son propre bouton, `poserSirenDepuisRapportAction`) ; le SIRET,
  *     l'adresse e-mail et tout champ inconnu sont à recopier à la main.
  */
 
@@ -157,17 +157,16 @@ const LIBELLES_STATUT: Readonly<Record<ResumeRapport["statut"], string>> = {
   en_attente: "En attente de démarrage",
   en_cours: "En cours",
   termine: "Terminé",
-  incomplet: "Terminé, mais incomplet",
   echoue: "N'a pas abouti",
 };
 
 export const libelleStatut = (r: ResumeRapport): string => LIBELLES_STATUT[r.statut];
 
-/** Pourcentage d'avancement, borné à 0-100. */
+/** Pourcentage d'avancement : 100 pour un rapport terminé, sinon borné à 0-99. */
 export function pourcentage(r: ResumeRapport): number {
-  if (r.statut === "termine" || r.statut === "incomplet") return 100;
-  if (r.etapesTotal <= 0) return 0;
-  return Math.max(0, Math.min(100, Math.round((r.etapesFaites / r.etapesTotal) * 100)));
+  if (r.statut === "termine") return 100;
+  if (!Number.isFinite(r.progression)) return 0;
+  return Math.max(0, Math.min(99, Math.round(r.progression)));
 }
 
 const nombre = new Intl.NumberFormat("fr-FR");
@@ -214,6 +213,26 @@ export function decisionValidationPdf(e: {
   if (e.rapport === null) return { ok: false, statut: 404, texte: "Rapport introuvable." };
   if (!aUneBase(e.rapport)) {
     return { ok: false, statut: 409, texte: "Ce rapport n'est pas terminé : rien à valider." };
+  }
+  return { ok: true };
+}
+
+/**
+ * « Compléter la fiche » (et « Poser ce SIREN ») : super-administrateur, rapport de CE client,
+ * terminé. Décision propre à la complétion : ses textes parlent de la fiche, pas du PDF.
+ */
+export function decisionCompletion(e: {
+  readonly role: string | null | undefined;
+  readonly rapport: ResumeRapport | null;
+}): Decision {
+  if (!estSuperAdmin(e.role)) return { ok: false, statut: 403, texte: RESERVE_SUPER_ADMIN };
+  if (e.rapport === null) return { ok: false, statut: 404, texte: "Rapport introuvable." };
+  if (!aUneBase(e.rapport)) {
+    return {
+      ok: false,
+      statut: 409,
+      texte: "Ce rapport n'est pas terminé : rien ne peut compléter la fiche.",
+    };
   }
   return { ok: true };
 }

@@ -380,6 +380,25 @@ export async function lancementsEnSuspens(
   return lignes.map((l) => l.id);
 }
 
+/**
+ * « Valider le PDF client » : pose la date et l'auteur, UNE fois. Seulement sur un rapport
+ * TERMINÉ, de CE client, non mis à l'écart, et pas encore validé ; sinon sans effet (rend
+ * `false`). N'envoie rien à personne.
+ */
+export async function validerPdfClient(
+  id: string,
+  clientId: string,
+  parId: string,
+  maintenant: Date = new Date(),
+  base: BaseRapports = prisma,
+): Promise<boolean> {
+  const r = await base.rapportAvantAudit.updateMany({
+    where: { id, clientId, ecarteLe: null, statut: "termine", pdfValideLe: null },
+    data: { pdfValideLe: maintenant, pdfValideParId: parId },
+  });
+  return r.count === 1;
+}
+
 // ── Lectures ────────────────────────────────────────────────────────────────
 
 export async function lireEtatRapport(

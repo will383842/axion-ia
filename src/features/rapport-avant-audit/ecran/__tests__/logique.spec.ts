@@ -135,11 +135,12 @@ describe("bouton « Lancer l'analyse complète » — garde super-administrateur
 });
 
 describe("progression", () => {
-  it("pourcentage par étape, borné", () => {
-    expect(pourcentage(resume({ statut: "en_cours", etapesFaites: 3, etapesTotal: 6 }))).toBe(50);
-    expect(pourcentage(resume({ statut: "en_cours", etapesFaites: 9, etapesTotal: 6 }))).toBe(100);
-    expect(pourcentage(resume({ statut: "en_attente", etapesFaites: 0, etapesTotal: 0 }))).toBe(0);
-    expect(pourcentage(resume({ statut: "incomplet", etapesFaites: 4 }))).toBe(100);
+  it("progression bornée à 0-99 tant que ça tourne, 100 une fois terminé", () => {
+    expect(pourcentage(resume({ statut: "en_cours", progression: 50 }))).toBe(50);
+    expect(pourcentage(resume({ statut: "en_cours", progression: 100 }))).toBe(99);
+    expect(pourcentage(resume({ statut: "en_attente", progression: -3 }))).toBe(0);
+    expect(pourcentage(resume({ statut: "en_cours", progression: Number.NaN }))).toBe(0);
+    expect(pourcentage(resume({ statut: "termine", progression: 40 }))).toBe(100);
   });
 });
 
@@ -185,15 +186,15 @@ describe("téléchargements — super-administrateur seul, PDF après validation
     ).toEqual({ ok: true });
   });
 
-  it("base et fiches d'un rapport incomplet restent téléchargeables", () => {
+  it("un rapport échoué n'a rien à télécharger (409)", () => {
     for (const format of ["base-json", "base-md", "fiches-md"]) {
       expect(
         decisionTelechargement({
           role: "super_admin",
           format,
-          rapport: resume({ statut: "incomplet" }),
+          rapport: resume({ statut: "echoue" }),
         }),
-      ).toEqual({ ok: true });
+      ).toMatchObject({ ok: false, statut: 409 });
     }
   });
 
