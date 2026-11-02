@@ -46,3 +46,10 @@ export function secretsGuidesReseau(
   if (!repli) return null;
   return { courant: repli, precedent: secretValide(env.VIDEOS_STUDIO_HMAC_SECRET_PRECEDENT) };
 }
+
+/** Corps maximal accepté par la route (ADR contrat v3, I3) : 32 Ko. */
+export const CORPS_MAX_GUIDES_RESEAU = 32 * 1024;
+
+/** Limites de débit de la v3 (I3), par jour : par personne, et par (post_ref, canal). */
+export const LIMITE_JOUR_PAR_PERSONNE = 20;
+export const LIMITE_JOUR_PAR_POST = 5000;
