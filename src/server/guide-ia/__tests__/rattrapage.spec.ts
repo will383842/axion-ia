@@ -92,7 +92,7 @@ describe("rattraperGuides — ce qui est repris", () => {
     expect(mettreEnFileGuide).toHaveBeenCalledTimes(1);
   });
 
-  it("🔴 la requête : formulaire SEULEMENT, non partie, âge compté depuis queued_at", async () => {
+  it("🔴 la requête : personne (hors admin), non partie, âge compté depuis queued_at", async () => {
     await rattraperGuides(MAINTENANT);
     const arg = guideFindMany.mock.calls[0]?.[0] as {
       where: {
@@ -102,7 +102,9 @@ describe("rattraperGuides — ce qui est repris", () => {
       };
     };
     // Une ligne `origine = admin` est un geste humain : jamais rejouée.
-    expect(arg.where.origine).toBe("formulaire");
+    // PV-1 : « tout sauf admin » (formulaire ET message privé), sans citer la valeur
+    // nouvelle — le worker peut atterrir avant la migration de l'énumération.
+    expect(arg.where.origine).toEqual({ not: "admin" });
     expect(arg.where.sentAt).toBeNull();
     expect(arg.where.OR).toEqual([
       { queuedAt: null },

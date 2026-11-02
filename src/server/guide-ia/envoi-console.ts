@@ -147,7 +147,7 @@ interface DemandeReservable {
   readonly email: string;
   readonly locale: "fr" | "en";
   readonly downloadToken: string;
-  readonly origine: "formulaire" | "admin";
+  readonly origine: "formulaire" | "admin" | "message_prive";
   readonly queuedAt: Date | null;
   readonly sentAt: Date | null;
 }
@@ -293,7 +293,7 @@ async function reserverEtMettreEnFile(
 async function controler(
   email: string,
   statut: EtatAdresseConsole["statut"],
-  origine: "formulaire" | "admin" | null,
+  origine: "formulaire" | "admin" | "message_prive" | null,
 ): Promise<RefusConsole | "introuvable" | null> {
   return refusConsole(await lireEtatAdresse(email, statut), origine);
 }

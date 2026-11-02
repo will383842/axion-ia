@@ -48,6 +48,12 @@ export interface OptionsEnvoiGuide {
    * `List-Unsubscribe` One-Click (RFC 8058) : amendement de Will du 24/09.
    */
   readonly unsubscribeToken?: string | null;
+  /**
+   * PV-1 — jeton du DOUBLE ACCORD d'une demande venue d'un réseau : l'e-mail porte le
+   * bloc « confirmez d'un clic » (texte BROUILLON, `content/guides-reseau.ts`). Le clic
+   * (un POST sur la page de confirmation) est seul à écrire la ligne `optin`.
+   */
+  readonly doubleAccordToken?: string | null;
   /** Phrase de reprise « inscrit avant la parution du guide » (envoi unique, lot L7). */
   readonly reprise?: boolean;
   readonly maintenant?: Date;
@@ -96,6 +102,7 @@ export async function mettreEnFileGuide(
   const payload: Record<string, unknown> = { downloadToken: demande.downloadToken };
   if (options.confirmToken) payload["confirmToken"] = options.confirmToken;
   if (options.unsubscribeToken) payload["unsubscribeToken"] = options.unsubscribeToken;
+  if (options.doubleAccordToken) payload["doubleAccordToken"] = options.doubleAccordToken;
   if (options.reprise === true) payload["reprise"] = true;
 
   // ⛔ JAMAIS `marketing: true` : « Votre guide » répond à une demande

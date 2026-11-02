@@ -95,7 +95,8 @@ function whereDemandes(f: FiltresDemandes): Record<string, unknown> {
   if (f.etat === "non-envoyees") where["sentAt"] = null;
   if (f.etat === "envoyees") where["sentAt"] = { not: null };
   if (f.etat === "cliquees") where["firstClickAt"] = { not: null };
-  if (f.origine === "formulaire" || f.origine === "admin") where["origine"] = f.origine;
+  if (f.origine === "formulaire" || f.origine === "admin" || f.origine === "message_prive")
+    where["origine"] = f.origine;
   if (f.recherche && f.recherche.trim().length >= 2) {
     where["email"] = { contains: f.recherche.trim(), mode: "insensitive" };
   }

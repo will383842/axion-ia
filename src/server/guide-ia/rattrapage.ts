@@ -8,7 +8,8 @@
  *
  * ── Ce qui est repris ────────────────────────────────────────────────────────
  * Une demande du guide, SI TOUT CECI EST VRAI :
- *   · elle vient d'un FORMULAIRE (`origine = formulaire`) — un envoi déclenché
+ *   · elle vient de la PERSONNE (`origine <> admin` : formulaire, ou message
+ *     privé d'un réseau, PV-1) — un envoi déclenché
  *     depuis la console est un geste humain, on ne le rejoue pas dans le dos
  *     de l'administrateur ;
  *   · elle n'est pas partie (`sent_at` nul) ;
@@ -117,7 +118,11 @@ export async function rattraperGuides(maintenant: Date = new Date()): Promise<Ra
     const t = maintenant.getTime();
     const candidates = await prisma.guideRequest.findMany({
       where: {
-        origine: "formulaire",
+        // PV-1 : « tout sauf admin » et non « formulaire OU message_prive ». Le
+        // worker peut atterrir avant la migration de l'énumération : citer
+        // `message_prive` dans la requête ferait échouer le passage (valeur
+        // d'énumération inconnue de la base) ; `<> 'admin'` marche avant ET après.
+        origine: { not: "admin" },
         sentAt: null,
         createdAt: {
           gte: new Date(t - HORIZON_RATTRAPAGE_MS),
@@ -182,17 +187,19 @@ export async function rattraperGuides(maintenant: Date = new Date()): Promise<Ra
         },
         {
           confirmToken: lettre.confirmToken ?? null,
+          doubleAccordToken: lettre.doubleAccordToken ?? null,
           unsubscribeToken: lettre.unsubscribeToken ?? null,
           maintenant,
         },
       );
       if (r === "en-file") {
         relancees++;
-        if (lettre.confirmToken) {
+        const jetonConfirmation = lettre.confirmToken ?? lettre.doubleAccordToken;
+        if (jetonConfirmation) {
           confirmationsViaGuide++;
           await prisma.newsletterSubscriber
             .updateMany({
-              where: { email: c.email, confirmToken: lettre.confirmToken },
+              where: { email: c.email, confirmToken: jetonConfirmation },
               data: { confirmSentAt: maintenant },
             })
             .catch(() => undefined);

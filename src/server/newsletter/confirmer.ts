@@ -32,6 +32,7 @@
 
 import * as Sentry from "@sentry/nextjs";
 import { prisma } from "@/lib/prisma";
+import { estOpposee } from "@/server/email/opposition";
 import { syncNewsletterOptInToCrm } from "@/server/crm-sync";
 import { estExclueDuCrm } from "@/server/crm-sync/exclusions";
 import { evenementInscriptionLettre } from "@/server/crm-sync/inscription-lettre";
@@ -87,6 +88,10 @@ export async function confirmerLettre(
       });
       return { ok: true, alreadyConfirmed: true, locale };
     }
+
+    // Une opposition (`email_oppositions`) ne se lève jamais par un clic de confirmation :
+    // un jeton `pending` antérieur à l'opposition ne confirme rien.
+    if (await estOpposee(sub.email)) return { ok: false, error: "unsubscribed" };
 
     // Jeton à usage unique : la mise à jour ne passe que s'il est encore là.
     // Deux POST simultanés (double clic) ne produisent qu'UNE confirmation.

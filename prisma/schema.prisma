@@ -1759,6 +1759,11 @@ enum GuideRequestOrigine {
   /// Un administrateur a déclenché l'envoi depuis la console (lot L3).
   /// ⚠️ Jamais repris par le rattrapage automatique.
   admin
+  /// PV-1 (2026-11-01) — la personne a demandé le guide dans un MESSAGE PRIVÉ
+  /// d'un réseau (parcours « mot en commentaire → message privé → e-mail »).
+  /// Posée AVANT le code qui l'écrit (le worker atterrit avant l'application).
+  /// Le rattrapage la traite comme `formulaire` (tout sauf `admin`).
+  message_prive
 }
 
 model GuideRequest {
@@ -17864,6 +17869,24 @@ model SiteVideoReception {
 
   @@index([recueLe], map: "site_video_receptions_recue_le_idx")
   @@map("site_video_receptions")
+}
+
+/// PV-1 (2026-11-01) — journal des demandes SIGNÉES du Studio pour le parcours « mot en
+/// commentaire → message privé → e-mail → guide ». Clé d'idempotence = identifiant du run Zernio
+/// (`cle_idempotence`) ; nonce unique = anti-rejeu. La réponse enregistrée est rejouée telle quelle.
+/// Ne porte JAMAIS l'adresse e-mail (ni le corps, seulement son empreinte SHA-256).
+/// rgpd: technique — journal d'idempotence des appels signés du Studio : identifiant de run, nonce, empreinte du corps et réponse ; ni adresse ni donnée de personne
+model GuideReseauReception {
+  id             String   @id @default(uuid()) @db.Uuid
+  cleIdempotence String   @unique @map("cle_idempotence") @db.VarChar(80)
+  nonce          String   @unique @db.Char(32)
+  corpsSha256    String   @map("corps_sha256") @db.Char(64)
+  reponseStatut  Int      @map("reponse_statut")
+  reponseCorps   Json     @map("reponse_corps")
+  recueLe        DateTime @default(now()) @map("recue_le") @db.Timestamptz(3)
+
+  @@index([recueLe], map: "guide_reseau_receptions_recue_le_idx")
+  @@map("guide_reseau_receptions")
 }
 
 /// rgpd: dossier-client

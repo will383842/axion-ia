@@ -48,6 +48,7 @@ import crypto from "node:crypto";
 import { prisma } from "@/lib/prisma";
 import { recordConsentEvent } from "@/lib/consents";
 import { estOpposee } from "@/server/email/opposition";
+import { FORM_REF_ACCORD_RESEAU } from "@/content/guides-reseau";
 import { FORM_REF_REINSCRIPTION, VERSION_REINSCRIPTION } from "@/content/guide-ia-formulaire";
 
 export type BaseLettre = "interet-legitime" | "consentement";
@@ -188,6 +189,8 @@ export interface LettreDansLEmail {
   readonly unsubscribeToken?: string;
   /** Désabonnée à qui l'on propose de revenir : le bouton de confirmation. */
   readonly confirmToken?: string;
+  /** PV-1 — « Oui » dit dans un message privé, en attente du clic de confirmation (double accord). */
+  readonly doubleAccordToken?: string;
 }
 
 /**
@@ -198,9 +201,23 @@ export interface LettreDansLEmail {
 export async function lettreDansLEmail(email: string): Promise<LettreDansLEmail> {
   const abonne = await prisma.newsletterSubscriber.findUnique({
     where: { email },
-    select: { status: true, unsubscribeToken: true, confirmToken: true },
+    select: {
+      status: true,
+      unsubscribeToken: true,
+      confirmToken: true,
+      consentFormRef: true,
+    },
   });
   if (abonne === null) return {};
+  // PV-1 : seul un « pending » né du parcours réseau porte le bloc de double accord ;
+  // un ancien « pending » (ancien double opt-in) ne reçoit toujours rien de plus.
+  if (
+    abonne.status === "pending" &&
+    abonne.confirmToken &&
+    abonne.consentFormRef === FORM_REF_ACCORD_RESEAU
+  ) {
+    return { doubleAccordToken: abonne.confirmToken };
+  }
   if (abonne.status === "confirmed" && abonne.unsubscribeToken) {
     return { unsubscribeToken: abonne.unsubscribeToken };
   }

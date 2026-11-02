@@ -674,7 +674,15 @@ describe("verrous statiques", () => {
       ecrivains.push(fichier!);
     }
     // Discriminant positif : les DEUX écritures (création et nouvelle demande) sont vues…
-    expect(ecrivains).toEqual(["src/server/guide-ia/demande.ts", "src/server/guide-ia/demande.ts"]);
+    // PV-1 (2026-11-01) : une demande faite PAR LA PERSONNE dans un message privé d'un
+    // réseau est un second écrivain légitime (même sens que le formulaire : un geste de la
+    // personne). Ni la console ni le rattrapage n'y touchent.
+    expect(ecrivains).toEqual([
+      "src/server/guide-ia/demande.ts",
+      "src/server/guide-ia/demande.ts",
+      "src/server/guides-reseau/traitement.ts",
+      "src/server/guides-reseau/traitement.ts",
+    ]);
   });
 
   it("🛑 la politique n'annonce plus les durées du module — elles ne sont plus appliquées (2026-10-07)", () => {
