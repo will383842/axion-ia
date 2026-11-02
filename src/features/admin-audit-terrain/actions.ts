@@ -13,7 +13,7 @@ import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import { hashIp } from "@/lib/security/ip-hash";
 import { ipVisiteurOuNull } from "@/lib/client-ip-core";
-import { ecrireJournalActivite } from "@/server/content-gen/shared/activity-log-writer";
+import { ecrireJournalActivite } from "@/server/audit-terrain/journal";
 import {
   JETON_DUREE_DEFAUT_JOURS,
   JETON_DUREE_MAX_JOURS,

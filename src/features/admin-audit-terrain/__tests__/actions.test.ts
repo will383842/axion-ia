@@ -6,7 +6,7 @@ const authMock = vi.fn();
 vi.mock("@/auth", () => ({ auth: () => authMock() }));
 vi.mock("next/headers", () => ({ headers: async () => new Headers() }));
 const journalMock = vi.fn();
-vi.mock("@/server/content-gen/shared/activity-log-writer", () => ({
+vi.mock("@/server/audit-terrain/journal", () => ({
   ecrireJournalActivite: (...a: unknown[]) => journalMock(...a),
 }));
 

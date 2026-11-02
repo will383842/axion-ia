@@ -33,7 +33,7 @@ import { checkRateLimit } from "@/lib/rate-limit";
 import { hashIp } from "@/lib/security/ip-hash";
 import { ipVisiteurOuNull } from "@/lib/client-ip-core";
 import { chiffrerParole } from "@/lib/chiffrer-parole";
-import { ecrireJournalActivite } from "@/server/content-gen/shared/activity-log-writer";
+import { ecrireJournalActivite } from "./journal";
 import { lireJeton, memeEmpreinte, type JetonLu } from "./jeton";
 import {
   MAX_CORPS_OCTETS,

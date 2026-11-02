@@ -145,7 +145,7 @@ vi.mock("@/lib/rate-limit", () => ({
   checkRateLimit: (...a: unknown[]) => checkRateLimitMock(...a),
 }));
 const journalMock = vi.fn();
-vi.mock("@/server/content-gen/shared/activity-log-writer", () => ({
+vi.mock("@/server/audit-terrain/journal", () => ({
   ecrireJournalActivite: (...a: unknown[]) => journalMock(...a),
 }));
 const sentryMock = vi.fn();
