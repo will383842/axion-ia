@@ -63,6 +63,8 @@ export interface OptionsEntree {
   drapeau?: () => boolean;
   secrets?: () => SecretsStudio | null;
   prefixeDebit?: string;
+  /** Plafond du corps propre à la route (défaut : `CORPS_MAX_OCTETS`). */
+  corpsMaxOctets?: number;
 }
 
 export async function controlerEntree(
@@ -104,7 +106,9 @@ export async function controlerEntree(
     if (type !== "application/json") return { ok: false, reponse: refus(415, "type_non_supporte") };
   }
   const corps =
-    options.methode === "GET" ? Buffer.alloc(0) : await lireCorpsPlafonne(req, CORPS_MAX_OCTETS);
+    options.methode === "GET"
+      ? Buffer.alloc(0)
+      : await lireCorpsPlafonne(req, options.corpsMaxOctets ?? CORPS_MAX_OCTETS);
   if (corps === null) return { ok: false, reponse: refus(413, "corps_trop_gros") };
 
   // 4-5. Horodatage et signature.

@@ -17894,6 +17894,41 @@ model GuideReseauReception {
   @@map("guide_reseau_receptions")
 }
 
+/// L3b (2026-11-03) — historique d'ORIGINE des demandes de guide venues d'un réseau (contrat v3,
+/// ADR-CONTRAT-V3-ORIGINE §2). Union sans retrait, dédoublonnée sur (post_ref, canal, date à la
+/// seconde). Au-delà de 50 entrées ACTIVES par personne, la plus ancienne est ARCHIVÉE
+/// (`archivee_le` posée) : AUCUNE ligne n'est jamais supprimée. Rattachée à la personne par
+/// `email_key` (empreinte HMAC), jamais par l'adresse. Aucun pseudo, aucun texte : le jeton du
+/// commentaire n'est gardé qu'en HMAC à clé serveur (`commentaire_ref_hmac`).
+/// rgpd: technique — origine d'une demande de guide : clés du dictionnaire, jeton de publication opaque, jeton de commentaire en HMAC ; rattachée à la personne par empreinte HMAC d'adresse, aucune adresse ni pseudo ni texte
+model GuideReseauOrigine {
+  id                 String    @id @default(uuid()) @db.Uuid
+  emailKey           String    @map("email_key") @db.VarChar(64)
+  /// SHA-256 de (mot, reseau, guide, post_ref, canal, date à la seconde) : `null` traité comme valeur.
+  cleDedoublonnage   String    @map("cle_dedoublonnage") @db.Char(64)
+  mot                String    @db.VarChar(30)
+  reseau             String    @db.VarChar(20)
+  guide              String    @db.VarChar(40)
+  postRef            String?   @map("post_ref") @db.VarChar(80)
+  postUrl            String?   @map("post_url") @db.VarChar(300)
+  canal              String?   @db.VarChar(16)
+  famille            String?   @db.VarChar(40)
+  detail             String?   @db.VarChar(60)
+  compte             String?   @db.VarChar(40)
+  versionTexte       String?   @map("version_texte") @db.VarChar(64)
+  utmCampagne        String?   @map("utm_campaign") @db.VarChar(60)
+  commentaireRefHmac String?   @map("commentaire_ref_hmac") @db.Char(64)
+  /// Date de l'origine (à la seconde) : fait foi pour « la plus récente gagne ».
+  occurredAt         DateTime  @map("occurred_at") @db.Timestamptz(3)
+  /// Posée quand l'entrée passe en archive (lecture seule) ; `null` = active.
+  archiveeLe         DateTime? @map("archivee_le") @db.Timestamptz(3)
+  createdAt          DateTime  @default(now()) @map("created_at") @db.Timestamptz(3)
+
+  @@unique([emailKey, cleDedoublonnage], map: "guide_reseau_origines_dedoublonnage_key")
+  @@index([emailKey, occurredAt], map: "guide_reseau_origines_personne_date_idx")
+  @@map("guide_reseau_origines")
+}
+
 /// rgpd: dossier-client
 /// Une demande du Tour France IA : la mini-demande faite AVANT le rendez-vous en visio
 /// (e-mail, ville, nom, téléphone). Table ajoutée par PR-2a ; le formulaire public est PR-2b.

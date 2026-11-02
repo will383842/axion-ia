@@ -31,7 +31,12 @@ import {
   FORM_REF_INFORMATION_RESEAU,
   sourceReseau,
 } from "@/content/guides-reseau";
+import { checkRateLimit } from "@/lib/rate-limit";
 import { occurredAtValide, type DemandeGuideReseau } from "./contrat";
+import { LIMITE_JOUR_PAR_PERSONNE, LIMITE_JOUR_PAR_POST } from "./config";
+import * as Sentry from "@sentry/nextjs";
+import { CleHmacManquanteError, construireOrigine, enregistrerOrigine } from "./origines";
+import { transmettreOriginesV3 } from "./synchro-v3";
 
 /**
  * VALEURS D'ACCORD RENDUES PAR LE SITE (réponse JSON, champ `accord`) :
@@ -53,7 +58,7 @@ export type EtatAccord =
   | "ecarte";
 
 export type ResultatTraitement =
-  | { readonly ok: false; readonly erreur: "adresse_refusee" }
+  | { readonly ok: false; readonly erreur: "adresse_refusee" | "trop_de_requetes" }
   | {
       readonly ok: true;
       readonly demandeId: string;
@@ -177,6 +182,64 @@ async function demanderDoubleAccord(d: DemandeGuideReseau, opposee: boolean): Pr
   }
 }
 
+async function sousLesLimites(
+  d: DemandeGuideReseau,
+  emailKey: string,
+  maintenant: Date,
+): Promise<boolean> {
+  const jour = maintenant.toISOString().slice(0, 10);
+  // Toutes versions signées (v1 comprise) : le débit par personne ne dépend pas du schéma.
+  const parPersonne = await checkRateLimit(`guides-reseau:pers:${emailKey}:${jour}`, {
+    limit: LIMITE_JOUR_PAR_PERSONNE,
+    windowSec: 86_400,
+  });
+  if (!parPersonne.allowed) return false;
+  if (d.schemaVersion !== 3 || !d.post_ref) return true;
+  const parPost = await checkRateLimit(
+    `guides-reseau:post:${d.post_ref}:${d.canal ?? "-"}:${jour}`,
+    { limit: LIMITE_JOUR_PAR_POST, windowSec: 86_400 },
+  );
+  return parPost.allowed;
+}
+
+/** Historique d'origine (v3). Ne casse jamais la demande : le guide reste dû à la personne. */
+export async function noterOrigineV3(
+  d: DemandeGuideReseau,
+  emailKey: string,
+  quand: Date,
+): Promise<void> {
+  try {
+    const origine = construireOrigine(d, quand);
+    await enregistrerOrigine(emailKey, origine);
+    await transmettreOriginesV3({
+      email: d.email,
+      cleIdempotence: d.cleIdempotence,
+      origines: [origine],
+      quand,
+    });
+  } catch (e) {
+    // Clé HMAC absente en production : ce n'est pas un aléa, c'est une panne de configuration.
+    // JOURNAL + ALERTE (Sentry, sans donnée de personne) : jamais avalée en silence.
+    const cleManquante = e instanceof CleHmacManquanteError;
+    console.error(
+      JSON.stringify({
+        event: cleManquante ? "guides_reseau_origine_cle_manquante" : "guides_reseau_origine_echec",
+        erreur: e instanceof Error ? e.name : "erreur",
+      }),
+    );
+    if (cleManquante) {
+      try {
+        Sentry.captureException(e, {
+          level: "error",
+          tags: { area: "guides-reseau", action: "origine-cle-manquante" },
+        });
+      } catch {
+        /* l'observabilité ne casse jamais la réponse */
+      }
+    }
+  }
+}
+
 export interface CrochetsTraitement {
   /**
    * Appelé DÈS que l'e-mail du guide est en file (`en-file` ou `en-validation`), avant tout
@@ -202,9 +265,16 @@ export async function traiterDemande(
   const emailKey = hashEmailForLookup(d.email);
   if (!emailKey) throw new Error("[guides-reseau] empreinte d'adresse indisponible");
 
+  // I3 : limites par jour, par personne (v1 ET v3) et par (post_ref, canal) (v3). Rien n'est écrit avant.
+  if (!(await sousLesLimites(d, emailKey, maintenant))) {
+    return { ok: false, erreur: "trop_de_requetes" };
+  }
+
   const quand = occurredAtValide(d.occurredAt, maintenant);
   const opposee = await estOpposee(d.email);
   const demande = await retrouverOuCreerDemande(d, emailKey, maintenant);
+
+  if (d.schemaVersion === 3) await noterOrigineV3(d, emailKey, quand);
 
   await recordConsentEvent({
     email: d.email,
