@@ -179,6 +179,33 @@ async function lireJson(
   }
 }
 
+const DELAI_MS = 15_000;
+const ATTENTE_429_MS = 1_000;
+
+/** GET avec délai de 15 s ; un seul réessai après 1 s sur 429 ; erreur réseau/délai => ErreurRegistre. */
+async function appeler(
+  source: "recherche-entreprises" | "bodacc",
+  fetchImpl: FetchRegistre,
+  url: string,
+): Promise<Response> {
+  for (let essai = 0; ; essai += 1) {
+    let res: Response;
+    try {
+      res = await fetchImpl(url, {
+        headers: { accept: "application/json" },
+        signal: AbortSignal.timeout(DELAI_MS),
+      });
+    } catch {
+      throw new ErreurRegistre(source, "erreur réseau ou délai dépassé");
+    }
+    if (res.status === 429 && essai === 0) {
+      await new Promise((r) => setTimeout(r, ATTENTE_429_MS));
+      continue;
+    }
+    return res;
+  }
+}
+
 const SIREN = /^\d{9}$/;
 const nettoyer = (s: string) => s.replace(/\s+/g, "");
 
@@ -191,7 +218,7 @@ export async function rechercherEntreprise(
   if (!brut) throw new ErreurRegistre("recherche-entreprises", "requête vide");
   const q = SIREN.test(nettoyer(brut)) ? nettoyer(brut) : brut;
   const url = `${URL_RECHERCHE}?${new URLSearchParams({ q, per_page: "5", minimal: "false" })}`;
-  const res = await fetchImpl(url, { headers: { accept: "application/json" } });
+  const res = await appeler("recherche-entreprises", fetchImpl, url);
   const json = await lireJson("recherche-entreprises", res);
   const lu = ReponseRecherche.safeParse(json);
   if (!lu.success) throw new ErreurRegistre("recherche-entreprises", "forme de réponse inattendue");
@@ -239,9 +266,7 @@ export async function annoncesBodacc(
     order_by: "dateparution desc",
     limit: "50",
   });
-  const res = await fetchImpl(`${URL_BODACC}?${params}`, {
-    headers: { accept: "application/json" },
-  });
+  const res = await appeler("bodacc", fetchImpl, `${URL_BODACC}?${params}`);
   const json = await lireJson("bodacc", res);
   const lu = ReponseBodacc.safeParse(json);
   if (!lu.success) throw new ErreurRegistre("bodacc", "forme de réponse inattendue");

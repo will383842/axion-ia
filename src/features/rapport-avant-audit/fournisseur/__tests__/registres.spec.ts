@@ -87,6 +87,42 @@ describe("rechercherEntreprise", () => {
   });
 });
 
+describe("robustesse des registres", () => {
+  it("429 : un seul réessai après 1 s (délais simulés), puis ErreurRegistre", async () => {
+    vi.useFakeTimers();
+    try {
+      const f = vi
+        .fn()
+        .mockResolvedValueOnce(json({}, 429))
+        .mockResolvedValueOnce(json({ results: [] }));
+      const p = rechercherEntreprise("x", f);
+      await vi.advanceTimersByTimeAsync(999);
+      expect(f).toHaveBeenCalledTimes(1);
+      await vi.advanceTimersByTimeAsync(1);
+      await expect(p).resolves.toEqual([]);
+      expect(f.mock.calls[0]![1].signal).toBeInstanceOf(AbortSignal);
+
+      const g = vi.fn().mockResolvedValue(json({}, 429));
+      const q = expect(annoncesBodacc("123456789", g)).rejects.toThrow(/429/);
+      await vi.advanceTimersByTimeAsync(1_000);
+      await q;
+      expect(g).toHaveBeenCalledTimes(2);
+    } finally {
+      vi.useRealTimers();
+    }
+  });
+
+  it("JSON invalide et erreur réseau deviennent des ErreurRegistre", async () => {
+    const mal = async () => new Response("<html>", { status: 200 });
+    await expect(rechercherEntreprise("x", mal)).rejects.toThrow(/JSON invalide/);
+    await expect(annoncesBodacc("123456789", mal)).rejects.toThrow(/JSON invalide/);
+    const coupure = async () => {
+      throw new TypeError("fetch failed");
+    };
+    await expect(rechercherEntreprise("x", coupure)).rejects.toBeInstanceOf(ErreurRegistre);
+  });
+});
+
 describe("annoncesBodacc", () => {
   it("parse une réponse d'exemple", async () => {
     const f = vi.fn().mockResolvedValue(

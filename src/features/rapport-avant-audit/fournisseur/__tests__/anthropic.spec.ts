@@ -102,6 +102,117 @@ describe("fournisseur Anthropic", () => {
     );
   });
 
+  it("le compteur usage.server_tool_use.web_search_requests prime sur le décompte des blocs", async () => {
+    const f = vi
+      .fn()
+      .mockImplementation(async () =>
+        ok({ ...bon, usage: { ...bon.usage, server_tool_use: { web_search_requests: 7 } } }),
+      );
+    const r = await creerFournisseurAnthropic({ cles: ["k1"], fetchImpl: f })(APPEL);
+    expect(r.nbRecherches).toBe(7);
+  });
+
+  it("traite une erreur réseau comme un 5xx : 2 réessais sur la même clé puis ErreurAnthropic", async () => {
+    const f = vi.fn().mockRejectedValue(new TypeError("fetch failed"));
+    await expect(
+      creerFournisseurAnthropic({ cles: ["k1", "k2"], fetchImpl: f, attenteMs: 0 })(APPEL),
+    ).rejects.toBeInstanceOf(ErreurAnthropic);
+    expect(f).toHaveBeenCalledTimes(3);
+    expect(f.mock.calls.every((c) => c[1].headers["x-api-key"] === "k1")).toBe(true);
+    expect(f.mock.calls[0]![1].signal).toBeInstanceOf(AbortSignal);
+
+    const g = vi
+      .fn()
+      .mockRejectedValueOnce(new Error("coupure"))
+      .mockImplementation(async () => ok(bon));
+    await creerFournisseurAnthropic({ cles: ["k1"], fetchImpl: g, attenteMs: 0 })(APPEL);
+    expect(g).toHaveBeenCalledTimes(2);
+  });
+
+  it("lève « réponse illisible » sur un JSON invalide ou une forme inattendue", async () => {
+    const mal = vi
+      .fn()
+      .mockImplementation(async () => new Response("pas du json", { status: 200 }));
+    await expect(
+      creerFournisseurAnthropic({ cles: ["k1"], fetchImpl: mal })(APPEL),
+    ).rejects.toThrow(/réponse illisible/);
+    const forme = vi.fn().mockImplementation(async () => ok({ foo: 1 }));
+    await expect(
+      creerFournisseurAnthropic({ cles: ["k1"], fetchImpl: forme })(APPEL),
+    ).rejects.toBeInstanceOf(ErreurAnthropic);
+  });
+
+  it("pause_turn : relance avec le tour assistant et cumule jetons et recherches", async () => {
+    const pause1 = {
+      content: [
+        { type: "server_tool_use", name: "web_search" },
+        { type: "text", text: "A" },
+      ],
+      stop_reason: "pause_turn",
+      usage: { input_tokens: 10, output_tokens: 5 },
+    };
+    const fin = {
+      content: [{ type: "text", text: "B" }],
+      stop_reason: "end_turn",
+      usage: { input_tokens: 20, output_tokens: 7, server_tool_use: { web_search_requests: 2 } },
+    };
+    const f = vi.fn().mockResolvedValueOnce(ok(pause1)).mockResolvedValueOnce(ok(fin));
+    const r = await creerFournisseurAnthropic({ cles: ["k1"], fetchImpl: f })(APPEL);
+    expect(r).toEqual({ texte: "AB", jetonsEntree: 30, jetonsSortie: 12, nbRecherches: 3 });
+    const corps2 = JSON.parse(f.mock.calls[1]![1].body as string);
+    expect(corps2.messages).toHaveLength(2);
+    expect(corps2.messages[1]).toEqual({ role: "assistant", content: pause1.content });
+
+    const toujours = vi.fn().mockImplementation(async () => ok(pause1));
+    await expect(
+      creerFournisseurAnthropic({ cles: ["k1"], fetchImpl: toujours })(APPEL),
+    ).rejects.toThrow(/pause_turn/);
+    expect(toujours).toHaveBeenCalledTimes(3); // 1 appel + 2 relances
+  });
+
+  it("lève une erreur explicite sur max_tokens et refusal", async () => {
+    for (const [arret, motif] of [
+      ["max_tokens", /tronquée/],
+      ["refusal", /refusée/],
+    ] as const) {
+      const f = vi.fn().mockImplementation(async () => ok({ content: [], stop_reason: arret }));
+      await expect(
+        creerFournisseurAnthropic({ cles: ["k1"], fetchImpl: f })(APPEL),
+      ).rejects.toThrow(motif);
+    }
+  });
+
+  it("n'écarte la clé sur 400 que pour un motif de crédits ou de facturation", async () => {
+    const f = vi.fn().mockImplementation(async () => err(400, "credits must be positive"));
+    await expect(
+      creerFournisseurAnthropic({ cles: ["k1", "k2"], fetchImpl: f })(APPEL),
+    ).rejects.toBeInstanceOf(ErreurAnthropic);
+    expect(f).toHaveBeenCalledTimes(1);
+  });
+
+  it("429 : attend retry-after plafonné à 30 s (délais simulés)", async () => {
+    vi.useFakeTimers();
+    try {
+      const f = vi
+        .fn()
+        .mockResolvedValueOnce(new Response("", { status: 429, headers: { "retry-after": "3" } }))
+        .mockResolvedValueOnce(new Response("", { status: 429, headers: { "retry-after": "999" } }))
+        .mockImplementation(async () => ok(bon));
+      const p = creerFournisseurAnthropic({ cles: ["k1"], fetchImpl: f, attenteMs: 10 })(APPEL);
+      await vi.advanceTimersByTimeAsync(2_999);
+      expect(f).toHaveBeenCalledTimes(1);
+      await vi.advanceTimersByTimeAsync(1);
+      expect(f).toHaveBeenCalledTimes(2);
+      await vi.advanceTimersByTimeAsync(29_999);
+      expect(f).toHaveBeenCalledTimes(2);
+      await vi.advanceTimersByTimeAsync(1);
+      await expect(p).resolves.toMatchObject({ texte: "Bonjour monde" });
+      expect(f).toHaveBeenCalledTimes(3);
+    } finally {
+      vi.useRealTimers();
+    }
+  });
+
   it("ne réessaie pas une erreur 400 ordinaire", async () => {
     const f = vi.fn().mockImplementation(async () => err(400, "invalid request"));
     await expect(
