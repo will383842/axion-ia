@@ -3,7 +3,14 @@ import { describe, expect, it } from "vitest";
 import { HTML_SYNTHETIQUE } from "../../questionnaire-preaudit/__tests__/squelette.fixture";
 import { lireLaCharge } from "../../questionnaire-preaudit/lecture";
 import { collecterReponses } from "../collecte";
-import { ErreurRapport, executerRapport, type AppelIA, type FournisseurIA } from "../executer";
+import {
+  ErreurRapport,
+  executerRapport,
+  MAX_QUESTIONS_PAR_ROLE,
+  MAX_ROLES,
+  type AppelIA,
+  type FournisseurIA,
+} from "../executer";
 import { exigerModeleAutorise } from "../modeles";
 
 const CLIENT = "11111111-1111-4111-8111-111111111111";
@@ -163,6 +170,7 @@ interface Options {
   premiereReponseInvalide?: boolean;
   fences?: boolean;
   ficheEnPanne?: boolean;
+  plan?: unknown;
 }
 
 function faux(o: Options = {}) {
@@ -174,7 +182,7 @@ function faux(o: Options = {}) {
     if (a.system.includes("Rédacteur de fiche individuelle")) {
       if (o.ficheEnPanne) throw new Error("service indisponible");
       corps = FICHE;
-    } else if (a.system.includes("chef d'orchestre")) corps = PLAN;
+    } else if (a.system.includes("chef d'orchestre")) corps = o.plan ?? PLAN;
     else if (a.system.includes("Tu es « Analyste des besoins déclarés »")) {
       if (o.premiereReponseInvalide && !besoinsDejaRates) {
         besoinsDejaRates = true;
@@ -310,5 +318,22 @@ describe("executerRapport", () => {
     const r = await executerRapport(dossier(), opts(fournisseur));
     expect(r.base.fiches_personnes[0]?.aVerifierSurPlace[0]?.question).toContain("annexe");
     expect(r.base.meta.limites.join(" ")).toContain("fiche individuelle");
+  });
+
+  it("plafonne l'équipe : un chef qui propose trop de spécialistes est borné et le dit", async () => {
+    const beaucoup = {
+      roles: Array.from({ length: 12 }, () => ({
+        id: "specialiste_secteur",
+        titre: "Spécialiste du secteur",
+        mission: "m",
+        questions: Array.from({ length: 20 }, (_, j) => `q${j}`),
+      })),
+    };
+    const { fournisseur, appels } = faux({ plan: beaucoup });
+    const r = await executerRapport(dossier(), opts(fournisseur));
+    expect(r.base.equipe_analyse).toHaveLength(MAX_ROLES);
+    expect(r.base.equipe_analyse[0]?.questionsDeRecherche).toHaveLength(MAX_QUESTIONS_PAR_ROLE);
+    expect(r.base.meta.limites.join(" ")).toContain("12 spécialistes");
+    expect(appels.filter((a) => a.recherche)).toHaveLength(MAX_ROLES);
   });
 });

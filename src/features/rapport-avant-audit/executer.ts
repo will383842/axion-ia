@@ -96,6 +96,10 @@ export interface ResultatRapport {
   readonly nbRecherches: number;
 }
 
+/** Plafonds de structure de l'équipe (jamais atteints par un rapport normal). */
+export const MAX_ROLES = 8;
+export const MAX_QUESTIONS_PAR_ROLE = 6;
+
 export class ErreurRapport extends Error {
   constructor(
     readonly etape: string,
@@ -335,10 +339,22 @@ export async function executerRapport(
     ROLES_DE_SYNTHESE.chef.modele,
   );
 
+  // Plafond de STRUCTURE (pas un budget en euros) : le modèle choisit l'équipe, un texte injecté
+  // dans une réponse ne doit pas pouvoir multiplier les spécialistes ni les recherches.
+  const rolesRetenus = plan.roles.slice(0, MAX_ROLES).map((r) => ({
+    ...r,
+    questions: r.questions.slice(0, MAX_QUESTIONS_PAR_ROLE),
+  }));
+  if (rolesRetenus.length < plan.roles.length) {
+    limites.push(
+      `L'équipe proposée comptait ${plan.roles.length} spécialistes : seuls les ${MAX_ROLES} premiers ont été retenus.`,
+    );
+  }
+
   // 3. Spécialistes en parallèle (un échec n'arrête pas les autres)
   progresser("Recherches et analyses", 2, 6);
   const resultats = await Promise.allSettled(
-    plan.roles.map((r) => {
+    rolesRetenus.map((r) => {
       const du_catalogue = ROLES.find((x) => x.id === r.id);
       const recherche = du_catalogue?.recherche ?? true;
       const modele = du_catalogue?.modele ?? MODELES_RAPPORT.execution;
@@ -356,7 +372,7 @@ export async function executerRapport(
     if (res.status === "fulfilled") constats.push(res.value);
     else {
       limites.push(
-        `Le spécialiste « ${plan.roles[i]?.titre ?? "?"} » n'a pas pu aboutir : ${String(res.reason instanceof Error ? res.reason.message : res.reason)}`,
+        `Le spécialiste « ${rolesRetenus[i]?.titre ?? "?"} » n'a pas pu aboutir : ${String(res.reason instanceof Error ? res.reason.message : res.reason)}`,
       );
     }
   });
@@ -456,7 +472,7 @@ export async function executerRapport(
       reponseDirection: analyse.reponseDirection,
     },
     besoins_declares: besoins,
-    equipe_analyse: plan.roles.map((r) => ({
+    equipe_analyse: rolesRetenus.map((r) => ({
       role: r.titre,
       mission: r.mission,
       modele: (ROLES.find((x) => x.id === r.id)?.modele ?? MODELES_RAPPORT.execution) as string,
