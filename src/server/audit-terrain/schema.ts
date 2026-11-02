@@ -18,6 +18,8 @@ export const MAX_DONNEES_OCTETS = 64 * 1024;
 export const MAX_CORPS_OCTETS = 512 * 1024;
 export const MAX_LOT = 50;
 export const MAX_EVENEMENTS_SESSION = 5000;
+/** seq borné : un numéro démesuré ne doit jamais pouvoir coûter du calcul côté base. */
+export const MAX_SEQ = 2 * MAX_EVENEMENTS_SESSION;
 
 // La taille de `donnees` (64 Ko en OCTETS) est contrôlée événement par événement dans reception.ts :
 // un événement trop gros est rejeté seul, il ne fait pas refuser tout le lot.
@@ -26,7 +28,7 @@ const donnees = z.record(z.string(), z.unknown());
 const evenement = z
   .object({
     eventId: z.string().uuid(),
-    seq: z.number().int().min(1).max(2_000_000_000),
+    seq: z.number().int().min(1).max(MAX_SEQ),
     type: z.enum(TYPES_EVENEMENT),
     etape: z.string().min(1).max(40),
     etapeIndex: z.number().int().min(0).max(7),

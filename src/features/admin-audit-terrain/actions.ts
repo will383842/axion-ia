@@ -138,3 +138,71 @@ export async function revoquerJetonAudit(
   }
   return { ok: true, revoque: true };
 }
+
+const regenererSchema = z
+  .object({
+    sessionId: z.string().uuid(),
+    joursValidite: z
+      .number()
+      .int()
+      .min(1)
+      .max(JETON_DUREE_MAX_JOURS)
+      .default(JETON_DUREE_DEFAUT_JOURS),
+  })
+  .strict();
+
+/**
+ * Rotation : nouveau jeton pour une session EXISTANTE (PC changé, jeton perdu). Même sessionId, même
+ * client, mêmes données déjà reçues (rien n'est supprimé ni dupliqué) ; l'ancien jeton est refusé (401)
+ * car son empreinte est remplacée ; la session redevient « ouverte » si elle avait été révoquée ; la
+ * durée repart de maintenant (J+2 par défaut, 10 jours au plus). Une session « close » n'est pas rouverte.
+ */
+export async function regenererJetonAudit(entree: unknown): Promise<ResultatJeton> {
+  const adminId = await exigerSuperAdmin();
+  if (!adminId) return { ok: false, erreur: "interdit" };
+  const p = regenererSchema.safeParse(entree);
+  if (!p.success) return { ok: false, erreur: "invalide" };
+  const { sessionId, joursValidite } = p.data;
+
+  const ligne = await prisma.auditTerrainSession.findUnique({
+    where: { id: sessionId },
+    select: { id: true, statut: true, jetonEmpreinte: true },
+  });
+  if (!ligne) return { ok: false, erreur: "introuvable" };
+  if (ligne.statut !== "ouverte" && ligne.statut !== "revoquee") {
+    return { ok: false, erreur: "invalide" };
+  }
+
+  const secret = genererSecret();
+  const expireLe = new Date(Date.now() + joursValidite * 86_400_000);
+  const { count } = await prisma.auditTerrainSession.updateMany({
+    // Garde de concurrence : on ne remplace que l'empreinte qu'on vient de lire.
+    where: { id: sessionId, jetonEmpreinte: ligne.jetonEmpreinte },
+    data: {
+      jetonEmpreinte: empreinteJeton(secret),
+      jetonExpireLe: expireLe,
+      jetonRevoqueLe: null,
+      statut: "ouverte",
+    },
+  });
+  if (count !== 1) return { ok: false, erreur: "introuvable" };
+  await ecrireJournalActivite(
+    { adminUserId: adminId, ipAddress: await ipHachee(), userAgent: null },
+    {
+      action: "audit-terrain.jeton.regenere",
+      targetType: "audit_terrain_session",
+      targetId: sessionId,
+      // Début de l'ancienne empreinte (non réversible) pour dater la rotation ; jamais un secret.
+      changes: {
+        ancienneEmpreinte: ligne.jetonEmpreinte.slice(0, 8),
+        expireLe: expireLe.toISOString(),
+      },
+    },
+  );
+  return {
+    ok: true,
+    jeton: composerJeton(sessionId, secret),
+    sessionId,
+    expireLe: expireLe.toISOString(),
+  };
+}

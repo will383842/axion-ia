@@ -15,6 +15,7 @@ const base = {
   rapports: [] as Ligne[],
 };
 const requetesSql: string[] = [];
+const bornesSerie: number[] = [];
 const p2002 = () => Object.assign(new Error("Unique constraint"), { code: "P2002" });
 
 const evenementModele = {
@@ -63,8 +64,29 @@ const rapportModele = {
 };
 const prismaFaux = {
   auditTerrainSession: {
-    findUnique: async ({ where }: { where: { jetonEmpreinte: string } }) =>
-      base.sessions.find((s) => s["jetonEmpreinte"] === where.jetonEmpreinte) ?? null,
+    findUnique: async ({ where }: { where: { jetonEmpreinte?: string; id?: string } }) =>
+      base.sessions.find((s) =>
+        where.id !== undefined
+          ? s["id"] === where.id
+          : s["jetonEmpreinte"] === where.jetonEmpreinte,
+      ) ?? null,
+    updateMany: async ({
+      where,
+      data,
+    }: {
+      where: { id: string; jetonEmpreinte: string };
+      data: Ligne;
+    }) => {
+      const s = base.sessions.find(
+        (x) => x["id"] === where.id && x["jetonEmpreinte"] === where.jetonEmpreinte,
+      );
+      if (s) Object.assign(s, data);
+      return { count: s ? 1 : 0 };
+    },
+  },
+  $executeRaw: async (strings: TemplateStringsArray, ...v: unknown[]) => {
+    requetesSql.push(strings.join("?") + "|" + v.join(","));
+    return 1;
   },
   auditTerrainEvenement: evenementModele,
   auditTerrainRapport: rapportModele,
@@ -90,6 +112,7 @@ const prismaFaux = {
     }
     if (texte.includes("generate_series")) {
       const [dernier, sid, limite] = v as [number, string, number];
+      bornesSerie.push(dernier);
       const vus = new Set(
         base.evenements.filter((e) => e["sessionId"] === sid).map((e) => e["seq"] as number),
       );
@@ -126,11 +149,15 @@ vi.mock("@/server/content-gen/shared/activity-log-writer", () => ({
   ecrireJournalActivite: (...a: unknown[]) => journalMock(...a),
 }));
 const sentryMock = vi.fn();
+const authMock = vi.fn();
+vi.mock("@/auth", () => ({ auth: () => authMock() }));
+vi.mock("next/headers", () => ({ headers: async () => new Headers() }));
 vi.mock("@sentry/nextjs", () => ({ captureException: (...a: unknown[]) => sentryMock(...a) }));
 
 import { POST } from "@/app/api/audit-terrain/v1/evenements/route";
 import { GET } from "@/app/api/audit-terrain/v1/etat/route";
 import { empreinteJeton } from "@/server/audit-terrain/jeton";
+import { regenererJetonAudit } from "@/features/admin-audit-terrain/actions";
 
 /* ---------- aides ---------- */
 const sha = (t: string) => createHash("sha256").update(t).digest("hex");
@@ -206,10 +233,12 @@ const etat = (jeton: string | null = JETON, q = "") =>
   );
 
 beforeEach(() => {
+  authMock.mockReset().mockResolvedValue({ user: { id: randomUUID(), role: "super_admin" } });
   base.sessions = [];
   base.evenements = [];
   base.rapports = [];
   requetesSql.length = 0;
+  bornesSerie.length = 0;
   checkRateLimitMock.mockReset().mockResolvedValue({
     allowed: true,
     count: 1,
@@ -298,6 +327,95 @@ describe("dernierSeq ne recule jamais (UPDATE avec GREATEST)", () => {
     expect(base.sessions[0]!["dernierSeq"]).toBe(5);
     expect(requetesSql.some((t) => t.includes("GREATEST(dernier_seq"))).toBe(true);
     expect(requetesSql.some((t) => t.includes("GREATEST(derniere_etape_index"))).toBe(true);
+  });
+});
+
+describe("seq bornée : aucune série géante côté base", () => {
+  it("un seq démesuré est refusé en 422 et rien n'est écrit", async () => {
+    expect((await post(lot([evenement(1, { seq: 2_000_000_000 })]))).status).toBe(422);
+    expect((await post(lot([evenement(1, { seq: 10_001 })]))).status).toBe(422);
+    expect(base.evenements).toHaveLength(0);
+    expect((await post(lot([evenement(1, { seq: 10_000 })]))).status).toBe(200);
+  });
+  it("même avec une ligne existante à seq énorme, la série générée reste bornée à nombre + 200", async () => {
+    base.evenements.push({ sessionId: SID, eventId: randomUUID(), seq: 2_000_000_000 });
+    const r = await etat();
+    expect(r.status).toBe(200);
+    expect(bornesSerie.length).toBeGreaterThan(0);
+    for (const b of bornesSerie) expect(b).toBeLessThanOrEqual(1 + 200);
+    expect((await r.json()).trous).toHaveLength(200);
+  });
+});
+
+describe("plafond de session sous verrou", () => {
+  it("le verrou consultatif de la session est pris et le plafond recompté dans la transaction", async () => {
+    // Pré-contrôle à 4 999, puis 5 000 dans la transaction (un autre lot est passé entre les deux).
+    const c = vi
+      .spyOn(prismaFaux.auditTerrainEvenement, "count")
+      .mockResolvedValueOnce(4999)
+      .mockResolvedValue(5000);
+    const e = evenement(1);
+    const j = await (await post(lot([e]))).json();
+    c.mockRestore();
+    expect(requetesSql.some((t) => t.includes("pg_advisory_xact_lock") && t.includes(SID))).toBe(
+      true,
+    );
+    expect(j.rejetes).toEqual([{ eventId: e.eventId, motif: "limite_session" }]);
+    expect(base.evenements).toHaveLength(0);
+  });
+});
+
+describe("rotation du jeton (régénérer)", () => {
+  it("nouveau jeton : l'ancien est refusé, les données restent, le nouveau passe", async () => {
+    const e1 = evenement(1);
+    await post(lot([e1]));
+    const r = await regenererJetonAudit({ sessionId: SID });
+    expect(r.ok).toBe(true);
+    if (!r.ok) return;
+    expect(r.sessionId).toBe(SID);
+    expect((await post(lot([evenement(2)]))).status).toBe(401); // ancien jeton
+    expect(base.evenements).toHaveLength(1);
+    const j = await (await post(lot([evenement(2)]), r.jeton)).json();
+    expect(j.acceptes).toHaveLength(1);
+    expect(base.evenements).toHaveLength(2);
+  });
+  it("le PC renvoie tout depuis le début avec le nouveau jeton : déjà reçu, aucun doublon", async () => {
+    const evs = [evenement(1), evenement(2), evenement(3)];
+    await post(lot(evs));
+    const r = await regenererJetonAudit({ sessionId: SID, joursValidite: 5 });
+    if (!r.ok) throw new Error("rotation");
+    const j = await (await post(lot(evs), r.jeton)).json();
+    expect(j.dejaRecus).toEqual(evs.map((x) => x.eventId));
+    expect(j.acceptes).toEqual([]);
+    expect(base.evenements).toHaveLength(3);
+    const jours = (new Date(r.expireLe).getTime() - Date.now()) / 86_400_000;
+    expect(jours).toBeGreaterThan(4.99);
+  });
+  it("rouvre une session révoquée (jeton perdu puis révoqué) ; une session close n'est pas rouverte", async () => {
+    base.sessions[0]!["statut"] = "revoquee";
+    base.sessions[0]!["jetonRevoqueLe"] = new Date();
+    const r = await regenererJetonAudit({ sessionId: SID });
+    expect(r.ok).toBe(true);
+    expect(base.sessions[0]).toMatchObject({ statut: "ouverte", jetonRevoqueLe: null });
+    base.sessions[0]!["statut"] = "close";
+    expect(await regenererJetonAudit({ sessionId: SID })).toEqual({
+      ok: false,
+      erreur: "invalide",
+    });
+  });
+  it("le nouveau jeton d'une session ne passe pas sur une autre session", async () => {
+    const r = await regenererJetonAudit({ sessionId: SID });
+    if (!r.ok) throw new Error("rotation");
+    const j = await post(lot([evenement(1)], { sessionId: SID_AUTRE }), r.jeton);
+    expect(j.status).toBe(401);
+    expect(base.evenements).toHaveLength(0);
+  });
+  it("réservée au super_admin", async () => {
+    authMock.mockResolvedValue({ user: { id: randomUUID(), role: "admin" } });
+    expect(await regenererJetonAudit({ sessionId: SID })).toEqual({
+      ok: false,
+      erreur: "interdit",
+    });
   });
 });
 

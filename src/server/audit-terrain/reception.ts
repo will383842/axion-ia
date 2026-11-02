@@ -197,7 +197,7 @@ async function lireCorpsPlafonne(req: Request): Promise<Uint8Array | null> {
 
 /* ---------- écriture d'un événement ---------- */
 
-type Issue = "accepte" | "dejaRecu" | "conflit";
+type Issue = "accepte" | "dejaRecu" | "conflit" | "plein";
 
 async function ecrireEvenement(sessionId: string, ev: EvenementRecu): Promise<Issue> {
   const empreinte = empreinteServeur(ev.empreinte);
@@ -214,13 +214,26 @@ async function ecrireEvenement(sessionId: string, ev: EvenementRecu): Promise<Is
     empreinte,
     donneesChiffrees,
   };
+  const classer = async (): Promise<Issue | null> => {
+    const existant = await prisma.auditTerrainEvenement.findUnique({
+      where: { sessionId_eventId: { sessionId, eventId: ev.eventId } },
+      select: { empreinte: true },
+    });
+    if (!existant) return null;
+    return memeEmpreinte(existant.empreinte, empreinte) ? "dejaRecu" : "conflit";
+  };
 
   for (let essai = 0; essai < 3; essai++) {
     try {
-      if (ev.type === "rapport_brouillon") {
-        const source = donneesRapportSchema.parse(ev.donnees).source;
-        await prisma.$transaction(async (tx) => {
-          await tx.auditTerrainEvenement.create({ data: donneesEvt });
+      // Verrou consultatif par session (levé à la fin de la transaction) : le plafond est recompté
+      // sous verrou, donc deux lots simultanés ne le dépassent pas.
+      const issue = await prisma.$transaction(async (tx): Promise<Issue> => {
+        await tx.$executeRaw`SELECT pg_advisory_xact_lock(hashtextextended(${sessionId}, 0))`;
+        const n = await tx.auditTerrainEvenement.count({ where: { sessionId } });
+        if (n >= MAX_EVENEMENTS_SESSION) return "plein";
+        await tx.auditTerrainEvenement.create({ data: donneesEvt });
+        if (ev.type === "rapport_brouillon") {
+          const source = donneesRapportSchema.parse(ev.donnees).source;
           const max = await tx.auditTerrainRapport.aggregate({
             where: { sessionId },
             _max: { version: true },
@@ -235,18 +248,15 @@ async function ecrireEvenement(sessionId: string, ev: EvenementRecu): Promise<Is
               statut: "a_relire",
             },
           });
-        });
-      } else {
-        await prisma.auditTerrainEvenement.create({ data: donneesEvt });
-      }
-      return "accepte";
+        }
+        return "accepte";
+      });
+      if (issue === "plein") return (await classer()) ?? "plein"; // un rejeu reste « déjà reçu »
+      return issue;
     } catch (err) {
       if (!estP2002(err)) throw err;
-      const existant = await prisma.auditTerrainEvenement.findUnique({
-        where: { sessionId_eventId: { sessionId, eventId: ev.eventId } },
-        select: { empreinte: true },
-      });
-      if (existant) return memeEmpreinte(existant.empreinte, empreinte) ? "dejaRecu" : "conflit";
+      const issue = await classer();
+      if (issue) return issue;
       // Autre contrainte (version de rapport prise en même temps, eventId de rapport déjà pris) : on réessaie.
     }
   }
@@ -263,9 +273,12 @@ async function etatSession(
   const dernier = Number(stats?.dernier ?? 0);
   const nombre = Number(stats?.nombre ?? 0);
   let trous: number[] = [];
+  // Borne de la série : avec `nombre` lignes, au plus `nombre` numéros sont occupés, donc
+  // `nombre + MAX_TROUS` suffit pour trouver MAX_TROUS trous. Jamais de série démesurée.
+  const borne = Math.min(dernier, nombre + MAX_TROUS);
   if (dernier > nombre) {
     const lignes = await prisma.$queryRaw<{ seq: number }[]>`
-      SELECT g::int AS seq FROM generate_series(1, ${dernier}::int) AS g
+      SELECT g::int AS seq FROM generate_series(1, ${borne}::int) AS g
       WHERE NOT EXISTS (SELECT 1 FROM audit_terrain_evenements e WHERE e.session_id = ${sessionId}::uuid AND e.seq = g)
       ORDER BY g LIMIT ${MAX_TROUS}::int`;
     trous = lignes.map((l) => Number(l.seq));
@@ -339,6 +352,10 @@ export async function recevoirEvenements(req: Request): Promise<Response> {
         continue;
       }
       const issue = await ecrireEvenement(session.id, ev);
+      if (issue === "plein") {
+        rejetes.push({ eventId: ev.eventId, motif: "limite_session" });
+        continue;
+      }
       if (issue === "accepte") {
         acceptes.push(ev.eventId);
         maxSeq = Math.max(maxSeq, ev.seq);
