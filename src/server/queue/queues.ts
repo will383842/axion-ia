@@ -39,6 +39,7 @@ import type { ImageBankTranslateJobData } from "./workers/image-bank-translate-w
 import type { ImageBankCronJobData, ImageBankCronJobType } from "./workers/image-bank-crons-worker";
 import type { ImageBankAutoConvertJobData } from "./workers/image-bank-auto-convert-worker";
 import type { KitImportJobData } from "./workers/kit-import-worker";
+import type { RapportAvantAuditJobData } from "./workers/rapport-avant-audit-worker";
 import type { CalendlyPollJobData, CalendlyPollJobType } from "./workers/calendly-poll-worker";
 import type { CrmSyncJobData, CrmSyncJobType } from "./workers/crm-sync-worker";
 import { AUTO_CONVERT_QUEUE_NAME } from "@/server/image-bank/constants";
@@ -673,6 +674,38 @@ export async function enqueueKitImport(runId: string): Promise<void> {
     return;
   }
   await kitImportQueue.add(`kit-import-${runId}`, { runId }, { jobId: `kit-import-${runId}` });
+}
+
+// Rapport d'analyse avant audit (2026-11-02) — concurrence 1, charge `{ rapportId }` SEULEMENT.
+// Une seule tentative : le worker écrit lui-même l'échec sur la ligne ; la reprise après un arrêt
+// est dans l'état en base (`lancementsEnSuspens`), pas dans les essais BullMQ.
+export const RAPPORT_AVANT_AUDIT_QUEUE_NAME = "rapport-avant-audit";
+
+export const rapportAvantAuditQueue: Queue<RapportAvantAuditJobData, void, string> | null =
+  connection
+    ? new Queue<RapportAvantAuditJobData, void, string>(RAPPORT_AVANT_AUDIT_QUEUE_NAME, {
+        connection,
+        defaultJobOptions: { ...defaultJobOptions, attempts: 1 },
+      })
+    : null;
+
+export async function enqueueRapportAvantAudit(
+  rapportId: string,
+  opts: { readonly reprise?: boolean } = {},
+): Promise<boolean> {
+  if (!rapportAvantAuditQueue) {
+    if (process.env.NODE_ENV !== "production" && !isBullmqDisabled()) {
+      console.warn(`[bullmq] no connection, skipping enqueueRapportAvantAudit(${rapportId})`);
+    }
+    return false;
+  }
+  // Une reprise porte un identifiant neuf : celui du premier passage est déjà « terminé » dans
+  // Redis et ferait ignorer l'ajout. Le doublon est sans effet : la prise en base est atomique.
+  const jobId = opts.reprise
+    ? `rapport-avant-audit-${rapportId}-reprise-${Date.now()}`
+    : `rapport-avant-audit-${rapportId}`;
+  await rapportAvantAuditQueue.add("rapport", { rapportId }, { jobId });
+  return true;
 }
 
 export const imageBankAutoConvertQueue: Queue<

@@ -199,9 +199,15 @@ describe("console : réponse illisible ou mise à l'écart (points 10 et 12)", (
 describe("RGPD d'un salarié (point 12)", () => {
   it("demande d'effacement = MISE À L'ÉCART (updateMany), aucune suppression", async () => {
     const { ecarterQuestionnairePreauditMembre } = await import("@/lib/rgpd-erase");
-    m.envoiUpdateMany.mockResolvedValue({ count: 2 });
+    // Réponses déjà écartées (count 0) : aucun rapport à toucher. Le cas des rapports avant audit
+    // concernés est couvert par rapports-avant-audit-mis-a-l-ecart-jamais-supprimes.spec.ts.
+    m.envoiUpdateMany.mockResolvedValue({ count: 0 });
     const quand = new Date("2026-10-24T10:00:00Z");
-    expect(await ecarterQuestionnairePreauditMembre("REF", "a1b2c3d4e5f6", quand)).toBe(2);
+    expect(await ecarterQuestionnairePreauditMembre("REF", "a1b2c3d4e5f6", quand)).toEqual({
+      reponses: 0,
+      rapportsEcartes: 0,
+      rapportsAnnules: 0,
+    });
     expect(m.envoiUpdateMany).toHaveBeenCalledWith({
       where: {
         mode: { in: ["emp", "it"] },
@@ -212,7 +218,7 @@ describe("RGPD d'un salarié (point 12)", () => {
       data: { ecarteLe: quand },
     });
     m.envoiUpdateMany.mockClear();
-    expect(await ecarterQuestionnairePreauditMembre("", "x")).toBe(0);
+    expect((await ecarterQuestionnairePreauditMembre("", "x")).reponses).toBe(0);
     expect(m.envoiUpdateMany).not.toHaveBeenCalled();
   });
 
@@ -286,12 +292,25 @@ describe("actions de la console (point 12)", () => {
   it("mettre à l'écart : met à l'écart, ne supprime rien, trace le geste", async () => {
     const a = await actions();
     m.acces.mockResolvedValue({ userId: "u1", role: "admin" });
-    m.ecarter.mockResolvedValue(1);
+    m.ecarter.mockResolvedValue({ reponses: 1, rapportsEcartes: 0, rapportsAnnules: 0 });
     const msg = await redirige(a.ecarterReponsesMembreAction(fd()));
     expect(m.ecarter).toHaveBeenCalledWith("REF", "m42");
     expect(m.erase).not.toHaveBeenCalled();
     expect(m.activityCreate).toHaveBeenCalled();
     expect(msg).toContain("mise(s) à l'écart");
+    expect(decodeURIComponent(msg)).not.toContain("rapport(s) avant audit");
+  });
+
+  it("mettre à l'écart : alerte Will quand des rapports avant audit sont touchés", async () => {
+    const a = await actions();
+    m.acces.mockResolvedValue({ userId: "u1", role: "admin" });
+    m.ecarter.mockResolvedValue({ reponses: 1, rapportsEcartes: 2, rapportsAnnules: 1 });
+    const msg = decodeURIComponent(
+      (await redirige(a.ecarterReponsesMembreAction(fd()))).replace(/\+/g, " "),
+    );
+    expect(msg).toContain("2 rapport(s) avant audit mis à l'écart");
+    expect(msg).toContain("1 lancement(s) annulé(s)");
+    expect(m.erase).not.toHaveBeenCalled();
   });
 
   it("effacer : refusé à un non super-administrateur, sans EFFACER, ou sans écart préalable", async () => {
@@ -314,7 +333,7 @@ describe("actions de la console (point 12)", () => {
   it("questionnaire SANS rencontre : les gestes reviennent à la liste des orphelins", async () => {
     const a = await actions();
     m.acces.mockResolvedValue({ userId: "u1", role: "admin" });
-    m.ecarter.mockResolvedValue(1);
+    m.ecarter.mockResolvedValue({ reponses: 1, rapportsEcartes: 0, rapportsAnnules: 0 });
     const f = new FormData();
     for (const [k, v] of Object.entries({ retour: "questionnaires", ref: "REF", membre: "m42" }))
       f.set(k, v);

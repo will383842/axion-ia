@@ -28,11 +28,23 @@ export class AucunQuestionnaireEnvoye extends Error {
   }
 }
 
-export async function lireCollecteDuClient(clientId: string): Promise<DossierCollecte> {
+/**
+ * @param questionnaireIds les questionnaires photographiés au lancement : seuls ceux-là sont lus
+ *   (un questionnaire envoyé depuis n'entre pas dans un rapport déjà lancé). Liste vide : rien.
+ */
+export async function lireCollecteDuClient(
+  clientId: string,
+  questionnaireIds: ReadonlyArray<string>,
+): Promise<DossierCollecte> {
+  if (questionnaireIds.length === 0) throw new AucunQuestionnaireEnvoye();
   const fiches = await fichesCouvertes(clientId);
   const qs = await prisma.questionnaireAvantAudit.findMany({
-    // Un brouillon jamais envoyé n'a reçu aucune réponse.
-    where: { ...questionnairesDesFiches(fiches), envoyeLe: { not: null } },
+    // Un brouillon jamais envoyé n'a reçu aucune réponse ; et toujours sur les fiches couvertes.
+    where: {
+      ...questionnairesDesFiches(fiches),
+      id: { in: [...questionnaireIds] },
+      envoyeLe: { not: null },
+    },
     select: { id: true, ref: true, envoyeLe: true, closLe: true, html: true },
     orderBy: [{ envoyeLe: "asc" }, { id: "asc" }],
   });

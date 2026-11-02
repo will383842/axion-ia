@@ -389,20 +389,37 @@ async function tracer(userId: string, action: string, ref: string, nombre: numbe
 export async function ecarterReponsesMembreAction(fd: FormData): Promise<void> {
   const page = pageDeRetour(fd);
   let n = 0;
+  let rapports = { ecartes: 0, annules: 0 };
   try {
     const { userId } = await exigerAccesEchanges();
     const { ref, membre } = refEtMembre(fd);
-    n = await ecarterQuestionnairePreauditMembre(ref, membre);
+    const ecart = await ecarterQuestionnairePreauditMembre(ref, membre);
+    n = ecart.reponses;
+    rapports = { ecartes: ecart.rapportsEcartes, annules: ecart.rapportsAnnules };
     await tracer(userId, "questionnaire-preaudit.membre.ecarte", ref, n);
+    if (rapports.ecartes + rapports.annules > 0) {
+      await tracer(
+        userId,
+        "rapport-avant-audit.ecarte-rgpd-membre",
+        ref,
+        rapports.ecartes + rapports.annules,
+      );
+    }
   } catch (e) {
     retourVers(page, "erreur", messageAffichable(e));
   }
   revalidatePath(page.split("?")[0] ?? page);
+  // Will est alerté ici : les rapports touchés ne sont plus lus, rien n'est supprimé.
+  const alerteRapports =
+    rapports.ecartes + rapports.annules > 0
+      ? ` ⚠️ ${rapports.ecartes} rapport(s) avant audit mis à l'écart (${rapports.annules} ` +
+        "lancement(s) annulé(s)) : rien n'est supprimé, à toi de décider de la suite."
+      : "";
   retourVers(
     page,
     "message",
     `${n} réponse(s) mise(s) à l'écart. L'effacement définitif reste à faire par Williams ` +
-      "(bouton rouge sur la fiche).",
+      `(bouton rouge sur la fiche).${alerteRapports}`,
   );
 }
 
