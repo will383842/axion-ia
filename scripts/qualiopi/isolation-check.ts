@@ -771,6 +771,11 @@ const CONSOMMATEURS_ASSUMES: ReadonlySet<string> = new Set([
   //    d'un clic par la porte unique), la personne passe par `ajouterPersonneAFiche`.
   //    Aucune seconde porte, aucune table nouvelle.
   "src/features/questionnaire-preaudit/completer-fiche.ts",
+  // ── Rapport d'analyse avant audit, écran de la fiche client (2026-11-02) : « Compléter la
+  //    fiche » écrit les champs VIDES par la PORTE UNIQUE `updateClientAction` (jamais une
+  //    seconde porte), le SIREN n'y passe jamais ; les trois gestes sont gardés par
+  //    `requireSuperAdmin` et tracés par `logQualiopiActivity` (`_guards`). Rien d'autre du domaine.
+  "src/features/rapport-avant-audit/ecran/actions.ts",
   "scripts/visio/pilote.ts",
   // ── Alertes visio (PR 4, correction anti-doublon A3, 2026-09-29) : AUCUNE
   //    table ni service d'alerte parallèle. Les alertes du circuit visio
