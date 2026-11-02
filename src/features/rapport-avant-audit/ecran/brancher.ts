@@ -46,7 +46,7 @@ import type {
   AccesRapports,
   FichierRapport,
   FormatTelechargement,
-  ResultatAcces,
+  ResultatValidation,
   ResumeRapport,
   StatutRapport,
 } from "./contrat";
@@ -244,15 +244,18 @@ export const ACCES_BRANCHE: AccesRapports = {
     const { retiresPourRelecture } = retirerMotsInterdits(filtrerPourClient(lu.base));
     return { retiresPourRelecture };
   },
-  async validerPdf(clientId, rapportId, par): Promise<ResultatAcces> {
+  async validerPdf(clientId, rapportId, par): Promise<ResultatValidation> {
     const etat = await etatDuClient(clientId, rapportId);
     if (etat === null || etat.statut !== "termine") return { ok: false, raison: REFUS_INTROUVABLE };
-    if (etat.pdfValideLe !== null) return { ok: true }; // déjà validé : sans effet
+    // Déjà validé : sans effet, et SANS trace (ce n'est pas cet appel qui a posé la date).
+    if (etat.pdfValideLe !== null) return { ok: true, dejaValide: true };
     const pose = await validerPdfClient(rapportId, clientId, par);
-    if (pose) return { ok: true };
+    if (pose) return { ok: true, dejaValide: false };
     // Validé entre-temps par un autre clic : sans effet, mais pas une erreur.
     const relu = await etatDuClient(clientId, rapportId);
-    return relu?.pdfValideLe != null ? { ok: true } : { ok: false, raison: REFUS_INTROUVABLE };
+    return relu?.pdfValideLe != null
+      ? { ok: true, dejaValide: true }
+      : { ok: false, raison: REFUS_INTROUVABLE };
   },
   async lancer(clientId) {
     // Import dynamique : la file BullMQ n'est chargée qu'au clic, jamais à l'affichage.

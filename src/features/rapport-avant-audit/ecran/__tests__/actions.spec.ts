@@ -1,5 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
+import type { AccesRapports } from "../contrat";
 import { creerAccesEnMemoire } from "../memoire";
 import { AUTRE_CLIENT, base, CLIENT, ficheVide, proposition, resume, RAPPORT } from "./fixtures";
 
@@ -143,6 +144,18 @@ describe("« Valider le PDF client » (Server Action)", () => {
     expect(logQualiopiActivity).toHaveBeenCalledWith(
       expect.objectContaining({ action: "rapport-avant-audit.pdf_valide" }),
     );
+  });
+
+  it("déjà validé (ou validé entre-temps) : ok, mais AUCUNE trace « pdf_valide »", async () => {
+    const valider = vi
+      .spyOn(etat.acces as AccesRapports, "validerPdf")
+      .mockResolvedValueOnce({ ok: true, dejaValide: true });
+    const r = await validerPdfClientAction(formulaire({ clientId: CLIENT, rapportId: RAPPORT }));
+    expect(valider).toHaveBeenCalledTimes(1);
+    expect(r.ok).toBe(true);
+    expect(r.texte).toContain("déjà validé");
+    expect(r.texte).toContain("Rien n'a été envoyé au client");
+    expect(logQualiopiActivity).not.toHaveBeenCalled();
   });
 });
 

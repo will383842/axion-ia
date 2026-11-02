@@ -93,10 +93,9 @@ export function creerAccesEnMemoire(
     async validerPdf(clientId, rapportId, par) {
       const r = duClient(clientId, rapportId);
       if (!lisible(r)) return { ok: false, raison: "Rapport introuvable ou pas terminé." };
-      if (r.resume.pdfValideLe === null) {
-        r.resume = { ...r.resume, pdfValideLe: maintenant(), pdfValidePar: par };
-      }
-      return { ok: true };
+      if (r.resume.pdfValideLe !== null) return { ok: true, dejaValide: true };
+      r.resume = { ...r.resume, pdfValideLe: maintenant(), pdfValidePar: par };
+      return { ok: true, dejaValide: false };
     },
     async lancer(clientId, par) {
       const duMeme = rapports.filter((r) => r.clientId === clientId);

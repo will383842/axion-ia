@@ -171,7 +171,7 @@ describe("cloison par client — le rapport de B demandé avec A = un identifian
     expect(croise).toEqual({ ok: false, raison: REFUS_INTROUVABLE });
     expect(croise).toEqual(await ACCES_BRANCHE.validerPdf(A, INEXISTANT, WILL));
     expect(table.lignes[0]?.pdfValideLe).toBeNull();
-    expect(await ACCES_BRANCHE.validerPdf(B, rB, WILL)).toEqual({ ok: true });
+    expect(await ACCES_BRANCHE.validerPdf(B, rB, WILL)).toEqual({ ok: true, dejaValide: false });
     expect(table.lignes[0]?.pdfValideLe).toBeInstanceOf(Date);
   });
 
@@ -294,7 +294,7 @@ describe("téléchargements", () => {
   it("validerPdf déjà validé : sans effet, ok", async () => {
     const avant = new Date("2026-11-01T12:00:00Z");
     const id = await rapportTermine(A, { pdfValideLe: avant, pdfValideParId: WILL });
-    expect(await ACCES_BRANCHE.validerPdf(A, id, "autre")).toEqual({ ok: true });
+    expect(await ACCES_BRANCHE.validerPdf(A, id, "autre")).toEqual({ ok: true, dejaValide: true });
     expect(table.lignes[0]?.pdfValideLe).toEqual(avant);
     expect(table.lignes[0]?.pdfValideParId).toBe(WILL);
   });

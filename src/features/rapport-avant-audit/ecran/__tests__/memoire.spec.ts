@@ -34,7 +34,8 @@ describe("accès en mémoire (contrat `AccesRapports`)", () => {
       maintenant: () => new Date("2026-11-02T09:00:00Z"),
     });
     expect(await a.telecharger(CLIENT, RAPPORT, "pdf-client")).toBeNull();
-    expect(await a.validerPdf(CLIENT, RAPPORT, "will")).toEqual({ ok: true });
+    expect(await a.validerPdf(CLIENT, RAPPORT, "will")).toEqual({ ok: true, dejaValide: false });
+    expect(await a.validerPdf(CLIENT, RAPPORT, "autre")).toEqual({ ok: true, dejaValide: true });
     const [r] = await a.listerRapports(CLIENT);
     expect(r?.pdfValidePar).toBe("will");
     const f = await a.telecharger(CLIENT, RAPPORT, "pdf-client");
