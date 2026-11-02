@@ -39,6 +39,7 @@ import type { ImageBankTranslateJobData } from "./workers/image-bank-translate-w
 import type { ImageBankCronJobData, ImageBankCronJobType } from "./workers/image-bank-crons-worker";
 import type { ImageBankAutoConvertJobData } from "./workers/image-bank-auto-convert-worker";
 import type { KitImportJobData } from "./workers/kit-import-worker";
+import { jobIdRapport } from "@/features/rapport-avant-audit/identifiant-job";
 import type { RapportAvantAuditJobData } from "./workers/rapport-avant-audit-worker";
 import type { CalendlyPollJobData, CalendlyPollJobType } from "./workers/calendly-poll-worker";
 import type { CrmSyncJobData, CrmSyncJobType } from "./workers/crm-sync-worker";
@@ -699,11 +700,10 @@ export async function enqueueRapportAvantAudit(
     }
     return false;
   }
-  // Une reprise porte un identifiant neuf : celui du premier passage est déjà « terminé » dans
-  // Redis et ferait ignorer l'ajout. Le doublon est sans effet : la prise en base est atomique.
-  const jobId = opts.reprise
-    ? `rapport-avant-audit-${rapportId}-reprise-${Date.now()}`
-    : `rapport-avant-audit-${rapportId}`;
+  // Une reprise porte un identifiant distinct de celui du premier passage (déjà « terminé » dans
+  // Redis, il ferait ignorer l'ajout), mais STABLE par tranche de 10 minutes : un balayage qui
+  // repasse pendant qu'une reprise attend encore dans la file n'en ajoute pas une seconde.
+  const jobId = jobIdRapport(rapportId, opts.reprise === true);
   await rapportAvantAuditQueue.add("rapport", { rapportId }, { jobId });
   return true;
 }
