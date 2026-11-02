@@ -42,9 +42,9 @@ describe("versions", () => {
     expect(analyserCorps(corps({ ...v1, schemaVersion: 4 })).ok).toBe(false);
   });
   it("v1 n'accepte pas les champs v3", () => {
-    expect(SchemaDemandeGuideReseau.safeParse({ ...v1, post_ref: "post_ref_test_01" }).success).toBe(
-      false,
-    );
+    expect(
+      SchemaDemandeGuideReseau.safeParse({ ...v1, post_ref: "post_ref_test_01" }).success,
+    ).toBe(false);
   });
   it.each([1, 3])("clé inconnue refusée en v%i", (n) => {
     const r = analyserCorps(corps({ ...v1, schemaVersion: n, inconnu: "x" }));
@@ -91,7 +91,8 @@ describe("post_url (I4)", () => {
   const bonne = "https://www.instagram.com/nos-comptes-test/p/AbC123/";
   it("acceptée", () => expect(ok(bonne)).toBe(true));
   it("http refusé", () => expect(ok(bonne.replace("https", "http"))).toBe(false));
-  it("hôte hors liste refusé", () => expect(ok("https://evil.test/nos-comptes-test/p/x")).toBe(false));
+  it("hôte hors liste refusé", () =>
+    expect(ok("https://evil.test/nos-comptes-test/p/x")).toBe(false));
   it("jamais endsWith", () =>
     expect(ok("https://www.instagram.com.evil.test/nos-comptes-test/p/x")).toBe(false));
   it("sous-domaine refusé", () =>
@@ -110,8 +111,7 @@ describe("post_url (I4)", () => {
   });
   it("préfixe absent de la configuration : tout refusé (fermé par défaut)", () =>
     expect(validerPostUrl(bonne, "instagram", {}).ok).toBe(false));
-  it("plus de 300 caractères refusé", () =>
-    expect(ok(bonne + "a".repeat(300))).toBe(false));
+  it("plus de 300 caractères refusé", () => expect(ok(bonne + "a".repeat(300))).toBe(false));
   it("valider dans le contrat : post_url refusée remonte en schema_invalide", () => {
     const r = analyserCorps(corps({ ...v3, post_url: "http://x.test/" }));
     expect(r.ok).toBe(false);
@@ -125,7 +125,14 @@ describe("dictionnaire (§4)", () => {
       expect(Object.keys(d.details)).toContain("autre_non_classe");
     }
     expect(Object.keys(dico.familles)).toEqual(
-      expect.arrayContaining(["guide_reseau", "cas_concret", "carrousel", "video", "tour_france_ia", "autre"]),
+      expect.arrayContaining([
+        "guide_reseau",
+        "cas_concret",
+        "carrousel",
+        "video",
+        "tour_france_ia",
+        "autre",
+      ]),
     );
   });
   it("aucun nom, montant ni pseudo (pas de @, pas de chiffre monétaire)", () => {

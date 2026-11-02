@@ -75,8 +75,14 @@ export const SchemaDemandeGuideReseauV3 = ObjetDemandeV1.extend({
     .optional(),
   post_url: z.string().max(300).optional(),
   canal: z.enum(["commentaire", "message_prive"]).optional(),
-  famille: z.string().refine((f) => FAMILLES_ORIGINE.includes(f)).optional(),
-  detail: z.string().regex(/^[a-z0-9_]{2,60}$/).optional(),
+  famille: z
+    .string()
+    .refine((f) => FAMILLES_ORIGINE.includes(f))
+    .optional(),
+  detail: z
+    .string()
+    .regex(/^[a-z0-9_]{2,60}$/)
+    .optional(),
   compte: z.enum(COMPTES_PUBLICATION).optional(),
   version_texte: z
     .string()
@@ -94,17 +100,18 @@ export const SchemaDemandeGuideReseauV3 = ObjetDemandeV1.extend({
 })
   .strict()
   .superRefine((d, ctx) => {
-    const faute = (path: string) => ctx.addIssue({ code: "custom", message: "invalide", path: [path] });
+    const faute = (path: string) =>
+      ctx.addIssue({ code: "custom", message: "invalide", path: [path] });
     if (!exigerM2(d)) faute("versionTexteM2");
     if ((d.famille === undefined) !== (d.detail === undefined)) {
       faute(d.famille === undefined ? "famille" : "detail");
     } else if (d.famille !== undefined && d.detail !== undefined) {
       if (!detailsDeLaFamille(d.famille).includes(d.detail)) faute("detail");
     }
-    if (d.canal === "message_prive" && RESEAUX_SANS_MESSAGE_PRIVE.includes(d.reseau)) faute("canal");
+    if (d.canal === "message_prive" && RESEAUX_SANS_MESSAGE_PRIVE.includes(d.reseau))
+      faute("canal");
     if (d.post_url !== undefined && !validerPostUrl(d.post_url, d.reseau).ok) faute("post_url");
   });
-
 
 export type DemandeGuideReseauV1 = z.infer<typeof SchemaDemandeGuideReseau>;
 export type DemandeGuideReseauV3 = z.infer<typeof SchemaDemandeGuideReseauV3>;
