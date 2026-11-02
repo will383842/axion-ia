@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 
 import {
   BaseAuditSchema,
+  FichePersonneSchema,
   PisteSchema,
   SECTIONS_ANALYSE,
   VERSION_BASE_AUDIT,
@@ -72,6 +73,7 @@ function baseMinimale() {
       personnesAttenduesSansReponse: [],
       alertes: [],
     },
+    fiches_personnes: [] as unknown[],
     annexe_reponses: [],
     sources: [],
   };
@@ -207,6 +209,43 @@ describe("base d'audit — contrat", () => {
     expect(BaseAuditSchema.safeParse({ ...baseMinimale(), version: "base-audit/9" }).success).toBe(
       false,
     );
+  });
+});
+
+describe("fiches par personne — contrat", () => {
+  const vide = {
+    identite: { nom: "Sandra", fonction: "ADV", service: null },
+    demandes: [],
+    douleurs: [],
+    taches: [],
+    outils: [],
+    reserves: [],
+  };
+  it("une personne qui n'a pas répondu a des questions et aucun contenu inventé", () => {
+    const ok = {
+      ...vide,
+      personne: "attendu:Sandra",
+      statut: "n_a_pas_repondu",
+      aVerifierSurPlace: [{ question: "Journée type ?", pourquoi: "Pas de réponse" }],
+    };
+    expect(FichePersonneSchema.safeParse(ok).success).toBe(true);
+    expect(FichePersonneSchema.safeParse({ ...ok, aVerifierSurPlace: [] }).success).toBe(false);
+    const inventee = {
+      ...ok,
+      douleurs: [{ enonce: "x", citation: "y", tempsParSemaine: null }],
+    };
+    expect(FichePersonneSchema.safeParse(inventee).success).toBe(false);
+  });
+  it("refuse une fiche qui cite un besoin inexistant", () => {
+    const b = baseMinimale();
+    b.fiches_personnes.push({
+      ...vide,
+      personne: "attendu:Sandra",
+      statut: "a_repondu",
+      douleurs: [{ enonce: "x", citation: "y", tempsParSemaine: null, besoinId: "B9" }],
+      aVerifierSurPlace: [],
+    });
+    expect(BaseAuditSchema.safeParse(b).success).toBe(false);
   });
 });
 

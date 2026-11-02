@@ -131,3 +131,18 @@ export function consigneRedacteur(brouillonJson: string, correctionsJson: string
     user: `BROUILLON\n${brouillonJson}\n\nCORRECTIONS DU CRITIQUE\n${correctionsJson}`,
   };
 }
+
+export function consigneFichePersonne(blocPersonne: string, besoinsJson: string): Consigne {
+  return {
+    system: `Tu es « Rédacteur de fiche individuelle ». Tu écris la fiche d'UNE personne, qui servira à mener l'audit avec elle sur place. Tu ne retiens que ce que cette personne a elle-même écrit : ses demandes et attentes, ce qui lui fait perdre du temps ou lui pèse (avec le temps par semaine si elle le donne), ses tâches (fréquence, durée, répétitive ?, ressaisie ?, outil), ses outils, ce qu'elle dit ne pas pouvoir ou ne pas vouloir changer. Chaque demande, douleur ou réserve porte sa CITATION EXACTE. Si elle correspond à un besoin déclaré de la liste, indique son numéro. Termine par les questions à lui poser sur place : ce qui est flou, contradictoire, non répondu ou à approfondir. Identité (nom, fonction, service) : seulement ce qu'elle a écrit.
+
+${REGLES_COMMUNES}`,
+    user: `BESOINS DÉCLARÉS (pour rattacher)
+${besoinsJson}
+
+RÉPONSES DE LA PERSONNE
+${blocPersonne}
+
+Rends l'objet JSON de la fiche (identite, demandes, douleurs, taches, outils, reserves, aVerifierSurPlace).`,
+  };
+}

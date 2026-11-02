@@ -140,11 +140,29 @@ const REDACTION = {
   lectureFinanciere: "Activité en croissance sur la période publiée.",
 };
 
+const FICHE = {
+  identite: { nom: "Alice", fonction: null, service: null },
+  demandes: [],
+  douleurs: [
+    {
+      enonce: "Retaper les fiches",
+      citation: "Je perds du temps à retaper les fiches",
+      tempsParSemaine: "3 h",
+      besoinId: "B1",
+    },
+  ],
+  taches: [],
+  outils: [],
+  reserves: [],
+  aVerifierSurPlace: [{ question: "Quel fichier retapez-vous ?", pourquoi: "Précision" }],
+};
+
 interface Options {
   analyse?: unknown;
   specialisteEnPanne?: boolean;
   premiereReponseInvalide?: boolean;
   fences?: boolean;
+  ficheEnPanne?: boolean;
 }
 
 function faux(o: Options = {}) {
@@ -153,7 +171,10 @@ function faux(o: Options = {}) {
   const fournisseur: FournisseurIA = async (a) => {
     appels.push(a);
     let corps: unknown;
-    if (a.system.includes("chef d'orchestre")) corps = PLAN;
+    if (a.system.includes("Rédacteur de fiche individuelle")) {
+      if (o.ficheEnPanne) throw new Error("service indisponible");
+      corps = FICHE;
+    } else if (a.system.includes("chef d'orchestre")) corps = PLAN;
     else if (a.system.includes("Tu es « Analyste des besoins déclarés »")) {
       if (o.premiereReponseInvalide && !besoinsDejaRates) {
         besoinsDejaRates = true;
@@ -267,5 +288,27 @@ describe("executerRapport", () => {
     });
     expect(etapes[0]).toBe("Besoins déclarés");
     expect(etapes.at(-1)).toBe("Terminé");
+  });
+
+  it("produit une fiche par personne, plus une fiche vide par personne attendue", async () => {
+    const { fournisseur } = faux();
+    const r = await executerRapport(dossier(), {
+      ...opts(fournisseur),
+      attenduesSansReponse: [{ nom: "Sandra", fonction: "ADV", service: "ADV" }],
+    });
+    const f = r.base.fiches_personnes;
+    expect(f).toHaveLength(2);
+    expect(f[0]?.statut).toBe("a_repondu");
+    expect(f[0]?.douleurs[0]?.besoinId).toBe("B1");
+    expect(f[1]?.statut).toBe("n_a_pas_repondu");
+    expect(f[1]?.aVerifierSurPlace.length).toBeGreaterThan(0);
+    expect(r.base.couverture.personnesAttenduesSansReponse[0]).toContain("Sandra");
+  });
+
+  it("si la fiche ne peut être rédigée, une fiche de secours renvoie à l'annexe", async () => {
+    const { fournisseur } = faux({ ficheEnPanne: true });
+    const r = await executerRapport(dossier(), opts(fournisseur));
+    expect(r.base.fiches_personnes[0]?.aVerifierSurPlace[0]?.question).toContain("annexe");
+    expect(r.base.meta.limites.join(" ")).toContain("fiche individuelle");
   });
 });

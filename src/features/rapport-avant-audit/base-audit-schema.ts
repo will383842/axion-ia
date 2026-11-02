@@ -195,6 +195,72 @@ export const ExerciceSchema = z.object({
 });
 export type Exercice = z.infer<typeof ExerciceSchema>;
 
+const IdBesoin = z.string().regex(/^B\d+$/);
+
+/**
+ * Fiche d'UNE personne (interne : elle sert à l'audit que l'on mène avec elle). Chaque demande,
+ * douleur ou réserve porte la citation exacte de la personne. Une personne qui n'a pas répondu a
+ * quand même une fiche : vide, avec les questions à lui poser sur place.
+ */
+export const FichePersonneSchema = z
+  .object({
+    /** Clé de la personne dans l'annexe, ou `attendu:<nom>` si elle n'a pas répondu. */
+    personne: Texte,
+    identite: z.object({
+      nom: z.string().nullable(),
+      fonction: z.string().nullable(),
+      service: z.string().nullable(),
+    }),
+    statut: z.enum(["a_repondu", "n_a_pas_repondu"]),
+    /** Ce qu'elle demande ou attend. */
+    demandes: z.array(z.object({ enonce: Texte, citation: Texte, besoinId: IdBesoin.optional() })),
+    /** Ce qui lui fait perdre du temps ou lui pèse. */
+    douleurs: z.array(
+      z.object({
+        enonce: Texte,
+        citation: Texte,
+        tempsParSemaine: z.string().nullable(),
+        besoinId: IdBesoin.optional(),
+      }),
+    ),
+    taches: z.array(
+      z.object({
+        libelle: Texte,
+        frequence: z.string().nullable(),
+        duree: z.string().nullable(),
+        repetitive: z.boolean().nullable(),
+        ressaisie: z.boolean().nullable(),
+        outil: z.string().nullable(),
+      }),
+    ),
+    outils: z.array(z.string()),
+    /** Ce qu'elle dit ne pas pouvoir ou ne pas vouloir changer. */
+    reserves: z.array(z.object({ enonce: Texte, citation: Texte })),
+    /** Questions à lui poser sur place. */
+    aVerifierSurPlace: z.array(z.object({ question: Texte, pourquoi: Texte })),
+  })
+  .superRefine((f, ctx) => {
+    if (f.statut === "n_a_pas_repondu") {
+      if (f.demandes.length + f.douleurs.length + f.taches.length + f.reserves.length > 0) {
+        ctx.addIssue({
+          code: "custom",
+          path: ["statut"],
+          message:
+            "Une personne qui n'a pas répondu n'a ni demande, ni douleur, ni tâche : on n'invente rien.",
+        });
+      }
+      if (f.aVerifierSurPlace.length === 0) {
+        ctx.addIssue({
+          code: "custom",
+          path: ["aVerifierSurPlace"],
+          message:
+            "Une personne qui n'a pas répondu a au moins une question à lui poser sur place.",
+        });
+      }
+    }
+  });
+export type FichePersonne = z.infer<typeof FichePersonneSchema>;
+
 export const BaseAuditSchema = z
   .object({
     version: z.literal(VERSION_BASE_AUDIT),
@@ -276,6 +342,8 @@ export const BaseAuditSchema = z
         z.object({ niveau: z.enum(["info", "attention", "rouge"]), texte: z.string() }),
       ),
     }),
+    /** Une fiche par personne (a répondu ou non), pour l'audit mené avec elle. */
+    fiches_personnes: z.array(FichePersonneSchema),
     /** Toutes les réponses, intégralement. */
     annexe_reponses: z.array(AnnexePersonneSchema),
     sources: z.array(SourceSchema),
@@ -325,6 +393,38 @@ export const BaseAuditSchema = z
       });
     }
     const ids = new Set(b.besoins_declares.map((x) => x.id));
+    // Une fiche par personne qui a répondu, et pas deux fiches pour la même clé.
+    const clesFiches = b.fiches_personnes.map((f) => f.personne);
+    if (new Set(clesFiches).size !== clesFiches.length) {
+      ctx.addIssue({
+        code: "custom",
+        path: ["fiches_personnes"],
+        message: "Deux fiches portent la même personne.",
+      });
+    }
+    for (const a of b.annexe_reponses) {
+      if (
+        a.statut === "recue" &&
+        !b.fiches_personnes.some((f) => f.personne === a.personne && f.statut === "a_repondu")
+      ) {
+        ctx.addIssue({
+          code: "custom",
+          path: ["fiches_personnes"],
+          message: `La personne ${a.personne} a répondu mais n'a pas de fiche.`,
+        });
+      }
+    }
+    b.fiches_personnes.forEach((f, i) => {
+      for (const x of [...f.demandes, ...f.douleurs]) {
+        if (x.besoinId !== undefined && !ids.has(x.besoinId)) {
+          ctx.addIssue({
+            code: "custom",
+            path: ["fiches_personnes", i],
+            message: `La fiche ${f.personne} cite le besoin ${x.besoinId}, qui n'existe pas.`,
+          });
+        }
+      }
+    });
     if (ids.size !== b.besoins_declares.length) {
       ctx.addIssue({
         code: "custom",

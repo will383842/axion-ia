@@ -25,19 +25,23 @@ import {
   BesoinSchema,
   ElementSchema,
   ExerciceSchema,
+  FichePersonneSchema,
   PisteSchema,
   SECTIONS_ANALYSE,
   VERSION_BASE_AUDIT,
   type AnnexePersonne,
   type BaseAudit,
   type Exercice,
+  type FichePersonne,
 } from "./base-audit-schema";
 import {
   consigneAnalyste,
   consigneBesoins,
   consigneChef,
   consigneCritique,
+  consigneFichePersonne,
   consigneRedacteur,
+  serialiserReponses,
   consigneSpecialiste,
   type Consigne,
 } from "./consignes/prompts";
@@ -68,6 +72,12 @@ export interface Progression {
   readonly total: number;
 }
 
+export interface PersonneAttendue {
+  readonly nom: string;
+  readonly fonction: string | null;
+  readonly service: string | null;
+}
+
 export interface OptionsRapport {
   readonly clientId: string;
   readonly raisonSociale: string;
@@ -75,7 +85,7 @@ export interface OptionsRapport {
   readonly genereePar: string;
   readonly fournisseur: FournisseurIA;
   /** Personnes de l'équipe déclarée qui n'ont pas répondu (venues du suivi par personne). */
-  readonly attenduesSansReponse?: ReadonlyArray<string>;
+  readonly attenduesSansReponse?: ReadonlyArray<PersonneAttendue>;
   readonly surProgression?: (p: Progression) => void;
 }
 
@@ -125,6 +135,7 @@ const SortieAnalyste = z.object({
   questions_jour_j: shape.questions_jour_j,
   propositions_fiche: shape.propositions_fiche,
 });
+const SortieFiche = FichePersonneSchema.innerType().omit({ personne: true, statut: true });
 const SortieCritique = z.object({
   corrections: z.array(
     z.object({
@@ -231,6 +242,59 @@ function fusionnerExercices(liste: ReadonlyArray<Exercice>): Exercice[] {
   return [...parAnnee.values()].sort((a, b) => a.annee - b.annee);
 }
 
+// ── Fiches par personne ─────────────────────────────────────────────────────
+
+const QUESTIONS_STANDARD: ReadonlyArray<{ question: string; pourquoi: string }> = [
+  {
+    question: "Pouvez-vous décrire une journée type ?",
+    pourquoi: "Elle n'a pas rempli le questionnaire.",
+  },
+  {
+    question: "Quelles tâches vous font perdre le plus de temps, et combien ?",
+    pourquoi: "Elle n'a pas rempli le questionnaire.",
+  },
+  {
+    question: "Quels outils et fichiers utilisez-vous chaque jour ?",
+    pourquoi: "Elle n'a pas rempli le questionnaire.",
+  },
+  { question: "Qu'attendez-vous de cet audit ?", pourquoi: "Ses attentes ne sont pas connues." },
+];
+
+/** Fiche d'une personne attendue qui n'a pas répondu : vide, avec les questions à lui poser. */
+function ficheDeLAbsent(p: PersonneAttendue): FichePersonne {
+  return {
+    personne: `attendu:${p.nom}`,
+    identite: { nom: p.nom, fonction: p.fonction, service: p.service },
+    statut: "n_a_pas_repondu",
+    demandes: [],
+    douleurs: [],
+    taches: [],
+    outils: [],
+    reserves: [],
+    aVerifierSurPlace: QUESTIONS_STANDARD.map((q) => ({ ...q })),
+  };
+}
+
+/** Repli quand l'IA n'a pas pu écrire la fiche : l'annexe garde tout, la fiche le dit. */
+function ficheDeSecours(cle: string, service: string | null): FichePersonne {
+  return {
+    personne: cle,
+    identite: { nom: null, fonction: null, service },
+    statut: "a_repondu",
+    demandes: [],
+    douleurs: [],
+    taches: [],
+    outils: [],
+    reserves: [],
+    aVerifierSurPlace: [
+      {
+        question: "Relire ses réponses complètes dans l'annexe avant l'entretien.",
+        pourquoi: "La fiche n'a pas pu être rédigée automatiquement.",
+      },
+    ],
+  };
+}
+
 // ── Le rapport ──────────────────────────────────────────────────────────────
 
 export async function executerRapport(
@@ -310,12 +374,37 @@ export async function executerRapport(
     ROLES_DE_SYNTHESE.analyste.modele,
   );
 
+  // 4 bis. Une fiche par personne qui a répondu (en parallèle ; un échec = fiche de secours)
+  progresser("Fiches individuelles", 3, 6);
+  const repondants = dossier.personnes.filter((p) => p.statut === "recue");
+  const fichesLues = await Promise.allSettled(
+    repondants.map((p) =>
+      appel(
+        `fiche « ${p.cle} »`,
+        SortieFiche,
+        consigneFichePersonne(serialiserReponses({ ...dossier, personnes: [p] }), besoinsJson),
+        MODELES_RAPPORT.execution,
+      ),
+    ),
+  );
+  const fiches: FichePersonne[] = repondants.map((p, i) => {
+    const r = fichesLues[i];
+    if (r !== undefined && r.status === "fulfilled") {
+      return { ...r.value, personne: p.cle, statut: "a_repondu" as const };
+    }
+    limites.push(
+      `La fiche individuelle de « ${p.cle} » n'a pas pu être rédigée automatiquement : voir l'annexe.`,
+    );
+    return ficheDeSecours(p.cle, p.service);
+  });
+  for (const a of opts.attenduesSansReponse ?? []) fiches.push(ficheDeLAbsent(a));
+
   // 5. Critique
   progresser("Relecture critique", 4, 6);
   const critique = await appel(
     "critique",
     SortieCritique,
-    consigneCritique(JSON.stringify({ besoins, constats, analyse })),
+    consigneCritique(JSON.stringify({ besoins, constats, analyse, fiches })),
     ROLES_DE_SYNTHESE.critique.modele,
   );
   const bloquantes = critique.corrections.filter((c) => c.gravite === "bloquant");
@@ -389,9 +478,12 @@ export async function executerRapport(
       personnesAvecReponse: dossier.totaux.personnesAvecReponse,
       reponsesDonnees: dossier.totaux.reponsesDonnees,
       questionsSansReponse: dossier.totaux.questionsSansReponse,
-      personnesAttenduesSansReponse: [...(opts.attenduesSansReponse ?? [])],
+      personnesAttenduesSansReponse: (opts.attenduesSansReponse ?? []).map((a) =>
+        a.fonction !== null ? `${a.nom} (${a.fonction})` : a.nom,
+      ),
       alertes: [...dossier.alertes],
     },
+    fiches_personnes: fiches,
     annexe_reponses: dossier.personnes.map(annexeDe),
     sources: [],
   };
