@@ -6,6 +6,9 @@
 -- Transaction : si le garde-fou refuse, plus rien ne s'exécute (même sans ON_ERROR_STOP).
 BEGIN;
 
+-- Verrou : personne n'écrit entre le contrôle « vide » et le DROP.
+LOCK TABLE "audit_terrain_rapports", "audit_terrain_evenements", "audit_terrain_sessions" IN ACCESS EXCLUSIVE MODE;
+
 DO $$
 BEGIN
   IF EXISTS (SELECT 1 FROM "audit_terrain_evenements")
@@ -18,5 +21,8 @@ END $$;
 DROP TABLE "audit_terrain_rapports";
 DROP TABLE "audit_terrain_evenements";
 DROP TABLE "audit_terrain_sessions";
+-- Les triggers partent avec leurs tables ; les fonctions, à part.
+DROP FUNCTION "audit_terrain_rapports_garde"();
+DROP FUNCTION "audit_terrain_ajout_seul"();
 
 COMMIT;

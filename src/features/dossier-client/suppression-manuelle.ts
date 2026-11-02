@@ -97,6 +97,9 @@ const NOMS_TABLES: Readonly<Record<string, string>> = {
   rencontre_participants: "participation(s) à un rendez-vous",
   projet_contacts: "rôle(s) dans une prestation",
   questionnaires_cadrage: "questionnaire(s) de cadrage adressé(s)",
+  audit_terrain_sessions: "session(s) d'audit sur place",
+  audit_terrain_evenements: "relevé(s) d'audit sur place",
+  audit_terrain_rapports: "rapport(s) d'audit sur place",
 };
 
 const nomTable = (t: string) => NOMS_TABLES[t.replace(/"/g, "")] ?? `table ${t}`;

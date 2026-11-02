@@ -4,6 +4,8 @@
 -- Compatible avec les DEUX conteneurs : l'ancien code (app ou worker) ignore ces tables.
 -- Clés étrangères en RESTRICT : jamais de suppression par ricochet.
 -- Contenu sensible (`donnees_chiffrees`, `contenu_chiffre`) : chiffré par `chiffrerParole`.
+-- Journal en AJOUT SEUL imposé par la base (triggers en fin de fichier) : aucun UPDATE/DELETE/TRUNCATE
+-- sur les événements ; sur les rapports, seuls statut / valide_par_id / valide_le peuvent changer.
 -- Retour arrière : voir `rollback.sql` (hors migration, jamais joué par migrate deploy ;
 -- seulement sur des tables VIDES — après le jour J on révoque le jeton, on ne supprime pas).
 
@@ -100,3 +102,35 @@ ALTER TABLE "audit_terrain_rapports" ADD CONSTRAINT "audit_terrain_rapports_sess
 -- AddForeignKey
 ALTER TABLE "audit_terrain_rapports" ADD CONSTRAINT "audit_terrain_rapports_valide_par_id_fkey" FOREIGN KEY ("valide_par_id") REFERENCES "admin_users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
+-- ═══ Triggers : journal en ajout seul (objets de la base, invisibles pour Prisma) ═══
+-- Les clés étrangères RESTRICT ne déclenchent pas ces triggers (ils portent sur les tables enfants) ;
+-- DROP TABLE (retour arrière à vide) ne les déclenche pas non plus.
+
+CREATE FUNCTION "audit_terrain_ajout_seul"() RETURNS trigger LANGUAGE plpgsql AS $fn$
+BEGIN
+  RAISE EXCEPTION '% est un journal en ajout seul : % interdit', TG_TABLE_NAME, TG_OP;
+END
+$fn$;
+
+CREATE FUNCTION "audit_terrain_rapports_garde"() RETURNS trigger LANGUAGE plpgsql AS $fn$
+BEGIN
+  IF TG_OP = 'DELETE' THEN
+    RAISE EXCEPTION 'audit_terrain_rapports : suppression interdite';
+  END IF;
+  IF (NEW."id", NEW."session_id", NEW."version", NEW."source", NEW."event_id", NEW."contenu_chiffre", NEW."cree_le")
+     IS DISTINCT FROM
+     (OLD."id", OLD."session_id", OLD."version", OLD."source", OLD."event_id", OLD."contenu_chiffre", OLD."cree_le") THEN
+    RAISE EXCEPTION 'audit_terrain_rapports : seuls statut, valide_par_id et valide_le peuvent changer';
+  END IF;
+  RETURN NEW;
+END
+$fn$;
+
+CREATE TRIGGER "audit_terrain_evenements_ajout_seul" BEFORE UPDATE OR DELETE ON "audit_terrain_evenements"
+  FOR EACH ROW EXECUTE FUNCTION "audit_terrain_ajout_seul"();
+CREATE TRIGGER "audit_terrain_evenements_pas_de_truncate" BEFORE TRUNCATE ON "audit_terrain_evenements"
+  FOR EACH STATEMENT EXECUTE FUNCTION "audit_terrain_ajout_seul"();
+CREATE TRIGGER "audit_terrain_rapports_garde" BEFORE UPDATE OR DELETE ON "audit_terrain_rapports"
+  FOR EACH ROW EXECUTE FUNCTION "audit_terrain_rapports_garde"();
+CREATE TRIGGER "audit_terrain_rapports_pas_de_truncate" BEFORE TRUNCATE ON "audit_terrain_rapports"
+  FOR EACH STATEMENT EXECUTE FUNCTION "audit_terrain_ajout_seul"();
