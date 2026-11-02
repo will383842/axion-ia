@@ -57,6 +57,7 @@ import {
   eraseReponsesEntrantesForEmail,
   erasePiecesJointesContactForEmail,
   effacerCibleParAdresses,
+  ecarterRapportsAvantAuditPourEmail,
 } from "@/lib/rgpd-erase";
 import { alertIncident } from "@/lib/telegram";
 import { empreinteSha256 } from "@/server/newsletter/exports";
@@ -142,6 +143,19 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   // (pseudonymisation, aucune suppression) est un geste d'administrateur, avec
   // confirmation. La route le SIGNALE seulement au journal.
   const formateurIndependant = await formateurIndependantASignalerPour(email);
+
+  // Rapports avant audit (2026-11-02) : MIS À L'ÉCART, jamais supprimés (règle de Will), et
+  // AVANT `eraseCalendlyEventsForEmail`, qui retire l'adresse par laquelle on les retrouve.
+  // Best-effort : la personne obtient son effacement même si cette étape échoue — l'alerte le dit.
+  const rapportsAvantAuditResult = await ecarterRapportsAvantAuditPourEmail(email).catch(
+    (err: unknown) => {
+      // Le NOM seulement : jamais un message d'erreur qui pourrait porter une donnée.
+      console.error(
+        `[gdpr-erase] mise à l'écart des rapports avant audit impossible : ${err instanceof Error ? err.name : "inconnue"}`,
+      );
+      return { ecartes: 0, annules: 0, echec: true as const };
+    },
+  );
 
   // Exécution des effacements
   const [
@@ -301,6 +315,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
         piecesJointesContactSupprimees: piecesJointesResult.supprimees,
         dossierClient: dossierClientResult,
         demandesTourAnonymisees: demandesTourResult.anonymisees,
+        rapportsAvantAudit: { ...rapportsAvantAuditResult },
         reseauApporteur: { ...reseauApporteurResult },
         formateurIndependant,
         candidaturesRetenues: candidaturesRetenues.size,
@@ -380,6 +395,21 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     });
   } catch (err) {
     console.error("[gdpr-erase] confirmation impossible à mettre en file :", err);
+  }
+
+  // Rapports avant audit mis à l'écart : Will décide (aucune purge automatique). Alerte à part,
+  // sans adresse : des nombres et l'identifiant du jeton seulement.
+  if (rapportsAvantAuditResult.ecartes > 0 || "echec" in rapportsAvantAuditResult) {
+    try {
+      await alertIncident(
+        "echec" in rapportsAvantAuditResult
+          ? "⚠️ RGPD art. 17 : la mise à l'écart des rapports avant audit a ÉCHOUÉ — à vérifier à la main."
+          : `⚠️ RGPD art. 17 : ${rapportsAvantAuditResult.ecartes} rapport(s) avant audit mis à l'écart (${rapportsAvantAuditResult.annules} lancement(s) annulé(s)). Rien n'est supprimé : à toi de décider de la suite.`,
+        { userId: v.jti },
+      );
+    } catch {
+      // Telegram non bloquant ; la ligne du journal ci-dessus porte les mêmes nombres.
+    }
   }
 
   // Telegram alert (DPO doit savoir — art. 30 RGPD register update)

@@ -43,6 +43,8 @@ import { startContentDeadlineCheckerWorker } from "./workers/content-gen-deadlin
 import { startImageBankEnrichWorker } from "./workers/image-bank-enrich-worker";
 import { startImageBankImportWorker } from "./workers/image-bank-import-worker";
 import { startKitImportWorker } from "./workers/kit-import-worker";
+// Rapport d'analyse avant audit (2026-11-02) — file `rapport-avant-audit`, concurrence 1.
+import { startRapportAvantAuditWorker } from "./workers/rapport-avant-audit-worker";
 import { startImageBankTranslateWorker } from "./workers/image-bank-translate-worker";
 import { startImageBankCronsWorker } from "./workers/image-bank-crons-worker";
 import { startImageBankAutoConvertWorker } from "./workers/image-bank-auto-convert-worker";
@@ -152,6 +154,9 @@ async function main() {
     startImageBankEnrichWorker(),
     startImageBankImportWorker(),
     startKitImportWorker(), // import en masse kit formation (ZIP → documents-interventions)
+    // Rapport avant audit (2026-11-02). Inerte tant que `RAPPORT_AVANT_AUDIT_ENABLED` est éteint :
+    // l'action refuse de lancer, et un lancement déjà posé passe en `erreur` sans aucun appel.
+    startRapportAvantAuditWorker(),
     startImageBankTranslateWorker(),
     startImageBankCronsWorker(),
     startImageBankAutoConvertWorker(), // 2026-05-20 — conversion slug-based PNG→WebP/AVIF (public/images/)
