@@ -18,6 +18,13 @@
  * PROPRIÉTAIRE : `prendreRapport` rend un jeton (`debut_le`) ; toutes les écritures suivantes le
  * portent, si bien qu'une prise périmée ne peut plus écrire sur une ligne reprise ailleurs.
  *
+ * BATTEMENT DE CŒUR : `maj_le` ne bougeait qu'entre deux étapes, or un seul appel d'IA peut durer
+ * bien plus que `SILENCE_ABANDON_MS` (600 s × 3 essais × relances). Le balayage aurait alors remis
+ * en file un rapport VIVANT : résultat perdu au premier passage, travail refait au second. Toutes
+ * les `BATTEMENT_MS`, la dernière progression est donc ré-écrite (ce qui touche `maj_le`) ; le
+ * battement s'arrête dans un `finally` — fin, erreur ou arrêt. Un worker planté ne bat plus : sa
+ * prise est libérée au bout de `SILENCE_ABANDON_MS`, comme avant.
+ *
  * Aucune écriture sur `clients` (la raison sociale est LUE). Aucun contenu dans les journaux.
  */
 
@@ -39,6 +46,9 @@ import {
   type BaseRapports,
 } from "./persistance";
 import { rosterAttendusSansReponse } from "./roster";
+
+/** Période du battement de cœur : bien en deçà de `SILENCE_ABANDON_MS` (30 min). */
+export const BATTEMENT_MS = 5 * 60_000;
 
 export class InterruptionArret extends Error {
   constructor() {
@@ -101,6 +111,17 @@ export async function traiterRapport(
   const jeton = await prendreRapport(rapportId, deps.maintenant(), base);
   if (jeton === null) return "deja_pris";
 
+  // Notées en série, jamais bloquantes : une progression perdue n'arrête pas le rapport.
+  let derniere: Promise<void> = Promise.resolve();
+  let derniereEtape = "Démarrage";
+  let dernierPct = 0;
+  const noter = (etape: string, pct: number): void => {
+    derniere = derniere
+      .then(() => noterProgression(rapportId, jeton, etape, pct, base))
+      .catch(() => undefined);
+  };
+  const battement = setInterval(() => noter(derniereEtape, dernierPct), BATTEMENT_MS);
+
   try {
     const client = await base.client.findUnique({
       where: { id: etat.clientId },
@@ -119,7 +140,6 @@ export async function traiterRapport(
       return brut(appel);
     };
 
-    let derniere: Promise<void> = Promise.resolve();
     const resultat = await executerRapport(collecte, {
       clientId: etat.clientId,
       raisonSociale: client.raisonSociale,
@@ -128,18 +148,19 @@ export async function traiterRapport(
       fournisseur,
       attenduesSansReponse: attendus,
       surProgression: (p) => {
-        // Notée en série, jamais bloquante : une progression perdue n'arrête pas le rapport.
         const pct = p.total > 0 ? (p.fait / p.total) * 100 : 0;
-        derniere = derniere
-          .then(() => noterProgression(rapportId, jeton, p.etape, Math.min(pct, 99), base))
-          .catch(() => undefined);
+        derniereEtape = p.etape;
+        dernierPct = Math.min(pct, 99);
+        noter(derniereEtape, dernierPct);
       },
     });
+    clearInterval(battement);
     await derniere;
     // Un résultat complet est enregistré même si l'arrêt vient d'être demandé : rien n'est jeté.
     await enregistrerResultat(rapportId, jeton, resultat, deps.maintenant(), base);
     return "termine";
   } catch (e) {
+    clearInterval(battement);
     // Seule l'interruption VOULUE (appel refusé après SIGTERM) remet en attente : une vraie
     // erreur survenue pendant l'arrêt reste une erreur, écrite pour Will.
     if (e instanceof InterruptionArret) {
@@ -148,5 +169,7 @@ export async function traiterRapport(
     }
     await marquerErreur(rapportId, messageDEchec(e), deps.maintenant(), base, jeton);
     return "erreur";
+  } finally {
+    clearInterval(battement);
   }
 }

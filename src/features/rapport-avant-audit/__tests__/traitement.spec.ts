@@ -19,10 +19,12 @@ import {
   creerRapport,
   lancementsEnSuspens,
   lireBaseAudit,
+  prendreRapport,
+  SILENCE_ABANDON_MS,
   type BaseRapports,
 } from "../persistance";
 import { ErreurRapport } from "../executer";
-import { messageDEchec, traiterRapport, type DepsTraitement } from "../traitement";
+import { BATTEMENT_MS, messageDEchec, traiterRapport, type DepsTraitement } from "../traitement";
 import { baseValide, CLIENT_FIXTURE, fausseTable } from "./base.fixture";
 
 const ENV0 = { ...process.env };
@@ -218,5 +220,91 @@ describe("traiterRapport", () => {
     const id = await lancement(db);
     await traiterRapport(id, deps);
     expect(deps.lireCollecte).toHaveBeenCalledWith(CLIENT_FIXTURE, ["q1"]);
+  });
+});
+
+describe("battement de cœur (un appel d'IA plus long que SILENCE_ABANDON_MS)", () => {
+  const MIN = 60_000;
+  beforeEach(() => {
+    vi.useFakeTimers();
+    vi.setSystemTime(new Date("2026-11-02T10:00:00Z"));
+  });
+  afterEach(() => {
+    vi.useRealTimers();
+  });
+
+  /** Un moteur qui reste suspendu dans un appel jusqu'à `finir()`. */
+  function moteurSuspendu() {
+    let finir: () => void = () => undefined;
+    let echouer: (e: Error) => void = () => undefined;
+    exec.executerRapport.mockImplementation(async (_d, opts) => {
+      opts.surProgression?.({ etape: "Croisement", fait: 2, total: 6 });
+      await new Promise<void>((res, rej) => {
+        finir = res;
+        echouer = rej;
+      });
+      return { base: baseValide(), jetonsEntree: 1, jetonsSortie: 1, nbRecherches: 0 };
+    });
+    return { finir: () => finir(), echouer: (e: Error) => echouer(e) };
+  }
+
+  it("une prise dont le battement est récent n'est PAS reprise par le balayage", async () => {
+    const moteur = moteurSuspendu();
+    const { deps, table, db } = monter({ maintenant: () => new Date() });
+    const id = await lancement(db);
+    const issue = traiterRapport(id, deps);
+    // 45 minutes dans le même appel d'IA, balayage toutes les 10 minutes.
+    for (let t = 0; t < 45; t += 10) {
+      await vi.advanceTimersByTimeAsync(10 * MIN);
+      expect(await lancementsEnSuspens(new Date(), db)).toEqual([]);
+      expect(table.lignes[0]!.statut).toBe("en_cours");
+    }
+    // L'étape et la progression notées restent celles du moteur.
+    expect(table.lignes[0]!.etape).toBe("Croisement");
+    expect(table.lignes[0]!.progression).toBe(33);
+    moteur.finir();
+    expect(await issue).toBe("termine");
+    expect(await lireBaseAudit(id, db)).toEqual(baseValide());
+  });
+
+  it("le battement s'arrête après la fin du traitement", async () => {
+    const moteur = moteurSuspendu();
+    const { deps, table, db } = monter({ maintenant: () => new Date() });
+    const id = await lancement(db);
+    const issue = traiterRapport(id, deps);
+    await vi.advanceTimersByTimeAsync(BATTEMENT_MS);
+    moteur.finir();
+    expect(await issue).toBe("termine");
+    const espion = vi.spyOn(table, "updateMany");
+    await vi.advanceTimersByTimeAsync(6 * BATTEMENT_MS);
+    expect(espion).not.toHaveBeenCalled();
+    expect(vi.getTimerCount()).toBe(0);
+  });
+
+  it("le battement s'arrête aussi après une erreur", async () => {
+    const moteur = moteurSuspendu();
+    const { deps, table, db } = monter({ maintenant: () => new Date() });
+    const id = await lancement(db);
+    const issue = traiterRapport(id, deps);
+    await vi.advanceTimersByTimeAsync(BATTEMENT_MS);
+    moteur.echouer(new TypeError("panne"));
+    expect(await issue).toBe("erreur");
+    const espion = vi.spyOn(table, "updateMany");
+    await vi.advanceTimersByTimeAsync(6 * BATTEMENT_MS);
+    expect(espion).not.toHaveBeenCalled();
+    expect(vi.getTimerCount()).toBe(0);
+  });
+
+  it("après un plantage (plus aucun battement), la prise est libérée au bout de 30 minutes", async () => {
+    const { table, db } = monter();
+    const id = await lancement(db);
+    // Une prise sans traitement vivant derrière : le conteneur a été tué.
+    expect(await prendreRapport(id, new Date(), db)).not.toBeNull();
+    await vi.advanceTimersByTimeAsync(SILENCE_ABANDON_MS - MIN);
+    expect(await lancementsEnSuspens(new Date(), db)).toEqual([]);
+    expect(table.lignes[0]!.statut).toBe("en_cours");
+    await vi.advanceTimersByTimeAsync(2 * MIN);
+    expect(await lancementsEnSuspens(new Date(), db)).toEqual([id]);
+    expect(table.lignes[0]!.statut).toBe("en_attente");
   });
 });
