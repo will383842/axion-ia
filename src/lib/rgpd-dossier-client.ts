@@ -168,6 +168,36 @@ export const EXCLUSIONS_EXPORT_DOSSIER: ReadonlyArray<{
       "IA (nom, e-mail, téléphone, ville, statut) sont rendues à part, dans la partie " +
       "« tourFranceIa » de cet export, retrouvées par l'empreinte de votre adresse.",
   },
+  {
+    // Audit présentiel (2026-11-02, PR1) : contenu chiffré par `chiffrerParole`, pseudonymes et postes
+    // seulement (les prénoms restent sur le PC de l'auditeur). Aucune colonne ne rattache une ligne à
+    // une personne : lecture manuelle, comme les comptes rendus.
+    modele: "AuditTerrainSession",
+    motif:
+      "les relevés de l'audit sur place concernent l'entreprise (postes, pseudonymes, jamais les " +
+      "prénoms) et peuvent citer d'autres personnes : réponse manuelle sous un mois, tiers " +
+      "occultés (contact@axion-ia.com).",
+  },
+  {
+    // Audit présentiel (2026-11-02, PR1) : contenu chiffré par `chiffrerParole`, pseudonymes et postes
+    // seulement (les prénoms restent sur le PC de l'auditeur). Aucune colonne ne rattache une ligne à
+    // une personne : lecture manuelle, comme les comptes rendus.
+    modele: "AuditTerrainEvenement",
+    motif:
+      "les relevés de l'audit sur place concernent l'entreprise (postes, pseudonymes, jamais les " +
+      "prénoms) et peuvent citer d'autres personnes : réponse manuelle sous un mois, tiers " +
+      "occultés (contact@axion-ia.com).",
+  },
+  {
+    // Audit présentiel (2026-11-02, PR1) : contenu chiffré par `chiffrerParole`, pseudonymes et postes
+    // seulement (les prénoms restent sur le PC de l'auditeur). Aucune colonne ne rattache une ligne à
+    // une personne : lecture manuelle, comme les comptes rendus.
+    modele: "AuditTerrainRapport",
+    motif:
+      "les relevés de l'audit sur place concernent l'entreprise (postes, pseudonymes, jamais les " +
+      "prénoms) et peuvent citer d'autres personnes : réponse manuelle sous un mois, tiers " +
+      "occultés (contact@axion-ia.com).",
+  },
 ];
 
 /** Le texte de la notice, pour `notice.excludedTables` de l'export. */

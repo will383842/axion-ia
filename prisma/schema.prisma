@@ -1649,6 +1649,8 @@ model AdminUser {
   @@index([role])
   @@index([status])
   @@map("admin_users")
+  auditTerrainSessionsCreees  AuditTerrainSession[] @relation("AuditTerrainSessionCreePar")
+  auditTerrainRapportsValides AuditTerrainRapport[]  @relation("AuditTerrainRapportValidePar")
 }
 
 // ============================================================
@@ -5244,6 +5246,7 @@ model Client {
   /// Fiche client en 7 onglets (relations seules, aucune colonne sur `clients`, ADR 0053) : tâches, notes, profil, étiquettes.
   taches     ClientTache[]
   notesDatees ClientNote[]
+  auditTerrainSessions AuditTerrainSession[]
   profil     ClientProfil?
   etiquettes ClientEtiquette[]
   /// Demandes du Tour France IA rattachées à la fiche (relation seule, aucune colonne sur `clients`).
@@ -12530,6 +12533,8 @@ model AuditMission {
   @@index([statut])
   @@index([dateDebut])
   @@index([dateDebut, dateFin])
+  auditTerrainSessions AuditTerrainSession[]
+
   @@map("audit_missions")
 }
 
@@ -17891,6 +17896,41 @@ model GuideReseauReception {
   @@map("guide_reseau_receptions")
 }
 
+/// L3b (2026-11-03) — historique d'ORIGINE des demandes de guide venues d'un réseau (contrat v3,
+/// ADR-CONTRAT-V3-ORIGINE §2). Union sans retrait, dédoublonnée sur (post_ref, canal, date à la
+/// seconde). Au-delà de 50 entrées ACTIVES par personne, la plus ancienne est ARCHIVÉE
+/// (`archivee_le` posée) : AUCUNE ligne n'est jamais supprimée. Rattachée à la personne par
+/// `email_key` (empreinte HMAC), jamais par l'adresse. Aucun pseudo, aucun texte : le jeton du
+/// commentaire n'est gardé qu'en HMAC à clé serveur (`commentaire_ref_hmac`).
+/// rgpd: technique — origine d'une demande de guide : clés du dictionnaire, jeton de publication opaque, jeton de commentaire en HMAC ; rattachée à la personne par empreinte HMAC d'adresse, aucune adresse ni pseudo ni texte
+model GuideReseauOrigine {
+  id                 String    @id @default(uuid()) @db.Uuid
+  emailKey           String    @map("email_key") @db.VarChar(64)
+  /// SHA-256 de (mot, reseau, guide, post_ref, canal, date à la seconde) : `null` traité comme valeur.
+  cleDedoublonnage   String    @map("cle_dedoublonnage") @db.Char(64)
+  mot                String    @db.VarChar(30)
+  reseau             String    @db.VarChar(20)
+  guide              String    @db.VarChar(40)
+  postRef            String?   @map("post_ref") @db.VarChar(80)
+  postUrl            String?   @map("post_url") @db.VarChar(300)
+  canal              String?   @db.VarChar(16)
+  famille            String?   @db.VarChar(40)
+  detail             String?   @db.VarChar(60)
+  compte             String?   @db.VarChar(40)
+  versionTexte       String?   @map("version_texte") @db.VarChar(64)
+  utmCampagne        String?   @map("utm_campaign") @db.VarChar(60)
+  commentaireRefHmac String?   @map("commentaire_ref_hmac") @db.Char(64)
+  /// Date de l'origine (à la seconde) : fait foi pour « la plus récente gagne ».
+  occurredAt         DateTime  @map("occurred_at") @db.Timestamptz(3)
+  /// Posée quand l'entrée passe en archive (lecture seule) ; `null` = active.
+  archiveeLe         DateTime? @map("archivee_le") @db.Timestamptz(3)
+  createdAt          DateTime  @default(now()) @map("created_at") @db.Timestamptz(3)
+
+  @@unique([emailKey, cleDedoublonnage], map: "guide_reseau_origines_dedoublonnage_key")
+  @@index([emailKey, occurredAt], map: "guide_reseau_origines_personne_date_idx")
+  @@map("guide_reseau_origines")
+}
+
 /// rgpd: dossier-client
 /// Une demande du Tour France IA : la mini-demande faite AVANT le rendez-vous en visio
 /// (e-mail, ville, nom, téléphone). Table ajoutée par PR-2a ; le formulaire public est PR-2b.
@@ -18011,4 +18051,83 @@ model RapportAvantAudit {
   @@index([clientId, creeLe])
   @@index([statut])
   @@map("rapports_avant_audit")
+}
+
+/// AUDIT PRÉSENTIEL (PR1, 2026-11-02) — une session d'audit sur place, ouverte depuis la fiche client.
+/// Le PC de l'auditeur envoie des événements signés par un jeton à durée limitée ; seule l'EMPREINTE
+/// du jeton (SHA-256) est gardée, jamais le jeton. Statut en VarChar (pas d'énumération Postgres :
+/// compatible avec les deux conteneurs), validé par zod. Aucune suppression : on révoque le jeton.
+/// Clés étrangères en RESTRICT : rien ne part par ricochet.
+/// rgpd: dossier-client
+model AuditTerrainSession {
+  id                 String        @id @default(uuid()) @db.Uuid
+  clientId           String        @map("client_id") @db.Uuid
+  client             Client        @relation(fields: [clientId], references: [id], onDelete: Restrict)
+  auditMissionId     String?       @map("audit_mission_id") @db.Uuid
+  auditMission       AuditMission? @relation(fields: [auditMissionId], references: [id], onDelete: Restrict)
+  statut             String        @default("ouverte") @db.VarChar(20)
+  jetonEmpreinte     String        @unique @map("jeton_empreinte") @db.Char(64)
+  jetonExpireLe      DateTime      @map("jeton_expire_le") @db.Timestamptz(3)
+  jetonRevoqueLe     DateTime?     @map("jeton_revoque_le") @db.Timestamptz(3)
+  creeParId          String        @map("cree_par_id") @db.Uuid
+  creePar            AdminUser     @relation("AuditTerrainSessionCreePar", fields: [creeParId], references: [id], onDelete: Restrict)
+  dernierSeq         Int           @default(0) @map("dernier_seq")
+  derniereEtapeIndex Int           @default(0) @map("derniere_etape_index")
+  dernierEnvoiLe     DateTime?     @map("dernier_envoi_le") @db.Timestamptz(3)
+  creeLe             DateTime      @default(now()) @map("cree_le") @db.Timestamptz(3)
+
+  evenements AuditTerrainEvenement[]
+  rapports   AuditTerrainRapport[]
+
+  @@index([clientId, creeLe], map: "audit_terrain_sessions_client_id_cree_le_idx")
+  @@index([auditMissionId], map: "audit_terrain_sessions_audit_mission_id_idx")
+  @@map("audit_terrain_sessions")
+}
+
+/// AUDIT PRÉSENTIEL (PR1) — journal en AJOUT SEUL des événements reçus du PC. `donneesChiffrees` :
+/// CHIFFRÉ par `chiffrerParole` (jamais de clair en base ; pseudonymes `pid` et postes seulement, les
+/// prénoms restent sur le PC). `empreinte` = SHA-256 de `donnees` en clair, calculée par le PC : un même
+/// `eventId` avec une autre empreinte est un conflit, journalisé, jamais écrasé. Revalider une étape
+/// crée un nouvel événement ; l'ancien reste. Unique (sessionId, eventId).
+/// rgpd: dossier-client
+model AuditTerrainEvenement {
+  id               String              @id @default(uuid()) @db.Uuid
+  sessionId        String              @map("session_id") @db.Uuid
+  session          AuditTerrainSession @relation(fields: [sessionId], references: [id], onDelete: Restrict)
+  eventId          String              @map("event_id") @db.Uuid
+  seq              Int
+  type             String              @db.VarChar(30)
+  etape            String?             @db.VarChar(40)
+  etapeIndex       Int?                @map("etape_index")
+  heurePc          DateTime            @map("heure_pc") @db.Timestamptz(3)
+  recuLe           DateTime            @default(now()) @map("recu_le") @db.Timestamptz(3)
+  empreinte        String              @db.Char(64)
+  donneesChiffrees String              @map("donnees_chiffrees")
+
+  @@unique([sessionId, eventId], map: "audit_terrain_evenements_session_id_event_id_key")
+  @@index([sessionId, seq], map: "audit_terrain_evenements_session_id_seq_idx")
+  @@map("audit_terrain_evenements")
+}
+
+/// AUDIT PRÉSENTIEL (PR1) — rapport de fin d'audit (brouillon produit sur le PC, ou gabarit de secours).
+/// `contenuChiffre` : CHIFFRÉ par `chiffrerParole`. Rien ne part au client : Will relit (`a_relire` →
+/// `valide`). Une nouvelle version s'ajoute, l'ancienne reste. `eventId` unique : l'envoi est idempotent.
+/// rgpd: dossier-client
+model AuditTerrainRapport {
+  id             String              @id @default(uuid()) @db.Uuid
+  sessionId      String              @map("session_id") @db.Uuid
+  session        AuditTerrainSession @relation(fields: [sessionId], references: [id], onDelete: Restrict)
+  version        Int
+  source         String              @db.VarChar(20)
+  eventId        String              @unique @map("event_id") @db.Uuid
+  contenuChiffre String              @map("contenu_chiffre")
+  statut         String              @default("a_relire") @db.VarChar(20)
+  valideParId    String?             @map("valide_par_id") @db.Uuid
+  validePar      AdminUser?          @relation("AuditTerrainRapportValidePar", fields: [valideParId], references: [id], onDelete: Restrict)
+  valideLe       DateTime?           @map("valide_le") @db.Timestamptz(3)
+  creeLe         DateTime            @default(now()) @map("cree_le") @db.Timestamptz(3)
+
+  @@unique([sessionId, version], map: "audit_terrain_rapports_session_id_version_key")
+  @@index([valideParId], map: "audit_terrain_rapports_valide_par_id_idx")
+  @@map("audit_terrain_rapports")
 }

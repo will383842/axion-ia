@@ -1844,6 +1844,36 @@ export const EXCEPTIONS_EFFACEMENT_DOSSIER: ReadonlyArray<{
       "par une valeur opaque propre à la ligne ; la ligne et son drapeau « compte » restent pour " +
       "que le compteur d'une ville ne recule pas.",
   },
+  {
+    // Audit présentiel (2026-11-02, PR1) : journal en ajout seul, jamais supprimé (ordre permanent).
+    modele: "AuditTerrainSession",
+    motif:
+      "relevé de l'audit sur place, chiffré, sans prénom (pseudonymes et postes), sans colonne " +
+      "qui le rattache à une personne : l'effacement automatique ne les touche pas et ne les " +
+      "supprime jamais (journal en ajout seul, triggers en base) ; l'alerte à l'opérateur sur " +
+      "demande d'effacement N'EXISTE PAS ENCORE (à coder en PR2/PR3) ; d'ici là Will traite " +
+      "à la main, sous le drapeau d'effacement.",
+  },
+  {
+    // Audit présentiel (2026-11-02, PR1) : journal en ajout seul, jamais supprimé (ordre permanent).
+    modele: "AuditTerrainEvenement",
+    motif:
+      "relevé de l'audit sur place, chiffré, sans prénom (pseudonymes et postes), sans colonne " +
+      "qui le rattache à une personne : l'effacement automatique ne les touche pas et ne les " +
+      "supprime jamais (journal en ajout seul, triggers en base) ; l'alerte à l'opérateur sur " +
+      "demande d'effacement N'EXISTE PAS ENCORE (à coder en PR2/PR3) ; d'ici là Will traite " +
+      "à la main, sous le drapeau d'effacement.",
+  },
+  {
+    // Audit présentiel (2026-11-02, PR1) : journal en ajout seul, jamais supprimé (ordre permanent).
+    modele: "AuditTerrainRapport",
+    motif:
+      "relevé de l'audit sur place, chiffré, sans prénom (pseudonymes et postes), sans colonne " +
+      "qui le rattache à une personne : l'effacement automatique ne les touche pas et ne les " +
+      "supprime jamais (journal en ajout seul, triggers en base) ; l'alerte à l'opérateur sur " +
+      "demande d'effacement N'EXISTE PAS ENCORE (à coder en PR2/PR3) ; d'ici là Will traite " +
+      "à la main, sous le drapeau d'effacement.",
+  },
 ];
 
 // ═════════════════════════════════════════════════════════════════════════════

@@ -10,6 +10,7 @@ import type { NextRequest } from "next/server";
 import { controlerEntree } from "@/server/videos/entree";
 import { refus } from "@/server/videos/reponse";
 import {
+  CORPS_MAX_GUIDES_RESEAU,
   PREFIXE_DEBIT_GUIDES,
   guidesReseauActifs,
   secretsGuidesReseau,
@@ -30,6 +31,7 @@ export async function POST(req: NextRequest): Promise<Response> {
     drapeau: guidesReseauActifs,
     secrets: () => secretsGuidesReseau(),
     prefixeDebit: PREFIXE_DEBIT_GUIDES,
+    corpsMaxOctets: CORPS_MAX_GUIDES_RESEAU,
   });
   if (!entree.ok) return entree.reponse;
   return recevoirDemande(entree);

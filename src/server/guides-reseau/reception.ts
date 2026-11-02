@@ -183,7 +183,10 @@ export async function recevoirDemande(e: EntreeSignee): Promise<Response> {
       await prisma.guideReseauReception.deleteMany({
         where: { cleIdempotence: d.cleIdempotence, reponseStatut: 0 },
       });
-      return reponseJson(422, { ok: false, erreur: r.erreur });
+      return reponseJson(r.erreur === "trop_de_requetes" ? 429 : 422, {
+        ok: false,
+        erreur: r.erreur,
+      });
     }
     const corps = {
       ok: true,
