@@ -15,19 +15,30 @@
  *     statut) donne la MÊME réponse 401, sans dire laquelle ;
  *   - événements écrits par `create` seulement (jamais upsert/update sur le contenu) ;
  *   - ni corps, ni Authorization, ni message de zod dans un journal ou dans Sentry ;
- *   - limitation de débit : si Redis tombe, on REFUSE (503), le PC réessaie.
+ *   - limitation de débit : si Redis tombe, on REFUSE (503), le PC réessaie ;
+ *   - au plus 5 000 événements par session (409 au-delà) ; max(seq) et trous calculés en SQL.
+ *
+ * Réponse 200 : s'ajoute `rejetes: [{ eventId, motif }]` : événements refusés UN PAR UN (motif
+ * `trop_gros` : donnees > 64 Ko en OCTETS ; `source_inconnue` : rapport sans source valide). Le PC ne
+ * doit PAS les renvoyer. Un SHA-256 recalculé différent ou un schéma invalide refuse le lot entier (422).
+ *
+ * `audit_terrain_rapports.event_id` est unique pour TOUTE la table (pas par session) : le même eventId de
+ * rapport rejoué dans une autre session finit en `conflits` (aucune ligne écrite).
+ * Conservation, clé PII_ENCRYPTION_KEY, conflits : voir `docs/audit-terrain-reception.md`.
  */
 import { createHash, createHmac } from "node:crypto";
 import * as Sentry from "@sentry/nextjs";
 import { prisma } from "@/lib/prisma";
 import { checkRateLimit } from "@/lib/rate-limit";
 import { hashIp } from "@/lib/security/ip-hash";
-import { ipDepuisEntetes } from "@/lib/client-ip-core";
+import { ipVisiteurOuNull } from "@/lib/client-ip-core";
 import { chiffrerParole } from "@/lib/chiffrer-parole";
 import { ecrireJournalActivite } from "@/server/content-gen/shared/activity-log-writer";
 import { lireJeton, memeEmpreinte, type JetonLu } from "./jeton";
 import {
   MAX_CORPS_OCTETS,
+  MAX_DONNEES_OCTETS,
+  MAX_EVENEMENTS_SESSION,
   corpsLotSchema,
   donneesRapportSchema,
   type EvenementRecu,
@@ -88,13 +99,15 @@ interface SessionAuth {
 type Auth = { ok: true; session: SessionAuth; ipHachee: string | null } | { ok: false; reponse: Response };
 
 async function authentifier(req: Request, controleurs?: { avant?: () => Response | null }): Promise<Auth> {
-  const ipHachee = hashIp(ipDepuisEntetes(req.headers));
-  const refusIp = await limiter(`audit-terrain:ip:${ipHachee ?? "inconnue"}`);
+  const ipHachee = hashIp(ipVisiteurOuNull(req.headers));
+  // Sans IP exploitable, une limite « par IP » deviendrait commune à tous : on refuse, explicitement.
+  if (ipHachee === null) return { ok: false, reponse: json({ erreur: "ip_inconnue" }, 403) };
+  const refusIp = await limiter(`audit-terrain:ip:${ipHachee}`);
   if (refusIp) return { ok: false, reponse: refusIp };
 
   const jeton: JetonLu | null = lireJeton(req.headers.get("authorization"));
   if (!jeton) {
-    await journaliser(null, ipHachee, { statut: 401 });
+    await journaliserRefus(ipHachee);
     return { ok: false, reponse: non401() };
   }
   const refusJeton = await limiter(`audit-terrain:jeton:${sha256("rl:" + jeton.empreinte).slice(0, 32)}`);
@@ -115,10 +128,16 @@ async function authentifier(req: Request, controleurs?: { avant?: () => Response
     ligne.jetonRevoqueLe === null &&
     ligne.jetonExpireLe.getTime() > Date.now();
   if (!valide || !ligne) {
-    await journaliser(null, ipHachee, { statut: 401 });
+    await journaliserRefus(ipHachee);
     return { ok: false, reponse: non401() };
   }
   return { ok: true, session: { id: ligne.id, clientId: ligne.clientId }, ipHachee };
+}
+
+/** Un 401 n'est journalisé qu'au PREMIER refus de la fenêtre (compteur Redis) : pas d'inondation du journal. */
+async function journaliserRefus(ipHachee: string | null): Promise<void> {
+  const r = await checkRateLimit(`audit-terrain:refus:${ipHachee ?? "inconnue"}`, { limit: 1, windowSec: 600, surPanne: "refuser" });
+  if (r.allowed && !r.panne) await journaliser(null, ipHachee, { statut: 401 });
 }
 
 async function journaliser(sessionId: string | null, ipHachee: string | null, changes: Record<string, number>): Promise<void> {
@@ -202,16 +221,21 @@ async function ecrireEvenement(sessionId: string, ev: EvenementRecu): Promise<Is
 }
 
 async function etatSession(sessionId: string): Promise<{ dernierSeqRecu: number; nombre: number; trous: number[] }> {
-  const lignes = await prisma.auditTerrainEvenement.findMany({
-    where: { sessionId },
-    select: { seq: true },
-    orderBy: { seq: "asc" },
-  });
-  const vus = new Set(lignes.map((l) => l.seq));
-  const dernier = lignes.reduce((m, l) => Math.max(m, l.seq), 0);
-  const trous: number[] = [];
-  for (let s = 1; s < dernier && trous.length < MAX_TROUS; s++) if (!vus.has(s)) trous.push(s);
-  return { dernierSeqRecu: dernier, nombre: lignes.length, trous };
+  // Calculs en SQL : on ne charge jamais les lignes. Les trous sont limités à MAX_TROUS.
+  const [stats] = await prisma.$queryRaw<{ dernier: number; nombre: number }[]>`
+    SELECT COALESCE(MAX(seq), 0)::int AS dernier, COUNT(*)::int AS nombre
+    FROM audit_terrain_evenements WHERE session_id = ${sessionId}::uuid`;
+  const dernier = Number(stats?.dernier ?? 0);
+  const nombre = Number(stats?.nombre ?? 0);
+  let trous: number[] = [];
+  if (dernier > nombre) {
+    const lignes = await prisma.$queryRaw<{ seq: number }[]>`
+      SELECT g::int AS seq FROM generate_series(1, ${dernier}::int) AS g
+      WHERE NOT EXISTS (SELECT 1 FROM audit_terrain_evenements e WHERE e.session_id = ${sessionId}::uuid AND e.seq = g)
+      ORDER BY g LIMIT ${MAX_TROUS}::int`;
+    trous = lignes.map((l) => Number(l.seq));
+  }
+  return { dernierSeqRecu: dernier, nombre, trous };
 }
 
 /* ---------- POST /evenements ---------- */
@@ -246,21 +270,33 @@ export async function recevoirEvenements(req: Request): Promise<Response> {
     const corps = verdict.data;
     // Le sessionId du corps doit être celui de la ligne trouvée par le jeton.
     if (corps.sessionId.toLowerCase() !== session.id.toLowerCase()) {
-      await journaliser(null, ipHachee, { statut: 401 });
+      await journaliserRefus(ipHachee);
       return non401();
     }
     // Le serveur recalcule le SHA-256 du contenu ; tout le lot est refusé avant la moindre écriture.
     for (const ev of corps.lot) {
       if (sha256(JSON.stringify(ev.donnees)) !== ev.empreinte.toLowerCase()) return non422();
-      if (ev.type === "rapport_brouillon" && !donneesRapportSchema.safeParse(ev.donnees).success) return non422();
     }
+    // Plafond par session : au-delà, 409 sans détail.
+    const deja = await prisma.auditTerrainEvenement.count({ where: { sessionId: session.id } });
+    if (deja >= MAX_EVENEMENTS_SESSION) return json({ erreur: "limite_session" }, 409);
 
     const acceptes: string[] = [];
     const dejaRecus: string[] = [];
     const conflits: string[] = [];
+    const rejetes: { eventId: string; motif: string }[] = [];
     let maxSeq = 0;
     let maxEtape = 0;
     for (const ev of [...corps.lot].sort((a, b) => a.seq - b.seq)) {
+      // Rejet PAR ÉVÉNEMENT (les autres du lot sont traités) : la taille se compte en OCTETS.
+      if (Buffer.byteLength(JSON.stringify(ev.donnees), "utf8") > MAX_DONNEES_OCTETS) {
+        rejetes.push({ eventId: ev.eventId, motif: "trop_gros" });
+        continue;
+      }
+      if (ev.type === "rapport_brouillon" && !donneesRapportSchema.safeParse(ev.donnees).success) {
+        rejetes.push({ eventId: ev.eventId, motif: "source_inconnue" });
+        continue;
+      }
       const issue = await ecrireEvenement(session.id, ev);
       if (issue === "accepte") {
         acceptes.push(ev.eventId);
@@ -300,8 +336,9 @@ export async function recevoirEvenements(req: Request): Promise<Response> {
       acceptes: acceptes.length,
       dejaRecus: dejaRecus.length,
       conflits: conflits.length,
+      rejetes: rejetes.length,
     });
-    return json({ acceptes, dejaRecus, conflits, dernierSeqRecu: etat.dernierSeqRecu, trous: etat.trous }, 200);
+    return json({ acceptes, dejaRecus, conflits, rejetes, dernierSeqRecu: etat.dernierSeqRecu, trous: etat.trous }, 200);
   } catch (err) {
     signaler(err, "evenements");
     return json({ erreur: "interne" }, 500);

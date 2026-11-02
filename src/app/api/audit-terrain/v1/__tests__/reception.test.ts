@@ -14,6 +14,7 @@ const base = {
   evenements: [] as Ligne[],
   rapports: [] as Ligne[],
 };
+const requetesSql: string[] = [];
 const p2002 = () => Object.assign(new Error("Unique constraint"), { code: "P2002" });
 
 const evenementModele = {
@@ -24,8 +25,7 @@ const evenementModele = {
   },
   findUnique: async ({ where }: { where: { sessionId_eventId: { sessionId: string; eventId: string } } }) =>
     base.evenements.find((e) => e["sessionId"] === where.sessionId_eventId.sessionId && e["eventId"] === where.sessionId_eventId.eventId) ?? null,
-  findMany: async ({ where }: { where: { sessionId: string } }) =>
-    base.evenements.filter((e) => e["sessionId"] === where.sessionId).sort((a, b) => (a["seq"] as number) - (b["seq"] as number)),
+  count: async ({ where }: { where: { sessionId: string } }) => base.evenements.filter((e) => e["sessionId"] === where.sessionId).length,
 };
 const rapportModele = {
   aggregate: async ({ where }: { where: { sessionId: string } }) => {
@@ -45,11 +45,30 @@ const prismaFaux = {
   },
   auditTerrainEvenement: evenementModele,
   auditTerrainRapport: rapportModele,
-  $queryRaw: async (_s: TemplateStringsArray, seq: number, etape: number, id: string) => {
-    const s = base.sessions.find((x) => x["id"] === id)!;
-    s["dernierSeq"] = Math.max(s["dernierSeq"] as number, seq);
-    s["derniereEtapeIndex"] = Math.max(s["derniereEtapeIndex"] as number, etape);
-    return [{ dernier_seq: s["dernierSeq"] }];
+  // Le faux lit le TEXTE de la requête : sans GREATEST dans le SQL, la valeur recule (la mutation rougit).
+  $queryRaw: async (strings: TemplateStringsArray, ...v: unknown[]) => {
+    const texte = strings.join("?");
+    requetesSql.push(texte);
+    if (texte.includes("UPDATE audit_terrain_sessions")) {
+      const [seq, etape, id] = v as [number, number, string];
+      const s = base.sessions.find((x) => x["id"] === id)!;
+      const garde = texte.includes("GREATEST(dernier_seq");
+      s["dernierSeq"] = garde ? Math.max(s["dernierSeq"] as number, seq) : seq;
+      s["derniereEtapeIndex"] = texte.includes("GREATEST(derniere_etape_index") ? Math.max(s["derniereEtapeIndex"] as number, etape) : etape;
+      return [{ dernier_seq: s["dernierSeq"] }];
+    }
+    if (texte.includes("MAX(seq)")) {
+      const l = base.evenements.filter((e) => e["sessionId"] === v[0]).map((e) => e["seq"] as number);
+      return [{ dernier: l.length ? Math.max(...l) : 0, nombre: l.length }];
+    }
+    if (texte.includes("generate_series")) {
+      const [dernier, sid, limite] = v as [number, string, number];
+      const vus = new Set(base.evenements.filter((e) => e["sessionId"] === sid).map((e) => e["seq"] as number));
+      const trous: { seq: number }[] = [];
+      for (let g = 1; g <= dernier && trous.length < limite; g++) if (!vus.has(g)) trous.push({ seq: g });
+      return trous;
+    }
+    throw new Error("requête SQL inattendue");
   },
   $transaction: async (fn: (tx: unknown) => Promise<unknown>) => {
     const copie = { e: [...base.evenements], r: [...base.rapports] };
@@ -93,7 +112,7 @@ function ajouterSession(id: string, secret: string, o: Ligne = {}) {
 function evenement(seq: number, o: Ligne = {}) {
   const donnees = (o["donnees"] as Ligne | undefined) ?? { pid: "p1", note: "n" + seq };
   return {
-    eventId: randomUUID(), seq, type: "etape_validee", etape: "A" + seq, etapeIndex: seq, etapesTotal: 7,
+    eventId: randomUUID(), seq, type: "etape_validee", etape: "A" + seq, etapeIndex: seq % 8, etapesTotal: 7,
     heurePC: new Date().toISOString(), donnees, empreinte: sha(JSON.stringify(donnees)), ...o,
   };
 }
@@ -104,14 +123,14 @@ function post(corps: unknown, jeton: string | null = JETON, h: Record<string, st
   const texte = typeof corps === "string" ? corps : JSON.stringify(corps);
   return POST(new Request("http://x/api/audit-terrain/v1/evenements", {
     method: "POST", body: texte,
-    headers: { "content-type": "application/json", "content-length": String(Buffer.byteLength(texte)), ...(jeton ? { authorization: "Bearer " + jeton } : {}), ...h },
+    headers: { "content-type": "application/json", "content-length": String(Buffer.byteLength(texte)), "x-real-ip": "203.0.113.5", ...(jeton ? { authorization: "Bearer " + jeton } : {}), ...h },
   }) as never);
 }
 const etat = (jeton: string | null = JETON, q = "") =>
-  GET(new Request("http://x/api/audit-terrain/v1/etat" + q, { headers: jeton ? { authorization: "Bearer " + jeton } : {} }) as never);
+  GET(new Request("http://x/api/audit-terrain/v1/etat" + q, { headers: { "x-real-ip": "203.0.113.5", ...(jeton ? { authorization: "Bearer " + jeton } : {}) } }) as never);
 
 beforeEach(() => {
-  base.sessions = []; base.evenements = []; base.rapports = [];
+  base.sessions = []; base.evenements = []; base.rapports = []; requetesSql.length = 0;
   checkRateLimitMock.mockReset().mockResolvedValue({ allowed: true, count: 1, remaining: 59, resetAt: Date.now() + 60000, panne: false });
   journalMock.mockReset(); sentryMock.mockReset();
   ajouterSession(SID, SECRET);
@@ -179,6 +198,17 @@ describe("idempotence : create seulement, jamais d'écrasement", () => {
   });
 });
 
+describe("dernierSeq ne recule jamais (UPDATE avec GREATEST)", () => {
+  it("la requête contient GREATEST et un lot plus ancien ne fait pas reculer la session", async () => {
+    await post(lot([evenement(5)]));
+    expect(base.sessions[0]!["dernierSeq"]).toBe(5);
+    await post(lot([evenement(3), evenement(2)]));
+    expect(base.sessions[0]!["dernierSeq"]).toBe(5);
+    expect(requetesSql.some((t) => t.includes("GREATEST(dernier_seq"))).toBe(true);
+    expect(requetesSql.some((t) => t.includes("GREATEST(derniere_etape_index"))).toBe(true);
+  });
+});
+
 describe("rapport_brouillon", () => {
   it("crée une version chiffrée, une seule fois même en cas de rejeu", async () => {
     const e = evenement(5, { type: "rapport_brouillon", donnees: { pid: "x", source: "gabarit", contenu: "RAPPORT-CLAIR" } });
@@ -189,9 +219,24 @@ describe("rapport_brouillon", () => {
     expect(String(base.rapports[0]!["contenuChiffre"])).toMatch(/^enc:v1:/);
     expect(JSON.stringify(base.rapports)).not.toContain("RAPPORT-CLAIR");
   });
-  it("une source inconnue est refusée (422)", async () => {
+  it("une source inconnue rejette cet événement seul (rejetes), les autres passent", async () => {
     const e = evenement(5, { type: "rapport_brouillon", donnees: { source: "autre" } });
-    expect((await post(lot([e]))).status).toBe(422);
+    const ok = evenement(6);
+    const r = await post(lot([e, ok]));
+    expect(r.status).toBe(200);
+    const j = await r.json();
+    expect(j.rejetes).toEqual([{ eventId: e.eventId, motif: "source_inconnue" }]);
+    expect(j.acceptes).toEqual([ok.eventId]);
+    expect(base.rapports).toHaveLength(0);
+  });
+  it("même eventId de rapport dans une autre session : conflit propre, rien d'écrit (event_id unique pour toute la table)", async () => {
+    const e = evenement(5, { type: "rapport_brouillon", donnees: { source: "gabarit", contenu: "x" } });
+    await post(lot([e]));
+    const r = await post(lot([e], { sessionId: SID_AUTRE }), `axa_${SID_AUTRE}_${SECRET_AUTRE}`);
+    expect(r.status).toBe(200);
+    expect((await r.json()).conflits).toEqual([e.eventId]);
+    expect(base.rapports).toHaveLength(1);
+    expect(base.evenements.filter((x) => x["sessionId"] === SID_AUTRE)).toHaveLength(0);
   });
 });
 
@@ -217,6 +262,10 @@ describe("jeton", () => {
   });
   it("révoqué : 401", async () => {
     base.sessions[0]!["jetonRevoqueLe"] = new Date(); base.sessions[0]!["statut"] = "revoquee";
+    await refus(await post(lot([evenement(1)])));
+  });
+  it("révoqué par la date seule (statut resté ouverte) : 401 grâce au contrôle de révocation", async () => {
+    base.sessions[0]!["jetonRevoqueLe"] = new Date();
     await refus(await post(lot([evenement(1)])));
   });
   it("expiré : 401", async () => {
@@ -251,12 +300,43 @@ describe("validation et limites", () => {
     expect(await r.json()).toEqual({ erreur: "schema" });
     expect(base.evenements).toHaveLength(0);
   });
-  it("lot de 51 événements : 422", async () => {
-    expect((await post(lot(Array.from({ length: 51 }, (_, i) => evenement(i + 1))))).status).toBe(422);
+  it("lot de 50 événements valides : accepté ; 51 événements valides : 422", async () => {
+    const valides = (n: number) => Array.from({ length: n }, (_, i) => evenement(i + 1));
+    expect((await post(lot(valides(50)))).status).toBe(200);
+    base.evenements = [];
+    const r = await post(lot(valides(51)));
+    expect(r.status).toBe(422);
+    expect(base.evenements).toHaveLength(0);
   });
-  it("donnees de plus de 64 Ko : 422", async () => {
-    const e = evenement(1, { donnees: { pid: "p", gros: "x".repeat(65 * 1024) } });
-    expect((await post(lot([e]))).status).toBe(422);
+  it("donnees > 64 Ko : cet événement seul est rejeté (trop_gros), les autres du lot sont acceptés", async () => {
+    const gros = evenement(1, { donnees: { pid: "p", gros: "x".repeat(65 * 1024) } });
+    const ok = evenement(2);
+    const r = await post(lot([gros, ok]));
+    expect(r.status).toBe(200);
+    const j = await r.json();
+    expect(j.rejetes).toEqual([{ eventId: gros.eventId, motif: "trop_gros" }]);
+    expect(j.acceptes).toEqual([ok.eventId]);
+  });
+  it("64 Ko comptés en OCTETS : 40 000 caractères accentués ou emoji (moins de 64 000 caractères) sont rejetés", async () => {
+    const accents = evenement(1, { donnees: { pid: "p", t: "\u00e9".repeat(40_000) } }); // 80 000 octets, 40 000 caractères
+    const emoji = evenement(2, { donnees: { pid: "p", t: "\u{1F600}".repeat(20_000) } }); // 80 000 octets, 40 000 unités
+    const j = await (await post(lot([accents, emoji]))).json();
+    expect(j.rejetes.map((r: { eventId: string }) => r.eventId)).toEqual([accents.eventId, emoji.eventId]);
+    expect(j.acceptes).toEqual([]);
+  });
+  it("plafond de 5 000 événements par session : 409 sans détail", async () => {
+    for (let i = 0; i < 5000; i++) base.evenements.push({ sessionId: SID, eventId: randomUUID(), seq: i + 1 });
+    const r = await post(lot([evenement(5001)]));
+    expect(r.status).toBe(409);
+    expect(await r.json()).toEqual({ erreur: "limite_session" });
+  });
+  it("sans IP exploitable : refus explicite 403", async () => {
+    const texte = JSON.stringify(lot([evenement(1)]));
+    const r = await POST(new Request("http://x/api/audit-terrain/v1/evenements", {
+      method: "POST", body: texte, headers: { authorization: "Bearer " + JETON },
+    }) as never);
+    expect(r.status).toBe(403);
+    expect(base.evenements).toHaveLength(0);
   });
   it("corps de plus de 512 Ko déclaré : 413", async () => {
     const r = await post(lot([evenement(1)]), JETON, { "content-length": String(513 * 1024) });
@@ -265,7 +345,7 @@ describe("validation et limites", () => {
   it("corps de plus de 512 Ko réel, sans Content-Length : 413", async () => {
     const gros = JSON.stringify(lot([evenement(1)])) + " ".repeat(513 * 1024);
     const r = await POST(new Request("http://x/api/audit-terrain/v1/evenements", {
-      method: "POST", body: gros, headers: { authorization: "Bearer " + JETON },
+      method: "POST", body: gros, headers: { authorization: "Bearer " + JETON, "x-real-ip": "203.0.113.5" },
     }) as never);
     expect(r.status).toBe(413);
   });
@@ -301,6 +381,16 @@ describe("limitation de débit", () => {
 });
 
 describe("journal et fuites", () => {
+  it("un 401 n'est journalisé qu'au premier refus de la fenêtre", async () => {
+    const vus = new Set<string>();
+    checkRateLimitMock.mockImplementation(async (cle: string) => {
+      const premier = !vus.has(cle);
+      vus.add(cle);
+      return { allowed: cle.startsWith("audit-terrain:refus:") ? premier : true, count: 1, remaining: 1, resetAt: Date.now() + 60000, panne: false };
+    });
+    for (let i = 0; i < 3; i++) await post(lot([evenement(1)]), `axa_${SID}_${"Z".repeat(43)}`);
+    expect(journalMock).toHaveBeenCalledTimes(1);
+  });
   it("le journal d'accès ne contient ni contenu, ni jeton", async () => {
     await post(lot([evenement(1, { donnees: { pid: "p", texte: "TEXTE-SENSIBLE" } })]));
     const tout = JSON.stringify(journalMock.mock.calls);

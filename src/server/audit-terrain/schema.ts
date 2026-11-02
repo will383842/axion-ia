@@ -17,10 +17,11 @@ export const SOURCES_RAPPORT = ["claude_code_pc", "gabarit"] as const;
 export const MAX_DONNEES_OCTETS = 64 * 1024;
 export const MAX_CORPS_OCTETS = 512 * 1024;
 export const MAX_LOT = 50;
+export const MAX_EVENEMENTS_SESSION = 5000;
 
-const donnees = z
-  .record(z.string(), z.unknown())
-  .refine((d) => Buffer.byteLength(JSON.stringify(d), "utf8") <= MAX_DONNEES_OCTETS);
+// La taille de `donnees` (64 Ko en OCTETS) est contrôlée événement par événement dans reception.ts :
+// un événement trop gros est rejeté seul, il ne fait pas refuser tout le lot.
+const donnees = z.record(z.string(), z.unknown());
 
 const evenement = z
   .object({
