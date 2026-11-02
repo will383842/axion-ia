@@ -5,11 +5,11 @@
  * la route répond 503 et rien n'est lu ni écrit. Nom du plan (la consigne orale parlait de
  * `DEMANDES_GUIDE_RESEAU_ENABLED` : c'est `GUIDES_RESEAU_ENABLED` qui fait foi).
  *
- * ⛔ REPORT ACTÉ : `GUIDES_RESEAU_ENABLED` NE S'ALLUME PAS avant le lot « demande d'effacement
- * reçue en message privé → alerte à l'opérateur, adresse masquée par `redactEmail`, aucune
- * suppression automatique ». Le contrat (`contrat.ts`) n'a pas de chemin d'effacement : tant
- * que ce lot n'est pas livré, le parcours ne doit pas recevoir de vraies demandes. Garde :
- * le test « éteint par défaut » (`config.spec.ts`).
+ * ✅ EFFACEMENT TRAITÉ (PV-1 bis, `effacement.ts`). Une demande d'effacement reçue en message
+ * privé (`type: "demande_effacement"`) déclenche UNE alerte à l'opérateur, adresse masquée par
+ * `redactEmail`, et met l'adresse à l'écart des envois (mécanisme d'opposition). AUCUNE
+ * suppression automatique. Malgré cela, `GUIDES_RESEAU_ENABLED` RESTE ÉTEINT jusqu'à l'essai
+ * « STOP » par l'opérateur. Garde : le test « éteint par défaut » (`config.spec.ts`).
  *
  * Lecture en `process.env` brut, hors schéma `env.ts`, AU RUNTIME uniquement (Coolify,
  * scope RUN, conteneur app) — jamais un build-arg.
