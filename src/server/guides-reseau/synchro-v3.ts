@@ -111,6 +111,11 @@ export async function transmettreOriginesV3(args: {
     const c = chargeCrmV3(args.origines);
     if (!personKey || !c.ok) return "ignoree";
     // ⚠️ Type d'événement à confirmer avec la session du CRM (voir la description de la PR).
+    //
+    // 🔴 CAST DOCUMENTÉ : `CrmSyncEvent.schema_version` est typé sur `CRM_SYNC_SCHEMA_VERSION` (1),
+    // alors que le CRM accepte [1, 2, 3] (ADR §3) et que cette charge porte 3. Élargir ce type
+    // toucherait toute la synchro (miroir exact du CRM) : on assume donc UN cast, ici, et le test
+    // « charge conforme » (fixture JSON partagée) verrouille la forme réellement émise.
     const event = {
       schema_version: VERSION_SCHEMA_CRM_V3,
       event_id: eventIdDeterministe(args.cleIdempotence),

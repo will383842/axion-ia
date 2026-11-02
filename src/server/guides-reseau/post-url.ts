@@ -34,7 +34,10 @@ export function prefixesDepuisEnv(
     const sortie: Record<string, string[]> = {};
     for (const [k, l] of Object.entries(v)) {
       if (Array.isArray(l)) {
-        sortie[k] = l.filter((p): p is string => typeof p === "string" && p.startsWith("/"));
+        // Le `/` final est IMPOSÉ : `/page-test` laisserait passer `/page-testpseudo/…`.
+        sortie[k] = l.filter(
+          (p): p is string => typeof p === "string" && p.startsWith("/") && p.endsWith("/"),
+        );
       }
     }
     return sortie;

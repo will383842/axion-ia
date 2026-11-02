@@ -109,9 +109,48 @@ describe("origines", () => {
     expect(r.creee).toBe(false);
     expect(bd.lignes).toHaveLength(1);
   });
+  it("reprise : exception après écriture puis même clé à une autre seconde = une seule origine", async () => {
+    const d = demandeV3();
+    await enregistrerOrigine("k1", construireOrigine(d, t(0)));
+    // L'appelant plante APRÈS l'écriture (ex. mise en file) ; le Studio rappelle avec la même clé,
+    // et « maintenant » a changé.
+    const r = await enregistrerOrigine("k1", construireOrigine(d, t(7)));
+    expect(r.creee).toBe(false);
+    expect(bd.lignes).toHaveLength(1);
+  });
+  it("reprise au plafond : plafond de 50 inchangé, aucune archive de plus", async () => {
+    for (let i = 0; i < PLAFOND_ORIGINES; i++) {
+      await enregistrerOrigine(
+        "k1",
+        construireOrigine(demandeV3({ cleIdempotence: `run_zernio_${1000 + i}` }), t(i)),
+      );
+    }
+    const d = demandeV3({ cleIdempotence: "run_zernio_9999" });
+    await enregistrerOrigine("k1", construireOrigine(d, t(60)));
+    const apres = bd.lignes.length;
+    await enregistrerOrigine("k1", construireOrigine(d, t(99)));
+    expect(bd.lignes).toHaveLength(apres);
+    expect(bd.lignes.filter((l) => l.archiveeLe === null)).toHaveLength(PLAFOND_ORIGINES);
+    expect(bd.lignes.filter((l) => l.archiveeLe !== null)).toHaveLength(1);
+  });
+  it("deux runs différents sur le même post à la même seconde = deux entrées", async () => {
+    await enregistrerOrigine("k1", construireOrigine(demandeV3(), t(0)));
+    await enregistrerOrigine(
+      "k1",
+      construireOrigine(demandeV3({ cleIdempotence: "run_zernio_0002" }), t(0)),
+    );
+    expect(bd.lignes).toHaveLength(2);
+  });
+  it("la clé d'idempotence n'est pas écrite en colonne (pas de colonne)", async () => {
+    await enregistrerOrigine("k1", construireOrigine(demandeV3(), t(0)));
+    expect(bd.lignes[0]).not.toHaveProperty("cleIdempotence");
+  });
   it("même post à une autre seconde = nouvelle entrée (union)", async () => {
     await enregistrerOrigine("k1", construireOrigine(demandeV3(), t(0)));
-    await enregistrerOrigine("k1", construireOrigine(demandeV3(), t(1)));
+    await enregistrerOrigine(
+      "k1",
+      construireOrigine(demandeV3({ cleIdempotence: "run_zernio_0002" }), t(1)),
+    );
     expect(bd.lignes).toHaveLength(2);
   });
   it("null traité comme une valeur (origine sans post_ref)", () => {
@@ -121,7 +160,10 @@ describe("origines", () => {
   });
   it("51e entrée : la plus ancienne est ARCHIVÉE, rien n'est supprimé, sous verrou", async () => {
     for (let i = 0; i < PLAFOND_ORIGINES + 1; i++) {
-      await enregistrerOrigine("k1", construireOrigine(demandeV3(), t(i)));
+      await enregistrerOrigine(
+        "k1",
+        construireOrigine(demandeV3({ cleIdempotence: `run_zernio_${2000 + i}` }), t(i)),
+      );
     }
     expect(bd.lignes).toHaveLength(PLAFOND_ORIGINES + 1);
     const actives = bd.lignes.filter((l) => l.archiveeLe === null);

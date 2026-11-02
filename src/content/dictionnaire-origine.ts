@@ -30,7 +30,7 @@ export function empreinteDictionnaire(d: unknown): string {
 
 /** Empreinte du fichier v1. À recalculer UNIQUEMENT avec une nouvelle version du dictionnaire. */
 export const EMPREINTE_DICTIONNAIRE =
-  "6506778823a22a8bbc26f6478267188d2308e470f8c0c267717687cad155d2fa";
+  "10a65d4d683fbd6fd5d65701c964bd468211352af8dcd5da0a1d8817e75f54af";
 
 export const FAMILLES_ORIGINE = Object.keys(dictionnaire.familles) as readonly string[];
 

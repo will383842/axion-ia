@@ -34,7 +34,8 @@ import {
 import { checkRateLimit } from "@/lib/rate-limit";
 import { occurredAtValide, type DemandeGuideReseau } from "./contrat";
 import { LIMITE_JOUR_PAR_PERSONNE, LIMITE_JOUR_PAR_POST } from "./config";
-import { construireOrigine, enregistrerOrigine } from "./origines";
+import * as Sentry from "@sentry/nextjs";
+import { CleHmacManquanteError, construireOrigine, enregistrerOrigine } from "./origines";
 import { transmettreOriginesV3 } from "./synchro-v3";
 
 /**
@@ -187,6 +188,7 @@ async function sousLesLimites(
   maintenant: Date,
 ): Promise<boolean> {
   const jour = maintenant.toISOString().slice(0, 10);
+  // Toutes versions signées (v1 comprise) : le débit par personne ne dépend pas du schéma.
   const parPersonne = await checkRateLimit(`guides-reseau:pers:${emailKey}:${jour}`, {
     limit: LIMITE_JOUR_PAR_PERSONNE,
     windowSec: 86_400,
@@ -201,7 +203,11 @@ async function sousLesLimites(
 }
 
 /** Historique d'origine (v3). Ne casse jamais la demande : le guide reste dû à la personne. */
-async function noterOrigineV3(d: DemandeGuideReseau, emailKey: string, quand: Date): Promise<void> {
+export async function noterOrigineV3(
+  d: DemandeGuideReseau,
+  emailKey: string,
+  quand: Date,
+): Promise<void> {
   try {
     const origine = construireOrigine(d, quand);
     await enregistrerOrigine(emailKey, origine);
@@ -212,10 +218,25 @@ async function noterOrigineV3(d: DemandeGuideReseau, emailKey: string, quand: Da
       quand,
     });
   } catch (e) {
+    // Clé HMAC absente en production : ce n'est pas un aléa, c'est une panne de configuration.
+    // JOURNAL + ALERTE (Sentry, sans donnée de personne) : jamais avalée en silence.
+    const cleManquante = e instanceof CleHmacManquanteError;
     console.error(
-      "[guides-reseau] origine v3 non enregistrée :",
-      e instanceof Error ? e.name : "erreur",
+      JSON.stringify({
+        event: cleManquante ? "guides_reseau_origine_cle_manquante" : "guides_reseau_origine_echec",
+        erreur: e instanceof Error ? e.name : "erreur",
+      }),
     );
+    if (cleManquante) {
+      try {
+        Sentry.captureException(e, {
+          level: "error",
+          tags: { area: "guides-reseau", action: "origine-cle-manquante" },
+        });
+      } catch {
+        /* l'observabilité ne casse jamais la réponse */
+      }
+    }
   }
 }
 
@@ -244,8 +265,8 @@ export async function traiterDemande(
   const emailKey = hashEmailForLookup(d.email);
   if (!emailKey) throw new Error("[guides-reseau] empreinte d'adresse indisponible");
 
-  // v3 (I3) : limites par jour, par personne et par (post_ref, canal). Rien n'est écrit avant.
-  if (d.schemaVersion === 3 && !(await sousLesLimites(d, emailKey, maintenant))) {
+  // I3 : limites par jour, par personne (v1 ET v3) et par (post_ref, canal) (v3). Rien n'est écrit avant.
+  if (!(await sousLesLimites(d, emailKey, maintenant))) {
     return { ok: false, erreur: "trop_de_requetes" };
   }
 

@@ -4,7 +4,8 @@
 // Adresses en `.test` ; aucune vraie URL de publication, aucun vrai jeton.
 import { describe, it, expect } from "vitest";
 import { analyserCorps, SchemaDemandeGuideReseau } from "../contrat";
-import { validerPostUrl } from "../post-url";
+import { prefixesDepuisEnv, validerPostUrl } from "../post-url";
+import { CAMPAGNES_UTM_CONNUES, VERSIONS_TEXTE_CONNUES } from "../valeurs-connues";
 import dico from "@/content/dictionnaire-origine.v1.json";
 import { EMPREINTE_DICTIONNAIRE, empreinteDictionnaire } from "@/content/dictionnaire-origine";
 
@@ -27,8 +28,8 @@ const v3 = {
   famille: "guide_reseau",
   detail: "autre_non_classe",
   compte: "page_principale",
-  version_texte: "v-texte-1",
-  utm_campaign: "campagne_test",
+  version_texte: "m1-v1",
+  utm_campaign: "guide_reseau",
   commentaire_ref: "comm_ref_test_01",
 };
 const corps = (o: unknown) => Buffer.from(JSON.stringify(o));
@@ -75,6 +76,16 @@ describe("champs v3", () => {
   it("compte hors liste fermée (un pseudo)", () => refuse({ compte: "@jean_dupont" }));
   it("version_texte invalide", () => refuse({ version_texte: "a b" }));
   it("utm_campaign invalide", () => refuse({ utm_campaign: "Camp Majuscule" }));
+  it("LISTE FERMÉE : un pseudo conforme à l'ancienne regex est refusé", () => {
+    refuse({ utm_campaign: "jean_dupont_75" });
+    refuse({ version_texte: "jean_dupont_75" });
+  });
+  it.each(CAMPAGNES_UTM_CONNUES)("utm_campaign connue acceptée : %s", (utm_campaign) =>
+    expect(analyserCorps(corps({ ...v3, utm_campaign })).ok).toBe(true),
+  );
+  it.each(VERSIONS_TEXTE_CONNUES)("version_texte connue acceptée : %s", (version_texte) =>
+    expect(analyserCorps(corps({ ...v3, version_texte })).ok).toBe(true),
+  );
   it.each(["linkedin_page", "tiktok"])("message_prive refusé sur %s", (reseau) =>
     refuse({ reseau, canal: "message_prive" }),
   );
@@ -103,7 +114,34 @@ describe("post_url (I4)", () => {
     expect(ok(bonne + "?utm=1")).toBe(false);
     expect(ok(bonne + "#c1")).toBe(false);
   });
-  it("IDN refusé", () => expect(ok("https://www.instagram.com/nos-comptes-test/é")).toBe(false));
+  it("IDN refusé (chemin non ASCII)", () =>
+    expect(ok("https://www.instagram.com/nos-comptes-test/é")).toBe(false));
+  it("IDN refusé : hôte IDN réel, en unicode et en punycode (xn--)", () => {
+    const unicode = "https://www.ınstagram.com/nos-comptes-test/p/AbC123/"; // « ı » sans point
+    const punycode = new URL(unicode).hostname; // forme xn-- que `new URL` produit
+    expect(punycode).toContain("xn--");
+    expect(ok(unicode)).toBe(false);
+    expect(ok(`https://${punycode}/nos-comptes-test/p/AbC123/`)).toBe(false);
+  });
+  it("préfixe d'environnement sans `/` final : écarté, `/page-testpseudo/` refusé", () => {
+    const sans = prefixesDepuisEnv({
+      GUIDES_RESEAU_POST_URL_PREFIXES: JSON.stringify({ facebook: ["/page-test"] }),
+    });
+    expect(sans.facebook).toEqual([]);
+    expect(
+      validerPostUrl("https://www.facebook.com/page-testpseudo/p/1", "facebook", sans).ok,
+    ).toBe(false);
+    const avec = prefixesDepuisEnv({
+      GUIDES_RESEAU_POST_URL_PREFIXES: JSON.stringify({ facebook: ["/page-test/"] }),
+    });
+    expect(avec.facebook).toEqual(["/page-test/"]);
+    expect(
+      validerPostUrl("https://www.facebook.com/page-testpseudo/p/1", "facebook", avec).ok,
+    ).toBe(false);
+    expect(validerPostUrl("https://www.facebook.com/page-test/p/1", "facebook", avec).ok).toBe(
+      true,
+    );
+  });
   it("raccourcisseur refusé", () => expect(ok("https://bit.ly/abc")).toBe(false));
   it("chemin de profil refusé (hors préfixe de nos comptes)", () => {
     expect(ok("https://www.instagram.com/un_pseudo/")).toBe(false);
@@ -138,6 +176,9 @@ describe("dictionnaire (§4)", () => {
   it("aucun nom, montant ni pseudo (pas de @, pas de chiffre monétaire)", () => {
     const t = JSON.stringify(dico);
     expect(t).not.toMatch(/@|€|\beuros?\b/i);
+  });
+  it("libellé de la famille tour_france_ia : « Tour France IA »", () => {
+    expect(dico.familles.tour_france_ia.libelle).toBe("Tour France IA");
   });
   it("empreinte SHA-256 du JSON canonique = constante", () => {
     expect(empreinteDictionnaire(dico)).toBe(EMPREINTE_DICTIONNAIRE);

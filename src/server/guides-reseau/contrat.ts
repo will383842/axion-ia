@@ -6,6 +6,7 @@ import { z } from "zod";
 import { GUIDES_RESEAU_CONNUS, RESEAUX_GUIDE } from "@/content/guides-reseau";
 import { detailsDeLaFamille, FAMILLES_ORIGINE } from "@/content/dictionnaire-origine";
 import { validerPostUrl } from "./post-url";
+import { CAMPAGNES_UTM_CONNUES, VERSIONS_TEXTE_CONNUES } from "./valeurs-connues";
 
 const VERSION = /^[A-Za-z0-9._-]{3,64}$/;
 
@@ -84,14 +85,10 @@ export const SchemaDemandeGuideReseauV3 = ObjetDemandeV1.extend({
     .regex(/^[a-z0-9_]{2,60}$/)
     .optional(),
   compte: z.enum(COMPTES_PUBLICATION).optional(),
-  version_texte: z
-    .string()
-    .regex(/^[A-Za-z0-9._-]{3,64}$/)
-    .optional(),
-  utm_campaign: z
-    .string()
-    .regex(/^[a-z0-9_-]{2,60}$/)
-    .optional(),
+  /** LISTE FERMÉE (`valeurs-connues.ts`) : jamais une simple regex, un pseudo y passerait. */
+  version_texte: z.enum(VERSIONS_TEXTE_CONNUES).optional(),
+  /** LISTE FERMÉE (`valeurs-connues.ts`). */
+  utm_campaign: z.enum(CAMPAGNES_UTM_CONNUES).optional(),
   /** Jeton opaque du commentaire. Stocké en HMAC avec clé serveur, jamais brut (I6). */
   commentaire_ref: z
     .string()

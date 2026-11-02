@@ -1,7 +1,7 @@
 /**
  * HISTORIQUE `origines` d'une personne (ADR contrat v3, §2 et I4/I6).
  *
- * Union SANS RETRAIT, dédoublonnée sur (post_ref, canal, date à la seconde) — `null` traité
+ * Union SANS RETRAIT, dédoublonnée sur (post_ref, canal, clé d'idempotence du run) — `null` traité
  * comme une valeur (M2). Plafond : 50 entrées ACTIVES par personne ; au-delà, la plus ancienne
  * est ARCHIVÉE (`archivee_le` posée, lecture seule). AUCUNE ligne n'est supprimée. L'écriture et
  * l'archivage se font dans UNE transaction, sous verrou consultatif propre à la personne.
@@ -21,12 +21,23 @@ export const SEUIL_ALERTE_ARCHIVE = 200;
 const DOMAINE_COMMENTAIRE = "guides-reseau-commentaire-ref-v1";
 const CLE_DEV = "axion-ia-dev-only-do-not-use-in-prod";
 
-/** HMAC du jeton de commentaire. Clé dérivée de `PII_ENCRYPTION_KEY` par séparation de domaine. */
+/** Clé HMAC absente en production : erreur typée, que l'appelant doit signaler (jamais avalée). */
+export class CleHmacManquanteError extends Error {
+  constructor() {
+    super("PII_ENCRYPTION_KEY manquant en production (origine des guides réseau).");
+    this.name = "CleHmacManquanteError";
+  }
+}
+
+/**
+ * HMAC du jeton de commentaire. La clé est `PII_ENCRYPTION_KEY` TELLE QUELLE (aucune dérivation) ;
+ * la séparation de domaine est portée par le MESSAGE signé (préfixe `DOMAINE_COMMENTAIRE`).
+ */
 export function hmacCommentaireRef(ref: string): string {
   const configuree = process.env.PII_ENCRYPTION_KEY?.trim();
   const cle = configuree && configuree.length > 0 ? configuree : CLE_DEV;
   if (cle === CLE_DEV && process.env.NODE_ENV === "production") {
-    throw new Error("PII_ENCRYPTION_KEY manquant en production (origine des guides réseau).");
+    throw new CleHmacManquanteError();
   }
   return createHmac("sha256", cle).update(`${DOMAINE_COMMENTAIRE}:${ref}`).digest("hex");
 }
@@ -46,6 +57,11 @@ export interface OrigineAEcrire {
   readonly commentaireRefHmac: string | null;
   /** Date de l'origine, tronquée à la seconde. */
   readonly occurredAt: Date;
+  /**
+   * Clé d'idempotence du run (non stockée : elle ne sert qu'à la clé de dédoublonnage). Une reprise
+   * du même run, même à une autre seconde, retombe sur la même ligne.
+   */
+  readonly cleIdempotence: string;
 }
 
 export function construireOrigine(d: DemandeGuideReseau, quand: Date): OrigineAEcrire {
@@ -64,15 +80,20 @@ export function construireOrigine(d: DemandeGuideReseau, quand: Date): OrigineAE
     utmCampagne: v3?.utm_campaign ?? null,
     commentaireRefHmac: v3?.commentaire_ref ? hmacCommentaireRef(v3.commentaire_ref) : null,
     occurredAt: new Date(Math.floor(quand.getTime() / 1000) * 1000),
+    cleIdempotence: d.cleIdempotence,
   };
 }
 
-/** Clé de dédoublonnage : (mot, réseau, guide, post_ref, canal, date à la seconde). */
+/**
+ * Clé de dédoublonnage : (mot, réseau, guide, post_ref, canal, cleIdempotence).
+ * La DATE n'en fait plus partie : sans `occurredAt` dans la charge, « maintenant » change à
+ * chaque appel, donc une reprise (exception après écriture, puis nouvel appel de la même clé)
+ * dupliquait l'origine. La clé d'idempotence du run identifie la demande ; deux runs distincts
+ * du même post à la même seconde restent deux entrées. La date reste une colonne (tri, plafond).
+ */
 export function cleDedoublonnage(o: OrigineAEcrire): string {
   return createHash("sha256")
-    .update(
-      JSON.stringify([o.mot, o.reseau, o.guide, o.postRef, o.canal, o.occurredAt.toISOString()]),
-    )
+    .update(JSON.stringify([o.mot, o.reseau, o.guide, o.postRef, o.canal, o.cleIdempotence]))
     .digest("hex");
 }
 
@@ -83,8 +104,9 @@ export async function enregistrerOrigine(
   const resultat = await prisma.$transaction(async (tx) => {
     // Verrou consultatif de la personne : deux demandes simultanées ne dépassent jamais le plafond.
     await tx.$executeRaw`SELECT pg_advisory_xact_lock(hashtext(${"origines:" + emailKey}))`;
+    const { cleIdempotence: _cle, ...colonnes } = o;
     const { count } = await tx.guideReseauOrigine.createMany({
-      data: { emailKey, cleDedoublonnage: cleDedoublonnage(o), ...o },
+      data: { emailKey, cleDedoublonnage: cleDedoublonnage(o), ...colonnes },
       skipDuplicates: true,
     });
     const actives = await tx.guideReseauOrigine.findMany({
