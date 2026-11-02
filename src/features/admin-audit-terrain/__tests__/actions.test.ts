@@ -6,7 +6,9 @@ const authMock = vi.fn();
 vi.mock("@/auth", () => ({ auth: () => authMock() }));
 vi.mock("next/headers", () => ({ headers: async () => new Headers() }));
 const journalMock = vi.fn();
-vi.mock("@/server/content-gen/shared/activity-log-writer", () => ({ ecrireJournalActivite: (...a: unknown[]) => journalMock(...a) }));
+vi.mock("@/server/content-gen/shared/activity-log-writer", () => ({
+  ecrireJournalActivite: (...a: unknown[]) => journalMock(...a),
+}));
 
 const creer = vi.fn();
 const maj = vi.fn();
@@ -32,7 +34,9 @@ const ADMIN = randomUUID();
 const CLIENT = randomUUID();
 
 beforeEach(() => {
-  [authMock, journalMock, creer, maj, trouverSession, trouverClient, trouverMission].forEach((m) => m.mockReset());
+  [authMock, journalMock, creer, maj, trouverSession, trouverClient, trouverMission].forEach((m) =>
+    m.mockReset(),
+  );
   authMock.mockResolvedValue({ user: { id: ADMIN, role: "super_admin" } });
   trouverClient.mockResolvedValue({ id: CLIENT });
 });
@@ -62,9 +66,15 @@ describe("creerJetonAudit", () => {
   });
   it("refuse une entrée invalide, un client inconnu, une durée trop longue", async () => {
     expect(await creerJetonAudit({ clientId: "x" })).toEqual({ ok: false, erreur: "invalide" });
-    expect(await creerJetonAudit({ clientId: CLIENT, joursValidite: 30 })).toEqual({ ok: false, erreur: "invalide" });
+    expect(await creerJetonAudit({ clientId: CLIENT, joursValidite: 30 })).toEqual({
+      ok: false,
+      erreur: "invalide",
+    });
     trouverClient.mockResolvedValue(null);
-    expect(await creerJetonAudit({ clientId: CLIENT })).toEqual({ ok: false, erreur: "introuvable" });
+    expect(await creerJetonAudit({ clientId: CLIENT })).toEqual({
+      ok: false,
+      erreur: "introuvable",
+    });
     expect(creer).not.toHaveBeenCalled();
   });
   it("deux jetons successifs sont différents", async () => {

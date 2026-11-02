@@ -47,9 +47,7 @@ export const corpsLotSchema = z
   })
   .strict();
 
-export const donneesRapportSchema = z
-  .object({ source: z.enum(SOURCES_RAPPORT) })
-  .passthrough();
+export const donneesRapportSchema = z.object({ source: z.enum(SOURCES_RAPPORT) }).passthrough();
 
 export type CorpsLot = z.infer<typeof corpsLotSchema>;
 export type EvenementRecu = CorpsLot["lot"][number];

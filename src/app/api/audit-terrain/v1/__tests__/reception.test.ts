@@ -19,21 +19,44 @@ const p2002 = () => Object.assign(new Error("Unique constraint"), { code: "P2002
 
 const evenementModele = {
   create: async ({ data }: { data: Ligne }) => {
-    if (base.evenements.some((e) => e["sessionId"] === data["sessionId"] && e["eventId"] === data["eventId"])) throw p2002();
+    if (
+      base.evenements.some(
+        (e) => e["sessionId"] === data["sessionId"] && e["eventId"] === data["eventId"],
+      )
+    )
+      throw p2002();
     base.evenements.push({ ...data });
     return data;
   },
-  findUnique: async ({ where }: { where: { sessionId_eventId: { sessionId: string; eventId: string } } }) =>
-    base.evenements.find((e) => e["sessionId"] === where.sessionId_eventId.sessionId && e["eventId"] === where.sessionId_eventId.eventId) ?? null,
-  count: async ({ where }: { where: { sessionId: string } }) => base.evenements.filter((e) => e["sessionId"] === where.sessionId).length,
+  findUnique: async ({
+    where,
+  }: {
+    where: { sessionId_eventId: { sessionId: string; eventId: string } };
+  }) =>
+    base.evenements.find(
+      (e) =>
+        e["sessionId"] === where.sessionId_eventId.sessionId &&
+        e["eventId"] === where.sessionId_eventId.eventId,
+    ) ?? null,
+  count: async ({ where }: { where: { sessionId: string } }) =>
+    base.evenements.filter((e) => e["sessionId"] === where.sessionId).length,
 };
 const rapportModele = {
   aggregate: async ({ where }: { where: { sessionId: string } }) => {
-    const versions = base.rapports.filter((r) => r["sessionId"] === where.sessionId).map((r) => r["version"] as number);
+    const versions = base.rapports
+      .filter((r) => r["sessionId"] === where.sessionId)
+      .map((r) => r["version"] as number);
     return { _max: { version: versions.length ? Math.max(...versions) : null } };
   },
   create: async ({ data }: { data: Ligne }) => {
-    if (base.rapports.some((r) => r["eventId"] === data["eventId"] || (r["sessionId"] === data["sessionId"] && r["version"] === data["version"]))) throw p2002();
+    if (
+      base.rapports.some(
+        (r) =>
+          r["eventId"] === data["eventId"] ||
+          (r["sessionId"] === data["sessionId"] && r["version"] === data["version"]),
+      )
+    )
+      throw p2002();
     base.rapports.push({ ...data });
     return data;
   },
@@ -54,18 +77,25 @@ const prismaFaux = {
       const s = base.sessions.find((x) => x["id"] === id)!;
       const garde = texte.includes("GREATEST(dernier_seq");
       s["dernierSeq"] = garde ? Math.max(s["dernierSeq"] as number, seq) : seq;
-      s["derniereEtapeIndex"] = texte.includes("GREATEST(derniere_etape_index") ? Math.max(s["derniereEtapeIndex"] as number, etape) : etape;
+      s["derniereEtapeIndex"] = texte.includes("GREATEST(derniere_etape_index")
+        ? Math.max(s["derniereEtapeIndex"] as number, etape)
+        : etape;
       return [{ dernier_seq: s["dernierSeq"] }];
     }
     if (texte.includes("MAX(seq)")) {
-      const l = base.evenements.filter((e) => e["sessionId"] === v[0]).map((e) => e["seq"] as number);
+      const l = base.evenements
+        .filter((e) => e["sessionId"] === v[0])
+        .map((e) => e["seq"] as number);
       return [{ dernier: l.length ? Math.max(...l) : 0, nombre: l.length }];
     }
     if (texte.includes("generate_series")) {
       const [dernier, sid, limite] = v as [number, string, number];
-      const vus = new Set(base.evenements.filter((e) => e["sessionId"] === sid).map((e) => e["seq"] as number));
+      const vus = new Set(
+        base.evenements.filter((e) => e["sessionId"] === sid).map((e) => e["seq"] as number),
+      );
       const trous: { seq: number }[] = [];
-      for (let g = 1; g <= dernier && trous.length < limite; g++) if (!vus.has(g)) trous.push({ seq: g });
+      for (let g = 1; g <= dernier && trous.length < limite; g++)
+        if (!vus.has(g)) trous.push({ seq: g });
       return trous;
     }
     throw new Error("requête SQL inattendue");
@@ -81,12 +111,20 @@ const prismaFaux = {
     }
   },
 };
-vi.mock("@/lib/prisma", () => ({ get prisma() { return prismaFaux; } }));
+vi.mock("@/lib/prisma", () => ({
+  get prisma() {
+    return prismaFaux;
+  },
+}));
 
 const checkRateLimitMock = vi.fn();
-vi.mock("@/lib/rate-limit", () => ({ checkRateLimit: (...a: unknown[]) => checkRateLimitMock(...a) }));
+vi.mock("@/lib/rate-limit", () => ({
+  checkRateLimit: (...a: unknown[]) => checkRateLimitMock(...a),
+}));
 const journalMock = vi.fn();
-vi.mock("@/server/content-gen/shared/activity-log-writer", () => ({ ecrireJournalActivite: (...a: unknown[]) => journalMock(...a) }));
+vi.mock("@/server/content-gen/shared/activity-log-writer", () => ({
+  ecrireJournalActivite: (...a: unknown[]) => journalMock(...a),
+}));
 const sentryMock = vi.fn();
 vi.mock("@sentry/nextjs", () => ({ captureException: (...a: unknown[]) => sentryMock(...a) }));
 
@@ -105,34 +143,84 @@ const dans = (ms: number) => new Date(Date.now() + ms);
 
 function ajouterSession(id: string, secret: string, o: Ligne = {}) {
   base.sessions.push({
-    id, clientId: randomUUID(), statut: "ouverte", jetonEmpreinte: empreinteJeton(secret),
-    jetonExpireLe: dans(86_400_000), jetonRevoqueLe: null, dernierSeq: 0, derniereEtapeIndex: 0, ...o,
+    id,
+    clientId: randomUUID(),
+    statut: "ouverte",
+    jetonEmpreinte: empreinteJeton(secret),
+    jetonExpireLe: dans(86_400_000),
+    jetonRevoqueLe: null,
+    dernierSeq: 0,
+    derniereEtapeIndex: 0,
+    ...o,
   });
 }
 function evenement(seq: number, o: Ligne = {}) {
   const donnees = (o["donnees"] as Ligne | undefined) ?? { pid: "p1", note: "n" + seq };
   return {
-    eventId: randomUUID(), seq, type: "etape_validee", etape: "A" + seq, etapeIndex: seq % 8, etapesTotal: 7,
-    heurePC: new Date().toISOString(), donnees, empreinte: sha(JSON.stringify(donnees)), ...o,
+    eventId: randomUUID(),
+    seq,
+    type: "etape_validee",
+    etape: "A" + seq,
+    etapeIndex: seq % 8,
+    etapesTotal: 7,
+    heurePC: new Date().toISOString(),
+    donnees,
+    empreinte: sha(JSON.stringify(donnees)),
+    ...o,
   };
 }
 function lot(evs: Ligne[], o: Ligne = {}) {
-  return { schema: "audit-terrain.evenements/1", sessionId: SID, outilVersion: "p1-0.1", mode: "reel", lot: evs, ...o };
+  return {
+    schema: "audit-terrain.evenements/1",
+    sessionId: SID,
+    outilVersion: "p1-0.1",
+    mode: "reel",
+    lot: evs,
+    ...o,
+  };
 }
 function post(corps: unknown, jeton: string | null = JETON, h: Record<string, string> = {}) {
   const texte = typeof corps === "string" ? corps : JSON.stringify(corps);
-  return POST(new Request("http://x/api/audit-terrain/v1/evenements", {
-    method: "POST", body: texte,
-    headers: { "content-type": "application/json", "content-length": String(Buffer.byteLength(texte)), "x-real-ip": "203.0.113.5", ...(jeton ? { authorization: "Bearer " + jeton } : {}), ...h },
-  }) as never);
+  return POST(
+    new Request("http://x/api/audit-terrain/v1/evenements", {
+      method: "POST",
+      body: texte,
+      headers: {
+        "content-type": "application/json",
+        "content-length": String(Buffer.byteLength(texte)),
+        "x-real-ip": "203.0.113.5",
+        ...(jeton ? { authorization: "Bearer " + jeton } : {}),
+        ...h,
+      },
+    }) as never,
+  );
 }
 const etat = (jeton: string | null = JETON, q = "") =>
-  GET(new Request("http://x/api/audit-terrain/v1/etat" + q, { headers: { "x-real-ip": "203.0.113.5", ...(jeton ? { authorization: "Bearer " + jeton } : {}) } }) as never);
+  GET(
+    new Request("http://x/api/audit-terrain/v1/etat" + q, {
+      headers: {
+        "x-real-ip": "203.0.113.5",
+        ...(jeton ? { authorization: "Bearer " + jeton } : {}),
+      },
+    }) as never,
+  );
 
 beforeEach(() => {
-  base.sessions = []; base.evenements = []; base.rapports = []; requetesSql.length = 0;
-  checkRateLimitMock.mockReset().mockResolvedValue({ allowed: true, count: 1, remaining: 59, resetAt: Date.now() + 60000, panne: false });
-  journalMock.mockReset(); sentryMock.mockReset();
+  base.sessions = [];
+  base.evenements = [];
+  base.rapports = [];
+  requetesSql.length = 0;
+  checkRateLimitMock
+    .mockReset()
+    .mockResolvedValue({
+      allowed: true,
+      count: 1,
+      remaining: 59,
+      resetAt: Date.now() + 60000,
+      panne: false,
+    });
+  journalMock.mockReset();
+  sentryMock.mockReset();
   ajouterSession(SID, SECRET);
   ajouterSession(SID_AUTRE, SECRET_AUTRE);
 });
@@ -143,7 +231,13 @@ describe("réception : cas nominal et ordre", () => {
     const r = await post(lot([e1]));
     expect(r.status).toBe(200);
     const j = await r.json();
-    expect(j).toMatchObject({ acceptes: [e1.eventId], dejaRecus: [], conflits: [], dernierSeqRecu: 1, trous: [] });
+    expect(j).toMatchObject({
+      acceptes: [e1.eventId],
+      dejaRecus: [],
+      conflits: [],
+      dernierSeqRecu: 1,
+      trous: [],
+    });
     const ligne = base.evenements[0]!;
     expect(String(ligne["donneesChiffrees"])).toMatch(/^enc:v1:/);
     expect(JSON.stringify(ligne)).not.toContain("TEXTE-SENSIBLE");
@@ -211,7 +305,10 @@ describe("dernierSeq ne recule jamais (UPDATE avec GREATEST)", () => {
 
 describe("rapport_brouillon", () => {
   it("crée une version chiffrée, une seule fois même en cas de rejeu", async () => {
-    const e = evenement(5, { type: "rapport_brouillon", donnees: { pid: "x", source: "gabarit", contenu: "RAPPORT-CLAIR" } });
+    const e = evenement(5, {
+      type: "rapport_brouillon",
+      donnees: { pid: "x", source: "gabarit", contenu: "RAPPORT-CLAIR" },
+    });
     await post(lot([e]));
     await post(lot([e]));
     expect(base.rapports).toHaveLength(1);
@@ -230,7 +327,10 @@ describe("rapport_brouillon", () => {
     expect(base.rapports).toHaveLength(0);
   });
   it("même eventId de rapport dans une autre session : conflit propre, rien d'écrit (event_id unique pour toute la table)", async () => {
-    const e = evenement(5, { type: "rapport_brouillon", donnees: { source: "gabarit", contenu: "x" } });
+    const e = evenement(5, {
+      type: "rapport_brouillon",
+      donnees: { source: "gabarit", contenu: "x" },
+    });
     await post(lot([e]));
     const r = await post(lot([e], { sessionId: SID_AUTRE }), `axa_${SID_AUTRE}_${SECRET_AUTRE}`);
     expect(r.status).toBe(200);
@@ -261,7 +361,8 @@ describe("jeton", () => {
     await refus(await post(lot([evenement(1)], { sessionId: SID_AUTRE })));
   });
   it("révoqué : 401", async () => {
-    base.sessions[0]!["jetonRevoqueLe"] = new Date(); base.sessions[0]!["statut"] = "revoquee";
+    base.sessions[0]!["jetonRevoqueLe"] = new Date();
+    base.sessions[0]!["statut"] = "revoquee";
     await refus(await post(lot([evenement(1)])));
   });
   it("révoqué par la date seule (statut resté ouverte) : 401 grâce au contrôle de révocation", async () => {
@@ -321,20 +422,28 @@ describe("validation et limites", () => {
     const accents = evenement(1, { donnees: { pid: "p", t: "\u00e9".repeat(40_000) } }); // 80 000 octets, 40 000 caractères
     const emoji = evenement(2, { donnees: { pid: "p", t: "\u{1F600}".repeat(20_000) } }); // 80 000 octets, 40 000 unités
     const j = await (await post(lot([accents, emoji]))).json();
-    expect(j.rejetes.map((r: { eventId: string }) => r.eventId)).toEqual([accents.eventId, emoji.eventId]);
+    expect(j.rejetes.map((r: { eventId: string }) => r.eventId)).toEqual([
+      accents.eventId,
+      emoji.eventId,
+    ]);
     expect(j.acceptes).toEqual([]);
   });
   it("plafond de 5 000 événements par session : 409 sans détail", async () => {
-    for (let i = 0; i < 5000; i++) base.evenements.push({ sessionId: SID, eventId: randomUUID(), seq: i + 1 });
+    for (let i = 0; i < 5000; i++)
+      base.evenements.push({ sessionId: SID, eventId: randomUUID(), seq: i + 1 });
     const r = await post(lot([evenement(5001)]));
     expect(r.status).toBe(409);
     expect(await r.json()).toEqual({ erreur: "limite_session" });
   });
   it("sans IP exploitable : refus explicite 403", async () => {
     const texte = JSON.stringify(lot([evenement(1)]));
-    const r = await POST(new Request("http://x/api/audit-terrain/v1/evenements", {
-      method: "POST", body: texte, headers: { authorization: "Bearer " + JETON },
-    }) as never);
+    const r = await POST(
+      new Request("http://x/api/audit-terrain/v1/evenements", {
+        method: "POST",
+        body: texte,
+        headers: { authorization: "Bearer " + JETON },
+      }) as never,
+    );
     expect(r.status).toBe(403);
     expect(base.evenements).toHaveLength(0);
   });
@@ -344,9 +453,13 @@ describe("validation et limites", () => {
   });
   it("corps de plus de 512 Ko réel, sans Content-Length : 413", async () => {
     const gros = JSON.stringify(lot([evenement(1)])) + " ".repeat(513 * 1024);
-    const r = await POST(new Request("http://x/api/audit-terrain/v1/evenements", {
-      method: "POST", body: gros, headers: { authorization: "Bearer " + JETON, "x-real-ip": "203.0.113.5" },
-    }) as never);
+    const r = await POST(
+      new Request("http://x/api/audit-terrain/v1/evenements", {
+        method: "POST",
+        body: gros,
+        headers: { authorization: "Bearer " + JETON, "x-real-ip": "203.0.113.5" },
+      }) as never,
+    );
     expect(r.status).toBe(413);
   });
   it("JSON invalide : 422", async () => {
@@ -356,14 +469,26 @@ describe("validation et limites", () => {
 
 describe("limitation de débit", () => {
   it("429 avec Retry-After quand la limite est atteinte", async () => {
-    checkRateLimitMock.mockResolvedValue({ allowed: false, count: 61, remaining: 0, resetAt: Date.now() + 30000, panne: false });
+    checkRateLimitMock.mockResolvedValue({
+      allowed: false,
+      count: 61,
+      remaining: 0,
+      resetAt: Date.now() + 30000,
+      panne: false,
+    });
     const r = await post(lot([evenement(1)]));
     expect(r.status).toBe(429);
     expect(Number(r.headers.get("retry-after"))).toBeGreaterThan(0);
     expect(base.evenements).toHaveLength(0);
   });
   it("Redis en panne : on refuse (503), le PC réessaiera", async () => {
-    checkRateLimitMock.mockResolvedValue({ allowed: false, count: 0, remaining: 0, resetAt: Date.now() + 60000, panne: true });
+    checkRateLimitMock.mockResolvedValue({
+      allowed: false,
+      count: 0,
+      remaining: 0,
+      resetAt: Date.now() + 60000,
+      panne: true,
+    });
     const r = await post(lot([evenement(1)]));
     expect(r.status).toBe(503);
     expect(r.headers.get("retry-after")).toBeTruthy();
@@ -386,7 +511,13 @@ describe("journal et fuites", () => {
     checkRateLimitMock.mockImplementation(async (cle: string) => {
       const premier = !vus.has(cle);
       vus.add(cle);
-      return { allowed: cle.startsWith("audit-terrain:refus:") ? premier : true, count: 1, remaining: 1, resetAt: Date.now() + 60000, panne: false };
+      return {
+        allowed: cle.startsWith("audit-terrain:refus:") ? premier : true,
+        count: 1,
+        remaining: 1,
+        resetAt: Date.now() + 60000,
+        panne: false,
+      };
     });
     for (let i = 0; i < 3; i++) await post(lot([evenement(1)]), `axa_${SID}_${"Z".repeat(43)}`);
     expect(journalMock).toHaveBeenCalledTimes(1);
@@ -399,7 +530,9 @@ describe("journal et fuites", () => {
     expect(tout).not.toContain(SECRET);
   });
   it("une erreur interne renvoie 500 sans détail et n'envoie à Sentry ni corps ni jeton", async () => {
-    const c = vi.spyOn(prismaFaux.auditTerrainEvenement, "create").mockRejectedValue(new Error("boom TEXTE-SENSIBLE " + SECRET));
+    const c = vi
+      .spyOn(prismaFaux.auditTerrainEvenement, "create")
+      .mockRejectedValue(new Error("boom TEXTE-SENSIBLE " + SECRET));
     const r = await post(lot([evenement(1)]));
     c.mockRestore();
     expect(r.status).toBe(500);

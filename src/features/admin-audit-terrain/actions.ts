@@ -30,7 +30,12 @@ const creerSchema = z
   .object({
     clientId: z.string().uuid(),
     auditMissionId: z.string().uuid().optional(),
-    joursValidite: z.number().int().min(1).max(JETON_DUREE_MAX_JOURS).default(JETON_DUREE_DEFAUT_JOURS),
+    joursValidite: z
+      .number()
+      .int()
+      .min(1)
+      .max(JETON_DUREE_MAX_JOURS)
+      .default(JETON_DUREE_DEFAUT_JOURS),
   })
   .strict();
 
@@ -59,7 +64,10 @@ export async function creerJetonAudit(entree: unknown): Promise<ResultatJeton> {
   const client = await prisma.client.findUnique({ where: { id: clientId }, select: { id: true } });
   if (!client) return { ok: false, erreur: "introuvable" };
   if (auditMissionId) {
-    const mission = await prisma.auditMission.findFirst({ where: { id: auditMissionId, clientId }, select: { id: true } });
+    const mission = await prisma.auditMission.findFirst({
+      where: { id: auditMissionId, clientId },
+      select: { id: true },
+    });
     if (!mission) return { ok: false, erreur: "introuvable" };
   }
 
@@ -83,19 +91,35 @@ export async function creerJetonAudit(entree: unknown): Promise<ResultatJeton> {
       action: "audit-terrain.jeton.cree",
       targetType: "audit_terrain_session",
       targetId: id,
-      changes: { clientId, auditMissionId: auditMissionId ?? null, expireLe: expireLe.toISOString() },
+      changes: {
+        clientId,
+        auditMissionId: auditMissionId ?? null,
+        expireLe: expireLe.toISOString(),
+      },
     },
   );
-  return { ok: true, jeton: composerJeton(id, secret), sessionId: id, expireLe: expireLe.toISOString() };
+  return {
+    ok: true,
+    jeton: composerJeton(id, secret),
+    sessionId: id,
+    expireLe: expireLe.toISOString(),
+  };
 }
 
-export async function revoquerJetonAudit(sessionId: unknown): Promise<{ ok: true; revoque: true } | { ok: false; erreur: "interdit" | "invalide" | "introuvable" }> {
+export async function revoquerJetonAudit(
+  sessionId: unknown,
+): Promise<
+  { ok: true; revoque: true } | { ok: false; erreur: "interdit" | "invalide" | "introuvable" }
+> {
   const adminId = await exigerSuperAdmin();
   if (!adminId) return { ok: false, erreur: "interdit" };
   const p = z.string().uuid().safeParse(sessionId);
   if (!p.success) return { ok: false, erreur: "invalide" };
 
-  const ligne = await prisma.auditTerrainSession.findUnique({ where: { id: p.data }, select: { id: true, jetonRevoqueLe: true } });
+  const ligne = await prisma.auditTerrainSession.findUnique({
+    where: { id: p.data },
+    select: { id: true, jetonRevoqueLe: true },
+  });
   if (!ligne) return { ok: false, erreur: "introuvable" };
   if (ligne.jetonRevoqueLe === null) {
     await prisma.auditTerrainSession.update({
@@ -104,7 +128,12 @@ export async function revoquerJetonAudit(sessionId: unknown): Promise<{ ok: true
     });
     await ecrireJournalActivite(
       { adminUserId: adminId, ipAddress: await ipHachee(), userAgent: null },
-      { action: "audit-terrain.jeton.revoque", targetType: "audit_terrain_session", targetId: ligne.id, changes: {} },
+      {
+        action: "audit-terrain.jeton.revoque",
+        targetType: "audit_terrain_session",
+        targetId: ligne.id,
+        changes: {},
+      },
     );
   }
   return { ok: true, revoque: true };

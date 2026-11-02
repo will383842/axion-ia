@@ -64,14 +64,17 @@ const sha256 = (t: string) => createHash("sha256").update(t, "utf8").digest("hex
 export function empreinteServeur(shaHex: string): string {
   const hex = process.env["PII_ENCRYPTION_KEY"];
   if (!hex || !/^[0-9a-fA-F]{64}$/.test(hex)) throw new Error("cle_absente");
-  const sousCle = createHmac("sha256", Buffer.from(hex, "hex")).update("audit-terrain/empreinte/v1").digest();
+  const sousCle = createHmac("sha256", Buffer.from(hex, "hex"))
+    .update("audit-terrain/empreinte/v1")
+    .digest();
   return createHmac("sha256", sousCle).update(shaHex.toLowerCase()).digest("hex");
 }
 
 /* ---------- erreurs sans fuite ---------- */
 
 function signaler(err: unknown, etape: string): void {
-  const code = typeof (err as { code?: unknown })?.code === "string" ? (err as { code: string }).code : "";
+  const code =
+    typeof (err as { code?: unknown })?.code === "string" ? (err as { code: string }).code : "";
   const nom = err instanceof Error ? err.name : "inconnue";
   // On n'envoie JAMAIS le message d'origine (il peut citer une valeur, un corps ou un jeton).
   Sentry.captureException(new Error(`audit-terrain ${etape}: ${nom} ${code}`.trim()), {
@@ -87,7 +90,8 @@ async function limiter(cle: string): Promise<Response | null> {
   const r = await checkRateLimit(cle, LIMITE);
   if (r.allowed) return null;
   const attente = Math.max(1, Math.ceil((r.resetAt - Date.now()) / 1000));
-  if (r.panne) return json({ erreur: "indisponible" }, 503, { "Retry-After": String(Math.min(attente, 60)) });
+  if (r.panne)
+    return json({ erreur: "indisponible" }, 503, { "Retry-After": String(Math.min(attente, 60)) });
   return json({ erreur: "limite" }, 429, { "Retry-After": String(attente) });
 }
 
@@ -96,9 +100,13 @@ interface SessionAuth {
   readonly clientId: string;
 }
 
-type Auth = { ok: true; session: SessionAuth; ipHachee: string | null } | { ok: false; reponse: Response };
+type Auth =
+  { ok: true; session: SessionAuth; ipHachee: string | null } | { ok: false; reponse: Response };
 
-async function authentifier(req: Request, controleurs?: { avant?: () => Response | null }): Promise<Auth> {
+async function authentifier(
+  req: Request,
+  controleurs?: { avant?: () => Response | null },
+): Promise<Auth> {
   const ipHachee = hashIp(ipVisiteurOuNull(req.headers));
   // Sans IP exploitable, une limite « par IP » deviendrait commune à tous : on refuse, explicitement.
   if (ipHachee === null) return { ok: false, reponse: json({ erreur: "ip_inconnue" }, 403) };
@@ -110,7 +118,9 @@ async function authentifier(req: Request, controleurs?: { avant?: () => Response
     await journaliserRefus(ipHachee);
     return { ok: false, reponse: non401() };
   }
-  const refusJeton = await limiter(`audit-terrain:jeton:${sha256("rl:" + jeton.empreinte).slice(0, 32)}`);
+  const refusJeton = await limiter(
+    `audit-terrain:jeton:${sha256("rl:" + jeton.empreinte).slice(0, 32)}`,
+  );
   if (refusJeton) return { ok: false, reponse: refusJeton };
 
   const trop = controleurs?.avant?.();
@@ -118,7 +128,14 @@ async function authentifier(req: Request, controleurs?: { avant?: () => Response
 
   const ligne = await prisma.auditTerrainSession.findUnique({
     where: { jetonEmpreinte: jeton.empreinte },
-    select: { id: true, clientId: true, statut: true, jetonEmpreinte: true, jetonExpireLe: true, jetonRevoqueLe: true },
+    select: {
+      id: true,
+      clientId: true,
+      statut: true,
+      jetonEmpreinte: true,
+      jetonExpireLe: true,
+      jetonRevoqueLe: true,
+    },
   });
   const valide =
     ligne !== null &&
@@ -136,14 +153,27 @@ async function authentifier(req: Request, controleurs?: { avant?: () => Response
 
 /** Un 401 n'est journalisé qu'au PREMIER refus de la fenêtre (compteur Redis) : pas d'inondation du journal. */
 async function journaliserRefus(ipHachee: string | null): Promise<void> {
-  const r = await checkRateLimit(`audit-terrain:refus:${ipHachee ?? "inconnue"}`, { limit: 1, windowSec: 600, surPanne: "refuser" });
+  const r = await checkRateLimit(`audit-terrain:refus:${ipHachee ?? "inconnue"}`, {
+    limit: 1,
+    windowSec: 600,
+    surPanne: "refuser",
+  });
   if (r.allowed && !r.panne) await journaliser(null, ipHachee, { statut: 401 });
 }
 
-async function journaliser(sessionId: string | null, ipHachee: string | null, changes: Record<string, number>): Promise<void> {
+async function journaliser(
+  sessionId: string | null,
+  ipHachee: string | null,
+  changes: Record<string, number>,
+): Promise<void> {
   await ecrireJournalActivite(
     { adminUserId: null, ipAddress: ipHachee, userAgent: null },
-    { action: "audit-terrain.reception", targetType: "audit_terrain_session", targetId: sessionId, changes },
+    {
+      action: "audit-terrain.reception",
+      targetType: "audit_terrain_session",
+      targetId: sessionId,
+      changes,
+    },
   );
 }
 
@@ -191,7 +221,10 @@ async function ecrireEvenement(sessionId: string, ev: EvenementRecu): Promise<Is
         const source = donneesRapportSchema.parse(ev.donnees).source;
         await prisma.$transaction(async (tx) => {
           await tx.auditTerrainEvenement.create({ data: donneesEvt });
-          const max = await tx.auditTerrainRapport.aggregate({ where: { sessionId }, _max: { version: true } });
+          const max = await tx.auditTerrainRapport.aggregate({
+            where: { sessionId },
+            _max: { version: true },
+          });
           await tx.auditTerrainRapport.create({
             data: {
               sessionId,
@@ -220,7 +253,9 @@ async function ecrireEvenement(sessionId: string, ev: EvenementRecu): Promise<Is
   return "conflit"; // sans détail : l'événement n'est pas écrit, le PC le voit en conflit
 }
 
-async function etatSession(sessionId: string): Promise<{ dernierSeqRecu: number; nombre: number; trous: number[] }> {
+async function etatSession(
+  sessionId: string,
+): Promise<{ dernierSeqRecu: number; nombre: number; trous: number[] }> {
   // Calculs en SQL : on ne charge jamais les lignes. Les trous sont limités à MAX_TROUS.
   const [stats] = await prisma.$queryRaw<{ dernier: number; nombre: number }[]>`
     SELECT COALESCE(MAX(seq), 0)::int AS dernier, COUNT(*)::int AS nombre
@@ -245,7 +280,9 @@ export async function recevoirEvenements(req: Request): Promise<Response> {
     const auth = await authentifier(req, {
       avant: () => {
         const declare = Number(req.headers.get("content-length"));
-        return Number.isFinite(declare) && declare > MAX_CORPS_OCTETS ? json({ erreur: "trop_gros" }, 413) : null;
+        return Number.isFinite(declare) && declare > MAX_CORPS_OCTETS
+          ? json({ erreur: "trop_gros" }, 413)
+          : null;
       },
     });
     if (!auth.ok) return auth.reponse;
@@ -260,7 +297,11 @@ export async function recevoirEvenements(req: Request): Promise<Response> {
     } catch {
       return non422();
     }
-    if (typeof parse === "object" && parse !== null && (parse as { mode?: unknown }).mode === "test") {
+    if (
+      typeof parse === "object" &&
+      parse !== null &&
+      (parse as { mode?: unknown }).mode === "test"
+    ) {
       await journaliser(session.id, ipHachee, { statut: 403 });
       return json({ erreur: "mode_test_refuse" }, 403);
     }
@@ -338,7 +379,17 @@ export async function recevoirEvenements(req: Request): Promise<Response> {
       conflits: conflits.length,
       rejetes: rejetes.length,
     });
-    return json({ acceptes, dejaRecus, conflits, rejetes, dernierSeqRecu: etat.dernierSeqRecu, trous: etat.trous }, 200);
+    return json(
+      {
+        acceptes,
+        dejaRecus,
+        conflits,
+        rejetes,
+        dernierSeqRecu: etat.dernierSeqRecu,
+        trous: etat.trous,
+      },
+      200,
+    );
   } catch (err) {
     signaler(err, "evenements");
     return json({ erreur: "interne" }, 500);
@@ -352,7 +403,8 @@ export async function lireEtat(req: Request): Promise<Response> {
     const auth = await authentifier(req);
     if (!auth.ok) return auth.reponse;
     const demande = new URL(req.url).searchParams.get("sessionId");
-    if (demande !== null && demande.toLowerCase() !== auth.session.id.toLowerCase()) return non401();
+    if (demande !== null && demande.toLowerCase() !== auth.session.id.toLowerCase())
+      return non401();
     return json(await etatSession(auth.session.id), 200);
   } catch (err) {
     signaler(err, "etat");
