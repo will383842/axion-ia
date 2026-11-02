@@ -4,10 +4,18 @@
  */
 import { z } from "zod";
 import { GUIDES_RESEAU_CONNUS, RESEAUX_GUIDE } from "@/content/guides-reseau";
+import { detailsDeLaFamille, FAMILLES_ORIGINE } from "@/content/dictionnaire-origine";
+import { validerPostUrl } from "./post-url";
 
 const VERSION = /^[A-Za-z0-9._-]{3,64}$/;
 
-export const SchemaDemandeGuideReseau = z
+/** Réseaux sans message privé automatique (PV-5) : `canal = message_prive` y est refusé. */
+export const RESEAUX_SANS_MESSAGE_PRIVE: readonly string[] = ["linkedin_page", "tiktok"];
+
+/** Comptes de publication : clé FERMÉE, jamais un pseudo (ADR §1). */
+export const COMPTES_PUBLICATION = ["page_principale"] as const;
+
+const ObjetDemandeV1 = z
   .object({
     schemaVersion: z.literal(1),
     /** Identifiant du run Zernio : clé d'idempotence. */
@@ -45,13 +53,62 @@ export const SchemaDemandeGuideReseau = z
     /** Moment de la réponse dans la conversation (ISO 8601). */
     occurredAt: z.string().datetime().optional(),
   })
+  .strict();
+
+const exigerM2 = <T extends { accord: string; versionTexteM2?: string | undefined }>(
+  d: T,
+): boolean => d.accord !== "oui" || d.versionTexteM2 !== undefined;
+const MESSAGE_M2 = { message: "versionTexteM2_requise", path: ["versionTexteM2"] };
+
+export const SchemaDemandeGuideReseau = ObjetDemandeV1.refine(exigerM2, MESSAGE_M2);
+
+/**
+ * VERSION 3 (ADR contrat v3 d'origine). Tous les champs ajoutés sont FACULTATIFS ; le schéma
+ * reste `.strict()`. Les noms des champs existants (`cleIdempotence`, `versionTexteM1`…) sont
+ * ceux de la v1 ; les champs NOUVEAUX portent les noms de l'ADR (snake_case).
+ */
+export const SchemaDemandeGuideReseauV3 = ObjetDemandeV1.extend({
+  schemaVersion: z.literal(3),
+  post_ref: z
+    .string()
+    .regex(/^[A-Za-z0-9_-]{8,80}$/)
+    .optional(),
+  post_url: z.string().max(300).optional(),
+  canal: z.enum(["commentaire", "message_prive"]).optional(),
+  famille: z.string().refine((f) => FAMILLES_ORIGINE.includes(f)).optional(),
+  detail: z.string().regex(/^[a-z0-9_]{2,60}$/).optional(),
+  compte: z.enum(COMPTES_PUBLICATION).optional(),
+  version_texte: z
+    .string()
+    .regex(/^[A-Za-z0-9._-]{3,64}$/)
+    .optional(),
+  utm_campaign: z
+    .string()
+    .regex(/^[a-z0-9_-]{2,60}$/)
+    .optional(),
+  /** Jeton opaque du commentaire. Stocké en HMAC avec clé serveur, jamais brut (I6). */
+  commentaire_ref: z
+    .string()
+    .regex(/^[A-Za-z0-9_-]{8,80}$/)
+    .optional(),
+})
   .strict()
-  .refine((d) => d.accord !== "oui" || d.versionTexteM2 !== undefined, {
-    message: "versionTexteM2_requise",
-    path: ["versionTexteM2"],
+  .superRefine((d, ctx) => {
+    const faute = (path: string) => ctx.addIssue({ code: "custom", message: "invalide", path: [path] });
+    if (!exigerM2(d)) faute("versionTexteM2");
+    if ((d.famille === undefined) !== (d.detail === undefined)) {
+      faute(d.famille === undefined ? "famille" : "detail");
+    } else if (d.famille !== undefined && d.detail !== undefined) {
+      if (!detailsDeLaFamille(d.famille).includes(d.detail)) faute("detail");
+    }
+    if (d.canal === "message_prive" && RESEAUX_SANS_MESSAGE_PRIVE.includes(d.reseau)) faute("canal");
+    if (d.post_url !== undefined && !validerPostUrl(d.post_url, d.reseau).ok) faute("post_url");
   });
 
-export type DemandeGuideReseau = z.infer<typeof SchemaDemandeGuideReseau>;
+
+export type DemandeGuideReseauV1 = z.infer<typeof SchemaDemandeGuideReseau>;
+export type DemandeGuideReseauV3 = z.infer<typeof SchemaDemandeGuideReseauV3>;
+export type DemandeGuideReseau = DemandeGuideReseauV1 | DemandeGuideReseauV3;
 
 /** Valeur du champ `type` qui bascule la requête vers le chemin d'effacement (PV-1 bis). */
 export const TYPE_DEMANDE_EFFACEMENT = "demande_effacement";
@@ -84,7 +141,7 @@ export type AnalyseDemande =
   | { readonly ok: true; readonly effacement: DemandeEffacement; readonly demande?: undefined }
   | {
       readonly ok: false;
-      readonly erreur: "json_invalide" | "schema_invalide";
+      readonly erreur: "json_invalide" | "schema_invalide" | "unknown_field";
       readonly champs: string[];
     };
 
@@ -118,6 +175,20 @@ export function analyserCorps(corps: Buffer): AnalyseDemande {
       return { ok: false, erreur: "schema_invalide", champs };
     }
     return { ok: true, effacement: e.data };
+  }
+  const version =
+    typeof brut === "object" && brut !== null
+      ? (brut as Record<string, unknown>)["schemaVersion"]
+      : undefined;
+  if (version === 3) {
+    const r3 = SchemaDemandeGuideReseauV3.safeParse(brut);
+    if (r3.success) return { ok: true, demande: r3.data };
+    // v3 : une clé inconnue est un 422 `unknown_field` (ADR §3). Ni son nom ni sa valeur ne sortent.
+    if (r3.error.issues.some((i) => i.code === "unrecognized_keys")) {
+      return { ok: false, erreur: "unknown_field", champs: [] };
+    }
+    const champs = [...new Set(r3.error.issues.map((i) => String(i.path[0] ?? "corps")))];
+    return { ok: false, erreur: "schema_invalide", champs };
   }
   const r = SchemaDemandeGuideReseau.safeParse(brut);
   if (!r.success) {
