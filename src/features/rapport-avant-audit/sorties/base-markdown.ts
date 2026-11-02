@@ -57,6 +57,13 @@ function euros(n: number | null): string {
   return n === null ? "—" : `${Math.round(n).toLocaleString("fr-FR")} €`;
 }
 
+/** Tri par rang croissant ; une piste sans rang va à la fin (rang ?? Infinity). */
+function parRang(a: number | null, b: number | null): number {
+  const x = a ?? Infinity;
+  const y = b ?? Infinity;
+  return x === y ? 0 : x < y ? -1 : 1;
+}
+
 /** Rendu lisible COMPLET de la base d'audit. */
 export function baseEnMarkdown(base: BaseAudit): string {
   const o: string[] = [];
@@ -135,12 +142,12 @@ export function baseEnMarkdown(base: BaseAudit): string {
   o.push("## 5. Pistes", "");
   const retenues = base.pistes
     .filter((p) => !p.horsDemande)
-    .sort((a, b) => (a.rang ?? 0) - (b.rang ?? 0));
+    .sort((a, b) => parRang(a.rang, b.rang));
   const hors = base.pistes.filter((p) => p.horsDemande);
   if (base.pistes.length === 0) o.push("_Aucune piste._", "");
   for (const p of retenues) {
     o.push(
-      `### ${p.rang}. ${p.id} — ${p.titre}`,
+      `### ${p.rang !== null ? `${p.rang}. ` : "(sans rang) "}${p.id} — ${p.titre}`,
       "",
       p.description,
       "",

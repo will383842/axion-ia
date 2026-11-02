@@ -14,6 +14,17 @@ function citation(t: string): string {
     .join("\n");
 }
 
+/** Le nom lisible : jamais une clé technique (`attendu:`, `emp:`). */
+function nomAffiche(f: FichePersonne): string {
+  if (f.identite.nom?.trim()) return f.identite.nom.trim();
+  if (f.personne.startsWith("attendu:")) {
+    const nom = f.personne.slice("attendu:".length).trim();
+    if (nom) return nom;
+  }
+  if (f.personne.startsWith("emp:")) return "Personne sans nom";
+  return f.personne;
+}
+
 /**
  * @param niveauTitre niveau du titre principal (1 = « # »). Mettre 3 pour l'inclure dans un
  *   document plus large.
@@ -22,7 +33,7 @@ export function ficheEnMarkdown(f: FichePersonne, niveauTitre = 1): string {
   const h = (n: number) => "#".repeat(Math.min(6, niveauTitre + n));
   const o: string[] = [];
   const id = f.identite;
-  o.push(`${h(0)} Fiche d'entretien — ${id.nom ?? f.personne}`, "");
+  o.push(`${h(0)} Fiche d'entretien — ${nomAffiche(f)}`, "");
   o.push(
     `- Fonction : ${id.fonction ?? "non renseignée"}`,
     `- Service : ${id.service ?? "non renseigné"}`,

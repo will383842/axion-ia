@@ -11,8 +11,13 @@ import type { BaseAudit } from "../base-audit-schema";
 import { motsInterditsDans } from "../mots-interdits";
 import { baseEnJson, baseEnMarkdown } from "../sorties/base-markdown";
 import { ficheEnMarkdown } from "../sorties/fiche-personne-markdown";
-import { filtrerPourClient, nomsConnus } from "../sorties/filtre-client";
-import { genererPdfClient, MENTION_IA, RapportClientPdf } from "../sorties/pdf-client";
+import { filtrerPourClient, nomsConnus, SERVICE_NON_PRECISE } from "../sorties/filtre-client";
+import {
+  genererPdfClient,
+  MENTION_IA,
+  RapportClientPdf,
+  retirerMotsInterdits,
+} from "../sorties/pdf-client";
 import { collectPdfTextNormalized } from "@/server/qualiopi/documents/collect-pdf-text";
 
 const Q = (personne: string) =>
@@ -269,9 +274,17 @@ describe("filtre client", () => {
     expect(json).not.toContain("minimise");
     expect(json).not.toContain("Résumé interne");
     expect(json).not.toContain("Votre priorité");
-    expect(json).not.toContain("Pourquoi");
     expect(json).not.toContain("évasive");
     expect(Object.keys(vue)).not.toContain("annexe_reponses");
+  });
+
+  it("la préparation de la venue n'expose que la question et le besoin, jamais le « pourquoi »", () => {
+    expect(vue.preparationVenue).toEqual([
+      {
+        question: "Comment sont chiffrés les devis aujourd'hui ?",
+        besoin: "Les devis prennent trop de temps",
+      },
+    ]);
   });
 
   it("garde les éléments probables, avec le nom retiré", () => {
@@ -280,9 +293,11 @@ describe("filtre client", () => {
     expect(valeurs).toContain("un collaborateur encadre l'atelier");
   });
 
-  it("présente les difficultés par service, sans temps individuel", () => {
+  it("présente les difficultés par service, sans temps individuel ; un service d'une seule personne rejoint « Autres services »", () => {
     const services = vue.difficultesParService.map((d) => d.service);
-    expect(services).toEqual(["Atelier", "Direction"]);
+    expect(services).toEqual([SERVICE_NON_PRECISE]);
+    expect(json).not.toContain('"Atelier"');
+    expect(json).not.toContain('"Direction"');
     expect(json).not.toContain("6 h");
     expect(json).not.toContain("4 h");
   });
@@ -333,7 +348,8 @@ describe("mots interdits et PDF client", () => {
   });
 
   it("rend un vrai PDF, sans mot interdit ni nom dans le texte extrait", async () => {
-    const buffer = await genererPdfClient(base);
+    const { pdf: buffer, retiresPourRelecture } = await genererPdfClient(base);
+    expect(retiresPourRelecture).toEqual([]);
     expect(buffer.byteLength).toBeGreaterThan(2000);
     expect(buffer.subarray(0, 5).toString("latin1")).toBe("%PDF-");
     const { extractText, getDocumentProxy } = await import("unpdf");
@@ -393,5 +409,183 @@ describe("Markdown, JSON et fiche", () => {
     const md = ficheEnMarkdown(base.fiches_personnes[2]!);
     expect(md).toContain("n'a pas répondu");
     expect(md).toContain("Comment suit-il les relances ?");
+  });
+});
+
+/** Variante de l'exemple, modifiée à la main puis revalidée. */
+function variante(modifier: (b: BaseAudit) => void, valider = true): BaseAudit {
+  const b = structuredClone(exemple()) as BaseAudit;
+  modifier(b);
+  return valider ? BaseAuditSchema.parse(b) : b;
+}
+
+describe("filtre client — cas limites de la relecture", () => {
+  it("une citation sans accent nommant une personne accentuée ne sort pas (Solene / Solène)", () => {
+    const base = variante((b) => {
+      (b.besoins_declares[0]!.citations as { texte: string; auteur: string }[]).push({
+        texte: "Solene refait tout",
+        auteur: "Atelier",
+      });
+    });
+    const vue = filtrerPourClient(base);
+    expect(vue.besoins[0]!.motsDesEquipes).not.toContain("Solene refait tout");
+    expect(JSON.stringify(vue)).not.toMatch(/Sol[eè]ne/);
+  });
+
+  it("remplace un nom écrit sans accent dans un texte libre, en gardant le reste intact", () => {
+    const base = variante((b) => {
+      (b.activite_offre.elements as { valeur: string }[])[0]!.valeur =
+        "Fabrication pilotée par Solene Marchaudon, cœur de métier";
+    });
+    const valeurs = filtrerPourClient(base).comprehension.flatMap((s) =>
+      s.elements.map((e) => e.valeur),
+    );
+    expect(valeurs).toContain("Fabrication pilotée par un collaborateur, cœur de métier");
+  });
+
+  it("un prénom qui est aussi un mot courant n'est retiré qu'avec sa majuscule", () => {
+    const base = variante((b) => {
+      (b.fiches_personnes[1]!.identite as { nom: string | null }).nom = "Pierre Lefaure";
+      (b.activite_offre.elements as { valeur: string }[])[0]!.valeur =
+        "Escaliers en pierre de taille, posés par Pierre";
+    });
+    const valeurs = filtrerPourClient(base).comprehension.flatMap((s) =>
+      s.elements.map((e) => e.valeur),
+    );
+    expect(valeurs).toContain("Escaliers en pierre de taille, posés par un collaborateur");
+  });
+
+  it("n'efface pas les mots de la raison sociale ni les particules", () => {
+    const base = variante((b) => {
+      (b.fiches_personnes[1]!.identite as { nom: string | null }).nom = "Martin de Bois";
+      (b.activite_offre.elements as { valeur: string }[])[0]!.valeur =
+        "Les Ateliers Bois-Joli fabriquent des meubles de qualité";
+    });
+    expect(nomsConnus(base)).not.toContain("Bois");
+    expect(nomsConnus(base)).not.toContain("de");
+    const valeurs = filtrerPourClient(base).comprehension.flatMap((s) =>
+      s.elements.map((e) => e.valeur),
+    );
+    expect(valeurs).toContain("Les Ateliers Bois-Joli fabriquent des meubles de qualité");
+  });
+
+  it("garde un service d'au moins deux répondants sous son nom", () => {
+    const base = variante((b) => {
+      (b.fiches_personnes[0]!.identite as { service: string | null }).service = "Atelier";
+    });
+    expect(filtrerPourClient(base).difficultesParService.map((d) => d.service)).toEqual([
+      "Atelier",
+    ]);
+  });
+
+  it("n'expose ni la section organisation ni une question sans besoin ou liée à une contradiction", () => {
+    const base = variante((b) => {
+      (b.organisation_equipe.elements as unknown[]).push({
+        libelle: "Encadrement",
+        valeur: "Un chef d'atelier très présent",
+        provenance: "declare",
+        confiance: "etabli",
+        sources: [Q("Gérante")],
+      });
+      (b.questions_jour_j as unknown[]).push(
+        { question: "Qui fait la paie ?", pourquoi: "Flou" },
+        { question: "Êtes-vous 8 ou 12 salariés ?", pourquoi: "Écart", besoinId: "B1" },
+      );
+    });
+    const vue = filtrerPourClient(base);
+    expect(vue.comprehension.map((s) => s.cle)).not.toContain("organisation_equipe");
+    expect(JSON.stringify(vue)).not.toContain("chef d'atelier");
+    expect(vue.preparationVenue.map((q) => q.question)).toEqual([
+      "Comment sont chiffrés les devis aujourd'hui ?",
+    ]);
+  });
+
+  it("range les pistes retenues sans rang à la fin et renumérote de 1 à n", () => {
+    const base = variante((b) => {
+      const p = b.pistes as { id: string; rang: number | null; horsDemande: boolean }[];
+      p[0]!.rang = 5;
+      p.push({ ...structuredClone(p[0]!), id: "P3", rang: null });
+      p.push({ ...structuredClone(p[0]!), id: "P4", rang: 2 });
+    }, false); // le contrat refuse une piste retenue sans rang : on vérifie la défense du filtre
+    const pistes = filtrerPourClient(base).pistes;
+    expect(pistes.map((p) => [p.id, p.rang])).toEqual([
+      ["P4", 1],
+      ["P1", 2],
+      ["P3", 3],
+    ]);
+  });
+
+  it("retire une piste portant « Qualiopi » et la signale, sans toucher à une simple « certification » du client", async () => {
+    const base = variante((b) => {
+      const p = b.pistes as { id: string; titre: string; description: string }[];
+      p.push({ ...structuredClone(p[0]!), id: "P5", titre: "Préparer Qualiopi" });
+      (b.activite_offre.elements as { valeur: string }[])[0]!.valeur =
+        "Meubles sur mesure, certification ISO 9001 obtenue";
+    });
+    const { vue, retiresPourRelecture } = retirerMotsInterdits(filtrerPourClient(base));
+    expect(vue.pistes.map((p) => p.id)).toEqual(["P1"]);
+    expect(retiresPourRelecture).toHaveLength(1);
+    expect(retiresPourRelecture[0]!.ou).toBe("piste");
+    expect(retiresPourRelecture[0]!.mots).toContain("« Qualiopi »");
+    expect(vue.comprehension.flatMap((s) => s.elements.map((e) => e.valeur))).toContain(
+      "Meubles sur mesure, certification ISO 9001 obtenue",
+    );
+    const genere = await genererPdfClient(base);
+    expect(genere.retiresPourRelecture).toHaveLength(1);
+  }, 30_000);
+
+  it("base vide : vue vide et PDF rendu sans erreur", async () => {
+    const base = variante((b) => {
+      const x = b as unknown as Record<string, unknown>;
+      x.besoins_declares = [];
+      x.pistes = [];
+      x.questions_jour_j = [];
+      x.contradictions = [];
+      x.fiches_personnes = [];
+      x.annexe_reponses = [];
+      x.sources = [];
+      x.evolution_financiere = {
+        exercices: [],
+        tendance: "indeterminee",
+        tauxAnnuelMoyenPct: null,
+        lecture: "",
+        limites: [],
+      };
+      x.activite_offre = { resume: "", elements: [] };
+      (x.couverture as { personnesAttenduesSansReponse: string[] }).personnesAttenduesSansReponse =
+        [];
+    });
+    const vue = filtrerPourClient(base);
+    expect(vue.besoins).toEqual([]);
+    expect(vue.comprehension).toEqual([]);
+    expect(vue.pistes).toEqual([]);
+    expect(vue.difficultesParService).toEqual([]);
+    const t = collectPdfTextNormalized(<RapportClientPdf vue={vue} />);
+    expect(t).toContain("Aucun besoin n'a été exprimé");
+    const { pdf: buffer, retiresPourRelecture } = await genererPdfClient(base);
+    expect(buffer.subarray(0, 5).toString("latin1")).toBe("%PDF-");
+    expect(retiresPourRelecture).toEqual([]);
+  }, 30_000);
+});
+
+describe("Markdown — corrections de la relecture", () => {
+  it("une piste retenue sans rang n'affiche pas « null. » et passe en fin", () => {
+    const base = variante((b) => {
+      const p = b.pistes as { id: string; rang: number | null }[];
+      p.unshift({ ...structuredClone(p[0]!), id: "P9", rang: null });
+    }, false);
+    const md = baseEnMarkdown(base);
+    expect(md).not.toContain("null.");
+    expect(md.indexOf("P1 — ")).toBeLessThan(md.indexOf("P9 — "));
+  });
+
+  it("la fiche n'affiche jamais une clé technique comme nom", () => {
+    const f = exemple().fiches_personnes;
+    const sansNomAttendu = { ...f[2]!, identite: { ...f[2]!.identite, nom: null } };
+    expect(ficheEnMarkdown(sansNomAttendu)).toContain("Fiche d'entretien — Hugo Valmorel");
+    expect(ficheEnMarkdown(sansNomAttendu)).not.toContain("attendu:");
+    const sansNomEmp = { ...f[1]!, identite: { ...f[1]!.identite, nom: null } };
+    expect(ficheEnMarkdown(sansNomEmp)).toContain("Fiche d'entretien — Personne sans nom");
+    expect(ficheEnMarkdown(sansNomEmp)).not.toContain("emp:");
   });
 });

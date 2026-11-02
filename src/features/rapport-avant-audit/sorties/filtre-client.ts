@@ -105,11 +105,14 @@ export interface VueClient {
   readonly sources: readonly SourceClient[];
 }
 
-/** Titres lisibles des sections de compréhension, dans l'ordre du rapport. */
+/**
+ * Titres lisibles des sections de compréhension, dans l'ordre du rapport.
+ * `organisation_equipe` n'en fait PAS partie : elle décrit des personnes (qui fait quoi), pas
+ * l'entreprise.
+ */
 export const TITRES_COMPREHENSION: ReadonlyArray<readonly [BaseAudit_SectionCle, string]> = [
   ["identite", "Qui vous êtes"],
   ["activite_offre", "Votre activité et votre offre"],
-  ["organisation_equipe", "Votre organisation"],
   ["processus", "Vos façons de travailler"],
   ["outils_systeme_information", "Vos outils"],
   ["donnees", "Vos données"],
@@ -137,36 +140,142 @@ function echapper(s: string): string {
   return s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 }
 
+/** Retire les accents en gardant la casse (« Solène » → « Solene »). */
+function sansAccents(s: string): string {
+  return s.normalize("NFD").replace(/\p{M}/gu, "");
+}
+
 function normaliser(s: string): string {
-  return s.normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase();
+  return sansAccents(s).toLowerCase();
 }
 
 /**
- * Les noms de personnes que la base connaît : identité des fiches et clés `attendu:<nom>`.
- * On garde le nom entier ET ses éléments d'au moins trois lettres (prénom, nom de famille).
+ * Version sans accents d'un texte, avec la correspondance des positions : `debut[i]` est la
+ * position, dans le texte d'origine, du caractère d'indice `i` du texte sans accents
+ * (`debut[texte.length]` = longueur d'origine). Sert à remplacer dans l'ORIGINAL ce qu'on a
+ * trouvé dans la version sans accents.
  */
-export function nomsConnus(base: BaseAudit): string[] {
+function versionSansAccents(t: string): { texte: string; debut: number[] } {
+  let texte = "";
+  const debut: number[] = [];
+  let pos = 0;
+  for (const c of t) {
+    const s = sansAccents(c);
+    for (let k = 0; k < s.length; k++) debut.push(pos);
+    texte += s;
+    pos += c.length;
+  }
+  debut.push(t.length);
+  return { texte, debut };
+}
+
+/** Particules de noms : jamais cherchées seules (« de », « van »…). */
+const PARTICULES: ReadonlySet<string> = new Set([
+  "de",
+  "des",
+  "du",
+  "van",
+  "der",
+  "von",
+  "del",
+  "dos",
+  "ben",
+  "mac",
+]);
+
+interface NomsAChercher {
+  /** Noms entiers (plusieurs mots) : cherchés sans tenir compte de la casse ni des accents. */
+  readonly entiers: readonly string[];
+  /**
+   * Morceaux (prénom, nom de famille) : cherchés SENSIBLES à la casse, seulement avec leur
+   * majuscule initiale (ou tout en capitales) — « Pierre » est un nom, « pierre » un mot courant.
+   */
+  readonly morceaux: readonly string[];
+}
+
+function nomsAChercher(base: BaseAudit): NomsAChercher {
   const bruts: string[] = [];
   for (const f of base.fiches_personnes) {
     if (f.identite.nom) bruts.push(f.identite.nom);
     if (f.personne.startsWith("attendu:")) bruts.push(f.personne.slice("attendu:".length));
   }
   for (const nom of base.couverture.personnesAttenduesSansReponse) bruts.push(nom);
-  const jetons = new Set<string>();
+
+  // Les mots de la raison sociale ne sont pas des noms de personne : on ne les cherche pas seuls.
+  const motsSociete = new Set(
+    normaliser(base.meta.raisonSociale)
+      .split(/[^\p{L}\p{N}]+/u)
+      .filter((m) => m.length > 0),
+  );
+  const entiers = new Set<string>();
+  const morceaux = new Set<string>();
   for (const n of bruts) {
-    const propre = n.trim();
-    if (propre.length >= 3) jetons.add(propre);
-    for (const part of propre.split(/[\s,;/()'’-]+/)) if (part.length >= 3) jetons.add(part);
+    const propre = n.trim().replace(/\s+/g, " ");
+    const parts = propre.split(/[\s,;/()'’-]+/).filter((p) => p.length > 0);
+    if (parts.length > 1 && propre.length >= 3) entiers.add(sansAccents(propre));
+    for (const part of parts) {
+      const cle = normaliser(part);
+      if (part.length < 3 || PARTICULES.has(cle) || motsSociete.has(cle)) continue;
+      if (/^\p{Lu}/u.test(part)) morceaux.add(sansAccents(part));
+      // Nom d'un seul mot saisi en minuscules : on le cherche quand même, sans casse.
+      else if (parts.length === 1) entiers.add(sansAccents(part));
+    }
   }
-  return [...jetons].sort((a, b) => b.length - a.length);
+  const parLongueur = (a: string, b: string) => b.length - a.length;
+  return {
+    entiers: [...entiers].sort(parLongueur),
+    morceaux: [...morceaux].sort(parLongueur),
+  };
 }
 
-function motifNoms(noms: readonly string[]): RegExp | null {
-  if (noms.length === 0) return null;
-  return new RegExp(
-    `(?<![\\p{L}\\p{N}])(?:${noms.map(echapper).join("|")})(?![\\p{L}\\p{N}])`,
-    "iu",
-  );
+/**
+ * Les noms de personnes que la base connaît : identité des fiches et clés `attendu:<nom>`.
+ * Noms entiers ET leurs éléments (prénom, nom de famille), sans accents, hors particules et
+ * hors mots de la raison sociale.
+ */
+export function nomsConnus(base: BaseAudit): string[] {
+  const n = nomsAChercher(base);
+  return [...n.entiers, ...n.morceaux];
+}
+
+const AVANT = "(?<![\\p{L}\\p{N}])";
+const APRES = "(?![\\p{L}\\p{N}])";
+
+/** Motifs (drapeau `g`) à appliquer au texte SANS ACCENTS. */
+function motifsNoms(n: NomsAChercher): RegExp[] {
+  const motifs: RegExp[] = [];
+  if (n.entiers.length > 0) {
+    motifs.push(new RegExp(`${AVANT}(?:${n.entiers.map(echapper).join("|")})${APRES}`, "giu"));
+  }
+  if (n.morceaux.length > 0) {
+    const variantes = n.morceaux.flatMap((m) => [m, m.toUpperCase()]);
+    motifs.push(
+      new RegExp(`${AVANT}(?:${[...new Set(variantes)].map(echapper).join("|")})${APRES}`, "gu"),
+    );
+  }
+  return motifs;
+}
+
+/** Remplace, dans le texte d'ORIGINAL, chaque passage trouvé par `motif` dans sa version sans accents. */
+function remplacerSansAccents(t: string, motif: RegExp, par: string): string {
+  const { texte, debut } = versionSansAccents(t);
+  let sortie = "";
+  let curseur = 0;
+  motif.lastIndex = 0;
+  for (const m of texte.matchAll(motif)) {
+    const d = debut[m.index]!;
+    const f = debut[m.index + m[0].length]!;
+    sortie += t.slice(curseur, d) + par;
+    curseur = f;
+  }
+  return sortie + t.slice(curseur);
+}
+
+/** Termes significatifs d'un texte (sans accents, minuscules) : nombres, et mots de 4 lettres ou plus. */
+function termes(t: string): string[] {
+  return normaliser(t)
+    .split(/[^\p{L}\p{N}]+/u)
+    .filter((m) => /^\p{N}+$/u.test(m) || m.length >= 4);
 }
 
 function visible(c: string): c is Confiance {
@@ -179,15 +288,21 @@ function unique<T>(xs: readonly T[]): T[] {
 
 /** Construit la vue client. Ne modifie jamais la base. */
 export function filtrerPourClient(base: BaseAudit): VueClient {
-  const noms = nomsConnus(base);
-  const motif = motifNoms(noms);
-  const motifG = motif ? new RegExp(motif.source, "giu") : null;
+  const motifs = motifsNoms(nomsAChercher(base));
 
-  /** Retire les noms connus d'un texte libre. */
+  /** Retire les noms connus d'un texte libre (comparaison sans accents, positions conservées). */
   const propre = (t: string): string =>
-    (motifG ? t.replace(motifG, "un collaborateur") : t).replace(/\s+/g, " ").trim();
-  const contientUnNom = (t: string): boolean =>
-    motif ? motif.test(normaliser(t)) || motif.test(t) : false;
+    motifs
+      .reduce((acc, m) => remplacerSansAccents(acc, m, "un collaborateur"), t)
+      .replace(/\s+/g, " ")
+      .trim();
+  const contientUnNom = (t: string): boolean => {
+    const s = sansAccents(t);
+    return motifs.some((m) => {
+      m.lastIndex = 0;
+      return m.test(s);
+    });
+  };
 
   const enonces = new Map(base.besoins_declares.map((b) => [b.id, propre(b.enonce)] as const));
 
@@ -231,11 +346,20 @@ export function filtrerPourClient(base: BaseAudit): VueClient {
   // Tendance fondée sur des chiffres qu'on ne montre pas : on ne la montre pas non plus.
   const tendanceLisible = exercices.length >= 2 && ev.exercices.length === exercices.length;
 
-  // Difficultés PAR SERVICE : jamais la personne, jamais le temps individuel.
+  // Difficultés PAR SERVICE : jamais la personne, jamais le temps individuel. Un service où
+  // moins de deux personnes ont répondu désignerait quelqu'un : il rejoint « Autres services ».
+  const repondants = base.fiches_personnes.filter((f) => f.statut === "a_repondu");
+  const nomService = (f: (typeof repondants)[number]): string =>
+    f.identite.service?.trim() ? propre(f.identite.service) : SERVICE_NON_PRECISE;
+  const effectifs = new Map<string, number>();
+  for (const f of repondants) {
+    const s = nomService(f);
+    effectifs.set(s, (effectifs.get(s) ?? 0) + 1);
+  }
   const parService = new Map<string, { difficultes: string[]; taches: string[] }>();
-  for (const f of base.fiches_personnes) {
-    if (f.statut !== "a_repondu") continue;
-    const service = f.identite.service?.trim() ? propre(f.identite.service) : SERVICE_NON_PRECISE;
+  for (const f of repondants) {
+    const brut = nomService(f);
+    const service = (effectifs.get(brut) ?? 0) >= 2 ? brut : SERVICE_NON_PRECISE;
     const entree = parService.get(service) ?? { difficultes: [], taches: [] };
     for (const d of f.douleurs) entree.difficultes.push(propre(d.enonce));
     for (const t of f.taches) {
@@ -258,10 +382,16 @@ export function filtrerPourClient(base: BaseAudit): VueClient {
           : a.service.localeCompare(b.service, "fr"),
     );
 
+  // Pistes retenues : par rang croissant, celles sans rang à la fin, puis renumérotées 1..n.
   const pistes: PisteClient[] = base.pistes
-    .filter((p) => !p.horsDemande && p.rang !== null)
-    .sort((a, b) => (a.rang ?? 0) - (b.rang ?? 0))
-    .map((p) => ({
+    .filter((p) => !p.horsDemande)
+    .map((p, i) => ({ p, i }))
+    .sort((a, b) => {
+      const x = a.p.rang ?? Infinity;
+      const y = b.p.rang ?? Infinity;
+      return x === y ? a.i - b.i : x < y ? -1 : 1;
+    })
+    .map(({ p }, i) => ({
       id: p.id,
       titre: propre(p.titre),
       description: propre(p.description),
@@ -270,17 +400,25 @@ export function filtrerPourClient(base: BaseAudit): VueClient {
         .map((id) => ({ id, enonce: enonces.get(id) ?? "" })),
       gain: p.gain,
       effort: p.effort,
-      rang: p.rang ?? 0,
+      rang: i + 1,
     }));
 
   const pistesHorsDemande: PisteHorsDemandeClient[] = base.pistes
     .filter((p) => p.horsDemande)
     .map((p) => ({ id: p.id, titre: propre(p.titre), description: propre(p.description) }));
 
-  const preparationVenue: QuestionVenue[] = base.questions_jour_j.map((q) => ({
-    question: propre(q.question),
-    besoin: q.besoinId ? (enonces.get(q.besoinId) ?? null) : null,
-  }));
+  // Préparation de la venue : seulement les questions rattachées à un besoin déclaré, et aucune
+  // qui reprenne un terme d'une contradiction (elle trahirait un désaccord interne).
+  const termesContradictions = new Set(
+    base.contradictions.flatMap((c) => termes(`${c.versionA} ${c.versionB}`)),
+  );
+  const preparationVenue: QuestionVenue[] = base.questions_jour_j
+    .filter((q) => q.besoinId !== undefined && enonces.has(q.besoinId))
+    .filter((q) => !termes(q.question).some((t) => termesContradictions.has(t)))
+    .map((q) => ({
+      question: propre(q.question),
+      besoin: enonces.get(q.besoinId ?? "") ?? null,
+    }));
 
   // Seules les sources que nous avons trouvées : une source « questionnaire » désigne une personne.
   const vues = new Set<string>();

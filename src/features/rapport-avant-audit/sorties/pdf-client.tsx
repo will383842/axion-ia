@@ -25,6 +25,7 @@ import { registerQualiopiPdfFonts } from "@/server/qualiopi/documents/fonts";
 import { assainirEspacesPdf } from "@/server/qualiopi/documents/base-layout";
 
 import type { BaseAudit } from "../base-audit-schema";
+import { motsInterditsDans } from "../mots-interdits";
 import {
   filtrerPourClient,
   LIBELLE_CATEGORIE,
@@ -311,8 +312,10 @@ export function RapportClientPdf({ vue }: { vue: VueClient }): React.ReactElemen
           <Text style={styles.vide}>Aucune difficulté n'a été décrite par service.</Text>
         ) : (
           vue.difficultesParService.map((d) => (
-            <View key={d.service} wrap={false}>
-              <Text style={styles.sousTitre}>{txt(d.service)}</Text>
+            <View key={d.service}>
+              <Text style={styles.sousTitre} minPresenceAhead={40}>
+                {txt(d.service)}
+              </Text>
               {d.difficultes.map((x, i) => (
                 <Puce key={`d${i}`}>{x}</Puce>
               ))}
@@ -391,11 +394,121 @@ export function RapportClientPdf({ vue }: { vue: VueClient }): React.ReactElemen
   );
 }
 
-/** Rend le rapport client en PDF. Filtre d'abord : la base complète n'entre jamais dans le rendu. */
-export async function genererPdfClient(base: BaseAudit): Promise<Buffer> {
+/** Un passage retiré du PDF client parce qu'il porte un mot interdit : Will le relit. */
+export interface RetraitRelecture {
+  /** Où il était : « besoin », « citation », « élément », « piste »… */
+  readonly ou: string;
+  readonly texte: string;
+  readonly mots: readonly string[];
+}
+
+function normaliserTexte(s: string): string {
+  return s.normalize("NFD").replace(/\p{M}/gu, "").toLowerCase();
+}
+
+/**
+ * Mots interdits d'un passage destiné au client. « certifié » ne vise qu'Axion IA : un passage
+ * qui ne parle pas d'Axion (« la certification ISO de vos ateliers ») n'est pas retiré pour ça.
+ */
+function interditsClient(texte: string): string[] {
+  const mots = motsInterditsDans(texte);
+  if (/\baxion\b/.test(normaliserTexte(texte))) return mots;
+  return mots.filter((m) => m !== "« certifié »");
+}
+
+/**
+ * Retire de la vue client, ÉLÉMENT PAR ÉLÉMENT, tout passage qui porte un mot interdit, et le note
+ * pour relecture. On ne rejette pas tout le document pour un passage. PUR.
+ */
+export function retirerMotsInterdits(vue: VueClient): {
+  vue: VueClient;
+  retiresPourRelecture: RetraitRelecture[];
+} {
+  const retires: RetraitRelecture[] = [];
+  /** Vrai si le passage peut rester ; sinon il est noté pour relecture. */
+  const garde = (ou: string, ...textes: string[]): boolean => {
+    const texte = textes.filter((t) => t.length > 0).join(" — ");
+    const mots = interditsClient(texte);
+    if (mots.length === 0) return true;
+    retires.push({ ou, texte, mots });
+    return false;
+  };
+
+  const besoins = vue.besoins
+    .filter((b) => garde("besoin", b.enonce))
+    .map((b) => ({ ...b, motsDesEquipes: b.motsDesEquipes.filter((c) => garde("citation", c)) }));
+  const besoinsGardes = new Set(besoins.map((b) => b.id));
+
+  const comprehension = vue.comprehension
+    .map((s) => ({
+      ...s,
+      elements: s.elements.filter((e) => garde("élément", e.libelle, e.valeur)),
+    }))
+    .filter((s) => s.elements.length > 0);
+
+  const lecture = garde("lecture financière", vue.evolution.lecture) ? vue.evolution.lecture : "";
+
+  const difficultesParService = vue.difficultesParService
+    .filter((d) => garde("service", d.service))
+    .map((d) => ({
+      ...d,
+      difficultes: d.difficultes.filter((x) => garde("difficulté", x)),
+      tachesRepetitives: d.tachesRepetitives.filter((x) => garde("tâche répétitive", x)),
+    }))
+    .filter((d) => d.difficultes.length + d.tachesRepetitives.length > 0);
+
+  const pistes = vue.pistes
+    .filter((p) => garde("piste", p.titre, p.description))
+    .map((p, i) => ({
+      ...p,
+      besoinsServis: p.besoinsServis.filter((b) => besoinsGardes.has(b.id)),
+      rang: i + 1,
+    }));
+
+  const pistesHorsDemande = vue.pistesHorsDemande.filter((p) =>
+    garde("piste hors demande", p.titre, p.description),
+  );
+
+  const preparationVenue = vue.preparationVenue
+    .filter((q) => garde("question de venue", q.question))
+    .map((q) => ({
+      ...q,
+      besoin: q.besoin !== null && interditsClient(q.besoin).length === 0 ? q.besoin : null,
+    }));
+
+  const sources = vue.sources.filter((s) => garde("source", s.reference, s.url ?? ""));
+
+  return {
+    vue: {
+      ...vue,
+      besoins,
+      comprehension,
+      evolution: { ...vue.evolution, lecture },
+      difficultesParService,
+      pistes,
+      pistesHorsDemande,
+      preparationVenue,
+      sources,
+    },
+    retiresPourRelecture: retires,
+  };
+}
+
+export interface PdfClientGenere {
+  readonly pdf: Buffer;
+  /** Passages retirés pour mot interdit : à montrer à Will, jamais au client. */
+  readonly retiresPourRelecture: readonly RetraitRelecture[];
+}
+
+/**
+ * Rend le rapport client en PDF. Filtre d'abord (la base complète n'entre jamais dans le rendu),
+ * puis retire passage par passage ce qui porte un mot interdit.
+ */
+export async function genererPdfClient(base: BaseAudit): Promise<PdfClientGenere> {
   registerQualiopiPdfFonts();
-  const stream = await pdf(<RapportClientPdf vue={filtrerPourClient(base)} />).toBuffer();
-  return new Promise<Buffer>((resolve, reject) => {
+  const { vue, retiresPourRelecture } = retirerMotsInterdits(filtrerPourClient(base));
+  const stream = await pdf(<RapportClientPdf vue={vue} />).toBuffer();
+  const buffer = await new Promise<Buffer>((resolve, reject) => {
     const morceaux: Buffer[] = [];
     stream.on("data", (m: Buffer | Uint8Array) =>
       morceaux.push(Buffer.isBuffer(m) ? m : Buffer.from(m)),
@@ -403,4 +516,5 @@ export async function genererPdfClient(base: BaseAudit): Promise<Buffer> {
     stream.on("end", () => resolve(Buffer.concat(morceaux)));
     stream.on("error", reject);
   });
+  return { pdf: buffer, retiresPourRelecture };
 }
