@@ -19,7 +19,6 @@ const m = vi.hoisted(() => ({
 
 vi.mock("@/features/dossier-client/acces", () => ({ exigerAccesEchanges: m.acces }));
 vi.mock("@/server/queue/queues", () => ({ enqueueRapportAvantAudit: m.enqueue }));
-vi.mock("@/server/content-gen/shared/activity-log", () => ({ logActivity: m.log }));
 vi.mock("../../questionnaire-preaudit/de-la-fiche", () => ({
   fichesCouvertes: async (id: string) => [id],
   questionnairesDesFiches: (ids: string[]) => ({ clientId: { in: ids } }),
@@ -34,6 +33,7 @@ vi.mock("@/lib/prisma", () => ({
     questionnaireAvantAudit: { findMany: m.questionnaires },
     questionnaireAvantAuditEnvoi: { count: m.reponses },
     rapportAvantAudit: { count: m.enVol, create: m.create, updateMany: m.updateMany },
+    activityLog: { create: m.log },
   },
 }));
 
@@ -135,13 +135,14 @@ describe("lancerRapportAvantAudit — lancement", () => {
       lanceParId: "u-will",
     });
     expect(m.enqueue).toHaveBeenCalledWith("r1");
-    expect(m.log).toHaveBeenCalledWith(
-      expect.objectContaining({
+    expect(m.log).toHaveBeenCalledWith({
+      data: expect.objectContaining({
+        adminUserId: "u-will",
         action: "rapport-avant-audit.lancer",
         targetType: "RapportAvantAudit",
         targetId: "r1",
       }),
-    );
+    });
     expect(m.clientUpdate).not.toHaveBeenCalled();
   });
 

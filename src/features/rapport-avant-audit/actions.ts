@@ -9,7 +9,8 @@
  *   4. aucun lancement déjà en attente ou en cours sur la fiche (double clic, coût).
  *
  * Écrit UNE ligne neuve dans `rapports_avant_audit` (jamais la réutilisation d'une ancienne),
- * met `{ rapportId }` en file, journalise (`logActivity`). AUCUNE écriture sur `clients`.
+ * met `{ rapportId }` en file, journalise (`ActivityLog`, patron de `questionnaire-preaudit/actions.ts`,
+ * module de journal propre). AUCUNE écriture sur `clients`.
  *
  * ⚠️ Module `"use server"` : il n'exporte QUE des fonctions asynchrones.
  */
@@ -20,7 +21,6 @@ import { z } from "zod";
 
 import { exigerAccesEchanges } from "@/features/dossier-client/acces";
 import { prisma } from "@/lib/prisma";
-import { logActivity } from "@/server/content-gen/shared/activity-log";
 import { enqueueRapportAvantAudit } from "@/server/queue/queues";
 
 import { fichesCouvertes, questionnairesDesFiches } from "../questionnaire-preaudit/de-la-fiche";
@@ -32,6 +32,27 @@ export type ResultatLancement =
   | { readonly ok: false; readonly erreur: string };
 
 const Uuid = z.string().uuid();
+
+/** Journal d'audit best-effort : des identifiants et des nombres, jamais un contenu de réponse. */
+async function journaliser(
+  userId: string,
+  rapportId: string,
+  changes: Record<string, string | number | boolean>,
+): Promise<void> {
+  try {
+    await prisma.activityLog.create({
+      data: {
+        adminUserId: userId,
+        action: "rapport-avant-audit.lancer",
+        targetType: "RapportAvantAudit",
+        targetId: rapportId,
+        changes,
+      },
+    });
+  } catch {
+    // un journal indisponible n'empêche pas le geste
+  }
+}
 
 export async function lancerRapportAvantAudit(clientId: string): Promise<ResultatLancement> {
   let acces: { userId: string; role: string };
@@ -87,15 +108,7 @@ export async function lancerRapportAvantAudit(clientId: string): Promise<Resulta
     await marquerErreur(id, "La file des tâches est indisponible : relancez plus tard.");
   }
 
-  // Des identifiants et des nombres : jamais un contenu de réponse.
-  await logActivity({
-    // `logActivity` n'écrit que `userId` ; l'adresse n'est ni lue ni journalisée.
-    session: { userId: acces.userId, email: "", role: acces.role },
-    action: "rapport-avant-audit.lancer",
-    targetType: "RapportAvantAudit",
-    targetId: id,
-    changes: { clientId, questionnaires: ids.length, reponses, enFile },
-  });
+  await journaliser(acces.userId, id, { clientId, questionnaires: ids.length, reponses, enFile });
 
   return enFile
     ? { ok: true, rapportId: id }
