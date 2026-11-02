@@ -1,4 +1,5 @@
 "use client";
+// use-client: formulaires à état local (mode de fermeture, retour de l'action) avec appel de Server Action
 
 // Audit présentiel (PR3) : les îlots interactifs de l'écran « Audit ».
 // Aucun journal navigateur : le jeton ne vit que dans l'état React, jamais dans l'URL, le stockage ou la console.
