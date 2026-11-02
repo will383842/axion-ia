@@ -58,6 +58,9 @@ on:
           - "QUESTIONNAIRE_SUIVI_NOTICE_VISIBLE"
           # Copie complète des réponses d'un questionnaire (super-administrateur) : ÉTEINT par défaut.
           - "QUESTIONNAIRE_EXPORT_COMPLET_ENABLED"
+          # Rapport d'analyse avant audit (2026-11-02) : bouton « Lancer l'analyse complète ». Cible : site.
+          # ÉTEINT par défaut ; n'envoie jamais rien au client.
+          - "RAPPORT_AVANT_AUDIT_ENABLED"
           # Salon Telegram « Questionnaire audit » (identifiant, ex. -1001234567890). Sans lui :
           # Clients, puis Système. Cible : worker.
           - "TELEGRAM_CHAT_ID_QUESTIONNAIRE_AUDIT"
