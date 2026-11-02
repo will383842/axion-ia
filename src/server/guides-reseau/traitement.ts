@@ -33,6 +33,17 @@ import {
 } from "@/content/guides-reseau";
 import { occurredAtValide, type DemandeGuideReseau } from "./contrat";
 
+/**
+ * VALEURS D'ACCORD RENDUES PAR LE SITE (réponse JSON, champ `accord`) :
+ *   · `non_demande`            — entrée `accord: "non_demande"` : rien n'a été demandé ;
+ *   · `non`                    — entrée `accord: "non"` : refus, aucune campagne ;
+ *   · `oui_en_attente_de_clic` — entrée `oui` : e-mail de confirmation envoyé, rien d'écrit
+ *                                tant que la personne n'a pas cliqué ;
+ *   · `oui_deja_confirme`      — entrée `oui` mais adresse déjà confirmée (ancien « oui_confirme »
+ *                                du doc Studio) ;
+ *   · `ecarte`                 — entrée `oui`, adresse opposée / désabonnée / en rebond.
+ * Entrées acceptées : `oui | non | non_demande` (cf. `contrat.ts`).
+ */
 export type EtatAccord =
   | "non_demande"
   | "non"

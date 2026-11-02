@@ -530,3 +530,52 @@ describe("opposition respectée", () => {
     expect(bd.envois).toHaveLength(1);
   });
 });
+
+describe("drapeau, secret et débit propres à la route (COR-INT-A)", () => {
+  const SECRET_GUIDES = "g".repeat(40);
+
+  it("ne dépend plus de VIDEOS_SITE_ENABLED : vidéos éteintes, guides allumés → 200", async () => {
+    delete process.env.VIDEOS_SITE_ENABLED;
+    expect((await appel()).status).toBe(200);
+  });
+
+  it("drapeau guides éteint : réponse neutre identique, vidéos allumées ou non", async () => {
+    delete process.env.GUIDES_RESEAU_ENABLED;
+    const a = await appel();
+    delete process.env.VIDEOS_SITE_ENABLED;
+    const b = await appel();
+    expect(a.status).toBe(503);
+    expect(b.status).toBe(503);
+    expect(await a.text()).toBe(await b.text());
+  });
+
+  it("GUIDES_RESEAU_HMAC_SECRET propre : il prime, le secret des vidéos n'ouvre plus la route", async () => {
+    process.env.GUIDES_RESEAU_HMAC_SECRET = SECRET_GUIDES;
+    try {
+      expect((await appel(corpsBase, { secret: SECRET })).status).toBe(401);
+      expect((await appel(corpsBase, { secret: SECRET_GUIDES })).status).toBe(200);
+    } finally {
+      delete process.env.GUIDES_RESEAU_HMAC_SECRET;
+    }
+  });
+
+  it("repli documenté : sans secret propre, le secret des vidéos signe encore", async () => {
+    delete process.env.GUIDES_RESEAU_HMAC_SECRET;
+    expect((await appel()).status).toBe(200);
+  });
+
+  it("aucun secret du tout → 503 reception_non_configuree", async () => {
+    delete process.env.VIDEOS_STUDIO_HMAC_SECRET;
+    delete process.env.GUIDES_RESEAU_HMAC_SECRET;
+    const r = await appel();
+    expect(r.status).toBe(503);
+    expect(((await r.json()) as Ligne).erreur).toBe("reception_non_configuree");
+  });
+
+  it("base factice du build (stub.invalid) → 503 base_indisponible", async () => {
+    process.env.DATABASE_URL = "postgresql://stub:stub@stub.invalid:5432/stub";
+    const r = await appel();
+    expect(r.status).toBe(503);
+    expect(((await r.json()) as Ligne).erreur).toBe("base_indisponible");
+  });
+});

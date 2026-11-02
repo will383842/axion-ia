@@ -18,15 +18,24 @@ export const SchemaDemandeGuideReseau = z
       .max(254)
       .email()
       .transform((e) => e.toLowerCase()),
+    /** Mot-clé du commentaire : lettres (accentuées) et chiffres Unicode, 2 à 30, en MAJUSCULES. */
     mot: z
       .string()
-      .regex(/^[A-Za-z0-9]{2,30}$/)
-      .transform((m) => m.toUpperCase()),
+      .trim()
+      .regex(/^[\p{L}\p{N}]{2,30}$/u)
+      .transform((m) => m.toLocaleUpperCase("fr")),
     reseau: z.enum(RESEAUX_GUIDE),
     guide: z
       .string()
       .regex(/^[a-z0-9-]{2,40}$/)
       .refine((g) => GUIDES_RESEAU_CONNUS.includes(g), "guide_inconnu"),
+    /**
+     * ENTRÉE `accord` (réponse à M2, « conseils par e-mail ») :
+     *   · `oui`         → accord demandé : double accord (e-mail de confirmation) ; exige M2 ;
+     *   · `non`         → refus explicite, aucune campagne ;
+     *   · `non_demande` → la question n'a pas (encore) été posée.
+     * La SORTIE (`EtatAccord`, `traitement.ts`) est différente : voir ce type.
+     */
     accord: z.enum(["oui", "non", "non_demande"]),
     /** Version du texte du premier message privé (M1) — preuve d'information. */
     versionTexteM1: z.string().regex(VERSION),

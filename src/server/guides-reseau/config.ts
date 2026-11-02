@@ -17,3 +17,32 @@
 export function guidesReseauActifs(): boolean {
   return process.env.GUIDES_RESEAU_ENABLED === "true";
 }
+
+const LONGUEUR_MIN_SECRET = 32;
+
+function secretValide(v: string | undefined): string | null {
+  const s = v?.trim();
+  return s && s.length >= LONGUEUR_MIN_SECRET ? s : null;
+}
+
+/** Préfixe du seau de débit de la route (distinct de `internal:videos`). */
+export const PREFIXE_DEBIT_GUIDES = "internal:guides-reseau";
+
+/**
+ * Secret HMAC de la route. Variable propre `GUIDES_RESEAU_HMAC_SECRET` (+ `_PRECEDENT` pendant
+ * une rotation). REPLI DOCUMENTÉ : tant qu'elle est absente ou < 32 caractères, on retombe sur
+ * `VIDEOS_STUDIO_HMAC_SECRET` (déploiement sans nouvelle variable) — dans ce cas une fuite de
+ * ce secret ouvre aussi la route vidéos ; définir la variable propre dès l'allumage.
+ * Lecture `process.env` brut au runtime (hors `env.ts`, donc sans effet sur
+ * `SKIP_ENV_VALIDATION` ni sur le build `stub.invalid`).
+ */
+export function secretsGuidesReseau(
+  env: Readonly<Record<string, string | undefined>> = process.env,
+): { courant: string; precedent: string | null } | null {
+  const propre = secretValide(env.GUIDES_RESEAU_HMAC_SECRET);
+  if (propre)
+    return { courant: propre, precedent: secretValide(env.GUIDES_RESEAU_HMAC_SECRET_PRECEDENT) };
+  const repli = secretValide(env.VIDEOS_STUDIO_HMAC_SECRET);
+  if (!repli) return null;
+  return { courant: repli, precedent: secretValide(env.VIDEOS_STUDIO_HMAC_SECRET_PRECEDENT) };
+}

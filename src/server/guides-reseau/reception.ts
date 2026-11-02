@@ -20,13 +20,24 @@
  *   · une réservation reprise après 2 min qui porte la marque est CLOSE (réponse rejouée),
  *     jamais retraitée : pas de second e-mail.
  *
- * ⚠️ SECRET PARTAGÉ AVEC LES VIDÉOS. `controlerEntree` (`src/server/videos/entree.ts`) exige
- * aussi `VIDEOS_SITE_ENABLED=true`, vérifie la signature avec `VIDEOS_STUDIO_HMAC_SECRET` et
- * partage le seau de débit `internal:videos:<ip>`. Choix assumé pour ce lot : la signature
- * couvre méthode + chemin + empreinte du corps, donc une requête vidéo ne se rejoue pas ici
- * (ni l'inverse). Contrepartie : une fuite du secret ouvre les DEUX routes. Séparer secret,
- * drapeau et préfixe de débit (paramètres de `controlerEntree`) est le suivi recommandé,
- * avant d'allumer `GUIDES_RESEAU_ENABLED`.
+ * ✅ DRAPEAU, SECRET ET DÉBIT PROPRES (COR-INT-A). La route passe à `controlerEntree` son drapeau
+ * (`GUIDES_RESEAU_ENABLED`, plus aucune dépendance à `VIDEOS_SITE_ENABLED`), son secret
+ * (`GUIDES_RESEAU_HMAC_SECRET`, repli documenté dans `config.ts` sur `VIDEOS_STUDIO_HMAC_SECRET`
+ * tant qu'elle n'est pas définie) et son seau de débit `internal:guides-reseau:<ip>`. Drapeau
+ * éteint : 503 `reception_eteinte`, identique quelle que soit la configuration des vidéos.
+ *
+ * ⏱️ RÉESSAI DU STUDIO APRÈS `409 en_cours`. Une réservation est reprise au bout de 2 min
+ * (`RESERVATION_PERIMEE_MS`) : réessayer avant, c'est se heurter à nouveau à `en_cours` ;
+ * réessayer JUSTE après, c'est risquer de reprendre un traitement encore vivant (MX ou base
+ * lents) et donc un second e-mail. L'attente avant réessai doit être NETTEMENT supérieure à
+ * 2 min (recommandé : ≥ 5 min, backoff croissant), avec le MÊME corps figé.
+ *
+ * 🔁 ANTI-REJEU RÉEL. Le nonce n'est mémorisé qu'APRÈS un traitement abouti (la ligne du
+ * journal le porte). Il n'y a donc pas de « nonce déjà vu → 401 » : une requête refusée en 422
+ * ou en 500 (clé rendue) peut être rejouée telle quelle pendant la fenêtre de ±300 s de la
+ * signature, sans autre effet que de recommencer le même traitement. Un nonce réutilisé avec
+ * une AUTRE clé rend 409 `nonce_reutilise` ; avec la même clé et le même corps, la réponse
+ * enregistrée est rejouée (`x-axion-rejeu: 1`) sans nouvel effet.
  *
  * Seuls les traitements ABOUTIS sont journalisés : un corps invalide (422) ou une adresse
  * refusée ne consomment pas la clé, pour que le Studio puisse rappeler avec l'adresse corrigée.
