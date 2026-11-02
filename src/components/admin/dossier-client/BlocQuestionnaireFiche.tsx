@@ -7,7 +7,10 @@ import Link from "next/link";
 
 import type { QuestionnaireDeLaFiche } from "@/features/dossier-client/questionnaires-de-la-fiche";
 
+import { clientIdDeLaFiche } from "@/features/rapport-avant-audit/ecran/logique";
+
 import type { ActionLireBrouillon } from "./LireBrouillonPreaudit";
+import { RapportAnalyseDeLaFiche } from "./RapportAnalyseDeLaFiche";
 import { SuiviParPersonne } from "./SuiviParPersonne";
 
 const jourHeure = (d: Date): string =>
@@ -65,6 +68,8 @@ export function BlocQuestionnaireFiche({
 }): React.ReactElement | null {
   if (questionnaires.length === 0) return null;
   const base = `/fr/${adminPrefix}`;
+  // Le bloc « Rapport d'analyse » suit le questionnaire (seulement pour une vraie fiche client).
+  const clientId = clientIdDeLaFiche(ficheHref);
   return (
     <section aria-labelledby="questionnaire-fiche" className="admin-carte">
       <h2 id="questionnaire-fiche" className="admin-carte-titre">
@@ -134,6 +139,9 @@ export function BlocQuestionnaireFiche({
           );
         })}
       </ul>
+      {clientId !== null ? (
+        <RapportAnalyseDeLaFiche clientId={clientId} ficheHref={ficheHref} />
+      ) : null}
     </section>
   );
 }
