@@ -210,15 +210,13 @@ beforeEach(() => {
   base.evenements = [];
   base.rapports = [];
   requetesSql.length = 0;
-  checkRateLimitMock
-    .mockReset()
-    .mockResolvedValue({
-      allowed: true,
-      count: 1,
-      remaining: 59,
-      resetAt: Date.now() + 60000,
-      panne: false,
-    });
+  checkRateLimitMock.mockReset().mockResolvedValue({
+    allowed: true,
+    count: 1,
+    remaining: 59,
+    resetAt: Date.now() + 60000,
+    panne: false,
+  });
   journalMock.mockReset();
   sentryMock.mockReset();
   ajouterSession(SID, SECRET);
