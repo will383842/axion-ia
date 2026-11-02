@@ -4,6 +4,7 @@
 // reste le clic de Will sur la page du rendez-vous, après l'aperçu exact de l'e-mail.
 
 import Link from "next/link";
+import { Suspense } from "react";
 
 import type { QuestionnaireDeLaFiche } from "@/features/dossier-client/questionnaires-de-la-fiche";
 
@@ -140,7 +141,10 @@ export function BlocQuestionnaireFiche({
         })}
       </ul>
       {clientId !== null ? (
-        <RapportAnalyseDeLaFiche clientId={clientId} ficheHref={ficheHref} />
+        // Lecture du rapport en flux : elle ne retarde jamais le reste de la fiche.
+        <Suspense fallback={<p>Rapport d&apos;analyse : chargement…</p>}>
+          <RapportAnalyseDeLaFiche clientId={clientId} ficheHref={ficheHref} />
+        </Suspense>
       ) : null}
     </section>
   );

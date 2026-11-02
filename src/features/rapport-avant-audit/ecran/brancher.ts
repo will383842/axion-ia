@@ -15,7 +15,9 @@
  *     `EmpreinteAlteree`, `BaseHorsContrat`) rend `null`. Une empreinte altérée est
  *     journalisée — identifiants seulement, jamais le contenu ;
  *   · `pdfChemin` n'est JAMAIS lu : le PDF client est régénéré depuis la base vérifiée, et
- *     `@react-pdf` n'est chargé (import dynamique) qu'au téléchargement ou à l'aperçu.
+ *     `@react-pdf` n'est chargé (import dynamique) qu'au TÉLÉCHARGEMENT. L'aperçu (« ce que le PDF
+ *     retirerait »), lu à chaque affichage de la fiche, n'utilise que les fonctions pures
+ *     `filtrerPourClient` + `retirerMotsInterdits` : aucun rendu de PDF, aucun `@react-pdf`.
  */
 
 import { z } from "zod";
@@ -37,6 +39,8 @@ import {
 } from "../persistance";
 import { baseEnJson, baseEnMarkdown } from "../sorties/base-markdown";
 import { ficheEnMarkdown } from "../sorties/fiche-personne-markdown";
+import { filtrerPourClient } from "../sorties/filtre-client";
+import { retirerMotsInterdits } from "../sorties/retirer-mots";
 
 import type {
   AccesRapports,
@@ -236,8 +240,8 @@ export const ACCES_BRANCHE: AccesRapports = {
   async apercuPdf(clientId, rapportId) {
     const lu = await baseDuClient(clientId, rapportId);
     if (lu === null) return null;
-    const { genererPdfClient } = await import("../sorties/pdf-client");
-    const { retiresPourRelecture } = await genererPdfClient(lu.base);
+    // Les MÊMES fonctions pures que `genererPdfClient`, sans le rendu : même liste de passages.
+    const { retiresPourRelecture } = retirerMotsInterdits(filtrerPourClient(lu.base));
     return { retiresPourRelecture };
   },
   async validerPdf(clientId, rapportId, par): Promise<ResultatAcces> {

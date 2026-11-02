@@ -24,6 +24,12 @@ vi.mock("@/lib/prisma", () => ({
   },
 }));
 vi.mock("../../actions", () => ({ lancerRapportAvantAudit: faux.lancer }));
+// Espion sur le VRAI rendu : l'aperçu ne doit jamais le déclencher.
+const pdfClient = vi.hoisted(() => ({ genererPdfClient: vi.fn() }));
+vi.mock("../../sorties/pdf-client", async (orig) => ({
+  ...(await orig<typeof import("../../sorties/pdf-client")>()),
+  genererPdfClient: pdfClient.genererPdfClient,
+}));
 
 import { scellerBase, scellerPropositions } from "../../persistance";
 import { baseValide, fausseTable } from "../../__tests__/base.fixture";
@@ -49,8 +55,11 @@ let envoisFindMany: ReturnType<typeof vi.fn>;
 let horloge = 0;
 
 /** Pose une ligne TERMINÉE (base scellée) pour `clientId`. */
-async function rapportTermine(clientId: string, extra: Record<string, unknown> = {}) {
-  const base = baseDe(clientId);
+async function rapportTermine(
+  clientId: string,
+  extra: Record<string, unknown> = {},
+  base: BaseAudit = baseDe(clientId),
+) {
   const s = scellerBase(base);
   const { id } = await table.create({
     data: {
@@ -71,7 +80,12 @@ async function rapportTermine(clientId: string, extra: Record<string, unknown> =
   return id as string;
 }
 
-beforeEach(() => {
+beforeEach(async () => {
+  // `restoreAllMocks` (afterEach) efface l'implémentation : l'espion est ré-armé sur le VRAI rendu.
+  const vrai = await vi.importActual<typeof import("../../sorties/pdf-client")>(
+    "../../sorties/pdf-client",
+  );
+  pdfClient.genererPdfClient.mockReset().mockImplementation(vrai.genererPdfClient);
   process.env = { ...ENV0, PII_ENCRYPTION_KEY: "d".repeat(64) };
   horloge = 0;
   table = fausseTable(() => new Date(Date.UTC(2026, 10, 1, 9, 0, horloge++)));
@@ -284,6 +298,31 @@ describe("téléchargements", () => {
     expect(table.lignes[0]?.pdfValideLe).toEqual(avant);
     expect(table.lignes[0]?.pdfValideParId).toBe(WILL);
   });
+});
+
+describe("aperçu du PDF client (sans rendu)", () => {
+  /** Une base qui porte deux passages à retirer (mots interdits), 100 % fictive. */
+  function baseAvecInterdits(): BaseAudit {
+    const b = baseDe(A);
+    return {
+      ...b,
+      besoins_declares: [{ ...b.besoins_declares[0]!, enonce: "Un gain garanti sur les devis" }],
+      pistes: [b.pistes[0]!, { ...b.pistes[0]!, id: "P2", titre: "Préparer Qualiopi", rang: 2 }],
+    };
+  }
+
+  it("n'appelle jamais genererPdfClient et rend les MÊMES passages retirés que le rendu", async () => {
+    const base = baseAvecInterdits();
+    const id = await rapportTermine(A, {}, base);
+    const apercu = await ACCES_BRANCHE.apercuPdf(A, id);
+    expect(pdfClient.genererPdfClient).not.toHaveBeenCalled();
+    expect(apercu?.retiresPourRelecture.map((r) => r.ou).sort()).toEqual(["besoin", "piste"]);
+    // Témoin : le rendu complet retire exactement les mêmes passages.
+    const { genererPdfClient } = await import("../../sorties/pdf-client");
+    const { retiresPourRelecture } = await genererPdfClient(base);
+    expect(pdfClient.genererPdfClient).toHaveBeenCalledTimes(1); // l'espion voit bien le rendu
+    expect(apercu).toEqual({ retiresPourRelecture });
+  }, 30_000);
 });
 
 describe("lancer", () => {
