@@ -176,21 +176,42 @@ export function ouvrirBase(chiffre: string, empreinte: string): BaseAudit {
 export interface EnveloppePropositions {
   readonly v: 1;
   readonly chiffre: string;
+  /** SHA-256 du JSON en clair : vérifié à l'ouverture, comme pour la base. */
+  readonly empreinte: string;
 }
 
 export function scellerPropositions(
   propositions: BaseAudit["propositions_fiche"],
 ): EnveloppePropositions {
-  return { v: 1, chiffre: chiffrerParole(JSON.stringify(propositions)) };
+  const json = JSON.stringify(propositions);
+  return { v: 1, chiffre: chiffrerParole(json), empreinte: empreinteDe(json) };
 }
 
+/** Déchiffre les propositions, vérifie l'empreinte, puis le contrat. Lève à la moindre anomalie. */
 export function ouvrirPropositions(valeur: unknown): BaseAudit["propositions_fiche"] {
-  const e = valeur as { v?: unknown; chiffre?: unknown } | null;
-  if (e === null || typeof e !== "object" || e.v !== 1 || typeof e.chiffre !== "string") {
+  const e = valeur as { v?: unknown; chiffre?: unknown; empreinte?: unknown } | null;
+  if (
+    e === null ||
+    typeof e !== "object" ||
+    e.v !== 1 ||
+    typeof e.chiffre !== "string" ||
+    typeof e.empreinte !== "string"
+  ) {
     throw new BaseHorsContrat("enveloppe des propositions illisible");
   }
-  const brut: unknown = JSON.parse(dechiffrerParole(e.chiffre));
-  return BaseAuditSchema.innerType().shape.propositions_fiche.parse(brut);
+  const json = dechiffrerParole(e.chiffre);
+  if (!/^[0-9a-f]{64}$/.test(e.empreinte) || !memeEmpreinte(empreinteDe(json), e.empreinte)) {
+    throw new EmpreinteAlteree();
+  }
+  let brut: unknown;
+  try {
+    brut = JSON.parse(json);
+  } catch {
+    throw new BaseHorsContrat("JSON des propositions illisible");
+  }
+  const valide = BaseAuditSchema.innerType().shape.propositions_fiche.safeParse(brut);
+  if (!valide.success) throw new BaseHorsContrat("propositions hors contrat");
+  return valide.data;
 }
 
 // ── Écritures ───────────────────────────────────────────────────────────────
@@ -217,31 +238,45 @@ export async function creerRapport(
 }
 
 /**
- * Prise du lancement par le worker : `en_attente` → `en_cours`, atomiquement. Rend `false` si la
- * ligne n'était pas en attente (déjà prise, terminée, annulée, ou mise à l'écart).
+ * Le JETON d'une prise : la date `debut_le` posée par `prendreRapport`. Toute écriture du worker
+ * sur la ligne exige `{ statut: "en_cours", debutLe: jeton }` : une prise ancienne (worker arrêté,
+ * ligne reprise par un autre passage) ne peut plus rien écrire.
+ */
+export type JetonPrise = Date;
+
+function dePrise(id: string, jeton: JetonPrise) {
+  return { id, statut: "en_cours", debutLe: jeton } as const;
+}
+
+/**
+ * Prise du lancement par le worker : `en_attente` → `en_cours`, atomiquement. Rend le jeton de la
+ * prise, ou `null` si la ligne n'était pas en attente (déjà prise, terminée, annulée, écartée).
  */
 export async function prendreRapport(
   id: string,
   maintenant: Date = new Date(),
   base: BaseRapports = prisma,
-): Promise<boolean> {
+): Promise<JetonPrise | null> {
+  // Une date neuve par prise : deux prises ne partagent jamais le même jeton.
+  const jeton = new Date(maintenant.getTime());
   const r = await base.rapportAvantAudit.updateMany({
     where: { id, statut: "en_attente", ecarteLe: null },
-    data: { statut: "en_cours", debutLe: maintenant, erreur: null, etape: "Démarrage" },
+    data: { statut: "en_cours", debutLe: jeton, erreur: null, etape: "Démarrage" },
   });
-  return r.count === 1;
+  return r.count === 1 ? jeton : null;
 }
 
-/** Progression (0-100) et étape lisible. N'écrit que sur une ligne `en_cours`. */
+/** Progression (0-100) et étape lisible. N'écrit que sur la ligne de CETTE prise. */
 export async function noterProgression(
   id: string,
+  jeton: JetonPrise,
   etape: string,
   progression: number,
   base: BaseRapports = prisma,
 ): Promise<void> {
   const pct = Math.max(0, Math.min(100, Math.round(progression)));
   await base.rapportAvantAudit.updateMany({
-    where: { id, statut: "en_cours" },
+    where: dePrise(id, jeton),
     data: { etape: etape.slice(0, 200), progression: pct },
   });
 }
@@ -252,13 +287,14 @@ export async function noterProgression(
  */
 export async function enregistrerResultat(
   id: string,
+  jeton: JetonPrise,
   resultat: ResultatRapport,
   maintenant: Date = new Date(),
   base: BaseRapports = prisma,
 ): Promise<void> {
   const scellee = scellerBase(resultat.base);
   const r = await base.rapportAvantAudit.updateMany({
-    where: { id, statut: "en_cours", baseAudit: null, ecarteLe: null },
+    where: { ...dePrise(id, jeton), baseAudit: null, ecarteLe: null },
     data: {
       statut: "termine",
       etape: "Terminé",
@@ -276,26 +312,36 @@ export async function enregistrerResultat(
   if (r.count !== 1) throw new TransitionRefusee("en_cours, sans base enregistrée");
 }
 
-/** Échec : le message est écrit pour Will (jamais un extrait de réponse). */
+/**
+ * Échec : le message est écrit pour Will (jamais un extrait de réponse).
+ * Avec un jeton : seulement la ligne de CETTE prise. Sans jeton (action, interrupteur éteint
+ * avant toute prise) : seulement une ligne encore `en_attente` — jamais celle d'un worker en vol.
+ */
 export async function marquerErreur(
   id: string,
   message: string,
   maintenant: Date = new Date(),
   base: BaseRapports = prisma,
+  jeton: JetonPrise | null = null,
 ): Promise<void> {
   await base.rapportAvantAudit.updateMany({
-    where: { id, statut: { in: ["en_attente", "en_cours"] } },
+    where: jeton === null ? { id, statut: "en_attente" } : dePrise(id, jeton),
     data: { statut: "erreur", erreur: message.slice(0, 2000), finLe: maintenant },
   });
 }
 
 /**
  * Interruption (SIGTERM, redémarrage) : `en_cours` → `en_attente`, SANS erreur ni essai compté.
- * La reprise est dans l'état en base : `reprendreRapportsEnSuspens` la remet en file.
+ * Seulement la ligne de CETTE prise. La reprise est dans l'état en base : le balayage périodique
+ * (`reprendreRapportsEnSuspens`) la remet en file.
  */
-export async function remettreEnAttente(id: string, base: BaseRapports = prisma): Promise<void> {
+export async function remettreEnAttente(
+  id: string,
+  jeton: JetonPrise,
+  base: BaseRapports = prisma,
+): Promise<void> {
   await base.rapportAvantAudit.updateMany({
-    where: { id, statut: "en_cours", baseAudit: null },
+    where: { ...dePrise(id, jeton), baseAudit: null },
     data: {
       statut: "en_attente",
       etape: "Interrompu par un redémarrage : reprise automatique",
@@ -308,8 +354,10 @@ export async function remettreEnAttente(id: string, base: BaseRapports = prisma)
 export const SILENCE_ABANDON_MS = 30 * 60_000;
 
 /**
- * Lancements à reprendre au démarrage du worker : les lignes `en_attente`, et les `en_cours` sans
- * nouvelles depuis `SILENCE_ABANDON_MS` (remises en attente). Rend leurs identifiants.
+ * Lancements à reprendre (au démarrage du worker PUIS toutes les 10 minutes) : les lignes
+ * `en_attente`, et les `en_cours` sans nouvelles depuis `SILENCE_ABANDON_MS` — un plantage ne
+ * bloque donc jamais la fiche : la ligne est libérée (remise en attente) et reprise. L'ancienne
+ * prise perd son jeton : elle ne peut plus rien écrire. Rend les identifiants à remettre en file.
  */
 export async function lancementsEnSuspens(
   maintenant: Date = new Date(),
@@ -353,14 +401,19 @@ export async function listerRapportsDuClient(
   });
 }
 
-/** La base d'audit d'un rapport : déchiffrée, empreinte vérifiée, contrat validé. */
+/**
+ * La base d'audit d'un rapport : déchiffrée, empreinte vérifiée, contrat validé, et rattachée à
+ * la BONNE fiche (une base d'un autre client recopiée sur cette ligne n'est jamais rendue).
+ */
 export async function lireBaseAudit(id: string, base: BaseRapports = prisma): Promise<BaseAudit> {
   const l = await base.rapportAvantAudit.findUnique({
     where: { id },
-    select: { baseAudit: true, baseEmpreinte: true, ecarteLe: true },
+    select: { clientId: true, baseAudit: true, baseEmpreinte: true, ecarteLe: true },
   });
   if (l === null) throw new RapportIntrouvable();
   if (l.ecarteLe !== null) throw new RapportEcarte();
   if (l.baseAudit === null || l.baseEmpreinte === null) throw new BaseAbsente();
-  return ouvrirBase(l.baseAudit, l.baseEmpreinte);
+  const ouverte = ouvrirBase(l.baseAudit, l.baseEmpreinte);
+  if (ouverte.meta.clientId !== l.clientId) throw new EmpreinteAlteree();
+  return ouverte;
 }

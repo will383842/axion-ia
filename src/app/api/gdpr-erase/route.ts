@@ -149,7 +149,10 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   // Best-effort : la personne obtient son effacement même si cette étape échoue — l'alerte le dit.
   const rapportsAvantAuditResult = await ecarterRapportsAvantAuditPourEmail(email).catch(
     (err: unknown) => {
-      console.error("[gdpr-erase] mise à l'écart des rapports avant audit impossible :", err);
+      // Le NOM seulement : jamais un message d'erreur qui pourrait porter une donnée.
+      console.error(
+        `[gdpr-erase] mise à l'écart des rapports avant audit impossible : ${err instanceof Error ? err.name : "inconnue"}`,
+      );
       return { ecartes: 0, annules: 0, echec: true as const };
     },
   );

@@ -154,4 +154,47 @@ describe("lancerRapportAvantAudit — lancement", () => {
       expect.objectContaining({ data: expect.objectContaining({ statut: "erreur" }) }),
     );
   });
+
+  it("double lancement SIMULTANÉ : l'index unique refuse le second, un seul rapport en file", async () => {
+    // Les deux clics passent le comptage (0 en vol) ; la base refuse la seconde ligne (P2002).
+    m.create
+      .mockResolvedValueOnce({ id: "r1" })
+      .mockRejectedValueOnce(Object.assign(new Error("Unique constraint"), { code: "P2002" }));
+    const [a, b] = await Promise.all([
+      lancerRapportAvantAudit(CLIENT),
+      lancerRapportAvantAudit(CLIENT),
+    ]);
+    const oks = [a, b].filter((r) => r.ok);
+    expect(oks).toHaveLength(1);
+    expect([a, b].find((r) => !r.ok)).toEqual({
+      ok: false,
+      erreur: "Un rapport est déjà en préparation pour cette fiche.",
+    });
+    expect(m.enqueue).toHaveBeenCalledTimes(1);
+    expect(m.enqueue).toHaveBeenCalledWith("r1");
+  });
+
+  it("une autre erreur de base n'est pas maquillée en doublon", async () => {
+    m.create.mockRejectedValueOnce(Object.assign(new Error("panne"), { code: "P1001" }));
+    await expect(lancerRapportAvantAudit(CLIENT)).rejects.toThrow("panne");
+  });
+});
+
+describe("index unique partiel (migration additive)", () => {
+  it("un seul lancement en vol par fiche, sans rien supprimer", async () => {
+    const { readFileSync } = await import("node:fs");
+    const { join } = await import("node:path");
+    const sql = readFileSync(
+      join(
+        process.cwd(),
+        "prisma/migrations/20261102130000_rapports_avant_audit_un_en_vol/migration.sql",
+      ),
+      "utf8",
+    );
+    expect(sql).toMatch(
+      /CREATE UNIQUE INDEX IF NOT EXISTS "rapports_avant_audit_un_en_vol_par_client"\s+ON "rapports_avant_audit" \("client_id"\)\s+WHERE "statut" IN \('en_attente', 'en_cours'\)/,
+    );
+    const code = sql.replace(/^\s*--.*$/gm, "");
+    expect(code).not.toMatch(/(DROP|DELETE|TRUNCATE|UPDATE)/i);
+  });
 });

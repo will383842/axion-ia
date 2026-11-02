@@ -20,11 +20,14 @@ import {
   lancementsEnSuspens,
   lireBaseAudit,
   listerRapportsDuClient,
+  marquerErreur,
+  noterProgression,
   ouvrirBase,
   ouvrirPropositions,
   prendreRapport,
   remettreEnAttente,
   scellerBase,
+  scellerPropositions,
   type BaseRapports,
 } from "../persistance";
 import { baseValide, CLIENT_FIXTURE, fausseTable } from "./base.fixture";
@@ -94,8 +97,8 @@ describe("cycle de vie d'un lancement", () => {
       { clientId: CLIENT_FIXTURE, questionnaireIds: ["q1"], lanceParId: null },
       db,
     );
-    expect(await prendreRapport(id, new Date(), db)).toBe(true);
-    expect(await prendreRapport(id, new Date(), db)).toBe(false);
+    expect(await prendreRapport(id, new Date(), db)).toBeInstanceOf(Date);
+    expect(await prendreRapport(id, new Date(), db)).toBeNull();
   });
 
   it("le résultat est chiffré, scellé et relu ; les propositions aussi", async () => {
@@ -104,8 +107,8 @@ describe("cycle de vie d'un lancement", () => {
       { clientId: CLIENT_FIXTURE, questionnaireIds: ["q1"], lanceParId: null },
       db,
     );
-    await prendreRapport(id, new Date(), db);
-    await enregistrerResultat(id, resultat(), new Date(), db);
+    const jeton = (await prendreRapport(id, new Date(), db))!;
+    await enregistrerResultat(id, jeton, resultat(), new Date(), db);
     const ligne = table.lignes[0]!;
     expect(ligne.statut).toBe("termine");
     expect(ligne.progression).toBe(100);
@@ -121,8 +124,8 @@ describe("cycle de vie d'un lancement", () => {
       { clientId: CLIENT_FIXTURE, questionnaireIds: ["q1"], lanceParId: null },
       db,
     );
-    await prendreRapport(id, new Date(), db);
-    await enregistrerResultat(id, resultat(), new Date(), db);
+    const jeton = (await prendreRapport(id, new Date(), db))!;
+    await enregistrerResultat(id, jeton, resultat(), new Date(), db);
     table.lignes[0]!.baseEmpreinte = "0".repeat(64);
     await expect(lireBaseAudit(id, db)).rejects.toThrow(EmpreinteAlteree);
   });
@@ -133,12 +136,12 @@ describe("cycle de vie d'un lancement", () => {
       { clientId: CLIENT_FIXTURE, questionnaireIds: ["q1"], lanceParId: null },
       db,
     );
-    await prendreRapport(a.id, new Date(), db);
-    await enregistrerResultat(a.id, resultat(), new Date(), db);
+    const jeton = (await prendreRapport(a.id, new Date(), db))!;
+    await enregistrerResultat(a.id, jeton, resultat(), new Date(), db);
     const premiereBase = table.lignes[0]!.baseAudit;
 
     // Second enregistrement sur la même ligne : refusé, la première base reste.
-    await expect(enregistrerResultat(a.id, resultat(), new Date(), db)).rejects.toThrow(
+    await expect(enregistrerResultat(a.id, jeton, resultat(), new Date(), db)).rejects.toThrow(
       TransitionRefusee,
     );
     expect(table.lignes[0]!.baseAudit).toBe(premiereBase);
@@ -160,8 +163,8 @@ describe("cycle de vie d'un lancement", () => {
       { clientId: CLIENT_FIXTURE, questionnaireIds: ["q1"], lanceParId: null },
       db,
     );
-    await prendreRapport(id, new Date(), db);
-    await enregistrerResultat(id, resultat(), new Date(), db);
+    const jeton = (await prendreRapport(id, new Date(), db))!;
+    await enregistrerResultat(id, jeton, resultat(), new Date(), db);
     table.lignes[0]!.ecarteLe = new Date();
     await expect(lireBaseAudit(id, db)).rejects.toThrow(RapportEcarte);
   });
@@ -172,8 +175,8 @@ describe("cycle de vie d'un lancement", () => {
       { clientId: CLIENT_FIXTURE, questionnaireIds: ["q1"], lanceParId: null },
       db,
     );
-    await prendreRapport(id, new Date(), db);
-    await remettreEnAttente(id, db);
+    const jeton = (await prendreRapport(id, new Date(), db))!;
+    await remettreEnAttente(id, jeton, db);
     expect(table.lignes[0]!.statut).toBe("en_attente");
     expect(table.lignes[0]!.erreur).toBeNull();
     expect(await lancementsEnSuspens(new Date(), db)).toEqual([id]);
@@ -193,5 +196,75 @@ describe("cycle de vie d'un lancement", () => {
     expect(table.lignes[0]!.statut).toBe("en_cours");
     t = new Date(t0.getTime() + 31 * 60_000);
     expect(await lancementsEnSuspens(t, db)).toEqual([id]);
+    // Libérée : la fiche n'est plus bloquée (la ligne n'est plus « en vol » côté en_cours).
+    expect(table.lignes[0]!.statut).toBe("en_attente");
+  });
+
+  it("une prise périmée (ligne libérée puis reprise) ne peut plus rien écrire", async () => {
+    const t0 = new Date("2026-11-02T10:00:00Z");
+    let t = t0;
+    const { db, table } = base(fausseTable(() => t));
+    const { id } = await creerRapport(
+      { clientId: CLIENT_FIXTURE, questionnaireIds: ["q1"], lanceParId: null },
+      db,
+    );
+    const ancienne = (await prendreRapport(id, t0, db))!;
+    t = new Date(t0.getTime() + 31 * 60_000);
+    await lancementsEnSuspens(t, db);
+    const neuve = (await prendreRapport(id, t, db))!;
+    expect(neuve.getTime()).not.toBe(ancienne.getTime());
+
+    await noterProgression(id, ancienne, "Vieille étape", 50, db);
+    await remettreEnAttente(id, ancienne, db);
+    await marquerErreur(id, "vieille erreur", t, db, ancienne);
+    await expect(enregistrerResultat(id, ancienne, resultat(), t, db)).rejects.toThrow(
+      TransitionRefusee,
+    );
+    expect(table.lignes[0]!.statut).toBe("en_cours");
+    expect(table.lignes[0]!.etape).toBe("Démarrage");
+    expect(table.lignes[0]!.erreur).toBeNull();
+
+    await enregistrerResultat(id, neuve, resultat(), t, db);
+    expect(table.lignes[0]!.statut).toBe("termine");
+  });
+
+  it("sans jeton, marquerErreur ne touche jamais une ligne en cours", async () => {
+    const { db, table } = base();
+    const { id } = await creerRapport(
+      { clientId: CLIENT_FIXTURE, questionnaireIds: ["q1"], lanceParId: null },
+      db,
+    );
+    await prendreRapport(id, new Date(), db);
+    await marquerErreur(id, "file indisponible", new Date(), db);
+    expect(table.lignes[0]!.statut).toBe("en_cours");
+  });
+
+  it("une base d'un AUTRE client recopiée sur la ligne n'est pas rendue", async () => {
+    const { db, table } = base();
+    const { id } = await creerRapport(
+      { clientId: CLIENT_FIXTURE, questionnaireIds: ["q1"], lanceParId: null },
+      db,
+    );
+    const jeton = (await prendreRapport(id, new Date(), db))!;
+    await enregistrerResultat(id, jeton, resultat(), new Date(), db);
+    table.lignes[0]!.clientId = "22222222-2222-4222-8222-222222222222";
+    await expect(lireBaseAudit(id, db)).rejects.toThrow(EmpreinteAlteree);
+  });
+});
+
+describe("propositions de mise à jour de la fiche", () => {
+  it("scellées avec une empreinte : altérée → refusée", () => {
+    const e = scellerPropositions(baseValide().propositions_fiche);
+    expect(e.empreinte).toMatch(/^[0-9a-f]{64}$/);
+    expect(ouvrirPropositions(e)).toEqual(baseValide().propositions_fiche);
+    expect(() => ouvrirPropositions({ ...e, empreinte: "0".repeat(64) })).toThrow(EmpreinteAlteree);
+    expect(() => ouvrirPropositions({ v: 1, chiffre: e.chiffre })).toThrow(BaseHorsContrat);
+  });
+
+  it("JSON illisible (empreinte concordante) → BaseHorsContrat, jamais une SyntaxError", () => {
+    const json = "{pas du json";
+    expect(() =>
+      ouvrirPropositions({ v: 1, chiffre: chiffrerParole(json), empreinte: empreinteDe(json) }),
+    ).toThrow(BaseHorsContrat);
   });
 });

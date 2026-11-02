@@ -12,7 +12,11 @@
  *
  * ARRÊT (SIGTERM) : `arretDemande()` devient vrai, le fournisseur refuse l'appel suivant
  * (`InterruptionArret`) et la ligne repasse `en_attente` SANS erreur : la reprise est dans l'état
- * en base, le démarrage suivant du worker la remet en file (`lancementsEnSuspens`).
+ * en base, le balayage du worker la remet en file (`lancementsEnSuspens`). Un appel déjà parti
+ * va au bout : si c'était le dernier, le rapport est enregistré (`termine`).
+ *
+ * PROPRIÉTAIRE : `prendreRapport` rend un jeton (`debut_le`) ; toutes les écritures suivantes le
+ * portent, si bien qu'une prise périmée ne peut plus écrire sur une ligne reprise ailleurs.
  *
  * Aucune écriture sur `clients` (la raison sociale est LUE). Aucun contenu dans les journaux.
  */
@@ -72,7 +76,13 @@ export type IssueTraitement =
  */
 export function messageDEchec(e: unknown): string {
   if (e instanceof FournisseurNonBranche || e instanceof AucunQuestionnaireEnvoye) return e.message;
-  if (e instanceof ErreurRapport) return e.message.slice(0, 500);
+  if (e instanceof ErreurRapport) {
+    // JAMAIS `e.message` : pour une sortie d'IA refusée, il porte le détail zod, qui cite les
+    // valeurs reçues (des extraits de réponses). L'étape seule (un nom d'étape du moteur) et un
+    // texte fixe.
+    const etape = e.etape.replace(/\s+/g, " ").trim().slice(0, 80);
+    return `Rapport avant audit — étape « ${etape} » : réponse de l'IA invalide après une réparation, ou donnée manquante. Détail dans les journaux du worker.`;
+  }
   const nom = e instanceof Error ? e.name : "inconnue";
   return `Erreur technique (${nom}) : voir les journaux du worker.`;
 }
@@ -88,7 +98,8 @@ export async function traiterRapport(
   }
   const etat = await lireEtatRapport(rapportId, base);
   if (etat === null) return "introuvable";
-  if (!(await prendreRapport(rapportId, deps.maintenant(), base))) return "deja_pris";
+  const jeton = await prendreRapport(rapportId, deps.maintenant(), base);
+  if (jeton === null) return "deja_pris";
 
   try {
     const client = await base.client.findUnique({
@@ -97,7 +108,8 @@ export async function traiterRapport(
     });
     if (client === null) throw new ErreurRapport("fiche", "la fiche client est introuvable.");
 
-    const { collecte } = await deps.lireCollecte(etat.clientId);
+    // Seulement les questionnaires photographiés au lancement (jamais un envoyé depuis).
+    const { collecte } = await deps.lireCollecte(etat.clientId, etat.questionnaireIds);
     const suivis = await deps.lireSuivi(collecte.questionnaires.map((q) => q.id));
     const attendus = rosterAttendusSansReponse([...suivis.values()].map((s) => s.suivi));
 
@@ -119,20 +131,22 @@ export async function traiterRapport(
         // Notée en série, jamais bloquante : une progression perdue n'arrête pas le rapport.
         const pct = p.total > 0 ? (p.fait / p.total) * 100 : 0;
         derniere = derniere
-          .then(() => noterProgression(rapportId, p.etape, Math.min(pct, 99), base))
+          .then(() => noterProgression(rapportId, jeton, p.etape, Math.min(pct, 99), base))
           .catch(() => undefined);
       },
     });
     await derniere;
     // Un résultat complet est enregistré même si l'arrêt vient d'être demandé : rien n'est jeté.
-    await enregistrerResultat(rapportId, resultat, deps.maintenant(), base);
+    await enregistrerResultat(rapportId, jeton, resultat, deps.maintenant(), base);
     return "termine";
   } catch (e) {
-    if (e instanceof InterruptionArret || deps.arretDemande()) {
-      await remettreEnAttente(rapportId, base);
+    // Seule l'interruption VOULUE (appel refusé après SIGTERM) remet en attente : une vraie
+    // erreur survenue pendant l'arrêt reste une erreur, écrite pour Will.
+    if (e instanceof InterruptionArret) {
+      await remettreEnAttente(rapportId, jeton, base);
       return "interrompu";
     }
-    await marquerErreur(rapportId, messageDEchec(e), deps.maintenant(), base);
+    await marquerErreur(rapportId, messageDEchec(e), deps.maintenant(), base, jeton);
     return "erreur";
   }
 }

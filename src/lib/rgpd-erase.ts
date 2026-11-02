@@ -2593,6 +2593,17 @@ export async function ecarterRapportsAvantAuditPourEmail(
   return { ecartes: ecartes.count, annules: annules.count };
 }
 
+/** Motif posé sur un rapport avant audit mis à l'écart par la demande d'un membre de l'équipe. */
+export const MOTIF_ECART_RAPPORT_RGPD_MEMBRE =
+  "demande d'effacement RGPD (art. 17) d'un membre de l'équipe";
+
+/** Ce que la mise à l'écart d'un membre a touché : des nombres, pour l'alerte à Will. */
+export interface EcartMembre {
+  readonly reponses: number;
+  readonly rapportsEcartes: number;
+  readonly rapportsAnnules: number;
+}
+
 /**
  * DEMANDE d'effacement d'un salarié ou du référent informatique au questionnaire de pré-audit
  * (audit des données du 24/10/2026, point 12) : ses réponses sont MISES À L'ÉCART (plus montrées
@@ -2604,13 +2615,40 @@ export async function ecarterQuestionnairePreauditMembre(
   ref: string,
   membre: string,
   maintenant: Date = new Date(),
-): Promise<number> {
-  if (ref.trim() === "" || membre.trim() === "") return 0;
+): Promise<EcartMembre> {
+  const rien = { reponses: 0, rapportsEcartes: 0, rapportsAnnules: 0 } as const;
+  if (ref.trim() === "" || membre.trim() === "") return rien;
   const r = await prisma.questionnaireAvantAuditEnvoi.updateMany({
     where: { mode: { in: ["emp", "it"] }, membre, questionnaire: { ref }, ecarteLe: null },
     data: { ecarteLe: maintenant },
   });
-  return r.count;
+  if (r.count === 0) return rien;
+
+  // Les rapports avant audit établis sur ce questionnaire contiennent ses réponses (déchiffrées
+  // dans leur base) : même traitement que pour le dirigeant — MIS À L'ÉCART, lancements en vol
+  // ANNULÉS, JAMAIS supprimés. L'appelant remonte les nombres à Will, qui décide.
+  const qs = await prisma.questionnaireAvantAudit.findMany({
+    where: { ref },
+    select: { id: true },
+  });
+  let rapportsEcartes = 0;
+  let rapportsAnnules = 0;
+  for (const q of qs) {
+    const sur = { questionnaireIds: { has: q.id } };
+    const [annules, ecartes] = await prisma.$transaction([
+      prisma.rapportAvantAudit.updateMany({
+        where: { ...sur, statut: { in: ["en_attente", "en_cours"] } },
+        data: { statut: "annule", etape: "Annulé : demande d'effacement", finLe: maintenant },
+      }),
+      prisma.rapportAvantAudit.updateMany({
+        where: { ...sur, ecarteLe: null },
+        data: { ecarteLe: maintenant, ecarteMotif: MOTIF_ECART_RAPPORT_RGPD_MEMBRE },
+      }),
+    ]);
+    rapportsAnnules += annules.count;
+    rapportsEcartes += ecartes.count;
+  }
+  return { reponses: r.count, rapportsEcartes, rapportsAnnules };
 }
 
 /**

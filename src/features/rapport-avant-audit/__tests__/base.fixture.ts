@@ -83,11 +83,14 @@ function correspond(l: Ligne, where: Record<string, unknown>): boolean {
   return Object.entries(where).every(([k, v]) => {
     const val = l[k];
     if (v === null) return val === null || val === undefined;
+    // Égalité de dates par VALEUR, comme Postgres (le jeton de prise est une date).
+    if (v instanceof Date) return val instanceof Date && val.getTime() === v.getTime();
     if (typeof v === "object" && v !== null && !(v instanceof Date)) {
       const o = v as Record<string, unknown>;
       if ("in" in o) return (o.in as unknown[]).includes(val);
       if ("lt" in o) return val instanceof Date && val < (o.lt as Date);
       if ("not" in o) return o.not === null ? val !== null && val !== undefined : val !== o.not;
+      if ("has" in o) return Array.isArray(val) && val.includes(o.has);
       if ("hasSome" in o) {
         return Array.isArray(val) && (o.hasSome as unknown[]).some((x) => val.includes(x));
       }

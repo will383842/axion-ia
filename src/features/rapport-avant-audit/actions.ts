@@ -33,6 +33,8 @@ export type ResultatLancement =
 
 const Uuid = z.string().uuid();
 
+const DEJA_EN_PREPARATION = "Un rapport est déjà en préparation pour cette fiche.";
+
 /** Journal d'audit best-effort : des identifiants et des nombres, jamais un contenu de réponse. */
 async function journaliser(
   userId: string,
@@ -93,11 +95,19 @@ export async function lancerRapportAvantAudit(clientId: string): Promise<Resulta
   const enVol = await prisma.rapportAvantAudit.count({
     where: { clientId, statut: { in: ["en_attente", "en_cours"] } },
   });
-  if (enVol > 0) {
-    return { ok: false, erreur: "Un rapport est déjà en préparation pour cette fiche." };
-  }
+  if (enVol > 0) return { ok: false, erreur: DEJA_EN_PREPARATION };
 
-  const { id } = await creerRapport({ clientId, questionnaireIds: ids, lanceParId: acces.userId });
+  // Deux clics simultanés passent tous deux le comptage ci-dessus : l'index unique partiel
+  // `rapports_avant_audit_un_en_vol_par_client` refuse le second (P2002), qu'on traduit ici.
+  let id: string;
+  try {
+    ({ id } = await creerRapport({ clientId, questionnaireIds: ids, lanceParId: acces.userId }));
+  } catch (e) {
+    if ((e as { code?: unknown } | null)?.code === "P2002") {
+      return { ok: false, erreur: DEJA_EN_PREPARATION };
+    }
+    throw e;
+  }
   let enFile = false;
   try {
     enFile = await enqueueRapportAvantAudit(id);

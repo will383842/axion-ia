@@ -5,8 +5,11 @@
 // fait foi en base, la file n'est qu'un réveil. Le traitement ne finit jamais en échec BullMQ :
 // l'échec est écrit sur la ligne (`statut = erreur`), lisible par Will.
 //
-// SIGTERM : l'appel d'IA suivant est refusé et la ligne en cours repasse `en_attente`, SANS
-// erreur ; au démarrage, les lancements en suspens sont remis en file (`lancementsEnSuspens`).
+// SIGTERM : le drapeau `arret` SEUL. L'appel d'IA déjà parti va au bout ; le suivant est refusé
+// et c'est `traiterRapport` (qui tient le jeton de la prise) qui remet la ligne `en_attente`, SANS
+// erreur. Le gestionnaire ne touche jamais la base : il effacerait un rapport en train de finir.
+// Au démarrage PUIS toutes les 10 minutes, les lancements en suspens (en attente, ou en cours
+// sans nouvelles depuis 30 min : plantage) sont remis en file (`lancementsEnSuspens`).
 // Patron : `kit-import-worker.ts`.
 
 import { Worker } from "bullmq";
@@ -14,7 +17,7 @@ import { Worker } from "bullmq";
 import { getBullConnectionOrThrow } from "../connection";
 import { captureWorkerError } from "@/server/queue/lib/sentry-worker";
 import { enqueueRapportAvantAudit, RAPPORT_AVANT_AUDIT_QUEUE_NAME } from "@/server/queue/queues";
-import { lancementsEnSuspens, remettreEnAttente } from "@/features/rapport-avant-audit/persistance";
+import { lancementsEnSuspens } from "@/features/rapport-avant-audit/persistance";
 import { depsParDefaut, traiterRapport } from "@/features/rapport-avant-audit/traitement";
 
 export type RapportAvantAuditJobData = { rapportId: string };
@@ -28,7 +31,23 @@ const estTableAbsente = (e: unknown): boolean => {
 };
 
 let arret = false;
-let courant: string | null = null;
+
+/** Intervalle du balayage des lancements en suspens. */
+export const BALAYAGE_SUSPENS_MS = 10 * 60_000;
+
+/** Vrai une fois SIGTERM reçu (lu par le traitement avant chaque appel d'IA). */
+export function arretDemande(): boolean {
+  return arret;
+}
+
+/**
+ * Gestionnaire de SIGTERM : lève le drapeau et arrête le balayage. RIEN d'autre — surtout pas
+ * d'écriture en base (voir l'en-tête).
+ */
+export function surArret(balayage: ReturnType<typeof setInterval> | null): void {
+  arret = true;
+  if (balayage !== null) clearInterval(balayage);
+}
 
 /** Au démarrage : remet en file les lancements en attente ou abandonnés. Jamais bloquant. */
 export async function reprendreRapportsEnSuspens(): Promise<number> {
@@ -51,12 +70,8 @@ export function startRapportAvantAuditWorker(): Worker<RapportAvantAuditJobData,
     async (job) => {
       const { rapportId } = job.data;
       if (typeof rapportId !== "string" || !UUID.test(rapportId)) return;
-      courant = rapportId;
       try {
-        const issue = await traiterRapport(
-          rapportId,
-          depsParDefaut(() => arret),
-        );
+        const issue = await traiterRapport(rapportId, depsParDefaut(arretDemande));
         // Un identifiant et une issue : jamais un contenu.
         console.log(`[rapport-avant-audit] rapport=${rapportId} issue=${issue}`);
       } catch (e) {
@@ -68,8 +83,6 @@ export function startRapportAvantAuditWorker(): Worker<RapportAvantAuditJobData,
         // Le NOM seulement : jamais un message qui pourrait porter une réponse.
         console.error(`[rapport-avant-audit] rapport=${rapportId} : ${err.name}`);
         captureWorkerError("rapport-avant-audit", RAPPORT_AVANT_AUDIT_QUEUE_NAME, job, err);
-      } finally {
-        courant = null;
       }
     },
     {
@@ -85,11 +98,14 @@ export function startRapportAvantAuditWorker(): Worker<RapportAvantAuditJobData,
     captureWorkerError("rapport-avant-audit", RAPPORT_AVANT_AUDIT_QUEUE_NAME, job, err);
   });
 
-  process.once("SIGTERM", () => {
-    arret = true;
-    const id = courant;
-    if (id !== null) void remettreEnAttente(id).catch(() => undefined);
-  });
+  // Balayage répété : un plantage (conteneur tué sans SIGTERM) ne bloque jamais une fiche.
+  const balayage = setInterval(() => {
+    if (!arret) void reprendreRapportsEnSuspens();
+  }, BALAYAGE_SUSPENS_MS);
+  balayage.unref?.();
+  worker.on("closed", () => clearInterval(balayage));
+
+  process.once("SIGTERM", () => surArret(balayage));
 
   void reprendreRapportsEnSuspens();
   return worker;
