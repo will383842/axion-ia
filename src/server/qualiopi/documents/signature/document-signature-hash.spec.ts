@@ -27,6 +27,7 @@ import {
   type PieceScellee,
   type TupleDocumentSignatureV1,
   type TupleDocumentSignatureV2,
+  type TupleDocumentSignatureV3,
 } from "./document-signature-hash";
 import { verifierChaine } from "@/server/qualiopi/emargement/hash";
 
@@ -78,6 +79,7 @@ function ligne(over: Partial<LigneDocumentSignature> = {}): LigneDocumentSignatu
     // Preuve de VERSION 1 : celles qui existent déjà et ne seront jamais réécrites.
     hashVersion: 1,
     facteurVerification: null,
+    cgvVersion: null,
     ...over,
   };
 }
@@ -231,26 +233,25 @@ describe("🔴 version 2 — le facteur de vérification est scellé (V1-A-7)", 
     facteurVerification: "code_email",
   };
 
-  it("la version courante est 2, et la version 1 reste recalculable", () => {
-    expect(HASH_VERSION_DOCUMENT).toBe(2);
+  it("les versions 1 et 2 restent recalculables (la courante est la 3, voir plus bas)", () => {
     expect(versionDocumentRecalculable(1)).toBe(true);
     expect(versionDocumentRecalculable(2)).toBe(true);
   });
 
   it("la forme v2 porte `facteurVerification` et `v: 2`", () => {
-    const canon = tupleDocumentCanonique(TUPLE_V2);
+    const canon = tupleDocumentCanonique(TUPLE_V2, 2);
     expect(canon).toContain('"facteurVerification":"code_email"');
     expect(canon).toContain('"v":2');
   });
 
   it("modifier le facteur change l'empreinte ; nul et `code_email` ne se confondent pas", () => {
-    expect(calculerSelfHashDocument(TUPLE_V2)).not.toBe(
-      calculerSelfHashDocument({ ...TUPLE_V2, facteurVerification: null }),
+    expect(calculerSelfHashDocument(TUPLE_V2, 2)).not.toBe(
+      calculerSelfHashDocument({ ...TUPLE_V2, facteurVerification: null }, 2),
     );
   });
 
   it("un tuple v2 SANS facteur ne se hache pas (absent n'est pas nul)", () => {
-    expect(() => calculerSelfHashDocument(TUPLE)).toThrow(/sans facteurVerification/);
+    expect(() => calculerSelfHashDocument(TUPLE, 2)).toThrow(/sans facteurVerification/);
   });
 
   it("la v1 ignore le facteur : une preuve existante garde son empreinte", () => {
@@ -266,7 +267,7 @@ describe("🔴 version 2 — le facteur de vérification est scellé (V1-A-7)", 
       consentementVersion: "doc-consent-code-v1",
       hashVersion: 2,
       facteurVerification: "code_email",
-      selfHash: calculerSelfHashDocument(TUPLE_V2),
+      selfHash: calculerSelfHashDocument(TUPLE_V2, 2),
     });
     expect(tupleDocumentDepuisLigne(l, PIECE)).toStrictEqual(TUPLE_V2);
     expect(verifierChaine([maillonDocumentDepuisLigne(l, PIECE)]).valide).toBe(true);
@@ -281,5 +282,86 @@ describe("🔴 version 2 — le facteur de vérification est scellé (V1-A-7)", 
     expect(
       tupleDocumentDepuisLigne(ligne({ facteurVerification: "code_email" }), PIECE),
     ).toBeNull();
+  });
+});
+
+describe("🔴 version 3 — la version des CGV acceptées est scellée (devis)", () => {
+  const TUPLE_V3: TupleDocumentSignatureV3 = {
+    ...TUPLE,
+    facteurVerification: null,
+    cgvVersion: "2026-10-04",
+  };
+
+  it("🔴 le vecteur d'or de la version 2 est FIGÉ (aucun octet du sérialiseur v2 n'a bougé)", () => {
+    const t = { ...TUPLE, facteurVerification: "code_email" as const };
+    expect(calculerSelfHashDocument(t, 2)).toBe(
+      "eaf6685d4b56702cf133291eed1457e7abd3be6cda91205179d92ff27157d286",
+    );
+  });
+
+  it("🔴 le vecteur d'or de la version 1 reste inchangé au caractère près", () => {
+    expect(calculerSelfHashDocument(TUPLE, 1)).toBe(
+      "63898b6d0b0e4f2023f85efbaef1e1254bc5fb8cd17048b1af277ef63977af2e",
+    );
+  });
+
+  it("la version courante est 3 ; 1, 2 et 3 sont recalculables", () => {
+    expect(HASH_VERSION_DOCUMENT).toBe(3);
+    expect(versionDocumentRecalculable(1)).toBe(true);
+    expect(versionDocumentRecalculable(2)).toBe(true);
+    expect(versionDocumentRecalculable(3)).toBe(true);
+    expect(versionDocumentRecalculable(4)).toBe(false);
+  });
+
+  it("la forme v3 porte `cgvVersion`, `facteurVerification` et `v: 3`", () => {
+    const canon = tupleDocumentCanonique(TUPLE_V3);
+    expect(canon).toContain('"cgvVersion":"2026-10-04"');
+    expect(canon).toContain('"facteurVerification":null');
+    expect(canon).toContain('"v":3');
+  });
+
+  it("modifier la version des CGV change l'empreinte ; nulle et renseignée ne se confondent pas", () => {
+    const h = calculerSelfHashDocument(TUPLE_V3);
+    expect(h).not.toBe(calculerSelfHashDocument({ ...TUPLE_V3, cgvVersion: "2026-10-05" }));
+    expect(h).not.toBe(calculerSelfHashDocument({ ...TUPLE_V3, cgvVersion: null }));
+  });
+
+  it("un tuple v3 SANS cgvVersion ne se hache pas (absent n'est pas nul)", () => {
+    expect(() =>
+      calculerSelfHashDocument({ ...TUPLE, facteurVerification: null } as TupleDocumentSignatureV2),
+    ).toThrow(/sans cgvVersion/);
+  });
+
+  it("une ligne v3 se reconstruit et se vérifie, version des CGV comprise", () => {
+    const l = ligne({
+      hashVersion: 3,
+      cgvVersion: "2026-10-04",
+      selfHash: calculerSelfHashDocument(TUPLE_V3),
+    });
+    expect(tupleDocumentDepuisLigne(l, PIECE)).toStrictEqual(TUPLE_V3);
+    expect(verifierChaine([maillonDocumentDepuisLigne(l, PIECE)]).valide).toBe(true);
+    // Version des CGV modifiée ou effacée après coup : la preuve le dit.
+    for (const cgvVersion of ["2026-01-01", null]) {
+      expect(verifierChaine([maillonDocumentDepuisLigne({ ...l, cgvVersion }, PIECE)]).valide).toBe(
+        false,
+      );
+    }
+  });
+
+  it("une ligne v1 ou v2 qui porte une version des CGV a été écrite après coup : irrecalculable", () => {
+    expect(tupleDocumentDepuisLigne(ligne({ cgvVersion: "2026-10-04" }), PIECE)).toBeNull();
+    expect(
+      tupleDocumentDepuisLigne(ligne({ hashVersion: 2, cgvVersion: "2026-10-04" }), PIECE),
+    ).toBeNull();
+  });
+
+  it("une ligne v2 déjà scellée garde sa validité (aucune réécriture)", () => {
+    const t = { ...TUPLE, facteurVerification: "code_email" as const };
+    const l = ligne({
+      hashVersion: 2,
+      facteurVerification: "code_email",
+      selfHash: calculerSelfHashDocument(t, 2),
+    });
+    expect(verifierChaine([maillonDocumentDepuisLigne(l, PIECE)]).valide).toBe(true);
   });
 });

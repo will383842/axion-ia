@@ -7702,7 +7702,7 @@ model DocumentSignature {
   /// version 2 du tuple ; NULL sur les preuves antérieures, qui ne sont pas réécrites.
   facteurVerification FacteurVerificationSignature? @map("facteur_verification")
   /// Version des CGV acceptées à la signature d'un DEVIS par jeton (ex. `2026-08-17`). NULL sur
-  /// les autres pièces et canaux, et sur les preuves antérieures. HACHÉE à partir de la version 2.
+  /// les autres pièces et canaux, et sur les preuves antérieures. HACHÉE à partir de la version 3.
   cgvVersion String? @map("cgv_version") @db.VarChar(40)
 
   /// 🔴 DISTINCTS de `createdAt` : l'écart entre les deux révèle une insertion

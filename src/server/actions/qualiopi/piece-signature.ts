@@ -43,6 +43,7 @@
 import { createHash } from "node:crypto";
 import * as Sentry from "@sentry/nextjs";
 import { z } from "zod";
+import { CGV_VERSION } from "@/content/cgv-version";
 import { prisma } from "@/lib/prisma";
 import { checkRateLimit } from "@/lib/rate-limit";
 import type { AdminSession } from "@/server/actions/knowledge/_guards";
@@ -105,7 +106,11 @@ export type RefusSignaturePiece =
   /** Contrat-cadre v3 : la signature exige le code reçu par e-mail (lot L7c). */
   | "code_requis"
   | "code_refuse"
-  | "code_indisponible";
+  | "code_indisponible"
+  /** Devis : la case « j'ai lu et j'accepte les CGV » n'a pas été cochée. */
+  | "cgv_non_acceptees"
+  /** Devis : la page affichait une autre version des CGV que la version en vigueur. */
+  | "cgv_perimees";
 
 export type ResultatSignaturePiece =
   | {
@@ -142,7 +147,17 @@ const entreeJetonSchema = z.object({
     .string()
     .regex(/^\d{6}$/)
     .optional(),
+  /**
+   * CGV avant signature du devis. `z.literal(true)` : « true » en chaîne, `false`, 1… sont
+   * refusés. La version AFFICHÉE ne sert qu'à détecter une page périmée ; la version
+   * ENREGISTRÉE est toujours celle du serveur (`CGV_VERSION`).
+   */
+  cgvAcceptees: z.literal(true).optional(),
+  cgvVersionAffichee: z.string().max(40).optional(),
 });
+
+const MESSAGE_CGV_NON_ACCEPTEES =
+  "Pour signer ce devis, cochez la case « J'ai lu et j'accepte les conditions générales de vente ».";
 
 const entreeContresignatureSchema = z.object({
   documentGenereId: z.string().uuid(),
@@ -242,9 +257,14 @@ export async function signerPieceParJetonAction(input: {
   methode: "trace" | "confirmation_accessible";
   imageDataUrl?: string;
   code?: string;
+  cgvAcceptees?: boolean;
+  cgvVersionAffichee?: string;
 }): Promise<ResultatSignaturePiece> {
   const parse = entreeJetonSchema.safeParse(input);
   if (!parse.success) {
+    if (parse.error.issues.some((i) => i.path[0] === "cgvAcceptees")) {
+      return { ok: false, raison: "cgv_non_acceptees", message: MESSAGE_CGV_NON_ACCEPTEES };
+    }
     return {
       ok: false,
       raison: parse.error.issues.some((i) => i.path[0] === "code")
@@ -337,6 +357,23 @@ export async function signerPieceParJetonAction(input: {
     return { ok: false, raison: "piece_non_signable_maintenant", message: objection.message };
   }
 
+  // CGV avant signature du devis : case obligatoire, sur la version en vigueur. Placé
+  // APRÈS l'objection métier (un devis refusé garde son message) et AVANT toute
+  // consommation de code. Le service le revérifie (`signerDocument`).
+  if (piece.type === "devis") {
+    if (donnees.cgvAcceptees !== true) {
+      return { ok: false, raison: "cgv_non_acceptees", message: MESSAGE_CGV_NON_ACCEPTEES };
+    }
+    if (donnees.cgvVersionAffichee !== CGV_VERSION) {
+      return {
+        ok: false,
+        raison: "cgv_perimees",
+        message:
+          "Les conditions générales ont été mises à jour. Rechargez la page pour les relire avant de signer.",
+      };
+    }
+  }
+
   // Contrat-cadre v3 : le code à usage unique est vérifié et CONSOMMÉ juste
   // avant l'écriture de la preuve. Sans code valide, rien n'est signé.
   const avecCode = codeRequis(piece.type, piece.metadata, verif.partie);
@@ -364,6 +401,8 @@ export async function signerPieceParJetonAction(input: {
       partiesRequises: circuit.parties,
       ...(donnees.imageDataUrl === undefined ? {} : { imageDataUrl: donnees.imageDataUrl }),
       ...(avecCode ? { consentementVersion: CONSENTEMENT_VERSION_DOCUMENT_CODE } : {}),
+      // Valeur SERVEUR, jamais celle du navigateur. Vide hors devis.
+      ...(piece.type === "devis" ? { cgvVersion: CGV_VERSION } : {}),
       ...contexte,
     });
     if (!res.ok) return res;
