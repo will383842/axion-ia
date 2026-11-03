@@ -24,6 +24,12 @@ vi.mock("@/lib/prisma", () => ({
   },
 }));
 vi.mock("../../actions", () => ({ lancerRapportAvantAudit: faux.lancer }));
+// Espion sur le VRAI rendu : l'aperçu ne doit jamais le déclencher.
+const pdfClient = vi.hoisted(() => ({ genererPdfClient: vi.fn() }));
+vi.mock("../../sorties/pdf-client", async (orig) => ({
+  ...(await orig<typeof import("../../sorties/pdf-client")>()),
+  genererPdfClient: pdfClient.genererPdfClient,
+}));
 
 import { scellerBase, scellerPropositions } from "../../persistance";
 import { baseValide, fausseTable } from "../../__tests__/base.fixture";
@@ -49,8 +55,11 @@ let envoisFindMany: ReturnType<typeof vi.fn>;
 let horloge = 0;
 
 /** Pose une ligne TERMINÉE (base scellée) pour `clientId`. */
-async function rapportTermine(clientId: string, extra: Record<string, unknown> = {}) {
-  const base = baseDe(clientId);
+async function rapportTermine(
+  clientId: string,
+  extra: Record<string, unknown> = {},
+  base: BaseAudit = baseDe(clientId),
+) {
   const s = scellerBase(base);
   const { id } = await table.create({
     data: {
@@ -71,7 +80,12 @@ async function rapportTermine(clientId: string, extra: Record<string, unknown> =
   return id as string;
 }
 
-beforeEach(() => {
+beforeEach(async () => {
+  // `restoreAllMocks` (afterEach) efface l'implémentation : l'espion est ré-armé sur le VRAI rendu.
+  const vrai = await vi.importActual<typeof import("../../sorties/pdf-client")>(
+    "../../sorties/pdf-client",
+  );
+  pdfClient.genererPdfClient.mockReset().mockImplementation(vrai.genererPdfClient);
   process.env = { ...ENV0, PII_ENCRYPTION_KEY: "d".repeat(64) };
   horloge = 0;
   table = fausseTable(() => new Date(Date.UTC(2026, 10, 1, 9, 0, horloge++)));
@@ -157,7 +171,7 @@ describe("cloison par client — le rapport de B demandé avec A = un identifian
     expect(croise).toEqual({ ok: false, raison: REFUS_INTROUVABLE });
     expect(croise).toEqual(await ACCES_BRANCHE.validerPdf(A, INEXISTANT, WILL));
     expect(table.lignes[0]?.pdfValideLe).toBeNull();
-    expect(await ACCES_BRANCHE.validerPdf(B, rB, WILL)).toEqual({ ok: true });
+    expect(await ACCES_BRANCHE.validerPdf(B, rB, WILL)).toEqual({ ok: true, dejaValide: false });
     expect(table.lignes[0]?.pdfValideLe).toBeInstanceOf(Date);
   });
 
@@ -199,6 +213,47 @@ describe("rapports écartés et bases illisibles", () => {
     expect(ligne).toContain("empreinte altérée");
     expect(ligne).toContain(id);
     expect(ligne).not.toMatch(/devis|soirées|Société/);
+  });
+
+  it("base indéchiffrable : null, journalisée par son NOM seul, et l'historique reste lisible", async () => {
+    const erreur = vi.spyOn(console, "error").mockImplementation(() => undefined);
+    const sain = await rapportTermine(A);
+    const corrompu = await rapportTermine(A, { baseAudit: "Société d'exemple : devis en clair" });
+    const tronque = await rapportTermine(A, { baseAudit: "enc:v1:tronque" });
+    for (const id of [corrompu, tronque]) {
+      expect(await ACCES_BRANCHE.lireBase(A, id)).toBeNull();
+      expect(await ACCES_BRANCHE.lirePropositions(A, id)).toEqual([]);
+      expect(await ACCES_BRANCHE.apercuPdf(A, id)).toBeNull();
+      expect(await ACCES_BRANCHE.telecharger(A, id, "base-json")).toBeNull();
+    }
+    // Le rapport sain et la liste complète restent lisibles.
+    expect(await ACCES_BRANCHE.lireBase(A, sain)).not.toBeNull();
+    expect((await ACCES_BRANCHE.listerRapports(A)).map((r) => r.id).sort()).toEqual(
+      [sain, corrompu, tronque].sort(),
+    );
+    expect(erreur).toHaveBeenCalled();
+    for (const [ligne] of erreur.mock.calls) {
+      expect(String(ligne)).toMatch(/base illisible \(\w+\) : rapport=/);
+      expect(String(ligne)).not.toMatch(/devis|Société|tronque|enc:v1|chiffr/);
+    }
+  });
+
+  it("une panne de la base de données n'est PAS déguisée en « rapport illisible »", async () => {
+    const id = await rapportTermine(A);
+    const panne = Object.assign(new Error("connexion perdue"), {
+      name: "PrismaClientKnownRequestError",
+    });
+    const findUnique = table.findUnique;
+    let appels = 0;
+    (table as Record<string, unknown>).findUnique = async (
+      args: Parameters<typeof findUnique>[0],
+    ) => {
+      appels += 1;
+      // 1er appel : l'état (cloison) ; 2e : la lecture de la base, qui tombe en panne.
+      if (appels === 2) throw panne;
+      return findUnique(args);
+    };
+    await expect(ACCES_BRANCHE.lireBase(A, id)).rejects.toBe(panne);
   });
 
   it("base absente (rapport en cours) : null", async () => {
@@ -280,10 +335,35 @@ describe("téléchargements", () => {
   it("validerPdf déjà validé : sans effet, ok", async () => {
     const avant = new Date("2026-11-01T12:00:00Z");
     const id = await rapportTermine(A, { pdfValideLe: avant, pdfValideParId: WILL });
-    expect(await ACCES_BRANCHE.validerPdf(A, id, "autre")).toEqual({ ok: true });
+    expect(await ACCES_BRANCHE.validerPdf(A, id, "autre")).toEqual({ ok: true, dejaValide: true });
     expect(table.lignes[0]?.pdfValideLe).toEqual(avant);
     expect(table.lignes[0]?.pdfValideParId).toBe(WILL);
   });
+});
+
+describe("aperçu du PDF client (sans rendu)", () => {
+  /** Une base qui porte deux passages à retirer (mots interdits), 100 % fictive. */
+  function baseAvecInterdits(): BaseAudit {
+    const b = baseDe(A);
+    return {
+      ...b,
+      besoins_declares: [{ ...b.besoins_declares[0]!, enonce: "Un gain garanti sur les devis" }],
+      pistes: [b.pistes[0]!, { ...b.pistes[0]!, id: "P2", titre: "Préparer Qualiopi", rang: 2 }],
+    };
+  }
+
+  it("n'appelle jamais genererPdfClient et rend les MÊMES passages retirés que le rendu", async () => {
+    const base = baseAvecInterdits();
+    const id = await rapportTermine(A, {}, base);
+    const apercu = await ACCES_BRANCHE.apercuPdf(A, id);
+    expect(pdfClient.genererPdfClient).not.toHaveBeenCalled();
+    expect(apercu?.retiresPourRelecture.map((r) => r.ou).sort()).toEqual(["besoin", "piste"]);
+    // Témoin : le rendu complet retire exactement les mêmes passages.
+    const { genererPdfClient } = await import("../../sorties/pdf-client");
+    const { retiresPourRelecture } = await genererPdfClient(base);
+    expect(pdfClient.genererPdfClient).toHaveBeenCalledTimes(1); // l'espion voit bien le rendu
+    expect(apercu).toEqual({ retiresPourRelecture });
+  }, 30_000);
 });
 
 describe("lancer", () => {

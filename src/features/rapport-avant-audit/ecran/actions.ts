@@ -118,6 +118,13 @@ export async function validerPdfClientAction(formData: FormData): Promise<Retour
 
   const r = await acces.validerPdf(clientId, rapportId, session.userId);
   if (!r.ok) return { ok: false, texte: r.raison };
+  // La trace ne dit « validé » que si CET appel a posé la date (un double clic n'en écrit pas deux).
+  if (r.dejaValide) {
+    return {
+      ok: true,
+      texte: "Ce PDF client était déjà validé : rien n'a changé. Rien n'a été envoyé au client.",
+    };
+  }
   await logQualiopiActivity({
     action: "rapport-avant-audit.pdf_valide",
     targetType: "Client",

@@ -14,8 +14,14 @@
  *   · une base illisible (`RapportEcarte`, `RapportIntrouvable`, `BaseAbsente`,
  *     `EmpreinteAlteree`, `BaseHorsContrat`) rend `null`. Une empreinte altérée est
  *     journalisée — identifiants seulement, jamais le contenu ;
+ *   · toute AUTRE erreur de lecture de la base (déchiffrement : clé changée, valeur tronquée…)
+ *     rend aussi `null`, journalisée par son NOM et les identifiants : un rapport corrompu ne
+ *     masque jamais tout l'historique de la fiche. Seule une erreur de la base de données
+ *     (`PrismaClient…`) remonte, pour ne pas faire passer une panne pour « aucun rapport » ;
  *   · `pdfChemin` n'est JAMAIS lu : le PDF client est régénéré depuis la base vérifiée, et
- *     `@react-pdf` n'est chargé (import dynamique) qu'au téléchargement ou à l'aperçu.
+ *     `@react-pdf` n'est chargé (import dynamique) qu'au TÉLÉCHARGEMENT. L'aperçu (« ce que le PDF
+ *     retirerait »), lu à chaque affichage de la fiche, n'utilise que les fonctions pures
+ *     `filtrerPourClient` + `retirerMotsInterdits` : aucun rendu de PDF, aucun `@react-pdf`.
  */
 
 import { z } from "zod";
@@ -37,12 +43,14 @@ import {
 } from "../persistance";
 import { baseEnJson, baseEnMarkdown } from "../sorties/base-markdown";
 import { ficheEnMarkdown } from "../sorties/fiche-personne-markdown";
+import { filtrerPourClient } from "../sorties/filtre-client";
+import { retirerMotsInterdits } from "../sorties/retirer-mots";
 
 import type {
   AccesRapports,
   FichierRapport,
   FormatTelechargement,
-  ResultatAcces,
+  ResultatValidation,
   ResumeRapport,
   StatutRapport,
 } from "./contrat";
@@ -89,7 +97,11 @@ async function baseDuClient(
       console.error(`${JOURNAL} empreinte altérée : rapport=${rapportId} client=${clientId}`);
     }
     if (ILLISIBLES.some((C) => e instanceof C)) return null;
-    throw e;
+    const nom = e instanceof Error ? e.name : "inconnue";
+    if (nom.startsWith("PrismaClient")) throw e;
+    // Déchiffrement impossible : le NOM seulement (jamais `e.message`, qui pourrait citer la valeur).
+    console.error(`${JOURNAL} base illisible (${nom}) : rapport=${rapportId} client=${clientId}`);
+    return null;
   }
 }
 
@@ -236,19 +248,22 @@ export const ACCES_BRANCHE: AccesRapports = {
   async apercuPdf(clientId, rapportId) {
     const lu = await baseDuClient(clientId, rapportId);
     if (lu === null) return null;
-    const { genererPdfClient } = await import("../sorties/pdf-client");
-    const { retiresPourRelecture } = await genererPdfClient(lu.base);
+    // Les MÊMES fonctions pures que `genererPdfClient`, sans le rendu : même liste de passages.
+    const { retiresPourRelecture } = retirerMotsInterdits(filtrerPourClient(lu.base));
     return { retiresPourRelecture };
   },
-  async validerPdf(clientId, rapportId, par): Promise<ResultatAcces> {
+  async validerPdf(clientId, rapportId, par): Promise<ResultatValidation> {
     const etat = await etatDuClient(clientId, rapportId);
     if (etat === null || etat.statut !== "termine") return { ok: false, raison: REFUS_INTROUVABLE };
-    if (etat.pdfValideLe !== null) return { ok: true }; // déjà validé : sans effet
+    // Déjà validé : sans effet, et SANS trace (ce n'est pas cet appel qui a posé la date).
+    if (etat.pdfValideLe !== null) return { ok: true, dejaValide: true };
     const pose = await validerPdfClient(rapportId, clientId, par);
-    if (pose) return { ok: true };
+    if (pose) return { ok: true, dejaValide: false };
     // Validé entre-temps par un autre clic : sans effet, mais pas une erreur.
     const relu = await etatDuClient(clientId, rapportId);
-    return relu?.pdfValideLe != null ? { ok: true } : { ok: false, raison: REFUS_INTROUVABLE };
+    return relu?.pdfValideLe != null
+      ? { ok: true, dejaValide: true }
+      : { ok: false, raison: REFUS_INTROUVABLE };
   },
   async lancer(clientId) {
     // Import dynamique : la file BullMQ n'est chargée qu'au clic, jamais à l'affichage.

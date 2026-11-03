@@ -83,6 +83,14 @@ export interface PassageRetire {
 
 export type ResultatAcces = { readonly ok: true } | { readonly ok: false; readonly raison: string };
 
+/**
+ * Le résultat de `validerPdf`. `dejaValide` dit si CET appel a posé la date : vrai quand le PDF
+ * l'était déjà (ou l'a été entre-temps par un autre clic). La trace n'est écrite que s'il est faux.
+ */
+export type ResultatValidation =
+  | { readonly ok: true; readonly dejaValide: boolean }
+  | { readonly ok: false; readonly raison: string };
+
 export interface AccesRapports {
   /** Faux pour un accès « pas encore installé » : l'écran le dit, et le bouton reste éteint. */
   readonly branche: boolean;
@@ -110,7 +118,7 @@ export interface AccesRapports {
     rapportId: string,
   ): Promise<{ readonly retiresPourRelecture: ReadonlyArray<PassageRetire> } | null>;
   /** Marque le PDF client comme validé (date et auteur). N'ENVOIE RIEN à personne. */
-  validerPdf(clientId: string, rapportId: string, par: string): Promise<ResultatAcces>;
+  validerPdf(clientId: string, rapportId: string, par: string): Promise<ResultatValidation>;
   /**
    * Lance une nouvelle version du rapport. Rend vite : le travail se fait en arrière-plan.
    * L'accès trace lui-même le lancement (une seule trace : `rapport-avant-audit.lancer`).

@@ -4,10 +4,14 @@
  * Société et personnes FICTIVES, écrites à la main.
  */
 import React from "react";
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
+
+// `fichesEnMarkdown` vit dans le raccord de l'écran, qui importe le client Prisma : hors sujet ici.
+vi.mock("@/lib/prisma", () => ({ prisma: {} }));
 
 import { BaseAuditSchema, SECTIONS_ANALYSE, VERSION_BASE_AUDIT } from "../base-audit-schema";
 import type { BaseAudit } from "../base-audit-schema";
+import { fichesEnMarkdown } from "../ecran/brancher";
 import { motsInterditsDans } from "../mots-interdits";
 import { baseEnJson, baseEnMarkdown } from "../sorties/base-markdown";
 import { ficheEnMarkdown } from "../sorties/fiche-personne-markdown";
@@ -587,5 +591,21 @@ describe("Markdown — corrections de la relecture", () => {
     const sansNomEmp = { ...f[1]!, identite: { ...f[1]!.identite, nom: null } };
     expect(ficheEnMarkdown(sansNomEmp)).toContain("Fiche d'entretien — Personne sans nom");
     expect(ficheEnMarkdown(sansNomEmp)).not.toContain("emp:");
+  });
+});
+
+describe("téléchargement « fiches-md » (base à trois personnes)", () => {
+  it("rend trois fiches de niveau 2, une par personne, chaque nom présent", () => {
+    const base = exemple();
+    expect(base.fiches_personnes).toHaveLength(3);
+    const md = fichesEnMarkdown(base);
+    expect(md.startsWith(`# Fiches des personnes — ${base.meta.raisonSociale}`)).toBe(true);
+    const titres = md.split("\n").filter((l) => l.startsWith("## Fiche d'entretien — "));
+    expect(titres).toHaveLength(3);
+    for (const nom of ["Solène Marchaudon", "Odile Fontbrune", "Hugo Valmorel"]) {
+      expect(md).toContain(nom);
+      expect(titres).toContain(`## Fiche d'entretien — ${nom}`);
+    }
+    expect(md).not.toContain("Aucune fiche individuelle");
   });
 });
