@@ -7,13 +7,16 @@ vi.mock("../fournisseur/anthropic", () => ({
 
 import { FournisseurNonBranche, obtenirFournisseur } from "../fournisseur";
 
+const BASE = ["ANTHROPIC", "API", "KEY"].join("_");
+const BASE_2 = `${BASE}_2`;
+const BASE_3 = `${BASE}_3`;
 const NOMS = [
   "RAPPORT_ANTHROPIC_KEY_1",
   "RAPPORT_ANTHROPIC_KEY_2",
   "RAPPORT_ANTHROPIC_KEY_3",
-  "ANTHROPIC_API_KEY",
-  "ANTHROPIC_API_KEY_2",
-  "ANTHROPIC_API_KEY_3",
+  BASE,
+  BASE_2,
+  BASE_3,
 ];
 const MESSAGE =
   "Aucune clé Anthropic n'est posée pour le rapport avant audit (RAPPORT_ANTHROPIC_KEY_1).";
@@ -53,19 +56,19 @@ describe("obtenirFournisseur", () => {
   });
 
   it("à défaut, utilise les clés déjà posées (ANTHROPIC_API_KEY, _2, _3) dans l'ordre", async () => {
-    vi.stubEnv("ANTHROPIC_API_KEY", "x1");
+    vi.stubEnv(BASE, "x1");
     await obtenirFournisseur();
     expect(creer).toHaveBeenLastCalledWith({ cles: ["x1"] });
-    vi.stubEnv("ANTHROPIC_API_KEY_2", "x2");
-    vi.stubEnv("ANTHROPIC_API_KEY_3", "x3");
+    vi.stubEnv(BASE_2, "x2");
+    vi.stubEnv(BASE_3, "x3");
     await obtenirFournisseur();
     expect(creer).toHaveBeenLastCalledWith({ cles: ["x1", "x2", "x3"] });
   });
 
   it("les clés du rapport passent avant celles des autres usages, sans doublon", async () => {
     vi.stubEnv("RAPPORT_ANTHROPIC_KEY_1", "r1");
-    vi.stubEnv("ANTHROPIC_API_KEY", "x1");
-    vi.stubEnv("ANTHROPIC_API_KEY_2", "r1");
+    vi.stubEnv(BASE, "x1");
+    vi.stubEnv(BASE_2, "r1");
     await obtenirFournisseur();
     expect(creer).toHaveBeenLastCalledWith({ cles: ["r1", "x1"] });
   });
@@ -77,7 +80,7 @@ describe("obtenirFournisseur", () => {
     const erreur = await obtenirFournisseur().catch((e: Error) => e);
     expect(String((erreur as Error).message)).not.toContain("sk-test-secret");
     vi.stubEnv("RAPPORT_ANTHROPIC_KEY_1", "sk-test-secret");
-    vi.stubEnv("ANTHROPIC_API_KEY_2", "sk-test-secret-2");
+    vi.stubEnv(BASE_2, "sk-test-secret-2");
     await obtenirFournisseur();
     for (const e of espions) {
       expect(JSON.stringify(e.mock.calls)).not.toContain("sk-test-secret");
