@@ -33,6 +33,8 @@ vi.mock("@/lib/admin-path", () => ({ adminPath: (_l: string, p: string) => `/fr/
 vi.mock("@/features/dossier-client/message-de-retour", () => ({
   avecMessageDeRetour: (u: string, c: string, t: string) => `${u}&${c}=${t}`,
 }));
+// L'encart « Audit » (super_admin, lit la session) a ses propres tests : ici il ne rend rien.
+vi.mock("@/components/admin/audit-terrain/EncartAudit", () => ({ EncartAudit: () => null }));
 vi.mock("next/link", () => ({
   default: ({ href, children }: { href: string; children: React.ReactNode }) => (
     <a href={href}>{children}</a>

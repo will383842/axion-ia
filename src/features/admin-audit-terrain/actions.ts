@@ -206,3 +206,57 @@ export async function regenererJetonAudit(entree: unknown): Promise<ResultatJeto
     expireLe: expireLe.toISOString(),
   };
 }
+
+/**
+ * PR3 : Will valide le brouillon du rapport (a_relire → valide). Rien ne part au client.
+ * Seule la DERNIÈRE version d'une session peut être validée ; un rapport déjà validé reste tel quel.
+ */
+export async function validerRapportAudit(
+  rapportId: unknown,
+  clientId: unknown,
+): Promise<
+  | { ok: true; valide: true }
+  | { ok: false; erreur: "interdit" | "invalide" | "introuvable" | "ancienne_version" }
+> {
+  const adminId = await exigerSuperAdmin();
+  if (!adminId) return { ok: false, erreur: "interdit" };
+  const p = z.string().uuid().safeParse(rapportId);
+  const c = z.string().uuid().safeParse(clientId);
+  if (!p.success || !c.success) return { ok: false, erreur: "invalide" };
+
+  const ligne = await prisma.auditTerrainRapport.findUnique({
+    where: { id: p.data },
+    select: {
+      id: true,
+      sessionId: true,
+      version: true,
+      statut: true,
+      session: { select: { clientId: true } },
+    },
+  });
+  // Le rapport doit appartenir au client de la fiche d'où part l'action.
+  if (!ligne || ligne.session.clientId !== c.data) return { ok: false, erreur: "introuvable" };
+  if (ligne.statut === "valide") return { ok: true, valide: true };
+  const plusRecent = await prisma.auditTerrainRapport.findFirst({
+    where: { sessionId: ligne.sessionId, version: { gt: ligne.version } },
+    select: { id: true },
+  });
+  if (plusRecent) return { ok: false, erreur: "ancienne_version" };
+
+  // Condition d'état dans l'écriture : un double clic ou une version dépassée entre-temps ne passe qu'une fois.
+  const { count } = await prisma.auditTerrainRapport.updateMany({
+    where: { id: ligne.id, statut: "a_relire" },
+    data: { statut: "valide", valideParId: adminId, valideLe: new Date() },
+  });
+  if (count !== 1) return { ok: false, erreur: "ancienne_version" };
+  await ecrireJournalActivite(
+    { adminUserId: adminId, ipAddress: await ipHachee(), userAgent: null },
+    {
+      action: "audit-terrain.rapport.valide",
+      targetType: "audit_terrain_rapport",
+      targetId: ligne.id,
+      changes: { version: ligne.version },
+    },
+  );
+  return { ok: true, valide: true };
+}

@@ -3,6 +3,7 @@
 
 import Link from "next/link";
 
+import { EncartAudit } from "@/components/admin/audit-terrain/EncartAudit";
 import { Frise } from "@/components/admin/dossier-client/fiche/Frise";
 import { htEtTtc } from "@/components/admin/dossier-client/fiche/montants";
 import { enregistrerSuiviPrestationAction } from "@/features/dossier-client/actions-prestations";
@@ -65,6 +66,7 @@ export function SuiviPrestations({
       >
         Ce que le client a pris
       </h2>
+      <EncartAudit clientId={clientId} ficheHref={ficheHref} />
       {erreur !== null ? (
         <p role="alert" className="mb-[var(--space-admin-3)] text-[color:var(--color-admin-error)]">
           {erreur}
