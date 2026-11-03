@@ -142,7 +142,6 @@ vi.mock("@/server/notifications", () => ({ notify: async () => undefined }));
 
 import { POST } from "@/app/api/interne/demandes-guide-reseau/route";
 import { signerRequete, sha256Hex } from "@/server/videos/signature";
-import { confirmerLettre } from "@/server/newsletter/confirmer";
 
 const SECRET = "s".repeat(40);
 const CHEMIN = "/api/interne/demandes-guide-reseau";
@@ -238,9 +237,14 @@ describe("porte d'entrée", () => {
     expect(bd.journal).toHaveLength(0);
   });
 
-  it("« oui » sans version de la question M2 → 422 ; guide inconnu → 422", async () => {
-    expect((await appel({ ...corpsBase, accord: "oui" })).status).toBe(422);
+  it("le champ `accord` est facultatif (absent → 200) ; guide inconnu → 422", async () => {
+    const { accord: _accord, ...sansAccord } = corpsBase;
+    expect((await appel({ ...sansAccord, cleIdempotence: "run_sans_accord" })).status).toBe(200);
     expect((await appel({ ...corpsBase, guide: "autre-guide" })).status).toBe(422);
+  });
+
+  it("« oui » sans version de la question n'est plus une erreur (plus de double accord)", async () => {
+    expect((await appel({ ...corpsBase, accord: "oui" })).status).toBe(200);
   });
 });
 
@@ -412,122 +416,91 @@ describe("idempotence (clé = identifiant du run)", () => {
   });
 });
 
-describe("accord : double accord", () => {
-  const OUI = { ...corpsBase, accord: "oui", versionTexteM2: "m2-brouillon-v1" };
+describe("aucun consentement newsletter (décision du 03/11/2026)", () => {
+  it.each(["oui", "non", "non_demande"])(
+    "accord d'entrée « %s » : aucune inscription, aucune ligne optin, pas de champ accord en sortie",
+    async (accord) => {
+      const r = await appel({ ...corpsBase, accord, versionTexteM2: "m2-brouillon-v1" });
+      expect(r.status).toBe(200);
+      expect(await r.json()).not.toHaveProperty("accord");
+      expect(bd.abonnes).toHaveLength(0);
+      expect(bd.preuves.map((p) => p.action)).toEqual(["information"]);
+    },
+  );
 
-  it("« Oui » → inscription `pending` (jamais confirmed), aucune ligne `optin` à ce stade", async () => {
-    const r = await appel(OUI);
-    expect(((await r.json()) as Ligne).accord).toBe("oui_en_attente_de_clic");
-    expect(bd.abonnes).toHaveLength(1);
-    expect(bd.abonnes[0]).toMatchObject({
+  it("l'e-mail est marqué « réseau » et ne porte AUCUN jeton de lettre, même avec une ligne `pending` ancienne", async () => {
+    bd.abonnes.push({
+      id: "a0",
+      email: ADRESSE,
       status: "pending",
+      confirmToken: "t".repeat(40),
+      unsubscribeToken: "u".repeat(40),
       consentFormRef: "newsletter-reseau-message-prive",
-      consentVersion: "m2-brouillon-v1",
-      source: "mot-guide:instagram",
     });
-    expect(bd.preuves.map((p) => p.action)).toEqual(["information"]);
-  });
-
-  it("« Non » / non demandé → aucune inscription", async () => {
-    await appel({ ...corpsBase, accord: "non" });
-    await appel({ ...corpsBase, cleIdempotence: "run_zernio_0002", accord: "non_demande" });
-    expect(bd.abonnes).toHaveLength(0);
-  });
-
-  it("l'e-mail du guide porte le bloc de confirmation (jeton du double accord)", async () => {
-    await appel(OUI);
+    await appel({ ...corpsBase, accord: "oui", versionTexteM2: "m2-brouillon-v1" });
     const payload = bd.envois[0]![3] as Ligne;
-    expect(payload.doubleAccordToken).toBe(bd.abonnes[0]!.confirmToken);
+    expect(payload.reseau).toBe(true);
+    expect(payload.doubleAccordToken).toBeUndefined();
+    expect(payload.confirmToken).toBeUndefined();
+    expect(payload.unsubscribeToken).toBeUndefined();
     expect(payload.downloadToken).toBeTruthy();
-  });
-
-  it("sans clic de confirmation : jamais d'abonnement confirmé ; après le clic : confirmed + `optin`", async () => {
-    await appel(OUI);
     expect(bd.abonnes[0]!.status).toBe("pending");
-    const jeton = bd.abonnes[0]!.confirmToken as string;
-    const c = await confirmerLettre(jeton, { maintenant: new Date() });
-    expect(c.ok).toBe(true);
-    expect(bd.abonnes[0]).toMatchObject({ status: "confirmed", confirmToken: null });
-    expect(bd.preuves.map((p) => p.action)).toEqual(["information", "optin"]);
-    expect(bd.preuves[1]).toMatchObject({
-      formRef: "newsletter-reseau-message-prive",
-      consentVersion: "m2-brouillon-v1",
-    });
   });
 
-  it("adresse OPPOSÉE avec une ligne `pending` réseau existante → l'e-mail ne porte PAS le bouton", async () => {
-    bd.abonnes.push({
-      id: "a0",
-      email: ADRESSE,
-      status: "pending",
-      confirmToken: "t".repeat(40),
-      unsubscribeToken: "u".repeat(40),
-      consentFormRef: "newsletter-reseau-message-prive",
-    });
-    bd.opposees.add(ADRESSE);
-    const r = await appel(OUI);
-    expect(((await r.json()) as Ligne).accord).toBe("ecarte");
-    expect(bd.envois).toHaveLength(1);
-    expect((bd.envois[0]![3] as Ligne).doubleAccordToken).toBeUndefined();
-  });
-
-  it("accord « non » avec une ligne `pending` réseau existante → l'e-mail ne porte PAS le bouton", async () => {
-    bd.abonnes.push({
-      id: "a0",
-      email: ADRESSE,
-      status: "pending",
-      confirmToken: "t".repeat(40),
-      unsubscribeToken: "u".repeat(40),
-      consentFormRef: "newsletter-reseau-message-prive",
-    });
-    await appel({ ...corpsBase, accord: "non" });
-    expect(bd.envois).toHaveLength(1);
-    expect((bd.envois[0]![3] as Ligne).doubleAccordToken).toBeUndefined();
-  });
-
-  it("confirmerLettre refuse une adresse opposée (jeton pending valide)", async () => {
-    await appel(OUI);
-    bd.opposees.add(ADRESSE);
-    const c = await confirmerLettre(bd.abonnes[0]!.confirmToken as string, {
-      maintenant: new Date(),
-    });
-    expect(c.ok).toBe(false);
-    expect(bd.abonnes[0]!.status).toBe("pending");
-    expect(bd.preuves.map((p) => p.action)).toEqual(["information"]);
-  });
-
-  it("adresse déjà abonnée → rien ne change", async () => {
-    bd.abonnes.push({
-      id: "a0",
-      email: ADRESSE,
-      status: "confirmed",
-      unsubscribeToken: "u".repeat(40),
-    });
-    const r = await appel(OUI);
-    expect(((await r.json()) as Ligne).accord).toBe("oui_deja_confirme");
+  it("aucune ligne d'abonné n'est créée ni modifiée, adresse déjà abonnée comprise", async () => {
+    bd.abonnes.push({ id: "a0", email: ADRESSE, status: "confirmed", unsubscribeToken: "u" });
+    await appel({ ...corpsBase, accord: "oui", versionTexteM2: "m2-brouillon-v1" });
     expect(bd.abonnes).toHaveLength(1);
-    expect(bd.abonnes[0]!.status).toBe("confirmed");
+    expect(bd.abonnes[0]).toMatchObject({ status: "confirmed" });
+    expect((bd.envois[0]![3] as Ligne).unsubscribeToken).toBeUndefined();
   });
 });
 
 describe("opposition respectée", () => {
-  it("adresse opposée : le guide part, aucune inscription, aucune suppression", async () => {
+  it("adresse opposée : 200 neutre, ni guide, ni bouton, ni demande, ni inscription, rien de supprimé", async () => {
     bd.opposees.add(ADRESSE);
     const r = await appel({ ...corpsBase, accord: "oui", versionTexteM2: "m2-brouillon-v1" });
     expect(r.status).toBe(200);
-    expect(((await r.json()) as Ligne).accord).toBe("ecarte");
+    expect(((await r.json()) as Ligne).guide).toBe("opposee");
+    expect(bd.envois).toHaveLength(0);
     expect(bd.abonnes).toHaveLength(0);
-    expect(bd.envois).toHaveLength(1);
-    expect((bd.envois[0]![3] as Ligne).doubleAccordToken).toBeUndefined();
-    expect(bd.demandes).toHaveLength(1);
+    expect(bd.demandes).toHaveLength(0);
+    expect(bd.preuves).toHaveLength(0);
   });
 
-  it("désabonnée : un « Oui » ne lève pas son désabonnement", async () => {
-    bd.abonnes.push({ id: "a0", email: ADRESSE, status: "unsubscribed", confirmToken: null });
-    const r = await appel({ ...corpsBase, accord: "oui", versionTexteM2: "m2-brouillon-v1" });
-    expect(((await r.json()) as Ligne).accord).toBe("ecarte");
+  it("adresse opposée avec une ligne `pending` réseau : toujours aucun e-mail, ligne intacte", async () => {
+    bd.abonnes.push({
+      id: "a0",
+      email: ADRESSE,
+      status: "pending",
+      confirmToken: "t".repeat(40),
+      consentFormRef: "newsletter-reseau-message-prive",
+    });
+    bd.opposees.add(ADRESSE);
+    await appel();
+    expect(bd.envois).toHaveLength(0);
+    expect(bd.abonnes).toHaveLength(1);
+  });
+
+  it("opposée : la clé est close (rejeu → même réponse, toujours aucun e-mail)", async () => {
+    bd.opposees.add(ADRESSE);
+    await appel();
+    const r = await appel();
+    expect(r.status).toBe(200);
+    expect(bd.envois).toHaveLength(0);
+  });
+
+  it("désabonnée de la lettre (non opposée) : le guide part, sans bouton, sans réinscription", async () => {
+    bd.abonnes.push({
+      id: "a0",
+      email: ADRESSE,
+      status: "unsubscribed",
+      confirmToken: "c".repeat(40),
+    });
+    await appel();
     expect(bd.abonnes[0]!.status).toBe("unsubscribed");
     expect(bd.envois).toHaveLength(1);
+    expect((bd.envois[0]![3] as Ligne).confirmToken).toBeUndefined();
   });
 });
 

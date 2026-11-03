@@ -6,15 +6,15 @@
  *   1. la demande du guide (`guide_requests`, origine `message_prive`, source
  *      `mot-{mot}:{reseau}`) est créée ou retrouvée — `derniereDemandeFormulaireAt` écrite ;
  *   2. le registre de preuve reçoit la ligne `information` (version du texte M1) ;
- *   3. SI « Oui » ET adresse non opposée ET pas déjà abonnée/désabonnée/rebondie : une
- *      inscription `pending` (double accord) — la ligne `optin` n'est écrite qu'au CLIC de
- *      confirmation (`confirmerLettre`), comme pour la lettre actuelle ;
- *   4. l'e-mail du guide part DANS TOUS LES CAS (accord, refus, ou opposition), derrière les
- *      plafonds du guide (`mettreEnFileGuide` : coupe-circuit, 3 par destinataire et par 24 h,
- *      30 par heure). Au-delà, la demande attend le rattrapage, qui la traite comme un formulaire.
+ *   3. l'e-mail du guide part, derrière les plafonds du guide (`mettreEnFileGuide` : coupe-circuit,
+ *      3 par destinataire et par 24 h, 30 par heure). Au-delà, la demande attend le rattrapage.
  *
- * 🔴 Une opposition (`email_oppositions`) ne se lève JAMAIS par ce parcours : le guide part,
- * aucune inscription n'est créée, aucune donnée n'est supprimée.
+ * 🔴 DÉCISION DE WILL DU 03/11/2026 : ce parcours LIVRE LE GUIDE ET RIEN D'AUTRE. Aucune
+ * question « autres informations », aucun double accord, aucune ligne `newsletter_subscribers`
+ * créée ou modifiée, aucune ligne `optin`. L'e-mail porte le lien de la politique de
+ * confidentialité et aucune proposition d'autres envois.
+ * 🔴 Une adresse OPPOSÉE (`email_oppositions`) ne reçoit ni guide ni bouton : aucune réponse à la
+ * personne, aucune ligne créée. Rien n'est supprimé.
  * 🔴 L'adresse n'est jamais journalisée en clair (`redactEmail`).
  */
 import crypto from "node:crypto";
@@ -25,12 +25,7 @@ import { recordConsentEvent } from "@/lib/consents";
 import { estOpposee } from "@/server/email/opposition";
 import { domaineRecoitDesEmails } from "@/server/guide-ia/mx";
 import { mettreEnFileGuide, type ResultatEnvoiGuide } from "@/server/guide-ia/envoi";
-import { lettreDansLEmail } from "@/server/guide-ia/lettre";
-import {
-  FORM_REF_ACCORD_RESEAU,
-  FORM_REF_INFORMATION_RESEAU,
-  sourceReseau,
-} from "@/content/guides-reseau";
+import { FORM_REF_INFORMATION_RESEAU, sourceReseau } from "@/content/guides-reseau";
 import { checkRateLimit } from "@/lib/rate-limit";
 import { occurredAtValide, type DemandeGuideReseau } from "./contrat";
 import { LIMITE_JOUR_PAR_PERSONNE, LIMITE_JOUR_PAR_POST } from "./config";
@@ -38,33 +33,14 @@ import * as Sentry from "@sentry/nextjs";
 import { CleHmacManquanteError, construireOrigine, enregistrerOrigine } from "./origines";
 import { transmettreOriginesV3 } from "./synchro-v3";
 
-/**
- * VALEURS D'ACCORD RENDUES PAR LE SITE (réponse JSON, champ `accord`) :
- *   · `non_demande`            — entrée `accord: "non_demande"` : rien n'a été demandé ;
- *   · `non`                    — entrée `accord: "non"` : refus, aucune campagne ;
- *   · `oui_en_attente_de_clic` — entrée `oui` : e-mail de confirmation envoyé, rien d'écrit
- *                                tant que la personne n'a pas cliqué ;
- *   · `oui_deja_confirme`      — entrée `oui` mais adresse déjà confirmée (ancien « oui_confirme »
- *                                du doc Studio) ;
- *   · `ecarte`                 — entrée `oui`, adresse opposée / désabonnée / en rebond.
- * Entrées acceptées : `oui | non | non_demande` (cf. `contrat.ts`).
- */
-export type EtatAccord =
-  | "non_demande"
-  | "non"
-  | "oui_en_attente_de_clic"
-  | "oui_deja_confirme"
-  /** Adresse opposée, désabonnée ou en rebond : le guide part, aucune campagne. */
-  | "ecarte";
-
 export type ResultatTraitement =
   | { readonly ok: false; readonly erreur: "adresse_refusee" | "trop_de_requetes" }
   | {
       readonly ok: true;
       readonly demandeId: string;
       readonly nouvelle: boolean;
-      readonly guide: ResultatEnvoiGuide;
-      readonly accord: EtatAccord;
+      /** `opposee` : adresse opposée, rien n'est parti ni écrit. */
+      readonly guide: ResultatEnvoiGuide | "opposee";
     };
 
 function estConflitUnique(e: unknown): boolean {
@@ -119,66 +95,6 @@ async function retrouverOuCreerDemande(
       select: { id: true, downloadToken: true },
     });
     return { ...gagnante, nouvelle: false };
-  }
-}
-
-/** « Oui » : pose (ou retrouve) l'inscription EN ATTENTE du clic. Ne confirme jamais. */
-async function demanderDoubleAccord(d: DemandeGuideReseau, opposee: boolean): Promise<EtatAccord> {
-  if (opposee) return "ecarte";
-  const source = sourceReseau(d.mot, d.reseau);
-  const existant = await prisma.newsletterSubscriber.findUnique({
-    where: { email: d.email },
-    select: { id: true, status: true, confirmToken: true, unsubscribeToken: true },
-  });
-  if (existant === null) {
-    try {
-      await prisma.newsletterSubscriber.create({
-        data: {
-          email: d.email,
-          locale: d.locale,
-          status: "pending",
-          confirmToken: crypto.randomBytes(32).toString("hex"),
-          unsubscribeToken: crypto.randomBytes(32).toString("hex"),
-          source,
-          consentFormRef: FORM_REF_ACCORD_RESEAU,
-          consentVersion: d.versionTexteM2 ?? null,
-        },
-        select: { id: true },
-      });
-      return "oui_en_attente_de_clic";
-    } catch (e) {
-      if (!estConflitUnique(e)) throw e;
-      return "oui_en_attente_de_clic";
-    }
-  }
-  switch (existant.status) {
-    case "confirmed":
-      return "oui_deja_confirme";
-    case "pending": {
-      // Le « Oui » le plus récent fait foi : une ligne `pending` ANCIENNE (ancien double
-      // opt-in) est réécrite avec la référence et la version du texte réseau de CETTE
-      // demande. Choix assumé ; elle reste `pending` tant que la personne n'a pas cliqué.
-      // Jeton gardé s'il existe : le lien d'un e-mail précédent reste valable.
-      await prisma.newsletterSubscriber.updateMany({
-        where: { id: existant.id, status: "pending" },
-        data: {
-          locale: d.locale,
-          source,
-          consentFormRef: FORM_REF_ACCORD_RESEAU,
-          consentVersion: d.versionTexteM2 ?? null,
-          ...(existant.confirmToken
-            ? {}
-            : { confirmToken: crypto.randomBytes(32).toString("hex") }),
-          ...(existant.unsubscribeToken
-            ? {}
-            : { unsubscribeToken: crypto.randomBytes(32).toString("hex") }),
-        },
-      });
-      return "oui_en_attente_de_clic";
-    }
-    default:
-      // `unsubscribed` / `bounced` : une demande de guide ne lève jamais une opposition.
-      return "ecarte";
   }
 }
 
@@ -249,7 +165,6 @@ export interface CrochetsTraitement {
     readonly demandeId: string;
     readonly nouvelle: boolean;
     readonly guide: ResultatEnvoiGuide;
-    readonly accord: EtatAccord;
   }) => Promise<void>;
 }
 
@@ -265,13 +180,25 @@ export async function traiterDemande(
   const emailKey = hashEmailForLookup(d.email);
   if (!emailKey) throw new Error("[guides-reseau] empreinte d'adresse indisponible");
 
+  // Adresse opposée : ni guide, ni bouton, ni ligne. Réponse neutre (la clé se clôt).
+  if (await estOpposee(d.email)) {
+    console.warn(
+      JSON.stringify({
+        event: "guides_reseau_demande",
+        adresse: redactEmail(d.email),
+        reseau: d.reseau,
+        guide: "opposee",
+      }),
+    );
+    return { ok: true, demandeId: "", nouvelle: false, guide: "opposee" };
+  }
+
   // I3 : limites par jour, par personne (v1 ET v3) et par (post_ref, canal) (v3). Rien n'est écrit avant.
   if (!(await sousLesLimites(d, emailKey, maintenant))) {
     return { ok: false, erreur: "trop_de_requetes" };
   }
 
   const quand = occurredAtValide(d.occurredAt, maintenant);
-  const opposee = await estOpposee(d.email);
   const demande = await retrouverOuCreerDemande(d, emailKey, maintenant);
 
   if (d.schemaVersion === 3) await noterOrigineV3(d, emailKey, quand);
@@ -284,12 +211,6 @@ export async function traiterDemande(
     occurredAt: quand,
   });
 
-  let accord: EtatAccord;
-  if (d.accord === "oui") accord = await demanderDoubleAccord(d, opposee);
-  else accord = d.accord === "non" ? "non" : "non_demande";
-
-  // L'e-mail porte ce que la ligne d'abonné dit AU MOMENT DE L'ENVOI.
-  const dansLEmail = await lettreDansLEmail(d.email);
   const guide = await mettreEnFileGuide(
     {
       id: demande.id,
@@ -297,16 +218,7 @@ export async function traiterDemande(
       locale: d.locale,
       downloadToken: demande.downloadToken,
     },
-    {
-      confirmToken: dansLEmail.confirmToken ?? null,
-      // Le bloc « Oui, je confirme » n'est transmis que si CETTE demande dit « Oui » et que
-      // l'adresse n'est pas écartée : une ancienne ligne `pending` réseau ne suffit pas
-      // (opposition ultérieure, ou « Non » dit cette fois-ci).
-      doubleAccordToken:
-        accord === "oui_en_attente_de_clic" ? (dansLEmail.doubleAccordToken ?? null) : null,
-      unsubscribeToken: dansLEmail.unsubscribeToken ?? null,
-      maintenant,
-    },
+    { reseau: true, maintenant },
   );
 
   if (guide === "en-file" || guide === "en-validation") {
@@ -314,21 +226,7 @@ export async function traiterDemande(
       demandeId: demande.id,
       nouvelle: demande.nouvelle,
       guide,
-      accord,
     });
-  }
-
-  // La trace d'envoi du bloc de confirmation suit l'envoi réel de l'e-mail.
-  const jeton =
-    (accord === "oui_en_attente_de_clic" ? dansLEmail.doubleAccordToken : undefined) ??
-    dansLEmail.confirmToken;
-  if (jeton && guide === "en-file") {
-    await prisma.newsletterSubscriber
-      .updateMany({
-        where: { email: d.email, confirmToken: jeton },
-        data: { confirmSentAt: maintenant },
-      })
-      .catch(() => undefined);
   }
 
   console.warn(
@@ -336,10 +234,9 @@ export async function traiterDemande(
       event: "guides_reseau_demande",
       adresse: redactEmail(d.email),
       reseau: d.reseau,
-      accord,
       guide,
       nouvelle: demande.nouvelle,
     }),
   );
-  return { ok: true, demandeId: demande.id, nouvelle: demande.nouvelle, guide, accord };
+  return { ok: true, demandeId: demande.id, nouvelle: demande.nouvelle, guide };
 }
