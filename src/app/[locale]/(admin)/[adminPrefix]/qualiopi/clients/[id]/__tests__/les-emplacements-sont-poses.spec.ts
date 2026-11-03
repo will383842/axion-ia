@@ -42,8 +42,9 @@ const compter = (texte: string, motif: string): number => texte.split(motif).len
 const empreinte = (texte: string): string =>
   createHash("sha256").update(texte.replace(/\r\n/g, "\n")).digest("hex");
 
-// Seul le lot 0 met à jour ce hash : un lot B qui touche la page fait rougir ce test.
-const HASH_PAGE = "8d24a69bd4c11d0f96ebc64a93cf4b027e8a644121374bd029f51cc6f172f959";
+// Refonte lot 0 + B1-B10 terminée : toute modification de page.tsx re-scelle ce hash dans la
+// même PR, ancres inchangées.
+const HASH_PAGE = "c4ab5ae49b12c2709b3f85ce3d5b545f7bc7b6fb03372ae88335df8d6a475501";
 
 describe("les emplacements de la fiche client sont posés", () => {
   for (const { nom, suivante, appel } of ANCRES) {
@@ -57,7 +58,7 @@ describe("les emplacements de la fiche client sont posés", () => {
     });
   }
 
-  it("la page est celle du lot 0 (seul le lot 0 met à jour ce hash)", () => {
+  it("la page est celle scellée (toute modification de page.tsx re-scelle ce hash, ancres inchangées)", () => {
     expect(empreinte(PAGE)).toBe(HASH_PAGE);
   });
 
