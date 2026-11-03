@@ -43,7 +43,7 @@ const empreinte = (texte: string): string =>
   createHash("sha256").update(texte.replace(/\r\n/g, "\n")).digest("hex");
 
 // Seul le lot 0 met à jour ce hash : un lot B qui touche la page fait rougir ce test.
-const HASH_PAGE = "8d24a69bd4c11d0f96ebc64a93cf4b027e8a644121374bd029f51cc6f172f959";
+const HASH_PAGE = "bc6a1d3776ea2104f9adf6e5df838c1ea2f642b99cace44fc7099514857a618a";
 
 describe("les emplacements de la fiche client sont posés", () => {
   for (const { nom, suivante, appel } of ANCRES) {

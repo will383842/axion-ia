@@ -615,8 +615,15 @@ export default async function FicheClient360Page({ params, searchParams }: PageP
                 Envoyer le questionnaire
               </AdminButton>
             ) : null}
+            {/* « Faire un devis » : action principale pour les rôles qui écrivent
+                (/devis/new est gardée en écriture) ; « Nouvelle vente » passe alors en secondaire. */}
+            {acces.peutEcrire ? (
+              <AdminButton variant="primary" href={`${qBase}/devis/new?clientId=${client.id}`}>
+                Faire un devis
+              </AdminButton>
+            ) : null}
             <AdminButton
-              variant={voitEchanges ? "secondary" : "primary"}
+              variant={voitEchanges || acces.peutEcrire ? "secondary" : "primary"}
               href={`${qBase}/vente/new?clientId=${client.id}`}
             >
               Nouvelle vente
