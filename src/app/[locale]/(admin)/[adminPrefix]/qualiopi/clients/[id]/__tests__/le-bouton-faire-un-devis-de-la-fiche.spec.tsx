@@ -6,8 +6,9 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 
 const d = vi.hoisted(() => ({ session: null as unknown }));
 
-vi.mock("@/components/admin/dossier-client/fiche/emplacements", async () =>
-  (await import("./_emplacements-vides")).emplacementsVides,
+vi.mock(
+  "@/components/admin/dossier-client/fiche/emplacements",
+  async () => (await import("./_emplacements-vides")).emplacementsVides,
 );
 vi.mock("@/auth", () => ({ auth: () => Promise.resolve(d.session) }));
 vi.mock("next/navigation", () => ({

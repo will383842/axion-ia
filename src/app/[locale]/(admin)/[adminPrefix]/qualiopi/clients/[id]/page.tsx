@@ -619,7 +619,10 @@ export default async function FicheClient360Page({ params, searchParams }: PageP
                 échanges (/devis/new est gardée en écriture) ; sinon secondaire, l'unique bouton
                 plein de l'écran étant celui de la prochaine action. */}
             {acces.peutEcrire ? (
-              <AdminButton variant={voitEchanges ? "secondary" : "primary"} href={`${qBase}/devis/new?clientId=${client.id}`}>
+              <AdminButton
+                variant={voitEchanges ? "secondary" : "primary"}
+                href={`${qBase}/devis/new?clientId=${client.id}`}
+              >
                 Faire un devis
               </AdminButton>
             ) : null}
