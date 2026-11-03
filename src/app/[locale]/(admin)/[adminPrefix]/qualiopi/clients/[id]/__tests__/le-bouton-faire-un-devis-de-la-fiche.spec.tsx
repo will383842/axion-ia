@@ -57,21 +57,32 @@ import { ID_CLIENT, rendreFiche } from "./_fiche-client-rendu";
 beforeEach(() => vi.clearAllMocks());
 
 describe("bouton « Faire un devis » de la fiche client", () => {
-  it.each(["super_admin", "admin", "responsable_qualite", "secretaire", "editor"])(
+  const HREF = `/fr/console/qualiopi/devis/new?clientId=${ID_CLIENT}`;
+
+  it.each(["super_admin", "admin"])(
+    "rôle « %s » (voit les échanges) : bouton secondaire, aucun bouton plein dans l'en-tête",
+    async (role) => {
+      d.session = { user: { id: "u1", role } };
+      const html = await rendreFiche(Page, undefined);
+      expect(html).toContain(`<a class="admin-button-secondary" href="${HREF}">Faire un devis</a>`);
+      // Au plus un bouton plein par écran : ici, aucun lien plein vers devis/vente.
+      expect(html).not.toMatch(/<a class="admin-button" href="[^"]*(devis|vente)\/new/);
+    },
+  );
+
+  it.each(["responsable_qualite", "secretaire", "editor"])(
     "rôle « %s » : lien vers /devis/new avec le client, en action principale",
     async (role) => {
       d.session = { user: { id: "u1", role } };
       const html = await rendreFiche(Page, undefined);
-      // Action principale : classe « admin-button » (pleine), pas « -secondary ».
-      expect(html).toContain(
-        `<a class="admin-button" href="/fr/console/qualiopi/devis/new?clientId=${ID_CLIENT}">Faire un devis</a>`,
-      );
+      expect(html).toContain(`<a class="admin-button" href="${HREF}">Faire un devis</a>`);
     },
   );
 
-  it("rôle « reader » : pas de bouton", async () => {
+  it("rôle « reader » : fiche rendue, mais pas de bouton", async () => {
     d.session = { user: { id: "u1", role: "reader" } };
     const html = await rendreFiche(Page, undefined);
+    expect(html).toContain("Atelier Fictif SARL");
     expect(html).not.toContain("Faire un devis");
     expect(html).not.toContain("/devis/new");
   });
