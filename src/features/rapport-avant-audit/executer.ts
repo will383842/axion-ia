@@ -46,6 +46,7 @@ import {
   type Consigne,
 } from "./consignes/prompts";
 import { ROLES, ROLES_DE_SYNTHESE } from "./consignes/roles";
+import { blocFormeAttendue } from "./forme-attendue";
 import { exigerModeleAutorise, MODELES_RAPPORT } from "./modeles";
 import { lireTendance } from "./tendance";
 
@@ -191,7 +192,10 @@ async function etape<T extends z.ZodTypeAny>(
       essai === 0
         ? consigne.user
         : `${consigne.user}\n\nTA RÉPONSE PRÉCÉDENTE ÉTAIT INVALIDE : ${derniereErreur}\nRends à nouveau UNIQUEMENT l'objet JSON corrigé.`;
-    const r = await fournisseur({ ...consigne, user, modele, recherche });
+    const system = `${consigne.system}
+
+${blocFormeAttendue(schema)}`;
+    const r = await fournisseur({ ...consigne, system, user, modele, recherche });
     compteur.ajouter(r);
     try {
       return schema.parse(extraireJson(r.texte)) as z.infer<T>;
