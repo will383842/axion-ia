@@ -54,10 +54,10 @@ function ecran(p: Partial<EcranRapport> = {}): EcranRapport {
 describe("BlocRapportAnalyse", () => {
   it("avant validation : pas de lien PDF client, mais le bouton « Valider le PDF client »", () => {
     render(<BlocRapportAnalyse ecran={ecran()} clientId={CLIENT} ficheHref={FICHE} />);
-    expect(screen.getByRole("link", { name: "Base d'audit (.json)" }).getAttribute("href")).toBe(
-      `${FICHE}/rapport-analyse?r=${RAPPORT}&f=base-json`,
-    );
-    expect(screen.getByRole("link", { name: "Fiche de chaque personne (.md)" })).toBeTruthy();
+    expect(
+      screen.getByRole("link", { name: "base d'audit au format .json" }).getAttribute("href"),
+    ).toBe(`${FICHE}/rapport-analyse?r=${RAPPORT}&f=base-json`);
+    expect(screen.getByRole("link", { name: "Fiche de chaque personne" })).toBeTruthy();
     expect(screen.queryByRole("link", { name: "PDF client" })).toBeNull();
     expect(screen.getByRole("button", { name: "Valider le PDF client" })).toBeTruthy();
   });

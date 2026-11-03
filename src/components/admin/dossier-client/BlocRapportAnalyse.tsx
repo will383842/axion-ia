@@ -100,30 +100,32 @@ function Telechargements({
   return (
     <div className="space-y-[var(--space-admin-2)]">
       <h3 className="font-medium">Télécharger</h3>
-      <ul className="flex flex-wrap gap-x-[var(--space-admin-4)] gap-y-[var(--space-admin-1)]">
+      <ul className="flex flex-wrap gap-[var(--space-admin-3)]">
         <li>
-          <a className="admin-link" href={lien("base-json")} download>
-            Base d&apos;audit (.json)
+          <a className="admin-button-secondary" href={lien("base-md")} download>
+            Base d&apos;audit (à lire avant l&apos;audit)
           </a>
         </li>
         <li>
-          <a className="admin-link" href={lien("base-md")} download>
-            Base d&apos;audit (.md)
-          </a>
-        </li>
-        <li>
-          <a className="admin-link" href={lien("fiches-md")} download>
-            Fiche de chaque personne (.md)
+          <a className="admin-button-secondary" href={lien("fiches-md")} download>
+            Fiche de chaque personne
           </a>
         </li>
         {r.pdfValideLe !== null ? (
           <li>
-            <a className="admin-link" href={lien("pdf-client")} download>
+            <a className="admin-button-secondary" href={lien("pdf-client")} download>
               PDF client
             </a>
           </li>
         ) : null}
       </ul>
+      <p className={PETIT}>
+        Pour les machines seulement :{" "}
+        <a className="admin-link" href={lien("base-json")} download>
+          base d&apos;audit au format .json
+        </a>
+        .
+      </p>
       {r.pdfValideLe !== null ? (
         <p className={PETIT}>
           PDF client validé le {jourHeure(r.pdfValideLe)}. Il n&apos;est jamais envoyé
