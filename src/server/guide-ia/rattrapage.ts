@@ -130,7 +130,14 @@ export async function rattraperGuides(maintenant: Date = new Date()): Promise<Ra
         },
         OR: [{ queuedAt: null }, { queuedAt: { lt: new Date(t - AGE_RATTRAPAGE_MS) } }],
       },
-      select: { id: true, email: true, locale: true, downloadToken: true, sendCount: true },
+      select: {
+        id: true,
+        email: true,
+        locale: true,
+        downloadToken: true,
+        sendCount: true,
+        origine: true,
+      },
       orderBy: { createdAt: "asc" },
       take: 200,
     });
@@ -177,7 +184,11 @@ export async function rattraperGuides(maintenant: Date = new Date()): Promise<Ra
         continue;
       }
 
-      const lettre = await lettreDansLEmail(c.email);
+      // Demande venue d'un réseau : le guide et rien d'autre (décision du 03/11/2026).
+      const reseau = (c.origine as string) === "message_prive";
+      const lettre: Awaited<ReturnType<typeof lettreDansLEmail>> = reseau
+        ? {}
+        : await lettreDansLEmail(c.email);
       const r = await mettreEnFileGuide(
         {
           id: c.id,
@@ -186,6 +197,7 @@ export async function rattraperGuides(maintenant: Date = new Date()): Promise<Ra
           downloadToken: c.downloadToken,
         },
         {
+          reseau,
           confirmToken: lettre.confirmToken ?? null,
           doubleAccordToken: lettre.doubleAccordToken ?? null,
           unsubscribeToken: lettre.unsubscribeToken ?? null,

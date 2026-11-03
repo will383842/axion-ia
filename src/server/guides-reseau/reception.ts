@@ -168,7 +168,6 @@ export async function recevoirDemande(e: EntreeSignee): Promise<Response> {
           demandeId: m.demandeId,
           nouvelle: m.nouvelle,
           guide: m.guide,
-          accord: m.accord,
         };
         await prisma.guideReseauReception.updateMany({
           where: { cleIdempotence: d.cleIdempotence, reponseStatut: 0 },
@@ -193,7 +192,6 @@ export async function recevoirDemande(e: EntreeSignee): Promise<Response> {
       demandeId: r.demandeId,
       nouvelle: r.nouvelle,
       guide: r.guide,
-      accord: r.accord,
     };
     await prisma.guideReseauReception.updateMany({
       where: { cleIdempotence: d.cleIdempotence },

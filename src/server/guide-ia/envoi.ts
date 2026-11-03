@@ -54,6 +54,12 @@ export interface OptionsEnvoiGuide {
    * (un POST sur la page de confirmation) est seul à écrire la ligne `optin`.
    */
   readonly doubleAccordToken?: string | null;
+  /**
+   * Demande venue d'un réseau (décision du 03/11/2026) : l'e-mail livre le guide et rien
+   * d'autre — lien vers la politique de confidentialité, aucune proposition d'autres envois.
+   * Les jetons de lettre sont alors ignorés même s'ils sont fournis.
+   */
+  readonly reseau?: boolean;
   /** Phrase de reprise « inscrit avant la parution du guide » (envoi unique, lot L7). */
   readonly reprise?: boolean;
   readonly maintenant?: Date;
@@ -100,9 +106,13 @@ export async function mettreEnFileGuide(
   if ((await envoisDeLaDerniereHeure(maintenant)) >= PLAFOND_HORAIRE_GUIDE) return "plafond";
 
   const payload: Record<string, unknown> = { downloadToken: demande.downloadToken };
-  if (options.confirmToken) payload["confirmToken"] = options.confirmToken;
-  if (options.unsubscribeToken) payload["unsubscribeToken"] = options.unsubscribeToken;
-  if (options.doubleAccordToken) payload["doubleAccordToken"] = options.doubleAccordToken;
+  if (options.reseau === true) {
+    payload["reseau"] = true;
+  } else {
+    if (options.confirmToken) payload["confirmToken"] = options.confirmToken;
+    if (options.unsubscribeToken) payload["unsubscribeToken"] = options.unsubscribeToken;
+    if (options.doubleAccordToken) payload["doubleAccordToken"] = options.doubleAccordToken;
+  }
   if (options.reprise === true) payload["reprise"] = true;
 
   // ⛔ JAMAIS `marketing: true` : « Votre guide » répond à une demande

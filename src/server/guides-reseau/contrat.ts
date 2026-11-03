@@ -39,16 +39,14 @@ const ObjetDemandeV1 = z
       .regex(/^[a-z0-9-]{2,40}$/)
       .refine((g) => GUIDES_RESEAU_CONNUS.includes(g), "guide_inconnu"),
     /**
-     * ENTRÉE `accord` (réponse à M2, « conseils par e-mail ») :
-     *   · `oui`         → accord demandé : double accord (e-mail de confirmation) ; exige M2 ;
-     *   · `non`         → refus explicite, aucune campagne ;
-     *   · `non_demande` → la question n'a pas (encore) été posée.
-     * La SORTIE (`EtatAccord`, `traitement.ts`) est différente : voir ce type.
+     * `accord` : FACULTATIF et SANS EFFET (décision de Will du 03/11/2026). Le parcours ne pose
+     * plus la question « autres informations » : il livre le guide et rien d'autre. Le champ
+     * reste accepté pour qu'un Studio qui l'envoie encore ne reçoive pas de 422.
      */
-    accord: z.enum(["oui", "non", "non_demande"]),
+    accord: z.enum(["oui", "non", "non_demande"]).optional(),
     /** Version du texte du premier message privé (M1) — preuve d'information. */
     versionTexteM1: z.string().regex(VERSION),
-    /** Version de la question « conseils par e-mail » (M2) — obligatoire si « oui ». */
+    /** Ancienne version de la question M2 : acceptée, ignorée. */
     versionTexteM2: z.string().regex(VERSION).optional(),
     locale: z.enum(["fr", "en"]).default("fr"),
     /** Moment de la réponse dans la conversation (ISO 8601). */
@@ -56,12 +54,7 @@ const ObjetDemandeV1 = z
   })
   .strict();
 
-const exigerM2 = <T extends { accord: string; versionTexteM2?: string | undefined }>(
-  d: T,
-): boolean => d.accord !== "oui" || d.versionTexteM2 !== undefined;
-const MESSAGE_M2 = { message: "versionTexteM2_requise", path: ["versionTexteM2"] };
-
-export const SchemaDemandeGuideReseau = ObjetDemandeV1.refine(exigerM2, MESSAGE_M2);
+export const SchemaDemandeGuideReseau = ObjetDemandeV1;
 
 /**
  * VERSION 3 (ADR contrat v3 d'origine). Tous les champs ajoutés sont FACULTATIFS ; le schéma
@@ -99,7 +92,6 @@ export const SchemaDemandeGuideReseauV3 = ObjetDemandeV1.extend({
   .superRefine((d, ctx) => {
     const faute = (path: string) =>
       ctx.addIssue({ code: "custom", message: "invalide", path: [path] });
-    if (!exigerM2(d)) faute("versionTexteM2");
     if ((d.famille === undefined) !== (d.detail === undefined)) {
       faute(d.famille === undefined ? "famille" : "detail");
     } else if (d.famille !== undefined && d.detail !== undefined) {
