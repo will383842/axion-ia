@@ -119,6 +119,10 @@ export const env = createEnv({
     QUESTIONNAIRE_SUIVI_NOTICE_VISIBLE: z.string().optional(),
     // Copie complète des réponses d'un questionnaire (super-administrateur) : ABSENT = ÉTEINT.
     QUESTIONNAIRE_EXPORT_COMPLET_ENABLED: z.string().optional(),
+    // Rapport d'analyse avant audit (2026-11-02) : bouton « Lancer l'analyse complète » de la fiche
+    // client (super-administrateur). Cible : les deux (le site lance, le worker traite).
+    // ABSENT = ÉTEINT. Les rapports déjà faits restent lisibles.
+    RAPPORT_AVANT_AUDIT_ENABLED: z.string().optional(),
     // Alerte Telegram du Tour France IA (2026-10-29) : nouvelle mini-demande et ville qui atteint
     // 5 demandes comptées. Lu par le SITE (`features/tour-de-france/alertes.ts`). ⚠️ EXCEPTION à la
     // convention du dépôt (absent = éteint) : ici ABSENT = ALLUMÉ, seule la valeur "false" éteint
@@ -764,6 +768,7 @@ export const env = createEnv({
     QUESTIONNAIRE_SUIVI_ENABLED: process.env.QUESTIONNAIRE_SUIVI_ENABLED,
     QUESTIONNAIRE_SUIVI_NOTICE_VISIBLE: process.env.QUESTIONNAIRE_SUIVI_NOTICE_VISIBLE,
     QUESTIONNAIRE_EXPORT_COMPLET_ENABLED: process.env.QUESTIONNAIRE_EXPORT_COMPLET_ENABLED,
+    RAPPORT_AVANT_AUDIT_ENABLED: process.env.RAPPORT_AVANT_AUDIT_ENABLED,
     TOUR_TELEGRAM_ENABLED: process.env.TOUR_TELEGRAM_ENABLED,
     QUESTIONNAIRE_PREAUDIT_ADRESSE_ESSAI: process.env.QUESTIONNAIRE_PREAUDIT_ADRESSE_ESSAI,
     IDCC_OPCO_IMPORT_ENABLED: process.env.IDCC_OPCO_IMPORT_ENABLED,

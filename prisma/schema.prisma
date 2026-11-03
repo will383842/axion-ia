@@ -5251,6 +5251,8 @@ model Client {
   etiquettes ClientEtiquette[]
   /// Demandes du Tour France IA rattachées à la fiche (relation seule, aucune colonne sur `clients`).
   tourDemandes TourDemande[] @relation("TourDemandeClient")
+  /// Rapports d'analyse avant audit (relation seule, aucune colonne sur `clients`, 2026-11-02).
+  rapportsAvantAudit RapportAvantAudit[]
 
   @@index([statut])
   @@index([nafCode])
@@ -17999,6 +18001,56 @@ model TourDemande {
   @@index([creeLe], map: "tour_demandes_cree_le_idx")
   @@index([clientId], map: "tour_demandes_client_id_idx")
   @@map("tour_demandes")
+}
+
+/// Un LANCEMENT du rapport d'analyse avant audit d'une fiche client (2026-11-02). Chaque lancement
+/// est une NOUVELLE ligne : l'historique est gardé, jamais écrasé ni supprimé (aucun code ne
+/// supprime une ligne ; `client_id` en RESTRICT). `base_audit` est la base d'audit (JSON
+/// `base-audit/1`) CHIFFRÉE par `chiffrerParole` — elle contient les réponses intégrales du
+/// questionnaire ; `base_empreinte` est le SHA-256 du JSON en clair, vérifié à chaque lecture.
+/// `propositions_fiche` est une enveloppe `{ v, chiffre }` chiffrée de même : jamais de clair.
+/// `statut` : texte + CHECK (aucune énumération Postgres, fenêtre app/worker).
+/// L'effacement RGPD MET À L'ÉCART (`ecarte_le`) et alerte Will : aucune purge automatique.
+/// rgpd: dossier-client
+model RapportAvantAudit {
+  id                String    @id @default(uuid()) @db.Uuid
+  clientId          String    @map("client_id") @db.Uuid
+  client            Client    @relation(fields: [clientId], references: [id], onDelete: Restrict)
+  /// Les questionnaires ENVOYÉS lus pour ce lancement (photographie au lancement).
+  questionnaireIds  String[]  @default([]) @map("questionnaire_ids") @db.Uuid
+  /// en_attente | en_cours | termine | erreur | annule (CHECK `rapports_avant_audit_statut_check`).
+  statut            String    @default("en_attente") @db.VarChar(20)
+  etape             String?   @db.VarChar(200)
+  /// 0 à 100 (CHECK `rapports_avant_audit_progression_check`).
+  progression       Int       @default(0)
+  /// Message d'erreur LISIBLE par Will, jamais un extrait de réponse.
+  erreur            String?   @db.Text
+  /// AdminUser.id de l'auteur du lancement (audit, sans FK pour rester additif).
+  lanceParId        String?   @map("lance_par_id") @db.Uuid
+  debutLe           DateTime? @map("debut_le")
+  finLe             DateTime? @map("fin_le")
+  versionSchema     String?   @map("version_schema") @db.VarChar(40)
+  /// (enc) JSON de la base d'audit, chiffré par `chiffrerParole`.
+  baseAudit         String?   @map("base_audit") @db.Text
+  /// SHA-256 (hex) du JSON en clair de la base d'audit.
+  baseEmpreinte     String?   @map("base_empreinte") @db.VarChar(64)
+  jetonsEntree      Int       @default(0) @map("jetons_entree")
+  jetonsSortie      Int       @default(0) @map("jetons_sortie")
+  nbRecherches      Int       @default(0) @map("nb_recherches")
+  pdfChemin         String?   @map("pdf_chemin") @db.Text
+  pdfValideLe       DateTime? @map("pdf_valide_le")
+  pdfValideParId    String?   @map("pdf_valide_par_id") @db.Uuid
+  /// (enc) Enveloppe `{ v: 1, chiffre }` des propositions de mise à jour de la fiche.
+  propositionsFiche Json?     @map("propositions_fiche")
+  /// Mise à l'écart (demande d'effacement RGPD) : la base n'est plus lue ; Will tranche.
+  ecarteLe          DateTime? @map("ecarte_le")
+  ecarteMotif       String?   @map("ecarte_motif") @db.VarChar(200)
+  creeLe            DateTime  @default(now()) @map("cree_le")
+  majLe             DateTime  @updatedAt @map("maj_le")
+
+  @@index([clientId, creeLe])
+  @@index([statut])
+  @@map("rapports_avant_audit")
 }
 
 /// AUDIT PRÉSENTIEL (PR1, 2026-11-02) — une session d'audit sur place, ouverte depuis la fiche client.

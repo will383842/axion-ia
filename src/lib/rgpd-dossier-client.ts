@@ -272,8 +272,25 @@ export interface ExportDossierClient {
     /** Case « informations par e-mail » (oui, non, `null` = non posée), datée par `recuLe`. */
     readonly infosEmail: boolean | null;
   }>;
+  /**
+   * Rapports d'analyse avant audit établis à partir de ses réponses (2026-11-02) : leur
+   * EXISTENCE et leurs dates. Le contenu mêle ses réponses à celles de son équipe : il est
+   * communiqué sur demande, après retrait des réponses des autres personnes (avertissement).
+   */
+  readonly rapportsAvantAudit: ReadonlyArray<{
+    readonly lanceLe: Date;
+    readonly statut: string;
+    readonly termineLe: Date | null;
+    readonly misALecartLe: Date | null;
+  }>;
   readonly avertissements: readonly string[];
 }
+
+/** Ce que l'export dit des rapports avant audit quand il en existe. */
+export const NOTE_RAPPORTS_AVANT_AUDIT =
+  "rapportsAvantAudit : le contenu d'un rapport d'analyse avant audit mêle vos réponses à celles " +
+  "des autres personnes de votre entreprise et à nos analyses. Il vous est communiqué sur demande " +
+  "à contact@axion-ia.com, après retrait des réponses des autres personnes.";
 
 const VIDE: ExportDossierClient = {
   personnes: [],
@@ -288,6 +305,7 @@ const VIDE: ExportDossierClient = {
   tachesVousConcernant: [],
   questionnairesPreauditEnvoyes: [],
   questionnairesPreaudit: [],
+  rapportsAvantAudit: [],
   avertissements: [],
 };
 
@@ -443,8 +461,20 @@ export async function exporterDossierClientPour(email: string): Promise<ExportDo
 
     const preauditEnvoyes = await prisma.questionnaireAvantAudit.findMany({
       where: questionnairesDuDirigeant(email, empreinte),
-      select: { envoyeLe: true, destinataire: true },
+      select: { id: true, envoyeLe: true, destinataire: true },
     });
+
+    // Rapports avant audit (2026-11-02) établis sur SES questionnaires : l'existence et les
+    // dates, rien de déchiffré (le contenu mêle les réponses de son équipe, `NOTE_…`).
+    const rapportsAvantAudit =
+      preauditEnvoyes.length === 0
+        ? []
+        : await prisma.rapportAvantAudit.findMany({
+            where: { questionnaireIds: { hasSome: preauditEnvoyes.map((p) => p.id) } },
+            select: { creeLe: true, statut: true, finLe: true, ecarteLe: true },
+            orderBy: { creeLe: "asc" },
+          });
+    if (rapportsAvantAudit.length > 0) avertissements.push(NOTE_RAPPORTS_AVANT_AUDIT);
 
     const questionnaires =
       contactIds.length === 0
@@ -583,6 +613,12 @@ export async function exporterDossierClientPour(email: string): Promise<ExportDo
           ? []
           : [{ recuLe: r.recuLe, parcours: r.mode, reponses, infosEmail: r.infosEmail ?? null }];
       }),
+      rapportsAvantAudit: rapportsAvantAudit.map((r) => ({
+        lanceLe: r.creeLe,
+        statut: r.statut,
+        termineLe: r.finLe,
+        misALecartLe: r.ecarteLe,
+      })),
       avertissements,
     };
   } catch {
