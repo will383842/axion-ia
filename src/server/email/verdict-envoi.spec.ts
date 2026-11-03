@@ -67,6 +67,11 @@ describe("estSollicitationSoumiseAOpposition — table de vérité", () => {
     // La variante ne vaut que pour CE gabarit.
     ["candidature-commercial-confirmee", { variante: "dossier-commence" }, false],
     ["qualiopi-convocation", {}, false],
+    // Guide demandé par message privé d'un réseau : l'opposition le retient, à l'enfilage
+    // comme au départ. Le guide du formulaire du site, lui, répond à une demande directe.
+    ["guide-ia-envoi", { reseau: true }, true],
+    ["guide-ia-envoi", { downloadToken: "x" }, false],
+    ["guide-ia-envoi", undefined, false],
   ])("%s %j → %s", (gabarit, payload, attendu) => {
     expect(estSollicitationSoumiseAOpposition(gabarit, payload)).toBe(attendu);
   });

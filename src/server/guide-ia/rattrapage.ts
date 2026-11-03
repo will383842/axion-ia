@@ -41,6 +41,7 @@
  * silence, jusqu'au passage suivant.
  */
 
+import { estOpposee } from "@/server/email/opposition";
 import { prisma } from "@/lib/prisma";
 import { verdictAvantEnvoi } from "@/server/email/verdict-envoi";
 import {
@@ -186,6 +187,12 @@ export async function rattraperGuides(maintenant: Date = new Date()): Promise<Ra
 
       // Demande venue d'un réseau : le guide et rien d'autre (décision du 03/11/2026).
       const reseau = (c.origine as string) === "message_prive";
+      // Une adresse qui s'est opposée (ou a demandé l'effacement) APRÈS la demande ne reçoit
+      // pas le guide par le rattrapage : on écarte, on ne supprime rien.
+      if (reseau && (await estOpposee(c.email))) {
+        ecartees++;
+        continue;
+      }
       const lettre: Awaited<ReturnType<typeof lettreDansLEmail>> = reseau
         ? {}
         : await lettreDansLEmail(c.email);
