@@ -90,6 +90,19 @@ describe("les pièces du site d'audit", () => {
     expect((await poster("image/jpeg", new Uint8Array([1, 2, 3, 4]))).status).toBe(400);
   });
 
+  it("fichier infecté → 400, rien d'enregistré", async () => {
+    const s = monter();
+    etat.verdict = { issue: "infecte", signature: "Test.Sig" };
+    expect((await poster("image/jpeg", JPEG)).status).toBe(400);
+    expect(s.etat.documents.length).toBe(0);
+  });
+
+  it("antivirus indisponible → 503", async () => {
+    monter();
+    etat.verdict = { issue: "indisponible" };
+    expect((await poster("image/jpeg", JPEG)).status).toBe(503);
+  });
+
   it("plus de 15 Mo → 413", async () => {
     monter();
     const gros = new Uint8Array(15 * 1024 * 1024 + 1);

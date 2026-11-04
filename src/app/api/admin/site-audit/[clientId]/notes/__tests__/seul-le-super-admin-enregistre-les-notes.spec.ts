@@ -149,6 +149,60 @@ describe("seul le super_admin enregistre les notes", () => {
     expect((await poster()).status).toBe(503);
   });
 
+  it("corps ≤ 2 Mo mais contenu réécrit > 2 Mo → 413 (pas 400)", async () => {
+    monter();
+    const fab = (n: number) =>
+      JSON.stringify({ notes: { "audit-oury-q3-abc-1": { t: "x".repeat(n), d: "d" } } });
+    const MAX = 2 * 1024 * 1024;
+    const corps = fab(MAX - fab(0).length);
+    expect(corps.length).toBe(MAX);
+    expect((await poster(BONS, corps)).status).toBe(413);
+  });
+
+  it("moins de notes que la version précédente → 409 raison « moins »", async () => {
+    monter();
+    const deux = JSON.stringify({
+      base: null,
+      notes: { "audit-oury-q3-abc-1": { t: "x" }, "audit-oury-q3-abc-2": { t: "y" } },
+    });
+    const { version } = (await (await poster(BONS, deux)).json()) as { version: string };
+    const un = JSON.stringify({ base: version, notes: { "audit-oury-q3-abc-1": { t: "x" } } });
+    const r = await poster(BONS, un);
+    expect(r.status).toBe(409);
+    expect(await r.json()).toEqual({ version, raison: "moins" });
+  });
+
+  it("archivage de l'ancienne version en échec → la réponse reste ok", async () => {
+    const s = monter();
+    const { version } = (await (await poster()).json()) as { version: string };
+    const err = vi.spyOn(console, "error").mockImplementation(() => {});
+    const orig = s.db.documentProjet.update;
+    const db = s.db as unknown as Record<string, Record<string, unknown>>;
+    for (const k of ["update", "updateMany"]) {
+      if (db.documentProjet && k in db.documentProjet) {
+        db.documentProjet[k] = async () => {
+          throw new Error("panne");
+        };
+      }
+    }
+    void orig;
+    const suite = JSON.stringify({
+      base: version,
+      notes: { "audit-oury-q3-abc-1": { t: "x" }, "audit-oury-q3-abc-2": { t: "y" } },
+    });
+    const r = await poster(BONS, suite);
+    err.mockRestore();
+    expect(r.status).toBe(200);
+  });
+
+  it("clientId en majuscules → accepté, enregistré en minuscules", async () => {
+    const s = monter();
+    const r = await poster(BONS, CORPS, CLIENT.toUpperCase());
+    expect(r.status).toBe(200);
+    expect(s.etat.documents[0]!.clientId).toBe(CLIENT);
+    expect((await lire(CLIENT.toUpperCase())).status).toBe(200);
+  });
+
   it("GET sans version → 204", async () => {
     monter();
     expect((await lire()).status).toBe(204);

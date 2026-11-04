@@ -64,6 +64,7 @@ export type IssueEnregistrement =
   | { issue: "ok"; version: string }
   | { issue: "conflit"; version: string | null }
   | { issue: "moins"; version: string | null }
+  | { issue: "volumineux" }
   | { issue: "antivirus" };
 
 export async function enregistrerNotes(
@@ -88,7 +89,7 @@ export async function enregistrerNotes(
 
   const date = (p.maintenant ?? new Date()).toISOString();
   const octets = new TextEncoder().encode(JSON.stringify({ format: 1, date, notes: p.notes }));
-  if (octets.length > MAX_NOTES_OCTETS) throw new ErreurDocument("Notes trop volumineuses.");
+  if (octets.length > MAX_NOTES_OCTETS) return { issue: "volumineux" };
   let cree: { id: string };
   try {
     cree = await ajouterFichier(

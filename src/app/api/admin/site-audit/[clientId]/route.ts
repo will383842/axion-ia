@@ -50,8 +50,9 @@ export async function GET(
   const { userId, role } = acces as { userId: string; role: string };
   if (role !== "super_admin") return refus(403, "Accès refusé.");
 
-  const { clientId } = await params;
-  if (!uuid.safeParse(clientId).success) return refus(404, "Introuvable.");
+  const { clientId: brut } = await params;
+  if (!uuid.safeParse(brut).success) return refus(404, "Introuvable.");
+  const clientId = brut.toLowerCase();
 
   const r = await lireSiteAudit(prisma, { clientId, parAdminId: userId }, (o) =>
     analyserOctets(o, 30_000),

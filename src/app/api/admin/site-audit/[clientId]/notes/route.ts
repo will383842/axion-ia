@@ -101,6 +101,7 @@ export async function POST(
     if (r.issue === "conflit" || r.issue === "moins") {
       return json(409, { version: r.version, raison: r.issue });
     }
+    if (r.issue === "volumineux") return refus(413, "Notes trop volumineuses.");
     return refus(503, "La vérification antivirus est momentanément indisponible. Réessayez.");
   } catch (e) {
     if (e instanceof ErreurDocument) return refus(400, e.message);

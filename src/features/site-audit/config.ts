@@ -36,7 +36,8 @@ export function cspSiteAudit(host: string | null | undefined, clientId: string):
   const h = (host ?? "").trim().toLowerCase();
   let connect = "'none'";
   if (HOTE_VALIDE.test(h) && UUID.test(clientId.toLowerCase())) {
-    const proto = h.startsWith("localhost") || h.startsWith("127.0.0.1") ? "http" : "https";
+    const local = /^(localhost|127\.0\.0\.1)(:\d+)?$/.test(h);
+    const proto = local ? "http" : "https";
     connect = `${proto}://${h}/api/admin/site-audit/${clientId.toLowerCase()}/`;
   }
   return `default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src data: blob:; font-src data:; media-src data: blob:; connect-src ${connect}; form-action 'none'; base-uri 'none'; frame-src 'none'; frame-ancestors 'none'; object-src 'none'`;
