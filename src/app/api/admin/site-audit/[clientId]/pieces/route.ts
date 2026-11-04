@@ -1,7 +1,11 @@
 /** Pièces jointes du site d'audit : un document interne par pièce (JPEG, PNG, PDF). */
 import { NextResponse, type NextRequest } from "next/server";
 
-import { ajouterFichier, ErreurDocument, MESSAGES_DOCUMENT } from "@/features/dossier-client/documents/ajouter";
+import {
+  ajouterFichier,
+  ErreurDocument,
+  MESSAGES_DOCUMENT,
+} from "@/features/dossier-client/documents/ajouter";
 import { TAILLE_MAX_FICHIER_OCTETS } from "@/features/dossier-client/documents/formats";
 import { SANS_CACHE } from "@/features/site-audit/config";
 import { gardeSiteAudit, refus } from "@/features/site-audit/garde";

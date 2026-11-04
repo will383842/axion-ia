@@ -50,9 +50,14 @@ function monter(extra: Record<string, unknown> = {}) {
 }
 
 function appeler(clientId = CLIENT, headers: Record<string, string> = {}) {
-  return GET(new Request("https://axion-ia.com/x", { headers: { host: "axion-ia.com", ...headers } }) as never, {
-    params: Promise.resolve({ clientId }),
-  });
+  return GET(
+    new Request("https://axion-ia.com/x", {
+      headers: { host: "axion-ia.com", ...headers },
+    }) as never,
+    {
+      params: Promise.resolve({ clientId }),
+    },
+  );
 }
 
 describe("seul le super_admin ouvre le site d'audit", () => {

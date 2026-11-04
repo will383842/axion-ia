@@ -47,15 +47,21 @@ function monter() {
 }
 
 function poster(headers: Record<string, string> = BONS, corps: string = CORPS, id = CLIENT) {
-  return POST(new Request("https://axion-ia.com/x", { method: "POST", headers, body: corps }) as never, {
-    params: Promise.resolve({ clientId: id }),
-  });
+  return POST(
+    new Request("https://axion-ia.com/x", { method: "POST", headers, body: corps }) as never,
+    {
+      params: Promise.resolve({ clientId: id }),
+    },
+  );
 }
 
 function lire(id = CLIENT) {
-  return GET(new Request("https://axion-ia.com/x", { headers: { host: "axion-ia.com" } }) as never, {
-    params: Promise.resolve({ clientId: id }),
-  });
+  return GET(
+    new Request("https://axion-ia.com/x", { headers: { host: "axion-ia.com" } }) as never,
+    {
+      params: Promise.resolve({ clientId: id }),
+    },
+  );
 }
 
 describe("seul le super_admin enregistre les notes", () => {
