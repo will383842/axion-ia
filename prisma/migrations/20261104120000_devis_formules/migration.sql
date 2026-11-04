@@ -6,11 +6,13 @@
 -- Codes de formule : 'achat' / 'abonnement' (codes du contrat avec la console ; A/B = affichage seulement).
 --
 -- Retour arriere (JAMAIS execute sans Will ; colonnes vides en prod tant que l interrupteur devis_formules est eteint), ordre inverse :
+--   (apres le retour arriere SQL : prisma migrate resolve --rolled-back 20261104120000_devis_formules)
+--   DROP TRIGGER IF EXISTS "devis_textes_bibliotheque_no_truncate" ON "devis_textes_bibliotheque";
 --   DROP TRIGGER IF EXISTS "devis_textes_bibliotheque_no_delete" ON "devis_textes_bibliotheque";
 --   DROP TABLE IF EXISTS "devis_textes_bibliotheque";
 --   DROP FUNCTION IF EXISTS "devis_textes_bibliotheque_refuse_delete"();
 --   DROP INDEX IF EXISTS "plans_recurrents_devis_nature_uq";
---   ALTER TABLE "plans_recurrents" DROP CONSTRAINT IF EXISTS "plans_recurrents_nature_chk", DROP CONSTRAINT IF EXISTS "plans_recurrents_devis_id_fkey";
+--   ALTER TABLE "plans_recurrents" DROP CONSTRAINT IF EXISTS "plans_recurrents_devis_nature_chk", DROP CONSTRAINT IF EXISTS "plans_recurrents_nature_chk", DROP CONSTRAINT IF EXISTS "plans_recurrents_devis_id_fkey";
 --   ALTER TABLE "plans_recurrents" DROP COLUMN IF EXISTS "valide_par_admin_id", DROP COLUMN IF EXISTS "valide_at", DROP COLUMN IF EXISTS "propose_at", DROP COLUMN IF EXISTS "nature", DROP COLUMN IF EXISTS "devis_id";
 --   ALTER TABLE "document_signatures" DROP CONSTRAINT IF EXISTS "document_signatures_choix_offre_sha_chk";
 --   ALTER TABLE "document_signatures" DROP COLUMN IF EXISTS "choix_offre_sha256", DROP COLUMN IF EXISTS "choix_offre";
@@ -65,6 +67,10 @@ ALTER TABLE "plans_recurrents"
 ALTER TABLE "plans_recurrents"
   ADD CONSTRAINT "plans_recurrents_nature_chk" CHECK ("nature" IS NULL OR "nature" IN ('maintenance', 'abonnement', 'hebergement'));
 
+-- Un plan lie a un devis porte toujours sa nature (sinon l index unique partiel ne le distingue pas).
+ALTER TABLE "plans_recurrents"
+  ADD CONSTRAINT "plans_recurrents_devis_nature_chk" CHECK ("devis_id" IS NULL OR "nature" IS NOT NULL);
+
 ALTER TABLE "plans_recurrents"
   ADD CONSTRAINT "plans_recurrents_devis_id_fkey" FOREIGN KEY ("devis_id") REFERENCES "devis"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
@@ -105,3 +111,7 @@ $$ LANGUAGE plpgsql;
 CREATE TRIGGER "devis_textes_bibliotheque_no_delete"
   BEFORE DELETE ON "devis_textes_bibliotheque"
   FOR EACH ROW EXECUTE FUNCTION "devis_textes_bibliotheque_refuse_delete"();
+
+-- TRUNCATE aussi (meme fonction : elle refuse sans condition), comme numeros_emis_pas_de_truncate.
+CREATE TRIGGER "devis_textes_bibliotheque_no_truncate" BEFORE TRUNCATE ON "devis_textes_bibliotheque"
+  FOR EACH STATEMENT EXECUTE FUNCTION "devis_textes_bibliotheque_refuse_delete"();
