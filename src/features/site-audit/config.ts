@@ -26,16 +26,41 @@ export function siteAuditDuClient(
   return null;
 }
 
-/** Pas de `sandbox` (décision D1) ; aucun réseau : connect-src/form-action fermés. */
-export const CSP_SITE_AUDIT =
-  "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src data: blob:; font-src data:; media-src data: blob:; connect-src 'none'; form-action 'none'; base-uri 'none'; frame-src 'none'; frame-ancestors 'none'; object-src 'none'";
+const HOTE_VALIDE = /^[a-z0-9.-]+(:\d+)?$/;
 
-export const ENTETES_SITE_AUDIT: Record<string, string> = {
-  "Content-Type": "text/html; charset=utf-8",
+/**
+ * Pas de `sandbox` (décision D1). Réseau : UNIQUEMENT le chemin de ce site
+ * d'audit (enregistrement automatique) ; hôte illisible → `'none'`.
+ */
+export function cspSiteAudit(host: string | null | undefined, clientId: string): string {
+  const h = (host ?? "").trim().toLowerCase();
+  let connect = "'none'";
+  if (HOTE_VALIDE.test(h) && UUID.test(clientId.toLowerCase())) {
+    const proto = h.startsWith("localhost") || h.startsWith("127.0.0.1") ? "http" : "https";
+    connect = `${proto}://${h}/api/admin/site-audit/${clientId.toLowerCase()}/`;
+  }
+  return `default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src data: blob:; font-src data:; media-src data: blob:; connect-src ${connect}; form-action 'none'; base-uri 'none'; frame-src 'none'; frame-ancestors 'none'; object-src 'none'`;
+}
+
+export function entetesSiteAudit(
+  host: string | null | undefined,
+  clientId: string,
+): Record<string, string> {
+  return {
+    "Content-Type": "text/html; charset=utf-8",
+    "Cache-Control": "private, no-store",
+    "X-Content-Type-Options": "nosniff",
+    "X-Robots-Tag": "noindex",
+    "X-Frame-Options": "DENY",
+    "Referrer-Policy": "no-referrer",
+    "Content-Security-Policy": cspSiteAudit(host, clientId),
+  };
+}
+
+/** En-têtes des réponses texte (refus) de toutes les routes du site d'audit. */
+export const SANS_CACHE: Record<string, string> = {
+  "Content-Type": "text/plain; charset=utf-8",
   "Cache-Control": "private, no-store",
   "X-Content-Type-Options": "nosniff",
   "X-Robots-Tag": "noindex",
-  "X-Frame-Options": "DENY",
-  "Referrer-Policy": "no-referrer",
-  "Content-Security-Policy": CSP_SITE_AUDIT,
 };
