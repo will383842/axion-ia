@@ -50,6 +50,7 @@ import {
   emettreDevisSigne,
   transactionDevisSigne,
 } from "@/server/partners-sync/producteurs/devis";
+import { faireMonterLesFichesDesDevisSignes } from "@/features/dossier-client/devis-signe-fait-client";
 import { bandeauPourLeRole } from "@/server/partners/client-attributions";
 import { sirenDuClient } from "@/lib/siret";
 import { DevisPdf, type DevisData } from "@/server/qualiopi/documents/templates/devis";
@@ -727,6 +728,11 @@ export async function acceptDevisAction(id: string): Promise<ActionResult<{ id: 
       data: { statut: "accepte", acceptedAt: new Date() },
     });
     await emettreDevisSigne(tx, devisId);
+    // Un prospect passe en client lorsqu'un devis est signé (Will, 04/11/2026).
+    await faireMonterLesFichesDesDevisSignes(tx, [devisId], {
+      origine: "console",
+      adminUserId: session.userId,
+    });
   });
 
   await logQualiopiActivity({

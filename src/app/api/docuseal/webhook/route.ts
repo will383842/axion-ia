@@ -32,6 +32,7 @@ import {
 import { prisma } from "@/lib/prisma";
 import { sendTelegram } from "@/lib/telegram";
 import { emettreDevisSigne, transactionDevisSigne } from "@/server/partners-sync/producteurs/devis";
+import { faireMonterLesFichesDesDevisSignes } from "@/features/dossier-client/devis-signe-fait-client";
 
 // Le canal Partners est importé (INT-T04) : jamais évaluée au build (garde d'inertie R4).
 export const dynamic = "force-dynamic";
@@ -197,6 +198,8 @@ async function dispatchDevisEvent(
         data: { statut: "accepte", acceptedAt: new Date() },
       });
       await emettreDevisSigne(tx, devis.id);
+      // Un prospect passe en client lorsqu'un devis est signé (Will, 04/11/2026).
+      await faireMonterLesFichesDesDevisSignes(tx, [devis.id], { origine: "docuseal" });
     });
     sendTelegram({
       tag: "OPTION CONFIRMÉE",

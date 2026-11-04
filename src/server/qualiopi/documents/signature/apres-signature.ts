@@ -50,6 +50,7 @@ import {
   emettreDevisSigne,
   transactionDevisSigne,
 } from "@/server/partners-sync/producteurs/devis";
+import { faireMonterLesFichesDesDevisSignes } from "@/features/dossier-client/devis-signe-fait-client";
 import type { PartieSignataire } from "./document-signature-hash";
 import { circuitPour } from "./parties-requises";
 import { estPieceEngageante } from "./pieces-engageantes";
@@ -176,11 +177,19 @@ async function accepterDevis(documentGenereId: string): Promise<void> {
   const garde = { documentGenereId, statut: { in: ["envoye" as const, "expire" as const] } };
   await transactionDevisSigne(prisma, async (tx) => {
     const concernes = await devisConcernesPourEmission(tx, garde);
+    // Lecture propre à la montée du prospect : `devisConcernesPourEmission` rend [] canal Partners fermé.
+    const vises = await tx.devis.findMany({ where: garde, select: { id: true } });
     await tx.devis.updateMany({
       where: garde,
       data: { statut: "accepte", acceptedAt: new Date() },
     });
     for (const id of concernes) await emettreDevisSigne(tx, id);
+    // Un prospect passe en client lorsqu'un devis est signé (Will, 04/11/2026) ; après l'émission.
+    await faireMonterLesFichesDesDevisSignes(
+      tx,
+      vises.map((d) => d.id),
+      { origine: "signature_complete" },
+    );
   });
 }
 

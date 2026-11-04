@@ -195,6 +195,8 @@ describe("REQ-INT-007 — face VERTE : le dépôt réel", () => {
       expect(client.horsChampsTransmis.map((e) => `${e.fichier} (${e.fonction})`)).toEqual([
         // 26/10/2026 : « Facture établie hors console » ne pose que le statut commercial (hors charge Partners).
         "src/features/dossier-client/actions-facture-hors-console.ts (factureHorsConsoleAction › travail de prisma.$transaction())",
+        // 04/11/2026 : « un prospect passe en client lorsqu'un devis est signé » ne pose que le statut commercial.
+        "src/features/dossier-client/devis-signe-fait-client.ts (faireMonterLesFichesDesDevisSignes)",
         "src/server/actions/qualiopi/devis.ts (sendDevisAction › travail de prisma.$transaction())",
         "src/server/qualiopi/crm/contact-facturation.ts (definirContactFacturation)",
         "src/server/qualiopi/crm/contact-facturation.ts (definirContactFacturation)",

@@ -18,6 +18,8 @@ const h = vi.hoisted(() => ({
   log: vi.fn(),
   prevenir: vi.fn(),
   fiche: vi.fn(),
+  monter: vi.fn(),
+  txDevis: { devis: { updateMany: vi.fn(), findMany: vi.fn() } },
   p: {
     documentGenere: { findUnique: vi.fn() },
     documentSignature: { findMany: vi.fn() },
@@ -52,8 +54,11 @@ vi.mock("@/server/partners-sync/producteurs/devis", () => ({
   devisConcernesPourEmission: vi.fn(async () => []),
   emettreDevisSigne: vi.fn(),
   transactionDevisSigne: vi.fn(async (_p: unknown, fn: (tx: unknown) => Promise<void>) =>
-    fn({ devis: { updateMany: vi.fn() } }),
+    fn(h.txDevis),
   ),
+}));
+vi.mock("@/features/dossier-client/devis-signe-fait-client", () => ({
+  faireMonterLesFichesDesDevisSignes: h.monter,
 }));
 
 import { apresSignature, type ContexteApresSignature } from "./apres-signature";
@@ -323,5 +328,40 @@ describe("devis signé par le client (lien) : e-mail interne à l'organisme", ()
       }),
     );
     expect(h.prevenir).not.toHaveBeenCalled();
+  });
+});
+
+describe("devis intégralement signé : le prospect passe en client", () => {
+  beforeEach(() => {
+    h.txDevis.devis.findMany.mockResolvedValue([{ id: "dv-1" }]);
+  });
+
+  it("signature intégrale (contresignature comprise) : les devis visés font monter leur fiche", async () => {
+    await apresSignature(ctx({ type: "devis", statutSignature: "signee", partie: "axionia" }));
+    expect(h.txDevis.devis.findMany).toHaveBeenCalledOnce();
+    expect(h.monter).toHaveBeenCalledOnce();
+    expect(h.monter).toHaveBeenCalledWith(h.txDevis, ["dv-1"], { origine: "signature_complete" });
+    // La lecture des devis visés précède l'écriture gardée, la montée la suit.
+    const ordre = (f: { mock: { invocationCallOrder: number[] } }) =>
+      f.mock.invocationCallOrder[0]!;
+    expect(ordre(h.txDevis.devis.findMany)).toBeLessThan(ordre(h.txDevis.devis.updateMany));
+    expect(ordre(h.txDevis.devis.updateMany)).toBeLessThan(ordre(h.monter));
+  });
+
+  it("signature partielle : rien ne monte", async () => {
+    await apresSignature(
+      ctx({
+        type: "devis",
+        statutSignature: "partielle",
+        partie: "client",
+        acteur: { type: "signataire" },
+      }),
+    );
+    expect(h.monter).not.toHaveBeenCalled();
+  });
+
+  it("une autre pièce que le devis : rien ne monte", async () => {
+    await apresSignature(ctx({ type: "lettre_mission" }));
+    expect(h.monter).not.toHaveBeenCalled();
   });
 });
