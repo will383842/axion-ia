@@ -1888,6 +1888,14 @@ export const ALERTE_CATALOGUE: Record<string, AlerteCatalogueEntry> = {
       "STRUCTUREL — émise une fois par fiche créée en doute d'identité par le balayage du dossier client ; elle attend la fusion au SIRET (une autre PR), `synchroniserAlertes` la fermerait au premier tour.",
     guichet: "direction",
   },
+  "visio.fiche_de_message_efface": {
+    niveau: "important",
+    titre: "Message effacé (art. 17) : sa fiche prospect est restée, à examiner",
+    resolutionAuto: false,
+    motifSansResolutionAuto:
+      "STRUCTUREL — émise une fois par l'effacement d'un message relié à une fiche ; rien n'est supprimé tout seul, la fiche attend la décision de Will, `synchroniserAlertes` la fermerait au premier tour.",
+    guichet: "direction",
+  },
   "visio.rendez_vous_a_classer": {
     niveau: "important",
     titre: "Rendez-vous Calendly à classer à la main (fiche automatique en doute)",

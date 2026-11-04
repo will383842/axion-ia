@@ -73,6 +73,11 @@ export const CODES_ALERTES_VISIO = {
    * Une alerte par fiche (cible = la fiche) : à fusionner plus tard, quand le SIRET est connu.
    */
   doublonPossible: "visio.doublon_possible",
+  /**
+   * Un message effacé (art. 17) avait une fiche prospect : la fiche N'EST PAS supprimée (rien ne
+   * s'efface tout seul), Will décide. Une alerte par fiche (cible = la fiche).
+   */
+  ficheDeMessageEfface: "visio.fiche_de_message_efface",
   // ── enregistreur (PR 5) ──
   /** Le worker ne relit pas le témoin de clé. */
   temoinCle: "visio.temoin_cle",

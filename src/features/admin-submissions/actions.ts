@@ -255,12 +255,31 @@ export async function eraseSubmissionAction(
   await prisma.$transaction(async (tx) => {
     const sub = await tx.submission.findUnique({
       where: { id: parsed.data.id },
-      select: { id: true, type: true, contactEmail: true, details: true },
+      select: { id: true, type: true, contactEmail: true, details: true, ficheClientId: true },
     });
     if (!sub) throw new Error("submission_not_found");
     cheminCv = lireCvCandidat(sub.details)?.fichier?.storagePath ?? null;
 
     await tx.submission.delete({ where: { id: parsed.data.id } });
+
+    // La fiche prospect née de ce message (ou à laquelle il était relié) N'EST PAS supprimée :
+    // rien ne s'efface tout seul. Will en est prévenu, il décide (aucune donnée de la personne
+    // dans l'alerte : seulement la cible).
+    if (sub.ficheClientId) {
+      await tx.alerteSysteme.create({
+        data: {
+          code: "visio.fiche_de_message_efface",
+          niveau: "important",
+          titre: "Message effacé (art. 17) : sa fiche prospect est restée, à examiner",
+          message:
+            "Un message relié à cette fiche vient d'être effacé à la demande de la personne. " +
+            "La fiche n'a PAS été supprimée : à examiner et, si besoin, à effacer à la main.",
+          cibleType: "Client",
+          cibleId: sub.ficheClientId,
+          metadata: { origine: "effacement-message" },
+        },
+      });
+    }
 
     // Activity log RGPD : on ne re-stocke pas l'email supprimé en clair, on
     // conserve uniquement le hash + reason + targetId pour traçabilité.

@@ -117,6 +117,31 @@ async function passerDossierClient(prisma: BaseDossier): Promise<void> {
           `${fa.doutes} à classer, ${fa.plantees} plantée(s)`,
       );
     }
+    // Les demandes écrites (DOSSIER_FICHE_DEMANDE) : des NOMBRES seulement, jamais un nom ni une
+    // adresse. Sans cette ligne l'étape « essai » ne se lirait nulle part.
+    const fd = r.fichesDemande;
+    if (fd && fd.mode === "essai") {
+      console.warn(
+        `[visio-balayage-worker] fiches des demandes À BLANC : créerait ${fd.creeraient}, ` +
+          `lierait ${fd.lieraient}, douterait ${fd.doutes}, planterait ${fd.plantees}, ` +
+          `colonne absente ${fd.colonneAbsente ? "oui" : "non"}`,
+      );
+    } else if (
+      fd &&
+      (fd.creees > 0 ||
+        fd.liees > 0 ||
+        fd.doutes > 0 ||
+        fd.plantees > 0 ||
+        fd.colonneAbsente ||
+        fd.doublons.length > 0)
+    ) {
+      console.warn(
+        `[visio-balayage-worker] fiches des demandes : ${fd.creees} créée(s), ` +
+          `${fd.liees} liée(s), ${fd.doublons.length} doublon(s) possible(s), ` +
+          `${fd.doutes} doute(s), ${fd.plantees} plantée(s), ` +
+          `colonne absente ${fd.colonneAbsente ? "oui" : "non"}`,
+      );
+    }
     if (r.etapesEnEchec.length > 0 || r.rencontresAssurees > 0) {
       console.warn(
         `[visio-balayage-worker] ${r.rencontresAssurees} rencontre(s) assurée(s), ` +

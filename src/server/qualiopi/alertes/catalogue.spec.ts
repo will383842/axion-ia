@@ -277,6 +277,7 @@ const CODES_ATTENDUS: string[] = [
   "visio.balayage_en_panne",
   "visio.rendez_vous_a_classer",
   "visio.doublon_possible",
+  "visio.fiche_de_message_efface",
   // Chantier visio, PR 5 (anti-doublon A3) : les pannes techniques de
   // l'enregistreur passent par ce catalogue, plus par une table à part.
   "visio.temoin_cle",
@@ -437,6 +438,7 @@ describe("ALERTE_CATALOGUE", () => {
     "visio.balayage_en_panne",
     "visio.rendez_vous_a_classer",
     "visio.doublon_possible",
+    "visio.fiche_de_message_efface",
   ])("%s — levé hors balayage, donc jamais auto-résolu, et le motif est écrit", (code) => {
     const entree = ALERTE_CATALOGUE[code];
     expect(entree, `« ${code} » est émis par le code mais absent du catalogue`).toBeDefined();
