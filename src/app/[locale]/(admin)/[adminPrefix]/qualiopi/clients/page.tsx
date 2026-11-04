@@ -28,6 +28,14 @@ import { gardePage } from "@/server/auth/garde-page";
 import { prisma } from "@/lib/prisma";
 import { separerLesArchivees } from "@/features/dossier-client/fiche/archivage-liste";
 import { TEXTE_LECTURE_IMPOSSIBLE } from "@/features/dossier-client/bandeau-ou-en-est";
+import {
+  adresseListe,
+  appliquerFiltreStatut,
+  compterParFiltre,
+  FILTRES_STATUT,
+  LIBELLE_FILTRE,
+  lireFiltreStatut,
+} from "@/features/dossier-client/filtre-statut-liste";
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
@@ -67,12 +75,12 @@ const TAILLE_LABELS: Record<string, string> = {
 
 interface PageProps {
   params: Promise<{ locale: "fr" | "en"; adminPrefix: string }>;
-  searchParams: Promise<{ q?: string; archives?: string }>;
+  searchParams: Promise<{ q?: string; archives?: string; statut?: string }>;
 }
 
 export default async function QualiopiClientsPage({ params, searchParams }: PageProps) {
   const { locale, adminPrefix } = await params;
-  const { q, archives } = await searchParams;
+  const { q, archives, statut } = await searchParams;
   const acces = await gardePage("consultation", `/${locale}/${adminPrefix}/login`);
   if (!acces.autorise) {
     return <AccesRefuse motif={acces.motif} retourHref={`/${locale}/${adminPrefix}`} />;
@@ -85,8 +93,14 @@ export default async function QualiopiClientsPage({ params, searchParams }: Page
   // Lot B6 : les fiches archivées sont masquées par défaut (`?archives=1` les montre seules).
   const partage = await separerLesArchivees(prisma, tous);
   const voirArchives = archives === "1";
-  const clients = voirArchives ? partage.archivees : partage.actives;
+  // `vue` = ce que `archives` et `q` donnent ; `clients` = la vue réduite par `?statut=`.
+  const vue = voirArchives ? partage.archivees : partage.actives;
+  const filtre = lireFiltreStatut(statut);
+  const clients = appliquerFiltreStatut(vue, filtre);
+  const parFiltre = compterParFiltre(vue);
   const hrefListe = `/${locale}/${adminPrefix}/qualiopi/clients`;
+  // Le rôle vient de la session lue ICI, côté serveur : jamais d'un paramètre d'adresse.
+  const estSuperAdmin = acces.role === "super_admin";
 
   // 🔴 Les compteurs portent sur le RÉSULTAT AFFICHÉ, et le libellé le dit.
   //
@@ -135,12 +149,13 @@ export default async function QualiopiClientsPage({ params, searchParams }: Page
             className="admin-input min-w-[16rem] flex-1"
           />
           {voirArchives ? <input type="hidden" name="archives" value="1" /> : null}
+          {filtre !== "tous" ? <input type="hidden" name="statut" value={filtre} /> : null}
           <AdminButton type="submit" variant="secondary">
             Rechercher
           </AdminButton>
           {recherche !== "" ? (
             <Link
-              href={`/${locale}/${adminPrefix}/qualiopi/clients`}
+              href={adresseListe(hrefListe, { statut: filtre })}
               className="self-center text-[length:var(--text-admin-sm)] underline"
             >
               Effacer
@@ -149,20 +164,42 @@ export default async function QualiopiClientsPage({ params, searchParams }: Page
         </form>
       </AdminBloc>
 
+      {/* Filtre par statut : de simples liens (composant serveur), combinés à `q` et `archives`.
+          Les compteurs portent sur la vue courante, donc chaque lien donne exactement son nombre. */}
+      <nav
+        aria-label="Filtrer par statut"
+        className="mb-[var(--space-admin-4)] flex flex-wrap gap-[var(--space-admin-2)]"
+      >
+        {FILTRES_STATUT.map((f) => (
+          <Link
+            key={f}
+            href={adresseListe(hrefListe, { q: recherche, archives: voirArchives, statut: f })}
+            aria-current={f === filtre ? "page" : undefined}
+            className={`inline-flex min-h-11 items-center rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] px-[var(--space-admin-4)] text-[length:var(--text-admin-sm)] ${
+              f === filtre
+                ? "bg-[color:var(--color-admin-fg)] font-semibold text-[color:var(--color-admin-paper)]"
+                : "underline"
+            }`}
+          >
+            {`${LIBELLE_FILTRE[f]} (${parFiltre[f]})`}
+          </Link>
+        ))}
+      </nav>
+
       {recherche !== "" && !(voirArchives && partage.lectureImpossible) ? (
         <p className="mb-[var(--space-admin-4)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
-          {clients.length === 0
+          {vue.length === 0
             ? `${voirArchives ? "Aucune fiche archivée" : "Aucune fiche active"} ne correspond à « ${recherche} »${
                 !voirArchives && partage.archivees.length > 0
                   ? ` ; ${partage.archivees.length} fiche${partage.archivees.length > 1 ? "s archivées correspondent" : " archivée correspond"}`
                   : ""
               }. Vérifiez l'orthographe avant d'en créer un nouveau : un doublon coûte plus cher qu'une recherche ratée.`
-            : `${clients.length} résultat${clients.length > 1 ? "s" : ""} pour « ${recherche} ».`}
-          {clients.length === 0 && !voirArchives && partage.archivees.length > 0 ? (
+            : `${vue.length} résultat${vue.length > 1 ? "s" : ""} pour « ${recherche} ».`}
+          {vue.length === 0 && !voirArchives && partage.archivees.length > 0 ? (
             <>
               {" "}
               <Link
-                href={`${hrefListe}?archives=1&q=${encodeURIComponent(recherche)}`}
+                href={adresseListe(hrefListe, { q: recherche, archives: true, statut: filtre })}
                 className="inline-flex min-h-11 items-center underline"
               >
                 Voir les archivées
@@ -177,9 +214,7 @@ export default async function QualiopiClientsPage({ params, searchParams }: Page
           {`Archives : ${TEXTE_LECTURE_IMPOSSIBLE} pour le moment. `}
           {voirArchives ? (
             <Link
-              href={
-                recherche === "" ? hrefListe : `${hrefListe}?q=${encodeURIComponent(recherche)}`
-              }
+              href={adresseListe(hrefListe, { q: recherche, statut: filtre })}
               className="inline-flex min-h-11 items-center underline"
             >
               Revenir aux clients
@@ -190,7 +225,7 @@ export default async function QualiopiClientsPage({ params, searchParams }: Page
         <p className="mb-[var(--space-admin-4)] text-[length:var(--text-admin-sm)]">
           {`Fiches archivées (${partage.archivees.length}). `}
           <Link
-            href={recherche === "" ? hrefListe : `${hrefListe}?q=${encodeURIComponent(recherche)}`}
+            href={adresseListe(hrefListe, { q: recherche, statut: filtre })}
             className="inline-flex min-h-11 items-center underline"
           >
             Revenir aux clients
@@ -199,7 +234,7 @@ export default async function QualiopiClientsPage({ params, searchParams }: Page
       ) : partage.archivees.length > 0 ? (
         <p className="mb-[var(--space-admin-4)] text-[length:var(--text-admin-sm)]">
           <Link
-            href={`${hrefListe}?archives=1${recherche === "" ? "" : `&q=${encodeURIComponent(recherche)}`}`}
+            href={adresseListe(hrefListe, { q: recherche, archives: true, statut: filtre })}
             className="inline-flex min-h-11 items-center underline"
           >
             {`Voir les archivées (${partage.archivees.length})`}
@@ -244,11 +279,15 @@ export default async function QualiopiClientsPage({ params, searchParams }: Page
           L'IDCC (déclencheur du barème OPCO par dossier) et la taille sont éditables par ligne
           via ClientBrancheForm → updateClientAction ; la saisie complète (enveloppe, adhérent,
           offre Mobilités, versement volontaire) est dans le bloc « Branche et OPCO » de la fiche. */}
-      {voirArchives && clients.length === 0 && !partage.lectureImpossible ? (
+      {voirArchives && vue.length === 0 && !partage.lectureImpossible ? (
         <AdminEmptyState
           title={recherche === "" ? "Aucune fiche archivée" : "Aucune fiche archivée ne correspond"}
         />
-      ) : clients.length === 0 && tous.length > 0 ? null : clients.length === 0 ? (
+      ) : vue.length > 0 && clients.length === 0 ? (
+        <p className="text-[length:var(--text-admin-sm)]">
+          {`Aucune fiche dans cette vue (${LIBELLE_FILTRE[filtre]}). Choisissez un autre filtre ci-dessus.`}
+        </p>
+      ) : vue.length === 0 && tous.length > 0 ? null : vue.length === 0 ? (
         <AdminEmptyState
           title="Aucun client enregistré"
           description="Un client est nécessaire avant de créer une session ou d'émettre un devis."
@@ -299,6 +338,20 @@ export default async function QualiopiClientsPage({ params, searchParams }: Page
                     >
                       Éditer
                     </Link>
+                    {estSuperAdmin ? (
+                      <>
+                        {" "}
+                        {/* Même adresse que le lien d'ouverture de la fiche (SuppressionManuelle) :
+                            l'écran de confirmation à double validation reste celui de la fiche. */}
+                        <Link
+                          href={`/${locale}/${adminPrefix}/qualiopi/clients/${client.id}?supprimer=client#suppression-client`}
+                          className="admin-button-ghost"
+                          aria-label={`Supprimer ${client.raisonSociale} (écran de confirmation)`}
+                        >
+                          Supprimer
+                        </Link>
+                      </>
+                    ) : null}
                     {client.contactEmail ? (
                       <div className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
                         {client.contactEmail}
