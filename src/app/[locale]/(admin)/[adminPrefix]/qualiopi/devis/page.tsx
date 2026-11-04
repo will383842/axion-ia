@@ -12,11 +12,19 @@ import { AdminPageShell } from "@/components/admin/ui/AdminPageShell";
 import { AdminPageHeader } from "@/components/admin/ui/AdminPageHeader";
 import { AdminStatCard } from "@/components/admin/ui/AdminStatCard";
 import { AdminButton } from "@/components/admin/ui/AdminButton";
-import { Hash, FileText, Send, CheckCircle2, ArrowRight } from "lucide-react";
+import { Hash, FileText, Send, CheckCircle2, ArrowRight, PenLine } from "lucide-react";
 import { listDevis } from "@/server/qualiopi/crm/devis";
 import { listClients } from "@/server/qualiopi/crm/clients";
 import { AccesRefuse } from "@/components/admin/ui/AccesRefuse";
 import { gardePage } from "@/server/auth/garde-page";
+import { idsPiecesDevisAContresigner } from "@/server/qualiopi/documents/signature/pieces-en-attente";
+import {
+  FILTRES_ETAT_DEVIS,
+  compterAContresigner,
+  etatListeDevis,
+  filtrerDevisParEtat,
+  lireFiltreEtatDevis,
+} from "@/server/qualiopi/devis/a-contresigner";
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
@@ -60,17 +68,23 @@ function formatDate(date: Date): string {
 
 interface PageProps {
   params: Promise<{ locale: "fr" | "en"; adminPrefix: string }>;
+  searchParams: Promise<{ etat?: string | string[] }>;
 }
 
-export default async function QualiopiDevisPage({ params }: PageProps) {
+export default async function QualiopiDevisPage({ params, searchParams }: PageProps) {
   const { locale, adminPrefix } = await params;
+  const filtre = lireFiltreEtatDevis((await searchParams).etat);
   const acces = await gardePage("consultation", `/${locale}/${adminPrefix}/login`);
   if (!acces.autorise) {
     return <AccesRefuse motif={acces.motif} retourHref={`/${locale}/${adminPrefix}`} />;
   }
 
   const devisBase = `/${locale}/${adminPrefix}/qualiopi/devis`;
-  const [devisList, clients] = await Promise.all([listDevis(), listClients()]);
+  const [devisList, clients, piecesAContresigner] = await Promise.all([
+    listDevis(),
+    listClients(),
+    idsPiecesDevisAContresigner(),
+  ]);
 
   // Index clients par id pour affichage rapide
   const clientIndex = new Map(clients.map((c) => [c.id, c.raisonSociale]));
@@ -78,6 +92,9 @@ export default async function QualiopiDevisPage({ params }: PageProps) {
   const brouillons = devisList.filter((d) => d.statut === "brouillon").length;
   const envoyes = devisList.filter((d) => d.statut === "envoye").length;
   const acceptes = devisList.filter((d) => d.statut === "accepte").length;
+  // Même prédicat que le filtre « À contresigner » : compteur = lignes filtrées.
+  const aContresigner = compterAContresigner(devisList, piecesAContresigner);
+  const devisAffiches = filtrerDevisParEtat(devisList, filtre, piecesAContresigner);
 
   const cellCls = "px-[var(--space-admin-4)] py-[var(--space-admin-3)] align-top";
   const headCls =
@@ -96,17 +113,45 @@ export default async function QualiopiDevisPage({ params }: PageProps) {
         </Link>
       </div>
 
-      <div className="mb-[var(--space-admin-6)] grid grid-cols-1 gap-[var(--space-admin-5)] sm:grid-cols-4">
+      <div className="mb-[var(--space-admin-6)] grid grid-cols-1 gap-[var(--space-admin-5)] sm:grid-cols-5">
         <AdminStatCard label="Total" value={devisList.length} icon={Hash} />
         <AdminStatCard label="Brouillons" value={brouillons} icon={FileText} />
         <AdminStatCard label="Envoyés" value={envoyes} tone="warning" icon={Send} />
+        <AdminStatCard label="À contresigner" value={aContresigner} tone="warning" icon={PenLine} />
         <AdminStatCard label="Acceptés" value={acceptes} tone="success" icon={CheckCircle2} />
       </div>
+
+      <nav
+        aria-label="Filtrer par état"
+        className="mb-[var(--space-admin-4)] flex flex-wrap gap-[var(--space-admin-2)]"
+      >
+        {[{ id: null, label: "Tous" }, ...FILTRES_ETAT_DEVIS].map((f) => {
+          const actif = f.id === filtre;
+          return (
+            <Link
+              key={f.id ?? "tous"}
+              href={f.id ? `${devisBase}?etat=${f.id}` : devisBase}
+              aria-current={actif ? "page" : undefined}
+              className={
+                actif
+                  ? "rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-fg)] px-[var(--space-admin-3)] py-[var(--space-admin-1)] text-[length:var(--text-admin-sm)] font-semibold text-[color:var(--color-admin-fg)]"
+                  : "rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] px-[var(--space-admin-3)] py-[var(--space-admin-1)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-soft)]"
+              }
+            >
+              {f.label}
+            </Link>
+          );
+        })}
+      </nav>
 
       {devisList.length === 0 ? (
         <p className="text-[length:var(--text-admin-base)] text-[color:var(--color-admin-fg-soft)]">
           Aucun devis. Créez votre premier devis en cliquant sur &laquo;&nbsp;+ Nouveau
           devis&nbsp;&raquo;.
+        </p>
+      ) : devisAffiches.length === 0 ? (
+        <p className="text-[length:var(--text-admin-base)] text-[color:var(--color-admin-fg-soft)]">
+          Aucun devis dans cet état.
         </p>
       ) : (
         <div className="overflow-x-auto rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)]">
@@ -123,7 +168,7 @@ export default async function QualiopiDevisPage({ params }: PageProps) {
               </tr>
             </thead>
             <tbody>
-              {devisList.map((devis) => {
+              {devisAffiches.map((devis) => {
                 const isExpired =
                   devis.statut === "brouillon" || devis.statut === "envoye"
                     ? devis.dateValidite < new Date()
@@ -174,7 +219,11 @@ export default async function QualiopiDevisPage({ params }: PageProps) {
                       )}
                     </td>
                     <td className={cellCls}>
-                      {devis.statut === "accepte" ? (
+                      {etatListeDevis(devis, piecesAContresigner) === "a_contresigner" ? (
+                        <span className="font-semibold text-[color:var(--color-admin-warning)]">
+                          ✎ À contresigner
+                        </span>
+                      ) : devis.statut === "accepte" ? (
                         <span className="text-[color:var(--color-admin-success)]">
                           ● {STATUT_LABELS[devis.statut] ?? devis.statut}
                         </span>

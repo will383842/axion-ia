@@ -24,6 +24,8 @@
  */
 
 import { prisma } from "@/lib/prisma";
+import { idsPiecesDevisAContresigner } from "@/server/qualiopi/documents/signature/pieces-en-attente";
+import { estDevisAContresigner } from "@/server/qualiopi/devis/a-contresigner";
 import { estDansPerimetreQualiopi } from "@/server/qualiopi/perimetre";
 import { STATUTS_FACTURE_OUVERTE } from "@/server/qualiopi/financements/statuts-facture";
 import { estFinancementOpco } from "@/server/qualiopi/financements/validation-service";
@@ -40,6 +42,7 @@ import type {
 
 /** Identifiants des colonnes, dans l'ordre du cycle de vie d'une affaire. */
 export type ColonnePipeline =
+  | "devis_a_contresigner"
   | "devis_attente"
   | "attente_financeur"
   | "signature_attente"
@@ -69,6 +72,13 @@ export const COLONNES_PIPELINE: ReadonlyArray<{
   label: string;
   description: string;
 }> = [
+  {
+    id: "devis_a_contresigner",
+    label: "Devis à contresigner",
+    // Étape DÉDUITE (aucune valeur d'énumération) : devis envoyé dont la pièce
+    // porte la signature du client mais pas encore celle d'axionia.
+    description: "Devis signés par le client — il ne manque que le contreseing d'axionia.",
+  },
   {
     id: "devis_attente",
     label: "Devis en attente",
@@ -139,7 +149,12 @@ export const ACTIVITE_LABELS: Record<ActiviteDossier, string> = {
  * elle ne juge que des faits.
  */
 export type DossierSource =
-  | { source: "devis"; statut: DevisStatut }
+  | {
+      source: "devis";
+      statut: DevisStatut;
+      /** Pièce signée du client, contreseing d'axionia attendu (cf. `estDevisAContresigner`). */
+      aContresigner?: boolean;
+    }
   | {
       source: "session";
       statut: TrainingSessionStatut;
@@ -227,7 +242,11 @@ export function deriverStatutDossier(
 ): ColonnePipeline | null {
   switch (dossier.source) {
     case "devis":
-      return dossier.statut === "envoye" ? "devis_attente" : null;
+      // Un devis expiré mais signé par le client reste à contresigner (accord valable).
+      if (dossier.statut === "expire")
+        return dossier.aContresigner === true ? "devis_a_contresigner" : null;
+      if (dossier.statut !== "envoye") return null;
+      return dossier.aContresigner === true ? "devis_a_contresigner" : "devis_attente";
 
     case "session":
       switch (dossier.statut) {
@@ -345,6 +364,8 @@ export function libellerProchaineAction(
   activite: ActiviteDossier,
 ): string {
   switch (colonne) {
+    case "devis_a_contresigner":
+      return "Contresigner le devis signé par le client";
     case "devis_attente":
       return "Relancer le client, ou marquer la réponse (accepté / refusé)";
     case "attente_financeur":
@@ -503,6 +524,7 @@ async function lireDevisEnvoyes() {
           numero: true,
           activite: true,
           statut: true,
+          documentGenereId: true,
           sentAt: true,
           dateValidite: true,
           client: { select: { raisonSociale: true } },
@@ -662,6 +684,7 @@ async function lireAuditsVivants() {
 /** Pipeline vide — les 7 colonnes présentes, aucune ligne. */
 function pipelineVide(): DossiersPipeline {
   return {
+    devis_a_contresigner: [],
     devis_attente: [],
     attente_financeur: [],
     signature_attente: [],
@@ -711,11 +734,12 @@ export async function lireDossiersPipeline(
     }
     return null;
   };
-  const [srcDevis, srcSessions, srcCoachings, srcAudits] = await Promise.all([
+  const [srcDevis, srcSessions, srcCoachings, srcAudits, piecesAContresigner] = await Promise.all([
     lireDevisEnvoyes(),
     lireSessionsVivantes(),
     lireCoachingsVivants(),
     lireAuditsVivants(),
+    idsPiecesDevisAContresigner(),
   ]);
   const devis = srcDevis.lignes;
   const sessions = srcSessions.lignes;
@@ -726,7 +750,11 @@ export async function lireDossiersPipeline(
   const ajouter = (ligne: LigneDossier) => pipeline[ligne.colonne].push(ligne);
 
   for (const d of devis) {
-    const resolu = resoudre({ source: "devis", statut: d.statut });
+    const resolu = resoudre({
+      source: "devis",
+      statut: d.statut,
+      aContresigner: estDevisAContresigner(d, piecesAContresigner),
+    });
     if (!resolu) continue;
     const { colonne, archive } = resolu;
     const activite = activiteDevis(d.activite);

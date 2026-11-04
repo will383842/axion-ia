@@ -29,6 +29,7 @@
 
 import { cache } from "react";
 import { prisma } from "@/lib/prisma";
+import { estContresignable } from "./contresignables";
 import type { DocumentType, DocumentStatutSignature } from "../../../../../prisma/generated/client";
 
 /**
@@ -171,4 +172,26 @@ export async function listerPiecesEnAttente() {
  */
 export async function compterPiecesEnAttente(): Promise<number> {
   return (await lireEnAttente()).length;
+}
+
+/**
+ * Ids des pièces de type `devis` signées par le client et en attente du seul
+ * contreseing d'axionia — SSOT de la vue « devis à contresigner » (liste des
+ * devis et pipeline). Même lecture mémoïsée que « À traiter » (annulées exclues),
+ * aucune requête de plus. Stub-safe → ensemble vide.
+ */
+export async function idsPiecesDevisAContresigner(): Promise<Set<string>> {
+  const pieces = await lireEnAttente();
+  return new Set(
+    pieces
+      .filter(
+        (p) =>
+          p.type === "devis" &&
+          estContresignable(
+            p.type,
+            p.signatures.map((s) => s.partie),
+          ),
+      )
+      .map((p) => p.id),
+  );
 }
