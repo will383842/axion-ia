@@ -16,7 +16,7 @@ export async function GET(): Promise<Response> {
     headers: {
       "Content-Type": "application/pdf",
       "Content-Disposition": `attachment; filename="CGV-Axion-IA-${CGV_VERSION}.pdf"`,
-      "Cache-Control": "public, max-age=300",
+      "Cache-Control": "public, max-age=0, must-revalidate",
     },
   });
 }
