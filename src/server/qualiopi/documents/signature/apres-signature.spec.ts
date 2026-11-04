@@ -16,6 +16,8 @@ const h = vi.hoisted(() => ({
   reevaluer: vi.fn(),
   activer: vi.fn(),
   log: vi.fn(),
+  prevenir: vi.fn(),
+  fiche: vi.fn(),
   p: {
     documentGenere: { findUnique: vi.fn() },
     documentSignature: { findMany: vi.fn() },
@@ -29,6 +31,10 @@ const h = vi.hoisted(() => ({
 
 vi.mock("@sentry/nextjs", () => ({ captureException: vi.fn(), captureMessage: vi.fn() }));
 vi.mock("@/lib/prisma", () => ({ prisma: h.p }));
+vi.mock("./notification-interne-devis", () => ({
+  prevenirDevisSigne: h.prevenir,
+  ficheDevisDePiece: h.fiche,
+}));
 vi.mock("@/lib/telegram", () => ({ sendTelegram: h.telegram }));
 vi.mock("./transmission-exemplaire", () => ({
   transmettreExemplaireSigne: h.transmettre,
@@ -84,6 +90,8 @@ beforeEach(() => {
   h.transmettre.mockResolvedValue({ ok: true, destinataires: ["f@x.test"], r2Key: "k" });
   h.copie.mockResolvedValue({ ok: true, r2Key: "k2" });
   h.telegram.mockResolvedValue(undefined);
+  h.prevenir.mockResolvedValue(undefined);
+  h.fiche.mockResolvedValue({ id: "dv-1", numero: "AXI-DEV-2026-042" });
   h.p.documentSignature.findMany.mockResolvedValue([{ partie: "formateur" }]);
   h.p.documentGenere.findUnique.mockResolvedValue({ sessionId: null, trainerId: null });
   h.p.questionnaire.findMany.mockResolvedValue([]);
@@ -254,5 +262,66 @@ describe("contrat de travail", () => {
       statutValidation: "valide",
     });
     expect(h.transmettre).toHaveBeenCalledOnce();
+  });
+});
+
+describe("devis signé par le client (lien) : e-mail interne à l'organisme", () => {
+  const client = (patch: Partial<ContexteApresSignature> = {}) =>
+    ctx({
+      type: "devis",
+      statutSignature: "partielle",
+      partie: "client",
+      acteur: { type: "signataire" },
+      canal: "lien_a_jeton",
+      ...patch,
+    });
+
+  it("signature du client : UN e-mail « à contresigner », Telegram avec le numéro du devis", async () => {
+    await apresSignature(client());
+    expect(h.prevenir).toHaveBeenCalledOnce();
+    expect(h.prevenir).toHaveBeenCalledWith({
+      documentGenereId: DOC,
+      numeroPiece: "AXI-DOC-2026-100",
+      etape: "a_contresigner",
+      essai: false,
+    });
+    const corps = String(h.telegram.mock.calls[0]![0].body);
+    expect(corps).toContain("AXI-DEV-2026-042");
+    expect(corps).not.toMatch(/@/);
+  });
+
+  it("pièce d'essai : l'appel porte essai: true (la porte de sortie bloque), Telegram muet", async () => {
+    await apresSignature(client({ numero: "AXI-DOC-ESSAI-2026-0A1B2C" }));
+    expect(h.prevenir).toHaveBeenCalledOnce();
+    expect(h.prevenir.mock.calls[0]![0].essai).toBe(true);
+    expect(h.telegram).not.toHaveBeenCalled();
+  });
+
+  it("fail-soft : une panne de l'e-mail interne ne casse jamais la signature", async () => {
+    h.prevenir.mockRejectedValue(new Error("boom"));
+    await expect(apresSignature(client())).resolves.toEqual({ activationRefusee: null });
+    h.fiche.mockRejectedValue(new Error("db"));
+    await expect(apresSignature(client())).resolves.toEqual({ activationRefusee: null });
+  });
+
+  it("dernière signature par le client (lien) : « signé des deux parties », une seule fois", async () => {
+    await apresSignature(client({ statutSignature: "signee" }));
+    expect(h.prevenir).toHaveBeenCalledOnce();
+    expect(h.prevenir.mock.calls[0]![0].etape).toBe("complete");
+  });
+
+  it("ni contresignature de l'organisme, ni autre pièce, ni autre canal : aucun e-mail interne", async () => {
+    await apresSignature(ctx({ type: "devis", statutSignature: "signee", partie: "axionia" }));
+    await apresSignature(client({ type: "convention" }));
+    await apresSignature(client({ type: "lettre_mission" }));
+    await apresSignature(
+      ctx({
+        type: "devis",
+        statutSignature: "partielle",
+        partie: "client",
+        acteur: { type: "signataire" },
+      }),
+    );
+    expect(h.prevenir).not.toHaveBeenCalled();
   });
 });

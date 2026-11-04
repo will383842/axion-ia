@@ -712,6 +712,13 @@ export const CATALOGUE: Readonly<Record<EmailJobName, FicheEmail>> = {
     destinataire: "la personne qui a répondu",
     source: "features/questionnaire-preaudit/suivi.ts",
   },
+  "devis-signe-a-contresigner": {
+    categorie: "commerce",
+    quand:
+      "Le client signe son devis par lien (puis, si c'est la dernière signature, « signé des deux parties ») — numéro et lien console, aucune donnée personnelle",
+    destinataire: "interne",
+    source: "server/qualiopi/documents/signature/notification-interne-devis.ts",
+  },
   "questionnaire-reponses-recues": {
     categorie: "rendez-vous",
     quand:
