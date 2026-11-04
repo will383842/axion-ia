@@ -66,7 +66,7 @@ describe("liste des clients : fiches archivées", () => {
     h.tous = [fiche];
     h.partage = { actives: [], archivees: [fiche], lectureImpossible: false };
     const html = await rendre({ archives: "1" });
-    for (const l of ["Prospects", "Devis envoyés", "Clients actifs"]) {
+    for (const l of ["Prospects sans devis", "Devis envoyés", "Clients actifs"]) {
       expect(html).toContain(`${l} (hors archivées)`);
     }
   });
