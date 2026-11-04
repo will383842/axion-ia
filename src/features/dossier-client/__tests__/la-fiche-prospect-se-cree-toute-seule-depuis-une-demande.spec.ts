@@ -219,9 +219,9 @@ describe("les interrupteurs", () => {
     expect(lire("2026-02-30")).toBeNull();
     expect(lire("2026-13-01")).toBeNull();
     expect(lire("2026-11-04T00:00:00Z")).toBeNull();
-    // Trop ancienne (plus de 90 jours avant « maintenant ») : refusée ; 90 jours pile : permise.
+    // Trop ancienne (plus de 90 jours avant « maintenant ») : refusée ; 89 jours : permise.
     expect(lire("2026-08-07")).toBeNull();
-    expect(lire("2026-08-08")).not.toBeNull();
+    expect(lire("2026-08-09")).not.toBeNull();
     // Une date future reste permise.
     expect(lire("2027-01-01")).not.toBeNull();
   });
@@ -602,6 +602,15 @@ describe("une clé de chiffrement absente ou fausse est une panne, jamais un dou
     const r = await passerBalayage(b.client as never, {
       maintenant: MAINTENANT,
       notifier: vi.fn(async () => ({ channels: { telegram: "sent" } })) as never,
+      creerAlerte: async (input: { code: string }) => {
+        await (
+          b.client as unknown as {
+            alerteSysteme: { create: (a: unknown) => Promise<unknown> };
+          }
+        ).alerteSysteme.create({
+          data: { ...input, niveau: "important", titre: "t", message: "m" },
+        });
+      },
     });
     expect(r.etapesEnEchec).toContain("fiches-demande");
     avert.mockRestore();
