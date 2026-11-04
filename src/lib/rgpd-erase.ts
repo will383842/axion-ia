@@ -2593,8 +2593,8 @@ export const MOTIF_ECART_RAPPORT_RGPD = "demande d'effacement RGPD (art. 17) du 
 /**
  * Rapports d'analyse avant audit établis sur les questionnaires du DIRIGEANT qui demande
  * l'effacement (2026-11-02) : MIS À L'ÉCART, JAMAIS SUPPRIMÉS (règle de Will : aucune purge de
- * données clients). La base n'est plus déchiffrée par la console (`lireBaseAudit` refuse une ligne
- * écartée) ; un lancement encore en attente ou en cours est ANNULÉ (le worker ne peut plus y
+ * données clients). La base n'est plus déchiffrée : plus aucun code ne la déchiffre ;
+ * un lancement encore en attente ou en cours est ANNULÉ (le worker ne peut plus y
  * écrire). L'appelant ALERTE Will, qui décide de la suite.
  *
  * ⚠️ À appeler AVANT `eraseCalendlyEventsForEmail` : celui-ci retire l'adresse et l'empreinte par
