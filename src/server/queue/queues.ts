@@ -1085,7 +1085,7 @@ export async function enqueueEmail(
       ? { attachments: options.attachments }
       : {}),
   };
-  const journalise = template !== "submission-reply";
+  const journalise = template !== "submission-reply" && template !== "candidature-reponse";
   const jobId = options?.jobId ?? (journalise ? `email-${randomUUID()}` : undefined);
   const addOptions: Record<string, unknown> = {};
   if (options?.delayMs) addOptions["delay"] = options.delayMs;
@@ -1113,7 +1113,11 @@ export async function enqueueEmail(
   // l'autre). `await` volontaire : la fonction ne lève jamais (elle avale ses propres
   // erreurs).
   //
-  // ⚠️ `submission-reply` est le SEUL gabarit exclu, et l'exclusion est
+  // ⚠️ `candidature-reponse` est exclu pour la même raison que `submission-reply` : son suivi
+  // est sur `JobApplicationReply`. Lui écrivait dans `email_logs` avant l'exclusion : 360 lignes
+  // restées « en attente » en production. Ce qui suit décrit `submission-reply`, et vaut pour lui.
+  //
+  // ⚠️ `submission-reply` et `candidature-reponse` sont les SEULS gabarits exclus, et l'exclusion est
   // nécessaire, pas cosmétique. Ce chemin n'a jamais écrit dans `email_logs` :
   // il porte son propre suivi, plus riche, sur `SubmissionReply`
   // (`deliveryStatus` / `sentAt` / `failedAt` / `errorMsg` / `retryCount`), et
