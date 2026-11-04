@@ -36,6 +36,8 @@ import {
   LIBELLE_FILTRE,
   lireFiltreStatut,
 } from "@/features/dossier-client/filtre-statut-liste";
+// Alias : un nom en « lire… » est compté comme une lecture du dossier par la garde « rôle avant lecture ».
+import { lireMessageDeRetour as messageScelle } from "@/features/dossier-client/message-de-retour";
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
@@ -75,12 +77,18 @@ const TAILLE_LABELS: Record<string, string> = {
 
 interface PageProps {
   params: Promise<{ locale: "fr" | "en"; adminPrefix: string }>;
-  searchParams: Promise<{ q?: string; archives?: string; statut?: string }>;
+  searchParams: Promise<{
+    q?: string;
+    archives?: string;
+    statut?: string;
+    message?: string;
+    sceau?: string;
+  }>;
 }
 
 export default async function QualiopiClientsPage({ params, searchParams }: PageProps) {
   const { locale, adminPrefix } = await params;
-  const { q, archives, statut } = await searchParams;
+  const { q, archives, statut, message, sceau } = await searchParams;
   const acces = await gardePage("consultation", `/${locale}/${adminPrefix}/login`);
   if (!acces.autorise) {
     return <AccesRefuse motif={acces.motif} retourHref={`/${locale}/${adminPrefix}`} />;
@@ -98,17 +106,26 @@ export default async function QualiopiClientsPage({ params, searchParams }: Page
   const filtre = lireFiltreStatut(statut);
   const clients = appliquerFiltreStatut(vue, filtre);
   const parFiltre = compterParFiltre(vue);
+  // Archivées que le filtre courant laisserait voir : c'est CE nombre que les liens annoncent.
+  const archiveesDuFiltre = appliquerFiltreStatut(partage.archivees, filtre).length;
+  // Confirmation laissée par la suppression (`?message=`) : seul un message SCELLÉ par nos actions
+  // s'affiche (un lien forgé ne montre rien), en texte brut (React échappe), 300 caractères au plus.
+  const messageRetour = messageScelle({ message, sceau }, "message");
   const hrefListe = `/${locale}/${adminPrefix}/qualiopi/clients`;
   // Le rôle vient de la session lue ICI, côté serveur : jamais d'un paramètre d'adresse.
   const estSuperAdmin = acces.role === "super_admin";
 
   // 🔴 Les compteurs portent sur le RÉSULTAT AFFICHÉ, et le libellé le dit.
+  // Avec `?statut=`, les cartes suivent le filtre (suffixe « · Perdus ») : « Total 6 » au-dessus
+  // d'une ligne serait faux. La carte « Prospects sans devis » dit ce qu'elle compte (`prospect`
+  // seul) pour ne pas se confondre avec le filtre « Prospects » (prospect + devis envoyé).
   //
   // Laisser « Total 3 » au-dessus d'une liste filtrée à 1 ligne fait douter de
   // l'écran : on ne sait plus si la recherche a filtré ou si des fiches ont
   // disparu. Un compteur qui ne décrit pas ce qu'on voit est pire que pas de
   // compteur.
-  const compte = partage.actives;
+  const compte = appliquerFiltreStatut(partage.actives, filtre);
+  const suffixeFiltre = filtre === "tous" ? "" : ` · ${LIBELLE_FILTRE[filtre]}`;
   const prospects = compte.filter((c) => c.statut === "prospect").length;
   const actifs = compte.filter((c) => c.statut === "client_actif").length;
   const devisEnvoyes = compte.filter((c) => c.statut === "devis_envoye").length;
@@ -186,16 +203,24 @@ export default async function QualiopiClientsPage({ params, searchParams }: Page
         ))}
       </nav>
 
-      {recherche !== "" && !(voirArchives && partage.lectureImpossible) ? (
+      {messageRetour !== null ? (
+        <p role="status" data-message-retour className="mb-[var(--space-admin-4)] font-semibold">
+          {messageRetour}
+        </p>
+      ) : null}
+
+      {recherche !== "" &&
+      !(voirArchives && partage.lectureImpossible) &&
+      (vue.length === 0 || clients.length > 0) ? (
         <p className="mb-[var(--space-admin-4)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
           {vue.length === 0
             ? `${voirArchives ? "Aucune fiche archivée" : "Aucune fiche active"} ne correspond à « ${recherche} »${
-                !voirArchives && partage.archivees.length > 0
-                  ? ` ; ${partage.archivees.length} fiche${partage.archivees.length > 1 ? "s archivées correspondent" : " archivée correspond"}`
+                !voirArchives && archiveesDuFiltre > 0
+                  ? ` ; ${archiveesDuFiltre} fiche${archiveesDuFiltre > 1 ? "s archivées correspondent" : " archivée correspond"}`
                   : ""
               }. Vérifiez l'orthographe avant d'en créer un nouveau : un doublon coûte plus cher qu'une recherche ratée.`
-            : `${vue.length} résultat${vue.length > 1 ? "s" : ""} pour « ${recherche} ».`}
-          {vue.length === 0 && !voirArchives && partage.archivees.length > 0 ? (
+            : `${clients.length} résultat${clients.length > 1 ? "s" : ""} pour « ${recherche} ».`}
+          {vue.length === 0 && !voirArchives && archiveesDuFiltre > 0 ? (
             <>
               {" "}
               <Link
@@ -223,7 +248,7 @@ export default async function QualiopiClientsPage({ params, searchParams }: Page
         </p>
       ) : voirArchives ? (
         <p className="mb-[var(--space-admin-4)] text-[length:var(--text-admin-sm)]">
-          {`Fiches archivées (${partage.archivees.length}). `}
+          {`Fiches archivées (${clients.length}). `}
           <Link
             href={adresseListe(hrefListe, { q: recherche, statut: filtre })}
             className="inline-flex min-h-11 items-center underline"
@@ -237,7 +262,7 @@ export default async function QualiopiClientsPage({ params, searchParams }: Page
             href={adresseListe(hrefListe, { q: recherche, archives: true, statut: filtre })}
             className="inline-flex min-h-11 items-center underline"
           >
-            {`Voir les archivées (${partage.archivees.length})`}
+            {`Voir les archivées (${archiveesDuFiltre})`}
           </Link>
         </p>
       ) : null}
@@ -247,17 +272,17 @@ export default async function QualiopiClientsPage({ params, searchParams }: Page
           label={
             voirArchives
               ? recherche === ""
-                ? "Total (hors archivées)"
-                : "Résultats (hors archivées)"
+                ? `Total (hors archivées)${suffixeFiltre}`
+                : `Résultats (hors archivées)${suffixeFiltre}`
               : recherche === ""
-                ? "Total"
-                : "Résultats"
+                ? `Total${suffixeFiltre}`
+                : `Résultats${suffixeFiltre}`
           }
           value={compte.length}
           icon={Hash}
         />
         <AdminStatCard
-          label={voirArchives ? "Prospects (hors archivées)" : "Prospects"}
+          label={voirArchives ? "Prospects sans devis (hors archivées)" : "Prospects sans devis"}
           value={prospects}
           icon={Users}
         />
