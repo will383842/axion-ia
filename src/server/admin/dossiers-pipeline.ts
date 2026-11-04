@@ -242,6 +242,9 @@ export function deriverStatutDossier(
 ): ColonnePipeline | null {
   switch (dossier.source) {
     case "devis":
+      // Un devis expiré mais signé par le client reste à contresigner (accord valable).
+      if (dossier.statut === "expire")
+        return dossier.aContresigner === true ? "devis_a_contresigner" : null;
       if (dossier.statut !== "envoye") return null;
       return dossier.aContresigner === true ? "devis_a_contresigner" : "devis_attente";
 

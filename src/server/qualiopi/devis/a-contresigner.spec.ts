@@ -11,6 +11,11 @@ const IDS = new Set(["piece-signee-client"]);
 const devis = (statut: string, documentGenereId: string | null) => ({ statut, documentGenereId });
 
 describe("estDevisAContresigner", () => {
+  it("devis expiré mais signé par le client = encore à contresigner", () => {
+    expect(estDevisAContresigner(devis("expire", "piece-signee-client"), IDS)).toBe(true);
+    expect(etatListeDevis(devis("expire", "piece-signee-client"), IDS)).toBe("a_contresigner");
+    expect(estDevisAContresigner(devis("expire", "autre"), IDS)).toBe(false);
+  });
   it("devis envoyé + pièce signée du client seul = à contresigner", () => {
     expect(estDevisAContresigner(devis("envoye", "piece-signee-client"), IDS)).toBe(true);
   });
@@ -18,7 +23,7 @@ describe("estDevisAContresigner", () => {
     expect(estDevisAContresigner(devis("envoye", "piece-autre"), IDS)).toBe(false);
     expect(estDevisAContresigner(devis("envoye", null), IDS)).toBe(false);
   });
-  it.each(["brouillon", "refuse", "expire", "accepte", "transforme_convention"])(
+  it.each(["brouillon", "refuse", "accepte", "transforme_convention"])(
     "statut %s = non, même avec une pièce dans l'ensemble",
     (statut) => {
       expect(estDevisAContresigner(devis(statut, "piece-signee-client"), IDS)).toBe(false);

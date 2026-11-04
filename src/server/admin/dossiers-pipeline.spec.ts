@@ -76,7 +76,7 @@ describe("deriverStatutDossier — devis", () => {
     ).toBe("devis_a_contresigner");
   });
 
-  it.each(["brouillon", "refuse", "expire", "accepte"] as const)(
+  it.each(["brouillon", "refuse", "accepte"] as const)(
     "%s + aContresigner → toujours exclu",
     (statut) => {
       expect(
@@ -84,6 +84,12 @@ describe("deriverStatutDossier — devis", () => {
       ).toBeNull();
     },
   );
+
+  it("expiré + signé par le client → reste à contresigner", () => {
+    expect(
+      deriverStatutDossier({ source: "devis", statut: "expire", aContresigner: true }, MAINTENANT),
+    ).toBe("devis_a_contresigner");
+  });
 
   it("brouillon → exclu (pas encore une affaire)", () => {
     expect(deriverStatutDossier({ source: "devis", statut: "brouillon" }, MAINTENANT)).toBeNull();

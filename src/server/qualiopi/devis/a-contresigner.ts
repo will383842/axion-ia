@@ -33,7 +33,7 @@ export function estDevisAContresigner(
   piecesAContresigner: ReadonlySet<string>,
 ): boolean {
   return (
-    d.statut === "envoye" &&
+    (d.statut === "envoye" || d.statut === "expire") &&
     typeof d.documentGenereId === "string" &&
     piecesAContresigner.has(d.documentGenereId)
   );
