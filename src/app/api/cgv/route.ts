@@ -5,17 +5,21 @@
 // avec les stubs de build. Aucune écriture, aucun JavaScript navigateur.
 
 import { CGV_VERSION } from "@/content/cgv-version";
+import { dispositionDemandee, enTeteContentDisposition } from "@/lib/content-disposition";
 import { rendreCgvPdf } from "@/server/cgv-pdf";
 
 export const dynamic = "force-dynamic";
 
-export async function GET(): Promise<Response> {
+export async function GET(req: Request): Promise<Response> {
   const pdf = await rendreCgvPdf();
   return new Response(new Uint8Array(pdf), {
     status: 200,
     headers: {
       "Content-Type": "application/pdf",
-      "Content-Disposition": `attachment; filename="CGV-Axion-IA-${CGV_VERSION}.pdf"`,
+      "Content-Disposition": enTeteContentDisposition(
+        dispositionDemandee(req.url),
+        `CGV-Axion-IA-${CGV_VERSION}.pdf`,
+      ),
       "Cache-Control": "public, max-age=0, must-revalidate",
     },
   });

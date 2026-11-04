@@ -34,6 +34,7 @@ import {
 } from "@/server/actions/qualiopi/piece-signature";
 import { codeRequis } from "@/server/qualiopi/documents/signature/contrat-cadre-signature";
 import { PieceSignatureForm } from "@/components/portail/PieceSignatureForm";
+import { lienTelechargement } from "@/lib/content-disposition";
 import { prisma } from "@/lib/prisma";
 import {
   REGIME_TVA_DEFAUT,
@@ -283,7 +284,7 @@ export default async function SignerDevisPage({ params }: PageProps) {
               version: CGV_VERSION,
               libelle: CGV_VERSION_LIBELLE,
               href: "/fr/conditions-generales",
-              pdfHref: "/api/cgv",
+              pdfHref: lienTelechargement("/api/cgv"),
             },
           }
         : {})}

@@ -29,7 +29,7 @@ const CGV = {
   version: "2026-10-04",
   libelle: "4 octobre 2026",
   href: "/fr/conditions-generales",
-  pdfHref: "/api/cgv",
+  pdfHref: "/api/cgv?dl=1",
 };
 
 function monter(
@@ -72,7 +72,7 @@ describe("bloc des CGV", () => {
     expect(lire.getAttribute("rel")).toContain("noopener");
     expect(lire.getAttribute("rel")).toContain("noreferrer");
     const tel = screen.getByRole("link", { name: /télécharger/i }) as HTMLAnchorElement;
-    expect(tel.getAttribute("href")).toBe("/api/cgv");
+    expect(tel.getAttribute("href")).toBe("/api/cgv?dl=1");
   });
 
   it("les liens sont HORS de l'étiquette de la case", () => {
