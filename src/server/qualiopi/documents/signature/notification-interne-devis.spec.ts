@@ -23,6 +23,7 @@ vi.mock("@/server/qualiopi/essai/sorties", () => ({
   },
 }));
 
+import { destinataireAlertesInternes } from "@/lib/destinataires-internes";
 import { prevenirDevisSigne, ficheDevisDePiece } from "./notification-interne-devis";
 
 const DOC = "11111111-1111-4111-8111-111111111111";
@@ -46,14 +47,14 @@ describe("prevenirDevisSigne", () => {
     expect(h.enqueue).toHaveBeenCalledOnce();
     const [gabarit, to, locale, payload, opts] = h.enqueue.mock.calls[0]!;
     expect(gabarit).toBe("devis-signe-a-contresigner");
-    expect(to).toMatch(/@/);
+    expect(to).toBe(destinataireAlertesInternes());
     expect(locale).toBe("fr");
     expect(payload.numeroDevis).toBe("AXI-DEV-2026-042");
     expect(payload.etape).toBe("a_contresigner");
     expect(payload.consoleUrl).toContain(`/fr/admin-test/qualiopi/devis/${DEVIS}`);
     expect(Object.keys(payload).sort()).toEqual(["consoleUrl", "etape", "numeroDevis"]);
     expect(opts.clientId).toBeNull();
-    expect(opts.jobId).toContain(DOC);
+    expect(opts.jobId).toBe(`devis-signe-a-contresigner-a_contresigner-${DOC}`);
   });
 
   it("pièce d'ESSAI : rien ne part, le refus est journalisé", async () => {
