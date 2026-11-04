@@ -219,6 +219,9 @@ export type EmailJobName =
   // Questionnaire de cadrage EN LIGNE (2026-10-01) — e-mail INTERNE : un client
   // a envoyé ses réponses. Aucune réponse dans le message, un lien vers la console.
   | "questionnaire-reponses-recues"
+  // Devis signé par le client (2026-11-04) — e-mail INTERNE (numéro + lien console, aucune donnée
+  // personnelle), enfilé après la signature par lien (`notification-interne-devis.ts`).
+  | "devis-signe-a-contresigner"
   // Questionnaire de pré-audit (2026-10-24) — au prospect, par clic de Will uniquement.
   | "questionnaire-avant-audit"
   // Suivi du questionnaire avant audit (2026-10-26) — relances 1 à 3 et confirmation de

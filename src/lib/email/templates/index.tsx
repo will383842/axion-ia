@@ -227,6 +227,10 @@ import { PreavisSousTraitantsEmail, preavisSousTraitantsSubject } from "./preavi
 import { RencontreInvitationEmail, rencontreInvitationSubject } from "./rencontre-invitation";
 import { VisioEmailSuiviEmail, visioEmailSuiviSubject } from "./visio-email-suivi";
 import {
+  DevisSigneAContresignerEmail,
+  devisSigneAContresignerSubject,
+} from "./devis-signe-a-contresigner";
+import {
   QuestionnaireReponsesRecuesEmail,
   questionnaireReponsesRecuesSubject,
 } from "./questionnaire-reponses-recues";
@@ -691,6 +695,12 @@ const TEMPLATES: TemplateMap = {
   },
   // Questionnaire en ligne (2026-10-01) — e-mail interne, sans contenu de
   // réponse (`app/questionnaire/[id]/[jeton]/actions.ts`).
+  // Devis signé par le client (2026-11-04) — e-mail INTERNE, enfilé par
+  // `server/qualiopi/documents/signature/notification-interne-devis.ts`.
+  "devis-signe-a-contresigner": {
+    subject: devisSigneAContresignerSubject,
+    component: DevisSigneAContresignerEmail,
+  },
   "questionnaire-reponses-recues": {
     subject: questionnaireReponsesRecuesSubject,
     component: QuestionnaireReponsesRecuesEmail,

@@ -139,6 +139,10 @@ export const EMAILS_AUTOMATIQUES_PAR_DEFAUT: readonly string[] = [
   // a répondu »), sans contenu de réponse. Garée, elle serait une alerte perdue
   // — même raisonnement que `qualiopi-alerte-interne`.
   "questionnaire-reponses-recues",
+  // Devis signé par le client (2026-11-04) : notification INTERNE à l'organisme (numéro du devis
+  // et lien console, aucune donnée personnelle), jamais au client. Garée, ce serait une alerte
+  // perdue : le devis resterait à contresigner sans que personne le sache.
+  "devis-signe-a-contresigner",
   // QNC L03 (2026-10-16) : le recueil du besoin part SEUL, sur décision du
   // brief du lot (« envoi AUTOMATIQUE à l'entreprise dès la demande, avec
   // relance »). Il ne contient ni prix, ni engagement : un questionnaire. Retenu
@@ -223,6 +227,7 @@ export const LIBELLE_TEMPLATE_EMAIL: Record<string, string> = {
   "qualiopi-relance-impayee": "Relance d'impayé",
   "appel-rappel": "Rappel avant un appel de découverte",
   "piece-exemplaire-signe": "Remise de l'exemplaire signé",
+  "devis-signe-a-contresigner": "Devis signé par le client, à contresigner (interne)",
   "questionnaire-reponses-recues": "Questionnaire en ligne : réponses reçues (interne)",
   "questionnaire-avant-audit": "Questionnaire de pré-audit envoyé par Will",
   "questionnaire-avant-audit-relance": "Relance du questionnaire de pré-audit (J+2, J+5, J+10)",

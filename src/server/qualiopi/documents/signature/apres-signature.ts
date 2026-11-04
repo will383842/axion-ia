@@ -54,6 +54,7 @@ import type { PartieSignataire } from "./document-signature-hash";
 import { circuitPour } from "./parties-requises";
 import { estPieceEngageante } from "./pieces-engageantes";
 import { lettreDue, reevaluerMission } from "./crochets-mission";
+import { ficheDevisDePiece, prevenirDevisSigne } from "./notification-interne-devis";
 import { transmettreCopiePartielle, transmettreExemplaireSigne } from "./transmission-exemplaire";
 
 /**
@@ -441,14 +442,31 @@ export async function apresSignature(ctx: ContexteApresSignature): Promise<Resul
       try {
         const manquantes =
           circuit === null ? [] : await partiesManquantes(ctx.documentGenereId, circuit.parties);
+        // Le numéro du devis (AXI-DEV-…) s'ajoute à celui de la pièce : aucune donnée personnelle.
+        const fiche = ctx.type === "devis" ? await ficheDevisDePiece(ctx.documentGenereId) : null;
+        const numeroDevis = fiche !== null ? ` (n° ${fiche.numero})` : "";
         await sortieSaufEssai(essai, alerteBloquee, () =>
           sendTelegram({
             tag: "AUTO",
-            body: `✍️ ${libelle} ${ctx.numero} : signature reçue (${ctx.partie}). Reste à signer : ${manquantes.join(", ")}.`,
+            body: `✍️ ${libelle} ${ctx.numero}${numeroDevis} : signature reçue (${ctx.partie}). Reste à signer : ${manquantes.join(", ")}.`,
           }),
         );
       } catch (err) {
         capturer(err, "alerte", ctx);
+      }
+    }
+    // E-mail INTERNE à l'organisme : le client vient de signer son devis par lien, il reste
+    // à contresigner. Fail-soft (module qui ne lève pas), muet pour une pièce d'essai.
+    if (ctx.type === "devis" && ctx.partie === "client" && ctx.canal === "lien_a_jeton") {
+      try {
+        await prevenirDevisSigne({
+          documentGenereId: ctx.documentGenereId,
+          numeroPiece: ctx.numero,
+          etape: "a_contresigner",
+          essai,
+        });
+      } catch (err) {
+        capturer(err, "email_interne_devis", ctx);
       }
     }
     if (interrupteurs.copie_partielle && ctx.sansCopiePartielle !== true) {
@@ -469,6 +487,20 @@ export async function apresSignature(ctx: ContexteApresSignature): Promise<Resul
         body: `✅ ${libelle} ${ctx.numero} : intégralement signée.`,
       }),
     ).catch(() => {});
+    // Le client a signé EN DERNIER (l'organisme avait déjà contresigné) : même trace par e-mail
+    // interne. La contresignature par l'organisme n'en envoie pas, il le sait déjà.
+    if (ctx.type === "devis" && ctx.partie === "client" && ctx.canal === "lien_a_jeton") {
+      try {
+        await prevenirDevisSigne({
+          documentGenereId: ctx.documentGenereId,
+          numeroPiece: ctx.numero,
+          etape: "complete",
+          essai,
+        });
+      } catch (err) {
+        capturer(err, "email_interne_devis", ctx);
+      }
+    }
   }
 
   // ── 2. Lettre de mission : la mission se réévalue à chaque signature ──────
