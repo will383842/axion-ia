@@ -209,9 +209,7 @@ export interface TupleDocumentSignatureV3 extends TupleDocumentSignatureV2 {
 
 /** Tout tuple recalculable, quelle que soit sa version. */
 export type TupleDocumentSignature =
-  | TupleDocumentSignatureV1
-  | TupleDocumentSignatureV2
-  | TupleDocumentSignatureV3;
+  TupleDocumentSignatureV1 | TupleDocumentSignatureV2 | TupleDocumentSignatureV3;
 
 function versCanonicalDocumentV2(t: TupleDocumentSignature): CanonicalValue {
   const facteur = "facteurVerification" in t ? t.facteurVerification : undefined;

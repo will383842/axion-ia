@@ -726,8 +726,7 @@ function porteurAutorise(ctx: ContextePiece, porteur: PorteurSignatureDocument):
     estPrincipalFk: ctx.session.formateurPrincipalId === porteur.trainerId,
     roleSessionFormateur:
       (ctx.session.sessionFormateurs.find((f) => f.trainerId === porteur.trainerId)?.role as
-        | RoleFormateur
-        | undefined) ?? null,
+        RoleFormateur | undefined) ?? null,
   }).estMembre
     ? "autorise"
     : refusDuPorteur;
@@ -1049,8 +1048,7 @@ export type RefusRevocationDocument =
   | "revocation_maillon_interne_interdite";
 
 export type ResultatRevocationDocument =
-  | { ok: true }
-  | { ok: false; raison: RefusRevocationDocument; message: string };
+  { ok: true } | { ok: false; raison: RefusRevocationDocument; message: string };
 
 /**
  * Révoque une signature de document.
