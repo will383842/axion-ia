@@ -27,10 +27,10 @@ import {
 import type { DevisData } from "./templates/devis";
 import type { LigneFacture } from "./templates/facture";
 
-const FINANCEMENTS = ["direct", "opco", "cpf", "france_travail"] as const;
+type Financement = "direct" | "opco" | "cpf" | "france_travail";
 
 /** Libellés d'affichage du financement suggéré (PDF devis). */
-const FINANCEMENT_LABELS: Record<(typeof FINANCEMENTS)[number], string> = {
+const FINANCEMENT_LABELS: Record<Financement, string> = {
   direct: "Financement direct (fonds propres)",
   opco: "OPCO",
   cpf: "CPF",
@@ -142,8 +142,7 @@ export function donneesPdfDevis(
   const adresse = adresseClientDevis(devis.client);
   const financementLabel =
     devis.financementSuggere !== null
-      ? (FINANCEMENT_LABELS[devis.financementSuggere as (typeof FINANCEMENTS)[number]] ??
-        devis.financementSuggere)
+      ? (FINANCEMENT_LABELS[devis.financementSuggere as Financement] ?? devis.financementSuggere)
       : undefined;
 
   // Sous-lot 8G — décidé UNE fois, ici, avec l'état réel du drapeau, puis
