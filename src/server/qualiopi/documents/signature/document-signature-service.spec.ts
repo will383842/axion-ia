@@ -665,6 +665,7 @@ describe("🔴 ce qui est réellement écrit", () => {
       selfHash: d["selfHash"] as string,
       hashVersion: HASH_VERSION_DOCUMENT,
       facteurVerification: null,
+      cgvVersion: null,
     };
     const rapport = verifierChaine([
       maillonDocumentDepuisLigne(ligne, {
@@ -1002,10 +1003,11 @@ describe("🔴 V1-A-7 — facteur de vérification de l'adresse", () => {
       facteurVerification: d[
         "facteurVerification"
       ] as LigneDocumentSignature["facteurVerification"],
+      cgvVersion: (d["cgvVersion"] ?? null) as string | null,
     };
   }
 
-  it("code saisi et CONSOMMÉ pour cette partie : `code_email`, scellé (tuple v2)", async () => {
+  it("code saisi et CONSOMMÉ pour cette partie : `code_email`, scellé (tuple v3)", async () => {
     mockPrisma.documentSignatureToken.findUnique.mockResolvedValue(
       jeton({ partie: "sous_traitant" }),
     );
@@ -1024,7 +1026,7 @@ describe("🔴 V1-A-7 — facteur de vérification de l'adresse", () => {
     );
     const d = donneesCreees();
     expect(d["facteurVerification"]).toBe("code_email");
-    expect(d["hashVersion"]).toBe(2);
+    expect(d["hashVersion"]).toBe(HASH_VERSION_DOCUMENT);
     const piece = { documentNumero: "AXI-CONV-2026-0042", documentType: "convention" };
     const l = ligneEcrite(d);
     expect(verifierChaine([maillonDocumentDepuisLigne(l, piece)]).valide).toBe(true);
@@ -1048,7 +1050,94 @@ describe("🔴 V1-A-7 — facteur de vérification de l'adresse", () => {
     const res = await signerDocument(entree());
     expect(res).toMatchObject({ ok: true });
     expect(donneesCreees()["facteurVerification"]).toBeNull();
-    expect(donneesCreees()["hashVersion"]).toBe(2);
+    expect(donneesCreees()["hashVersion"]).toBe(HASH_VERSION_DOCUMENT);
     expect(mockPrisma.documentSignatureCode.findFirst).not.toHaveBeenCalled();
+  });
+});
+
+describe("🔴 CGV avant signature du devis — version scellée, case obligatoire côté jeton", () => {
+  const CGV = "2026-10-04";
+  const DEVIS = () =>
+    piece({ type: "devis", numero: "AXI-DEV-2026-004", sessionId: null, session: null });
+
+  function ligneCgv(d: Record<string, unknown>): LigneDocumentSignature {
+    return {
+      id: d["id"] as string,
+      documentGenereId: DOC,
+      provider: "interne",
+      providerSubmissionId: null,
+      partie: d["partie"] as LigneDocumentSignature["partie"],
+      signataireNom: d["signataireNom"] as string,
+      signataireEmail: d["signataireEmail"] as string | null,
+      signataireQualite: d["signataireQualite"] as string | null,
+      documentHashSha256: "c".repeat(64),
+      methode: d["methode"] as LigneDocumentSignature["methode"],
+      signatureSha256: d["signatureSha256"] as string | null,
+      mentionVersion: d["mentionVersion"] as string,
+      consentementVersion: d["consentementVersion"] as string,
+      signeAt: MAINTENANT,
+      prevHash: null,
+      selfHash: d["selfHash"] as string,
+      hashVersion: d["hashVersion"] as number,
+      facteurVerification: null,
+      cgvVersion: (d["cgvVersion"] ?? null) as string | null,
+    };
+  }
+
+  it("T6 — jeton + devis SANS cgvVersion : refus `cgv_non_acceptees`, rien n'est écrit", async () => {
+    mockPrisma.documentGenere.findUnique.mockResolvedValue(DEVIS());
+    attendRefus(await signerDocument(entreeJeton()), "cgv_non_acceptees");
+    attendRefus(await signerDocument(entreeJeton({ cgvVersion: "" })), "cgv_non_acceptees");
+    attendRefus(await signerDocument(entreeJeton({ cgvVersion: null })), "cgv_non_acceptees");
+  });
+
+  it("T6 — jeton + devis AVEC cgvVersion : ligne écrite avec la version et hashVersion 3, chaîne valide", async () => {
+    mockPrisma.documentGenere.findUnique.mockResolvedValue(DEVIS());
+    const res = await signerDocument(entreeJeton({ cgvVersion: CGV }));
+    expect(res).toMatchObject({ ok: true });
+
+    const d = donneesCreees();
+    expect(d["cgvVersion"]).toBe(CGV);
+    expect(d["hashVersion"]).toBe(3);
+    const l = ligneCgv(d);
+    const p = { documentNumero: "AXI-DEV-2026-004", documentType: "devis" };
+    expect(verifierChaine([maillonDocumentDepuisLigne(l, p)]).valide).toBe(true);
+    // Version des CGV retouchée après coup : la preuve le dit.
+    expect(
+      verifierChaine([maillonDocumentDepuisLigne({ ...l, cgvVersion: "2020-01-01" }, p)]).valide,
+    ).toBe(false);
+  });
+
+  it("T6 — la garde « déjà signée » passe AVANT le refus CGV", async () => {
+    mockPrisma.documentGenere.findUnique.mockResolvedValue({
+      ...DEVIS(),
+      signatures: [{ id: "deja" }],
+    });
+    attendRefus(await signerDocument(entreeJeton()), "deja_signe");
+  });
+
+  it("T6 — contresignature de l'organisme sur un devis SANS cgvVersion : passe, `null` scellé", async () => {
+    mockPrisma.documentGenere.findUnique.mockResolvedValue(DEVIS());
+    const res = await signerDocument(
+      entree({
+        porteur: { type: "organisme_authentifie", adminId: ADMIN, partie: "axionia" },
+        partiesRequises: ["client", "axionia"] as const,
+      }),
+    );
+    expect(res).toMatchObject({ ok: true });
+    expect(donneesCreees()["cgvVersion"]).toBeNull();
+    expect(donneesCreees()["hashVersion"]).toBe(3);
+  });
+
+  it("T6 — convention par jeton sans cgvVersion : passe (la case ne vise que le devis), `null` scellé", async () => {
+    const res = await signerDocument(entreeJeton());
+    expect(res).toMatchObject({ ok: true });
+    expect(donneesCreees()["cgvVersion"]).toBeNull();
+  });
+
+  it("T6 — une cgvVersion passée sur une convention n'est PAS écrite (réservée au devis par jeton)", async () => {
+    const res = await signerDocument(entreeJeton({ cgvVersion: CGV }));
+    expect(res).toMatchObject({ ok: true });
+    expect(donneesCreees()["cgvVersion"]).toBeNull();
   });
 });

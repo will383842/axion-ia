@@ -54,7 +54,7 @@ import {
   type PartieSignataire,
   type ProviderSignature,
   type FacteurVerificationSignature,
-  type TupleDocumentSignatureV2,
+  type TupleDocumentSignatureV3,
 } from "./document-signature-hash";
 import {
   MENTION_VERSION_DOCUMENT,
@@ -182,7 +182,9 @@ export type RefusSignatureDocument =
   /** Canal A — le lien ne vise pas cette pièce, ou plus cette partie. */
   | "jeton_non_applicable"
   /** Canal A — lien révoqué ou périmé. Distingué : le client peut en redemander un. */
-  | "jeton_inactif";
+  | "jeton_inactif"
+  /** CGV avant signature du devis — le signataire par lien n'a pas accepté les CGV. */
+  | "cgv_non_acceptees";
 
 export type ResultatSignatureDocument =
   | {
@@ -219,6 +221,12 @@ export interface EntreeSignatureDocument {
    * à usage unique (contrat-cadre v3, lot L7c) : elle entre dans le tuple haché.
    */
   consentementVersion?: VersionConsentementDocument | undefined;
+  /**
+   * Version des CGV acceptées. 🔴 Fournie par le SERVEUR (jamais par le navigateur) et
+   * OBLIGATOIRE pour un devis signé par lien (`signataire_jeton`). Les autres pièces et
+   * canaux (contresignature, papier, DocuSeal) la laissent vide : `null` est alors scellé.
+   */
+  cgvVersion?: string | null | undefined;
 }
 
 function estStub(): boolean {
@@ -251,6 +259,8 @@ const MESSAGES: Record<RefusSignatureDocument, string> = {
     "Ce lien de signature ne correspond pas à cette pièce, ou pas à ce titre. Demandez un nouveau lien à votre interlocuteur.",
   jeton_inactif:
     "Ce lien de signature n'est plus valable : il a expiré ou a été remplacé. Demandez-en un nouveau à votre interlocuteur.",
+  cgv_non_acceptees:
+    "Pour signer ce devis, vous devez d'abord lire et accepter les conditions générales de vente.",
 };
 
 function refus(raison: RefusSignatureDocument): ResultatSignatureDocument {
@@ -716,7 +726,8 @@ function porteurAutorise(ctx: ContextePiece, porteur: PorteurSignatureDocument):
     estPrincipalFk: ctx.session.formateurPrincipalId === porteur.trainerId,
     roleSessionFormateur:
       (ctx.session.sessionFormateurs.find((f) => f.trainerId === porteur.trainerId)?.role as
-        RoleFormateur | undefined) ?? null,
+        | RoleFormateur
+        | undefined) ?? null,
   }).estMembre
     ? "autorise"
     : refusDuPorteur;
@@ -778,6 +789,13 @@ export async function signerDocument(
   // Placé APRÈS l'autorisation : sinon un appelant qui devine un identifiant de
   // pièce apprend si une autre partie a déjà signé.
   if (ctx.signatures.length > 0) return refus("deja_signe");
+
+  // CGV avant signature du devis : un client qui signe SON devis par lien doit avoir
+  // accepté les CGV. Le service le revérifie lui-même (défense en profondeur), après la
+  // garde « déjà signée » pour ne rien révéler. Autres pièces et canaux : `null`.
+  const cgvDemandee = porteur.type === "signataire_jeton" && ctx.type === "devis";
+  const cgvVersion = cgvDemandee ? nettoyer(input.cgvVersion) : null;
+  if (cgvDemandee && cgvVersion === null) return refus("cgv_non_acceptees");
 
   // ── 2. GARDES SUR LA PIÈCE ──
   //
@@ -891,6 +909,7 @@ export async function signerDocument(
     mentionVersion: MENTION_VERSION_DOCUMENT,
     consentementVersion,
     signeAtIso: maintenant.toISOString(),
+    cgvVersion,
   };
 
   const requises = new Set(input.partiesRequises);
@@ -916,7 +935,7 @@ export async function signerDocument(
         });
         const prevHash = precedente?.selfHash ?? null;
 
-        const tuple: TupleDocumentSignatureV2 = { ...socle, prevHash, facteurVerification };
+        const tuple: TupleDocumentSignatureV3 = { ...socle, prevHash, facteurVerification };
         const selfHash = calculerSelfHashDocument(tuple);
 
         const sig = await tx.documentSignature.create({
@@ -942,6 +961,7 @@ export async function signerDocument(
             mentionVersion: MENTION_VERSION_DOCUMENT,
             consentementVersion,
             facteurVerification,
+            cgvVersion,
             signeAt: maintenant,
             ipHash: input.ipHash ?? null,
             userAgentSha256: input.userAgentSha256 ?? null,
@@ -1029,7 +1049,8 @@ export type RefusRevocationDocument =
   | "revocation_maillon_interne_interdite";
 
 export type ResultatRevocationDocument =
-  { ok: true } | { ok: false; raison: RefusRevocationDocument; message: string };
+  | { ok: true }
+  | { ok: false; raison: RefusRevocationDocument; message: string };
 
 /**
  * Révoque une signature de document.

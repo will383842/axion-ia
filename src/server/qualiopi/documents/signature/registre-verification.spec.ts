@@ -47,7 +47,7 @@ import {
   HASH_VERSION_DOCUMENT,
   type LigneDocumentSignature,
   type PartieSignataire,
-  type TupleDocumentSignatureV2,
+  type TupleDocumentSignatureV3,
 } from "./document-signature-hash";
 import {
   construireRapportPiece,
@@ -92,7 +92,13 @@ const PDF = "c".repeat(64);
  */
 function chaine(
   parties: readonly PartieSignataire[],
-  options: { pdfParPartie?: Partial<Record<PartieSignataire, string>> } = {},
+  options: {
+    pdfParPartie?: Partial<Record<PartieSignataire, string>>;
+    /** Version de hachage par rang (défaut : la courante) — pour les chaînes MIXTES. */
+    versions?: readonly number[];
+    /** Version des CGV acceptées, par partie (défaut : aucune). */
+    cgvParPartie?: Partial<Record<PartieSignataire, string>>;
+  } = {},
 ): LigneDocumentSignature[] {
   const lignes: LigneDocumentSignature[] = [];
   let prevHash: string | null = null;
@@ -100,7 +106,9 @@ function chaine(
   parties.forEach((partie, i) => {
     const documentHashSha256 = options.pdfParPartie?.[partie] ?? PDF;
     const signeAt = new Date(Date.UTC(2026, 5, 10, 10, i, 0, 0));
-    const tuple: TupleDocumentSignatureV2 = {
+    const hashVersion = options.versions?.[i] ?? HASH_VERSION_DOCUMENT;
+    const cgvVersion = options.cgvParPartie?.[partie] ?? null;
+    const tuple: TupleDocumentSignatureV3 = {
       contexteType: "document_engagement",
       documentGenereId: DOC,
       documentNumero: NUMERO,
@@ -119,8 +127,9 @@ function chaine(
       signeAtIso: signeAt.toISOString(),
       prevHash,
       facteurVerification: null,
+      cgvVersion,
     };
-    const selfHash = calculerSelfHashDocument(tuple);
+    const selfHash = calculerSelfHashDocument(tuple, hashVersion);
     lignes.push({
       id: `sig-${i}`,
       documentGenereId: DOC,
@@ -138,8 +147,9 @@ function chaine(
       signeAt,
       prevHash,
       selfHash,
-      hashVersion: HASH_VERSION_DOCUMENT,
+      hashVersion,
       facteurVerification: null,
+      cgvVersion,
     });
     prevHash = selfHash;
   });
@@ -236,6 +246,37 @@ describe("construireRapportPiece — intégrité de la chaîne", () => {
     // n'est PAS une falsification constatée, c'est un aveu d'incapacité à
     // conclure. Les confondre ferait accuser un dossier intact.
     expect(r.chaine.anomalies).toHaveLength(1);
+  });
+
+  it("🔴 T8 — une chaîne MIXTE (v1 puis v2 puis v3) reste valide", () => {
+    const lignes = chaine(["client", "financeur", "axionia"], {
+      versions: [1, 2, 3],
+      cgvParPartie: { axionia: "2026-10-04" },
+    });
+    const r = construireRapportPiece(piece({ signatures: lignes }));
+
+    expect(r.chaine.valide).toBe(true);
+    expect(r.chaine.nbVerifies).toBe(3);
+  });
+
+  it("🔴 T8 — la version des CGV modifiée après coup rend empreinte_invalide", () => {
+    const lignes = chaine(["client", "axionia"], {
+      cgvParPartie: { client: "2026-10-04" },
+    });
+    lignes[0] = { ...lignes[0]!, cgvVersion: "2025-01-01" };
+
+    const r = construireRapportPiece(piece({ signatures: lignes }));
+
+    expect(r.chaine.valide).toBe(false);
+    expect(r.chaine.anomalies.map((a) => a.type)).toContain("empreinte_invalide");
+  });
+
+  it("🔴 T8 — un devis signé AVANT ce changement (v2, sans CGV) reste inchangé et valide", () => {
+    const lignes = chaine(["client", "axionia"], { versions: [2, 2] });
+    const r = construireRapportPiece(piece({ signatures: lignes }));
+
+    expect(r.chaine.valide).toBe(true);
+    expect(lignes.every((l) => l.hashVersion === 2 && l.cgvVersion === null)).toBe(true);
   });
 
   it("ne lève jamais, même sur une chaîne entièrement incohérente", () => {

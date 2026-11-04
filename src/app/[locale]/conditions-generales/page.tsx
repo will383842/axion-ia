@@ -7,6 +7,7 @@ import { LegalPageTemplate } from "@/components/sections/LegalPageTemplate";
 import { Container } from "@/components/layout/Container";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { getLegal } from "@/content/legal";
+import { CGV_VERSION, CGV_VERSION_LIBELLE, CGV_VERSION_LIBELLE_EN } from "@/content/cgv-version";
 import { buildProductMetadata } from "@/lib/seo";
 import { buildDeclarationActiviteSection } from "@/components/qualiopi/certifications-section";
 
@@ -45,7 +46,7 @@ export const revalidate = 3600;
 // 2026-10-04 : ajout de l'article « Financement par un opérateur de
 // compétences (OPCO) » (FR + EN) — dépôt de la demande, subrogation, refus,
 // heures d'absence, non-paiement par l'OPCO. Le texte rendu change, la date suit.
-const LAST_UPDATED_ISO = "2026-10-04";
+// La date elle-même vit dans `@/content/cgv-version` (source unique, enregistrée à la signature).
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
@@ -93,8 +94,8 @@ export default async function ConditionsGenerales({ params }: Props) {
         {...(copy.titleEm !== undefined ? { titleEm: copy.titleEm } : {})}
         intro={copy.intro}
         sections={sections}
-        lastUpdated={isFr ? "17 août 2026" : "August 17, 2026"}
-        lastUpdatedIso={LAST_UPDATED_ISO}
+        lastUpdated={isFr ? CGV_VERSION_LIBELLE : CGV_VERSION_LIBELLE_EN}
+        lastUpdatedIso={CGV_VERSION}
         relatedLinks={[
           { href: "/mentions-legales", label: isFr ? "Mentions légales" : "Legal notice" },
           {

@@ -20,6 +20,7 @@
 
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import { CGV_VERSION, CGV_VERSION_LIBELLE } from "@/content/cgv-version";
 import { signedDocumentPdfUrl } from "@/lib/r2-storage";
 import { getOrganismeIdentite } from "@/server/qualiopi/documents/organisme";
 import { getQualiopiConfig } from "@/server/qualiopi/config/site-settings";
@@ -275,6 +276,17 @@ export default async function SignerDevisPage({ params }: PageProps) {
       // Le formulaire reçoit désormais le tableau et le rend structuré ; aucun
       // texte ne change, donc aucune version de mention à incrémenter.
       mentions={mentions}
+      // CGV à lire et accepter avant de signer un DEVIS (case séparée, version scellée).
+      {...(piece.type === "devis"
+        ? {
+            cgv: {
+              version: CGV_VERSION,
+              libelle: CGV_VERSION_LIBELLE,
+              href: "/fr/conditions-generales",
+              pdfHref: "/api/cgv",
+            },
+          }
+        : {})}
       signerAction={signerPieceParJetonAction}
       {...(avecCode ? { demanderCodeAction: demanderCodeSignatureAction } : {})}
     />
