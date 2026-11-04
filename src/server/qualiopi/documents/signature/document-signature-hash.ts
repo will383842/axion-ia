@@ -53,8 +53,12 @@ import type { MaillonChaine } from "@/server/qualiopi/emargement/hash";
  * 2 (vérification 1, V1-A-7) : le tuple scelle aussi le FACTEUR qui a prouvé
  * l'adresse du signataire (`facteurVerification`). Les preuves de version 1 ne
  * sont pas réécrites : elles se recalculent avec leur sérialiseur, figé ci-dessous.
+ *
+ * 3 (CGV avant signature du devis) : le tuple scelle aussi la VERSION des conditions
+ * générales de vente acceptées (`cgvVersion`, `null` hors devis signé par jeton). Les
+ * versions 1 et 2 restent figées, pas un octet changé.
  */
-export const HASH_VERSION_DOCUMENT = 2;
+export const HASH_VERSION_DOCUMENT = 3;
 
 /**
  * Versions encore recalculables — même doctrine que les deux autres familles :
@@ -67,6 +71,7 @@ const SERIALISEURS_DOCUMENT: Readonly<
 > = {
   1: versCanonicalDocumentV1,
   2: versCanonicalDocumentV2,
+  3: versCanonicalDocumentV3,
 };
 
 /** Vrai si ce code sait recalculer une empreinte de document de cette version. */
@@ -190,8 +195,21 @@ export interface TupleDocumentSignatureV2 extends TupleDocumentSignatureV1 {
   facteurVerification: FacteurVerificationSignature | null;
 }
 
+/**
+ * Version 3 : la version 2, plus la VERSION DES CGV acceptées.
+ *
+ * 🔴 HACHÉE : sans elle, un `UPDATE cgv_version` ferait dire après coup à une preuve que
+ * le client a accepté un autre texte. `null` = aucune acceptation de CGV n'a été
+ * recueillie à cette signature (convention, contresignature, papier, DocuSeal) ; ce n'est
+ * pas « inconnue ».
+ */
+export interface TupleDocumentSignatureV3 extends TupleDocumentSignatureV2 {
+  cgvVersion: string | null;
+}
+
 /** Tout tuple recalculable, quelle que soit sa version. */
-export type TupleDocumentSignature = TupleDocumentSignatureV1 | TupleDocumentSignatureV2;
+export type TupleDocumentSignature =
+  TupleDocumentSignatureV1 | TupleDocumentSignatureV2 | TupleDocumentSignatureV3;
 
 function versCanonicalDocumentV2(t: TupleDocumentSignature): CanonicalValue {
   const facteur = "facteurVerification" in t ? t.facteurVerification : undefined;
@@ -203,6 +221,19 @@ function versCanonicalDocumentV2(t: TupleDocumentSignature): CanonicalValue {
     ...(versCanonicalDocumentV1(t) as Record<string, CanonicalValue>),
     v: 2,
     facteurVerification: facteur,
+  };
+}
+
+function versCanonicalDocumentV3(t: TupleDocumentSignature): CanonicalValue {
+  const cgv = "cgvVersion" in t ? t.cgvVersion : undefined;
+  if (cgv === undefined) {
+    // Absent n'est pas nul : un tuple v3 sans version des CGV ne se hache pas.
+    throw new Error("[document-signature-hash] Tuple v3 sans cgvVersion");
+  }
+  return {
+    ...(versCanonicalDocumentV2(t) as Record<string, CanonicalValue>),
+    v: 3,
+    cgvVersion: cgv,
   };
 }
 
@@ -278,6 +309,8 @@ export interface LigneDocumentSignature {
   selfHash: string;
   hashVersion: number;
   facteurVerification: FacteurVerificationSignature | null;
+  /** Version des CGV acceptées (devis signé par jeton) ; scellée à partir de la version 3. */
+  cgvVersion: string | null;
 }
 
 /**
@@ -315,6 +348,8 @@ export function tupleDocumentDepuisLigne(
   // Une preuve de version 1 n'a jamais porté de facteur : en trouver un, c'est une
   // écriture après coup. Irrecalculable, donc signalée — jamais ignorée.
   if (ligne.hashVersion === 1 && ligne.facteurVerification !== null) return null;
+  // Idem pour la version des CGV : aucune preuve de version 1 ou 2 n'en a porté.
+  if (ligne.hashVersion < 3 && ligne.cgvVersion !== null) return null;
 
   const v1: TupleDocumentSignatureV1 = {
     contexteType: "document_engagement",
@@ -335,7 +370,9 @@ export function tupleDocumentDepuisLigne(
     signeAtIso: ligne.signeAt.toISOString(),
     prevHash: ligne.prevHash,
   };
-  return ligne.hashVersion === 1 ? v1 : { ...v1, facteurVerification: ligne.facteurVerification };
+  if (ligne.hashVersion === 1) return v1;
+  const v2: TupleDocumentSignatureV2 = { ...v1, facteurVerification: ligne.facteurVerification };
+  return ligne.hashVersion === 2 ? v2 : { ...v2, cgvVersion: ligne.cgvVersion };
 }
 
 /**

@@ -1,5 +1,5 @@
 "use client";
-// use-client: pavé de signature (canvas + pointer events) + état local + Server Action.
+// use-client: pavé de signature (canvas + pointer events) + état local (dont la case des CGV) + Server Action.
 
 /**
  * Canal A — signature d'une PIÈCE contractuelle par un tiers, depuis son lien.
@@ -37,6 +37,18 @@ export interface LigneAffichee {
   quantite: number;
   prixUnitaireHtLisible: string;
   totalHtLisible: string;
+}
+
+/** CGV à lire et accepter avant de signer un DEVIS. Absent pour toute autre pièce. */
+export interface CgvAffichees {
+  /** Version en vigueur (`CGV_VERSION`) : renvoyée telle quelle pour détecter une page périmée. */
+  version: string;
+  /** Libellé lisible (« 4 octobre 2026 »). */
+  libelle: string;
+  /** Page publique des CGV (lecture). */
+  href: string;
+  /** Téléchargement PDF. */
+  pdfHref: string;
 }
 
 export interface PieceSignatureFormProps {
@@ -94,11 +106,18 @@ export interface PieceSignatureFormProps {
    * aucune empreinte déjà scellée ne devient invérifiable.
    */
   mentions: readonly string[];
+  /**
+   * Présente = la pièce est un devis : le bloc des CGV s'affiche et sa case, SÉPARÉE de
+   * l'attestation, conditionne le bouton. Absente, l'écran est celui de toujours.
+   */
+  cgv?: CgvAffichees;
   signerAction: (input: {
     token: string;
     methode: "trace" | "confirmation_accessible";
     imageDataUrl?: string;
     code?: string;
+    cgvAcceptees?: true;
+    cgvVersionAffichee?: string;
   }) => Promise<
     { ok: true; signatureId: string; statutSignature: string } | { ok: false; message: string }
   >;
@@ -126,6 +145,7 @@ export function PieceSignatureForm({
   pieceLibelle,
   pdfUrl,
   mentions,
+  cgv,
   signerAction,
   demanderCodeAction,
 }: PieceSignatureFormProps): React.ReactElement {
@@ -138,6 +158,7 @@ export function PieceSignatureForm({
   const [trace, setTrace] = useState<string | null>(null);
   const [modeAccessible, setModeAccessible] = useState(false);
   const [consent, setConsent] = useState(false);
+  const [cgvOk, setCgvOk] = useState(false);
   const [erreur, setErreur] = useState<string | null>(null);
   const [signe, setSigne] = useState(false);
   const [enCours, startTransition] = useTransition();
@@ -152,7 +173,10 @@ export function PieceSignatureForm({
   const [envoiCodeEnCours, startEnvoiCode] = useTransition();
 
   const pretASigner =
-    consent && (modeAccessible || trace !== null) && (!avecCode || /^\d{6}$/.test(code));
+    consent &&
+    (cgv === undefined || cgvOk) &&
+    (modeAccessible || trace !== null) &&
+    (!avecCode || /^\d{6}$/.test(code));
 
   function demanderCode() {
     if (demanderCodeAction === undefined) return;
@@ -175,6 +199,9 @@ export function PieceSignatureForm({
         // manuscrite une signature qui ne l'est pas.
         ...(modeAccessible || trace === null ? {} : { imageDataUrl: trace }),
         ...(avecCode ? { code } : {}),
+        ...(cgv !== undefined
+          ? { cgvAcceptees: true as const, cgvVersionAffichee: cgv.version }
+          : {}),
       });
       if (res.ok) setSigne(true);
       else setErreur(res.message);
@@ -353,6 +380,43 @@ export function PieceSignatureForm({
           <span>{attestation}</span>
         </label>
 
+        {/* CGV — à lire AVANT de signer un devis. Les liens sont HORS du <label> : cliquer
+            sur « Lire » ou « Télécharger » ne doit jamais cocher la case. La case est
+            SÉPARÉE de l'attestation : l'acceptation des CGV est un acte distinct, dont la
+            version est enregistrée et scellée dans la preuve. */}
+        {cgv !== undefined && (
+          <div className="mt-5 rounded border border-gray-300 p-4">
+            <h3 className="text-sm font-semibold text-gray-900">
+              {`Conditions générales de vente (version du ${cgv.libelle})`}
+            </h3>
+            <p className="mt-2 flex flex-wrap gap-x-6 gap-y-1 text-sm">
+              <a
+                href={cgv.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="underline underline-offset-4"
+              >
+                Lire
+                <span className="sr-only"> les conditions générales de vente (nouvel onglet)</span>
+              </a>
+              <a href={cgv.pdfHref} className="underline underline-offset-4">
+                Télécharger (PDF)
+                <span className="sr-only"> les conditions générales de vente</span>
+              </a>
+            </p>
+            <label className="mt-3 flex items-start gap-3 text-sm text-gray-900">
+              <input
+                type="checkbox"
+                checked={cgvOk}
+                onChange={(e) => setCgvOk(e.target.checked)}
+                disabled={enCours}
+                className="mt-1"
+              />
+              <span>J&apos;ai lu et j&apos;accepte les conditions générales de vente</span>
+            </label>
+          </div>
+        )}
+
         {/* CE QUI ENCADRE L'ENGAGEMENT — valeur juridique, consentement, RGPD.
             Replié, sur DÉCISION DE WILL du 16/08.
 
@@ -454,6 +518,9 @@ export function PieceSignatureForm({
             {(modeAccessible
               ? "Cochez la case ci-dessus pour confirmer votre accord."
               : "Tracez votre signature et cochez la case ci-dessus.") +
+              (cgv !== undefined
+                ? " Cochez aussi la case des conditions générales de vente."
+                : "") +
               (avecCode ? " Saisissez ensuite le code reçu par e-mail." : "")}
           </p>
         )}
