@@ -106,8 +106,6 @@ export type WorkerName =
   | "formation-crons"
   // Import en masse kit formation (ZIP → documents-interventions) 2026-06-13
   | "kit-import"
-  // Rapport d'analyse avant audit 2026-11-02
-  | "rapport-avant-audit"
   // Sondage Calendly 2026-08-09 — découverte des réservations + annulations
   | "calendly-poll"
   // Lot L2 2026-08-14 — synchro sortante de l'outbox vers Axion CRM Pro

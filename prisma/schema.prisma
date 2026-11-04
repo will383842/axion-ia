@@ -18011,6 +18011,7 @@ model TourDemande {
 /// `propositions_fiche` est une enveloppe `{ v, chiffre }` chiffrée de même : jamais de clair.
 /// `statut` : texte + CHECK (aucune énumération Postgres, fenêtre app/worker).
 /// L'effacement RGPD MET À L'ÉCART (`ecarte_le`) et alerte Will : aucune purge automatique.
+/// Fonction retirée le 04/11/2026 : plus aucun code n'écrit de lancement ; table et lignes CONSERVÉES, aucune purge ; seuls l'export art. 15 (rgpd-dossier-client.ts) et la mise à l'écart art. 17 (rgpd-erase.ts) la lisent ou l'écrivent. Contenu chiffré par chiffrerParole.
 /// rgpd: dossier-client
 model RapportAvantAudit {
   id                String    @id @default(uuid()) @db.Uuid
