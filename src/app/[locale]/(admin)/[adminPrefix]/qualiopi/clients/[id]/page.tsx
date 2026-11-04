@@ -103,6 +103,7 @@ import { NouveauRendezVous } from "@/components/admin/dossier-client/NouveauRend
 import { FusionDeFiches } from "@/components/admin/dossier-client/FusionDeFiches";
 import { BrancheOpcoBloc } from "@/components/admin/qualiopi/BrancheOpcoBloc";
 import { lireMessageDeRetour } from "@/features/dossier-client/message-de-retour";
+import { siteAuditDuClient } from "@/features/site-audit/config";
 import { compterDocumentsParProjet } from "@/features/dossier-client/documents/queries";
 import { toParisLocalInput } from "@/lib/calendar-grid";
 import {
@@ -613,6 +614,18 @@ export default async function FicheClient360Page({ params, searchParams }: PageP
             {voitEchanges ? (
               <AdminButton variant="secondary" href={`${ficheHref}/questionnaire`}>
                 Envoyer le questionnaire
+              </AdminButton>
+            ) : null}
+            {/* Site d'audit servi au super_admin seul, tant que la variable SITE_AUDIT_DOCUMENTS
+                désigne un document pour ce client (route : api/admin/site-audit). */}
+            {acces.role === "super_admin" && siteAuditDuClient(client.id) ? (
+              <AdminButton
+                variant="secondary"
+                href={`/api/admin/site-audit/${client.id}`}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Audit : ouvrir le site
               </AdminButton>
             ) : null}
             {/* « Faire un devis » : action principale pour les rôles qui écrivent SANS voir les
