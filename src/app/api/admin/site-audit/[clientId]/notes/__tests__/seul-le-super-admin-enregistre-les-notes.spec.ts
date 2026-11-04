@@ -176,7 +176,6 @@ describe("seul le super_admin enregistre les notes", () => {
     const s = monter();
     const { version } = (await (await poster()).json()) as { version: string };
     const err = vi.spyOn(console, "error").mockImplementation(() => {});
-    const orig = s.db.documentProjet.update;
     const db = s.db as unknown as Record<string, Record<string, unknown>>;
     for (const k of ["update", "updateMany"]) {
       if (db.documentProjet && k in db.documentProjet) {
@@ -185,7 +184,6 @@ describe("seul le super_admin enregistre les notes", () => {
         };
       }
     }
-    void orig;
     const suite = JSON.stringify({
       base: version,
       notes: { "audit-oury-q3-abc-1": { t: "x" }, "audit-oury-q3-abc-2": { t: "y" } },
