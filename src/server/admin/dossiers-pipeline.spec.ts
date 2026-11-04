@@ -30,6 +30,7 @@ vi.mock("@/lib/prisma", () => ({
     // `count` : chaque source rend desormais son TOTAL en base a cote de ses
     // lignes, pour que la vue puisse DIRE ce qu'elle n'a pas lu (T1, 16/08).
     devis: { findMany: vi.fn(), count: vi.fn() },
+    documentGenere: { findMany: vi.fn(async () => []) },
     trainingSession: { findMany: vi.fn(), count: vi.fn() },
     coachingSession: { findMany: vi.fn(), count: vi.fn() },
     auditMission: { findMany: vi.fn(), count: vi.fn() },
@@ -68,6 +69,21 @@ describe("deriverStatutDossier — devis", () => {
       "devis_attente",
     );
   });
+
+  it("envoye + pièce signée du client seul → « Devis à contresigner » (étape déduite)", () => {
+    expect(
+      deriverStatutDossier({ source: "devis", statut: "envoye", aContresigner: true }, MAINTENANT),
+    ).toBe("devis_a_contresigner");
+  });
+
+  it.each(["brouillon", "refuse", "expire", "accepte"] as const)(
+    "%s + aContresigner → toujours exclu",
+    (statut) => {
+      expect(
+        deriverStatutDossier({ source: "devis", statut, aContresigner: true }, MAINTENANT),
+      ).toBeNull();
+    },
+  );
 
   it("brouillon → exclu (pas encore une affaire)", () => {
     expect(deriverStatutDossier({ source: "devis", statut: "brouillon" }, MAINTENANT)).toBeNull();
@@ -289,6 +305,33 @@ describe("lireDossiersPipeline", () => {
     vi.mocked(prisma.trainingSession.count).mockResolvedValue(0);
     vi.mocked(prisma.coachingSession.count).mockResolvedValue(0);
     vi.mocked(prisma.auditMission.count).mockResolvedValue(0);
+  });
+
+  it("lecture : devis dont la pièce est signée client seul → colonne à contresigner, l'autre reste en attente", async () => {
+    vi.mocked(prisma.documentGenere.findMany).mockResolvedValue([
+      { id: "p1", type: "devis", sessionId: null, signatures: [{ partie: "client" }] },
+      {
+        id: "p2",
+        type: "devis",
+        sessionId: null,
+        signatures: [{ partie: "client" }, { partie: "axionia" }],
+      },
+    ] as never);
+    const ligne = (id: string, doc: string) =>
+      ({
+        id,
+        numero: id,
+        activite: "formation",
+        statut: "envoye",
+        documentGenereId: doc,
+        sentAt: RECENT,
+        dateValidite: new Date("2026-08-24T00:00:00Z"),
+        client: { raisonSociale: "X" },
+      }) as never;
+    vi.mocked(prisma.devis.findMany).mockResolvedValue([ligne("d1", "p1"), ligne("d2", "p2")]);
+    const pipeline = (await lireDossiersPipeline(MAINTENANT)).colonnes;
+    expect(pipeline.devis_a_contresigner.map((l) => l.cle)).toEqual(["devis:d1"]);
+    expect(pipeline.devis_attente.map((l) => l.cle)).toEqual(["devis:d2"]);
   });
 
   it("retourne les 6 colonnes vides quand il n'y a aucune affaire", async () => {

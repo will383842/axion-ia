@@ -24,6 +24,7 @@ import { describe, it, expect, vi, beforeEach } from "vitest";
 vi.mock("@/lib/prisma", () => ({
   prisma: {
     devis: { findMany: vi.fn(), count: vi.fn() },
+    documentGenere: { findMany: vi.fn(async () => []) },
     trainingSession: { findMany: vi.fn(), count: vi.fn() },
     coachingSession: { findMany: vi.fn(), count: vi.fn() },
     auditMission: { findMany: vi.fn(), count: vi.fn() },
