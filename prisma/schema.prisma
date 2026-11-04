@@ -7701,6 +7701,9 @@ model DocumentSignature {
   /// `code_email` quand un code reçu par e-mail a été saisi. HACHÉE à partir de la
   /// version 2 du tuple ; NULL sur les preuves antérieures, qui ne sont pas réécrites.
   facteurVerification FacteurVerificationSignature? @map("facteur_verification")
+  /// Version des CGV acceptées à la signature d'un DEVIS par jeton (ex. `2026-10-04`). NULL sur
+  /// les autres pièces et canaux, et sur les preuves antérieures. HACHÉE à partir de la version 3 du sceau.
+  cgvVersion String? @map("cgv_version") @db.VarChar(40)
 
   /// 🔴 DISTINCTS de `createdAt` : l'écart entre les deux révèle une insertion
   /// tardive. Les confondre effacerait la seule trace d'une signature antidatée.
