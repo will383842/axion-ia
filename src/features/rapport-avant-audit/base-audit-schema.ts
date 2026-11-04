@@ -1,8 +1,14 @@
 /**
- * Contrat de la BASE D'AUDIT (livrable B) — 2026-11-02. Version `base-audit/1`.
+ * Contrat de la BASE D'AUDIT (livrable B) — 2026-11-02. Versions `base-audit/1` et `base-audit/2`.
  *
- * C'est la source de vérité du rapport : le PDF client en est un filtre, et la génération de
- * l'audit du jour J la lira sans refaire la recherche. Générique : aucune section ni aucun champ
+ * C'est la source de vérité du rapport : les trois documents HTML INTERNES (synthèse, fiche des
+ * automatisations, schéma des dépendances) en sont des vues, et la génération de l'audit du
+ * jour J la lira sans refaire la recherche. Plus aucun document ne part chez le client.
+ *
+ * La version 2 ajoute DEUX champs optionnels (`contexte_interne`, `automatisations`) ; aucun
+ * champ de la version 1 n'est devenu obligatoire, donc les bases `base-audit/1` déjà scellées
+ * continuent de s'ouvrir. Le contrat ne contrôle NI le catalogue d'automatisations NI
+ * l'exactitude des citations : c'est le travail du moteur, pas du schéma. Générique : aucune section ni aucun champ
  * propre à un client ou à un secteur ; le secteur se déclare dans `equipe_analyse` et dans les
  * éléments eux-mêmes.
  *
@@ -20,11 +26,14 @@ import { z } from "zod";
 import { lireTendance } from "./tendance";
 
 export const VERSION_BASE_AUDIT = "base-audit/1";
+export const VERSION_BASE_AUDIT_2 = "base-audit/2";
+export const VERSIONS_BASE_AUDIT = [VERSION_BASE_AUDIT, VERSION_BASE_AUDIT_2] as const;
 
 export const CONFIANCES = ["etabli", "probable", "hypothese"] as const;
 export const NIVEAUX = ["faible", "moyen", "fort"] as const;
 
 const Texte = z.string().trim().min(1);
+const IdBesoin = z.string().regex(/^B\d+$/);
 
 export const SourceSchema = z.object({
   type: z.enum(["questionnaire", "registre", "web"]),
@@ -195,8 +204,6 @@ export const ExerciceSchema = z.object({
 });
 export type Exercice = z.infer<typeof ExerciceSchema>;
 
-const IdBesoin = z.string().regex(/^B\d+$/);
-
 /**
  * Fiche d'UNE personne (interne : elle sert à l'audit que l'on mène avec elle). Chaque demande,
  * douleur ou réserve porte la citation exacte de la personne. Une personne qui n'a pas répondu a
@@ -261,9 +268,203 @@ export const FichePersonneSchema = z
   });
 export type FichePersonne = z.infer<typeof FichePersonneSchema>;
 
+// ── Version 2 : contexte interne et automatisations ─────────────────────────────────────────────
+
+const IdAutomatisation = z.string().regex(/^A\d+$/);
+
+/** Les mots exacts d'une personne. `personne` : clé de l'annexe, ou `attendu:<nom>`. */
+export const CitationSchema = z.object({
+  texte: Texte,
+  personne: Texte,
+  auteur: Texte,
+});
+export type Citation = z.infer<typeof CitationSchema>;
+
+/** Un temps perdu tel que la personne l'a déclaré (jamais un temps estimé par nous). */
+export const TempsDeclareSchema = z.object({
+  libelle: Texte,
+  citation: Texte,
+  occurrences: z.number().positive().nullable(),
+  periode: z.enum(["jour", "semaine", "mois"]).nullable(),
+  minutesMin: z.number().nonnegative().nullable(),
+  minutesMax: z.number().nonnegative().nullable(),
+});
+export type TempsDeclare = z.infer<typeof TempsDeclareSchema>;
+
+export const GROUPES_AUTOMATISATION = ["sans_prerequis", "base_unique", "a_etudier"] as const;
+export const IMPORTANCES = ["haute", "moyenne_haute", "moyenne", "faible"] as const;
+
+const QuestionsParTheme = z.array(z.object({ theme: Texte, questions: z.array(Texte) }));
+
+export const AutomatisationSchema = z.object({
+  id: IdAutomatisation,
+  titre: Texte,
+  source: z.enum(["catalogue", "sur_mesure"]),
+  catalogueId: z.string().min(1).nullable(),
+  /** Vrai : c'est la base commune dont d'autres automatisations dépendent. */
+  estSocle: z.boolean(),
+  groupe: z.enum(GROUPES_AUTOMATISATION),
+  dependDe: z.array(IdAutomatisation),
+  besoinsServis: z.array(IdBesoin),
+  horsDemande: z.boolean(),
+  /** Le client l'a cité lui-même comme une priorité. */
+  citeCommePriorite: z.boolean(),
+  importance: z.enum(IMPORTANCES),
+  /** 1 = la plus importante ; suite 1..n sans trou sur toute la liste. */
+  rangImportance: z.number().int().min(1),
+  ordreMiseEnPlace: z.number().int().min(1),
+  ceQuElleFait: Texte,
+  utilite: Texte,
+  douleurs: z.array(CitationSchema),
+  temps: z.array(TempsDeclareSchema),
+  dependanceExpliquee: z.string(),
+  questions: QuestionsParTheme,
+  vente: z.enum(["unique", "abonnement", "a_definir"]),
+  venteRaison: z.string(),
+  jetonsIA: z.enum(["aucun", "peu", "moyen", "eleve"]),
+  tableauDeBord: z.object({ titre: Texte, indicateurs: z.array(Texte) }).nullable(),
+  /** Jamais de prix dans la base : Will le fixe. */
+  prix: z.object({ etat: z.literal("a_fixer_par_will") }),
+});
+export type Automatisation = z.infer<typeof AutomatisationSchema>;
+
+export const AutomatisationsSchema = z.object({
+  liste: z.array(AutomatisationSchema),
+  formules: z.array(
+    z.object({ nom: Texte, ids: z.array(IdAutomatisation).min(1), remarque: z.string() }),
+  ),
+  questionsCommunes: QuestionsParTheme,
+});
+export type Automatisations = z.infer<typeof AutomatisationsSchema>;
+
+const RubriqueInterneSchema = z.object({
+  /** `non_repondu` (aucune réponse) et `ne_sait_pas` (réponse « je ne sais pas ») ne sont PAS un « non ». */
+  etat: z.enum(["declare", "ne_sait_pas", "non_repondu"]),
+  elements: z.array(z.object({ enonce: Texte, citations: z.array(CitationSchema) })),
+});
+export type RubriqueInterne = z.infer<typeof RubriqueInterneSchema>;
+
+export const ContexteInterneSchema = z
+  .object({
+    freins: RubriqueInterneSchema,
+    attentes: RubriqueInterneSchema,
+    budget: RubriqueInterneSchema,
+    formation: RubriqueInterneSchema,
+  })
+  .superRefine((c, ctx) => {
+    const nb = c.budget.elements.reduce((n, e) => n + e.citations.length, 0);
+    if (c.budget.etat === "declare" && nb === 0) {
+      ctx.addIssue({
+        code: "custom",
+        path: ["budget"],
+        message: "Un budget « déclaré » porte au moins une citation.",
+      });
+    }
+  });
+export type ContexteInterne = z.infer<typeof ContexteInterneSchema>;
+
+/** Règles de cohérence d'une liste d'automatisations (ids, dépendances, rangs, besoins, groupes). */
+function verifierAutomatisations(
+  a: Automatisations,
+  idsBesoins: ReadonlySet<string>,
+  ctx: z.RefinementCtx,
+): void {
+  const mal = (path: Array<string | number>, message: string) =>
+    ctx.addIssue({ code: "custom", path: ["automatisations", ...path], message });
+  const liste = a.liste;
+  const ids = liste.map((x) => x.id);
+  if (new Set(ids).size !== ids.length) mal(["liste"], "Identifiants d'automatisation en double.");
+  const parId = new Map(liste.map((x) => [x.id, x]));
+
+  liste.forEach((x, i) => {
+    for (const d of x.dependDe) {
+      if (!parId.has(d)) {
+        mal(["liste", i, "dependDe"], `${x.id} dépend de ${d}, qui n'existe pas.`);
+      } else if (d === x.id) {
+        mal(["liste", i, "dependDe"], `${x.id} dépend d'elle-même.`);
+      } else if ((parId.get(d)?.ordreMiseEnPlace ?? 0) >= x.ordreMiseEnPlace) {
+        mal(
+          ["liste", i, "ordreMiseEnPlace"],
+          `${d} doit être mise en place avant ${x.id}, dont elle est un prérequis.`,
+        );
+      }
+    }
+    for (const b of x.besoinsServis) {
+      if (!idsBesoins.has(b))
+        mal(["liste", i, "besoinsServis"], `${x.id} cite le besoin ${b}, qui n'existe pas.`);
+    }
+    if ((x.source === "catalogue") !== (x.catalogueId !== null)) {
+      mal(
+        ["liste", i, "catalogueId"],
+        `${x.id} : un identifiant de catalogue si et seulement si la source est « catalogue ».`,
+      );
+    }
+    if (!x.horsDemande) {
+      if (x.douleurs.length === 0) {
+        mal(
+          ["liste", i, "douleurs"],
+          `${x.id} n'est pas « hors demande » : elle cite au moins une douleur.`,
+        );
+      }
+      if (!x.besoinsServis.some((b) => idsBesoins.has(b))) {
+        mal(
+          ["liste", i, "besoinsServis"],
+          `${x.id} n'est pas « hors demande » : elle sert au moins un besoin déclaré.`,
+        );
+      }
+    }
+  });
+
+  // Rangs d'importance : exactement la suite 1..n.
+  const rangs = liste.map((x) => x.rangImportance).sort((p, q) => p - q);
+  if (rangs.some((r, i) => r !== i + 1)) {
+    mal(["liste"], "Les rangs d'importance doivent former la suite 1..n, sans trou ni doublon.");
+  }
+
+  // Pas de boucle de dépendances.
+  const etat = new Map<string, 1 | 2>();
+  let boucle = false;
+  const visiter = (id: string): void => {
+    if (etat.get(id) === 2 || boucle) return;
+    if (etat.get(id) === 1) {
+      boucle = true;
+      return;
+    }
+    etat.set(id, 1);
+    for (const d of parId.get(id)?.dependDe ?? []) if (parId.has(d)) visiter(d);
+    etat.set(id, 2);
+  };
+  for (const id of parId.keys()) visiter(id);
+  if (boucle) mal(["liste"], "Les dépendances forment une boucle.");
+
+  // « base unique » : c'est le socle, ou une automatisation qui en dépend (directement ou non).
+  const dependDuSocle = (id: string, vus: Set<string>): boolean => {
+    if (vus.has(id)) return false;
+    vus.add(id);
+    return (parId.get(id)?.dependDe ?? []).some(
+      (d) => parId.get(d)?.estSocle === true || dependDuSocle(d, vus),
+    );
+  };
+  liste.forEach((x, i) => {
+    if (x.groupe === "base_unique" && !x.estSocle && !dependDuSocle(x.id, new Set())) {
+      mal(
+        ["liste", i, "groupe"],
+        `${x.id} est dans « base unique » : elle est le socle ou en dépend.`,
+      );
+    }
+  });
+
+  a.formules.forEach((f, i) => {
+    for (const id of f.ids) {
+      if (!parId.has(id))
+        mal(["formules", i, "ids"], `La formule « ${f.nom} » cite ${id}, qui n'existe pas.`);
+    }
+  });
+}
+
 export const BaseAuditSchema = z
   .object({
-    version: z.literal(VERSION_BASE_AUDIT),
+    version: z.enum(VERSIONS_BASE_AUDIT),
     meta: z.object({
       clientId: z.string().uuid(),
       raisonSociale: Texte,
@@ -347,8 +548,39 @@ export const BaseAuditSchema = z
     /** Toutes les réponses, intégralement. */
     annexe_reponses: z.array(AnnexePersonneSchema),
     sources: z.array(SourceSchema),
+    /** Version 2. Freins, attentes, budget et formation, avec les mots des personnes. */
+    contexte_interne: ContexteInterneSchema.optional().nullable(),
+    /** Version 2. `null` : l'étape a échoué (une limite le dit dans `meta.limites`). */
+    automatisations: AutomatisationsSchema.optional().nullable(),
   })
   .superRefine((b, ctx) => {
+    if (b.version === VERSION_BASE_AUDIT_2) {
+      if (b.contexte_interne === undefined || b.contexte_interne === null) {
+        ctx.addIssue({
+          code: "custom",
+          path: ["contexte_interne"],
+          message: "Une base « base-audit/2 » porte le contexte interne.",
+        });
+      }
+      if (b.automatisations === undefined) {
+        ctx.addIssue({
+          code: "custom",
+          path: ["automatisations"],
+          message:
+            "Une base « base-audit/2 » porte les automatisations (ou null si l'étape a échoué).",
+        });
+      } else if (b.automatisations === null && b.meta.limites.length === 0) {
+        ctx.addIssue({
+          code: "custom",
+          path: ["meta", "limites"],
+          message:
+            "Des automatisations à null (étape échouée) exigent au moins une limite qui le dit.",
+        });
+      }
+    }
+    if (b.automatisations !== undefined && b.automatisations !== null) {
+      verifierAutomatisations(b.automatisations, new Set(b.besoins_declares.map((x) => x.id)), ctx);
+    }
     // La direction n'a pas (ou pas sûrement) parlé : il faut lui poser la question le jour J.
     if (
       b.meta.reponseDirection.fournieParUnDirigeant !== "oui" &&

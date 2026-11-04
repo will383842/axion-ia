@@ -3,8 +3,6 @@
  *
  *   · `lancerAnalyseAction` — le bouton « Lancer l'analyse complète » (îlot client). La trace
  *     du lancement est écrite par l'accès (`rapport-avant-audit.lancer`), une seule fois ;
- *   · `validerPdfClientAction` — « Valider le PDF client ». Rend le PDF téléchargeable ;
- *     ⛔ n'envoie RIEN à personne (aucun envoi automatique, jamais) ;
  *   · `completerFicheAction` — « Compléter la fiche » : écrit les champs cochés, SEULEMENT
  *     s'ils sont vides au moment du clic, par la porte unique `updateClientAction`. Jamais
  *     d'écrasement ; le SIREN n'y passe jamais (il a son bouton). Trace
@@ -34,7 +32,6 @@ import { rapportAvantAuditActif } from "./interrupteur";
 import { datesDesReponses, lireFicheActuelle } from "./lecture";
 import {
   decisionCompletion,
-  decisionValidationPdf,
   etatBoutonLancer,
   LIBELLES_CHAMPS,
   listerPropositions,
@@ -92,7 +89,7 @@ export async function lancerAnalyseAction(saisie: {
   };
 }
 
-// ── Valider le PDF client ────────────────────────────────────────────────────
+// ── Formulaires ──────────────────────────────────────────────────────────────
 
 type Retour = { ok: true; texte: string } | { ok: false; texte: string };
 
@@ -103,41 +100,6 @@ const champsDuFormulaire = (formData: FormData) => {
     ? { clientId: clientId.data, rapportId: rapportId.data }
     : null;
 };
-
-export async function validerPdfClientAction(formData: FormData): Promise<Retour> {
-  const session = await superAdminOuNull();
-  if (session === null) return { ok: false, texte: RESERVE_SUPER_ADMIN };
-  const ids = champsDuFormulaire(formData);
-  if (ids === null) return { ok: false, texte: "Demande invalide." };
-  const { clientId, rapportId } = ids;
-
-  const acces = accesRapports();
-  const rapport = (await acces.listerRapports(clientId)).find((r) => r.id === rapportId) ?? null;
-  const d = decisionValidationPdf({ role: session.role, rapport });
-  if (!d.ok) return { ok: false, texte: d.texte };
-
-  const r = await acces.validerPdf(clientId, rapportId, session.userId);
-  if (!r.ok) return { ok: false, texte: r.raison };
-  // La trace ne dit « validé » que si CET appel a posé la date (un double clic n'en écrit pas deux).
-  if (r.dejaValide) {
-    return {
-      ok: true,
-      texte: "Ce PDF client était déjà validé : rien n'a changé. Rien n'a été envoyé au client.",
-    };
-  }
-  await logQualiopiActivity({
-    action: "rapport-avant-audit.pdf_valide",
-    targetType: "Client",
-    targetId: clientId,
-    changes: { rapportId, version: rapport?.version ?? null },
-    session,
-  });
-  revalidatePath(ficheDe(clientId));
-  return {
-    ok: true,
-    texte: "PDF client validé : il est maintenant téléchargeable. Rien n'a été envoyé au client.",
-  };
-}
 
 // ── Compléter la fiche ───────────────────────────────────────────────────────
 

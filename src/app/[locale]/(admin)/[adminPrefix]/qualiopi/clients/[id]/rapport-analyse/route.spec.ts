@@ -8,7 +8,11 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import { scellerBase, scellerPropositions } from "@/features/rapport-avant-audit/persistance";
-import { baseValide, fausseTable } from "@/features/rapport-avant-audit/__tests__/base.fixture";
+import {
+  baseValide,
+  baseValideV2,
+  fausseTable,
+} from "@/features/rapport-avant-audit/__tests__/base.fixture";
 
 const faux = vi.hoisted(() => ({
   session: null as null | { user: { id: string; role: string } },
@@ -33,8 +37,12 @@ const ENV0 = { ...process.env };
 let table: ReturnType<typeof fausseTable>;
 let journal: ReturnType<typeof vi.fn>;
 
-async function rapportDe(clientId: string, extra: Record<string, unknown> = {}): Promise<string> {
-  const b = baseValide();
+async function rapportDe(
+  clientId: string,
+  extra: Record<string, unknown> = {},
+  v2 = false,
+): Promise<string> {
+  const b = v2 ? baseValideV2() : baseValide();
   const base = { ...b, meta: { ...b.meta, clientId } };
   const s = scellerBase(base);
   const { id } = await table.create({
@@ -43,6 +51,7 @@ async function rapportDe(clientId: string, extra: Record<string, unknown> = {}):
       questionnaireIds: [],
       lanceParId: WILL,
       statut: "termine",
+      versionSchema: b.version,
       progression: 100,
       baseAudit: s.chiffre,
       baseEmpreinte: s.empreinte,
@@ -104,8 +113,8 @@ describe("route rapport-analyse", () => {
   });
 
   it("404 IDENTIQUE : rapport de B sous l'adresse de A = identifiant inexistant", async () => {
-    const rB = await rapportDe(B, { pdfValideLe: new Date(), pdfValideParId: WILL });
-    for (const f of ["base-json", "base-md", "fiches-md", "pdf-client"]) {
+    const rB = await rapportDe(B, {}, true);
+    for (const f of ["base-json", "synthese-html", "automatisations-html", "schema-html"]) {
       const croise = await lu(await appel(A, rB, f));
       const absent = await lu(await appel(A, INEXISTANT, f));
       expect(croise.statut, f).toBe(404);
@@ -118,28 +127,55 @@ describe("route rapport-analyse", () => {
 
   it("200 : pièce jointe, private no-store, nosniff, et trace écrite", async () => {
     const id = await rapportDe(A);
-    const r = await appel(A, id, "base-md");
+    const r = await appel(A, id, "synthese-html");
     expect(r.status).toBe(200);
-    expect(r.headers.get("content-disposition")).toMatch(/^attachment; filename="[^"/\\]+\.md"$/);
+    expect(r.headers.get("content-disposition")).toMatch(
+      /^attachment; filename="INTERNE-synthese-[0-9a-f]{8}\.html"$/,
+    );
+    expect(r.headers.get("content-type")).toBe("text/html; charset=utf-8");
     expect(r.headers.get("cache-control")).toBe("private, no-store");
     expect(r.headers.get("x-content-type-options")).toBe("nosniff");
-    expect(journal).toHaveBeenCalledWith(
-      expect.objectContaining({
-        data: expect.objectContaining({
-          action: "rapport-avant-audit.telechargement",
-          targetId: A,
-          changes: expect.objectContaining({ rapportId: id, format: "base-md" }),
-        }),
-      }),
+    expect(r.headers.get("content-security-policy")).toBe(
+      "default-src 'none'; style-src 'unsafe-inline'; img-src data:",
     );
   });
 
-  it("PDF client refusé tant qu'il n'est pas validé", async () => {
+  it("la trace est écrite pour les 4 formats (V2), avec la CSP sur les trois HTML", async () => {
+    const id = await rapportDe(A, {}, true);
+    for (const f of ["synthese-html", "automatisations-html", "schema-html", "base-json"]) {
+      journal.mockClear();
+      const r = await appel(A, id, f);
+      expect(r.status, f).toBe(200);
+      expect(r.headers.has("content-security-policy"), f).toBe(f.endsWith("-html"));
+      expect(journal, f).toHaveBeenCalledWith(
+        expect.objectContaining({
+          data: expect.objectContaining({
+            action: "rapport-avant-audit.telechargement",
+            targetId: A,
+            changes: expect.objectContaining({ rapportId: id, format: f }),
+          }),
+        }),
+      );
+    }
+  });
+
+  it("l'ancien format pdf-client n'existe plus : 400", async () => {
     const id = await rapportDe(A);
-    const r = await appel(A, id, "pdf-client");
-    expect(r.status).toBe(409);
-    expect(await r.text()).toMatch(/pas encore été validé/);
-    expect(r.headers.get("cache-control")).toBe("private, no-store");
+    for (const f of ["pdf-client", "base-md", "fiches-md"]) {
+      const r = await appel(A, id, f);
+      expect(r.status, f).toBe(400);
+    }
+    expect(journal).not.toHaveBeenCalled();
+  });
+
+  it("automatisations et schéma sur une base V1 : 409, rien n'est tracé", async () => {
+    const id = await rapportDe(A);
+    for (const f of ["automatisations-html", "schema-html"]) {
+      const r = await appel(A, id, f);
+      expect(r.status, f).toBe(409);
+      expect(await r.text()).toMatch(/relancez l'analyse/);
+      expect(r.headers.get("cache-control")).toBe("private, no-store");
+    }
     expect(journal).not.toHaveBeenCalled();
   });
 

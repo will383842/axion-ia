@@ -4,7 +4,6 @@ import {
   cibleDuChamp,
   clientIdDeLaFiche,
   decisionTelechargement,
-  decisionValidationPdf,
   etatBoutonLancer,
   listerPropositions,
   planifierCompletion,
@@ -144,7 +143,7 @@ describe("progression", () => {
   });
 });
 
-describe("téléchargements — super-administrateur seul, PDF après validation", () => {
+describe("téléchargements — super-administrateur seul, documents V2 selon la version", () => {
   it("refuse tout autre rôle (403)", () => {
     for (const role of ["admin", "editor", null]) {
       expect(
@@ -161,33 +160,59 @@ describe("téléchargements — super-administrateur seul, PDF après validation
     expect(decisionTelechargement({ role, format: "zip", rapport: resume() })).toMatchObject({
       statut: 400,
     });
-    expect(decisionTelechargement({ role, format: "base-md", rapport: null })).toMatchObject({
+    expect(decisionTelechargement({ role, format: "synthese-html", rapport: null })).toMatchObject({
       statut: 404,
     });
     expect(
-      decisionTelechargement({ role, format: "base-md", rapport: resume({ statut: "en_cours" }) }),
+      decisionTelechargement({
+        role,
+        format: "synthese-html",
+        rapport: resume({ statut: "en_cours" }),
+      }),
     ).toMatchObject({ statut: 409 });
   });
 
-  it("le PDF client exige le clic « Valider le PDF client »", () => {
+  it("automatisations et schéma : 409 tant que la base n'est pas en version 2", () => {
     const role = "super_admin";
-    expect(decisionTelechargement({ role, format: "pdf-client", rapport: resume() })).toMatchObject(
-      {
-        ok: false,
-        statut: 409,
-      },
-    );
-    expect(
-      decisionTelechargement({
+    for (const format of ["automatisations-html", "schema-html"]) {
+      const refus = decisionTelechargement({
         role,
-        format: "pdf-client",
-        rapport: resume({ pdfValideLe: d("2026-11-02T08:00:00Z") }),
-      }),
-    ).toEqual({ ok: true });
+        format,
+        rapport: resume({ versionSchema: "base-audit/1" }),
+      });
+      expect(refus).toMatchObject({ ok: false, statut: 409 });
+      expect(refus.ok ? "" : refus.texte).toBe(
+        "Ce document n'existe que pour une analyse lancée après la mise à jour : relancez l'analyse",
+      );
+      expect(
+        decisionTelechargement({ role, format, rapport: resume({ versionSchema: null }) }),
+      ).toMatchObject({ statut: 409 });
+      expect(decisionTelechargement({ role, format, rapport: resume() })).toEqual({ ok: true });
+    }
+  });
+
+  it("synthèse et JSON : disponibles aussi pour une base V1", () => {
+    for (const format of ["synthese-html", "base-json"]) {
+      expect(
+        decisionTelechargement({
+          role: "super_admin",
+          format,
+          rapport: resume({ versionSchema: "base-audit/1" }),
+        }),
+      ).toEqual({ ok: true });
+    }
+  });
+
+  it("les anciens formats (pdf-client, base-md, fiches-md) sont refusés (400)", () => {
+    for (const format of ["pdf-client", "base-md", "fiches-md"]) {
+      expect(
+        decisionTelechargement({ role: "super_admin", format, rapport: resume() }),
+      ).toMatchObject({ ok: false, statut: 400 });
+    }
   });
 
   it("un rapport échoué n'a rien à télécharger (409)", () => {
-    for (const format of ["base-json", "base-md", "fiches-md"]) {
+    for (const format of ["base-json", "synthese-html", "schema-html"]) {
       expect(
         decisionTelechargement({
           role: "super_admin",
@@ -196,16 +221,6 @@ describe("téléchargements — super-administrateur seul, PDF après validation
         }),
       ).toMatchObject({ ok: false, statut: 409 });
     }
-  });
-
-  it("valider le PDF : super-administrateur et rapport terminé", () => {
-    expect(decisionValidationPdf({ role: "admin", rapport: resume() })).toMatchObject({
-      statut: 403,
-    });
-    expect(
-      decisionValidationPdf({ role: "super_admin", rapport: resume({ statut: "echoue" }) }),
-    ).toMatchObject({ statut: 409 });
-    expect(decisionValidationPdf({ role: "super_admin", rapport: resume() })).toEqual({ ok: true });
   });
 });
 

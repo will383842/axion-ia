@@ -28,19 +28,19 @@ describe("accès en mémoire (contrat `AccesRapports`)", () => {
     expect(await a.lirePropositions(AUTRE_CLIENT, RAPPORT)).toEqual([]);
   });
 
-  it("le PDF client ne sort qu'après validation", async () => {
-    const a = creerAccesEnMemoire({
-      rapports: [termine()],
-      maintenant: () => new Date("2026-11-02T09:00:00Z"),
-    });
-    expect(await a.telecharger(CLIENT, RAPPORT, "pdf-client")).toBeNull();
-    expect(await a.validerPdf(CLIENT, RAPPORT, "will")).toEqual({ ok: true, dejaValide: false });
-    expect(await a.validerPdf(CLIENT, RAPPORT, "autre")).toEqual({ ok: true, dejaValide: true });
-    const [r] = await a.listerRapports(CLIENT);
-    expect(r?.pdfValidePar).toBe("will");
-    const f = await a.telecharger(CLIENT, RAPPORT, "pdf-client");
-    expect(f?.nom).toBe("rapport-client-v1.pdf");
-    expect(f?.type).toBe("application/pdf");
+  it("les documents V2 ne sortent que pour une base base-audit/2", async () => {
+    const v1 = termine();
+    v1.resume = { ...v1.resume, versionSchema: "base-audit/1" };
+    const a = creerAccesEnMemoire({ rapports: [v1] });
+    expect((await a.telecharger(CLIENT, RAPPORT, "synthese-html"))?.nom).toBe(
+      "INTERNE-synthese-v1.html",
+    );
+    expect(await a.telecharger(CLIENT, RAPPORT, "automatisations-html")).toBeNull();
+    expect(await a.telecharger(CLIENT, RAPPORT, "schema-html")).toBeNull();
+    const b = creerAccesEnMemoire({ rapports: [termine()] });
+    const f = await b.telecharger(CLIENT, RAPPORT, "schema-html");
+    expect(f?.nom).toBe("INTERNE-schema-v1.html");
+    expect(f?.type).toBe("text/html; charset=utf-8");
   });
 
   it("un lancement crée une nouvelle version en attente ; pas deux à la fois", async () => {

@@ -30,7 +30,7 @@ import {
   scellerPropositions,
   type BaseRapports,
 } from "../persistance";
-import { baseValide, CLIENT_FIXTURE, fausseTable } from "./base.fixture";
+import { baseValide, baseValideV2, CLIENT_FIXTURE, fausseTable } from "./base.fixture";
 
 const ENV0 = { ...process.env };
 beforeEach(() => {
@@ -266,5 +266,27 @@ describe("propositions de mise à jour de la fiche", () => {
     expect(() =>
       ouvrirPropositions({ v: 1, chiffre: chiffrerParole(json), empreinte: empreinteDe(json) }),
     ).toThrow(BaseHorsContrat);
+  });
+});
+
+describe("deux versions de base : base-audit/1 et base-audit/2", () => {
+  it("ouvre une base V1 scellée et une base V2 scellée", () => {
+    const v1 = scellerBase(baseValide());
+    const v2 = scellerBase(baseValideV2());
+    expect(ouvrirBase(v1.chiffre, v1.empreinte).version).toBe("base-audit/1");
+    const ouverte = ouvrirBase(v2.chiffre, v2.empreinte);
+    expect(ouverte.version).toBe("base-audit/2");
+    expect(ouverte.automatisations?.liste).toHaveLength(3);
+  });
+
+  it("enregistre la version réelle de la base dans version_schema", async () => {
+    const { table, db } = base();
+    const { id } = await creerRapport(
+      { clientId: CLIENT_FIXTURE, questionnaireIds: ["q1"], lanceParId: null },
+      db,
+    );
+    const jeton = (await prendreRapport(id, new Date(), db))!;
+    await enregistrerResultat(id, jeton, { ...resultat(), base: baseValideV2() }, new Date(), db);
+    expect(table.lignes[0]!.versionSchema).toBe("base-audit/2");
   });
 });

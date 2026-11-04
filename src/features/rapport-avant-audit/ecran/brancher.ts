@@ -18,10 +18,9 @@
  *     rend aussi `null`, journalisée par son NOM et les identifiants : un rapport corrompu ne
  *     masque jamais tout l'historique de la fiche. Seule une erreur de la base de données
  *     (`PrismaClient…`) remonte, pour ne pas faire passer une panne pour « aucun rapport » ;
- *   · `pdfChemin` n'est JAMAIS lu : le PDF client est régénéré depuis la base vérifiée, et
- *     `@react-pdf` n'est chargé (import dynamique) qu'au TÉLÉCHARGEMENT. L'aperçu (« ce que le PDF
- *     retirerait »), lu à chaque affichage de la fiche, n'utilise que les fonctions pures
- *     `filtrerPourClient` + `retirerMotsInterdits` : aucun rendu de PDF, aucun `@react-pdf`.
+ *   · les documents sont des HTML INTERNES, générés à la demande depuis la base vérifiée (code pur,
+ *     aucun rendu de PDF) ; `automatisations-html` et `schema-html` n'existent que pour une base
+ *     `base-audit/2` (sinon `null`). Aucun document ne part chez le client.
  */
 
 import { z } from "zod";
@@ -38,27 +37,22 @@ import {
   lireBaseAudit,
   lireEtatRapport,
   listerRapportsDuClient,
-  validerPdfClient,
   type EtatRapport,
 } from "../persistance";
-import { baseEnJson, baseEnMarkdown } from "../sorties/base-markdown";
-import { ficheEnMarkdown } from "../sorties/fiche-personne-markdown";
-import { filtrerPourClient } from "../sorties/filtre-client";
-import { retirerMotsInterdits } from "../sorties/retirer-mots";
+import { baseEnJson } from "../sorties/base-json";
+import { automatisationsHtml } from "../sorties/html/automatisations";
+import { schemaHtml } from "../sorties/html/schema";
+import { syntheseHtml } from "../sorties/html/synthese";
 
 import type {
   AccesRapports,
   FichierRapport,
   FormatTelechargement,
-  ResultatValidation,
   ResumeRapport,
   StatutRapport,
 } from "./contrat";
 
 const Uuid = z.string().uuid();
-
-/** Le refus de `validerPdf`, IDENTIQUE pour un rapport d'un autre client et un inexistant. */
-export const REFUS_INTROUVABLE = "Rapport introuvable ou pas terminé.";
 
 const JOURNAL = "[rapport-avant-audit]";
 
@@ -147,9 +141,7 @@ async function listerRapports(clientId: string): Promise<ReadonlyArray<ResumeRap
 
   const idsAdmins = [
     ...new Set(
-      numerotes.flatMap(({ etat }) =>
-        [etat.lanceParId, etat.pdfValideParId].filter((x): x is string => x !== null),
-      ),
+      numerotes.flatMap(({ etat }) => [etat.lanceParId].filter((x): x is string => x !== null)),
     ),
   ];
   const idsQuestionnaires = [...new Set(numerotes.flatMap(({ etat }) => etat.questionnaireIds))];
@@ -183,23 +175,13 @@ async function listerRapports(clientId: string): Promise<ReadonlyArray<ResumeRap
     lancePar: nom(etat.lanceParId),
     reponsesJusquau: reponsesJusquau(etat, envois),
     erreur: etat.erreur,
-    pdfValideLe: etat.pdfValideLe,
-    pdfValidePar: nom(etat.pdfValideParId),
+    versionSchema: etat.versionSchema,
   }));
 }
 
 // ── Téléchargements ──────────────────────────────────────────────────────────
 
-const MD = "text/markdown; charset=utf-8";
-
-/** Les fiches de chaque personne, assemblées sous un titre (niveau 2 pour chaque fiche). */
-export function fichesEnMarkdown(base: BaseAudit): string {
-  const titre = `# Fiches des personnes — ${base.meta.raisonSociale}`;
-  if (base.fiches_personnes.length === 0) {
-    return `${titre}\n\nAucune fiche individuelle dans ce rapport.\n`;
-  }
-  return [titre, ...base.fiches_personnes.map((f) => ficheEnMarkdown(f, 2))].join("\n\n");
-}
+const HTML = "text/html; charset=utf-8";
 
 async function telecharger(
   clientId: string,
@@ -208,7 +190,7 @@ async function telecharger(
 ): Promise<FichierRapport | null> {
   const lu = await baseDuClient(clientId, rapportId);
   if (lu === null) return null;
-  const { etat, base } = lu;
+  const { base } = lu;
   const court = rapportId.slice(0, 8);
   switch (format) {
     case "base-json":
@@ -217,16 +199,18 @@ async function telecharger(
         type: "application/json; charset=utf-8",
         contenu: baseEnJson(base),
       };
-    case "base-md":
-      return { nom: `base-audit-${court}.md`, type: MD, contenu: baseEnMarkdown(base) };
-    case "fiches-md":
-      return { nom: `fiches-personnes-${court}.md`, type: MD, contenu: fichesEnMarkdown(base) };
-    case "pdf-client": {
-      // Refusé tant que le PDF n'est pas validé. `pdfChemin` n'est jamais lu : régénéré.
-      if (etat.pdfValideLe === null) return null;
-      const { genererPdfClient } = await import("../sorties/pdf-client");
-      const { pdf } = await genererPdfClient(base);
-      return { nom: `rapport-client-${court}.pdf`, type: "application/pdf", contenu: pdf };
+    case "synthese-html":
+      return { nom: `INTERNE-synthese-${court}.html`, type: HTML, contenu: syntheseHtml(base) };
+    case "automatisations-html": {
+      // `null` : base `base-audit/1`, ce document n'existe pas.
+      const contenu = automatisationsHtml(base);
+      return contenu === null
+        ? null
+        : { nom: `INTERNE-automatisations-${court}.html`, type: HTML, contenu };
+    }
+    case "schema-html": {
+      const contenu = schemaHtml(base);
+      return contenu === null ? null : { nom: `INTERNE-schema-${court}.html`, type: HTML, contenu };
     }
     default:
       return null;
@@ -245,26 +229,6 @@ export const ACCES_BRANCHE: AccesRapports = {
     return (await baseDuClient(clientId, rapportId))?.base.propositions_fiche ?? [];
   },
   telecharger,
-  async apercuPdf(clientId, rapportId) {
-    const lu = await baseDuClient(clientId, rapportId);
-    if (lu === null) return null;
-    // Les MÊMES fonctions pures que `genererPdfClient`, sans le rendu : même liste de passages.
-    const { retiresPourRelecture } = retirerMotsInterdits(filtrerPourClient(lu.base));
-    return { retiresPourRelecture };
-  },
-  async validerPdf(clientId, rapportId, par): Promise<ResultatValidation> {
-    const etat = await etatDuClient(clientId, rapportId);
-    if (etat === null || etat.statut !== "termine") return { ok: false, raison: REFUS_INTROUVABLE };
-    // Déjà validé : sans effet, et SANS trace (ce n'est pas cet appel qui a posé la date).
-    if (etat.pdfValideLe !== null) return { ok: true, dejaValide: true };
-    const pose = await validerPdfClient(rapportId, clientId, par);
-    if (pose) return { ok: true, dejaValide: false };
-    // Validé entre-temps par un autre clic : sans effet, mais pas une erreur.
-    const relu = await etatDuClient(clientId, rapportId);
-    return relu?.pdfValideLe != null
-      ? { ok: true, dejaValide: true }
-      : { ok: false, raison: REFUS_INTROUVABLE };
-  },
   async lancer(clientId) {
     // Import dynamique : la file BullMQ n'est chargée qu'au clic, jamais à l'affichage.
     // `lancerRapportAvantAudit` revérifie la session et le rôle, et écrit LA trace du lancement.

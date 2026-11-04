@@ -1,5 +1,12 @@
-/** Une base d'audit minimale et VALIDE (contrat `base-audit/1`), pour les tests de persistance. */
-import { SECTIONS_ANALYSE, VERSION_BASE_AUDIT, type BaseAudit } from "../base-audit-schema";
+/** Une base d'audit minimale et VALIDE (contrat `base-audit/1`), pour les tests de persistance.
+ * `baseValideV2()` : une base `base-audit/2` FICTIVE (« Entreprise Exemple », personnes inventées). */
+import {
+  SECTIONS_ANALYSE,
+  VERSION_BASE_AUDIT,
+  VERSION_BASE_AUDIT_2,
+  type Automatisation,
+  type BaseAudit,
+} from "../base-audit-schema";
 
 export const CLIENT_FIXTURE = "11111111-1111-4111-8111-111111111111";
 
@@ -72,6 +79,133 @@ export function baseValide(): BaseAudit {
     fiches_personnes: [],
     annexe_reponses: [],
     sources: [],
+  } as unknown as BaseAudit;
+}
+
+const CITATION = (
+  texte: string,
+  personne = "emp:ab12",
+  auteur = "Collaboratrice, service Gestion",
+) => ({
+  texte,
+  personne,
+  auteur,
+});
+
+export function automatisationExemple(
+  id: string,
+  surcharge: Partial<Automatisation> = {},
+): Automatisation {
+  return {
+    id,
+    titre: `Automatisation ${id}`,
+    source: "sur_mesure",
+    catalogueId: null,
+    estSocle: false,
+    groupe: "sans_prerequis",
+    dependDe: [],
+    besoinsServis: ["B1"],
+    horsDemande: false,
+    citeCommePriorite: false,
+    importance: "moyenne",
+    rangImportance: 1,
+    ordreMiseEnPlace: 1,
+    ceQuElleFait: "Prépare les devis à partir de la demande reçue.",
+    utilite: "Moins de temps passé sur les devis.",
+    douleurs: [CITATION("Je passe mes soirées sur les devis")],
+    temps: [
+      {
+        libelle: "Rédaction des devis",
+        citation: "Trois devis par jour, une demi-heure chacun",
+        occurrences: 3,
+        periode: "jour",
+        minutesMin: 20,
+        minutesMax: 30,
+      },
+    ],
+    dependanceExpliquee: "",
+    questions: [{ theme: "Devis", questions: ["Quel logiciel produit les devis aujourd'hui ?"] }],
+    vente: "unique",
+    venteRaison: "Mise en place ponctuelle.",
+    jetonsIA: "peu",
+    tableauDeBord: { titre: "Devis", indicateurs: ["Devis préparés", "Délai moyen"] },
+    prix: { etat: "a_fixer_par_will" },
+    ...surcharge,
+  };
+}
+
+/** Une base `base-audit/2` complète et FICTIVE : trois automatisations (socle, dépendante, libre). */
+export function baseValideV2(): BaseAudit {
+  const b = baseValide();
+  return {
+    ...b,
+    version: VERSION_BASE_AUDIT_2,
+    meta: { ...b.meta, raisonSociale: "Entreprise Exemple" },
+    contexte_interne: {
+      freins: {
+        etat: "declare",
+        elements: [
+          {
+            enonce: "Peur de perdre le contact avec les clients",
+            citations: [CITATION("On tient à parler aux gens")],
+          },
+        ],
+      },
+      attentes: { etat: "ne_sait_pas", elements: [] },
+      budget: {
+        etat: "declare",
+        elements: [
+          {
+            enonce: "Enveloppe limitée",
+            citations: [CITATION("Pas plus qu'un petit abonnement", "main", "Dirigeante")],
+          },
+        ],
+      },
+      formation: { etat: "non_repondu", elements: [] },
+    },
+    automatisations: {
+      liste: [
+        automatisationExemple("A1", {
+          titre: "Boîte mail triée",
+          source: "catalogue",
+          catalogueId: "adm-tri-boite-mail",
+          estSocle: true,
+          groupe: "base_unique",
+          importance: "haute",
+          rangImportance: 1,
+          ordreMiseEnPlace: 1,
+          citeCommePriorite: true,
+        }),
+        automatisationExemple("A2", {
+          titre: "Devis préparés automatiquement",
+          groupe: "base_unique",
+          dependDe: ["A1"],
+          importance: "moyenne_haute",
+          rangImportance: 2,
+          ordreMiseEnPlace: 2,
+          dependanceExpliquee: "Lit les demandes triées par A1.",
+        }),
+        automatisationExemple("A3", {
+          titre: "Relances de factures",
+          groupe: "a_etudier",
+          importance: "faible",
+          rangImportance: 3,
+          ordreMiseEnPlace: 3,
+          temps: [
+            {
+              libelle: "Relances",
+              citation: "Je relance quand j'y pense",
+              occurrences: null,
+              periode: null,
+              minutesMin: null,
+              minutesMax: null,
+            },
+          ],
+        }),
+      ],
+      formules: [{ nom: "Démarrage", ids: ["A1", "A2"], remarque: "Le socle puis les devis." }],
+      questionsCommunes: [{ theme: "Outils", questions: ["Qui administre la messagerie ?"] }],
+    },
   } as unknown as BaseAudit;
 }
 

@@ -3,7 +3,7 @@
  *
  *   · `rappelReponses` : « réponses reçues : rapport pas lancé » / « nouvelles réponses : relancer » ;
  *   · `etatBoutonLancer` : actif ou éteint, avec la raison en français simple ;
- *   · `decisionTelechargement` / `decisionValidationPdf` : réservés au super-administrateur ;
+ *   · `decisionTelechargement` : réservée au super-administrateur ;
  *   · `listerPropositions` / `planifierCompletion` : la liste « Compléter la fiche » et ce qu'un
  *     clic écrirait. ⛔ Un champ déjà rempli n'est JAMAIS remplacé ; le SIREN n'est jamais écrit
  *     par cette liste (il a son propre bouton, `poserSirenDepuisRapportAction`) ; le SIRET,
@@ -176,7 +176,7 @@ export function libelleJetons(r: ResumeRapport): string {
   return `${nombre.format(r.jetonsEntree)} jetons lus, ${nombre.format(r.jetonsSortie)} jetons écrits`;
 }
 
-// ── Téléchargements et validation du PDF ─────────────────────────────────────
+// ── Téléchargements ──────────────────────────────────────────────────────────
 
 export type Decision =
   | { readonly ok: true }
@@ -185,8 +185,10 @@ export type Decision =
 export const estFormat = (f: string | null | undefined): f is FormatTelechargement =>
   typeof f === "string" && (FORMATS_TELECHARGEMENT as ReadonlyArray<string>).includes(f);
 
-export const PDF_NON_VALIDE =
-  "Le PDF client n'a pas encore été validé : cliquez d'abord « Valider le PDF client ».";
+/** Les deux documents qui n'existent que pour une base `base-audit/2`. */
+export const FORMATS_VERSION_2 = ["automatisations-html", "schema-html"] as const;
+export const VERSION_2_REQUISE =
+  "Ce document n'existe que pour une analyse lancée après la mise à jour : relancez l'analyse";
 
 export function decisionTelechargement(e: {
   readonly role: string | null | undefined;
@@ -199,27 +201,18 @@ export function decisionTelechargement(e: {
   if (!aUneBase(e.rapport)) {
     return { ok: false, statut: 409, texte: "Ce rapport n'est pas terminé : rien à télécharger." };
   }
-  if (e.format === "pdf-client" && e.rapport.pdfValideLe === null) {
-    return { ok: false, statut: 409, texte: PDF_NON_VALIDE };
-  }
-  return { ok: true };
-}
-
-export function decisionValidationPdf(e: {
-  readonly role: string | null | undefined;
-  readonly rapport: ResumeRapport | null;
-}): Decision {
-  if (!estSuperAdmin(e.role)) return { ok: false, statut: 403, texte: RESERVE_SUPER_ADMIN };
-  if (e.rapport === null) return { ok: false, statut: 404, texte: "Rapport introuvable." };
-  if (!aUneBase(e.rapport)) {
-    return { ok: false, statut: 409, texte: "Ce rapport n'est pas terminé : rien à valider." };
+  if (
+    (FORMATS_VERSION_2 as ReadonlyArray<string>).includes(e.format) &&
+    e.rapport.versionSchema !== "base-audit/2"
+  ) {
+    return { ok: false, statut: 409, texte: VERSION_2_REQUISE };
   }
   return { ok: true };
 }
 
 /**
  * « Compléter la fiche » (et « Poser ce SIREN ») : super-administrateur, rapport de CE client,
- * terminé. Décision propre à la complétion : ses textes parlent de la fiche, pas du PDF.
+ * terminé. Décision propre à la complétion : ses textes parlent de la fiche.
  */
 export function decisionCompletion(e: {
   readonly role: string | null | undefined;

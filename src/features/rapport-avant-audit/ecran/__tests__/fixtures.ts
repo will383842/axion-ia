@@ -21,8 +21,7 @@ export function resume(p: Partial<ResumeRapport> = {}): ResumeRapport {
     lancePar: "Will",
     reponsesJusquau: null,
     erreur: null,
-    pdfValideLe: null,
-    pdfValidePar: null,
+    versionSchema: "base-audit/2",
     ...p,
   };
 }

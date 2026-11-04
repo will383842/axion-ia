@@ -1,9 +1,11 @@
 // Bloc « Rapport d'analyse » de la fiche client, onglet Questionnaire (2026-11-02).
 //
 // Composant SERVEUR. Le seul JavaScript envoyé au navigateur : le bouton « Lancer l'analyse
-// complète » (`LancerAnalyseBouton`) et l'envoi des deux formulaires « Valider le PDF client » et
-// « Compléter la fiche » (`FormulaireRapport`, qui écrit le résultat sous le bouton). Le contenu
-// des formulaires (tableau, cases) est rendu ici, au serveur.
+// complète » (`LancerAnalyseBouton`) et l'envoi du formulaire « Compléter la fiche »
+// (`FormulaireRapport`, qui écrit le résultat sous le bouton). Le contenu des formulaires
+// (tableau, cases) est rendu ici, au serveur.
+//
+// Les documents téléchargeables sont des HTML INTERNES : ils ne sont jamais transmis au client.
 //
 // ⛔ Rien n'est écrit sur la fiche sans clic explicite ; rien n'est jamais envoyé au client.
 // Toutes les décisions sont dans `features/rapport-avant-audit/ecran/logique.ts` (pur, testé).
@@ -12,9 +14,8 @@ import { AdminBloc } from "@/components/admin/ui/AdminBloc";
 import {
   completerFicheAction,
   poserSirenDepuisRapportAction,
-  validerPdfClientAction,
 } from "@/features/rapport-avant-audit/ecran/actions";
-import type { PassageRetire, ResumeRapport } from "@/features/rapport-avant-audit/ecran/contrat";
+import type { ResumeRapport } from "@/features/rapport-avant-audit/ecran/contrat";
 import type { EcranRapport } from "@/features/rapport-avant-audit/ecran/lecture";
 import {
   libelleJetons,
@@ -22,6 +23,7 @@ import {
   LIBELLES_CHAMPS,
   pourcentage,
   RESERVE_SUPER_ADMIN,
+  VERSION_2_REQUISE,
   type LigneProposition,
 } from "@/features/rapport-avant-audit/ecran/logique";
 
@@ -56,98 +58,70 @@ function Progression({ r }: { r: ResumeRapport }): React.ReactElement {
   );
 }
 
-function PassagesARelire({
-  retires,
-}: {
-  retires: ReadonlyArray<PassageRetire> | null;
-}): React.ReactElement | null {
-  if (retires === null || retires.length === 0) return null;
-  return (
-    <AdminBloc
-      teinte="ambre"
-      niveau={4}
-      titre="Passages retirés du PDF client : à relire avant d'envoyer"
-    >
-      <p className={PETIT}>
-        Ces passages contenaient un mot à ne pas écrire au client : ils ont été retirés du PDF.
-        Relisez-les, et reformulez-les vous-même si besoin.
-      </p>
-      <ul className="list-disc pl-[var(--space-admin-4)]">
-        {retires.map((p, i) => (
-          <li key={`${p.ou}-${i}`}>
-            <span className="font-medium">{p.ou}</span> : {p.texte}{" "}
-            <span className={PETIT}>({p.mots.join(", ")})</span>
-          </li>
-        ))}
-      </ul>
-    </AdminBloc>
-  );
-}
-
 function Telechargements({
   r,
-  clientId,
   ficheHref,
-  retiresPdf,
 }: {
   r: ResumeRapport;
-  clientId: string;
   ficheHref: string;
-  retiresPdf: ReadonlyArray<PassageRetire> | null;
 }): React.ReactElement {
   const lien = (f: string): string =>
     `${ficheHref}/rapport-analyse?r=${encodeURIComponent(r.id)}&f=${f}`;
+  const version2 = r.versionSchema === "base-audit/2";
   return (
     <div className="space-y-[var(--space-admin-2)]">
       <h3 className="font-medium">Télécharger</h3>
       <ul className="flex flex-wrap gap-[var(--space-admin-3)]">
         <li>
-          <a className="admin-button-secondary" href={lien("base-md")} download>
-            Base d&apos;audit (à lire avant l&apos;audit)
+          <a className="admin-button-secondary" href={lien("synthese-html")} download>
+            Synthèse (réponses, difficultés, logiciels)
           </a>
         </li>
         <li>
-          <a className="admin-button-secondary" href={lien("fiches-md")} download>
-            Fiche de chaque personne
-          </a>
-        </li>
-        {r.pdfValideLe !== null ? (
-          <li>
-            <a className="admin-button-secondary" href={lien("pdf-client")} download>
-              PDF client
+          {version2 ? (
+            <a className="admin-button-secondary" href={lien("automatisations-html")} download>
+              Fiche des automatisations
             </a>
-          </li>
-        ) : null}
+          ) : (
+            <button
+              type="button"
+              className="admin-button-secondary"
+              disabled
+              aria-describedby="doc-v2"
+            >
+              Fiche des automatisations
+            </button>
+          )}
+        </li>
+        <li>
+          {version2 ? (
+            <a className="admin-button-secondary" href={lien("schema-html")} download>
+              Schéma des dépendances
+            </a>
+          ) : (
+            <button
+              type="button"
+              className="admin-button-secondary"
+              disabled
+              aria-describedby="doc-v2"
+            >
+              Schéma des dépendances
+            </button>
+          )}
+        </li>
       </ul>
+      {version2 ? null : (
+        <p id="doc-v2" className={PETIT}>
+          {VERSION_2_REQUISE}.
+        </p>
+      )}
       <p className={PETIT}>
-        Pour les machines seulement :{" "}
+        Documents internes : jamais transmis au client. Pour les machines seulement :{" "}
         <a className="admin-link" href={lien("base-json")} download>
           base d&apos;audit au format .json
         </a>
         .
       </p>
-      {r.pdfValideLe !== null ? (
-        <p className={PETIT}>
-          PDF client validé le {jourHeure(r.pdfValideLe)}. Il n&apos;est jamais envoyé
-          automatiquement : c&apos;est vous qui le transmettez au client.
-        </p>
-      ) : (
-        <>
-          <PassagesARelire retires={retiresPdf} />
-          <FormulaireRapport
-            action={validerPdfClientAction}
-            libelle="Valider le PDF client"
-            libelleEnCours="Validation…"
-          >
-            <input type="hidden" name="clientId" value={clientId} />
-            <input type="hidden" name="rapportId" value={r.id} />
-            <p className={PETIT}>
-              Relisez la base d&apos;audit d&apos;abord. Une fois validé, le PDF devient
-              téléchargeable ; rien n&apos;est envoyé au client.
-            </p>
-          </FormulaireRapport>
-        </>
-      )}
     </div>
   );
 }
@@ -271,7 +245,7 @@ export function BlocRapportAnalyse({
       </h2>
       <p className={PETIT}>
         Une analyse complète des réponses au questionnaire, pour préparer l&apos;audit sur place :
-        besoins exprimés, fiche de chaque personne, pistes et questions à poser.
+        besoins exprimés, difficultés de chaque personne, automatisations et questions à poser.
       </p>
 
       {ecran.rappel.ton === "attention" ? (
@@ -309,12 +283,7 @@ export function BlocRapportAnalyse({
           </p>
           {ecran.superAdmin ? (
             <>
-              <Telechargements
-                r={courant}
-                clientId={clientId}
-                ficheHref={ficheHref}
-                retiresPdf={ecran.retiresPdf}
-              />
+              <Telechargements r={courant} ficheHref={ficheHref} />
               {ecran.propositions.length > 0 ? (
                 <CompleterLaFiche
                   lignes={ecran.propositions}
@@ -340,7 +309,6 @@ export function BlocRapportAnalyse({
                   <th scope="col">Lancée le</th>
                   <th scope="col">État</th>
                   <th scope="col">Jetons</th>
-                  <th scope="col">PDF client</th>
                 </tr>
               </thead>
               <tbody>
@@ -353,11 +321,6 @@ export function BlocRapportAnalyse({
                       {r.statut === "echoue" && r.erreur !== null ? ` — ${r.erreur}` : ""}
                     </td>
                     <td>{libelleJetons(r)}</td>
-                    <td>
-                      {r.pdfValideLe !== null
-                        ? `Validé le ${jourHeure(r.pdfValideLe)}`
-                        : "Non validé"}
-                    </td>
                   </tr>
                 ))}
               </tbody>

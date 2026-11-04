@@ -1,6 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
-import type { AccesRapports } from "../contrat";
 import { creerAccesEnMemoire } from "../memoire";
 import { AUTRE_CLIENT, base, CLIENT, ficheVide, proposition, resume, RAPPORT } from "./fixtures";
 
@@ -30,12 +29,8 @@ vi.mock("../lecture", () => ({
 }));
 vi.mock("../interrupteur", () => ({ rapportAvantAuditActif: () => true }));
 
-const {
-  completerFicheAction,
-  lancerAnalyseAction,
-  poserSirenDepuisRapportAction,
-  validerPdfClientAction,
-} = await import("../actions");
+const { completerFicheAction, lancerAnalyseAction, poserSirenDepuisRapportAction } =
+  await import("../actions");
 
 function formulaire(champs: Record<string, string | string[]>): FormData {
   const f = new FormData();
@@ -126,35 +121,6 @@ describe("« Compléter la fiche » (Server Action)", () => {
     expect(
       await completerFicheAction(formulaire({ clientId: CLIENT, rapportId: RAPPORT, cle: "p0" })),
     ).toEqual({ ok: false, texte: "Rien n'a été écrit : Secteur refusé." });
-    expect(logQualiopiActivity).not.toHaveBeenCalled();
-  });
-});
-
-describe("« Valider le PDF client » (Server Action)", () => {
-  it("super-administrateur seul", async () => {
-    etat.role = "editor";
-    const r = await validerPdfClientAction(formulaire({ clientId: CLIENT, rapportId: RAPPORT }));
-    expect(r).toEqual({ ok: false, texte: "Réservé au super-administrateur." });
-  });
-
-  it("valide, trace, et dit que rien n'a été envoyé", async () => {
-    const r = await validerPdfClientAction(formulaire({ clientId: CLIENT, rapportId: RAPPORT }));
-    expect(r.ok).toBe(true);
-    expect(r.texte).toContain("Rien n'a été envoyé au client");
-    expect(logQualiopiActivity).toHaveBeenCalledWith(
-      expect.objectContaining({ action: "rapport-avant-audit.pdf_valide" }),
-    );
-  });
-
-  it("déjà validé (ou validé entre-temps) : ok, mais AUCUNE trace « pdf_valide »", async () => {
-    const valider = vi
-      .spyOn(etat.acces as AccesRapports, "validerPdf")
-      .mockResolvedValueOnce({ ok: true, dejaValide: true });
-    const r = await validerPdfClientAction(formulaire({ clientId: CLIENT, rapportId: RAPPORT }));
-    expect(valider).toHaveBeenCalledTimes(1);
-    expect(r.ok).toBe(true);
-    expect(r.texte).toContain("déjà validé");
-    expect(r.texte).toContain("Rien n'a été envoyé au client");
     expect(logQualiopiActivity).not.toHaveBeenCalled();
   });
 });

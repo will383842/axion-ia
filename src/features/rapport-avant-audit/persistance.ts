@@ -22,7 +22,7 @@ import { chiffrerParole, dechiffrerParole } from "@/lib/chiffrer-parole";
 import { prisma } from "@/lib/prisma";
 import type { PrismaClient } from "../../../prisma/generated/client";
 
-import { BaseAuditSchema, VERSION_BASE_AUDIT, type BaseAudit } from "./base-audit-schema";
+import { BaseAuditSchema, type BaseAudit } from "./base-audit-schema";
 import type { ResultatRapport } from "./executer";
 
 export type BaseRapports = Pick<PrismaClient, "rapportAvantAudit">;
@@ -152,7 +152,10 @@ function memeEmpreinte(a: string, b: string): boolean {
   return x.length === y.length && timingSafeEqual(x, y);
 }
 
-/** Déchiffre, vérifie l'empreinte, puis le contrat. Lève à la moindre anomalie. */
+/**
+ * Déchiffre, vérifie l'empreinte, puis le contrat. Lève à la moindre anomalie. Accepte les deux
+ * versions (`base-audit/1` et `base-audit/2`) : une base déjà scellée en V1 reste lisible.
+ */
 export function ouvrirBase(chiffre: string, empreinte: string): BaseAudit {
   const json = dechiffrerParole(chiffre);
   if (!/^[0-9a-f]{64}$/.test(empreinte) || !memeEmpreinte(empreinteDe(json), empreinte)) {
@@ -300,7 +303,7 @@ export async function enregistrerResultat(
       etape: "Terminé",
       progression: 100,
       finLe: maintenant,
-      versionSchema: VERSION_BASE_AUDIT,
+      versionSchema: resultat.base.version,
       baseAudit: scellee.chiffre,
       baseEmpreinte: scellee.empreinte,
       jetonsEntree: resultat.jetonsEntree,
@@ -378,25 +381,6 @@ export async function lancementsEnSuspens(
     take: 50,
   });
   return lignes.map((l) => l.id);
-}
-
-/**
- * « Valider le PDF client » : pose la date et l'auteur, UNE fois. Seulement sur un rapport
- * TERMINÉ, de CE client, non mis à l'écart, et pas encore validé ; sinon sans effet (rend
- * `false`). N'envoie rien à personne.
- */
-export async function validerPdfClient(
-  id: string,
-  clientId: string,
-  parId: string,
-  maintenant: Date = new Date(),
-  base: BaseRapports = prisma,
-): Promise<boolean> {
-  const r = await base.rapportAvantAudit.updateMany({
-    where: { id, clientId, ecarteLe: null, statut: "termine", pdfValideLe: null },
-    data: { pdfValideLe: maintenant, pdfValideParId: parId },
-  });
-  return r.count === 1;
 }
 
 // ── Lectures ────────────────────────────────────────────────────────────────

@@ -21,7 +21,6 @@ import {
 vi.mock("next/navigation", () => ({ useRouter: () => ({ refresh: vi.fn() }) }));
 vi.mock("@/features/rapport-avant-audit/ecran/actions", () => ({
   lancerAnalyseAction: vi.fn(),
-  validerPdfClientAction: vi.fn(),
   completerFicheAction: vi.fn(),
   poserSirenDepuisRapportAction: vi.fn(),
 }));
@@ -46,29 +45,46 @@ function ecran(p: Partial<EcranRapport> = {}): EcranRapport {
     rapports,
     courant: rapports.find((r) => r.statut === "termine") ?? null,
     propositions: [],
-    retiresPdf: null,
     ...p,
   };
 }
 
 describe("BlocRapportAnalyse", () => {
-  it("avant validation : pas de lien PDF client, mais le bouton « Valider le PDF client »", () => {
+  it("une base V2 : trois boutons de téléchargement, le .json, et la phrase « jamais transmis au client »", () => {
     render(<BlocRapportAnalyse ecran={ecran()} clientId={CLIENT} ficheHref={FICHE} />);
-    expect(
-      screen.getByRole("link", { name: "base d'audit au format .json" }).getAttribute("href"),
-    ).toBe(`${FICHE}/rapport-analyse?r=${RAPPORT}&f=base-json`);
-    expect(screen.getByRole("link", { name: "Fiche de chaque personne" })).toBeTruthy();
-    expect(screen.queryByRole("link", { name: "PDF client" })).toBeNull();
-    expect(screen.getByRole("button", { name: "Valider le PDF client" })).toBeTruthy();
+    const lien = (nom: string) => screen.getByRole("link", { name: nom }).getAttribute("href");
+    expect(lien("Synthèse (réponses, difficultés, logiciels)")).toBe(
+      `${FICHE}/rapport-analyse?r=${RAPPORT}&f=synthese-html`,
+    );
+    expect(lien("Fiche des automatisations")).toBe(
+      `${FICHE}/rapport-analyse?r=${RAPPORT}&f=automatisations-html`,
+    );
+    expect(lien("Schéma des dépendances")).toBe(
+      `${FICHE}/rapport-analyse?r=${RAPPORT}&f=schema-html`,
+    );
+    expect(lien("base d'audit au format .json")).toBe(
+      `${FICHE}/rapport-analyse?r=${RAPPORT}&f=base-json`,
+    );
+    expect(screen.getByText(/Documents internes : jamais transmis au client/)).toBeTruthy();
+    expect(screen.queryByText(/Valider le PDF client/)).toBeNull();
+    expect(screen.queryByText(/PDF/)).toBeNull();
   });
 
-  it("après validation : le lien PDF client apparaît", () => {
-    const r = resume({ pdfValideLe: new Date("2026-11-02T08:00:00Z") });
+  it("une base V1 : la synthèse seule est un lien ; les deux autres sont désactivés avec la phrase de relance", () => {
+    const r = resume({ versionSchema: "base-audit/1" });
     render(
       <BlocRapportAnalyse ecran={ecran({ rapports: [r] })} clientId={CLIENT} ficheHref={FICHE} />,
     );
-    expect(screen.getByRole("link", { name: "PDF client" })).toBeTruthy();
-    expect(screen.queryByRole("button", { name: "Valider le PDF client" })).toBeNull();
+    expect(screen.getByRole("link", { name: /Synthèse/ })).toBeTruthy();
+    for (const nom of ["Fiche des automatisations", "Schéma des dépendances"]) {
+      expect(screen.queryByRole("link", { name: nom })).toBeNull();
+      expect((screen.getByRole("button", { name: nom }) as HTMLButtonElement).disabled).toBe(true);
+    }
+    expect(
+      screen.getByText(
+        "Ce document n'existe que pour une analyse lancée après la mise à jour : relancez l'analyse.",
+      ),
+    ).toBeTruthy();
   });
 
   it("hors super-administrateur : ni bouton, ni téléchargement, ni liste", () => {
@@ -146,22 +162,6 @@ describe("BlocRapportAnalyse", () => {
     expect(screen.getByText(/étape : Recherches et analyses \(33 %\)/)).toBeTruthy();
     expect(screen.getAllByText(/1\s500 jetons lus, 200 jetons écrits/).length).toBeGreaterThan(0);
     expect(screen.getByRole("heading", { name: "Historique des versions" })).toBeTruthy();
-  });
-
-  it("passages retirés du PDF : listés au-dessus de « Valider le PDF client »", () => {
-    render(
-      <BlocRapportAnalyse
-        ecran={ecran({
-          retiresPdf: [{ ou: "piste", texte: "Un passage à reformuler", mots: ["« interdit »"] }],
-        })}
-        clientId={CLIENT}
-        ficheHref={FICHE}
-      />,
-    );
-    const titre = screen.getByRole("heading", { name: /à relire avant d'envoyer/ });
-    const bouton = screen.getByRole("button", { name: "Valider le PDF client" });
-    expect(titre.compareDocumentPosition(bouton) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
-    expect(screen.getByText(/Un passage à reformuler/)).toBeTruthy();
   });
 
   it("« Poser ce SIREN » n'envoie pas la valeur dans le formulaire", () => {

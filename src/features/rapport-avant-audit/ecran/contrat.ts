@@ -3,8 +3,8 @@
  * (2026-11-02).
  *
  * L'écran ne connaît NI la table `rapports_avant_audit`, NI l'action `lancerRapportAvantAudit`,
- * NI les sorties (`baseEnMarkdown`, `baseEnJson`, `ficheEnMarkdown`, `genererPdfClient`) : elles
- * vivent dans deux autres PR (« persistance » et « sorties ») pas encore fusionnées. Tout l'écran
+ * NI les sorties (`syntheseHtml`, `automatisationsHtml`, `schemaHtml`, `baseEnJson`) : elles
+ * vivent dans `sorties/`. Tout l'écran
  * est écrit contre l'interface `AccesRapports` ci-dessous ; le raccord avec le vrai code se fait
  * dans UNE seule fonction (`brancher.ts`), une fois les deux PR fusionnées.
  *
@@ -53,13 +53,20 @@ export interface ResumeRapport {
   readonly reponsesJusquau: Date | null;
   /** Message lisible si le rapport a échoué ou s'est arrêté avant la fin, sinon `null`. */
   readonly erreur: string | null;
-  /** Date du clic « Valider le PDF client », ou `null` : le PDF n'est pas téléchargeable. */
-  readonly pdfValideLe: Date | null;
-  readonly pdfValidePar: string | null;
+  /**
+   * Version du contrat de la base (`base-audit/1` ou `base-audit/2`), ou `null` si inconnue. Les
+   * documents « automatisations » et « schéma » n'existent que pour `base-audit/2`.
+   */
+  readonly versionSchema: string | null;
 }
 
 /** Ce que l'écran propose au téléchargement. */
-export const FORMATS_TELECHARGEMENT = ["base-json", "base-md", "fiches-md", "pdf-client"] as const;
+export const FORMATS_TELECHARGEMENT = [
+  "synthese-html",
+  "automatisations-html",
+  "schema-html",
+  "base-json",
+] as const;
 export type FormatTelechargement = (typeof FORMATS_TELECHARGEMENT)[number];
 
 /** Un fichier prêt à partir en pièce jointe. */
@@ -73,24 +80,6 @@ export interface FichierRapport {
 
 export type PropositionFiche = BaseAudit["propositions_fiche"][number];
 
-/** Un passage retiré du PDF client pour relecture (mot interdit), tel que l'écran l'affiche. */
-export interface PassageRetire {
-  /** Où il était : « besoin », « citation », « élément », « piste »… */
-  readonly ou: string;
-  readonly texte: string;
-  readonly mots: ReadonlyArray<string>;
-}
-
-export type ResultatAcces = { readonly ok: true } | { readonly ok: false; readonly raison: string };
-
-/**
- * Le résultat de `validerPdf`. `dejaValide` dit si CET appel a posé la date : vrai quand le PDF
- * l'était déjà (ou l'a été entre-temps par un autre clic). La trace n'est écrite que s'il est faux.
- */
-export type ResultatValidation =
-  | { readonly ok: true; readonly dejaValide: boolean }
-  | { readonly ok: false; readonly raison: string };
-
 export interface AccesRapports {
   /** Faux pour un accès « pas encore installé » : l'écran le dit, et le bouton reste éteint. */
   readonly branche: boolean;
@@ -101,24 +90,14 @@ export interface AccesRapports {
   /** Les propositions « Compléter la fiche » d'un rapport de CE client (vide si aucune). */
   lirePropositions(clientId: string, rapportId: string): Promise<ReadonlyArray<PropositionFiche>>;
   /**
-   * Le fichier demandé, ou `null` (rapport inconnu, pas fini, ou — pour `pdf-client` — PDF pas
-   * encore validé). L'écran vérifie aussi ces conditions avant d'appeler.
+   * Le fichier demandé, ou `null` (rapport inconnu, pas fini, ou document qui n'existe pas pour
+   * cette version de la base). L'écran vérifie aussi ces conditions avant d'appeler.
    */
   telecharger(
     clientId: string,
     rapportId: string,
     format: FormatTelechargement,
   ): Promise<FichierRapport | null>;
-  /**
-   * Ce que le PDF client retirerait pour relecture, AVANT sa validation ; `null` si le rapport
-   * n'est pas un rapport terminé de CE client.
-   */
-  apercuPdf(
-    clientId: string,
-    rapportId: string,
-  ): Promise<{ readonly retiresPourRelecture: ReadonlyArray<PassageRetire> } | null>;
-  /** Marque le PDF client comme validé (date et auteur). N'ENVOIE RIEN à personne. */
-  validerPdf(clientId: string, rapportId: string, par: string): Promise<ResultatValidation>;
   /**
    * Lance une nouvelle version du rapport. Rend vite : le travail se fait en arrière-plan.
    * L'accès trace lui-même le lancement (une seule trace : `rapport-avant-audit.lancer`).

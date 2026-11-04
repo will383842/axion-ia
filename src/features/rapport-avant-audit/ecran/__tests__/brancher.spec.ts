@@ -24,16 +24,10 @@ vi.mock("@/lib/prisma", () => ({
   },
 }));
 vi.mock("../../actions", () => ({ lancerRapportAvantAudit: faux.lancer }));
-// Espion sur le VRAI rendu : l'aperçu ne doit jamais le déclencher.
-const pdfClient = vi.hoisted(() => ({ genererPdfClient: vi.fn() }));
-vi.mock("../../sorties/pdf-client", async (orig) => ({
-  ...(await orig<typeof import("../../sorties/pdf-client")>()),
-  genererPdfClient: pdfClient.genererPdfClient,
-}));
 
 import { scellerBase, scellerPropositions } from "../../persistance";
-import { baseValide, fausseTable } from "../../__tests__/base.fixture";
-import { ACCES_BRANCHE, REFUS_INTROUVABLE, fichesEnMarkdown } from "../brancher";
+import { baseValide, baseValideV2, fausseTable } from "../../__tests__/base.fixture";
+import { ACCES_BRANCHE } from "../brancher";
 import type { FormatTelechargement } from "../contrat";
 
 const A = "11111111-1111-4111-8111-111111111111";
@@ -44,8 +38,8 @@ const Q1 = "bbbbbbbb-0000-4000-8000-000000000001";
 
 const ENV0 = { ...process.env };
 
-function baseDe(clientId: string): BaseAudit {
-  const b = baseValide();
+function baseDe(clientId: string, v2 = false): BaseAudit {
+  const b = v2 ? baseValideV2() : baseValide();
   return { ...b, meta: { ...b.meta, clientId } };
 }
 
@@ -67,6 +61,7 @@ async function rapportTermine(
       questionnaireIds: [Q1],
       lanceParId: WILL,
       statut: "termine",
+      versionSchema: base.version,
       progression: 100,
       debutLe: new Date("2026-11-01T10:00:00Z"),
       finLe: new Date("2026-11-01T10:20:00Z"),
@@ -80,12 +75,7 @@ async function rapportTermine(
   return id as string;
 }
 
-beforeEach(async () => {
-  // `restoreAllMocks` (afterEach) efface l'implémentation : l'espion est ré-armé sur le VRAI rendu.
-  const vrai = await vi.importActual<typeof import("../../sorties/pdf-client")>(
-    "../../sorties/pdf-client",
-  );
-  pdfClient.genererPdfClient.mockReset().mockImplementation(vrai.genererPdfClient);
+beforeEach(() => {
   process.env = { ...ENV0, PII_ENCRYPTION_KEY: "d".repeat(64) };
   horloge = 0;
   table = fausseTable(() => new Date(Date.UTC(2026, 10, 1, 9, 0, horloge++)));
@@ -122,10 +112,10 @@ afterEach(() => {
 });
 
 const FORMATS: ReadonlyArray<FormatTelechargement> = [
+  "synthese-html",
+  "automatisations-html",
+  "schema-html",
   "base-json",
-  "base-md",
-  "fiches-md",
-  "pdf-client",
 ];
 
 describe("cloison par client — le rapport de B demandé avec A = un identifiant inexistant", () => {
@@ -147,32 +137,14 @@ describe("cloison par client — le rapport de B demandé avec A = un identifian
     expect(await ACCES_BRANCHE.lirePropositions(B, rB)).toHaveLength(1);
   });
 
-  it("telecharger, pour chaque format (PDF validé)", async () => {
-    const rB = await rapportTermine(B, { pdfValideLe: new Date(), pdfValideParId: WILL });
+  it("telecharger, pour chaque format", async () => {
+    const rB = await rapportTermine(B, {}, baseDe(B, true));
     for (const f of FORMATS) {
       const croise = await ACCES_BRANCHE.telecharger(A, rB, f);
       expect(croise, f).toBeNull();
       expect(croise, f).toEqual(await ACCES_BRANCHE.telecharger(A, INEXISTANT, f));
     }
-    expect(await ACCES_BRANCHE.telecharger(B, rB, "base-json")).not.toBeNull();
-  });
-
-  it("apercuPdf", async () => {
-    const rB = await rapportTermine(B);
-    const croise = await ACCES_BRANCHE.apercuPdf(A, rB);
-    expect(croise).toBeNull();
-    expect(croise).toEqual(await ACCES_BRANCHE.apercuPdf(A, INEXISTANT));
-    expect(await ACCES_BRANCHE.apercuPdf(B, rB)).toEqual({ retiresPourRelecture: [] });
-  });
-
-  it("validerPdf : même refus, et la ligne de B n'est pas touchée", async () => {
-    const rB = await rapportTermine(B);
-    const croise = await ACCES_BRANCHE.validerPdf(A, rB, WILL);
-    expect(croise).toEqual({ ok: false, raison: REFUS_INTROUVABLE });
-    expect(croise).toEqual(await ACCES_BRANCHE.validerPdf(A, INEXISTANT, WILL));
-    expect(table.lignes[0]?.pdfValideLe).toBeNull();
-    expect(await ACCES_BRANCHE.validerPdf(B, rB, WILL)).toEqual({ ok: true, dejaValide: false });
-    expect(table.lignes[0]?.pdfValideLe).toBeInstanceOf(Date);
+    for (const f of FORMATS) expect(await ACCES_BRANCHE.telecharger(B, rB, f), f).not.toBeNull();
   });
 
   it("listerRapports : A ne voit jamais le rapport de B", async () => {
@@ -201,7 +173,6 @@ describe("rapports écartés et bases illisibles", () => {
     ]);
     expect(await ACCES_BRANCHE.lireBase(A, r2)).toBeNull();
     expect(await ACCES_BRANCHE.telecharger(A, r2, "base-json")).toBeNull();
-    expect((await ACCES_BRANCHE.validerPdf(A, r2, WILL)).ok).toBe(false);
   });
 
   it("empreinte altérée : null, journalisée SANS contenu", async () => {
@@ -223,7 +194,6 @@ describe("rapports écartés et bases illisibles", () => {
     for (const id of [corrompu, tronque]) {
       expect(await ACCES_BRANCHE.lireBase(A, id)).toBeNull();
       expect(await ACCES_BRANCHE.lirePropositions(A, id)).toEqual([]);
-      expect(await ACCES_BRANCHE.apercuPdf(A, id)).toBeNull();
       expect(await ACCES_BRANCHE.telecharger(A, id, "base-json")).toBeNull();
     }
     // Le rapport sain et la liste complète restent lisibles.
@@ -282,7 +252,7 @@ describe("résumé de la liste", () => {
         progression: 42,
       },
     });
-    const id = await rapportTermine(A, { pdfValideLe: new Date(), pdfValideParId: WILL });
+    const id = await rapportTermine(A);
     const liste = await ACCES_BRANCHE.listerRapports(A);
     expect(liste.map((r) => [r.version, r.statut])).toEqual([
       [4, "termine"],
@@ -291,7 +261,7 @@ describe("résumé de la liste", () => {
       [1, "echoue"],
     ]);
     expect(liste[1]?.progression).toBe(42);
-    expect(liste[0]).toMatchObject({ id, lancePar: "Will Exemple", pdfValidePar: "Will Exemple" });
+    expect(liste[0]).toMatchObject({ id, lancePar: "Will Exemple", versionSchema: "base-audit/1" });
     expect(liste[1]?.lancePar).toBeNull();
     expect(adminFindMany).toHaveBeenCalledTimes(1);
   });
@@ -308,62 +278,32 @@ describe("résumé de la liste", () => {
 });
 
 describe("téléchargements", () => {
-  it("le PDF client est refusé tant qu'il n'est pas validé ; pdfChemin n'est jamais lu", async () => {
-    const id = await rapportTermine(A, { pdfChemin: "/etc/passwd" });
-    expect(await ACCES_BRANCHE.telecharger(A, id, "pdf-client")).toBeNull();
-    expect((await ACCES_BRANCHE.validerPdf(A, id, WILL)).ok).toBe(true);
-    const f = await ACCES_BRANCHE.telecharger(A, id, "pdf-client");
-    expect(f?.type).toBe("application/pdf");
-    expect(
-      Buffer.from(f?.contenu as Uint8Array)
-        .subarray(0, 4)
-        .toString(),
-    ).toBe("%PDF");
-  });
-
-  it("base-json, base-md et fiches-md", async () => {
-    const id = await rapportTermine(A);
+  it("les trois HTML internes et le JSON pour une base V2, avec leurs noms", async () => {
+    const id = await rapportTermine(A, {}, baseDe(A, true));
+    const court = id.slice(0, 8);
+    const attendus: Array<[FormatTelechargement, string]> = [
+      ["synthese-html", `INTERNE-synthese-${court}.html`],
+      ["automatisations-html", `INTERNE-automatisations-${court}.html`],
+      ["schema-html", `INTERNE-schema-${court}.html`],
+    ];
+    for (const [format, nom] of attendus) {
+      const f = await ACCES_BRANCHE.telecharger(A, id, format);
+      expect(f?.nom).toBe(nom);
+      expect(f?.type).toBe("text/html; charset=utf-8");
+      expect(String(f?.contenu)).toContain("INTERNE : ne jamais transmettre au client");
+    }
     const json = await ACCES_BRANCHE.telecharger(A, id, "base-json");
     expect(JSON.parse(String(json?.contenu)).meta.clientId).toBe(A);
-    expect((await ACCES_BRANCHE.telecharger(A, id, "base-md"))?.type).toContain("markdown");
-    expect(String((await ACCES_BRANCHE.telecharger(A, id, "fiches-md"))?.contenu)).toMatch(
-      /^# Fiches des personnes/,
-    );
-    expect(fichesEnMarkdown(baseDe(A))).toContain("Aucune fiche individuelle");
+    expect(json?.nom).toBe(`base-audit-${court}.json`);
   });
 
-  it("validerPdf déjà validé : sans effet, ok", async () => {
-    const avant = new Date("2026-11-01T12:00:00Z");
-    const id = await rapportTermine(A, { pdfValideLe: avant, pdfValideParId: WILL });
-    expect(await ACCES_BRANCHE.validerPdf(A, id, "autre")).toEqual({ ok: true, dejaValide: true });
-    expect(table.lignes[0]?.pdfValideLe).toEqual(avant);
-    expect(table.lignes[0]?.pdfValideParId).toBe(WILL);
+  it("une base V1 : synthèse et JSON sortent, automatisations et schéma n'existent pas", async () => {
+    const id = await rapportTermine(A);
+    expect(await ACCES_BRANCHE.telecharger(A, id, "synthese-html")).not.toBeNull();
+    expect(await ACCES_BRANCHE.telecharger(A, id, "base-json")).not.toBeNull();
+    expect(await ACCES_BRANCHE.telecharger(A, id, "automatisations-html")).toBeNull();
+    expect(await ACCES_BRANCHE.telecharger(A, id, "schema-html")).toBeNull();
   });
-});
-
-describe("aperçu du PDF client (sans rendu)", () => {
-  /** Une base qui porte deux passages à retirer (mots interdits), 100 % fictive. */
-  function baseAvecInterdits(): BaseAudit {
-    const b = baseDe(A);
-    return {
-      ...b,
-      besoins_declares: [{ ...b.besoins_declares[0]!, enonce: "Un gain garanti sur les devis" }],
-      pistes: [b.pistes[0]!, { ...b.pistes[0]!, id: "P2", titre: "Préparer Qualiopi", rang: 2 }],
-    };
-  }
-
-  it("n'appelle jamais genererPdfClient et rend les MÊMES passages retirés que le rendu", async () => {
-    const base = baseAvecInterdits();
-    const id = await rapportTermine(A, {}, base);
-    const apercu = await ACCES_BRANCHE.apercuPdf(A, id);
-    expect(pdfClient.genererPdfClient).not.toHaveBeenCalled();
-    expect(apercu?.retiresPourRelecture.map((r) => r.ou).sort()).toEqual(["besoin", "piste"]);
-    // Témoin : le rendu complet retire exactement les mêmes passages.
-    const { genererPdfClient } = await import("../../sorties/pdf-client");
-    const { retiresPourRelecture } = await genererPdfClient(base);
-    expect(pdfClient.genererPdfClient).toHaveBeenCalledTimes(1); // l'espion voit bien le rendu
-    expect(apercu).toEqual({ retiresPourRelecture });
-  }, 30_000);
 });
 
 describe("lancer", () => {

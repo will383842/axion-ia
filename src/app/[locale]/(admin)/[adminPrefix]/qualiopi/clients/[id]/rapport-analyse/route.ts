@@ -1,10 +1,12 @@
 /**
  * Téléchargements du rapport d'analyse d'un client (2026-11-02) — SUPER-ADMINISTRATEUR seul.
  *
- *   ?r=<rapport>&f=base-json | base-md | fiches-md | pdf-client
+ *   ?r=<rapport>&f=synthese-html | automatisations-html | schema-html | base-json
  *
- * Toujours en PIÈCE JOINTE, jamais en cache (`private, no-store`). Le PDF client ne sort
- * qu'après le clic « Valider le PDF client » ; rien n'est jamais envoyé au client d'ici.
+ * Toujours en PIÈCE JOINTE, jamais en cache (`private, no-store`). Les trois documents HTML sont
+ * INTERNES (jamais transmis au client) ; les deux derniers n'existent que pour une base
+ * `base-audit/2` (409 sinon). Un HTML part avec une `Content-Security-Policy` qui interdit tout
+ * script et toute ressource externe. Rien n'est jamais envoyé au client d'ici.
  * La décision est dans `decisionTelechargement` (pur, testé). LA TRACE EST ÉCRITE D'ABORD (qui,
  * quand, quel rapport, quel format — jamais le contenu) : sans trace, rien n'est rendu.
  */
@@ -14,6 +16,7 @@ import { NextResponse } from "next/server";
 import { auth } from "@/auth";
 import { accesRapports } from "@/features/rapport-avant-audit/ecran/brancher";
 import { decisionTelechargement } from "@/features/rapport-avant-audit/ecran/logique";
+import { POLITIQUE_SECURITE } from "@/features/rapport-avant-audit/sorties/html/echapper";
 import { prisma } from "@/lib/prisma";
 
 export const runtime = "nodejs";
@@ -76,9 +79,13 @@ export async function GET(
   const nom = fichier.nom.replace(/[^a-zA-Z0-9._-]/g, "_");
   const corps =
     typeof fichier.contenu === "string" ? fichier.contenu : Buffer.from(fichier.contenu);
+  const entetesHtml: Record<string, string> = fichier.type.startsWith("text/html")
+    ? { "Content-Security-Policy": POLITIQUE_SECURITE }
+    : {};
   return new NextResponse(corps, {
     status: 200,
     headers: {
+      ...entetesHtml,
       "Content-Type": fichier.type,
       "Content-Disposition": `attachment; filename="${nom}"`,
       "Cache-Control": "private, no-store",

@@ -2,8 +2,8 @@
  * `AccesRapports` EN MÉMOIRE — pour les tests de l'écran (aucune base, aucun réseau).
  *
  * Se comporte comme le vrai code est attendu se comporter : un rapport n'appartient qu'à son
- * client, seule une base validée (`termine`) se lit et se télécharge, le PDF client
- * ne se télécharge qu'après validation, et un lancement crée une nouvelle version « en attente ».
+ * client, seule une base validée (`termine`) se lit et se télécharge, les documents de la
+ * version 2 ne se téléchargent que pour une base `base-audit/2`, et un lancement crée une nouvelle version « en attente ».
  */
 
 import type { BaseAudit } from "../base-audit-schema";
@@ -28,17 +28,11 @@ export interface OptionsMemoire {
   readonly branche?: boolean;
 }
 
-const EXTENSIONS: Readonly<Record<FormatTelechargement, readonly [string, string]>> = {
-  "base-json": ["base-audit", "application/json; charset=utf-8"],
-  "base-md": ["base-audit", "text/markdown; charset=utf-8"],
-  "fiches-md": ["fiches-personnes", "text/markdown; charset=utf-8"],
-  "pdf-client": ["rapport-client", "application/pdf"],
-};
-const SUFFIXES: Readonly<Record<FormatTelechargement, string>> = {
-  "base-json": "json",
-  "base-md": "md",
-  "fiches-md": "md",
-  "pdf-client": "pdf",
+const EXTENSIONS: Readonly<Record<FormatTelechargement, readonly [string, string, string]>> = {
+  "synthese-html": ["INTERNE-synthese", "text/html; charset=utf-8", "html"],
+  "automatisations-html": ["INTERNE-automatisations", "text/html; charset=utf-8", "html"],
+  "schema-html": ["INTERNE-schema", "text/html; charset=utf-8", "html"],
+  "base-json": ["base-audit", "application/json; charset=utf-8", "json"],
 };
 
 export function creerAccesEnMemoire(
@@ -73,29 +67,22 @@ export function creerAccesEnMemoire(
     async telecharger(clientId, rapportId, format): Promise<FichierRapport | null> {
       const r = duClient(clientId, rapportId);
       if (!lisible(r)) return null;
-      if (format === "pdf-client" && r.resume.pdfValideLe === null) return null;
-      const [prefixe, type] = EXTENSIONS[format];
+      if (
+        format !== "base-json" &&
+        format !== "synthese-html" &&
+        r.resume.versionSchema !== "base-audit/2"
+      ) {
+        return null;
+      }
+      const [prefixe, type, suffixe] = EXTENSIONS[format];
       return {
-        nom: `${prefixe}-v${r.resume.version}.${SUFFIXES[format]}`,
+        nom: `${prefixe}-v${r.resume.version}.${suffixe}`,
         type,
         contenu:
-          format === "pdf-client"
-            ? new Uint8Array([0x25, 0x50, 0x44, 0x46])
-            : format === "base-json"
-              ? JSON.stringify(r.base)
-              : `# ${r.base.meta.raisonSociale}\n`,
+          format === "base-json"
+            ? JSON.stringify(r.base)
+            : `<!doctype html><title>${r.base.meta.raisonSociale}</title>`,
       };
-    },
-    async apercuPdf(clientId, rapportId) {
-      const r = duClient(clientId, rapportId);
-      return lisible(r) ? { retiresPourRelecture: [] } : null;
-    },
-    async validerPdf(clientId, rapportId, par) {
-      const r = duClient(clientId, rapportId);
-      if (!lisible(r)) return { ok: false, raison: "Rapport introuvable ou pas terminé." };
-      if (r.resume.pdfValideLe !== null) return { ok: true, dejaValide: true };
-      r.resume = { ...r.resume, pdfValideLe: maintenant(), pdfValidePar: par };
-      return { ok: true, dejaValide: false };
     },
     async lancer(clientId, par) {
       const duMeme = rapports.filter((r) => r.clientId === clientId);
@@ -120,8 +107,7 @@ export function creerAccesEnMemoire(
           lancePar: par,
           reponsesJusquau: null,
           erreur: null,
-          pdfValideLe: null,
-          pdfValidePar: null,
+          versionSchema: null,
         },
       });
       return { ok: true, rapportId: id };

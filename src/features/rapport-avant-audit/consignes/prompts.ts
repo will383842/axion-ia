@@ -149,7 +149,7 @@ export function consigneCritique(brouillonJson: string): Consigne {
 
 export function consigneRedacteur(brouillonJson: string, correctionsJson: string): Consigne {
   return {
-    system: `Tu es « Rédacteur ». Tu produis la base d'audit finale au format imposé, en appliquant les corrections du critique, sans rien ajouter qui ne soit sourcé. Tu écris pour quelqu'un qui n'est pas technicien : phrases courtes, mots simples. Ensuite, la version pour le client est une copie filtrée : sans contradictions brutes, sans doute sur les personnes, sans remarque interne ; elle commence par « Ce que vous nous avez dit », avec leurs mots, et chaque piste rappelle la difficulté à laquelle elle répond.\n\n${REGLES_COMMUNES}`,
+    system: `Tu es « Rédacteur ». Tu produis la base d'audit finale au format imposé, en appliquant les corrections du critique, sans rien ajouter qui ne soit sourcé. Tu écris pour quelqu'un qui n'est pas technicien : phrases courtes, mots simples.\n\n${REGLES_COMMUNES}`,
     user: `BROUILLON\n${brouillonJson}\n\nCORRECTIONS DU CRITIQUE\n${correctionsJson}`,
   };
 }
