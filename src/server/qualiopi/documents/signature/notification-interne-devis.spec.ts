@@ -32,7 +32,7 @@ const DEVIS = "33333333-3333-4333-8333-333333333333";
 beforeEach(() => {
   vi.clearAllMocks();
   h.devis.mockResolvedValue({ id: DEVIS, numero: "AXI-DEV-2026-042" });
-  h.enqueue.mockResolvedValue(undefined);
+  h.enqueue.mockResolvedValue({ enqueued: true });
   process.env["ADMIN_URL_PREFIX"] = "admin-test";
 });
 
@@ -66,6 +66,19 @@ describe("prevenirDevisSigne", () => {
     });
     expect(h.enqueue).not.toHaveBeenCalled();
     expect(h.journal).toHaveBeenCalledOnce();
+  });
+
+  it("e-mail non mis en file (retour enqueued:false) : alerte Sentry, ne lève pas", async () => {
+    h.enqueue.mockResolvedValue({ enqueued: false });
+    await expect(
+      prevenirDevisSigne({
+        documentGenereId: DOC,
+        numeroPiece: "X",
+        etape: "a_contresigner",
+        essai: false,
+      }),
+    ).resolves.toBeUndefined();
+    expect(h.capture).toHaveBeenCalledOnce();
   });
 
   it("fail-soft : une panne de file ne lève jamais et part chez Sentry", async () => {

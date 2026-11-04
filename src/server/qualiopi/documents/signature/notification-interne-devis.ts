@@ -70,7 +70,7 @@ export async function prevenirDevisSigne(demande: DemandeNotificationDevis): Pro
           payload["consoleUrl"] =
             `${SITE_URL.replace(/\/+$/, "")}${adminPath("fr", `qualiopi/devis/${fiche.id}`)}`;
         }
-        await enqueueEmail(
+        const misEnFile = await enqueueEmail(
           "devis-signe-a-contresigner",
           destinataireAlertesInternes(),
           "fr",
@@ -82,6 +82,9 @@ export async function prevenirDevisSigne(demande: DemandeNotificationDevis): Pro
             clientId: null,
           },
         );
+        // enqueueEmail ne lève pas : elle RETOURNE `enqueued: false` (file absente, adresse
+        // supprimée, corbeille). On le remonte au catch ci-dessous, qui alerte.
+        if (!misEnFile.enqueued) throw new Error("EmailNonMisEnFile");
       },
     );
   } catch (e) {
