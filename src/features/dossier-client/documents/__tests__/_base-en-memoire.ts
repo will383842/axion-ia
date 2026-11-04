@@ -50,6 +50,8 @@ function correspond(doc: DocEnMemoire, where: Where): boolean {
     const valeur = (doc as unknown as Record<string, unknown>)[cle];
     if (attendu === null) {
       if (valeur !== null) return false;
+    } else if (typeof attendu === "object" && attendu !== null && "in" in attendu) {
+      if (!(attendu as { in: unknown[] }).in.includes(valeur)) return false;
     } else if (typeof attendu === "object" && attendu !== null && "not" in attendu) {
       const non = (attendu as { not: unknown }).not;
       if (non === null ? valeur === null : valeur === non) return false;

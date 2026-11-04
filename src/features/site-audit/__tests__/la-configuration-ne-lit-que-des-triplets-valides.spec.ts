@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { siteAuditDuClient } from "../config";
+import { cspSiteAudit, siteAuditDuClient } from "../config";
 
 const C1 = "11111111-1111-4111-8111-111111111111";
 const P1 = "22222222-2222-4222-8222-222222222222";
@@ -33,5 +33,26 @@ describe("siteAuditDuClient", () => {
   it("majuscules acceptées et ramenées en minuscules", () => {
     const env = { SITE_AUDIT_DOCUMENTS: `${C1}:${P1}:${D1}`.toUpperCase() };
     expect(siteAuditDuClient(C1.toUpperCase(), env)).toEqual({ projetId: P1, documentId: D1 });
+  });
+});
+
+describe("cspSiteAudit : réseau", () => {
+  const connect = (h: string) => /connect-src ([^;]*);/.exec(cspSiteAudit(h, C1))![1]!;
+  it("localhost et 127.0.0.1, avec ou sans port → http", () => {
+    for (const h of ["localhost", "localhost:3000", "127.0.0.1", "127.0.0.1:3000"]) {
+      expect(connect(h)).toBe(`http://${h}/api/admin/site-audit/${C1}/`);
+    }
+  });
+  it("localhost.evil.com et 127.0.0.1.evil.com → jamais http", () => {
+    for (const h of ["localhost.evil.com", "127.0.0.1.evil.com", "localhost.evil.com:80"]) {
+      expect(connect(h)).not.toMatch(/^http:/);
+      expect(connect(h)).toMatch(/^https:/);
+    }
+  });
+  it("hôte illisible → 'none'", () => {
+    expect(connect("a b")).toBe("'none'");
+  });
+  it("clientId en majuscules → minuscules dans la CSP", () => {
+    expect(cspSiteAudit("axion-ia.com", C1.toUpperCase())).toContain(`/${C1}/`);
   });
 });

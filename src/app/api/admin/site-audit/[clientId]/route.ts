@@ -16,20 +16,13 @@ import { NextResponse, type NextRequest } from "next/server";
 import { z } from "zod";
 
 import { AccesRefuse, exigerAccesEchanges } from "@/features/dossier-client/acces";
-import { ENTETES_SITE_AUDIT } from "@/features/site-audit/config";
+import { entetesSiteAudit, SANS_CACHE } from "@/features/site-audit/config";
 import { lireSiteAudit } from "@/features/site-audit/lire";
 import { prisma } from "@/lib/prisma";
 import { analyserOctets } from "@/server/careers/clamav";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
-
-const SANS_CACHE = {
-  "Content-Type": "text/plain; charset=utf-8",
-  "Cache-Control": "private, no-store",
-  "X-Content-Type-Options": "nosniff",
-  "X-Robots-Tag": "noindex",
-};
 
 function refus(statut: number, texte: string): NextResponse {
   return new NextResponse(texte, { status: statut, headers: SANS_CACHE });
@@ -57,8 +50,9 @@ export async function GET(
   const { userId, role } = acces as { userId: string; role: string };
   if (role !== "super_admin") return refus(403, "Accès refusé.");
 
-  const { clientId } = await params;
-  if (!uuid.safeParse(clientId).success) return refus(404, "Introuvable.");
+  const { clientId: brut } = await params;
+  if (!uuid.safeParse(brut).success) return refus(404, "Introuvable.");
+  const clientId = brut.toLowerCase();
 
   const r = await lireSiteAudit(prisma, { clientId, parAdminId: userId }, (o) =>
     analyserOctets(o, 30_000),
@@ -75,6 +69,9 @@ export async function GET(
   }
   return new NextResponse(r.octets as unknown as BodyInit, {
     status: 200,
-    headers: { ...ENTETES_SITE_AUDIT, "Content-Length": String(r.octets.length) },
+    headers: {
+      ...entetesSiteAudit(req.headers.get("host"), clientId),
+      "Content-Length": String(r.octets.length),
+    },
   });
 }

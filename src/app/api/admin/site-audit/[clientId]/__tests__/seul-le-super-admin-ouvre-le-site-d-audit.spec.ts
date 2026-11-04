@@ -2,7 +2,7 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import { baseEnMemoire } from "@/features/dossier-client/documents/__tests__/_base-en-memoire";
-import { CSP_SITE_AUDIT } from "@/features/site-audit/config";
+import { cspSiteAudit } from "@/features/site-audit/config";
 
 const CLIENT = "11111111-1111-4111-8111-111111111111";
 const AUTRE = "44444444-4444-4444-8444-444444444444";
@@ -50,9 +50,14 @@ function monter(extra: Record<string, unknown> = {}) {
 }
 
 function appeler(clientId = CLIENT, headers: Record<string, string> = {}) {
-  return GET(new Request("https://axion-ia.com/x", { headers }) as never, {
-    params: Promise.resolve({ clientId }),
-  });
+  return GET(
+    new Request("https://axion-ia.com/x", {
+      headers: { host: "axion-ia.com", ...headers },
+    }) as never,
+    {
+      params: Promise.resolve({ clientId }),
+    },
+  );
 }
 
 describe("seul le super_admin ouvre le site d'audit", () => {
@@ -115,7 +120,10 @@ describe("seul le super_admin ouvre le site d'audit", () => {
     expect(r.status).toBe(200);
     expect(new Uint8Array(await r.arrayBuffer())).toEqual(OCTETS);
     expect(r.headers.get("content-type")).toBe("text/html; charset=utf-8");
-    expect(r.headers.get("content-security-policy")).toBe(CSP_SITE_AUDIT);
+    expect(r.headers.get("content-security-policy")).toBe(cspSiteAudit("axion-ia.com", CLIENT));
+    expect(r.headers.get("content-security-policy")).toContain(
+      `connect-src https://axion-ia.com/api/admin/site-audit/${CLIENT}/;`,
+    );
     expect(r.headers.get("cache-control")).toBe("private, no-store");
     expect(r.headers.get("x-content-type-options")).toBe("nosniff");
     expect(r.headers.get("content-length")).toBe(String(OCTETS.length));
@@ -126,5 +134,12 @@ describe("seul le super_admin ouvre le site d'audit", () => {
         parAdminId: ADMIN,
       }),
     ]);
+  });
+
+  it("hôte illisible → connect-src 'none'", async () => {
+    monter();
+    const r = await appeler(CLIENT, { host: "evil.com/x y" });
+    expect(r.status).toBe(200);
+    expect(r.headers.get("content-security-policy")).toContain("connect-src 'none';");
   });
 });
