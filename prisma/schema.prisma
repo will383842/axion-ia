@@ -18142,6 +18142,7 @@ model AuditTerrainRapport {
 // refusant UPDATE / DELETE / TRUNCATE, CHECK sur les empreintes. Ne jamais
 // modifier une ligne : une version archivée est définitive.
 // ============================================================
+/// rgpd: technique — texte public des CGV, son PDF figé et leurs empreintes ; aucune donnée sur une personne
 model CgvArchive {
   version        String   @id @db.VarChar(40)
   libelle        String   @db.VarChar(80)
