@@ -26,7 +26,13 @@ CREATE TABLE "cgv_archives" (
     CONSTRAINT "cgv_archives_pkey" PRIMARY KEY ("version"),
     CONSTRAINT "cgv_archives_texte_sha256_chk" CHECK ("texte_sha256" ~ '^[0-9a-f]{64}$'),
     CONSTRAINT "cgv_archives_pdf_sha256_chk" CHECK ("pdf_sha256" ~ '^[0-9a-f]{64}$'),
-    CONSTRAINT "cgv_archives_pdf_taille_chk" CHECK ("pdf_taille" > 0)
+    CONSTRAINT "cgv_archives_pdf_taille_chk" CHECK ("pdf_taille" > 0),
+    -- Une ligne archivee ne se corrige JAMAIS (UPDATE refuse) : toute forme est donc verifiee a l insertion.
+    CONSTRAINT "cgv_archives_version_chk" CHECK ("version" ~ '^[0-9]{4}-[0-9]{2}-[0-9]{2}$'),
+    CONSTRAINT "cgv_archives_libelle_chk" CHECK (length(btrim("libelle")) > 0),
+    -- Cle R2 adressee par le contenu : legal/cgv/<version>/<sha256 du PDF>.pdf
+    CONSTRAINT "cgv_archives_pdf_r2_key_chk" CHECK ("pdf_r2_key" = 'legal/cgv/' || "version" || '/' || "pdf_sha256" || '.pdf'),
+    CONSTRAINT "cgv_archives_pdf_r2_key_uq" UNIQUE ("pdf_r2_key")
 );
 
 CREATE FUNCTION "cgv_archives_refuse_modification"() RETURNS trigger AS $$
