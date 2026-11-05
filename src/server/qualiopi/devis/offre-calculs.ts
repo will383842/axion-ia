@@ -103,6 +103,9 @@ export function indemniteSortieMaxCents(
   mensualitesRestantesCents: number,
   tauxBps: number,
 ): number {
+  if (!Number.isInteger(tauxBps) || tauxBps < 0 || tauxBps > 10000) {
+    throw new RangeError(`Taux hors [0, 10000] points de base : ${tauxBps}.`);
+  }
   return Math.round((mensualitesRestantesCents * tauxBps) / 10000);
 }
 
@@ -149,7 +152,7 @@ export function choixCanonique(c: Omit<ChoixCanonique, "v">): ChoixCanonique {
   // `v` APRÈS le spread : un `v` passé à l'exécution (cast, JSON) ne peut pas l'écraser.
   return {
     ...c,
-    automatisationsRetenues: [...c.automatisationsRetenues].sort(),
+    automatisationsRetenues: [...new Set(c.automatisationsRetenues)].sort(),
     v: 1,
   };
 }

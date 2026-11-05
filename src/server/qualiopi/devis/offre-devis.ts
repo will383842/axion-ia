@@ -16,7 +16,9 @@ export const GARANTIE_JOURS_PAR_DEFAUT = 30;
 export const FORMULES = ["achat", "abonnement"] as const;
 export type Formule = (typeof FORMULES)[number];
 
-const cents = z.number().int().min(0);
+/** Borné à 2 000 000 000 : `Devis.montantTotalHtCents` est un Int 32 bits. */
+const CENTS_MAX = 2_000_000_000;
+const cents = z.number().int().min(0).max(CENTS_MAX);
 /** Points de base : 10000 = 100 %. Pas de maximum = remise > 100 % = prix négatif. */
 const BPS_MAX = 10000;
 const bps = z.number().int().min(0).max(BPS_MAX);
@@ -29,7 +31,10 @@ const tauxTva = z
   .number()
   .int()
   .min(TAUX_TVA_STANDARD * 100)
-  .max(BPS_MAX);
+  .max(BPS_MAX)
+  // Multiples de 100 : `computeTotauxFacture` calcule en pourcentage flottant ; seuls les
+  // taux entiers (bps/100 exact) y sont sans écart d'arrondi.
+  .refine((v) => v % 100 === 0, "Taux de TVA : multiple de 100 points de base");
 const texte = z.string().trim().min(1);
 
 const ligne = z

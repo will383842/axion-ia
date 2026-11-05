@@ -107,6 +107,27 @@ describe("hachages", () => {
   });
 });
 
+describe("corrections audit (a)(d)", () => {
+  it("indemniteSortieMaxCents refuse un taux hors [0, 10000] ou non entier", () => {
+    expect(() => indemniteSortieMaxCents(1000, 10001)).toThrow(RangeError);
+    expect(() => indemniteSortieMaxCents(1000, -1)).toThrow(RangeError);
+    expect(() => indemniteSortieMaxCents(1000, 50.5)).toThrow(RangeError);
+  });
+  it("choixCanonique dédoublonne : [a,a] et [a] => même empreinte", () => {
+    const base = {
+      devisNumero: "N-1",
+      offreSha256: "x",
+      formule: "achat" as const,
+      maintenanceRetenue: false,
+      periodiciteMois: null,
+    };
+    const c1 = choixCanonique({ ...base, automatisationsRetenues: ["a", "a"] });
+    const c2 = choixCanonique({ ...base, automatisationsRetenues: ["a"] });
+    expect(c1.automatisationsRetenues).toEqual(["a"]);
+    expect(sha256Choix(c1)).toBe(sha256Choix(c2));
+  });
+});
+
 describe("prixMensuelNet — jamais négatif", () => {
   it("refuse une remise hors [0, 10000] au lieu de rendre un prix négatif", () => {
     expect(prixMensuelNet(9000, 10000)).toBe(0);

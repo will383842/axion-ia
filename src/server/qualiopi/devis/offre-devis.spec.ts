@@ -116,6 +116,19 @@ describe("offreDevisV1 — bornes (audit)", () => {
       true,
     );
   });
+  it("cents : borné à 2 000 000 000 (Int 32 bits)", () => {
+    const o = offreFictive();
+    const ligne = (p: number) => ({
+      ...o,
+      achat: { ...o.achat!, lignes: [{ ...o.achat!.lignes[0]!, prixHtCents: p }] },
+    });
+    expect(echec(ligne(2_000_000_001))).toBe(true);
+    expect(offreDevisV1.safeParse(ligne(2_000_000_000)).success).toBe(true);
+  });
+  it("tauxTvaBps : multiple de 100 uniquement (TVA en entiers purs, pas de flottant)", () => {
+    expect(echec(avecAbo({ tauxTvaBps: 2033 }))).toBe(true);
+    expect(offreDevisV1.safeParse(avecAbo({ tauxTvaBps: 2100 })).success).toBe(true);
+  });
   it("tauxTvaBps d'une ligne ou d'une automatisation : jamais 0", () => {
     const o = offreFictive();
     expect(

@@ -45,6 +45,24 @@ export class SelectionIncompleteError extends Error {
   }
 }
 
+/** La formule choisie n'est pas proposée par l'offre, ou son bloc de prix manque. */
+export class FormuleNonProposeeError extends Error {
+  readonly formule: Formule;
+  constructor(formule: Formule, raison: "non_proposee" | "bloc_absent") {
+    super(
+      raison === "non_proposee"
+        ? `Formule « ${formule} » non proposée par l'offre.`
+        : `Formule « ${formule} » proposée mais son bloc de prix est absent.`,
+    );
+    this.name = "FormuleNonProposeeError";
+    this.formule = formule;
+  }
+}
+
+/**
+ * ⚠️ `offre` doit être valide : un appelant qui lit le Json en base DOIT le passer par
+ * `offreDevisV1.parse` avant d'appeler (cette fonction ne revalide rien).
+ */
 export function montantsDevis(devis: DevisPourMontants): MontantsDevis {
   const { offre } = devis;
   if (offre === null) {
@@ -55,6 +73,13 @@ export function montantsDevis(devis: DevisPourMontants): MontantsDevis {
     devis.choix?.formule ??
     (offre.formulesProposees.length === 1 ? offre.formulesProposees[0]! : null);
   if (formule === null) return { lignes: [], montantTotalHtCents: 0 };
+
+  if (!offre.formulesProposees.includes(formule)) {
+    throw new FormuleNonProposeeError(formule, "non_proposee");
+  }
+  if ((formule === "achat" ? offre.achat : offre.abonnement) == null) {
+    throw new FormuleNonProposeeError(formule, "bloc_absent");
+  }
 
   const sel = selectionComplete(devis.choix?.automatisationsRetenues ?? [], offre.automatisations);
   if (!sel.ok) throw new SelectionIncompleteError(sel.inconnues, sel.manquantes);

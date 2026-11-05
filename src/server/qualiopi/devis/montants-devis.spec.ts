@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 
 import { computeTotauxFacture } from "../legal/tva";
-import { montantsDevis, SelectionIncompleteError } from "./montants-devis";
+import { FormuleNonProposeeError, montantsDevis, SelectionIncompleteError } from "./montants-devis";
 import { offreFictive } from "./offre-fixtures.spec-util";
 
 /** Un devis à la VRAIE forme (model Devis : lignes Json + montantTotalHtCents). */
@@ -75,5 +75,27 @@ describe("montantsDevis", () => {
     } catch (e) {
       expect((e as SelectionIncompleteError).manquantes).toEqual(["b"]);
     }
+  });
+  it("formule choisie non proposée : erreur typée (abonnement seul + choix achat)", () => {
+    const o = { ...offreFictive(), formulesProposees: ["abonnement" as const] };
+    expect(() =>
+      montantsDevis({
+        offre: o,
+        lignes: [],
+        montantTotalHtCents: 0,
+        choix: { formule: "achat", automatisationsRetenues: [] },
+      }),
+    ).toThrow(FormuleNonProposeeError);
+  });
+  it("formule proposée mais bloc de prix absent : erreur typée", () => {
+    const o = { ...offreFictive(), achat: undefined };
+    expect(() =>
+      montantsDevis({
+        offre: o,
+        lignes: [],
+        montantTotalHtCents: 0,
+        choix: { formule: "achat", automatisationsRetenues: [] },
+      }),
+    ).toThrow(FormuleNonProposeeError);
   });
 });
