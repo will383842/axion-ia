@@ -21,6 +21,7 @@
 //   - Pas de log du body en clair (peut contenir PII signataire).
 //   - Sentry capture seulement les erreurs internes, pas le payload.
 
+import * as Sentry from "@sentry/nextjs";
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 import {
@@ -32,6 +33,7 @@ import {
 import { prisma } from "@/lib/prisma";
 import { sendTelegram } from "@/lib/telegram";
 import { emettreDevisSigne, transactionDevisSigne } from "@/server/partners-sync/producteurs/devis";
+import { faireMonterLesFichesDesDevisSignes } from "@/features/dossier-client/devis-signe-fait-client";
 
 // Le canal Partners est importé (INT-T04) : jamais évaluée au build (garde d'inertie R4).
 export const dynamic = "force-dynamic";
@@ -198,6 +200,13 @@ async function dispatchDevisEvent(
       });
       await emettreDevisSigne(tx, devis.id);
     });
+    // Un prospect passe en client lorsqu'un devis est signé (Will, 04/11/2026) : APRÈS le COMMIT,
+    // hors transaction (B1) ; une erreur ne touche jamais l'acceptation.
+    try {
+      await faireMonterLesFichesDesDevisSignes(prisma, [devis.id], { origine: "docuseal" });
+    } catch (err) {
+      Sentry.captureException(err, { tags: { action: "devis_signe_fait_client" } });
+    }
     sendTelegram({
       tag: "OPTION CONFIRMÉE",
       body: `📑 Devis ${devis.numero} signé (bon pour accord) via DocuSeal`,
