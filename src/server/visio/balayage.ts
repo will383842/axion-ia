@@ -373,9 +373,14 @@ export async function passerBalayage(
     lieraient: 0,
     doublons: [],
     colonneAbsente: false,
+    refusAbandonnes: 0,
+    dateManquante: false,
   };
   await etape<void>("fiches-demande", undefined, async () => {
-    fichesDemande = await assurerLesFichesDemande(db, { maintenant });
+    fichesDemande = await assurerLesFichesDemande(db, {
+      maintenant,
+      ...(deps.creerAlerte ? { creerAlerte: deps.creerAlerte } : {}),
+    });
     if (fichesDemande.plantees > 0) throw new FicheDemandePlantee();
   });
   // Les fiches créées avec un doute d'identité : l'alerte est écrite avec la fiche (même

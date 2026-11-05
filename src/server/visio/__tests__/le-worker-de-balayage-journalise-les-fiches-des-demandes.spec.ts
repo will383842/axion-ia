@@ -41,6 +41,8 @@ const BILAN = {
   lieraient: 4,
   doublons: [],
   colonneAbsente: false,
+  refusAbandonnes: 0,
+  dateManquante: false,
 };
 
 function resultat(fichesDemande: Record<string, unknown>) {
@@ -124,6 +126,47 @@ describe("le worker de balayage journalise les fiches des demandes", () => {
     );
     await unPassage();
     expect(lignes().some((l: string) => l.includes("colonne absente oui"))).toBe(true);
+  });
+
+  it("les messages abandonnés après refus et la date d'activation manquante, en nombres seulement", async () => {
+    espions.passerBalayage.mockReset().mockResolvedValue(
+      resultat({
+        ...BILAN,
+        mode: "actif",
+        doutes: 0,
+        plantees: 0,
+        creeraient: 0,
+        lieraient: 0,
+        refusAbandonnes: 2,
+        dateManquante: true,
+      }),
+    );
+    await unPassage();
+    const ligne = lignes().find((l: string) => l.includes("fiches des demandes :"));
+    expect(ligne).toContain("2 abandonnée(s) après refus");
+    expect(ligne).toContain("date d'activation manquante oui");
+  });
+
+  it("une date manquante seule suffit à écrire la ligne, et « non » sinon", async () => {
+    espions.passerBalayage.mockReset().mockResolvedValue(
+      resultat({
+        ...BILAN,
+        mode: "actif",
+        doutes: 0,
+        plantees: 0,
+        creeraient: 0,
+        lieraient: 0,
+        dateManquante: true,
+      }),
+    );
+    await unPassage();
+    expect(lignes().some((l: string) => l.includes("date d'activation manquante oui"))).toBe(true);
+    avert.mockClear();
+    espions.passerBalayage
+      .mockReset()
+      .mockResolvedValue(resultat({ ...BILAN, mode: "actif", creees: 1 }));
+    await unPassage();
+    expect(lignes().some((l: string) => l.includes("date d'activation manquante non"))).toBe(true);
   });
 
   it("coupé et rien à dire : aucune ligne", async () => {

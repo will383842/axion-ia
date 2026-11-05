@@ -78,6 +78,11 @@ export const CODES_ALERTES_VISIO = {
    * s'efface tout seul), Will décide. Une alerte par fiche (cible = la fiche).
    */
   ficheDeMessageEfface: "visio.fiche_de_message_efface",
+  /**
+   * La porte unique a refusé trois fois de créer la fiche d'un message de `/fr/contact` : le message
+   * est écarté (plus de réessai) et Will en est prévenu UNE fois (alerte agrégée, sans cible).
+   */
+  refusPorteDemande: "visio.fiche_demande_refus_porte",
   // ── enregistreur (PR 5) ──
   /** Le worker ne relit pas le témoin de clé. */
   temoinCle: "visio.temoin_cle",
@@ -126,7 +131,7 @@ type TxAlertes = Pick<Tx, "alerteSysteme">;
 
 type Metadonnees = Record<string, string | number | null | string[]>;
 
-async function creerOuDedupParDefaut(input: AlerteInput): Promise<unknown> {
+export async function creerOuDedupParDefaut(input: AlerteInput): Promise<unknown> {
   const { creerOuDedup } = await import("@/server/qualiopi/alertes/alertes-service");
   return creerOuDedup(input);
 }

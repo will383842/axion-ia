@@ -124,7 +124,8 @@ async function passerDossierClient(prisma: BaseDossier): Promise<void> {
       console.warn(
         `[visio-balayage-worker] fiches des demandes À BLANC : créerait ${fd.creeraient}, ` +
           `lierait ${fd.lieraient}, douterait ${fd.doutes}, planterait ${fd.plantees}, ` +
-          `colonne absente ${fd.colonneAbsente ? "oui" : "non"}`,
+          `colonne absente ${fd.colonneAbsente ? "oui" : "non"}, ` +
+          `date d'activation manquante ${fd.dateManquante ? "oui" : "non"}`,
       );
     } else if (
       fd &&
@@ -133,13 +134,16 @@ async function passerDossierClient(prisma: BaseDossier): Promise<void> {
         fd.doutes > 0 ||
         fd.plantees > 0 ||
         fd.colonneAbsente ||
+        fd.dateManquante ||
+        fd.refusAbandonnes > 0 ||
         fd.doublons.length > 0)
     ) {
       console.warn(
         `[visio-balayage-worker] fiches des demandes : ${fd.creees} créée(s), ` +
           `${fd.liees} liée(s), ${fd.doublons.length} doublon(s) possible(s), ` +
-          `${fd.doutes} doute(s), ${fd.plantees} plantée(s), ` +
-          `colonne absente ${fd.colonneAbsente ? "oui" : "non"}`,
+          `${fd.doutes} doute(s), ${fd.refusAbandonnes} abandonnée(s) après refus, ` +
+          `${fd.plantees} plantée(s), colonne absente ${fd.colonneAbsente ? "oui" : "non"}, ` +
+          `date d'activation manquante ${fd.dateManquante ? "oui" : "non"}`,
       );
     }
     if (r.etapesEnEchec.length > 0 || r.rencontresAssurees > 0) {

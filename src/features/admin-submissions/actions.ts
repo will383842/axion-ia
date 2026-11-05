@@ -21,6 +21,7 @@ import { getClientIp } from "@/lib/client-ip";
 import { adminPath } from "@/lib/admin-path";
 import { decryptPii } from "@/lib/pii-crypto";
 import { csvEscape } from "@/lib/csv";
+import { creerOuDedup } from "@/server/qualiopi/alertes/alertes-service";
 import { ROI_DETAILS_KEYS as K } from "@/lib/roi/submission-details";
 import { listSubmissions } from "./reads";
 import type { SubmissionListResult } from "./reads";
@@ -252,6 +253,7 @@ export async function eraseSubmissionAction(
   const clesPieces = await clesPiecesJointes(parsed.data.id);
 
   let cheminCv: string | null = null;
+  let ficheLieeId: string | null = null;
   await prisma.$transaction(async (tx) => {
     const sub = await tx.submission.findUnique({
       where: { id: parsed.data.id },
@@ -262,24 +264,9 @@ export async function eraseSubmissionAction(
 
     await tx.submission.delete({ where: { id: parsed.data.id } });
 
-    // La fiche prospect née de ce message (ou à laquelle il était relié) N'EST PAS supprimée :
-    // rien ne s'efface tout seul. Will en est prévenu, il décide (aucune donnée de la personne
-    // dans l'alerte : seulement la cible).
-    if (sub.ficheClientId) {
-      await tx.alerteSysteme.create({
-        data: {
-          code: "visio.fiche_de_message_efface",
-          niveau: "important",
-          titre: "Message effacé (art. 17) : sa fiche prospect est restée, à examiner",
-          message:
-            "Un message relié à cette fiche vient d'être effacé à la demande de la personne. " +
-            "La fiche n'a PAS été supprimée : à examiner et, si besoin, à effacer à la main.",
-          cibleType: "Client",
-          cibleId: sub.ficheClientId,
-          metadata: { origine: "effacement-message" },
-        },
-      });
-    }
+    // La fiche prospect née de ce message N'EST PAS supprimée. L'alerte part APRÈS le commit
+    // (voir plus bas) : une alerte déjà ouverte pour la même fiche ne doit jamais annuler l'effacement.
+    ficheLieeId = sub.ficheClientId;
 
     // Activity log RGPD : on ne re-stocke pas l'email supprimé en clair, on
     // conserve uniquement le hash + reason + targetId pour traçabilité.
@@ -305,6 +292,29 @@ export async function eraseSubmissionAction(
   // un fichier effacé pour une ligne qui survit serait une perte sans effacement.
   await deleteCv(cheminCv);
   await supprimerObjetsPiecesJointes(clesPieces);
+
+  // Rien ne s'efface tout seul : la fiche reste, Will en est prévenu (aucune donnée de la
+  // personne dans l'alerte, seulement la cible). `creerOuDedup` absorbe une alerte déjà ouverte ;
+  // toute autre panne est signalée sans jamais défaire ni bloquer l'effacement déjà validé.
+  if (ficheLieeId) {
+    try {
+      await creerOuDedup({
+        code: "visio.fiche_de_message_efface",
+        niveau: "important",
+        titre: "Message effacé (art. 17) : sa fiche prospect est restée, à examiner",
+        message:
+          "Un message relié à cette fiche vient d'être effacé à la demande de la personne. " +
+          "La fiche n'a PAS été supprimée : à examiner et, si besoin, à effacer à la main.",
+        cibleType: "Client",
+        cibleId: ficheLieeId,
+        metadata: { origine: "effacement-message" },
+      });
+    } catch (err) {
+      Sentry.captureException(err, {
+        tags: { action: "eraseSubmissionAction", step: "alerte-fiche" },
+      });
+    }
+  }
 
   revalidateEcransDesDemandes();
   return { ok: true };

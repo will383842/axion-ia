@@ -23,6 +23,7 @@ const del = vi.fn();
 const logCreate = vi.fn();
 const annuler = vi.fn();
 const alerteCreate = vi.fn();
+const sentryCapture = vi.fn();
 
 vi.mock("@/lib/prisma", () => {
   const tx = {
@@ -34,7 +35,6 @@ vi.mock("@/lib/prisma", () => {
       },
     },
     activityLog: { create: (...a: unknown[]) => logCreate(...a) },
-    alerteSysteme: { create: (...a: unknown[]) => alerteCreate(...a) },
   };
   return {
     prisma: {
@@ -43,12 +43,21 @@ vi.mock("@/lib/prisma", () => {
     },
   };
 });
+vi.mock("@/server/qualiopi/alertes/alertes-service", () => ({
+  creerOuDedup: (...a: unknown[]) => {
+    ordre.push("alerte");
+    return alerteCreate(...a);
+  },
+}));
 vi.mock("@/auth", () => ({
   auth: () => Promise.resolve({ user: { id: "admin-1", role: "super_admin" } }),
 }));
 vi.mock("@/lib/client-ip", () => ({ getClientIp: () => Promise.resolve("127.0.0.1") }));
 vi.mock("next/cache", () => ({ revalidatePath: vi.fn(), updateTag: vi.fn() }));
-vi.mock("@sentry/nextjs", () => ({ captureMessage: vi.fn(), captureException: vi.fn() }));
+vi.mock("@sentry/nextjs", () => ({
+  captureMessage: vi.fn(),
+  captureException: (...a: unknown[]) => sentryCapture(...a),
+}));
 vi.mock("@/lib/pii-crypto", () => ({
   decryptPii: (v: string | null) => (v === null ? null : String(v).replace(/^chiffre\(|\)$/g, "")),
 }));
@@ -98,27 +107,51 @@ describe("eraseSubmissionAction", () => {
     expect(trace.data.changes["contactEmailHash"]).toBe(attendue);
   });
 
-  it("🔴 un message relié à une fiche prospect : la fiche reste, Will est prévenu (rien n'est supprimé)", async () => {
-    const FICHE = "33333333-3333-4333-8333-333333333333";
+  const FICHE = "33333333-3333-4333-8333-333333333333";
+  const liee = () =>
     findUnique.mockResolvedValue({
       id: ID,
       type: "contact",
       contactEmail: "chiffre(Nadia@Exemple.fr)",
       ficheClientId: FICHE,
     });
+
+  it("🔴 un message relié à une fiche prospect : la fiche reste, Will est prévenu APRÈS la suppression", async () => {
+    liee();
     alerteCreate.mockResolvedValue({});
     const r = await eraseSubmissionAction({ ok: true }, formulaire());
     expect(r).toEqual({ ok: true });
     expect(alerteCreate).toHaveBeenCalledTimes(1);
-    const alerte = alerteCreate.mock.calls[0]?.[0] as { data: Record<string, unknown> };
-    expect(alerte.data).toMatchObject({
+    const alerte = alerteCreate.mock.calls[0]?.[0] as Record<string, unknown>;
+    expect(alerte).toMatchObject({
       code: "visio.fiche_de_message_efface",
       cibleType: "Client",
       cibleId: FICHE,
     });
     // Aucune donnée de la personne dans l'alerte.
-    expect(JSON.stringify(alerte.data)).not.toMatch(/nadia|exemple/i);
+    expect(JSON.stringify(alerte)).not.toMatch(/nadia|exemple/i);
     expect(del).toHaveBeenCalledTimes(1);
+    expect(ordre).toEqual(["annuler", "delete", "alerte"]);
+  });
+
+  it("🔴 une alerte déjà ouverte (réponse nulle) n'empêche jamais l'effacement du second message", async () => {
+    liee();
+    alerteCreate.mockResolvedValue(null);
+    const r = await eraseSubmissionAction({ ok: true }, formulaire());
+    expect(r).toEqual({ ok: true });
+    expect(del).toHaveBeenCalledTimes(1);
+    expect(logCreate).toHaveBeenCalledTimes(1);
+  });
+
+  it("🔴 une écriture d'alerte qui échoue n'empêche jamais l'effacement ni ses suites", async () => {
+    liee();
+    alerteCreate.mockRejectedValue(new Error("base indisponible"));
+    const r = await eraseSubmissionAction({ ok: true }, formulaire());
+    expect(r).toEqual({ ok: true });
+    expect(del).toHaveBeenCalledTimes(1);
+    expect(logCreate).toHaveBeenCalledTimes(1);
+    expect(sentryCapture).toHaveBeenCalledTimes(1);
+    expect(sentryCapture.mock.calls[0]?.[1]).toMatchObject({ tags: { step: "alerte-fiche" } });
   });
 
   it("un message sans fiche : aucune alerte", async () => {

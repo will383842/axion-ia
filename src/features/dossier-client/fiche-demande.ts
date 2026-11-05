@@ -36,9 +36,17 @@
  *
  * `DOSSIER_FICHE_DEMANDE` : actif SEULEMENT si `"true"` ; `"essai"` = à blanc ; tout le reste
  * (absent compris) = coupé. `DOSSIER_FICHE_DEMANDE_DEPUIS` : une date `AAAA-MM-JJ` stricte
- * (aller-retour contrôlé), pas plus vieille que 90 jours ; absente, invalide ou trop ancienne
- * (`04/11/2026` compris) : l'étape ne fait RIEN. Un message reçu avant elle n'est jamais traité. Colonne
- * `fiche_client_id` pas encore migrée : le passage le dit (`colonneAbsente`) et ne plante pas.
+ * (aller-retour contrôlé, `04/11/2026` refusée). Absente ou invalide en mode allumé : l'étape ne
+ * fait RIEN mais le dit (un avertissement, `dateManquante` dans le bilan, jamais un silence). Une
+ * vieille date n'arrête PAS l'étape : la borne réellement appliquée est `borneEffective` = la plus
+ * récente de la date et de « maintenant − 90 jours » (un message plus ancien n'est jamais traité).
+ * Colonne `fiche_client_id` pas encore migrée : le passage le dit (`colonneAbsente`) et ne plante pas.
+ *
+ * ## Refus de la porte
+ *
+ * Chaque refus de `creerOuRetrouverClient` laisse une trace (`dossier.fiche_demande_refus_porte`).
+ * Au 3e refus le message est écarté (doute permanent, plus de réessai) et UNE alerte agrégée
+ * `visio.fiche_demande_refus_porte` est levée (dédupliquée, sans donnée de personne).
  *
  * Module neutre (sans `server-only`, sans Next) : le balayage du worker l'importe.
  */
@@ -48,7 +56,11 @@ import { createHash } from "node:crypto";
 import { decryptPii, isDecryptedEmailUsable, PII_DECRYPT_PLACEHOLDER } from "@/lib/pii-crypto";
 import { estApporteur } from "@/lib/commercial-application/est-apporteur";
 import { estOpposee } from "@/server/email/opposition";
-import { CODES_ALERTES_VISIO } from "@/server/visio/alertes";
+import {
+  CODES_ALERTES_VISIO,
+  creerOuDedupParDefaut,
+  type CreerAlerte,
+} from "@/server/visio/alertes";
 import {
   chargerFichesCandidates,
   creerOuRetrouverClient,
@@ -93,21 +105,24 @@ const JOURS_MAX_DEPUIS = 90;
 
 /**
  * La date d'activation : seuls les messages reçus à partir d'elle sont traités. Format STRICT
- * `AAAA-MM-JJ` avec contrôle aller-retour (`2026-02-30` refusée) ; `04/11/2026` serait lue
- * « 11 avril » par `new Date` : refusée. Absente, invalide ou plus vieille que 90 jours : `null`
- * (l'étape ne fait rien). Une date future reste permise (rien n'est traité avant elle).
+ * `AAAA-MM-JJ` avec contrôle aller-retour (`2026-02-30` refusée) ; `04/11/2026` serait lu
+ * « 11 avril » par `new Date` : refusée. Absente ou invalide : `null`. Une date ANCIENNE n'est plus
+ * rejetée (sinon l'étape s'arrêtait en silence 90 jours après l'activation) : le plafond de 90 jours
+ * est appliqué par `borneEffective`. Une date future reste permise.
  */
-export function ficheDemandeDepuis(
-  env: Env = process.env,
-  maintenant: Date = new Date(),
-): Date | null {
+export function ficheDemandeDepuis(env: Env = process.env): Date | null {
   const brut = env["DOSSIER_FICHE_DEMANDE_DEPUIS"]?.trim();
   if (!brut || !/^\d{4}-\d{2}-\d{2}$/.test(brut)) return null;
   const [a, m, j] = brut.split("-").map(Number) as [number, number, number];
   const d = new Date(Date.UTC(a, m - 1, j));
   if (d.getUTCFullYear() !== a || d.getUTCMonth() !== m - 1 || d.getUTCDate() !== j) return null;
-  if (maintenant.getTime() - d.getTime() > JOURS_MAX_DEPUIS * 86_400_000) return null;
   return d;
+}
+
+/** La borne réellement appliquée : la plus récente de la date d'activation et de « maintenant − 90 jours ». */
+export function borneEffective(depuis: Date, maintenant: Date): Date {
+  const plancher = maintenant.getTime() - JOURS_MAX_DEPUIS * 86_400_000;
+  return new Date(Math.max(depuis.getTime(), plancher));
 }
 
 // ── Le prédicat des types (EXPORTÉ) ──────────────────────────────────────────
@@ -184,6 +199,10 @@ export function estColonneFicheDemandeAbsente(e: unknown): boolean {
 export const ACTION_DOUTE_DEMANDE_VU = "dossier.fiche_demande_doute";
 /** Le message s'est relié à une fiche qui existait déjà (la fiche n'est pas touchée). */
 export const ACTION_DEMANDE_LIEE = "submission.fiche_liee_automatique";
+/** Un refus de la porte unique (une trace par refus) : au 3e, le message est écarté. */
+export const ACTION_REFUS_PORTE_DEMANDE = "dossier.fiche_demande_refus_porte";
+/** Combien de refus de la porte avant d'écarter le message. */
+export const REFUS_PORTE_MAX = 3;
 
 export type RaisonDemande =
   | "adresse_illisible"
@@ -220,10 +239,14 @@ const DOMAINE_EFFACE = "@erased.local";
 
 /**
  * Les adresses exclues du CRM par l'environnement (`CRM_SYNC_EXCLUSIONS_SHA256`, empreintes
- * SHA-256 de l'adresse normalisée). Même règle que `crm-sync/exclusions.ts`, recopiée ici car
- * le dossier client n'importe pas `@/server/crm-sync` (garde `le-dossier-client-ne-part-pas-au-crm`).
+ * SHA-256 de l'adresse normalisée). Même règle que `crm-sync/exclusions.ts` (`estExclueDuCrm`),
+ * recopiée ici pour éviter l'import DIRECT de `@/server/crm-sync` (garde PA-12
+ * `le-dossier-client-ne-part-pas-au-crm`). Ce n'est PAS un cloisonnement de bout en bout :
+ * `@/server/email/opposition`, importé plus haut, importe lui-même `crm-sync` ; PA-12 ne voit que
+ * les imports directs (précédent : `src/server/qualiopi/documents/jeton.ts`). La parité des deux
+ * règles est verrouillée par `tests/unit/ci/la-regle-d-exclusion-de-la-fiche-demande-est-celle-du-crm.spec.ts`.
  */
-function estExclueParEnvironnement(email: string): boolean {
+export function estExclueParEnvironnement(email: string): boolean {
   const exclues = (process.env["CRM_SYNC_EXCLUSIONS_SHA256"] ?? "")
     .split(",")
     .map((v) => v.trim().toLowerCase())
@@ -493,6 +516,10 @@ export interface BilanFichesDemande {
   readonly doublons: ReadonlyArray<{ readonly clientId: string; readonly proches: number }>;
   /** La colonne `fiche_client_id` n'est pas encore migrée : rien n'a été fait. */
   readonly colonneAbsente: boolean;
+  /** Messages écartés à CE passage après trois refus de la porte (une alerte agrégée). */
+  readonly refusAbandonnes: number;
+  /** Mode allumé mais `DOSSIER_FICHE_DEMANDE_DEPUIS` absente ou invalide : l'étape est à l'arrêt. */
+  readonly dateManquante: boolean;
 }
 
 const BILAN_VIDE: BilanFichesDemande = {
@@ -505,16 +532,27 @@ const BILAN_VIDE: BilanFichesDemande = {
   lieraient: 0,
   doublons: [],
   colonneAbsente: false,
+  refusAbandonnes: 0,
+  dateManquante: false,
 };
 
 /** Combien de messages candidats sont relus par passage (les plus récents d'abord). */
 const PLAFOND_MESSAGES = 500;
 
-/** Les doutes permanents déjà vus. */
-async function doutesVus(db: Tx): Promise<string[]> {
+/**
+ * Les doutes permanents déjà vus, depuis la borne seulement (un doute est écrit APRÈS la réception
+ * du message, donc jamais avant la borne), les plus récents d'abord.
+ */
+async function doutesVus(db: Tx, borne: Date): Promise<string[]> {
   const lignes = await db.activityLog.findMany({
-    where: { action: ACTION_DOUTE_DEMANDE_VU, targetType: "Submission", targetId: { not: null } },
+    where: {
+      action: ACTION_DOUTE_DEMANDE_VU,
+      targetType: "Submission",
+      targetId: { not: null },
+      createdAt: { gte: borne },
+    },
     select: { targetId: true },
+    orderBy: { createdAt: "desc" },
     take: 5000,
   });
   return lignes.flatMap((l) => (l.targetId ? [l.targetId] : []));
@@ -538,16 +576,28 @@ const FILTRE_TYPES = [...TYPES_DEMANDE_AVEC_FICHE, ...TYPES_A_CONFIRMER].map((t)
 /** Le passage : les messages reçus depuis l'activation, encore sans fiche. */
 export async function assurerLesFichesDemande(
   db: BaseFicheDemande,
-  options: { readonly env?: Env; readonly maintenant?: Date } = {},
+  options: {
+    readonly env?: Env;
+    readonly maintenant?: Date;
+    /** L'alerte agrégée des refus de la porte (`creerOuDedup` par défaut) : injectée par les tests. */
+    readonly creerAlerte?: CreerAlerte;
+  } = {},
 ): Promise<BilanFichesDemande> {
   const mode = modeFicheDemande(options.env);
-  const depuis = ficheDemandeDepuis(options.env, options.maintenant);
-  if (mode === "coupe" || depuis === null) return { ...BILAN_VIDE, mode };
+  if (mode === "coupe") return { ...BILAN_VIDE, mode };
+  const activation = ficheDemandeDepuis(options.env);
+  if (activation === null) {
+    console.warn(
+      "[fiche-demande] DOSSIER_FICHE_DEMANDE_DEPUIS absente ou invalide (AAAA-MM-JJ) : l'étape est à l'arrêt",
+    );
+    return { ...BILAN_VIDE, mode, dateManquante: true };
+  }
+  const depuis = borneEffective(activation, options.maintenant ?? new Date());
   const essai = mode === "essai";
 
   let candidats: Array<{ id: string }>;
   try {
-    const vus = await doutesVus(db);
+    const vus = await doutesVus(db, depuis);
     candidats = await db.submission.findMany({
       where: {
         ficheClientId: null,
@@ -566,7 +616,7 @@ export async function assurerLesFichesDemande(
     throw e;
   }
 
-  const c = { creees: 0, liees: 0, doutes: 0, plantees: 0, cr: 0, li: 0 };
+  const c = { creees: 0, liees: 0, doutes: 0, plantees: 0, cr: 0, li: 0, abandons: 0 };
   const doublons: Array<{ clientId: string; proches: number }> = [];
   let colonneAbsente = false;
   const adressesPrevues = new Set<string>();
@@ -584,7 +634,31 @@ export async function assurerLesFichesDemande(
       else if (issue.statut === "lierait") c.li += 1;
       else if (issue.statut === "doute") {
         c.doutes += 1;
-        if (!essai && DOUTES_PERMANENTS.has(issue.raison)) {
+        let permanent = DOUTES_PERMANENTS.has(issue.raison);
+        if (!essai && issue.raison === "refus_porte") {
+          // Chaque refus laisse une trace ; au 3e le message est écarté (doute permanent).
+          const avant = await db.activityLog.count({
+            where: {
+              action: ACTION_REFUS_PORTE_DEMANDE,
+              targetType: "Submission",
+              targetId: cand.id,
+            },
+          });
+          await db.activityLog.create({
+            data: {
+              adminUserId: null,
+              action: ACTION_REFUS_PORTE_DEMANDE,
+              targetType: "Submission",
+              targetId: cand.id,
+              changes: { origine: "automatique", rang: avant + 1 },
+            },
+          });
+          if (avant + 1 >= REFUS_PORTE_MAX) {
+            permanent = true;
+            c.abandons += 1;
+          }
+        }
+        if (!essai && permanent) {
           await db.activityLog.create({
             data: {
               adminUserId: null,
@@ -609,6 +683,27 @@ export async function assurerLesFichesDemande(
       console.warn(`[fiche-demande] traitement d'un message en échec : ${nomErreur}`);
     }
   }
+  // UNE alerte agrégée pour tous les messages écartés à ce passage (dédupliquée par code, sans
+  // cible, sans donnée de personne). Une panne d'alerte ne défait rien : les traces sont écrites.
+  if (c.abandons > 0) {
+    try {
+      await (options.creerAlerte ?? creerOuDedupParDefaut)({
+        code: CODES_ALERTES_VISIO.refusPorteDemande,
+        niveau: "important",
+        titre: "Messages du site sans fiche prospect : la porte a refusé trois fois",
+        message:
+          `${c.abandons} message(s) reçu(s) par le site n'ont pas de fiche prospect : la porte ` +
+          `unique a refusé trois fois de la créer. Ils sont écartés (plus de réessai) et restent ` +
+          `visibles dans la boîte des messages ; à traiter à la main.`,
+        metadata: { abandonnes: c.abandons },
+      });
+    } catch (e) {
+      const o = e as { name?: unknown; code?: unknown } | null;
+      const nomErreur =
+        typeof o?.code === "string" ? o.code : typeof o?.name === "string" ? o.name : "inconnue";
+      console.warn(`[fiche-demande] alerte des refus de la porte en échec : ${nomErreur}`);
+    }
+  }
   return {
     mode,
     creees: c.creees,
@@ -619,5 +714,7 @@ export async function assurerLesFichesDemande(
     lieraient: c.li,
     doublons,
     colonneAbsente,
+    refusAbandonnes: c.abandons,
+    dateManquante: false,
   };
 }

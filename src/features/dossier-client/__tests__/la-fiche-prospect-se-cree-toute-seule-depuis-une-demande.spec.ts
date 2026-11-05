@@ -71,6 +71,7 @@ import { empreinteSha256 } from "@/server/newsletter/exports";
 import {
   assurerFicheDemande,
   assurerLesFichesDemande,
+  borneEffective,
   ErreurDechiffrementDemande,
   estColonneFicheDemandeAbsente,
   estDemandeATracer,
@@ -84,6 +85,8 @@ import { CLE_TEST, dossierEnMemoire, fiche, id } from "./_dossier-en-memoire";
 import type { BaseEnMemoire, Ligne } from "./_prisma-en-memoire";
 
 const DEPUIS = "2026-11-04";
+const ID_A = "00000000-0000-4000-0006-aaaaaaaaaaaa";
+const ID_B = "00000000-0000-4000-0007-bbbbbbbbbbbb";
 const MAINTENANT = new Date("2026-11-06T10:00:00Z");
 const APRES = new Date("2026-11-05T09:00:00Z");
 const AVANT = new Date("2026-11-03T09:00:00Z");
@@ -208,9 +211,9 @@ describe("les interrupteurs", () => {
     expect(modeFicheDemande({ DOSSIER_FICHE_DEMANDE: "essai" })).toBe("essai");
   });
 
-  it("la date d'activation : AAAA-MM-JJ strict, aller-retour contrôlé, pas plus de 90 jours", () => {
+  it("la date d'activation : AAAA-MM-JJ strict, aller-retour contrôlé, jamais rejetée pour son âge", () => {
     const lire = (v?: string) =>
-      ficheDemandeDepuis(v === undefined ? {} : { DOSSIER_FICHE_DEMANDE_DEPUIS: v }, MAINTENANT);
+      ficheDemandeDepuis(v === undefined ? {} : { DOSSIER_FICHE_DEMANDE_DEPUIS: v });
     expect(lire()).toBeNull();
     expect(lire("pas une date")).toBeNull();
     expect(lire("2026-11-04")?.toISOString()).toBe("2026-11-04T00:00:00.000Z");
@@ -219,11 +222,24 @@ describe("les interrupteurs", () => {
     expect(lire("2026-02-30")).toBeNull();
     expect(lire("2026-13-01")).toBeNull();
     expect(lire("2026-11-04T00:00:00Z")).toBeNull();
-    // Trop ancienne (plus de 90 jours avant « maintenant ») : refusée ; 89 jours : permise.
-    expect(lire("2026-08-07")).toBeNull();
-    expect(lire("2026-08-09")).not.toBeNull();
+    // Une vieille date n'est PLUS rejetée (c'était l'arrêt silencieux à J+90) : le plafond est ailleurs.
+    expect(lire("2026-08-07")?.toISOString()).toBe("2026-08-07T00:00:00.000Z");
+    expect(lire("2025-01-01")).not.toBeNull();
     // Une date future reste permise.
     expect(lire("2027-01-01")).not.toBeNull();
+  });
+
+  it("la borne effective : la plus récente de la date d'activation et de « maintenant − 90 jours »", () => {
+    const m = new Date("2026-11-06T10:00:00Z");
+    expect(borneEffective(new Date("2026-11-04T00:00:00Z"), m).toISOString()).toBe(
+      "2026-11-04T00:00:00.000Z",
+    );
+    expect(borneEffective(new Date("2026-01-01T00:00:00Z"), m).toISOString()).toBe(
+      "2026-08-08T10:00:00.000Z",
+    );
+    expect(borneEffective(new Date("2027-01-01T00:00:00Z"), m).toISOString()).toBe(
+      "2027-01-01T00:00:00.000Z",
+    );
   });
 
   it("coupé : aucune requête, aucune fiche", async () => {
@@ -236,13 +252,65 @@ describe("les interrupteurs", () => {
     expect(clients(b)).toHaveLength(0);
   });
 
-  it("date absente, au format français ou trop ancienne : l'étape ne fait rien", async () => {
-    for (const valeur of ["", "04/11/2026", "2026-01-01"]) {
+  it("date absente ou invalide en mode allumé : rien n'est fait, un avertissement, dateManquante", async () => {
+    for (const valeur of ["", "04/11/2026", "2026-02-30"]) {
       vi.stubEnv("DOSSIER_FICHE_DEMANDE_DEPUIS", valeur);
+      const avert = vi.spyOn(console, "warn").mockImplementation(() => undefined);
       const b = base([demande()]);
-      await passage(b);
+      const bilan = await passage(b);
+      expect(bilan).toMatchObject({ mode: "actif", creees: 0, dateManquante: true });
       expect(clients(b)).toHaveLength(0);
+      expect(avert).toHaveBeenCalledTimes(1);
+      expect(String(avert.mock.calls[0]?.[0])).toContain("DOSSIER_FICHE_DEMANDE_DEPUIS");
+      avert.mockRestore();
     }
+  });
+
+  it("coupé : pas d'avertissement, dateManquante reste faux même sans date", async () => {
+    vi.stubEnv("DOSSIER_FICHE_DEMANDE", "false");
+    vi.stubEnv("DOSSIER_FICHE_DEMANDE_DEPUIS", "");
+    const avert = vi.spyOn(console, "warn").mockImplementation(() => undefined);
+    const bilan = await passage(base([demande()]));
+    expect(bilan).toMatchObject({ mode: "coupe", dateManquante: false });
+    expect(avert).not.toHaveBeenCalled();
+    avert.mockRestore();
+  });
+
+  it("🔴 J+120 : la date d'activation ne tue pas l'étape ; un message de juillet reste sans fiche, un d'octobre en reçoit une", async () => {
+    vi.stubEnv("DOSSIER_FICHE_DEMANDE_DEPUIS", "2026-07-01");
+    const b = base([
+      demande({
+        id: ID_A,
+        submittedAt: new Date("2026-07-15T09:00:00Z"),
+        _email: "juillet@exemple-fictif.fr",
+      }),
+      demande({
+        id: ID_B,
+        submittedAt: new Date("2026-10-20T09:00:00Z"),
+        _email: "octobre@exemple-fictif.fr",
+      }),
+    ]);
+    const bilan = await assurerLesFichesDemande(b.client as never, {
+      maintenant: new Date("2026-10-29T10:00:00Z"),
+    });
+    expect(bilan).toMatchObject({ creees: 1, dateManquante: false });
+    expect(b.tables["submission"]?.find((m) => m["id"] === ID_A)?.["ficheClientId"]).toBeNull();
+    expect(b.tables["submission"]?.find((m) => m["id"] === ID_B)?.["ficheClientId"]).not.toBeNull();
+  });
+
+  it("une date d'activation ancienne reste plafonnée à 90 jours", async () => {
+    vi.stubEnv("DOSSIER_FICHE_DEMANDE_DEPUIS", "2026-01-01");
+    const b = base([
+      demande({
+        id: ID_A,
+        submittedAt: new Date("2026-03-01T09:00:00Z"),
+        _email: "mars@exemple-fictif.fr",
+      }),
+      demande({ id: ID_B, submittedAt: APRES, _email: "recent@exemple-fictif.fr" }),
+    ]);
+    const bilan = await passage(b);
+    expect(bilan.creees).toBe(1);
+    expect(b.tables["submission"]?.find((m) => m["id"] === ID_A)?.["ficheClientId"]).toBeNull();
   });
 
   it("à blanc : décide et compte, n'écrit rien", async () => {
@@ -516,7 +584,7 @@ describe("une fiche existe déjà : aucune écriture sur elle", () => {
     const absorbee = fiche({ raisonSociale: "Ancienne", contactEmail: "alex@exemple-fictif.fr" });
     const b = base([demande()], {
       client: [absorbee],
-      clientFusion: [{ id: id(7), absorbeId: absorbee["id"], defaiteLe: null }],
+      clientFusion: [{ id: ID_B, absorbeId: absorbee["id"], defaiteLe: null }],
     });
     await passage(b);
     expect(clients(b)).toHaveLength(2);
@@ -524,17 +592,83 @@ describe("une fiche existe déjà : aucune écriture sur elle", () => {
     expect(b.tables["submission"]?.[0]?.["ficheClientId"]).not.toBeNull();
   });
 
-  it("un refus réel de la porte : rien n'est écrit, doute compté, réessayé au passage suivant", async () => {
+  it("un refus de la porte laisse une trace, rien n'est écrit, le message est réessayé", async () => {
     etat.refus = { statut: "motif_requis", proches: [], message: "connue" };
     const b = base([demande()]);
     const un = await passage(b);
-    expect(un).toMatchObject({ creees: 0, doutes: 1, plantees: 0 });
+    expect(un).toMatchObject({ creees: 0, doutes: 1, plantees: 0, refusAbandonnes: 0 });
     expect(clients(b)).toHaveLength(0);
     expect(b.tables["submission"]?.[0]?.["ficheClientId"]).toBeNull();
     expect(traces(b, "dossier.fiche_demande_doute")).toHaveLength(0);
+    expect(traces(b, "dossier.fiche_demande_refus_porte")).toHaveLength(1);
     etat.refus = null;
     const deux = await passage(b);
     expect(deux.creees).toBe(1);
+  });
+
+  it("🔴 au 3e refus le message est écarté, UNE alerte agrégée pour deux messages, plus de réessai", async () => {
+    etat.refus = { statut: "motif_requis", proches: [], message: "connue" };
+    const b = base([
+      demande({ id: ID_A, _email: "un@exemple-fictif.fr" }),
+      demande({ id: ID_B, _email: "deux@exemple-fictif.fr" }),
+    ]);
+    const creerAlerte = vi.fn(async () => null);
+    const passer = () =>
+      assurerLesFichesDemande(b.client as never, { maintenant: MAINTENANT, creerAlerte });
+    expect((await passer()).refusAbandonnes).toBe(0);
+    expect((await passer()).refusAbandonnes).toBe(0);
+    expect(creerAlerte).not.toHaveBeenCalled();
+    const trois = await passer();
+    expect(trois).toMatchObject({ refusAbandonnes: 2, doutes: 2, creees: 0 });
+    expect(creerAlerte).toHaveBeenCalledTimes(1);
+    const alerte = (creerAlerte.mock.calls[0] as unknown as [Record<string, unknown>])[0];
+    expect(alerte).toMatchObject({ code: "visio.fiche_demande_refus_porte" });
+    expect(alerte["cibleId"]).toBeUndefined();
+    expect(JSON.stringify(alerte)).not.toMatch(/exemple-fictif|Alex/i);
+    expect(traces(b, "dossier.fiche_demande_refus_porte")).toHaveLength(6);
+    expect(traces(b, "dossier.fiche_demande_doute")).toHaveLength(2);
+    expect(traces(b, "dossier.fiche_demande_doute")[0]?.["changes"]).toMatchObject({
+      raison: "refus_porte",
+    });
+    // La porte accepterait maintenant : les deux messages sont écartés, plus aucun réessai.
+    etat.refus = null;
+    const apres = await passer();
+    expect(apres).toMatchObject({ creees: 0, doutes: 0, refusAbandonnes: 0 });
+    expect(creerAlerte).toHaveBeenCalledTimes(1);
+    expect(clients(b)).toHaveLength(0);
+  });
+
+  it("une alerte agrégée qui échoue ne fait pas planter le passage", async () => {
+    etat.refus = { statut: "motif_requis", proches: [], message: "connue" };
+    const b = base([demande()]);
+    const creerAlerte = vi.fn(async () => {
+      throw new Error("base indisponible");
+    });
+    const avert = vi.spyOn(console, "warn").mockImplementation(() => undefined);
+    const passer = () =>
+      assurerLesFichesDemande(b.client as never, { maintenant: MAINTENANT, creerAlerte });
+    await passer();
+    await passer();
+    const trois = await passer();
+    expect(trois).toMatchObject({ refusAbandonnes: 1, plantees: 0 });
+    avert.mockRestore();
+  });
+
+  it("les doutes déjà vus sont relus du plus récent, depuis la borne seulement", async () => {
+    const b = base([demande()]);
+    const lire = vi.spyOn(
+      b.client["activityLog"] as { findMany: (a: unknown) => unknown },
+      "findMany",
+    );
+    await passage(b);
+    const appel = lire.mock.calls[0]?.[0] as {
+      where: { createdAt: { gte: Date } };
+      orderBy: unknown;
+      take: number;
+    };
+    expect(appel.orderBy).toEqual({ createdAt: "desc" });
+    expect(appel.where.createdAt.gte.toISOString()).toBe("2026-11-04T00:00:00.000Z");
+    expect(appel.take).toBe(5000);
   });
 
   it("fiche proche (même nom, même ville) : nouvelle fiche, doublon possible tracé, alerte, fiche proche intacte", async () => {
