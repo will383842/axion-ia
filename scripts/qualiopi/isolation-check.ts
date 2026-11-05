@@ -752,6 +752,15 @@ const CONSOMMATEURS_ASSUMES: ReadonlySet<string> = new Set([
   //    compris) et lit les fiches proches par ses fonctions ; sa spec appelle la
   //    vraie porte. Aucune seconde porte, aucune table nouvelle.
   "src/features/dossier-client/fiche-auto.ts",
+  // ── Fiche prospect créée toute seule depuis une DEMANDE écrite (2026-11-04) : même porte unique
+  //    `crm/porte-client.ts` que `fiche-auto.ts`, mêmes fonctions de lecture des fiches proches ; sa
+  //    spec appelle la porte (simulée à l'écriture). Aucune seconde porte, aucune table nouvelle.
+  "src/features/dossier-client/fiche-demande.ts",
+  // ── Effacement art. 17 d'un message relié à une fiche prospect (2026-11-05) : l'action écrit, APRÈS
+  //    le commit, l'alerte `visio.fiche_de_message_efface` par `creerOuDedup` (qui absorbe une alerte
+  //    déjà ouverte) ; la fiche n'est pas touchée. Une seule arête vers le service d'alertes.
+  "src/features/admin-submissions/actions.ts",
+  "src/features/dossier-client/__tests__/la-fiche-prospect-se-cree-toute-seule-depuis-une-demande.spec.ts",
   // ── Fiche client, lot B9 (29/10/2026) : « Préparer une relance » d'un devis envoyé. Une seule arête,
   //    la même que `actions.ts` : la garde d'écriture de la console et la trace d'audit
   //    (`_guards` : `requireAdminWrite`, `logQualiopiActivity`). L'action ne fait que garer un brouillon

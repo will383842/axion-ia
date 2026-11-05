@@ -38,6 +38,13 @@ const EXEMPTIONS: ReadonlyArray<{ readonly fichier: string; readonly motif: stri
       "lit `clients.contact_email` (adresse saisie au formulaire, chiffrée par encryptPii) " +
       "pour le préavis de la PR 1 ; aucune parole",
   },
+  {
+    fichier: "src/features/dossier-client/fiche-demande.ts",
+    motif:
+      "lit `submissions.contact_email|contact_name|contact_phone` (colonnes de FORMULAIRE chiffrées par " +
+      "encryptPii, clair possible sur les lignes anciennes) pour créer la fiche prospect d'une demande ; " +
+      "aucune parole. Une clé absente ou fausse y LÈVE (ErreurDechiffrementDemande), elle n'y devient jamais un doute",
+  },
 ];
 
 /** Les modules qui lisent le dossier client hors du circuit. */

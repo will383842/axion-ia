@@ -114,6 +114,8 @@ export function dossierEnMemoire(initial: Tables = {}): BaseEnMemoire {
         createdAt: new Date(),
       }),
       compteRendu: () => ({ statut: "brouillon", createdAt: new Date() }),
+      // Le filtre `createdAt >= borne` des doutes déjà vus (fiche-demande.ts) lit cette colonne.
+      activityLog: () => ({ createdAt: new Date() }),
       alerteSysteme: () => ({
         cibleType: null,
         cibleId: null,

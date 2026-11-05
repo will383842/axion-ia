@@ -579,11 +579,18 @@ model Submission {
   // 2026-10-15 — pièces jointes du formulaire de contact (cahier des charges,
   // devis…). Fichiers dans le compartiment R2 PRIVÉ ; ici, la fiche de chacun.
   piecesJointes  SubmissionAttachment[]
+  /// 2026-11-04 — la fiche prospect (console, table `clients`) créée toute seule pour cette
+  /// demande, ou celle qui existait déjà avec exactement la même adresse (`fiche-demande.ts`).
+  /// NULL = pas de fiche (demande exclue, antérieure à l'activation, ou à l'écart). Sans clé
+  /// étrangère : une fiche absorbée par une fusion ne doit jamais bloquer ni suivre ce lien, et
+  /// la colonne ne s'écrit JAMAIS en dehors de ce module. Ajout seul, nullable, sans défaut.
+  ficheClientId  String?                  @map("fiche_client_id") @db.Uuid
 
   @@index([type])
   @@index([status])
   @@index([locale])
   @@index([submittedAt])
+  @@index([ficheClientId])
   @@index([contactEmail])
   /// Index de l'empreinte e-mail — c'est LUI que doivent interroger l'export
   /// (art. 15) et l'effacement (art. 17). `@@index([contactEmail])` ci-dessus

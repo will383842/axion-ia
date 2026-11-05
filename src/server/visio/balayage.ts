@@ -51,6 +51,10 @@ import {
   type BilanFichesAuto,
 } from "@/features/dossier-client/fiche-auto";
 import {
+  assurerLesFichesDemande,
+  type BilanFichesDemande,
+} from "@/features/dossier-client/fiche-demande";
+import {
   aEuLieu,
   estDuMoisDuBilan,
   fenetreDuBilan,
@@ -102,9 +106,16 @@ class FicheAutoPlantee extends Error {
   override name = "FicheAutoPlantee";
 }
 
+/** Un message dont le traitement a PLANTÉ (vraie panne) : même règle que `FicheAutoPlantee`. */
+class FicheDemandePlantee extends Error {
+  override name = "FicheDemandePlantee";
+}
+
 export interface ResultatBalayage {
   readonly rencontresAssurees: number;
   readonly fichesAuto: BilanFichesAuto;
+  /** La fiche prospect des demandes écrites (`DOSSIER_FICHE_DEMANDE`). */
+  readonly fichesDemande: BilanFichesDemande;
   readonly comptesRendusAValider: number;
   readonly suitesEchues: number;
   readonly veille: number;
@@ -350,6 +361,28 @@ export async function passerBalayage(
     fichesLues = true;
     if (fichesAuto.plantees > 0) throw new FicheAutoPlantee();
   });
+  // 2 ter. La fiche prospect des DEMANDES écrites (DOSSIER_FICHE_DEMANDE, coupé par défaut) : après
+  // celle des rendez-vous, avant l'envoi des alertes « doublon possible » qui couvre les deux.
+  let fichesDemande: BilanFichesDemande = {
+    mode: "coupe",
+    creees: 0,
+    liees: 0,
+    doutes: 0,
+    plantees: 0,
+    creeraient: 0,
+    lieraient: 0,
+    doublons: [],
+    colonneAbsente: false,
+    refusAbandonnes: 0,
+    dateManquante: false,
+  };
+  await etape<void>("fiches-demande", undefined, async () => {
+    fichesDemande = await assurerLesFichesDemande(db, {
+      maintenant,
+      ...(deps.creerAlerte ? { creerAlerte: deps.creerAlerte } : {}),
+    });
+    if (fichesDemande.plantees > 0) throw new FicheDemandePlantee();
+  });
   // Les fiches créées avec un doute d'identité : l'alerte est écrite avec la fiche (même
   // transaction) ; ici on l'ENVOIE, tant qu'elle n'est pas partie. Jamais une panne.
   await etape<void>("fiches-auto-doublon", undefined, async () => {
@@ -385,6 +418,7 @@ export async function passerBalayage(
   return {
     rencontresAssurees,
     fichesAuto,
+    fichesDemande,
     comptesRendusAValider,
     suitesEchues,
     veille,
