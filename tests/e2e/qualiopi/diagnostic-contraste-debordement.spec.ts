@@ -25,7 +25,9 @@ test.describe("@diagnostic contraste & débordement", () => {
     const parCouple = new Map<string, { occurrences: number; exemples: string[] }>();
 
     for (const route of ECHANTILLON) {
-      await page.goto(route, { waitUntil: "networkidle", timeout: 45_000 });
+      await page.goto(route, { waitUntil: "load", timeout: 45_000 });
+      // Repère stable à la place de `networkidle` (requête /_next/image pendante en CI).
+      await page.locator("h1").first().waitFor({ state: "visible", timeout: 15_000 });
       const axe = await new AxeBuilder({ page }).withRules(["color-contrast"]).analyze();
       for (const v of axe.violations) {
         for (const n of v.nodes) {
@@ -61,7 +63,9 @@ test.describe("@diagnostic contraste & débordement", () => {
     const releve: unknown[] = [];
 
     for (const route of ECHANTILLON) {
-      await page.goto(route, { waitUntil: "networkidle", timeout: 45_000 });
+      await page.goto(route, { waitUntil: "load", timeout: 45_000 });
+      // Repère stable à la place de `networkidle` (requête /_next/image pendante en CI).
+      await page.locator("h1").first().waitFor({ state: "visible", timeout: 15_000 });
       for (const largeur of [1440, 1024, 768, 390]) {
         await page.setViewportSize({ width: largeur, height: 900 });
         // Stabilisation RÉELLE : deux frames + une seconde pleine. C'est ce qui

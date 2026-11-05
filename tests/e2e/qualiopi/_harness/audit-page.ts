@@ -124,7 +124,17 @@ export async function auditerPage(page: Page, url: string): Promise<ResultatAudi
   });
 
   const t0 = Date.now();
-  const resp = await page.goto(url, { waitUntil: "networkidle", timeout: 45_000 });
+  // `load` + repère explicite, pas `networkidle` : une requête `/_next/image` qui ne
+  // répond pas (observé en CI, run 42071731046, ~7 min sur une illustration de
+  // /fr/formations) empêche `networkidle` d'aboutir alors que la page est prête.
+  const resp = await page.goto(url, { waitUntil: "load", timeout: 45_000 });
+  // Repère stable : le h1. Une route sans h1 garde le comportement d'avant (pas de
+  // nouvelle exigence) ; le statut HTTP et les assertions du test restent inchangés.
+  await page
+    .locator("h1")
+    .first()
+    .waitFor({ state: "visible", timeout: 15_000 })
+    .catch(() => undefined);
   const msChargement = Date.now() - t0;
   await page.waitForTimeout(400); // laisse l'hydratation émettre ses avertissements
 
