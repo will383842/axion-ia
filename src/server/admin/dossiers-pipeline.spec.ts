@@ -887,3 +887,71 @@ describe("🔴 8D — la vue doit annoncer ce que la GARDE va refuser", () => {
     expect(accordFinanceurAttendu(financement, statutOpco)).toBe(bloque);
   });
 });
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Lot 6 — suivi « en livraison » / « livré » du devis accepté
+// ─────────────────────────────────────────────────────────────────────────────
+
+describe("Lot 6 — suivi de livraison du devis", () => {
+  const DEBUT = new Date("2026-10-20T08:00:00Z");
+
+  it("devis accepté avec livraison démarrée → « En livraison »", () => {
+    expect(
+      deriverStatutDossier(
+        { source: "devis", statut: "accepte", livraisonDebutAt: DEBUT },
+        MAINTENANT,
+      ),
+    ).toBe("devis_en_livraison");
+  });
+
+  it("devis livré dans la fenêtre → « Livré » ; au-delà → exclu", () => {
+    expect(
+      deriverStatutDossier(
+        { source: "devis", statut: "accepte", livraisonDebutAt: DEBUT, livreAt: MAINTENANT },
+        MAINTENANT,
+      ),
+    ).toBe("devis_livre");
+    expect(
+      deriverStatutDossier(
+        {
+          source: "devis",
+          statut: "accepte",
+          livraisonDebutAt: DEBUT,
+          livreAt: new Date(MAINTENANT.getTime() - 40 * 86400000),
+        },
+        MAINTENANT,
+      ),
+    ).toBeNull();
+  });
+
+  it("devis accepté SANS jalon reste hors vue (comportement inchangé)", () => {
+    expect(deriverStatutDossier({ source: "devis", statut: "accepte" }, MAINTENANT)).toBeNull();
+  });
+
+  it("colonnes ordonnées après « à contresigner », avec une action lisible", () => {
+    const ids = COLONNES_PIPELINE.map((c) => c.id);
+    expect(ids.indexOf("devis_en_livraison")).toBeGreaterThan(ids.indexOf("devis_attente"));
+    expect(ids.indexOf("devis_livre")).toBeGreaterThan(ids.indexOf("devis_en_livraison"));
+    expect(libellerProchaineAction("devis_en_livraison", "audit")).toMatch(/livr/i);
+  });
+
+  it("lecture : un devis accepté en livraison arrive dans sa colonne", async () => {
+    vi.mocked(prisma.devis.findMany).mockResolvedValue([
+      {
+        id: "dl1",
+        numero: "AXI-DEV-2026-900",
+        activite: "implementation",
+        statut: "accepte",
+        documentGenereId: null,
+        sentAt: RECENT,
+        dateValidite: RECENT,
+        livraisonDebutAt: DEBUT,
+        livreAt: null,
+        client: { raisonSociale: "X" },
+      },
+    ] as never);
+    const { colonnes } = await lireDossiersPipeline(MAINTENANT);
+    expect(colonnes.devis_en_livraison.map((l) => l.cle)).toEqual(["devis:dl1"]);
+    expect(colonnes.devis_attente).toHaveLength(0);
+  });
+});
