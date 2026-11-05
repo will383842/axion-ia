@@ -19,6 +19,8 @@ import { DevisLifecycleButtons } from "@/components/admin/qualiopi/DevisLifecycl
 import { DevisContresignature } from "@/components/admin/qualiopi/DevisContresignature";
 import { contresignerPieceAction } from "@/server/actions/qualiopi/piece-signature";
 import { getOrganismeIdentite } from "@/server/qualiopi/documents/organisme";
+import { DevisSuiviLivraison } from "@/components/admin/qualiopi/DevisSuiviLivraison";
+import { peutDemarrerLivraison, peutMarquerLivre } from "@/server/qualiopi/devis/suivi-livraison";
 import { FacturerDevisButtons } from "@/components/admin/qualiopi/FacturerDevisButtons";
 import { getDevis } from "@/server/qualiopi/crm/devis";
 import { bandeauEtatFonds } from "@/server/qualiopi/financements/etat-fonds-opco";
@@ -560,6 +562,17 @@ export default async function QualiopiDevisDetailPage({ params }: PageProps) {
           </p>
         )}
         <DevisLifecycleButtons devisId={devis.id} statut={devis.statut} />
+        <DevisSuiviLivraison
+          devisId={devis.id}
+          peutDemarrer={peutDemarrerLivraison(devis)}
+          peutLivrer={peutMarquerLivre(devis)}
+        />
+        {devis.livraisonDebutAt && (
+          <p className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-soft)]">
+            Livraison démarrée le {devis.livraisonDebutAt.toLocaleDateString("fr-FR")}
+            {devis.livreAt ? ` · livré le ${devis.livreAt.toLocaleDateString("fr-FR")}` : ""}.
+          </p>
+        )}
       </section>
 
       {/* ── Facturation (acompte / solde) — devis accepté uniquement ─────── */}

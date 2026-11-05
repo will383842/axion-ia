@@ -26,6 +26,7 @@
 import { prisma } from "@/lib/prisma";
 import { idsPiecesDevisAContresigner } from "@/server/qualiopi/documents/signature/pieces-en-attente";
 import { estDevisAContresigner } from "@/server/qualiopi/devis/a-contresigner";
+import { etapeSuiviDevis, FENETRE_LIVRES_JOURS } from "@/server/qualiopi/devis/suivi-livraison";
 import { estDansPerimetreQualiopi } from "@/server/qualiopi/perimetre";
 import { STATUTS_FACTURE_OUVERTE } from "@/server/qualiopi/financements/statuts-facture";
 import { estFinancementOpco } from "@/server/qualiopi/financements/validation-service";
@@ -33,6 +34,7 @@ import type {
   AuditMissionStatut,
   CoachingSessionStatut,
   DevisStatut,
+  Prisma,
   TrainingSessionStatut,
 } from "../../../prisma/generated/client";
 
@@ -44,6 +46,8 @@ import type {
 export type ColonnePipeline =
   | "devis_a_contresigner"
   | "devis_attente"
+  | "devis_en_livraison"
+  | "devis_livre"
   | "attente_financeur"
   | "signature_attente"
   | "a_preparer"
@@ -83,6 +87,18 @@ export const COLONNES_PIPELINE: ReadonlyArray<{
     id: "devis_attente",
     label: "Devis en attente",
     description: "Devis envoyés au client, sans réponse — à relancer ou à statuer.",
+  },
+  {
+    id: "devis_en_livraison",
+    label: "Devis en livraison",
+    // Étape DÉDUITE : devis accepté dont `livraison_debut_at` est posé et
+    // `livre_at` ne l'est pas. Aucune valeur d'énumération.
+    description: "Devis acceptés dont la livraison a démarré — à livrer puis marquer livrés.",
+  },
+  {
+    id: "devis_livre",
+    label: "Devis livrés",
+    description: `Devis livrés — ${FENETRE_LIVRES_JOURS} derniers jours seulement.`,
   },
   {
     id: "attente_financeur",
@@ -154,6 +170,9 @@ export type DossierSource =
       statut: DevisStatut;
       /** Pièce signée du client, contreseing d'axionia attendu (cf. `estDevisAContresigner`). */
       aContresigner?: boolean;
+      /** Jalons de livraison (Lot 6) : posés par les boutons de la fiche devis. */
+      livraisonDebutAt?: Date | null;
+      livreAt?: Date | null;
     }
   | {
       source: "session";
@@ -242,11 +261,27 @@ export function deriverStatutDossier(
 ): ColonnePipeline | null {
   switch (dossier.source) {
     case "devis":
-      // Un devis expiré mais signé par le client reste à contresigner (accord valable).
-      if (dossier.statut === "expire")
-        return dossier.aContresigner === true ? "devis_a_contresigner" : null;
-      if (dossier.statut !== "envoye") return null;
-      return dossier.aContresigner === true ? "devis_a_contresigner" : "devis_attente";
+      switch (
+        etapeSuiviDevis(
+          {
+            statut: dossier.statut,
+            aContresigner: dossier.aContresigner === true,
+            livraisonDebutAt: dossier.livraisonDebutAt ?? null,
+            livreAt: dossier.livreAt ?? null,
+          },
+          maintenant,
+        )
+      ) {
+        case "a_contresigner":
+          // Un devis expiré mais signé par le client reste à contresigner (accord valable).
+          return "devis_a_contresigner";
+        case "en_livraison":
+          return "devis_en_livraison";
+        case "livre":
+          return "devis_livre";
+        default:
+          return dossier.statut === "envoye" ? "devis_attente" : null;
+      }
 
     case "session":
       switch (dossier.statut) {
@@ -368,6 +403,10 @@ export function libellerProchaineAction(
       return "Contresigner le devis signé par le client";
     case "devis_attente":
       return "Relancer le client, ou marquer la réponse (accepté / refusé)";
+    case "devis_en_livraison":
+      return "Livrer la prestation, puis marquer le devis livré";
+    case "devis_livre":
+      return "Rien à faire — devis livré (facturer le solde si besoin)";
     case "attente_financeur":
       return "Relancer le financeur, ou acter sa réponse — sans accord, le démarrage sera refusé";
     case "signature_attente":
@@ -509,7 +548,13 @@ function activiteDevis(activite: string | null): ActiviteDossier {
 
 /** Devis envoyés (colonne « Devis en attente »). Stub-safe → []. */
 /** LE `where` des devis en attente — ecrit une fois, lu deux fois. */
-const WHERE_DEVIS_ENVOYES = { statut: "envoye" } as const;
+const WHERE_DEVIS_ENVOYES: Prisma.DevisWhereInput = {
+  OR: [
+    { statut: "envoye" },
+    // Lot 6 : devis acceptés dont la livraison est suivie (jalon posé).
+    { statut: { in: ["accepte", "transforme_convention"] }, livraisonDebutAt: { not: null } },
+  ],
+};
 
 async function lireDevisEnvoyes() {
   try {
@@ -527,6 +572,8 @@ async function lireDevisEnvoyes() {
           documentGenereId: true,
           sentAt: true,
           dateValidite: true,
+          livraisonDebutAt: true,
+          livreAt: true,
           client: { select: { raisonSociale: true } },
         },
       }),
@@ -686,6 +733,8 @@ function pipelineVide(): DossiersPipeline {
   return {
     devis_a_contresigner: [],
     devis_attente: [],
+    devis_en_livraison: [],
+    devis_livre: [],
     attente_financeur: [],
     signature_attente: [],
     a_preparer: [],
@@ -754,6 +803,8 @@ export async function lireDossiersPipeline(
       source: "devis",
       statut: d.statut,
       aContresigner: estDevisAContresigner(d, piecesAContresigner),
+      livraisonDebutAt: d.livraisonDebutAt,
+      livreAt: d.livreAt,
     });
     if (!resolu) continue;
     const { colonne, archive } = resolu;

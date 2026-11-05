@@ -5340,6 +5340,12 @@ model Devis {
   venteBrouillons     VenteBrouillon[]
   coachingSessions    CoachingSession[]
 
+  /// Jalons de suivi après signature (colonnes posées par la migration
+  /// 20261104120000_devis_formules). Posés par les boutons « Démarrer la
+  /// livraison » / « Marquer livré » ; l'étape est DÉDUITE (aucune énumération).
+  livraisonDebutAt DateTime? @map("livraison_debut_at")
+  livreAt          DateTime? @map("livre_at")
+
   @@index([clientId])
   @@index([statut])
   @@index([documentGenereId])
