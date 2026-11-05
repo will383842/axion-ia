@@ -1904,6 +1904,14 @@ export const ALERTE_CATALOGUE: Record<string, AlerteCatalogueEntry> = {
       "STRUCTUREL — levée par le balayage (étape « fiches-demande ») quand un message est écarté après trois refus de la porte unique ; le refus est permanent, `synchroniserAlertes` la fermerait au premier tour.",
     guichet: "direction",
   },
+  "visio.fiche_demande_bilan_essai": {
+    niveau: "info",
+    titre: "Essai à blanc des fiches des demandes",
+    resolutionAuto: false,
+    motifSansResolutionAuto:
+      "STRUCTUREL — levée par le balayage (étape « fiches-demande ») en mode essai, une fois par jour (cible = le jour de Paris) ; c'est un bilan chiffré à lire, `synchroniserAlertes` le fermerait au premier tour.",
+    guichet: "direction",
+  },
   "visio.rendez_vous_a_classer": {
     niveau: "important",
     titre: "Rendez-vous Calendly à classer à la main (fiche automatique en doute)",

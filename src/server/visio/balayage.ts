@@ -66,6 +66,8 @@ import {
   signalerPanneDuBalayage,
   signalerRendezVousAClasser,
   VISIO_BALAYAGE_EN_PANNE,
+  creerOuDedupParDefaut,
+  CODES_ALERTES_VISIO,
   type CreerAlerte,
   type Notifier,
 } from "./alertes";
@@ -286,6 +288,50 @@ export async function lireEtatDuCircuit(db: Tx, maintenant: Date): Promise<EtatD
   };
 }
 
+/**
+ * Le compte à blanc de la fiche des demandes devient UNE alerte par jour (cible = le jour de Paris,
+ * pour qu'une alerte résolue n'absorbe pas le lendemain). Mode essai seulement ; message fixe, que
+ * des nombres. Une panne d'alerte est capturée : elle ne bloque jamais le balayage.
+ */
+export async function signalerBilanEssaiDemande(
+  b: BilanFichesDemande,
+  maintenant: Date,
+  creerAlerte?: CreerAlerte,
+): Promise<void> {
+  if (b.mode !== "essai") return;
+  if (
+    b.creeraient + b.lieraient + b.doutes + b.plantees === 0 &&
+    !b.colonneAbsente &&
+    !b.dateManquante
+  )
+    return;
+  const oui = (v: boolean) => (v ? "oui" : "non");
+  try {
+    await (creerAlerte ?? creerOuDedupParDefaut)({
+      code: CODES_ALERTES_VISIO.bilanEssaiFicheDemande,
+      niveau: "info",
+      titre: "Essai à blanc des fiches des demandes",
+      message:
+        `Essai à blanc des fiches des demandes : créerait ${b.creeraient}, lierait ${b.lieraient}, ` +
+        `douterait ${b.doutes}, planterait ${b.plantees} ; colonne absente ${oui(b.colonneAbsente)} ; ` +
+        `date d'activation manquante ${oui(b.dateManquante)}`,
+      cibleType: "jour",
+      cibleId: dayKeyInParis(maintenant),
+      metadata: {
+        creeraient: b.creeraient,
+        lieraient: b.lieraient,
+        doutes: b.doutes,
+        plantees: b.plantees,
+        colonneAbsente: b.colonneAbsente,
+        dateManquante: b.dateManquante,
+      },
+    });
+  } catch (e) {
+    const nom = e instanceof Error ? e.name : "inconnue";
+    console.warn(`[balayage] alerte du bilan d'essai des demandes en échec : ${nom}`);
+  }
+}
+
 /** Un passage du balayage. Voir l'en-tête. */
 export async function passerBalayage(
   db: BaseBalayage,
@@ -383,6 +429,9 @@ export async function passerBalayage(
     });
     if (fichesDemande.plantees > 0) throw new FicheDemandePlantee();
   });
+  // Le bilan de l'ESSAI À BLANC, lisible dans la console (le journal du worker ne l'est pas) :
+  // une alerte par jour, uniquement en mode essai, des nombres seulement. Jamais une panne.
+  await signalerBilanEssaiDemande(fichesDemande, maintenant, deps.creerAlerte);
   // Les fiches créées avec un doute d'identité : l'alerte est écrite avec la fiche (même
   // transaction) ; ici on l'ENVOIE, tant qu'elle n'est pas partie. Jamais une panne.
   await etape<void>("fiches-auto-doublon", undefined, async () => {
