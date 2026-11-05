@@ -23,7 +23,8 @@ import { describe, it, expect, vi, beforeEach } from "vitest";
 vi.mock("@/lib/prisma", () => ({
   prisma: {
     documentGenere: { findUnique: vi.fn() },
-    devis: { findFirst: vi.fn(), updateMany: vi.fn() },
+    // `findMany` : la lecture des devis visés, avant l'acceptation (montée du prospect en client).
+    devis: { findFirst: vi.fn(), updateMany: vi.fn(), findMany: vi.fn(async () => []) },
     documentSignature: { count: vi.fn(), findMany: vi.fn() },
     questionnaire: { findMany: vi.fn(), update: vi.fn() },
   },
