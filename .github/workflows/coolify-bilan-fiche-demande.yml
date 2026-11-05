@@ -1,0 +1,84 @@
+name: Coolify · bilan de la fiche des demandes (journal du worker)
+# Workflow utilitaire workflow_dispatch, EN LECTURE SEULE : lit le journal d'exécution du WORKER
+# via l'API Coolify (GET /api/v1/applications/{uuid}/logs?lines=N) et n'imprime QUE les lignes
+# contenant « fiches des demandes » ou « visio-balayage-worker », après filtre de sécurité :
+#   - toute ligne contenant un @ est retirée (adresse e-mail = donnée de personne) ;
+#   - toute ligne de plus de 200 caractères est retirée ;
+#   - 40 lignes au plus (les plus récentes).
+# Aucune autre ligne du journal n'est jamais affichée. Sécurité : workflow_dispatch only.
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  bilan:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Valider les secrets
+        env:
+          COOLIFY_API_TOKEN: ${{ secrets.COOLIFY_API_TOKEN }}
+          COOLIFY_URL: ${{ secrets.COOLIFY_URL }}
+          COOLIFY_WORKER_APP_UUID: ${{ secrets.COOLIFY_WORKER_APP_UUID }}
+        run: |
+          set -euo pipefail
+          for v in COOLIFY_API_TOKEN COOLIFY_URL COOLIFY_WORKER_APP_UUID; do
+            if [ -z "${!v:-}" ]; then
+              echo "::error::Secret manquant : $v"
+              exit 1
+            fi
+          done
+          echo "Secrets présents."
+
+      - name: Dernier déploiement du worker
+        env:
+          COOLIFY_API_TOKEN: ${{ secrets.COOLIFY_API_TOKEN }}
+          COOLIFY_URL: ${{ secrets.COOLIFY_URL }}
+          COOLIFY_WORKER_APP_UUID: ${{ secrets.COOLIFY_WORKER_APP_UUID }}
+        run: |
+          set -uo pipefail
+          # Meilleur effort : on n'imprime que des dates, jamais le corps de la réponse.
+          r=$(curl -fsSL -m 20 -H "Authorization: Bearer ${COOLIFY_API_TOKEN}" -H "Accept: application/json" \
+            "${COOLIFY_URL}/api/v1/applications/${COOLIFY_WORKER_APP_UUID}" 2>/dev/null) || r=""
+          if [ -z "$r" ]; then echo "(dernier déploiement : lecture impossible)"; exit 0; fi
+          echo "$r" | jq -r '"Application mise à jour le : \(.updated_at // "inconnu")\nStatut : \(.status // "inconnu")"' \
+            || echo "(dernier déploiement : réponse illisible)"
+
+      - name: Lire le bilan dans le journal du worker
+        env:
+          COOLIFY_API_TOKEN: ${{ secrets.COOLIFY_API_TOKEN }}
+          COOLIFY_URL: ${{ secrets.COOLIFY_URL }}
+          COOLIFY_WORKER_APP_UUID: ${{ secrets.COOLIFY_WORKER_APP_UUID }}
+        run: |
+          set -uo pipefail
+          # Le journal brut ne va que dans un fichier, jamais sur la sortie.
+          brut="$(mktemp)"
+          code=$(curl -sS -m 30 -o "$brut" -w "%{http_code}" \
+            -H "Authorization: Bearer ${COOLIFY_API_TOKEN}" -H "Accept: application/json" \
+            "${COOLIFY_URL}/api/v1/applications/${COOLIFY_WORKER_APP_UUID}/logs?lines=5000") || code="000"
+          if [ "$code" = "404" ] || [ "$code" = "405" ]; then
+            echo "::error::La route GET /api/v1/applications/{uuid}/logs n'existe pas sur ce Coolify (HTTP $code). Aucune lecture possible par l'API."
+            exit 1
+          fi
+          if [ "$code" != "200" ]; then
+            echo "::error::Lecture du journal impossible : HTTP $code (corps non affiché)."
+            exit 1
+          fi
+          # La réponse est soit {"logs": "..."} soit du texte brut.
+          if jq -e 'type == "object" and has("logs")' "$brut" >/dev/null 2>&1; then
+            jq -r '.logs | if type == "array" then join("\n") else tostring end' "$brut" > "$brut.txt"
+          else
+            cp "$brut" "$brut.txt"
+          fi
+          echo "Journal reçu : $(wc -l < "$brut.txt") lignes (non affichées)."
+          echo "──── Lignes retenues (max 40, sans @, ≤ 200 caractères) ────"
+          grep -E 'fiches des demandes|visio-balayage-worker' "$brut.txt" \
+            | grep -v '@' \
+            | awk 'length($0) <= 200' \
+            | cut -c1-200 \
+            | tail -n 40 \
+            || true
+          rm -f "$brut" "$brut.txt"
