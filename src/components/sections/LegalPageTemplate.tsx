@@ -148,7 +148,7 @@ export function LegalPageTemplate({
             </a>
           </h2>
         </div>
-        <p className="text-fg-soft mt-4 text-[15px] leading-relaxed sm:pl-[3.25rem] sm:text-base">
+        <p className="text-fg-soft mt-4 text-[15px] leading-relaxed whitespace-pre-line sm:pl-[3.25rem] sm:text-base">
           {section.body}
         </p>
       </section>
