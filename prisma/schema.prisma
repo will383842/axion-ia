@@ -18135,3 +18135,23 @@ model AuditTerrainRapport {
   @@index([valideParId], map: "audit_terrain_rapports_valide_par_id_idx")
   @@map("audit_terrain_rapports")
 }
+
+// ============================================================
+// Archive immuable de chaque version des CGV (preuve d'acceptation, P2).
+// Table posée en SQL par la migration 20261104160000_cgv_archives : déclencheurs
+// refusant UPDATE / DELETE / TRUNCATE, CHECK sur les empreintes. Ne jamais
+// modifier une ligne : une version archivée est définitive.
+// ============================================================
+/// rgpd: technique — texte public des CGV, son PDF figé et leurs empreintes ; aucune donnée sur une personne
+model CgvArchive {
+  version        String   @id @db.VarChar(40)
+  libelle        String   @db.VarChar(80)
+  texteCanonique String   @map("texte_canonique") @db.Text
+  texteSha256    String   @map("texte_sha256") @db.Char(64)
+  pdfR2Key       String   @map("pdf_r2_key") @db.Text
+  pdfSha256      String   @map("pdf_sha256") @db.Char(64)
+  pdfTaille      Int      @map("pdf_taille")
+  archiveeAt     DateTime @default(now()) @map("archivee_at") @db.Timestamptz(3)
+
+  @@map("cgv_archives")
+}

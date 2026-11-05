@@ -15,6 +15,7 @@
 
 "use server";
 
+import * as Sentry from "@sentry/nextjs";
 import React from "react";
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
@@ -50,6 +51,7 @@ import {
   emettreDevisSigne,
   transactionDevisSigne,
 } from "@/server/partners-sync/producteurs/devis";
+import { faireMonterLesFichesDesDevisSignes } from "@/features/dossier-client/devis-signe-fait-client";
 import { bandeauPourLeRole } from "@/server/partners/client-attributions";
 import { sirenDuClient } from "@/lib/siret";
 import { DevisPdf, type DevisData } from "@/server/qualiopi/documents/templates/devis";
@@ -728,6 +730,16 @@ export async function acceptDevisAction(id: string): Promise<ActionResult<{ id: 
     });
     await emettreDevisSigne(tx, devisId);
   });
+  // Un prospect passe en client lorsqu'un devis est signé (Will, 04/11/2026) : APRÈS le COMMIT,
+  // hors transaction (B1) ; une erreur ne touche jamais l'acceptation.
+  try {
+    await faireMonterLesFichesDesDevisSignes(prisma, [devisId], {
+      origine: "console",
+      adminUserId: session.userId,
+    });
+  } catch (err) {
+    Sentry.captureException(err, { tags: { action: "devis_signe_fait_client" } });
+  }
 
   await logQualiopiActivity({
     action: "qualiopi.devis.accept",
