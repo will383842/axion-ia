@@ -63,7 +63,7 @@ export function DevisSuiviLivraison({
       {erreur && (
         <p
           role="alert"
-          className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-danger,#b00020)]"
+          className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-error)]"
         >
           {erreur}
         </p>
