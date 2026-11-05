@@ -1,13 +1,13 @@
 /**
  * Interrupteur de la preuve d'acceptation des CGV : clé `settings` `signature.cgv_preuve`.
  *
- * Module SANS `server-only` (atteignable par le worker). Absent, illisible, arrêté ou lecture
- * en panne : `null` = comportement de `main` (aucun changement). Ne lève jamais.
- * Même lecture que `interrupteur-captation.ts` ; l'écriture de la clé se fera avec l'écran
- * des interrupteurs, dans une PR ultérieure du chantier.
+ * Module SANS `server-only` (atteignable par le worker) et SANS import du domaine Qualiopi
+ * (cloisonnement : `pnpm qualiopi:isolation-check`) : la valeur est lue ici, au même format
+ * que les autres interrupteurs `signature.*` (`{ actif: boolean, allumeLe?: ISO }`).
+ * Absent, illisible, arrêté ou lecture en panne : `null` = comportement de `main`.
+ * Ne lève jamais. L'écriture de la clé viendra avec l'écran des interrupteurs (PR ultérieure).
  */
 import { prisma } from "@/lib/prisma";
-import { dateAllumageSignature } from "@/server/qualiopi/formateurs-independants/interrupteurs";
 
 export const CLE_SETTING_CGV_PREUVE = "signature.cgv_preuve";
 
@@ -17,7 +17,16 @@ export async function allumagePreuveCgv(): Promise<Date | null> {
       where: { key: CLE_SETTING_CGV_PREUVE },
       select: { value: true, updatedAt: true },
     });
-    return ligne === null ? null : dateAllumageSignature(ligne.value, ligne.updatedAt);
+    if (ligne === null) return null;
+    const v = ligne.value;
+    if (v === null || typeof v !== "object" || Array.isArray(v)) return null;
+    const { actif, allumeLe } = v as Record<string, unknown>;
+    if (actif !== true) return null;
+    if (typeof allumeLe === "string") {
+      const d = new Date(allumeLe);
+      if (!Number.isNaN(d.getTime())) return d;
+    }
+    return ligne.updatedAt;
   } catch {
     return null;
   }
