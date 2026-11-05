@@ -84,18 +84,18 @@ async function produireCgvPdf(): Promise<Buffer> {
           </Text>
         ))}
         {fr.sections.map((sec, i) => (
-          <View key={i}>
-            <Text style={s.h2}>{nettoyer(sec.title)}</Text>
+          <React.Fragment key={i}>
+            <Text style={s.h2} minPresenceAhead={40}>{nettoyer(sec.title)}</Text>
             {paragraphes(sec.body).map((l, j) => (
               <Text key={j} style={s.p}>
                 {l}
               </Text>
             ))}
-          </View>
+          </React.Fragment>
         ))}
+        {/* Pas de numéro de page : `render` fait échouer le rendu (react-pdf) sur ce volume de texte. */}
         <View style={s.pied} fixed>
           <Text>{`Conditions générales de vente · Axion-IA · version du ${CGV_VERSION_LIBELLE}`}</Text>
-          <Text render={({ pageNumber, totalPages }) => `${pageNumber} / ${totalPages}`} />
         </View>
       </Page>
     </Document>
