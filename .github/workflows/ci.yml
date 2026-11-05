@@ -421,7 +421,7 @@ jobs:
           retention-days: 7
 
   # ═══════════════════════════════════════════════════════════════════
-  # 🔵 2026-11-05 — GATE B EST DÉCOUPÉE EN TROIS TRANCHES PARALLÈLES.
+  # 🔵 2026-11-05 — GATE B EST DÉCOUPÉE EN DEUX TRANCHES PARALLÈLES.
   #
   # Mesuré sur 10 runs de PR verts (41868746865 → 41986727435) : job de
   # 23,4 à 32,4 min, médiane ~30 min, dont Build 10,6 min (médiane) et
@@ -431,16 +431,28 @@ jobs:
   #
   # Chaque tranche refait EXACTEMENT le même job qu'avant (mêmes services,
   # même build, même semis, mêmes gardes, même `bundle:check`) et ne joue
-  # qu'un tiers des tests (`--shard=i/3`). Aucun test n'est retiré : les
-  # trois tranches forment une partition de la même sélection
+  # que la moitié des tests (`--shard=i/2`). Aucun test n'est retiré : les
+  # deux tranches forment une partition de la même sélection
   # (`--project=chromium --grep-invert "@baseline|@formateurs"`).
+  #
+  # 🔴 POURQUOI DEUX ET PAS TROIS — mesuré sur le run 41994729311 (+ sa relance).
+  # `--shard` découpe dans l'ORDRE des fichiers. En 3, la tranche 3 recevait
+  # les 131 audits `qualiopi/public-routes` SANS les specs `flows/` qui, dans
+  # la suite entière, visitent `/fr/formations` avant eux. Sur un serveur
+  # froid, ces pages (dont les fiches `[slug]` rendues à la demande, ISR
+  # `dynamicParams`) dépassaient le `networkidle` de 45 s : 6 puis 3 échecs,
+  # toujours `/fr/formations*`, `/fr/catalogue`, `/fr/audit`. En 2, la
+  # tranche 2 garde `flows/` AVANT `qualiopi/`, comme la suite entière.
+  # ⚠️ Cette dépendance d'ordre (serveur « chauffé » par d'autres specs) est
+  # PRÉEXISTANTE ; le découpage l'a seulement révélée. Ne pas passer à 3+
+  # tranches sans la traiter d'abord.
   #
   # 🔑 Le contexte EXIGÉ par la protection de `main` reste « Gate B · per-PR » :
   # c'est le job `gate-b-verdict` ci-dessous, qui ne peut être vert que si les
-  # TROIS tranches le sont (même patron que « Gate A · couverture »).
+  # DEUX tranches le sont (même patron que « Gate A · couverture »).
   # ═══════════════════════════════════════════════════════════════════
   gate-b:
-    name: Gate B · tranche ${{ matrix.tranche }}/3
+    name: Gate B · tranche ${{ matrix.tranche }}/2
     # `merge_group` doit figurer ici : en file de fusion, un job SKIPPÉ sur un
     # contexte EXIGÉ n'est pas un job vert — la file resterait bloquée dessus.
     # 🔴 2026-09-12 — `workflow_dispatch` AJOUTÉ, ET C'EST UN DÉFAUT MESURÉ.
@@ -477,7 +489,7 @@ jobs:
       # tests E2E rouges en une seule passe (même doctrine que Gate A).
       fail-fast: false
       matrix:
-        tranche: [1, 2, 3]
+        tranche: [1, 2]
     # 🔴 BASE DE DONNÉES E2E (2026-08-21) — LE HARNAIS DOIT AVOIR UNE BASE.
     #
     # Quatre specs Playwright (`a11y-admin`, `admin-nav-clic`, `admin-booking-flow`,
@@ -821,8 +833,8 @@ jobs:
           echo "cache-hit=${{ steps.cache-tsc.outputs.cache-hit }} matched=${{ steps.cache-tsc.outputs.cache-matched-key }}"
       # Sauvegarde seulement si le build a réussi (condition par défaut) et si la
       # clé exacte n'existait pas : une clé de GitHub Actions est immuable.
-      # Tranche 1 seulement : les trois tranches calculent la MÊME clé, et une
-      # clé de cache est immuable — trois sauvegardes concurrentes se disputeraient.
+      # Tranche 1 seulement : les deux tranches calculent la MÊME clé, et une
+      # clé de cache est immuable — deux sauvegardes concurrentes se disputeraient.
       - name: Sauver le cache incrémental TypeScript
         if: ${{ steps.cache-tsc.outputs.cache-hit != 'true' && matrix.tranche == 1 }}
         uses: actions/cache/save@v6
@@ -1058,9 +1070,9 @@ jobs:
         # SMTP). Elle tourne dans son job, `banc-formateurs.yml`. Une spec
         # d'ÉCRAN ou de GARDE du chantier reste ici : elle ne porte pas le tag.
         # Garde : `tests/unit/ci/le-banc-formateurs-a-son-job.spec.ts`.
-        # `--shard` : chaque tranche joue un tiers de la MÊME sélection. Les
+        # `--shard` : chaque tranche joue la moitié de la MÊME sélection. Les
         # groupes `describe.serial` restent entiers dans une seule tranche.
-        run: pnpm test:e2e --project=chromium --grep-invert "@baseline|@formateurs" --shard=${{ matrix.tranche }}/3
+        run: pnpm test:e2e --project=chromium --grep-invert "@baseline|@formateurs" --shard=${{ matrix.tranche }}/2
         # 🔴 15 → 30 (2026-08-21). Les DEUX premiers runs où la suite a réellement
         # tourné ont été COUPÉS par ce plafond, pas terminés :
         #   run 32447074166 — 04:39:06 → 04:54:30 = 15 min 24 s
@@ -1224,7 +1236,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
-      - name: Les trois tranches ont réussi
+      - name: Les deux tranches ont réussi
         env:
           RESULTAT: ${{ needs.gate-b.result }}
         run: |
@@ -1232,7 +1244,7 @@ jobs:
             echo "::error::Tranches de Gate B : « ${RESULTAT} » (attendu : success). Gate B · per-PR ne peut pas être verte."
             exit 1
           fi
-          echo "Les trois tranches de Gate B sont vertes."
+          echo "Les deux tranches de Gate B sont vertes."
 
   gate-c-docker:
     # Boots the production Dockerfile end-to-end against ephemeral Redis +
