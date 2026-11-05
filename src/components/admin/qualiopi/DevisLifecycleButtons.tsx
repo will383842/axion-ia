@@ -178,6 +178,18 @@ export function DevisLifecycleButtons({
           </button>
         )}
 
+        {statut === "brouillon" && (
+          <a
+            href={`/api/qualiopi/devis/${devisId}/apercu`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="admin-button"
+            aria-label="Ouvrir l'aperçu PDF du brouillon (aucun numéro attribué, rien n'est envoyé)"
+          >
+            Aperçu
+          </a>
+        )}
+
         {statut === "envoye" && (
           <>
             <button
