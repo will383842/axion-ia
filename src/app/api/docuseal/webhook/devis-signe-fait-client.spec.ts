@@ -1,9 +1,12 @@
 // @vitest-environment node
 /**
- * Webhook DocuSeal : la signature d'un devis fait passer la fiche en client, dans la transaction
- * de l'acceptation. Un refus, un rejeu, un devis expiré ne font rien monter.
+ * Webhook DocuSeal : la signature d'un devis fait passer la fiche en client, APRÈS le COMMIT
+ * de l'acceptation (hors transaction). Un refus, un rejeu, un devis expiré ne font rien monter.
  */
 import { beforeEach, describe, expect, it, vi } from "vitest";
+
+const sentry = vi.hoisted(() => ({ captureException: vi.fn() }));
+vi.mock("@sentry/nextjs", () => sentry);
 
 const h = vi.hoisted(() => ({
   tx: { devis: { update: vi.fn() } },
@@ -46,18 +49,30 @@ beforeEach(() => {
 });
 
 describe("webhook DocuSeal, devis", () => {
-  it("signature complète : acceptation, émission, puis montée de la fiche, dans le même tx", async () => {
+  it("signature complète : acceptation, émission, puis montée de la fiche par le client prisma", async () => {
     const r = await POST(requete());
     expect(r.status).toBe(200);
     expect(h.tx.devis.update).toHaveBeenCalledOnce();
     expect(h.monter).toHaveBeenCalledOnce();
-    expect(h.monter).toHaveBeenCalledWith(h.tx, ["dv-1"], { origine: "docuseal" });
+    expect(h.monter).toHaveBeenCalledWith(h.p, ["dv-1"], { origine: "docuseal" });
     expect(h.tx.devis.update.mock.invocationCallOrder[0]!).toBeLessThan(
       h.emettre.mock.invocationCallOrder[0]!,
     );
     expect(h.emettre.mock.invocationCallOrder[0]!).toBeLessThan(
       h.monter.mock.invocationCallOrder[0]!,
     );
+  });
+
+  it("une erreur levée par la montée n'empêche jamais l'acceptation du devis", async () => {
+    h.monter.mockRejectedValueOnce(new Error("montée"));
+    const r = await POST(requete());
+    expect(r.status).toBe(200);
+    expect(h.tx.devis.update).toHaveBeenCalledOnce();
+    expect(h.emettre).toHaveBeenCalledOnce();
+    expect(h.p.docusealWebhookEvent.update).toHaveBeenCalledWith(
+      expect.objectContaining({ data: expect.objectContaining({ processedAt: expect.any(Date) }) }),
+    );
+    expect(sentry.captureException).toHaveBeenCalledOnce();
   });
 
   it("refus (form.declined) : rien ne monte", async () => {

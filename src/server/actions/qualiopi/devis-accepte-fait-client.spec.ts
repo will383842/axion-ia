@@ -1,14 +1,18 @@
 // @vitest-environment node
 /**
- * Acceptation d'un devis depuis la console : la fiche passe en client dans la transaction de
- * l'acceptation, après l'émission Partners, avec l'administrateur nommé dans la trace.
+ * Acceptation d'un devis depuis la console : la fiche passe en client APRÈS le COMMIT de
+ * l'acceptation (hors transaction, par le client prisma), après l'émission Partners, avec l'administrateur nommé dans la trace.
  */
 import { beforeEach, describe, expect, it, vi } from "vitest";
+
+const sentry = vi.hoisted(() => ({ captureException: vi.fn() }));
+vi.mock("@sentry/nextjs", () => sentry);
 
 const DEVIS = "11111111-1111-4111-8111-111111111111";
 
 const h = vi.hoisted(() => ({
   tx: { devis: { update: vi.fn() } },
+  p: {},
   monter: vi.fn(),
   emettre: vi.fn(),
   habilitation: vi.fn(),
@@ -16,7 +20,7 @@ const h = vi.hoisted(() => ({
 }));
 
 vi.mock("react", () => ({ default: {} }));
-vi.mock("@/lib/prisma", () => ({ prisma: {} }));
+vi.mock("@/lib/prisma", () => ({ prisma: h.p }));
 vi.mock("@/server/actions/qualiopi/_guards", () => ({
   requireAdminWrite: vi.fn(),
   requireHabilitation: h.habilitation,
@@ -86,7 +90,7 @@ describe("acceptDevisAction", () => {
     const r = await acceptDevisAction(DEVIS);
     expect(r).toEqual({ data: { id: DEVIS } });
     expect(h.monter).toHaveBeenCalledOnce();
-    expect(h.monter).toHaveBeenCalledWith(h.tx, [DEVIS], {
+    expect(h.monter).toHaveBeenCalledWith(h.p, [DEVIS], {
       origine: "console",
       adminUserId: "adm-1",
     });
@@ -96,6 +100,16 @@ describe("acceptDevisAction", () => {
     expect(h.emettre.mock.invocationCallOrder[0]!).toBeLessThan(
       h.monter.mock.invocationCallOrder[0]!,
     );
+  });
+
+  it("une erreur levée par la montée n'empêche jamais l'acceptation du devis", async () => {
+    h.monter.mockRejectedValueOnce(new Error("montée"));
+    const r = await acceptDevisAction(DEVIS);
+    expect(r).toEqual({ data: { id: DEVIS } });
+    expect(h.tx.devis.update).toHaveBeenCalledOnce();
+    expect(h.emettre).toHaveBeenCalledOnce();
+    expect(h.log).toHaveBeenCalledOnce();
+    expect(sentry.captureException).toHaveBeenCalledOnce();
   });
 
   it("identifiant invalide : rien n'est écrit, rien ne monte", async () => {

@@ -1,6 +1,6 @@
 /**
  * « Un prospect passe en client lorsqu'un devis est signé » : la règle, sur une base SIMULÉE en
- * mémoire (le `tx` reçu). Garde : le statut ne fait que monter, un rejeu ne trace pas deux fois,
+ * mémoire (le client Prisma ordinaire reçu, hors transaction d'acceptation). Garde : le statut ne fait que monter, un rejeu ne trace pas deux fois,
  * un devis non accepté ne fait rien monter, une panne n'échoue jamais.
  */
 
@@ -15,7 +15,7 @@ type Statut = "prospect" | "devis_envoye" | "client_actif" | "client_inactif" | 
 
 interface Monde {
   devis: Map<string, { clientId: string; numero: string; statut: string }>;
-  clients: Map<string, { statut: Statut }>;
+  clients: Map<string, { statut: Statut }>; // réaffecté par le retour arrière d'une transaction
   fusions: { absorbeId: string; absorbantId: string; defaiteLe: Date | null }[];
   traces: Record<string, unknown>[];
   ecritures: number;
@@ -26,20 +26,10 @@ function monde(): Monde {
 }
 
 function faux(m: Monde) {
-  return {
-    devis: {
-      findUnique: vi.fn(
-        async ({ where }: { where: { id: string } }) => m.devis.get(where.id) ?? null,
-      ),
-    },
+  // Les écritures ne vivent que dans `t`, le client de la petite transaction : elles ne sont
+  // joignables qu'à travers `$transaction`, comme en production.
+  const t = {
     client: {
-      findUnique: vi.fn(
-        // Une COPIE, comme Prisma : la ligne lue ne bouge pas avec l'écriture suivante.
-        async ({ where }: { where: { id: string } }) => {
-          const c = m.clients.get(where.id);
-          return c === undefined ? null : { ...c };
-        },
-      ),
       updateMany: vi.fn(
         async ({
           where,
@@ -56,11 +46,6 @@ function faux(m: Monde) {
         },
       ),
     },
-    clientFusion: {
-      findMany: vi.fn(async ({ where }: { where: { absorbeId: { in: string[] } } }) =>
-        m.fusions.filter((f) => where.absorbeId.in.includes(f.absorbeId) && f.defaiteLe === null),
-      ),
-    },
     activityLog: {
       create: vi.fn(async ({ data }: { data: Record<string, unknown> }) => {
         m.traces.push(data);
@@ -68,6 +53,43 @@ function faux(m: Monde) {
       }),
     },
   };
+  const db = {
+    devis: {
+      findUnique: vi.fn(
+        async ({ where }: { where: { id: string } }) => m.devis.get(where.id) ?? null,
+      ),
+    },
+    client: {
+      findUnique: vi.fn(
+        // Une COPIE, comme Prisma : la ligne lue ne bouge pas avec l'écriture suivante.
+        async ({ where }: { where: { id: string } }) => {
+          const c = m.clients.get(where.id);
+          return c === undefined ? null : { ...c };
+        },
+      ),
+    },
+    clientFusion: {
+      findMany: vi.fn(async ({ where }: { where: { absorbeId: { in: string[] } } }) =>
+        m.fusions.filter((f) => where.absorbeId.in.includes(f.absorbeId) && f.defaiteLe === null),
+      ),
+    },
+    // Une vraie transaction : si le travail lève, tout ce qu'il a écrit est annulé.
+    $transaction: vi.fn(async (travail: (x: typeof t) => Promise<unknown>) => {
+      const avant = new Map([...m.clients].map(([id, c]) => [id, { ...c }]));
+      const ecrituresAvant = m.ecritures;
+      const tracesAvant = m.traces.length;
+      try {
+        return await travail(t);
+      } catch (err) {
+        m.clients = avant;
+        m.ecritures = ecrituresAvant;
+        m.traces.length = tracesAvant;
+        throw err;
+      }
+    }),
+    t,
+  };
+  return db;
 }
 
 const D1 = "d1";
@@ -126,11 +148,36 @@ describe("la montée", () => {
 
   it("course perdue (la fiche a changé entre la lecture et l'écriture) : aucune trace", async () => {
     const tx = faux(m);
-    tx.client.updateMany.mockResolvedValue({ count: 0 });
+    tx.t.client.updateMany.mockResolvedValue({ count: 0 });
     expect(
       await faireMonterLesFichesDesDevisSignes(tx as never, [D1], { origine: "docuseal" }),
     ).toBe(0);
     expect(m.traces).toHaveLength(0);
+  });
+
+  it("l'écriture et sa trace vont ensemble dans UNE transaction", async () => {
+    const db = faux(m);
+    expect(
+      await faireMonterLesFichesDesDevisSignes(db as never, [D1], { origine: "docuseal" }),
+    ).toBe(1);
+    expect(db.$transaction).toHaveBeenCalledOnce();
+    expect(db.t.client.updateMany).toHaveBeenCalledOnce();
+    expect(db.t.activityLog.create).toHaveBeenCalledOnce();
+    // L'écriture et la trace sont passées par le client de la transaction, dans cet ordre.
+    expect(db.t.client.updateMany.mock.invocationCallOrder[0]!).toBeLessThan(
+      db.t.activityLog.create.mock.invocationCallOrder[0]!,
+    );
+  });
+
+  it("si la trace échoue, l'écriture est annulée avec elle (Sentry le dit, le statut ne bouge pas)", async () => {
+    const db = faux(m);
+    db.t.activityLog.create.mockRejectedValue(new Error("trace"));
+    expect(
+      await faireMonterLesFichesDesDevisSignes(db as never, [D1], { origine: "docuseal" }),
+    ).toBe(0);
+    expect(m.clients.get(C1)!.statut).toBe("prospect");
+    expect(m.traces).toHaveLength(0);
+    expect(sentry.captureException).toHaveBeenCalledOnce();
   });
 
   it("l'administrateur de la console est nommé dans la trace", async () => {
@@ -180,7 +227,7 @@ describe("fiche absorbée par fusion", () => {
 describe("panne", () => {
   it("une erreur est signalée à Sentry et n'échoue jamais", async () => {
     const tx = faux(m);
-    tx.client.updateMany.mockRejectedValue(new Error("base"));
+    tx.t.client.updateMany.mockRejectedValue(new Error("base"));
     await expect(
       faireMonterLesFichesDesDevisSignes(tx as never, [D1], { origine: "docuseal" }),
     ).resolves.toBe(0);

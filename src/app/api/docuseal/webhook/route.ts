@@ -21,6 +21,7 @@
 //   - Pas de log du body en clair (peut contenir PII signataire).
 //   - Sentry capture seulement les erreurs internes, pas le payload.
 
+import * as Sentry from "@sentry/nextjs";
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 import {
@@ -198,9 +199,14 @@ async function dispatchDevisEvent(
         data: { statut: "accepte", acceptedAt: new Date() },
       });
       await emettreDevisSigne(tx, devis.id);
-      // Un prospect passe en client lorsqu'un devis est signé (Will, 04/11/2026).
-      await faireMonterLesFichesDesDevisSignes(tx, [devis.id], { origine: "docuseal" });
     });
+    // Un prospect passe en client lorsqu'un devis est signé (Will, 04/11/2026) : APRÈS le COMMIT,
+    // hors transaction (B1) ; une erreur ne touche jamais l'acceptation.
+    try {
+      await faireMonterLesFichesDesDevisSignes(prisma, [devis.id], { origine: "docuseal" });
+    } catch (err) {
+      Sentry.captureException(err, { tags: { action: "devis_signe_fait_client" } });
+    }
     sendTelegram({
       tag: "OPTION CONFIRMÉE",
       body: `📑 Devis ${devis.numero} signé (bon pour accord) via DocuSeal`,

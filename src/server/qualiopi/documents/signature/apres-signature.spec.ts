@@ -53,7 +53,7 @@ vi.mock("@/server/actions/qualiopi/_guards", () => ({ logQualiopiActivity: h.log
 vi.mock("@/server/partners-sync/producteurs/devis", () => ({
   devisConcernesPourEmission: vi.fn(async () => []),
   emettreDevisSigne: vi.fn(),
-  transactionDevisSigne: vi.fn(async (_p: unknown, fn: (tx: unknown) => Promise<void>) =>
+  transactionDevisSigne: vi.fn(async (_p: unknown, fn: (tx: unknown) => Promise<unknown>) =>
     fn(h.txDevis),
   ),
 }));
@@ -340,12 +340,27 @@ describe("devis intégralement signé : le prospect passe en client", () => {
     await apresSignature(ctx({ type: "devis", statutSignature: "signee", partie: "axionia" }));
     expect(h.txDevis.devis.findMany).toHaveBeenCalledOnce();
     expect(h.monter).toHaveBeenCalledOnce();
-    expect(h.monter).toHaveBeenCalledWith(h.txDevis, ["dv-1"], { origine: "signature_complete" });
+    expect(h.monter).toHaveBeenCalledWith(h.p, ["dv-1"], { origine: "signature_complete" });
+    // Hors transaction : jamais le `tx` de l'acceptation (B1).
+    expect(h.monter.mock.calls[0]![0]).not.toBe(h.txDevis);
     // La lecture des devis visés précède l'écriture gardée, la montée la suit.
     const ordre = (f: { mock: { invocationCallOrder: number[] } }) =>
       f.mock.invocationCallOrder[0]!;
     expect(ordre(h.txDevis.devis.findMany)).toBeLessThan(ordre(h.txDevis.devis.updateMany));
     expect(ordre(h.txDevis.devis.updateMany)).toBeLessThan(ordre(h.monter));
+  });
+
+  it("une erreur levée par la montée n'empêche jamais l'acceptation du devis", async () => {
+    const Sentry = await import("@sentry/nextjs");
+    h.monter.mockRejectedValueOnce(new Error("montée"));
+    await expect(
+      apresSignature(ctx({ type: "devis", statutSignature: "signee", partie: "axionia" })),
+    ).resolves.not.toThrow();
+    expect(h.txDevis.devis.updateMany).toHaveBeenCalledOnce();
+    expect(h.monter).toHaveBeenCalledOnce();
+    expect(Sentry.captureException).toHaveBeenCalledWith(expect.any(Error), {
+      tags: { action: "devis_signe_fait_client" },
+    });
   });
 
   it("signature partielle : rien ne monte", async () => {
