@@ -11,7 +11,9 @@ import {
   sha256Offre,
   totauxFormule,
 } from "./offre-calculs";
+import { empreinteCanonique, versValeurJson } from "../../mcp/json-canonique";
 import { offreFictive } from "./offre-fixtures.spec-util";
+import { offreDevisV1 } from "./offre-devis";
 
 const phase = (rang: number, pourcentage: number) => ({
   rang,
@@ -102,5 +104,60 @@ describe("hachages", () => {
     expect(c1.automatisationsRetenues).toEqual(["a", "b"]);
     expect(c1.v).toBe(1);
     expect(sha256Choix(c1)).toMatch(/^[0-9a-f]{64}$/);
+  });
+});
+
+describe("prixMensuelNet — jamais négatif", () => {
+  it("refuse une remise hors [0, 10000] au lieu de rendre un prix négatif", () => {
+    expect(prixMensuelNet(9000, 10000)).toBe(0);
+    expect(() => prixMensuelNet(9000, 10001)).toThrow(RangeError);
+    expect(() => prixMensuelNet(9000, -1)).toThrow(RangeError);
+  });
+});
+
+describe("hachages — durcissement (audit)", () => {
+  it("n'empreinte que la sortie de parse : le défaut modeAvance ne change pas l'empreinte", () => {
+    const o = offreFictive();
+    const { modeAvance: _m, ...sansMode } = o.abonnement!;
+    expect(sha256Offre({ ...o, abonnement: sansMode })).toBe(sha256Offre(o));
+  });
+  it("refuse d'empreinter une offre invalide", () => {
+    expect(() => sha256Offre({ ...offreFictive(), v: 2 })).toThrow();
+  });
+  it("normalise les textes en NFC avant empreinte", () => {
+    const o = offreFictive();
+    const nfc = {
+      ...o,
+      garantie: o.garantie,
+      automatisations: [{ ...o.automatisations[0]!, libelle: "Café" }],
+    };
+    const nfd = { ...nfc, automatisations: [{ ...nfc.automatisations[0]!, libelle: "Café" }] };
+    expect(sha256Offre(nfd)).toBe(sha256Offre(nfc));
+    const c = (n: string) =>
+      choixCanonique({
+        devisNumero: n,
+        offreSha256: "x",
+        formule: "achat",
+        automatisationsRetenues: [],
+        maintenanceRetenue: false,
+        periodiciteMois: null,
+      });
+    expect(sha256Choix(c("Café"))).toBe(sha256Choix(c("Café")));
+  });
+  it("un v passé à l'exécution n'écrase pas la version de choixCanonique", () => {
+    const c = choixCanonique({
+      v: 2,
+      devisNumero: "N-1",
+      offreSha256: "x",
+      formule: "achat",
+      automatisationsRetenues: [],
+      maintenanceRetenue: false,
+      periodiciteMois: null,
+    } as never);
+    expect(c.v).toBe(1);
+  });
+  it("même empreinte que json-canonique (empreinteCanonique) sur la sortie de parse", () => {
+    const o = offreDevisV1.parse(offreFictive());
+    expect(`sha256:${sha256Offre(o)}`).toBe(empreinteCanonique(versValeurJson(o)));
   });
 });

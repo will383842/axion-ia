@@ -3,10 +3,15 @@
  *   - offre NULL        : lignes et total actuels, INCHANGÉS ;
  *   - une formule       : lignes + total de la partie ponctuelle ;
  *   - deux formules     : lignes vides et total 0 tant que le client n'a pas choisi.
+ *
+ * Forme = celle du VRAI `Devis` (prisma `model Devis`) : `lignes` Json
+ * `{ designation, quantite, prixUnitaireHtCents, tauxTvaPercent? }` (type
+ * `LigneFacture`, lu par `devis-signature-queries`) et `montantTotalHtCents`.
  */
+import type { LigneFacture } from "../documents/templates/facture";
 import { selectionComplete } from "./dependances";
-import type { Formule, LigneOffre, OffreDevisV1 } from "./offre-devis";
 import { totauxFormule } from "./offre-calculs";
+import type { Formule, OffreDevisV1 } from "./offre-devis";
 
 export interface ChoixDevis {
   readonly formule: Formule;
@@ -15,44 +20,68 @@ export interface ChoixDevis {
 
 export interface DevisPourMontants {
   readonly offre: OffreDevisV1 | null;
-  readonly lignes: readonly LigneOffre[];
-  readonly totalHtCents: number;
+  readonly lignes: readonly LigneFacture[];
+  readonly montantTotalHtCents: number;
   readonly choix?: ChoixDevis;
 }
 
 export interface MontantsDevis {
-  readonly lignes: readonly LigneOffre[];
-  readonly totalHtCents: number;
+  readonly lignes: readonly LigneFacture[];
+  readonly montantTotalHtCents: number;
+}
+
+/** Sélection d'automatisations incomplète ou inconnue : on ne devine pas à la place du client. */
+export class SelectionIncompleteError extends Error {
+  readonly inconnues: readonly string[];
+  readonly manquantes: readonly string[];
+  constructor(inconnues: readonly string[], manquantes: readonly string[]) {
+    super(
+      `Sélection d'automatisations incomplète (inconnues : ${inconnues.join(", ") || "aucune"} ; ` +
+        `dépendances manquantes : ${manquantes.join(", ") || "aucune"}).`,
+    );
+    this.name = "SelectionIncompleteError";
+    this.inconnues = inconnues;
+    this.manquantes = manquantes;
+  }
 }
 
 export function montantsDevis(devis: DevisPourMontants): MontantsDevis {
   const { offre } = devis;
-  if (offre === null) return { lignes: devis.lignes, totalHtCents: devis.totalHtCents };
+  if (offre === null) {
+    return { lignes: devis.lignes, montantTotalHtCents: devis.montantTotalHtCents };
+  }
 
   const formule =
     devis.choix?.formule ??
     (offre.formulesProposees.length === 1 ? offre.formulesProposees[0]! : null);
-  if (formule === null) return { lignes: [], totalHtCents: 0 };
+  if (formule === null) return { lignes: [], montantTotalHtCents: 0 };
 
   const sel = selectionComplete(devis.choix?.automatisationsRetenues ?? [], offre.automatisations);
-  const retenues = sel.ok
-    ? sel.retenues
-    : offre.automatisations.filter((a) => !a.facultative).map((a) => a.code);
+  if (!sel.ok) throw new SelectionIncompleteError(sel.inconnues, sel.manquantes);
+  const retenues = sel.retenues;
 
   const base =
     formule === "achat"
       ? (offre.achat?.lignes ?? [])
       : (offre.abonnement?.miseEnServiceLignes ?? []);
-  const autos = offre.automatisations
-    .filter((a) => retenues.includes(a.code))
-    .map((a) => ({
-      libelle: a.libelle,
-      quantite: 1,
-      prixHtCents: a.prixHtCents,
-      tauxTvaBps: a.tauxTvaBps,
-    }));
+  const lignes: LigneFacture[] = [
+    ...base.map((l) => ({
+      designation: l.libelle,
+      quantite: l.quantite,
+      prixUnitaireHtCents: l.prixHtCents,
+      tauxTvaPercent: l.tauxTvaBps / 100,
+    })),
+    ...offre.automatisations
+      .filter((a) => retenues.includes(a.code))
+      .map((a) => ({
+        designation: a.libelle,
+        quantite: 1,
+        prixUnitaireHtCents: a.prixHtCents,
+        tauxTvaPercent: a.tauxTvaBps / 100,
+      })),
+  ];
   return {
-    lignes: [...base, ...autos],
-    totalHtCents: totauxFormule(offre, formule, retenues).totalHtCents,
+    lignes,
+    montantTotalHtCents: totauxFormule(offre, formule, retenues).totalHtCents,
   };
 }

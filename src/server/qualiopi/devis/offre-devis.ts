@@ -7,6 +7,7 @@
  */
 import { z } from "zod";
 
+import { TAUX_TVA_STANDARD } from "../legal/tva";
 import { verifierDependances } from "./dependances";
 
 /** Durée de garantie proposée à la saisie (jours). Une durée, pas un prix. */
@@ -16,7 +17,19 @@ export const FORMULES = ["achat", "abonnement"] as const;
 export type Formule = (typeof FORMULES)[number];
 
 const cents = z.number().int().min(0);
-const bps = z.number().int().min(0);
+/** Points de base : 10000 = 100 %. Pas de maximum = remise > 100 % = prix négatif. */
+const BPS_MAX = 10000;
+const bps = z.number().int().min(0).max(BPS_MAX);
+/**
+ * Taux de TVA (bps) : la TVA est TOUJOURS facturée (ordre permanent, ADR 0050).
+ * Plancher = le taux standard EXISTANT (`TAUX_TVA_STANDARD`, en %) converti en bps ;
+ * aucune valeur inventée ici. Un taux supérieur reste accepté (cf. `clampTauxLigneCreation`).
+ */
+const tauxTva = z
+  .number()
+  .int()
+  .min(TAUX_TVA_STANDARD * 100)
+  .max(BPS_MAX);
 const texte = z.string().trim().min(1);
 
 const ligne = z
@@ -24,7 +37,7 @@ const ligne = z
     libelle: texte,
     quantite: z.number().positive(),
     prixHtCents: cents,
-    tauxTvaBps: bps,
+    tauxTvaBps: tauxTva,
   })
   .strict();
 export type LigneOffre = z.infer<typeof ligne>;
@@ -48,6 +61,9 @@ const phases = z
     if (p.reduce((s, x) => s + x.pourcentage, 0) !== 100) {
       ctx.addIssue({ code: "custom", message: "La somme des pourcentages doit valoir 100." });
     }
+    if (new Set(p.map((x) => x.rang)).size !== p.length) {
+      ctx.addIssue({ code: "custom", message: "Les rangs de phases doivent être distincts." });
+    }
   });
 
 const modeIA = z.enum(["client_direct", "via_axion_forfait", "incluse"]);
@@ -59,7 +75,7 @@ const automatisation = z
     facultative: z.boolean(),
     dependDe: z.array(z.string()),
     prixHtCents: cents,
-    tauxTvaBps: bps,
+    tauxTvaBps: tauxTva,
     palier: z.string().optional(),
     modeIA,
     moisIAInclus: z.number().int().min(1).optional(),
@@ -105,7 +121,7 @@ const abonnement = z
     miseEnServiceLignes: z.array(ligne),
     phases,
     mensuelCatalogueHtCents: cents,
-    tauxTvaBps: bps,
+    tauxTvaBps: tauxTva,
     terme: z.enum(["a_echoir", "echu"]),
     modeAvance: z
       .enum(["premiere_periode_seulement", "toutes_periodes"])
@@ -185,6 +201,29 @@ export const offreDevisV1 = z
         path: ["achat"],
         message: "Formule A : achat (et règle de maintenance) requis.",
       });
+    }
+    // Plusieurs phases ET plusieurs taux de TVA : la TVA par palier ne se répartirait
+    // plus exactement (même règle que `echeancierPhases`, refusée ici dès la saisie).
+    // Les automatisations comptent toutes : leur sélection n'est connue qu'au choix.
+    const tauxAutos = o.automatisations.map((a) => a.tauxTvaBps);
+    const blocs = [
+      { cle: "achat" as const, phases: o.achat?.phases, lignes: o.achat?.lignes },
+      {
+        cle: "abonnement" as const,
+        phases: o.abonnement?.phases,
+        lignes: o.abonnement?.miseEnServiceLignes,
+      },
+    ];
+    for (const b of blocs) {
+      if (!b.phases || !b.lignes || b.phases.length < 2) continue;
+      const taux = new Set([...b.lignes.map((l) => l.tauxTvaBps), ...tauxAutos]);
+      if (taux.size > 1) {
+        ctx.addIssue({
+          code: "custom",
+          path: [b.cle, "phases"],
+          message: "Plusieurs phases avec plusieurs taux de TVA : refusé.",
+        });
+      }
     }
     const dep = verifierDependances(o.automatisations);
     if (!dep.ok) {

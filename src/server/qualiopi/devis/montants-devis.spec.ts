@@ -1,32 +1,79 @@
 import { describe, expect, it } from "vitest";
 
-import { montantsDevis } from "./montants-devis";
+import { computeTotauxFacture } from "../legal/tva";
+import { montantsDevis, SelectionIncompleteError } from "./montants-devis";
 import { offreFictive } from "./offre-fixtures.spec-util";
 
-const lignesActuelles = [{ libelle: "L", quantite: 1, prixHtCents: 777, tauxTvaBps: 2000 }];
+/** Un devis à la VRAIE forme (model Devis : lignes Json + montantTotalHtCents). */
+const lignesActuelles = [
+  { designation: "Audit", quantite: 2, prixUnitaireHtCents: 777, tauxTvaPercent: 20 },
+  { designation: "Conseil", quantite: 1, prixUnitaireHtCents: 1000 },
+];
+const montantActuel = computeTotauxFacture(lignesActuelles, "assujetti").totalHtCents;
 
 describe("montantsDevis", () => {
-  it("offre NULL : lignes et total inchangés", () => {
-    const r = montantsDevis({ offre: null, lignes: lignesActuelles, totalHtCents: 777 });
-    expect(r).toEqual({ lignes: lignesActuelles, totalHtCents: 777 });
+  it("offre NULL : égal au calcul actuel (computeTotauxFacture), lignes inchangées", () => {
+    const r = montantsDevis({
+      offre: null,
+      lignes: lignesActuelles,
+      montantTotalHtCents: montantActuel,
+    });
+    expect(r.lignes).toEqual(lignesActuelles);
+    expect(r.montantTotalHtCents).toBe(montantActuel);
+    expect(r.montantTotalHtCents).toBe(computeTotauxFacture(r.lignes, "assujetti").totalHtCents);
   });
-  it("une formule : partie ponctuelle", () => {
+  it("une formule : partie ponctuelle, lignes à la forme du devis", () => {
     const o = { ...offreFictive(), formulesProposees: ["achat" as const] };
-    const r = montantsDevis({ offre: o, lignes: [], totalHtCents: 0 });
-    expect(r.totalHtCents).toBe(120000);
+    const r = montantsDevis({ offre: o, lignes: [], montantTotalHtCents: 0 });
+    expect(r.montantTotalHtCents).toBe(120000);
     expect(r.lignes).toHaveLength(2);
+    expect(r.lignes[0]).toEqual({
+      designation: "Ligne A",
+      quantite: 1,
+      prixUnitaireHtCents: 100000,
+      tauxTvaPercent: 20,
+    });
+    expect(computeTotauxFacture(r.lignes, "assujetti").totalHtCents).toBe(r.montantTotalHtCents);
   });
   it("deux formules : vide et 0 jusqu'au choix", () => {
-    const r = montantsDevis({ offre: offreFictive(), lignes: lignesActuelles, totalHtCents: 777 });
-    expect(r).toEqual({ lignes: [], totalHtCents: 0 });
+    const r = montantsDevis({
+      offre: offreFictive(),
+      lignes: lignesActuelles,
+      montantTotalHtCents: montantActuel,
+    });
+    expect(r).toEqual({ lignes: [], montantTotalHtCents: 0 });
   });
   it("deux formules, choix fait : la formule choisie", () => {
     const r = montantsDevis({
       offre: offreFictive(),
       lignes: [],
-      totalHtCents: 0,
+      montantTotalHtCents: 0,
       choix: { formule: "abonnement", automatisationsRetenues: [] },
     });
-    expect(r.totalHtCents).toBe(30000);
+    expect(r.montantTotalHtCents).toBe(30000);
+  });
+  it("sélection incomplète : erreur typée, pas de repli silencieux", () => {
+    const o = offreFictive();
+    const a = o.automatisations[0]!;
+    const offre = {
+      ...o,
+      automatisations: [
+        { ...a, code: "a", dependDe: ["b"] },
+        { ...a, code: "b", dependDe: [] },
+      ],
+    };
+    const appel = () =>
+      montantsDevis({
+        offre,
+        lignes: [],
+        montantTotalHtCents: 0,
+        choix: { formule: "achat", automatisationsRetenues: ["a"] },
+      });
+    expect(appel).toThrow(SelectionIncompleteError);
+    try {
+      appel();
+    } catch (e) {
+      expect((e as SelectionIncompleteError).manquantes).toEqual(["b"]);
+    }
   });
 });

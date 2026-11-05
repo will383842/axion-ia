@@ -3,10 +3,9 @@
  * Réutilise `computeTotauxFacture` (TVA par groupe de taux) ; rien n'est
  * recalculé ici.
  */
-import { createHash } from "node:crypto";
-
+import { empreinteCanonique, versValeurJson } from "../../mcp/json-canonique";
 import { computeTotauxFacture, type TotauxFacture } from "../legal/tva";
-import type { Formule, OffreDevisV1, PhaseOffre } from "./offre-devis";
+import { offreDevisV1, type Formule, type OffreDevisV1, type PhaseOffre } from "./offre-devis";
 
 /**
  * Totaux de la partie PONCTUELLE d'une formule (lignes + automatisations
@@ -35,6 +34,10 @@ export function totauxFormule(
 
 /** Mensuel net après remise, arrondi AVANT toute multiplication par les mois. */
 export function prixMensuelNet(mensuelHtCents: number, remiseBps: number): number {
+  if (!Number.isInteger(remiseBps) || remiseBps < 0 || remiseBps > 10000) {
+    throw new RangeError(`Remise hors [0, 10000] points de base : ${remiseBps}.`);
+  }
+  if (mensuelHtCents < 0) throw new RangeError("Mensuel négatif refusé.");
   return Math.round((mensuelHtCents * (10000 - remiseBps)) / 10000);
 }
 
@@ -103,24 +106,33 @@ export function indemniteSortieMaxCents(
   return Math.round((mensualitesRestantesCents * tauxBps) / 10000);
 }
 
-function canonique(v: unknown): unknown {
-  if (Array.isArray(v)) return v.map(canonique);
+/** Texte en NFC : « é » précomposé et « e + accent » donnent la même empreinte. */
+function enNfc(v: unknown): unknown {
+  if (typeof v === "string") return v.normalize("NFC");
+  if (Array.isArray(v)) return v.map(enNfc);
   if (v !== null && typeof v === "object") {
     return Object.fromEntries(
-      Object.entries(v as Record<string, unknown>)
-        .filter(([, x]) => x !== undefined)
-        .sort(([a], [b]) => (a < b ? -1 : a > b ? 1 : 0))
-        .map(([k, x]) => [k, canonique(x)]),
+      Object.entries(v as Record<string, unknown>).map(([k, x]) => [k.normalize("NFC"), enNfc(x)]),
     );
   }
   return v;
 }
 
-const sha256Hex = (s: string) => createHash("sha256").update(s, "utf8").digest("hex");
+/**
+ * Empreinte (hex, sans le préfixe `sha256:`) du JSON canonique de `valeur`, via le
+ * sérialiseur partagé `json-canonique` (clés triées, refus des nombres non finis).
+ * `versValeurJson` retire d'abord les `undefined` (que `canoniser` refuse par design).
+ */
+function empreinteHex(valeur: unknown): string {
+  return empreinteCanonique(versValeurJson(enNfc(valeur))).slice("sha256:".length);
+}
 
-/** SHA-256 (hex) du JSON canonique (clés triées) de l'offre. */
+/**
+ * SHA-256 (hex) de l'offre. N'empreinte QUE la sortie de `offreDevisV1.parse` :
+ * un défaut Zod (`modeAvance`) ne change pas l'empreinte, une offre invalide lève.
+ */
 export function sha256Offre(offre: unknown): string {
-  return sha256Hex(JSON.stringify(canonique(offre)));
+  return empreinteHex(offreDevisV1.parse(offre));
 }
 
 export interface ChoixCanonique {
@@ -134,9 +146,14 @@ export interface ChoixCanonique {
 }
 
 export function choixCanonique(c: Omit<ChoixCanonique, "v">): ChoixCanonique {
-  return { v: 1, ...c, automatisationsRetenues: [...c.automatisationsRetenues].sort() };
+  // `v` APRÈS le spread : un `v` passé à l'exécution (cast, JSON) ne peut pas l'écraser.
+  return {
+    ...c,
+    automatisationsRetenues: [...c.automatisationsRetenues].sort(),
+    v: 1,
+  };
 }
 
 export function sha256Choix(choix: ChoixCanonique): string {
-  return sha256Hex(JSON.stringify(canonique(choix)));
+  return empreinteHex(choix);
 }
