@@ -41,18 +41,10 @@ import {
   projetOuvrableDuClient,
   recopierLienProjet,
 } from "@/server/qualiopi/crm/devis-projet";
-import { getOrganismeIdentite } from "@/server/qualiopi/documents/organisme";
 import { generateDocument } from "@/server/qualiopi/documents/documents-service";
 import { getQualiopiConfig } from "@/server/qualiopi/config/site-settings";
-import { isQualiopiCertificationObtenue } from "@/server/qualiopi/config/flag";
-import { regimeEstimationMutualisee } from "@/server/qualiopi/financements/estimation-certification";
 import { LEGAL_MENTIONS } from "@/server/qualiopi/legal/legal-mentions";
-import {
-  regimeTvaDepuisConfig,
-  mentionTva,
-  TAUX_TVA_STANDARD,
-  type RegimeTva,
-} from "@/server/qualiopi/legal/tva";
+import { regimeTvaDepuisConfig, mentionTva } from "@/server/qualiopi/legal/tva";
 import {
   emettreDevisEmis,
   emettreDevisSigne,
@@ -60,12 +52,11 @@ import {
 } from "@/server/partners-sync/producteurs/devis";
 import { bandeauPourLeRole } from "@/server/partners/client-attributions";
 import { sirenDuClient } from "@/lib/siret";
-import {
-  ACTIVITE_LABELS,
-  normaliserLignesPourActivite,
-} from "@/server/qualiopi/financements/facture-libre-pur";
 import { DevisPdf, type DevisData } from "@/server/qualiopi/documents/templates/devis";
-import type { LigneFacture } from "@/server/qualiopi/documents/templates/facture";
+import {
+  donneesPdfDevis,
+  lireContextePdfDevis,
+} from "@/server/qualiopi/documents/donnees-pdf-devis";
 import { publicUrl } from "@/lib/public-url";
 import {
   creerTokenDocument,
@@ -115,14 +106,6 @@ const FINANCEMENTS = ["direct", "opco", "cpf", "france_travail"] as const;
 
 /** Miroir de l'enum Prisma ActiviteFacturation (sélecteur du Hub). */
 const ACTIVITES = ["formation", "un_a_un", "audit", "implementation", "site_web"] as const;
-
-/** Libellés d'affichage du financement suggéré (PDF devis). */
-const FINANCEMENT_LABELS: Record<(typeof FINANCEMENTS)[number], string> = {
-  direct: "Financement direct (fonds propres)",
-  opco: "OPCO",
-  cpf: "CPF",
-  france_travail: "France Travail",
-};
 
 /**
  * Lot A7d (relecture) — `AAAA-MM-JJ` relu en date UTC et comparé à lui-même, puis
@@ -385,24 +368,6 @@ export async function createDevisAction(
   return { data: { id: created.id, numero: created.numero } };
 }
 
-/** Assemble l'adresse d'affichage : structurée si présente, sinon champ libre. */
-function adresseClientDevis(client: {
-  adresse: string | null;
-  adresseRue: string | null;
-  adresseCodePostal: string | null;
-  adresseVille: string | null;
-}): string | undefined {
-  if (client.adresseRue && client.adresseVille) {
-    return [
-      client.adresseRue,
-      [client.adresseCodePostal, client.adresseVille].filter(Boolean).join(" "),
-    ]
-      .filter(Boolean)
-      .join(", ");
-  }
-  return client.adresse ?? undefined;
-}
-
 /**
  * Marque le devis comme envoyé (statut → envoye, sentAt = now).
  * Met aussi à jour le statut du client → devis_envoye.
@@ -510,76 +475,10 @@ export async function sendDevisAction(
    */
   let documentGenereId: string | null = null;
   try {
-    const identite = await getOrganismeIdentite();
-
-    // Régime + taux (snapshot config) et normalisation TVA par activité.
-    const regimeTvaConfig = await getQualiopiConfig("regime_tva");
-    const regimeTva: RegimeTva = regimeTvaDepuisConfig(regimeTvaConfig);
-    const tauxStandard =
-      (await getQualiopiConfig("taux_tva_standard_percent")) || TAUX_TVA_STANDARD;
-
-    const lignesBrutes = (Array.isArray(devis.lignes)
-      ? devis.lignes
-      : []) as unknown as LigneFacture[];
-    const lignes =
-      devis.activite !== null
-        ? normaliserLignesPourActivite(lignesBrutes, devis.activite, regimeTva, tauxStandard)
-        : lignesBrutes;
-
-    const formatDate = (d: Date) => d.toLocaleDateString("fr-FR");
-    const adresse = adresseClientDevis(devis.client);
-    const financementLabel =
-      devis.financementSuggere !== null
-        ? (FINANCEMENT_LABELS[devis.financementSuggere as (typeof FINANCEMENTS)[number]] ??
-          devis.financementSuggere)
-        : undefined;
-
-    // Sous-lot 8G — décidé UNE fois, ici, avec l'état réel du drapeau, puis
-    // transmis au gabarit. Le gabarit ne lit pas la configuration : un PDF qui
-    // consulterait l'environnement rendrait deux pièces différentes pour le
-    // même devis selon l'endroit d'où on le regénère.
-    const regimeEstimation = regimeEstimationMutualisee(
-      devis.financementSuggere,
-      isQualiopiCertificationObtenue(),
-    );
-
-    const data: DevisData = {
-      numero: devis.numero,
-      dateEmission: formatDate(new Date()),
-      dateValidite: formatDate(devis.dateValidite),
-      identite,
-      client: {
-        // Un devis part TOUJOURS au client lui-meme : pas de destinataire tiers
-        // ici, contrairement a la facture (OPCO, France Travail, beneficiaire).
-        // Le predicat se reduit donc au type du client.
-        estPersonnePhysique: devis.client.type === "particulier",
-        raisonSociale: devis.client.raisonSociale,
-        ...(devis.client.siret !== null ? { siret: devis.client.siret } : {}),
-        ...(adresse !== undefined ? { adresse } : {}),
-        ...(devis.client.contactEmail !== null ? { email: devis.client.contactEmail } : {}),
-      },
-      lignes,
-      regimeTva,
-      tauxTvaStandardPercent: tauxStandard,
-      ...(devis.refClient !== null ? { refClient: devis.refClient } : {}),
-      ...(devis.activite !== null ? { activiteLabel: ACTIVITE_LABELS[devis.activite] } : {}),
-      ...(financementLabel !== undefined ? { financementSuggere: financementLabel } : {}),
-      // 🔴 Sous-lot 8G — les montants d'estimation ne partent au PDF que si le
-      // financement mutualisé est réellement accessible. Sinon la pièce porte
-      // la mention à leur place : l'accès aux fonds OPCO/CPF/France Travail est
-      // subordonné à la certification (L.6316-1), et un devis est l'offre que
-      // le client accepte, pas une note de travail.
-      ...(regimeEstimation.presentable
-        ? {
-            ...(devis.montantOpcoEstimeCents !== null
-              ? { montantOpcoEstimeCents: devis.montantOpcoEstimeCents }
-              : {}),
-            ...(devis.resteAChargeCents !== null
-              ? { resteAChargeCents: devis.resteAChargeCents }
-              : {}),
-          }
-        : { mentionEstimationIndisponible: regimeEstimation.mention ?? "" }),
-    };
+    // Données du PDF : même fonction pure que l'aperçu du brouillon.
+    const contexte = await lireContextePdfDevis();
+    const identite = contexte.identite;
+    const data: DevisData = donneesPdfDevis(devis, contexte, new Date());
 
     const yearGeneration = new Date().getFullYear();
     const doc = await generateDocument({

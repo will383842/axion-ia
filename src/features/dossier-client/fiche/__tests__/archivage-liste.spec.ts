@@ -37,6 +37,7 @@ describe("liste des clients et archivage", () => {
     expect(src).toContain('archives === "1"');
     expect(src).toContain("voirArchives ? partage.archivees : partage.actives");
     expect(src).toContain("Voir les archivées (");
-    expect(src).toContain("const compte = partage.actives;");
+    // Les cartes comptent les actives (hors archivées), réduites par `?statut=`.
+    expect(src).toContain("const compte = appliquerFiltreStatut(partage.actives, filtre);");
   });
 });
