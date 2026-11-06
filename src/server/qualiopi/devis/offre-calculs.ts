@@ -43,6 +43,9 @@ export function prixMensuelNet(mensuelHtCents: number, remiseBps: number): numbe
 
 /** Prix d'une période : mensuel net (déjà arrondi) × nombre de mois. */
 export function prixPeriode(mensuelHtCents: number, remiseBps: number, mois: number): number {
+  if (!Number.isInteger(mois) || mois < 0) {
+    throw new RangeError(`Nombre de mois invalide (entier ≥ 0 attendu) : ${mois}.`);
+  }
   return prixMensuelNet(mensuelHtCents, remiseBps) * mois;
 }
 
@@ -103,6 +106,11 @@ export function indemniteSortieMaxCents(
   mensualitesRestantesCents: number,
   tauxBps: number,
 ): number {
+  if (!Number.isFinite(mensualitesRestantesCents) || mensualitesRestantesCents < 0) {
+    throw new RangeError(
+      `Mensualités restantes invalides (≥ 0 attendu) : ${mensualitesRestantesCents}.`,
+    );
+  }
   if (!Number.isInteger(tauxBps) || tauxBps < 0 || tauxBps > 10000) {
     throw new RangeError(`Taux hors [0, 10000] points de base : ${tauxBps}.`);
   }

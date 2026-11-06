@@ -1,7 +1,13 @@
 import { describe, expect, it } from "vitest";
 
 import { computeTotauxFacture } from "../legal/tva";
-import { FormuleNonProposeeError, montantsDevis, SelectionIncompleteError } from "./montants-devis";
+import {
+  choixCanoniqueDepuisOffre,
+  FormuleNonProposeeError,
+  montantsDevis,
+  SelectionIncompleteError,
+} from "./montants-devis";
+import { sha256Choix } from "./offre-calculs";
 import { offreFictive } from "./offre-fixtures.spec-util";
 
 /** Un devis à la VRAIE forme (model Devis : lignes Json + montantTotalHtCents). */
@@ -97,5 +103,49 @@ describe("montantsDevis", () => {
         choix: { formule: "achat", automatisationsRetenues: [] },
       }),
     ).toThrow(FormuleNonProposeeError);
+  });
+});
+
+describe("relecture du lot 1 — total borné et choix empreinté sur le facturé", () => {
+  it("total au-delà de CENTS_MAX : refus, pas de dépassement silencieux de l'Int 32 bits", () => {
+    const o = offreFictive();
+    const gros = {
+      ...o,
+      formulesProposees: ["achat" as const],
+      achat: {
+        ...o.achat!,
+        lignes: [{ libelle: "Gros", quantite: 1000, prixHtCents: 2_000_000_000, tauxTvaBps: 2000 }],
+      },
+    };
+    expect(() => montantsDevis({ offre: gros, lignes: [], montantTotalHtCents: 0 })).toThrow(
+      RangeError,
+    );
+  });
+  const base = {
+    devisNumero: "N-1",
+    offreSha256: "x",
+    formule: "achat" as const,
+    maintenanceRetenue: false,
+    periodiciteMois: null,
+  };
+  it("une automatisation OBLIGATOIRE est dans le choix empreinté même si la saisie l'omet", () => {
+    const o = offreFictive();
+    const offre = {
+      ...o,
+      automatisations: [{ ...o.automatisations[0]!, facultative: false }],
+    };
+    const c = choixCanoniqueDepuisOffre(offre, { ...base, automatisationsRetenues: [] });
+    expect(c.automatisationsRetenues).toEqual(["auto1"]);
+    const explicite = choixCanoniqueDepuisOffre(offre, {
+      ...base,
+      automatisationsRetenues: ["auto1"],
+    });
+    expect(sha256Choix(c)).toBe(sha256Choix(explicite));
+  });
+  it("même liste facturée, saisies brutes différentes (inconnue refusée) : sélection incomplète", () => {
+    const o = offreFictive();
+    expect(() =>
+      choixCanoniqueDepuisOffre(o, { ...base, automatisationsRetenues: ["fantome"] }),
+    ).toThrow(SelectionIncompleteError);
   });
 });

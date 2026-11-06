@@ -10,8 +10,8 @@
  */
 import type { LigneFacture } from "../documents/templates/facture";
 import { selectionComplete } from "./dependances";
-import { totauxFormule } from "./offre-calculs";
-import type { Formule, OffreDevisV1 } from "./offre-devis";
+import { choixCanonique, totauxFormule, type ChoixCanonique } from "./offre-calculs";
+import { CENTS_MAX, type Formule, type OffreDevisV1 } from "./offre-devis";
 
 export interface ChoixDevis {
   readonly formule: Formule;
@@ -105,8 +105,26 @@ export function montantsDevis(devis: DevisPourMontants): MontantsDevis {
         tauxTvaPercent: a.tauxTvaBps / 100,
       })),
   ];
-  return {
-    lignes,
-    montantTotalHtCents: totauxFormule(offre, formule, retenues).totalHtCents,
-  };
+  const totalHtCents = totauxFormule(offre, formule, retenues).totalHtCents;
+  // `Devis.montantTotalHtCents` est un Int 32 bits : le prix unitaire et la quantité sont
+  // bornés chacun, pas leur produit ni leur somme.
+  if (totalHtCents > CENTS_MAX) {
+    throw new RangeError(`Total HT hors borne (${totalHtCents} > ${CENTS_MAX} centimes).`);
+  }
+  return { lignes, montantTotalHtCents: totalHtCents };
+}
+
+/**
+ * Choix canonique empreinté sur la liste RÉELLEMENT FACTURÉE (`sel.retenues` : saisie
+ * + automatisations non facultatives), jamais sur la saisie brute : deux saisies qui
+ * facturent la même chose doivent sceller la même chose, et la preuve doit refléter la
+ * facture. Même refus que `montantsDevis` sur une sélection inconnue ou incomplète.
+ */
+export function choixCanoniqueDepuisOffre(
+  offre: OffreDevisV1,
+  c: Omit<ChoixCanonique, "v">,
+): ChoixCanonique {
+  const sel = selectionComplete(c.automatisationsRetenues, offre.automatisations);
+  if (!sel.ok) throw new SelectionIncompleteError(sel.inconnues, sel.manquantes);
+  return choixCanonique({ ...c, automatisationsRetenues: sel.retenues });
 }
