@@ -570,6 +570,24 @@ describe("une fiche existe déjà : aucune écriture sur elle", () => {
     expect(b.tables["submission"]?.[0]?.["ficheClientId"]).toBe(ficheMain["id"]);
   });
 
+  it("🔴 plus de 50 fiches au nom proche : la fiche de la même adresse est quand même retrouvée", async () => {
+    // 60 fiches « Atelier N » (même premier mot que la demande) AVANT la bonne dans l'ordre
+    // naturel : une fenêtre de 50 sans ordre ni priorité la laisserait dehors.
+    const voisines = Array.from({ length: 60 }, (_, i) =>
+      fiche({ raisonSociale: `Atelier Voisin ${i}`, contactEmail: `voisin${i}@autre-fictif.fr` }),
+    );
+    const bonne = fiche({
+      raisonSociale: "Atelier Fictif",
+      contactEmail: "alex@exemple-fictif.fr",
+    });
+    const b = base([demande()], { client: [...voisines, bonne] });
+    const bilan = await passage(b);
+    expect(bilan).toMatchObject({ creees: 0, liees: 1, doutes: 0 });
+    expect(clients(b)).toHaveLength(61);
+    expect(appelsPorte).toHaveLength(0);
+    expect(b.tables["submission"]?.[0]?.["ficheClientId"]).toBe(bonne["id"]);
+  });
+
   it("une même adresse sur deux fiches : ambigu, rien n'est créé ni relié, doute noté", async () => {
     const f1 = fiche({ raisonSociale: "Une", contactEmail: "alex@exemple-fictif.fr" });
     const f2 = fiche({ raisonSociale: "Deux", contactEmail: "alex@exemple-fictif.fr" });

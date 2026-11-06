@@ -210,27 +210,47 @@ export async function chargerFichesPourRattachement(
   const nomDeclare = indices.entrepriseDeclaree?.trim() ?? "";
   const premiereAdresse = adresses[0];
   const clientIds = [...new Set(contacts.map((c) => c.clientId))];
-  const fichesBrutes = await tx.client.findMany({
-    where: {
-      OR: [
-        ...(clientIds.length > 0 ? [{ id: { in: clientIds } }] : []),
-        ...(premiereAdresse
-          ? [{ contactEmail: { equals: premiereAdresse, mode: "insensitive" as const } }]
-          : []),
-        ...[nomDeclare, demande?.raisonSociale?.trim() ?? ""]
-          .filter((n) => n !== "")
-          .map((n) => ({
-            raisonSociale: {
-              contains: n.split(/\s+/)[0] ?? "",
-              mode: "insensitive" as const,
-            },
-          })),
-        ...(demande?.siren ? [{ siren: demande.siren }] : []),
-      ],
-    },
-    select: { id: true, raisonSociale: true, siren: true, contactEmail: true },
-    take: 50,
-  });
+  const selection = { id: true, raisonSociale: true, siren: true, contactEmail: true } as const;
+  // Ordre stable : jamais une fenêtre qui dépend de l'ordre physique des lignes.
+  const ordre = [{ createdAt: "asc" as const }, { id: "asc" as const }];
+  // 1. Les fiches RÉELLEMENT candidates (personne connue, même adresse, même SIREN) : d'abord,
+  //    et hors de la fenêtre des fiches « au nom proche » qui peut être pleine à elle seule.
+  const exactes = [
+    ...(clientIds.length > 0 ? [{ id: { in: clientIds } }] : []),
+    ...(premiereAdresse
+      ? [{ contactEmail: { equals: premiereAdresse, mode: "insensitive" as const } }]
+      : []),
+    ...(demande?.siren ? [{ siren: demande.siren }] : []),
+  ];
+  const fichesExactes =
+    exactes.length > 0
+      ? await tx.client.findMany({
+          where: { OR: exactes },
+          select: selection,
+          orderBy: ordre,
+          take: 50,
+        })
+      : [];
+  // 2. Les fiches au premier mot du nom, en complément, dans la place restante.
+  const noms = [nomDeclare, demande?.raisonSociale?.trim() ?? ""]
+    .filter((n) => n !== "")
+    .map((n) => ({
+      raisonSociale: {
+        contains: n.split(/\s+/)[0] ?? "",
+        mode: "insensitive" as const,
+      },
+    }));
+  const deja = new Set(fichesExactes.map((f) => f.id));
+  const fichesNoms =
+    noms.length > 0
+      ? await tx.client.findMany({
+          where: { OR: noms, ...(deja.size > 0 ? { id: { notIn: [...deja] } } : {}) },
+          select: selection,
+          orderBy: ordre,
+          take: 50,
+        })
+      : [];
+  const fichesBrutes = [...fichesExactes, ...fichesNoms];
   if (fichesBrutes.length === 0) return [];
 
   const absorbees = new Set(
