@@ -625,6 +625,14 @@ describe("une fiche existe déjà : aucune écriture sur elle", () => {
     expect(alerte).toMatchObject({ code: "visio.fiche_demande_refus_porte" });
     expect(alerte["cibleId"]).toBeUndefined();
     expect(JSON.stringify(alerte)).not.toMatch(/exemple-fictif|Alex/i);
+    // Message FIXE : aucune valeur variable (pas même le nombre), le compte vit dans metadata.
+    expect(alerte["message"]).toBe(
+      "Des messages reçus par le site n'ont pas de fiche prospect : la porte unique a refusé " +
+        "trois fois de la créer. Ils sont écartés (plus de réessai) et restent visibles dans " +
+        "la boîte des messages ; à traiter à la main.",
+    );
+    expect(alerte["message"]).not.toMatch(/\d/);
+    expect(alerte["metadata"]).toEqual({ abandonnes: 2 });
     expect(traces(b, "dossier.fiche_demande_refus_porte")).toHaveLength(6);
     expect(traces(b, "dossier.fiche_demande_doute")).toHaveLength(2);
     expect(traces(b, "dossier.fiche_demande_doute")[0]?.["changes"]).toMatchObject({
