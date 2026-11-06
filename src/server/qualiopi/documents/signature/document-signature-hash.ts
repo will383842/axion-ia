@@ -46,6 +46,7 @@
 import { createHash } from "node:crypto";
 import { canonicalJson, type CanonicalValue } from "@/server/qualiopi/emargement/canonical";
 import type { MaillonChaine } from "@/server/qualiopi/emargement/hash";
+import { sha256Choix, type ChoixCanonique } from "@/server/qualiopi/devis/offre-calculs";
 
 /**
  * Version courante du tuple de signature au grain document.
@@ -57,8 +58,18 @@ import type { MaillonChaine } from "@/server/qualiopi/emargement/hash";
  * 3 (CGV avant signature du devis) : le tuple scelle aussi la VERSION des conditions
  * générales de vente acceptées (`cgvVersion`, `null` hors devis signé par jeton). Les
  * versions 1 et 2 restent figées, pas un octet changé.
+ *
+ * 4 (devis à formules, lot 4) : le tuple scelle aussi le CHOIX d'offre du client et la preuve
+ * d'acceptation des CGV (empreinte du texte, instant de la case cochée, jeton du lien). La
+ * version 4 est écrite SEULEMENT pour un devis à formules (`HASH_VERSION_DOCUMENT_V4`) ;
+ * `HASH_VERSION_DOCUMENT` reste 3 pour tout le reste, octet pour octet. JAMAIS de version 5 :
+ * la preuve d'acceptation des CGV (archive, trace d'accès) ne fait que remplir des valeurs
+ * déjà prévues ici.
  */
 export const HASH_VERSION_DOCUMENT = 3;
+
+/** Version du sceau d'une signature de devis à formules (choix d'offre + preuve des CGV). */
+export const HASH_VERSION_DOCUMENT_V4 = 4;
 
 /**
  * Versions encore recalculables — même doctrine que les deux autres familles :
@@ -72,6 +83,7 @@ const SERIALISEURS_DOCUMENT: Readonly<
   1: versCanonicalDocumentV1,
   2: versCanonicalDocumentV2,
   3: versCanonicalDocumentV3,
+  4: versCanonicalDocumentV4,
 };
 
 /** Vrai si ce code sait recalculer une empreinte de document de cette version. */
@@ -207,9 +219,77 @@ export interface TupleDocumentSignatureV3 extends TupleDocumentSignatureV2 {
   cgvVersion: string | null;
 }
 
+/**
+ * Version 4 : la version 3, plus le CHOIX d'offre et la PREUVE D'ACCEPTATION DES CGV.
+ *
+ * 🔴 TOUS HACHÉS. Aucun défaut : `null` = « non recueilli » (contresignature sans choix propre,
+ * ou preuve d'accès pas encore archivée), jamais « inconnu ». Absent n'est pas nul.
+ *
+ *  - `choixOffreSha256` : empreinte du choix canonique (formule, automatisations RÉELLEMENT
+ *    facturées, maintenance, périodicité, numéro du devis, empreinte de l'offre). Recalculée
+ *    depuis `choix_offre` à la vérification. La ligne `axionia` recopie celle du client.
+ *  - `cgvTexteSha256` : empreinte du TEXTE des CGV présenté (calcul unique `empreinteTexteCgv`).
+ *  - `cgvPdfSha256`, `cgvTraceSha256` : réservées à l'archive du PDF et à la trace d'accès
+ *    (chantier « preuve d'acceptation des CGV ») ; `null` tant qu'elles ne sont pas produites.
+ *  - `cgvAccepteeAtIso` : instant (serveur) de réception de la case cochée, distinct de `signeAt`.
+ *  - `jetonId` : identifiant du lien de signature utilisé (jamais le jeton ni son empreinte).
+ *
+ * `ipHash` et `userAgentSha256` restent HORS tuple (doctrine RGPD ci-dessus) : ils sont enregistrés
+ * avec la signature mais effaçables sans casser la preuve.
+ */
+export interface TupleDocumentSignatureV4 extends TupleDocumentSignatureV3 {
+  choixOffreSha256: string | null;
+  cgvTexteSha256: string | null;
+  cgvPdfSha256: string | null;
+  cgvAccepteeAtIso: string | null;
+  cgvTraceSha256: string | null;
+  jetonId: string | null;
+}
+
 /** Tout tuple recalculable, quelle que soit sa version. */
 export type TupleDocumentSignature =
-  TupleDocumentSignatureV1 | TupleDocumentSignatureV2 | TupleDocumentSignatureV3;
+  | TupleDocumentSignatureV1
+  | TupleDocumentSignatureV2
+  | TupleDocumentSignatureV3
+  | TupleDocumentSignatureV4;
+
+/** Les colonnes du sceau V4, toutes vides : une ligne V1 à V3 n'en porte aucune. */
+export const COLONNES_V4_VIDES = {
+  choixOffre: null,
+  choixOffreSha256: null,
+  cgvTexteSha256: null,
+  cgvPdfSha256: null,
+  cgvAccepteeAt: null,
+  cgvTraceSha256: null,
+  jetonId: null,
+} as const;
+
+const CLES_V4 = [
+  "choixOffreSha256",
+  "cgvTexteSha256",
+  "cgvPdfSha256",
+  "cgvAccepteeAtIso",
+  "cgvTraceSha256",
+  "jetonId",
+] as const;
+
+function versCanonicalDocumentV4(t: TupleDocumentSignature): CanonicalValue {
+  const v4: Record<string, CanonicalValue> = {};
+  for (const cle of CLES_V4) {
+    const valeur =
+      cle in t ? (t as unknown as Record<string, string | null | undefined>)[cle] : undefined;
+    if (valeur === undefined) {
+      // Absent n'est pas nul : un tuple v4 incomplet ne se hache pas.
+      throw new Error(`[document-signature-hash] Tuple v4 sans ${cle}`);
+    }
+    v4[cle] = valeur;
+  }
+  return {
+    ...(versCanonicalDocumentV3(t) as Record<string, CanonicalValue>),
+    v: 4,
+    ...v4,
+  };
+}
 
 function versCanonicalDocumentV2(t: TupleDocumentSignature): CanonicalValue {
   const facteur = "facteurVerification" in t ? t.facteurVerification : undefined;
@@ -311,6 +391,16 @@ export interface LigneDocumentSignature {
   facteurVerification: FacteurVerificationSignature | null;
   /** Version des CGV acceptées (devis signé par jeton) ; scellée à partir de la version 3. */
   cgvVersion: string | null;
+  /** Choix canonique du client (devis à formules) ; son empreinte est scellée en version 4. */
+  choixOffre: unknown;
+  choixOffreSha256: string | null;
+  /** Preuve d'acceptation des CGV, scellée en version 4. */
+  cgvTexteSha256: string | null;
+  cgvPdfSha256: string | null;
+  cgvAccepteeAt: Date | null;
+  cgvTraceSha256: string | null;
+  /** Lien de signature utilisé, scellé en version 4. */
+  jetonId: string | null;
 }
 
 /**
@@ -350,6 +440,9 @@ export function tupleDocumentDepuisLigne(
   if (ligne.hashVersion === 1 && ligne.facteurVerification !== null) return null;
   // Idem pour la version des CGV : aucune preuve de version 1 ou 2 n'en a porté.
   if (ligne.hashVersion < 3 && ligne.cgvVersion !== null) return null;
+  // Idem pour le choix d'offre et la preuve des CGV : aucune preuve antérieure à la version 4
+  // n'en a porté. En trouver un, c'est une écriture après coup.
+  if (ligne.hashVersion < 4 && porteColonnesV4(ligne)) return null;
 
   const v1: TupleDocumentSignatureV1 = {
     contexteType: "document_engagement",
@@ -372,7 +465,42 @@ export function tupleDocumentDepuisLigne(
   };
   if (ligne.hashVersion === 1) return v1;
   const v2: TupleDocumentSignatureV2 = { ...v1, facteurVerification: ligne.facteurVerification };
-  return ligne.hashVersion === 2 ? v2 : { ...v2, cgvVersion: ligne.cgvVersion };
+  if (ligne.hashVersion === 2) return v2;
+  const v3: TupleDocumentSignatureV3 = { ...v2, cgvVersion: ligne.cgvVersion };
+  if (ligne.hashVersion === 3) return v3;
+
+  // Version 4. L'empreinte du choix est RECALCULÉE depuis le JSON stocké : modifier
+  // `choix_offre` en base, ou seulement sa colonne d'empreinte, rend la ligne irrecalculable.
+  let choixOffreSha256: string | null = null;
+  if (ligne.choixOffre !== null && ligne.choixOffre !== undefined) {
+    try {
+      choixOffreSha256 = sha256Choix(ligne.choixOffre as ChoixCanonique);
+    } catch {
+      return null;
+    }
+  }
+  if (choixOffreSha256 !== ligne.choixOffreSha256) return null;
+  return {
+    ...v3,
+    choixOffreSha256,
+    cgvTexteSha256: ligne.cgvTexteSha256,
+    cgvPdfSha256: ligne.cgvPdfSha256,
+    cgvAccepteeAtIso: ligne.cgvAccepteeAt === null ? null : ligne.cgvAccepteeAt.toISOString(),
+    cgvTraceSha256: ligne.cgvTraceSha256,
+    jetonId: ligne.jetonId,
+  };
+}
+
+function porteColonnesV4(ligne: LigneDocumentSignature): boolean {
+  return (
+    (ligne.choixOffre !== null && ligne.choixOffre !== undefined) ||
+    ligne.choixOffreSha256 !== null ||
+    ligne.cgvTexteSha256 !== null ||
+    ligne.cgvPdfSha256 !== null ||
+    ligne.cgvAccepteeAt !== null ||
+    ligne.cgvTraceSha256 !== null ||
+    ligne.jetonId !== null
+  );
 }
 
 /**

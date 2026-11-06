@@ -17,10 +17,11 @@ import * as Sentry from "@sentry/nextjs";
 import { z } from "zod";
 
 import { prisma } from "@/lib/prisma";
+import type { ActiviteFacturation } from "../../../../prisma/generated/client";
 import { FORMULES, offreDevisV1 } from "./offre-devis";
 import { sha256Offre } from "./offre-calculs";
 import { formulesActives } from "./interrupteur-formules";
-import { planifierPlansRecurrents } from "./plan-recurrent-devis";
+import { planifierPlansRecurrents, type PlansProposes } from "./plan-recurrent-devis";
 
 const choixStocke = z.object({
   v: z.literal(1),
@@ -47,8 +48,20 @@ const refuse = (code: string, motif: string): PropositionPlans => ({
   motif,
 });
 
-export async function proposerPlansRecurrentsDuDevis(devisId: string): Promise<PropositionPlans> {
-  if (!(await formulesActives())) return { statut: "inerte", raison: "interrupteur_eteint" };
+type Evaluation =
+  | { readonly fin: PropositionPlans }
+  | {
+      readonly fin: null;
+      readonly devis: { clientId: string; activite: ActiviteFacturation; refClient: string | null };
+      readonly calcul: Extract<PlansProposes, { ok: true }>;
+      readonly maintenant: Date;
+    };
+
+/** Lit le devis et calcule (fonction pure du lot 5) les plans ATTENDUS. N'écrit rien. */
+async function evaluerPlansDuDevis(devisId: string): Promise<Evaluation> {
+  if (!(await formulesActives())) {
+    return { fin: { statut: "inerte", raison: "interrupteur_eteint" } };
+  }
 
   const devis = await prisma.devis.findUnique({
     where: { id: devisId },
@@ -66,34 +79,39 @@ export async function proposerPlansRecurrentsDuDevis(devisId: string): Promise<P
       choixRetenu: true,
     },
   });
-  if (devis === null) return refuse("devis_introuvable", "Devis introuvable.");
-  if (devis.offre === null) return { statut: "inerte", raison: "sans_offre" };
+  if (devis === null) return { fin: refuse("devis_introuvable", "Devis introuvable.") };
+  if (devis.offre === null) return { fin: { statut: "inerte", raison: "sans_offre" } };
   if (devis.statut !== "accepte" && devis.statut !== "transforme_convention") {
-    return refuse("devis_non_accepte", "Seul un devis accepté propose des plans.");
+    return { fin: refuse("devis_non_accepte", "Seul un devis accepté propose des plans.") };
   }
   if (devis.formuleRetenue === null) {
-    return refuse("aucune_formule", "Aucune formule retenue : aucun plan proposé.");
+    return { fin: refuse("aucune_formule", "Aucune formule retenue : aucun plan proposé.") };
   }
   if (devis.activite === null) {
-    return refuse("activite_absente", "Activité du devis absente : le plan exige une activité.");
+    return {
+      fin: refuse("activite_absente", "Activité du devis absente : le plan exige une activité."),
+    };
   }
 
   const offre = offreDevisV1.safeParse(devis.offre);
-  if (!offre.success) return refuse("offre_illisible", "Offre du devis illisible.");
+  if (!offre.success) return { fin: refuse("offre_illisible", "Offre du devis illisible.") };
   const choix = choixStocke.safeParse(devis.choixRetenu);
-  if (!choix.success) return refuse("choix_illisible", "Choix du client illisible ou absent.");
+  if (!choix.success)
+    return { fin: refuse("choix_illisible", "Choix du client illisible ou absent.") };
 
   // Le plan ne s'écrit que sur une offre INTACTE : empreinte recalculée = empreinte stockée
   // = empreinte que le client a vue en choisissant.
   const empreinte = sha256Offre(devis.offre);
   if (devis.offreSha256 !== empreinte || choix.data.offreSha256 !== empreinte) {
-    return refuse(
-      "offre_alteree",
-      "Empreinte de l'offre différente de celle du choix : aucun plan.",
-    );
+    return {
+      fin: refuse(
+        "offre_alteree",
+        "Empreinte de l'offre différente de celle du choix : aucun plan.",
+      ),
+    };
   }
   if (choix.data.formule !== devis.formuleRetenue || choix.data.devisNumero !== devis.numero) {
-    return refuse("choix_incoherent", "Le choix scellé ne correspond pas au devis.");
+    return { fin: refuse("choix_incoherent", "Le choix scellé ne correspond pas au devis.") };
   }
 
   const maintenant = new Date();
@@ -107,8 +125,29 @@ export async function proposerPlansRecurrentsDuDevis(devisId: string): Promise<P
     debutAt: devis.acceptedAt ?? maintenant,
     devisNumero: devis.numero,
   });
-  if (!calcul.ok) return refuse(calcul.code, calcul.motif);
+  if (!calcul.ok) return { fin: refuse(calcul.code, calcul.motif) };
+  return {
+    fin: null,
+    devis: { clientId: devis.clientId, activite: devis.activite, refClient: devis.refClient },
+    calcul,
+    maintenant,
+  };
+}
 
+/**
+ * Nombre de plans récurrents ATTENDUS pour un devis accepté (recalculé depuis la formule retenue
+ * et l'offre figée), ou `null` si on ne peut pas l'affirmer (inerte, refus, offre illisible).
+ * `0` = cas NORMAL (ex. formule « achat » sans maintenance) : aucune alerte à montrer.
+ */
+export async function compterPlansAttendus(devisId: string): Promise<number | null> {
+  const e = await evaluerPlansDuDevis(devisId);
+  return e.fin === null ? e.calcul.plans.length : null;
+}
+
+export async function proposerPlansRecurrentsDuDevis(devisId: string): Promise<PropositionPlans> {
+  const e = await evaluerPlansDuDevis(devisId);
+  if (e.fin !== null) return e.fin;
+  const { devis, calcul, maintenant } = e;
   try {
     return await prisma.$transaction(async (tx) => {
       const existants = new Set(
@@ -126,7 +165,7 @@ export async function proposerPlansRecurrentsDuDevis(devisId: string): Promise<P
         await tx.planRecurrent.create({
           data: {
             clientId: devis.clientId,
-            activite: devis.activite!,
+            activite: devis.activite,
             lignes: plan.lignes as never,
             ...(devis.refClient !== null ? { refClient: devis.refClient } : {}),
             periodiciteMois: plan.periodiciteMois,
@@ -160,12 +199,16 @@ export async function proposerPlansRecurrentsDuDevis(devisId: string): Promise<P
 /**
  * Appel après le COMMIT de l'acceptation (hors transaction) : n'échoue JAMAIS, et ne
  * touche jamais l'acceptation. Un refus ou une erreur part à Sentry (aucune donnée
- * personnelle : identifiant du devis, code) — Will crée alors le plan à la main.
+ * personnelle : identifiant du devis, code) — Will relance alors la proposition des plans.
+ *
+ * Rend `null` si tout va bien (plans proposés, déjà présents, ou interrupteur éteint / devis
+ * sans offre), sinon le CODE de l'échec : l'appelant peut ainsi le rendre visible à l'écran
+ * sans jamais avoir à capturer d'exception.
  */
 export async function proposerPlansApresAcceptation(
   devisId: string,
   origine: "signature_complete" | "console",
-): Promise<void> {
+): Promise<string | null> {
   try {
     const r = await proposerPlansRecurrentsDuDevis(devisId);
     if (r.statut === "refuse") {
@@ -174,6 +217,7 @@ export async function proposerPlansApresAcceptation(
         tags: { action: "devis_plan_recurrent", code: r.code, origine },
         extra: { devisId, motif: r.motif },
       });
+      return r.code;
     } else if (r.statut === "traite" && r.nonTraites.length > 0) {
       Sentry.captureMessage("devis_formules: éléments d'offre sans plan", {
         level: "info",
@@ -186,5 +230,7 @@ export async function proposerPlansApresAcceptation(
       tags: { action: "devis_plan_recurrent", origine },
       extra: { devisId },
     });
+    return "erreur_inattendue";
   }
+  return null;
 }

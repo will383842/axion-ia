@@ -29,7 +29,7 @@
  * FR en dur, comme le reste du portail.
  */
 
-import { useState, useTransition } from "react";
+import { useEffect, useMemo, useState, useTransition } from "react";
 import { SignaturePad } from "@/components/portail/SignaturePad";
 
 export interface LigneAffichee {
@@ -49,6 +49,105 @@ export interface CgvAffichees {
   href: string;
   /** Téléchargement PDF. */
   pdfHref: string;
+}
+
+/**
+ * Offre à formules telle qu'AFFICHÉE : montants déjà formatés par le serveur (le navigateur n'en
+ * calcule aucun). Miroir structurel de `OffreAffichee` (`server/qualiopi/devis/choix-affichage`) :
+ * la page, qui passe l'un à l'autre, est le verrou de compatibilité à la compilation. Ce fichier
+ * n'importe pas le domaine Qualiopi (cloisonnement, `qualiopi:isolation-check`).
+ */
+export interface OffreAffichee {
+  readonly formules: readonly {
+    readonly formule: "achat" | "abonnement";
+    readonly libelle: string;
+    readonly baseHtLisible: string;
+    readonly baseTtcLisible: string;
+    readonly lignes: readonly { libelle: string; quantite: number; prixLisible: string }[];
+    readonly maintenance: {
+      readonly regle: "obligatoire" | "facultative";
+      readonly mensuelLisible: string;
+      readonly periodes: readonly { mois: number; libelle: string }[];
+    } | null;
+    readonly abonnement: {
+      readonly mensuelLisible: string;
+      readonly engagementMois: number;
+      readonly periodes: readonly { mois: number; libelle: string }[];
+    } | null;
+  }[];
+  readonly automatisations: readonly {
+    readonly code: string;
+    readonly libelle: string;
+    readonly facultative: boolean;
+    readonly dependDe: readonly string[];
+    readonly dependDeLibelles: readonly string[];
+    readonly prixHtLisible: string;
+  }[];
+}
+
+/** Récapitulatif de ce que le client signe, calculé par le serveur. Miroir de `RecapChoix`. */
+export interface RecapChoix {
+  readonly formuleLibelle: string;
+  readonly automatisations: readonly string[];
+  readonly totalPonctuelHtLisible: string;
+  readonly totalPonctuelTtcLisible: string;
+  readonly recurrent: readonly string[];
+}
+
+/** Ce que le client choisit sur un devis à formules (aucun prix : le serveur recalcule tout). */
+export interface ChoixFormules {
+  formule: "achat" | "abonnement";
+  automatisationsRetenues: string[];
+  maintenanceRetenue: boolean | null;
+  periodiciteMois: number | null;
+}
+
+/** Devis À FORMULES : l'offre affichée et l'action qui en calcule le récapitulatif. */
+export interface OffreFormulesProps {
+  offre: OffreAffichee;
+  apercuAction: (input: {
+    token: string;
+    choix: ChoixFormules;
+  }) => Promise<{ ok: true; recap: RecapChoix } | { ok: false; message: string }>;
+}
+
+/** Ajoute `code` et tout ce dont il dépend (fermeture transitive). */
+function avecDependances(
+  code: string,
+  autos: OffreAffichee["automatisations"],
+  courant: readonly string[],
+): string[] {
+  const parCode = new Map(autos.map((a) => [a.code, a]));
+  const res = new Set(courant);
+  const pile = [code];
+  while (pile.length > 0) {
+    const c = pile.pop()!;
+    if (res.has(c) && c !== code) continue;
+    res.add(c);
+    for (const d of parCode.get(c)?.dependDe ?? []) if (!res.has(d)) pile.push(d);
+  }
+  return [...res];
+}
+
+/** Retire `code` et tout ce qui en dépend (directement ou non). */
+function sansDependants(
+  code: string,
+  autos: OffreAffichee["automatisations"],
+  courant: readonly string[],
+): string[] {
+  const res = new Set(courant);
+  res.delete(code);
+  let change = true;
+  while (change) {
+    change = false;
+    for (const a of autos) {
+      if (res.has(a.code) && a.dependDe.some((d) => !res.has(d))) {
+        res.delete(a.code);
+        change = true;
+      }
+    }
+  }
+  return [...res];
 }
 
 export interface PieceSignatureFormProps {
@@ -111,6 +210,8 @@ export interface PieceSignatureFormProps {
    * l'attestation, conditionne le bouton. Absente, l'écran est celui de toujours.
    */
   cgv?: CgvAffichees;
+  /** Présente = devis À FORMULES : le client choisit sa formule avant de signer. */
+  formules?: OffreFormulesProps;
   signerAction: (input: {
     token: string;
     methode: "trace" | "confirmation_accessible";
@@ -118,6 +219,7 @@ export interface PieceSignatureFormProps {
     code?: string;
     cgvAcceptees?: true;
     cgvVersionAffichee?: string;
+    choix?: ChoixFormules;
   }) => Promise<
     { ok: true; signatureId: string; statutSignature: string } | { ok: false; message: string }
   >;
@@ -146,6 +248,7 @@ export function PieceSignatureForm({
   pdfUrl,
   mentions,
   cgv,
+  formules,
   signerAction,
   demanderCodeAction,
 }: PieceSignatureFormProps): React.ReactElement {
@@ -172,8 +275,73 @@ export function PieceSignatureForm({
   const [codeEnvoyeA, setCodeEnvoyeA] = useState<string | null>(null);
   const [envoiCodeEnCours, startEnvoiCode] = useTransition();
 
+  // ── Devis à formules : le choix et son récapitulatif (calculé par le serveur) ──
+  const offre = formules?.offre;
+  const [formule, setFormule] = useState<"achat" | "abonnement" | null>(
+    offre !== undefined && offre.formules.length === 1 ? offre.formules[0]!.formule : null,
+  );
+  const [autos, setAutos] = useState<string[]>(() =>
+    offre === undefined
+      ? []
+      : offre.automatisations.filter((a) => !a.facultative).map((a) => a.code),
+  );
+  const [maintenance, setMaintenance] = useState<boolean | null>(null);
+  const [periode, setPeriode] = useState<number | null>(null);
+  const [recap, setRecap] = useState<{ cle: string; valeur: RecapChoix } | null>(null);
+
+  const formuleChoisie = offre?.formules.find((f) => f.formule === formule) ?? null;
+  const maintenanceObligatoire = formuleChoisie?.maintenance?.regle === "obligatoire";
+  const maintenanceEffective =
+    formule !== "achat" ? false : maintenanceObligatoire ? true : maintenance;
+
+  const choix: ChoixFormules | null = useMemo(() => {
+    if (formule === null) return null;
+    if (formule === "abonnement") {
+      if (periode === null) return null;
+      return {
+        formule,
+        automatisationsRetenues: autos,
+        maintenanceRetenue: null,
+        periodiciteMois: periode,
+      };
+    }
+    if (maintenanceEffective === null) return null;
+    if (maintenanceEffective && periode === null) return null;
+    return {
+      formule,
+      automatisationsRetenues: autos,
+      maintenanceRetenue: maintenanceEffective,
+      periodiciteMois: maintenanceEffective ? periode : null,
+    };
+  }, [formule, autos, periode, maintenanceEffective]);
+  const cleChoix = choix === null ? null : JSON.stringify(choix);
+
+  const apercuAction = formules?.apercuAction;
+  useEffect(() => {
+    if (apercuAction === undefined || choix === null || cleChoix === null) return;
+    let annule = false;
+    void apercuAction({ token, choix }).then((res) => {
+      if (annule) return;
+      if (res.ok) {
+        setRecap({ cle: cleChoix, valeur: res.recap });
+        setErreur(null);
+      } else {
+        setRecap(null);
+        setErreur(res.message);
+      }
+    });
+    return () => {
+      annule = true;
+    };
+    // `choix` est dérivé de `cleChoix` : une seule dépendance suffit.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [cleChoix, token, apercuAction]);
+
+  const choixConfirme = formules === undefined || (recap !== null && recap.cle === cleChoix);
+
   const pretASigner =
     consent &&
+    choixConfirme &&
     (cgv === undefined || cgvOk) &&
     (modeAccessible || trace !== null) &&
     (!avecCode || /^\d{6}$/.test(code));
@@ -202,6 +370,7 @@ export function PieceSignatureForm({
         ...(cgv !== undefined
           ? { cgvAcceptees: true as const, cgvVersionAffichee: cgv.version }
           : {}),
+        ...(formules !== undefined && choix !== null ? { choix } : {}),
       });
       if (res.ok) setSigne(true);
       else setErreur(res.message);
@@ -216,6 +385,11 @@ export function PieceSignatureForm({
           {`Merci. Votre signature sur ${pieceLibelle} ${numero} a bien été enregistrée, horodatée et
           rattachée au document que vous venez de lire.`}
         </p>
+        {formules !== undefined && (
+          <p className="mt-2 text-sm text-gray-600">
+            {`Votre choix est enregistré avec votre signature. Le contrat est formé lorsque ${organismeNom} contresigne le devis.`}
+          </p>
+        )}
         <p className="mt-2 text-sm text-gray-600">
           {`${organismeNom} vous adressera l'exemplaire contresigné. Vous pouvez fermer cette page.`}
         </p>
@@ -317,6 +491,204 @@ export function PieceSignatureForm({
           </p>
         )}
       </section>
+
+      {/* ── Devis à formules : le CHOIX du client, avant la signature ── */}
+      {offre !== undefined && (
+        <section className="mt-8" aria-labelledby="choix-titre">
+          <h2 id="choix-titre" className="text-sm font-semibold text-gray-900">
+            Votre choix
+          </h2>
+
+          <fieldset className="mt-3">
+            <legend className="text-sm text-gray-700">
+              {offre.formules.length > 1
+                ? "Ce devis propose deux formules. Choisissez celle que vous signez."
+                : "Formule proposée"}
+            </legend>
+            <div className="mt-2 grid gap-3">
+              {offre.formules.map((f) => (
+                <label
+                  key={f.formule}
+                  className={`block rounded border p-4 text-sm ${
+                    formule === f.formule ? "border-gray-900 bg-gray-50" : "border-gray-300"
+                  }`}
+                >
+                  <span className="flex items-start gap-3">
+                    <input
+                      type="radio"
+                      name="formule"
+                      value={f.formule}
+                      checked={formule === f.formule}
+                      onChange={() => {
+                        setFormule(f.formule);
+                        setPeriode(null);
+                        setMaintenance(null);
+                      }}
+                      disabled={enCours}
+                      className="mt-1"
+                    />
+                    <span className="block">
+                      <span className="block font-medium text-gray-900">{f.libelle}</span>
+                      <span className="mt-1 block text-gray-700">
+                        {`À la signature : ${f.baseHtLisible} HT (${f.baseTtcLisible} TTC), hors options.`}
+                      </span>
+                      {f.lignes.length > 0 && (
+                        <ul className="mt-2 list-disc pl-5 text-xs text-gray-700">
+                          {f.lignes.map((l, i) => (
+                            <li key={i}>{`${l.libelle} — ${l.quantite} × ${l.prixLisible}`}</li>
+                          ))}
+                        </ul>
+                      )}
+                      {f.abonnement !== null && (
+                        <span className="mt-2 block text-xs text-gray-700">
+                          {`Abonnement : ${f.abonnement.mensuelLisible}` +
+                            (f.abonnement.engagementMois > 0
+                              ? `, engagement de ${f.abonnement.engagementMois} mois.`
+                              : ".")}
+                        </span>
+                      )}
+                      {f.maintenance !== null && (
+                        <span className="mt-2 block text-xs text-gray-700">
+                          {`Maintenance ${
+                            f.maintenance.regle === "obligatoire" ? "obligatoire" : "facultative"
+                          } : ${f.maintenance.mensuelLisible}.`}
+                        </span>
+                      )}
+                    </span>
+                  </span>
+                </label>
+              ))}
+            </div>
+          </fieldset>
+
+          {formule !== null && offre.automatisations.length > 0 && (
+            <fieldset className="mt-5">
+              <legend className="text-sm text-gray-700">Automatisations</legend>
+              <div className="mt-2 space-y-2">
+                {offre.automatisations.map((a) => {
+                  const coche = autos.includes(a.code);
+                  return (
+                    <label key={a.code} className="flex items-start gap-3 text-sm text-gray-900">
+                      <input
+                        type="checkbox"
+                        checked={coche}
+                        disabled={enCours || !a.facultative}
+                        onChange={(e) =>
+                          setAutos((cur) =>
+                            e.target.checked
+                              ? avecDependances(a.code, offre.automatisations, cur)
+                              : sansDependants(a.code, offre.automatisations, cur),
+                          )
+                        }
+                        className="mt-1"
+                      />
+                      <span>
+                        {`${a.libelle} — ${a.prixHtLisible}`}
+                        {!a.facultative ? " (incluse)" : ""}
+                        {a.dependDeLibelles.length > 0 && (
+                          <span className="block text-xs text-gray-600">
+                            {`Nécessite : ${a.dependDeLibelles.join(", ")}`}
+                          </span>
+                        )}
+                      </span>
+                    </label>
+                  );
+                })}
+              </div>
+            </fieldset>
+          )}
+
+          {formule === "achat" && formuleChoisie?.maintenance != null && (
+            <fieldset className="mt-5">
+              <legend className="text-sm text-gray-700">Maintenance</legend>
+              {maintenanceObligatoire ? (
+                <p className="mt-2 text-sm text-gray-900">
+                  {`La maintenance est incluse dans cette formule (${formuleChoisie.maintenance.mensuelLisible}).`}
+                </p>
+              ) : (
+                <div className="mt-2 space-y-2 text-sm text-gray-900">
+                  <label className="flex items-start gap-3">
+                    <input
+                      type="radio"
+                      name="maintenance"
+                      checked={maintenance === true}
+                      onChange={() => setMaintenance(true)}
+                      disabled={enCours}
+                      className="mt-1"
+                    />
+                    <span>{`Je souscris la maintenance (${formuleChoisie.maintenance.mensuelLisible})`}</span>
+                  </label>
+                  <label className="flex items-start gap-3">
+                    <input
+                      type="radio"
+                      name="maintenance"
+                      checked={maintenance === false}
+                      onChange={() => {
+                        setMaintenance(false);
+                        setPeriode(null);
+                      }}
+                      disabled={enCours}
+                      className="mt-1"
+                    />
+                    <span>Je ne souscris pas la maintenance</span>
+                  </label>
+                </div>
+              )}
+            </fieldset>
+          )}
+
+          {(formule === "abonnement" || (formule === "achat" && maintenanceEffective === true)) && (
+            <fieldset className="mt-5">
+              <legend className="text-sm text-gray-700">Durée payée d&apos;avance</legend>
+              <div className="mt-2 space-y-2 text-sm text-gray-900">
+                {(formule === "abonnement"
+                  ? (formuleChoisie?.abonnement?.periodes ?? [])
+                  : (formuleChoisie?.maintenance?.periodes ?? [])
+                ).map((p) => (
+                  <label key={p.mois} className="flex items-start gap-3">
+                    <input
+                      type="radio"
+                      name="periode"
+                      checked={periode === p.mois}
+                      onChange={() => setPeriode(p.mois)}
+                      disabled={enCours}
+                      className="mt-1"
+                    />
+                    <span>{p.libelle}</span>
+                  </label>
+                ))}
+              </div>
+            </fieldset>
+          )}
+
+          {recap !== null && recap.cle === cleChoix && (
+            <div
+              className="mt-5 rounded border border-gray-900 bg-gray-50 p-4 text-sm"
+              aria-live="polite"
+            >
+              <h3 className="font-semibold text-gray-900">Récapitulatif de ce que vous signez</h3>
+              <p className="mt-1 text-gray-900">{recap.valeur.formuleLibelle}</p>
+              {recap.valeur.automatisations.length > 0 && (
+                <p className="mt-1 text-xs text-gray-700">
+                  {`Automatisations : ${recap.valeur.automatisations.join(", ")}`}
+                </p>
+              )}
+              <p className="mt-2 text-gray-900">
+                {`À la signature : ${recap.valeur.totalPonctuelHtLisible} HT, soit ${recap.valeur.totalPonctuelTtcLisible} TTC.`}
+              </p>
+              {recap.valeur.recurrent.map((l) => (
+                <p key={l} className="mt-1 text-gray-900">
+                  {l}
+                </p>
+              ))}
+              <p className="mt-2 text-xs text-gray-600">
+                La TVA est comprise dans les montants TTC. Votre choix est enregistré avec votre
+                signature ; le contrat est formé lorsque {organismeNom} contresigne.
+              </p>
+            </div>
+          )}
+        </section>
+      )}
 
       {/* ── Le signataire, tel qu'il a été identifié ── */}
       <section className="mt-8 rounded border border-gray-300 bg-gray-50 p-4">
@@ -520,6 +892,9 @@ export function PieceSignatureForm({
               : "Tracez votre signature et cochez la case ci-dessus.") +
               (cgv !== undefined
                 ? " Cochez aussi la case des conditions générales de vente."
+                : "") +
+              (formules !== undefined
+                ? " Choisissez votre formule et vérifiez le récapitulatif."
                 : "") +
               (avecCode ? " Saisissez ensuite le code reçu par e-mail." : "")}
           </p>

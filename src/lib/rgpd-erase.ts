@@ -1881,6 +1881,17 @@ export const EXCEPTIONS_EFFACEMENT_DOSSIER: ReadonlyArray<{
       "à la main, sous le drapeau d'effacement.",
   },
   {
+    // Devis à formules, lot 4 (2026-11-06) : le fait `commande.signee`, rangé avec l'acceptation.
+    modele: "ConsoleCommande",
+    motif:
+      "copie du choix signé (société, nom et fonction du signataire, formule, montants), rangée " +
+      "dans la même transaction que l'acceptation du devis : preuve contractuelle, conservée " +
+      "comme la signature qu'elle copie (art. 17(3)(e)) ; jamais supprimée automatiquement " +
+      "(ordre permanent) et protégée par un déclencheur qui refuse modification du contenu et " +
+      "suppression. Aucune adresse IP, aucun lien de signature. Toute demande d'effacement est " +
+      "traitée à la main par Will.",
+  },
+  {
     // Audit présentiel (2026-11-02, PR1) : journal en ajout seul, jamais supprimé (ordre permanent).
     modele: "AuditTerrainRapport",
     motif:

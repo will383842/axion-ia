@@ -54,6 +54,7 @@ import { verifierChaine } from "@/server/qualiopi/emargement/hash";
 import {
   maillonDocumentDepuisLigne,
   HASH_VERSION_DOCUMENT,
+  COLONNES_V4_VIDES,
   type LigneDocumentSignature,
 } from "./document-signature-hash";
 import {
@@ -110,6 +111,8 @@ function piece(over: Record<string, unknown> = {}) {
     // TOUTES les pièces pour annulées (`undefined !== null`) et rendrait vertes,
     // pour la mauvaise raison, les 36 assertions de refus de ce fichier.
     annuleeAt: null as Date | null,
+    // Relation lue avec la pièce (devis à formules, lot 4) : vide hors devis.
+    devisPortes: [] as Array<Record<string, unknown>>,
     signatures: [] as Array<{ id: string }>,
     session: {
       formateurPrincipalId: null,
@@ -666,6 +669,7 @@ describe("🔴 ce qui est réellement écrit", () => {
       hashVersion: HASH_VERSION_DOCUMENT,
       facteurVerification: null,
       cgvVersion: null,
+      ...COLONNES_V4_VIDES,
     };
     const rapport = verifierChaine([
       maillonDocumentDepuisLigne(ligne, {
@@ -1004,6 +1008,7 @@ describe("🔴 V1-A-7 — facteur de vérification de l'adresse", () => {
         "facteurVerification"
       ] as LigneDocumentSignature["facteurVerification"],
       cgvVersion: (d["cgvVersion"] ?? null) as string | null,
+      ...COLONNES_V4_VIDES,
     };
   }
 
@@ -1081,6 +1086,7 @@ describe("🔴 CGV avant signature du devis — version scellée, case obligatoi
       hashVersion: d["hashVersion"] as number,
       facteurVerification: null,
       cgvVersion: (d["cgvVersion"] ?? null) as string | null,
+      ...COLONNES_V4_VIDES,
     };
   }
 

@@ -50,6 +50,7 @@ import type { AdminSession } from "@/server/actions/knowledge/_guards";
 import {
   apresSignature,
   PREFIXE_ACTIVATION_REFUSEE,
+  reprendreAcceptationDevisFormules,
 } from "@/server/qualiopi/documents/signature/apres-signature";
 import { contexteRequete } from "@/server/qualiopi/documents/signature/contexte-requete";
 import {
@@ -71,7 +72,16 @@ import { envoyerCodeSignature } from "@/server/qualiopi/formateurs-independants/
 import { objectionContresignatureContratCadre } from "@/server/qualiopi/formateurs-independants/garde-contresignature-contrat-cadre";
 import { objectionLettreMissionPerimee } from "@/server/qualiopi/formateurs-independants/lettre-mission-perimee";
 import { verifierTokenDocument } from "@/server/qualiopi/documents/signature/token-document";
+import type { ChoixCanonique } from "@/server/qualiopi/devis/offre-calculs";
 import { SignatureStockageError } from "@/server/qualiopi/emargement/storage";
+import {
+  validerChoixSignature,
+  type ChoixSaisi,
+  type RaisonRefusChoix,
+} from "@/server/qualiopi/devis/choix-signature";
+import { recapitulerChoix, type RecapChoix } from "@/server/qualiopi/devis/choix-affichage";
+import { formulesActives } from "@/server/qualiopi/devis/interrupteur-formules";
+import { offreDevisV1 } from "@/server/qualiopi/devis/offre-devis";
 import { requireAdminWrite, logQualiopiActivity } from "./_guards";
 
 /**
@@ -110,7 +120,10 @@ export type RefusSignaturePiece =
   /** Devis : la case « j'ai lu et j'accepte les CGV » n'a pas été cochée. */
   | "cgv_non_acceptees"
   /** Devis : la page affichait une autre version des CGV que la version en vigueur. */
-  | "cgv_perimees";
+  | "cgv_perimees"
+  /** Devis à formules : le choix est absent ou refusé contre l'offre figée (voir `choix-signature`). */
+  | RaisonRefusChoix
+  | "choix_requis";
 
 export type ResultatSignaturePiece =
   | {
@@ -154,6 +167,19 @@ const entreeJetonSchema = z.object({
    */
   cgvAcceptees: z.literal(true).optional(),
   cgvVersionAffichee: z.string().max(40).optional(),
+  /**
+   * Devis À FORMULES : ce que le client a choisi. Seulement des CHOIX — formule, automatisations
+   * facultatives, case maintenance, durée. Tout autre champ (prix, remise…) est écarté par Zod et
+   * ne parvient jamais au sceau : les montants viennent de l'offre figée en base.
+   */
+  choix: z
+    .object({
+      formule: z.enum(["achat", "abonnement"]),
+      automatisationsRetenues: z.array(z.string().min(1).max(120)).max(200),
+      maintenanceRetenue: z.boolean().nullable(),
+      periodiciteMois: z.number().int().min(1).max(120).nullable(),
+    })
+    .optional(),
 });
 
 const MESSAGE_CGV_NON_ACCEPTEES =
@@ -259,7 +285,16 @@ export async function signerPieceParJetonAction(input: {
   code?: string;
   cgvAcceptees?: boolean;
   cgvVersionAffichee?: string;
+  choix?: {
+    formule: "achat" | "abonnement";
+    automatisationsRetenues: string[];
+    maintenanceRetenue: boolean | null;
+    periodiciteMois: number | null;
+  };
 }): Promise<ResultatSignaturePiece> {
+  // Instant SERVEUR de réception de la demande : il datera la case « j'ai lu et j'accepte »
+  // (sceau V4), toujours antérieur à l'instant de signature posé par le service.
+  const recuLe = new Date();
   const parse = entreeJetonSchema.safeParse(input);
   if (!parse.success) {
     if (parse.error.issues.some((i) => i.path[0] === "cgvAcceptees")) {
@@ -374,6 +409,60 @@ export async function signerPieceParJetonAction(input: {
     }
   }
 
+  // Devis À FORMULES : le choix du client est validé contre l'offre FIGÉE en base (jamais contre
+  // la requête), AVANT toute consommation de code. Un devis sans offre ignore tout `choix` reçu.
+  let choixOffre: { choix: ChoixCanonique; sha256: string } | undefined;
+  if (piece.type === "devis") {
+    const devis = await prisma.devis.findFirst({
+      where: { documentGenereId: verif.documentGenereId },
+      select: { numero: true, offre: true, offreSha256: true },
+    });
+    if (devis !== null && devis.offre != null && devis.offreSha256 != null) {
+      // Interrupteur `qualiopi.devis_formules.actif` : éteint, un devis à formules ne se signe pas
+      // (échec fermé). Rien n'est lu ni écrit de plus.
+      if (!(await formulesActives())) {
+        return {
+          ok: false,
+          raison: "piece_non_signable_maintenant",
+          message:
+            "Ce devis n'est pas disponible à la signature pour le moment. Contactez votre interlocuteur chez Axion-IA.",
+        };
+      }
+      if (donnees.choix === undefined) {
+        return {
+          ok: false,
+          raison: "choix_requis",
+          message: "Choisissez votre formule avant de signer ce devis.",
+        };
+      }
+      const offre = offreDevisV1.safeParse(devis.offre);
+      if (!offre.success) {
+        Sentry.captureException(new Error("Offre de devis illisible à la signature"), {
+          tags: { action: "signerPieceParJetonAction:offre_illisible" },
+        });
+        return {
+          ok: false,
+          raison: "offre_alteree",
+          message:
+            "Ce devis ne peut pas être signé en l'état. Contactez votre interlocuteur chez Axion-IA.",
+        };
+      }
+      const valide = validerChoixSignature(
+        { offre: offre.data, devisNumero: devis.numero, offreSha256: devis.offreSha256 },
+        donnees.choix,
+      );
+      if (!valide.ok) {
+        if (valide.raison === "offre_alteree") {
+          Sentry.captureException(new Error("Offre de devis altérée à la signature"), {
+            tags: { action: "signerPieceParJetonAction:offre_alteree" },
+          });
+        }
+        return { ok: false, raison: valide.raison, message: valide.message };
+      }
+      choixOffre = { choix: valide.choix, sha256: valide.sha256Choix };
+    }
+  }
+
   // Contrat-cadre v3 : le code à usage unique est vérifié et CONSOMMÉ juste
   // avant l'écriture de la preuve. Sans code valide, rien n'est signé.
   const avecCode = codeRequis(piece.type, piece.metadata, verif.partie);
@@ -403,6 +492,8 @@ export async function signerPieceParJetonAction(input: {
       ...(avecCode ? { consentementVersion: CONSENTEMENT_VERSION_DOCUMENT_CODE } : {}),
       // Valeur SERVEUR, jamais celle du navigateur. Vide hors devis.
       ...(piece.type === "devis" ? { cgvVersion: CGV_VERSION } : {}),
+      // Devis à formules : choix validé + instant (serveur) de la case cochée.
+      ...(choixOffre === undefined ? {} : { choixOffre, cgvAccepteeAt: recuLe }),
       ...contexte,
     });
     if (!res.ok) return res;
@@ -425,6 +516,78 @@ export async function signerPieceParJetonAction(input: {
     Sentry.captureException(err, { tags: { action: "signerPieceParJetonAction" } });
     throw err;
   }
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Devis à formules — récapitulatif du choix, calculé par le SERVEUR
+// ─────────────────────────────────────────────────────────────────────────────
+
+const LIMITE_APERCU_PAR_JETON = { limit: 60, windowSec: 60 } as const;
+
+export type ResultatApercuChoix =
+  { ok: true; recap: RecapChoix } | { ok: false; raison: RefusSignaturePiece; message: string };
+
+/**
+ * Ce que le client s'apprête à signer, pour SON choix : formule, total ponctuel HT/TTC, postes
+ * récurrents. Le navigateur n'additionne rien : le récapitulatif est calculé ici, sur l'offre
+ * figée, avec la même validation que la signature. Lecture seule, gardée par le jeton.
+ */
+export async function apercuChoixAction(input: {
+  token: string;
+  choix: ChoixSaisi;
+}): Promise<ResultatApercuChoix> {
+  const parse = z
+    .object({ token: z.string().min(1).max(4000), choix: entreeJetonSchema.shape.choix.unwrap() })
+    .safeParse(input);
+  if (!parse.success) {
+    return {
+      ok: false,
+      raison: "requete_invalide",
+      message: "Cette demande n'est pas valide. Rechargez la page.",
+    };
+  }
+  const empreinteJeton = createHash("sha256").update(parse.data.token).digest("hex");
+  const limite = await checkRateLimit(`piece:apercu:${empreinteJeton}`, LIMITE_APERCU_PAR_JETON);
+  if (!limite.allowed) {
+    return {
+      ok: false,
+      raison: "trop_de_tentatives",
+      message: "Trop de tentatives. Patientez une minute avant de réessayer.",
+    };
+  }
+  const verif = await verifierTokenDocument(parse.data.token);
+  if (!verif.ok) {
+    const m = REFUS_JETON[verif.raison];
+    return { ok: false, raison: m.raison, message: m.message };
+  }
+  const devis = await prisma.devis.findFirst({
+    where: { documentGenereId: verif.documentGenereId },
+    select: { numero: true, offre: true, offreSha256: true },
+  });
+  if (devis === null || devis.offre == null || devis.offreSha256 == null) {
+    return {
+      ok: false,
+      raison: "piece_non_signable",
+      message: "Ce devis ne propose pas de formule.",
+    };
+  }
+  if (!(await formulesActives())) {
+    return {
+      ok: false,
+      raison: "piece_non_signable_maintenant",
+      message: "Ce devis n'est pas disponible à la signature pour le moment.",
+    };
+  }
+  const offre = offreDevisV1.safeParse(devis.offre);
+  if (!offre.success) {
+    return { ok: false, raison: "offre_alteree", message: "Ce devis ne peut pas être affiché." };
+  }
+  const valide = validerChoixSignature(
+    { offre: offre.data, devisNumero: devis.numero, offreSha256: devis.offreSha256 },
+    parse.data.choix,
+  );
+  if (!valide.ok) return { ok: false, raison: valide.raison, message: valide.message };
+  return { ok: true, recap: recapitulerChoix(offre.data, valide.choix) };
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -649,6 +812,74 @@ export async function contresignerPieceAction(input: {
   return contresignerUne(session, input);
 }
 
+/**
+ * REPRISE d'un devis signé des deux parties dont l'acceptation a échoué (`accepterDevisAFormules`
+ * avait levé : l'erreur ne partait que dans Sentry). Même habilitation que la contresignature.
+ * Idempotent : un devis déjà accepté, ou déjà recopié, n'est pas retouché.
+ */
+export async function relancerAcceptationDevisAction(input: {
+  documentGenereId: string;
+}): Promise<{ ok: true; devisAcceptes: number } | { ok: false; message: string }> {
+  const session = await requireAdminWrite();
+  if (!peutSignerPourOrganisme(session.role)) {
+    return { ok: false, message: REFUS_ROLE_ORGANISME.message };
+  }
+  const id = z.string().uuid().safeParse(input?.documentGenereId);
+  if (!id.success)
+    return { ok: false, message: "Cette demande n'est pas valide. Rechargez la page." };
+
+  const piece = await prisma.documentGenere.findUnique({
+    where: { id: id.data },
+    select: { type: true, numero: true },
+  });
+  if (piece === null || piece.type !== "devis") {
+    return { ok: false, message: "Cette pièce n'est pas un devis." };
+  }
+  const signatures = await prisma.documentSignature.findMany({
+    where: { documentGenereId: id.data, revokedAt: null },
+    select: { partie: true },
+  });
+  const parties = new Set(signatures.map((s) => s.partie));
+  if (!parties.has("client") || !parties.has("axionia")) {
+    return {
+      ok: false,
+      message: "Le devis n'est pas encore signé par les deux parties : rien à reprendre.",
+    };
+  }
+  try {
+    const res = await reprendreAcceptationDevisFormules(id.data);
+    if (!res.traite) {
+      return {
+        ok: false,
+        message: "Aucun devis à formules en attente d'acceptation pour cette pièce.",
+      };
+    }
+    await logQualiopiActivity({
+      action: "qualiopi.devis.relance_acceptation",
+      targetType: "DocumentGenere",
+      targetId: id.data,
+      changes: { numero: piece.numero, devis: res.ids, plansEchec: res.plansEchec },
+      session,
+    });
+    if (res.plansEchec.length > 0) {
+      return {
+        ok: false,
+        message:
+          "L'acceptation est enregistrée, mais les plans récurrents n'ont pas pu être proposés " +
+          "(code consigné). Relancez la proposition des plans.",
+      };
+    }
+    return { ok: true, devisAcceptes: res.ids.length };
+  } catch (err) {
+    Sentry.captureException(err, { tags: { action: "relancerAcceptationDevisAction" } });
+    const motif = (err as { motif?: unknown } | null)?.motif;
+    return {
+      ok: false,
+      message: `L'acceptation a de nouveau échoué${typeof motif === "string" ? ` (motif : ${motif})` : ""}.`,
+    };
+  }
+}
+
 const REFUS_ROLE_ORGANISME = {
   ok: false,
   raison: "role_insuffisant",
@@ -753,7 +984,7 @@ async function contresignerUne(
     // de contresignature le dit (`ResultatApresSignature.activationRefusee`).
     const activationRefusee =
       apres?.activationRefusee != null
-        ? `${PREFIXE_ACTIVATION_REFUSEE} ${apres.activationRefusee.message}`
+        ? `${apres.activationRefusee.prefixe ?? PREFIXE_ACTIVATION_REFUSEE} ${apres.activationRefusee.message}`
         : undefined;
 
     await logQualiopiActivity({

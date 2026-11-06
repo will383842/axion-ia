@@ -5,7 +5,7 @@
  *
  * Face ROUGE : un texte source synthétique où un chemin d'acceptation de devis pose
  * `statut: "accepte"` sans passer par `emettreDevisSigne` — le cliquet doit le refuser en nommant
- * le fichier et la ligne. Face VERTE : le dépôt réel, zéro faute, et les deux écrivains connus (le webhook DocuSeal n'en est plus un : CGV 6.2),
+ * le fichier et la ligne. Face VERTE : le dépôt réel, zéro faute, et les trois écrivains connus (le webhook DocuSeal n'en est plus un : CGV 6.2),
  * nommés un par un.
  */
 import path from "node:path";
@@ -131,12 +131,12 @@ describe("REQ-INT-007 — face ROUGE : un écrivain de « accepte » qui n'émet
 
 describe("REQ-INT-007 — face VERTE : le dépôt réel", () => {
   it(
-    "REQ-INT-007 : zéro faute, et les deux écrivains connus (le webhook DocuSeal n'en est plus un : CGV 6.2) confrontés par identité",
+    "REQ-INT-007 : zéro faute, et les trois écrivains connus (le webhook DocuSeal n'en est plus un : CGV 6.2) confrontés par identité",
     { timeout: 60_000 },
     () => {
       const b = confronterEcrivains(lireLeDepot(RACINE));
       expect(b.fautes).toEqual([]);
-      expect(b.parEvenement["devis.signe"]).toBe(2);
+      expect(b.parEvenement["devis.signe"]).toBe(3);
       expect(
         b.ecrivains
           .filter((e) => e.evenement === "devis.signe")
@@ -144,6 +144,9 @@ describe("REQ-INT-007 — face VERTE : le dépôt réel", () => {
           .sort(),
       ).toEqual([
         "src/server/actions/qualiopi/devis.ts (acceptDevisAction › travail de transactionDevisSigne())",
+        // Devis à formules (lot 4) : recopie du choix + acceptation + `devis.signe` + fait
+        // `commande.signee` dans UNE vraie transaction, même canal Partners fermé.
+        "src/server/qualiopi/devis/acceptation-formules.ts (accepterDevisAFormules › travail de client.$transaction())",
         // Lot S6a : l'écrivain du canal maison a quitté `piece-signature.ts`
         // (`consequenceSignatureComplete`) pour l'après-signature commun — même
         // transaction, même garde, un fichier hors « use server ».

@@ -27,7 +27,11 @@ vi.mock("./interrupteur-formules", () => ({ formulesActives: h.actif }));
 
 import { sha256Offre } from "./offre-calculs";
 import { offreFictive } from "./offre-fixtures.spec-util";
-import { proposerPlansApresAcceptation, proposerPlansRecurrentsDuDevis } from "./proposer-plans";
+import {
+  compterPlansAttendus,
+  proposerPlansApresAcceptation,
+  proposerPlansRecurrentsDuDevis,
+} from "./proposer-plans";
 
 const DEVIS = "11111111-1111-4111-8111-111111111111";
 const ACCEPTE = new Date("2030-01-15T10:00:00.000Z");
@@ -204,13 +208,15 @@ describe("fail-closed", () => {
 describe("proposerPlansApresAcceptation (fail-soft)", () => {
   it("n'échoue jamais : une erreur base part à Sentry", async () => {
     h.p.devis.findUnique.mockRejectedValue(new Error("db down"));
-    await expect(proposerPlansApresAcceptation(DEVIS, "console")).resolves.toBeUndefined();
+    await expect(proposerPlansApresAcceptation(DEVIS, "console")).resolves.toBe(
+      "erreur_inattendue",
+    );
     expect(sentry.captureException).toHaveBeenCalled();
   });
 
   it("un refus est signalé (code, sans donnée personnelle)", async () => {
     h.p.devis.findUnique.mockResolvedValue(devisB({ formuleRetenue: null }));
-    await proposerPlansApresAcceptation(DEVIS, "signature_complete");
+    expect(await proposerPlansApresAcceptation(DEVIS, "signature_complete")).toBe("aucune_formule");
     expect(sentry.captureMessage).toHaveBeenCalledWith(
       expect.any(String),
       expect.objectContaining({ tags: expect.objectContaining({ code: "aucune_formule" }) }),
@@ -222,5 +228,47 @@ describe("proposerPlansApresAcceptation (fail-soft)", () => {
     await proposerPlansApresAcceptation(DEVIS, "console");
     expect(sentry.captureMessage).not.toHaveBeenCalled();
     expect(sentry.captureException).not.toHaveBeenCalled();
+  });
+});
+
+describe("compterPlansAttendus (alerte « plans non proposés »)", () => {
+  const offre = offreFictive();
+  const sha = sha256Offre(offre);
+  const choix = (formule: string, maintenanceRetenue: boolean) => ({
+    v: 1,
+    devisNumero: "AXI-DEV-2030-001",
+    offreSha256: sha,
+    formule,
+    automatisationsRetenues: [],
+    maintenanceRetenue,
+    periodiciteMois: 12,
+  });
+
+  it("achat SANS maintenance : zéro plan attendu → aucune alerte possible", async () => {
+    h.p.devis.findUnique.mockResolvedValue(
+      devisB({ formuleRetenue: "achat", choixRetenu: choix("achat", false) }, offre),
+    );
+    expect(await compterPlansAttendus(DEVIS)).toBe(0);
+  });
+
+  it("achat AVEC maintenance retenue : un plan attendu", async () => {
+    h.p.devis.findUnique.mockResolvedValue(
+      devisB({ formuleRetenue: "achat", choixRetenu: choix("achat", true) }, offre),
+    );
+    expect(await compterPlansAttendus(DEVIS)).toBe(1);
+  });
+
+  it("abonnement : un plan attendu", async () => {
+    h.p.devis.findUnique.mockResolvedValue(devisB());
+    expect(await compterPlansAttendus(DEVIS)).toBe(1);
+  });
+
+  it("interrupteur éteint, ou refus : null (rien d'affirmé), et n'écrit jamais", async () => {
+    h.actif.mockResolvedValue(false);
+    expect(await compterPlansAttendus(DEVIS)).toBeNull();
+    h.actif.mockResolvedValue(true);
+    h.p.devis.findUnique.mockResolvedValue(devisB({ formuleRetenue: null }));
+    expect(await compterPlansAttendus(DEVIS)).toBeNull();
+    expect(h.tx.planRecurrent.create).not.toHaveBeenCalled();
   });
 });
