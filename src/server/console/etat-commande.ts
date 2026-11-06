@@ -17,7 +17,7 @@ import { createHash, createHmac, timingSafeEqual } from "node:crypto";
 import * as Sentry from "@sentry/nextjs";
 import { z } from "zod";
 import { prisma as prismaGlobal } from "@/lib/prisma";
-import { canonicalJson, type CanonicalValue } from "@/server/qualiopi/emargement/canonical";
+import { canoniser, versValeurJson } from "@/server/mcp/json-canonique";
 
 export const ENTETE_HORODATAGE_CONSOLE = "x-console-timestamp";
 export const ENTETE_SIGNATURE_CONSOLE = "x-console-signature";
@@ -111,8 +111,9 @@ function json(statut: number, corps: Record<string, unknown>): Response {
   });
 }
 
+/** Forme canonique (clés triées) pour comparer deux détails sans dépendre de l'ordre des clés. */
 function canon(valeur: unknown): string {
-  return canonicalJson((valeur ?? null) as CanonicalValue);
+  return canoniser(versValeurJson(valeur ?? null));
 }
 
 export async function repondreEtatCommande(

@@ -7,8 +7,7 @@ import React from "react";
 import { describe, expect, it, vi } from "vitest";
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { PieceSignatureForm } from "../PieceSignatureForm";
-import { presenterOffre } from "@/server/qualiopi/devis/choix-affichage";
-import { offreFictive } from "@/server/qualiopi/devis/offre-fixtures.spec-util";
+import type { OffreAffichee } from "../PieceSignatureForm";
 
 vi.mock("@/components/portail/SignaturePad", () => ({
   SignaturePad: (p: { onBasculerAccessible: () => void; onChange: (v: string | null) => void }) => (
@@ -27,6 +26,54 @@ const CGV = {
   href: "/fr/conditions-generales",
   pdfHref: "/api/cgv?dl=1",
 };
+/** Offre affichée, telle que le serveur la formate (montants FICTIFS, aucun import du domaine). */
+function offreAffichee(over: Partial<OffreAffichee> = {}): OffreAffichee {
+  return {
+    formules: [
+      {
+        formule: "achat",
+        libelle: "Formule A · Achat",
+        baseHtLisible: "1 200,00 €",
+        baseTtcLisible: "1 450,00 €",
+        lignes: [{ libelle: "Ligne A", quantite: 1, prixLisible: "1 000,00 € HT" }],
+        maintenance: {
+          regle: "facultative",
+          mensuelLisible: "40,00 € HT / mois",
+          periodes: [
+            { mois: 1, libelle: "1 mois d'avance : 40,00 € HT / mois" },
+            { mois: 12, libelle: "12 mois (1 an) d'avance : 40,00 € HT / mois" },
+          ],
+        },
+        abonnement: null,
+      },
+      {
+        formule: "abonnement",
+        libelle: "Formule B · Mise en place + abonnement",
+        baseHtLisible: "300,00 €",
+        baseTtcLisible: "360,00 €",
+        lignes: [{ libelle: "Mise en service", quantite: 1, prixLisible: "300,00 € HT" }],
+        maintenance: null,
+        abonnement: {
+          mensuelLisible: "90,00 € HT / mois",
+          engagementMois: 12,
+          periodes: [{ mois: 1, libelle: "1 mois d'avance : 90,00 € HT / mois" }],
+        },
+      },
+    ],
+    automatisations: [
+      {
+        code: "auto1",
+        libelle: "Automatisation un",
+        facultative: true,
+        dependDe: [],
+        dependDeLibelles: [],
+        prixHtLisible: "50,00 € HT",
+      },
+    ],
+    ...over,
+  };
+}
+
 const RECAP = {
   formuleLibelle: "Formule B · Mise en place + abonnement",
   automatisations: [],
@@ -37,7 +84,7 @@ const RECAP = {
 
 function monter(
   opts: {
-    offre?: ReturnType<typeof offreFictive>;
+    offre?: OffreAffichee;
     apercu?: ReturnType<typeof vi.fn>;
     signer?: ReturnType<typeof vi.fn>;
   } = {},
@@ -60,7 +107,7 @@ function monter(
       pdfUrl={null}
       mentions={MENTIONS}
       cgv={CGV}
-      formules={{ offre: presenterOffre(opts.offre ?? offreFictive()), apercuAction }}
+      formules={{ offre: opts.offre ?? offreAffichee(), apercuAction }}
       signerAction={signerAction}
     />,
   );
@@ -113,11 +160,23 @@ describe("devis à formules — le choix", () => {
   });
 
   it("changer de choix invalide le récapitulatif : on ne signe pas un autre choix que celui affiché", async () => {
-    const offre = offreFictive();
-    offre.abonnement!.periodes = [
-      { mois: 1, remiseBps: 0 },
-      { mois: 6, remiseBps: 500 },
-    ];
+    const base = offreAffichee();
+    const offre = offreAffichee({
+      formules: base.formules.map((f) =>
+        f.abonnement === null
+          ? f
+          : {
+              ...f,
+              abonnement: {
+                ...f.abonnement,
+                periodes: [
+                  ...f.abonnement.periodes,
+                  { mois: 6, libelle: "6 mois d'avance : 85,50 € HT / mois — remise de 5 %" },
+                ],
+              },
+            },
+      ),
+    });
     let resolve!: (v: unknown) => void;
     const apercu = vi
       .fn()
@@ -164,8 +223,14 @@ describe("devis à formules — le choix", () => {
   });
 
   it("formule A, maintenance OBLIGATOIRE : incluse d'office, aucune case à décocher", async () => {
-    const offre = offreFictive();
-    offre.achat!.maintenance.regle = "obligatoire";
+    const base = offreAffichee();
+    const offre = offreAffichee({
+      formules: base.formules.map((f) =>
+        f.maintenance === null
+          ? f
+          : { ...f, maintenance: { ...f.maintenance, regle: "obligatoire" } },
+      ),
+    });
     const { apercuAction } = monter({ offre });
     fireEvent.click(screen.getByRole("radio", { name: /Formule A/ }));
     expect(screen.getByText(/maintenance est incluse/i)).toBeTruthy();
@@ -181,15 +246,19 @@ describe("devis à formules — le choix", () => {
   });
 
   it("automatisation dépendante : la cocher coche ce dont elle dépend ; décocher la base décoche la dépendante", () => {
-    const offre = offreFictive();
-    offre.automatisations.push({
-      code: "auto2",
-      libelle: "Automatisation deux",
-      facultative: true,
-      dependDe: ["auto1"],
-      prixHtCents: 100,
-      tauxTvaBps: 2000,
-      modeIA: "client_direct",
+    const base = offreAffichee();
+    const offre = offreAffichee({
+      automatisations: [
+        ...base.automatisations,
+        {
+          code: "auto2",
+          libelle: "Automatisation deux",
+          facultative: true,
+          dependDe: ["auto1"],
+          dependDeLibelles: ["Automatisation un"],
+          prixHtLisible: "1,00 € HT",
+        },
+      ],
     });
     monter({ offre });
     fireEvent.click(screen.getByRole("radio", { name: /Formule B/ }));
