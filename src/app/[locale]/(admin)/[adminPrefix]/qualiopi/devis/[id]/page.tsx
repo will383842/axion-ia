@@ -448,8 +448,8 @@ export default async function QualiopiDevisDetailPage({ params }: PageProps) {
 
       {/* ── Signature électronique ───────────────────────────────────────── */}
       {/*
-        Cette section affichait la soumission DocuSeal et un champ « copier le
-        lien du client ». La bascule du 2026-07-30 vers le canal maison la rend
+        Cette section affichait l'ancienne soumission DocuSeal (n'émet plus rien
+        depuis le 30/07/2026) et un champ « copier le lien du client ». La bascule du 2026-07-30 vers le canal maison la rend
         sans objet, et c'est un GAIN de sûreté : on ne stocke que le HASH du
         jeton, si bien que la console ne détient plus le lien personnel du
         client. Le composant `DevisSignatureLinkCopy` disait lui-même pourquoi ce
