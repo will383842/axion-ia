@@ -610,11 +610,11 @@ export async function sendDevisAction(
         ...(documentGenereId !== null ? { documentGenereId } : {}),
       },
     });
-    // Écriture GARDÉE : seul un PROSPECT devient « devis envoyé ». Un client actif (ou inactif,
-    // ou perdu) à qui l'on envoie un nouveau devis garde son statut — il ne doit jamais être
+    // Écriture GARDÉE : seul un PROSPECT (ou un prospect « perdu » qui reçoit un nouveau devis) devient « devis envoyé ». Un client actif (ou inactif)
+    // à qui l'on envoie un nouveau devis garde son statut — il ne doit jamais être
     // rétrogradé. 0 ligne modifiée est le cas normal d'un client déjà plus avancé : ni erreur ni note.
     await tx.client.updateMany({
-      where: { id: devis.clientId, statut: "prospect" },
+      where: { id: devis.clientId, statut: { in: ["prospect", "perdu"] } },
       data: { statut: "devis_envoye" },
     });
     // Révision : l'ancienne version passe `expire` — jamais d'écrasement.
