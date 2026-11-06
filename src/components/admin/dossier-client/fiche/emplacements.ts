@@ -5,6 +5,7 @@ export { compteursOnglets, type CompteurOnglet } from "./compteurs-onglets";
 export { ongletActivite, ONGLET_ACTIVITE_PRET } from "./OngletActivite";
 export { resumeTaches } from "./ResumeTaches";
 export { resumeNotes } from "./ResumeNotes";
+export { resumeDemandesRecues } from "./CarteDemandesRecues";
 export { resumePrestations } from "./ResumePrestations";
 export { personnesDecision } from "./PersonnesDecision";
 export { ActionsDeLaPersonne } from "./ActionsDeLaPersonne";

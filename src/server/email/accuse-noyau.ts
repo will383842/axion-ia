@@ -68,6 +68,8 @@ export interface AccuseReception {
   readonly rebond: "hard" | "soft" | null;
   /** `null` quand aucun envoi n'a été trouvé. */
   readonly rattachement: "exact" | "adresse_et_date" | null;
+  /** L'envoi du journal décrit (pour relire sa copie), `null` quand rien n'a été trouvé. */
+  readonly emailLogId?: string | null;
 }
 
 export interface AccuseRetenu {
@@ -133,10 +135,11 @@ export function decrireAccuse(retenu: AccuseRetenu | null): AccuseReception {
       motif: null,
       rebond: null,
       rattachement: null,
+      emailLogId: null,
     };
   }
   const { ligne: l, rattachement } = retenu;
-  const base = { essais: l.attempts, rattachement, rebond: null };
+  const base = { essais: l.attempts, rattachement, rebond: null, emailLogId: l.id };
   switch (l.status) {
     case "sent":
       return { ...base, etat: "envoye", date: l.sentAt ?? l.createdAt, motif: null };
