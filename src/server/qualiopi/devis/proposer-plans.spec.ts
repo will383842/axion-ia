@@ -101,8 +101,9 @@ describe("création", () => {
       devisId: DEVIS,
       nature: "abonnement",
       periodiciteMois: 1,
-      nbMaxFactures: 12,
     });
+    // reconduction mensuelle : l'engagement ne borne pas la facturation → champ absent (NULL).
+    expect(data).not.toHaveProperty("nbMaxFactures");
     expect(data.proposeAt).toBeInstanceOf(Date);
     expect(data).not.toHaveProperty("valideAt");
     expect(data.prochaineGenerationAt).toEqual(ACCEPTE); // à échoir : date de début

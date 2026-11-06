@@ -138,7 +138,12 @@ function planAbonnement(e: EntreePlans): PlansProposes {
           },
         ],
         prochaineGenerationAt: premiere,
-        nbMaxFactures: ab.engagementMois === 0 ? null : nbMaxFactures(ab.engagementMois, mois),
+        // L'engagement n'est la FIN de la facturation que sans reconduction : sinon le contrat
+        // continue (CGV art. 44.3) et borner le plan le ferait clore au passage suivant.
+        nbMaxFactures:
+          ab.reconduction === "aucune" && ab.engagementMois > 0
+            ? nbMaxFactures(ab.engagementMois, mois)
+            : null,
         notes: `Proposé à l'acceptation du devis ${e.devisNumero} — en pause jusqu'à validation. Date de début indicative (acceptation).`,
       },
     ],

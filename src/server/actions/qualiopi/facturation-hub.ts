@@ -269,6 +269,18 @@ export async function genererFactureDepuisDevisAction(
       nbFacturesEmises: devis.facturesFormation.length,
     });
     if (!lecture.ok) return { error: lecture.motif };
+    // Le « solde » ne saute pas les paliers intermédiaires : tant que le palier suivant n'est
+    // pas le dernier, il faut facturer l'acompte correspondant.
+    if (
+      parsed.data.acomptePercent === undefined &&
+      lecture.palier !== null &&
+      !lecture.palier.estSolde
+    ) {
+      const p = lecture.palier;
+      return {
+        error: `Solde refusé : le palier suivant de l'échéancier (${p.rang}/${p.nbPaliers} — ${p.libelle}) n'est pas le solde ; facturer d'abord cet acompte de ${p.pourcentage} %.`,
+      };
+    }
     if (parsed.data.acomptePercent !== undefined) {
       const p = lecture.palier;
       if (p === null) return { error: "Tous les paliers de l'échéancier sont déjà facturés." };

@@ -48,7 +48,9 @@ function unPlan(r: ReturnType<typeof planifierPlansRecurrents>) {
 
 describe("formule B — abonnement", () => {
   it("mensuel, à échoir : 1re génération = début, prix = mensuel, TVA du devis", () => {
-    const p = unPlan(planifierPlansRecurrents(entree(offreB(), choixB(1))));
+    const p = unPlan(
+      planifierPlansRecurrents(entree(offreB({ reconduction: "aucune" }), choixB(1))),
+    );
     expect(p.nature).toBe("abonnement");
     expect(p.periodiciteMois).toBe(1);
     expect(p.lignes).toHaveLength(1);
@@ -106,6 +108,7 @@ describe("formule B — abonnement", () => {
       periodes: [{ mois: 6, remiseBps: 1500 }],
       modeAvance: "toutes_periodes",
       engagementMois: 12,
+      reconduction: "aucune",
     });
     const p = unPlan(planifierPlansRecurrents(entree(o, choixB(6))));
     expect(p.lignes[0]!.prixUnitaireHtCents).toBe(5106); // et non round(1001 × 6 × 0,85) = 5105
@@ -141,6 +144,7 @@ describe("formule B — abonnement", () => {
         entree(
           offreB({
             engagementMois,
+            reconduction: "aucune",
             periodes: [{ mois, remiseBps: 0 }],
             modeAvance: "toutes_periodes",
           }),
@@ -164,6 +168,35 @@ describe("formule B — abonnement", () => {
     it("sans engagement (0) → aucune borne de nombre de factures", () => {
       expect(unPlan(avecEngagement(0, 1)).nbMaxFactures).toBeNull();
       expect(unPlan(avecEngagement(0, 12)).nbMaxFactures).toBeNull();
+    });
+
+    describe("reconduction : l'engagement ne borne la facturation que sans reconduction", () => {
+      const avecReconduction = (
+        reconduction: Abo["reconduction"],
+        engagementMois: Abo["engagementMois"],
+      ) =>
+        planifierPlansRecurrents(
+          entree(
+            offreB({
+              engagementMois,
+              reconduction,
+              periodes: [{ mois: 1, remiseBps: 0 }],
+              modeAvance: "toutes_periodes",
+            }),
+            choixB(1),
+          ),
+        );
+
+      it.each([
+        ["mensuelle", 12, null],
+        ["annuelle", 12, null],
+        ["aucune", 12, 12],
+        ["mensuelle", 0, null],
+        ["annuelle", 0, null],
+        ["aucune", 0, null],
+      ] as const)("reconduction %s / engagement %i → nbMaxFactures %s", (rec, eng, attendu) => {
+        expect(unPlan(avecReconduction(rec, eng)).nbMaxFactures).toBe(attendu);
+      });
     });
 
     it("engagement 3 avec période 2 → REFUS (1,5 facture), pas 1 par division entière", () => {

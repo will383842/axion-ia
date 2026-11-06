@@ -158,6 +158,16 @@ describe("acompte = palier de l'échéancier", () => {
     expect(lignes.reduce((s, l) => s + l.prixUnitaireHtCents * 1, 0)).toBe(40003);
   });
 
+  it.each([0, 1])(
+    "solde demandé alors que %i facture(s) émise(s) : paliers intermédiaires non sautés → refus",
+    async (nb) => {
+      h.devisFind.mockResolvedValue(devis({}, nb));
+      const r = await genererFactureDepuisDevisAction({ devisId: DEVIS_ID });
+      expect(r).toMatchObject({ error: expect.stringContaining("palier suivant") });
+      expect(h.genererFactureLibre).not.toHaveBeenCalled();
+    },
+  );
+
   it("tous les paliers facturés → acompte refusé", async () => {
     h.devisFind.mockResolvedValue(devis({}, 3));
     const r = await genererFactureDepuisDevisAction({ devisId: DEVIS_ID, acomptePercent: 30 });

@@ -34,7 +34,6 @@ import { getClient } from "@/server/qualiopi/crm/clients";
 import { prisma } from "@/lib/prisma";
 import { AccesRefuse } from "@/components/admin/ui/AccesRefuse";
 import { gardePage } from "@/server/auth/garde-page";
-import { formulesActives } from "@/server/qualiopi/devis/interrupteur-formules";
 import { SiretEtablissementDevis } from "@/components/admin/qualiopi/SiretEtablissementDevis";
 import { lireSiretsDevis } from "@/features/apporteurs-reseau/etablissement-presentation";
 
