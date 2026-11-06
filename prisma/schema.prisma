@@ -13442,8 +13442,11 @@ model EdInvite {
   @@map("ed_invites")
 }
 
-/// 🔴 BLOQUANT. Aucun épisode ni dérivé ne se publie si l'autorisation
-/// n'est pas `signee`. Signature via DocuSeal, déjà en place.
+/// 🔴 BLOQUANT (INTENTION, pas encore de garde). Un épisode ou un dérivé ne devrait se publier
+/// que si l'autorisation est `signee`. ⚠️ Aucun code n'écrit aujourd'hui `autorisationStatut` :
+/// il reste à `non_demandee` (valeur par défaut) et la colonne n'est lue que par l'évaluateur de
+/// conformité. DocuSeal n'est plus le canal de signature (statut historique depuis le
+/// 2026-11-06) : le circuit d'autorisation reste à brancher sur le procédé de signature maison.
 model EdEpisodeInvite {
   id       String   @id @default(uuid()) @db.Uuid
   assetId  String   @map("asset_id") @db.Uuid

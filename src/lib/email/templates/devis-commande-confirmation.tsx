@@ -7,7 +7,6 @@
 import { Text } from "@react-email/components";
 import { EmailLayout, emailStyles } from "./_layout";
 import { objetCompose } from "../objet-email";
-import { objetCompose } from "../objet-email";
 import type { Locale } from "../../../../prisma/generated/client";
 
 interface Payload {
