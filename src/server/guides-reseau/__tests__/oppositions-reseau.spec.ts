@@ -492,7 +492,7 @@ describe("🔴 RGPD — le CRM ne reçoit jamais l'adresse d'une personne purgé
   const jeton = () => jetonOpposition(ADRESSE);
 
   beforeEach(() => {
-    process.env.AUTH_SECRET = "secret-de-test-suffisamment-long-0123456789";
+    process.env.AUTH_SECRET = "t".repeat(48);
   });
 
   it("(1) adresse déjà en base (ancienne ligne) → CRM non appelé, 200", async () => {
