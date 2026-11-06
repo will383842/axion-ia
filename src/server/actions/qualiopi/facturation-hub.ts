@@ -37,6 +37,8 @@ import {
   enregistrerDepotDossier,
 } from "@/server/qualiopi/financements/dossier-financement";
 import { planifierFacturationDevis } from "@/server/qualiopi/financements/facture-libre-pur";
+import { formulesActives } from "@/server/qualiopi/devis/interrupteur-formules";
+import { lirePalierSuivant } from "@/server/qualiopi/devis/palier-suivant";
 import { exigerIdccConfirme } from "@/server/qualiopi/financements/blocage-idcc";
 // SSOT du plafond légal (art. L6353-6) : la même constante que `calculerAcompte`
 // applique. Ne pas la recopier en dur ici — c'est ainsi que deux règles divergent.
@@ -210,6 +212,9 @@ export async function genererFactureDepuisDevisAction(
       refClient: true,
       clientId: true,
       lignes: true,
+      // Devis à formules (lot 5) : garde « formule retenue » et palier d'échéancier.
+      offre: true,
+      formuleRetenue: true,
       // Date d'engagement du particulier : fait courir le délai de rétractation
       // de 10 jours (art. L6353-5). Sans elle dans le select, le garde-fou
       // ci-dessous lirait `undefined` et laisserait passer TOUTES les factures —
@@ -234,9 +239,51 @@ export async function genererFactureDepuisDevisAction(
     return { error: "Renseigner l'activité du devis avant facturation (pilote le régime TVA)." };
   }
 
+  // Devis à formules (lot 5) — GARDE : une offre non NULL sans formule retenue n'a pas de
+  // montant convenu (deux formules = lignes vides tant que le client n'a pas choisi). On
+  // refuse AVANT toute lecture des lignes. Inerte interrupteur éteint.
+  const devisAFormules = devis.offre != null && (await formulesActives());
+  if (devisAFormules && devis.formuleRetenue === null) {
+    return {
+      error:
+        "Devis à formules : aucune formule retenue par le client — facturation refusée (aucun montant convenu).",
+    };
+  }
+
   const lignesParsed = z.array(LigneSchema).safeParse(devis.lignes);
   if (!lignesParsed.success || lignesParsed.data.length === 0) {
     return { error: "Lignes du devis illisibles — corriger le devis." };
+  }
+
+  // Devis à formules — l'acompte suit l'échéancier du devis, au centime près : même palier,
+  // même montant que celui imprimé (`echeancierPhases`), jamais un % libre.
+  let montantAcompteHtCents: number | undefined;
+  if (devisAFormules) {
+    const lecture = lirePalierSuivant({
+      offre: devis.offre,
+      formuleRetenue: devis.formuleRetenue,
+      totalHtCents: lignesParsed.data.reduce(
+        (acc, l) => acc + Math.round(l.quantite * l.prixUnitaireHtCents),
+        0,
+      ),
+      nbFacturesEmises: devis.facturesFormation.length,
+    });
+    if (!lecture.ok) return { error: lecture.motif };
+    if (parsed.data.acomptePercent !== undefined) {
+      const p = lecture.palier;
+      if (p === null) return { error: "Tous les paliers de l'échéancier sont déjà facturés." };
+      if (p.estSolde) {
+        return {
+          error: `Le palier suivant (${p.rang}/${p.nbPaliers} — ${p.libelle}) est le solde : facturer le solde, pas un acompte.`,
+        };
+      }
+      if (parsed.data.acomptePercent !== p.pourcentage) {
+        return {
+          error: `Acompte de ${parsed.data.acomptePercent} % refusé : le palier suivant de l'échéancier (${p.rang}/${p.nbPaliers} — ${p.libelle}) est de ${p.pourcentage} %.`,
+        };
+      }
+      montantAcompteHtCents = p.montantHtCents;
+    }
   }
 
   // Taux effectivement facturé sur chaque facture liée (le régime a pu évoluer).
@@ -327,7 +374,8 @@ export async function genererFactureDepuisDevisAction(
       0,
     );
     const plafondHtCents = Math.floor((totalHtCents * PLAFOND_ACOMPTE_PARTICULIER_PCT) / 100);
-    const demandeHtCents = Math.round((totalHtCents * parsed.data.acomptePercent) / 100);
+    const demandeHtCents =
+      montantAcompteHtCents ?? Math.round((totalHtCents * parsed.data.acomptePercent) / 100);
     if (dejaFactureHtCents + demandeHtCents > plafondHtCents) {
       const eur = (c: number): string => (c / 100).toFixed(2);
       return {
@@ -343,6 +391,7 @@ export async function genererFactureDepuisDevisAction(
     ...(parsed.data.acomptePercent !== undefined
       ? { acomptePercent: parsed.data.acomptePercent }
       : {}),
+    ...(montantAcompteHtCents !== undefined ? { montantAcompteHtCents } : {}),
   });
   if (!plan.ok) return { error: plan.erreur };
 
@@ -1259,14 +1308,31 @@ export async function changerStatutPlanAction(
   }
   // `requireAdminWrite` ASSUMÉ : activer, mettre en pause ou clore un plan ne
   // fait qu'ouvrir ou fermer un robinet à brouillons — aucune pièce émise.
-  const session = await requireAdminWrite();
+  let session = await requireAdminWrite();
   const parsed = ChangerStatutPlanSchema.safeParse(rawInput);
   if (!parsed.success) return { error: "Entrée invalide." };
+
+  // Plan PROPOSÉ par un devis à formules (lot 5) : le passer `actif` ouvre la facturation
+  // d'un abonnement ou d'une maintenance pour des mois — c'est la VALIDATION de Will, donc
+  // un acte ENGAGEANT (même niveau que facturer), tracé (`valideAt` + qui). Un plan sans devis
+  // garde le comportement historique (`requireAdminWrite`).
+  const plan = await prisma.planRecurrent.findUnique({
+    where: { id: parsed.data.planId },
+    select: { devisId: true, valideAt: true },
+  });
+  const valide = plan?.devisId != null && parsed.data.statut === "actif";
+  if (valide) session = await requireHabilitation("facturer");
 
   // Un plan clos ne se rouvre pas (historique figé — recréer un plan).
   const { count } = await prisma.planRecurrent.updateMany({
     where: { id: parsed.data.planId, statut: { not: "clos" } },
-    data: { statut: parsed.data.statut },
+    data: {
+      statut: parsed.data.statut,
+      // Première validation seulement : une remise en `actif` après une pause garde la date d'origine.
+      ...(valide && plan.valideAt === null
+        ? { valideAt: new Date(), valideParAdminId: session.userId }
+        : {}),
+    },
   });
   if (count === 0) return { error: "Plan introuvable ou déjà clos (recréer un plan)." };
 
@@ -1274,7 +1340,7 @@ export async function changerStatutPlanAction(
     action: "facturation.plan_recurrent.statut",
     targetType: "PlanRecurrent",
     targetId: parsed.data.planId,
-    changes: { statut: parsed.data.statut },
+    changes: { statut: parsed.data.statut, ...(valide ? { validationDevis: true } : {}) },
     session,
   });
   return { data: { statut: parsed.data.statut } };

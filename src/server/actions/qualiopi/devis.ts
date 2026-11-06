@@ -15,6 +15,7 @@
 
 "use server";
 
+import { proposerPlansApresAcceptation } from "@/server/qualiopi/devis/proposer-plans";
 import * as Sentry from "@sentry/nextjs";
 import React from "react";
 import { z } from "zod";
@@ -740,6 +741,8 @@ export async function acceptDevisAction(id: string): Promise<ActionResult<{ id: 
   } catch (err) {
     Sentry.captureException(err, { tags: { action: "devis_signe_fait_client" } });
   }
+  // Devis à formules : plans récurrents PROPOSÉS en `pause` (lot 5), après le COMMIT, fail-soft.
+  await proposerPlansApresAcceptation(devisId, "console");
 
   await logQualiopiActivity({
     action: "qualiopi.devis.accept",
