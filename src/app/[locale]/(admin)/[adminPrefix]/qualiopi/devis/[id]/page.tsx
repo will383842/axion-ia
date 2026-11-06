@@ -32,6 +32,7 @@ import { getClient } from "@/server/qualiopi/crm/clients";
 import { prisma } from "@/lib/prisma";
 import { AccesRefuse } from "@/components/admin/ui/AccesRefuse";
 import { gardePage } from "@/server/auth/garde-page";
+import { formulesActives } from "@/server/qualiopi/devis/interrupteur-formules";
 import { SiretEtablissementDevis } from "@/components/admin/qualiopi/SiretEtablissementDevis";
 import { lireSiretsDevis } from "@/features/apporteurs-reseau/etablissement-presentation";
 
@@ -190,6 +191,9 @@ export default async function QualiopiDevisDetailPage({ params }: PageProps) {
   const identiteOrganisme = await getOrganismeIdentite();
 
   const devisBase = `/${locale}/${adminPrefix}/qualiopi/devis`;
+  // Édition d'un brouillon à formules : lien proposé seulement interrupteur allumé.
+  const peutModifierFormules =
+    devis.statut === "brouillon" && devis.offreSha256 !== null && (await formulesActives());
   const lignes = parseLignes(devis.lignes);
 
   const isExpired =
@@ -559,6 +563,16 @@ export default async function QualiopiDevisDetailPage({ params }: PageProps) {
             >
               Voir l&apos;aperçu PDF
             </a>
+          </p>
+        )}
+        {peutModifierFormules && (
+          <p className="mb-[var(--space-admin-3)]">
+            <Link
+              href={`${devisBase}/${devis.id}/modifier`}
+              className="text-[length:var(--text-admin-sm)] underline"
+            >
+              Modifier le brouillon
+            </Link>
           </p>
         )}
         <DevisLifecycleButtons devisId={devis.id} statut={devis.statut} />
