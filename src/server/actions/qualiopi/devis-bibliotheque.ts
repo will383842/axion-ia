@@ -12,6 +12,7 @@
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
 import { requireAdminWrite, logQualiopiActivity } from "@/server/actions/qualiopi/_guards";
+import { formulesActives } from "@/server/qualiopi/devis/interrupteur-formules";
 import {
   FORMULES_BIBLIOTHEQUE,
   NATURES_BIBLIOTHEQUE,
@@ -19,6 +20,16 @@ import {
 } from "@/server/qualiopi/devis/bibliotheque-constantes";
 
 type ActionResult<T> = { data: T } | { error: string };
+
+const MSG_ETEINT = "Le devis à formules n'est pas activé.";
+const MSG_BUILD = "Indisponible pendant le build";
+
+/** Garde commune des écritures : build GH Actions (stub) puis interrupteur. `null` = autorisé. */
+async function refusEcriture(): Promise<string | null> {
+  if (process.env["DATABASE_URL"]?.includes("stub.invalid")) return MSG_BUILD;
+  if (!(await formulesActives())) return MSG_ETEINT;
+  return null;
+}
 
 const texteSchema = z.string().trim().min(1).max(4000);
 const ajoutSchema = z.object({
@@ -54,6 +65,8 @@ export async function ajouterTexteAction(
   input: z.infer<typeof ajoutSchema>,
 ): Promise<ActionResult<{ id: string }>> {
   const session = await requireAdminWrite();
+  const refus = await refusEcriture();
+  if (refus !== null) return { error: refus };
   const p = ajoutSchema.safeParse(input);
   if (!p.success) return { error: "Données invalides" };
   const row = await prisma.devisTexteBibliotheque.create({
@@ -85,6 +98,8 @@ export async function modifierTexteAction(
   texte: string,
 ): Promise<ActionResult<{ id: string }>> {
   const session = await requireAdminWrite();
+  const refus = await refusEcriture();
+  if (refus !== null) return { error: refus };
   const idP = idSchema.safeParse(id);
   const tP = texteSchema.safeParse(texte);
   if (!idP.success || !tP.success) return { error: "Données invalides" };
@@ -125,6 +140,8 @@ export async function modifierTexteAction(
 
 export async function archiverTexteAction(id: string): Promise<ActionResult<{ id: string }>> {
   const session = await requireAdminWrite();
+  const refus = await refusEcriture();
+  if (refus !== null) return { error: refus };
   const idP = idSchema.safeParse(id);
   if (!idP.success) return { error: "Identifiant invalide" };
   const { count } = await prisma.devisTexteBibliotheque.updateMany({
@@ -137,6 +154,36 @@ export async function archiverTexteAction(id: string): Promise<ActionResult<{ id
     targetType: "DevisTexteBibliotheque",
     targetId: idP.data,
     changes: { archive: true },
+    session,
+  });
+  return { data: { id: idP.data } };
+}
+
+/**
+ * Règle « actif par défaut » d'un texte : coché, le texte est pré-activé à la saisie d'un devis.
+ * Ne touche ni au texte ni à sa version (c'est un réglage, pas une réécriture) ; ne vaut que
+ * pour la version ACTIVE et n'affecte pas les offres déjà copiées.
+ */
+export async function definirActifParDefautAction(
+  id: string,
+  actif: boolean,
+): Promise<ActionResult<{ id: string }>> {
+  const session = await requireAdminWrite();
+  const refus = await refusEcriture();
+  if (refus !== null) return { error: refus };
+  const idP = idSchema.safeParse(id);
+  const aP = z.boolean().safeParse(actif);
+  if (!idP.success || !aP.success) return { error: "Données invalides" };
+  const { count } = await prisma.devisTexteBibliotheque.updateMany({
+    where: { id: idP.data, archiveAt: null },
+    data: { actifParDefaut: aP.data, majParAdminId: session.userId },
+  });
+  if (count === 0) return { error: "Texte introuvable ou archivé : rechargez." };
+  await logQualiopiActivity({
+    action: "qualiopi.devis_bibliotheque.reglage_defaut",
+    targetType: "DevisTexteBibliotheque",
+    targetId: idP.data,
+    changes: { actifParDefaut: aP.data },
     session,
   });
   return { data: { id: idP.data } };

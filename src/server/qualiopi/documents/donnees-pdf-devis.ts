@@ -138,13 +138,14 @@ export class OffreDevisInvalideError extends Error {
 export function formulesDuDevis(
   offre: unknown,
   actif: boolean | undefined,
+  regime: RegimeTva = "assujetti",
 ): VueFormules | undefined {
   if (actif !== true || offre === null || offre === undefined) return undefined;
   const parsed = offreDevisV1.safeParse(offre);
   if (!parsed.success) {
     throw new OffreDevisInvalideError(parsed.error.issues[0]?.message ?? "schéma non conforme");
   }
-  return vueFormules(parsed.data);
+  return vueFormules(parsed.data, regime);
 }
 
 /** Lectures de configuration (aucune écriture). */
@@ -193,7 +194,7 @@ export function donneesPdfDevis(
     contexte.certificationObtenue,
   );
 
-  const formules = formulesDuDevis(devis.offre, contexte.formulesActives);
+  const formules = formulesDuDevis(devis.offre, contexte.formulesActives, regimeTva);
 
   return {
     numero: devis.numero,

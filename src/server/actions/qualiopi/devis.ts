@@ -413,6 +413,8 @@ export async function sendDevisAction(
       activite: true,
       refClient: true,
       replacesDevisId: true,
+      // Devis à formules : l'envoi est refusé tant que la signature des formules n'existe pas.
+      offre: true,
       // Pièce de la version REMPLACÉE : son lien de signature doit mourir avec
       // elle (voir la transaction plus bas).
       replacesDevis: { select: { documentGenereId: true } },
@@ -454,6 +456,15 @@ export async function sendDevisAction(
   if (devis.statut !== "brouillon") {
     return {
       error: `Seul un devis en brouillon peut être envoyé (statut actuel : ${devis.statut}).`,
+    };
+  }
+  // 🔴 Devis à formules : le circuit de signature (choix de la formule, mensualité, engagement,
+  // indemnité de sortie) n'est pas livré. Envoyé maintenant, le client signerait un PDF
+  // classique qui ne porte pas ces conditions. Refus tant que le lot de signature manque.
+  if (devis.offre !== null && devis.offre !== undefined) {
+    return {
+      error:
+        "Un devis à formules ne peut pas encore être envoyé : le circuit de signature des formules (choix de la formule, mensualité, engagement, indemnité de sortie) n'est pas disponible. Gardez-le en brouillon.",
     };
   }
   // Un devis à 0,00 € ne doit pas partir en signature.
@@ -933,6 +944,9 @@ export async function reviseDevisAction(
       opcoEstimationOrigine: true,
       opcoEstimationAvertissement: true,
       resteAChargeCents: true,
+      // Devis à formules : la révision reste éditable par /modifier, donc garde son offre.
+      offre: true,
+      offreSha256: true,
     },
   });
   if (!origine) return { error: "Devis introuvable" };
@@ -987,6 +1001,12 @@ export async function reviseDevisAction(
             : {}),
           ...(origine.resteAChargeCents !== null
             ? { resteAChargeCents: origine.resteAChargeCents }
+            : {}),
+          ...(origine.offre !== null && origine.offre !== undefined
+            ? { offre: origine.offre as never }
+            : {}),
+          ...(origine.offreSha256 !== null && origine.offreSha256 !== undefined
+            ? { offreSha256: origine.offreSha256 }
             : {}),
         },
         select: { id: true, numero: true },

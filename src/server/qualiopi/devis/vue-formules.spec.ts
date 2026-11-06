@@ -96,3 +96,22 @@ describe("vueFormules", () => {
     sansToken(vueFormules(o));
   });
 });
+
+describe("vueFormules — régime de TVA", () => {
+  it("assujetti (défaut) : taux saisis et TVA calculée", () => {
+    const v = vueFormules(offreFictive());
+    const a = v.formules.find((f) => f.formule === "achat")!;
+    expect(a.lignes.map((l) => l.tauxTvaPercent)).toEqual([20, 25]);
+    expect(a.totalTvaCents).toBe(25000);
+    expect(v.formules.find((f) => f.formule === "abonnement")!.abonnement!.tauxTvaPercent).toBe(20);
+  });
+  it("franchise 293 B : taux 0 partout (lignes, options, abonnement), aucune TVA", () => {
+    const v = vueFormules(offreFictive(), "franchise_293b");
+    for (const f of v.formules) {
+      expect(f.totalTvaCents).toBe(0);
+      expect(f.totalTtcCents).toBe(f.totalHtCents);
+      for (const l of [...f.lignes, ...f.options]) expect(l.tauxTvaPercent).toBe(0);
+      if (f.abonnement) expect(f.abonnement.tauxTvaPercent).toBe(0);
+    }
+  });
+});

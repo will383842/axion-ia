@@ -332,6 +332,9 @@ export function DevisForm({
           clientId,
           offre: offre.offre,
           activite: acteurActivite,
+          // Même garde que le devis classique : le lien n'est posé que si le client choisi
+          // est celui du projet (l'action le revérifie côté serveur).
+          ...(projetId !== undefined && clientId === defaultClientId ? { projetId } : {}),
         });
         if ("error" in r) setError(r.error);
         else router.push(`${basePath}/${r.data.id}`);
