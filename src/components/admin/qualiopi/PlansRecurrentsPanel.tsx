@@ -43,6 +43,8 @@ export interface PlanItem {
   finAt: string | null; // ISO
   nbMaxFactures: number | null;
   nbFacturesGenerees: number;
+  /** Proposé par un devis à formules et pas encore validé : en pause, ne facture rien. */
+  aValider?: boolean;
   brouillons: PlanBrouillon[];
 }
 
@@ -523,7 +525,9 @@ export function PlansRecurrentsPanel({
                   {` · ${p.nbFacturesGenerees} générée${p.nbFacturesGenerees > 1 ? "s" : ""}`}
                 </span>
                 <span className="rounded-[var(--radius-admin-sm)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] px-[var(--space-admin-2)] text-[length:var(--text-admin-xs)]">
-                  {STATUT_LABELS[p.statut] ?? p.statut}
+                  {p.aValider === true
+                    ? "À valider (proposé par un devis)"
+                    : (STATUT_LABELS[p.statut] ?? p.statut)}
                 </span>
               </div>
 

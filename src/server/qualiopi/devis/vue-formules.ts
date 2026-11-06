@@ -9,6 +9,7 @@
  * ⛔ Vocabulaire client : jamais d'unité d'IA, de jeton ni de prix fournisseur.
  */
 import type { OffreDevisV1, Formule } from "./offre-devis";
+import type { RegimeTva } from "../legal/tva";
 import {
   echeancierPhases,
   indemniteSortieMaxCents,
@@ -145,7 +146,9 @@ function libelleModeIA(a: OffreDevisV1["automatisations"][number]): string {
   }
 }
 
-function vueFormule(offre: OffreDevisV1, formule: Formule): VueFormule {
+function vueFormule(offre: OffreDevisV1, formule: Formule, regime: RegimeTva): VueFormule {
+  // Hors `assujetti` : aucun taux affiché (le taux saisi ne s'applique pas).
+  const taux = (bps: number): number => (regime === "assujetti" ? bps / 100 : 0);
   const bloc = formule === "achat" ? offre.achat : offre.abonnement;
   if (!bloc) throw new RangeError(`Formule « ${formule} » proposée sans bloc de prix.`);
 
@@ -162,14 +165,14 @@ function vueFormule(offre: OffreDevisV1, formule: Formule): VueFormule {
       designation: l.libelle,
       quantite: l.quantite,
       prixUnitaireHtCents: l.prixHtCents,
-      tauxTvaPercent: l.tauxTvaBps / 100,
+      tauxTvaPercent: taux(l.tauxTvaBps),
       totalHtCents: Math.round(l.quantite * l.prixHtCents),
     })),
     ...obligatoires.map((a) => ({
       designation: a.libelle,
       quantite: 1,
       prixUnitaireHtCents: a.prixHtCents,
-      tauxTvaPercent: a.tauxTvaBps / 100,
+      tauxTvaPercent: taux(a.tauxTvaBps),
       totalHtCents: a.prixHtCents,
       precision: libelleModeIA(a),
     })),
@@ -180,7 +183,7 @@ function vueFormule(offre: OffreDevisV1, formule: Formule): VueFormule {
     designation: a.libelle,
     quantite: 1,
     prixUnitaireHtCents: a.prixHtCents,
-    tauxTvaPercent: a.tauxTvaBps / 100,
+    tauxTvaPercent: taux(a.tauxTvaBps),
     totalHtCents: a.prixHtCents,
     precision: [
       "Facultative",
@@ -191,7 +194,7 @@ function vueFormule(offre: OffreDevisV1, formule: Formule): VueFormule {
       .join(" — "),
   }));
 
-  const totaux = totauxFormule(offre, formule, codesObligatoires);
+  const totaux = totauxFormule(offre, formule, codesObligatoires, regime);
   const tauxPhases = lignes.map((l) => Math.round(l.tauxTvaPercent * 100));
   const paliers = echeancierPhases(totaux.totalHtCents, bloc.phases, tauxPhases);
   const phases: VuePalier[] = [...bloc.phases]
@@ -225,7 +228,7 @@ function vueFormule(offre: OffreDevisV1, formule: Formule): VueFormule {
         : null;
     abonnement = {
       mensuelCatalogueHtCents: a.mensuelCatalogueHtCents,
-      tauxTvaPercent: a.tauxTvaBps / 100,
+      tauxTvaPercent: taux(a.tauxTvaBps),
       terme: LIBELLES_TERME[a.terme] ?? a.terme,
       modeAvance: LIBELLES_MODE_AVANCE[a.modeAvance] ?? a.modeAvance,
       periodes,
@@ -264,12 +267,12 @@ function vueFormule(offre: OffreDevisV1, formule: Formule): VueFormule {
 }
 
 /** Vue complète. `offre` DOIT être valide (`offreDevisV1.parse`) : rien n'est revalidé ici. */
-export function vueFormules(offre: OffreDevisV1): VueFormules {
+export function vueFormules(offre: OffreDevisV1, regime: RegimeTva = "assujetti"): VueFormules {
   const ordre: Formule[] = ["achat", "abonnement"];
   return {
     formules: ordre
       .filter((f) => offre.formulesProposees.includes(f))
-      .map((f) => vueFormule(offre, f)),
+      .map((f) => vueFormule(offre, f, regime)),
     servicesTiers: offre.servicesTiers.map((s) => ({
       nom: s.nom,
       obligatoire: s.obligatoire,

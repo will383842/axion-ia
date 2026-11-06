@@ -254,7 +254,8 @@ export function captureWorkerError(
         jobName: job?.name ?? null,
         jobData: job?.data ? sanitizeJobData(job.data) : null,
         attemptsMade: job?.attemptsMade ?? 0,
-        failedReason: job?.failedReason ?? null,
+        // Passe par le même filtre que `jobData` : une raison d'échec peut citer un lien.
+        failedReason: job?.failedReason ? sanitizeJobData({ r: job.failedReason })?.["r"] : null,
         timestamp: job?.timestamp ?? null,
         queueName,
       },

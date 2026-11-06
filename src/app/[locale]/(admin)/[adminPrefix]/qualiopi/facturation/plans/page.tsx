@@ -56,6 +56,8 @@ export default async function QualiopiPlansRecurrentsPage({ params }: PageProps)
         prochaineGenerationAt: true,
         finAt: true,
         nbMaxFactures: true,
+        proposeAt: true,
+        valideAt: true,
         client: { select: { raisonSociale: true } },
         factures: {
           select: {
@@ -82,6 +84,7 @@ export default async function QualiopiPlansRecurrentsPage({ params }: PageProps)
     finAt: p.finAt ? p.finAt.toISOString() : null,
     nbMaxFactures: p.nbMaxFactures,
     nbFacturesGenerees: p.factures.length,
+    aValider: p.proposeAt !== null && p.valideAt === null && p.statut === "pause",
     brouillons: p.factures
       .filter((f) => f.statut === "brouillon")
       .map((f) => ({

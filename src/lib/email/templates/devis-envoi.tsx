@@ -4,7 +4,7 @@
 // l'envoi initial (sendDevisAction, bouton « Envoyer au client »), soit au
 // renvoi manuel (envoyerDevisEmailAction). Le PDF du devis est attaché par le
 // worker (clé R2 dans EmailJobData.attachments). Si `signatureUrl` est fourni
-// (embed_src DocuSeal du client), un CTA « Signer en ligne » est ajouté. Le
+// (lien de signature MAISON `/portail/signer/<jeton>`, depuis le 30/07/2026), un CTA « Signer en ligne » est ajouté. Le
 // message personnalisé de l'admin (multi-lignes) est affiché tel quel. Ton :
 // courtois, zéro pression.
 
@@ -23,9 +23,10 @@ interface Payload {
   /** Message libre de l'admin (multi-lignes, affiché tel quel). Optionnel. */
   messagePersonnalise?: string;
   /**
-   * Lien de signature en ligne (embed_src DocuSeal du client). Si présent,
-   * un CTA « Signer le devis en ligne » est affiché. Optionnel — sans DocuSeal
-   * configuré, le devis reste signable par retour du PDF « bon pour accord ».
+   * Lien de signature en ligne MAISON (`/portail/signer/<jeton>`, jeton porteur : ne
+   * jamais le journaliser ni l'envoyer à Sentry). Si présent, un CTA « Signer le devis
+   * en ligne » est affiché. Optionnel — sans lien, le devis reste signable par retour
+   * du PDF « bon pour accord ». DocuSeal n'émet plus rien depuis le 30/07/2026.
    */
   signatureUrl?: string;
   /** Devis à formules : nombre de formules proposées (2 = « 2 formules au choix »). */

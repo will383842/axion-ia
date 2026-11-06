@@ -200,3 +200,23 @@ describe("relecture du lot 1 — bornes", () => {
     expect(indemniteSortieMaxCents(10000, 5000)).toBe(5000);
   });
 });
+
+describe("totauxFormule — régime de TVA", () => {
+  it("assujetti (défaut) : TVA par groupe de taux saisi", () => {
+    const t = totauxFormule(offreFictive(), "achat");
+    expect(t.totalHtCents).toBe(120000);
+    // 100 000 × 20 % + 20 000 × 25 %
+    expect(t.totalTvaCents).toBe(25000);
+    expect(t.totalTtcCents).toBe(145000);
+  });
+  it.each(["franchise_293b", "exoneration_261"] as const)(
+    "%s : taux 0 partout, TTC = HT, même si les lignes portent un taux",
+    (regime) => {
+      const t = totauxFormule(offreFictive(), "achat", ["auto1"], regime);
+      expect(t.totalHtCents).toBe(125000);
+      expect(t.totalTvaCents).toBe(0);
+      expect(t.totalTtcCents).toBe(125000);
+      expect(t.ventilation.every((v) => v.tauxPercent === 0)).toBe(true);
+    },
+  );
+});
