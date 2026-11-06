@@ -11,6 +11,8 @@ import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 
 export interface RelancerAcceptationDevisProps {
+  /** « acceptation » : formule non enregistrée ; « plans » : acceptation faite, plans non proposés. */
+  cas: "acceptation" | "plans";
   documentGenereId: string;
   relancerAction: (input: {
     documentGenereId: string;
@@ -18,6 +20,7 @@ export interface RelancerAcceptationDevisProps {
 }
 
 export function RelancerAcceptationDevis({
+  cas,
   documentGenereId,
   relancerAction,
 }: RelancerAcceptationDevisProps): React.ReactElement {
@@ -37,9 +40,9 @@ export function RelancerAcceptationDevis({
   return (
     <div role="alert" className="text-[length:var(--text-admin-sm)]">
       <p className="text-[color:var(--color-admin-error)]">
-        Devis signé par les deux parties, mais son acceptation n&apos;a pas été enregistrée (aucune
-        formule retenue). Relancez l&apos;acceptation : l&apos;opération est sans risque si elle a
-        déjà abouti.
+        {cas === "acceptation"
+          ? "Devis signé par les deux parties, mais son acceptation n'a pas été enregistrée (aucune formule retenue). Relancez l'acceptation : l'opération est sans risque si elle a déjà abouti."
+          : "Devis accepté, mais les plans récurrents attendus n'ont pas été proposés. Relancez la proposition des plans : ils sont créés en pause, sans facture ni e-mail."}
       </p>
       <button
         type="button"
@@ -47,7 +50,11 @@ export function RelancerAcceptationDevis({
         disabled={enCours}
         className="mt-[var(--space-admin-2)] rounded-[var(--radius-admin-sm)] bg-[color:var(--color-admin-fg)] px-[var(--space-admin-4)] py-[var(--space-admin-2)] font-medium text-[color:var(--color-admin-paper)] disabled:opacity-40"
       >
-        {enCours ? "Reprise en cours…" : "Relancer l'acceptation"}
+        {enCours
+          ? "Reprise en cours…"
+          : cas === "acceptation"
+            ? "Relancer l'acceptation"
+            : "Relancer la proposition des plans"}
       </button>
       {erreur !== null && (
         <p className="mt-[var(--space-admin-2)] text-[color:var(--color-admin-error)]">{erreur}</p>

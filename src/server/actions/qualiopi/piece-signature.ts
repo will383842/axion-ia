@@ -866,7 +866,7 @@ export async function relancerAcceptationDevisAction(input: {
         ok: false,
         message:
           "L'acceptation est enregistrée, mais les plans récurrents n'ont pas pu être proposés " +
-          "(code consigné). Relancez, ou créez le plan à la main.",
+          "(code consigné). Relancez la proposition des plans.",
       };
     }
     return { ok: true, devisAcceptes: res.ids.length };

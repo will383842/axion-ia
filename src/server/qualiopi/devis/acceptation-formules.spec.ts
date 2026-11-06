@@ -121,7 +121,7 @@ describe("accepterDevisAFormules", () => {
     const { client } = faux_(e);
     client.devis.findMany.mockResolvedValue([]);
     const r = await accepterDevisAFormules(client as never, DOC);
-    expect(r).toEqual({ traite: false, ids: [] });
+    expect(r).toEqual({ traite: false, ids: [], acceptes: [] });
     expect(client.$transaction).not.toHaveBeenCalled();
   });
 
@@ -129,7 +129,7 @@ describe("accepterDevisAFormules", () => {
     const e = etat();
     const { client, tx, appels } = faux_(e);
     const r = await accepterDevisAFormules(client as never, DOC);
-    expect(r).toEqual({ traite: true, ids: [DEVIS_ID] });
+    expect(r).toEqual({ traite: true, ids: [DEVIS_ID], acceptes: [DEVIS_ID] });
     const attendu = montantsDevis({
       offre: e.offre,
       lignes: [],
@@ -180,6 +180,8 @@ describe("accepterDevisAFormules", () => {
     const { client, tx, appels } = faux_(e, { updateFormuleCount: 0 });
     const r = await accepterDevisAFormules(client as never, DOC);
     expect(r.traite).toBe(true);
+    // Sauté par la transaction : PAS repris pour la proposition des plans (fausse alerte sinon).
+    expect(r.acceptes).toEqual([]);
     expect(appels).toEqual(["recopie"]);
     expect(tx.consoleCommande.createMany).not.toHaveBeenCalled();
     expect(emettre).not.toHaveBeenCalled();
@@ -190,6 +192,7 @@ describe("accepterDevisAFormules", () => {
     const { client, tx } = faux_(e);
     const r = await accepterDevisAFormules(client as never, DOC);
     expect(r.traite).toBe(true);
+    expect(r.acceptes).toEqual([]);
     expect(tx.devis.updateMany).not.toHaveBeenCalled();
     expect(tx.consoleCommande.createMany).not.toHaveBeenCalled();
   });

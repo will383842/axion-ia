@@ -60,7 +60,7 @@ vi.mock("@/server/partners-sync/producteurs/devis", () => ({
 }));
 // Devis à formules (lot 4) : couvert par `acceptation-formules.spec.ts`. Ici, aucun devis à formules.
 vi.mock("@/server/qualiopi/devis/acceptation-formules", () => ({
-  accepterDevisAFormules: vi.fn(async () => ({ traite: false, ids: [] })),
+  accepterDevisAFormules: vi.fn(async () => ({ traite: false, ids: [], acceptes: [] })),
 }));
 vi.mock("@/server/qualiopi/devis/proposer-plans", () => ({
   proposerPlansApresAcceptation: vi.fn(async () => null),
@@ -383,6 +383,7 @@ describe("devis intégralement signé : le prospect passe en client", () => {
     (accepterDevisAFormules as unknown as ReturnType<typeof vi.fn>).mockResolvedValueOnce({
       traite: true,
       ids: ["dv-formules"],
+      acceptes: ["dv-formules"],
     });
     await apresSignature(ctx({ type: "devis", statutSignature: "signee", partie: "axionia" }));
     expect(accepterDevisAFormules).toHaveBeenCalledWith(h.p, DOC);
@@ -393,10 +394,26 @@ describe("devis intégralement signé : le prospect passe en client", () => {
     expect(proposerPlansApresAcceptation).toHaveBeenCalledWith("dv-formules", "signature_complete");
   });
 
+  it("🔴 devis À FORMULES sauté par la transaction (déjà recopié ailleurs) : aucune proposition de plans → pas de fausse alerte devis_non_accepte", async () => {
+    (accepterDevisAFormules as unknown as ReturnType<typeof vi.fn>).mockResolvedValueOnce({
+      traite: true,
+      ids: ["dv-saute", "dv-accepte"],
+      acceptes: ["dv-accepte"],
+    });
+    const r = await apresSignature(
+      ctx({ type: "devis", statutSignature: "signee", partie: "axionia" }),
+    );
+    expect(proposerPlansApresAcceptation).toHaveBeenCalledTimes(1);
+    expect(proposerPlansApresAcceptation).toHaveBeenCalledWith("dv-accepte", "signature_complete");
+    expect(proposerPlansApresAcceptation).not.toHaveBeenCalledWith("dv-saute", expect.anything());
+    expect(r.activationRefusee ?? null).toBeNull();
+  });
+
   it("🔴 devis À FORMULES : l'échec de la proposition des plans n'annule pas l'acceptation et remonte une alerte distincte", async () => {
     (accepterDevisAFormules as unknown as ReturnType<typeof vi.fn>).mockResolvedValueOnce({
       traite: true,
       ids: ["dv-formules"],
+      acceptes: ["dv-formules"],
     });
     (proposerPlansApresAcceptation as unknown as ReturnType<typeof vi.fn>).mockResolvedValueOnce(
       "offre_alteree",

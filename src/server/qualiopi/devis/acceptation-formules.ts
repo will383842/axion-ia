@@ -50,7 +50,7 @@ function refuser(motif: string): never {
 export async function accepterDevisAFormules(
   client: PrismaClient,
   documentGenereId: string,
-): Promise<{ traite: boolean; ids: string[] }> {
+): Promise<{ traite: boolean; ids: string[]; acceptes: string[] }> {
   const concernes = await client.devis.findMany({
     where: {
       documentGenereId,
@@ -59,9 +59,12 @@ export async function accepterDevisAFormules(
     },
     select: { id: true },
   });
-  if (concernes.length === 0) return { traite: false, ids: [] };
+  if (concernes.length === 0) return { traite: false, ids: [], acceptes: [] };
 
   const ids = concernes.map((d) => d.id);
+  // Seuls les devis EFFECTIVEMENT acceptés par CETTE transaction (ni sautés par `preparer`, ni
+  // déjà recopiés par un autre accepteur) : l'appelant s'en sert pour proposer les plans.
+  const acceptes: string[] = [];
   try {
     // 🔴 Les ÉCRITURES (recopie, acceptation, émission, fait) vivent ICI, dans le travail même de
     // la transaction : c'est la forme que le cliquet des écrivains de `devis.signe`
@@ -85,10 +88,11 @@ export async function accepterDevisAFormules(
         if (recopie.count === 0) continue;
 
         // Acceptation AVANT l'émission : le producteur n'émet que pour un devis `accepte`.
-        await tx.devis.updateMany({
+        const acceptation = await tx.devis.updateMany({
           where: { id: devisId, statut: { in: [...STATUTS_ACCEPTABLES] } },
           data: { statut: "accepte", acceptedAt: new Date() },
         });
+        if (acceptation.count > 0) acceptes.push(devisId);
         await emettreDevisSigne(tx, devisId);
 
         // Le fait `commande.signee` (inerte tant que l'envoi vers la console est fermé).
@@ -113,7 +117,7 @@ export async function accepterDevisAFormules(
     });
     throw err;
   }
-  return { traite: true, ids };
+  return { traite: true, ids, acceptes };
 }
 
 interface Preparation {

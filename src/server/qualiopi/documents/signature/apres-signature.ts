@@ -198,7 +198,9 @@ export async function reprendreAcceptationDevisFormules(
   // transaction, fail-soft. Aussi pour un devis DÉJÀ accepté dont les plans manquent (la reprise
   // manuelle repropose) : idempotent (index unique partiel (devis_id, nature) + lecture
   // préalable → « déjà présents »). Inerte interrupteur éteint. Aucune facture, aucun e-mail.
-  const aProposer = formules.traite ? formules.ids : await devisAcceptesAFormules(documentGenereId);
+  const aProposer = formules.traite
+    ? formules.acceptes
+    : await devisAcceptesAFormules(documentGenereId);
   const plansEchec: string[] = [];
   for (const id of aProposer) {
     if ((await proposerPlansApresAcceptation(id, "signature_complete")) !== null) {

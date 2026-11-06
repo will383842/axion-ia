@@ -17,6 +17,7 @@ import { AdminPageShell } from "@/components/admin/ui/AdminPageShell";
 import { AdminPageHeader } from "@/components/admin/ui/AdminPageHeader";
 import { DevisLifecycleButtons } from "@/components/admin/qualiopi/DevisLifecycleButtons";
 import { DevisContresignature } from "@/components/admin/qualiopi/DevisContresignature";
+import { compterPlansAttendus } from "@/server/qualiopi/devis/proposer-plans";
 import { RelancerAcceptationDevis } from "@/components/admin/qualiopi/RelancerAcceptationDevis";
 import {
   contresignerPieceAction,
@@ -189,7 +190,10 @@ export default async function QualiopiDevisDetailPage({ params }: PageProps) {
     devis.formuleRetenue !== null &&
     (devis.statut === "accepte" || devis.statut === "transforme_convention") &&
     (await formulesActives()) &&
-    (await prisma.planRecurrent.count({ where: { devisId: devis.id } })) === 0;
+    // 🔴 « Aucun plan en base » ne suffit PAS : une formule « achat » sans maintenance donne
+    // normalement ZÉRO plan. On n'alerte que si AU MOINS UN plan est ATTENDU (recalculé depuis
+    // la formule retenue et l'offre figée) et qu'il en manque en base.
+    (await plansManquants(devis.id));
 
   // ── État RÉEL de la signature, lu du registre de preuve ──
   //
@@ -536,19 +540,26 @@ export default async function QualiopiDevisDetailPage({ params }: PageProps) {
           />
         )}
 
-        {/* Signé des deux parties mais jamais accepté : alerte persistante (lue en base) + reprise. */}
+        {/* Signé des deux parties : deux alertes DISTINCTES, persistantes (lues en base) + reprise.
+            « acceptation non enregistrée » (aucune formule retenue) ≠ « plans non proposés ». */}
         {devis.documentGenereId !== null &&
           clientASigne &&
           organismeASigne &&
           devis.offreSha256 !== null &&
-          ((devis.formuleRetenue === null &&
-            (devis.statut === "envoye" || devis.statut === "expire")) ||
-            plansAReproposer) && (
+          (devis.formuleRetenue === null &&
+          (devis.statut === "envoye" || devis.statut === "expire") ? (
             <RelancerAcceptationDevis
+              cas="acceptation"
               documentGenereId={devis.documentGenereId}
               relancerAction={relancerAcceptationDevisAction}
             />
-          )}
+          ) : plansAReproposer ? (
+            <RelancerAcceptationDevis
+              cas="plans"
+              documentGenereId={devis.documentGenereId}
+              relancerAction={relancerAcceptationDevisAction}
+            />
+          ) : null)}
 
         {clientASigne && organismeASigne && (
           <p className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-soft)]">
@@ -660,4 +671,12 @@ export default async function QualiopiDevisDetailPage({ params }: PageProps) {
       )}
     </AdminPageShell>
   );
+}
+
+/** Vrai si au moins un plan est attendu pour ce devis et qu'il en manque en base. */
+async function plansManquants(devisId: string): Promise<boolean> {
+  const attendus = await compterPlansAttendus(devisId);
+  if (attendus === null || attendus === 0) return false;
+  const presents = await prisma.planRecurrent.count({ where: { devisId } });
+  return presents < attendus;
 }
