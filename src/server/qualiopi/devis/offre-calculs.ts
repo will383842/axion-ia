@@ -5,6 +5,9 @@
  */
 import { empreinteCanonique, versValeurJson } from "../../mcp/json-canonique";
 import { computeTotauxFacture, type TotauxFacture } from "../legal/tva";
+import { indemniteSortieMaxCents, prixMensuelNet } from "./montants-mensuels";
+
+export { indemniteSortieMaxCents, prixMensuelNet };
 import { offreDevisV1, type Formule, type OffreDevisV1, type PhaseOffre } from "./offre-devis";
 
 /**
@@ -30,15 +33,6 @@ export function totauxFormule(
     tauxTvaPercent: l.t / 100,
   }));
   return computeTotauxFacture(lignes, "assujetti");
-}
-
-/** Mensuel net après remise, arrondi AVANT toute multiplication par les mois. */
-export function prixMensuelNet(mensuelHtCents: number, remiseBps: number): number {
-  if (!Number.isInteger(remiseBps) || remiseBps < 0 || remiseBps > 10000) {
-    throw new RangeError(`Remise hors [0, 10000] points de base : ${remiseBps}.`);
-  }
-  if (mensuelHtCents < 0) throw new RangeError("Mensuel négatif refusé.");
-  return Math.round((mensuelHtCents * (10000 - remiseBps)) / 10000);
 }
 
 /** Prix d'une période : mensuel net (déjà arrondi) × nombre de mois. */
@@ -96,25 +90,6 @@ export function debutMaintenance(livraison: Date, moisOfferts: number): Date {
   const mois = ((total % 12) + 12) % 12;
   const dernierJour = new Date(Date.UTC(annee, mois + 1, 0)).getUTCDate();
   return new Date(Date.UTC(annee, mois, Math.min(livraison.getUTCDate(), dernierJour)));
-}
-
-/**
- * Plafond de l'indemnité de sortie anticipée : taux × mensualités restantes
- * (somme en centimes, hors IA).
- */
-export function indemniteSortieMaxCents(
-  mensualitesRestantesCents: number,
-  tauxBps: number,
-): number {
-  if (!Number.isFinite(mensualitesRestantesCents) || mensualitesRestantesCents < 0) {
-    throw new RangeError(
-      `Mensualités restantes invalides (≥ 0 attendu) : ${mensualitesRestantesCents}.`,
-    );
-  }
-  if (!Number.isInteger(tauxBps) || tauxBps < 0 || tauxBps > 10000) {
-    throw new RangeError(`Taux hors [0, 10000] points de base : ${tauxBps}.`);
-  }
-  return Math.round((mensualitesRestantesCents * tauxBps) / 10000);
 }
 
 /** Texte en NFC : « é » précomposé et « e + accent » donnent la même empreinte. */

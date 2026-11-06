@@ -6,7 +6,7 @@
  * seule la TVA reçoit le taux standard EXISTANT (`TAUX_TVA_STANDARD`), modifiable.
  */
 import { TAUX_TVA_STANDARD } from "@/server/qualiopi/legal/tva";
-import { prixMensuelNet, indemniteSortieMaxCents } from "@/server/qualiopi/devis/offre-calculs";
+import { prixMensuelNet, indemniteSortieMaxCents } from "@/server/qualiopi/devis/montants-mensuels";
 import {
   GARANTIE_JOURS_PAR_DEFAUT,
   offreDevisV1,
