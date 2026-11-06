@@ -7,7 +7,7 @@
 //
 // PIPELINE :
 //   1. Lire le body RAW (DocuSeal exige bytes-exact pour HMAC-SHA256).
-//   2. Vérifier `X-Docuseal-Signature` via `verifyWebhookSignature`.
+//   2. Plafonner le corps (256 Ko → 413) puis vérifier `X-Docuseal-Signature` (v2 seul).
 //   3. Parse JSON → idempotency outbox INSERT `DocusealWebhookEvent` avec
 //      `docusealEventId` UNIQUE. Si conflict P2002 → 200 OK (déjà reçu).
 //   4. Pour les events critiques (`form.completed`, `submission.completed`,
@@ -25,7 +25,7 @@ import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 import {
   parseWebhookPayload,
-  verifyWebhookAuth,
+  verifyWebhookSignature,
   isDocusealWebhookConfigured,
   type DocusealWebhookPayload,
 } from "@/lib/docuseal";
@@ -37,24 +37,54 @@ export const dynamic = "force-dynamic";
 // Prisma error codes (string literals — pas d'import Prisma runtime ici car edge-friendly).
 const PRISMA_UNIQUE_CONSTRAINT = "P2002";
 
+/** Plafond du corps accepté (un webhook DocuSeal légitime pèse quelques Ko). */
+const MAX_BODY_BYTES = 256 * 1024;
+
+/** Lit le corps en flux ; `null` dès que le plafond est dépassé (on arrête de lire). */
+async function lireCorpsPlafonne(req: NextRequest): Promise<string | null> {
+  if (!req.body) return "";
+  const reader = req.body.getReader();
+  const chunks: Uint8Array[] = [];
+  let total = 0;
+  for (;;) {
+    const { done, value } = await reader.read();
+    if (done) break;
+    total += value.byteLength;
+    if (total > MAX_BODY_BYTES) {
+      await reader.cancel().catch(() => {});
+      return null;
+    }
+    chunks.push(value);
+  }
+  return Buffer.concat(chunks).toString("utf8");
+}
+
 export async function POST(req: NextRequest): Promise<NextResponse> {
   // -- 1. Configuration check -----------------------------------------
   if (!isDocusealWebhookConfigured()) {
     return NextResponse.json({ error: "webhook_not_configured" }, { status: 503 });
   }
 
-  // -- 2. Raw body (REQUIRED pour HMAC) -------------------------------
+  // -- 2. Raw body plafonné (REQUIRED pour HMAC) ----------------------
+  // Le plafond s'applique AVANT toute lecture complète / vérification HMAC :
+  // un POST anonyme ne doit pas pouvoir nous faire bufferiser un corps géant.
+  const declared = Number(req.headers.get("content-length") ?? "0");
+  if (Number.isFinite(declared) && declared > MAX_BODY_BYTES) {
+    return NextResponse.json({ error: "payload_too_large" }, { status: 413 });
+  }
   let rawBody: string;
   try {
-    rawBody = await req.text();
+    const lu = await lireCorpsPlafonne(req);
+    if (lu === null) {
+      return NextResponse.json({ error: "payload_too_large" }, { status: 413 });
+    }
+    rawBody = lu;
   } catch {
     return NextResponse.json({ error: "invalid_body" }, { status: 400 });
   }
 
-  // -- 3. Signature verification (dual-mode HMAC v1.x ou plaintext v2.x) -
-  const signatureHeader = req.headers.get("x-docuseal-signature");
-  const secretHeader = req.headers.get("x-docuseal-secret");
-  if (!verifyWebhookAuth(rawBody, { signature: signatureHeader, secret: secretHeader })) {
+  // -- 3. Signature v2 `<ts>.<hmac>` (seul format accepté) -------------
+  if (!verifyWebhookSignature(rawBody, req.headers.get("x-docuseal-signature"))) {
     // Pas de log détaillé pour éviter d'aider un attaquant.
     return NextResponse.json({ error: "invalid_signature" }, { status: 401 });
   }
@@ -168,7 +198,9 @@ async function alerterEvenementDevis(
     select: { numero: true },
   });
   if (!devis) {
-    throw new Error(`[docuseal-webhook] devis ${devisId} not found`);
+    throw new Error(
+      `[docuseal-webhook] devis introuvable pour la soumission ${event.submissionId}`,
+    );
   }
   sendTelegram({
     tag: "AUTO",

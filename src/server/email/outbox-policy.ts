@@ -120,9 +120,9 @@ export const EMAILS_AUTOMATIQUES_PAR_DEFAUT: readonly string[] = [
   // lui-même de signer. La décision humaine a DÉJÀ eu lieu — c'est la
   // contresignature.
   "piece-exemplaire-signe",
-  // Confirmation de commande : le clic de contresignature d'Axion-IA vaut validation (CGV 6.2) ;
-  // la retenir en corbeille retarderait la confirmation due au client (CGV 5.2).
-  "devis-commande-confirmation",
+  // ⛔ « devis-commande-confirmation » n'est volontairement PAS ici : ce gabarit ne part
+  // jamais seul. Il passe par la file à valider ; il est déclenché par le clic de
+  // contresignature d'Axion-IA (CGV 6.2), jamais par un envoi automatique.
   // 🔴 Le rappel de la VEILLE part SEUL, et c'est le cas le plus net de toute
   // cette liste (2026-09-05, ADR 0048 §4.3).
   //

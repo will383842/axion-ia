@@ -2,8 +2,8 @@
  * Qualiopi — Server Actions CRM devis (T2).
  *
  * createDevisAction  : crée un devis brouillon (lignes, montant, numéro, TVA, validité).
- * sendDevisAction    : génère le PDF (fail-soft) + soumission DocuSeal « bon pour
- *                      accord » (best-effort) puis bascule statut → envoyé
+ * sendDevisAction    : génère le PDF (fail-soft) + lien de signature MAISON « bon pour
+ *                      accord » (jeton `/portail/signer/`, best-effort) puis bascule statut → envoyé
  *                      (+ expire l'ancienne version si révision) + statut client.
  * acceptDevisAction  : bascule statut → accepté.
  * declineDevisAction : bascule statut → refusé.
@@ -15,6 +15,7 @@
 
 "use server";
 
+import { proposerPlansApresAcceptation } from "@/server/qualiopi/devis/proposer-plans";
 import * as Sentry from "@sentry/nextjs";
 import React from "react";
 import { z } from "zod";
@@ -382,8 +383,9 @@ export async function createDevisAction(
  *      numéro DocumentGenere ne sert qu'au registre). `fichierPdfUrl` stocke la
  *      CLÉ R2 stable `documents/{year}/devis/{numeroDocumentGenere}.pdf` — pas
  *      l'URL signée (expirée en 900 s).
- *   2. DocuSeal (best-effort) : soumission « bon pour accord » si configuré +
- *      template id + email de contact client (metadata kind="devis").
+ *   2. Signature MAISON (best-effort) : jeton `/portail/signer/` « bon pour accord »
+ *      si la pièce est générée et le client a un e-mail de contact (DocuSeal
+ *      n'émet plus rien depuis le 30/07/2026).
  *   3. Révision : si `replacesDevisId` non null, l'ancienne version passe
  *      `expire` dans la MÊME transaction que le passage à `envoye`.
  */
@@ -411,6 +413,8 @@ export async function sendDevisAction(
       activite: true,
       refClient: true,
       replacesDevisId: true,
+      // Devis à formules : l'envoi est refusé tant que la signature des formules n'existe pas.
+      offre: true,
       // Pièce de la version REMPLACÉE : son lien de signature doit mourir avec
       // elle (voir la transaction plus bas).
       replacesDevis: { select: { documentGenereId: true } },
@@ -445,13 +449,22 @@ export async function sendDevisAction(
   });
   if (!devis) return { error: "Devis introuvable" };
   // Garde de statut serveur : seul un BROUILLON s'envoie. Empêche un re-clic
-  // depuis une UI périmée / 2e onglet de recréer une soumission DocuSeal (qui
-  // écraserait docusealEmbedUrl et orphelinerait l'ancien lien) et de renvoyer
+  // depuis une UI périmée / 2e onglet de réémettre un lien de signature (qui
+  // révoquerait le précédent et orphelinerait le lien déjà reçu) et de renvoyer
   // un 2e email au client. Le renvoi d'un devis déjà émis passe par
-  // envoyerDevisEmailAction (email seul, pas de nouvelle soumission).
+  // envoyerDevisEmailAction (email seul, pas de nouveau lien).
   if (devis.statut !== "brouillon") {
     return {
       error: `Seul un devis en brouillon peut être envoyé (statut actuel : ${devis.statut}).`,
+    };
+  }
+  // 🔴 Devis à formules : le circuit de signature (choix de la formule, mensualité, engagement,
+  // indemnité de sortie) n'est pas livré. Envoyé maintenant, le client signerait un PDF
+  // classique qui ne porte pas ces conditions. Refus tant que le lot de signature manque.
+  if (devis.offre !== null && devis.offre !== undefined) {
+    return {
+      error:
+        "Un devis à formules ne peut pas encore être envoyé : le circuit de signature des formules (choix de la formule, mensualité, engagement, indemnité de sortie) n'est pas disponible. Gardez-le en brouillon.",
     };
   }
   // Un devis à 0,00 € ne doit pas partir en signature.
@@ -459,7 +472,7 @@ export async function sendDevisAction(
   // Le garde côté formulaire ne protège rien : cette action est appelable depuis
   // un onglet resté ouvert, et `ligneSchema` accepte volontairement un PU à 0
   // (lignes offertes). C'est ICI que le montant total doit être vérifié — au-delà,
-  // le PDF est rendu, DocuSeal ouvre une signature et le client reçoit une offre
+  // le PDF est rendu, un lien de signature est émis et le client reçoit une offre
   // ferme à zéro euro. `ligneSchema.min(0)` reste inchangé.
   if (devis.montantTotalHtCents <= 0) {
     return {
@@ -522,9 +535,9 @@ export async function sendDevisAction(
   // Le lien maison fait signer LE PDF RÉEL, celui dont l'empreinte est scellée
   // dans `document_hash_sha256`. Une seule source de vérité.
   //
-  // ⚠️ Le circuit DocuSeal n'est PAS rebranché ailleurs : `docusealSubmissionId`
-  // et `docusealEmbedUrl` restent en base pour l'unique devis signé par cette
-  // voie avant la bascule, et ne reçoivent plus d'écriture.
+  // ⚠️ DocuSeal n'émet plus rien : `docusealSubmissionId` et `docusealEmbedUrl` restent en
+  // base pour les anciens devis (le webhook ne les traite que si la soumission reçue est
+  // celle enregistrée sur le devis) et ne reçoivent plus d'écriture.
   let signatureUrl: string | null = null;
   const contactEmail = devis.client.contactEmail;
   /**
@@ -700,7 +713,7 @@ export async function sendDevisAction(
       // le fait qu'il ait été émis l'est.
       lienSignatureEmis: signatureCreee,
       // Motif d'échec tracé au registre : le journal affichait
-      // `"docusealSubmissionId": null` sans jamais dire pourquoi, et les logs du
+      // `"docusealSubmissionId": null` (ancien canal) sans jamais dire pourquoi, et les logs du
       // conteneur partent au premier redémarrage.
       signatureErreur,
       emailEnvoye,
@@ -747,6 +760,8 @@ export async function acceptDevisAction(id: string): Promise<ActionResult<{ id: 
   } catch (err) {
     Sentry.captureException(err, { tags: { action: "devis_signe_fait_client" } });
   }
+  // Devis à formules : plans récurrents PROPOSÉS en `pause` (lot 5), après le COMMIT, fail-soft.
+  await proposerPlansApresAcceptation(devisId, "console");
 
   await logQualiopiActivity({
     action: "qualiopi.devis.accept",
@@ -929,6 +944,9 @@ export async function reviseDevisAction(
       opcoEstimationOrigine: true,
       opcoEstimationAvertissement: true,
       resteAChargeCents: true,
+      // Devis à formules : la révision reste éditable par /modifier, donc garde son offre.
+      offre: true,
+      offreSha256: true,
     },
   });
   if (!origine) return { error: "Devis introuvable" };
@@ -983,6 +1001,12 @@ export async function reviseDevisAction(
             : {}),
           ...(origine.resteAChargeCents !== null
             ? { resteAChargeCents: origine.resteAChargeCents }
+            : {}),
+          ...(origine.offre !== null && origine.offre !== undefined
+            ? { offre: origine.offre as never }
+            : {}),
+          ...(origine.offreSha256 !== null && origine.offreSha256 !== undefined
+            ? { offreSha256: origine.offreSha256 }
             : {}),
         },
         select: { id: true, numero: true },

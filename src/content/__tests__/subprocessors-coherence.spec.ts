@@ -324,15 +324,32 @@ describe("cohérence des sous-processeurs", () => {
     }
   });
 
-  it("DocuSeal est HISTORIQUE (plus aucun envoi) et le procédé de signature maison est déclaré", () => {
+  it("DocuSeal reste ACTIF (contrats d'apporteurs), devis = usage historique ; la signature maison est déclarée et ne compte pas comme sous-traitant", () => {
     const docuseal = SUBPROCESSORS.find((s) => /docuseal/i.test(s.name));
-    expect(docuseal?.activationStatus).toBe("historique");
+    expect(docuseal?.activationStatus).toBe("active");
+    expect(docuseal?.purposeFr).toContain("contrats d'apporteurs");
+    expect(docuseal?.purposeFr).toContain("usage historique");
     expect(docuseal?.purposeFr).toContain("30/07/2026");
+    expect(docuseal?.purposeFr).not.toMatch(/plus aucune nouvelle donnée/i);
+    expect(docuseal?.purposeEn).not.toMatch(/no new data/i);
+    for (const mot of ["signataires", "e-mail", "signature", "journal d'audit"]) {
+      expect(docuseal?.dataCategoriesFr).toContain(mot);
+    }
+    expect(docuseal?.sansSousTraitant).toBeUndefined();
     const maison = SUBPROCESSORS.find((s) => /^Signature maison/.test(s.name));
     expect(maison?.activationStatus).toBe("active");
     for (const mot of ["IP hachée", "image de signature", "identité", "empreinte"]) {
       expect(maison?.dataCategoriesFr).toContain(mot);
     }
+    expect(maison?.sansSousTraitant).toBe(true);
     expect(SUBPROCESSORS_LAST_UPDATED >= "2026-11-06").toBe(true);
+  });
+
+  it("le total « N sous-traitants » de la page exclut les procédés internes", () => {
+    const page = readFileSync(join(ROOT, "src/app/[locale]/sous-processeurs/page.tsx"), "utf8");
+    expect(page).toContain("const total = tiers.length");
+    expect(page).not.toContain("const total = SUBPROCESSORS.length");
+    const internes = SUBPROCESSORS.filter((s) => s.sansSousTraitant === true).map((s) => s.name);
+    expect(internes.every((n) => /^Signature maison/.test(n))).toBe(true);
   });
 });

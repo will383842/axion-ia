@@ -143,6 +143,7 @@ export default async function QualiopiVenteNewPage({ params, searchParams }: Pag
         sentAt: string | null;
         fichierPdfUrl: string | null;
         docusealSubmissionId: string | null;
+        signatureMaison: boolean;
         montantTotalHtCents: number;
       }
     | undefined;
@@ -192,11 +193,18 @@ export default async function QualiopiVenteNewPage({ params, searchParams }: Pag
               sentAt: true,
               fichierPdfUrl: true,
               docusealSubmissionId: true,
+              documentGenereId: true,
               montantTotalHtCents: true,
             },
           })
           .catch(() => null);
         if (d !== null) {
+          // Canal MAISON : un jeton de signature a été émis pour la pièce du devis.
+          const signatureMaison =
+            d.documentGenereId !== null &&
+            (await prisma.documentSignatureToken
+              .count({ where: { documentGenereId: d.documentGenereId } })
+              .catch(() => 0)) > 0;
           devisInitial = {
             id: d.id,
             numero: d.numero,
@@ -204,6 +212,7 @@ export default async function QualiopiVenteNewPage({ params, searchParams }: Pag
             sentAt: d.sentAt?.toISOString() ?? null,
             fichierPdfUrl: d.fichierPdfUrl,
             docusealSubmissionId: d.docusealSubmissionId,
+            signatureMaison,
             montantTotalHtCents: d.montantTotalHtCents,
           };
         }
@@ -253,6 +262,7 @@ export default async function QualiopiVenteNewPage({ params, searchParams }: Pag
                   statut: devisInitial.statut,
                   fichierPdfUrl: devisInitial.fichierPdfUrl,
                   docusealSubmissionId: devisInitial.docusealSubmissionId,
+                  signatureMaison: devisInitial.signatureMaison,
                   sentAt: devisInitial.sentAt,
                 }
               : null,

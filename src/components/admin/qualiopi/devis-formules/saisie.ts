@@ -25,7 +25,13 @@ export interface PhaseSaisie {
   libelle: string;
   pourcentage: string;
   declencheur: "signature" | "avancement" | "livraison";
+  /** Non saisis à l'écran : conservés tels quels à la relecture d'une offre enregistrée. */
+  delaiJours?: number | undefined;
+  dateEstimee?: string | undefined;
 }
+type OffreAutomatisations = OffreDevisV1["automatisations"];
+type OffreServicesTiers = OffreDevisV1["servicesTiers"];
+type OffrePlafond = OffreDevisV1["plafondAConfirmer"];
 export type Engagement = 0 | 3 | 6 | 12 | 24;
 export type Preavis = 1 | 2 | 3;
 export type MoisPeriode = 1 | 2 | 6 | 12;
@@ -33,6 +39,13 @@ export type MoisPeriode = 1 | 2 | 6 | 12;
 export interface SaisieFormules {
   formules: { achat: boolean; abonnement: boolean };
   garantieJours: string;
+  /**
+   * Éléments de l'offre que l'écran ne sait pas encore saisir : ils traversent la relecture
+   * (`offreVersSaisie`) et la reconstruction (`construireOffre`) SANS être effacés.
+   */
+  automatisations: OffreAutomatisations;
+  servicesTiers: OffreServicesTiers;
+  plafondAConfirmer: OffrePlafond;
   achat: {
     lignes: LigneSaisie[];
     phases: PhaseSaisie[];
@@ -51,6 +64,8 @@ export interface SaisieFormules {
     mensuelCatalogueEur: string;
     tauxTvaPct: string;
     terme: "a_echoir" | "echu";
+    /** Non saisi à l'écran : conservé à la relecture (défaut du schéma si absent). */
+    modeAvance?: "premiere_periode_seulement" | "toutes_periodes" | undefined;
     periodes: Array<{ mois: MoisPeriode; remisePct: string }>;
     engagementMois: Engagement;
     reconduction: "mensuelle" | "annuelle" | "aucune";
@@ -78,6 +93,9 @@ export function saisieVide(tvaStandardPct: number = TAUX_TVA_STANDARD): SaisieFo
   return {
     formules: { achat: false, abonnement: false },
     garantieJours: String(GARANTIE_JOURS_PAR_DEFAUT),
+    automatisations: [],
+    servicesTiers: [],
+    plafondAConfirmer: null,
     achat: {
       lignes: [ligne()],
       phases: [phase()],
@@ -132,7 +150,14 @@ function phasesVersOffre(p: PhaseSaisie[], nom: string, e: Erreurs) {
     const pourcentage = Number(x.pourcentage);
     if (!Number.isInteger(pourcentage))
       e.push(`${nom}, phase ${i + 1} : pourcentage entier requis.`);
-    return { rang: i + 1, libelle: x.libelle, pourcentage, declencheur: x.declencheur };
+    return {
+      rang: i + 1,
+      libelle: x.libelle,
+      pourcentage,
+      declencheur: x.declencheur,
+      ...(x.delaiJours !== undefined ? { delaiJours: x.delaiJours } : {}),
+      ...(x.dateEstimee !== undefined ? { dateEstimee: x.dateEstimee } : {}),
+    };
   });
 }
 
@@ -151,9 +176,9 @@ export function construireOffre(s: SaisieFormules, textes: readonly TexteCopie[]
     v: 1,
     client: "professionnel",
     formulesProposees: proposees,
-    automatisations: [],
-    servicesTiers: [],
-    plafondAConfirmer: null,
+    automatisations: s.automatisations,
+    servicesTiers: s.servicesTiers,
+    plafondAConfirmer: s.plafondAConfirmer,
     garantie: { jours: garantie },
     textes: textes.map((t) => ({ ...t })),
   };
@@ -194,6 +219,7 @@ export function construireOffre(s: SaisieFormules, textes: readonly TexteCopie[]
       mensuelCatalogueHtCents: cat ?? -1,
       tauxTvaBps: tva ?? -1,
       terme: b.terme,
+      ...(b.modeAvance !== undefined ? { modeAvance: b.modeAvance } : {}),
       periodes: b.periodes.map((p) => {
         const remise = pctVersBps(p.remisePct);
         if (remise === null) e.push(`Période de ${p.mois} mois : remise illisible.`);
@@ -260,6 +286,8 @@ export function offreVersSaisie(o: OffreDevisV1): SaisieFormules {
         libelle: x.libelle,
         pourcentage: String(x.pourcentage),
         declencheur: x.declencheur,
+        ...(x.delaiJours !== undefined ? { delaiJours: x.delaiJours } : {}),
+        ...(x.dateEstimee !== undefined ? { dateEstimee: x.dateEstimee } : {}),
       }));
   const out: SaisieFormules = {
     ...base,
@@ -268,6 +296,9 @@ export function offreVersSaisie(o: OffreDevisV1): SaisieFormules {
       abonnement: o.formulesProposees.includes("abonnement"),
     },
     garantieJours: o.garantie.jours === null ? "" : String(o.garantie.jours),
+    automatisations: o.automatisations,
+    servicesTiers: o.servicesTiers,
+    plafondAConfirmer: o.plafondAConfirmer,
   };
   if (o.achat) {
     out.achat = {
@@ -293,6 +324,7 @@ export function offreVersSaisie(o: OffreDevisV1): SaisieFormules {
       mensuelCatalogueEur: centsVersEur(o.abonnement.mensuelCatalogueHtCents),
       tauxTvaPct: bpsVersPct(o.abonnement.tauxTvaBps),
       terme: o.abonnement.terme,
+      modeAvance: o.abonnement.modeAvance,
       periodes: o.abonnement.periodes.map((p) => ({
         mois: p.mois,
         remisePct: bpsVersPct(p.remiseBps),

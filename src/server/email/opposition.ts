@@ -32,6 +32,8 @@ import * as Sentry from "@sentry/nextjs";
 import { prisma } from "@/lib/prisma";
 import { hashEmailForLookup } from "@/lib/security/email-hash";
 import { syncNewsletterOptOutToCrm } from "@/server/crm-sync";
+import { isCrmSyncEnabled } from "@/server/crm-sync/config";
+import { eventIdDeterministe } from "@/server/crm-sync/event-id";
 import { lireJetonOpposition, normaliserAdresse } from "./opposition-jeton";
 
 function estStub(): boolean {
@@ -68,12 +70,130 @@ async function annulerEnvoisProgrammes(email: string): Promise<void> {
       "Envoi annulé : la personne s'est opposée aux sollicitations.",
     );
   } catch (e) {
-    Sentry.captureException(e, { tags: { module: "email-opposition", step: "annuler-relances" } });
+    // Le nom seul : un message d'erreur peut recopier l'adresse.
+    Sentry.captureException(
+      { name: e instanceof Error ? e.name : "erreur" },
+      { tags: { module: "email-opposition", step: "annuler-relances" } },
+    );
+  }
+}
+
+/** Le nom seul : un message d'erreur peut recopier l'adresse. */
+function signaler(e: unknown, step: string): void {
+  try {
+    Sentry.captureException(
+      { name: e instanceof Error ? e.name : "erreur" },
+      { tags: { module: "email-opposition", step } },
+    );
+  } catch {
+    /* l'observabilité ne casse jamais la réponse */
+  }
+}
+
+/**
+ * Pose (`true`) ou retire (`false`) la marque « le CRM n'a pas encore été prévenu ». Requête
+ * SÉPARÉE, jamais dans le `create` ; son échec ne bloque jamais l'opposition. Le retrait ne
+ * touche jamais une ligne dont le CRM est interdit (effacement).
+ */
+async function marquerAttenteCrm(oppositionId: string, enAttente: boolean): Promise<void> {
+  try {
+    await prisma.emailOpposition.updateMany({
+      where: enAttente
+        ? { id: oppositionId, crmInterditLe: null }
+        : { id: oppositionId, crmInterditLe: null, crmEnAttenteDepuis: { not: null } },
+      data: { crmEnAttenteDepuis: enAttente ? new Date() : null },
+    });
+  } catch (e) {
+    signaler(e, enAttente ? "poser-attente-crm" : "lever-attente-crm");
+  }
+}
+
+/**
+ * Réessai IDEMPOTENT de l'avertissement du CRM. `syncNewsletterOptOutToCrm` ne lève jamais (il
+ * avale l'erreur) : seule la présence d'une ligne dans la file prouve que le CRM sera prévenu.
+ * Identifiants fixes (subjectRef + eventId déterministe) : rappeler ne crée jamais de doublon.
+ * Rend vrai si la ligne est présente (ou si la synchro CRM est coupée, ou s'il n'y a rien à rattraper).
+ *
+ * 🔴 RGPD — FERMÉ PAR DÉFAUT. Une adresse DÉJÀ en base n'est renvoyée au CRM que si la ligne porte
+ * `crm_en_attente_depuis` ET pas `crm_interdit_le` ET qu'aucune ligne de file n'existe. Une ligne
+ * ancienne, posée par la rétention, ou dont la file a été purgée/effacée, n'a pas d'attente : le CRM
+ * n'est PAS rappelé (il recevrait l'adresse en clair). Lecture des marques en erreur : pas d'appel.
+ * `creation` : premier avertissement de la ligne qu'on vient de poser — pas un réessai.
+ */
+async function assurerAvertissementCrm(
+  oppositionId: string,
+  email: string,
+  origine: string,
+  template: string | null | undefined,
+  creation = false,
+): Promise<boolean> {
+  if (!isCrmSyncEnabled()) return true;
+  const subjectRef = `site:email_opposition:${oppositionId}`;
+  const eventId = eventIdDeterministe(`newsletter_optout:${subjectRef}`);
+  const lignePresente = async (): Promise<boolean> => {
+    try {
+      return (
+        (await prisma.crmSyncOutbox.findFirst({ where: { subjectRef }, select: { id: true } })) !==
+        null
+      );
+    } catch (e) {
+      signaler(e, "lire-file-crm");
+      throw e;
+    }
+  };
+  try {
+    if (await lignePresente()) {
+      await marquerAttenteCrm(oppositionId, false);
+      return true;
+    }
+    if (!creation) {
+      let marques: { crmEnAttenteDepuis: Date | null; crmInterditLe: Date | null } | null;
+      try {
+        marques = await prisma.emailOpposition.findUnique({
+          where: { id: oppositionId },
+          select: { crmEnAttenteDepuis: true, crmInterditLe: true },
+        });
+      } catch (e) {
+        signaler(e, "lire-marques-crm");
+        return false;
+      }
+      if (
+        marques === null ||
+        marques.crmEnAttenteDepuis === null ||
+        marques.crmInterditLe !== null
+      ) {
+        return true;
+      }
+    }
+    try {
+      await syncNewsletterOptOutToCrm({
+        subjectRef,
+        eventId,
+        person: { email },
+        payload: { reason: origine, template: template ?? null },
+      });
+    } catch (e) {
+      console.error(
+        "[email-opposition] avertissement CRM en échec :",
+        e instanceof Error ? e.name : "erreur",
+      );
+      return false;
+    }
+    if (!(await lignePresente())) return false;
+    await marquerAttenteCrm(oppositionId, false);
+    return true;
+  } catch {
+    return false;
   }
 }
 
 export type ResultatOpposition =
-  | { readonly ok: true; readonly email: string; readonly dejaOpposee: boolean }
+  | {
+      readonly ok: true;
+      readonly email: string;
+      readonly dejaOpposee: boolean;
+      readonly crmAverti: boolean;
+    }
   | { readonly ok: false; readonly error: "invalid_token" | "internal" };
 
 /**
@@ -115,39 +235,66 @@ export async function enregistrerOppositionPourAdresse(
     const emailHash = hashEmailForLookup(email);
     if (emailHash === null) return { ok: false, error: "invalid_token" };
 
-    const existante = await prisma.emailOpposition.findUnique({
-      where: { emailHash },
-      select: { id: true },
-    });
-    if (existante !== null) {
-      // Un second clic rattrape aussi un envoi resté en file (opposition
-      // antérieure à ce correctif, ou file indisponible au premier clic).
+    const dejaEnBase = async (): Promise<ResultatOpposition | null> => {
+      const existante = await prisma.emailOpposition.findUnique({
+        where: { emailHash },
+        select: { id: true },
+      });
+      if (existante === null) return null;
+      // Un second appel rattrape un CRM resté sans ligne de file ET un envoi resté en file.
+      const crmAverti = await assurerAvertissementCrm(
+        existante.id,
+        email,
+        origine,
+        source.template,
+      );
       await annulerEnvoisProgrammes(email);
-      return { ok: true, email, dejaOpposee: true };
+      return { ok: true, email, dejaOpposee: true, crmAverti };
+    };
+
+    const avant = await dejaEnBase();
+    if (avant !== null) return avant;
+
+    let ligne: { id: string };
+    try {
+      ligne = await prisma.emailOpposition.create({
+        data: {
+          emailHash,
+          source: origine.slice(0, 40),
+          ...(source.template ? { template: source.template.slice(0, 60) } : {}),
+        },
+        select: { id: true },
+      });
+    } catch (e) {
+      // Deux appels simultanés : l'autre a posé la ligne entre notre lecture et notre création.
+      if ((e as { code?: unknown } | null)?.code === "P2002") {
+        const apres = await dejaEnBase();
+        if (apres !== null) return apres;
+      }
+      throw e;
     }
 
-    const ligne = await prisma.emailOpposition.create({
-      data: {
-        emailHash,
-        source: origine.slice(0, 40),
-        ...(source.template ? { template: source.template.slice(0, 60) } : {}),
-      },
-      select: { id: true },
-    });
-
-    // La prospection HUMAINE est gouvernée par la liste d'opposition du CRM,
-    // pas par notre file d'envoi : sans cette synchronisation, l'opposition
-    // n'arrêterait que les campagnes automatiques — et il n'y en a aucune.
-    await syncNewsletterOptOutToCrm({
-      subjectRef: `site:email_opposition:${ligne.id}`,
-      person: { email },
-      payload: { reason: origine, template: source.template ?? null },
-    });
-
+    // La prospection HUMAINE est gouvernée par la liste d'opposition du CRM, pas par notre file
+    // d'envoi. Les envois programmés sont annulés TOUJOURS, même si le CRM a échoué.
+    await marquerAttenteCrm(ligne.id, true);
+    const crmAverti = await assurerAvertissementCrm(
+      ligne.id,
+      email,
+      origine,
+      source.template,
+      true,
+    );
     await annulerEnvoisProgrammes(email);
-
-    return { ok: true, email, dejaOpposee: false };
+    return { ok: true, email, dejaOpposee: false, crmAverti };
   } catch (e) {
+    try {
+      Sentry.captureException(
+        { name: e instanceof Error ? e.name : "erreur" },
+        { tags: { module: "email-opposition", step: "enregistrer" } },
+      );
+    } catch {
+      /* l'observabilité ne casse jamais la réponse */
+    }
     console.error(
       "[email-opposition] enregistrement impossible :",
       e instanceof Error ? e.name : "erreur",

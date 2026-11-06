@@ -79,9 +79,15 @@ export interface Subprocessor {
    * intégration codée mais clé API absente de Coolify env → aucun flux data
    * réel (cas content-gen IA tant que Will n'a pas signé les DPA).
    * `historique` = plus aucune nouvelle donnée n'est envoyée ; seules des données
-   * anciennes sont conservées (cas DocuSeal depuis le 30/07/2026).
+   * anciennes sont conservées (aucune entrée aujourd'hui : DocuSeal reste `active`, il sert
+   * aux contrats d'apporteurs ; seul son usage pour les devis est historique).
    */
   activationStatus: "active" | "pending_activation" | "historique";
+  /**
+   * Vrai pour un procédé interne d'Axion-IA, qui ne confie aucune donnée à un tiers : il est
+   * déclaré en transparence mais NE COMPTE PAS dans le total « N sous-traitants ».
+   */
+  sansSousTraitant?: true;
   /** Lien DPO / documentation publique du sous-processeur. */
   documentationUrl?: string;
 }
@@ -224,22 +230,22 @@ export const SUBPROCESSORS: ReadonlyArray<Subprocessor> = [
     documentationUrl: "https://stripe.com/legal/dpa",
   },
   {
-    name: "DocuSeal Community (self-hosted) — statut historique",
+    name: "DocuSeal Community (self-hosted)",
     location: "Hébergement Hetzner Allemagne (UE)",
     serversLocation: "Frankfurt, Allemagne (UE)",
     purposeFr:
-      "Statut historique : un seul devis a été signé par ce procédé avant le 30/07/2026. Il est conservé, et plus aucune nouvelle donnée n'est envoyée à DocuSeal. Auto-hébergé sur notre infrastructure en Allemagne — pas de SaaS tiers.",
+      "Signature électronique des contrats d'apporteurs : usage actif. Devis : usage historique, un seul devis a été signé par ce procédé (avant le 30/07/2026), conservé ; les nouveaux devis se signent par le procédé interne d'Axion-IA. Auto-hébergé sur notre infrastructure en Allemagne — pas de SaaS tiers.",
     purposeEn:
-      "Historical status: a single quote was signed with this tool before 30 July 2026. It is kept, and no new data is sent to DocuSeal. Self-hosted on our infrastructure in Germany — no third-party SaaS.",
+      "Electronic signature of referral-partner contracts: active use. Quotes: historical use only — a single quote was signed with this tool (before 30 July 2026) and is kept; new quotes are signed through Axion-IA's in-house process. Self-hosted on our infrastructure in Germany — no third-party SaaS.",
     dataCategoriesFr:
-      "Données de l'unique devis signé avant le 30/07/2026 : nom et email du signataire, contenu signé, horodatage, empreinte du PDF.",
+      "Contrats d'apporteurs : nom, e-mail et signature des signataires, contenu signé, journal d'audit (horodatage, adresse IP, navigateur), empreinte du PDF. Devis historique (un seul) : nom et e-mail du signataire, contenu signé, horodatage, empreinte du PDF.",
     dataCategoriesEn:
-      "Data of the single quote signed before 30 July 2026: signer's name and email, signed content, timestamp, PDF hash.",
+      "Referral-partner contracts: signers' name, email and signature, signed content, audit log (timestamp, IP address, browser), PDF fingerprint. Historical quote (a single one): signer's name and email, signed content, timestamp, PDF fingerprint.",
     legalBasis: "6.1.b_contract",
     dpaStatus: "self_hosted_no_dpa",
     transferFramework: "self_hosted_eu",
     category: "payments",
-    activationStatus: "historique",
+    activationStatus: "active",
     documentationUrl: "https://www.docuseal.com",
   },
   {
@@ -259,6 +265,7 @@ export const SUBPROCESSORS: ReadonlyArray<Subprocessor> = [
     transferFramework: "self_hosted_eu",
     category: "payments",
     activationStatus: "active",
+    sansSousTraitant: true,
   },
   // ───────────────────────────── communications & géo
   {

@@ -10,6 +10,7 @@ const PAYLOAD = {
   montantTvaLabel: "200,00 €",
   montantTtcLabel: "1 200,00 €",
   cgvVersionLabel: "4 octobre 2026",
+  cgvJointes: true,
 };
 
 describe("devis-commande-confirmation", () => {
@@ -23,13 +24,20 @@ describe("devis-commande-confirmation", () => {
     expect(r.text).toMatch(/pièces jointes/);
     expect(r.text).not.toMatch(/aucun gain garanti|en un clic/i);
   });
+  it("CGV non retrouvables : ni version citée ni CGV annoncées en pièce jointe", async () => {
+    const { cgvVersionLabel: _v, cgvJointes: _j, ...sans } = PAYLOAD;
+    const r = await renderEmailTemplate("devis-commande-confirmation", "fr", sans);
+    expect(r.text).not.toContain("Conditions générales de vente acceptées");
+    expect(r.text).not.toMatch(/conditions générales de vente acceptées, au format/);
+    expect(r.text).toMatch(/pièce jointe le devis signé/);
+  });
   it("sans formule, la ligne « Formule retenue » est absente", async () => {
     const { formuleRetenue: _f, ...sans } = PAYLOAD;
     const r = await renderEmailTemplate("devis-commande-confirmation", "fr", sans);
     expect(r.text).not.toContain("Formule retenue");
   });
-  it("part seul (le clic de contresignature vaut validation) et porte un libellé", () => {
-    expect(EMAILS_AUTOMATIQUES_PAR_DEFAUT).toContain("devis-commande-confirmation");
+  it("ne part JAMAIS seul (file à valider) et porte un libellé", () => {
+    expect(EMAILS_AUTOMATIQUES_PAR_DEFAUT).not.toContain("devis-commande-confirmation");
     expect(libelleTemplateEmail("devis-commande-confirmation")).toMatch(/Confirmation de commande/);
   });
 });
