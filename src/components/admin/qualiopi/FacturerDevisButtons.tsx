@@ -13,19 +13,28 @@
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { genererFactureDepuisDevisAction } from "@/server/actions/qualiopi/facturation-hub";
+import type { PalierSuivant } from "@/server/qualiopi/devis/palier-suivant";
 
 export function FacturerDevisButtons({
   devisId,
   dejaFactureHtCents,
   totalDevisHtCents,
+  palierSuivant,
+  palierIndisponible,
 }: {
   devisId: string;
   dejaFactureHtCents: number;
   totalDevisHtCents: number;
+  /** Devis à formules : palier d'échéancier suivant (acompte pré-rempli et verrouillé). */
+  palierSuivant?: PalierSuivant;
+  /** Devis à formules dont l'échéancier ne se lit pas : l'acompte est refusé côté serveur. */
+  palierIndisponible?: string;
 }) {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
-  const [acomptePercent, setAcomptePercent] = useState(30);
+  const [acomptePercent, setAcomptePercent] = useState(
+    palierSuivant !== undefined && !palierSuivant.estSolde ? palierSuivant.pourcentage : 30,
+  );
   const [message, setMessage] = useState<string | null>(null);
 
   const fmt = (cents: number) =>
@@ -59,6 +68,19 @@ export function FacturerDevisButtons({
       <p className="mb-[var(--space-admin-3)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
         Déjà facturé : {fmt(dejaFactureHtCents)} HT · Restant : {fmt(restant)} HT
       </p>
+      {palierSuivant !== undefined && (
+        <p className="mb-[var(--space-admin-3)] text-[length:var(--text-admin-sm)]">
+          Échéancier du devis · palier {palierSuivant.rang}/{palierSuivant.nbPaliers} —{" "}
+          {palierSuivant.libelle} · {palierSuivant.pourcentage} % ·{" "}
+          {fmt(palierSuivant.montantHtCents)} HT
+          {palierSuivant.estSolde ? " (solde : acomptes déduits)" : ""}
+        </p>
+      )}
+      {palierIndisponible !== undefined && (
+        <p className="mb-[var(--space-admin-3)] text-[length:var(--text-admin-sm)]">
+          Échéancier illisible : {palierIndisponible}
+        </p>
+      )}
       {message !== null && (
         <p className="mb-[var(--space-admin-3)] text-[length:var(--text-admin-sm)]">{message}</p>
       )}
@@ -70,6 +92,7 @@ export function FacturerDevisButtons({
             min={1}
             max={90}
             value={acomptePercent}
+            readOnly={palierSuivant !== undefined}
             onChange={(e) => setAcomptePercent(Number.parseInt(e.target.value, 10) || 30)}
             className="w-16 rounded-[var(--radius-admin-sm)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] px-[var(--space-admin-2)] py-[var(--space-admin-1)]"
           />
@@ -78,7 +101,12 @@ export function FacturerDevisButtons({
         <button
           type="button"
           className="admin-button"
-          disabled={isPending || restant <= 0}
+          disabled={
+            isPending ||
+            restant <= 0 ||
+            palierIndisponible !== undefined ||
+            palierSuivant?.estSolde === true
+          }
           onClick={() => facturer(true)}
         >
           Facturer l&apos;acompte

@@ -21,6 +21,8 @@ import { contresignerPieceAction } from "@/server/actions/qualiopi/piece-signatu
 import { getOrganismeIdentite } from "@/server/qualiopi/documents/organisme";
 import { DevisSuiviLivraison } from "@/components/admin/qualiopi/DevisSuiviLivraison";
 import { peutDemarrerLivraison, peutMarquerLivre } from "@/server/qualiopi/devis/suivi-livraison";
+import { formulesActives } from "@/server/qualiopi/devis/interrupteur-formules";
+import { lirePalierSuivant, totalHtLignesDevis } from "@/server/qualiopi/devis/palier-suivant";
 import { FacturerDevisButtons } from "@/components/admin/qualiopi/FacturerDevisButtons";
 import { getDevis } from "@/server/qualiopi/crm/devis";
 import { bandeauEtatFonds } from "@/server/qualiopi/financements/etat-fonds-opco";
@@ -32,7 +34,6 @@ import { getClient } from "@/server/qualiopi/crm/clients";
 import { prisma } from "@/lib/prisma";
 import { AccesRefuse } from "@/components/admin/ui/AccesRefuse";
 import { gardePage } from "@/server/auth/garde-page";
-import { formulesActives } from "@/server/qualiopi/devis/interrupteur-formules";
 import { SiretEtablissementDevis } from "@/components/admin/qualiopi/SiretEtablissementDevis";
 import { lireSiretsDevis } from "@/features/apporteurs-reseau/etablissement-presentation";
 
@@ -160,6 +161,22 @@ export default async function QualiopiDevisDetailPage({ params }: PageProps) {
     orderBy: { createdAt: "asc" },
   });
   const dejaFactureHtCents = facturesLiees.reduce((acc, f) => acc + f.montantHtCents, 0);
+
+  // Devis à formules : palier d'échéancier suivant (pré-remplit le bloc de facturation).
+  // Inerte interrupteur éteint ou sans offre/formule retenue : le bloc reste celui d'avant.
+  const totalLignesHtCents = totalHtLignesDevis(devis.lignes);
+  const lecturePalier =
+    devis.offre !== null &&
+    devis.formuleRetenue !== null &&
+    totalLignesHtCents !== null &&
+    (await formulesActives())
+      ? lirePalierSuivant({
+          offre: devis.offre,
+          formuleRetenue: devis.formuleRetenue,
+          totalHtCents: totalLignesHtCents,
+          nbFacturesEmises: facturesLiees.length,
+        })
+      : null;
 
   // ── État RÉEL de la signature, lu du registre de preuve ──
   //
@@ -607,6 +624,10 @@ export default async function QualiopiDevisDetailPage({ params }: PageProps) {
             devisId={devis.id}
             dejaFactureHtCents={dejaFactureHtCents}
             totalDevisHtCents={devis.montantTotalHtCents}
+            {...(lecturePalier?.ok === true && lecturePalier.palier !== null
+              ? { palierSuivant: lecturePalier.palier }
+              : {})}
+            {...(lecturePalier?.ok === false ? { palierIndisponible: lecturePalier.motif } : {})}
           />
         </section>
       )}
