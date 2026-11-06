@@ -53,3 +53,38 @@ export const CORPS_MAX_GUIDES_RESEAU = 32 * 1024;
 /** Limites de débit de la v3 (I3), par jour : par personne, et par (post_ref, canal). */
 export const LIMITE_JOUR_PAR_PERSONNE = 20;
 export const LIMITE_JOUR_PAR_POST = 5000;
+
+/**
+ * OPPOSITIONS PAR RÉSEAU — l'INTERRUPTEUR de `POST /api/interne/oppositions-reseau`.
+ *
+ * 🔴 ÉTEINT PAR DÉFAUT : vrai seulement si la variable vaut exactement `"true"`. Lu au runtime
+ * (`process.env` brut, hors `env.ts`). Éteint = 503 `reception_eteinte`, rien n'est lu ni écrit.
+ * ⚠️ À allumer AVANT `GUIDES_RESEAU_ENABLED` et à ne JAMAIS éteindre pendant que le Studio
+ * tourne : un « stop » refusé serait perdu pour la personne qui l'a écrit.
+ */
+export function oppositionsReseauActives(): boolean {
+  return process.env.OPPOSITIONS_RESEAU_ENABLED === "true";
+}
+
+/** Seau de débit de la route des oppositions (distinct des deux autres routes internes). */
+export const PREFIXE_DEBIT_OPPOSITIONS = "internal:oppositions-reseau";
+
+/** Corps maximal accepté par la route des oppositions : 4 Ko (le corps utile tient en 300 octets). */
+export const CORPS_MAX_OPPOSITIONS = 4 * 1024;
+
+/** Valeur de `email_oppositions.source` pour un « stop » venu d'un réseau (colonne ≤ 40). */
+export const ORIGINE_OPPOSITION_RESEAU_STOP = "reseau-stop";
+
+/**
+ * Secret HMAC de la route des oppositions : `GUIDES_RESEAU_HMAC_SECRET` (+ `_PRECEDENT` pendant
+ * une rotation), SANS AUCUN REPLI sur `VIDEOS_STUDIO_HMAC_SECRET` : une fuite du secret des
+ * vidéos ne doit pas permettre de mettre des adresses à l'écart. Absent ou < 32 caractères → null
+ * (503 `reception_non_configuree`).
+ */
+export function secretsOppositionsReseau(
+  env: Readonly<Record<string, string | undefined>> = process.env,
+): { courant: string; precedent: string | null } | null {
+  const courant = secretValide(env.GUIDES_RESEAU_HMAC_SECRET);
+  if (!courant) return null;
+  return { courant, precedent: secretValide(env.GUIDES_RESEAU_HMAC_SECRET_PRECEDENT) };
+}
