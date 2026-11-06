@@ -5,7 +5,7 @@
  * fonction elle-même est la vraie.
  */
 
-import { beforeEach, describe, expect, it, vi } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 const h = vi.hoisted(() => ({
   transmettre: vi.fn(),
@@ -81,6 +81,15 @@ function ctx(patch: Partial<ContexteApresSignature> = {}): ContexteApresSignatur
 
 beforeEach(() => {
   vi.clearAllMocks();
+  // Horloge figée : le code teste `new Date()` (envoi, acceptation, émission)
+  // et l'ordre des appels ne doit jamais dépendre de l'heure réelle.
+  vi.useFakeTimers({ toFake: ["Date"] });
+  vi.setSystemTime(new Date("2026-10-10T12:00:00Z"));
+  // `clearAllMocks` garde les implémentations : on remet à zéro celles qu'un
+  // test modifie pour qu'aucun ne fuie vers le suivant (ordre d'exécution).
+  h.p.trainer.findUnique.mockReset();
+  h.p.trainerDocument.findFirst.mockReset();
+  h.txDevis.devis.findMany.mockReset();
   // Ce fichier éprouve les comportements NEUFS de S6a : leurs interrupteurs
   // sont allumés. Clé absente = comportement d'avant S6a, éprouvé dans
   // `apres-signature-interrupteurs.spec.ts`.
@@ -106,6 +115,10 @@ beforeEach(() => {
     inchange: false,
     sollicitationsRetirees: 0,
   });
+});
+
+afterEach(() => {
+  vi.useRealTimers();
 });
 
 describe("remise de l'exemplaire", () => {
