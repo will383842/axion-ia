@@ -12,6 +12,8 @@ const syncOptOut = vi.fn();
 const findFirstOutbox = vi.fn();
 const sentryCapture = vi.fn();
 const suppressions = vi.fn();
+const updateMany = vi.fn();
+const lireMarques = vi.fn();
 
 vi.mock("@sentry/nextjs", () => ({
   captureException: (...a: unknown[]) => sentryCapture(...a),
@@ -24,7 +26,12 @@ vi.mock("@/lib/prisma", () => ({
       deleteMany: (...a: unknown[]) => suppressions(...a),
     },
     emailOpposition: {
-      findUnique: (...a: unknown[]) => findUnique(...a),
+      // Lecture des deux marques (par id) ou recherche par empreinte.
+      findUnique: (...a: unknown[]) =>
+        (a[0] as { where: { id?: string } }).where.id !== undefined
+          ? lireMarques(...a)
+          : findUnique(...a),
+      updateMany: (...a: unknown[]) => updateMany(...a),
       create: (...a: unknown[]) => create(...a),
       delete: (...a: unknown[]) => suppressions(...a),
       deleteMany: (...a: unknown[]) => suppressions(...a),
@@ -60,6 +67,8 @@ beforeEach(() => {
     .mockImplementation(async () => (syncOptOut.mock.calls.length > 0 ? { id: "ob-1" } : null));
   sentryCapture.mockReset();
   suppressions.mockReset();
+  updateMany.mockReset().mockResolvedValue({ count: 1 });
+  lireMarques.mockReset().mockResolvedValue({ crmEnAttenteDepuis: null, crmInterditLe: null });
   process.env["CRM_SYNC_ENABLED"] = "true";
   annulerRelances.mockReset().mockResolvedValue(0);
   process.env["AUTH_SECRET"] = "secret-de-test-suffisamment-long-0123456789";
@@ -211,6 +220,7 @@ describe("réessai idempotent de l'avertissement CRM", () => {
     const premier = syncOptOut.mock.calls[0]![0] as { subjectRef: string; eventId: string };
     // Renvoi : la ligne existe, la file est toujours vide, puis se remplit.
     syncOptOut.mockClear();
+    lireMarques.mockResolvedValue({ crmEnAttenteDepuis: new Date(), crmInterditLe: null });
     findUnique.mockResolvedValue({ id: "opp-1" });
     findFirstOutbox.mockReset().mockResolvedValueOnce(null).mockResolvedValue({ id: "ob-2" });
     const r = await enregistrerOpposition(jeton());
@@ -225,6 +235,7 @@ describe("réessai idempotent de l'avertissement CRM", () => {
   it("erreur d'unicité P2002 à la création → relit et rend dejaOpposee:true", async () => {
     create.mockRejectedValue(Object.assign(new Error("Unique"), { code: "P2002" }));
     findUnique.mockResolvedValueOnce(null).mockResolvedValueOnce({ id: "opp-9" });
+    lireMarques.mockResolvedValue({ crmEnAttenteDepuis: new Date(), crmInterditLe: null });
     const r = await enregistrerOpposition(jeton());
     expect(r).toMatchObject({ ok: true, dejaOpposee: true });
     expect(syncOptOut).toHaveBeenCalledWith(
@@ -239,10 +250,15 @@ describe("réessai idempotent de l'avertissement CRM", () => {
     expect(findFirstOutbox).not.toHaveBeenCalled();
   });
 
-  it("lecture de la file en erreur → crmAverti:false", async () => {
-    findFirstOutbox.mockRejectedValue(new Error("base"));
+  it("(8) lecture de la file en erreur → crmAverti:false + Sentry {name} sans adresse", async () => {
+    findFirstOutbox.mockRejectedValue(new Error("base jean@client.fr"));
     const r = await enregistrerOpposition(jeton());
     expect(r).toMatchObject({ ok: true, crmAverti: false });
+    const appel = sentryCapture.mock.calls.find(
+      (c) => (c[1] as { tags: { step: string } }).tags.step === "lire-file-crm",
+    );
+    expect(appel![0]).toEqual({ name: "Error" });
+    expect(JSON.stringify(sentryCapture.mock.calls)).not.toContain("jean");
   });
 
   it("🔴 annulerRelances lève une erreur contenant l'adresse → Sentry ne reçoit pas l'adresse", async () => {
@@ -253,5 +269,70 @@ describe("réessai idempotent de l'avertissement CRM", () => {
     const tout = JSON.stringify(sentryCapture.mock.calls);
     expect(tout).not.toContain("jean@client.fr");
     expect(tout).not.toContain("jean");
+  });
+});
+
+describe("🔴 RGPD — le CRM ne reçoit jamais une adresse déjà en base sans attente posée", () => {
+  const jeton = () => jetonOpposition("jean@client.fr");
+
+  it("(1) adresse déjà en base, attente vide, file vide → CRM non appelé, crmAverti:true", async () => {
+    findUnique.mockResolvedValue({ id: "opp-1" });
+    findFirstOutbox.mockResolvedValue(null);
+    const r = await enregistrerOpposition(jeton());
+    expect(r).toEqual({ ok: true, email: "jean@client.fr", dejaOpposee: true, crmAverti: true });
+    expect(syncOptOut).not.toHaveBeenCalled();
+  });
+
+  it("(2) attente ET interdit renseignées, file vide → CRM non appelé", async () => {
+    findUnique.mockResolvedValue({ id: "opp-1" });
+    findFirstOutbox.mockResolvedValue(null);
+    lireMarques.mockResolvedValue({ crmEnAttenteDepuis: new Date(), crmInterditLe: new Date() });
+    const r = await enregistrerOpposition(jeton());
+    expect(r).toMatchObject({ ok: true, dejaOpposee: true });
+    expect(syncOptOut).not.toHaveBeenCalled();
+  });
+
+  it("(9) lecture des deux colonnes en erreur → CRM non appelé (fermé par défaut)", async () => {
+    findUnique.mockResolvedValue({ id: "opp-1" });
+    findFirstOutbox.mockResolvedValue(null);
+    lireMarques.mockRejectedValue(new Error("base"));
+    const r = await enregistrerOpposition(jeton());
+    expect(r).toMatchObject({ ok: true, crmAverti: false });
+    expect(syncOptOut).not.toHaveBeenCalled();
+  });
+
+  it("(6) création : l'attente est posée APRÈS le create, par une requête séparée", async () => {
+    findFirstOutbox.mockResolvedValue(null);
+    await enregistrerOpposition(jeton());
+    const data = (create.mock.calls[0]![0] as { data: Record<string, unknown> }).data;
+    expect(data).not.toHaveProperty("crmEnAttenteDepuis");
+    const pose = updateMany.mock.calls.find(
+      (c) => (c[0] as { data: Record<string, unknown> }).data["crmEnAttenteDepuis"] instanceof Date,
+    );
+    expect(pose).toBeDefined();
+    expect(create.mock.invocationCallOrder[0]!).toBeLessThan(
+      updateMany.mock.invocationCallOrder[0]!,
+    );
+  });
+
+  it("échec de la pose de l'attente → l'opposition n'est pas bloquée, Sentry {name}", async () => {
+    updateMany.mockRejectedValueOnce(new Error("base jean@client.fr"));
+    const r = await enregistrerOpposition(jeton());
+    expect(r).toMatchObject({ ok: true, dejaOpposee: false });
+    expect(JSON.stringify(sentryCapture.mock.calls)).not.toContain("jean");
+  });
+
+  it("(6) ligne de file constatée → attente remise à NULL, seulement si non interdite", async () => {
+    findUnique.mockResolvedValue({ id: "opp-1" });
+    findFirstOutbox.mockResolvedValue({ id: "ob-0" });
+    await enregistrerOpposition(jeton());
+    const remise = updateMany.mock.calls.find(
+      (c) => (c[0] as { data: Record<string, unknown> }).data["crmEnAttenteDepuis"] === null,
+    );
+    expect(remise).toBeDefined();
+    expect((remise![0] as { where: Record<string, unknown> }).where).toMatchObject({
+      id: "opp-1",
+      crmInterditLe: null,
+    });
   });
 });

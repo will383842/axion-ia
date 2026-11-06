@@ -464,6 +464,22 @@ export async function eraseCrmOutboxForEmail(email: string): Promise<EraseCrmOut
   // L'adresse telle que saisie ET sa forme normalisée : le filtre JSON est
   // sensible à la casse, contrairement aux colonnes `citext`.
   const formes = [...new Set([email, email.trim().toLowerCase()])];
+  // 🔴 AVANT de vider la file : ferme la porte du CRM pour cette adresse (l'opposition, elle, est
+  // gardée — jamais de suppression). Sans cette marque, un réessai renverrait l'adresse au CRM.
+  // Son échec ne bloque jamais l'effacement.
+  if (empreinte) {
+    try {
+      await prisma.emailOpposition.updateMany({
+        where: { emailHash: empreinte },
+        data: { crmInterditLe: new Date() },
+      });
+    } catch (e) {
+      Sentry.captureException(
+        { name: e instanceof Error ? e.name : "erreur" },
+        { tags: { rgpd: "art17", etape: "interdire-crm-opposition" } },
+      );
+    }
+  }
   const r = await prisma.crmSyncOutbox.deleteMany({
     where: {
       OR: [

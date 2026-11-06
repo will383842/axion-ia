@@ -25,6 +25,8 @@ const { interdit, bd, limite } = vi.hoisted(() => {
     suppressions: 0,
     cles: [] as string[],
     limiteRefusee: false,
+    effacement: false,
+    videes: 0,
   };
   return {
     bd,
@@ -44,7 +46,29 @@ vi.mock("@/lib/prisma", () => ({
     emailOpposition: {
       findUnique: async ({ where }: { where: Ligne }) => {
         bd.appelsPrisma++;
+        if (where.id !== undefined) {
+          const l = bd.oppositions.find((x) => x.id === where.id);
+          return l
+            ? {
+                crmEnAttenteDepuis: l.crmEnAttenteDepuis ?? null,
+                crmInterditLe: l.crmInterditLe ?? null,
+              }
+            : null;
+        }
         return bd.oppositions.find((l) => l.emailHash === where.emailHash) ?? null;
+      },
+      updateMany: async ({ where, data }: { where: Ligne; data: Ligne }) => {
+        const ok = (l: Ligne) =>
+          Object.entries(where).every(([k, v]) =>
+            v === null
+              ? (l[k] ?? null) === null
+              : typeof v === "object"
+                ? (l[k] ?? null) !== null
+                : l[k] === v,
+          );
+        const cibles = bd.oppositions.filter(ok);
+        for (const l of cibles) Object.assign(l, data);
+        return { count: cibles.length };
       },
       create: async ({ data }: { data: Ligne }) => {
         bd.appelsPrisma++;
@@ -68,7 +92,14 @@ vi.mock("@/lib/prisma", () => ({
         return bd.outbox.find((l) => l.subjectRef === where.subjectRef) ?? null;
       },
       delete: interdit,
-      deleteMany: interdit,
+      // Seul l'effacement (simulé par le scénario 4) vide la file ; jamais une opposition.
+      deleteMany: async () => {
+        if (!bd.effacement) return interdit();
+        const n = bd.outbox.length;
+        bd.outbox.length = 0;
+        bd.videes += n;
+        return { count: n };
+      },
     },
     guideRequest: { delete: interdit, deleteMany: interdit },
     newsletterSubscriber: { delete: interdit, deleteMany: interdit },
@@ -104,6 +135,12 @@ vi.mock("@sentry/nextjs", () => ({
 
 import { POST } from "@/app/api/interne/oppositions-reseau/route";
 import { signerRequete } from "@/server/videos/signature";
+import { hashEmailForLookup } from "@/lib/security/email-hash";
+import {
+  enregistrerOpposition,
+  enregistrerOppositionPourAdresse,
+  jetonOpposition,
+} from "@/server/email/opposition";
 
 const SECRET = "g".repeat(40);
 const CHEMIN = "/api/interne/oppositions-reseau";
@@ -163,6 +200,8 @@ beforeEach(() => {
   bd.outbox.length = bd.cles.length = 0;
   bd.crmPerd = false;
   bd.suppressions = 0;
+  bd.effacement = false;
+  bd.videes = 0;
   bd.limiteRefusee = false;
   process.env.CRM_SYNC_ENABLED = "true";
   bd.creerLeve = null;
@@ -439,11 +478,89 @@ describe("aucune donnée de personne dans les sorties", () => {
     verifier();
   });
 
-  it("internal puis estOpposee faux → 500 sans l'adresse", async () => {
+  it("enregistrement en échec (panne de base) -> 500 sans l'adresse", async () => {
     bd.creerLeve = () => new Error("panne");
     const r = await appel();
     expect(r.status).toBe(500);
     expect(await r.json()).toEqual({ ok: false, erreur: "erreur_interne" });
     verifier();
+  });
+});
+
+describe("🔴 RGPD — le CRM ne reçoit jamais l'adresse d'une personne purgée ou effacée", () => {
+  const empreinte = () => hashEmailForLookup(ADRESSE)!;
+  const jeton = () => jetonOpposition(ADRESSE);
+
+  beforeEach(() => {
+    process.env.AUTH_SECRET = "secret-de-test-suffisamment-long-0123456789";
+  });
+
+  it("(1) adresse déjà en base (ancienne ligne) → CRM non appelé, 200", async () => {
+    bd.oppositions.push({ id: "o0", emailHash: empreinte(), source: "ancienne" });
+    const r = await appel();
+    expect(r.status).toBe(200);
+    expect(bd.crm).toHaveLength(0);
+    expect(bd.outbox).toHaveLength(0);
+  });
+
+  it("(2) attente ET interdit renseignées, file vide → CRM non appelé, aucune ligne créée", async () => {
+    bd.oppositions.push({
+      id: "o0",
+      emailHash: empreinte(),
+      crmEnAttenteDepuis: new Date(),
+      crmInterditLe: new Date(),
+    });
+    await appel();
+    expect(bd.crm).toHaveLength(0);
+    expect(bd.outbox).toHaveLength(0);
+  });
+
+  it("(3) stop → ligne en file → purge des lignes sent → second stop → aucune nouvelle ligne", async () => {
+    await appel();
+    expect(bd.outbox).toHaveLength(1);
+    expect(bd.oppositions[0]!.crmEnAttenteDepuis ?? null).toBeNull(); // remise à NULL
+    bd.outbox.length = 0; // purge de rétention
+    const r = await appel();
+    expect(r.status).toBe(200);
+    expect(bd.outbox).toHaveLength(0);
+    expect(bd.crm).toHaveLength(1);
+  });
+
+  it("(4) stop CRM en échec → effacement → nouveau stop, lien, console : aucune ligne, CRM non rappelé", async () => {
+    bd.crmPerd = true;
+    expect((await appel()).status).toBe(500);
+    expect(bd.oppositions[0]!.crmEnAttenteDepuis).toBeInstanceOf(Date);
+    const appelsAvant = bd.crm.length;
+    bd.effacement = true;
+    const { eraseCrmOutboxForEmail } = await import("@/lib/rgpd-erase");
+    await eraseCrmOutboxForEmail(ADRESSE);
+    bd.effacement = false;
+    expect(bd.oppositions[0]!.crmInterditLe).toBeInstanceOf(Date);
+    bd.crmPerd = false;
+    await appel();
+    await enregistrerOpposition(jeton());
+    await enregistrerOppositionPourAdresse(ADRESSE);
+    expect(bd.crm).toHaveLength(appelsAvant);
+    expect(JSON.stringify(bd.outbox)).not.toContain(ADRESSE);
+    expect(bd.outbox).toHaveLength(0);
+    expect(bd.oppositions).toHaveLength(1);
+  });
+
+  it("(5) opposition créée par la rétention puis clic sur le jeton → CRM non appelé", async () => {
+    bd.oppositions.push({ id: "o0", emailHash: empreinte(), source: "desinscrit-retention" });
+    const r = await enregistrerOpposition(jeton());
+    expect(r).toMatchObject({ ok: true, dejaOpposee: true });
+    expect(bd.crm).toHaveLength(0);
+  });
+
+  it("(6) cas normal : CRM en échec → attente posée ; renvoi → même subjectRef/eventId, attente remise à NULL", async () => {
+    bd.crmPerd = true;
+    expect((await appel()).status).toBe(500);
+    expect(bd.oppositions[0]!.crmEnAttenteDepuis).toBeInstanceOf(Date);
+    bd.crmPerd = false;
+    expect((await appel()).status).toBe(200);
+    expect((bd.crm[0] as Ligne).eventId).toBe((bd.crm[1] as Ligne).eventId);
+    expect((bd.crm[0] as Ligne).subjectRef).toBe((bd.crm[1] as Ligne).subjectRef);
+    expect(bd.oppositions[0]!.crmEnAttenteDepuis ?? null).toBeNull();
   });
 });

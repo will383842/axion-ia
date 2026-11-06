@@ -13788,6 +13788,10 @@ model EmailOpposition {
   /// Gabarit depuis lequel le lien a été cliqué — une trace, pas un secret.
   template  String?  @db.VarChar(60)
   source    String   @default("lien-email") @db.VarChar(40)
+  /// Posée APRÈS la création : le CRM n'a pas encore été prévenu. NULL = ne pas réessayer.
+  crmEnAttenteDepuis DateTime? @map("crm_en_attente_depuis") @db.Timestamptz(6)
+  /// Posée par l'effacement : le CRM ne doit plus jamais recevoir l'adresse.
+  crmInterditLe      DateTime? @map("crm_interdit_le") @db.Timestamptz(6)
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 

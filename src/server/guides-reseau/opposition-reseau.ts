@@ -5,9 +5,9 @@
  * (`enregistrerOppositionPourAdresse` : empreinte, CRM, envois programmés retirés).
  * Il ne touche jamais au chemin d'effacement.
  *
- * Idempotence PAR NATURE : l'opération est déjà idempotente (une ligne par empreinte, un second
- * appel ne refait que l'annulation des envois programmés). Aucune table, aucune migration ; la
- * clé d'idempotence n'est donc ni stockée ni journalisée.
+ * Idempotence : une ligne par empreinte ; un second appel annule les envois programmés et réessaie
+ * l'avertissement du CRM seulement s'il est resté en attente et que la personne n'a pas été effacée.
+ * La clé d'idempotence n'est ni stockée ni journalisée.
  *
  * Réponse IDENTIQUE adresse nouvelle, déjà écartée ou inconnue ; jamais l'adresse.
  * Journal : un seul événement structuré, sans aucune donnée de personne.

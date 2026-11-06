@@ -78,26 +78,93 @@ async function annulerEnvoisProgrammes(email: string): Promise<void> {
   }
 }
 
+/** Le nom seul : un message d'erreur peut recopier l'adresse. */
+function signaler(e: unknown, step: string): void {
+  try {
+    Sentry.captureException(
+      { name: e instanceof Error ? e.name : "erreur" },
+      { tags: { module: "email-opposition", step } },
+    );
+  } catch {
+    /* l'observabilité ne casse jamais la réponse */
+  }
+}
+
+/**
+ * Pose (`true`) ou retire (`false`) la marque « le CRM n'a pas encore été prévenu ». Requête
+ * SÉPARÉE, jamais dans le `create` ; son échec ne bloque jamais l'opposition. Le retrait ne
+ * touche jamais une ligne dont le CRM est interdit (effacement).
+ */
+async function marquerAttenteCrm(oppositionId: string, enAttente: boolean): Promise<void> {
+  try {
+    await prisma.emailOpposition.updateMany({
+      where: enAttente
+        ? { id: oppositionId, crmInterditLe: null }
+        : { id: oppositionId, crmInterditLe: null, crmEnAttenteDepuis: { not: null } },
+      data: { crmEnAttenteDepuis: enAttente ? new Date() : null },
+    });
+  } catch (e) {
+    signaler(e, enAttente ? "poser-attente-crm" : "lever-attente-crm");
+  }
+}
+
 /**
  * Réessai IDEMPOTENT de l'avertissement du CRM. `syncNewsletterOptOutToCrm` ne lève jamais (il
  * avale l'erreur) : seule la présence d'une ligne dans la file prouve que le CRM sera prévenu.
  * Identifiants fixes (subjectRef + eventId déterministe) : rappeler ne crée jamais de doublon.
- * Rend vrai si la ligne est présente (ou si la synchro CRM est coupée).
+ * Rend vrai si la ligne est présente (ou si la synchro CRM est coupée, ou s'il n'y a rien à rattraper).
+ *
+ * 🔴 RGPD — FERMÉ PAR DÉFAUT. Une adresse DÉJÀ en base n'est renvoyée au CRM que si la ligne porte
+ * `crm_en_attente_depuis` ET pas `crm_interdit_le` ET qu'aucune ligne de file n'existe. Une ligne
+ * ancienne, posée par la rétention, ou dont la file a été purgée/effacée, n'a pas d'attente : le CRM
+ * n'est PAS rappelé (il recevrait l'adresse en clair). Lecture des marques en erreur : pas d'appel.
+ * `creation` : premier avertissement de la ligne qu'on vient de poser — pas un réessai.
  */
 async function assurerAvertissementCrm(
   oppositionId: string,
   email: string,
   origine: string,
   template: string | null | undefined,
+  creation = false,
 ): Promise<boolean> {
   if (!isCrmSyncEnabled()) return true;
   const subjectRef = `site:email_opposition:${oppositionId}`;
   const eventId = eventIdDeterministe(`newsletter_optout:${subjectRef}`);
-  const lignePresente = async (): Promise<boolean> =>
-    (await prisma.crmSyncOutbox.findFirst({ where: { subjectRef }, select: { id: true } })) !==
-    null;
+  const lignePresente = async (): Promise<boolean> => {
+    try {
+      return (
+        (await prisma.crmSyncOutbox.findFirst({ where: { subjectRef }, select: { id: true } })) !==
+        null
+      );
+    } catch (e) {
+      signaler(e, "lire-file-crm");
+      throw e;
+    }
+  };
   try {
-    if (await lignePresente()) return true;
+    if (await lignePresente()) {
+      await marquerAttenteCrm(oppositionId, false);
+      return true;
+    }
+    if (!creation) {
+      let marques: { crmEnAttenteDepuis: Date | null; crmInterditLe: Date | null } | null;
+      try {
+        marques = await prisma.emailOpposition.findUnique({
+          where: { id: oppositionId },
+          select: { crmEnAttenteDepuis: true, crmInterditLe: true },
+        });
+      } catch (e) {
+        signaler(e, "lire-marques-crm");
+        return false;
+      }
+      if (
+        marques === null ||
+        marques.crmEnAttenteDepuis === null ||
+        marques.crmInterditLe !== null
+      ) {
+        return true;
+      }
+    }
     try {
       await syncNewsletterOptOutToCrm({
         subjectRef,
@@ -112,7 +179,9 @@ async function assurerAvertissementCrm(
       );
       return false;
     }
-    return await lignePresente();
+    if (!(await lignePresente())) return false;
+    await marquerAttenteCrm(oppositionId, false);
+    return true;
   } catch {
     return false;
   }
@@ -207,7 +276,14 @@ export async function enregistrerOppositionPourAdresse(
 
     // La prospection HUMAINE est gouvernée par la liste d'opposition du CRM, pas par notre file
     // d'envoi. Les envois programmés sont annulés TOUJOURS, même si le CRM a échoué.
-    const crmAverti = await assurerAvertissementCrm(ligne.id, email, origine, source.template);
+    await marquerAttenteCrm(ligne.id, true);
+    const crmAverti = await assurerAvertissementCrm(
+      ligne.id,
+      email,
+      origine,
+      source.template,
+      true,
+    );
     await annulerEnvoisProgrammes(email);
     return { ok: true, email, dejaOpposee: false, crmAverti };
   } catch (e) {

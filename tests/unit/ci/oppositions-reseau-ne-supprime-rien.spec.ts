@@ -19,6 +19,8 @@ const INTERDITS: Array<[string, RegExp]> = [
   ["secret des vidéos", /VIDEOS_STUDIO_HMAC_SECRET/],
 ];
 
+const TOUCHE_OPPOSITION = /emailOpposition\s*\.\s*(delete|deleteMany)\s*\(/;
+
 function fautes(code: string): string[] {
   const s = sansCommentaires(code);
   return INTERDITS.filter(([, re]) => re.test(s)).map(([nom]) => nom);
@@ -34,6 +36,18 @@ describe("oppositions réseau : source", () => {
   for (const [nom, chemin] of FICHIERS) {
     it(`${nom} : aucune faute`, () => expect(fautes(lire(...chemin))).toEqual([]));
   }
+
+  it("rgpd-erase.ts ne supprime jamais une ligne de la table emailOpposition", () => {
+    const code = sansCommentaires(lire("src", "lib", "rgpd-erase.ts"));
+    expect(code).not.toMatch(TOUCHE_OPPOSITION);
+  });
+
+  it("contre-témoin : la garde de la table emailOpposition fait rougir", () => {
+    expect("prisma.emailOpposition.deleteMany({})").toMatch(TOUCHE_OPPOSITION);
+    expect("tx.emailOpposition.delete({ where })").toMatch(TOUCHE_OPPOSITION);
+    expect("prisma.emailOpposition.updateMany({})").not.toMatch(TOUCHE_OPPOSITION);
+    expect("prisma.crmSyncOutbox.deleteMany({})").not.toMatch(TOUCHE_OPPOSITION);
+  });
 
   it("le secret des oppositions n'a pas de repli sur celui des vidéos", () => {
     const config = sansCommentaires(lire("src", "server", "guides-reseau", "config.ts"));
