@@ -21,7 +21,13 @@ export type VenteFinancement = "direct" | "opco" | "cpf" | "france_travail";
 export interface ChecklistDevisInput {
   statut: "brouillon" | "envoye" | "accepte" | "refuse" | "expire" | "transforme_convention";
   fichierPdfUrl: string | null;
+  /** Historique (anciens devis signés via DocuSeal) — plus écrit depuis le 30/07/2026. */
   docusealSubmissionId: string | null;
+  /**
+   * Un lien de signature MAISON (`/portail/signer/<jeton>`) a été émis pour la pièce du devis.
+   * C'est le canal de signature depuis le 30/07/2026 ; absent = inconnu (traité comme faux).
+   */
+  signatureMaison?: boolean;
   /** Date d'envoi ISO — n'alimente que le détail affiché. */
   sentAt: string | null;
 }
@@ -163,12 +169,12 @@ function itemDevis(devis: ChecklistDevisInput | null): ChecklistVenteItem {
       }
       const envoi = dateFr(devis.sentAt);
       const prefixe = envoi !== null ? `Envoyé le ${envoi}` : "Envoyé";
-      if (devis.docusealSubmissionId === null) {
+      if (devis.docusealSubmissionId === null && devis.signatureMaison !== true) {
         return {
           key: "devis",
           libelle,
           etat: "a_faire",
-          detail: `${prefixe} — le client ne peut pas signer en ligne (aucune soumission de signature). Réémettez un lien de signature ou recueillez un bon pour accord par retour d'e-mail.`,
+          detail: `${prefixe} — le client ne peut pas signer en ligne (aucun lien de signature émis). Réémettez un lien de signature ou recueillez un bon pour accord par retour d'e-mail.`,
         };
       }
       return {
