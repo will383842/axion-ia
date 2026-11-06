@@ -88,7 +88,11 @@ beforeEach(() => {
   vi.clearAllMocks();
   h.habilitation.mockResolvedValue({ userId: "adm-1", role: "admin" });
   // Devis classique : aucune offre (le devis à formules a son test plus bas).
-  h.tx.devis.findUnique.mockResolvedValue({ offreSha256: null, formuleRetenue: null });
+  h.tx.devis.findUnique.mockResolvedValue({
+    statut: "envoye",
+    offreSha256: null,
+    formuleRetenue: null,
+  });
 });
 
 describe("acceptDevisAction", () => {
@@ -128,8 +132,35 @@ describe("acceptDevisAction", () => {
     expect(sentry.captureException).toHaveBeenCalledOnce();
   });
 
+  it.each(["accepte", "transforme_convention", "brouillon", "refuse"])(
+    "🔴 devis au statut %s : refusé côté serveur, aucune écriture ni émission",
+    async (statut) => {
+      h.tx.devis.findUnique.mockResolvedValue({ statut, offreSha256: null, formuleRetenue: null });
+      const r = await acceptDevisAction(DEVIS);
+      expect(r).toMatchObject({ error: expect.stringContaining("envoyé") });
+      expect(h.tx.devis.update).not.toHaveBeenCalled();
+      expect(h.emettre).not.toHaveBeenCalled();
+      expect(h.monter).not.toHaveBeenCalled();
+      expect(h.proposer).not.toHaveBeenCalled();
+      expect(h.log).not.toHaveBeenCalled();
+    },
+  );
+
+  it("un devis expiré peut encore être accepté (signature tardive)", async () => {
+    h.tx.devis.findUnique.mockResolvedValue({
+      statut: "expire",
+      offreSha256: null,
+      formuleRetenue: null,
+    });
+    expect(await acceptDevisAction(DEVIS)).toEqual({ data: { id: DEVIS } });
+  });
+
   it("🔴 devis À FORMULES sans formule retenue : l'acceptation manuelle est refusée, rien n'est écrit", async () => {
-    h.tx.devis.findUnique.mockResolvedValue({ offreSha256: "a".repeat(64), formuleRetenue: null });
+    h.tx.devis.findUnique.mockResolvedValue({
+      statut: "envoye",
+      offreSha256: "a".repeat(64),
+      formuleRetenue: null,
+    });
     const r = await acceptDevisAction(DEVIS);
     expect(r).toMatchObject({ error: expect.stringContaining("formules") });
     expect(h.tx.devis.update).not.toHaveBeenCalled();
@@ -140,6 +171,7 @@ describe("acceptDevisAction", () => {
 
   it("devis à formules AVEC formule retenue : l'acceptation reste possible", async () => {
     h.tx.devis.findUnique.mockResolvedValue({
+      statut: "envoye",
       offreSha256: "a".repeat(64),
       formuleRetenue: "abonnement",
     });

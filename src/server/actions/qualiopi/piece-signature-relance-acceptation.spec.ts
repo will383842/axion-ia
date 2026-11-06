@@ -48,7 +48,7 @@ beforeEach(() => {
     numero: "AXI-DEV-2026-001",
   });
   sigs("client", "axionia");
-  reprise.mockResolvedValue({ traite: true, ids: ["dv-1"] });
+  reprise.mockResolvedValue({ traite: true, ids: ["dv-1"], plansEchec: [] });
 });
 
 describe("relancerAcceptationDevisAction", () => {
@@ -56,6 +56,13 @@ describe("relancerAcceptationDevisAction", () => {
     const r = await relancerAcceptationDevisAction({ documentGenereId: DOC });
     expect(r).toEqual({ ok: true, devisAcceptes: 1 });
     expect(reprise).toHaveBeenCalledWith(DOC);
+  });
+
+  it("🔴 acceptation reprise mais plans non proposés : échec visible, jamais un succès muet", async () => {
+    reprise.mockResolvedValue({ traite: true, ids: ["dv-1"], plansEchec: ["dv-1"] });
+    const r = await relancerAcceptationDevisAction({ documentGenereId: DOC });
+    expect(r.ok).toBe(false);
+    expect(!r.ok && r.message).toContain("plans récurrents");
   });
 
   it("rôle sans habilitation à contresigner : refusé, rien n'est relancé", async () => {
@@ -82,7 +89,7 @@ describe("relancerAcceptationDevisAction", () => {
   });
 
   it("rien à reprendre (déjà accepté) : message clair, pas d'erreur levée", async () => {
-    reprise.mockResolvedValue({ traite: false, ids: [] });
+    reprise.mockResolvedValue({ traite: false, ids: [], plansEchec: [] });
     const r = await relancerAcceptationDevisAction({ documentGenereId: DOC });
     expect(r.ok).toBe(false);
   });

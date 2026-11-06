@@ -204,13 +204,15 @@ describe("fail-closed", () => {
 describe("proposerPlansApresAcceptation (fail-soft)", () => {
   it("n'échoue jamais : une erreur base part à Sentry", async () => {
     h.p.devis.findUnique.mockRejectedValue(new Error("db down"));
-    await expect(proposerPlansApresAcceptation(DEVIS, "console")).resolves.toBeUndefined();
+    await expect(proposerPlansApresAcceptation(DEVIS, "console")).resolves.toBe(
+      "erreur_inattendue",
+    );
     expect(sentry.captureException).toHaveBeenCalled();
   });
 
   it("un refus est signalé (code, sans donnée personnelle)", async () => {
     h.p.devis.findUnique.mockResolvedValue(devisB({ formuleRetenue: null }));
-    await proposerPlansApresAcceptation(DEVIS, "signature_complete");
+    expect(await proposerPlansApresAcceptation(DEVIS, "signature_complete")).toBe("aucune_formule");
     expect(sentry.captureMessage).toHaveBeenCalledWith(
       expect.any(String),
       expect.objectContaining({ tags: expect.objectContaining({ code: "aucune_formule" }) }),

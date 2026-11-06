@@ -733,6 +733,7 @@ export async function sendDevisAction(
 }
 
 class AcceptationManuelleRefusee extends Error {}
+class AcceptationStatutRefuse extends Error {}
 
 /**
  * Marque le devis comme accepté (statut → accepte, acceptedAt = now).
@@ -752,9 +753,15 @@ export async function acceptDevisAction(id: string): Promise<ActionResult<{ id: 
       // client puis la contresignature d'Axion-IA sont la seule voie.
       const formules = await tx.devis.findUnique({
         where: { id: devisId },
-        select: { offreSha256: true, formuleRetenue: true },
+        select: { statut: true, offreSha256: true, formuleRetenue: true },
       });
-      if (formules !== null && formules.offreSha256 != null && formules.formuleRetenue == null) {
+      // Garde de statut CÔTÉ SERVEUR : seul un devis envoyé (ou expiré, signature tardive) peut
+      // être accepté. Un devis déjà accepté ou transformé en convention n'est jamais ré-accepté
+      // (`acceptedAt` réécrit, statut ramené à `accepte`) : refus sans écriture ni émission.
+      if (formules === null || (formules.statut !== "envoye" && formules.statut !== "expire")) {
+        throw new AcceptationStatutRefuse();
+      }
+      if (formules.offreSha256 != null && formules.formuleRetenue == null) {
         throw new AcceptationManuelleRefusee();
       }
       await tx.devis.update({
@@ -764,6 +771,11 @@ export async function acceptDevisAction(id: string): Promise<ActionResult<{ id: 
       await emettreDevisSigne(tx, devisId);
     });
   } catch (err) {
+    if (err instanceof AcceptationStatutRefuse) {
+      return {
+        error: "Seul un devis envoyé (ou expiré) peut être accepté. Rechargez la page.",
+      };
+    }
     if (err instanceof AcceptationManuelleRefusee) {
       return {
         error:

@@ -22,6 +22,7 @@ const h = vi.hoisted(() => ({
   txDevis: { devis: { updateMany: vi.fn(), findMany: vi.fn() } },
   p: {
     documentGenere: { findUnique: vi.fn() },
+    devis: { findMany: vi.fn(async (): Promise<unknown[]> => []) },
     documentSignature: { findMany: vi.fn() },
     questionnaire: { findMany: vi.fn(), update: vi.fn() },
     trainer: { findUnique: vi.fn(), updateMany: vi.fn() },
@@ -61,14 +62,20 @@ vi.mock("@/server/partners-sync/producteurs/devis", () => ({
 vi.mock("@/server/qualiopi/devis/acceptation-formules", () => ({
   accepterDevisAFormules: vi.fn(async () => ({ traite: false, ids: [] })),
 }));
+vi.mock("@/server/qualiopi/devis/proposer-plans", () => ({
+  proposerPlansApresAcceptation: vi.fn(async () => null),
+}));
 vi.mock("@/features/dossier-client/devis-signe-fait-client", () => ({
   faireMonterLesFichesDesDevisSignes: h.monter,
 }));
 
 import { accepterDevisAFormules } from "@/server/qualiopi/devis/acceptation-formules";
+import { proposerPlansApresAcceptation } from "@/server/qualiopi/devis/proposer-plans";
 import {
   apresSignature,
   PREFIXE_ACCEPTATION_DEVIS_ECHOUEE,
+  PREFIXE_PLANS_NON_PROPOSES,
+  reprendreAcceptationDevisFormules,
   type ContexteApresSignature,
 } from "./apres-signature";
 
@@ -381,6 +388,47 @@ describe("devis intégralement signé : le prospect passe en client", () => {
     expect(accepterDevisAFormules).toHaveBeenCalledWith(h.p, DOC);
     expect(h.txDevis.devis.updateMany).not.toHaveBeenCalled();
     expect(h.monter).toHaveBeenCalledWith(h.p, ["dv-formules"], { origine: "signature_complete" });
+    // 🔴 Argent : sans cet appel, aucun plan récurrent en pause n'est jamais créé.
+    expect(proposerPlansApresAcceptation).toHaveBeenCalledTimes(1);
+    expect(proposerPlansApresAcceptation).toHaveBeenCalledWith("dv-formules", "signature_complete");
+  });
+
+  it("🔴 devis À FORMULES : l'échec de la proposition des plans n'annule pas l'acceptation et remonte une alerte distincte", async () => {
+    (accepterDevisAFormules as unknown as ReturnType<typeof vi.fn>).mockResolvedValueOnce({
+      traite: true,
+      ids: ["dv-formules"],
+    });
+    (proposerPlansApresAcceptation as unknown as ReturnType<typeof vi.fn>).mockResolvedValueOnce(
+      "offre_alteree",
+    );
+    const r = await apresSignature(
+      ctx({ type: "devis", statutSignature: "signee", partie: "axionia" }),
+    );
+    expect(r.activationRefusee).toMatchObject({
+      code: "plans_recurrents_non_proposes",
+      prefixe: PREFIXE_PLANS_NON_PROPOSES,
+    });
+    expect(r.activationRefusee?.code).not.toBe("acceptation_devis_echouee");
+    expect(h.monter).toHaveBeenCalledWith(h.p, ["dv-formules"], { origine: "signature_complete" });
+  });
+
+  it("🔴 reprise manuelle d'un devis DÉJÀ accepté : repropose les plans (idempotent), sans ré-accepter", async () => {
+    h.p.devis.findMany.mockResolvedValueOnce([{ id: "dv-formules" }]);
+    const r = await reprendreAcceptationDevisFormules(DOC);
+    expect(r).toEqual({ traite: true, ids: ["dv-formules"], plansEchec: [] });
+    expect(proposerPlansApresAcceptation).toHaveBeenCalledWith("dv-formules", "signature_complete");
+    // Aucune montée de fiche : l'acceptation n'a pas eu lieu à cet appel.
+    expect(h.monter).not.toHaveBeenCalled();
+  });
+
+  it("reprise manuelle : aucun devis à formules → rien à proposer", async () => {
+    h.p.devis.findMany.mockResolvedValueOnce([]);
+    expect(await reprendreAcceptationDevisFormules(DOC)).toEqual({
+      traite: false,
+      ids: [],
+      plansEchec: [],
+    });
+    expect(proposerPlansApresAcceptation).not.toHaveBeenCalled();
   });
 
   it("🔴 devis À FORMULES dont l'acceptation échoue : l'écran de contresignature le dit (pas seulement Sentry)", async () => {

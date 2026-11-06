@@ -172,7 +172,7 @@ describe("POST /commandes/{numeroDevis}/etat — authentification", () => {
     expect(prisma.consoleCommande.updateMany).not.toHaveBeenCalled();
   });
 
-  it("la formule de signature est HMAC-SHA256(secret, ts.METHODE.chemin.sha256(corps))", () => {
+  it("la formule de signature est HMAC-SHA256(secret, ts.METHODE.chemin.Idempotency-Key.sha256(corps))", () => {
     const corps = '{"etat":"recue"}';
     const attendu = createHmac("sha256", SECRET)
       .update(

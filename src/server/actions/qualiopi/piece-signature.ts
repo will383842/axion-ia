@@ -858,9 +858,17 @@ export async function relancerAcceptationDevisAction(input: {
       action: "qualiopi.devis.relance_acceptation",
       targetType: "DocumentGenere",
       targetId: id.data,
-      changes: { numero: piece.numero, devis: res.ids },
+      changes: { numero: piece.numero, devis: res.ids, plansEchec: res.plansEchec },
       session,
     });
+    if (res.plansEchec.length > 0) {
+      return {
+        ok: false,
+        message:
+          "L'acceptation est enregistrée, mais les plans récurrents n'ont pas pu être proposés " +
+          "(code consigné). Relancez, ou créez le plan à la main.",
+      };
+    }
     return { ok: true, devisAcceptes: res.ids.length };
   } catch (err) {
     Sentry.captureException(err, { tags: { action: "relancerAcceptationDevisAction" } });

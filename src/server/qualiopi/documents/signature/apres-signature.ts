@@ -183,7 +183,7 @@ async function declencherPositionnement(documentGenereId: string): Promise<void>
  */
 export async function reprendreAcceptationDevisFormules(
   documentGenereId: string,
-): Promise<{ traite: boolean; ids: string[] }> {
+): Promise<{ traite: boolean; ids: string[]; plansEchec: string[] }> {
   const formules = await accepterDevisAFormules(prisma, documentGenereId);
   if (formules.traite) {
     try {
@@ -194,13 +194,52 @@ export async function reprendreAcceptationDevisFormules(
       Sentry.captureException(err, { tags: { action: "devis_signe_fait_client" } });
     }
   }
-  return formules;
+  // Plans récurrents PROPOSÉS en `pause` (lot 5) : APRÈS le COMMIT de l'acceptation, hors
+  // transaction, fail-soft. Aussi pour un devis DÉJÀ accepté dont les plans manquent (la reprise
+  // manuelle repropose) : idempotent (index unique partiel (devis_id, nature) + lecture
+  // préalable → « déjà présents »). Inerte interrupteur éteint. Aucune facture, aucun e-mail.
+  const aProposer = formules.traite ? formules.ids : await devisAcceptesAFormules(documentGenereId);
+  const plansEchec: string[] = [];
+  for (const id of aProposer) {
+    if ((await proposerPlansApresAcceptation(id, "signature_complete")) !== null) {
+      plansEchec.push(id);
+    }
+  }
+  return { traite: formules.traite || aProposer.length > 0, ids: aProposer, plansEchec };
 }
 
-async function accepterDevis(documentGenereId: string): Promise<void> {
+/** Devis à formules déjà acceptés de la pièce (formule retenue) : candidats à la reproposition. */
+async function devisAcceptesAFormules(documentGenereId: string): Promise<string[]> {
+  const lignes = await prisma.devis.findMany({
+    where: {
+      documentGenereId,
+      offreSha256: { not: null },
+      formuleRetenue: { not: null },
+      statut: { in: ["accepte", "transforme_convention"] },
+    },
+    select: { id: true },
+  });
+  return lignes.map((d) => d.id);
+}
+
+/** Plans récurrents non proposés après une acceptation réussie : la signature reste acquise. */
+export const PREFIXE_PLANS_NON_PROPOSES =
+  "Devis accepté, mais les plans récurrents n'ont pas pu être proposés.";
+
+async function accepterDevis(documentGenereId: string): Promise<ActivationRefusee | null> {
   // Aucun devis à formules → chemin ci-dessous, inchangé.
   const formules = await reprendreAcceptationDevisFormules(documentGenereId);
-  if (formules.traite) return;
+  if (formules.traite) {
+    return formules.plansEchec.length === 0
+      ? null
+      : {
+          code: "plans_recurrents_non_proposes",
+          message:
+            "L'acceptation est enregistrée. Relancez la proposition des plans depuis la fiche du devis.",
+          manques: [],
+          prefixe: PREFIXE_PLANS_NON_PROPOSES,
+        };
+  }
   const garde = { documentGenereId, statut: { in: ["envoye" as const, "expire" as const] } };
   const vises = await transactionDevisSigne(prisma, async (tx) => {
     const concernes = await devisConcernesPourEmission(tx, garde);
@@ -224,6 +263,7 @@ async function accepterDevis(documentGenereId: string): Promise<void> {
   // transaction, fail-soft ; inerte interrupteur éteint ou devis sans offre. Aucune facture,
   // aucun e-mail.
   for (const id of vises) await proposerPlansApresAcceptation(id, "signature_complete");
+  return null;
 }
 
 /**
@@ -581,7 +621,7 @@ export async function apresSignature(ctx: ContexteApresSignature): Promise<Resul
   try {
     if (ctx.type === "devis") {
       try {
-        await accepterDevis(ctx.documentGenereId);
+        activationRefusee = await accepterDevis(ctx.documentGenereId);
       } catch (err) {
         // Signé des deux parties mais non accepté : ne reste pas qu'un message Sentry, l'écran
         // de contresignature le dit et la reprise manuelle existe.

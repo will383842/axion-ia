@@ -182,6 +182,15 @@ export default async function QualiopiDevisDetailPage({ params }: PageProps) {
         })
       : null;
 
+  // Devis à formules accepté dont AUCUN plan récurrent n'a été proposé (la proposition a échoué
+  // après le COMMIT) : alerte persistante lue en base, la reprise repropose (idempotente).
+  const plansAReproposer =
+    devis.offreSha256 !== null &&
+    devis.formuleRetenue !== null &&
+    (devis.statut === "accepte" || devis.statut === "transforme_convention") &&
+    (await formulesActives()) &&
+    (await prisma.planRecurrent.count({ where: { devisId: devis.id } })) === 0;
+
   // ── État RÉEL de la signature, lu du registre de preuve ──
   //
   // 🔴 Source de vérité = les lignes `document_signatures`, jamais le statut
@@ -532,8 +541,9 @@ export default async function QualiopiDevisDetailPage({ params }: PageProps) {
           clientASigne &&
           organismeASigne &&
           devis.offreSha256 !== null &&
-          devis.formuleRetenue === null &&
-          (devis.statut === "envoye" || devis.statut === "expire") && (
+          ((devis.formuleRetenue === null &&
+            (devis.statut === "envoye" || devis.statut === "expire")) ||
+            plansAReproposer) && (
             <RelancerAcceptationDevis
               documentGenereId={devis.documentGenereId}
               relancerAction={relancerAcceptationDevisAction}

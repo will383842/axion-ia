@@ -161,11 +161,15 @@ export async function proposerPlansRecurrentsDuDevis(devisId: string): Promise<P
  * Appel après le COMMIT de l'acceptation (hors transaction) : n'échoue JAMAIS, et ne
  * touche jamais l'acceptation. Un refus ou une erreur part à Sentry (aucune donnée
  * personnelle : identifiant du devis, code) — Will crée alors le plan à la main.
+ *
+ * Rend `null` si tout va bien (plans proposés, déjà présents, ou interrupteur éteint / devis
+ * sans offre), sinon le CODE de l'échec : l'appelant peut ainsi le rendre visible à l'écran
+ * sans jamais avoir à capturer d'exception.
  */
 export async function proposerPlansApresAcceptation(
   devisId: string,
   origine: "signature_complete" | "console",
-): Promise<void> {
+): Promise<string | null> {
   try {
     const r = await proposerPlansRecurrentsDuDevis(devisId);
     if (r.statut === "refuse") {
@@ -174,6 +178,7 @@ export async function proposerPlansApresAcceptation(
         tags: { action: "devis_plan_recurrent", code: r.code, origine },
         extra: { devisId, motif: r.motif },
       });
+      return r.code;
     } else if (r.statut === "traite" && r.nonTraites.length > 0) {
       Sentry.captureMessage("devis_formules: éléments d'offre sans plan", {
         level: "info",
@@ -186,5 +191,7 @@ export async function proposerPlansApresAcceptation(
       tags: { action: "devis_plan_recurrent", origine },
       extra: { devisId },
     });
+    return "erreur_inattendue";
   }
+  return null;
 }
