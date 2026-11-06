@@ -15,11 +15,9 @@
 import * as Sentry from "@sentry/nextjs";
 import { z } from "zod";
 import { RESEAUX_GUIDE } from "@/content/guides-reseau";
-import { masquerDonneesSensibles } from "@/lib/security/masquage-donnees-sensibles";
-import { enregistrerOppositionPourAdresse, estOpposee } from "@/server/email/opposition";
+import { enregistrerOppositionPourAdresse } from "@/server/email/opposition";
 import type { EntreeSignee } from "@/server/videos/entree";
 import { reponseJson } from "@/server/videos/reponse";
-import { occurredAtValide } from "./contrat";
 import { ORIGINE_OPPOSITION_RESEAU_STOP } from "./config";
 
 export const SchemaOppositionReseau = z
@@ -69,25 +67,23 @@ export async function recevoirOpposition(e: EntreeSignee): Promise<Response> {
     });
   }
   const d = analyse.data;
-  // Contrôlé mais jamais stocké (même fenêtre que les autres routes du Studio).
-  occurredAtValide(d.occurredAt, new Date());
 
   try {
     const r = await enregistrerOppositionPourAdresse(d.email, {
       origine: ORIGINE_OPPOSITION_RESEAU_STOP,
     });
-    let ecartee = r.ok;
-    // Deux appels simultanés : le second échoue à la création (unicité). Si l'adresse est
-    // bien écartée, l'objectif est atteint.
-    if (!r.ok && r.error === "internal") ecartee = await estOpposee(d.email);
-    if (!ecartee) {
+    // Écartée ET CRM prévenu, sinon 500 : le Studio renverra le stop (réessai idempotent).
+    if (!r.ok || !r.crmAverti) {
       return reponseJson(500, { ok: false, erreur: "erreur_interne" });
     }
   } catch (err) {
     try {
-      Sentry.captureException(masquerDonneesSensibles(err), {
-        tags: { area: "guides-reseau", action: "recevoirOpposition" },
-      });
+      Sentry.captureException(
+        { name: err instanceof Error ? err.name : "erreur" },
+        {
+          tags: { area: "guides-reseau", action: "recevoirOpposition" },
+        },
+      );
     } catch {
       /* l'observabilité ne casse jamais la réponse */
     }

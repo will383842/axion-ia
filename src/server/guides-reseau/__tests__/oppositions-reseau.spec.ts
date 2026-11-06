@@ -9,11 +9,8 @@ import { NextRequest } from "next/server";
 type Ligne = Record<string, unknown>;
 const p2002 = () => Object.assign(new Error("Unique constraint failed"), { code: "P2002" });
 
-const { interdit, bd } = vi.hoisted(() => ({
-  interdit: async () => {
-    throw new Error("interdit : aucune suppression");
-  },
-  bd: {
+const { interdit, bd, limite } = vi.hoisted(() => {
+  const bd = {
     oppositions: [] as Ligne[],
     appelsPrisma: 0,
     crm: [] as unknown[],
@@ -23,8 +20,24 @@ const { interdit, bd } = vi.hoisted(() => ({
     creerLeve: null as null | (() => Error),
     concurrent: false,
     n: 0,
-  },
-}));
+    outbox: [] as Ligne[],
+    crmPerd: false,
+    suppressions: 0,
+    cles: [] as string[],
+    limiteRefusee: false,
+  };
+  return {
+    bd,
+    limite: async (cle: string) => {
+      bd.cles.push(cle);
+      return { allowed: !bd.limiteRefusee };
+    },
+    interdit: async () => {
+      bd.suppressions++;
+      throw new Error("interdit : aucune suppression");
+    },
+  };
+});
 
 vi.mock("@/lib/prisma", () => ({
   prisma: {
@@ -49,15 +62,28 @@ vi.mock("@/lib/prisma", () => ({
       delete: interdit,
       deleteMany: interdit,
     },
+    crmSyncOutbox: {
+      findFirst: async ({ where }: { where: Ligne }) => {
+        bd.appelsPrisma++;
+        return bd.outbox.find((l) => l.subjectRef === where.subjectRef) ?? null;
+      },
+      delete: interdit,
+      deleteMany: interdit,
+    },
     guideRequest: { delete: interdit, deleteMany: interdit },
     newsletterSubscriber: { delete: interdit, deleteMany: interdit },
     guideReseauReception: { delete: interdit, deleteMany: interdit },
   },
 }));
-vi.mock("@/lib/rate-limit", () => ({ checkRateLimit: async () => ({ allowed: true }) }));
+vi.mock("@/lib/rate-limit", () => ({ checkRateLimit: (cle: string) => limite(cle) }));
 vi.mock("@/server/crm-sync", () => ({
-  syncNewsletterOptOutToCrm: async (i: unknown) => {
+  syncNewsletterOptOutToCrm: async (i: Ligne) => {
     bd.crm.push(i);
+    // Comme enqueue.ts : une ligne par eventId (unicité), ou rien si la perte est silencieuse.
+    if (bd.crmPerd) return;
+    if (!bd.outbox.some((l) => l.eventId === i.eventId)) {
+      bd.outbox.push({ eventId: i.eventId, subjectRef: i.subjectRef });
+    }
   },
 }));
 vi.mock("@/features/commercial-application/relances-lead-apporteur", () => ({
@@ -125,10 +151,20 @@ function appel(
 }
 
 const sorties: string[] = [];
+import { afterEach } from "vitest";
+afterEach(() => {
+  // Aucun scénario ne supprime quoi que ce soit.
+  expect(bd.suppressions).toBe(0);
+});
 beforeEach(() => {
   bd.oppositions.length = bd.crm.length = bd.relances.length = 0;
   bd.enqueueEmail.length = bd.sentry.length = 0;
   bd.appelsPrisma = 0;
+  bd.outbox.length = bd.cles.length = 0;
+  bd.crmPerd = false;
+  bd.suppressions = 0;
+  bd.limiteRefusee = false;
+  process.env.CRM_SYNC_ENABLED = "true";
   bd.creerLeve = null;
   bd.concurrent = false;
   bd.n = 0;
@@ -179,6 +215,23 @@ describe("interrupteur et secret", () => {
     const r = await appel();
     expect(r.status).toBe(503);
     expect(bd.appelsPrisma).toBe(0);
+  });
+});
+
+describe("débit", () => {
+  it("la clé de débit commence par internal:oppositions-reseau:", async () => {
+    await appel();
+    expect(bd.cles.length).toBeGreaterThan(0);
+    for (const c of bd.cles) expect(c.startsWith("internal:oppositions-reseau:")).toBe(true);
+  });
+
+  it("limite atteinte → 429 trop_de_requetes, aucun accès base", async () => {
+    bd.limiteRefusee = true;
+    const r = await appel();
+    expect(r.status).toBe(429);
+    expect((await r.json()).erreur).toBe("trop_de_requetes");
+    expect(bd.appelsPrisma).toBe(0);
+    expect(bd.crm).toHaveLength(0);
   });
 });
 
@@ -335,14 +388,54 @@ describe("aucune donnée de personne dans les sorties", () => {
     verifier();
   });
 
-  it("exception levée par le CRM, message contenant l'adresse", async () => {
+  it("exception levée par le CRM, message contenant l'adresse : 500, puis renvoi → 200", async () => {
     const crm = await import("@/server/crm-sync");
     vi.spyOn(crm, "syncNewsletterOptOutToCrm").mockRejectedValueOnce(
       new Error(`CRM refuse ${ADRESSE}`),
     );
     const r = await appel();
-    // La ligne existe : « internal » puis estOpposee vrai → succès.
-    expect(r.status).toBe(200);
+    expect(r.status).toBe(500);
+    expect(bd.oppositions).toHaveLength(1);
+    expect(bd.relances).toHaveLength(1);
+    verifier();
+    const r2 = await appel();
+    expect(r2.status).toBe(200);
+    expect(bd.oppositions).toHaveLength(1);
+    expect(bd.outbox).toHaveLength(1);
+    expect(bd.suppressions).toBe(0);
+    verifier();
+  });
+
+  it("perte silencieuse du CRM : 500, puis renvoi → 200 avec une seule ligne en file", async () => {
+    bd.crmPerd = true;
+    expect((await appel()).status).toBe(500);
+    expect(bd.oppositions).toHaveLength(1);
+    expect(bd.relances).toHaveLength(1);
+    bd.crmPerd = false;
+    expect((await appel()).status).toBe(200);
+    expect(bd.outbox).toHaveLength(1);
+    expect(bd.crm).toHaveLength(2);
+    expect((bd.crm[0] as Ligne).eventId).toBe((bd.crm[1] as Ligne).eventId);
+    expect((bd.crm[0] as Ligne).subjectRef).toBe((bd.crm[1] as Ligne).subjectRef);
+    expect(bd.suppressions).toBe(0);
+    verifier();
+  });
+
+  it("Sentry : findUnique lève une erreur contenant l'adresse → 500, nom seul, ni adresse ni partie locale", async () => {
+    const prisma = (await import("@/lib/prisma")).prisma as unknown as {
+      emailOpposition: { findUnique: (...a: unknown[]) => unknown };
+    };
+    vi.spyOn(prisma.emailOpposition, "findUnique").mockRejectedValueOnce(
+      new Error("échec " + ADRESSE),
+    );
+    const r = await appel();
+    expect(r.status).toBe(500);
+    expect(bd.sentry.length).toBeGreaterThan(0);
+    const ctx = bd.sentry.map((x) => (x as unknown[])[0]);
+    expect(ctx).toContainEqual({ name: "Error" });
+    const tout = JSON.stringify(bd.sentry);
+    expect(tout).not.toContain(ADRESSE);
+    expect(tout).not.toContain(PARTIE_LOCALE);
     verifier();
   });
 

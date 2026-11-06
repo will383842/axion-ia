@@ -27,6 +27,7 @@ function fautes(code: string): string[] {
 const FICHIERS: Array<[string, string[]]> = [
   ["route", ["src", "app", "api", "interne", "oppositions-reseau", "route.ts"]],
   ["opposition-reseau.ts", ["src", "server", "guides-reseau", "opposition-reseau.ts"]],
+  ["opposition.ts", ["src", "server", "email", "opposition.ts"]],
 ];
 
 describe("oppositions réseau : source", () => {
