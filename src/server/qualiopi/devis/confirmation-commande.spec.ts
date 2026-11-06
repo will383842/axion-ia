@@ -26,12 +26,15 @@ function deps(over: Partial<DependancesConfirmation> & { devis?: unknown } = {})
       (over.devis as never) ?? {
         id: "dv1",
         numero: "AXI-DEV-1",
+        documentGenereId: "dg1",
         lignes: [{ designation: "x", quantite: 1, prixUnitaireHtCents: 100_000 }],
         offre: null,
         client: { raisonSociale: "Acme", contactEmail: "a@acme.fr" },
       },
     formulesActives: async () => false,
     regimeEtTaux: async () => ({ regime: "assujetti", taux: 20 }),
+    versionCgvAcceptee: async () => CGV_VERSION,
+    cgvExiste: async () => false,
     pdfCgv: async () => Buffer.from("pdf"),
     deposer,
     enfiler: enfiler as never,
@@ -50,7 +53,12 @@ describe("envoyerConfirmationCommande", () => {
   it("devis classique : e-mail avec montants HT/TVA/TTC, CGV et devis signé en PJ", async () => {
     const { d, enfiler, deposer } = deps();
     const r = await envoyerConfirmationCommande(DEMANDE, d);
-    expect(r).toEqual({ envoye: true, garePourValidation: false });
+    expect(r).toEqual({
+      envoye: true,
+      garePourValidation: false,
+      cgvJointes: true,
+      cgvVersionAcceptee: CGV_VERSION,
+    });
     expect(deposer).toHaveBeenCalledWith(cleCgvAcceptees(), expect.any(Buffer));
     const [tpl, to, , payload, opts] = enfiler.mock.calls[0] as unknown as [
       string,
@@ -67,6 +75,62 @@ describe("envoyerConfirmationCommande", () => {
       DEMANDE.pdfDevisSigneR2Key,
       `documents/cgv/CGV-${CGV_VERSION}.pdf`,
     ]);
+  });
+  it("CGV déjà déposées pour la version acceptée : réutilisées, clé non réécrite", async () => {
+    const { d, enfiler, deposer } = deps({ cgvExiste: async () => true });
+    const r = await envoyerConfirmationCommande(DEMANDE, d);
+    expect(deposer).not.toHaveBeenCalled();
+    expect(r).toMatchObject({ envoye: true, cgvJointes: true });
+    const opts = (
+      enfiler.mock.calls[0] as unknown as [string, string, string, unknown, never]
+    )[4] as {
+      attachments: { r2Key: string }[];
+    };
+    expect(opts.attachments[1]?.r2Key).toBe(cleCgvAcceptees(CGV_VERSION));
+  });
+  it("version ANTÉRIEURE acceptée et archivée : c'est elle qui est jointe et citée, pas la version en vigueur", async () => {
+    const { d, enfiler, deposer } = deps({
+      versionCgvAcceptee: async () => "2026-05-01",
+      cgvExiste: async (k) => k === cleCgvAcceptees("2026-05-01"),
+    });
+    const r = await envoyerConfirmationCommande(DEMANDE, d);
+    expect(deposer).not.toHaveBeenCalled();
+    expect(r).toMatchObject({ envoye: true, cgvJointes: true, cgvVersionAcceptee: "2026-05-01" });
+    const [, , , payload, opts] = enfiler.mock.calls[0] as unknown as [
+      string,
+      string,
+      string,
+      Record<string, string>,
+      { attachments: { r2Key: string; filename: string }[] },
+    ];
+    expect(opts.attachments.map((a) => a.r2Key)).toEqual([
+      DEMANDE.pdfDevisSigneR2Key,
+      "documents/cgv/CGV-2026-05-01.pdf",
+    ]);
+    expect(payload["cgvVersionLabel"]).toBe("1 mai 2026");
+    expect(JSON.stringify(opts)).not.toContain(CGV_VERSION);
+  });
+  it("version antérieure NON archivée : CGV non jointes, le retour le dit, rien n'est déposé", async () => {
+    const { d, enfiler, deposer } = deps({ versionCgvAcceptee: async () => "2026-05-01" });
+    const r = await envoyerConfirmationCommande(DEMANDE, d);
+    expect(deposer).not.toHaveBeenCalled();
+    expect(r).toMatchObject({ envoye: true, cgvJointes: false, cgvVersionAcceptee: "2026-05-01" });
+    const opts = (
+      enfiler.mock.calls[0] as unknown as [string, string, string, unknown, never]
+    )[4] as {
+      attachments: { r2Key: string }[];
+    };
+    expect(opts.attachments.map((a) => a.r2Key)).toEqual([DEMANDE.pdfDevisSigneR2Key]);
+  });
+  it("aucune version enregistrée : rien joint, aucune version citée", async () => {
+    const { d, enfiler, deposer } = deps({ versionCgvAcceptee: async () => null });
+    const r = await envoyerConfirmationCommande(DEMANDE, d);
+    expect(deposer).not.toHaveBeenCalled();
+    expect(r).toMatchObject({ envoye: true, cgvJointes: false, cgvVersionAcceptee: null });
+    const payload = (
+      enfiler.mock.calls[0] as unknown as [string, string, string, Record<string, unknown>]
+    )[3];
+    expect(payload).not.toHaveProperty("cgvVersionLabel");
   });
   it("INERTE si l'interrupteur formules est éteint et que le devis porte une offre", async () => {
     const { d, enfiler } = deps({

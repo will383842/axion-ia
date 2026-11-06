@@ -191,6 +191,7 @@ async function versPreuve(ligne: {
   signeAt: Date;
   selfHash: string;
   methode: string;
+  provider?: string;
   signatureKey: string | null;
   imagePurgeeAt: Date | null;
 }): Promise<PreuveSignature> {
@@ -218,6 +219,9 @@ async function versPreuve(ligne: {
     signeAtLisible: heureParis(ligne.signeAt),
     empreinte: ligne.selfHash,
     methode: ligne.methode as PreuveSignature["methode"],
+    ...(ligne.provider !== undefined
+      ? { provider: ligne.provider as NonNullable<PreuveSignature["provider"]> }
+      : {}),
     imageSrc,
     imagePurgee: ligne.imagePurgeeAt !== null,
   };
@@ -334,6 +338,7 @@ export async function rendreExemplaireSigne(documentGenereId: string): Promise<R
       signeAt: true,
       selfHash: true,
       methode: true,
+      provider: true,
       signatureKey: true,
       imagePurgeeAt: true,
     },

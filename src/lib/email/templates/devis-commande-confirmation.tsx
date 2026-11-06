@@ -19,8 +19,13 @@ interface Payload {
   montantHtLabel: string;
   montantTvaLabel: string;
   montantTtcLabel: string;
-  /** Version des CGV acceptées, libellé lisible : « 4 octobre 2026 ». */
-  cgvVersionLabel: string;
+  /**
+   * Version des CGV réellement acceptées par le client, libellé lisible : « 4 octobre 2026 ».
+   * Absente si elle n'est pas retrouvable : la ligne n'est alors pas affichée.
+   */
+  cgvVersionLabel?: string;
+  /** Vrai si le PDF des CGV acceptées est joint. Absent/faux : seul le devis signé est joint. */
+  cgvJointes?: boolean;
 }
 
 function field(p: Partial<Payload>, key: keyof Payload, fallback: string): string {
@@ -40,6 +45,7 @@ const COPY = {
     cgv: (v: string) => `Conditions générales de vente acceptées : version du ${v}.`,
     attachments:
       "Vous trouverez en pièces jointes le devis signé et les conditions générales de vente acceptées, au format PDF.",
+    attachmentsSansCgv: "Vous trouverez en pièce jointe le devis signé, au format PDF.",
     questions: "Pour toute question, répondez simplement à cet email.",
     close: "Bien cordialement,\nL'équipe Axion-IA",
     preview: (num: string) => `Commande confirmée — devis ${num}.`,
@@ -55,6 +61,7 @@ const COPY = {
     cgv: (v: string) => `General terms of sale accepted: version of ${v}.`,
     attachments:
       "Attached are the signed quote and the accepted general terms of sale, in PDF format.",
+    attachmentsSansCgv: "Attached is the signed quote, in PDF format.",
     questions: "For any question, simply reply to this email.",
     close: "Best regards,\nThe Axion-IA team",
     preview: (num: string) => `Order confirmed — quote ${num}.`,
@@ -81,6 +88,7 @@ export function DevisCommandeConfirmationEmail({
   const p = payload as Partial<Payload>;
   const t = COPY[locale];
   const formule = field(p, "formuleRetenue", "");
+  const cgvLabel = field(p, "cgvVersionLabel", "");
   return (
     <EmailLayout
       famille="B"
@@ -98,8 +106,10 @@ export function DevisCommandeConfirmationEmail({
           field(p, "montantTtcLabel", ""),
         )}
       </Text>
-      <Text style={emailStyles.paragraphStyle}>{t.cgv(field(p, "cgvVersionLabel", ""))}</Text>
-      <Text style={emailStyles.paragraphStyle}>{t.attachments}</Text>
+      {cgvLabel !== "" && <Text style={emailStyles.paragraphStyle}>{t.cgv(cgvLabel)}</Text>}
+      <Text style={emailStyles.paragraphStyle}>
+        {p.cgvJointes === true ? t.attachments : t.attachmentsSansCgv}
+      </Text>
       <Text style={emailStyles.paragraphStyle}>{t.questions}</Text>
       <Text style={emailStyles.paragraphStyle}>
         {t.close.split("\n").map((line, i) => (

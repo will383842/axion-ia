@@ -278,13 +278,13 @@ export default async function SubprocessorsPage({ params }: Props) {
   const lastUpdatedDisplay = formatLastUpdated(SUBPROCESSORS_LAST_UPDATED, isFr);
 
   // ── Statistiques dérivées de la SSOT (jamais hardcodées)
-  const total = SUBPROCESSORS.length;
-  const activeCount = SUBPROCESSORS.filter((s) => s.activationStatus === "active").length;
-  const pendingCount = SUBPROCESSORS.filter(
-    (s) => s.activationStatus === "pending_activation",
-  ).length;
-  const historicalCount = SUBPROCESSORS.filter((s) => s.activationStatus === "historique").length;
-  const euNoTransfer = SUBPROCESSORS.filter(
+  // Un procédé interne (`sansSousTraitant`) est listé mais ne compte pas comme sous-traitant.
+  const tiers = SUBPROCESSORS.filter((s) => s.sansSousTraitant !== true);
+  const total = tiers.length;
+  const activeCount = tiers.filter((s) => s.activationStatus === "active").length;
+  const pendingCount = tiers.filter((s) => s.activationStatus === "pending_activation").length;
+  const historicalCount = tiers.filter((s) => s.activationStatus === "historique").length;
+  const euNoTransfer = tiers.filter(
     (s) => s.transferFramework === "intra_eu" || s.transferFramework === "self_hosted_eu",
   ).length;
 
@@ -381,7 +381,7 @@ export default async function SubprocessorsPage({ params }: Props) {
     "@id": listId,
     name: isFr ? "Sous-traitants d'Axion-IA" : "Axion-IA subprocessors",
     url: pageUrl,
-    numberOfItems: SUBPROCESSORS.length,
+    numberOfItems: tiers.length,
     itemListElement: SUBPROCESSORS.map((s, i) => {
       const iso = isoCountry(s.location);
       return {
@@ -612,12 +612,12 @@ export default async function SubprocessorsPage({ params }: Props) {
                   >
                     {lbCategory[group.category]}
                     <span className="text-fg-muted text-sm font-normal">
-                      {group.items.length}{" "}
+                      {group.items.filter((i) => i.sansSousTraitant !== true).length}{" "}
                       {isFr
-                        ? group.items.length > 1
+                        ? group.items.filter((i) => i.sansSousTraitant !== true).length > 1
                           ? "sous-traitants"
                           : "sous-traitant"
-                        : group.items.length > 1
+                        : group.items.filter((i) => i.sansSousTraitant !== true).length > 1
                           ? "subprocessors"
                           : "subprocessor"}
                     </span>

@@ -107,6 +107,11 @@ const deps: DependancesExport = {
         partie: "client",
         signataire: { nom: devis.clientNom, email: devis.clientEmail },
       },
+      // Pas de valeur « DocuSeal » dans l'énumération de méthode (elle est hachée dans la ligne
+      // de preuve) : `confirmation_accessible` est la seule valeur sans image locale. Ce que
+      // DocuSeal a réellement recueilli est une signature électronique simple ; c'est
+      // `provider: "docuseal"` (+ identifiant de soumission) qui la qualifie, et l'exemplaire
+      // signé le dit en clair au lieu de rendre « confirmation accessible ».
       methode: "confirmation_accessible",
       partiesRequises: parties,
       ...(soumission.signeAt !== null ? { maintenant: soumission.signeAt } : {}),

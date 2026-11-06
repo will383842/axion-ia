@@ -198,7 +198,9 @@ async function alerterEvenementDevis(
     select: { numero: true },
   });
   if (!devis) {
-    throw new Error(`[docuseal-webhook] devis ${devisId} not found`);
+    throw new Error(
+      `[docuseal-webhook] devis introuvable pour la soumission ${event.submissionId}`,
+    );
   }
   sendTelegram({
     tag: "AUTO",

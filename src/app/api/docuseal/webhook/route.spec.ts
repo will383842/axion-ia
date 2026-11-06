@@ -25,7 +25,7 @@ vi.mock("@/lib/prisma", () => ({ prisma: h.p }));
 vi.mock("@/lib/telegram", () => ({ sendTelegram: h.telegram }));
 vi.mock("@/lib/docuseal", () => ({
   isDocusealWebhookConfigured: () => true,
-  verifyWebhookAuth: () => true,
+  verifyWebhookSignature: () => true,
   parseWebhookPayload: () => h.event,
 }));
 

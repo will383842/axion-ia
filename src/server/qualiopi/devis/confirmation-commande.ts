@@ -10,15 +10,19 @@
  * (aucun e-mail ne part pour un devis à formules tant que le lot est éteint). Un devis classique
  * (sans offre) n'est pas concerné par l'interrupteur.
  *
- * Pièces jointes : le devis signé (clé R2 fournie par l'appelant) et les CGV acceptées (PDF
- * rendu depuis la version en vigueur, déposé sous une clé déterministe `documents/cgv/`).
+ * Pièces jointes : le devis signé (clé R2 fournie par l'appelant) et les CGV de la version
+ * réellement ACCEPTÉE par le client (`cgvVersion` enregistrée à sa signature), jamais celles en
+ * vigueur au moment de la contresignature. Le PDF n'est produit que pour la version en vigueur ;
+ * une version antérieure n'est jointe que si son PDF existe déjà sous la clé `documents/cgv/`.
+ * Sinon rien n'est joint et le retour le dit (`cgvJointes: false`). La clé R2 est adressée par
+ * la version : un objet existant est réutilisé, jamais réécrit.
  *
  * Ne lève pas pour un refus attendu : retourne un résultat typé.
  */
 
 import { CGV_VERSION, CGV_VERSION_LIBELLE } from "@/content/cgv-version";
 import { prisma } from "@/lib/prisma";
-import { uploadToR2 } from "@/lib/r2-storage";
+import { existsInR2, uploadToR2 } from "@/lib/r2-storage";
 import { enqueueEmail } from "@/server/queue/queues";
 import { rendreCgvPdf } from "@/server/cgv-pdf";
 import { getQualiopiConfig } from "@/server/qualiopi/config/site-settings";
@@ -35,6 +39,7 @@ import { formulesActives } from "./interrupteur-formules";
 export interface DevisConfirmation {
   readonly id: string;
   readonly numero: string;
+  readonly documentGenereId: string | null;
   readonly lignes: unknown;
   readonly offre: unknown;
   readonly client: { readonly raisonSociale: string; readonly contactEmail: string | null };
@@ -44,6 +49,10 @@ export interface DependancesConfirmation {
   lireDevis(devisId: string): Promise<DevisConfirmation | null>;
   formulesActives(): Promise<boolean>;
   regimeEtTaux(): Promise<{ regime: ReturnType<typeof regimeTvaDepuisConfig>; taux: number }>;
+  /** `cgvVersion` enregistrée à la signature du client (ligne non révoquée), ou `null`. */
+  versionCgvAcceptee(documentGenereId: string): Promise<string | null>;
+  /** Le PDF des CGV de cette version existe-t-il déjà dans R2 ? */
+  cgvExiste(key: string): Promise<boolean>;
   pdfCgv(): Promise<Buffer>;
   deposer(key: string, buffer: Buffer): Promise<void>;
   enfiler: typeof enqueueEmail;
@@ -63,7 +72,14 @@ export interface DemandeConfirmationCommande {
 }
 
 export type ResultatConfirmation =
-  | { readonly envoye: true; readonly garePourValidation: boolean }
+  | {
+      readonly envoye: true;
+      readonly garePourValidation: boolean;
+      /** Vrai si le PDF des CGV acceptées est en pièce jointe. */
+      readonly cgvJointes: boolean;
+      /** Version des CGV acceptées par le client, `null` si introuvable. */
+      readonly cgvVersionAcceptee: string | null;
+    }
   | {
       readonly envoye: false;
       readonly raison:
@@ -83,6 +99,20 @@ const eur = (cents: number): string =>
 export const cleCgvAcceptees = (version: string = CGV_VERSION): string =>
   `documents/cgv/CGV-${version}.pdf`;
 
+/** « 2026-10-04 » → « 4 octobre 2026 » ; une version non datée est citée telle quelle. */
+function libelleVersionCgv(version: string): string {
+  if (version === CGV_VERSION) return CGV_VERSION_LIBELLE;
+  const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(version);
+  if (m === null) return version;
+  const d = new Date(Date.UTC(Number(m[1]), Number(m[2]) - 1, Number(m[3])));
+  return new Intl.DateTimeFormat("fr-FR", {
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+    timeZone: "UTC",
+  }).format(d);
+}
+
 const dependancesParDefaut: DependancesConfirmation = {
   lireDevis: (id) =>
     prisma.devis.findUnique({
@@ -90,6 +120,7 @@ const dependancesParDefaut: DependancesConfirmation = {
       select: {
         id: true,
         numero: true,
+        documentGenereId: true,
         lignes: true,
         offre: true,
         client: { select: { raisonSociale: true, contactEmail: true } },
@@ -100,6 +131,15 @@ const dependancesParDefaut: DependancesConfirmation = {
     regime: regimeTvaDepuisConfig(await getQualiopiConfig("regime_tva")),
     taux: (await getQualiopiConfig("taux_tva_standard_percent")) || TAUX_TVA_STANDARD,
   }),
+  versionCgvAcceptee: async (documentGenereId) => {
+    const ligne = await prisma.documentSignature.findFirst({
+      where: { documentGenereId, partie: "client", revokedAt: null, cgvVersion: { not: null } },
+      orderBy: { signeAt: "desc" },
+      select: { cgvVersion: true },
+    });
+    return ligne?.cgvVersion ?? null;
+  },
+  cgvExiste: (key) => existsInR2(key),
   pdfCgv: () => rendreCgvPdf(),
   deposer: async (key, buffer) => {
     await uploadToR2(key, buffer, "application/pdf");
@@ -138,8 +178,23 @@ export async function envoyerConfirmationCommande(
     totaux = computeTotauxFacture(lignes, regime, taux);
   }
 
-  const cleCgv = cleCgvAcceptees();
-  await deps.deposer(cleCgv, await deps.pdfCgv());
+  // CGV de la version ACCEPTÉE par le client. Introuvable → on n'en cite ni n'en joint aucune.
+  const versionAcceptee =
+    devis.documentGenereId === null
+      ? null
+      : (await deps.versionCgvAcceptee(devis.documentGenereId))?.trim() || null;
+  let cleCgv: string | null = null;
+  if (versionAcceptee !== null) {
+    const cle = cleCgvAcceptees(versionAcceptee);
+    if (await deps.cgvExiste(cle)) {
+      cleCgv = cle; // déjà déposée : réutilisée, jamais réécrite
+    } else if (versionAcceptee === CGV_VERSION) {
+      await deps.deposer(cle, await deps.pdfCgv());
+      cleCgv = cle;
+    }
+    // Version antérieure sans PDF archivé : le texte d'alors n'est pas reconstituable.
+  }
+  const cgvJointes = cleCgv !== null;
 
   const res = await deps.enfiler(
     "devis-commande-confirmation",
@@ -152,13 +207,16 @@ export async function envoyerConfirmationCommande(
       montantHtLabel: eur(totaux.totalHtCents),
       montantTvaLabel: eur(totaux.totalTvaCents),
       montantTtcLabel: eur(totaux.totalTtcCents),
-      cgvVersionLabel: CGV_VERSION_LIBELLE,
+      ...(versionAcceptee !== null ? { cgvVersionLabel: libelleVersionCgv(versionAcceptee) } : {}),
+      cgvJointes,
     },
     {
       jobId: `devis-commande-confirmation-${devis.id}`,
       attachments: [
         { filename: `${devis.numero}-signe.pdf`, r2Key: demande.pdfDevisSigneR2Key },
-        { filename: `CGV-${CGV_VERSION}.pdf`, r2Key: cleCgv },
+        ...(cleCgv !== null && versionAcceptee !== null
+          ? [{ filename: `CGV-${versionAcceptee}.pdf`, r2Key: cleCgv }]
+          : []),
       ],
       entityType: "Devis",
       entityId: devis.id,
@@ -167,5 +225,10 @@ export async function envoyerConfirmationCommande(
   if (!res.enqueued && res.garePourValidation !== true) {
     return { envoye: false, raison: "file_indisponible" };
   }
-  return { envoye: true, garePourValidation: res.garePourValidation === true };
+  return {
+    envoye: true,
+    garePourValidation: res.garePourValidation === true,
+    cgvJointes,
+    cgvVersionAcceptee: versionAcceptee,
+  };
 }
