@@ -28,7 +28,8 @@ de traitement) côté sous-processeurs. Révision trimestrielle minimum.
 | 11  | Voyage AI, Inc.            | Embeddings KB (voyage-3-lite)        | États-Unis              | online | SCC + EU-US DPF            | 🟡 à signer     |
 | 12  | Stripe Payments Europe Ltd | Paiements (Checkout + Radar)         | Irlande (UE) + USA      | online | SCC + EU-US DPF            | 🟡 à accepter   |
 | 13  | OSM Foundation (Nominatim) | Géocodage villes saisies             | UK + UE                 | NA     | Décision d'adéquation UE   | ✅ usage public |
-| 14  | DocuSeal (self-hosted)     | Signature électronique contrats      | Allemagne (VPS Hetzner) | NA     | UE intra-zone              | ✅ self-hosted  |
+| 14  | DocuSeal (self-hosted)     | **Actif : contrats d'apporteurs.** Devis : usage historique (un seul devis, avant le 30/07/2026, conservé) | Allemagne (VPS Hetzner) | NA     | UE intra-zone              | ✅ self-hosted  |
+| 14b | Signature maison Axion-IA (procédé interne) | Signature électronique maison (IP hachée, image de signature, identité, empreinte) | Hetzner (DB) + Cloudflare R2 | NA | UE intra-zone | ✅ interne |
 | 15  | Microsoft Corporation      | Clarity analytics qualitatifs UX     | États-Unis (Azure)      | online | SCC + EU-US DPF            | 🟡 à signer     |
 | 16  | Calendly LLC               | Prise de RDV /appel + capture event  | États-Unis (AWS)        | accepté | SCC                       | ✅ DPA accepté 2026-08-28 |
 | 17  | Zoho Corporation (ZeptoMail) | Relais SMTP transactionnel — TOUS les e-mails sortants | Union européenne (`smtp.zeptomail.eu`) | signé | UE intra-zone | ✅ DPA signé |
@@ -484,19 +485,30 @@ de traitement) côté sous-processeurs. Révision trimestrielle minimum.
 
 ---
 
-## 7sexies. DocuSeal Community (self-hosted)
+## 7sexies. DocuSeal Community (self-hosted) — ACTIF (contrats d'apporteurs) ; devis : usage historique (2026-11-06)
 
-| Champ                     | Valeur                                                                                                   |
-| ------------------------- | -------------------------------------------------------------------------------------------------------- |
-| **Nom légal**             | Auto-hébergement (open-source DocuSeal Community Edition)                                                |
-| **Adresse**               | Hébergement Hetzner Frankfurt (VPS dédié AXION IA SAS)                                                   |
-| **Finalité**              | Signature électronique des contrats et devis (Sprint X.3+)                                               |
-| **Données traitées**      | Nom et email des signataires, contenu signé du contrat, horodatage cryptographique, hash PDF             |
-| **Localisation physique** | Allemagne (UE) — auto-hébergé                                                                            |
-| **Garanties**             | Pas de tiers extérieur (AXION IA SAS seul responsable). Backups chiffrés AES-256 sur Hetzner Storage Box. |
-| **DPA**                   | NA — pas de sous-traitant externe                                                                        |
-| **Lien**                  | https://www.docuseal.com                                                                                 |
-| **Statut**                | ✅ **CONFORME** (self-hosted UE)                                                                         |
+| Champ                     | Valeur                                                                                                                                  |
+| ------------------------- | --------------------------------------------------------------------------------------------------------------------------------------- |
+| **Nom légal**             | Auto-hébergement (open-source DocuSeal Community Edition)                                                                               |
+| **Adresse**               | Hébergement Hetzner Frankfurt (VPS dédié AXION IA SAS)                                                                                  |
+| **Finalité**              | **Contrats d'apporteurs : usage actif.** **Devis : usage historique** — un seul devis a été signé par ce procédé avant le 30/07/2026 et il est conservé ; les nouveaux devis se signent par le procédé interne (section 7septies) |
+| **Données traitées**      | Contrats d'apporteurs : nom, e-mail et signature des signataires, contenu signé, journal d'audit (horodatage, IP, navigateur), empreinte du PDF. Devis historique (un seul) : nom et e-mail du signataire, contenu signé, horodatage, empreinte du PDF |
+| **Localisation physique** | Allemagne (UE) — auto-hébergé                                                                                                           |
+| **Garanties**             | Pas de tiers extérieur (AXION IA SAS seul responsable). Backups chiffrés AES-256 sur Hetzner Storage Box.                               |
+| **DPA**                   | NA — pas de sous-traitant externe                                                                                                       |
+| **Lien**                  | https://www.docuseal.com                                                                                                                |
+| **Statut**                | ✅ **CONFORME** (self-hosted UE). Preuve du devis historique : `scripts/export-docuseal-devis-historique.ts` (PDF signé + journal d'audit versés dans R2). |
+
+## 7septies. Signature maison Axion-IA (procédé de signature électronique interne)
+
+| Champ                | Valeur                                                                                                     |
+| -------------------- | ---------------------------------------------------------------------------------------------------------- |
+| **Nature**           | Procédé développé par Axion-IA, sans prestataire de signature tiers                                        |
+| **Finalité**         | Signature des devis et documents contractuels ; le contrat est formé à la contresignature d'Axion-IA (CGV art. 6.2) |
+| **Données traitées** | Adresse IP hachée, image de signature, identité du signataire, empreinte du document                       |
+| **Localisation**     | Base : Hetzner (UE) ; pièces et images de signature : Cloudflare R2 (cf. section Cloudflare)               |
+| **DPA**              | NA — pas de sous-traitant supplémentaire                                                                   |
+| **Statut**           | ✅ **CONFORME** (interne, UE)                                                                              |
 
 ---
 

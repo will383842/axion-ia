@@ -14,6 +14,9 @@ const GENRE: Readonly<Record<GenreEchange, string>> = {
   email: "E-mail",
   email_en_attente: "E-mail à valider",
   questionnaire: "Questionnaire",
+  demande: "Demande reçue",
+  accuse: "Accusé automatique",
+  reponse: "Réponse de l'équipe",
 };
 
 const jourHeure = (d: Date): string =>

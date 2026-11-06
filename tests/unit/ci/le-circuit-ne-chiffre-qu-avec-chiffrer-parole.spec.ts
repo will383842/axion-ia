@@ -45,6 +45,13 @@ const EXEMPTIONS: ReadonlyArray<{ readonly fichier: string; readonly motif: stri
       "encryptPii, clair possible sur les lignes anciennes) pour créer la fiche prospect d'une demande ; " +
       "aucune parole. Une clé absente ou fausse y LÈVE (ErreurDechiffrementDemande), elle n'y devient jamais un doute",
   },
+  {
+    fichier: "src/features/dossier-client/demandes-de-la-fiche.ts",
+    motif:
+      "lit `submissions.contact_email` (colonne de FORMULAIRE chiffrée par encryptPii, clair possible sur " +
+      "les lignes anciennes) pour retrouver l'accusé de réception d'une demande ; l'adresse n'est ni " +
+      "affichée ni journalisée, une adresse illisible ne cherche que le lien exact ; aucune parole",
+  },
 ];
 
 /** Les modules qui lisent le dossier client hors du circuit. */

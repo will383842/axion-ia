@@ -33,7 +33,16 @@ import {
 } from "@/features/questionnaire-preaudit/libelles-courrier";
 import type { EmailLogStatus } from "../../../prisma/generated/client";
 
-export type GenreEchange = "rendez_vous" | "email" | "email_en_attente" | "questionnaire";
+export type GenreEchange =
+  | "rendez_vous"
+  | "email"
+  | "email_en_attente"
+  | "questionnaire"
+  // Demandes écrites du formulaire de contact : jamais de corps ici (la carte « Demandes reçues »
+  // les montre). Un accusé automatique (`accuse`) n'est PAS une réponse (`reponse`, équipe).
+  | "demande"
+  | "accuse"
+  | "reponse";
 
 export interface EchangeDuFil {
   readonly cle: string;

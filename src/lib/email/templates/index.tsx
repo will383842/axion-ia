@@ -141,6 +141,10 @@ import {
 import { RessourcesMagicLinkEmail, ressourcesMagicLinkSubject } from "./ressources-magic-link";
 import { DevisEnvoiEmail, devisEnvoiSubject } from "./devis-envoi";
 import {
+  DevisCommandeConfirmationEmail,
+  devisCommandeConfirmationSubject,
+} from "./devis-commande-confirmation";
+import {
   CandidatureCommercialConfirmeeEmail,
   candidatureCommercialConfirmeeSubject,
 } from "./candidature-commercial-confirmee";
@@ -529,6 +533,11 @@ const TEMPLATES: TemplateMap = {
   },
   // Hub facturation — envois MANUELS admin (PDF joint par le worker, clé R2).
   "devis-envoi": { subject: devisEnvoiSubject, component: DevisEnvoiEmail },
+  // Confirmation de commande (CGV 5.2 et 6.2) — au client, sur contresignature explicite d'Axion-IA.
+  "devis-commande-confirmation": {
+    subject: devisCommandeConfirmationSubject,
+    component: DevisCommandeConfirmationEmail,
+  },
   // Lot B9 : relance de devis, toujours garée « à valider » par l'action de la fiche client.
   "relance-devis-client": {
     subject: relanceDevisClientSubject,

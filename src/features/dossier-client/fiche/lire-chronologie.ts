@@ -11,6 +11,10 @@
  */
 
 import { prisma } from "@/lib/prisma";
+import {
+  demandesEnEchanges,
+  lireDemandesDeLaFiche,
+} from "@/features/dossier-client/demandes-de-la-fiche";
 import { dechiffrerParoleOuNull } from "@/lib/chiffrer-parole";
 import {
   LIBELLE_STATUT_RENDEZ_VOUS,
@@ -63,6 +67,8 @@ export async function lireChronologie(
   clientId: string,
   adminPrefix: string,
   maintenant: Date,
+  /** Le rôle : sans le droit sur les échanges, les demandes reçues ne sont pas lues. */
+  role?: string | null,
 ): Promise<ChronologieLue> {
   let sourcesEnPanne = 0;
   const sans = async <T>(p: Promise<T[]>): Promise<T[]> =>
@@ -142,6 +148,28 @@ export async function lireChronologie(
           ...(telegram ? { mot: "Message Telegram" } : {}),
         };
       });
+    }),
+  );
+
+  // 1b. Demandes écrites du formulaire (message, accusé, réponses) : titres seulement, jamais de corps.
+  const demandes = sans(
+    lireDemandesDeLaFiche(clientId, role).then((lu) => {
+      if (lu.pannes.messages || lu.pannes.accuses || lu.pannes.reponses) sourcesEnPanne += 1;
+      return demandesEnEchanges(lu).map((x): EvenementActivite => ({
+        cle: x.cle,
+        type: "message",
+        date: x.date,
+        titre: x.titre,
+        etat: x.etat,
+        nuance: "neutre",
+        lien: null,
+        mot:
+          x.genre === "demande"
+            ? "Demande reçue"
+            : x.genre === "accuse"
+              ? "Accusé automatique"
+              : "Réponse de l'équipe",
+      }));
     }),
   );
 
@@ -299,7 +327,7 @@ export async function lireChronologie(
   );
 
   const evenements = assemblerChronologie(
-    await Promise.all([fil, taches, notes, devis, factures, paiements]),
+    await Promise.all([fil, demandes, taches, notes, devis, factures, paiements]),
   );
   return { evenements, sourcesEnPanne };
 }

@@ -632,6 +632,12 @@ export interface PreuveSignature {
   /** Modalité de recueil. Dire la vérité sur la NATURE de la preuve. */
   methode: "trace" | "papier_scanne" | "confirmation_accessible";
   /**
+   * Fournisseur de la signature (`docuseal` pour un devis historique). Une signature DocuSeal
+   * est une signature électronique simple recueillie par DocuSeal ; elle ne doit pas être
+   * présentée comme une « confirmation accessible » du canal maison.
+   */
+  provider?: "docuseal" | "manual_upload" | "physical_signed" | "interne";
+  /**
    * Image du tracé. `null` pour une confirmation accessible (pas d'image par
    * construction) et après purge RGPD.
    */
@@ -776,6 +782,11 @@ function SignatureApposee({ preuve }: { preuve: PreuveSignature }): React.ReactE
         <Text style={signatureLocal.mentionPreuve}>
           Image de la signature supprimée à la demande du signataire (art. 17 RGPD). La signature
           reste établie et son empreinte vérifiable.
+        </Text>
+      ) : preuve.provider === "docuseal" ? (
+        <Text style={signatureLocal.mentionPreuve}>
+          Signature électronique simple recueillie via DocuSeal (outil auto-hébergé). Le PDF signé
+          et le journal d&apos;audit du fournisseur sont conservés par l&apos;organisme.
         </Text>
       ) : preuve.methode === "confirmation_accessible" ? (
         <Text style={signatureLocal.mentionPreuve}>

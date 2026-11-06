@@ -54,7 +54,8 @@ const COPY = {
     attachment: "Le document est joint à cet email au format PDF.",
     formules: (n: number, l: string) =>
       `Ce devis vous propose ${n} formules au choix${l ? ` : ${l}` : ""}. Elles figurent côte à côte dans le document joint.`,
-    sign: "Vous pouvez signer votre « bon pour accord » en ligne, en un clic, via le bouton ci-dessous.",
+    sign: (formules: boolean) =>
+      `Pour signer, ouvrez le lien ci-dessous, ${formules ? "choisissez votre formule, " : ""}cochez l'acceptation des conditions générales de vente, puis signez. Le contrat est formé lorsque Axion-IA a contresigné (CGV art. 6.2).`,
     signCta: "Signer le devis en ligne",
     questions:
       "Pour toute question sur le contenu, le périmètre ou les modalités, répondez simplement à cet email : nous sommes à votre écoute.",
@@ -73,7 +74,8 @@ const COPY = {
     attachment: "The document is attached to this email in PDF format.",
     formules: (n: number, l: string) =>
       `This quote offers ${n} options to choose from${l ? `: ${l}` : ""}. They are shown side by side in the attached document.`,
-    sign: "You can sign your approval online, in one click, using the button below.",
+    sign: (formules: boolean) =>
+      `To sign, open the link below, ${formules ? "choose your option, " : ""}tick the acceptance of the general terms of sale, then sign. The contract is formed once Axion-IA has countersigned (T&C art. 6.2).`,
     signCta: "Sign the quote online",
     questions:
       "For any question about the content, scope or terms, simply reply to this email: we are here for you.",
@@ -127,7 +129,9 @@ export function DevisEnvoiEmail({
         <Text style={emailStyles.paragraphStyle}>{t.formules(nbFormules, libellesFormules)}</Text>
       )}
       <Text style={emailStyles.paragraphStyle}>{t.attachment}</Text>
-      {signatureUrl !== "" && <Text style={emailStyles.paragraphStyle}>{t.sign}</Text>}
+      {signatureUrl !== "" && (
+        <Text style={emailStyles.paragraphStyle}>{t.sign(nbFormules > 0)}</Text>
+      )}
       <Text style={emailStyles.paragraphStyle}>{t.questions}</Text>
       <Text style={emailStyles.paragraphStyle}>
         {t.close.split("\n").map((line, i) => (
