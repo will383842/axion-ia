@@ -67,13 +67,13 @@ beforeEach(() => {
 });
 
 describe("sendDevisAction — statut du client", () => {
-  it("ne touche le client que s'il est encore prospect (écriture gardée)", async () => {
+  it("ne touche le client que s'il est prospect ou perdu (écriture gardée, jamais un client actif ou inactif)", async () => {
     const r = await sendDevisAction(ID);
     expect("data" in r).toBe(true);
     expect(h.clientUpdate).not.toHaveBeenCalled();
     expect(h.clientUpdateMany).toHaveBeenCalledOnce();
     expect(h.clientUpdateMany).toHaveBeenCalledWith({
-      where: { id: "c1", statut: "prospect" },
+      where: { id: "c1", statut: { in: ["prospect", "perdu"] } },
       data: { statut: "devis_envoye" },
     });
     // Même transaction que le passage du devis à « envoye ».
