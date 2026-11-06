@@ -392,6 +392,13 @@ export const CATALOGUE: Readonly<Record<EmailJobName, FicheEmail>> = {
     destinataire: "chaque signataire, sauf l'organisme",
     source: "server/qualiopi/documents/signature/transmission-exemplaire.ts",
   },
+  "devis-commande-confirmation": {
+    categorie: "commerce",
+    quand:
+      "Axion-IA contresigne un devis (action explicite uniquement) — confirmation de commande avec devis signé et CGV en pièces jointes",
+    destinataire: "le client",
+    source: "server/qualiopi/devis/confirmation-commande.ts",
+  },
   "autofacture-transmission": {
     categorie: "commerce",
     quand:

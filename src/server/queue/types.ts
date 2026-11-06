@@ -222,6 +222,8 @@ export type EmailJobName =
   // Devis signé par le client (2026-11-04) — e-mail INTERNE (numéro + lien console, aucune donnée
   // personnelle), enfilé après la signature par lien (`notification-interne-devis.ts`).
   | "devis-signe-a-contresigner"
+  // Confirmation de commande au client (CGV 5.2, 6.2) — sur contresignature explicite uniquement.
+  | "devis-commande-confirmation"
   // Questionnaire de pré-audit (2026-10-24) — au prospect, par clic de Will uniquement.
   | "questionnaire-avant-audit"
   // Suivi du questionnaire avant audit (2026-10-26) — relances 1 à 3 et confirmation de

@@ -168,7 +168,9 @@ describe("le jeu de données d'exemple couvre tous les gabarits", () => {
     // Champs tous facultatifs.
     // RELEVÉ À 84 (2026-11-04) : `devis-signe-a-contresigner`, notification INTERNE « devis signé
     // par le client ». Champs tous facultatifs.
-    expect(tous.length).toBe(84);
+    // RELEVÉ À 85 (2026-11-06) : `devis-commande-confirmation`, confirmation de commande au client
+    // (CGV 5.2). Quatre champs de montants/CGV ajoutés au jeu d'exemple.
+    expect(tous.length).toBe(85);
   });
 
   it.each(tous.map((g) => g.nom))("%s : tous ses champs requis ont une valeur d'exemple", (nom) => {
