@@ -50,6 +50,7 @@ import type { AdminSession } from "@/server/actions/knowledge/_guards";
 import {
   apresSignature,
   PREFIXE_ACTIVATION_REFUSEE,
+  reprendreAcceptationDevisFormules,
 } from "@/server/qualiopi/documents/signature/apres-signature";
 import { contexteRequete } from "@/server/qualiopi/documents/signature/contexte-requete";
 import {
@@ -811,6 +812,66 @@ export async function contresignerPieceAction(input: {
   return contresignerUne(session, input);
 }
 
+/**
+ * REPRISE d'un devis signé des deux parties dont l'acceptation a échoué (`accepterDevisAFormules`
+ * avait levé : l'erreur ne partait que dans Sentry). Même habilitation que la contresignature.
+ * Idempotent : un devis déjà accepté, ou déjà recopié, n'est pas retouché.
+ */
+export async function relancerAcceptationDevisAction(input: {
+  documentGenereId: string;
+}): Promise<{ ok: true; devisAcceptes: number } | { ok: false; message: string }> {
+  const session = await requireAdminWrite();
+  if (!peutSignerPourOrganisme(session.role)) {
+    return { ok: false, message: REFUS_ROLE_ORGANISME.message };
+  }
+  const id = z.string().uuid().safeParse(input?.documentGenereId);
+  if (!id.success)
+    return { ok: false, message: "Cette demande n'est pas valide. Rechargez la page." };
+
+  const piece = await prisma.documentGenere.findUnique({
+    where: { id: id.data },
+    select: { type: true, numero: true },
+  });
+  if (piece === null || piece.type !== "devis") {
+    return { ok: false, message: "Cette pièce n'est pas un devis." };
+  }
+  const signatures = await prisma.documentSignature.findMany({
+    where: { documentGenereId: id.data, revokedAt: null },
+    select: { partie: true },
+  });
+  const parties = new Set(signatures.map((s) => s.partie));
+  if (!parties.has("client") || !parties.has("axionia")) {
+    return {
+      ok: false,
+      message: "Le devis n'est pas encore signé par les deux parties : rien à reprendre.",
+    };
+  }
+  try {
+    const res = await reprendreAcceptationDevisFormules(id.data);
+    if (!res.traite) {
+      return {
+        ok: false,
+        message: "Aucun devis à formules en attente d'acceptation pour cette pièce.",
+      };
+    }
+    await logQualiopiActivity({
+      action: "qualiopi.devis.relance_acceptation",
+      targetType: "DocumentGenere",
+      targetId: id.data,
+      changes: { numero: piece.numero, devis: res.ids },
+      session,
+    });
+    return { ok: true, devisAcceptes: res.ids.length };
+  } catch (err) {
+    Sentry.captureException(err, { tags: { action: "relancerAcceptationDevisAction" } });
+    const motif = (err as { motif?: unknown } | null)?.motif;
+    return {
+      ok: false,
+      message: `L'acceptation a de nouveau échoué${typeof motif === "string" ? ` (motif : ${motif})` : ""}.`,
+    };
+  }
+}
+
 const REFUS_ROLE_ORGANISME = {
   ok: false,
   raison: "role_insuffisant",
@@ -915,7 +976,7 @@ async function contresignerUne(
     // de contresignature le dit (`ResultatApresSignature.activationRefusee`).
     const activationRefusee =
       apres?.activationRefusee != null
-        ? `${PREFIXE_ACTIVATION_REFUSEE} ${apres.activationRefusee.message}`
+        ? `${apres.activationRefusee.prefixe ?? PREFIXE_ACTIVATION_REFUSEE} ${apres.activationRefusee.message}`
         : undefined;
 
     await logQualiopiActivity({

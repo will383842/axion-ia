@@ -358,7 +358,10 @@ async function lirePiece(documentGenereId: string, partie: PartieSignataire) {
       // tout autre type de pièce.
       devisPortes: {
         select: { numero: true, offre: true, offreSha256: true, dateValidite: true },
-        take: 1,
+        // Tri déterministe, et 2 lignes (pas 1) pour DÉTECTER l'ambiguïté : une pièce ne doit
+        // porter qu'un devis ; sinon on ne choisit pas au hasard le devis dont on scelle le choix.
+        orderBy: [{ createdAt: "asc" }, { id: "asc" }],
+        take: 2,
       },
       signatures: {
         where: { partie, revokedAt: null },
@@ -850,6 +853,15 @@ export async function signerDocument(
   // Une offre non NULL change la nature de ce qui est signé : le client signe SON choix, scellé
   // en V4 avec la preuve d'acceptation des CGV. Tout est relu ICI, sur le devis lu en base, sans
   // faire confiance à la validation de l'action : numéro, empreinte de l'offre, validité.
+  // Plusieurs devis portant la même pièce, dont l'un à formules : ambiguïté → refus (jamais un
+  // tirage au hasard du devis dont on scelle le choix).
+  if (
+    ctx.type === "devis" &&
+    ctx.devisPortes.length > 1 &&
+    ctx.devisPortes.some((d) => d.offreSha256 !== null)
+  ) {
+    return refus("choix_incoherent");
+  }
   const devisLie = ctx.type === "devis" ? (ctx.devisPortes[0] ?? null) : null;
   const aOffre = devisLie !== null && devisLie.offre !== null && devisLie.offreSha256 !== null;
   const choixFourni = input.choixOffre !== undefined;

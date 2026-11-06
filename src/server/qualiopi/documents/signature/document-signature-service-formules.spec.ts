@@ -294,6 +294,23 @@ describe("devis à formules — signature du client (sceau V4)", () => {
     );
   });
 
+  it("🔴 deux devis portent la même pièce (dont un à formules) : ambiguïté refusée, rien n'est scellé", async () => {
+    mockPrisma.documentGenere.findUnique.mockResolvedValue({
+      ...piece(DEVIS_FORMULES),
+      devisPortes: [DEVIS_FORMULES, { ...DEVIS_FORMULES, numero: "AXI-DEV-2026-998" }],
+    });
+    attendRefus(await signerDocument(entreeClient()), "choix_incoherent");
+  });
+
+  it("le devis lié est lu dans un ordre déterministe (createdAt, id) et sur deux lignes au plus", async () => {
+    await signerDocument(entreeClient());
+    const arg = mockPrisma.documentGenere.findUnique.mock.calls[0]?.[0] as {
+      select: { devisPortes: { orderBy: unknown; take: number } };
+    };
+    expect(arg.select.devisPortes.orderBy).toEqual([{ createdAt: "asc" }, { id: "asc" }]);
+    expect(arg.select.devisPortes.take).toBe(2);
+  });
+
   it("🔴 refuse un choix d'un AUTRE devis (numéro différent)", async () => {
     const autre = choixCanonique({ ...CHOIX, devisNumero: "AXI-DEV-2026-999" });
     attendRefus(

@@ -17,7 +17,11 @@ import { AdminPageShell } from "@/components/admin/ui/AdminPageShell";
 import { AdminPageHeader } from "@/components/admin/ui/AdminPageHeader";
 import { DevisLifecycleButtons } from "@/components/admin/qualiopi/DevisLifecycleButtons";
 import { DevisContresignature } from "@/components/admin/qualiopi/DevisContresignature";
-import { contresignerPieceAction } from "@/server/actions/qualiopi/piece-signature";
+import { RelancerAcceptationDevis } from "@/components/admin/qualiopi/RelancerAcceptationDevis";
+import {
+  contresignerPieceAction,
+  relancerAcceptationDevisAction,
+} from "@/server/actions/qualiopi/piece-signature";
 import { getOrganismeIdentite } from "@/server/qualiopi/documents/organisme";
 import { DevisSuiviLivraison } from "@/components/admin/qualiopi/DevisSuiviLivraison";
 import { peutDemarrerLivraison, peutMarquerLivre } from "@/server/qualiopi/devis/suivi-livraison";
@@ -505,6 +509,19 @@ export default async function QualiopiDevisDetailPage({ params }: PageProps) {
             contresignerAction={contresignerPieceAction}
           />
         )}
+
+        {/* Signé des deux parties mais jamais accepté : alerte persistante (lue en base) + reprise. */}
+        {devis.documentGenereId !== null &&
+          clientASigne &&
+          organismeASigne &&
+          devis.offreSha256 !== null &&
+          devis.formuleRetenue === null &&
+          (devis.statut === "envoye" || devis.statut === "expire") && (
+            <RelancerAcceptationDevis
+              documentGenereId={devis.documentGenereId}
+              relancerAction={relancerAcceptationDevisAction}
+            />
+          )}
 
         {clientASigne && organismeASigne && (
           <p className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-soft)]">

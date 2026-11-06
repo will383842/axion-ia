@@ -1,4 +1,5 @@
 import { createHash, createHmac } from "node:crypto";
+import { Prisma } from "../../../prisma/generated/client";
 import { describe, expect, it, vi, beforeEach } from "vitest";
 
 vi.mock("@sentry/nextjs", () => ({ captureException: vi.fn() }));
@@ -29,7 +30,15 @@ function requete(
   const ts = String(opts.ts ?? Math.floor(MAINTENANT / 1000));
   const chemin = opts.chemin ?? CHEMIN;
   const signature =
-    opts.signature ?? signerRequeteConsole(opts.secret ?? SECRET, ts, "POST", chemin, brut);
+    opts.signature ??
+    signerRequeteConsole(
+      opts.secret ?? SECRET,
+      ts,
+      "POST",
+      chemin,
+      opts.cle === null ? "" : (opts.cle ?? "cle-0001-abcdef"),
+      brut,
+    );
   const entetes: Record<string, string> = {
     "content-type": "application/json",
     [ENTETE_HORODATAGE_CONSOLE]: ts,
@@ -48,6 +57,7 @@ function base() {
     id: "c1",
     etat: null as string | null,
     etatDetail: null as unknown,
+    etatRecuAt: null as Date | null,
     etatCleIdempotence: null as string | null,
   };
   const prisma = {
@@ -122,6 +132,7 @@ describe("POST /commandes/{numeroDevis}/etat — authentification", () => {
       ts,
       "POST",
       CHEMIN,
+      "cle-0001-abcdef",
       JSON.stringify({ etat: "recue" }),
     );
     const r = await appeler(requete({ etat: "en_service" }, { signature }), prisma);
@@ -136,6 +147,7 @@ describe("POST /commandes/{numeroDevis}/etat — authentification", () => {
       ts,
       "POST",
       CHEMIN,
+      "cle-0001-abcdef",
       JSON.stringify({ etat: "recue" }),
     );
     const autre = "/api/console/v1/commandes/AXI-DEV-2026-999/etat";
@@ -147,12 +159,29 @@ describe("POST /commandes/{numeroDevis}/etat — authentification", () => {
     expect(r.status).toBe(401);
   });
 
+  it("🔴 la signature couvre l'Idempotency-Key : une autre clé sous la même signature est refusée", async () => {
+    const { prisma } = base();
+    const ts = String(Math.floor(MAINTENANT / 1000));
+    const corps = JSON.stringify({ etat: "recue" });
+    const signature = signerRequeteConsole(SECRET, ts, "POST", CHEMIN, "cle-0001-abcdef", corps);
+    const r = await appeler(
+      requete({ etat: "recue" }, { signature, cle: "cle-9999-zzzzzz" }),
+      prisma,
+    );
+    expect(r.status).toBe(401);
+    expect(prisma.consoleCommande.updateMany).not.toHaveBeenCalled();
+  });
+
   it("la formule de signature est HMAC-SHA256(secret, ts.METHODE.chemin.sha256(corps))", () => {
     const corps = '{"etat":"recue"}';
     const attendu = createHmac("sha256", SECRET)
-      .update(`1.POST.${CHEMIN}.${createHash("sha256").update(corps).digest("hex")}`)
+      .update(
+        `1.POST.${CHEMIN}.cle-0001-abcdef.${createHash("sha256").update(corps).digest("hex")}`,
+      )
       .digest("hex");
-    expect(signerRequeteConsole(SECRET, "1", "POST", CHEMIN, corps)).toBe(attendu);
+    expect(signerRequeteConsole(SECRET, "1", "POST", CHEMIN, "cle-0001-abcdef", corps)).toBe(
+      attendu,
+    );
   });
 });
 
@@ -175,6 +204,32 @@ describe("POST /commandes/{numeroDevis}/etat — traitement", () => {
     expect(Object.keys(arg.data).sort()).toEqual(
       ["etat", "etatCleIdempotence", "etatDetail", "etatRecuAt"].sort(),
     );
+  });
+
+  it('🔴 {"etat":"recue"} sans detail : la colonne Json? reçoit Prisma.DbNull, jamais null', async () => {
+    const { prisma } = base();
+    const r = await appeler(requete({ etat: "recue" }), prisma);
+    expect(r.status).toBe(200);
+    const arg = (prisma.consoleCommande.updateMany.mock.calls[0] as unknown[])[0] as {
+      data: { etatDetail: unknown };
+    };
+    expect(arg.data.etatDetail).toBe(Prisma.DbNull);
+    expect(arg.data.etatDetail).not.toBeNull();
+  });
+
+  it("🔴 un état émis avant l'état enregistré est refusé (409), rien n'est écrit", async () => {
+    const { prisma, ligne } = base();
+    ligne.etat = "en_service";
+    ligne.etatCleIdempotence = "autre-cle-0001";
+    (ligne as { etatRecuAt?: Date }).etatRecuAt = new Date(MAINTENANT);
+    const s = Math.floor(MAINTENANT / 1000);
+    const r = await appeler(requete({ etat: "recue" }, { ts: s - 10 }), prisma);
+    expect(r.status).toBe(409);
+    expect(await r.json()).toEqual({ error: "etat_perime" });
+    expect(prisma.consoleCommande.updateMany).not.toHaveBeenCalled();
+    // Un état plus récent est accepté.
+    const ok = await appeler(requete({ etat: "en_service" }, { ts: s + 10 }), prisma);
+    expect(ok.status).toBe(200);
   });
 
   it("Idempotency-Key obligatoire : 400", async () => {

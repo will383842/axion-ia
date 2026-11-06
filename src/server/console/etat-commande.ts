@@ -7,14 +7,17 @@
  * modifier), ne déclenche aucune facture, aucun e-mail, aucun changement de statut du devis.
  *
  * Authentification : HMAC-SHA256 sous un secret DÉDIÉ à ce sens (`CONSOLE_C1_SECRET`, ≥ 32
- * caractères), sur `<horodatage>.<METHODE>.<chemin>.<sha256 du corps>` — le corps et le chemin sont
- * donc couverts —, fenêtre de 5 minutes. `Idempotency-Key` obligatoire : rejouer la même clé avec
- * le même contenu rend « déjà reçu » sans effet ; avec un contenu différent, 409.
+ * caractères), sur `<horodatage>.<METHODE>.<chemin>.<Idempotency-Key>.<sha256 du corps>` — le corps, le chemin
+ * et la clé d'idempotence sont donc couverts —, fenêtre de 5 minutes. `Idempotency-Key`
+ * obligatoire : rejouer la même clé avec le même contenu rend « déjà reçu » sans effet ; avec un
+ * contenu différent, 409. Un état émis AVANT l'état déjà enregistré est refusé (409
+ * `etat_perime`) : un message retardé ne réécrit pas un état plus récent.
  *
  * Canal fermé (secret absent ou trop court) ou build (base stub) : 404, rien n'est lu.
  */
 import { createHash, createHmac, timingSafeEqual } from "node:crypto";
 import * as Sentry from "@sentry/nextjs";
+import { Prisma } from "../../../prisma/generated/client";
 import { z } from "zod";
 import { prisma as prismaGlobal } from "@/lib/prisma";
 import { canoniser, versValeurJson } from "@/server/mcp/json-canonique";
@@ -43,11 +46,12 @@ export function signerRequeteConsole(
   horodatage: string,
   methode: string,
   chemin: string,
+  cle: string,
   corps: string,
 ): string {
   const empreinte = createHash("sha256").update(corps, "utf8").digest("hex");
   return createHmac("sha256", secret)
-    .update(`${horodatage}.${methode.toUpperCase()}.${chemin}.${empreinte}`)
+    .update(`${horodatage}.${methode.toUpperCase()}.${chemin}.${cle}.${empreinte}`)
     .digest("hex");
 }
 
@@ -83,18 +87,26 @@ export interface EcrivainEtat {
   consoleCommande: {
     findUnique(args: {
       where: { numeroDevis: string };
-      select: Record<string, true>;
+      select: {
+        id: true;
+        etat: true;
+        etatDetail: true;
+        etatRecuAt: true;
+        etatCleIdempotence: true;
+      };
     }): PromiseLike<{
       id: string;
       etat: string | null;
       etatDetail: unknown;
+      etatRecuAt: Date | null;
       etatCleIdempotence: string | null;
     } | null>;
     updateMany(args: {
       where: { id: string; etatCleIdempotence: string | null };
       data: {
         etat: string;
-        etatDetail: Record<string, unknown> | null;
+        /** `Prisma.DbNull` (jamais un `null` JS) pour effacer une colonne `Json?`. */
+        etatDetail: Prisma.InputJsonObject | typeof Prisma.DbNull;
         etatRecuAt: Date;
         etatCleIdempotence: string;
       };
@@ -125,7 +137,7 @@ export async function repondreEtatCommande(
   if (secret === null || auBuild()) return json(404, { error: "not_found" });
 
   const maintenantMs = dependances.maintenantMs ?? Date.now();
-  const client = dependances.prisma ?? (prismaGlobal as unknown as EcrivainEtat);
+  const client: EcrivainEtat = dependances.prisma ?? prismaGlobal;
 
   // Corps lu UNE fois, borné, avant toute vérification qui en dépend.
   const brut = await requete.text();
@@ -140,7 +152,15 @@ export async function repondreEtatCommande(
     return json(401, { error: "unauthorized" });
   }
   const chemin = new URL(requete.url).pathname;
-  const attendue = signerRequeteConsole(secret, horodatage, requete.method, chemin, brut);
+  const cle = requete.headers.get("idempotency-key");
+  const attendue = signerRequeteConsole(
+    secret,
+    horodatage,
+    requete.method,
+    chemin,
+    cle ?? "",
+    brut,
+  );
   // La comparaison a lieu dans tous les cas ; la forme est jugée après.
   if (!(egaux(signature, attendue) && SIGNATURE.test(signature))) {
     return json(401, { error: "unauthorized" });
@@ -148,7 +168,6 @@ export async function repondreEtatCommande(
 
   // ── Requête ──
   if (!NUMERO_DEVIS.test(numeroDevis)) return json(404, { error: "not_found" });
-  const cle = requete.headers.get("idempotency-key");
   if (cle === null || !CLE_IDEMPOTENCE.test(cle))
     return json(400, { error: "idempotency_key_required" });
 
@@ -161,21 +180,38 @@ export async function repondreEtatCommande(
   const parse = corpsSchema.safeParse(corps);
   if (!parse.success) return json(422, { error: "invalid_body" });
   const { etat } = parse.data;
-  const detail = parse.data.detail === undefined ? null : { ...parse.data.detail };
+  const detail =
+    parse.data.detail === undefined
+      ? Prisma.DbNull
+      : ({ ...parse.data.detail } as Prisma.InputJsonObject);
 
   try {
     const ligne = await client.consoleCommande.findUnique({
       where: { numeroDevis },
-      select: { id: true, etat: true, etatDetail: true, etatCleIdempotence: true },
+      select: {
+        id: true,
+        etat: true,
+        etatDetail: true,
+        etatRecuAt: true,
+        etatCleIdempotence: true,
+      },
     });
     if (ligne === null) return json(404, { error: "not_found" });
 
     if (ligne.etatCleIdempotence === cle) {
       // Même clé : même contenu = « déjà reçu » (succès sans effet) ; sinon conflit.
-      const identique = ligne.etat === etat && canon(ligne.etatDetail) === canon(detail);
+      const identique =
+        ligne.etat === etat &&
+        canon(ligne.etatDetail) === canon(detail === Prisma.DbNull ? null : detail);
       return identique
         ? json(200, { ok: true, deja_recu: true })
         : json(409, { error: "conflict" });
+    }
+
+    // Un état émis avant l'état enregistré est périmé (message retardé ou rejoué sous une autre
+    // clé dans la fenêtre de 5 min) : l'horodatage signé fait foi, pas l'ordre d'arrivée.
+    if (ligne.etatRecuAt !== null && Number(horodatage) * 1000 < ligne.etatRecuAt.getTime()) {
+      return json(409, { error: "etat_perime" });
     }
 
     // Écriture gardée sur la clé lue : deux requêtes simultanées, une seule gagne.
@@ -184,7 +220,8 @@ export async function repondreEtatCommande(
       data: {
         etat,
         etatDetail: detail,
-        etatRecuAt: new Date(maintenantMs),
+        // Horodatage d'ÉMISSION signé : sert de repère d'ordre (cf. contrôle d'état périmé).
+        etatRecuAt: new Date(Number(horodatage) * 1000),
         etatCleIdempotence: cle,
       },
     });

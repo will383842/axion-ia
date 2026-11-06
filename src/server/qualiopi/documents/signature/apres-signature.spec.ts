@@ -66,7 +66,11 @@ vi.mock("@/features/dossier-client/devis-signe-fait-client", () => ({
 }));
 
 import { accepterDevisAFormules } from "@/server/qualiopi/devis/acceptation-formules";
-import { apresSignature, type ContexteApresSignature } from "./apres-signature";
+import {
+  apresSignature,
+  PREFIXE_ACCEPTATION_DEVIS_ECHOUEE,
+  type ContexteApresSignature,
+} from "./apres-signature";
 
 const ADMIN = { userId: "adm-1", role: "admin", email: "x", name: "x" } as never;
 const DOC = "11111111-1111-4111-8111-111111111111";
@@ -364,6 +368,21 @@ describe("devis intégralement signé : le prospect passe en client", () => {
     expect(accepterDevisAFormules).toHaveBeenCalledWith(h.p, DOC);
     expect(h.txDevis.devis.updateMany).not.toHaveBeenCalled();
     expect(h.monter).toHaveBeenCalledWith(h.p, ["dv-formules"], { origine: "signature_complete" });
+  });
+
+  it("🔴 devis À FORMULES dont l'acceptation échoue : l'écran de contresignature le dit (pas seulement Sentry)", async () => {
+    const Sentry = await import("@sentry/nextjs");
+    const echec = Object.assign(new Error("refusée"), { motif: "choix_altere" });
+    (accepterDevisAFormules as unknown as ReturnType<typeof vi.fn>).mockRejectedValueOnce(echec);
+    const r = await apresSignature(
+      ctx({ type: "devis", statutSignature: "signee", partie: "axionia" }),
+    );
+    expect(Sentry.captureException).toHaveBeenCalled();
+    expect(r.activationRefusee).toMatchObject({
+      code: "acceptation_devis_echouee",
+      prefixe: PREFIXE_ACCEPTATION_DEVIS_ECHOUEE,
+    });
+    expect(r.activationRefusee?.message).toContain("choix_altere");
   });
 
   it("une erreur levée par la montée n'empêche jamais l'acceptation du devis", async () => {

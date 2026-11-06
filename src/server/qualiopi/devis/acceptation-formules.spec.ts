@@ -264,4 +264,31 @@ describe("accepterDevisAFormules", () => {
       AcceptationFormulesRefusee,
     );
   });
+
+  it("🔴 contresignature d'Axion-IA absente : refusée (contresignature_absente), rien n'est écrit", async () => {
+    const e = etat();
+    const { client, tx } = faux_(e, { axioniaSigneAt: null });
+    await expect(accepterDevisAFormules(client as never, DOC)).rejects.toMatchObject({
+      motif: "contresignature_absente",
+    });
+    expect(tx.devis.updateMany).not.toHaveBeenCalled();
+    expect(tx.consoleCommande.createMany).not.toHaveBeenCalled();
+    expect(emettre).not.toHaveBeenCalled();
+  });
+
+  it("révision : première version → null ; remplaçant d'une v1 → 2 (fait lu sur replacesDevisId)", async () => {
+    const payloadDe = async (replaces: string | null) => {
+      const e = etat({ devis: { replacesDevisId: replaces } });
+      const { client, tx } = faux_(e);
+      tx.devis.findUnique.mockImplementation((async (a: { where: { id: string } }) =>
+        a.where.id === DEVIS_ID ? e.devis : { replacesDevisId: null }) as never);
+      await accepterDevisAFormules(client as never, DOC);
+      const arg = tx.consoleCommande.createMany.mock.calls[0]![0] as {
+        data: { payload: { revision: number | null } }[];
+      };
+      return arg.data[0]!.payload.revision;
+    };
+    expect(await payloadDe(null)).toBeNull();
+    expect(await payloadDe("44444444-4444-4444-8444-444444444444")).toBe(2);
+  });
 });

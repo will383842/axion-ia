@@ -127,6 +127,32 @@ interface Preparation {
 }
 
 /**
+ * Rang de révision du devis : `null` pour la première version, sinon 1 + le nombre de versions
+ * qu'il remplace (v2 → 2). Fait immuable de la chaîne `replacesDevisId`, relu à chaque
+ * acceptation ; la boucle est bornée et protégée contre un cycle.
+ */
+async function rangRevision(
+  tx: Prisma.TransactionClient,
+  devisId: string,
+  replacesDevisId: string | null,
+): Promise<number | null> {
+  if (replacesDevisId == null) return null;
+  const vus = new Set<string>([devisId]);
+  let courant: string | null = replacesDevisId;
+  let rang = 1;
+  while (courant !== null && !vus.has(courant) && rang < 100) {
+    vus.add(courant);
+    rang += 1;
+    const parent: { replacesDevisId: string | null } | null = await tx.devis.findUnique({
+      where: { id: courant },
+      select: { replacesDevisId: true },
+    });
+    courant = parent?.replacesDevisId ?? null;
+  }
+  return rang;
+}
+
+/**
  * LIT et VÉRIFIE, n'écrit rien. `null` : rien à faire (devis déjà accepté, rejeu). Lève
  * `AcceptationFormulesRefusee` sur toute incohérence.
  */
@@ -223,9 +249,12 @@ async function preparer(
     }),
   ]);
   if (clientFiche === null) return refuser("client_introuvable");
+  // Un devis n'est « signé des deux parties » qu'avec la contresignature d'Axion-IA : sans elle,
+  // on n'accepte pas et on ne range pas de fait `commande.signee`.
+  if (sigAxionia === null) return refuser("contresignature_absente");
   const { eventId, payload } = construireCommandeSignee({
     numeroDevis: d.numero,
-    revision: null,
+    revision: await rangRevision(tx, devisId, d.replacesDevisId),
     offre: offre.data,
     offreSha256: d.offreSha256,
     choix,
@@ -238,7 +267,7 @@ async function preparer(
       qualite: sigClient.signataireQualite,
       signeAt: sigClient.signeAt,
     },
-    contresigneAt: sigAxionia?.signeAt ?? null,
+    contresigneAt: sigAxionia.signeAt,
   });
   return {
     choix,
