@@ -4,7 +4,7 @@
  * recalculé ici.
  */
 import { empreinteCanonique, versValeurJson } from "../../mcp/json-canonique";
-import { computeTotauxFacture, type TotauxFacture } from "../legal/tva";
+import { computeTotauxFacture, type RegimeTva, type TotauxFacture } from "../legal/tva";
 import { indemniteSortieMaxCents, prixMensuelNet } from "./montants-mensuels";
 
 export { indemniteSortieMaxCents, prixMensuelNet };
@@ -13,11 +13,15 @@ import { offreDevisV1, type Formule, type OffreDevisV1, type PhaseOffre } from "
 /**
  * Totaux de la partie PONCTUELLE d'une formule (lignes + automatisations
  * retenues). Mensuel, hébergement et services tiers n'y entrent pas.
+ *
+ * `regime` : hors `assujetti` (franchise 293 B, exonération), AUCUNE TVA — le taux saisi sur
+ * les lignes est ignoré (même règle que le gabarit PDF : 0 % partout).
  */
 export function totauxFormule(
   offre: OffreDevisV1,
   formule: Formule,
   automatisationsRetenues: readonly string[] = [],
+  regime: RegimeTva = "assujetti",
 ): TotauxFacture {
   const base =
     formule === "achat"
@@ -30,9 +34,9 @@ export function totauxFormule(
   ].map((l) => ({
     quantite: l.q,
     prixUnitaireHtCents: l.p,
-    tauxTvaPercent: l.t / 100,
+    ...(regime === "assujetti" ? { tauxTvaPercent: l.t / 100 } : {}),
   }));
-  return computeTotauxFacture(lignes, "assujetti");
+  return computeTotauxFacture(lignes, regime);
 }
 
 /** Prix d'une période : mensuel net (déjà arrondi) × nombre de mois. */

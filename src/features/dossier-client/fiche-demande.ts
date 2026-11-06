@@ -692,9 +692,9 @@ export async function assurerLesFichesDemande(
         niveau: "important",
         titre: "Messages du site sans fiche prospect : la porte a refusé trois fois",
         message:
-          `${c.abandons} message(s) reçu(s) par le site n'ont pas de fiche prospect : la porte ` +
-          `unique a refusé trois fois de la créer. Ils sont écartés (plus de réessai) et restent ` +
-          `visibles dans la boîte des messages ; à traiter à la main.`,
+          "Des messages reçus par le site n'ont pas de fiche prospect : la porte unique a refusé " +
+          "trois fois de la créer. Ils sont écartés (plus de réessai) et restent visibles dans " +
+          "la boîte des messages ; à traiter à la main.",
         metadata: { abandonnes: c.abandons },
       });
     } catch (e) {

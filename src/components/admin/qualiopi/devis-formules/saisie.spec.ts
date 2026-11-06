@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 
+import { offreFictive } from "@/server/qualiopi/devis/offre-fixtures.spec-util";
 import {
   construireOffre,
   eurosVersCents,
@@ -127,5 +128,41 @@ describe("offreVersSaisie", () => {
     if (!r1.ok) return;
     const relue = offreVersSaisie(r1.offre);
     expect(relue.formules).toEqual({ achat: true, abonnement: false });
+  });
+});
+
+describe("relecture d'une offre enregistrée : rien de ce que l'écran ne saisit n'est effacé", () => {
+  it("automatisations, services tiers, plafond, mode d'avance, délais et dates survivent", () => {
+    const o = offreFictive();
+    o.servicesTiers = [
+      { nom: "Hébergeur tiers", obligatoire: true, estimationHtCents: 1200, rythme: "mensuel" },
+    ];
+    o.plafondAConfirmer = { montantHtCents: 50000, texte: "À confirmer" };
+    o.abonnement!.modeAvance = "toutes_periodes";
+    o.achat!.phases = [
+      {
+        rang: 1,
+        libelle: "Solde",
+        pourcentage: 100,
+        declencheur: "livraison",
+        delaiJours: 15,
+        dateEstimee: "2026-12-01",
+      },
+    ];
+    const r = construireOffre(offreVersSaisie(o), []);
+    expect(r.ok).toBe(true);
+    if (!r.ok) return;
+    expect(r.offre.automatisations).toEqual(o.automatisations);
+    expect(r.offre.servicesTiers).toEqual(o.servicesTiers);
+    expect(r.offre.plafondAConfirmer).toEqual(o.plafondAConfirmer);
+    expect(r.offre.abonnement?.modeAvance).toBe("toutes_periodes");
+    expect(r.offre.achat?.phases[0]).toMatchObject({ delaiJours: 15, dateEstimee: "2026-12-01" });
+  });
+  it("saisie neuve : valeurs vides, mode d'avance au défaut du schéma", () => {
+    const r = construireOffre(saisieValide(), []);
+    expect(r.ok && r.offre.automatisations).toEqual([]);
+    expect(r.ok && r.offre.servicesTiers).toEqual([]);
+    expect(r.ok && r.offre.plafondAConfirmer).toBeNull();
+    expect(r.ok && r.offre.abonnement?.modeAvance).toBe("premiere_periode_seulement");
   });
 });

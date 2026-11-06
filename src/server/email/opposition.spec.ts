@@ -9,12 +9,32 @@ import { describe, it, expect, vi, beforeEach } from "vitest";
 const findUnique = vi.fn();
 const create = vi.fn();
 const syncOptOut = vi.fn();
+const findFirstOutbox = vi.fn();
+const sentryCapture = vi.fn();
+const suppressions = vi.fn();
+const updateMany = vi.fn();
+const lireMarques = vi.fn();
 
+vi.mock("@sentry/nextjs", () => ({
+  captureException: (...a: unknown[]) => sentryCapture(...a),
+}));
 vi.mock("@/lib/prisma", () => ({
   prisma: {
+    crmSyncOutbox: {
+      findFirst: (...a: unknown[]) => findFirstOutbox(...a),
+      delete: (...a: unknown[]) => suppressions(...a),
+      deleteMany: (...a: unknown[]) => suppressions(...a),
+    },
     emailOpposition: {
-      findUnique: (...a: unknown[]) => findUnique(...a),
+      // Lecture des deux marques (par id) ou recherche par empreinte.
+      findUnique: (...a: unknown[]) =>
+        (a[0] as { where: { id?: string } }).where.id !== undefined
+          ? lireMarques(...a)
+          : findUnique(...a),
+      updateMany: (...a: unknown[]) => updateMany(...a),
       create: (...a: unknown[]) => create(...a),
+      delete: (...a: unknown[]) => suppressions(...a),
+      deleteMany: (...a: unknown[]) => suppressions(...a),
     },
   },
 }));
@@ -41,6 +61,15 @@ beforeEach(() => {
   findUnique.mockReset().mockResolvedValue(null);
   create.mockReset().mockResolvedValue({ id: "opp-1" });
   syncOptOut.mockReset().mockResolvedValue(undefined);
+  // La file « voit » la ligne dès que le CRM a été appelé (cas nominal).
+  findFirstOutbox
+    .mockReset()
+    .mockImplementation(async () => (syncOptOut.mock.calls.length > 0 ? { id: "ob-1" } : null));
+  sentryCapture.mockReset();
+  suppressions.mockReset();
+  updateMany.mockReset().mockResolvedValue({ count: 1 });
+  lireMarques.mockReset().mockResolvedValue({ crmEnAttenteDepuis: null, crmInterditLe: null });
+  process.env["CRM_SYNC_ENABLED"] = "true";
   annulerRelances.mockReset().mockResolvedValue(0);
   process.env["AUTH_SECRET"] = "secret-de-test-suffisamment-long-0123456789";
   process.env["NEXT_PUBLIC_SITE_URL"] = "https://axion-ia.com";
@@ -92,7 +121,7 @@ describe("enregistrerOpposition", () => {
     const r = await enregistrerOpposition(jetonOpposition("jean@client.fr"), {
       template: "roi-report",
     });
-    expect(r).toEqual({ ok: true, email: "jean@client.fr", dejaOpposee: false });
+    expect(r).toEqual({ ok: true, email: "jean@client.fr", dejaOpposee: false, crmAverti: true });
     // 🔴 La table ne porte QUE l'empreinte : une liste d'opposition survit à
     // l'effacement, donc elle ne contient aucune adresse lisible.
     const ecrit = create.mock.calls[0]![0] as { data: Record<string, unknown> };
@@ -107,10 +136,11 @@ describe("enregistrerOpposition", () => {
     );
   });
 
-  it("est idempotent : une seconde opposition ne réécrit rien et le dit", async () => {
+  it("ligne de file déjà présente → CRM non rappelé, crmAverti:true", async () => {
     findUnique.mockResolvedValue({ id: "opp-1" });
+    findFirstOutbox.mockResolvedValue({ id: "ob-0" });
     const r = await enregistrerOpposition(jetonOpposition("jean@client.fr"));
-    expect(r).toEqual({ ok: true, email: "jean@client.fr", dejaOpposee: true });
+    expect(r).toEqual({ ok: true, email: "jean@client.fr", dejaOpposee: true, crmAverti: true });
     expect(create).not.toHaveBeenCalled();
     expect(syncOptOut).not.toHaveBeenCalled();
   });
@@ -157,6 +187,152 @@ describe("2026-09-19 — l'opposition annule les envois déjà programmés", () 
   it("une file indisponible ne fait pas échouer l'opposition", async () => {
     annulerRelances.mockRejectedValue(new Error("redis mort"));
     const r = await enregistrerOpposition(jetonOpposition("jean@client.fr"));
-    expect(r).toEqual({ ok: true, email: "jean@client.fr", dejaOpposee: false });
+    expect(r).toEqual({ ok: true, email: "jean@client.fr", dejaOpposee: false, crmAverti: true });
+  });
+});
+
+describe("réessai idempotent de l'avertissement CRM", () => {
+  const jeton = () => jetonOpposition("jean@client.fr");
+
+  it("création sans ligne de file après l'appel → crmAverti:false, relances annulées, aucune suppression", async () => {
+    findFirstOutbox.mockResolvedValue(null);
+    const r = await enregistrerOpposition(jeton());
+    expect(r).toEqual({ ok: true, email: "jean@client.fr", dejaOpposee: false, crmAverti: false });
+    expect(create).toHaveBeenCalledTimes(1);
+    expect(annulerRelances).toHaveBeenCalledTimes(1);
+    expect(suppressions).not.toHaveBeenCalled();
+  });
+
+  it("syncOptOut lève → ligne gardée, relances annulées, crmAverti:false", async () => {
+    syncOptOut.mockRejectedValue(new Error("crm mort jean@client.fr"));
+    findFirstOutbox.mockResolvedValue(null);
+    const r = await enregistrerOpposition(jeton());
+    expect(r).toMatchObject({ ok: true, dejaOpposee: false, crmAverti: false });
+    expect(create).toHaveBeenCalledTimes(1);
+    expect(annulerRelances).toHaveBeenCalledTimes(1);
+    expect(suppressions).not.toHaveBeenCalled();
+  });
+
+  it("adresse déjà en base sans ligne de file → CRM rappelé avec même subjectRef et même eventId", async () => {
+    // Premier passage : le CRM échoue.
+    findFirstOutbox.mockResolvedValue(null);
+    await enregistrerOpposition(jeton());
+    const premier = syncOptOut.mock.calls[0]![0] as { subjectRef: string; eventId: string };
+    // Renvoi : la ligne existe, la file est toujours vide, puis se remplit.
+    syncOptOut.mockClear();
+    lireMarques.mockResolvedValue({ crmEnAttenteDepuis: new Date(), crmInterditLe: null });
+    findUnique.mockResolvedValue({ id: "opp-1" });
+    findFirstOutbox.mockReset().mockResolvedValueOnce(null).mockResolvedValue({ id: "ob-2" });
+    const r = await enregistrerOpposition(jeton());
+    expect(r).toEqual({ ok: true, email: "jean@client.fr", dejaOpposee: true, crmAverti: true });
+    const second = syncOptOut.mock.calls[0]![0] as { subjectRef: string; eventId: string };
+    expect(second.subjectRef).toBe("site:email_opposition:opp-1");
+    expect(second.subjectRef).toBe(premier.subjectRef);
+    expect(second.eventId).toBe(premier.eventId);
+    expect(second.eventId).toMatch(/^[0-9a-f-]{36}$/);
+  });
+
+  it("erreur d'unicité P2002 à la création → relit et rend dejaOpposee:true", async () => {
+    create.mockRejectedValue(Object.assign(new Error("Unique"), { code: "P2002" }));
+    findUnique.mockResolvedValueOnce(null).mockResolvedValueOnce({ id: "opp-9" });
+    lireMarques.mockResolvedValue({ crmEnAttenteDepuis: new Date(), crmInterditLe: null });
+    const r = await enregistrerOpposition(jeton());
+    expect(r).toMatchObject({ ok: true, dejaOpposee: true });
+    expect(syncOptOut).toHaveBeenCalledWith(
+      expect.objectContaining({ subjectRef: "site:email_opposition:opp-9" }),
+    );
+  });
+
+  it("drapeau CRM coupé → crmAverti:true sans lire la file", async () => {
+    process.env["CRM_SYNC_ENABLED"] = "false";
+    const r = await enregistrerOpposition(jeton());
+    expect(r).toMatchObject({ ok: true, crmAverti: true });
+    expect(findFirstOutbox).not.toHaveBeenCalled();
+  });
+
+  it("(8) lecture de la file en erreur → crmAverti:false + Sentry {name} sans adresse", async () => {
+    findFirstOutbox.mockRejectedValue(new Error("base jean@client.fr"));
+    const r = await enregistrerOpposition(jeton());
+    expect(r).toMatchObject({ ok: true, crmAverti: false });
+    const appel = sentryCapture.mock.calls.find(
+      (c) => (c[1] as { tags: { step: string } }).tags.step === "lire-file-crm",
+    );
+    expect(appel![0]).toEqual({ name: "Error" });
+    expect(JSON.stringify(sentryCapture.mock.calls)).not.toContain("jean");
+  });
+
+  it("🔴 annulerRelances lève une erreur contenant l'adresse → Sentry ne reçoit pas l'adresse", async () => {
+    annulerRelances.mockRejectedValue(new Error("échec jean@client.fr"));
+    await enregistrerOpposition(jeton());
+    expect(sentryCapture).toHaveBeenCalled();
+    expect(sentryCapture.mock.calls[0]![0]).toEqual({ name: "Error" });
+    const tout = JSON.stringify(sentryCapture.mock.calls);
+    expect(tout).not.toContain("jean@client.fr");
+    expect(tout).not.toContain("jean");
+  });
+});
+
+describe("🔴 RGPD — le CRM ne reçoit jamais une adresse déjà en base sans attente posée", () => {
+  const jeton = () => jetonOpposition("jean@client.fr");
+
+  it("(1) adresse déjà en base, attente vide, file vide → CRM non appelé, crmAverti:true", async () => {
+    findUnique.mockResolvedValue({ id: "opp-1" });
+    findFirstOutbox.mockResolvedValue(null);
+    const r = await enregistrerOpposition(jeton());
+    expect(r).toEqual({ ok: true, email: "jean@client.fr", dejaOpposee: true, crmAverti: true });
+    expect(syncOptOut).not.toHaveBeenCalled();
+  });
+
+  it("(2) attente ET interdit renseignées, file vide → CRM non appelé", async () => {
+    findUnique.mockResolvedValue({ id: "opp-1" });
+    findFirstOutbox.mockResolvedValue(null);
+    lireMarques.mockResolvedValue({ crmEnAttenteDepuis: new Date(), crmInterditLe: new Date() });
+    const r = await enregistrerOpposition(jeton());
+    expect(r).toMatchObject({ ok: true, dejaOpposee: true });
+    expect(syncOptOut).not.toHaveBeenCalled();
+  });
+
+  it("(9) lecture des deux colonnes en erreur → CRM non appelé (fermé par défaut)", async () => {
+    findUnique.mockResolvedValue({ id: "opp-1" });
+    findFirstOutbox.mockResolvedValue(null);
+    lireMarques.mockRejectedValue(new Error("base"));
+    const r = await enregistrerOpposition(jeton());
+    expect(r).toMatchObject({ ok: true, crmAverti: false });
+    expect(syncOptOut).not.toHaveBeenCalled();
+  });
+
+  it("(6) création : l'attente est posée APRÈS le create, par une requête séparée", async () => {
+    findFirstOutbox.mockResolvedValue(null);
+    await enregistrerOpposition(jeton());
+    const data = (create.mock.calls[0]![0] as { data: Record<string, unknown> }).data;
+    expect(data).not.toHaveProperty("crmEnAttenteDepuis");
+    const pose = updateMany.mock.calls.find(
+      (c) => (c[0] as { data: Record<string, unknown> }).data["crmEnAttenteDepuis"] instanceof Date,
+    );
+    expect(pose).toBeDefined();
+    expect(create.mock.invocationCallOrder[0]!).toBeLessThan(
+      updateMany.mock.invocationCallOrder[0]!,
+    );
+  });
+
+  it("échec de la pose de l'attente → l'opposition n'est pas bloquée, Sentry {name}", async () => {
+    updateMany.mockRejectedValueOnce(new Error("base jean@client.fr"));
+    const r = await enregistrerOpposition(jeton());
+    expect(r).toMatchObject({ ok: true, dejaOpposee: false });
+    expect(JSON.stringify(sentryCapture.mock.calls)).not.toContain("jean");
+  });
+
+  it("(6) ligne de file constatée → attente remise à NULL, seulement si non interdite", async () => {
+    findUnique.mockResolvedValue({ id: "opp-1" });
+    findFirstOutbox.mockResolvedValue({ id: "ob-0" });
+    await enregistrerOpposition(jeton());
+    const remise = updateMany.mock.calls.find(
+      (c) => (c[0] as { data: Record<string, unknown> }).data["crmEnAttenteDepuis"] === null,
+    );
+    expect(remise).toBeDefined();
+    expect((remise![0] as { where: Record<string, unknown> }).where).toMatchObject({
+      id: "opp-1",
+      crmInterditLe: null,
+    });
   });
 });
