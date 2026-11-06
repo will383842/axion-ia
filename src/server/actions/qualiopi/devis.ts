@@ -375,7 +375,7 @@ export async function createDevisAction(
 
 /**
  * Marque le devis comme envoyé (statut → envoye, sentAt = now).
- * Met aussi à jour le statut du client → devis_envoye.
+ * Fait passer le client de prospect à devis_envoye (jamais un statut plus avancé).
  *
  * Avant la bascule :
  *   1. PDF (fail-soft) : rendu DevisPdf via generateDocument type "devis"
@@ -610,8 +610,11 @@ export async function sendDevisAction(
         ...(documentGenereId !== null ? { documentGenereId } : {}),
       },
     });
-    await tx.client.update({
-      where: { id: devis.clientId },
+    // Écriture GARDÉE : seul un PROSPECT (ou un prospect « perdu » qui reçoit un nouveau devis) devient « devis envoyé ». Un client actif (ou inactif)
+    // à qui l'on envoie un nouveau devis garde son statut — il ne doit jamais être
+    // rétrogradé. 0 ligne modifiée est le cas normal d'un client déjà plus avancé : ni erreur ni note.
+    await tx.client.updateMany({
+      where: { id: devis.clientId, statut: { in: ["prospect", "perdu"] } },
       data: { statut: "devis_envoye" },
     });
     // Révision : l'ancienne version passe `expire` — jamais d'écrasement.
