@@ -5359,10 +5359,8 @@ model Devis {
   /// Plans récurrents PROPOSÉS à l'acceptation (statut `pause` tant que Will n'a pas validé).
   plansRecurrents PlanRecurrent[]
 
-  /// Lot 4 — posés UNE fois, à l'acceptation (signature complète), depuis le choix scellé sur la
-  /// ligne de signature du client : `formuleRetenue` / `choixRetenu` / `choixSignatureId`.
-  formuleRetenue   String?            @map("formule_retenue") @db.VarChar(12)
-  choixRetenu      Json?              @map("choix_retenu")
+  /// Lot 4 — signature qui porte le choix retenu (`formuleRetenue` / `choixRetenu` ci-dessus sont
+  /// posés avec elle, UNE fois, à l'acceptation).
   choixSignatureId String?            @map("choix_signature_id") @db.Uuid
   choixSignature   DocumentSignature? @relation("DevisChoixSignature", fields: [choixSignatureId], references: [id], onDelete: Restrict)
   commandeConsole  ConsoleCommande?
