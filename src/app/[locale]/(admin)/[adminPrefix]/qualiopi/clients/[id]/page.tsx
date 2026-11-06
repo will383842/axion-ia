@@ -34,7 +34,11 @@
 
 import * as E from "@/components/admin/dossier-client/fiche/emplacements";
 import { FilDesEchanges } from "@/components/admin/dossier-client/FilDesEchanges";
-import { lireFilDesEchanges } from "@/features/dossier-client/fil-des-echanges";
+import {
+  demandesEnEchanges,
+  lireDemandesDeLaFiche,
+} from "@/features/dossier-client/demandes-de-la-fiche";
+import { assemblerFil, lireFilDesEchanges } from "@/features/dossier-client/fil-des-echanges";
 import { prisma } from "@/lib/prisma";
 import { SuiviPrestations } from "@/components/admin/dossier-client/SuiviPrestations";
 import {
@@ -358,13 +362,14 @@ export default async function FicheClient360Page({ params, searchParams }: PageP
 
   let contenuDossier: React.ReactNode = null;
   if (voitEchanges && onglet === "resume") {
-    const [faits, projets, resumeDesTaches, resumeDesPrestations, resumeDesNotes] =
+    const [faits, projets, resumeDesTaches, resumeDesPrestations, resumeDesNotes, demandesRecues] =
       await Promise.all([
         lireFaitsDuClient(id),
         projetsLus ?? lireProjetsDuClient(id),
         abri(() => E.resumeTaches(ctx)),
         abri(() => E.resumePrestations(ctx)),
         abri(() => E.resumeNotes(ctx)),
+        abri(() => E.resumeDemandesRecues(ctx)),
       ]);
     contenuDossier = (
       <>
@@ -374,6 +379,7 @@ export default async function FicheClient360Page({ params, searchParams }: PageP
         {resumeDesPrestations}
         {/* EMPLACEMENT:RESUME-NOTES (lot B4) */}
         {resumeDesNotes}
+        {demandesRecues}
         <OngletSynthese
           consolidation={consoliderFaits(faits, projets, maintenant)}
           projets={projets}
@@ -414,12 +420,23 @@ export default async function FicheClient360Page({ params, searchParams }: PageP
       </>
     );
   } else if (voitEchanges && onglet === "emails") {
-    const fil = await lireFilDesEchanges(id, adminPrefix);
-    // Les rendez-vous ont leur onglet : celui-ci ne montre que les courriers.
+    const [fil, demandesFil] = await Promise.all([
+      lireFilDesEchanges(id, adminPrefix),
+      lireDemandesDeLaFiche(id, acces.role).catch(() => null),
+    ]);
+    const panneDemandes =
+      demandesFil === null ||
+      demandesFil.pannes.messages ||
+      demandesFil.pannes.accuses ||
+      demandesFil.pannes.reponses;
+    // Les rendez-vous ont leur onglet : celui-ci ne montre que les courriers (et les demandes, sans corps).
     contenuDossier = (
       <FilDesEchanges
-        fil={fil.fil.filter((x) => x.genre !== "rendez_vous")}
-        sourcesEnPanne={fil.sourcesEnPanne}
+        fil={assemblerFil([
+          fil.fil.filter((x) => x.genre !== "rendez_vous"),
+          demandesFil === null ? [] : demandesEnEchanges(demandesFil),
+        ])}
+        sourcesEnPanne={fil.sourcesEnPanne + (panneDemandes ? 1 : 0)}
         clientId={id}
         adminPrefix={adminPrefix}
       />

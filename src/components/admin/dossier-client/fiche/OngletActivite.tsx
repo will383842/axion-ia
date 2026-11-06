@@ -23,6 +23,7 @@ export async function ongletActivite(ctx: ContexteFiche): Promise<React.ReactEle
     ctx.clientId,
     ctx.adminPrefix,
     ctx.maintenant,
+    ctx.role,
   );
   const gardes = filtrer(evenements, filtre);
   // Filtre « Notes » : les épinglées forment un bloc à part ; les autres restent par jour.
