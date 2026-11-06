@@ -38,7 +38,7 @@ import { donneesMeet, stockageSonCloudflare } from "./visio-annonce-textes";
  * — bonne pratique transparence). Affichée en haut de `/sous-processeurs`.
  * Update à chaque ajout/modification d'entrée.
  */
-export const SUBPROCESSORS_LAST_UPDATED = "2026-10-11" as const;
+export const SUBPROCESSORS_LAST_UPDATED = "2026-11-06" as const;
 
 export type TransferFramework = "intra_eu" | "scc" | "adequacy_decision" | "self_hosted_eu";
 
@@ -78,8 +78,10 @@ export interface Subprocessor {
    * effectivement des données au provider aujourd'hui. `pending_activation` =
    * intégration codée mais clé API absente de Coolify env → aucun flux data
    * réel (cas content-gen IA tant que Will n'a pas signé les DPA).
+   * `historique` = plus aucune nouvelle donnée n'est envoyée ; seules des données
+   * anciennes sont conservées (cas DocuSeal depuis le 30/07/2026).
    */
-  activationStatus: "active" | "pending_activation";
+  activationStatus: "active" | "pending_activation" | "historique";
   /** Lien DPO / documentation publique du sous-processeur. */
   documentationUrl?: string;
 }
@@ -222,23 +224,41 @@ export const SUBPROCESSORS: ReadonlyArray<Subprocessor> = [
     documentationUrl: "https://stripe.com/legal/dpa",
   },
   {
-    name: "DocuSeal Community (self-hosted)",
+    name: "DocuSeal Community (self-hosted) — statut historique",
     location: "Hébergement Hetzner Allemagne (UE)",
     serversLocation: "Frankfurt, Allemagne (UE)",
     purposeFr:
-      "Signature électronique des contrats et devis (Sprint X.3+). Auto-hébergé sur notre infrastructure — pas de SaaS tiers.",
+      "Statut historique : un seul devis a été signé par ce procédé avant le 30/07/2026. Il est conservé, et plus aucune nouvelle donnée n'est envoyée à DocuSeal. Auto-hébergé sur notre infrastructure en Allemagne — pas de SaaS tiers.",
     purposeEn:
-      "E-signature for contracts and quotes (Sprint X.3+). Self-hosted on our infra — no third-party SaaS.",
+      "Historical status: a single quote was signed with this tool before 30 July 2026. It is kept, and no new data is sent to DocuSeal. Self-hosted on our infrastructure in Germany — no third-party SaaS.",
     dataCategoriesFr:
-      "Nom et email des signataires, contenu signé du contrat, horodatage cryptographique, hash PDF.",
+      "Données de l'unique devis signé avant le 30/07/2026 : nom et email du signataire, contenu signé, horodatage, empreinte du PDF.",
     dataCategoriesEn:
-      "Signers' name and email, signed contract content, cryptographic timestamp, PDF hash.",
+      "Data of the single quote signed before 30 July 2026: signer's name and email, signed content, timestamp, PDF hash.",
+    legalBasis: "6.1.b_contract",
+    dpaStatus: "self_hosted_no_dpa",
+    transferFramework: "self_hosted_eu",
+    category: "payments",
+    activationStatus: "historique",
+    documentationUrl: "https://www.docuseal.com",
+  },
+  {
+    name: "Signature maison Axion-IA (procédé de signature électronique interne)",
+    location: "Axion-IA (France) — procédé interne, sans sous-traitant",
+    serversLocation: "Base de données sur Hetzner (Allemagne, UE) ; pièces sur Cloudflare R2 (UE)",
+    purposeFr:
+      "Signature électronique des devis et documents contractuels par un procédé développé par Axion-IA, sans prestataire de signature tiers. Le contrat est formé lorsqu'Axion-IA a contresigné.",
+    purposeEn:
+      "Electronic signature of quotes and contractual documents through a process built by Axion-IA, with no third-party signature provider. The contract is formed once Axion-IA has countersigned.",
+    dataCategoriesFr:
+      "Adresse IP hachée, image de signature, identité du signataire, empreinte du document signé.",
+    dataCategoriesEn:
+      "Hashed IP address, signature image, signer's identity, fingerprint of the signed document.",
     legalBasis: "6.1.b_contract",
     dpaStatus: "self_hosted_no_dpa",
     transferFramework: "self_hosted_eu",
     category: "payments",
     activationStatus: "active",
-    documentationUrl: "https://www.docuseal.com",
   },
   // ───────────────────────────── communications & géo
   {

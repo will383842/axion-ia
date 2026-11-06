@@ -120,6 +120,9 @@ export const EMAILS_AUTOMATIQUES_PAR_DEFAUT: readonly string[] = [
   // lui-même de signer. La décision humaine a DÉJÀ eu lieu — c'est la
   // contresignature.
   "piece-exemplaire-signe",
+  // Confirmation de commande : le clic de contresignature d'Axion-IA vaut validation (CGV 6.2) ;
+  // la retenir en corbeille retarderait la confirmation due au client (CGV 5.2).
+  "devis-commande-confirmation",
   // 🔴 Le rappel de la VEILLE part SEUL, et c'est le cas le plus net de toute
   // cette liste (2026-09-05, ADR 0048 §4.3).
   //
@@ -227,6 +230,7 @@ export const LIBELLE_TEMPLATE_EMAIL: Record<string, string> = {
   "qualiopi-relance-impayee": "Relance d'impayé",
   "appel-rappel": "Rappel avant un appel de découverte",
   "piece-exemplaire-signe": "Remise de l'exemplaire signé",
+  "devis-commande-confirmation": "Confirmation de commande (contresignature d'Axion-IA)",
   "devis-signe-a-contresigner": "Devis signé par le client, à contresigner (interne)",
   "questionnaire-reponses-recues": "Questionnaire en ligne : réponses reçues (interne)",
   "questionnaire-avant-audit": "Questionnaire de pré-audit envoyé par Will",

@@ -30,7 +30,7 @@ import { describe, it, expect } from "vitest";
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { DISTANCIEL_VISIO } from "../formations/materiel";
-import { SUBPROCESSORS } from "../subprocessors";
+import { SUBPROCESSORS, SUBPROCESSORS_LAST_UPDATED } from "../subprocessors";
 import { LEGAL_PAGES } from "../legal";
 
 const ROOT = process.cwd();
@@ -322,5 +322,17 @@ describe("cohérence des sous-processeurs", () => {
           `le registre art. 30 est la pièce demandée en premier en audit.`,
       ).toContain(firstToken(s.name));
     }
+  });
+
+  it("DocuSeal est HISTORIQUE (plus aucun envoi) et le procédé de signature maison est déclaré", () => {
+    const docuseal = SUBPROCESSORS.find((s) => /docuseal/i.test(s.name));
+    expect(docuseal?.activationStatus).toBe("historique");
+    expect(docuseal?.purposeFr).toContain("30/07/2026");
+    const maison = SUBPROCESSORS.find((s) => /^Signature maison/.test(s.name));
+    expect(maison?.activationStatus).toBe("active");
+    for (const mot of ["IP hachée", "image de signature", "identité", "empreinte"]) {
+      expect(maison?.dataCategoriesFr).toContain(mot);
+    }
+    expect(SUBPROCESSORS_LAST_UPDATED >= "2026-11-06").toBe(true);
   });
 });

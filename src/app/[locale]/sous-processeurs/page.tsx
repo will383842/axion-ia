@@ -283,6 +283,7 @@ export default async function SubprocessorsPage({ params }: Props) {
   const pendingCount = SUBPROCESSORS.filter(
     (s) => s.activationStatus === "pending_activation",
   ).length;
+  const historicalCount = SUBPROCESSORS.filter((s) => s.activationStatus === "historique").length;
   const euNoTransfer = SUBPROCESSORS.filter(
     (s) => s.transferFramework === "intra_eu" || s.transferFramework === "self_hosted_eu",
   ).length;
@@ -465,8 +466,8 @@ export default async function SubprocessorsPage({ params }: Props) {
       <Section tone="paper" titleAs="h2" title={isFr ? "En bref" : "At a glance"}>
         <p className="text-fg-soft -mt-6 mb-10 max-w-2xl text-base leading-relaxed" data-answer>
           {isFr
-            ? `Axion-IA fait appel à ${total} sous-traitants pour héberger, sécuriser et exploiter son application. ${activeCount} sont actifs en production aujourd'hui et ${pendingCount} restent en attente d'activation (DPA non signé ou clé API absente). ${textesPagesIa("fr").spEnBrefIa}`
-            : `Axion-IA relies on ${total} subprocessors to host, secure and run its application. ${activeCount} are active in production today and ${pendingCount} remain pending activation (unsigned DPA or missing API key). ${textesPagesIa("en").spEnBrefIa}`}
+            ? `Axion-IA fait appel à ${total} sous-traitants pour héberger, sécuriser et exploiter son application. ${activeCount} sont actifs en production aujourd'hui et ${pendingCount} restent en attente d'activation (DPA non signé ou clé API absente)${historicalCount > 0 ? ` et ${historicalCount} ne figure${historicalCount > 1 ? "nt" : ""} plus qu'à titre historique (données anciennes conservées, plus aucun envoi)` : ""}. ${textesPagesIa("fr").spEnBrefIa}`
+            : `Axion-IA relies on ${total} subprocessors to host, secure and run its application. ${activeCount} are active in production today and ${pendingCount} remain pending activation (unsigned DPA or missing API key)${historicalCount > 0 ? ` and ${historicalCount} ${historicalCount > 1 ? "are" : "is"} listed for history only (old data kept, nothing sent any more)` : ""}. ${textesPagesIa("en").spEnBrefIa}`}
         </p>
         <dl className="grid grid-cols-2 gap-4 sm:gap-5 lg:grid-cols-4">
           <StatCard
@@ -650,6 +651,10 @@ export default async function SubprocessorsPage({ params }: Props) {
                               className="bg-terracotta h-1.5 w-1.5 rounded-full"
                             />
                             {isFr ? "Activation en attente" : "Pending activation"}
+                          </span>
+                        ) : s.activationStatus === "historique" ? (
+                          <span className="bg-paper border-border text-fg-muted inline-flex shrink-0 items-center gap-1.5 rounded-full border px-2.5 py-1 text-[11px] font-medium">
+                            {isFr ? "Historique" : "Historical"}
                           </span>
                         ) : (
                           <span className="bg-sage-soft text-sage inline-flex shrink-0 items-center gap-1.5 rounded-full px-2.5 py-1 text-[11px] font-medium">

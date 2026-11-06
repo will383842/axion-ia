@@ -55,7 +55,9 @@ describe.each(["brouillon", "envoye", "accepte"])("devis au statut %s", (statut)
       expect(h.p.devis.updateMany).not.toHaveBeenCalled();
       expect(h.p.docusealWebhookEvent.create).toHaveBeenCalledOnce();
       expect(h.p.docusealWebhookEvent.update).toHaveBeenCalledWith(
-        expect.objectContaining({ data: expect.objectContaining({ processedAt: expect.any(Date) }) }),
+        expect.objectContaining({
+          data: expect.objectContaining({ processedAt: expect.any(Date) }),
+        }),
       );
     },
   );
