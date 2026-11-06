@@ -28,6 +28,10 @@ interface Payload {
    * configuré, le devis reste signable par retour du PDF « bon pour accord ».
    */
   signatureUrl?: string;
+  /** Devis à formules : nombre de formules proposées (2 = « 2 formules au choix »). */
+  nbFormules?: number;
+  /** Intitulés des formules, tels que sur le PDF. */
+  libellesFormules?: string[];
 }
 
 function field(p: Partial<Payload>, key: keyof Payload, fallback: string): string {
@@ -47,6 +51,8 @@ const COPY = {
         .filter(Boolean)
         .join(" — ") + ".",
     attachment: "Le document est joint à cet email au format PDF.",
+    formules: (n: number, l: string) =>
+      `Ce devis vous propose ${n} formules au choix${l ? ` : ${l}` : ""}. Elles figurent côte à côte dans le document joint.`,
     sign: "Vous pouvez signer votre « bon pour accord » en ligne, en un clic, via le bouton ci-dessous.",
     signCta: "Signer le devis en ligne",
     questions:
@@ -64,6 +70,8 @@ const COPY = {
         .filter(Boolean)
         .join(" — ") + ".",
     attachment: "The document is attached to this email in PDF format.",
+    formules: (n: number, l: string) =>
+      `This quote offers ${n} options to choose from${l ? `: ${l}` : ""}. They are shown side by side in the attached document.`,
     sign: "You can sign your approval online, in one click, using the button below.",
     signCta: "Sign the quote online",
     questions:
@@ -88,6 +96,10 @@ export function DevisEnvoiEmail({
   const t = COPY[locale];
   const message = field(p, "messagePersonnalise", "");
   const signatureUrl = field(p, "signatureUrl", "");
+  const nbFormules = typeof p.nbFormules === "number" && p.nbFormules >= 2 ? p.nbFormules : 0;
+  const libellesFormules = Array.isArray(p.libellesFormules)
+    ? p.libellesFormules.filter((x): x is string => typeof x === "string").join(" / ")
+    : "";
 
   return (
     <EmailLayout
@@ -110,6 +122,9 @@ export function DevisEnvoiEmail({
         {t.body(field(p, "numero", ""), field(p, "montantLabel", ""))}{" "}
         {t.validity(field(p, "dateValiditeLabel", ""))}
       </Text>
+      {nbFormules > 0 && (
+        <Text style={emailStyles.paragraphStyle}>{t.formules(nbFormules, libellesFormules)}</Text>
+      )}
       <Text style={emailStyles.paragraphStyle}>{t.attachment}</Text>
       {signatureUrl !== "" && <Text style={emailStyles.paragraphStyle}>{t.sign}</Text>}
       <Text style={emailStyles.paragraphStyle}>{t.questions}</Text>

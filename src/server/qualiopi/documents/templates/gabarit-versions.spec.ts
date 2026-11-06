@@ -87,10 +87,12 @@ describe("le scénario réel qui a motivé le mécanisme", () => {
     expect(versionGabaritInstantane(instantaneApres)).toBe(courante);
   });
 
-  it("le devis est en v2 (mention handicap, L15) ; sa v1 reste rendable par l'archive", () => {
+  it("le devis est en v3 (formules, 06/11) ; ses v1 et v2 restent rendables par l'archive", () => {
     // Avant le 16/10 le devis restait en v1 : sa garde de certification change les
     // données, pas le texte. La mention handicap, elle, est du TEXTE rendu : v2, et la
     // v1 est archivée pour que les devis déjà signés se re-rendent à l'identique.
-    expect(versionGabaritCourante("devis")).toBe(2);
+    // 06/11 : le devis à formules passe la pièce en v3 ; la v2 (qui porte la mention
+    // handicap) est archivée telle quelle.
+    expect(versionGabaritCourante("devis")).toBe(3);
   });
 });
