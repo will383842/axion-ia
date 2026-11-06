@@ -24,6 +24,10 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 
 const createDevisActionMock = vi.fn();
+vi.mock("@/server/actions/qualiopi/devis-formules", () => ({
+  creerDevisFormulesAction: vi.fn(),
+}));
+
 vi.mock("@/server/actions/qualiopi/devis", () => ({
   createDevisAction: (...args: unknown[]) => createDevisActionMock(...args),
   // INT-T07-A : le bandeau d'attribution d'Axion Partners, sans attribution ici.

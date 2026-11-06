@@ -56,6 +56,8 @@ import { faireMonterLesFichesDesDevisSignes } from "@/features/dossier-client/de
 import { bandeauPourLeRole } from "@/server/partners/client-attributions";
 import { sirenDuClient } from "@/lib/siret";
 import { DevisPdf, type DevisData } from "@/server/qualiopi/documents/templates/devis";
+import { payloadDevisEnvoi } from "@/server/qualiopi/devis/email-devis-envoi";
+import type { VueFormules } from "@/server/qualiopi/devis/vue-formules";
 import {
   donneesPdfDevis,
   lireContextePdfDevis,
@@ -477,11 +479,14 @@ export async function sendDevisAction(
    * sans lui, il n'y a rien à signer, seulement un PDF posé sur un bucket.
    */
   let documentGenereId: string | null = null;
+  /** Formules du PDF envoyé (devis à formules) : l'e-mail décrit exactement ce PDF. */
+  let formulesEnvoyees: VueFormules | undefined;
   try {
     // Données du PDF : même fonction pure que l'aperçu du brouillon.
     const contexte = await lireContextePdfDevis();
     const identite = contexte.identite;
     const data: DevisData = donneesPdfDevis(devis, contexte, new Date());
+    formulesEnvoyees = data.formules;
 
     const yearGeneration = new Date().getFullYear();
     const doc = await generateDocument({
@@ -639,13 +644,15 @@ export async function sendDevisAction(
       "devis-envoi",
       contactEmail,
       "fr",
-      {
+      payloadDevisEnvoi({
         clientNom: devis.client.raisonSociale,
         numero: devis.numero,
+        montantTotalHtCents: devis.montantTotalHtCents,
         montantLabel: `${eurHt(devis.montantTotalHtCents)} HT`,
         dateValiditeLabel: devis.dateValidite.toLocaleDateString("fr-FR"),
-        ...(signatureUrl !== null ? { signatureUrl } : {}),
-      },
+        formules: formulesEnvoyees,
+        signatureUrl,
+      }),
       {
         attachments: [{ filename: `${devis.numero}.pdf`, r2Key: fichierPdfUrl }],
         entityType: "Devis",

@@ -7,6 +7,7 @@ import {
   indemniteSortieMaxCents,
   nbMaxFactures,
   prixMensuelNet,
+  prixPeriode,
   sha256Choix,
   sha256Offre,
   totauxFormule,
@@ -180,5 +181,22 @@ describe("hachages — durcissement (audit)", () => {
   it("même empreinte que json-canonique (empreinteCanonique) sur la sortie de parse", () => {
     const o = offreDevisV1.parse(offreFictive());
     expect(`sha256:${sha256Offre(o)}`).toBe(empreinteCanonique(versValeurJson(o)));
+  });
+});
+
+describe("relecture du lot 1 — bornes", () => {
+  it("prixPeriode refuse des mois négatifs, non entiers ou non finis", () => {
+    expect(() => prixPeriode(1000, 0, -1)).toThrow(RangeError);
+    expect(() => prixPeriode(1000, 0, 1.5)).toThrow(RangeError);
+    expect(() => prixPeriode(1000, 0, Number.NaN)).toThrow(RangeError);
+    expect(prixPeriode(1000, 0, 0)).toBe(0);
+    expect(prixPeriode(1000, 0, 12)).toBe(12000);
+  });
+  it("indemniteSortieMaxCents refuse un restant négatif ou non fini", () => {
+    expect(() => indemniteSortieMaxCents(-1, 5000)).toThrow(RangeError);
+    expect(() => indemniteSortieMaxCents(Number.NaN, 5000)).toThrow(RangeError);
+    expect(() => indemniteSortieMaxCents(Number.POSITIVE_INFINITY, 5000)).toThrow(RangeError);
+    expect(indemniteSortieMaxCents(0, 5000)).toBe(0);
+    expect(indemniteSortieMaxCents(10000, 5000)).toBe(5000);
   });
 });

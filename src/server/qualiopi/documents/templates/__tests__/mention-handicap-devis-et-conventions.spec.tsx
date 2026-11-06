@@ -149,7 +149,9 @@ describe("mention handicap — cohérence", () => {
   });
 
   it("🔑 les versions de gabarit ont été incrémentées UNE fois dans ce lot", () => {
-    expect(GABARIT_VERSIONS.devis).toBe(2);
+    // La mention a été introduite en v2 ; le devis est passé en v3 depuis (formules, 06/11),
+    // la v2 qui porte la mention est archivée. On vérifie la présence, pas le numéro courant.
+    expect(GABARIT_VERSIONS.devis).toBeGreaterThanOrEqual(2);
     expect(GABARIT_VERSIONS.convention).toBe(6);
     expect(GABARIT_VERSIONS.convention_tripartite).toBe(6);
   });

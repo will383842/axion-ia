@@ -25,6 +25,9 @@ import { gardePage } from "@/server/auth/garde-page";
 import { chargerAideDuProjet } from "@/features/dossier-client/aide-du-projet";
 import { CeQueLeClientADit } from "@/features/dossier-client/ce-que-le-client-a-dit";
 import { isUuid } from "@/lib/is-uuid";
+import { prisma } from "@/lib/prisma";
+import { formulesActives } from "@/server/qualiopi/devis/interrupteur-formules";
+import { TAUX_TVA_STANDARD } from "@/server/qualiopi/legal/tva";
 
 export const dynamic = "force-dynamic";
 
@@ -91,6 +94,17 @@ export default async function QualiopiDevisNewPage({ params, searchParams }: Pag
     projetId: sp.projetId,
   });
 
+  // Mode formules : proposé SEULEMENT si l'interrupteur est allumé (éteint par défaut) ;
+  // les textes copiés dans l'offre sont ceux de la bibliothèque « actifs par défaut ».
+  const formulesOn = await formulesActives();
+  const textesParDefaut = formulesOn
+    ? await prisma.devisTexteBibliotheque.findMany({
+        where: { archiveAt: null, actifParDefaut: true },
+        orderBy: [{ formule: "asc" }, { nature: "asc" }, { ordre: "asc" }],
+        select: { id: true, version: true, texte: true },
+      })
+    : [];
+
   const formulaire = (
     <DevisForm
       clients={clientOptions}
@@ -100,6 +114,19 @@ export default async function QualiopiDevisNewPage({ params, searchParams }: Pag
         label: ACTIVITE_LABELS[value],
       }))}
       basePath={basePath}
+      {...(formulesOn
+        ? {
+            formules: {
+              tvaStandardPct: TAUX_TVA_STANDARD,
+              textes: textesParDefaut.map((t) => ({
+                bibliothequeId: t.id,
+                version: String(t.version),
+                texte: t.texte,
+                actif: true,
+              })),
+            },
+          }
+        : {})}
       {...(defaultClientId !== undefined ? { defaultClientId } : {})}
       {...(projetId !== null ? { projetId } : {})}
     />

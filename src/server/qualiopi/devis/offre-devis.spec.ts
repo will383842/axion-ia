@@ -192,3 +192,41 @@ describe("offreDevisV1 — bornes (audit)", () => {
     expect(echec(mono)).toBe(true);
   });
 });
+
+describe("relecture du lot 1 — quantité et engagement", () => {
+  const avecQuantite = (quantite: number) => {
+    const o = offreFictive();
+    return { ...o, achat: { ...o.achat!, lignes: [{ ...o.achat!.lignes[0]!, quantite }] } };
+  };
+  it("quantité : entier ou 2 décimales au plus", () => {
+    expect(echec(avecQuantite(1))).toBe(false);
+    expect(echec(avecQuantite(2.5))).toBe(false);
+    expect(echec(avecQuantite(0.25))).toBe(false);
+    expect(echec(avecQuantite(1.005))).toBe(true);
+    expect(echec(avecQuantite(1 / 3))).toBe(true);
+  });
+  it("quantité : plafonnée", () => {
+    expect(echec(avecQuantite(1_000_001))).toBe(true);
+  });
+  const avecEngagement = (engagementMois: 0 | 3 | 6 | 12 | 24, mois: (1 | 2 | 6 | 12)[]) => {
+    const o = offreFictive();
+    return {
+      ...o,
+      abonnement: {
+        ...o.abonnement!,
+        engagementMois,
+        periodes: mois.map((m) => ({ mois: m, remiseBps: 0 })),
+      },
+    };
+  };
+  it("engagement : multiple de chaque période proposée", () => {
+    expect(echec(avecEngagement(12, [1, 2, 6, 12]))).toBe(false);
+    expect(echec(avecEngagement(24, [12]))).toBe(false);
+    expect(echec(avecEngagement(6, [12]))).toBe(true);
+    expect(echec(avecEngagement(3, [2]))).toBe(true);
+    expect(echec(avecEngagement(3, [1]))).toBe(false);
+  });
+  it("sans engagement : toute période est permise", () => {
+    expect(echec(avecEngagement(0, [1, 2, 6, 12]))).toBe(false);
+  });
+});

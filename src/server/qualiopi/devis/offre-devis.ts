@@ -17,7 +17,7 @@ export const FORMULES = ["achat", "abonnement"] as const;
 export type Formule = (typeof FORMULES)[number];
 
 /** Borné à 2 000 000 000 : `Devis.montantTotalHtCents` est un Int 32 bits. */
-const CENTS_MAX = 2_000_000_000;
+export const CENTS_MAX = 2_000_000_000;
 const cents = z.number().int().min(0).max(CENTS_MAX);
 /** Points de base : 10000 = 100 %. Pas de maximum = remise > 100 % = prix négatif. */
 const BPS_MAX = 10000;
@@ -36,11 +36,21 @@ const tauxTva = z
   // taux entiers (bps/100 exact) y sont sans écart d'arrondi.
   .refine((v) => v % 100 === 0, "Taux de TVA : multiple de 100 points de base");
 const texte = z.string().trim().min(1);
+/**
+ * Quantité : entier ou 2 décimales au plus, plafonnée. Une quantité en virgule flottante
+ * quelconque (1/3) ferait dériver `Math.round(q × p)` d'un centime selon le chemin de calcul.
+ */
+const QUANTITE_MAX = 1_000_000;
+const quantite = z
+  .number()
+  .positive()
+  .max(QUANTITE_MAX)
+  .refine((q) => Math.abs(q * 100 - Math.round(q * 100)) < 1e-9, "Quantité : 2 décimales au plus");
 
 const ligne = z
   .object({
     libelle: texte,
-    quantite: z.number().positive(),
+    quantite: quantite,
     prixHtCents: cents,
     tauxTvaBps: tauxTva,
   })
@@ -152,6 +162,15 @@ const abonnement = z
     const mois = a.periodes.map((p) => p.mois);
     if (new Set(mois).size !== mois.length) {
       ctx.addIssue({ code: "custom", message: "Les périodes doivent avoir des mois distincts." });
+    }
+    // Engagement multiple de CHAQUE période proposée : sinon `nbMaxFactures` (plancher de
+    // engagement ÷ période) facturerait moins que l'engagement promis (3 mois en périodes de 2).
+    if (a.engagementMois > 0 && mois.some((m) => a.engagementMois % m !== 0)) {
+      ctx.addIssue({
+        code: "custom",
+        path: ["engagementMois"],
+        message: "L'engagement doit être un multiple de chaque période proposée.",
+      });
     }
   });
 

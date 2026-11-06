@@ -5365,6 +5365,31 @@ model Devis {
   @@map("devis")
 }
 
+/// Bibliothèque des textes du devis à formules (avantages, inconvénients, prérequis,
+/// clauses). Table posée par la migration 20261104120000_devis_formules. ARCHIVAGE
+/// seulement : un trigger SQL refuse tout DELETE/TRUNCATE. Modifier = nouvelle version,
+/// l'ancienne est archivée. Les textes sont des projets « à valider » (Will + juriste).
+/// rgpd: technique — textes commerciaux génériques de l'organisme ; aucune donnée sur une personne
+model DevisTexteBibliotheque {
+  id             String    @id @default(uuid()) @db.Uuid
+  /// achat | abonnement | commun (CHECK SQL).
+  formule        String    @db.VarChar(12)
+  /// avantage | inconvenient | prerequis | clause (CHECK SQL).
+  nature         String    @db.VarChar(20)
+  texte          String    @db.Text
+  actifParDefaut Boolean   @default(false) @map("actif_par_defaut")
+  ordre          Int       @default(0)
+  version        Int       @default(1)
+  aValider       Boolean   @default(true) @map("a_valider")
+  archiveAt      DateTime? @map("archive_at")
+  majParAdminId  String?   @map("maj_par_admin_id") @db.Uuid
+  createdAt      DateTime  @default(now()) @map("created_at")
+  updatedAt      DateTime  @default(now()) @updatedAt @map("updated_at")
+
+  @@index([formule, nature, ordre])
+  @@map("devis_textes_bibliotheque")
+}
+
 /// Brouillon du parcours guidé « Nouvelle vente » (wizard admin, plan 2026-08-05).
 ///
 /// Une session TrainingSession ne PEUT PAS être brouillon (5 colonnes NOT NULL,

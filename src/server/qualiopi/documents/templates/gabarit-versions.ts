@@ -89,6 +89,7 @@ export type TypeGabaritSignable =
  * | `mandat_opco` | 1 | 04/10 — premier texte (INT-T66-A) : mandat spécial, limité, révocable, sans pouvoir de recevoir des fonds ; relu par la juriste avant fusion |
  * | `autorisation_captation` | 1 | 10/10 — S6a : entre dans la table pour être rendue en exemplaire signé ; texte inchangé depuis l'origine |
  * | `devis` | 2 | 16/10 — L15 (NC12, indicateur 26) : mention handicap (référent, contact handicap@axion-ia.com, possibilité d'adaptation) dans « Conditions du devis ». **v1 archivée** |
+ * | `devis` | 3 | 06/11 — devis à formules (lot 3) : section « formules A et B côte à côte » (prestations, options, totaux, échéancier, abonnement, engagement, préavis, indemnité de sortie maximale en euros, maintenance, garantie, services tiers). Sans offre, le texte imprimé est celui de la v2 ; l'incrément est gardé par prudence (branche de fond ajoutée). **v2 archivée** |
  * | `convention` | 6 | 16/10 — L15 : même mention, section non numérotée « Accessibilité et situation de handicap » avant les signatures. **v5 archivée** |
  * | `convention_tripartite` | 6 | 16/10 — L15 : même mention, mot pour mot. **v5 archivée** |
  * | les autres | 1 | texte inchangé depuis l'origine |
@@ -126,7 +127,8 @@ export type TypeGabaritSignable =
  */
 export const GABARIT_VERSIONS: Record<TypeGabaritSignable, number> = {
   /* v2 — 16/10/2026, L15 : mention handicap ajoutée (texte rendu changé, donc incrément). */
-  devis: 2,
+  /* v3 — 06/11/2026, devis à formules (lot 3) : branche « formules » ; v2 archivée. */
+  devis: 3,
   /*
     v5 — 04/10/2026, INT-T65-A : clause de condition suspensive OPCO.
 

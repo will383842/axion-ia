@@ -18,6 +18,14 @@
 import { useEffect, useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { createDevisAction, lireBandeauAttributionAction } from "@/server/actions/qualiopi/devis";
+import { creerDevisFormulesAction } from "@/server/actions/qualiopi/devis-formules";
+import {
+  construireOffre,
+  saisieVide,
+  type SaisieFormules,
+  type TexteCopie,
+} from "@/components/admin/qualiopi/devis-formules/saisie";
+import { DevisFormulesPanel } from "./DevisFormulesPanel";
 import { BandeauAttributionPartners } from "./BandeauAttributionPartners";
 import type { ActiviteFacturation } from "../../../../prisma/generated/client";
 
@@ -67,6 +75,11 @@ export interface DevisFormProps {
    * du 29/09) — l'aide « Ce que le client a dit » s'affiche À CÔTÉ, en lecture.
    */
   projetId?: string;
+  /**
+   * Mode « formules » : fourni par la page SEULEMENT quand l'interrupteur
+   * `qualiopi.devis_formules.actif` est allumé. Absent = formulaire inchangé.
+   */
+  formules?: { textes: TexteCopie[]; tvaStandardPct: number };
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -176,6 +189,7 @@ export function DevisForm({
   basePath,
   defaultClientId,
   projetId,
+  formules,
 }: DevisFormProps): React.ReactElement {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
@@ -219,7 +233,13 @@ export function DevisForm({
   // Lot OPCO A7d : choisit le barème et l'année civile de l'enveloppe.
   const [dateDebutSession, setDateDebutSession] = useState<string>("");
 
-  const showOpco = financementSuggere === "opco";
+  // Mode formules (interrupteur allumé seulement) : activité implémentation ou site web.
+  const [modeFormules, setModeFormules] = useState(false);
+  const [saisieFormules, setSaisieFormules] = useState<SaisieFormules>(() =>
+    saisieVide(formules?.tvaStandardPct),
+  );
+
+  const showOpco = financementSuggere === "opco" && !modeFormules;
   const total = totalHtCents(lignes);
 
   // ── Lignes helpers ──
@@ -293,6 +313,29 @@ export function DevisForm({
 
     if (!clientId) {
       setError("Veuillez sélectionner un client.");
+      return;
+    }
+
+    if (modeFormules && formules !== undefined) {
+      if (activite !== "implementation" && activite !== "site_web") {
+        setError("Le devis à formules s'applique aux activités implémentation et site web.");
+        return;
+      }
+      const offre = construireOffre(saisieFormules, formules.textes);
+      if (!offre.ok) {
+        setError(offre.erreurs.join(" · "));
+        return;
+      }
+      const acteurActivite = activite;
+      startTransition(async () => {
+        const r = await creerDevisFormulesAction({
+          clientId,
+          offre: offre.offre,
+          activite: acteurActivite,
+        });
+        if ("error" in r) setError(r.error);
+        else router.push(`${basePath}/${r.data.id}`);
+      });
       return;
     }
 
@@ -402,277 +445,325 @@ export function DevisForm({
         </div>
       </section>
 
-      {/* ── Lignes ── */}
-      <section className="rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] p-[var(--space-admin-5)]">
-        <h2 className="mb-[var(--space-admin-4)] text-[length:var(--text-admin-base)] font-semibold text-[color:var(--color-admin-fg)]">
-          Lignes du devis
-        </h2>
-
-        <div className="flex flex-col gap-[var(--space-admin-4)]">
-          {lignes.map((ligne, idx) => (
-            <div
-              key={idx}
-              className="grid grid-cols-1 gap-[var(--space-admin-3)] rounded-[var(--radius-admin-sm)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] p-[var(--space-admin-4)] sm:grid-cols-12"
-            >
-              {/* Désignation */}
-              <div className="sm:col-span-5">
-                <label className={labelCls} htmlFor={`ligne-${idx}-designation`}>
-                  Désignation <span className="text-[color:var(--color-admin-error)]">*</span>
-                </label>
-                <input
-                  id={`ligne-${idx}-designation`}
-                  type="text"
-                  value={ligne.designation}
-                  onChange={(e) => setDesignation(idx, e.target.value)}
-                  disabled={isPending}
-                  required
-                  maxLength={500}
-                  placeholder="Ex. Formation IA appliquée"
-                  className={inputCls}
-                />
-              </div>
-
-              {/* Offre catalogue (optionnel) */}
-              <div className="sm:col-span-3">
-                <label className={labelCls} htmlFor={`ligne-${idx}-offre`}>
-                  Offre catalogue
-                </label>
-                <select
-                  id={`ligne-${idx}-offre`}
-                  value={ligne.offreCode}
-                  onChange={(e) => selectOffre(idx, e.target.value)}
-                  disabled={isPending}
-                  className={selectCls}
-                >
-                  <option value="">— Aucune —</option>
-                  {offres.map((o) => (
-                    <option key={o.code} value={o.code}>
-                      {o.code} — {o.titreFr} · {o.prixLabelFr}
-                    </option>
-                  ))}
-                </select>
-                <NoteOffre offre={offres.find((o) => o.code === ligne.offreCode)} />
-              </div>
-
-              {/* Quantité */}
-              <div className="sm:col-span-2">
-                <label className={labelCls} htmlFor={`ligne-${idx}-quantite`}>
-                  Qté <span className="text-[color:var(--color-admin-error)]">*</span>
-                </label>
-                <input
-                  id={`ligne-${idx}-quantite`}
-                  type="number"
-                  value={ligne.quantite}
-                  onChange={(e) => updateLigne(idx, "quantite", e.target.value)}
-                  disabled={isPending}
-                  min="0.01"
-                  step="0.01"
-                  required
-                  className={inputCls}
-                />
-              </div>
-
-              {/* Prix unitaire HT en centimes */}
-              <div className="sm:col-span-2">
-                <label className={labelCls} htmlFor={`ligne-${idx}-prix`}>
-                  PU HT (€) <span className="text-[color:var(--color-admin-error)]">*</span>
-                </label>
-                <input
-                  id={`ligne-${idx}-prix`}
-                  type="number"
-                  value={
-                    ligne.prixUnitaireHtCents !== ""
-                      ? (parseInt(ligne.prixUnitaireHtCents, 10) / 100).toString()
-                      : ""
-                  }
-                  onChange={(e) => {
-                    const eurVal = parseFloat(e.target.value);
-                    updateLigne(
-                      idx,
-                      "prixUnitaireHtCents",
-                      isNaN(eurVal) ? "0" : Math.round(eurVal * 100).toString(),
-                    );
-                  }}
-                  disabled={isPending}
-                  min="0"
-                  step="0.01"
-                  required
-                  className={inputCls}
-                />
-              </div>
-
-              {/* Supprimer ligne */}
-              {lignes.length > 1 && (
-                <div className="flex items-end sm:col-span-12">
-                  <button
-                    type="button"
-                    onClick={() => removeLigne(idx)}
-                    disabled={isPending}
-                    className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-error)] hover:underline"
-                  >
-                    Supprimer cette ligne
-                  </button>
-                </div>
-              )}
-            </div>
-          ))}
-        </div>
-
-        <div className="mt-[var(--space-admin-4)] flex items-center justify-between">
-          <button
-            type="button"
-            onClick={addLigne}
-            disabled={isPending}
-            className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-accent)] hover:underline"
-          >
-            + Ajouter une ligne
-          </button>
-          <p className="text-[length:var(--text-admin-sm)] font-semibold text-[color:var(--color-admin-fg)]">
-            Total HT : <span className="tabular-nums">{formatEur(total)}</span>
-          </p>
-        </div>
-      </section>
-
-      {/* ── Financement ── */}
-      <section className="rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] p-[var(--space-admin-5)]">
-        <h2 className="mb-[var(--space-admin-4)] text-[length:var(--text-admin-base)] font-semibold text-[color:var(--color-admin-fg)]">
-          Financement
-        </h2>
-
-        <div className="grid grid-cols-1 gap-[var(--space-admin-4)] sm:grid-cols-2">
-          <div className={fieldCls}>
-            <label className={labelCls} htmlFor="devis-activite">
-              Activité *
-            </label>
-            <select
-              id="devis-activite"
-              value={activite}
-              onChange={(e) => setActivite(e.target.value as ActiviteFacturation | "")}
+      {formules !== undefined ? (
+        <section className="rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] p-[var(--space-admin-5)]">
+          <label className="flex items-center gap-[var(--space-admin-2)] text-[length:var(--text-admin-sm)] font-semibold">
+            <input
+              type="checkbox"
+              checked={modeFormules}
               disabled={isPending}
-              className={selectCls}
+              onChange={(e) => {
+                setModeFormules(e.target.checked);
+                if (e.target.checked && activite !== "implementation" && activite !== "site_web") {
+                  setActivite("implementation");
+                }
+              }}
+            />
+            Devis à formules (achat / mise en place + abonnement)
+          </label>
+          {modeFormules ? (
+            <div className="mt-[var(--space-admin-3)] max-w-xs">
+              <label className={labelCls} htmlFor="formules-activite">
+                Activité
+              </label>
+              <select
+                id="formules-activite"
+                value={activite}
+                disabled={isPending}
+                onChange={(e) => setActivite(e.target.value as ActiviteFacturation)}
+                className="w-full rounded-[var(--radius-admin-sm)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] px-[var(--space-admin-3)] py-[var(--space-admin-2)] text-[length:var(--text-admin-sm)]"
+              >
+                <option value="implementation">Implémentation</option>
+                <option value="site_web">Site web</option>
+              </select>
+            </div>
+          ) : null}
+        </section>
+      ) : null}
+
+      {modeFormules && formules !== undefined ? (
+        <DevisFormulesPanel
+          saisie={saisieFormules}
+          onChange={setSaisieFormules}
+          disabled={isPending}
+        />
+      ) : null}
+
+      {/* ── Lignes ── */}
+      {!modeFormules ? (
+        <section className="rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] p-[var(--space-admin-5)]">
+          <h2 className="mb-[var(--space-admin-4)] text-[length:var(--text-admin-base)] font-semibold text-[color:var(--color-admin-fg)]">
+            Lignes du devis
+          </h2>
+
+          <div className="flex flex-col gap-[var(--space-admin-4)]">
+            {lignes.map((ligne, idx) => (
+              <div
+                key={idx}
+                className="grid grid-cols-1 gap-[var(--space-admin-3)] rounded-[var(--radius-admin-sm)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] p-[var(--space-admin-4)] sm:grid-cols-12"
+              >
+                {/* Désignation */}
+                <div className="sm:col-span-5">
+                  <label className={labelCls} htmlFor={`ligne-${idx}-designation`}>
+                    Désignation <span className="text-[color:var(--color-admin-error)]">*</span>
+                  </label>
+                  <input
+                    id={`ligne-${idx}-designation`}
+                    type="text"
+                    value={ligne.designation}
+                    onChange={(e) => setDesignation(idx, e.target.value)}
+                    disabled={isPending}
+                    required
+                    maxLength={500}
+                    placeholder="Ex. Formation IA appliquée"
+                    className={inputCls}
+                  />
+                </div>
+
+                {/* Offre catalogue (optionnel) */}
+                <div className="sm:col-span-3">
+                  <label className={labelCls} htmlFor={`ligne-${idx}-offre`}>
+                    Offre catalogue
+                  </label>
+                  <select
+                    id={`ligne-${idx}-offre`}
+                    value={ligne.offreCode}
+                    onChange={(e) => selectOffre(idx, e.target.value)}
+                    disabled={isPending}
+                    className={selectCls}
+                  >
+                    <option value="">— Aucune —</option>
+                    {offres.map((o) => (
+                      <option key={o.code} value={o.code}>
+                        {o.code} — {o.titreFr} · {o.prixLabelFr}
+                      </option>
+                    ))}
+                  </select>
+                  <NoteOffre offre={offres.find((o) => o.code === ligne.offreCode)} />
+                </div>
+
+                {/* Quantité */}
+                <div className="sm:col-span-2">
+                  <label className={labelCls} htmlFor={`ligne-${idx}-quantite`}>
+                    Qté <span className="text-[color:var(--color-admin-error)]">*</span>
+                  </label>
+                  <input
+                    id={`ligne-${idx}-quantite`}
+                    type="number"
+                    value={ligne.quantite}
+                    onChange={(e) => updateLigne(idx, "quantite", e.target.value)}
+                    disabled={isPending}
+                    min="0.01"
+                    step="0.01"
+                    required
+                    className={inputCls}
+                  />
+                </div>
+
+                {/* Prix unitaire HT en centimes */}
+                <div className="sm:col-span-2">
+                  <label className={labelCls} htmlFor={`ligne-${idx}-prix`}>
+                    PU HT (€) <span className="text-[color:var(--color-admin-error)]">*</span>
+                  </label>
+                  <input
+                    id={`ligne-${idx}-prix`}
+                    type="number"
+                    value={
+                      ligne.prixUnitaireHtCents !== ""
+                        ? (parseInt(ligne.prixUnitaireHtCents, 10) / 100).toString()
+                        : ""
+                    }
+                    onChange={(e) => {
+                      const eurVal = parseFloat(e.target.value);
+                      updateLigne(
+                        idx,
+                        "prixUnitaireHtCents",
+                        isNaN(eurVal) ? "0" : Math.round(eurVal * 100).toString(),
+                      );
+                    }}
+                    disabled={isPending}
+                    min="0"
+                    step="0.01"
+                    required
+                    className={inputCls}
+                  />
+                </div>
+
+                {/* Supprimer ligne */}
+                {lignes.length > 1 && (
+                  <div className="flex items-end sm:col-span-12">
+                    <button
+                      type="button"
+                      onClick={() => removeLigne(idx)}
+                      disabled={isPending}
+                      className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-error)] hover:underline"
+                    >
+                      Supprimer cette ligne
+                    </button>
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+
+          <div className="mt-[var(--space-admin-4)] flex items-center justify-between">
+            <button
+              type="button"
+              onClick={addLigne}
+              disabled={isPending}
+              className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-accent)] hover:underline"
             >
-              <option value="">— Sélectionner une activité —</option>
-              {activites.map((a) => (
-                <option key={a.value} value={a.value}>
-                  {a.label}
-                </option>
-              ))}
-            </select>
-            <p className="mt-[var(--space-admin-1)] text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
-              Détermine le régime de TVA applicable et conditionne le passage en facture. Sans elle,
-              le devis ne pourra pas être facturé.
+              + Ajouter une ligne
+            </button>
+            <p className="text-[length:var(--text-admin-sm)] font-semibold text-[color:var(--color-admin-fg)]">
+              Total HT : <span className="tabular-nums">{formatEur(total)}</span>
             </p>
           </div>
+        </section>
+      ) : null}
 
-          <div className={fieldCls}>
-            <label className={labelCls} htmlFor="devis-financement">
-              Financement suggéré
-            </label>
-            <select
-              id="devis-financement"
-              value={financementSuggere}
-              onChange={(e) => setFinancementSuggere(e.target.value as FinancementSuggere)}
-              disabled={isPending}
-              className={selectCls}
-            >
-              {FINANCEMENT_OPTIONS.map((opt) => (
-                <option key={opt.value} value={opt.value}>
-                  {opt.label}
-                </option>
-              ))}
-            </select>
+      {/* ── Financement ── */}
+      {!modeFormules ? (
+        <section className="rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] p-[var(--space-admin-5)]">
+          <h2 className="mb-[var(--space-admin-4)] text-[length:var(--text-admin-base)] font-semibold text-[color:var(--color-admin-fg)]">
+            Financement
+          </h2>
+
+          <div className="grid grid-cols-1 gap-[var(--space-admin-4)] sm:grid-cols-2">
+            <div className={fieldCls}>
+              <label className={labelCls} htmlFor="devis-activite">
+                Activité *
+              </label>
+              <select
+                id="devis-activite"
+                value={activite}
+                onChange={(e) => setActivite(e.target.value as ActiviteFacturation | "")}
+                disabled={isPending}
+                className={selectCls}
+              >
+                <option value="">— Sélectionner une activité —</option>
+                {activites.map((a) => (
+                  <option key={a.value} value={a.value}>
+                    {a.label}
+                  </option>
+                ))}
+              </select>
+              <p className="mt-[var(--space-admin-1)] text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
+                Détermine le régime de TVA applicable et conditionne le passage en facture. Sans
+                elle, le devis ne pourra pas être facturé.
+              </p>
+            </div>
+
+            <div className={fieldCls}>
+              <label className={labelCls} htmlFor="devis-financement">
+                Financement suggéré
+              </label>
+              <select
+                id="devis-financement"
+                value={financementSuggere}
+                onChange={(e) => setFinancementSuggere(e.target.value as FinancementSuggere)}
+                disabled={isPending}
+                className={selectCls}
+              >
+                {FINANCEMENT_OPTIONS.map((opt) => (
+                  <option key={opt.value} value={opt.value}>
+                    {opt.label}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            {/* OPCO — champs complémentaires */}
+            {showOpco && (
+              <>
+                <div className={fieldCls}>
+                  <label className={labelCls} htmlFor="devis-opco-modalite">
+                    Modalité OPCO
+                  </label>
+                  <select
+                    id="devis-opco-modalite"
+                    value={modaliteOpco}
+                    onChange={(e) => setModaliteOpco(e.target.value as ModaliteOpco)}
+                    disabled={isPending}
+                    className={selectCls}
+                  >
+                    {MODALITE_OPCO_OPTIONS.map((opt) => (
+                      <option key={opt.value} value={opt.value}>
+                        {opt.label}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                <div className={fieldCls}>
+                  <label className={labelCls} htmlFor="devis-opco-participants">
+                    Nb. stagiaires
+                  </label>
+                  <input
+                    id="devis-opco-participants"
+                    type="number"
+                    value={nbParticipants}
+                    onChange={(e) => setNbParticipants(e.target.value)}
+                    disabled={isPending}
+                    min="1"
+                    step="1"
+                    placeholder="Ex. 8"
+                    className={inputCls}
+                  />
+                </div>
+
+                <div className={fieldCls}>
+                  <label className={labelCls} htmlFor="devis-opco-duree">
+                    Durée (heures)
+                  </label>
+                  <input
+                    id="devis-opco-duree"
+                    type="number"
+                    value={dureeHeures}
+                    onChange={(e) => setDureeHeures(e.target.value)}
+                    disabled={isPending}
+                    min="0.5"
+                    step="0.5"
+                    placeholder="Ex. 14"
+                    className={inputCls}
+                  />
+                </div>
+
+                <div className={fieldCls}>
+                  <label className={labelCls} htmlFor="devis-opco-enveloppe">
+                    Enveloppe OPCO restante (€, optionnel)
+                  </label>
+                  <input
+                    id="devis-opco-enveloppe"
+                    type="number"
+                    value={enveloppeRestante}
+                    onChange={(e) => setEnveloppeRestante(e.target.value)}
+                    disabled={isPending}
+                    min="0"
+                    step="0.01"
+                    placeholder="Défaut : plafond annuel moins ce que l'OPCO a déjà pris en charge"
+                    className={inputCls}
+                  />
+                </div>
+
+                <div className={fieldCls}>
+                  <label className={labelCls} htmlFor="devis-opco-debut-session">
+                    Début prévu de la session (optionnel)
+                  </label>
+                  <input
+                    id="devis-opco-debut-session"
+                    type="date"
+                    value={dateDebutSession}
+                    onChange={(e) => setDateDebutSession(e.target.value)}
+                    disabled={isPending}
+                    className={inputCls}
+                  />
+                </div>
+              </>
+            )}
           </div>
-
-          {/* OPCO — champs complémentaires */}
-          {showOpco && (
-            <>
-              <div className={fieldCls}>
-                <label className={labelCls} htmlFor="devis-opco-modalite">
-                  Modalité OPCO
-                </label>
-                <select
-                  id="devis-opco-modalite"
-                  value={modaliteOpco}
-                  onChange={(e) => setModaliteOpco(e.target.value as ModaliteOpco)}
-                  disabled={isPending}
-                  className={selectCls}
-                >
-                  {MODALITE_OPCO_OPTIONS.map((opt) => (
-                    <option key={opt.value} value={opt.value}>
-                      {opt.label}
-                    </option>
-                  ))}
-                </select>
-              </div>
-
-              <div className={fieldCls}>
-                <label className={labelCls} htmlFor="devis-opco-participants">
-                  Nb. stagiaires
-                </label>
-                <input
-                  id="devis-opco-participants"
-                  type="number"
-                  value={nbParticipants}
-                  onChange={(e) => setNbParticipants(e.target.value)}
-                  disabled={isPending}
-                  min="1"
-                  step="1"
-                  placeholder="Ex. 8"
-                  className={inputCls}
-                />
-              </div>
-
-              <div className={fieldCls}>
-                <label className={labelCls} htmlFor="devis-opco-duree">
-                  Durée (heures)
-                </label>
-                <input
-                  id="devis-opco-duree"
-                  type="number"
-                  value={dureeHeures}
-                  onChange={(e) => setDureeHeures(e.target.value)}
-                  disabled={isPending}
-                  min="0.5"
-                  step="0.5"
-                  placeholder="Ex. 14"
-                  className={inputCls}
-                />
-              </div>
-
-              <div className={fieldCls}>
-                <label className={labelCls} htmlFor="devis-opco-enveloppe">
-                  Enveloppe OPCO restante (€, optionnel)
-                </label>
-                <input
-                  id="devis-opco-enveloppe"
-                  type="number"
-                  value={enveloppeRestante}
-                  onChange={(e) => setEnveloppeRestante(e.target.value)}
-                  disabled={isPending}
-                  min="0"
-                  step="0.01"
-                  placeholder="Défaut : plafond annuel moins ce que l'OPCO a déjà pris en charge"
-                  className={inputCls}
-                />
-              </div>
-
-              <div className={fieldCls}>
-                <label className={labelCls} htmlFor="devis-opco-debut-session">
-                  Début prévu de la session (optionnel)
-                </label>
-                <input
-                  id="devis-opco-debut-session"
-                  type="date"
-                  value={dateDebutSession}
-                  onChange={(e) => setDateDebutSession(e.target.value)}
-                  disabled={isPending}
-                  className={inputCls}
-                />
-              </div>
-            </>
-          )}
-        </div>
-      </section>
+        </section>
+      ) : null}
 
       {/* ── Mention TVA ── */}
       <section className="rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-surface)] p-[var(--space-admin-4)]">

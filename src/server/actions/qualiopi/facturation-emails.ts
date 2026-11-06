@@ -26,6 +26,10 @@ import {
   creerTokenDocument,
   TokenDocumentError,
 } from "@/server/qualiopi/documents/signature/token-document";
+import {
+  formulesDepuisMetadata,
+  payloadDevisEnvoi,
+} from "@/server/qualiopi/devis/email-devis-envoi";
 import { preparerEnvoiFactureEmail } from "@/server/qualiopi/financements/facture-envoi-email";
 
 const eur = (cents: number): string =>
@@ -74,6 +78,13 @@ export async function envoyerDevisEmailAction(
     },
   });
   if (!devis) return { error: "Devis introuvable." };
+  const pieceEnvoyee =
+    devis.documentGenereId !== null
+      ? await prisma.documentGenere.findUnique({
+          where: { id: devis.documentGenereId },
+          select: { metadata: true },
+        })
+      : null;
 
   const to = input.to ?? devis.client.contactEmail ?? null;
   if (to === null) {
@@ -127,16 +138,17 @@ export async function envoyerDevisEmailAction(
     "devis-envoi",
     to,
     "fr",
-    {
+    payloadDevisEnvoi({
       clientNom: devis.client.raisonSociale,
       numero: devis.numero,
+      montantTotalHtCents: devis.montantTotalHtCents,
       montantLabel: `${eur(devis.montantTotalHtCents)} HT`,
       dateValiditeLabel: dateFr(devis.dateValidite),
-      ...(signatureUrl !== null ? { signatureUrl } : {}),
-      ...(input.messagePersonnalise !== undefined
-        ? { messagePersonnalise: input.messagePersonnalise }
-        : {}),
-    },
+      // Formules figées dans la pièce déjà envoyée : l'e-mail décrit le PDF joint.
+      formules: formulesDepuisMetadata(pieceEnvoyee?.metadata),
+      signatureUrl,
+      messagePersonnalise: input.messagePersonnalise,
+    }),
     {
       attachments: [{ filename: `${devis.numero}.pdf`, r2Key: devis.fichierPdfUrl }],
       entityType: "Devis",
