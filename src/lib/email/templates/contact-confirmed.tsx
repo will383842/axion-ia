@@ -32,7 +32,8 @@ const COPY = {
     cta: "Réserver un appel",
     // Ajout du 2026-11-06 (ordre de Will) : le formulaire accepte n'importe quelle
     // adresse ; si quelqu'un a saisi celle d'un tiers, ce tiers sait quoi faire.
-    pasVous: "Si vous n'êtes pas à l'origine de ce message, ignorez-le ou répondez-nous : nous effaçons vos données.",
+    pasVous:
+      "Si vous n'êtes pas à l'origine de ce message, ignorez-le ou répondez-nous : nous effaçons vos données.",
     refRow: (id: string) => `Référence : ${id}`,
   },
   en: {
@@ -42,7 +43,8 @@ const COPY = {
     body: "Your message has arrived. You will have a reply within 48 working hours.",
     next: "For urgent topics (session within 7 days), book a call with us directly.",
     cta: "Book a call",
-    pasVous: "If you did not send this message, please ignore it or reply to us: we will erase your data.",
+    pasVous:
+      "If you did not send this message, please ignore it or reply to us: we will erase your data.",
     refRow: (id: string) => `Reference: ${id}`,
   },
 } as const;
