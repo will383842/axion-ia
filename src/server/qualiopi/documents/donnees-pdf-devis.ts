@@ -24,6 +24,9 @@ import {
   TAUX_TVA_STANDARD,
   type RegimeTva,
 } from "@/server/qualiopi/legal/tva";
+import { offreDevisV1 } from "@/server/qualiopi/devis/offre-devis";
+import { formulesActives } from "@/server/qualiopi/devis/interrupteur-formules";
+import { vueFormules, type VueFormules } from "@/server/qualiopi/devis/vue-formules";
 import type { DevisData } from "./templates/devis";
 import type { LigneFacture } from "./templates/facture";
 
@@ -65,6 +68,12 @@ export interface DevisPourPdf {
   montantOpcoEstimeCents: number | null;
   resteAChargeCents: number | null;
   dateValidite: Date;
+  /**
+   * Offre à formules (Json). ABSENT ou NULL = devis classique, rendu inchangé.
+   * ⚠️ La colonne n'existe pas encore en base (migration du lot 0) : `SELECT_DEVIS_POUR_PDF`
+   * ne la lit pas, donc tous les appelants passent aujourd'hui `undefined`.
+   */
+  offre?: unknown;
   client: {
     type: string;
     raisonSociale: string;
@@ -107,6 +116,35 @@ export interface ContextePdfDevis {
   regimeTva: RegimeTva;
   tauxStandard: number;
   certificationObtenue: boolean;
+  /**
+   * Interrupteur `qualiopi.devis_formules.actif`. Absent = ÉTEINT : une offre éventuelle
+   * est alors ignorée et le devis est rendu comme avant.
+   */
+  formulesActives?: boolean | undefined;
+}
+
+/** Une offre stockée est illisible : on n'imprime pas un devis à 0 € à sa place. */
+export class OffreDevisInvalideError extends Error {
+  constructor(detail: string) {
+    super(`Offre du devis invalide : ${detail}`);
+    this.name = "OffreDevisInvalideError";
+  }
+}
+
+/**
+ * Vue des formules, ou `undefined` si l'interrupteur est éteint ou si le devis n'a pas
+ * d'offre. UNE seule porte pour le PDF et pour l'e-mail.
+ */
+export function formulesDuDevis(
+  offre: unknown,
+  actif: boolean | undefined,
+): VueFormules | undefined {
+  if (actif !== true || offre === null || offre === undefined) return undefined;
+  const parsed = offreDevisV1.safeParse(offre);
+  if (!parsed.success) {
+    throw new OffreDevisInvalideError(parsed.error.issues[0]?.message ?? "schéma non conforme");
+  }
+  return vueFormules(parsed.data);
 }
 
 /** Lectures de configuration (aucune écriture). */
@@ -119,6 +157,7 @@ export async function lireContextePdfDevis(): Promise<ContextePdfDevis> {
     regimeTva,
     tauxStandard,
     certificationObtenue: isQualiopiCertificationObtenue(),
+    formulesActives: await formulesActives(),
   };
 }
 
@@ -154,6 +193,8 @@ export function donneesPdfDevis(
     contexte.certificationObtenue,
   );
 
+  const formules = formulesDuDevis(devis.offre, contexte.formulesActives);
+
   return {
     numero: devis.numero,
     dateEmission: formatDate(maintenant),
@@ -170,6 +211,7 @@ export function donneesPdfDevis(
       ...(devis.client.contactEmail !== null ? { email: devis.client.contactEmail } : {}),
     },
     lignes,
+    ...(formules !== undefined ? { formules } : {}),
     regimeTva,
     tauxTvaStandardPercent: tauxStandard,
     ...(devis.refClient !== null ? { refClient: devis.refClient } : {}),

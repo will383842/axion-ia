@@ -95,9 +95,10 @@ const EMPREINTES: Readonly<
   Record<TypeGabaritSignable, { readonly sha: string; readonly version: number }>
 > = {
   devis: {
-    // v2 — 16/10/2026 : mention handicap (L15, NC12) ; v1 archivée.
-    sha: "c702f29f1febb462cc3461591a8704b13c1512fa0e42b18219febccac6d4c811",
-    version: 2,
+    // v3 — 06/11/2026 : devis à formules, formules A et B côte à côte (lot 3) ; v2 archivée.
+    // (v2 — 16/10/2026 : mention handicap, L15, NC12 ; v1 archivée.)
+    sha: "70f99c862cad6bc0fa9b2f7473a06bc4d05b665e57b41e52d0a24f791d3815f9",
+    version: 3,
   },
   convention: {
     // v6 — 16/10/2026 : mention handicap (L15, NC12) ; v5 archivée.
@@ -305,6 +306,8 @@ const EMPREINTES_ARCHIVES: Readonly<Record<string, string>> = {
   "convention-tripartite.v5.tsx":
     "b46c9072efe9f2013c499629f2af2364e6d56a92a3c35f83c353c5dfb16817d4",
   "devis.v1.tsx": "bfd05ad0ef5d538342d23a8deeff1b69f10c8fb9acdad6f5dd88a1cb79fc1f90",
+  // Copie conforme du gabarit courant du 06/11/2026 (empreinte identique à celle de la v2 courante).
+  "devis.v2.tsx": "c702f29f1febb462cc3461591a8704b13c1512fa0e42b18219febccac6d4c811",
   "contrat-formation.v1.tsx": "4afe9d19dac33437e8970ecbad091af861e8a5bce4f01b35ac4fceaed264e4cd",
   "releve-connexion.v1.tsx": "958909a208a6f56c286c67f68694982e9668b48232872553c683ac68aee44ae7",
   "mentions-figees.ts": "6f570713a14786affb5a2a2bc2dd73f61e0ff1546dcf9ab896917ff03eb6f199",
