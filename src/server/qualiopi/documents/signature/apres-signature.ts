@@ -34,6 +34,7 @@
  * (alerte `exemplaire_signe_non_transmis`, cron du positionnement).
  */
 
+import { proposerPlansApresAcceptation } from "@/server/qualiopi/devis/proposer-plans";
 import * as Sentry from "@sentry/nextjs";
 import { prisma } from "@/lib/prisma";
 import { sendTelegram } from "@/lib/telegram";
@@ -219,6 +220,10 @@ async function accepterDevis(documentGenereId: string): Promise<void> {
   } catch (err) {
     Sentry.captureException(err, { tags: { action: "devis_signe_fait_client" } });
   }
+  // Devis à formules : plans récurrents PROPOSÉS en `pause` (lot 5). Après le COMMIT, hors
+  // transaction, fail-soft ; inerte interrupteur éteint ou devis sans offre. Aucune facture,
+  // aucun e-mail.
+  for (const id of vises) await proposerPlansApresAcceptation(id, "signature_complete");
 }
 
 /**

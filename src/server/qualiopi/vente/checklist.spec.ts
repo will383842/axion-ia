@@ -162,6 +162,44 @@ describe("construireChecklistVente — sous-états du devis envoyé", () => {
     expect(devis?.detail).toContain("ne peut pas signer en ligne");
   });
 
+  it("🔴 envoyé par le canal MAISON (lien de signature émis, aucune soumission DocuSeal) : simple attente", () => {
+    const items = construireChecklistVente(
+      baseInput({
+        devis: {
+          statut: "envoye",
+          fichierPdfUrl: "documents/2026/devis/AXI-DOC-2026-001.pdf",
+          docusealSubmissionId: null,
+          signatureMaison: true,
+          sentAt: "2026-08-01T09:00:00.000Z",
+        },
+        session: null,
+      }),
+    );
+    const devis = items.find((i) => i.key === "devis");
+    expect(devis?.etat).toBe("a_faire");
+    expect(devis?.detail).toContain("attente de signature");
+    expect(devis?.detail).not.toContain("aucune soumission");
+    expect(devis?.detail).not.toContain("ne peut pas signer en ligne");
+  });
+
+  it("envoyé sans aucun canal (ni maison ni DocuSeal) : message sans parler de « soumission »", () => {
+    const items = construireChecklistVente(
+      baseInput({
+        devis: {
+          statut: "envoye",
+          fichierPdfUrl: "x.pdf",
+          docusealSubmissionId: null,
+          signatureMaison: false,
+          sentAt: null,
+        },
+        session: null,
+      }),
+    );
+    const devis = items.find((i) => i.key === "devis");
+    expect(devis?.detail).toContain("ne peut pas signer en ligne");
+    expect(devis?.detail).not.toContain("soumission");
+  });
+
   it("envoyé SANS PDF : bloqué, le client n'a rien reçu à lire", () => {
     const items = construireChecklistVente(
       baseInput({

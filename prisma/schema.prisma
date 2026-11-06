@@ -1651,13 +1651,13 @@ model AdminUser {
 
   // Console éditoriale (lot 0) — relation inverse de `EdMembre.userId`.
   // Aucune colonne n'est ajoutée ici : la clé étrangère vit sur `ed_membres`.
-  edMembre EdMembre?
+  edMembre                    EdMembre?
+  auditTerrainSessionsCreees  AuditTerrainSession[] @relation("AuditTerrainSessionCreePar")
+  auditTerrainRapportsValides AuditTerrainRapport[] @relation("AuditTerrainRapportValidePar")
 
   @@index([role])
   @@index([status])
   @@map("admin_users")
-  auditTerrainSessionsCreees  AuditTerrainSession[] @relation("AuditTerrainSessionCreePar")
-  auditTerrainRapportsValides AuditTerrainRapport[]  @relation("AuditTerrainRapportValidePar")
 }
 
 // ============================================================
@@ -5249,17 +5249,17 @@ model Client {
   questionnairesAvantAudit QuestionnaireAvantAudit[] @relation("QuestionnaireAvantAuditClient")
   crmDossierSynchro        CrmDossierSynchro?
   /// Facture établie hors console (relation seule, aucune colonne sur `clients`, ADR 0053).
-  factureHorsConsole ClientFactureHorsConsole?
+  factureHorsConsole       ClientFactureHorsConsole?
   /// Fiche client en 7 onglets (relations seules, aucune colonne sur `clients`, ADR 0053) : tâches, notes, profil, étiquettes.
-  taches     ClientTache[]
-  notesDatees ClientNote[]
-  auditTerrainSessions AuditTerrainSession[]
-  profil     ClientProfil?
-  etiquettes ClientEtiquette[]
+  taches                   ClientTache[]
+  notesDatees              ClientNote[]
+  auditTerrainSessions     AuditTerrainSession[]
+  profil                   ClientProfil?
+  etiquettes               ClientEtiquette[]
   /// Demandes du Tour France IA rattachées à la fiche (relation seule, aucune colonne sur `clients`).
-  tourDemandes TourDemande[] @relation("TourDemandeClient")
+  tourDemandes             TourDemande[]             @relation("TourDemandeClient")
   /// Rapports d'analyse avant audit (relation seule, aucune colonne sur `clients`, 2026-11-02).
-  rapportsAvantAudit RapportAvantAudit[]
+  rapportsAvantAudit       RapportAvantAudit[]
 
   @@index([statut])
   @@index([nafCode])
@@ -5346,12 +5346,18 @@ model Devis {
   livraisonDebutAt DateTime? @map("livraison_debut_at")
   livreAt          DateTime? @map("livre_at")
 
-  /// Devis à formules (colonnes posées par la migration 20261104120000_devis_formules,
-  /// lot 2). `offre` = OffreDevisV1 validée (NULL = devis classique, inchangé) ; l'empreinte
-  /// est posée avec elle (CHECK : les deux NULL ou les deux non NULL). Écrites seulement
-  /// derrière l'interrupteur `qualiopi.devis_formules.actif`.
-  offre       Json?
-  offreSha256 String? @map("offre_sha256") @db.Char(64)
+  /// Devis à formules (colonnes posées par la migration 20261104120000_devis_formules).
+  /// `offre` NULL = devis classique, comportement INCHANGÉ. Tant que l'interrupteur
+  /// `qualiopi.devis_formules.actif` est éteint, rien n'écrit ces colonnes.
+  offre          Json?
+  offreSha256    String? @map("offre_sha256") @db.Char(64)
+  /// 'achat' | 'abonnement' (CHECK en base). Posée à l'acceptation (lot 4).
+  formuleRetenue String? @map("formule_retenue") @db.VarChar(12)
+  /// Choix canonique du client (formule, maintenance, périodicité), scellé à la signature.
+  choixRetenu    Json?   @map("choix_retenu")
+
+  /// Plans récurrents PROPOSÉS à l'acceptation (statut `pause` tant que Will n'a pas validé).
+  plansRecurrents PlanRecurrent[]
 
   /// Lot 4 — posés UNE fois, à l'acceptation (signature complète), depuis le choix scellé sur la
   /// ligne de signature du client : `formuleRetenue` / `choixRetenu` / `choixSignatureId`.
@@ -7757,7 +7763,7 @@ model DocumentSignature {
   facteurVerification FacteurVerificationSignature? @map("facteur_verification")
   /// Version des CGV acceptées à la signature d'un DEVIS par jeton (ex. `2026-10-04`). NULL sur
   /// les autres pièces et canaux, et sur les preuves antérieures. HACHÉE à partir de la version 3.
-  cgvVersion String? @map("cgv_version") @db.VarChar(40)
+  cgvVersion          String?                       @map("cgv_version") @db.VarChar(40)
 
   /// Sceau V4 (devis à formules, migrations 20261104120000 et 20261106100000). `choixOffre` est le
   /// choix canonique du client (la ligne `axionia` recopie celui du client) ; son empreinte est
@@ -8199,6 +8205,18 @@ model PlanRecurrent {
   notes                 String?             @db.Text
   createdAt             DateTime            @default(now()) @map("created_at")
   updatedAt             DateTime            @updatedAt @map("updated_at")
+
+  /// Plan PROPOSÉ par un devis à formules (colonnes posées par la migration
+  /// 20261104120000_devis_formules). Un plan lié à un devis naît en `pause` et ne
+  /// facture rien tant que Will ne l'a pas validé (`valideAt`). Index unique partiel
+  /// (devis_id, nature) en SQL : un seul plan d'une nature donnée par devis.
+  devisId          String?   @map("devis_id") @db.Uuid
+  devis            Devis?    @relation(fields: [devisId], references: [id], onDelete: SetNull)
+  /// 'maintenance' | 'abonnement' | 'hebergement' (CHECK en base).
+  nature           String?   @db.VarChar(20)
+  proposeAt        DateTime? @map("propose_at")
+  valideAt         DateTime? @map("valide_at")
+  valideParAdminId String?   @map("valide_par_admin_id") @db.Uuid
 
   factures FactureFormation[]
 
@@ -12626,9 +12644,10 @@ model AuditMission {
   createdAt DateTime           @default(now()) @map("created_at")
   updatedAt DateTime           @updatedAt @map("updated_at")
 
-  feeLines            TrainerFeeLine[]
-  facturesFormation   FactureFormation[]
-  dossiersFinancement DossierFinancement[]
+  feeLines             TrainerFeeLine[]
+  facturesFormation    FactureFormation[]
+  dossiersFinancement  DossierFinancement[]
+  auditTerrainSessions AuditTerrainSession[]
 
   @@index([clientId])
   @@index([devisId])
@@ -12636,8 +12655,6 @@ model AuditMission {
   @@index([statut])
   @@index([dateDebut])
   @@index([dateDebut, dateFin])
-  auditTerrainSessions AuditTerrainSession[]
-
   @@map("audit_missions")
 }
 
@@ -13934,7 +13951,7 @@ model ClientContact {
   createdAt             DateTime       @default(now()) @map("created_at")
   updatedAt             DateTime       @updatedAt @map("updated_at")
 
-  adresses ClientContactAdresse[]
+  adresses     ClientContactAdresse[]
   /// Tâches de la fiche qui visent cette personne (relation seule ; SET NULL).
   clientTaches ClientTache[]
 
@@ -14041,17 +14058,17 @@ model Projet {
 /// Le détail libre d'un type « autre » se dit dans le titre du projet, déjà traité par le dossier.
 /// rgpd: technique — un type de prestation, une étape et un montant d'entreprise, aucune parole ni identité de personne
 model ProjetSuivi {
-  projetId     String   @id @map("projet_id") @db.Uuid
-  projet       Projet   @relation(fields: [projetId], references: [id], onDelete: Restrict)
-  type         String   @db.VarChar(30)
-  etapeForcee  String?  @map("etape_forcee") @db.VarChar(30)
-  montantCents Int?     @map("montant_cents")
+  projetId        String    @id @map("projet_id") @db.Uuid
+  projet          Projet    @relation(fields: [projetId], references: [id], onDelete: Restrict)
+  type            String    @db.VarChar(30)
+  etapeForcee     String?   @map("etape_forcee") @db.VarChar(30)
+  montantCents    Int?      @map("montant_cents")
   /// Probabilité de signature, 0 à 100 (CHECK en base). NULL = non estimée. Ajoutée le 2026-10-29.
   probabilitePct  Int?      @map("probabilite_pct") @db.SmallInt
   /// Date de clôture prévue (jour). NULL = non estimée.
   cloturePrevueLe DateTime? @map("cloture_prevue_le") @db.Date
-  creeLe       DateTime @default(now()) @map("cree_le")
-  majLe        DateTime @updatedAt @map("maj_le")
+  creeLe          DateTime  @default(now()) @map("cree_le")
+  majLe           DateTime  @updatedAt @map("maj_le")
 
   @@index([type])
   @@map("projet_suivis")
@@ -14077,22 +14094,22 @@ model ClientFactureHorsConsole {
 /// MIGRATION SEULE : aucun écrivain dans cette PR.
 /// rgpd: dossier-client
 model ClientTache {
-  id               String    @id @default(uuid()) @db.Uuid
-  clientId         String    @map("client_id") @db.Uuid
-  client           Client    @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  id               String         @id @default(uuid()) @db.Uuid
+  clientId         String         @map("client_id") @db.Uuid
+  client           Client         @relation(fields: [clientId], references: [id], onDelete: Cascade)
   /// Clé composée (SQL brut) : projet du même client.
-  projetId         String?   @map("projet_id") @db.Uuid
-  projet           Projet?   @relation(fields: [projetId], references: [id], onDelete: SetNull)
+  projetId         String?        @map("projet_id") @db.Uuid
+  projet           Projet?        @relation(fields: [projetId], references: [id], onDelete: SetNull)
   /// Clé composée (SQL brut) : la personne est du même client.
-  contactId        String?   @map("contact_id") @db.Uuid
+  contactId        String?        @map("contact_id") @db.Uuid
   contact          ClientContact? @relation(fields: [contactId], references: [id], onDelete: SetNull)
-  intitule         String    @db.VarChar(300)
-  echeanceLe       DateTime  @map("echeance_le") @db.Date
-  responsableLabel String    @map("responsable_label") @db.VarChar(80)
-  faiteLe          DateTime? @map("faite_le")
-  origine          String    @default("manuelle") @db.VarChar(20)
-  createdAt        DateTime  @default(now()) @map("created_at")
-  updatedAt        DateTime  @updatedAt @map("updated_at")
+  intitule         String         @db.VarChar(300)
+  echeanceLe       DateTime       @map("echeance_le") @db.Date
+  responsableLabel String         @map("responsable_label") @db.VarChar(80)
+  faiteLe          DateTime?      @map("faite_le")
+  origine          String         @default("manuelle") @db.VarChar(20)
+  createdAt        DateTime       @default(now()) @map("created_at")
+  updatedAt        DateTime       @updatedAt @map("updated_at")
 
   @@index([clientId, echeanceLe])
   @@index([projetId])
@@ -18055,49 +18072,49 @@ model GuideReseauOrigine {
 /// · Statuts en VARCHAR (comme les tables voisines) : aucune énumération Postgres, la migration
 ///   reste additive et sans effet sur l'ancien conteneur pendant la bascule.
 model TourDemande {
-  id                     String    @id @default(uuid()) @db.Uuid
+  id                   String    @id @default(uuid()) @db.Uuid
   /// Chiffré (`encryptPii`).
-  nom                    String    @db.Text
+  nom                  String    @db.Text
   /// Chiffrée (`encryptPii`).
-  email                  String    @db.Text
+  email                String    @db.Text
   /// Chiffré (`encryptPii`).
-  telephone              String    @db.Text
+  telephone            String    @db.Text
   /// `hashEmailForLookup(email)` : clé du rendez-vous, de la fiche, du CRM et du RGPD. Nulle après effacement.
-  emailHash              String?   @map("email_hash") @db.VarChar(64)
+  emailHash            String?   @map("email_hash") @db.VarChar(64)
   /// La ville telle que tapée (texte libre : jamais écrite sur une fiche ; « [effacé] » après un effacement).
-  villeSaisie            String    @map("ville_saisie") @db.VarChar(80)
+  villeSaisie          String    @map("ville_saisie") @db.VarChar(80)
   /// Clé du référentiel des villes, ou `?<texte normalisé>` hors référentiel ou ambiguë.
-  villeCle               String    @map("ville_cle") @db.VarChar(100)
+  villeCle             String    @map("ville_cle") @db.VarChar(100)
   /// Nom du référentiel ; nul = jamais affichée en public.
-  villeNom               String?   @map("ville_nom") @db.VarChar(100)
+  villeNom             String?   @map("ville_nom") @db.VarChar(100)
   /// recue | relancee_main | ecartee | effacee_rgpd
-  statut                 String    @default("recue") @db.VarChar(20)
-  statutChangeLe         DateTime? @map("statut_change_le")
-  statutChangeParId      String?   @map("statut_change_par_id") @db.Uuid
+  statut               String    @default("recue") @db.VarChar(20)
+  statutChangeLe       DateTime? @map("statut_change_le")
+  statutChangeParId    String?   @map("statut_change_par_id") @db.Uuid
   /// Vrai si la demande compte pour sa ville (aucune clé de comptage n'était déjà prise).
-  compte                 Boolean   @default(false)
+  compte               Boolean   @default(false)
   /// `villeCle:HMAC(adresse canonique)` — une personne ne compte qu'une fois par ville. `efface:<id>:p` après un effacement.
-  cleComptagePersonne    String?   @unique(map: "tour_demandes_cle_comptage_personne_key") @map("cle_comptage_personne") @db.VarChar(170)
+  cleComptagePersonne  String?   @unique(map: "tour_demandes_cle_comptage_personne_key") @map("cle_comptage_personne") @db.VarChar(170)
   /// `villeCle:HMAC(domaine)` — domaine PROFESSIONNEL seulement, jamais un webmail. `efface:<id>:d` après un effacement.
-  cleComptageDomaine     String?   @unique(map: "tour_demandes_cle_comptage_domaine_key") @map("cle_comptage_domaine") @db.VarChar(170)
+  cleComptageDomaine   String?   @unique(map: "tour_demandes_cle_comptage_domaine_key") @map("cle_comptage_domaine") @db.VarChar(170)
   /// `villeCle:HMAC(9 derniers chiffres)`. `efface:<id>:t` après un effacement.
-  cleComptageTelephone   String?   @unique(map: "tour_demandes_cle_comptage_telephone_key") @map("cle_comptage_telephone") @db.VarChar(170)
+  cleComptageTelephone String?   @unique(map: "tour_demandes_cle_comptage_telephone_key") @map("cle_comptage_telephone") @db.VarChar(170)
   /// La demande qui tenait déjà la clé, pour un doublon.
-  doublonDeId            String?   @map("doublon_de_id") @db.Uuid
+  doublonDeId          String?   @map("doublon_de_id") @db.Uuid
   /// a_verifier | fiche_completee | a_arbitrer | sans_fiche | fiche_creee
-  rattachement           String    @default("a_verifier") @db.VarChar(20)
-  clientId               String?   @map("client_id") @db.Uuid
-  client                 Client?   @relation("TourDemandeClient", fields: [clientId], references: [id], onDelete: SetNull)
+  rattachement         String    @default("a_verifier") @db.VarChar(20)
+  clientId             String?   @map("client_id") @db.Uuid
+  client               Client?   @relation("TourDemandeClient", fields: [clientId], references: [id], onDelete: SetNull)
   /// `[{ ficheId, numero, raisonSociale, signal }]` : les fiches proches d'une demande « à arbitrer ». Jamais une fusion.
-  fichesProches          Json?     @map("fiches_proches")
-  depuis                 String?   @db.VarChar(60)
-  utmSource              String?   @map("utm_source") @db.VarChar(60)
-  utmMedium              String?   @map("utm_medium") @db.VarChar(60)
-  utmCampaign            String?   @map("utm_campaign") @db.VarChar(60)
-  utmContent             String?   @map("utm_content") @db.VarChar(60)
+  fichesProches        Json?     @map("fiches_proches")
+  depuis               String?   @db.VarChar(60)
+  utmSource            String?   @map("utm_source") @db.VarChar(60)
+  utmMedium            String?   @map("utm_medium") @db.VarChar(60)
+  utmCampaign          String?   @map("utm_campaign") @db.VarChar(60)
+  utmContent           String?   @map("utm_content") @db.VarChar(60)
   /// Empreinte de l'adresse IP (jamais l'adresse). Nulle après effacement.
-  ipHash                 String?   @map("ip_hash") @db.VarChar(64)
-  creeLe                 DateTime  @default(now()) @map("cree_le")
+  ipHash               String?   @map("ip_hash") @db.VarChar(64)
+  creeLe               DateTime  @default(now()) @map("cree_le")
 
   @@index([villeCle, compte], map: "tour_demandes_ville_cle_compte_idx")
   @@index([emailHash], map: "tour_demandes_email_hash_idx")

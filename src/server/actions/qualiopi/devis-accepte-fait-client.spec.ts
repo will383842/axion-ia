@@ -14,6 +14,7 @@ const h = vi.hoisted(() => ({
   tx: { devis: { update: vi.fn(), findUnique: vi.fn() } },
   p: {},
   monter: vi.fn(),
+  proposer: vi.fn(),
   emettre: vi.fn(),
   habilitation: vi.fn(),
   log: vi.fn(),
@@ -61,6 +62,9 @@ vi.mock("@/server/partners-sync/producteurs/devis", () => ({
 vi.mock("@/features/dossier-client/devis-signe-fait-client", () => ({
   faireMonterLesFichesDesDevisSignes: h.monter,
 }));
+vi.mock("@/server/qualiopi/devis/proposer-plans", () => ({
+  proposerPlansApresAcceptation: h.proposer,
+}));
 vi.mock("@/server/partners/client-attributions", () => ({ bandeauPourLeRole: vi.fn() }));
 vi.mock("@/lib/siret", () => ({ sirenDuClient: vi.fn() }));
 vi.mock("@/server/qualiopi/documents/templates/devis", () => ({ DevisPdf: {} }));
@@ -101,6 +105,16 @@ describe("acceptDevisAction", () => {
     );
     expect(h.emettre.mock.invocationCallOrder[0]!).toBeLessThan(
       h.monter.mock.invocationCallOrder[0]!,
+    );
+  });
+
+  it("propose les plans récurrents du devis APRÈS le commit (hors transaction), même si la montée échoue", async () => {
+    h.monter.mockRejectedValueOnce(new Error("montée"));
+    await acceptDevisAction(DEVIS);
+    expect(h.proposer).toHaveBeenCalledOnce();
+    expect(h.proposer).toHaveBeenCalledWith(DEVIS, "console");
+    expect(h.emettre.mock.invocationCallOrder[0]!).toBeLessThan(
+      h.proposer.mock.invocationCallOrder[0]!,
     );
   });
 

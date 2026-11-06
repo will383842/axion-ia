@@ -167,6 +167,13 @@ export function planifierFacturationDevis(input: {
   facturesLiees: FactureLieeResume[];
   devisNumero: string;
   acomptePercent?: number;
+  /**
+   * Devis à formules : montant HT de l'acompte IMPOSÉ par l'échéancier du devis
+   * (`echeancierPhases`, floor + dernier palier au reste). Absent = `round(total × % / 100)`,
+   * comportement historique INCHANGÉ. Sans cela, l'acompte facturé pourrait différer d'un
+   * centime du palier imprimé sur le devis.
+   */
+  montantAcompteHtCents?: number;
 }): PlanFacturationDevis {
   const totalDevisHtCents = input.lignesDevis.reduce(
     (acc, l) => acc + Math.round(l.quantite * l.prixUnitaireHtCents),
@@ -190,7 +197,8 @@ export function planifierFacturationDevis(input: {
           "Acompte impossible sur un devis multi-taux (le taux de l'acompte serait ambigu) — facturer la totalité, ou scinder le devis.",
       };
     }
-    const montantAcompteHtCents = Math.round((totalDevisHtCents * input.acomptePercent) / 100);
+    const montantAcompteHtCents =
+      input.montantAcompteHtCents ?? Math.round((totalDevisHtCents * input.acomptePercent) / 100);
     if (montantAcompteHtCents <= 0) {
       return { ok: false, erreur: "Montant d'acompte nul." };
     }
