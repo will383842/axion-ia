@@ -21,6 +21,7 @@ import { formulesActives } from "@/server/qualiopi/devis/interrupteur-formules";
 import { montantsDevis } from "@/server/qualiopi/devis/montants-devis";
 import { sha256Offre } from "@/server/qualiopi/devis/offre-calculs";
 import { offreDevisV1, type OffreDevisV1 } from "@/server/qualiopi/devis/offre-devis";
+import { lierDevisAuProjet, projetOuvrableDuClient } from "@/server/qualiopi/crm/devis-projet";
 import { nextNumero } from "@/server/qualiopi/numbering/allocate";
 import { withNumberRetry } from "@/server/qualiopi/numbering/retry";
 import { getQualiopiConfig } from "@/server/qualiopi/config/site-settings";
@@ -127,6 +128,8 @@ const creerSchema = z.object({
   offre: z.unknown(),
   activite: z.enum(["implementation", "site_web"]),
   refClient: z.string().trim().min(1).max(120).optional(),
+  /** Projet d'où le devis est ouvert : seul le LIEN `projet_devis` est écrit. */
+  projetId: z.string().uuid().optional(),
 });
 
 /** Crée un brouillon à formules (activité implémentation ou site web, client professionnel). */
@@ -143,6 +146,25 @@ export async function creerDevisFormulesAction(
   const d = deriver(p.data.offre);
   if (!d.ok) return { error: d.error };
 
+  // Le client est lu AVANT toute écriture : un identifiant inexistant donnerait sinon une
+  // violation de clé étrangère brute, et l'offre est réservée aux professionnels.
+  const client = await prisma.client.findUnique({
+    where: { id: p.data.clientId },
+    select: { type: true },
+  });
+  if (!client) return { error: "Client introuvable : sélectionnez un client existant." };
+  if (client.type !== "entreprise") {
+    return {
+      error: "Le devis à formules est réservé aux clients professionnels (entreprise).",
+    };
+  }
+  if (
+    p.data.projetId !== undefined &&
+    !(await projetOuvrableDuClient(prisma, p.data.projetId, p.data.clientId))
+  ) {
+    return { error: "Ce projet n'appartient pas à ce client (ou a été fusionné)." };
+  }
+
   const regime = await getQualiopiConfig("regime_tva");
   const mention = mentionTva(regimeTvaDepuisConfig(regime)) ?? LEGAL_MENTIONS.factureTvaAssujetti;
   const dateValidite = new Date();
@@ -157,7 +179,7 @@ export async function creerDevisFormulesAction(
           select: { numero: true },
         }),
       );
-      return tx.devis.create({
+      const devis = await tx.devis.create({
         data: {
           numero,
           clientId: p.data.clientId,
@@ -173,13 +195,26 @@ export async function creerDevisFormulesAction(
         },
         select: { id: true, numero: true },
       });
+      if (p.data.projetId !== undefined) {
+        await lierDevisAuProjet(tx, {
+          devisId: devis.id,
+          projetId: p.data.projetId,
+          clientId: p.data.clientId,
+          lieParId: session.userId,
+        });
+      }
+      return devis;
     }),
   );
   await logQualiopiActivity({
     action: "qualiopi.devis.create_formules",
     targetType: "Devis",
     targetId: created.id,
-    changes: { numero: created.numero, offreSha256: d.sha },
+    changes: {
+      numero: created.numero,
+      offreSha256: d.sha,
+      ...(p.data.projetId !== undefined ? { projetId: p.data.projetId } : {}),
+    },
     session,
   });
   return { data: { id: created.id, numero: created.numero } };

@@ -8,6 +8,7 @@ import { useRouter } from "next/navigation";
 import {
   ajouterTexteAction,
   archiverTexteAction,
+  definirActifParDefautAction,
   modifierTexteAction,
 } from "@/server/actions/qualiopi/devis-bibliotheque";
 import {
@@ -79,6 +80,17 @@ export function BibliothequeTextesDevis({
                 disabled={pending}
                 onChange={(e) => setEdition({ ...edition, [t.id]: e.target.value })}
               />
+              <label className="mt-[var(--space-admin-2)] flex items-center gap-[var(--space-admin-2)] text-[length:var(--text-admin-sm)]">
+                <input
+                  type="checkbox"
+                  checked={t.actifParDefaut}
+                  disabled={pending}
+                  onChange={(e) =>
+                    lancer(() => definirActifParDefautAction(t.id, e.target.checked))
+                  }
+                />
+                Actif par défaut à la saisie d&apos;un devis
+              </label>
               <div className="mt-[var(--space-admin-2)] flex gap-[var(--space-admin-4)]">
                 <button
                   type="button"
