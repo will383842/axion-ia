@@ -83,6 +83,8 @@ export const CODES_ALERTES_VISIO = {
    * est écarté (plus de réessai) et Will en est prévenu UNE fois (alerte agrégée, sans cible).
    */
   refusPorteDemande: "visio.fiche_demande_refus_porte",
+  /** Le bilan chiffré de l'essai à blanc de la fiche des demandes (une alerte par jour, que des nombres). */
+  bilanEssaiFicheDemande: "visio.fiche_demande_bilan_essai",
   // ── enregistreur (PR 5) ──
   /** Le worker ne relit pas le témoin de clé. */
   temoinCle: "visio.temoin_cle",
