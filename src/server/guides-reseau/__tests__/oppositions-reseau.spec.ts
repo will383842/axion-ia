@@ -1,0 +1,356 @@
+// @vitest-environment node
+//
+// `POST /api/interne/oppositions-reseau` — « stop » écrit en message privé. Base EN MÉMOIRE,
+// CRM et relances SIMULÉS, sans réseau, adresses de domaine réservé (.test). Aucune suppression.
+import { describe, it, expect, vi, beforeEach } from "vitest";
+import crypto from "node:crypto";
+import { NextRequest } from "next/server";
+
+type Ligne = Record<string, unknown>;
+const p2002 = () => Object.assign(new Error("Unique constraint failed"), { code: "P2002" });
+
+const { interdit, bd } = vi.hoisted(() => ({
+  interdit: async () => {
+    throw new Error("interdit : aucune suppression");
+  },
+  bd: {
+    oppositions: [] as Ligne[],
+    appelsPrisma: 0,
+    crm: [] as unknown[],
+    relances: [] as unknown[],
+    enqueueEmail: [] as unknown[],
+    sentry: [] as unknown[],
+    creerLeve: null as null | (() => Error),
+    concurrent: false,
+    n: 0,
+  },
+}));
+
+vi.mock("@/lib/prisma", () => ({
+  prisma: {
+    emailOpposition: {
+      findUnique: async ({ where }: { where: Ligne }) => {
+        bd.appelsPrisma++;
+        return bd.oppositions.find((l) => l.emailHash === where.emailHash) ?? null;
+      },
+      create: async ({ data }: { data: Ligne }) => {
+        bd.appelsPrisma++;
+        if (bd.creerLeve) throw bd.creerLeve();
+        if (bd.concurrent) {
+          // L'autre appel a posé la ligne entre notre lecture et notre création.
+          bd.oppositions.push({ id: `o${++bd.n}`, ...data });
+          throw p2002();
+        }
+        if (bd.oppositions.some((l) => l.emailHash === data.emailHash)) throw p2002();
+        const ligne = { id: `o${++bd.n}`, ...data };
+        bd.oppositions.push(ligne);
+        return { id: ligne.id };
+      },
+      delete: interdit,
+      deleteMany: interdit,
+    },
+    guideRequest: { delete: interdit, deleteMany: interdit },
+    newsletterSubscriber: { delete: interdit, deleteMany: interdit },
+    guideReseauReception: { delete: interdit, deleteMany: interdit },
+  },
+}));
+vi.mock("@/lib/rate-limit", () => ({ checkRateLimit: async () => ({ allowed: true }) }));
+vi.mock("@/server/crm-sync", () => ({
+  syncNewsletterOptOutToCrm: async (i: unknown) => {
+    bd.crm.push(i);
+  },
+}));
+vi.mock("@/features/commercial-application/relances-lead-apporteur", () => ({
+  annulerRelancesLeadApporteur: async (...a: unknown[]) => {
+    bd.relances.push(a);
+    return 0;
+  },
+}));
+vi.mock("@/server/queue/queues", () => ({
+  enqueueEmail: async (...a: unknown[]) => {
+    bd.enqueueEmail.push(a);
+    return { enqueued: true };
+  },
+}));
+vi.mock("@sentry/nextjs", () => ({
+  captureException: (e: unknown, ctx: unknown) => bd.sentry.push([e, ctx]),
+}));
+
+import { POST } from "@/app/api/interne/oppositions-reseau/route";
+import { signerRequete } from "@/server/videos/signature";
+
+const SECRET = "g".repeat(40);
+const CHEMIN = "/api/interne/oppositions-reseau";
+const ADRESSE = "personne.secrete@exemple.test";
+const PARTIE_LOCALE = "personne.secrete";
+const CLE = "run_zernio_stop_0001";
+
+const valide = {
+  schemaVersion: 1,
+  cleIdempotence: CLE,
+  email: ADRESSE,
+  motif: "stop",
+  reseau: "instagram",
+};
+
+let dernierNonce = "";
+function appel(
+  corps: unknown = valide,
+  opt: { secret?: string; chemin?: string; decalage?: number; brut?: string } = {},
+): Promise<Response> {
+  const texte = opt.brut ?? JSON.stringify(corps);
+  const nonce = crypto.randomBytes(16).toString("hex");
+  dernierNonce = nonce;
+  const horodatage = String(Math.floor(Date.now() / 1000) + (opt.decalage ?? 0));
+  const signature = signerRequete({
+    secret: opt.secret ?? SECRET,
+    horodatage,
+    nonce,
+    methode: "POST",
+    chemin: opt.chemin ?? CHEMIN,
+    corps: texte,
+  });
+  return POST(
+    new NextRequest(`http://localhost${CHEMIN}`, {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+        "x-axion-horodatage": horodatage,
+        "x-axion-nonce": nonce,
+        "x-axion-signature": signature,
+      },
+      body: texte,
+    }),
+  );
+}
+
+const sorties: string[] = [];
+beforeEach(() => {
+  bd.oppositions.length = bd.crm.length = bd.relances.length = 0;
+  bd.enqueueEmail.length = bd.sentry.length = 0;
+  bd.appelsPrisma = 0;
+  bd.creerLeve = null;
+  bd.concurrent = false;
+  bd.n = 0;
+  sorties.length = 0;
+  process.env.OPPOSITIONS_RESEAU_ENABLED = "true";
+  process.env.GUIDES_RESEAU_HMAC_SECRET = SECRET;
+  delete process.env.GUIDES_RESEAU_HMAC_SECRET_PRECEDENT;
+  delete process.env.VIDEOS_STUDIO_HMAC_SECRET;
+  process.env.DATABASE_URL = "postgresql://u:p@db.example.test:5432/x";
+  for (const m of ["log", "info", "warn", "error", "debug"] as const) {
+    vi.spyOn(console, m).mockImplementation((...a: unknown[]) => {
+      sorties.push(a.map((x) => (typeof x === "string" ? x : JSON.stringify(x))).join(" "));
+    });
+  }
+});
+
+describe("interrupteur et secret", () => {
+  it.each([undefined, "1", "false", "TRUE", ""])(
+    "interrupteur « %s » → 503, rien lu",
+    async (v) => {
+      if (v === undefined) delete process.env.OPPOSITIONS_RESEAU_ENABLED;
+      else process.env.OPPOSITIONS_RESEAU_ENABLED = v;
+      const r = await appel();
+      expect(r.status).toBe(503);
+      expect((await r.json()).erreur).toBe("reception_eteinte");
+      expect(bd.appelsPrisma).toBe(0);
+      expect(bd.crm).toHaveLength(0);
+    },
+  );
+
+  it("sans secret → 503 reception_non_configuree", async () => {
+    delete process.env.GUIDES_RESEAU_HMAC_SECRET;
+    const r = await appel();
+    expect(r.status).toBe(503);
+    expect((await r.json()).erreur).toBe("reception_non_configuree");
+    expect(bd.appelsPrisma).toBe(0);
+  });
+
+  it("secret de 31 caractères → 503", async () => {
+    process.env.GUIDES_RESEAU_HMAC_SECRET = "x".repeat(31);
+    expect((await appel(valide, { secret: "x".repeat(31) })).status).toBe(503);
+    expect(bd.appelsPrisma).toBe(0);
+  });
+
+  it("seulement VIDEOS_STUDIO_HMAC_SECRET : AUCUN repli → 503", async () => {
+    delete process.env.GUIDES_RESEAU_HMAC_SECRET;
+    process.env.VIDEOS_STUDIO_HMAC_SECRET = SECRET;
+    const r = await appel();
+    expect(r.status).toBe(503);
+    expect(bd.appelsPrisma).toBe(0);
+  });
+});
+
+describe("signature", () => {
+  it("mauvaise signature → 401", async () => {
+    expect((await appel(valide, { secret: "z".repeat(40) })).status).toBe(401);
+    expect(bd.oppositions).toHaveLength(0);
+  });
+  it("horodatage hors fenêtre (> 300 s) → 401", async () => {
+    expect((await appel(valide, { decalage: -400 })).status).toBe(401);
+    expect(bd.oppositions).toHaveLength(0);
+  });
+  it("signature d'une autre route → 401", async () => {
+    const r = await appel(valide, { chemin: "/api/interne/demandes-guide-reseau" });
+    expect(r.status).toBe(401);
+    expect(bd.oppositions).toHaveLength(0);
+  });
+  it("secret précédent accepté pendant une rotation", async () => {
+    process.env.GUIDES_RESEAU_HMAC_SECRET = "n".repeat(40);
+    process.env.GUIDES_RESEAU_HMAC_SECRET_PRECEDENT = SECRET;
+    expect((await appel()).status).toBe(200);
+  });
+});
+
+describe("opposition", () => {
+  it("corps valide : une ligne source reseau-stop, CRM une fois, relances annulées", async () => {
+    const r = await appel();
+    expect(r.status).toBe(200);
+    expect(await r.json()).toEqual({ ok: true, type: "opposition", recue: true });
+    expect(bd.oppositions).toHaveLength(1);
+    expect(bd.oppositions[0]!.source).toBe("reseau-stop");
+    expect(bd.crm).toHaveLength(1);
+    expect(bd.relances).toHaveLength(1);
+    expect(bd.enqueueEmail).toHaveLength(0);
+  });
+
+  it("rejeu (nouveau nonce, même clé) : 200 identique, une ligne, CRM non rappelé", async () => {
+    const a = await appel();
+    const b = await appel();
+    expect(b.status).toBe(200);
+    expect(await b.json()).toEqual(await a.json());
+    expect(bd.oppositions).toHaveLength(1);
+    expect(bd.crm).toHaveLength(1);
+  });
+
+  it("adresse déjà écartée : 200 identique", async () => {
+    const a = await appel({ ...valide, email: "autre@exemple.test" });
+    const b = await appel();
+    const c = await appel();
+    expect(await c.json()).toEqual(await a.json());
+    expect(await b.json()).toEqual({ ok: true, type: "opposition", recue: true });
+  });
+
+  it("adresse en majuscules et espaces : même empreinte", async () => {
+    await appel();
+    await appel({ ...valide, email: `  ${ADRESSE.toUpperCase()} ` });
+    expect(bd.oppositions).toHaveLength(1);
+  });
+
+  it("deux appels simultanés (P2002 au second) : deux 200, une ligne", async () => {
+    const premier = await appel();
+    bd.oppositions.length = 0;
+    bd.concurrent = true;
+    const second = await appel();
+    expect(premier.status).toBe(200);
+    expect(second.status).toBe(200);
+    expect(await second.json()).toEqual(await premier.json());
+    expect(bd.oppositions).toHaveLength(1);
+  });
+
+  it("occurredAt valide ou hors fenêtre : accepté, jamais stocké", async () => {
+    const r1 = await appel({ ...valide, occurredAt: new Date().toISOString() });
+    const r2 = await appel({ ...valide, occurredAt: "2001-01-01T00:00:00.000Z" });
+    expect([r1.status, r2.status]).toEqual([200, 200]);
+    expect(JSON.stringify(bd.oppositions)).not.toContain("2001");
+  });
+});
+
+describe("corps refusé (422)", () => {
+  const cas: Array<[string, Ligne]> = [
+    ["type demande_effacement", { ...valide, type: "demande_effacement" }],
+    ["champ inconnu", { ...valide, surprise: "valeur-secrete-xyz" }],
+    ["motif autre", { ...valide, motif: "effacement" }],
+    ["réseau invalide", { ...valide, reseau: "myspace" }],
+    ["adresse invalide", { ...valide, email: "pas-une-adresse" }],
+    ["clé trop courte", { ...valide, cleIdempotence: "court" }],
+  ];
+  it.each(cas)("%s → 422 sans la valeur ni file d'e-mails", async (_n, corps) => {
+    const r = await appel(corps);
+    expect(r.status).toBe(422);
+    const texte = await r.text();
+    for (const v of ["valeur-secrete-xyz", "demande_effacement", "myspace", "pas-une-adresse"]) {
+      if (JSON.stringify(corps).includes(v)) expect(texte).not.toContain(v);
+    }
+    expect(bd.oppositions).toHaveLength(0);
+    expect(bd.enqueueEmail).toHaveLength(0);
+    expect(bd.crm).toHaveLength(0);
+  });
+
+  it("un champ inconnu est nommé, jamais sa valeur", async () => {
+    const r = await appel({ ...valide, surprise: "valeur-secrete-xyz" });
+    const j = await r.json();
+    expect(j.champs).toContain("surprise");
+  });
+
+  it("JSON invalide → 422", async () => {
+    expect((await appel(null, { brut: "{pas du json" })).status).toBe(422);
+  });
+
+  it("corps de 5 Ko → 413", async () => {
+    const r = await appel({ ...valide, remplissage: "a".repeat(5 * 1024) });
+    expect(r.status).toBe(413);
+    expect(bd.oppositions).toHaveLength(0);
+  });
+});
+
+describe("aucune suppression (mocks delete/deleteMany qui lèvent « interdit »)", () => {
+  it("tous les scénarios passent sans déclencher le moindre delete", async () => {
+    const statuts = [
+      (await appel()).status,
+      (await appel()).status,
+      (await appel({ ...valide, type: "demande_effacement" })).status,
+    ];
+    expect(statuts).toEqual([200, 200, 422]);
+    expect(sorties.join("\n")).not.toContain("interdit");
+  });
+});
+
+describe("aucune donnée de personne dans les sorties", () => {
+  const verifier = () => {
+    const tout = JSON.stringify([sorties, bd.sentry]) + dernierNonce;
+    for (const interdite of [ADRESSE, PARTIE_LOCALE, "exemple.test", CLE]) {
+      expect(tout).not.toContain(interdite);
+    }
+    expect(JSON.stringify([sorties, bd.sentry])).not.toContain(dernierNonce);
+  };
+
+  it("succès : seul l'événement structuré est journalisé", async () => {
+    await appel();
+    const evt = sorties.find((s) => s.includes("guides_reseau_opposition"));
+    expect(JSON.parse(evt!)).toEqual({
+      event: "guides_reseau_opposition",
+      reseau: "instagram",
+      motif: "stop",
+    });
+    verifier();
+  });
+
+  it("exception dont le message contient l'adresse", async () => {
+    bd.creerLeve = () => new Error(`échec pour ${ADRESSE} clé ${CLE}`);
+    const r = await appel();
+    expect(r.status).toBe(500);
+    expect(JSON.stringify(await r.json())).not.toContain(PARTIE_LOCALE);
+    verifier();
+  });
+
+  it("exception levée par le CRM, message contenant l'adresse", async () => {
+    const crm = await import("@/server/crm-sync");
+    vi.spyOn(crm, "syncNewsletterOptOutToCrm").mockRejectedValueOnce(
+      new Error(`CRM refuse ${ADRESSE}`),
+    );
+    const r = await appel();
+    // La ligne existe : « internal » puis estOpposee vrai → succès.
+    expect(r.status).toBe(200);
+    verifier();
+  });
+
+  it("internal puis estOpposee faux → 500 sans l'adresse", async () => {
+    bd.creerLeve = () => new Error("panne");
+    const r = await appel();
+    expect(r.status).toBe(500);
+    expect(await r.json()).toEqual({ ok: false, erreur: "erreur_interne" });
+    verifier();
+  });
+});
