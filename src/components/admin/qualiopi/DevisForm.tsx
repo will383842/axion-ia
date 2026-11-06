@@ -24,7 +24,7 @@ import {
   saisieVide,
   type SaisieFormules,
   type TexteCopie,
-} from "@/features/devis-formules/saisie";
+} from "@/components/admin/qualiopi/devis-formules/saisie";
 import { DevisFormulesPanel } from "./DevisFormulesPanel";
 import { BandeauAttributionPartners } from "./BandeauAttributionPartners";
 import type { ActiviteFacturation } from "../../../../prisma/generated/client";

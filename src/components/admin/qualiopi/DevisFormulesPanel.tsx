@@ -17,7 +17,7 @@ import {
   type PhaseSaisie,
   type Preavis,
   type SaisieFormules,
-} from "@/features/devis-formules/saisie";
+} from "@/components/admin/qualiopi/devis-formules/saisie";
 
 interface Props {
   saisie: SaisieFormules;

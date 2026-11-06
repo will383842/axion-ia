@@ -13,7 +13,7 @@ import {
   construireOffre,
   type SaisieFormules,
   type TexteCopie,
-} from "@/features/devis-formules/saisie";
+} from "@/components/admin/qualiopi/devis-formules/saisie";
 import { DevisFormulesPanel } from "./DevisFormulesPanel";
 
 interface Props {

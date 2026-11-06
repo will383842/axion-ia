@@ -17,7 +17,7 @@ import { prisma } from "@/lib/prisma";
 import { isUuid } from "@/lib/is-uuid";
 import { formulesActives } from "@/server/qualiopi/devis/interrupteur-formules";
 import { offreDevisV1 } from "@/server/qualiopi/devis/offre-devis";
-import { offreVersSaisie } from "@/features/devis-formules/saisie";
+import { offreVersSaisie } from "@/components/admin/qualiopi/devis-formules/saisie";
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
