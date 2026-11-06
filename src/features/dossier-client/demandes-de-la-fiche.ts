@@ -14,7 +14,7 @@ import "server-only";
  *
  * Seuls les types de demande qui créent une fiche (`TYPES_DEMANDE_AVEC_FICHE`, le prédicat de
  * `fiche-demande.ts`) sont lus : un autre type (recrutement, presse, partenariat…) est écarté
- * dans la requête même, son message n'est jamais chargé. Plafond : 20 demandes.
+ * dans la requête même, son message n'est jamais chargé. Plafond : 20 demandes (comptées après filtrage).
  *
  * ## Droit
  *
@@ -156,8 +156,8 @@ async function lireMessages(clientId: string): Promise<LigneMessage[]> {
   const empreinte = hashEmailForLookup(fiche?.contactEmail);
   const lignes = (await prisma.submission.findMany({
     where: {
+      // Une demande archivée est déjà traitée : elle reste dans l'historique.
       deletedAt: null,
-      archivedAt: null,
       // Le type est filtré ICI : un message d'un autre type n'est jamais chargé.
       OR: TYPES_DEMANDE_AVEC_FICHE.map((t) => ({ details: { path: ["unifiedType"], equals: t } })),
       AND: [
@@ -170,7 +170,8 @@ async function lireMessages(clientId: string): Promise<LigneMessage[]> {
       ],
     },
     orderBy: { submittedAt: "desc" },
-    take: PLAFOND_DEMANDES + 1,
+    // Lecture plus large que le plafond : le prédicat écarte ensuite des lignes.
+    take: PLAFOND_DEMANDES * 3,
     select: {
       id: true,
       type: true,
@@ -245,7 +246,7 @@ async function lireReponses(
 ): Promise<Map<string, ReponseDeLaDemande[]>> {
   const lignes = await prisma.submissionReply.findMany({
     where: { submissionId: { in: [...ids] } },
-    orderBy: { repliedAt: "asc" },
+    orderBy: { repliedAt: "desc" },
     take: 200,
     // Jamais `bodyHtml`.
     select: {
@@ -271,6 +272,8 @@ async function lireReponses(
     });
     parDemande.set(r.submissionId, liste);
   }
+  // Lues du plus récent au plus ancien (pour le plafond) ; affichées dans l'ordre chronologique.
+  for (const liste of parDemande.values()) liste.reverse();
   return parDemande;
 }
 
@@ -293,7 +296,7 @@ async function lireBrut(clientId: string, role: string | null | undefined): Prom
     enPanne("messages", e);
     return { demandes: [], plafondAtteint: false, pannes };
   }
-  const plafondAtteint = lignes.length > PLAFOND_DEMANDES;
+  const plafondAtteint = lignes.length > PLAFOND_DEMANDES; // lignes = liste déjà filtrée
   const messages = lignes.slice(0, PLAFOND_DEMANDES);
   if (messages.length === 0) return { demandes: [], plafondAtteint, pannes };
 

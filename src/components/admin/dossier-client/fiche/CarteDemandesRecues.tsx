@@ -1,6 +1,7 @@
 // « Demandes reçues » (onglet Résumé de la fiche) : le message du formulaire de contact, l'accusé de
 // réception automatique et les réponses de l'équipe. Composant SERVEUR, sans JavaScript client.
-// Tout texte de personne est rendu en TEXTE (React l'échappe) : jamais de HTML, jamais d'adresse.
+// Tout texte de personne est rendu en TEXTE (React l'échappe) : jamais de HTML. Toute adresse
+// e-mail glissée dans le motif d'un accusé est masquée (`masqueAdresses`).
 
 import Link from "next/link";
 
@@ -23,6 +24,10 @@ const jourHeure = (d: Date): string =>
     hour: "2-digit",
     minute: "2-digit",
   }).format(d);
+
+/** Masque toute adresse e-mail d'un texte libre (le motif d'un accusé peut citer l'adresse). */
+export const masqueAdresses = (t: string): string =>
+  t.replace(/[^\s@<>"',;:()]+@[^\s@<>"',;:()]+/g, "[adresse masquée]");
 
 const SOUS_TITRE =
   "mt-[var(--space-admin-2)] text-[length:var(--text-admin-xs)] font-semibold text-[color:var(--color-admin-fg-muted)]";
@@ -73,7 +78,7 @@ function Demande({
           <p className={TEXTE}>
             {LIBELLE_ETAT_ACCUSE[a.etat]}
             {a.date ? ` · ${jourHeure(a.date)}` : ""}
-            {a.motif ? ` · ${a.motif}` : ""}
+            {a.motif ? ` · ${masqueAdresses(a.motif)}` : ""}
           </p>
           {a.texte !== null ? (
             <p className={`${TEXTE} text-[color:var(--color-admin-fg-muted)]`}>{a.texte}</p>

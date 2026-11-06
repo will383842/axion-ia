@@ -168,7 +168,7 @@ export async function lireChronologie(
             ? "Demande reçue"
             : x.genre === "accuse"
               ? "Accusé automatique"
-              : "Réponse envoyée",
+              : "Réponse de l'équipe",
       }));
     }),
   );
