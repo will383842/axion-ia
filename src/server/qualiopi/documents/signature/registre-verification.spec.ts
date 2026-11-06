@@ -45,6 +45,7 @@ import { prisma } from "@/lib/prisma";
 import {
   calculerSelfHashDocument,
   HASH_VERSION_DOCUMENT,
+  COLONNES_V4_VIDES,
   type LigneDocumentSignature,
   type PartieSignataire,
   type TupleDocumentSignatureV3,
@@ -150,6 +151,7 @@ function chaine(
       hashVersion,
       facteurVerification: null,
       cgvVersion,
+      ...COLONNES_V4_VIDES,
     });
     prevHash = selfHash;
   });

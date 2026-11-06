@@ -50,6 +50,7 @@ import {
   emettreDevisSigne,
   transactionDevisSigne,
 } from "@/server/partners-sync/producteurs/devis";
+import { accepterDevisAFormules } from "@/server/qualiopi/devis/acceptation-formules";
 import { faireMonterLesFichesDesDevisSignes } from "@/features/dossier-client/devis-signe-fait-client";
 import type { PartieSignataire } from "./document-signature-hash";
 import { circuitPour } from "./parties-requises";
@@ -174,6 +175,20 @@ async function declencherPositionnement(documentGenereId: string): Promise<void>
  * l'événement `devis.signe` dans UNE transaction.
  */
 async function accepterDevis(documentGenereId: string): Promise<void> {
+  // Devis À FORMULES (lot 4) : recopie du choix scellé + acceptation + fait `commande.signee`
+  // dans UNE vraie transaction, canal Partners ouvert ou non. Aucun devis à formules → chemin
+  // ci-dessous, inchangé.
+  const formules = await accepterDevisAFormules(prisma, documentGenereId);
+  if (formules.traite) {
+    try {
+      await faireMonterLesFichesDesDevisSignes(prisma, formules.ids, {
+        origine: "signature_complete",
+      });
+    } catch (err) {
+      Sentry.captureException(err, { tags: { action: "devis_signe_fait_client" } });
+    }
+    return;
+  }
   const garde = { documentGenereId, statut: { in: ["envoye" as const, "expire" as const] } };
   const vises = await transactionDevisSigne(prisma, async (tx) => {
     const concernes = await devisConcernesPourEmission(tx, garde);

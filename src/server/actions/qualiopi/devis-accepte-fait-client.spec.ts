@@ -11,7 +11,7 @@ vi.mock("@sentry/nextjs", () => sentry);
 const DEVIS = "11111111-1111-4111-8111-111111111111";
 
 const h = vi.hoisted(() => ({
-  tx: { devis: { update: vi.fn() } },
+  tx: { devis: { update: vi.fn(), findUnique: vi.fn() } },
   p: {},
   monter: vi.fn(),
   emettre: vi.fn(),
@@ -83,6 +83,8 @@ import { acceptDevisAction } from "./devis";
 beforeEach(() => {
   vi.clearAllMocks();
   h.habilitation.mockResolvedValue({ userId: "adm-1", role: "admin" });
+  // Devis classique : aucune offre (le devis à formules a son test plus bas).
+  h.tx.devis.findUnique.mockResolvedValue({ offreSha256: null, formuleRetenue: null });
 });
 
 describe("acceptDevisAction", () => {
@@ -110,6 +112,25 @@ describe("acceptDevisAction", () => {
     expect(h.emettre).toHaveBeenCalledOnce();
     expect(h.log).toHaveBeenCalledOnce();
     expect(sentry.captureException).toHaveBeenCalledOnce();
+  });
+
+  it("🔴 devis À FORMULES sans formule retenue : l'acceptation manuelle est refusée, rien n'est écrit", async () => {
+    h.tx.devis.findUnique.mockResolvedValue({ offreSha256: "a".repeat(64), formuleRetenue: null });
+    const r = await acceptDevisAction(DEVIS);
+    expect(r).toMatchObject({ error: expect.stringContaining("formules") });
+    expect(h.tx.devis.update).not.toHaveBeenCalled();
+    expect(h.emettre).not.toHaveBeenCalled();
+    expect(h.monter).not.toHaveBeenCalled();
+    expect(h.log).not.toHaveBeenCalled();
+  });
+
+  it("devis à formules AVEC formule retenue : l'acceptation reste possible", async () => {
+    h.tx.devis.findUnique.mockResolvedValue({
+      offreSha256: "a".repeat(64),
+      formuleRetenue: "abonnement",
+    });
+    expect(await acceptDevisAction(DEVIS)).toEqual({ data: { id: DEVIS } });
+    expect(h.tx.devis.update).toHaveBeenCalledOnce();
   });
 
   it("identifiant invalide : rien n'est écrit, rien ne monte", async () => {

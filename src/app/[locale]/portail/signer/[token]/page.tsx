@@ -29,9 +29,16 @@ import { lireDevisASigner } from "@/server/qualiopi/documents/signature/devis-si
 import { circuitPour } from "@/server/qualiopi/documents/signature/parties-requises";
 import { mentionCompleteDocument } from "@/server/qualiopi/documents/signature/mentions-document";
 import {
+  apercuChoixAction,
   demanderCodeSignatureAction,
   signerPieceParJetonAction,
 } from "@/server/actions/qualiopi/piece-signature";
+import { devisSignableParFormules } from "@/server/qualiopi/devis/choix-signature";
+import { presenterOffre } from "@/server/qualiopi/devis/choix-affichage";
+import { formulesActives } from "@/server/qualiopi/devis/interrupteur-formules";
+import { sha256Offre } from "@/server/qualiopi/devis/offre-calculs";
+import { offreDevisV1 } from "@/server/qualiopi/devis/offre-devis";
+import type { OffreAffichee } from "@/server/qualiopi/devis/choix-affichage";
 import { codeRequis } from "@/server/qualiopi/documents/signature/contrat-cadre-signature";
 import { PieceSignatureForm } from "@/components/portail/PieceSignatureForm";
 import { lienTelechargement } from "@/lib/content-disposition";
@@ -197,6 +204,46 @@ export default async function SignerDevisPage({ params }: PageProps) {
     }
   }
 
+  // ── Devis À FORMULES (lot 4) : l'offre figée, à choisir avant de signer ──
+  //
+  // `offre` NULL = devis classique, écran inchangé. Interrupteur éteint, offre illisible ou
+  // altérée, date de validité dépassée : on le dit, on ne propose pas de signer.
+  let offreAffichee: OffreAffichee | null = null;
+  if (piece.type === "devis") {
+    const lie = await prisma.devis.findFirst({
+      where: { documentGenereId: verif.documentGenereId },
+      select: { numero: true, offre: true, offreSha256: true, dateValidite: true },
+    });
+    if (lie !== null && lie.offre != null && lie.offreSha256 != null) {
+      if (!(await formulesActives())) {
+        return (
+          <Message
+            titre="Ce devis n'est pas disponible pour le moment"
+            detail="Contactez votre interlocuteur chez Axion-IA : ce devis ne peut pas encore être signé en ligne."
+          />
+        );
+      }
+      if (!devisSignableParFormules(lie, new Date())) {
+        return (
+          <Message
+            titre="Ce devis a dépassé sa date de validité"
+            detail={`Le devis ${lie.numero} ne peut plus être signé. Contactez votre interlocuteur pour en recevoir un nouveau.`}
+          />
+        );
+      }
+      const offre = offreDevisV1.safeParse(lie.offre);
+      if (!offre.success || sha256Offre(offre.data) !== lie.offreSha256) {
+        return (
+          <Message
+            titre="Ce devis ne peut pas être affiché"
+            detail="Contactez votre interlocuteur chez Axion-IA pour en recevoir une version à jour."
+          />
+        );
+      }
+      offreAffichee = presenterOffre(offre.data);
+    }
+  }
+
   // Le PDF EXACT que la signature scellera. URL signée COURTE — 15 min suffisent
   // pour lire avant de signer, et un lien public ne doit pas laisser fuiter une
   // pièce contractuelle durablement.
@@ -287,6 +334,9 @@ export default async function SignerDevisPage({ params }: PageProps) {
               pdfHref: lienTelechargement("/api/cgv"),
             },
           }
+        : {})}
+      {...(offreAffichee !== null
+        ? { formules: { offre: offreAffichee, apercuAction: apercuChoixAction } }
         : {})}
       signerAction={signerPieceParJetonAction}
       {...(avecCode ? { demanderCodeAction: demanderCodeSignatureAction } : {})}

@@ -6,9 +6,8 @@
  * client a accepté un texte qu'il n'a pas lu. Ce test lie donc l'empreinte du texte
  * français à la version : modifier l'un oblige à toucher l'autre, ici, en revue.
  */
-import { createHash } from "node:crypto";
 import { describe, it, expect } from "vitest";
-import { getLegal } from "@/content/legal";
+import { empreinteTexteCgv } from "@/content/cgv-empreinte";
 import { CGV_VERSION, CGV_VERSION_LIBELLE, CGV_VERSION_LIBELLE_EN } from "@/content/cgv-version";
 
 /** Empreinte du texte FR pour la version courante. À mettre à jour AVEC CGV_VERSION. */
@@ -24,8 +23,8 @@ describe("cgv-version : source unique de la version des CGV", () => {
   });
 
   it("cliquet : le texte FR des CGV n'a pas changé sans changement de version", () => {
-    const texte = JSON.stringify(getLegal("conditions-generales").fr);
-    const empreinte = createHash("sha256").update(texte, "utf8").digest("hex");
+    // Même fonction que la signature du devis : une seule définition du calcul.
+    const empreinte = empreinteTexteCgv();
     // Si ce test casse : le texte a changé. Mettre à jour CGV_VERSION (+ libellés),
     // puis EMPREINTE_TEXTE_FR et VERSION_DE_L_EMPREINTE ensemble. Jamais l'empreinte seule.
     expect(CGV_VERSION).toBe(VERSION_DE_L_EMPREINTE);

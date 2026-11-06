@@ -5353,9 +5353,18 @@ model Devis {
   offre       Json?
   offreSha256 String? @map("offre_sha256") @db.Char(64)
 
+  /// Lot 4 — posés UNE fois, à l'acceptation (signature complète), depuis le choix scellé sur la
+  /// ligne de signature du client : `formuleRetenue` / `choixRetenu` / `choixSignatureId`.
+  formuleRetenue   String?            @map("formule_retenue") @db.VarChar(12)
+  choixRetenu      Json?              @map("choix_retenu")
+  choixSignatureId String?            @map("choix_signature_id") @db.Uuid
+  choixSignature   DocumentSignature? @relation("DevisChoixSignature", fields: [choixSignatureId], references: [id], onDelete: Restrict)
+  commandeConsole  ConsoleCommande?
+
   @@index([clientId])
   @@index([statut])
   @@index([documentGenereId])
+  @@index([choixSignatureId])
   @@map("devis")
 }
 
@@ -7750,6 +7759,23 @@ model DocumentSignature {
   /// les autres pièces et canaux, et sur les preuves antérieures. HACHÉE à partir de la version 3.
   cgvVersion String? @map("cgv_version") @db.VarChar(40)
 
+  /// Sceau V4 (devis à formules, migrations 20261104120000 et 20261106100000). `choixOffre` est le
+  /// choix canonique du client (la ligne `axionia` recopie celui du client) ; son empreinte est
+  /// RECALCULÉE à la vérification. Les empreintes du PDF des CGV et de la trace d'accès sont
+  /// prévues et vides jusqu'au chantier d'archive. NULL partout avant la V4.
+  choixOffre       Json?                   @map("choix_offre")
+  choixOffreSha256 String?                 @map("choix_offre_sha256") @db.Char(64)
+  cgvTexteSha256   String?                 @map("cgv_texte_sha256") @db.Char(64)
+  cgvPdfSha256     String?                 @map("cgv_pdf_sha256") @db.Char(64)
+  /// Instant SERVEUR de réception de la case « j'ai lu et j'accepte les CGV » — distinct de `signeAt`.
+  cgvAccepteeAt    DateTime?               @map("cgv_acceptee_at")
+  cgvTraceSha256   String?                 @map("cgv_trace_sha256") @db.Char(64)
+  /// Lien de signature utilisé (jamais le jeton lui-même). HACHÉ en V4.
+  jetonId          String?                 @map("jeton_id") @db.Uuid
+  jeton            DocumentSignatureToken? @relation(fields: [jetonId], references: [id], onDelete: Restrict)
+  /// Devis dont CETTE signature porte le choix retenu.
+  devisChoisis     Devis[]                 @relation("DevisChoixSignature")
+
   /// 🔴 DISTINCTS de `createdAt` : l'écart entre les deux révèle une insertion
   /// tardive. Les confondre effacerait la seule trace d'une signature antidatée.
   signeAt   DateTime @map("signe_at")
@@ -7828,12 +7854,41 @@ model DocumentSignatureToken {
   createdIpHash String?  @map("created_ip_hash") @db.Char(64)
   createdAt     DateTime @default(now()) @map("created_at")
 
+  /// Signatures posées avec ce lien (sceau V4).
+  signatures DocumentSignature[]
+
   /// ⚠️ L'index unique `document_signature_token_actif` est PARTIEL
   /// (`WHERE revoked_at IS NULL`) : créé en SQL brut, Prisma ne sait pas
   /// l'exprimer. Un seul jeton vivant par (pièce, partie).
   @@index([documentGenereId])
   @@index([expiresAt])
   @@map("document_signature_tokens")
+}
+
+/// Fait `commande.signee` du devis à formules (lot 4) : ce que le client a choisi en signant, rangé dans
+/// la MÊME transaction que l'acceptation du devis. Une ligne par devis signé. Le contenu (payload,
+/// identifiants) ne se modifie jamais (déclencheur) ; seuls l'envoi et l'état d'activation renvoyé par
+/// la console (affichage seulement) se mettent à jour. Aucune suppression (déclencheur).
+/// rgpd: dossier-client — copie du choix signé (société, signataire, formule, montants) ; preuve contractuelle conservée, jamais supprimée (art. 17(3)(e)) ; aucune adresse IP ni jeton. Voir `EXCEPTIONS_EFFACEMENT_DOSSIER` et `EXCLUSIONS_EXPORT_DOSSIER`.
+model ConsoleCommande {
+  id                 String    @id @default(uuid()) @db.Uuid
+  devisId            String    @unique @map("devis_id") @db.Uuid
+  devis              Devis     @relation(fields: [devisId], references: [id], onDelete: Restrict)
+  numeroDevis        String    @unique @map("numero_devis") @db.VarChar(40)
+  /// SHA-256 de (type, numéro du devis, empreinte du choix) : idempotence de bout en bout.
+  eventId            String    @unique @map("event_id") @db.Char(64)
+  choixOffreSha256   String    @map("choix_offre_sha256") @db.Char(64)
+  payload            Json
+  creeAt             DateTime  @default(now()) @map("cree_at")
+  envoiEssais        Int       @default(0) @map("envoi_essais")
+  envoyeAt           DateTime? @map("envoye_at")
+  /// recue | a_trancher | acompte_attendu | outils_a_relier | en_service | suspendue (CHECK en base).
+  etat               String?   @db.VarChar(24)
+  etatDetail         Json?     @map("etat_detail")
+  etatRecuAt         DateTime? @map("etat_recu_at")
+  etatCleIdempotence String?   @map("etat_cle_idempotence") @db.VarChar(120)
+
+  @@map("console_commandes")
 }
 
 /// Code à usage unique pour SIGNER une pièce (lot S6a, e — ADR 0066 étape 7).

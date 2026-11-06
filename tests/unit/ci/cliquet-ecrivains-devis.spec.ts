@@ -131,12 +131,12 @@ describe("REQ-INT-007 — face ROUGE : un écrivain de « accepte » qui n'émet
 
 describe("REQ-INT-007 — face VERTE : le dépôt réel", () => {
   it(
-    "REQ-INT-007 : zéro faute, et les trois écrivains connus confrontés par identité",
+    "REQ-INT-007 : zéro faute, et les quatre écrivains connus confrontés par identité",
     { timeout: 60_000 },
     () => {
       const b = confronterEcrivains(lireLeDepot(RACINE));
       expect(b.fautes).toEqual([]);
-      expect(b.parEvenement["devis.signe"]).toBe(3);
+      expect(b.parEvenement["devis.signe"]).toBe(4);
       expect(
         b.ecrivains
           .filter((e) => e.evenement === "devis.signe")
@@ -145,6 +145,9 @@ describe("REQ-INT-007 — face VERTE : le dépôt réel", () => {
       ).toEqual([
         "src/app/api/docuseal/webhook/route.ts (dispatchDevisEvent › travail de transactionDevisSigne())",
         "src/server/actions/qualiopi/devis.ts (acceptDevisAction › travail de transactionDevisSigne())",
+        // Devis à formules (lot 4) : recopie du choix + acceptation + `devis.signe` + fait
+        // `commande.signee` dans UNE vraie transaction, même canal Partners fermé.
+        "src/server/qualiopi/devis/acceptation-formules.ts (accepterDevisAFormules › travail de client.$transaction())",
         // Lot S6a : l'écrivain du canal maison a quitté `piece-signature.ts`
         // (`consequenceSignatureComplete`) pour l'après-signature commun — même
         // transaction, même garde, un fichier hors « use server ».

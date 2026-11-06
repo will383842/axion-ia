@@ -57,10 +57,15 @@ vi.mock("@/server/partners-sync/producteurs/devis", () => ({
     fn(h.txDevis),
   ),
 }));
+// Devis à formules (lot 4) : couvert par `acceptation-formules.spec.ts`. Ici, aucun devis à formules.
+vi.mock("@/server/qualiopi/devis/acceptation-formules", () => ({
+  accepterDevisAFormules: vi.fn(async () => ({ traite: false, ids: [] })),
+}));
 vi.mock("@/features/dossier-client/devis-signe-fait-client", () => ({
   faireMonterLesFichesDesDevisSignes: h.monter,
 }));
 
+import { accepterDevisAFormules } from "@/server/qualiopi/devis/acceptation-formules";
 import { apresSignature, type ContexteApresSignature } from "./apres-signature";
 
 const ADMIN = { userId: "adm-1", role: "admin", email: "x", name: "x" } as never;
@@ -348,6 +353,17 @@ describe("devis intégralement signé : le prospect passe en client", () => {
       f.mock.invocationCallOrder[0]!;
     expect(ordre(h.txDevis.devis.findMany)).toBeLessThan(ordre(h.txDevis.devis.updateMany));
     expect(ordre(h.txDevis.devis.updateMany)).toBeLessThan(ordre(h.monter));
+  });
+
+  it("devis À FORMULES : l'acceptation passe par sa propre transaction, le chemin classique n'est pas pris", async () => {
+    (accepterDevisAFormules as unknown as ReturnType<typeof vi.fn>).mockResolvedValueOnce({
+      traite: true,
+      ids: ["dv-formules"],
+    });
+    await apresSignature(ctx({ type: "devis", statutSignature: "signee", partie: "axionia" }));
+    expect(accepterDevisAFormules).toHaveBeenCalledWith(h.p, DOC);
+    expect(h.txDevis.devis.updateMany).not.toHaveBeenCalled();
+    expect(h.monter).toHaveBeenCalledWith(h.p, ["dv-formules"], { origine: "signature_complete" });
   });
 
   it("une erreur levée par la montée n'empêche jamais l'acceptation du devis", async () => {

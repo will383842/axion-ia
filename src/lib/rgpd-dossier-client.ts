@@ -48,6 +48,13 @@ export const EXCLUSIONS_EXPORT_DOSSIER: ReadonlyArray<{
   readonly motif: string;
 }> = [
   {
+    modele: "ConsoleCommande",
+    motif:
+      "la copie, transmise à notre console des automatisations, de ce que vous avez choisi en " +
+      "signant votre devis : votre choix et votre signature figurent déjà dans le devis signé " +
+      "et son exemplaire, qui vous ont été remis.",
+  },
+  {
     modele: "QuestionnaireAvantAuditBrouillon",
     motif:
       "votre brouillon en cours du questionnaire avant audit : il vous est rendu par votre propre " +

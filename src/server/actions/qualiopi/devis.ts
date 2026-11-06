@@ -719,6 +719,8 @@ export async function sendDevisAction(
   };
 }
 
+class AcceptationManuelleRefusee extends Error {}
+
 /**
  * Marque le devis comme accepté (statut → accepte, acceptedAt = now).
  */
@@ -730,13 +732,33 @@ export async function acceptDevisAction(id: string): Promise<ActionResult<{ id: 
 
   // INT-T04 (REQ-INT-007) : l'acceptation et l'événement `devis.signe` dans UNE transaction.
   const devisId = idParsed.data;
-  await transactionDevisSigne(prisma, async (tx) => {
-    await tx.devis.update({
-      where: { id: devisId },
-      data: { statut: "accepte", acceptedAt: new Date() },
+  try {
+    await transactionDevisSigne(prisma, async (tx) => {
+      // Devis À FORMULES (lot 4) : sans formule retenue il n'y a ni lignes ni total à facturer.
+      // Une acceptation manuelle ne porte aucun choix scellé : elle est refusée, la signature du
+      // client puis la contresignature d'Axion-IA sont la seule voie.
+      const formules = await tx.devis.findUnique({
+        where: { id: devisId },
+        select: { offreSha256: true, formuleRetenue: true },
+      });
+      if (formules !== null && formules.offreSha256 != null && formules.formuleRetenue == null) {
+        throw new AcceptationManuelleRefusee();
+      }
+      await tx.devis.update({
+        where: { id: devisId },
+        data: { statut: "accepte", acceptedAt: new Date() },
+      });
+      await emettreDevisSigne(tx, devisId);
     });
-    await emettreDevisSigne(tx, devisId);
-  });
+  } catch (err) {
+    if (err instanceof AcceptationManuelleRefusee) {
+      return {
+        error:
+          "Ce devis propose des formules : il ne peut être accepté que par la signature du client suivie de votre contresignature.",
+      };
+    }
+    throw err;
+  }
   // Un prospect passe en client lorsqu'un devis est signé (Will, 04/11/2026) : APRÈS le COMMIT,
   // hors transaction (B1) ; une erreur ne touche jamais l'acceptation.
   try {

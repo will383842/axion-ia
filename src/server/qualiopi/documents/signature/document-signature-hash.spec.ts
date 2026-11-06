@@ -23,6 +23,9 @@ import {
   tupleDocumentDepuisLigne,
   versionDocumentRecalculable,
   HASH_VERSION_DOCUMENT,
+  HASH_VERSION_DOCUMENT_V4,
+  COLONNES_V4_VIDES,
+  type TupleDocumentSignatureV4,
   type LigneDocumentSignature,
   type PieceScellee,
   type TupleDocumentSignatureV1,
@@ -30,6 +33,7 @@ import {
   type TupleDocumentSignatureV3,
 } from "./document-signature-hash";
 import { verifierChaine } from "@/server/qualiopi/emargement/hash";
+import { sha256Choix } from "@/server/qualiopi/devis/offre-calculs";
 
 const DOC = "11111111-1111-4111-8111-111111111111";
 
@@ -80,6 +84,7 @@ function ligne(over: Partial<LigneDocumentSignature> = {}): LigneDocumentSignatu
     hashVersion: 1,
     facteurVerification: null,
     cgvVersion: null,
+    ...COLONNES_V4_VIDES,
     ...over,
   };
 }
@@ -310,7 +315,8 @@ describe("🔴 version 3 — la version des CGV acceptées est scellée (devis)"
     expect(versionDocumentRecalculable(1)).toBe(true);
     expect(versionDocumentRecalculable(2)).toBe(true);
     expect(versionDocumentRecalculable(3)).toBe(true);
-    expect(versionDocumentRecalculable(4)).toBe(false);
+    expect(versionDocumentRecalculable(4)).toBe(true);
+    expect(versionDocumentRecalculable(5)).toBe(false);
   });
 
   it("la forme v3 porte `cgvVersion`, `facteurVerification` et `v: 3`", () => {
@@ -361,6 +367,186 @@ describe("🔴 version 3 — la version des CGV acceptées est scellée (devis)"
       hashVersion: 2,
       facteurVerification: "code_email",
       selfHash: calculerSelfHashDocument(t, 2),
+    });
+    expect(verifierChaine([maillonDocumentDepuisLigne(l, PIECE)]).valide).toBe(true);
+  });
+});
+
+describe("🔴 version 4 — le choix d'offre et la preuve d'acceptation des CGV sont scellés", () => {
+  const CHOIX = {
+    v: 1 as const,
+    devisNumero: "AXI-DEV-2026-001",
+    offreSha256: "d".repeat(64),
+    formule: "abonnement" as const,
+    automatisationsRetenues: ["auto1"],
+    maintenanceRetenue: false,
+    periodiciteMois: 1,
+  };
+  const SHA_CHOIX = sha256Choix(CHOIX);
+  const TUPLE_V4: TupleDocumentSignatureV4 = {
+    ...TUPLE,
+    facteurVerification: null,
+    cgvVersion: "2026-10-04",
+    choixOffreSha256: SHA_CHOIX,
+    cgvTexteSha256: "e".repeat(64),
+    cgvPdfSha256: null,
+    cgvAccepteeAtIso: "2026-06-10T10:15:00.000Z",
+    cgvTraceSha256: null,
+    jetonId: "33333333-3333-4333-8333-333333333333",
+  };
+  const ligneV4 = (over: Partial<LigneDocumentSignature> = {}) =>
+    ligne({
+      hashVersion: 4,
+      cgvVersion: "2026-10-04",
+      choixOffre: CHOIX,
+      choixOffreSha256: SHA_CHOIX,
+      cgvTexteSha256: "e".repeat(64),
+      cgvAccepteeAt: new Date("2026-06-10T10:15:00.000Z"),
+      jetonId: "33333333-3333-4333-8333-333333333333",
+      selfHash: calculerSelfHashDocument(TUPLE_V4, 4),
+      ...over,
+    });
+
+  it("🔴 la version courante reste 3 (devis classique inchangé) ; la 4 est explicite", () => {
+    expect(HASH_VERSION_DOCUMENT).toBe(3);
+    expect(HASH_VERSION_DOCUMENT_V4).toBe(4);
+  });
+
+  it("🔴 les vecteurs d'or V1 et V2 restent inchangés (la V4 n'a rien déplacé)", () => {
+    expect(calculerSelfHashDocument(TUPLE, 1)).toBe(
+      "63898b6d0b0e4f2023f85efbaef1e1254bc5fb8cd17048b1af277ef63977af2e",
+    );
+    expect(
+      calculerSelfHashDocument({ ...TUPLE, facteurVerification: "code_email" as const }, 2),
+    ).toBe("eaf6685d4b56702cf133291eed1457e7abd3be6cda91205179d92ff27157d286");
+  });
+
+  it("la forme v4 porte tous les champs du sceau et `v: 4`", () => {
+    const canon = tupleDocumentCanonique(TUPLE_V4, 4);
+    for (const cle of [
+      "choixOffreSha256",
+      "cgvTexteSha256",
+      "cgvPdfSha256",
+      "cgvAccepteeAtIso",
+      "cgvTraceSha256",
+      "jetonId",
+      "cgvVersion",
+    ]) {
+      expect(canon).toContain(`"${cle}"`);
+    }
+    expect(canon).toContain('"v":4');
+  });
+
+  it("🔴 chaque champ V4 change l'empreinte ; nul et renseigné ne se confondent pas", () => {
+    const h = calculerSelfHashDocument(TUPLE_V4, 4);
+    const variantes: Partial<TupleDocumentSignatureV4>[] = [
+      { choixOffreSha256: "f".repeat(64) },
+      { choixOffreSha256: null },
+      { cgvTexteSha256: "f".repeat(64) },
+      { cgvTexteSha256: null },
+      { cgvPdfSha256: "f".repeat(64) },
+      { cgvAccepteeAtIso: "2026-06-10T10:15:01.000Z" },
+      { cgvTraceSha256: "f".repeat(64) },
+      { jetonId: "44444444-4444-4444-8444-444444444444" },
+      { jetonId: null },
+    ];
+    for (const v of variantes) {
+      expect(calculerSelfHashDocument({ ...TUPLE_V4, ...v }, 4)).not.toBe(h);
+    }
+  });
+
+  it("un tuple v4 incomplet ne se hache pas (absent n'est pas nul)", () => {
+    const { jetonId: _jeton, ...incomplet } = TUPLE_V4;
+    expect(() => calculerSelfHashDocument(incomplet as TupleDocumentSignatureV4, 4)).toThrow(
+      /sans jetonId/,
+    );
+  });
+
+  it("une ligne v4 se reconstruit et se vérifie, sceau stable", () => {
+    const l = ligneV4();
+    expect(tupleDocumentDepuisLigne(l, PIECE)).toStrictEqual(TUPLE_V4);
+    expect(verifierChaine([maillonDocumentDepuisLigne(l, PIECE)]).valide).toBe(true);
+    // Recalcul répété : même empreinte.
+    expect(calculerSelfHashDocument(tupleDocumentDepuisLigne(l, PIECE)!, 4)).toBe(l.selfHash);
+  });
+
+  it("🔴 modifier `choix_offre` en base invalide l'empreinte", () => {
+    const l = ligneV4();
+    const modifie = { ...CHOIX, formule: "achat" as const };
+    expect(
+      verifierChaine([maillonDocumentDepuisLigne({ ...l, choixOffre: modifie }, PIECE)]).valide,
+    ).toBe(false);
+    // Même en recalculant la colonne d'empreinte pour la rendre cohérente avec le JSON modifié.
+    expect(
+      verifierChaine([
+        maillonDocumentDepuisLigne(
+          { ...l, choixOffre: modifie, choixOffreSha256: sha256Choix(modifie) },
+          PIECE,
+        ),
+      ]).valide,
+    ).toBe(false);
+    // Effacer le choix : idem.
+    expect(
+      verifierChaine([
+        maillonDocumentDepuisLigne({ ...l, choixOffre: null, choixOffreSha256: null }, PIECE),
+      ]).valide,
+    ).toBe(false);
+  });
+
+  it("🔴 modifier seulement la colonne d'empreinte du choix : irrecalculable", () => {
+    const l = ligneV4({ choixOffreSha256: "0".repeat(64) });
+    expect(tupleDocumentDepuisLigne(l, PIECE)).toBeNull();
+  });
+
+  it("🔴 modifier l'empreinte du texte des CGV, l'instant de la case ou le lien invalide la preuve", () => {
+    const l = ligneV4();
+    for (const mod of [
+      { cgvTexteSha256: "0".repeat(64) },
+      { cgvAccepteeAt: new Date("2026-06-10T10:16:00.000Z") },
+      { jetonId: "55555555-5555-4555-8555-555555555555" },
+      { cgvPdfSha256: "0".repeat(64) },
+      { cgvTraceSha256: "0".repeat(64) },
+    ]) {
+      expect(verifierChaine([maillonDocumentDepuisLigne({ ...l, ...mod }, PIECE)]).valide).toBe(
+        false,
+      );
+    }
+  });
+
+  it("une ligne V1/V2/V3 qui porte une colonne V4 a été écrite après coup : irrecalculable", () => {
+    for (const hashVersion of [1, 2, 3]) {
+      expect(
+        tupleDocumentDepuisLigne(ligne({ hashVersion, cgvTexteSha256: "e".repeat(64) }), PIECE),
+      ).toBeNull();
+      expect(tupleDocumentDepuisLigne(ligne({ hashVersion, jetonId: "x" }), PIECE)).toBeNull();
+      expect(
+        tupleDocumentDepuisLigne(
+          ligne({ hashVersion, choixOffre: CHOIX, choixOffreSha256: SHA_CHOIX }),
+          PIECE,
+        ),
+      ).toBeNull();
+    }
+  });
+
+  it("la contresignature recopie le choix du client : même empreinte de choix, sans CGV propre", () => {
+    const axionia: TupleDocumentSignatureV4 = {
+      ...TUPLE,
+      partie: "axionia",
+      facteurVerification: null,
+      cgvVersion: null,
+      choixOffreSha256: SHA_CHOIX,
+      cgvTexteSha256: null,
+      cgvPdfSha256: null,
+      cgvAccepteeAtIso: null,
+      cgvTraceSha256: null,
+      jetonId: null,
+    };
+    const l = ligne({
+      partie: "axionia",
+      hashVersion: 4,
+      choixOffre: CHOIX,
+      choixOffreSha256: SHA_CHOIX,
+      selfHash: calculerSelfHashDocument(axionia, 4),
     });
     expect(verifierChaine([maillonDocumentDepuisLigne(l, PIECE)]).valide).toBe(true);
   });
