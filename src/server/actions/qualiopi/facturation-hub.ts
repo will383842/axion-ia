@@ -36,7 +36,10 @@ import {
   enregistrerAccordEcrit,
   enregistrerDepotDossier,
 } from "@/server/qualiopi/financements/dossier-financement";
-import { planifierFacturationDevis } from "@/server/qualiopi/financements/facture-libre-pur";
+import {
+  dateDepartDansLePasse,
+  planifierFacturationDevis,
+} from "@/server/qualiopi/financements/facture-libre-pur";
 import { formulesActives } from "@/server/qualiopi/devis/interrupteur-formules";
 import { lirePalierSuivant } from "@/server/qualiopi/devis/palier-suivant";
 import { exigerIdccConfirme } from "@/server/qualiopi/financements/blocage-idcc";
@@ -1278,6 +1281,11 @@ export async function creerPlanRecurrentAction(
   const parsed = CreerPlanSchema.safeParse(rawInput);
   if (!parsed.success) return { error: "Entrée invalide." };
   const input = parsed.data;
+  if (dateDepartDansLePasse(input.premiereGenerationAt)) {
+    return {
+      error: "La date de départ est dans le passé : choisissez aujourd'hui ou une date future.",
+    };
+  }
 
   try {
     const plan = await prisma.planRecurrent.create({
@@ -1288,6 +1296,7 @@ export async function creerPlanRecurrentAction(
         ...(input.refClient !== undefined ? { refClient: input.refClient } : {}),
         periodiciteMois: input.periodiciteMois ?? 1,
         prochaineGenerationAt: input.premiereGenerationAt,
+        jourAncre: input.premiereGenerationAt.getUTCDate(),
         ...(input.finAt !== undefined ? { finAt: input.finAt } : {}),
         ...(input.nbMaxFactures !== undefined ? { nbMaxFactures: input.nbMaxFactures } : {}),
         ...(input.notes !== undefined ? { notes: input.notes } : {}),

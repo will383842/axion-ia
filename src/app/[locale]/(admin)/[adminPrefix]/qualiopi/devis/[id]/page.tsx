@@ -19,7 +19,10 @@ import { AdminBadge } from "@/components/admin/ui/AdminBadge";
 import { AdminButton } from "@/components/admin/ui/AdminButton";
 import { DevisLifecycleButtons } from "@/components/admin/qualiopi/DevisLifecycleButtons";
 import { DevisContresignature } from "@/components/admin/qualiopi/DevisContresignature";
-import { compterPlansAttendus } from "@/server/qualiopi/devis/proposer-plans";
+import {
+  compterPlansAttendus,
+  evaluerPlansManquants,
+} from "@/server/qualiopi/devis/proposer-plans";
 import { RelancerAcceptationDevis } from "@/components/admin/qualiopi/RelancerAcceptationDevis";
 import {
   contresignerPieceAction,
@@ -196,15 +199,22 @@ export default async function QualiopiDevisDetailPage({ params }: PageProps) {
 
   // Devis à formules accepté dont AUCUN plan récurrent n'a été proposé (la proposition a échoué
   // après le COMMIT) : alerte persistante lue en base, la reprise repropose (idempotente).
-  const plansAReproposer =
+  const devisAFormulesAccepte =
     devis.offreSha256 !== null &&
     devis.formuleRetenue !== null &&
     (devis.statut === "accepte" || devis.statut === "transforme_convention") &&
-    (await formulesActives()) &&
-    // 🔴 « Aucun plan en base » ne suffit PAS : une formule « achat » sans maintenance donne
-    // normalement ZÉRO plan. On n'alerte que si AU MOINS UN plan est ATTENDU (recalculé depuis
-    // la formule retenue et l'offre figée) et qu'il en manque en base.
-    (await plansManquants(devis.id));
+    (await formulesActives());
+  // 🔴 « Aucun plan en base » ne suffit PAS : une formule « achat » sans maintenance donne
+  // normalement ZÉRO plan. Règle pure et testée : `evaluerPlansManquants`. `null` attendu = les
+  // plans ne peuvent pas être calculés : message DISTINCT, jamais silencieux.
+  const etatPlans = devisAFormulesAccepte
+    ? evaluerPlansManquants(
+        await compterPlansAttendus(devis.id),
+        await prisma.planRecurrent.count({ where: { devisId: devis.id } }),
+      )
+    : "aucun";
+  const plansAReproposer = etatPlans === "manquants";
+  const plansImpossibles = etatPlans === "impossibles";
 
   // ── État RÉEL de la signature, lu du registre de preuve ──
   //
@@ -600,6 +610,17 @@ export default async function QualiopiDevisDetailPage({ params }: PageProps) {
             />
           ) : null)}
 
+        {plansImpossibles && (
+          <p
+            role="alert"
+            className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-soft)]"
+          >
+            Plans récurrents impossibles à proposer, à vérifier : la formule retenue n&apos;a pas pu
+            être transformée en plan (offre ou choix illisible, ou règle de facturation non
+            décidée). Créez le plan à la main si nécessaire.
+          </p>
+        )}
+
         {clientASigne && organismeASigne && (
           <p className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-soft)]">
             Devis intégralement signé. La chaîne de preuve est vérifiable dans Qualiopi › Mode
@@ -688,12 +709,4 @@ export default async function QualiopiDevisDetailPage({ params }: PageProps) {
       )}
     </AdminPageShell>
   );
-}
-
-/** Vrai si au moins un plan est attendu pour ce devis et qu'il en manque en base. */
-async function plansManquants(devisId: string): Promise<boolean> {
-  const attendus = await compterPlansAttendus(devisId);
-  if (attendus === null || attendus === 0) return false;
-  const presents = await prisma.planRecurrent.count({ where: { devisId } });
-  return presents < attendus;
 }

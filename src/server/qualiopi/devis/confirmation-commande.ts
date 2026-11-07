@@ -95,7 +95,7 @@ const LIBELLE_FORMULE: Record<Formule, string> = { achat: "Achat", abonnement: "
 const eur = (cents: number): string =>
   new Intl.NumberFormat("fr-FR", { style: "currency", currency: "EUR" }).format(cents / 100);
 
-/** Clé R2 déterministe : une version de CGV = un objet, réécrit à l'identique. */
+/** Clé R2 déterministe : une version de CGV = un objet (même clé par version : un renvoi remplace l'objet par un contenu identique, jamais par une autre version). */
 export const cleCgvAcceptees = (version: string = CGV_VERSION): string =>
   `documents/cgv/CGV-${version}.pdf`;
 

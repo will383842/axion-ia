@@ -3,6 +3,7 @@ import { describe, expect, it } from "vitest";
 import { offreFictive } from "./offre-fixtures.spec-util";
 import type { OffreDevisV1 } from "./offre-devis";
 import type { ChoixPourPlan } from "./plan-recurrent-devis";
+import { calculerProchaineGeneration } from "../financements/facture-libre-pur";
 import { planifierPlansRecurrents, PLAFOND_PERIODE_HT_CENTS } from "./plan-recurrent-devis";
 
 const jour = (iso: string) => new Date(`${iso}T00:00:00.000Z`);
@@ -322,5 +323,26 @@ describe("formule A — maintenance", () => {
     const r = planifierPlansRecurrents(entree(o, choixA(true)));
     expect(r.ok && r.nonTraites).toEqual(["hebergement"]);
     expect(r.ok && r.plans.map((p) => p.nature)).toEqual(["maintenance"]);
+  });
+});
+
+describe("première période non doublée", () => {
+  const six = (terme: "a_echoir" | "echu") =>
+    offreB({ terme, periodes: [{ mois: 6, remiseBps: 0 }], modeAvance: "toutes_periodes" });
+
+  it("🔴 à échoir : 1re génération = début, la suivante début + période (jamais la même période deux fois)", () => {
+    const p = unPlan(planifierPlansRecurrents(entree(six("a_echoir"), choixB(6), "2030-08-31")));
+    expect(iso(p.prochaineGenerationAt)).toBe("2030-08-31");
+    expect(iso(calculerProchaineGeneration(p.prochaineGenerationAt, 6, p.jourAncre))).toBe(
+      "2031-02-28",
+    );
+  });
+  it("🔴 à terme échu : 1re génération = début + période (la période 1 n'est facturée qu'une fois)", () => {
+    const p = unPlan(planifierPlansRecurrents(entree(six("echu"), choixB(6), "2030-08-31")));
+    expect(iso(p.prochaineGenerationAt)).toBe("2031-02-28");
+    expect(p.jourAncre).toBe(31);
+    expect(iso(calculerProchaineGeneration(p.prochaineGenerationAt, 6, p.jourAncre))).toBe(
+      "2031-08-31",
+    );
   });
 });

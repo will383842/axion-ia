@@ -29,6 +29,7 @@ import { sha256Offre } from "./offre-calculs";
 import { offreFictive } from "./offre-fixtures.spec-util";
 import {
   compterPlansAttendus,
+  evaluerPlansManquants,
   proposerPlansApresAcceptation,
   proposerPlansRecurrentsDuDevis,
 } from "./proposer-plans";
@@ -270,5 +271,21 @@ describe("compterPlansAttendus (alerte « plans non proposés »)", () => {
     h.p.devis.findUnique.mockResolvedValue(devisB({ formuleRetenue: null }));
     expect(await compterPlansAttendus(DEVIS)).toBeNull();
     expect(h.tx.planRecurrent.create).not.toHaveBeenCalled();
+  });
+});
+
+describe("evaluerPlansManquants (règle d'alerte, pure)", () => {
+  it("0 attendu : pas d'alerte (formule achat sans maintenance)", () => {
+    expect(evaluerPlansManquants(0, 0)).toBe("aucun");
+  });
+  it("1 attendu sur 0 présent : alerte plans manquants", () => {
+    expect(evaluerPlansManquants(1, 0)).toBe("manquants");
+  });
+  it("1 attendu sur 1 présent : pas d'alerte", () => {
+    expect(evaluerPlansManquants(1, 1)).toBe("aucun");
+  });
+  it("🔴 null (formule retenue mais plans impossibles à calculer) : message distinct, jamais silencieux", () => {
+    expect(evaluerPlansManquants(null, 0)).toBe("impossibles");
+    expect(evaluerPlansManquants(null, 2)).toBe("impossibles");
   });
 });

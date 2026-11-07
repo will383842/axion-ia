@@ -52,6 +52,8 @@ export interface PlanPropose {
   /** Une ligne, quantité 1, prix de la PÉRIODE entière (déjà remisé et arrondi). */
   readonly lignes: readonly LigneFacture[];
   readonly prochaineGenerationAt: Date;
+  /** Jour du mois de la date de début (1-31) : ancre contre la dérive après un mois court. */
+  readonly jourAncre: number;
   /** NULL = sans engagement : pas de borne de nombre de factures. */
   readonly nbMaxFactures: number | null;
   readonly notes: string;
@@ -138,6 +140,7 @@ function planAbonnement(e: EntreePlans): PlansProposes {
           },
         ],
         prochaineGenerationAt: premiere,
+        jourAncre: e.debutAt.getUTCDate(),
         // L'engagement n'est la FIN de la facturation que sans reconduction : sinon le contrat
         // continue (CGV art. 44.3) et borner le plan le ferait clore au passage suivant.
         nbMaxFactures:
@@ -199,6 +202,7 @@ function planMaintenance(e: EntreePlans): PlansProposes {
         ],
         // Mois offerts : la facturation démarre après eux (fin de mois bornée).
         prochaineGenerationAt: debutMaintenance(e.debutAt, m.moisOfferts),
+        jourAncre: e.debutAt.getUTCDate(),
         nbMaxFactures: null,
         notes: `Proposé à l'acceptation du devis ${e.devisNumero} — en pause jusqu'à validation. Début = acceptation + ${m.moisOfferts} mois offerts ; à recaler sur la livraison.`,
       },
