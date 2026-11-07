@@ -799,7 +799,7 @@ export async function acceptDevisAction(id: string): Promise<ActionResult<{ id: 
   }
   // Devis à formules : plans récurrents PROPOSÉS en `pause` (lot 5), après le COMMIT, fail-soft.
   const echecPlans = await proposerPlansApresAcceptation(devisId, "console");
-  if (echecPlans !== null) {
+  if (typeof echecPlans === "string") {
     // Jamais ignoré : l'acceptation reste valable, mais l'alerte « plans non proposés » de la
     // fiche devis permet la reprise ; on journalise le code pour la trace.
     Sentry.captureMessage("devis_formules: plans non proposés après acceptation console", {
