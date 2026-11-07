@@ -20,6 +20,7 @@ import { retrieve as kbRetrieve } from "../kb-client";
 import { parseLlmJson } from "../shared/parse-llm-json";
 import { escapeLlmInput } from "../shared/prompt-input-escape";
 import type { VilleEconomicData } from "@/content/villes/economic-data/types";
+import { SOURCE_DONNEES_MEMOIRE_MODELE } from "../villes/controle-ville";
 
 // ---------------------------------------------------------------------------
 // Output schema — subset de VilleEconomicData strictement nécessaire à
@@ -28,7 +29,7 @@ import type { VilleEconomicData } from "@/content/villes/economic-data/types";
 // ---------------------------------------------------------------------------
 
 const SourceMeta = {
-  source: "claude-knowledge:wikipedia-pretraining" as const,
+  source: SOURCE_DONNEES_MEMOIRE_MODELE,
   verifiedOn: new Date().toISOString().slice(0, 10),
 };
 
