@@ -10,15 +10,20 @@
  *  2. la signature du SignerInfo (sur les attributs signés) se vérifie avec la clé d'un certificat
  *     embarqué dans le jeton — RSA PKCS#1 v1.5 ou ECDSA ; tout autre schéma est REFUSÉ (échec fermé) ;
  *  3. ce certificat porte l'usage étendu `timeStamping` (1.3.6.1.5.5.7.3.8) et est valide à `genTime` ;
- *  4. une chaîne de certificats mène à une ANCRE DE CONFIANCE : les racines de Node (`tls.rootCertificates`,
- *     magasin Mozilla) plus celles de `HORODATAGE_TSA_CA_PEM` (autorité à racine privée, ex. FreeTSA).
- *     Chaque lien : émetteur déclaré (`checkIssued`) ET signature vérifiée, validité à `genTime`.
+ *  4. une chaîne de certificats mène à une ANCRE DE CONFIANCE : QUAND `HORODATAGE_TSA_CA_PEM` est posé,
+ *     ces ancres-là SEULEMENT (autorité à racine privée, ex. FreeTSA) ; sinon les racines de Node
+ *     (`tls.rootCertificates`, magasin Mozilla). Chaque lien : émetteur déclaré (`checkIssued`) ET
+ *     signature vérifiée, validité à `genTime`. Anti-DoS : au plus 10 certificats embarqués (sinon refus
+ *     net), certificats déjà visités écartés, profondeur 6, arrêt au premier émetteur valide ;
+ *  5. contrôles de forme : contentType = id-signedData, eContentType = id-ct-TSTInfo, un seul attribut
+ *     `messageDigest`, usage étendu `timeStamping` CRITIQUE et EXCLUSIF, clé RSA ≥ 2048 bits ou ECDSA
+ *     (DSA refusé), et le `sid` du SignerInfo désigne bien le certificat dont la clé a signé.
  *
  * ## Ce qui NE l'est PAS (limite assumée)
  *  · la RÉVOCATION (ni CRL ni OCSP : pas d'E/S réseau ici) ;
  *  · les contraintes de nom, de politique et de longueur de chemin au-delà de `CA:TRUE` ;
  *  · l'attribut `signingCertificateV2` (lien cryptographique certificat ↔ jeton) ;
- *  · RSA-PSS, EdDSA et DSA (refus).
+ *  · RSA-PSS, EdDSA et DSA (refus) ; RSA < 2048 bits (refus).
  * L'audit hors ligne reste possible sur le jeton brut conservé : `openssl ts -verify -in jeton.tsr
  * -digest <selfHash> -CAfile <ca.pem>` — voir `horodatage-rfc3161.ts`.
  *
@@ -37,6 +42,11 @@ export class ErreurSignatureJeton extends Error {
 const OID_EKU_HORODATAGE = "1.3.6.1.5.5.7.3.8";
 const OID_MESSAGE_DIGEST = "2a864886f70d010904";
 const PROFONDEUR_MAX = 6;
+/** Plafond de certificats embarqués dans un jeton : au-delà, refus net (anti-DoS, jeton piégé). */
+const CERTIFICATS_MAX = 10;
+const OID_SIGNED_DATA = "2a864886f70d010702";
+const OID_CT_TSTINFO = "2a864886f70d0109100104";
+const RSA_BITS_MIN = 2048;
 
 const HACHAGES: Readonly<Record<string, string>> = {
   "608648016503040201": "sha256",
@@ -92,7 +102,7 @@ export interface EntreesSignatureJeton {
   readonly reponse: Buffer;
   /** Instant attesté (`genTime`), déjà lu par `lireReponse`. */
   readonly genTime: Date;
-  /** Ancres de confiance en PEM (en plus des racines de Node). */
+  /** Ancres de confiance en PEM (HORODATAGE_TSA_CA_PEM) : si non vide, REMPLACE les racines de Node. */
   readonly ancresPem?: readonly string[];
   /** Remplace les racines de Node (tests). */
   readonly racines?: readonly string[];
@@ -109,30 +119,108 @@ function valideA(c: X509Certificate, a: Date): boolean {
   );
 }
 
-/** Chaîne `cert` → ancre, par les certificats embarqués `intermediaires`. */
+/**
+ * Chaîne `cert` → ancre, par les certificats embarqués `intermediaires`.
+ * `visites` : empreintes déjà parcourues (un cycle ou un doublon n'est jamais revisité) ; on s'arrête
+ * au premier émetteur valide qui mène à une ancre.
+ */
 function chaineJusquAUneAncre(
   cert: X509Certificate,
   intermediaires: readonly X509Certificate[],
   ancres: readonly X509Certificate[],
   genTime: Date,
   profondeur: number,
+  visites: Set<string>,
 ): boolean {
   if (profondeur > PROFONDEUR_MAX) return false;
+  visites.add(cert.fingerprint256);
   // Le certificat EST une ancre.
   if (ancres.some((a) => a.fingerprint256 === cert.fingerprint256)) return true;
-  const emetteurs = (liste: readonly X509Certificate[]): X509Certificate[] =>
-    liste.filter(
-      (e) =>
-        e.fingerprint256 !== cert.fingerprint256 &&
-        e.ca &&
-        valideA(e, genTime) &&
-        cert.checkIssued(e) &&
-        cert.verify(e.publicKey),
-    );
-  if (emetteurs(ancres).length > 0) return true;
-  return emetteurs(intermediaires).some((i) =>
-    chaineJusquAUneAncre(i, intermediaires, ancres, genTime, profondeur + 1),
+  const estEmetteur = (e: X509Certificate): boolean =>
+    e.ca && valideA(e, genTime) && cert.checkIssued(e) && cert.verify(e.publicKey);
+  if (ancres.some(estEmetteur)) return true;
+  for (const i of intermediaires) {
+    if (visites.has(i.fingerprint256) || !estEmetteur(i)) continue;
+    if (chaineJusquAUneAncre(i, intermediaires, ancres, genTime, profondeur + 1, visites)) {
+      return true;
+    }
+  }
+  return false;
+}
+
+/** Entier DER sans zéros de tête, en hexadécimal minuscule. */
+function serieHex(contenu: Buffer): string {
+  return contenu.toString("hex").replace(/^(00)+(?=.)/, "");
+}
+
+/** Sous-séquence `issuer` et numéro de série du TBSCertificate. */
+function emetteurEtSerie(cert: X509Certificate): { issuer: Buffer; serie: string } {
+  const tbs = exiger(
+    lireTlvs(exiger(lireTlvs(cert.raw)[0], 0x30, "certificat").contenu)[0],
+    0x30,
+    "tbs",
   );
+  const champs = lireTlvs(tbs.contenu);
+  const d = champs[0]?.tag === 0xa0 ? 1 : 0;
+  return {
+    serie: serieHex(exiger(champs[d], 0x02, "série").contenu),
+    issuer: exiger(champs[d + 2], 0x30, "émetteur").brut,
+  };
+}
+
+/** Extension X.509 (DER) par OID : drapeau « critique » et contenu de l'OCTET STRING. */
+function extensionDe(
+  cert: X509Certificate,
+  oidHex: string,
+): { critique: boolean; valeur: Buffer } | undefined {
+  const tbs = exiger(
+    lireTlvs(exiger(lireTlvs(cert.raw)[0], 0x30, "certificat").contenu)[0],
+    0x30,
+    "tbs",
+  );
+  const ext = lireTlvs(tbs.contenu).find((n) => n.tag === 0xa3);
+  if (ext === undefined) return undefined;
+  const liste = lireTlvs(exiger(lireTlvs(ext.contenu)[0], 0x30, "extensions").contenu);
+  for (const e of liste) {
+    const champs = lireTlvs(exiger(e, 0x30, "extension").contenu);
+    if (champs[0]?.contenu.toString("hex") !== oidHex) continue;
+    const critique = champs[1]?.tag === 0x01 && champs[1].contenu[0] === 0xff;
+    const octets = champs[critique || champs[1]?.tag === 0x01 ? 2 : 1];
+    return { critique, valeur: exiger(octets, 0x04, "extension (octets)").contenu };
+  }
+  return undefined;
+}
+
+/** Le `sid` du SignerInfo désigne-t-il ce certificat ? (issuerAndSerialNumber ou subjectKeyIdentifier) */
+function sidDesigne(sid: Noeud | undefined, cert: X509Certificate): boolean {
+  if (sid === undefined) return false;
+  if (sid.tag === 0x30) {
+    const [issuer, serie] = lireTlvs(sid.contenu);
+    if (issuer === undefined || serie === undefined || serie.tag !== 0x02) return false;
+    const c = emetteurEtSerie(cert);
+    return issuer.brut.equals(c.issuer) && serieHex(serie.contenu) === c.serie;
+  }
+  if (sid.tag === 0x80) {
+    const ski = extensionDe(cert, "551d0e");
+    if (ski === undefined) return false;
+    const id = lireTlvs(ski.valeur)[0];
+    return id?.tag === 0x04 && id.contenu.equals(sid.contenu);
+  }
+  return false;
+}
+
+/** Usage étendu : `timeStamping` seul, marqué critique. */
+function controlerUsageHorodatage(c: X509Certificate): void {
+  const usages = c.keyUsage ?? [];
+  if (!usages.includes(OID_EKU_HORODATAGE)) {
+    throw new ErreurSignatureJeton("le certificat n'est pas un certificat d'horodatage");
+  }
+  if (usages.length !== 1) {
+    throw new ErreurSignatureJeton("l'usage étendu timeStamping doit être exclusif");
+  }
+  if (extensionDe(c, "551d25")?.critique !== true) {
+    throw new ErreurSignatureJeton("l'usage étendu timeStamping doit être critique");
+  }
 }
 
 /**
@@ -147,9 +235,18 @@ export function verifierSignatureJeton(entrees: EntreesSignatureJeton): void {
     0x30,
     "SignedData",
   );
+  if (
+    exiger(lireTlvs(contentInfo.contenu)[0], 0x06, "contentType").contenu.toString("hex") !==
+    OID_SIGNED_DATA
+  ) {
+    throw new ErreurSignatureJeton("le contentType du jeton n'est pas id-signedData");
+  }
   const sd = lireTlvs(signedData.contenu);
   // version, digestAlgorithms, encapContentInfo, [0] certificates?, [1] crls?, signerInfos.
   const encap = lireTlvs(exiger(sd[2], 0x30, "encapContentInfo").contenu);
+  if (exiger(encap[0], 0x06, "eContentType").contenu.toString("hex") !== OID_CT_TSTINFO) {
+    throw new ErreurSignatureJeton("l'eContentType du jeton n'est pas id-ct-TSTInfo");
+  }
   const octets = exiger(
     lireTlvs(exiger(encap[1], 0xa0, "eContent").contenu)[0],
     0x04,
@@ -159,8 +256,14 @@ export function verifierSignatureJeton(entrees: EntreesSignatureJeton): void {
 
   const certsNoeud = sd.find((n) => n.tag === 0xa0);
   if (certsNoeud === undefined) throw new ErreurSignatureJeton("aucun certificat dans le jeton");
+  const certsBruts = lireTlvs(certsNoeud.contenu);
+  if (certsBruts.length > CERTIFICATS_MAX) {
+    throw new ErreurSignatureJeton(
+      `trop de certificats embarqués (${certsBruts.length} > ${CERTIFICATS_MAX})`,
+    );
+  }
   const embarques: X509Certificate[] = [];
-  for (const c of lireTlvs(certsNoeud.contenu)) {
+  for (const c of certsBruts) {
     if (c.tag !== 0x30) continue;
     try {
       embarques.push(new X509Certificate(c.brut));
@@ -183,17 +286,16 @@ export function verifierSignatureJeton(entrees: EntreesSignatureJeton): void {
   const signature = exiger(si[5], 0x04, "signature").contenu;
 
   // 1. messageDigest == hachage(TSTInfo).
-  let digestAttendu: Buffer | undefined;
-  for (const attr of lireTlvs(attrs.contenu)) {
-    const [oid, valeurs] = lireTlvs(exiger(attr, 0x30, "attribut").contenu);
-    if (oid !== undefined && oid.contenu.toString("hex") === OID_MESSAGE_DIGEST) {
-      digestAttendu = exiger(
-        lireTlvs(exiger(valeurs, 0x31, "valeurs").contenu)[0],
-        0x04,
-        "digest",
-      ).contenu;
-    }
-  }
+  const attributs = lireTlvs(attrs.contenu).map((attr) =>
+    lireTlvs(exiger(attr, 0x30, "attribut").contenu),
+  );
+  const digests = attributs.filter(([oid]) => oid?.contenu.toString("hex") === OID_MESSAGE_DIGEST);
+  if (digests.length > 1) throw new ErreurSignatureJeton("attribut messageDigest en double");
+  const valeursDigest = digests[0]?.[1];
+  const digestAttendu =
+    valeursDigest === undefined
+      ? undefined
+      : exiger(lireTlvs(exiger(valeursDigest, 0x31, "valeurs").contenu)[0], 0x04, "digest").contenu;
   if (digestAttendu === undefined) throw new ErreurSignatureJeton("messageDigest absent");
   if (!createHash(hachage).update(tstInfo).digest().equals(digestAttendu)) {
     throw new ErreurSignatureJeton("le contenu signé ne correspond pas à la signature");
@@ -223,26 +325,37 @@ export function verifierSignatureJeton(entrees: EntreesSignatureJeton): void {
     );
   }
 
-  // 3. Usage étendu « horodatage » et validité à l'instant du jeton.
-  if (!(signataire.keyUsage ?? []).includes(OID_EKU_HORODATAGE)) {
-    throw new ErreurSignatureJeton("le certificat n'est pas un certificat d'horodatage");
+  // 3. Clé acceptable, `sid` cohérent, usage étendu « horodatage » et validité à l'instant du jeton.
+  const cle = signataire.publicKey;
+  if (cle.asymmetricKeyType === "rsa") {
+    if ((cle.asymmetricKeyDetails?.modulusLength ?? 0) < RSA_BITS_MIN) {
+      throw new ErreurSignatureJeton(`clé RSA de moins de ${RSA_BITS_MIN} bits refusée`);
+    }
+  } else if (cle.asymmetricKeyType !== "ec") {
+    throw new ErreurSignatureJeton("type de clé non géré (DSA, EdDSA… refusés)");
   }
+  if (!sidDesigne(si[1], signataire)) {
+    throw new ErreurSignatureJeton("le sid du signataire ne désigne pas la clé qui a signé");
+  }
+  controlerUsageHorodatage(signataire);
   if (!valideA(signataire, entrees.genTime)) {
     throw new ErreurSignatureJeton("certificat de l'autorité hors validité à l'instant du jeton");
   }
 
   // 4. Chaîne jusqu'à une ancre de confiance.
-  const ancres = [...(entrees.racines ?? rootCertificates), ...(entrees.ancresPem ?? [])].flatMap(
-    (pem) =>
-      certificatsDePem(pem).flatMap((p) => {
-        try {
-          return [new X509Certificate(p)];
-        } catch {
-          return [];
-        }
-      }),
+  // HORODATAGE_TSA_CA_PEM posé → ces ancres SEULES (même si elles sont illisibles : échec fermé).
+  const ancresPrivees = (entrees.ancresPem ?? []).filter((p) => p.trim() !== "");
+  const sources = ancresPrivees.length > 0 ? ancresPrivees : (entrees.racines ?? rootCertificates);
+  const ancres = sources.flatMap((pem) =>
+    certificatsDePem(pem).flatMap((p) => {
+      try {
+        return [new X509Certificate(p)];
+      } catch {
+        return [];
+      }
+    }),
   );
-  if (!chaineJusquAUneAncre(signataire, embarques, ancres, entrees.genTime, 0)) {
+  if (!chaineJusquAUneAncre(signataire, embarques, ancres, entrees.genTime, 0, new Set())) {
     throw new ErreurSignatureJeton("la chaîne de certificats ne mène à aucune ancre de confiance");
   }
 }

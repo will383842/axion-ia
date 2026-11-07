@@ -827,6 +827,8 @@ async function declarationRenforcee(args: {
   documentGenereId: string;
   partie: PartieSignataire;
   maintenant: Date;
+  /** Lien en cours : quand il est fourni, seul un code demandé PAR CE LIEN est accepté. */
+  jetonId?: string;
 }): Promise<
   | { ok: true; declaration: NonNullable<SceauV4["declaration"]> }
   | { ok: false; raison: "declaration_requise" | "code_requis" }
@@ -846,6 +848,7 @@ async function declarationRenforcee(args: {
       documentGenereId: args.documentGenereId,
       partie: args.partie,
       utiliseAt: { not: null },
+      ...(args.jetonId === undefined ? {} : { jetonId: args.jetonId }),
     },
     orderBy: { utiliseAt: "desc" },
     select: { utiliseAt: true },
@@ -985,6 +988,7 @@ export async function signerDocument(
       documentGenereId: ctx.id,
       partie,
       maintenant,
+      jetonId: porteur.tokenId,
     });
     if (!renforcee.ok) return refus(renforcee.raison);
     sceauV4 = {

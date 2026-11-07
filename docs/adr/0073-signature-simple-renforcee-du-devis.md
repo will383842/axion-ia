@@ -25,8 +25,11 @@ Tous les devis à formules se signent par le canal maison, **sans prestataire pa
 4. **Horodatage RFC 3161** du sceau (`selfHash`) par une autorité gratuite configurable
    (`HORODATAGE_TSA_URL`, **HTTPS obligatoire en production, aucune autorité par défaut** : horodatage coupé
    tant qu'elle n'est pas choisie). Un jeton n'est « obtenu » que si sa **signature CMS et sa chaîne de
-   certificats** se vérifient (`horodatage-cms.ts`, `node:crypto` seul ; racines de Node +
-   `HORODATAGE_TSA_CA_PEM`). **Limite : pas de contrôle de révocation (CRL/OCSP)**, ni de lien
+   certificats** se vérifient (`horodatage-cms.ts`, `node:crypto` seul ; ancres : celles de
+   `HORODATAGE_TSA_CA_PEM` **seules** quand il est posé, sinon le magasin Mozilla des racines de Node ; au plus
+   10 certificats embarqués, certificats déjà visités écartés, profondeur 6 — anti-DoS ; contrôles de forme :
+   `id-signedData`, `id-ct-TSTInfo`, un seul `messageDigest`, EKU `timeStamping` critique et exclusif, RSA ≥ 2048
+   bits ou ECDSA, `sid` cohérent avec la clé signataire). **Limite : pas de contrôle de révocation (CRL/OCSP)**, ni de lien
    `signingCertificateV2` ; audit hors ligne possible sur le jeton brut conservé. La signature ne dépend jamais de l'autorité : la ligne
    `document_signature_horodatages` naît « en attente » dans la transaction de signature, un premier jeton est
    tenté aussitôt, le balayage du worker (5 min, backoff plafonné à 6 h, **sans plafond d'essais**) reprend le
@@ -40,7 +43,7 @@ Une signature électronique **simple** (eIDAS) : ni avancée, ni qualifiée. Ell
 probante d'une signature qualifiée ; elle repose sur un faisceau (adresse prouvée par le code, déclaration,
 empreintes, horodatage) et sur la clause de preuve des CGV. Le jeton est conservé tel que reçu, et il
 n'est « obtenu » qu'après vérification (`node:crypto` seul) : signature CMS de l'autorité, usage étendu
-`timeStamping` du certificat signataire, chaîne jusqu'à une ancre de `HORODATAGE_TSA_CA_PEM`, chaque certificat
+`timeStamping` du certificat signataire, chaîne jusqu'à une ancre (`HORODATAGE_TSA_CA_PEM` seul s'il est posé, sinon magasin Mozilla), chaque certificat
 valide à l'instant attesté ; la réponse est lue en flux avec un plafond de 64 Ko. Non contrôlé : la
 révocation (CRL/OCSP) — à l'audit, hors ligne (`openssl ts -verify`).
 
