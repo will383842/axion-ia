@@ -380,17 +380,17 @@ export function PieceSignatureForm({
   if (signe) {
     return (
       <div className="mx-auto w-full max-w-2xl px-4 py-16">
-        <h1 className="text-xl font-semibold text-gray-900">Votre signature est enregistrée</h1>
-        <p className="mt-3 text-sm text-gray-700">
+        <h1 className="text-fg text-xl font-semibold">Votre signature est enregistrée</h1>
+        <p className="text-fg-soft mt-3 text-sm">
           {`Merci. Votre signature sur ${pieceLibelle} ${numero} a bien été enregistrée, horodatée et
           rattachée au document que vous venez de lire.`}
         </p>
         {formules !== undefined && (
-          <p className="mt-2 text-sm text-gray-600">
+          <p className="text-fg-soft mt-2 text-sm">
             {`Votre choix est enregistré avec votre signature. Le contrat est formé lorsque ${organismeNom} contresigne le devis.`}
           </p>
         )}
-        <p className="mt-2 text-sm text-gray-600">
+        <p className="text-fg-soft mt-2 text-sm">
           {`${organismeNom} vous adressera l'exemplaire contresigné. Vous pouvez fermer cette page.`}
         </p>
       </div>
@@ -399,10 +399,10 @@ export function PieceSignatureForm({
 
   return (
     <div className="mx-auto w-full max-w-2xl px-4 py-10">
-      <h1 className="text-xl font-semibold text-gray-900">
+      <h1 className="text-fg text-xl font-semibold">
         {`${pieceLibelle.charAt(0).toUpperCase()}${pieceLibelle.slice(1)} ${numero}`}
       </h1>
-      <p className="mt-1 text-sm text-gray-600">
+      <p className="text-fg-soft mt-1 text-sm">
         {clientRaisonSociale !== null && clientRaisonSociale !== ""
           ? `Établie par ${organismeNom} à l'attention de ${clientRaisonSociale}.`
           : `Établie par ${organismeNom}.`}
@@ -416,13 +416,13 @@ export function PieceSignatureForm({
       <section className="mt-8" aria-labelledby="recap-titre">
         {lignes !== undefined && lignes.length > 0 ? (
           <>
-            <h2 id="recap-titre" className="text-sm font-semibold text-gray-900">
+            <h2 id="recap-titre" className="text-fg text-sm font-semibold">
               Détail de la prestation
             </h2>
             <div className="mt-3 overflow-x-auto">
               <table className="w-full min-w-[32rem] border-collapse text-sm">
                 <thead>
-                  <tr className="border-b border-gray-300 text-left text-xs text-gray-600 uppercase">
+                  <tr className="border-border text-fg-soft border-b text-left text-xs uppercase">
                     <th scope="col" className="py-2 pr-3 font-medium">
                       Désignation
                     </th>
@@ -439,17 +439,15 @@ export function PieceSignatureForm({
                 </thead>
                 <tbody>
                   {lignes.map((l, i) => (
-                    <tr key={i} className="border-b border-gray-200 align-top">
-                      <td className="py-2 pr-3 text-gray-900">{l.designation}</td>
-                      <td className="py-2 pr-3 text-right text-gray-700 tabular-nums">
+                    <tr key={i} className="border-border border-b align-top">
+                      <td className="text-fg py-2 pr-3">{l.designation}</td>
+                      <td className="text-fg-soft py-2 pr-3 text-right tabular-nums">
                         {l.quantite}
                       </td>
-                      <td className="py-2 pr-3 text-right text-gray-700 tabular-nums">
+                      <td className="text-fg-soft py-2 pr-3 text-right tabular-nums">
                         {l.prixUnitaireHtLisible}
                       </td>
-                      <td className="py-2 text-right text-gray-900 tabular-nums">
-                        {l.totalHtLisible}
-                      </td>
+                      <td className="text-fg py-2 text-right tabular-nums">{l.totalHtLisible}</td>
                     </tr>
                   ))}
                 </tbody>
@@ -458,17 +456,15 @@ export function PieceSignatureForm({
 
             <dl className="mt-4 space-y-1 text-sm">
               <div className="flex justify-between">
-                <dt className="text-gray-600">Total HT</dt>
-                <dd className="font-medium text-gray-900 tabular-nums">{totalHtLisible ?? ""}</dd>
+                <dt className="text-fg-soft">Total HT</dt>
+                <dd className="text-fg font-medium tabular-nums">{totalHtLisible ?? ""}</dd>
               </div>
               <div className="flex justify-between">
-                <dt className="font-semibold text-gray-900">Total TTC</dt>
-                <dd className="font-semibold text-gray-900 tabular-nums">
-                  {totalTtcLisible ?? ""}
-                </dd>
+                <dt className="text-fg font-semibold">Total TTC</dt>
+                <dd className="text-fg font-semibold tabular-nums">{totalTtcLisible ?? ""}</dd>
               </div>
             </dl>
-            {mentionTva != null && <p className="mt-2 text-xs text-gray-600">{mentionTva}</p>}
+            {mentionTva != null && <p className="text-fg-soft mt-2 text-xs">{mentionTva}</p>}
           </>
         ) : null}
 
@@ -485,7 +481,7 @@ export function PieceSignatureForm({
                   SSOT des circuits, il ne se réécrit pas ici. */}
               {`Ouvrir ${pieceLibelle} au format PDF`}
             </a>
-            <span className="block text-xs text-gray-600">
+            <span className="text-fg-soft block text-xs">
               C&apos;est ce document exact, et son empreinte, que votre signature scelle.
             </span>
           </p>
@@ -495,12 +491,12 @@ export function PieceSignatureForm({
       {/* ── Devis à formules : le CHOIX du client, avant la signature ── */}
       {offre !== undefined && (
         <section className="mt-8" aria-labelledby="choix-titre">
-          <h2 id="choix-titre" className="text-sm font-semibold text-gray-900">
+          <h2 id="choix-titre" className="text-fg text-sm font-semibold">
             Votre choix
           </h2>
 
           <fieldset className="mt-3">
-            <legend className="text-sm text-gray-700">
+            <legend className="text-fg-soft text-sm">
               {offre.formules.length > 1
                 ? "Ce devis propose deux formules. Choisissez celle que vous signez."
                 : "Formule proposée"}
@@ -510,7 +506,7 @@ export function PieceSignatureForm({
                 <label
                   key={f.formule}
                   className={`block rounded border p-4 text-sm ${
-                    formule === f.formule ? "border-gray-900 bg-gray-50" : "border-gray-300"
+                    formule === f.formule ? "border-fg bg-bg" : "border-border"
                   }`}
                 >
                   <span className="flex items-start gap-3">
@@ -528,19 +524,19 @@ export function PieceSignatureForm({
                       className="mt-1"
                     />
                     <span className="block">
-                      <span className="block font-medium text-gray-900">{f.libelle}</span>
-                      <span className="mt-1 block text-gray-700">
+                      <span className="text-fg block font-medium">{f.libelle}</span>
+                      <span className="text-fg-soft mt-1 block">
                         {`À la signature : ${f.baseHtLisible} HT (${f.baseTtcLisible} TTC), hors options.`}
                       </span>
                       {f.lignes.length > 0 && (
-                        <ul className="mt-2 list-disc pl-5 text-xs text-gray-700">
+                        <ul className="text-fg-soft mt-2 list-disc pl-5 text-xs">
                           {f.lignes.map((l, i) => (
                             <li key={i}>{`${l.libelle} — ${l.quantite} × ${l.prixLisible}`}</li>
                           ))}
                         </ul>
                       )}
                       {f.abonnement !== null && (
-                        <span className="mt-2 block text-xs text-gray-700">
+                        <span className="text-fg-soft mt-2 block text-xs">
                           {`Abonnement : ${f.abonnement.mensuelLisible}` +
                             (f.abonnement.engagementMois > 0
                               ? `, engagement de ${f.abonnement.engagementMois} mois.`
@@ -548,7 +544,7 @@ export function PieceSignatureForm({
                         </span>
                       )}
                       {f.maintenance !== null && (
-                        <span className="mt-2 block text-xs text-gray-700">
+                        <span className="text-fg-soft mt-2 block text-xs">
                           {`Maintenance ${
                             f.maintenance.regle === "obligatoire" ? "obligatoire" : "facultative"
                           } : ${f.maintenance.mensuelLisible}.`}
@@ -563,12 +559,12 @@ export function PieceSignatureForm({
 
           {formule !== null && offre.automatisations.length > 0 && (
             <fieldset className="mt-5">
-              <legend className="text-sm text-gray-700">Automatisations</legend>
+              <legend className="text-fg-soft text-sm">Automatisations</legend>
               <div className="mt-2 space-y-2">
                 {offre.automatisations.map((a) => {
                   const coche = autos.includes(a.code);
                   return (
-                    <label key={a.code} className="flex items-start gap-3 text-sm text-gray-900">
+                    <label key={a.code} className="text-fg flex items-start gap-3 text-sm">
                       <input
                         type="checkbox"
                         checked={coche}
@@ -586,7 +582,7 @@ export function PieceSignatureForm({
                         {`${a.libelle} — ${a.prixHtLisible}`}
                         {!a.facultative ? " (incluse)" : ""}
                         {a.dependDeLibelles.length > 0 && (
-                          <span className="block text-xs text-gray-600">
+                          <span className="text-fg-soft block text-xs">
                             {`Nécessite : ${a.dependDeLibelles.join(", ")}`}
                           </span>
                         )}
@@ -600,13 +596,13 @@ export function PieceSignatureForm({
 
           {formule === "achat" && formuleChoisie?.maintenance != null && (
             <fieldset className="mt-5">
-              <legend className="text-sm text-gray-700">Maintenance</legend>
+              <legend className="text-fg-soft text-sm">Maintenance</legend>
               {maintenanceObligatoire ? (
-                <p className="mt-2 text-sm text-gray-900">
+                <p className="text-fg mt-2 text-sm">
                   {`La maintenance est incluse dans cette formule (${formuleChoisie.maintenance.mensuelLisible}).`}
                 </p>
               ) : (
-                <div className="mt-2 space-y-2 text-sm text-gray-900">
+                <div className="text-fg mt-2 space-y-2 text-sm">
                   <label className="flex items-start gap-3">
                     <input
                       type="radio"
@@ -639,8 +635,8 @@ export function PieceSignatureForm({
 
           {(formule === "abonnement" || (formule === "achat" && maintenanceEffective === true)) && (
             <fieldset className="mt-5">
-              <legend className="text-sm text-gray-700">Durée payée d&apos;avance</legend>
-              <div className="mt-2 space-y-2 text-sm text-gray-900">
+              <legend className="text-fg-soft text-sm">Durée payée d&apos;avance</legend>
+              <div className="text-fg mt-2 space-y-2 text-sm">
                 {(formule === "abonnement"
                   ? (formuleChoisie?.abonnement?.periodes ?? [])
                   : (formuleChoisie?.maintenance?.periodes ?? [])
@@ -662,26 +658,23 @@ export function PieceSignatureForm({
           )}
 
           {recap !== null && recap.cle === cleChoix && (
-            <div
-              className="mt-5 rounded border border-gray-900 bg-gray-50 p-4 text-sm"
-              aria-live="polite"
-            >
-              <h3 className="font-semibold text-gray-900">Récapitulatif de ce que vous signez</h3>
-              <p className="mt-1 text-gray-900">{recap.valeur.formuleLibelle}</p>
+            <div className="border-fg bg-bg mt-5 rounded border p-4 text-sm" aria-live="polite">
+              <h3 className="text-fg font-semibold">Récapitulatif de ce que vous signez</h3>
+              <p className="text-fg mt-1">{recap.valeur.formuleLibelle}</p>
               {recap.valeur.automatisations.length > 0 && (
-                <p className="mt-1 text-xs text-gray-700">
+                <p className="text-fg-soft mt-1 text-xs">
                   {`Automatisations : ${recap.valeur.automatisations.join(", ")}`}
                 </p>
               )}
-              <p className="mt-2 text-gray-900">
+              <p className="text-fg mt-2">
                 {`À la signature : ${recap.valeur.totalPonctuelHtLisible} HT, soit ${recap.valeur.totalPonctuelTtcLisible} TTC.`}
               </p>
               {recap.valeur.recurrent.map((l) => (
-                <p key={l} className="mt-1 text-gray-900">
+                <p key={l} className="text-fg mt-1">
                   {l}
                 </p>
               ))}
-              <p className="mt-2 text-xs text-gray-600">
+              <p className="text-fg-soft mt-2 text-xs">
                 La TVA est comprise dans les montants TTC. Votre choix est enregistré avec votre
                 signature ; le contrat est formé lorsque {organismeNom} contresigne.
               </p>
@@ -691,11 +684,11 @@ export function PieceSignatureForm({
       )}
 
       {/* ── Le signataire, tel qu'il a été identifié ── */}
-      <section className="mt-8 rounded border border-gray-300 bg-gray-50 p-4">
-        <h2 className="text-sm font-semibold text-gray-900">Signataire</h2>
-        <p className="mt-1 text-sm text-gray-900">{signataireNom}</p>
-        {signataireQualite !== null && <p className="text-sm text-gray-700">{signataireQualite}</p>}
-        <p className="mt-2 text-xs text-gray-600">
+      <section className="border-border bg-bg mt-8 rounded border p-4">
+        <h2 className="text-fg text-sm font-semibold">Signataire</h2>
+        <p className="text-fg mt-1 text-sm">{signataireNom}</p>
+        {signataireQualite !== null && <p className="text-fg-soft text-sm">{signataireQualite}</p>}
+        <p className="text-fg-soft mt-2 text-xs">
           Cette identité a été enregistrée par {organismeNom} lors de l&apos;envoi de ce lien. Si
           elle est inexacte, ne signez pas et prévenez votre interlocuteur : un lien corrigé vous
           sera adressé.
@@ -704,7 +697,7 @@ export function PieceSignatureForm({
 
       {/* ── Signature ── */}
       <section className="mt-8" aria-labelledby="signature-titre">
-        <h2 id="signature-titre" className="text-sm font-semibold text-gray-900">
+        <h2 id="signature-titre" className="text-fg text-sm font-semibold">
           Bon pour accord
         </h2>
 
@@ -721,11 +714,11 @@ export function PieceSignatureForm({
             />
           </div>
         ) : (
-          <div className="mt-3 rounded border border-gray-300 p-4">
-            <p className="text-sm text-gray-900">
+          <div className="border-border mt-3 rounded border p-4">
+            <p className="text-fg text-sm">
               Vous avez choisi de confirmer votre accord sans tracé manuscrit.
             </p>
-            <p className="mt-1 text-xs text-gray-600">
+            <p className="text-fg-soft mt-1 text-xs">
               Cette modalité a exactement la même valeur qu&apos;une signature tracée. Elle sera
               mentionnée comme telle sur le document.
             </p>
@@ -741,7 +734,7 @@ export function PieceSignatureForm({
         )}
 
         {/* L'ENGAGEMENT — court, isolé, et c'est lui qu'on coche. */}
-        <label className="mt-5 flex items-start gap-3 text-sm text-gray-900">
+        <label className="text-fg mt-5 flex items-start gap-3 text-sm">
           <input
             type="checkbox"
             checked={consent}
@@ -757,8 +750,8 @@ export function PieceSignatureForm({
             SÉPARÉE de l'attestation : l'acceptation des CGV est un acte distinct, dont la
             version est enregistrée et scellée dans la preuve. */}
         {cgv !== undefined && (
-          <div className="mt-5 rounded border border-gray-300 p-4">
-            <h3 className="text-sm font-semibold text-gray-900">
+          <div className="border-border mt-5 rounded border p-4">
+            <h3 className="text-fg text-sm font-semibold">
               {`Conditions générales de vente (version du ${cgv.libelle})`}
             </h3>
             <p className="mt-2 flex flex-wrap gap-x-6 gap-y-1 text-sm">
@@ -776,7 +769,7 @@ export function PieceSignatureForm({
                 <span className="sr-only"> les conditions générales de vente</span>
               </a>
             </p>
-            <label className="mt-3 flex items-start gap-3 text-sm text-gray-900">
+            <label className="text-fg mt-3 flex items-start gap-3 text-sm">
               <input
                 type="checkbox"
                 checked={cgvOk}
@@ -815,8 +808,8 @@ export function PieceSignatureForm({
             ⚠️ Toujours à faire relire par l'avocat avec les clauses OPCO. Le
             repli est un choix d'affichage, pas un avis juridique. */}
         {mentionsEncadrantes.length > 0 && (
-          <details className="group mt-4 rounded border border-gray-200 bg-gray-50">
-            <summary className="cursor-pointer list-none p-3 text-xs font-semibold tracking-wide text-gray-700 uppercase hover:bg-gray-100">
+          <details className="group border-border bg-bg mt-4 rounded border">
+            <summary className="text-fg-soft hover:bg-sand cursor-pointer list-none p-3 text-xs font-semibold tracking-wide uppercase">
               <span aria-hidden="true" className="mr-1 inline-block group-open:hidden">
                 +
               </span>
@@ -827,7 +820,7 @@ export function PieceSignatureForm({
             </summary>
             <div className="space-y-2 px-3 pt-1 pb-3">
               {mentionsEncadrantes.map((texte) => (
-                <p key={texte} className="text-xs leading-relaxed text-gray-700">
+                <p key={texte} className="text-fg-soft text-xs leading-relaxed">
                   {texte}
                 </p>
               ))}
@@ -836,24 +829,24 @@ export function PieceSignatureForm({
         )}
 
         {avecCode && (
-          <div className="mt-5 rounded border border-gray-300 p-4">
-            <p className="text-sm text-gray-900">
+          <div className="border-border mt-5 rounded border p-4">
+            <p className="text-fg text-sm">
               Pour signer, saisissez le code à 6 chiffres que nous vous envoyons par e-mail.
             </p>
             <button
               type="button"
               onClick={demanderCode}
               disabled={envoiCodeEnCours || enCours}
-              className="mt-3 min-h-12 rounded border border-gray-900 px-4 text-sm font-medium disabled:opacity-40"
+              className="border-fg mt-3 min-h-12 rounded border px-4 text-sm font-medium disabled:opacity-40"
             >
               {codeEnvoyeA === null ? "Recevoir mon code" : "Recevoir un nouveau code"}
             </button>
             {codeEnvoyeA !== null && (
-              <p className="mt-2 text-xs text-gray-600" aria-live="polite">
+              <p className="text-fg-soft mt-2 text-xs" aria-live="polite">
                 {`Code envoyé à ${codeEnvoyeA}.`}
               </p>
             )}
-            <label className="mt-3 block text-sm text-gray-900" htmlFor="code-signature">
+            <label className="text-fg mt-3 block text-sm" htmlFor="code-signature">
               Code reçu par e-mail
             </label>
             <input
@@ -866,7 +859,7 @@ export function PieceSignatureForm({
               value={code}
               onChange={(e) => setCode(e.target.value.replace(/\D/g, "").slice(0, 6))}
               disabled={enCours}
-              className="mt-1 min-h-12 w-40 rounded border border-gray-400 px-3 text-lg tracking-widest tabular-nums"
+              className="border-border-field mt-1 min-h-12 w-40 rounded border px-3 text-lg tracking-widest tabular-nums"
             />
           </div>
         )}
@@ -881,12 +874,12 @@ export function PieceSignatureForm({
           type="button"
           onClick={soumettre}
           disabled={!pretASigner || enCours}
-          className="mt-6 rounded bg-gray-900 px-5 py-2.5 text-sm font-medium text-white disabled:opacity-40"
+          className="bg-terracotta hover:bg-terracotta-deep mt-6 rounded px-5 py-2.5 text-sm font-medium text-white focus-visible:outline-2 focus-visible:outline-offset-2 disabled:opacity-40"
         >
           {enCours ? "Enregistrement…" : `Signer ${pieceLibelle}`}
         </button>
         {!pretASigner && (
-          <p className="mt-2 text-xs text-gray-600">
+          <p className="text-fg-soft mt-2 text-xs">
             {(modeAccessible
               ? "Cochez la case ci-dessus pour confirmer votre accord."
               : "Tracez votre signature et cochez la case ci-dessus.") +
