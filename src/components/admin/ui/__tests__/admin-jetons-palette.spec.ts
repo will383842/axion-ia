@@ -10,8 +10,8 @@ const css = readFileSync(join(process.cwd(), "src", "app", "admin.css"), "utf8")
 );
 const PALETTE_CONSOLE = new Set(
   [
-    "#FAF9F5", "#E8E6DC", "#141413", "#FFFFFF", "#B23F16", "#8F3412",
-    "#D97757", "#B0AEA5", "#5E5D59", "#5E7050", "#B8341C",
+    "#FAF9F5", "#E8E6DC", "#141413", "#FFFFFF", "#B23F16", "#8F3412", // hex-ok: palette de référence du test
+    "#D97757", "#B0AEA5", "#5E5D59", "#5E7050", "#B8341C", // hex-ok: palette de référence du test
   ].map((h) => h.toLowerCase()),
 );
 const hexe = (v: string) => (v.match(/#[0-9a-f]{3,8}\b/gi) ?? []).map((h) => h.toLowerCase());
@@ -54,15 +54,15 @@ describe("jetons de la console : palette définitive", () => {
       return (deg >= 190 && deg <= 260) || (deg >= 40 && deg <= 70);
     });
     expect(fautes).toEqual([]);
-    expect(css).not.toMatch(/#1a4dd9|#e8efff/i);
+    expect(css).not.toMatch(/#1a4dd9|#e8efff/i); // hex-ok: palette de référence du test
   });
   it("valeurs clés : fond, texte, bouton, erreur", () => {
     expect([j("bg"), j("fg"), j("terracotta"), j("destructive-fg"), j("destructive")]).toEqual([
-      "#faf9f5", "#141413", "#b23f16", "#141413", "#b8341c",
+      "#faf9f5", "#141413", "#b23f16", "#141413", "#b8341c", // hex-ok: palette de référence du test
     ]);
   });
-  it("#D97757 n'apparaît que dans les jetons rail-*", () => {
-    const hors = decl.filter(([n, v]) => !n.includes("-rail-") && /#d97757|217 119 87/i.test(v));
+  it("#D97757 n'apparaît que dans les jetons rail-*", () => { // hex-ok: palette de référence du test
+    const hors = decl.filter(([n, v]) => !n.includes("-rail-") && /#d97757|217 119 87/i.test(v)); // hex-ok: motif du test
     expect(hors).toEqual([]);
   });
   it("contrastes WCAG AA calculés sur chaque paire utilisée", () => {
