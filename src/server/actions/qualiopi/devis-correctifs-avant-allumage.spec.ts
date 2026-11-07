@@ -21,6 +21,9 @@ vi.mock("@/server/actions/qualiopi/_guards", () => ({
   requireHabilitation: vi.fn().mockResolvedValue({ userId: "admin-1", role: "super_admin" }),
   logQualiopiActivity: vi.fn(),
 }));
+vi.mock("@/server/qualiopi/devis/interrupteur-formules", () => ({
+  formulesActives: async () => false,
+}));
 vi.mock("@/server/actions/qualiopi/documents", () => ({ genererConventionAction: vi.fn() }));
 const lireContexte = vi.fn();
 vi.mock("@/server/qualiopi/documents/donnees-pdf-devis", () => ({
@@ -54,7 +57,7 @@ beforeEach(() => {
 });
 
 describe("sendDevisAction — offre à formules", () => {
-  it("refuse l'envoi d'un devis portant une offre, avec un message clair", async () => {
+  it("interrupteur éteint : refuse l'envoi d'un devis portant une offre, avec un message clair", async () => {
     findUnique.mockResolvedValue({
       id: ID,
       numero: "AXI-DEV-2026-001",
@@ -67,7 +70,7 @@ describe("sendDevisAction — offre à formules", () => {
     });
     const r = await sendDevisAction(ID);
     expect("error" in r && r.error).toMatch(/formules/i);
-    expect("error" in r && r.error).toMatch(/signature/i);
+    expect("error" in r && r.error).toMatch(/désactivés/i);
     expect(lireContexte).not.toHaveBeenCalled();
   });
   it("la lecture du devis demande bien la colonne offre", async () => {
