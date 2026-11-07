@@ -143,7 +143,9 @@ describe("rattraperGuides — adresse opposée (toutes origines)", () => {
 
   it("ligne déjà envoyée (journal sent) + adresse opposée : trace réparée, aucun envoi", async () => {
     guideFindMany.mockResolvedValue([{ ...CANDIDATE, origine: "formulaire" }]);
-    emailLogFindMany.mockResolvedValue([{ status: "sent", sentAt: new Date("2026-09-24T10:00:00Z") }]);
+    emailLogFindMany.mockResolvedValue([
+      { status: "sent", sentAt: new Date("2026-09-24T10:00:00Z") },
+    ]);
     estOpposee.mockResolvedValue(true);
     const r = await rattraperGuides(MAINTENANT);
     expect(r.reparees).toBe(1);
