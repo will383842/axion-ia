@@ -15,6 +15,8 @@ import Link from "next/link";
 
 import { AdminPageShell } from "@/components/admin/ui/AdminPageShell";
 import { AdminPageHeader } from "@/components/admin/ui/AdminPageHeader";
+import { AdminBadge } from "@/components/admin/ui/AdminBadge";
+import { AdminButton } from "@/components/admin/ui/AdminButton";
 import { DevisLifecycleButtons } from "@/components/admin/qualiopi/DevisLifecycleButtons";
 import { DevisContresignature } from "@/components/admin/qualiopi/DevisContresignature";
 import { compterPlansAttendus } from "@/server/qualiopi/devis/proposer-plans";
@@ -58,6 +60,15 @@ export const metadata: Metadata = {
 // ─────────────────────────────────────────────────────────────────────────────
 // Helpers & libellés
 // ─────────────────────────────────────────────────────────────────────────────
+
+const STATUT_TONES: Record<string, "neutral" | "info" | "success" | "warning"> = {
+  brouillon: "neutral",
+  envoye: "warning",
+  accepte: "success",
+  refuse: "neutral",
+  expire: "neutral",
+  transforme_convention: "info",
+};
 
 const STATUT_LABELS: Record<string, string> = {
   brouillon: "Brouillon",
@@ -246,7 +257,15 @@ export default async function QualiopiDevisDetailPage({ params }: PageProps) {
   return (
     <AdminPageShell width="wide">
       {/* Fil d&apos;Ariane */}
-      <div className="mb-[var(--space-admin-4)] flex items-center gap-[var(--space-admin-3)]">
+      <div className="mb-[var(--space-admin-4)] flex flex-wrap items-center gap-[var(--space-admin-4)]">
+        {client ? (
+          <Link
+            href={`/${locale}/${adminPrefix}/qualiopi/clients/${client.id}`}
+            className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-accent)] underline-offset-2 hover:underline"
+          >
+            ← {client.raisonSociale}
+          </Link>
+        ) : null}
         <Link
           href={devisBase}
           className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-accent)] underline-offset-2 hover:underline"
@@ -257,10 +276,30 @@ export default async function QualiopiDevisDetailPage({ params }: PageProps) {
 
       <AdminPageHeader
         title={`Devis ${devis.numero}`}
-        description={
-          client
-            ? `${client.raisonSociale} · ${STATUT_LABELS[devis.statut] ?? devis.statut}`
-            : `Client inconnu · ${STATUT_LABELS[devis.statut] ?? devis.statut}`
+        description={client ? client.raisonSociale : "Client inconnu"}
+        meta={
+          <AdminBadge tone={STATUT_TONES[devis.statut] ?? "neutral"} dot>
+            {STATUT_LABELS[devis.statut] ?? devis.statut}
+          </AdminBadge>
+        }
+        actions={
+          <>
+            {devis.statut === "brouillon" ? (
+              <AdminButton
+                variant="secondary"
+                href={`/api/qualiopi/devis/${devis.id}/apercu`}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Voir l&apos;aperçu PDF
+              </AdminButton>
+            ) : null}
+            {peutModifierFormules ? (
+              <AdminButton variant="secondary" href={`${devisBase}/${devis.id}/modifier`}>
+                Modifier le brouillon
+              </AdminButton>
+            ) : null}
+          </>
         }
       />
 
@@ -608,28 +647,6 @@ export default async function QualiopiDevisDetailPage({ params }: PageProps) {
       {/* ── Actions de cycle de vie ──────────────────────────────────────── */}
       <section className="mb-[var(--space-admin-8)]">
         <h2 className={sectionHeadCls}>Actions</h2>
-        {devis.statut === "brouillon" && (
-          <p className="mb-[var(--space-admin-3)]">
-            <a
-              href={`/api/qualiopi/devis/${devis.id}/apercu`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-[length:var(--text-admin-sm)] underline"
-            >
-              Voir l&apos;aperçu PDF
-            </a>
-          </p>
-        )}
-        {peutModifierFormules && (
-          <p className="mb-[var(--space-admin-3)]">
-            <Link
-              href={`${devisBase}/${devis.id}/modifier`}
-              className="text-[length:var(--text-admin-sm)] underline"
-            >
-              Modifier le brouillon
-            </Link>
-          </p>
-        )}
         <DevisLifecycleButtons devisId={devis.id} statut={devis.statut} />
         <DevisSuiviLivraison
           devisId={devis.id}

@@ -63,8 +63,8 @@ interface PageProps {
 function Message({ titre, detail }: { titre: string; detail: string }) {
   return (
     <div className="mx-auto w-full max-w-md px-4 py-16">
-      <h1 className="text-lg font-semibold text-gray-900">{titre}</h1>
-      <p className="mt-2 text-sm text-gray-600">{detail}</p>
+      <h1 className="text-fg text-lg font-semibold">{titre}</h1>
+      <p className="text-fg-soft mt-2 text-sm">{detail}</p>
     </div>
   );
 }
