@@ -71,70 +71,10 @@
       "cellules": ["Coaching individuel", "à la séance", "à partir de 790 €", "30 %"]
     }
   ],
-  "A1.3 | Audit sur place": [
+  "A1.3 | Tous les audits": [
     {
       "depuisLe": "2026-10-08",
-      "cellules": ["Audit sur place", "à partir de 1 190 €", "30 %"]
-    }
-  ],
-  "A1.3 | Audit sur place — sur site": [
-    {
-      "depuisLe": "2026-10-08",
-      "cellules": ["Audit sur place — sur site", "à partir de 1 190 €", "30 %"]
-    }
-  ],
-  "A1.3 | Audit ciblé": [
-    {
-      "depuisLe": "2026-10-08",
-      "cellules": ["Audit ciblé", "à partir de 1 900 €", "30 %"]
-    }
-  ],
-  "A1.3 | Audit ciblé — solo": [
-    {
-      "depuisLe": "2026-10-08",
-      "cellules": ["Audit ciblé — solo", "à partir de 1 900 €", "30 %"]
-    }
-  ],
-  "A1.3 | Audit ciblé — standard": [
-    {
-      "depuisLe": "2026-10-08",
-      "cellules": ["Audit ciblé — standard", "à partir de 2 900 €", "30 %"]
-    }
-  ],
-  "A1.3 | Audit ciblé — avancé": [
-    {
-      "depuisLe": "2026-10-08",
-      "cellules": ["Audit ciblé — avancé", "à partir de 3 900 €", "30 %"]
-    }
-  ],
-  "A1.3 | Audit stratégique PME": [
-    {
-      "depuisLe": "2026-10-08",
-      "cellules": ["Audit stratégique PME", "à partir de 1 900 €", "30 %"]
-    }
-  ],
-  "A1.3 | Audit stratégique PME — 20 à 50 salariés": [
-    {
-      "depuisLe": "2026-10-08",
-      "cellules": ["Audit stratégique PME — 20 à 50 salariés", "à partir de 4 900 €", "30 %"]
-    }
-  ],
-  "A1.3 | Audit stratégique PME — 50 à 250 salariés": [
-    {
-      "depuisLe": "2026-10-08",
-      "cellules": ["Audit stratégique PME — 50 à 250 salariés", "à partir de 9 900 €", "30 %"]
-    }
-  ],
-  "A1.3 | Audit stratégique ETI": [
-    {
-      "depuisLe": "2026-10-08",
-      "cellules": ["Audit stratégique ETI", "à partir de 1 900 €", "30 %"]
-    }
-  ],
-  "A1.3 | Audit stratégique ETI — base": [
-    {
-      "depuisLe": "2026-10-08",
-      "cellules": ["Audit stratégique ETI — base", "à partir de 1 900 €", "30 %"]
+      "cellules": ["Tous les audits", "à partir de 1 190 €", "30 %"]
     }
   ],
   "A1.4 | Pilote IA": [

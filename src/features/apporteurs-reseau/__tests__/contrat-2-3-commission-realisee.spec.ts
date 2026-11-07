@@ -39,7 +39,11 @@ describe("contrat 2.3 : commission sur prestation réalisée, reprise et litige"
     expect(texte).toContain("4.2 bis — Contestation du client");
     expect(texte).toContain("la commission correspondante est **suspendue**");
     expect(texte).toContain("selon le prix finalement conservé par la Société");
-    expect(texte).toContain("Hors la contestation écrite du client prévue à l'article 4.2 bis");
+    // Contrat 2.7 : liste FERMÉE des cas de report (art. 5.4), dont la contestation (b).
+    expect(texte).toContain(
+      "Un versement ne peut être différé que dans les cas suivants, limitativement",
+    );
+    expect(texte).toContain("(b) la contestation écrite du client");
   });
 
   it("4.5 : reprise dans les vingt-quatre mois de l'annulation", () => {

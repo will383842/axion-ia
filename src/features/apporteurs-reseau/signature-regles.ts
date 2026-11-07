@@ -221,9 +221,16 @@ export function estSociete(statut: string): boolean {
   return statut !== "micro_entrepreneur" && statut !== "entrepreneur_individuel";
 }
 
-/** La qualité au sens de l'art. 14 (copie de `qualiteDuStatut`, module pur). */
-function qualite(statut: string): string {
-  return estSociete(statut) ? "société commerciale" : "entrepreneur individuel";
+/**
+ * La qualité au sens de l'art. 14 (copie de `qualiteDuStatut`, module pur). Contrat 2.7 : un
+ * entrepreneur individuel est commerçant ou non selon son immatriculation au RCS (le dossier ne le
+ * dit pas) ; une société est nommée, avec la personne qui la représente.
+ */
+function qualite(statut: string, denomination: string | null, identite: string): string {
+  if (!estSociete(statut))
+    return "entrepreneur individuel commerçant s'il est immatriculé au registre du commerce et des sociétés, entrepreneur individuel non commerçant dans le cas contraire";
+  const nom = denomination ? `société commerciale ${denomination}` : "société commerciale";
+  return `${nom}, représentée par ${identite}, qui déclare avoir le pouvoir de l'engager`;
 }
 
 /**
@@ -255,7 +262,9 @@ export function valeursDuContrat(
     siren: d.siren ?? A_COMPLETER,
     ...(d.siret ? { siret: d.siret } : {}),
     siege: d.adresse?.trim() || A_COMPLETER,
-    qualite: d.statutJuridique ? qualite(d.statutJuridique) : A_COMPLETER,
+    qualite: d.statutJuridique
+      ? qualite(d.statutJuridique, denomination, identite || A_COMPLETER)
+      : A_COMPLETER,
     grilleDate: dateFrancaise(le),
   };
 }
