@@ -146,6 +146,11 @@ const ALLOWED_PATTERNS: ReadonlyArray<RegExp> = [
  * pour rien.
  */
 const CONSOMMATEURS_ASSUMES: ReadonlySet<string> = new Set([
+  // Signature renforcée du devis, lot 4 bis (07/11/2026) — le passage périodique du worker (5 min,
+  // toujours allumé) reprend les jetons d'horodatage RFC 3161 restés « en attente » quand l'autorité
+  // était injoignable (`passerHorodatages`, import PARESSEUX). Une file dédiée pour une seule requête
+  // toutes les 5 minutes serait plus de plomberie que de valeur. N'importe que ce module du domaine.
+  "src/server/queue/workers/visio-balayage-worker.ts",
   // Synchro console ↔ CRM (étape 6, 26/10/2026) — le NAF qui revient du CRM doit recalculer
   // l'OPCO déduit EXACTEMENT comme la saisie en console (`inferOpcoDepuisTable`, `nomOpcoDuClient`,
   // `isOpcoId`) : une seule règle, jamais un OPCO saisi écrasé. Déplacer cette fonction dans

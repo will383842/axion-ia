@@ -597,6 +597,29 @@ const relireCodeSignature: LecteurAuDepart = async (job) => {
   }
 };
 
+/**
+ * Code de signature d'un DEVIS (lot 4 bis) : même règle que F17 — le code doit être encore VIVANT au
+ * départ (ni utilisé, ni remplacé, ni expiré, ni pièce bloquée), sinon l'e-mail ne part pas. Pas de
+ * fiche formateur ici : la ligne du code est la seule source. Sans identifiant, on retient.
+ */
+const relireCodeDevis: LecteurAuDepart = async (job) => {
+  try {
+    const id = champ(job.payload, CLE_CODE_SIGNATURE);
+    if (typeof id !== "string") return "ligne du code absente — retenu par prudence";
+    const code = await prisma.documentSignatureCode.findUnique({
+      where: { id },
+      select: { expiresAt: true, utiliseAt: true, invalideAt: true, bloqueJusquA: true },
+    });
+    if (code === null) return "code de signature introuvable";
+    if (code.utiliseAt !== null) return "le code de signature a déjà servi";
+    if (code.invalideAt !== null) return "le code de signature a été remplacé";
+    if (code.expiresAt.getTime() <= Date.now()) return "le code de signature a expiré";
+    return null;
+  } catch {
+    return "état illisible au départ — retenu par prudence";
+  }
+};
+
 /** Le registre : gabarit → lecteur d'état. */
 export const RELECTURES_AU_DEPART: ReadonlyMap<string, LecteurAuDepart> = new Map<
   string,
@@ -624,4 +647,5 @@ export const RELECTURES_AU_DEPART: ReadonlyMap<string, LecteurAuDepart> = new Ma
   [F21, relireRelanceNda],
   [F61, relireRelanceBilan],
   [F17, relireCodeSignature],
+  ["devis-code-signature", relireCodeDevis],
 ]);

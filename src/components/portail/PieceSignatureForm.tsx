@@ -212,6 +212,13 @@ export interface PieceSignatureFormProps {
   cgv?: CgvAffichees;
   /** Présente = devis À FORMULES : le client choisit sa formule avant de signer. */
   formules?: OffreFormulesProps;
+  /**
+   * Vrai = signature « simple renforcée » (lot 4 bis, devis à formules) : le signataire SAISIT son
+   * nom et sa fonction et coche « Je déclare avoir le pouvoir d'engager la société ». Jamais
+   * préremplis : la déclaration doit être un acte, pas une validation par défaut. Le code reçu par
+   * e-mail (`demanderCodeAction`) l'accompagne ; l'instant de la déclaration est posé par le serveur.
+   */
+  declaration?: boolean;
   signerAction: (input: {
     token: string;
     methode: "trace" | "confirmation_accessible";
@@ -220,6 +227,7 @@ export interface PieceSignatureFormProps {
     cgvAcceptees?: true;
     cgvVersionAffichee?: string;
     choix?: ChoixFormules;
+    declaration?: { nom: string; fonction: string; pouvoirEngager: boolean };
   }) => Promise<
     { ok: true; signatureId: string; statutSignature: string } | { ok: false; message: string }
   >;
@@ -249,6 +257,7 @@ export function PieceSignatureForm({
   mentions,
   cgv,
   formules,
+  declaration,
   signerAction,
   demanderCodeAction,
 }: PieceSignatureFormProps): React.ReactElement {
@@ -272,6 +281,10 @@ export function PieceSignatureForm({
   // refuserait en `image_requise`, message que personne ne saurait interpréter.
   const avecCode = demanderCodeAction !== undefined;
   const [code, setCode] = useState("");
+  const avecDeclaration = declaration === true;
+  const [nomSaisi, setNomSaisi] = useState("");
+  const [fonctionSaisie, setFonctionSaisie] = useState("");
+  const [pouvoirOk, setPouvoirOk] = useState(false);
   const [codeEnvoyeA, setCodeEnvoyeA] = useState<string | null>(null);
   const [envoiCodeEnCours, startEnvoiCode] = useTransition();
 
@@ -344,7 +357,9 @@ export function PieceSignatureForm({
     choixConfirme &&
     (cgv === undefined || cgvOk) &&
     (modeAccessible || trace !== null) &&
-    (!avecCode || /^\d{6}$/.test(code));
+    (!avecCode || /^\d{6}$/.test(code)) &&
+    (!avecDeclaration ||
+      (nomSaisi.trim().length >= 2 && fonctionSaisie.trim().length >= 2 && pouvoirOk));
 
   function demanderCode() {
     if (demanderCodeAction === undefined) return;
@@ -367,6 +382,15 @@ export function PieceSignatureForm({
         // manuscrite une signature qui ne l'est pas.
         ...(modeAccessible || trace === null ? {} : { imageDataUrl: trace }),
         ...(avecCode ? { code } : {}),
+        ...(avecDeclaration
+          ? {
+              declaration: {
+                nom: nomSaisi.trim(),
+                fonction: fonctionSaisie.trim(),
+                pouvoirEngager: pouvoirOk,
+              },
+            }
+          : {}),
         ...(cgv !== undefined
           ? { cgvAcceptees: true as const, cgvVersionAffichee: cgv.version }
           : {}),
@@ -835,10 +859,59 @@ export function PieceSignatureForm({
           </details>
         )}
 
+        {avecDeclaration && (
+          <fieldset className="mt-5 rounded border border-gray-300 p-4" disabled={enCours}>
+            <legend className="px-1 text-sm font-semibold text-gray-900">
+              Vous signez en votre nom
+            </legend>
+            <p className="text-xs text-gray-600">
+              {`Ce lien a été établi pour ${signataireNom}${
+                signataireQualite !== null && signataireQualite !== ""
+                  ? ` (${signataireQualite})`
+                  : ""
+              }. Saisissez vos nom et fonction : ils sont enregistrés avec votre signature.`}
+            </p>
+            <label className="mt-3 block text-sm text-gray-900" htmlFor="declaration-nom">
+              Votre nom et prénom
+            </label>
+            <input
+              id="declaration-nom"
+              type="text"
+              autoComplete="name"
+              maxLength={200}
+              value={nomSaisi}
+              onChange={(e) => setNomSaisi(e.target.value)}
+              className="mt-1 min-h-12 w-full rounded border border-gray-400 px-3 text-sm"
+            />
+            <label className="mt-3 block text-sm text-gray-900" htmlFor="declaration-fonction">
+              Votre fonction dans la société
+            </label>
+            <input
+              id="declaration-fonction"
+              type="text"
+              autoComplete="organization-title"
+              maxLength={200}
+              value={fonctionSaisie}
+              onChange={(e) => setFonctionSaisie(e.target.value)}
+              className="mt-1 min-h-12 w-full rounded border border-gray-400 px-3 text-sm"
+            />
+            <label className="mt-4 flex items-start gap-3 text-sm text-gray-900">
+              <input
+                type="checkbox"
+                checked={pouvoirOk}
+                onChange={(e) => setPouvoirOk(e.target.checked)}
+                className="mt-1"
+              />
+              <span>Je déclare avoir le pouvoir d&apos;engager la société</span>
+            </label>
+          </fieldset>
+        )}
+
         {avecCode && (
           <div className="mt-5 rounded border border-gray-300 p-4">
             <p className="text-sm text-gray-900">
-              Pour signer, saisissez le code à 6 chiffres que nous vous envoyons par e-mail.
+              Pour signer, saisissez le code à 6 chiffres que nous vous envoyons par e-mail. Il est
+              à usage unique et valable quelques minutes.
             </p>
             <button
               type="button"
@@ -895,6 +968,9 @@ export function PieceSignatureForm({
                 : "") +
               (formules !== undefined
                 ? " Choisissez votre formule et vérifiez le récapitulatif."
+                : "") +
+              (avecDeclaration
+                ? " Renseignez votre nom et votre fonction, et cochez la déclaration de pouvoir."
                 : "") +
               (avecCode ? " Saisissez ensuite le code reçu par e-mail." : "")}
           </p>

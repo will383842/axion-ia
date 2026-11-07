@@ -7950,7 +7950,8 @@ model DocumentSignatureCode {
 /// l'horodatage : la ligne naît `en_attente` avec la signature, un job la complète (réessais sans
 /// limite, intervalle croissant) — l'autorité injoignable ne bloque ni ne perd rien.
 /// Ajout seul : jamais de DELETE ; l'empreinte et la signature ne changent pas ; un jeton obtenu
-/// est définitif (déclencheurs SQL). rgpd: technique — empreinte et jeton, aucune donnée en clair.
+/// est définitif (déclencheurs SQL).
+/// rgpd: technique — empreinte SHA-256 d'un sceau et jeton d'horodatage de l'autorité ; ni nom, ni adresse, ni donnée en clair
 model DocumentSignatureHorodatage {
   id               String            @id @default(uuid()) @db.Uuid
   signatureId      String            @unique @map("signature_id") @db.Uuid

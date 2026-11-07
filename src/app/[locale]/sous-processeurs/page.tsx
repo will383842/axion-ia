@@ -77,12 +77,14 @@ const LABELS_DPA_FR: Record<Subprocessor["dpaStatus"], string> = {
   auto_signable_dashboard: "DPA auto-signable",
   self_hosted_no_dpa: "Auto-hébergé — sans DPA externe",
   pending: "DPA en cours",
+  not_required: "Sans objet — aucune donnée personnelle transmise",
 };
 const LABELS_DPA_EN: Record<Subprocessor["dpaStatus"], string> = {
   signed: "DPA signed",
   auto_signable_dashboard: "DPA auto-signable",
   self_hosted_no_dpa: "Self-hosted — no external DPA",
   pending: "DPA pending",
+  not_required: "Not applicable — no personal data transmitted",
 };
 
 const LABELS_TRANSFER_FR: Record<Subprocessor["transferFramework"], string> = {
@@ -189,6 +191,7 @@ function dpaBadge(s: Subprocessor, isFr: boolean): Badge {
     case "pending":
       return { label, className: "bg-terracotta-soft text-terracotta-deep", dot: "bg-terracotta" };
     case "self_hosted_no_dpa":
+    case "not_required":
     default:
       return { label, className: "bg-sand text-fg-soft", dot: "bg-border-strong" };
   }
@@ -202,6 +205,7 @@ const COUNTRY_NAME_TO_ISO: ReadonlyArray<readonly [RegExp, string]> = [
   [/Allemagne|Germany/i, "DE"],
   [/Irlande|Ireland/i, "IE"],
   [/Royaume-Uni|United Kingdom/i, "GB"],
+  [/Pologne|Poland/i, "PL"],
   [/Canada/i, "CA"],
   [/Émirats|Emirates/i, "AE"],
   [/USA|United States|États-Unis/i, "US"],

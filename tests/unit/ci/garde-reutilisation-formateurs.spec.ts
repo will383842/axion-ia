@@ -45,6 +45,10 @@ const MODELES_SIGNATURE_FIGES: ReadonlyArray<string> = [
   // d'un code éphémère (10 min, 5 essais) que l'ADR 0066 étape 7 exige pour
   // signer le contrat-cadre. La preuve, elle, reste dans `DocumentSignature`.
   "DocumentSignatureCode",
+  // Lot 4 bis (ADR 0073) — ce n'est PAS une table de preuve : elle porte le JETON D'HORODATAGE
+  // RFC 3161 d'une signature existante (`DocumentSignature`, qui reste la seule preuve). Elle naît
+  // « en attente » avec la signature et un job la complète ; ajout seul, un jeton obtenu est définitif.
+  "DocumentSignatureHorodatage",
   "DocumentSignatureToken",
   "EmargementContresignature",
   "EmargementSignature",

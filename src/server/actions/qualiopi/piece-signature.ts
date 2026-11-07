@@ -66,6 +66,12 @@ import {
   objectionContratCadre,
 } from "@/server/qualiopi/documents/signature/contrat-cadre-signature";
 import { verifierCodeSignature } from "@/server/qualiopi/documents/signature/code-signature";
+import { envoyerCodeDevis } from "@/server/qualiopi/devis/code-signature-devis";
+import { horodaterSignature } from "@/server/qualiopi/documents/signature/horodatage-signature";
+import {
+  CODE_DEVIS_BLOCAGE_MS,
+  validerDeclaration,
+} from "@/server/qualiopi/devis/signature-renforcee";
 import { CONSENTEMENT_VERSION_DOCUMENT_CODE } from "@/server/qualiopi/documents/signature/mentions-document";
 import { circuitPour } from "@/server/qualiopi/documents/signature/parties-requises";
 import { envoyerCodeSignature } from "@/server/qualiopi/formateurs-independants/code-signature-envoi";
@@ -75,6 +81,7 @@ import { verifierTokenDocument } from "@/server/qualiopi/documents/signature/tok
 import type { ChoixCanonique } from "@/server/qualiopi/devis/offre-calculs";
 import { SignatureStockageError } from "@/server/qualiopi/emargement/storage";
 import {
+  devisSignableParFormules,
   validerChoixSignature,
   type ChoixSaisi,
   type RaisonRefusChoix,
@@ -123,7 +130,11 @@ export type RefusSignaturePiece =
   | "cgv_perimees"
   /** Devis à formules : le choix est absent ou refusé contre l'offre figée (voir `choix-signature`). */
   | RaisonRefusChoix
-  | "choix_requis";
+  | "choix_requis"
+  /** Signature renforcée : nom, fonction ou déclaration de pouvoir absents ou invalides. */
+  | "declaration_requise"
+  /** Signature renforcée : cinq codes faux, la pièce est bloquée quelques minutes. */
+  | "code_bloque";
 
 export type ResultatSignaturePiece =
   | {
@@ -168,6 +179,18 @@ const entreeJetonSchema = z.object({
   cgvAcceptees: z.literal(true).optional(),
   cgvVersionAffichee: z.string().max(40).optional(),
   /**
+   * Signature « simple renforcée » du devis à formules (lot 4 bis) : ce que le signataire SAISIT.
+   * `pouvoirEngager` n'est volontairement pas typé ici : `validerDeclaration` exige EXACTEMENT
+   * `true` et rend un message précis. L'instant de la déclaration, lui, est posé par le serveur.
+   */
+  declaration: z
+    .object({
+      nom: z.string().max(400),
+      fonction: z.string().max(400),
+      pouvoirEngager: z.unknown(),
+    })
+    .optional(),
+  /**
    * Devis À FORMULES : ce que le client a choisi. Seulement des CHOIX — formule, automatisations
    * facultatives, case maintenance, durée. Tout autre champ (prix, remise…) est écarté par Zod et
    * ne parvient jamais au sceau : les montants viennent de l'offre figée en base.
@@ -181,6 +204,9 @@ const entreeJetonSchema = z.object({
     })
     .optional(),
 });
+
+const MESSAGE_DEJA_SIGNE =
+  "Cette pièce a déjà été signée. Aucune nouvelle signature n'est nécessaire.";
 
 const MESSAGE_CGV_NON_ACCEPTEES =
   "Pour signer ce devis, cochez la case « J'ai lu et j'accepte les conditions générales de vente ».";
@@ -285,6 +311,7 @@ export async function signerPieceParJetonAction(input: {
   code?: string;
   cgvAcceptees?: boolean;
   cgvVersionAffichee?: string;
+  declaration?: { nom: string; fonction: string; pouvoirEngager: boolean };
   choix?: {
     formule: "achat" | "abonnement";
     automatisationsRetenues: string[];
@@ -463,6 +490,53 @@ export async function signerPieceParJetonAction(input: {
     }
   }
 
+  // Devis À FORMULES — signature « simple renforcée » (lot 4 bis) : déclaration (nom, fonction, pouvoir
+  // d'engager la société) PUIS code reçu par e-mail. Ordre voulu : le code (5 essais, blocage) n'est
+  // consommé qu'en DERNIER, une fois tout le reste valide — un oubli de case ne coûte pas un code.
+  let renforcee:
+    { declarationNom: string; declarationFonction: string; pouvoirDeclareAt: Date } | undefined;
+  if (choixOffre !== undefined) {
+    const decl = validerDeclaration(
+      donnees.declaration ?? { nom: undefined, fonction: undefined, pouvoirEngager: undefined },
+    );
+    if (!decl.ok) {
+      return { ok: false, raison: "declaration_requise", message: decl.message };
+    }
+    if (donnees.code === undefined) {
+      return {
+        ok: false,
+        raison: "code_requis",
+        message: "Saisissez le code reçu par e-mail pour signer.",
+      };
+    }
+    // Deux onglets, double clic : une pièce déjà signée par cette partie ne coûte pas un code de plus.
+    const dejaSignee = await prisma.documentSignature.count({
+      where: { documentGenereId: verif.documentGenereId, partie: verif.partie, revokedAt: null },
+    });
+    if (dejaSignee > 0) {
+      return { ok: false, raison: "deja_signe", message: MESSAGE_DEJA_SIGNE };
+    }
+    const v = await verifierCodeSignature({
+      documentGenereId: verif.documentGenereId,
+      partie: verif.partie,
+      code: donnees.code,
+      blocageMs: CODE_DEVIS_BLOCAGE_MS,
+    });
+    if (!v.ok) {
+      return {
+        ok: false,
+        raison: v.bloque === true ? "code_bloque" : "code_refuse",
+        message: v.message,
+      };
+    }
+    renforcee = {
+      declarationNom: decl.declaration.nom,
+      declarationFonction: decl.declaration.fonction,
+      // Instant SERVEUR de réception : antérieur à la signature, jamais une heure du navigateur.
+      pouvoirDeclareAt: recuLe,
+    };
+  }
+
   // Contrat-cadre v3 : le code à usage unique est vérifié et CONSOMMÉ juste
   // avant l'écriture de la preuve. Sans code valide, rien n'est signé.
   const avecCode = codeRequis(piece.type, piece.metadata, verif.partie);
@@ -489,7 +563,10 @@ export async function signerPieceParJetonAction(input: {
       methode: donnees.methode,
       partiesRequises: circuit.parties,
       ...(donnees.imageDataUrl === undefined ? {} : { imageDataUrl: donnees.imageDataUrl }),
-      ...(avecCode ? { consentementVersion: CONSENTEMENT_VERSION_DOCUMENT_CODE } : {}),
+      ...(avecCode || renforcee !== undefined
+        ? { consentementVersion: CONSENTEMENT_VERSION_DOCUMENT_CODE }
+        : {}),
+      ...(renforcee === undefined ? {} : { renforcee }),
       // Valeur SERVEUR, jamais celle du navigateur. Vide hors devis.
       ...(piece.type === "devis" ? { cgvVersion: CGV_VERSION } : {}),
       // Devis à formules : choix validé + instant (serveur) de la case cochée.
@@ -509,6 +586,14 @@ export async function signerPieceParJetonAction(input: {
       acteur: { type: "signataire" },
       canal: "lien_a_jeton",
     });
+
+    // Horodatage RFC 3161 du sceau : premier essai aussitôt, SANS attendre et sans jamais défaire la
+    // signature (autorité injoignable : la ligne reste « en attente », le worker la reprend).
+    if (renforcee !== undefined) {
+      void Promise.resolve()
+        .then(() => horodaterSignature(res.signatureId))
+        .catch(() => undefined);
+    }
 
     return { ok: true, signatureId: res.signatureId, statutSignature: res.statutSignature };
   } catch (err) {
@@ -735,6 +820,142 @@ export async function demanderCodeSignatureAction(input: {
   }
 
   return { ok: true, destinataireMasque: masquerAdresse(piece.trainer.email) };
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Devis à formules — « Recevoir mon code » (signature simple renforcée, lot 4 bis)
+// ─────────────────────────────────────────────────────────────────────────────
+
+/**
+ * Envoie le code à usage unique qui permet de signer un devis à formules.
+ *
+ * 🔴 PUBLIQUE, gardée par le jeton seul — comme la signature. Déclenchée par le CLIC du signataire,
+ * jamais automatiquement :
+ *  · le code part à l'adresse FIGÉE sur le lien (jamais une adresse reçue de la requête) ;
+ *  · plafonds : une minute entre deux envois, cinq par heure et par lien, blocage de 15 minutes
+ *    après cinq codes faux (comptés sur les codes réellement émis, en base) ;
+ *  · mêmes refus que la signature : lien expiré/révoqué, devis refusé, retiré, remplacé ou expiré,
+ *    interrupteur éteint, pièce déjà signée — aucun code ne part pour un devis qui ne se signe pas ;
+ *  · le code n'est ni rendu ni journalisé : il ne voyage que scellé, dans l'e-mail.
+ */
+export async function demanderCodeDevisAction(input: {
+  token: string;
+}): Promise<ResultatDemandeCode> {
+  const token = typeof input?.token === "string" ? input.token : "";
+  if (token === "" || token.length > 4000) {
+    return {
+      ok: false,
+      raison: "requete_invalide",
+      message: "Cette demande n'est pas valide. Rechargez la page.",
+    };
+  }
+  const empreinteJeton = createHash("sha256").update(token).digest("hex");
+  const parJeton = await checkRateLimit(`piece:codedevis:${empreinteJeton}`, LIMITE_CODE_PAR_JETON);
+  if (!parJeton.allowed) {
+    return {
+      ok: false,
+      raison: "trop_de_tentatives",
+      message:
+        "Trop de demandes de code. Utilisez le plus récent reçu, ou réessayez dans quelques minutes.",
+    };
+  }
+  const contexte = await contexteRequete();
+  if (contexte.ipHash !== null) {
+    const parIp = await checkRateLimit(`piece:ip:${contexte.ipHash}`, LIMITE_PAR_IP);
+    if (!parIp.allowed) {
+      return {
+        ok: false,
+        raison: "trop_de_tentatives",
+        message: "Trop de tentatives depuis ce réseau. Patientez une minute.",
+      };
+    }
+  }
+
+  const verif = await verifierTokenDocument(token);
+  if (!verif.ok) {
+    const m = REFUS_JETON[verif.raison];
+    return { ok: false, raison: m.raison, message: m.message };
+  }
+  if (verif.partie !== "client") {
+    return { ok: false, raison: "piece_non_signable", message: "Cette pièce se signe sans code." };
+  }
+
+  const piece = await prisma.documentGenere.findUnique({
+    where: { id: verif.documentGenereId },
+    select: { type: true, metadata: true },
+  });
+  if (piece === null) {
+    return { ok: false, raison: "piece_introuvable", message: "Pièce introuvable." };
+  }
+  if (piece.type !== "devis") {
+    return { ok: false, raison: "piece_non_signable", message: "Cette pièce se signe sans code." };
+  }
+
+  // Devis refusé, retiré, remplacé ou déjà accepté : aucun code ne part.
+  const objection = await objectionMetier(piece.type, verif.documentGenereId);
+  if (objection !== null) {
+    return { ok: false, raison: "piece_non_signable_maintenant", message: objection.message };
+  }
+  const devis = await prisma.devis.findFirst({
+    where: { documentGenereId: verif.documentGenereId },
+    select: { numero: true, offre: true, offreSha256: true, dateValidite: true },
+  });
+  if (devis === null || devis.offre == null || devis.offreSha256 == null) {
+    return { ok: false, raison: "piece_non_signable", message: "Ce devis se signe sans code." };
+  }
+  if (!(await formulesActives())) {
+    return {
+      ok: false,
+      raison: "piece_non_signable_maintenant",
+      message:
+        "Ce devis n'est pas disponible à la signature pour le moment. Contactez votre interlocuteur chez Axion-IA.",
+    };
+  }
+  if (!devisSignableParFormules(devis, new Date())) {
+    return {
+      ok: false,
+      raison: "devis_expire",
+      message:
+        "Ce devis a dépassé sa date de validité et ne peut plus être signé. Demandez-en un nouveau à votre interlocuteur chez Axion-IA.",
+    };
+  }
+  const dejaSignee = await prisma.documentSignature.count({
+    where: { documentGenereId: verif.documentGenereId, partie: "client", revokedAt: null },
+  });
+  if (dejaSignee > 0) {
+    return { ok: false, raison: "deja_signe", message: MESSAGE_DEJA_SIGNE };
+  }
+
+  // L'adresse du LIEN, figée à l'émission. Absente : aucun code (jamais une adresse de repli).
+  const destinataire = verif.signataireEmail?.trim() ?? "";
+  if (destinataire === "") {
+    return {
+      ok: false,
+      raison: "code_indisponible",
+      message:
+        "Le code ne peut pas être envoyé : aucune adresse n'est associée à ce lien. Contactez votre interlocuteur chez Axion-IA.",
+    };
+  }
+
+  const envoi = await envoyerCodeDevis({
+    documentGenereId: verif.documentGenereId,
+    jetonId: verif.tokenId,
+    destinataire,
+    numeroDevis: devis.numero,
+  });
+  if (!envoi.ok) {
+    return {
+      ok: false,
+      raison:
+        envoi.raison === "envoi_impossible"
+          ? "code_indisponible"
+          : envoi.raison === "bloque"
+            ? "code_bloque"
+            : "trop_de_tentatives",
+      message: envoi.message,
+    };
+  }
+  return { ok: true, destinataireMasque: masquerAdresse(destinataire) };
 }
 
 /**

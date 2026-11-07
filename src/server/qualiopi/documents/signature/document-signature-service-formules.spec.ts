@@ -20,6 +20,7 @@ vi.mock("@/lib/prisma", () => ({
     },
     documentSignatureToken: { findUnique: vi.fn() },
     documentSignatureCode: { findFirst: vi.fn() },
+    documentSignatureHorodatage: { create: vi.fn() },
     trainer: { findUnique: vi.fn() },
     adminUser: { findUnique: vi.fn() },
     $transaction: vi.fn(),
@@ -47,6 +48,7 @@ const mockPrisma = prisma as unknown as {
   documentSignature: { findFirst: Mock; findMany: Mock; create: Mock; count: Mock };
   documentSignatureToken: { findUnique: Mock };
   documentSignatureCode: { findFirst: Mock };
+  documentSignatureHorodatage: { create: Mock };
   adminUser: { findUnique: Mock };
   $transaction: Mock;
 };
@@ -58,6 +60,9 @@ const NUMERO_PIECE = "AXI-DEV-2026-001";
 const MAINTENANT = new Date("2026-11-10T10:00:00.123Z");
 const RECU_LE = new Date("2026-11-10T09:59:58.000Z");
 const CGV = "2026-10-04";
+const POUVOIR_LE = new Date("2026-11-10T09:59:58.500Z");
+/** Code accepté une minute avant la signature. */
+const CODE_UTILISE_LE = new Date("2026-11-10T09:59:00.000Z");
 
 const OFFRE = offreFictive();
 const OFFRE_SHA = sha256Offre(OFFRE);
@@ -109,6 +114,13 @@ function entreeClient(over: Record<string, unknown> = {}) {
     cgvVersion: CGV,
     choixOffre: { choix: CHOIX, sha256: sha256Choix(CHOIX) },
     cgvAccepteeAt: RECU_LE,
+    // Signature renforcée : déclaration saisie + code reçu par e-mail (lot 4 bis).
+    consentementVersion: "doc-consent-code-v1" as const,
+    renforcee: {
+      declarationNom: "Camille  Durand",
+      declarationFonction: "Gérante",
+      pouvoirDeclareAt: POUVOIR_LE,
+    },
     ipHash: "i".repeat(64),
     userAgentSha256: "u".repeat(64),
     ...over,
@@ -145,7 +157,11 @@ beforeEach(() => {
     expiresAt: new Date("2026-12-01T00:00:00.000Z"),
     revokedAt: null,
   });
-  mockPrisma.documentSignatureCode.findFirst.mockResolvedValue(null);
+  mockPrisma.documentSignatureCode.findFirst.mockResolvedValue({
+    id: "code-1",
+    utiliseAt: CODE_UTILISE_LE,
+  });
+  mockPrisma.documentSignatureHorodatage.create.mockResolvedValue({ id: "h1" });
   mockPrisma.adminUser.findUnique.mockResolvedValue({
     name: "Williams Jullin",
     email: "w@axion.test",
@@ -205,7 +221,11 @@ describe("devis à formules — signature du client (sceau V4)", () => {
       prevHash: null,
       selfHash: d["selfHash"],
       hashVersion: 4,
-      facteurVerification: null,
+      facteurVerification: d["facteurVerification"],
+      declarationNom: d["declarationNom"] ?? null,
+      declarationFonction: d["declarationFonction"] ?? null,
+      pouvoirDeclareAt: d["pouvoirDeclareAt"] ?? null,
+      codeVerifieAt: d["codeVerifieAt"] ?? null,
       cgvVersion: d["cgvVersion"],
       choixOffre: d["choixOffre"],
       choixOffreSha256: d["choixOffreSha256"],
@@ -487,3 +507,228 @@ describe("devis SANS offre — inchangé (V3, octet pour octet)", () => {
     attendRefus(await signerDocument(entreeClient()), "choix_incoherent");
   });
 });
+
+describe("devis à formules — signature RENFORCÉE (lot 4 bis)", () => {
+  it("scelle la déclaration normalisée, le pouvoir et le code vérifié ; facteur « code_email »", async () => {
+    const res = await signerDocument(entreeClient());
+    expect(res).toMatchObject({ ok: true });
+    const d = donnees();
+    expect(d["declarationNom"]).toBe("Camille Durand"); // espaces normalisés
+    expect(d["declarationFonction"]).toBe("Gérante");
+    expect(d["pouvoirDeclareAt"]).toEqual(POUVOIR_LE);
+    // Valeur SERVEUR relue en base (le code consommé), jamais une heure venue de l'appelant.
+    expect(d["codeVerifieAt"]).toEqual(CODE_UTILISE_LE);
+    expect(d["facteurVerification"]).toBe("code_email");
+    expect(d["consentementVersion"]).toBe("doc-consent-code-v1");
+    expect(d["hashVersion"]).toBe(4);
+  });
+
+  it("🔴 la ligne renforcée se vérifie ; modifier la déclaration, la fonction ou le code la casse", async () => {
+    await signerDocument(entreeClient());
+    const d = donnees();
+    const ligne = {
+      id: d["id"],
+      documentGenereId: DOC,
+      provider: "interne",
+      providerSubmissionId: null,
+      partie: "client",
+      signataireNom: d["signataireNom"],
+      signataireEmail: d["signataireEmail"],
+      signataireQualite: d["signataireQualite"],
+      documentHashSha256: "c".repeat(64),
+      methode: "trace",
+      signatureSha256: d["signatureSha256"],
+      mentionVersion: d["mentionVersion"],
+      consentementVersion: d["consentementVersion"],
+      signeAt: d["signeAt"],
+      prevHash: null,
+      selfHash: d["selfHash"],
+      hashVersion: 4,
+      facteurVerification: d["facteurVerification"],
+      declarationNom: d["declarationNom"],
+      declarationFonction: d["declarationFonction"],
+      pouvoirDeclareAt: d["pouvoirDeclareAt"],
+      codeVerifieAt: d["codeVerifieAt"],
+      cgvVersion: d["cgvVersion"],
+      choixOffre: d["choixOffre"],
+      choixOffreSha256: d["choixOffreSha256"],
+      cgvTexteSha256: d["cgvTexteSha256"],
+      cgvPdfSha256: null,
+      cgvAccepteeAt: d["cgvAccepteeAt"],
+      cgvTraceSha256: null,
+      jetonId: d["jetonId"],
+    } as unknown as LigneDocumentSignature;
+    const p = { documentNumero: NUMERO_PIECE, documentType: "devis" };
+    expect(verifierChaine([maillonDocumentDepuisLigne(ligne, p)]).valide).toBe(true);
+    for (const mod of [
+      { declarationNom: "Quelqu'un d'autre" },
+      { declarationFonction: "Président" },
+      { codeVerifieAt: new Date("2026-11-10T09:58:00.000Z") },
+      { facteurVerification: null },
+    ]) {
+      expect(verifierChaine([maillonDocumentDepuisLigne({ ...ligne, ...mod }, p)]).valide).toBe(
+        false,
+      );
+    }
+  });
+
+  it("le texte exact accepté est scellé : empreinte des CGV, du choix (donc de l'offre) et du devis (PDF)", async () => {
+    await signerDocument(entreeClient());
+    const d = donnees();
+    expect(d["cgvTexteSha256"]).toBe(empreinteTexteCgv());
+    expect(d["choixOffreSha256"]).toBe(sha256Choix(CHOIX));
+    expect(d["documentHashSha256"]).toBe("c".repeat(64));
+  });
+
+  it("pose la ligne d'horodatage dans la transaction, sur l'empreinte du sceau", async () => {
+    await signerDocument(entreeClient());
+    expect(mockPrisma.documentSignatureHorodatage.create).toHaveBeenCalledTimes(1);
+    const arg = mockPrisma.documentSignatureHorodatage.create.mock.calls[0]![0] as {
+      data: { signatureId: string; empreinteSha256: string; prochainEssaiAt: Date };
+    };
+    expect(arg.data.signatureId).toBe(donnees()["id"]);
+    expect(arg.data.empreinteSha256).toBe(donnees()["selfHash"]);
+    expect(arg.data.prochainEssaiAt).toEqual(MAINTENANT);
+  });
+
+  it("🔴 sans déclaration : `declaration_requise`, rien n'est écrit", async () => {
+    attendRefus(
+      await signerDocument(entreeClient({ renforcee: undefined })),
+      "declaration_requise",
+    );
+    expect(mockPrisma.documentSignatureHorodatage.create).not.toHaveBeenCalled();
+  });
+
+  it("🔴 nom, fonction illisibles ou 2 caractères manquants : `declaration_requise`", async () => {
+    for (const renforcee of [
+      { declarationNom: "", declarationFonction: "Gérante", pouvoirDeclareAt: POUVOIR_LE },
+      { declarationNom: "Camille Durand", declarationFonction: " ", pouvoirDeclareAt: POUVOIR_LE },
+      { declarationNom: "C", declarationFonction: "Gérante", pouvoirDeclareAt: POUVOIR_LE },
+      {
+        declarationNom: "Camille\nDurand",
+        declarationFonction: "Gérante",
+        pouvoirDeclareAt: POUVOIR_LE,
+      },
+      {
+        declarationNom: "x".repeat(201),
+        declarationFonction: "Gérante",
+        pouvoirDeclareAt: POUVOIR_LE,
+      },
+    ]) {
+      vi.clearAllMocks();
+      beforeEachMocks();
+      attendRefus(await signerDocument(entreeClient({ renforcee })), "declaration_requise");
+    }
+  });
+
+  it("🔴 un pouvoir déclaré APRÈS la signature est refusé (horloge du navigateur ou antidate)", async () => {
+    attendRefus(
+      await signerDocument(
+        entreeClient({
+          renforcee: {
+            declarationNom: "Camille Durand",
+            declarationFonction: "Gérante",
+            pouvoirDeclareAt: new Date(MAINTENANT.getTime() + 1000),
+          },
+        }),
+      ),
+      "declaration_requise",
+    );
+  });
+
+  it("🔴 sans code consommé : `code_requis`", async () => {
+    mockPrisma.documentSignatureCode.findFirst.mockResolvedValue(null);
+    attendRefus(await signerDocument(entreeClient()), "code_requis");
+  });
+
+  it("🔴 un code consommé il y a plus de 10 minutes ne signe plus : `code_requis`", async () => {
+    mockPrisma.documentSignatureCode.findFirst.mockResolvedValue({
+      id: "code-1",
+      utiliseAt: new Date(MAINTENANT.getTime() - 10 * 60 * 1000 - 1),
+    });
+    attendRefus(await signerDocument(entreeClient()), "code_requis");
+  });
+
+  it("devis expiré : refusé même avec un code valide", async () => {
+    mockPrisma.documentGenere.findUnique.mockResolvedValue(
+      piece({ ...DEVIS_FORMULES, dateValidite: new Date("2026-11-10T10:00:00.000Z") }),
+    );
+    attendRefus(await signerDocument(entreeClient()), "devis_expire");
+  });
+
+  it("la contresignature d'Axion-IA est scellée en V4 sans déclaration, et horodatée aussi", async () => {
+    mockPrisma.documentSignature.findMany.mockResolvedValue([
+      { partie: "client" },
+      { partie: "axionia" },
+    ]);
+    mockPrisma.documentSignature.findFirst.mockImplementation(
+      async (args: { where: { partie?: string } }) =>
+        args.where.partie === "client"
+          ? { choixOffre: CHOIX, choixOffreSha256: sha256Choix(CHOIX) }
+          : { selfHash: "b".repeat(64) },
+    );
+    const res = await signerDocument({
+      documentGenereId: DOC,
+      porteur: { type: "organisme_authentifie", adminId: "a1", partie: "axionia" },
+      methode: "trace",
+      partiesRequises: ["client", "axionia"],
+      imageDataUrl: "data:image/png;base64,AAAA",
+      maintenant: MAINTENANT,
+    });
+    expect(res).toMatchObject({ ok: true });
+    const d = donnees();
+    expect(d["hashVersion"]).toBe(4);
+    expect(d["declarationNom"] ?? null).toBeNull();
+    expect(d["codeVerifieAt"] ?? null).toBeNull();
+    expect(mockPrisma.documentSignatureHorodatage.create).toHaveBeenCalledTimes(1);
+  });
+
+  it("un devis SANS offre reste en V3 : ni déclaration ni horodatage", async () => {
+    mockPrisma.documentGenere.findUnique.mockResolvedValue(piece(null));
+    const res = await signerDocument(
+      entreeClient({ choixOffre: undefined, renforcee: undefined, consentementVersion: undefined }),
+    );
+    expect(res).toMatchObject({ ok: true });
+    expect(donnees()["hashVersion"]).toBe(3);
+    expect(donnees()["declarationNom"]).toBeUndefined();
+    expect(mockPrisma.documentSignatureHorodatage.create).not.toHaveBeenCalled();
+  });
+});
+
+/** Rejoue les valeurs par défaut des mocks (après un `clearAllMocks` en cours de test). */
+function beforeEachMocks(): void {
+  mockPrisma.documentGenere.findUnique.mockResolvedValue(piece(DEVIS_FORMULES));
+  mockPrisma.documentGenere.update.mockResolvedValue({ id: DOC });
+  mockPrisma.documentSignature.findFirst.mockResolvedValue(null);
+  mockPrisma.documentSignature.findMany.mockResolvedValue([{ partie: "client" }]);
+  mockPrisma.documentSignature.count.mockResolvedValue(0);
+  mockPrisma.documentSignature.create.mockImplementation(
+    async (args: { data: Record<string, unknown> }) => ({
+      id: args.data["id"],
+      selfHash: args.data["selfHash"],
+    }),
+  );
+  mockPrisma.documentSignatureToken.findUnique.mockResolvedValue({
+    documentGenereId: DOC,
+    partie: "client",
+    signataireNom: "Camille Durand",
+    signataireEmail: "camille@client.test",
+    signataireQualite: "Gérante",
+    expiresAt: new Date("2026-12-01T00:00:00.000Z"),
+    revokedAt: null,
+  });
+  mockPrisma.documentSignatureCode.findFirst.mockResolvedValue({
+    id: "code-1",
+    utiliseAt: CODE_UTILISE_LE,
+  });
+  mockPrisma.documentSignatureHorodatage.create.mockResolvedValue({ id: "h1" });
+  mockPrisma.$transaction.mockImplementation(async (cb: (tx: unknown) => unknown) =>
+    cb(mockPrisma),
+  );
+  mockStore.mockResolvedValue({
+    key: "emargement/2026/signatures/x.png",
+    sha256: "a".repeat(64),
+    mimeType: "image/png",
+    sizeBytes: 10,
+  });
+}

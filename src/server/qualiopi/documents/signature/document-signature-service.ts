@@ -52,6 +52,7 @@ import {
   validerChoixSignature,
 } from "@/server/qualiopi/devis/choix-signature";
 import { offreDevisV1 } from "@/server/qualiopi/devis/offre-devis";
+import { codeAssezRecent, validerDeclaration } from "@/server/qualiopi/devis/signature-renforcee";
 import { peutEngager } from "@/server/auth/habilitations";
 import { resoudreAppartenance, type RoleFormateur } from "@/server/formateur/session-membership";
 import {
@@ -199,7 +200,11 @@ export type RefusSignatureDocument =
   /** Devis à formules — le choix ne correspond pas au devis lu en base (numéro, offre, empreinte). */
   | "choix_incoherent"
   /** Devis à formules — la date de validité est passée : le devis ne se signe plus. */
-  | "devis_expire";
+  | "devis_expire"
+  /** Signature renforcée — nom, fonction ou déclaration de pouvoir absents ou invalides. */
+  | "declaration_requise"
+  /** Signature renforcée — aucun code à usage unique récemment accepté pour cette pièce. */
+  | "code_requis";
 
 export type ResultatSignatureDocument =
   | {
@@ -255,6 +260,19 @@ export interface EntreeSignatureDocument {
    * signature. Jamais une heure venue du navigateur. Requis avec `choixOffre`.
    */
   cgvAccepteeAt?: Date | undefined;
+  /**
+   * Signature « simple renforcée » (lot 4 bis) — OBLIGATOIRE pour la signature du client d'un devis à
+   * formules. `declarationNom`/`declarationFonction` sont ce que le signataire a SAISI (le service les
+   * revalide et les normalise) ; `pouvoirDeclareAt` est l'instant SERVEUR où il a déclaré avoir le
+   * pouvoir d'engager la société. L'instant du code accepté, lui, est relu en base par le service.
+   */
+  renforcee?:
+    | {
+        declarationNom: string;
+        declarationFonction: string;
+        pouvoirDeclareAt: Date;
+      }
+    | undefined;
 }
 
 /** Valeurs du sceau V4 d'une signature de devis à formules (toutes SERVEUR). */
@@ -264,6 +282,13 @@ interface SceauV4 {
   cgvTexteSha256: string | null;
   cgvAccepteeAt: Date | null;
   jetonId: string | null;
+  /** Déclaration du signataire (lot 4 bis) ; `null` pour la contresignature. */
+  declaration: {
+    nom: string;
+    fonction: string;
+    pouvoirDeclareAt: Date;
+    codeVerifieAt: Date;
+  } | null;
 }
 
 function estStub(): boolean {
@@ -304,6 +329,10 @@ const MESSAGES: Record<RefusSignatureDocument, string> = {
     "Votre choix ne correspond plus à ce devis. Rechargez la page pour le relire, ou contactez votre interlocuteur chez Axion-IA.",
   devis_expire:
     "Ce devis a dépassé sa date de validité et ne peut plus être signé. Demandez-en un nouveau à votre interlocuteur chez Axion-IA.",
+  declaration_requise:
+    "Renseignez votre nom, votre fonction et cochez la déclaration de pouvoir d'engager la société avant de signer.",
+  code_requis:
+    "Saisissez le code reçu par e-mail pour signer. S'il a expiré, demandez-en un nouveau.",
 };
 
 function refus(raison: RefusSignatureDocument): ResultatSignatureDocument {
@@ -785,6 +814,57 @@ function porteurAutorise(ctx: ContextePiece, porteur: PorteurSignatureDocument):
 }
 
 /**
+ * Signature renforcée (lot 4 bis) : valide la déclaration saisie et relit en base le code accepté.
+ *
+ *  · nom, fonction : revalidés ici (2 à 200 caractères, sans caractère de commande), espaces
+ *    normalisés — la déclaration scellée est exactement celle qui est écrite ;
+ *  · le pouvoir est déclaré par l'appelant à un instant SERVEUR antérieur à la signature ;
+ *  · le code : une ligne consommée pour cette pièce et cette partie, acceptée il y a moins de
+ *    10 minutes. L'instant scellé est celui de la BASE (`utilise_at`), jamais celui de l'appelant.
+ */
+async function declarationRenforcee(args: {
+  saisie: EntreeSignatureDocument["renforcee"];
+  documentGenereId: string;
+  partie: PartieSignataire;
+  maintenant: Date;
+}): Promise<
+  | { ok: true; declaration: NonNullable<SceauV4["declaration"]> }
+  | { ok: false; raison: "declaration_requise" | "code_requis" }
+> {
+  if (args.saisie === undefined) return { ok: false, raison: "declaration_requise" };
+  const decl = validerDeclaration({
+    nom: args.saisie.declarationNom,
+    fonction: args.saisie.declarationFonction,
+    pouvoirEngager: true,
+  });
+  if (!decl.ok) return { ok: false, raison: "declaration_requise" };
+  if (args.saisie.pouvoirDeclareAt.getTime() > args.maintenant.getTime()) {
+    return { ok: false, raison: "declaration_requise" };
+  }
+  const code = await prisma.documentSignatureCode.findFirst({
+    where: {
+      documentGenereId: args.documentGenereId,
+      partie: args.partie,
+      utiliseAt: { not: null },
+    },
+    orderBy: { utiliseAt: "desc" },
+    select: { utiliseAt: true },
+  });
+  if (code?.utiliseAt == null || !codeAssezRecent(code.utiliseAt, args.maintenant)) {
+    return { ok: false, raison: "code_requis" };
+  }
+  return {
+    ok: true,
+    declaration: {
+      nom: decl.declaration.nom,
+      fonction: decl.declaration.fonction,
+      pouvoirDeclareAt: args.saisie.pouvoirDeclareAt,
+      codeVerifieAt: code.utiliseAt,
+    },
+  };
+}
+
+/**
  * Enregistre la signature d'UNE pièce par UNE partie.
  *
  * ⚠️ Ne retourne JAMAIS un succès silencieux : soit la ligne est écrite et son
@@ -899,6 +979,14 @@ export async function signerDocument(
     if (rederive === null || !rederive.ok || rederive.sha256Choix !== sha256) {
       return refus("choix_incoherent");
     }
+    // Signature renforcée : déclaration valide + code accepté récemment, relus ICI (rien n'est cru sur parole).
+    const renforcee = await declarationRenforcee({
+      saisie: input.renforcee,
+      documentGenereId: ctx.id,
+      partie,
+      maintenant,
+    });
+    if (!renforcee.ok) return refus(renforcee.raison);
     sceauV4 = {
       choixOffre: choix,
       choixOffreSha256: sha256,
@@ -906,6 +994,7 @@ export async function signerDocument(
       cgvTexteSha256: empreinteTexteCgv(),
       cgvAccepteeAt: input.cgvAccepteeAt,
       jetonId: porteur.tokenId,
+      declaration: renforcee.declaration,
     };
   } else if (aOffre && partie === "axionia") {
     // La contresignature RECOPIE le choix scellé du client : lu en base, jamais en entrée.
@@ -922,6 +1011,7 @@ export async function signerDocument(
       cgvTexteSha256: null,
       cgvAccepteeAt: null,
       jetonId: null,
+      declaration: null,
     };
   } else if (aOffre) {
     // Toute autre partie d'un devis à formules (pas de circuit prévu) : rien de scellé sans choix.
@@ -1079,6 +1169,15 @@ export async function signerDocument(
                 cgvAccepteeAtIso: sceauV4.cgvAccepteeAt?.toISOString() ?? null,
                 cgvTraceSha256: null,
                 jetonId: sceauV4.jetonId,
+                // Absente (contresignature) : AUCUNE clé n'est scellée (forme V4 inchangée).
+                ...(sceauV4.declaration === null
+                  ? {}
+                  : {
+                      declarationNom: sceauV4.declaration.nom,
+                      declarationFonction: sceauV4.declaration.fonction,
+                      pouvoirDeclareAtIso: sceauV4.declaration.pouvoirDeclareAt.toISOString(),
+                      codeVerifieAtIso: sceauV4.declaration.codeVerifieAt.toISOString(),
+                    }),
               };
         const selfHash =
           tupleV4 === null
@@ -1119,6 +1218,14 @@ export async function signerDocument(
                   cgvTexteSha256: sceauV4.cgvTexteSha256,
                   cgvAccepteeAt: sceauV4.cgvAccepteeAt,
                   jetonId: sceauV4.jetonId,
+                  ...(sceauV4.declaration === null
+                    ? {}
+                    : {
+                        declarationNom: sceauV4.declaration.nom,
+                        declarationFonction: sceauV4.declaration.fonction,
+                        pouvoirDeclareAt: sceauV4.declaration.pouvoirDeclareAt,
+                        codeVerifieAt: sceauV4.declaration.codeVerifieAt,
+                      }),
                 }),
             signeAt: maintenant,
             ipHash: input.ipHash ?? null,
@@ -1127,6 +1234,19 @@ export async function signerDocument(
           },
           select: { id: true, selfHash: true },
         });
+
+        // Horodatage RFC 3161 du sceau (lot 4 bis) : la ligne naît « en attente » dans la MÊME
+        // transaction que la preuve ; le jeton est demandé APRÈS, sans jamais bloquer ni défaire la
+        // signature. Toute signature V4 (client et contresignature) a la sienne.
+        if (sceauV4 !== null) {
+          await tx.documentSignatureHorodatage.create({
+            data: {
+              signatureId: sig.id,
+              empreinteSha256: sig.selfHash,
+              prochainEssaiAt: maintenant,
+            },
+          });
+        }
 
         // 🔴 Statut DÉRIVÉ, dans la MÊME transaction que la preuve.
         //

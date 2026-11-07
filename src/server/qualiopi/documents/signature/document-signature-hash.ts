@@ -244,6 +244,20 @@ export interface TupleDocumentSignatureV4 extends TupleDocumentSignatureV3 {
   cgvAccepteeAtIso: string | null;
   cgvTraceSha256: string | null;
   jetonId: string | null;
+  /**
+   * Lot 4 bis (signature « simple renforcée ») — ce que le signataire a SAISI et déclaré. Les quatre
+   * champs vont ENSEMBLE : tous présents (non nuls) ou tous absents/nuls. Absents, ils ne figurent
+   * PAS dans la forme canonique : une V4 scellée avant le lot garde exactement son empreinte, et
+   * « jamais de V5 » tient. Présents, ils entrent dans le sceau (modifier, effacer ou ajouter l'un
+   * d'eux après coup change l'empreinte recalculée).
+   *  - `declarationNom`, `declarationFonction` : normalisés (espaces), tels que saisis ;
+   *  - `pouvoirDeclareAtIso` : instant (serveur) de la déclaration « j'ai le pouvoir d'engager la société » ;
+   *  - `codeVerifieAtIso` : instant où le code reçu par e-mail a été accepté (consommé).
+   */
+  declarationNom?: string | null | undefined;
+  declarationFonction?: string | null | undefined;
+  pouvoirDeclareAtIso?: string | null | undefined;
+  codeVerifieAtIso?: string | null | undefined;
 }
 
 /** Tout tuple recalculable, quelle que soit sa version. */
@@ -262,6 +276,10 @@ export const COLONNES_V4_VIDES = {
   cgvAccepteeAt: null,
   cgvTraceSha256: null,
   jetonId: null,
+  declarationNom: null,
+  declarationFonction: null,
+  pouvoirDeclareAt: null,
+  codeVerifieAt: null,
 } as const;
 
 const CLES_V4 = [
@@ -273,8 +291,25 @@ const CLES_V4 = [
   "jetonId",
 ] as const;
 
+/** Clés de la déclaration (lot 4 bis) : scellées ensemble, seulement quand elles sont présentes. */
+const CLES_DECLARATION = [
+  "declarationNom",
+  "declarationFonction",
+  "pouvoirDeclareAtIso",
+  "codeVerifieAtIso",
+] as const;
+
 function versCanonicalDocumentV4(t: TupleDocumentSignature): CanonicalValue {
   const v4: Record<string, CanonicalValue> = {};
+  const lu = (cle: string): string | null | undefined =>
+    cle in t ? (t as unknown as Record<string, string | null | undefined>)[cle] : undefined;
+  const presentes = CLES_DECLARATION.filter((c) => lu(c) !== null && lu(c) !== undefined);
+  if (presentes.length !== 0 && presentes.length !== CLES_DECLARATION.length) {
+    throw new Error("[document-signature-hash] Tuple v4 : déclaration incomplète");
+  }
+  if (presentes.length === CLES_DECLARATION.length) {
+    for (const cle of CLES_DECLARATION) v4[cle] = lu(cle) as string;
+  }
   for (const cle of CLES_V4) {
     const valeur =
       cle in t ? (t as unknown as Record<string, string | null | undefined>)[cle] : undefined;
@@ -401,6 +436,11 @@ export interface LigneDocumentSignature {
   cgvTraceSha256: string | null;
   /** Lien de signature utilisé, scellé en version 4. */
   jetonId: string | null;
+  /** Déclaration du signataire (lot 4 bis) : scellée en version 4 quand elle est présente. */
+  declarationNom: string | null;
+  declarationFonction: string | null;
+  pouvoirDeclareAt: Date | null;
+  codeVerifieAt: Date | null;
 }
 
 /**
@@ -442,7 +482,15 @@ export function tupleDocumentDepuisLigne(
   if (ligne.hashVersion < 3 && ligne.cgvVersion !== null) return null;
   // Idem pour le choix d'offre et la preuve des CGV : aucune preuve antérieure à la version 4
   // n'en a porté. En trouver un, c'est une écriture après coup.
-  if (ligne.hashVersion < 4 && porteColonnesV4(ligne)) return null;
+  if (ligne.hashVersion < 4 && (porteColonnesV4(ligne) || porteDeclaration(ligne))) return null;
+  // La déclaration va par QUATRE : une ligne qui n'en porte qu'une partie est irrecalculable.
+  const nDeclaration = [
+    ligne.declarationNom,
+    ligne.declarationFonction,
+    ligne.pouvoirDeclareAt,
+    ligne.codeVerifieAt,
+  ].filter((v) => v !== null && v !== undefined).length;
+  if (nDeclaration !== 0 && nDeclaration !== 4) return null;
 
   const v1: TupleDocumentSignatureV1 = {
     contexteType: "document_engagement",
@@ -488,7 +536,25 @@ export function tupleDocumentDepuisLigne(
     cgvAccepteeAtIso: ligne.cgvAccepteeAt === null ? null : ligne.cgvAccepteeAt.toISOString(),
     cgvTraceSha256: ligne.cgvTraceSha256,
     jetonId: ligne.jetonId,
+    // Absente : AUCUNE clé n'est ajoutée (la forme d'avant le lot 4 bis reste strictement la même).
+    ...(nDeclaration === 4
+      ? {
+          declarationNom: ligne.declarationNom,
+          declarationFonction: ligne.declarationFonction,
+          pouvoirDeclareAtIso: ligne.pouvoirDeclareAt!.toISOString(),
+          codeVerifieAtIso: ligne.codeVerifieAt!.toISOString(),
+        }
+      : {}),
   };
+}
+
+function porteDeclaration(ligne: LigneDocumentSignature): boolean {
+  return (
+    (ligne.declarationNom !== null && ligne.declarationNom !== undefined) ||
+    (ligne.declarationFonction !== null && ligne.declarationFonction !== undefined) ||
+    (ligne.pouvoirDeclareAt !== null && ligne.pouvoirDeclareAt !== undefined) ||
+    (ligne.codeVerifieAt !== null && ligne.codeVerifieAt !== undefined)
+  );
 }
 
 function porteColonnesV4(ligne: LigneDocumentSignature): boolean {

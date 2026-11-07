@@ -48,6 +48,10 @@ export const CODE_LONGUEUR = 6;
 export const CODE_VALIDITE_MS = 15 * 60 * 1000;
 export const CODE_ESSAIS_MAX = 5;
 
+/** Refus quand la pièce est bloquée après cinq échecs (signature renforcée du devis, lot 4 bis). */
+export const MESSAGE_CODE_BLOQUE =
+  "Trop d'essais. Par sécurité, la saisie d'un code est bloquée pendant quelques minutes : réessayez plus tard.";
+
 const FORMAT_CODE = /^\d{6}$/;
 
 /** Message unique de refus — voir l'en-tête. */
@@ -87,12 +91,16 @@ export async function emettreCodeSignature(input: {
   readonly documentGenereId: string;
   readonly partie: PartieSignataire;
   readonly maintenant?: Date;
+  /** Durée de vie du code ; défaut `CODE_VALIDITE_MS` (15 min). Le devis passe 10 min. */
+  readonly validiteMs?: number;
+  /** Lien de signature demandeur (plafond d'envois par lien) ; absent pour le contrat-cadre. */
+  readonly jetonId?: string;
 }): Promise<{ code: string; expiresAt: Date; id: string }> {
   secret(); // garde fermée AVANT toute écriture
   const maintenant = input.maintenant ?? new Date();
   const code = tirerCode();
   const id = randomUUID();
-  const expiresAt = new Date(maintenant.getTime() + CODE_VALIDITE_MS);
+  const expiresAt = new Date(maintenant.getTime() + (input.validiteMs ?? CODE_VALIDITE_MS));
 
   await prisma.$transaction([
     prisma.documentSignatureCode.updateMany({
@@ -111,6 +119,7 @@ export async function emettreCodeSignature(input: {
         partie: input.partie,
         codeHash: empreinteCode(id, code),
         expiresAt,
+        ...(input.jetonId === undefined ? {} : { jetonId: input.jetonId }),
       },
     }),
   ]);
@@ -119,7 +128,10 @@ export async function emettreCodeSignature(input: {
   return { code, expiresAt, id };
 }
 
-export type VerificationCode = { ok: true } | { ok: false; message: string };
+export type VerificationCode =
+  | { ok: true }
+  /** `bloque` : la pièce est bloquée (cinquième échec) ; seulement quand l'appelant a demandé un blocage. */
+  | { ok: false; message: string; bloque?: true };
 
 const REFUS: VerificationCode = { ok: false, message: MESSAGE_CODE_REFUSE };
 
@@ -139,9 +151,26 @@ export async function verifierCodeSignature(input: {
   readonly partie: PartieSignataire;
   readonly code: string;
   readonly maintenant?: Date;
+  /**
+   * Signature renforcée du devis : au cinquième échec, la pièce est BLOQUÉE pour cette durée (aucun
+   * code accepté ni émis). Absent (contrat-cadre) : comportement inchangé, le code est seulement
+   * invalidé.
+   */
+  readonly blocageMs?: number;
 }): Promise<VerificationCode> {
   const maintenant = input.maintenant ?? new Date();
   const saisi = (input.code ?? "").trim();
+  if (input.blocageMs !== undefined) {
+    const bloque = await prisma.documentSignatureCode.findFirst({
+      where: {
+        documentGenereId: input.documentGenereId,
+        partie: input.partie,
+        bloqueJusquA: { gt: maintenant },
+      },
+      select: { id: true },
+    });
+    if (bloque !== null) return { ok: false, message: MESSAGE_CODE_BLOQUE, bloque: true };
+  }
   if (!FORMAT_CODE.test(saisi)) return REFUS;
   const vivant = { utiliseAt: null, invalideAt: null, expiresAt: { gt: maintenant } } as const;
 
@@ -185,10 +214,18 @@ export async function verifierCodeSignature(input: {
   if (!egauxATempsConstant(attendu, ligne.codeHash)) {
     // Conditionné sur le compteur EN BASE : deux échecs simultanés ne laissent pas un
     // code épuisé « vivant ».
-    await prisma.documentSignatureCode.updateMany({
+    const epuise = await prisma.documentSignatureCode.updateMany({
       where: { id: ligne.id, invalideAt: null, essais: { gte: CODE_ESSAIS_MAX } },
-      data: { invalideAt: maintenant },
+      data: {
+        invalideAt: maintenant,
+        ...(input.blocageMs === undefined
+          ? {}
+          : { bloqueJusquA: new Date(maintenant.getTime() + input.blocageMs) }),
+      },
     });
+    if (epuise.count > 0 && input.blocageMs !== undefined) {
+      return { ok: false, message: MESSAGE_CODE_BLOQUE, bloque: true };
+    }
     return REFUS;
   }
 

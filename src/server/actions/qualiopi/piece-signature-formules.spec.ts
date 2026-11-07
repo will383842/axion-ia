@@ -11,8 +11,13 @@ vi.mock("@/lib/prisma", () => ({
   prisma: {
     documentGenere: { findUnique: vi.fn() },
     devis: { findFirst: vi.fn() },
+    documentSignature: { count: vi.fn() },
   },
 }));
+const code = vi.hoisted(() => ({ verifierCodeSignature: vi.fn() }));
+vi.mock("@/server/qualiopi/documents/signature/code-signature", () => code);
+const horodatage = vi.hoisted(() => ({ horodaterSignature: vi.fn(async () => "en_attente") }));
+vi.mock("@/server/qualiopi/documents/signature/horodatage-signature", () => horodatage);
 vi.mock("@/server/qualiopi/documents/signature/token-document", () => ({
   verifierTokenDocument: vi.fn(),
 }));
@@ -49,6 +54,7 @@ type Mock = ReturnType<typeof vi.fn>;
 const mockPrisma = prisma as unknown as {
   documentGenere: { findUnique: Mock };
   devis: { findFirst: Mock };
+  documentSignature: { count: Mock };
 };
 const mockVerif = verifierTokenDocument as unknown as Mock;
 const mockSigner = signerDocument as unknown as Mock;
@@ -67,6 +73,9 @@ function entree(over: Record<string, unknown> = {}) {
     imageDataUrl: "data:image/png;base64,AAAA",
     cgvAcceptees: true as const,
     cgvVersionAffichee: CGV_VERSION,
+    // Signature renforcée (lot 4 bis) : déclaration saisie + code reçu par e-mail.
+    declaration: { nom: "Camille Durand", fonction: "Gérante", pouvoirEngager: true },
+    code: "123456",
     choix: {
       formule: "abonnement" as const,
       automatisationsRetenues: [] as string[],
@@ -80,6 +89,8 @@ function entree(over: Record<string, unknown> = {}) {
 beforeEach(() => {
   vi.clearAllMocks();
   mockLimit.mockResolvedValue({ allowed: true });
+  code.verifierCodeSignature.mockResolvedValue({ ok: true });
+  mockPrisma.documentSignature.count.mockResolvedValue(0);
   interrupteur.formulesActives.mockResolvedValue(true);
   mockVerif.mockResolvedValue({
     ok: true,
@@ -283,5 +294,203 @@ describe("devis à formules — l'action valide le choix contre l'offre figée",
     expect(arg["choixOffre"]).toBeUndefined();
     expect(arg["cgvAccepteeAt"]).toBeUndefined();
     expect(arg["cgvVersion"]).toBe(CGV_VERSION);
+  });
+});
+
+describe("devis à formules — signature RENFORCÉE : déclaration et code (lot 4 bis)", () => {
+  it("transmet au service la déclaration, l'instant SERVEUR du pouvoir et le consentement « avec code »", async () => {
+    const avant = Date.now();
+    const res = await signerPieceParJetonAction(entree());
+    expect(res).toMatchObject({ ok: true });
+    const arg = mockSigner.mock.calls[0]?.[0] as Record<string, unknown>;
+    const r = arg["renforcee"] as {
+      declarationNom: string;
+      declarationFonction: string;
+      pouvoirDeclareAt: Date;
+    };
+    expect(r.declarationNom).toBe("Camille Durand");
+    expect(r.declarationFonction).toBe("Gérante");
+    expect(r.pouvoirDeclareAt.getTime()).toBeGreaterThanOrEqual(avant);
+    expect(arg["consentementVersion"]).toBe("doc-consent-code-v1");
+    // Le code est vérifié avec le blocage de 15 minutes.
+    expect(code.verifierCodeSignature).toHaveBeenCalledWith(
+      expect.objectContaining({
+        documentGenereId: DOC,
+        partie: "client",
+        code: "123456",
+        blocageMs: 15 * 60 * 1000,
+      }),
+    );
+  });
+
+  it("tente l'horodatage aussitôt après la signature, sans l'attendre", async () => {
+    await signerPieceParJetonAction(entree());
+    expect(horodatage.horodaterSignature).toHaveBeenCalledWith("sig-1");
+  });
+
+  it("🔴 un horodatage qui échoue ne défait pas la signature", async () => {
+    horodatage.horodaterSignature.mockRejectedValueOnce(new Error("TSA en panne"));
+    const res = await signerPieceParJetonAction(entree());
+    expect(res).toMatchObject({ ok: true });
+  });
+
+  it("🔴 sans code : `code_requis`, rien n'est signé", async () => {
+    const res = await signerPieceParJetonAction(entree({ code: undefined }));
+    expect(res).toMatchObject({ ok: false, raison: "code_requis" });
+    expect(code.verifierCodeSignature).not.toHaveBeenCalled();
+    expect(mockSigner).not.toHaveBeenCalled();
+  });
+
+  it("🔴 code faux, expiré ou rejoué : `code_refuse` (même message), rien n'est signé", async () => {
+    code.verifierCodeSignature.mockResolvedValue({
+      ok: false,
+      message: "Ce code n'est pas valide.",
+    });
+    const res = await signerPieceParJetonAction(entree());
+    expect(res).toMatchObject({
+      ok: false,
+      raison: "code_refuse",
+      message: "Ce code n'est pas valide.",
+    });
+    expect(mockSigner).not.toHaveBeenCalled();
+  });
+
+  it("🔴 trop d'essais : `code_bloque`, rien n'est signé", async () => {
+    code.verifierCodeSignature.mockResolvedValue({
+      ok: false,
+      message: "Trop d'essais.",
+      bloque: true,
+    });
+    const res = await signerPieceParJetonAction(entree());
+    expect(res).toMatchObject({ ok: false, raison: "code_bloque" });
+    expect(mockSigner).not.toHaveBeenCalled();
+  });
+
+  it("un code mal formé est refusé avant tout (schéma) : aucun essai consommé", async () => {
+    for (const mauvais of ["12345", "1234567", "abcdef", "12 456"]) {
+      const res = await signerPieceParJetonAction(entree({ code: mauvais }));
+      expect(res).toMatchObject({ ok: false, raison: "code_refuse" });
+    }
+    expect(code.verifierCodeSignature).not.toHaveBeenCalled();
+  });
+
+  it("🔴 sans déclaration : `declaration_requise`, le code n'est PAS consommé", async () => {
+    const res = await signerPieceParJetonAction(entree({ declaration: undefined }));
+    expect(res).toMatchObject({ ok: false, raison: "declaration_requise" });
+    expect(code.verifierCodeSignature).not.toHaveBeenCalled();
+    expect(mockSigner).not.toHaveBeenCalled();
+  });
+
+  it("🔴 case du pouvoir non cochée : refusée, le code n'est pas consommé", async () => {
+    for (const pouvoirEngager of [false, "true", 1, undefined]) {
+      const res = await signerPieceParJetonAction(
+        entree({ declaration: { nom: "Camille Durand", fonction: "Gérante", pouvoirEngager } }),
+      );
+      expect(res).toMatchObject({ ok: false });
+      expect((res as { raison: string }).raison).toMatch(
+        /pouvoir_non_declare|requete_invalide|declaration_requise/,
+      );
+    }
+    expect(code.verifierCodeSignature).not.toHaveBeenCalled();
+    expect(mockSigner).not.toHaveBeenCalled();
+  });
+
+  it("🔴 nom ou fonction vides : refusés, le code n'est pas consommé", async () => {
+    for (const declaration of [
+      { nom: "", fonction: "Gérante", pouvoirEngager: true },
+      { nom: "Camille Durand", fonction: "  ", pouvoirEngager: true },
+      { nom: "Camille\nDurand", fonction: "Gérante", pouvoirEngager: true },
+    ]) {
+      const res = await signerPieceParJetonAction(entree({ declaration }));
+      expect(res).toMatchObject({ ok: false });
+    }
+    expect(code.verifierCodeSignature).not.toHaveBeenCalled();
+  });
+
+  it("🔴 un choix refusé ne consomme pas le code", async () => {
+    const res = await signerPieceParJetonAction(
+      entree({
+        choix: {
+          formule: "abonnement",
+          automatisationsRetenues: [],
+          maintenanceRetenue: null,
+          periodiciteMois: 99,
+        },
+      }),
+    );
+    expect(res).toMatchObject({ ok: false, raison: "periodicite_hors_offre" });
+    expect(code.verifierCodeSignature).not.toHaveBeenCalled();
+  });
+
+  it("deux onglets / double clic APRÈS signature : `deja_signe`, le code n'est pas consommé pour rien", async () => {
+    mockPrisma.documentSignature.count.mockResolvedValue(1);
+    const res = await signerPieceParJetonAction(entree());
+    expect(res).toMatchObject({ ok: false, raison: "deja_signe" });
+    expect(code.verifierCodeSignature).not.toHaveBeenCalled();
+    expect(mockSigner).not.toHaveBeenCalled();
+  });
+
+  it("double clic simultané : un seul code passe, la seconde requête est refusée sans signer", async () => {
+    code.verifierCodeSignature
+      .mockResolvedValueOnce({ ok: true })
+      .mockResolvedValueOnce({ ok: false, message: "Ce code n'est pas valide." });
+    const [a, b] = await Promise.all([
+      signerPieceParJetonAction(entree()),
+      signerPieceParJetonAction(entree()),
+    ]);
+    expect([a.ok, b.ok].sort()).toEqual([false, true]);
+    expect(mockSigner).toHaveBeenCalledTimes(1);
+  });
+
+  it("le service refuse (déjà signé entre-temps) : le refus remonte tel quel", async () => {
+    mockSigner.mockResolvedValue({ ok: false, raison: "deja_signe", message: "déjà" });
+    const res = await signerPieceParJetonAction(entree());
+    expect(res).toMatchObject({ ok: false, raison: "deja_signe" });
+    expect(horodatage.horodaterSignature).not.toHaveBeenCalled();
+  });
+
+  it("🔴 lien expiré ou révoqué : refus avant toute lecture, le code n'est pas consommé", async () => {
+    mockVerif.mockResolvedValue({ ok: false, raison: "expire" });
+    expect(await signerPieceParJetonAction(entree())).toMatchObject({
+      ok: false,
+      raison: "lien_expire",
+    });
+    mockVerif.mockResolvedValue({ ok: false, raison: "revoque" });
+    expect(await signerPieceParJetonAction(entree())).toMatchObject({
+      ok: false,
+      raison: "lien_revoque",
+    });
+    expect(code.verifierCodeSignature).not.toHaveBeenCalled();
+    expect(mockSigner).not.toHaveBeenCalled();
+  });
+
+  it("🔴 devis refusé (ou retiré, remplacé) : refus, le code n'est pas consommé", async () => {
+    mockPrisma.devis.findFirst.mockImplementation(
+      async (args: { select: Record<string, boolean> }) =>
+        args.select["statut"] === true
+          ? { statut: "refuse" }
+          : { numero: NUMERO, offre: OFFRE, offreSha256: OFFRE_SHA },
+    );
+    const res = await signerPieceParJetonAction(entree());
+    expect(res).toMatchObject({ ok: false, raison: "piece_non_signable_maintenant" });
+    expect(code.verifierCodeSignature).not.toHaveBeenCalled();
+    expect(mockSigner).not.toHaveBeenCalled();
+  });
+
+  it("un devis SANS offre ne demande ni déclaration ni code (palier inchangé)", async () => {
+    mockPrisma.devis.findFirst.mockImplementation(
+      async (args: { select: Record<string, boolean> }) =>
+        args.select["statut"] === true
+          ? { statut: "envoye" }
+          : { numero: NUMERO, offre: null, offreSha256: null },
+    );
+    const res = await signerPieceParJetonAction(
+      entree({ declaration: undefined, code: undefined, choix: undefined }),
+    );
+    expect(res).toMatchObject({ ok: true });
+    const arg = mockSigner.mock.calls[0]?.[0] as Record<string, unknown>;
+    expect(arg["renforcee"]).toBeUndefined();
+    expect(arg["consentementVersion"]).toBeUndefined();
+    expect(code.verifierCodeSignature).not.toHaveBeenCalled();
   });
 });

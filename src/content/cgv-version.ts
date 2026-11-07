@@ -9,6 +9,6 @@
  * `conditions-generales`). Le test `__tests__/cgv-version.spec.ts` lie l'empreinte du
  * texte français à cette version : il casse si l'un bouge sans l'autre.
  */
-export const CGV_VERSION = "2026-10-04";
-export const CGV_VERSION_LIBELLE = "4 octobre 2026";
-export const CGV_VERSION_LIBELLE_EN = "October 4, 2026";
+export const CGV_VERSION = "2026-11-07";
+export const CGV_VERSION_LIBELLE = "7 novembre 2026";
+export const CGV_VERSION_LIBELLE_EN = "November 7, 2026";

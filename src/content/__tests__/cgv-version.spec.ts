@@ -11,8 +11,8 @@ import { empreinteTexteCgv } from "@/content/cgv-empreinte";
 import { CGV_VERSION, CGV_VERSION_LIBELLE, CGV_VERSION_LIBELLE_EN } from "@/content/cgv-version";
 
 /** Empreinte du texte FR pour la version courante. À mettre à jour AVEC CGV_VERSION. */
-const EMPREINTE_TEXTE_FR = "3d0461ea83994472ae2628d8bb9b6dd79a9bde9055a1883092d27bc432f30c5f";
-const VERSION_DE_L_EMPREINTE = "2026-10-04";
+const EMPREINTE_TEXTE_FR = "46fe4de371da981835d9f77ac2a7771bcc7af9964924a19694198ac46b85c235";
+const VERSION_DE_L_EMPREINTE = "2026-11-07";
 
 describe("cgv-version : source unique de la version des CGV", () => {
   it("la version est une date ISO, le libellé la reflète", () => {
