@@ -29,7 +29,7 @@ export interface AdminNotificationItem {
 const SEVERITY_LABELS_FR: Record<AdminNotificationItem["severity"], string> = {
   info: "Information",
   warning: "Attention",
-  destructive: "Critique",
+  destructive: "Erreur",
   success: "Succès",
 };
 
@@ -93,7 +93,7 @@ export function AdminNotificationsDropdown({
             Notifications
           </strong>
           {count > 0 ? (
-            <AdminBadge tone="destructive" compact>
+            <AdminBadge tone="destructive" compact dot>
               {count}
             </AdminBadge>
           ) : null}
@@ -121,7 +121,7 @@ export function AdminNotificationsDropdown({
                   )}
                 >
                   <div className="flex items-center gap-[var(--space-admin-3)]">
-                    <AdminBadge tone={it.severity} compact>
+                    <AdminBadge tone={it.severity} compact dot>
                       {SEVERITY_LABELS_FR[it.severity] ?? it.severity}
                     </AdminBadge>
                     <span
