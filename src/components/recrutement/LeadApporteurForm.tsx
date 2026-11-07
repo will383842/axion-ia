@@ -38,6 +38,7 @@ import * as React from "react";
 import { useLocale } from "next-intl";
 import { useRouter } from "@/i18n/navigation";
 import { submitLeadApporteurAction } from "@/features/commercial-application/lead-actions";
+import { CLE_DU_CODE_DE_PARRAINAGE } from "@/lib/commercial-application/parrainage";
 import { trackFunnel } from "@/lib/tracking";
 import { isStaleServerActionError } from "@/lib/forms/form-errors";
 import { lireCookieFbp } from "@/lib/analytics/meta-pixel";
@@ -166,6 +167,11 @@ export function LeadApporteurForm() {
     const fd = new FormData(formRef.current ?? undefined);
     fd.set("payload", JSON.stringify(payload));
     fd.set("locale", locale);
+    // INT-T52-A : le code de parrainage du lien d'arrivée (`?p=`), lu dans l'URL AU MOMENT DE
+    // L'ENVOI, transmis tel quel ; le serveur le juge. Il n'est écrit dans aucun stockage, ni dans
+    // le brouillon (SEC-21, REQ-JUR-028).
+    const codeDuLien = new URLSearchParams(window.location.search).get("p");
+    if (codeDuLien !== null) fd.set(CLE_DU_CODE_DE_PARRAINAGE, codeDuLien);
 
     try {
       const result = await submitLeadApporteurAction({ ok: false, error: "" }, fd);

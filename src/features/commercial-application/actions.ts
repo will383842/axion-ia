@@ -54,8 +54,15 @@ import {
 import { signalerHoneypot } from "@/lib/security/honeypot-observable";
 import {
   DOSSIER_COMPLET_PATH,
+  LEAD_APPORTEUR_ETAPE,
   sourceConnueDepuisUtm,
 } from "@/lib/commercial-application/lead-apporteur";
+import {
+  CLE_DU_CODE_DE_PARRAINAGE,
+  codeDeParrainageDeLaFiche,
+  codeDuDossierComplet,
+} from "@/lib/commercial-application/parrainage";
+import { codeDeParrainageAdmis } from "@/lib/commercial-application/parrainage-serveur";
 import { annulerRelancesLeadApporteur } from "./relances-lead-apporteur";
 
 export type CommercialApplicationState =
@@ -109,6 +116,35 @@ async function sourceDuPremierContact(emailKey: string | null): Promise<string |
   } catch (err) {
     Sentry.captureException(err, {
       tags: { action: "submitCommercialApplicationAction", step: "source-premier-contact" },
+    });
+    return null;
+  }
+}
+
+/**
+ * INT-T52-A — le code de parrainage rangé dans le PREMIER CONTACT de la même personne, ou `null`.
+ * Même lecture que `sourceDuPremierContact` : par l'empreinte de l'adresse, best-effort ; une
+ * lecture en échec ne coûte que le code, jamais la candidature.
+ */
+async function codeDuPremierContact(emailKey: string | null): Promise<string | null> {
+  if (!emailKey) return null;
+  try {
+    const ligne = await prisma.submission.findFirst({
+      where: {
+        contactEmailHash: emailKey,
+        deletedAt: null,
+        AND: [
+          { details: { path: ["subType"], equals: "candidature-commerciale" } },
+          { details: { path: ["etape"], equals: LEAD_APPORTEUR_ETAPE } },
+        ],
+      },
+      select: { details: true },
+      orderBy: { submittedAt: "desc" },
+    });
+    return codeDeParrainageDeLaFiche(ligne?.details);
+  } catch (err) {
+    Sentry.captureException(err, {
+      tags: { action: "submitCommercialApplicationAction", step: "parrainage-premier-contact" },
     });
     return null;
   }
@@ -306,6 +342,15 @@ export async function submitCommercialApplicationAction(
     if (heritee) d.sourceConnaissance = heritee;
   }
 
+  // 4 ter. INT-T52-A — le code de parrainage : celui du lien qui a ouvert CE dossier, s'il a la
+  // forme d'un code et si le compteur l'admet ; sinon celui du premier contact de la même
+  // personne, recopié ici, côté serveur (rattrapage 94). Jamais par le navigateur ni un stockage.
+  const codeDuLien = await codeDeParrainageAdmis(formData.get(CLE_DU_CODE_DE_PARRAINAGE), ip);
+  const codeDeParrainage = codeDuDossierComplet(
+    codeDuLien,
+    codeDuLien === null ? await codeDuPremierContact(emailKey) : null,
+  );
+
   // Expériences en ordre ANTI-CHRONOLOGIQUE partout en aval (récap + console) :
   // poste actuel d'abord, puis début décroissant.
   const experiences = [...d.experiences].sort((a, b) => {
@@ -371,6 +416,7 @@ export async function submitCommercialApplicationAction(
           // Les dossiers antérieurs gardent leur horodatage, que la fiche
           // console affiche comme tel.
           ...(Object.keys(funnel).length > 0 ? { funnel: funnel as unknown as object } : {}),
+          ...(codeDeParrainage === null ? {} : { [CLE_DU_CODE_DE_PARRAINAGE]: codeDeParrainage }),
           // Bloc structuré rendu par la vue détail console (accordéons, chips).
           // PII minimisée : nom/email/téléphone vivent UNIQUEMENT dans les
           // colonnes chiffrées ci-dessus, pas ici.
