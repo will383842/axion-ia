@@ -22,8 +22,10 @@ Tous les devis à formules se signent par le canal maison, **sans prestataire pa
    accepté) entrent dans la forme canonique **seulement quand ils sont présents** : une V4 antérieure garde
    exactement son empreinte. Le texte exact accepté est scellé : empreinte du PDF du devis (`document_hash`),
    du choix (qui contient l'empreinte de l'offre) et du texte des CGV (`cgv_texte_sha256`).
-4. **Horodatage RFC 3161** du sceau (`selfHash`) par une autorité gratuite configurable
-   (`HORODATAGE_TSA_URL`, défaut Certum, Pologne). La signature ne dépend jamais de l'autorité : la ligne
+4. **Horodatage RFC 3161** du sceau (`selfHash`) par une autorité gratuite que l'exploitant
+   désigne (`HORODATAGE_TSA_URL`, https en production ; ancre de confiance `HORODATAGE_TSA_CA_PEM`).
+   **Aucune autorité par défaut** : tant que l'URL ou l'ancre manque, l'horodatage est coupé et la ligne reste
+   « en attente ». La signature ne dépend jamais de l'autorité : la ligne
    `document_signature_horodatages` naît « en attente » dans la transaction de signature, un premier jeton est
    tenté aussitôt, le balayage du worker (5 min, backoff plafonné à 6 h, **sans plafond d'essais**) reprend le
    reste. La contresignature d'Axion-IA est horodatée aussi.
@@ -34,9 +36,11 @@ Le **contrat n'est formé qu'à la contresignature** d'Axion-IA (CGV, section «
 
 Une signature électronique **simple** (eIDAS) : ni avancée, ni qualifiée. Elle ne prétend pas à la force
 probante d'une signature qualifiée ; elle repose sur un faisceau (adresse prouvée par le code, déclaration,
-empreintes, horodatage) et sur la clause de preuve des CGV. Le jeton est conservé tel que reçu : la signature de
-l'autorité se vérifie hors ligne (`openssl ts -verify`). Le code ne valide **pas** cette signature à la
-réception : il vérifie l'empreinte, le nonce, le statut et l'instant, pas la chaîne de certificats.
+empreintes, horodatage) et sur la clause de preuve des CGV. Le jeton est conservé tel que reçu, et il
+n'est « obtenu » qu'après vérification (`node:crypto` seul) : signature CMS de l'autorité, usage étendu
+`timeStamping` du certificat signataire, chaîne jusqu'à une ancre de `HORODATAGE_TSA_CA_PEM`, chaque certificat
+valide à l'instant attesté ; la réponse est lue en flux avec un plafond de 64 Ko. Non contrôlé : la
+révocation (CRL/OCSP) — à l'audit, hors ligne (`openssl ts -verify`).
 
 ## Conséquences
 
@@ -48,3 +52,19 @@ réception : il vérifie l'empreinte, le nonce, le statut et l'instant, pas la c
 - Une autorité d'horodatage figure sur `/sous-processeurs` (empreinte seule, `dpaStatus: not_required`).
 - Hors périmètre, à faire ensuite : affichage du jeton et de la déclaration dans l'exemplaire signé et le
   registre, vérification offline de la signature CMS du jeton, export de la preuve.
+
+
+## Addendum — suivis de l'audit argent/données (2026-11-07)
+
+- **Texte des CGV** : la section « Signature électronique du devis » décrit désormais le **devis à formules** (seul
+  à recevoir code, nom, fonction, déclaration de pouvoir et horodatage — `piece-signature.ts`, `choixOffre`).
+- **RGPD — effacement et export** : `declarationNom` et `declarationFonction` rejoignent `signataireEmail`
+  dans l'exception « colonne scellée » de `rgpd-erase.ts` (elles entrent dans l'empreinte du sceau V4 : les
+  effacer casserait la preuve). L'export RGPD de la personne ne couvre pas les signataires de devis (aucun
+  export de cette population n'existe) : c'est écrit au registre (`_AUDIT/DPA-REGISTER.md` §7septies).
+- **Conservation de `document_signature_codes`** (code haché + `jeton_id`) : pas de suppression logique
+  possible sans casser la preuve du code vérifié ; la durée est celle de la preuve de signature.
+- **Nom et fonction** : bornes comptées en points de code Unicode (`Array.from`), comme `length()` SQL ;
+  dépassement = refus propre, jamais une erreur 500.
+- **Code à usage unique** : consommé seulement quand le refus tient au code lui-même (voir code de
+  `signerDocument`).

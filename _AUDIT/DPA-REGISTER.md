@@ -514,17 +514,18 @@ de traitement) côté sous-processeurs. Révision trimestrielle minimum.
 ---
 
 
-## 7octies. Autorité d'horodatage RFC 3161 (Certum — Asseco Data Systems S.A.) — lot 4 bis, 2026-11-07
+## 7octies. Autorité d'horodatage RFC 3161 (à désigner — aucune par défaut) — lot 4 bis, 2026-11-07
 
 | Champ                | Valeur                                                                                                     |
 | -------------------- | ---------------------------------------------------------------------------------------------------------- |
-| **Nature**           | Service public GRATUIT d'horodatage (norme RFC 3161) : aucun compte, aucun contrat, aucun paiement        |
+| **Nature**           | Service GRATUIT d'horodatage (norme RFC 3161), autorité **à désigner par Will** ; **désactivé** tant que `HORODATAGE_TSA_URL` et `HORODATAGE_TSA_CA_PEM` ne sont pas posées |
 | **Finalité**         | Horodater le sceau de la signature d'un devis (preuve que l'empreinte existait à l'instant du jeton)       |
 | **Données traitées** | **Une empreinte SHA-256** (64 hexadécimaux, non réversible) et un nombre aléatoire. Ni nom, ni e-mail, ni montant, ni document. |
-| **Localisation**     | Pologne (UE), selon l'autorité configurée (`HORODATAGE_TSA_URL`, défaut `http://time.certum.pl`)           |
+| **Localisation**     | Selon l'autorité désignée (non désignée à ce jour) ; URL **https** obligatoire en production              |
 | **Sous-traitant ?**  | Non au sens de l'art. 28 RGPD : aucune donnée personnelle ne lui est confiée. Déclaré en transparence.     |
 | **Dégradation**      | Autorité injoignable : la signature reste valable, le jeton est redemandé par le worker (sans plafond d'essais) |
-| **Si l'autorité change** | Corriger CETTE section, l'entrée de `src/content/subprocessors.ts` et `TSA_URL_PAR_DEFAUT` dans la même PR |
+| **Vérification**     | Un jeton n'est conservé que si sa signature CMS, l'usage `timeStamping` et la chaîne jusqu'à `HORODATAGE_TSA_CA_PEM` se vérifient ; réponse lue en flux, plafond 64 Ko |
+| **Si l'autorité est désignée / change** | Corriger CETTE section et l'entrée de `src/content/subprocessors.ts` (nom, localisation, `active`) dans la même PR |
 | **Statut**           | ✅ **SANS OBJET** (pas de données personnelles) — à reconfirmer si l'on transmet autre chose qu'une empreinte |
 
 ## 8. Action correctif Backblaze (clarification legal.ts)

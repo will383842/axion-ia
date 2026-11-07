@@ -28,7 +28,10 @@ const BASE_MS = 5 * 60 * 1000;
 const PLAFOND_MS = 6 * 60 * 60 * 1000;
 /** Bail pris pendant un essai : deux passages ne demandent pas deux jetons. */
 const BAIL_MS = 10 * 60 * 1000;
-/** Une alerte, une seule, quand une signature attend son jeton depuis ~1 jour. */
+/**
+ * Une alerte, une seule, au 14e essai : avec 5 min doublées puis plafonnées à 6 h, le 14e essai a
+ * lieu ~47 h (2 795 min) après le premier — pas ~1 jour.
+ */
 const ESSAIS_ALERTE = 14;
 
 export function delaiAvantEssai(essais: number): number {
@@ -57,7 +60,7 @@ export async function horodaterLigne(
 ): Promise<IssueHorodatage> {
   const maintenant = options.maintenant ?? new Date();
   try {
-    const { url } = configurationTsa(options.env ?? process.env);
+    const { url, ancresPem } = configurationTsa(options.env ?? process.env);
     if (url === null) return "coupe";
 
     // Bail : seule la requête qui gagne cette écriture demande un jeton.
@@ -82,6 +85,7 @@ export async function horodaterLigne(
       jeton = await demanderJeton({
         empreinteHex: ligne.empreinteSha256,
         url,
+        ancresPem,
         maintenant,
         ...(options.fetcher === undefined ? {} : { fetcher: options.fetcher }),
       });

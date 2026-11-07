@@ -73,7 +73,7 @@ vi.mock("@sentry/nextjs", () => ({ captureException: vi.fn(), captureMessage: vi
 
 import * as Sentry from "@sentry/nextjs";
 import { prisma } from "@/lib/prisma";
-import { ErreurHorodatage, TSA_URL_PAR_DEFAUT } from "./horodatage-rfc3161";
+import { ErreurHorodatage } from "./horodatage-rfc3161";
 import {
   delaiAvantEssai,
   horodaterLigne,
@@ -113,6 +113,10 @@ const JETON = {
   autorite: "https://tsa.test/tsr",
 };
 
+// Autorité configurée : la config ne lit que la forme du PEM, la vérification est mockée ici.
+const PEM_FACTICE = "-----BEGIN CERTIFICATE-----\nAAAA\n-----END CERTIFICATE-----";
+const ENV_TSA = { HORODATAGE_TSA_URL: "https://tsa.test/tsr", HORODATAGE_TSA_CA_PEM: PEM_FACTICE };
+
 beforeEach(() => {
   table.length = 0;
   demander.mockReset();
@@ -128,33 +132,45 @@ describe("délai entre deux essais", () => {
 });
 
 describe("horodaterLigne", () => {
+  it("aucune autorité par défaut : sans HORODATAGE_TSA_URL, rien n'est demandé, la ligne attend", async () => {
+    const l = ligne();
+    expect(await horodaterLigne("h1", { maintenant: T0, env: {} })).toBe("coupe");
+    expect(demander).not.toHaveBeenCalled();
+    expect(l.statut).toBe("en_attente");
+    expect(l.essais).toBe(0);
+  });
+
   it("obtient et stocke le jeton, son empreinte, son instant et l'autorité", async () => {
     const l = ligne();
     demander.mockResolvedValue(JETON);
-    expect(await horodaterLigne("h1", { maintenant: T0, env: {} })).toBe("obtenu");
+    expect(await horodaterLigne("h1", { maintenant: T0, env: ENV_TSA })).toBe("obtenu");
     expect(l.statut).toBe("obtenu");
     expect(Buffer.from(l.jeton!).equals(JETON.jeton)).toBe(true);
     expect(l.jetonSha256).toMatch(/^[0-9a-f]{64}$/);
     expect(l.horodateAt).toEqual(T0);
     expect(l.autorite).toBe("https://tsa.test/tsr");
     expect(demander).toHaveBeenCalledWith(
-      expect.objectContaining({ empreinteHex: "ab".repeat(32), url: TSA_URL_PAR_DEFAUT }),
+      expect.objectContaining({
+        empreinteHex: "ab".repeat(32),
+        url: "https://tsa.test/tsr",
+        ancresPem: [PEM_FACTICE],
+      }),
     );
   });
 
   it("autorité injoignable : la ligne reste en attente, l'erreur est notée, l'essai suivant s'espace", async () => {
     const l = ligne();
     demander.mockRejectedValue(new ErreurHorodatage("autorité injoignable"));
-    expect(await horodaterLigne("h1", { maintenant: T0, env: {} })).toBe("en_attente");
+    expect(await horodaterLigne("h1", { maintenant: T0, env: ENV_TSA })).toBe("en_attente");
     expect(l.statut).toBe("en_attente");
     expect(l.jeton).toBeNull();
     expect(l.derniereErreur).toBe("autorité injoignable");
     expect(l.prochainEssaiAt).toEqual(mn(5));
     // Pas dû avant l'échéance : aucun nouvel appel.
-    expect(await horodaterLigne("h1", { maintenant: mn(4), env: {} })).toBe("pas_du");
+    expect(await horodaterLigne("h1", { maintenant: mn(4), env: ENV_TSA })).toBe("pas_du");
     expect(demander).toHaveBeenCalledTimes(1);
     // Dû ensuite : on réessaie, espacement doublé.
-    expect(await horodaterLigne("h1", { maintenant: mn(5), env: {} })).toBe("en_attente");
+    expect(await horodaterLigne("h1", { maintenant: mn(5), env: ENV_TSA })).toBe("en_attente");
     expect(l.essais).toBe(2);
     expect(l.prochainEssaiAt).toEqual(mn(15));
   });
@@ -162,7 +178,7 @@ describe("horodaterLigne", () => {
   it("n'écrit jamais autre chose qu'un message sûr quand l'erreur est inattendue", async () => {
     const l = ligne();
     demander.mockRejectedValue(new Error("connect ECONNREFUSED 10.1.2.3:443 token=abc"));
-    await horodaterLigne("h1", { maintenant: T0, env: {} });
+    await horodaterLigne("h1", { maintenant: T0, env: ENV_TSA });
     expect(l.derniereErreur).toBe("erreur inattendue");
   });
 
@@ -170,8 +186,8 @@ describe("horodaterLigne", () => {
     ligne();
     demander.mockResolvedValue(JETON);
     const [a, b] = await Promise.all([
-      horodaterLigne("h1", { maintenant: T0, env: {} }),
-      horodaterLigne("h1", { maintenant: T0, env: {} }),
+      horodaterLigne("h1", { maintenant: T0, env: ENV_TSA }),
+      horodaterLigne("h1", { maintenant: T0, env: ENV_TSA }),
     ]);
     expect([a, b].sort()).toEqual(["obtenu", "pas_du"]);
     expect(demander).toHaveBeenCalledTimes(1);
@@ -180,8 +196,8 @@ describe("horodaterLigne", () => {
   it("un jeton obtenu n'est jamais redemandé", async () => {
     const l = ligne();
     demander.mockResolvedValue(JETON);
-    await horodaterLigne("h1", { maintenant: T0, env: {} });
-    expect(await horodaterLigne("h1", { maintenant: mn(60), env: {} })).toBe("pas_du");
+    await horodaterLigne("h1", { maintenant: T0, env: ENV_TSA });
+    expect(await horodaterLigne("h1", { maintenant: mn(60), env: ENV_TSA })).toBe("pas_du");
     expect(demander).toHaveBeenCalledTimes(1);
     expect(l.statut).toBe("obtenu");
   });
@@ -199,7 +215,7 @@ describe("horodaterLigne", () => {
     const l = ligne();
     l.essais = 100;
     demander.mockResolvedValue(JETON);
-    expect(await horodaterLigne("h1", { maintenant: T0, env: {} })).toBe("obtenu");
+    expect(await horodaterLigne("h1", { maintenant: T0, env: ENV_TSA })).toBe("obtenu");
   });
 });
 
@@ -207,8 +223,8 @@ describe("horodaterSignature et balayage", () => {
   it("retrouve la ligne par sa signature", async () => {
     ligne();
     demander.mockResolvedValue(JETON);
-    expect(await horodaterSignature("s-h1", { maintenant: T0, env: {} })).toBe("obtenu");
-    expect(await horodaterSignature("inconnue", { maintenant: T0, env: {} })).toBe("inconnu");
+    expect(await horodaterSignature("s-h1", { maintenant: T0, env: ENV_TSA })).toBe("obtenu");
+    expect(await horodaterSignature("inconnue", { maintenant: T0, env: ENV_TSA })).toBe("inconnu");
   });
 
   it("le balayage reprend les lignes dues, pas les autres", async () => {
@@ -218,7 +234,7 @@ describe("horodaterSignature et balayage", () => {
     const c = ligne("c");
     c.statut = "obtenu";
     demander.mockResolvedValue(JETON);
-    const bilan = await passerHorodatages({ maintenant: T0, env: {} });
+    const bilan = await passerHorodatages({ maintenant: T0, env: ENV_TSA });
     expect(bilan).toEqual({ tentes: 1, obtenus: 1, enAttente: 0 });
     expect(demander).toHaveBeenCalledTimes(1);
   });
@@ -227,7 +243,7 @@ describe("horodaterSignature et balayage", () => {
     ligne("a");
     ligne("b");
     demander.mockRejectedValue(new ErreurHorodatage("autorité : HTTP 503"));
-    await expect(passerHorodatages({ maintenant: T0, env: {} })).resolves.toEqual({
+    await expect(passerHorodatages({ maintenant: T0, env: ENV_TSA })).resolves.toEqual({
       tentes: 2,
       obtenus: 0,
       enAttente: 2,
@@ -240,7 +256,7 @@ describe("horodaterSignature et balayage", () => {
       throw Object.assign(new Error("table absente"), { code: "P2021" });
     };
     try {
-      await expect(passerHorodatages({ maintenant: T0, env: {} })).resolves.toEqual({
+      await expect(passerHorodatages({ maintenant: T0, env: ENV_TSA })).resolves.toEqual({
         tentes: 0,
         obtenus: 0,
         enAttente: 0,
@@ -250,7 +266,7 @@ describe("horodaterSignature et balayage", () => {
       prismaMock.documentSignatureHorodatage.findMany = async () => {
         throw new Error("connexion perdue");
       };
-      await passerHorodatages({ maintenant: T0, env: {} });
+      await passerHorodatages({ maintenant: T0, env: ENV_TSA });
       expect(Sentry.captureException).toHaveBeenCalledTimes(1);
     } finally {
       prismaMock.documentSignatureHorodatage.findMany = orig;
