@@ -88,6 +88,15 @@ export async function envoyerDevisEmailAction(
         "Ce devis à formules ne peut pas être renvoyé tant que les devis à formules sont désactivés dans la configuration.",
     };
   }
+  const aFormules = devis.offre !== null && devis.offre !== undefined;
+  // Devis à formules : le bouton « signer » est le seul moyen de choisir une formule. Hors
+  // statut « envoye » aucun lien n'est émis : refuser, plutôt qu'un e-mail sans bouton.
+  if (aFormules && devis.statut !== "envoye") {
+    return {
+      error:
+        "Ce devis à formules ne peut être renvoyé que s'il est au statut « envoyé » (aucun e-mail sans lien de signature).",
+    };
+  }
   const pieceEnvoyee =
     devis.documentGenereId !== null
       ? await prisma.documentGenere.findUnique({
@@ -136,6 +145,13 @@ export async function envoyerDevisEmailAction(
       });
       signatureUrl = publicUrl(`/fr/portail/signer/${token}`).toString();
     } catch (err) {
+      if (aFormules) {
+        console.warn("[envoyerDevisEmailAction] émission du lien de signature échouée", err);
+        return {
+          error:
+            "Le lien de signature n'a pas pu être créé : un devis à formules ne part jamais sans bouton « signer ». Réessayer.",
+        };
+      }
       signatureNote =
         err instanceof TokenDocumentError
           ? `Lien de signature non émis (${err.motif}) : l'email part sans bouton « signer ».`
@@ -156,6 +172,8 @@ export async function envoyerDevisEmailAction(
       dateValiditeLabel: dateFr(devis.dateValidite),
       // Formules figées dans la pièce déjà envoyée : l'e-mail décrit le PDF joint.
       formules: formulesDepuisMetadata(pieceEnvoyee?.metadata),
+      // Même si les formules figées sont illisibles : un devis à formules n'annonce jamais de montant.
+      devisAFormules: aFormules,
       signatureUrl,
       messagePersonnalise: input.messagePersonnalise,
     }),

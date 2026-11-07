@@ -14,6 +14,8 @@ export interface EntreePayloadDevisEnvoi {
   readonly montantLabel: string;
   readonly dateValiditeLabel: string;
   readonly formules?: VueFormules | undefined;
+  /** Devis porteur d'une offre : aucun montant unique annoncé, même si `formules` est illisible. */
+  readonly devisAFormules?: boolean | undefined;
   readonly signatureUrl?: string | null | undefined;
   readonly messagePersonnalise?: string | undefined;
 }
@@ -25,7 +27,8 @@ export function payloadDevisEnvoi(e: EntreePayloadDevisEnvoi): Record<string, un
   // À deux formules il vaut 0 ; à UNE formule abonnement il ne couvre que la mise en service et
   // sous-annoncerait le prix. Aucun montant unique n'est donc jamais annoncé dès que `formules`
   // est présent.
-  const annonceMontant = e.formules === undefined && e.montantTotalHtCents > 0;
+  const annonceMontant =
+    e.formules === undefined && e.devisAFormules !== true && e.montantTotalHtCents > 0;
   return {
     clientNom: e.clientNom,
     numero: e.numero,

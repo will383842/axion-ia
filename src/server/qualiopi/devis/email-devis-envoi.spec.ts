@@ -67,4 +67,16 @@ describe("payloadDevisEnvoi", () => {
     expect(formulesDepuisMetadata({ renderData: { data: {} } })).toBeUndefined();
     expect(formulesDepuisMetadata(null)).toBeUndefined();
   });
+
+  it("devisAFormules : aucun montant annoncé même sans formules lisibles", () => {
+    const p = payloadDevisEnvoi({
+      clientNom: "C",
+      numero: "N",
+      montantTotalHtCents: 90000,
+      montantLabel: "900,00 € HT",
+      dateValiditeLabel: "01/01/2027",
+      devisAFormules: true,
+    });
+    expect(p).not.toHaveProperty("montantLabel");
+  });
 });
