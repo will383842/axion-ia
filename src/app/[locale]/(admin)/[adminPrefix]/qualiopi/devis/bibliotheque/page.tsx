@@ -41,9 +41,9 @@ export default async function QualiopiDevisBibliothequePage({ params }: PageProp
       <div className="mb-[var(--space-admin-4)]">
         <Link
           href={`/${locale}/${adminPrefix}/qualiopi/devis`}
-          className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-accent)] underline hover:no-underline"
+          className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-accent)] underline-offset-2 hover:underline"
         >
-          ← Retour aux devis
+          ← Devis
         </Link>
       </div>
       <AdminPageHeader

@@ -12,6 +12,7 @@ import { AdminPageShell } from "@/components/admin/ui/AdminPageShell";
 import { AdminPageHeader } from "@/components/admin/ui/AdminPageHeader";
 import { AdminStatCard } from "@/components/admin/ui/AdminStatCard";
 import { AdminButton } from "@/components/admin/ui/AdminButton";
+import { AdminBadge } from "@/components/admin/ui/AdminBadge";
 import { Hash, FileText, Send, CheckCircle2, ArrowRight, PenLine } from "lucide-react";
 import { listDevis } from "@/server/qualiopi/crm/devis";
 import { listClients } from "@/server/qualiopi/crm/clients";
@@ -39,6 +40,15 @@ const STATUT_LABELS: Record<string, string> = {
   refuse: "Refusé",
   expire: "Expiré",
   transforme_convention: "→ Convention",
+};
+
+const STATUT_TONES: Record<string, "neutral" | "info" | "success" | "warning"> = {
+  brouillon: "neutral",
+  envoye: "warning",
+  accepte: "success",
+  refuse: "neutral",
+  expire: "neutral",
+  transforme_convention: "info",
 };
 
 const FINANCEMENT_LABELS: Record<string, string> = {
@@ -105,13 +115,8 @@ export default async function QualiopiDevisPage({ params, searchParams }: PagePr
       <AdminPageHeader
         title="Devis"
         description="Devis commerciaux formation — montants HT, financement OPCO estimé, statut."
+        actions={<AdminButton href={`${devisBase}/new`}>Nouveau devis</AdminButton>}
       />
-
-      <div className="mb-[var(--space-admin-6)]">
-        <Link href={`${devisBase}/new`} className="admin-button">
-          + Nouveau devis
-        </Link>
-      </div>
 
       <div className="mb-[var(--space-admin-6)] grid grid-cols-1 gap-[var(--space-admin-5)] sm:grid-cols-5">
         <AdminStatCard label="Total" value={devisList.length} icon={Hash} />
@@ -146,8 +151,7 @@ export default async function QualiopiDevisPage({ params, searchParams }: PagePr
 
       {devisList.length === 0 ? (
         <p className="text-[length:var(--text-admin-base)] text-[color:var(--color-admin-fg-soft)]">
-          Aucun devis. Créez votre premier devis en cliquant sur &laquo;&nbsp;+ Nouveau
-          devis&nbsp;&raquo;.
+          Aucun devis. Créez votre premier devis avec &laquo;&nbsp;Nouveau devis&nbsp;&raquo;.
         </p>
       ) : devisAffiches.length === 0 ? (
         <p className="text-[length:var(--text-admin-base)] text-[color:var(--color-admin-fg-soft)]">
@@ -220,25 +224,13 @@ export default async function QualiopiDevisPage({ params, searchParams }: PagePr
                     </td>
                     <td className={cellCls}>
                       {etatListeDevis(devis, piecesAContresigner) === "a_contresigner" ? (
-                        <span className="font-semibold text-[color:var(--color-admin-warning)]">
-                          ✎ À contresigner
-                        </span>
-                      ) : devis.statut === "accepte" ? (
-                        <span className="text-[color:var(--color-admin-success)]">
-                          ● {STATUT_LABELS[devis.statut] ?? devis.statut}
-                        </span>
-                      ) : devis.statut === "refuse" || devis.statut === "expire" ? (
-                        <span className="text-[color:var(--color-admin-fg-muted)]">
-                          {STATUT_LABELS[devis.statut] ?? devis.statut}
-                        </span>
-                      ) : devis.statut === "envoye" ? (
-                        <span className="text-[color:var(--color-admin-warning)]">
-                          ◑ {STATUT_LABELS[devis.statut] ?? devis.statut}
-                        </span>
+                        <AdminBadge tone="warning" dot>
+                          À contresigner
+                        </AdminBadge>
                       ) : (
-                        <span className="text-[color:var(--color-admin-fg-muted)]">
-                          ○ {STATUT_LABELS[devis.statut] ?? devis.statut}
-                        </span>
+                        <AdminBadge tone={STATUT_TONES[devis.statut] ?? "neutral"} dot>
+                          {STATUT_LABELS[devis.statut] ?? devis.statut}
+                        </AdminBadge>
                       )}
                     </td>
                     <td className={cellCls}>

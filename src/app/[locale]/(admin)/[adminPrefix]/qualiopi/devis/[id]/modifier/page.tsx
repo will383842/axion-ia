@@ -58,7 +58,7 @@ export default async function QualiopiDevisModifierPage({ params }: PageProps) {
       <div className="mb-[var(--space-admin-4)]">
         <Link
           href={retourHref}
-          className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-accent)] underline hover:no-underline"
+          className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-accent)] underline-offset-2 hover:underline"
         >
           ← Retour au devis
         </Link>
