@@ -423,7 +423,7 @@ const card: React.CSSProperties = {
   // carte ne laisseraient que 520 px de texte, et sur mobile la ligne devient
   // trop étroite pour un corps à 16 px.
   padding: "32px 28px",
-  boxShadow: "0 12px 34px -16px rgba(234,78,27,0.20), 0 2px 6px -2px rgba(36,29,21,0.06)",
+  boxShadow: "0 2px 6px -2px rgba(20,20,19,0.08)",
 };
 const eyebrowStyle: React.CSSProperties = {
   fontSize: "12px",
@@ -460,7 +460,6 @@ const ctaStyle: React.CSSProperties = {
   fontSize: "16px",
   fontWeight: 700,
   fontFamily: SANS,
-  boxShadow: "0 10px 22px -8px rgba(194,74,27,0.5)",
 };
 /** Repli du CTA en texte brut — §3.8. Petit, discret, mais copiable. */
 const ctaFallbackStyle: React.CSSProperties = {
@@ -585,7 +584,7 @@ const DARK_MODE_STYLE = `
        terracotta, est remis à part par sa classe. */
     .ax-card p, .ax-card li, .ax-card td, .ax-card span, .ax-card strong, .ax-card em { color: #FAF9F5 !important; }
     .ax-card h1, .ax-card h2, .ax-card h3 { color: #FAF9F5 !important; }
-    .ax-card a { color: #D97757 !important; }
+    .ax-card a, .ax-link { color: #D97757 !important; }
     .ax-card a.ax-cta, .ax-card a.ax-cta span { color: #ffffff !important; }
     .ax-card hr { border-color: #B0AEA5 !important; }
   }
@@ -1078,20 +1077,20 @@ export function EmailLayout({
             {regime.reseauxSociaux === "complet" && sansReseauxSociaux !== true && (
               <Text style={socialRowStyle} className="ax-muted">
                 {t.followBrand} —{" "}
-                <Link href={SOCIALS.linkedinCompany} style={socialLinkStyle}>
+                <Link className="ax-link" href={SOCIALS.linkedinCompany} style={socialLinkStyle}>
                   LinkedIn
                 </Link>
                 {" · "}
-                <Link href={SOCIALS.facebookCompany} style={socialLinkStyle}>
+                <Link className="ax-link" href={SOCIALS.facebookCompany} style={socialLinkStyle}>
                   Facebook
                 </Link>
                 {" · "}
-                <Link href={SOCIALS.x} style={socialLinkStyle}>
+                <Link className="ax-link" href={SOCIALS.x} style={socialLinkStyle}>
                   X
                 </Link>
                 {" — "}
                 {t.followFounder} :{" "}
-                <Link href={SOCIALS.linkedinWilliams} style={socialLinkStyle}>
+                <Link className="ax-link" href={SOCIALS.linkedinWilliams} style={socialLinkStyle}>
                   LinkedIn
                 </Link>
               </Text>
@@ -1123,6 +1122,7 @@ export function EmailLayout({
                   <br />
                   {t.autoNoticeAsk}{" "}
                   <Link
+                    className="ax-link"
                     href={`mailto:${CONTACT_EMAIL}`}
                     style={{ color: C.orangeDeep, fontWeight: 600 }}
                   >
@@ -1133,6 +1133,7 @@ export function EmailLayout({
                 <>
                   {t.contact}{" "}
                   <Link
+                    className="ax-link"
                     href={`mailto:${CONTACT_EMAIL}`}
                     style={{ color: C.orangeDeep, fontWeight: 600 }}
                   >

@@ -50,6 +50,37 @@ describe("châssis e-mail — palette définitive", () => {
       expect(sombre).not.toContain("#f0a070");
     });
 
+    it(`${nom} : aucune couleur rgba()/rgb()/hsl() hors palette`, async () => {
+      const html = await rendre(nom);
+      const PALETTE = [
+        [250, 249, 245],
+        [232, 230, 220],
+        [20, 20, 19],
+        [178, 63, 22],
+        [217, 119, 87],
+        [176, 174, 165],
+        [255, 255, 255],
+      ];
+      const hors: string[] = [];
+      for (const m of html.matchAll(/\b(rgba?|hsla?)\(([^)]*)\)/gi)) {
+        const fn = m[1]!.toLowerCase();
+        const n = m[2]!
+          .split(/[ ,/]+/)
+          .filter(Boolean)
+          .slice(0, 3)
+          .map(Number);
+        const ok = fn.startsWith("rgb") && PALETTE.some((p) => p.every((v, i) => v === n[i]));
+        if (!ok) hors.push(m[0]);
+      }
+      expect(hors, `${nom} : couleurs hors palette`).toEqual([]);
+    });
+
+    it(`${nom} : sombre, les liens du pied sont orange sur noir`, async () => {
+      const html = await rendre(nom);
+      expect(html).toContain("ax-link");
+      expect(blocSombre(html).toLowerCase()).toMatch(/\.ax-link[^}]*color: #d97757/);
+    });
+
     it(`${nom} : HTML sous 100 Ko`, async () => {
       expect(Buffer.byteLength(await rendre(nom), "utf8")).toBeLessThan(100 * 1024);
     });
