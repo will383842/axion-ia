@@ -19,6 +19,13 @@ export const CODE_DEVIS_VALIDITE_MS = 10 * 60 * 1000;
 /** Cinq essais, puis blocage de la pièce pour 15 minutes. */
 export const CODE_DEVIS_ESSAIS_MAX = 5;
 export const CODE_DEVIS_BLOCAGE_MS = 15 * 60 * 1000;
+/**
+ * Plafond CUMULÉ, par pièce et partie, tous codes confondus : au 10e échec sur 24 h, la pièce est
+ * bloquée 15 minutes. Redemander un code ne remet PAS ce compteur à zéro (audit sécurité) ; seules
+ * une signature réussie ou l'écoulement des 24 h le font.
+ */
+export const CODE_DEVIS_ECHECS_CUMULES_MAX = 10;
+export const CODE_DEVIS_ECHECS_CUMULES_FENETRE_MS = 24 * 60 * 60 * 1000;
 /** « Recevoir mon code » : pas deux envois à moins d'une minute d'écart… */
 export const CODE_DEVIS_DELAI_RENVOI_MS = 60 * 1000;
 /** … et au plus cinq envois par heure pour un même lien. */

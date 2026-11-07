@@ -37,8 +37,13 @@ function correspond(l: Ligne, w: Filtre): boolean {
   });
 }
 
+const cumule = { bloqueJusquA: null as Date | null };
+
 vi.mock("@/lib/prisma", () => ({
   prisma: {
+    documentSignatureEchecs: {
+      findUnique: async () => (cumule.bloqueJusquA === null ? null : { ...cumule }),
+    },
     documentSignatureCode: {
       create: async ({ data }: { data: Partial<Ligne> & { id: string } }) => {
         const l = {
@@ -248,6 +253,13 @@ describe("trop d'essais : blocage de 15 minutes", () => {
     const fin = apres(5000 + CODE_DEVIS_BLOCAGE_MS + 1);
     expect(await demander(fin)).toEqual({ ok: true });
     expect((await verifier(dernierCode(), apres(5000 + CODE_DEVIS_BLOCAGE_MS + 2))).ok).toBe(true);
+  });
+
+  it("le blocage CUMULÉ de la pièce refuse aussi l'émission d'un code (audit sécurité)", async () => {
+    cumule.bloqueJusquA = apres(10 * 60_000);
+    expect(await demander(T0)).toMatchObject({ ok: false, raison: "bloque" });
+    expect(enqueue).not.toHaveBeenCalled();
+    cumule.bloqueJusquA = null;
   });
 
   it("le cinquième essai peut encore réussir (cinq essais, bon code compris)", async () => {

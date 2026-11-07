@@ -67,9 +67,12 @@ import {
 } from "@/server/qualiopi/documents/signature/contrat-cadre-signature";
 import { verifierCodeSignature } from "@/server/qualiopi/documents/signature/code-signature";
 import { envoyerCodeDevis } from "@/server/qualiopi/devis/code-signature-devis";
+import { reinitialiserEchecsSignature } from "@/server/qualiopi/documents/signature/echecs-cumules";
 import { horodaterSignature } from "@/server/qualiopi/documents/signature/horodatage-signature";
 import {
   CODE_DEVIS_BLOCAGE_MS,
+  CODE_DEVIS_ECHECS_CUMULES_FENETRE_MS,
+  CODE_DEVIS_ECHECS_CUMULES_MAX,
   validerDeclaration,
 } from "@/server/qualiopi/devis/signature-renforcee";
 import { CONSENTEMENT_VERSION_DOCUMENT_CODE } from "@/server/qualiopi/documents/signature/mentions-document";
@@ -455,6 +458,15 @@ export async function signerPieceParJetonAction(input: {
             "Ce devis n'est pas disponible à la signature pour le moment. Contactez votre interlocuteur chez Axion-IA.",
         };
       }
+    }
+    // Choix, déclaration et code : pour la partie CLIENT seulement. La contresignature d'Axion-IA
+    // recopie le choix scellé du client (lu en base par le service) et n'a ni code ni déclaration.
+    if (
+      verif.partie === "client" &&
+      devis !== null &&
+      devis.offre != null &&
+      devis.offreSha256 != null
+    ) {
       if (donnees.choix === undefined) {
         return {
           ok: false,
@@ -495,7 +507,7 @@ export async function signerPieceParJetonAction(input: {
   // consommé qu'en DERNIER, une fois tout le reste valide — un oubli de case ne coûte pas un code.
   let renforcee:
     { declarationNom: string; declarationFonction: string; pouvoirDeclareAt: Date } | undefined;
-  if (choixOffre !== undefined) {
+  if (choixOffre !== undefined && verif.partie === "client") {
     const decl = validerDeclaration(
       donnees.declaration ?? { nom: undefined, fonction: undefined, pouvoirEngager: undefined },
     );
@@ -521,6 +533,12 @@ export async function signerPieceParJetonAction(input: {
       partie: verif.partie,
       code: donnees.code,
       blocageMs: CODE_DEVIS_BLOCAGE_MS,
+      echecsCumules: {
+        max: CODE_DEVIS_ECHECS_CUMULES_MAX,
+        fenetreMs: CODE_DEVIS_ECHECS_CUMULES_FENETRE_MS,
+      },
+      // Le code ne vaut que pour le lien qui l'a demandé.
+      jetonId: verif.tokenId,
     });
     if (!v.ok) {
       return {
@@ -590,6 +608,12 @@ export async function signerPieceParJetonAction(input: {
     // Horodatage RFC 3161 du sceau : premier essai aussitôt, SANS attendre et sans jamais défaire la
     // signature (autorité injoignable : la ligne reste « en attente », le worker la reprend).
     if (renforcee !== undefined) {
+      // Signature réussie : le compteur d'échecs cumulé de la pièce repart de zéro. Jamais fatal.
+      try {
+        await reinitialiserEchecsSignature(verif.documentGenereId, verif.partie);
+      } catch {
+        // la signature est acquise ; le compteur retombera de lui-même au bout de 24 h
+      }
       void Promise.resolve()
         .then(() => horodaterSignature(res.signatureId))
         .catch(() => undefined);

@@ -28,6 +28,9 @@
  *   calculée même quand aucun code n'est vivant, ce qui RÉDUIT l'écart de durée
  *   entre les refus sans l'annuler (une écriture de moins) : il faut de toute
  *   façon détenir le jeton du lien pour poser la question.
+ * - **Signature renforcée du devis** : un compteur d'échecs CUMULÉ par pièce (`echecs-cumules.ts`) double
+ *   le plafond par code — redemander un code ne le remet pas à zéro — et le code n'est accepté que par le
+ *   lien pour lequel il a été émis (`jetonId`).
  * - **Un seul code vivant** par (pièce, partie) : en émettre un nouveau
  *   invalide le précédent.
  * - **Refus uniformes** : un code faux, expiré, épuisé ou inexistant rend le
@@ -43,6 +46,7 @@ import { createHmac, randomInt, randomUUID, timingSafeEqual } from "node:crypto"
 import { prisma } from "@/lib/prisma";
 import type { Prisma } from "../../../../../prisma/generated/client";
 import type { PartieSignataire } from "./document-signature-hash";
+import { blocageCumule, enregistrerEchecCumule, type PlafondCumule } from "./echecs-cumules";
 
 export const CODE_LONGUEUR = 6;
 export const CODE_VALIDITE_MS = 15 * 60 * 1000;
@@ -157,6 +161,16 @@ export async function verifierCodeSignature(input: {
    * invalidé.
    */
   readonly blocageMs?: number;
+  /**
+   * Avec `blocageMs` : plafond d'échecs CUMULÉ par pièce, tous codes confondus (audit sécurité). Sans
+   * lui, redemander un code remettrait le compteur à zéro et contournerait le blocage.
+   */
+  readonly echecsCumules?: PlafondCumule;
+  /**
+   * Lien de signature qui présente le code : seul un code ÉMIS POUR CE LIEN est accepté (un code
+   * demandé via le lien A ne signe pas via le lien B). Absent : pas de contrainte (contrat-cadre).
+   */
+  readonly jetonId?: string;
 }): Promise<VerificationCode> {
   const maintenant = input.maintenant ?? new Date();
   const saisi = (input.code ?? "").trim();
@@ -170,6 +184,10 @@ export async function verifierCodeSignature(input: {
       select: { id: true },
     });
     if (bloque !== null) return { ok: false, message: MESSAGE_CODE_BLOQUE, bloque: true };
+    if (input.echecsCumules !== undefined) {
+      const cumule = await blocageCumule(input.documentGenereId, input.partie, maintenant);
+      if (cumule !== null) return { ok: false, message: MESSAGE_CODE_BLOQUE, bloque: true };
+    }
   }
   if (!FORMAT_CODE.test(saisi)) return REFUS;
   const vivant = { utiliseAt: null, invalideAt: null, expiresAt: { gt: maintenant } } as const;
@@ -182,6 +200,7 @@ export async function verifierCodeSignature(input: {
       invalideAt: null,
       expiresAt: { gt: maintenant },
       essais: { lt: CODE_ESSAIS_MAX },
+      ...(input.jetonId === undefined ? {} : { jetonId: input.jetonId }),
     },
     orderBy: { createdAt: "desc" },
     select: { id: true, codeHash: true, essais: true },
@@ -223,7 +242,18 @@ export async function verifierCodeSignature(input: {
           : { bloqueJusquA: new Date(maintenant.getTime() + input.blocageMs) }),
       },
     });
-    if (epuise.count > 0 && input.blocageMs !== undefined) {
+    // Compteur cumulé de la PIÈCE : survit à l'émission d'un nouveau code.
+    let bloqueCumule = false;
+    if (input.blocageMs !== undefined && input.echecsCumules !== undefined) {
+      bloqueCumule = await enregistrerEchecCumule({
+        documentGenereId: input.documentGenereId,
+        partie: input.partie,
+        maintenant,
+        plafond: input.echecsCumules,
+        blocageMs: input.blocageMs,
+      });
+    }
+    if ((epuise.count > 0 || bloqueCumule) && input.blocageMs !== undefined) {
       return { ok: false, message: MESSAGE_CODE_BLOQUE, bloque: true };
     }
     return REFUS;

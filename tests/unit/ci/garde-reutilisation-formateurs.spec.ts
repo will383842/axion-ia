@@ -49,6 +49,9 @@ const MODELES_SIGNATURE_FIGES: ReadonlyArray<string> = [
   // RFC 3161 d'une signature existante (`DocumentSignature`, qui reste la seule preuve). Elle naît
   // « en attente » avec la signature et un job la complète ; ajout seul, un jeton obtenu est définitif.
   "DocumentSignatureHorodatage",
+  // Lot 4 bis, audit sécurité — compteur d'ÉCHECS de saisie de code, cumulé par (pièce, partie). Pas
+  // une preuve non plus : un compteur et des dates, supprimé à la signature réussie.
+  "DocumentSignatureEchecs",
   "DocumentSignatureToken",
   "EmargementContresignature",
   "EmargementSignature",

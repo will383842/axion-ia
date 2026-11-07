@@ -16,6 +16,8 @@ vi.mock("@/lib/prisma", () => ({
 }));
 const code = vi.hoisted(() => ({ verifierCodeSignature: vi.fn() }));
 vi.mock("@/server/qualiopi/documents/signature/code-signature", () => code);
+const echecs = vi.hoisted(() => ({ reinitialiserEchecsSignature: vi.fn(async () => undefined) }));
+vi.mock("@/server/qualiopi/documents/signature/echecs-cumules", () => echecs);
 const horodatage = vi.hoisted(() => ({ horodaterSignature: vi.fn(async () => "en_attente") }));
 vi.mock("@/server/qualiopi/documents/signature/horodatage-signature", () => horodatage);
 vi.mock("@/server/qualiopi/documents/signature/token-document", () => ({
@@ -321,6 +323,48 @@ describe("devis à formules — signature RENFORCÉE : déclaration et code (lot
         blocageMs: 15 * 60 * 1000,
       }),
     );
+  });
+
+  it("🔴 audit : le code n'est vérifié que pour LE lien qui signe, avec le plafond cumulé par pièce", async () => {
+    await signerPieceParJetonAction(entree());
+    expect(code.verifierCodeSignature).toHaveBeenCalledWith(
+      expect.objectContaining({
+        jetonId: TOKEN_ID,
+        echecsCumules: { max: 10, fenetreMs: 24 * 60 * 60 * 1000 },
+      }),
+    );
+  });
+
+  it("une signature réussie remet à zéro le compteur d'échecs cumulé, un refus de code non", async () => {
+    code.verifierCodeSignature.mockResolvedValueOnce({ ok: false, message: "non" });
+    await signerPieceParJetonAction(entree());
+    expect(echecs.reinitialiserEchecsSignature).not.toHaveBeenCalled();
+    await signerPieceParJetonAction(entree());
+    expect(echecs.reinitialiserEchecsSignature).toHaveBeenCalledWith(DOC, "client");
+  });
+
+  it("🔴 un compteur qui échoue à se remettre à zéro ne défait pas la signature", async () => {
+    echecs.reinitialiserEchecsSignature.mockRejectedValueOnce(new Error("base"));
+    expect(await signerPieceParJetonAction(entree())).toMatchObject({ ok: true });
+  });
+
+  it("audit : la déclaration et le code ne sont exigés que de la partie CLIENT", async () => {
+    mockVerif.mockResolvedValue({
+      ok: true,
+      tokenId: TOKEN_ID,
+      documentGenereId: DOC,
+      partie: "axionia",
+      signataireNom: "Axion-IA",
+      signataireEmail: "contact@axion-ia.com",
+      signataireQualite: "Direction",
+    });
+    const res = await signerPieceParJetonAction(
+      entree({ declaration: undefined, code: undefined, choix: undefined }),
+    );
+    expect(res).not.toMatchObject({ raison: "declaration_requise" });
+    expect(res).not.toMatchObject({ raison: "code_requis" });
+    expect(res).not.toMatchObject({ raison: "choix_requis" });
+    expect(code.verifierCodeSignature).not.toHaveBeenCalled();
   });
 
   it("tente l'horodatage aussitôt après la signature, sans l'attendre", async () => {

@@ -7946,6 +7946,25 @@ model DocumentSignatureCode {
   @@map("document_signature_codes")
 }
 
+/// Signature renforcée du devis (lot 4 bis, audit sécurité) : compteur d'échecs de saisie de code
+/// CUMULÉ par (pièce, partie), tous codes confondus. Émettre un nouveau code ne le remet pas à zéro :
+/// seuls une signature réussie ou l'écoulement de la fenêtre de 24 h le font. Au 10e échec, la pièce
+/// est bloquée 15 minutes. Table de suivi, jamais de preuve (la preuve reste `DocumentSignature`).
+/// rgpd: technique — compteur et dates ; ni nom, ni adresse, ni code
+model DocumentSignatureEchecs {
+  id               String                   @id @default(uuid()) @db.Uuid
+  documentGenereId String                   @map("document_genere_id") @db.Uuid
+  partie           DocumentPartieSignataire
+  echecs           Int                      @default(0)
+  /// Premier échec de la fenêtre courante (24 h).
+  fenetreDebutAt   DateTime                 @map("fenetre_debut_at")
+  /// Bloque la saisie et l'émission de codes jusqu'à cet instant ; NULL sinon.
+  bloqueJusquA     DateTime?                @map("bloque_jusqu_a")
+
+  @@unique([documentGenereId, partie])
+  @@map("document_signature_echecs")
+}
+
 /// Horodatage certifié RFC 3161 du sceau d'une signature de devis (lot 4 bis).
 ///
 /// L'empreinte horodatée est le `selfHash` de la signature. La signature ne dépend JAMAIS de

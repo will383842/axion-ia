@@ -24,6 +24,7 @@
 import { prisma } from "@/lib/prisma";
 import { CLE_CODE_SIGNATURE, scellerCodePourFile } from "@/server/email/code-en-file";
 import { emettreCodeSignature } from "@/server/qualiopi/documents/signature/code-signature";
+import { blocageCumule } from "@/server/qualiopi/documents/signature/echecs-cumules";
 import { enqueueEmail } from "@/server/queue/queues";
 import {
   CODE_DEVIS_VALIDITE_MS,
@@ -53,6 +54,12 @@ const refus = (raison: RaisonRefusEnvoiCodeDevis): ResultatEnvoiCodeDevis => ({
   message: MESSAGES[raison],
 });
 
+function plusTardif(a: Date | null, b: Date | null): Date | null {
+  if (a === null) return b;
+  if (b === null) return a;
+  return a.getTime() >= b.getTime() ? a : b;
+}
+
 const HEURE_MS = 60 * 60 * 1000;
 
 export async function envoyerCodeDevis(input: {
@@ -69,11 +76,13 @@ export async function envoyerCodeDevis(input: {
   const depuisUneHeure = new Date(maintenant.getTime() - HEURE_MS);
 
   // ── Plafonds et blocage, relus en base ──
-  const [bloque, duLien, deLaPiece] = await Promise.all([
+  const [bloque, bloqueCumule, duLien, deLaPiece] = await Promise.all([
     prisma.documentSignatureCode.findFirst({
       where: { documentGenereId: input.documentGenereId, partie, bloqueJusquA: { gt: maintenant } },
       select: { bloqueJusquA: true },
     }),
+    // Compteur cumulé de la pièce : un code redemandé ne contourne pas le blocage.
+    blocageCumule(input.documentGenereId, partie, maintenant),
     prisma.documentSignatureCode.findMany({
       where: { jetonId: input.jetonId, createdAt: { gt: depuisUneHeure } },
       select: { createdAt: true },
@@ -90,7 +99,7 @@ export async function envoyerCodeDevis(input: {
     maintenant,
     envoisDuLien: duLien.map((l) => l.createdAt),
     envoisDeLaPiece: deLaPiece,
-    bloqueJusquA: bloque?.bloqueJusquA ?? null,
+    bloqueJusquA: plusTardif(bloque?.bloqueJusquA ?? null, bloqueCumule),
   });
   if (!decision.ok) return refus(decision.raison);
 
