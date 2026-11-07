@@ -1110,7 +1110,7 @@ export async function relancerAcceptationDevisAction(input: {
     };
   }
   try {
-    const res = await reprendreAcceptationDevisFormules(id.data);
+    const res = await reprendreAcceptationDevisFormules(id.data, { confirmer: true });
     if (!res.traite) {
       return {
         ok: false,
@@ -1128,9 +1128,22 @@ export async function relancerAcceptationDevisAction(input: {
       action: "qualiopi.devis.relance_acceptation",
       targetType: "DocumentGenere",
       targetId: id.data,
-      changes: { numero: piece.numero, devis: res.ids, plansEchec: res.plansEchec },
+      changes: {
+        numero: piece.numero,
+        devis: res.ids,
+        plansEchec: res.plansEchec,
+        confirmationsEchec: res.confirmationsEchec,
+      },
       session,
     });
+    if (res.confirmationsEchec.length > 0) {
+      return {
+        ok: false,
+        message:
+          "L'acceptation est enregistrée, mais la confirmation de commande n'a pas été mise en " +
+          "corbeille (code consigné). Relancez l'acceptation depuis la fiche du devis.",
+      };
+    }
     if (res.plansEchec.length > 0) {
       return {
         ok: false,

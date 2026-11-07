@@ -395,7 +395,7 @@ export const CATALOGUE: Readonly<Record<EmailJobName, FicheEmail>> = {
   "devis-commande-confirmation": {
     categorie: "commerce",
     quand:
-      "Axion-IA contresigne un devis (action explicite uniquement) — confirmation de commande avec devis signé et CGV en pièces jointes",
+      "Axion-IA contresigne un devis (action explicite uniquement) — confirmation de commande (formule, automatisations et lignes récurrentes retenues) avec devis signé et CGV en pièces jointes ; TOUJOURS garée dans la corbeille « à valider », jamais envoyée seule",
     destinataire: "le client",
     source: "server/qualiopi/devis/confirmation-commande.ts",
   },

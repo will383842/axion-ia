@@ -52,6 +52,7 @@ import {
   transactionDevisSigne,
 } from "@/server/partners-sync/producteurs/devis";
 import { accepterDevisAFormules } from "@/server/qualiopi/devis/acceptation-formules";
+import { envoyerConfirmationCommande } from "@/server/qualiopi/devis/confirmation-commande";
 import { faireMonterLesFichesDesDevisSignes } from "@/features/dossier-client/devis-signe-fait-client";
 import type { PartieSignataire } from "./document-signature-hash";
 import { circuitPour } from "./parties-requises";
@@ -183,7 +184,13 @@ async function declencherPositionnement(documentGenereId: string): Promise<void>
  */
 export async function reprendreAcceptationDevisFormules(
   documentGenereId: string,
-): Promise<{ traite: boolean; ids: string[]; plansEchec: string[] }> {
+  options?: { confirmer?: boolean },
+): Promise<{
+  traite: boolean;
+  ids: string[];
+  plansEchec: string[];
+  confirmationsEchec: string[];
+}> {
   const formules = await accepterDevisAFormules(prisma, documentGenereId);
   if (formules.traite) {
     try {
@@ -192,6 +199,29 @@ export async function reprendreAcceptationDevisFormules(
       });
     } catch (err) {
       Sentry.captureException(err, { tags: { action: "devis_signe_fait_client" } });
+    }
+  }
+  // Confirmation de commande au client (CGV 6.2) : sur CONTRESIGNATURE EXPLICITE d'Axion-IA
+  // seulement (`options.confirmer`), pour les devis que CET appel vient d'accepter (`acceptes`,
+  // PAS `ids` : un rejeu ou une course n'envoie rien deux fois). Toujours garée en corbeille
+  // « à valider », jamais envoyée seule. Fail-soft : la signature et l'acceptation sont acquises.
+  const confirmationsEchec: string[] = [];
+  if (options?.confirmer === true && formules.traite) {
+    for (const id of formules.acceptes) {
+      try {
+        const r = await envoyerConfirmationCommande({
+          declencheur: "contresignature_axion_explicite",
+          devisId: id,
+        });
+        // `formules_eteintes` : lot éteint, rien n'est dû. Tout autre refus est signalé.
+        if (!r.envoye && r.raison !== "formules_eteintes") confirmationsEchec.push(id);
+      } catch (err) {
+        confirmationsEchec.push(id);
+        Sentry.captureException(err, {
+          tags: { action: "confirmation_commande_non_preparee" },
+          extra: { devisId: id },
+        });
+      }
     }
   }
   // Plans récurrents PROPOSÉS en `pause` (lot 5) : APRÈS le COMMIT de l'acceptation, hors
@@ -207,7 +237,12 @@ export async function reprendreAcceptationDevisFormules(
       plansEchec.push(id);
     }
   }
-  return { traite: formules.traite || aProposer.length > 0, ids: aProposer, plansEchec };
+  return {
+    traite: formules.traite || aProposer.length > 0,
+    ids: aProposer,
+    plansEchec,
+    confirmationsEchec,
+  };
 }
 
 /** Devis à formules déjà acceptés de la pièce (formule retenue) : candidats à la reproposition. */
@@ -228,19 +263,41 @@ async function devisAcceptesAFormules(documentGenereId: string): Promise<string[
 export const PREFIXE_PLANS_NON_PROPOSES =
   "Devis accepté, mais les plans récurrents n'ont pas pu être proposés.";
 
-async function accepterDevis(documentGenereId: string): Promise<ActivationRefusee | null> {
+/** Devis accepté, mais la confirmation de commande n'a pas été mise en corbeille. */
+export const PREFIXE_CONFIRMATION_NON_PREPAREE =
+  "Devis accepté, mais la confirmation de commande n'a pas été préparée.";
+
+async function accepterDevis(
+  documentGenereId: string,
+  options: { confirmer: boolean },
+): Promise<ActivationRefusee | null> {
   // Aucun devis à formules → chemin ci-dessous, inchangé.
-  const formules = await reprendreAcceptationDevisFormules(documentGenereId);
+  const formules = await reprendreAcceptationDevisFormules(documentGenereId, options);
   if (formules.traite) {
-    return formules.plansEchec.length === 0
-      ? null
-      : {
-          code: "plans_recurrents_non_proposes",
-          message:
-            "L'acceptation est enregistrée. Relancez la proposition des plans depuis la fiche du devis.",
-          manques: [],
-          prefixe: PREFIXE_PLANS_NON_PROPOSES,
-        };
+    const plans = formules.plansEchec.length > 0;
+    const confirmations = formules.confirmationsEchec.length > 0;
+    if (!plans && !confirmations) return null;
+    if (plans && !confirmations) {
+      return {
+        code: "plans_recurrents_non_proposes",
+        message:
+          "L'acceptation est enregistrée. Relancez la proposition des plans depuis la fiche du devis.",
+        manques: [],
+        prefixe: PREFIXE_PLANS_NON_PROPOSES,
+      };
+    }
+    const messageConfirmation =
+      "La signature et l'acceptation sont enregistrées. Relancez l'acceptation depuis la fiche du devis pour préparer la confirmation de commande.";
+    return {
+      code: "confirmation_commande_non_preparee",
+      message: plans
+        ? `${messageConfirmation} Les plans récurrents n'ont pas non plus pu être proposés : relancez leur proposition depuis la fiche du devis.`
+        : messageConfirmation,
+      manques: [],
+      prefixe: plans
+        ? `${PREFIXE_CONFIRMATION_NON_PREPAREE} ${PREFIXE_PLANS_NON_PROPOSES}`
+        : PREFIXE_CONFIRMATION_NON_PREPAREE,
+    };
   }
   const garde = { documentGenereId, statut: { in: ["envoye" as const, "expire" as const] } };
   const vises = await transactionDevisSigne(prisma, async (tx) => {
@@ -623,7 +680,11 @@ export async function apresSignature(ctx: ContexteApresSignature): Promise<Resul
   try {
     if (ctx.type === "devis") {
       try {
-        activationRefusee = await accepterDevis(ctx.documentGenereId);
+        // La confirmation de commande ne part que de la contresignature EXPLICITE d'un
+        // administrateur d'Axion-IA : jamais sur la signature du client ni par un signataire.
+        activationRefusee = await accepterDevis(ctx.documentGenereId, {
+          confirmer: ctx.partie === "axionia" && ctx.acteur.type === "administrateur",
+        });
       } catch (err) {
         // Signé des deux parties mais non accepté : ne reste pas qu'un message Sentry, l'écran
         // de contresignature le dit et la reprise manuelle existe.

@@ -14,9 +14,49 @@ import {
 } from "./confirmation-commande";
 import { CGV_VERSION } from "@/content/cgv-version";
 
+import { offreFictive } from "./offre-fixtures.spec-util";
+import { choixCanonique, sha256Offre } from "./offre-calculs";
+
 const OFFRE = {
   v: 1,
 };
+
+const CLE_EXEMPLAIRE = "documents/2026/devis/AXI-DEV-1-signe.pdf";
+const BASE = {
+  id: "dv1",
+  numero: "AXI-DEV-1",
+  statut: "accepte",
+  clientId: "cl1",
+  formuleRetenue: null,
+  choixRetenu: null,
+  exemplaireSigneKey: CLE_EXEMPLAIRE,
+  documentGenereId: "dg1",
+};
+
+/** Devis à formules accepté, choix lu sur `choixRetenu`. */
+function devisFormules(
+  over: Record<string, unknown> = {},
+  formule: "achat" | "abonnement" = "abonnement",
+) {
+  const offre = offreFictive();
+  const choix = choixCanonique({
+    devisNumero: "AXI-DEV-1",
+    offreSha256: sha256Offre(offre),
+    formule,
+    automatisationsRetenues: ["auto1"],
+    maintenanceRetenue: false,
+    periodiciteMois: formule === "abonnement" ? 1 : null,
+  });
+  return {
+    ...BASE,
+    lignes: [],
+    offre,
+    formuleRetenue: formule,
+    choixRetenu: choix,
+    client: { raisonSociale: "Acme", contactEmail: "a@acme.fr" },
+    ...over,
+  };
+}
 
 function deps(over: Partial<DependancesConfirmation> & { devis?: unknown } = {}) {
   const enfiler = vi.fn(async () => ({ enqueued: true }));
@@ -24,9 +64,7 @@ function deps(over: Partial<DependancesConfirmation> & { devis?: unknown } = {})
   const d: DependancesConfirmation = {
     lireDevis: async () =>
       (over.devis as never) ?? {
-        id: "dv1",
-        numero: "AXI-DEV-1",
-        documentGenereId: "dg1",
+        ...BASE,
         lignes: [{ designation: "x", quantite: 1, prixUnitaireHtCents: 100_000 }],
         offre: null,
         client: { raisonSociale: "Acme", contactEmail: "a@acme.fr" },
@@ -37,6 +75,7 @@ function deps(over: Partial<DependancesConfirmation> & { devis?: unknown } = {})
     cgvExiste: async () => false,
     pdfCgv: async () => Buffer.from("pdf"),
     deposer,
+    dejaEnvoyee: async () => false,
     enfiler: enfiler as never,
     ...over,
   };
@@ -46,7 +85,6 @@ function deps(over: Partial<DependancesConfirmation> & { devis?: unknown } = {})
 const DEMANDE = {
   declencheur: "contresignature_axion_explicite" as const,
   devisId: "dv1",
-  pdfDevisSigneR2Key: "documents/2026/devis/AXI-DEV-1.pdf",
 };
 
 describe("envoyerConfirmationCommande", () => {
@@ -72,7 +110,7 @@ describe("envoyerConfirmationCommande", () => {
     expect(payload["montantHtLabel"]).toMatch(/1\s?000,00/);
     expect(payload["montantTtcLabel"]).toMatch(/1\s?200,00/);
     expect(opts.attachments.map((a) => a.r2Key)).toEqual([
-      DEMANDE.pdfDevisSigneR2Key,
+      CLE_EXEMPLAIRE,
       `documents/cgv/CGV-${CGV_VERSION}.pdf`,
     ]);
   });
@@ -104,7 +142,7 @@ describe("envoyerConfirmationCommande", () => {
       { attachments: { r2Key: string; filename: string }[] },
     ];
     expect(opts.attachments.map((a) => a.r2Key)).toEqual([
-      DEMANDE.pdfDevisSigneR2Key,
+      CLE_EXEMPLAIRE,
       "documents/cgv/CGV-2026-05-01.pdf",
     ]);
     expect(payload["cgvVersionLabel"]).toBe("1 mai 2026");
@@ -120,7 +158,7 @@ describe("envoyerConfirmationCommande", () => {
     )[4] as {
       attachments: { r2Key: string }[];
     };
-    expect(opts.attachments.map((a) => a.r2Key)).toEqual([DEMANDE.pdfDevisSigneR2Key]);
+    expect(opts.attachments.map((a) => a.r2Key)).toEqual([CLE_EXEMPLAIRE]);
   });
   it("aucune version enregistrée : rien joint, aucune version citée", async () => {
     const { d, enfiler, deposer } = deps({ versionCgvAcceptee: async () => null });
@@ -135,7 +173,7 @@ describe("envoyerConfirmationCommande", () => {
   it("INERTE si l'interrupteur formules est éteint et que le devis porte une offre", async () => {
     const { d, enfiler } = deps({
       devis: {
-        id: "dv1",
+        ...BASE,
         numero: "N",
         lignes: [],
         offre: OFFRE,
@@ -148,11 +186,11 @@ describe("envoyerConfirmationCommande", () => {
     });
     expect(enfiler).not.toHaveBeenCalled();
   });
-  it("formules allumées mais aucun choix transmis : rien ne part", async () => {
+  it("formules allumées mais devis sans choix retenu : rien ne part (non_accepte)", async () => {
     const { d, enfiler } = deps({
       formulesActives: async () => true,
       devis: {
-        id: "dv1",
+        ...BASE,
         numero: "N",
         lignes: [],
         offre: OFFRE,
@@ -161,14 +199,14 @@ describe("envoyerConfirmationCommande", () => {
     });
     expect(await envoyerConfirmationCommande(DEMANDE, d)).toEqual({
       envoye: false,
-      raison: "choix_requis",
+      raison: "non_accepte",
     });
     expect(enfiler).not.toHaveBeenCalled();
   });
   it("sans adresse ou devis introuvable : rien ne part", async () => {
     const a = deps({
       devis: {
-        id: "d",
+        ...BASE,
         numero: "N",
         lignes: [],
         offre: null,
@@ -189,6 +227,76 @@ describe("envoyerConfirmationCommande", () => {
       envoye: false,
       raison: "file_indisponible",
     });
+  });
+  it("garée en corbeille : exigerValidation et clientId sont passés, sujet lisible", async () => {
+    const { d, enfiler } = deps();
+    await envoyerConfirmationCommande(DEMANDE, d);
+    const opts = (
+      enfiler.mock.calls[0] as unknown as [string, string, string, unknown, never]
+    )[4] as {
+      exigerValidation: boolean;
+      clientId: string;
+      sujet: string;
+      jobId: string;
+    };
+    expect(opts.exigerValidation).toBe(true);
+    expect(opts.clientId).toBe("cl1");
+    expect(opts.sujet).toContain("AXI-DEV-1");
+    expect(opts.jobId).toBe("devis-commande-confirmation-dv1");
+  });
+  it("devis à formules : le choix se lit sur choixRetenu, payload récurrent et automatisations facultatifs", async () => {
+    const { d, enfiler } = deps({ formulesActives: async () => true, devis: devisFormules() });
+    const r = await envoyerConfirmationCommande(DEMANDE, d);
+    expect(r).toMatchObject({ envoye: true });
+    const payload = (
+      enfiler.mock.calls[0] as unknown as [string, string, string, Record<string, unknown>]
+    )[3];
+    expect(payload["formuleRetenue"]).toBe("Abonnement");
+    expect(payload["automatisationsRetenues"]).toEqual(expect.any(Array));
+    expect(payload["recurrent"]).toEqual([expect.stringContaining("Abonnement")]);
+  });
+  it("devis à formules au statut envoyé : refus non_accepte, rien ne part", async () => {
+    const { d, enfiler } = deps({
+      formulesActives: async () => true,
+      devis: devisFormules({ statut: "envoye" }),
+    });
+    expect(await envoyerConfirmationCommande(DEMANDE, d)).toEqual({
+      envoye: false,
+      raison: "non_accepte",
+    });
+    expect(enfiler).not.toHaveBeenCalled();
+  });
+  it("exemplaire signé absent : refus exemplaire_absent", async () => {
+    const { d, enfiler } = deps({
+      devis: {
+        ...BASE,
+        exemplaireSigneKey: null,
+        lignes: [],
+        offre: null,
+        client: { raisonSociale: "A", contactEmail: "a@a.fr" },
+      },
+    });
+    expect(await envoyerConfirmationCommande(DEMANDE, d)).toEqual({
+      envoye: false,
+      raison: "exemplaire_absent",
+    });
+    expect(enfiler).not.toHaveBeenCalled();
+  });
+  it("job déjà gardé ou journalisé : refus deja_envoyee", async () => {
+    const { d, enfiler } = deps({ dejaEnvoyee: async () => true });
+    expect(await envoyerConfirmationCommande(DEMANDE, d)).toEqual({
+      envoye: false,
+      raison: "deja_envoyee",
+    });
+    expect(enfiler).not.toHaveBeenCalled();
+  });
+  it("base muette : refus etat_inconnu, aucun envoi", async () => {
+    const { d, enfiler } = deps({ dejaEnvoyee: async () => null });
+    expect(await envoyerConfirmationCommande(DEMANDE, d)).toEqual({
+      envoye: false,
+      raison: "etat_inconnu",
+    });
+    expect(enfiler).not.toHaveBeenCalled();
   });
   it("jamais déclenchée hors de l'action explicite : aucun cron/webhook/worker ne l'importe", async () => {
     const { execSync } = await import("node:child_process");
