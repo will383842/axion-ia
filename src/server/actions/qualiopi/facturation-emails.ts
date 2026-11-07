@@ -30,6 +30,7 @@ import {
   formulesDepuisMetadata,
   payloadDevisEnvoi,
 } from "@/server/qualiopi/devis/email-devis-envoi";
+import { formulesActives } from "@/server/qualiopi/devis/interrupteur-formules";
 import { preparerEnvoiFactureEmail } from "@/server/qualiopi/financements/facture-envoi-email";
 
 const eur = (cents: number): string =>
@@ -78,6 +79,15 @@ export async function envoyerDevisEmailAction(
     },
   });
   if (!devis) return { error: "Devis introuvable." };
+  // Devis à formules : échec FERMÉ si l'interrupteur est éteint. Sinon un renvoi émettrait un
+  // nouveau lien (qui révoque l'ancien) et enverrait un e-mail dont le lien serait refusé à la
+  // signature. `offre` est un champ scalaire, déjà lu par `include`.
+  if (devis.offre !== null && devis.offre !== undefined && !(await formulesActives())) {
+    return {
+      error:
+        "Ce devis à formules ne peut pas être renvoyé tant que les devis à formules sont désactivés dans la configuration.",
+    };
+  }
   const pieceEnvoyee =
     devis.documentGenereId !== null
       ? await prisma.documentGenere.findUnique({

@@ -21,9 +21,11 @@ export interface EntreePayloadDevisEnvoi {
 export function payloadDevisEnvoi(e: EntreePayloadDevisEnvoi): Record<string, unknown> {
   const nb = e.formules?.formules.length ?? 0;
   const deuxFormules = nb >= 2;
-  // Deux formules : le total du devis est 0 tant que le client n'a pas choisi — afficher
-  // « 0,00 € HT » dans l'e-mail serait faux. Aucun montant n'est alors annoncé.
-  const annonceMontant = !deuxFormules && e.montantTotalHtCents > 0;
+  // Devis à formules (une OU plusieurs) : le total du devis ne dit pas ce que le client paiera.
+  // À deux formules il vaut 0 ; à UNE formule abonnement il ne couvre que la mise en service et
+  // sous-annoncerait le prix. Aucun montant unique n'est donc jamais annoncé dès que `formules`
+  // est présent.
+  const annonceMontant = e.formules === undefined && e.montantTotalHtCents > 0;
   return {
     clientNom: e.clientNom,
     numero: e.numero,

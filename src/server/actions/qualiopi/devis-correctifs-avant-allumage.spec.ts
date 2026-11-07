@@ -26,7 +26,8 @@ vi.mock("@/server/qualiopi/devis/interrupteur-formules", () => ({
 }));
 vi.mock("@/server/actions/qualiopi/documents", () => ({ genererConventionAction: vi.fn() }));
 const lireContexte = vi.fn();
-vi.mock("@/server/qualiopi/documents/donnees-pdf-devis", () => ({
+vi.mock("@/server/qualiopi/documents/donnees-pdf-devis", async (importOriginal) => ({
+  ...(await importOriginal<typeof import("@/server/qualiopi/documents/donnees-pdf-devis")>()),
   lireContextePdfDevis: (...a: unknown[]) => lireContexte(...a),
   donneesPdfDevis: vi.fn(() => {
     throw new Error("interception du test");

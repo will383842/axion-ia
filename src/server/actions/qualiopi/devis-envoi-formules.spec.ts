@@ -177,6 +177,99 @@ describe("sendDevisAction — devis à formules", () => {
   });
 });
 
+/** Offre abonnement seul, mise en service à 0 € : le total est 0, seules les périodes comptent. */
+function offreAboSeul(periodes: { mois: number; remiseBps: number }[]) {
+  const o = offreFictive();
+  const { achat: _a, ...reste } = o;
+  return {
+    ...reste,
+    formulesProposees: ["abonnement"],
+    abonnement: {
+      ...o.abonnement!,
+      miseEnServiceLignes: [
+        { libelle: "Mise en service offerte", quantite: 1, prixHtCents: 0, tauxTvaBps: 2000 },
+      ],
+      periodes,
+    },
+  };
+}
+
+describe("sendDevisAction — devis à formules : gardes complémentaires", () => {
+  it("lien de signature non créé : refus avant la transaction, aucun e-mail", async () => {
+    creerToken.mockRejectedValue(new Error("panne"));
+    const r = await sendDevisAction(ID);
+    expect("error" in r).toBe(true);
+    if ("error" in r) expect(r.error).toContain("lien de signature");
+    expect(transaction).not.toHaveBeenCalled();
+    expect(enqueueEmail).not.toHaveBeenCalled();
+  });
+
+  it("sans e-mail de contact : refus avant tout rendu", async () => {
+    const d0 = devis();
+    findUnique.mockResolvedValue({ ...d0, client: { ...d0.client, contactEmail: null } });
+    const r = await sendDevisAction(ID);
+    expect("error" in r).toBe(true);
+    expect(generateDocument).not.toHaveBeenCalled();
+    expect(transaction).not.toHaveBeenCalled();
+    expect(enqueueEmail).not.toHaveBeenCalled();
+  });
+
+  it("formules absentes du PDF (interrupteur éteint à la 2e lecture) : refus", async () => {
+    formulesActives.mockReset();
+    formulesActives.mockResolvedValueOnce(true).mockResolvedValue(false);
+    const r = await sendDevisAction(ID);
+    expect("error" in r).toBe(true);
+    if ("error" in r) expect(r.error).toContain("n'ont pas pu être construites");
+    expect(generateDocument).not.toHaveBeenCalled();
+    expect(transaction).not.toHaveBeenCalled();
+  });
+
+  it("rendu PDF en échec : message dédié « n'a pas pu être généré »", async () => {
+    generateDocument.mockRejectedValue(new Error("rendu KO"));
+    const r = await sendDevisAction(ID);
+    if ("error" in r) expect(r.error).toContain("n'a pas pu être généré");
+    else throw new Error("refus attendu");
+  });
+
+  it("pièce sans identifiant : message dédié « Aucune pièce à signer »", async () => {
+    generateDocument.mockResolvedValue({ id: null, numero: "AXI-DEV-2026-001" });
+    const r = await sendDevisAction(ID);
+    if ("error" in r) expect(r.error).toContain("Aucune pièce à signer");
+    else throw new Error("refus attendu");
+  });
+
+  it("offre illisible : le message de l'offre remonte, pas « PDF non généré »", async () => {
+    findUnique.mockResolvedValue(devis({ offre: { v: 99 } }));
+    const r = await sendDevisAction(ID);
+    if ("error" in r) {
+      expect(r.error).toContain("Offre du devis invalide");
+      expect(r.error).not.toContain("PDF");
+    } else throw new Error("refus attendu");
+    expect(transaction).not.toHaveBeenCalled();
+  });
+
+  it("remise 100 % : une période à 0 €/mois parmi des périodes payantes est refusée", async () => {
+    findUnique.mockResolvedValue(
+      devis({
+        offre: offreAboSeul([
+          { mois: 1, remiseBps: 10000 },
+          { mois: 12, remiseBps: 0 },
+        ]),
+      }),
+    );
+    const r = await sendDevisAction(ID);
+    expect("error" in r).toBe(true);
+    expect(generateDocument).not.toHaveBeenCalled();
+    expect(transaction).not.toHaveBeenCalled();
+  });
+
+  it("total 0 et toutes périodes payantes : l'envoi passe", async () => {
+    findUnique.mockResolvedValue(devis({ offre: offreAboSeul([{ mois: 12, remiseBps: 0 }]) }));
+    const r = await sendDevisAction(ID);
+    expect("data" in r).toBe(true);
+  });
+});
+
 describe("sendDevisAction — devis classique (inchangé)", () => {
   it("à 0,00 € HT : refus", async () => {
     findUnique.mockResolvedValue(devis({ offre: null, montantTotalHtCents: 0 }));

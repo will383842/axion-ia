@@ -62,6 +62,7 @@ import type { VueFormules } from "@/server/qualiopi/devis/vue-formules";
 import {
   donneesPdfDevis,
   lireContextePdfDevis,
+  OffreDevisInvalideError,
 } from "@/server/qualiopi/documents/donnees-pdf-devis";
 import { publicUrl } from "@/lib/public-url";
 import {
@@ -484,6 +485,15 @@ export async function sendDevisAction(
     };
   }
 
+  // Devis à formules : sans e-mail de contact, pas de lien de signature, donc pas de choix de
+  // formule possible. Refus avant tout rendu.
+  if (aFormules && !devis.client.contactEmail) {
+    return {
+      error:
+        "Aucun email de contact client : un devis à formules ne peut pas être envoyé sans lien de signature (le client y choisit sa formule).",
+    };
+  }
+
   // ── 1. Génération du PDF (fail-soft : un rendu raté ne bloque pas l'envoi) ──
   let fichierPdfUrl: string | null = null;
   /**
@@ -508,16 +518,19 @@ export async function sendDevisAction(
       if (data.formules === undefined) {
         return { error: "Les formules du devis n'ont pas pu être construites : envoi refusé." };
       }
-      // Une formule à 0 € HT sans aucune mensualité est une offre ferme à zéro euro.
-      const formuleVide = data.formules.formules.some(
-        (f) =>
-          f.totalHtCents <= 0 &&
-          !(f.abonnement?.periodes ?? []).some((p) => p.mensuelNetHtCents > 0),
-      );
+      // Remise 100 % — règle : une formule dont le TOTAL est <= 0 est refusée si l'abonnement
+      // n'a aucune période, OU si UNE SEULE période a une mensualité nette <= 0. Le client
+      // choisit sa période : une période à 0 €/mois (ex. [{1 mois, remise 100 %}, {12 mois, 0}])
+      // est un engagement ferme à zéro euro, même si une autre période est payante.
+      const formuleVide = data.formules.formules.some((f) => {
+        if (f.totalHtCents > 0) return false;
+        const periodes = f.abonnement?.periodes ?? [];
+        return periodes.length === 0 || periodes.some((p) => p.mensuelNetHtCents <= 0);
+      });
       if (formuleVide) {
         return {
           error:
-            "Une formule du devis est à 0,00 € HT sans mensualité : chiffrez-la avant l'envoi.",
+            "Une formule du devis est à 0,00 € HT sans mensualité (ou avec une période à 0 €/mois) : chiffrez-la avant l'envoi.",
         };
       }
     }
@@ -535,6 +548,8 @@ export async function sendDevisAction(
     documentGenereId = doc.id;
   } catch (err) {
     console.warn("[sendDevisAction] génération PDF devis échouée", err);
+    // Offre illisible : le message dit QUOI corriger, pas « PDF non généré ».
+    if (err instanceof OffreDevisInvalideError) return { error: err.message };
     // Devis à formules : sans PDF, pas de pièce ni de lien de signature à envoyer. Le devis
     // reste en brouillon, rien n'est écrit, aucun e-mail ne part. (Devis classique : fail-soft.)
     if (aFormules) {
@@ -626,6 +641,15 @@ export async function sendDevisAction(
     }
   }
   const signatureCreee = signatureUrl !== null;
+  // Devis à formules : le choix de la formule passe PAR ce lien. Jamais « envoyé » sans lien
+  // (ni destinataire) : refus avant la transaction, aucun e-mail.
+  if (aFormules && !signatureCreee) {
+    return {
+      error: `Le lien de signature n'a pas pu être créé${
+        signatureErreur !== null ? ` (${signatureErreur})` : ""
+      } : un devis à formules ne peut pas être envoyé sans lien (le client y choisit sa formule). Le devis reste en brouillon.`,
+    };
+  }
 
   // ── 3. Transaction : envoye + statut client + expiration de la version remplacée ──
   // INT-T46-A : une transaction INTERACTIVE (et non plus un tableau), pour que le fait
@@ -736,7 +760,7 @@ export async function sendDevisAction(
   if (signatureAttendue && !signatureCreee) {
     const detail = signatureErreur !== null ? ` (${signatureErreur})` : "";
     const prefixe = note !== undefined ? `${note} ` : "Devis marqué envoyé. ";
-    note = `${prefixe}⚠️ Le lien de signature n'a PAS pu être créé${detail} : le client ne peut pas signer en ligne. Lui faire retourner le PDF signé, ou réviser le devis pour réessayer.`;
+    note = `${prefixe}⚠️ Le lien de signature n'a PAS pu être créé${detail} : le client ne peut pas signer en ligne. ${aFormules ? "Réviser le devis pour réessayer." : "Lui faire retourner le PDF signé, ou réviser le devis pour réessayer."}`;
   }
 
   await logQualiopiActivity({
