@@ -7,30 +7,41 @@
  * aucun montant, aucun document : l'autorité ne peut rien apprendre du devis. Elle répond par un
  * jeton signé qui atteste que cette empreinte existait à l'instant `genTime`.
  *
- * ## Ce que ce module vérifie, et ce qu'il laisse à l'audit
+ * ## Ce que ce module vérifie
  *
- * Vérifié ICI, à la réception : statut accordé (0 ou 1), empreinte du jeton = la nôtre, nonce =
- * le nôtre, `genTime` plausible (±15 min de l'horloge du serveur). La réponse brute (TimeStampResp
- * en DER) est ensuite conservée telle quelle : la signature CMS de l'autorité et sa chaîne de
- * certificats se vérifient hors ligne, par n'importe quel outil standard —
+ * À la FORME (ici, `lireReponse`) : statut accordé (0 ou 1), empreinte du jeton = la nôtre, nonce =
+ * le nôtre, `genTime` plausible (±15 min de l'horloge du serveur).
+ *
+ * À la SIGNATURE (`horodatage-cms.ts`, appelé par `demanderJeton` avant tout `obtenu`) : signature CMS
+ * de l'autorité, usage étendu `timeStamping`, chaîne de certificats jusqu'à une ancre de confiance
+ * (racines de Node + `HORODATAGE_TSA_CA_PEM`). Sans cela, un faux jeton bien formé devenait DÉFINITIF.
+ * Limite assumée, détaillée dans `horodatage-cms.ts` : pas de contrôle de RÉVOCATION (ni CRL ni OCSP).
+ * La réponse brute (TimeStampResp en DER) reste conservée telle quelle pour un audit hors ligne :
  *   `openssl ts -verify -in jeton.tsr -digest <selfHash> -CAfile <ca.pem>`
- * Ce module ne prétend PAS valider la signature de l'autorité : il refuse seulement un jeton qui
- * ne porte manifestement pas sur notre empreinte.
+ *
+ * ## Transport
+ *
+ * HTTPS obligatoire en production (une empreinte seule transite, mais un intermédiaire ne doit pas pouvoir
+ * choisir la réponse). La réponse est lue EN FLUX avec un plafond de taille : jamais de corps complet en
+ * mémoire avant contrôle.
  *
  * Aucune horloge ni E/S cachée : le `fetch` et l'instant sont des paramètres.
  */
 
 import { randomBytes } from "node:crypto";
+import { ErreurSignatureJeton, verifierSignatureJeton } from "./horodatage-cms";
 
 /**
- * Autorité gratuite par défaut (Certum, Pologne — UE) ; surchargeable par `HORODATAGE_TSA_URL`.
- * ⚠️ Changer ce défaut, c'est changer l'entrée « autorité d'horodatage » de `content/subprocessors.ts`
- * (localisation, nom) dans la même PR. Service en http : seule une empreinte SHA-256 y transite.
+ * 🔴 AUCUNE autorité par défaut (audit sécurité). L'ancien défaut (`http://time.certum.pl`) était en clair
+ * et sa signature n'était pas vérifiée. Aucune autorité gratuite proposant HTTPS avec une racine publique
+ * n'a pu être éprouvée de bout en bout : l'horodatage reste COUPÉ (la signature, elle, ne dépend jamais de
+ * lui) tant que `HORODATAGE_TSA_URL` (HTTPS) n'est pas posé. Une autorité à racine privée (FreeTSA…) se
+ * déclare avec `HORODATAGE_TSA_CA_PEM`. Choisir une autorité, c'est aussi corriger l'entrée « autorité
+ * d'horodatage » de `content/subprocessors.ts` (nom, localisation) dans la même PR.
  */
-export const TSA_URL_PAR_DEFAUT = "http://time.certum.pl";
 export const HORODATAGE_TIMEOUT_MS = 8_000;
 const TOLERANCE_HORLOGE_MS = 15 * 60 * 1000;
-const TAILLE_MAX_REPONSE = 64 * 1024;
+export const TAILLE_MAX_REPONSE = 64 * 1024;
 
 /** OID id-sha256 (2.16.840.1.101.3.4.2.1), déjà encodé. */
 const OID_SHA256 = Buffer.from([0x06, 0x09, 0x60, 0x86, 0x48, 0x01, 0x65, 0x03, 0x04, 0x02, 0x01]);
@@ -49,26 +60,35 @@ export class ErreurHorodatage extends Error {
 export interface ConfigurationTsa {
   /** `null` : l'horodatage est coupé (signature possible, jeton jamais demandé). */
   readonly url: string | null;
+  /** Racines supplémentaires (PEM) de `HORODATAGE_TSA_CA_PEM`, pour une autorité à racine privée. */
+  readonly ancresPem: readonly string[];
 }
 
 /**
  * `HORODATAGE_TSA_URL` choisit l'autorité ; `HORODATAGE_DESACTIVE=true` coupe la demande de jeton
- * (les lignes restent « en attente » et reprennent dès la réactivation). Une URL qui n'est pas
- * http(s) est ignorée avec repli sur l'autorité par défaut : jamais de schéma exotique (file://…).
+ * (les lignes restent « en attente » et reprennent dès la réactivation). Variable absente : COUPÉ, pas de
+ * repli. Une URL qui n'est pas https est refusée (coupé) en production ; hors production, http est toléré
+ * (autorité locale de test). Jamais de schéma exotique (file://…).
  */
 export function configurationTsa(
   env: Readonly<Record<string, string | undefined>>,
 ): ConfigurationTsa {
-  if (env["HORODATAGE_DESACTIVE"] === "true") return { url: null };
+  const pem = (env["HORODATAGE_TSA_CA_PEM"] ?? "").trim();
+  const ancresPem = pem === "" ? [] : [pem];
+  const coupe: ConfigurationTsa = { url: null, ancresPem };
+  if (env["HORODATAGE_DESACTIVE"] === "true") return coupe;
   const brut = (env["HORODATAGE_TSA_URL"] ?? "").trim();
-  if (brut === "") return { url: TSA_URL_PAR_DEFAUT };
+  if (brut === "") return coupe;
   try {
     const u = new URL(brut);
-    if (u.protocol === "https:" || u.protocol === "http:") return { url: u.toString() };
+    if (u.protocol === "https:") return { url: u.toString(), ancresPem };
+    if (u.protocol === "http:" && env["NODE_ENV"] !== "production") {
+      return { url: u.toString(), ancresPem };
+    }
   } catch {
-    // retombe sur le défaut
+    // illisible : coupé
   }
-  return { url: TSA_URL_PAR_DEFAUT };
+  return coupe;
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -243,9 +263,44 @@ export interface JetonObtenu {
 
 type Fetcher = (url: string, init: RequestInit) => Promise<Response>;
 
+export type VerificateurSignature = (entrees: {
+  readonly reponse: Buffer;
+  readonly genTime: Date;
+  readonly ancresPem?: readonly string[];
+}) => void;
+
+/** Lit le corps EN FLUX et s'arrête au plafond : jamais d'`arrayBuffer` complet d'un corps non borné. */
+async function lireCorpsPlafonne(res: Response): Promise<Buffer> {
+  const annonce = Number(res.headers.get("content-length") ?? "");
+  if (Number.isFinite(annonce) && annonce > TAILLE_MAX_REPONSE) {
+    throw new ErreurHorodatage("taille de réponse inattendue");
+  }
+  if (res.body === null) throw new ErreurHorodatage("taille de réponse inattendue");
+  const lecteur = res.body.getReader();
+  const morceaux: Buffer[] = [];
+  let total = 0;
+  try {
+    for (;;) {
+      const { done, value } = await lecteur.read();
+      if (done) break;
+      total += value.byteLength;
+      if (total > TAILLE_MAX_REPONSE) {
+        throw new ErreurHorodatage("taille de réponse inattendue");
+      }
+      morceaux.push(Buffer.from(value));
+    }
+  } catch (err) {
+    await lecteur.cancel().catch(() => undefined);
+    if (err instanceof ErreurHorodatage) throw err;
+    throw new ErreurHorodatage("autorité injoignable");
+  }
+  return Buffer.concat(morceaux, total);
+}
+
 /**
  * Demande un jeton pour une empreinte. LÈVE (`ErreurHorodatage`) sur toute indisponibilité :
  * c'est l'appelant qui décide de réessayer — la signature, elle, n'en dépend jamais.
+ * Le jeton n'est rendu QUE si sa signature CMS se vérifie (`verifier`, par défaut `verifierSignatureJeton`).
  */
 export async function demanderJeton(input: {
   readonly empreinteHex: string;
@@ -253,7 +308,17 @@ export async function demanderJeton(input: {
   readonly maintenant: Date;
   readonly fetcher?: Fetcher;
   readonly nonce?: Buffer;
+  /** Ancres de confiance supplémentaires (PEM). */
+  readonly ancresPem?: readonly string[];
+  /** Remplace la vérification de signature (tests uniquement). */
+  readonly verifier?: VerificateurSignature;
+  /** Défaut : `NODE_ENV === "production"`. */
+  readonly production?: boolean;
 }): Promise<JetonObtenu> {
+  const production = input.production ?? process.env["NODE_ENV"] === "production";
+  if (production && !input.url.toLowerCase().startsWith("https://")) {
+    throw new ErreurHorodatage("autorité : HTTPS obligatoire en production");
+  }
   const nonce = input.nonce ?? randomBytes(8);
   const corps = construireRequete(input.empreinteHex, nonce);
   const fetcher: Fetcher = input.fetcher ?? ((u, i) => fetch(u, i));
@@ -274,7 +339,18 @@ export async function demanderJeton(input: {
     throw new ErreurHorodatage("autorité injoignable");
   }
   if (!res.ok) throw new ErreurHorodatage(`autorité : HTTP ${res.status}`);
-  const brut = Buffer.from(await res.arrayBuffer());
+  const brut = await lireCorpsPlafonne(res);
   const { genTime } = lireReponse(brut, input.empreinteHex, nonce, input.maintenant);
+  try {
+    (input.verifier ?? verifierSignatureJeton)({
+      reponse: brut,
+      genTime,
+      ...(input.ancresPem === undefined ? {} : { ancresPem: input.ancresPem }),
+    });
+  } catch (err) {
+    // Le motif précis (nos propres messages, sans donnée réseau) aide l'exploitation ; tout autre texte non.
+    const motif = err instanceof ErreurSignatureJeton ? ` : ${err.message}` : "";
+    throw new ErreurHorodatage(`signature de l'autorité non vérifiée${motif}`.slice(0, 200));
+  }
   return { jeton: brut, genTime, autorite: input.url.slice(0, 300) };
 }

@@ -281,11 +281,13 @@ export const SUBPROCESSORS: ReadonlyArray<Subprocessor> = [
   {
     // Lot 4 bis (2026-11-07) — horodatage RFC 3161 des signatures de devis. Service GRATUIT : aucun
     // contrat payant, aucun compte. Ce qui part : UNE empreinte SHA-256 (64 caractères) et un nombre
-    // aléatoire — ni nom, ni adresse, ni montant. L'autorité est CONFIGURABLE (`HORODATAGE_TSA_URL`) ;
-    // si Will en choisit une autre, cette entrée et sa localisation sont à corriger dans la même PR.
-    name: "Certum (Asseco Data Systems S.A.) — autorité d'horodatage RFC 3161, service gratuit",
-    location: "Szczecin, Pologne (UE)",
-    serversLocation: "Pologne (UE), selon l'autorité configurée",
+    // aléatoire — ni nom, ni adresse, ni montant. L'autorité est CONFIGURABLE (`HORODATAGE_TSA_URL`, HTTPS
+    // obligatoire en production) et il n'y en a AUCUNE par défaut (audit sécurité, 2026-11-07) : l'horodatage
+    // reste coupé tant que l'exploitant n'en a pas choisi une. Au choix, cette entrée (nom, localisation,
+    // cadre de transfert) est à compléter dans la même PR, et le statut à repasser à « active ».
+    name: "Autorité d'horodatage RFC 3161 (service gratuit, à désigner)",
+    location: "À préciser à la désignation de l'autorité",
+    serversLocation: "À préciser à la désignation de l'autorité",
     purposeFr:
       "Horodatage certifié (norme RFC 3161) du sceau d'une signature de devis : l'autorité atteste que l'empreinte du sceau existait à l'instant indiqué. Service public gratuit, sans contrat. Si l'autorité est injoignable, la signature reste valable et le jeton est redemandé plus tard.",
     purposeEn:
@@ -298,8 +300,7 @@ export const SUBPROCESSORS: ReadonlyArray<Subprocessor> = [
     dpaStatus: "not_required",
     transferFramework: "intra_eu",
     category: "payments",
-    activationStatus: "active",
-    documentationUrl: "https://www.certum.eu",
+    activationStatus: "pending_activation",
   },
   // ───────────────────────────── communications & géo
   {

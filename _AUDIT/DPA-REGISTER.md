@@ -30,7 +30,7 @@ de traitement) côté sous-processeurs. Révision trimestrielle minimum.
 | 13  | OSM Foundation (Nominatim) | Géocodage villes saisies             | UK + UE                 | NA     | Décision d'adéquation UE   | ✅ usage public |
 | 14  | DocuSeal (self-hosted)     | **Actif : contrats d'apporteurs.** Devis : usage historique (un seul devis, avant le 30/07/2026, conservé) | Allemagne (VPS Hetzner) | NA     | UE intra-zone              | ✅ self-hosted  |
 | 14b | Signature maison Axion-IA (procédé interne) | Signature électronique maison (IP hachée, image de signature, identité, empreinte) | Hetzner (DB) + Cloudflare R2 | NA | UE intra-zone | ✅ interne |
-| 14c | Certum (Asseco Data Systems S.A.) — autorité d'horodatage RFC 3161 (gratuit, configurable) | Horodatage du sceau d'une signature de devis : **empreinte SHA-256 seule** | Pologne (UE) | NA — aucune donnée personnelle | UE intra-zone | ✅ sans objet (voir §7octies) |
+| 14c | Autorité d'horodatage RFC 3161 (gratuit, à désigner ; aucune par défaut) | Horodatage du sceau d'une signature de devis : **empreinte SHA-256 seule** | À préciser à la désignation | NA — aucune donnée personnelle | À préciser | ✅ sans objet (voir §7octies) |
 | 15  | Microsoft Corporation      | Clarity analytics qualitatifs UX     | États-Unis (Azure)      | online | SCC + EU-US DPF            | 🟡 à signer     |
 | 16  | Calendly LLC               | Prise de RDV /appel + capture event  | États-Unis (AWS)        | accepté | SCC                       | ✅ DPA accepté 2026-08-28 |
 | 17  | Zoho Corporation (ZeptoMail) | Relais SMTP transactionnel — TOUS les e-mails sortants | Union européenne (`smtp.zeptomail.eu`) | signé | UE intra-zone | ✅ DPA signé |
@@ -514,14 +514,14 @@ de traitement) côté sous-processeurs. Révision trimestrielle minimum.
 ---
 
 
-## 7octies. Autorité d'horodatage RFC 3161 (Certum — Asseco Data Systems S.A.) — lot 4 bis, 2026-11-07
+## 7octies. Autorité d'horodatage RFC 3161 (à désigner — aucune par défaut) — lot 4 bis, 2026-11-07
 
 | Champ                | Valeur                                                                                                     |
 | -------------------- | ---------------------------------------------------------------------------------------------------------- |
 | **Nature**           | Service public GRATUIT d'horodatage (norme RFC 3161) : aucun compte, aucun contrat, aucun paiement        |
 | **Finalité**         | Horodater le sceau de la signature d'un devis (preuve que l'empreinte existait à l'instant du jeton)       |
 | **Données traitées** | **Une empreinte SHA-256** (64 hexadécimaux, non réversible) et un nombre aléatoire. Ni nom, ni e-mail, ni montant, ni document. |
-| **Localisation**     | Pologne (UE), selon l'autorité configurée (`HORODATAGE_TSA_URL`, défaut `http://time.certum.pl`)           |
+| **Localisation**     | Selon l'autorité désignée (`HORODATAGE_TSA_URL`, HTTPS en production) ; AUCUNE par défaut depuis l'audit sécurité du 2026-11-07 — horodatage coupé tant qu'elle n'est pas choisie           |
 | **Sous-traitant ?**  | Non au sens de l'art. 28 RGPD : aucune donnée personnelle ne lui est confiée. Déclaré en transparence.     |
 | **Dégradation**      | Autorité injoignable : la signature reste valable, le jeton est redemandé par le worker (sans plafond d'essais) |
 | **Si l'autorité change** | Corriger CETTE section, l'entrée de `src/content/subprocessors.ts` et `TSA_URL_PAR_DEFAUT` dans la même PR |

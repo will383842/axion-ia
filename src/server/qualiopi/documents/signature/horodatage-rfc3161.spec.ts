@@ -6,7 +6,7 @@ import {
   ErreurHorodatage,
   lireGeneralizedTime,
   lireReponse,
-  TSA_URL_PAR_DEFAUT,
+  TAILLE_MAX_REPONSE,
 } from "./horodatage-rfc3161";
 
 const EMPREINTE = "ab".repeat(32);
@@ -165,6 +165,7 @@ describe("horodatage RFC 3161 : demande", () => {
       maintenant: MAINTENANT,
       fetcher,
       nonce: NONCE,
+      verifier: () => undefined,
     });
     expect(r.autorite).toBe("https://tsa.exemple.test/tsr");
     expect(r.jeton.equals(reponse({}))).toBe(true);
@@ -189,6 +190,100 @@ describe("horodatage RFC 3161 : demande", () => {
         fetcher: async () => new Response("no", { status: 503 }),
       }),
     ).rejects.toThrow(/HTTP 503/);
+  });
+});
+
+describe("horodatage RFC 3161 : demande — audit sécurité", () => {
+  const base = {
+    empreinteHex: EMPREINTE,
+    maintenant: MAINTENANT,
+    nonce: NONCE,
+  };
+
+  it("🔴 un jeton bien formé mais NON SIGNÉ par une autorité de confiance n'est jamais accepté", async () => {
+    // `reponse({})` est une TimeStampResp parfaitement formée... sans certificat ni signature valable.
+    await expect(
+      demanderJeton({
+        ...base,
+        url: "https://tsa.exemple.test/tsr",
+        fetcher: async () => new Response(new Uint8Array(reponse({})), { status: 200 }),
+      }),
+    ).rejects.toThrow(ErreurHorodatage);
+  });
+
+  it("le vérificateur de signature reçoit la réponse brute et l'instant du jeton", async () => {
+    const verifier = vi.fn();
+    await demanderJeton({
+      ...base,
+      url: "https://tsa.exemple.test/tsr",
+      ancresPem: ["PEM"],
+      verifier,
+      fetcher: async () => new Response(new Uint8Array(reponse({})), { status: 200 }),
+    });
+    expect(verifier).toHaveBeenCalledWith(
+      expect.objectContaining({
+        reponse: reponse({}),
+        genTime: new Date("2026-11-07T10:00:05.000Z"),
+        ancresPem: ["PEM"],
+      }),
+    );
+  });
+
+  it("un vérificateur qui refuse fait échouer la demande, sans détail", async () => {
+    await expect(
+      demanderJeton({
+        ...base,
+        url: "https://tsa.exemple.test/tsr",
+        verifier: () => {
+          throw new Error("détail interne");
+        },
+        fetcher: async () => new Response(new Uint8Array(reponse({})), { status: 200 }),
+      }),
+    ).rejects.toThrow(/signature de l'autorité/);
+  });
+
+  it("🔴 refuse une URL non HTTPS en production, sans même ouvrir de connexion", async () => {
+    const fetcher = vi.fn();
+    await expect(
+      demanderJeton({ ...base, url: "http://time.exemple.test", production: true, fetcher }),
+    ).rejects.toThrow(/HTTPS/);
+    expect(fetcher).not.toHaveBeenCalled();
+  });
+
+  it("🔴 la réponse est lue en flux avec un plafond : jamais d'arrayBuffer complet d'un corps géant", async () => {
+    const arrayBuffer = vi.fn();
+    let lus = 0;
+    const flux = new ReadableStream<Uint8Array>({
+      pull(c) {
+        lus += 16 * 1024;
+        c.enqueue(new Uint8Array(16 * 1024));
+        if (lus > 10 * 1024 * 1024) c.close();
+      },
+    });
+    const res = Object.assign(new Response(flux, { status: 200 }), { arrayBuffer });
+    await expect(
+      demanderJeton({
+        ...base,
+        url: "https://tsa.exemple.test/tsr",
+        verifier: () => undefined,
+        fetcher: async () => res,
+      }),
+    ).rejects.toThrow(/taille/);
+    expect(arrayBuffer).not.toHaveBeenCalled();
+    // Lecture interrompue peu après le plafond, pas à 10 Mio.
+    expect(lus).toBeLessThanOrEqual(TAILLE_MAX_REPONSE + 3 * 16 * 1024);
+  });
+
+  it("un Content-Length annoncé au-dessus du plafond est refusé avant toute lecture", async () => {
+    await expect(
+      demanderJeton({
+        ...base,
+        url: "https://tsa.exemple.test/tsr",
+        verifier: () => undefined,
+        fetcher: async () =>
+          new Response("x", { status: 200, headers: { "Content-Length": "9999999" } }),
+      }),
+    ).rejects.toThrow(/taille/);
   });
 });
 
@@ -223,18 +318,40 @@ describe("horodatage RFC 3161 : réponse réelle", () => {
 });
 
 describe("horodatage RFC 3161 : configuration", () => {
-  it("défaut gratuit, surcharge par variable, coupure explicite", () => {
-    expect(configurationTsa({}).url).toBe(TSA_URL_PAR_DEFAUT);
+  it("🔴 aucune autorité par défaut : l'horodatage est coupé tant que rien n'est configuré", () => {
+    expect(configurationTsa({}).url).toBeNull();
+    expect(configurationTsa({ NODE_ENV: "production" }).url).toBeNull();
+  });
+
+  it("surcharge par variable en HTTPS, coupure explicite", () => {
     expect(configurationTsa({ HORODATAGE_TSA_URL: "https://autre.test/tsr" }).url).toBe(
       "https://autre.test/tsr",
     );
-    expect(configurationTsa({ HORODATAGE_DESACTIVE: "true" }).url).toBeNull();
+    expect(
+      configurationTsa({
+        HORODATAGE_TSA_URL: "https://autre.test/tsr",
+        HORODATAGE_DESACTIVE: "true",
+      }).url,
+    ).toBeNull();
   });
 
-  it("ignore un schéma exotique", () => {
-    expect(configurationTsa({ HORODATAGE_TSA_URL: "file:///etc/passwd" }).url).toBe(
-      TSA_URL_PAR_DEFAUT,
-    );
-    expect(configurationTsa({ HORODATAGE_TSA_URL: "pas une url" }).url).toBe(TSA_URL_PAR_DEFAUT);
+  it("🔴 refuse toute URL non HTTPS en production, l'accepte hors production", () => {
+    const http = "http://time.exemple.test/tsr";
+    expect(configurationTsa({ HORODATAGE_TSA_URL: http, NODE_ENV: "production" }).url).toBeNull();
+    expect(configurationTsa({ HORODATAGE_TSA_URL: http, NODE_ENV: "development" }).url).toBe(http);
+  });
+
+  it("ignore un schéma exotique ou une URL illisible (coupé, jamais de repli)", () => {
+    expect(configurationTsa({ HORODATAGE_TSA_URL: "file:///etc/passwd" }).url).toBeNull();
+    expect(configurationTsa({ HORODATAGE_TSA_URL: "pas une url" }).url).toBeNull();
+  });
+
+  it("transmet les ancres de confiance de HORODATAGE_TSA_CA_PEM", () => {
+    const pem = "-----BEGIN CERTIFICATE-----\nAAA\n-----END CERTIFICATE-----";
+    expect(
+      configurationTsa({ HORODATAGE_TSA_URL: "https://a.test/tsr", HORODATAGE_TSA_CA_PEM: pem })
+        .ancresPem,
+    ).toEqual([pem]);
+    expect(configurationTsa({ HORODATAGE_TSA_URL: "https://a.test/tsr" }).ancresPem).toEqual([]);
   });
 });

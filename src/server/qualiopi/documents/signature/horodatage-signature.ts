@@ -43,6 +43,8 @@ export interface OptionsHorodatage {
   readonly maintenant?: Date;
   readonly env?: Readonly<Record<string, string | undefined>>;
   readonly fetcher?: Fetcher;
+  /** Remplace la vérification de signature du jeton (tests uniquement). */
+  readonly verifier?: NonNullable<Parameters<typeof demanderJeton>[0]["verifier"]>;
 }
 
 function messageSur(err: unknown): string {
@@ -57,7 +59,7 @@ export async function horodaterLigne(
 ): Promise<IssueHorodatage> {
   const maintenant = options.maintenant ?? new Date();
   try {
-    const { url } = configurationTsa(options.env ?? process.env);
+    const { url, ancresPem } = configurationTsa(options.env ?? process.env);
     if (url === null) return "coupe";
 
     // Bail : seule la requête qui gagne cette écriture demande un jeton.
@@ -83,6 +85,8 @@ export async function horodaterLigne(
         empreinteHex: ligne.empreinteSha256,
         url,
         maintenant,
+        ancresPem,
+        ...(options.verifier === undefined ? {} : { verifier: options.verifier }),
         ...(options.fetcher === undefined ? {} : { fetcher: options.fetcher }),
       });
     } catch (err) {
