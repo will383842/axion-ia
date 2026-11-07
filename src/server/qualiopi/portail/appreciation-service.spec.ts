@@ -21,6 +21,12 @@ vi.mock("@/lib/prisma", () => ({
   },
 }));
 
+const horsPreuve = vi.hoisted(() => ({ lire: vi.fn() }));
+vi.mock("../appreciations/hors-preuve", async (importOriginal) => ({
+  ...(await importOriginal<typeof import("../appreciations/hors-preuve")>()),
+  lireAppreciationsHorsPreuve: horsPreuve.lire,
+}));
+
 import { prisma } from "@/lib/prisma";
 import { creerAppreciation, listAppreciations, statsAppreciations } from "./appreciation-service";
 
@@ -220,7 +226,34 @@ describe("listAppreciations", () => {
 // ─────────────────────────────────────────────────────────────────────────────
 
 describe("statsAppreciations", () => {
-  beforeEach(() => vi.clearAllMocks());
+  beforeEach(() => {
+    vi.clearAllMocks();
+    horsPreuve.lire.mockResolvedValue(new Set<string>());
+  });
+
+  it("rien de marqué : requêtes sans filtre d'essai (identiques à avant)", async () => {
+    mockPrisma.appreciation.aggregate.mockResolvedValue({
+      _count: { _all: 0 },
+      _avg: { note: null },
+    });
+    mockPrisma.appreciation.groupBy.mockResolvedValue([]);
+    await statsAppreciations();
+    expect(mockPrisma.appreciation.aggregate.mock.calls[0]![0]).not.toHaveProperty("where");
+    expect(mockPrisma.appreciation.groupBy.mock.calls[0]![0]).not.toHaveProperty("where");
+  });
+
+  it("les essais marqués « hors preuve » sont écartés du total ET de chaque source", async () => {
+    horsPreuve.lire.mockResolvedValue(new Set(["essai-1", "essai-2"]));
+    mockPrisma.appreciation.aggregate.mockResolvedValue({
+      _count: { _all: 0 },
+      _avg: { note: null },
+    });
+    mockPrisma.appreciation.groupBy.mockResolvedValue([]);
+    await statsAppreciations();
+    const filtre = { where: { id: { notIn: ["essai-1", "essai-2"] } } };
+    expect(mockPrisma.appreciation.aggregate).toHaveBeenCalledWith(expect.objectContaining(filtre));
+    expect(mockPrisma.appreciation.groupBy).toHaveBeenCalledWith(expect.objectContaining(filtre));
+  });
 
   it("retourne global count + moyenne par source", async () => {
     mockPrisma.appreciation.aggregate.mockResolvedValue({

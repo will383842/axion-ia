@@ -41,7 +41,11 @@ import { whereReseauHandicapActif } from "../conformite/conformite-service";
 import { lirePedagogie } from "../pedagogie/interrupteur";
 import { formateursDeLaSession } from "../appreciations/formateurs-de-la-session";
 import { lireAppreciationsHorsPreuve } from "../appreciations/hors-preuve";
-import { LOT_VOYANTS } from "./voyants-indicateurs";
+import {
+  DELAI_APRES_SESSION_JOURS,
+  DELAI_AUTRES_PARTIES_JOURS,
+  LOT_VOYANTS,
+} from "./voyants-indicateurs";
 import type {
   AutresPartiesAppreciations,
   TraceAdaptation,
@@ -353,6 +357,7 @@ async function lireAutresParties(s: SessionALire): Promise<AutresPartiesApprecia
     where: { sessionId: s.id, ...inscriptionsActives(), ...HORS_ESSAI, session: SESSION_REELLE },
     select: {
       id: true,
+      clientId: true,
       financementType: true,
       questionnaires: {
         where: { type: "satisfaction_entreprise" },
@@ -393,6 +398,8 @@ async function lireAutresParties(s: SessionALire): Promise<AutresPartiesApprecia
 
   const questionnaires = inscriptions.flatMap((i) => i.questionnaires);
   const entreprise = {
+    // Particuliers / CPF : ni la session ni aucune inscription n'a de client.
+    concernee: session.clientId !== null || inscriptions.some((i) => i.clientId != null),
     sollicitee: questionnaires
       .map((q) => q.envoyeAt)
       .reduce<Date | null>((m, d) => (d !== null && (m === null || d < m) ? d : m), null),
@@ -425,11 +432,33 @@ async function lireAutresParties(s: SessionALire): Promise<AutresPartiesApprecia
   const tiers: AutresPartiesAppreciations["financeur"]["tiers"] =
     effectifs.some((t) => t !== null && FINANCEMENTS_TIERS.has(t)) ||
     session.opcoSubrogation ||
-    session.opcoStatut !== "non_demande"
+    // Un OPCO qui a REFUSÉ ne finance pas : son avis n'est pas attendu.
+    (session.opcoStatut !== "non_demande" && session.opcoStatut !== "refuse")
       ? "oui"
       : effectifs.some((t) => t === null)
         ? "inconnu"
         : "non";
+  // Un avis rattaché au seul client peut venir d'une AUTRE session du même client :
+  // il ne compte que dans la fenêtre de CETTE session (fin + 37 j, et avant le
+  // début de la session suivante du client).
+  const suivante =
+    session.clientId !== null
+      ? await prisma.trainingSession.findFirst({
+          where: {
+            clientId: session.clientId,
+            id: { not: s.id },
+            dateDebut: { gt: s.dateDebut },
+            ...SESSION_REELLE,
+          },
+          orderBy: { dateDebut: "asc" },
+          select: { dateDebut: true },
+        })
+      : null;
+  const finFenetre = Math.min(
+    s.dateFin.getTime() +
+      (DELAI_AUTRES_PARTIES_JOURS + DELAI_APRES_SESSION_JOURS) * 24 * 60 * 60 * 1000,
+    suivante?.dateDebut.getTime() ?? Number.POSITIVE_INFINITY,
+  );
   const financeur = {
     tiers,
     avis: max(
@@ -440,7 +469,8 @@ async function lireAutresParties(s: SessionALire): Promise<AutresPartiesApprecia
             (dansSession(a) ||
               (session.clientId !== null &&
                 a.clientId === session.clientId &&
-                a.dateAppreciation.getTime() >= s.dateDebut.getTime())),
+                a.dateAppreciation.getTime() >= s.dateDebut.getTime() &&
+                a.dateAppreciation.getTime() <= finFenetre)),
         )
         .map((a) => a.dateAppreciation),
     ),

@@ -65,8 +65,11 @@ const db = prisma as unknown as {
   relanceJournal: { create: ReturnType<typeof vi.fn> };
 };
 
-async function rendu(token: string): Promise<string> {
-  const el = await Page({ params: Promise.resolve({ locale: "fr", token }) });
+async function rendu(token: string, e?: string): Promise<string> {
+  const el = await Page({
+    params: Promise.resolve({ locale: "fr", token }),
+    ...(e !== undefined ? { searchParams: Promise.resolve({ e }) } : {}),
+  });
   return renderToStaticMarkup(el);
 }
 
@@ -106,6 +109,17 @@ describe("page de confirmation de présence", () => {
     h.derniere = "non";
     const html = await rendu(jeton);
     expect(html).toMatch(/pas venir|ne pourrez pas/i);
+  });
+
+  it("?e=aucune_demande : un message clair (la demande n'est pas retrouvée), boutons conservés", async () => {
+    const html = await rendu(jeton, "aucune_demande");
+    expect(html).toMatch(/role="alert"/);
+    expect(html).toMatch(/demande de confirmation/i);
+    expect(html).toContain("Je serai présent(e)");
+  });
+
+  it("sans ?e= : aucun message d'erreur", async () => {
+    expect(await rendu(jeton)).not.toMatch(/role="alert"/);
   });
 
   it("jeton invalide : un message, aucun bouton, aucune écriture", async () => {

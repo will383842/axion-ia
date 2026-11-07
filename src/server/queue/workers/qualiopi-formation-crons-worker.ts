@@ -1996,6 +1996,17 @@ async function handleLiensEmargementJ0(): Promise<void> {
   }
 
   const now = new Date();
+  // Deux dépendances INDÉPENDANTES : la confirmation de présence part même si les liens
+  // d'émargement ou les rappels de demi-journée lèvent (l'erreur de ceux-ci remonte quand
+  // même, pour que le job soit rejoué). Chaque envoi est idempotent (traces).
+  try {
+    await liensEmargementEtRappels(now);
+  } finally {
+    await confirmationsPresence(now);
+  }
+}
+
+async function liensEmargementEtRappels(now: Date): Promise<void> {
   // 🔴 S5 (2026-08-26) — PLUS DE FENÊTRE JOUR UTC (résidu M2). L'ancienne
   // sélection était `dateDebut ∈ [minuit UTC ; minuit+24h[` au SEUL passage de
   // 06:00 : une session créée à 10 h pour l'après-midi — le cas ordinaire, cf.
@@ -2130,11 +2141,15 @@ async function handleLiensEmargementJ0(): Promise<void> {
         `sur ${bilan.sessions} session(s), ${bilan.echecs.length} échec(s)`,
     );
   }
+}
 
-  // QNC NC6 (lot présence) — la confirmation de présence : demande (J-3 à J-1), relance,
-  // information de l'entreprise (J-1). Sans effet si `qualiopi.presence.actif` est éteint.
-  // Dans son PROPRE try/catch : une erreur ici est journalisée et ne casse jamais les rappels
-  // ci-dessus. Aucun job BullMQ de plus : on réutilise ce passage horaire.
+/**
+ * QNC NC6 (lot présence) — la confirmation de présence : demande (J-3 à J-1), relance,
+ * information de l'entreprise (J-1). Sans effet si `qualiopi.presence.actif` est éteint.
+ * Dans son PROPRE try/catch : une erreur ici est journalisée et ne casse jamais le reste.
+ * Aucun job BullMQ de plus : on réutilise le passage horaire des liens d'émargement.
+ */
+async function confirmationsPresence(now: Date): Promise<void> {
   try {
     const { envoyerConfirmationsPresence } =
       await import("@/server/qualiopi/confirmation-presence/envois");
