@@ -24,7 +24,11 @@ import {
   type BarometerSnapshotPayload,
   type SegmentMetric,
 } from "./snapshot";
-import { STUDY_NAME_FR, STUDY_ATTRIBUTION } from "@/content/observatoire/study";
+import {
+  STUDY_NAME_FR,
+  STUDY_ATTRIBUTION,
+  SEUIL_REPONSES_REELLES,
+} from "@/content/observatoire/study";
 import { KB_SECTOR_TAGS } from "@/content/knowledge/sector-tags";
 import { STUDY_REGIONS } from "@/content/observatoire/study";
 
@@ -141,11 +145,14 @@ Règles absolues :
   "recommendations": ["3 à 5 recommandations opérationnelles concrètes pour un dirigeant"]
 }`;
 
-/** Lit l'analyse en cache (ou null). */
+/**
+ * Lit l'analyse en cache (ou null). Lot L3 : une analyse ancrée sur moins de
+ * SEUIL_REPONSES_REELLES réponses n'est jamais publiée (elle reste en base).
+ */
 export async function readLatestAnalysis(): Promise<BarometerAnalysisRecord | null> {
   try {
     const row = await prisma.barometerAnalysis.findUnique({ where: { key: ANALYSIS_KEY } });
-    if (!row) return null;
+    if (!row || row.basedOnTotal < SEUIL_REPONSES_REELLES) return null;
     return {
       payload: row.payload as unknown as BarometerAnalysisPayload,
       generatedAt: row.generatedAt.toISOString(),
@@ -174,7 +181,7 @@ export async function generateAndPersistAnalysis(
       readLatestAnalysis(),
     ]);
 
-    if (!snapshot || realResponses === 0) {
+    if (!snapshot || realResponses < SEUIL_REPONSES_REELLES) {
       return { ok: false, reason: "no-real-responses" };
     }
     // Économie : pas de régénération si l'analyse couvre déjà l'effectif courant.

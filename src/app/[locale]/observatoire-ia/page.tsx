@@ -128,8 +128,9 @@ export default async function ObservatoirePage({ params, searchParams }: Props) 
   // question → on masque le dashboard global pour rester lisible.
   const showGlobal = !hasFilter;
   const segments = showGlobal ? payload?.segments : undefined;
-  const analysis = showGlobal && !isBuildStub ? await readLatestAnalysis() : null;
-  const history = showGlobal && !isBuildStub ? await readSnapshotHistory(60).catch(() => []) : [];
+  const analysis = showGlobal && hasData && !isBuildStub ? await readLatestAnalysis() : null;
+  const history =
+    showGlobal && hasData && !isBuildStub ? await readSnapshotHistory(60).catch(() => []) : [];
 
   // Résolution des libellés d'options (SSOT pour secteur/région, i18n sinon).
   const sectorLabel = (slug: string) => {

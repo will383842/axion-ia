@@ -30,7 +30,8 @@ export async function GET() {
     insights: snapshot?.insights ?? {},
     distributions: snapshot?.distributions ?? {},
     segments: snapshot?.segments ?? {},
-    history,
+    // Comme la page : pas d'historique tant que le snapshot est vide.
+    history: (snapshot?.totalResponses ?? 0) > 0 ? history : [],
   };
 
   return new NextResponse(JSON.stringify(body, null, 2), {
