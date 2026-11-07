@@ -46,6 +46,8 @@ export interface OptionsHorodatage {
   readonly maintenant?: Date;
   readonly env?: Readonly<Record<string, string | undefined>>;
   readonly fetcher?: Fetcher;
+  /** Remplace la vérification de signature du jeton (tests uniquement). */
+  readonly verifier?: NonNullable<Parameters<typeof demanderJeton>[0]["verifier"]>;
 }
 
 function messageSur(err: unknown): string {
@@ -85,8 +87,9 @@ export async function horodaterLigne(
       jeton = await demanderJeton({
         empreinteHex: ligne.empreinteSha256,
         url,
-        ancresPem,
         maintenant,
+        ancresPem,
+        ...(options.verifier === undefined ? {} : { verifier: options.verifier }),
         ...(options.fetcher === undefined ? {} : { fetcher: options.fetcher }),
       });
     } catch (err) {

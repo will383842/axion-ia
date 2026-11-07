@@ -22,10 +22,12 @@ Tous les devis à formules se signent par le canal maison, **sans prestataire pa
    accepté) entrent dans la forme canonique **seulement quand ils sont présents** : une V4 antérieure garde
    exactement son empreinte. Le texte exact accepté est scellé : empreinte du PDF du devis (`document_hash`),
    du choix (qui contient l'empreinte de l'offre) et du texte des CGV (`cgv_texte_sha256`).
-4. **Horodatage RFC 3161** du sceau (`selfHash`) par une autorité gratuite que l'exploitant
-   désigne (`HORODATAGE_TSA_URL`, https en production ; ancre de confiance `HORODATAGE_TSA_CA_PEM`).
-   **Aucune autorité par défaut** : tant que l'URL ou l'ancre manque, l'horodatage est coupé et la ligne reste
-   « en attente ». La signature ne dépend jamais de l'autorité : la ligne
+4. **Horodatage RFC 3161** du sceau (`selfHash`) par une autorité gratuite configurable
+   (`HORODATAGE_TSA_URL`, **HTTPS obligatoire en production, aucune autorité par défaut** : horodatage coupé
+   tant qu'elle n'est pas choisie). Un jeton n'est « obtenu » que si sa **signature CMS et sa chaîne de
+   certificats** se vérifient (`horodatage-cms.ts`, `node:crypto` seul ; racines de Node +
+   `HORODATAGE_TSA_CA_PEM`). **Limite : pas de contrôle de révocation (CRL/OCSP)**, ni de lien
+   `signingCertificateV2` ; audit hors ligne possible sur le jeton brut conservé. La signature ne dépend jamais de l'autorité : la ligne
    `document_signature_horodatages` naît « en attente » dans la transaction de signature, un premier jeton est
    tenté aussitôt, le balayage du worker (5 min, backoff plafonné à 6 h, **sans plafond d'essais**) reprend le
    reste. La contresignature d'Axion-IA est horodatée aussi.
@@ -70,3 +72,12 @@ révocation (CRL/OCSP) — à l'audit, hors ligne (`openssl ts -verify`).
   expiré ni invalidé : le signataire déjà vérifié n'a pas à redemander un code. **Non restitué, par prudence** : une
   panne de stockage ou une erreur inattendue (on ne sait pas si la signature a été écrite) — le signataire en
   redemande un.
+
+## Addendum — audit sécurité (2026-11-07)
+
+- **Blocage non contournable** : le plafond de 5 essais est par code ; un compteur d'échecs **cumulé par
+  (pièce, partie)** (`document_signature_echecs`) bloque 15 min au 10e échec sur 24 h, **tous codes confondus**.
+  Émettre un code ne le remet pas à zéro ; seules une signature réussie ou l'écoulement des 24 h le font.
+  Il bloque aussi l'émission de codes et le départ d'un e-mail déjà en file.
+- **Code lié au lien** : un code émis pour le lien A ne signe pas via le lien B (`jetonId`).
+- **Réponse de l'autorité lue en flux**, plafonnée à 64 Kio.
