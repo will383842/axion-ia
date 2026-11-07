@@ -4,8 +4,9 @@
 // Complète `oppositions-reseau.spec.ts` (déjà : rejeu même clé, panne du CRM, champ inconnu,
 // aucune suppression, effacement après opposition) : ici seulement les cas manquants.
 // Base EN MÉMOIRE, file d'e-mails et CRM SIMULÉS, adresses de domaine réservé (.test).
-// Le code du site N'EST PAS modifié : un test qui échoue parce que le code est faux est écrit
-// en `it.fails` avec la mention ESCALADE (à traiter par un concepteur et un auditeur).
+// Ces scénarios décrivent le comportement attendu et passent tous : le rattrapage écarte
+// désormais une adresse opposée (corrigé par la PR #1823), il n'y a donc plus aucun `it.fails`.
+// Un test qui rougirait ici signale une régression du code du site, pas un cas connu.
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import crypto from "node:crypto";
 import { NextRequest } from "next/server";
