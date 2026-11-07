@@ -1596,6 +1596,12 @@ jobs:
         run: |
           PGPASSWORD=ci_password_dummy psql -h localhost -U axion_ia_ci -d axion_ia_ci \
             -v ON_ERROR_STOP=1 -f tests/sql/cgv-archives-comportement.sql
+      # Signature renforcée du devis (2026-11-07) : déclaration du signataire tout-ou-rien par CHECK,
+      # horodatage RFC 3161 en ajout seul, jeton obtenu définitif. Cas ANNULÉS.
+      - name: Signature renforcée du devis — comportement SQL
+        run: |
+          PGPASSWORD=ci_password_dummy psql -h localhost -U axion_ia_ci -d axion_ia_ci \
+            -v ON_ERROR_STOP=1 -f tests/sql/signature-renforcee-comportement.sql
       # ADR 0060 (2026-09-30) — le journal des réouvertures de dossier de session
       # est en ajout seul : UPDATE/DELETE refusés par trigger, motif de
       # réouverture ≥ 10 caractères par CHECK, deux réouvertures = deux lignes,
