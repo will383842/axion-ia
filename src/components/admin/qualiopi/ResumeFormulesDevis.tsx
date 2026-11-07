@@ -18,11 +18,11 @@ export function ResumeFormulesDevis({ vue }: { vue: VueFormules }) {
       </p>
       <ul className="space-y-1 text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg)]">
         {vue.formules.map((f) => {
-          const mensuel = 
+          const mensuel =
             // Première période À MONTANT > 0 : une période de mois offerts (0 €) ne doit pas
             // masquer la mensualité réelle qui suit.
-            (f.abonnement?.periodes ?? []).find((p) => p.mensuelNetHtCents > 0)?.mensuelNetHtCents ??
-            null;
+            (f.abonnement?.periodes ?? []).find((p) => p.mensuelNetHtCents > 0)
+              ?.mensuelNetHtCents ?? null;
           return (
             <li key={f.formule}>
               <span className="font-medium">{f.titre}</span> —{" "}
