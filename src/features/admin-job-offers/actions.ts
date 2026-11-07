@@ -22,6 +22,10 @@ import {
   type NatureCollaborationOffre,
 } from "@/lib/careers/formateur-freelance";
 import { lireEtatsEntree } from "@/server/qualiopi/formateurs-independants/interrupteurs-lecture";
+import {
+  messageRefusSuppression,
+  suppressionRefusee,
+} from "@/server/careers/garde-suppression-offre";
 import { CAREER_CATEGORY_SLUGS } from "@/content/careers/categories";
 import type {
   JobCategory,
@@ -732,6 +736,12 @@ export async function deleteJobOfferAction(
     select: { slug: true, _count: { select: { applications: true } } },
   });
   if (!offer) return { ok: false, error: "Offre introuvable." };
+
+  // Lot P15 (CH4-38), interrupteur `qualiopi.documents_organisme.actif` : une
+  // offre qui porte des candidatures s'archive. Éteint, rien ne change.
+  if (await suppressionRefusee(offer._count.applications)) {
+    return { ok: false, error: messageRefusSuppression(offer._count.applications) };
+  }
 
   // Les candidatures SURVIVENT (`ON DELETE SET NULL`). On compte ce qui est
   // detache pour l'ecrire au journal : « l'offre a disparu » et « onze dossiers
