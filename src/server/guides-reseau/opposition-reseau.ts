@@ -9,6 +9,8 @@
  * l'avertissement du CRM seulement s'il est resté en attente et que la personne n'a pas été effacée.
  * La clé d'idempotence n'est ni stockée ni journalisée.
  *
+ * Le nonce est contrôlé en forme, pas mémorisé : un rejeu dans la fenêtre de 300 s reproduit la même opposition, sans nouvel effet ; décision du 07/11/2026.
+ *
  * Réponse IDENTIQUE adresse nouvelle, déjà écartée ou inconnue ; jamais l'adresse.
  * Journal : un seul événement structuré, sans aucune donnée de personne.
  */

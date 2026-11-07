@@ -23,6 +23,8 @@
  *
  * ── Ce qui l'arrête ──────────────────────────────────────────────────────────
  *   · le coupe-circuit : tant qu'il est déclenché, le passage ne fait RIEN ;
+ *   · une adresse opposée (email_oppositions), quelle que soit l'origine de la demande :
+ *     écartée, rien n'est supprimé ni modifié ;
  *   · le plafond horaire du guide : il ne relâche que la place restante.
  *
  * L'e-mail repris porte ce que la ligne d'abonné dit AU MOMENT DE L'ENVOI :
@@ -174,6 +176,15 @@ export async function rattraperGuides(maintenant: Date = new Date()): Promise<Ra
         ecartees++;
         continue;
       }
+      // Une adresse opposée (ou qui a demandé l'effacement) APRÈS la demande ne reçoit pas le
+      // guide par le rattrapage, QUELLE QUE SOIT l'origine de la demande : on écarte, on ne
+      // supprime ni ne modifie rien. Ce contrôle passe après la réparation de trace (qui
+      // n'envoie rien) et avant toute lecture de la ligne d'abonnée. Pas de try/catch : si la
+      // base ne répond pas, l'erreur remonte et rien n'est mis en file (échec fermé).
+      if (await estOpposee(c.email)) {
+        ecartees++;
+        continue;
+      }
       // Même liste de suppression que l'enfilage : une adresse en rebond dur ne
       // doit pas être re-tentée toutes les heures pendant une semaine.
       const verdict = await verdictAvantEnvoi(c.email, {
@@ -187,12 +198,6 @@ export async function rattraperGuides(maintenant: Date = new Date()): Promise<Ra
 
       // Demande venue d'un réseau : le guide et rien d'autre (décision du 03/11/2026).
       const reseau = (c.origine as string) === "message_prive";
-      // Une adresse qui s'est opposée (ou a demandé l'effacement) APRÈS la demande ne reçoit
-      // pas le guide par le rattrapage : on écarte, on ne supprime rien.
-      if (reseau && (await estOpposee(c.email))) {
-        ecartees++;
-        continue;
-      }
       const lettre: Awaited<ReturnType<typeof lettreDansLEmail>> = reseau
         ? {}
         : await lettreDansLEmail(c.email);
