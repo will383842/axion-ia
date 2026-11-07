@@ -93,6 +93,7 @@ export function registerQualiopiPdfFonts(): void {
   const manrope = resolveFont("Manrope-Regular.ttf");
   const manropeMedium = resolveFont("Manrope-Medium.ttf");
   const manropeBold = resolveFont("Manrope-Bold.ttf");
+  const manropeExtraBold = resolveFont("Manrope-ExtraBold.ttf");
 
   const inconsolata = resolveFont("Inconsolata-Regular.ttf");
   const inconsolataBold = resolveFont("Inconsolata-Bold.ttf");
@@ -154,6 +155,7 @@ export function registerQualiopiPdfFonts(): void {
           { src: manrope, fontWeight: "normal" },
           ...(manropeMedium ? [{ src: manropeMedium, fontWeight: 500 as const }] : []),
           ...(manropeBold ? [{ src: manropeBold, fontWeight: "bold" as const }] : []),
+          ...(manropeExtraBold ? [{ src: manropeExtraBold, fontWeight: 800 as const }] : []),
           // Manrope n'a pas d'italique dédié → italique synthétique (fichier
           // upright). Les templates appliquent fontStyle:"italic" sur la famille
           // sans par défaut (legalNote, signatureLu, notes…) : sans ces variantes
@@ -184,6 +186,7 @@ export function registerQualiopiPdfFonts(): void {
               { src: fb, fontWeight: "normal" },
               { src: fb, fontWeight: 500 as const },
               { src: fb, fontWeight: "bold" },
+              { src: fb, fontWeight: 800 as const },
               { src: fb, fontStyle: "italic" as const },
               { src: fb, fontWeight: "bold", fontStyle: "italic" as const },
             ],
