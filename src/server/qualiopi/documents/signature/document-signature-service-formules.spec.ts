@@ -649,6 +649,16 @@ describe("devis à formules — signature RENFORCÉE (lot 4 bis)", () => {
     attendRefus(await signerDocument(entreeClient()), "code_requis");
   });
 
+  it("🔴 défense en profondeur : le code est relu pour le LIEN en cours (jetonId)", async () => {
+    mockPrisma.documentSignatureCode.findFirst.mockResolvedValue(null);
+    attendRefus(await signerDocument(entreeClient()), "code_requis");
+    expect(mockPrisma.documentSignatureCode.findFirst).toHaveBeenCalledWith(
+      expect.objectContaining({
+        where: expect.objectContaining({ jetonId: TOKEN, utiliseAt: { not: null } }),
+      }),
+    );
+  });
+
   it("devis expiré : refusé même avec un code valide", async () => {
     mockPrisma.documentGenere.findUnique.mockResolvedValue(
       piece({ ...DEVIS_FORMULES, dateValidite: new Date("2026-11-10T10:00:00.000Z") }),
