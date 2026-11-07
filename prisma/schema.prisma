@@ -7782,6 +7782,17 @@ model DocumentSignature {
   /// Devis dont CETTE signature porte le choix retenu.
   devisChoisis     Devis[]                 @relation("DevisChoixSignature")
 
+  /// Signature « simple renforcée » du devis (lot 4 bis, migration 20261107120000) : ce que le
+  /// signataire a SAISI (nom, fonction), l'instant où il a déclaré avoir le pouvoir d'engager la
+  /// société et celui où son code reçu par e-mail a été accepté. SCELLÉS en V4 quand ils sont
+  /// présents (clés absentes du sceau sinon : les signatures V4 antérieures restent vérifiables).
+  /// NULL partout avant le lot 4 bis. Jamais de V5.
+  declarationNom      String?   @map("declaration_nom") @db.VarChar(200)
+  declarationFonction String?   @map("declaration_fonction") @db.VarChar(200)
+  pouvoirDeclareAt    DateTime? @map("pouvoir_declare_at")
+  codeVerifieAt       DateTime? @map("code_verifie_at")
+  horodatage          DocumentSignatureHorodatage?
+
   /// 🔴 DISTINCTS de `createdAt` : l'écart entre les deux révèle une insertion
   /// tardive. Les confondre effacerait la seule trace d'une signature antidatée.
   signeAt   DateTime @map("signe_at")
@@ -7922,10 +7933,69 @@ model DocumentSignatureCode {
   utiliseAt        DateTime?                @map("utilise_at")
   invalideAt       DateTime?                @map("invalide_at")
   createdAt        DateTime                 @default(now()) @map("created_at")
+  /// Signature renforcée du devis (lot 4 bis) : lien de signature qui a demandé le code, pour
+  /// plafonner les envois PAR LIEN. NULL pour le contrat-cadre. Pas de clé étrangère (voir ci-dessus).
+  jetonId          String?                  @map("jeton_id") @db.Uuid
+  /// Cinquième échec : plus aucun code n'est émis ni accepté pour cette pièce avant cet instant
+  /// (15 minutes). NULL tant que la ligne n'a pas épuisé ses essais, et pour le contrat-cadre.
+  bloqueJusquA     DateTime?                @map("bloque_jusqu_a")
 
   @@index([documentGenereId, partie])
   @@index([expiresAt])
+  @@index([jetonId, createdAt])
   @@map("document_signature_codes")
+}
+
+/// Signature renforcée du devis (lot 4 bis, audit sécurité) : compteur d'échecs de saisie de code
+/// CUMULÉ par (pièce, partie), tous codes confondus. Émettre un nouveau code ne le remet pas à zéro :
+/// seuls une signature réussie ou l'écoulement de la fenêtre de 24 h le font. Au 10e échec, la pièce
+/// est bloquée 15 minutes. Table de suivi, jamais de preuve (la preuve reste `DocumentSignature`).
+/// rgpd: technique — compteur et dates ; ni nom, ni adresse, ni code
+model DocumentSignatureEchecs {
+  id               String                   @id @default(uuid()) @db.Uuid
+  documentGenereId String                   @map("document_genere_id") @db.Uuid
+  partie           DocumentPartieSignataire
+  echecs           Int                      @default(0)
+  /// Premier échec de la fenêtre courante (24 h).
+  fenetreDebutAt   DateTime                 @map("fenetre_debut_at")
+  /// Bloque la saisie et l'émission de codes jusqu'à cet instant ; NULL sinon.
+  bloqueJusquA     DateTime?                @map("bloque_jusqu_a")
+
+  @@unique([documentGenereId, partie])
+  @@map("document_signature_echecs")
+}
+
+/// Horodatage certifié RFC 3161 du sceau d'une signature de devis (lot 4 bis).
+///
+/// L'empreinte horodatée est le `selfHash` de la signature. La signature ne dépend JAMAIS de
+/// l'horodatage : la ligne naît `en_attente` avec la signature, un job la complète (réessais sans
+/// limite, intervalle croissant) — l'autorité injoignable ne bloque ni ne perd rien.
+/// Ajout seul : jamais de DELETE ; l'empreinte et la signature ne changent pas ; un jeton obtenu
+/// est définitif (déclencheurs SQL).
+/// rgpd: technique — empreinte SHA-256 d'un sceau et jeton d'horodatage de l'autorité ; ni nom, ni adresse, ni donnée en clair
+model DocumentSignatureHorodatage {
+  id               String            @id @default(uuid()) @db.Uuid
+  signatureId      String            @unique @map("signature_id") @db.Uuid
+  signature        DocumentSignature @relation(fields: [signatureId], references: [id], onDelete: Restrict)
+  /// `selfHash` de la signature : la valeur soumise à l'autorité.
+  empreinteSha256  String            @map("empreinte_sha256") @db.Char(64)
+  /// `en_attente` | `obtenu`.
+  statut           String            @default("en_attente") @db.VarChar(12)
+  /// URL de l'autorité qui a répondu (renseignée à l'obtention).
+  autorite         String?           @db.VarChar(300)
+  /// Réponse RFC 3161 (TimeStampResp, DER) telle que reçue.
+  jeton            Bytes?
+  jetonSha256      String?           @map("jeton_sha256") @db.Char(64)
+  /// `genTime` du jeton.
+  horodateAt       DateTime?         @map("horodate_at")
+  essais           Int               @default(0)
+  dernierEssaiAt   DateTime?         @map("dernier_essai_at")
+  prochainEssaiAt  DateTime          @map("prochain_essai_at")
+  derniereErreur   String?           @map("derniere_erreur") @db.VarChar(200)
+  creeAt           DateTime          @default(now()) @map("cree_at")
+
+  @@index([statut, prochainEssaiAt])
+  @@map("document_signature_horodatages")
 }
 
 // ============================================================

@@ -48,6 +48,33 @@ async function processJob(_job: Job<VisioBalayageJobData>): Promise<void> {
   await passerEnregistreur(prisma, enregistreur);
   // TOUJOURS aussi : le suivi du questionnaire avant audit lit ses propres interrupteurs.
   await passerQuestionnairesPreaudit(prisma);
+  // TOUJOURS aussi : les jetons d'horodatage RFC 3161 des signatures de devis qui n'en ont pas encore
+  // (autorité injoignable au moment de signer). Son propre `try` : jamais bloquant, jamais fatal.
+  await passerHorodatagesSignatures();
+}
+
+/**
+ * Horodatage RFC 3161 des signatures de devis (lot 4 bis) : reprend les lignes `en_attente` dont
+ * l'heure est venue. Marqueur de déploiement : `horodatage-signatures`. Des nombres seulement
+ * au journal (jamais d'empreinte, de nom ni d'adresse).
+ */
+async function passerHorodatagesSignatures(): Promise<void> {
+  try {
+    const { passerHorodatages } =
+      await import("@/server/qualiopi/documents/signature/horodatage-signature");
+    const b = await passerHorodatages();
+    if (b.tentes > 0) {
+      console.warn(
+        `[visio-balayage-worker] horodatage-signatures : ${b.tentes} tenté(s), ${b.obtenus} obtenu(s), ${b.enAttente} en attente`,
+      );
+    }
+  } catch (err) {
+    console.error(
+      "[visio-balayage-worker] horodatage-signatures en échec :",
+      err instanceof Error ? err.name : "inconnue",
+    );
+    captureWorkerError("visio-balayage", VISIO_BALAYAGE_QUEUE_NAME, undefined, err);
+  }
 }
 
 /**

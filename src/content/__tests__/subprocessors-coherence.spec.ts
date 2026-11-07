@@ -353,3 +353,11 @@ describe("cohérence des sous-processeurs", () => {
     expect(internes.every((n) => /^Signature maison/.test(n))).toBe(true);
   });
 });
+
+describe("autorité d'horodatage RFC 3161 (m5)", () => {
+  it("n'est jamais classée « payments » : c'est de l'infrastructure de preuve, sans paiement", () => {
+    const tsa = SUBPROCESSORS.find((x) => /horodatage/i.test(x.name));
+    expect(tsa).toBeDefined();
+    expect(tsa?.category).not.toBe("payments");
+  });
+});

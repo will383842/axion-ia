@@ -224,6 +224,9 @@ export type EmailJobName =
   | "devis-signe-a-contresigner"
   // Confirmation de commande au client (CGV 5.2, 6.2) — sur contresignature explicite uniquement.
   | "devis-commande-confirmation"
+  // Code à usage unique pour SIGNER un devis (lot 4 bis) — transactionnel, déclenché par le clic
+  // « Recevoir mon code » du signataire uniquement ; le code traverse la file scellé.
+  | "devis-code-signature"
   // Questionnaire de pré-audit (2026-10-24) — au prospect, par clic de Will uniquement.
   | "questionnaire-avant-audit"
   // Suivi du questionnaire avant audit (2026-10-26) — relances 1 à 3 et confirmation de

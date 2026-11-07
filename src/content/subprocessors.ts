@@ -38,7 +38,7 @@ import { donneesMeet, stockageSonCloudflare } from "./visio-annonce-textes";
  * — bonne pratique transparence). Affichée en haut de `/sous-processeurs`.
  * Update à chaque ajout/modification d'entrée.
  */
-export const SUBPROCESSORS_LAST_UPDATED = "2026-11-06" as const;
+export const SUBPROCESSORS_LAST_UPDATED = "2026-11-07" as const;
 
 export type TransferFramework = "intra_eu" | "scc" | "adequacy_decision" | "self_hosted_eu";
 
@@ -58,7 +58,18 @@ export interface Subprocessor {
   /** Base légale RGPD (art. 6 §1). */
   legalBasis: "6.1.b_contract" | "6.1.f_legitimate_interest" | "6.1.a_consent";
   /** DPA signé / disponible. */
-  dpaStatus: "signed" | "auto_signable_dashboard" | "self_hosted_no_dpa" | "pending";
+  dpaStatus:
+    | "signed"
+    | "auto_signable_dashboard"
+    | "self_hosted_no_dpa"
+    | "pending"
+    /**
+     * Sans objet : le tiers ne reçoit AUCUNE donnée personnelle (une empreinte SHA-256 non
+     * réversible, sans nom ni adresse) — il n'y a donc pas de contrat de sous-traitance à signer
+     * (RGPD art. 28 ne s'applique pas). À n'utiliser que pour un flux qui le démontre ; jamais pour
+     * contourner la garde « aucun sous-traitant ACTIF avec un DPA en attente ».
+     */
+    | "not_required";
   /** Cadre transfert international. */
   transferFramework: TransferFramework;
   /**
@@ -257,15 +268,39 @@ export const SUBPROCESSORS: ReadonlyArray<Subprocessor> = [
     purposeEn:
       "Electronic signature of quotes and contractual documents through a process built by Axion-IA, with no third-party signature provider. The contract is formed once Axion-IA has countersigned.",
     dataCategoriesFr:
-      "Adresse IP hachée, image de signature, identité du signataire, empreinte du document signé.",
+      "Adresse IP hachée, image de signature, identité du signataire (nom et fonction saisis, adresse électronique à laquelle est envoyé le code à usage unique), empreintes du document signé et du texte des CGV acceptées. Le code à usage unique est conservé haché et n'est jamais lisible après son envoi.",
     dataCategoriesEn:
-      "Hashed IP address, signature image, signer's identity, fingerprint of the signed document.",
+      "Hashed IP address, signature image, signer's identity (name and position entered, email address to which the one-time code is sent), fingerprints of the signed document and of the accepted terms of sale. The one-time code is stored hashed and is never readable after it has been sent.",
     legalBasis: "6.1.b_contract",
     dpaStatus: "self_hosted_no_dpa",
     transferFramework: "self_hosted_eu",
     category: "payments",
     activationStatus: "active",
     sansSousTraitant: true,
+  },
+  {
+    // Lot 4 bis (2026-11-07) — horodatage RFC 3161 des signatures de devis. Service GRATUIT : aucun
+    // contrat payant, aucun compte. Ce qui part : UNE empreinte SHA-256 (64 caractères) et un nombre
+    // aléatoire — ni nom, ni adresse, ni montant. L'autorité est CONFIGURABLE (`HORODATAGE_TSA_URL`, HTTPS
+    // obligatoire en production) et il n'y en a AUCUNE par défaut (audit sécurité, 2026-11-07) : l'horodatage
+    // reste coupé tant que l'exploitant n'en a pas choisi une. Au choix, cette entrée (nom, localisation,
+    // cadre de transfert) est à compléter dans la même PR, et le statut à repasser à « active ».
+    name: "Autorité d'horodatage RFC 3161 (service gratuit, à désigner)",
+    location: "À préciser à la désignation de l'autorité",
+    serversLocation: "À préciser à la désignation de l'autorité",
+    purposeFr:
+      "Horodatage certifié (norme RFC 3161) du sceau d'une signature de devis : l'autorité atteste que l'empreinte du sceau existait à l'instant indiqué. Service public gratuit, sans contrat. Si l'autorité est injoignable, la signature reste valable et le jeton est redemandé plus tard.",
+    purposeEn:
+      "Certified time-stamping (RFC 3161) of a quote signature's seal: the authority attests that the seal's fingerprint existed at the stated time. Free public service, no contract. If the authority is unreachable, the signature stays valid and the token is requested again later.",
+    dataCategoriesFr:
+      "Une empreinte numérique SHA-256 du sceau de la signature (64 caractères hexadécimaux, non réversible) et un nombre aléatoire à usage unique. Aucun nom, aucune adresse électronique, aucun montant ni document n'est transmis.",
+    dataCategoriesEn:
+      "A SHA-256 digital fingerprint of the signature seal (64 hexadecimal characters, not reversible) and a one-time random number. No name, email address, amount or document is transmitted.",
+    legalBasis: "6.1.b_contract",
+    dpaStatus: "not_required",
+    transferFramework: "intra_eu",
+    category: "core_infra",
+    activationStatus: "pending_activation",
   },
   // ───────────────────────────── communications & géo
   {

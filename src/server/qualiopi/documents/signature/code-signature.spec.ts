@@ -27,7 +27,7 @@ function correspond(l: Ligne, w: Filtre): boolean {
       const o = v as { lt?: number; gte?: number; gt?: Date };
       if (o.lt !== undefined) return (val as number) < o.lt;
       if (o.gte !== undefined) return (val as number) >= o.gte;
-      if (o.gt !== undefined) return (val as Date).getTime() > o.gt.getTime();
+      if (o.gt !== undefined) return val instanceof Date && val.getTime() > o.gt.getTime();
     }
     return val === v;
   });
@@ -81,6 +81,7 @@ import {
   emettreCodeSignature,
   empreinteCode,
   MESSAGE_CODE_REFUSE,
+  restituerCodeSignature,
   tirerCode,
   verifierCodeSignature,
 } from "./code-signature";
@@ -129,6 +130,37 @@ describe("émission", () => {
       ok: false,
       message: MESSAGE_CODE_REFUSE,
     });
+  });
+});
+
+describe("restitution d'un code consommé pour rien (signature refusée pour une autre raison)", () => {
+  const renforce = { ...base, blocageMs: 15 * 60 * 1000 };
+
+  it("avec blocage demandé, la vérification rend l'identifiant de la ligne consommée", async () => {
+    const { code, id } = await emettreCodeSignature({ ...base, maintenant: T0 });
+    expect(await verifierCodeSignature({ ...renforce, code, maintenant: T0 })).toEqual({
+      ok: true,
+      codeId: id,
+    });
+  });
+
+  it("un code restitué peut resservir une fois, tant qu'il n'est pas expiré", async () => {
+    const { code, id } = await emettreCodeSignature({ ...base, maintenant: T0 });
+    const v = await verifierCodeSignature({ ...renforce, code, maintenant: T0 });
+    expect(v.ok).toBe(true);
+    expect((await verifierCodeSignature({ ...renforce, code, maintenant: T0 })).ok).toBe(false);
+    await restituerCodeSignature(id, T0);
+    expect((await verifierCodeSignature({ ...renforce, code, maintenant: T0 })).ok).toBe(true);
+    // …et une seule fois de plus : consommé de nouveau, il ne repasse pas.
+    expect((await verifierCodeSignature({ ...renforce, code, maintenant: T0 })).ok).toBe(false);
+  });
+
+  it("un code expiré n'est jamais ressuscité", async () => {
+    const { code, id } = await emettreCodeSignature({ ...base, maintenant: T0 });
+    await verifierCodeSignature({ ...renforce, code, maintenant: T0 });
+    const apres = new Date(T0.getTime() + 15 * 60 * 1000 + 1);
+    await restituerCodeSignature(id, apres);
+    expect((await verifierCodeSignature({ ...renforce, code, maintenant: apres })).ok).toBe(false);
   });
 });
 

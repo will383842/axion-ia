@@ -144,6 +144,7 @@ import {
   DevisCommandeConfirmationEmail,
   devisCommandeConfirmationSubject,
 } from "./devis-commande-confirmation";
+import { DevisCodeSignatureEmail, devisCodeSignatureSubject } from "./devis-code-signature";
 import {
   CandidatureCommercialConfirmeeEmail,
   candidatureCommercialConfirmeeSubject,
@@ -537,6 +538,11 @@ const TEMPLATES: TemplateMap = {
   "devis-commande-confirmation": {
     subject: devisCommandeConfirmationSubject,
     component: DevisCommandeConfirmationEmail,
+  },
+  // Lot 4 bis — code à usage unique pour signer un devis (clic « Recevoir mon code » uniquement).
+  "devis-code-signature": {
+    subject: devisCodeSignatureSubject,
+    component: DevisCodeSignatureEmail,
   },
   // Lot B9 : relance de devis, toujours garée « à valider » par l'action de la fiche client.
   "relance-devis-client": {

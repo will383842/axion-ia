@@ -170,7 +170,9 @@ describe("le jeu de données d'exemple couvre tous les gabarits", () => {
     // par le client ». Champs tous facultatifs.
     // RELEVÉ À 85 (2026-11-06) : `devis-commande-confirmation`, confirmation de commande au client
     // (CGV 5.2). Quatre champs de montants/CGV ajoutés au jeu d'exemple.
-    expect(tous.length).toBe(85);
+    // RELEVÉ À 86 (2026-11-07) : `devis-code-signature`, code à usage unique pour signer un devis
+    // (lot 4 bis). Aucun champ requis : le code et la durée viennent de `valeurs`, remplis au rendu.
+    expect(tous.length).toBe(86);
   });
 
   it.each(tous.map((g) => g.nom))("%s : tous ses champs requis ont une valeur d'exemple", (nom) => {

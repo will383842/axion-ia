@@ -87,6 +87,12 @@ export const COLONNES_SCELLEES_DOCUMENT: ReadonlyArray<keyof LigneDocumentSignat
   "cgvAccepteeAt",
   "cgvTraceSha256",
   "jetonId",
+  // Scellés en version 4 SEULEMENT quand ils sont présents (lot 4 bis, signature renforcée) : la
+  // déclaration du signataire et l'instant du code vérifié. Absents, la forme canonique ne change pas.
+  "declarationNom",
+  "declarationFonction",
+  "pouvoirDeclareAt",
+  "codeVerifieAt",
 ];
 
 /**

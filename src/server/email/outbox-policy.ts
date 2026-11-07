@@ -120,6 +120,10 @@ export const EMAILS_AUTOMATIQUES_PAR_DEFAUT: readonly string[] = [
   // lui-même de signer. La décision humaine a DÉJÀ eu lieu — c'est la
   // contresignature.
   "piece-exemplaire-signe",
+  // 🔴 Le code de signature d'un devis part SEUL (lot 4 bis) : valable 10 minutes, il expirerait dans
+  // la corbeille avant d'être relu. Il est déclenché par le clic « Recevoir mon code » du signataire,
+  // jamais par un automate ; il n'y a rien à relire (un code et un numéro de devis).
+  "devis-code-signature",
   // ⛔ « devis-commande-confirmation » n'est volontairement PAS ici : ce gabarit ne part
   // jamais seul. Il passe par la file à valider ; il est déclenché par le clic de
   // contresignature d'Axion-IA (CGV 6.2), jamais par un envoi automatique.
@@ -231,6 +235,7 @@ export const LIBELLE_TEMPLATE_EMAIL: Record<string, string> = {
   "appel-rappel": "Rappel avant un appel de découverte",
   "piece-exemplaire-signe": "Remise de l'exemplaire signé",
   "devis-commande-confirmation": "Confirmation de commande (contresignature d'Axion-IA)",
+  "devis-code-signature": "Code à usage unique pour signer un devis",
   "devis-signe-a-contresigner": "Devis signé par le client, à contresigner (interne)",
   "questionnaire-reponses-recues": "Questionnaire en ligne : réponses reçues (interne)",
   "questionnaire-avant-audit": "Questionnaire de pré-audit envoyé par Will",

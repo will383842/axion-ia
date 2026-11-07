@@ -399,6 +399,13 @@ export const CATALOGUE: Readonly<Record<EmailJobName, FicheEmail>> = {
     destinataire: "le client",
     source: "server/qualiopi/devis/confirmation-commande.ts",
   },
+  "devis-code-signature": {
+    categorie: "commerce",
+    quand:
+      "Le signataire clique « Recevoir mon code » sur la page de signature de son devis — code à usage unique (10 minutes), jamais automatique",
+    destinataire: "le signataire du devis (adresse figée sur le lien de signature)",
+    source: "server/qualiopi/devis/code-signature-devis.ts",
+  },
   "autofacture-transmission": {
     categorie: "commerce",
     quand:

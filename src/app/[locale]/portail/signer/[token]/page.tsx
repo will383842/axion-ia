@@ -30,6 +30,7 @@ import { circuitPour } from "@/server/qualiopi/documents/signature/parties-requi
 import { mentionCompleteDocument } from "@/server/qualiopi/documents/signature/mentions-document";
 import {
   apercuChoixAction,
+  demanderCodeDevisAction,
   demanderCodeSignatureAction,
   signerPieceParJetonAction,
 } from "@/server/actions/qualiopi/piece-signature";
@@ -287,6 +288,8 @@ export default async function SignerDevisPage({ params }: PageProps) {
     null;
 
   const avecCode = codeRequis(piece.type, piece.metadata, verif.partie);
+  // Devis À FORMULES : signature « simple renforcée » (lot 4 bis) — code reçu par e-mail + déclaration.
+  const renforcee = offreAffichee !== null && verif.partie === "client";
 
   const mentions = mentionCompleteDocument(
     verif.partie,
@@ -296,7 +299,7 @@ export default async function SignerDevisPage({ params }: PageProps) {
       organisme: identite.raisonSociale,
     },
     circuit.canal === "maison",
-    avecCode,
+    avecCode || renforcee,
   );
 
   return (
@@ -340,6 +343,9 @@ export default async function SignerDevisPage({ params }: PageProps) {
         : {})}
       signerAction={signerPieceParJetonAction}
       {...(avecCode ? { demanderCodeAction: demanderCodeSignatureAction } : {})}
+      {...(renforcee
+        ? { demanderCodeAction: demanderCodeDevisAction, declaration: true as const }
+        : {})}
     />
   );
 }

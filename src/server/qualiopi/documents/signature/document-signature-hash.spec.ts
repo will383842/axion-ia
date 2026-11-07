@@ -550,4 +550,134 @@ describe("🔴 version 4 — le choix d'offre et la preuve d'acceptation des CGV
     });
     expect(verifierChaine([maillonDocumentDepuisLigne(l, PIECE)]).valide).toBe(true);
   });
+
+  // ── Lot 4 bis : déclaration du signataire et code vérifié, scellés SANS déplacer un octet de la V4 ──
+  describe("V4 : déclaration du signataire (signature renforcée)", () => {
+    const DECL = {
+      declarationNom: "Jeanne Martin",
+      declarationFonction: "Directrice générale",
+      pouvoirDeclareAtIso: "2026-06-10T10:15:00.000Z",
+      codeVerifieAtIso: "2026-06-10T10:14:00.000Z",
+    } as const;
+    const TUPLE_RENF: TupleDocumentSignatureV4 = { ...TUPLE_V4, ...DECL };
+    const ligneRenf = (over: Partial<LigneDocumentSignature> = {}) =>
+      ligneV4({
+        declarationNom: DECL.declarationNom,
+        declarationFonction: DECL.declarationFonction,
+        pouvoirDeclareAt: new Date(DECL.pouvoirDeclareAtIso),
+        codeVerifieAt: new Date(DECL.codeVerifieAtIso),
+        facteurVerification: "code_email",
+        selfHash: calculerSelfHashDocument({ ...TUPLE_RENF, facteurVerification: "code_email" }, 4),
+        ...over,
+      });
+
+    it("🔴 une V4 SANS déclaration garde exactement l'empreinte d'avant le lot 4 bis", () => {
+      // Vecteur d'or calculé avant le lot : la V4 déjà scellée en production reste vérifiable.
+      expect(tupleDocumentCanonique(TUPLE_V4, 4)).not.toContain("declaration");
+      expect(
+        tupleDocumentCanonique(
+          {
+            ...TUPLE_V4,
+            declarationNom: null,
+            declarationFonction: null,
+            pouvoirDeclareAtIso: null,
+            codeVerifieAtIso: null,
+          },
+          4,
+        ),
+      ).toBe(tupleDocumentCanonique(TUPLE_V4, 4));
+    });
+
+    it("la déclaration entre dans le sceau : nom, fonction, pouvoir et code", () => {
+      const canon = tupleDocumentCanonique(TUPLE_RENF, 4);
+      for (const cle of [
+        "declarationNom",
+        "declarationFonction",
+        "pouvoirDeclareAtIso",
+        "codeVerifieAtIso",
+      ]) {
+        expect(canon).toContain(`"${cle}"`);
+      }
+      expect(canon).toContain('"v":4');
+    });
+
+    it("🔴 chaque élément de la déclaration change l'empreinte", () => {
+      const h = calculerSelfHashDocument(TUPLE_RENF, 4);
+      expect(h).not.toBe(calculerSelfHashDocument(TUPLE_V4, 4));
+      for (const v of [
+        { declarationNom: "Jeanne Martine" },
+        { declarationFonction: "Présidente" },
+        { pouvoirDeclareAtIso: "2026-06-10T10:15:01.000Z" },
+        { codeVerifieAtIso: "2026-06-10T10:14:01.000Z" },
+      ]) {
+        expect(calculerSelfHashDocument({ ...TUPLE_RENF, ...v }, 4)).not.toBe(h);
+      }
+    });
+
+    it("une déclaration incomplète ne se hache pas", () => {
+      expect(() =>
+        calculerSelfHashDocument({ ...TUPLE_V4, declarationNom: "Jeanne Martin" }, 4),
+      ).toThrow(/déclaration incomplète/);
+    });
+
+    it("une ligne renforcée se reconstruit et se vérifie", () => {
+      const l = ligneRenf();
+      expect(verifierChaine([maillonDocumentDepuisLigne(l, PIECE)]).valide).toBe(true);
+    });
+
+    it("🔴 effacer, ajouter ou modifier la déclaration en base invalide la preuve", () => {
+      const l = ligneRenf();
+      for (const mod of [
+        { declarationNom: "Autre Personne" },
+        { declarationFonction: "Stagiaire" },
+        { pouvoirDeclareAt: new Date("2026-06-10T10:15:02.000Z") },
+        { codeVerifieAt: new Date("2026-06-10T10:14:02.000Z") },
+        {
+          declarationNom: null,
+          declarationFonction: null,
+          pouvoirDeclareAt: null,
+          codeVerifieAt: null,
+        },
+      ]) {
+        expect(verifierChaine([maillonDocumentDepuisLigne({ ...l, ...mod }, PIECE)]).valide).toBe(
+          false,
+        );
+      }
+      // Ajoutée après coup sur une V4 classique : la preuve casse.
+      expect(
+        verifierChaine([
+          maillonDocumentDepuisLigne(
+            {
+              ...ligneV4(),
+              declarationNom: "X Y",
+              declarationFonction: "Z Z",
+              pouvoirDeclareAt: new Date(DECL.pouvoirDeclareAtIso),
+              codeVerifieAt: new Date(DECL.codeVerifieAtIso),
+            },
+            PIECE,
+          ),
+        ]).valide,
+      ).toBe(false);
+    });
+
+    it("une déclaration partielle en base est irrecalculable", () => {
+      expect(tupleDocumentDepuisLigne(ligneRenf({ declarationFonction: null }), PIECE)).toBeNull();
+      expect(tupleDocumentDepuisLigne(ligneRenf({ codeVerifieAt: null }), PIECE)).toBeNull();
+    });
+
+    it("une ligne V1/V2/V3 qui porte une déclaration a été écrite après coup : irrecalculable", () => {
+      for (const hashVersion of [1, 2, 3]) {
+        expect(
+          tupleDocumentDepuisLigne(ligne({ hashVersion, declarationNom: "Jeanne Martin" }), PIECE),
+        ).toBeNull();
+      }
+    });
+
+    it("le texte exact accepté est scellé : devis (PDF), CGV (texte) et offre (via le choix)", () => {
+      const canon = tupleDocumentCanonique(TUPLE_RENF, 4);
+      expect(canon).toContain(`"documentHashSha256":"${TUPLE_RENF.documentHashSha256}"`);
+      expect(canon).toContain(`"cgvTexteSha256":"${"e".repeat(64)}"`);
+      expect(canon).toContain(`"choixOffreSha256":"${SHA_CHOIX}"`);
+    });
+  });
 });
