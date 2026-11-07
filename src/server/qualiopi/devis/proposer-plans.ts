@@ -134,6 +134,23 @@ async function evaluerPlansDuDevis(devisId: string): Promise<Evaluation> {
   };
 }
 
+export type EtatPlansManquants = "aucun" | "manquants" | "impossibles";
+
+/**
+ * Règle d'alerte (pure). `attendus` : résultat de `compterPlansAttendus`.
+ *  - 0 attendu → « aucun » (cas normal) ;
+ *  - null (formule retenue mais plans non calculables) → « impossibles », JAMAIS silencieux ;
+ *  - sinon « manquants » si la base en porte moins que prévu.
+ */
+export function evaluerPlansManquants(
+  attendus: number | null,
+  presents: number,
+): EtatPlansManquants {
+  if (attendus === null) return "impossibles";
+  if (attendus === 0) return "aucun";
+  return presents < attendus ? "manquants" : "aucun";
+}
+
 /**
  * Nombre de plans récurrents ATTENDUS pour un devis accepté (recalculé depuis la formule retenue
  * et l'offre figée), ou `null` si on ne peut pas l'affirmer (inerte, refus, offre illisible).
@@ -175,6 +192,7 @@ export async function proposerPlansRecurrentsDuDevis(devisId: string): Promise<P
             notes: plan.notes,
             devisId,
             nature: plan.nature,
+            jourAncre: plan.jourAncre,
             proposeAt: maintenant,
           },
         });

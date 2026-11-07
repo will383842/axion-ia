@@ -798,7 +798,16 @@ export async function acceptDevisAction(id: string): Promise<ActionResult<{ id: 
     Sentry.captureException(err, { tags: { action: "devis_signe_fait_client" } });
   }
   // Devis à formules : plans récurrents PROPOSÉS en `pause` (lot 5), après le COMMIT, fail-soft.
-  await proposerPlansApresAcceptation(devisId, "console");
+  const echecPlans = await proposerPlansApresAcceptation(devisId, "console");
+  if (typeof echecPlans === "string") {
+    // Jamais ignoré : l'acceptation reste valable, mais l'alerte « plans non proposés » de la
+    // fiche devis permet la reprise ; on journalise le code pour la trace.
+    Sentry.captureMessage("devis_formules: plans non proposés après acceptation console", {
+      level: "warning",
+      tags: { action: "devis_plan_recurrent", origine: "console", code: echecPlans },
+      extra: { devisId },
+    });
+  }
 
   await logQualiopiActivity({
     action: "qualiopi.devis.accept",

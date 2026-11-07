@@ -381,7 +381,7 @@ export default async function SubprocessorsPage({ params }: Props) {
     "@id": listId,
     name: isFr ? "Sous-traitants d'Axion-IA" : "Axion-IA subprocessors",
     url: pageUrl,
-    numberOfItems: tiers.length,
+    numberOfItems: SUBPROCESSORS.length,
     itemListElement: SUBPROCESSORS.map((s, i) => {
       const iso = isoCountry(s.location);
       return {

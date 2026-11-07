@@ -854,6 +854,13 @@ export async function relancerAcceptationDevisAction(input: {
         message: "Aucun devis à formules en attente d'acceptation pour cette pièce.",
       };
     }
+    if (res.ids.length === 0) {
+      return {
+        ok: false,
+        message:
+          "Rien n'a été fait : aucun devis n'a été accepté par cette reprise (déjà accepté ou non éligible).",
+      };
+    }
     await logQualiopiActivity({
       action: "qualiopi.devis.relance_acceptation",
       targetType: "DocumentGenere",

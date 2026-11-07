@@ -5,7 +5,7 @@
  */
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
-const sentry = vi.hoisted(() => ({ captureException: vi.fn() }));
+const sentry = vi.hoisted(() => ({ captureException: vi.fn(), captureMessage: vi.fn() }));
 vi.mock("@sentry/nextjs", () => sentry);
 
 const DEVIS = "11111111-1111-4111-8111-111111111111";
@@ -119,6 +119,16 @@ describe("acceptDevisAction", () => {
     expect(h.proposer).toHaveBeenCalledWith(DEVIS, "console");
     expect(h.emettre.mock.invocationCallOrder[0]!).toBeLessThan(
       h.proposer.mock.invocationCallOrder[0]!,
+    );
+  });
+
+  it("🔴 code d'échec de la proposition des plans : journalisé, jamais ignoré, acceptation intacte", async () => {
+    h.proposer.mockResolvedValueOnce("offre_illisible");
+    const r = await acceptDevisAction(DEVIS);
+    expect(r).toEqual({ data: { id: DEVIS } });
+    expect(sentry.captureMessage).toHaveBeenCalledWith(
+      expect.any(String),
+      expect.objectContaining({ tags: expect.objectContaining({ code: "offre_illisible" }) }),
     );
   });
 

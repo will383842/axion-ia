@@ -239,7 +239,9 @@ enum PaymentStatus {
   cancelled
 }
 
-/// Sprint X.1 — provider signature (ADR 0014 : DocuSeal self-hosted V1).
+/// Sprint X.1 — provider signature (ADR 0014 : DocuSeal self-hosted). DocuSeal reste ACTIF pour
+/// les contrats d'apporteurs ; pour les devis il est HISTORIQUE seulement (canal maison depuis le
+/// 2026-07-30).
 /// `physical_signed` = signature papier scannée et uploadée par Will.
 /// `interne` = canal maison (chaîne de hachage + snapshot figé), ajouté par le
 /// socle de preuve de signature. Additif : aucune valeur retirée.
@@ -8212,6 +8214,9 @@ model PlanRecurrent {
   devis            Devis?    @relation(fields: [devisId], references: [id], onDelete: SetNull)
   /// 'maintenance' | 'abonnement' | 'hebergement' (CHECK en base).
   nature           String?   @db.VarChar(20)
+  /// Jour du mois d'ancrage (1-31) de la 1re génération : évite que le jour dérive après un
+  /// mois court (31 → 28 → 28…). NULL = plan antérieur, comportement historique.
+  jourAncre        Int?      @map("jour_ancre")
   proposeAt        DateTime? @map("propose_at")
   valideAt         DateTime? @map("valide_at")
   valideParAdminId String?   @map("valide_par_admin_id") @db.Uuid

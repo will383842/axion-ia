@@ -1,6 +1,7 @@
 #!/usr/bin/env tsx
 /**
- * Verse dans R2 la preuve du devis historique signé via DocuSeal (PDF signé + journal d'audit)
+ * Verse dans R2 la preuve du devis historique signé via DocuSeal (PDF signé + journal d'audit).
+ * DocuSeal reste ACTIF pour les contrats d'apporteurs ; il n'est HISTORIQUE que pour les devis.
  * et crée la ligne `document_signatures` provider='docuseal'.
  *
  *   tsx scripts/export-docuseal-devis-historique.ts            # DRY-RUN (défaut) : ne fait rien
