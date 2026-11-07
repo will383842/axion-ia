@@ -146,6 +146,11 @@ const ALLOWED_PATTERNS: ReadonlyArray<RegExp> = [
  * pour rien.
  */
 const CONSOMMATEURS_ASSUMES: ReadonlySet<string> = new Set([
+  // Signature renforcée du devis, lot 4 bis (07/11/2026) — ce test de garde RGPD (aucune table ne garde une
+  // donnée personnelle en silence) lit `COLONNES_SCELLEES_DOCUMENT` (colonnes scellées de la signature,
+  // `document-reconstruction`) : c'est la liste unique des colonnes que l'effacement ne touche pas ; la
+  // recopier dans le test la ferait diverger. N'importe que ce module du domaine, rien d'autre. Nommé seul.
+  "src/lib/__tests__/rgpd-aucune-table-n-echappe-en-silence.spec.ts",
   // Signature renforcée du devis, lot 4 bis (07/11/2026) — le passage périodique du worker (5 min,
   // toujours allumé) reprend les jetons d'horodatage RFC 3161 restés « en attente » quand l'autorité
   // était injoignable (`passerHorodatages`, import PARESSEUX). Une file dédiée pour une seule requête
