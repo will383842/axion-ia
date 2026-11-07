@@ -46,6 +46,7 @@ import { prisma } from "@/lib/prisma";
 import { idsLiesALaSession } from "@/features/admin-emails/query";
 import { sectionIndicateur10Session } from "../adaptation-session";
 import { chargerDossierSession } from "../chargement";
+import { inscriptionSurSessionTenue } from "../../conformite/piece-admissible";
 import { MENTION_RESERVE_REFERENT } from "../blocs";
 
 type Fn = ReturnType<typeof vi.fn>;
@@ -287,6 +288,16 @@ describe("fail-soft, jamais muet", () => {
 });
 
 describe("modèles vierges et questionnaires remplis (dossier à 100 %)", () => {
+  it("un modèle vierge est marqué `modeleVierge`, une pièce remplacée non", async () => {
+    p["documentGenere"]!["findMany"]!.mockResolvedValue([
+      piece({ id: "pv", type: "positionnement", numero: "AXI-POS-2026-001" }),
+      piece({ id: "pr", numero: "AXI-ATT-2026-001", remplaceeParNumero: "AXI-ATT-2026-002" }),
+    ]);
+    const m = await chargerDossierSession("s1", { role: "admin" });
+    expect(m!.elements.find((e) => e.cle === "piece:pv")!.modeleVierge).toBe(true);
+    expect(m!.elements.find((e) => e.cle === "piece:pr")!.modeleVierge).toBeFalsy();
+  });
+
   it("un positionnement généré est un modèle vierge : étiqueté, hors voyants, jamais joint", async () => {
     p["documentGenere"]!["findMany"]!.mockResolvedValue([
       piece({ id: "pv", type: "positionnement", numero: "AXI-POS-2026-001" }),
@@ -320,7 +331,7 @@ describe("modèles vierges et questionnaires remplis (dossier à 100 %)", () => 
       (c) => c[0].where.enrollment !== undefined,
     )![0];
     expect(appel.where).toEqual({
-      enrollment: { sessionId: "s1" },
+      enrollment: { sessionId: "s1", ...inscriptionSurSessionTenue() },
       reponduAt: { not: null },
       type: { in: ["positionnement", "satisfaction_chaud", "satisfaction_froid"] },
     });
@@ -331,6 +342,50 @@ describe("modèles vierges et questionnaires remplis (dossier à 100 %)", () => 
     p["questionnaire"]!["findMany"]!.mockRejectedValueOnce(new Error("boom"));
     const m = await chargerDossierSession("s1", { role: "admin" });
     expect(m!.avertissements.join(" ")).toContain("questionnaires remplis");
+  });
+});
+
+describe("exemplaire signé : probant seulement s'il porte une signature en vigueur", () => {
+  const base = {
+    id: "ps",
+    type: "convention",
+    numero: "AXI-CONV-2026-009",
+    exemplaireSigneKey: "documents/signes/x.pdf",
+  };
+  const revoquee = {
+    signeAt: new Date("2026-10-20T10:00:00Z"),
+    revokedAt: new Date("2026-10-21T10:00:00Z"),
+  };
+  const vivante = { signeAt: new Date("2026-10-22T10:00:00Z"), revokedAt: null };
+
+  it("pièce remplacée : l'exemplaire signé est hors voyants et le dit", async () => {
+    p["documentGenere"]!["findMany"]!.mockResolvedValue([
+      piece({ ...base, remplaceeParNumero: "AXI-CONV-2026-010", signatures: [vivante] }),
+    ]);
+    const m = await chargerDossierSession("s1", { role: "admin" });
+    const s = m!.elements.find((e) => e.cle === "piece-signee:ps")!;
+    expect(s.horsVoyants).toBe(true);
+    expect(s.etiquettes.join(" ")).toContain("Remplacée par AXI-CONV-2026-010");
+  });
+
+  it("toutes les signatures révoquées : hors voyants, étiqueté non probant", async () => {
+    p["documentGenere"]!["findMany"]!.mockResolvedValue([
+      piece({ ...base, signatures: [revoquee] }),
+    ]);
+    const m = await chargerDossierSession("s1", { role: "admin" });
+    const s = m!.elements.find((e) => e.cle === "piece-signee:ps")!;
+    expect(s.horsVoyants).toBe(true);
+    expect(s.etiquettes.join(" ")).toContain("signatures révoquées");
+  });
+
+  it("une signature révoquée ET une en vigueur : reste probant, daté de la vivante", async () => {
+    p["documentGenere"]!["findMany"]!.mockResolvedValue([
+      piece({ ...base, signatures: [revoquee, vivante] }),
+    ]);
+    const m = await chargerDossierSession("s1", { role: "admin" });
+    const s = m!.elements.find((e) => e.cle === "piece-signee:ps")!;
+    expect(s.horsVoyants).toBe(false);
+    expect(s.etiquettes).toContain("Signé le 22/10/2026");
   });
 });
 
