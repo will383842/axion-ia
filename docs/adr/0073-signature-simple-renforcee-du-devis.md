@@ -53,7 +53,6 @@ révocation (CRL/OCSP) — à l'audit, hors ligne (`openssl ts -verify`).
 - Hors périmètre, à faire ensuite : affichage du jeton et de la déclaration dans l'exemplaire signé et le
   registre, vérification offline de la signature CMS du jeton, export de la preuve.
 
-
 ## Addendum — suivis de l'audit argent/données (2026-11-07)
 
 - **Texte des CGV** : la section « Signature électronique du devis » décrit désormais le **devis à formules** (seul
@@ -66,5 +65,8 @@ révocation (CRL/OCSP) — à l'audit, hors ligne (`openssl ts -verify`).
   possible sans casser la preuve du code vérifié ; la durée est celle de la preuve de signature.
 - **Nom et fonction** : bornes comptées en points de code Unicode (`Array.from`), comme `length()` SQL ;
   dépassement = refus propre, jamais une erreur 500.
-- **Code à usage unique** : consommé seulement quand le refus tient au code lui-même (voir code de
-  `signerDocument`).
+- **Code à usage unique** : si `signerDocument` refuse (refus typé : devis expiré, pièce déjà signée, lien révoqué
+  entre-temps…) APRÈS la vérification du code, le code est **restitué** (`restituerCodeSignature`) tant qu'il n'est pas
+  expiré ni invalidé : le signataire déjà vérifié n'a pas à redemander un code. **Non restitué, par prudence** : une
+  panne de stockage ou une erreur inattendue (on ne sait pas si la signature a été écrite) — le signataire en
+  redemande un.

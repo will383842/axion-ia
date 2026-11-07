@@ -212,7 +212,9 @@ export interface EraseSignatureTokensResult {
  * ## La distinction, qui est tout le sujet
  *
  * `DocumentSignature.signataireEmail` est **scellé** dans le tuple haché
- * (`COLONNES_SCELLEES_DOCUMENT`) : l'écraser ferait rendre `empreinte_invalide`
+ * (`COLONNES_SCELLEES_DOCUMENT`) — comme `signataireNom` et, pour le devis à formules (V4),
+ * `declarationNom` et `declarationFonction` (la déclaration de pouvoir saisie par le signataire) :
+ * l'écraser ferait rendre `empreinte_invalide`
  * à la vérification de chaîne, c'est-à-dire, dans un dossier présenté à un
  * contrôle, le verdict « ces pièces ont été modifiées après coup » sur des
  * pièces intactes. Ce dépôt a déjà payé ce défaut exact côté émargement. On n'y

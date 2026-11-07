@@ -312,7 +312,7 @@ describe("horodatage RFC 3161 : signature CMS et chaîne", () => {
 
   it("refuse un jeton dont la signature a été altérée", () => {
     const altere = Buffer.from(REELLE);
-    altere[altere.length - 5] ^= 0xff;
+    altere[altere.length - 5] = (altere[altere.length - 5] ?? 0) ^ 0xff;
     expect(() => verifierJeton(altere, [CA_PEM], T_REEL)).toThrow(/signature/);
   });
 

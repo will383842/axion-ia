@@ -511,6 +511,20 @@ de traitement) côté sous-processeurs. Révision trimestrielle minimum.
 | **DPA**              | NA — pas de sous-traitant supplémentaire                                                                   |
 | **Statut**           | ✅ **CONFORME** (interne, UE)                                                                              |
 
+### 7septies.1 — Signature renforcée du devis à formules (lot 4 bis) : conservation et droits
+
+| Donnée | Durée de conservation | Effacement / export (RGPD) |
+| ------ | --------------------- | -------------------------- |
+| `document_signatures` : `signataireNom`, `signataireEmail`, **`declarationNom`, `declarationFonction`**, `pouvoirDeclareAt`, `codeVerifieAt` | Durée de la preuve de signature (conservation du devis signé) | **Exception « colonne scellée »** (art. 17(3)(e), art. 1366 C. civ.) : ces colonnes entrent dans l'empreinte du sceau V4 ; les écraser ferait rendre `empreinte_invalide`. Déclarée dans `src/lib/rgpd-erase.ts` et `rgpd-aucune-table-n-echappe-en-silence.spec.ts`. |
+| **`document_signature_codes`** (code **haché** HMAC, `jeton_id`, essais, instants) | **Pas de purge automatique** : aucune suppression logique n'est possible sans perdre la preuve que le code a été vérifié avant la signature ; la durée de conservation est donc **celle de la preuve de signature** du devis auquel la ligne se rattache. Le code n'est jamais lisible (HMAC à clé serveur, 6 chiffres, expiré après 10 min) ; `jeton_id` ne renvoie à l'adresse que via le jeton, dont l'adresse est pseudonymisée à l'effacement (`eraseSignatureTokensForEmail`). | Aucune donnée en clair : hors périmètre de l'effacement (« technique »). |
+| `document_signature_echecs` (compteur d'échecs par pièce) | Idem : compteur et dates seulement, ni nom, ni adresse, ni code. | Hors périmètre (technique). |
+| `document_signature_horodatages` (empreinte SHA-256 du sceau, jeton) | Durée de la preuve de signature | Aucune donnée personnelle en clair (empreinte non réversible). |
+
+**Export RGPD de la personne** : il n'existe **aucun export des signataires de devis** (ni dans `rgpd-service.ts`
+ni ailleurs) ; une demande d'accès d'un signataire se traite à la main, sur demande écrite à l'organisme, à partir de
+`document_signatures` (nom, fonction, déclaration, adresse). Pas d'e-mail automatique. À ouvrir en lot dédié si
+le volume le justifie.
+
 ---
 
 

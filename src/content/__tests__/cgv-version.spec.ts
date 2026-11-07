@@ -8,10 +8,11 @@
  */
 import { describe, it, expect } from "vitest";
 import { empreinteTexteCgv } from "@/content/cgv-empreinte";
+import { getLegal } from "@/content/legal";
 import { CGV_VERSION, CGV_VERSION_LIBELLE, CGV_VERSION_LIBELLE_EN } from "@/content/cgv-version";
 
 /** Empreinte du texte FR pour la version courante. À mettre à jour AVEC CGV_VERSION. */
-const EMPREINTE_TEXTE_FR = "46fe4de371da981835d9f77ac2a7771bcc7af9964924a19694198ac46b85c235";
+const EMPREINTE_TEXTE_FR = "e6b28ee496863794a48493dbea3eca51c3072ab27434c95fe30def155d4c5ab4";
 const VERSION_DE_L_EMPREINTE = "2026-11-07";
 
 describe("cgv-version : source unique de la version des CGV", () => {
@@ -29,5 +30,17 @@ describe("cgv-version : source unique de la version des CGV", () => {
     // puis EMPREINTE_TEXTE_FR et VERSION_DE_L_EMPREINTE ensemble. Jamais l'empreinte seule.
     expect(CGV_VERSION).toBe(VERSION_DE_L_EMPREINTE);
     expect(empreinte).toBe(EMPREINTE_TEXTE_FR);
+  });
+
+  it("la section « Signature électronique du devis » ne promet les garanties renforcées qu'au devis à formules", () => {
+    for (const [langue, motif] of [
+      ["fr", /devis à formules.*Pour tout autre devis/s],
+      ["en", /options quote.*any other quote/s],
+    ] as const) {
+      const section = getLegal("conditions-generales")[langue].sections.find((s) =>
+        /signature of the quote|Signature électronique du devis/.test(s.title),
+      );
+      expect(section?.body).toMatch(motif);
+    }
   });
 });

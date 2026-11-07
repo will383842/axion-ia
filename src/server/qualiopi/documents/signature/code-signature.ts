@@ -133,7 +133,12 @@ export async function emettreCodeSignature(input: {
 }
 
 export type VerificationCode =
-  | { ok: true }
+  /**
+   * `codeId` : la ligne consommée, rendue SEULEMENT quand l'appelant a demandé un blocage (signature
+   * renforcée du devis) — pour pouvoir la restituer si la signature est refusée pour une raison
+   * étrangère au code (`restituerCodeSignature`). Contrat-cadre : `{ ok: true }` inchangé.
+   */
+  | { ok: true; codeId?: string }
   /** `bloque` : la pièce est bloquée (cinquième échec) ; seulement quand l'appelant a demandé un blocage. */
   | { ok: false; message: string; bloque?: true };
 
@@ -264,7 +269,23 @@ export async function verifierCodeSignature(input: {
     where: { id: ligne.id, ...vivant },
     data: { utiliseAt: maintenant },
   });
-  return consomme.count === 1 ? { ok: true } : REFUS;
+  if (consomme.count !== 1) return REFUS;
+  return input.blocageMs === undefined ? { ok: true } : { ok: true, codeId: ligne.id };
+}
+
+/**
+ * Rend un code consommé à l'état « vivant » : la signature qu'il devait autoriser a été REFUSÉE
+ * (pièce déjà signée, devis expiré, lien révoqué entre-temps…) pour une raison qui ne tient pas au
+ * code. Sans cela le signataire, déjà vérifié, devrait redemander un code (5 envois par heure et par
+ * lien). Un code expiré ou invalidé n'est jamais ressuscité ; la restitution n'a lieu que sur un
+ * refus typé de `signerDocument`, jamais après une erreur inattendue (on ne sait alors pas si la
+ * signature a été écrite — le code reste consommé, par prudence).
+ */
+export async function restituerCodeSignature(codeId: string, maintenant: Date): Promise<void> {
+  await prisma.documentSignatureCode.updateMany({
+    where: { id: codeId, invalideAt: null, expiresAt: { gt: maintenant } },
+    data: { utiliseAt: null },
+  });
 }
 
 /**

@@ -65,7 +65,10 @@ import {
   memeAdresse,
   objectionContratCadre,
 } from "@/server/qualiopi/documents/signature/contrat-cadre-signature";
-import { verifierCodeSignature } from "@/server/qualiopi/documents/signature/code-signature";
+import {
+  restituerCodeSignature,
+  verifierCodeSignature,
+} from "@/server/qualiopi/documents/signature/code-signature";
 import { envoyerCodeDevis } from "@/server/qualiopi/devis/code-signature-devis";
 import { reinitialiserEchecsSignature } from "@/server/qualiopi/documents/signature/echecs-cumules";
 import { horodaterSignature } from "@/server/qualiopi/documents/signature/horodatage-signature";
@@ -507,6 +510,8 @@ export async function signerPieceParJetonAction(input: {
   // consommé qu'en DERNIER, une fois tout le reste valide — un oubli de case ne coûte pas un code.
   let renforcee:
     { declarationNom: string; declarationFonction: string; pouvoirDeclareAt: Date } | undefined;
+  // Ligne du code consommé : restituée si `signerDocument` refuse pour une raison étrangère au code.
+  let codeConsommeId: string | undefined;
   if (choixOffre !== undefined && verif.partie === "client") {
     const decl = validerDeclaration(
       donnees.declaration ?? { nom: undefined, fonction: undefined, pouvoirEngager: undefined },
@@ -547,6 +552,7 @@ export async function signerPieceParJetonAction(input: {
         message: v.message,
       };
     }
+    codeConsommeId = v.codeId;
     renforcee = {
       declarationNom: decl.declaration.nom,
       declarationFonction: decl.declaration.fonction,
@@ -591,7 +597,19 @@ export async function signerPieceParJetonAction(input: {
       ...(choixOffre === undefined ? {} : { choixOffre, cgvAccepteeAt: recuLe }),
       ...contexte,
     });
-    if (!res.ok) return res;
+    if (!res.ok) {
+      // Refus typé (rien n'a été écrit) : le code vérifié ne doit pas être perdu pour rien. Jamais
+      // fatal. Panne de stockage ou erreur inattendue (plus bas) : le code reste consommé — on ne
+      // sait pas si la signature a été écrite, et le signataire en redemande un.
+      if (codeConsommeId !== undefined) {
+        try {
+          await restituerCodeSignature(codeConsommeId, new Date());
+        } catch {
+          // le refus d'origine est ce qui compte ; le code expirera de lui-même
+        }
+      }
+      return res;
+    }
 
     // Remise, alerte « reste à signer », copie partielle et conséquences
     // métier : un seul après-signature pour les six actions (S6a).

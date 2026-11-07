@@ -75,6 +75,36 @@ describe("validerDeclaration", () => {
   });
 });
 
+describe("longueur du nom et de la fonction : points de code Unicode (comme length() SQL)", () => {
+  const saisie = (nom: string, fonction = "DG") =>
+    validerDeclaration({ nom, fonction, pouvoirEngager: true });
+
+  it("un emoji est UN caractère : « 😀 » seul est trop court, « 😀😀 » suffit", () => {
+    expect(saisie("😀")).toMatchObject({ ok: false, raison: "nom_invalide" });
+    expect(saisie("😀😀")).toMatchObject({ ok: true });
+  });
+
+  it("200 emojis (400 unités UTF-16) passent ; 201 sont refusés proprement, sans lever", () => {
+    expect(saisie("😀".repeat(200))).toMatchObject({ ok: true });
+    expect(() => saisie("😀".repeat(201))).not.toThrow();
+    expect(saisie("😀".repeat(201))).toMatchObject({ ok: false, raison: "nom_invalide" });
+    expect(saisie("Jeanne", "🧑‍💼".repeat(100))).toMatchObject({
+      ok: false,
+      raison: "fonction_invalide",
+    });
+  });
+
+  it("ce qui passe tient dans VARCHAR(200) : jamais plus de 200 points de code", () => {
+    const r = saisie("é".repeat(200));
+    expect(r.ok && Array.from(r.declaration.nom).length).toBe(200);
+  });
+
+  it("un demi-substitut isolé (UTF-8 invalide pour Postgres) est refusé, jamais écrit", () => {
+    expect(saisie("Jeanne \ud83d")).toMatchObject({ ok: false, raison: "nom_invalide" });
+    expect(saisie("\ude00 Martin")).toMatchObject({ ok: false, raison: "nom_invalide" });
+  });
+});
+
 describe("décision d'envoi du code", () => {
   const libre = {
     maintenant: T,

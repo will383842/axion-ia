@@ -14,7 +14,10 @@ vi.mock("@/lib/prisma", () => ({
     documentSignature: { count: vi.fn() },
   },
 }));
-const code = vi.hoisted(() => ({ verifierCodeSignature: vi.fn() }));
+const code = vi.hoisted(() => ({
+  verifierCodeSignature: vi.fn(),
+  restituerCodeSignature: vi.fn(async () => undefined),
+}));
 vi.mock("@/server/qualiopi/documents/signature/code-signature", () => code);
 const echecs = vi.hoisted(() => ({ reinitialiserEchecsSignature: vi.fn(async () => undefined) }));
 vi.mock("@/server/qualiopi/documents/signature/echecs-cumules", () => echecs);
@@ -91,7 +94,7 @@ function entree(over: Record<string, unknown> = {}) {
 beforeEach(() => {
   vi.clearAllMocks();
   mockLimit.mockResolvedValue({ allowed: true });
-  code.verifierCodeSignature.mockResolvedValue({ ok: true });
+  code.verifierCodeSignature.mockResolvedValue({ ok: true, codeId: "code-1" });
   mockPrisma.documentSignature.count.mockResolvedValue(0);
   interrupteur.formulesActives.mockResolvedValue(true);
   mockVerif.mockResolvedValue({
@@ -491,6 +494,28 @@ describe("devis à formules — signature RENFORCÉE : déclaration et code (lot
     const res = await signerPieceParJetonAction(entree());
     expect(res).toMatchObject({ ok: false, raison: "deja_signe" });
     expect(horodatage.horodaterSignature).not.toHaveBeenCalled();
+  });
+
+  it("m4 — le service refuse pour une raison étrangère au code : le code consommé est RESTITUÉ", async () => {
+    mockSigner.mockResolvedValue({ ok: false, raison: "devis_expire", message: "expiré" });
+    const res = await signerPieceParJetonAction(entree());
+    expect(res).toMatchObject({ ok: false, raison: "devis_expire" });
+    expect(code.restituerCodeSignature).toHaveBeenCalledTimes(1);
+    expect(code.restituerCodeSignature).toHaveBeenCalledWith("code-1", expect.any(Date));
+  });
+
+  it("m4 — une restitution qui échoue ne change pas le refus rendu", async () => {
+    mockSigner.mockResolvedValue({ ok: false, raison: "devis_expire", message: "expiré" });
+    code.restituerCodeSignature.mockRejectedValueOnce(new Error("base indisponible"));
+    expect(await signerPieceParJetonAction(entree())).toMatchObject({
+      ok: false,
+      raison: "devis_expire",
+    });
+  });
+
+  it("m4 — une signature réussie ne restitue rien : le code reste consommé", async () => {
+    await signerPieceParJetonAction(entree());
+    expect(code.restituerCodeSignature).not.toHaveBeenCalled();
   });
 
   it("🔴 lien expiré ou révoqué : refus avant toute lecture, le code n'est pas consommé", async () => {

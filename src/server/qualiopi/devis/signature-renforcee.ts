@@ -63,9 +63,13 @@ const MESSAGES: Record<RaisonRefusDeclaration, string> = {
     "Pour signer ce devis, cochez la case « Je déclare avoir le pouvoir d'engager la société ».",
 };
 
-/** Caractères de commande (dont retours à la ligne), séparateurs de ligne/paragraphe et marques bidi. */
+/**
+ * Caractères de commande (dont retours à la ligne), séparateurs de ligne/paragraphe, marques bidi et
+ * demi-substituts ISOLÉS (en mode `u`, une paire valide — un emoji — est un seul point de code et ne
+ * correspond pas ; un demi-substitut seul est de l'UTF-8 invalide que Postgres refuserait en 500).
+ */
 const INTERDITS = new RegExp(
-  "[\\u0000-\\u001f\\u007f-\\u009f\\u2028\\u2029\\u200b-\\u200f\\u202a-\\u202e\\u2066-\\u2069]",
+  "[\\u0000-\\u001f\\u007f-\\u009f\\u2028\\u2029\\u200b-\\u200f\\u202a-\\u202e\\u2066-\\u2069\\ud800-\\udfff]",
   "u",
 );
 
@@ -74,7 +78,9 @@ export function normaliserSaisie(v: unknown): string | null {
   if (typeof v !== "string") return null;
   if (INTERDITS.test(v)) return null;
   const propre = v.normalize("NFC").replace(/\s+/g, " ").trim();
-  if (propre.length < DECLARATION_LONGUEUR_MIN || propre.length > DECLARATION_LONGUEUR_MAX) {
+  // Points de code, pas unités UTF-16 : c'est ce que compte `length()` côté SQL (VARCHAR(200)).
+  const longueur = Array.from(propre).length;
+  if (longueur < DECLARATION_LONGUEUR_MIN || longueur > DECLARATION_LONGUEUR_MAX) {
     return null;
   }
   return propre;
