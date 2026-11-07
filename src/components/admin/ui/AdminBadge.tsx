@@ -3,6 +3,7 @@
 // Badge admin (vs <Badge> public éditorial). Compact, uppercase tracking.
 // Variant générique + variant status spécialisé par enum métier.
 
+import { CircleCheck, Info, TriangleAlert, X, type LucideIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 type AdminBadgeTone = "neutral" | "info" | "success" | "warning" | "destructive" | "outline";
@@ -30,6 +31,22 @@ const TONE_PLEIN: Record<Exclude<AdminBadgeTone, "outline">, string> = {
   destructive: "admin-badge-plein--destructive",
 };
 
+// États : icône ET mot, jamais la couleur seule. Le mot est le libellé du badge ;
+// l'icône (décorative) est posée à la place du point pour les tons d'état.
+const TONE_ICONE: Partial<Record<AdminBadgeTone, LucideIcon>> = {
+  success: CircleCheck,
+  destructive: X,
+  warning: TriangleAlert,
+  info: Info,
+};
+
+// Erreur et attention : filet gauche de 3 px, texte noir (jamais rouge).
+const FILET_GAUCHE: Partial<Record<AdminBadgeTone, string>> = {
+  destructive:
+    "border-l-[3px] border-[color:var(--color-admin-destructive-line,var(--color-admin-destructive))]",
+  warning: "border-l-[3px] border-[color:var(--color-admin-warning)]",
+};
+
 const TONE_CLASS: Record<AdminBadgeTone, string> = {
   neutral: "bg-[color:var(--color-admin-neutral-soft)] text-[color:var(--color-admin-neutral)]",
   info: "bg-[color:var(--color-admin-info-soft)] text-[color:var(--color-admin-info)]",
@@ -50,6 +67,7 @@ export function AdminBadge({
   plein = false,
   className,
 }: AdminBadgeProps): React.ReactElement {
+  const Icone = TONE_ICONE[tone];
   return (
     <span
       className={cn(
@@ -58,10 +76,18 @@ export function AdminBadge({
           ? "px-[var(--space-admin-3)] py-[var(--space-admin-1)] text-[length:var(--text-admin-xs)]"
           : "px-[var(--space-admin-4)] py-[var(--space-admin-2)] text-[length:var(--text-admin-sm)]",
         plein && tone !== "outline" ? ["admin-badge-plein", TONE_PLEIN[tone]] : TONE_CLASS[tone],
+        dot && !plein && FILET_GAUCHE[tone],
         className,
       )}
     >
-      {dot ? (
+      {dot && Icone ? (
+        <Icone
+          aria-hidden="true"
+          size={12}
+          strokeWidth={2.5}
+          className={cn("shrink-0", pulse && "motion-safe:animate-pulse")}
+        />
+      ) : dot ? (
         <span
           aria-hidden="true"
           className={cn(

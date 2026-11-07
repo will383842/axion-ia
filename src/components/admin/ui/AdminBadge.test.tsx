@@ -130,3 +130,46 @@ describe("AdminStatusBadge", () => {
     );
   });
 });
+
+describe("AdminBadge — états avec icône ET mot (décision de Williams)", () => {
+  const tons = ["success", "destructive", "warning", "info"] as const;
+
+  it.each(tons)("le ton %s porte une icône (svg) en plus du libellé", (tone) => {
+    const { container } = render(
+      <AdminBadge tone={tone} dot>
+        Libellé
+      </AdminBadge>,
+    );
+    expect(screen.getByText("Libellé")).toBeDefined();
+    const icone = container.querySelector(".admin-badge-v2 svg[aria-hidden='true']");
+    expect(icone).not.toBeNull();
+  });
+
+  it("l'erreur : texte noir via -fg, filet gauche de 3 px, jamais de texte rouge", () => {
+    const { container } = render(
+      <AdminBadge tone="destructive" dot>
+        Échec
+      </AdminBadge>,
+    );
+    const cls = container.querySelector(".admin-badge-v2")?.className ?? "";
+    expect(cls).toContain("border-l-[3px]");
+    expect(cls).toContain("--color-admin-destructive-fg");
+    expect(cls).not.toMatch(/text-\[color:var\(--color-admin-destructive\)\]/);
+  });
+
+  it("le ton neutre garde le point, sans icône d'état", () => {
+    const { container } = render(
+      <AdminBadge tone="neutral" dot>
+        Inactif
+      </AdminBadge>,
+    );
+    expect(container.querySelector(".admin-badge-v2 svg")).toBeNull();
+    expect(container.querySelector(".admin-badge-v2 [aria-hidden='true']")).not.toBeNull();
+  });
+
+  it("AdminStatusBadge d'un échec affiche l'icône ET le mot", () => {
+    const { container } = render(<AdminStatusBadge status="failed" type="job" />);
+    expect(screen.getByText("Échec")).toBeDefined();
+    expect(container.querySelector("svg[aria-hidden='true']")).not.toBeNull();
+  });
+});

@@ -4,7 +4,7 @@
 // Server Component. 19 KPIs dashboard/content-gen/analytics à migrer.
 
 import Link from "next/link";
-import type { LucideIcon } from "lucide-react";
+import { CircleCheck, Info, TriangleAlert, X, type LucideIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Sparkline } from "./charts";
 
@@ -43,17 +43,23 @@ const TONE_PASTILLE: Record<StatTone, string> = {
   info: "bg-[color:var(--color-admin-info-soft)] text-[color:var(--color-admin-info)]",
 };
 
-// Refonte juin 2026 (P1 audit design console) — l'accent de tonalité passait
-// par une grosse bordure-gauche 4px (pattern « alerte Bootstrap » daté). On
-// remplace par une pastille de couleur 6px devant le label : bordure de carte
-// uniforme + signal de tonalité discret et moderne (réf. dots de statut
-// Linear/Vercel). `default` = aucune pastille.
-const TONE_DOT: Record<StatTone, string | null> = {
+// États : icône ET mot, jamais la couleur seule. `default` = aucun état.
+// Erreur et attention : filet gauche de 3 px sur fond blanc, texte noir.
+const TONE_ETAT: Record<StatTone, { Icone: LucideIcon; mot: string } | null> = {
   default: null,
-  success: "bg-[color:var(--color-admin-success)]",
-  warning: "bg-[color:var(--color-admin-warning)]",
-  destructive: "bg-[color:var(--color-admin-destructive)]",
-  info: "bg-[color:var(--color-admin-info)]",
+  success: { Icone: CircleCheck, mot: "Réussite" },
+  warning: { Icone: TriangleAlert, mot: "Attention" },
+  destructive: { Icone: X, mot: "Erreur" },
+  info: { Icone: Info, mot: "Info" },
+};
+
+const TONE_FILET: Record<StatTone, string | null> = {
+  default: null,
+  success: null,
+  warning: "border-l-[3px] border-l-[color:var(--color-admin-warning)]",
+  destructive:
+    "border-l-[3px] border-l-[color:var(--color-admin-destructive-line,var(--color-admin-destructive))]",
+  info: null,
 };
 
 function deltaTone(delta: string): "up" | "down" | "neutral" {
@@ -64,7 +70,7 @@ function deltaTone(delta: string): "up" | "down" | "neutral" {
 
 const DELTA_COLOR: Record<"up" | "down" | "neutral", string> = {
   up: "text-[color:var(--color-admin-success)]",
-  down: "text-[color:var(--color-admin-destructive)]",
+  down: "text-[color:var(--color-admin-destructive-fg)]",
   neutral: "text-[color:var(--color-admin-fg-muted)]",
 };
 
@@ -80,6 +86,7 @@ export function AdminStatCard({
   trendLabels,
   className,
 }: AdminStatCardProps): React.ReactElement {
+  const etat = TONE_ETAT[tone];
   const content = (
     <div
       className={cn(
@@ -87,6 +94,7 @@ export function AdminStatCard({
         "rounded-[var(--radius-admin-xl)] border border-[color:var(--color-admin-border)]",
         "bg-[color:var(--color-admin-paper)]",
         "p-[var(--space-admin-6)] shadow-[var(--shadow-admin-1)]",
+        TONE_FILET[tone],
         href && "transition-shadow hover:shadow-[var(--shadow-admin-2)]",
         className,
       )}
@@ -107,11 +115,20 @@ export function AdminStatCard({
             "text-[color:var(--color-admin-fg-soft)]",
           )}
         >
-          {TONE_DOT[tone] ? (
-            <span
-              aria-hidden="true"
-              className={cn("h-[6px] w-[6px] shrink-0 rounded-full", TONE_DOT[tone])}
-            />
+          {etat ? (
+            <span className="flex items-center gap-[var(--space-admin-2)]">
+              <etat.Icone aria-hidden="true" size={14} strokeWidth={2.5} />
+              <span
+                className={cn(
+                  "font-semibold",
+                  tone === "destructive"
+                    ? "text-[color:var(--color-admin-destructive-fg)]"
+                    : "text-[color:var(--color-admin-fg)]",
+                )}
+              >
+                {etat.mot}
+              </span>
+            </span>
           ) : null}
           {label}
         </span>
