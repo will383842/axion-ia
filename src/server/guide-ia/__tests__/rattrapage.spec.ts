@@ -117,6 +117,8 @@ describe("rattraperGuides — adresse opposée (toutes origines)", () => {
     expect(abonneFindUnique).not.toHaveBeenCalled();
     expect(guideUpdateMany).not.toHaveBeenCalled();
     expect(estOpposee).toHaveBeenCalledWith(CANDIDATE.email);
+    // Ordre exigé : réparation → opposition → verdict → lettre. Le verdict n'est jamais consulté.
+    expect(verdictAvantEnvoi).not.toHaveBeenCalled();
   });
 
   it("ligne sans origine + adresse opposée : écartée", async () => {
