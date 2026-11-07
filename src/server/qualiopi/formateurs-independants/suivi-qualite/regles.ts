@@ -313,7 +313,11 @@ export function missionsAReprendre(
     }
     // Entretien : mission suivie seulement (une annulée n'a pas d'entretien à prévoir).
     // Une levée motivée vaut entretien ; un entretien seul ne lève pas une suspension.
-    if (suivies.has(m.sessionId) && niveauSatisfaction(m.satisfaction, R) === "entretien") {
+    // Même mesure que la console : la PIRE (3,2 puis 4,5 -> entretien à prévoir).
+    if (
+      suivies.has(m.sessionId) &&
+      niveauSatisfaction(satisfactionPlancher(m), R) === "entretien"
+    ) {
       if (ds.length === 0) entretien.push(m);
     }
   }

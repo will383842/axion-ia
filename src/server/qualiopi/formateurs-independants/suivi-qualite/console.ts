@@ -18,8 +18,8 @@ import {
   etatEvaluationMission,
   etatObservation,
   etatReevaluation,
-  missionsAReprendre,
   missionsSuivies,
+  missionsSuspensives,
   niveauSatisfaction,
   satisfactionPlancher,
   type EtatObservation,
@@ -214,15 +214,18 @@ export async function lireEcranSuiviQualite(
   const infos = await prisma.trainingSession.findMany({
     where: {
       id: {
-        in: [...suivies, ...missionsAReprendre(f, reglages).suspension].map((m) => m.sessionId),
+        in: [...suivies, ...missionsSuspensives(f)].map((m) => m.sessionId),
       },
     },
     select: { id: true, numero: true, titreSession: true },
   });
   const info = new Map(infos.map((i) => [i.id, i]));
   const aujourdhui = jourParis(maintenant);
-  // Les missions annulées ne s'affichent que si elles portent une suspension non levée.
-  const annuleesSuspendues = missionsAReprendre(f, reglages).suspension.filter((m) => m.annulee);
+  // Les missions annulées ne s'affichent que si elles portent une suspension (levée comprise :
+  // la décision de levée reste visible, pour la traçabilité).
+  const annuleesSuspendues = missionsSuspensives(f).filter(
+    (m) => m.annulee && niveauSatisfaction(satisfactionPlancher(m), reglages) === "suspension",
+  );
   const missions: MissionConsole[] = [...suivies, ...annuleesSuspendues].map((m) => {
     const saisie = f.evaluations.some((e) => e.sessionId === m.sessionId);
     const ds = f.decisions.filter((d) => d.sessionId === m.sessionId);

@@ -708,7 +708,7 @@ export const QUALIOPI_CONFIG_REGISTRY = {
   suivi_qualite_texte_min_caracteres: {
     ...num(REGLAGES_SUIVI_QUALITE.texteMinCaracteres),
     description:
-      "Indicateur 21 — longueur minimale d'une conclusion de grille ou d'un motif de décision du suivi qualité. Entier de 2 à 500. Défaut 10, à valider par Will.",
+      "Indicateur 21 — longueur minimale d'une conclusion de grille ou d'un motif de décision du suivi qualité. Entier de 5 à 500. Défaut 10, à valider par Will.",
   },
 } as const satisfies Record<string, ConfigEntry<unknown>>;
 
