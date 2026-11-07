@@ -48,21 +48,43 @@ beforeEach(() => {
     numero: "AXI-DEV-2026-001",
   });
   sigs("client", "axionia");
-  reprise.mockResolvedValue({ traite: true, ids: ["dv-1"], plansEchec: [] });
+  reprise.mockResolvedValue({
+    traite: true,
+    ids: ["dv-1"],
+    plansEchec: [],
+    confirmationsEchec: [],
+  });
 });
 
 describe("relancerAcceptationDevisAction", () => {
   it("devis signé des deux parties sans formule retenue : relance l'acceptation", async () => {
     const r = await relancerAcceptationDevisAction({ documentGenereId: DOC });
     expect(r).toEqual({ ok: true, devisAcceptes: 1 });
-    expect(reprise).toHaveBeenCalledWith(DOC);
+    expect(reprise).toHaveBeenCalledWith(DOC, { confirmer: true });
   });
 
   it("🔴 acceptation reprise mais plans non proposés : échec visible, jamais un succès muet", async () => {
-    reprise.mockResolvedValue({ traite: true, ids: ["dv-1"], plansEchec: ["dv-1"] });
+    reprise.mockResolvedValue({
+      traite: true,
+      ids: ["dv-1"],
+      plansEchec: ["dv-1"],
+      confirmationsEchec: [],
+    });
     const r = await relancerAcceptationDevisAction({ documentGenereId: DOC });
     expect(r.ok).toBe(false);
     expect(!r.ok && r.message).toContain("plans récurrents");
+  });
+
+  it("🔴 acceptation reprise mais confirmation de commande non préparée : échec visible", async () => {
+    reprise.mockResolvedValue({
+      traite: true,
+      ids: ["dv-1"],
+      plansEchec: [],
+      confirmationsEchec: ["dv-1"],
+    });
+    const r = await relancerAcceptationDevisAction({ documentGenereId: DOC });
+    expect(r.ok).toBe(false);
+    expect(!r.ok && r.message).toContain("confirmation de commande");
   });
 
   it("rôle sans habilitation à contresigner : refusé, rien n'est relancé", async () => {
@@ -89,13 +111,13 @@ describe("relancerAcceptationDevisAction", () => {
   });
 
   it("rien à reprendre (déjà accepté) : message clair, pas d'erreur levée", async () => {
-    reprise.mockResolvedValue({ traite: false, ids: [], plansEchec: [] });
+    reprise.mockResolvedValue({ traite: false, ids: [], plansEchec: [], confirmationsEchec: [] });
     const r = await relancerAcceptationDevisAction({ documentGenereId: DOC });
     expect(r.ok).toBe(false);
   });
 
   it("🔴 traite:true mais aucun devis réellement accepté : dit clairement que rien n'a été fait", async () => {
-    reprise.mockResolvedValue({ traite: true, ids: [], plansEchec: [] });
+    reprise.mockResolvedValue({ traite: true, ids: [], plansEchec: [], confirmationsEchec: [] });
     const r = await relancerAcceptationDevisAction({ documentGenereId: DOC });
     expect(r.ok).toBe(false);
     expect(!r.ok && r.message).toContain("Rien n'a été fait");
