@@ -94,6 +94,13 @@ describe("relancerAcceptationDevisAction", () => {
     expect(r.ok).toBe(false);
   });
 
+  it("🔴 traite:true mais aucun devis réellement accepté : dit clairement que rien n'a été fait", async () => {
+    reprise.mockResolvedValue({ traite: true, ids: [], plansEchec: [] });
+    const r = await relancerAcceptationDevisAction({ documentGenereId: DOC });
+    expect(r.ok).toBe(false);
+    expect(!r.ok && r.message).toContain("Rien n'a été fait");
+  });
+
   it("nouvel échec : message avec le motif, jamais d'exception", async () => {
     reprise.mockRejectedValue(Object.assign(new Error("x"), { motif: "offre_alteree" }));
     const r = await relancerAcceptationDevisAction({ documentGenereId: DOC });
