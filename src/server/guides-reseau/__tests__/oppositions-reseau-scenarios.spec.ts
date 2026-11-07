@@ -273,19 +273,18 @@ beforeEach(() => {
 });
 
 describe("(a) rejeu", () => {
-  // ESCALADE (faible gravité, l'opposition est idempotente) : la route des oppositions ne
-  // mémorise AUCUN nonce (`recevoirOpposition` ne le lit pas ; `controlerEntree` ne le contrôle
-  // que dans sa forme). Un même couple (horodatage, nonce, signature) rejoué dans la fenêtre de
-  // 300 s est donc traité comme une nouvelle requête (200), alors que la consigne demande un
-  // refus anti-rejeu. À arbitrer : soit ajouter la mémoire du nonce, soit acter que
-  // l'idempotence par empreinte suffit. Voir la description de la PR.
-  it.fails("même nonce rejoué → refus anti-rejeu (401 ou 409)", async () => {
-    const nonce = "n".repeat(32);
+  // décision : l'idempotence par empreinte tient lieu d'anti-rejeu, comme reception.ts
+  it("même nonce rejoué dans la fenêtre (même corps signé) → 200 identique, sans nouvel effet", async () => {
+    const nonce = "c".repeat(32);
     const horodatage = String(Math.floor(Date.now() / 1000));
     const premier = await appel(valide, { nonce, horodatage });
-    expect(premier.status).toBe(200);
     const second = await appel(valide, { nonce, horodatage });
-    expect([401, 409]).toContain(second.status);
+    expect(premier.status).toBe(200);
+    expect(second.status).toBe(200);
+    expect(await second.json()).toEqual(await premier.json());
+    expect(bd.oppositions).toHaveLength(1);
+    expect(bd.outbox).toHaveLength(1);
+    expect(bd.suppressions).toBe(0);
   });
 
   it("même cleIdempotence, nouveau nonce → 200 identique, une seule ligne d'opposition", async () => {
@@ -337,42 +336,26 @@ describe("(c) désordre — opposition et demandes du guide", () => {
     expect(bd.envois).toHaveLength(0);
   });
 
-  // 🔴 ESCALADE RGPD — scénario exact :
+  // Scénario RGPD :
   //   1. la personne a demandé le guide par le FORMULAIRE du site (ligne guide_requests,
   //      origine « formulaire », jamais envoyée) ;
   //   2. elle écrit ensuite « stop » en message privé d'un réseau → ligne email_oppositions ;
-  //   3. le rattrapage horaire reprend la demande : il ne contrôle l'opposition QUE pour
-  //      l'origine « message_prive » (`reseau && estOpposee`), donc il met le guide en file
-  //      pour une adresse qui s'est opposée.
-  // Le test d'origine « formulaire » de rattrapage.spec.ts fige ce comportement
-  // (« le formulaire n'est pas concerné »). Ce test dit ce que la consigne attend : aucun envoi.
-  // Il ÉCHOUE parce que le code est faux selon la consigne : NE PAS corriger ici.
-  it.fails(
-    "🔴 ESCALADE : ligne d'origine « formulaire » (non réécrite) + plafond + opposition + rattrapage → aucun envoi",
-    async () => {
-      bd.demandes.push(ligneFormulaire());
-      bd.logs.heure = PLAFOND_HORAIRE_GUIDE;
-      // La demande réseau retrouve la ligne existante : l'origine « formulaire » n'est pas réécrite.
-      const d = await traiterDemande(demandeReseau(), IL_Y_A_UN_JOUR);
-      expect(d).toMatchObject({ ok: true, nouvelle: false, guide: "plafond" });
-      expect(bd.demandes[0]!.origine).toBe("formulaire");
-
-      expect((await appel()).status).toBe(200);
-
-      bd.logs.heure = 0;
-      await rattraperGuides(MAINTENANT);
-      expect(bd.envois).toHaveLength(0);
-    },
-  );
-
-  // Témoin de l'escalade : décrit le comportement ACTUEL (un envoi part), pour que le
-  // `it.fails` ci-dessus rougisse le jour où le code est corrigé et que ce témoin soit retiré.
-  it("témoin (comportement actuel) : la ligne « formulaire » opposée est bien reprise par le rattrapage", async () => {
+  //   3. le rattrapage horaire reprend la demande : il contrôle l'opposition quelle que soit
+  //      l'origine, donc il écarte la ligne et ne met rien en file.
+  it("🔴 ligne d'origine « formulaire » (non réécrite) + plafond + opposition + rattrapage → aucun envoi", async () => {
     bd.demandes.push(ligneFormulaire());
+    bd.logs.heure = PLAFOND_HORAIRE_GUIDE;
+    // La demande réseau retrouve la ligne existante : l'origine « formulaire » n'est pas réécrite.
+    const d = await traiterDemande(demandeReseau(), IL_Y_A_UN_JOUR);
+    expect(d).toMatchObject({ ok: true, nouvelle: false, guide: "plafond" });
+    expect(bd.demandes[0]!.origine).toBe("formulaire");
+
     expect((await appel()).status).toBe(200);
+
+    bd.logs.heure = 0;
     const rapport = await rattraperGuides(MAINTENANT);
-    expect(rapport.relancees).toBe(1);
-    expect(bd.envois).toHaveLength(1);
+    expect(rapport.ecartees).toBe(1);
+    expect(bd.envois).toHaveLength(0);
   });
 });
 

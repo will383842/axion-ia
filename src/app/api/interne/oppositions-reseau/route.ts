@@ -5,6 +5,7 @@
  * Signée comme `/api/interne/demandes-guide-reseau` (HMAC + horodatage + nonce) avec SON
  * interrupteur, SON secret (`GUIDES_RESEAU_HMAC_SECRET`, sans repli sur celui des vidéos) et
  * SON seau de débit. Aucune suppression : l'adresse est seulement mise à l'écart des envois.
+ * Le nonce est contrôlé en forme, pas mémorisé : un rejeu dans la fenêtre de 300 s reproduit la même opposition, sans nouvel effet ; décision du 07/11/2026.
  */
 import type { NextRequest } from "next/server";
 import { controlerEntree } from "@/server/videos/entree";
