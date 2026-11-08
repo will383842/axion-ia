@@ -41,3 +41,34 @@ describe("pages d'audit : aucun montant dans les métadonnées", () => {
     });
   }
 });
+
+describe("R5a (relecture) : plus aucun montant dans le contenu des audits", () => {
+  const sources = [
+    "src/content/audit-detail-configs.ts",
+    "src/content/audit-taxonomy.ts",
+    "src/components/services/audit/AuditAudience.tsx",
+    "src/components/services/audit/AuditFormatsCards.tsx",
+  ];
+  for (const f of sources) {
+    it(`${f} n'écrit ni n'appelle aucun montant d'audit`, () => {
+      const src = lire(f)
+        .replace(/\/\*[\s\S]*?\*\//g, "")
+        .replace(/^\s*\/\/.*$/gm, "");
+      expect(src).not.toMatch(/PRICE_[A-Z_]+|priceMin|\.priceFlat!|formatAmount\(/);
+      expect(src).not.toMatch(/\d[  ]?€|1[  ]?(190|900)|3[  ]?900/);
+    });
+  }
+
+  it("le hub ne renvoie plus vers /audit/tpe-1-jour (carte et liste JSON-LD)", () => {
+    for (const f of sources) expect(lire(f), f).not.toContain('"/audit/tpe-1-jour"');
+    expect(lire("src/components/services/audit/AuditAudience.tsx")).toContain('"/journee-ia"');
+    expect(lire("src/components/services/audit/AuditFormatsCards.tsx")).toContain('"/journee-ia"');
+    expect(lire("src/content/audit-taxonomy.ts")).not.toContain('id: "audit-flash"');
+  });
+
+  it("la carte tarifaire d'un palier masqué dit « Sur devis » sans « À partir de »", () => {
+    const src = lire("src/components/sections/AuditDetailPage.tsx");
+    expect(src).toContain("prixPublicMasque");
+    expect(src).toMatch(/prixMasque \? null/);
+  });
+});

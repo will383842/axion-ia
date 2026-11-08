@@ -2,8 +2,8 @@
 //
 // Refonte hub /audit (Will 2026-05-12) :
 //   /audit               → hub 2 AXES (Par taille / Par situation)
-//   /audit/tpe-1-jour         → audit présentiel · 1 journée complète · 1190 € HT (Will 2026-05-31)
-//   /audit/cible         → 3 sous-tiers : Solo 1900 / Standard 2900 / Avancé 3900
+//   /audit/tpe-1-jour         → RETIRÉ (R5a, 08/11/2026) : redirigé vers /journee-ia
+//   /audit/cible         → 3 sous-tiers : Solo / Standard / Avancé (sur devis)
 //   /audit/strategique-pme → 2 sous-tiers : 20-50 / 50-250 salariés
 //   /audit/strategique-eti → 1 sous-tier (12k+) extensible
 //
@@ -15,7 +15,6 @@
 // du hub uniquement.
 
 import type { Locale } from "@/i18n/routing";
-import { AUDIT_TIERS, formatTierPrice, getTierById } from "./pricing";
 
 // ============================================================================
 // Types
@@ -52,25 +51,15 @@ export interface AuditTierMeta {
 
 export const AUDIT_TIERS_META: ReadonlyArray<AuditTierMeta> = [
   {
-    id: "audit-flash",
-    pathFr: "/audit/tpe-1-jour",
-    pathEn: "/audit/tpe-1-jour",
-    labelFr: "Audit sur place",
-    labelEn: "On-site audit",
-    taglineFr: `Audit complet de l'entreprise pour TPE, artisan ou commerçant — une journée complète sur place (${formatTierPrice(getTierById(AUDIT_TIERS, "audit-flash"), "fr", { compact: true })} · réservation calendrier).`,
-    taglineEn: `Complete company audit for a small business, artisan or retailer — one full day on site (${formatTierPrice(getTierById(AUDIT_TIERS, "audit-flash"), "en", { compact: true })} · calendar booking).`,
-    audienceSizes: ["tpe"],
-    accent: "terracotta",
-    hasCalendarSlot: true,
-  },
-  {
     id: "audit-cible",
     pathFr: "/audit/cible",
     pathEn: "/audit/targeted",
     labelFr: "Audit Ciblé",
     labelEn: "Targeted audit",
-    taglineFr: `Audit focalisé sur 1 département (marketing, RH, ops, finance, juridique). 3 sous-tiers : Solo / Standard / Avancé (${getTierById(AUDIT_TIERS, "audit-cible").priceMin!} → ${getTierById(AUDIT_TIERS, "audit-cible").subTiers!.at(-1)!.priceFlat!} €).`,
-    taglineEn: `Audit focused on 1 department (marketing, HR, ops, finance, legal). 3 sub-tiers: Solo / Standard / Advanced (€${getTierById(AUDIT_TIERS, "audit-cible").priceMin!} → €${getTierById(AUDIT_TIERS, "audit-cible").subTiers!.at(-1)!.priceFlat!}).`,
+    taglineFr:
+      "Audit focalisé sur 1 département (marketing, RH, ops, finance, juridique). 3 niveaux : Solo / Standard / Avancé, sur devis.",
+    taglineEn:
+      "Audit focused on 1 department (marketing, HR, ops, finance, legal). 3 levels: Solo / Standard / Advanced, on request.",
     audienceSizes: ["pme"],
     accent: "terracotta",
     hasCalendarSlot: false,
