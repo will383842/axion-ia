@@ -52,6 +52,16 @@ function Hote({
           changer-delai
         </button>
       ) : null}
+      {avecChangement ? (
+        <button
+          type="button"
+          onClick={() =>
+            dispatch({ type: "ligne_modifier", id: "a", patch: { delaiSemaines: "" } })
+          }
+        >
+          vider-delai
+        </button>
+      ) : null}
       <div data-testid="etat">{JSON.stringify(e)}</div>
     </>
   );
@@ -89,6 +99,59 @@ describe("EtapePhases", () => {
     render(<Hote initial={{ ...base, delais: { texte: "Déjà écrit", fourchette: "" } }} />);
     await waitFor(() => expect(screen.getByTestId("etat")).toBeTruthy());
     expect(etat().delais.texte).toBe("Déjà écrit");
+  });
+
+  it("une phrase des délais vidée (Ctrl+A puis effacement) reste vide, mais on peut y revenir", async () => {
+    render(<Hote />);
+    const champ = screen.getByLabelText(
+      /phrase affichée sur le devis pour les délais/i,
+    ) as HTMLTextAreaElement;
+    await waitFor(() => expect(champ.value).toBe(TEXTE_DELAIS));
+    fireEvent.change(champ, { target: { value: "" } });
+    await waitFor(() => expect(screen.getByTestId("etat")).toBeTruthy());
+    expect(champ.value).toBe("");
+    expect(etat().delais.texte).toBe("");
+    fireEvent.click(screen.getByRole("button", { name: /revenir au texte d'origine/i }));
+    expect(etat().delais.texte).toBe(TEXTE_DELAIS);
+  });
+
+  it("un brouillon rouvert avec une phrase vidée ne la remplit pas", async () => {
+    render(
+      <Hote
+        initial={{
+          ...base,
+          delais: { texte: "", fourchette: "", touche: true },
+          garantie: { afficher: true, jours: "", phrase: "", touche: true },
+        }}
+      />,
+    );
+    await waitFor(() => expect(screen.getByTestId("etat")).toBeTruthy());
+    expect(etat().delais.texte).toBe("");
+    expect(etat().garantie.phrase).toBe("");
+  });
+
+  it("garantie : phrase vidée reste vide, et le bouton la rétablit", async () => {
+    render(<Hote />);
+    const champ = screen.getByLabelText(/phrase de garantie affichée/i) as HTMLTextAreaElement;
+    await waitFor(() => expect(champ.value).toBe(PHRASE_GARANTIE));
+    fireEvent.change(champ, { target: { value: "" } });
+    expect(champ.value).toBe("");
+    expect(etat().garantie.phrase).toBe("");
+    fireEvent.click(screen.getByRole("button", { name: /revenir à la phrase d'origine/i }));
+    expect(etat().garantie.phrase).toBe(PHRASE_GARANTIE);
+  });
+
+  it("fourchette cochée : vider les délais ne la décoche pas en silence, un message le dit", async () => {
+    render(<Hote initial={{ ...base, lignes: [L("a", { delaiSemaines: "2" })] }} avecChangement />);
+    fireEvent.click(screen.getByLabelText(/afficher une fourchette/i));
+    expect(etat().delais.fourchette).toBe("2 semaines");
+    fireEvent.click(screen.getByRole("button", { name: "vider-delai" }));
+    await waitFor(() => expect(screen.getByTestId("etat")).toBeTruthy());
+    expect(etat().delais.fourchette).toBe("2 semaines");
+    expect((screen.getByLabelText(/afficher une fourchette/i) as HTMLInputElement).checked).toBe(
+      true,
+    );
+    expect(screen.getByText(/conservée telle quelle/i)).toBeTruthy();
   });
 
   it("fourchette : cochée, elle vient des délais des lignes (chemin le plus long → tout à la suite)", () => {

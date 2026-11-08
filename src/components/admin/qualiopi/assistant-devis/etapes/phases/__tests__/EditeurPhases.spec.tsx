@@ -87,17 +87,27 @@ describe("EditeurPhases", () => {
   it("total ≠ 100 : message de blocage et total annoncé", () => {
     render(<Hote initial={[P("a", "60"), P("b", "30")]} />);
     expect(screen.getByText(/total des versements : 90 %/i)).toBeTruthy();
-    expect(screen.getByRole("alert").textContent).toMatch(/100 %/);
-  });
-
-  it("total = 100 : pas d'alerte", () => {
-    render(<Hote initial={[P("a", "60"), P("b", "40")]} />);
+    expect(screen.getByText(/doit valoir 100 %/i)).toBeTruthy();
+    // Pas de rôle « alert » qui change à chaque frappe.
     expect(screen.queryByRole("alert")).toBeNull();
   });
 
-  it("la zone du total est annoncée (aria-live)", () => {
-    render(<Hote initial={[P("a", "100")]} />);
-    expect(screen.getByText(/total des versements/i).closest("[aria-live]")).not.toBeNull();
+  it("total = 100 : pas de message de blocage", () => {
+    render(<Hote initial={[P("a", "60"), P("b", "40")]} />);
+    expect(screen.queryByText(/doit valoir 100 %/i)).toBeNull();
+  });
+
+  it("garde : le message de blocage existe bien à 90 % (le test à 100 % ne passe pas à vide)", () => {
+    render(<Hote initial={[P("a", "60"), P("b", "30")]} />);
+    expect(screen.queryByText(/doit valoir 100 %/i)).not.toBeNull();
+  });
+
+  it("une seule annonce polie, limitée au total (pas les messages d'erreur)", () => {
+    render(<Hote initial={[P("a", "60"), P("b", "30")]} />);
+    const lives = document.querySelectorAll("[aria-live]");
+    expect(lives).toHaveLength(1);
+    expect(lives[0]!.textContent).toMatch(/90 %/);
+    expect(lives[0]!.textContent).not.toMatch(/doit valoir/i);
   });
 
   it("aria-label de la barre recalculé à chaque changement", () => {
@@ -115,6 +125,42 @@ describe("EditeurPhases", () => {
     expect(lues()).toHaveLength(2);
     fireEvent.click(screen.getAllByRole("button", { name: /retirer la phase/i })[1]!);
     expect(lues()).toHaveLength(1);
+  });
+
+  it("« + Ajouter une phase » crée une phase à signaler (0 % invalide), message près du champ", () => {
+    render(<Hote initial={[P("a", "100")]} />);
+    fireEvent.click(screen.getByRole("button", { name: /ajouter une phase/i }));
+    const champ = screen.getByLabelText(/versement de la phase 2/i);
+    expect(champ.getAttribute("aria-invalid")).toBe("true");
+    expect(document.getElementById(champ.getAttribute("aria-describedby")!)!.textContent).toMatch(
+      /entre 1 et 100/,
+    );
+  });
+
+  it("un modèle appliqué puis dont le délai est modifié demande confirmation avant d'être remplacé", () => {
+    render(<Hote initial={[P("a", "100")]} />);
+    fireEvent.click(screen.getByRole("button", { name: /complet \(6 phases\)/i }));
+    const delai = screen.getByLabelText(/délai de la phase 1/i);
+    fireEvent.change(delai, { target: { value: "9" } });
+    fireEvent.click(screen.getByRole("button", { name: /court \(3 phases\)/i }));
+    expect(lues()).toHaveLength(6);
+    expect(lues()[0]!.delaiSemaines).toBe("9");
+    expect(screen.getByRole("button", { name: /remplacer mes phases/i })).toBeTruthy();
+  });
+
+  it("après « Retirer » puis « Garder » ou « Confirmer », le focus reste dans l'éditeur", () => {
+    render(<Hote initial={[P("a", "50", { libelle: "Étude" }), P("b", "50")]} />);
+    fireEvent.click(screen.getByRole("button", { name: /retirer la phase 1/i }));
+    const garder = screen.getByRole("button", { name: /garder la phase/i });
+    expect(document.activeElement).toBe(garder);
+    fireEvent.click(garder);
+    expect(document.activeElement).toBe(
+      screen.getByRole("button", { name: /retirer la phase 1/i }),
+    );
+    fireEvent.click(screen.getByRole("button", { name: /retirer la phase 1/i }));
+    fireEvent.click(screen.getByRole("button", { name: /confirmer le retrait/i }));
+    expect(document.activeElement).not.toBe(document.body);
+    expect(document.activeElement).toBe(screen.getByLabelText(/^phase 1/i));
   });
 
   it("retirer une phase remplie demande confirmation ; la dernière phase reste", () => {

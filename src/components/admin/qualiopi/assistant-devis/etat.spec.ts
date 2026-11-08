@@ -92,6 +92,16 @@ describe("controlerEtape", () => {
     ).toMatch(/110 %/);
   });
 
+  it("étape 1b : une phase à 0 % (ou au-dessus de 100) est refusée, même si le total vaut 100", () => {
+    const [p0, p1] = etatT1().achat.phases;
+    const phases = [
+      { ...p0!, pourcentage: "0" },
+      { ...p1!, pourcentage: "100" },
+    ];
+    const e = reducteur(etatT1(), { type: "achat", patch: { phases } });
+    expect(controlerEtape(e, "1b").join(" ")).toMatch(/entre 1 et 100/);
+  });
+
   it("étape 2 : mois offerts de maintenance, entier >= 0 sinon refus lisible", () => {
     const avecMois = (moisOfferts: string) =>
       reducteur(etatT1(), {

@@ -93,7 +93,12 @@ export function BlocClient({
   const horsBornes = min !== null && max !== null && (etat.validite < min || etat.validite > max);
   const bandeauAffiche =
     bandeau !== null && bandeau.clientId === etat.clientId ? bandeau.texte : null;
-  const noteParticulier = etat.clientType === "particulier" ? raisonPrixUniqueImpose(etat) : null;
+  // La note du particulier est SA raison (interrupteur supposé allumé), pas la première trouvée :
+  // sinon un interrupteur éteint afficherait « devis à formules non activés » sous un particulier.
+  const noteParticulier =
+    etat.clientType === "particulier"
+      ? raisonPrixUniqueImpose({ ...etat, formulesActives: true })
+      : null;
 
   return (
     <section aria-labelledby="titre-client" className="mb-[var(--space-admin-6,16px)]">

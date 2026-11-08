@@ -1,12 +1,28 @@
 import { fireEvent, render, screen, within } from "@testing-library/react";
 import { useReducer } from "react";
-import { describe, expect, it, vi } from "vitest";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import { etatInitial, reducteur } from "../../../etat";
 import type { OffreCatalogue } from "../../../lignes";
 import type { EtatAssistant, LigneAssistant } from "../../../types";
 import { BlocMotsDuClient } from "../BlocMotsDuClient";
 import { ListeLignes } from "../ListeLignes";
+
+// On mesure les rendus du VRAI `LigneContenu` (memo + comparateur réels, rien n'est recouvert) :
+// `quantiteLue` est appelée une fois par rendu du corps de la ligne, avec sa quantité, que ce
+// test rend distincte d'une ligne à l'autre (a=1, b=2, c=3). Retirer le comparateur de l'export
+// réel fait donc grimper les compteurs de b et c à chaque frappe dans a.
+const rendus = vi.hoisted(() => new Map<string, number>());
+vi.mock("../../../calculs", async (importOriginal) => {
+  const reel = await importOriginal<typeof import("../../../calculs")>();
+  return {
+    ...reel,
+    quantiteLue: (q: string) => {
+      rendus.set(q, (rendus.get(q) ?? 0) + 1);
+      return reel.quantiteLue(q);
+    },
+  };
+});
 
 const L = (id: string, patch: Partial<LigneAssistant> = {}): LigneAssistant => ({
   id,
@@ -39,7 +55,14 @@ const OFFRES: OffreCatalogue[] = [
 ];
 
 /** Monte la liste avec le vrai réducteur pour vérifier le comportement de bout en bout. */
-function Hote({ initial, offres = [] }: { initial: EtatAssistant; offres?: OffreCatalogue[] }) {
+const AUCUNE_OFFRE: OffreCatalogue[] = [];
+function Hote({
+  initial,
+  offres = AUCUNE_OFFRE,
+}: {
+  initial: EtatAssistant;
+  offres?: OffreCatalogue[];
+}) {
   const [e, dispatch] = useReducer(reducteur, initial);
   return (
     <>
@@ -202,6 +225,24 @@ describe("ListeLignes", () => {
     expect(document.activeElement).toBe(screen.getByLabelText(/libellé/i));
   });
 
+  it("Supprimer → Garder / Confirmer : le focus ne tombe jamais sur la page", () => {
+    render(
+      <Hote
+        initial={etat([L("a", { libelle: "Alpha", prixEur: "1" }), L("b", { libelle: "Beta" })])}
+      />,
+    );
+    fireEvent.click(screen.getAllByRole("button", { name: /supprimer la ligne/i })[0]!);
+    const garder = screen.getByRole("button", { name: /garder la ligne/i });
+    expect(document.activeElement).toBe(garder);
+    fireEvent.click(garder);
+    expect(document.activeElement).toBe(
+      screen.getAllByRole("button", { name: /supprimer la ligne 1/i })[0],
+    );
+    fireEvent.click(screen.getByRole("button", { name: /supprimer la ligne 1/i }));
+    fireEvent.click(screen.getByRole("button", { name: /confirmer la suppression/i }));
+    expect(document.activeElement).not.toBe(document.body);
+  });
+
   it("la dernière ligne ne peut pas être supprimée", () => {
     render(<Hote initial={etat([L("a")])} />);
     expect(
@@ -242,5 +283,29 @@ describe("ListeLignes", () => {
   it("pas de sélecteur d'offre quand le catalogue est vide", () => {
     render(<Hote initial={etat([L("a")])} />);
     expect(screen.queryByLabelText(/offre du catalogue/i)).toBeNull();
+  });
+});
+
+describe("ListeLignes : rendus", () => {
+  beforeEach(() => rendus.clear());
+
+  it("une frappe dans la ligne 1 ne refait pas le rendu des autres lignes", () => {
+    render(
+      <Hote
+        initial={etat([
+          L("a", { quantite: "1" }),
+          L("b", { quantite: "2" }),
+          L("c", { quantite: "3" }),
+        ])}
+      />,
+    );
+    const avant = new Map(rendus);
+    const prix = screen.getAllByLabelText(/prix/i)[0] as HTMLInputElement;
+    fireEvent.change(prix, { target: { value: "120" } });
+    fireEvent.change(prix, { target: { value: "1200" } });
+    expect(lignesDe()[0]!.prixEur).toBe("1200");
+    expect(rendus.get("1")).toBeGreaterThan(avant.get("1")!);
+    expect(rendus.get("2")).toBe(avant.get("2"));
+    expect(rendus.get("3")).toBe(avant.get("3"));
   });
 });

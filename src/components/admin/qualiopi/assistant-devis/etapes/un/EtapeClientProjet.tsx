@@ -11,7 +11,7 @@ import { useState, type Dispatch, type ReactNode } from "react";
 import { ApercuDirect } from "../../ApercuDirect";
 import type { ActionAssistant } from "../../etat";
 import type { OffreCatalogue } from "../../lignes";
-import type { Etape, EtatAssistant } from "../../types";
+import type { EtatAssistant } from "../../types";
 import { BlocClient, type ClientOption } from "./BlocClient";
 import { BlocMotsDuClient } from "./BlocMotsDuClient";
 import { ChoixModele } from "./ChoixModele";
@@ -19,7 +19,6 @@ import { ListeLignes } from "./ListeLignes";
 import type { EntreeNouveauContact, ResultatNouveauContact } from "./NouveauContact";
 
 export interface PropsEtapeClientProjet {
-  etape: Etape;
   etat: EtatAssistant;
   dispatch: Dispatch<ActionAssistant>;
   clients: readonly ClientOption[];

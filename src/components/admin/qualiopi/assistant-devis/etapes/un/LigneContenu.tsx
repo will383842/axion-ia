@@ -7,7 +7,7 @@
  * champs libres. PAS de choix facultative / indispensable en v1 (D1) : toutes les lignes sont
  * dans le prix. Un prix ou une quantité illisible est signalé, jamais ramené à 0.
  */
-import { memo, type Dispatch, type Ref } from "react";
+import { memo, useCallback, useEffect, useRef, type Dispatch } from "react";
 
 import { eurosEnCents, quantiteLue } from "../../calculs";
 import type { ActionAssistant } from "../../etat";
@@ -43,7 +43,8 @@ export interface PropsLigneContenu {
   onDemanderSuppression: (ligneId: string) => void;
   onConfirmerSuppression: (ligneId: string) => void;
   onAnnulerSuppression: () => void;
-  refLibelle: Ref<HTMLInputElement>;
+  /** Stable (même fonction à chaque rendu) : le parent y enregistre le champ Libellé de la ligne. */
+  enregistrerLibelle: (ligneId: string, el: HTMLInputElement | null) => void;
 }
 
 function LigneContenuBrut({
@@ -60,13 +61,29 @@ function LigneContenuBrut({
   onDemanderSuppression,
   onConfirmerSuppression,
   onAnnulerSuppression,
-  refLibelle,
+  enregistrerLibelle,
 }: PropsLigneContenu) {
   const modifier = (patch: Partial<Omit<LigneAssistant, "id">>) =>
     dispatch({ type: "ligne_modifier", id: l.id, patch });
   const pre = `ligne-${l.id}`;
   const prixIllisible = l.prixEur.trim() !== "" && eurosEnCents(l.prixEur) === null;
   const quantiteIllisible = quantiteLue(l.quantite) === null;
+  const refLibelle = useCallback(
+    (el: HTMLInputElement | null) => enregistrerLibelle(l.id, el),
+    [enregistrerLibelle, l.id],
+  );
+
+  // Le bouton cliqué disparaît quand la confirmation s'ouvre ou se ferme : sans ceci le focus
+  // tomberait sur la page. Ouverture -> « Garder la ligne » (choix sûr) ; abandon -> « Supprimer ».
+  // La confirmation menée au bout supprime la ligne : ListeLignes replace alors le focus.
+  const refGarder = useRef<HTMLButtonElement>(null);
+  const refSupprimer = useRef<HTMLButtonElement>(null);
+  const focusAuChangement = useRef(false);
+  useEffect(() => {
+    if (!focusAuChangement.current) return;
+    focusAuChangement.current = false;
+    (confirmation ? refGarder : refSupprimer).current?.focus();
+  }, [confirmation]);
 
   return (
     <li className="mb-[var(--space-admin-4,8px)] rounded border p-3" aria-label={`Ligne ${rang}`}>
@@ -248,7 +265,11 @@ function LigneContenuBrut({
             <button
               type="button"
               className="min-h-[44px] rounded border px-3"
-              onClick={onAnnulerSuppression}
+              ref={refGarder}
+              onClick={() => {
+                focusAuChangement.current = true;
+                onAnnulerSuppression();
+              }}
             >
               Garder la ligne
             </button>
@@ -257,8 +278,12 @@ function LigneContenuBrut({
           <button
             type="button"
             className="min-h-[44px] rounded border px-3"
+            ref={refSupprimer}
             disabled={!peutSupprimer}
-            onClick={() => onDemanderSuppression(l.id)}
+            onClick={() => {
+              focusAuChangement.current = true;
+              onDemanderSuppression(l.id);
+            }}
           >
             Supprimer la ligne {rang}
           </button>
@@ -268,4 +293,26 @@ function LigneContenuBrut({
   );
 }
 
-export const LigneContenu = memo(LigneContenuBrut);
+/** Mêmes autres lignes = même id, même étiquette, même cycle (la référence du tableau change à chaque frappe). */
+function memesAutres(a: readonly AutreLigne[], b: readonly AutreLigne[]): boolean {
+  return (
+    a === b ||
+    (a.length === b.length &&
+      a.every(
+        (x, i) => x.id === b[i]!.id && x.etiquette === b[i]!.etiquette && x.cycle === b[i]!.cycle,
+      ))
+  );
+}
+
+export function memesProps(avant: PropsLigneContenu, apres: PropsLigneContenu): boolean {
+  const { autres: autresAvant, ...resteAvant } = avant;
+  const { autres: autresApres, ...resteApres } = apres;
+  return (
+    memesAutres(autresAvant, autresApres) &&
+    (Object.keys(resteAvant) as Array<keyof typeof resteAvant>).every((k) =>
+      Object.is(resteAvant[k], resteApres[k]),
+    )
+  );
+}
+
+export const LigneContenu = memo(LigneContenuBrut, memesProps);
