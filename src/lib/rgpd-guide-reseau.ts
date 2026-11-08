@@ -6,9 +6,13 @@
  * d'où elle est venue, la version et l'empreinte du texte de la case qu'elle a cochée, la date de
  * son accord, l'état du remerciement.
  *
+ * Rend aussi ses ORIGINES (`guide_reseau_origines`, même empreinte d'adresse) : mot, réseau, guide,
+ * référence du post, compte, famille, date de l'origine et date de mise en archive éventuelle.
+ *
  * Ce qui n'est PAS rendu, et pourquoi : l'empreinte du jeton du lien (un identifiant technique
- * d'usage unique, sans information sur elle) et la référence de la conversation (une empreinte
- * HMAC à clé serveur de l'identifiant opaque du réseau, qui ne se relit pas).
+ * d'usage unique, sans information sur elle), la référence de la conversation et l'empreinte HMAC
+ * du commentaire (empreintes à clé serveur d'identifiants opaques du réseau, qui ne se relisent
+ * pas), ni la clé de dédoublonnage (technique).
  *
  * Ne lève pas : une lecture impossible devient un avertissement.
  */
@@ -27,14 +31,26 @@ export interface ContactGuideReseauExporte {
   readonly remerciement: string;
 }
 
+export interface OrigineGuideReseauExportee {
+  readonly mot: string;
+  readonly reseau: string;
+  readonly guide: string;
+  readonly postRef: string | null;
+  readonly compte: string | null;
+  readonly famille: string | null;
+  readonly occurredAt: Date;
+  readonly archiveeLe: Date | null;
+}
+
 export interface ExportGuideReseau {
   readonly contacts: readonly ContactGuideReseauExporte[];
+  readonly origines: readonly OrigineGuideReseauExportee[];
   readonly avertissements: readonly string[];
 }
 
 export async function exporterGuideReseauPour(email: string): Promise<ExportGuideReseau> {
   const empreinte = hashEmailForLookup(email);
-  if (!empreinte) return { contacts: [], avertissements: [] };
+  if (!empreinte) return { contacts: [], origines: [], avertissements: [] };
   try {
     const lignes = await prisma.contactGuideReseau.findMany({
       where: { emailKey: empreinte },
@@ -50,7 +66,31 @@ export async function exporterGuideReseauPour(email: string): Promise<ExportGuid
         merciStatut: true,
       },
     });
+    const origines = await prisma.guideReseauOrigine.findMany({
+      where: { emailKey: empreinte },
+      orderBy: { occurredAt: "asc" },
+      select: {
+        mot: true,
+        reseau: true,
+        guide: true,
+        postRef: true,
+        compte: true,
+        famille: true,
+        occurredAt: true,
+        archiveeLe: true,
+      },
+    });
     return {
+      origines: origines.map((o) => ({
+        mot: o.mot,
+        reseau: o.reseau,
+        guide: o.guide,
+        postRef: o.postRef,
+        compte: o.compte,
+        famille: o.famille,
+        occurredAt: o.occurredAt,
+        archiveeLe: o.archiveeLe,
+      })),
       contacts: lignes.map((l) => ({
         prenom: decryptPii(l.prenom) ?? null,
         mot: l.mot,
@@ -66,6 +106,7 @@ export async function exporterGuideReseauPour(email: string): Promise<ExportGuid
   } catch {
     return {
       contacts: [],
+      origines: [],
       avertissements: [
         "guideReseau : lecture impossible au moment de l'export — cette rubrique peut être incomplète. " +
           "Écrivez à contact@axion-ia.com pour une vérification manuelle.",

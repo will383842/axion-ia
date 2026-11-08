@@ -36,12 +36,24 @@ const bd = vi.hoisted(() => ({
   enfilePanne: false,
   /** Conflit simulé sur guide_requests : nombre de création qui échouent en P2002. */
   conflitDemande: { restant: 0, gagnante: false },
+  /** Lectures `guideRequest.findUnique` faites DANS une transaction. */
+  lecturesDansTransaction: 0,
+  /** Suites inscrites dans `after()` (next/server), exécutées par `confirmerPageGuide` du test. */
+  apres: [] as (() => unknown)[],
+}));
+
+vi.mock("next/server", async (orig) => ({
+  ...(await orig<Record<string, unknown>>()),
+  after: (f: () => unknown) => {
+    bd.apres.push(f);
+  },
 }));
 
 /** Lignes créées par une transaction : retirées si elle échoue (comme PostgreSQL). */
 type Trace = { contacts: Ligne[]; demandes: Ligne[] };
 
 function client(trace?: Trace) {
+  const dansTransaction = trace !== undefined;
   return {
     $executeRaw: async () => 0,
     contactGuideReseau: {
@@ -65,6 +77,7 @@ function client(trace?: Trace) {
     },
     guideRequest: {
       findUnique: async ({ where }: { where: Ligne }) => {
+        if (dansTransaction) bd.lecturesDansTransaction += 1;
         const c = where["emailKey_aimant"] as Ligne | undefined;
         return (
           bd.demandes.find((d) =>
@@ -188,7 +201,20 @@ vi.mock("@/server/queue/queues", () => ({
 }));
 vi.mock("@/server/notifications", () => ({ notify: async () => undefined }));
 
-import { confirmerPageGuide, type EntreeConfirmation } from "../page-confirmation";
+import {
+  confirmerPageGuide as confirmerSansSuite,
+  type EntreeConfirmation,
+} from "../page-confirmation";
+
+/** Comme la production : la réponse part, PUIS les suites inscrites dans `after()` s'exécutent. */
+async function viderApres(): Promise<void> {
+  while (bd.apres.length > 0) await bd.apres.shift()!();
+}
+async function confirmerPageGuide(e: EntreeConfirmation) {
+  const r = await confirmerSansSuite(e);
+  await viderApres();
+  return r;
+}
 import { creerJeton, empreinteJeton, type DonneesLien } from "../lien-page-guide";
 import {
   EMPREINTE_CASE_PAGE_GUIDE,
@@ -234,6 +260,8 @@ beforeEach(() => {
   bd.limites.length = bd.journal.length = 0;
   bd.origines.length = bd.crm.length = 0;
   bd.mxAppels = 0;
+  bd.apres.length = 0;
+  bd.lecturesDansTransaction = 0;
   bd.enfilePanne = false;
   bd.conflitDemande.restant = 0;
   bd.conflitDemande.gagnante = false;
@@ -336,6 +364,48 @@ describe("jeton", () => {
     expect(bd.demandes).toHaveLength(1);
     expect(bd.envois).toHaveLength(1);
     expect(bd.preuves).toHaveLength(1);
+  });
+});
+
+describe("M1 — suites après la réponse (after)", () => {
+  it("adresse ordinaire : origine, CRM, preuve et e-mail ne partent QU'APRÈS la réponse", async () => {
+    const r = await confirmerSansSuite(entree());
+    expect(r).toEqual({ ok: true });
+    expect(bd.origines).toHaveLength(0);
+    expect(bd.crm).toHaveLength(0);
+    expect(bd.preuves).toHaveLength(0);
+    expect(bd.envois).toHaveLength(0);
+    expect(bd.apres).toHaveLength(1);
+    await viderApres();
+    expect(bd.origines).toHaveLength(1);
+    expect(bd.crm).toHaveLength(1);
+    expect(bd.preuves).toHaveLength(1);
+    expect(bd.envois).toHaveLength(1);
+  });
+
+  it("adresse opposée : un after() est inscrit aussi, et rien ne part", async () => {
+    bd.opposees.add(ADRESSE);
+    expect(await confirmerSansSuite(entree())).toEqual({ ok: true });
+    expect(bd.apres).toHaveLength(1);
+    await viderApres();
+    expect(bd.origines).toHaveLength(0);
+    expect(bd.envois).toHaveLength(0);
+    expect(bd.preuves).toHaveLength(0);
+  });
+
+  it("opposée : la même lecture guideRequest.findUnique dans la transaction que le chemin normal", async () => {
+    await confirmerPageGuide(entree({ jeton: jeton({ conv: "conv_exemple_0011" }) }));
+    const normal = bd.lecturesDansTransaction;
+    expect(normal).toBeGreaterThan(0);
+    bd.lecturesDansTransaction = 0;
+    bd.opposees.add(ADRESSE);
+    await confirmerPageGuide(entree());
+    expect(bd.lecturesDansTransaction).toBe(normal);
+  });
+
+  it("une suite qui échoue ne remonte pas : la réponse est déjà partie", async () => {
+    bd.enfilePanne = true;
+    await expect(confirmerPageGuide(entree())).resolves.toEqual({ ok: true });
   });
 });
 

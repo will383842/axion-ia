@@ -7,6 +7,7 @@ type Ligne = Record<string, unknown>;
 const etat = vi.hoisted(() => ({
   appels: [] as { op: string; args: unknown }[],
   lignes: [] as Ligne[],
+  origines: [] as Ligne[],
 }));
 
 vi.mock("@/lib/prisma", () => ({
@@ -23,6 +24,24 @@ vi.mock("@/lib/prisma", () => ({
       deleteMany: async (args: unknown) => {
         etat.appels.push({ op: "deleteMany", args });
         return { count: 0 };
+      },
+    },
+    guideReseauOrigine: {
+      findMany: async (args: unknown) => {
+        etat.appels.push({ op: "origine.findMany", args });
+        return etat.origines;
+      },
+      updateMany: async (args: unknown) => {
+        etat.appels.push({ op: "origine.updateMany", args });
+        return { count: 0 };
+      },
+      deleteMany: async (args: unknown) => {
+        etat.appels.push({ op: "origine.deleteMany", args });
+        return { count: 0 };
+      },
+      delete: async (args: unknown) => {
+        etat.appels.push({ op: "origine.delete", args });
+        return {};
       },
     },
     clientContactAdresse: { findMany: async () => [] },
@@ -61,6 +80,21 @@ beforeEach(() => {
       convRef: "c".repeat(64),
     },
   ];
+  etat.origines = [
+    {
+      mot: "GUIDE",
+      reseau: "instagram",
+      guide: "guide-ia",
+      postRef: "post_12345678",
+      compte: "axion_ia",
+      famille: "guide_reseau",
+      occurredAt: new Date("2026-11-08T10:00:00Z"),
+      archiveeLe: null,
+      commentaireRefHmac: "h".repeat(64),
+      cleDedoublonnage: "d".repeat(64),
+      emailKey: "h:personne@example.test",
+    },
+  ];
   vi.spyOn(console, "warn").mockImplementation(() => undefined);
 });
 
@@ -80,6 +114,28 @@ describe("contacts_guide_reseau — export art. 15", () => {
   });
 });
 
+describe("guide_reseau_origines — export art. 15", () => {
+  it("rend mot, réseau, guide, post, compte, famille et dates, sans l'empreinte HMAC du commentaire", async () => {
+    const r = await exporterGuideReseauPour("personne@example.test");
+    expect(r.origines).toHaveLength(1);
+    expect(r.origines[0]).toEqual({
+      mot: "GUIDE",
+      reseau: "instagram",
+      guide: "guide-ia",
+      postRef: "post_12345678",
+      compte: "axion_ia",
+      famille: "guide_reseau",
+      occurredAt: new Date("2026-11-08T10:00:00Z"),
+      archiveeLe: null,
+    });
+    const texte = JSON.stringify(r);
+    expect(texte).not.toContain("h".repeat(64));
+    expect(texte).not.toContain("d".repeat(64));
+    const lecture = etat.appels.find((a) => a.op === "origine.findMany");
+    expect(lecture?.args).toMatchObject({ where: { emailKey: "h:personne@example.test" } });
+  });
+});
+
 describe("contacts_guide_reseau — effacement art. 17 : mise à l'écart", () => {
   it("passe merci_statut à 'ecarte', ne supprime rien, même sans fiche personne", async () => {
     await effacerCibleParAdresses(["personne@example.test"]);
@@ -89,6 +145,14 @@ describe("contacts_guide_reseau — effacement art. 17 : mise à l'écart", () =
       data: { merciStatut: "ecarte" },
     });
     expect(etat.appels.some((a) => a.op === "deleteMany")).toBe(false);
+  });
+
+  it("ne supprime ni ne modifie les origines (guide_reseau_origines)", async () => {
+    await effacerCibleParAdresses(["personne@example.test"]);
+    expect(
+      etat.appels.some((a) => a.op === "origine.deleteMany" || a.op === "origine.delete"),
+    ).toBe(false);
+    expect(etat.appels.some((a) => a.op === "origine.updateMany")).toBe(false);
   });
 
   it("n'écrit aucune adresse ni prénom au journal", async () => {

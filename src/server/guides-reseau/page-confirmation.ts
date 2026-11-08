@@ -35,6 +35,7 @@
  * La route des confirmations (lot S4) n'est PAS dans ce lot.
  */
 import { createHash } from "node:crypto";
+import { after } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { hashEmailForLookup } from "@/lib/security/email-hash";
 import { encryptPii } from "@/lib/pii-crypto";
@@ -203,6 +204,11 @@ export async function confirmerPageGuide(e: EntreeConfirmation): Promise<Resulta
         // Deux envois simultanés de la même adresse se suivent au lieu de se croiser.
         await tx.$executeRaw`SELECT pg_advisory_xact_lock(hashtext(${"guide-reseau-page:" + emailKey}))`;
         if (opposee) {
+          // M1 : la MÊME lecture que le chemin normal (`retrouverOuCreerDemande`), résultat écarté.
+          await tx.guideRequest.findUnique({
+            where: { emailKey_aimant: { emailKey, aimant: demandeEntree.guide } },
+            select: { id: true, downloadToken: true, origine: true },
+          });
           // Marque : le jeton est consommé comme pour un succès, SANS donnée de la personne.
           await tx.contactGuideReseau.create({
             data: {
@@ -261,10 +267,54 @@ export async function confirmerPageGuide(e: EntreeConfirmation): Promise<Resulta
   }
 
   if (opposee || demande === null) {
-    console.warn(JSON.stringify({ event: "guides_reseau_page", resultat: "opposee" }));
+    // M1 : même forme que le chemin normal — un `after()` est inscrit dans les deux cas, la réponse
+    // part sans attendre ; ici la suite se borne à une ligne de journal.
+    after(() => {
+      console.warn(JSON.stringify({ event: "guides_reseau_page", resultat: "opposee" }));
+    });
     return { ok: true };
   }
+  const demandeFaite = demande;
 
+  // 9 à 11 : APRÈS la réponse. Le temps de réponse est ainsi le même pour une adresse opposée et
+  // pour une adresse ordinaire (ni l'origine, ni la preuve, ni la mise en file ne s'y comptent).
+  after(async () => {
+    try {
+      await suiteApresReponse(e, donnees, demandeFaite, {
+        email,
+        emailKey,
+        empreinte,
+        compte,
+        postRef,
+        maintenant,
+      });
+    } catch (err) {
+      console.error(
+        JSON.stringify({
+          event: "guides_reseau_page_suite_echec",
+          erreur: err instanceof Error ? err.name : "erreur",
+        }),
+      );
+    }
+  });
+  return { ok: true };
+}
+
+interface ContexteSuite {
+  readonly email: string;
+  readonly emailKey: string;
+  readonly empreinte: string;
+  readonly compte: string | null;
+  readonly postRef: string | null;
+  readonly maintenant: Date;
+}
+
+async function suiteApresReponse(
+  e: EntreeConfirmation,
+  donnees: DonneesJeton,
+  demande: { id: string; downloadToken: string },
+  { email, emailKey, empreinte, compte, postRef, maintenant }: ContexteSuite,
+): Promise<void> {
   // 9. L'origine : historique v3 (+ CRM sauf compte hors format). Ne lève jamais.
   const quand = new Date(Math.floor(maintenant.getTime() / 1000) * 1000);
   await noterOrigineAvec(
@@ -334,5 +384,4 @@ export async function confirmerPageGuide(e: EntreeConfirmation): Promise<Resulta
       guide,
     }),
   );
-  return { ok: true };
 }

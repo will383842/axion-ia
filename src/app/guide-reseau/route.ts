@@ -44,7 +44,10 @@ async function jetonUtilisable(jeton: string | null): Promise<boolean> {
 }
 
 const CHAMP =
-  "display:block;width:100%;box-sizing:border-box;margin-top:.4rem;padding:.75rem .9rem;font:inherit;font-size:1.05rem;border:1px solid #c9c2b8;border-radius:.5rem";
+  "display:block;width:100%;box-sizing:border-box;margin-top:.4rem;padding:.75rem .9rem;font:inherit;font-size:1.05rem;border:1px solid #c9c2b8;border-radius:.5rem"; // hex-ok: page HTML autonome, aucun jeton Tailwind (réponse de route)
+
+const BOUTON =
+  "width:100%;padding:.9rem 1.2rem;font:inherit;font-size:1.05rem;font-weight:600;color:#fff;background:#c24a1b;border:0;border-radius:.5rem"; // hex-ok: page HTML autonome, aucun jeton Tailwind (réponse de route)
 
 export async function GET(req: NextRequest): Promise<NextResponse> {
   if (!pageGuideReseauActive()) {
@@ -68,7 +71,7 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
 <div aria-hidden="true" style="position:absolute;left:-10000px"><label for="site-web">Site web</label><input id="site-web" name="website" type="text" tabindex="-1" autocomplete="off"></div>
 <p style="display:flex;gap:.75rem;align-items:flex-start"><input id="accord" name="accord" type="checkbox" value="oui" required style="width:1.25rem;height:1.25rem;margin-top:.2rem;flex:none"><label for="accord">${echapper(T.case)}</label></p>
 <p style="font-size:.875rem;opacity:.8">${echapper(T.information)} <a href="${echapper(URL_CONFIDENTIALITE)}">${echapper(T.lienConfidentialite)}</a>.</p>
-<p><button type="submit" style="width:100%;padding:.9rem 1.2rem;font:inherit;font-size:1.05rem;font-weight:600;color:#fff;background:#c24a1b;border:0;border-radius:.5rem">${echapper(T.envoyer)}</button></p>
+<p><button type="submit" style="${BOUTON}">${echapper(T.envoyer)}</button></p>
 </form>`;
   return pageStatique(T.titre, corps, 200);
 }
