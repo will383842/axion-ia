@@ -18183,7 +18183,7 @@ model GuideReseauOrigine {
 /// · `guide_request_id` est facultatif : la demande de guide peut ne pas (encore) exister. SET NULL à sa suppression.
 /// · `jeton_empreinte` = SHA-256 du jeton du lien, UNIQUE : le lien est à usage unique ; le jeton lui-même n'est pas gardé.
 /// · `consent_empreinte` = SHA-256 du texte exact de la case cochée, `version_consentement` sa version.
-/// · `merci_statut` en VARCHAR (a_envoyer | envoye | hors_fenetre | expire | aucun) : aucune énumération
+/// · `merci_statut` en VARCHAR (a_envoyer | envoye | hors_fenetre | expire | aucun | ecarte ; l'ancienne graphie « ecartee » est lue comme écartée) : aucune énumération
 ///   Postgres, la migration reste additive.
 model ContactGuideReseau {
   id                  String        @id @default(cuid())

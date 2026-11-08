@@ -1,4 +1,5 @@
 -- RETOUR ARRIÈRE de 20261108150000_contacts_guide_reseau_origine_optionnelle.
+-- Applicable seulement avant l'allumage de PAGE_GUIDE_RESEAU_ENABLED.
 -- Remet NOT NULL sur les quatre colonnes. ⛔ Refusé s'il existe une ligne sans origine : aucune
 -- valeur n'est inventée, aucune ligne n'est modifiée ni supprimée.
 -- Ensuite : DELETE FROM "_prisma_migrations" WHERE migration_name = '20261108150000_contacts_guide_reseau_origine_optionnelle';

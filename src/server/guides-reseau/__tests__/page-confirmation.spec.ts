@@ -437,7 +437,7 @@ describe("adresse", () => {
     expect(marque).not.toContain(`h:${ADRESSE}`);
     expect(marque).not.toContain("Camille");
     expect(marque).not.toContain(Buffer.from("Camille").toString("base64"));
-    expect(bd.contacts[0]!["merciStatut"]).not.toBe("a_envoyer");
+    expect(bd.contacts[0]!["merciStatut"]).toBe("ecarte");
     expect(bd.demandes).toHaveLength(0);
     expect(bd.preuves).toHaveLength(0);
     expect(bd.envois).toHaveLength(0);

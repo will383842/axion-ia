@@ -55,6 +55,7 @@ import {
   type ReseauGuide,
 } from "@/content/guides-reseau";
 import { empreinteJeton, verifierJeton, type DonneesJeton } from "./lien-page-guide";
+import { MERCI_STATUT_ECARTE } from "./merci-statut";
 import { hmacConversationRef } from "./origines";
 import { VERSIONS_TEXTE_CONNUES } from "./valeurs-connues";
 import { noterOrigineAvec, retrouverOuCreerDemande, sousLesLimites } from "./traitement";
@@ -98,7 +99,7 @@ const MARQUE = {
   convRef: "-",
   version: "ecartee",
   empreinte: "0".repeat(64),
-  statut: "ecartee",
+  statut: MERCI_STATUT_ECARTE,
 } as const;
 
 /** Réseau du lien (alphabet du jeton) → réseau du registre des demandes. */

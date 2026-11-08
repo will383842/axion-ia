@@ -23,6 +23,10 @@
  * Tous les appels génèrent un ActivityLog `gdpr.erase.<table>` (forensique).
  */
 
+import {
+  MERCI_STATUT_ECARTE,
+  MERCI_STATUTS_ECARTES_LUS,
+} from "@/server/guides-reseau/merci-statut";
 import { createHash } from "node:crypto";
 import type {
   CibleEffacement,
@@ -1281,8 +1285,11 @@ export type EffacementCibleResultat = {
  */
 async function mettreAEcartContactsGuideReseau(empreintes: readonly string[]): Promise<number> {
   const r = await prisma.contactGuideReseau.updateMany({
-    where: { emailKey: { in: [...empreintes] }, merciStatut: { not: "ecarte" } },
-    data: { merciStatut: "ecarte" },
+    where: {
+      emailKey: { in: [...empreintes] },
+      merciStatut: { notIn: [...MERCI_STATUTS_ECARTES_LUS] },
+    },
+    data: { merciStatut: MERCI_STATUT_ECARTE },
   });
   if (r.count > 0) {
     console.warn(JSON.stringify({ event: "rgpd_guide_reseau_mis_a_l_ecart", lignes: r.count }));

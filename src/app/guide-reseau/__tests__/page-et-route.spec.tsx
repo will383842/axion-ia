@@ -320,6 +320,14 @@ describe("AUCUN JavaScript client, en-têtes, build", () => {
     }
   });
 
+  it("next.config.ts : script-src 'none' sur /guide-reseau (aucune page n'a de script)", () => {
+    const conf = readFileSync(join(RACINE, "next.config.ts"), "utf8");
+    const i = conf.indexOf('source: "/guide-reseau/:path*"');
+    const bloc = conf.slice(i, i + 1200);
+    expect(bloc).toContain(`"script-src 'none'"`);
+    expect(bloc).not.toMatch(/unsafe-inline'\$\{|script-src 'self'/);
+  });
+
   it("next.config.ts : no-referrer, noindex et CSP sur /guide-reseau, après la règle générale", () => {
     const conf = readFileSync(join(RACINE, "next.config.ts"), "utf8");
     const i = conf.indexOf('source: "/guide-reseau/:path*"');

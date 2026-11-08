@@ -920,7 +920,7 @@ const nextConfig: NextConfig = {
       // pose donc ni CSP ni Referrer-Policy. Le jeton est dans l'adresse, donc `no-referrer` (l'adresse
       // ne part vers aucun site) — la page n'a AUCUNE action serveur, son formulaire est un POST natif
       // vers une route qui ne contrôle pas `Origin` (que `no-referrer` rend `null`) : c'est la raison
-      // pour laquelle elle n'utilise PAS de Server Action. `noindex`. CSP stricte : aucun hôte tiers.
+      // pour laquelle elle n'utilise PAS de Server Action. `noindex`. CSP stricte : aucun hôte tiers, aucun script (`script-src 'none'`).
       // Placée APRÈS `/:path*` : la dernière règle gagne. Garde : `src/app/guide-reseau/__tests__/`.
       {
         source: "/guide-reseau/:path*",
@@ -931,7 +931,8 @@ const nextConfig: NextConfig = {
             key: "Content-Security-Policy",
             value: [
               "default-src 'self'",
-              `script-src 'self' 'unsafe-inline'${process.env.NODE_ENV === "production" ? "" : " 'unsafe-eval'"}`,
+              // Aucune page (formulaire, merci, redirections) n'a de script : routes HTML sans JS.
+              "script-src 'none'",
               "style-src 'self' 'unsafe-inline'",
               "img-src 'self' data:",
               "font-src 'self'",
