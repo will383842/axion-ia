@@ -42,8 +42,8 @@
 import React from "react";
 import { Document, Page, Text, View, StyleSheet } from "@react-pdf/renderer";
 import { pdf } from "@react-pdf/renderer";
+import { COULEURS_MARQUE } from "@/lib/brand/couleurs-marque";
 import {
-  brandColor,
   QUALIOPI_BRAND_FONTS as F,
   QUALIOPI_PDF_TYPE as T,
   QUALIOPI_PDF_SPACE as S,
@@ -60,6 +60,9 @@ import {
   type AssetPlan,
   type ContextePlan,
 } from "@/server/editorial/plan-production";
+
+/** V8-P3 : palette VIVANTE (pièce non signable) — jamais la copie gelée de brand-tokens. */
+const couleurVivante = (jeton: keyof typeof COULEURS_MARQUE): string => COULEURS_MARQUE[jeton];
 
 registerQualiopiPdfFonts();
 
@@ -179,8 +182,8 @@ export const styles = StyleSheet.create({
     paddingBottom: 52,
     fontSize: T.base,
     fontFamily: F.sans,
-    color: brandColor("fg"),
-    backgroundColor: brandColor("paper"),
+    color: couleurVivante("fg"),
+    backgroundColor: couleurVivante("paper"),
   },
 
   // ── En-tête de couverture ───────────────────────────────────────────────
@@ -188,32 +191,32 @@ export const styles = StyleSheet.create({
     fontSize: T.xs,
     letterSpacing: T.trackingWide,
     textTransform: "uppercase",
-    color: brandColor("terracotta"),
+    color: couleurVivante("terracotta"),
     marginBottom: S.sm,
   },
   titre: {
     fontFamily: F.serif,
     fontSize: T.xl,
-    color: brandColor("mocha"),
+    color: couleurVivante("mocha"),
     marginBottom: S.md,
   },
   sousTitre: {
     fontSize: T.sm,
     lineHeight: T.lineNormal,
-    color: brandColor("fg-muted"),
+    color: couleurVivante("fg-muted"),
     marginBottom: S.xl,
   },
   regleTitre: {
     borderBottomWidth: 2,
-    borderBottomColor: brandColor("terracotta"),
+    borderBottomColor: couleurVivante("terracotta"),
     marginBottom: S.xxl,
   },
 
   // ── Avertissement ───────────────────────────────────────────────────────
   alerte: {
-    backgroundColor: brandColor("terracotta-soft"),
+    backgroundColor: couleurVivante("terracotta-soft"),
     borderLeftWidth: 3,
-    borderLeftColor: brandColor("terracotta"),
+    borderLeftColor: couleurVivante("terracotta"),
     paddingVertical: S.lg,
     paddingHorizontal: S.xl,
     borderRadius: S.radius,
@@ -222,33 +225,33 @@ export const styles = StyleSheet.create({
   alerteTitre: {
     fontSize: T.sm,
     fontWeight: "bold",
-    color: brandColor("terracotta-deep"),
+    color: couleurVivante("terracotta-deep"),
     marginBottom: S.xs,
   },
   alerteTexte: {
     fontSize: T.sm,
     lineHeight: T.lineNormal,
-    color: brandColor("fg-soft"),
+    color: couleurVivante("fg-soft"),
   },
 
   // ── Sommaire ────────────────────────────────────────────────────────────
   tableau: {
     borderWidth: 1,
-    borderColor: brandColor("border"),
+    borderColor: couleurVivante("border"),
     borderRadius: S.radius,
   },
   ligneEntete: {
     flexDirection: "row",
-    backgroundColor: brandColor("sand"),
+    backgroundColor: couleurVivante("sand"),
     borderBottomWidth: 1,
-    borderBottomColor: brandColor("border-strong"),
+    borderBottomColor: couleurVivante("border-strong"),
     paddingVertical: S.md,
     paddingHorizontal: S.lg,
   },
   ligne: {
     flexDirection: "row",
     borderBottomWidth: 1,
-    borderBottomColor: brandColor("border"),
+    borderBottomColor: couleurVivante("border"),
     paddingVertical: S.md,
     paddingHorizontal: S.lg,
   },
@@ -269,9 +272,9 @@ export const styles = StyleSheet.create({
   titreSection: {
     fontFamily: F.serif,
     fontSize: T.lg,
-    color: brandColor("mocha"),
+    color: couleurVivante("mocha"),
     borderBottomWidth: 1,
-    borderBottomColor: brandColor("border-strong"),
+    borderBottomColor: couleurVivante("border-strong"),
     paddingBottom: S.md,
     marginBottom: S.xl,
   },
@@ -281,7 +284,7 @@ export const styles = StyleSheet.create({
     marginBottom: S.xxl,
     paddingBottom: S.xl,
     borderBottomWidth: 1,
-    borderBottomColor: brandColor("border"),
+    borderBottomColor: couleurVivante("border"),
   },
   assetEnTete: {
     flexDirection: "row",
@@ -294,25 +297,25 @@ export const styles = StyleSheet.create({
     fontSize: T.md,
     lineHeight: T.lineTight,
     fontWeight: "bold",
-    color: brandColor("mocha"),
+    color: couleurVivante("mocha"),
     paddingRight: S.xl,
   },
   assetEcheance: {
     fontFamily: F.mono,
     fontSize: T.sm,
-    color: brandColor("terracotta-deep"),
+    color: couleurVivante("terracotta-deep"),
   },
   assetMeta: {
     fontSize: T.xs,
     lineHeight: T.lineNormal,
-    color: brandColor("fg-muted"),
+    color: couleurVivante("fg-muted"),
     marginBottom: S.xl,
   },
   assetVide: {
     fontSize: T.sm,
     lineHeight: T.lineNormal,
     fontStyle: "italic",
-    color: brandColor("fg-muted"),
+    color: couleurVivante("fg-muted"),
   },
 
   // ── La copie du post ────────────────────────────────────────────────────
@@ -324,8 +327,8 @@ export const styles = StyleSheet.create({
   // opposées se distinguent mieux que deux fonds contrastés.
   post: {
     borderLeftWidth: 3,
-    borderLeftColor: brandColor("mocha"),
-    backgroundColor: brandColor("bg"),
+    borderLeftColor: couleurVivante("mocha"),
+    backgroundColor: couleurVivante("bg"),
     borderRadius: S.radius,
     paddingVertical: S.lg,
     paddingHorizontal: S.xl,
@@ -336,26 +339,26 @@ export const styles = StyleSheet.create({
     letterSpacing: T.trackingWide,
     textTransform: "uppercase",
     fontWeight: "bold",
-    color: brandColor("mocha"),
+    color: couleurVivante("mocha"),
     marginBottom: S.md,
   },
   postLibelle: {
     fontSize: T.xs,
     fontWeight: "bold",
-    color: brandColor("fg-muted"),
+    color: couleurVivante("fg-muted"),
     marginBottom: S.xs,
   },
   postTexte: {
     fontSize: T.sm,
     lineHeight: T.lineNormal,
-    color: brandColor("fg"),
+    color: couleurVivante("fg"),
     marginBottom: S.md,
   },
   postManquant: {
     fontSize: T.sm,
     lineHeight: T.lineNormal,
     fontStyle: "italic",
-    color: brandColor("terracotta-deep"),
+    color: couleurVivante("terracotta-deep"),
     marginBottom: S.xl,
   },
 
@@ -371,14 +374,14 @@ export const styles = StyleSheet.create({
     width: 10,
     height: 10,
     borderWidth: 1,
-    borderColor: brandColor("border-strong"),
+    borderColor: couleurVivante("border-strong"),
     borderRadius: 1,
     marginTop: 2,
     marginRight: S.lg,
   },
   caseFaite: {
-    backgroundColor: brandColor("sage"),
-    borderColor: brandColor("sage"),
+    backgroundColor: couleurVivante("sage"),
+    borderColor: couleurVivante("sage"),
   },
   segmentCorps: {
     flex: 1,
@@ -387,7 +390,7 @@ export const styles = StyleSheet.create({
     fontSize: T.sm,
     lineHeight: T.lineNormal,
     fontWeight: "bold",
-    color: brandColor("fg-soft"),
+    color: couleurVivante("fg-soft"),
     marginBottom: S.xs,
   },
   segmentTexte: {
@@ -400,11 +403,11 @@ export const styles = StyleSheet.create({
     fontWeight: "bold",
     letterSpacing: T.trackingWide,
     textTransform: "uppercase",
-    color: brandColor("fg-muted"),
+    color: couleurVivante("fg-muted"),
     marginBottom: S.xs,
   },
   promptBloc: {
-    backgroundColor: brandColor("sand"),
+    backgroundColor: couleurVivante("sand"),
     borderRadius: S.radius,
     paddingVertical: S.lg,
     paddingHorizontal: S.xl,
@@ -413,7 +416,7 @@ export const styles = StyleSheet.create({
     fontFamily: F.mono,
     fontSize: T.sm,
     lineHeight: T.lineTight,
-    color: brandColor("fg"),
+    color: couleurVivante("fg"),
   },
 
   // ── Pied de page ────────────────────────────────────────────────────────
@@ -425,12 +428,12 @@ export const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     borderTopWidth: 1,
-    borderTopColor: brandColor("border"),
+    borderTopColor: couleurVivante("border"),
     paddingTop: S.md,
   },
   piedTexte: {
     fontSize: T.xs,
-    color: brandColor("fg-muted"),
+    color: couleurVivante("fg-muted"),
   },
 });
 
