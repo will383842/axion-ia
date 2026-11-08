@@ -33,10 +33,55 @@ const interdite = (hex: string) => {
 const hexDe = (src: string) =>
   [...src.matchAll(/#[0-9a-fA-F]{6}\b/g)].map((m) => m[0].toLowerCase());
 
+const versHex = (r: number, g: number, b: number) =>
+  "#" + [r, g, b].map((c) => Math.min(255, c).toString(16).padStart(2, "0")).join("");
+
+/** Couleurs rgb()/rgba() du source, converties en hex, avec le sélecteur qui les porte. */
+const rgbDe = (src: string) =>
+  [...src.matchAll(/rgba?\(\s*(\d{1,3})\s*,\s*(\d{1,3})\s*,\s*(\d{1,3})\s*(?:,[^)]*)?\)/g)].map(
+    (m) => ({
+      hex: versHex(Number(m[1]), Number(m[2]), Number(m[3])),
+      selecteur: /([.\w-]+)\s*\{[^{}]*$/.exec(src.slice(0, m.index))?.[1] ?? "",
+    }),
+  );
+
+/**
+ * Halos bleus restants : décision de Williams requise (lot V4 suivant).
+ * Exceptions NOMMÉES, limitées à ces trois sélecteurs et à ce seul bleu rgba(26, 77, 217, …) :
+ * tout NOUVEAU rgba bleu ou jaune, ailleurs, fait échouer le test.
+ */
+const HALOS_BLEUS_RESTANTS = {
+  selecteurs: [".bg-halo-warm", ".bg-halo-cool", ".bg-mocha-rich"],
+  hex: versHex(26, 77, 217),
+};
+
 describe("V4-02 : aucune teinte bleue (190-260°) ni jaune (40-70°)", () => {
   it.each(["src/app/globals.css", "src/lib/brand/couleurs-marque.ts"])("%s", (fichier) => {
-    const fautifs = [...new Set(hexDe(lire(fichier)).filter(interdite))];
+    const src = lire(fichier);
+    const fautifs = [
+      ...new Set(
+        [
+          ...hexDe(src),
+          ...rgbDe(src)
+            .filter(
+              (c) =>
+                !(
+                  c.hex === HALOS_BLEUS_RESTANTS.hex &&
+                  HALOS_BLEUS_RESTANTS.selecteurs.includes(c.selecteur)
+                ),
+            )
+            .map((c) => c.hex),
+        ].filter(interdite),
+      ),
+    ];
     expect(fautifs).toEqual([]);
+  });
+
+  it("les halos bleus restants sont bien les trois sélecteurs nommés (rien de plus)", () => {
+    const portes = rgbDe(lire("src/app/globals.css"))
+      .filter((c) => c.hex === HALOS_BLEUS_RESTANTS.hex)
+      .map((c) => c.selecteur);
+    expect([...new Set(portes)].sort()).toEqual([...HALOS_BLEUS_RESTANTS.selecteurs].sort());
   });
 
   it("les jetons de la table B ont leur valeur cible", () => {
@@ -72,19 +117,25 @@ describe("V4-02 : aucune teinte bleue (190-260°) ni jaune (40-70°)", () => {
   });
 });
 
+// Palette dérivée des jetons : COULEURS_MARQUE (miroir de @theme) pour ce qu'il couvre,
+// globals.css pour le reste (orange, erreur, attention).
+const jetonCss = (j: string) =>
+  lire("src/app/globals.css")
+    .match(new RegExp(`--color-${j}\\s*:\\s*(#[0-9a-fA-F]{6})`))?.[1]
+    ?.toLowerCase() as string;
 const PALETTE: Record<string, string> = {
-  ivoire: "#FAF9F5",
-  "gris-chaud": "#E8E6DC",
-  noir: "#141413",
-  blanc: "#FFFFFF",
-  terracotta: "#B23F16",
-  "terracotta-survol": "#8F3412",
-  orange: "#D97757",
-  "gris-moyen": "#B0AEA5",
-  "texte-secondaire": "#5E5D59",
-  reussite: "#5E7050",
-  erreur: "#B8341C",
-  attention: "#8F3412",
+  ivoire: COULEURS_MARQUE.bg,
+  "gris-chaud": COULEURS_MARQUE.sand,
+  noir: COULEURS_MARQUE.mocha,
+  blanc: COULEURS_MARQUE.paper,
+  terracotta: COULEURS_MARQUE.terracotta,
+  "terracotta-survol": COULEURS_MARQUE["primary-hover"],
+  orange: jetonCss("terracotta-on-mocha"),
+  "gris-moyen": COULEURS_MARQUE["border-strong"],
+  "texte-secondaire": COULEURS_MARQUE["fg-soft"],
+  reussite: COULEURS_MARQUE.sage,
+  erreur: jetonCss("error"),
+  attention: jetonCss("warning"),
 };
 const lin = (c: number) => ((c /= 255) <= 0.03928 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4);
 const lum = (h: string) => {
@@ -117,14 +168,12 @@ const AUTORISEES: Array<[string, string, number]> = [
   ["reussite", "ivoire", 4.5],
   ["erreur", "ivoire", 4.5],
   ["attention", "ivoire", 4.5],
-  ["texte-secondaire", "ivoire", 3],
-  ["gris-moyen", "noir", 3],
-  ["terracotta", "noir", 3],
 ];
+// Gros texte seulement (≥ 24 px, ou ≥ 18,66 px gras) : seuil WCAG 3, et sous 4,5 par construction.
+const GROS_TEXTE_SEULEMENT: Array<[string, string, number]> = [["terracotta", "noir", 3]];
 const INTERDITES: Array<[string, string]> = [
   ["orange", "ivoire"],
   ["gris-moyen", "ivoire"],
-  ["terracotta", "noir"],
   ["texte-secondaire", "noir"],
   ["blanc", "orange"],
   ["reussite", "gris-chaud"],
@@ -133,6 +182,10 @@ const INTERDITES: Array<[string, string]> = [
 describe("V4-02 : contraste de la palette définitive", () => {
   it.each(AUTORISEES)("%s sur %s ≥ %s", (t, f, seuil) => {
     expect(ratio(t, f)).toBeGreaterThanOrEqual(seuil);
+  });
+  it.each(GROS_TEXTE_SEULEMENT)("%s sur %s : gros texte seulement (≥ %s, < 4,5)", (t, f, seuil) => {
+    expect(ratio(t, f)).toBeGreaterThanOrEqual(seuil);
+    expect(ratio(t, f)).toBeLessThan(4.5);
   });
   it.each(INTERDITES)("%s sur %s reste < 4,5", (t, f) => {
     expect(ratio(t, f)).toBeLessThan(4.5);

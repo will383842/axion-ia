@@ -133,27 +133,32 @@
   line-gap-override: 0%;
 }
 
+/* A ARBITRER PAR WILLIAMS (aucune valeur modifiée ici) :
+   - mocha-soft = mocha = ink (#141413) : les survols hover:bg-mocha-soft et les
+     fonds de cartouches ne se voient plus ;
+   - primary, plum et terracotta = #b23f16 pour les services (plus de distinction
+     de couleur entre les cartes de services). */
 @theme {
   /* ----- Surfaces : 4 tons éditoriaux (sans noir) ----- */
   --color-bg: #faf9f5; /* canvas — ivoire chaud (était blanc froid) */
   --color-paper: #ffffff; /* papier blanc pur — cards, sections de contraste */
   --color-sand: #e8e6dc; /* sable — sections "intermissions" */
   --color-sand-deep: #e8e6dc; /* sable saturé — bordures, badges */
-  --color-mocha: #141413; /* brun-aubergine — sections premium (PAS du noir) */
-  --color-mocha-soft: #141413; /* mocha plus doux — gradients */
+  --color-mocha: #141413; /* sections premium — #141413, quasi noir (même valeur que ink) */
+  --color-mocha-soft: #141413; /* même valeur que mocha et ink (#141413) : plus de ton « plus doux » */
   /* Encre — surface la plus sombre de la charte, réservée aux pages
      d'atterrissage publicitaires (cf. `.bg-vsl`). Un visiteur qui arrive d'un
      fil Facebook lumineux doit sentir une rupture immédiate ; `--color-mocha`
      seul, sur un téléphone en plein jour, ne la produit pas.
-     Ce n'est PAS du noir pur : la charte l'interdit, et un #000 sous un texte
-     ivoire crée un halo de scintillement désagréable sur écran OLED. On reste
-     dans la famille chaude de la marque, brun très sombre.
-     Contraste vérifié par `pnpm contrast:check` : mocha-fg 18,3:1 ·
-     mocha-fg-muted 8,3:1 · terracotta-on-mocha 7,3:1 — tous AAA. */
+     Ce n'est pas du #000 pur : un #000 sous un texte ivoire crée un halo de
+     scintillement désagréable sur écran OLED. La valeur est #141413, noir
+     chaud de la palette définitive (identique à mocha).
+     Contraste vérifié par `pnpm contrast:check` : mocha-fg 17,5:1 ·
+     mocha-fg-muted 8,29:1 · terracotta-on-mocha 5,90:1 — tous AAA. */
   --color-ink: #141413;
   --color-mocha-fg: #faf9f5; /* texte sur mocha — ivoire */
   /* Texte SECONDAIRE sur mocha (libellés inactifs, sous-titres des espaces
-     connectés). 6,64:1 sur --color-mocha — au-delà du seuil AA 4,5. Ne pas
+     connectés). 8,29:1 sur --color-mocha — au-delà du seuil AA 4,5. Ne pas
      l'obtenir par opacité sur --color-mocha-fg : une opacité ne se calcule pas,
      donc elle ne se vérifie pas, et le gate de contraste ne la voit pas. */
   --color-mocha-fg-muted: #b0aea5;
@@ -161,20 +166,20 @@
      🔴 Le terracotta de marque (#b23f16) donne 2,61:1 sur --color-mocha : très
      en dessous d'AA. Il est calibré pour servir de FOND sous du texte ivoire
      (5,24:1), pas de texte sur fond sombre. Même teinte (15,8°), même
-     saturation, luminosité portée à 65 % → 5,82:1 sur --color-mocha et 4,56:1
-     sur --color-mocha-soft. Mesuré, pas estimé. */
+     saturation, luminosité portée à 65 % → 5,90:1 sur --color-mocha (et sur
+     --color-mocha-soft, désormais de même valeur). Mesuré, pas estimé. */
   --color-terracotta-on-mocha: #d97757;
 
   /* ----- Foreground (texte) ----- */
-  --color-fg: #141413; /* anthracite-brun — texte principal (PAS du noir) */
+  --color-fg: #141413; /* texte principal — #141413, quasi noir */
   --color-fg-soft: #5e5d59; /* gris-brun moyen — texte secondaire */
   --color-fg-muted: #5e5d59; /* gris-sable durci — texte tertiaire, captions (WCAG AA strict 5.0:1 sur paper #fff + 4.8:1 sur bg ivoire ; Sprint A11y 2026-05-17 anciennement #6b6155 = 4.4:1 borderline) */
 
-  /* ----- Accent identitaire : bleu profond éditorial + chaleur ----- */
-  --color-primary: #b23f16; /* bleu dense éditorial v3 (Editorial Premium Light, ADR 0002) */
+  /* ----- Accent identitaire : terracotta (ancien bleu retiré de la palette) ----- */
+  --color-primary: #b23f16; /* terracotta #b23f16 (ancien bleu dense éditorial v3 retiré de la palette) */
   --color-primary-hover: #8f3412;
   --color-primary-fg: #ffffff;
-  --color-primary-soft: #e8e6dc; /* halo bleu très doux pour fonds d'icônes */
+  --color-primary-soft: #e8e6dc; /* halo gris chaud très doux pour fonds d'icônes (ancien halo bleu retiré de la palette) */
 
   /* ----- Accent éditorial : terracotta brique ----- */
   --color-terracotta: #b23f16; /* brique chaude — accents éditoriaux, italiques.
@@ -190,17 +195,17 @@
   --color-sage-soft: #eef1eb;
 
   /* ----- Accent chaud : ocre / or — 5e ton palette services (« pep par activité ») -----
-     Complète terracotta/bleu/sauge pour donner à chacun des 5 services SA couleur.
+     Complète terracotta/ancien bleu/sauge pour donner à chacun des 5 services SA couleur.
      Ancré ivoire chaud (charte Editorial Premium Light). Ne PAS réutiliser hors
      du système de cartes services (services-visual.ts) sans arbitrage Will. */
-  --color-ochre: #8f3412; /* or brûlé — accent 1-to-1 */
+  --color-ochre: #8f3412; /* terracotta foncé #8f3412 — accent 1-to-1 */
   --color-ochre-soft: #e8e6dc; /* halo ocre doux (fond d'icône) */
-  --color-ochre-deep: #8f3412; /* ocre foncé — texte/hover (WCAG ~8:1 sur paper) */
+  --color-ochre-deep: #8f3412; /* ocre foncé — texte/hover (WCAG 7,87:1 sur paper) */
 
   /* ----- Accent profond : prune — 5e ton palette services ----- */
   --color-plum: #b23f16; /* prune sourde — accent sites web & SaaS */
   --color-plum-soft: #e8e6dc; /* halo prune doux (fond d'icône) */
-  --color-plum-deep: #141413; /* prune foncée — texte/hover (WCAG ~9:1 sur paper) */
+  --color-plum-deep: #141413; /* prune foncée — texte/hover (WCAG 18,43:1 sur paper) */
 
   /* ----- Borders & dividers ----- */
   --color-border: #e8e6dc; /* sable doux pour bordures */
@@ -335,9 +340,8 @@
   --shadow-inset-soft: inset 0 1px 0 0 rgba(255, 255, 255, 0.6);
   /* CTA primary terracotta — halo coloré signature. Token centralisé
      (audit 2026-05-12) pour éviter le RGB literal `rgba(205,107,72,0.6)`
-     répété sur ~11 fichiers. La valeur RGB est différente de
-     --color-terracotta (#c24a1b → rgb(194,74,27)) — c'est volontaire : c'est
-     une teinte terracotta plus claire pour le glow. */
+     répété sur ~11 fichiers. La valeur RGB (178,63,22) est celle de
+     --color-terracotta (#b23f16), appliquée ici à faible opacité pour le glow. */
   --shadow-cta-terracotta: 0 1px 2px rgba(20, 20, 19, 0.08), 0 4px 12px rgba(178, 63, 22, 0.18);
 
   /* ----- Motion ----- */
@@ -475,7 +479,7 @@
       radial-gradient(at 8% 92%, rgba(26, 77, 217, 0.06) 0px, transparent 60%);
   }
 
-  /* Halo cool sand → blue subtle (alternance) */
+  /* Halo cool sand → ancien bleu (retiré de la palette), subtil (alternance) */
   .bg-halo-cool {
     background-color: var(--color-sand);
     background-image:
@@ -845,7 +849,7 @@
     font-style: italic;
   }
 
-  /* Liens inline — bleu primary, soulignement raffiné, hover terracotta */
+  /* Liens inline — primary (terracotta), soulignement raffiné, hover terracotta */
   .prose-axionia a {
     color: var(--color-primary);
     text-decoration: underline;

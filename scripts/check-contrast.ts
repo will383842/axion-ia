@@ -73,7 +73,7 @@ const palette = {
   // Foreground
   fg: "#141413",
   fgSoft: "#5e5d59",
-  fgMuted: "#5e5d59", // resynchronisé 2026-07-26 (X5) — globals.css porte #5a4f44
+  fgMuted: "#5e5d59", // resynchronisé 2026-07-26 (X5) — globals.css porte #5e5d59
   mochaFg: "#faf9f5",
   mochaFgMuted: "#b0aea5", // texte secondaire sur mocha (espaces connectés)
   mochaSoft: "#141413",
