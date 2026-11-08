@@ -109,14 +109,15 @@ describe("REQ-INT-014 — le MARQUEUR : le nom ne sort que vers le bandeau", () 
     ]);
   });
 
-  it("REQ-INT-014 — TÉMOIN STATIQUE : le bandeau n'est rendu que par le devis (formulaire et assistant), l'assistant de vente et la fiche, jamais par un document, un PDF ou un courriel", () => {
+  it("REQ-INT-014 — TÉMOIN STATIQUE : le bandeau n'est rendu que par le devis, l'assistant de vente et la fiche, jamais par un document, un PDF ou un courriel", () => {
     expect(importeurs(/BandeauAttributionPartners"/)).toEqual([
       // Déplacé de page.tsx au lot 0 : le bloc devis-factures vit maintenant dans ce fichier.
       "src/components/admin/dossier-client/fiche/OngletDevisFactures.tsx",
       "src/components/admin/qualiopi/DevisForm.tsx",
       "src/components/admin/qualiopi/VenteWizard.tsx",
-      // Assistant de devis (E08) : même écran de création de devis, le bandeau y est lu par une
-      // action injectée en prop. Exception documentée, la garde reste exacte.
+      // Étape 1 de l'assistant de création de devis : c'est un écran de création de devis,
+      // donc un écran du devis, jamais un document, un PDF ou un courriel (le balayage des
+      // `documents` juste en dessous continue d'exiger l'absence du bandeau de ceux-là).
       "src/components/admin/qualiopi/assistant-devis/etapes/un/BlocClient.tsx",
     ]);
     const documents = SRC.filter((f) => /documents\/templates|\/emails?\/|pdf/i.test(f));
