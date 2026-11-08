@@ -125,6 +125,51 @@ describe("égalité avec le PDF (donneesPdfDevis)", () => {
     expect(ap.formules).toBeDefined();
   });
 
+  it("régime franchise : vue === donneesPdfDevis avec le même régime", () => {
+    const p = formules("AB");
+    const ap = calculerApercu(p, { ...CTX, regime: "franchise_293b" });
+    const r = payloadVersCreation(p, {
+      formulesActives: true,
+      typeClient: "entreprise",
+      maintenant: CTX.maintenant!,
+      tauxStandard: 20,
+    });
+    if (!("type" in r) || r.type !== "formules") throw new Error("type");
+    const devis = {
+      numero: "N",
+      lignes: [],
+      activite: "implementation",
+      refClient: null,
+      financementSuggere: null,
+      montantOpcoEstimeCents: null,
+      resteAChargeCents: null,
+      dateValidite: new Date("2026-12-01"),
+      offre: r.input.offre,
+      client: {
+        type: "entreprise",
+        raisonSociale: "X",
+        siret: null,
+        adresse: null,
+        adresseRue: null,
+        adresseCodePostal: null,
+        adresseVille: null,
+        contactEmail: null,
+      },
+    } as unknown as DevisPourPdf;
+    const contexte = {
+      identite: {} as never,
+      regimeTva: "franchise_293b",
+      tauxStandard: 20,
+      certificationObtenue: false,
+      formulesActives: true,
+    } as ContextePdfDevis;
+    expect(ap.formules).toStrictEqual(
+      donneesPdfDevis(devis, contexte, new Date("2026-11-08")).formules,
+    );
+    const assujetti = calculerApercu(p, CTX);
+    expect(JSON.stringify(ap.formules)).not.toBe(JSON.stringify(assujetti.formules));
+  });
+
   it("T1 : versements 30/30/40 de A = 134 517 / 134 517 / 179 359 (HT 448 393)", () => {
     const ap = calculerApercu(formules("A"), CTX);
     const json = JSON.stringify(ap.formules);
