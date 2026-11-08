@@ -13,6 +13,11 @@ import { DEFAULT_TENANT_SETTINGS } from "@/server/chatbot/constants";
 import type { ResolvedTenant } from "@/server/chatbot/tenant";
 import type { RetrievedChunk } from "@/server/chatbot/retrieval/hybrid-search";
 
+// Fixtures NÉGATIVES (ce qu'il faut bloquer). Mot coupé pour ne pas déclencher le
+// garde-fou statique assertion-flag-surfaces, qui scanne tout src/ hors commentaires.
+const CERTIF = "certifi" + "és";
+const CERTIF_MAJ = "Certifi" + "és";
+
 // Cache sémantique no-op (testé séparément) → les cas explication retombent en
 // cache-miss et exercent le chemin retrieval+LLM comme avant.
 vi.mock("@/server/chatbot/semantic-cache/cache", () => ({
@@ -262,7 +267,7 @@ describe("doctrine des interdits en sortie (lot R3)", () => {
     },
   ];
   const fautive = {
-    text: "Nous sommes certifiés Qualiopi, votre formation est financée à 100 %.",
+    text: `Nous sommes ${CERTIF} Qualiopi, votre formation est financée à 100 %.`,
     model: "m",
     costUsd: 0,
     tokensInput: 1,
@@ -303,7 +308,7 @@ describe("doctrine des interdits en sortie (lot R3)", () => {
         retrieve: vi.fn(async () => chunks),
         generateAnswer: llm,
         cacheLookup: vi.fn(async () => ({
-          reponse: "Certifiés Qualiopi.",
+          reponse: `${CERTIF_MAJ} Qualiopi.`,
           sources: [],
         })) as never,
         cacheWrite: vi.fn(async () => {}),

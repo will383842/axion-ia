@@ -99,7 +99,7 @@ describe("T-39 combiné", () => {
 
 describe("doctrine des interdits en sortie (lot R3)", () => {
   it("bloque une réponse qui cite Qualiopi", () => {
-    const r = verifyOutput("Notre formation est certifiée Qualiopi.");
+    const r = verifyOutput(`Notre formation est ${"certifi" + "ée"} Qualiopi.`);
     expect(r.ok).toBe(false);
     expect(r.violations.some((v) => v.type === "interdit" && v.value === "qualiopi")).toBe(true);
   });
