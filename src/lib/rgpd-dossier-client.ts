@@ -48,6 +48,13 @@ export const EXCLUSIONS_EXPORT_DOSSIER: ReadonlyArray<{
   readonly motif: string;
 }> = [
   {
+    modele: "DevisAssistantBrouillon",
+    motif:
+      "le brouillon de travail du devis que nous préparons pour vous (étapes, lignes et prix en " +
+      "cours de saisie) : il ne contient aucune coordonnée de personne, seulement un lien vers " +
+      "votre fiche ; le devis lui-même, une fois établi, vous est remis.",
+  },
+  {
     modele: "ConsoleCommande",
     motif:
       "la copie, transmise à notre console des automatisations, de ce que vous avez choisi en " +
