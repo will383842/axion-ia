@@ -169,8 +169,20 @@ function textesInjectes(p: PayloadAssistantV1): TexteCopie[] {
   ];
   // Comparaison sur le texte rogné : un devis rouvert dont les textes sont déjà injectés ne
   // reçoit pas une seconde copie de l'intitulé ressaisi (ou repris tel quel) dans le récit.
-  const deja = new Set(p.textes.map((t) => t.texte.trim()));
-  const out: TexteCopie[] = [...p.textes];
+  // Une phrase d'IA déjà injectée (« Formule A/B : … », texte libre) est REMPLACÉE, jamais
+  // doublée : on l'écarte dès que le choix d'IA de la formule est (re)posé, ou que la formule
+  // n'est plus proposée (sinon l'ancienne phrase contredirait la nouvelle).
+  const aEcarter = (t: TexteCopie): boolean => {
+    if (t.bibliothequeId !== undefined) return false;
+    return (["achat", "abonnement"] as const).some((f) => {
+      const prefixe = f === "achat" ? "Formule A :" : "Formule B :";
+      if (!t.texte.trim().startsWith(prefixe)) return false;
+      return !p.formules.formules[f] || (ia !== null && f in ia);
+    });
+  };
+  const conserves = p.textes.filter((t) => !aEcarter(t));
+  const deja = new Set(conserves.map((t) => t.texte.trim()));
+  const out: TexteCopie[] = [...conserves];
   for (const s of sources) {
     const texte = s.trim();
     if (texte !== "" && !deja.has(texte)) {
@@ -323,6 +335,15 @@ export function devisVersPayload(d: DevisPourAssistant, tvaStandardPct: number):
     p.typeDevis = "formules";
     p.formules = offreVersSaisie(o);
     p.textes = o.textes.map((t) => ({ ...t }));
+    // Texte d'intitulé injecté à l'enregistrement : on le rend au récit (et on le retire des
+    // textes) pour que ressaisir l'intitulé le REMPLACE à la prochaine conversion.
+    const iIntitule = p.textes.findIndex(
+      (t) => t.bibliothequeId === undefined && !/^Formule [AB] :/.test(t.texte.trim()),
+    );
+    if (iIntitule >= 0) {
+      p.recit.intitule = p.textes[iIntitule]!.texte;
+      p.textes.splice(iIntitule, 1);
+    }
     // D1 : lignes de l'étape 1 = lignes de A, ou mise en service de B seule.
     const source = o.achat ? o.achat.lignes : (o.abonnement?.miseEnServiceLignes ?? []);
     p.lignesClassiques = source.map((l) => ({

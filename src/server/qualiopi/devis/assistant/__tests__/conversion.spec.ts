@@ -374,11 +374,59 @@ describe("textes d'IA par formule (liste blanche, préfixe « Formule A/B : »)"
     c.nonImprime = { ia: { achat: "compte_client" } };
     expect(JSON.stringify(creation(c))).not.toContain("IA");
   });
-  it("réouverture : intitulé déjà injecté, jamais dupliqué (comparaison rognée)", () => {
+  it("réouverture : intitulé déjà injecté (texte enregistré avec espaces, récit vide), jamais dupliqué", () => {
     const p = formules("A");
-    p.textes = [{ texte: "Assistant client", actif: true }];
-    p.recit.intitule = "  Assistant client ";
-    expect(textes(p)).toEqual(["Assistant client"]);
+    p.textes = [{ texte: "  Assistant client ", actif: true }];
+    p.recit.intitule = "Assistant client";
+    expect(textes(p)).toEqual(["  Assistant client "]);
+  });
+  it("réouverture réelle : l'intitulé ressaisi REMPLACE l'ancien, sans doublon", () => {
+    const creee = creation(formules("A"));
+    if (creee.type !== "formules") throw new Error("type");
+    const o = creee.input.offre;
+    o.textes = [{ texte: "Ancien intitulé", actif: true }];
+    const p = devisVersPayloadBrut(devisDepuis(o), 20);
+    if (!("payload" in p)) throw new Error("refus");
+    const q = p.payload;
+    q.clientId = CLIENT;
+    q.activite = "implementation";
+    expect(q.recit.intitule).toBe("Ancien intitulé");
+    q.recit.intitule = "Nouvel intitulé";
+    const t = textes(q);
+    expect(t).toContain("Nouvel intitulé");
+    expect(t).not.toContain("Ancien intitulé");
+    q.recit.intitule = "";
+    expect(textes(q)).not.toContain("Nouvel intitulé");
+  });
+  it("réouverture : la phrase d'IA injectée est REMPLACÉE quand le choix change", () => {
+    const p = formules("AB");
+    p.textes = [
+      { texte: "Formule A : L'utilisation de l'IA se fait avec le compte du client.", actif: true },
+      {
+        texte: "Formule B : L'utilisation de l'IA n'est pas incluse dans l'abonnement.",
+        actif: true,
+      },
+    ];
+    p.nonImprime = {
+      ia: { achat: { mode: "incluse", mois: 3 }, abonnement: { inclus: true } },
+    };
+    expect(textes(p)).toEqual([
+      "Formule A : L'utilisation de l'IA est incluse pendant 3 mois.",
+      "Formule B : L'utilisation de l'IA est incluse dans l'abonnement.",
+    ]);
+  });
+  it("une phrase d'IA d'une formule qui n'est plus proposée est retirée", () => {
+    const p = formules("A");
+    p.textes = [
+      { texte: "Formule B : L'utilisation de l'IA est incluse dans l'abonnement.", actif: true },
+    ];
+    expect(textes(p)).toEqual([]);
+  });
+  it("une phrase d'IA déjà injectée est gardée si aucun choix n'est reposé", () => {
+    const p = formules("A");
+    const ph = "Formule A : L'utilisation de l'IA se fait avec le compte du client.";
+    p.textes = [{ texte: ph, actif: true }];
+    expect(textes(p)).toEqual([ph]);
   });
 });
 

@@ -340,4 +340,44 @@ describe("chargerAssistantDevis — brouillon lié, brouillon écarté, refus d'
     }
     aucuneEcriture();
   });
+
+  it("?devis lié à un brouillon a_l_ecart : jamais relu (requête filtrée), hydratation du devis", async () => {
+    db.devis.findUnique.mockResolvedValue(devisBrouillon());
+    db.devisAssistantBrouillon.findFirst.mockImplementation(
+      async ({ where }: { where: { statut?: { not: string } } }) =>
+        where.statut?.not === "a_l_ecart"
+          ? null
+          : { id: BROUILLON, revision: 9, payload: JSON.parse(JSON.stringify(payloadVide(20))) },
+    );
+    const c = await charge({ devisId: DEVIS });
+    expect(c.brouillon).toBeNull();
+    expect(c.payloadInitial.refClient).toBe("REF-DEVIS");
+    expect(db.devisAssistantBrouillon.findFirst.mock.calls[0]![0].where).toMatchObject({
+      statut: { not: "a_l_ecart" },
+    });
+  });
+
+  it("?devis classique OPCO avec brouillon lié lisible : rouvert (contenu du brouillon)", async () => {
+    db.devis.findUnique.mockResolvedValue(devisBrouillon({ financementSuggere: "opco" }));
+    const p = payloadVide(20);
+    p.refClient = "REF-BROUILLON";
+    db.devisAssistantBrouillon.findFirst.mockResolvedValue({
+      id: BROUILLON,
+      revision: 4,
+      payload: JSON.parse(JSON.stringify(p)),
+    });
+    const c = await charge({ devisId: DEVIS });
+    expect(c.brouillon).toEqual({ id: BROUILLON, revision: 4 });
+    expect(c.payloadInitial.refClient).toBe("REF-BROUILLON");
+  });
+
+  it("?devis classique OPCO sans brouillon lisible (absent ou illisible) : refus", async () => {
+    db.devis.findUnique.mockResolvedValue(devisBrouillon({ financementSuggere: "opco" }));
+    for (const lie of [null, { id: BROUILLON, revision: 1, payload: { v: 9 } }]) {
+      db.devisAssistantBrouillon.findFirst.mockResolvedValue(lie);
+      const r = await chargerAssistantDevis({ adminId: ADMIN, devisId: DEVIS });
+      expect(r).toMatchObject({ redirection: `/qualiopi/devis/${DEVIS}` });
+      expect((r as { message?: string }).message).toMatch(/ne peut pas être rouvert/);
+    }
+  });
 });
