@@ -22,8 +22,10 @@ interface PreviewButtonProps {
 }
 
 const VARIANTS = {
-  outline: "border border-border bg-paper text-fg hover:bg-sand focus-visible:ring-primary",
-  solid: "bg-primary text-primary-fg hover:bg-primary-hover focus-visible:ring-primary",
+  outline:
+    "border border-border bg-paper text-fg hover:bg-sand focus-visible:ring-[color:var(--color-admin-accent)]",
+  solid:
+    "bg-[color:var(--color-admin-accent)] text-[color:var(--color-admin-accent-fg)] hover:bg-[color:var(--color-admin-accent-strong)] focus-visible:ring-[color:var(--color-admin-accent)]",
 } as const;
 
 export function PreviewButton({

@@ -164,7 +164,9 @@ export default async function GabaritsEmailPage({
             : ""}
         </p>
         <details className="mt-3">
-          <summary className="text-primary cursor-pointer text-sm">Voir la liste</summary>
+          <summary className="cursor-pointer text-sm text-[color:var(--color-admin-accent-strong)]">
+            Voir la liste
+          </summary>
           <ul className="mt-2 grid gap-1 text-sm sm:grid-cols-2">
             {textesFormateurs.map((t) => (
               <li key={cleDuTexte(t)} className="flex items-center gap-2">
@@ -179,7 +181,7 @@ export default async function GabaritsEmailPage({
                   href={`/fr/${adminPrefix}/emails/gabarits/${t.gabarit}${
                     t.variante !== undefined ? `?variante=${t.variante}` : ""
                   }`}
-                  className="text-primary hover:underline"
+                  className="text-[color:var(--color-admin-accent-strong)] hover:underline"
                 >
                   <code className="text-[13px]">
                     {t.gabarit}
