@@ -52,7 +52,11 @@ const LIGNES_PUR = lire("src/server/qualiopi/financements/facture-libre-pur.ts")
 
 /** Les modules qui RÉSOLVENT un régime depuis la configuration — donc qui créent. */
 const SITES_DE_CREATION = [
-  "src/server/actions/qualiopi/devis.ts",
+  // 2026-11-08 — la résolution du régime du devis classique a déménagé dans
+  // `mentionTvaDevisClassique` (assistant de devis S09), partagée par `devis.ts`
+  // (création) et `devis-classique-modifier.ts`. L'action n'en résout plus aucun ;
+  // c'est ce service qui appelle `regimeTvaDepuisConfig`, le verrou.
+  "src/server/qualiopi/devis/champs-classiques.ts",
   "src/server/actions/qualiopi/factures-inter.ts",
   // 2026-09-15 — le corps d'émission de `actions/qualiopi/financements.ts` vit
   // désormais dans ce service pur (partagé avec la facture du lendemain). La
