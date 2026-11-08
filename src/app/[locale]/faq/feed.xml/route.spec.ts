@@ -52,9 +52,11 @@ describe("feed FAQ — les descriptions servent des prix, pas des gabarits", () 
 
   it("résout les jetons de prix en « sur devis » (R7 : aucun montant public hors Journée IA)", () => {
     expect(XML_FR.toLowerCase()).toContain("sur devis");
-    expect(XML_FR.replace(/1[\s\u00a0\u202f]?490[\s\u00a0\u202f]?€/g, "")).not.toMatch(
-      /\d[\s\u00a0\u202f]?\d{3}\s?€\s?HT/,
-    );
+    expect(
+      XML_FR.replace(/1[\s\u00a0\u202f]?490[\s\u00a0\u202f]?€/g, "").match(
+        /(?:\d[\d\s\u00a0\u202f.,]*\s?k?€|€\s?\d)/g,
+      ) ?? [],
+    ).toEqual([]);
   });
 
   it("ne produit jamais « à partir de à partir de »", () => {

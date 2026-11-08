@@ -157,6 +157,18 @@ function entreeAffichable(entry: RegistryEntry): boolean {
  * donnerait « démarre à sur devis » ; on réécrit donc la préposition ou le verbe qui le
  * porte. Toute rédaction future est couverte sans purge de la copy (les jetons restent).
  */
+/** Phrase entière qui promet des tarifs publics / « sans devis opaque ». */
+const PROMESSE = String.raw`(?:tarifs?|prix)\s+(?:sont\s+)?(?:publics?|affichés|transparents)|tarif public|grille tarifaire|sans devis (?:opaque|caché)|pas de devis opaque|devis opaque`;
+const PHRASE_TARIFS_PUBLICS = new RegExp(
+  String.raw`(?<=^|[.!?]\s)[^.!?]*(?:${PROMESSE})[^.!?]*[.!?]?(?=\s|$)`,
+  "giu",
+);
+/** Incise « , tarifs publics… » restée dans une phrase conservée. */
+const INCISE_TARIFS_PUBLICS = new RegExp(
+  String.raw`\s*[,—–:]\s*[^,.;:!?—–]*(?:${PROMESSE})[^,.;!?—–]*`,
+  "giu",
+);
+
 export function recollerSurDevis(text: string, locale: Locale = "fr"): string {
   if (!text.includes(MARQUEUR_SUR_DEVIS)) return text;
   const M = MARQUEUR_SUR_DEVIS;
@@ -168,9 +180,17 @@ export function recollerSurDevis(text: string, locale: Locale = "fr"): string {
       .replace(new RegExp(`(^|[.!?]\\s+)${M}`, "g"), "$1On request")
       .replaceAll(M, "on request");
   }
+  // R7 — une phrase qui promet des « tarifs publics » devient fausse dès qu'un montant est
+  // masqué : elle tombe (phrase entière, ou incise après une virgule).
+  const sansPromesse = (x: string): string => {
+    let y = x.replace(INCISE_TARIFS_PUBLICS, "").replace(PHRASE_TARIFS_PUBLICS, "");
+    // Phrase unique : on ne vide pas le champ, on retire seulement l'adjectif.
+    if (y.trim() === "") y = x.replace(/\b(tarifs?)\s+publics?\b/gi, "$1");
+    return y === x ? x : y.replace(/ {2,}/g, " ").trim();
+  };
   // 0. Une devise écrite à la main après un mode `num` (« {{num}} € HT ») tombe avec lui.
   let t = text
-    .replace(new RegExp(`${M}\\s*(?:€|euros?)(?:\\s*HT)?`, "g"), M)
+    .replace(new RegExp(`${M}(?:\\s*(?:k?€|euros?))?(?:\\s*(?:HT|TTC)(?![\\p{L}]))?`, "gu"), M)
     .replace(new RegExp(`${M}\\s*\\(?excl\\.?\\s*VAT\\)?`, "g"), M)
     .replace(new RegExp(`(?:Starting from|Starting at|From)\\s+${M}`, "g"), "on request");
   // 1. Fourchettes : deux montants masqués ne font qu'un « sur devis ».
@@ -183,31 +203,31 @@ export function recollerSurDevis(text: string, locale: Locale = "fr"): string {
   t = t
     .replace(
       new RegExp(
-        `\\b(?:démarrent|commencent|débutent|coûtent|reviennent|partent)\\s+(?:à partir de|dès|à|a|de)\\s+${M}`,
-        "g",
+        `(?<![\\p{L}\\p{N}'’])(?:démarrent|commencent|débutent|coûtent|reviennent|partent)\\s+(?:à partir de|dès|à|a|de)\\s+${M}`,
+        "gu",
       ),
       `sont ${M}`,
     )
     .replace(
       new RegExp(
-        `(?:démarre|demarre|commence|débute|debute|coûte|revient|part|est facturée?|est proposée?|est accessible|est disponible)\\s+(?:à partir de|a partir de|dès|à|a|de|pour)\\s+${M}`,
-        "g",
+        `(?<![\\p{L}\\p{N}'’])(?:démarre|demarre|commence|débute|debute|coûte|revient|part|est facturée?|est proposée?|est accessible|est disponible)\\s+(?:à partir de|a partir de|dès|à|a|de|pour)\\s+${M}`,
+        "gu",
       ),
       `est ${M}`,
     )
-    .replace(new RegExp(`(?:coûte|coûtent)\\s+${M}`, "g"), (m) =>
+    .replace(new RegExp(`(?<![\\p{L}\\p{N}'’])(?:coûte|coûtent)\\s+${M}`, "gu"), (m) =>
       m.startsWith("coûtent") ? `sont ${M}` : `est ${M}`,
     );
   // 3. Prépositions et amorces devant le montant : elles tombent.
   t = t
     .replace(
-      new RegExp(`(^|[.!?]\\s+|[\\n"«(])(?:À partir de|Dès|A partir de)\\s+${M}`, "g"),
+      new RegExp(`(^|[.!?]\\s+|[\\n"(]|«\\s?)(?:À partir de|Dès|A partir de)\\s+${M}`, "g"),
       "$1Sur devis",
     )
     .replace(
       new RegExp(
-        `(?:à partir de|a partir de|au prix de|au tarif de|pour un budget de|pour|dès|des|à|a|de|en)\\s+${M}`,
-        "g",
+        `(?<![\\p{L}\\p{N}'’])(?:jusqu['’]à|à partir de|a partir de|au prix de|au tarif de|pour un budget de|pour|dès|des|à|a|de|en)\\s+${M}`,
+        "gu",
       ),
       M,
     )
@@ -221,7 +241,7 @@ export function recollerSurDevis(text: string, locale: Locale = "fr"): string {
     .replace(/\b(sur devis)(?:\s*,?\s*sur devis)+/gi, "$1")
     .replace(/\bsur devis\s+sur mesure\s+sur devis/gi, "sur mesure, sur devis")
     .replace(/\b(sont|est)\s+sur devis\s+sur devis/gi, "$1 sur devis");
-  return t;
+  return sansPromesse(t);
 }
 
 /** Résout une entrée du registre selon le mode demandé. */

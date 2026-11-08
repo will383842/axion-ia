@@ -141,6 +141,20 @@ describe("R7 — la prose recollée reste du français", () => {
       "Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
       "Audit sur place sur devis, ROI chiffré.",
     ],
+    // Relecture Opus : bornes de mots (« départ », « guide », « jusqu'à ») et devises écrites.
+    ["Au départ de {{price:audit-flash|flat}}.", "Au départ sur devis."],
+    ["Le guide {{price:audit-flash|flat}}", "Le guide sur devis"],
+    ["Coût {{price:audit-flash|num}} € HT.", "Coût sur devis."],
+    ["« Dès {{price:audit-flash|flat}} »", "« Sur devis »"],
+    // Une promesse de « tarifs publics » devient fausse : elle tombe.
+    [
+      "L'Audit sur place démarre à {{price:audit-flash|flat}}. Tarifs publics consultables sur notre site. Adapté aux TPE.",
+      "L'Audit sur place est sur devis. Adapté aux TPE.",
+    ],
+    [
+      "L'Audit sur place démarre à {{price:audit-flash|flat}}, tarifs publics et sans devis opaque. Suite.",
+      "L'Audit sur place est sur devis. Suite.",
+    ],
   ])("%s", (source, attendu) => {
     expect(resolvePriceTokens(source, "fr")).toBe(attendu);
   });
@@ -158,7 +172,7 @@ describe("R7 — copy des 2 160 pages villes", () => {
         if (!brut.includes("{{price")) continue;
         const rendu = resolvePriceTokens(JSON.parse(brut) as string, "fr");
         const mauvais =
-          /\{\{price|\u0000|\d[\d\s  ]*\s?€\s?HT|(?:(?:^|\s)(?:à|dès|de|partir))\s+sur devis/i.exec(
+          /\{\{price|\u0000|\d[\d\s\u00a0\u202f]*\s?€\s?HT|(?:(?:^|\s)(?:à|dès|de|partir))\s+sur devis|[\p{L}'’]sur devis|jusqu['’]sur|tarifs? publics?(?! identiques)/iu.exec(
             rendu,
           );
         if (mauvais)
