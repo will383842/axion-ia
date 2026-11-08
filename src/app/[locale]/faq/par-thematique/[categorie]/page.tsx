@@ -305,8 +305,8 @@ export default async function FaqCategoryPage({ params }: Props) {
         titleEm={isFr ? "votre cas" : "your case"}
         description={
           isFr
-            ? "Écrivez-nous à contact@axion-ia.com ou réservez un appel de 20 minutes : nous répondons précisément à votre contexte, sans engagement."
-            : "Email us at contact@axion-ia.com or book a 20-minute call: we answer your exact context, no strings attached."
+            ? "Écrivez-nous à contact@axion-ia.com ou réservez un rendez-vous gratuit de 45 minutes : nous répondons précisément à votre contexte, sans engagement."
+            : "Email us at contact@axion-ia.com or book a free 45-minute meeting: we answer your exact context, no strings attached."
         }
         cta={
           <>
