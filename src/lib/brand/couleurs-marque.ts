@@ -37,14 +37,14 @@
  * valeur = hex.
  */
 export const COULEURS_MARQUE = {
-  bg: "#faf8f3",
+  bg: "#faf9f5",
   paper: "#ffffff",
-  sand: "#f0e9da",
-  "sand-deep": "#e6dcc4",
+  sand: "#e8e6dc",
+  "sand-deep": "#e8e6dc",
   mocha: "#2a2520",
   "mocha-soft": "#3d362f",
-  "mocha-fg": "#f7f3ea",
-  fg: "#1a1815",
+  "mocha-fg": "#faf9f5",
+  fg: "#141413",
   "fg-soft": "#524b41",
   "fg-muted": "#5a4f44",
   primary: "#1a4dd9",
@@ -54,10 +54,10 @@ export const COULEURS_MARQUE = {
   terracotta: "#b23f16",
   "terracotta-soft": "#f5e3d8",
   "terracotta-deep": "#8c3010",
-  sage: "#5e6c54",
-  "sage-soft": "#e6ebe2",
-  border: "#e5ddc8",
-  "border-strong": "#c8bda0",
+  sage: "#5e7050",
+  "sage-soft": "#eef1eb",
+  border: "#e8e6dc",
+  "border-strong": "#b0aea5",
 } as const;
 
 export type JetonCouleurMarque = keyof typeof COULEURS_MARQUE;

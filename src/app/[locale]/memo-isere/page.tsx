@@ -1217,7 +1217,7 @@ export default async function MemoIserePage({ params }: Props) {
                     {t.sigle}
                   </span>
                 </p>
-                <p className="text-terracotta mt-2 text-xs font-bold tracking-wide uppercase">
+                <p className="text-terracotta-deep mt-2 text-xs font-bold tracking-wide uppercase">
                   {t.effectif}
                 </p>
                 <ul className="text-fg-soft mt-4 space-y-1.5 text-[13px] leading-snug" role="list">
@@ -1395,7 +1395,7 @@ export default async function MemoIserePage({ params }: Props) {
                     : "border-border bg-paper shadow-subtle",
                 )}
               >
-                <p className="text-terracotta text-xs font-bold tracking-wide uppercase">
+                <p className="text-terracotta-deep text-xs font-bold tracking-wide uppercase">
                   {s.titre}
                 </p>
                 <p className="text-terracotta-deep mt-2 font-serif text-3xl leading-none font-semibold sm:text-4xl">
