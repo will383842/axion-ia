@@ -60,6 +60,7 @@ export function registerPdfTestFontsFallback(): void {
         fonts: [
           { src: "Helvetica", fontWeight: "normal", fontStyle: "normal" },
           { src: "Helvetica-Bold", fontWeight: "bold", fontStyle: "normal" },
+          { src: "Helvetica-Bold", fontWeight: 800, fontStyle: "normal" },
           { src: "Helvetica-Oblique", fontWeight: "normal", fontStyle: "italic" },
           { src: "Helvetica-BoldOblique", fontWeight: "bold", fontStyle: "italic" },
         ],
