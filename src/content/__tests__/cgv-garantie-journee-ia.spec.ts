@@ -17,11 +17,6 @@ import {
 } from "@/content/garantie-journee-ia";
 
 const CGV = getLegal("conditions-generales");
-const TITRE_GARANTIE = {
-  fr: "Garantie de la Journée IA",
-  en: "Journée IA guarantee",
-} as const;
-
 function section(locale: "fr" | "en", re: RegExp): string {
   const s = CGV[locale].sections.find((x) => re.test(x.title));
   if (!s) throw new Error(`Section ${re} introuvable (${locale})`);
@@ -50,7 +45,7 @@ describe("CGV : article de garantie de la Journée IA", () => {
       GARANTIE_JOURNEE_IA_FORMULE_EN,
       GARANTIE_JOURNEE_IA_CONDITION_EN,
     ]) {
-      expect(t).not.toMatch(/€|\beuros?\b|EUR/i);
+      expect(t).not.toMatch(/€|\beuros?\b|\bEUR\b/i);
     }
   });
 
@@ -85,7 +80,9 @@ describe("CGV : clause OPCO retirée (décision 21)", () => {
   it("4. aucun titre de section ne parle d'OPCO ou d'opérateur de compétences", () => {
     for (const locale of ["fr", "en"] as const) {
       for (const s of CGV[locale].sections) {
-        expect(s.title, `${locale} : ${s.title}`).not.toMatch(/OPCO|opérateur de compétences|skills operator/i);
+        expect(s.title, `${locale} : ${s.title}`).not.toMatch(
+          /OPCO|opérateur de compétences|skills operator/i,
+        );
       }
     }
   });

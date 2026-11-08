@@ -9,6 +9,12 @@
 
 import { complementsNotice, sectionRendezVousDecouverte } from "./visio-annonce-textes";
 import { TITRE_ARTICLE_VIOLENCES, VIOLENCES_PROCEDURE } from "./prevention-violences";
+import {
+  GARANTIE_JOURNEE_IA_CONDITION,
+  GARANTIE_JOURNEE_IA_CONDITION_EN,
+  GARANTIE_JOURNEE_IA_FORMULE,
+  GARANTIE_JOURNEE_IA_FORMULE_EN,
+} from "./garantie-journee-ia";
 
 // Chantier visio (PR 8) — ce que la politique dit de l'enregistrement des
 // rendez-vous bascule sur UN interrupteur (`src/server/visio/visio-annonce.ts`).
@@ -200,7 +206,7 @@ export const LEGAL_PAGES: ReadonlyArray<LegalContent> = [
         },
         {
           title: "Conditions de paiement",
-          body: "Sauf échéancier convenu au devis, le règlement s'effectue par virement bancaire. Pour les prestations inférieures à 5 000 € HT, le paiement intervient à la commande ; au-delà, un échelonnement (acompte à la commande puis solde à l'avancement ou à la livraison) peut être convenu. Aucun escompte n'est accordé en cas de paiement anticipé.",
+          body: "Le règlement s'effectue par virement bancaire, selon l'échéancier fixé au devis. Sauf stipulation contraire du devis, un acompte de 30 % du montant total hors taxes est dû à la signature du devis, et le solde à réception de la facture émise à l'achèvement de la prestation. Ces modalités s'entendent sous réserve des dispositions propres au particulier et aux produits numériques prévues ci-après. Aucun escompte n'est accordé en cas de paiement anticipé.",
         },
         {
           title: "Retard de paiement — pénalités et indemnité de recouvrement",
@@ -282,7 +288,11 @@ export const LEGAL_PAGES: ReadonlyArray<LegalContent> = [
         },
         {
           title: "Garanties et responsabilité",
-          body: "Axion-IA exécute ses prestations selon les règles de l'art, dans le cadre d'une obligation de moyens. Axion-IA ne souscrit aucune obligation de résultat. Les gains de productivité, économies de temps, taux d'automatisation, indicateurs de performance ou retours sur investissement évoqués dans les propositions commerciales, supports de présentation, contenus du site ou échanges précontractuels constituent des estimations indicatives, dépendantes de facteurs propres au Client, et ne constituent en aucun cas un engagement contractuel d'Axion-IA.",
+          body: "Axion-IA exécute ses prestations selon les règles de l'art, dans le cadre d'une obligation de moyens. Axion-IA ne souscrit aucune obligation de résultat, sous réserve de la garantie prévue à l'article « Garantie de la Journée IA ». Les gains de productivité, économies de temps, taux d'automatisation, indicateurs de performance ou retours sur investissement évoqués dans les propositions commerciales, supports de présentation, contenus du site ou échanges précontractuels constituent des estimations indicatives, dépendantes de facteurs propres au Client, et ne constituent en aucun cas un engagement contractuel d'Axion-IA, hors cette garantie.",
+        },
+        {
+          title: "Garantie de la Journée IA",
+          body: `Par exception à l'obligation de moyens, la Journée IA est assortie de la garantie suivante : « ${GARANTIE_JOURNEE_IA_FORMULE} » ${GARANTIE_JOURNEE_IA_CONDITION} La garantie porte sur les gains identifiés dans le rapport, et non sur des gains réalisés. Elle ne s'applique à aucune autre prestation.`,
         },
         {
           // 2026-08-14 — le plafond existait mais sans BORNE TEMPORELLE : « le
@@ -331,24 +341,6 @@ export const LEGAL_PAGES: ReadonlyArray<LegalContent> = [
           // un abandon en cours de session n'était régi par aucun texte.
           title: "Dédit et abandon en cours d'exécution",
           body: "En cas d'abandon en cours d'exécution à l'initiative du Client ou du bénéficiaire, les prestations effectivement réalisées à la date de l'abandon restent dues au prorata. Lorsque l'action est financée par un tiers (OPCO, France Travail, autre financeur), la part non réalisée n'est pas facturée au financeur et ne peut être réclamée au Client au-delà de ce prorata. Lorsque l'abandon résulte d'un cas de force majeure dûment constaté, le contrat est résilié et seules les prestations effectivement dispensées sont dues, conformément à l'article L.6353-7 du Code du travail.",
-        },
-        {
-          // Lot OPCO O13 (2026-10-04). Les CGV ne disaient RIEN du financement
-          // par un OPCO — zéro occurrence de « subrogation » — alors que les
-          // conventions (bipartite § 5 et tripartite § 5) portent depuis le
-          // 16/08 une clause de défaillance du financeur. Les CGV sont annexées
-          // à ces conventions : mêmes mots (« refus, réduction, caducité,
-          // non-paiement », « redeviennent exigibles auprès du client, qui
-          // demeure le débiteur du prix »), sinon deux rédactions du même
-          // engagement s'interprètent l'une contre l'autre (art. 1190 C. civ.).
-          // ⛔ Aucun délai propre à Axion-IA : le texte doit rester tenable avec
-          // des centaines de clients. Les délais cités sont ceux de l'OPCO.
-          // Les heures d'absence sont distinguées de l'abandon, régi par la
-          // clause précédente (prorata, rien au-delà).
-          // Relecture A07 : aucune date de réforme (règles propres à chaque OPCO),
-          // et les manquements d'Axion-IA ne retombent pas sur le Client.
-          title: "Financement par un opérateur de compétences (OPCO)",
-          body: "Lorsque le Client sollicite la prise en charge d'une action de formation par son opérateur de compétences (OPCO), il appartient au Client de déposer sa demande de prise en charge auprès de cet OPCO avant le début de la formation, dans les délais et selon les modalités fixés par cet OPCO ; Axion-IA lui transmet à cette fin les pièces nécessaires (convention de formation, programme, devis). Cette démarche relève de la relation entre le Client et son OPCO : la prise en charge est subordonnée à l'accord écrit de l'OPCO et au respect de ses règles de financement, et elle ne modifie ni le prix convenu, ni son exigibilité, sous réserve de la subrogation de paiement prévue ci-après. Lorsque l'accord de prise en charge prévoit le paiement direct à l'organisme de formation (subrogation de paiement), Axion-IA facture l'OPCO pour la part prise en charge et le Client pour le solde ; à défaut, Axion-IA facture au Client l'intégralité du prix, et le Client fait son affaire du remboursement auprès de son OPCO. Les conditions de recours au paiement direct relevant des règles propres à chaque OPCO, notamment fiscales, et pouvant évoluer, la modalité applicable est celle que retient l'accord de prise en charge. En cas de refus, de prise en charge partielle ou d'absence de réponse de l'OPCO avant le début de la formation, les sommes non prises en charge demeurent dues par le Client, sauf lorsque le refus résulte d'un manquement d'Axion-IA à ses propres obligations, et sauf annulation de sa part, les sommes dues étant alors celles prévues par la clause « Annulation, report et remboursement ». L'OPCO ne prend en charge que les heures effectivement suivies par chaque stagiaire, attestées par l'émargement : les heures d'une séance tenue par Axion-IA auxquelles un stagiaire inscrit n'a pas assisté ne sont pas prises en charge et restent dues par le Client ; elles lui sont facturées distinctement et ne peuvent être présentées à l'OPCO. L'abandon, entendu comme l'arrêt définitif de la participation du stagiaire à l'action, reste régi par la clause « Dédit et abandon en cours d'exécution ». Enfin, sous réserve de la clause « Dédit et abandon en cours d'exécution », en cas de réduction, de caducité de l'accord ou de non-paiement par l'OPCO de tout ou partie de la somme qu'il avait acceptée, notamment en raison d'un dossier incomplet du fait du Client ou d'un refus de paiement après contrôle, les sommes correspondantes redeviennent exigibles auprès du Client, qui demeure le débiteur du prix convenu, sauf lorsque la réduction, la caducité ou le non-paiement résulte d'un manquement d'Axion-IA à ses propres obligations (inexécution de tout ou partie de l'action, défaut des justificatifs de réalisation qui lui incombent).",
         },
         {
           // F53 — aucune clause de sous-traitance n'existait, alors que
@@ -608,7 +600,7 @@ export const LEGAL_PAGES: ReadonlyArray<LegalContent> = [
         },
         {
           title: "Payment terms",
-          body: "Unless a schedule is agreed in the quote, payment is made by bank transfer. For services under €5,000 excl. VAT, payment is due at order time; above that, staged payment (deposit at order then balance on progress or delivery) may be agreed. No early-payment discount is granted.",
+          body: "Payment is made by bank transfer, according to the schedule set out in the quote. Unless the quote states otherwise, a deposit of 30% of the total amount excluding VAT is due on signature of the quote, and the balance on receipt of the invoice issued when the service is completed. These terms are subject to the provisions specific to individuals and to digital products set out below. No early-payment discount is granted.",
         },
         {
           title: "Late payment — penalties and recovery indemnity",
@@ -640,7 +632,11 @@ export const LEGAL_PAGES: ReadonlyArray<LegalContent> = [
         },
         {
           title: "Warranties and liability",
-          body: "Axion-IA performs its services to professional standards, as a best-efforts undertaking. No outcome guarantee is given; any gains, ROI or performance mentioned are indicative and depend on factors specific to the Client. Axion-IA's liability, on any ground, is limited to direct damage and capped at the amount excl. VAT actually received for the service giving rise to the damage. Indirect damage is excluded (loss of operations, data, revenue or reputation). These limitations do not apply in the event of gross negligence or wilful misconduct, nor where the law prohibits them.",
+          body: "Axion-IA performs its services to professional standards, as a best-efforts undertaking. No outcome guarantee is given, except the Journée IA guarantee set out in the next clause; any gains, ROI or performance mentioned are indicative and depend on factors specific to the Client. Axion-IA's liability, on any ground, is limited to direct damage and capped at the amount excl. VAT actually received for the service giving rise to the damage. Indirect damage is excluded (loss of operations, data, revenue or reputation). These limitations do not apply in the event of gross negligence or wilful misconduct, nor where the law prohibits them.",
+        },
+        {
+          title: "Journée IA guarantee",
+          body: `By way of exception to the best-efforts undertaking, the Journée IA comes with the following guarantee: “${GARANTIE_JOURNEE_IA_FORMULE_EN}” ${GARANTIE_JOURNEE_IA_CONDITION_EN} The guarantee covers the gains identified in the report, not gains actually achieved. It does not apply to any other service.`,
         },
         {
           title: "Insurance",
@@ -653,11 +649,6 @@ export const LEGAL_PAGES: ReadonlyArray<LegalContent> = [
         {
           title: "Cancellation, rescheduling and refund",
           body: "Any cancellation by the Client: more than 7 days before the scheduled date, full refund of sums paid; between 7 and 2 days, 50% of the price remains due; less than 2 days, the full price remains due, with the slot reschedulable once at no extra charge. Where the service takes the form of a training action, the specific terms (training agreement or contract, cancellation and withdrawal conditions, any funding) are set out in the quote or applicable agreement.",
-        },
-        {
-          // Lot OPCO O13 (2026-10-04) — traduction de l'article FR du même nom.
-          title: "Funding by a skills operator (OPCO)",
-          body: "Where the Client seeks funding for a training action from its skills operator (OPCO), it is for the Client to file its funding application with that OPCO before the training starts, within the time limits and according to the procedures set by that OPCO; Axion-IA provides the Client with the necessary documents for this purpose (training agreement, programme, quote). This application is a matter between the Client and its OPCO: funding is subject to the OPCO's written approval and to compliance with its funding rules, and it changes neither the agreed price nor when it falls due, subject to the payment subrogation provided for below. Where the funding approval provides for direct payment to the training provider (payment subrogation), Axion-IA invoices the OPCO for the funded share and the Client for the balance; otherwise, Axion-IA invoices the Client for the full price, and the Client is responsible for obtaining reimbursement from its OPCO. As the conditions for using direct payment are governed by each OPCO's own rules, including tax rules, and may change, the applicable arrangement is the one set out in the funding approval. In the event of refusal, partial funding or lack of response from the OPCO before the training starts, the amounts not funded remain payable by the Client, except where the refusal results from a failure by Axion-IA to perform its own obligations, and unless the Client cancels, in which case the amounts due are those provided for in the clause \"Cancellation, rescheduling and refund\". The OPCO only funds the hours actually attended by each trainee, as evidenced by the attendance sheet: hours of a session held by Axion-IA that an enrolled trainee did not attend are not funded and remain payable by the Client; they are invoiced to the Client separately and may not be submitted to the OPCO. Abandonment, meaning the permanent cessation of the trainee's participation in the action, is not covered by this rule: in that event, the services actually delivered up to the date of abandonment remain payable pro rata, and the undelivered share is neither invoiced to the OPCO nor claimable from the Client beyond that pro rata amount. Finally, subject to the rule on abandonment set out above, in the event of reduction, lapse of the approval or non-payment by the OPCO of all or part of the amount it had agreed to fund, in particular because of an incomplete file attributable to the Client or a refusal of payment following an audit, the corresponding amounts become payable again by the Client, who remains liable for the agreed price, except where the reduction, lapse or non-payment results from a failure by Axion-IA to perform its own obligations (non-performance of all or part of the action, failure to provide the evidence of completion for which it is responsible).",
         },
         {
           title: "Reversibility and return",

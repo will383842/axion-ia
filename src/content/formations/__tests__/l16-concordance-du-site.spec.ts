@@ -238,7 +238,9 @@ describe("L16 — prix : les conditions réelles remplacent « prix fixe, sans s
     const cgv = getLegal("conditions-generales");
     const texte = cgv.fr.sections.map((s) => `${s.title} ${s.body}`).join("\n");
     // Les CGV disent ces seuils ; si elles changent, la liste doit suivre.
-    expect(texte).toMatch(/inférieures à 5 000 € HT, le paiement intervient à la commande/);
+    // Décision 9 du 08/11/2026 : le paiement n'est plus un seuil, il suit le devis.
+    expect(texte).not.toMatch(/inférieures à 5 000 € HT, le paiement intervient à la commande/);
+    expect(texte).toMatch(/selon l'échéancier fixé au devis/);
     expect(texte).toMatch(/à plus de 15 jours ouvrés, aucune somme n'est due/);
     expect(texte).toMatch(/entre 8 et 15 jours ouvrés, 50 % du prix HT restent dus/);
     expect(texte).toMatch(/à moins de 8 jours ouvrés, le prix HT reste dû en totalité/);
@@ -246,7 +248,8 @@ describe("L16 — prix : les conditions réelles remplacent « prix fixe, sans s
     const liste = CONDITIONS_TARIFAIRES_FR.map((c) => c.texte)
       .join("\n")
       .toLowerCase();
-    expect(liste).toContain("5 000 € ht");
+    expect(liste).not.toContain("5 000 € ht");
+    expect(liste).not.toContain("à la commande");
     expect(liste).toContain("15 jours ouvrés");
     expect(liste).toContain("entre 8 et 15 jours ouvrés, 50 % du prix ht");
     expect(liste).toContain("moins de 8 jours ouvrés");
