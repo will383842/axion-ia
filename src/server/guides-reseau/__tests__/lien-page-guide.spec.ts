@@ -13,6 +13,7 @@ import {
   creerJeton,
   empreinteJeton,
   verifierJeton,
+  verifierSecretsDistincts,
 } from "../lien-page-guide";
 
 const SECRET = "secret-fictif-example-test-0123456789-abcdef";
@@ -191,5 +192,84 @@ describe("lien-page-guide — empreinte et fixture", () => {
     expect(empreinteJeton(f.jeton)).toBe(f.empreinte);
     expect(verifierJeton(f.jeton, f.secret, f.maintenant_ms).ok).toBe(true);
     expect(JSON.stringify(f)).not.toContain("@");
+  });
+});
+
+const ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_";
+
+describe("lien-page-guide — forme canonique (D1)", () => {
+  it("les 3 variantes du dernier caractère de la signature sont refusées", () => {
+    const jeton = creerJeton(DONNEES, SECRET, T0);
+    const dernier = jeton.slice(-1);
+    const base = jeton.slice(0, -1);
+    // Les 3 autres caractères partageant les 4 bits de tête (2 bits de queue ignorés).
+    const idx = ALPHABET.indexOf(dernier);
+    const variantes = [0, 1, 2, 3]
+      .map((k) => ALPHABET[(idx & ~3) | k]!)
+      .filter((c) => c !== dernier);
+    expect(variantes).toHaveLength(3);
+    for (const c of variantes) {
+      expect(verifierJeton(base + c, SECRET, T0)).toEqual({ ok: false, motif: "signature" });
+    }
+    expect(verifierJeton(jeton, SECRET, T0).ok).toBe(true);
+  });
+
+  it("charge non canonique (bits de queue non nuls), signée correctement → refusée", () => {
+    // Charge de longueur ≡ 1 (mod 3) ou 2 : le dernier caractère base64url porte des bits ignorés.
+    const json = JSON.stringify(chargeValide());
+    let canon = b64u(json);
+    let n = json;
+    while (canon.length % 4 === 0) {
+      n += " ";
+      canon = b64u(n);
+    }
+    const idx = ALPHABET.indexOf(canon.slice(-1));
+    const altere = canon.slice(0, -1) + ALPHABET[idx ^ 1]!;
+    expect(Buffer.from(altere, "base64url").equals(Buffer.from(canon, "base64url"))).toBe(true);
+    const sig = (p: string) => createHmac("sha256", SECRET).update(p).digest("base64url");
+    expect(verifierJeton(`${canon}.${sig(canon)}`, SECRET, T0).ok).toBe(true);
+    const r = verifierJeton(`${altere}.${sig(altere)}`, SECRET, T0);
+    expect(r.ok).toBe(false);
+  });
+
+  it("une seule empreinte par jeton valide, quelle que soit l'écriture reçue", () => {
+    const jeton = creerJeton(DONNEES, SECRET, T0);
+    const base = jeton.slice(0, -1);
+    const idx = ALPHABET.indexOf(jeton.slice(-1));
+    const empreintes = new Set(
+      [0, 1, 2, 3].map((k) => empreinteJeton(base + ALPHABET[(idx & ~3) | k]!)),
+    );
+    expect(empreintes.size).toBe(1);
+    expect(empreintes.has(empreinteJeton(jeton))).toBe(true);
+  });
+});
+
+describe("lien-page-guide — temps non fini (D2)", () => {
+  it.each([Number.NaN, Number.POSITIVE_INFINITY, Number.NEGATIVE_INFINITY])(
+    "maintenantMs = %s → refus",
+    (ms) => {
+      const jeton = creerJeton(DONNEES, SECRET, T0);
+      expect(verifierJeton(jeton, SECRET, ms)).toEqual({ ok: false, motif: "expire" });
+      expect(() => creerJeton(DONNEES, SECRET, ms)).toThrow();
+    },
+  );
+});
+
+describe("lien-page-guide — secrets distincts (D3)", () => {
+  const A = "a".repeat(32);
+  const B = "b".repeat(32);
+  it("deux secrets distincts de ≥ 32 caractères passent", () => {
+    expect(() => verifierSecretsDistincts(A, B)).not.toThrow();
+  });
+  it("secrets identiques → erreur explicite", () => {
+    expect(() => verifierSecretsDistincts(A, A)).toThrow(/distincts/);
+  });
+  it.each([
+    ["court", "x".repeat(31), B],
+    ["court", A, "x".repeat(31)],
+    ["absent", undefined, B],
+    ["absent", A, null],
+  ])("secret %s → erreur explicite", (_n, a, b) => {
+    expect(() => verifierSecretsDistincts(a as never, b as never)).toThrow(/32 caractères/);
   });
 });

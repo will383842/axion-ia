@@ -75,9 +75,35 @@ function signature(partie: string, secret: string): Buffer {
   return createHmac("sha256", secret).update(partie, "utf8").digest();
 }
 
+/**
+ * Contrôle pur, à appeler par le lot qui lira l'environnement : le secret du lien et le
+ * secret des appels Studio→site doivent être distincts et faire ≥ 32 caractères chacun.
+ */
+export function verifierSecretsDistincts(secretLien: unknown, secretAppels: unknown): void {
+  for (const [nom, v] of [
+    ["GUIDES_RESEAU_LIEN_SECRET", secretLien],
+    ["secret des appels Studio→site", secretAppels],
+  ] as const) {
+    if (typeof v !== "string" || v.length < LONGUEUR_MIN_SECRET) {
+      throw new Error(
+        `${nom} absent ou trop court (au moins ${LONGUEUR_MIN_SECRET} caractères requis).`,
+      );
+    }
+  }
+  if (secretLien === secretAppels) {
+    throw new Error("Les secrets du lien et des appels Studio→site doivent être distincts.");
+  }
+}
+
+/** Forme canonique base64url : ré-encoder l'octet décodé doit redonner exactement le texte. */
+function estCanonique(texte: string): boolean {
+  return Buffer.from(texte, "base64url").toString("base64url") === texte;
+}
+
 /** Crée un jeton valable 7 jours à partir de `maintenantMs`. Lève si les données sont invalides. */
 export function creerJeton(donnees: DonneesLien, secret: string, maintenantMs: number): string {
   const s = controlerSecret(secret);
+  if (!Number.isFinite(maintenantMs)) throw new Error("Horloge invalide (maintenantMs non fini).");
   const charge = {
     v: VERSION_JETON,
     conv: donnees.conv,
@@ -103,6 +129,7 @@ export function verifierJeton(
   maintenantMs: number,
 ): ResultatVerification {
   const s = controlerSecret(secret);
+  if (!Number.isFinite(maintenantMs)) return { ok: false, motif: "expire" };
   if (typeof jeton !== "string" || jeton.length === 0 || jeton.length > TAILLE_MAX_JETON) {
     return { ok: false, motif: "format" };
   }
@@ -114,9 +141,15 @@ export function verifierJeton(
   }
   const recue = Buffer.from(sig, "base64url");
   const attendue = signature(partie, s);
-  if (recue.length !== attendue.length || !timingSafeEqual(recue, attendue)) {
+  if (
+    recue.length !== attendue.length ||
+    recue.toString("base64url") !== sig ||
+    !timingSafeEqual(recue, attendue)
+  ) {
     return { ok: false, motif: "signature" };
   }
+  // Les bits de queue de la charge sont ignorés eux aussi : une seule écriture est admise.
+  if (!estCanonique(partie)) return { ok: false, motif: "format" };
   let charge: unknown;
   try {
     charge = JSON.parse(Buffer.from(partie, "base64url").toString("utf8"));
@@ -128,7 +161,16 @@ export function verifierJeton(
   return { ok: true, donnees: charge };
 }
 
-/** Empreinte SHA-256 hexadécimale du jeton complet, pour l'usage unique (table : autre lot). */
+/**
+ * Empreinte SHA-256 hexadécimale du jeton sous sa forme canonique (chaque partie ré-encodée),
+ * pour l'usage unique (table : autre lot). Plusieurs écritures d'un même jeton donnent
+ * donc une seule empreinte.
+ */
 export function empreinteJeton(jeton: string): string {
-  return createHash("sha256").update(jeton, "utf8").digest("hex");
+  const morceaux = jeton.split(".");
+  const canonique =
+    morceaux.length === 2 && morceaux.every((m) => /^[A-Za-z0-9_-]+$/.test(m))
+      ? morceaux.map((m) => Buffer.from(m, "base64url").toString("base64url")).join(".")
+      : jeton;
+  return createHash("sha256").update(canonique, "utf8").digest("hex");
 }
