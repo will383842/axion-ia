@@ -118,6 +118,25 @@ describe("controlerEtape", () => {
     expect(lu.ok && lu.etat.achat.maintenance.moisOfferts).toBe("4");
   });
 
+  it("étape 2 : plafond ou estimation illisibles ne bloquent qu'hors prix unique (E14)", () => {
+    const base = avec(etatT3(), {
+      proposition: "A",
+      plafondSaisie: "",
+      servicesSaisies: ["12,505"],
+    });
+    expect(propositionEffective(base)).toBe("A");
+    expect(controlerEtape(base, 2).join(" ")).toMatch(/Plafond/);
+    expect(controlerEtape(base, 2).join(" ")).toMatch(/estimation illisible/);
+    // Passage en prix unique : la section disparaît, l'étape 2 et l'envoi ne doivent plus bloquer.
+    const unique = avec(base, { proposition: "prix_unique" });
+    expect(controlerEtape(unique, 2)).toEqual([]);
+    expect(controlerEtape(unique, 4)).toEqual([]);
+    // Prix unique imposé (formules désactivées) : même résultat.
+    const impose = avec(base, { formulesActives: false });
+    expect(controlerEtape(impose, 2)).toEqual([]);
+    expect(controlerEtape(impose, 4)).toEqual([]);
+  });
+
   it("les jeux d'essai T1 à T5 passent toutes les étapes", () => {
     for (const [nom, f] of Object.entries(FIXTURES)) {
       expect(controlerEtape(f(), 4), nom).toEqual([]);

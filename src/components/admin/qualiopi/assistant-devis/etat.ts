@@ -240,17 +240,21 @@ export function controlerEtape(e: EtatAssistant, etape: Etape): string[] {
       if (a && !/^\d+$/.test(e.achat.maintenance.moisOfferts.trim())) {
         err.push("Maintenance : les mois offerts doivent être un entier supérieur ou égal à 0.");
       }
-      e.servicesSaisies?.forEach((t, i) => {
-        if (t.trim() !== "" && centsLus(t) === null) {
-          err.push(
-            `Service extérieur ${i + 1} : estimation illisible (euros, 2 décimales au plus).`,
-          );
-        }
-      });
-      if (e.plafondSaisie !== undefined && e.plafondSaisie !== null) {
-        if (e.plafondSaisie.trim() === "") err.push("Plafond : saisissez un montant ou décochez.");
-        else if (centsLus(e.plafondSaisie) === null) {
-          err.push("Plafond : montant illisible (euros, 2 décimales au plus).");
+      // Section « Services extérieurs » masquée en prix unique : ne pas bloquer sur un champ invisible.
+      if (p !== "prix_unique") {
+        e.servicesSaisies?.forEach((t, i) => {
+          if (t.trim() !== "" && centsLus(t) === null) {
+            err.push(
+              `Service extérieur ${i + 1} : estimation illisible (euros, 2 décimales au plus).`,
+            );
+          }
+        });
+        if (e.plafondSaisie !== undefined && e.plafondSaisie !== null) {
+          if (e.plafondSaisie.trim() === "")
+            err.push("Plafond : saisissez un montant ou décochez.");
+          else if (centsLus(e.plafondSaisie) === null) {
+            err.push("Plafond : montant illisible (euros, 2 décimales au plus).");
+          }
         }
       }
       if (b && (centsLus(e.abonnement.mensuelCatalogueEur) ?? 0) <= 0) {

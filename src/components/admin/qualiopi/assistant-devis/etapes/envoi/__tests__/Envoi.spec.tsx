@@ -109,8 +109,11 @@ describe("EtapeEnvoi : entrée", () => {
       .mockImplementationOnce(() => new Promise((r) => (fin = r)));
     monter({ preparer });
     const b = await screen.findByRole("button", { name: /Réessayer/ });
-    fireEvent.click(b);
-    fireEvent.click(b);
+    // Deux clics dans le même lot : le bouton est encore monté au second, seul le verrou protège.
+    act(() => {
+      fireEvent.click(b);
+      fireEvent.click(b);
+    });
     expect(preparer).toHaveBeenCalledTimes(2);
     await act(async () => fin({ data: PREPARE }));
     expect(preparer).toHaveBeenCalledTimes(2);
