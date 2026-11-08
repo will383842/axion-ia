@@ -139,20 +139,30 @@ export async function chargerAssistantDevis(
     if (devis) {
       // Un devis envoyé, accepté… n'est jamais modifié : on renvoie à sa fiche.
       if (devis.statut !== "brouillon") return { redirection: `/qualiopi/devis/${devis.id}` };
-      const ouverture = devisVersPayload(devis as unknown as DevisPourAssistant, tauxStandard);
-      if ("refus" in ouverture)
-        return { redirection: `/qualiopi/devis/${devis.id}`, message: ouverture.refus };
-      payload = ouverture.payload;
       const lie = await prisma.devisAssistantBrouillon.findFirst({
-        where: { devisId: devis.id, createdByAdminId: i.adminId },
+        where: {
+          devisId: devis.id,
+          createdByAdminId: i.adminId,
+          statut: { not: STATUT_BROUILLON_A_L_ECART },
+        },
         select: { id: true, revision: true, payload: true },
       });
+      // Un brouillon déjà lié au devis porte SON contenu (récit, textes, champs hors moteur) :
+      // on le relit au lieu de réhydrater depuis le devis, sous peine de le perdre.
+      const lu = lie ? lirePayload(lie.payload) : null;
+      const ouverture = devisVersPayload(devis as unknown as DevisPourAssistant, tauxStandard);
+      if ("refus" in ouverture) {
+        // Un devis créé par l'assistant (brouillon lié lisible) se rouvre même s'il est
+        // « classique OPCO » — et SEULEMENT pour ce motif : une offre illisible ou une ligne à
+        // TVA non standard restent refusées. Sans brouillon lisible, on renvoie à sa fiche.
+        if (ouverture.motif !== "opco" || !lu || !lu.ok)
+          return { redirection: `/qualiopi/devis/${devis.id}`, message: ouverture.refus };
+      } else {
+        payload = ouverture.payload;
+      }
       if (lie) {
         brouillon = { id: lie.id, revision: lie.revision };
-        // Un brouillon déjà lié au devis porte SON contenu (récit, textes, champs hors moteur) :
-        // on le relit au lieu de réhydrater depuis le devis, sous peine de le perdre.
-        const lu = lirePayload(lie.payload);
-        if (lu.ok) payload = lu.payload;
+        if (lu && lu.ok) payload = lu.payload;
       }
     }
   }
