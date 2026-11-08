@@ -370,7 +370,7 @@ function ChoixDuRendezVous({
         <div className="mx-auto max-w-3xl text-center">
           <p className="text-terracotta mb-2 inline-flex items-center gap-2 text-[11px] font-semibold tracking-widest uppercase sm:text-xs">
             <Calendar className="h-3.5 w-3.5" aria-hidden="true" />
-            Visio Google Meet · sans engagement
+            Visio ou téléphone · sans engagement
           </p>
           <h1
             id="appel-hero-h1"

@@ -146,7 +146,7 @@ const LECTURE_DE_LA_VARIABLE: Readonly<Record<ChoixRendezVous, () => string | un
 // 🔴 Le CHOIX DU FORMAT s'annonce à l'étape 1, et pas ailleurs : c'est le moment où
 // l'on s'apprête à cliquer (chantier visio B5, Will 28/09 : Google Meet seulement).
 const PREMIERE_ETAPE_VISIO =
-  "Choisissez un créneau : le rendez-vous se tient en visioconférence Google Meet.";
+  "Choisissez un créneau : le rendez-vous se tient en visioconférence Google Meet ou par téléphone.";
 
 // ⚠️ Alignée sur ce que le code envoie vraiment (`rappels-appel.ts`) : la
 // confirmation dans la minute, puis les rappels J-1 et H-1.
@@ -161,7 +161,7 @@ export const TYPES_RESERVABLES: Readonly<Record<ChoixRendezVous, ConfigRendezVou
     public: true,
     nom: "Diagnostic IA gratuit",
     titre: "Votre diagnostic IA gratuit",
-    promesse: "Diagnostic IA gratuit, 45 minutes, sans engagement",
+    promesse: "Diagnostic IA gratuit, 45 minutes, en visio ou par téléphone, sans engagement",
     premiereEtape: PREMIERE_ETAPE_VISIO,
     deuxiemeEtape: CONFIRMATION_CLIENT,
     troisiemeEtape:

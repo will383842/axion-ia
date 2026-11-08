@@ -221,7 +221,7 @@ export default async function ReserverPage({ params, searchParams }: Props) {
                 className="text-fg mt-2.5 mb-1.5 text-[clamp(1.625rem,5.5vw,2.125rem)] leading-tight font-semibold tracking-tight"
                 style={{ fontFamily: "var(--font-serif)" }}
               >
-                Votre visio de {et.dureeMinutes ?? 30} minutes
+                Votre visio de {et.dureeMinutes ?? DUREE_DEFAUT} minutes
               </h1>
               <p className="text-fg-soft mb-5 text-[15px] leading-relaxed">
                 Plus qu&apos;une minute : vos coordonnées, dont un téléphone pour vous joindre.

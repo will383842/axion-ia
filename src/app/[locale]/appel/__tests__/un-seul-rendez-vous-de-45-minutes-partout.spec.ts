@@ -122,3 +122,34 @@ describe("🔑 FAQ et stack-ia : 45 minutes, et le bouton mène au rendez-vous g
     },
   );
 });
+
+describe("🔑 /appel/echange-projet : le titre suit le corps (Diagnostic IA gratuit)", () => {
+  it("generateMetadata rabat `projet` vers `diagnostic`", async () => {
+    const { generateMetadata } = await import("../[type]/page");
+    const m = await generateMetadata({
+      params: Promise.resolve({ locale: "fr", type: "echange-projet" }),
+    });
+    expect(JSON.stringify(m.title)).toContain("Diagnostic IA gratuit");
+    expect(JSON.stringify(m.title)).not.toContain("Échange projet");
+  });
+});
+
+describe("🔑 la durée de repli du rendez-vous gratuit vaut 45 minutes", () => {
+  const reserver = sansCommentaires(lire("src/app/[locale]/appel/reserver/page.tsx"));
+  it("DUREE_DEFAUT = 45 et aucun repli en dur à 30", () => {
+    expect(reserver).toMatch(/const DUREE_DEFAUT = 45;/);
+    expect(reserver).not.toMatch(/dureeMinutes \?\? 30/);
+    expect(reserver).toMatch(/Votre visio de \{et\.dureeMinutes \?\? DUREE_DEFAUT\} minutes/);
+  });
+});
+
+describe("🔑 le texte public dit « en visio ou par téléphone », comme Calendly", () => {
+  it("cartes, étape 1, promesse, consigne", () => {
+    expect(TYPES_RESERVABLES.diagnostic.promesse).toMatch(/visio ou par téléphone/);
+    expect(TYPES_RESERVABLES.diagnostic.premiereEtape).toMatch(/ou par téléphone/);
+    expect(lire("src/app/[locale]/appel/page.tsx")).toContain(
+      "Visio ou téléphone · sans engagement",
+    );
+    expect(lire("src/server/visio/consignes/commun.md")).toContain("en visio ou par téléphone");
+  });
+});
