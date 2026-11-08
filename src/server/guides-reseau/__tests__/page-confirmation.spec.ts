@@ -39,6 +39,11 @@ function client() {
       },
       findUnique: async ({ where }: { where: Ligne }) =>
         bd.contacts.find((c) => egal(c, where)) ?? null,
+      update: async ({ where, data }: { where: Ligne; data: Ligne }) => {
+        const l = bd.contacts.find((c) => egal(c, where))!;
+        Object.assign(l, data);
+        return l;
+      },
     },
     guideRequest: {
       findUnique: async ({ where }: { where: Ligne }) => {
@@ -199,7 +204,15 @@ describe("case de consentement", () => {
   it("prénom de 1 et de 50 caractères accepté (bornes incluses)", async () => {
     expect((await confirmerPageGuide(entree({ prenom: "A" }))).ok).toBe(true);
     expect(
-      (await confirmerPageGuide(entree({ jeton: jeton({ conv: "conv_exemple_0002" }), prenom: "b".repeat(50), email: "autre@example.test" }))).ok,
+      (
+        await confirmerPageGuide(
+          entree({
+            jeton: jeton({ conv: "conv_exemple_0002" }),
+            prenom: "b".repeat(50),
+            email: "autre@example.test",
+          }),
+        )
+      ).ok,
     ).toBe(true);
   });
 
@@ -378,7 +391,12 @@ describe("ce qui est écrit", () => {
   it("l'e-mail du guide porte la désinscription (gabarit de la page), jamais de lettre", async () => {
     await confirmerPageGuide(entree());
     expect(bd.envois).toHaveLength(1);
-    const [gabarit, destinataire, , payload] = bd.envois[0] as [string, string, string, Record<string, unknown>];
+    const [gabarit, destinataire, , payload] = bd.envois[0] as [
+      string,
+      string,
+      string,
+      Record<string, unknown>,
+    ];
     expect(gabarit).toBe("guide-ia-envoi");
     expect(destinataire).toBe(ADRESSE);
     expect(payload["reseau"]).toBe(true);
@@ -401,7 +419,9 @@ describe("journaux", () => {
     await confirmerPageGuide(entree({ jeton: jeton({ conv: "conv_exemple_0003" }) }));
     bd.domaine.verdict = "oui";
     bd.opposees.add("opp@example.test");
-    await confirmerPageGuide(entree({ jeton: jeton({ conv: "conv_exemple_0004" }), email: "opp@example.test" }));
+    await confirmerPageGuide(
+      entree({ jeton: jeton({ conv: "conv_exemple_0004" }), email: "opp@example.test" }),
+    );
     const tout = bd.journal.join("\n");
     expect(tout).not.toContain("example.test");
     expect(tout).not.toContain("Camille");

@@ -85,15 +85,6 @@ export const EXCLUSIONS_EXPORT_DOSSIER: ReadonlyArray<{
       "des dates et des statuts, sans contenu ni adresse.",
   },
   {
-    // Page « Recevoir le guide », lot S0 (2026-11-08) — table posée par migration seule : AUCUN
-    // code ne l'écrit encore (lot S2). Le lot S2 DOIT remplacer cette exception par l'export réel.
-    modele: "ContactGuideReseau",
-    motif:
-      "le contact laissé depuis un réseau pour recevoir le guide (prénom chiffré, empreinte " +
-      "d'adresse, preuve de consentement) : table encore sans écrivain, donc vide ; son export " +
-      "sera branché avec le premier code qui l'écrit.",
-  },
-  {
     modele: "CompteRendu",
     motif:
       "un compte rendu d'échange professionnel rapporte aussi les propos d'autres personnes : " +

@@ -1270,6 +1270,26 @@ export type EffacementCibleResultat = {
   readonly questions: number;
 };
 
+/**
+ * `contacts_guide_reseau` (page « Recevoir le guide », lot S2) — MISE À L'ÉCART, jamais suppression.
+ *
+ * Décision de Williams : aucune suppression de données de personnes sans sa décision. La ligne reste
+ * (prénom chiffré, preuve du consentement : art. 17(3)(e) pour la preuve) ; elle passe
+ * `merci_statut = 'ecarte'`, état que le remerciement (lot S4) ne traite jamais. Retirer l'envoi
+ * est le rôle de l'opposition (`email_oppositions`), posée par la voie de la demande ; ici on ne
+ * touche à aucun envoi. Idempotent. Le prénom chiffré reste en base jusqu'à décision de Williams.
+ */
+async function mettreAEcartContactsGuideReseau(empreintes: readonly string[]): Promise<number> {
+  const r = await prisma.contactGuideReseau.updateMany({
+    where: { emailKey: { in: [...empreintes] }, merciStatut: { not: "ecarte" } },
+    data: { merciStatut: "ecarte" },
+  });
+  if (r.count > 0) {
+    console.warn(JSON.stringify({ event: "rgpd_guide_reseau_mis_a_l_ecart", lignes: r.count }));
+  }
+  return r.count;
+}
+
 const EFFACEMENT_VIDE: EffacementCibleResultat = {
   personnes: 0,
   segments: 0,
@@ -1337,6 +1357,10 @@ export async function effacerCibleParAdresses(
     ...new Set(emails.map((e) => hashEmailForLookup(e)).filter((h): h is string => !!h)),
   ];
   if (empreintes.length === 0) return EFFACEMENT_VIDE;
+
+  // Page « Recevoir le guide » (lot S2) : MISE À L'ÉCART, avant toute sortie à vide (cette table se
+  // retrouve par l'empreinte d'adresse, sans fiche personne).
+  await mettreAEcartContactsGuideReseau(empreintes);
 
   // La personne, puis TOUTES ses adresses (une adresse pro, une perso…).
   const trouvees = await prisma.clientContactAdresse.findMany({
@@ -1772,15 +1796,6 @@ export const EXCEPTIONS_EFFACEMENT_DOSSIER: ReadonlyArray<{
   readonly modele: string;
   readonly motif: string;
 }> = [
-  {
-    // Page « Recevoir le guide », lot S0 (2026-11-08) — table posée par migration seule : AUCUN
-    // code ne l'écrit encore (lot S2). Le lot S2 DOIT remplacer cette exception par l'export réel.
-    modele: "ContactGuideReseau",
-    motif:
-      "le contact laissé depuis un réseau pour recevoir le guide (prénom chiffré, empreinte " +
-      "d'adresse, preuve de consentement) : table encore sans écrivain, donc vide ; son effacement " +
-      "sera branché avec le premier code qui l'écrit.",
-  },
   {
     modele: "EnregistrementConsentement",
     motif:
