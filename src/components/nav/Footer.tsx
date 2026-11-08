@@ -1,3 +1,4 @@
+import { CAS_CONCRETS_AFFICHES } from "@/content/preuves-sociales";
 import { getLocale, getTranslations } from "next-intl/server";
 import NextLink from "next/link";
 import { LogIn } from "lucide-react";
@@ -46,7 +47,7 @@ export async function Footer() {
     { href: "/blog/categorie", label: isFr ? "Catégories du blog" : "Blog categories" },
     { href: "/actualites", label: isFr ? "Actualités de l'IA" : "AI news" },
     { href: "/glossaire", label: isFr ? "Glossaire" : "Glossary" },
-    { href: "/cas-concrets", label: t("nav.caseStudies") },
+    ...(CAS_CONCRETS_AFFICHES ? [{ href: "/cas-concrets", label: t("nav.caseStudies") }] : []),
     { href: "/guides", label: isFr ? "Guides piliers" : "Pillar guides" },
     { href: "/comparaisons", label: isFr ? "Comparatifs" : "Comparisons" },
     { href: "/roi", label: isFr ? "Simulateur ROI" : "ROI simulator" },

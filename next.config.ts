@@ -274,6 +274,32 @@ const nextConfig: NextConfig = {
   // expose l'URL legacy au sitemap auto + au crawler.
   async redirects() {
     return [
+      // 2026-11-08 (audit d'harmonie, retraits juridiques) — deux fichiers statiques
+      // sortis de public/ : le feuilletoir du catalogue (affichait « Organisme certifié
+      // Qualiopi » et « OPCO jusqu'à 100 % ») et le PDF apporteur (OPCO, France Travail,
+      // Grenoble, ventes fictives). Les adresses vivent dans des QR imprimés et des
+      // e-mails déjà partis : elles redirigent (307, réversible) au lieu de faire 404.
+      // Les fichiers sont sous docs/pdf-hors-ligne-certification/.
+      {
+        source: "/catalogue/index.html",
+        destination: "/fr/formations",
+        permanent: false,
+      },
+      {
+        source: "/catalogue/pages-web/:fichier*",
+        destination: "/fr/formations",
+        permanent: false,
+      },
+      {
+        source: "/catalogue/og-catalogue.jpg",
+        destination: "/fr/formations",
+        permanent: false,
+      },
+      {
+        source: "/imprimes/devenir-apporteur-d-affaires-axion-ia.pdf",
+        destination: "/fr/apporteur-affaires",
+        permanent: false,
+      },
       // Alias de vocabulaire pour les apporteurs d'affaires (LinkedIn, 09/2026).
       // Les publications disent « apporteur d'affaires » ; l'ecart avec une URL
       // qui dit « commercial » se voit, et c'est le vocabulaire que Will a

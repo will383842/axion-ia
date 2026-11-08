@@ -1,3 +1,4 @@
+import { CAS_CONCRETS_AFFICHES } from "@/content/preuves-sociales";
 import type { Metadata } from "next";
 import type { CSSProperties } from "react";
 import Image from "next/image";
@@ -1125,13 +1126,15 @@ export default async function Home({ params }: HomeProps) {
                     : "Built around your real business needs — not generic templates."}
                 </p>
               </div>
-              <Link
-                href="/cas-concrets"
-                className="text-primary inline-flex items-center gap-2 text-sm font-semibold hover:underline"
-              >
-                {t("casesCta")}
-                <ArrowRight className="h-4 w-4" aria-hidden="true" />
-              </Link>
+              {CAS_CONCRETS_AFFICHES ? (
+                <Link
+                  href="/cas-concrets"
+                  className="text-primary inline-flex items-center gap-2 text-sm font-semibold hover:underline"
+                >
+                  {t("casesCta")}
+                  <ArrowRight className="h-4 w-4" aria-hidden="true" />
+                </Link>
+              ) : null}
             </div>
           </FadeInOnView>
         </Container>

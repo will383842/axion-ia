@@ -1,3 +1,4 @@
+import { CAS_CONCRETS_AFFICHES } from "@/content/preuves-sociales";
 import { getLocale, getTranslations } from "next-intl/server";
 import { Mail, Phone, Search } from "lucide-react";
 import { Link } from "@/i18n/navigation";
@@ -53,7 +54,7 @@ export async function Header() {
   // 2026-07-10 (Will) : retirés du drawer → Implantations, Stack IA, Centre
   // d'aide (accessibles via footer / méga-menu Ressources desktop).
   const navMobileExtras = [
-    { href: "/cas-concrets", label: t("nav.caseStudies") },
+    ...(CAS_CONCRETS_AFFICHES ? [{ href: "/cas-concrets", label: t("nav.caseStudies") }] : []),
     { href: "/blog", label: t("nav.blog") },
     { href: "/faq", label: "FAQ" },
     { href: "/a-propos", label: t("nav.about") },

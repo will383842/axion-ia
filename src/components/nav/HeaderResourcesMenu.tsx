@@ -18,6 +18,7 @@
 // est confirmé ample, pour ne PAS risquer le budget d'espace de la bande
 // 1280–1400px. À abaisser à `xl` après validation visuelle + gates lhci/size-limit.
 
+import { CAS_CONCRETS_AFFICHES } from "@/content/preuves-sociales";
 import type { ReactNode } from "react";
 import { Link } from "@/i18n/navigation";
 import { HeaderMegaMenu } from "./HeaderMegaMenu";
@@ -40,7 +41,9 @@ const COLUMNS: ReadonlyArray<Column> = [
     titleEn: "Get oriented",
     links: [
       { href: "/secteurs", labelFr: "L'IA par secteur", labelEn: "AI by sector" },
-      { href: "/cas-concrets", labelFr: "Cas concrets", labelEn: "Case studies" },
+      ...(CAS_CONCRETS_AFFICHES
+        ? [{ href: "/cas-concrets", labelFr: "Cas concrets", labelEn: "Case studies" }]
+        : []),
       { href: "/comparaisons", labelFr: "Comparaisons", labelEn: "Comparisons" },
       { href: "/roi", labelFr: "Calculateur de ROI", labelEn: "ROI calculator" },
     ],

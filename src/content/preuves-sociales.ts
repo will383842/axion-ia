@@ -32,3 +32,22 @@
 
 /** Bandeau de logos clients (accueil, villes, régions, pages service, fiches). */
 export const LOGOS_CLIENTS_AFFICHES = false;
+
+/**
+ * CAS CONCRETS — interrupteur MANUEL (2026-11-08, audit d'harmonie, retrait juridique).
+ *
+ * Les 5 « cas concrets » de `src/content/case-studies.ts` sont des cas INVENTÉS
+ * (clients, citations et chiffres fictifs) présentés comme « une mission Axion-IA
+ * réellement livrée » : pratique commerciale trompeuse (L121-2, L121-4 du Code de la
+ * consommation). Axion-IA n'a pas de client livré à ce jour.
+ *
+ * `false` : `/cas-concrets` (hub, fiche, secteur, flux RSS) répond 404 ; plus aucun
+ * lien dans l'en-tête, le pied de page, les menus, le sitemap ni `llms.txt` /
+ * `llms-full.txt`. Le contenu n'est PAS effacé : il reste dans `case-studies.ts`.
+ *
+ * Ne repasser à `true` que sur décision écrite de Williams, avec de vrais cas ayant
+ * l'accord écrit du client. Un « exemple type » éventuel serait étiqueté « scénario
+ * illustratif », sans nom ni chiffre attribué.
+ * Témoin : `src/content/__tests__/cas-concrets-eteints.spec.ts`.
+ */
+export const CAS_CONCRETS_AFFICHES = false;

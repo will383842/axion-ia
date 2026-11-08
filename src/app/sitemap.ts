@@ -1,3 +1,4 @@
+import { CAS_CONCRETS_AFFICHES } from "@/content/preuves-sociales";
 import type { MetadataRoute } from "next";
 import { routing } from "@/i18n/routing";
 import { SITE_URL } from "@/lib/seo";
@@ -726,6 +727,8 @@ function buildPagesSitemap(now: Date): MetadataRoute.Sitemap {
   for (const key of Object.keys(routing.pathnames) as PathnameKey[]) {
     if (EXCLUDED_FROM_INDEX.includes(key)) continue;
     if (isSlugTemplate(key)) continue;
+    // Cas concrets éteints (2026-11-08) : la page répond 404, donc hors pages.xml.
+    if (key === "/cas-concrets" && !CAS_CONCRETS_AFFICHES) continue;
     // Page de réassurance Qualiopi : Phase-B uniquement (la page `notFound()` en
     // Phase A tant que l'agrément n'est pas public). On la garde HORS sitemap tant
     // que `OF_PUBLIC_DISCLOSURE_ENABLED` ≠ "true" pour éviter une URL 404 dans
@@ -1099,6 +1102,8 @@ async function buildFaqSitemap(now: Date): Promise<MetadataRoute.Sitemap> {
 // supporte pas le namespace requis par Google News.
 
 function buildCasConcretsSitemap(now: Date): MetadataRoute.Sitemap {
+  // Cas concrets éteints (2026-11-08) : aucune URL, la page répond 404.
+  if (!CAS_CONCRETS_AFFICHES) return [];
   return buildDynamic(
     [
       {

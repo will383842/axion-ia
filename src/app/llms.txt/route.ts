@@ -16,6 +16,7 @@
 // Preuve & méthode, Connaissances & contenu, Implantations géographiques,
 // Galerie & ressources, Contact & presse, Stratégie & positionnement.
 
+import { CAS_CONCRETS_AFFICHES } from "@/content/preuves-sociales";
 import {
   CODAGE_TIERS,
   UN_A_UN_TIERS,
@@ -108,8 +109,7 @@ export async function GET() {
 
 ## Preuve & méthode
 
-- [Cas concrets](${SITE_URL}/fr/cas-concrets) — résultats clients chiffrés (ROI mesuré post-déploiement).
-- [Avis clients](${SITE_URL}/fr/avis) — retours d'expérience réels et vérifiés. Chaque avis est déposé par un client puis contrôlé manuellement (authenticité) avant publication ; les avis positifs comme négatifs sont publiés (conforme directive Omnibus/DGCCRF). Note globale + avis par service, ville, département et secteur. Chaque avis a sa page dédiée. Flux RSS : ${SITE_URL}/fr/avis/feed.xml.
+${CAS_CONCRETS_AFFICHES ? `- [Cas concrets](${SITE_URL}/fr/cas-concrets) — résultats clients chiffrés (ROI mesuré post-déploiement).\n` : ""}- [Avis clients](${SITE_URL}/fr/avis) — retours d'expérience réels et vérifiés. Chaque avis est déposé par un client puis contrôlé manuellement (authenticité) avant publication ; les avis positifs comme négatifs sont publiés (conforme directive Omnibus/DGCCRF). Note globale + avis par service, ville, département et secteur. Chaque avis a sa page dédiée. Flux RSS : ${SITE_URL}/fr/avis/feed.xml.
 - [Méthodologie](${SITE_URL}/fr/methodologie) — 4 étapes Identifier → Auditer → Implémenter → Mesurer.
 - [Comparaisons](${SITE_URL}/fr/comparaisons) — Axion-IA vs alternatives (cabinets, agences, SaaS).
 - [Stack IA 2026](${SITE_URL}/fr/stack-ia) — 11 outils en 5 fonctions, doctrine cabinet.

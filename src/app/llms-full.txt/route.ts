@@ -2,6 +2,7 @@
 // Spec: https://llmstxt.org/  (the "-full" companion variant)
 // Used by Perplexity, ChatGPT, Claude, Bing Copilot, Google AIO crawlers.
 
+import { CAS_CONCRETS_AFFICHES } from "@/content/preuves-sociales";
 import { FAQ_GLOBAL } from "@/content/transversal";
 import { CASE_STUDIES } from "@/content/case-studies";
 import { SERVICE_BY_ID } from "@/content/services";
@@ -102,10 +103,12 @@ Axion-IA est un organisme de formation certifié **Qualiopi** au titre de la cat
       `### ${renderFr(f.fr.question)}\n\n${renderFr(f.fr.answer)}\n\n(EN) ${renderEn(f.en.answer)}`,
   ).join("\n\n");
 
-  const caseBlock = CASE_STUDIES.map(
-    (c) =>
-      `### ${renderFr(c.fr.title)} (${c.industry}, ${c.size})\n\n${renderFr(c.fr.excerpt)} · Métrique : ${c.metric}.`,
-  ).join("\n\n");
+  const caseBlock = (CAS_CONCRETS_AFFICHES ? CASE_STUDIES : [])
+    .map(
+      (c) =>
+        `### ${renderFr(c.fr.title)} (${c.industry}, ${c.size})\n\n${renderFr(c.fr.excerpt)} · Métrique : ${c.metric}.`,
+    )
+    .join("\n\n");
 
   const body = `# Axion-IA — full content for AI crawlers
 
@@ -157,11 +160,7 @@ URL : ${SITE_URL}/fr/sites-web-augmentes${qualiopiBlock}
 
 ${faqBlock}
 
-## Cas concrets (échantillon)
-
-${caseBlock}
-
-## Actualités IA — veille opérationnelle
+${CAS_CONCRETS_AFFICHES ? `## Cas concrets (échantillon)\n\n${caseBlock}\n\n` : ""}## Actualités IA — veille opérationnelle
 
 Axion-IA publie une veille IA opérationnelle destinée aux dirigeants de PME et d'ETI : les actualités marquantes de l'IA sont sourcées puis intégralement réécrites en articles autonomes (contexte, analyse, implications concrètes pour l'entreprise, points à retenir). Objectif : transformer le flux d'annonces en décisions actionnables, sans jargon ni hype. La date de publication portée par chaque article et le flux RSS ci-dessous font foi sur la fraîcheur — aucune cadence n'est promise.
 
