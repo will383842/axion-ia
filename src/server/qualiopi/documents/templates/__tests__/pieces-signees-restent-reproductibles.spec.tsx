@@ -55,8 +55,16 @@ vi.mock("@/lib/r2-storage", () => ({
 }));
 
 import { registerPdfTestFontsFallback } from "@/server/qualiopi/documents/register-pdf-test-fonts";
-import { rendreExemplaireSigne } from "@/server/qualiopi/documents/signature/exemplaire-signe";
-import { versionGabaritCourante } from "@/server/qualiopi/documents/templates/gabarit-versions";
+import {
+  composantGabarit,
+  rendreExemplaireSigne,
+} from "@/server/qualiopi/documents/signature/exemplaire-signe";
+import {
+  versionGabaritCourante,
+  versionGabaritInstantane,
+} from "@/server/qualiopi/documents/templates/gabarit-versions";
+import { gabaritArchive } from "@/server/qualiopi/documents/templates/archives";
+import { DevisPdf } from "@/server/qualiopi/documents/templates/devis";
 
 const IDENTITE = {
   raisonSociale: "Axion-IA SAS",
@@ -341,6 +349,18 @@ describe("une pièce générée AUJOURD'HUI porte les citations corrigées", () 
     expect(versionGabaritCourante("convention_tripartite")).toBe(6);
     expect(versionGabaritCourante("contrat_formation")).toBe(2);
     expect(versionGabaritCourante("releve_connexion")).toBe(2);
+  });
+
+  it("🔴 un devis signé en v4 (avec Qualiopi) est rejoué par l'archive v4, jamais par la v5", () => {
+    // 08/11/2026, décision 22 : la v5 retire la mention Qualiopi. Un instantané qui porte
+    // `gabaritVersion: 4` doit retrouver le composant archivé, pas le gabarit courant.
+    const v4 = composantGabarit("devis", versionGabaritInstantane({ gabaritVersion: 4 }));
+    expect(v4).not.toBeNull();
+    expect(v4).toBe(gabaritArchive("devis", 4));
+    expect(v4).not.toBe(DevisPdf);
+    expect(composantGabarit("devis", versionGabaritInstantane({ gabaritVersion: 5 }))).toBe(
+      DevisPdf,
+    );
   });
 
   it("🔴 la pièce de type `contrat` (nom de l'énumération) est bien versionnée", () => {
