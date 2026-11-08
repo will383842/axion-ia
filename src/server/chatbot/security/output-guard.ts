@@ -11,7 +11,6 @@
 import { PRICING_CATEGORIES, UN_A_UN_RECURRING_TIER } from "@/content/pricing";
 import { isKnownFrUrl, KNOWN_FR_PATHS } from "@/lib/offer-url";
 import { detecterInterditsSurface } from "@/lib/contenu/interdits-publication";
-import { financementPublicCitable } from "@/server/qualiopi/config/financing";
 
 /** Étiquette « TPE/PME » (barre, tiret ou tiret typographique, espaces tolérés). */
 const ETIQUETTE_TPE_PME = /\bTPE[\s\u00a0]*[/\-\u2010-\u2015][\s\u00a0]*PME\b/i;
@@ -132,7 +131,9 @@ export function verifyOutput(text: string, opts: VerifyOutputOptions = {}): Outp
   // réservation du rendez-vous (« Réservez votre créneau de 45 minutes »).
   const interdits = detecterInterditsSurface(
     { reponse: text },
-    { actualite: false, financementPublicAutorise: financementPublicCitable() },
+    // Axion-IA ne propose pas de financement : le chatbot ne le cite jamais (et la
+    // garde n'importe pas le domaine Qualiopi, cf. pnpm qualiopi:isolation-check).
+    { actualite: false, financementPublicAutorise: false },
   )
     .filter((i) => i.code !== "reservation-paiement")
     // « TPE et PME » est la forme autorisée (règle du 07/11) ; seule l'étiquette
