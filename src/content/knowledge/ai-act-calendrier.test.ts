@@ -4,7 +4,7 @@
  * Le règlement (UE) 2026/1744 (« omnibus numérique IA », en vigueur le 27/07/2026)
  * a reporté les obligations « haut risque » : annexe III au 02/12/2027, annexe I au
  * 02/08/2028. Il a réécrit l'article 4 (maîtrise de l'IA) sans le reporter.
- * Ce test lit le TEXTE des fichiers de contenu, ligne par ligne, et refuse les
+ * Ce test lit le TEXTE des fichiers de contenu, phrase par phrase, et refuse les
  * formulations périmées. Il exige aussi que chaque fiche sectorielle qui parle du
  * calendrier cite l'omnibus et porte une date de relecture postérieure.
  */
@@ -12,6 +12,11 @@ import { describe, it, expect } from "vitest";
 import { readFileSync, readdirSync } from "node:fs";
 import { join } from "node:path";
 import { ALL_SECTOR_KB_ENTRIES } from "./sector-entries";
+import { KB_VILLES_ALL } from "../../server/content-gen/kb/villes-facts";
+import { KB_AUDITS } from "../../server/content-gen/kb/audits";
+import { KB_INTERVENTIONS_FORMATIONS } from "../../server/content-gen/kb/interventions-formations";
+import { KB_IMPLEMENTATIONS } from "../../server/content-gen/kb/implementations";
+import { KB_SITES_WEB_AUGMENTES } from "../../server/content-gen/kb/sites-web-augmentes";
 
 const RACINE = join(__dirname, "..", "..", "..");
 const dossier = (d: string) =>
@@ -28,28 +33,45 @@ const FICHIERS: readonly string[] = [
   "src/content/formations/catalog-v2.ts",
 ];
 
-/** Une ligne reste juste si elle dit explicitement que la date a été reportée. */
-const MENTION_DU_REPORT = /report|initialement|au lieu d|instead of|postponed|omnibus|2026\/1744/i;
+/**
+ * Une PHRASE reste juste si elle dit explicitement que la date a été reportée.
+ * L'exemption s'applique phrase par phrase, jamais à toute la ligne : dans ces
+ * fichiers, une ligne est souvent un paragraphe entier, et un seul « omnibus »
+ * masquerait sinon une date fausse plus loin dans le même paragraphe.
+ * « report » est borné (« reporté », « reportée »…) pour ne pas exempter « reporting ».
+ */
+const MENTION_DU_REPORT =
+  /\breport(é|ée|és|ées|er|e)?\b|initialement|au lieu d|instead of|postponed|omnibus|2026\/1744/i;
+
+/** Découpe une ligne en phrases, sans couper « art. 50 » ni « (UE) 2024/1689 ». */
+const phrases = (ligne: string): string[] =>
+  ligne.split(/(?<=\S[.;!?])\s+(?=[A-ZÀÂÇÉÈÊ«*\-–—#])|\\n/u);
+
+const AOUT_2026 = String.raw`(ao[uû]t 2026|august 2026|aug\.? 2026|0?2\/08\/2026|2026-08-02|august 2, 2026)`;
+const AOUT_2027 = String.raw`(ao[uû]t 2027|august 2027|aug\.? 2027|0?2\/08\/2027|2027-08-02)`;
+const HAUT_RISQUE = String.raw`(haut risque|high-risk|annexe III|annex III)`;
+const re = (src: string) => new RegExp(src, "i");
 
 const REGLES: ReadonlyArray<{ nom: string; motif: RegExp }> = [
   {
     nom: "haut risque / annexe III placé en août 2026 (reporté au 02/12/2027)",
-    motif:
-      /(haut risque|high-risk|annexe III|annex III)[^\n]*(ao[uû]t 2026|august 2026)|(ao[uû]t 2026|august 2026)[^\n]*(haut risque|high-risk|annexe III|annex III)/i,
+    motif: re(`${HAUT_RISQUE}.*${AOUT_2026}|${AOUT_2026}.*${HAUT_RISQUE}`),
   },
   {
     nom: "annexe I / produits réglementés placés en août 2027 (reporté au 02/08/2028)",
-    motif:
-      /(ao[uû]t 2027|august 2027)[^\n]*(annexe I\b|produits|dispositifs|directives|haut risque)|(annexe I\b|haut risque)[^\n]*(ao[uû]t 2027)/i,
+    motif: re(
+      `${AOUT_2027}.*(annexe I\\b|produits|dispositifs|directives|haut risque)|(annexe I\\b|haut risque).*${AOUT_2027}`,
+    ),
   },
   {
     nom: "« 3 août 2026 » (la date d'application est le 2 août)",
-    motif: /3 ao[uû]t 2026|3 august 2026/i,
+    motif: /\b3 ao[uû]t 2026|\b3 august 2026|03\/08\/2026/i,
   },
   {
     nom: "« plein effet » ou « application jusqu'à » août 2026 (le calendrier court jusqu'en 2028)",
-    motif:
-      /(plein effet|pleinement|fully applicable|jusqu'à ao[uû]t 2026|until august 2026)[^\n]*2026|(ao[uû]t 2026|august 2026)[^\n]*(plein effet|pleinement)/i,
+    motif: re(
+      `(plein effet|pleinement|fully applicable|jusqu'à ${AOUT_2026}|until ${AOUT_2026}).*2026|${AOUT_2026}.*(plein effet|pleinement)`,
+    ),
   },
   {
     nom: "article 50 présenté comme applicable dès 2025",
@@ -57,9 +79,26 @@ const REGLES: ReadonlyArray<{ nom: string; motif: RegExp }> = [
   },
   {
     nom: "« deadline » ou échéance AI Act en août 2026 pour le haut risque ou l'art. 22",
-    motif: /deadline[^\n]*(ao[uû]t 2026)|(ao[uû]t 2026)[^\n]*deadline/i,
+    motif: re(`deadline.*${AOUT_2026}|${AOUT_2026}.*deadline`),
   },
 ];
+
+describe("le découpage en phrases ne laisse pas une exemption masquer une faute", () => {
+  it("une phrase fausse après une phrase exemptée est détectée", () => {
+    const ligne =
+      "Le règlement (UE) 2026/1744 a reporté l'annexe III. Les obligations haut risque s'appliquent en août 2026.";
+    const fautives = phrases(ligne).filter(
+      (p) => !MENTION_DU_REPORT.test(p) && REGLES.some((r) => r.motif.test(p)),
+    );
+    expect(fautives).toHaveLength(1);
+  });
+  it("« reporting » n'exempte pas une phrase", () => {
+    expect(MENTION_DU_REPORT.test("Un reporting haut risque dès août 2026.")).toBe(false);
+  });
+  it("une date numérique est vue", () => {
+    expect(REGLES[0]!.motif.test("Obligations haut risque au 02/08/2026.")).toBe(true);
+  });
+});
 
 describe("contenu AI Act : aucune date périmée", () => {
   for (const fichier of FICHIERS) {
@@ -67,9 +106,12 @@ describe("contenu AI Act : aucune date périmée", () => {
       const lignes = readFileSync(join(RACINE, fichier), "utf8").split("\n");
       const fautes: string[] = [];
       lignes.forEach((ligne, i) => {
-        if (MENTION_DU_REPORT.test(ligne)) return;
-        for (const r of REGLES) {
-          if (r.motif.test(ligne)) fautes.push(`${fichier}:${i + 1} — ${r.nom}`);
+        for (const p of phrases(ligne)) {
+          if (MENTION_DU_REPORT.test(p)) continue;
+          for (const r of REGLES) {
+            if (r.motif.test(p))
+              fautes.push(`${fichier}:${i + 1} — ${r.nom} — « ${p.slice(0, 120)} »`);
+          }
         }
       });
       expect(fautes).toEqual([]);
@@ -97,58 +139,49 @@ describe("fiches sectorielles qui datent l'AI Act : source et relecture", () => 
 });
 
 describe("faits KB AI Act : calendrier de l'omnibus écrit en clair", () => {
-  // Import dynamique : le module KB est lourd, on ne le charge que pour ce bloc.
-  const charger = async () => {
-    const m = await import("../../server/content-gen/kb/villes-facts");
-    const a = await import("../../server/content-gen/kb/audits");
-    const i = await import("../../server/content-gen/kb/interventions-formations");
-    const im = await import("../../server/content-gen/kb/implementations");
-    const w = await import("../../server/content-gen/kb/sites-web-augmentes");
-    return [
-      ...m.KB_VILLES_ALL,
-      ...a.KB_AUDITS,
-      ...i.KB_INTERVENTIONS_FORMATIONS,
-      ...im.KB_IMPLEMENTATIONS,
-      ...w.KB_SITES_WEB_AUGMENTES,
-    ];
-  };
-  const fait = async (id: string) => {
-    const f = (await charger()).find((x) => x.id === id);
+  const TOUS = [
+    ...KB_VILLES_ALL,
+    ...KB_AUDITS,
+    ...KB_INTERVENTIONS_FORMATIONS,
+    ...KB_IMPLEMENTATIONS,
+    ...KB_SITES_WEB_AUGMENTES,
+  ];
+  const fait = (id: string) => {
+    const f = TOUS.find((x) => x.id === id);
     if (!f) throw new Error(`fait ${id} absent`);
     return f;
   };
 
-  it("ai-act-001 donne les deux dates de report du haut risque", async () => {
-    const t = (await fait("ai-act-001")).text;
+  it("ai-act-001 donne les deux dates de report du haut risque", () => {
+    const t = fait("ai-act-001").text;
     expect(t).toMatch(/2 décembre 2027/);
     expect(t).toMatch(/2 août 2028/);
     expect(t).toMatch(/2026\/1744/);
   });
 
-  it("form-059 : article 4 applicable depuis le 2 février 2025, assoupli, sans niveau garanti", async () => {
-    const t = (await fait("form-059")).text;
+  it("form-059 : article 4 applicable depuis le 2 février 2025, assoupli, sans niveau garanti", () => {
+    const t = fait("form-059").text;
     expect(t).toMatch(/2 février 2025/);
     expect(t).toMatch(/sans (devoir )?garantir/);
     expect(t).not.toMatch(/suffisant/);
   });
 
-  it("art. 50 : applicable depuis le 2 août 2026 (audit-026, ai-act-025, web-017)", async () => {
+  it("art. 50 : applicable depuis le 2 août 2026 (audit-026, ai-act-025, web-017)", () => {
     for (const id of ["audit-026", "ai-act-025", "web-017"]) {
-      expect((await fait(id)).text).toMatch(/2 août 2026/);
+      expect(fait(id).text).toMatch(/2 août 2026/);
     }
   });
 
-  it("ai-act-010 : n'affirme plus une désignation française qui n'a pas eu lieu", async () => {
-    expect((await fait("ai-act-010")).text).not.toMatch(/a été confirmée/);
+  it("ai-act-010 : n'affirme plus une désignation française qui n'a pas eu lieu", () => {
+    expect(fait("ai-act-010").text).not.toMatch(/a été confirmée/);
   });
 
-  it("ai-act-029 : plus de chiffre attribué au CNNum sans source", async () => {
-    expect((await fait("ai-act-029")).text).not.toMatch(/CNNum|200 000/);
+  it("ai-act-029 : plus de chiffre attribué au CNNum sans source", () => {
+    expect(fait("ai-act-029").text).not.toMatch(/CNNum|200 000/);
   });
 
-  it("tout fait qui invoque l'omnibus cite le règlement (UE) 2026/1744 dans sa source", async () => {
-    const fautifs = (await charger())
-      .filter((f) => /omnibus/i.test(f.text))
+  it("tout fait qui invoque l'omnibus cite le règlement (UE) 2026/1744 dans sa source", () => {
+    const fautifs = TOUS.filter((f) => /omnibus/i.test(f.text))
       .filter((f) => !/2026\/1744/.test(f.source + " " + f.sourceUrl))
       .map((f) => f.id);
     expect(fautifs).toEqual([]);
