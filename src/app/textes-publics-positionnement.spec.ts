@@ -101,7 +101,7 @@ describe("llms.txt / llms-full.txt — cible, rendez-vous, Qualiopi", () => {
     expect(await (await get()).text()).toContain(POSITIONNEMENT);
   });
 
-  it("llms.txt nomme et lie l'offre « La Journée IA » (page en ligne depuis #1854)", async () => {
+  it("llms.txt nomme et lie l'offre « La Journée IA » (page en ligne depuis la PR 1854)", async () => {
     const corps = await (await getLlms()).text();
     expect(corps).toContain("La Journée IA");
     expect(corps).toMatch(/\/fr\/journee-ia/);
