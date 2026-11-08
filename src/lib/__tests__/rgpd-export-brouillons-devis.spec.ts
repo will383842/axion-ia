@@ -2,9 +2,12 @@
  * S17 — l'export art. 15 d'une fiche INCLUT ses brouillons d'assistant de devis (sans coordonnées),
  * et seulement ceux de SA fiche.
  */
-import { describe, expect, it, vi } from "vitest";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 
-const appels = vi.hoisted(() => ({ brouillons: [] as unknown[] }));
+const appels = vi.hoisted(() => ({
+  brouillons: [] as unknown[],
+  fusions: [] as Array<{ absorbeId: string; absorbantId: string; defaiteLe: Date | null }>,
+}));
 
 vi.mock("@/lib/security/email-hash", () => ({ hashEmailForLookup: (e: string) => `h:${e}` }));
 vi.mock("@/features/questionnaire-preaudit/portee-rgpd", () => ({
@@ -21,6 +24,14 @@ vi.mock("@/lib/prisma", () => {
       updatedAt: new Date("2026-11-02"),
       statut: "en_cours",
       payload: { etape: 2 },
+    },
+    {
+      id: "b-f0",
+      clientId: "fiche-0",
+      createdAt: new Date("2026-10-01"),
+      updatedAt: new Date("2026-10-02"),
+      statut: "en_cours",
+      payload: { etape: 1 },
     },
     {
       id: "b-autre",
@@ -50,6 +61,12 @@ vi.mock("@/lib/prisma", () => {
         },
       ],
     },
+    clientFusion: {
+      findMany: async (args: { where: { absorbantId: { in: string[] }; defaiteLe: null } }) =>
+        appels.fusions.filter(
+          (f) => args.where.absorbantId.in.includes(f.absorbantId) && f.defaiteLe === null,
+        ),
+    },
     devisAssistantBrouillon: {
       findMany: async (args: { where: { clientId: { in: string[] } } }) => {
         appels.brouillons.push(args);
@@ -65,6 +82,10 @@ vi.mock("@/lib/prisma", () => {
 import { exporterDossierClientPour } from "@/lib/rgpd-dossier-client";
 
 describe("export art. 15 — brouillons de l'assistant de devis (S17)", () => {
+  beforeEach(() => {
+    appels.fusions = [];
+  });
+
   it("rend les brouillons de SA fiche, sans coordonnées, et pas ceux d'une autre", async () => {
     const r = await exporterDossierClientPour("alice@exemple.fr");
     expect(r.avertissements).toEqual([]);
@@ -79,5 +100,22 @@ describe("export art. 15 — brouillons de l'assistant de devis (S17)", () => {
       },
     ]);
     expect(JSON.stringify(r.brouillonsDevis)).not.toMatch(/@|telephone/);
+  });
+
+  it("fusion F0 dans F1 (fiche de la personne) puis export => brouillon de F0 inclus", async () => {
+    appels.fusions = [{ absorbeId: "fiche-0", absorbantId: "fiche-1", defaiteLe: null }];
+    const r = await exporterDossierClientPour("alice@exemple.fr");
+    expect(r.brouillonsDevis.map((b) => b.id).sort()).toEqual(["b-1", "b-f0"]);
+    expect(r.brouillonsDevis.find((b) => b.id === "b-f0")?.ficheLien).toBe("client:fiche-0");
+    expect(JSON.stringify(r.brouillonsDevis)).not.toMatch(/@|telephone/);
+  });
+
+  it("fusion défaite, ou fiche absorbée dans la fiche d'une AUTRE personne => non inclus", async () => {
+    appels.fusions = [
+      { absorbeId: "fiche-0", absorbantId: "fiche-1", defaiteLe: new Date("2026-11-03") },
+      { absorbeId: "fiche-0", absorbantId: "fiche-2", defaiteLe: null },
+    ];
+    const r = await exporterDossierClientPour("alice@exemple.fr");
+    expect(r.brouillonsDevis.map((b) => b.id)).toEqual(["b-1"]);
   });
 });

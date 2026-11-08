@@ -17,7 +17,7 @@
  * élargirait la lecture aux comptes rendus de visio).
  */
 
-import { listInbox } from "@/features/admin-inbox/queries";
+import { listInbox, PER_CHANNEL_FETCH } from "@/features/admin-inbox/queries";
 import { peutVoirLesAppels } from "@/features/admin-calendly/acces";
 import { requireAdminWrite } from "@/server/actions/qualiopi/_guards";
 import { clientsParEmail } from "@/server/qualiopi/crm/entrees";
@@ -69,7 +69,14 @@ export async function listerSourcesPourQuiAction(i: {
           "n'ont pas pu être lus.",
       );
     }
-    if (inbox.truncated) {
+    // `inbox.truncated` vaut vrai dès qu'UN canal atteint la fenêtre, candidatures comprises (164 en
+    // prod) : or seuls les appels et les messages sont utilisés ici. On ne signale donc la troncature
+    // que si l'un de CES deux canaux atteint `PER_CHANNEL_FETCH` (FENETRE couvre les 4 canaux, aucune
+    // ligne utile n'est écartée par la coupe à `pageSize`).
+    const tronqueUtile = Object.keys(NOM_CANAL).some(
+      (c) => inbox.rows.filter((r) => r.channel === c).length >= PER_CHANNEL_FETCH,
+    );
+    if (tronqueUtile) {
       notes.push("Liste incomplète : seules les demandes les plus récentes sont affichées.");
     }
     return notes.length > 0 ? { data, note: notes.join(" ") } : { data };

@@ -5,6 +5,7 @@ const clientsParEmail = vi.fn();
 const requireAdminWrite = vi.fn();
 vi.mock("@/features/admin-inbox/queries", () => ({
   listInbox: (...a: unknown[]) => listInbox(...a),
+  PER_CHANNEL_FETCH: 100,
 }));
 vi.mock("@/server/qualiopi/crm/entrees", () => ({
   clientsParEmail: (...a: unknown[]) => clientsParEmail(...a),
@@ -85,9 +86,26 @@ describe("listerSourcesPourQuiAction (S13)", () => {
   });
 
   it("liste tronquée : note claire", async () => {
-    listInbox.mockResolvedValue({ rows: [LIGNE], truncated: true, failedChannels: [] });
+    const messages = Array.from({ length: 100 }, (_, i) => ({
+      ...LIGNE,
+      key: `m${i}`,
+      sourceId: `m${i}`,
+    }));
+    listInbox.mockResolvedValue({ rows: messages, truncated: true, failedChannels: [] });
     const r = await listerSourcesPourQuiAction({ recherche: "" });
     expect("data" in r && r.note).toMatch(/incomplète/);
+  });
+
+  it("truncated vrai à cause de 100 candidatures seules : aucune note", async () => {
+    const cands = Array.from({ length: 100 }, (_, i) => ({
+      ...LIGNE,
+      key: `c${i}`,
+      channel: "candidature",
+      sourceId: `c${i}`,
+    }));
+    listInbox.mockResolvedValue({ rows: [LIGNE, ...cands], truncated: true, failedChannels: [] });
+    const r = await listerSourcesPourQuiAction({ recherche: "" });
+    expect("data" in r && r.note).toBeUndefined();
   });
 
   it("un canal sans rapport (candidature) en panne n'alarme pas", async () => {

@@ -542,7 +542,20 @@ export async function exporterDossierClientPour(email: string): Promise<ExportDo
           });
 
     // Brouillons de l'assistant de devis (S17) : rattachés à la FICHE (`client_id`), sans coordonnée.
+    // Fusion : elle déplace les PERSONNES vers la fiche absorbante mais laisse les brouillons sur la
+    // fiche ABSORBÉE. On y ajoute donc les fiches absorbées (fusion non défaite) dans une de SES
+    // fiches, transitivement (A dans B puis B dans C). Lecture seule, rien n'est modifié.
     const clientIds = [...new Set(contacts.map((c) => c.clientId))];
+    for (let frontiere = [...clientIds]; frontiere.length > 0;) {
+      const fusions = await prisma.clientFusion.findMany({
+        where: { absorbantId: { in: frontiere }, defaiteLe: null },
+        select: { absorbeId: true },
+      });
+      frontiere = [...new Set(fusions.map((f) => f.absorbeId))].filter(
+        (id) => !clientIds.includes(id),
+      );
+      clientIds.push(...frontiere);
+    }
     const brouillons =
       clientIds.length === 0
         ? []
