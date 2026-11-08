@@ -17,6 +17,7 @@ import { hashPrompt } from "../provenance/provenance-logger";
 import { retrieve as kbRetrieve } from "../kb-client";
 import { parseLlmJson } from "../shared/parse-llm-json";
 import { escapeLlmInput } from "../shared/prompt-input-escape";
+import { fautesDoctrineVille } from "../villes/controle-ville";
 
 // ---------------------------------------------------------------------------
 // Output schema (Zod)
@@ -173,6 +174,13 @@ ${factsContext}
     try {
       parsed = EcosystemSchema.parse(parseLlmJson(llmResult.output));
     } catch {
+      if (accumulatedCostUsd >= BUDGET_CAP_USD) break;
+      continue;
+    }
+
+    // Doctrine (audit 24/10/2026) : un texte avec une faute dure (Qualiopi, CPF,
+    // faux partenariat, Grenoble…) n'est jamais rendu. Rien n'est sauvegardé ici.
+    if (fautesDoctrineVille({ content: parsed.content }).length > 0) {
       if (accumulatedCostUsd >= BUDGET_CAP_USD) break;
       continue;
     }

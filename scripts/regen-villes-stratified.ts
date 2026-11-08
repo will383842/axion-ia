@@ -378,8 +378,27 @@ async function runWithConcurrency<T>(
 // Main
 // ---------------------------------------------------------------------------
 
+/**
+ * Les 4 générateurs (écosystème, secteurs, FAQ étendue, cas d'usage) payent un
+ * appel IA mais ne sauvegardent RIEN : `runGenerator` jette le résultat (audit
+ * blog/RAG du 24/10/2026, problème 5). Aucune table ne reçoit leur sortie et
+ * aucun mécanisme frère n'existe pour ces sections (seule la copie hub passe par
+ * `GeneratedVilleCopy`). Tant qu'une sauvegarde n'existe pas, le script refuse de
+ * lancer le moindre appel payant. Le passage à blanc (--dry-run) reste permis.
+ */
+const SAUVEGARDE_DES_RESULTATS_DISPONIBLE = false;
+
+const MESSAGE_REFUS_SANS_SAUVEGARDE =
+  "[regen-villes] REFUS : ce script paie un appel IA par section et jette le résultat (aucune sauvegarde). " +
+  "Rien n'est lancé. Ajouter d'abord la sauvegarde des sections, ou utiliser scripts/regen-villes-complete.ts " +
+  "(qui sauvegarde la copie hub). --dry-run reste permis.";
+
 async function main(): Promise<void> {
   const args = parseArgs();
+  if (!args.dryRun && !SAUVEGARDE_DES_RESULTATS_DISPONIBLE) {
+    console.error(MESSAGE_REFUS_SANS_SAUVEGARDE);
+    process.exit(1);
+  }
   const prisma = new PrismaClient();
 
   try {
