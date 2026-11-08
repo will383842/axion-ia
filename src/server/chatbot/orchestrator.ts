@@ -287,7 +287,8 @@ export async function handleTurn(
     default: {
       // T-26 cache sémantique : question proche déjà répondue → 0 retrieval, 0 LLM.
       const cached = await cacheLookup(tenantId, message, ctx.tenant.settings);
-      if (cached) {
+      // Une entrée écrite avant le contrôle de doctrine ne doit jamais être servie.
+      if (cached && verifyOutput(cached.reponse).ok) {
         return {
           intent: "explication",
           text: cached.reponse,
@@ -414,10 +415,18 @@ export async function handleTurn(
       // inventée (chemin de contenu dynamique hors routes statiques).
       const guard = verifyOutput(answer.text, resource ? { extraKnownUrls: [resource.url] } : {});
       if (!guard.ok) {
-        // Garde-fou : on n'émet pas une sortie qui invente prix/URL.
+        // Garde-fou : on n'émet pas une sortie qui invente prix/URL, ni qui
+        // enfreint la doctrine (rien n'est mis en cache : on sort avant cacheWrite).
+        const doctrine = guard.violations.some((v) => v.type === "interdit");
+        console.warn(
+          "[chatbot:orchestrator] sortie bloquée par l'output-guard:",
+          guard.violations.map((v) => `${v.type}:${v.value}`).join(", "),
+        );
         return {
           intent: "explication",
-          text: "Je préfère ne pas avancer une information incertaine. Voici un échange pour en parler précisément :",
+          text: doctrine
+            ? "Je préfère vous orienter vers un échange plutôt que d'avancer une information imprécise. Réservez un rendez-vous gratuit de 45 minutes :"
+            : "Je préfère ne pas avancer une information incertaine. Voici un échange pour en parler précisément :",
           cards: [],
           sendLinks: false,
           rdvUrl: RDV_URL,

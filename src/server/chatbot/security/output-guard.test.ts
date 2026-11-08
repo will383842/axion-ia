@@ -96,3 +96,21 @@ describe("T-39 combiné", () => {
     expect(r.ok).toBe(true);
   });
 });
+
+describe("doctrine des interdits en sortie (lot R3)", () => {
+  it("bloque une réponse qui cite Qualiopi", () => {
+    const r = verifyOutput("Notre formation est certifiée Qualiopi.");
+    expect(r.ok).toBe(false);
+    expect(r.violations.some((v) => v.type === "interdit" && v.value === "qualiopi")).toBe(true);
+  });
+
+  it("bloque un financement présenté comme intégral", () => {
+    const r = verifyOutput("Votre formation est financée à 100 % par votre OPCO.");
+    expect(r.ok).toBe(false);
+    expect(r.violations.some((v) => v.type === "interdit")).toBe(true);
+  });
+
+  it("laisse passer une réponse propre", () => {
+    expect(verifyOutput("Réservons un rendez-vous gratuit de 45 minutes.").ok).toBe(true);
+  });
+});

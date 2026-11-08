@@ -2,12 +2,16 @@
 //
 // AVANT d'émettre une réponse, vérifie la garantie ZÉRO-HALLUCINATION :
 //   - tout montant « X € » cité ∈ prix réels de pricing.ts (SSOT) ;
-//   - toute URL/chemin cité(e) ∈ routes FR connues (routing.pathnames).
+//   - toute URL/chemin cité(e) ∈ routes FR connues (routing.pathnames) ;
+//   - aucun interdit de la doctrine de publication (Qualiopi, CPF, « 100 % financé »…),
+//     via `detecterInterditsSurface` (même source que les contenus générés).
 // Si violation → l'orchestrateur corrige (re-grounding) ou escalade. Le guard
 // ne réécrit pas : il DÉTECTE et liste les violations (décision côté orchestrateur).
 
 import { PRICING_CATEGORIES, UN_A_UN_RECURRING_TIER } from "@/content/pricing";
 import { isKnownFrUrl, KNOWN_FR_PATHS } from "@/lib/offer-url";
+import { detecterInterditsSurface } from "@/lib/contenu/interdits-publication";
+import { financementPublicCitable } from "@/server/qualiopi/config/financing";
 
 /** Tous les prix légitimes (€ HT) de la SSOT pricing.ts (tiers + sous-tiers). */
 export const KNOWN_PRICES: ReadonlySet<number> = (() => {
@@ -39,7 +43,7 @@ const KNOWN_TOP_SEGMENTS: ReadonlySet<string> = new Set(
 );
 
 export interface OutputViolation {
-  readonly type: "price" | "url";
+  readonly type: "price" | "url" | "interdit";
   readonly value: string;
   readonly reason: string;
 }
@@ -117,6 +121,20 @@ export function verifyOutput(text: string, opts: VerifyOutputOptions = {}): Outp
         reason: "URL absente des routes FR connues — lien mort / inventé",
       });
     }
+  }
+
+  // Doctrine des interdits : un chatbot ne doit pas dire en direct ce qu'un
+  // article n'a pas le droit de publier. Le code de l'interdit sert de valeur.
+  const interdits = detecterInterditsSurface(
+    { reponse: text },
+    { actualite: false, financementPublicAutorise: financementPublicCitable() },
+  );
+  for (const i of interdits) {
+    violations.push({
+      type: "interdit",
+      value: i.code,
+      reason: `interdit de publication (${i.code}) : « ${i.extrait} »`,
+    });
   }
 
   return { ok: violations.length === 0, violations };

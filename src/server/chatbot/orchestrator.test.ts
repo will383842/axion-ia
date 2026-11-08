@@ -248,3 +248,69 @@ describe("T-07 explication (RAG + LLM mockés)", () => {
     expect(llm).toHaveBeenCalled();
   });
 });
+
+describe("doctrine des interdits en sortie (lot R3)", () => {
+  const chunks: RetrievedChunk[] = [
+    {
+      id: "c1",
+      sourceType: "faq",
+      sourceRef: "x",
+      categorie: "faq",
+      contenu: "Un audit dure une journée.",
+      contexte: null,
+      score: 1,
+    },
+  ];
+  const fautive = {
+    text: "Nous sommes certifiés Qualiopi, votre formation est financée à 100 %.",
+    model: "m",
+    costUsd: 0,
+    tokensInput: 1,
+    tokensOutput: 1,
+  };
+
+  it("ne sert pas la réponse fautive, ne l'écrit pas dans le cache, oriente vers les 45 minutes", async () => {
+    const cacheWrite = vi.fn(async () => {});
+    const r = await handleTurn(
+      "c'est quoi un audit ?",
+      { tenant },
+      {
+        retrieve: vi.fn(async () => chunks),
+        generateAnswer: vi.fn(async () => fautive),
+        cacheWrite,
+      },
+    );
+    expect(r.text).not.toMatch(/qualiopi|100 ?%/i);
+    expect(r.text).toMatch(/45 minutes/);
+    expect(r.escalate).toBe(true);
+    expect(r.rdvUrl).toBeTruthy();
+    expect(r.guard.ok).toBe(false);
+    expect(cacheWrite).not.toHaveBeenCalled();
+  });
+
+  it("ignore une entrée de cache déjà empoisonnée et régénère", async () => {
+    const llm = vi.fn(async () => ({
+      text: "Un audit dure une journée.",
+      model: "m",
+      costUsd: 0,
+      tokensInput: 1,
+      tokensOutput: 1,
+    }));
+    const r = await handleTurn(
+      "c'est quoi un audit ?",
+      { tenant },
+      {
+        retrieve: vi.fn(async () => chunks),
+        generateAnswer: llm,
+        cacheLookup: vi.fn(async () => ({
+          reponse: "Certifiés Qualiopi.",
+          sources: [],
+        })) as never,
+        cacheWrite: vi.fn(async () => {}),
+      },
+    );
+    expect(llm).toHaveBeenCalled();
+    expect(r.servedFromCache).toBeUndefined();
+    expect(r.text).not.toMatch(/qualiopi/i);
+  });
+});
