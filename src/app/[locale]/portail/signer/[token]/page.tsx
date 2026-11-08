@@ -306,6 +306,7 @@ export default async function SignerDevisPage({ params }: PageProps) {
     <PieceSignatureForm
       token={token}
       numero={piece.numero}
+      {...(devis !== null ? { numeroDevis: devis.numero } : {})}
       pieceLibelle={circuit.libelle}
       dateValiditeLisible={devis?.dateValiditeLisible ?? null}
       organismeNom={identite.raisonSociale}
