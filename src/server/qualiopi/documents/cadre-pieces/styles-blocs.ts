@@ -4,7 +4,7 @@
  * les gabarits signables gardent `base-layout.tsx`.
  */
 import { StyleSheet } from "@react-pdf/renderer";
-import { couleurPiece as brandColor } from "@/lib/brand/jetons-pieces";
+import { couleurPiece } from "@/server/qualiopi/brand/jetons-pieces";
 import {
   QUALIOPI_BRAND_FONTS,
   QUALIOPI_PDF_TYPE as T,
@@ -22,15 +22,15 @@ export const stylesBlocs = StyleSheet.create({
     fontSize: T.md,
     fontFamily: QUALIOPI_BRAND_FONTS.serif,
     fontWeight: "bold",
-    color: brandColor("mocha"),
+    color: couleurPiece("mocha"),
     marginBottom: S.md,
     paddingBottom: S.sm,
     borderBottomWidth: 1,
-    borderBottomColor: brandColor("border"),
+    borderBottomColor: couleurPiece("border"),
   },
   paragraph: {
     fontSize: T.base,
-    color: brandColor("fg"),
+    color: couleurPiece("fg"),
     marginBottom: S.sm,
     lineHeight: T.lineNormal,
   },
@@ -42,19 +42,19 @@ export const stylesBlocs = StyleSheet.create({
   tableRow: {
     flexDirection: "row",
     borderBottomWidth: 1,
-    borderBottomColor: brandColor("border"),
+    borderBottomColor: couleurPiece("border"),
     paddingVertical: S.md,
   },
   tableHeaderCell: {
     fontSize: T.sm,
     fontWeight: "bold",
-    color: brandColor("fg-soft"),
+    color: couleurPiece("fg-soft"),
     flex: 1,
     paddingRight: S.sm,
   },
   tableCell: {
     fontSize: T.base,
-    color: brandColor("fg"),
+    color: couleurPiece("fg"),
     flex: 1,
     paddingRight: S.sm,
   },
@@ -65,24 +65,24 @@ export const stylesBlocs = StyleSheet.create({
     marginBottom: S.sm,
     paddingVertical: 3,
     borderBottomWidth: 1,
-    borderBottomColor: brandColor("sand"),
+    borderBottomColor: couleurPiece("sand"),
   },
   fieldLabel: {
     fontSize: T.sm,
-    color: brandColor("fg-soft"),
+    color: couleurPiece("fg-soft"),
     width: 160,
     fontWeight: "bold",
   },
   fieldValue: {
     fontSize: T.base,
-    color: brandColor("fg"),
+    color: couleurPiece("fg"),
     flex: 1,
   },
   // Valeur manquante mise en évidence (rouge terracotta) — ne JAMAIS masquer
   // en silence un identifiant obligatoire absent.
   fieldValueMissing: {
     fontSize: T.base,
-    color: brandColor("terracotta-deep"),
+    color: couleurPiece("terracotta-deep"),
     flex: 1,
     fontStyle: "italic",
   },
@@ -96,26 +96,26 @@ export const stylesBlocs = StyleSheet.create({
   signatureBox: {
     flex: 1,
     borderWidth: 1,
-    borderColor: brandColor("border-strong"),
+    borderColor: couleurPiece("border-strong"),
     minHeight: 84,
     padding: S.lg,
     borderRadius: S.radius,
-    backgroundColor: brandColor("bg"),
+    backgroundColor: couleurPiece("bg"),
   },
   signatureBoxTitle: {
     fontSize: T.sm,
     fontWeight: "bold",
-    color: brandColor("mocha"),
+    color: couleurPiece("mocha"),
     marginBottom: S.xs,
   },
   signatureBoxName: {
     fontSize: T.base,
-    color: brandColor("fg"),
+    color: couleurPiece("fg"),
     marginBottom: S.sm,
   },
   signatureBoxMention: {
     fontSize: T.xs,
-    color: brandColor("fg-muted"),
+    color: couleurPiece("fg-muted"),
     fontStyle: "italic",
     marginTop: S.xxl,
   },
@@ -123,7 +123,7 @@ export const stylesBlocs = StyleSheet.create({
   // ---- Notes légales -------------------------------------------
   legalNote: {
     fontSize: T.xs,
-    color: brandColor("fg-muted"),
+    color: couleurPiece("fg-muted"),
     fontStyle: "italic",
     marginTop: S.lg,
     lineHeight: T.lineNormal,
@@ -137,7 +137,7 @@ export const stylesBlocs = StyleSheet.create({
     right: 0,
     textAlign: "center",
     fontSize: 72,
-    color: brandColor("border"),
+    color: couleurPiece("border"),
     opacity: 0.18,
     transform: "rotate(-45deg)",
     fontFamily: QUALIOPI_BRAND_FONTS.serif,
@@ -151,7 +151,7 @@ export const stylesBlocs = StyleSheet.create({
     right: 0,
     textAlign: "center",
     fontSize: 68,
-    color: brandColor("terracotta"),
+    color: couleurPiece("terracotta"),
     opacity: 0.16,
     transform: "rotate(-45deg)",
     fontFamily: QUALIOPI_BRAND_FONTS.serif,
@@ -159,8 +159,8 @@ export const stylesBlocs = StyleSheet.create({
   },
   specimenBanner: {
     borderWidth: 1,
-    borderColor: brandColor("terracotta"),
-    backgroundColor: brandColor("terracotta-soft"),
+    borderColor: couleurPiece("terracotta"),
+    backgroundColor: couleurPiece("terracotta-soft"),
     borderRadius: 4,
     padding: S.md,
     marginBottom: S.lg,
@@ -168,12 +168,12 @@ export const stylesBlocs = StyleSheet.create({
   specimenBannerTitle: {
     fontSize: T.sm,
     fontWeight: "bold",
-    color: brandColor("terracotta-deep"),
+    color: couleurPiece("terracotta-deep"),
     marginBottom: 2,
   },
   specimenBannerText: {
     fontSize: T.xs,
-    color: brandColor("fg-soft"),
+    color: couleurPiece("fg-soft"),
     lineHeight: T.lineNormal,
   },
 });

@@ -7,6 +7,7 @@
  *  - tons doux (`terracotta-soft`, `primary-soft`, `sage-soft`, `sand-deep`) → gris chaud ;
  *  - `terracotta-deep` et `primary` (ex-bleu) → terracotta ;
  *  - `border-strong` → gris moyen ; `mocha-soft` → noir ; `primary-hover` → terracotta.
+ *  - `sage` = vert réussite #5E7050 : GARDÉ par décision de Williams le 08/11/2026.
  */
 import { COULEURS_PIECES as P } from "@/lib/brand/couleurs-pieces";
 import type { QualiopiBrandColorToken } from "@/server/qualiopi/brand/brand-tokens";

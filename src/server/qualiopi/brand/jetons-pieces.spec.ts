@@ -4,7 +4,7 @@ import { resolve } from "node:path";
 import { describe, expect, it } from "vitest";
 import { COULEURS_PIECES } from "@/lib/brand/couleurs-pieces";
 import { COULEURS_MARQUE_GELEES_2026_11 } from "@/lib/brand/couleurs-marque-gelees-2026-11";
-import { couleurPiece, JETONS_PIECES } from "@/lib/brand/jetons-pieces";
+import { couleurPiece, JETONS_PIECES } from "@/server/qualiopi/brand/jetons-pieces";
 
 const JETONS = Object.keys(COULEURS_MARQUE_GELEES_2026_11);
 const VALEURS = new Set<string>(Object.values(COULEURS_PIECES));
@@ -52,7 +52,9 @@ describe("jetons-pieces", () => {
         );
       }
     }
-    // sage (#5E7050) : 4,29 sur gris chaud → texte autorisé sur ivoire/blanc seulement (journal).
+    // sage (#5E7050) sur gris chaud #E8E6DC = 4,29:1 : EXCLU. Interdit d'utiliser sage
+    // comme texte sur gris chaud (décision de Williams du 08/11/2026 : le vert est gardé) ;
+    // texte autorisé sur ivoire/blanc seulement.
     for (const f of ["bg", "paper"] as const) {
       expect(contraste(couleurPiece("sage"), couleurPiece(f))).toBeGreaterThanOrEqual(4.5);
     }
