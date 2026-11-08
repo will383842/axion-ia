@@ -166,7 +166,7 @@ export async function handleTurn(
     return {
       ...base,
       intent: "explication",
-      text: "Nous ne gérons pas de dispositif de financement (CPF, OPCO, subvention…) : nos prestations — formations, audits, implémentation — sont facturées en direct. Je peux vous présenter nos offres et leurs tarifs, ou organiser un court échange pour cadrer votre besoin :",
+      text: "Axion-IA ne propose pas de financement ; parlons-en lors du Diagnostic IA gratuit de 45 minutes, sans engagement :",
       cards: [],
       sendLinks: false,
       rdvUrl: RDV_URL,

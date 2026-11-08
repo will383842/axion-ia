@@ -12,18 +12,12 @@ import {
   buildPrimaryImageOfPage,
   buildWebPageJsonLd,
 } from "@/lib/seo";
-import { AUDIT_TIERS, getTierById, formatAmount } from "@/content/pricing";
 
 // Sprint 14.10.8 (Will 2026-05-12) — wrapper Audit Stratégique PME via template.
 
 const TIER = "audit-strategique-pme" as const;
 
-// SSOT prix — dérivé de pricing.ts (audit-strategique-pme : « À partir de 4 900 €
-// · sur devis » depuis 2026-06-03 ; ex-fourchette 4 900–9 900 €, cf. décision Will).
-const PME_TIER = getTierById(AUDIT_TIERS, "audit-strategique-pme");
-const PME_MIN = PME_TIER.priceMin ?? 0;
-const PME_FROM_FR = formatAmount(PME_MIN, "fr", { compact: true });
-const PME_FROM_EN = formatAmount(PME_MIN, "en", { compact: true });
+// Aucun montant dans les métadonnées (R5a, décision n°7) : les audits sont sur devis.
 
 export const revalidate = 3600;
 
@@ -40,8 +34,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     locale,
     path: isFr ? "/audit/strategique-pme" : "/audit/strategic-pme",
     title: isFr
-      ? `Audit Stratégique PME · à partir de ${PME_FROM_FR} · Axion-IA`
-      : `SME Strategic AI audit · from ${PME_FROM_EN} · Axion-IA`,
+      ? `Audit Stratégique PME · sur devis · Axion-IA`
+      : `SME Strategic AI audit · on request · Axion-IA`,
     description: isFr ? c.promiseFr : c.promiseEn,
     alternates: { fr: "/audit/strategique-pme", en: "/audit/strategic-pme" },
   });
