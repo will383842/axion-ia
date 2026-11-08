@@ -371,6 +371,26 @@ describe("chargerAssistantDevis — brouillon lié, brouillon écarté, refus d'
     expect(c.payloadInitial.refClient).toBe("REF-BROUILLON");
   });
 
+  it("?devis avec brouillon lié lisible : offre illisible ou TVA non standard restent REFUSÉES (seul le motif OPCO est levé)", async () => {
+    const p = payloadVide(20);
+    p.refClient = "REF-BROUILLON";
+    db.devisAssistantBrouillon.findFirst.mockResolvedValue({
+      id: BROUILLON,
+      revision: 4,
+      payload: JSON.parse(JSON.stringify(p)),
+    });
+    for (const extra of [
+      { offre: { v: 99 } },
+      { lignes: [{ designation: "x", quantite: 1, prixUnitaireHtCents: 1, tauxTvaPercent: 10 }] },
+    ]) {
+      db.devis.findUnique.mockResolvedValue(devisBrouillon(extra));
+      const r = await chargerAssistantDevis({ adminId: ADMIN, devisId: DEVIS });
+      expect(r, JSON.stringify(extra)).toMatchObject({ redirection: `/qualiopi/devis/${DEVIS}` });
+      expect((r as { message?: string }).message).toMatch(/ne peut pas être rouvert/);
+    }
+    aucuneEcriture();
+  });
+
   it("?devis classique OPCO sans brouillon lisible (absent ou illisible) : refus", async () => {
     db.devis.findUnique.mockResolvedValue(devisBrouillon({ financementSuggere: "opco" }));
     for (const lie of [null, { id: BROUILLON, revision: 1, payload: { v: 9 } }]) {

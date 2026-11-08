@@ -35,6 +35,7 @@ import { payloadVide, type PayloadAssistantV1 } from "../payload";
 import {
   devisVersPayload as devisVersPayloadBrut,
   payloadVersCreation,
+  VERSION_TEXTE_INTITULE,
   type ContexteConversion,
   type DevisPourAssistant,
 } from "../conversion";
@@ -380,11 +381,48 @@ describe("textes d'IA par formule (liste blanche, préfixe « Formule A/B : »)"
     p.recit.intitule = "Assistant client";
     expect(textes(p)).toEqual(["  Assistant client "]);
   });
+  it("réouverture : intitulé vide + besoin client — le besoin n'est jamais pris pour l'intitulé ni perdu", () => {
+    const p = formules("A");
+    p.recit.intitule = "";
+    p.recit.besoinClient = "Besoin X";
+    const creee = creation(p);
+    if (creee.type !== "formules") throw new Error("type");
+    const o = creee.input.offre;
+    expect(o.textes.map((t) => t.texte)).toEqual(["Besoin X"]);
+    const q = devisVersPayload(devisDepuis(o), 20);
+    expect(q.recit.intitule).toBe("");
+    expect(q.textes.map((t) => t.texte)).toEqual(["Besoin X"]);
+    q.clientId = CLIENT;
+    q.activite = "implementation";
+    expect(textes(q)).toEqual(["Besoin X"]);
+  });
+  it("réouverture : texte libre AVANT l'intitulé injecté — jamais pris pour l'intitulé, pas de doublon", () => {
+    const p = formules("A");
+    p.textes = [{ texte: "Texte libre", actif: true }];
+    p.recit.intitule = "Vrai intitulé";
+    const creee = creation(p);
+    if (creee.type !== "formules") throw new Error("type");
+    const o = creee.input.offre;
+    expect(o.textes.map((t) => t.texte)).toEqual(["Texte libre", "Vrai intitulé"]);
+    const q = devisVersPayload(devisDepuis(o), 20);
+    expect(q.recit.intitule).toBe("Vrai intitulé");
+    expect(q.textes.map((t) => t.texte)).toEqual(["Texte libre"]);
+    q.clientId = CLIENT;
+    q.activite = "implementation";
+    expect(textes(q)).toEqual(["Texte libre", "Vrai intitulé"]);
+  });
+  it("réouverture : sans marqueur, aucun texte n'est pris pour l'intitulé (textes intacts)", () => {
+    const o = offreStandard();
+    o.textes = [{ texte: "Texte libre", actif: true }];
+    const q = devisVersPayload(devisDepuis(o), 20);
+    expect(q.recit.intitule).toBe("");
+    expect(q.textes.map((t) => t.texte)).toEqual(["Texte libre"]);
+  });
   it("réouverture réelle : l'intitulé ressaisi REMPLACE l'ancien, sans doublon", () => {
     const creee = creation(formules("A"));
     if (creee.type !== "formules") throw new Error("type");
     const o = creee.input.offre;
-    o.textes = [{ texte: "Ancien intitulé", actif: true }];
+    o.textes = [{ texte: "Ancien intitulé", actif: true, version: VERSION_TEXTE_INTITULE }];
     const p = devisVersPayloadBrut(devisDepuis(o), 20);
     if (!("payload" in p)) throw new Error("refus");
     const q = p.payload;
