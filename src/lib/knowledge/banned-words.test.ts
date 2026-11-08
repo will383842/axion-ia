@@ -91,7 +91,7 @@ describe("doctrine à l'entrée (audit knowledge 08/11/2026)", () => {
   });
 
   it("bloque Qualiopi", () => {
-    const r = verifierDoctrineTraduction({ body: "Notre organisme est certifié Qualiopi." });
+    const r = verifierDoctrineTraduction({ body: "Notre organisme cite Qualiopi." });
     expect(r.valid).toBe(false);
     expect(r.fieldViolations[0]?.code).toBe("qualiopi");
   });
@@ -129,11 +129,11 @@ describe("doctrine à l'entrée (audit knowledge 08/11/2026)", () => {
   });
 
   it("un bodyText vide ne masque pas le body", () => {
-    const r = verifierDoctrineTraduction({ body: "<p>Certifié Qualiopi</p>", bodyText: "" });
+    const r = verifierDoctrineTraduction({ body: "<p>Voir Qualiopi</p>", bodyText: "" });
     expect(r.valid).toBe(false);
   });
 
   it("l'ancien contrôle (vidéo) reste sans effet", () => {
-    expect(checkTranslationBannedWords({ body: "Certifié Qualiopi à Grenoble" }).valid).toBe(true);
+    expect(checkTranslationBannedWords({ body: "Voir Qualiopi à Grenoble" }).valid).toBe(true);
   });
 });

@@ -3,7 +3,7 @@ import { planifierFiche, upsertFact, MARQUEUR_DOCTRINE } from "./seed-kb-facts";
 import { verifierDoctrineFiche } from "../../../src/lib/knowledge/banned-words";
 
 const propre = verifierDoctrineFiche({ fait: "Une PME peut commencer simplement." });
-const fautive = verifierDoctrineFiche({ fait: "Nous sommes certifiés Qualiopi." });
+const fautive = verifierDoctrineFiche({ fait: "Nous citons Qualiopi." });
 
 describe("planifierFiche", () => {
   it("fiche propre et nouvelle : publiée", () => {
