@@ -14,7 +14,7 @@
 import type { GenerateAnswerFn } from "@/server/chatbot/generation/generate-stream";
 import type { LlmTier } from "@/server/chatbot/constants";
 
-const SYSTEM = [
+export const SYSTEM = [
   "Tu détermines si un message visiteur relève du périmètre d'Axion-IA :",
   "conseil, audit, formation, accompagnement, implémentation et sites web — tout",
   "ce qui touche à l'intelligence artificielle pour les entreprises (TPE et PME).",

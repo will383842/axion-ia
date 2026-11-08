@@ -3,7 +3,10 @@
  */
 
 import { describe, it, expect } from "vitest";
-import { assembleSystemPrompt, defaultSystemRules } from "@/server/chatbot/generation/system-prompt";
+import {
+  assembleSystemPrompt,
+  defaultSystemRules,
+} from "@/server/chatbot/generation/system-prompt";
 import { DEFAULT_TENANT_SETTINGS } from "@/server/chatbot/constants";
 import type { ResolvedTenant } from "@/server/chatbot/tenant";
 import type { RetrievedChunk } from "@/server/chatbot/retrieval/hybrid-search";
@@ -75,6 +78,37 @@ describe("T-07 assembleSystemPrompt", () => {
     expect(p).toMatch(/\{\{price:/);
     // Aucun prix en chiffres dans les règles.
     expect(p).not.toMatch(/\d\s?€/);
+  });
+});
+
+describe("relecture directeur", () => {
+  it("l'anti-invention nomme l'exception des règles et du rendez-vous de 45 minutes", () => {
+    const p = defaultRules();
+    expect(p).toMatch(/ni dans le CONTEXTE ci-dessous ni dans ces règles/);
+    expect(p).toMatch(/exception[^\n]*45 minutes/i);
+  });
+
+  it("la Journée IA est décrite uniquement à partir du CONTEXTE", () => {
+    expect(defaultRules()).toMatch(/uniquement à partir du CONTEXTE/);
+    expect(defaultRules()).toMatch(/citez? seulement son nom|cite seulement son nom/);
+  });
+
+  it("le message principal n'est pas répété à chaque réponse", () => {
+    expect(defaultRules()).toMatch(/qui vous êtes|qui tu es|ce que vous faites/);
+    expect(defaultRules()).toMatch(/pas à chaque réponse/);
+  });
+
+  it("un prompt versionné actif reçoit toujours le bloc fixe (PME, vouvoiement, 45 minutes)", () => {
+    const p = assembleSystemPrompt({ tenant, promptOverride: "Tu es un bot. Tutoie le visiteur." });
+    expect(p).toContain("Tu es un bot.");
+    expect(p).toMatch(/TPE et PME/);
+    expect(p).toMatch(/VOUVOY/i);
+    expect(p).toMatch(/rendez-vous gratuit de 45 minutes/);
+  });
+
+  it("sans prompt versionné, le bloc fixe n'est pas dupliqué", () => {
+    const p = assembleSystemPrompt({ tenant });
+    expect(p.split("RÈGLES FIXES").length - 1).toBe(0);
   });
 });
 

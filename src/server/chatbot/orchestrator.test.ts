@@ -248,3 +248,16 @@ describe("T-07 explication (RAG + LLM mockés)", () => {
     expect(llm).toHaveBeenCalled();
   });
 });
+
+describe("réponse financement (mots interdits en public)", () => {
+  it("ne cite ni CPF, ni OPCO, et oriente vers les 45 minutes", async () => {
+    const r = await handleTurn(
+      "est-ce finançable par mon OPCO ?",
+      { tenant },
+      { retrieve: noopRetrieve },
+    );
+    expect(r.text).not.toMatch(/cpf|opco|qualiopi/i);
+    expect(r.text).toMatch(/45 minutes/);
+    expect(r.text).not.toMatch(/factur/i);
+  });
+});
