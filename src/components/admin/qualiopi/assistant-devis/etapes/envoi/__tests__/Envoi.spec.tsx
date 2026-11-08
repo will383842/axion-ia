@@ -175,6 +175,16 @@ describe("EmailEnvoi (D9 : pas d'e-mail personnalisé en v1)", () => {
     expect((screen.getByLabelText("À") as HTMLInputElement).value).toBe("client@example.test");
   });
 
+  it("l'adresse est en LECTURE SEULE : une frappe ne la change pas et c'est elle qui part", async () => {
+    const { envoyer } = email();
+    const champ = screen.getByLabelText("À") as HTMLInputElement;
+    expect(champ.readOnly).toBe(true);
+    fireEvent.change(champ, { target: { value: "autre@example.test" } });
+    expect(champ.value).toBe("client@example.test");
+    fireEvent.click(screen.getByRole("button", { name: /Envoyer au client/ }));
+    await waitFor(() => expect(envoyer).toHaveBeenCalledWith({ a: "client@example.test" }));
+  });
+
   it("« Envoyer au client » appelle l'envoi UNE fois (double clic neutralisé)", async () => {
     let fin!: (v: { data: { enCorbeille: true } }) => void;
     const envoyer = vi.fn(() => new Promise<{ data: { enCorbeille: true } }>((r) => (fin = r)));

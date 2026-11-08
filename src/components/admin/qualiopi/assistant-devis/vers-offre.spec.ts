@@ -87,6 +87,15 @@ describe("formules proposées (D1)", () => {
     });
     expect(formules(e).offre.achat!.hebergementMensuelHtCents).toBe(120000);
   });
+
+  it("mois de maintenance offerts : transmis à l'offre (le moteur les porte), jamais forcés à 0", () => {
+    const e = reducteur(etatT1(), {
+      type: "achat",
+      patch: { maintenance: { ...etatT1().achat.maintenance, moisOfferts: "3" } },
+    });
+    expect(formules(e).offre.achat!.maintenance.moisOfferts).toBe(3);
+    expect(formules(etatT1()).offre.achat!.maintenance.moisOfferts).toBe(0);
+  });
 });
 
 describe("TVA, textes, modeAvance", () => {

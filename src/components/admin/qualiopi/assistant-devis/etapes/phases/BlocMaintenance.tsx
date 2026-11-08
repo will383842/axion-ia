@@ -3,8 +3,8 @@
 
 /**
  * Maintenance après livraison (fiche E12). Monté en 1b et dans la carte A (E13) : les deux
- * lisent et écrivent `achat.maintenance`, il n'y a qu'un état. Pas de « mois offerts » (le
- * moteur n'en a pas : ce serait une promesse sans trace). Le montant mensuel est une saisie,
+ * lisent et écrivent `achat.maintenance`, il n'y a qu'un état. Les « mois offerts » ne sont pas
+ * saisis ici : le moteur les porte (`moisOfferts`), mais cet écran n'en propose pas. Le montant mensuel est une saisie,
  * jamais un prix en dur ; les rythmes de paiement se choisissent à l'étape 3.
  */
 import { useId, type Dispatch } from "react";

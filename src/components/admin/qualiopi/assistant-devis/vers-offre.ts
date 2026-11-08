@@ -123,7 +123,8 @@ export function versSaisie(
       hebergementMensuelEur: sansEspaces(ac.hebergementMensuelEur),
       maintenance: {
         regle: ac.maintenance.regle,
-        moisOfferts: "0",
+        // Le moteur porte les mois offerts (schéma, PDF, plan récurrent) : on les transmet.
+        moisOfferts: ac.maintenance.moisOfferts.trim(),
         mensuelEur: sansEspaces(ac.maintenance.mensuelEur),
         periodes: ac.maintenance.periodes,
       },

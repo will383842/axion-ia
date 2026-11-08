@@ -33,7 +33,7 @@ export interface PropsEtapeEnvoi {
     devisId: string,
     majLe: string,
     email: EmailAEnvoyer,
-  ) => Promise<ResultatAction<{ enCorbeille: true; note?: string }>>;
+  ) => Promise<ResultatAction<{ enCorbeille: boolean; note?: string }>>;
   destinataire: string;
   onModifier?: (() => void) | undefined;
 }
