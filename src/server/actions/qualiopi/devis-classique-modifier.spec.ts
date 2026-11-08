@@ -288,9 +288,88 @@ describe("fixerValiditeDevisBrouillonAction (S10)", () => {
     const arg = m.devisUpdateMany.mock.calls[0]![0];
     expect(arg.where).toEqual({ id: DEVIS, statut: "brouillon", updatedAt: new Date(MAJ) });
     expect(Object.keys(arg.data)).toEqual(["dateValidite"]);
-    expect((arg.data.dateValidite as Date).toISOString()).toBe("2026-12-08T23:59:59.000Z");
+    expect((arg.data.dateValidite as Date).toISOString()).toBe("2026-12-08T22:59:59.000Z");
     expect(JSON.stringify(arg)).not.toMatch(/"statut":"(?!brouillon)/);
     expect(m.devisUpdate).not.toHaveBeenCalled();
+  });
+
+  it("stocke 23:59:59 heure de PARIS (hiver UTC+1, été UTC+2)", async () => {
+    for (const [d, iso] of [
+      ["2026-12-08", "2026-12-08T22:59:59.000Z"],
+      ["2027-01-15", "2027-01-15T22:59:59.000Z"],
+    ] as const) {
+      m.devisFindUnique.mockResolvedValueOnce(EXISTANT).mockResolvedValueOnce(null);
+      await appel(d);
+      expect(
+        (m.devisUpdateMany.mock.calls.at(-1)![0].data.dateValidite as Date).toISOString(),
+      ).toBe(iso);
+    }
+  });
+
+  it("à 23:30 UTC (déjà le lendemain à Paris) : le jour de Paris sert de référence", async () => {
+    vi.setSystemTime(new Date("2026-11-08T23:30:00.000Z")); // 9 nov 00:30 à Paris
+    // J+7 de Paris = 16 nov (J+8 en UTC) → accepté ; le 15 nov est J+6 à Paris → refusé.
+    m.devisFindUnique.mockResolvedValueOnce(EXISTANT).mockResolvedValueOnce(null);
+    expect("data" in (await appel("2026-11-16"))).toBe(true);
+    expect("error" in (await appel("2026-11-15"))).toBe(true);
+    expect(m.devisUpdateMany).toHaveBeenCalledTimes(1);
+  });
+
+  it("journalise l'action avec la session de requireAdminWrite", async () => {
+    m.devisFindUnique.mockResolvedValueOnce(EXISTANT).mockResolvedValueOnce(null);
+    await appel("2026-12-08");
+    expect(m.log).toHaveBeenCalledWith(
+      expect.objectContaining({
+        action: "qualiopi.devis.fixer_validite_brouillon",
+        targetType: "Devis",
+        targetId: DEVIS,
+        session: { userId: "admin-1", role: "super_admin" },
+      }),
+    );
+  });
+
+  describe("estimation OPCO dépendante de la date", () => {
+    const OPCO = {
+      ...EXISTANT,
+      financementSuggere: "opco",
+      montantTotalHtCents: 100000,
+      montantOpcoEstimeCents: 50000,
+    };
+    const COVERAGE = {
+      montantPriseEnChargeCents: 40000,
+      origine: "reglage_par_defaut",
+      avertissement: null,
+      resteAChargeCents: 60000,
+    };
+
+    it("recalcule l'estimation avec la nouvelle date quand la saisie est fournie", async () => {
+      m.estimate.mockResolvedValue(COVERAGE);
+      m.devisFindUnique.mockResolvedValueOnce(OPCO).mockResolvedValueOnce(null);
+      await appel("2027-01-15", {
+        estimation: { nbParticipants: 4, dureeHeures: 14, modaliteOpco: "inter_presentiel" },
+      });
+      expect(m.estimate.mock.calls[0]![0].asOf.toISOString()).toBe("2027-01-15T22:59:59.000Z");
+      const data = m.devisUpdateMany.mock.calls[0]![0].data;
+      expect(data.montantOpcoEstimeCents).toBe(40000);
+      expect(data.resteAChargeCents).toBe(60000);
+    });
+
+    it("sans saisie : montants conservés, avertissement « à recalculer »", async () => {
+      m.devisFindUnique.mockResolvedValueOnce(OPCO).mockResolvedValueOnce(null);
+      await appel("2027-01-15");
+      expect(m.estimate).not.toHaveBeenCalled();
+      const data = m.devisUpdateMany.mock.calls[0]![0].data;
+      expect(data.opcoEstimationAvertissement).toMatch(/recalculer/);
+      expect("montantOpcoEstimeCents" in data).toBe(false);
+    });
+
+    it("devis à formules : l'estimation n'est pas touchée", async () => {
+      m.devisFindUnique
+        .mockResolvedValueOnce({ ...OPCO, offreSha256: "a".repeat(64) })
+        .mockResolvedValueOnce(null);
+      await appel("2027-01-15");
+      expect(Object.keys(m.devisUpdateMany.mock.calls[0]![0].data)).toEqual(["dateValidite"]);
+    });
   });
 
   it("accepte aussi un devis À FORMULES (offreSha256 non nul)", async () => {

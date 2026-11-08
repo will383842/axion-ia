@@ -132,15 +132,50 @@ function minuitParisUtc(maintenant: Date): number {
   return Date.UTC(y, mo - 1, d);
 }
 
+/** Décalage de Paris par rapport à UTC (ms) à l'instant `t`. */
+function decalageParisMs(t: number): number {
+  const parts = new Intl.DateTimeFormat("en-GB", {
+    timeZone: "Europe/Paris",
+    hourCycle: "h23",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+  }).formatToParts(new Date(t));
+  const g = (k: string) => Number(parts.find((x) => x.type === k)?.value);
+  return Date.UTC(g("year"), g("month") - 1, g("day"), g("hour"), g("minute"), g("second")) - t;
+}
+
+/** Instant UTC de 23 h 59 min 59 s, HEURE DE PARIS, du jour civil `y-mo-d`. */
+function finDeJourneeParis(y: number, mo: number, d: number): Date {
+  const naif = Date.UTC(y, mo - 1, d, 23, 59, 59);
+  return new Date(naif - decalageParisMs(naif - decalageParisMs(naif)));
+}
+
 const validiteSchema = z.object({
   id: z.string().uuid(),
   attenduMajLe: z.string().datetime(),
   dateValidite: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
+  /**
+   * Saisie d'estimation OPCO (non conservée sur le devis) : si elle est fournie, l'estimation
+   * est recalculée avec la nouvelle date ; sinon l'estimation existante est signalée à refaire.
+   */
+  estimation: entreeDevisClassiqueSchema
+    .pick({
+      nbParticipants: true,
+      dureeHeures: true,
+      modaliteOpco: true,
+      opcoEnveloppeRestanteCents: true,
+      dateDebutSessionPrevue: true,
+    })
+    .optional(),
 });
 
 /**
  * Fixe la date de validité d'un BROUILLON (classique OU à formules : la date n'est pas dans le
- * sceau de l'offre). Dernier jour inclus : la date est enregistrée à 23 h 59 min 59 s UTC.
+ * sceau de l'offre). Dernier jour inclus : la date est enregistrée à 23 h 59 min 59 s, heure de Paris.
  * Écriture conditionnelle sur `updatedAt` ; n'écrit jamais `statut`.
  */
 export async function fixerValiditeDevisBrouillonAction(
@@ -149,7 +184,7 @@ export async function fixerValiditeDevisBrouillonAction(
   if (process.env["DATABASE_URL"]?.includes("stub.invalid")) {
     return { error: "Indisponible pendant le build" };
   }
-  await requireAdminWrite();
+  const session = await requireAdminWrite();
   const p = validiteSchema.safeParse(i);
   if (!p.success) return { error: "Données invalides" };
   const { id } = p.data;
@@ -170,7 +205,16 @@ export async function fixerValiditeDevisBrouillonAction(
 
   const actuel = await prisma.devis.findUnique({
     where: { id },
-    select: { id: true, statut: true, updatedAt: true },
+    select: {
+      id: true,
+      statut: true,
+      updatedAt: true,
+      clientId: true,
+      offreSha256: true,
+      financementSuggere: true,
+      montantTotalHtCents: true,
+      montantOpcoEstimeCents: true,
+    },
   });
   if (!actuel) return { error: "Devis introuvable" };
   if (actuel.statut !== "brouillon") {
@@ -178,12 +222,50 @@ export async function fixerValiditeDevisBrouillonAction(
   }
   if (actuel.updatedAt.getTime() !== attendu.getTime()) return { error: MSG_PERIME };
 
+  const nouvelleDate = finDeJourneeParis(y, mo, d);
+
+  // L'estimation OPCO dépend de la date de référence (début de session, sinon validité) :
+  // pour un devis CLASSIQUE financé par OPCO, elle suit la date. Un devis à formules garde la sienne.
+  let estimationData: Record<string, unknown> = {};
+  if (actuel.offreSha256 === null && actuel.financementSuggere === "opco") {
+    const saisie = p.data.estimation;
+    if (saisie) {
+      const opco = await estimationOpcoDevis(
+        { clientId: actuel.clientId, financementSuggere: "opco", ...saisie },
+        actuel.montantTotalHtCents,
+        nouvelleDate,
+      );
+      estimationData = {
+        montantOpcoEstimeCents: opco.montantOpcoEstimeCents ?? null,
+        opcoEstimationOrigine: opco.opcoEstimationOrigine ?? null,
+        opcoEstimationAvertissement: opco.opcoEstimationAvertissement ?? null,
+        resteAChargeCents: opco.resteAChargeCents ?? null,
+      };
+    } else if (actuel.montantOpcoEstimeCents !== null) {
+      estimationData = {
+        opcoEstimationAvertissement:
+          "La date de validité a changé : l'estimation OPCO est à recalculer (enregistrez le devis).",
+      };
+    }
+  }
+
   const { count } = await prisma.devis.updateMany({
     where: { id, statut: "brouillon", updatedAt: attendu },
-    data: { dateValidite: new Date(jourUtc + JOUR_MS - 1000) },
+    data: { dateValidite: nouvelleDate, ...estimationData },
   });
   if (count === 0) return { error: MSG_PERIME };
 
   const apres = await prisma.devis.findUnique({ where: { id }, select: { updatedAt: true } });
+
+  await logQualiopiActivity({
+    action: "qualiopi.devis.fixer_validite_brouillon",
+    targetType: "Devis",
+    targetId: id,
+    changes: {
+      dateValidite: p.data.dateValidite,
+      estimationRecalculee: "montantOpcoEstimeCents" in estimationData,
+    },
+    session,
+  });
   return { data: { majLe: (apres?.updatedAt ?? new Date()).toISOString() } };
 }

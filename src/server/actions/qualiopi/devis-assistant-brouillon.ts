@@ -82,6 +82,7 @@ export async function creerBrouillonAssistantAction(i: {
   }
 
   let devisMajLe: string | null = null;
+  let clientIdDuDevis: string | null = null;
   if (devisId) {
     // Rejeu sûr : un brouillon déjà lié à ce devis est renvoyé tel quel (contrainte unique).
     const deja = await prisma.devisAssistantBrouillon.findUnique({
@@ -94,28 +95,56 @@ export async function creerBrouillonAssistantAction(i: {
     }
     const devis = await prisma.devis.findUnique({
       where: { id: devisId },
-      select: { id: true, updatedAt: true },
+      select: { id: true, updatedAt: true, clientId: true, statut: true },
     });
     if (!devis) return { error: "Devis introuvable" };
+    if (devis.statut !== "brouillon") {
+      return { error: "Seul un devis en brouillon peut être repris dans l'assistant." };
+    }
+    // Le client est celui du devis : le payload ne peut ni le contredire ni le remplacer.
+    if (lu.payload.clientId !== null && lu.payload.clientId !== devis.clientId) {
+      return { error: "Le client du brouillon ne correspond pas à celui du devis." };
+    }
+    clientIdDuDevis = devis.clientId;
     devisMajLe = devis.updatedAt.toISOString();
   }
 
-  const refs = await verifierReferences(lu.payload, adminId);
+  const refs = await verifierReferences(
+    clientIdDuDevis ? { ...lu.payload, clientId: clientIdDuDevis } : lu.payload,
+    adminId,
+  );
   if (!refs.ok) return { error: refs.error };
   const payload: PayloadAssistantV1 = { ...refs.payload, sync: syncServeur(devisId, devisMajLe) };
 
-  const cree = await prisma.devisAssistantBrouillon.create({
-    data: {
-      createdByAdminId: adminId,
-      clientId: payload.clientId,
-      devisId,
-      venteBrouillonId: payload.venteBrouillonId,
-      etape: payload.etape,
-      statut: devisId ? "lie_au_devis" : "en_cours",
-      payload: payload as never,
-    },
-    select: { id: true, revision: true },
-  });
+  let cree: { id: string; revision: number };
+  try {
+    cree = await prisma.devisAssistantBrouillon.create({
+      data: {
+        createdByAdminId: adminId,
+        clientId: payload.clientId,
+        devisId,
+        venteBrouillonId: payload.venteBrouillonId,
+        etape: payload.etape,
+        statut: devisId ? "lie_au_devis" : "en_cours",
+        payload: payload as never,
+      },
+      select: { id: true, revision: true },
+    });
+  } catch (err) {
+    // Double clic / deux onglets : l'index unique `devis_id` a refusé le second — on relit
+    // le brouillon gagnant et on le renvoie (même règle de propriété que le rejeu).
+    if (devisId && (err as { code?: string })?.code === "P2002") {
+      const existant = await prisma.devisAssistantBrouillon.findUnique({
+        where: { devisId },
+        select: { id: true, revision: true, createdByAdminId: true },
+      });
+      if (existant) {
+        if (existant.createdByAdminId !== adminId) return { error: INTROUVABLE };
+        return { data: { id: existant.id, revision: existant.revision } };
+      }
+    }
+    throw err;
+  }
 
   await logQualiopiActivity({
     action: "qualiopi.devis_assistant.brouillon_cree",
@@ -299,6 +328,12 @@ export async function mettreAEcartBrouillonAssistantAction(i: {
   });
   if (!row) return { error: INTROUVABLE };
   if (row.statut === "a_l_ecart") return { data: { id: row.id } };
+  if (row.statut === "lie_au_devis") {
+    return {
+      error:
+        "Ce brouillon est lié à un devis : il ne peut pas être mis à l'écart. Supprimez ou traitez le devis depuis la liste des devis.",
+    };
+  }
   if (row.statut === "numerotation") {
     return { error: "Numérotation en cours : réessayez dans un instant." };
   }
@@ -308,7 +343,7 @@ export async function mettreAEcartBrouillonAssistantAction(i: {
       id: e.data.id,
       createdByAdminId: adminId,
       revision: e.data.attenduRevision,
-      statut: { not: "numerotation" },
+      statut: { notIn: ["numerotation", "lie_au_devis"] },
     },
     data: { statut: "a_l_ecart", revision: { increment: 1 } },
   });
