@@ -1,12 +1,26 @@
 import { fireEvent, render, screen, within } from "@testing-library/react";
 import { useReducer } from "react";
-import { describe, expect, it, vi } from "vitest";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import { etatInitial, reducteur } from "../../../etat";
 import type { OffreCatalogue } from "../../../lignes";
 import type { EtatAssistant, LigneAssistant } from "../../../types";
 import { BlocMotsDuClient } from "../BlocMotsDuClient";
 import { ListeLignes } from "../ListeLignes";
+
+const rendus = vi.hoisted(() => new Map<string, number>());
+vi.mock("../LigneContenu", async (importOriginal) => {
+  const reel = await importOriginal<typeof import("../LigneContenu")>();
+  const { memo, createElement } = await import("react");
+  return {
+    ...reel,
+    // Même comparateur que le vrai composant : on compte les rendus qu'il laisse passer.
+    LigneContenu: memo((p: Parameters<typeof reel.LigneContenu>[0]) => {
+      rendus.set(p.ligne.id, (rendus.get(p.ligne.id) ?? 0) + 1);
+      return createElement(reel.LigneContenu, p);
+    }, reel.memesProps),
+  };
+});
 
 const L = (id: string, patch: Partial<LigneAssistant> = {}): LigneAssistant => ({
   id,
@@ -39,7 +53,14 @@ const OFFRES: OffreCatalogue[] = [
 ];
 
 /** Monte la liste avec le vrai réducteur pour vérifier le comportement de bout en bout. */
-function Hote({ initial, offres = [] }: { initial: EtatAssistant; offres?: OffreCatalogue[] }) {
+const AUCUNE_OFFRE: OffreCatalogue[] = [];
+function Hote({
+  initial,
+  offres = AUCUNE_OFFRE,
+}: {
+  initial: EtatAssistant;
+  offres?: OffreCatalogue[];
+}) {
   const [e, dispatch] = useReducer(reducteur, initial);
   return (
     <>
@@ -260,5 +281,21 @@ describe("ListeLignes", () => {
   it("pas de sélecteur d'offre quand le catalogue est vide", () => {
     render(<Hote initial={etat([L("a")])} />);
     expect(screen.queryByLabelText(/offre du catalogue/i)).toBeNull();
+  });
+});
+
+describe("ListeLignes : rendus", () => {
+  beforeEach(() => rendus.clear());
+
+  it("une frappe dans la ligne 1 ne refait pas le rendu des autres lignes", () => {
+    render(<Hote initial={etat([L("a"), L("b"), L("c")])} />);
+    const avant = new Map(rendus);
+    const prix = screen.getAllByLabelText(/prix/i)[0] as HTMLInputElement;
+    fireEvent.change(prix, { target: { value: "120" } });
+    fireEvent.change(prix, { target: { value: "1200" } });
+    expect(lignesDe()[0]!.prixEur).toBe("1200");
+    expect(rendus.get("a")).toBeGreaterThan(avant.get("a")!);
+    expect(rendus.get("b")).toBe(avant.get("b"));
+    expect(rendus.get("c")).toBe(avant.get("c"));
   });
 });

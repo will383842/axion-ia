@@ -293,4 +293,26 @@ function LigneContenuBrut({
   );
 }
 
-export const LigneContenu = memo(LigneContenuBrut);
+/** Mêmes autres lignes = même id, même étiquette, même cycle (la référence du tableau change à chaque frappe). */
+function memesAutres(a: readonly AutreLigne[], b: readonly AutreLigne[]): boolean {
+  return (
+    a === b ||
+    (a.length === b.length &&
+      a.every(
+        (x, i) => x.id === b[i]!.id && x.etiquette === b[i]!.etiquette && x.cycle === b[i]!.cycle,
+      ))
+  );
+}
+
+export function memesProps(avant: PropsLigneContenu, apres: PropsLigneContenu): boolean {
+  const { autres: autresAvant, ...resteAvant } = avant;
+  const { autres: autresApres, ...resteApres } = apres;
+  return (
+    memesAutres(autresAvant, autresApres) &&
+    (Object.keys(resteAvant) as Array<keyof typeof resteAvant>).every((k) =>
+      Object.is(resteAvant[k], resteApres[k]),
+    )
+  );
+}
+
+export const LigneContenu = memo(LigneContenuBrut, memesProps);

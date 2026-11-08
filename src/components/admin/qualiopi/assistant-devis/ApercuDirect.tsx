@@ -30,7 +30,9 @@ export function ApercuDirect({ etat, tvaStandardPct, clientNom }: PropsApercuDir
   // n'est pas une zone live, sinon chaque touche ferait relire trois montants.
   const [annonce, setAnnonce] = useState("");
   const dernierTotal = useRef(etat.lignes);
-  dernierTotal.current = etat.lignes;
+  useEffect(() => {
+    dernierTotal.current = etat.lignes;
+  });
   useEffect(() => {
     const auDepart = (ev: FocusEvent) => {
       const cible = ev.target;

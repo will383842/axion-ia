@@ -92,9 +92,14 @@ describe("EditeurPhases", () => {
     expect(screen.queryByRole("alert")).toBeNull();
   });
 
-  it("total = 100 : pas d'alerte", () => {
+  it("total = 100 : pas de message de blocage", () => {
     render(<Hote initial={[P("a", "60"), P("b", "40")]} />);
-    expect(screen.queryByRole("alert")).toBeNull();
+    expect(screen.queryByText(/doit valoir 100 %/i)).toBeNull();
+  });
+
+  it("garde : le message de blocage existe bien à 90 % (le test à 100 % ne passe pas à vide)", () => {
+    render(<Hote initial={[P("a", "60"), P("b", "30")]} />);
+    expect(screen.queryByText(/doit valoir 100 %/i)).not.toBeNull();
   });
 
   it("une seule annonce polie, limitée au total (pas les messages d'erreur)", () => {

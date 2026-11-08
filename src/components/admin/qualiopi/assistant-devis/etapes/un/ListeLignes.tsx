@@ -44,6 +44,9 @@ function dependDe(lignes: readonly LigneAssistant[], depart: string, cible: stri
   return false;
 }
 
+/** Référence partagée : un `[]` neuf à chaque rendu casserait le memo. */
+const AUCUNE_AUTRE: readonly AutreLigne[] = [];
+
 const etiquette = (l: LigneAssistant, i: number): string =>
   l.libelle.trim() !== "" ? l.libelle : `Ligne ${i + 1}`;
 
@@ -78,6 +81,8 @@ export function ListeLignes({ etat, dispatch, offres }: PropsListeLignes) {
     return id;
   }
 
+  // Le contenu de `autres` est comparé par LigneContenu (comparateur de memo) : une nouvelle
+  // référence au même contenu ne refait pas le rendu.
   const autresParLigne = useMemo(() => {
     const out = new Map<string, AutreLigne[]>();
     for (const l of lignes) {
@@ -171,7 +176,7 @@ export function ListeLignes({ etat, dispatch, offres }: PropsListeLignes) {
             key={l.id}
             ligne={l}
             rang={i + 1}
-            autres={autresParLigne.get(l.id) ?? []}
+            autres={autresParLigne.get(l.id) ?? AUCUNE_AUTRE}
             offres={offres}
             note={l.offreCode !== "" ? noteDeLOffre(offres, l.offreCode) : null}
             sansPrixFerme={sansPrix.has(l.id)}
