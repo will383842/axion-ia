@@ -17,7 +17,7 @@ import { Container } from "@/components/layout/Container";
 import { Cta } from "@/components/marketing/Cta";
 import { JsonLd } from "@/components/marketing/JsonLd";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
-import { JOURNEE_IA_TIER, formatAmount } from "@/content/pricing";
+import { JOURNEE_IA_TIER } from "@/content/pricing";
 import {
   buildFaqJsonLd,
   buildProductMetadata,
@@ -31,6 +31,9 @@ import { prixDeLaJournee, remplacerLePrix } from "./prix";
 export const revalidate = 3600;
 
 const PATH = "/journee-ia";
+
+/** Le format, en une ligne : un seul chiffre, le plafond de personnes (décision n°11, Williams). */
+const FORMAT = "Une journée dans votre entreprise, jusqu’à 15 personnes.";
 
 interface Props {
   params: Promise<{ locale: string }>;
@@ -80,6 +83,7 @@ export default async function JourneeIaPage({ params }: Props) {
     description: DESCRIPTION,
     ...(JOURNEE_IA_TIER.priceFlat !== undefined ? { priceEur: JOURNEE_IA_TIER.priceFlat } : {}),
     serviceType: "Audit et formation à l'IA en entreprise",
+    areasServed: [{ type: "Country", name: "France" }],
   });
   // Montant HT : précisé en toutes lettres pour les moteurs de réponse.
   const serviceAvecPrix = {
@@ -105,11 +109,12 @@ export default async function JourneeIaPage({ params }: Props) {
   const webPageJsonLd = buildWebPageJsonLd({
     locale: loc,
     path: PATH,
-    name: `La Journée IA · ${formatAmount(JOURNEE_IA_TIER.priceFlat ?? 0, "fr")} · Axion-IA`,
+    name: `La Journée IA · ${prixDeLaJournee("fr")} · Axion-IA`,
     description: DESCRIPTION,
   });
 
-  const lien = (depuis: string) => `/appel?depuis=${depuis}`;
+  // `rdv=projet` : la carte unique du rendez-vous gratuit de 45 minutes (lot R5b).
+  const lien = (depuis: string) => `/appel?rdv=projet&depuis=${depuis}`;
 
   return (
     <>
@@ -171,6 +176,7 @@ export default async function JourneeIaPage({ params }: Props) {
           >
             {deroule.titre}
           </h2>
+          <p className="text-fg-soft mt-3 text-[16px]">{FORMAT}</p>
           <ol className="mt-8 grid gap-6 sm:grid-cols-3">
             {deroule.etapes.map((e, i) => (
               <li key={e.moment} className="flex gap-4">

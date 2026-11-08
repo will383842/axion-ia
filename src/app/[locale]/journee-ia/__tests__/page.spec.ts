@@ -66,4 +66,19 @@ describe("page /journee-ia", () => {
   it("renvoie les locales non françaises vers /fr/journee-ia (308)", () => {
     expect(page).toMatch(/permanentRedirect\(\s*["'`]\/fr\/journee-ia["'`]\s*\)/);
   });
+
+  it("le bouton mène à la carte unique du rendez-vous : /appel?rdv=projet", () => {
+    expect(page).toContain("/appel?rdv=projet&depuis=");
+    expect(page).not.toContain("rdv=diagnostic");
+  });
+
+  it("annonce le plafond de 15 personnes, et rien d'autre de chiffré", () => {
+    expect(page).toContain("jusqu’à 15 personnes");
+  });
+
+  it("déclare la France comme zone desservie et lit le prix via prixDeLaJournee()", () => {
+    expect(page).toMatch(/areasServed:\s*\[\{\s*type:\s*"Country",\s*name:\s*"France"/);
+    expect(page).not.toContain("formatAmount");
+    expect(page).toMatch(/name: `La Journée IA · \$\{prixDeLaJournee\("fr"\)\}/);
+  });
 });
