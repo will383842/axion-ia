@@ -1,26 +1,26 @@
 // AUTO-GENERATED 2026-05-27 — T4 batch #2 Claude Code (Will).
-// La Tour-du-Pin (38, Isère) — sous-préfecture, Bas-Dauphiné, Nord-Isère, position carrefour Lyon-Grenoble-Chambéry.
+// La Tour-du-Pin (38, Isère) — sous-préfecture, Bas-Dauphiné, Nord-Isère, position carrefour Lyon-Chambéry.
 
 import type { VilleCopy } from "./types";
 
 export const LA_TOUR_DU_PIN_COPY: VilleCopy = {
   pitchFr:
-    "La Tour-du-Pin (38), sous-préfecture de l'Isère en Bas-Dauphiné (Nord-Isère), occupe une position carrefour entre Lyon, Grenoble et Chambéry. Tissu PME industrielles, services administratifs, TPE artisans BTP, commerces et agriculture périphérique. Axion-IA couvre les activités professionnelles du bassin du Nord-Isère.",
+    "La Tour-du-Pin (38), sous-préfecture de l'Isère en Bas-Dauphiné (Nord-Isère), occupe une position carrefour entre Lyon et Chambéry. Tissu PME industrielles, services administratifs, TPE artisans BTP, commerces et agriculture périphérique. Axion-IA couvre les activités professionnelles du bassin du Nord-Isère.",
   pitchEn:
-    "La Tour-du-Pin (38), sous-préfecture de l'Isère en Bas-Dauphiné (Nord-Isère), occupe une position carrefour entre Lyon, Grenoble et Chambéry. Tissu PME industrielles, services administratifs, TPE artisans BTP, commerces et agriculture périphérique. Axion-IA couvre les activités professionnelles du bassin du Nord-Isère.",
+    "La Tour-du-Pin (38), sous-préfecture de l'Isère en Bas-Dauphiné (Nord-Isère), occupe une position carrefour entre Lyon et Chambéry. Tissu PME industrielles, services administratifs, TPE artisans BTP, commerces et agriculture périphérique. Axion-IA couvre les activités professionnelles du bassin du Nord-Isère.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à La Tour-du-Pin (38). Nous accompagnons tous types d'activités : services publics (sous-préfecture, tribunal d'instance), PME industrielles Nord-Isère, TPE artisans BTP, commerçants, professions libérales, agriculteurs/éleveurs périphériques et entreprises du Bas-Dauphiné.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à La Tour-du-Pin (38). Nous accompagnons tous types d'activités : services publics (sous-préfecture, tribunal d'instance), PME industrielles Nord-Isère, TPE artisans BTP, commerçants, professions libérales, agriculteurs/éleveurs périphériques et entreprises du Bas-Dauphiné.",
   seoHook: "TPE & PME Isère",
   ecosystemFr:
-    "La Tour-du-Pin est l'une des sous-préfectures de l'Isère en région historique Bas-Dauphiné (partie septentrionale du département). Position géographique stratégique au carrefour des axes Lyon-Chambéry et Lyon-Grenoble. Tissu administratif (préfecture, justice), PME industrielles et logistique, agriculture périphérique (élevage, céréales), commerces et services. Communauté de communes Les Vals du Dauphiné.",
+    "La Tour-du-Pin est l'une des sous-préfectures de l'Isère en région historique Bas-Dauphiné (partie septentrionale du département). Position géographique stratégique sur l'axe A43 Lyon-Chambéry. Tissu administratif (préfecture, justice), PME industrielles et logistique, agriculture périphérique (élevage, céréales), commerces et services. Communauté de communes Les Vals du Dauphiné.",
   ecosystemEn:
-    "La Tour-du-Pin est l'une des sous-préfectures de l'Isère en région historique Bas-Dauphiné (partie septentrionale du département). Position géographique stratégique au carrefour des axes Lyon-Chambéry et Lyon-Grenoble. Tissu administratif (préfecture, justice), PME industrielles et logistique, agriculture périphérique (élevage, céréales), commerces et services. Communauté de communes Les Vals du Dauphiné.",
+    "La Tour-du-Pin est l'une des sous-préfectures de l'Isère en région historique Bas-Dauphiné (partie septentrionale du département). Position géographique stratégique sur l'axe A43 Lyon-Chambéry. Tissu administratif (préfecture, justice), PME industrielles et logistique, agriculture périphérique (élevage, céréales), commerces et services. Communauté de communes Les Vals du Dauphiné.",
   distancesFr:
-    "Gare La Tour-du-Pin (TER ligne Lyon-Chambéry, 1h Lyon). Aéroport Lyon-Saint-Exupéry à 30 min. Chambéry à 50 min A43. Grenoble à 1h. Axe A43 vers Lyon ouest et Chambéry est.",
+    "Gare La Tour-du-Pin (TER ligne Lyon-Chambéry, 1h Lyon). Aéroport Lyon-Saint-Exupéry à 30 min. Chambéry à 50 min A43. Axe A43 vers Lyon ouest et Chambéry est.",
   distancesEn:
-    "Gare La Tour-du-Pin (TER ligne Lyon-Chambéry, 1h Lyon). Aéroport Lyon-Saint-Exupéry à 30 min. Chambéry à 50 min A43. Grenoble à 1h. Axe A43 vers Lyon ouest et Chambéry est.",
+    "Gare La Tour-du-Pin (TER ligne Lyon-Chambéry, 1h Lyon). Aéroport Lyon-Saint-Exupéry à 30 min. Chambéry à 50 min A43. Axe A43 vers Lyon ouest et Chambéry est.",
   topSectorsNaf: [
     "Administration & services publics (sous-préfecture)",
     "PME industrielles & logistique Nord-Isère",
@@ -49,7 +49,7 @@ export const LA_TOUR_DU_PIN_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à La Tour-du-Pin et Nord-Isère ?",
-      a: "Oui, Axion-IA intervient à La Tour-du-Pin et tout le Nord-Isère / Bas-Dauphiné (Les Vals du Dauphiné, Bourgoin-Jallieu, La Verpillière, Pont-de-Beauvoisin). Nos consultants viennent de Lyon (1h A43) ou Grenoble (1h voiture).",
+      a: "Oui, Axion-IA intervient à La Tour-du-Pin et tout le Nord-Isère / Bas-Dauphiné (Les Vals du Dauphiné, Bourgoin-Jallieu, La Verpillière, Pont-de-Beauvoisin). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les services publics et sous-préfecture ?",
@@ -64,8 +64,8 @@ export const LA_TOUR_DU_PIN_COPY: VilleCopy = {
       a: "Pour les PME industrielles du Bas-Dauphiné, nous proposons les 5 services Axion-IA : audit IA (Sur place à Stratégique), interventions sur site (atelier production), implémentation IA (prédiction maintenance, contrôle qualité par vision), coaching 1-to-1 dirigeants, et plateformes web/SaaS IA sur mesure.",
     },
     {
-      q: "Comment se passe une mission depuis Lyon, Grenoble ou Chambéry ?",
-      a: "Nos consultants viennent de Lyon (1h A43), Grenoble (1h voiture) ou Chambéry (50 min A43). Pour les multi-jours, hébergement local possible (hôtels Bourgoin-Jallieu ou La Tour-du-Pin).",
+      q: "Comment se déroule une intervention ?",
+      a: "Sur place ou à distance, selon votre besoin. Pour les multi-jours, hébergement local possible (hôtels Bourgoin-Jallieu ou La Tour-du-Pin).",
     },
   ],
 };

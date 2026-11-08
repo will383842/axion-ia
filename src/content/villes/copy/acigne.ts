@@ -49,7 +49,7 @@ export const ACIGNE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Acigné et dans l'est rennais ?",
-      a: "Oui, Axion-IA intervient à Acigné et dans tout l'est de Rennes Métropole (Cesson-Sévigné, Noyal-sur-Vilaine, Thorigné-Fouillard, Chantepie). Nos consultants sont basés sur Rennes, déplacement en 15 min.",
+      a: "Oui, Axion-IA intervient à Acigné et dans tout l'est de Rennes Métropole (Cesson-Sévigné, Noyal-sur-Vilaine, Thorigné-Fouillard, Chantepie). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Tarifs audit IA à Acigné  : quel budget prévoir ?",

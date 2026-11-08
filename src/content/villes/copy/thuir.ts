@@ -49,7 +49,7 @@ export const THUIR_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Thuir et dans les Aspres ?",
-      a: "Oui, Axion-IA intervient à Thuir et toute la Communauté de communes des Aspres (Trouillas, Montauriol, Terrats, Ponteilla). Nos consultants sont basés à proximité de Perpignan (15 min).",
+      a: "Oui, Axion-IA intervient à Thuir et toute la Communauté de communes des Aspres (Trouillas, Montauriol, Terrats, Ponteilla). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les viticulteurs Côtes du Roussillon ?",

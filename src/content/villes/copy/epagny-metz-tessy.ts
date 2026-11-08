@@ -49,7 +49,7 @@ export const EPAGNY_METZ_TESSY_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Epagny Metz-Tessy et dans le bassin annécien ?",
-      a: "Oui, Axion-IA intervient à Epagny Metz-Tessy et dans tout le bassin annécien (Annecy, Meythet, Cran-Gevrier, Seynod, Pringy). Nos consultants sont basés à proximité, déplacement sous 10 min depuis Annecy centre.",
+      a: "Oui, Axion-IA intervient à Epagny Metz-Tessy et dans tout le bassin annécien (Annecy, Meythet, Cran-Gevrier, Seynod, Pringy). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les enseignes commerciales de la zone Grand Épagny ?",
