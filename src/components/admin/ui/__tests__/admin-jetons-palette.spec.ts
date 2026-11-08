@@ -51,6 +51,14 @@ const ratio = (a: string, b: string) => {
 };
 const j = (n: string) => jetons.get(`--color-admin-${n}`) as string;
 
+/** Couleur de texte et fond déclarés par une règle `.classe { … }` (jetons `var(--color-admin-x)`). */
+const regle = (sel: string) => {
+  const corps = css.match(new RegExp(`${sel.replace(".", "\\.")}\\s*\\{([^}]*)\\}`))?.[1] ?? "";
+  const jeton = (prop: string) =>
+    corps.match(new RegExp(`(?:^|[\\s;])${prop}\\s*:\\s*var\\(--color-admin-([a-z0-9-]+)\\)`))?.[1];
+  return { texte: jeton("color"), fond: jeton("background-color") };
+};
+
 describe("jetons de la console : palette définitive", () => {
   it("l'analyse voit les jetons (83 ou plus) et les deux blocs", () => {
     expect(decl.length).toBeGreaterThanOrEqual(83);
@@ -124,6 +132,11 @@ describe("jetons de la console : palette définitive", () => {
       ["accent-fg", "solid-warning", 4.5],
       ["accent-fg", "solid-destructive", 4.5],
       ["accent-fg", "solid-info", 4.5],
+      // Teinte d'identité « teal » (vert) : lisible en filet/icône sur les surfaces.
+      ["id-teal", "paper", 4.5],
+      ["id-teal", "bg", 4.5],
+      // Texte noir posé sur le ton doux d'un badge ou d'une ligne d'agenda.
+      ["fg", "success-soft", 4.5],
     ];
     for (const t of ["terracotta", "bleu", "vert", "ambre", "violet", "gris"])
       P.push([`bloc-${t}-title`, `bloc-${t}-bg`, 4.5], [`bloc-${t}-accent`, `bloc-${t}-bg`, 3]);
@@ -131,5 +144,16 @@ describe("jetons de la console : palette définitive", () => {
       ([a, b, s]) => `${a}/${b} ${ratio(j(a)!, j(b)!).toFixed(2)} < ${s}`,
     );
     expect(bas).toEqual([]);
+  });
+  it("le badge actif : texte sur son fond >= 4,5 (AA)", () => {
+    const { texte, fond } = regle(".admin-badge-active");
+    expect(texte).toBe("success-fg");
+    expect(fond).toBe("success-soft");
+    expect(ratio(j(texte!), j(fond!))).toBeGreaterThanOrEqual(4.5);
+  });
+  it("les sources d'agenda « Réservations » (bleu) et « Personnel » (teal) sont distinctes", () => {
+    expect(j("id-teal")).toBe("#5e7050"); // hex-ok: palette de référence du test
+    expect(j("id-bleu")).toBe("#5e5d59"); // hex-ok: palette de référence du test
+    expect(j("id-teal")).not.toBe(j("id-bleu"));
   });
 });

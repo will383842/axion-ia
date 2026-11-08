@@ -38,7 +38,7 @@
     --color-admin-fg: #141413; /* anthracite-brun = --color-fg public */
     --color-admin-fg-soft: #5e5d59; /* gris-brun moyen = --color-fg-soft */
     --color-admin-fg-muted: #5e5d59; /* tertiaire = --color-fg-muted */
-    --color-admin-fg-disabled: #b0aea5; /* WCAG 3:1 sur paper */
+    --color-admin-fg-disabled: #b0aea5; /* état inactif décoratif : ~2,2:1 sur paper, hors seuil AA (texte désactivé exempté) */
 
     /* ----- Status (étend Design.md sans conflit public) ----- */
     --color-admin-success: #5e7050; /* vert plus saturé que --color-sage pour distinction badges */
@@ -79,7 +79,7 @@
        usages plutôt que 84 remplacements — et la prochaine référence à `accent`
        fonctionnera d'office.
 
-       Contraste vérifié : #c24a1b sur blanc = 4,90:1, au-dessus du seuil AA de
+       Contraste vérifié : #b23f16 sur blanc = 5,8:1, au-dessus du seuil AA de
        4,5:1 pour du texte normal. */
     --color-admin-accent: var(--color-admin-terracotta);
     /* Piste des jauges de données : le MÊME ton éclairci — jamais un gris
@@ -119,7 +119,7 @@
      * catégories affichées ensemble.
      * ===================================================================== */
     --color-admin-id-terracotta: var(--color-admin-terracotta);
-    --color-admin-id-teal: #5e5d59;
+    --color-admin-id-teal: #5e7050;
     --color-admin-id-violet: #5e5d59;
     --color-admin-id-or: #5e5d59;
     --color-admin-id-bleu: #5e5d59;
@@ -130,7 +130,7 @@
       var(--color-admin-terracotta) 12%,
       transparent
     );
-    --color-admin-id-teal-soft: color-mix(in srgb, #5e5d59 12%, transparent);
+    --color-admin-id-teal-soft: color-mix(in srgb, #5e7050 12%, transparent);
     --color-admin-id-violet-soft: color-mix(in srgb, #5e5d59 12%, transparent);
     --color-admin-id-or-soft: color-mix(in srgb, #5e5d59 14%, transparent);
     --color-admin-id-bleu-soft: color-mix(in srgb, #5e5d59 10%, transparent);
@@ -1177,7 +1177,7 @@
  *    affichait donc des actions bleues à côté d'actions terracotta
  *    (`.admin-button-cta`) sans règle discernable, et le rail actif est
  *    terracotta. Une seule couleur d'action désormais : terracotta.
- *    Le bleu reste réservé à l'information (badges, liens de contexte).
+ *    Aucun bleu dans la palette définitive : l'information passe par le gris chaud.
  *
  * `.admin-button-cta` devient un alias de `.admin-button` (même rendu) — les
  * 13 sites d'appel restent valides, sans divergence possible.
@@ -2266,7 +2266,7 @@
 }
 .admin-badge-active {
   background-color: var(--color-admin-success-soft);
-  color: var(--color-admin-success);
+  color: var(--color-admin-success-fg);
 }
 .admin-badge-suspended {
   background-color: var(--color-admin-paper-alt);
