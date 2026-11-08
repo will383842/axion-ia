@@ -354,6 +354,9 @@
        elle passe désormais par un jeton à elle : le jour où l'on change la
        police de code de l'admin, ou celle du site, un seul endroit bouge. */
     --font-admin-mono: var(--font-inconsolata, ui-monospace, monospace);
+    /* Texte de la console : Manrope, comme le site (V6-02). Emprunt unique,
+       dans la déclaration du jeton, au même titre que la chasse fixe. */
+    --font-admin: var(--font-manrope);
 
     /* =====================================================================
      * Contrôles de formulaire (refonte UI 2026-08-01).
@@ -438,6 +441,7 @@
  * =============================================================*/
 .admin-layout-v2,
 .admin-layout {
+  font-variant-numeric: tabular-nums;
   font-family:
     var(--font-admin),
     ui-sans-serif,
