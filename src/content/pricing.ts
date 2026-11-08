@@ -43,6 +43,8 @@ export interface PricingSubTier {
   isFromPrice?: boolean;
   /** Mis en avant dans l'UI (« ★ Recommandé »). */
   isFeatured?: boolean;
+  /** Voir `PricingTier.prixPublicMasque` : le montant reste interne, l'affichage dit « Sur devis ». */
+  prixPublicMasque?: boolean;
 }
 
 export interface PricingTier {
@@ -82,6 +84,21 @@ export interface PricingTier {
   priceMax?: number;
   /** True si le tarif est sur devis (pas de prix public). */
   onQuote?: boolean;
+  /**
+   * R5a (audit d'harmonie 08/11/2026, décision n°7 de Williams) : le montant n'est JAMAIS
+   * affiché au public — les formateurs d'AFFICHAGE de ce fichier (`formatTierPrice`,
+   * `formatSubTierPrice`, `getEntryLabel`, `getFromLabel`) rendent « Sur devis ».
+   * `formatPrice`, `getEntryPriceEur` et les jetons `{{price:…}}` restent bruts : le résolveur
+   * de devis, le JSON-LD et la prose des pages ville (« commence à {{price}} ») en dépendent.
+   *
+   * Différent de `onQuote`, volontairement : `onQuote` signifie « aucun montant n'existe »
+   * (la réservation en tire `cents: null`, le résolveur de devis `sur_devis`). Ici le montant
+   * EXISTE et reste lu par les usages transactionnels — devis, réservation, barème des
+   * apporteurs, passerelle Partners — qui ont besoin du nombre. Seul l'affichage public change.
+   *
+   * ⚠️ Un appelant qui écrit `formatAmount(tier.priceFlat!)` à la main CONTOURNE ce drapeau.
+   */
+  prixPublicMasque?: boolean;
   /**
    * Sous-tiers tarifaires (variations par nombre de participants pour les
    * formats intervention multi-tarifs). Le `priceFlat` reste le prix
@@ -135,6 +152,9 @@ export interface PricingTier {
 export const AUDIT_FLASH_SUB_TIERS: ReadonlyArray<PricingSubTier> = [
   {
     id: "audit-flash-onsite",
+    // R5a (audit d'harmonie 08/11/2026, décision n°7) : jamais de montant au public, « Sur devis ».
+    // Le montant ci-dessous reste la référence INTERNE (devis, réservation, barème apporteurs).
+    prixPublicMasque: true,
     labelFr: "Audit sur place · 1 journée",
     labelEn: "On-site audit · 1 day",
     rangeFr: "Toute l'entreprise · sur site",
@@ -154,6 +174,9 @@ export const AUDIT_FLASH_SUB_TIERS: ReadonlyArray<PricingSubTier> = [
 export const AUDIT_CIBLE_SUB_TIERS: ReadonlyArray<PricingSubTier> = [
   {
     id: "audit-cible-solo",
+    // R5a (audit d'harmonie 08/11/2026, décision n°7) : jamais de montant au public, « Sur devis ».
+    // Le montant ci-dessous reste la référence INTERNE (devis, réservation, barème apporteurs).
+    prixPublicMasque: true,
     labelFr: "Ciblé Solo",
     labelEn: "Targeted Solo",
     rangeFr: "À distance · périmètre simple",
@@ -166,6 +189,9 @@ export const AUDIT_CIBLE_SUB_TIERS: ReadonlyArray<PricingSubTier> = [
   },
   {
     id: "audit-cible-standard",
+    // R5a (audit d'harmonie 08/11/2026, décision n°7) : jamais de montant au public, « Sur devis ».
+    // Le montant ci-dessous reste la référence INTERNE (devis, réservation, barème apporteurs).
+    prixPublicMasque: true,
     labelFr: "Ciblé Standard",
     labelEn: "Targeted Standard",
     rangeFr: "Mix site + visio",
@@ -179,6 +205,9 @@ export const AUDIT_CIBLE_SUB_TIERS: ReadonlyArray<PricingSubTier> = [
   },
   {
     id: "audit-cible-avance",
+    // R5a (audit d'harmonie 08/11/2026, décision n°7) : jamais de montant au public, « Sur devis ».
+    // Le montant ci-dessous reste la référence INTERNE (devis, réservation, barème apporteurs).
+    prixPublicMasque: true,
     labelFr: "Ciblé Avancé",
     labelEn: "Targeted Advanced",
     rangeFr: "Service complexe, multi-acteurs",
@@ -195,6 +224,9 @@ export const AUDIT_CIBLE_SUB_TIERS: ReadonlyArray<PricingSubTier> = [
 export const AUDIT_STRATEGIQUE_PME_SUB_TIERS: ReadonlyArray<PricingSubTier> = [
   {
     id: "audit-strategique-pme-20-50",
+    // R5a (audit d'harmonie 08/11/2026, décision n°7) : jamais de montant au public, « Sur devis ».
+    // Le montant ci-dessous reste la référence INTERNE (devis, réservation, barème apporteurs).
+    prixPublicMasque: true,
     labelFr: "PME 20-50 salariés",
     labelEn: "SMB 20-50 staff",
     rangeFr: "2 services majeurs",
@@ -207,6 +239,9 @@ export const AUDIT_STRATEGIQUE_PME_SUB_TIERS: ReadonlyArray<PricingSubTier> = [
   },
   {
     id: "audit-strategique-pme-50-250",
+    // R5a (audit d'harmonie 08/11/2026, décision n°7) : jamais de montant au public, « Sur devis ».
+    // Le montant ci-dessous reste la référence INTERNE (devis, réservation, barème apporteurs).
+    prixPublicMasque: true,
     labelFr: "PME 50-250 salariés",
     labelEn: "SMB 50-250 staff",
     rangeFr: "3-4 services majeurs",
@@ -224,6 +259,9 @@ export const AUDIT_STRATEGIQUE_PME_SUB_TIERS: ReadonlyArray<PricingSubTier> = [
 export const AUDIT_STRATEGIQUE_ETI_SUB_TIERS: ReadonlyArray<PricingSubTier> = [
   {
     id: "audit-strategique-eti-base",
+    // R5a (audit d'harmonie 08/11/2026, décision n°7) : jamais de montant au public, « Sur devis ».
+    // Le montant ci-dessous reste la référence INTERNE (devis, réservation, barème apporteurs).
+    prixPublicMasque: true,
     labelFr: "1-2 BU · 1-2 sites",
     labelEn: "1-2 BU · 1-2 sites",
     rangeFr: "3-4 services",
@@ -244,6 +282,9 @@ export const AUDIT_STRATEGIQUE_ETI_SUB_TIERS: ReadonlyArray<PricingSubTier> = [
 export const AUDIT_TIERS: ReadonlyArray<PricingTier> = [
   {
     id: "audit-flash",
+    // R5a (audit d'harmonie 08/11/2026, décision n°7) : jamais de montant au public, « Sur devis ».
+    // Le montant ci-dessous reste la référence INTERNE (devis, réservation, barème apporteurs).
+    prixPublicMasque: true,
     commissionId: "com-audit",
     labelFr: "Audit sur place",
     labelEn: "On-site audit",
@@ -262,6 +303,9 @@ export const AUDIT_TIERS: ReadonlyArray<PricingTier> = [
   },
   {
     id: "audit-cible",
+    // R5a (audit d'harmonie 08/11/2026, décision n°7) : jamais de montant au public, « Sur devis ».
+    // Le montant ci-dessous reste la référence INTERNE (devis, réservation, barème apporteurs).
+    prixPublicMasque: true,
     commissionId: "com-audit",
     labelFr: "Audit Ciblé",
     labelEn: "Targeted audit",
@@ -275,6 +319,9 @@ export const AUDIT_TIERS: ReadonlyArray<PricingTier> = [
   },
   {
     id: "audit-strategique-pme",
+    // R5a (audit d'harmonie 08/11/2026, décision n°7) : jamais de montant au public, « Sur devis ».
+    // Le montant ci-dessous reste la référence INTERNE (devis, réservation, barème apporteurs).
+    prixPublicMasque: true,
     commissionId: "com-audit",
     labelFr: "Audit Stratégique PME",
     labelEn: "SME Strategic audit",
@@ -289,6 +336,9 @@ export const AUDIT_TIERS: ReadonlyArray<PricingTier> = [
   },
   {
     id: "audit-strategique-eti",
+    // R5a (audit d'harmonie 08/11/2026, décision n°7) : jamais de montant au public, « Sur devis ».
+    // Le montant ci-dessous reste la référence INTERNE (devis, réservation, barème apporteurs).
+    prixPublicMasque: true,
     commissionId: "com-audit",
     labelFr: "Audit Stratégique ETI",
     labelEn: "Mid-cap Strategic audit",
@@ -410,6 +460,27 @@ export const ANCIENS_IDS_FORMATION: Readonly<Record<string, string>> = {
   "approfondie-standard": "formation-generale-2j",
 };
 
+/**
+ * La Journée IA (offre phare) — 1 490 € HT, prix ferme, une journée dans l'entreprise.
+ *
+ * Constante À PART, volontairement : elle n'entre ni dans `AUDIT_TIERS` ni dans
+ * `INTERVENTION_TIERS`, lus par /tarifs, la réservation et les commissions. La page
+ * /journee-ia lit ce montant ici : aucun prix en dur ailleurs. Aucune commission tant que
+ * Williams ne l'a pas tranchée (pas de `commissionId`).
+ */
+export const JOURNEE_IA_TIER: PricingTier = {
+  id: "journee-ia",
+  labelFr: "Journée IA",
+  labelEn: "AI Day",
+  priceFlat: 1490,
+  isFromPrice: false,
+  durationFr: "1 journée",
+  durationEn: "1 day",
+  descriptionFr: "Une journée dans votre entreprise pour mettre l'IA au travail avec votre équipe.",
+  descriptionEn: "One day in your company to put AI to work with your team.",
+  audienceSizes: ["tpe", "pme"],
+};
+
 export const INTERVENTION_TIERS: ReadonlyArray<PricingTier> = [
   {
     // Sprint 14.10.7 (Will 2026-05-11) — palier 4 h Collectives. Tier porté
@@ -456,6 +527,9 @@ export const INTERVENTION_TIERS: ReadonlyArray<PricingTier> = [
     // Plus de CODIR/COMEX : c'est une journée 1-to-1 avec le dirigeant pour
     // structurer l'entreprise et chiffrer précisément les gains d'implémentation IA.
     id: "intervention-dirigeants",
+    // R5a (audit d'harmonie 08/11/2026, décision n°7) : jamais de montant au public, « Sur devis ».
+    // Le montant ci-dessous reste la référence INTERNE (devis, réservation, barème apporteurs).
+    prixPublicMasque: true,
     commissionId: "com-un-a-un",
     // Will 2026-06-23 — label SSOT « Public · Durée » (aligné sur booking-catalog
     // qui utilise déjà « Dirigeant · 1 jour »). FR uniquement (EN désactivé).
@@ -483,6 +557,9 @@ export const INTERVENTION_TIERS: ReadonlyArray<PricingTier> = [
     // 990 € HT (nouveau prix collaborateur ; propagé aux 393 villes + /un-a-un
     // via les tokens de prix).
     id: "intervention-membre-equipe",
+    // R5a (audit d'harmonie 08/11/2026, décision n°7) : jamais de montant au public, « Sur devis ».
+    // Le montant ci-dessous reste la référence INTERNE (devis, réservation, barème apporteurs).
+    prixPublicMasque: true,
     commissionId: "com-un-a-un",
     // Will 2026-06-23 — label SSOT « Public · Durée » (FR only, EN désactivé).
     labelFr: "Collaborateur · 1 jour",
@@ -501,6 +578,9 @@ export const INTERVENTION_TIERS: ReadonlyArray<PricingTier> = [
   {
     // Will 2026-06-03 — 1-to-1 dirigeant « Vision IA stratégique », prix fixe.
     id: "intervention-dirigeant-vision",
+    // R5a (audit d'harmonie 08/11/2026, décision n°7) : jamais de montant au public, « Sur devis ».
+    // Le montant ci-dessous reste la référence INTERNE (devis, réservation, barème apporteurs).
+    prixPublicMasque: true,
     commissionId: "com-un-a-un",
     labelFr: "Vision IA stratégique",
     labelEn: "Strategic AI vision",
@@ -518,6 +598,9 @@ export const INTERVENTION_TIERS: ReadonlyArray<PricingTier> = [
     // Will 2026-06-13 — 1-to-1 dirigeant « 2 jours ». Prix = 1 390 × ~1,85
     // (règle 1j→2j de la grille formations). HT.
     id: "intervention-dirigeant-vision-2j",
+    // R5a (audit d'harmonie 08/11/2026, décision n°7) : jamais de montant au public, « Sur devis ».
+    // Le montant ci-dessous reste la référence INTERNE (devis, réservation, barème apporteurs).
+    prixPublicMasque: true,
     commissionId: "com-un-a-un",
     labelFr: "Dirigeant · 2 jours",
     labelEn: "Executive · 2 days",
@@ -536,6 +619,9 @@ export const INTERVENTION_TIERS: ReadonlyArray<PricingTier> = [
     // Will 2026-06-13 — collaborateur « Optimisation du poste · 2 jours » (1-to-1).
     // Prix = 990 × ~1,85. HT.
     id: "intervention-membre-equipe-2j",
+    // R5a (audit d'harmonie 08/11/2026, décision n°7) : jamais de montant au public, « Sur devis ».
+    // Le montant ci-dessous reste la référence INTERNE (devis, réservation, barème apporteurs).
+    prixPublicMasque: true,
     commissionId: "com-un-a-un",
     // Will 2026-06-23 — label SSOT « Public · Durée » (FR only, EN désactivé).
     labelFr: "Collaborateur · 2 jours",
@@ -612,6 +698,9 @@ export const UN_A_UN_TIERS: ReadonlyArray<PricingTier> = [
  */
 export const UN_A_UN_RECURRING_TIER: PricingTier = {
   id: "un-a-un-recurrent",
+  // R5a (audit d'harmonie 08/11/2026, décision n°7) : jamais de montant au public, « Sur devis ».
+  // Le montant ci-dessous reste la référence INTERNE (devis, réservation, barème apporteurs).
+  prixPublicMasque: true,
   labelFr: "Coaching régulier 1-to-1",
   labelEn: "Recurring 1-to-1 coaching",
   priceFlat: 790,
@@ -1098,7 +1187,9 @@ export function formatTierPrice(
   opts: FormatAmountOptions = {},
 ): string {
   const amount = tier.priceFlat ?? tier.priceMin;
-  if (amount == null) return locale === "fr" ? "Sur devis" : "On request";
+  if (amount == null || tier.prixPublicMasque === true) {
+    return locale === "fr" ? "Sur devis" : "On request";
+  }
   // Un tier sans `priceFlat` mais avec `priceMin` est un plancher par nature
   // (c'est la sémantique de `formatPrice`) : le préfixer aussi, sinon
   // `formatTierPrice(audit-cible)` rendrait « 1 900 € » FERME là où
@@ -1124,6 +1215,7 @@ export function formatSubTierPrice(
   locale: "fr" | "en" = "fr",
   opts: FormatAmountOptions = {},
 ): string {
+  if (sub.prixPublicMasque === true) return locale === "fr" ? "Sur devis" : "On request";
   return formatAmount(sub.priceFlat, locale, { ...opts, from: sub.isFromPrice === true });
 }
 
@@ -1181,7 +1273,10 @@ export function getEntryLabel(
   opts: FormatAmountOptions = {},
 ): string {
   const price = getEntryPriceEur(tiers);
-  if (price == null) return locale === "fr" ? "Sur devis" : "On request";
+  // R5a : catégorie dont le palier d'entrée est masqué → jamais de montant.
+  if (price == null || getEntryTier(tiers).prixPublicMasque === true) {
+    return locale === "fr" ? "Sur devis" : "On request";
+  }
   return locale === "fr"
     ? `À partir de ${formatAmount(price, "fr", opts)}`
     : `Starting at ${formatAmount(price, "en", opts)}`;
@@ -1197,7 +1292,10 @@ export function getFromLabel(
   opts: FormatAmountOptions = {},
 ): string {
   const price = getEntryPriceEur(tiers);
-  if (price == null) return locale === "fr" ? "Sur devis" : "On request";
+  // R5a : catégorie dont le palier d'entrée est masqué → jamais de montant.
+  if (price == null || getEntryTier(tiers).prixPublicMasque === true) {
+    return locale === "fr" ? "Sur devis" : "On request";
+  }
   return locale === "fr"
     ? `À partir de ${formatAmount(price, "fr", opts)}`
     : `From ${formatAmount(price, "en", opts)}`;
@@ -1249,6 +1347,7 @@ export function formatPrice(tier: PricingTier, locale: "fr" | "en" = "fr"): stri
   if (tier.onQuote && !tier.priceMin && !tier.priceMax && !tier.priceFlat) {
     return locale === "fr" ? "Sur devis" : "On quote";
   }
+
   if (typeof tier.priceFlat === "number") {
     // `isFromPrice` — plancher et non prix ferme (audits, Will 2026-07-17).
     // Même formulation que la branche `priceMin` plus bas.
