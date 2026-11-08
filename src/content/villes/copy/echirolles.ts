@@ -7,22 +7,22 @@ import type { VilleCopy } from "./types";
 
 export const ECHIROLLES_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA accompagne les TPE et PME d'Échirolles, deuxième commune de la métropole grenobloise avec 37 491 habitants, située 7 km au sud de Grenoble en Isère. Notre cabinet intervient sur site dans les zones d'activités ZA des Essarts, Sud Galaxie et autour des centres Grand'Place et Espace Comboire pour automatiser les processus des commerces, PME industrielles et acteurs de la santé locaux.",
+    "Axion-IA accompagne les TPE et PME d'Échirolles, deuxième commune de la métropole grenobloise avec 37 491 habitants, située en Isère. Notre cabinet intervient sur site dans les zones d'activités ZA des Essarts, Sud Galaxie et autour des centres Grand'Place et Espace Comboire pour automatiser les processus des commerces, PME industrielles et acteurs de la santé locaux.",
   pitchEn:
-    "Axion-IA accompagne les TPE et PME d'Échirolles, deuxième commune de la métropole grenobloise avec 37 491 habitants, située 7 km au sud de Grenoble en Isère. Notre cabinet intervient sur site dans les zones d'activités ZA des Essarts, Sud Galaxie et autour des centres Grand'Place et Espace Comboire pour automatiser les processus des commerces, PME industrielles et acteurs de la santé locaux.",
+    "Axion-IA accompagne les TPE et PME d'Échirolles, deuxième commune de la métropole grenobloise avec 37 491 habitants, située en Isère. Notre cabinet intervient sur site dans les zones d'activités ZA des Essarts, Sud Galaxie et autour des centres Grand'Place et Espace Comboire pour automatiser les processus des commerces, PME industrielles et acteurs de la santé locaux.",
   directAnswerFr:
-    "Axion-IA se déplace à Échirolles (Isère, 37 491 habitants) pour auditer et automatiser les processus des TPE et PME locales. La commune accueille un héritage industriel actif avec des employeurs comme Caterpillar et Bull Grenoble (Atos), ainsi qu'un pôle santé structuré autour de l'Hôpital Sud (340 lits) et de la Clinique des Cèdres (200 lits). Nos interventions intègrent la conformité RGPD et reposent sur du code source sur-mesure, jamais sur des outils no-code.",
+    "Axion-IA se déplace à Échirolles (Isère, 37 491 habitants) pour auditer et automatiser les processus des TPE et PME locales. La commune accueille un héritage industriel actif avec des employeurs comme Caterpillar et Bull (Atos), ainsi qu'un pôle santé structuré autour de l'Hôpital Sud (340 lits) et de la Clinique des Cèdres (200 lits). Nos interventions intègrent la conformité RGPD et reposent sur du code source sur-mesure, jamais sur des outils no-code.",
   directAnswerEn:
-    "Axion-IA se déplace à Échirolles (Isère, 37 491 habitants) pour auditer et automatiser les processus des TPE et PME locales. La commune accueille un héritage industriel actif avec des employeurs comme Caterpillar et Bull Grenoble (Atos), ainsi qu'un pôle santé structuré autour de l'Hôpital Sud (340 lits) et de la Clinique des Cèdres (200 lits). Nos interventions intègrent la conformité RGPD et reposent sur du code source sur-mesure, jamais sur des outils no-code.",
+    "Axion-IA se déplace à Échirolles (Isère, 37 491 habitants) pour auditer et automatiser les processus des TPE et PME locales. La commune accueille un héritage industriel actif avec des employeurs comme Caterpillar et Bull (Atos), ainsi qu'un pôle santé structuré autour de l'Hôpital Sud (340 lits) et de la Clinique des Cèdres (200 lits). Nos interventions intègrent la conformité RGPD et reposent sur du code source sur-mesure, jamais sur des outils no-code.",
   seoHook: "TPE & PME · IA opérationnelle",
   ecosystemFr:
-    "Le tissu économique d'Échirolles combine industrie historique (héritage viscose depuis les années 1920), commerce de détail concentré sur Grand'Place et Espace Comboire, services de santé (Hôpital Sud, Clinique des Cèdres) et PME tertiaires installées dans la ZA des Essarts et Sud Galaxie. La commune profite de la dynamique de Grenoble-Alpes Métropole et de la proximité immédiate des activités technologiques grenobloises.",
+    "Le tissu économique d'Échirolles combine industrie historique (héritage viscose depuis les années 1920), commerce de détail concentré sur Grand'Place et Espace Comboire, services de santé (Hôpital Sud, Clinique des Cèdres) et PME tertiaires installées dans la ZA des Essarts et Sud Galaxie. La commune profite de la dynamique de la métropole grenobloise et de la proximité immédiate des activités technologiques grenobloises.",
   ecosystemEn:
-    "Le tissu économique d'Échirolles combine industrie historique (héritage viscose depuis les années 1920), commerce de détail concentré sur Grand'Place et Espace Comboire, services de santé (Hôpital Sud, Clinique des Cèdres) et PME tertiaires installées dans la ZA des Essarts et Sud Galaxie. La commune profite de la dynamique de Grenoble-Alpes Métropole et de la proximité immédiate des activités technologiques grenobloises.",
+    "Le tissu économique d'Échirolles combine industrie historique (héritage viscose depuis les années 1920), commerce de détail concentré sur Grand'Place et Espace Comboire, services de santé (Hôpital Sud, Clinique des Cèdres) et PME tertiaires installées dans la ZA des Essarts et Sud Galaxie. La commune profite de la dynamique de la métropole grenobloise et de la proximité immédiate des activités technologiques grenobloises.",
   distancesFr:
-    "Échirolles est à 7 km au sud de Grenoble, accessible via la ligne A du tramway, la liaison TER et l'autoroute A480. La gare de Grenoble (TGV Paris ~3 h) est à environ 7 km, et l'aéroport Grenoble-Alpes-Isère est accessible en 45 min par l'A48.",
+    "Échirolles est accessible via la ligne A du tramway, la liaison TER et l'autoroute A480.",
   distancesEn:
-    "Échirolles est à 7 km au sud de Grenoble, accessible via la ligne A du tramway, la liaison TER et l'autoroute A480. La gare de Grenoble (TGV Paris ~3 h) est à environ 7 km, et l'aéroport Grenoble-Alpes-Isère est accessible en 45 min par l'A48.",
+    "Échirolles est accessible via la ligne A du tramway, la liaison TER et l'autoroute A480.",
   topSectorsNaf: [
     "Industrie mécanique et équipements",
     "Commerce de détail",
@@ -137,7 +137,7 @@ export const ECHIROLLES_COPY: VilleCopy = {
           "Engagement contractuel : périmètre et livrables fixés au devis, remis à partir de 24 à 48 h selon la complexité. Sites et plateformes développés en code source, hébergés dans l'UE et conformes RGPD par défaut. Aucun verrou éditeur : le code, les données et la documentation vous appartiennent et sont repris en interne ou par tout intégrateur de la métropole grenobloise. Performances Web Vitals suivies à la livraison. Kick-off et recette toujours en présentiel sur site à Échirolles.",
       },
       en: {
-        hero: "Axion-IA designs AI-augmented websites and SaaS platforms in Échirolles, the 2nd employment basin of Isère and 2nd city of the Grenoble metropolitan area. The town is distinctive: it hosts one of Bull/Atos's main R&D sites dedicated to high-performance computing (HPC), a rare retail density (Espace Comboire with ~150 stores, Grand'Place with ~80 shops), heavy industry (Caterpillar) and a private health hub (Clinique des Cèdres). We build IA-native platforms in source code — RAG chatbots, semantic search, conversational agents, multi-CMS e-commerce, UX/UI and mobile — hosted in the EU, GDPR-compliant, with no vendor lock-in.",
+        hero: "Axion-IA designs AI-augmented websites and SaaS platforms in Échirolles, the 2nd employment basin of Isère and 2nd city of its metropolitan area. The town is distinctive: it hosts one of Bull/Atos's main R&D sites dedicated to high-performance computing (HPC), a rare retail density (Espace Comboire with ~150 stores, Grand'Place with ~80 shops), heavy industry (Caterpillar) and a private health hub (Clinique des Cèdres). We build IA-native platforms in source code — RAG chatbots, semantic search, conversational agents, multi-CMS e-commerce, UX/UI and mobile — hosted in the EU, GDPR-compliant, with no vendor lock-in.",
         whyHere: [
           "Échirolles is one of the rare T3 territories hosting a Bull/Atos R&D site in high-performance computing and AI: software publishers, IT firms and data teams in the ZA des Essarts (281 companies) and Parc Sud Galaxie find a partner who speaks their technical language, not a template seller.",
           "The dual retail polarity of Espace Comboire (E.Leclerc hypermarket + ~150 stores along the A480, ~2,500 jobs) and Grand'Place (~80 shops) drives concrete demand for e-commerce and omnichannel platforms — catalogs, click & collect, AI product recommendation — on Shopify, WooCommerce, PrestaShop or headless custom.",
@@ -168,7 +168,7 @@ export const ECHIROLLES_COPY: VilleCopy = {
           {
             step: "Acceptance, go-live & handover",
             detail:
-              "Acceptance testing on site in Échirolles, go-live, performance measurement (Web Vitals), then handover of code and documentation. Your teams stay autonomous: no Axion-IA lock-in, the project is taken over in-house or by any Grenoble integrator.",
+              "Acceptance testing on site in Échirolles, go-live, performance measurement (Web Vitals), then handover of code and documentation. Your teams stay autonomous: no Axion-IA lock-in, the project is taken over in-house or by any local integrator.",
           },
         ],
         pricing: [
@@ -220,7 +220,7 @@ export const ECHIROLLES_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Contractual commitment: scope and deliverables fixed in the quote, provided from 24 to 48 hours depending on complexity. Sites and platforms built in source code, hosted in the EU and GDPR-compliant by default. No vendor lock-in: the code, data and documentation belong to you and are taken over in-house or by any Grenoble metro integrator. Web Vitals performance tracked at delivery. Kick-off and acceptance always in person on site in Échirolles.",
+          "Contractual commitment: scope and deliverables fixed in the quote, provided from 24 to 48 hours depending on complexity. Sites and platforms built in source code, hosted in the EU and GDPR-compliant by default. No vendor lock-in: the code, data and documentation belong to you and are taken over in-house or by any metro-area integrator. Web Vitals performance tracked at delivery. Kick-off and acceptance always in person on site in Échirolles.",
       },
     },
   },
@@ -236,7 +236,7 @@ export const ECHIROLLES_COPY: VilleCopy = {
     },
     {
       q: "Axion-IA intervient-il dans les communes proches d'Échirolles ?",
-      a: "Oui, nous couvrons Grenoble, Eybens, Pont-de-Claix, Seyssins, Seyssinet-Pariset et l'ensemble de la métropole grenobloise depuis Échirolles.",
+      a: "Oui, nous couvrons Eybens, Pont-de-Claix, Seyssins, Seyssinet-Pariset et l'ensemble de la métropole grenobloise, sur place ou à distance.",
     },
     {
       q: "Comment Axion-IA respecte-t-il le RGPD pour les PME industrielles d'Échirolles ?",

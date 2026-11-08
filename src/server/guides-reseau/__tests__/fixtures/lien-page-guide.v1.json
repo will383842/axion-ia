@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "note": "Valeurs 100 % fictives. À copier telle quelle côté Studio.",
+  "secret": "fixture-secret-fictif-example-test-01234",
+  "maintenant_ms": 1793534400000,
+  "donnees": {
+    "conv": "conv_example_0001",
+    "mot": "GUIDE",
+    "reseau": "linkedin",
+    "guide": "guide-reseau-exemple",
+    "compte": "compte_example_01",
+    "post_ref": "post_example_01",
+    "version_m1": "m1.2"
+  },
+  "jeton": "eyJ2IjoxLCJjb252IjoiY29udl9leGFtcGxlXzAwMDEiLCJtb3QiOiJHVUlERSIsInJlc2VhdSI6ImxpbmtlZGluIiwiZ3VpZGUiOiJndWlkZS1yZXNlYXUtZXhlbXBsZSIsImNvbXB0ZSI6ImNvbXB0ZV9leGFtcGxlXzAxIiwicG9zdF9yZWYiOiJwb3N0X2V4YW1wbGVfMDEiLCJ2ZXJzaW9uX20xIjoibTEuMiIsImV4cCI6MTc5NDEzOTIwMH0.U4n6eUr6q2DyJW7UHb9Eny40bGzNiej0W0A2jad-Cgc",
+  "empreinte": "a47697b365708b2be4bdda04e1999e92b193a846a3096bbbd84981bf7fbcda1e"
+}

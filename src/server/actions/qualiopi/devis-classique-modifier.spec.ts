@@ -293,17 +293,23 @@ describe("fixerValiditeDevisBrouillonAction (S10)", () => {
     expect(m.devisUpdate).not.toHaveBeenCalled();
   });
 
-  it("stocke 23:59:59 heure de PARIS (hiver UTC+1, été UTC+2)", async () => {
+  it("stocke 23:59:59 heure de PARIS (hiver : 22:59:59Z ; été : 21:59:59Z)", async () => {
     for (const [d, iso] of [
       ["2026-12-08", "2026-12-08T22:59:59.000Z"],
       ["2027-01-15", "2027-01-15T22:59:59.000Z"],
+      ["2027-07-14", "2027-07-14T21:59:59.000Z"],
     ] as const) {
+      // Le cas d'été doit rester dans la fenêtre J+7..J+90 : on avance l'horloge en juillet.
+      vi.setSystemTime(
+        new Date(d === "2027-07-14" ? "2027-07-01T10:00:00.000Z" : "2026-11-08T10:00:00.000Z"),
+      );
       m.devisFindUnique.mockResolvedValueOnce(EXISTANT).mockResolvedValueOnce(null);
       await appel(d);
       expect(
         (m.devisUpdateMany.mock.calls.at(-1)![0].data.dateValidite as Date).toISOString(),
       ).toBe(iso);
     }
+    vi.setSystemTime(NOW);
   });
 
   it("à 23:30 UTC (déjà le lendemain à Paris) : le jour de Paris sert de référence", async () => {
@@ -354,13 +360,30 @@ describe("fixerValiditeDevisBrouillonAction (S10)", () => {
       expect(data.resteAChargeCents).toBe(60000);
     });
 
-    it("sans saisie : montants conservés, avertissement « à recalculer »", async () => {
-      m.devisFindUnique.mockResolvedValueOnce(OPCO).mockResolvedValueOnce(null);
-      await appel("2027-01-15");
+    it("sans saisie et estimation non nulle : REFUS, rien n'est écrit", async () => {
+      m.devisFindUnique.mockResolvedValueOnce(OPCO);
+      const r = await appel("2027-01-15");
+      expect("error" in r && r.error).toMatch(/recalculer/);
       expect(m.estimate).not.toHaveBeenCalled();
-      const data = m.devisUpdateMany.mock.calls[0]![0].data;
-      expect(data.opcoEstimationAvertissement).toMatch(/recalculer/);
-      expect("montantOpcoEstimeCents" in data).toBe(false);
+      expect(m.devisUpdateMany).not.toHaveBeenCalled();
+    });
+
+    it("sans saisie et estimation existante à 0 € : REFUS aussi, rien n'est écrit", async () => {
+      // estimateOpcoCoverage rend 0 € (enveloppe épuisée, 50 salariés ou plus) : 0 n'est pas « absent ».
+      m.devisFindUnique.mockResolvedValueOnce({ ...OPCO, montantOpcoEstimeCents: 0 });
+      const r = await appel("2027-01-15");
+      expect("error" in r && r.error).toMatch(/recalculer/);
+      expect(m.estimate).not.toHaveBeenCalled();
+      expect(m.devisUpdateMany).not.toHaveBeenCalled();
+    });
+
+    it("sans saisie mais sans estimation existante : la date s'enregistre seule", async () => {
+      m.devisFindUnique
+        .mockResolvedValueOnce({ ...OPCO, montantOpcoEstimeCents: null })
+        .mockResolvedValueOnce(null);
+      const r = await appel("2027-01-15");
+      expect("data" in r).toBe(true);
+      expect(Object.keys(m.devisUpdateMany.mock.calls[0]![0].data)).toEqual(["dateValidite"]);
     });
 
     it("devis à formules : l'estimation n'est pas touchée", async () => {

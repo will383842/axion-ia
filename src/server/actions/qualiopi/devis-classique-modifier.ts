@@ -241,10 +241,10 @@ export async function fixerValiditeDevisBrouillonAction(
         opcoEstimationAvertissement: opco.opcoEstimationAvertissement ?? null,
         resteAChargeCents: opco.resteAChargeCents ?? null,
       };
-    } else if (actuel.montantOpcoEstimeCents !== null) {
-      estimationData = {
-        opcoEstimationAvertissement:
-          "La date de validité a changé : l'estimation OPCO est à recalculer (enregistrez le devis).",
+    } else if (actuel.montantOpcoEstimeCents != null) {
+      return {
+        error:
+          "La date change l'estimation OPCO : fournissez les paramètres pour la recalculer (saisie « estimation »).",
       };
     }
   }

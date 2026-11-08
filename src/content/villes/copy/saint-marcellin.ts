@@ -18,9 +18,9 @@ export const SAINT_MARCELLIN_COPY: VilleCopy = {
   ecosystemEn:
     "Saint-Marcellin est ville-centre du Bas-Dauphiné (Sud Grésivaudan, vallée de l'Isère), connue pour le fromage AOP Saint-Marcellin et son AOC fromagère reconnue. Tissu d'éleveurs laitiers locaux, fromageries artisanales, PME industrielles périphériques, TPE artisans BTP, commerces. Position vers Vercors et plaine de l'Isère.",
   distancesFr:
-    "Gare Saint-Marcellin (TER Lyon-Grenoble, 40 min Grenoble). Grenoble centre à 50 min A49. Lyon centre à 1h15 voiture. Aéroport Grenoble-Alpes-Isère à 1h. Axe N532 vers Romans-sur-Isère.",
+    "Gare Saint-Marcellin (TER vers Lyon). Lyon centre à 1h15 voiture. Axe N532 vers Romans-sur-Isère.",
   distancesEn:
-    "Gare Saint-Marcellin (TER Lyon-Grenoble, 40 min Grenoble). Grenoble centre à 50 min A49. Lyon centre à 1h15 voiture. Aéroport Grenoble-Alpes-Isère à 1h. Axe N532 vers Romans-sur-Isère.",
+    "Gare Saint-Marcellin (TER vers Lyon). Lyon centre à 1h15 voiture. Axe N532 vers Romans-sur-Isère.",
   topSectorsNaf: [
     "AOP Saint-Marcellin & fromageries artisanales",
     "Élevage laitier & agriculture vallée Isère",
@@ -49,7 +49,7 @@ export const SAINT_MARCELLIN_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Saint-Marcellin et Sud Grésivaudan ?",
-      a: "Oui, Axion-IA intervient à Saint-Marcellin et tout le Sud Grésivaudan (Vinay, Tullins, Saint-Sauveur, Chatte). Nos consultants viennent de Grenoble (50 min A49) ou Lyon (1h15 voiture).",
+      a: "Oui, Axion-IA intervient à Saint-Marcellin et tout le Sud Grésivaudan (Vinay, Tullins, Saint-Sauveur, Chatte). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les fromageries AOP Saint-Marcellin ?",
@@ -64,8 +64,8 @@ export const SAINT_MARCELLIN_COPY: VilleCopy = {
       a: "Pour les TPE artisans BTP et commerçants à Saint-Marcellin, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation pratique, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, classification photos, gestion stocks.",
     },
     {
-      q: "Comment se passe une mission depuis Grenoble ou Lyon ?",
-      a: "Nos consultants viennent de Grenoble (50 min A49) ou Lyon (1h15 voiture). Pour les multi-jours, hébergement local possible (hôtels Sud Grésivaudan).",
+      q: "Comment se déroule une intervention ?",
+      a: "Sur place ou à distance, selon votre besoin. Pour les multi-jours, hébergement local possible (hôtels Sud Grésivaudan).",
     },
   ],
 };

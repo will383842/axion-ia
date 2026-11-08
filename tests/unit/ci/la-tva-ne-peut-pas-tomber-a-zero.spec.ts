@@ -122,6 +122,16 @@ describe("🔴 le verrou TVA est au point de CRÉATION", () => {
     ).toEqual([]);
   });
 
+  it("🔴 la CRÉATION du devis classique passe par `mentionTvaDevisClassique`", () => {
+    // La résolution du régime a déménagé dans ce service : si `devis.ts` cessait de
+    // l'appeler, la création ne passerait plus par le verrou sans qu'aucun site ne rougisse.
+    expect(
+      lire("src/server/actions/qualiopi/devis.ts"),
+      "`devis.ts` n'appelle plus `mentionTvaDevisClassique` : la création du devis classique " +
+        "échappe au verrou TVA.",
+    ).toMatch(/await mentionTvaDevisClassique\(\)/);
+  });
+
   it("🔴 les chemins de REPRODUCTION ne sont PAS verrouillés — et c'est voulu", () => {
     // La moitié que mon premier jet avait cassée, et que neuf tests ont
     // rattrapée. Une pièce déjà émise doit se re-rendre TELLE QU'ELLE EST.

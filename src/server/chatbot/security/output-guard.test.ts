@@ -96,3 +96,34 @@ describe("T-39 combiné", () => {
     expect(r.ok).toBe(true);
   });
 });
+
+describe("doctrine des interdits en sortie (lot R3)", () => {
+  it("bloque une réponse qui cite Qualiopi", () => {
+    const r = verifyOutput(`Notre formation est ${"certifi" + "ée"} Qualiopi.`);
+    expect(r.ok).toBe(false);
+    expect(r.violations.some((v) => v.type === "interdit" && v.value === "qualiopi")).toBe(true);
+  });
+
+  it("bloque un financement présenté comme intégral", () => {
+    const r = verifyOutput("Votre formation est financée à 100 % par votre OPCO.");
+    expect(r.ok).toBe(false);
+    expect(r.violations.some((v) => v.type === "interdit")).toBe(true);
+  });
+
+  it("laisse passer « Réservez votre créneau de 45 minutes » (parcours principal)", () => {
+    expect(verifyOutput("Réservez votre créneau de 45 minutes.").ok).toBe(true);
+  });
+
+  // Indépendant de l'ordre de fusion avec le lot R6 (filtre local de l'étiquette).
+  it("laisse passer « …les TPE et PME… » et bloque l'étiquette « TPE/PME »", () => {
+    expect(verifyOutput("Axion-IA accompagne les TPE et PME françaises.").ok).toBe(true);
+    const r = verifyOutput("Axion-IA accompagne les TPE/PME françaises.");
+    expect(r.violations.some((v) => v.type === "interdit" && v.value === "etiquette-tpe-pme")).toBe(
+      true,
+    );
+  });
+
+  it("laisse passer une réponse propre", () => {
+    expect(verifyOutput("Réservons un rendez-vous gratuit de 45 minutes.").ok).toBe(true);
+  });
+});

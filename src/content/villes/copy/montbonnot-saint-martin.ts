@@ -18,9 +18,9 @@ export const MONTBONNOT_SAINT_MARTIN_COPY: VilleCopy = {
   ecosystemEn:
     "Montbonnot-Saint-Martin fait partie de la communauté de communes du Pays du Grésivaudan et abrite une partie du parc technologique Inovallée — l'un des principaux clusters deep-tech français (microélectronique héritière du CEA-Leti, édition logicielle, instrumentation scientifique). Aux côtés des entreprises tech : tissu PME tertiaires, TPE artisanat BTP, commerces, professions libérales.",
   distancesFr:
-    "Tramway B (terminus Plaine des Sports) à 5 min. Grenoble centre à 20 min A41. Aéroport Grenoble-Alpes-Isère à 1h. Chambéry à 50 min A41. Meylan / Inovallée principal à 5 min.",
+    "Tramway B (terminus Plaine des Sports) à 5 min. Chambéry à 50 min A41. Meylan / Inovallée principal à 5 min.",
   distancesEn:
-    "Tramway B (terminus Plaine des Sports) à 5 min. Grenoble centre à 20 min A41. Aéroport Grenoble-Alpes-Isère à 1h. Chambéry à 50 min A41. Meylan / Inovallée principal à 5 min.",
+    "Tramway B (terminus Plaine des Sports) à 5 min. Chambéry à 50 min A41. Meylan / Inovallée principal à 5 min.",
   topSectorsNaf: [
     "Deep-tech & microélectronique (Inovallée)",
     "Édition logicielle & SaaS",
@@ -49,7 +49,7 @@ export const MONTBONNOT_SAINT_MARTIN_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Montbonnot-Saint-Martin et Inovallée ?",
-      a: "Oui, Axion-IA intervient à Montbonnot-Saint-Martin et tout le parc technologique Inovallée (Meylan limitrophe, Saint-Ismier, Biviers). Couverture Pays du Grésivaudan et Grenoble-Alpes Métropole.",
+      a: "Oui, Axion-IA intervient à Montbonnot-Saint-Martin et tout le parc technologique Inovallée (Meylan limitrophe, Saint-Ismier, Biviers). Couverture Pays du Grésivaudan et de la métropole grenobloise.",
     },
     {
       q: "Travaillez-vous avec les scale-ups deep-tech Inovallée ?",
@@ -65,7 +65,7 @@ export const MONTBONNOT_SAINT_MARTIN_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Paris ?",
-      a: "Nos consultants viennent de Paris (TGV Grenoble 3h + tram/voiture) ou Lyon (1h15 A48). Pour les multi-jours, hébergement local possible.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Pour les multi-jours, hébergement local possible.",
     },
   ],
 };

@@ -176,7 +176,7 @@ export default async function TransparencePage({ params }: Props) {
           // cette question précise, sur une page dédiée à la transparence,
           // était l'écart le plus difficile à défendre de tout l'audit.
           answer:
-            "Pas systématiquement. Chaque contenu passe par des contrôles automatisés avant publication — vérification factuelle par un modèle tiers, contrôle éditorial et alignement avec notre charte. Une relecture humaine intervient sur les contenus sensibles et à la demande, mais elle n'est pas systématique sur l'ensemble de la production. Vous pouvez nous signaler toute erreur à contact@axion-ia.com : nous corrigeons sous 5 jours ouvrés.",
+            "Pas systématiquement. Chaque contenu passe par des contrôles automatisés avant publication (contrôle éditorial et alignement avec notre charte) ; les chiffres sont ensuite vérifiés par un modèle tiers après la mise en ligne. Une relecture humaine intervient lorsque ces contrôles bloquent un contenu, et sur signalement, mais elle n'est pas systématique sur l'ensemble de la production. Vous pouvez nous signaler toute erreur à contact@axion-ia.com : nous corrigeons sous 5 jours ouvrés.",
         },
       ]
     : [
@@ -201,7 +201,7 @@ export default async function TransparencePage({ params }: Props) {
           id: "supervision-humaine",
           question: "Is AI content reviewed by a human?",
           answer:
-            "Yes. Every AI-assisted content piece (Manon persona) is supervised by the Axion-IA team before publication: editorial review, factual verification and alignment with our editorial policy.",
+            "Not systematically. Every AI-assisted content piece (Manon persona) goes through automated checks before publication (editorial review and alignment with our editorial policy); figures are then fact-checked by a third-party model after it goes live. Human review applies when those checks block a piece, and when an error is reported, but it is not systematic across all production.",
         },
       ];
 

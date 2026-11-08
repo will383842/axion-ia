@@ -18,9 +18,9 @@ export const BOURG_LES_VALENCE_COPY: VilleCopy = {
   ecosystemEn:
     "Bourg-lès-Valence est intégrée à la Communauté d'agglomération Valence Romans Agglo (~225 000 hab) et fait partie du tissu économique nord de Valence. Tissu PME industrielles (transformation, mécanique), commerces et zones d'activités, agriculture vallée du Rhône (vergers, viticulture), TPE artisanat BTP, professions libérales. Position axe A7 Lyon-Marseille.",
   distancesFr:
-    "Gare Valence-Ville à 5 min (TGV Paris 2h15). Aéroport Lyon-Saint-Exupéry à 1h. Lyon centre à 1h A7. Grenoble centre à 1h15. Axe A7 Lyon-Marseille / A49 vers Grenoble.",
+    "Gare Valence-Ville à 5 min (TGV Paris 2h15). Aéroport Lyon-Saint-Exupéry à 1h. Lyon centre à 1h A7. Axe A7 Lyon-Marseille.",
   distancesEn:
-    "Gare Valence-Ville à 5 min (TGV Paris 2h15). Aéroport Lyon-Saint-Exupéry à 1h. Lyon centre à 1h A7. Grenoble centre à 1h15. Axe A7 Lyon-Marseille / A49 vers Grenoble.",
+    "Gare Valence-Ville à 5 min (TGV Paris 2h15). Aéroport Lyon-Saint-Exupéry à 1h. Lyon centre à 1h A7. Axe A7 Lyon-Marseille.",
   topSectorsNaf: [
     "PME industrielles agglomération Valence",
     "Commerce & zones d'activités",
