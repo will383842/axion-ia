@@ -33,6 +33,14 @@ export function ResumeFormulesDevis({ vue }: { vue: VueFormules }) {
                   + <span className="tabular-nums">{eur(mensuel)} HT</span> / mois
                 </>
               ) : null}
+              {f.maintenance !== null && f.maintenance.mensuelHtCents > 0 ? (
+                <>
+                  {" "}
+                  — maintenance {f.maintenance.obligatoire ? "obligatoire" : "facultative"} :{" "}
+                  <span className="tabular-nums">{eur(f.maintenance.mensuelHtCents)} HT</span> /
+                  mois
+                </>
+              ) : null}
             </li>
           );
         })}

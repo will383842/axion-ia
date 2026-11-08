@@ -314,6 +314,42 @@ export async function verifierTokenDocument(token: string): Promise<Verification
 }
 
 /**
+ * Statut du devis auquel se rattache un lien DÉJÀ refusé (révoqué ou périmé) — lecture seule.
+ *
+ * Sert au message de la page de signature : un lien révoqué parce que le devis a été REFUSÉ
+ * ou a expiré ne doit pas laisser croire qu'une version révisée a été envoyée. N'est appelée
+ * qu'après un refus de `verifierTokenDocument` (HMAC donc déjà validé) ; `null` si le lien est
+ * inconnu ou si la pièce n'est pas un devis. Ne rend que le statut, jamais de motif.
+ */
+export async function statutDevisDuLien(
+  token: string,
+): Promise<"refuse" | "expire" | "autre" | null> {
+  if (estStub()) return null;
+  const verified = await verifyMagicToken(token, { scope: "document_signature" });
+  // Un jeton périmé reste authentique : on peut alors dire pourquoi.
+  if (!verified.ok && verified.reason !== "expired") return null;
+  const tokenHash = await sha256Hex(token);
+  const ligne = await prisma.documentSignatureToken.findUnique({
+    where: { tokenHash },
+    select: { documentGenereId: true },
+  });
+  if (ligne === null) return null;
+  const devis = await prisma.devis.findFirst({
+    where: { documentGenereId: ligne.documentGenereId },
+    select: { id: true, statut: true },
+  });
+  if (devis === null) return null;
+  if (devis.statut === "refuse") return "refuse";
+  if (devis.statut === "expire") {
+    // Devis révisé : l'ancien passe `expire` mais un successeur existe → message « version
+    // révisée » conservé ("autre"). Un expire SANS successeur reste "expire".
+    const successeurs = await prisma.devis.count({ where: { replacesDevisId: devis.id } });
+    return successeurs > 0 ? "autre" : "expire";
+  }
+  return "autre";
+}
+
+/**
  * Révoque les jetons actifs d'une pièce — tous, ou ceux d'une seule partie.
  *
  * Cas d'usage : devis révisé (l'ancienne version passe `expire`, son lien ne
