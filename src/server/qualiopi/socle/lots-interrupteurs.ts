@@ -125,6 +125,12 @@ export const LOTS_INTERRUPTEURS: ReadonlyArray<LotInterrupteur> = [
     description:
       "Envoie la confirmation de présence avant la formation et ses relances aux stagiaires (indicateur 12).",
   },
+  {
+    lot: "devis_formules",
+    libelle: "Devis à formules (achat / abonnement)",
+    description:
+      "Permet de proposer au client un devis à une ou deux formules (achat, abonnement) et de recueillir son choix.",
+  },
 ];
 
 const LOTS_CONNUS: ReadonlySet<string> = new Set(LOTS_INTERRUPTEURS.map((l) => l.lot));

@@ -48,6 +48,33 @@ async function processJob(_job: Job<VisioBalayageJobData>): Promise<void> {
   await passerEnregistreur(prisma, enregistreur);
   // TOUJOURS aussi : le suivi du questionnaire avant audit lit ses propres interrupteurs.
   await passerQuestionnairesPreaudit(prisma);
+  // TOUJOURS aussi : les jetons d'horodatage RFC 3161 des signatures de devis qui n'en ont pas encore
+  // (autorité injoignable au moment de signer). Son propre `try` : jamais bloquant, jamais fatal.
+  await passerHorodatagesSignatures();
+}
+
+/**
+ * Horodatage RFC 3161 des signatures de devis (lot 4 bis) : reprend les lignes `en_attente` dont
+ * l'heure est venue. Marqueur de déploiement : `horodatage-signatures`. Des nombres seulement
+ * au journal (jamais d'empreinte, de nom ni d'adresse).
+ */
+async function passerHorodatagesSignatures(): Promise<void> {
+  try {
+    const { passerHorodatages } =
+      await import("@/server/qualiopi/documents/signature/horodatage-signature");
+    const b = await passerHorodatages();
+    if (b.tentes > 0) {
+      console.warn(
+        `[visio-balayage-worker] horodatage-signatures : ${b.tentes} tenté(s), ${b.obtenus} obtenu(s), ${b.enAttente} en attente`,
+      );
+    }
+  } catch (err) {
+    console.error(
+      "[visio-balayage-worker] horodatage-signatures en échec :",
+      err instanceof Error ? err.name : "inconnue",
+    );
+    captureWorkerError("visio-balayage", VISIO_BALAYAGE_QUEUE_NAME, undefined, err);
+  }
 }
 
 /**
@@ -115,6 +142,35 @@ async function passerDossierClient(prisma: BaseDossier): Promise<void> {
         `[visio-balayage-worker] fiches automatiques : ${fa.creees} créée(s), ` +
           `${fa.rattachees} rattachée(s), ${fa.doublons.length} doublon(s) possible(s), ` +
           `${fa.doutes} à classer, ${fa.plantees} plantée(s)`,
+      );
+    }
+    // Les demandes écrites (DOSSIER_FICHE_DEMANDE) : des NOMBRES seulement, jamais un nom ni une
+    // adresse. Sans cette ligne l'étape « essai » ne se lirait nulle part.
+    const fd = r.fichesDemande;
+    if (fd && fd.mode === "essai") {
+      console.warn(
+        `[visio-balayage-worker] fiches des demandes À BLANC : créerait ${fd.creeraient}, ` +
+          `lierait ${fd.lieraient}, douterait ${fd.doutes}, planterait ${fd.plantees}, ` +
+          `colonne absente ${fd.colonneAbsente ? "oui" : "non"}, ` +
+          `date d'activation manquante ${fd.dateManquante ? "oui" : "non"}`,
+      );
+    } else if (
+      fd &&
+      (fd.creees > 0 ||
+        fd.liees > 0 ||
+        fd.doutes > 0 ||
+        fd.plantees > 0 ||
+        fd.colonneAbsente ||
+        fd.dateManquante ||
+        fd.refusAbandonnes > 0 ||
+        fd.doublons.length > 0)
+    ) {
+      console.warn(
+        `[visio-balayage-worker] fiches des demandes : ${fd.creees} créée(s), ` +
+          `${fd.liees} liée(s), ${fd.doublons.length} doublon(s) possible(s), ` +
+          `${fd.doutes} doute(s), ${fd.refusAbandonnes} abandonnée(s) après refus, ` +
+          `${fd.plantees} plantée(s), colonne absente ${fd.colonneAbsente ? "oui" : "non"}, ` +
+          `date d'activation manquante ${fd.dateManquante ? "oui" : "non"}`,
       );
     }
     if (r.etapesEnEchec.length > 0 || r.rencontresAssurees > 0) {

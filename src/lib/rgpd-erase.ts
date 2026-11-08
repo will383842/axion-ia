@@ -212,7 +212,9 @@ export interface EraseSignatureTokensResult {
  * ## La distinction, qui est tout le sujet
  *
  * `DocumentSignature.signataireEmail` est **scellé** dans le tuple haché
- * (`COLONNES_SCELLEES_DOCUMENT`) : l'écraser ferait rendre `empreinte_invalide`
+ * (`COLONNES_SCELLEES_DOCUMENT`) — comme `signataireNom` et, pour le devis à formules (V4),
+ * `declarationNom` et `declarationFonction` (la déclaration de pouvoir saisie par le signataire) :
+ * l'écraser ferait rendre `empreinte_invalide`
  * à la vérification de chaîne, c'est-à-dire, dans un dossier présenté à un
  * contrôle, le verdict « ces pièces ont été modifiées après coup » sur des
  * pièces intactes. Ce dépôt a déjà payé ce défaut exact côté émargement. On n'y
@@ -464,6 +466,22 @@ export async function eraseCrmOutboxForEmail(email: string): Promise<EraseCrmOut
   // L'adresse telle que saisie ET sa forme normalisée : le filtre JSON est
   // sensible à la casse, contrairement aux colonnes `citext`.
   const formes = [...new Set([email, email.trim().toLowerCase()])];
+  // 🔴 AVANT de vider la file : ferme la porte du CRM pour cette adresse (l'opposition, elle, est
+  // gardée — jamais de suppression). Sans cette marque, un réessai renverrait l'adresse au CRM.
+  // Son échec ne bloque jamais l'effacement.
+  if (empreinte) {
+    try {
+      await prisma.emailOpposition.updateMany({
+        where: { emailHash: empreinte },
+        data: { crmInterditLe: new Date() },
+      });
+    } catch (e) {
+      Sentry.captureException(
+        { name: e instanceof Error ? e.name : "erreur" },
+        { tags: { rgpd: "art17", etape: "interdire-crm-opposition" } },
+      );
+    }
+  }
   const r = await prisma.crmSyncOutbox.deleteMany({
     where: {
       OR: [
@@ -1865,6 +1883,17 @@ export const EXCEPTIONS_EFFACEMENT_DOSSIER: ReadonlyArray<{
       "à la main, sous le drapeau d'effacement.",
   },
   {
+    // Devis à formules, lot 4 (2026-11-06) : le fait `commande.signee`, rangé avec l'acceptation.
+    modele: "ConsoleCommande",
+    motif:
+      "copie du choix signé (société, nom et fonction du signataire, formule, montants), rangée " +
+      "dans la même transaction que l'acceptation du devis : preuve contractuelle, conservée " +
+      "comme la signature qu'elle copie (art. 17(3)(e)) ; jamais supprimée automatiquement " +
+      "(ordre permanent) et protégée par un déclencheur qui refuse modification du contenu et " +
+      "suppression. Aucune adresse IP, aucun lien de signature. Toute demande d'effacement est " +
+      "traitée à la main par Will.",
+  },
+  {
     // Audit présentiel (2026-11-02, PR1) : journal en ajout seul, jamais supprimé (ordre permanent).
     modele: "AuditTerrainRapport",
     motif:
@@ -2593,8 +2622,8 @@ export const MOTIF_ECART_RAPPORT_RGPD = "demande d'effacement RGPD (art. 17) du 
 /**
  * Rapports d'analyse avant audit établis sur les questionnaires du DIRIGEANT qui demande
  * l'effacement (2026-11-02) : MIS À L'ÉCART, JAMAIS SUPPRIMÉS (règle de Will : aucune purge de
- * données clients). La base n'est plus déchiffrée par la console (`lireBaseAudit` refuse une ligne
- * écartée) ; un lancement encore en attente ou en cours est ANNULÉ (le worker ne peut plus y
+ * données clients). La base n'est plus déchiffrée : plus aucun code ne la déchiffre ;
+ * un lancement encore en attente ou en cours est ANNULÉ (le worker ne peut plus y
  * écrire). L'appelant ALERTE Will, qui décide de la suite.
  *
  * ⚠️ À appeler AVANT `eraseCalendlyEventsForEmail` : celui-ci retire l'adresse et l'empreinte par

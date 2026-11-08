@@ -21,6 +21,7 @@ const envoisDeLaDerniereHeure = vi.fn();
 const coupeCircuitDeclenche = vi.fn();
 const verdictAvantEnvoi = vi.fn();
 const enqueueEmail = vi.fn();
+const estOpposee = vi.fn();
 
 vi.mock("@/lib/prisma", () => ({
   prisma: {
@@ -49,6 +50,9 @@ vi.mock("../coupe-circuit", () => ({
 }));
 vi.mock("@/server/email/verdict-envoi", () => ({
   verdictAvantEnvoi: (...a: unknown[]) => verdictAvantEnvoi(...a),
+}));
+vi.mock("@/server/email/opposition", () => ({
+  estOpposee: (...a: unknown[]) => estOpposee(...a),
 }));
 vi.mock("@/server/queue/queues", () => ({
   enqueueEmail: (...a: unknown[]) => enqueueEmail(...a),
@@ -83,6 +87,73 @@ beforeEach(() => {
   coupeCircuitDeclenche.mockReset().mockResolvedValue(false);
   verdictAvantEnvoi.mockReset().mockResolvedValue({ retenu: false });
   enqueueEmail.mockReset().mockResolvedValue({ enqueued: true });
+  estOpposee.mockReset().mockResolvedValue(false);
+});
+
+describe("rattraperGuides — adresse opposée (toutes origines)", () => {
+  it("🔴 origine message_prive + adresse opposée : rien n'est mis en file, rien n'est supprimé", async () => {
+    guideFindMany.mockResolvedValue([{ ...CANDIDATE, origine: "message_prive" }]);
+    estOpposee.mockResolvedValue(true);
+    const r = await rattraperGuides(MAINTENANT);
+    expect(mettreEnFileGuide).not.toHaveBeenCalled();
+    expect(r.relancees).toBe(0);
+    expect(r.ecartees).toBe(1);
+    expect(estOpposee).toHaveBeenCalledWith(CANDIDATE.email);
+  });
+
+  it("témoin : message_prive non opposée est bien reprise", async () => {
+    guideFindMany.mockResolvedValue([{ ...CANDIDATE, origine: "message_prive" }]);
+    const r = await rattraperGuides(MAINTENANT);
+    expect(r.relancees).toBe(1);
+  });
+
+  it("origine formulaire + adresse opposée : écartée, rien mis en file, rien modifié", async () => {
+    guideFindMany.mockResolvedValue([{ ...CANDIDATE, origine: "formulaire" }]);
+    estOpposee.mockResolvedValue(true);
+    const r = await rattraperGuides(MAINTENANT);
+    expect(r.relancees).toBe(0);
+    expect(r.ecartees).toBe(1);
+    expect(mettreEnFileGuide).not.toHaveBeenCalled();
+    expect(abonneFindUnique).not.toHaveBeenCalled();
+    expect(guideUpdateMany).not.toHaveBeenCalled();
+    expect(estOpposee).toHaveBeenCalledWith(CANDIDATE.email);
+    // Ordre exigé : réparation → opposition → verdict → lettre. Le verdict n'est jamais consulté.
+    expect(verdictAvantEnvoi).not.toHaveBeenCalled();
+  });
+
+  it("ligne sans origine + adresse opposée : écartée", async () => {
+    guideFindMany.mockResolvedValue([{ ...CANDIDATE }]);
+    estOpposee.mockResolvedValue(true);
+    const r = await rattraperGuides(MAINTENANT);
+    expect(r.relancees).toBe(0);
+    expect(r.ecartees).toBe(1);
+    expect(mettreEnFileGuide).not.toHaveBeenCalled();
+  });
+
+  it("estOpposee rejette : rattraperGuides rejette et rien n'est mis en file (échec fermé)", async () => {
+    guideFindMany.mockResolvedValue([{ ...CANDIDATE, origine: "formulaire" }]);
+    estOpposee.mockRejectedValue(new Error("base indisponible"));
+    await expect(rattraperGuides(MAINTENANT)).rejects.toThrow("base indisponible");
+    expect(mettreEnFileGuide).not.toHaveBeenCalled();
+  });
+
+  it("témoin : formulaire non opposée est bien reprise", async () => {
+    guideFindMany.mockResolvedValue([{ ...CANDIDATE, origine: "formulaire" }]);
+    const r = await rattraperGuides(MAINTENANT);
+    expect(r.relancees).toBe(1);
+  });
+
+  it("ligne déjà envoyée (journal sent) + adresse opposée : trace réparée, aucun envoi", async () => {
+    guideFindMany.mockResolvedValue([{ ...CANDIDATE, origine: "formulaire" }]);
+    emailLogFindMany.mockResolvedValue([
+      { status: "sent", sentAt: new Date("2026-09-24T10:00:00Z") },
+    ]);
+    estOpposee.mockResolvedValue(true);
+    const r = await rattraperGuides(MAINTENANT);
+    expect(r.reparees).toBe(1);
+    expect(r.relancees).toBe(0);
+    expect(mettreEnFileGuide).not.toHaveBeenCalled();
+  });
 });
 
 describe("rattraperGuides — ce qui est repris", () => {

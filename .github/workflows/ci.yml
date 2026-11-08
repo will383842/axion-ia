@@ -420,8 +420,39 @@ jobs:
           path: coverage/
           retention-days: 7
 
+  # ═══════════════════════════════════════════════════════════════════
+  # 🔵 2026-11-05 — GATE B EST DÉCOUPÉE EN DEUX TRANCHES PARALLÈLES.
+  #
+  # Mesuré sur 10 runs de PR verts (41868746865 → 41986727435) : job de
+  # 23,4 à 32,4 min, médiane ~30 min, dont Build 10,6 min (médiane) et
+  # « Playwright suite » 16,2 min (médiane, 12,3-17,1). Installation pnpm,
+  # client Prisma, navigateurs Playwright et semis : < 1 min à eux tous.
+  # Ce qui domine est donc la suite E2E, puis le build.
+  #
+  # Chaque tranche refait EXACTEMENT le même job qu'avant (mêmes services,
+  # même build, même semis, mêmes gardes, même `bundle:check`) et ne joue
+  # que la moitié des tests (`--shard=i/2`). Aucun test n'est retiré : les
+  # deux tranches forment une partition de la même sélection
+  # (`--project=chromium --grep-invert "@baseline|@formateurs"`).
+  #
+  # 🔴 POURQUOI DEUX ET PAS TROIS — mesuré sur le run 41994729311 (+ sa relance).
+  # `--shard` découpe dans l'ORDRE des fichiers. En 3, la tranche 3 recevait
+  # les 131 audits `qualiopi/public-routes` SANS les specs `flows/` qui, dans
+  # la suite entière, visitent `/fr/formations` avant eux. Sur un serveur
+  # froid, ces pages (dont les fiches `[slug]` rendues à la demande, ISR
+  # `dynamicParams`) dépassaient le `networkidle` de 45 s : 6 puis 3 échecs,
+  # toujours `/fr/formations*`, `/fr/catalogue`, `/fr/audit`. En 2, la
+  # tranche 2 garde `flows/` AVANT `qualiopi/`, comme la suite entière.
+  # ⚠️ Cette dépendance d'ordre (serveur « chauffé » par d'autres specs) est
+  # PRÉEXISTANTE ; le découpage l'a seulement révélée. Ne pas passer à 3+
+  # tranches sans la traiter d'abord.
+  #
+  # 🔑 Le contexte EXIGÉ par la protection de `main` reste « Gate B · per-PR » :
+  # c'est le job `gate-b-verdict` ci-dessous, qui ne peut être vert que si les
+  # DEUX tranches le sont (même patron que « Gate A · couverture »).
+  # ═══════════════════════════════════════════════════════════════════
   gate-b:
-    name: Gate B · per-PR
+    name: Gate B · tranche ${{ matrix.tranche }}/2
     # `merge_group` doit figurer ici : en file de fusion, un job SKIPPÉ sur un
     # contexte EXIGÉ n'est pas un job vert — la file resterait bloquée dessus.
     # 🔴 2026-09-12 — `workflow_dispatch` AJOUTÉ, ET C'EST UN DÉFAUT MESURÉ.
@@ -453,6 +484,12 @@ jobs:
     # job tué en « cancelled » ne rend AUCUN résultat — c'est déjà arrivé le
     # 2026-05-30 (run 26674394530), Lighthouse jamais lancé.
     timeout-minutes: 90
+    strategy:
+      # Une tranche rouge n'annule pas les autres : une PR cassée rend TOUS ses
+      # tests E2E rouges en une seule passe (même doctrine que Gate A).
+      fail-fast: false
+      matrix:
+        tranche: [1, 2]
     # 🔴 BASE DE DONNÉES E2E (2026-08-21) — LE HARNAIS DOIT AVOIR UNE BASE.
     #
     # Quatre specs Playwright (`a11y-admin`, `admin-nav-clic`, `admin-booking-flow`,
@@ -796,8 +833,10 @@ jobs:
           echo "cache-hit=${{ steps.cache-tsc.outputs.cache-hit }} matched=${{ steps.cache-tsc.outputs.cache-matched-key }}"
       # Sauvegarde seulement si le build a réussi (condition par défaut) et si la
       # clé exacte n'existait pas : une clé de GitHub Actions est immuable.
+      # Tranche 1 seulement : les deux tranches calculent la MÊME clé, et une
+      # clé de cache est immuable — deux sauvegardes concurrentes se disputeraient.
       - name: Sauver le cache incrémental TypeScript
-        if: ${{ steps.cache-tsc.outputs.cache-hit != 'true' }}
+        if: ${{ steps.cache-tsc.outputs.cache-hit != 'true' && matrix.tranche == 1 }}
         uses: actions/cache/save@v6
         with:
           path: .next/cache/.tsbuildinfo
@@ -1031,7 +1070,9 @@ jobs:
         # SMTP). Elle tourne dans son job, `banc-formateurs.yml`. Une spec
         # d'ÉCRAN ou de GARDE du chantier reste ici : elle ne porte pas le tag.
         # Garde : `tests/unit/ci/le-banc-formateurs-a-son-job.spec.ts`.
-        run: pnpm test:e2e --project=chromium --grep-invert "@baseline|@formateurs"
+        # `--shard` : chaque tranche joue la moitié de la MÊME sélection. Les
+        # groupes `describe.serial` restent entiers dans une seule tranche.
+        run: pnpm test:e2e --project=chromium --grep-invert "@baseline|@formateurs" --shard=${{ matrix.tranche }}/2
         # 🔴 15 → 30 (2026-08-21). Les DEUX premiers runs où la suite a réellement
         # tourné ont été COUPÉS par ce plafond, pas terminés :
         #   run 32447074166 — 04:39:06 → 04:54:30 = 15 min 24 s
@@ -1066,7 +1107,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: a11y-console-mesure
+          name: a11y-console-mesure-${{ matrix.tranche }}
           path: _AUDIT/a11y-console-*.json
           if-no-files-found: ignore
           retention-days: 30
@@ -1169,12 +1210,41 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v7
         with:
-          name: gate-b-${{ github.run_id }}
+          # Un nom par tranche : deux artefacts du même nom dans un run sont refusés.
+          name: gate-b-${{ github.run_id }}-${{ matrix.tranche }}
           path: |
             playwright-report/
             test-results/
             lhci/
           retention-days: 7
+
+  gate-b-verdict:
+    # ⛔ CE NOM EST LE CONTEXTE EXIGÉ PAR LA PROTECTION DE `main`. Ne pas le changer.
+    name: Gate B · per-PR
+    needs: gate-b
+    # `always()` : ce job doit TOUJOURS rendre un verdict sous le nom exigé.
+    # Sans lui, une tranche rouge le ferait `skipped` — et un contexte exigé
+    # sauté n'est pas un contexte rouge. L'étape transforme tout résultat autre
+    # que `success` (échec, annulation, saut) en rouge. Les trois autres
+    # conditions sont celles de `gate-b`, à l'identique : hors de ces
+    # événements, Gate B n'a jamais tourné et ne tourne toujours pas.
+    if: >-
+      always() && (
+      github.event_name == 'pull_request' ||
+      github.event_name == 'merge_group' ||
+      (github.event_name == 'workflow_dispatch' && github.event.inputs.a11y_routes != ''))
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Les deux tranches ont réussi
+        env:
+          RESULTAT: ${{ needs.gate-b.result }}
+        run: |
+          if [ "${RESULTAT}" != "success" ]; then
+            echo "::error::Tranches de Gate B : « ${RESULTAT} » (attendu : success). Gate B · per-PR ne peut pas être verte."
+            exit 1
+          fi
+          echo "Les deux tranches de Gate B sont vertes."
 
   gate-c-docker:
     # Boots the production Dockerfile end-to-end against ephemeral Redis +
@@ -1520,6 +1590,18 @@ jobs:
         run: |
           PGPASSWORD=ci_password_dummy psql -h localhost -U axion_ia_ci -d axion_ia_ci \
             -v ON_ERROR_STOP=1 -f tests/sql/numeros-emis-comportement.sql
+      # Archive immuable des versions de CGV (2026-11-05) : UPDATE, DELETE et
+      # TRUNCATE refusés par déclencheur, empreintes bornées par CHECK. Cas ANNULÉS.
+      - name: Archive des CGV — comportement SQL
+        run: |
+          PGPASSWORD=ci_password_dummy psql -h localhost -U axion_ia_ci -d axion_ia_ci \
+            -v ON_ERROR_STOP=1 -f tests/sql/cgv-archives-comportement.sql
+      # Signature renforcée du devis (2026-11-07) : déclaration du signataire tout-ou-rien par CHECK,
+      # horodatage RFC 3161 en ajout seul, jeton obtenu définitif. Cas ANNULÉS.
+      - name: Signature renforcée du devis — comportement SQL
+        run: |
+          PGPASSWORD=ci_password_dummy psql -h localhost -U axion_ia_ci -d axion_ia_ci \
+            -v ON_ERROR_STOP=1 -f tests/sql/signature-renforcee-comportement.sql
       # ADR 0060 (2026-09-30) — le journal des réouvertures de dossier de session
       # est en ajout seul : UPDATE/DELETE refusés par trigger, motif de
       # réouverture ≥ 10 caractères par CHECK, deux réouvertures = deux lignes,

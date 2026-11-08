@@ -28,7 +28,9 @@ de traitement) côté sous-processeurs. Révision trimestrielle minimum.
 | 11  | Voyage AI, Inc.            | Embeddings KB (voyage-3-lite)        | États-Unis              | online | SCC + EU-US DPF            | 🟡 à signer     |
 | 12  | Stripe Payments Europe Ltd | Paiements (Checkout + Radar)         | Irlande (UE) + USA      | online | SCC + EU-US DPF            | 🟡 à accepter   |
 | 13  | OSM Foundation (Nominatim) | Géocodage villes saisies             | UK + UE                 | NA     | Décision d'adéquation UE   | ✅ usage public |
-| 14  | DocuSeal (self-hosted)     | Signature électronique contrats      | Allemagne (VPS Hetzner) | NA     | UE intra-zone              | ✅ self-hosted  |
+| 14  | DocuSeal (self-hosted)     | **Actif : contrats d'apporteurs.** Devis : usage historique (un seul devis, avant le 30/07/2026, conservé) | Allemagne (VPS Hetzner) | NA     | UE intra-zone              | ✅ self-hosted  |
+| 14b | Signature maison Axion-IA (procédé interne) | Signature électronique maison (IP hachée, image de signature, identité, empreinte) | Hetzner (DB) + Cloudflare R2 | NA | UE intra-zone | ✅ interne |
+| 14c | Autorité d'horodatage RFC 3161 (gratuit, à désigner ; aucune par défaut) | Horodatage du sceau d'une signature de devis : **empreinte SHA-256 seule** | À préciser à la désignation | NA — aucune donnée personnelle | À préciser | ✅ sans objet (voir §7octies) |
 | 15  | Microsoft Corporation      | Clarity analytics qualitatifs UX     | États-Unis (Azure)      | online | SCC + EU-US DPF            | 🟡 à signer     |
 | 16  | Calendly LLC               | Prise de RDV /appel + capture event  | États-Unis (AWS)        | accepté | SCC                       | ✅ DPA accepté 2026-08-28 |
 | 17  | Zoho Corporation (ZeptoMail) | Relais SMTP transactionnel — TOUS les e-mails sortants | Union européenne (`smtp.zeptomail.eu`) | signé | UE intra-zone | ✅ DPA signé |
@@ -484,21 +486,61 @@ de traitement) côté sous-processeurs. Révision trimestrielle minimum.
 
 ---
 
-## 7sexies. DocuSeal Community (self-hosted)
+## 7sexies. DocuSeal Community (self-hosted) — ACTIF (contrats d'apporteurs) ; devis : usage historique (2026-11-06)
 
-| Champ                     | Valeur                                                                                                   |
-| ------------------------- | -------------------------------------------------------------------------------------------------------- |
-| **Nom légal**             | Auto-hébergement (open-source DocuSeal Community Edition)                                                |
-| **Adresse**               | Hébergement Hetzner Frankfurt (VPS dédié AXION IA SAS)                                                   |
-| **Finalité**              | Signature électronique des contrats et devis (Sprint X.3+)                                               |
-| **Données traitées**      | Nom et email des signataires, contenu signé du contrat, horodatage cryptographique, hash PDF             |
-| **Localisation physique** | Allemagne (UE) — auto-hébergé                                                                            |
-| **Garanties**             | Pas de tiers extérieur (AXION IA SAS seul responsable). Backups chiffrés AES-256 sur Hetzner Storage Box. |
-| **DPA**                   | NA — pas de sous-traitant externe                                                                        |
-| **Lien**                  | https://www.docuseal.com                                                                                 |
-| **Statut**                | ✅ **CONFORME** (self-hosted UE)                                                                         |
+| Champ                     | Valeur                                                                                                                                  |
+| ------------------------- | --------------------------------------------------------------------------------------------------------------------------------------- |
+| **Nom légal**             | Auto-hébergement (open-source DocuSeal Community Edition)                                                                               |
+| **Adresse**               | Hébergement Hetzner Frankfurt (VPS dédié AXION IA SAS)                                                                                  |
+| **Finalité**              | **Contrats d'apporteurs : usage actif.** **Devis : usage historique** — un seul devis a été signé par ce procédé avant le 30/07/2026 et il est conservé ; les nouveaux devis se signent par le procédé interne (section 7septies) |
+| **Données traitées**      | Contrats d'apporteurs : nom, e-mail et signature des signataires, contenu signé, journal d'audit (horodatage, IP, navigateur), empreinte du PDF. Devis historique (un seul) : nom et e-mail du signataire, contenu signé, horodatage, empreinte du PDF |
+| **Localisation physique** | Allemagne (UE) — auto-hébergé                                                                                                           |
+| **Garanties**             | Pas de tiers extérieur (AXION IA SAS seul responsable). Backups chiffrés AES-256 sur Hetzner Storage Box.                               |
+| **DPA**                   | NA — pas de sous-traitant externe                                                                                                       |
+| **Lien**                  | https://www.docuseal.com                                                                                                                |
+| **Statut**                | ✅ **CONFORME** (self-hosted UE). Preuve du devis historique : `scripts/export-docuseal-devis-historique.ts` (PDF signé + journal d'audit versés dans R2). |
+
+## 7septies. Signature maison Axion-IA (procédé de signature électronique interne)
+
+| Champ                | Valeur                                                                                                     |
+| -------------------- | ---------------------------------------------------------------------------------------------------------- |
+| **Nature**           | Procédé développé par Axion-IA, sans prestataire de signature tiers                                        |
+| **Finalité**         | Signature des devis et documents contractuels ; le contrat est formé à la contresignature d'Axion-IA (CGV art. 6.2) |
+| **Données traitées** | Adresse IP hachée, image de signature, identité du signataire, empreinte du document                       |
+| **Localisation**     | Base : Hetzner (UE) ; pièces et images de signature : Cloudflare R2 (cf. section Cloudflare)               |
+| **DPA**              | NA — pas de sous-traitant supplémentaire                                                                   |
+| **Statut**           | ✅ **CONFORME** (interne, UE)                                                                              |
+
+### 7septies.1 — Signature renforcée du devis à formules (lot 4 bis) : conservation et droits
+
+| Donnée | Durée de conservation | Effacement / export (RGPD) |
+| ------ | --------------------- | -------------------------- |
+| `document_signatures` : `signataireNom`, `signataireEmail`, **`declarationNom`, `declarationFonction`**, `pouvoirDeclareAt`, `codeVerifieAt` | Durée de la preuve de signature (conservation du devis signé) | **Exception « colonne scellée »** (art. 17(3)(e), art. 1366 C. civ.) : ces colonnes entrent dans l'empreinte du sceau V4 ; les écraser ferait rendre `empreinte_invalide`. Déclarée dans `src/lib/rgpd-erase.ts` et `rgpd-aucune-table-n-echappe-en-silence.spec.ts`. |
+| **`document_signature_codes`** (code **haché** HMAC, `jeton_id`, essais, instants) | **Pas de purge automatique** : aucune suppression logique n'est possible sans perdre la preuve que le code a été vérifié avant la signature ; la durée de conservation est donc **celle de la preuve de signature** du devis auquel la ligne se rattache. Le code n'est jamais lisible (HMAC à clé serveur, 6 chiffres, expiré après 10 min) ; `jeton_id` ne renvoie à l'adresse que via le jeton, dont l'adresse est pseudonymisée à l'effacement (`eraseSignatureTokensForEmail`). | Aucune donnée en clair : hors périmètre de l'effacement (« technique »). |
+| `document_signature_echecs` (compteur d'échecs par pièce) | Idem : compteur et dates seulement, ni nom, ni adresse, ni code. | Hors périmètre (technique). |
+| `document_signature_horodatages` (empreinte SHA-256 du sceau, jeton) | Durée de la preuve de signature | Aucune donnée personnelle en clair (empreinte non réversible). |
+
+**Export RGPD de la personne** : il n'existe **aucun export des signataires de devis** (ni dans `rgpd-service.ts`
+ni ailleurs) ; une demande d'accès d'un signataire se traite à la main, sur demande écrite à l'organisme, à partir de
+`document_signatures` (nom, fonction, déclaration, adresse). Pas d'e-mail automatique. À ouvrir en lot dédié si
+le volume le justifie.
 
 ---
+
+
+## 7octies. Autorité d'horodatage RFC 3161 (à désigner — aucune par défaut) — lot 4 bis, 2026-11-07
+
+| Champ                | Valeur                                                                                                     |
+| -------------------- | ---------------------------------------------------------------------------------------------------------- |
+| **Nature**           | Service GRATUIT d'horodatage (norme RFC 3161), autorité **à désigner par Will** ; **désactivé** tant que `HORODATAGE_TSA_URL` et `HORODATAGE_TSA_CA_PEM` ne sont pas posées |
+| **Finalité**         | Horodater le sceau de la signature d'un devis (preuve que l'empreinte existait à l'instant du jeton)       |
+| **Données traitées** | **Une empreinte SHA-256** (64 hexadécimaux, non réversible) et un nombre aléatoire. Ni nom, ni e-mail, ni montant, ni document. |
+| **Localisation**     | Selon l'autorité désignée (`HORODATAGE_TSA_URL`, HTTPS en production) ; AUCUNE par défaut depuis l'audit sécurité du 2026-11-07 — horodatage coupé tant qu'elle n'est pas choisie           |
+| **Sous-traitant ?**  | Non au sens de l'art. 28 RGPD : aucune donnée personnelle ne lui est confiée. Déclaré en transparence.     |
+| **Dégradation**      | Autorité injoignable : la signature reste valable, le jeton est redemandé par le worker (sans plafond d'essais) |
+| **Vérification**     | Un jeton n'est conservé que si sa signature CMS, l'usage `timeStamping` et la chaîne jusqu'à `HORODATAGE_TSA_CA_PEM` se vérifient ; réponse lue en flux, plafond 64 Ko |
+| **Si l'autorité est désignée / change** | Corriger CETTE section et l'entrée de `src/content/subprocessors.ts` (nom, localisation, `active`) dans la même PR |
+| **Statut**           | ✅ **SANS OBJET** (pas de données personnelles) — à reconfirmer si l'on transmet autre chose qu'une empreinte |
 
 ## 8. Action correctif Backblaze (clarification legal.ts)
 

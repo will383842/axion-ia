@@ -25,6 +25,9 @@ import { gardePage } from "@/server/auth/garde-page";
 import { chargerAideDuProjet } from "@/features/dossier-client/aide-du-projet";
 import { CeQueLeClientADit } from "@/features/dossier-client/ce-que-le-client-a-dit";
 import { isUuid } from "@/lib/is-uuid";
+import { prisma } from "@/lib/prisma";
+import { formulesActives } from "@/server/qualiopi/devis/interrupteur-formules";
+import { TAUX_TVA_STANDARD } from "@/server/qualiopi/legal/tva";
 
 export const dynamic = "force-dynamic";
 
@@ -82,6 +85,7 @@ export default async function QualiopiDevisNewPage({ params, searchParams }: Pag
     : undefined;
 
   const basePath = `/${locale}/${adminPrefix}/qualiopi/devis`;
+  const clientPreselectionne = clientOptions.find((c) => c.id === defaultClientId);
 
   // Chantier visio (PR 7) : le lien au projet et l'aide à côté — la garde A2
   // (rôle non habilité : lien gardé, rien lu du dossier) est dans le chargeur.
@@ -90,6 +94,17 @@ export default async function QualiopiDevisNewPage({ params, searchParams }: Pag
     clientId: defaultClientId,
     projetId: sp.projetId,
   });
+
+  // Mode formules : proposé SEULEMENT si l'interrupteur est allumé (éteint par défaut) ;
+  // les textes copiés dans l'offre sont ceux de la bibliothèque « actifs par défaut ».
+  const formulesOn = await formulesActives();
+  const textesParDefaut = formulesOn
+    ? await prisma.devisTexteBibliotheque.findMany({
+        where: { archiveAt: null, actifParDefaut: true },
+        orderBy: [{ formule: "asc" }, { nature: "asc" }, { ordre: "asc" }],
+        select: { id: true, version: true, texte: true },
+      })
+    : [];
 
   const formulaire = (
     <DevisForm
@@ -100,6 +115,19 @@ export default async function QualiopiDevisNewPage({ params, searchParams }: Pag
         label: ACTIVITE_LABELS[value],
       }))}
       basePath={basePath}
+      {...(formulesOn
+        ? {
+            formules: {
+              tvaStandardPct: TAUX_TVA_STANDARD,
+              textes: textesParDefaut.map((t) => ({
+                bibliothequeId: t.id,
+                version: String(t.version),
+                texte: t.texte,
+                actif: true,
+              })),
+            },
+          }
+        : {})}
       {...(defaultClientId !== undefined ? { defaultClientId } : {})}
       {...(projetId !== null ? { projetId } : {})}
     />
@@ -107,17 +135,25 @@ export default async function QualiopiDevisNewPage({ params, searchParams }: Pag
 
   return (
     <AdminPageShell width={aide !== null ? "wide" : "narrow"}>
-      <div className="mb-[var(--space-admin-4)]">
+      <div className="mb-[var(--space-admin-4)] flex flex-wrap items-center gap-x-[var(--space-admin-4)] gap-y-[var(--space-admin-2)]">
+        {clientPreselectionne !== undefined ? (
+          <Link
+            href={`/${locale}/${adminPrefix}/qualiopi/clients/${clientPreselectionne.id}`}
+            className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-accent)] underline-offset-2 hover:underline"
+          >
+            ← {clientPreselectionne.raisonSociale}
+          </Link>
+        ) : null}
         <Link
           href={basePath}
-          className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-accent)] underline hover:no-underline"
+          className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-accent)] underline-offset-2 hover:underline"
         >
-          ← Retour aux devis
+          ← Devis
         </Link>
         {isUuid(sp.rencontreId) ? (
           <Link
             href={`/${locale}/${adminPrefix}/rendez-vous/rencontres/${sp.rencontreId}`}
-            className="ml-[var(--space-admin-4)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-accent)] underline hover:no-underline"
+            className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-accent)] underline-offset-2 hover:underline"
           >
             ← Rendez-vous
           </Link>
@@ -126,7 +162,11 @@ export default async function QualiopiDevisNewPage({ params, searchParams }: Pag
 
       <AdminPageHeader
         title="Nouveau devis"
-        description="Créez un devis commercial formation. Le numéro est alloué automatiquement (AXI-DEV-AAAA-NNN). La TVA suit le régime configuré."
+        description={
+          clientPreselectionne !== undefined
+            ? `Devis pour ${clientPreselectionne.raisonSociale}. Le numéro est alloué automatiquement (AXI-DEV-AAAA-NNN). La TVA suit le régime configuré.`
+            : "Créez un devis commercial formation. Le numéro est alloué automatiquement (AXI-DEV-AAAA-NNN). La TVA suit le régime configuré."
+        }
       />
 
       {aide !== null ? (

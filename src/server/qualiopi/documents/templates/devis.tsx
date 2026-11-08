@@ -40,6 +40,8 @@ import {
   TAUX_TVA_STANDARD,
   type RegimeTva,
 } from "@/server/qualiopi/legal/tva";
+import type { VueFormule, VueFormules } from "@/server/qualiopi/devis/vue-formules";
+import type { ChoixImprimable } from "@/server/qualiopi/devis/choix-exemplaire";
 import {
   brandColor,
   QUALIOPI_PDF_TYPE as T,
@@ -96,6 +98,40 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     textAlign: "right",
   },
+  // ── Formules A / B côte à côte (devis à formules) ──
+  formulesRow: { flexDirection: "row", marginTop: S.md },
+  formuleCol: {
+    flexGrow: 1,
+    flexShrink: 1,
+    flexBasis: 0,
+    borderWidth: 1,
+    borderColor: brandColor("border-strong"),
+    borderRadius: S.radius,
+    padding: S.md,
+  },
+  formuleGap: { width: S.md },
+  formuleTitre: {
+    fontSize: T.md,
+    fontWeight: "bold",
+    color: brandColor("mocha"),
+    marginBottom: S.sm,
+  },
+  formuleSousTitre: {
+    fontSize: T.xs,
+    fontWeight: "bold",
+    color: brandColor("fg-soft"),
+    marginTop: S.sm,
+    marginBottom: S.xs,
+  },
+  fRow: { flexDirection: "row", paddingVertical: 2 },
+  fLabel: { fontSize: T.xs, flex: 1, color: brandColor("fg") },
+  fValue: {
+    fontSize: T.xs,
+    color: brandColor("fg"),
+    fontFamily: "Inconsolata",
+    textAlign: "right",
+  },
+  fNote: { fontSize: T.xs, color: brandColor("fg-muted"), marginBottom: 2 },
   legalLine: {
     fontSize: T.xs,
     color: brandColor("fg"),
@@ -123,6 +159,36 @@ const styles = StyleSheet.create({
     color: brandColor("fg-muted"),
     marginBottom: S.lg,
   },
+  // Bloc « Formule retenue par le client » (exemplaire signé d'un devis à formules).
+  choixTitle: {
+    fontSize: T.sm,
+    fontWeight: "bold",
+    color: brandColor("mocha"),
+    marginBottom: S.xs,
+  },
+  choixLine: {
+    fontSize: T.xs,
+    color: brandColor("fg"),
+    lineHeight: T.lineNormal,
+    marginBottom: 2,
+  },
+  choixSceau: {
+    fontSize: T.xs,
+    color: brandColor("fg-muted"),
+    marginTop: S.xs,
+  },
+  // Encadré du choix : MÊME cadre que `accordBox`, mais SANS `wrap={false}` — un choix long
+  // (nombreuses automatisations, lignes récurrentes) peut dépasser une page ; un bloc insécable
+  // plus haut que la page serait rogné. Le « Bon pour accord » + signatures, eux, restent insécables.
+  choixBox: {
+    marginTop: S.xxl,
+    borderWidth: 1,
+    borderColor: brandColor("border-strong"),
+    borderRadius: S.radius,
+    backgroundColor: brandColor("bg"),
+    padding: S.lg,
+  },
+  accordBoxApresChoix: { marginTop: S.lg },
   // ⚠️ `accordLine` a été retiré avec les trois lignes « Nom / Date / Signature »
   // à remplir au stylo : `SignatureZone` porte désormais les cadres, vides ou
   // renseignés. Le laisser aurait été du style mort.
@@ -160,6 +226,11 @@ export interface DevisData {
   identite: OrganismeIdentite;
   client: ClientDevis;
   lignes: LigneFacture[];
+  /**
+   * Devis à formules (v3) : vue prête à imprimer des formules A et/ou B. ABSENTE = mise en
+   * page historique (détail des prestations + totaux), inchangée.
+   */
+  formules?: VueFormules;
   /**
    * Régime de TVA appliqué (assujetti 20 % / exonération 261-4-4° / franchise
    * 293 B). Capturé depuis la config au moment de l'émission (instantané).
@@ -201,6 +272,191 @@ export interface DevisData {
    * qu'il a lue, et non un document séparé à trois champs.
    */
   signatures?: PreuvesParPartie;
+  /**
+   * Choix SCELLÉ du client (devis à formules), injecté par `exemplaire-signe.ts` seulement
+   * quand le sceau de la ligne client est cohérent avec l'offre figée. ABSENT = rendu
+   * identique à celui d'avant (original, devis classique, sceau incohérent).
+   */
+  choixRetenu?: ChoixImprimable;
+}
+
+// ============================================================
+// Devis à formules — blocs d'affichage (v3)
+// ============================================================
+
+const pct = (n: number): string => String(n).replace(".", ",");
+const eur = (c: number): string => formatEurosFromCents(c);
+
+function FRow({ label, value }: { label: string; value?: string }): React.ReactElement {
+  return (
+    <View style={styles.fRow}>
+      <Text style={styles.fLabel}>{label}</Text>
+      {value !== undefined ? <Text style={styles.fValue}>{value}</Text> : null}
+    </View>
+  );
+}
+
+function FormuleColonne({ f }: { f: VueFormule }): React.ReactElement {
+  const a = f.abonnement;
+  const m = f.maintenance;
+  return (
+    <View style={styles.formuleCol}>
+      <Text style={styles.formuleTitre}>{f.titre}</Text>
+
+      <Text style={styles.formuleSousTitre}>Prestations</Text>
+      {f.lignes.map((l, i) => (
+        <View key={i}>
+          <FRow label={l.designation} value={eur(l.totalHtCents)} />
+          <Text style={styles.fNote}>
+            {`${l.quantite} × ${eur(l.prixUnitaireHtCents)} HT — TVA ${pct(l.tauxTvaPercent)} %${
+              l.precision ? ` — ${l.precision}` : ""
+            }`}
+          </Text>
+        </View>
+      ))}
+
+      {f.options.length > 0 ? (
+        <View>
+          <Text style={styles.formuleSousTitre}>Options (non comprises dans le total)</Text>
+          {f.options.map((l, i) => (
+            <View key={i}>
+              <FRow label={l.designation} value={eur(l.totalHtCents)} />
+              <Text style={styles.fNote}>
+                {`HT — TVA ${pct(l.tauxTvaPercent)} %${l.precision ? ` — ${l.precision}` : ""}`}
+              </Text>
+            </View>
+          ))}
+        </View>
+      ) : null}
+
+      <View style={{ marginTop: S.sm }}>
+        <FRow label="Total HT" value={eur(f.totalHtCents)} />
+        <FRow label="TVA" value={eur(f.totalTvaCents)} />
+        <FRow label="Total TTC" value={eur(f.totalTtcCents)} />
+      </View>
+
+      <Text style={styles.formuleSousTitre}>Paiement de la partie ponctuelle (HT)</Text>
+      {f.phases.map((p) => (
+        <View key={p.rang}>
+          <FRow label={`${p.libelle} — ${p.pourcentage} %`} value={eur(p.montantHtCents)} />
+          <Text style={styles.fNote}>{p.declencheur}</Text>
+        </View>
+      ))}
+
+      {a ? (
+        <View>
+          <Text style={styles.formuleSousTitre}>Abonnement</Text>
+          <FRow
+            label={`Mensualité (TVA ${pct(a.tauxTvaPercent)} %)`}
+            value={`${eur(a.mensuelCatalogueHtCents)} HT`}
+          />
+          {a.periodes.map((p) => (
+            <View key={p.mois}>
+              <FRow
+                label={`${p.mois} mois${p.remisePercent > 0 ? ` — remise ${pct(p.remisePercent)} %` : ""}`}
+                value={`${eur(p.prixPeriodeHtCents)} HT`}
+              />
+              <Text style={styles.fNote}>{`soit ${eur(p.mensuelNetHtCents)} HT par mois`}</Text>
+            </View>
+          ))}
+          <Text style={styles.fNote}>{a.terme}</Text>
+          <Text style={styles.fNote}>{a.modeAvance}</Text>
+          <FRow
+            label="Engagement"
+            value={a.engagementMois > 0 ? `${a.engagementMois} mois` : "Sans engagement"}
+          />
+          <FRow label={a.reconduction} />
+          <FRow label="Préavis de résiliation" value={`${a.preavisMois} mois`} />
+          <FRow
+            label="Indemnité de sortie anticipée (maximum)"
+            value={
+              a.indemniteSortieMaxHtCents !== null
+                ? `${eur(a.indemniteSortieMaxHtCents)} HT`
+                : "Aucune"
+            }
+          />
+        </View>
+      ) : null}
+
+      {m ? (
+        <View>
+          <Text style={styles.formuleSousTitre}>
+            {`Maintenance — ${m.obligatoire ? "obligatoire" : "facultative"}`}
+          </Text>
+          <FRow label="Mensualité" value={`${eur(m.mensuelHtCents)} HT`} />
+          <Text style={styles.fNote}>
+            {`${m.moisOfferts > 0 ? `${m.moisOfferts} mois offerts. ` : ""}Paiement par périodes de ${m.periodesMois.join(", ")} mois.`}
+          </Text>
+        </View>
+      ) : null}
+
+      {f.hebergementMensuelHtCents !== null ? (
+        <View>
+          <Text style={styles.formuleSousTitre}>Hébergement chez Axion-IA</Text>
+          <FRow label="Mensualité" value={`${eur(f.hebergementMensuelHtCents)} HT`} />
+        </View>
+      ) : null}
+    </View>
+  );
+}
+
+function FormulesBloc({ v }: { v: VueFormules }): React.ReactElement {
+  return (
+    <View>
+      <DocSection title={v.formules.length > 1 ? "Nos formules, côte à côte" : "Formule proposée"}>
+        <View style={styles.formulesRow}>
+          {v.formules.map((f, i) => (
+            <React.Fragment key={f.formule}>
+              {i > 0 ? <View style={styles.formuleGap} /> : null}
+              <FormuleColonne f={f} />
+            </React.Fragment>
+          ))}
+        </View>
+      </DocSection>
+
+      <DocSection title="Garantie">
+        <FRow
+          label={
+            v.garantieJours === null
+              ? "Aucune garantie contractuelle n'est prévue."
+              : `Corrections gratuites pendant ${v.garantieJours} jours après la livraison.`
+          }
+        />
+      </DocSection>
+
+      {v.servicesTiers.length > 0 || v.plafondAConfirmer ? (
+        <DocSection title="Services tiers et frais d'infrastructure (hors total, réglés à leurs fournisseurs)">
+          {v.servicesTiers.map((s, i) => (
+            <FRow
+              key={i}
+              label={`${s.nom} — ${s.obligatoire ? "obligatoire" : "facultatif"}, ${s.rythme}`}
+              value={
+                s.estimationHtCents !== null
+                  ? `${eur(s.estimationHtCents)} HT (indicatif)`
+                  : "à confirmer"
+              }
+            />
+          ))}
+          {v.plafondAConfirmer ? (
+            <FRow
+              label={`Frais à confirmer : ${v.plafondAConfirmer.texte} — plafond`}
+              value={`${eur(v.plafondAConfirmer.montantHtCents)} HT`}
+            />
+          ) : null}
+        </DocSection>
+      ) : null}
+
+      {v.textes.length > 0 ? (
+        <DocSection title="Informations complémentaires">
+          {v.textes.map((t, i) => (
+            <Text key={i} style={styles.legalLine}>
+              {t}
+            </Text>
+          ))}
+        </DocSection>
+      ) : null}
+    </View>
+  );
 }
 
 // ============================================================
@@ -298,47 +554,55 @@ export function DevisPdf({ data }: { data: DevisData }): React.ReactElement {
           {data.client.email ? <FieldRow label="Email" value={data.client.email} /> : null}
         </DocSection>
 
-        {/* Détail des prestations */}
-        <DocSection title="Détail des prestations">
-          <DataTable
-            columns={[
-              { key: "designation", header: "Désignation", flex: 3 },
-              { key: "qte", header: "Qté", flex: 0.8, align: "right" },
-              { key: "pu", header: "P.U. HT", flex: 1.4, align: "right" },
-              { key: "tva", header: "TVA", flex: 0.8, align: "right" },
-              { key: "total", header: "Total HT", flex: 1.4, align: "right" },
-            ]}
-            rows={data.lignes.map((ligne) => ({
-              designation: ligne.designation,
-              qte: String(ligne.quantite),
-              pu: formatEurosFromCents(ligne.prixUnitaireHtCents),
-              tva: `${tauxLigne(ligne)} %`,
-              total: formatEurosFromCents(ligne.quantite * ligne.prixUnitaireHtCents),
-            }))}
-          />
-        </DocSection>
+        {data.formules !== undefined ? (
+          <FormulesBloc v={data.formules} />
+        ) : (
+          <>
+            {/* Détail des prestations */}
+            <DocSection title="Détail des prestations">
+              <DataTable
+                columns={[
+                  { key: "designation", header: "Désignation", flex: 3 },
+                  { key: "qte", header: "Qté", flex: 0.8, align: "right" },
+                  { key: "pu", header: "P.U. HT", flex: 1.4, align: "right" },
+                  { key: "tva", header: "TVA", flex: 0.8, align: "right" },
+                  { key: "total", header: "Total HT", flex: 1.4, align: "right" },
+                ]}
+                rows={data.lignes.map((ligne) => ({
+                  designation: ligne.designation,
+                  qte: String(ligne.quantite),
+                  pu: formatEurosFromCents(ligne.prixUnitaireHtCents),
+                  tva: `${tauxLigne(ligne)} %`,
+                  total: formatEurosFromCents(ligne.quantite * ligne.prixUnitaireHtCents),
+                }))}
+              />
+            </DocSection>
 
-        {/* Totaux — ventilation TVA par taux (régime de TVA appliqué) */}
-        <View style={styles.totalsBlock}>
-          <View style={styles.totalRow}>
-            <Text style={styles.totalLabel}>Total HT</Text>
-            <Text style={styles.totalValue}>{formatEurosFromCents(totaux.totalHtCents)}</Text>
-          </View>
-          {totaux.ventilation.map((v) => (
-            <View key={v.tauxPercent} style={styles.totalRow}>
-              <Text style={styles.totalLabel}>
-                {totaux.ventilation.length > 1
-                  ? `TVA ${v.tauxPercent} % (base ${formatEurosFromCents(v.baseHtCents)})`
-                  : `TVA (${v.tauxPercent} %)`}
-              </Text>
-              <Text style={styles.totalValue}>{formatEurosFromCents(v.montantTvaCents)}</Text>
+            {/* Totaux — ventilation TVA par taux (régime de TVA appliqué) */}
+            <View style={styles.totalsBlock}>
+              <View style={styles.totalRow}>
+                <Text style={styles.totalLabel}>Total HT</Text>
+                <Text style={styles.totalValue}>{formatEurosFromCents(totaux.totalHtCents)}</Text>
+              </View>
+              {totaux.ventilation.map((v) => (
+                <View key={v.tauxPercent} style={styles.totalRow}>
+                  <Text style={styles.totalLabel}>
+                    {totaux.ventilation.length > 1
+                      ? `TVA ${v.tauxPercent} % (base ${formatEurosFromCents(v.baseHtCents)})`
+                      : `TVA (${v.tauxPercent} %)`}
+                  </Text>
+                  <Text style={styles.totalValue}>{formatEurosFromCents(v.montantTvaCents)}</Text>
+                </View>
+              ))}
+              <View style={styles.totalTtcRow}>
+                <Text style={styles.totalTtcLabel}>Total TTC</Text>
+                <Text style={styles.totalTtcValue}>
+                  {formatEurosFromCents(totaux.totalTtcCents)}
+                </Text>
+              </View>
             </View>
-          ))}
-          <View style={styles.totalTtcRow}>
-            <Text style={styles.totalTtcLabel}>Total TTC</Text>
-            <Text style={styles.totalTtcValue}>{formatEurosFromCents(totaux.totalTtcCents)}</Text>
-          </View>
-        </View>
+          </>
+        )}
 
         {/* Estimation de financement (indicative — jamais contractuelle) */}
         {afficheEstimation ? (
@@ -411,7 +675,37 @@ export function DevisPdf({ data }: { data: DevisData }): React.ReactElement {
             n'affiche jamais une case « signé » sans dire de quoi elle est faite.
             Tant qu'aucune preuve n'existe, elle rend les cadres vides — le
             circuit papier reste ouvert. */}
-        <View style={styles.accordBox} wrap={false}>
+        {data.choixRetenu !== undefined && (
+          <View style={styles.choixBox}>
+            <Text style={styles.choixTitle}>Formule retenue par le client</Text>
+            <Text style={styles.choixLine}>{data.choixRetenu.formuleLibelle}</Text>
+            {data.choixRetenu.automatisations.length > 0 && (
+              <Text style={styles.choixLine}>
+                Automatisations retenues : {data.choixRetenu.automatisations.join(", ")}
+              </Text>
+            )}
+            <Text style={styles.choixLine}>
+              Total ponctuel : {data.choixRetenu.totalPonctuelHtLisible} HT —{" "}
+              {data.choixRetenu.totalPonctuelTtcLisible} TTC
+            </Text>
+            {data.choixRetenu.recurrent.map((ligne) => (
+              <Text key={ligne} style={styles.choixLine}>
+                {ligne}
+              </Text>
+            ))}
+            <Text style={styles.choixSceau}>
+              Choix scellé avec la signature du client - empreinte {data.choixRetenu.empreinteChoix}
+            </Text>
+          </View>
+        )}
+        <View
+          style={
+            data.choixRetenu !== undefined
+              ? [styles.accordBox, styles.accordBoxApresChoix]
+              : styles.accordBox
+          }
+          wrap={false}
+        >
           <Text style={styles.accordTitle}>Bon pour accord</Text>
           <Text style={styles.accordHint}>
             Le client accepte le présent devis dans son intégralité : désignations, quantités, prix

@@ -148,6 +148,11 @@ export function estSollicitationSoumiseAOpposition(
   // CAMP-1 — les sollicitations des formateurs indépendants (F1, F2, F7, F22, F55),
   // tenues dans leur propre liste : celle des apporteurs ne bouge pas.
   if (GABARITS_SOLLICITATION_FORMATEUR_LOCAL.has(template)) return true;
+  // Guide demandé par message privé d'un réseau (payload `reseau: true`) : la personne n'a
+  // pas rempli le formulaire du site, l'opposition le retient à l'enfilage et au départ.
+  if (template === "guide-ia-envoi") {
+    return (payload as { reseau?: unknown } | null | undefined)?.reseau === true;
+  }
   if (template !== "lead-apporteur-recu") return false;
   return VARIANTES_DIFFEREES.has((payload as { variante?: unknown } | null | undefined)?.variante);
 }

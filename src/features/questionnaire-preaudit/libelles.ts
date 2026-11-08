@@ -66,11 +66,6 @@ const RUBRIQUES: ReadonlyArray<readonly [string, string]> = [
   ["contact_", "Contact"],
 ];
 
-/** La rubrique d'un champ (« Entreprise », « Outils »…), ou `null` si son préfixe est inconnu. PUR. */
-export function rubriqueDe(cle: string): string | null {
-  return RUBRIQUES.find(([p]) => cle.startsWith(p))?.[1] ?? null;
-}
-
 /** Le libellé d'un champ pour Will : la question, sinon sa rubrique et le nom du champ. PUR. */
 export function libelleDe(cle: string, libelles: Libelles, mode?: string): string {
   const l = (mode === "it" ? libelles.it.get(cle) : undefined) ?? libelles.normal.get(cle);

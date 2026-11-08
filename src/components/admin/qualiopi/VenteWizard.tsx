@@ -94,6 +94,8 @@ export interface VenteDevisEtat {
   sentAt: string | null;
   fichierPdfUrl: string | null;
   docusealSubmissionId: string | null;
+  /** Lien de signature maison émis pour la pièce du devis. */
+  signatureMaison?: boolean;
   montantTotalHtCents: number;
 }
 
@@ -479,6 +481,7 @@ export function VenteWizard({
         // Le PDF est généré par sendDevisAction (fail-soft) — la valeur exacte
         // sera relue de la base à la reprise du brouillon.
         fichierPdfUrl: devis.fichierPdfUrl,
+        signatureMaison: r.data.signatureCreee,
       });
       setSale(true);
       toast.success(
@@ -556,6 +559,9 @@ export function VenteWizard({
               statut: devis.statut,
               fichierPdfUrl: devis.fichierPdfUrl,
               docusealSubmissionId: devis.docusealSubmissionId,
+              ...(devis.signatureMaison !== undefined
+                ? { signatureMaison: devis.signatureMaison }
+                : {}),
               sentAt: devis.sentAt,
             }
           : null,

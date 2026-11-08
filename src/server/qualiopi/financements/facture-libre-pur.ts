@@ -110,9 +110,15 @@ export function construireLignesAvoir(
  * cible : 31 janv. + 1 mois → 28/29 févr., jamais de dérive vers mars).
  * Utilisé par les plans récurrents (Phase 5).
  */
-export function calculerProchaineGeneration(depuis: Date, periodiciteMois: number): Date {
+export function calculerProchaineGeneration(
+  depuis: Date,
+  periodiciteMois: number,
+  jourAncre?: number | null,
+): Date {
   const d = new Date(depuis);
-  const jour = d.getUTCDate();
+  // 🔴 Jour d'ANCRAGE : sans lui, 31 janv. → 28 févr. → 28 mars → … le jour dérive à la baisse
+  // après le premier mois court. Avec l'ancre posée à la création du plan, on retombe au 31 mars.
+  const jour = Math.max(d.getUTCDate(), jourAncre ?? 0);
   d.setUTCDate(1);
   d.setUTCMonth(d.getUTCMonth() + periodiciteMois);
   const dernierJourDuMois = new Date(
@@ -120,6 +126,19 @@ export function calculerProchaineGeneration(depuis: Date, periodiciteMois: numbe
   ).getUTCDate();
   d.setUTCDate(Math.min(jour, dernierJourDuMois));
   return d;
+}
+
+/**
+ * Une date de départ strictement antérieure au jour courant (UTC) est refusée : le cron
+ * génèrerait aussitôt un brouillon de rattrapage pour une période qui n'a pas lieu d'être.
+ */
+export function dateDepartDansLePasse(depart: Date, maintenant: Date = new Date()): boolean {
+  const debutDuJour = Date.UTC(
+    maintenant.getUTCFullYear(),
+    maintenant.getUTCMonth(),
+    maintenant.getUTCDate(),
+  );
+  return depart.getTime() < debutDuJour;
 }
 
 /** Statut d'encaissement d'une facture d'après le total encaissé (centimes). */
@@ -167,6 +186,13 @@ export function planifierFacturationDevis(input: {
   facturesLiees: FactureLieeResume[];
   devisNumero: string;
   acomptePercent?: number;
+  /**
+   * Devis à formules : montant HT de l'acompte IMPOSÉ par l'échéancier du devis
+   * (`echeancierPhases`, floor + dernier palier au reste). Absent = `round(total × % / 100)`,
+   * comportement historique INCHANGÉ. Sans cela, l'acompte facturé pourrait différer d'un
+   * centime du palier imprimé sur le devis.
+   */
+  montantAcompteHtCents?: number;
 }): PlanFacturationDevis {
   const totalDevisHtCents = input.lignesDevis.reduce(
     (acc, l) => acc + Math.round(l.quantite * l.prixUnitaireHtCents),
@@ -190,7 +216,8 @@ export function planifierFacturationDevis(input: {
           "Acompte impossible sur un devis multi-taux (le taux de l'acompte serait ambigu) — facturer la totalité, ou scinder le devis.",
       };
     }
-    const montantAcompteHtCents = Math.round((totalDevisHtCents * input.acomptePercent) / 100);
+    const montantAcompteHtCents =
+      input.montantAcompteHtCents ?? Math.round((totalDevisHtCents * input.acomptePercent) / 100);
     if (montantAcompteHtCents <= 0) {
       return { ok: false, erreur: "Montant d'acompte nul." };
     }

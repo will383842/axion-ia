@@ -35,7 +35,6 @@ import { Button, Link, Section, Text } from "@react-email/components";
 import { EmailLayout, emailStyles } from "./_layout";
 import type { Locale } from "../../../../prisma/generated/client";
 import { GUIDE_IA_PAGES } from "@/content/guide-ia";
-import { TEXTE_CONFIRMATION_RESEAU } from "@/content/guides-reseau";
 import { CADENCE_LETTRE, TEXTE_REINSCRIPTION } from "@/content/guide-ia-formulaire";
 
 interface Payload {
@@ -46,6 +45,11 @@ interface Payload {
   unsubscribeToken?: string;
   /** PV-1 — double accord d'une demande venue d'un réseau : bloc « confirmez d'un clic ». */
   doubleAccordToken?: string;
+  /**
+   * Demande venue d'un réseau (décision du 03/11/2026) : le guide et rien d'autre. Lien vers la
+   * politique de confidentialité, AUCUN bloc de lettre, AUCUNE proposition d'autres envois.
+   */
+  reseau?: boolean;
   reprise?: boolean;
 }
 
@@ -65,6 +69,8 @@ const COPY = {
     reinscription: TEXTE_REINSCRIPTION.fr,
     reinscriptionCta: "Recevoir à nouveau la lettre",
     note: "Vous n'avez pas fait cette demande ? Ignorez simplement ce message : vous ne recevrez rien d'autre.",
+    confidentialite: "Comment vos données sont traitées : politique de confidentialité",
+    noteReseau: "Vous n'avez pas fait cette demande ? Ignorez simplement ce message.",
     noteInscrite:
       "Vous n'avez pas fait cette demande ? Cliquez sur « Se désabonner de la lettre » ci-dessus : vous ne recevrez rien d'autre.",
   },
@@ -82,6 +88,8 @@ const COPY = {
     reinscription: TEXTE_REINSCRIPTION.en,
     reinscriptionCta: "Receive the letter again",
     note: "Didn't request this? Just ignore this message: you will receive nothing else.",
+    confidentialite: "How your data is handled: privacy policy",
+    noteReseau: "Didn't request this? Just ignore this message.",
     noteInscrite:
       'Didn\'t request this? Click "Unsubscribe from the letter" above: you will receive nothing else.',
   },
@@ -105,6 +113,12 @@ export function urlConfirmationLettre(baseUrl: string, locale: Locale, token: st
   return `${baseUrl.replace(/\/+$/, "")}/${locale}/confirmation/newsletter?token=${encodeURIComponent(token)}`;
 }
 
+/** URL de la politique de confidentialité (route réelle : `app/[locale]/politique-confidentialite`). */
+export function urlPolitiqueConfidentialite(baseUrl: string, locale: Locale): string {
+  const chemin = locale === "en" ? "en/privacy-policy" : "fr/politique-confidentialite";
+  return `${baseUrl.replace(/\/+$/, "")}/${chemin}`;
+}
+
 const boutonSecondaire: React.CSSProperties = {
   ...emailStyles.ctaStyle,
   backgroundColor: "#ffffff",
@@ -121,7 +135,9 @@ export function GuideIaEnvoiEmail({
   locale: Locale;
   payload: Record<string, unknown>;
 }) {
-  const p = payload as unknown as Payload;
+  const p0 = payload as unknown as Payload;
+  // Demande venue d'un réseau : aucun jeton de lettre n'est lu, même s'il traînait dans la charge.
+  const p: Payload = p0.reseau === true ? { downloadToken: p0.downloadToken, reseau: true } : p0;
   const t = COPY[locale];
   const baseUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://axion-ia.com";
   return (
@@ -133,7 +149,7 @@ export function GuideIaEnvoiEmail({
       // Deux liens d'ACTION dans le corps (le guide, et la lettre) : la rangée
       // de réseaux sociaux (lien de notoriété) cède sa place, comme sur les
       // e-mails du réseau d'apporteurs (§5.4).
-      sansReseauxSociaux={Boolean(p.confirmToken || p.unsubscribeToken || p.doubleAccordToken)}
+      sansReseauxSociaux={Boolean(p.confirmToken || p.unsubscribeToken)}
       locale={locale}
     >
       {p.reprise === true ? <Text style={emailStyles.paragraphStyle}>{t.reprise}</Text> : null}
@@ -173,22 +189,6 @@ export function GuideIaEnvoiEmail({
             </Link>
           </Text>
         </Section>
-      ) : p.doubleAccordToken ? (
-        // ⛔ BROUILLON (PV-1) : texte à valider par l'opérateur — `content/guides-reseau.ts`.
-        // Un clic sur le bouton ouvre la page de confirmation ; seul son POST inscrit.
-        <Section style={{ margin: "8px 0 4px 0" }}>
-          <Text style={{ ...emailStyles.paragraphStyle, fontWeight: 700 }}>
-            {TEXTE_CONFIRMATION_RESEAU[locale].titre}
-          </Text>
-          <Text style={emailStyles.paragraphStyle}>{TEXTE_CONFIRMATION_RESEAU[locale].corps}</Text>
-          <Button
-            href={urlConfirmationLettre(baseUrl, locale, p.doubleAccordToken)}
-            style={boutonSecondaire}
-            className="ax-cta"
-          >
-            {TEXTE_CONFIRMATION_RESEAU[locale].cta}
-          </Button>
-        </Section>
       ) : p.confirmToken ? (
         <Section style={{ margin: "8px 0 4px 0" }}>
           <Text style={{ ...emailStyles.paragraphStyle, fontWeight: 700 }}>{t.lettreTitre}</Text>
@@ -203,12 +203,18 @@ export function GuideIaEnvoiEmail({
         </Section>
       ) : null}
       <Text style={{ ...emailStyles.paragraphStyle, color: emailStyles.COLORS.textMuted }}>
-        {p.unsubscribeToken
-          ? t.noteInscrite
-          : p.doubleAccordToken
-            ? TEXTE_CONFIRMATION_RESEAU[locale].note
-            : t.note}
+        {p.reseau === true ? t.noteReseau : p.unsubscribeToken ? t.noteInscrite : t.note}
       </Text>
+      {p.reseau === true ? (
+        <Text style={{ ...emailStyles.paragraphStyle, color: emailStyles.COLORS.textMuted }}>
+          <Link
+            href={urlPolitiqueConfidentialite(baseUrl, locale)}
+            style={{ color: emailStyles.COLORS.accent, textDecoration: "underline" }}
+          >
+            {t.confidentialite}
+          </Link>
+        </Text>
+      ) : null}
     </EmailLayout>
   );
 }

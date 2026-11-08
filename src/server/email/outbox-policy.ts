@@ -120,6 +120,13 @@ export const EMAILS_AUTOMATIQUES_PAR_DEFAUT: readonly string[] = [
   // lui-même de signer. La décision humaine a DÉJÀ eu lieu — c'est la
   // contresignature.
   "piece-exemplaire-signe",
+  // 🔴 Le code de signature d'un devis part SEUL (lot 4 bis) : valable 10 minutes, il expirerait dans
+  // la corbeille avant d'être relu. Il est déclenché par le clic « Recevoir mon code » du signataire,
+  // jamais par un automate ; il n'y a rien à relire (un code et un numéro de devis).
+  "devis-code-signature",
+  // ⛔ « devis-commande-confirmation » n'est volontairement PAS ici : ce gabarit ne part
+  // jamais seul. Il passe par la file à valider ; il est déclenché par le clic de
+  // contresignature d'Axion-IA (CGV 6.2), jamais par un envoi automatique.
   // 🔴 Le rappel de la VEILLE part SEUL, et c'est le cas le plus net de toute
   // cette liste (2026-09-05, ADR 0048 §4.3).
   //
@@ -139,6 +146,10 @@ export const EMAILS_AUTOMATIQUES_PAR_DEFAUT: readonly string[] = [
   // a répondu »), sans contenu de réponse. Garée, elle serait une alerte perdue
   // — même raisonnement que `qualiopi-alerte-interne`.
   "questionnaire-reponses-recues",
+  // Devis signé par le client (2026-11-04) : notification INTERNE à l'organisme (numéro du devis
+  // et lien console, aucune donnée personnelle), jamais au client. Garée, ce serait une alerte
+  // perdue : le devis resterait à contresigner sans que personne le sache.
+  "devis-signe-a-contresigner",
   // QNC L03 (2026-10-16) : le recueil du besoin part SEUL, sur décision du
   // brief du lot (« envoi AUTOMATIQUE à l'entreprise dès la demande, avec
   // relance »). Il ne contient ni prix, ni engagement : un questionnaire. Retenu
@@ -223,6 +234,9 @@ export const LIBELLE_TEMPLATE_EMAIL: Record<string, string> = {
   "qualiopi-relance-impayee": "Relance d'impayé",
   "appel-rappel": "Rappel avant un appel de découverte",
   "piece-exemplaire-signe": "Remise de l'exemplaire signé",
+  "devis-commande-confirmation": "Confirmation de commande (contresignature d'Axion-IA)",
+  "devis-code-signature": "Code à usage unique pour signer un devis",
+  "devis-signe-a-contresigner": "Devis signé par le client, à contresigner (interne)",
   "questionnaire-reponses-recues": "Questionnaire en ligne : réponses reçues (interne)",
   "questionnaire-avant-audit": "Questionnaire de pré-audit envoyé par Will",
   "questionnaire-avant-audit-relance": "Relance du questionnaire de pré-audit (J+2, J+5, J+10)",

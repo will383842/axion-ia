@@ -21,11 +21,12 @@ import {
   calculerSelfHashDocument,
   maillonDocumentDepuisLigne,
   HASH_VERSION_DOCUMENT,
+  COLONNES_V4_VIDES,
   type LigneDocumentSignature,
   type PartieSignataire,
   type PieceScellee,
   type TupleDocumentSignatureV1,
-  type TupleDocumentSignatureV2,
+  type TupleDocumentSignatureV3,
 } from "./document-signature-hash";
 import { verifierChaine } from "@/server/qualiopi/emargement/hash";
 import { calculerSelfHash, type TupleSignatureV1 } from "@/server/qualiopi/emargement/hash";
@@ -67,9 +68,11 @@ function signer(
     prevHash,
     hashVersion: HASH_VERSION_DOCUMENT,
     facteurVerification: null,
+    cgvVersion: null,
+    ...COLONNES_V4_VIDES,
     ...over,
   };
-  const tuple: TupleDocumentSignatureV2 = {
+  const tuple: TupleDocumentSignatureV3 = {
     contexteType: "document_engagement",
     documentGenereId: base.documentGenereId,
     documentNumero: PIECE.documentNumero,
@@ -88,6 +91,7 @@ function signer(
     signeAtIso: base.signeAt.toISOString(),
     prevHash: base.prevHash,
     facteurVerification: base.facteurVerification,
+    cgvVersion: base.cgvVersion,
   };
   return {
     id: `sig-${partie}-${nom}`,

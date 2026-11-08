@@ -4,7 +4,7 @@
 // l'envoi initial (sendDevisAction, bouton « Envoyer au client »), soit au
 // renvoi manuel (envoyerDevisEmailAction). Le PDF du devis est attaché par le
 // worker (clé R2 dans EmailJobData.attachments). Si `signatureUrl` est fourni
-// (embed_src DocuSeal du client), un CTA « Signer en ligne » est ajouté. Le
+// (lien de signature MAISON `/portail/signer/<jeton>`, depuis le 30/07/2026), un CTA « Signer en ligne » est ajouté. Le
 // message personnalisé de l'admin (multi-lignes) est affiché tel quel. Ton :
 // courtois, zéro pression.
 
@@ -23,11 +23,16 @@ interface Payload {
   /** Message libre de l'admin (multi-lignes, affiché tel quel). Optionnel. */
   messagePersonnalise?: string;
   /**
-   * Lien de signature en ligne (embed_src DocuSeal du client). Si présent,
-   * un CTA « Signer le devis en ligne » est affiché. Optionnel — sans DocuSeal
-   * configuré, le devis reste signable par retour du PDF « bon pour accord ».
+   * Lien de signature en ligne MAISON (`/portail/signer/<jeton>`, jeton porteur : ne
+   * jamais le journaliser ni l'envoyer à Sentry). Si présent, un CTA « Signer le devis
+   * en ligne » est affiché. Optionnel — sans lien, le devis reste signable par retour
+   * du PDF « bon pour accord ». DocuSeal n'émet plus rien depuis le 30/07/2026.
    */
   signatureUrl?: string;
+  /** Devis à formules : nombre de formules proposées (2 = « 2 formules au choix »). */
+  nbFormules?: number;
+  /** Intitulés des formules, tels que sur le PDF. */
+  libellesFormules?: string[];
 }
 
 function field(p: Partial<Payload>, key: keyof Payload, fallback: string): string {
@@ -47,7 +52,10 @@ const COPY = {
         .filter(Boolean)
         .join(" — ") + ".",
     attachment: "Le document est joint à cet email au format PDF.",
-    sign: "Vous pouvez signer votre « bon pour accord » en ligne, en un clic, via le bouton ci-dessous.",
+    formules: (n: number, l: string) =>
+      `Ce devis vous propose ${n} formules au choix${l ? ` : ${l}` : ""}. Elles figurent côte à côte dans le document joint.`,
+    sign: (formules: boolean) =>
+      `Pour signer, ouvrez le lien ci-dessous, ${formules ? "choisissez votre formule, " : ""}cochez l'acceptation des conditions générales de vente, puis signez. Le contrat est formé lorsque Axion-IA a contresigné (CGV art. 6.2).`,
     signCta: "Signer le devis en ligne",
     questions:
       "Pour toute question sur le contenu, le périmètre ou les modalités, répondez simplement à cet email : nous sommes à votre écoute.",
@@ -64,7 +72,10 @@ const COPY = {
         .filter(Boolean)
         .join(" — ") + ".",
     attachment: "The document is attached to this email in PDF format.",
-    sign: "You can sign your approval online, in one click, using the button below.",
+    formules: (n: number, l: string) =>
+      `This quote offers ${n} options to choose from${l ? `: ${l}` : ""}. They are shown side by side in the attached document.`,
+    sign: (formules: boolean) =>
+      `To sign, open the link below, ${formules ? "choose your option, " : ""}tick the acceptance of the general terms of sale, then sign. The contract is formed once Axion-IA has countersigned (T&C art. 6.2).`,
     signCta: "Sign the quote online",
     questions:
       "For any question about the content, scope or terms, simply reply to this email: we are here for you.",
@@ -88,6 +99,10 @@ export function DevisEnvoiEmail({
   const t = COPY[locale];
   const message = field(p, "messagePersonnalise", "");
   const signatureUrl = field(p, "signatureUrl", "");
+  const nbFormules = typeof p.nbFormules === "number" && p.nbFormules >= 2 ? p.nbFormules : 0;
+  const libellesFormules = Array.isArray(p.libellesFormules)
+    ? p.libellesFormules.filter((x): x is string => typeof x === "string").join(" / ")
+    : "";
 
   return (
     <EmailLayout
@@ -110,8 +125,13 @@ export function DevisEnvoiEmail({
         {t.body(field(p, "numero", ""), field(p, "montantLabel", ""))}{" "}
         {t.validity(field(p, "dateValiditeLabel", ""))}
       </Text>
+      {nbFormules > 0 && (
+        <Text style={emailStyles.paragraphStyle}>{t.formules(nbFormules, libellesFormules)}</Text>
+      )}
       <Text style={emailStyles.paragraphStyle}>{t.attachment}</Text>
-      {signatureUrl !== "" && <Text style={emailStyles.paragraphStyle}>{t.sign}</Text>}
+      {signatureUrl !== "" && (
+        <Text style={emailStyles.paragraphStyle}>{t.sign(nbFormules > 0)}</Text>
+      )}
       <Text style={emailStyles.paragraphStyle}>{t.questions}</Text>
       <Text style={emailStyles.paragraphStyle}>
         {t.close.split("\n").map((line, i) => (

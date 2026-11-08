@@ -66,6 +66,7 @@
 import { describe, it, expect } from "vitest";
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
+import { COLONNES_SCELLEES_DOCUMENT } from "@/server/qualiopi/documents/signature/document-reconstruction";
 
 const SCHEMA = readFileSync(join(process.cwd(), "prisma", "schema.prisma"), "utf8");
 
@@ -269,8 +270,9 @@ const INVENTAIRE: ReadonlyArray<{ modele: string; statut: Statut; note: string }
     statut: "exception-declaree",
     note:
       "idem — l'identité du signataire est scellée dans l'empreinte de la pièce " +
-      "(`COLONNES_SCELLEES_DOCUMENT`). Art. 1366 du code civil, art. 17(3)(e) RGPD. " +
-      "Seule l'image de la signature est purgeable.",
+      "(`COLONNES_SCELLEES_DOCUMENT`) : `signataireEmail`, `signataireNom` et, pour le devis " +
+      "à formules (V4), `declarationNom` et `declarationFonction` (la déclaration de pouvoir). " +
+      "Art. 1366 du code civil, art. 17(3)(e) RGPD. Seule l'image de la signature est purgeable.",
   },
   {
     modele: "SousTraitant",
@@ -502,5 +504,20 @@ describe("aucune table portant une adresse n'échappe au RGPD en silence", () =>
         "déclarer l'obligation légale qui s'y oppose — jamais la laisser sans " +
         "mention.",
     ).toBeLessThanOrEqual(0);
+  });
+
+  it("l'exception DocumentSignature nomme TOUTES les colonnes d'identité scellées, déclaration comprise", () => {
+    const exception = INVENTAIRE.find((m) => m.modele === "DocumentSignature");
+    for (const colonne of [
+      "signataireEmail",
+      "signataireNom",
+      "declarationNom",
+      "declarationFonction",
+    ] as const) {
+      // Scellée dans le tuple…
+      expect(COLONNES_SCELLEES_DOCUMENT).toContain(colonne);
+      // …et déclarée dans l'exception : une colonne scellée non dite est indiscernable d'un oubli.
+      expect(exception?.note).toContain(colonne);
+    }
   });
 });

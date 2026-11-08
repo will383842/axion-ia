@@ -166,7 +166,13 @@ describe("le jeu de données d'exemple couvre tous les gabarits", () => {
     // RELEVÉ À 82 (2026-10-29) : `relance-devis-client` (lot B9). Champs facultatifs sauf `numero` et `destinataireNom`, déjà au jeu d'exemple.
     // RELEVÉ À 83 (2026-10-29) : `questionnaire-relance-equipe`, brouillon au dirigeant (lot B10).
     // Champs tous facultatifs.
-    expect(tous.length).toBe(83);
+    // RELEVÉ À 84 (2026-11-04) : `devis-signe-a-contresigner`, notification INTERNE « devis signé
+    // par le client ». Champs tous facultatifs.
+    // RELEVÉ À 85 (2026-11-06) : `devis-commande-confirmation`, confirmation de commande au client
+    // (CGV 5.2). Quatre champs de montants/CGV ajoutés au jeu d'exemple.
+    // RELEVÉ À 86 (2026-11-07) : `devis-code-signature`, code à usage unique pour signer un devis
+    // (lot 4 bis). Aucun champ requis : le code et la durée viennent de `valeurs`, remplis au rendu.
+    expect(tous.length).toBe(86);
   });
 
   it.each(tous.map((g) => g.nom))("%s : tous ses champs requis ont une valeur d'exemple", (nom) => {

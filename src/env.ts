@@ -94,6 +94,12 @@ export const env = createEnv({
     // le stock créé avant cette date reste à classer à la main.
     DOSSIER_FICHE_AUTO: z.enum(["true", "false", "essai"]).optional(),
     DOSSIER_FICHE_AUTO_DEPUIS: z.string().optional(),
+    // Fiche prospect depuis une DEMANDE écrite (2026-11-04, `fiche-demande.ts`) : même mécanique que
+    // DOSSIER_FICHE_AUTO, même balayage (DOSSIER_BALAYAGE_ENABLED exigé). ABSENT = COUPÉ ; "essai" =
+    // à blanc. Ne l'ouvrir qu'APRÈS la preuve que la colonne `submissions.fiche_client_id` existe.
+    // DOSSIER_FICHE_DEMANDE_DEPUIS (date ISO) absente : rien n'est traité.
+    DOSSIER_FICHE_DEMANDE: z.enum(["true", "false", "essai"]).optional(),
+    DOSSIER_FICHE_DEMANDE_DEPUIS: z.string().optional(),
     // Lot OPCO A8 — envoi du dossier prêt à déposer à l'entreprise et relances.
     // Lu par le site ET le worker. Absent : ACTIF (hors tests) ; "false" coupe
     // tout (envoi automatique, bouton, relances, réponses par lien).
@@ -119,10 +125,6 @@ export const env = createEnv({
     QUESTIONNAIRE_SUIVI_NOTICE_VISIBLE: z.string().optional(),
     // Copie complète des réponses d'un questionnaire (super-administrateur) : ABSENT = ÉTEINT.
     QUESTIONNAIRE_EXPORT_COMPLET_ENABLED: z.string().optional(),
-    // Rapport d'analyse avant audit (2026-11-02) : bouton « Lancer l'analyse complète » de la fiche
-    // client (super-administrateur). Cible : les deux (le site lance, le worker traite).
-    // ABSENT = ÉTEINT. Les rapports déjà faits restent lisibles.
-    RAPPORT_AVANT_AUDIT_ENABLED: z.string().optional(),
     // Alerte Telegram du Tour France IA (2026-10-29) : nouvelle mini-demande et ville qui atteint
     // 5 demandes comptées. Lu par le SITE (`features/tour-de-france/alertes.ts`). ⚠️ EXCEPTION à la
     // convention du dépôt (absent = éteint) : ici ABSENT = ALLUMÉ, seule la valeur "false" éteint
@@ -758,6 +760,8 @@ export const env = createEnv({
     DOSSIER_BALAYAGE_ENABLED: process.env.DOSSIER_BALAYAGE_ENABLED,
     DOSSIER_FICHE_AUTO: process.env.DOSSIER_FICHE_AUTO,
     DOSSIER_FICHE_AUTO_DEPUIS: process.env.DOSSIER_FICHE_AUTO_DEPUIS,
+    DOSSIER_FICHE_DEMANDE: process.env.DOSSIER_FICHE_DEMANDE,
+    DOSSIER_FICHE_DEMANDE_DEPUIS: process.env.DOSSIER_FICHE_DEMANDE_DEPUIS,
     OPCO_SUIVI_ENTREPRISE_ENABLED: process.env.OPCO_SUIVI_ENTREPRISE_ENABLED,
     QUESTIONNAIRE_AVANT_AUDIT_ENABLED: process.env.QUESTIONNAIRE_AVANT_AUDIT_ENABLED,
     QUESTIONNAIRE_PREAUDIT_RGPD_CONTACT: process.env.QUESTIONNAIRE_PREAUDIT_RGPD_CONTACT,
@@ -768,7 +772,6 @@ export const env = createEnv({
     QUESTIONNAIRE_SUIVI_ENABLED: process.env.QUESTIONNAIRE_SUIVI_ENABLED,
     QUESTIONNAIRE_SUIVI_NOTICE_VISIBLE: process.env.QUESTIONNAIRE_SUIVI_NOTICE_VISIBLE,
     QUESTIONNAIRE_EXPORT_COMPLET_ENABLED: process.env.QUESTIONNAIRE_EXPORT_COMPLET_ENABLED,
-    RAPPORT_AVANT_AUDIT_ENABLED: process.env.RAPPORT_AVANT_AUDIT_ENABLED,
     TOUR_TELEGRAM_ENABLED: process.env.TOUR_TELEGRAM_ENABLED,
     QUESTIONNAIRE_PREAUDIT_ADRESSE_ESSAI: process.env.QUESTIONNAIRE_PREAUDIT_ADRESSE_ESSAI,
     IDCC_OPCO_IMPORT_ENABLED: process.env.IDCC_OPCO_IMPORT_ENABLED,

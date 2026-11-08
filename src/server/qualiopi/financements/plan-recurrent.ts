@@ -134,6 +134,7 @@ export async function genererBrouillonsPlansEchus(
             prochaineGenerationAt: calculerProchaineGeneration(
               plan.prochaineGenerationAt,
               plan.periodiciteMois,
+              plan.jourAncre,
             ),
           },
         });

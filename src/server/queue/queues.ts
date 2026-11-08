@@ -39,8 +39,6 @@ import type { ImageBankTranslateJobData } from "./workers/image-bank-translate-w
 import type { ImageBankCronJobData, ImageBankCronJobType } from "./workers/image-bank-crons-worker";
 import type { ImageBankAutoConvertJobData } from "./workers/image-bank-auto-convert-worker";
 import type { KitImportJobData } from "./workers/kit-import-worker";
-import { jobIdRapport } from "@/features/rapport-avant-audit/identifiant-job";
-import type { RapportAvantAuditJobData } from "./workers/rapport-avant-audit-worker";
 import type { CalendlyPollJobData, CalendlyPollJobType } from "./workers/calendly-poll-worker";
 import type { CrmSyncJobData, CrmSyncJobType } from "./workers/crm-sync-worker";
 import { AUTO_CONVERT_QUEUE_NAME } from "@/server/image-bank/constants";
@@ -677,37 +675,6 @@ export async function enqueueKitImport(runId: string): Promise<void> {
   await kitImportQueue.add(`kit-import-${runId}`, { runId }, { jobId: `kit-import-${runId}` });
 }
 
-// Rapport d'analyse avant audit (2026-11-02) — concurrence 1, charge `{ rapportId }` SEULEMENT.
-// Une seule tentative : le worker écrit lui-même l'échec sur la ligne ; la reprise après un arrêt
-// est dans l'état en base (`lancementsEnSuspens`), pas dans les essais BullMQ.
-export const RAPPORT_AVANT_AUDIT_QUEUE_NAME = "rapport-avant-audit";
-
-export const rapportAvantAuditQueue: Queue<RapportAvantAuditJobData, void, string> | null =
-  connection
-    ? new Queue<RapportAvantAuditJobData, void, string>(RAPPORT_AVANT_AUDIT_QUEUE_NAME, {
-        connection,
-        defaultJobOptions: { ...defaultJobOptions, attempts: 1 },
-      })
-    : null;
-
-export async function enqueueRapportAvantAudit(
-  rapportId: string,
-  opts: { readonly reprise?: boolean } = {},
-): Promise<boolean> {
-  if (!rapportAvantAuditQueue) {
-    if (process.env.NODE_ENV !== "production" && !isBullmqDisabled()) {
-      console.warn(`[bullmq] no connection, skipping enqueueRapportAvantAudit(${rapportId})`);
-    }
-    return false;
-  }
-  // Une reprise porte un identifiant distinct de celui du premier passage (déjà « terminé » dans
-  // Redis, il ferait ignorer l'ajout), mais STABLE par tranche de 10 minutes : un balayage qui
-  // repasse pendant qu'une reprise attend encore dans la file n'en ajoute pas une seconde.
-  const jobId = jobIdRapport(rapportId, opts.reprise === true);
-  await rapportAvantAuditQueue.add("rapport", { rapportId }, { jobId });
-  return true;
-}
-
 export const imageBankAutoConvertQueue: Queue<
   ImageBankAutoConvertJobData,
   { lqipBase64: string; slug: string },
@@ -1118,7 +1085,7 @@ export async function enqueueEmail(
       ? { attachments: options.attachments }
       : {}),
   };
-  const journalise = template !== "submission-reply";
+  const journalise = template !== "submission-reply" && template !== "candidature-reponse";
   const jobId = options?.jobId ?? (journalise ? `email-${randomUUID()}` : undefined);
   const addOptions: Record<string, unknown> = {};
   if (options?.delayMs) addOptions["delay"] = options.delayMs;
@@ -1146,7 +1113,11 @@ export async function enqueueEmail(
   // l'autre). `await` volontaire : la fonction ne lève jamais (elle avale ses propres
   // erreurs).
   //
-  // ⚠️ `submission-reply` est le SEUL gabarit exclu, et l'exclusion est
+  // ⚠️ `candidature-reponse` est exclu pour la même raison que `submission-reply` : son suivi
+  // est sur `JobApplicationReply`. Lui écrivait dans `email_logs` avant l'exclusion : 360 lignes
+  // restées « en attente » en production. Ce qui suit décrit `submission-reply`, et vaut pour lui.
+  //
+  // ⚠️ `submission-reply` et `candidature-reponse` sont les SEULS gabarits exclus, et l'exclusion est
   // nécessaire, pas cosmétique. Ce chemin n'a jamais écrit dans `email_logs` :
   // il porte son propre suivi, plus riche, sur `SubmissionReply`
   // (`deliveryStatus` / `sentAt` / `failedAt` / `errorMsg` / `retryCount`), et

@@ -23,6 +23,8 @@
  *
  * ── Ce qui l'arrête ──────────────────────────────────────────────────────────
  *   · le coupe-circuit : tant qu'il est déclenché, le passage ne fait RIEN ;
+ *   · une adresse opposée (email_oppositions), quelle que soit l'origine de la demande :
+ *     écartée, rien n'est supprimé ni modifié ;
  *   · le plafond horaire du guide : il ne relâche que la place restante.
  *
  * L'e-mail repris porte ce que la ligne d'abonné dit AU MOMENT DE L'ENVOI :
@@ -41,6 +43,7 @@
  * silence, jusqu'au passage suivant.
  */
 
+import { estOpposee } from "@/server/email/opposition";
 import { prisma } from "@/lib/prisma";
 import { verdictAvantEnvoi } from "@/server/email/verdict-envoi";
 import {
@@ -130,7 +133,14 @@ export async function rattraperGuides(maintenant: Date = new Date()): Promise<Ra
         },
         OR: [{ queuedAt: null }, { queuedAt: { lt: new Date(t - AGE_RATTRAPAGE_MS) } }],
       },
-      select: { id: true, email: true, locale: true, downloadToken: true, sendCount: true },
+      select: {
+        id: true,
+        email: true,
+        locale: true,
+        downloadToken: true,
+        sendCount: true,
+        origine: true,
+      },
       orderBy: { createdAt: "asc" },
       take: 200,
     });
@@ -166,6 +176,15 @@ export async function rattraperGuides(maintenant: Date = new Date()): Promise<Ra
         ecartees++;
         continue;
       }
+      // Une adresse opposée (ou qui a demandé l'effacement) APRÈS la demande ne reçoit pas le
+      // guide par le rattrapage, QUELLE QUE SOIT l'origine de la demande : on écarte, on ne
+      // supprime ni ne modifie rien. Ce contrôle passe après la réparation de trace (qui
+      // n'envoie rien) et avant toute lecture de la ligne d'abonnée. Pas de try/catch : si la
+      // base ne répond pas, l'erreur remonte et rien n'est mis en file (échec fermé).
+      if (await estOpposee(c.email)) {
+        ecartees++;
+        continue;
+      }
       // Même liste de suppression que l'enfilage : une adresse en rebond dur ne
       // doit pas être re-tentée toutes les heures pendant une semaine.
       const verdict = await verdictAvantEnvoi(c.email, {
@@ -177,7 +196,11 @@ export async function rattraperGuides(maintenant: Date = new Date()): Promise<Ra
         continue;
       }
 
-      const lettre = await lettreDansLEmail(c.email);
+      // Demande venue d'un réseau : le guide et rien d'autre (décision du 03/11/2026).
+      const reseau = (c.origine as string) === "message_prive";
+      const lettre: Awaited<ReturnType<typeof lettreDansLEmail>> = reseau
+        ? {}
+        : await lettreDansLEmail(c.email);
       const r = await mettreEnFileGuide(
         {
           id: c.id,
@@ -186,6 +209,7 @@ export async function rattraperGuides(maintenant: Date = new Date()): Promise<Ra
           downloadToken: c.downloadToken,
         },
         {
+          reseau,
           confirmToken: lettre.confirmToken ?? null,
           doubleAccordToken: lettre.doubleAccordToken ?? null,
           unsubscribeToken: lettre.unsubscribeToken ?? null,

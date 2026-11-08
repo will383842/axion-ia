@@ -7,13 +7,13 @@
 //
 // PIPELINE :
 //   1. Lire le body RAW (DocuSeal exige bytes-exact pour HMAC-SHA256).
-//   2. Vérifier `X-Docuseal-Signature` via `verifyWebhookSignature`.
+//   2. Plafonner le corps (256 Ko → 413) puis vérifier `X-Docuseal-Signature` (v2 seul).
 //   3. Parse JSON → idempotency outbox INSERT `DocusealWebhookEvent` avec
 //      `docusealEventId` UNIQUE. Si conflict P2002 → 200 OK (déjà reçu).
 //   4. Pour les events critiques (`form.completed`, `submission.completed`,
 //      `form.declined`) :
-//        - Si `metadata.kind === "devis"` → dispatch Devis (CRM Qualiopi).
-//        - Sinon → Telegram only.
+//        - Alerte Telegram interne uniquement (numéro de devis, aucune donnée client).
+//        - AUCUNE écriture sur Devis (CGV art. 5.1, 6.2, 6.3).
 //   5. Marquer l'event `processedAt` après dispatch réussi.
 //   6. Return 200 OK immédiat (DocuSeal retry exponentiel sinon).
 //
@@ -25,19 +25,39 @@ import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 import {
   parseWebhookPayload,
-  verifyWebhookAuth,
+  verifyWebhookSignature,
   isDocusealWebhookConfigured,
   type DocusealWebhookPayload,
 } from "@/lib/docuseal";
 import { prisma } from "@/lib/prisma";
 import { sendTelegram } from "@/lib/telegram";
-import { emettreDevisSigne, transactionDevisSigne } from "@/server/partners-sync/producteurs/devis";
 
-// Le canal Partners est importé (INT-T04) : jamais évaluée au build (garde d'inertie R4).
 export const dynamic = "force-dynamic";
 
 // Prisma error codes (string literals — pas d'import Prisma runtime ici car edge-friendly).
 const PRISMA_UNIQUE_CONSTRAINT = "P2002";
+
+/** Plafond du corps accepté (un webhook DocuSeal légitime pèse quelques Ko). */
+const MAX_BODY_BYTES = 256 * 1024;
+
+/** Lit le corps en flux ; `null` dès que le plafond est dépassé (on arrête de lire). */
+async function lireCorpsPlafonne(req: NextRequest): Promise<string | null> {
+  if (!req.body) return "";
+  const reader = req.body.getReader();
+  const chunks: Uint8Array[] = [];
+  let total = 0;
+  for (;;) {
+    const { done, value } = await reader.read();
+    if (done) break;
+    total += value.byteLength;
+    if (total > MAX_BODY_BYTES) {
+      await reader.cancel().catch(() => {});
+      return null;
+    }
+    chunks.push(value);
+  }
+  return Buffer.concat(chunks).toString("utf8");
+}
 
 export async function POST(req: NextRequest): Promise<NextResponse> {
   // -- 1. Configuration check -----------------------------------------
@@ -45,18 +65,26 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     return NextResponse.json({ error: "webhook_not_configured" }, { status: 503 });
   }
 
-  // -- 2. Raw body (REQUIRED pour HMAC) -------------------------------
+  // -- 2. Raw body plafonné (REQUIRED pour HMAC) ----------------------
+  // Le plafond s'applique AVANT toute lecture complète / vérification HMAC :
+  // un POST anonyme ne doit pas pouvoir nous faire bufferiser un corps géant.
+  const declared = Number(req.headers.get("content-length") ?? "0");
+  if (Number.isFinite(declared) && declared > MAX_BODY_BYTES) {
+    return NextResponse.json({ error: "payload_too_large" }, { status: 413 });
+  }
   let rawBody: string;
   try {
-    rawBody = await req.text();
+    const lu = await lireCorpsPlafonne(req);
+    if (lu === null) {
+      return NextResponse.json({ error: "payload_too_large" }, { status: 413 });
+    }
+    rawBody = lu;
   } catch {
     return NextResponse.json({ error: "invalid_body" }, { status: 400 });
   }
 
-  // -- 3. Signature verification (dual-mode HMAC v1.x ou plaintext v2.x) -
-  const signatureHeader = req.headers.get("x-docuseal-signature");
-  const secretHeader = req.headers.get("x-docuseal-secret");
-  if (!verifyWebhookAuth(rawBody, { signature: signatureHeader, secret: secretHeader })) {
+  // -- 3. Signature v2 `<ts>.<hmac>` (seul format accepté) -------------
+  if (!verifyWebhookSignature(rawBody, req.headers.get("x-docuseal-signature"))) {
     // Pas de log détaillé pour éviter d'aider un attaquant.
     return NextResponse.json({ error: "invalid_signature" }, { status: 401 });
   }
@@ -94,7 +122,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     return NextResponse.json({ error: "internal_error" }, { status: 500 });
   }
 
-  // -- 5. Dispatch event critique --------------------------------------
+  // -- 5. Alerte interne (AUCUNE écriture métier) ------------------------
   try {
     const kind = event.metadata["kind"];
     const isCompleted =
@@ -102,16 +130,17 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     const isDeclined = event.eventType === "form.declined";
 
     if (kind === "devis" && (isCompleted || isDeclined)) {
-      await dispatchDevisEvent(event, isCompleted);
+      await alerterEvenementDevis(event, isCompleted);
     } else if (isCompleted) {
+      // Aucune donnée client vers Telegram : ni métadonnées, ni identité.
       sendTelegram({
-        tag: "OPTION CONFIRMÉE",
-        body: `DocuSeal submission ${event.submissionId} signée (kind=${kind ?? "unknown"}). Metadata: ${JSON.stringify(event.metadata).slice(0, 200)}`,
+        tag: "AUTO",
+        body: `DocuSeal : soumission ${event.submissionId} signée (kind=${kind ?? "unknown"}).`,
       }).catch(() => {});
     } else if (isDeclined) {
       sendTelegram({
-        tag: "OPTION REFUSÉE",
-        body: `DocuSeal submission ${event.submissionId} refusée (kind=${kind ?? "unknown"}). Metadata: ${JSON.stringify(event.metadata).slice(0, 200)}`,
+        tag: "AUTO",
+        body: `DocuSeal : soumission ${event.submissionId} refusée (kind=${kind ?? "unknown"}).`,
       }).catch(() => {});
     }
 
@@ -141,20 +170,20 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
 }
 
 // ============================================================
-// Dispatchers internes
+// Alerte interne
 // ============================================================
 
 /**
- * Dispatch un event DocuSeal lié à un Devis CRM Qualiopi (« bon pour accord »).
+ * Un événement DocuSeal sur un devis N'ÉCRIT JAMAIS `Devis.statut`, n'émet pas
+ * `devis.signe` vers Partners et ne fait pas monter les fiches.
  *
- * - `form.completed` / `submission.completed` : Devis → accepte + acceptedAt.
- * - `form.declined` : Devis → refuse + declinedAt.
- *
- * Idempotence applicative : un replay sur un devis déjà dans l'état cible (ou
- * déjà transformé en convention) est un no-op. Best-effort : aucune state
- * machine, aucun email — le CRM devis est piloté côté admin.
+ * Raison (CGV art. 5.1, 6.2, 6.3) : le contrat n'est formé que lorsqu'Axion-IA
+ * a contresigné, après acceptation des CGV par le client. Une signature
+ * DocuSeal seule n'est donc pas une acceptation. L'événement est conservé dans
+ * `docuseal_webhook_events` (idempotence) et un humain est alerté avec le seul
+ * numéro de devis (aucune donnée client vers Telegram).
  */
-async function dispatchDevisEvent(
+async function alerterEvenementDevis(
   event: DocusealWebhookPayload,
   isCompleted: boolean,
 ): Promise<void> {
@@ -164,52 +193,19 @@ async function dispatchDevisEvent(
       `[docuseal-webhook] missing devisId in metadata for submission ${event.submissionId}`,
     );
   }
-
   const devis = await prisma.devis.findUnique({
     where: { id: devisId },
-    select: { id: true, numero: true, statut: true },
+    select: { numero: true },
   });
   if (!devis) {
-    throw new Error(`[docuseal-webhook] devis ${devisId} not found`);
+    throw new Error(
+      `[docuseal-webhook] devis introuvable pour la soumission ${event.submissionId}`,
+    );
   }
-
-  // Idempotence : replay sur un devis déjà dans l'état cible → no-op. Un devis
-  // déjà transformé en convention n'est jamais rétrogradé.
-  if (isCompleted && (devis.statut === "accepte" || devis.statut === "transforme_convention"))
-    return;
-  if (!isCompleted && devis.statut === "refuse") return;
-  // Revue M7 : un devis EXPIRÉ (remplacé par une révision, ou périmé) ne se
-  // signe plus — le client a peut-être signé la VIEILLE soumission d'une
-  // version remplacée. On ignore + Telegram interne pour arbitrage humain.
-  if (devis.statut === "expire") {
-    sendTelegram({
-      tag: "AUTO",
-      body: `⚠️ Signature DocuSeal reçue sur le devis EXPIRÉ ${devis.numero} — ignorée (révision probable). Vérifier avec le client quelle version fait foi.`,
-    }).catch(() => {});
-    return;
-  }
-
-  if (isCompleted) {
-    // INT-T04 (REQ-INT-007) : l'acceptation et l'événement `devis.signe` dans UNE transaction.
-    await transactionDevisSigne(prisma, async (tx) => {
-      await tx.devis.update({
-        where: { id: devis.id },
-        data: { statut: "accepte", acceptedAt: new Date() },
-      });
-      await emettreDevisSigne(tx, devis.id);
-    });
-    sendTelegram({
-      tag: "OPTION CONFIRMÉE",
-      body: `📑 Devis ${devis.numero} signé (bon pour accord) via DocuSeal`,
-    }).catch(() => {});
-  } else {
-    await prisma.devis.update({
-      where: { id: devis.id },
-      data: { statut: "refuse", declinedAt: new Date() },
-    });
-    sendTelegram({
-      tag: "OPTION REFUSÉE",
-      body: `📑 Devis ${devis.numero} refusé via DocuSeal`,
-    }).catch(() => {});
-  }
+  sendTelegram({
+    tag: "AUTO",
+    body: isCompleted
+      ? `📑 Événement DocuSeal « signé » sur le devis ${devis.numero} : aucun changement de statut. Vérifier la contresignature (CGV art. 6.2).`
+      : `📑 Événement DocuSeal « refusé » sur le devis ${devis.numero} : aucun changement de statut.`,
+  }).catch(() => {});
 }

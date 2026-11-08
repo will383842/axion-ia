@@ -122,6 +122,24 @@ describe("🔴 le PDF ne ment pas sur la nature de la preuve", () => {
     expect(texte).not.toContain("Lu et approuvé");
   });
 
+  it("une signature DocuSeal est dite « signature électronique simple via DocuSeal », pas « confirmation accessible »", () => {
+    const texte = rendre([
+      {
+        titre: "Pour le client",
+        signature: preuve({
+          methode: "confirmation_accessible",
+          provider: "docuseal",
+          imageSrc: null,
+        }),
+      },
+    ]);
+    expect(texte).toContain("Signature électronique simple");
+    expect(texte).toContain("DocuSeal");
+    expect(texte).not.toContain("confirmation nominative");
+    expect(texte).not.toContain("modalité accessible");
+    expect(texte).toContain(EMPREINTE);
+  });
+
   it("🔴 une image purgée (art. 17) est DITE — sinon un droit exercé se lit comme un manquement", () => {
     const texte = rendre([
       {

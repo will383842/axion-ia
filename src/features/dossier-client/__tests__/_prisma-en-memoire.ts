@@ -133,6 +133,25 @@ export function satisfait(l: Ligne, where: Record<string, unknown> | undefined):
       }
       continue;
     }
+    // Filtre JSON de Prisma : `{ path: [clé…], equals: valeur }` (lecture d'une clé d'un champ Json).
+    if (
+      v !== null &&
+      typeof v === "object" &&
+      !(v instanceof Date) &&
+      Array.isArray((v as Record<string, unknown>)["path"]) &&
+      "equals" in (v as Record<string, unknown>)
+    ) {
+      const { path, equals } = v as { path: string[]; equals: unknown };
+      let courant: unknown = valeur;
+      for (const k of path) {
+        courant =
+          courant !== null && typeof courant === "object"
+            ? (courant as Record<string, unknown>)[k]
+            : undefined;
+      }
+      if (!egal(courant, equals)) return false;
+      continue;
+    }
     if (v !== null && typeof v === "object" && !(v instanceof Date)) {
       inconnue(`filtre de relation ou composé « ${cle} »`, v);
     }

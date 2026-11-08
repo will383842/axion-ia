@@ -392,6 +392,20 @@ export const CATALOGUE: Readonly<Record<EmailJobName, FicheEmail>> = {
     destinataire: "chaque signataire, sauf l'organisme",
     source: "server/qualiopi/documents/signature/transmission-exemplaire.ts",
   },
+  "devis-commande-confirmation": {
+    categorie: "commerce",
+    quand:
+      "Axion-IA contresigne un devis (action explicite uniquement) — confirmation de commande (formule, automatisations et lignes récurrentes retenues) avec devis signé et CGV en pièces jointes ; TOUJOURS garée dans la corbeille « à valider », jamais envoyée seule",
+    destinataire: "le client",
+    source: "server/qualiopi/devis/confirmation-commande.ts",
+  },
+  "devis-code-signature": {
+    categorie: "commerce",
+    quand:
+      "Le signataire clique « Recevoir mon code » sur la page de signature de son devis — code à usage unique (10 minutes), jamais automatique",
+    destinataire: "le signataire du devis (adresse figée sur le lien de signature)",
+    source: "server/qualiopi/devis/code-signature-devis.ts",
+  },
   "autofacture-transmission": {
     categorie: "commerce",
     quand:
@@ -711,6 +725,13 @@ export const CATALOGUE: Readonly<Record<EmailJobName, FicheEmail>> = {
       "Une personne vient d'envoyer ses réponses au questionnaire de pré-audit (dirigeant, collaborateur ou référent informatique) — texte neutre, sans bouton",
     destinataire: "la personne qui a répondu",
     source: "features/questionnaire-preaudit/suivi.ts",
+  },
+  "devis-signe-a-contresigner": {
+    categorie: "commerce",
+    quand:
+      "Le client signe son devis par lien (puis, si c'est la dernière signature, « signé des deux parties ») — numéro et lien console, aucune donnée personnelle",
+    destinataire: "interne",
+    source: "server/qualiopi/documents/signature/notification-interne-devis.ts",
   },
   "questionnaire-reponses-recues": {
     categorie: "rendez-vous",

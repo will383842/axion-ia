@@ -45,16 +45,26 @@ import { prisma } from "@/lib/prisma";
 import { resolveLegalIdentity } from "@/lib/legal-identity";
 import { DOCUMENT_RETENTION_YEARS } from "@/server/qualiopi/legal/legal-mentions";
 import { storeSignatureImage, supprimerImageSignature } from "@/server/qualiopi/emargement/storage";
+import { empreinteTexteCgv } from "@/content/cgv-empreinte";
+import { sha256Choix, type ChoixCanonique } from "@/server/qualiopi/devis/offre-calculs";
+import {
+  devisSignableParFormules,
+  validerChoixSignature,
+} from "@/server/qualiopi/devis/choix-signature";
+import { offreDevisV1 } from "@/server/qualiopi/devis/offre-devis";
+import { codeAssezRecent, validerDeclaration } from "@/server/qualiopi/devis/signature-renforcee";
 import { peutEngager } from "@/server/auth/habilitations";
 import { resoudreAppartenance, type RoleFormateur } from "@/server/formateur/session-membership";
 import {
   calculerSelfHashDocument,
   HASH_VERSION_DOCUMENT,
+  HASH_VERSION_DOCUMENT_V4,
   type MethodeSignatureDocument,
   type PartieSignataire,
   type ProviderSignature,
   type FacteurVerificationSignature,
-  type TupleDocumentSignatureV2,
+  type TupleDocumentSignatureV3,
+  type TupleDocumentSignatureV4,
 } from "./document-signature-hash";
 import {
   MENTION_VERSION_DOCUMENT,
@@ -182,7 +192,19 @@ export type RefusSignatureDocument =
   /** Canal A — le lien ne vise pas cette pièce, ou plus cette partie. */
   | "jeton_non_applicable"
   /** Canal A — lien révoqué ou périmé. Distingué : le client peut en redemander un. */
-  | "jeton_inactif";
+  | "jeton_inactif"
+  /** CGV avant signature du devis — le signataire par lien n'a pas accepté les CGV. */
+  | "cgv_non_acceptees"
+  /** Devis à formules — aucun choix d'offre n'accompagne la signature (ou la signature du client n'en porte pas). */
+  | "choix_requis"
+  /** Devis à formules — le choix ne correspond pas au devis lu en base (numéro, offre, empreinte). */
+  | "choix_incoherent"
+  /** Devis à formules — la date de validité est passée : le devis ne se signe plus. */
+  | "devis_expire"
+  /** Signature renforcée — nom, fonction ou déclaration de pouvoir absents ou invalides. */
+  | "declaration_requise"
+  /** Signature renforcée — aucun code à usage unique récemment accepté pour cette pièce. */
+  | "code_requis";
 
 export type ResultatSignatureDocument =
   | {
@@ -219,6 +241,54 @@ export interface EntreeSignatureDocument {
    * à usage unique (contrat-cadre v3, lot L7c) : elle entre dans le tuple haché.
    */
   consentementVersion?: VersionConsentementDocument | undefined;
+  /**
+   * Version des CGV acceptées. 🔴 Fournie par le SERVEUR (jamais par le navigateur) et
+   * OBLIGATOIRE pour un devis signé par lien (`signataire_jeton`). Les autres pièces et
+   * canaux (contresignature, papier, DocuSeal) la laissent vide : `null` est alors scellé.
+   */
+  cgvVersion?: string | null | undefined;
+  /**
+   * Devis À FORMULES — choix du client, DÉJÀ validé contre l'offre figée par l'action
+   * (`validerChoixSignature`). Le service ne fait pas confiance à cette validation : il
+   * revérifie le numéro du devis, l'empreinte de l'offre et la cohérence de l'empreinte.
+   * Obligatoire (et seulement admis) pour la signature du client d'un devis dont l'offre
+   * n'est pas NULL.
+   */
+  choixOffre?: { choix: ChoixCanonique; sha256: string } | undefined;
+  /**
+   * Instant (SERVEUR) de réception de la case « j'ai lu et j'accepte les CGV », antérieur à la
+   * signature. Jamais une heure venue du navigateur. Requis avec `choixOffre`.
+   */
+  cgvAccepteeAt?: Date | undefined;
+  /**
+   * Signature « simple renforcée » (lot 4 bis) — OBLIGATOIRE pour la signature du client d'un devis à
+   * formules. `declarationNom`/`declarationFonction` sont ce que le signataire a SAISI (le service les
+   * revalide et les normalise) ; `pouvoirDeclareAt` est l'instant SERVEUR où il a déclaré avoir le
+   * pouvoir d'engager la société. L'instant du code accepté, lui, est relu en base par le service.
+   */
+  renforcee?:
+    | {
+        declarationNom: string;
+        declarationFonction: string;
+        pouvoirDeclareAt: Date;
+      }
+    | undefined;
+}
+
+/** Valeurs du sceau V4 d'une signature de devis à formules (toutes SERVEUR). */
+interface SceauV4 {
+  choixOffre: ChoixCanonique;
+  choixOffreSha256: string;
+  cgvTexteSha256: string | null;
+  cgvAccepteeAt: Date | null;
+  jetonId: string | null;
+  /** Déclaration du signataire (lot 4 bis) ; `null` pour la contresignature. */
+  declaration: {
+    nom: string;
+    fonction: string;
+    pouvoirDeclareAt: Date;
+    codeVerifieAt: Date;
+  } | null;
 }
 
 function estStub(): boolean {
@@ -251,6 +321,18 @@ const MESSAGES: Record<RefusSignatureDocument, string> = {
     "Ce lien de signature ne correspond pas à cette pièce, ou pas à ce titre. Demandez un nouveau lien à votre interlocuteur.",
   jeton_inactif:
     "Ce lien de signature n'est plus valable : il a expiré ou a été remplacé. Demandez-en un nouveau à votre interlocuteur.",
+  cgv_non_acceptees:
+    "Pour signer ce devis, vous devez d'abord lire et accepter les conditions générales de vente.",
+  choix_requis:
+    "Ce devis propose des formules : choisissez votre formule avant de signer. Si le problème persiste, contactez votre interlocuteur chez Axion-IA.",
+  choix_incoherent:
+    "Votre choix ne correspond plus à ce devis. Rechargez la page pour le relire, ou contactez votre interlocuteur chez Axion-IA.",
+  devis_expire:
+    "Ce devis a dépassé sa date de validité et ne peut plus être signé. Demandez-en un nouveau à votre interlocuteur chez Axion-IA.",
+  declaration_requise:
+    "Renseignez votre nom, votre fonction et cochez la déclaration de pouvoir d'engager la société avant de signer.",
+  code_requis:
+    "Saisissez le code reçu par e-mail pour signer. S'il a expiré, demandez-en un nouveau.",
 };
 
 function refus(raison: RefusSignatureDocument): ResultatSignatureDocument {
@@ -301,6 +383,15 @@ async function lirePiece(documentGenereId: string, partie: PartieSignataire) {
       // faisait encore foi. Un lien légitimement émis, porté par son
       // destinataire légitime, signait donc une pièce annulée.
       annuleeAt: true,
+      // Devis à formules (lot 4) : l'offre FIGÉE et sa validité, lues avec la pièce. Vide pour
+      // tout autre type de pièce.
+      devisPortes: {
+        select: { numero: true, offre: true, offreSha256: true, dateValidite: true },
+        // Tri déterministe, et 2 lignes (pas 1) pour DÉTECTER l'ambiguïté : une pièce ne doit
+        // porter qu'un devis ; sinon on ne choisit pas au hasard le devis dont on scelle le choix.
+        orderBy: [{ createdAt: "asc" }, { id: "asc" }],
+        take: 2,
+      },
       signatures: {
         where: { partie, revokedAt: null },
         select: { id: true },
@@ -723,6 +814,60 @@ function porteurAutorise(ctx: ContextePiece, porteur: PorteurSignatureDocument):
 }
 
 /**
+ * Signature renforcée (lot 4 bis) : valide la déclaration saisie et relit en base le code accepté.
+ *
+ *  · nom, fonction : revalidés ici (2 à 200 caractères, sans caractère de commande), espaces
+ *    normalisés — la déclaration scellée est exactement celle qui est écrite ;
+ *  · le pouvoir est déclaré par l'appelant à un instant SERVEUR antérieur à la signature ;
+ *  · le code : une ligne consommée pour cette pièce et cette partie, acceptée il y a moins de
+ *    10 minutes. L'instant scellé est celui de la BASE (`utilise_at`), jamais celui de l'appelant.
+ */
+async function declarationRenforcee(args: {
+  saisie: EntreeSignatureDocument["renforcee"];
+  documentGenereId: string;
+  partie: PartieSignataire;
+  maintenant: Date;
+  /** Lien en cours : quand il est fourni, seul un code demandé PAR CE LIEN est accepté. */
+  jetonId?: string;
+}): Promise<
+  | { ok: true; declaration: NonNullable<SceauV4["declaration"]> }
+  | { ok: false; raison: "declaration_requise" | "code_requis" }
+> {
+  if (args.saisie === undefined) return { ok: false, raison: "declaration_requise" };
+  const decl = validerDeclaration({
+    nom: args.saisie.declarationNom,
+    fonction: args.saisie.declarationFonction,
+    pouvoirEngager: true,
+  });
+  if (!decl.ok) return { ok: false, raison: "declaration_requise" };
+  if (args.saisie.pouvoirDeclareAt.getTime() > args.maintenant.getTime()) {
+    return { ok: false, raison: "declaration_requise" };
+  }
+  const code = await prisma.documentSignatureCode.findFirst({
+    where: {
+      documentGenereId: args.documentGenereId,
+      partie: args.partie,
+      utiliseAt: { not: null },
+      ...(args.jetonId === undefined ? {} : { jetonId: args.jetonId }),
+    },
+    orderBy: { utiliseAt: "desc" },
+    select: { utiliseAt: true },
+  });
+  if (code?.utiliseAt == null || !codeAssezRecent(code.utiliseAt, args.maintenant)) {
+    return { ok: false, raison: "code_requis" };
+  }
+  return {
+    ok: true,
+    declaration: {
+      nom: decl.declaration.nom,
+      fonction: decl.declaration.fonction,
+      pouvoirDeclareAt: args.saisie.pouvoirDeclareAt,
+      codeVerifieAt: code.utiliseAt,
+    },
+  };
+}
+
+/**
  * Enregistre la signature d'UNE pièce par UNE partie.
  *
  * ⚠️ Ne retourne JAMAIS un succès silencieux : soit la ligne est écrite et son
@@ -778,6 +923,104 @@ export async function signerDocument(
   // Placé APRÈS l'autorisation : sinon un appelant qui devine un identifiant de
   // pièce apprend si une autre partie a déjà signé.
   if (ctx.signatures.length > 0) return refus("deja_signe");
+
+  // CGV avant signature du devis : un client qui signe SON devis par lien doit avoir
+  // accepté les CGV. Le service le revérifie lui-même (défense en profondeur), après la
+  // garde « déjà signée » pour ne rien révéler. Autres pièces et canaux : `null`.
+  const cgvDemandee = porteur.type === "signataire_jeton" && ctx.type === "devis";
+  const cgvVersion = cgvDemandee ? nettoyer(input.cgvVersion) : null;
+  if (cgvDemandee && cgvVersion === null) return refus("cgv_non_acceptees");
+
+  // ── DEVIS À FORMULES (lot 4) ──
+  //
+  // Une offre non NULL change la nature de ce qui est signé : le client signe SON choix, scellé
+  // en V4 avec la preuve d'acceptation des CGV. Tout est relu ICI, sur le devis lu en base, sans
+  // faire confiance à la validation de l'action : numéro, empreinte de l'offre, validité.
+  // Plusieurs devis portant la même pièce, dont l'un à formules : ambiguïté → refus (jamais un
+  // tirage au hasard du devis dont on scelle le choix).
+  if (
+    ctx.type === "devis" &&
+    ctx.devisPortes.length > 1 &&
+    ctx.devisPortes.some((d) => d.offreSha256 !== null)
+  ) {
+    return refus("choix_incoherent");
+  }
+  const devisLie = ctx.type === "devis" ? (ctx.devisPortes[0] ?? null) : null;
+  const aOffre = devisLie !== null && devisLie.offre !== null && devisLie.offreSha256 !== null;
+  const choixFourni = input.choixOffre !== undefined;
+  let sceauV4: SceauV4 | null = null;
+  if (!aOffre && choixFourni) return refus("choix_incoherent");
+  if (aOffre && partie === "client") {
+    if (porteur.type !== "signataire_jeton" || !choixFourni) return refus("choix_requis");
+    if (input.cgvAccepteeAt === undefined || cgvVersion === null) {
+      return refus("cgv_non_acceptees");
+    }
+    if (!devisSignableParFormules(devisLie, maintenant)) return refus("devis_expire");
+    const { choix, sha256 } = input.choixOffre!;
+    if (
+      choix.devisNumero !== devisLie.numero ||
+      choix.offreSha256 !== devisLie.offreSha256 ||
+      sha256Choix(choix) !== sha256
+    ) {
+      return refus("choix_incoherent");
+    }
+    // Défense en profondeur : le choix fourni doit être EXACTEMENT celui que les règles de l'offre
+    // figée produisent (maintenance obligatoire, durées proposées, dépendances). Le service ne
+    // suppose pas que l'action l'a vérifié.
+    const offre = offreDevisV1.safeParse(devisLie.offre);
+    const rederive = offre.success
+      ? validerChoixSignature(
+          { offre: offre.data, devisNumero: devisLie.numero, offreSha256: devisLie.offreSha256! },
+          {
+            formule: choix.formule,
+            automatisationsRetenues: choix.automatisationsRetenues,
+            maintenanceRetenue: choix.maintenanceRetenue,
+            periodiciteMois: choix.periodiciteMois,
+          },
+        )
+      : null;
+    if (rederive === null || !rederive.ok || rederive.sha256Choix !== sha256) {
+      return refus("choix_incoherent");
+    }
+    // Signature renforcée : déclaration valide + code accepté récemment, relus ICI (rien n'est cru sur parole).
+    const renforcee = await declarationRenforcee({
+      saisie: input.renforcee,
+      documentGenereId: ctx.id,
+      partie,
+      maintenant,
+      jetonId: porteur.tokenId,
+    });
+    if (!renforcee.ok) return refus(renforcee.raison);
+    sceauV4 = {
+      choixOffre: choix,
+      choixOffreSha256: sha256,
+      // 🔴 Valeurs SERVEUR : le texte en vigueur, jamais une empreinte envoyée par le navigateur.
+      cgvTexteSha256: empreinteTexteCgv(),
+      cgvAccepteeAt: input.cgvAccepteeAt,
+      jetonId: porteur.tokenId,
+      declaration: renforcee.declaration,
+    };
+  } else if (aOffre && partie === "axionia") {
+    // La contresignature RECOPIE le choix scellé du client : lu en base, jamais en entrée.
+    const client = await prisma.documentSignature.findFirst({
+      where: { documentGenereId: ctx.id, partie: "client", revokedAt: null },
+      select: { choixOffre: true, choixOffreSha256: true },
+    });
+    if (client === null || client.choixOffre == null || client.choixOffreSha256 == null) {
+      return refus("choix_requis");
+    }
+    sceauV4 = {
+      choixOffre: client.choixOffre as unknown as ChoixCanonique,
+      choixOffreSha256: client.choixOffreSha256,
+      cgvTexteSha256: null,
+      cgvAccepteeAt: null,
+      jetonId: null,
+      declaration: null,
+    };
+  } else if (aOffre) {
+    // Toute autre partie d'un devis à formules (pas de circuit prévu) : rien de scellé sans choix.
+    return refus("choix_requis");
+  }
 
   // ── 2. GARDES SUR LA PIÈCE ──
   //
@@ -891,6 +1134,7 @@ export async function signerDocument(
     mentionVersion: MENTION_VERSION_DOCUMENT,
     consentementVersion,
     signeAtIso: maintenant.toISOString(),
+    cgvVersion,
   };
 
   const requises = new Set(input.partiesRequises);
@@ -916,8 +1160,33 @@ export async function signerDocument(
         });
         const prevHash = precedente?.selfHash ?? null;
 
-        const tuple: TupleDocumentSignatureV2 = { ...socle, prevHash, facteurVerification };
-        const selfHash = calculerSelfHashDocument(tuple);
+        const tupleV3: TupleDocumentSignatureV3 = { ...socle, prevHash, facteurVerification };
+        // V4 SEULEMENT pour un devis à formules ; tout le reste reste scellé en V3, octet pour octet.
+        const tupleV4: TupleDocumentSignatureV4 | null =
+          sceauV4 === null
+            ? null
+            : {
+                ...tupleV3,
+                choixOffreSha256: sceauV4.choixOffreSha256,
+                cgvTexteSha256: sceauV4.cgvTexteSha256,
+                cgvPdfSha256: null,
+                cgvAccepteeAtIso: sceauV4.cgvAccepteeAt?.toISOString() ?? null,
+                cgvTraceSha256: null,
+                jetonId: sceauV4.jetonId,
+                // Absente (contresignature) : AUCUNE clé n'est scellée (forme V4 inchangée).
+                ...(sceauV4.declaration === null
+                  ? {}
+                  : {
+                      declarationNom: sceauV4.declaration.nom,
+                      declarationFonction: sceauV4.declaration.fonction,
+                      pouvoirDeclareAtIso: sceauV4.declaration.pouvoirDeclareAt.toISOString(),
+                      codeVerifieAtIso: sceauV4.declaration.codeVerifieAt.toISOString(),
+                    }),
+              };
+        const selfHash =
+          tupleV4 === null
+            ? calculerSelfHashDocument(tupleV3)
+            : calculerSelfHashDocument(tupleV4, HASH_VERSION_DOCUMENT_V4);
 
         const sig = await tx.documentSignature.create({
           data: {
@@ -938,10 +1207,30 @@ export async function signerDocument(
             sizeBytes: image?.sizeBytes ?? null,
             prevHash,
             selfHash,
-            hashVersion: HASH_VERSION_DOCUMENT,
+            hashVersion: sceauV4 === null ? HASH_VERSION_DOCUMENT : HASH_VERSION_DOCUMENT_V4,
             mentionVersion: MENTION_VERSION_DOCUMENT,
             consentementVersion,
             facteurVerification,
+            cgvVersion,
+            // Colonnes du sceau V4 : ABSENTES de la donnée écrite pour tout autre devis, afin que
+            // l'écriture soit celle de main.
+            ...(sceauV4 === null
+              ? {}
+              : {
+                  choixOffre: sceauV4.choixOffre as unknown as Prisma.InputJsonValue,
+                  choixOffreSha256: sceauV4.choixOffreSha256,
+                  cgvTexteSha256: sceauV4.cgvTexteSha256,
+                  cgvAccepteeAt: sceauV4.cgvAccepteeAt,
+                  jetonId: sceauV4.jetonId,
+                  ...(sceauV4.declaration === null
+                    ? {}
+                    : {
+                        declarationNom: sceauV4.declaration.nom,
+                        declarationFonction: sceauV4.declaration.fonction,
+                        pouvoirDeclareAt: sceauV4.declaration.pouvoirDeclareAt,
+                        codeVerifieAt: sceauV4.declaration.codeVerifieAt,
+                      }),
+                }),
             signeAt: maintenant,
             ipHash: input.ipHash ?? null,
             userAgentSha256: input.userAgentSha256 ?? null,
@@ -949,6 +1238,19 @@ export async function signerDocument(
           },
           select: { id: true, selfHash: true },
         });
+
+        // Horodatage RFC 3161 du sceau (lot 4 bis) : la ligne naît « en attente » dans la MÊME
+        // transaction que la preuve ; le jeton est demandé APRÈS, sans jamais bloquer ni défaire la
+        // signature. Toute signature V4 (client et contresignature) a la sienne.
+        if (sceauV4 !== null) {
+          await tx.documentSignatureHorodatage.create({
+            data: {
+              signatureId: sig.id,
+              empreinteSha256: sig.selfHash,
+              prochainEssaiAt: maintenant,
+            },
+          });
+        }
 
         // 🔴 Statut DÉRIVÉ, dans la MÊME transaction que la preuve.
         //

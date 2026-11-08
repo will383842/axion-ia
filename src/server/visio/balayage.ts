@@ -51,6 +51,10 @@ import {
   type BilanFichesAuto,
 } from "@/features/dossier-client/fiche-auto";
 import {
+  assurerLesFichesDemande,
+  type BilanFichesDemande,
+} from "@/features/dossier-client/fiche-demande";
+import {
   aEuLieu,
   estDuMoisDuBilan,
   fenetreDuBilan,
@@ -62,6 +66,8 @@ import {
   signalerPanneDuBalayage,
   signalerRendezVousAClasser,
   VISIO_BALAYAGE_EN_PANNE,
+  creerOuDedupParDefaut,
+  CODES_ALERTES_VISIO,
   type CreerAlerte,
   type Notifier,
 } from "./alertes";
@@ -102,9 +108,16 @@ class FicheAutoPlantee extends Error {
   override name = "FicheAutoPlantee";
 }
 
+/** Un message dont le traitement a PLANTÉ (vraie panne) : même règle que `FicheAutoPlantee`. */
+class FicheDemandePlantee extends Error {
+  override name = "FicheDemandePlantee";
+}
+
 export interface ResultatBalayage {
   readonly rencontresAssurees: number;
   readonly fichesAuto: BilanFichesAuto;
+  /** La fiche prospect des demandes écrites (`DOSSIER_FICHE_DEMANDE`). */
+  readonly fichesDemande: BilanFichesDemande;
   readonly comptesRendusAValider: number;
   readonly suitesEchues: number;
   readonly veille: number;
@@ -275,6 +288,50 @@ export async function lireEtatDuCircuit(db: Tx, maintenant: Date): Promise<EtatD
   };
 }
 
+/**
+ * Le compte à blanc de la fiche des demandes devient UNE alerte par jour (cible = le jour de Paris,
+ * pour qu'une alerte résolue n'absorbe pas le lendemain). Mode essai seulement ; message fixe, que
+ * des nombres. Une panne d'alerte est capturée : elle ne bloque jamais le balayage.
+ */
+export async function signalerBilanEssaiDemande(
+  b: BilanFichesDemande,
+  maintenant: Date,
+  creerAlerte?: CreerAlerte,
+): Promise<void> {
+  if (b.mode !== "essai") return;
+  if (
+    b.creeraient + b.lieraient + b.doutes + b.plantees === 0 &&
+    !b.colonneAbsente &&
+    !b.dateManquante
+  )
+    return;
+  const oui = (v: boolean) => (v ? "oui" : "non");
+  try {
+    await (creerAlerte ?? creerOuDedupParDefaut)({
+      code: CODES_ALERTES_VISIO.bilanEssaiFicheDemande,
+      niveau: "info",
+      titre: "Essai à blanc des fiches des demandes",
+      message:
+        `Essai à blanc des fiches des demandes : créerait ${b.creeraient}, lierait ${b.lieraient}, ` +
+        `douterait ${b.doutes}, planterait ${b.plantees} ; colonne absente ${oui(b.colonneAbsente)} ; ` +
+        `date d'activation manquante ${oui(b.dateManquante)}`,
+      cibleType: "jour",
+      cibleId: dayKeyInParis(maintenant),
+      metadata: {
+        creeraient: b.creeraient,
+        lieraient: b.lieraient,
+        doutes: b.doutes,
+        plantees: b.plantees,
+        colonneAbsente: b.colonneAbsente,
+        dateManquante: b.dateManquante,
+      },
+    });
+  } catch (e) {
+    const nom = e instanceof Error ? e.name : "inconnue";
+    console.warn(`[balayage] alerte du bilan d'essai des demandes en échec : ${nom}`);
+  }
+}
+
 /** Un passage du balayage. Voir l'en-tête. */
 export async function passerBalayage(
   db: BaseBalayage,
@@ -350,6 +407,31 @@ export async function passerBalayage(
     fichesLues = true;
     if (fichesAuto.plantees > 0) throw new FicheAutoPlantee();
   });
+  // 2 ter. La fiche prospect des DEMANDES écrites (DOSSIER_FICHE_DEMANDE, coupé par défaut) : après
+  // celle des rendez-vous, avant l'envoi des alertes « doublon possible » qui couvre les deux.
+  let fichesDemande: BilanFichesDemande = {
+    mode: "coupe",
+    creees: 0,
+    liees: 0,
+    doutes: 0,
+    plantees: 0,
+    creeraient: 0,
+    lieraient: 0,
+    doublons: [],
+    colonneAbsente: false,
+    refusAbandonnes: 0,
+    dateManquante: false,
+  };
+  await etape<void>("fiches-demande", undefined, async () => {
+    fichesDemande = await assurerLesFichesDemande(db, {
+      maintenant,
+      ...(deps.creerAlerte ? { creerAlerte: deps.creerAlerte } : {}),
+    });
+    if (fichesDemande.plantees > 0) throw new FicheDemandePlantee();
+  });
+  // Le bilan de l'ESSAI À BLANC, lisible dans la console (le journal du worker ne l'est pas) :
+  // une alerte par jour, uniquement en mode essai, des nombres seulement. Jamais une panne.
+  await signalerBilanEssaiDemande(fichesDemande, maintenant, deps.creerAlerte);
   // Les fiches créées avec un doute d'identité : l'alerte est écrite avec la fiche (même
   // transaction) ; ici on l'ENVOIE, tant qu'elle n'est pas partie. Jamais une panne.
   await etape<void>("fiches-auto-doublon", undefined, async () => {
@@ -385,6 +467,7 @@ export async function passerBalayage(
   return {
     rencontresAssurees,
     fichesAuto,
+    fichesDemande,
     comptesRendusAValider,
     suitesEchues,
     veille,

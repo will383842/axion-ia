@@ -1888,6 +1888,30 @@ export const ALERTE_CATALOGUE: Record<string, AlerteCatalogueEntry> = {
       "STRUCTUREL — émise une fois par fiche créée en doute d'identité par le balayage du dossier client ; elle attend la fusion au SIRET (une autre PR), `synchroniserAlertes` la fermerait au premier tour.",
     guichet: "direction",
   },
+  "visio.fiche_de_message_efface": {
+    niveau: "important",
+    titre: "Message effacé (art. 17) : sa fiche prospect est restée, à examiner",
+    resolutionAuto: false,
+    motifSansResolutionAuto:
+      "STRUCTUREL — émise une fois par l'effacement d'un message relié à une fiche ; rien n'est supprimé tout seul, la fiche attend la décision de Will, `synchroniserAlertes` la fermerait au premier tour.",
+    guichet: "direction",
+  },
+  "visio.fiche_demande_refus_porte": {
+    niveau: "important",
+    titre: "Messages du site sans fiche prospect : la porte a refusé trois fois",
+    resolutionAuto: false,
+    motifSansResolutionAuto:
+      "STRUCTUREL — levée par le balayage (étape « fiches-demande ») quand un message est écarté après trois refus de la porte unique ; le refus est permanent, `synchroniserAlertes` la fermerait au premier tour.",
+    guichet: "direction",
+  },
+  "visio.fiche_demande_bilan_essai": {
+    niveau: "info",
+    titre: "Essai à blanc des fiches des demandes",
+    resolutionAuto: false,
+    motifSansResolutionAuto:
+      "STRUCTUREL — levée par le balayage (étape « fiches-demande ») en mode essai, une fois par jour (cible = le jour de Paris) ; c'est un bilan chiffré à lire, `synchroniserAlertes` le fermerait au premier tour.",
+    guichet: "direction",
+  },
   "visio.rendez_vous_a_classer": {
     niveau: "important",
     titre: "Rendez-vous Calendly à classer à la main (fiche automatique en doute)",

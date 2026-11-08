@@ -38,6 +38,10 @@ const SECRET_PATTERNS: ReadonlyArray<RegExp> = [
   /\beyJ[A-Za-z0-9_-]{10,}\.[A-Za-z0-9_-]{10,}\.[A-Za-z0-9_-]{10,}\b/g,
   // INDEXNOW key (hex 32 chars typique)
   /\b[a-f0-9]{32}\b/gi,
+  // Lien de signature maison (`/portail/signer/<payloadB64>.<sigB64>`) : jeton porteur à
+  // 2 segments, que ni le motif JWT (3 segments) ni le motif hex n'attrapent. On masque toute
+  // l'URL / le chemin contenant `/signer/`, jusqu'au prochain espace ou délimiteur.
+  /(?:https?:\/\/)?[^\s"'<>()]*\/signer\/[^\s"'<>()]*/gi,
   // Postgres URL passwords (postgres://user:PASSWORD@host)
   /(postgres(?:ql)?:\/\/[^:]+:)[^@]+(@)/gi,
   // Redis URL passwords
@@ -77,6 +81,8 @@ const SENSITIVE_KEYS: ReadonlySet<string> = new Set([
   "docuseal_strict_hmac",
   // S6b — code de signature à usage unique (scellé dans la file, masqué ici en plus).
   "code",
+  // Lien de signature maison (jeton porteur) — cf. SECRET_PATTERNS pour les valeurs libres.
+  "signatureurl",
 ]);
 
 /** Noms de clés à redacter via redactEmail (premier char + masque + @domaine). */

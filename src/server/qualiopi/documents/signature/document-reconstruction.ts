@@ -75,6 +75,24 @@ export const COLONNES_SCELLEES_DOCUMENT: ReadonlyArray<keyof LigneDocumentSignat
   // Scellé à partir de la version 2 du tuple (V1-A-7) ; une ligne de version 1 qui
   // en porterait un est jugée irrecalculable.
   "facteurVerification",
+  // Scellé à partir de la version 3 du tuple (CGV avant signature du devis) ; une ligne de
+  // version 1 ou 2 qui en porterait une est jugée irrecalculable.
+  "cgvVersion",
+  // Scellés à partir de la version 4 du tuple (devis à formules). `choixOffre` n'est pas haché tel
+  // quel : son empreinte est RECALCULÉE à la vérification, puis scellée (`choixOffreSha256`).
+  "choixOffre",
+  "choixOffreSha256",
+  "cgvTexteSha256",
+  "cgvPdfSha256",
+  "cgvAccepteeAt",
+  "cgvTraceSha256",
+  "jetonId",
+  // Scellés en version 4 SEULEMENT quand ils sont présents (lot 4 bis, signature renforcée) : la
+  // déclaration du signataire et l'instant du code vérifié. Absents, la forme canonique ne change pas.
+  "declarationNom",
+  "declarationFonction",
+  "pouvoirDeclareAt",
+  "codeVerifieAt",
 ];
 
 /**

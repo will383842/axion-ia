@@ -34,6 +34,10 @@
  * (alerte `exemplaire_signe_non_transmis`, cron du positionnement).
  */
 
+import {
+  proposerPlansApresAcceptation,
+  proposerPlansApresAcceptationDetaille,
+} from "@/server/qualiopi/devis/proposer-plans";
 import * as Sentry from "@sentry/nextjs";
 import { prisma } from "@/lib/prisma";
 import { sendTelegram } from "@/lib/telegram";
@@ -50,10 +54,14 @@ import {
   emettreDevisSigne,
   transactionDevisSigne,
 } from "@/server/partners-sync/producteurs/devis";
+import { accepterDevisAFormules } from "@/server/qualiopi/devis/acceptation-formules";
+import { envoyerConfirmationCommande } from "@/server/qualiopi/devis/confirmation-commande";
+import { faireMonterLesFichesDesDevisSignes } from "@/features/dossier-client/devis-signe-fait-client";
 import type { PartieSignataire } from "./document-signature-hash";
 import { circuitPour } from "./parties-requises";
 import { estPieceEngageante } from "./pieces-engageantes";
 import { lettreDue, reevaluerMission } from "./crochets-mission";
+import { ficheDevisDePiece, prevenirDevisSigne } from "./notification-interne-devis";
 import { transmettreCopiePartielle, transmettreExemplaireSigne } from "./transmission-exemplaire";
 
 /**
@@ -171,16 +179,179 @@ async function declencherPositionnement(documentGenereId: string): Promise<void>
  * signature intégrale reçue après l'échéance vaut accord). INT-T04 : l'accord et
  * l'événement `devis.signe` dans UNE transaction.
  */
-async function accepterDevis(documentGenereId: string): Promise<void> {
+/**
+ * Devis À FORMULES (lot 4) : recopie du choix scellé + acceptation + fait `commande.signee`
+ * dans UNE vraie transaction, canal Partners ouvert ou non. Idempotent (condition
+ * `formule_retenue IS NULL`) : sert aussi à la REPRISE manuelle d'un devis signé des deux
+ * parties dont l'acceptation avait échoué. `traite: false` = aucun devis à formules en attente.
+ */
+export async function reprendreAcceptationDevisFormules(
+  documentGenereId: string,
+  options?: { confirmer?: boolean },
+): Promise<{
+  traite: boolean;
+  ids: string[];
+  /** Devis que CET appel vient d'accepter (pas ceux déjà acceptés). */
+  acceptes: string[];
+  plansEchec: string[];
+  confirmationsEchec: string[];
+  /** Devis dont la confirmation vient d'être garée en corbeille par CET appel. */
+  confirmationsPreparees: string[];
+  /** Devis pour lesquels CET appel vient de créer au moins un plan récurrent (pas « déjà présents »). */
+  plansProposes: string[];
+}> {
+  const formules = await accepterDevisAFormules(prisma, documentGenereId);
+  if (formules.traite) {
+    try {
+      await faireMonterLesFichesDesDevisSignes(prisma, formules.ids, {
+        origine: "signature_complete",
+      });
+    } catch (err) {
+      Sentry.captureException(err, { tags: { action: "devis_signe_fait_client" } });
+    }
+  }
+  // Confirmation de commande au client (CGV 6.2) : sur CONTRESIGNATURE EXPLICITE d'Axion-IA
+  // seulement (`options.confirmer`). Cibles : les devis que CET appel vient d'accepter ET les devis
+  // à formules DÉJÀ acceptés (reprise manuelle : la confirmation avait pu échouer — corbeille
+  // indisponible, exemplaire absent — alors que l'acceptation, elle, était acquise). L'anti-rejeu
+  // de `envoyerConfirmationCommande` (`dejaEnvoyee`, outbox + emailLog par jobId) interdit tout
+  // doublon : `deja_envoyee` n'est NI un échec NI une préparation. Sans `confirmer: true`, jamais
+  // de confirmation. Toujours garée en corbeille « à valider », jamais envoyée seule. Fail-soft.
+  //
+  // ⚠️ DÉCISION À TRANCHER PAR WILL (comportement inchangé) : une confirmation REFUSÉE ou SUPPRIMÉE
+  // en corbeille laisse `jobIdDejaGare` vrai (la ligne d'outbox/emailLog existe) → `deja_envoyee`,
+  // aucune nouvelle confirmation automatique. Une reprise ne la régénère donc pas.
+  // Une seule lecture des devis déjà acceptés : sert à la confirmation ET à la reproposition.
+  const dejaAcceptes =
+    options?.confirmer === true || !formules.traite
+      ? await devisAcceptesAFormules(documentGenereId)
+      : [];
+  const confirmationsEchec: string[] = [];
+  const confirmationsPreparees: string[] = [];
+  if (options?.confirmer === true) {
+    const cibles = [...new Set([...(formules.traite ? formules.acceptes : []), ...dejaAcceptes])];
+    for (const id of cibles) {
+      try {
+        const r = await envoyerConfirmationCommande({
+          declencheur: "contresignature_axion_explicite",
+          devisId: id,
+        });
+        if (r.envoye) {
+          confirmationsPreparees.push(id);
+        } else if (r.raison !== "formules_eteintes" && r.raison !== "deja_envoyee") {
+          // `formules_eteintes` : lot éteint, rien n'est dû. `deja_envoyee` : déjà garée.
+          confirmationsEchec.push(id);
+        }
+      } catch (err) {
+        confirmationsEchec.push(id);
+        Sentry.captureException(err, {
+          tags: { action: "confirmation_commande_non_preparee" },
+          extra: { devisId: id },
+        });
+      }
+    }
+  }
+  // Plans récurrents PROPOSÉS en `pause` (lot 5) : APRÈS le COMMIT de l'acceptation, hors
+  // transaction, fail-soft. Aussi pour un devis DÉJÀ accepté dont les plans manquent (la reprise
+  // manuelle repropose) : idempotent (index unique partiel (devis_id, nature) + lecture
+  // préalable → « déjà présents »). Inerte interrupteur éteint. Aucune facture, aucun e-mail.
+  const aProposer = formules.traite ? formules.acceptes : dejaAcceptes;
+  const plansEchec: string[] = [];
+  const plansProposes: string[] = [];
+  for (const id of aProposer) {
+    const r = await proposerPlansApresAcceptationDetaille(id, "signature_complete");
+    if (r.echec !== null) plansEchec.push(id);
+    else if (r.proposes) plansProposes.push(id);
+  }
+  return {
+    traite: formules.traite || aProposer.length > 0,
+    ids: aProposer,
+    acceptes: formules.traite ? formules.acceptes : [],
+    plansEchec,
+    confirmationsEchec,
+    confirmationsPreparees,
+    plansProposes,
+  };
+}
+
+/** Devis à formules déjà acceptés de la pièce (formule retenue) : candidats à la reproposition. */
+async function devisAcceptesAFormules(documentGenereId: string): Promise<string[]> {
+  const lignes = await prisma.devis.findMany({
+    where: {
+      documentGenereId,
+      offreSha256: { not: null },
+      formuleRetenue: { not: null },
+      statut: { in: ["accepte", "transforme_convention"] },
+    },
+    select: { id: true },
+  });
+  return lignes.map((d) => d.id);
+}
+
+/** Plans récurrents non proposés après une acceptation réussie : la signature reste acquise. */
+export const PREFIXE_PLANS_NON_PROPOSES =
+  "Devis accepté, mais les plans récurrents n'ont pas pu être proposés.";
+
+/** Devis accepté, mais la confirmation de commande n'a pas été mise en corbeille. */
+export const PREFIXE_CONFIRMATION_NON_PREPAREE =
+  "Devis accepté, mais la confirmation de commande n'a pas été préparée.";
+
+async function accepterDevis(
+  documentGenereId: string,
+  options: { confirmer: boolean },
+): Promise<ActivationRefusee | null> {
+  // Aucun devis à formules → chemin ci-dessous, inchangé.
+  const formules = await reprendreAcceptationDevisFormules(documentGenereId, options);
+  if (formules.traite) {
+    const plans = formules.plansEchec.length > 0;
+    const confirmations = formules.confirmationsEchec.length > 0;
+    if (!plans && !confirmations) return null;
+    if (plans && !confirmations) {
+      return {
+        code: "plans_recurrents_non_proposes",
+        message:
+          "L'acceptation est enregistrée. Relancez la proposition des plans depuis la fiche du devis.",
+        manques: [],
+        prefixe: PREFIXE_PLANS_NON_PROPOSES,
+      };
+    }
+    const messageConfirmation =
+      "La signature et l'acceptation sont enregistrées. Relancez l'acceptation depuis la fiche du devis pour préparer la confirmation de commande.";
+    return {
+      code: "confirmation_commande_non_preparee",
+      message: plans
+        ? `${messageConfirmation} Les plans récurrents n'ont pas non plus pu être proposés : relancez leur proposition depuis la fiche du devis.`
+        : messageConfirmation,
+      manques: [],
+      prefixe: plans
+        ? `${PREFIXE_CONFIRMATION_NON_PREPAREE} ${PREFIXE_PLANS_NON_PROPOSES}`
+        : PREFIXE_CONFIRMATION_NON_PREPAREE,
+    };
+  }
   const garde = { documentGenereId, statut: { in: ["envoye" as const, "expire" as const] } };
-  await transactionDevisSigne(prisma, async (tx) => {
+  const vises = await transactionDevisSigne(prisma, async (tx) => {
     const concernes = await devisConcernesPourEmission(tx, garde);
+    // Lecture propre à la montée du prospect : `devisConcernesPourEmission` rend [] canal Partners fermé.
+    const lus = await tx.devis.findMany({ where: garde, select: { id: true } });
     await tx.devis.updateMany({
       where: garde,
       data: { statut: "accepte", acceptedAt: new Date() },
     });
     for (const id of concernes) await emettreDevisSigne(tx, id);
+    return lus.map((d) => d.id);
   });
+  // Un prospect passe en client lorsqu'un devis est signé (Will, 04/11/2026) : APRÈS le COMMIT,
+  // hors transaction (B1) ; une erreur ne touche jamais l'acceptation.
+  try {
+    await faireMonterLesFichesDesDevisSignes(prisma, vises, { origine: "signature_complete" });
+  } catch (err) {
+    Sentry.captureException(err, { tags: { action: "devis_signe_fait_client" } });
+  }
+  // Devis à formules : plans récurrents PROPOSÉS en `pause` (lot 5). Après le COMMIT, hors
+  // transaction, fail-soft ; inerte interrupteur éteint ou devis sans offre. Aucune facture,
+  // aucun e-mail.
+  for (const id of vises) await proposerPlansApresAcceptation(id, "signature_complete");
+  return null;
 }
 
 /**
@@ -247,7 +418,13 @@ export interface ActivationRefusee {
   /** Message d'écran : le motif, puis la liste des manques. */
   readonly message: string;
   readonly manques: ReadonlyArray<string>;
+  /** Phrase d'ouverture de l'alerte, si ce n'est pas celle du contrat-cadre. */
+  readonly prefixe?: string;
 }
+
+/** Devis signé des deux parties, mais son acceptation n'a pas été enregistrée. */
+export const PREFIXE_ACCEPTATION_DEVIS_ECHOUEE =
+  "Devis signé par les deux parties, mais son acceptation n'a pas été enregistrée.";
 
 /** Ce que la console lit avant le motif d'un refus d'activation après contresignature. */
 export const PREFIXE_ACTIVATION_REFUSEE =
@@ -441,14 +618,31 @@ export async function apresSignature(ctx: ContexteApresSignature): Promise<Resul
       try {
         const manquantes =
           circuit === null ? [] : await partiesManquantes(ctx.documentGenereId, circuit.parties);
+        // Le numéro du devis (AXI-DEV-…) s'ajoute à celui de la pièce : aucune donnée personnelle.
+        const fiche = ctx.type === "devis" ? await ficheDevisDePiece(ctx.documentGenereId) : null;
+        const numeroDevis = fiche !== null ? ` (n° ${fiche.numero})` : "";
         await sortieSaufEssai(essai, alerteBloquee, () =>
           sendTelegram({
             tag: "AUTO",
-            body: `✍️ ${libelle} ${ctx.numero} : signature reçue (${ctx.partie}). Reste à signer : ${manquantes.join(", ")}.`,
+            body: `✍️ ${libelle} ${ctx.numero}${numeroDevis} : signature reçue (${ctx.partie}). Reste à signer : ${manquantes.join(", ")}.`,
           }),
         );
       } catch (err) {
         capturer(err, "alerte", ctx);
+      }
+    }
+    // E-mail INTERNE à l'organisme : le client vient de signer son devis par lien, il reste
+    // à contresigner. Fail-soft (module qui ne lève pas), muet pour une pièce d'essai.
+    if (ctx.type === "devis" && ctx.partie === "client" && ctx.canal === "lien_a_jeton") {
+      try {
+        await prevenirDevisSigne({
+          documentGenereId: ctx.documentGenereId,
+          numeroPiece: ctx.numero,
+          etape: "a_contresigner",
+          essai,
+        });
+      } catch (err) {
+        capturer(err, "email_interne_devis", ctx);
       }
     }
     if (interrupteurs.copie_partielle && ctx.sansCopiePartielle !== true) {
@@ -469,6 +663,20 @@ export async function apresSignature(ctx: ContexteApresSignature): Promise<Resul
         body: `✅ ${libelle} ${ctx.numero} : intégralement signée.`,
       }),
     ).catch(() => {});
+    // Le client a signé EN DERNIER (l'organisme avait déjà contresigné) : même trace par e-mail
+    // interne. La contresignature par l'organisme n'en envoie pas, il le sait déjà.
+    if (ctx.type === "devis" && ctx.partie === "client" && ctx.canal === "lien_a_jeton") {
+      try {
+        await prevenirDevisSigne({
+          documentGenereId: ctx.documentGenereId,
+          numeroPiece: ctx.numero,
+          etape: "complete",
+          essai,
+        });
+      } catch (err) {
+        capturer(err, "email_interne_devis", ctx);
+      }
+    }
   }
 
   // ── 2. Lettre de mission : la mission se réévalue à chaque signature ──────
@@ -499,8 +707,28 @@ export async function apresSignature(ctx: ContexteApresSignature): Promise<Resul
 
   // ── 4. Branches propres à un type ──────────────────────────────────────────
   try {
-    if (ctx.type === "devis") await accepterDevis(ctx.documentGenereId);
-    else if (ctx.type === "contrat_travail") {
+    if (ctx.type === "devis") {
+      try {
+        // La confirmation de commande ne part que de la contresignature EXPLICITE d'un
+        // administrateur d'Axion-IA : jamais sur la signature du client ni par un signataire.
+        activationRefusee = await accepterDevis(ctx.documentGenereId, {
+          confirmer: ctx.partie === "axionia" && ctx.acteur.type === "administrateur",
+        });
+      } catch (err) {
+        // Signé des deux parties mais non accepté : ne reste pas qu'un message Sentry, l'écran
+        // de contresignature le dit et la reprise manuelle existe.
+        capturer(err, ctx.type, ctx);
+        const motif = (err as { motif?: unknown } | null)?.motif;
+        activationRefusee = {
+          code: "acceptation_devis_echouee",
+          message:
+            (typeof motif === "string" ? `Motif : ${motif}. ` : "") +
+            "Relancez l'acceptation depuis la fiche du devis.",
+          manques: [],
+          prefixe: PREFIXE_ACCEPTATION_DEVIS_ECHOUEE,
+        };
+      }
+    } else if (ctx.type === "contrat_travail") {
       await classerContratTravail(ctx.documentGenereId, ctx.numero);
     } else if (ctx.type === "contrat_sous_traitance" && interrupteurs.suite_contrat_cadre) {
       activationRefusee = await contratSousTraitanceFormateur(ctx);

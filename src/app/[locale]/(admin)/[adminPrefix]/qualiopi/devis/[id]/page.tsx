@@ -15,10 +15,37 @@ import Link from "next/link";
 
 import { AdminPageShell } from "@/components/admin/ui/AdminPageShell";
 import { AdminPageHeader } from "@/components/admin/ui/AdminPageHeader";
+import { AdminBadge } from "@/components/admin/ui/AdminBadge";
+import { AdminButton } from "@/components/admin/ui/AdminButton";
 import { DevisLifecycleButtons } from "@/components/admin/qualiopi/DevisLifecycleButtons";
+import { ChoixClientSigne } from "@/components/admin/qualiopi/ChoixClientSigne";
+import { offreDevisV1 } from "@/server/qualiopi/devis/offre-devis";
+import { choixImprimable } from "@/server/qualiopi/devis/choix-exemplaire";
 import { DevisContresignature } from "@/components/admin/qualiopi/DevisContresignature";
-import { contresignerPieceAction } from "@/server/actions/qualiopi/piece-signature";
+import {
+  compterPlansAttendus,
+  evaluerPlansManquants,
+} from "@/server/qualiopi/devis/proposer-plans";
+import { RelancerAcceptationDevis } from "@/components/admin/qualiopi/RelancerAcceptationDevis";
+import {
+  contresignerPieceAction,
+  relancerAcceptationDevisAction,
+} from "@/server/actions/qualiopi/piece-signature";
 import { getOrganismeIdentite } from "@/server/qualiopi/documents/organisme";
+import { DevisSuiviLivraison } from "@/components/admin/qualiopi/DevisSuiviLivraison";
+import { peutDemarrerLivraison, peutMarquerLivre } from "@/server/qualiopi/devis/suivi-livraison";
+import { formulesActives } from "@/server/qualiopi/devis/interrupteur-formules";
+import {
+  OffreDevisInvalideError,
+  formulesDuDevis,
+} from "@/server/qualiopi/documents/donnees-pdf-devis";
+import { getQualiopiConfig } from "@/server/qualiopi/config/site-settings";
+import { regimeTvaDepuisConfig } from "@/server/qualiopi/legal/tva";
+import {
+  LIBELLE_MONTANT_AU_CHOIX,
+  ResumeFormulesDevis,
+} from "@/components/admin/qualiopi/ResumeFormulesDevis";
+import { lirePalierSuivant, totalHtLignesDevis } from "@/server/qualiopi/devis/palier-suivant";
 import { FacturerDevisButtons } from "@/components/admin/qualiopi/FacturerDevisButtons";
 import { getDevis } from "@/server/qualiopi/crm/devis";
 import { bandeauEtatFonds } from "@/server/qualiopi/financements/etat-fonds-opco";
@@ -50,6 +77,15 @@ export const metadata: Metadata = {
 // Helpers & libellés
 // ─────────────────────────────────────────────────────────────────────────────
 
+const STATUT_TONES: Record<string, "neutral" | "info" | "success" | "warning"> = {
+  brouillon: "neutral",
+  envoye: "warning",
+  accepte: "success",
+  refuse: "neutral",
+  expire: "neutral",
+  transforme_convention: "info",
+};
+
 const STATUT_LABELS: Record<string, string> = {
   brouillon: "Brouillon",
   envoye: "Envoyé",
@@ -65,6 +101,11 @@ const FINANCEMENT_LABELS: Record<string, string> = {
   cpf: "CPF / EDOF",
   france_travail: "France Travail",
 };
+
+function maintenanceFacultativeDe(offre: unknown): boolean {
+  const o = offreDevisV1.safeParse(offre);
+  return o.success && o.data.achat?.maintenance.regle === "facultative";
+}
 
 function formatEur(cents: number): string {
   return new Intl.NumberFormat("fr-FR", {
@@ -158,6 +199,41 @@ export default async function QualiopiDevisDetailPage({ params }: PageProps) {
   });
   const dejaFactureHtCents = facturesLiees.reduce((acc, f) => acc + f.montantHtCents, 0);
 
+  // Devis à formules : palier d'échéancier suivant (pré-remplit le bloc de facturation).
+  // Inerte interrupteur éteint ou sans offre/formule retenue : le bloc reste celui d'avant.
+  const totalLignesHtCents = totalHtLignesDevis(devis.lignes);
+  const lecturePalier =
+    devis.offre !== null &&
+    devis.formuleRetenue !== null &&
+    totalLignesHtCents !== null &&
+    (await formulesActives())
+      ? lirePalierSuivant({
+          offre: devis.offre,
+          formuleRetenue: devis.formuleRetenue,
+          totalHtCents: totalLignesHtCents,
+          nbFacturesEmises: facturesLiees.length,
+        })
+      : null;
+
+  // Devis à formules accepté dont AUCUN plan récurrent n'a été proposé (la proposition a échoué
+  // après le COMMIT) : alerte persistante lue en base, la reprise repropose (idempotente).
+  const devisAFormulesAccepte =
+    devis.offreSha256 !== null &&
+    devis.formuleRetenue !== null &&
+    (devis.statut === "accepte" || devis.statut === "transforme_convention") &&
+    (await formulesActives());
+  // 🔴 « Aucun plan en base » ne suffit PAS : une formule « achat » sans maintenance donne
+  // normalement ZÉRO plan. Règle pure et testée : `evaluerPlansManquants`. `null` attendu = les
+  // plans ne peuvent pas être calculés : message DISTINCT, jamais silencieux.
+  const etatPlans = devisAFormulesAccepte
+    ? evaluerPlansManquants(
+        await compterPlansAttendus(devis.id),
+        await prisma.planRecurrent.count({ where: { devisId: devis.id } }),
+      )
+    : "aucun";
+  const plansAReproposer = etatPlans === "manquants";
+  const plansImpossibles = etatPlans === "impossibles";
+
   // ── État RÉEL de la signature, lu du registre de preuve ──
   //
   // 🔴 Source de vérité = les lignes `document_signatures`, jamais le statut
@@ -176,6 +252,10 @@ export default async function QualiopiDevisDetailPage({ params }: PageProps) {
             signeAt: true,
             selfHash: true,
             methode: true,
+            // Choix scellé (sceau V4) : lu en lecture seule pour l'affichage.
+            hashVersion: true,
+            choixOffre: true,
+            choixOffreSha256: true,
           },
           // ⚠️ Même tri que la chaîne (`createdAt`, puis `id`) : trier sur
           // `signeAt` afficherait un ordre qui peut différer de celui du
@@ -188,7 +268,25 @@ export default async function QualiopiDevisDetailPage({ params }: PageProps) {
   const identiteOrganisme = await getOrganismeIdentite();
 
   const devisBase = `/${locale}/${adminPrefix}/qualiopi/devis`;
+  // Édition d'un brouillon à formules : lien proposé seulement interrupteur allumé.
+  const peutModifierFormules =
+    devis.statut === "brouillon" && devis.offreSha256 !== null && (await formulesActives());
   const lignes = parseLignes(devis.lignes);
+  // Devis à formules, interrupteur allumé et aucune formule retenue : le montant se détermine au
+  // choix du client — on résume les formules au lieu d'afficher 0,00 € et « Aucune ligne ».
+  let resumeFormules: ReturnType<typeof formulesDuDevis>;
+  if (devis.offre !== null && devis.formuleRetenue === null) {
+    try {
+      resumeFormules = formulesDuDevis(
+        devis.offre,
+        await formulesActives(),
+        regimeTvaDepuisConfig(await getQualiopiConfig("regime_tva")),
+      );
+    } catch (err) {
+      if (!(err instanceof OffreDevisInvalideError)) throw err;
+      resumeFormules = undefined; // offre illisible : la fiche garde son affichage d'avant
+    }
+  }
 
   const isExpired =
     (devis.statut === "brouillon" || devis.statut === "envoye") && devis.dateValidite < new Date();
@@ -206,7 +304,15 @@ export default async function QualiopiDevisDetailPage({ params }: PageProps) {
   return (
     <AdminPageShell width="wide">
       {/* Fil d&apos;Ariane */}
-      <div className="mb-[var(--space-admin-4)] flex items-center gap-[var(--space-admin-3)]">
+      <div className="mb-[var(--space-admin-4)] flex flex-wrap items-center gap-[var(--space-admin-4)]">
+        {client ? (
+          <Link
+            href={`/${locale}/${adminPrefix}/qualiopi/clients/${client.id}`}
+            className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-accent)] underline-offset-2 hover:underline"
+          >
+            ← {client.raisonSociale}
+          </Link>
+        ) : null}
         <Link
           href={devisBase}
           className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-accent)] underline-offset-2 hover:underline"
@@ -217,10 +323,30 @@ export default async function QualiopiDevisDetailPage({ params }: PageProps) {
 
       <AdminPageHeader
         title={`Devis ${devis.numero}`}
-        description={
-          client
-            ? `${client.raisonSociale} · ${STATUT_LABELS[devis.statut] ?? devis.statut}`
-            : `Client inconnu · ${STATUT_LABELS[devis.statut] ?? devis.statut}`
+        description={client ? client.raisonSociale : "Client inconnu"}
+        meta={
+          <AdminBadge tone={STATUT_TONES[devis.statut] ?? "neutral"} dot>
+            {STATUT_LABELS[devis.statut] ?? devis.statut}
+          </AdminBadge>
+        }
+        actions={
+          <>
+            {devis.statut === "brouillon" ? (
+              <AdminButton
+                variant="secondary"
+                href={`/api/qualiopi/devis/${devis.id}/apercu`}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Voir l&apos;aperçu PDF
+              </AdminButton>
+            ) : null}
+            {peutModifierFormules ? (
+              <AdminButton variant="secondary" href={`${devisBase}/${devis.id}/modifier`}>
+                Modifier le brouillon
+              </AdminButton>
+            ) : null}
+          </>
         }
       />
 
@@ -260,7 +386,11 @@ export default async function QualiopiDevisDetailPage({ params }: PageProps) {
           <div>
             <p className={infoLabelCls}>Montant HT</p>
             <p className={infoValueCls}>
-              <span className="tabular-nums">{formatEur(devis.montantTotalHtCents)}</span>
+              {resumeFormules !== undefined ? (
+                LIBELLE_MONTANT_AU_CHOIX
+              ) : (
+                <span className="tabular-nums">{formatEur(devis.montantTotalHtCents)}</span>
+              )}
             </p>
           </div>
 
@@ -383,7 +513,9 @@ export default async function QualiopiDevisDetailPage({ params }: PageProps) {
       {/* ── Lignes ──────────────────────────────────────────────────────── */}
       <section className="mb-[var(--space-admin-8)]">
         <h2 className={sectionHeadCls}>Lignes</h2>
-        {lignes.length === 0 ? (
+        {lignes.length === 0 && resumeFormules !== undefined ? (
+          <ResumeFormulesDevis vue={resumeFormules} />
+        ) : lignes.length === 0 ? (
           <p className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
             Aucune ligne.
           </p>
@@ -442,8 +574,8 @@ export default async function QualiopiDevisDetailPage({ params }: PageProps) {
 
       {/* ── Signature électronique ───────────────────────────────────────── */}
       {/*
-        Cette section affichait la soumission DocuSeal et un champ « copier le
-        lien du client ». La bascule du 2026-07-30 vers le canal maison la rend
+        Cette section affichait l'ancienne soumission DocuSeal (n'émet plus rien
+        depuis le 30/07/2026) et un champ « copier le lien du client ». La bascule du 2026-07-30 vers le canal maison la rend
         sans objet, et c'est un GAIN de sûreté : on ne stocke que le HASH du
         jeton, si bien que la console ne détient plus le lien personnel du
         client. Le composant `DevisSignatureLinkCopy` disait lui-même pourquoi ce
@@ -478,6 +610,19 @@ export default async function QualiopiDevisDetailPage({ params }: PageProps) {
                     ? " — confirmation nominative, sans tracé manuscrit"
                     : ""}
                 </p>
+                {s.partie === "client" && devis.offre !== null && devis.offreSha256 !== null ? (
+                  <ChoixClientSigne
+                    resultat={choixImprimable(
+                      { offre: devis.offre, offreSha256: devis.offreSha256, numero: devis.numero },
+                      {
+                        hashVersion: s.hashVersion,
+                        choixOffre: s.choixOffre,
+                        choixOffreSha256: s.choixOffreSha256,
+                      },
+                    )}
+                    maintenanceFacultativeProposee={maintenanceFacultativeDe(devis.offre)}
+                  />
+                ) : null}
                 {/* L'empreinte EN ENTIER : une empreinte tronquée ne se
                     vérifie pas, et une preuve invérifiable n'en est pas une. */}
                 <p className="mt-[var(--space-admin-1)] text-[length:var(--text-admin-xs)] break-all text-[color:var(--color-admin-fg-muted)]">
@@ -498,6 +643,38 @@ export default async function QualiopiDevisDetailPage({ params }: PageProps) {
             organismeNom={identiteOrganisme.raisonSociale}
             contresignerAction={contresignerPieceAction}
           />
+        )}
+
+        {/* Signé des deux parties : deux alertes DISTINCTES, persistantes (lues en base) + reprise.
+            « acceptation non enregistrée » (aucune formule retenue) ≠ « plans non proposés ». */}
+        {devis.documentGenereId !== null &&
+          clientASigne &&
+          organismeASigne &&
+          devis.offreSha256 !== null &&
+          (devis.formuleRetenue === null &&
+          (devis.statut === "envoye" || devis.statut === "expire") ? (
+            <RelancerAcceptationDevis
+              cas="acceptation"
+              documentGenereId={devis.documentGenereId}
+              relancerAction={relancerAcceptationDevisAction}
+            />
+          ) : plansAReproposer ? (
+            <RelancerAcceptationDevis
+              cas="plans"
+              documentGenereId={devis.documentGenereId}
+              relancerAction={relancerAcceptationDevisAction}
+            />
+          ) : null)}
+
+        {plansImpossibles && (
+          <p
+            role="alert"
+            className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-soft)]"
+          >
+            Plans récurrents impossibles à proposer, à vérifier : la formule retenue n&apos;a pas pu
+            être transformée en plan (offre ou choix illisible, ou règle de facturation non
+            décidée). Créez le plan à la main si nécessaire.
+          </p>
         )}
 
         {clientASigne && organismeASigne && (
@@ -539,7 +716,7 @@ export default async function QualiopiDevisDetailPage({ params }: PageProps) {
           >
             {devis.documentGenereId === null
               ? "Aucune pièce n'a été générée pour ce devis : le client ne peut pas signer en ligne. Réviser le devis pour le réémettre."
-              : "Le client n'a pas encore signé. Le lien de signature lui a été envoyé avec le devis ; renvoyer l'email en émet un nouveau et invalide le précédent."}
+              : "Le client n'a pas encore signé. Le lien de signature lui a été envoyé avec le devis ; renvoyer l'email émet un nouveau lien et invalide l'ancien IMMÉDIATEMENT, avant même la validation de l'e-mail en corbeille : si l'e-mail est refusé ou supprimé, le client n'a plus de lien valable (il faudra alors renvoyer à nouveau)."}
           </p>
         )}
       </section>
@@ -548,6 +725,17 @@ export default async function QualiopiDevisDetailPage({ params }: PageProps) {
       <section className="mb-[var(--space-admin-8)]">
         <h2 className={sectionHeadCls}>Actions</h2>
         <DevisLifecycleButtons devisId={devis.id} statut={devis.statut} />
+        <DevisSuiviLivraison
+          devisId={devis.id}
+          peutDemarrer={peutDemarrerLivraison(devis)}
+          peutLivrer={peutMarquerLivre(devis)}
+        />
+        {devis.livraisonDebutAt && (
+          <p className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-soft)]">
+            Livraison démarrée le {devis.livraisonDebutAt.toLocaleDateString("fr-FR")}
+            {devis.livreAt ? ` · livré le ${devis.livreAt.toLocaleDateString("fr-FR")}` : ""}.
+          </p>
+        )}
       </section>
 
       {/* ── Facturation (acompte / solde) — devis accepté uniquement ─────── */}
@@ -568,6 +756,10 @@ export default async function QualiopiDevisDetailPage({ params }: PageProps) {
             devisId={devis.id}
             dejaFactureHtCents={dejaFactureHtCents}
             totalDevisHtCents={devis.montantTotalHtCents}
+            {...(lecturePalier?.ok === true && lecturePalier.palier !== null
+              ? { palierSuivant: lecturePalier.palier }
+              : {})}
+            {...(lecturePalier?.ok === false ? { palierIndisponible: lecturePalier.motif } : {})}
           />
         </section>
       )}

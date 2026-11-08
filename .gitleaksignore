@@ -32,3 +32,10 @@ d0d8c2a0ba94fd66beee226362789b8d0037b940:src/server/qualiopi/recueil/__tests__/l
 41fc10b2cd6190c9642f5e4427b9ed1fb715b310:src/features/rapport-avant-audit/__tests__/fournisseur.spec.ts:generic-api-key:15
 c4366748ef9eb811dd1439d4b477b07253fef6b5:src/features/rapport-avant-audit/fournisseur.ts:generic-api-key:28
 6154f4f8f5e57378b9e27cbadc8400f0a942ef93:src/features/rapport-avant-audit/__tests__/fournisseur.spec.ts:generic-api-key:15
+# Faux positif : `r2Key: <variable>` (clé d'objet R2 passée en pièce jointe, aucune valeur secrète). PR #1813.
+dbdfd2dec2a5386019804ca8b7c6229e22e8178d:src/server/qualiopi/devis/confirmation-commande.ts:generic-api-key:160
+
+# PR #1806 (oppositions réseau) : FAUX POSITIF, valeur de test inventée pour AUTH_SECRET dans
+# oppositions-reseau.spec.ts (aucune clé réelle). Remplacée par "t".repeat(48) au commit suivant ;
+# le commit d'origine porte toujours la chaîne et l'historique ne se réécrit pas.
+55b0e21a4b8ba5cb3f61de68e0a2f316e09b1598:src/server/guides-reseau/__tests__/oppositions-reseau.spec.ts:generic-api-key:495

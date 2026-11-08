@@ -141,6 +141,11 @@ import {
 import { RessourcesMagicLinkEmail, ressourcesMagicLinkSubject } from "./ressources-magic-link";
 import { DevisEnvoiEmail, devisEnvoiSubject } from "./devis-envoi";
 import {
+  DevisCommandeConfirmationEmail,
+  devisCommandeConfirmationSubject,
+} from "./devis-commande-confirmation";
+import { DevisCodeSignatureEmail, devisCodeSignatureSubject } from "./devis-code-signature";
+import {
   CandidatureCommercialConfirmeeEmail,
   candidatureCommercialConfirmeeSubject,
 } from "./candidature-commercial-confirmee";
@@ -226,6 +231,10 @@ import {
 import { PreavisSousTraitantsEmail, preavisSousTraitantsSubject } from "./preavis-sous-traitants";
 import { RencontreInvitationEmail, rencontreInvitationSubject } from "./rencontre-invitation";
 import { VisioEmailSuiviEmail, visioEmailSuiviSubject } from "./visio-email-suivi";
+import {
+  DevisSigneAContresignerEmail,
+  devisSigneAContresignerSubject,
+} from "./devis-signe-a-contresigner";
 import {
   QuestionnaireReponsesRecuesEmail,
   questionnaireReponsesRecuesSubject,
@@ -525,6 +534,16 @@ const TEMPLATES: TemplateMap = {
   },
   // Hub facturation — envois MANUELS admin (PDF joint par le worker, clé R2).
   "devis-envoi": { subject: devisEnvoiSubject, component: DevisEnvoiEmail },
+  // Confirmation de commande (CGV 5.2 et 6.2) — au client, sur contresignature explicite d'Axion-IA.
+  "devis-commande-confirmation": {
+    subject: devisCommandeConfirmationSubject,
+    component: DevisCommandeConfirmationEmail,
+  },
+  // Lot 4 bis — code à usage unique pour signer un devis (clic « Recevoir mon code » uniquement).
+  "devis-code-signature": {
+    subject: devisCodeSignatureSubject,
+    component: DevisCodeSignatureEmail,
+  },
   // Lot B9 : relance de devis, toujours garée « à valider » par l'action de la fiche client.
   "relance-devis-client": {
     subject: relanceDevisClientSubject,
@@ -691,6 +710,12 @@ const TEMPLATES: TemplateMap = {
   },
   // Questionnaire en ligne (2026-10-01) — e-mail interne, sans contenu de
   // réponse (`app/questionnaire/[id]/[jeton]/actions.ts`).
+  // Devis signé par le client (2026-11-04) — e-mail INTERNE, enfilé par
+  // `server/qualiopi/documents/signature/notification-interne-devis.ts`.
+  "devis-signe-a-contresigner": {
+    subject: devisSigneAContresignerSubject,
+    component: DevisSigneAContresignerEmail,
+  },
   "questionnaire-reponses-recues": {
     subject: questionnaireReponsesRecuesSubject,
     component: QuestionnaireReponsesRecuesEmail,

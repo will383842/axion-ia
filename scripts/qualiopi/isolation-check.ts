@@ -146,13 +146,16 @@ const ALLOWED_PATTERNS: ReadonlyArray<RegExp> = [
  * pour rien.
  */
 const CONSOMMATEURS_ASSUMES: ReadonlySet<string> = new Set([
-  // Rapport avant audit, PDF client (02/11/2026) — le rendu réutilise la charte de marque et les polices
-  // des PDF du domaine (`brand-tokens`, `registerQualiopiPdfFonts`, `assainirEspacesPdf`), importés et
-  // jamais recopiés (un prédicat recopié diverge : les fines insécables s'impriment « / »). Même choix que
-  // `plan-production-pdf.tsx`. Le test importe `collect-pdf-text` (utilitaire de test des PDF). Rien
-  // d'autre du domaine. Nommés seuls.
-  "src/features/rapport-avant-audit/sorties/pdf-client.tsx",
-  "src/features/rapport-avant-audit/__tests__/sorties.spec.tsx",
+  // Signature renforcée du devis, lot 4 bis (07/11/2026) — ce test de garde RGPD (aucune table ne garde une
+  // donnée personnelle en silence) lit `COLONNES_SCELLEES_DOCUMENT` (colonnes scellées de la signature,
+  // `document-reconstruction`) : c'est la liste unique des colonnes que l'effacement ne touche pas ; la
+  // recopier dans le test la ferait diverger. N'importe que ce module du domaine, rien d'autre. Nommé seul.
+  "src/lib/__tests__/rgpd-aucune-table-n-echappe-en-silence.spec.ts",
+  // Signature renforcée du devis, lot 4 bis (07/11/2026) — le passage périodique du worker (5 min,
+  // toujours allumé) reprend les jetons d'horodatage RFC 3161 restés « en attente » quand l'autorité
+  // était injoignable (`passerHorodatages`, import PARESSEUX). Une file dédiée pour une seule requête
+  // toutes les 5 minutes serait plus de plomberie que de valeur. N'importe que ce module du domaine.
+  "src/server/queue/workers/visio-balayage-worker.ts",
   // Synchro console ↔ CRM (étape 6, 26/10/2026) — le NAF qui revient du CRM doit recalculer
   // l'OPCO déduit EXACTEMENT comme la saisie en console (`inferOpcoDepuisTable`, `nomOpcoDuClient`,
   // `isOpcoId`) : une seule règle, jamais un OPCO saisi écrasé. Déplacer cette fonction dans
@@ -759,6 +762,15 @@ const CONSOMMATEURS_ASSUMES: ReadonlySet<string> = new Set([
   //    compris) et lit les fiches proches par ses fonctions ; sa spec appelle la
   //    vraie porte. Aucune seconde porte, aucune table nouvelle.
   "src/features/dossier-client/fiche-auto.ts",
+  // ── Fiche prospect créée toute seule depuis une DEMANDE écrite (2026-11-04) : même porte unique
+  //    `crm/porte-client.ts` que `fiche-auto.ts`, mêmes fonctions de lecture des fiches proches ; sa
+  //    spec appelle la porte (simulée à l'écriture). Aucune seconde porte, aucune table nouvelle.
+  "src/features/dossier-client/fiche-demande.ts",
+  // ── Effacement art. 17 d'un message relié à une fiche prospect (2026-11-05) : l'action écrit, APRÈS
+  //    le commit, l'alerte `visio.fiche_de_message_efface` par `creerOuDedup` (qui absorbe une alerte
+  //    déjà ouverte) ; la fiche n'est pas touchée. Une seule arête vers le service d'alertes.
+  "src/features/admin-submissions/actions.ts",
+  "src/features/dossier-client/__tests__/la-fiche-prospect-se-cree-toute-seule-depuis-une-demande.spec.ts",
   // ── Fiche client, lot B9 (29/10/2026) : « Préparer une relance » d'un devis envoyé. Une seule arête,
   //    la même que `actions.ts` : la garde d'écriture de la console et la trace d'audit
   //    (`_guards` : `requireAdminWrite`, `logQualiopiActivity`). L'action ne fait que garer un brouillon
@@ -778,11 +790,6 @@ const CONSOMMATEURS_ASSUMES: ReadonlySet<string> = new Set([
   //    d'un clic par la porte unique), la personne passe par `ajouterPersonneAFiche`.
   //    Aucune seconde porte, aucune table nouvelle.
   "src/features/questionnaire-preaudit/completer-fiche.ts",
-  // ── Rapport d'analyse avant audit, écran de la fiche client (2026-11-02) : « Compléter la
-  //    fiche » écrit les champs VIDES par la PORTE UNIQUE `updateClientAction` (jamais une
-  //    seconde porte), le SIREN n'y passe jamais ; les trois gestes sont gardés par
-  //    `requireSuperAdmin` et tracés par `logQualiopiActivity` (`_guards`). Rien d'autre du domaine.
-  "src/features/rapport-avant-audit/ecran/actions.ts",
   "scripts/visio/pilote.ts",
   // ── Alertes visio (PR 4, correction anti-doublon A3, 2026-09-29) : AUCUNE
   //    table ni service d'alerte parallèle. Les alertes du circuit visio
