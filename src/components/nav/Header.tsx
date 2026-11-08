@@ -169,7 +169,23 @@ export async function Header() {
           Après correctif, espace libre entre la nav et le groupe CTA, mesuré sur
           treize largeurs de 1439 à 2560 px : **26 px au pire point** (1440), 96
           à 1700, 244 à 1920. Aucun débordement nulle part, tiroir intact à 1439.
-          Garde : `tests/e2e/qualiopi/header-tient-dans-sa-boite.spec.ts`. */}
+          Garde : `tests/e2e/qualiopi/header-tient-dans-sa-boite.spec.ts`.
+
+          🔴 2026-11-08 — MANROPE SEULE ÉLARGIT LES ONGLETS : la réserve de la
+          bande `nav` retombe sous le minimum de 16 px de la garde. Mesuré en CI
+          (Chromium Linux) : **11 px à 1440, 12 px à 1441**.
+          Correctif minimal : l'écart entre onglets de la SEULE bande `nav`
+          (1440–1699) passe de 20 px (`nav:gap-5`) à 18 px (`nav:gap-[18px]`).
+          La nav compte 7 entrées (5 services + Tarifs + Ressources), donc
+          6 écarts : 6 × 2 = **12 px récupérés**.
+
+              1440 px   réserve 11 + 12 = **23 px**   (minimum 16)
+              1441 px   réserve 12 + 12 = **24 px**
+
+          Les bandes `navcta` (gap-6) et `navair` (gap-8), le seuil de bascule
+          `--breakpoint-nav` (1440) et le rembourrage (`xl:px-16`) ne bougent pas :
+          l'aspect est inchangé à partir de 1700 px. Le contenu de la rangée de
+          la bande `nav` passe de 1286 à 1274 px, toujours sous 1440 − 128. */}
       <div className="nav:gap-4 navcta:gap-6 navair:gap-8 relative mx-auto flex h-[var(--header-h)] w-full max-w-[1920px] items-center gap-4 px-4 sm:px-6 lg:gap-8 lg:px-10 xl:gap-8 xl:px-16">
         {/* Bloc identité : logo serif badge ivoire + tagline B2B EN DESSOUS.
             Layout colonne → libère l'espace horizontal pour la nav (vs ancien
@@ -237,7 +253,7 @@ export async function Header() {
           // d'air entre le logo et le 1er onglet (« Formations IA ») UNIQUEMENT
           // — s'ajoute au gap-8 du flex parent (→ ~48/56 px logo↔nav) sans
           // toucher l'espacement entre onglets ni la position du dual-CTA.
-          className="navair:ml-6 nav:ml-4 nav:flex nav:gap-5 navcta:gap-6 navair:gap-8 hidden items-center gap-8"
+          className="navair:ml-6 nav:ml-4 nav:flex nav:gap-[18px] navcta:gap-6 navair:gap-8 hidden items-center gap-8"
         >
           {navItems.map((item) =>
             item.href === "/formations" ? (

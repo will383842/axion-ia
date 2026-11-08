@@ -49,27 +49,19 @@ import { AdminCommandPalette } from "./AdminCommandPalette";
 import { getFailedJobsCount } from "@/server/actions/content-gen/jobs";
 import { prisma } from "@/lib/prisma";
 
-// Refonte admin juin 2026 — police Inter pour TOUTE la console (lisibilité
-// supérieure en petites tailles, référence des dashboards modernes). Exposée
-// via la variable CSS `--font-admin`, appliquée par admin.css à
-// `.admin-layout-v2 / .admin-layout` (et au rail `.admin-rail`).
-// Self-host woff2 depuis `src/fonts/` ; admin = noindex/force-dynamic (hors
-// budget Web Vitals des 15 pages publiques).
+// V6-02 — la console utilise Manrope, comme le site : `--font-admin` est
+// déclarée par admin.css et vaut `var(--font-manrope)`, variable posée par le
+// layout racine `[locale]/layout.tsx`. Plus de police propre à la console.
 //
-// 2026-08-16 — bascule `next/font/google` → `next/font/local` : le build ne
-// dépend plus d'un fetch vivant vers fonts.gstatic.com. Voir le bandeau
-// d'explication dans `src/app/[locale]/layout.tsx` et l'ADR 0027. Un seul
-// fichier variable sert les quatre graisses, exactement comme le CSS que
-// Google renvoyait pour `Inter:wght@400;500;600;700`.
-const interAdmin = localFont({
-  src: [
-    { path: "../../../../fonts/inter-latin-var.woff2", weight: "400", style: "normal" },
-    { path: "../../../../fonts/inter-latin-var.woff2", weight: "500", style: "normal" },
-    { path: "../../../../fonts/inter-latin-var.woff2", weight: "600", style: "normal" },
-    { path: "../../../../fonts/inter-latin-var.woff2", weight: "700", style: "normal" },
-  ],
+// V6-02 — déclaration DORMANTE, retirée à la PR 5 (avec la mise à jour de
+// tests/unit/ci/fontes-build-hermetique.spec.ts, qui compte 5 woff2 locaux).
+// Ni `variable` ni classe posée : `--font-admin` reste Manrope (admin.css).
+// `preload: false` : aucun lien de préchargement, le fichier n'est jamais
+// téléchargé.
+const _interReserveV6 = localFont({
+  src: "../../../../fonts/inter-latin-var.woff2",
   display: "swap",
-  variable: "--font-admin",
+  preload: false,
 });
 
 // Sprint Notif Infra 2026-05-26 / fix P1-1 audit 2026-05-27 — cache 30s du
@@ -515,9 +507,7 @@ export default async function AdminLayout({ children, params }: AdminLayoutProps
     // L'AdminUserMenu n'a pas de logoutHref ici — éviterait un GET → 405 sur
     // /api/auth/signout (Auth.js v5 attend un POST).
     return (
-      <div
-        className={`admin-layout-v2 ${interAdmin.variable} min-h-screen bg-[color:var(--color-admin-bg)]`}
-      >
+      <div className={`admin-layout-v2 min-h-screen bg-[color:var(--color-admin-bg)]`}>
         {}
         <style dangerouslySetInnerHTML={{ __html: adminHidePublicShellCss }} />
         <AdminTopbar
@@ -581,7 +571,7 @@ export default async function AdminLayout({ children, params }: AdminLayoutProps
 
   // Pas de session — page /login (children gère son propre rendu).
   return (
-    <div className={`admin-layout ${interAdmin.variable}`}>
+    <div className={`admin-layout`}>
       {}
       <style dangerouslySetInnerHTML={{ __html: adminHidePublicShellCss }} />
       {/* <div> et NON <main> : même raison qu'au-dessus — le layout [locale] porte

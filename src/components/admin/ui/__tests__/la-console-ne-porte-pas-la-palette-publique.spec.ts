@@ -186,6 +186,8 @@ describe("la console ne se style pas avec la palette du site public", () => {
       brut.includes("--font-admin-mono: var(--font-inconsolata"),
       "l'unique emprunt doit être celui de `--font-admin-mono`",
     ).toBe(true);
+    expect([...brut.matchAll(/var\(\s*--font-manrope/g)].length).toBe(1);
+    expect(brut.includes("--font-admin: var(--font-manrope)")).toBe(true);
   });
 
   it("ne référence AUCUN jeton de police du site public", () => {
@@ -194,14 +196,14 @@ describe("la console ne se style pas avec la palette du site public", () => {
       fautives,
       "🔴 Une règle de la console impose une police du site PUBLIC.\n" +
         "\n" +
-        "   La console est en Inter (`--font-admin`) et en Inconsolata pour la\n" +
+        "   La console est en Manrope (`--font-admin`) et en Inconsolata pour la\n" +
         "   chasse fixe (`--font-admin-mono`). `--font-manrope`, `--font-sans`,\n" +
         "   `--font-serif`, `--font-fraunces` et `--font-mono` appartiennent au\n" +
         "   site éditorial : posés ici, ils rendent le texte concerné dans une\n" +
         "   AUTRE police que le reste de l'écran — et comme ces règles sont hors\n" +
         "   couche, elles écrasent le `font-family: inherit` de `@layer base`.\n" +
         "\n" +
-        "   Remède : retirer la déclaration (l'héritage donne Inter), ou pointer\n" +
+        "   Remède : retirer la déclaration (l'héritage donne Manrope), ou pointer\n" +
         "   `var(--font-admin-mono)` s'il s'agit vraiment de chasse fixe.",
     ).toEqual([]);
   });

@@ -63,6 +63,8 @@ const manrope = localFont({
   src: [
     { path: "../../fonts/manrope-latin-var.woff2", weight: "400", style: "normal" },
     { path: "../../fonts/manrope-latin-var.woff2", weight: "600", style: "normal" },
+    { path: "../../fonts/manrope-latin-var.woff2", weight: "500", style: "normal" },
+    { path: "../../fonts/manrope-latin-var.woff2", weight: "700", style: "normal" },
   ],
   variable: "--font-manrope",
   display: "swap",

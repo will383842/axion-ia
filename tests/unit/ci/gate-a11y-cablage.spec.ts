@@ -170,3 +170,26 @@ describe("Cohérence déclarative — accessibilité", () => {
     );
   });
 });
+
+describe("Console — Manrope seule (V6-02)", () => {
+  const LAYOUT = "src/app/[locale]/(admin)/[adminPrefix]/layout.tsx";
+
+  it("le layout admin n'applique plus Inter : déclaration dormante, jamais branchée", () => {
+    const code = lire(LAYOUT);
+    expect(code).not.toMatch(/\binterAdmin\b/);
+    expect(code).not.toMatch(/variable:\s*["']--font-admin["']/);
+    expect(code).toMatch(/const _interReserveV6 = localFont\(\{[^}]*preload:\s*false/);
+    expect(code).not.toMatch(/_interReserveV6\.(className|variable|style)/);
+  });
+
+  it("--font-admin vaut Manrope (déclarée par admin.css, héritée du layout racine)", () => {
+    const css = lire("src/app/admin.css");
+    expect(css).toMatch(/--font-admin:\s*var\(--font-manrope\)/);
+  });
+
+  it("les chiffres de la console sont tabulaires", () => {
+    expect(lire("src/app/admin.css")).toMatch(
+      /\.admin-layout-v2[^{]*\{[^}]*font-variant-numeric:\s*tabular-nums/,
+    );
+  });
+});
