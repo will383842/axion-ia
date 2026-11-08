@@ -485,7 +485,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
      * paroles, les faits vous concernant, les preuves de votre accord.
      */
     dossierClient,
-    guideReseau: guideReseau.contacts,
+    guideReseau: { contacts: guideReseau.contacts, origines: guideReseau.origines },
     reseauApporteurs,
     ...(formateurIndependant ? { formateurIndependant } : {}),
     consentEvents,
