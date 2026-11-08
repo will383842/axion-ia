@@ -6,6 +6,7 @@ import {
   IMPLEMENTATION_TIERS,
   INTERVENTION_TIERS,
   MAINTENANCE_TIERS,
+  PRIX_PUBLICS_AFFICHES,
   formatAmount,
   formatPrice,
   getEntryLabel,
@@ -31,6 +32,12 @@ const maintenanceStandard = getTierById(MAINTENANCE_TIERS, "maintenance-standard
 // champs riches que le reste du corpus a reçus. L'équivalent EN ci-dessous est
 // conservé : le bloc `en` n'a pas été réécrit.
 function modulesAnswerEn(): string {
+  // R7 (ordre de Williams du 08/11/2026) : aucun montant public hors Journée IA. Cette
+  // réponse est servie telle quelle par llms-full.txt et le flux FAQ : interrupteur coupé,
+  // elle ne cite aucun montant (la version chiffrée ci-dessous revient s'il est rallumé).
+  if (!PRIX_PUBLICS_AFFICHES) {
+    return "Module 1 — On-site sessions (half-day to 2 days, on request). Module 2 — AI audit (4 tiers: Flash, Targeted, Strategic SME, Strategic Mid-cap; on request). Module 3 — AI implementation (production deployment, on request).";
+  }
   const interventionsEntry = getEntryLabel(INTERVENTION_TIERS, "en", { compact: false });
   const flash = formatAmount(auditFlashTier.priceFlat!, "en", { compact: true });
   // Targeted / SME / Mid-cap are all « from €1,900 · on request » (Will
@@ -1713,7 +1720,8 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
     en: {
       question: "How much does an AI project cost for an SME?",
       answer:
-        "Axion-IA pricing starts from a few hundred euros for training (half-day) and several thousand euros for a full audit or implementation. Each project has a fixed quote with no surprises. See the pricing page or request a free quote.",
+        // R7 (ordre de Williams du 08/11/2026) : aucune indication de montant hors Journée IA.
+        "Every Axion-IA project is priced on a fixed quote, set after a short scoping call, with no surprises. Request a free quote.",
     },
   },
   {
@@ -2081,7 +2089,7 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
     en: {
       question: "What budget should I plan to get started with AI?",
       answer:
-        "You can start without a big budget. A first AI audit or a targeted session is an investment of a few hundred to a few thousand euros, with ROI often reached within weeks (hours saved, tasks automated). A custom implementation (agents, automations, domain AI) is priced by scope. The right approach: start small on a high-impact case, prove ROI, then scale.",
+        "You can start without a big budget. A first AI audit or a targeted session is priced on quote, with ROI often reached within weeks (hours saved, tasks automated). A custom implementation (agents, automations, domain AI) is priced by scope. The right approach: start small on a high-impact case, prove ROI, then scale.",
     },
   },
   {
@@ -5131,12 +5139,12 @@ export const HELP_ARTICLES: ReadonlyArray<HelpArticle> = [
     fr: {
       title: "Quel support après livraison ?",
       excerpt: "30 jours de maintenance corrective inclus, escalade chaude.",
-      body: `Tout projet Axion-IA inclut 30 jours de support post-livraison : maintenance corrective sur les bugs identifiés, escalade chaude par email/téléphone (réponse sous 4 h ouvrées), 1 itération de fine-tuning si dérive de qualité observée. Au-delà, contrat de maintenance optionnel à ${formatPrice(maintenanceStandard, "fr")} (4 h/mois forfait). Aucun support n'est facturé pendant les 30 jours initiaux.`,
+      body: `Tout projet Axion-IA inclut 30 jours de support post-livraison : maintenance corrective sur les bugs identifiés, escalade chaude par email/téléphone (réponse sous 4 h ouvrées), 1 itération de fine-tuning si dérive de qualité observée. Au-delà, contrat de maintenance optionnel ${PRIX_PUBLICS_AFFICHES ? `à ${formatPrice(maintenanceStandard, "fr")}` : "sur devis"} (4 h/mois forfait). Aucun support n'est facturé pendant les 30 jours initiaux.`,
     },
     en: {
       title: "What post-delivery support?",
       excerpt: "30 days of corrective maintenance included, warm escalation.",
-      body: `Every Axion-IA project includes 30 days of post-delivery support: corrective maintenance on identified bugs, warm escalation by email/phone (response within 4 business hours), 1 fine-tuning iteration if quality drift observed. Beyond that, optional maintenance contract at ${formatPrice(maintenanceStandard, "en")} (4h/month flat fee). No support is billed during the initial 30 days.`,
+      body: `Every Axion-IA project includes 30 days of post-delivery support: corrective maintenance on identified bugs, warm escalation by email/phone (response within 4 business hours), 1 fine-tuning iteration if quality drift observed. Beyond that, optional maintenance contract ${PRIX_PUBLICS_AFFICHES ? `at ${formatPrice(maintenanceStandard, "en")}` : "on request"} (4h/month flat fee). No support is billed during the initial 30 days.`,
     },
   },
 ];

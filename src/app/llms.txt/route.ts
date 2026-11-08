@@ -18,12 +18,15 @@
 
 import {
   CODAGE_TIERS,
+  JOURNEE_IA_TIER,
   UN_A_UN_TIERS,
-  formatAmount,
+  formatTierPrice,
   getEntryLabel,
   getFormationCatalogPriceRange,
   getTierById,
 } from "@/content/pricing";
+// R7 (ordre de Williams du 08/11/2026) : aucun montant public hors Journée IA.
+import { montantPublic, recollerMontantsMasques } from "@/lib/seo/montant-public-texte";
 import { SERVICE_BY_ID } from "@/content/services";
 import { SITE_URL } from "@/lib/seo";
 import { FOUNDER, founderUrl } from "@/lib/brand";
@@ -54,7 +57,7 @@ export async function GET() {
   // Audit KB 2026-08-11 — prix d'ENTRÉE réel du 1-to-1 = journée Collaborateur
   // (990 €), pas la journée Dirigeant (1 390 €) : « à partir de » doit pointer
   // le tier le moins cher du groupe UN_A_UN_TIERS.
-  const coachingPrice = formatAmount(
+  const coachingPrice = montantPublic(
     getTierById(UN_A_UN_TIERS, "intervention-membre-equipe").priceFlat!,
     "fr",
   );
@@ -64,7 +67,7 @@ export async function GET() {
     "à partir de ",
   );
   // Prix d'entrée catalogue formations — dérivé de la matrice (jamais en dur).
-  const formationsMinPrice = formatAmount(getFormationCatalogPriceRange().minEur, "fr", {
+  const formationsMinPrice = montantPublic(getFormationCatalogPriceRange().minEur, "fr", {
     compact: true,
   });
   // Phase B (divulgation publique OF). Route edge sans DB → on lit l'env flag
@@ -93,6 +96,10 @@ export async function GET() {
 > Langues : FR (canonique), EN (miroir, actuellement désactivé en faveur des 301 FR).
 > Hébergement : Hetzner (Nuremberg, UE). Conformité RGPD intégrale.
 > Pour la version verbose avec contenus inline : ${SITE_URL}/llms-full.txt
+
+## Offre phare
+
+- [La Journée IA](${SITE_URL}/fr/journee-ia) — ${JOURNEE_IA_TIER.descriptionFr} ${formatTierPrice(JOURNEE_IA_TIER, "fr")}, prix ferme. Les autres prestations sont sur devis.
 
 ## Modules — 5 prestations
 
@@ -190,7 +197,7 @@ ${sectionVideos}${sectionTour}
 - \`/en/*\` — locale EN temporairement désactivée (redirect 301 → équivalent FR, voir AGENTS.md).
 `;
 
-  return new Response(body, {
+  return new Response(recollerMontantsMasques(body), {
     status: 200,
     headers: {
       "Content-Type": "text/plain; charset=utf-8",

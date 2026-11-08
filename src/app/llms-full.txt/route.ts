@@ -11,10 +11,11 @@ import {
   IMPLEMENTATION_TIERS,
   getFormationCatalogPriceRange,
   UN_A_UN_TIERS,
-  formatAmount,
   getEntryLabel,
   getTierById,
 } from "@/content/pricing";
+// R7 (ordre de Williams du 08/11/2026) : aucun montant public hors Journée IA.
+import { montantPublic, recollerMontantsMasques } from "@/lib/seo/montant-public-texte";
 import { collapsePriceProseDuplicates, resolvePriceTokens } from "@/content/pricing-tokens";
 import { SITE_URL } from "@/lib/seo";
 import { FOUNDER, founderUrl } from "@/lib/brand";
@@ -42,16 +43,16 @@ export async function GET() {
   // La source correcte est `FORMATION_PRICE_MATRIX`, celle que servent
   // /formations, /tarifs et le catalogue.
   const formationsEntryEur = getFormationCatalogPriceRange().minEur;
-  const interventionsEntry = formatAmount(formationsEntryEur, "fr");
-  const interventionsCompact = formatAmount(formationsEntryEur, "fr", { compact: true });
+  const interventionsEntry = montantPublic(formationsEntryEur, "fr");
+  const interventionsCompact = montantPublic(formationsEntryEur, "fr", { compact: true });
   // Audit = prix d'entrée « à partir de » : les niveaux Ciblé/PME/ETI sont
   // « à partir de 1 900 € · sur devis » depuis 2026-06-03 (plus de borne haute
   // priceMax → l'ancienne fourchette Flash→PME-max rendait « NaN »).
-  const auditRange = `à partir de ${formatAmount(getTierById(AUDIT_TIERS, "audit-flash").priceFlat!, "fr")}`;
+  const auditRange = `à partir de ${montantPublic(getTierById(AUDIT_TIERS, "audit-flash").priceFlat!, "fr")}`;
   const implEntry = getEntryLabel(IMPLEMENTATION_TIERS, "fr").replace(/^dès\s/, "à partir de ");
   // Audit KB 2026-08-11 — prix d'ENTRÉE réel du 1-to-1 = journée Collaborateur
   // (990 €), pas Dirigeant (1 390 €).
-  const coachingEntry = formatAmount(
+  const coachingEntry = montantPublic(
     getTierById(UN_A_UN_TIERS, "intervention-membre-equipe").priceFlat!,
     "fr",
   );
@@ -191,7 +192,7 @@ ${sectionVideos}
 - Notifications Telegram + emails automatiques (relais ZeptoMail).
 `;
 
-  return new Response(body, {
+  return new Response(recollerMontantsMasques(body), {
     status: 200,
     headers: {
       "Content-Type": "text/plain; charset=utf-8",
