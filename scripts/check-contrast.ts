@@ -64,17 +64,17 @@ interface Pair {
 // v3 palette mirror — must match globals.css.
 const palette = {
   // Surfaces
-  bg: "#faf8f3", // canvas ivoire chaud
+  bg: "#faf9f5", // canvas ivoire chaud
   paper: "#ffffff",
-  sand: "#f0e9da",
+  sand: "#e8e6dc",
   mocha: "#2a2520",
   // Encre — surface des pages d'atterrissage publicitaires (`.bg-vsl`).
-  ink: "#14100e",
+  ink: "#141413",
   // Foreground
-  fg: "#1a1815",
+  fg: "#141413",
   fgSoft: "#524b41",
   fgMuted: "#5a4f44", // resynchronisé 2026-07-26 (X5) — globals.css porte #5a4f44
-  mochaFg: "#f7f3ea",
+  mochaFg: "#faf9f5",
   mochaFgMuted: "#b5aa9c", // texte secondaire sur mocha (espaces connectés)
   mochaSoft: "#3d362f",
   // Accents
@@ -87,13 +87,13 @@ const palette = {
   // Terracotta éclairci pour surface SOMBRE (barre latérale des espaces
   // connectés). Le terracotta de marque n'y donne que 2,61:1.
   terracottaOnMocha: "#eb8560",
-  sage: "#5e6c54",
+  sage: "#5e7050",
   // Compat v1 (legacy bg-accent-* tokens still emitted by Badge etc.)
   accentOrange: "#ff6b00",
   accentPurple: "#7a3dff",
-  accentGreen: "#00d722",
+  accentGreen: "#5e7050",
   accentYellow: "#ffae13",
-  accentRed: "#ee1d36",
+  accentRed: "#b8341c",
 };
 
 const pairs: Pair[] = [
@@ -200,7 +200,7 @@ const pairs: Pair[] = [
   // Compat v1 (Badge variants, accent backgrounds — still used in product pages)
   { fg: palette.fg, bg: palette.accentOrange, label: "fg on accent-orange" },
   { fg: palette.fg, bg: palette.accentYellow, label: "fg on accent-yellow" },
-  { fg: palette.fg, bg: palette.accentGreen, label: "fg on accent-green" },
+  { fg: palette.paper, bg: palette.accentGreen, label: "blanc (#ffffff) on accent-green" },
   { fg: palette.primaryFg, bg: palette.accentPurple, label: "primaryFg on accent-purple" },
   {
     fg: palette.primaryFg,
