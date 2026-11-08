@@ -60,7 +60,7 @@ describe("🔑 la page des conditions générales", () => {
     expect(container.querySelectorAll("h1")).toHaveLength(1);
     expect(container.querySelector("h1")?.textContent).toBe(TITRE_CG);
     expect(container.querySelector(`time[datetime="${VERSION_CG}"]`)?.textContent).toBe(
-      "27 octobre 2026",
+      "8 novembre 2026",
     );
     // Le sommaire : un details FERMÉ (téléphone) et une colonne (grand écran), vers chaque article.
     const sommaire = container.querySelector("details");
@@ -73,8 +73,8 @@ describe("🔑 la page des conditions générales", () => {
     cleanup();
   });
 
-  it("version 2026-10-27 ; ni indexée ni dans un sitemap ; 17 px, 68 caractères, impression", () => {
-    expect(VERSION_CG).toBe("2026-10-27");
+  it("version 2026-11-08 ; ni indexée ni dans un sitemap ; 17 px, 68 caractères, impression", () => {
+    expect(VERSION_CG).toBe("2026-11-08");
     expect(metadata.robots).toEqual({ index: false, follow: true });
     expect(metadata.alternates).toEqual({ canonical: CHEMIN_CONDITIONS });
     const page = lire("src/app/tour-france-ia/conditions-generales/page.tsx");
@@ -112,7 +112,7 @@ describe("🔴 le texte des conditions : montants, mots interdits, adaptations",
       "Le refus ou le retrait d’un salarié n’a aucune conséquence, ni pour lui ni pour la gratuité.",
     );
     expect(article(4)).toMatch(/conditions générales de vente d’AXION IA/);
-    expect(article(6)).toMatch(/intégralement déduit de la première commande/);
+    expect(article(6)).toMatch(/intégralement déduites de la première commande/);
     expect(article(6)).toMatch(/s’applique sur la facture de solde/);
     expect(article(8)).toMatch(/Journée offerte : le jour d’intervention est fixé/);
     expect(article(6)).toMatch(/plafonnée au montant hors taxes de cette facture/);
@@ -140,7 +140,7 @@ describe("🔴 le texte des conditions : montants, mots interdits, adaptations",
     expect(article(18)).toMatch(/30 jours/);
   });
 
-  it("🔴 la journée payante (corrections du 2026-10-27) : tarif convenu, semaine suivante, 100 % d’avance", () => {
+  it("🔴 la journée payante (corrections du 2026-10-27) : tarif convenu, semaine suivante, acompte de 30 %", () => {
     expect(texte).toContain("convenu avec l’entreprise");
     expect(texte).toContain("semaine suivant");
     expect(article(4)).toContain(
@@ -149,7 +149,11 @@ describe("🔴 le texte des conditions : montants, mots interdits, adaptations",
     expect(article(4)).toContain(
       "La journée est fixée la semaine suivant le passage du Tour dans la ville, ou à une date convenue.",
     );
-    expect(article(5)).toMatch(/payables à 100\s%\sd’avance, à la confirmation de la date/);
+    expect(article(5)).toMatch(
+      /acompte de 30\s%\sdu montant total hors taxes, dû à la signature du devis/,
+    );
+    expect(article(5)).not.toMatch(/100\s%\sd’avance/);
+    expect(texte).not.toMatch(/100\s%\sd’avance/);
   });
 
   it("🔴 le repas de midi n’est dit nulle part (corrections du 2026-10-27)", () => {

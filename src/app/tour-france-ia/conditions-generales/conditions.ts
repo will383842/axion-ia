@@ -13,13 +13,15 @@
 // `rel="sponsored"`, l'article sur l'AI Act sans promesse de conformité, la
 // version applicable et la juridiction du siège social.
 //
+// Historique : 08/11/2026 : acompte de 30 % du total HT au lieu de 100 % d’avance, décision Williams n°9.
+//
 // Ce fichier est HORS de la garde des mots interdits de la landing : c'est ici, et
 // seulement ici, que vivent le tarif, « filmée » et le détail juridique. Aucun
 // montant chiffré, ici non plus : le tarif Tour se convient avec l'entreprise.
 // `__tests__/les-conditions-generales.spec.tsx` garde ses propres interdits.
 
 /** La version affichée sous le titre (date ISO de la dernière modification). */
-export const VERSION_CG = "2026-10-27";
+export const VERSION_CG = "2026-11-08";
 
 export const TITRE_CG = "Conditions générales du Tour France IA — AXION IA SAS";
 
@@ -95,16 +97,16 @@ export const ARTICLES: readonly Article[] = [
     numero: 5,
     titre: "Paiement des journées payantes",
     blocs: [
-      "Les journées payantes sont payables à 100 % d’avance, à la confirmation de la date. La date n’est réservée qu’après paiement.",
+      "Les journées payantes donnent lieu à un acompte de 30 % du montant total hors taxes, dû à la signature du devis ; le solde est dû selon l’échéancier fixé au devis. La date n’est réservée qu’après réception de l’acompte.",
     ],
   },
   {
     numero: 6,
     titre: "Déduction",
     blocs: [
-      "Le montant payé pour la journée est intégralement déduit de la première commande d’automatisation, d’intégration ou d’audit approfondi passée dans un délai de 6 mois après la journée. Fait foi la date de déclenchement de la commande, c’est-à-dire la signature du devis accompagnée du paiement de l’acompte, et non la date de livraison ni celle de la facture finale.",
+      "Les sommes versées pour la journée sont intégralement déduites de la première commande d’automatisation, d’intégration ou d’audit approfondi passée dans un délai de 6 mois après la journée. Fait foi la date de déclenchement de la commande, c’est-à-dire la signature du devis accompagnée du paiement de l’acompte, et non la date de livraison ni celle de la facture finale.",
       "La déduction s’applique sur la facture de solde, et non sur l’acompte, qui est dû en totalité. Elle est plafonnée au montant hors taxes de cette facture, n’est pas cessible et ne s’applique qu’une seule fois par entreprise.",
-      "Ce montant n’est pas déductible d’une formation en entreprise et n’est jamais remboursé en argent, sauf dans les cas prévus aux articles 7 et 8.",
+      "Ces sommes ne sont pas déductibles d’une formation en entreprise et ne sont jamais remboursées en argent, sauf dans les cas prévus aux articles 7 et 8.",
     ],
   },
   {
@@ -121,7 +123,7 @@ export const ARTICLES: readonly Article[] = [
     blocs: [
       "Le Tour France IA se déroule sur une semaine complète dans chaque ville : une entreprise par jour, du lundi au vendredi, puis le dîner du vendredi soir. Journée offerte : le jour d’intervention est fixé par AXION IA en fonction de l’organisation de la semaine. L’entreprise peut indiquer ses contraintes lors de la visio, mais aucun report n’est possible en dehors de la semaine prévue.",
       "Journée offerte : en cas d’annulation, l’entreprise prévient AXION IA dès que possible ; sa place est alors attribuée à une autre entreprise, et elle perd son droit à la journée offerte.",
-      "Journée payante : annulée au moins 14 jours avant, la journée est, au choix de l’entreprise, remboursée ou conservée sous forme de crédit ; annulée moins de 14 jours avant, elle n’est pas remboursée, mais la somme reste déductible, dans les mêmes conditions, d’une commande passée dans les 6 mois suivant la date prévue de la journée.",
+      "Journée payante : annulée au moins 14 jours avant, la journée est, au choix de l’entreprise, les sommes versées sont remboursées ou conservées sous forme de crédit ; annulée moins de 14 jours avant, elle n’est pas remboursée, mais les sommes versées restent déductibles, dans les mêmes conditions, d’une commande passée dans les 6 mois suivant la date prévue de la journée.",
     ],
   },
   {
