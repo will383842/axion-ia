@@ -84,6 +84,10 @@ const SANS_AUCUN_APPELANT: ReadonlyArray<string> = [
   "server/actions/knowledge/assign-reviewer.ts::assignReviewerAction",
   "server/actions/knowledge/rollback-version.ts::rollbackVersionAction",
   "server/actions/knowledge/upload-asset.ts::uploadAssetAction",
+  // Assistant de devis, lot serveur-1 (PR #1868) : l'aperçu en direct attend l'écran de
+  // l'assistant (lot ÉCRANS, E-lots), livré APRÈS ce lot. Sort de cette liste dès qu'un écran
+  // l'appelle (le second test l'exige).
+  "server/actions/qualiopi/devis-assistant-apercu.ts::apercuAssistantAction",
   // 2026-11-08 — assistant de devis : écran dans les PR E08+ (lot serveur-4, S13).
   "server/actions/qualiopi/devis-assistant-sources.ts::listerSourcesPourQuiAction",
   // 2026-11-08 — assistant de devis : écrans dans les PR E08+ (lot serveur-2).

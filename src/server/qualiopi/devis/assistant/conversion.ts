@@ -151,6 +151,13 @@ function phraseIA(formule: "achat" | "abonnement", choix: unknown): string | nul
 }
 
 /** Textes D1 d'un devis À FORMULES : récit du projet et choix d'IA par formule, injectés comme textes actifs (jamais de montant). */
+/**
+ * Marqueur interne (champ `version`, jamais imprimé) posé sur le texte d'intitulé injecté :
+ * seul moyen sûr de le reconnaître à la réouverture, l'intitulé étant facultatif et placé
+ * après les textes de l'utilisateur.
+ */
+export const VERSION_TEXTE_INTITULE = "assistant:intitule";
+
 function textesInjectes(p: PayloadAssistantV1): TexteCopie[] {
   const garantie = p.nonImprime["phraseGarantie"];
   const ia = objet(p.nonImprime["ia"]);
@@ -169,15 +176,29 @@ function textesInjectes(p: PayloadAssistantV1): TexteCopie[] {
   ];
   // Comparaison sur le texte rogné : un devis rouvert dont les textes sont déjà injectés ne
   // reçoit pas une seconde copie de l'intitulé ressaisi (ou repris tel quel) dans le récit.
-  const deja = new Set(p.textes.map((t) => t.texte.trim()));
-  const out: TexteCopie[] = [...p.textes];
-  for (const s of sources) {
+  // Une phrase d'IA déjà injectée (« Formule A/B : … », texte libre) est REMPLACÉE, jamais
+  // doublée : on l'écarte dès que le choix d'IA de la formule est (re)posé, ou que la formule
+  // n'est plus proposée (sinon l'ancienne phrase contredirait la nouvelle).
+  const aEcarter = (t: TexteCopie): boolean => {
+    if (t.bibliothequeId !== undefined) return false;
+    return (["achat", "abonnement"] as const).some((f) => {
+      const prefixe = f === "achat" ? "Formule A :" : "Formule B :";
+      if (!t.texte.trim().startsWith(prefixe)) return false;
+      return !p.formules.formules[f] || (ia !== null && f in ia);
+    });
+  };
+  const conserves = p.textes.filter((t) => !aEcarter(t));
+  const deja = new Set(conserves.map((t) => t.texte.trim()));
+  const out: TexteCopie[] = [...conserves];
+  sources.forEach((s, i) => {
     const texte = s.trim();
     if (texte !== "" && !deja.has(texte)) {
       deja.add(texte);
-      out.push({ texte, actif: true });
+      out.push(
+        i === 0 ? { texte, actif: true, version: VERSION_TEXTE_INTITULE } : { texte, actif: true },
+      );
     }
-  }
+  });
   return out;
 }
 
@@ -257,10 +278,15 @@ export interface DevisPourAssistant {
 }
 
 /** Résultat de la réouverture : le payload, ou un refus motivé (renvoi vers la fiche du devis). */
-export type ResultatOuverture = { payload: PayloadAssistantV1 } | { refus: string };
+export type ResultatOuverture =
+  { payload: PayloadAssistantV1 } | { refus: string; motif: MotifRefus };
 
-const refus = (motif: string): { refus: string } => ({
-  refus: `Ce devis ne peut pas être rouvert dans l'assistant : ${motif} Modifiez-le depuis sa fiche.`,
+/** `opco` : seul refus que lève un brouillon lié lisible (cf. `charger.ts`). */
+export type MotifRefus = "opco" | "offre_illisible" | "tva_non_standard";
+
+const refus = (texte: string, motif: MotifRefus): { refus: string; motif: MotifRefus } => ({
+  refus: `Ce devis ne peut pas être rouvert dans l'assistant : ${texte} Modifiez-le depuis sa fiche.`,
+  motif,
 });
 
 /** Centimes entiers → « 12.5 » / « 12 » (division entière : aucun flottant). */
@@ -311,7 +337,7 @@ export function devisVersPayload(d: DevisPourAssistant, tvaStandardPct: number):
   p.sync = { devisId: d.id, devisMajLe: d.updatedAt.toISOString() };
   if (d.offre != null) {
     const offre = offreDevisV1.safeParse(d.offre);
-    if (!offre.success) return refus("son offre est illisible.");
+    if (!offre.success) return refus("son offre est illisible.", "offre_illisible");
     const o = offre.data;
     const taux = [
       ...(o.achat?.lignes ?? []).map((l) => l.tauxTvaBps),
@@ -319,10 +345,21 @@ export function devisVersPayload(d: DevisPourAssistant, tvaStandardPct: number):
       ...(o.abonnement ? [o.abonnement.tauxTvaBps] : []),
     ];
     if (taux.some((t) => bpsNonStandard(t, tvaStandardPct)))
-      return refus("une ligne a un taux de TVA différent du taux standard.");
+      return refus("une ligne a un taux de TVA différent du taux standard.", "tva_non_standard");
     p.typeDevis = "formules";
     p.formules = offreVersSaisie(o);
     p.textes = o.textes.map((t) => ({ ...t }));
+    // Texte d'intitulé injecté à l'enregistrement : on le rend au récit (et on le retire des
+    // textes) pour que ressaisir l'intitulé le REMPLACE à la prochaine conversion. Seul le
+    // texte portant le marqueur d'injection est repris ; sans marqueur on ne devine rien
+    // (un « besoin client » ou un texte libre ne doit jamais passer pour l'intitulé).
+    const iIntitule = p.textes.findIndex(
+      (t) => t.bibliothequeId === undefined && t.version === VERSION_TEXTE_INTITULE,
+    );
+    if (iIntitule >= 0) {
+      p.recit.intitule = p.textes[iIntitule]!.texte;
+      p.textes.splice(iIntitule, 1);
+    }
     // D1 : lignes de l'étape 1 = lignes de A, ou mise en service de B seule.
     const source = o.achat ? o.achat.lignes : (o.abonnement?.miseEnServiceLignes ?? []);
     p.lignesClassiques = source.map((l) => ({
@@ -331,11 +368,6 @@ export function devisVersPayload(d: DevisPourAssistant, tvaStandardPct: number):
       prixEur: centsVersTexte(l.prixHtCents),
     }));
   } else {
-    if (
-      (d.financementSuggere != null && d.financementSuggere !== "direct") ||
-      (d.montantOpcoEstimeCents ?? null) !== null
-    )
-      return refus("il porte un financement ou une estimation OPCO.");
     if (Array.isArray(d.lignes)) {
       for (const l of d.lignes) {
         const x = l && typeof l === "object" ? (l as Record<string, unknown>) : {};
@@ -345,9 +377,19 @@ export function devisVersPayload(d: DevisPourAssistant, tvaStandardPct: number):
           (typeof pct === "number" && bpsNonStandard(Math.round(pct * 100), tvaStandardPct)) ||
           (typeof bps === "number" && bpsNonStandard(bps, tvaStandardPct))
         )
-          return refus("une ligne a un taux de TVA différent du taux standard.");
+          return refus(
+            "une ligne a un taux de TVA différent du taux standard.",
+            "tva_non_standard",
+          );
       }
     }
+    // Le motif TVA passe AVANT l'OPCO : il n'est jamais levé par le passe-droit du brouillon lié
+    // (charger.ts), qui ne lève que le motif « opco ».
+    if (
+      (d.financementSuggere != null && d.financementSuggere !== "direct") ||
+      (d.montantOpcoEstimeCents ?? null) !== null
+    )
+      return refus("il porte un financement ou une estimation OPCO.", "opco");
     p.typeDevis = "classique";
     const l = lignesClassiquesDe(d.lignes);
     if (l.length > 0) p.lignesClassiques = l;

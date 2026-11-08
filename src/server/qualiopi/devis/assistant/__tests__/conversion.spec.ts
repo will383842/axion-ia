@@ -35,6 +35,7 @@ import { payloadVide, type PayloadAssistantV1 } from "../payload";
 import {
   devisVersPayload as devisVersPayloadBrut,
   payloadVersCreation,
+  VERSION_TEXTE_INTITULE,
   type ContexteConversion,
   type DevisPourAssistant,
 } from "../conversion";
@@ -380,6 +381,97 @@ describe("textes d'IA par formule (liste blanche, préfixe « Formule A/B : »)"
     p.recit.intitule = "  Assistant client ";
     expect(textes(p)).toEqual(["Assistant client"]);
   });
+  it("réouverture : intitulé déjà injecté (texte enregistré avec espaces, récit vide), jamais dupliqué", () => {
+    const p = formules("A");
+    p.textes = [{ texte: "  Assistant client ", actif: true }];
+    p.recit.intitule = "Assistant client";
+    expect(textes(p)).toEqual(["  Assistant client "]);
+  });
+  it("réouverture : intitulé vide + besoin client — le besoin n'est jamais pris pour l'intitulé ni perdu", () => {
+    const p = formules("A");
+    p.recit.intitule = "";
+    p.recit.besoinClient = "Besoin X";
+    const creee = creation(p);
+    if (creee.type !== "formules") throw new Error("type");
+    const o = creee.input.offre;
+    expect(o.textes.map((t) => t.texte)).toEqual(["Besoin X"]);
+    const q = devisVersPayload(devisDepuis(o), 20);
+    expect(q.recit.intitule).toBe("");
+    expect(q.textes.map((t) => t.texte)).toEqual(["Besoin X"]);
+    q.clientId = CLIENT;
+    q.activite = "implementation";
+    expect(textes(q)).toEqual(["Besoin X"]);
+  });
+  it("réouverture : texte libre AVANT l'intitulé injecté — jamais pris pour l'intitulé, pas de doublon", () => {
+    const p = formules("A");
+    p.textes = [{ texte: "Texte libre", actif: true }];
+    p.recit.intitule = "Vrai intitulé";
+    const creee = creation(p);
+    if (creee.type !== "formules") throw new Error("type");
+    const o = creee.input.offre;
+    expect(o.textes.map((t) => t.texte)).toEqual(["Texte libre", "Vrai intitulé"]);
+    const q = devisVersPayload(devisDepuis(o), 20);
+    expect(q.recit.intitule).toBe("Vrai intitulé");
+    expect(q.textes.map((t) => t.texte)).toEqual(["Texte libre"]);
+    q.clientId = CLIENT;
+    q.activite = "implementation";
+    expect(textes(q)).toEqual(["Texte libre", "Vrai intitulé"]);
+  });
+  it("réouverture : sans marqueur, aucun texte n'est pris pour l'intitulé (textes intacts)", () => {
+    const o = offreStandard();
+    o.textes = [{ texte: "Texte libre", actif: true }];
+    const q = devisVersPayload(devisDepuis(o), 20);
+    expect(q.recit.intitule).toBe("");
+    expect(q.textes.map((t) => t.texte)).toEqual(["Texte libre"]);
+  });
+  it("réouverture réelle : l'intitulé ressaisi REMPLACE l'ancien, sans doublon", () => {
+    const creee = creation(formules("A"));
+    if (creee.type !== "formules") throw new Error("type");
+    const o = creee.input.offre;
+    o.textes = [{ texte: "Ancien intitulé", actif: true, version: VERSION_TEXTE_INTITULE }];
+    const p = devisVersPayloadBrut(devisDepuis(o), 20);
+    if (!("payload" in p)) throw new Error("refus");
+    const q = p.payload;
+    q.clientId = CLIENT;
+    q.activite = "implementation";
+    expect(q.recit.intitule).toBe("Ancien intitulé");
+    q.recit.intitule = "Nouvel intitulé";
+    const t = textes(q);
+    expect(t).toContain("Nouvel intitulé");
+    expect(t).not.toContain("Ancien intitulé");
+    q.recit.intitule = "";
+    expect(textes(q)).not.toContain("Nouvel intitulé");
+  });
+  it("réouverture : la phrase d'IA injectée est REMPLACÉE quand le choix change", () => {
+    const p = formules("AB");
+    p.textes = [
+      { texte: "Formule A : L'utilisation de l'IA se fait avec le compte du client.", actif: true },
+      {
+        texte: "Formule B : L'utilisation de l'IA n'est pas incluse dans l'abonnement.",
+        actif: true,
+      },
+    ];
+    p.nonImprime = {
+      ia: { achat: { mode: "incluse", mois: 3 }, abonnement: { inclus: true } },
+    };
+    expect(textes(p)).toEqual([
+      "Formule A : L'utilisation de l'IA est incluse pendant 3 mois.",
+      "Formule B : L'utilisation de l'IA est incluse dans l'abonnement.",
+    ]);
+  });
+  it("une phrase d'IA d'une formule qui n'est plus proposée est retirée", () => {
+    const p = formules("A");
+    p.textes = [
+      { texte: "Formule B : L'utilisation de l'IA est incluse dans l'abonnement.", actif: true },
+    ];
+    expect(textes(p)).toEqual([]);
+  });
+  it("une phrase d'IA déjà injectée est gardée si aucun choix n'est reposé", () => {
+    const p = formules("A");
+    const ph = "Formule A : L'utilisation de l'IA se fait avec le compte du client.";
+    p.textes = [{ texte: ph, actif: true }];
+    expect(textes(p)).toEqual([ph]);
+  });
 });
 
 describe("devisVersPayload — refus d'ouverture", () => {
@@ -399,6 +491,14 @@ describe("devisVersPayload — refus d'ouverture", () => {
     expect(
       motif(classique({ financementSuggere: "direct", montantOpcoEstimeCents: null })),
     ).toBeNull();
+  });
+  it("classique OPCO ET ligne à 10 % : le motif TVA l'emporte sur le motif OPCO", () => {
+    const d = classique({
+      financementSuggere: "opco",
+      lignes: [{ designation: "x", quantite: 1, prixUnitaireHtCents: 1, tauxTvaPercent: 10 }],
+    });
+    const r = devisVersPayloadBrut(d, 20);
+    expect("refus" in r && r.motif).toBe("tva_non_standard");
   });
   it("offre présente mais illisible : refusée, jamais rouverte en classique", () => {
     expect(motif({ ...devisDepuis(offreStandard()), offre: { v: 99, n: "x" } })).toMatch(
