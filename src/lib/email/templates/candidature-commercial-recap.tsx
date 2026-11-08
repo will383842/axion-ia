@@ -71,7 +71,7 @@ const quoteStyle = {
   ...emailStyles.paragraphStyle,
   margin: "0 0 8px",
   padding: "10px 12px",
-  backgroundColor: "#f6f3ee",
+  backgroundColor: "#FAF9F5",
   borderLeft: `3px solid ${emailStyles.COLORS.terracotta}`,
   whiteSpace: "pre-wrap" as const,
 };

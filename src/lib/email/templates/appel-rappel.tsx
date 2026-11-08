@@ -606,7 +606,7 @@ export function formatDuRendezVous(p: { lieu?: string; format?: string }): Canal
 
 /** Fond ivoire + filet : la carte se détache sans peser comme un bloc plein. */
 const carteRecap: React.CSSProperties = {
-  backgroundColor: "#f6f1e8",
+  backgroundColor: "#FAF9F5",
   border: `1px solid ${emailStyles.COLORS.border}`,
   borderRadius: "16px",
   padding: "20px 22px",
@@ -635,7 +635,7 @@ const valeurRecap: React.CSSProperties = {
   fontSize: "17px",
   lineHeight: 1.35,
   fontWeight: 600,
-  color: "#241d15",
+  color: "#141413",
 };
 const precisionRecap: React.CSSProperties = {
   margin: "4px 0 0 0",
