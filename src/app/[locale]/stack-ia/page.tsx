@@ -832,13 +832,13 @@ export default async function StackIaPage({ params }: Props) {
         titleEm={isFr ? "votre entreprise ?" : "your company?"}
         description={
           isFr
-            ? "30 minutes en visio, gratuit. On regarde ensemble ce que vous utilisez déjà, ce qui manque, ce qui peut sortir. Vous repartez avec votre stack ciblée — qu'on déploie ensuite ou non."
-            : "30 minutes on video, free. Together we look at what you already use, what's missing, what can go. You leave with your targeted stack — whether or not we then deploy it."
+            ? "45 minutes en visio, gratuit. On regarde ensemble ce que vous utilisez déjà, ce qui manque, ce qui peut sortir. Vous repartez avec votre stack ciblée — qu'on déploie ensuite ou non."
+            : "45 minutes on video, free. Together we look at what you already use, what's missing, what can go. You leave with your targeted stack — whether or not we then deploy it."
         }
         cta={
           <>
-            <Cta href="/audit/tpe-1-jour" size="lg">
-              {isFr ? "Réserver l'audit flash" : "Book the flash audit"}
+            <Cta href="/appel" size="lg">
+              {isFr ? "Réserver mon rendez-vous gratuit" : "Book my free meeting"}
               <ArrowRight aria-hidden="true" className="h-4 w-4" />
             </Cta>
             <Link

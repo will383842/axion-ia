@@ -13,16 +13,7 @@ import { CalendlyInlineWidget } from "@/components/booking/CalendlyInlineWidget"
 import { reservationDirecteActive } from "@/server/calendly/formulaire-reservation";
 import { CalendlyEventCapture } from "@/components/booking/CalendlyEventCapture";
 import { ArriveeReservationMesure } from "@/components/lp/ArriveeReservationMesure";
-import {
-  ArrowLeft,
-  ArrowRight,
-  Clock,
-  Shield,
-  CheckCircle,
-  Calendar,
-  Compass,
-  Target,
-} from "lucide-react";
+import { ArrowLeft, ArrowRight, Clock, Shield, CheckCircle, Calendar, Target } from "lucide-react";
 import {
   lireChoixRendezVous,
   lireDepuis,
@@ -36,8 +27,8 @@ import {
   utmContentDuChoix,
   PARAM_DEPUIS,
   PARAM_RDV,
-  type ChoixPublic,
   type ChoixRendezVous,
+  type ChoixPublic,
   type ChoixResolu,
   type SuiviArrivee,
 } from "@/server/calendly/choix-rendez-vous";
@@ -89,13 +80,17 @@ interface Props {
 }
 
 /**
- * DEUX rendez-vous au choix (chantier « Types de rendez-vous », L2, 2026-10-04).
+ * UN SEUL rendez-vous gratuit de 45 minutes (décision n° 12, 2026-11-08 ; avant :
+ * deux rendez-vous au choix, chantier « Types de rendez-vous », L2, 2026-10-04).
  *
- * `?rdv=diagnostic|projet` ouvre directement le bon calendrier ; sans paramètre,
- * la page montre le choix. Les URL Calendly ne sont plus lues ici : elles
+ * `?rdv=projet` ouvre directement le calendrier ; sans paramètre, la page montre
+ * la carte unique. Un ancien lien `?rdv=diagnostic` (ou `/appel/diagnostic`) est
+ * rabattu sur `projet` à l'AFFICHAGE, `depuis` et les UTM conservés ; le report
+ * et l'annulation d'un diagnostic déjà réservé ne passent pas par cette page
+ * (ils lisent le type d'origine du rendez-vous). Les URL Calendly ne sont plus lues ici : elles
  * passent TOUTES par `server/calendly/choix-rendez-vous.ts`, qui porte aussi le
  * repli silencieux du diagnostic sur le type appel quand il est introuvable.
- * `?depuis=<emplacement>` est recopié dans `utm_content` (`diagnostic:accueil-hero`).
+ * `?depuis=<emplacement>` est recopié dans `utm_content` (`projet:accueil-hero`).
  *
  * Le choix est rendu CÔTÉ SERVEUR, en liens simples : aucun JavaScript ajouté,
  * aucun saut de mise en page (CLS 0).
@@ -124,8 +119,8 @@ export async function generateMetadata({ params, searchParams }: Props): Promise
       locale,
       path: "/appel",
       title: titleStr,
-      // 134 car. (2026-10-04, deux rendez-vous) — sous `META_DESCRIPTION_MAX` (158),
-      // donc servie ENTIÈRE. Aucune durée : elles se lisent chez Calendly.
+      // 2026-11-08 : UN seul rendez-vous gratuit de 45 minutes — sous
+      // `META_DESCRIPTION_MAX` (158), donc servie ENTIÈRE.
       // 2026-09-25 : « Sans engagement ni pression commerciale » → « Gratuit et
       // sans engagement ». Règle de Will : le diagnostic est GRATUIT, et
       // « sans engagement » seul laisse croire qu'il est payant.
@@ -136,8 +131,8 @@ export async function generateMetadata({ params, searchParams }: Props): Promise
       // retirée en même temps que ce raccourcissement — le cliquet exige que le
       // chiffre reste exact, il rougit donc si l'un bouge sans l'autre.
       description: isFr
-        ? "Deux rendez-vous en visio : un diagnostic IA pour savoir par où commencer, ou un échange sur votre projet. Gratuit et sans engagement."
-        : "Deux rendez-vous en visio : un diagnostic IA pour savoir par où commencer, ou un échange sur votre projet. Gratuit et sans engagement.",
+        ? "Un rendez-vous gratuit de 45 minutes en visio avec l’équipe d’Axion-IA : on fait le point sur votre projet IA, sans engagement."
+        : "Un rendez-vous gratuit de 45 minutes en visio avec l’équipe d’Axion-IA : on fait le point sur votre projet IA, sans engagement.",
       alternates: { fr: "/appel", en: "/book-a-call" },
       // Image de partage dédiée (2026-09-27) : ce lien est épinglé dans la
       // « Sélection » du profil LinkedIn, où la vignette ne fait que ~190 px de
@@ -158,7 +153,9 @@ export default async function AppelPage({ params, searchParams }: Props) {
   setRequestLocale(locale);
   const isFr = locale === "fr";
 
-  const choix = lireChoixRendezVous(sp[PARAM_RDV]);
+  const choixBrut = lireChoixRendezVous(sp[PARAM_RDV]);
+  // Un seul rendez-vous public : l'ancien diagnostic s'affiche comme lui.
+  const choix = choixBrut === "diagnostic" ? "projet" : choixBrut;
   const depuis = lireDepuis(sp[PARAM_DEPUIS]);
   // Les UTM d'ARRIVÉE (L5a) : lus une fois, bornés, puis recopiés par chaque
   // lien du parcours — sans quoi le premier clic effaçait l'attribution.
@@ -221,8 +218,8 @@ export default async function AppelPage({ params, searchParams }: Props) {
     path: "/appel",
     name: isFr ? "Rendez-vous projet IA · Axion-IA" : "Rendez-vous projet IA · Axion-IA",
     description: isFr
-      ? "Deux rendez-vous en visioconférence Google Meet avec un consultant IA Axion-IA : un diagnostic IA pour savoir par où commencer, ou un échange projet pour avancer sur un besoin précis — audit, formation, intégration et automatisation, coaching. Gratuit et sans engagement."
-      : "Deux rendez-vous en visioconférence Google Meet avec un consultant IA Axion-IA : un diagnostic IA pour savoir par où commencer, ou un échange projet pour avancer sur un besoin précis — audit, formation, intégration et automatisation, coaching. Gratuit et sans engagement.",
+      ? "Un rendez-vous gratuit de 45 minutes en visioconférence Google Meet avec l’équipe d’Axion-IA : on fait le point sur votre besoin — audit, formation, intégration et automatisation, coaching. Sans engagement."
+      : "Un rendez-vous gratuit de 45 minutes en visioconférence Google Meet avec l’équipe d’Axion-IA : on fait le point sur votre besoin — audit, formation, intégration et automatisation, coaching. Sans engagement.",
   });
 
   const breadcrumbJsonLd = {
@@ -339,18 +336,25 @@ function classeDepuis(depuis: string | null): string {
   return depuis ? `plausible-event-depuis=${depuis}` : "";
 }
 
-/** « 30 min », lue chez Calendly ; rien si la durée est inconnue. */
+/** Les choix que l'écran d'entrée PROPOSE : un seul (le diagnostic est rabattu sur lui). */
+const CHOIX_AFFICHES: readonly ChoixPublic[] = ["projet"];
+
+/** La durée annoncée si Calendly ne la donne pas : c'est la promesse du site. */
+const DUREE_REPLI_MINUTES = 45;
+
+/** « 45 min », lue chez Calendly ; rien si la durée est inconnue. */
 function libelleDuree(resolu: ChoixResolu): string | null {
   return resolu.dureeMinutes ? `${resolu.dureeMinutes} min` : null;
 }
 
 /**
- * L'ÉCRAN DU CHOIX — deux cartes, très peu de texte.
+ * L'ÉCRAN D'ENTRÉE — UNE SEULE carte : le rendez-vous gratuit de 45 minutes
+ * (audit harmonie A08, décision n° 12 de Williams, 2026-11-08).
  *
- * 🔑 Le diagnostic est mis en avant (bordure, pastille, bouton plein) : c'est
- * l'entrée pour qui ne sait pas encore. Les durées viennent de Calendly ; si la
- * liste des types est illisible, elles disparaissent plutôt que d'être
- * inventées.
+ * 🔑 Elle mène au type `projet` (45 min chez Calendly). Le type `diagnostic`
+ * reste joignable par `?rdv=diagnostic` (anciens liens, e-mails déjà partis),
+ * mais l'écran ne le propose plus. La durée de la carte est la PROMESSE du
+ * site ; l'écran du calendrier lit toujours la durée réelle chez Calendly.
  */
 function ChoixDuRendezVous({
   resolus,
@@ -363,8 +367,7 @@ function ChoixDuRendezVous({
   suivi: SuiviArrivee;
   locale: string;
 }) {
-  const dureeDiagnostic = libelleDuree(resolus.diagnostic);
-  const dureeProjet = libelleDuree(resolus.projet);
+  const minutes = resolus.projet.dureeMinutes ?? DUREE_REPLI_MINUTES;
   return (
     <section aria-labelledby="appel-hero-h1" className="bg-canvas pt-6 pb-12 sm:pt-10 sm:pb-16">
       <Container>
@@ -378,53 +381,14 @@ function ChoixDuRendezVous({
             className="text-fg text-[clamp(1.625rem,4vw,2.5rem)] leading-tight font-semibold tracking-tight"
             style={{ fontFamily: "var(--font-serif)" }}
           >
-            Choisissez votre rendez-vous
+            Réservez votre rendez-vous gratuit
           </h1>
         </div>
 
-        <ul className="mx-auto mt-6 grid max-w-4xl gap-4 sm:mt-8 sm:grid-cols-2 sm:gap-6">
+        <ul className="mx-auto mt-6 max-w-xl sm:mt-8">
           <li className="border-terracotta bg-paper shadow-terracotta/10 relative flex flex-col rounded-3xl border-2 p-5 shadow-xl sm:p-7">
-            <div className="flex items-start justify-between gap-3">
-              <span
-                className="bg-terracotta text-mocha-fg flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl"
-                aria-hidden="true"
-              >
-                <Compass className="h-5 w-5" />
-              </span>
-              <span className="bg-terracotta-soft text-terracotta-deep rounded-full px-3 py-1 text-[11px] font-semibold tracking-wide uppercase">
-                Pour démarrer
-              </span>
-            </div>
-            <h2
-              className="text-fg mt-4 text-2xl font-semibold tracking-tight"
-              style={{ fontFamily: "var(--font-serif)" }}
-            >
-              Diagnostic IA
-            </h2>
-            <p className="text-terracotta-deep mt-1 text-sm font-semibold">
-              Gratuit{dureeDiagnostic ? ` · ${dureeDiagnostic}` : ""}
-            </p>
-            <p className="text-fg mt-4 text-base font-medium">
-              Vous ne savez pas encore par où commencer.
-            </p>
-            <p className="text-fg-soft mt-1 text-[15px] leading-relaxed">
-              Quelques questions sur votre activité, et vous repartez avec des pistes concrètes.
-            </p>
-            <div className="mt-auto pt-6">
-              <a
-                href={lienDuChoix(locale, "diagnostic", depuis, suivi)}
-                data-cta="appel_choix_diagnostic"
-                className={`plausible-event-name=Appel+choix plausible-event-rdv=diagnostic ${classeDepuis(depuis)} bg-terracotta text-mocha-fg hover:bg-terracotta-deep focus-visible:ring-terracotta inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-full px-6 text-base font-semibold transition focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none`}
-              >
-                Réserver mon diagnostic
-                <ArrowRight className="h-4 w-4" aria-hidden="true" />
-              </a>
-            </div>
-          </li>
-
-          <li className="border-border bg-paper flex flex-col rounded-3xl border p-5 shadow-sm sm:p-7">
             <span
-              className="bg-sand text-terracotta flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl"
+              className="bg-terracotta text-mocha-fg flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl"
               aria-hidden="true"
             >
               <Target className="h-5 w-5" />
@@ -433,12 +397,18 @@ function ChoixDuRendezVous({
               className="text-fg mt-4 text-2xl font-semibold tracking-tight"
               style={{ fontFamily: "var(--font-serif)" }}
             >
-              Échange projet
+              Rendez-vous gratuit de {minutes} minutes
             </h2>
-            <p className="text-fg-soft mt-1 text-sm font-semibold">
-              {dureeProjet ? `${dureeProjet} · ` : ""}Sans engagement
+            <p className="text-terracotta-deep mt-1 text-sm font-semibold">
+              Gratuit · {libelleDuree(resolus.projet) ?? `${DUREE_REPLI_MINUTES} min`} · Sans
+              engagement
             </p>
-            <p className="text-fg mt-4 text-base font-medium">Vous savez ce que vous voulez.</p>
+            <p className="text-fg mt-4 text-base font-medium">
+              Vous savez ce que vous voulez, ou pas encore : on fait le point ensemble.
+            </p>
+            <p className="text-fg-soft mt-1 text-[15px] leading-relaxed">
+              Quelques questions sur votre activité, et vous repartez avec des pistes concrètes.
+            </p>
             <ul className="mt-3 flex flex-wrap gap-2" aria-label="Sujets possibles">
               {["Audit", "Formation", "Intégration et automatisation", "Coaching"].map((sujet) => (
                 <li
@@ -453,9 +423,9 @@ function ChoixDuRendezVous({
               <a
                 href={lienDuChoix(locale, "projet", depuis, suivi)}
                 data-cta="appel_choix_projet"
-                className={`plausible-event-name=Appel+choix plausible-event-rdv=projet ${classeDepuis(depuis)} border-terracotta text-terracotta-deep hover:bg-terracotta-soft focus-visible:ring-terracotta inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-full border-2 px-6 text-base font-semibold transition focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none`}
+                className={`plausible-event-name=Appel+choix plausible-event-rdv=projet ${classeDepuis(depuis)} bg-terracotta text-mocha-fg hover:bg-terracotta-deep focus-visible:ring-terracotta inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-full px-6 text-base font-semibold transition focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none`}
               >
-                Réserver un échange projet
+                Réserver mon rendez-vous gratuit
                 <ArrowRight className="h-4 w-4" aria-hidden="true" />
               </a>
             </div>
@@ -548,7 +518,7 @@ function Calendrier({
             {/* Lien DISCRET pour changer d'avis : le choix n'enferme pas. Il ramène
                 à l'écran du choix PUBLIC — donc il n'existe pas pour un rendez-vous
                 « En privé », qui n'y figure pas et que le visiteur n'a pas « choisi ». */}
-            {config.public ? (
+            {config.public && CHOIX_AFFICHES.length > 1 ? (
               <a
                 href={retourAuChoix}
                 data-cta="appel_changer_de_rendez_vous"
