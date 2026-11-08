@@ -59,12 +59,12 @@ describe("bloc de positionnement", () => {
     }
   });
 
-  it("donne le message principal, l'offre phare et le rendez-vous gratuit de 45 minutes", () => {
+  it("donne le message principal, l'offre phare et le Diagnostic IA gratuit de 45 minutes", () => {
     expect(BLOC_POSITIONNEMENT).toContain(
       "Le partenaire IA de bout en bout des PME : on chiffre, on forme, on met en place.",
     );
     expect(BLOC_POSITIONNEMENT).toContain("La Journée IA");
-    expect(BLOC_POSITIONNEMENT).toContain("rendez-vous gratuit de 45 minutes");
+    expect(BLOC_POSITIONNEMENT).toContain("Diagnostic IA gratuit de 45 minutes, sans engagement");
   });
 
   it("cible les PME et autorise « TPE et PME » dans le texte", () => {
