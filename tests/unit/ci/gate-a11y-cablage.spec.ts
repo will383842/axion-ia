@@ -174,11 +174,12 @@ describe("Cohérence déclarative — accessibilité", () => {
 describe("Console — Manrope seule (V6-02)", () => {
   const LAYOUT = "src/app/[locale]/(admin)/[adminPrefix]/layout.tsx";
 
-  it("le layout admin ne charge plus Inter : aucun localFont, aucun interAdmin", () => {
+  it("le layout admin n'applique plus Inter : déclaration dormante, jamais branchée", () => {
     const code = lire(LAYOUT);
-    expect(code).not.toMatch(/import\s+localFont\b/);
     expect(code).not.toMatch(/\binterAdmin\b/);
-    expect(code).not.toMatch(/inter-latin-var/);
+    expect(code).not.toMatch(/variable:\s*["']--font-admin["']/);
+    expect(code).toMatch(/const _interReserveV6 = localFont\(\{[^}]*preload:\s*false/);
+    expect(code).not.toMatch(/_interReserveV6\.(className|variable|style)/);
   });
 
   it("--font-admin vaut Manrope (déclarée par admin.css, héritée du layout racine)", () => {
