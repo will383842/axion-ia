@@ -94,12 +94,21 @@ function lignesFormule(f: VueFormule): VueApercuDevis["formules"][number]["ligne
       libelle: "Hébergement chez Axion-IA (par mois)",
       montantHtCents: f.hebergementMensuelHtCents,
     });
-  if (f.abonnement)
+  if (f.abonnement) {
     lignes.push({
       libelle: "Abonnement (par mois, tarif catalogue)",
       montantHtCents: f.abonnement.mensuelCatalogueHtCents,
     });
-  lignes.push({ libelle: "Total hors taxes", montantHtCents: f.totalHtCents });
+    // Périodes remisées : le mensuel net du serveur, recopié.
+    for (const p of f.abonnement.periodes)
+      if (p.remisePercent > 0)
+        lignes.push({
+          libelle: `Abonnement remisé de ${p.remisePercent} % (${p.mois} mois, par mois)`,
+          montantHtCents: p.mensuelNetHtCents,
+        });
+  }
+  // `totalHtCents` du serveur ne compte QUE la mise en place (pas les mensuels ci-dessus).
+  lignes.push({ libelle: "Mise en place hors taxes", montantHtCents: f.totalHtCents });
   return lignes;
 }
 
@@ -146,7 +155,8 @@ export function versApercuPrepare(
   } else if (apercu.formules) {
     const formules = apercu.formules.formules;
     // Une seule formule : son détail est AUSSI le détail global. Deux formules : le total dépend
-    // du choix du client, donc aucun total global n'est recopié (chaque formule porte le sien).
+    // du choix du client, donc aucun total global n'est recopié (zéros) et l'aperçu MASQUE le
+    // bloc de totaux globaux (`formules.length > 1`) ; chaque formule porte les siens.
     const seule = formules.length === 1 ? formules[0] : undefined;
     vue = {
       ...base,
@@ -170,7 +180,10 @@ export function versApercuPrepare(
         cle: cle(f),
         titre: f.titre.replace(/^Formule [AB] · /, ""),
         lignes: lignesFormule(f),
+        totalTvaCents: f.totalTvaCents,
+        totalTtcCents: f.totalTtcCents,
       })),
+      plafondAConfirmer: apercu.formules.plafondAConfirmer,
       servicesExterieurs: apercu.formules.servicesTiers.map(service),
     };
   } else {

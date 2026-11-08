@@ -15,7 +15,7 @@
  *    dans l'état), et la `note` de « Pour qui ? » est affichée.
  * Les étapes 1 à 3 sont assemblées par la page (E17b) et injectées par `rendreEtape`.
  */
-import { useCallback, useEffect, useRef, useState, type ReactNode } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 
 import { apercuAssistantAction } from "@/server/actions/qualiopi/devis-assistant-apercu";
 import {
@@ -77,6 +77,10 @@ interface Dernier {
 }
 
 const MSG_INDISPONIBLE = "L'enregistrement du brouillon a échoué. Réessayez.";
+const MSG_CONFLIT =
+  "Ce brouillon a été modifié ailleurs (un autre onglet ?). Rien n'a été écrasé : rechargez la page avant de continuer.";
+const MSG_INATTENDU =
+  "Une erreur inattendue est survenue. Vérifiez l'état du devis dans la liste avant de réessayer.";
 
 // ───────────────────────── « Pour qui ? » : demandes récentes ─────────────────────────
 
@@ -177,9 +181,16 @@ function PontSauvegarde(p: {
   sauverBrouillon: (i: EntreeSauvegarde) => Promise<ReponseSauvegarde>;
   initial: { id: string; majLe: string } | undefined;
   illisible: boolean;
-  origine: { projetId?: string; rencontreId?: string };
   enregistrer: (f: Sauveur | null) => void;
 }) {
+  const { projetId, rencontreId } = p.ctx.etat.origine;
+  const origine = useMemo(
+    () => ({
+      ...(projetId ? { projetId } : {}),
+      ...(rencontreId ? { rencontreId } : {}),
+    }),
+    [projetId, rencontreId],
+  );
   const h = useBrouillonAuto({
     etat: p.ctx.etat,
     etape: p.ctx.etape,
@@ -187,7 +198,7 @@ function PontSauvegarde(p: {
     sauverBrouillon: p.sauverBrouillon,
     brouillonInitial: p.initial,
     brouillonIllisible: p.illisible,
-    origine: p.origine,
+    origine,
   });
   const { enregistrer } = p;
   useEffect(() => {
@@ -209,14 +220,18 @@ function PontSauvegarde(p: {
 export function AssistantDevisBranche(props: PropsAssistantDevisBranche) {
   const [depart] = useState(() => {
     const lu = payloadVersEtat(props.payloadInitial);
-    const initial =
-      props.brouillon && lu.source === "ecran"
-        ? {
-            id: props.brouillon.id,
-            majLe: String(props.brouillon.revision),
-            donnees: serialiser(lu.etat, lu.etape),
-          }
-        : undefined;
+    // Un brouillon fourni est TOUJOURS passé : s'il est illisible, son contenu brut suit tel quel
+    // et le chemin « illisible » d'origine s'applique (message affiché, brouillon non modifié).
+    const initial = props.brouillon
+      ? {
+          id: props.brouillon.id,
+          majLe: String(props.brouillon.revision),
+          donnees:
+            lu.source === "ecran"
+              ? serialiser(lu.etat, lu.etape)
+              : (props.payloadInitial.nonImprime["ecran"] as EtatSerialise),
+        }
+      : undefined;
     return { initial, illisible: brouillonEstIllisible(initial) };
   });
   const { initial, illisible } = depart;
@@ -224,6 +239,10 @@ export function AssistantDevisBranche(props: PropsAssistantDevisBranche) {
     initial ? { id: initial.id, revision: Number(initial.majLe) } : null,
   );
   const sauveur = useRef<Sauveur | null>(null);
+  /** Révision du serveur inattendue (autre onglet ?) : plus aucune écriture ni envoi d'ici. */
+  const enConflit = useRef(false);
+  const [avis, setAvis] = useState<string | null>(null);
+  const [cleEnvoi, setCleEnvoi] = useState(0);
   const enregistrer = useCallback((f: Sauveur | null) => {
     sauveur.current = f;
   }, []);
@@ -243,7 +262,9 @@ export function AssistantDevisBranche(props: PropsAssistantDevisBranche) {
     if (i.id === undefined) {
       const r = await creerBrouillonAssistantAction({
         payload,
-        ...(props.devisId ? { devisId: props.devisId } : {}),
+        // Avec un brouillon fourni (même illisible), le lien au devis existe déjà : le renvoyer
+        // ferait rendre le brouillon lié SANS écrire le payload.
+        ...(props.devisId && !props.brouillon ? { devisId: props.devisId } : {}),
       });
       if ("error" in r) return { error: r.error };
       dernier.current = { id: r.data.id, revision: r.data.revision };
@@ -251,6 +272,7 @@ export function AssistantDevisBranche(props: PropsAssistantDevisBranche) {
     }
     // La numérotation (étape 4) fait avancer la révision sans passer par le hook : la plus
     // récente des deux valeurs est celle du serveur.
+    if (enConflit.current) return { error: MSG_CONFLIT, conflit: true };
     const duJeton = Number(i.attenduMajLe);
     const connue = dernier.current?.id === i.id ? dernier.current.revision : -1;
     const attenduRevision = Math.max(Number.isInteger(duJeton) ? duJeton : -1, connue);
@@ -274,21 +296,41 @@ export function AssistantDevisBranche(props: PropsAssistantDevisBranche) {
     return f ? f(s) : { ok: false, erreur: MSG_INDISPONIBLE };
   }
 
-  /** Après un échec d'envoi, la numérotation a pu faire avancer la révision : on la relit. */
-  async function relireRevision(): Promise<void> {
+  /**
+   * Après un échec, la numérotation a pu faire avancer la révision : on la relit. Seule la
+   * révision `dernier + 1` (la numérotation de l'envoi) est adoptée ; toute autre valeur vient
+   * d'une autre session : conflit, rien n'est adopté.
+   */
+  async function relireRevision(): Promise<"adoptee" | "inchangee" | "conflit"> {
     const d = dernier.current;
-    if (!d) return;
+    if (!d) return "inchangee";
     try {
       const r = await reprendreBrouillonAssistantAction(d.id);
-      if ("data" in r) dernier.current = { id: d.id, revision: r.data.revision };
+      if (!("data" in r) || r.data.revision === d.revision) return "inchangee";
+      if (r.data.revision === d.revision + 1) {
+        dernier.current = { id: d.id, revision: r.data.revision };
+        return "adoptee";
+      }
+      enConflit.current = true;
+      return "conflit";
     } catch {
       // Sans relecture, l'envoi suivant sera refusé par le serveur (jamais envoyé deux fois).
+      return "inchangee";
     }
   }
 
   function etapeQuatre(ctx: ContexteEtape): ReactNode {
     const client = props.clients.find((c) => c.id === ctx.etat.clientId);
     const preparer = async (): Promise<ResultatAction<ApercuPrepare>> => {
+      try {
+        return await preparerSansFiltre();
+      } catch (err) {
+        console.error("[devis-assistant] préparation de l'aperçu", err);
+        return { error: MSG_INATTENDU };
+      }
+    };
+    const preparerSansFiltre = async (): Promise<ResultatAction<ApercuPrepare>> => {
+      if (enConflit.current) return { error: MSG_CONFLIT };
       const s = await sauvegarder(serialiser(ctx.etat, 4));
       if (!s.ok) return { error: s.erreur };
       const d = dernier.current;
@@ -297,7 +339,11 @@ export function AssistantDevisBranche(props: PropsAssistantDevisBranche) {
         brouillonId: d.id,
         attenduRevision: d.revision,
       });
-      if ("error" in n) return { error: n.error };
+      if ("error" in n) {
+        // « Validité refusée » : le devis est numéroté et la révision a pu avancer.
+        if ((await relireRevision()) === "conflit") return { error: MSG_CONFLIT };
+        return { error: n.error };
+      }
       dernier.current = { id: d.id, revision: n.data.revision };
       if (n.data.aRenumeroter) {
         return {
@@ -322,37 +368,58 @@ export function AssistantDevisBranche(props: PropsAssistantDevisBranche) {
     };
     const envoyer = async (
       devisId: string,
-    ): Promise<ResultatAction<{ enCorbeille: true; note?: string }>> => {
+    ): Promise<ResultatAction<{ enCorbeille: boolean; note?: string }>> => {
+      if (enConflit.current) return { error: MSG_CONFLIT };
       const d = dernier.current;
       if (!d) return { error: MSG_INDISPONIBLE };
-      const r = await envoyerDepuisAssistantAction({
-        brouillonId: d.id,
-        attenduRevision: d.revision,
-      });
-      if ("error" in r) {
-        // Rejeu, « à renuméroter », conflit… : le message du serveur est affiché tel quel, aucun
-        // second appel n'est lancé ici.
+      try {
+        const r = await envoyerDepuisAssistantAction({
+          brouillonId: d.id,
+          attenduRevision: d.revision,
+        });
+        if ("error" in r) {
+          // Le message du serveur est affiché tel quel, aucun second envoi n'est lancé ici.
+          const lu = await relireRevision();
+          if (lu === "conflit") return { error: MSG_CONFLIT };
+          if (lu === "adoptee") {
+            // « À renuméroter » : le devis porte une version que le client n'a pas vue ici. On
+            // refait un aperçu (sauver → numéroter → aperçu) au lieu de réenvoyer directement.
+            setAvis(`${r.error} L'aperçu a été recalculé : relisez-le avant d'envoyer.`);
+            setCleEnvoi((k) => k + 1);
+          }
+          return { error: r.error };
+        }
         await relireRevision();
-        return { error: r.error };
+        // Le devis est ENVOYÉ côté serveur dans tous les cas : l'écran en est informé.
+        props.onEnvoye?.({ devisId });
+        if (!r.data.emailEnvoye) {
+          return {
+            data: {
+              enCorbeille: false,
+              note:
+                r.data.note ??
+                "Le devis est envoyé, mais l'e-mail n'a pas été préparé : ouvrez la fiche du devis.",
+            },
+          };
+        }
+        return { data: { enCorbeille: true, ...(r.data.note ? { note: r.data.note } : {}) } };
+      } catch (err) {
+        console.error("[devis-assistant] envoi", err);
+        await relireRevision();
+        return { error: MSG_INATTENDU };
       }
-      await relireRevision();
-      if (!r.data.emailEnvoye) {
-        return {
-          error:
-            r.data.note ??
-            "Le devis est enregistré mais l'e-mail n'a pas été préparé : ouvrez la fiche du devis.",
-        };
-      }
-      props.onEnvoye?.({ devisId });
-      return { data: { enCorbeille: true, ...(r.data.note ? { note: r.data.note } : {}) } };
     };
     return (
-      <EtapeEnvoi
-        etape={4}
-        preparer={preparer}
-        envoyer={envoyer}
-        destinataire={client?.email ?? ""}
-      />
+      <>
+        {avis ? <p role="status">{avis}</p> : null}
+        <EtapeEnvoi
+          key={cleEnvoi}
+          etape={4}
+          preparer={preparer}
+          envoyer={envoyer}
+          destinataire={client?.email ?? ""}
+        />
+      </>
     );
   }
 
@@ -365,10 +432,6 @@ export function AssistantDevisBranche(props: PropsAssistantDevisBranche) {
           sauverBrouillon={sauverBrouillon}
           initial={initial ? { id: initial.id, majLe: initial.majLe } : undefined}
           illisible={illisible}
-          origine={{
-            ...(ctx.etat.origine.projetId ? { projetId: ctx.etat.origine.projetId } : {}),
-            ...(ctx.etat.origine.rencontreId ? { rencontreId: ctx.etat.origine.rencontreId } : {}),
-          }}
           enregistrer={enregistrer}
         />
         {ctx.etape === 1 ? (

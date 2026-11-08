@@ -62,15 +62,38 @@ describe("versApercuPrepare : les centimes du serveur sont recopiés, rien n'est
   });
 
   it("T3 (A + B) : aucun total global (il dépend du choix), chaque formule porte le sien", () => {
-    const v = vue(etatT3()).prepare.vue;
+    const { apercu, prepare } = vue(etatT3());
+    const v = prepare.vue;
     expect(v.formules.map((f) => f.cle)).toEqual(["A", "B"]);
     expect([v.totalHtCents, v.tvaCents, v.totalTtcCents, v.lignes.length, v.phases.length]).toEqual(
       [0, 0, 0, 0, 0],
     );
-    const totaux = v.formules.map(
-      (f) => f.lignes.find((l) => l.libelle === "Total hors taxes")!.montantHtCents,
+    // Le libellé ne prétend pas à une somme : `totalHtCents` ne compte que la mise en place.
+    const miseEnPlace = v.formules.map(
+      (f) => f.lignes.find((l) => l.libelle === "Mise en place hors taxes")!.montantHtCents,
     );
-    expect(totaux).toEqual([448393, 190000]);
+    expect(miseEnPlace).toEqual([448393, 190000]);
+    expect(v.formules.some((f) => f.lignes.some((l) => l.libelle === "Total hors taxes"))).toBe(
+      false,
+    );
+    // TVA et TTC de chaque formule recopiés du serveur, sans recalcul.
+    const serveur = apercu.formules!.formules;
+    expect(v.formules.map((f) => [f.totalTvaCents, f.totalTtcCents])).toEqual(
+      serveur.map((f) => [f.totalTvaCents, f.totalTtcCents]),
+    );
+    expect(v.formules.map((f) => f.totalTtcCents)).toEqual([538072, 228000]);
+    expect(v.plafondAConfirmer).toEqual(serveur ? apercu.formules!.plafondAConfirmer : null);
+  });
+
+  it("T3 : les périodes remisées de l'abonnement montrent le mensuel net du serveur", () => {
+    const { apercu, prepare } = vue(etatT3());
+    const periodes = apercu.formules!.formules.flatMap((f) => f.abonnement?.periodes ?? []);
+    for (const p of periodes.filter((x) => x.remisePercent > 0)) {
+      const l = prepare.vue.formules
+        .flatMap((f) => f.lignes)
+        .find((x) => x.libelle.includes(`remisé de ${p.remisePercent} %`));
+      expect(l?.montantHtCents).toBe(p.mensuelNetHtCents);
+    }
   });
 
   it("mois offerts de la maintenance : dits au client", () => {

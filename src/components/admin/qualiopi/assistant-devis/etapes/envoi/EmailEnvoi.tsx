@@ -19,7 +19,7 @@ type Resultat<T> = { data: T } | { error: string };
 
 export interface PropsEmailEnvoi {
   destinataire: string;
-  envoyer: (email: EmailAEnvoyer) => Promise<Resultat<{ enCorbeille: true; note?: string }>>;
+  envoyer: (email: EmailAEnvoyer) => Promise<Resultat<{ enCorbeille: boolean; note?: string }>>;
 }
 
 export function EmailEnvoi({ destinataire, envoyer }: PropsEmailEnvoi) {
@@ -49,7 +49,12 @@ export function EmailEnvoi({ destinataire, envoyer }: PropsEmailEnvoi) {
         setErreur(r.error);
       } else {
         setEnvoye(true);
-        setStatut(`En corbeille, à valider.${r.data.note ? ` ${r.data.note}` : ""}`);
+        setStatut(
+          r.data.enCorbeille
+            ? `En corbeille, à valider.${r.data.note ? ` ${r.data.note}` : ""}`
+            : (r.data.note ??
+                "Le devis est envoyé, mais l'e-mail n'a pas été préparé : ouvrez la fiche du devis."),
+        );
       }
     } finally {
       verrou.current = false;

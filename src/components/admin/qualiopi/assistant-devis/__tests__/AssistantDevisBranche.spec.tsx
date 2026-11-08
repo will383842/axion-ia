@@ -104,7 +104,8 @@ beforeEach(() => {
     data: { revision: i.attenduRevision + 1 },
   }));
   A.creer.mockResolvedValue({ data: { id: BROUILLON, revision: 0 } });
-  A.reprendre.mockResolvedValue({ data: { revision: 9 } });
+  // Par défaut le serveur n'a pas bougé depuis la numérotation (révision 8).
+  A.reprendre.mockResolvedValue({ data: { revision: NUM.revision } });
   A.numeroter.mockResolvedValue({ data: NUM });
   A.apercu.mockImplementation(async (p: never) => ({
     data: calculerApercu(p, {
@@ -275,20 +276,48 @@ describe("étape 4 : sauver → numéroter → aperçu → envoyer", () => {
     expect(A.envoyer).toHaveBeenCalledTimes(1);
   });
 
-  it("devis « à renuméroter » à l'envoi : erreur affichée, aucun second appel ; la révision est relue pour le clic suivant", async () => {
+  it("devis « à renuméroter » à l'envoi : révision 8+1 adoptée, l'aperçu est REFAIT (sauver → numéroter → aperçu), jamais réenvoyé directement", async () => {
     A.envoyer.mockResolvedValueOnce({
       error:
         "La saisie a été modifiée pendant la numérotation : le devis porte la version précédente. Relancez l'envoi.",
     });
+    A.reprendre.mockResolvedValueOnce({ data: { revision: 9 } });
     monter({ etape: 4 });
     await screen.findByText(/Proposition n°/);
     fireEvent.click(screen.getByRole("button", { name: /Envoyer au client/ }));
-    expect((await screen.findByRole("alert")).textContent).toContain("Relancez l'envoi");
+    await waitFor(() => expect(A.numeroter).toHaveBeenCalledTimes(2));
     expect(A.envoyer).toHaveBeenCalledTimes(1);
-    expect(A.reprendre).toHaveBeenCalledWith(BROUILLON);
+    expect(A.apercu).toHaveBeenCalledTimes(2);
+    expect(A.numeroter.mock.calls[1]![0]).toEqual({ brouillonId: BROUILLON, attenduRevision: 10 });
+    expect(await screen.findByText(/L'aperçu a été recalculé/)).toBeTruthy();
+  });
+
+  it("après un échec d'envoi, une révision autre que dernier + 1 N'EST PAS adoptée : conflit, plus aucun envoi", async () => {
+    A.envoyer.mockResolvedValueOnce({ error: "Envoi refusé." });
+    A.reprendre.mockResolvedValueOnce({ data: { revision: 12 } });
+    monter({ etape: 4 });
+    await screen.findByText(/Proposition n°/);
     fireEvent.click(screen.getByRole("button", { name: /Envoyer au client/ }));
-    await waitFor(() => expect(A.envoyer).toHaveBeenCalledTimes(2));
-    expect(A.envoyer.mock.calls[1]![0]).toEqual({ brouillonId: BROUILLON, attenduRevision: 9 });
+    expect((await screen.findByRole("alert")).textContent).toContain("modifié ailleurs");
+    fireEvent.click(screen.getByRole("button", { name: /Envoyer au client/ }));
+    await waitFor(() => expect(screen.getAllByRole("alert")[0]!.textContent).toContain("ailleurs"));
+    expect(A.envoyer).toHaveBeenCalledTimes(1);
+    expect(A.numeroter).toHaveBeenCalledTimes(1);
+  });
+
+  it("l'envoi qui lève une exception rend une erreur affichée (pas d'attente infinie)", async () => {
+    A.envoyer.mockRejectedValueOnce(new Error("réseau"));
+    monter({ etape: 4 });
+    await screen.findByText(/Proposition n°/);
+    fireEvent.click(screen.getByRole("button", { name: /Envoyer au client/ }));
+    expect((await screen.findByRole("alert")).textContent).toContain("Vérifiez l'état du devis");
+  });
+
+  it("la préparation qui lève une exception affiche l'erreur et « Réessayer »", async () => {
+    A.apercu.mockRejectedValueOnce(new Error("réseau"));
+    monter({ etape: 4 });
+    expect((await screen.findByRole("alert")).textContent).toContain("Vérifiez l'état du devis");
+    expect(screen.getByRole("button", { name: "Réessayer" })).toBeTruthy();
   });
 
   it("numérotation « à renuméroter » : message affiché, ni aperçu ni envoi", async () => {
@@ -303,12 +332,26 @@ describe("étape 4 : sauver → numéroter → aperçu → envoyer", () => {
 
   it("une erreur de numérotation est affichée telle quelle (aucun aperçu)", async () => {
     A.numeroter.mockResolvedValue({ error: "Numérotation déjà en cours" });
+    A.reprendre.mockResolvedValue({ data: { revision: 6 } });
     monter({ etape: 4 });
     expect((await screen.findByRole("alert")).textContent).toContain("Numérotation déjà en cours");
     expect(A.apercu).not.toHaveBeenCalled();
   });
 
-  it("e-mail non préparé : le devis n'est pas annoncé « en corbeille »", async () => {
+  it("numérotation en erreur de validité (révision avancée) : la révision est relue, le « Réessayer » repart de 7", async () => {
+    A.numeroter.mockResolvedValueOnce({
+      error: "Le devis est numéroté, mais sa validité a échoué.",
+    });
+    A.reprendre.mockResolvedValueOnce({ data: { revision: 7 } });
+    monter({ etape: 4 });
+    await screen.findByRole("alert");
+    expect(A.reprendre).toHaveBeenCalledWith(BROUILLON);
+    fireEvent.click(screen.getByRole("button", { name: "Réessayer" }));
+    await screen.findByText(/Proposition n°/);
+    expect(A.numeroter.mock.calls[1]![0]).toEqual({ brouillonId: BROUILLON, attenduRevision: 8 });
+  });
+
+  it("e-mail non préparé : le devis est déjà envoyé, onEnvoye est appelé et le message n'est PAS une erreur", async () => {
     A.envoyer.mockResolvedValue({
       data: {
         devisId: NUM.devisId,
@@ -317,12 +360,48 @@ describe("étape 4 : sauver → numéroter → aperçu → envoyer", () => {
         note: "Le client n'a pas d'adresse.",
       },
     });
-    monter({ etape: 4 });
+    const onEnvoye = vi.fn();
+    monter({ etape: 4, onEnvoye });
     await screen.findByText(/Proposition n°/);
     fireEvent.click(screen.getByRole("button", { name: /Envoyer au client/ }));
-    expect((await screen.findByRole("alert")).textContent).toContain(
-      "Le client n'a pas d'adresse.",
+    await waitFor(() =>
+      expect(document.body.textContent).toContain("Le client n'a pas d'adresse."),
     );
+    expect(screen.queryByRole("alert")).toBeNull();
     expect(screen.queryByText(/en corbeille, à valider/i)).toBeNull();
+    expect(onEnvoye).toHaveBeenCalledWith({ devisId: NUM.devisId });
+  });
+});
+
+describe("brouillon fourni mais illisible", () => {
+  it("est remplacé AVEC le message, sans envoyer devisId à la création (le lien existe déjà)", async () => {
+    const etat = etatT1();
+    const payload = etatVersPayload(etat, 1, CTX);
+    payload.nonImprime = { ecran: { v: 99 } };
+    render(
+      <AssistantDevisBranche
+        payloadInitial={payload}
+        brouillon={{ id: BROUILLON, revision: 5 }}
+        clients={[CLIENT]}
+        textesParDefaut={[]}
+        tauxStandard={20}
+        formulesActives
+        validiteParDefaut="2026-12-08"
+        versionCgv="v"
+        urlAssistant="/fr/adm/qualiopi/devis/new"
+        devisId="33333333-3333-4333-8333-333333333333"
+        rendreEtape={({ dispatch }) => (
+          <button type="button" onClick={() => dispatch({ type: "remplacer", etat })}>
+            Saisir le devis
+          </button>
+        )}
+      />,
+    );
+    expect(await screen.findByText(/vos saisies iront dans un nouveau brouillon/)).toBeTruthy();
+    fireEvent.click(screen.getByRole("button", { name: "Saisir le devis" }));
+    continuer();
+    await waitFor(() => expect(A.creer).toHaveBeenCalled());
+    expect(A.creer.mock.calls[0]![0]).not.toHaveProperty("devisId");
+    expect(A.sauver).not.toHaveBeenCalled();
   });
 });

@@ -27,7 +27,12 @@ export interface VueApercuDevis {
     cle: "A" | "B";
     titre: string;
     lignes: Array<{ libelle: string; montantHtCents: number }>;
+    /** TVA et TTC de la mise en place, recopiés du serveur (jamais recalculés ici). */
+    totalTvaCents?: number | undefined;
+    totalTtcCents?: number | undefined;
   }>;
+  /** Plafond de frais à confirmer, tel que fourni par le serveur ; absent ou null = aucun. */
+  plafondAConfirmer?: { montantHtCents: number; texte: string } | null | undefined;
   servicesExterieurs: Array<{ nom: string; obligatoire: boolean; estimation: string }>;
   mentionTva: string | null;
   versionCgv: string;
@@ -37,6 +42,8 @@ const EUROS = new Intl.NumberFormat("fr-FR", { style: "currency", currency: "EUR
 const euros = (c: number): string => EUROS.format(c / 100);
 
 export function ApercuDevis({ vue, urlPdf }: { vue: VueApercuDevis; urlPdf: string }) {
+  // Plusieurs formules : le total dépend du choix du client, aucun total global n'existe.
+  const totauxGlobaux = vue.formules.length <= 1;
   return (
     <article aria-label="Aperçu du devis" className="p-3">
       <header className="mb-3 flex flex-wrap items-center justify-between gap-2">
@@ -63,29 +70,35 @@ export function ApercuDevis({ vue, urlPdf }: { vue: VueApercuDevis; urlPdf: stri
         </section>
       ) : null}
 
-      <section className="mb-3">
-        <h4>Ce que vous recevez</h4>
-        <ul className="list-none p-0">
-          {vue.lignes.map((l, i) => (
-            <li key={i} className="flex justify-between gap-2">
-              <span>{l.libelle}</span>
-              <span>{euros(l.totalHtCents)}</span>
-            </li>
-          ))}
-        </ul>
-        <p className="flex justify-between font-medium">
-          <span>Total hors taxes</span>
-          <span>{euros(vue.totalHtCents)}</span>
-        </p>
-        <p className="flex justify-between">
-          <span>TVA</span>
-          <span>{euros(vue.tvaCents)}</span>
-        </p>
-        <p className="flex justify-between">
-          <span>Total TTC</span>
-          <span>{euros(vue.totalTtcCents)}</span>
-        </p>
-      </section>
+      {totauxGlobaux || vue.lignes.length > 0 ? (
+        <section className="mb-3">
+          <h4>Ce que vous recevez</h4>
+          <ul className="list-none p-0">
+            {vue.lignes.map((l, i) => (
+              <li key={i} className="flex justify-between gap-2">
+                <span>{l.libelle}</span>
+                <span>{euros(l.totalHtCents)}</span>
+              </li>
+            ))}
+          </ul>
+          {totauxGlobaux ? (
+            <>
+              <p className="flex justify-between font-medium">
+                <span>Total hors taxes</span>
+                <span>{euros(vue.totalHtCents)}</span>
+              </p>
+              <p className="flex justify-between">
+                <span>TVA</span>
+                <span>{euros(vue.tvaCents)}</span>
+              </p>
+              <p className="flex justify-between">
+                <span>Total TTC</span>
+                <span>{euros(vue.totalTtcCents)}</span>
+              </p>
+            </>
+          ) : null}
+        </section>
+      ) : null}
 
       {vue.phases.length > 0 ? (
         <section className="mb-3">
@@ -117,8 +130,26 @@ export function ApercuDevis({ vue, urlPdf }: { vue: VueApercuDevis; urlPdf: stri
               </li>
             ))}
           </ul>
+          {f.totalTvaCents !== undefined ? (
+            <p className="flex justify-between">
+              <span>TVA sur la mise en place</span>
+              <span>{euros(f.totalTvaCents)}</span>
+            </p>
+          ) : null}
+          {f.totalTtcCents !== undefined ? (
+            <p className="flex justify-between">
+              <span>Mise en place TTC</span>
+              <span>{euros(f.totalTtcCents)}</span>
+            </p>
+          ) : null}
         </section>
       ))}
+
+      {vue.plafondAConfirmer ? (
+        <p role="note" className="mb-3">
+          {vue.plafondAConfirmer.texte} ({euros(vue.plafondAConfirmer.montantHtCents)} HT)
+        </p>
+      ) : null}
 
       {vue.servicesExterieurs.length > 0 ? (
         <section className="mb-3">
