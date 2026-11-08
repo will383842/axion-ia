@@ -148,7 +148,7 @@ describe("formules (D1)", () => {
       const r = creation(formules(m));
       if (r.type !== "formules") throw new Error("type");
       expect(offreDevisV1.safeParse(r.input.offre).success).toBe(true);
-      expect(r.input.automatisations ?? r.input.offre.automatisations).toEqual([]);
+      expect(r.input.offre.automatisations).toEqual([]);
       mockPrisma.client.findUnique.mockResolvedValueOnce({ type: "entreprise" } as never);
       const res = await creerDevisFormulesAction(r.input as never).catch(() => ({
         error: "arrêt",
