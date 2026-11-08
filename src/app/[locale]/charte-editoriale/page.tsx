@@ -53,6 +53,12 @@ export const revalidate = 86400;
 // substantielle de cette charte). Émise dans dateModified JSON-LD + visible UX.
 const LAST_REVIEWED = "2026-11-08";
 
+// ⚠️ Ce que la page affirme de la relecture suppose que les réglages de publication
+// automatique `factoryAutoPublishAllBlogTypes` et `newsAutoPublish` sont VRAIS
+// (réglages en base, `ContentGenConfig` clé `policies` ; défauts du code : true, cf.
+// src/server/actions/content-gen/policies.ts). Si l'un est désactivé, des articles
+// attendent une validation humaine avant publication : relire les sections 2 et 4.
+
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
   if (!hasLocale(routing.locales, locale)) return {};
@@ -64,8 +70,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       ? "Charte éditoriale & transparence IA — Axion-IA"
       : "Editorial policy & AI transparency — Axion-IA",
     description: isFr
-      ? "Mission éditoriale Axion-IA, process de revue, sources, transparence IA (AI Act art. 50), corrections et indépendance. Charte publique mise à jour 2026-05-18."
-      : "Axion-IA editorial mission, review process, sources, AI transparency (EU AI Act art. 50), corrections and independence. Public policy updated 2026-05-18.",
+      ? `Mission éditoriale Axion-IA, process de revue, sources, transparence IA (AI Act art. 50), corrections et indépendance. Charte publique mise à jour ${LAST_REVIEWED}.`
+      : `Axion-IA editorial mission, review process, sources, AI transparency (EU AI Act art. 50), corrections and independence. Public policy updated ${LAST_REVIEWED}.`,
     alternates: { fr: "/charte-editoriale", en: "/editorial-policy" },
   });
 }
@@ -312,8 +318,8 @@ export default async function CharteEditorialePage({ params }: Props) {
         <Container className="text-fg max-w-3xl space-y-5 text-lg leading-relaxed">
           <p>
             {isFr
-              ? "Chaque article publié fait l'objet d'une vérification factuelle automatique des affirmations chiffrées (prix, dates, statistiques). Lorsqu'un chiffre est réfuté, il est corrigé dans l'article, ou la phrase est reformulée sans le chiffre. Les sources externes datées sont citées explicitement dans l'article ET dans le JSON-LD `Article.citation[]`."
-              : "Every published article goes through an automatic factual check of its numbered claims (prices, dates, statistics). When a figure is refuted, it is corrected in the article, or the sentence is reworded without the figure. Dated external sources are explicitly cited in the article AND in JSON-LD `Article.citation[]`."}
+              ? "Chaque article publié fait l'objet d'une vérification factuelle automatique des affirmations chiffrées (prix, dates, statistiques). Lorsqu'un chiffre est réfuté, nous le corrigeons automatiquement dans l'article, ou reformulons la phrase sans le chiffre ; si la correction automatique échoue, l'article reste en l'état jusqu'à correction manuelle. Les sources externes datées sont citées explicitement dans l'article ET dans le JSON-LD `Article.citation[]`."
+              : "Every published article goes through an automatic factual check of its numbered claims (prices, dates, statistics). When a figure is refuted, we correct it automatically in the article, or reword the sentence without the figure; if the automatic correction fails, the article stays as it is until it is corrected manually. Dated external sources are explicitly cited in the article AND in JSON-LD `Article.citation[]`."}
           </p>
         </Container>
       </Section>

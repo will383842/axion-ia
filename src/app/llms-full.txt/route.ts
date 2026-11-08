@@ -72,13 +72,11 @@ export async function GET() {
   // `from` rendrait « à partir de À partir de ».
   // `collapsePriceProseDuplicates` rattrape les collisions résiduelles, comme
   // dans `api/markdown/[type]/[slug]/route.ts`.
-  // Décision Will 2026-10-18 (L0-08) : aucune ville nommée dans ce canal. La FAQ
-  // partagée (`transversal.ts`, hors périmètre) cite Grenoble dans une liste de
-  // villes desservies : on retire cette entrée ici, sans toucher à la source.
-  const sansVille = (s: string) => s.replace(/,\s*Grenoble(?=,)/g, "");
-  const renderFr = (s: string) =>
-    sansVille(collapsePriceProseDuplicates(resolvePriceTokens(s, "fr")));
-  const renderEn = (s: string) => sansVille(resolvePriceTokens(s, "en"));
+  // Aucune ville nommée dans ce canal (décision L0-08) : la FAQ partagée ne cite
+  // plus Grenoble (R4, 2026-11-08), donc plus de filtre ici — llms-sans-grenoble.spec.ts
+  // garde le résultat.
+  const renderFr = (s: string) => collapsePriceProseDuplicates(resolvePriceTokens(s, "fr"));
+  const renderEn = (s: string) => resolvePriceTokens(s, "en");
 
   const faqBlock = FAQ_GLOBAL.map(
     (f) =>

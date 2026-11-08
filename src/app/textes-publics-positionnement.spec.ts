@@ -42,6 +42,17 @@ function sansCommentaires(src: string): string {
     .replace(/\{\/\*[\s\S]*?\*\/\}/g, "");
 }
 
+/**
+ * Tour France IA : chantier séparé (PR n° 1852 fermée par Williams). La ligne du Tour de
+ * llms.txt reste EXACTEMENT celle de main (« de la TPE à l'ETI », visio de 30 minutes) :
+ * les contrôles de ce lot l'excluent explicitement.
+ */
+const sansLigneTour = (t: string) =>
+  t
+    .split("\n")
+    .filter((l) => !l.startsWith("- [Tour France IA]"))
+    .join("\n");
+
 const INTERDITS_CIBLE = [
   [/\bETI\b/, "ETI"],
   [/grands groupes/i, "grands groupes"],
@@ -76,7 +87,7 @@ describe("llms.txt / llms-full.txt — cible, rendez-vous, Qualiopi", () => {
       // llms-full.txt rend aussi la FAQ partagée (`transversal.ts`), dont les entrées sur les
       // niveaux d'audit « Stratégique ETI » relèvent de l'offre/des tarifs (lot R5a) : ESCALADE.
       // On contrôle donc tout ce qui précède la FAQ (direction, modules, positionnement).
-      const corps = tout.split("\n## FAQ")[0] ?? tout;
+      const corps = sansLigneTour(tout.split("\n## FAQ")[0] ?? tout);
       for (const [motif, nom] of INTERDITS_CIBLE) expect(corps, nom).not.toMatch(motif);
       expect(tout).not.toMatch(/qualiopi|certifi|finançable/i);
       expect(tout).not.toMatch(/Grenoble/i);
@@ -96,11 +107,11 @@ describe("llms.txt / llms-full.txt — cible, rendez-vous, Qualiopi", () => {
     expect(corps).not.toMatch(/journee-ia/);
   });
 
-  it("llms.txt : la visio de sélection du Tour dure 45 minutes, jamais 30", async () => {
+  it("llms.txt : la ligne du Tour France IA reste celle de main (chantier séparé)", async () => {
     const corps = await (await getLlms()).text();
-    expect(corps).toMatch(/visio de 45 minutes/);
-    expect(corps).not.toMatch(/30 minutes/);
-    expect(corps).toMatch(/des TPE et PME, tous secteurs/);
+    const ligne = corps.split("\n").find((l) => l.startsWith("- [Tour France IA]")) ?? "";
+    expect(ligne).toMatch(/de la TPE à l'ETI/);
+    expect(ligne).toMatch(/visio de 30 minutes/);
   });
 
   it("les sources des deux routes ne lisent plus aucun drapeau de certification", () => {
@@ -248,5 +259,91 @@ describe("rédaction : pas de mots proscrits dans les fichiers de ce lot", () =>
         /qualiopi|\bCPF\b|certifi|Aucun gain garanti/i,
       );
     }
+  });
+});
+
+describe("relecture Opus : accueil, régions, presse, transparence (décisions n°15, n°18, n°19)", () => {
+  const page = (rel: string) => sansCommentaires(lire(rel));
+
+  it("l'accueil n'affiche plus que deux cartes cible (TPE et PME), sans ETI ni grandes entreprises", () => {
+    const home = page("src/app/[locale]/page.tsx");
+    expect(home).not.toMatch(/id:\s*"eti"|id:\s*"large"|audience3|audience4/);
+    expect(home).toMatch(/id:\s*"tpe"/);
+    expect(home).toMatch(/id:\s*"pme"/);
+  });
+
+  it("AudienceSegments : plus de visuel ETI / grand compte, et la grille ne réserve plus 4 colonnes", () => {
+    const seg = page("src/components/home/AudienceSegments.tsx");
+    expect(seg).not.toMatch(/id:\s*"eti"|id:\s*"large"|audience-03|audience-04|Landmark/);
+    expect(seg).not.toMatch(/lg:grid-cols-4/);
+  });
+
+  it("RegionAudienceSection : ni cartes ETI / grandes entreprises, ni titre « ETI et grands groupes »", () => {
+    const reg = page("src/components/sections/RegionAudienceSection.tsx");
+    expect(reg).not.toMatch(/audience3|audience4/);
+    expect(reg).not.toMatch(/\bETI\b|grands groupes|mid-caps|large groups/);
+    expect(reg).not.toMatch(/xl:grid-cols-5/);
+  });
+
+  it("fr.json / en.json : les clés des cartes retirées ont disparu, le titre de section est cohérent", () => {
+    for (const rel of ["src/messages/fr.json", "src/messages/en.json"]) {
+      const home = (JSON.parse(lire(rel)) as { home: Record<string, string> }).home;
+      expect(
+        Object.keys(home).filter((k) => /^audience[34]/.test(k)),
+        rel,
+      ).toEqual([]);
+      expect(home["audienceTitleEm"], rel).not.toMatch(/toutes les tailles|every size/i);
+    }
+  });
+
+  it("charte : la date « mise à jour » des métadonnées vient de LAST_REVIEWED, pas d'une date figée", () => {
+    const brutCharte = lire("src/app/[locale]/charte-editoriale/page.tsx");
+    expect(brutCharte).not.toContain("mise à jour 2026-05-18");
+    expect(brutCharte).not.toContain("updated 2026-05-18");
+    expect(brutCharte).toMatch(/mise à jour \$\{LAST_REVIEWED\}/);
+    expect(brutCharte).toMatch(/updated \$\{LAST_REVIEWED\}/);
+  });
+
+  it("charte : dit que la correction est automatique, et ce qui se passe si elle échoue", () => {
+    const c = page("src/app/[locale]/charte-editoriale/page.tsx");
+    expect(c).toMatch(
+      /nous le corrigeons automatiquement dans l'article, ou reformulons la phrase sans le chiffre/,
+    );
+    expect(c).toMatch(/reste en l'état jusqu'à correction manuelle/);
+    expect(c).toMatch(
+      /we correct it automatically in the article, or reword the sentence without the figure/,
+    );
+    expect(c).toMatch(/stays as it is until it is corrected manually/);
+  });
+
+  it("charte : un commentaire dit que le texte suppose les deux réglages de publication automatique", () => {
+    const brutCharte = lire("src/app/[locale]/charte-editoriale/page.tsx");
+    expect(brutCharte).toMatch(/factoryAutoPublishAllBlogTypes/);
+    expect(brutCharte).toMatch(/newsAutoPublish/);
+  });
+
+  it("presse : le nœud #organization du JSON-LD n'émet que le pays", () => {
+    const p = page("src/app/[locale]/presse/page.tsx");
+    expect(p).not.toMatch(/addressLocality/);
+    expect(p).toMatch(/addressCountry:\s*"FR"/);
+  });
+
+  it("transparence, bandeau IA et blog : aucune promesse de relecture humaine systématique ou de fact-check avant publication", () => {
+    const t = page("src/app/[locale]/transparence/page.tsx");
+    expect(t).not.toMatch(/contenus sensibles/);
+    expect(t).not.toMatch(/supervised by the Axion-IA team before publication/);
+    expect(t).not.toMatch(/^\s*"Yes\. Every AI-assisted content piece/m);
+    const d = page("src/components/marketing/AiContentDisclaimer.tsx");
+    expect(d).not.toMatch(/checked before publication \(fact-checking/);
+    expect(d).not.toMatch(/avant publication \(vérification factuelle/);
+    const h = page("src/server/content-gen/lib/category-hub-content.ts");
+    expect(h).not.toMatch(/produits et relus par l'équipe Axion-IA, dont Manon et Williams/);
+  });
+
+  it("mineurs : point final EN en a-propos, regex sansVille supprimé, commentaires seo.ts", () => {
+    expect(page("src/app/[locale]/a-propos/page.tsx")).toMatch(/based in France\. It supports/);
+    expect(lire("src/app/llms-full.txt/route.ts")).not.toMatch(/sansVille/);
+    const seo = lire("src/lib/seo.ts");
+    expect(seo).not.toMatch(/siège[^\n]{0,20}Grenoble|address Grenoble réelle|Grenoble réel\)/);
   });
 });

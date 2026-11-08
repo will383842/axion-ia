@@ -224,7 +224,7 @@ export default async function About({ params }: Props) {
           id: "definition",
           question: "What is Axion-IA?",
           answer:
-            "Axion-IA is an operational artificial-intelligence consultancy based in France It supports small and medium-sized businesses on AI audits, training, production AI implementation, 1-to-1 coaching and AI-augmented websites, with a focus on concrete, measurable results.",
+            "Axion-IA is an operational artificial-intelligence consultancy based in France. It supports small and medium-sized businesses on AI audits, training, production AI implementation, 1-to-1 coaching and AI-augmented websites, with a focus on concrete, measurable results.",
         },
         {
           id: "siege",

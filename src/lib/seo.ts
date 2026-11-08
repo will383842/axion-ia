@@ -1570,8 +1570,8 @@ interface LocalBusinessJsonLdInput {
    * Avant : default Mo-Fr 09:00-18:00 → fake-claim de bureau ouvert dans chaque
    * ville où LB émis. Maintenant : omettre = pas d'openingHours dans le JSON-LD
    * (compatible Service Area Business pattern Google). À passer explicitement
-   * UNIQUEMENT pour les pages avec un vrai bureau physique (ex: /a-propos siège
-   * Grenoble).
+   * UNIQUEMENT pour les pages avec un vrai bureau physique (aucune aujourd'hui :
+   * Axion-IA intervient partout en France).
    * Cert C6 2026-05-08 : forme objet typée requise (Google Validator rejette les
    * arrays de strings type "Mo-Fr 09:00-18:00").
    */
@@ -1587,8 +1587,8 @@ interface LocalBusinessJsonLdInput {
 }
 
 /**
- * Default opening hours utilisables par la page /a-propos ou /contact (siège
- * Grenoble réel). Sprint Correctif P1-2 2026-05-23 : ces hours ne sont PLUS
+ * Default opening hours utilisables par la page /a-propos ou /contact (aucun bureau
+ * public aujourd'hui). Sprint Correctif P1-2 2026-05-23 : ces hours ne sont PLUS
  * appliquées automatiquement par `buildLocalBusinessJsonLd` (cf. commentaire
  * de la fonction) — à passer explicitement.
  */
@@ -1603,7 +1603,7 @@ export const DEFAULT_HEADQUARTERS_OPENING_HOURS = [
 // LocalBusiness JSON-LD — Service Area Business safe mode.
 //
 // Sprint Correctif P1-2 (2026-05-23 — audit E2E passe 2 runtime + décision Will
-// 2026-05-23) : Axion-IA = 1 siège FR (Grenoble) qui sert toute la France. Pour
+// 2026-05-23) : Axion-IA = entreprise qui sert toute la France. Pour
 // chaque page ville/région : on émet `ProfessionalService` (compatible LocalBusiness
 // schema.org) avec `areaServed` mais SANS les attributs qui claim un bureau
 // physique (`geo`, `openingHoursSpecification`, `priceRange`, `address.postalCode`)
