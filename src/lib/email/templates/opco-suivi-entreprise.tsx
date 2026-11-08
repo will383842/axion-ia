@@ -61,7 +61,7 @@ export const opcoSuiviEntrepriseSubject = (
 
 const boutonSecondaire: React.CSSProperties = {
   ...emailStyles.ctaStyle,
-  backgroundColor: "#ffffff",
+  backgroundColor: "#FFFFFF",
   backgroundImage: "none",
   color: emailStyles.COLORS.terracotta,
   border: `2px solid ${emailStyles.COLORS.terracotta}`,

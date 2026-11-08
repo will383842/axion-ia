@@ -121,7 +121,7 @@ export function urlPolitiqueConfidentialite(baseUrl: string, locale: Locale): st
 
 const boutonSecondaire: React.CSSProperties = {
   ...emailStyles.ctaStyle,
-  backgroundColor: "#ffffff",
+  backgroundColor: "#FFFFFF",
   backgroundImage: "none",
   color: emailStyles.COLORS.accent,
   border: `2px solid ${emailStyles.COLORS.accent}`,
