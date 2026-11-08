@@ -59,13 +59,13 @@ describe("les e-mails aux candidats portent le lien", () => {
     });
   }
 
-  it("le lien est bleu (charte : liens en bleu)", async () => {
+  it("le lien est terracotta (palette définitive : ni bleu)", async () => {
     const { html } = await renderEmailTemplate("candidature-recue", "fr", {
       ...PAYLOAD_EXEMPLE,
       lienSuppression: LIEN,
     });
     const balise = new RegExp(`<a[^>]*href="${LIEN.replace(/[?.]/g, "\\$&")}"[^>]*>`).exec(html);
-    expect(balise?.[0]).toMatch(/color:\s*#1a4dd9/i);
+    expect(balise?.[0]).toMatch(/color:\s*#B23F16/i);
   });
 
   for (const nom of ["candidature-recue", "candidature-reponse"] as const) {

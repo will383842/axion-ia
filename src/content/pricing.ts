@@ -410,6 +410,26 @@ export const ANCIENS_IDS_FORMATION: Readonly<Record<string, string>> = {
   "approfondie-standard": "formation-generale-2j",
 };
 
+/**
+ * Journée IA sur site (brand V5-01) — 1 490 € HT, prix ferme.
+ *
+ * Constante À PART, volontairement : elle n'entre ni dans `AUDIT_TIERS` ni dans
+ * `INTERVENTION_TIERS`, lus par /tarifs, la réservation et les commissions. La page
+ * /journee-ia lit ce montant ici : aucun prix en dur ailleurs.
+ */
+export const JOURNEE_IA_TIER: PricingTier = {
+  id: "journee-ia",
+  labelFr: "Journée IA",
+  labelEn: "AI Day",
+  priceFlat: 1490,
+  isFromPrice: false,
+  durationFr: "1 journée",
+  durationEn: "1 day",
+  descriptionFr: "Une journée dans votre entreprise pour mettre l'IA au travail avec votre équipe.",
+  descriptionEn: "One day in your company to put AI to work with your team.",
+  audienceSizes: ["tpe", "pme"],
+};
+
 export const INTERVENTION_TIERS: ReadonlyArray<PricingTier> = [
   {
     // Sprint 14.10.7 (Will 2026-05-11) — palier 4 h Collectives. Tier porté
