@@ -173,7 +173,25 @@ async function lier(
     });
     if (count === 1) return { revision: cur.revision + 1, aRenumeroter: cur.revision !== attendu };
   }
-  return null;
+  // Dernier recours (3 sauvegardes intercalées) : le devis EXISTE, il ne doit jamais rester sans
+  // lien (le verrou expiré en créerait un second). Le contrôle `verrouDepuis` garantit que le
+  // verrou est le nôtre : on pose `devisId` sans condition de révision. Le `payload` n'est pas
+  // réécrit (il écraserait la sauvegarde la plus récente) ; la colonne `devisId` fait foi.
+  const { count } = await prisma.devisAssistantBrouillon.updateMany({
+    where: { id, createdByAdminId: adminId, statut: "numerotation", verrouDepuis: verrou },
+    data: {
+      devisId,
+      statut: "lie_au_devis",
+      verrouDepuis: null,
+      revision: { increment: 1 },
+    },
+  });
+  if (count !== 1) return null;
+  const apres = await prisma.devisAssistantBrouillon.findFirst({
+    where: { id, createdByAdminId: adminId },
+    select: { revision: true },
+  });
+  return { revision: apres?.revision ?? attendu + 1, aRenumeroter: true };
 }
 
 async function numeroter(i: unknown): Promise<Interne> {
@@ -301,9 +319,11 @@ async function numeroter(i: unknown): Promise<Interne> {
   }
   const statutAvant: "en_cours" | "lie_au_devis" = row.devisId ? "lie_au_devis" : "en_cours";
 
-  let devisId: string;
-  let numero: string;
-  let majLe: string;
+  // `devisId` non nul = le devis EXISTE : plus aucun chemin ne relâche le brouillon vers
+  // `en_cours` (un 2e appel créerait un 2e numéro) ; on lie toujours.
+  let devisId: string | null = null;
+  let numero = "";
+  let majLe: string | null = null;
   let erreurValidite: string | null = null;
   try {
     if (devisLie) {
@@ -334,10 +354,8 @@ async function numeroter(i: unknown): Promise<Interne> {
       }
       devisId = devisLie.id;
       numero = devisLie.numero;
-      majLe =
-        ("majLe" in maj.data ? maj.data.majLe : undefined) ??
-        (await lireMajLe(devisId)) ??
-        new Date().toISOString();
+      majLe = ("majLe" in maj.data ? maj.data.majLe : undefined) ?? null;
+      majLe = majLe ?? (await lireMajLe(devisId)) ?? new Date().toISOString();
     } else {
       // ── Première fois : la porte existante attribue le numéro. ──
       const cree =
@@ -357,7 +375,7 @@ async function numeroter(i: unknown): Promise<Interne> {
     if (payload.dateValidite) {
       const val = await fixerValiditeDevisBrouillonAction({
         id: devisId,
-        attenduMajLe: majLe,
+        attenduMajLe: majLe ?? new Date().toISOString(),
         dateValidite: payload.dateValidite,
       });
       if ("error" in val) erreurValidite = val.error;
@@ -365,6 +383,27 @@ async function numeroter(i: unknown): Promise<Interne> {
     }
   } catch (err) {
     console.error("[devis-assistant] numérotation interrompue", err);
+    if (devisId === null) {
+      await relacher(id, adminId, verrou, statutAvant);
+      return { error: "La numérotation a échoué : réessayez dans un instant." };
+    }
+    // Le devis existe (création ou mise à jour faite) : on lie, jamais de relâchement.
+    const lienApresErreur = await lier(
+      id,
+      adminId,
+      verrou,
+      devisId,
+      majLe ?? payload.sync.devisMajLe ?? new Date().toISOString(),
+      payload,
+      attendu,
+    );
+    return {
+      error: lienApresErreur
+        ? `Le devis ${numero} est numéroté, mais la suite de l'opération a échoué : ouvrez le devis dans la liste. Ne recommencez pas la numérotation.`
+        : `Le devis ${numero} a été créé mais son lien avec le brouillon n'a pas pu être posé. Ne recommencez pas : ouvrez la liste des devis.`,
+    };
+  }
+  if (devisId === null || majLe === null) {
     await relacher(id, adminId, verrou, statutAvant);
     return { error: "La numérotation a échoué : réessayez dans un instant." };
   }

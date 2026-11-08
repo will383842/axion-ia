@@ -445,6 +445,40 @@ describe("numerotation — idempotence", () => {
     expect(m.row).toMatchObject({ devisId: DEVIS, statut: "lie_au_devis", verrouDepuis: null });
   });
 
+  it("S10 qui REJETTE après la création : le brouillon reste lié, un 2e appel ne recrée pas de numéro", async () => {
+    const p = classique();
+    p.dateValidite = new Date(Date.now() + 30 * 86_400_000).toISOString().slice(0, 10);
+    poser(p);
+    m.fixerValidite.mockRejectedValue(new Error("base indisponible"));
+    const r = await num();
+    expect(r).toMatchObject({ error: expect.stringContaining("AXI-DEV-2026-007") });
+    expect(m.row).toMatchObject({ devisId: DEVIS, statut: "lie_au_devis", verrouDepuis: null });
+    await num(m.row!["revision"] as number);
+    expect(m.creerClassique).toHaveBeenCalledTimes(1);
+  });
+
+  it("3 sauvegardes intercalées (lier à court d'essais) : le devis est lié quand même, pas de 2e création après verrou vieilli", async () => {
+    poser(classique());
+    let lectures = 0;
+    m.findFirst.mockImplementation(async ({ where }: { where: Ligne }) => {
+      if (!m.row || !correspond(m.row, where)) return null;
+      const copie = { ...m.row };
+      // Lectures de `lier` (where.statut = numerotation) : une sauvegarde s'intercale à chaque fois.
+      if (where["statut"] === "numerotation" && lectures++ < 3) {
+        m.row["revision"] = (m.row["revision"] as number) + 1;
+      }
+      return copie;
+    });
+    const r = await num();
+    expect(r).toMatchObject({ data: { devisId: DEVIS, aRenumeroter: true } });
+    expect(m.row).toMatchObject({ devisId: DEVIS, statut: "lie_au_devis", verrouDepuis: null });
+    if (m.row!["statut"] === "numerotation") {
+      m.row!["verrouDepuis"] = new Date(Date.now() - 3 * 60_000);
+    }
+    await num(m.row!["revision"] as number);
+    expect(m.creerClassique).toHaveBeenCalledTimes(1);
+  });
+
   it("brouillon vide de sync après un lien : le devis lié est recherché dans la colonne, pas dans le texte", async () => {
     const p = classique();
     p.sync = { devisId: AUTRE, devisMajLe: MAJ0.toISOString() };
@@ -714,6 +748,16 @@ describe("envoyerDepuisAssistantAction", () => {
     const r = await env();
     expect("error" in r).toBe(true);
     expect(m.envoyer).not.toHaveBeenCalled();
+  });
+
+  it("2e appel APRÈS la fin de la numérotation du 1er : rejoue, jamais un 2e envoi", async () => {
+    poser(classique());
+    const a = await env();
+    expect("data" in a).toBe(true);
+    const b = await env();
+    expect(b).toMatchObject({ error: expect.stringContaining("déjà demandé") });
+    expect(m.envoyer).toHaveBeenCalledTimes(1);
+    expect(m.creerClassique).toHaveBeenCalledTimes(1);
   });
 
   it("refus d'envoi (sendDevisAction) : le devis reste numéroté et lié, l'erreur remonte", async () => {
