@@ -718,7 +718,7 @@ export function getBlogHomeFaq(locale: Locale): ReadonlyArray<CategoryFaqItem> {
       {
         question: "Qui écrit les articles du blog Axion-IA ?",
         answer:
-          "Les articles du blog Axion-IA sont produits et relus par l'équipe Axion-IA, dont Manon et Williams, à partir de missions réelles. La méthodologie partagée est testée sur le terrain, plutôt que tirée d'une théorie générique éloignée du quotidien des entreprises.",
+          "Les articles du blog Axion-IA sont rédigés avec l'assistance d'une IA générative (plume « Manon »), sous la direction de Williams Jullin, à partir de missions réelles. La méthodologie partagée est testée sur le terrain, plutôt que tirée d'une théorie générique éloignée du quotidien des entreprises.",
       },
       {
         question: "À quelle fréquence publiez-vous ?",

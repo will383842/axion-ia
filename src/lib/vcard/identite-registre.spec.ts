@@ -27,37 +27,28 @@ import { buildOrganizationJsonLd } from "@/lib/seo";
 
 import { WILLIAMS } from "./index";
 
-type OrgAddress = {
-  address: { streetAddress: string; postalCode: string; addressLocality: string };
-};
+type OrgAddress = { address: Record<string, string> };
 
 const org = buildOrganizationJsonLd({ locale: "fr" }) as OrgAddress;
 
-describe("vCard — l'adresse du siège ne diverge pas du JSON-LD", () => {
+// 2026-11-08 — décision de Williams (audit harmonie n°19) : le JSON-LD ne porte plus
+// que le PAYS. L'ancienne exigence « la vCard porte la même voie / ville / code
+// postal que le JSON-LD » n'a donc plus d'objet côté JSON-LD ; ce qu'il faut encore
+// garder, c'est que la carte imprimée (document où l'adresse du siège est légitime,
+// au même titre que les mentions légales) reste complète, et que le JSON-LD ne
+// redevienne pas une seconde surface d'adresse.
+describe("vCard — l'adresse du siège (JSON-LD : pays seulement, carte : adresse complète)", () => {
   const { adresse } = WILLIAMS;
 
-  it("porte la même voie que le JSON-LD de l'organisation", () => {
-    expect(org.address.streetAddress).toContain(adresse.rue);
+  it("le JSON-LD de l'organisation ne déclare que le pays", () => {
+    expect(org.address).toEqual({ "@type": "PostalAddress", addressCountry: "FR" });
   });
 
-  it("porte le complément de domiciliation, comme le JSON-LD", () => {
-    // Le complément fait partie de l'adresse immatriculée : SIRENE le porte sur
-    // sa propre ligne. L'omettre d'un seul côté rouvre l'écart du 02/08/2026.
-    expect(org.address.streetAddress).toContain(adresse.complement);
-  });
-
-  it("porte la même ville et le même code postal", () => {
-    expect(adresse.ville).toBe(org.address.addressLocality);
-    expect(adresse.codePostal).toBe(org.address.postalCode);
-  });
-
-  it("reste comparable au JSON-LD — contre-épreuve", () => {
-    // Sans cette contre-épreuve, un `streetAddress` devenu vide ou générique
-    // ferait passer les trois tests ci-dessus au vert : `contains("")` est
-    // toujours vrai. On vérifie donc que la valeur comparée est bien une
-    // adresse, et que la comparaison distingue réellement deux voies.
-    expect(org.address.streetAddress.length).toBeGreaterThan(20);
-    expect(org.address.streetAddress).not.toContain("11 Rue Paul Verlaine");
+  it("la carte imprimée garde une adresse complète (rue, complément, ville, code postal)", () => {
+    for (const champ of [adresse.rue, adresse.complement, adresse.ville, adresse.codePostal]) {
+      expect(champ.trim().length).toBeGreaterThan(0);
+    }
+    expect(adresse.codePostal).toMatch(/^\d{5}$/);
   });
 });
 

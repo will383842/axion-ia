@@ -71,7 +71,7 @@ export const BOUGUENAIS_COPY: VilleCopy = {
           {
             step: "Développement par sprints",
             detail:
-              "Greffe IA sur l'existant ou build IA-native dans nos locaux et à distance : portail fournisseurs, e-commerce multi-CMS, chatbot RAG multilingue, recherche sémantique sur documentation technique, agents et automatisations. Démos hebdomadaires en visio avec vos référents.",
+              "Greffe IA sur l'existant ou build IA-native, sur place ou à distance : portail fournisseurs, e-commerce multi-CMS, chatbot RAG multilingue, recherche sémantique sur documentation technique, agents et automatisations. Démos hebdomadaires en visio avec vos référents.",
           },
           {
             step: "Recette + mise en ligne",
@@ -157,7 +157,7 @@ export const BOUGUENAIS_COPY: VilleCopy = {
           {
             step: "Développement par sprints",
             detail:
-              "Greffe IA sur l'existant ou build IA-native dans nos locaux et à distance : portail fournisseurs, e-commerce multi-CMS, chatbot RAG multilingue, recherche sémantique sur documentation technique, agents et automatisations. Démos hebdomadaires en visio avec vos référents.",
+              "Greffe IA sur l'existant ou build IA-native, sur place ou à distance : portail fournisseurs, e-commerce multi-CMS, chatbot RAG multilingue, recherche sémantique sur documentation technique, agents et automatisations. Démos hebdomadaires en visio avec vos référents.",
           },
           {
             step: "Recette + mise en ligne",

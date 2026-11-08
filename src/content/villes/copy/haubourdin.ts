@@ -49,7 +49,7 @@ export const HAUBOURDIN_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Haubourdin et dans l'ouest lillois ?",
-      a: "Oui, Axion-IA intervient à Haubourdin et dans tout l'ouest de la Métropole Européenne de Lille (Loos, Lomme, Santes, Wavrin, Sequedin). Nos consultants sont basés sur Lille, déplacement en 12 min.",
+      a: "Oui, Axion-IA intervient à Haubourdin et dans tout l'ouest de la Métropole Européenne de Lille (Loos, Lomme, Santes, Wavrin, Sequedin). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quel est le tarif d'un audit IA à Haubourdin  ?",

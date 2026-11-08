@@ -52,7 +52,12 @@ export async function Header() {
   // accessibles depuis mobile, pas seulement depuis le footer).
   // 2026-07-10 (Will) : retirés du drawer → Implantations, Stack IA, Centre
   // d'aide (accessibles via footer / méga-menu Ressources desktop).
+  // R5a (08/11/2026) : « La Journée IA » (offre phare) en tête. Elle n'est PAS un 8ᵉ onglet du
+  // bandeau desktop : celui-ci est mesuré pour 7 onglets (Header.budget.spec.ts) et l'ajout
+  // exige de refaire la mesure en navigateur. Libellé en dur, comme les autres libellés de ce
+  // fichier (messages/fr.json appartient à un autre lot).
   const navMobileExtras = [
+    { href: "/journee-ia", label: isFr ? "La Journée IA" : "The AI Day" },
     { href: "/cas-concrets", label: t("nav.caseStudies") },
     { href: "/blog", label: t("nav.blog") },
     { href: "/faq", label: "FAQ" },
@@ -62,6 +67,7 @@ export async function Header() {
   // Emoji par onglet du drawer mobile (clé = href) — repère visuel « type 2026 »
   // dans chaque rangée. Affiché uniquement dans le drawer (cf. NavLink mobile).
   const mobileNavEmoji: Record<string, string> = {
+    "/journee-ia": "☀️",
     "/formations": "🎓",
     "/un-a-un": "🤝",
     "/audit": "🔍",
