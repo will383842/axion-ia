@@ -65,7 +65,9 @@ vi.mock("@/server/guides-reseau/origines", async (orig) => ({
   ...(await orig<Record<string, unknown>>()),
   enregistrerOrigine: async () => ({ creee: true, archivees: 0 }),
 }));
-vi.mock("@/server/guides-reseau/synchro-v3", () => ({ transmettreOriginesV3: async () => undefined }));
+vi.mock("@/server/guides-reseau/synchro-v3", () => ({
+  transmettreOriginesV3: async () => undefined,
+}));
 
 import * as traitement from "../traitement";
 
