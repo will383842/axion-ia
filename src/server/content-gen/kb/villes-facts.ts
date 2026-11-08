@@ -1017,7 +1017,7 @@ export const KB_AI_ACT: readonly KbFact[] = [
   },
   {
     id: "ai-act-008",
-    text: "Les sanctions prévues par l'AI Act (art. 99) vont jusqu'à 35 millions d'euros ou 7 % du CA mondial annuel pour violation des interdictions (art. 5), 15 millions ou 3 % pour la plupart des autres manquements, et 7,5 millions ou 1 % pour des informations inexactes. Pour les PME, c'est le montant le plus bas des deux qui s'applique ; hors PME, c'est le plus élevé des deux.",
+    text: "Les sanctions prévues par l'AI Act (art. 99) vont jusqu'à 35 millions d'euros ou 7 % du CA mondial annuel pour violation des interdictions (art. 5), 15 millions ou 3 % pour la plupart des autres manquements, et 7,5 millions ou 1 % pour des informations inexactes. Pour les PME, c'est le montant le plus bas des deux qui s'applique ; hors PME, c'est le plus élevé des deux. L'extension de ce régime aux petites entreprises de taille intermédiaire par le règlement (UE) 2026/1744 est à vérifier sur EUR-Lex.",
     source:
       "EUR-Lex — Règlement (UE) 2024/1689, modifié par le règlement (UE) 2026/1744 (omnibus IA, JO du 24/07/2026)",
     sourceUrl: "https://eur-lex.europa.eu/eli/reg/2026/1744/oj",
