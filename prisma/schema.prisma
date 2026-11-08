@@ -5453,7 +5453,7 @@ model VenteBrouillon {
 /// `devisId` est unique : un seul brouillon d'assistant par devis (rejeu sûr).
 /// Le code qui lit ou écrit cette table arrive APRÈS la mise en ligne de cette migration.
 ///
-/// rgpd: technique — brouillon de travail de l'organisme : aucun contact libre dans le payload (plan assistant §5.11), seulement un lien `client_id` ; à requalifier en `dossier-client` par la fiche S17 (export art. 15 + fusion), qui lira la table.
+/// rgpd: dossier-client — brouillon de devis rattaché à une fiche client par `client_id` (requalifié par la fiche S17, AVANT l'allumage de S06). Aucun contact libre dans le payload (plan assistant §5.11) ; jamais supprimé ni purgé. Déclaré dans `EXCLUSIONS_EXPORT_DOSSIER` et `EXCEPTIONS_EFFACEMENT_DOSSIER` avec son motif.
 model DevisAssistantBrouillon {
   id                   String    @id @default(uuid()) @db.Uuid
   /// Propriétaire (uuid AdminUser, sans FK — comme `vente_brouillons`).

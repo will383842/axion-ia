@@ -92,6 +92,16 @@ describe("controlerEtape", () => {
     ).toMatch(/110 %/);
   });
 
+  it("étape 1b : une phase à 0 % (ou au-dessus de 100) est refusée, même si le total vaut 100", () => {
+    const [p0, p1] = etatT1().achat.phases;
+    const phases = [
+      { ...p0!, pourcentage: "0" },
+      { ...p1!, pourcentage: "100" },
+    ];
+    const e = reducteur(etatT1(), { type: "achat", patch: { phases } });
+    expect(controlerEtape(e, "1b").join(" ")).toMatch(/entre 1 et 100/);
+  });
+
   it("étape 2 : mois offerts de maintenance, entier >= 0 sinon refus lisible", () => {
     const avecMois = (moisOfferts: string) =>
       reducteur(etatT1(), {
@@ -116,6 +126,25 @@ describe("controlerEtape", () => {
     });
     const lu = deserialiser(JSON.parse(JSON.stringify(serialiser(e, 2))));
     expect(lu.ok && lu.etat.achat.maintenance.moisOfferts).toBe("4");
+  });
+
+  it("étape 2 : plafond ou estimation illisibles ne bloquent qu'hors prix unique (E14)", () => {
+    const base = avec(etatT3(), {
+      proposition: "A",
+      plafondSaisie: "",
+      servicesSaisies: ["12,505"],
+    });
+    expect(propositionEffective(base)).toBe("A");
+    expect(controlerEtape(base, 2).join(" ")).toMatch(/Plafond/);
+    expect(controlerEtape(base, 2).join(" ")).toMatch(/estimation illisible/);
+    // Passage en prix unique : la section disparaît, l'étape 2 et l'envoi ne doivent plus bloquer.
+    const unique = avec(base, { proposition: "prix_unique" });
+    expect(controlerEtape(unique, 2)).toEqual([]);
+    expect(controlerEtape(unique, 4)).toEqual([]);
+    // Prix unique imposé (formules désactivées) : même résultat.
+    const impose = avec(base, { formulesActives: false });
+    expect(controlerEtape(impose, 2)).toEqual([]);
+    expect(controlerEtape(impose, 4)).toEqual([]);
   });
 
   it("les jeux d'essai T1 à T5 passent toutes les étapes", () => {

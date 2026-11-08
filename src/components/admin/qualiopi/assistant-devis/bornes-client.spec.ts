@@ -77,6 +77,19 @@ const POINTS_D_ENTREE = [
   "lignes.ts",
   "useBrouillonAuto.ts",
   "StatutSauvegarde.tsx",
+  "etapes/un/ChoixModele.tsx",
+  "etapes/un/BlocClient.tsx",
+  "etapes/un/NouveauContact.tsx",
+  "etapes/un/BlocMotsDuClient.tsx",
+  "etapes/un/ListeLignes.tsx",
+  "etapes/un/LigneContenu.tsx",
+  "etapes/un/EtapeClientProjet.tsx",
+  "ApercuDirect.tsx",
+  "etapes/phases/EditeurPhases.tsx",
+  "etapes/phases/EtapePhases.tsx",
+  "etapes/phases/BlocDelais.tsx",
+  "etapes/phases/BlocMaintenance.tsx",
+  "etapes/phases/BlocGarantie.tsx",
 ];
 
 describe("l'assistant de devis est sûr côté client", () => {

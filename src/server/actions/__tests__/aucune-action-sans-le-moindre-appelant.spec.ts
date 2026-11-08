@@ -84,14 +84,24 @@ const SANS_AUCUN_APPELANT: ReadonlyArray<string> = [
   "server/actions/knowledge/assign-reviewer.ts::assignReviewerAction",
   "server/actions/knowledge/rollback-version.ts::rollbackVersionAction",
   "server/actions/knowledge/upload-asset.ts::uploadAssetAction",
+  // 2026-11-08 — assistant de devis : écran dans les PR E08+ (lot serveur-4, S13).
+  "server/actions/qualiopi/devis-assistant-sources.ts::listerSourcesPourQuiAction",
   // 2026-11-08 — assistant de devis : écrans dans les PR E08+ (lot serveur-2).
   "server/actions/qualiopi/devis-assistant-brouillon.ts::creerBrouillonAssistantAction",
   "server/actions/qualiopi/devis-assistant-brouillon.ts::listerMesBrouillonsAssistantAction",
   "server/actions/qualiopi/devis-assistant-brouillon.ts::mettreAEcartBrouillonAssistantAction",
   "server/actions/qualiopi/devis-assistant-brouillon.ts::reprendreBrouillonAssistantAction",
   "server/actions/qualiopi/devis-assistant-brouillon.ts::sauverBrouillonAssistantAction",
-  "server/actions/qualiopi/devis-classique-modifier.ts::fixerValiditeDevisBrouillonAction",
-  "server/actions/qualiopi/devis-classique-modifier.ts::modifierDevisClassiqueBrouillonAction",
+  // 2026-11-08 — lot serveur-3 (S08) : numérotation et envoi attendent l'écran de l'étape 4
+  // (lot ÉCRANS). Sortent d'ici dès qu'un écran les appelle (le second test l'exige).
+  // `modifierDevisClassiqueBrouillonAction` et `fixerValiditeDevisBrouillonAction` (S09/S10) ont
+  // maintenant un appelant (S08) : leurs lignes ont été retirées.
+  "server/actions/qualiopi/devis-assistant-finaliser.ts::envoyerDepuisAssistantAction",
+  "server/actions/qualiopi/devis-assistant-finaliser.ts::numeroterDevisAssistantAction",
+  // Assistant de devis, lot serveur-1 (PR #1868) : l'aperçu en direct attend l'écran de
+  // l'assistant (lot ÉCRANS, E-lots), livré APRÈS ce lot. Sort de cette liste dès qu'un écran
+  // l'appelle (le second test l'exige).
+  "server/actions/qualiopi/devis-assistant-apercu.ts::apercuAssistantAction",
   "server/actions/qualiopi/devis.ts::reviseDevisAction",
   "server/actions/qualiopi/engine.ts::getGenerationStatusAction",
   "server/actions/qualiopi/enrollments.ts::updateEnrollmentPresenceAction",

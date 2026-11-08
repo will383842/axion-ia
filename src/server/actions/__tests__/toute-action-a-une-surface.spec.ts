@@ -76,13 +76,20 @@ function fichiers(...segments: string[]): string[] {
 const SANS_SURFACE_CONNUS: ReadonlyArray<string> = [
   "server/actions/image-bank/publish.action.ts",
   "server/actions/image-bank/translate.action.ts",
+  // 2026-11-08 — assistant de devis : écran dans les PR E08+ (lot serveur-4, S13).
+  "server/actions/qualiopi/devis-assistant-sources.ts",
   // 2026-11-08 — assistant de devis : écrans dans les PR E08+ (lot serveur-2).
   "server/actions/qualiopi/devis-assistant-brouillon.ts",
   "server/actions/qualiopi/devis-classique-modifier.ts",
+  // Lot serveur-3 (S08) : numérotation/envoi, écran de l'étape 4 dans le lot ÉCRANS.
+  "server/actions/qualiopi/devis-assistant-finaliser.ts",
   "server/actions/knowledge/add-relation.ts",
   "server/actions/knowledge/assign-reviewer.ts",
   "server/actions/knowledge/rollback-version.ts",
   "server/actions/knowledge/upload-asset.ts",
+  // Assistant de devis, lot serveur-1 (PR #1868) : action d'aperçu livrée AVANT l'écran de
+  // l'assistant (lot ÉCRANS), qui l'appellera. À retirer d'ici dès qu'un écran la nomme.
+  "server/actions/qualiopi/devis-assistant-apercu.ts",
 ];
 
 describe("`D3-3-05` — toute Server Action finit par atteindre un écran", () => {
