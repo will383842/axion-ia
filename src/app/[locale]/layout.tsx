@@ -163,9 +163,9 @@ export function generateStaticParams() {
 // Viewport SSOT — audit perfection SEO 2026-05-12. Next 16 sépare
 // `viewport` (size, colors, scale) de `metadata` (title, OG, etc.). Déclaré
 // au root layout pour s'appliquer à toutes pages :
-//   - themeColor : signature visuelle terracotta sur iOS Safari status bar +
-//     Chrome Android URL bar + PWA splash. Doit matcher --color-terracotta
-//     défini dans globals.css. Next exige une string littérale ici (pas de
+//   - themeColor : ivoire de la palette définitive sur iOS Safari
+//     status bar + Chrome Android URL bar + PWA splash. Doit rester dans la
+//     palette (fond de page ivoire de globals.css). Next exige une string littérale ici (pas de
 //     CSS var possible), donc le hex est duppliqué intentionnellement.
 //   - colorScheme "light" : Axion-IA est light-only (charte ivoire/sand) — on
 //     bloque le dark auto pour préserver l'identité éditoriale
@@ -173,7 +173,7 @@ export function generateStaticParams() {
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
-  themeColor: "#c24a1b", // hex-ok: signature terracotta SSOT, dupliquée de globals.css --color-terracotta
+  themeColor: "#faf9f5", // hex-ok: ivoire de la palette définitive, dupliqué de globals.css (fond de page)
   colorScheme: "light",
 };
 

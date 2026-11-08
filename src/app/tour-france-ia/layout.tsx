@@ -64,7 +64,7 @@ export const viewport: Viewport = {
   // Le héros est sur le crème d'Axion (refonte du 2026-10-27) : la barre du
   // navigateur (et celle du navigateur intégré de Facebook, quand il la colore) le
   // prolonge au lieu de le couper.
-  themeColor: "#faf8f3", // hex-ok: crème de la charte, dupliqué de globals.css --color-bg (Next exige un littéral)
+  themeColor: "#faf9f5", // hex-ok: crème de la charte, dupliqué de globals.css --color-bg (Next exige un littéral)
   colorScheme: "light",
 };
 

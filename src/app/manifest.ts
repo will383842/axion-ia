@@ -21,8 +21,8 @@ export default function manifest(): MetadataRoute.Manifest {
     scope: ROUTES.home,
     display: "standalone",
     orientation: "portrait-primary",
-    background_color: "#faf8f3", // hex-ok: W3C Web App Manifest spec requires hex literals (no CSS vars at PWA install time)
-    theme_color: "#c24a1b", // hex-ok: idem — color matches --color-terracotta
+    background_color: "#faf9f5", // hex-ok: W3C Web App Manifest spec requires hex literals (no CSS vars at PWA install time)
+    theme_color: "#faf9f5", // hex-ok: idem — ivoire de la palette définitive (fond de page)
     lang: "fr",
     dir: "ltr",
     categories: ["business", "productivity", "education"],
