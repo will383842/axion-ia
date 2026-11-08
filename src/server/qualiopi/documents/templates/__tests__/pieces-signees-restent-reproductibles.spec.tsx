@@ -54,6 +54,11 @@ vi.mock("@/lib/r2-storage", () => ({
   uploadToR2: vi.fn(),
 }));
 
+// V8-P0 : le consentement de captation ne se rend que « allumé » ; on l'allume pour son cas.
+vi.mock("@/server/qualiopi/documents/signature/interrupteur-captation", () => ({
+  allumageExemplaireCaptation: async () => new Date(0),
+}));
+
 import { registerPdfTestFontsFallback } from "@/server/qualiopi/documents/register-pdf-test-fonts";
 import { rendreExemplaireSigne } from "@/server/qualiopi/documents/signature/exemplaire-signe";
 import { versionGabaritCourante } from "@/server/qualiopi/documents/templates/gabarit-versions";
@@ -360,4 +365,371 @@ describe("une pièce générée AUJOURD'HUI porte les citations corrigées", () 
     expect(r.ok).toBe(false);
     if (!r.ok) expect(r.raison).toBe("gabarit_modifie");
   });
+});
+
+// ════════════════════════════════════════════════════════════════════════════
+// V8-P0 (2026-11-08) — GEL DE LA CHARTE À LA SOURCE : octets relevés AVANT.
+//
+// Relevés sur l'état de `brand-2027` AVANT tout changement de code (`brand-tokens.ts`
+// n'avait pas encore été repointé vers la copie gelée), horloge figée. Un cas par type de
+// pièce signable et par version. ⛔ Rouge = annuler le changement, jamais « mettre à jour ».
+// ════════════════════════════════════════════════════════════════════════════
+
+const LIGNES_DEVIS = [
+  { designation: "Formation IA appliquée — 2 jours", quantite: 1, prixUnitaireHtCents: 280000 },
+];
+const DATA_DEVIS = {
+  numero: "AXI-DEV-2026-001",
+  dateEmission: "06/06/2026",
+  dateValidite: "06/07/2026",
+  refClient: "BC-2026-042",
+  identite: IDENTITE,
+  client: {
+    raisonSociale: "Acme SAS",
+    siret: "98765432100011",
+    adresse: "10 avenue des Champs, 75008 Paris",
+  },
+  lignes: LIGNES_DEVIS,
+  regimeTva: "assujetti",
+};
+const LIGNE_F = {
+  designation: "Agent IA sur mesure",
+  quantite: 1,
+  prixUnitaireHtCents: 500000,
+  tauxTvaPercent: 20,
+  totalHtCents: 500000,
+};
+const FORMULES = {
+  formules: [
+    {
+      formule: "achat",
+      titre: "Formule A · Achat",
+      lignes: [LIGNE_F],
+      options: [],
+      totalHtCents: 500000,
+      totalTvaCents: 100000,
+      totalTtcCents: 600000,
+      phases: [
+        {
+          rang: 1,
+          libelle: "Acompte",
+          pourcentage: 30,
+          declencheur: "À la signature",
+          montantHtCents: 150000,
+        },
+      ],
+      abonnement: null,
+      maintenance: null,
+      hebergementMensuelHtCents: null,
+    },
+    {
+      formule: "abonnement",
+      titre: "Formule B · Mise en place + abonnement",
+      lignes: [{ ...LIGNE_F, totalHtCents: 200000, prixUnitaireHtCents: 200000 }],
+      options: [],
+      totalHtCents: 200000,
+      totalTvaCents: 40000,
+      totalTtcCents: 240000,
+      phases: [],
+      abonnement: {
+        mensuelCatalogueHtCents: 30000,
+        tauxTvaPercent: 20,
+        terme: "a_echoir",
+        modeAvance: "mensuel",
+        periodes: [
+          { mois: 12, remisePercent: 0, mensuelNetHtCents: 30000, prixPeriodeHtCents: 360000 },
+        ],
+        engagementMois: 12,
+        reconduction: "tacite",
+        preavisMois: 1,
+        indemniteSortieMaxHtCents: null,
+        indemniteSortieTauxPercent: 0,
+      },
+      maintenance: null,
+      hebergementMensuelHtCents: null,
+    },
+  ],
+  servicesTiers: [],
+  plafondAConfirmer: null,
+  garantieJours: 30,
+  textes: ["Prérequis : accès aux outils du client."],
+};
+const DATA_SOUS_TRAITANCE = {
+  numero: "AXI-DOC-2026-071",
+  sousTraitant: { nom: "Externe Formation SARL", siret: "98765432100011" },
+  missions: ["Animer les modules IA générative"],
+  dateDebut: "01/09/2026",
+  remuneration: "850 € HT par journée",
+  dateContrat: "02/08/2026",
+};
+const DATA_TRAVAIL = {
+  numero: "AXI-DOC-2026-080",
+  salarie: {
+    nom: "Durand",
+    prenom: "Camille",
+    dateNaissance: "01/02/1990",
+    lieuNaissance: "Lyon",
+    adresse: "3 rue des Lilas, 42000 Saint-Étienne",
+  },
+  type: "cdi",
+  dateEmbauche: "01/10/2026",
+  poste: "Formatrice",
+  classification: "Niveau 3",
+  dureeHebdoHeures: "35",
+  lieuTravail: "Saint-Étienne",
+  periodeEssai: null,
+  remunerationMensuelle: "2 400 €",
+  variableActive: false,
+  representant: "Camille Martin",
+  conventionCollective: "Organismes de formation",
+  conventionIdcc: "1516",
+  dateContrat: "20/09/2026",
+};
+const DATA_LETTRE = {
+  numero: "AXI-DOC-2026-070",
+  formateur: {
+    nomPrenom: "Paul Externe",
+    email: "paul@exemple.fr",
+    specialite: "IA générative",
+    statut: "sous_traitant",
+  },
+  objetMission: "Animation de formations.",
+  formations: [
+    {
+      intitule: "IA pour l'immobilier",
+      dateDebut: "31/07/2026",
+      dateFin: "31/07/2026",
+      lieuOuModalite: "Saint-Étienne / Présentiel",
+      dureeHeures: 7,
+    },
+  ],
+  tarifJourHt: 850,
+  dateMission: "02/08/2026",
+};
+const DATA_MANDAT = {
+  numero: "AXI-DOC-2026-120",
+  entreprise: {
+    raisonSociale: "Menuiserie Durand SARL",
+    siret: "98765432100011",
+    adresse: "10 avenue du Client, 42000 Saint-Étienne",
+    representant: "Claire Durand",
+    qualiteRepresentant: "Gérante",
+  },
+  opco: { nom: "OPCO EP" },
+  action: {
+    intitule: "IA générative pour l'artisanat",
+    dateDebut: "12/11/2026",
+    dateFin: "13/11/2026",
+    dureeHeures: 14,
+    stagiaires: ["Camille Durand"],
+    numeroConvention: "AXI-DOC-2026-119",
+  },
+  dateMandat: "04/10/2026",
+};
+const DATA_CAPTATION = {
+  numero: "AXI-DOC-2026-130",
+  personne: { nomPrenom: "Camille Durand", qualite: "Stagiaire" },
+  intitule: "IA pour l'immobilier",
+  dateAction: "15/09/2026",
+  lieu: "Saint-Étienne",
+  dateEdition: "10/09/2026",
+  finalites: ["Illustrer le site de l'organisme"],
+  supports: ["Site web"],
+  dureeAnnees: 2,
+};
+const DATA_CADRE = {
+  numero: "AXI-DOC-2026-900",
+  nature: "independant",
+  cocontractant: {
+    prenomNom: "Alex Durand",
+    siret: "98765432100017",
+    adresse: "5 chemin des Tilleuls, 69001 Lyon",
+    numeroDeclaration: null,
+    tvaIntracom: null,
+    email: "alex@exemple.fr",
+  },
+  mandatAutofacturation: true,
+  axion: { regionDeclaration: "Auvergne-Rhône-Alpes", adresseFormateurs: "formateurs@exemple.fr" },
+  dateContrat: "12/10/2026",
+};
+const DATA_LETTRE_V2 = {
+  numero: "AXI-DOC-2026-901",
+  partie: {
+    forme: "independant",
+    nomPrenom: "Alex Durand",
+    siret: "98765432100017",
+    nda: "84000000000",
+  },
+  contratCadre: { version: 3, signeLe: "12/10/2026" },
+  accordLe: "13/10/2026",
+  formation: {
+    intitule: "IA pour l'immobilier",
+    reference: "REF-1",
+    client: "SCI Invest Sun",
+    stagiaires: 2,
+  },
+  jours: [{ date: "04/11/2026", horaires: "09:00-17:00", demiJournees: 2, lieu: "Saint-Étienne" }],
+  journees: 1,
+  demiJournees: 0,
+  tarifJourneeHtCents: 85000,
+  honorairesHtCents: 85000,
+  deplacement: null,
+  totalHtCents: 85000,
+  mentionTva: "TVA non applicable",
+  echeancePaiement: "30 jours",
+  autofacturation: true,
+  financeurEnAttente: false,
+  mentionExpresse: null,
+  dateMission: "13/10/2026",
+};
+
+const P2 = ["client", "axionia"];
+const P3 = ["client", "financeur", "axionia"];
+const PF = ["formateur", "axionia"];
+// Pièces dont la version signée figure dans `AVANT_CORRECTION` (conv. v4 incluse) : non répétées ici.
+const GEL_CHARTE_V8: ReadonlyArray<
+  readonly [string, Record<string, unknown>, readonly string[], number | undefined, string]
+> = [
+  ["devis", DATA_DEVIS, P2, 1, "c45bef9b9718b8d694f23533cd312f267cbdde6247ef0b0c3e0e9a212672dc8b"],
+  ["devis", DATA_DEVIS, P2, 2, "6f74ae37ac03fa7291156e32cfc5a3877d0d1580d85888b03d15725b3a4eb0c5"],
+  ["devis", DATA_DEVIS, P2, 3, "6f74ae37ac03fa7291156e32cfc5a3877d0d1580d85888b03d15725b3a4eb0c5"],
+  [
+    "devis",
+    { ...DATA_DEVIS, formules: FORMULES },
+    P2,
+    3,
+    "7b3034a88cc8b09a11b55e108282767ef59925c8ef87a295d5c8197d99d91c64",
+  ],
+  [
+    "convention",
+    DATA_CONVENTION,
+    P2,
+    3,
+    "11fcdbf9d56f384aad6257daa0a78bb84dd1f87d770abe5532659fc40b7a1a70",
+  ],
+  [
+    "convention",
+    DATA_CONVENTION,
+    P2,
+    5,
+    "37bd68dbd4f920038afbabe497a85f072467c4e4911313829cb83b6c1180788c",
+  ],
+  [
+    "convention",
+    DATA_CONVENTION,
+    P2,
+    6,
+    "d36aa1f2d9b52fcc4b17ac7f4865a5302abb6fac9ff9bd95cda1ad81c9f5dd94",
+  ],
+  [
+    "convention_tripartite",
+    DATA_TRIPARTITE,
+    P3,
+    3,
+    "fc0c5d0be179d7ff05488d4c6562c97ca28f5cc96e91b3d7789196abf6d1de32",
+  ],
+  [
+    "convention_tripartite",
+    DATA_TRIPARTITE,
+    P3,
+    5,
+    "7407ec141571e9f5aa39898f219718ce5691a28350ef7a9cb2f814f293464404",
+  ],
+  [
+    "convention_tripartite",
+    DATA_TRIPARTITE,
+    P3,
+    6,
+    "61db0c0bc6c1cd88e46db405ca21096a4f896b8bc16e19c8d15fff7664089d27",
+  ],
+  [
+    "contrat",
+    DATA_CONTRAT,
+    ["beneficiaire", "axionia"],
+    2,
+    "20407cc51cd1a9b473148f08ffb877aebd66c05e1fc15e57cf753cb0ed51b21a",
+  ],
+  [
+    "releve_connexion",
+    DATA_RELEVE,
+    ["formateur", "responsable_pedagogique"],
+    2,
+    "115fcf2509b90377dd70727bb4d41d6b59430e15b928c52f9d52d00de7742006",
+  ],
+  [
+    "contrat_sous_traitance",
+    DATA_SOUS_TRAITANCE,
+    PF,
+    2,
+    "3b9b34dec2de1b42944a600cfe7f2b5ec72c034ada5b597cecfe6e32bcf437bf",
+  ],
+  [
+    "contrat_travail",
+    DATA_TRAVAIL,
+    ["salarie", "axionia"],
+    2,
+    "0ceaabadf5c7e155abd8a2e19cd1c935ca72d1063c09ecfad0cdb760e65bde50",
+  ],
+  [
+    "lettre_mission",
+    DATA_LETTRE,
+    PF,
+    1,
+    "cae4d1482739218415df9729e79d113fce537efa097296dfe5f252156827bf29",
+  ],
+  [
+    "mandat_opco",
+    DATA_MANDAT,
+    ["entreprise", "axionia"],
+    1,
+    "206a1290bfd6a0dada8439121ee0c178b8ed61aeefe532ccaf10a9a9d42bd05a",
+  ],
+  [
+    "autorisation_captation",
+    DATA_CAPTATION,
+    ["beneficiaire"],
+    1,
+    "d662e4c06aa34713e84606ad98173338a2388cd86b7b5a935559f59b36e0a749",
+  ],
+  [
+    "contrat_sous_traitance",
+    DATA_CADRE,
+    PF,
+    3,
+    "eb7dac000f1a6e0864c7a721db8bf71742e0b283e00cd966e8f8285d5e2813ca",
+  ],
+  [
+    "contrat_sous_traitance",
+    DATA_CADRE,
+    PF,
+    4,
+    "a71f8506b7e40f0548352ce339dab8e9d57552000b723f790ba9efcf4ea66f05",
+  ],
+  [
+    "lettre_mission",
+    DATA_LETTRE_V2,
+    PF,
+    2,
+    "7c8e2da73f71e5feb2674946a6f0fc901430ed70676f92ff1b5b23d46a40406e",
+  ],
+  [
+    "lettre_mission",
+    DATA_LETTRE_V2,
+    PF,
+    3,
+    "b3e5c91219bf12d4199c75ba2edfa1f640d136b724ca4bd3dc0b93089d85a283",
+  ],
+];
+
+describe("🔴 V8-P0 — gel de la charte : chaque type de pièce signable garde ses octets", () => {
+  for (const [type, data, parties, version, empreinte] of GEL_CHARTE_V8) {
+    const formules = "formules" in data ? " avec formules" : "";
+    it(`${type} v${version}${formules} — octet pour octet`, async () => {
+      const r = await exemplaire({ type, data, parties }, version);
+      expect(r.ok, r.ok ? "" : r.message).toBe(true);
+      if (!r.ok) return;
+      const sha = createHash("sha256").update(r.buffer).digest("hex");
+      expect(sha).toBe(empreinte);
+    }, 60_000);
+  }
 });
