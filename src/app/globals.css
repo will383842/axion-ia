@@ -139,8 +139,8 @@
   --color-paper: #ffffff; /* papier blanc pur — cards, sections de contraste */
   --color-sand: #e8e6dc; /* sable — sections "intermissions" */
   --color-sand-deep: #e8e6dc; /* sable saturé — bordures, badges */
-  --color-mocha: #2a2520; /* brun-aubergine — sections premium (PAS du noir) */
-  --color-mocha-soft: #3d362f; /* mocha plus doux — gradients */
+  --color-mocha: #141413; /* brun-aubergine — sections premium (PAS du noir) */
+  --color-mocha-soft: #141413; /* mocha plus doux — gradients */
   /* Encre — surface la plus sombre de la charte, réservée aux pages
      d'atterrissage publicitaires (cf. `.bg-vsl`). Un visiteur qui arrive d'un
      fil Facebook lumineux doit sentir une rupture immédiate ; `--color-mocha`
@@ -156,25 +156,25 @@
      connectés). 6,64:1 sur --color-mocha — au-delà du seuil AA 4,5. Ne pas
      l'obtenir par opacité sur --color-mocha-fg : une opacité ne se calcule pas,
      donc elle ne se vérifie pas, et le gate de contraste ne la voit pas. */
-  --color-mocha-fg-muted: #b5aa9c;
+  --color-mocha-fg-muted: #b0aea5;
   /* Terracotta ÉCLAIRCI pour surface sombre — accent des espaces connectés.
      🔴 Le terracotta de marque (#b23f16) donne 2,61:1 sur --color-mocha : très
      en dessous d'AA. Il est calibré pour servir de FOND sous du texte ivoire
      (5,24:1), pas de texte sur fond sombre. Même teinte (15,8°), même
      saturation, luminosité portée à 65 % → 5,82:1 sur --color-mocha et 4,56:1
      sur --color-mocha-soft. Mesuré, pas estimé. */
-  --color-terracotta-on-mocha: #eb8560;
+  --color-terracotta-on-mocha: #d97757;
 
   /* ----- Foreground (texte) ----- */
   --color-fg: #141413; /* anthracite-brun — texte principal (PAS du noir) */
-  --color-fg-soft: #524b41; /* gris-brun moyen — texte secondaire */
-  --color-fg-muted: #5a4f44; /* gris-sable durci — texte tertiaire, captions (WCAG AA strict 5.0:1 sur paper #fff + 4.8:1 sur bg ivoire ; Sprint A11y 2026-05-17 anciennement #6b6155 = 4.4:1 borderline) */
+  --color-fg-soft: #5e5d59; /* gris-brun moyen — texte secondaire */
+  --color-fg-muted: #5e5d59; /* gris-sable durci — texte tertiaire, captions (WCAG AA strict 5.0:1 sur paper #fff + 4.8:1 sur bg ivoire ; Sprint A11y 2026-05-17 anciennement #6b6155 = 4.4:1 borderline) */
 
   /* ----- Accent identitaire : bleu profond éditorial + chaleur ----- */
-  --color-primary: #1a4dd9; /* bleu dense éditorial v3 (Editorial Premium Light, ADR 0002) */
-  --color-primary-hover: #0f3aae;
+  --color-primary: #b23f16; /* bleu dense éditorial v3 (Editorial Premium Light, ADR 0002) */
+  --color-primary-hover: #8f3412;
   --color-primary-fg: #ffffff;
-  --color-primary-soft: #e8efff; /* halo bleu très doux pour fonds d'icônes */
+  --color-primary-soft: #e8e6dc; /* halo bleu très doux pour fonds d'icônes */
 
   /* ----- Accent éditorial : terracotta brique ----- */
   --color-terracotta: #b23f16; /* brique chaude — accents éditoriaux, italiques.
@@ -182,50 +182,50 @@
      4,5), et 4,09:1 dans le header qui l'applique à 95 % d'opacité (bg-terracotta/95
      → mélange #c55326). 45 nœuds en échec sur 5 pages. #b23f16 : 5,24 en plein,
      4,82 à 95 %. Miroir obligatoire dans brand-tokens.ts (test de parité). */
-  --color-terracotta-soft: #f5e3d8; /* halo terracotta doux */
-  --color-terracotta-deep: #8c3010; /* terracotta foncé — hover */
+  --color-terracotta-soft: #e8e6dc; /* halo terracotta doux */
+  --color-terracotta-deep: #8f3412; /* terracotta foncé — hover */
 
   /* ----- Accent doux : vert sauge (proof/succès) ----- */
   --color-sage: #5e7050; /* assombri pour WCAG AA sur paper (5.0:1) */
-  --color-sage-soft: #e6ebe2;
+  --color-sage-soft: #e8e6dc;
 
   /* ----- Accent chaud : ocre / or — 5e ton palette services (« pep par activité ») -----
      Complète terracotta/bleu/sauge pour donner à chacun des 5 services SA couleur.
      Ancré ivoire chaud (charte Editorial Premium Light). Ne PAS réutiliser hors
      du système de cartes services (services-visual.ts) sans arbitrage Will. */
-  --color-ochre: #b06a12; /* or brûlé — accent 1-to-1 */
-  --color-ochre-soft: #f6e7cf; /* halo ocre doux (fond d'icône) */
-  --color-ochre-deep: #7d4a0a; /* ocre foncé — texte/hover (WCAG ~8:1 sur paper) */
+  --color-ochre: #8f3412; /* or brûlé — accent 1-to-1 */
+  --color-ochre-soft: #e8e6dc; /* halo ocre doux (fond d'icône) */
+  --color-ochre-deep: #8f3412; /* ocre foncé — texte/hover (WCAG ~8:1 sur paper) */
 
   /* ----- Accent profond : prune — 5e ton palette services ----- */
-  --color-plum: #7c4a63; /* prune sourde — accent sites web & SaaS */
-  --color-plum-soft: #efe2ea; /* halo prune doux (fond d'icône) */
-  --color-plum-deep: #5a3348; /* prune foncée — texte/hover (WCAG ~9:1 sur paper) */
+  --color-plum: #b23f16; /* prune sourde — accent sites web & SaaS */
+  --color-plum-soft: #e8e6dc; /* halo prune doux (fond d'icône) */
+  --color-plum-deep: #141413; /* prune foncée — texte/hover (WCAG ~9:1 sur paper) */
 
   /* ----- Borders & dividers ----- */
   --color-border: #e8e6dc; /* sable doux pour bordures */
   --color-border-strong: #b0aea5; /* sable saturé pour focus rings, dividers marqués */
   --color-border-field: #8a7f6c; /* contour des champs de saisie — 3,9:1 sur paper (WCAG 1.4.11 ; V2-N-13) */
-  --color-border-on-mocha: #4a4239;
+  --color-border-on-mocha: #5e5d59;
 
   /* ----- Compatibilité v1/v2 (ne pas supprimer — composants existants) ----- */
-  --color-primary-400: #4a73e0;
-  --color-primary-300: #1a4dd9;
-  --color-accent-purple: #7a3dff;
-  --color-accent-pink: #ed52cb;
+  --color-primary-400: #b23f16;
+  --color-primary-300: #b23f16;
+  --color-accent-purple: #b23f16;
+  --color-accent-pink: #8f3412;
   --color-accent-green: #5e7050;
-  --color-accent-orange: #ff6b00;
-  --color-accent-yellow: #ffae13;
+  --color-accent-orange: #d97757;
+  --color-accent-yellow: #e8e6dc;
   --color-accent-red: #b8341c;
   --color-gray-800: #141413;
-  --color-gray-700: #524b41;
-  --color-gray-600: #6b6155;
+  --color-gray-700: #5e5d59;
+  --color-gray-600: #5e5d59;
   --color-gray-300: #b0aea5;
   --color-border-hover: #b0aea5;
   --color-success: #5e7050;
-  --color-warning: #c24a1b;
+  --color-warning: #8f3412;
   --color-error: #b8341c;
-  --color-info: #1a4dd9;
+  --color-info: #5e5d59;
 
   /* ----- Typography v3 ----- */
   --font-sans:
@@ -338,7 +338,7 @@
      répété sur ~11 fichiers. La valeur RGB est différente de
      --color-terracotta (#c24a1b → rgb(194,74,27)) — c'est volontaire : c'est
      une teinte terracotta plus claire pour le glow. */
-  --shadow-cta-terracotta: 0 8px 24px -8px rgba(205, 107, 72, 0.6);
+  --shadow-cta-terracotta: 0 1px 2px rgba(20, 20, 19, 0.08), 0 4px 12px rgba(178, 63, 22, 0.18);
 
   /* ----- Motion ----- */
   /* `--ease-out-editorial` : courbe de sortie éditoriale v3. Renommée
