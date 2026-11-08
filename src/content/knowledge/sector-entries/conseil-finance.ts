@@ -159,7 +159,7 @@ Le secteur bancaire français est soumis à une superposition de cadres régleme
 - **Règlement DORA** (applicable depuis janvier 2025) : gestion du risque ICT, résilience opérationnelle numérique, obligations sur les prestataires tiers critiques (dont les fournisseurs de modèles IA cloud)
 - **Guidelines EBA sur le risque ICT** (EBA/GL/2019/04) : documentation des systèmes, tests de résilience, gouvernance des modèles
 - **Supervision ACPR** : l'ACPR intègre dans ses inspections thématiques la gouvernance des algorithmes de scoring et de détection de fraude depuis 2021
-- **AI Act européen** (applicable par paliers de 2024 à 2028) : scoring crédit aux particuliers classé haut risque (annexe III) → exigences de documentation, tests de robustesse et de non-discrimination, supervision humaine ; échéance reportée au 2 décembre 2027 par le règlement (UE) 2026/1744
+- **AI Act européen** (applicable par paliers de 2025 à 2028) : scoring crédit aux particuliers classé haut risque (annexe III) → exigences de documentation, tests de robustesse et de non-discrimination, supervision humaine ; échéance reportée au 2 décembre 2027 par le règlement (UE) 2026/1744
 
 ---
 
@@ -415,7 +415,7 @@ En pratique, les deux approches sont souvent combinées : l'audit de maturité f
 
 **R :** Le ROI d'un audit IA est indirect mais documenté sur trois axes :
 
-1. **Évitement de coûts réglementaires** : les sanctions AI Act pour les systèmes à haut risque non conformes peuvent atteindre **15 millions d'euros ou 3 % du chiffre d'affaires mondial** (le montant le plus élevé ; le plus bas pour les PME) selon l'article 99 de l'AI Act. Un audit préventif coûte en général 1 à 5 % de ce risque potentiel.
+1. **Évitement de coûts réglementaires** : les sanctions AI Act pour les systèmes à haut risque non conformes peuvent atteindre **15 millions d'euros ou 3 % du chiffre d'affaires mondial** (le montant le plus élevé ; le plus bas pour les PME) selon l'article 99 de l'AI Act. Un audit préventif coûte en général bien moins que ce risque potentiel.
 
 2. **Optimisation des dépenses IA** : la majorité des entreprises auditées découvrent qu'elles dépensent 20 à 40 % de leur budget IA sur des outils sous-utilisés ou redondants. Un audit permet une rationalisation rapide.
 

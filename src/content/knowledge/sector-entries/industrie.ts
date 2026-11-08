@@ -55,7 +55,7 @@ Pour les industriels exportant vers les États-Unis ou soumis à inspection FDA,
 L'Agence nationale de sécurité du médicament (ANSM) et l'Agence européenne des médicaments (EMA) ont publié des réflexions communes sur l'utilisation de l'IA dans le cycle de vie du médicament (EMA/CHMP/786999/2023). Les systèmes IA qualifiés de **Software as a Medical Device (SaMD)** tombent sous la réglementation MDR 2017/745 ou IVDR 2017/746 lorsqu'ils ont un usage diagnostique ou thérapeutique.
 
 ### AI Act européen (haut risque : échéances reportées par le règlement (UE) 2026/1744)
-Les systèmes IA utilisés dans des dispositifs médicaux de classe IIa/IIb/III ou dans la gestion de risques pharmaceutiques critiques peuvent être classés **haut risque** au sens de l'AI Act (Règlement UE 2024/1689). Pour l'IA intégrée dans un produit réglementé (annexe I, dont les dispositifs médicaux), l'application est fixée au 2 août 2028 selon le règlement (UE) 2026/1744. Cela implique : documentation technique renforcée, alignement sur les normes harmonisées (EN ISO 13485, IEC 62304), enregistrement dans la base EUID.
+Les systèmes IA utilisés dans des dispositifs médicaux de classe IIa/IIb/III ou dans la gestion de risques pharmaceutiques critiques peuvent être classés **haut risque** au sens de l'AI Act (Règlement UE 2024/1689). Pour l'IA intégrée dans un produit réglementé (annexe I, dont les dispositifs médicaux), l'application est fixée au 2 août 2028 selon le règlement (UE) 2026/1744. Cela implique : documentation technique renforcée, alignement sur les normes harmonisées (EN ISO 13485, IEC 62304).
 
 ---
 

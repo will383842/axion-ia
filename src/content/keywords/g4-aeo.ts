@@ -995,10 +995,10 @@ export const KW_AEO_G4: KeywordSeed[] = [
       h1: "Obligations AI Act 2026 pour les PME : ce qui s'applique depuis le 2 août 2026",
       metaTitle: "Obligations AI Act 2026 PME | Axion-IA",
       metaDescription:
-        "Depuis le 2 août 2026 : une PME qui utilise une IA doit dire qu'on échange avec une IA et signaler certains contenus générés (art. 50).",
+        "Depuis le 2 août 2026 (art. 50), selon votre rôle : informer de l'interaction avec une IA, signaler hypertrucages et certains textes générés.",
       h2Variants: [
         "Ce qui s'applique aux PME depuis le 2 août 2026",
-        "Les points à anticiper maintenant : art. 4, art. 5, art. 50",
+        "Déjà applicables : art. 4, art. 5, art. 50",
         "Sanctions et contrôles AI Act : ce que risque une PME",
       ],
     },
@@ -1172,11 +1172,11 @@ export const KW_AEO_G4: KeywordSeed[] = [
       h1: "Calendrier AI Act 2026 : les dates clés pour les PME",
       metaTitle: "AI Act 2026 : dates clés PME | Axion-IA",
       metaDescription:
-        "Dates AI Act : 2 février 2025 (pratiques IA interdites), 2 août 2025 (gouvernance), 2 août 2026 (application générale dont art. 50), 2 décembre 2027 (haut risque, après report).",
+        "Dates AI Act : 2/02/2025 (interdictions, art. 4), 2/08/2025 (IA à usage général), 2/08/2026 (art. 50), 2/12/2027 (haut risque annexe III, reporté).",
       h2Variants: [
-        "Chronologie AI Act 2024-2027",
+        "Chronologie AI Act 2024-2028",
         "Ce qui s'applique depuis le 2 août 2026",
-        "Actions à mener avant juillet 2026",
+        "Actions à mener dès maintenant",
       ],
     },
     urlCible: "/fr/faq/calendrier-ai-act-pme",

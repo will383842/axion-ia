@@ -270,7 +270,7 @@ Les établissements ESR publics sont soumis aux règles de la commande publique 
 
 **R :** Le règlement UE 2024/1689 (AI Act) a été publié au Journal Officiel de l'Union Européenne le 12 juillet 2024. Il est entré en application de manière progressive :
 
-- **2 février 2025** : interdiction des pratiques IA inacceptables (manipulation subliminale, scoring social par les pouvoirs publics, exploitation des vulnérabilités).
+- **2 février 2025** : interdiction des pratiques IA inacceptables (manipulation subliminale, notation sociale, exploitation des vulnérabilités).
 - **2 août 2025** : obligations applicables aux fournisseurs de modèles d'IA à usage général (GPAI — General Purpose AI), dont les exigences de transparence de l'article 53 (documentation technique, politique de droit d'auteur).
 - **2 août 2026** : application générale du règlement, dont la transparence de l'article 50 (le marquage technique des contenus générés, art. 50 §2, a un délai jusqu'au 2 décembre 2026 pour les systèmes déjà sur le marché).
 - **2 décembre 2027** : obligations haut risque de l'Annexe III (RH, crédit, éducation, infrastructure critique, etc.), initialement prévues en août 2026, reportées par le règlement (UE) 2026/1744 (« omnibus numérique IA », en vigueur le 27 juillet 2026).
@@ -292,7 +292,7 @@ Exemples de catégories à haut risque directement pertinentes pour les entrepri
 - **Gestion d'infrastructures critiques** (eau, énergie, transports).
 - **Application de la loi** et **administration de la justice** (secteur public).
 
-Un système IA interne d'aide à la décision RH (tri de CV, scoring d'entretien) entre dans cette catégorie pour les entreprises de toute taille. L'obligation s'applique au **déployeur** (l'entreprise qui utilise) autant qu'au **fournisseur** (l'éditeur qui produit le système).
+Un système IA interne d'aide à la décision RH (tri de CV, scoring d'entretien) entre dans cette catégorie pour les entreprises de toute taille. Le **fournisseur** (l'éditeur qui produit le système) et le **déployeur** (l'entreprise qui l'utilise) ont chacun des obligations distinctes.
 
 ---
 
@@ -304,7 +304,7 @@ Un système IA interne d'aide à la décision RH (tri de CV, scoring d'entretien
 
 2. **Systèmes IA générant du contenu synthétique** (texte, audio, image, vidéo — deepfakes) : le contenu généré doit être marqué de manière machine-lisible (watermarking ou métadonnées C2PA) permettant sa détection comme contenu synthétique.
 
-Pour les entreprises qui déploient un chatbot IA en contact client ou qui utilisent des LLM pour générer des contenus publiés sous leur nom, ces obligations s'appliquent depuis le 2 août 2026 (marquage technique des contenus générés : délai jusqu'au 2 décembre 2026 pour les systèmes déjà sur le marché). Un manquement peut être sanctionné selon l'article 99.
+Pour les entreprises qui déploient un chatbot IA en contact client ou qui utilisent des LLM pour générer des contenus publiés sous leur nom, l'utilisateur doit signaler les hypertrucages et certains textes d'intérêt public générés (art. 50 §4) depuis le 2 août 2026 ; le marquage technique des contenus relève du fournisseur de l'outil (délai jusqu'au 2 décembre 2026 pour les systèmes déjà sur le marché). Un manquement peut être sanctionné selon l'article 99.
 
 ---
 
@@ -313,7 +313,7 @@ Pour les entreprises qui déploient un chatbot IA en contact client ou qui utili
 **R :** Le régime de sanctions de l'AI Act (article 99) est le suivant :
 
 - **Violation des pratiques interdites** (art. 5) : jusqu'à **35 millions d'euros** ou 7 % du chiffre d'affaires mondial annuel (le montant le plus élevé).
-- **Non-conformité des systèmes à haut risque** ou obligations GPAI : jusqu'à **15 millions d'euros** ou 3 % du CA mondial.
+- **Non-respect des obligations des systèmes à haut risque** : jusqu'à **15 millions d'euros** ou 3 % du CA mondial (art. 99). Pour les modèles d'IA à usage général (GPAI), les amendes relèvent de l'article 101 et sont prononcées par la Commission.
 - **Fourniture d'informations incorrectes** aux autorités : jusqu'à **7,5 millions d'euros** ou 1 % du CA mondial.
 
 Pour les PME, le plafond applicable est le montant le plus bas des deux (montant fixe ou pourcentage). Ces sanctions sont cumulables avec celles du RGPD (jusqu'à 4 % du CA mondial) lorsque des données personnelles sont impliquées.
