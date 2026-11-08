@@ -101,11 +101,11 @@ export default async function InterventionDocumentsPage({
                             </span>
                           ))}
                           {slot.generatedOnly ? (
-                            <span className="bg-primary-soft text-primary rounded px-1.5 py-0.5">
+                            <span className="rounded bg-[color:var(--color-admin-accent-track)] px-1.5 py-0.5 text-[color:var(--color-admin-accent-strong)]">
                               Généré par le Formation Engine
                             </span>
                           ) : slot.qualiopiDocType ? (
-                            <span className="bg-primary-soft text-primary rounded px-1.5 py-0.5">
+                            <span className="rounded bg-[color:var(--color-admin-accent-track)] px-1.5 py-0.5 text-[color:var(--color-admin-accent-strong)]">
                               Aussi généré (Qualiopi)
                             </span>
                           ) : null}

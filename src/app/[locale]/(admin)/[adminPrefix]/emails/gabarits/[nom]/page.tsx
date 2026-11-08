@@ -133,7 +133,7 @@ export default async function ApercuGabaritPage({
         actions={
           <Link
             href={`/fr/${adminPrefix}/emails/gabarits`}
-            className="text-primary text-sm hover:underline"
+            className="text-sm text-[color:var(--color-admin-accent-strong)] hover:underline"
           >
             ← Tous les gabarits
           </Link>
@@ -193,7 +193,7 @@ export default async function ApercuGabaritPage({
                   <li>
                     <Link
                       href={`/fr/${adminPrefix}/emails/gabarits/${nom}`}
-                      className="text-primary hover:underline"
+                      className="text-[color:var(--color-admin-accent-strong)] hover:underline"
                       aria-current={variante === null ? "page" : undefined}
                     >
                       Texte de base
@@ -203,7 +203,7 @@ export default async function ApercuGabaritPage({
                     <li key={v}>
                       <Link
                         href={`/fr/${adminPrefix}/emails/gabarits/${nom}?variante=${v}`}
-                        className="text-primary hover:underline"
+                        className="text-[color:var(--color-admin-accent-strong)] hover:underline"
                         aria-current={variante === v ? "page" : undefined}
                       >
                         Variante « {v} »
