@@ -13,15 +13,7 @@ import { CalendlyInlineWidget } from "@/components/booking/CalendlyInlineWidget"
 import { reservationDirecteActive } from "@/server/calendly/formulaire-reservation";
 import { CalendlyEventCapture } from "@/components/booking/CalendlyEventCapture";
 import { ArriveeReservationMesure } from "@/components/lp/ArriveeReservationMesure";
-import {
-  ArrowLeft,
-  ArrowRight,
-  Clock,
-  Shield,
-  CheckCircle,
-  Calendar,
-  Target,
-} from "lucide-react";
+import { ArrowLeft, ArrowRight, Clock, Shield, CheckCircle, Calendar, Target } from "lucide-react";
 import {
   lireChoixRendezVous,
   lireDepuis,
@@ -36,6 +28,7 @@ import {
   PARAM_DEPUIS,
   PARAM_RDV,
   type ChoixRendezVous,
+  type ChoixPublic,
   type ChoixResolu,
   type SuiviArrivee,
 } from "@/server/calendly/choix-rendez-vous";
@@ -87,13 +80,17 @@ interface Props {
 }
 
 /**
- * DEUX rendez-vous au choix (chantier « Types de rendez-vous », L2, 2026-10-04).
+ * UN SEUL rendez-vous gratuit de 45 minutes (décision n° 12, 2026-11-08 ; avant :
+ * deux rendez-vous au choix, chantier « Types de rendez-vous », L2, 2026-10-04).
  *
- * `?rdv=diagnostic|projet` ouvre directement le bon calendrier ; sans paramètre,
- * la page montre le choix. Les URL Calendly ne sont plus lues ici : elles
+ * `?rdv=projet` ouvre directement le calendrier ; sans paramètre, la page montre
+ * la carte unique. Un ancien lien `?rdv=diagnostic` (ou `/appel/diagnostic`) est
+ * rabattu sur `projet` à l'AFFICHAGE, `depuis` et les UTM conservés ; le report
+ * et l'annulation d'un diagnostic déjà réservé ne passent pas par cette page
+ * (ils lisent le type d'origine du rendez-vous). Les URL Calendly ne sont plus lues ici : elles
  * passent TOUTES par `server/calendly/choix-rendez-vous.ts`, qui porte aussi le
  * repli silencieux du diagnostic sur le type appel quand il est introuvable.
- * `?depuis=<emplacement>` est recopié dans `utm_content` (`diagnostic:accueil-hero`).
+ * `?depuis=<emplacement>` est recopié dans `utm_content` (`projet:accueil-hero`).
  *
  * Le choix est rendu CÔTÉ SERVEUR, en liens simples : aucun JavaScript ajouté,
  * aucun saut de mise en page (CLS 0).
@@ -134,8 +131,8 @@ export async function generateMetadata({ params, searchParams }: Props): Promise
       // retirée en même temps que ce raccourcissement — le cliquet exige que le
       // chiffre reste exact, il rougit donc si l'un bouge sans l'autre.
       description: isFr
-        ? "Un rendez-vous gratuit de 45 minutes en visio avec Williams : on fait le point sur votre projet IA, sans engagement."
-        : "Un rendez-vous gratuit de 45 minutes en visio avec Williams : on fait le point sur votre projet IA, sans engagement.",
+        ? "Un rendez-vous gratuit de 45 minutes en visio avec l’équipe d’Axion-IA : on fait le point sur votre projet IA, sans engagement."
+        : "Un rendez-vous gratuit de 45 minutes en visio avec l’équipe d’Axion-IA : on fait le point sur votre projet IA, sans engagement.",
       alternates: { fr: "/appel", en: "/book-a-call" },
       // Image de partage dédiée (2026-09-27) : ce lien est épinglé dans la
       // « Sélection » du profil LinkedIn, où la vignette ne fait que ~190 px de
@@ -156,7 +153,9 @@ export default async function AppelPage({ params, searchParams }: Props) {
   setRequestLocale(locale);
   const isFr = locale === "fr";
 
-  const choix = lireChoixRendezVous(sp[PARAM_RDV]);
+  const choixBrut = lireChoixRendezVous(sp[PARAM_RDV]);
+  // Un seul rendez-vous public : l'ancien diagnostic s'affiche comme lui.
+  const choix = choixBrut === "diagnostic" ? "projet" : choixBrut;
   const depuis = lireDepuis(sp[PARAM_DEPUIS]);
   // Les UTM d'ARRIVÉE (L5a) : lus une fois, bornés, puis recopiés par chaque
   // lien du parcours — sans quoi le premier clic effaçait l'attribution.
@@ -219,8 +218,8 @@ export default async function AppelPage({ params, searchParams }: Props) {
     path: "/appel",
     name: isFr ? "Rendez-vous projet IA · Axion-IA" : "Rendez-vous projet IA · Axion-IA",
     description: isFr
-      ? "Un rendez-vous gratuit de 45 minutes en visioconférence Google Meet avec Williams, d’Axion-IA : on fait le point sur votre besoin — audit, formation, intégration et automatisation, coaching. Sans engagement."
-      : "Un rendez-vous gratuit de 45 minutes en visioconférence Google Meet avec Williams, d’Axion-IA : on fait le point sur votre besoin — audit, formation, intégration et automatisation, coaching. Sans engagement.",
+      ? "Un rendez-vous gratuit de 45 minutes en visioconférence Google Meet avec l’équipe d’Axion-IA : on fait le point sur votre besoin — audit, formation, intégration et automatisation, coaching. Sans engagement."
+      : "Un rendez-vous gratuit de 45 minutes en visioconférence Google Meet avec l’équipe d’Axion-IA : on fait le point sur votre besoin — audit, formation, intégration et automatisation, coaching. Sans engagement.",
   });
 
   const breadcrumbJsonLd = {
@@ -276,7 +275,7 @@ export default async function AppelPage({ params, searchParams }: Props) {
             trackingContext={trackingContext}
           />
         ) : (
-          <ChoixDuRendezVous depuis={depuis} suivi={suivi} locale={locale} />
+          <ChoixDuRendezVous resolus={resolus} depuis={depuis} suivi={suivi} locale={locale} />
         )}
 
         {/* CTA fallback bas de page — pour les visiteurs qui préfèrent un autre
@@ -337,6 +336,12 @@ function classeDepuis(depuis: string | null): string {
   return depuis ? `plausible-event-depuis=${depuis}` : "";
 }
 
+/** Les choix que l'écran d'entrée PROPOSE : un seul (le diagnostic est rabattu sur lui). */
+const CHOIX_AFFICHES: readonly ChoixPublic[] = ["projet"];
+
+/** La durée annoncée si Calendly ne la donne pas : c'est la promesse du site. */
+const DUREE_REPLI_MINUTES = 45;
+
 /** « 45 min », lue chez Calendly ; rien si la durée est inconnue. */
 function libelleDuree(resolu: ChoixResolu): string | null {
   return resolu.dureeMinutes ? `${resolu.dureeMinutes} min` : null;
@@ -352,14 +357,17 @@ function libelleDuree(resolu: ChoixResolu): string | null {
  * site ; l'écran du calendrier lit toujours la durée réelle chez Calendly.
  */
 function ChoixDuRendezVous({
+  resolus,
   depuis,
   suivi,
   locale,
 }: {
+  resolus: Readonly<Record<ChoixPublic, ChoixResolu>>;
   depuis: string | null;
   suivi: SuiviArrivee;
   locale: string;
 }) {
+  const minutes = resolus.projet.dureeMinutes ?? DUREE_REPLI_MINUTES;
   return (
     <section aria-labelledby="appel-hero-h1" className="bg-canvas pt-6 pb-12 sm:pt-10 sm:pb-16">
       <Container>
@@ -389,10 +397,11 @@ function ChoixDuRendezVous({
               className="text-fg mt-4 text-2xl font-semibold tracking-tight"
               style={{ fontFamily: "var(--font-serif)" }}
             >
-              Rendez-vous gratuit de 45 minutes
+              Rendez-vous gratuit de {minutes} minutes
             </h2>
             <p className="text-terracotta-deep mt-1 text-sm font-semibold">
-              Gratuit · 45 minutes · Sans engagement
+              Gratuit · {libelleDuree(resolus.projet) ?? `${DUREE_REPLI_MINUTES} min`} · Sans
+              engagement
             </p>
             <p className="text-fg mt-4 text-base font-medium">
               Vous savez ce que vous voulez, ou pas encore : on fait le point ensemble.
@@ -509,7 +518,7 @@ function Calendrier({
             {/* Lien DISCRET pour changer d'avis : le choix n'enferme pas. Il ramène
                 à l'écran du choix PUBLIC — donc il n'existe pas pour un rendez-vous
                 « En privé », qui n'y figure pas et que le visiteur n'a pas « choisi ». */}
-            {config.public ? (
+            {config.public && CHOIX_AFFICHES.length > 1 ? (
               <a
                 href={retourAuChoix}
                 data-cta="appel_changer_de_rendez_vous"

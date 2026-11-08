@@ -837,8 +837,8 @@ export default async function StackIaPage({ params }: Props) {
         }
         cta={
           <>
-            <Cta href="/audit/tpe-1-jour" size="lg">
-              {isFr ? "Réserver l'audit flash" : "Book the flash audit"}
+            <Cta href="/appel" size="lg">
+              {isFr ? "Réserver mon rendez-vous gratuit" : "Book my free meeting"}
               <ArrowRight aria-hidden="true" className="h-4 w-4" />
             </Cta>
             <Link

@@ -81,7 +81,7 @@ describe("🔑 /appel : le choix public ne montre que le rendez-vous public de 4
   it("« Changer de rendez-vous » n'existe pas pour un rendez-vous privé", () => {
     const i = page.indexOf('data-cta="appel_changer_de_rendez_vous"');
     expect(i).toBeGreaterThan(-1);
-    expect(page.slice(Math.max(0, i - 400), i)).toContain("config.public ?");
+    expect(page.slice(Math.max(0, i - 400), i)).toContain("config.public &&");
   });
 
   it("un rendez-vous privé n'a ni description structurée ni référencement", () => {

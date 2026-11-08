@@ -50,6 +50,8 @@ vi.mock("@/server/qualiopi/formateurs-independants/identite-reservation", () => 
   identiteDuJetonReservation: vi.fn(async () => null),
 }));
 
+import { resoudreEventTypePourReservation } from "@/server/calendly/availability";
+
 import ReserverPage from "../page";
 
 afterEach(cleanup);
@@ -74,6 +76,14 @@ describe("l'en-tête de l'étape 2", () => {
       "Confirmer ma visio",
     );
     expect(container.textContent).not.toContain("Plus qu'une minute et c'est réservé");
+  });
+
+  it("rdv=tour, durée inconnue de Calendly : repli sur 45 minutes", async () => {
+    vi.mocked(resoudreEventTypePourReservation).mockResolvedValueOnce({
+      questions: [],
+    } as never);
+    const { container } = await rendre("tour");
+    expect(container.querySelector("h1")?.textContent).toBe("Votre visio de 45 minutes");
   });
 
   it("rdv=projet : en-tête et bouton historiques, inchangés", async () => {

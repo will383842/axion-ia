@@ -61,7 +61,8 @@ describe("🔑 /appel montre le choix, puis le bon calendrier", () => {
     expect(page).not.toContain("Diagnostic IA");
     expect(page).not.toContain("Réserver mon diagnostic");
     expect(page.match(/data-cta="appel_choix_/g)).toHaveLength(1);
-    expect(page).toContain("Rendez-vous gratuit de 45 minutes");
+    expect(page).toContain("Rendez-vous gratuit de {minutes} minutes");
+    expect(page).toContain("DUREE_REPLI_MINUTES = 45");
     // La carte unique porte le bouton PLEIN (couleur de marque).
     const bouton = page.slice(page.lastIndexOf("<a", projet), projet + 400);
     expect(bouton).toContain("bg-terracotta");

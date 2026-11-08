@@ -114,7 +114,9 @@ describe("🔑 la consigne du compte rendu visio dit UN seul rendez-vous gratuit
   const consigne = lire("src/server/visio/consignes/commun.md");
 
   it("45 minutes, un seul : ni « Diagnostic IA » de 30 minutes, ni deux rendez-vous", () => {
-    expect(consigne).toMatch(/rendez-vous gratuit de 45 minutes/);
+    expect(consigne).toContain(
+      "le plus souvent le rendez-vous gratuit de 45 minutes réservé sur le site",
+    );
     expect(consigne).not.toMatch(/\b(15|20|30) minutes/);
     expect(consigne).not.toMatch(/l'un des deux rendez-vous/);
     expect(consigne).not.toMatch(/Diagnostic IA[^.]*30 minutes/);

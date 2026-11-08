@@ -63,7 +63,7 @@ export function VueTour({
     <>
       <AdminPageHeader
         title="Tunnel Tour France IA"
-        description="De la landing /tour-france-ia à la visio de 30 minutes tenue."
+        description="De la landing /tour-france-ia à la visio de 45 minutes tenue."
         actions={
           <div className="flex flex-wrap gap-[var(--space-admin-2)]">
             <Link href={`${base}/villes`} className="admin-button-ghost">
@@ -112,7 +112,7 @@ export function VueTour({
           value={rdv === null ? "non mesuré" : rdv.pris.toLocaleString("fr-FR")}
           meta={
             tableau.transformation === null
-              ? "Visio de 30 minutes, type « Tour France IA »"
+              ? "Visio de 45 minutes, type « Tour France IA »"
               : `${tableau.transformation} % des clics « Participer »`
           }
           tone={rdv && rdv.pris > 0 ? "success" : "default"}
