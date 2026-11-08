@@ -398,7 +398,12 @@ describe("🔴 numéro du DEVIS sur l'exemplaire d'un devis signé", () => {
     cheminNominal();
     await transmettreExemplaireSigne("doc-039");
     expect(devisFindFirstMock).not.toHaveBeenCalled();
-    const [, , , payload] = enqueueMock.mock.calls[0] as [string, string, unknown, Record<string, unknown>];
+    const [, , , payload] = enqueueMock.mock.calls[0] as [
+      string,
+      string,
+      unknown,
+      Record<string, unknown>,
+    ];
     expect(payload).not.toHaveProperty("numeroDevis");
   });
 
@@ -408,7 +413,12 @@ describe("🔴 numéro du DEVIS sur l'exemplaire d'un devis signé", () => {
     devisFindFirstMock.mockRejectedValue(new Error("db"));
     const res = await transmettreExemplaireSigne("doc-039");
     expect(res.ok).toBe(true);
-    const [, , , payload] = enqueueMock.mock.calls[0] as [string, string, unknown, Record<string, unknown>];
+    const [, , , payload] = enqueueMock.mock.calls[0] as [
+      string,
+      string,
+      unknown,
+      Record<string, unknown>,
+    ];
     expect(payload).not.toHaveProperty("numeroDevis");
   });
 });

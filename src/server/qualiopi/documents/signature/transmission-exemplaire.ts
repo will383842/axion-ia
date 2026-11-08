@@ -135,9 +135,10 @@ function champEmpreinte(empreintePiece: string | null | undefined): { empreinte?
  * `{}` pour toute autre pièce, ou si la lecture échoue : le champ du payload est
  * facultatif, l'e-mail retombe sur le n° de pièce. Ne lève jamais.
  */
-async function champNumeroDevis(
-  piece: { id: string; type: string },
-): Promise<{ numeroDevis?: string }> {
+async function champNumeroDevis(piece: {
+  id: string;
+  type: string;
+}): Promise<{ numeroDevis?: string }> {
   if (piece.type !== "devis") return {};
   try {
     const d = await prisma.devis.findFirst({
