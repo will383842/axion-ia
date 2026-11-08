@@ -104,9 +104,25 @@ describe("ApercuDirect", () => {
     for (const m of ["Mon projet", "SCI Invest Sun", "Ligne A", "50,00"]) expect(t).toContain(m);
   });
 
-  it("le total est annoncé aux lecteurs d'écran", () => {
-    render(<ApercuDirect etat={avec({ lignes: T4 })} tvaStandardPct={20} />);
-    expect(document.querySelector('[aria-live="polite"]')).not.toBeNull();
+  it("le total est annoncé une seule fois, au départ d'un champ, pas à chaque frappe", () => {
+    render(
+      <>
+        <input aria-label="champ" />
+        <ApercuDirect etat={avec({ lignes: T4 })} tvaStandardPct={20} />
+      </>,
+    );
+    const aside = screen.getByRole("complementary", { name: /aperçu en direct/i });
+    // Aucun montant ne vit dans une zone live.
+    expect(aside.querySelectorAll("[aria-live]")).toHaveLength(1);
+    const live = aside.querySelector('[aria-live="polite"]')!;
+    expect(live.textContent).toBe("");
+    expect(within(live as HTMLElement).queryByText(/Total HT/)).toBeNull();
+    const champ = screen.getByLabelText("champ");
+    champ.focus();
+    fireEvent.change(champ, { target: { value: "a" } });
+    expect(live.textContent).toBe("");
+    fireEvent.blur(champ);
+    expect(nbsp(live.textContent ?? "")).toMatch(/Total TTC du devis : .*€/);
   });
 });
 
@@ -114,7 +130,6 @@ function Hote({ initial, aide }: { initial: EtatAssistant; aide?: React.ReactNod
   const [e, dispatch] = useReducer(reducteur, initial);
   return (
     <EtapeClientProjet
-      etape={1}
       etat={e}
       dispatch={dispatch}
       clients={CLIENTS}
@@ -163,7 +178,6 @@ describe("EtapeClientProjet", () => {
       const [e, dispatch] = useReducer(reducteur, avec({}));
       return (
         <EtapeClientProjet
-          etape={1}
           etat={e}
           dispatch={dispatch}
           clients={CLIENTS}

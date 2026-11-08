@@ -24,8 +24,12 @@ export function BlocGarantie({ etat, dispatch, phraseGarantie }: PropsBlocGarant
     dispatch({ type: "champs", patch: { garantie: { ...g, ...patch } } });
 
   useEffect(() => {
-    if (g.afficher && g.phrase === "" && phraseGarantie !== "") {
-      dispatch({ type: "champs", patch: { garantie: { ...g, phrase: phraseGarantie } } });
+    // Une seule fois, pour un champ jamais touché : une phrase vidée reste vide.
+    if (g.afficher && g.touche !== true && g.phrase === "" && phraseGarantie !== "") {
+      dispatch({
+        type: "champs",
+        patch: { garantie: { ...g, phrase: phraseGarantie, touche: true } },
+      });
     }
   }, [g, phraseGarantie, dispatch]);
 
@@ -59,9 +63,16 @@ export function BlocGarantie({ etat, dispatch, phraseGarantie }: PropsBlocGarant
               rows={3}
               className="rounded border p-2"
               value={g.phrase}
-              onChange={(e) => maj({ phrase: e.target.value })}
+              onChange={(e) => maj({ phrase: e.target.value, touche: true })}
             />
           </label>
+          <button
+            type="button"
+            className="min-h-[44px] rounded border px-3 sm:w-fit"
+            onClick={() => maj({ phrase: phraseGarantie, touche: true })}
+          >
+            Revenir à la phrase d&apos;origine
+          </button>
         </div>
       ) : null}
     </section>

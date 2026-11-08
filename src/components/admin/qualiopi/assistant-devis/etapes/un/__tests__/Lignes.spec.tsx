@@ -202,6 +202,24 @@ describe("ListeLignes", () => {
     expect(document.activeElement).toBe(screen.getByLabelText(/libellé/i));
   });
 
+  it("Supprimer → Garder / Confirmer : le focus ne tombe jamais sur la page", () => {
+    render(
+      <Hote
+        initial={etat([L("a", { libelle: "Alpha", prixEur: "1" }), L("b", { libelle: "Beta" })])}
+      />,
+    );
+    fireEvent.click(screen.getAllByRole("button", { name: /supprimer la ligne/i })[0]!);
+    const garder = screen.getByRole("button", { name: /garder la ligne/i });
+    expect(document.activeElement).toBe(garder);
+    fireEvent.click(garder);
+    expect(document.activeElement).toBe(
+      screen.getAllByRole("button", { name: /supprimer la ligne 1/i })[0],
+    );
+    fireEvent.click(screen.getByRole("button", { name: /supprimer la ligne 1/i }));
+    fireEvent.click(screen.getByRole("button", { name: /confirmer la suppression/i }));
+    expect(document.activeElement).not.toBe(document.body);
+  });
+
   it("la dernière ligne ne peut pas être supprimée", () => {
     render(<Hote initial={etat([L("a")])} />);
     expect(

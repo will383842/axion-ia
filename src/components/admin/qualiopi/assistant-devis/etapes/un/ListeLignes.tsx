@@ -6,7 +6,7 @@
  * ligne est remplie, focus rendu à la ligne voisine, dépendances de planning sans cycle.
  * Aucun calcul de montant ici (les totaux viennent de `calculs.ts`, dans l'aperçu direct).
  */
-import { useEffect, useMemo, useRef, useState, type Dispatch } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState, type Dispatch } from "react";
 
 import type { ActionAssistant } from "../../etat";
 import { appliquerOffre, noteDeLOffre, type OffreCatalogue } from "../../lignes";
@@ -55,6 +55,12 @@ export function ListeLignes({ etat, dispatch, offres }: PropsListeLignes) {
   const refs = useRef(new Map<string, HTMLInputElement>());
   const focusApres = useRef<string | null>(null);
   const compteur = useRef(0);
+  // Dernier état lu par les gestionnaires : ils restent ainsi identiques d'un rendu à l'autre
+  // (sinon chaque frappe réveille toutes les lignes mémoïsées, au détriment de l'INP).
+  const dernier = useRef({ lignes, offres });
+  useEffect(() => {
+    dernier.current = { lignes, offres };
+  });
 
   useEffect(() => {
     const id = focusApres.current;
@@ -91,46 +97,64 @@ export function ListeLignes({ etat, dispatch, offres }: PropsListeLignes) {
     return out;
   }, [lignes]);
 
-  function choisirOffre(ligneId: string, code: string) {
-    const l = lignes.find((x) => x.id === ligneId);
-    if (!l) return;
-    const r = appliquerOffre(l, offres, code);
-    setSansPrix((s) => {
-      const n = new Set(s);
-      if (r.sansPrixFerme) n.add(ligneId);
-      else n.delete(ligneId);
-      return n;
-    });
-    // Remplacement de la liste : `appliquerOffre` peut RETIRER `offreTierId`, ce qu'un patch ne sait pas faire.
-    dispatch({
-      type: "champs",
-      patch: { lignes: lignes.map((x) => (x.id === ligneId ? r.ligne : x)) },
-    });
-  }
+  const choisirOffre = useCallback(
+    (ligneId: string, code: string) => {
+      const { lignes: courantes, offres: catalogue } = dernier.current;
+      const l = courantes.find((x) => x.id === ligneId);
+      if (!l) return;
+      const r = appliquerOffre(l, catalogue, code);
+      setSansPrix((s) => {
+        const n = new Set(s);
+        if (r.sansPrixFerme) n.add(ligneId);
+        else n.delete(ligneId);
+        return n;
+      });
+      // Remplacement de la liste : `appliquerOffre` peut RETIRER `offreTierId`, ce qu'un patch ne sait pas faire.
+      dispatch({
+        type: "champs",
+        patch: { lignes: courantes.map((x) => (x.id === ligneId ? r.ligne : x)) },
+      });
+    },
+    [dispatch],
+  );
 
-  function supprimer(id: string) {
-    const i = lignes.findIndex((x) => x.id === id);
-    const cible = lignes[i];
-    if (!cible || lignes.length <= 1) return;
-    const touchees = lignes.filter((x) => x.necessite.includes(id));
-    setMessage(
-      touchees.length > 0
-        ? `La dépendance à « ${etiquette(cible, i)} » a été retirée de : ${touchees
-            .map((t) => etiquette(t, lignes.indexOf(t)))
-            .join(", ")}.`
-        : `La ligne « ${etiquette(cible, i)} » a été supprimée.`,
-    );
-    const voisine = lignes[i - 1] ?? lignes[i + 1];
-    focusApres.current = voisine ? voisine.id : null;
-    setASupprimer(null);
-    dispatch({ type: "ligne_supprimer", id });
-  }
+  const supprimer = useCallback(
+    (id: string) => {
+      const { lignes: courantes } = dernier.current;
+      const i = courantes.findIndex((x) => x.id === id);
+      const cible = courantes[i];
+      if (!cible || courantes.length <= 1) return;
+      const touchees = courantes.filter((x) => x.necessite.includes(id));
+      setMessage(
+        touchees.length > 0
+          ? `La dépendance à « ${etiquette(cible, i)} » a été retirée de : ${touchees
+              .map((t) => etiquette(t, courantes.indexOf(t)))
+              .join(", ")}.`
+          : `La ligne « ${etiquette(cible, i)} » a été supprimée.`,
+      );
+      const voisine = courantes[i - 1] ?? courantes[i + 1];
+      focusApres.current = voisine ? voisine.id : null;
+      setASupprimer(null);
+      dispatch({ type: "ligne_supprimer", id });
+    },
+    [dispatch],
+  );
 
-  function demander(id: string) {
-    const l = lignes.find((x) => x.id === id);
-    if (l && estRemplie(l)) setASupprimer(id);
-    else supprimer(id);
-  }
+  const demander = useCallback(
+    (id: string) => {
+      const l = dernier.current.lignes.find((x) => x.id === id);
+      if (l && estRemplie(l)) setASupprimer(id);
+      else supprimer(id);
+    },
+    [supprimer],
+  );
+
+  const annuler = useCallback(() => setASupprimer(null), []);
+
+  const enregistrerLibelle = useCallback((id: string, el: HTMLInputElement | null) => {
+    if (el) refs.current.set(id, el);
+    else refs.current.delete(id);
+  }, []);
 
   return (
     <section aria-labelledby="titre-lignes" className="mb-[var(--space-admin-6,16px)]">
@@ -157,11 +181,8 @@ export function ListeLignes({ etat, dispatch, offres }: PropsListeLignes) {
             onChoisirOffre={choisirOffre}
             onDemanderSuppression={demander}
             onConfirmerSuppression={supprimer}
-            onAnnulerSuppression={() => setASupprimer(null)}
-            refLibelle={(el) => {
-              if (el) refs.current.set(l.id, el);
-              else refs.current.delete(l.id);
-            }}
+            onAnnulerSuppression={annuler}
+            enregistrerLibelle={enregistrerLibelle}
           />
         ))}
       </ol>

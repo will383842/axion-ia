@@ -92,6 +92,16 @@ describe("controlerEtape", () => {
     ).toMatch(/110 %/);
   });
 
+  it("étape 1b : une phase à 0 % (ou au-dessus de 100) est refusée, même si le total vaut 100", () => {
+    const [p0, p1] = etatT1().achat.phases;
+    const phases = [
+      { ...p0!, pourcentage: "0" },
+      { ...p1!, pourcentage: "100" },
+    ];
+    const e = reducteur(etatT1(), { type: "achat", patch: { phases } });
+    expect(controlerEtape(e, "1b").join(" ")).toMatch(/entre 1 et 100/);
+  });
+
   it("les jeux d'essai T1 à T5 passent toutes les étapes", () => {
     for (const [nom, f] of Object.entries(FIXTURES)) {
       expect(controlerEtape(f(), 4), nom).toEqual([]);

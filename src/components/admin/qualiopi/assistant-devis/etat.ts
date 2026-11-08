@@ -211,8 +211,16 @@ export function controlerEtape(e: EtatAssistant, etape: Etape): string[] {
       if (e.clientId === "") err.push("Choisissez un client.");
       if (e.intitule.trim() === "") err.push("Donnez un intitulé au devis.");
       return [...err, ...controlerLignes(e)];
-    case "1b":
-      return totalPhases(e.achat.phases, "Phases");
+    case "1b": {
+      const hors = e.achat.phases.some((x) => {
+        const v = entier(x.pourcentage);
+        return v !== null && (v < 1 || v > 100);
+      });
+      return [
+        ...totalPhases(e.achat.phases, "Phases"),
+        ...(hors ? ["Phases : chaque versement doit être compris entre 1 et 100 %."] : []),
+      ];
+    }
     case 2:
       if (
         a &&

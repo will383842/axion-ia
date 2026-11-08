@@ -3,8 +3,8 @@
 
 /**
  * « Délais estimatifs, pas garantis » (fiche E12). La phrase vient de la bibliothèque de textes
- * (prop) : copiée dans le brouillon seulement si le champ est vide, jamais par-dessus une
- * saisie. La fourchette est calculée par `fourchetteSemaines` (les lignes), pas saisie.
+ * (prop) : copiée dans le brouillon une seule fois, à l'initialisation d'un champ jamais
+ * touché (`delais.touche`), jamais par-dessus une saisie ni par-dessus une phrase vidée. La fourchette est calculée par `fourchetteSemaines` (les lignes), pas saisie.
  */
 import { useEffect, useId, type Dispatch } from "react";
 
@@ -30,16 +30,21 @@ export function BlocDelais({ etat, dispatch, texteDelais }: PropsBlocDelais) {
   const { delais, lignes } = etat;
   const calcule = libelleFourchette(fourchetteSemaines(lignes));
   const total = semainesTotales(etat.achat.phases);
+  const perimee = delais.fourchette !== "" && calcule === "";
 
   useEffect(() => {
-    if (delais.texte === "" && texteDelais !== "") {
-      dispatch({ type: "champs", patch: { delais: { ...delais, texte: texteDelais } } });
+    if (delais.touche !== true && delais.texte === "" && texteDelais !== "") {
+      dispatch({
+        type: "champs",
+        patch: { delais: { ...delais, texte: texteDelais, touche: true } },
+      });
     }
   }, [delais, texteDelais, dispatch]);
 
-  // Fourchette cochée : elle suit les lignes (aucune valeur périmée dans le devis).
+  // Fourchette cochée : elle suit les lignes. Si plus aucun délai n'est renseigné (calcule vide),
+  // on ne décoche PAS en silence : l'état est conservé et un avertissement le dit (voir plus bas).
   useEffect(() => {
-    if (delais.fourchette !== "" && delais.fourchette !== calcule) {
+    if (delais.fourchette !== "" && calcule !== "" && delais.fourchette !== calcule) {
       dispatch({ type: "champs", patch: { delais: { ...delais, fourchette: calcule } } });
     }
   }, [delais, calcule, dispatch]);
@@ -58,7 +63,10 @@ export function BlocDelais({ etat, dispatch, texteDelais }: PropsBlocDelais) {
           className="rounded border p-2"
           value={delais.texte}
           onChange={(e) =>
-            dispatch({ type: "champs", patch: { delais: { ...delais, texte: e.target.value } } })
+            dispatch({
+              type: "champs",
+              patch: { delais: { ...delais, texte: e.target.value, touche: true } },
+            })
           }
         />
       </label>
@@ -66,7 +74,10 @@ export function BlocDelais({ etat, dispatch, texteDelais }: PropsBlocDelais) {
         type="button"
         className="mt-2 min-h-[44px] rounded border px-3"
         onClick={() =>
-          dispatch({ type: "champs", patch: { delais: { ...delais, texte: texteDelais } } })
+          dispatch({
+            type: "champs",
+            patch: { delais: { ...delais, texte: texteDelais, touche: true } },
+          })
         }
       >
         Revenir au texte d&apos;origine
@@ -77,7 +88,9 @@ export function BlocDelais({ etat, dispatch, texteDelais }: PropsBlocDelais) {
             type="checkbox"
             checked={delais.fourchette !== ""}
             disabled={calcule === "" && delais.fourchette === ""}
-            aria-describedby={calcule === "" && delais.fourchette === "" ? `${uid}-f` : undefined}
+            aria-describedby={
+              calcule === "" ? (delais.fourchette === "" ? `${uid}-f` : `${uid}-p`) : undefined
+            }
             onChange={(e) =>
               dispatch({
                 type: "champs",
@@ -94,6 +107,13 @@ export function BlocDelais({ etat, dispatch, texteDelais }: PropsBlocDelais) {
           </p>
         ) : null}
       </div>
+      {perimee ? (
+        <p id={`${uid}-p`} className="mt-1 text-[length:var(--text-admin-sm)]">
+          Plus aucun délai n&apos;est renseigné sur les lignes : la fourchette « {delais.fourchette}{" "}
+          » est conservée telle quelle sur le devis. Décochez-la, ou renseignez un délai pour la
+          recalculer.
+        </p>
+      ) : null}
       {total > 0 ? (
         <p aria-live="polite" className="mt-2">
           {total} semaine{total > 1 ? "s" : ""} estimées au total

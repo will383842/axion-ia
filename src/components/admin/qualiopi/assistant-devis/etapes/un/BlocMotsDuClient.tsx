@@ -4,7 +4,7 @@
 /**
  * Étape 1 — « Ce que le client vous a dit » (fiche E09). Trois champs de texte, gardés dans
  * le brouillon. Rien n'est pré-rempli (décision du 29/09) et aucun chiffre n'est inventé :
- * la valeur n'est qu'une saisie facultative, avec les chiffres du client.
+ * la valeur n'est qu'une saisie facultative, gardée dans le récit non imprimé (décision D1).
  */
 import type { Dispatch } from "react";
 
@@ -24,7 +24,9 @@ export function BlocMotsDuClient({ etat, dispatch }: PropsBlocMots) {
         Ce que le client vous a dit
       </h3>
       <p className="text-[length:var(--text-admin-sm)]" id="aide-mots">
-        Notez son problème avec ses propres mots. Cette phrase ouvre le devis.
+        Notez son problème avec ses propres mots, pour votre dossier. Le devis n&apos;imprime que
+        l&apos;intitulé, le besoin, le résultat visé et la phrase de garantie, et seulement sur un
+        devis à formules.
       </p>
       <textarea
         rows={3}
@@ -45,8 +47,8 @@ export function BlocMotsDuClient({ etat, dispatch }: PropsBlocMots) {
       <label className="mt-3 flex flex-col">
         Valeur pour le client (facultatif, ses chiffres)
         <span className="text-[length:var(--text-admin-sm)]" id="aide-valeur">
-          La valeur chiffrée n&apos;apparaît que si vous la remplissez avec les chiffres du client.
-          Rien n&apos;est inventé.
+          Pour votre suivi uniquement : cette valeur est gardée dans le récit du devis et n&apos;est
+          pas imprimée. Rien n&apos;est inventé.
         </span>
         <textarea
           rows={2}

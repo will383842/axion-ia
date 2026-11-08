@@ -47,6 +47,11 @@ export interface PropsEditeurPhases {
 }
 
 const entier = (s: string): number | null => (/^\d+$/.test(s.trim()) ? Number(s) : null);
+/** Un versement vaut au moins 1 % et au plus 100 % (une phase à 0 % n'est pas un versement). */
+const pctValide = (s: string): boolean => {
+  const n = entier(s);
+  return n !== null && n >= 1 && n <= 100;
+};
 const EUROS = new Intl.NumberFormat("fr-FR", { style: "currency", currency: "EUR" });
 
 /** Phases laissées telles quelles par le départ ou issues d'un modèle : rien à perdre à les remplacer. */
@@ -70,6 +75,7 @@ function estIntacte(
         return (
           p.libelle === m.libelle &&
           p.livrable === m.livrable &&
+          p.delaiSemaines === (m.delaiSemaines > 0 ? String(m.delaiSemaines) : "") &&
           p.pourcentage === String(m.pourcentage)
         );
       }),
@@ -92,6 +98,10 @@ export function EditeurPhases({
   const refs = useRef(new Map<string, HTMLInputElement>());
   const focusApres = useRef<string | null>(null);
   const compteur = useRef(0);
+  // Boutons de confirmation du retrait : le bouton cliqué disparaît, le focus ne doit pas tomber sur la page.
+  const refGarder = useRef<HTMLButtonElement>(null);
+  const refRetirer = useRef(new Map<string, HTMLButtonElement>());
+  const focusConfirmation = useRef<"garder" | { retirer: string } | null>(null);
 
   useEffect(() => {
     const id = focusApres.current;
@@ -99,6 +109,14 @@ export function EditeurPhases({
     focusApres.current = null;
     refs.current.get(id)?.focus();
   }, [phases]);
+
+  useEffect(() => {
+    const f = focusConfirmation.current;
+    if (f === null) return;
+    focusConfirmation.current = null;
+    if (f === "garder") refGarder.current?.focus();
+    else refRetirer.current.get(f.retirer)?.focus();
+  }, [aRetirer]);
 
   const nouvelId = (): string => {
     let id: string;
@@ -128,8 +146,9 @@ export function EditeurPhases({
 
   const valeurs = phases.map((p) => entier(p.pourcentage));
   const illisible = phases.length === 0 || valeurs.some((v) => v === null);
+  const horsBornes = phases.some((p) => !pctValide(p.pourcentage));
   const total = valeurs.reduce<number>((s, v) => s + (v ?? 0), 0);
-  const juste = !illisible && total === 100;
+  const juste = !illisible && total === 100 && !horsBornes;
   const repartition = phases.map((p) => `${entier(p.pourcentage) ?? 0} %`).join(", ");
 
   return (
@@ -218,11 +237,18 @@ export function EditeurPhases({
                     inputMode="numeric"
                     className="min-h-[44px] rounded border px-2"
                     value={p.pourcentage}
+                    aria-invalid={!pctValide(p.pourcentage)}
+                    aria-describedby={pctValide(p.pourcentage) ? undefined : `${nom}-pct-${p.id}`}
                     onChange={(e) => {
                       if (/^\d{0,3}$/.test(e.target.value))
                         maj(p.id, { pourcentage: e.target.value });
                     }}
                   />
+                  {pctValide(p.pourcentage) ? null : (
+                    <span id={`${nom}-pct-${p.id}`}>
+                      Le versement doit être compris entre 1 et 100 %.
+                    </span>
+                  )}
                 </label>
                 {montants ? (
                   <p className="flex flex-col">
@@ -243,8 +269,12 @@ export function EditeurPhases({
                     </button>
                     <button
                       type="button"
+                      ref={refGarder}
                       className="min-h-[44px] rounded border px-3"
-                      onClick={() => setARetirer(null)}
+                      onClick={() => {
+                        focusConfirmation.current = { retirer: p.id };
+                        setARetirer(null);
+                      }}
                     >
                       Garder la phase
                     </button>
@@ -253,8 +283,17 @@ export function EditeurPhases({
                   <button
                     type="button"
                     className="min-h-[44px] rounded border px-3"
+                    ref={(el) => {
+                      if (el) refRetirer.current.set(p.id, el);
+                      else refRetirer.current.delete(p.id);
+                    }}
                     disabled={phases.length <= 1}
-                    onClick={() => (rediges(p) ? setARetirer(p.id) : retirer(p.id))}
+                    onClick={() => {
+                      if (rediges(p)) {
+                        focusConfirmation.current = "garder";
+                        setARetirer(p.id);
+                      } else retirer(p.id);
+                    }}
                   >
                     Retirer la phase {rang}
                   </button>
@@ -302,16 +341,20 @@ export function EditeurPhases({
           />
         ))}
       </div>
-      <div aria-live="polite">
-        <p className="font-medium">Total des versements : {total} %</p>
-        {!juste ? (
-          <p role="alert">
-            {illisible
-              ? "Chaque phase demande un pourcentage entier."
-              : `Le total des versements doit valoir 100 % (actuellement ${total} %).`}
-          </p>
-        ) : null}
-      </div>
+      <p className="font-medium">Total des versements : {total} %</p>
+      {!juste ? (
+        <p>
+          {illisible
+            ? "Chaque phase demande un pourcentage entier."
+            : total !== 100
+              ? `Le total des versements doit valoir 100 % (actuellement ${total} %).`
+              : "Chaque versement doit être compris entre 1 et 100 %."}
+        </p>
+      ) : null}
+      {/* Une seule annonce polie, sobre : le total, pas le message d'erreur qui change à chaque frappe. */}
+      <p role="status" aria-live="polite" className="sr-only">
+        Total : {total} % sur 100.
+      </p>
     </section>
   );
 }

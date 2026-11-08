@@ -105,6 +105,23 @@ describe("BlocClient", () => {
     expect(document.body.textContent).not.toMatch(/rétractation ajoutée/i);
   });
 
+  it("particulier avec l'interrupteur des formules éteint : la note est celle du particulier", () => {
+    render(
+      <BlocClient
+        {...base}
+        etat={neuf({
+          clientId: "c2",
+          clientType: "particulier",
+          modele: "implementation",
+          formulesActives: false,
+        })}
+        dispatch={() => {}}
+      />,
+    );
+    expect(screen.getByRole("note").textContent).toMatch(/particulier/i);
+    expect(screen.getByRole("note").textContent).not.toMatch(/activés/i);
+  });
+
   it("bandeau Partners : affiché pour le client courant, jamais celui d'un autre", async () => {
     const lireBandeau = vi.fn(async (id: string) => (id === "c1" ? "Texte Partners" : null));
     const { rerender } = render(
