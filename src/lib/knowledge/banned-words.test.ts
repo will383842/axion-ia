@@ -13,7 +13,12 @@
  */
 
 import { describe, expect, it } from "vitest";
-import { checkTranslationBannedWords, verifierDoctrineTraduction } from "./banned-words";
+import {
+  avertissementsCible,
+  checkTranslationBannedWords,
+  ficheDestineeAuPublic,
+  verifierDoctrineTraduction,
+} from "./banned-words";
 
 describe("checkTranslationBannedWords", () => {
   it("accepte un texte quelconque (aucun motif proscrit déclaré)", () => {
@@ -102,10 +107,18 @@ describe("doctrine à l'entrée (audit knowledge 08/11/2026)", () => {
     expect(r.fieldViolations.map((v) => v.code)).toContain("grenoble");
   });
 
-  it("bloque la cible ETI", () => {
-    const r = verifierDoctrineTraduction({ body: "Un audit pour les ETI et grands groupes." });
-    expect(r.valid).toBe(false);
-    expect(r.fieldViolations.map((v) => v.code)).toContain("eti-hors-cible");
+  it("ne bloque PAS la cible ETI (titres de sources réels) mais l'avertit", () => {
+    const texte = "Baromètre Bpifrance Le Lab — Dirigeants de PME et ETI";
+    expect(verifierDoctrineTraduction({ title: texte }).valid).toBe(true);
+    expect(avertissementsCible({ title: texte }).map((v) => v.code)).toContain("eti-hors-cible");
+  });
+
+  it("ficheDestineeAuPublic : public/client + confidentialité publique seulement", () => {
+    expect(ficheDestineeAuPublic({ audience: "public", confidentiality: "public" })).toBe(true);
+    expect(ficheDestineeAuPublic({ audience: "client", confidentiality: "public" })).toBe(true);
+    expect(ficheDestineeAuPublic({ audience: "team", confidentiality: "public" })).toBe(false);
+    expect(ficheDestineeAuPublic({ audience: "public", confidentiality: "internal" })).toBe(false);
+    expect(ficheDestineeAuPublic({ audience: "will_only", confidentiality: "secret" })).toBe(false);
   });
 
   it("ne confond pas ETI avec un mot qui la contient", () => {

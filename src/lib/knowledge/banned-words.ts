@@ -3,7 +3,7 @@
  *
  * Audit knowledge du 08/11/2026 : la liste de motifs de ce fichier était vide, donc
  * aucune fiche n'était contrôlée (import API, publication en console, seed). Une
- * fiche qui dit « Qualiopi », « Grenoble » ou vise les ETI partait au chatbot et sur
+ * fiche qui dit « Qualiopi », « Grenoble » ou vise une autre cible partait au chatbot et sur
  * `/connaissances`.
  *
  * Ce module ne définit AUCUN motif de la doctrine : il appelle
@@ -63,8 +63,23 @@ export function verifierDoctrineFiche(
     raison: raisonInterdit(d.code),
   }));
 
-  for (const [champ, valeur] of Object.entries(textes)) {
-    const n = normaliserPourControle(valeur ?? "");
+  // La cible « ETI » n'est PAS un blocage : la règle n'est pas une doctrine écrite et
+  // elle refusait des titres de sources réels (« Dirigeants de PME et ETI »).
+  // Voir `avertissementsCible` (informatif).
+  return out;
+}
+
+/**
+ * Avertissements NON bloquants : champs qui mentionnent la cible ETI. Jamais utilisé
+ * pour refuser une fiche ; à l'usage de l'éditeur qui veut relire.
+ */
+export function avertissementsCible(
+  champs: Readonly<Record<string, string | null | undefined>>,
+): ReadonlyArray<ViolationFiche> {
+  const out: ViolationFiche[] = [];
+  for (const [champ, valeur] of Object.entries(champs)) {
+    if (!valeur) continue;
+    const n = normaliserPourControle(valeur);
     const m = ETI_RE.exec(n);
     if (m) {
       const de = Math.max(0, m.index - 25);
@@ -77,6 +92,21 @@ export function verifierDoctrineFiche(
     }
   }
   return out;
+}
+
+/**
+ * La porte de doctrine ne vaut que pour les fiches destinées au public : même critère
+ * que `search-vector.ts` (confidentialité « public » ET audience public / client).
+ * Une fiche interne (team / will_only, interne ou plus) peut énoncer une règle
+ * (« jamais Grenoble ») sans être refusée.
+ */
+export function ficheDestineeAuPublic(meta: {
+  readonly audience?: string | null | undefined;
+  readonly confidentiality?: string | null | undefined;
+}): boolean {
+  return (
+    meta.confidentiality === "public" && (meta.audience === "public" || meta.audience === "client")
+  );
 }
 
 /** Phrase lisible pour un brouillon bloqué (champ, code, raison). */

@@ -21,7 +21,7 @@
 
 import { prisma } from "@/lib/prisma";
 import { detectPii } from "@/lib/knowledge/pii-scan";
-import { verifierDoctrineTraduction } from "@/lib/knowledge/banned-words";
+import { ficheDestineeAuPublic, verifierDoctrineTraduction } from "@/lib/knowledge/banned-words";
 import { validateAltText } from "@/lib/knowledge/alt-text-validation";
 import { runHeuristicGates } from "@/lib/knowledge/quality-gates";
 import {
@@ -102,12 +102,19 @@ export async function ingestEntry(payload: IngestPayload): Promise<IngestResult>
   });
 
   // ----- 2. Banned words gate -----
-  const bannedCheck = verifierDoctrineTraduction({
-    title: payload.title,
-    excerpt: payload.excerpt ?? null,
-    body: payload.body,
-    bodyText: payload.bodyText ?? null,
-  });
+  // On contrôle la destination DEMANDÉE (public par défaut), pas le « team » de la
+  // file de relecture : sinon il suffirait d'être en relecture pour passer.
+  const bannedCheck = ficheDestineeAuPublic({
+    audience: payload.audience ?? "public",
+    confidentiality: payload.confidentiality ?? "public",
+  })
+    ? verifierDoctrineTraduction({
+        title: payload.title,
+        excerpt: payload.excerpt ?? null,
+        body: payload.body,
+        bodyText: payload.bodyText ?? null,
+      })
+    : { valid: true as const, fieldViolations: [] };
   if (!bannedCheck.valid) {
     await rejectIngest(
       payload.idempotencyKey,

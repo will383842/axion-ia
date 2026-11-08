@@ -137,3 +137,14 @@ describe("cohérence seed / console", () => {
     expect(incoherents).toEqual([]);
   });
 });
+
+describe("faits qui passeraient en brouillon au prochain seed", () => {
+  it("liste figée : aucun (la correction #1848 est fusionnée)", async () => {
+    const { ALL_KB_FACTS } = await import("./seed-kb-facts");
+    const enBrouillon = ALL_KB_FACTS.filter(
+      (f) => planifierFiche(null, verifierDoctrineFiche({ fait: f.text })).statut === "draft",
+    ).map((f) => f.id);
+    // Si ce test rougit, la liste ci-dessous est celle des faits à corriger AVANT le seed.
+    expect(enBrouillon).toEqual([]);
+  });
+});

@@ -7,10 +7,17 @@
  */
 
 import { prisma } from "@/lib/prisma";
-import { verifierDoctrineTraduction } from "@/lib/knowledge/banned-words";
+import { ficheDestineeAuPublic, verifierDoctrineTraduction } from "@/lib/knowledge/banned-words";
 
 /** Renvoie la raison du blocage, ou `null` si toutes les traductions passent. */
 export async function raisonDoctrineEntree(entryId: string): Promise<string | null> {
+  // Fiche interne (team / will_only, confidentialité > public) : hors porte.
+  const entry = await prisma.knowledgeEntry.findUnique({
+    where: { id: entryId },
+    select: { audience: true, confidentiality: true },
+  });
+  if (!entry || !ficheDestineeAuPublic(entry)) return null;
+
   const translations = await prisma.knowledgeTranslation.findMany({
     where: { entryId },
     select: {

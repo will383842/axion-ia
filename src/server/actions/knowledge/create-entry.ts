@@ -10,7 +10,7 @@
 import { headers } from "next/headers";
 import { prisma } from "@/lib/prisma";
 import { getClientIp } from "@/lib/client-ip";
-import { verifierDoctrineTraduction } from "@/lib/knowledge/banned-words";
+import { ficheDestineeAuPublic, verifierDoctrineTraduction } from "@/lib/knowledge/banned-words";
 import { requireAdminWrite } from "./_guards";
 import { logKbActivity } from "./_audit";
 import { revalidateAdminKbRoutes, revalidatePublicKbRoutes } from "./_revalidate";
@@ -45,7 +45,10 @@ export async function createEntryAction(input: CreateEntryInput): Promise<Create
   // Doctrine : une fiche créée directement « en ligne » (ou prête à l'être) doit
   // la respecter. En brouillon / relecture, le contenu reste libre : la porte
   // s'applique à la publication.
-  if (["approved", "scheduled", "published", "deprecated"].includes(data.status)) {
+  if (
+    ["approved", "scheduled", "published", "deprecated"].includes(data.status) &&
+    ficheDestineeAuPublic(data)
+  ) {
     for (const t of data.translations) {
       const check = verifierDoctrineTraduction(t);
       if (!check.valid) {

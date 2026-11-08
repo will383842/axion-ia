@@ -12,7 +12,7 @@
 import { headers } from "next/headers";
 import { prisma } from "@/lib/prisma";
 import { getClientIp } from "@/lib/client-ip";
-import { verifierDoctrineTraduction } from "@/lib/knowledge/banned-words";
+import { ficheDestineeAuPublic, verifierDoctrineTraduction } from "@/lib/knowledge/banned-words";
 import { requireAdminWrite } from "./_guards";
 import { logKbActivity } from "./_audit";
 import { revalidateAdminKbRoutes } from "./_revalidate";
@@ -39,7 +39,14 @@ export async function saveDraftAction(input: SaveDraftInput): Promise<SaveDraftR
   // Vérifier entry existe et pas soft-deleted
   const entry = await prisma.knowledgeEntry.findUnique({
     where: { id: data.entryId },
-    select: { id: true, deletedAt: true, slug: true, status: true },
+    select: {
+      id: true,
+      deletedAt: true,
+      slug: true,
+      status: true,
+      audience: true,
+      confidentiality: true,
+    },
   });
   if (!entry || entry.deletedAt) {
     return { ok: false, error: "not_found" };
@@ -47,7 +54,10 @@ export async function saveDraftAction(input: SaveDraftInput): Promise<SaveDraftR
 
   // Doctrine : modifier une fiche déjà en ligne (ou prête à l'être) ne contourne pas
   // la porte de publication. Un brouillon reste libre.
-  if (["approved", "scheduled", "published", "deprecated"].includes(entry.status)) {
+  if (
+    ["approved", "scheduled", "published", "deprecated"].includes(entry.status) &&
+    ficheDestineeAuPublic(entry)
+  ) {
     const check = verifierDoctrineTraduction({
       title: data.title,
       excerpt: data.excerpt,
