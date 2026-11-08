@@ -18,6 +18,9 @@ import { AdminPageHeader } from "@/components/admin/ui/AdminPageHeader";
 import { AdminBadge } from "@/components/admin/ui/AdminBadge";
 import { AdminButton } from "@/components/admin/ui/AdminButton";
 import { DevisLifecycleButtons } from "@/components/admin/qualiopi/DevisLifecycleButtons";
+import { ChoixClientSigne } from "@/components/admin/qualiopi/ChoixClientSigne";
+import { offreDevisV1 } from "@/server/qualiopi/devis/offre-devis";
+import { choixImprimable } from "@/server/qualiopi/devis/choix-exemplaire";
 import { DevisContresignature } from "@/components/admin/qualiopi/DevisContresignature";
 import {
   compterPlansAttendus,
@@ -98,6 +101,11 @@ const FINANCEMENT_LABELS: Record<string, string> = {
   cpf: "CPF / EDOF",
   france_travail: "France Travail",
 };
+
+function maintenanceFacultativeDe(offre: unknown): boolean {
+  const o = offreDevisV1.safeParse(offre);
+  return o.success && o.data.achat?.maintenance.regle === "facultative";
+}
 
 function formatEur(cents: number): string {
   return new Intl.NumberFormat("fr-FR", {
@@ -244,6 +252,10 @@ export default async function QualiopiDevisDetailPage({ params }: PageProps) {
             signeAt: true,
             selfHash: true,
             methode: true,
+            // Choix scellé (sceau V4) : lu en lecture seule pour l'affichage.
+            hashVersion: true,
+            choixOffre: true,
+            choixOffreSha256: true,
           },
           // ⚠️ Même tri que la chaîne (`createdAt`, puis `id`) : trier sur
           // `signeAt` afficherait un ordre qui peut différer de celui du
@@ -598,6 +610,19 @@ export default async function QualiopiDevisDetailPage({ params }: PageProps) {
                     ? " — confirmation nominative, sans tracé manuscrit"
                     : ""}
                 </p>
+                {s.partie === "client" && devis.offre !== null && devis.offreSha256 !== null ? (
+                  <ChoixClientSigne
+                    resultat={choixImprimable(
+                      { offre: devis.offre, offreSha256: devis.offreSha256, numero: devis.numero },
+                      {
+                        hashVersion: s.hashVersion,
+                        choixOffre: s.choixOffre,
+                        choixOffreSha256: s.choixOffreSha256,
+                      },
+                    )}
+                    maintenanceFacultativeProposee={maintenanceFacultativeDe(devis.offre)}
+                  />
+                ) : null}
                 {/* L'empreinte EN ENTIER : une empreinte tronquée ne se
                     vérifie pas, et une preuve invérifiable n'en est pas une. */}
                 <p className="mt-[var(--space-admin-1)] text-[length:var(--text-admin-xs)] break-all text-[color:var(--color-admin-fg-muted)]">
@@ -691,7 +716,7 @@ export default async function QualiopiDevisDetailPage({ params }: PageProps) {
           >
             {devis.documentGenereId === null
               ? "Aucune pièce n'a été générée pour ce devis : le client ne peut pas signer en ligne. Réviser le devis pour le réémettre."
-              : "Le client n'a pas encore signé. Le lien de signature lui a été envoyé avec le devis ; renvoyer l'email en émet un nouveau et invalide le précédent."}
+              : "Le client n'a pas encore signé. Le lien de signature lui a été envoyé avec le devis ; renvoyer l'email émet un nouveau lien et invalide l'ancien IMMÉDIATEMENT, avant même la validation de l'e-mail en corbeille : si l'e-mail est refusé ou supprimé, le client n'a plus de lien valable (il faudra alors renvoyer à nouveau)."}
           </p>
         )}
       </section>
