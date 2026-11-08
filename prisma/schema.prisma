@@ -1821,6 +1821,8 @@ model GuideRequest {
   @@index([sentAt, queuedAt])
   @@index([createdAt])
   @@map("guide_requests")
+
+  contactsGuideReseau ContactGuideReseau[]
 }
 
 // ============================================================
@@ -18169,6 +18171,49 @@ model GuideReseauOrigine {
   @@unique([emailKey, cleDedoublonnage], map: "guide_reseau_origines_dedoublonnage_key")
   @@index([emailKey, occurredAt], map: "guide_reseau_origines_personne_date_idx")
   @@map("guide_reseau_origines")
+}
+
+/// Page « Recevoir le guide » (lot S0, 2026-11-08) — le contact laissé par une personne venue d'un réseau
+/// (mot en commentaire → page dédiée), avec la preuve de son consentement et l'état du message de remerciement.
+/// Table posée AVANT tout code qui la lit (S2) : l'ancien conteneur, qui l'ignore, continue de tourner.
+/// rgpd: dossier-client
+///
+/// · Rattachée à la personne par `email_key` (HMAC, la même clé que `guide_requests`) : l'adresse en clair
+///   n'y est JAMAIS écrite. `prenom` est CHIFFRÉ (`encryptPii`, IV aléatoire).
+/// · `guide_request_id` est facultatif : la demande de guide peut ne pas (encore) exister. SET NULL à sa suppression.
+/// · `jeton_empreinte` = SHA-256 du jeton du lien, UNIQUE : le lien est à usage unique ; le jeton lui-même n'est pas gardé.
+/// · `consent_empreinte` = SHA-256 du texte exact de la case cochée, `version_consentement` sa version.
+/// · `merci_statut` en VARCHAR (a_envoyer | envoye | hors_fenetre | expire | aucun) : aucune énumération
+///   Postgres, la migration reste additive.
+model ContactGuideReseau {
+  id                  String        @id @default(cuid())
+  emailKey            String        @map("email_key") @db.VarChar(64)
+  guideRequestId      String?       @map("guide_request_id") @db.Uuid
+  guideRequest        GuideRequest? @relation(fields: [guideRequestId], references: [id], onDelete: SetNull)
+  /// Chiffré (`encryptPii`).
+  prenom              String        @db.Text
+  mot                 String        @db.VarChar(30)
+  reseau              String        @db.VarChar(20)
+  compteRef           String        @map("compte_ref") @db.VarChar(80)
+  postRef             String?       @map("post_ref") @db.VarChar(80)
+  versionM1           String        @map("version_m1") @db.VarChar(64)
+  versionConsentement String        @map("version_consentement") @db.VarChar(64)
+  /// SHA-256 (hex) du texte de la case de consentement.
+  consentEmpreinte    String        @map("consent_empreinte") @db.Char(64)
+  consentiLe          DateTime      @map("consenti_le") @db.Timestamptz(3)
+  /// SHA-256 (hex) du jeton du lien : unique, usage unique.
+  jetonEmpreinte      String        @unique @map("jeton_empreinte") @db.Char(64)
+  /// Référence opaque de la conversation du réseau.
+  convRef             String        @map("conv_ref") @db.VarChar(120)
+  merciStatut         String        @default("a_envoyer") @map("merci_statut") @db.VarChar(20)
+  merciConfirmeLe     DateTime?     @map("merci_confirme_le") @db.Timestamptz(3)
+  createdAt           DateTime      @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt           DateTime      @updatedAt @map("updated_at") @db.Timestamptz(3)
+
+  @@index([emailKey], map: "contacts_guide_reseau_email_key_idx")
+  @@index([merciStatut, createdAt], map: "contacts_guide_reseau_merci_statut_created_at_idx")
+  @@index([guideRequestId], map: "contacts_guide_reseau_guide_request_id_idx")
+  @@map("contacts_guide_reseau")
 }
 
 /// rgpd: dossier-client
