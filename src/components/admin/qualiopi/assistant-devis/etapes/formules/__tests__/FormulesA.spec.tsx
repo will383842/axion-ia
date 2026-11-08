@@ -40,7 +40,15 @@ function Hote({ initial = base, seul }: { initial?: EtatAssistant; seul?: "choix
       ) : seul === "carte" ? (
         <CarteFormuleA etat={e} dispatch={dispatch} tvaStandardPct={TVA} />
       ) : (
-        <EtapeFormules etape={2} etat={e} dispatch={dispatch} tvaStandardPct={TVA} />
+        <EtapeFormules
+          etape={2}
+          etat={e}
+          dispatch={dispatch}
+          tvaStandardPct={TVA}
+          avantagesPossibles={{ A: [], B: [] }}
+          aSavoirPossibles={{ A: [], B: [] }}
+          textePlafond="Texte"
+        />
       )}
       <div data-testid="etat">{JSON.stringify(e)}</div>
     </>
