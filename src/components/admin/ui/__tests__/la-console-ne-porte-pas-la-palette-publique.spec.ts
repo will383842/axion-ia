@@ -143,46 +143,8 @@ function reglesSurPalettePublique(css: string, famille: "color" | "font"): strin
  * et leurs déclinaisons `-soft` / `-deep`. Corriger une entrée demande de
  * regarder l'écran, pas seulement le fichier.
  */
-const RATTRAPAGE_COULEURS_PUBLIQUES: readonly string[] = [
-  ".admin-2fa-code",
-  ".admin-alert-badge",
-  ".admin-badge-active",
-  ".admin-badge-admin",
-  ".admin-badge-reader",
-  ".admin-badge-super_admin",
-  ".admin-badge-suspended",
-  ".admin-calendar-cell-blocked",
-  ".admin-calendar-cell-empty",
-  ".admin-calendar-cell-link:hover",
-  ".admin-calendar-cell-prereserved",
-  ".admin-calendar-cell-reserved",
-  ".admin-calendar-cell-validated",
-  '.admin-cmdk-item[data-selected="true"], .admin-cmdk-item:hover',
-  ".admin-cmdk-trigger:hover",
-  ".admin-form-block",
-  ".admin-input-toggle:hover",
-  ".admin-json",
-  ".admin-kpi-link:hover",
-  ".admin-layout",
-  ".admin-reschedule-booking:hover",
-  ".admin-reschedule-slot-available",
-  ".admin-reschedule-slot-blocked",
-  ".admin-reschedule-slot-over",
-  ".admin-reschedule-slot-reserved",
-  ".admin-severity-critical",
-  ".admin-severity-warning",
-  ".admin-status-degraded, .admin-status-down",
-  ".admin-status-down",
-  ".admin-status-ok",
-  ".admin-status-pill",
-  ".admin-tags-grid",
-  ".admin-urgency-critical",
-  ".admin-urgency-high",
-  ".admin-urgency-medium td:first-child::before",
-  ".tiptap-content code",
-  ".tiptap-toolbar",
-  ".tiptap-toolbar .tiptap-btn-active",
-];
+// V6-01 (2026-11-07) : les 38 règles ont été migrées vers les jetons `--color-admin-*`.
+const RATTRAPAGE_COULEURS_PUBLIQUES: readonly string[] = [];
 
 describe("la console ne se style pas avec la palette du site public", () => {
   const css = codeCss();
@@ -275,5 +237,18 @@ describe("la console ne se style pas avec la palette du site public", () => {
         "   il la surestime, et la prochaine régression pourra se glisser dans\n" +
         "   une ligne que plus personne ne relit.",
     ).toEqual([]);
+  });
+  it("aucun jeton de la console n'est DÉCLARÉ par renvoi à un jeton du site public", () => {
+    // V6-01 : les valeurs sont en hex littéral. Le bloc `admin-tokens` échappe au
+    // balayage des règles : on lit donc ici le CSS brut, sans commentaires.
+    const brut = readFileSync(ADMIN_CSS, "utf8").replace(/\/\*[\s\S]*?\*\//g, "");
+    const renvoi = (src: string) =>
+      [...src.matchAll(/(--color-admin-[a-z0-9-]+)\s*:\s*([^;]+);/g)]
+        .filter((m) => /var\(\s*--color-(?!admin-)/.test(m[2] as string))
+        .map((m) => m[1]);
+    // Contre-témoin : le renvoi interdit est bien détecté.
+    expect(renvoi("--color-admin-x: var(--color-terracotta);")).toEqual(["--color-admin-x"]);
+    expect(renvoi("--color-admin-x: var(--color-admin-terracotta);")).toEqual([]);
+    expect(renvoi(brut), "jeton de console déclaré par renvoi à un jeton public").toEqual([]);
   });
 });
