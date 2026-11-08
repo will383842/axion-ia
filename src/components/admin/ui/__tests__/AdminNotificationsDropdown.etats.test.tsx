@@ -8,8 +8,20 @@ describe("AdminNotificationsDropdown — icône ET mot", () => {
       <AdminNotificationsDropdown
         allHref="/alerts"
         items={[
-          { id: "1", title: "Envoi", href: "/a", severity: "destructive", createdAt: "2026-11-07T10:00:00Z" },
-          { id: "2", title: "Quota", href: "/b", severity: "warning", createdAt: "2026-11-07T10:00:00Z" },
+          {
+            id: "1",
+            title: "Envoi",
+            href: "/a",
+            severity: "destructive",
+            createdAt: "2026-11-07T10:00:00Z",
+          },
+          {
+            id: "2",
+            title: "Quota",
+            href: "/b",
+            severity: "warning",
+            createdAt: "2026-11-07T10:00:00Z",
+          },
         ]}
       />,
     );

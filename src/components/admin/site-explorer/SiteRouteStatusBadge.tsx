@@ -1,6 +1,14 @@
 // Badge statut route — Sprint Site Explorer Admin 2026-05-22.
 
-import { CircleCheck, CircleDashed, Info, Redo2, TriangleAlert, X, type LucideIcon } from "lucide-react";
+import {
+  CircleCheck,
+  CircleDashed,
+  Info,
+  Redo2,
+  TriangleAlert,
+  X,
+  type LucideIcon,
+} from "lucide-react";
 import type { SiteRouteStatus } from "../../../../prisma/generated/client";
 
 interface Props {
@@ -9,7 +17,10 @@ interface Props {
 }
 
 export function SiteRouteStatusBadge({ status, httpStatus }: Props) {
-  const config: Record<SiteRouteStatus, { label: string; className: string; Icone: LucideIcon; filet?: "erreur" | "attention" }> = {
+  const config: Record<
+    SiteRouteStatus,
+    { label: string; className: string; Icone: LucideIcon; filet?: "erreur" | "attention" }
+  > = {
     live: {
       label: "En ligne",
       Icone: CircleCheck,
