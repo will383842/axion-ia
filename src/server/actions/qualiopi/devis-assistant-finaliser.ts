@@ -176,16 +176,21 @@ async function lier(
   // Dernier recours (3 sauvegardes intercalées) : le devis EXISTE, il ne doit jamais rester sans
   // lien (le verrou expiré en créerait un second). Le contrôle `verrouDepuis` garantit que le
   // verrou est le nôtre : on pose `devisId` sans condition de révision. Le `payload` n'est pas
-  // réécrit (il écraserait la sauvegarde la plus récente) ; la colonne `devisId` fait foi.
-  const { count } = await prisma.devisAssistantBrouillon.updateMany({
-    where: { id, createdByAdminId: adminId, statut: "numerotation", verrouDepuis: verrou },
-    data: {
-      devisId,
-      statut: "lie_au_devis",
-      verrouDepuis: null,
-      revision: { increment: 1 },
-    },
-  });
+  // réécrit en entier (il écraserait la sauvegarde la plus récente) : seul `sync` est écrit, en
+  // UNE instruction atomique (`jsonb_set`), sous la même condition statut + verrou. Sans lui,
+  // `sync.devisMajLe` resterait nul et chaque rappel ferait MSG_PERIME (brouillon inutilisable).
+  const syncJson = JSON.stringify({ devisId, devisMajLe });
+  const count = await prisma.$executeRaw`
+    UPDATE "devis_assistant_brouillons"
+    SET "payload" = jsonb_set("payload", '{sync}', ${syncJson}::jsonb, true),
+        "devis_id" = ${devisId}::uuid,
+        "statut" = 'lie_au_devis',
+        "verrou_depuis" = NULL,
+        "revision" = "revision" + 1
+    WHERE "id" = ${id}::uuid
+      AND "created_by_admin_id" = ${adminId}::uuid
+      AND "statut" = 'numerotation'
+      AND "verrou_depuis" = ${verrou}`;
   if (count !== 1) return null;
   const apres = await prisma.devisAssistantBrouillon.findFirst({
     where: { id, createdByAdminId: adminId },

@@ -24,6 +24,7 @@ const m = vi.hoisted(() => ({
   ecritures: [] as Array<{ where: Record<string, unknown>; data: Record<string, unknown> }>,
   findFirst: vi.fn(),
   updateMany: vi.fn(),
+  executeRaw: vi.fn(),
   devisFindUnique: vi.fn(),
   clientFindUnique: vi.fn(),
   venteUpdateMany: vi.fn(),
@@ -45,6 +46,7 @@ vi.mock("@/lib/prisma", () => ({
     devis: { findUnique: m.devisFindUnique },
     client: { findUnique: m.clientFindUnique },
     venteBrouillon: { updateMany: m.venteUpdateMany },
+    $executeRaw: m.executeRaw,
   },
 }));
 vi.mock("@/server/actions/qualiopi/_guards", () => ({
@@ -187,6 +189,18 @@ beforeEach(() => {
       return { count: 1 };
     },
   );
+  // Dernier recours de `lier` : UPDATE brut atomique (payload.sync + lien), mêmes conditions.
+  m.executeRaw.mockImplementation(async (_s: TemplateStringsArray, ...v: unknown[]) => {
+    const [syncJson, devisId, id, adminId, verrou] = v as [string, string, string, string, Date];
+    const where = { id, createdByAdminId: adminId, statut: "numerotation", verrouDepuis: verrou };
+    if (!m.row || !correspond(m.row, where)) return 0;
+    m.row["payload"] = { ...(m.row["payload"] as object), sync: JSON.parse(syncJson) };
+    m.row["devisId"] = devisId;
+    m.row["statut"] = "lie_au_devis";
+    m.row["verrouDepuis"] = null;
+    m.row["revision"] = (m.row["revision"] as number) + 1;
+    return 1;
+  });
   // Le devis « en base » : créé par l'action, relu pour sa date de dernière mise à jour.
   m.devisFindUnique.mockResolvedValue(devisBrouillon());
   m.creerClassique.mockResolvedValue({ data: { id: DEVIS, numero: "AXI-DEV-2026-007" } });
@@ -476,6 +490,28 @@ describe("numerotation — idempotence", () => {
       m.row!["verrouDepuis"] = new Date(Date.now() - 3 * 60_000);
     }
     await num(m.row!["revision"] as number);
+    expect(m.creerClassique).toHaveBeenCalledTimes(1);
+  });
+
+  it("3 sauvegardes intercalées : sync est écrit (devisMajLe du devis créé), le 2e appel MODIFIE au lieu d'être périmé", async () => {
+    poser(classique());
+    let lectures = 0;
+    m.findFirst.mockImplementation(async ({ where }: { where: Ligne }) => {
+      if (!m.row || !correspond(m.row, where)) return null;
+      const copie = { ...m.row };
+      if (where["statut"] === "numerotation" && lectures++ < 3) {
+        m.row["revision"] = (m.row["revision"] as number) + 1;
+      }
+      return copie;
+    });
+    await num();
+    expect((m.row!["payload"] as PayloadAssistantV1).sync).toEqual({
+      devisId: DEVIS,
+      devisMajLe: MAJ1.toISOString(),
+    });
+    const r2 = await num(m.row!["revision"] as number);
+    expect(r2).not.toMatchObject({ error: expect.stringContaining("modifi") });
+    expect(m.modifierClassique).toHaveBeenCalledTimes(1);
     expect(m.creerClassique).toHaveBeenCalledTimes(1);
   });
 
