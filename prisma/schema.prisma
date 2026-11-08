@@ -5226,6 +5226,7 @@ model Client {
   emailsEnAttente  EmailOutbox[]
   reglesEmail      EmailAutomationSetting[]
   venteBrouillons  VenteBrouillon[]
+  devisAssistantBrouillons DevisAssistantBrouillon[]
   coachingSessions CoachingSession[]
 
   // ── Dossier client (chantier visio, 2026-09-29) ──
@@ -5331,6 +5332,7 @@ model Devis {
   dossiersFinancement DossierFinancement[]
   relancesProposees   RelanceProposee[]
   venteBrouillons     VenteBrouillon[]
+  devisAssistantBrouillon DevisAssistantBrouillon?
   coachingSessions    CoachingSession[]
 
   @@index([clientId])
@@ -5379,6 +5381,42 @@ model VenteBrouillon {
   @@index([retentionUntil])
   @@index([createdByAdminId, updatedAt])
   @@map("vente_brouillons")
+}
+
+/// Brouillon de l'assistant de création de devis (chantier « assistant de devis », fiche S01).
+///
+/// Porte l'état de l'assistant entre deux visites. Aucune purge (décision de Williams) :
+/// pas de `retentionUntil`, aucune suppression — un brouillon abandonné est mis à l'écart
+/// (`statut`), jamais effacé. `adminId` et `venteBrouillonId` sont des liens logiques sans FK.
+/// `devisId` est unique : un seul brouillon d'assistant par devis (rejeu sûr).
+/// Le code qui lit ou écrit cette table arrive APRÈS la mise en ligne de cette migration.
+model DevisAssistantBrouillon {
+  id                   String    @id @default(uuid()) @db.Uuid
+  /// Propriétaire (uuid AdminUser, sans FK — comme `vente_brouillons`).
+  createdByAdminId     String    @map("created_by_admin_id") @db.Uuid
+  clientId             String?   @map("client_id") @db.Uuid
+  client               Client?   @relation(fields: [clientId], references: [id], onDelete: SetNull)
+  devisId              String?   @unique @map("devis_id") @db.Uuid
+  devis                Devis?    @relation(fields: [devisId], references: [id], onDelete: SetNull)
+  /// Lien logique vers `vente_brouillons` (sans FK).
+  venteBrouillonId     String?   @map("vente_brouillon_id") @db.Uuid
+  etape                Int       @default(1) @db.SmallInt
+  /// Validé par Zod côté code (varchar, pas d'énumération Postgres).
+  statut               String    @default("en_cours") @db.VarChar(16)
+  payload              Json      @default("{}")
+  payloadVersion       Int       @default(1) @map("payload_version") @db.SmallInt
+  /// Concurrence optimiste.
+  revision             Int       @default(0)
+  /// Rejeu d'une sauvegarde déjà appliquée.
+  derniereSauvegardeId String?   @map("derniere_sauvegarde_id") @db.Uuid
+  /// Verrou de numérotation (double clic).
+  verrouDepuis         DateTime? @map("verrou_depuis") @db.Timestamptz(3)
+  createdAt            DateTime  @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt            DateTime  @updatedAt @map("updated_at") @db.Timestamptz(3)
+
+  @@index([createdByAdminId, updatedAt])
+  @@index([clientId])
+  @@map("devis_assistant_brouillons")
 }
 
 // ============================================================
