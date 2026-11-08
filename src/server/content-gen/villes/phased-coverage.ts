@@ -1,3 +1,5 @@
+import { generateurAnnexeVilleGele } from "./generateurs-annexes-geles";
+
 /**
  * AXION-IA — Phased Coverage Campaign
  *
@@ -376,4 +378,13 @@ export interface GeneratorBaseInputExtension {
 
   // Nouveau — Dépendances satisfaites (checké par le worker avant génération)
   phaseDepsSatisfied?: boolean;
+}
+
+/**
+ * Types réellement planifiables pour une phase : les générateurs annexes ville
+ * gelés (cf. `generateurs-annexes-geles.ts`) en sont retirés. `PHASE_DEFINITIONS`
+ * reste la matrice déclarative ; tout planificateur doit passer par ici.
+ */
+export function contentTypesActifs(def: PhaseDefinition): string[] {
+  return def.contentTypes.filter((t) => !generateurAnnexeVilleGele(t));
 }

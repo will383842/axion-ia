@@ -30,6 +30,10 @@
 import { PrismaClient } from "../prisma/generated/client";
 import { VILLES } from "../src/content/villes";
 import type { Ville } from "../src/content/villes";
+import {
+  MESSAGE_GENERATEUR_ANNEXE_GELE,
+  generateurAnnexeVilleGele,
+} from "../src/server/content-gen/villes/generateurs-annexes-geles";
 
 // ---------------------------------------------------------------------------
 // Types
@@ -275,6 +279,14 @@ async function runGenerator(
   tier: Tier,
   dryRun: boolean,
 ): Promise<GeneratorResult> {
+  // Gel : aucune page ne lit la table de ces générateurs (aucun appel au modèle).
+  if (generateurAnnexeVilleGele(`landing-ville-${generatorName}`)) {
+    console.log(
+      `[regen-villes] ${generatorName} / ${ville.slug} : ${MESSAGE_GENERATEUR_ANNEXE_GELE}`,
+    );
+    return { generatorName, villeSlug: ville.slug, success: true, skipped: true };
+  }
+
   // Resume check
   if (!dryRun) {
     const alreadyDone = await isAlreadyGenerated(prisma, ville.slug, generatorName);
