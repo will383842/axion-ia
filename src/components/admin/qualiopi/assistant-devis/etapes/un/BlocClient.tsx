@@ -37,6 +37,11 @@ export interface PropsBlocClient {
   creerClient: (input: EntreeNouveauContact) => Promise<ResultatNouveauContact>;
   /** Date du jour ISO (AAAA-MM-JJ) fournie par la page serveur ; absente = bornes non posées. */
   aujourdhui?: string | undefined;
+  /**
+   * Si fourni, le parent tient la liste des contacts créés (et `clients` les contient déjà) ;
+   * sinon le bloc garde lui-même les contacts créés pendant la saisie.
+   */
+  onClientCree?: ((c: ClientOption) => void) | undefined;
 }
 
 const JOUR_MS = 86_400_000;
@@ -57,12 +62,13 @@ export function BlocClient({
   lireBandeau,
   creerClient,
   aujourdhui,
+  onClientCree,
 }: PropsBlocClient) {
   const [ajoutes, setAjoutes] = useState<ClientOption[]>([]);
   const [creation, setCreation] = useState(false);
   const [bandeau, setBandeau] = useState<{ clientId: string; texte: string | null } | null>(null);
 
-  const tous = [...clients, ...ajoutes];
+  const tous = onClientCree ? clients : [...clients, ...ajoutes];
   const client = tous.find((c) => c.id === etat.clientId) ?? null;
 
   useEffect(() => {
@@ -127,7 +133,8 @@ export function BlocClient({
           creerClient={creerClient}
           onAnnuler={() => setCreation(false)}
           onCree={(c) => {
-            setAjoutes((a) => [...a, c]);
+            if (onClientCree) onClientCree(c);
+            else setAjoutes((a) => [...a, c]);
             setCreation(false);
             dispatch({ type: "client", id: c.id, clientType: c.type });
           }}
