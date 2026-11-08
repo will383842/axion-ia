@@ -78,7 +78,7 @@ export default async function JourneeIaPage({ params }: Props) {
     path: PATH,
     name: "La Journée IA",
     description: DESCRIPTION,
-    priceEur: JOURNEE_IA_TIER.priceFlat,
+    ...(JOURNEE_IA_TIER.priceFlat !== undefined ? { priceEur: JOURNEE_IA_TIER.priceFlat } : {}),
     serviceType: "Audit et formation à l'IA en entreprise",
   });
   // Montant HT : précisé en toutes lettres pour les moteurs de réponse.
