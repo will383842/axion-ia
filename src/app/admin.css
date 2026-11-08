@@ -27,30 +27,30 @@
     /* Passe « pep's » 2026-08-02 (retour Will : « manque de contraste sur
        toutes les pages ») : canvas approfondi d'un cran — les cartes blanches
        et leurs ombres se détachent enfin au lieu de se fondre. */
-    --color-admin-bg: #FAF9F5;
-    --color-admin-paper: #FFFFFF; /* surface cards/tables */
-    --color-admin-paper-alt: #FAF9F5; /* alt rows tables, équivalent --color-bg public */
-    --color-admin-surface-hover: #E8E6DC; /* hover rows = --color-sand public */
-    --color-admin-border: #B0AEA5; /* = --color-border public */
-    --color-admin-border-strong: #5E5D59; /* dividers marqués */
+    --color-admin-bg: #faf9f5;
+    --color-admin-paper: #ffffff; /* surface cards/tables */
+    --color-admin-paper-alt: #faf9f5; /* alt rows tables, équivalent --color-bg public */
+    --color-admin-surface-hover: #e8e6dc; /* hover rows = --color-sand public */
+    --color-admin-border: #b0aea5; /* = --color-border public */
+    --color-admin-border-strong: #5e5d59; /* dividers marqués */
 
     /* ----- Foreground ----- */
     --color-admin-fg: #141413; /* anthracite-brun = --color-fg public */
-    --color-admin-fg-soft: #5E5D59; /* gris-brun moyen = --color-fg-soft */
-    --color-admin-fg-muted: #5E5D59; /* tertiaire = --color-fg-muted */
-    --color-admin-fg-disabled: #B0AEA5; /* WCAG 3:1 sur paper */
+    --color-admin-fg-soft: #5e5d59; /* gris-brun moyen = --color-fg-soft */
+    --color-admin-fg-muted: #5e5d59; /* tertiaire = --color-fg-muted */
+    --color-admin-fg-disabled: #b0aea5; /* WCAG 3:1 sur paper */
 
     /* ----- Status (étend Design.md sans conflit public) ----- */
-    --color-admin-success: #5E7050; /* vert plus saturé que --color-sage pour distinction badges */
-    --color-admin-success-soft: #E8E6DC;
+    --color-admin-success: #5e7050; /* vert plus saturé que --color-sage pour distinction badges */
+    --color-admin-success-soft: #e8e6dc;
     --color-admin-success-fg: #141413;
 
-    --color-admin-warning: #8F3412; /* ambré pour distinguer de terracotta éditoriale */
-    --color-admin-warning-soft: #E8E6DC;
+    --color-admin-warning: #8f3412; /* ambré pour distinguer de terracotta éditoriale */
+    --color-admin-warning-soft: #e8e6dc;
     --color-admin-warning-fg: #141413;
 
-    --color-admin-destructive: #B8341C; /* rouge-brique destructive (vs --color-error site) */
-    --color-admin-destructive-soft: #E8E6DC;
+    --color-admin-destructive: #b8341c; /* rouge-brique destructive (vs --color-error site) */
+    --color-admin-destructive-soft: #e8e6dc;
     --color-admin-destructive-fg: #141413;
     /* Alias historique : ~84 composants (dont les alertes d'erreur de l'émargement,
        B6/L6/L7) référencent `--color-admin-error`, jamais défini → les messages
@@ -60,7 +60,7 @@
     --color-admin-error-soft: var(--color-admin-destructive-soft);
     --color-admin-error-fg: var(--color-admin-destructive-fg);
 
-    --color-admin-terracotta: #B23F16; /* terracotta éditoriale — brand Axion-IA, CTA admin */
+    --color-admin-terracotta: #b23f16; /* terracotta éditoriale — brand Axion-IA, CTA admin */
 
     /* 🔴 `accent` et `accent-fg` étaient RÉFÉRENCÉS PAR 84 FICHIERS et DÉFINIS
        NULLE PART.
@@ -87,7 +87,7 @@
     --color-admin-accent-track: color-mix(in srgb, var(--color-admin-terracotta) 14%, transparent);
     /* Texte d'action sur fond teinté accent : un cran plus profond que la
        terracotta pour garder AA sur la teinte (vague « tonal » 2026-08-02). */
-    --color-admin-accent-strong: #8F3412;
+    --color-admin-accent-strong: #8f3412;
 
     /* =====================================================================
      * PALETTE D'IDENTITÉ — une teinte par FAMILLE MÉTIER (2026-08-02).
@@ -119,31 +119,31 @@
      * catégories affichées ensemble.
      * ===================================================================== */
     --color-admin-id-terracotta: var(--color-admin-terracotta);
-    --color-admin-id-teal: #5E5D59;
-    --color-admin-id-violet: #5E5D59;
-    --color-admin-id-or: #5E5D59;
-    --color-admin-id-bleu: #5E5D59;
-    --color-admin-id-magenta: #5E5D59;
-    --color-admin-id-vert: #5E7050;
+    --color-admin-id-teal: #5e5d59;
+    --color-admin-id-violet: #5e5d59;
+    --color-admin-id-or: #5e5d59;
+    --color-admin-id-bleu: #5e5d59;
+    --color-admin-id-magenta: #5e5d59;
+    --color-admin-id-vert: #5e7050;
     --color-admin-id-terracotta-soft: color-mix(
       in srgb,
       var(--color-admin-terracotta) 12%,
       transparent
     );
-    --color-admin-id-teal-soft: color-mix(in srgb, #5E5D59 12%, transparent);
-    --color-admin-id-violet-soft: color-mix(in srgb, #5E5D59 12%, transparent);
-    --color-admin-id-or-soft: color-mix(in srgb, #5E5D59 14%, transparent);
-    --color-admin-id-bleu-soft: color-mix(in srgb, #5E5D59 10%, transparent);
-    --color-admin-id-magenta-soft: color-mix(in srgb, #5E5D59 10%, transparent);
-    --color-admin-id-vert-soft: color-mix(in srgb, #5E7050 12%, transparent);
+    --color-admin-id-teal-soft: color-mix(in srgb, #5e5d59 12%, transparent);
+    --color-admin-id-violet-soft: color-mix(in srgb, #5e5d59 12%, transparent);
+    --color-admin-id-or-soft: color-mix(in srgb, #5e5d59 14%, transparent);
+    --color-admin-id-bleu-soft: color-mix(in srgb, #5e5d59 10%, transparent);
+    --color-admin-id-magenta-soft: color-mix(in srgb, #5e5d59 10%, transparent);
+    --color-admin-id-vert-soft: color-mix(in srgb, #5e7050 12%, transparent);
     --color-admin-accent-fg: #ffffff;
 
-    --color-admin-info: #5E5D59; /* = --color-primary public, CTA primaire admin */
-    --color-admin-info-soft: #E8E6DC; /* = --color-primary-soft */
-    --color-admin-info-fg: #FFFFFF;
+    --color-admin-info: #5e5d59; /* = --color-primary public, CTA primaire admin */
+    --color-admin-info-soft: #e8e6dc; /* = --color-primary-soft */
+    --color-admin-info-fg: #ffffff;
 
-    --color-admin-neutral: #5E5D59;
-    --color-admin-neutral-soft: #E8E6DC;
+    --color-admin-neutral: #5e5d59;
+    --color-admin-neutral-soft: #e8e6dc;
 
     /* ----- Spacing dense (4-12 prioritaire admin, vs public 8-64) ----- */
     --space-admin-1: 2px;
@@ -229,13 +229,13 @@
 
     --color-admin-rail-bg: #141413; /* mocha rich — fond du rail */
     --color-admin-rail-bg-elevated: #141413; /* header / footer / champ recherche */
-    --color-admin-rail-border: #5E5D59; /* dividers internes subtils */
-    --color-admin-rail-fg: #FFFFFF; /* texte principal ivoire (un cran plus clair) */
-    --color-admin-rail-fg-soft: #B0AEA5; /* liens nav au repos (contraste relevé ~10:1) */
-    --color-admin-rail-fg-muted: #B0AEA5; /* labels / méta / niveau 3 (~6.3:1) */
+    --color-admin-rail-border: #5e5d59; /* dividers internes subtils */
+    --color-admin-rail-fg: #ffffff; /* texte principal ivoire (un cran plus clair) */
+    --color-admin-rail-fg-soft: #b0aea5; /* liens nav au repos (contraste relevé ~10:1) */
+    --color-admin-rail-fg-muted: #b0aea5; /* labels / méta / niveau 3 (~6.3:1) */
     --color-admin-rail-hover: rgb(255 255 255 / 0.06); /* fond hover lien */
     --color-admin-rail-active-bg: rgb(217 119 87 / 0.18); /* tuile active (terracotta tint) */
-    --color-admin-rail-active-fg: #FFFFFF; /* texte lien actif */
+    --color-admin-rail-active-fg: #ffffff; /* texte lien actif */
 
     /* =====================================================================
      * 🔴 2026-08-21 — LA CONSOLE N'AVAIT JAMAIS ÉTÉ PASSÉE À axe-core.
@@ -266,16 +266,16 @@
 
     /* Éclairci pour tenir 4,5:1 SUR LA TUILE ACTIVE (#4d3528 → 4,95) et non
        seulement sur le fond du rail (#2a2520 → 6,64). */
-    --color-admin-rail-accent: #D97757;
+    --color-admin-rail-accent: #d97757;
     /* Encre sombre pour les surfaces VIVES (accent, avatar, badge ambre), où le
        blanc ne peut pas tenir : 5,9:1 sur terracotta, 8,1:1 sur ambre. */
     --color-admin-rail-on-bright: #141413;
     --color-admin-rail-ring: rgb(217 119 87 / 0.5); /* focus ring sur fond sombre */
     /* Rouge assombri : le blanc y passe de 3,91 à 4,93. On garde l'idiome
        « badge rouge, chiffre blanc », qui est ce qu'un opérateur reconnaît. */
-    --color-admin-rail-badge-danger: #B8341C;
-    --color-admin-rail-badge-warn: #D97757; /* badge ambre — encre SOMBRE obligatoire */
-    --color-admin-rail-avatar-bg: #D97757; /* pastille avatar footer — encre sombre */
+    --color-admin-rail-badge-danger: #b8341c;
+    --color-admin-rail-badge-warn: #d97757; /* badge ambre — encre SOMBRE obligatoire */
+    --color-admin-rail-avatar-bg: #d97757; /* pastille avatar footer — encre sombre */
     --color-admin-rail-text: var(--color-admin-rail-fg); /* alias — cf. bloc « jetons fantômes » */
 
     /* =====================================================================
@@ -377,7 +377,7 @@
 
     /* Surface « creusée » — en-têtes de tableau, blocs de code, puits JSON.
        Distincte de `paper-alt` (qui reste une surface posée, pas creusée). */
-    --color-admin-surface-sunken: #E8E6DC;
+    --color-admin-surface-sunken: #e8e6dc;
 
     /* Ombres de survol pour les surfaces cliquables — un cran au-dessus de
        l'élévation au repos, sans « saut » de mise en page. */
@@ -388,42 +388,42 @@
        CLIENTS). Aucun rendu existant ne les lit : D0 ne change rien à l'écran.
        Contrastes calculés (WCAG) : control-border 4,92:1, placeholder 6,06:1,
        ghost-border 3,45:1 sur blanc. ----- */
-    --color-admin-control-border: #5E5D59;
-    --color-admin-placeholder: #5E5D59;
+    --color-admin-control-border: #5e5d59;
+    --color-admin-placeholder: #5e5d59;
     --color-admin-mocha: #141413;
-    --color-admin-ghost-border: #B23F16;
+    --color-admin-ghost-border: #b23f16;
     --shadow-admin-cta: 0 6px 16px rgb(178 63 22 / 0.28);
     /* Pastilles PLEINES (texte blanc, ≥ 4,5:1). */
-    --color-admin-solid-success: #5E7050;
-    --color-admin-solid-warning: #8F3412;
-    --color-admin-solid-destructive: #B8341C;
-    --color-admin-solid-info: #5E5D59;
-    --color-admin-solid-neutral: #5E5D59;
+    --color-admin-solid-success: #5e7050;
+    --color-admin-solid-warning: #8f3412;
+    --color-admin-solid-destructive: #b8341c;
+    --color-admin-solid-info: #5e5d59;
+    --color-admin-solid-neutral: #5e5d59;
     /* Blocs colorés : fond / bord / liseré / titre, par teinte. La couleur ne
        porte jamais seule le sens (titre + libellé en toutes lettres). */
-    --color-admin-bloc-terracotta-bg: #E8E6DC;
-    --color-admin-bloc-terracotta-border: #B0AEA5;
-    --color-admin-bloc-terracotta-accent: #B23F16;
+    --color-admin-bloc-terracotta-bg: #e8e6dc;
+    --color-admin-bloc-terracotta-border: #b0aea5;
+    --color-admin-bloc-terracotta-accent: #b23f16;
     --color-admin-bloc-terracotta-title: #141413;
-    --color-admin-bloc-bleu-bg: #E8E6DC;
-    --color-admin-bloc-bleu-border: #B0AEA5;
-    --color-admin-bloc-bleu-accent: #5E5D59;
+    --color-admin-bloc-bleu-bg: #e8e6dc;
+    --color-admin-bloc-bleu-border: #b0aea5;
+    --color-admin-bloc-bleu-accent: #5e5d59;
     --color-admin-bloc-bleu-title: #141413;
-    --color-admin-bloc-vert-bg: #E8E6DC;
-    --color-admin-bloc-vert-border: #B0AEA5;
-    --color-admin-bloc-vert-accent: #5E7050;
+    --color-admin-bloc-vert-bg: #e8e6dc;
+    --color-admin-bloc-vert-border: #b0aea5;
+    --color-admin-bloc-vert-accent: #5e7050;
     --color-admin-bloc-vert-title: #141413;
-    --color-admin-bloc-ambre-bg: #E8E6DC;
-    --color-admin-bloc-ambre-border: #B0AEA5;
-    --color-admin-bloc-ambre-accent: #8F3412;
+    --color-admin-bloc-ambre-bg: #e8e6dc;
+    --color-admin-bloc-ambre-border: #b0aea5;
+    --color-admin-bloc-ambre-accent: #8f3412;
     --color-admin-bloc-ambre-title: #141413;
-    --color-admin-bloc-violet-bg: #E8E6DC;
-    --color-admin-bloc-violet-border: #B0AEA5;
-    --color-admin-bloc-violet-accent: #5E5D59;
+    --color-admin-bloc-violet-bg: #e8e6dc;
+    --color-admin-bloc-violet-border: #b0aea5;
+    --color-admin-bloc-violet-accent: #5e5d59;
     --color-admin-bloc-violet-title: #141413;
-    --color-admin-bloc-gris-bg: #E8E6DC;
-    --color-admin-bloc-gris-border: #B0AEA5;
-    --color-admin-bloc-gris-accent: #5E5D59;
+    --color-admin-bloc-gris-bg: #e8e6dc;
+    --color-admin-bloc-gris-border: #b0aea5;
+    --color-admin-bloc-gris-accent: #5e5d59;
     --color-admin-bloc-gris-title: #141413;
   }
 }
@@ -871,10 +871,10 @@
     white-space: nowrap;
   }
   .admin-button-cta:hover {
-    background-color: #8F3412;
+    background-color: #8f3412;
   }
   .admin-button-cta:focus-visible {
-    outline: 2px solid #B23F16;
+    outline: 2px solid #b23f16;
     outline-offset: 2px;
   }
   .admin-button-cta:disabled,
@@ -1243,10 +1243,10 @@
     box-shadow var(--duration-admin-fast) var(--easing-admin);
 }
 .admin-button:hover:not(:disabled, [aria-disabled="true"]) {
-  background-color: #8F3412;
+  background-color: #8f3412;
 }
 .admin-button:active:not(:disabled, [aria-disabled="true"]) {
-  background-color: #8F3412;
+  background-color: #8f3412;
 }
 .admin-button:focus-visible {
   outline: none;
@@ -1364,7 +1364,7 @@
   transition: background-color var(--duration-admin-fast) var(--easing-admin);
 }
 .admin-button-danger:hover:not(:disabled, [aria-disabled="true"]) {
-  background-color: #8F3412;
+  background-color: #8f3412;
 }
 .admin-button-danger:focus-visible {
   outline: none;
@@ -3048,13 +3048,13 @@ a.admin-card-inline {
    de toute façon la valeur héritée du shell). */
 @layer admin-tokens {
   .admin-ton-dossier {
-    --color-admin-border: #B0AEA5;
-    --color-admin-border-strong: #5E5D59;
-    --color-admin-fg-soft: #5E5D59;
-    --color-admin-fg-muted: #5E5D59;
-    --color-admin-accent: #B23F16;
-    --color-admin-accent-track: #E8E6DC;
-    --color-admin-ring: #B23F16;
+    --color-admin-border: #b0aea5;
+    --color-admin-border-strong: #5e5d59;
+    --color-admin-fg-soft: #5e5d59;
+    --color-admin-fg-muted: #5e5d59;
+    --color-admin-accent: #b23f16;
+    --color-admin-accent-track: #e8e6dc;
+    --color-admin-ring: #b23f16;
     --radius-admin-sm: 8px;
     --radius-admin-md: 12px;
     --text-admin-xs: 13px;
