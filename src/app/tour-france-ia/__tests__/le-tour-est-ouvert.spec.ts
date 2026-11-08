@@ -632,7 +632,7 @@ describe("🔴 le Tour est une OFFRE aux entreprises, pas un événement (JSON-L
     expect(service["areaServed"]).toEqual({ "@type": "Country", name: "France" });
     expect(service["audience"]).toEqual({
       "@type": "BusinessAudience",
-      name: "Entreprises, de la TPE à l’ETI",
+      name: "TPE et PME",
     });
   });
 

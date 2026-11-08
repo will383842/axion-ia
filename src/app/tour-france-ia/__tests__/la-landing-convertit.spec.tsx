@@ -156,6 +156,11 @@ describe("🔑 une seule action : ma journée offerte", () => {
       libelle: "Conditions générales du Tour",
       href: "/tour-france-ia/conditions-generales",
     });
+    // La Journée IA du site : même offre, hors Tour (page du lot R5a).
+    expect(PIED.liens[1]).toEqual({
+      libelle: "La Journée IA d’Axion-IA",
+      href: "https://axion-ia.com/fr/journee-ia",
+    });
   });
 
   it("l'en-tête du tunnel : le logo et UN bouton (tdf-entete, 44 px minimum), aucun menu, aucun lien de sortie", () => {
@@ -391,7 +396,7 @@ describe("🔑 une seule action : ma journée offerte", () => {
   it("« En 3 étapes », « Ce que vous gagnez », les ambassadeurs : le texte du propriétaire, mot pour mot", () => {
     expect(ETAPES.liste).toEqual([
       "Votre demande, en 1 minute",
-      "Une visio de 30 minutes",
+      "Une visio de 45 minutes",
       "Retenu ? Votre jour est fixé",
     ]);
     expect(sansCommentaires(PAGE)).toMatch(/\$\{styles\.parcours\} mt-8 grid gap-8 lg:grid-cols-3/);
@@ -906,11 +911,11 @@ describe("🔴 le vocabulaire de la landing", () => {
 
   it("aucun chiffre hors de ceux du concept : pas de compteur, pas de statistique", () => {
     const chiffres = new Set(texte.match(/\d+/g) ?? []);
-    for (const c of chiffres) expect(["1", "3", "4", "5", "15", "30"], c).toContain(c);
+    for (const c of chiffres) expect(["1", "3", "4", "5", "15", "45"], c).toContain(c);
   });
 
   it("« offert » et « gratuit » ne disent jamais la visio : elle est « sans engagement »", () => {
-    expect(MICRO_TEXTE_CTA).toBe("Visio de 30 minutes · sans engagement");
+    expect(MICRO_TEXTE_CTA).toBe("Visio de 45 minutes · sans engagement");
     expect(texte).not.toMatch(/visio[^.\n]*(gratuite|offerte)|gratuite et sans engagement/i);
     // La phrase est écrite UNE fois (contenu.ts) ; la page la cite sous les deux grands boutons.
     expect(PAGE.match(/\{MICRO_TEXTE_CTA\}/g)).toHaveLength(2);

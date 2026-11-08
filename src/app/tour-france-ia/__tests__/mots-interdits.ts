@@ -19,6 +19,9 @@ export const MOTS_INTERDITS: RegExp[] = [
   /✨/u,
   /obligatoire/i,
   /r[ée]serv[ée] aux (TPE|PME)/i,
+  // Cible : « TPE et PME » (jamais l'étiquette « TPE/PME »), et pas d'ETI dans l'offre publique.
+  /TPE\s*\/\s*PME/i,
+  /\bETI\b/,
   /candidat/i,
   /marque d[ée]pos[ée]e/i,
   /®/u,

@@ -5,7 +5,7 @@
 //
 // 🔑 Le Tour n'est PAS un événement : c'est une offre faite AUX ENTREPRISES — une
 // journée offerte chez elles (audit + formation d'équipe de 4 h, en intra-entreprise
-// et en présentiel, de la TPE à l'ETI), aux 5 entreprises retenues par ville, en
+// et en présentiel, des TPE et PME), aux 5 entreprises retenues par ville, en
 // échange d'un podcast (modèle du 2026-10-27). Il garde son nom et l'idée d'un tour qui va
 // de ville en ville, mais il est décrit comme un `Service` : aucune propriété
 // d'`Event` (ni `startDate`, ni `location`, ni `eventAttendanceMode`, ni `subEvent`,
@@ -67,7 +67,7 @@ export function jsonLdDuTour(): Record<string, unknown> {
         url,
         provider: organisation,
         areaServed: { "@type": "Country", name: "France" },
-        audience: { "@type": "BusinessAudience", name: "Entreprises, de la TPE à l’ETI" },
+        audience: { "@type": "BusinessAudience", name: "TPE et PME" },
         // Dit comme le texte visible : la journée offerte, sa sélection et sa contrepartie.
         offers: {
           "@type": "Offer",

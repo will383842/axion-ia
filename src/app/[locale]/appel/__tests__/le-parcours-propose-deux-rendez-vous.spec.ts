@@ -53,16 +53,18 @@ describe("🔑 /appel montre le choix, puis le bon calendrier", () => {
     expect(page).toContain("<ChoixDuRendezVous");
   });
 
-  it("les deux rendez-vous sont nommés, le diagnostic EN PREMIER et en bouton plein", () => {
-    const diag = page.indexOf('data-cta="appel_choix_diagnostic"');
+  it("🔑 UN SEUL rendez-vous gratuit de 45 minutes : une carte, vers l'échange de 45 min", () => {
     const projet = page.indexOf('data-cta="appel_choix_projet"');
-    expect(diag).toBeGreaterThan(-1);
-    expect(projet).toBeGreaterThan(diag);
-    expect(page).toContain("Diagnostic IA");
-    expect(page).toContain("Échange projet");
-    // Le bouton du diagnostic est le bouton PLEIN (couleur de marque).
-    const boutonDiag = page.slice(page.lastIndexOf("<a", diag), diag + 400);
-    expect(boutonDiag).toContain("bg-terracotta");
+    expect(projet).toBeGreaterThan(-1);
+    // Plus de carte « Diagnostic IA » : aucun bouton ne mène au diagnostic de 30 min.
+    expect(page).not.toContain('data-cta="appel_choix_diagnostic"');
+    expect(page).not.toContain("Diagnostic IA");
+    expect(page).not.toContain("Réserver mon diagnostic");
+    expect(page.match(/data-cta="appel_choix_/g)).toHaveLength(1);
+    expect(page).toContain("Rendez-vous gratuit de 45 minutes");
+    // La carte unique porte le bouton PLEIN (couleur de marque).
+    const bouton = page.slice(page.lastIndexOf("<a", projet), projet + 400);
+    expect(bouton).toContain("bg-terracotta");
   });
 
   it("un lien discret permet de changer de rendez-vous", () => {
@@ -85,8 +87,10 @@ describe("🔑 /appel montre le choix, puis le bon calendrier", () => {
     expect(page).not.toContain("StickyMobileCta");
   });
 
-  it("aucune durée écrite en dur sur la page : elles viennent de Calendly", () => {
-    expect(page).not.toMatch(/\b(30|45) ?min/);
+  it("la seule durée écrite est « 45 minutes » : jamais 15, 20 ni 30", () => {
+    expect(page).toContain("45 minutes");
+    expect(page).not.toMatch(/\b(15|20|30) ?min/);
+    expect(page).not.toMatch(/quart d'heure|demi-heure/i);
   });
 });
 

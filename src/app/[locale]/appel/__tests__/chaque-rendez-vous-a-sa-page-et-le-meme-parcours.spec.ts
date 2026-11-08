@@ -65,11 +65,15 @@ describe("🔑 la porte `/appel/[type]`", () => {
   });
 });
 
-describe("🔑 /appel : le choix public ne liste que les deux rendez-vous publics", () => {
+describe("🔑 /appel : le choix public ne montre que le rendez-vous public de 45 minutes", () => {
   const page = sansCommentaires(lire(PAGE));
 
-  it("une carte par rendez-vous PUBLIC, aucune pour un lien privé", () => {
-    for (const c of CHOIX_PUBLICS) expect(page).toContain(`data-cta="appel_choix_${c}"`);
+  it("une seule carte (le rendez-vous de 45 min), aucune pour un lien privé", () => {
+    // Le diagnostic reste un choix PUBLIC côté logique (liens anciens `?rdv=diagnostic`),
+    // mais l'écran n'en fait plus une carte : un seul rendez-vous gratuit, 45 minutes.
+    expect(CHOIX_PUBLICS).toContain("projet");
+    expect(page).toContain('data-cta="appel_choix_projet"');
+    expect(page).not.toContain('data-cta="appel_choix_diagnostic"');
     expect(page).not.toContain('data-cta="appel_choix_apporteur"');
     expect(page).not.toContain('data-cta="appel_choix_salon"');
   });

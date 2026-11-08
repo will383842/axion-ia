@@ -17,7 +17,7 @@ vi.mock("@/i18n/routing", () => ({ routing: { locales: ["fr", "en"] } }));
 vi.mock("../actions", () => ({ soumettreLaReservation: vi.fn() }));
 vi.mock("@/server/calendly/alertes-reservation", () => ({ signalerRepliPermanent: vi.fn() }));
 vi.mock("@/server/calendly/availability", () => ({
-  resoudreEventTypePourReservation: vi.fn(async () => ({ dureeMinutes: 30, questions: [] })),
+  resoudreEventTypePourReservation: vi.fn(async () => ({ dureeMinutes: 45, questions: [] })),
 }));
 vi.mock("@/server/calendly/reprise-formulaire", () => ({
   lireLaRepriseDuCreneau: vi.fn(async () => null),
@@ -65,7 +65,7 @@ async function rendre(rdv: string) {
 describe("l'en-tête de l'étape 2", () => {
   it("rdv=tour : fil du Tour (étape 2), titre, sous-titre et bouton « Confirmer ma visio »", async () => {
     const { container } = await rendre("tour");
-    expect(container.querySelector("h1")?.textContent).toBe("Votre visio de 30 minutes");
+    expect(container.querySelector("h1")?.textContent).toBe("Votre visio de 45 minutes");
     expect(container.querySelector('ol [aria-current="step"]')?.textContent).toBe("La visio");
     expect(container.textContent).toContain(
       "Plus qu'une minute : vos coordonnées, dont un téléphone pour vous joindre.",

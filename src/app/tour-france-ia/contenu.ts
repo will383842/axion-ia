@@ -35,7 +35,7 @@
 // Jamais de vocabulaire de salon, de guichet ou de transaction : un test le garde.
 //
 // Les seuls chiffres de la page sont ceux du CONCEPT (3 étapes, 4 h, 5 demandes,
-// 5 entreprises, 15 personnes, 30 minutes, 1 minute) : aucun compteur par ville,
+// 5 entreprises, 15 personnes, 45 minutes, 1 minute) : aucun compteur par ville,
 // aucune statistique, aucun horaire.
 
 import { TOUR_PREFIX } from "@/features/tour-de-france/visibilite";
@@ -46,7 +46,7 @@ export const NOM_DU_TOUR = "Tour France IA";
 /** Le seuil qui OUVRE une ville, et le nombre de journées offertes par ville. Jamais un compteur. */
 export const SEUIL_PAR_VILLE = 5;
 
-/** La page de rendez-vous visio de 30 minutes (type `tour` de `types-reservables.ts`). */
+/** La page de rendez-vous visio de 45 minutes (type `tour` de `types-reservables.ts`). */
 export const CHEMIN_RENDEZ_VOUS = "/fr/appel/tour-france-ia";
 
 /** La mini-demande qui précède la visio (`demande/page.tsx`) : trois champs, puis le calendrier. */
@@ -65,7 +65,7 @@ export const LIBELLE_CTA_COURT = "Ma journée offerte";
  * Le micro-texte sous chaque grand bouton — la SEULE phrase qui décrit la visio.
  * Sans « gratuite » ni « offerte » : ces mots ne qualifient que la journée.
  */
-export const MICRO_TEXTE_CTA = "Visio de 30 minutes · sans engagement";
+export const MICRO_TEXTE_CTA = "Visio de 45 minutes · sans engagement";
 
 /**
  * Les emplacements des boutons, mesurés en `utm_term` chez Calendly puis lus par
@@ -139,7 +139,7 @@ export const META = {
    */
   image: `${TOUR_PREFIX}/opengraph-image.jpg`,
   imageAlt:
-    "Tour France IA, organisé par Axion-IA : sur fond clair ivoire aux couleurs d’Axion-IA, « Vous entendez parler d’IA partout et ne savez plus par où commencer ? Nous, si. » Audit offert, formation de 4 h offerte, de la TPE à l’ETI.",
+    "Tour France IA, organisé par Axion-IA : sur fond clair ivoire aux couleurs d’Axion-IA, « Vous entendez parler d’IA partout et ne savez plus par où commencer ? Nous, si. » Audit offert, formation de 4 h offerte, des TPE et PME.",
 } as const;
 
 /** L'en-tête du tunnel : le logo, et c'est tout (le bouton porte `LIBELLE_CTA_COURT`). */
@@ -173,7 +173,7 @@ export const HEROS = {
  * Elle ne dit rien que la page visible, sa FAQ et ses conditions ne disent.
  */
 export const DEFINITION =
-  "Le Tour France IA, organisé par Axion-IA et fondé par Williams Jullin, offre une journée à des entreprises de la TPE à l’ETI, tous secteurs : un audit de leur activité, qui chiffre ce que l’IA peut leur apporter, puis une formation de 4 h de leur équipe, en intra-entreprise et en présentiel, qui les aide à répondre à l’exigence de formation de l’AI Act. Le Tour va de ville en ville : une ville s’ouvre dès 5 demandes, puis une semaine, une entreprise par jour. La journée est offerte aux 5 entreprises retenues par ville, après une visio et un court questionnaire, en échange d’un podcast tourné chez elles ; les autres peuvent recevoir la même journée à un tarif Tour. Le vendredi soir, un dîner des dirigeants, facultatif et non compris dans la journée offerte.";
+  "Le Tour France IA, organisé par Axion-IA et fondé par Williams Jullin, offre une journée à des TPE et PME, tous secteurs : un audit de leur activité, qui chiffre ce que l’IA peut leur apporter, puis une formation de 4 h de leur équipe, en intra-entreprise et en présentiel, qui les aide à répondre à l’exigence de formation de l’AI Act. Le Tour va de ville en ville : une ville s’ouvre dès 5 demandes, puis une semaine, une entreprise par jour. La journée est offerte aux 5 entreprises retenues par ville, après une visio et un court questionnaire, en échange d’un podcast tourné chez elles ; les autres peuvent recevoir la même journée à un tarif Tour. Le vendredi soir, un dîner des dirigeants, facultatif et non compris dans la journée offerte.";
 
 /** La ville : le seuil, la semaine, et la carte — sans aucune ville nommée. */
 export const VILLE = {
@@ -211,7 +211,7 @@ export const AMBASSADEURS = {
 /** En 3 étapes : une pastille dessinée et une ligne chacune. */
 export const ETAPES = {
   titre: "En 3 étapes",
-  liste: ["Votre demande, en 1 minute", "Une visio de 30 minutes", "Retenu ? Votre jour est fixé"],
+  liste: ["Votre demande, en 1 minute", "Une visio de 45 minutes", "Retenu ? Votre jour est fixé"],
 } as const;
 
 /**
@@ -281,6 +281,7 @@ export const PIED = {
     "Le Tour France IA n’a aucun lien avec le Tour de France cycliste ni avec son organisateur.",
   liens: [
     { libelle: "Conditions générales du Tour", href: CHEMIN_CONDITIONS },
+    { libelle: "La Journée IA d’Axion-IA", href: "https://axion-ia.com/fr/journee-ia" },
     { libelle: "À propos d’Axion-IA", href: "https://axion-ia.com/fr/a-propos" },
     { libelle: "Contact", href: "https://axion-ia.com/fr/contact" },
     { libelle: "Mentions légales", href: "https://axion-ia.com/fr/mentions-legales" },
