@@ -111,3 +111,79 @@ export async function modifierDevisClassiqueBrouillonAction(
 
   return { data: { id, majLe: (apres?.updatedAt ?? new Date()).toISOString() } };
 }
+
+// ─────────────────────────────────────────────────────────────────────────────
+// S10 — validité modifiable (bornes D8 : J+7 à J+90 ; le défaut de 30 jours est posé à la création)
+// ─────────────────────────────────────────────────────────────────────────────
+
+const VALIDITE_MIN_JOURS = 7;
+const VALIDITE_MAX_JOURS = 90;
+const JOUR_MS = 86_400_000;
+
+/** Jour civil (heure de Paris) de `maintenant`, en millisecondes UTC à minuit. */
+function minuitParisUtc(maintenant: Date): number {
+  const p = new Intl.DateTimeFormat("en-CA", {
+    timeZone: "Europe/Paris",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  }).format(maintenant);
+  const [y, mo, d] = p.split("-").map(Number) as [number, number, number];
+  return Date.UTC(y, mo - 1, d);
+}
+
+const validiteSchema = z.object({
+  id: z.string().uuid(),
+  attenduMajLe: z.string().datetime(),
+  dateValidite: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
+});
+
+/**
+ * Fixe la date de validité d'un BROUILLON (classique OU à formules : la date n'est pas dans le
+ * sceau de l'offre). Dernier jour inclus : la date est enregistrée à 23 h 59 min 59 s UTC.
+ * Écriture conditionnelle sur `updatedAt` ; n'écrit jamais `statut`.
+ */
+export async function fixerValiditeDevisBrouillonAction(
+  i: z.input<typeof validiteSchema>,
+): Promise<ActionResult<{ majLe: string }>> {
+  if (process.env["DATABASE_URL"]?.includes("stub.invalid")) {
+    return { error: "Indisponible pendant le build" };
+  }
+  await requireAdminWrite();
+  const p = validiteSchema.safeParse(i);
+  if (!p.success) return { error: "Données invalides" };
+  const { id } = p.data;
+  const attendu = new Date(p.data.attenduMajLe);
+
+  const [y, mo, d] = p.data.dateValidite.split("-").map(Number) as [number, number, number];
+  const jourUtc = Date.UTC(y, mo - 1, d);
+  const verif = new Date(jourUtc);
+  if (verif.getUTCFullYear() !== y || verif.getUTCMonth() !== mo - 1 || verif.getUTCDate() !== d) {
+    return { error: "Date de validité invalide." };
+  }
+  const jours = Math.round((jourUtc - minuitParisUtc(new Date())) / JOUR_MS);
+  if (jours < VALIDITE_MIN_JOURS || jours > VALIDITE_MAX_JOURS) {
+    return {
+      error: `La validité du devis va de ${VALIDITE_MIN_JOURS} à ${VALIDITE_MAX_JOURS} jours à partir d'aujourd'hui.`,
+    };
+  }
+
+  const actuel = await prisma.devis.findUnique({
+    where: { id },
+    select: { id: true, statut: true, updatedAt: true },
+  });
+  if (!actuel) return { error: "Devis introuvable" };
+  if (actuel.statut !== "brouillon") {
+    return { error: "Un devis envoyé ne se modifie pas : créez une révision (nouvelle version)." };
+  }
+  if (actuel.updatedAt.getTime() !== attendu.getTime()) return { error: MSG_PERIME };
+
+  const { count } = await prisma.devis.updateMany({
+    where: { id, statut: "brouillon", updatedAt: attendu },
+    data: { dateValidite: new Date(jourUtc + JOUR_MS - 1000) },
+  });
+  if (count === 0) return { error: MSG_PERIME };
+
+  const apres = await prisma.devis.findUnique({ where: { id }, select: { updatedAt: true } });
+  return { data: { majLe: (apres?.updatedAt ?? new Date()).toISOString() } };
+}

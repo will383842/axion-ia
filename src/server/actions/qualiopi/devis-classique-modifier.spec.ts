@@ -5,7 +5,7 @@
  * partagé `champs-classiques` : le test d'égalité compare ce que `createDevisAction` écrit à
  * ce que la modification écrit, pour la MÊME entrée.
  */
-import { describe, it, expect, vi, beforeEach } from "vitest";
+import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 
 const m = vi.hoisted(() => ({
   devisFindUnique: vi.fn(),
@@ -50,7 +50,10 @@ vi.mock("@/server/queue/queues", () => ({ enqueueEmail: m.enqueueEmail }));
 vi.mock("@/server/actions/qualiopi/documents", () => ({ genererConventionAction: vi.fn() }));
 
 import { createDevisAction } from "./devis";
-import { modifierDevisClassiqueBrouillonAction } from "./devis-classique-modifier";
+import {
+  modifierDevisClassiqueBrouillonAction,
+  fixerValiditeDevisBrouillonAction,
+} from "./devis-classique-modifier";
 
 const CLIENT = "550e8400-e29b-41d4-a716-446655440001";
 const DEVIS = "550e8400-e29b-41d4-a716-446655440002";
@@ -252,5 +255,110 @@ describe("modifierDevisClassiqueBrouillonAction", () => {
     }
     expect(modif.montantOpcoEstimeCents).toBe(10000);
     expect(modif.mentionTva).toBeTruthy();
+  });
+});
+
+/**
+ * Fiche S10 — validité modifiable (bornes D8 : J+7 à J+90, défaut 30 jours posé à la création).
+ *
+ * Mutations qui font rougir ces tests : bornes décalées d'un jour (J+6 / J+91), retrait du
+ * `updatedAt` dans le `where`, retrait du refus « hors brouillon », ajout d'une écriture de
+ * `statut`, retrait du `requireAdminWrite`.
+ */
+describe("fixerValiditeDevisBrouillonAction (S10)", () => {
+  const NOW = new Date("2026-11-08T10:00:00.000Z");
+
+  beforeEach(() => {
+    vi.useFakeTimers();
+    vi.setSystemTime(NOW);
+  });
+  afterEach(() => {
+    vi.useRealTimers();
+  });
+
+  const appel = (dateValidite: string, o: Record<string, unknown> = {}) =>
+    fixerValiditeDevisBrouillonAction({ id: DEVIS, attenduMajLe: MAJ, dateValidite, ...o });
+
+  it("accepte J+30 sur un brouillon classique : updateMany conditionnel, jamais le statut", async () => {
+    m.devisFindUnique
+      .mockResolvedValueOnce(EXISTANT)
+      .mockResolvedValueOnce({ updatedAt: new Date("2026-11-08T10:01:00.000Z") });
+    const r = await appel("2026-12-08");
+    expect(r).toEqual({ data: { majLe: "2026-11-08T10:01:00.000Z" } });
+    const arg = m.devisUpdateMany.mock.calls[0]![0];
+    expect(arg.where).toEqual({ id: DEVIS, statut: "brouillon", updatedAt: new Date(MAJ) });
+    expect(Object.keys(arg.data)).toEqual(["dateValidite"]);
+    expect((arg.data.dateValidite as Date).toISOString()).toBe("2026-12-08T23:59:59.000Z");
+    expect(JSON.stringify(arg)).not.toMatch(/"statut":"(?!brouillon)/);
+    expect(m.devisUpdate).not.toHaveBeenCalled();
+  });
+
+  it("accepte aussi un devis À FORMULES (offreSha256 non nul)", async () => {
+    m.devisFindUnique
+      .mockResolvedValueOnce({ ...EXISTANT, offreSha256: "a".repeat(64) })
+      .mockResolvedValueOnce({ updatedAt: new Date(MAJ) });
+    const r = await appel("2026-12-08");
+    expect("data" in r).toBe(true);
+    expect(m.devisUpdateMany.mock.calls[0]![0].where).not.toHaveProperty("offreSha256");
+  });
+
+  it("bornes D8 : J+7 et J+90 passent", async () => {
+    for (const d of ["2026-11-15", "2027-02-06"]) {
+      m.devisFindUnique
+        .mockResolvedValueOnce(EXISTANT)
+        .mockResolvedValueOnce({ updatedAt: new Date(MAJ) });
+      expect("data" in (await appel(d)), d).toBe(true);
+    }
+  });
+
+  it("bornes D8 : J+6 et J+91 refusés, rien d'écrit", async () => {
+    for (const d of ["2026-11-14", "2027-02-07", "2026-11-08", "2025-01-01"]) {
+      const r = await appel(d);
+      expect("error" in r, d).toBe(true);
+    }
+    expect(m.devisUpdateMany).not.toHaveBeenCalled();
+  });
+
+  it("date illisible ou impossible refusée (31 février, format libre)", async () => {
+    for (const d of ["2026-02-31", "08/12/2026", "2026-13-01", "demain"]) {
+      expect("error" in (await appel(d)), d).toBe(true);
+    }
+    expect(m.devisUpdateMany).not.toHaveBeenCalled();
+  });
+
+  it("refuse un devis qui n'est plus brouillon", async () => {
+    m.devisFindUnique.mockResolvedValueOnce({ ...EXISTANT, statut: "envoye" });
+    const r = await appel("2026-12-08");
+    expect("error" in r).toBe(true);
+    expect(m.devisUpdateMany).not.toHaveBeenCalled();
+  });
+
+  it("refuse si updatedAt n'est plus celui que l'onglet a lu", async () => {
+    m.devisFindUnique.mockResolvedValueOnce({
+      ...EXISTANT,
+      updatedAt: new Date("2026-11-08T10:30:00.000Z"),
+    });
+    const r = await appel("2026-12-08");
+    expect("error" in r).toBe(true);
+    expect(m.devisUpdateMany).not.toHaveBeenCalled();
+  });
+
+  it("course entre onglets : updateMany à 0 ligne → refus", async () => {
+    m.devisFindUnique.mockResolvedValueOnce(EXISTANT);
+    m.devisUpdateMany.mockResolvedValue({ count: 0 });
+    const r = await appel("2026-12-08");
+    expect("error" in r).toBe(true);
+  });
+
+  it("devis introuvable → erreur", async () => {
+    m.devisFindUnique.mockResolvedValueOnce(null);
+    expect("error" in (await appel("2026-12-08"))).toBe(true);
+  });
+
+  it("garde d'écriture appelée d'abord", async () => {
+    const guards = await import("@/server/actions/qualiopi/_guards");
+    vi.mocked(guards.requireAdminWrite).mockRejectedValueOnce(new Error("interdit"));
+    await expect(appel("2026-12-08")).rejects.toThrow("interdit");
+    expect(m.devisFindUnique).not.toHaveBeenCalled();
   });
 });
