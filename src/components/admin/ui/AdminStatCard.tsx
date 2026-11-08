@@ -130,7 +130,7 @@ export function AdminStatCard({
               </span>
             </span>
           ) : null}
-          {label}
+          <span>{label}</span>
         </span>
         {Icon ? (
           <span

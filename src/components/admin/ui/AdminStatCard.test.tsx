@@ -31,4 +31,13 @@ describe("AdminStatCard — états avec icône ET mot", () => {
     render(<AdminStatCard label="Envois" value={12} delta="-3 %" />);
     expect(screen.getByText("-3 %").className).not.toContain("--color-admin-destructive)");
   });
+
+  it("le libellé est dans son propre élément, séparé du mot d'état", () => {
+    render(<AdminStatCard label="Envois" value={12} tone="info" />);
+    expect(screen.getByText("Envois")).toBeDefined();
+    // Playwright `getByText(..., { exact: true })` compare le textContent COMPLET
+    // de l'élément : le libellé doit donc avoir un élément qui ne contient que lui.
+    const exact = screen.getAllByText((_, el) => el?.textContent === "Envois");
+    expect(exact.length).toBeGreaterThan(0);
+  });
 });
