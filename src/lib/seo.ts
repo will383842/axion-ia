@@ -2060,17 +2060,21 @@ export function buildCourseJsonLd(input: CourseJsonLdInput) {
         : {}),
     })),
     // R7 — formations : aucun prix public interrupteur coupé (cf. `montantJsonLdAutorise`).
-    ...(typeof input.priceEurHt === "number" && montantJsonLdAutorise()
-      ? {
-          offers: {
-            "@type": "Offer",
-            url,
-            price: input.priceEurHt.toString(),
-            priceCurrency: "EUR",
-            availability: "https://schema.org/InStock",
-            category: "Professional training",
-          },
-        }
+    // Une formation payante garde alors une Offer SANS montant, `category: "Paid"` : c'est
+    // ce que demande l'éligibilité Google « Course info » quand le prix n'est pas publié.
+    ...(typeof input.priceEurHt === "number"
+      ? montantJsonLdAutorise()
+        ? {
+            offers: {
+              "@type": "Offer",
+              url,
+              price: input.priceEurHt.toString(),
+              priceCurrency: "EUR",
+              availability: "https://schema.org/InStock",
+              category: "Professional training",
+            },
+          }
+        : { offers: { "@type": "Offer", category: "Paid" } }
       : {}),
   } as const;
 }

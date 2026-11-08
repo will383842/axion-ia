@@ -26,7 +26,11 @@ import {
   getTierById,
 } from "@/content/pricing";
 // R7 (ordre de Williams du 08/11/2026) : aucun montant public hors Journée IA.
-import { montantPublic, recollerMontantsMasques } from "@/lib/seo/montant-public-texte";
+import {
+  marquerSurDevis,
+  montantPublic,
+  recollerMontantsMasques,
+} from "@/lib/seo/montant-public-texte";
 import { SERVICE_BY_ID } from "@/content/services";
 import { SITE_URL } from "@/lib/seo";
 import { FOUNDER, founderUrl } from "@/lib/brand";
@@ -62,7 +66,7 @@ export async function GET() {
     "fr",
   );
   // Sites web & SaaS IA — prix d'entrée dérivé du SSOT CODAGE_TIERS.
-  const sitesWebEntry = getEntryLabel(CODAGE_TIERS, "fr").replace(
+  const sitesWebEntry = marquerSurDevis(getEntryLabel(CODAGE_TIERS, "fr")).replace(
     /^(dès\s|À partir de )/,
     "à partir de ",
   );

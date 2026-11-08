@@ -54,7 +54,7 @@ import { JOURNEE_IA_TIER, prixAffichable } from "@/content/pricing";
 const ESPACE = "[\\s\\u00a0\\u202f]";
 /** Un montant écrit avec son unité : « 1 900 € », « 1,9 k€ », « 990 euros », « € 490 », « 1490 EUR ». */
 const MONTANT = new RegExp(
-  `\\d[\\d${ESPACE.slice(1, -1)}.,]*${ESPACE}?(?:k?€|EUR\\b|euros?\\b)|€${ESPACE}?\\d[\\d.,]*`,
+  `\\d[\\d${ESPACE.slice(1, -1)}.,]*${ESPACE}?(?:[kKM]?€|EUR\\b|euros?\\b)|€${ESPACE}?\\d[\\d.,]*|\\bEUR${ESPACE}?\\d(?:[\\d.,]|${ESPACE}(?=\\d))*`,
   "gi",
 );
 
@@ -110,6 +110,8 @@ describe("garde R7 — les détecteurs voient ce qu'ils doivent voir (anti-test-
     );
     expect(montantsInterdits("La Journée IA : 1 490 € HT, 1490 €, 1 490 €")).toEqual([]);
     expect(montantsInterdits("from a few hundred euros to several thousand euros")).toHaveLength(2);
+    expect(montantsInterdits("EUR 1 900, puis 1 M€, puis 1 900 € HT")).toHaveLength(3);
+    expect(montantsInterdits("EUR 1 490")).toEqual([]);
   });
 
   it("le parcours JSON-LD repère un prix imbriqué et épargne 1 490 et 0", () => {
@@ -157,6 +159,10 @@ describe("garde R7 — texte des canaux machine", () => {
   it("llms-full.txt ne sert aucun montant hors Journée IA", async () => {
     const corps = await (await getLlmsFull()).text();
     expect(montantsInterdits(corps)).toEqual([]);
+    // La Journée IA, elle, est nommée avec son prix.
+    expect(corps).toContain("/fr/journee-ia");
+    expect(corps).toMatch(/1[\s  ]?490[\s  ]?€/);
+    expect(corps).not.toContain("\u0000");
   });
 
   it("le flux FAQ (fr et en) ne sert aucun montant hors Journée IA", async () => {
@@ -320,8 +326,27 @@ describe("garde R7 — générateurs JSON-LD", () => {
 
 // ─── 3. JSON-LD inline des pages (lecture du source) ─────────────────────────
 
+/**
+ * Un champ de prix écrit à la main dans un objet : `AggregateOffer`, `lowPrice:`,
+ * `highPrice:`, `price:` (sauf la gratuité `price: "0"` et les jetons `{{price:…}}`).
+ *
+ * ⚠️ `formatAmount(` n'est PAS cherché ici : dans une page, il sert surtout le rendu
+ * VISIBLE, que traite le lot `fix/prix-pages-offres`. Les FAQPage JSON-LD tirées de ces
+ * chaînes visibles (a-propos l.199/274, formations/page.tsx l.1430,
+ * formations/entreprise l.440 via FaqAccordion) relèvent de ce lot et ne sont pas lues ici.
+ */
+const CHAMP_PRIX_SOURCE = /"AggregateOffer"|\blowPrice:|\bhighPrice:|(?<!\{\{)\bprice:(?!\s*"0")/;
+
+/**
+ * Fichiers où `price:` n'appartient PAS à un JSON-LD (propriété d'une carte visible) :
+ * hors de ce lot, rendu traité par `fix/prix-pages-offres`.
+ */
+const HORS_JSON_LD: ReadonlySet<string> = new Set([
+  "[locale]/page.tsx", // accueil : `price:` des 5 lignes de la grille visible des services
+]);
+
 describe("garde R7 — JSON-LD inline des pages", () => {
-  it("toute page qui construit un AggregateOffer / lowPrice / highPrice le conditionne à l'interrupteur", () => {
+  it("toute page qui écrit un champ de prix dans un JSON-LD le conditionne à l'interrupteur", () => {
     const racines = ["src/app", "src/components"].map((r) => path.resolve(process.cwd(), r));
     const fautes: string[] = [];
     let lus = 0;
@@ -329,13 +354,25 @@ describe("garde R7 — JSON-LD inline des pages", () => {
       for (const rel of readdirSync(racine, { recursive: true, encoding: "utf8" })) {
         if (!/\.tsx?$/.test(rel) || /\.(spec|test)\.tsx?$/.test(rel)) continue;
         if (rel.includes("(admin)") || rel.includes("tour-france-ia")) continue;
+        if (HORS_JSON_LD.has(rel)) continue;
         const source = readFileSync(path.join(racine, rel), "utf8");
         lus++;
-        if (!/"AggregateOffer"|\blowPrice:|\bhighPrice:/.test(source)) continue;
-        if (!source.includes("PRIX_PUBLICS_AFFICHES")) fautes.push(rel);
+        if (!source.includes('"@type"')) continue; // pas de JSON-LD dans ce fichier
+        const lignes = source
+          .split("\n")
+          .filter((l) => !/^\s*(\/\/|\*|\/\*)/.test(l) && CHAMP_PRIX_SOURCE.test(l));
+        if (lignes.length === 0) continue;
+        if (!/PRIX_PUBLICS_AFFICHES|prixAffichable\(/.test(source)) fautes.push(rel);
       }
     }
     expect(lus).toBeGreaterThan(100);
     expect(fautes).toEqual([]);
+  });
+
+  it("le motif de source repère un prix et épargne la gratuité et les jetons", () => {
+    expect(CHAMP_PRIX_SOURCE.test("        price: auditFlashPrice,")).toBe(true);
+    expect(CHAMP_PRIX_SOURCE.test("    lowPrice: 490,")).toBe(true);
+    expect(CHAMP_PRIX_SOURCE.test('      price: "0",')).toBe(false);
+    expect(CHAMP_PRIX_SOURCE.test("`{{price:audit-flash|flat}}`")).toBe(false);
   });
 });

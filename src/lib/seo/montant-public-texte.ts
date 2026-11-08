@@ -29,14 +29,22 @@ export function montantPublic(
 }
 
 /**
- * Réécrit la prose autour de chaque montant masqué, puis remplace le marqueur restant. Le
- * libellé « Sur devis » des formateurs d'affichage (`getEntryLabel`), inséré après une
- * virgule ou une parenthèse, repasse en minuscule.
+ * Marque le libellé « Sur devis » d'un formateur d'affichage (`getEntryLabel`), pour qu'il
+ * soit recollé comme un montant masqué (en minuscule au milieu d'une phrase). Tout autre
+ * libellé — un montant affichable, interrupteur allumé — passe tel quel.
+ */
+export function marquerSurDevis(libelle: string): string {
+  return /^(?:Sur devis|On request|On quote)$/.test(libelle) ? MARQUEUR : libelle;
+}
+
+/**
+ * Réécrit la prose autour de chaque montant masqué, puis remplace le marqueur restant. Seuls
+ * les montants MARQUÉS (`montantPublic`, `marquerSurDevis`) sont touchés : un « Sur devis »
+ * déjà écrit dans la copy reste tel quel.
  */
 export function recollerMontantsMasques(texte: string): string {
   return texte
     .replace(new RegExp(`(?:à partir de|À partir de|dès|Dès)\\s+${MARQUEUR}`, "g"), "sur devis")
     .replace(new RegExp(`(?:from|From|starting at)\\s+${MARQUEUR}`, "g"), "on request")
-    .replaceAll(MARQUEUR, "sur devis")
-    .replace(/([,(]\s*)Sur devis\b/g, "$1sur devis");
+    .replaceAll(MARQUEUR, "sur devis");
 }

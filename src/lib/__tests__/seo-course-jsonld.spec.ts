@@ -63,7 +63,7 @@ describe("buildCourseJsonLd — P1-2 Course schema interventions/collectives", (
 
   // R7 (ordre de Williams du 08/11/2026) : interrupteur des prix publics coupé, une
   // formation n'émet plus d'Offer chiffrée, même si `priceEurHt` est fourni.
-  it("n'émet aucune Offer chiffrée interrupteur des prix publics coupé (R7)", () => {
+  it("n'émet qu'une Offer sans montant interrupteur des prix publics coupé (R7)", () => {
     expect(PRIX_PUBLICS_AFFICHES).toBe(false);
     const out = buildCourseJsonLd({
       locale: "fr",
@@ -72,7 +72,8 @@ describe("buildCourseJsonLd — P1-2 Course schema interventions/collectives", (
       description: "Description complète intervention 1 jour pour test offre prix HT.",
       priceEurHt: 1990,
     });
-    expect("offers" in out).toBe(false);
+    // Offer sans montant, « Paid » : éligibilité Google « Course info » conservée.
+    expect((out as Record<string, unknown>).offers).toEqual({ "@type": "Offer", category: "Paid" });
   });
 
   it("émet audience BusinessAudience si audienceType fourni", () => {
