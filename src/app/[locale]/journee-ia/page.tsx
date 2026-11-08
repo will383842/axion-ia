@@ -113,8 +113,8 @@ export default async function JourneeIaPage({ params }: Props) {
     description: DESCRIPTION,
   });
 
-  // `rdv=projet` : la carte unique du rendez-vous gratuit de 45 minutes (lot R5b).
-  const lien = (depuis: string) => `/appel?rdv=projet&depuis=${depuis}`;
+  // `rdv=diagnostic` : le Diagnostic IA gratuit de 45 minutes, seul rendez-vous (Brain r10, lot R5b).
+  const lien = (depuis: string) => `/appel?rdv=diagnostic&depuis=${depuis}`;
 
   return (
     <>

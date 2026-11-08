@@ -67,9 +67,9 @@ describe("page /journee-ia", () => {
     expect(page).toMatch(/permanentRedirect\(\s*["'`]\/fr\/journee-ia["'`]\s*\)/);
   });
 
-  it("le bouton mène à la carte unique du rendez-vous : /appel?rdv=projet", () => {
-    expect(page).toContain("/appel?rdv=projet&depuis=");
-    expect(page).not.toContain("rdv=diagnostic");
+  it("le bouton mène au Diagnostic IA gratuit de 45 minutes : /appel?rdv=diagnostic", () => {
+    expect(page).toContain("/appel?rdv=diagnostic&depuis=");
+    expect(page).not.toContain("rdv=projet");
   });
 
   it("annonce le plafond de 15 personnes, et rien d'autre de chiffré", () => {
