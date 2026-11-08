@@ -39,7 +39,7 @@ vi.mock("@/server/guides-reseau/page-confirmation", () => ({
 }));
 
 import PageRecevoirLeGuide from "../page";
-import MerciGuide from "../merci/page";
+import { GET as MerciGET } from "../merci/route";
 import { POST, GET } from "../envoyer/route";
 import { creerJeton, empreinteJeton } from "@/server/guides-reseau/lien-page-guide";
 import { TEXTE_CASE_PAGE_GUIDE } from "@/content/guides-reseau";
@@ -107,7 +107,7 @@ describe("interrupteur PAGE_GUIDE_RESEAU_ENABLED (éteint par défaut)", () => {
     await expect(rendre(JETON)).rejects.toMatchObject({
       digest: expect.stringContaining("NEXT_HTTP_ERROR_FALLBACK;404"),
     });
-    expect(() => MerciGuide()).toThrow();
+    expect((await MerciGET()).status).toBe(404);
     const r = await POST(
       envoi({ j: JETON, prenom: "Camille", email: "a@example.test", accord: "oui" }),
     );
@@ -188,8 +188,31 @@ describe("page allumée", () => {
     expect(egal).toBe(sans);
   });
 
-  it("la page de merci affiche le merci elle-même", () => {
-    expect(renderToStaticMarkup(MerciGuide())).toContain("Merci");
+  it("la page de merci est une réponse HTML de ROUTE (sans socle React), qui affiche le merci", async () => {
+    const r = await MerciGET();
+    expect(r.status).toBe(200);
+    expect(r.headers.get("content-type")).toContain("text/html");
+    expect(r.headers.get("cache-control")).toBe("no-store");
+    const html = await r.text();
+    expect(html).toContain("Merci");
+    expect(html).not.toContain("<script");
+  });
+
+  it("jeton d'un guide INCONNU (signé, valide) : la même page neutre dès le GET", async () => {
+    const inconnu = creerJeton(
+      {
+        conv: "conv_exemple_0003",
+        mot: "GUIDE",
+        reseau: "instagram",
+        guide: "guide-qui-nexiste-pas",
+        compte: "page_principale",
+        version_m1: "m1-2026-11",
+      },
+      SECRET_LIEN,
+      Date.now(),
+    );
+    const neutre = await rendre(undefined);
+    expect(await rendre(inconnu)).toBe(neutre);
   });
 });
 
@@ -254,8 +277,25 @@ describe("route d'envoi allumée", () => {
     expect(etat.appels).toHaveLength(0);
   });
 
+  it("derrière un proxy, request.url porte l'adresse INTERNE : le Location reste sur l'URL publique du site", async () => {
+    const { SITE_URL } = await import("@/lib/site-url");
+    const interne = new NextRequest("http://0.0.0.0:3000/guide-reseau/envoyer", {
+      method: "POST",
+      headers: { "content-type": "application/x-www-form-urlencoded" },
+      body: new URLSearchParams({ ...champs, j: JETON }).toString(),
+    });
+    const r = await POST(interne);
+    expect(r.status).toBe(303);
+    const loc = new URL(r.headers.get("location")!);
+    expect(loc.origin).toBe(new URL(SITE_URL).origin);
+    expect(loc.origin).not.toContain("0.0.0.0");
+    expect(loc.pathname).toBe("/guide-reseau/merci");
+    const g = await GET();
+    expect(new URL(g.headers.get("location")!).origin).toBe(new URL(SITE_URL).origin);
+  });
+
   it("un GET n'envoie rien : retour au formulaire", async () => {
-    const r = await GET(new NextRequest("http://localhost/guide-reseau/envoyer"));
+    const r = await GET();
     expect(r.status).toBe(303);
     expect(etat.appels).toHaveLength(0);
   });

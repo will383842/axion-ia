@@ -16,7 +16,7 @@ import { prisma } from "@/lib/prisma";
 import { pageGuideReseauActive } from "@/server/guides-reseau/config";
 import { lireSecretLien } from "@/server/guides-reseau/secret-lien";
 import { empreinteJeton, verifierJeton } from "@/server/guides-reseau/lien-page-guide";
-import { PRENOM_MAX, PRENOM_MIN } from "@/content/guides-reseau";
+import { GUIDES_RESEAU_CONNUS, PRENOM_MAX, PRENOM_MIN } from "@/content/guides-reseau";
 import { TEXTES_PAGE_GUIDE as T, URL_CONFIDENTIALITE, URL_FORMULAIRE_GUIDE } from "./textes";
 
 export const dynamic = "force-dynamic";
@@ -40,7 +40,9 @@ async function jetonUtilisable(jeton: string | null): Promise<boolean> {
   const secret = lireSecretLien();
   if (!secret) return false;
   try {
-    if (!verifierJeton(jeton, secret, Date.now()).ok) return false;
+    const v = verifierJeton(jeton, secret, Date.now());
+    // Guide inconnu = page neutre dès le GET (sinon la personne remplirait un formulaire qui échouera).
+    if (!v.ok || !GUIDES_RESEAU_CONNUS.includes(v.donnees.guide)) return false;
     const deja = await prisma.contactGuideReseau.findUnique({
       where: { jetonEmpreinte: empreinteJeton(jeton) },
       select: { id: true },

@@ -23,28 +23,29 @@ import {
 import { lireSecretLien } from "@/server/guides-reseau/secret-lien";
 import { confirmerPageGuide } from "@/server/guides-reseau/page-confirmation";
 import { CHEMIN_PAGE_GUIDE } from "@/content/guides-reseau";
+import { publicUrl } from "@/lib/public-url";
+import { ENTETES_PAGE_GUIDE, echapper, pageStatique } from "../html-statique";
 import { TEXTES_PAGE_GUIDE as T } from "../textes";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
-const ENTETES = { "Cache-Control": "no-store", "Referrer-Policy": "no-referrer" } as const;
+const ENTETES = ENTETES_PAGE_GUIDE;
 
-function vers(req: NextRequest, chemin: string): NextResponse {
-  // URL relative à l'origine de la requête ; 303 : le navigateur rejoue en GET.
-  return NextResponse.redirect(new URL(chemin, req.url), { status: 303, headers: ENTETES });
+function vers(chemin: string): NextResponse {
+  // URL PUBLIQUE du site (`publicUrl`) : derrière le proxy, `req.url` porte l'adresse d'écoute
+  // INTERNE du conteneur (Location: https://0.0.0.0:3000/…). 303 : le navigateur rejoue en GET.
+  return NextResponse.redirect(publicUrl(chemin), { status: 303, headers: ENTETES });
 }
-
-const echapper = (s: string): string => s.replace(/[&<>"']/g, (c) => `&#${c.charCodeAt(0)};`);
 
 /** Page d'erreur statique : aucun script, aucune donnée saisie n'y est répétée. */
 function pageErreur(message: string, jeton: string, statut: number): NextResponse {
   const retour = jeton ? `${CHEMIN_PAGE_GUIDE}?j=${encodeURIComponent(jeton)}` : CHEMIN_PAGE_GUIDE;
-  const html = `<!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow,noarchive"><meta name="referrer" content="no-referrer"><title>${echapper(T.titre)} — Axion-IA</title></head><body style="font-family:system-ui,sans-serif;max-width:36rem;margin:2rem auto;padding:0 1.25rem"><h1 style="font-size:1.5rem">${echapper(T.titre)}</h1><p role="alert">${echapper(message)}</p><p><a href="${echapper(retour)}">${echapper(T.retour)}</a></p></body></html>`;
-  return new NextResponse(html, {
-    status: statut,
-    headers: { ...ENTETES, "Content-Type": "text/html; charset=utf-8" },
-  });
+  return pageStatique(
+    T.titre,
+    `<p role="alert">${echapper(message)}</p><p><a href="${echapper(retour)}">${echapper(T.retour)}</a></p>`,
+    statut,
+  );
 }
 
 function texte(v: FormDataEntryValue | null): string {
@@ -83,11 +84,11 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   const leurre = form.get("website");
   if (leurre) {
     await signalerHoneypot("guide-reseau-page", leurre);
-    return vers(req, `${CHEMIN_PAGE_GUIDE}/merci`);
+    return vers(`${CHEMIN_PAGE_GUIDE}/merci`);
   }
 
   const secret = lireSecretLien();
-  if (!secret) return vers(req, `${CHEMIN_PAGE_GUIDE}?j=${encodeURIComponent(jeton)}`);
+  if (!secret) return vers(`${CHEMIN_PAGE_GUIDE}?j=${encodeURIComponent(jeton)}`);
 
   let resultat;
   try {
@@ -114,9 +115,9 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     });
   }
 
-  if (resultat.ok) return vers(req, `${CHEMIN_PAGE_GUIDE}/merci`);
+  if (resultat.ok) return vers(`${CHEMIN_PAGE_GUIDE}/merci`);
   if (resultat.erreur === "lien")
-    return vers(req, `${CHEMIN_PAGE_GUIDE}?j=${encodeURIComponent(jeton)}`);
+    return vers(`${CHEMIN_PAGE_GUIDE}?j=${encodeURIComponent(jeton)}`);
   if (resultat.statut === 429) {
     return new NextResponse(T.erreurs.trop_de_requetes, { status: 429, headers: ENTETES });
   }
@@ -124,6 +125,6 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
 }
 
 // Un GET n'envoie rien : on revient au formulaire.
-export async function GET(req: NextRequest): Promise<NextResponse> {
-  return vers(req, CHEMIN_PAGE_GUIDE);
+export async function GET(): Promise<NextResponse> {
+  return vers(CHEMIN_PAGE_GUIDE);
 }

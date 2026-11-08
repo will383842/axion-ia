@@ -30,7 +30,12 @@ import { checkRateLimit } from "@/lib/rate-limit";
 import { occurredAtValide, type DemandeGuideReseau } from "./contrat";
 import { LIMITE_JOUR_PAR_PERSONNE, LIMITE_JOUR_PAR_POST } from "./config";
 import * as Sentry from "@sentry/nextjs";
-import { CleHmacManquanteError, construireOrigine, enregistrerOrigine } from "./origines";
+import {
+  CleHmacManquanteError,
+  construireOrigine,
+  enregistrerOrigine,
+  type OrigineAEcrire,
+} from "./origines";
 import { transmettreOriginesV3 } from "./synchro-v3";
 
 export type ResultatTraitement =
@@ -144,15 +149,32 @@ export async function noterOrigineV3(
   emailKey: string,
   quand: Date,
 ): Promise<void> {
+  await noterOrigineAvec(() => construireOrigine(d, quand), d.email, emailKey, quand);
+}
+
+/**
+ * Cœur de `noterOrigineV3`, partagé avec la page « Recevoir le guide » (lot S2) : écrit l'origine
+ * dans `guide_reseau_origines` puis, sauf `versLeCrm: false`, la met en file vers le CRM.
+ * Ne lève jamais. La construction de l'origine reste DANS le `try` (clé HMAC absente → alerte).
+ */
+export async function noterOrigineAvec(
+  construire: () => OrigineAEcrire,
+  email: string,
+  emailKey: string,
+  quand: Date,
+  versLeCrm = true,
+): Promise<void> {
   try {
-    const origine = construireOrigine(d, quand);
+    const origine = construire();
     await enregistrerOrigine(emailKey, origine);
-    await transmettreOriginesV3({
-      email: d.email,
-      cleIdempotence: d.cleIdempotence,
-      origines: [origine],
-      quand,
-    });
+    if (versLeCrm) {
+      await transmettreOriginesV3({
+        email,
+        cleIdempotence: origine.cleIdempotence,
+        origines: [origine],
+        quand,
+      });
+    }
   } catch (e) {
     // Clé HMAC absente en production : ce n'est pas un aléa, c'est une panne de configuration.
     // JOURNAL + ALERTE (Sentry, sans donnée de personne) : jamais avalée en silence.

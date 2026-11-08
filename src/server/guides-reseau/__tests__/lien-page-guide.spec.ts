@@ -104,6 +104,7 @@ describe("lien-page-guide — refus", () => {
     ["v", 2],
     ["conv", "court"],
     ["mot", "minuscule"],
+    ["mot", "A".repeat(31)], // colonne VarChar(30)
     ["reseau", "tiktok"],
     ["guide", "Guide Majuscule"],
     ["compte", ""],
@@ -271,5 +272,12 @@ describe("lien-page-guide — secrets distincts (D3)", () => {
     ["absent", A, null],
   ])("secret %s → erreur explicite", (_n, a, b) => {
     expect(() => verifierSecretsDistincts(a as never, b as never)).toThrow(/32 caractères/);
+  });
+});
+
+describe("M2 — le mot tient dans la colonne (30 caractères au plus)", () => {
+  it("un mot de 30 caractères est accepté, un mot de 31 est refusé par creerJeton", () => {
+    expect(() => creerJeton({ ...DONNEES, mot: "A".repeat(30) }, SECRET, T0)).not.toThrow();
+    expect(() => creerJeton({ ...DONNEES, mot: "A".repeat(31) }, SECRET, T0)).toThrow();
   });
 });

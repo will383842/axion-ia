@@ -43,7 +43,8 @@ const OPAQUE = /^[A-Za-z0-9_-]{1,64}$/;
 const CHAMPS: Readonly<Record<string, (x: unknown) => boolean>> = {
   v: (x) => x === VERSION_JETON,
   conv: (x) => typeof x === "string" && /^[A-Za-z0-9_-]{8,64}$/.test(x),
-  mot: (x) => typeof x === "string" && /^[A-Z0-9_-]{1,32}$/.test(x),
+  // 30 = colonne VarChar(30) du registre des demandes ET longueur maximale du mot du contrat v3.
+  mot: (x) => typeof x === "string" && /^[A-Z0-9_-]{1,30}$/.test(x),
   reseau: (x) => typeof x === "string" && (RESEAUX as readonly string[]).includes(x),
   guide: (x) => typeof x === "string" && x.length <= 64 && /^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(x),
   compte: (x) => typeof x === "string" && OPAQUE.test(x),

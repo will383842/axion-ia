@@ -7,7 +7,11 @@ import { describe, it, expect, vi, beforeEach } from "vitest";
 import crypto from "node:crypto";
 
 type Ligne = Record<string, unknown>;
-const p2002 = () => Object.assign(new Error("Unique constraint failed"), { code: "P2002" });
+const p2002 = (target?: string[] | string) =>
+  Object.assign(new Error("Unique constraint failed"), {
+    code: "P2002",
+    ...(target === undefined ? {} : { meta: { target } }),
+  });
 const egal = (l: Ligne, where: Ligne) => Object.entries(where).every(([k, v]) => l[k] === v);
 
 const bd = vi.hoisted(() => ({
@@ -23,18 +27,32 @@ const bd = vi.hoisted(() => ({
   logsDestinataire: 0,
   journal: [] as string[],
   n: 0,
+  /** Origines écrites par `enregistrerOrigine` (historique v3). */
+  origines: [] as Ligne[],
+  /** Charges transmises au CRM (`transmettreOriginesV3`). */
+  crm: [] as Ligne[],
+  mxAppels: 0,
+  /** Panne simulée de la mise en file de l'e-mail. */
+  enfilePanne: false,
+  /** Conflit simulé sur guide_requests : nombre de création qui échouent en P2002. */
+  conflitDemande: { restant: 0, gagnante: false },
 }));
 
-function client() {
+/** Lignes créées par une transaction : retirées si elle échoue (comme PostgreSQL). */
+type Trace = { contacts: Ligne[]; demandes: Ligne[] };
+
+function client(trace?: Trace) {
   return {
     $executeRaw: async () => 0,
     contactGuideReseau: {
       create: async ({ data }: { data: Ligne }) => {
         // Le temps d'un tour : deux transactions simultanées se croisent vraiment.
         await new Promise((r) => setTimeout(r, 1));
-        if (bd.contacts.some((c) => c.jetonEmpreinte === data.jetonEmpreinte)) throw p2002();
+        if (bd.contacts.some((c) => c.jetonEmpreinte === data.jetonEmpreinte))
+          throw p2002(["jeton_empreinte"]);
         const l = { id: `c${++bd.n}`, ...data };
         bd.contacts.push(l);
+        trace?.contacts.push(l);
         return l;
       },
       findUnique: async ({ where }: { where: Ligne }) =>
@@ -59,10 +77,20 @@ function client() {
         return bd.demandes.find((d) => d.emailKey === c.emailKey && d.aimant === c.aimant)!;
       },
       create: async ({ data }: { data: Ligne }) => {
+        if (bd.conflitDemande.restant > 0) {
+          bd.conflitDemande.restant -= 1;
+          // Une demande simultanée (formulaire /guide-ia) a gagné la course.
+          if (bd.conflitDemande.gagnante) {
+            // Créée par une AUTRE transaction (validée) : elle n'est pas dans la trace.
+            bd.demandes.push({ id: `d${++bd.n}`, ...data, origine: "formulaire" });
+          }
+          throw p2002(["email_key", "aimant"]);
+        }
         if (bd.demandes.some((d) => d.emailKey === data.emailKey && d.aimant === data.aimant))
-          throw p2002();
+          throw p2002(["email_key", "aimant"]);
         const l = { id: `d${++bd.n}`, ...data };
         bd.demandes.push(l);
+        trace?.demandes.push(l);
         return l;
       },
       update: async ({ where, data }: { where: Ligne; data: Ligne }) => {
@@ -94,7 +122,17 @@ vi.mock("@/lib/prisma", () => {
         count: async (a: { where: { recipient?: string } }) =>
           a.where.recipient ? bd.logsDestinataire : 0,
       },
-      $transaction: async (fn: (tx: unknown) => Promise<unknown>) => fn(client()),
+      // Comme PostgreSQL : si la transaction échoue, rien de ce qu'elle a créé ne reste.
+      $transaction: async (fn: (tx: unknown) => Promise<unknown>) => {
+        const trace: Trace = { contacts: [], demandes: [] };
+        try {
+          return await fn(client(trace));
+        } catch (e) {
+          for (const l of trace.contacts) bd.contacts.splice(bd.contacts.indexOf(l), 1);
+          for (const l of trace.demandes) bd.demandes.splice(bd.demandes.indexOf(l), 1);
+          throw e;
+        }
+      },
     },
   };
 });
@@ -120,10 +158,30 @@ vi.mock("@/lib/consents", async (orig) => ({
 vi.mock("@/server/email/opposition", () => ({
   estOpposee: async (e: string) => bd.opposees.has(e),
 }));
-vi.mock("@/server/guide-ia/mx", () => ({ domaineRecoitDesEmails: async () => bd.domaine.verdict }));
+vi.mock("@/server/guide-ia/mx", () => ({
+  domaineRecoitDesEmails: async () => {
+    bd.mxAppels += 1;
+    return bd.domaine.verdict;
+  },
+}));
+vi.mock("../origines", async (orig) => ({
+  ...(await orig<Record<string, unknown>>()),
+  enregistrerOrigine: async (emailKey: string, o: Ligne) => {
+    bd.origines.push({ emailKey, ...o });
+    return { creee: true, archivees: 0 };
+  },
+}));
+vi.mock("../synchro-v3", async (orig) => ({
+  ...(await orig<Record<string, unknown>>()),
+  transmettreOriginesV3: async (a: Ligne) => {
+    bd.crm.push(a);
+    return "mise_en_file";
+  },
+}));
 vi.mock("@/server/guide-ia/coupe-circuit", () => ({ coupeCircuitDeclenche: async () => false }));
 vi.mock("@/server/queue/queues", () => ({
   enqueueEmail: async (...a: unknown[]) => {
+    if (bd.enfilePanne) throw new Error("redis indisponible");
     bd.envois.push(a);
     return { enqueued: true };
   },
@@ -174,6 +232,11 @@ function ecritures(): number {
 beforeEach(() => {
   bd.demandes.length = bd.contacts.length = bd.preuves.length = bd.envois.length = 0;
   bd.limites.length = bd.journal.length = 0;
+  bd.origines.length = bd.crm.length = 0;
+  bd.mxAppels = 0;
+  bd.enfilePanne = false;
+  bd.conflitDemande.restant = 0;
+  bd.conflitDemande.gagnante = false;
   bd.opposees.clear();
   bd.domaine.verdict = "oui";
   bd.limiteAtteinte = false;
@@ -277,25 +340,64 @@ describe("jeton", () => {
 });
 
 describe("adresse", () => {
-  it("opposée : réponse IDENTIQUE à un succès, rien n'est envoyé ni écrit", async () => {
+  it("opposée : réponse IDENTIQUE à un succès, rien n'est envoyé ni écrit pour cette adresse", async () => {
     bd.opposees.add(ADRESSE);
     const r = await confirmerPageGuide(entree());
     const succes = await confirmerPageGuide(
       entree({ jeton: jeton({ conv: "conv_exemple_0009" }), email: "autre@example.test" }),
     );
     expect(r).toEqual(succes);
-    expect(bd.contacts).toHaveLength(1); // seulement celui de l'autre adresse
     expect(bd.envois).toHaveLength(1);
     expect(bd.demandes.every((d) => d.emailKey !== `h:${ADRESSE}`)).toBe(true);
     expect(bd.preuves.every((p) => p["email"] !== ADRESSE)).toBe(true);
+    expect(bd.origines.every((o) => o["emailKey"] !== `h:${ADRESSE}`)).toBe(true);
+    expect(bd.crm).toHaveLength(1);
   });
 
-  it("opposée : le jeton n'est pas consommé (rien n'est écrit)", async () => {
+  it("M1 — opposée : le jeton est CONSOMMÉ comme pour un succès, par une marque sans donnée personnelle", async () => {
     bd.opposees.add(ADRESSE);
     const j = jeton();
-    await confirmerPageGuide(entree({ jeton: j }));
-    expect(bd.contacts).toHaveLength(0);
-    expect(ecritures()).toBe(0);
+    expect(await confirmerPageGuide(entree({ jeton: j }))).toEqual({ ok: true });
+    // Même état qu'après un succès : une ligne porte l'empreinte du jeton…
+    expect(bd.contacts).toHaveLength(1);
+    expect(bd.contacts[0]!["jetonEmpreinte"]).toBe(empreinteJeton(j));
+    // …mais rien de la personne : ni clé d'adresse, ni prénom, ni demande, ni preuve.
+    const marque = JSON.stringify(bd.contacts[0]);
+    expect(marque).not.toContain(ADRESSE);
+    expect(marque).not.toContain(`h:${ADRESSE}`);
+    expect(marque).not.toContain("Camille");
+    expect(marque).not.toContain(Buffer.from("Camille").toString("base64"));
+    expect(bd.contacts[0]!["merciStatut"]).not.toBe("a_envoyer");
+    expect(bd.demandes).toHaveLength(0);
+    expect(bd.preuves).toHaveLength(0);
+    expect(bd.envois).toHaveLength(0);
+    expect(bd.origines).toHaveLength(0);
+    expect(bd.crm).toHaveLength(0);
+    // Rejouer le même jeton avec une adresse ordinaire ne donne RIEN : comme après un succès.
+    const rejeu = await confirmerPageGuide(entree({ jeton: j, email: "autre@example.test" }));
+    expect(rejeu).toEqual({ ok: true });
+    expect(bd.envois).toHaveLength(0);
+    expect(bd.contacts).toHaveLength(1);
+  });
+
+  it("M1 — opposée : le MÊME travail qu'un succès (MX, limites, verrou) — pas de sortie précoce", async () => {
+    await confirmerPageGuide(entree({ jeton: jeton({ conv: "conv_exemple_0010" }) }));
+    const mxSucces = bd.mxAppels;
+    const limitesSucces = bd.limites.length;
+    bd.mxAppels = 0;
+    bd.limites.length = 0;
+    bd.opposees.add(ADRESSE);
+    await confirmerPageGuide(entree());
+    expect(bd.mxAppels).toBe(mxSucces);
+    expect(bd.limites.length).toBe(limitesSucces);
+  });
+
+  it("M1 — opposée ET domaine sans MX : la même erreur qu'une adresse ordinaire sans MX", async () => {
+    bd.opposees.add(ADRESSE);
+    bd.domaine.verdict = "non";
+    const a = await confirmerPageGuide(entree());
+    const b = await confirmerPageGuide(entree({ email: "autre@example.test" }));
+    expect(a).toEqual(b);
   });
 
   it("MX « non » → message d'erreur (422), aucune écriture", async () => {
@@ -343,11 +445,6 @@ describe("ce qui est écrit", () => {
     const c = bd.contacts[0]!;
     expect(c).toMatchObject({
       emailKey: `h:${ADRESSE}`,
-      mot: "GUIDE",
-      reseau: "instagram",
-      compteRef: "page_principale",
-      postRef: "post_exemple_0001",
-      versionM1: "m1-2026-11",
       versionConsentement: VERSION_CONSENTEMENT_PAGE_GUIDE,
       consentEmpreinte: EMPREINTE_CASE_PAGE_GUIDE,
       consentiLe: MAINTENANT,
@@ -359,6 +456,13 @@ describe("ce qui est écrit", () => {
     expect(c["convRef"]).toMatch(/^[0-9a-f]{64}$/);
     expect(c["convRef"]).not.toBe(DONNEES.conv);
     expect(c["guideRequestId"]).toBe(bd.demandes[0]!["id"]);
+  });
+
+  it("B1 — l'ORIGINE n'est PAS recopiée dans contacts_guide_reseau (ni mot, ni réseau, ni compte, ni post, ni version M1)", async () => {
+    await confirmerPageGuide(entree());
+    for (const k of ["mot", "reseau", "compteRef", "postRef", "versionM1"]) {
+      expect(bd.contacts[0], k).not.toHaveProperty(k);
+    }
   });
 
   it("la demande garde l'origine « message_prive » et la source du réseau", async () => {
@@ -427,5 +531,142 @@ describe("journaux", () => {
     expect(tout).not.toContain("Camille");
     expect(tout).not.toContain(SECRET);
     expect(tout).not.toContain(crypto.createHash("sha256").update("x").digest("hex")); // garde-fou du harnais
+  });
+});
+
+describe("B1 — l'origine va dans l'historique v3 et au CRM (guide_reseau_origines)", () => {
+  it("enregistrerOrigine reçoit mot, réseau du registre, compte, post_ref, famille guide_reseau", async () => {
+    await confirmerPageGuide(entree());
+    expect(bd.origines).toHaveLength(1);
+    expect(bd.origines[0]).toMatchObject({
+      emailKey: `h:${ADRESSE}`,
+      mot: "GUIDE",
+      reseau: "instagram",
+      guide: "guide-ia",
+      compte: "page_principale",
+      postRef: "post_exemple_0001",
+      famille: "guide_reseau",
+      detail: "guide_ia",
+    });
+    expect(String(bd.origines[0]!["cleIdempotence"])).toMatch(/^[A-Za-z0-9_-]{8,80}$/);
+  });
+
+  it("la même origine part au CRM (transmettreOriginesV3), avec l'adresse et la clé d'idempotence", async () => {
+    await confirmerPageGuide(entree());
+    expect(bd.crm).toHaveLength(1);
+    expect(bd.crm[0]).toMatchObject({ email: ADRESSE });
+    const origines = bd.crm[0]!["origines"] as Ligne[];
+    expect(origines).toHaveLength(1);
+    expect(origines[0]).toMatchObject({ mot: "GUIDE", compte: "page_principale" });
+    expect(bd.crm[0]!["cleIdempotence"]).toBe(bd.origines[0]!["cleIdempotence"]);
+  });
+
+  it("un jeton rejoué n'écrit aucune seconde origine", async () => {
+    const j = jeton();
+    await confirmerPageGuide(entree({ jeton: j }));
+    await confirmerPageGuide(entree({ jeton: j }));
+    expect(bd.origines).toHaveLength(1);
+    expect(bd.crm).toHaveLength(1);
+  });
+
+  it("l'origine n'est pas écrite quand la validation échoue (case, MX…)", async () => {
+    await confirmerPageGuide(entree({ caseCochee: false }));
+    bd.domaine.verdict = "non";
+    await confirmerPageGuide(entree());
+    expect(bd.origines).toHaveLength(0);
+    expect(bd.crm).toHaveLength(0);
+  });
+});
+
+describe("B3 — formats exigés par le CRM, validés avant toute écriture", () => {
+  it("compte avec majuscules ou tirets : normalisé en minuscules/underscores, puis envoyé", async () => {
+    await confirmerPageGuide(entree({ jeton: jeton({ compte: "Page-Principale" }) }));
+    expect(bd.origines[0]).toMatchObject({ compte: "page_principale" });
+    expect(bd.crm).toHaveLength(1);
+    expect((bd.crm[0]!["origines"] as Ligne[])[0]).toMatchObject({ compte: "page_principale" });
+  });
+
+  it("compte invalide (1 caractère) : l'origine n'est PAS envoyée au CRM, mais le guide part", async () => {
+    expect(await confirmerPageGuide(entree({ jeton: jeton({ compte: "x" }) }))).toEqual({
+      ok: true,
+    });
+    expect(bd.crm).toHaveLength(0);
+    expect(bd.envois).toHaveLength(1);
+    expect(bd.demandes).toHaveLength(1);
+    // L'historique local garde la trace, sans compte invalide.
+    expect(bd.origines[0]!["compte"]).toBeNull();
+  });
+
+  it("compte trop long pour le CRM (> 40) : même chose, pas d'envoi au CRM", async () => {
+    await confirmerPageGuide(entree({ jeton: jeton({ compte: "a".repeat(41) }) }));
+    expect(bd.crm).toHaveLength(0);
+    expect(bd.envois).toHaveLength(1);
+  });
+
+  it("post_ref absent : accepté, rien de plus à faire", async () => {
+    const { post_ref: _p, ...sansPost } = DONNEES;
+    await confirmerPageGuide(entree({ jeton: creerJeton(sansPost, SECRET, MAINTENANT.getTime()) }));
+    expect(bd.origines[0]!["postRef"]).toBeNull();
+    expect(bd.crm).toHaveLength(1);
+  });
+
+  it("post_ref hors format CRM (< 8 caractères) : retiré de l'origine, le reste est envoyé", async () => {
+    await confirmerPageGuide(entree({ jeton: jeton({ post_ref: "abc" }) }));
+    expect(bd.origines[0]!["postRef"]).toBeNull();
+    expect((bd.crm[0]!["origines"] as Ligne[])[0]).not.toHaveProperty("post_ref");
+    expect(bd.envois).toHaveLength(1);
+  });
+
+  it("le débit « par post » n'utilise que la référence valide", async () => {
+    await confirmerPageGuide(entree({ jeton: jeton({ post_ref: "abc" }) }));
+    expect(bd.limites.some((l) => l.includes(":post:"))).toBe(false);
+  });
+});
+
+describe("B2 — un conflit d'unicité n'est un succès neutre QUE pour le jeton", () => {
+  it("P2002 sur guide_requests (demande simultanée) : la transaction est rejouée, le guide PART", async () => {
+    bd.conflitDemande.restant = 1;
+    bd.conflitDemande.gagnante = true;
+    expect(await confirmerPageGuide(entree())).toEqual({ ok: true });
+    expect(bd.contacts).toHaveLength(1);
+    expect(bd.demandes).toHaveLength(1);
+    expect(bd.contacts[0]!["guideRequestId"]).toBe(bd.demandes[0]!["id"]);
+    expect(bd.envois).toHaveLength(1);
+    expect(bd.preuves).toHaveLength(1);
+  });
+
+  it("P2002 persistant sur guide_requests : l'erreur remonte, JAMAIS un succès sans guide, jeton non consommé", async () => {
+    bd.conflitDemande.restant = 99;
+    await expect(confirmerPageGuide(entree())).rejects.toMatchObject({ code: "P2002" });
+    expect(bd.contacts).toHaveLength(0);
+    expect(bd.envois).toHaveLength(0);
+  });
+
+  it("P2002 dont meta.target est la contrainte nommée du jeton : succès neutre", async () => {
+    const j = jeton();
+    await confirmerPageGuide(entree({ jeton: j }));
+    expect(await confirmerPageGuide(entree({ jeton: j }))).toEqual({ ok: true });
+    expect(bd.envois).toHaveLength(1);
+  });
+});
+
+describe("mises en file : un échec ne perd pas la demande", () => {
+  it("l'e-mail ne peut pas être mis en file : la demande et la preuve sont écrites, aucune erreur à la personne", async () => {
+    bd.enfilePanne = true;
+    expect(await confirmerPageGuide(entree())).toEqual({ ok: true });
+    expect(bd.demandes).toHaveLength(1);
+    expect(bd.preuves).toHaveLength(1);
+    expect(bd.journal.join("\n")).not.toContain("example.test");
+  });
+});
+
+describe("adresse : le validateur de /guide-ia", () => {
+  it("une adresse sans point dans le domaine (acceptée par l'ancienne regex) est refusée", async () => {
+    expect(await confirmerPageGuide(entree({ email: "personne@localhost" }))).toEqual({
+      ok: false,
+      statut: 422,
+      erreur: "email",
+    });
+    expect(ecritures()).toBe(0);
   });
 });

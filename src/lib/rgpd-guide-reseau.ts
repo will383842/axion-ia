@@ -18,8 +18,8 @@ import { hashEmailForLookup } from "@/lib/security/email-hash";
 
 export interface ContactGuideReseauExporte {
   readonly prenom: string | null;
-  readonly mot: string;
-  readonly reseau: string;
+  readonly mot: string | null;
+  readonly reseau: string | null;
   readonly postRef: string | null;
   readonly versionTexteCase: string;
   readonly empreinteTexteCase: string;
