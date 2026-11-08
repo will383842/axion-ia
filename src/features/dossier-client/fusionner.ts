@@ -31,7 +31,10 @@
  * sur l'absorbante, avec leurs faits et leurs participants ; chacun est
  * listé dans `ClientFusionElement` pour pouvoir être RENDU. Les devis, les
  * factures, les conventions RESTENT sur la fiche absorbée, en lecture seule :
- * ce sont des pièces émises. Un projet relié à un devis (`ProjetDevis`) ne
+ * ce sont des pièces émises. Les BROUILLONS de l'assistant de devis
+ * (`DevisAssistantBrouillon`, S17) RESTENT eux aussi sur la fiche absorbée : documents de travail,
+ * ni déplacés, ni supprimés (aucune donnée n'est perdue ; l'export art. 15 les rend par leur
+ * fiche, absorbée comprise). Prouvé par `fusionner-laisse-les-brouillons-de-devis.spec.ts`. Un projet relié à un devis (`ProjetDevis`) ne
  * peut donc pas bouger sans son devis : la fusion est refusée et le dit.
  *
  * Les clés « même client » sont différées pour la durée de la transaction

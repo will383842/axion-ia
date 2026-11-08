@@ -38,16 +38,76 @@ beforeEach(() => {
   clientsParEmail.mockReset();
   requireAdminWrite.mockReset();
   requireAdminWrite.mockResolvedValue({ userId: "adm-1", role: "admin" });
-  listInbox.mockResolvedValue({ rows: [LIGNE] });
+  listInbox.mockResolvedValue({ rows: [LIGNE], truncated: false, failedChannels: [] });
   clientsParEmail.mockResolvedValue(new Map());
 });
 
 describe("listerSourcesPourQuiAction (S13)", () => {
-  it("lit la boîte de réception avec le rôle de l'appelant", async () => {
+  it("lecture STRICTEMENT seule : aucun rôle passé à listInbox, donc ni déchiffrement ni activityLog", async () => {
     await listerSourcesPourQuiAction({ recherche: "" });
     const arg = listInbox.mock.calls[0]?.[0] as Record<string, unknown>;
     expect(arg["adminUserId"]).toBe("adm-1");
-    expect(arg["roleAdmin"]).toBe("admin");
+    // Un rôle déclenche le déchiffrement des candidatures et l'écriture
+    // `careers.candidature.liste.consultee` : il doit rester null/absent.
+    expect(arg["roleAdmin"] == null).toBe(true);
+  });
+
+  it("la fenêtre couvre les 4 canaux (4 × 100) : 200 candidatures récentes + 1 message ancien => le message apparaît", async () => {
+    const candidatures = Array.from({ length: 200 }, (_, i) => ({
+      ...LIGNE,
+      key: `cand_${i}`,
+      channel: "candidature",
+      sourceId: `c${i}`,
+      receivedAt: new Date(Date.UTC(2026, 10, 1, 12, 0, 0) - i * 1000),
+    }));
+    const ancien = {
+      ...LIGNE,
+      key: "msg_ancien",
+      receivedAt: new Date("2026-01-01T10:00:00Z"),
+      contactName: "Message Ancien",
+    };
+    // Simule le tri + la troncature à `pageSize` de la vraie `listInbox`.
+    listInbox.mockImplementation(async (f: { pageSize: number }) => ({
+      rows: [...candidatures, ancien]
+        .sort((a, b) => b.receivedAt.getTime() - a.receivedAt.getTime())
+        .slice(0, f.pageSize),
+      truncated: false,
+      failedChannels: [],
+    }));
+    const r = await listerSourcesPourQuiAction({ recherche: "" });
+    expect("data" in r && r.data.map((x) => x.libelle)).toContain("Message Ancien");
+  });
+
+  it("un canal utile en panne : la liste est signalée incomplète, jamais présentée comme complète", async () => {
+    listInbox.mockResolvedValue({ rows: [LIGNE], truncated: false, failedChannels: ["appel"] });
+    const r = await listerSourcesPourQuiAction({ recherche: "" });
+    expect("data" in r && r.note).toMatch(/incomplète.*appels réservés/);
+  });
+
+  it("liste tronquée : note claire", async () => {
+    listInbox.mockResolvedValue({ rows: [LIGNE], truncated: true, failedChannels: [] });
+    const r = await listerSourcesPourQuiAction({ recherche: "" });
+    expect("data" in r && r.note).toMatch(/incomplète/);
+  });
+
+  it("un canal sans rapport (candidature) en panne n'alarme pas", async () => {
+    listInbox.mockResolvedValue({
+      rows: [LIGNE],
+      truncated: false,
+      failedChannels: ["candidature"],
+    });
+    const r = await listerSourcesPourQuiAction({ recherche: "" });
+    expect("data" in r && r.note).toBeUndefined();
+  });
+
+  it("appels ET messages illisibles : erreur claire, pas une liste vide", async () => {
+    listInbox.mockResolvedValue({
+      rows: [],
+      truncated: false,
+      failedChannels: ["appel", "message"],
+    });
+    const r = await listerSourcesPourQuiAction({ recherche: "" });
+    expect("error" in r && r.error).toMatch(/n'a pas pu être lue/);
   });
 
   it("sans fiche : clientId null et lien de la page existante, rien n'est créé", async () => {

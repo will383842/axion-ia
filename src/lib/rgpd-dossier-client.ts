@@ -48,13 +48,6 @@ export const EXCLUSIONS_EXPORT_DOSSIER: ReadonlyArray<{
   readonly motif: string;
 }> = [
   {
-    modele: "DevisAssistantBrouillon",
-    motif:
-      "le brouillon de travail du devis que nous préparons pour vous (étapes, lignes et prix en " +
-      "cours de saisie) : il ne contient aucune coordonnée de personne, seulement un lien vers " +
-      "votre fiche ; le devis lui-même, une fois établi, vous est remis.",
-  },
-  {
     modele: "ConsoleCommande",
     motif:
       "la copie, transmise à notre console des automatisations, de ce que vous avez choisi en " +
@@ -306,6 +299,18 @@ export interface ExportDossierClient {
     readonly termineLe: Date | null;
     readonly misALecartLe: Date | null;
   }>;
+  /**
+   * Brouillons de l'assistant de devis de SA fiche (S17) : sans coordonnées de personne — id, dates,
+   * statut, contenu de travail (payload) et lien vers la fiche.
+   */
+  readonly brouillonsDevis: ReadonlyArray<{
+    readonly id: string;
+    readonly creeLe: Date;
+    readonly modifieLe: Date;
+    readonly statut: string;
+    readonly payload: unknown;
+    readonly ficheLien: string;
+  }>;
   readonly avertissements: readonly string[];
 }
 
@@ -329,6 +334,7 @@ const VIDE: ExportDossierClient = {
   questionnairesPreauditEnvoyes: [],
   questionnairesPreaudit: [],
   rapportsAvantAudit: [],
+  brouillonsDevis: [],
   avertissements: [],
 };
 
@@ -382,6 +388,7 @@ export async function exporterDossierClientPour(email: string): Promise<ExportDo
               statut: true,
               partiLe: true,
               oppositionIaLe: true,
+              clientId: true,
               client: { select: { raisonSociale: true } },
               adresses: { select: { email: true, nature: true, emailHash: true } },
             },
@@ -534,6 +541,24 @@ export async function exporterDossierClientPour(email: string): Promise<ExportDo
             orderBy: { echeanceLe: "asc" },
           });
 
+    // Brouillons de l'assistant de devis (S17) : rattachés à la FICHE (`client_id`), sans coordonnée.
+    const clientIds = [...new Set(contacts.map((c) => c.clientId))];
+    const brouillons =
+      clientIds.length === 0
+        ? []
+        : await prisma.devisAssistantBrouillon.findMany({
+            where: { clientId: { in: clientIds } },
+            select: {
+              id: true,
+              clientId: true,
+              createdAt: true,
+              updatedAt: true,
+              statut: true,
+              payload: true,
+            },
+            orderBy: { createdAt: "asc" },
+          });
+
     const siens = new Set(contactIds);
     // « Elle l'a dit » exige un locuteur VALIDÉ (plan §3.15 : « ses citations
     // (locuteur validé) ») : `contactLocuteurId` n'est posé qu'après la
@@ -641,6 +666,14 @@ export async function exporterDossierClientPour(email: string): Promise<ExportDo
         statut: r.statut,
         termineLe: r.finLe,
         misALecartLe: r.ecarteLe,
+      })),
+      brouillonsDevis: brouillons.map((b) => ({
+        id: b.id,
+        creeLe: b.createdAt,
+        modifieLe: b.updatedAt,
+        statut: b.statut,
+        payload: b.payload,
+        ficheLien: `client:${b.clientId}`,
       })),
       avertissements,
     };

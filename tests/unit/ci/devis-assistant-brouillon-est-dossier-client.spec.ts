@@ -27,9 +27,10 @@ describe("le brouillon de l'assistant de devis suit la personne (S17)", () => {
     expect(m?.annotation).toBe("dossier-client");
   });
 
-  it("l'export art. 15 le déclare, avec un motif non vide", () => {
-    const motif = motifDeclare(lire("src/lib/rgpd-dossier-client.ts"));
-    expect((motif ?? "").length).toBeGreaterThan(40);
+  it("l'export art. 15 LIT les brouillons de la fiche (ils ne sont plus exclus)", () => {
+    const source = lire("src/lib/rgpd-dossier-client.ts");
+    expect(source).toMatch(/\.devisAssistantBrouillon\.findMany\b/);
+    expect(motifDeclare(source)).toBeNull();
   });
 
   it("l'effacement le déclare en exception motivée : jamais supprimé ni purgé", () => {
