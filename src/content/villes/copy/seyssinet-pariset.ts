@@ -62,7 +62,7 @@ export const SEYSSINET_PARISET_COPY: VilleCopy = {
       a: "Pour les commerces de proximité et acteurs du tourisme Vercors à Seyssinet-Pariset, nous proposons audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation pratique, coaching 1-to-1. Cas typiques : agents IA fidélité client, automatisation réservations, classification photos produits, gestion saisonnalité.",
     },
     {
-      q: "Comment se passe une mission chez vous ?",
+      q: "Comment se déroule une intervention ?",
       a: "Nous intervenons partout en France, sur place ou à distance. Pour les multi-jours, hébergement local possible.",
     },
   ],

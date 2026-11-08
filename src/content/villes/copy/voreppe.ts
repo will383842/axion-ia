@@ -18,9 +18,9 @@ export const VOREPPE_COPY: VilleCopy = {
   ecosystemEn:
     "Voreppe occupe une position stratégique à la cluse de Voreppe (entrée géologique nord des Alpes), sur l'axe A48. Tissu PME tertiaires et industries périphériques, TPE artisanat BTP dense, commerces de proximité. Patrimoine historique remarquable (bataille de Voreppe 22 juin 1940, repoussant l'invasion allemande de la cuvette grenobloise).",
   distancesFr:
-    "Gare Voreppe (TER Lyon, 1h). Aéroport Lyon-Saint-Exupéry à 1h. Axe A48 vers Lyon (1h).",
+    "Gare Voreppe (TER vers Lyon, 1h). Aéroport Lyon-Saint-Exupéry à 1h. Axe A48 vers Lyon (1h).",
   distancesEn:
-    "Gare Voreppe (TER Lyon, 1h). Aéroport Lyon-Saint-Exupéry à 1h. Axe A48 vers Lyon (1h).",
+    "Gare Voreppe (TER vers Lyon, 1h). Aéroport Lyon-Saint-Exupéry à 1h. Axe A48 vers Lyon (1h).",
   topSectorsNaf: [
     "PME tertiaires & services aux entreprises",
     "Industries périphériques nord-Isère",
@@ -64,7 +64,7 @@ export const VOREPPE_COPY: VilleCopy = {
       a: "Pour les acteurs du tourisme patrimoine et nature autour de Voreppe (cluse, sites historiques, randonnée Chartreuse-Vercors), audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas IA : agents conversationnels multilingues, automatisation réservations, classification feedback visiteurs.",
     },
     {
-      q: "Comment se passe une mission chez vous ?",
+      q: "Comment se déroule une intervention ?",
       a: "Nous intervenons partout en France, sur place ou à distance. Pour les missions de plusieurs jours, un hébergement local est possible.",
     },
   ],

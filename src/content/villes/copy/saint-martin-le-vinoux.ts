@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_MARTIN_LE_VINOUX_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Martin-le-Vinoux (38), commune du nord-ouest de la métropole grenobloise. Position résidentielle péri-urbaine à proximité immédiate du centre-ville grenoblois, au pied du massif de la Chartreuse. Tissu PME tertiaires, TPE artisans BTP, commerces, professions libérales. Axion-IA y travaille avec les organisations du territoire.",
+    "Saint-Martin-le-Vinoux (38) est une commune du nord-ouest de la métropole grenobloise. Position résidentielle péri-urbaine à proximité immédiate du centre-ville grenoblois, au pied du massif de la Chartreuse. Tissu PME tertiaires, TPE artisans BTP, commerces, professions libérales. Axion-IA y travaille avec les organisations du territoire.",
   pitchEn:
-    "Saint-Martin-le-Vinoux (38), commune du nord-ouest de la métropole grenobloise. Position résidentielle péri-urbaine à proximité immédiate du centre-ville grenoblois, au pied du massif de la Chartreuse. Tissu PME tertiaires, TPE artisans BTP, commerces, professions libérales. Axion-IA y travaille avec les organisations du territoire.",
+    "Saint-Martin-le-Vinoux (38) est une commune du nord-ouest de la métropole grenobloise. Position résidentielle péri-urbaine à proximité immédiate du centre-ville grenoblois, au pied du massif de la Chartreuse. Tissu PME tertiaires, TPE artisans BTP, commerces, professions libérales. Axion-IA y travaille avec les organisations du territoire.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Martin-le-Vinoux (38). Nous accompagnons tous types d'activités : PME tertiaires, TPE artisans BTP, commerçants, professions libérales (médecins, avocats), indépendants et services aux entreprises de la métropole grenobloise en zone nord-ouest.",
   directAnswerEn:
@@ -62,7 +62,7 @@ export const SAINT_MARTIN_LE_VINOUX_COPY: VilleCopy = {
       a: "Pour les professions libérales à Saint-Martin-le-Vinoux (médecins, avocats, expert-comptables), audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas IA respectueux du secret professionnel : agents conversationnels patients/clients, gestion RDV, transcription. RGPD strict.",
     },
     {
-      q: "Comment se passe une mission chez vous ?",
+      q: "Comment se déroule une intervention ?",
       a: "Nous intervenons partout en France, sur place ou à distance. Pour les multi-jours, hébergement local possible.",
     },
   ],

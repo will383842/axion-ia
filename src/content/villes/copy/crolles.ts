@@ -49,7 +49,7 @@ export const CROLLES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Crolles et vallée du Grésivaudan ?",
-      a: "Oui, Axion-IA intervient à Crolles et toute la vallée du Grésivaudan (Bernin, Saint-Ismier, Montbonnot-Saint-Martin, Villard-Bonnot, Le Versoud). Couverture également de la métropole grenobloise (30 min A41) et accès Chambéry à 50 min.",
+      a: "Oui, Axion-IA intervient à Crolles et toute la vallée du Grésivaudan (Bernin, Saint-Ismier, Montbonnot-Saint-Martin, Villard-Bonnot, Le Versoud). Couverture également de la métropole grenobloise et accès Chambéry à 50 min.",
     },
     {
       q: "Travaillez-vous avec les industriels microélectroniques du Grésivaudan ?",
@@ -64,7 +64,7 @@ export const CROLLES_COPY: VilleCopy = {
       a: "Pour les PME tertiaires de la vallée du Grésivaudan, nous proposons les 5 services Axion-IA : audit IA (Sur place à Stratégique), interventions sur site, implémentation IA (agents, automatisations), coaching 1-to-1 dirigeants, et plateformes web/SaaS IA sur mesure.",
     },
     {
-      q: "Comment se passe une mission chez vous ?",
+      q: "Comment se déroule une intervention ?",
       a: "Nous intervenons partout en France, sur place ou à distance. Pour les multi-jours, hébergement local possible.",
     },
   ],

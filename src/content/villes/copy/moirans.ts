@@ -18,9 +18,9 @@ export const MOIRANS_COPY: VilleCopy = {
   ecosystemEn:
     "Moirans appartient à la communauté d'agglomération du Pays voironnais et au canton de Tullins, au débouché septentrional de la basse vallée de l'Isère (Sud Grésivaudan). Position stratégique sur l'axe A48 : tissu industriel et logistique périphérique, TPE artisanat BTP, commerces, professions libérales, agriculture vallée de l'Isère.",
   distancesFr:
-    "Gare Moirans (TER Lyon, 1h). Aéroport Lyon-Saint-Exupéry à 1h. Axe A48 vers Lyon (1h). Voiron à 10 min.",
+    "Gare Moirans (TER vers Lyon, 1h). Aéroport Lyon-Saint-Exupéry à 1h. Axe A48 vers Lyon (1h). Voiron à 10 min.",
   distancesEn:
-    "Gare Moirans (TER Lyon, 1h). Aéroport Lyon-Saint-Exupéry à 1h. Axe A48 vers Lyon (1h). Voiron à 10 min.",
+    "Gare Moirans (TER vers Lyon, 1h). Aéroport Lyon-Saint-Exupéry à 1h. Axe A48 vers Lyon (1h). Voiron à 10 min.",
   topSectorsNaf: [
     "PME industrielles & manufacturières",
     "Logistique & transport (axe A48)",
@@ -64,8 +64,8 @@ export const MOIRANS_COPY: VilleCopy = {
       a: "Pour les TPE artisans BTP et commerçants à Moirans, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation pratique, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, classification photos, gestion stocks et planning.",
     },
     {
-      q: "Comment se passe une mission chez vous ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Pour les missions de plusieurs jours, un hébergement local est possible.",
+      q: "Comment se déroule une intervention ?",
+      a: "Sur place ou à distance, selon votre besoin. Pour les missions de plusieurs jours, un hébergement local est possible.",
     },
   ],
 };

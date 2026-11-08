@@ -62,8 +62,8 @@ export const VARCES_ALLIERES_ET_RISSET_COPY: VilleCopy = {
       a: "Pour les agriculteurs et éleveurs résiduels de la vallée de la Gresse autour de Varces, nous proposons audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation pratique. Cas IA : prédiction météo locale, classification photos animaux/cultures, automatisation traçabilité, vente directe e-commerce.",
     },
     {
-      q: "Comment se passe une mission chez vous ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Pour les missions de plusieurs jours, un hébergement local est possible.",
+      q: "Comment se déroule une intervention ?",
+      a: "Sur place ou à distance, selon votre besoin. Pour les missions de plusieurs jours, un hébergement local est possible.",
     },
   ],
 };

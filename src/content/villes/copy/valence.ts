@@ -230,7 +230,7 @@ export const VALENCE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Valence et dans la Drôme ?",
-      a: "Oui, Axion-IA accompagne les TPE et PME de Valence, Romans-sur-Isère, Montélimar et tout le département. Nous intervenons partout en France, sur place ou à distance.",
+      a: "Oui, Axion-IA accompagne les TPE et PME de Valence, Romans-sur-Isère, Montélimar et tout le département, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec l'agroalimentaire et la viticulture drômoise ?",

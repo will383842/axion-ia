@@ -62,7 +62,7 @@ export const SEYSSINS_COPY: VilleCopy = {
       a: "Pour les commerces et PME tertiaires à Seyssins, nous proposons les 5 services Axion-IA : audit IA (Sur place à Stratégique), interventions sur site, implémentation IA (agents conversationnels, automatisations workflow, CRM augmentés), coaching 1-to-1 dirigeants, et plateformes web/SaaS IA sur mesure.",
     },
     {
-      q: "Comment se passe une mission chez vous ?",
+      q: "Comment se déroule une intervention ?",
       a: "Nous intervenons partout en France, sur place ou à distance. Pour les multi-jours, hébergement local possible.",
     },
   ],

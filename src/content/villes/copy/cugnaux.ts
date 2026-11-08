@@ -230,7 +230,7 @@ export const CUGNAUX_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Cugnaux et dans le sud-ouest toulousain ?",
-      a: "Oui, Axion-IA intervient à Cugnaux et toute la couronne sud-ouest de Toulouse (Tournefeuille, Plaisance-du-Touch, Villeneuve-Tolosane). Nos consultants viennent de Toulouse, à 15 minutes.",
+      a: "Oui, Axion-IA intervient à Cugnaux et toute la couronne sud-ouest de Toulouse (Tournefeuille, Plaisance-du-Touch, Villeneuve-Tolosane). Nous intervenons sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les TPE et artisans de Cugnaux ?",

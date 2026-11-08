@@ -55,7 +55,7 @@ export const SAINT_MARTIN_D_HERES_COPY: VilleCopy = {
         hero: "Saint-Martin-d'Hères, 2e ville de l'Isère, est un cas singulier pour Axion-IA : c'est ici qu'ALMA, éditeur de logiciels CFAO né en 1979 d'un essaimage de mathématiciens universitaires, est devenu leader mondial de la découpe et de la tôlerie ; ici aussi que s'étend la majeure partie du Domaine universitaire (Institut Néel, LNCMI, Polytech) et que cohabitent une industrie de précision (SGL Carbon Technic, échangeurs graphite) et un pôle santé en pointe sur la FIV (Clinique Belledonne). Nous concevons sur place des sites web et plateformes SaaS augmentés par l'IA pour ces éditeurs, laboratoires, industriels et PME des zones d'activité martinéroises.",
         whyHere: [
           "Berceau d'ALMA et de son SaaS CFAO Almacam, Saint-Martin-d'Hères réunit une culture éditeur-logiciel rare : nous y concevons des plateformes IA-native (chatbot RAG, recherche sémantique, agents) pour les éditeurs et intégrateurs issus de cet écosystème.",
-          "Le Domaine universitaire (Institut Néel, LNCMI, Polytech, Sciences Po, IUT 1) génère un flux de spin-offs et de labos : portails de valorisation de recherche, applications métier et interfaces data sur mesure, hébergées en UE.",
+          "Le Domaine universitaire (Institut Néel, LNCMI, Polytech, l'institut d'études politiques (IEP), IUT 1) génère un flux de spin-offs et de labos : portails de valorisation de recherche, applications métier et interfaces data sur mesure, hébergées en UE.",
           "L'industrie de précision locale — SGL Carbon Technic (échangeurs et pompes graphite anticorrosion, av. Marcel-Cachin) et les ~248 entreprises de la Z.I. SUD — appelle des sites catalogues techniques, configurateurs produit et e-commerce B2B multi-CMS.",
           "Les TPE/PME des Z.A. Croix-Rouge et Bourgamon, des commerces de l'avenue Gabriel-Péri et la santé (Clinique Belledonne) ont besoin de sites mobile-first, prise de RDV et UX/UI accessible — sans dépendance éditeur ni lock-in.",
         ],
@@ -119,7 +119,7 @@ export const SAINT_MARTIN_D_HERES_COPY: VilleCopy = {
           },
           {
             q: "Travaillez-vous avec les laboratoires et structures du Domaine universitaire ?",
-            a: "Oui. Le Domaine universitaire (Institut Néel, LNCMI, Polytech, Sciences Po, IUT 1) s'étend en grande partie sur la commune. Nous réalisons des portails de valorisation de recherche, des applications métier et des interfaces de visualisation de données pour les laboratoires, spin-offs et services du campus, avec confidentialité et hébergement RGPD.",
+            a: "Oui. Le Domaine universitaire (Institut Néel, LNCMI, Polytech, l'institut d'études politiques (IEP), IUT 1) s'étend en grande partie sur la commune. Nous réalisons des portails de valorisation de recherche, des applications métier et des interfaces de visualisation de données pour les laboratoires, spin-offs et services du campus, avec confidentialité et hébergement RGPD.",
           },
           {
             q: "Pouvez-vous gérer un catalogue technique ou un configurateur pour un industriel comme SGL Carbon Technic ?",
@@ -141,7 +141,7 @@ export const SAINT_MARTIN_D_HERES_COPY: VilleCopy = {
         hero: "Saint-Martin-d'Hères, the second-largest town in Isère, is a singular case for Axion-IA: this is where ALMA, a CAD/CAM software publisher founded in 1979 by mathematicians spun off from the local university, became a world leader in cutting and sheet-metal software; where most of the university campus stretches (Institut Néel, LNCMI, Polytech); and where precision industry (SGL Carbon Technic, graphite heat exchangers) coexists with leading-edge healthcare (Clinique Belledonne, IVF). We design on site AI-augmented websites and SaaS platforms for these publishers, laboratories, manufacturers and SMEs across the town's business zones.",
         whyHere: [
           "Birthplace of ALMA and its Almacam CAD/CAM SaaS, Saint-Martin-d'Hères holds a rare software-publisher culture: we build AI-native platforms here (RAG chatbot, semantic search, agents) for the publishers and integrators stemming from that ecosystem.",
-          "The university campus (Institut Néel, LNCMI, Polytech, Sciences Po, IUT 1) generates a flow of spin-offs and labs: research-valorisation portals, bespoke business apps and data interfaces, hosted in the EU.",
+          "The university campus (Institut Néel, LNCMI, Polytech, the Institute of Political Studies (IEP), IUT 1) generates a flow of spin-offs and labs: research-valorisation portals, bespoke business apps and data interfaces, hosted in the EU.",
           "Local precision industry — SGL Carbon Technic (graphite anti-corrosion heat exchangers and pumps, av. Marcel-Cachin) and the ~248 companies of the Z.I. SUD — calls for technical catalogue sites, product configurators and B2B multi-CMS e-commerce.",
           "SMEs in the Croix-Rouge and Bourgamon business zones, the shops of avenue Gabriel-Péri and healthcare (Clinique Belledonne) need mobile-first sites, booking and accessible UX/UI — with no vendor lock-in.",
         ],
@@ -205,7 +205,7 @@ export const SAINT_MARTIN_D_HERES_COPY: VilleCopy = {
           },
           {
             q: "Do you work with the laboratories and bodies of the university campus?",
-            a: "Yes. The university campus (Institut Néel, LNCMI, Polytech, Sciences Po, IUT 1) largely spans the town. We build research-valorisation portals, business apps and data-visualisation interfaces for the campus labs, spin-offs and services, with confidentiality and GDPR hosting.",
+            a: "Yes. The university campus (Institut Néel, LNCMI, Polytech, the Institute of Political Studies (IEP), IUT 1) largely spans the town. We build research-valorisation portals, business apps and data-visualisation interfaces for the campus labs, spin-offs and services, with confidentiality and GDPR hosting.",
           },
           {
             q: "Can you handle a technical catalogue or configurator for a manufacturer like SGL Carbon Technic?",

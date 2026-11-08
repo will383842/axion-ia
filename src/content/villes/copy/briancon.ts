@@ -65,7 +65,7 @@ export const BRIANCON_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Briançon en altitude ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Toute saison, hiver comme été. Hébergement local possible.",
+      a: "Sur place ou à distance, selon votre besoin. Toute saison, hiver comme été. Hébergement local possible.",
     },
   ],
 };

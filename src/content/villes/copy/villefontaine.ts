@@ -18,9 +18,9 @@ export const VILLEFONTAINE_COPY: VilleCopy = {
   ecosystemEn:
     "Villefontaine s'inscrit dans le tissu économique de la ville nouvelle de L'Isle-d'Abeau, intégrée à la Communauté d'agglomération Porte de l'Isère (CAPI) et à l'aire urbaine de Lyon. Proximité immédiate plateforme aéroportuaire Lyon-Saint-Exupéry (15 min) génère une activité logistique, services aux entreprises et industrielle dense. Tissu TPE artisanat BTP et commerces de proximité.",
   distancesFr:
-    "Gare La Verpillière à 5 min (TER Lyon). Aéroport Lyon-Saint-Exupéry à 15 min. Lyon centre à 35 min via A43. Bourgoin-Jallieu à 10 min.",
+    "Gare La Verpillière à 5 min (TER vers Lyon). Aéroport Lyon-Saint-Exupéry à 15 min. Lyon centre à 35 min via A43. Bourgoin-Jallieu à 10 min.",
   distancesEn:
-    "Gare La Verpillière à 5 min (TER Lyon). Aéroport Lyon-Saint-Exupéry à 15 min. Lyon centre à 35 min via A43. Bourgoin-Jallieu à 10 min.",
+    "Gare La Verpillière à 5 min (TER vers Lyon). Aéroport Lyon-Saint-Exupéry à 15 min. Lyon centre à 35 min via A43. Bourgoin-Jallieu à 10 min.",
   topSectorsNaf: [
     "Logistique & transport (Lyon-Saint-Exupéry)",
     "Industrie & sous-traitance Nord-Isère",
@@ -64,8 +64,8 @@ export const VILLEFONTAINE_COPY: VilleCopy = {
       a: "Pour les PME tertiaires et industrielles de la CAPI (ville nouvelle), nous proposons les 5 services Axion-IA : audit IA (Sur place à Stratégique), interventions sur site, implémentation IA (agents, automatisations), coaching 1-to-1 dirigeants, et plateformes web/SaaS IA sur mesure.",
     },
     {
-      q: "Comment se passe une mission chez vous ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Pour les multi-jours, hébergement local possible (hôtels CAPI).",
+      q: "Comment se déroule une intervention ?",
+      a: "Sur place ou à distance, selon votre besoin. Pour les multi-jours, hébergement local possible (hôtels CAPI).",
     },
   ],
 };

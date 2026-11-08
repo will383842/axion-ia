@@ -14,9 +14,9 @@ export const LA_TOUR_DU_PIN_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à La Tour-du-Pin (38). Nous accompagnons tous types d'activités : services publics (sous-préfecture, tribunal d'instance), PME industrielles Nord-Isère, TPE artisans BTP, commerçants, professions libérales, agriculteurs/éleveurs périphériques et entreprises du Bas-Dauphiné.",
   seoHook: "TPE & PME Isère",
   ecosystemFr:
-    "La Tour-du-Pin est l'une des sous-préfectures de l'Isère en région historique Bas-Dauphiné (partie septentrionale du département). Position géographique stratégique au carrefour des axes Lyon-Chambéry et A43. Tissu administratif (préfecture, justice), PME industrielles et logistique, agriculture périphérique (élevage, céréales), commerces et services. Communauté de communes Les Vals du Dauphiné.",
+    "La Tour-du-Pin est l'une des sous-préfectures de l'Isère en région historique Bas-Dauphiné (partie septentrionale du département). Position géographique stratégique sur l'axe A43 Lyon-Chambéry. Tissu administratif (préfecture, justice), PME industrielles et logistique, agriculture périphérique (élevage, céréales), commerces et services. Communauté de communes Les Vals du Dauphiné.",
   ecosystemEn:
-    "La Tour-du-Pin est l'une des sous-préfectures de l'Isère en région historique Bas-Dauphiné (partie septentrionale du département). Position géographique stratégique au carrefour des axes Lyon-Chambéry et A43. Tissu administratif (préfecture, justice), PME industrielles et logistique, agriculture périphérique (élevage, céréales), commerces et services. Communauté de communes Les Vals du Dauphiné.",
+    "La Tour-du-Pin est l'une des sous-préfectures de l'Isère en région historique Bas-Dauphiné (partie septentrionale du département). Position géographique stratégique sur l'axe A43 Lyon-Chambéry. Tissu administratif (préfecture, justice), PME industrielles et logistique, agriculture périphérique (élevage, céréales), commerces et services. Communauté de communes Les Vals du Dauphiné.",
   distancesFr:
     "Gare La Tour-du-Pin (TER ligne Lyon-Chambéry, 1h Lyon). Aéroport Lyon-Saint-Exupéry à 30 min. Chambéry à 50 min A43. Axe A43 vers Lyon ouest et Chambéry est.",
   distancesEn:
@@ -64,8 +64,8 @@ export const LA_TOUR_DU_PIN_COPY: VilleCopy = {
       a: "Pour les PME industrielles du Bas-Dauphiné, nous proposons les 5 services Axion-IA : audit IA (Sur place à Stratégique), interventions sur site (atelier production), implémentation IA (prédiction maintenance, contrôle qualité par vision), coaching 1-to-1 dirigeants, et plateformes web/SaaS IA sur mesure.",
     },
     {
-      q: "Comment se passe une mission chez vous ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Pour les multi-jours, hébergement local possible (hôtels Bourgoin-Jallieu ou La Tour-du-Pin).",
+      q: "Comment se déroule une intervention ?",
+      a: "Sur place ou à distance, selon votre besoin. Pour les multi-jours, hébergement local possible (hôtels Bourgoin-Jallieu ou La Tour-du-Pin).",
     },
   ],
 };

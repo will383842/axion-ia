@@ -64,8 +64,8 @@ export const VIF_COPY: VilleCopy = {
       a: "Pour les commerces et professions libérales à Vif, nous proposons audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation pratique, coaching 1-to-1. Cas typiques : agents IA fidélité client, automatisation gestion RDV (santé, juridique), classification dossiers, transcription consultations.",
     },
     {
-      q: "Comment se passe une mission rurale chez vous ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Pour les missions de plusieurs jours en zone rurale, un hébergement local est possible.",
+      q: "Comment se déroule une intervention rurale ?",
+      a: "Sur place ou à distance, selon votre besoin. Pour les missions de plusieurs jours en zone rurale, un hébergement local est possible.",
     },
   ],
 };

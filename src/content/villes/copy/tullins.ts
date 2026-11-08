@@ -18,9 +18,9 @@ export const TULLINS_COPY: VilleCopy = {
   ecosystemEn:
     "Tullins est intégrée à la communauté d'agglomération du Pays voironnais (~93 000 hab) sur l'axe stratégique A48. Tissu PME industrielles, activité agricole vallée de l'Isère (élevage, céréales, maraîchage), commerces, services et tissu TPE artisanat BTP. Position de transit sur l'A48, proximité Voiron (15 min).",
   distancesFr:
-    "Gare Tullins-Fures à 5 min (TER Lyon, 1h). Aéroport Lyon-Saint-Exupéry à 1h. Axe A48 vers Lyon. Voiron à 15 min.",
+    "Gare Tullins-Fures à 5 min (TER vers Lyon, 1h). Aéroport Lyon-Saint-Exupéry à 1h. Axe A48 vers Lyon. Voiron à 15 min.",
   distancesEn:
-    "Gare Tullins-Fures à 5 min (TER Lyon, 1h). Aéroport Lyon-Saint-Exupéry à 1h. Axe A48 vers Lyon. Voiron à 15 min.",
+    "Gare Tullins-Fures à 5 min (TER vers Lyon, 1h). Aéroport Lyon-Saint-Exupéry à 1h. Axe A48 vers Lyon. Voiron à 15 min.",
   topSectorsNaf: [
     "PME industrielles & manufacturières",
     "Agriculture vallée de l'Isère",
@@ -64,8 +64,8 @@ export const TULLINS_COPY: VilleCopy = {
       a: "Pour les TPE artisans BTP et commerçants à Tullins, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, classification photos, gestion stocks.",
     },
     {
-      q: "Comment se passe une mission chez vous ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Pour les multi-jours, hébergement local possible (hôtels Voiron). Coûts de déplacement séparés du forfait, tarifs transparents.",
+      q: "Comment se déroule une intervention ?",
+      a: "Sur place ou à distance, selon votre besoin. Pour les multi-jours, hébergement local possible (hôtels Voiron). Coûts de déplacement séparés du forfait, tarifs transparents.",
     },
   ],
 };

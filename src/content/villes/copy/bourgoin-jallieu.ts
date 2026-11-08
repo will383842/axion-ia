@@ -18,9 +18,9 @@ export const BOURGOIN_JALLIEU_COPY: VilleCopy = {
   ecosystemEn:
     "Bourgoin-Jallieu, ville-centre de la CAPI (Communauté d'Agglomération Porte de l'Isère), s'est construite sur l'industrie textile et l'ennoblissement avant de devenir une grande plateforme logistique du couloir rhodanien. Le tissu local mêle entrepôts et transport, négoce de gros, sous-traitance industrielle (produits métalliques, agroalimentaire), artisanat du bâtiment et commerces de centre-ville. Ce maillage de TPE et PME, dépendant de marges serrées et de flux tendus, trouve dans l'IA opérationnelle un levier direct de productivité.",
   distancesFr:
-    "Bourgoin-Jallieu se situe sur l'A43 entre Lyon (40 km, 35 min) et l'aéroport Lyon-Saint-Exupéry (25 km, 25 min). La gare relie Lyon Part-Dieu en moins de 40 min. Nos consultants se déplacent depuis Lyon sur tout le Nord-Isère : La Tour-du-Pin, L'Isle-d'Abeau, Villefontaine et la plaine de la CAPI.",
+    "Bourgoin-Jallieu se situe sur l'A43 entre Lyon (40 km, 35 min) et l'aéroport Lyon-Saint-Exupéry (25 km, 25 min). La gare relie Lyon Part-Dieu en moins de 40 min. Nous intervenons sur place ou à distance sur tout le Nord-Isère : La Tour-du-Pin, L'Isle-d'Abeau, Villefontaine et la plaine de la CAPI.",
   distancesEn:
-    "Bourgoin-Jallieu se situe sur l'A43 entre Lyon (40 km, 35 min) et l'aéroport Lyon-Saint-Exupéry (25 km, 25 min). La gare relie Lyon Part-Dieu en moins de 40 min. Nos consultants se déplacent depuis Lyon sur tout le Nord-Isère : La Tour-du-Pin, L'Isle-d'Abeau, Villefontaine et la plaine de la CAPI.",
+    "Bourgoin-Jallieu se situe sur l'A43 entre Lyon (40 km, 35 min) et l'aéroport Lyon-Saint-Exupéry (25 km, 25 min). La gare relie Lyon Part-Dieu en moins de 40 min. Nous intervenons sur place ou à distance sur tout le Nord-Isère : La Tour-du-Pin, L'Isle-d'Abeau, Villefontaine et la plaine de la CAPI.",
   topSectorsNaf: [
     "Entreposage & logistique",
     "Commerce de gros",
