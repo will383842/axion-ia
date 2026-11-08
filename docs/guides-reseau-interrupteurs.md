@@ -11,6 +11,9 @@ build-arg) et valent « éteint » sauf si la valeur est exactement `true`.
 
 Éteint → `503 reception_eteinte` ; rien n'est lu ni écrit.
 
+Pose depuis GitHub (cible `site` seulement) : `gh workflow run coolify-drapeau.yml -f cle=OPPOSITIONS_RESEAU_ENABLED -f valeur=true -f cible=site -f redeploy=true`
+(puis `GUIDES_RESEAU_ENABLED`). Éteindre les oppositions exige `-f confirmer_extinction=true`.
+
 ## `OPPOSITIONS_RESEAU_ENABLED`
 
 Reçoit le « stop » écrit par une personne en message privé d'un réseau. L'adresse est mise à
