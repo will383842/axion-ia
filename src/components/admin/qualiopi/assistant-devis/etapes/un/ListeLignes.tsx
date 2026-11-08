@@ -44,7 +44,7 @@ function dependDe(lignes: readonly LigneAssistant[], depart: string, cible: stri
   return false;
 }
 
-/** Référence partagée : un `[]` neuf à chaque rendu casserait le memo. */
+/** Référence partagée, par économie : un `[]` neuf serait sans effet sur le memo (le comparateur juge égaux deux tableaux vides). */
 const AUCUNE_AUTRE: readonly AutreLigne[] = [];
 
 const etiquette = (l: LigneAssistant, i: number): string =>

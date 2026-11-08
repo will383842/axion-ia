@@ -8,17 +8,19 @@ import type { EtatAssistant, LigneAssistant } from "../../../types";
 import { BlocMotsDuClient } from "../BlocMotsDuClient";
 import { ListeLignes } from "../ListeLignes";
 
+// On mesure les rendus du VRAI `LigneContenu` (memo + comparateur réels, rien n'est recouvert) :
+// `quantiteLue` est appelée une fois par rendu du corps de la ligne, avec sa quantité, que ce
+// test rend distincte d'une ligne à l'autre (a=1, b=2, c=3). Retirer le comparateur de l'export
+// réel fait donc grimper les compteurs de b et c à chaque frappe dans a.
 const rendus = vi.hoisted(() => new Map<string, number>());
-vi.mock("../LigneContenu", async (importOriginal) => {
-  const reel = await importOriginal<typeof import("../LigneContenu")>();
-  const { memo, createElement } = await import("react");
+vi.mock("../../../calculs", async (importOriginal) => {
+  const reel = await importOriginal<typeof import("../../../calculs")>();
   return {
     ...reel,
-    // Même comparateur que le vrai composant : on compte les rendus qu'il laisse passer.
-    LigneContenu: memo((p: Parameters<typeof reel.LigneContenu>[0]) => {
-      rendus.set(p.ligne.id, (rendus.get(p.ligne.id) ?? 0) + 1);
-      return createElement(reel.LigneContenu, p);
-    }, reel.memesProps),
+    quantiteLue: (q: string) => {
+      rendus.set(q, (rendus.get(q) ?? 0) + 1);
+      return reel.quantiteLue(q);
+    },
   };
 });
 
@@ -288,14 +290,22 @@ describe("ListeLignes : rendus", () => {
   beforeEach(() => rendus.clear());
 
   it("une frappe dans la ligne 1 ne refait pas le rendu des autres lignes", () => {
-    render(<Hote initial={etat([L("a"), L("b"), L("c")])} />);
+    render(
+      <Hote
+        initial={etat([
+          L("a", { quantite: "1" }),
+          L("b", { quantite: "2" }),
+          L("c", { quantite: "3" }),
+        ])}
+      />,
+    );
     const avant = new Map(rendus);
     const prix = screen.getAllByLabelText(/prix/i)[0] as HTMLInputElement;
     fireEvent.change(prix, { target: { value: "120" } });
     fireEvent.change(prix, { target: { value: "1200" } });
     expect(lignesDe()[0]!.prixEur).toBe("1200");
-    expect(rendus.get("a")).toBeGreaterThan(avant.get("a")!);
-    expect(rendus.get("b")).toBe(avant.get("b"));
-    expect(rendus.get("c")).toBe(avant.get("c"));
+    expect(rendus.get("1")).toBeGreaterThan(avant.get("1")!);
+    expect(rendus.get("2")).toBe(avant.get("2"));
+    expect(rendus.get("3")).toBe(avant.get("3"));
   });
 });
