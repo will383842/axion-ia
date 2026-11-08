@@ -117,16 +117,59 @@ function lireOpco(p: PayloadAssistantV1, e: Erreurs) {
   return out;
 }
 
-/** Textes D1 d'un devis À FORMULES : récit du projet injecté comme textes actifs (jamais de montant). */
+/** Lit un champ d'IA de la liste blanche (S03) sans rien supposer sur le reste de `nonImprime`. */
+const objet = (v: unknown): Record<string, unknown> | null =>
+  v && typeof v === "object" && !Array.isArray(v) ? (v as Record<string, unknown>) : null;
+
+/**
+ * Phrase d'IA d'UNE formule, tirée d'une table fermée des choix permis (jamais de montant,
+ * aucun texte libre). Choix inconnu ou absent : aucune phrase.
+ */
+function phraseIA(formule: "achat" | "abonnement", choix: unknown): string | null {
+  const c = typeof choix === "string" ? { mode: choix } : objet(choix);
+  if (!c) return null;
+  if (formule === "achat") {
+    if (c["mode"] === "compte_client")
+      return "L'utilisation de l'IA se fait avec le compte du client.";
+    if (c["mode"] === "incluse") {
+      const mois = c["mois"];
+      return typeof mois === "number" && Number.isInteger(mois) && mois > 0
+        ? `L'utilisation de l'IA est incluse pendant ${mois} mois.`
+        : null;
+    }
+    return null;
+  }
+  const niveaux: Record<string, string> = { essentiel: "Essentiel", pro: "Pro", etendu: "Étendu" };
+  if (c["inclus"] === true) {
+    const niveau = typeof c["niveau"] === "string" ? niveaux[c["niveau"]] : undefined;
+    return niveau
+      ? `L'utilisation de l'IA est incluse dans l'abonnement (niveau ${niveau}).`
+      : "L'utilisation de l'IA est incluse dans l'abonnement.";
+  }
+  if (c["inclus"] === false) return "L'utilisation de l'IA n'est pas incluse dans l'abonnement.";
+  return null;
+}
+
+/** Textes D1 d'un devis À FORMULES : récit du projet et choix d'IA par formule, injectés comme textes actifs (jamais de montant). */
 function textesInjectes(p: PayloadAssistantV1): TexteCopie[] {
   const garantie = p.nonImprime["phraseGarantie"];
+  const ia = objet(p.nonImprime["ia"]);
+  const phrase = (f: "achat" | "abonnement", prefixe: string): string => {
+    if (!p.formules.formules[f] || !ia) return "";
+    const t = phraseIA(f, ia[f]);
+    return t ? `${prefixe}${t}` : "";
+  };
   const sources = [
     p.recit.intitule,
     p.recit.besoinClient,
     p.recit.resultatVise,
     typeof garantie === "string" ? garantie : "",
+    phrase("achat", "Formule A : "),
+    phrase("abonnement", "Formule B : "),
   ];
-  const deja = new Set(p.textes.map((t) => t.texte));
+  // Comparaison sur le texte rogné : un devis rouvert dont les textes sont déjà injectés ne
+  // reçoit pas une seconde copie de l'intitulé ressaisi (ou repris tel quel) dans le récit.
+  const deja = new Set(p.textes.map((t) => t.texte.trim()));
   const out: TexteCopie[] = [...p.textes];
   for (const s of sources) {
     const texte = s.trim();
@@ -208,7 +251,17 @@ export interface DevisPourAssistant {
   offre: unknown;
   /** Lignes enregistrées (JSON) d'un devis classique. */
   lignes: unknown;
+  /** Financement suggéré / estimation OPCO d'un devis classique : l'assistant ne les porte pas. */
+  financementSuggere?: string | null;
+  montantOpcoEstimeCents?: number | null;
 }
+
+/** Résultat de la réouverture : le payload, ou un refus motivé (renvoi vers la fiche du devis). */
+export type ResultatOuverture = { payload: PayloadAssistantV1 } | { refus: string };
+
+const refus = (motif: string): { refus: string } => ({
+  refus: `Ce devis ne peut pas être rouvert dans l'assistant : ${motif} Modifiez-le depuis sa fiche.`,
+});
 
 /** Centimes entiers → « 12.5 » / « 12 » (division entière : aucun flottant). */
 function centsVersTexte(c: number): string {
@@ -238,20 +291,35 @@ function lignesClassiquesDe(brut: unknown): LigneClassiqueSaisie[] {
   return out;
 }
 
-/** Hydratation EN MÉMOIRE d'un devis brouillon (aucune écriture). Réutilise `offreVersSaisie`. */
-export function devisVersPayload(
-  d: DevisPourAssistant,
-  tvaStandardPct: number,
-): PayloadAssistantV1 {
+/** Taux de TVA enregistré (points de base) ≠ taux standard reçu. */
+const bpsNonStandard = (bps: number, tvaStandardPct: number): boolean =>
+  bps !== Math.round(tvaStandardPct * 100);
+
+/**
+ * Hydratation EN MÉMOIRE d'un devis brouillon (aucune écriture). Réutilise `offreVersSaisie`.
+ * REFUSE l'ouverture (jamais de perte silencieuse) pour :
+ *  - une offre présente mais illisible (jamais de bascule en classique) ;
+ *  - un devis classique avec financement ou estimation OPCO (l'assistant ne les relit pas) ;
+ *  - une ligne existante à TVA non standard (le payload ne porte pas de taux par ligne).
+ */
+export function devisVersPayload(d: DevisPourAssistant, tvaStandardPct: number): ResultatOuverture {
   const p = payloadVide(tvaStandardPct);
   p.clientId = d.clientId;
   p.activite = d.activite;
   p.refClient = d.refClient ?? "";
   p.dateValidite = d.dateValidite ? d.dateValidite.toISOString().slice(0, 10) : null;
   p.sync = { devisId: d.id, devisMajLe: d.updatedAt.toISOString() };
-  const offre = d.offre == null ? null : offreDevisV1.safeParse(d.offre);
-  if (offre?.success) {
+  if (d.offre != null) {
+    const offre = offreDevisV1.safeParse(d.offre);
+    if (!offre.success) return refus("son offre est illisible.");
     const o = offre.data;
+    const taux = [
+      ...(o.achat?.lignes ?? []).map((l) => l.tauxTvaBps),
+      ...(o.abonnement?.miseEnServiceLignes ?? []).map((l) => l.tauxTvaBps),
+      ...(o.abonnement ? [o.abonnement.tauxTvaBps] : []),
+    ];
+    if (taux.some((t) => bpsNonStandard(t, tvaStandardPct)))
+      return refus("une ligne a un taux de TVA différent du taux standard.");
     p.typeDevis = "formules";
     p.formules = offreVersSaisie(o);
     p.textes = o.textes.map((t) => ({ ...t }));
@@ -263,9 +331,26 @@ export function devisVersPayload(
       prixEur: centsVersTexte(l.prixHtCents),
     }));
   } else {
+    if (
+      (d.financementSuggere != null && d.financementSuggere !== "direct") ||
+      (d.montantOpcoEstimeCents ?? null) !== null
+    )
+      return refus("il porte un financement ou une estimation OPCO.");
+    if (Array.isArray(d.lignes)) {
+      for (const l of d.lignes) {
+        const x = l && typeof l === "object" ? (l as Record<string, unknown>) : {};
+        const pct = x["tauxTvaPercent"];
+        const bps = x["tauxTvaBps"];
+        if (
+          (typeof pct === "number" && bpsNonStandard(Math.round(pct * 100), tvaStandardPct)) ||
+          (typeof bps === "number" && bpsNonStandard(bps, tvaStandardPct))
+        )
+          return refus("une ligne a un taux de TVA différent du taux standard.");
+      }
+    }
     p.typeDevis = "classique";
     const l = lignesClassiquesDe(d.lignes);
     if (l.length > 0) p.lignesClassiques = l;
   }
-  return p;
+  return { payload: p };
 }

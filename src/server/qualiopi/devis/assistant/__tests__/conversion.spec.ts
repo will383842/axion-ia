@@ -33,7 +33,7 @@ import { offreDevisV1, type OffreDevisV1 } from "@/server/qualiopi/devis/offre-d
 import { offreFictive } from "@/server/qualiopi/devis/offre-fixtures.spec-util";
 import { payloadVide, type PayloadAssistantV1 } from "../payload";
 import {
-  devisVersPayload,
+  devisVersPayload as devisVersPayloadBrut,
   payloadVersCreation,
   type ContexteConversion,
   type DevisPourAssistant,
@@ -248,6 +248,13 @@ describe("formules (D1)", () => {
   });
 });
 
+/** Ouverture qui doit réussir : rend le payload, sinon échoue avec le motif du refus. */
+function devisVersPayload(d: DevisPourAssistant, tva: number): PayloadAssistantV1 {
+  const r = devisVersPayloadBrut(d, tva);
+  if ("refus" in r) throw new Error(r.refus);
+  return r.payload;
+}
+
 function devisDepuis(offre: OffreDevisV1): DevisPourAssistant {
   return {
     id: "dev-1",
@@ -328,6 +335,101 @@ describe("devisVersPayload → payloadVersCreation (non-régression sha256Offre)
       offreTierId: "AXI-OFF-009",
     });
     expect(r.input.lignes[1]!.prixUnitaireHtCents).toBe(50000);
+  });
+});
+
+describe("textes d'IA par formule (liste blanche, préfixe « Formule A/B : »)", () => {
+  const textes = (p: PayloadAssistantV1) => {
+    const r = creation(p);
+    if (r.type !== "formules") throw new Error("type");
+    return r.input.offre.textes.map((t) => t.texte);
+  };
+  it("A et B : une phrase par formule, préfixée, sans montant", () => {
+    const p = formules("AB");
+    p.nonImprime = {
+      ia: { achat: { mode: "incluse", mois: 6 }, abonnement: { inclus: true, niveau: "pro" } },
+    };
+    expect(textes(p)).toEqual([
+      "Formule A : L'utilisation de l'IA est incluse pendant 6 mois.",
+      "Formule B : L'utilisation de l'IA est incluse dans l'abonnement (niveau Pro).",
+    ]);
+  });
+  it("une formule non proposée ne reçoit pas de phrase ; B non incluse ; mode inconnu = rien", () => {
+    const a = formules("A");
+    a.nonImprime = {
+      ia: { achat: "compte_client", abonnement: { inclus: false } },
+    };
+    expect(textes(a)).toEqual([
+      "Formule A : L'utilisation de l'IA se fait avec le compte du client.",
+    ]);
+    const b = formules("B");
+    b.nonImprime = { ia: { achat: { mode: "autre" }, abonnement: { inclus: false } } };
+    expect(textes(b)).toEqual([
+      "Formule B : L'utilisation de l'IA n'est pas incluse dans l'abonnement.",
+    ]);
+  });
+  it("jamais d'IA dans un devis classique", () => {
+    const c = base();
+    c.typeDevis = "classique";
+    c.nonImprime = { ia: { achat: "compte_client" } };
+    expect(JSON.stringify(creation(c))).not.toContain("IA");
+  });
+  it("réouverture : intitulé déjà injecté, jamais dupliqué (comparaison rognée)", () => {
+    const p = formules("A");
+    p.textes = [{ texte: "Assistant client", actif: true }];
+    p.recit.intitule = "  Assistant client ";
+    expect(textes(p)).toEqual(["Assistant client"]);
+  });
+});
+
+describe("devisVersPayload — refus d'ouverture", () => {
+  const motif = (d: DevisPourAssistant) => {
+    const r = devisVersPayloadBrut(d, 20);
+    return "refus" in r ? r.refus : null;
+  };
+  const classique = (extra: Partial<DevisPourAssistant> = {}): DevisPourAssistant => ({
+    ...devisDepuis(offreFictive()),
+    offre: null,
+    lignes: [{ designation: "Audit", quantite: 1, prixUnitaireHtCents: 50000 }],
+    ...extra,
+  });
+  it("classique avec financement OPCO ou estimation OPCO : refusé", () => {
+    expect(motif(classique({ financementSuggere: "opco" }))).toMatch(/OPCO/);
+    expect(motif(classique({ montantOpcoEstimeCents: 12000 }))).toMatch(/OPCO/);
+    expect(
+      motif(classique({ financementSuggere: "direct", montantOpcoEstimeCents: null })),
+    ).toBeNull();
+  });
+  it("offre présente mais illisible : refusée, jamais rouverte en classique", () => {
+    expect(motif({ ...devisDepuis(offreStandard()), offre: { v: 99, n: "x" } })).toMatch(
+      /illisible/,
+    );
+  });
+  it("ligne à TVA non standard (offre ou classique) : refusée", () => {
+    const o = offreStandard();
+    // Taux uniforme (le schéma refuse les taux mélangés avec plusieurs phases).
+    o.achat!.lignes = o.achat!.lignes.map((l) => ({ ...l, tauxTvaBps: 2100 }));
+    o.abonnement!.miseEnServiceLignes = o.abonnement!.miseEnServiceLignes.map((l) => ({
+      ...l,
+      tauxTvaBps: 2100,
+    }));
+    o.abonnement!.tauxTvaBps = 2100;
+    o.automatisations = o.automatisations.map((a) => ({ ...a, tauxTvaBps: 2100 }));
+    expect(motif(devisDepuis(o))).toMatch(/TVA/);
+    expect(
+      motif(
+        classique({
+          lignes: [{ designation: "x", quantite: 1, prixUnitaireHtCents: 1, tauxTvaPercent: 10 }],
+        }),
+      ),
+    ).toMatch(/TVA/);
+    expect(
+      motif(
+        classique({
+          lignes: [{ designation: "x", quantite: 1, prixUnitaireHtCents: 1, tauxTvaPercent: 20 }],
+        }),
+      ),
+    ).toBeNull();
   });
 });
 

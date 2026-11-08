@@ -65,9 +65,18 @@ export interface EntreeChargeur {
   modele?: string;
 }
 
+/** Redirection (chemin relatif à `/<locale>/<adminPrefix>`), avec le motif quand un refus la cause. */
+export interface RedirectionAssistant {
+  redirection: string;
+  message?: string;
+}
+
+/** Statut d'un brouillon mis de côté : jamais rouvert (la ligne reste, aucune suppression). */
+export const STATUT_BROUILLON_A_L_ECART = "a_l_ecart";
+
 export async function chargerAssistantDevis(
   i: EntreeChargeur,
-): Promise<{ redirection: string } | ContexteAssistant> {
+): Promise<RedirectionAssistant | ContexteAssistant> {
   const [clientsBruts, offresBrutes, formulesOn, regimeBrut, tauxBrut] = await Promise.all([
     listClients(),
     listOffres({ actifOnly: true }),
@@ -123,17 +132,28 @@ export async function chargerAssistantDevis(
         updatedAt: true,
         offre: true,
         lignes: true,
+        financementSuggere: true,
+        montantOpcoEstimeCents: true,
       },
     });
     if (devis) {
       // Un devis envoyé, accepté… n'est jamais modifié : on renvoie à sa fiche.
       if (devis.statut !== "brouillon") return { redirection: `/qualiopi/devis/${devis.id}` };
-      payload = devisVersPayload(devis as unknown as DevisPourAssistant, tauxStandard);
+      const ouverture = devisVersPayload(devis as unknown as DevisPourAssistant, tauxStandard);
+      if ("refus" in ouverture)
+        return { redirection: `/qualiopi/devis/${devis.id}`, message: ouverture.refus };
+      payload = ouverture.payload;
       const lie = await prisma.devisAssistantBrouillon.findFirst({
         where: { devisId: devis.id, createdByAdminId: i.adminId },
-        select: { id: true, revision: true },
+        select: { id: true, revision: true, payload: true },
       });
-      if (lie) brouillon = { id: lie.id, revision: lie.revision };
+      if (lie) {
+        brouillon = { id: lie.id, revision: lie.revision };
+        // Un brouillon déjà lié au devis porte SON contenu (récit, textes, champs hors moteur) :
+        // on le relit au lieu de réhydrater depuis le devis, sous peine de le perdre.
+        const lu = lirePayload(lie.payload);
+        if (lu.ok) payload = lu.payload;
+      }
     }
   }
 
@@ -141,8 +161,19 @@ export async function chargerAssistantDevis(
     // Brouillon d'un autre admin : ignoré (comme s'il n'existait pas).
     const b = await prisma.devisAssistantBrouillon.findFirst({
       where: { id: i.brouillonId, createdByAdminId: i.adminId },
-      select: { id: true, revision: true, payload: true },
+      select: { id: true, revision: true, payload: true, statut: true, devisId: true },
     });
+    // Mis à l'écart : ne se rouvre pas, on ouvre un assistant vide.
+    if (b?.statut === STATUT_BROUILLON_A_L_ECART) return { redirection: "/qualiopi/devis/new" };
+    if (b?.devisId) {
+      // Lié à un devis déjà envoyé (ou plus brouillon) : on renvoie à la fiche, jamais d'édition.
+      const lieDevis = await prisma.devis.findUnique({
+        where: { id: b.devisId },
+        select: { id: true, statut: true },
+      });
+      if (lieDevis && lieDevis.statut !== "brouillon")
+        return { redirection: `/qualiopi/devis/${lieDevis.id}` };
+    }
     if (b) {
       const lu = lirePayload(b.payload);
       if (lu.ok) {

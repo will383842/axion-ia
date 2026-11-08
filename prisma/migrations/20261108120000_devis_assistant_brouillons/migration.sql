@@ -1,7 +1,10 @@
 -- S01 (2026-11-08) — assistant de création de devis : brouillons.
 -- STRICTEMENT ADDITIF : une table neuve, ses index et ses clés étrangères. Aucune colonne ni
 -- table existante modifiée, aucune énumération, aucune purge. Compatible avec l'ANCIEN
--- conteneur (qui ignore la table). Aucun code ne la lit ni ne l'écrit dans cette PR.
+-- conteneur (qui ignore la table).
+-- Dans cette PR, seul `charger.ts` la lit, et il n'est monté par AUCUNE page : rien ne la lit
+-- encore en production. CONDITION DE MISE EN LIGNE : cette migration doit être appliquée en
+-- production AVANT de monter `charger.ts` sur une page (fiches S06, S08, S12, S17).
 -- Retour arrière (JAMAIS exécuté par défaut) : DROP TABLE "devis_assistant_brouillons";
 
 -- CreateTable

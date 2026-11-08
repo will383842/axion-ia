@@ -29,11 +29,14 @@ import {
   type ContextePdfDevis,
   type DevisPourPdf,
 } from "@/server/qualiopi/documents/donnees-pdf-devis";
+import { montantsDevis } from "@/server/qualiopi/devis/montants-devis";
 import { computeTotauxFacture } from "@/server/qualiopi/legal/tva";
 import { payloadVersCreation } from "../conversion";
 import { calculerApercu, type ContexteApercu } from "../apercu";
 import { payloadVide, type PayloadAssistantV1 } from "../payload";
 
+const CLIENT = "11111111-1111-4111-8111-111111111111";
+const DEVIS = "dddddddd-dddd-4ddd-8ddd-dddddddddddd";
 const CTX: ContexteApercu = {
   regime: "assujetti",
   tauxStandard: 20,
@@ -44,7 +47,7 @@ const CTX: ContexteApercu = {
 
 function base(): PayloadAssistantV1 {
   const p = payloadVide(20);
-  p.clientId = "c1";
+  p.clientId = CLIENT;
   p.activite = "implementation";
   p.lignesClassiques = [
     { designation: "Assistant de réponse", quantite: "1", prixEur: "2 400" },
@@ -252,6 +255,98 @@ describe("offre invalide", () => {
   });
 });
 
+/** Cas chiffrés de l'architecte (DECISIONS-D1-D2 §4), lus dans l'aperçu serveur. */
+describe("cas chiffrés de l'architecte (T1, T2, T3, T5)", () => {
+  const versements = (ap: ReturnType<typeof calculerApercu>, i = 0) =>
+    ap.formules!.formules[i]!.phases.map((x) => x.montantHtCents);
+  const totaux = (ap: ReturnType<typeof calculerApercu>, i = 0) => {
+    const f = ap.formules!.formules[i]!;
+    return [f.totalHtCents, f.totalTvaCents, f.totalTtcCents];
+  };
+  const offreDe = (p: PayloadAssistantV1) => {
+    const r = payloadVersCreation(p, {
+      formulesActives: true,
+      typeClient: "entreprise",
+      maintenant: CTX.maintenant!,
+      tauxStandard: 20,
+    });
+    if (!("type" in r) || r.type !== "formules") throw new Error("type");
+    return r.input.offre;
+  };
+  const lignes1900 = (p: PayloadAssistantV1) => {
+    p.lignesClassiques = [{ designation: "Mise en service", quantite: "1", prixEur: "1 900" }];
+    return p;
+  };
+
+  it("T1 : A seule 30/30/40 → 134 517 / 134 517 / 179 359 ; HT 448 393, TVA 89 679, TTC 538 072", () => {
+    const ap = calculerApercu(formules("A"), CTX);
+    expect(versements(ap)).toEqual([134517, 134517, 179359]);
+    expect(totaux(ap)).toEqual([448393, 89679, 538072]);
+    expect(ap.formules!.formules[0]!.lignes[2]!.totalHtCents).toBe(28393);
+  });
+
+  it("T1 : variante 20/20/20/15/15/10 → 89 678 ×3, 67 258 ×2, 44 843 (le dernier absorbe le reste)", () => {
+    const p = formules("A");
+    p.formules.achat.phases = [20, 20, 20, 15, 15, 10].map((pct, i) => ({
+      libelle: `Phase ${i + 1}`,
+      pourcentage: String(pct),
+      declencheur: i === 0 ? "signature" : i === 5 ? "livraison" : "avancement",
+    }));
+    const v = versements(calculerApercu(p, CTX));
+    expect(v).toEqual([89678, 89678, 89678, 67258, 67258, 44843]);
+    expect(v.reduce((a, b) => a + b, 0)).toBe(448393);
+  });
+
+  it("T2 : B seule (1 × 1 900 €, 50/50) → 190 000 / 38 000 / 228 000 ; versements 95 000 ×2", () => {
+    const ap = calculerApercu(lignes1900(formules("B")), CTX);
+    expect(ap.erreurs).toEqual([]);
+    expect(totaux(ap)).toEqual([190000, 38000, 228000]);
+    expect(versements(ap)).toEqual([95000, 95000]);
+  });
+
+  it("T2 : mensuel net à 12 mois 18 999 ; période de 12 mois 227 988 HT ; indemnité maximale 119 994 ; 1 mois = 19 999", () => {
+    const ab = calculerApercu(lignes1900(formules("B")), CTX).formules!.formules[0]!.abonnement!;
+    const p12 = ab.periodes.find((x) => x.mois === 12)!;
+    expect(p12.mensuelNetHtCents).toBe(18999);
+    expect(p12.prixPeriodeHtCents).toBe(227988);
+    expect(ab.periodes.find((x) => x.mois === 1)!.prixPeriodeHtCents).toBe(19999);
+    expect(ab.indemniteSortieMaxHtCents).toBe(119994);
+  });
+
+  it("T3 : A + B — avant le choix 0 ; choix A 448 393 / 89 679 / 538 072 ; choix B 190 000 / 38 000 / 228 000, sans ligne de L", () => {
+    const p = formules("AB");
+    const ap = calculerApercu(p, CTX);
+    expect(ap.erreurs).toEqual([]);
+    expect(totaux(ap, 0)).toEqual([448393, 89679, 538072]);
+    expect(totaux(ap, 1)).toEqual([190000, 38000, 228000]);
+    const offre = offreDe(p);
+    const vide = { offre, lignes: [], montantTotalHtCents: 0 };
+    expect(montantsDevis(vide)).toEqual({ lignes: [], montantTotalHtCents: 0 });
+    const a = montantsDevis({ ...vide, choix: { formule: "achat", automatisationsRetenues: [] } });
+    expect(a.montantTotalHtCents).toBe(448393);
+    const b = montantsDevis({
+      ...vide,
+      choix: { formule: "abonnement", automatisationsRetenues: [] },
+    });
+    expect(b.montantTotalHtCents).toBe(190000);
+    expect(b.lignes).toHaveLength(1);
+    expect(b.lignes[0]).toMatchObject({ quantite: 1, prixUnitaireHtCents: 190000 });
+    expect(offre.abonnement!.miseEnServiceLignes).toHaveLength(1);
+  });
+
+  it("T5 : bascule A + B → B seule — B = 448 393 / 89 679 / 538 072, versements 224 196 / 224 197 ; « 1 900 » gardé ; retour A + B = 190 000", () => {
+    const p = formules("AB");
+    p.formules.formules = { achat: false, abonnement: true };
+    const ap = calculerApercu(p, CTX);
+    expect(ap.erreurs).toEqual([]);
+    expect(totaux(ap)).toEqual([448393, 89679, 538072]);
+    expect(versements(ap)).toEqual([224196, 224197]);
+    expect(p.formules.abonnement.lignes[0]!.prixEur).toBe("1 900");
+    p.formules.formules = { achat: true, abonnement: true };
+    expect(totaux(calculerApercu(p, CTX), 1)).toEqual([190000, 38000, 228000]);
+  });
+});
+
 describe("apercuAssistantAction", () => {
   beforeEach(() => {
     vi.clearAllMocks();
@@ -293,10 +388,54 @@ describe("apercuAssistantAction", () => {
     prismaMock.devis.findUnique.mockResolvedValue(null);
     const neuf = await apercuAssistantAction(JSON.parse(JSON.stringify(p)));
     expect("data" in neuf && neuf.data.erreurs.length).toBeGreaterThan(0);
-    p.sync.devisId = "d1";
-    prismaMock.devis.findUnique.mockResolvedValue({ offre: { automatisations: [auto] } });
+    p.sync.devisId = DEVIS;
+    prismaMock.devis.findUnique.mockResolvedValue({
+      offre: { automatisations: [auto] },
+      statut: "brouillon",
+      clientId: CLIENT,
+    });
     const heritee = await apercuAssistantAction(JSON.parse(JSON.stringify(p)));
     expect("data" in heritee && heritee.data.erreurs).toEqual([]);
+  });
+  it("identifiants mal formés : { error }, aucune requête, aucune levée", async () => {
+    const mal = formules("A");
+    mal.clientId = "pas-un-uuid";
+    expect(await apercuAssistantAction(JSON.parse(JSON.stringify(mal)))).toEqual({
+      error: "Client invalide.",
+    });
+    const mal2 = formules("A");
+    mal2.sync.devisId = "x'; DROP";
+    expect(await apercuAssistantAction(JSON.parse(JSON.stringify(mal2)))).toEqual({
+      error: "Devis invalide.",
+    });
+    expect(prismaMock.client.findUnique).not.toHaveBeenCalled();
+    expect(prismaMock.devis.findUnique).not.toHaveBeenCalled();
+  });
+  it("sync.devisId du navigateur non cru : devis relu ; envoyé ou d'un autre client = aucun héritage", async () => {
+    const auto = {
+      code: "a",
+      libelle: "A",
+      facultative: true,
+      dependDe: [],
+      prixHtCents: 5000,
+      tauxTvaBps: 2000,
+      modeIA: "client_direct",
+    };
+    const p = formules("A");
+    p.formules.automatisations = [auto as never];
+    p.sync.devisId = DEVIS;
+    for (const relu of [
+      { statut: "envoye", clientId: CLIENT },
+      { statut: "brouillon", clientId: "99999999-9999-4999-8999-999999999999" },
+    ]) {
+      prismaMock.devis.findUnique.mockResolvedValue({
+        offre: { automatisations: [auto] },
+        ...relu,
+      });
+      const r = await apercuAssistantAction(JSON.parse(JSON.stringify(p)));
+      expect("data" in r && r.data.erreurs.length, JSON.stringify(relu)).toBeGreaterThan(0);
+    }
+    expect(prismaMock.devis.findUnique.mock.calls[0]![0].where).toEqual({ id: DEVIS });
   });
   it("pas de prisma dans apercu.ts (données pures)", () => {
     expect(readFileSync(resolve(__dirname, "../apercu.ts"), "utf8")).not.toMatch(/@\/lib\/prisma/);

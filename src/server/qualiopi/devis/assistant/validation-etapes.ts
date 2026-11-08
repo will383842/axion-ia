@@ -142,20 +142,21 @@ function empreinte(v: unknown): string {
   return JSON.stringify(v) ?? "null";
 }
 
-const MOTS_MONTANT = new Set([
-  "montant",
-  "forfait",
-  "prix",
-  "tarif",
-  "eur",
-  "euro",
-  "euros",
-  "cents",
-  "centimes",
-  "mensuel",
-  "ht",
-  "ttc",
-]);
+/**
+ * LISTE BLANCHE des clés d'IA permises dans `nonImprime` (D2 architecte : un choix, jamais un
+ * tarif). Toute clé dont un jeton est « ia » doit être la clé `ia`, et tout ce qui se trouve
+ * dessous est refusé sauf :
+ *  - `achat` / `abonnement` : conteneurs par formule (objet, ou simple chaîne de mode) ;
+ *  - `mode`, `niveau` : textes courts ; `inclus` : booléen ;
+ *  - `mois` : nombre de mois, entier de 0 à 120.
+ * Tout autre champ (numérique, monétaire ou non : `valeur`, `budget`, `forfait`…) est refusé.
+ */
+const CLES_IA_CONTENEURS = new Set(["achat", "abonnement"]);
+const CLES_IA_TEXTE = new Set(["mode", "niveau"]);
+const CLE_IA_BOOLEEN = "inclus";
+const CLE_IA_MOIS = "mois";
+const MOIS_IA_MAX = 120;
+const TEXTE_IA_MAX = 40;
 const jetons = (cle: string): string[] =>
   cle
     .replace(/([a-z0-9])([A-Z])/g, "$1 $2")
@@ -163,20 +164,59 @@ const jetons = (cle: string): string[] =>
     .split(/[^a-z0-9]+/)
     .filter(Boolean);
 
-/** Chemin d'une clé « montant » placée sous (ou nommée) une clé « IA », s'il y en a une. */
-function montantIA(v: unknown, sousIA = false, chemin = "nonImprime"): string | null {
-  if (!v || typeof v !== "object") return null;
-  const entrees = Array.isArray(v)
-    ? v.map((x, i): [string, unknown] => [String(i), x])
-    : Object.entries(v as Record<string, unknown>);
-  for (const [cle, x] of entrees) {
-    const j = jetons(cle);
-    const ia = sousIA || j.includes("ia");
-    if (ia && j.some((t) => MOTS_MONTANT.has(t))) return `${chemin}.${cle}`;
-    const sous = montantIA(x, ia, `${chemin}.${cle}`);
-    if (sous) return sous;
+/** Valeur permise sous une clé de la liste blanche (conteneur = objet ou chaîne de mode). */
+function feuilleIAValide(cle: string, v: unknown): boolean {
+  if (CLES_IA_TEXTE.has(cle)) return typeof v === "string" && v.length <= TEXTE_IA_MAX;
+  if (cle === CLE_IA_BOOLEEN) return typeof v === "boolean";
+  if (cle === CLE_IA_MOIS)
+    return typeof v === "number" && Number.isInteger(v) && v >= 0 && v <= MOIS_IA_MAX;
+  return false;
+}
+
+/** Parcourt un sous-arbre `ia` ; rend le chemin du premier champ hors liste blanche. */
+function intrusIA(v: unknown, chemin: string, conteneur: boolean): string | null {
+  if (v === null || typeof v !== "object" || Array.isArray(v)) {
+    // Un conteneur (achat/abonnement) peut être une simple chaîne de mode.
+    return conteneur && typeof v === "string" && v.length <= TEXTE_IA_MAX ? null : chemin;
+  }
+  for (const [cle, x] of Object.entries(v as Record<string, unknown>)) {
+    const ici = `${chemin}.${cle}`;
+    if (CLES_IA_CONTENEURS.has(cle) && chemin === "nonImprime.ia") {
+      const r = intrusIA(x, ici, true);
+      if (r) return r;
+    } else if (!feuilleIAValide(cle, x)) return ici;
   }
   return null;
+}
+
+/** Chemin du premier champ d'IA hors liste blanche dans `nonImprime`, s'il y en a un. */
+function montantIA(v: Record<string, unknown>): string | null {
+  const parcourir = (x: unknown, chemin: string): string | null => {
+    if (!x || typeof x !== "object") return null;
+    const entrees = Array.isArray(x)
+      ? x.map((y, i): [string, unknown] => [String(i), y])
+      : Object.entries(x as Record<string, unknown>);
+    for (const [cle, y] of entrees) {
+      const ici = `${chemin}.${cle}`;
+      if (jetons(cle).includes("ia")) {
+        // La seule clé d'IA permise est `ia`, à la racine de `nonImprime`.
+        if (cle !== "ia" || chemin !== "nonImprime") return ici;
+        const r = intrusIA(y, ici, false);
+        if (r) return r;
+      } else {
+        const r = parcourir(y, ici);
+        if (r) return r;
+      }
+    }
+    return null;
+  };
+  return parcourir(v, "nonImprime");
+}
+
+/** Montant saisi vide, ou nul (« 0 », « 0,00 ») une fois normalisé. */
+function estVideOuZero(prixEur: string): boolean {
+  const t = normaliserEuros(prixEur);
+  return t === "" || eurosVersCents(t) === 0;
 }
 
 /**
@@ -203,8 +243,9 @@ export function saisieFormulesPourOffre(
       ligne({ libelle: l.designation, quantite: l.quantite, prixEur: l.prixEur, tauxTvaPct: taux }),
     );
   const f = p.formules;
+  // « A + B » : champ vide, « 0 » ou « 0,00 » = aucune ligne (jamais une ligne à 0 €).
   const miseEnService: LigneSaisie[] = f.formules.achat
-    ? f.abonnement.lignes.filter((l) => l.prixEur.trim() !== "").map(ligne)
+    ? f.abonnement.lignes.filter((l) => !estVideOuZero(l.prixEur)).map(ligne)
     : deEtape1();
   return {
     ...f,
@@ -246,6 +287,18 @@ function validerPeriodes(periodes: readonly number[], champ: string, e: Erreurs)
 function validerFormules(p: PayloadAssistantV1, ctx: ContexteValidation, e: Erreurs): void {
   const s = saisieFormulesPourOffre(p, ctx.tauxStandard);
   validerAutomatisations(p, ctx, e);
+  if (s.formules.achat && s.formules.abonnement) {
+    // D1.4 : en « A + B », la mise en service de B est UN montant saisi : une ligne, quantité 1.
+    const l = s.abonnement.lignes;
+    if (l.length > 1)
+      err(
+        e,
+        "formules.abonnement.lignes",
+        "En formules A + B, la mise en service de B est un montant unique : une seule ligne.",
+      );
+    else if (l.length === 1 && lireQuantite(l[0]?.quantite ?? "") !== 1)
+      err(e, "formules.abonnement.lignes", "La mise en service de B est de quantité 1.");
+  }
   if (s.formules.achat) {
     validerPeriodes(s.achat.maintenance.periodes, "formules.achat.maintenance.periodes", e);
     if (lirePrixCents(s.achat.maintenance.mensuelEur) === 0)

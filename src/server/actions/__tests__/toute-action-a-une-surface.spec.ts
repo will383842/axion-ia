@@ -80,6 +80,9 @@ const SANS_SURFACE_CONNUS: ReadonlyArray<string> = [
   "server/actions/knowledge/assign-reviewer.ts",
   "server/actions/knowledge/rollback-version.ts",
   "server/actions/knowledge/upload-asset.ts",
+  // Assistant de devis, lot serveur-1 (PR #1868) : action d'aperçu livrée AVANT l'écran de
+  // l'assistant (lot ÉCRANS), qui l'appellera. À retirer d'ici dès qu'un écran la nomme.
+  "server/actions/qualiopi/devis-assistant-apercu.ts",
 ];
 
 describe("`D3-3-05` — toute Server Action finit par atteindre un écran", () => {

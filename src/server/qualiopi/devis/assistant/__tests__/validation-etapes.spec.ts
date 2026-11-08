@@ -249,6 +249,63 @@ describe("étape 3 — décisions de l'architecte", () => {
   });
 });
 
+describe("étape 3 — liste blanche des clés d'IA", () => {
+  it("budgetIA et ia.achat.valeur refusés (champ hors liste blanche)", () => {
+    for (const n of [
+      { budgetIA: 1200 },
+      { ia: { achat: { valeur: 3 } } },
+      { ia: { achat: { mode: "incluse", mois: "6 000" } } },
+      { ia: { achat: { mode: 5 } } },
+      { ia: { abonnement: { inclus: "oui" } } },
+      { ia: { tarif: 1 } },
+      { client: { ia: { achat: "compte_client" } } },
+    ]) {
+      const p = formules("A");
+      p.nonImprime = n;
+      expect(
+        champs(p, 3).some((c) => c.startsWith("nonImprime")),
+        JSON.stringify(n),
+      ).toBe(true);
+    }
+  });
+  it("mode, niveau, inclus et nombre de mois passent", () => {
+    const p = formules("AB");
+    p.nonImprime = {
+      ia: { achat: { mode: "incluse", mois: 6 }, abonnement: { inclus: true, niveau: "pro" } },
+    };
+    expect(validerEtape(p, 3, CTX).ok).toBe(true);
+  });
+});
+
+describe("étape 3 — mise en service de B en « A + B »", () => {
+  const ab = (prix: string) => {
+    const p = formules("AB");
+    p.formules.abonnement.lignes[0]!.prixEur = prix;
+    return p;
+  };
+  it.each(["", "0", "0,00", "0.00", " 0 "])("« %s » = vide : aucune ligne, valide", (prix) => {
+    const p = ab(prix);
+    expect(saisieFormulesPourOffre(p, 20).abonnement.lignes).toEqual([]);
+    expect(validerEtape(p, 3, CTX).ok).toBe(true);
+  });
+  it("deux lignes refusées", () => {
+    const p = ab("1 900");
+    p.formules.abonnement.lignes.push({ ...p.formules.abonnement.lignes[0]!, prixEur: "100" });
+    expect(champs(p, 3)).toContain("formules.abonnement.lignes");
+  });
+  it("quantité différente de 1 refusée", () => {
+    const p = ab("1 900");
+    p.formules.abonnement.lignes[0]!.quantite = "2";
+    expect(champs(p, 3)).toContain("formules.abonnement.lignes");
+  });
+  it("une ligne à 0 € ajoutée à une ligne valide est écartée (une seule ligne reste)", () => {
+    const p = ab("1 900");
+    p.formules.abonnement.lignes.push({ ...p.formules.abonnement.lignes[0]!, prixEur: "0,00" });
+    expect(validerEtape(p, 3, CTX).ok).toBe(true);
+    expect(saisieFormulesPourOffre(p, 20).abonnement.lignes).toHaveLength(1);
+  });
+});
+
 describe("étape 4 — validité (D8 : J+7 à J+90)", () => {
   const avec = (d: string | null) => {
     const p = formules("A");
