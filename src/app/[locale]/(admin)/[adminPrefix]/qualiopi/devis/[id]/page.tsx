@@ -32,6 +32,16 @@ import { getOrganismeIdentite } from "@/server/qualiopi/documents/organisme";
 import { DevisSuiviLivraison } from "@/components/admin/qualiopi/DevisSuiviLivraison";
 import { peutDemarrerLivraison, peutMarquerLivre } from "@/server/qualiopi/devis/suivi-livraison";
 import { formulesActives } from "@/server/qualiopi/devis/interrupteur-formules";
+import {
+  OffreDevisInvalideError,
+  formulesDuDevis,
+} from "@/server/qualiopi/documents/donnees-pdf-devis";
+import { getQualiopiConfig } from "@/server/qualiopi/config/site-settings";
+import { regimeTvaDepuisConfig } from "@/server/qualiopi/legal/tva";
+import {
+  LIBELLE_MONTANT_AU_CHOIX,
+  ResumeFormulesDevis,
+} from "@/components/admin/qualiopi/ResumeFormulesDevis";
 import { lirePalierSuivant, totalHtLignesDevis } from "@/server/qualiopi/devis/palier-suivant";
 import { FacturerDevisButtons } from "@/components/admin/qualiopi/FacturerDevisButtons";
 import { getDevis } from "@/server/qualiopi/crm/devis";
@@ -250,6 +260,21 @@ export default async function QualiopiDevisDetailPage({ params }: PageProps) {
   const peutModifierFormules =
     devis.statut === "brouillon" && devis.offreSha256 !== null && (await formulesActives());
   const lignes = parseLignes(devis.lignes);
+  // Devis à formules, interrupteur allumé et aucune formule retenue : le montant se détermine au
+  // choix du client — on résume les formules au lieu d'afficher 0,00 € et « Aucune ligne ».
+  let resumeFormules: ReturnType<typeof formulesDuDevis>;
+  if (devis.offre !== null && devis.formuleRetenue === null) {
+    try {
+      resumeFormules = formulesDuDevis(
+        devis.offre,
+        await formulesActives(),
+        regimeTvaDepuisConfig(await getQualiopiConfig("regime_tva")),
+      );
+    } catch (err) {
+      if (!(err instanceof OffreDevisInvalideError)) throw err;
+      resumeFormules = undefined; // offre illisible : la fiche garde son affichage d'avant
+    }
+  }
 
   const isExpired =
     (devis.statut === "brouillon" || devis.statut === "envoye") && devis.dateValidite < new Date();
@@ -349,7 +374,11 @@ export default async function QualiopiDevisDetailPage({ params }: PageProps) {
           <div>
             <p className={infoLabelCls}>Montant HT</p>
             <p className={infoValueCls}>
-              <span className="tabular-nums">{formatEur(devis.montantTotalHtCents)}</span>
+              {resumeFormules !== undefined ? (
+                LIBELLE_MONTANT_AU_CHOIX
+              ) : (
+                <span className="tabular-nums">{formatEur(devis.montantTotalHtCents)}</span>
+              )}
             </p>
           </div>
 
@@ -472,7 +501,9 @@ export default async function QualiopiDevisDetailPage({ params }: PageProps) {
       {/* ── Lignes ──────────────────────────────────────────────────────── */}
       <section className="mb-[var(--space-admin-8)]">
         <h2 className={sectionHeadCls}>Lignes</h2>
-        {lignes.length === 0 ? (
+        {lignes.length === 0 && resumeFormules !== undefined ? (
+          <ResumeFormulesDevis vue={resumeFormules} />
+        ) : lignes.length === 0 ? (
           <p className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
             Aucune ligne.
           </p>

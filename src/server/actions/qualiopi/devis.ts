@@ -56,11 +56,13 @@ import { faireMonterLesFichesDesDevisSignes } from "@/features/dossier-client/de
 import { bandeauPourLeRole } from "@/server/partners/client-attributions";
 import { sirenDuClient } from "@/lib/siret";
 import { DevisPdf, type DevisData } from "@/server/qualiopi/documents/templates/devis";
+import { formulesActives } from "@/server/qualiopi/devis/interrupteur-formules";
 import { payloadDevisEnvoi } from "@/server/qualiopi/devis/email-devis-envoi";
 import type { VueFormules } from "@/server/qualiopi/devis/vue-formules";
 import {
   donneesPdfDevis,
   lireContextePdfDevis,
+  OffreDevisInvalideError,
 } from "@/server/qualiopi/documents/donnees-pdf-devis";
 import { publicUrl } from "@/lib/public-url";
 import {
@@ -458,26 +460,37 @@ export async function sendDevisAction(
       error: `Seul un devis en brouillon peut être envoyé (statut actuel : ${devis.statut}).`,
     };
   }
-  // 🔴 Devis à formules : le circuit de signature (choix de la formule, mensualité, engagement,
-  // indemnité de sortie) n'est pas livré. Envoyé maintenant, le client signerait un PDF
-  // classique qui ne porte pas ces conditions. Refus tant que le lot de signature manque.
-  if (devis.offre !== null && devis.offre !== undefined) {
+  // Devis à formules : l'interrupteur `qualiopi.devis_formules.actif` doit être allumé. Éteint,
+  // le PDF ignorerait l'offre et le client recevrait un devis classique vide : échec FERMÉ.
+  const aFormules = devis.offre !== null && devis.offre !== undefined;
+  if (aFormules && !(await formulesActives())) {
     return {
       error:
-        "Un devis à formules ne peut pas encore être envoyé : le circuit de signature des formules (choix de la formule, mensualité, engagement, indemnité de sortie) n'est pas disponible. Gardez-le en brouillon.",
+        "Ce devis à formules ne peut pas être envoyé tant que les devis à formules sont désactivés dans la configuration. Gardez-le en brouillon.",
     };
   }
-  // Un devis à 0,00 € ne doit pas partir en signature.
+  // Un devis CLASSIQUE à 0,00 € ne doit pas partir en signature.
   //
   // Le garde côté formulaire ne protège rien : cette action est appelable depuis
   // un onglet resté ouvert, et `ligneSchema` accepte volontairement un PU à 0
   // (lignes offertes). C'est ICI que le montant total doit être vérifié — au-delà,
   // le PDF est rendu, un lien de signature est émis et le client reçoit une offre
   // ferme à zéro euro. `ligneSchema.min(0)` reste inchangé.
-  if (devis.montantTotalHtCents <= 0) {
+  // Un devis à formules n'a pas de total de lignes : son montant se détermine au choix du
+  // client, il est contrôlé sur les formules plus bas.
+  if (!aFormules && devis.montantTotalHtCents <= 0) {
     return {
       error:
         "Devis à 0,00 € HT : chiffrez les lignes avant l'envoi (une offre sans prix ferme ne pré-remplit aucun montant).",
+    };
+  }
+
+  // Devis à formules : sans e-mail de contact, pas de lien de signature, donc pas de choix de
+  // formule possible. Refus avant tout rendu.
+  if (aFormules && !devis.client.contactEmail) {
+    return {
+      error:
+        "Aucun email de contact client : un devis à formules ne peut pas être envoyé sans lien de signature (le client y choisit sa formule).",
     };
   }
 
@@ -500,6 +513,28 @@ export async function sendDevisAction(
     const data: DevisData = donneesPdfDevis(devis, contexte, new Date());
     formulesEnvoyees = data.formules;
 
+    if (aFormules) {
+      // Interrupteur allumé et offre présente : le PDF DOIT porter les formules.
+      if (data.formules === undefined) {
+        return { error: "Les formules du devis n'ont pas pu être construites : envoi refusé." };
+      }
+      // Remise 100 % — règle : une formule dont le TOTAL est <= 0 est refusée si l'abonnement
+      // n'a aucune période, OU si UNE SEULE période a une mensualité nette <= 0. Le client
+      // choisit sa période : une période à 0 €/mois (ex. [{1 mois, remise 100 %}, {12 mois, 0}])
+      // est un engagement ferme à zéro euro, même si une autre période est payante.
+      const formuleVide = data.formules.formules.some((f) => {
+        if (f.totalHtCents > 0) return false;
+        const periodes = f.abonnement?.periodes ?? [];
+        return periodes.length === 0 || periodes.some((p) => p.mensuelNetHtCents <= 0);
+      });
+      if (formuleVide) {
+        return {
+          error:
+            "Une formule du devis est à 0,00 € HT sans mensualité (ou avec une période à 0 €/mois) : chiffrez-la avant l'envoi.",
+        };
+      }
+    }
+
     const yearGeneration = new Date().getFullYear();
     const doc = await generateDocument({
       type: "devis",
@@ -512,7 +547,22 @@ export async function sendDevisAction(
     fichierPdfUrl = `documents/${yearGeneration}/devis/${doc.numero}.pdf`;
     documentGenereId = doc.id;
   } catch (err) {
-    console.warn("[sendDevisAction] génération PDF devis échouée (fail-soft)", err);
+    console.warn("[sendDevisAction] génération PDF devis échouée", err);
+    // Offre illisible : le message dit QUOI corriger, pas « PDF non généré ».
+    if (err instanceof OffreDevisInvalideError) return { error: err.message };
+    // Devis à formules : sans PDF, pas de pièce ni de lien de signature à envoyer. Le devis
+    // reste en brouillon, rien n'est écrit, aucun e-mail ne part. (Devis classique : fail-soft.)
+    if (aFormules) {
+      return {
+        error:
+          "Le PDF du devis à formules n'a pas pu être généré : envoi annulé, le devis reste en brouillon.",
+      };
+    }
+  }
+  if (aFormules && documentGenereId === null) {
+    return {
+      error: "Aucune pièce à signer n'a été produite : envoi annulé, le devis reste en brouillon.",
+    };
   }
 
   // ── 2. Signature électronique « bon pour accord » — CANAL MAISON ──
@@ -591,6 +641,15 @@ export async function sendDevisAction(
     }
   }
   const signatureCreee = signatureUrl !== null;
+  // Devis à formules : le choix de la formule passe PAR ce lien. Jamais « envoyé » sans lien
+  // (ni destinataire) : refus avant la transaction, aucun e-mail.
+  if (aFormules && !signatureCreee) {
+    return {
+      error: `Le lien de signature n'a pas pu être créé${
+        signatureErreur !== null ? ` (${signatureErreur})` : ""
+      } : un devis à formules ne peut pas être envoyé sans lien (le client y choisit sa formule). Le devis reste en brouillon.`,
+    };
+  }
 
   // ── 3. Transaction : envoye + statut client + expiration de la version remplacée ──
   // INT-T46-A : une transaction INTERACTIVE (et non plus un tableau), pour que le fait
@@ -701,7 +760,7 @@ export async function sendDevisAction(
   if (signatureAttendue && !signatureCreee) {
     const detail = signatureErreur !== null ? ` (${signatureErreur})` : "";
     const prefixe = note !== undefined ? `${note} ` : "Devis marqué envoyé. ";
-    note = `${prefixe}⚠️ Le lien de signature n'a PAS pu être créé${detail} : le client ne peut pas signer en ligne. Lui faire retourner le PDF signé, ou réviser le devis pour réessayer.`;
+    note = `${prefixe}⚠️ Le lien de signature n'a PAS pu être créé${detail} : le client ne peut pas signer en ligne. ${aFormules ? "Réviser le devis pour réessayer." : "Lui faire retourner le PDF signé, ou réviser le devis pour réessayer."}`;
   }
 
   await logQualiopiActivity({
