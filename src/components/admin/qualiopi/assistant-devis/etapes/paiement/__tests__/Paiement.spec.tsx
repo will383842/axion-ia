@@ -3,7 +3,7 @@ import { useReducer } from "react";
 import { describe, expect, it } from "vitest";
 
 import { indemniteSortieMax } from "../../../calculs";
-import { reducteur } from "../../../etat";
+import { controlerEtape, reducteur } from "../../../etat";
 import { etatT1, etatT2, etatT3, etatT4 } from "../../../fixtures";
 import type { EtatAssistant } from "../../../types";
 import { versSaisie } from "../../../vers-offre";
@@ -256,5 +256,78 @@ describe("ApercuClientVerra", () => {
     const t = nettoyer(document.body.textContent!);
     expect(t).not.toContain("4800€");
     expect(t).not.toContain("390€");
+  });
+});
+
+describe("E15 : TVA, TTC et hébergement dans « ce que le client verra »", () => {
+  it("prix unique : HT, TVA et TTC sont affichés", () => {
+    render(<Hote initial={etatT4()} vue="verra" />);
+    const t = nettoyer(
+      screen.getByRole("complementary", { name: /Ce que le client verra/ }).textContent!,
+    );
+    expect(t).toContain("TVA");
+    expect(t).toContain("TotalTTC");
+    expect(t).toContain("314,02€");
+  });
+
+  it("formule A avec hébergement Axion-IA : le mensuel figure dans l'aperçu", () => {
+    const e = etatT1();
+    const init = {
+      ...e,
+      achat: { ...e.achat, hebergement: "axion" as const, hebergementMensuelEur: "45" },
+    };
+    render(<Hote initial={init} vue="verra" />);
+    const t = nettoyer(
+      screen.getByRole("complementary", { name: /Ce que le client verra/ }).textContent!,
+    );
+    expect(t).toContain("HébergementchezAxion-IA");
+    expect(t).toContain("45,00€HT/mois");
+    expect(t).toContain("TotalTTC");
+  });
+});
+
+describe("E15 : onglets au clavier", () => {
+  it("flèches, Début et Fin déplacent la sélection et le focus (tabIndex itinérant)", () => {
+    render(<Hote initial={etatT3()} />);
+    const [a, b] = screen.getAllByRole("tab") as [HTMLElement, HTMLElement];
+    a.focus();
+    fireEvent.keyDown(a, { key: "ArrowRight" });
+    expect(b.getAttribute("aria-selected")).toBe("true");
+    expect(document.activeElement).toBe(b);
+    expect(b.tabIndex).toBe(0);
+    expect(a.tabIndex).toBe(-1);
+    expect(screen.getByRole("tabpanel", { name: /Formule B/ })).toBeTruthy();
+    fireEvent.keyDown(b, { key: "ArrowRight" });
+    expect(a.getAttribute("aria-selected")).toBe("true");
+    fireEvent.keyDown(a, { key: "End" });
+    expect(b.getAttribute("aria-selected")).toBe("true");
+    fireEvent.keyDown(b, { key: "Home" });
+    expect(a.getAttribute("aria-selected")).toBe("true");
+    fireEvent.keyDown(a, { key: "ArrowLeft" });
+    expect(b.getAttribute("aria-selected")).toBe("true");
+  });
+});
+
+describe("E15 : remise et indemnité hors borne", () => {
+  it("remise 150 : aria-invalid, message relié, étape 3 refusée", () => {
+    render(<Hote initial={etatT3()} vue="b" />);
+    const champ = screen.getAllByLabelText(/Remise pour/)[0] as HTMLInputElement;
+    fireEvent.change(champ, { target: { value: "150" } });
+    expect(champ.getAttribute("aria-invalid")).toBe("true");
+    expect(document.getElementById(champ.getAttribute("aria-describedby")!)!.textContent).toMatch(
+      /entre 0 et 100/,
+    );
+    expect(controlerEtape(etat(), 3).join(" ")).toMatch(/remise/i);
+  });
+
+  it("indemnité illisible ou > 100 : message visible et étape refusée", () => {
+    render(<Hote initial={etatT3()} vue="b" />);
+    const champ = screen.getByLabelText(/Indemnité de sortie/) as HTMLInputElement;
+    fireEvent.change(champ, { target: { value: "abc" } });
+    expect(champ.getAttribute("aria-invalid")).toBe("true");
+    expect(screen.getAllByRole("alert").length).toBeGreaterThan(0);
+    expect(controlerEtape(etat(), 3).join(" ")).toMatch(/Indemnité/);
+    fireEvent.change(champ, { target: { value: "120" } });
+    expect(controlerEtape(etat(), 3).join(" ")).toMatch(/entre 0 et 100/);
   });
 });

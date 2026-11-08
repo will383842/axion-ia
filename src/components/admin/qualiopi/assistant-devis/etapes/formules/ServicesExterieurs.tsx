@@ -66,7 +66,9 @@ export function ServicesExterieurs({ etat, dispatch, textePlafond }: PropsServic
   const services = etat.servicesTiers;
   // Saisies brutes alignées sur les services : l'écran n'a aucun état local, retirer un autre
   // service ne peut donc plus laisser un champ afficher l'ancienne valeur d'un autre.
-  const saisies = services.map((s, i) => etat.servicesSaisies?.[i] ?? centsVersSaisie(s.estimationHtCents));
+  const saisies = services.map(
+    (s, i) => etat.servicesSaisies?.[i] ?? centsVersSaisie(s.estimationHtCents),
+  );
   const maj = (i: number, patch: Partial<Service>) =>
     dispatch({
       type: "champs",

@@ -201,11 +201,17 @@ describe("ServicesExterieurs", () => {
     const ajout = screen.getByRole("button", { name: /Ajouter un service/ });
     fireEvent.click(ajout);
     fireEvent.click(ajout);
-    fireEvent.change(screen.getByLabelText(/Estimation du service 1/), { target: { value: "100" } });
-    fireEvent.change(screen.getByLabelText(/Estimation du service 2/), { target: { value: "200" } });
+    fireEvent.change(screen.getByLabelText(/Estimation du service 1/), {
+      target: { value: "100" },
+    });
+    fireEvent.change(screen.getByLabelText(/Estimation du service 2/), {
+      target: { value: "200" },
+    });
     fireEvent.click(screen.getByRole("button", { name: /Retirer le service 1/ }));
     expect(etat().servicesTiers[0]!.estimationHtCents).toBe(20000);
-    expect((screen.getByLabelText(/Estimation du service 1/) as HTMLInputElement).value).toBe("200");
+    expect((screen.getByLabelText(/Estimation du service 1/) as HTMLInputElement).value).toBe(
+      "200",
+    );
   });
 
   it("plafond vidé case cochée : l'ancienne valeur ne reste pas, l'erreur est visible et bloque l'étape", () => {
@@ -235,7 +241,9 @@ describe("ServicesExterieurs", () => {
     render(<Hote vue="services" />);
     fireEvent.click(screen.getByRole("button", { name: /Ajouter un service/ }));
     fireEvent.change(screen.getByLabelText(/Estimation du service 1/), { target: { value: "12" } });
-    fireEvent.change(screen.getByLabelText(/Estimation du service 1/), { target: { value: "12,505" } });
+    fireEvent.change(screen.getByLabelText(/Estimation du service 1/), {
+      target: { value: "12,505" },
+    });
     expect(etat().servicesTiers[0]!.estimationHtCents).toBeNull();
     expect(controlerEtape(etat(), 2).join(" ")).toMatch(/Service extérieur 1/);
   });

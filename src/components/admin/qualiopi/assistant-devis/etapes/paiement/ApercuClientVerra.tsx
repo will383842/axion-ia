@@ -8,7 +8,13 @@
  */
 import { useDeferredValue } from "react";
 
-import { eurosEnCents, totauxFormuleA, totauxLignes, totauxMiseEnServiceB } from "../../calculs";
+import {
+  eurosEnCents,
+  totauxFormuleA,
+  totauxLignes,
+  totauxMiseEnServiceB,
+  type Totaux,
+} from "../../calculs";
 import { propositionEffective } from "../../etat";
 import type { EtatAssistant } from "../../types";
 
@@ -21,6 +27,17 @@ function Ligne({ libelle, valeur }: { libelle: string; valeur: string }) {
       <dt>{libelle}</dt>
       <dd>{valeur}</dd>
     </div>
+  );
+}
+
+/** HT, TVA et TTC d'un total ; le taux vient des calculs (paramètre), jamais d'ici. */
+function LignesTotaux({ t, libelleHt }: { t: Totaux; libelleHt: string }) {
+  return (
+    <>
+      <Ligne libelle={libelleHt} valeur={euros(t.htCents)} />
+      <Ligne libelle="TVA" valeur={euros(t.tvaCents)} />
+      <Ligne libelle="Total TTC" valeur={euros(t.ttcCents)} />
+    </>
   );
 }
 
@@ -45,24 +62,24 @@ export function ApercuClientVerra({
       <p className="font-medium">Ce que le client verra</p>
       {p === "prix_unique" ? (
         <dl>
-          <Ligne
-            libelle="Total HT"
-            valeur={euros(totauxLignes(e.lignes, tvaStandardPct).htCents)}
-          />
+          <LignesTotaux t={totauxLignes(e.lignes, tvaStandardPct)} libelleHt="Total HT" />
         </dl>
       ) : null}
       {a ? (
         <section aria-label="Aperçu de la formule A">
           <p className="font-medium">Formule A</p>
           <dl>
-            <Ligne
-              libelle="Mise en place"
-              valeur={`${euros(totauxFormuleA(e, tvaStandardPct).htCents)} HT`}
-            />
+            <LignesTotaux t={totauxFormuleA(e, tvaStandardPct)} libelleHt="Mise en place (HT)" />
             <Ligne
               libelle={`Maintenance (${e.achat.maintenance.regle === "obligatoire" ? "obligatoire" : "facultative"})`}
               valeur={`${montantLu(e.achat.maintenance.mensuelEur)} HT / mois`}
             />
+            {e.achat.hebergement === "axion" && e.achat.hebergementMensuelEur.trim() !== "" ? (
+              <Ligne
+                libelle="Hébergement chez Axion-IA"
+                valeur={`${montantLu(e.achat.hebergementMensuelEur)} HT / mois`}
+              />
+            ) : null}
           </dl>
         </section>
       ) : null}
@@ -70,9 +87,9 @@ export function ApercuClientVerra({
         <section aria-label="Aperçu de la formule B">
           <p className="font-medium">Formule B</p>
           <dl>
-            <Ligne
-              libelle="Mise en service"
-              valeur={`${euros(totauxMiseEnServiceB(e, tvaStandardPct).htCents)} HT`}
+            <LignesTotaux
+              t={totauxMiseEnServiceB(e, tvaStandardPct)}
+              libelleHt="Mise en service (HT)"
             />
             <Ligne
               libelle="Abonnement"

@@ -89,13 +89,17 @@ export function CarteFormuleA({ etat, dispatch, tvaStandardPct }: PropsCarteForm
             className="min-h-[44px] rounded border px-2"
             value={heb}
             aria-invalid={hebIllisible || heb.trim() === ""}
-            aria-describedby={hebIllisible ? `${uid}-heb` : undefined}
+            aria-describedby={hebIllisible || heb.trim() === "" ? `${uid}-heb` : undefined}
             onChange={(e) =>
               dispatch({ type: "achat", patch: { hebergementMensuelEur: e.target.value } })
             }
           />
-          {hebIllisible ? (
-            <span id={`${uid}-heb`}>Montant illisible : des euros avec 2 décimales au plus.</span>
+          {hebIllisible || heb.trim() === "" ? (
+            <span id={`${uid}-heb`} role="alert">
+              {hebIllisible
+                ? "Montant illisible : des euros avec 2 décimales au plus."
+                : "Saisissez le montant mensuel de l'hébergement."}
+            </span>
           ) : null}
         </label>
       ) : null}

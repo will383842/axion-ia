@@ -175,6 +175,13 @@ const ESPACES = /[   ]/g;
 function centsLus(s: string): number | null {
   return eurosVersCents(s.replace(ESPACES, ""));
 }
+/** Pourcentage saisi : « illisible » (format) ou « hors_borne » (hors 0 à 100), sinon null. */
+export function defautPourcentage(saisie: string): "illisible" | "hors_borne" | null {
+  const t = saisie.replace(ESPACES, "").trim().replace(",", ".");
+  if (!/^\d+(\.\d{1,2})?$/.test(t)) return "illisible";
+  return Number(t) > 100 ? "hors_borne" : null;
+}
+
 const entier = (s: string): number | null => (/^\d+$/.test(s.trim()) ? Number(s) : null);
 
 function totalPhases(p: readonly PhaseAssistant[], nom: string): string[] {
@@ -235,7 +242,9 @@ export function controlerEtape(e: EtatAssistant, etape: Etape): string[] {
       }
       e.servicesSaisies?.forEach((t, i) => {
         if (t.trim() !== "" && centsLus(t) === null) {
-          err.push(`Service extérieur ${i + 1} : estimation illisible (euros, 2 décimales au plus).`);
+          err.push(
+            `Service extérieur ${i + 1} : estimation illisible (euros, 2 décimales au plus).`,
+          );
         }
       });
       if (e.plafondSaisie !== undefined && e.plafondSaisie !== null) {
@@ -260,13 +269,17 @@ export function controlerEtape(e: EtatAssistant, etape: Etape): string[] {
       if (b) {
         const ab = e.abonnement;
         err.push(...totalPhases(ab.phases, "Échéancier de la formule B"));
-        if (ab.periodes.some((x) => centsLus(x.remisePct) === null))
+        if (ab.periodes.some((x) => defautPourcentage(x.remisePct) === "illisible"))
           err.push("Abonnement : remise illisible.");
+        if (ab.periodes.some((x) => defautPourcentage(x.remisePct) === "hors_borne"))
+          err.push("Abonnement : la remise doit être comprise entre 0 et 100 %.");
         if (ab.engagementMois > 0 && ab.periodes.some((x) => ab.engagementMois % x.mois !== 0)) {
           err.push("L'engagement doit être un multiple de chaque période proposée.");
         }
-        if (centsLus(ab.indemniteTauxPct) === null)
-          err.push("Indemnité de sortie : taux illisible.");
+        const di = defautPourcentage(ab.indemniteTauxPct);
+        if (di === "illisible") err.push("Indemnité de sortie : taux illisible.");
+        if (di === "hors_borne")
+          err.push("Indemnité de sortie : le taux doit être entre 0 et 100 %.");
       }
       return err;
     }

@@ -131,6 +131,16 @@ describe("EtapeFormules / carte A", () => {
     expect(screen.queryByText(/Mois offerts/i)).toBeNull();
   });
 
+  it("hébergement Axion-IA laissé vide : un message est relié au champ", () => {
+    render(<Hote seul="carte" />);
+    fireEvent.click(screen.getByRole("radio", { name: /serveur d'Axion-IA/ }));
+    const champ = screen.getByLabelText(/Hébergement \(HT par mois\)/);
+    expect(champ.getAttribute("aria-invalid")).toBe("true");
+    const id = champ.getAttribute("aria-describedby");
+    expect(id).toBeTruthy();
+    expect(document.getElementById(id!)!.textContent).toMatch(/Saisissez/);
+  });
+
   it("le forfait IA via Axion-IA est grisé avec sa raison, aucun champ de montant d'IA", () => {
     render(<Hote seul="carte" />);
     const r = screen.getByRole("radio", {

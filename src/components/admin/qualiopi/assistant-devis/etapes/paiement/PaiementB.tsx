@@ -10,6 +10,7 @@
 import { useId, type Dispatch } from "react";
 
 import { indemniteSortieMax, periodesAbonnement } from "../../calculs";
+import { defautPourcentage } from "../../etat";
 import type { ActionAssistant } from "../../etat";
 import type { Engagement, EtatAssistant, MoisPeriode, Preavis } from "../../types";
 import { EditeurPhases } from "../phases/EditeurPhases";
@@ -21,6 +22,10 @@ export interface PropsPaiementB {
 }
 
 const EUROS = new Intl.NumberFormat("fr-FR", { style: "currency", currency: "EUR" });
+const messagePourcentage = (d: "illisible" | "hors_borne" | null): string =>
+  d === "hors_borne"
+    ? "Valeur hors limites : un pourcentage entre 0 et 100."
+    : "Valeur illisible : un pourcentage avec 2 décimales au plus.";
 const euros = (c: number): string => EUROS.format(c / 100);
 
 export const MESSAGE_ENGAGEMENT = "L'engagement doit être un multiple de chaque période proposée.";
@@ -111,15 +116,28 @@ export function PaiementB({ etat, dispatch, montants }: PropsPaiementB) {
                 {r.libelle}
               </label>
               {p ? (
-                <label className="flex items-center gap-2">
-                  Remise pour {r.mois} {r.mois === 1 ? "mois" : "mois"} (%)
-                  <input
-                    inputMode="decimal"
-                    className="min-h-[44px] w-24 rounded border px-2"
-                    value={p.remisePct}
-                    onChange={(e) => remise(r.mois, e.target.value)}
-                  />
-                </label>
+                <div className="flex flex-col">
+                  <label className="flex items-center gap-2">
+                    Remise pour {r.mois} {r.mois === 1 ? "mois" : "mois"} (%)
+                    <input
+                      inputMode="decimal"
+                      className="min-h-[44px] w-24 rounded border px-2"
+                      value={p.remisePct}
+                      aria-invalid={defautPourcentage(p.remisePct) !== null}
+                      aria-describedby={
+                        defautPourcentage(p.remisePct) !== null
+                          ? `${uid}-remise-${r.mois}`
+                          : undefined
+                      }
+                      onChange={(e) => remise(r.mois, e.target.value)}
+                    />
+                  </label>
+                  {defautPourcentage(p.remisePct) !== null ? (
+                    <span id={`${uid}-remise-${r.mois}`} role="alert">
+                      {messagePourcentage(defautPourcentage(p.remisePct))}
+                    </span>
+                  ) : null}
+                </div>
               ) : null}
             </div>
           );
@@ -213,9 +231,18 @@ export function PaiementB({ etat, dispatch, montants }: PropsPaiementB) {
           inputMode="decimal"
           className="min-h-[44px] rounded border px-2"
           value={ab.indemniteTauxPct}
+          aria-invalid={defautPourcentage(ab.indemniteTauxPct) !== null}
+          aria-describedby={
+            defautPourcentage(ab.indemniteTauxPct) !== null ? `${uid}-indemnite-err` : undefined
+          }
           onChange={(e) => maj({ indemniteTauxPct: e.target.value })}
         />
       </label>
+      {defautPourcentage(ab.indemniteTauxPct) !== null ? (
+        <p id={`${uid}-indemnite-err`} role="alert">
+          {messagePourcentage(defautPourcentage(ab.indemniteTauxPct))}
+        </p>
+      ) : null}
       {indemnite !== null ? (
         <p data-testid="indemnite">Indemnité de sortie maximale : {euros(indemnite)} HT.</p>
       ) : null}

@@ -6,7 +6,7 @@
  * le rappel de l'échéancier puis le financement. Les montants par phase arrivent du serveur
  * (`montantsPhases`, aperçu S07) ; rien n'est calculé ici.
  */
-import { useId, useState, type Dispatch } from "react";
+import { useId, useState, type Dispatch, type KeyboardEvent } from "react";
 
 import { propositionEffective, type ActionAssistant } from "../../etat";
 import type { Etape, EtatAssistant } from "../../types";
@@ -40,6 +40,25 @@ export function EtapePaiement({
   ];
   const [choix, setChoix] = useState<"A" | "B">("A");
   const actif = formules.includes(choix) ? choix : formules[0];
+  // Navigation clavier des onglets (motif WAI-ARIA) : flèches, Début, Fin ; tabIndex itinérant.
+  const surTouche = (ev: KeyboardEvent<HTMLButtonElement>) => {
+    const i = actif ? formules.indexOf(actif) : 0;
+    const n = formules.length;
+    const cible =
+      ev.key === "ArrowRight"
+        ? formules[(i + 1) % n]
+        : ev.key === "ArrowLeft"
+          ? formules[(i - 1 + n) % n]
+          : ev.key === "Home"
+            ? formules[0]
+            : ev.key === "End"
+              ? formules[n - 1]
+              : undefined;
+    if (!cible) return;
+    ev.preventDefault();
+    setChoix(cible);
+    document.getElementById(`${uid}-tab-${cible}`)?.focus();
+  };
 
   return (
     <div className="flex flex-col gap-4 lg:flex-row">
@@ -67,6 +86,7 @@ export function EtapePaiement({
                   tabIndex={actif === f ? 0 : -1}
                   className="min-h-[44px] rounded border px-4"
                   onClick={() => setChoix(f)}
+                  onKeyDown={surTouche}
                 >
                   Formule {f}
                 </button>
