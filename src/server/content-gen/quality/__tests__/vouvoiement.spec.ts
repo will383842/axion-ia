@@ -7,7 +7,9 @@ import { detecterTutoiement } from "../vouvoiement";
 describe("detecterTutoiement", () => {
   it("ne signale rien sur un texte au vouvoiement", () => {
     expect(
-      detecterTutoiement("<p>Vous pouvez commencer par vos devis. Votre équipe gagne du temps.</p>"),
+      detecterTutoiement(
+        "<p>Vous pouvez commencer par vos devis. Votre équipe gagne du temps.</p>",
+      ),
     ).toEqual({ tutoie: false, occurrences: 0, extrait: "" });
   });
 
@@ -27,7 +29,9 @@ describe("detecterTutoiement", () => {
 
   it("ne confond pas avec des mots qui contiennent « tu », « ton », « ta » ou « toi »", () => {
     expect(
-      detecterTutoiement("Le ton de l'étude, la tuile, un tutoriel, la toile, un tuteur, une statue."),
+      detecterTutoiement(
+        "Le ton de l'étude, la tuile, un tutoriel, la toile, un tuteur, une statue.",
+      ),
     ).toMatchObject({ tutoie: false });
   });
 

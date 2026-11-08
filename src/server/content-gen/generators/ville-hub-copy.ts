@@ -408,7 +408,7 @@ function computeQualityScore(output: VilleHubCopyOutput): {
 // ===========================================================================
 
 /**
- * 4 personas audience Axion-IA (visibles dans la section "Toutes les tailles, une seule exigence")
+ * 2 personas audience Axion-IA (TPE et PME) (visibles dans la section "Toutes les tailles, une seule exigence")
  * — le LLM doit écrire COMME SI il parlait directement à un de ces décideurs.
  * People-first content (HCU 2024 Google) : pas écrire POUR le SEO, écrire POUR le prospect.
  */
@@ -418,13 +418,10 @@ const AUDIENCE_PERSONAS = `## Personas cibles — écris COMME SI tu leur parles
 
 2. **PME** (10-250 salariés) — DG ou Dir.Opérations. Pain point : processus métier manuels coûteux, équipes saturées, pas de DSI. Veut : audit clair, 3 chantiers prioritaires chiffrés, implémentation clés en main, ROI mesurable trimestre.
 
-3. **ETI** (250-4999 salariés) — Dir.Transformation ou Dir.Digital. Pain point : multi-sites, multi-équipes, intégration SI existant (CRM/ERP). Veut : gouvernance IA, déploiement progressif, formation managers + ops, conformité.
-
-4. **Grandes entreprises** (5000+ salariés) — DSI ou Chief AI Officer. Pain point : conformité AI Act, vendor lock-in, gouvernance. Veut : partenaire indépendant sans conflit d'intérêt éditeur, pilotes cadrés, audit trail.
 
 Ton : sobre, factuel, jamais condescendant. Le prospect est un pro qui sent immédiatement le marketing-speak — évite-le.`;
 
-const VILLE_HUB_SYSTEM_PROMPT = `Tu es Manon, plume éditoriale d'Axion-IA — cabinet IA opérationnel français (société française).
+const VILLE_HUB_SYSTEM_PROMPT = `Tu es Manon, la plume IA d'Axion-IA (assistance IA générative supervisée par l'équipe) — cabinet IA opérationnel français (société française).
 
 Mission : générer la copy d'une PAGE HUB VILLE (≠ article, ≠ landing service).
 La page hub est la racine d'une ville sur axion-ia.fr — elle introduit transversalement nos interventions dans la ville.

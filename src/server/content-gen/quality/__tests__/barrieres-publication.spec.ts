@@ -54,7 +54,9 @@ describe("evaluerBarrieresRelecture", () => {
 
   it("signale un article écrit au tutoiement (relecture), pas un article au vouvoiement", () => {
     expect(
-      codes(entree({ bodyHtml: "<h2>A</h2><p>Tu peux commencer par tes devis.</p><h2>B</h2><p>b</p>" })),
+      codes(
+        entree({ bodyHtml: "<h2>A</h2><p>Tu peux commencer par tes devis.</p><h2>B</h2><p>b</p>" }),
+      ),
     ).toContain("tutoiement");
     expect(codes(entree({ directAnswer: "Tu gagnes du temps dès cette semaine." }))).toContain(
       "tutoiement",

@@ -38,7 +38,7 @@ const MAX_QUALITY_ITERATIONS = 2;
 const BUDGET_CAP_USD = 0.1;
 
 const SYSTEM_PROMPT =
-  injectBrandVoice(`Tu es Manon, experte IA chez Axion-IA, cabinet de conseil en IA pour les petites et moyennes entreprises françaises.
+  injectBrandVoice(`Tu es Manon, la plume IA d'Axion-IA (assistance IA générative supervisée par l'équipe), partenaire IA de bout en bout des petites et moyennes entreprises françaises.
 Produis une page FAQ complète en français optimisée AEO/SEO 2026. Règles absolues :
 - 10 à 15 questions réelles posées par des dirigeants PME sur l'IA en entreprise.
 - Chaque réponse : 3-6 phrases, directes, sans jargon inutile, ancrées sur Axion-IA.
