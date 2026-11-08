@@ -73,7 +73,13 @@ export function etatInitial(p: ParamsInitiaux): EtatAssistant {
       phases: [phaseSolde("phase-a-1")],
       hebergement: "client",
       hebergementMensuelEur: "",
-      maintenance: { regle: "facultative", mensuelEur: "", periodes: [1, 12], dureeMinimale: "", moisOfferts: "0" },
+      maintenance: {
+        regle: "facultative",
+        mensuelEur: "",
+        periodes: [1, 12],
+        dureeMinimale: "",
+        moisOfferts: "0",
+      },
     },
     abonnement: {
       miseEnServiceSaisie: "",
