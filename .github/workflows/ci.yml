@@ -35,6 +35,11 @@ on:
   # Un brouillon ne peut pas être fusionné : un `skipped` y est sans risque.
   # Gate A (gitleaks, anti-SIREN, admin-gardes, types, lint…) et Gate D
   # tournent TOUJOURS, brouillon ou non.
+  # ⚠️ PIÈGE : « Re-run » d'un VIEUX run lancé en brouillon rejoue son événement
+  # d'origine (`draft: true`) ; fait après le passage en « prête » sur le MÊME
+  # commit, il réécrirait « Gate A · couverture » et « Gate B · per-PR » en
+  # `skipped`. Ne relancer que le run déclenché par `ready_for_review` (ou
+  # pousser un commit).
   #
   # 🔴 2026-11-08 (CI-LOT1) — le déclencheur `push: branches: [main, staging]`
   # est RETIRÉ. Audit du 08/11 : 10 runs sur 13 sur `main` étaient annulés par
@@ -82,7 +87,8 @@ on:
 
 concurrency:
   # Le type d'événement entre dans le groupe : sans lui, un push sur main annulerait le passage
-  # quotidien (même ref).
+  # quotidien (même ref). Il n'y a plus de déclencheur `push` depuis le 2026-11-08 (CI-LOT1) ; le type
+  # d'événement reste dans le groupe pour qu'un dispatch manuel n'annule pas le passage quotidien.
   group: ci-${{ github.event_name }}-${{ github.ref }}
   cancel-in-progress: true
 
@@ -358,6 +364,8 @@ jobs:
     timeout-minutes: 30
     # Pas sur un push vers main/staging : la PR l'a déjà passé (~48 min-machine économisées).
     # Il reste exécuté sur PR, file de fusion, passage quotidien et à la demande.
+    # (Le déclencheur `push` est retiré depuis le 2026-11-08 : `!= 'push'` est gardé par
+    # prudence, au cas où il serait remis, et la garde la-suite-vitest-tourne-une-fois l'exige.)
     # 2026-11-08 (CI-LOT1) : ni sur une PR en BROUILLON (relancé par `ready_for_review`).
     if: github.event_name != 'push' && (github.event_name != 'pull_request' || github.event.pull_request.draft == false)
     strategy:

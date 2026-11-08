@@ -133,6 +133,13 @@ dernier à 30 KB) — l'étape est donc devenue bloquante **en passant**, ce qui
 
 Source de vérité : `_AUDIT/AUDIT-WEB-VITALS-2026-BUDGETS.md`.
 
+## CI : brouillon = pas de CI lourde (CI-LOT1, 2026-11-08)
+
+- Une PR **reste en brouillon pendant le travail** et passe en « prête » **une seule fois, à la fin du lot**. En brouillon, seules Gate A (types, lint, gitleaks, anti-SIREN, admin-gardes…) et Gate D tournent ; la couverture ×3, Gate B ×2 et leurs verdicts sautent, et `ready_for_review` relance tout.
+- La CI ne tourne plus sur `push` vers `main` : `main` est rejoué en entier par le passage quotidien (`schedule`).
+- Gate B build avec `SKIP_NEXT_TYPECHECK=true` ; la vérification de types (y compris `.next/types` via `next typegen`) est faite par « Gate A · per-commit ».
+- ⚠️ Ne pas « Re-run » un vieux run lancé en brouillon après le passage en « prête » : il rejoue `draft: true` et réécrit les verdicts exigés en `skipped`.
+
 ## Build externalisé GitHub Actions + stubs Prisma/Redis (ADR 0026)
 
 Depuis 2026-05-16 (recovery deploy), le build Docker est **externalisé sur GitHub Actions** (le VPS CPX42 ne suffisait plus, build SSG 17 629 routes saturait les 150 GB à ~117 GB peak). L'image est pushée sur GHCR public, et Coolify ne fait plus que `pull` via `Dockerfile.coolify-pull` (un-liner `FROM ghcr.io/will383842/axion-ia:latest`). Voir ADR 0026.
