@@ -35,7 +35,7 @@ describe("générateurs annexes ville : gelés par défaut", () => {
     }
   });
 
-  it("avec VILLES_GENERATEURS_ANNEXES_ACTIFS=true, le comportement d'avant revient", () => {
+  it("avec VILLES_GENERATEURS_ANNEXES_ACTIFS=true, ce gel est levé (le refus de #1643, s'il est fusionné, reste)", () => {
     vi.stubEnv("VILLES_GENERATEURS_ANNEXES_ACTIFS", "true");
     for (const t of QUATRE) expect(generateurAnnexeVilleGele(t)).toBe(false);
   });
@@ -70,10 +70,14 @@ describe("script regen-villes-stratified", () => {
     "utf8",
   );
 
-  it("passe par l'interrupteur avant tout appel du générateur", () => {
-    expect(src).toContain("generateurAnnexeVilleGele");
-    expect(src.indexOf("generateurAnnexeVilleGele(")).toBeLessThan(
-      src.indexOf("await importGeneratorFn(generatorName)"),
+  it("sort proprement (exit 0) sur l'interrupteur avant d'ouvrir la base", () => {
+    const main = src.slice(src.indexOf("async function main"));
+    expect(main.indexOf("generateurAnnexeVilleGele(")).toBeGreaterThan(-1);
+    expect(main.indexOf("process.exit(0)")).toBeGreaterThan(-1);
+    expect(main.indexOf("generateurAnnexeVilleGele(")).toBeLessThan(
+      main.indexOf("new PrismaClient()"),
     );
   });
+  // La variable ne lève que CE gel : la PR #1643, si fusionnée, refuse en plus
+  // tout run payant tant que les résultats ne sont pas sauvegardés.
 });

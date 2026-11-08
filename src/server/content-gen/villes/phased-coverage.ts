@@ -1,5 +1,3 @@
-import { generateurAnnexeVilleGele } from "./generateurs-annexes-geles";
-
 /**
  * AXION-IA — Phased Coverage Campaign
  *
@@ -10,6 +8,8 @@ import { generateurAnnexeVilleGele } from "./generateurs-annexes-geles";
  *
  * À ajouter dans prisma/schema.prisma + migrations
  */
+
+import { generateurAnnexeVilleGele } from "./generateurs-annexes-geles";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // TYPES & ENUMS
@@ -382,7 +382,8 @@ export interface GeneratorBaseInputExtension {
 
 /**
  * Types réellement planifiables pour une phase : les générateurs annexes ville
- * gelés (cf. `generateurs-annexes-geles.ts`) en sont retirés. `PHASE_DEFINITIONS`
+ * gelés (cf. `generateurs-annexes-geles.ts`) en sont retirés. Garde PRÉVENTIVE :
+ * aucun planificateur ne consomme `contentTypes` aujourd'hui. `PHASE_DEFINITIONS`
  * reste la matrice déclarative ; tout planificateur doit passer par ici.
  */
 export function contentTypesActifs(def: PhaseDefinition): string[] {

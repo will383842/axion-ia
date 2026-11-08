@@ -7,6 +7,9 @@
 //
 // Gel PAR DÉFAUT. Réactivation sans déploiement de code :
 //   VILLES_GENERATEURS_ANNEXES_ACTIFS=true
+// ⚠️ Cette variable lève SEULEMENT ce gel. Si la PR #1643 est fusionnée,
+// scripts/regen-villes-stratified.ts refuse en plus tout run payant tant que la
+// sauvegarde des résultats n'existe pas (aucun résultat n'est écrit aujourd'hui).
 // Retour arrière = mettre la variable à "true" (ou revert de la PR).
 //
 // NE SONT PAS gelés : `landing-ville-economic-data` et `ville-hub-copy`, qui
@@ -29,4 +32,4 @@ export function generateurAnnexeVilleGele(type: string): boolean {
 }
 
 export const MESSAGE_GENERATEUR_ANNEXE_GELE =
-  "générateur annexe ville gelé (aucune page ne lit sa table) — réactivable avec VILLES_GENERATEURS_ANNEXES_ACTIFS=true";
+  "générateurs annexes ville gelés (aucune page ne lit leurs tables) ; VILLES_GENERATEURS_ANNEXES_ACTIFS=true pour réactiver";

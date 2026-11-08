@@ -279,14 +279,6 @@ async function runGenerator(
   tier: Tier,
   dryRun: boolean,
 ): Promise<GeneratorResult> {
-  // Gel : aucune page ne lit la table de ces générateurs (aucun appel au modèle).
-  if (generateurAnnexeVilleGele(`landing-ville-${generatorName}`)) {
-    console.log(
-      `[regen-villes] ${generatorName} / ${ville.slug} : ${MESSAGE_GENERATEUR_ANNEXE_GELE}`,
-    );
-    return { generatorName, villeSlug: ville.slug, success: true, skipped: true };
-  }
-
   // Resume check
   if (!dryRun) {
     const alreadyDone = await isAlreadyGenerated(prisma, ville.slug, generatorName);
@@ -392,6 +384,12 @@ async function runWithConcurrency<T>(
 
 async function main(): Promise<void> {
   const args = parseArgs();
+  // Gel : aucune page ne lit les tables de ces 4 générateurs. Sortie unique,
+  // avant toute connexion base, y compris en --dry-run.
+  if (GENERATORS_BY_TIER[1].every((g) => generateurAnnexeVilleGele(`landing-ville-${g}`))) {
+    console.log(`[regen-villes] ${MESSAGE_GENERATEUR_ANNEXE_GELE} : rien à faire.`);
+    process.exit(0);
+  }
   const prisma = new PrismaClient();
 
   try {
