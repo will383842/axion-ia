@@ -48,7 +48,8 @@ describe("faits AI Act corrigés", () => {
   it("form-059 : l'art. 4 vise tous les systèmes, pas seulement le haut risque", () => {
     const t = parId("form-059").text;
     expect(t).not.toMatch(/dès 2025/);
-    expect(t).toMatch(/tous les systèmes d'IA/);
+    expect(t).toMatch(/tous systèmes confondus/);
+    expect(t).not.toMatch(/demande aux entreprises/);
   });
   it("ai-act-019 : l'analyse d'impact (art. 27) ne vise pas les RH privées", () => {
     const t = parId("ai-act-019").text;
@@ -62,6 +63,25 @@ describe("faits AI Act corrigés", () => {
     for (const f of TOUS) {
       expect(f.text, f.id).not.toMatch(/AI Act[^.]*depuis (le 2 )?août 2026/i);
     }
+  });
+});
+
+describe("autres faits AI Act relus (relecture Opus)", () => {
+  it("audit-027, audit-029 : plus d'« audit obligatoire »", () => {
+    expect(parId("audit-027").text).not.toMatch(/audit conformité obligatoire/);
+    expect(parId("audit-029").text).not.toMatch(/audit annuel/);
+  });
+  it("ai-act-026 cite l'art. 22 ; ai-act-012 ne parle plus de frais de base de données", () => {
+    expect(parId("ai-act-026").text).toMatch(/art\. 22/);
+    expect(parId("ai-act-012").text).not.toMatch(/base de données EU/);
+  });
+  it("ai-act-023 (PwC, août 2026) est retirée ; web-019 n'impose plus le consentement", () => {
+    expect(TOUS.some((f) => f.id === "ai-act-023")).toBe(false);
+    expect(parId("web-019").text).not.toMatch(/obligation de consentement explicite/);
+  });
+  it("aucune étiquette « TPE/PME » dans le texte des fiches", () => {
+    const fautifs = TOUS.filter((f) => /tpe ?[/,-] ?pme/i.test(f.text)).map((f) => f.id);
+    expect(fautifs).toEqual([]);
   });
 });
 

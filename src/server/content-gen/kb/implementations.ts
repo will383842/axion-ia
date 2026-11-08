@@ -151,7 +151,7 @@ export const KB_IMPLEMENTATIONS: readonly KbFact[] = [
     text: "Les chatbots IA Axion-IA affichent une information de transparence : l'utilisateur est informé qu'il échange avec un système IA, conformément à l'AI Act (art. 50, dates d'application à vérifier sur EUR-Lex).",
     source: "EUR-Lex — Règlement UE 2024/1689 (AI Act) art. 50",
     sourceUrl: "https://eur-lex.europa.eu/legal-content/FR/TXT/?uri=CELEX:32024R1689",
-    verifiedAt: "2026-05-01",
+    verifiedAt: "2026-11-08",
     verticales: ["implementations"],
     confidence: 0.85,
   },
@@ -475,12 +475,12 @@ export const KB_IMPLEMENTATIONS: readonly KbFact[] = [
   // ── AI Act et impact projets ──────────────────────────────────────────────
   {
     id: "impl-050",
-    text: "L'AI Act européen (applicable progressivement 2024-2027) impose des obligations spécifiques pour les systèmes IA à « risque élevé » (recrutement, crédit, contrôle des travailleurs) : documentation technique, évaluation de conformité, registre de supervision humaine.",
+    text: "L'AI Act européen prévoit des obligations spécifiques pour les systèmes IA « à haut risque » (recrutement, crédit, contrôle des travailleurs) : documentation technique, évaluation de conformité, supervision humaine. Le calendrier d'application a été décalé par l'omnibus numérique : à vérifier sur EUR-Lex.",
     source: "EUR-Lex — Règlement UE 2024/1689 (AI Act), Annexe III",
     sourceUrl: "https://eur-lex.europa.eu/legal-content/FR/TXT/?uri=CELEX:32024R1689",
-    verifiedAt: "2026-05-22",
+    verifiedAt: "2026-11-08",
     verticales: ["implementations"],
-    confidence: 0.95,
+    confidence: 0.8,
   },
   {
     id: "impl-051",
