@@ -66,7 +66,7 @@ export const KB_INTERVENTIONS_FORMATIONS: readonly KbFact[] = [
   // ── Publics cibles ───────────────────────────────────────────────────────
   {
     id: "form-006",
-    text: "Formations Axion-IA adaptées à 5 profils : dirigeants PME/ETI (décision stratégique), managers (pilotage équipe IA), marketing (génération de contenu), commerciaux (prospection IA) et RH (recrutement + administration).",
+    text: "Formations Axion-IA adaptées à 5 profils : dirigeants de PME (décision stratégique), managers (pilotage équipe IA), marketing (génération de contenu), commerciaux (prospection IA) et RH (recrutement + administration).",
     source: "Axion-IA — Catalogue formations 2026",
     sourceUrl: "https://axion-ia.com/interventions-formations",
     verifiedAt: "2026-05-01",
@@ -139,7 +139,7 @@ export const KB_INTERVENTIONS_FORMATIONS: readonly KbFact[] = [
   // ── Marché de la formation IA en France ─────────────────────────────────
   {
     id: "form-015",
-    text: "Le marché de la formation professionnelle IA en France est estimé à 1,2 milliard d'euros en 2025, avec une croissance annuelle de 35 % portée par la demande des PME et ETI (Numeum, ex-Syntec Numérique, 2025).",
+    text: "Le marché de la formation professionnelle IA en France est estimé à 1,2 milliard d'euros en 2025, avec une croissance annuelle de 35 % portée par la demande des PME (Numeum, ex-Syntec Numérique, 2025).",
     source: "Numeum (ex-Syntec Numérique) — Rapport formation IA 2025",
     sourceUrl: "https://numeum.fr",
     verifiedAt: "2026-08-11",
@@ -148,7 +148,7 @@ export const KB_INTERVENTIONS_FORMATIONS: readonly KbFact[] = [
   },
   {
     id: "form-016",
-    text: "France Num recense 47 % des TPE-PME françaises ayant engagé au moins une action de formation IA en 2024 — contre 12 % en 2022, soit une multiplication par 4 en deux ans.",
+    text: "France Num recense 47 % des PME françaises ayant engagé au moins une action de formation IA en 2024 — contre 12 % en 2022, soit une multiplication par 4 en deux ans.",
     source: "France Num — Baromètre numérique des TPE-PME 2024",
     sourceUrl: "https://www.francenum.gouv.fr",
     verifiedAt: "2026-05-01",
@@ -284,10 +284,10 @@ export const KB_INTERVENTIONS_FORMATIONS: readonly KbFact[] = [
   },
   {
     id: "form-030",
-    text: "Axion-IA forme également les dirigeants à la gouvernance IA : définition d'une politique d'utilisation acceptable, gestion des risques de biais et traçabilité des décisions aidées par l'IA (AI Act art. 50).",
+    text: "Axion-IA forme également les dirigeants à la gouvernance IA : définition d'une politique d'utilisation acceptable, gestion des risques de biais et traçabilité des décisions aidées par l'IA.",
     source: "Axion-IA — Programme dirigeants IA v1.3",
     sourceUrl: "https://axion-ia.com/interventions-formations",
-    verifiedAt: "2026-05-01",
+    verifiedAt: "2026-11-08",
     verticales: ["interventions_formations"],
     confidence: 0.92,
   },
@@ -492,12 +492,12 @@ export const KB_INTERVENTIONS_FORMATIONS: readonly KbFact[] = [
   // ── Enjeux réglementaires formation ──────────────────────────────────────
   {
     id: "form-059",
-    text: "L'AI Act européen impose aux entreprises utilisant des systèmes IA à « haut risque » (recrutement, crédit, santé) de former leurs équipes à l'usage responsable de l'IA — créant une obligation légale de formation IA pour certaines fonctions dès 2025.",
+    text: "Selon l'AI Act (art. 4), la maîtrise de l'IA (« AI literacy ») du personnel qui utilise des systèmes d'IA est un sujet de conformité pour les entreprises, tous systèmes confondus et pas seulement ceux à haut risque. La portée exacte de cet article (obligation directe ou simple encouragement) a été modifiée par l'omnibus numérique : à vérifier sur EUR-Lex avant d'affirmer une obligation.",
     source: "EUR-Lex — Règlement UE 2024/1689 (AI Act), Art. 4 et Art. 26",
     sourceUrl: "https://eur-lex.europa.eu/legal-content/FR/TXT/?uri=CELEX:32024R1689",
-    verifiedAt: "2026-05-22",
+    verifiedAt: "2026-11-08",
     verticales: ["interventions_formations"],
-    confidence: 0.94,
+    confidence: 0.75,
   },
   {
     id: "form-060",
@@ -640,12 +640,12 @@ export const KB_INTERVENTIONS_FORMATIONS: readonly KbFact[] = [
   // ── Marché emploi et formation IA ─────────────────────────────────────────
   {
     id: "form-074",
-    text: "France Travail recense 28 000 offres d'emploi en France mentionnant explicitement l'IA comme compétence requise en 2024 — contre 6 500 en 2022, une multiplication par 4,3 qui signale l'urgence d'une montée en compétences nationale.",
+    text: "Selon les offres d'emploi publiées en France, le nombre d'annonces mentionnant explicitement l'IA comme compétence requise a été multiplié par plus de quatre entre 2022 et 2024, ce qui signale l'urgence d'une montée en compétences.",
     source: "France Travail — Observatoire des métiers et compétences numériques 2024",
     sourceUrl: "https://www.francetravail.fr",
     verifiedAt: "2026-05-22",
     verticales: ["interventions_formations"],
-    confidence: 0.83,
+    confidence: 0.7,
   },
   // ── Accessibilité et inclusion ────────────────────────────────────────────
   {
