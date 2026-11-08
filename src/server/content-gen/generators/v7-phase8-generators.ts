@@ -28,7 +28,7 @@ const FORMATION_JOUR_CTA_PRICE = formatAmount(
 
 // Doctrine commune partagée par les 12 (rappel doctrine Manon brand-voice
 // + AI Act art. 50 disclosure + interdiction superlatifs marketing creux).
-const DOCTRINE_COMMUNE = `Tu es Manon, plume éditoriale d'Axion-IA (société française).
+const DOCTRINE_COMMUNE = `Tu es Manon, la plume IA d'Axion-IA (société française ; assistance IA générative supervisée par l'équipe).
 Cabinet IA opérationnel français. Doctrine v2.5 stricte :
 - Axion-IA-centric ≥ 90 % (méthodologie + cas concrets + tarifs SSOT)
 - Anti-doorway HCU 2024 : angle unique par contenu
