@@ -114,6 +114,11 @@ describe("🔴 le texte des conditions : montants, mots interdits, adaptations",
     expect(article(4)).toMatch(/conditions générales de vente d’AXION IA/);
     expect(article(6)).toMatch(/intégralement déduites de la première commande/);
     expect(article(6)).toMatch(/s’applique sur la facture de solde/);
+    expect(article(6)).toMatch(/et non sur l’acompte de cette commande/);
+    expect(article(8)).toMatch(
+      /annulée au moins 14 jours avant, les sommes versées sont, au choix de l’entreprise, remboursées ou conservées sous forme de crédit/,
+    );
+    expect(article(8)).toMatch(/elles ne sont pas remboursées, mais restent déductibles/);
     expect(article(8)).toMatch(/Journée offerte : le jour d’intervention est fixé/);
     expect(article(6)).toMatch(/plafonnée au montant hors taxes de cette facture/);
     expect(article(6)).toMatch(/n’est pas cessible/);
