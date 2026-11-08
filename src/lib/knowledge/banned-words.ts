@@ -55,7 +55,7 @@ export function verifierDoctrineFiche(
 
   const out: ViolationFiche[] = detecterInterditsSurface(textes, {
     actualite: false,
-    financementPublicAutorise: false,
+    financementPublicAutorise: false, // OPCO / France Travail non citables dans la base (contrat qualiopi/config)
   }).map((d) => ({
     champ: d.champ,
     code: d.code,
@@ -99,21 +99,39 @@ export interface BannedWordCheck {
 }
 
 /**
- * Vérifie tous les champs concernés d'une translation.
- * Retourne `valid: true` si aucune violation de la doctrine.
+ * Retire l'étiquette bibliographique « Source : … » que le seed ajoute au corps
+ * d'un fait (`<p><em>Source : …</em></p>` en HTML, ` Source : …` en fin de texte).
+ * C'est un renvoi, pas une affirmation : « Source : Axion-IA — Catalogue 2026 »
+ * déclencherait sinon le motif « statistique attribuée à Axion-IA ». La même règle
+ * vaut au seed ET en console, pour qu'une fiche acceptée par l'un ne soit pas
+ * refusée par l'autre.
  */
-export function checkTranslationBannedWords(input: {
+export function sansEtiquetteSource(texte: string): string {
+  let t = texte.replace(/<p>\s*<em>\s*Source\s*:[\s\S]*?<\/em>\s*<\/p>/gi, " ");
+  const i = t.lastIndexOf(" Source : ");
+  if (i >= 0 && !t.slice(i + 10).includes(". ")) t = t.slice(0, i);
+  return t;
+}
+
+export interface TraductionAControler {
   readonly title?: string | null | undefined;
   readonly excerpt?: string | null | undefined;
   readonly body?: string | null | undefined;
   readonly bodyText?: string | null | undefined;
   readonly metaTitle?: string | null | undefined;
   readonly metaDescription?: string | null | undefined;
-}): BannedWordCheck {
+}
+
+/**
+ * Porte de doctrine de la base de connaissance (publication, import, création).
+ * Le corps HTML ET le texte brut sont contrôlés (un `bodyText` vide ne masque pas le `body`).
+ */
+export function verifierDoctrineTraduction(input: TraductionAControler): BannedWordCheck {
   const violations = verifierDoctrineFiche({
     title: input.title,
     excerpt: input.excerpt,
-    body: input.bodyText ?? input.body,
+    body: input.body ? sansEtiquetteSource(input.body) : input.body,
+    bodyText: input.bodyText ? sansEtiquetteSource(input.bodyText) : input.bodyText,
     metaTitle: input.metaTitle,
     metaDescription: input.metaDescription,
   });
@@ -123,4 +141,14 @@ export function checkTranslationBannedWords(input: {
     fieldViolations: violations.map((v) => ({ field: v.champ, snippet: v.extrait, code: v.code })),
     reason: raisonBlocage(violations),
   };
+}
+
+/**
+ * Ancien contrôle « mots proscrits » : liste VIDE depuis le 2026-08-10, conservé
+ * tel quel pour `server/videos/gardes-contenu.ts`, qui a ses propres règles et ses
+ * propres options (OPCO, Qualiopi) et ne doit pas hériter de la doctrine de la
+ * base de connaissance. La base de connaissance utilise `verifierDoctrineTraduction`.
+ */
+export function checkTranslationBannedWords(_input: TraductionAControler): BannedWordCheck {
+  return { valid: true, fieldViolations: [] };
 }

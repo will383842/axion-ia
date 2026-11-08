@@ -21,7 +21,7 @@
 
 import { prisma } from "@/lib/prisma";
 import { detectPii } from "@/lib/knowledge/pii-scan";
-import { checkTranslationBannedWords } from "@/lib/knowledge/banned-words";
+import { verifierDoctrineTraduction } from "@/lib/knowledge/banned-words";
 import { validateAltText } from "@/lib/knowledge/alt-text-validation";
 import { runHeuristicGates } from "@/lib/knowledge/quality-gates";
 import {
@@ -102,7 +102,7 @@ export async function ingestEntry(payload: IngestPayload): Promise<IngestResult>
   });
 
   // ----- 2. Banned words gate -----
-  const bannedCheck = checkTranslationBannedWords({
+  const bannedCheck = verifierDoctrineTraduction({
     title: payload.title,
     excerpt: payload.excerpt ?? null,
     body: payload.body,

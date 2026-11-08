@@ -13,7 +13,7 @@
  */
 
 import { describe, expect, it } from "vitest";
-import { checkTranslationBannedWords } from "./banned-words";
+import { checkTranslationBannedWords, verifierDoctrineTraduction } from "./banned-words";
 
 describe("checkTranslationBannedWords", () => {
   it("accepte un texte quelconque (aucun motif proscrit déclaré)", () => {
@@ -83,7 +83,7 @@ describe("checkTranslationBannedWords", () => {
 
 describe("doctrine à l'entrée (audit knowledge 08/11/2026)", () => {
   it("laisse passer une fiche propre", () => {
-    const r = checkTranslationBannedWords({
+    const r = verifierDoctrineTraduction({
       title: "Premiers pas avec l'IA",
       body: "Un dirigeant de PME peut démarrer par un usage simple.",
     });
@@ -91,32 +91,49 @@ describe("doctrine à l'entrée (audit knowledge 08/11/2026)", () => {
   });
 
   it("bloque Qualiopi", () => {
-    const r = checkTranslationBannedWords({ body: "Notre organisme est certifié Qualiopi." });
+    const r = verifierDoctrineTraduction({ body: "Notre organisme est certifié Qualiopi." });
     expect(r.valid).toBe(false);
     expect(r.fieldViolations[0]?.code).toBe("qualiopi");
   });
 
   it("bloque Grenoble", () => {
-    const r = checkTranslationBannedWords({ excerpt: "Notre siège à Grenoble" });
+    const r = verifierDoctrineTraduction({ excerpt: "Notre siège à Grenoble" });
     expect(r.valid).toBe(false);
     expect(r.fieldViolations.map((v) => v.code)).toContain("grenoble");
   });
 
   it("bloque la cible ETI", () => {
-    const r = checkTranslationBannedWords({ body: "Un audit pour les ETI et grands groupes." });
+    const r = verifierDoctrineTraduction({ body: "Un audit pour les ETI et grands groupes." });
     expect(r.valid).toBe(false);
     expect(r.fieldViolations.map((v) => v.code)).toContain("eti-hors-cible");
   });
 
   it("ne confond pas ETI avec un mot qui la contient", () => {
     expect(
-      checkTranslationBannedWords({ body: "Une société étiquetée, la métier, le diététicien" })
+      verifierDoctrineTraduction({ body: "Une société étiquetée, la métier, le diététicien" })
         .valid,
     ).toBe(true);
   });
 
   it("donne la raison avec le champ", () => {
-    const r = checkTranslationBannedWords({ title: "Qualiopi" });
+    const r = verifierDoctrineTraduction({ title: "Qualiopi" });
     expect(r.reason).toMatch(/title \[qualiopi\]/);
+  });
+
+  it("ignore l'étiquette « Source : … » du seed (HTML et texte), comme le fait le seed", () => {
+    const r = verifierDoctrineTraduction({
+      body: '<p>Une PME peut commencer simplement.</p><p><em>Source : <a href="https://x.fr">Axion-IA — Catalogue formations 2026</a></em></p>',
+      bodyText: "Une PME peut commencer simplement. Source : Axion-IA — Catalogue formations 2026.",
+    });
+    expect(r.valid).toBe(true);
+  });
+
+  it("un bodyText vide ne masque pas le body", () => {
+    const r = verifierDoctrineTraduction({ body: "<p>Certifié Qualiopi</p>", bodyText: "" });
+    expect(r.valid).toBe(false);
+  });
+
+  it("l'ancien contrôle (vidéo) reste sans effet", () => {
+    expect(checkTranslationBannedWords({ body: "Certifié Qualiopi à Grenoble" }).valid).toBe(true);
   });
 });

@@ -35,6 +35,12 @@ describe("planifierFiche", () => {
       planifierFiche({ status: "draft", deletedAt: null, briefMarkdown: "ma note" }, propre).statut,
     ).toBe("inchange");
   });
+  it("brouillon de console + texte fautif : note conservée, jamais publié ensuite", () => {
+    const e = { status: "draft", deletedAt: null, briefMarkdown: "ma note" };
+    const p1 = planifierFiche(e, fautive);
+    expect(p1).toMatchObject({ statut: "inchange", ecrireRaison: false });
+    expect(planifierFiche(e, propre).statut).toBe("inchange");
+  });
   it("brouillon posé par le seed puis corrigé : publié", () => {
     expect(
       planifierFiche(
@@ -86,11 +92,48 @@ describe("upsertFact", () => {
     expect(update).not.toHaveProperty("deletedAt");
     expect(update).not.toHaveProperty("audience");
   });
+  it("fiche retirée : aucune écriture de traduction", async () => {
+    const { prisma } = fauxPrisma({ status: "deprecated", deletedAt: null, briefMarkdown: null });
+    await upsertFact(prisma as never, fait("Notre siège est à Grenoble."));
+    expect(prisma.knowledgeTranslation.upsert).not.toHaveBeenCalled();
+  });
+  it("brouillon du seed corrigé : publié ET remis en public", async () => {
+    const { prisma, upsert } = fauxPrisma({
+      status: "draft",
+      deletedAt: null,
+      briefMarkdown: `${MARQUEUR_DOCTRINE}x`,
+    });
+    await upsertFact(prisma as never, fait("Une PME peut commencer simplement."));
+    const update = upsert.mock.calls[0]![0].update as Record<string, unknown>;
+    expect(update).toMatchObject({
+      status: "published",
+      audience: "public",
+      confidentiality: "public",
+      briefMarkdown: null,
+    });
+  });
   it("fiche fautive : créée en brouillon avec la raison", async () => {
     const { prisma, upsert } = fauxPrisma(null);
     await upsertFact(prisma as never, fait("Notre siège est à Grenoble."));
     const create = upsert.mock.calls[0]![0].create as Record<string, unknown>;
     expect(create.status).toBe("draft");
     expect(String(create.briefMarkdown)).toContain("grenoble");
+  });
+});
+
+describe("cohérence seed / console", () => {
+  it("ce que le seed publie, la console ne le refuse pas (corps tel que le seed l'écrit)", async () => {
+    const { verifierDoctrineTraduction } = await import("../../../src/lib/knowledge/banned-words");
+    const { ALL_KB_FACTS } = await import("./seed-kb-facts");
+    const incoherents: string[] = [];
+    for (const f of ALL_KB_FACTS) {
+      const seed = verifierDoctrineFiche({ fait: f.text }).length === 0;
+      const console_ = verifierDoctrineTraduction({
+        body: `<p>${f.text}</p><p><em>Source : <a href="${f.sourceUrl}" rel="noopener noreferrer">${f.source}</a></em></p>`,
+        bodyText: `${f.text} Source : ${f.source}.`,
+      }).valid;
+      if (seed !== console_) incoherents.push(f.id);
+    }
+    expect(incoherents).toEqual([]);
   });
 });

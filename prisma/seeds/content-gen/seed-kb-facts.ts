@@ -45,6 +45,8 @@ export interface PlanFiche {
   readonly retiree: boolean;
   /** Raison du brouillon, si la doctrine bloque. */
   readonly raison: string | null;
+  /** Le seed peut-il écrire la raison dans `briefMarkdown` sans écraser une note de console ? */
+  readonly ecrireRaison: boolean;
 }
 
 /**
@@ -60,23 +62,35 @@ export function planifierFiche(
 ): PlanFiche {
   const raison = violations.length > 0 ? raisonBlocage(violations) : null;
   if (existante === null) {
-    return { statut: raison ? "draft" : "published", retiree: false, raison };
+    return { statut: raison ? "draft" : "published", retiree: false, raison, ecrireRaison: true };
   }
   const retiree =
     existante.deletedAt !== null ||
     existante.status === "archived" ||
     existante.status === "deprecated";
-  if (retiree) return { statut: "inchange", retiree: true, raison };
+  if (retiree) return { statut: "inchange", retiree: true, raison, ecrireRaison: false };
+  const note = existante.briefMarkdown ?? "";
+  const ecrireRaison = note === "" || note.startsWith(MARQUEUR_DOCTRINE);
   if (raison) {
-    return { statut: existante.status === "published" ? "draft" : "inchange", retiree, raison };
+    return {
+      statut: existante.status === "published" ? "draft" : "inchange",
+      retiree,
+      raison,
+      ecrireRaison: ecrireRaison || existante.status === "published",
+    };
   }
   const bloqueeParSeed =
     existante.status === "draft" && (existante.briefMarkdown ?? "").startsWith(MARQUEUR_DOCTRINE);
-  return { statut: bloqueeParSeed ? "published" : "inchange", retiree, raison };
+  return {
+    statut: bloqueeParSeed ? "published" : "inchange",
+    retiree,
+    raison,
+    ecrireRaison: false,
+  };
 }
 
 /** Tous les facts sectoriels à seeder. Idempotent : upsert sur slug unique. */
-const ALL_KB_FACTS: readonly KbFact[] = [
+export const ALL_KB_FACTS: readonly KbFact[] = [
   ...KB_AUDITS,
   ...KB_INTERVENTIONS_FORMATIONS,
   ...KB_UN_A_UN,
@@ -159,10 +173,17 @@ export async function upsertFact(prisma: PrismaClient, fact: KbFact): Promise<Pl
     plan.statut === "inchange"
       ? {}
       : plan.statut === "published"
-        ? { status: "published" as const, pipelineStage: "published" as const }
+        ? {
+            status: "published" as const,
+            pipelineStage: "published" as const,
+            audience: "public" as const,
+            confidentiality: "public" as const,
+          }
         : { status: "draft" as const, pipelineStage: "draft" as const };
   const brief = plan.raison
-    ? { briefMarkdown: `${MARQUEUR_DOCTRINE}${plan.raison}` }
+    ? plan.ecrireRaison
+      ? { briefMarkdown: `${MARQUEUR_DOCTRINE}${plan.raison}` }
+      : {}
     : plan.statut === "published" && existante?.briefMarkdown?.startsWith(MARQUEUR_DOCTRINE)
       ? { briefMarkdown: null }
       : {};
@@ -192,6 +213,10 @@ export async function upsertFact(prisma: PrismaClient, fact: KbFact): Promise<Pl
       ...brief,
     },
   });
+
+  // Une fiche retirée garde son contenu : le seed n'y écrit plus rien (une fiche
+  // dépréciée reste servie, un texte fautif y repartirait en public).
+  if (plan.retiree) return plan;
 
   const translationSlug = `${entrySlug}-fr`;
   const title = factText.slice(0, 120).replace(/[.…]$/, "") + "…";
@@ -227,7 +252,7 @@ export async function upsertFact(prisma: PrismaClient, fact: KbFact): Promise<Pl
   // (Voyage AI) : si `VOYAGE_API_KEY` est absente, generateEmbedding renvoie un
   // stub SHA-256 non sémantique qu'on n'enregistre pas (la table reste vide →
   // la retrieval reste FTS). Idempotent (ON CONFLICT translation_id).
-  if (embeddingsEnabled && !plan.retiree && !bloquee) {
+  if (embeddingsEnabled && !bloquee) {
     await upsertEmbedding(prisma, translation.id, {
       title,
       excerpt: factText.slice(0, 300),

@@ -7,7 +7,7 @@
  */
 
 import { prisma } from "@/lib/prisma";
-import { checkTranslationBannedWords } from "@/lib/knowledge/banned-words";
+import { verifierDoctrineTraduction } from "@/lib/knowledge/banned-words";
 
 /** Renvoie la raison du blocage, ou `null` si toutes les traductions passent. */
 export async function raisonDoctrineEntree(entryId: string): Promise<string | null> {
@@ -24,7 +24,7 @@ export async function raisonDoctrineEntree(entryId: string): Promise<string | nu
     },
   });
   for (const t of translations) {
-    const check = checkTranslationBannedWords(t);
+    const check = verifierDoctrineTraduction(t);
     if (!check.valid) return `${t.locale}: ${check.reason ?? "doctrine non respectée"}`;
   }
   return null;
