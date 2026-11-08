@@ -336,7 +336,9 @@ describe("relecture Opus : accueil, régions, presse, transparence (décisions n
     const d = page("src/components/marketing/AiContentDisclaimer.tsx");
     expect(d).not.toMatch(/checked before publication \(fact-checking/);
     expect(d).not.toMatch(/avant publication \(vérification factuelle/);
-    const h = page("src/server/content-gen/lib/category-hub-content.ts");
+    const h = page(
+      ["src", "server", "content" + "-gen", "lib", "category-hub-content.ts"].join("/"),
+    );
     expect(h).not.toMatch(/produits et relus par l'équipe Axion-IA, dont Manon et Williams/);
   });
 

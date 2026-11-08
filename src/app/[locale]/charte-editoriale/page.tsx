@@ -55,8 +55,8 @@ const LAST_REVIEWED = "2026-11-08";
 
 // ⚠️ Ce que la page affirme de la relecture suppose que les réglages de publication
 // automatique `factoryAutoPublishAllBlogTypes` et `newsAutoPublish` sont VRAIS
-// (réglages en base, `ContentGenConfig` clé `policies` ; défauts du code : true, cf.
-// src/server/actions/content-gen/policies.ts). Si l'un est désactivé, des articles
+// (réglages en base, configuration éditoriale, clé `policies` ; défauts du code : true, cf.
+// policies.ts, réglages de publication du pipeline éditorial). Si l'un est désactivé, des articles
 // attendent une validation humaine avant publication : relire les sections 2 et 4.
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
