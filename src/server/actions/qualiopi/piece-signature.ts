@@ -1152,6 +1152,15 @@ export async function relancerAcceptationDevisAction(input: {
           "(code consigné). Relancez la proposition des plans.",
       };
     }
+    // Jamais de faux succès : ni accepté ni confirmation préparée par cet appel = rien fait.
+    if (res.acceptes.length === 0 && res.confirmationsPreparees.length === 0) {
+      return {
+        ok: false,
+        message:
+          "Rien n'a été fait : le devis est déjà accepté et sa confirmation de commande est déjà " +
+          "en corbeille ou déjà envoyée.",
+      };
+    }
     return { ok: true, devisAcceptes: res.ids.length };
   } catch (err) {
     Sentry.captureException(err, { tags: { action: "relancerAcceptationDevisAction" } });

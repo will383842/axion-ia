@@ -556,10 +556,46 @@ describe("devis intégralement signé : le prospect passe en client", () => {
       expect(h.confirmer).not.toHaveBeenCalled();
     });
 
-    it("reprise d'un devis DÉJÀ accepté : aucune confirmation, même avec confirmer:true", async () => {
+    it("🔴 reprise (confirmer:true) d'un devis DÉJÀ accepté : sa confirmation non garée est préparée", async () => {
       h.p.devis.findMany.mockResolvedValueOnce([{ id: "dv-formules" }]);
-      await reprendreAcceptationDevisFormules(DOC, { confirmer: true });
+      const r = await reprendreAcceptationDevisFormules(DOC, { confirmer: true });
+      expect(h.confirmer).toHaveBeenCalledTimes(1);
+      expect(h.confirmer).toHaveBeenCalledWith({
+        declencheur: "contresignature_axion_explicite",
+        devisId: "dv-formules",
+      });
+      expect(r.confirmationsPreparees).toEqual(["dv-formules"]);
+      expect(r.acceptes).toEqual([]);
+    });
+
+    it("reprise d'un devis DÉJÀ accepté SANS confirmer:true : aucune confirmation (garde intacte)", async () => {
+      h.p.devis.findMany.mockResolvedValueOnce([{ id: "dv-formules" }]);
+      await reprendreAcceptationDevisFormules(DOC);
       expect(h.confirmer).not.toHaveBeenCalled();
+    });
+
+    it("🔴 reprise d'un devis déjà accepté ET déjà garé : pas de doublon, ni préparée ni en échec", async () => {
+      h.p.devis.findMany.mockResolvedValueOnce([{ id: "dv-formules" }]);
+      h.confirmer.mockResolvedValueOnce({ envoye: false, raison: "deja_envoyee" });
+      const r = await reprendreAcceptationDevisFormules(DOC, { confirmer: true });
+      expect(r.confirmationsPreparees).toEqual([]);
+      expect(r.confirmationsEchec).toEqual([]);
+    });
+
+    it("🔴 reprise d'un devis déjà accepté dont la confirmation échoue encore : signalée, jamais muette", async () => {
+      h.p.devis.findMany.mockResolvedValueOnce([{ id: "dv-formules" }]);
+      h.confirmer.mockResolvedValueOnce({ envoye: false, raison: "exemplaire_absent" });
+      const r = await reprendreAcceptationDevisFormules(DOC, { confirmer: true });
+      expect(r.confirmationsEchec).toEqual(["dv-formules"]);
+    });
+
+    it("📌 DÉCISION À TRANCHER PAR WILL : confirmation refusée/supprimée en corbeille ⇒ `deja_envoyee` (jobIdDejaGare reste vrai) ⇒ aucune nouvelle confirmation automatique, et ce n'est pas un échec", async () => {
+      h.p.devis.findMany.mockResolvedValueOnce([{ id: "dv-formules" }]);
+      h.confirmer.mockResolvedValueOnce({ envoye: false, raison: "deja_envoyee" });
+      const r = await reprendreAcceptationDevisFormules(DOC, { confirmer: true });
+      expect(h.confirmer).toHaveBeenCalledTimes(1); // une tentative, jamais de relance en boucle
+      expect(r.confirmationsPreparees).toEqual([]);
+      expect(r.confirmationsEchec).toEqual([]);
     });
   });
 
@@ -569,8 +605,10 @@ describe("devis intégralement signé : le prospect passe en client", () => {
     expect(r).toEqual({
       traite: true,
       ids: ["dv-formules"],
+      acceptes: [],
       plansEchec: [],
       confirmationsEchec: [],
+      confirmationsPreparees: [],
     });
     expect(proposerPlansApresAcceptation).toHaveBeenCalledWith("dv-formules", "signature_complete");
     // Aucune montée de fiche : l'acceptation n'a pas eu lieu à cet appel.
@@ -582,8 +620,10 @@ describe("devis intégralement signé : le prospect passe en client", () => {
     expect(await reprendreAcceptationDevisFormules(DOC)).toEqual({
       traite: false,
       ids: [],
+      acceptes: [],
       plansEchec: [],
       confirmationsEchec: [],
+      confirmationsPreparees: [],
     });
     expect(proposerPlansApresAcceptation).not.toHaveBeenCalled();
   });

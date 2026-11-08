@@ -188,8 +188,12 @@ export async function reprendreAcceptationDevisFormules(
 ): Promise<{
   traite: boolean;
   ids: string[];
+  /** Devis que CET appel vient d'accepter (pas ceux déjà acceptés). */
+  acceptes: string[];
   plansEchec: string[];
   confirmationsEchec: string[];
+  /** Devis dont la confirmation vient d'être garée en corbeille par CET appel. */
+  confirmationsPreparees: string[];
 }> {
   const formules = await accepterDevisAFormules(prisma, documentGenereId);
   if (formules.traite) {
@@ -202,19 +206,37 @@ export async function reprendreAcceptationDevisFormules(
     }
   }
   // Confirmation de commande au client (CGV 6.2) : sur CONTRESIGNATURE EXPLICITE d'Axion-IA
-  // seulement (`options.confirmer`), pour les devis que CET appel vient d'accepter (`acceptes`,
-  // PAS `ids` : un rejeu ou une course n'envoie rien deux fois). Toujours garée en corbeille
-  // « à valider », jamais envoyée seule. Fail-soft : la signature et l'acceptation sont acquises.
+  // seulement (`options.confirmer`). Cibles : les devis que CET appel vient d'accepter ET les devis
+  // à formules DÉJÀ acceptés (reprise manuelle : la confirmation avait pu échouer — corbeille
+  // indisponible, exemplaire absent — alors que l'acceptation, elle, était acquise). L'anti-rejeu
+  // de `envoyerConfirmationCommande` (`dejaEnvoyee`, outbox + emailLog par jobId) interdit tout
+  // doublon : `deja_envoyee` n'est NI un échec NI une préparation. Sans `confirmer: true`, jamais
+  // de confirmation. Toujours garée en corbeille « à valider », jamais envoyée seule. Fail-soft.
+  //
+  // ⚠️ DÉCISION À TRANCHER PAR WILL (comportement inchangé) : une confirmation REFUSÉE ou SUPPRIMÉE
+  // en corbeille laisse `jobIdDejaGare` vrai (la ligne d'outbox/emailLog existe) → `deja_envoyee`,
+  // aucune nouvelle confirmation automatique. Une reprise ne la régénère donc pas.
+  // Une seule lecture des devis déjà acceptés : sert à la confirmation ET à la reproposition.
+  const dejaAcceptes =
+    options?.confirmer === true || !formules.traite
+      ? await devisAcceptesAFormules(documentGenereId)
+      : [];
   const confirmationsEchec: string[] = [];
-  if (options?.confirmer === true && formules.traite) {
-    for (const id of formules.acceptes) {
+  const confirmationsPreparees: string[] = [];
+  if (options?.confirmer === true) {
+    const cibles = [...new Set([...(formules.traite ? formules.acceptes : []), ...dejaAcceptes])];
+    for (const id of cibles) {
       try {
         const r = await envoyerConfirmationCommande({
           declencheur: "contresignature_axion_explicite",
           devisId: id,
         });
-        // `formules_eteintes` : lot éteint, rien n'est dû. Tout autre refus est signalé.
-        if (!r.envoye && r.raison !== "formules_eteintes") confirmationsEchec.push(id);
+        if (r.envoye) {
+          confirmationsPreparees.push(id);
+        } else if (r.raison !== "formules_eteintes" && r.raison !== "deja_envoyee") {
+          // `formules_eteintes` : lot éteint, rien n'est dû. `deja_envoyee` : déjà garée.
+          confirmationsEchec.push(id);
+        }
       } catch (err) {
         confirmationsEchec.push(id);
         Sentry.captureException(err, {
@@ -228,9 +250,7 @@ export async function reprendreAcceptationDevisFormules(
   // transaction, fail-soft. Aussi pour un devis DÉJÀ accepté dont les plans manquent (la reprise
   // manuelle repropose) : idempotent (index unique partiel (devis_id, nature) + lecture
   // préalable → « déjà présents »). Inerte interrupteur éteint. Aucune facture, aucun e-mail.
-  const aProposer = formules.traite
-    ? formules.acceptes
-    : await devisAcceptesAFormules(documentGenereId);
+  const aProposer = formules.traite ? formules.acceptes : dejaAcceptes;
   const plansEchec: string[] = [];
   for (const id of aProposer) {
     if ((await proposerPlansApresAcceptation(id, "signature_complete")) !== null) {
@@ -240,8 +260,10 @@ export async function reprendreAcceptationDevisFormules(
   return {
     traite: formules.traite || aProposer.length > 0,
     ids: aProposer,
+    acceptes: formules.traite ? formules.acceptes : [],
     plansEchec,
     confirmationsEchec,
+    confirmationsPreparees,
   };
 }
 

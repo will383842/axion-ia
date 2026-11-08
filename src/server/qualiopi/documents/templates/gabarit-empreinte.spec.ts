@@ -100,7 +100,9 @@ const EMPREINTES: Readonly<
     // changé (branche de fond ajoutée) donc incrément ; v3 archivée.
     // (v3 — 06/11/2026 : devis à formules, formules A et B côte à côte, lot 3 ; v2 archivée.)
     // (v2 — 16/10/2026 : mention handicap, L15, NC12 ; v1 archivée.)
-    sha: "53a6d55d629981b5b507301920e7fb21285602686aae2fdcc75a66f0fe3c0737",
+    // Mise en page seule (08/11/2026, texte rendu INCHANGÉ → version 4 conservée) : le bloc
+    // « Formule retenue » sort du cadre insécable « Bon pour accord » (`choixBox`, sécable).
+    sha: "29aaf995b338ad278f5fe8a739737f0c13e9121cd3cbfec782b384ba5cec146b",
     version: 4,
   },
   convention: {
