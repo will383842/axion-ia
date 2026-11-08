@@ -18,9 +18,9 @@ export const TIGNIEU_JAMEYZIEU_COPY: VilleCopy = {
   ecosystemEn:
     "Tignieu-Jameyzieu est une des trois villes-centres de l'unité urbaine de Charvieu-Chavagneux, en partie orientale de l'aire d'attraction de Lyon. Tissu industriel et logistique périphérique au couloir rhodanien (Lyon-Saint-Exupéry à 25 min), PME tertiaires et services aux entreprises, TPE artisanat BTP, commerces, activité agricole résiduelle. Communauté de communes Lyon Saint-Exupéry en Dauphiné.",
   distancesFr:
-    "Gare Pont-de-Chéruy à 5 min. Aéroport Lyon-Saint-Exupéry à 25 min. Lyon centre à 40 min A43. Grenoble centre à 1h. Frontière Rhône à 10 min.",
+    "Gare Pont-de-Chéruy à 5 min. Aéroport Lyon-Saint-Exupéry à 25 min. Lyon centre à 40 min A43. Frontière Rhône à 10 min.",
   distancesEn:
-    "Gare Pont-de-Chéruy à 5 min. Aéroport Lyon-Saint-Exupéry à 25 min. Lyon centre à 40 min A43. Grenoble centre à 1h. Frontière Rhône à 10 min.",
+    "Gare Pont-de-Chéruy à 5 min. Aéroport Lyon-Saint-Exupéry à 25 min. Lyon centre à 40 min A43. Frontière Rhône à 10 min.",
   topSectorsNaf: [
     "Industrie manufacturière Nord-Isère",
     "Logistique & transport (axe rhodanien)",
@@ -49,7 +49,7 @@ export const TIGNIEU_JAMEYZIEU_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Tignieu-Jameyzieu et aire lyonnaise est ?",
-      a: "Oui, Axion-IA intervient à Tignieu-Jameyzieu et toute l'aire lyonnaise est (Charvieu-Chavagneux, Pont-de-Chéruy, Crémieu, Villette-d'Anthon, Janneyrias). Nos consultants viennent de Lyon (40 min A43) ou Grenoble (1h voiture).",
+      a: "Oui, Axion-IA intervient à Tignieu-Jameyzieu et toute l'aire lyonnaise est (Charvieu-Chavagneux, Pont-de-Chéruy, Crémieu, Villette-d'Anthon, Janneyrias). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les PME industrielles Nord-Isère ?",
@@ -64,8 +64,8 @@ export const TIGNIEU_JAMEYZIEU_COPY: VilleCopy = {
       a: "Pour les TPE artisans BTP et commerçants à Tignieu-Jameyzieu, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation pratique, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, classification photos, gestion stocks et planning.",
     },
     {
-      q: "Comment se passe une mission depuis Lyon ou Grenoble ?",
-      a: "Nos consultants viennent de Lyon (40 min A43) ou Grenoble (1h voiture). Pour les missions multi-jours, hébergement local possible (hôtels Bourgoin-Jallieu ou Lyon-Saint-Exupéry).",
+      q: "Comment se déroule une intervention ?",
+      a: "Sur place ou à distance, selon votre besoin. Pour les missions multi-jours, hébergement local possible (hôtels Bourgoin-Jallieu ou Lyon-Saint-Exupéry).",
     },
   ],
 };

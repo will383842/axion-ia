@@ -1,32 +1,32 @@
 // AUTO-GENERATED 2026-05-27 — T4 batch #3 Claude Code (Will).
-// Tullins (38, Isère) — Pays voironnais, sud Grésivaudan, axe A48 Lyon-Grenoble.
+// Tullins (38, Isère) — Pays voironnais, sud Grésivaudan, axe A48.
 
 import type { VilleCopy } from "./types";
 
 export const TULLINS_COPY: VilleCopy = {
   pitchFr:
-    "Tullins (38), commune du Pays voironnais en Isère, est positionnée sur l'axe stratégique Lyon-Grenoble (A48). Tissu PME industrielles, agriculture vallée de l'Isère, TPE artisans BTP, commerces et services aux entreprises. Axion-IA opère pour toutes les structures économiques de la commune du Voironnais / Sud Grésivaudan.",
+    "Tullins (38), commune du Pays voironnais en Isère, est positionnée sur l'axe stratégique A48. Tissu PME industrielles, agriculture vallée de l'Isère, TPE artisans BTP, commerces et services aux entreprises. Axion-IA opère pour toutes les structures économiques de la commune du Voironnais / Sud Grésivaudan.",
   pitchEn:
-    "Tullins (38), commune du Pays voironnais en Isère, est positionnée sur l'axe stratégique Lyon-Grenoble (A48). Tissu PME industrielles, agriculture vallée de l'Isère, TPE artisans BTP, commerces et services aux entreprises. Axion-IA opère pour toutes les structures économiques de la commune du Voironnais / Sud Grésivaudan.",
+    "Tullins (38), commune du Pays voironnais en Isère, est positionnée sur l'axe stratégique A48. Tissu PME industrielles, agriculture vallée de l'Isère, TPE artisans BTP, commerces et services aux entreprises. Axion-IA opère pour toutes les structures économiques de la commune du Voironnais / Sud Grésivaudan.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Tullins (38). Nous accompagnons tous types d'activités : PME industrielles Voironnais, TPE artisans BTP, commerçants, agriculteurs vallée de l'Isère, indépendants, professions libérales et services aux entreprises du Sud Grésivaudan / Pays voironnais.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Tullins (38). Nous accompagnons tous types d'activités : PME industrielles Voironnais, TPE artisans BTP, commerçants, agriculteurs vallée de l'Isère, indépendants, professions libérales et services aux entreprises du Sud Grésivaudan / Pays voironnais.",
   seoHook: "pays voironnais en",
   ecosystemFr:
-    "Tullins est intégrée à la communauté d'agglomération du Pays voironnais (~93 000 hab) sur l'axe stratégique Lyon-Grenoble (A48). Tissu PME industrielles, activité agricole vallée de l'Isère (élevage, céréales, maraîchage), commerces, services et tissu TPE artisanat BTP. Position de transit entre Lyon et Grenoble, proximité Voiron (15 min).",
+    "Tullins est intégrée à la communauté d'agglomération du Pays voironnais (~93 000 hab) sur l'axe stratégique A48. Tissu PME industrielles, activité agricole vallée de l'Isère (élevage, céréales, maraîchage), commerces, services et tissu TPE artisanat BTP. Position de transit sur l'A48, proximité Voiron (15 min).",
   ecosystemEn:
-    "Tullins est intégrée à la communauté d'agglomération du Pays voironnais (~93 000 hab) sur l'axe stratégique Lyon-Grenoble (A48). Tissu PME industrielles, activité agricole vallée de l'Isère (élevage, céréales, maraîchage), commerces, services et tissu TPE artisanat BTP. Position de transit entre Lyon et Grenoble, proximité Voiron (15 min).",
+    "Tullins est intégrée à la communauté d'agglomération du Pays voironnais (~93 000 hab) sur l'axe stratégique A48. Tissu PME industrielles, activité agricole vallée de l'Isère (élevage, céréales, maraîchage), commerces, services et tissu TPE artisanat BTP. Position de transit sur l'A48, proximité Voiron (15 min).",
   distancesFr:
-    "Gare Tullins-Fures à 5 min (TER Lyon-Grenoble, 30 min Grenoble, 1h Lyon). Aéroport Lyon-Saint-Exupéry à 1h. Aéroport Grenoble-Alpes-Isère à 50 min. Axe A48 vers Lyon et Grenoble. Voiron à 15 min.",
+    "Gare Tullins-Fures à 5 min (TER vers Lyon, 1h). Aéroport Lyon-Saint-Exupéry à 1h. Axe A48 vers Lyon. Voiron à 15 min.",
   distancesEn:
-    "Gare Tullins-Fures à 5 min (TER Lyon-Grenoble, 30 min Grenoble, 1h Lyon). Aéroport Lyon-Saint-Exupéry à 1h. Aéroport Grenoble-Alpes-Isère à 50 min. Axe A48 vers Lyon et Grenoble. Voiron à 15 min.",
+    "Gare Tullins-Fures à 5 min (TER vers Lyon, 1h). Aéroport Lyon-Saint-Exupéry à 1h. Axe A48 vers Lyon. Voiron à 15 min.",
   topSectorsNaf: [
     "PME industrielles & manufacturières",
     "Agriculture vallée de l'Isère",
     "TPE artisanat BTP",
     "Commerce de proximité",
-    "Logistique axe A48 Lyon-Grenoble",
+    "Logistique axe A48",
   ],
   servicesContext: {
     audit: {
@@ -49,7 +49,7 @@ export const TULLINS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Tullins et Pays voironnais ?",
-      a: "Oui, Axion-IA intervient à Tullins et tout le Pays voironnais (Voiron, Moirans, La Buisse, Coublevie, Saint-Geoire-en-Valdaine). Nos consultants viennent de Lyon (1h A48) ou Grenoble (30 min A48).",
+      a: "Oui, Axion-IA intervient à Tullins et tout le Pays voironnais (Voiron, Moirans, La Buisse, Coublevie, Saint-Geoire-en-Valdaine). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les PME industrielles du Voironnais ?",
@@ -64,8 +64,8 @@ export const TULLINS_COPY: VilleCopy = {
       a: "Pour les TPE artisans BTP et commerçants à Tullins, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, classification photos, gestion stocks.",
     },
     {
-      q: "Comment se passe une mission depuis Lyon ou Grenoble ?",
-      a: "Nos consultants viennent de Lyon (1h A48) ou Grenoble (30 min A48). Pour les multi-jours, hébergement local possible (hôtels Voiron). Coûts de déplacement séparés du forfait, tarifs transparents.",
+      q: "Comment se déroule une intervention ?",
+      a: "Sur place ou à distance, selon votre besoin. Pour les multi-jours, hébergement local possible (hôtels Voiron). Coûts de déplacement séparés du forfait, tarifs transparents.",
     },
   ],
 };

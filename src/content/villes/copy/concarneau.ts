@@ -72,7 +72,7 @@ export const CONCARNEAU_COPY: VilleCopy = {
           {
             step: "Développement par sprints",
             detail:
-              "Greffe IA sur l'existant ou build IA-native depuis nos bureaux : boutique e-commerce de produits de la mer, réservation directe pour l'hôtellerie de la Ville Close, chatbot RAG multilingue, recherche sémantique, agents de saisie et d'automatisation. Démos hebdomadaires en visio, code versionné et lisible.",
+              "Greffe IA sur l'existant ou build IA-native, sur place ou à distance : boutique e-commerce de produits de la mer, réservation directe pour l'hôtellerie de la Ville Close, chatbot RAG multilingue, recherche sémantique, agents de saisie et d'automatisation. Démos hebdomadaires en visio, code versionné et lisible.",
           },
           {
             step: "Recette + mise en ligne",
@@ -158,7 +158,7 @@ export const CONCARNEAU_COPY: VilleCopy = {
           {
             step: "Développement par sprints",
             detail:
-              "Greffe IA sur l'existant ou build IA-native depuis nos bureaux : boutique e-commerce de produits de la mer, réservation directe pour l'hôtellerie de la Ville Close, chatbot RAG multilingue, recherche sémantique, agents de saisie et d'automatisation. Démos hebdomadaires en visio, code versionné et lisible.",
+              "Greffe IA sur l'existant ou build IA-native, sur place ou à distance : boutique e-commerce de produits de la mer, réservation directe pour l'hôtellerie de la Ville Close, chatbot RAG multilingue, recherche sémantique, agents de saisie et d'automatisation. Démos hebdomadaires en visio, code versionné et lisible.",
           },
           {
             step: "Recette + mise en ligne",

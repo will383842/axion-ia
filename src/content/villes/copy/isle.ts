@@ -49,7 +49,7 @@ export const ISLE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Isle et agglo Limoges nord ?",
-      a: "Oui, Axion-IA intervient à Isle et toute l'agglomération de Limoges nord (Couzeix, Rilhac-Rancon, Bonnac-la-Côte, Chaptelat). Nos consultants sont basés à Limoges (10 min) et couvrent tout Limoges Métropole.",
+      a: "Oui, Axion-IA intervient à Isle et toute l'agglomération de Limoges nord (Couzeix, Rilhac-Rancon, Bonnac-la-Côte, Chaptelat). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quel est le tarif d'un audit IA pour une TPE à Isle ?",
