@@ -7,7 +7,7 @@
  * Le texte du plafond vient de la bibliothèque (props) ; le montant saisi est converti en
  * centimes par `eurosEnCents`, un montant illisible est refusé sans toucher à l'état.
  */
-import { useId, useState, type Dispatch } from "react";
+import { useId, type Dispatch } from "react";
 
 import { eurosEnCents } from "../../calculs";
 import type { ActionAssistant } from "../../etat";
@@ -27,18 +27,16 @@ const centsVersSaisie = (c: number | null): string =>
 
 function Estimation({
   index,
-  service,
+  saisie,
   onChange,
 }: {
   index: number;
-  service: Service;
-  onChange: (cents: number | null) => void;
+  saisie: string;
+  onChange: (saisie: string) => void;
 }) {
   const uid = useId();
-  const [saisie, setSaisie] = useState(centsVersSaisie(service.estimationHtCents));
   const vide = saisie.trim() === "";
-  const cents = vide ? null : eurosEnCents(saisie);
-  const illisible = !vide && cents === null;
+  const illisible = !vide && eurosEnCents(saisie) === null;
   return (
     <div className="flex flex-col">
       <label className="flex flex-col">
@@ -49,15 +47,7 @@ function Estimation({
           value={saisie}
           aria-invalid={illisible}
           aria-describedby={`${uid}-d`}
-          onChange={(e) => {
-            const v = e.target.value;
-            setSaisie(v);
-            if (v.trim() === "") onChange(null);
-            else {
-              const c = eurosEnCents(v);
-              if (c !== null) onChange(c);
-            }
-          }}
+          onChange={(e) => onChange(e.target.value)}
         />
       </label>
       <span id={`${uid}-d`} role={illisible ? "alert" : undefined}>
@@ -74,13 +64,33 @@ function Estimation({
 export function ServicesExterieurs({ etat, dispatch, textePlafond }: PropsServicesExterieurs) {
   const uid = useId();
   const services = etat.servicesTiers;
+  // Saisies brutes alignées sur les services : l'écran n'a aucun état local, retirer un autre
+  // service ne peut donc plus laisser un champ afficher l'ancienne valeur d'un autre.
+  const saisies = services.map((s, i) => etat.servicesSaisies?.[i] ?? centsVersSaisie(s.estimationHtCents));
   const maj = (i: number, patch: Partial<Service>) =>
     dispatch({
       type: "champs",
       patch: { servicesTiers: services.map((s, k) => (k === i ? { ...s, ...patch } : s)) },
     });
+  const majEstimation = (i: number, v: string) => {
+    const c = v.trim() === "" ? null : eurosEnCents(v);
+    // Vide ou illisible : l'ancien montant ne reste jamais en silence (null + erreur à l'étape).
+    dispatch({
+      type: "champs",
+      patch: {
+        servicesSaisies: saisies.map((t, k) => (k === i ? v : t)),
+        servicesTiers: services.map((s, k) => (k === i ? { ...s, estimationHtCents: c } : s)),
+      },
+    });
+  };
   const retirer = (i: number) =>
-    dispatch({ type: "champs", patch: { servicesTiers: services.filter((_, k) => k !== i) } });
+    dispatch({
+      type: "champs",
+      patch: {
+        servicesTiers: services.filter((_, k) => k !== i),
+        servicesSaisies: saisies.filter((_, k) => k !== i),
+      },
+    });
   const ajouter = () =>
     dispatch({
       type: "champs",
@@ -89,15 +99,30 @@ export function ServicesExterieurs({ etat, dispatch, textePlafond }: PropsServic
           ...services,
           { nom: "", obligatoire: true, estimationHtCents: null, rythme: "mensuel" },
         ],
+        servicesSaisies: [...saisies, ""],
       },
     });
   const plafond = etat.plafondAConfirmer;
-  const [plafondSaisie, setPlafondSaisie] = useState(
-    plafond ? centsVersSaisie(plafond.montantHtCents) : "",
-  );
-  const [plafondActif, setPlafondActif] = useState(plafond !== null);
-  const plafondCents = plafondSaisie.trim() === "" ? null : eurosEnCents(plafondSaisie);
-  const plafondIllisible = plafondSaisie.trim() !== "" && plafondCents === null;
+  const plafondSaisie =
+    etat.plafondSaisie !== undefined
+      ? etat.plafondSaisie
+      : plafond
+        ? centsVersSaisie(plafond.montantHtCents)
+        : null;
+  const plafondActif = plafondSaisie !== null;
+  const plafondVide = plafondSaisie !== null && plafondSaisie.trim() === "";
+  const plafondCents = plafondSaisie === null || plafondVide ? null : eurosEnCents(plafondSaisie);
+  const plafondIllisible = plafondActif && (plafondVide || plafondCents === null);
+  const majPlafond = (v: string | null) => {
+    const c = v === null || v.trim() === "" ? null : eurosEnCents(v);
+    dispatch({
+      type: "champs",
+      patch: {
+        plafondSaisie: v,
+        plafondAConfirmer: c === null ? null : { montantHtCents: c, texte: textePlafond },
+      },
+    });
+  };
 
   return (
     <section
@@ -119,7 +144,7 @@ export function ServicesExterieurs({ etat, dispatch, textePlafond }: PropsServic
               onChange={(e) => maj(i, { nom: e.target.value })}
             />
           </label>
-          <Estimation index={i} service={s} onChange={(c) => maj(i, { estimationHtCents: c })} />
+          <Estimation index={i} saisie={saisies[i] ?? ""} onChange={(v) => majEstimation(i, v)} />
           <fieldset>
             <legend>Service {i + 1} : obligatoire ou facultatif</legend>
             <div className="flex gap-4">
@@ -177,19 +202,7 @@ export function ServicesExterieurs({ etat, dispatch, textePlafond }: PropsServic
           <input
             type="checkbox"
             checked={plafondActif}
-            onChange={(e) => {
-              setPlafondActif(e.target.checked);
-              if (!e.target.checked) {
-                dispatch({ type: "champs", patch: { plafondAConfirmer: null } });
-              } else if (plafondCents !== null) {
-                dispatch({
-                  type: "champs",
-                  patch: {
-                    plafondAConfirmer: { montantHtCents: plafondCents, texte: textePlafond },
-                  },
-                });
-              }
-            }}
+            onChange={(e) => majPlafond(e.target.checked ? "" : null)}
           />
           Fixer un plafond pour les autres frais à confirmer
         </label>
@@ -201,20 +214,15 @@ export function ServicesExterieurs({ etat, dispatch, textePlafond }: PropsServic
               className="min-h-[44px] rounded border px-2"
               value={plafondSaisie}
               aria-invalid={plafondIllisible}
-              onChange={(e) => {
-                const v = e.target.value;
-                setPlafondSaisie(v);
-                const c = v.trim() === "" ? null : eurosEnCents(v);
-                if (c !== null) {
-                  dispatch({
-                    type: "champs",
-                    patch: { plafondAConfirmer: { montantHtCents: c, texte: textePlafond } },
-                  });
-                }
-              }}
+              aria-describedby={plafondIllisible ? `${uid}-p` : undefined}
+              onChange={(e) => majPlafond(e.target.value)}
             />
             {plafondIllisible ? (
-              <span>Montant illisible : des euros avec 2 décimales au plus.</span>
+              <span id={`${uid}-p`} role="alert">
+                {plafondVide
+                  ? "Saisissez un montant, ou décochez le plafond."
+                  : "Montant illisible : des euros avec 2 décimales au plus."}
+              </span>
             ) : null}
           </label>
         ) : null}

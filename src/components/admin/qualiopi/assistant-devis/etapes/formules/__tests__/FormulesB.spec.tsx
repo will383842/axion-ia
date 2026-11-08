@@ -2,7 +2,7 @@ import { fireEvent, render, screen } from "@testing-library/react";
 import { useReducer } from "react";
 import { describe, expect, it } from "vitest";
 
-import { etatInitial, reducteur } from "../../../etat";
+import { controlerEtape, etatInitial, reducteur } from "../../../etat";
 import type { EtatAssistant } from "../../../types";
 import { BlocAvantages } from "../BlocAvantages";
 import { CarteFormuleB } from "../CarteFormuleB";
@@ -194,6 +194,50 @@ describe("ServicesExterieurs", () => {
     expect(etat().plafondAConfirmer).toEqual({ montantHtCents: 50000, texte: PLAFOND });
     fireEvent.click(screen.getByRole("checkbox", { name: /plafond/i }));
     expect(etat().plafondAConfirmer).toBeNull();
+  });
+
+  it("retirer un autre service : le champ restant affiche SON estimation, pas l'ancienne", () => {
+    render(<Hote vue="services" />);
+    const ajout = screen.getByRole("button", { name: /Ajouter un service/ });
+    fireEvent.click(ajout);
+    fireEvent.click(ajout);
+    fireEvent.change(screen.getByLabelText(/Estimation du service 1/), { target: { value: "100" } });
+    fireEvent.change(screen.getByLabelText(/Estimation du service 2/), { target: { value: "200" } });
+    fireEvent.click(screen.getByRole("button", { name: /Retirer le service 1/ }));
+    expect(etat().servicesTiers[0]!.estimationHtCents).toBe(20000);
+    expect((screen.getByLabelText(/Estimation du service 1/) as HTMLInputElement).value).toBe("200");
+  });
+
+  it("plafond vidé case cochée : l'ancienne valeur ne reste pas, l'erreur est visible et bloque l'étape", () => {
+    render(<Hote vue="services" />);
+    fireEvent.click(screen.getByRole("checkbox", { name: /plafond/i }));
+    fireEvent.change(screen.getByLabelText(/Plafond \(HT\)/), { target: { value: "500" } });
+    fireEvent.change(screen.getByLabelText(/Plafond \(HT\)/), { target: { value: "" } });
+    expect(etat().plafondAConfirmer).toBeNull();
+    const champ = screen.getByLabelText(/Plafond \(HT\)/);
+    expect(champ.getAttribute("aria-invalid")).toBe("true");
+    const id = champ.getAttribute("aria-describedby")!;
+    expect(document.getElementById(id)!.textContent).toMatch(/Saisissez un montant/);
+    expect(controlerEtape(etat(), 2).join(" ")).toMatch(/Plafond/);
+  });
+
+  it("plafond illisible (« 1.500 ») : plus d'ancienne valeur, erreur visible, étape refusée", () => {
+    render(<Hote vue="services" />);
+    fireEvent.click(screen.getByRole("checkbox", { name: /plafond/i }));
+    fireEvent.change(screen.getByLabelText(/Plafond \(HT\)/), { target: { value: "500" } });
+    fireEvent.change(screen.getByLabelText(/Plafond \(HT\)/), { target: { value: "1.500" } });
+    expect(etat().plafondAConfirmer).toBeNull();
+    expect(screen.getByRole("alert").textContent).toMatch(/illisible/);
+    expect(controlerEtape(etat(), 2).join(" ")).toMatch(/Plafond/);
+  });
+
+  it("estimation illisible : l'étape 2 est refusée", () => {
+    render(<Hote vue="services" />);
+    fireEvent.click(screen.getByRole("button", { name: /Ajouter un service/ }));
+    fireEvent.change(screen.getByLabelText(/Estimation du service 1/), { target: { value: "12" } });
+    fireEvent.change(screen.getByLabelText(/Estimation du service 1/), { target: { value: "12,505" } });
+    expect(etat().servicesTiers[0]!.estimationHtCents).toBeNull();
+    expect(controlerEtape(etat(), 2).join(" ")).toMatch(/Service extérieur 1/);
   });
 });
 

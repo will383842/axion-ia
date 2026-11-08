@@ -26,6 +26,8 @@ export function BlocAvantages({
   aSavoirPossibles,
 }: PropsBlocAvantages) {
   const uid = useId();
+  // Limite connue : « avantages » et « à savoir » partagent UNE liste dans l'état. Un même texte
+  // présent dans les deux groupes serait coché dans les deux ; la bibliothèque n'en produit pas.
   const choisis = etat.avantages[formule];
   const basculer = (t: string) => {
     const suivant = choisis.includes(t) ? choisis.filter((x) => x !== t) : [...choisis, t];
