@@ -92,4 +92,52 @@ describe("envoyerDevisEmailAction — devis à formules", () => {
     const r = await envoyerDevisEmailAction({ devisId: ID });
     expect("data" in r).toBe(true);
   });
+
+  it("statut autre que « envoye » : refus, aucun lien, aucun e-mail", async () => {
+    d.findUnique.mockResolvedValue(devis({ statut: "accepte" }));
+    const r = await envoyerDevisEmailAction({ devisId: ID });
+    expect("error" in r).toBe(true);
+    expect(d.creerToken).not.toHaveBeenCalled();
+    expect(d.enqueueEmail).not.toHaveBeenCalled();
+  });
+
+  it("sans pièce générée (documentGenereId null) : refus, aucun lien, aucun e-mail", async () => {
+    d.findUnique.mockResolvedValue(devis({ documentGenereId: null }));
+    const r = await envoyerDevisEmailAction({ devisId: ID });
+    expect("error" in r).toBe(true);
+    if ("error" in r) expect(r.error).toContain("aucun e-mail sans lien de signature");
+    expect(d.creerToken).not.toHaveBeenCalled();
+    expect(d.enqueueEmail).not.toHaveBeenCalled();
+  });
+
+  it("lien de signature non créé : refus, aucun e-mail sans bouton signer", async () => {
+    d.creerToken.mockRejectedValue(new Error("boom"));
+    const r = await envoyerDevisEmailAction({ devisId: ID });
+    expect("error" in r).toBe(true);
+    expect(d.enqueueEmail).not.toHaveBeenCalled();
+  });
+
+  it("devis classique : lien en échec reste fail-soft (e-mail part avec note)", async () => {
+    d.findUnique.mockResolvedValue(devis({ offre: null, montantTotalHtCents: 1000 }));
+    d.creerToken.mockRejectedValue(new Error("boom"));
+    const r = await envoyerDevisEmailAction({ devisId: ID });
+    expect("data" in r).toBe(true);
+    expect(d.enqueueEmail).toHaveBeenCalledOnce();
+  });
+
+  it("devis à formules, formules figées illisibles : aucun montant annoncé", async () => {
+    d.findUnique.mockResolvedValue(devis({ montantTotalHtCents: 90000 }));
+    d.docFindUnique.mockResolvedValue({ metadata: null });
+    await envoyerDevisEmailAction({ devisId: ID });
+    expect(d.enqueueEmail).toHaveBeenCalledOnce();
+    const payload = d.enqueueEmail.mock.calls[0]?.[3] as Record<string, unknown>;
+    expect(payload).not.toHaveProperty("montantLabel");
+  });
+
+  it("devis classique : le montant reste annoncé", async () => {
+    d.findUnique.mockResolvedValue(devis({ offre: null, montantTotalHtCents: 90000 }));
+    await envoyerDevisEmailAction({ devisId: ID });
+    const payload = d.enqueueEmail.mock.calls[0]?.[3] as Record<string, unknown>;
+    expect(payload).toHaveProperty("montantLabel");
+  });
 });
