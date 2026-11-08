@@ -13,6 +13,9 @@ import { isKnownFrUrl, KNOWN_FR_PATHS } from "@/lib/offer-url";
 import { detecterInterditsSurface } from "@/lib/contenu/interdits-publication";
 import { financementPublicCitable } from "@/server/qualiopi/config/financing";
 
+/** Étiquette « TPE/PME » (barre, tiret ou tiret typographique, espaces tolérés). */
+const ETIQUETTE_TPE_PME = /\bTPE[\s\u00a0]*[/\-\u2010-\u2015][\s\u00a0]*PME\b/i;
+
 /** Tous les prix légitimes (€ HT) de la SSOT pricing.ts (tiers + sous-tiers). */
 export const KNOWN_PRICES: ReadonlySet<number> = (() => {
   const set = new Set<number>();
@@ -130,7 +133,13 @@ export function verifyOutput(text: string, opts: VerifyOutputOptions = {}): Outp
   const interdits = detecterInterditsSurface(
     { reponse: text },
     { actualite: false, financementPublicAutorise: financementPublicCitable() },
-  ).filter((i) => i.code !== "reservation-paiement");
+  )
+    .filter((i) => i.code !== "reservation-paiement")
+    // « TPE et PME » est la forme autorisée (règle du 07/11) ; seule l'étiquette
+    // « TPE/PME » (barre ou tiret) est interdite. On ne retient donc ce code que si
+    // l'étiquette est réellement présente : le chatbot reste juste quel que soit
+    // l'ordre de fusion avec le lot R6, qui resserre le même motif à la source.
+    .filter((i) => i.code !== "etiquette-tpe-pme" || ETIQUETTE_TPE_PME.test(text));
   for (const i of interdits) {
     violations.push({
       type: "interdit",
