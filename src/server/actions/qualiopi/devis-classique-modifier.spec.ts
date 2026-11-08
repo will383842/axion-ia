@@ -51,6 +51,7 @@ vi.mock("@/server/actions/qualiopi/documents", () => ({ genererConventionAction:
 
 import { createDevisAction } from "./devis";
 import { modifierDevisClassiqueBrouillonAction } from "./devis-classique-modifier";
+import { TAUX_TVA_STANDARD } from "@/server/qualiopi/legal/tva";
 
 const CLIENT = "550e8400-e29b-41d4-a716-446655440001";
 const DEVIS = "550e8400-e29b-41d4-a716-446655440002";
@@ -252,5 +253,59 @@ describe("modifierDevisClassiqueBrouillonAction", () => {
     }
     expect(modif.montantOpcoEstimeCents).toBe(10000);
     expect(modif.mentionTva).toBeTruthy();
+  });
+
+  it("refuse une ligne à 0 % de TVA (TVA toujours facturée), sans écrire", async () => {
+    const r = await modifierDevisClassiqueBrouillonAction({
+      id: DEVIS,
+      attenduMajLe: MAJ,
+      input: { ...ENTREE, lignes: [{ ...ENTREE.lignes[0]!, tauxTvaPercent: 0 }] },
+    });
+    expect("error" in r && r.error).toMatch(/TVA/);
+    expect(m.devisUpdateMany).not.toHaveBeenCalled();
+  });
+
+  it("refuse une ligne sous le taux standard, sans écrire", async () => {
+    const r = await modifierDevisClassiqueBrouillonAction({
+      id: DEVIS,
+      attenduMajLe: MAJ,
+      input: {
+        ...ENTREE,
+        lignes: [{ ...ENTREE.lignes[0]!, tauxTvaPercent: TAUX_TVA_STANDARD - 0.5 }],
+      },
+    });
+    expect("error" in r && r.error).toMatch(/TVA/);
+    expect(m.devisUpdateMany).not.toHaveBeenCalled();
+  });
+
+  it("accepte une ligne sans taux, et une ligne au taux standard", async () => {
+    m.devisFindUnique
+      .mockResolvedValueOnce(EXISTANT)
+      .mockResolvedValueOnce({ updatedAt: new Date(MAJ) })
+      .mockResolvedValueOnce(EXISTANT)
+      .mockResolvedValueOnce({ updatedAt: new Date(MAJ) });
+    const sans = await modifierDevisClassiqueBrouillonAction({
+      id: DEVIS,
+      attenduMajLe: MAJ,
+      input: ENTREE,
+    });
+    expect("data" in sans).toBe(true);
+    const std = await modifierDevisClassiqueBrouillonAction({
+      id: DEVIS,
+      attenduMajLe: MAJ,
+      input: {
+        ...ENTREE,
+        lignes: [{ ...ENTREE.lignes[0]!, tauxTvaPercent: TAUX_TVA_STANDARD }],
+      },
+    });
+    expect("data" in std).toBe(true);
+  });
+
+  it("l'écriture conditionnelle porte aussi le clientId (course sur le client)", async () => {
+    m.devisFindUnique
+      .mockResolvedValueOnce(EXISTANT)
+      .mockResolvedValueOnce({ updatedAt: new Date(MAJ) });
+    await modifierDevisClassiqueBrouillonAction({ id: DEVIS, attenduMajLe: MAJ, input: ENTREE });
+    expect(m.devisUpdateMany.mock.calls[0]?.[0].where).toMatchObject({ clientId: CLIENT });
   });
 });

@@ -11,7 +11,8 @@
  *   - total à 0 € refusé ;
  *   - refus si le devis porte une offre à formules (`offreSha256` non nul), s'il n'est plus
  *     `brouillon`, si le client change, ou si `updatedAt` n'est plus celui que l'onglet a lu ;
- *   - l'écriture est un `updateMany` CONDITIONNEL sur ces trois critères (course entre onglets) ;
+ *   - refus de toute ligne dont le taux de TVA est inférieur au taux standard (TVA toujours facturée) ;
+ *   - l'écriture est un `updateMany` CONDITIONNEL sur ces critères (client compris) (course entre onglets) ;
  *   - n'écrit JAMAIS `statut` (cliquet des écrivains) ; aucun delete ; aucun e-mail ;
  *   - le lien au projet (`projetId`) n'est posé qu'à la création : il est ignoré ici.
  *
@@ -21,6 +22,7 @@
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
 import { requireAdminWrite, logQualiopiActivity } from "@/server/actions/qualiopi/_guards";
+import { TAUX_TVA_STANDARD } from "@/server/qualiopi/legal/tva";
 import {
   entreeDevisClassiqueSchema,
   estimationOpcoDevis,
@@ -50,6 +52,17 @@ export async function modifierDevisClassiqueBrouillonAction(
   if (!p.success) return { error: "Données invalides" };
   const { id, input: v } = p.data;
   const attendu = new Date(p.data.attenduMajLe);
+
+  // Règle « TVA toujours facturée » : `tauxTvaLigne` donne la priorité au taux de la ligne, un taux
+  // sous le standard (0 % compris) ferait afficher ce taux sur le PDF. Absent = taux standard.
+  const ligneSousTaux = v.lignes.findIndex(
+    (l) => l.tauxTvaPercent !== undefined && l.tauxTvaPercent < TAUX_TVA_STANDARD,
+  );
+  if (ligneSousTaux !== -1) {
+    return {
+      error: `Ligne ${ligneSousTaux + 1} : la TVA est toujours facturée, un taux inférieur à ${TAUX_TVA_STANDARD} % n'est pas accepté. Laissez le taux vide.`,
+    };
+  }
 
   const montantTotalHtCents = totalHtClassiqueCents(v.lignes);
   if (montantTotalHtCents <= 0) {
@@ -83,7 +96,7 @@ export async function modifierDevisClassiqueBrouillonAction(
   const mentionTva = await mentionTvaDevisClassique();
 
   const { count } = await prisma.devis.updateMany({
-    where: { id, statut: "brouillon", offreSha256: null, updatedAt: attendu },
+    where: { id, clientId: v.clientId, statut: "brouillon", offreSha256: null, updatedAt: attendu },
     data: {
       lignes: v.lignes as never,
       montantTotalHtCents,
