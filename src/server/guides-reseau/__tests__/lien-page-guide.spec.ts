@@ -33,7 +33,11 @@ function signer(charge: unknown, secret = SECRET): string {
   const p = b64u(JSON.stringify(charge));
   return `${p}.${createHmac("sha256", secret).update(p).digest("base64url")}`;
 }
-const chargeValide = () => ({ v: 1, ...DONNEES, exp: Math.floor(T0 / 1000) + DUREE_JETON_SECONDES });
+const chargeValide = () => ({
+  v: 1,
+  ...DONNEES,
+  exp: Math.floor(T0 / 1000) + DUREE_JETON_SECONDES,
+});
 
 describe("lien-page-guide — aller-retour", () => {
   it("crée puis vérifie un jeton, sans aucune adresse ni pseudo dedans", () => {
@@ -136,7 +140,10 @@ describe("lien-page-guide — refus", () => {
   });
 
   it("charge signée mais pas du JSON → champs", () => {
-    expect(verifierJeton(signer("pas un objet"), SECRET, T0)).toEqual({ ok: false, motif: "champs" });
+    expect(verifierJeton(signer("pas un objet"), SECRET, T0)).toEqual({
+      ok: false,
+      motif: "champs",
+    });
     const p = b64u("{pas json");
     const s = createHmac("sha256", SECRET).update(p).digest("base64url");
     expect(verifierJeton(`${p}.${s}`, SECRET, T0)).toEqual({ ok: false, motif: "champs" });
@@ -148,7 +155,7 @@ describe("lien-page-guide — refus", () => {
 });
 
 describe("lien-page-guide — secret", () => {
-  it.each([undefined, null, "", "trop-court-31-caracteres-0123456", "x".repeat(31)])(
+  it.each([undefined, null, "", "trop-court-31-caracteres-012345", "x".repeat(31)])(
     "secret absent ou court (%s) → erreur explicite",
     (secret) => {
       expect(() => creerJeton(DONNEES, secret as never, T0)).toThrow(/GUIDES_RESEAU_LIEN_SECRET/);
