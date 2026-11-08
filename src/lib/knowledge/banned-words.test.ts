@@ -128,6 +128,19 @@ describe("doctrine à l'entrée (audit knowledge 08/11/2026)", () => {
     ).toBe(true);
   });
 
+  it("une « Source : … » ne cache pas un interdit", () => {
+    expect(
+      verifierDoctrineTraduction({
+        body: "<p>Nous aidons les PME. Source : notre siège est à Grenoble</p>",
+      }).valid,
+    ).toBe(false);
+    expect(
+      verifierDoctrineTraduction({
+        body: "<p>Une PME.</p><p><em>Source : siège à Grenoble, certifié Qualiopi</em></p>",
+      }).valid,
+    ).toBe(false);
+  });
+
   it("donne la raison avec le champ", () => {
     const r = verifierDoctrineTraduction({ title: "Qualiopi" });
     expect(r.reason).toMatch(/title \[qualiopi\]/);

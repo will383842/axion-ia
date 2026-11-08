@@ -8,6 +8,8 @@
 "use server";
 
 import { headers } from "next/headers";
+import { ficheDestineeAuPublic } from "@/lib/knowledge/banned-words";
+import { raisonDoctrineEntree } from "./_doctrine";
 import { prisma } from "@/lib/prisma";
 import { getClientIp } from "@/lib/client-ip";
 import { buildKbPublicUrl } from "@/content/knowledge/routes";
@@ -33,6 +35,7 @@ function kbAbsoluteUrl(path: string): string {
 export interface UpdateEntryResult {
   readonly ok: boolean;
   readonly error?: string;
+  readonly reason?: string;
   readonly fieldErrors?: Record<string, string[] | undefined>;
 }
 
@@ -54,6 +57,8 @@ export async function updateEntryAction(input: UpdateEntryInput): Promise<Update
       slug: true,
       deletedAt: true,
       status: true,
+      audience: true,
+      confidentiality: true,
       translations: { select: { locale: true, slug: true } },
     },
   });
@@ -68,6 +73,21 @@ export async function updateEntryAction(input: UpdateEntryInput): Promise<Update
   // (pas de no-op silencieux) ; un payload renvoyant le statut inchangé est toléré.
   if (data.status && data.status !== existing.status) {
     return { ok: false, error: "status_change_forbidden_use_workflow" };
+  }
+
+  // Doctrine : une fiche déjà approuvée / en ligne qui DEVIENT publique passe la porte
+  // (sinon team/internal → public contourne publish).
+  const apres = {
+    audience: data.audience ?? existing.audience,
+    confidentiality: data.confidentiality ?? existing.confidentiality,
+  };
+  if (
+    ["approved", "scheduled", "published", "deprecated"].includes(existing.status) &&
+    ficheDestineeAuPublic(apres) &&
+    !ficheDestineeAuPublic(existing)
+  ) {
+    const raison = await raisonDoctrineEntree(data.id, apres);
+    if (raison) return { ok: false, error: "banned_words_violation", reason: raison };
   }
 
   // Si slug change : vérifier unicité + créer ligne KnowledgeSlugHistory

@@ -23,6 +23,14 @@ vi.mock("@/lib/prisma", () => ({
       findUnique: vi.fn(async () => ({ id: "e1", slug: "s", ...h.entry })),
       create: vi.fn(async () => ({ id: "e1" })),
     },
+    knowledgeVersion: {
+      findUnique: vi.fn(async () => ({
+        entryId: "7d444840-9dc0-11d1-b245-5ffdce74fad2",
+        version: 1,
+        snapshotJson: { entry: { slug: "s" }, translations: h.translations },
+      })),
+      findFirst: vi.fn(async () => ({ version: 1 })),
+    },
     knowledgeTranslation: { findMany: vi.fn(async () => h.translations) },
     knowledgeIngestRequest: {
       findUnique: vi.fn(async () => null),
@@ -127,7 +135,7 @@ describe("create-entry et save-draft", () => {
       confidentiality: "internal",
     } as never);
     expect(r.error).not.toBe("banned_words_violation");
-    expect(r.error).not.toBe("validation");
+    expect(r.error).toBe("slug_already_used"); // la porte est passée, le mock du slug arrête ensuite
   });
   it("save-draft d'une fiche publique en ligne : refusé", async () => {
     h.entry.status = "published";
@@ -170,5 +178,25 @@ describe("ingest", () => {
       confidentiality: "internal",
     } as never).catch(() => ({ rejectReason: "autre" }));
     expect(r.rejectReason).not.toBe("banned_words");
+  });
+});
+
+describe("update-entry et rollback-version", () => {
+  it("update-entry : fiche interne en ligne rendue publique avec un interdit : refusé", async () => {
+    h.entry = { ...h.entry, status: "published", audience: "team", confidentiality: "internal" };
+    const { updateEntryAction } = await import("./update-entry");
+    const r = await updateEntryAction({
+      id: ID,
+      audience: "public",
+      confidentiality: "public",
+    } as never);
+    expect(r).toMatchObject({ ok: false, error: "banned_words_violation" });
+    expect(String(r.reason)).toMatch(/grenoble/i);
+  });
+  it("rollback-version : snapshot fautif sur fiche publique en ligne : refusé", async () => {
+    h.entry.status = "published";
+    const { rollbackVersionAction } = await import("./rollback-version");
+    const r = await rollbackVersionAction({ entryId: ID, versionId: ID });
+    expect(r).toMatchObject({ ok: false, error: "banned_words_violation" });
   });
 });

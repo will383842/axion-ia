@@ -137,10 +137,25 @@ export interface BannedWordCheck {
  * refusée par l'autre.
  */
 export function sansEtiquetteSource(texte: string): string {
-  let t = texte.replace(/<p>\s*<em>\s*Source\s*:[\s\S]*?<\/em>\s*<\/p>/gi, " ");
+  return separerEtiquetteSource(texte).reste;
+}
+
+/** Sépare le texte de son étiquette « Source : … » (que `sansEtiquetteSource` ignore). */
+export function separerEtiquetteSource(texte: string): {
+  readonly reste: string;
+  readonly etiquettes: readonly string[];
+} {
+  const etiquettes: string[] = [];
+  let t = texte.replace(/<p>\s*<em>\s*Source\s*:[\s\S]*?<\/em>\s*<\/p>/gi, (m) => {
+    etiquettes.push(m);
+    return " ";
+  });
   const i = t.lastIndexOf(" Source : ");
-  if (i >= 0 && !t.slice(i + 10).includes(". ")) t = t.slice(0, i);
-  return t;
+  if (i >= 0 && !t.slice(i + 10).includes(". ")) {
+    etiquettes.push(t.slice(i));
+    t = t.slice(0, i);
+  }
+  return { reste: t, etiquettes };
 }
 
 export interface TraductionAControler {
@@ -157,14 +172,30 @@ export interface TraductionAControler {
  * Le corps HTML ET le texte brut sont contrôlés (un `bodyText` vide ne masque pas le `body`).
  */
 export function verifierDoctrineTraduction(input: TraductionAControler): BannedWordCheck {
-  const violations = verifierDoctrineFiche({
-    title: input.title,
-    excerpt: input.excerpt,
-    body: input.body ? sansEtiquetteSource(input.body) : input.body,
-    bodyText: input.bodyText ? sansEtiquetteSource(input.bodyText) : input.bodyText,
-    metaTitle: input.metaTitle,
-    metaDescription: input.metaDescription,
-  });
+  const corps = input.body ? separerEtiquetteSource(input.body) : null;
+  const texte = input.bodyText ? separerEtiquetteSource(input.bodyText) : null;
+  const violations = [
+    ...verifierDoctrineFiche({
+      title: input.title,
+      excerpt: input.excerpt,
+      body: corps ? corps.reste : input.body,
+      bodyText: texte ? texte.reste : input.bodyText,
+      metaTitle: input.metaTitle,
+      metaDescription: input.metaDescription,
+    }),
+    // L'étiquette reste affichée en public : seules la « statistique attribuée à
+    // Axion-IA » et l'étiquette « TPE-PME » et France Travail / OPCO cité comme organisme source (titres de sources réels, ex. « Baromètre
+    // numérique des TPE-PME ») lui sont pardonnées, pas le reste.
+    ...verifierDoctrineFiche({
+      body: (corps?.etiquettes ?? []).join(" "),
+      bodyText: (texte?.etiquettes ?? []).join(" "),
+    }).filter(
+      (v) =>
+        v.code !== "stat-axion" &&
+        v.code !== "etiquette-tpe-pme" &&
+        v.code !== "financement-public",
+    ),
+  ];
   if (violations.length === 0) return { valid: true, fieldViolations: [] };
   return {
     valid: false,
