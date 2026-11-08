@@ -18,7 +18,7 @@
  * Couleurs miroir de `@theme` — clé = nom du token CSS (`--color-<clé>`),
  * valeur = hex. Le test de parité compare cette map à globals.css.
  */
-import { COULEURS_MARQUE } from "@/lib/brand/couleurs-marque";
+import { COULEURS_MARQUE_GELEES_2026_11 } from "@/lib/brand/couleurs-marque-gelees-2026-11";
 
 /**
  * 🔴 Les valeurs ont DÉMÉNAGÉ le 2026-08-28 vers `src/lib/brand/couleurs-marque.ts`.
@@ -34,7 +34,13 @@ import { COULEURS_MARQUE } from "@/lib/brand/couleurs-marque";
  * qu'elle « doit RÉTRÉCIR, jamais grandir », ou de ranger la couleur au bon
  * endroit. C'est la seconde.
  */
-export const QUALIOPI_BRAND_COLORS = COULEURS_MARQUE;
+/**
+ * 🔴 V8-P0 (2026-11) — GELÉ À LA SOURCE : ces couleurs ne suivent PLUS `couleurs-marque.ts`.
+ * Elles pointent vers `couleurs-marque-gelees-2026-11.ts` (21 valeurs en dur, `Object.freeze`) :
+ * les pièces signables, re-rendues depuis leur instantané, gardent leurs octets. La parité avec
+ * `globals.css` porte désormais sur `COULEURS_MARQUE` (le miroir vivant), plus sur ce gel.
+ */
+export const QUALIOPI_BRAND_COLORS = COULEURS_MARQUE_GELEES_2026_11;
 
 export type QualiopiBrandColorToken = keyof typeof QUALIOPI_BRAND_COLORS;
 
@@ -63,7 +69,7 @@ export function brandColor(token: QualiopiBrandColorToken): string {
  * Échelle modulaire ~1.18 autour d'un corps de 10 pt, calée pour l'A4 dense
  * réglementaire (lisibilité à l'impression + à l'écran).
  */
-export const QUALIOPI_PDF_TYPE = {
+export const QUALIOPI_PDF_TYPE = Object.freeze({
   /** Légales en pied, filigranes secondaires. */
   xs: 8,
   /** Méta, labels de champ, notes. */
@@ -86,13 +92,14 @@ export const QUALIOPI_PDF_TYPE = {
 
   /** Interlettrage des sur-titres (« eyebrow ») et labels capitales. */
   trackingWide: 1.1,
-} as const;
+} as const);
 
 /**
  * Échelle d'espacement (points) — rythme vertical/horizontal homogène.
- * Multiples de 2, alignés sur une grille de 4 pt. NON soumise à la parité.
+ * Multiples de 2, alignés sur une grille de 4 pt. 🔴 GELÉE (V8-P0, 2026-11), comme
+ * `QUALIOPI_PDF_TYPE` : ne pas la modifier (empreinte dans le test de gel).
  */
-export const QUALIOPI_PDF_SPACE = {
+export const QUALIOPI_PDF_SPACE = Object.freeze({
   xs: 2,
   sm: 4,
   md: 6,
@@ -106,4 +113,4 @@ export const QUALIOPI_PDF_SPACE = {
   radius: 3,
   /** Rayon large (totaux, blocs mis en avant). */
   radiusLg: 4,
-} as const;
+} as const);
