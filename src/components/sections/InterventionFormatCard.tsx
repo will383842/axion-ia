@@ -75,18 +75,17 @@ const accentClasses: Record<
     badge: "bg-terracotta-soft text-terracotta-deep border border-terracotta/30",
     surface: "bg-mocha-rich text-mocha-fg",
   },
-  // hex-ok: brand-anthropic-claude — couleurs Anthropic imposées pour la card
-  // Intervention Claude.
+  // Gamme Claude : jetons de la palette définitive (l'orange n'existe que sur fond noir).
   claude: {
-    border: "border-[#D97757]/40 hover:border-[#D97757]", // hex-ok: brand-anthropic-claude
-    title: "text-[#9C3E1E]", // hex-ok: brand-anthropic-claude
-    line: "bg-[#D97757]", // hex-ok: brand-anthropic-claude
-    cta: "bg-[#D97757] text-white hover:bg-[#B85F3E]", // hex-ok: brand-anthropic-claude
-    haloRing: "ring-[#D97757]/15", // hex-ok: brand-anthropic-claude
-    chipBg: "bg-[#FFF5EC]", // hex-ok: brand-anthropic-claude
-    chipText: "text-[#9C3E1E]", // hex-ok: brand-anthropic-claude
-    badge: "bg-[#FFF5EC] text-[#9C3E1E] border border-[#D97757]/30", // hex-ok: brand-anthropic-claude
-    surface: "bg-[#FFF5EC]", // hex-ok: brand-anthropic-claude
+    border: "border-terracotta/35 hover:border-terracotta",
+    title: "text-terracotta-deep",
+    line: "bg-terracotta",
+    cta: "bg-terracotta text-mocha-fg hover:bg-terracotta-deep",
+    haloRing: "ring-terracotta/15",
+    chipBg: "bg-terracotta-soft",
+    chipText: "text-terracotta-deep",
+    badge: "bg-terracotta-soft text-terracotta-deep border border-terracotta/20",
+    surface: "bg-sand",
   },
 };
 
