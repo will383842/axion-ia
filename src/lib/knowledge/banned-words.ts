@@ -1,64 +1,126 @@
 /**
- * KB V4 — Runtime gate banned words pour `publish.ts`.
+ * KB — porte de doctrine à l'ENTRÉE de la base de connaissance.
  *
- * Helper pure exposé. Pendant import depuis `scripts/check-knowledge-banned-words.ts`
- * éviterait un cycle (script Node Prisma → src → ...), donc on duplique le pattern
- * ici pour usage server action.
+ * Audit knowledge du 08/11/2026 : la liste de motifs de ce fichier était vide, donc
+ * aucune fiche n'était contrôlée (import API, publication en console, seed). Une
+ * fiche qui dit « Qualiopi », « Grenoble » ou vise les ETI partait au chatbot et sur
+ * `/connaissances`.
  *
- * Doctrine `axionia-core` 2026-05-06 + §18 décision 7 prompt V4.
+ * Ce module ne définit AUCUN motif de la doctrine : il appelle
+ * `detecterInterditsSurface` (`src/lib/contenu/interdits-publication.ts`, source
+ * unique). Seul ajout propre à la base de connaissance : la cible. La doctrine
+ * générale n'a pas de code « ETI » (le filtre de sujets `sujet-cible.ts` est
+ * un autre mécanisme, sur des mots-clés), or Axion-IA parle aux dirigeants de PME.
+ *
+ * Module PUR (ni Prisma ni Next) : utilisable par le seed, les server actions et
+ * les scripts.
+ *
+ * Le mot « formation » n'est PAS interdit (décision Williams, 2026-08-10). La
+ * protection Qualiopi reste portée par la doctrine ET par le drapeau
+ * `isQualiopiPublicDisclosureEnabled()`.
  */
 
-// Le mot « formation » n'est PLUS banni (décision Will, 2026-08-10).
-//
-// Le bannissement datait d'une époque où Axion-IA ne pouvait pas se présenter
-// comme organisme de formation. Ce n'est plus le cas : le site vend 21 formations
-// au catalogue, l'onglet « Formations IA » est dans la navigation principale, les
-// URL `/formations/*` sont indexées, et la divulgation OF est active. Interdire le
-// mot dans la base de connaissance revenait à interdire au corpus de nommer l'offre
-// que le site vend par ailleurs.
-//
-// ⚠️ Ce que cela ne change PAS : la protection Qualiopi. Elle n'a jamais reposé sur
-// ce filtre — la garde primaire est le drapeau `isQualiopiPublicDisclosureEnabled()`
-// (cf. `src/server/qualiopi/config/flag.ts`), qui reste en place. Le filtre de mots
-// n'en était qu'un filet secondaire, et un filet poreux (regex).
-//
-// La liste est donc VIDE. Le mécanisme est conservé : il reste le point d'entrée
-// si un mot devait être proscrit un jour (une marque tierce, un terme juridique
-// mal employé). Y ajouter une entrée suffit à le réactiver — mais ne jamais y
-// remettre « formation ».
-const BANNED_PATTERNS: ReadonlyArray<RegExp> = [];
+import {
+  detecterInterditsSurface,
+  normaliserPourControle,
+  raisonInterdit,
+  type CodeInterdit,
+} from "../contenu/interdits-publication";
+
+/** Codes de violation d'une fiche : ceux de la doctrine + la cible « ETI ». */
+export type CodeViolationFiche = CodeInterdit | "eti-hors-cible";
+
+export interface ViolationFiche {
+  readonly champ: string;
+  readonly code: CodeViolationFiche;
+  readonly extrait: string;
+  readonly raison: string;
+}
+
+export const RAISON_ETI =
+  "Cible ETI / grands groupes : Axion-IA s'adresse aux dirigeants de PME. Reformuler pour une PME.";
+
+// Texte normalisé (minuscules, sans accents) : bornes de mot explicites.
+const ETI_RE = /(?<![a-z0-9])(?:etis?|entreprises? de taille intermediaire)(?![a-z0-9])/;
+
+/**
+ * Contrôle les champs d'une fiche. `financementPublicAutorise: false` : par défaut
+ * OPCO / France Travail ne sont pas citables (contrat de `qualiopi/config`).
+ */
+export function verifierDoctrineFiche(
+  champs: Readonly<Record<string, string | null | undefined>>,
+): ReadonlyArray<ViolationFiche> {
+  const textes: Record<string, string | undefined> = {};
+  for (const [k, v] of Object.entries(champs)) if (v) textes[k] = v;
+
+  const out: ViolationFiche[] = detecterInterditsSurface(textes, {
+    actualite: false,
+    financementPublicAutorise: false,
+  }).map((d) => ({
+    champ: d.champ,
+    code: d.code,
+    extrait: d.extrait,
+    raison: raisonInterdit(d.code),
+  }));
+
+  for (const [champ, valeur] of Object.entries(textes)) {
+    const n = normaliserPourControle(valeur ?? "");
+    const m = ETI_RE.exec(n);
+    if (m) {
+      const de = Math.max(0, m.index - 25);
+      out.push({
+        champ,
+        code: "eti-hors-cible",
+        extrait: n.slice(de, m.index + m[0].length + 25).trim(),
+        raison: RAISON_ETI,
+      });
+    }
+  }
+  return out;
+}
+
+/** Phrase lisible pour un brouillon bloqué (champ, code, raison). */
+export function raisonBlocage(violations: ReadonlyArray<ViolationFiche>): string {
+  const vus = new Set<string>();
+  const parts: string[] = [];
+  for (const v of violations) {
+    const k = `${v.champ}:${v.code}`;
+    if (vus.has(k)) continue;
+    vus.add(k);
+    parts.push(`${v.champ} [${v.code}] ${v.raison}`);
+  }
+  return `Doctrine : ${parts.join(" ; ")}`;
+}
 
 export interface BannedWordCheck {
   readonly valid: boolean;
-  readonly fieldViolations: ReadonlyArray<{ field: string; snippet: string }>;
+  readonly fieldViolations: ReadonlyArray<{ field: string; snippet: string; code: string }>;
+  readonly reason?: string;
 }
 
 /**
  * Vérifie tous les champs concernés d'une translation.
- * Retourne `valid: true` si aucun mot banni.
+ * Retourne `valid: true` si aucune violation de la doctrine.
  */
 export function checkTranslationBannedWords(input: {
-  readonly title?: string | null;
-  readonly excerpt?: string | null;
-  readonly body?: string | null;
-  readonly bodyText?: string | null;
-  readonly metaTitle?: string | null;
-  readonly metaDescription?: string | null;
+  readonly title?: string | null | undefined;
+  readonly excerpt?: string | null | undefined;
+  readonly body?: string | null | undefined;
+  readonly bodyText?: string | null | undefined;
+  readonly metaTitle?: string | null | undefined;
+  readonly metaDescription?: string | null | undefined;
 }): BannedWordCheck {
-  const fields: Array<[string, string | null | undefined]> = [
-    ["title", input.title],
-    ["excerpt", input.excerpt],
-    ["body", input.bodyText ?? input.body],
-    ["metaTitle", input.metaTitle],
-    ["metaDescription", input.metaDescription],
-  ];
-
-  const violations: { field: string; snippet: string }[] = [];
-  for (const [field, value] of fields) {
-    if (value && BANNED_PATTERNS.some((re) => re.test(value))) {
-      violations.push({ field, snippet: value.slice(0, 100) });
-    }
-  }
-
-  return { valid: violations.length === 0, fieldViolations: violations };
+  const violations = verifierDoctrineFiche({
+    title: input.title,
+    excerpt: input.excerpt,
+    body: input.bodyText ?? input.body,
+    metaTitle: input.metaTitle,
+    metaDescription: input.metaDescription,
+  });
+  if (violations.length === 0) return { valid: true, fieldViolations: [] };
+  return {
+    valid: false,
+    fieldViolations: violations.map((v) => ({ field: v.champ, snippet: v.extrait, code: v.code })),
+    reason: raisonBlocage(violations),
+  };
 }

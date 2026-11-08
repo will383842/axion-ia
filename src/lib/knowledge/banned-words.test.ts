@@ -80,3 +80,43 @@ describe("checkTranslationBannedWords", () => {
     expect(r.valid).toBe(true);
   });
 });
+
+describe("doctrine à l'entrée (audit knowledge 08/11/2026)", () => {
+  it("laisse passer une fiche propre", () => {
+    const r = checkTranslationBannedWords({
+      title: "Premiers pas avec l'IA",
+      body: "Un dirigeant de PME peut démarrer par un usage simple.",
+    });
+    expect(r.valid).toBe(true);
+  });
+
+  it("bloque Qualiopi", () => {
+    const r = checkTranslationBannedWords({ body: "Notre organisme est certifié Qualiopi." });
+    expect(r.valid).toBe(false);
+    expect(r.fieldViolations[0]?.code).toBe("qualiopi");
+  });
+
+  it("bloque Grenoble", () => {
+    const r = checkTranslationBannedWords({ excerpt: "Notre siège à Grenoble" });
+    expect(r.valid).toBe(false);
+    expect(r.fieldViolations.map((v) => v.code)).toContain("grenoble");
+  });
+
+  it("bloque la cible ETI", () => {
+    const r = checkTranslationBannedWords({ body: "Un audit pour les ETI et grands groupes." });
+    expect(r.valid).toBe(false);
+    expect(r.fieldViolations.map((v) => v.code)).toContain("eti-hors-cible");
+  });
+
+  it("ne confond pas ETI avec un mot qui la contient", () => {
+    expect(
+      checkTranslationBannedWords({ body: "Une société étiquetée, la métier, le diététicien" })
+        .valid,
+    ).toBe(true);
+  });
+
+  it("donne la raison avec le champ", () => {
+    const r = checkTranslationBannedWords({ title: "Qualiopi" });
+    expect(r.reason).toMatch(/title \[qualiopi\]/);
+  });
+});

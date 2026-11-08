@@ -111,7 +111,8 @@ export async function ingestEntry(payload: IngestPayload): Promise<IngestResult>
   if (!bannedCheck.valid) {
     await rejectIngest(
       payload.idempotencyKey,
-      `Banned words: ${bannedCheck.fieldViolations.map((v) => v.field).join(", ")}`,
+      bannedCheck.reason ??
+        `Banned words: ${bannedCheck.fieldViolations.map((v) => v.field).join(", ")}`,
     );
     return { accepted: false, status: "rejected", rejectReason: "banned_words" };
   }
