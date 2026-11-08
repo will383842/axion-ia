@@ -52,20 +52,32 @@ describe("tagline et services", () => {
 
   it("Grenoble n'apparaît qu'une fois : dans le pied légal", async () => {
     const t = await layout("fr", "fondateur");
-    expect(t.match(/Grenoble/g)?.length ?? 0).toBeLessThanOrEqual(1);
+    expect(t.match(/Grenoble/g)?.length ?? 0).toBe(1);
   });
 });
 
 describe("signature des rendez-vous", () => {
-  it.each(["confirmation", "j1", "h1"])("fr %s : signé Williams", async (moment) => {
-    const t = texte(
+  const rendre = async (locale: "fr" | "en", moment: string) =>
+    texte(
       await render(
         <AppelRappelEmail
-          locale="fr"
+          locale={locale}
           payload={{ prenom: "Camille", heure: "10 h", dureeMinutes: 45, moment }}
         />,
       ),
     );
-    expect(t).toContain("Williams");
+
+  it.each([
+    ["confirmation", "À très vite, Williams"],
+    ["j1", "À demain, Williams"],
+    ["h1", "À tout à l'heure, Williams"],
+  ])("fr %s : signé Williams", async (moment, attendu) => {
+    expect(await rendre("fr", moment)).toContain(attendu);
+  });
+
+  it.each(["confirmation", "j1", "h1"])("en %s : signé Williams, pas l'équipe", async (moment) => {
+    const t = await rendre("en", moment);
+    expect(t).not.toContain("The Axion-IA team");
+    expect(t).toMatch(/Talk (soon|tomorrow),\s*Williams/);
   });
 });

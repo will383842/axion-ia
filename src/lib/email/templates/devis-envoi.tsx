@@ -59,7 +59,7 @@ const COPY = {
     signCta: "Signer le devis en ligne",
     questions:
       "Pour toute question sur le contenu, le périmètre ou les modalités, répondez simplement à cet email : nous sommes à votre écoute.",
-    close: "Bien cordialement,\nL'équipe Axion-IA",
+    close: "Bien cordialement,\nWilliams",
   },
   en: {
     title: "Your Axion-IA quote",
@@ -79,7 +79,7 @@ const COPY = {
     signCta: "Sign the quote online",
     questions:
       "For any question about the content, scope or terms, simply reply to this email: we are here for you.",
-    close: "Best regards,\nThe Axion-IA team",
+    close: "Best regards,\nWilliams",
   },
 } as const;
 
