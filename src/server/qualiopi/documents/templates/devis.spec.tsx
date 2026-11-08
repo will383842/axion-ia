@@ -9,6 +9,7 @@
 import { beforeAll, describe, it, expect } from "vitest";
 import React from "react";
 import { DevisPdf } from "./devis";
+import { gabaritArchive } from "./archives";
 import type { DevisData } from "./devis";
 import { renderPdfToBuffer } from "@/server/qualiopi/documents/render";
 import { registerPdfTestFontsFallback } from "@/server/qualiopi/documents/register-pdf-test-fonts";
@@ -385,5 +386,25 @@ describe("DevisPdf — choix scellé du client (exemplaire signé d'un devis à 
     const sans = collectPdfTextNormalized(React.createElement(DevisPdf, { data: makeDevis() }));
     expect(sans).not.toContain("Formule retenue par le client");
     expect(sans).not.toContain("Choix scellé");
+  });
+});
+
+describe("DevisPdf v5 — plus de mention Qualiopi (décision 22)", () => {
+  it("le texte courant ne contient ni « Certification Qualiopi » ni « Qualiopi FR-2024-001 »", () => {
+    const t = devisText(makeDevis());
+    expect(t).not.toContain("Certification Qualiopi");
+    expect(t).not.toContain("Qualiopi FR-2024-001");
+    expect(t).not.toContain("FR-2024-001");
+  });
+
+  it("l'archive v4 rendue avec la même donnée porte encore « Certification Qualiopi » (pièces signées figées)", () => {
+    const Archive = gabaritArchive("devis", 4);
+    expect(Archive).not.toBeNull();
+    const t = collectPdfTextNormalized(
+      React.createElement(Archive as unknown as React.ComponentType<{ data: DevisData }>, {
+        data: makeDevis(),
+      }),
+    );
+    expect(t).toContain("Certification Qualiopi");
   });
 });

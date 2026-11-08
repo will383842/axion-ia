@@ -166,3 +166,31 @@ describe("relecture d'une offre enregistrée : rien de ce que l'écran ne saisit
     expect(r.ok && r.offre.abonnement?.modeAvance).toBe("premiere_periode_seulement");
   });
 });
+
+describe("échéancier par défaut : acompte 30 % à la signature, solde 70 % à la livraison", () => {
+  const attendu = [
+    { libelle: "Acompte", pourcentage: "30", declencheur: "signature" },
+    { libelle: "Solde", pourcentage: "70", declencheur: "livraison" },
+  ];
+
+  it("le défaut de l'achat et celui de l'abonnement sont identiques", () => {
+    const s = saisieVide(20);
+    expect(s.achat.phases).toEqual(attendu);
+    expect(s.abonnement.phases).toEqual(attendu);
+  });
+
+  it("deux appels ne partagent pas les mêmes objets (pas de mutation croisée)", () => {
+    const s = saisieVide(20);
+    expect(s.achat.phases[0]).not.toBe(s.abonnement.phases[0]);
+  });
+
+  it("construireOffre accepte ce défaut : rang 1 = 30 % signature, rang 2 = 70 % livraison", () => {
+    const r = construireOffre(saisieValide(), []);
+    if (!r.ok) throw new Error(JSON.stringify(r));
+    for (const f of [r.offre.achat, r.offre.abonnement]) {
+      expect(f?.phases).toHaveLength(2);
+      expect(f?.phases[0]).toMatchObject({ rang: 1, pourcentage: 30, declencheur: "signature" });
+      expect(f?.phases[1]).toMatchObject({ rang: 2, pourcentage: 70, declencheur: "livraison" });
+    }
+  });
+});
