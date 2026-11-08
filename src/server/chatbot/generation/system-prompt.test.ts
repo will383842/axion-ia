@@ -106,6 +106,12 @@ describe("relecture directeur", () => {
     expect(p).toMatch(/rendez-vous gratuit de 45 minutes/);
   });
 
+  it("interdit les mots de la doctrine dans les réponses, avec ou sans prompt versionné", () => {
+    for (const p of [defaultRules(), assembleSystemPrompt({ tenant, promptOverride: "x" })]) {
+      expect(p).toContain("N'écrivez jamais : garanti, sans risque, Qualiopi, CPF, certifié.");
+    }
+  });
+
   it("sans prompt versionné, le bloc fixe n'est pas dupliqué", () => {
     const p = assembleSystemPrompt({ tenant });
     expect(p.split("RÈGLES FIXES").length - 1).toBe(0);
