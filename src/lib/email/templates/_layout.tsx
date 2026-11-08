@@ -359,24 +359,26 @@ export function assertPreEnTeteDistinct(preview: string, title: string, ou: stri
   }
 }
 
-// Palette — terracotta de marque (chaud, éditorial, pas orange criard), ivoire, serif.
+// Palette définitive (brand V8-E1) — ivoire #FAF9F5, gris chaud #E8E6DC, noir #141413,
+// terracotta #B23F16 (liens et boutons, texte blanc sur bouton). Plus de bleu, de jaune
+// ni de dégradé. L'orange #D97757 et le gris #B0AEA5 ne servent que sur fond noir.
 const C = {
-  text: "#241d15",
-  muted: "#6b6153", // assombri (était #7a6f60) — 4,5:1 sur ivoire, exigé §8 pied de page compris
-  heading: "#1c150e",
-  orange: "#c24a1b", // terracotta brique (accent éditorial du site) — CTA + accents
-  orangeDeep: "#8c3010", // terracotta foncé — hover / glow
-  orangeSoft: "#f7ebe2", // halo terracotta doux (bandeau confiance)
-  orangeTint: "#ecd9c9",
-  blue: "#1a4dd9", // liens texte inline (contraste)
-  border: "#eee2d2",
-  bgEmail: "#f6f1e8", // ivoire chaud
+  text: "#141413",
+  muted: "#5E5D59", // gris secondaire, contraste suffisant sur ivoire
+  heading: "#141413",
+  orange: "#B23F16", // terracotta : filet, bouton, liens
+  orangeDeep: "#B23F16", // liens : même terracotta
+  orangeSoft: "#E8E6DC", // bandeau confiance : gris chaud
+  orangeTint: "#E8E6DC",
+  blue: "#B23F16", // ex-bleu des liens : terracotta
+  border: "#E8E6DC",
+  bgEmail: "#FAF9F5", // ivoire
   card: "#ffffff",
   white: "#ffffff",
 } as const;
 
-const SERIF = "Georgia, 'Times New Roman', Times, serif";
-const SANS = "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif";
+const SERIF = "Manrope, Arial, Helvetica, sans-serif";
+const SANS = "Manrope, Arial, Helvetica, sans-serif";
 
 const main: React.CSSProperties = {
   backgroundColor: C.bgEmail,
@@ -386,11 +388,10 @@ const main: React.CSSProperties = {
   margin: 0,
 };
 const topbar: React.CSSProperties = {
-  height: "6px",
-  lineHeight: "6px",
+  height: "4px",
+  lineHeight: "4px",
   fontSize: "1px",
   backgroundColor: C.orange,
-  backgroundImage: `linear-gradient(90deg, ${C.orange} 0%, #d1561f 55%, ${C.orangeDeep} 100%)`,
 };
 /**
  * 600 px — référentiel §8, et arbitrage Will du 2026-08-31.
@@ -422,7 +423,7 @@ const card: React.CSSProperties = {
   // carte ne laisseraient que 520 px de texte, et sur mobile la ligne devient
   // trop étroite pour un corps à 16 px.
   padding: "32px 28px",
-  boxShadow: "0 12px 34px -16px rgba(234,78,27,0.20), 0 2px 6px -2px rgba(36,29,21,0.06)",
+  boxShadow: "0 2px 6px -2px rgba(20,20,19,0.08)",
 };
 const eyebrowStyle: React.CSSProperties = {
   fontSize: "12px",
@@ -450,17 +451,15 @@ const paragraphStyle: React.CSSProperties = {
 // CTA pill orange + glow (bulletproof via <Button> React Email).
 const ctaStyle: React.CSSProperties = {
   backgroundColor: C.orange,
-  backgroundImage: `linear-gradient(180deg, #cf5527 0%, ${C.orange} 100%)`,
   color: C.white,
   // 16 px de padding vertical + la hauteur de ligne ≈ 48 px de haut : au-dessus
   // des 44 × 44 px de zone tactile exigés au §3.8.
   padding: "16px 34px",
-  borderRadius: "999px",
+  borderRadius: "12px",
   textDecoration: "none",
   fontSize: "16px",
   fontWeight: 700,
   fontFamily: SANS,
-  boxShadow: "0 10px 22px -8px rgba(194,74,27,0.5)",
 };
 /** Repli du CTA en texte brut — §3.8. Petit, discret, mais copiable. */
 const ctaFallbackStyle: React.CSSProperties = {
@@ -564,30 +563,30 @@ const snowballLink: React.CSSProperties = {
   fontSize: "13px",
   fontWeight: 700,
   color: C.orangeDeep,
-  textDecoration: "none",
+  textDecoration: "underline",
 };
 
 const DARK_MODE_STYLE = `
   :root { color-scheme: light dark; supported-color-schemes: light dark; }
   @media (prefers-color-scheme: dark) {
-    .ax-body { background-color: #15110c !important; }
-    .ax-card { background-color: #221b13 !important; border-color: #3a3025 !important; }
-    .ax-text { color: #f6efe3 !important; }
-    .ax-heading { color: #fdf7ec !important; }
-    .ax-muted { color: #b8ac99 !important; }
-    .ax-trust { background-color: #2c1c12 !important; border-color: #5a3620 !important; }
+    .ax-body { background-color: #141413 !important; }
+    .ax-card { background-color: #141413 !important; border-color: #B0AEA5 !important; }
+    .ax-text { color: #FAF9F5 !important; }
+    .ax-heading { color: #FAF9F5 !important; }
+    .ax-muted { color: #B0AEA5 !important; }
+    .ax-trust { background-color: #141413 !important; border-color: #B0AEA5 !important; }
     /* Lot 4 (2026-09-02) — le CORPS des gabarits. Les classes ci-dessus ne
        vivaient que dans le châssis ; les 42 gabarits posent des styles en
-       ligne (encre #241d15) et aucune classe. En mode sombre, la carte passait
-       à #221b13 et chaque paragraphe restait presque noir : noir sur noir. On
+       ligne (encre #141413) et aucune classe. En mode sombre, la carte passait
+       à #141413 et chaque paragraphe restait presque noir : noir sur noir. On
        cible les descendants de la carte, en !important, ce qui prime sur un
        style en ligne — sans toucher à un seul gabarit. Le bouton, blanc sur
        terracotta, est remis à part par sa classe. */
-    .ax-card p, .ax-card li, .ax-card td, .ax-card span, .ax-card strong, .ax-card em { color: #f6efe3 !important; }
-    .ax-card h1, .ax-card h2, .ax-card h3 { color: #fdf7ec !important; }
-    .ax-card a { color: #f0a070 !important; }
+    .ax-card p, .ax-card li, .ax-card td, .ax-card span, .ax-card strong, .ax-card em { color: #FAF9F5 !important; }
+    .ax-card h1, .ax-card h2, .ax-card h3 { color: #FAF9F5 !important; }
+    .ax-card a, .ax-link { color: #D97757 !important; }
     .ax-card a.ax-cta, .ax-card a.ax-cta span { color: #ffffff !important; }
-    .ax-card hr { border-color: #3a3025 !important; }
+    .ax-card hr { border-color: #B0AEA5 !important; }
   }
   /* Lot 4 — sous 600 px : 28 px de marge de chaque côté et un titre de 26 px
      ne laissaient qu'une colonne de 264 px sur un écran de 320. */
@@ -1078,20 +1077,20 @@ export function EmailLayout({
             {regime.reseauxSociaux === "complet" && sansReseauxSociaux !== true && (
               <Text style={socialRowStyle} className="ax-muted">
                 {t.followBrand} —{" "}
-                <Link href={SOCIALS.linkedinCompany} style={socialLinkStyle}>
+                <Link className="ax-link" href={SOCIALS.linkedinCompany} style={socialLinkStyle}>
                   LinkedIn
                 </Link>
                 {" · "}
-                <Link href={SOCIALS.facebookCompany} style={socialLinkStyle}>
+                <Link className="ax-link" href={SOCIALS.facebookCompany} style={socialLinkStyle}>
                   Facebook
                 </Link>
                 {" · "}
-                <Link href={SOCIALS.x} style={socialLinkStyle}>
+                <Link className="ax-link" href={SOCIALS.x} style={socialLinkStyle}>
                   X
                 </Link>
                 {" — "}
                 {t.followFounder} :{" "}
-                <Link href={SOCIALS.linkedinWilliams} style={socialLinkStyle}>
+                <Link className="ax-link" href={SOCIALS.linkedinWilliams} style={socialLinkStyle}>
                   LinkedIn
                 </Link>
               </Text>
@@ -1123,6 +1122,7 @@ export function EmailLayout({
                   <br />
                   {t.autoNoticeAsk}{" "}
                   <Link
+                    className="ax-link"
                     href={`mailto:${CONTACT_EMAIL}`}
                     style={{ color: C.orangeDeep, fontWeight: 600 }}
                   >
@@ -1133,6 +1133,7 @@ export function EmailLayout({
                 <>
                   {t.contact}{" "}
                   <Link
+                    className="ax-link"
                     href={`mailto:${CONTACT_EMAIL}`}
                     style={{ color: C.orangeDeep, fontWeight: 600 }}
                   >

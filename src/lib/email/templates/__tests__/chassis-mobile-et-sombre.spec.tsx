@@ -32,9 +32,9 @@ describe("châssis — mobile", () => {
 describe("châssis — mode sombre", () => {
   it("🔴 couvre le corps des gabarits par les descendants de la carte, pas seulement le châssis", async () => {
     const h = await html("contact-confirmed");
-    expect(h).toMatch(/\.ax-card p,[^{]*\{\s*color: #f6efe3 !important/);
-    expect(h).toMatch(/\.ax-card h1,[^{]*\{\s*color: #fdf7ec !important/);
-    expect(h).toMatch(/\.ax-card a\s*\{\s*color: #f0a070 !important/);
+    expect(h).toMatch(/\.ax-card p,[^{]*\{\s*color: #FAF9F5 !important/);
+    expect(h).toMatch(/\.ax-card h1,[^{]*\{\s*color: #FAF9F5 !important/);
+    expect(h).toMatch(/\.ax-card a,\s*\.ax-link\s*\{\s*color: #D97757 !important/);
   });
 
   it("le bouton garde son texte blanc — sa classe le remet à part", async () => {
