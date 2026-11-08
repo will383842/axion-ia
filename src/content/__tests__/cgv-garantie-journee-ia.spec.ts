@@ -105,3 +105,31 @@ describe("Pages formations et un-a-un : une seule garantie", () => {
     });
   }
 });
+
+describe("Relecture : texte du brief et réserve du particulier", () => {
+  it("la formule et la condition FR sont, au caractère près, celles décidées le 08/11/2026", () => {
+    expect(GARANTIE_JOURNEE_IA_FORMULE).toBe(
+      "À la fin de la journée, vous recevez votre rapport complet : vos gains chiffrés, les tâches à automatiser classées par rentabilité, et votre plan d'action sur 90 jours. Si les gains annuels identifiés sont inférieurs à 3 fois le prix de la journée, nous vous remboursons, sans discussion, sous 30 jours.",
+    );
+    expect(GARANTIE_JOURNEE_IA_CONDITION).toBe(
+      "Condition : votre équipe est disponible pendant la journée et nous fournit les chiffres demandés.",
+    );
+  });
+
+  it("FR : l'acompte de 30 % cède devant les dispositions du particulier, qui existent", () => {
+    expect(section("fr", /^Conditions de paiement$/)).toMatch(
+      /sous réserve des dispositions propres au particulier/,
+    );
+    expect(
+      section("fr", /^Particulier — délai de rétractation et interdiction de paiement$/),
+    ).toMatch(
+      /Aucune somme ne peut être exigée ni versée avant l'expiration de ce délai de dix jours/,
+    );
+  });
+
+  it("EN : aucun renvoi à des sections absentes de la version anglaise", () => {
+    const b = section("en", /^Payment terms$/);
+    expect(b).not.toMatch(/digital products|set out below/);
+    expect(b).toMatch(/L\.6353-6/);
+  });
+});

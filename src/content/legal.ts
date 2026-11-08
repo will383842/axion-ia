@@ -600,7 +600,7 @@ export const LEGAL_PAGES: ReadonlyArray<LegalContent> = [
         },
         {
           title: "Payment terms",
-          body: "Payment is made by bank transfer, according to the schedule set out in the quote. Unless the quote states otherwise, a deposit of 30% of the total amount excluding VAT is due on signature of the quote, and the balance on receipt of the invoice issued when the service is completed. These terms are subject to the provisions specific to individuals and to digital products set out below. No early-payment discount is granted.",
+          body: "Payment is made by bank transfer, according to the schedule set out in the quote. Unless the quote states otherwise, a deposit of 30% of the total amount excluding VAT is due on signature of the quote, and the balance on receipt of the invoice issued when the service is completed. Where training is taken out by an individual in a personal capacity, the mandatory rules of articles L.6353-5 and L.6353-6 of the Labour Code prevail: no sum may be required before the ten-day withdrawal period expires, and no more than 30% of the price thereafter. No early-payment discount is granted.",
         },
         {
           title: "Late payment — penalties and recovery indemnity",

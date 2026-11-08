@@ -21,7 +21,7 @@
 import { EFFECTIF_PLAGE_FR } from "./effectif";
 
 /** Ligne unique, pour une description de section ou une méta. */
-export const CONDITIONS_TARIFAIRES_RESUME_FR = `Prix en euros hors taxes, par groupe ${EFFECTIF_PLAGE_FR} — jamais par personne. Annulation et prise en charge OPCO : conditions ci-dessous et conditions générales de vente.`;
+export const CONDITIONS_TARIFAIRES_RESUME_FR = `Prix en euros hors taxes, par groupe ${EFFECTIF_PLAGE_FR} — jamais par personne. Annulation et prise en charge OPCO : conditions ci-dessous ; l'annulation est aussi régie par les conditions générales de vente.`;
 
 /** Les conditions réelles, dans l'ordre où le client les rencontre. */
 export const CONDITIONS_TARIFAIRES_FR: ReadonlyArray<{ titre: string; texte: string }> = [
