@@ -568,13 +568,13 @@ export default async function StackToolPage({ params }: Props) {
         titleEm={isFr ? ` ${tool.name} dans votre contexte ?` : ` ${tool.name} in your context?`}
         description={
           isFr
-            ? "30 minutes en visio, gratuit. On regarde ensemble si l'outil mérite sa place dans votre stack — et avec quoi on le pairerait."
-            : "30 minutes on video, free. Together we look at whether the tool earns its slot in your stack — and what we'd pair it with."
+            ? "45 minutes en visio ou par téléphone, gratuit. On regarde ensemble si l'outil mérite sa place dans votre stack — et avec quoi on le pairerait."
+            : "45 minutes by video or phone, free. Together we look at whether the tool earns its slot in your stack — and what we'd pair it with."
         }
         cta={
           <>
-            <Cta href="/audit/tpe-1-jour" size="lg">
-              {isFr ? "Réserver l'audit flash" : "Book the flash audit"}
+            <Cta href="/appel" size="lg">
+              {isFr ? "Réserver mon rendez-vous gratuit" : "Book my free meeting"}
               <ArrowRight aria-hidden="true" className="h-4 w-4" />
             </Cta>
             <Link

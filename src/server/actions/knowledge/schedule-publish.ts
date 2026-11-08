@@ -3,6 +3,7 @@
 
 import { z } from "zod";
 import { requireAdminWrite } from "./_guards";
+import { raisonDoctrineEntree } from "./_doctrine";
 import { executeTransition, type TransitionResult } from "./_transition";
 
 const inputSchema = z.object({
@@ -19,6 +20,9 @@ export async function schedulePublishAction(input: {
   const session = await requireAdminWrite();
   const parsed = inputSchema.safeParse(input);
   if (!parsed.success) return { ok: false, error: "validation", reason: parsed.error.message };
+
+  const raison = await raisonDoctrineEntree(parsed.data.id);
+  if (raison) return { ok: false, error: "banned_words_violation", reason: raison };
 
   return executeTransition({
     entryId: parsed.data.id,

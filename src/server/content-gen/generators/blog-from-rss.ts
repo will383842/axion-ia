@@ -29,6 +29,7 @@
  * publication via le helper exporté `enrichOutputWithNewsArticleJsonLd`.
  */
 
+import { taillePourPrompt } from "@/server/content-gen/brand/positionnement";
 import {
   buildNewsArticleJsonLd,
   type NewsArticleJsonLdInput,
@@ -102,9 +103,12 @@ export const blogFromRssGenerator: Generator = {
       input.rssItemTitle ?? input.primaryKeyword ?? "actualité intelligence artificielle";
     const safeTopic = escapeLlmInput(topic, { maxLen: 140 });
     const safeIntent = escapeLlmInput(input.targetSearchIntent, { maxLen: 30 });
-    const safeAudienceSize = escapeLlmInput(input.targetAudienceSize ?? "entreprise", {
-      maxLen: 30,
-    });
+    const safeAudienceSize = escapeLlmInput(
+      taillePourPrompt(input.targetAudienceSize, "entreprise"),
+      {
+        maxLen: 30,
+      },
+    );
     const sectorTagSlugs = input.kbSectorTagSlugs ?? [];
 
     // Refonte templates 2026-06-22 — expert interne choisi DÉTERMINISTIQUEMENT

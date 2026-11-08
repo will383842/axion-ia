@@ -49,7 +49,7 @@ export const POLLESTRES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Pollestres et dans l'agglo Perpignan sud ?",
-      a: "Oui, Axion-IA intervient à Pollestres et toute l'agglo Perpignan sud (Canohès à 5 min, Thuir à 8 min, Toulouges, Perpignan à 10 min). Nos consultants sont basés à proximité immédiate.",
+      a: "Oui, Axion-IA intervient à Pollestres et toute l'agglo Perpignan sud (Canohès à 5 min, Thuir à 8 min, Toulouges, Perpignan à 10 min). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les PME tertiaires et services ?",
