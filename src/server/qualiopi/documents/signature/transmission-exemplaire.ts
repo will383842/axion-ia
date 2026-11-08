@@ -131,6 +131,28 @@ function champEmpreinte(empreintePiece: string | null | undefined): { empreinte?
 }
 
 /**
+ * Le n° du DEVIS lié à une pièce de type devis — celui que le client connaît.
+ * `{}` pour toute autre pièce, ou si la lecture échoue : le champ du payload est
+ * facultatif, l'e-mail retombe sur le n° de pièce. Ne lève jamais.
+ */
+async function champNumeroDevis(piece: {
+  id: string;
+  type: string;
+}): Promise<{ numeroDevis?: string }> {
+  if (piece.type !== "devis") return {};
+  try {
+    const d = await prisma.devis.findFirst({
+      where: { documentGenereId: piece.id },
+      select: { numero: true },
+    });
+    const n = (d?.numero ?? "").trim();
+    return n !== "" ? { numeroDevis: n } : {};
+  } catch {
+    return {};
+  }
+}
+
+/**
  * Les adresses à qui l'exemplaire doit parvenir.
  *
  * On lit les SIGNATURES réellement posées, pas les parties requises : c'est
@@ -241,6 +263,8 @@ export async function transmettreExemplaireSigne(
 
   const circuit = circuitPour(piece.type);
   const libellePiece = circuit?.libelle ?? "la pièce";
+  const devisNum = await champNumeroDevis(piece);
+  const numeroConnu = devisNum.numeroDevis ?? piece.numero;
 
   let aumoinsUnEnfile = false;
   for (const to of destinataires) {
@@ -250,6 +274,7 @@ export async function transmettreExemplaireSigne(
       "fr",
       {
         numero: piece.numero,
+        ...devisNum,
         libellePiece,
         signataires: piece.signatures
           .filter((s) => s.signataireNom.trim().length > 0)
@@ -261,7 +286,7 @@ export async function transmettreExemplaireSigne(
         entityType: "DocumentGenere",
         entityId: piece.id,
         clientId: piece.clientId,
-        sujet: `Votre exemplaire signé — ${libellePiece} ${piece.numero}`,
+        sujet: `Votre exemplaire signé — ${libellePiece} ${numeroConnu}`,
       },
     ).catch(() => ({ enqueued: false }) as const);
     if (res.enqueued) aumoinsUnEnfile = true;
@@ -444,12 +469,14 @@ export async function transmettreCopiePartielle(
     }
 
     const libellePiece = circuitPour(piece.type)?.libelle ?? "la pièce";
+    const devisNum = await champNumeroDevis(piece);
     const res = await enqueueEmail(
       "piece-exemplaire-signe",
       to,
       "fr",
       {
         numero: piece.numero,
+        ...devisNum,
         libellePiece,
         partielle: true,
         ...(signataire !== undefined && signataire.signataireNom.trim() !== ""
@@ -468,7 +495,7 @@ export async function transmettreCopiePartielle(
         entityType: "DocumentGenere",
         entityId: piece.id,
         clientId: piece.clientId,
-        sujet: `Copie de votre signature — ${libellePiece} ${piece.numero}`,
+        sujet: `Copie de votre signature — ${libellePiece} ${devisNum.numeroDevis ?? piece.numero}`,
       },
     ).catch(() => ({ enqueued: false }) as const);
     if (!res.enqueued) return { ok: false, motif: "file_indisponible" };
