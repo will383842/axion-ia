@@ -48,21 +48,52 @@ beforeEach(() => {
     numero: "AXI-DEV-2026-001",
   });
   sigs("client", "axionia");
-  reprise.mockResolvedValue({ traite: true, ids: ["dv-1"], plansEchec: [] });
+  reprise.mockResolvedValue({
+    traite: true,
+    ids: ["dv-1"],
+    acceptes: ["dv-1"],
+    plansEchec: [],
+    confirmationsEchec: [],
+    confirmationsPreparees: [],
+    plansProposes: [],
+  });
 });
 
 describe("relancerAcceptationDevisAction", () => {
   it("devis signé des deux parties sans formule retenue : relance l'acceptation", async () => {
     const r = await relancerAcceptationDevisAction({ documentGenereId: DOC });
     expect(r).toEqual({ ok: true, devisAcceptes: 1 });
-    expect(reprise).toHaveBeenCalledWith(DOC);
+    expect(reprise).toHaveBeenCalledWith(DOC, { confirmer: true });
   });
 
   it("🔴 acceptation reprise mais plans non proposés : échec visible, jamais un succès muet", async () => {
-    reprise.mockResolvedValue({ traite: true, ids: ["dv-1"], plansEchec: ["dv-1"] });
+    reprise.mockResolvedValue({
+      traite: true,
+      ids: ["dv-1"],
+      acceptes: ["dv-1"],
+      plansEchec: ["dv-1"],
+      confirmationsEchec: [],
+      confirmationsPreparees: [],
+      plansProposes: [],
+    });
     const r = await relancerAcceptationDevisAction({ documentGenereId: DOC });
     expect(r.ok).toBe(false);
     expect(!r.ok && r.message).toContain("plans récurrents");
+  });
+
+  it("🔴 acceptation reprise mais confirmation de commande non préparée : échec visible", async () => {
+    reprise.mockResolvedValue({
+      traite: true,
+      ids: ["dv-1"],
+      acceptes: [],
+      plansEchec: [],
+      confirmationsEchec: ["dv-1"],
+      confirmationsPreparees: [],
+      plansProposes: [],
+    });
+    const r = await relancerAcceptationDevisAction({ documentGenereId: DOC });
+    expect(r.ok).toBe(false);
+    expect(!r.ok && r.message).toContain("confirmation de commande");
   });
 
   it("rôle sans habilitation à contresigner : refusé, rien n'est relancé", async () => {
@@ -89,16 +120,95 @@ describe("relancerAcceptationDevisAction", () => {
   });
 
   it("rien à reprendre (déjà accepté) : message clair, pas d'erreur levée", async () => {
-    reprise.mockResolvedValue({ traite: false, ids: [], plansEchec: [] });
+    reprise.mockResolvedValue({
+      traite: false,
+      ids: [],
+      acceptes: [],
+      plansEchec: [],
+      confirmationsEchec: [],
+      confirmationsPreparees: [],
+      plansProposes: [],
+    });
     const r = await relancerAcceptationDevisAction({ documentGenereId: DOC });
     expect(r.ok).toBe(false);
   });
 
   it("🔴 traite:true mais aucun devis réellement accepté : dit clairement que rien n'a été fait", async () => {
-    reprise.mockResolvedValue({ traite: true, ids: [], plansEchec: [] });
+    reprise.mockResolvedValue({
+      traite: true,
+      ids: [],
+      acceptes: [],
+      plansEchec: [],
+      confirmationsEchec: [],
+      confirmationsPreparees: [],
+      plansProposes: [],
+    });
     const r = await relancerAcceptationDevisAction({ documentGenereId: DOC });
     expect(r.ok).toBe(false);
     expect(!r.ok && r.message).toContain("Rien n'a été fait");
+  });
+
+  it("🔴 devis déjà accepté, confirmation déjà garée (rien préparé) : jamais ok:true", async () => {
+    reprise.mockResolvedValue({
+      traite: true,
+      ids: ["dv-1"],
+      acceptes: [],
+      plansEchec: [],
+      confirmationsEchec: [],
+      confirmationsPreparees: [],
+      plansProposes: [],
+    });
+    const r = await relancerAcceptationDevisAction({ documentGenereId: DOC });
+    expect(r.ok).toBe(false);
+    expect(!r.ok && r.message).toContain("Rien n'a été fait");
+  });
+
+  it("🔴 devis déjà accepté dont la reprise vient de préparer la confirmation : succès", async () => {
+    reprise.mockResolvedValue({
+      traite: true,
+      ids: ["dv-1"],
+      acceptes: [],
+      plansEchec: [],
+      confirmationsEchec: [],
+      confirmationsPreparees: ["dv-1"],
+      plansProposes: [],
+    });
+    expect(await relancerAcceptationDevisAction({ documentGenereId: DOC })).toEqual({
+      ok: true,
+      devisAcceptes: 1,
+    });
+  });
+
+  it("🔴 confirmation déjà garée mais plans reproposés par cet appel : pas de « Rien n'a été fait »", async () => {
+    reprise.mockResolvedValue({
+      traite: true,
+      ids: ["dv-1"],
+      acceptes: [],
+      plansEchec: [],
+      confirmationsEchec: [],
+      confirmationsPreparees: [],
+      plansProposes: ["dv-1"],
+    });
+    expect(await relancerAcceptationDevisAction({ documentGenereId: DOC })).toEqual({
+      ok: true,
+      devisAcceptes: 1,
+    });
+  });
+
+  it("🔴 confirmation ET plans en échec : les deux messages sont affichés", async () => {
+    reprise.mockResolvedValue({
+      traite: true,
+      ids: ["dv-1"],
+      acceptes: ["dv-1"],
+      plansEchec: ["dv-1"],
+      confirmationsEchec: ["dv-1"],
+      confirmationsPreparees: [],
+      plansProposes: [],
+    });
+    const r = await relancerAcceptationDevisAction({ documentGenereId: DOC });
+    expect(r.ok).toBe(false);
+    expect(!r.ok && r.message).toContain("confirmation de commande");
+    expect(!r.ok && r.message).toContain("plans récurrents");
   });
 
   it("nouvel échec : message avec le motif, jamais d'exception", async () => {
