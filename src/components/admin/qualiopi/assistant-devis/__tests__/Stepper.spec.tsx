@@ -4,6 +4,16 @@ import { describe, expect, it, vi } from "vitest";
 import { Stepper } from "../Stepper";
 
 describe("Stepper", () => {
+  it("desactive : les pastilles terminées ne sont plus cliquables", () => {
+    const onAller = vi.fn();
+    render(<Stepper etape={3} onAller={onAller} desactive />);
+    const boutons = screen.getAllByRole("button") as HTMLButtonElement[];
+    expect(boutons.length).toBeGreaterThan(0);
+    for (const b of boutons) expect(b.disabled).toBe(true);
+    fireEvent.click(boutons[0]!);
+    expect(onAller).not.toHaveBeenCalled();
+  });
+
   it("aria-current=step sur la seule étape courante", () => {
     render(<Stepper etape={2} onAller={() => {}} />);
     const courantes = document.querySelectorAll('[aria-current="step"]');

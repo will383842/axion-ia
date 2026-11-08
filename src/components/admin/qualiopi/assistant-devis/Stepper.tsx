@@ -34,9 +34,11 @@ export function annonceEtape(etape: Etape): string {
 export interface StepperProps {
   etape: Etape;
   onAller: (etape: Etape) => void;
+  /** Pendant une sauvegarde : les pastilles terminées ne sont plus cliquables. */
+  desactive?: boolean | undefined;
 }
 
-export function Stepper({ etape, onAller }: StepperProps) {
+export function Stepper({ etape, onAller, desactive = false }: StepperProps) {
   const courant = rangPastille(etape);
   return (
     <nav aria-label="Étapes du devis">
@@ -72,7 +74,12 @@ export function Stepper({ etape, onAller }: StepperProps) {
           return (
             <li key={p.etape} className="flex flex-1 items-center">
               {etat === "terminee" ? (
-                <button type="button" className={cls} onClick={() => onAller(p.etape)}>
+                <button
+                  type="button"
+                  className={cls}
+                  disabled={desactive}
+                  onClick={() => onAller(p.etape)}
+                >
                   {pastille}
                 </button>
               ) : etat === "courante" ? (

@@ -59,7 +59,16 @@ function depart(p: PropsAssistantDevis): {
   const lu = deserialiser(p.brouillonInitial.donnees);
   return lu.ok
     ? { etat: lu.etat, etape: lu.etape, erreur: null }
-    : { etat: neuf, etape: 1, erreur: lu.erreur };
+    : {
+        etat: neuf,
+        etape: 1,
+        erreur: `${lu.erreur} Il ne sera pas modifié : vos saisies iront dans un nouveau brouillon.`,
+      };
+}
+
+/** Vrai si le brouillon repris ne peut pas être lu (à passer à `useBrouillonAuto`). */
+export function brouillonEstIllisible(b: PropsAssistantDevis["brouillonInitial"]): boolean {
+  return b !== undefined && !deserialiser(b.donnees).ok;
 }
 
 export function AssistantDevis(props: PropsAssistantDevis) {
@@ -106,13 +115,15 @@ export function AssistantDevis(props: PropsAssistantDevis) {
   }
 
   function aller(cible: Etape) {
+    // Pendant une sauvegarde, `continuer` posera l'étape suivante : aucun saut ne doit la précéder.
+    if (enCours) return;
     setErreurs([]);
     setEtape(cible);
   }
 
   return (
     <div>
-      <Stepper etape={etape} onAller={aller} />
+      <Stepper etape={etape} onAller={aller} desactive={enCours} />
       <h2 ref={titre} tabIndex={-1} className="mb-[var(--space-admin-4,8px)] outline-none">
         {titreEtape(etape)}
       </h2>

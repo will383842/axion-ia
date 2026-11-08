@@ -141,13 +141,16 @@ export function periodesAbonnement(e: EtatAssistant): LignePeriode[] | null {
   return out;
 }
 
-/** Plafond d'indemnité de sortie : taux × mensualités restantes au plus haut (plus faible remise). */
+/**
+ * Plafond d'indemnité de sortie : taux × mensualités restantes au plus haut (plus faible remise).
+ * `null` sans engagement ou à taux 0 (aucune indemnité), comme `vueFormules`.
+ */
 export function indemniteSortieMax(e: EtatAssistant): number | null {
   const ab = e.abonnement;
   if (ab.engagementMois === 0) return null;
   const taux = pctEnBps(ab.indemniteTauxPct);
   const periodes = periodesAbonnement(e);
-  if (taux === null || periodes === null || periodes.length === 0) return null;
+  if (taux === null || taux === 0 || periodes === null || periodes.length === 0) return null;
   const restant = Math.max(...periodes.map((p) => p.mensuelNetCents)) * ab.engagementMois;
   try {
     return indemniteSortieMaxCents(restant, taux);

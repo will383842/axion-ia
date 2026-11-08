@@ -1,7 +1,7 @@
 import { act, fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 
-import { AssistantDevis, type PropsAssistantDevis } from "../AssistantDevis";
+import { AssistantDevis, brouillonEstIllisible, type PropsAssistantDevis } from "../AssistantDevis";
 import { serialiser, etatInitial } from "../etat";
 import { etatT1 } from "../fixtures";
 
@@ -113,5 +113,34 @@ describe("AssistantDevis", () => {
     expect(screen.getByRole("alert").textContent).toMatch(/version/i);
     expect(screen.getByTestId("etape").textContent).toBe("1");
     expect(etatInitial).toBeTypeOf("function");
+    expect(screen.getByRole("alert").textContent).toMatch(/nouveau brouillon/i);
+  });
+
+  it("brouillonEstIllisible : vrai pour un brouillon illisible, faux sinon", () => {
+    expect(brouillonEstIllisible(undefined)).toBe(false);
+    expect(brouillonEstIllisible({ id: "b", majLe: "t", donnees: { v: 9 } as never })).toBe(true);
+    expect(brouillonEstIllisible(remplirEtape1().brouillonInitial)).toBe(false);
+  });
+
+  it("pendant la sauvegarde, une pastille terminée ne fait pas sauter d'étape (course)", async () => {
+    let fin: (v: { ok: true }) => void = () => {};
+    const sauvegarder = vi.fn((_s: unknown) => new Promise<{ ok: true }>((r) => (fin = r)));
+    render(
+      <AssistantDevis
+        {...BASE}
+        brouillonInitial={{ id: "b", majLe: "t", donnees: serialiser(etatT1(), 2) }}
+        sauvegarder={sauvegarder}
+        rendreEtape={rendre}
+      />,
+    );
+    const pastille = screen.getByRole("button", { name: /Client et projet/ });
+    expect((pastille as HTMLButtonElement).disabled).toBe(false);
+    fireEvent.click(screen.getByRole("button", { name: "Continuer" }));
+    expect(sauvegarder).toHaveBeenCalledTimes(1);
+    expect((pastille as HTMLButtonElement).disabled).toBe(true);
+    fireEvent.click(pastille);
+    expect(screen.getByTestId("etape").textContent).toBe("2");
+    await act(async () => fin({ ok: true }));
+    await waitFor(() => expect(screen.getByTestId("etape").textContent).toBe("3"));
   });
 });

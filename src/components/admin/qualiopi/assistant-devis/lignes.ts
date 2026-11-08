@@ -40,14 +40,19 @@ export function appliquerOffre(
   code: string,
 ): { ligne: LigneAssistant; sansPrixFerme: boolean } {
   const offre = offres.find((o) => o.code === code);
+  const { offreTierId: _ancien, ...sansTier } = l;
   if (offre === undefined) {
-    return { ligne: { ...l, offreCode: "", designationDepuisOffre: false }, sansPrixFerme: false };
+    return {
+      ligne: { ...sansTier, offreCode: "", designationDepuisOffre: false },
+      sansPrixFerme: false,
+    };
   }
   const reprendreLeTitre = l.libelle.trim() === "" || l.designationDepuisOffre;
   return {
     ligne: {
-      ...l,
+      ...sansTier,
       offreCode: offre.code,
+      ...(offre.tierId !== null ? { offreTierId: offre.tierId } : {}),
       libelle: reprendreLeTitre ? offre.titreFr : l.libelle,
       designationDepuisOffre: reprendreLeTitre,
       prixEur: offre.prixHtCents !== null ? centsEnSaisie(offre.prixHtCents) : l.prixEur,

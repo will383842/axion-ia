@@ -33,6 +33,7 @@ export interface LigneClassique {
   quantite: number;
   prixUnitaireHtCents: number;
   offreCode?: string;
+  offreTierId?: string;
 }
 
 /** Forme de l'entrée de `createDevisAction` (hors client et projet, ajoutés par l'appelant). */
@@ -158,6 +159,7 @@ function versClassique(e: EtatAssistant): ResultatConversion {
       quantite: quantite ?? 0,
       prixUnitaireHtCents: prix ?? 0,
       ...(l.offreCode !== "" ? { offreCode: l.offreCode } : {}),
+      ...(l.offreCode !== "" && l.offreTierId ? { offreTierId: l.offreTierId } : {}),
     };
   });
   const f = e.financement;

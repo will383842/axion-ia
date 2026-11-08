@@ -36,9 +36,16 @@ export type StatutBrouillon = "inactif" | "enCours" | "enregistre" | "erreur" | 
 export interface ParamsBrouillonAuto {
   etat: EtatAssistant;
   etape: Etape;
-  basePath: string;
+  /** URL complète de la page de l'assistant (ex. `/fr/adm/qualiopi/devis/new`), sans requête. */
+  urlAssistant: string;
   sauverBrouillon: (i: EntreeSauvegarde) => Promise<ReponseSauvegarde>;
   brouillonInitial?: { id: string; majLe: string } | undefined;
+  /**
+   * Le brouillon repris n'a pas pu être lu : l'assistant est reparti d'un état vide. Son id n'est
+   * alors JAMAIS réutilisé (ni id ni `attenduMajLe` à l'envoi) : la première sauvegarde crée un
+   * nouveau brouillon, et le brouillon illisible reste tel quel.
+   */
+  brouillonIllisible?: boolean | undefined;
   origine?: { projetId?: string; rencontreId?: string } | undefined;
   delaiMs?: number | undefined;
 }
@@ -53,8 +60,9 @@ export function useBrouillonAuto(p: ParamsBrouillonAuto) {
   const [enregistreA, setEnregistreA] = useState<number | null>(null);
   const [nonEnregistre, setNonEnregistre] = useState(false);
 
-  const id = useRef<string | null>(p.brouillonInitial?.id ?? null);
-  const majLe = useRef<string | null>(p.brouillonInitial?.majLe ?? null);
+  const repris = p.brouillonIllisible ? undefined : p.brouillonInitial;
+  const id = useRef<string | null>(repris?.id ?? null);
+  const majLe = useRef<string | null>(repris?.majLe ?? null);
   const enConflit = useRef(false);
   const derniereCle = useRef(cle(p.etat, p.etape));
   const file = useRef<Promise<unknown>>(Promise.resolve());
@@ -92,7 +100,7 @@ export function useBrouillonAuto(p: ParamsBrouillonAuto) {
         setErreur(null);
         setEnregistreA(Date.now());
         setNonEnregistre(false);
-        if (premiere) router.replace(`${p.basePath}?brouillon=${r.data.id}`, { scroll: false });
+        if (premiere) router.replace(`${p.urlAssistant}?brouillon=${r.data.id}`, { scroll: false });
         return { ok: true };
       }
       if (r.conflit) {
@@ -104,7 +112,7 @@ export function useBrouillonAuto(p: ParamsBrouillonAuto) {
       setErreur(r.error);
       return { ok: false, erreur: r.error };
     },
-    [p.basePath, p.origine, router],
+    [p.urlAssistant, p.origine, router],
   );
 
   /** Sauvegarde en file : chaque envoi part avec le `majLe` rendu par le précédent. */

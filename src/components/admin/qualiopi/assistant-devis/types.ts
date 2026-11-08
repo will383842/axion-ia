@@ -30,6 +30,8 @@ export interface LigneAssistant {
   necessite: string[];
   champsLibres: Array<{ nom: string; valeur: string }>;
   offreCode: string;
+  /** `tier_id` des offres anciennes uniquement ; absent pour le catalogue V2. */
+  offreTierId?: string;
   designationDepuisOffre: boolean;
 }
 

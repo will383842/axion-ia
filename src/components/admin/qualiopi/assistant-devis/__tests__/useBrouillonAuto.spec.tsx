@@ -30,7 +30,7 @@ function monter(
       useBrouillonAuto({
         etat,
         etape,
-        basePath: BASE,
+        urlAssistant: BASE,
         sauverBrouillon: sauver as never,
         ...extra,
       }),
@@ -87,6 +87,30 @@ describe("sauvegarde automatique", () => {
     await act(async () => void vi.advanceTimersByTime(3000));
     expect(sauver.mock.calls[0]![0]).toMatchObject({ id: "b9", attenduMajLe: "t4" });
     expect(replace).not.toHaveBeenCalled();
+  });
+});
+
+describe("brouillon illisible", () => {
+  it("n'envoie jamais l'id ni le majLe du brouillon illisible : un nouveau brouillon est créé", async () => {
+    const sauver = vi.fn(async (_i: unknown) => ({ data: { id: "neuf", majLe: "t1" } }));
+    const { rerender } = renderHook(
+      ({ etat }: { etat: EtatAssistant }) =>
+        useBrouillonAuto({
+          etat,
+          etape: 1,
+          urlAssistant: BASE,
+          sauverBrouillon: sauver as never,
+          brouillonInitial: { id: "casse", majLe: "t0" },
+          brouillonIllisible: true,
+        }),
+      { initialProps: { etat: neuf() } },
+    );
+    rerender({ etat: modifie(neuf(), "A") });
+    await act(async () => void vi.advanceTimersByTime(3000));
+    const envoye = sauver.mock.calls[0]![0] as Record<string, unknown>;
+    expect(envoye).not.toHaveProperty("id");
+    expect(envoye).not.toHaveProperty("attenduMajLe");
+    expect(replace).toHaveBeenCalledWith(`${BASE}?brouillon=neuf`, { scroll: false });
   });
 });
 
@@ -171,14 +195,21 @@ describe("StatutSauvegarde", () => {
     const zone = screen.getByRole("status");
     expect(zone.getAttribute("aria-live")).toBe("polite");
     expect(zone.className).toMatch(/min-w-/);
-    expect(zone.textContent).toBe("Brouillon enregistré automatiquement · il y a 12 s");
+    expect(zone.textContent).toBe("Brouillon enregistré automatiquement");
+    expect(screen.getByTestId("temps-ecoule").textContent).toBe(" · il y a 12 s");
+  });
+
+  it("le compteur « il y a N s » est hors de la zone aria-live", () => {
+    render(<StatutSauvegarde statut="enregistre" enregistreA={Date.now() - 12_000} />);
+    expect(screen.getByRole("status").contains(screen.getByTestId("temps-ecoule"))).toBe(false);
+    expect(screen.getByTestId("temps-ecoule").closest("[aria-live]")).toBeNull();
   });
 
   it("le temps écoulé avance tout seul", () => {
     const t0 = Date.now();
     render(<StatutSauvegarde statut="enregistre" enregistreA={t0} />);
     act(() => void vi.advanceTimersByTime(65_000));
-    expect(screen.getByRole("status").textContent).toContain("il y a 1 min");
+    expect(screen.getByTestId("temps-ecoule").textContent).toContain("il y a 1 min");
   });
 
   it("états enregistrement en cours et erreur", () => {
@@ -195,5 +226,18 @@ describe("StatutSauvegarde", () => {
     screen.getByRole("button", { name: "Recharger la dernière version" }).click();
     expect(onRecharger).toHaveBeenCalledTimes(1);
     expect(screen.queryByRole("button", { name: /écraser/i })).toBeNull();
+  });
+
+  it("conflit : le focus entre dans l'alertdialog, sur le bouton de rechargement", () => {
+    render(<StatutSauvegarde statut="conflit" enregistreA={null} onRecharger={() => {}} />);
+    expect(document.activeElement).toBe(
+      screen.getByRole("button", { name: "Recharger la dernière version" }),
+    );
+  });
+
+  it("conflit sans onRecharger : bouton masqué, le focus va sur l'alertdialog", () => {
+    render(<StatutSauvegarde statut="conflit" enregistreA={null} />);
+    expect(screen.queryByRole("button")).toBeNull();
+    expect(document.activeElement).toBe(screen.getByRole("alertdialog"));
   });
 });

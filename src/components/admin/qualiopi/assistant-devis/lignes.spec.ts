@@ -106,6 +106,13 @@ describe("références envoyées au serveur", () => {
     expect(referencesOffre(ligne, OFFRES)).toEqual({});
   });
 
+  it("la ligne porte le tier de l'offre ancienne, et le perd quand on change d'offre ou la retire", () => {
+    const a = appliquerOffre(vide(), OFFRES, "AXI-OFF-006").ligne;
+    expect(a.offreTierId).toBe("intervention-dirigeants");
+    expect(appliquerOffre(a, OFFRES, "AXI-OFF-205").ligne).not.toHaveProperty("offreTierId");
+    expect(appliquerOffre(a, OFFRES, "").ligne).not.toHaveProperty("offreTierId");
+  });
+
   it("aucun taux de TVA n'est porté par les références", () => {
     const { ligne } = appliquerOffre(vide(), OFFRES, "AXI-OFF-006");
     expect(JSON.stringify(referencesOffre(ligne, OFFRES))).not.toMatch(/tva/i);

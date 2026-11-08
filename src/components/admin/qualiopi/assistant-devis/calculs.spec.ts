@@ -222,6 +222,13 @@ describe("égalité avec le moteur (vueFormules ∘ construireOffre)", () => {
     expect(indemniteSortieMax(e)).toBe(ab.indemniteSortieMaxHtCents);
   });
 
+  it("T2 à taux d'indemnité 0 : aucune indemnité, comme le moteur (null, pas 0)", () => {
+    const e = reducteur(etatT2(), { type: "abonnement", patch: { indemniteTauxPct: "0" } });
+    const ab = vue(e).formules[0]!.abonnement!;
+    expect(ab.indemniteSortieMaxHtCents).toBeNull();
+    expect(indemniteSortieMax(e)).toBe(ab.indemniteSortieMaxHtCents);
+  });
+
   it("T3 : A + B, mise en service saisie", () => {
     const e = etatT3();
     const v = vue(e);

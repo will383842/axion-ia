@@ -131,6 +131,21 @@ describe("prix unique (T4)", () => {
     expect("offre" in r).toBe(false);
   });
 
+  it("les lignes classiques emportent offreTierId quand la ligne en a un, jamais sinon", () => {
+    const e = etatT4();
+    const lignes = e.lignes.map((l, i) =>
+      i === 0 ? { ...l, offreCode: "AXI-OFF-006", offreTierId: "intervention-dirigeants" } : l,
+    );
+    const r = versOffre({ ...e, lignes }, CTX);
+    if (!r.ok || r.type !== "classique") throw new Error("classique attendu");
+    expect(r.classique.lignes[0]).toMatchObject({
+      offreCode: "AXI-OFF-006",
+      offreTierId: "intervention-dirigeants",
+    });
+    expect(r.classique.lignes[1]).not.toHaveProperty("offreTierId");
+    expect(r.classique.lignes[1]).not.toHaveProperty("offreCode");
+  });
+
   it("un client particulier impose le prix unique même si A + B est demandé", () => {
     const e = reducteur(etatT3(), { type: "client", id: "c", clientType: "particulier" });
     expect(versOffre(e, CTX)).toMatchObject({ ok: true, type: "classique" });

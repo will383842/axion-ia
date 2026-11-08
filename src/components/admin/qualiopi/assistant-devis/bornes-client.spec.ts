@@ -19,6 +19,9 @@ const INTERDITS = [
   /^node:/,
 ];
 
+/** Chemin relatif à la racine, en `/` (sous Windows `resolve` rend des `\\`). */
+const relatif = (chemin: string): string => chemin.replace(RACINE, "").replaceAll("\\", "/");
+
 function resoudre(depuis: string, spec: string): string | null {
   const base = spec.startsWith("@/")
     ? resolve(RACINE, "src", spec.slice(2))
@@ -58,19 +61,40 @@ function fermeture(entree: string): { fichiers: Set<string>; violations: string[
     vus.add(f);
     for (const spec of importsExecutes(readFileSync(f, "utf8"))) {
       const r = resoudre(f, spec);
-      if (INTERDITS.some((re) => re.test(spec) || (r !== null && re.test(r.replace(RACINE, "")))))
-        violations.push(`${f.replace(RACINE, "")} -> ${spec}`);
+      if (INTERDITS.some((re) => re.test(spec) || (r !== null && re.test(relatif(r)))))
+        violations.push(`${relatif(f)} -> ${spec}`);
       if (r !== null) pile.push(r);
     }
   }
   return { fichiers: vus, violations };
 }
 
-describe("AssistantDevis.tsx est sûr côté client", () => {
-  it("la fermeture d'imports ne contient ni pricing, ni prisma, ni server-only, ni node:*", () => {
-    const { fichiers, violations } = fermeture(resolve(__dirname, "AssistantDevis.tsx"));
-    expect(fichiers.size).toBeGreaterThan(5);
-    expect(violations).toEqual([]);
+/** Tous les fichiers de l'assistant que le navigateur charge. */
+const POINTS_D_ENTREE = [
+  "AssistantDevis.tsx",
+  "vers-offre.ts",
+  "calculs.ts",
+  "lignes.ts",
+  "useBrouillonAuto.ts",
+  "StatutSauvegarde.tsx",
+];
+
+describe("l'assistant de devis est sûr côté client", () => {
+  it.each(POINTS_D_ENTREE)(
+    "%s : la fermeture d'imports ne contient ni pricing, ni prisma, ni server-only, ni node:*",
+    (entree) => {
+      const { fichiers, violations } = fermeture(resolve(__dirname, entree));
+      expect(fichiers.size).toBeGreaterThan(0);
+      expect(violations).toEqual([]);
+    },
+  );
+
+  it("AssistantDevis.tsx tire bien plus de cinq fichiers (la garde parcourt vraiment)", () => {
+    expect(fermeture(resolve(__dirname, "AssistantDevis.tsx")).fichiers.size).toBeGreaterThan(5);
+  });
+
+  it("relatif() normalise un chemin Windows", () => {
+    expect(relatif(`${RACINE}\\src\\lib\\prisma.ts`)).toBe("/src/lib/prisma.ts");
   });
 
   it("le détecteur voit une violation (import interdit à l'exécution) mais pas un import de type", () => {
