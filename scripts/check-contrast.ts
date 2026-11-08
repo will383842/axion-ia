@@ -112,6 +112,7 @@ const pairs: Pair[] = [
   { fg: palette.terracotta, bg: palette.paper, label: "terracotta on paper" },
   { fg: palette.sage, bg: palette.paper, label: "sage on paper" },
   { fg: palette.sage, bg: palette.sageSoft, label: "sage on sage-soft" },
+  { fg: palette.sage, bg: palette.sand, label: "sage on sand", largeOnly: true }, // 4,29:1 : texte normal interdit
   { fg: palette.accentGreen, bg: palette.sageSoft, label: "success on sage-soft" },
   // Text on sand (intermissions)
   { fg: palette.fg, bg: palette.sand, label: "fg on sand" },
