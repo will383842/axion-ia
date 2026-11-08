@@ -136,7 +136,7 @@ export const SAISIES_EUROS: ReadonlyArray<{ saisie: string; cents: number | null
   { saisie: "2.400", cents: null },
   { saisie: "1 190,505", cents: null },
   { saisie: "-5", cents: null },
-  { saisie: "12 €", cents: null },
+  { saisie: "12 €", cents: null }, // price-exempt: saisie invalide du cas T6, pas un prix
 ];
 
 export const FIXTURES = { T1: etatT1, T2: etatT2, T3: etatT3, T4: etatT4, T5: etatT5 } as const;
