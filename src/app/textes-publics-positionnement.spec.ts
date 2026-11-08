@@ -101,10 +101,10 @@ describe("llms.txt / llms-full.txt — cible, rendez-vous, Qualiopi", () => {
     expect(await (await get()).text()).toContain(POSITIONNEMENT);
   });
 
-  it("llms.txt nomme l'offre « La Journée IA » (sans lien : la page arrive par un autre lot)", async () => {
+  it("llms.txt nomme et lie l'offre « La Journée IA » (page en ligne depuis #1854)", async () => {
     const corps = await (await getLlms()).text();
     expect(corps).toContain("La Journée IA");
-    expect(corps).not.toMatch(/journee-ia/);
+    expect(corps).toMatch(/\/fr\/journee-ia/);
   });
 
   it("llms.txt : la ligne du Tour France IA reste celle de main (chantier séparé)", async () => {
