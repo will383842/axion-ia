@@ -17,7 +17,7 @@ import { Container } from "@/components/layout/Container";
 import { Cta } from "@/components/marketing/Cta";
 import { JsonLd } from "@/components/marketing/JsonLd";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
-import { JOURNEE_IA_TIER } from "@/content/pricing";
+import { JOURNEE_IA_TIER, prixAffichable } from "@/content/pricing";
 import {
   buildFaqJsonLd,
   buildProductMetadata,
@@ -82,6 +82,8 @@ export default async function JourneeIaPage({ params }: Props) {
     name: "La Journée IA",
     description: DESCRIPTION,
     ...(JOURNEE_IA_TIER.priceFlat !== undefined ? { priceEur: JOURNEE_IA_TIER.priceFlat } : {}),
+    // R7 : la Journée IA est le seul palier dont le montant reste public.
+    prixPublic: prixAffichable(JOURNEE_IA_TIER),
     serviceType: "Audit et formation à l'IA en entreprise",
     areasServed: [{ type: "Country", name: "France" }],
   });

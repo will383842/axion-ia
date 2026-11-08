@@ -15,6 +15,7 @@
  */
 
 import { SITE_URL } from "@/lib/seo";
+import { PRIX_PUBLICS_AFFICHES } from "@/content/pricing";
 
 // ─── 1. DefinedTerm — glossary_term content type ─────────────────────────────
 
@@ -69,7 +70,9 @@ export function buildSoftwareApplicationJsonLd(input: SoftwareApplicationInput) 
     url: input.url,
     applicationCategory: input.applicationCategory,
     operatingSystem: input.operatingSystem ?? "Web",
-    ...(input.price != null
+    // R7 (ordre de Williams du 08/11/2026) — la gratuité (« 0 ») reste déclarée ; un
+    // montant payant seulement interrupteur des prix publics allumé.
+    ...(input.price != null && (Number(input.price) === 0 || PRIX_PUBLICS_AFFICHES)
       ? {
           offers: {
             "@type": "Offer",
