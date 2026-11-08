@@ -67,33 +67,33 @@ const palette = {
   bg: "#faf9f5", // canvas ivoire chaud
   paper: "#ffffff",
   sand: "#e8e6dc",
-  mocha: "#2a2520",
+  mocha: "#141413",
   // Encre — surface des pages d'atterrissage publicitaires (`.bg-vsl`).
   ink: "#141413",
   // Foreground
   fg: "#141413",
-  fgSoft: "#524b41",
-  fgMuted: "#5a4f44", // resynchronisé 2026-07-26 (X5) — globals.css porte #5a4f44
+  fgSoft: "#5e5d59",
+  fgMuted: "#5e5d59", // resynchronisé 2026-07-26 (X5) — globals.css porte #5a4f44
   mochaFg: "#faf9f5",
-  mochaFgMuted: "#b5aa9c", // texte secondaire sur mocha (espaces connectés)
-  mochaSoft: "#3d362f",
+  mochaFgMuted: "#b0aea5", // texte secondaire sur mocha (espaces connectés)
+  mochaSoft: "#141413",
   // Accents
-  primary: "#1a4dd9",
+  primary: "#b23f16",
   primaryFg: "#ffffff",
-  primarySoft: "#e8efff",
+  primarySoft: "#e8e6dc",
   terracotta: "#b23f16", // resynchronisé 2026-07-26 (X5) — assombri pour AA le 26/07
-  terracottaSoft: "#f5e3d8",
-  terracottaDeep: "#8c3010",
+  terracottaSoft: "#e8e6dc",
+  terracottaDeep: "#8f3412",
   // Terracotta éclairci pour surface SOMBRE (barre latérale des espaces
   // connectés). Le terracotta de marque n'y donne que 2,61:1.
-  terracottaOnMocha: "#eb8560",
+  terracottaOnMocha: "#d97757",
   sage: "#5e7050",
   sageSoft: "#eef1eb",
   // Compat v1 (legacy bg-accent-* tokens still emitted by Badge etc.)
-  accentOrange: "#ff6b00",
-  accentPurple: "#7a3dff",
+  accentOrange: "#d97757",
+  accentPurple: "#b23f16",
   accentGreen: "#5e7050",
-  accentYellow: "#ffae13",
+  accentYellow: "#e8e6dc",
   accentRed: "#b8341c",
 };
 
@@ -203,7 +203,8 @@ const pairs: Pair[] = [
   // Compat v1 (Badge variants, accent backgrounds — still used in product pages)
   { fg: palette.fg, bg: palette.accentOrange, label: "fg on accent-orange" },
   { fg: palette.fg, bg: palette.accentYellow, label: "fg on accent-yellow" },
-  { fg: palette.paper, bg: palette.accentGreen, label: "blanc (#ffffff) on accent-green" },
+  // V4-02 : accent-green = #5e7050 (palette définitive) → texte blanc (5,1:1), plus noir (3,4:1).
+  { fg: palette.primaryFg, bg: palette.accentGreen, label: "primaryFg on accent-green" },
   { fg: palette.primaryFg, bg: palette.accentPurple, label: "primaryFg on accent-purple" },
   {
     fg: palette.primaryFg,
