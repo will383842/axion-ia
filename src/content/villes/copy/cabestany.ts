@@ -49,7 +49,7 @@ export const CABESTANY_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Cabestany et dans l'agglo Perpignan ?",
-      a: "Oui, Axion-IA intervient à Cabestany et toute Perpignan Méditerranée Métropole (Perpignan à 7 min, Saleilles, Canet-en-Roussillon, Toulouges). Nos consultants sont basés à proximité immédiate.",
+      a: "Oui, Axion-IA intervient à Cabestany et toute Perpignan Méditerranée Métropole (Perpignan à 7 min, Saleilles, Canet-en-Roussillon, Toulouges). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les commerces des zones commerciales ?",

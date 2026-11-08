@@ -49,7 +49,7 @@ export const ALLONNES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Allonnes et dans le sud du Mans ?",
-      a: "Oui, Axion-IA intervient à Allonnes et dans tout le sud de Le Mans Métropole (Arnage, Mulsanne, Ruaudin, Changé). Nos consultants sont basés en agglomération mancelle, déplacement rapide.",
+      a: "Oui, Axion-IA intervient à Allonnes et dans tout le sud de Le Mans Métropole (Arnage, Mulsanne, Ruaudin, Changé). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les PME du secteur automobile sarthois ?",

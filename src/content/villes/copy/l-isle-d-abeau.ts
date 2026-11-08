@@ -18,9 +18,9 @@ export const L_ISLE_D_ABEAU_COPY: VilleCopy = {
   ecosystemEn:
     "L'Isle-d'Abeau est ville-centre de la Communauté d'agglomération Porte de l'Isère (CAPI, ~106 000 hab), troisième agglomération du département. Issue de la ville nouvelle conçue en 1968 sous Pompidou, elle a conservé son caractère urbanisé tout en gardant des zones agricoles. Tissu PME logistique (axe Lyon-Saint-Exupéry à 15 min), industriels, services aux entreprises et TPE.",
   distancesFr:
-    "Gare La Verpillière à 10 min (TER Lyon-Grenoble). Aéroport Lyon-Saint-Exupéry à 15 min. Lyon centre à 40 min A43. Bourgoin-Jallieu à 10 min. Grenoble centre à 1h.",
+    "Gare La Verpillière à 10 min (TER vers Lyon). Aéroport Lyon-Saint-Exupéry à 15 min. Lyon centre à 40 min A43. Bourgoin-Jallieu à 10 min.",
   distancesEn:
-    "Gare La Verpillière à 10 min (TER Lyon-Grenoble). Aéroport Lyon-Saint-Exupéry à 15 min. Lyon centre à 40 min A43. Bourgoin-Jallieu à 10 min. Grenoble centre à 1h.",
+    "Gare La Verpillière à 10 min (TER vers Lyon). Aéroport Lyon-Saint-Exupéry à 15 min. Lyon centre à 40 min A43. Bourgoin-Jallieu à 10 min.",
   topSectorsNaf: [
     "Logistique & transport (Lyon-Saint-Exupéry)",
     "Industrie & sous-traitance Nord-Isère",
@@ -49,7 +49,7 @@ export const L_ISLE_D_ABEAU_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à L'Isle-d'Abeau et CAPI ?",
-      a: "Oui, Axion-IA intervient à L'Isle-d'Abeau et toute la Communauté d'agglomération Porte de l'Isère (Villefontaine, Bourgoin-Jallieu, La Verpillière, Vaulx-Milieu, Saint-Quentin-Fallavier). Nos consultants viennent de Lyon (40 min A43) ou Grenoble (1h).",
+      a: "Oui, Axion-IA intervient à L'Isle-d'Abeau et toute la Communauté d'agglomération Porte de l'Isère (Villefontaine, Bourgoin-Jallieu, La Verpillière, Vaulx-Milieu, Saint-Quentin-Fallavier). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les logisticiens et industriels CAPI ?",

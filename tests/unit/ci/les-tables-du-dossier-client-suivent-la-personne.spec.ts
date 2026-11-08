@@ -142,7 +142,9 @@ describe("les tables du dossier client suivent la personne", () => {
     // par l'effacement ; notes, profil, étiquettes sont des exclusions motivées). Une future table
     // créée par migration seule s'ajoute à `TABLES_SANS_ECRIVAIN` ET à une exception « sans écrivain ».
     // Paires { modele, table } : `table` = nom `@@map` du modèle (pour détecter aussi le SQL brut).
-    const TABLES_SANS_ECRIVAIN: readonly { modele: string; table: string }[] = [];
+    const TABLES_SANS_ECRIVAIN: readonly { modele: string; table: string }[] = [
+      { modele: "ContactGuideReseau", table: "contacts_guide_reseau" },
+    ];
     expect(sansEcrivain.map((m) => m[1]).sort()).toEqual(
       TABLES_SANS_ECRIVAIN.map((t) => t.modele).sort(),
     );

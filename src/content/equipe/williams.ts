@@ -52,7 +52,7 @@ export const WILLIAMS_TAGLINE =
  * puis l'étendue de l'offre. Aucun pronom en ouverture, aucune référence à
  * « cette page » : une citation extraite du contexte doit rester vraie.
  */
-export const WILLIAMS_LEAD = `${FOUNDER.fullName} est le fondateur et CEO d'Axion-IA, agence d'intelligence artificielle opérationnelle dont le siège est à Grenoble (Auvergne-Rhône-Alpes) et qui intervient dans toute la France. Il conçoit et pilote des transformations par l'IA à gains rapides et mesurables pour les TPE, PME, ETI et grands groupes, sur cinq métiers : audit IA, formation, coaching individuel de dirigeants, implémentation en code source dont l'entreprise reste propriétaire, et automatisation des processus.`;
+export const WILLIAMS_LEAD = `${FOUNDER.fullName} est le fondateur et CEO d'Axion-IA, agence d'intelligence artificielle opérationnelle qui intervient partout en France. Il conçoit et pilote des transformations par l'IA à gains rapides et mesurables pour les TPE et PME, sur cinq métiers : audit IA, formation, coaching individuel de dirigeants, implémentation en code source dont l'entreprise reste propriétaire, et automatisation des processus.`;
 
 /**
  * Second paragraphe — la DOCTRINE, en propre. C'est le passage qui différencie
@@ -73,9 +73,8 @@ export const WILLIAMS_IDENTITE: ReadonlyArray<{ terme: string; valeur: string }>
   { terme: "Nom", valeur: FOUNDER.fullName },
   { terme: "Fonction", valeur: FOUNDER.jobTitleFr },
   { terme: "Entreprise", valeur: "Axion-IA — agence d'intelligence artificielle opérationnelle" },
-  { terme: "Siège", valeur: "Grenoble, Auvergne-Rhône-Alpes, France" },
   { terme: "Zone d'intervention", valeur: "France entière — sur site et à distance" },
-  { terme: "Clients", valeur: "PME, ETI, grands groupes et TPE, tous secteurs" },
+  { terme: "Clients", valeur: "TPE et PME, tous secteurs" },
   {
     terme: "Domaines",
     valeur:
@@ -98,8 +97,8 @@ export const WILLIAMS_PREUVES: ReadonlyArray<{ chiffre: string; libelle: string 
   },
   { chiffre: "0 intermédiaire", libelle: "Vous échangez directement avec l'équipe Axion-IA" },
   // 2026-09-30 — « PME → CAC 40 » retiré (formulation interdite par le dirigeant).
-  { chiffre: "TPE, PME et ETI", libelle: "Tous secteurs d'activité" },
-  { chiffre: "France entière", libelle: "Sur site partout, siège à Grenoble" },
+  { chiffre: "TPE et PME", libelle: "Tous secteurs d'activité" },
+  { chiffre: "France entière", libelle: "Interventions partout en France" },
 ];
 
 /**
@@ -289,13 +288,13 @@ export function buildWilliamsFaq({
     {
       id: "qui-est-williams-jullin",
       question: "Qui est Williams Jullin ?",
-      answer: `${FOUNDER.fullName} est le fondateur et CEO d'Axion-IA, agence d'intelligence artificielle opérationnelle dont le siège est à Grenoble et qui intervient dans toute la France. Il accompagne les PME, les ETI et les grands groupes — ainsi que les TPE à fort potentiel — sur l'audit IA, la formation, le coaching individuel de dirigeants, l'implémentation d'IA sur mesure et l'automatisation des processus, avec une exigence constante de résultats mesurés.`,
+      answer: `${FOUNDER.fullName} est le fondateur et CEO d'Axion-IA, agence d'intelligence artificielle opérationnelle qui intervient partout en France. Il accompagne les PME et les TPE sur l'audit IA, la formation, le coaching individuel de dirigeants, l'implémentation d'IA sur mesure et l'automatisation des processus, avec une exigence constante de résultats mesurés.`,
     },
     {
       id: "que-fait-axion-ia",
       question: "Qu'est-ce qu'Axion-IA ?",
       answer:
-        "Axion-IA est une agence française d'intelligence artificielle opérationnelle, fondée en 2026, dont le siège est à Grenoble (Auvergne-Rhône-Alpes). Elle couvre l'audit IA, la formation professionnelle, le coaching 1-to-1, l'implémentation de solutions IA sur mesure et l'automatisation des processus, pour des entreprises de toutes tailles et de tous secteurs, partout en France.",
+        "Axion-IA est une agence française d'intelligence artificielle opérationnelle, fondée en 2026. Elle couvre l'audit IA, la formation professionnelle, le coaching 1-to-1, l'implémentation de solutions IA sur mesure et l'automatisation des processus, pour les PME et les TPE, tous secteurs, partout en France.",
     },
     {
       id: "combien-de-temps-transformation",
@@ -313,13 +312,13 @@ export function buildWilliamsFaq({
       id: "secteurs-et-tailles",
       question: "Pour quelles entreprises Williams Jullin intervient-il ?",
       answer:
-        "Pour toutes les tailles, de la TPE de quelques salariés au grand groupe coté, et dans tous les secteurs — industrie, services, santé, immobilier, juridique, commerce, transport, secteur public. Le format d'intervention change avec la taille, la méthode ne change pas : cadrer sur le terrain, prouver sur les données réelles, déployer, transmettre.",
+        "Pour les PME et les TPE, dans tous les secteurs — industrie, services, santé, immobilier, juridique, commerce, transport, secteur public. Le format d'intervention change avec la taille de l'entreprise, la méthode ne change pas : cadrer sur le terrain, prouver sur les données réelles, déployer, transmettre.",
     },
     {
       id: "zone-geographique",
       question: "Williams Jullin intervient-il dans toute la France ?",
       answer:
-        "Oui. Le siège d'Axion-IA est à Grenoble, en Auvergne-Rhône-Alpes, et les missions sont menées dans toute la France, sur site — Paris et l'Île-de-France compris — au même tarif public qu'ailleurs. Les formats à distance sont disponibles pour le coaching individuel et une partie des formations.",
+        "Oui. Les missions sont menées partout en France, sur site — Paris et l'Île-de-France compris — au même tarif public qu'ailleurs. Les formats à distance sont disponibles pour le coaching individuel et une partie des formations.",
     },
     {
       id: "equipe",

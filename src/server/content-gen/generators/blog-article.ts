@@ -4,7 +4,7 @@
  * Différences vs blog-from-keywords :
  * - primaryKeyword optionnel (synthétisé depuis anchorVilleSlug + templateVariant)
  * - Angle "mise en pratique / retour terrain" plutôt que ciblage keyword pur
- * - Audience B2B PME/ETI France — format conseil opérationnel
+ * - Audience B2B : PME (et TPE) de France — format conseil opérationnel
  *
  * ARCHITECTURE 3-APPELS (2026-06-25) — voir audit content-gen profond.
  * Le mono-appel JSON faisait écrire le modèle court (~400 mots, finish_reason
@@ -15,6 +15,7 @@
  *      bodyHtml complet par tranches de 4 sections (130-190 mots/section).
  */
 
+import { taillePourPrompt } from "@/server/content-gen/brand/positionnement";
 import { generate as routerGenerate } from "../providers/provider-router";
 import { hashPrompt } from "../provenance/provenance-logger";
 import { retrieve as kbRetrieve } from "../kb-client";
@@ -64,7 +65,7 @@ const MIN_WORD_COUNT = 850;
 // APPEL 1 — PLAN : produit l'ossature (métadonnées + FAQ + outline 8 sections).
 // PAS de bodyHtml ici (c'est l'appel 2 qui développe).
 const SYSTEM_PROMPT_PLAN =
-  injectBrandVoice(`Tu es Manon, experte IA chez Axion-IA, cabinet de conseil en IA pour les petites et moyennes entreprises françaises.
+  injectBrandVoice(`Tu es Manon, la plume IA d'Axion-IA (assistance IA générative supervisée par l'équipe), partenaire IA de bout en bout des petites et moyennes entreprises françaises.
 Tu prépares le PLAN d'un article de blog FR optimisé SEO/AEO 2026 (le corps sera rédigé séparément). Règles :
 - 100 % centré Axion-IA, ancré sur les « Sources internes Axion-IA » fournies (faits KB). Rien d'inventé : ni cas client fictif, ni chiffre non sourcé.
 - INTERDIT : angle purement définitionnel. L'angle est TOUJOURS ce qu'Axion-IA fait concrètement (cas d'usage réels, bénéfices mesurables, retour terrain).
@@ -84,7 +85,7 @@ Tu prépares le PLAN d'un article de blog FR optimisé SEO/AEO 2026 (le corps se
 // APPEL 2 — EXPANSION : développe l'outline en bodyHtml complet et long.
 // C'est ici que se joue la LONGUEUR : chaque section doit faire 130-190 mots.
 const SYSTEM_PROMPT_EXPAND =
-  injectBrandVoice(`Tu es Manon, experte IA chez Axion-IA. Tu RÉDIGES le corps HTML d'un article de blog FR à partir d'un plan déjà validé. Règles absolues :
+  injectBrandVoice(`Tu es Manon, la plume IA d'Axion-IA (assistance IA générative supervisée par l'équipe). Tu RÉDIGES le corps HTML d'un article de blog FR à partir d'un plan déjà validé. Règles absolues :
 - GROUNDING OBLIGATOIRE : développe CHAQUE section à partir des « Sources internes Axion-IA » fournies (méthodologie, étapes, livrables, ROI RÉELS). Si un fait précis manque, reste général et factuel SANS rien inventer (ni cas client fictif, ni chiffre non sourcé).
 - INTERDIT : fabriquer un cas client (« Entreprise Anonyme », « une PME de la région »…) — n'utilise QUE les cas réels présents dans les faits fournis ; à défaut, n'invente aucun exemple chiffré.
 - INTERDIT : section purement définitionnelle. L'angle est TOUJOURS ce qu'Axion-IA fait concrètement (angle opérationnel : cas d'usage réels, bénéfices mesurables, retour terrain). 0 prix en dur, 0 délai chiffré, 0 numéro de téléphone (contact@axion-ia.com uniquement).
@@ -108,12 +109,7 @@ function synthesizeTopic(input: GeneratorBaseInput): string {
         ? "implémentation IA"
         : "déploiement de l'IA";
 
-  const audience =
-    input.targetAudienceSize === "TPE"
-      ? " pour TPE"
-      : input.targetAudienceSize === "ETI" || input.targetAudienceSize === "GRANDE_ENTREPRISE"
-        ? " pour ETI/GE"
-        : " pour PME";
+  const audience = input.targetAudienceSize === "TPE" ? " pour TPE" : " pour PME";
 
   const geo = input.anchorVilleSlug
     ? ` à ${input.anchorVilleSlug.replace(/-/g, " ")}`
@@ -131,7 +127,9 @@ export const blogArticleGenerator: Generator = {
     const topic = synthesizeTopic(input);
     const safeTopic = escapeLlmInput(topic, { maxLen: 140 });
     const safeIntent = escapeLlmInput(input.targetSearchIntent, { maxLen: 30 });
-    const safeAudienceSize = escapeLlmInput(input.targetAudienceSize ?? "PME", { maxLen: 30 });
+    const safeAudienceSize = escapeLlmInput(taillePourPrompt(input.targetAudienceSize, "PME"), {
+      maxLen: 30,
+    });
     const sectorTagSlugs = input.kbSectorTagSlugs ?? [];
     // Mot-clé effectif pour les gates/SEO : primaryKeyword si présent, sinon le
     // topic synthétisé (les articles de campagne n'ont pas toujours de keyword).

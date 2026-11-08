@@ -67,24 +67,22 @@ export interface PayloadAssistantV1 {
 export const TAILLE_MAX_PAYLOAD_OCTETS = 256 * 1024;
 
 const PROFONDEUR_MAX = 12;
-/** Clés de contact libres : le brouillon ne stocke jamais nom, e-mail ni téléphone (fiche client seulement). */
-const CLES_CONTACT = new Set([
-  "email",
-  "mail",
-  "courriel",
-  "telephone",
-  "tel",
-  "phone",
-  "mobile",
-  "contactemail",
-  "contactnom",
-  "contacttelephone",
-  "contactphone",
-  "emailclient",
-  "telephoneclient",
-  "nomclient",
-  "prenomclient",
-]);
+/**
+ * Clés de contact libres : le brouillon ne stocke jamais nom, e-mail ni téléphone (fiche client
+ * seulement). La clé est d'abord réduite à ses lettres minuscules sans accent (« contact_email »,
+ * « e-mail », « Téléphone » → « contactemail », « email », « telephone »).
+ */
+const MOTIF_CONTACT_SOUS_CHAINE = /mail|courriel|telephone|phone|portable|mobile/;
+const MOTIF_CONTACT_EXACT =
+  /^(tel|telcontact|contacttel|(nom|prenom|adresse)(d[eu])?(contact|client)|contact(nom|prenom|adresse)|adresse(d[eu])?(contact|client))$/;
+
+function estCleDeContact(cle: string): boolean {
+  const k = cle
+    .normalize("NFD")
+    .toLowerCase()
+    .replace(/[^a-z]/g, "");
+  return MOTIF_CONTACT_SOUS_CHAINE.test(k) || MOTIF_CONTACT_EXACT.test(k);
+}
 
 const ACTIVITES: readonly ActiviteAssistant[] = [
   "formation",
@@ -142,8 +140,9 @@ function octets(json: string): number {
   return new TextEncoder().encode(json).length;
 }
 
-function cleDeContact(v: unknown, profondeur = 0): string | null {
-  if (profondeur > PROFONDEUR_MAX) return null;
+/** `{ cle }` = clé de contact trouvée ; `{ tropProfond }` = imbrication au-delà de la limite (refus). */
+function cleDeContact(v: unknown, profondeur = 0): { cle: string } | { tropProfond: true } | null {
+  if (profondeur > PROFONDEUR_MAX) return { tropProfond: true };
   if (Array.isArray(v)) {
     for (const x of v) {
       const c = cleDeContact(x, profondeur + 1);
@@ -151,7 +150,7 @@ function cleDeContact(v: unknown, profondeur = 0): string | null {
     }
   } else if (estObjet(v)) {
     for (const [k, x] of Object.entries(v)) {
-      if (CLES_CONTACT.has(k.toLowerCase())) return k;
+      if (estCleDeContact(k)) return { cle: k };
       const c = cleDeContact(x, profondeur + 1);
       if (c) return c;
     }
@@ -316,10 +315,15 @@ export function lirePayload(
   if (!estObjet(brut)) return { ok: false, error: "Brouillon illisible (objet attendu)." };
   if (brut.v !== 1) return { ok: false, error: "Version de brouillon inconnue." };
   const contact = cleDeContact(brut);
+  if (contact && "tropProfond" in contact)
+    return {
+      ok: false,
+      error: `Brouillon trop imbriqué (${PROFONDEUR_MAX} niveaux au plus) : impossible de vérifier l'absence de contact libre.`,
+    };
   if (contact)
     return {
       ok: false,
-      error: `Champ de contact libre refusé (« ${contact} ») : utilisez la fiche client.`,
+      error: `Champ de contact libre refusé (« ${contact.cle} ») : utilisez la fiche client.`,
     };
   let etape: EtapeAssistant = 1;
   if (brut.etape !== undefined) {

@@ -9,18 +9,18 @@ export const VOREPPE_COPY: VilleCopy = {
   pitchEn:
     "Voreppe (38), positionnée à l'entrée géologique des Alpes (cluse de Voreppe, début du Y grenoblois), est bordée par l'Isère et les falaises du massif de la Chartreuse face au Vercors. Site historique de la bataille de Voreppe (juin 1940, général Olry). Tissu PME tertiaires, TPE artisans BTP, commerces et services. Axion-IA opère sur l'ensemble des activités professionnelles locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Voreppe (38). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants, indépendants, professions libérales, PME tertiaires voreppines, industriels périphériques et services aux entreprises du bassin nord-Isère vers Grenoble.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Voreppe (38). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants, indépendants, professions libérales, PME tertiaires voreppines, industriels périphériques et services aux entreprises du bassin nord-Isère.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Voreppe (38). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants, indépendants, professions libérales, PME tertiaires voreppines, industriels périphériques et services aux entreprises du bassin nord-Isère vers Grenoble.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Voreppe (38). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants, indépendants, professions libérales, PME tertiaires voreppines, industriels périphériques et services aux entreprises du bassin nord-Isère.",
   seoHook: "massif la",
   ecosystemFr:
-    "Voreppe occupe une position stratégique à la cluse de Voreppe (entrée géologique nord des Alpes), à 20 km de Grenoble sur l'axe A48 Lyon-Grenoble. Tissu PME tertiaires et industries périphériques, TPE artisanat BTP dense, commerces de proximité. Patrimoine historique remarquable (bataille de Voreppe 22 juin 1940, repoussant l'invasion allemande de la cuvette grenobloise).",
+    "Voreppe occupe une position stratégique à la cluse de Voreppe (entrée géologique nord des Alpes), sur l'axe A48. Tissu PME tertiaires et industries périphériques, TPE artisanat BTP dense, commerces de proximité. Patrimoine historique remarquable (bataille de Voreppe 22 juin 1940, repoussant l'invasion allemande de la cuvette grenobloise).",
   ecosystemEn:
-    "Voreppe occupe une position stratégique à la cluse de Voreppe (entrée géologique nord des Alpes), à 20 km de Grenoble sur l'axe A48 Lyon-Grenoble. Tissu PME tertiaires et industries périphériques, TPE artisanat BTP dense, commerces de proximité. Patrimoine historique remarquable (bataille de Voreppe 22 juin 1940, repoussant l'invasion allemande de la cuvette grenobloise).",
+    "Voreppe occupe une position stratégique à la cluse de Voreppe (entrée géologique nord des Alpes), sur l'axe A48. Tissu PME tertiaires et industries périphériques, TPE artisanat BTP dense, commerces de proximité. Patrimoine historique remarquable (bataille de Voreppe 22 juin 1940, repoussant l'invasion allemande de la cuvette grenobloise).",
   distancesFr:
-    "Gare Voreppe (TER Lyon-Grenoble, 25 min Grenoble, 1h Lyon). Aéroport Lyon-Saint-Exupéry à 1h. Aéroport Grenoble-Alpes-Isère à 50 min. Axe A48 vers Lyon (1h) et Grenoble (20 min).",
+    "Gare Voreppe (TER vers Lyon, 1h). Aéroport Lyon-Saint-Exupéry à 1h. Axe A48 vers Lyon (1h).",
   distancesEn:
-    "Gare Voreppe (TER Lyon-Grenoble, 25 min Grenoble, 1h Lyon). Aéroport Lyon-Saint-Exupéry à 1h. Aéroport Grenoble-Alpes-Isère à 50 min. Axe A48 vers Lyon (1h) et Grenoble (20 min).",
+    "Gare Voreppe (TER vers Lyon, 1h). Aéroport Lyon-Saint-Exupéry à 1h. Axe A48 vers Lyon (1h).",
   topSectorsNaf: [
     "PME tertiaires & services aux entreprises",
     "Industries périphériques nord-Isère",
@@ -30,8 +30,8 @@ export const VOREPPE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Voreppe : diagnostic adapté aux TPE artisans, PME tertiaires/industrielles, professions libérales du bassin nord-Isère vers Grenoble. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré accessible aux petites structures.",
-      en: "Audit IA à Voreppe : diagnostic adapté aux TPE artisans, PME tertiaires/industrielles, professions libérales du bassin nord-Isère vers Grenoble. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré accessible aux petites structures.",
+      fr: "Audit IA à Voreppe : diagnostic adapté aux TPE artisans, PME tertiaires/industrielles, professions libérales du bassin nord-Isère. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré accessible aux petites structures.",
+      en: "Audit IA à Voreppe : diagnostic adapté aux TPE artisans, PME tertiaires/industrielles, professions libérales du bassin nord-Isère. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré accessible aux petites structures.",
     },
     interventions: {
       fr: "Interventions IA sur site à Voreppe : formats adaptés au commerce, atelier artisan ou bureau PME. Vos équipes terrain et back-office repartent autonomes sur outils IA configurés métier.",
@@ -49,7 +49,7 @@ export const VOREPPE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Voreppe et nord-Isère ?",
-      a: "Oui, Axion-IA intervient à Voreppe et tout le nord-Isère vers Grenoble (Moirans, Saint-Égrève, Saint-Marcellin, Tullins, Veurey-Voroize). Couverture également cuvette grenobloise et accès rapide depuis Lyon (1h A48) ou Grenoble (20 min).",
+      a: "Oui, Axion-IA intervient à Voreppe et tout le nord-Isère (Moirans, Saint-Égrève, Saint-Marcellin, Tullins, Veurey-Voroize). Couverture également cuvette grenobloise.",
     },
     {
       q: "Travaillez-vous avec les TPE et artisans voreppins ?",
@@ -64,8 +64,8 @@ export const VOREPPE_COPY: VilleCopy = {
       a: "Pour les acteurs du tourisme patrimoine et nature autour de Voreppe (cluse, sites historiques, randonnée Chartreuse-Vercors), audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas IA : agents conversationnels multilingues, automatisation réservations, classification feedback visiteurs.",
     },
     {
-      q: "Comment se passe une mission depuis Lyon ou Grenoble ?",
-      a: "Nos consultants viennent de Lyon (1h A48) ou Grenoble (20 min A48 ou TER). Pour les multi-jours, hébergement local possible (hôtels Voreppe ou Grenoble).",
+      q: "Comment se déroule une intervention ?",
+      a: "Nous intervenons partout en France, sur place ou à distance. Pour les missions de plusieurs jours, un hébergement local est possible.",
     },
   ],
 };
