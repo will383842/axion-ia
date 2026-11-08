@@ -86,6 +86,14 @@ const SANS_AUCUN_APPELANT: ReadonlyArray<string> = [
   "server/actions/knowledge/upload-asset.ts::uploadAssetAction",
   // 2026-11-08 — assistant de devis : écran dans les PR E08+ (lot serveur-4, S13).
   "server/actions/qualiopi/devis-assistant-sources.ts::listerSourcesPourQuiAction",
+  // 2026-11-08 — assistant de devis : écrans dans les PR E08+ (lot serveur-2).
+  "server/actions/qualiopi/devis-assistant-brouillon.ts::creerBrouillonAssistantAction",
+  "server/actions/qualiopi/devis-assistant-brouillon.ts::listerMesBrouillonsAssistantAction",
+  "server/actions/qualiopi/devis-assistant-brouillon.ts::mettreAEcartBrouillonAssistantAction",
+  "server/actions/qualiopi/devis-assistant-brouillon.ts::reprendreBrouillonAssistantAction",
+  "server/actions/qualiopi/devis-assistant-brouillon.ts::sauverBrouillonAssistantAction",
+  "server/actions/qualiopi/devis-classique-modifier.ts::fixerValiditeDevisBrouillonAction",
+  "server/actions/qualiopi/devis-classique-modifier.ts::modifierDevisClassiqueBrouillonAction",
   "server/actions/qualiopi/devis.ts::reviseDevisAction",
   "server/actions/qualiopi/engine.ts::getGenerationStatusAction",
   "server/actions/qualiopi/enrollments.ts::updateEnrollmentPresenceAction",
