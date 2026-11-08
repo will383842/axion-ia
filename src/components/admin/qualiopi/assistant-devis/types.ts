@@ -100,6 +100,14 @@ export interface EtatAssistant {
   avantages: { A: string[]; B: string[] };
   servicesTiers: OffreDevisV1["servicesTiers"];
   plafondAConfirmer: OffreDevisV1["plafondAConfirmer"];
+  /**
+   * Saisies brutes de l'étape 2 (E14), alignées sur `servicesTiers`. Optionnelles : un brouillon
+   * ancien n'en porte pas, l'écran repart alors des centimes. Elles servent à refuser une saisie
+   * illisible que les centimes ne peuvent pas représenter.
+   */
+  servicesSaisies?: string[];
+  /** Plafond : `null` = case décochée ; texte (même vide) = case cochée. */
+  plafondSaisie?: string | null;
   /** Automatisations d'un devis rouvert : recopiées TELLES QUELLES, jamais réécrites. */
   automatisationsHeritees: OffreDevisV1["automatisations"];
   financement: {
