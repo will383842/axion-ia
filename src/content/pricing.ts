@@ -481,6 +481,43 @@ export const JOURNEE_IA_TIER: PricingTier = {
   audienceSizes: ["tpe", "pme"],
 };
 
+/**
+ * R7 — INTERRUPTEUR DES PRIX PUBLICS (ordre de Williams du 08/11/2026) :
+ * « il ne faut plus de prix affichés pour les formations, les audits ou autres. La seule
+ * chose à mettre en avant est la journée audit à 1 490 €. »
+ *
+ * `false` : AUCUN montant n'est rendu au public, sauf les paliers de
+ * `IDS_PRIX_TOUJOURS_AFFICHES` (la Journée IA). Les formateurs d'AFFICHAGE
+ * (`formatTierPrice`, `formatSubTierPrice`, `getEntryLabel`, `getFromLabel`,
+ * `formatFormationPrice`, `formatPricePublic`) et les jetons `{{price:…}}` de la prose
+ * rendent alors « Sur devis ».
+ *
+ * Les MONTANTS restent dans ce fichier : devis, réservation, barème des apporteurs,
+ * passerelle Partners et console les lisent toujours en brut (`priceFlat`, `formatPrice`,
+ * `formatAmount`, `getEntryPriceEur`). Repasser à `true` réaffiche la grille telle quelle.
+ *
+ * Verrouillé par `src/content/__tests__/prix-publics-masques.spec.ts`.
+ */
+export const PRIX_PUBLICS_AFFICHES: boolean = false;
+
+/** Paliers dont le montant reste affiché même interrupteur coupé : la Journée IA seule. */
+export const IDS_PRIX_TOUJOURS_AFFICHES: ReadonlySet<string> = new Set([JOURNEE_IA_TIER.id]);
+
+/**
+ * Le montant de ce palier (ou sous-palier) peut-il être montré au public ?
+ * `prixPublicMasque` (R5a) l'emporte toujours ; sinon l'interrupteur décide, la Journée IA
+ * passant dans tous les cas.
+ */
+export function prixAffichable(palier: { id: string; prixPublicMasque?: boolean }): boolean {
+  if (palier.prixPublicMasque === true) return false;
+  return PRIX_PUBLICS_AFFICHES || IDS_PRIX_TOUJOURS_AFFICHES.has(palier.id);
+}
+
+/** Libellé rendu à la place d'un montant masqué. */
+export function libelleSurDevis(locale: "fr" | "en" = "fr"): string {
+  return locale === "fr" ? "Sur devis" : "On request";
+}
+
 export const INTERVENTION_TIERS: ReadonlyArray<PricingTier> = [
   {
     // Sprint 14.10.7 (Will 2026-05-11) — palier 4 h Collectives. Tier porté
@@ -1187,8 +1224,8 @@ export function formatTierPrice(
   opts: FormatAmountOptions = {},
 ): string {
   const amount = tier.priceFlat ?? tier.priceMin;
-  if (amount == null || tier.prixPublicMasque === true) {
-    return locale === "fr" ? "Sur devis" : "On request";
+  if (amount == null || !prixAffichable(tier)) {
+    return libelleSurDevis(locale);
   }
   // Un tier sans `priceFlat` mais avec `priceMin` est un plancher par nature
   // (c'est la sémantique de `formatPrice`) : le préfixer aussi, sinon
@@ -1215,7 +1252,7 @@ export function formatSubTierPrice(
   locale: "fr" | "en" = "fr",
   opts: FormatAmountOptions = {},
 ): string {
-  if (sub.prixPublicMasque === true) return locale === "fr" ? "Sur devis" : "On request";
+  if (!prixAffichable(sub)) return libelleSurDevis(locale);
   return formatAmount(sub.priceFlat, locale, { ...opts, from: sub.isFromPrice === true });
 }
 
@@ -1273,9 +1310,9 @@ export function getEntryLabel(
   opts: FormatAmountOptions = {},
 ): string {
   const price = getEntryPriceEur(tiers);
-  // R5a : catégorie dont le palier d'entrée est masqué → jamais de montant.
-  if (price == null || getEntryTier(tiers).prixPublicMasque === true) {
-    return locale === "fr" ? "Sur devis" : "On request";
+  // R5a / R7 : catégorie dont le palier d'entrée est masqué → jamais de montant.
+  if (price == null || !prixAffichable(getEntryTier(tiers))) {
+    return libelleSurDevis(locale);
   }
   return locale === "fr"
     ? `À partir de ${formatAmount(price, "fr", opts)}`
@@ -1292,9 +1329,9 @@ export function getFromLabel(
   opts: FormatAmountOptions = {},
 ): string {
   const price = getEntryPriceEur(tiers);
-  // R5a : catégorie dont le palier d'entrée est masqué → jamais de montant.
-  if (price == null || getEntryTier(tiers).prixPublicMasque === true) {
-    return locale === "fr" ? "Sur devis" : "On request";
+  // R5a / R7 : catégorie dont le palier d'entrée est masqué → jamais de montant.
+  if (price == null || !prixAffichable(getEntryTier(tiers))) {
+    return libelleSurDevis(locale);
   }
   return locale === "fr"
     ? `À partir de ${formatAmount(price, "fr", opts)}`
@@ -1362,6 +1399,14 @@ export function formatPrice(tier: PricingTier, locale: "fr" | "en" = "fr"): stri
     return `${locale === "fr" ? "À partir de" : "Starting at"} ${fmt(tier.priceMin)}${currency}${recurrence}`;
   }
   return locale === "fr" ? "Sur devis" : "On quote";
+}
+
+/**
+ * `formatPrice` pour l'AFFICHAGE PUBLIC : « Sur devis » si le palier est masqué (R7).
+ * `formatPrice` reste brut pour le devis et la console.
+ */
+export function formatPricePublic(tier: PricingTier, locale: "fr" | "en" = "fr"): string {
+  return prixAffichable(tier) ? formatPrice(tier, locale) : libelleSurDevis(locale);
 }
 
 /** Tier d'entrée d'une catégorie (le moins cher) — utile pour CTA prix. */
@@ -1437,7 +1482,8 @@ export function formatFormationPrice(
   locale: "fr" | "en" = "fr",
 ): string {
   const p = getFormationPrice(categorie, duree);
-  if (p === undefined) return locale === "fr" ? "Sur devis" : "On quote";
+  // R7 : aucun prix de formation au public tant que l'interrupteur est coupé.
+  if (p === undefined || !PRIX_PUBLICS_AFFICHES) return locale === "fr" ? "Sur devis" : "On quote";
   return formatAmount(p, locale);
 }
 

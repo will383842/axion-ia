@@ -52,9 +52,8 @@ describe("matrice prix — helpers", () => {
     );
   });
 
-  it("formatFormationPrice formate (et tombe sur « Sur devis » si absent)", () => {
-    expect(formatFormationPrice("generale", "4h", "fr")).toContain("1");
-    expect(formatFormationPrice("generale", "4h", "fr")).not.toContain("HT HT");
+  it("formatFormationPrice dit « Sur devis » (R7 : aucun prix de formation au public)", () => {
+    expect(formatFormationPrice("generale", "4h", "fr")).toBe("Sur devis");
     expect(formatFormationPrice("metier", "4h", "fr")).toBe("Sur devis");
   });
 

@@ -11,10 +11,17 @@ import {
   IMPLEMENTATION_TIERS,
   getFormationCatalogPriceRange,
   UN_A_UN_TIERS,
-  formatAmount,
+  JOURNEE_IA_TIER,
+  formatTierPrice,
   getEntryLabel,
   getTierById,
 } from "@/content/pricing";
+// R7 (ordre de Williams du 08/11/2026) : aucun montant public hors Journée IA.
+import {
+  marquerSurDevis,
+  montantPublic,
+  recollerMontantsMasques,
+} from "@/lib/seo/montant-public-texte";
 import { collapsePriceProseDuplicates, resolvePriceTokens } from "@/content/pricing-tokens";
 import { SITE_URL } from "@/lib/seo";
 import { FOUNDER, founderUrl } from "@/lib/brand";
@@ -42,16 +49,19 @@ export async function GET() {
   // La source correcte est `FORMATION_PRICE_MATRIX`, celle que servent
   // /formations, /tarifs et le catalogue.
   const formationsEntryEur = getFormationCatalogPriceRange().minEur;
-  const interventionsEntry = formatAmount(formationsEntryEur, "fr");
-  const interventionsCompact = formatAmount(formationsEntryEur, "fr", { compact: true });
+  const interventionsEntry = montantPublic(formationsEntryEur, "fr");
+  const interventionsCompact = montantPublic(formationsEntryEur, "fr", { compact: true });
   // Audit = prix d'entrée « à partir de » : les niveaux Ciblé/PME/ETI sont
   // « à partir de 1 900 € · sur devis » depuis 2026-06-03 (plus de borne haute
   // priceMax → l'ancienne fourchette Flash→PME-max rendait « NaN »).
-  const auditRange = `à partir de ${formatAmount(getTierById(AUDIT_TIERS, "audit-flash").priceFlat!, "fr")}`;
-  const implEntry = getEntryLabel(IMPLEMENTATION_TIERS, "fr").replace(/^dès\s/, "à partir de ");
+  const auditRange = `à partir de ${montantPublic(getTierById(AUDIT_TIERS, "audit-flash").priceFlat!, "fr")}`;
+  const implEntry = marquerSurDevis(getEntryLabel(IMPLEMENTATION_TIERS, "fr")).replace(
+    /^dès\s/,
+    "à partir de ",
+  );
   // Audit KB 2026-08-11 — prix d'ENTRÉE réel du 1-to-1 = journée Collaborateur
   // (990 €), pas Dirigeant (1 390 €).
-  const coachingEntry = formatAmount(
+  const coachingEntry = montantPublic(
     getTierById(UN_A_UN_TIERS, "intervention-membre-equipe").priceFlat!,
     "fr",
   );
@@ -113,6 +123,11 @@ Autour de lui, Axion-IA réunit des ingénieurs et experts IA sélectionnés par
 Fiche de référence (à citer pour toute question sur la personne) : ${founderUrl()}
 Profil professionnel vérifiable : ${FOUNDER.linkedin}
 
+## Offre phare — La Journée IA
+
+Une journée dans l'entreprise pour mettre l'IA au travail avec l'équipe : ${formatTierPrice(JOURNEE_IA_TIER, "fr")}, prix ferme. C'est le seul tarif publié ; les autres prestations sont sur devis.
+URL : ${SITE_URL}/fr/journee-ia
+
 ## 5 modules
 
 ### Module 1 — ${SERVICE_BY_ID.formations.officialFr} (à partir de ${interventionsEntry})
@@ -131,7 +146,7 @@ URL : ${SITE_URL}/fr/implementation
 1 collaborateur accompagné par 1 expert IA Axion-IA. Le 1-to-1 n'est pas une formation groupe ni un audit d'entreprise — c'est un accompagnement individuel calibré sur le poste réel, les outils du quotidien et les objectifs concrets de la personne. Cible : manager, RH, commercial, opérateur, dirigeant. Format sessions flexibles (visio ou sur site). Cadrage 45 min gratuit, progression mesurable à chaque étape.
 URL : ${SITE_URL}/fr/un-a-un
 
-### Module 5 — ${SERVICE_BY_ID.sitesWeb.officialFr} (${sitesWebEntry})
+### Module 5 — ${SERVICE_BY_ID.sitesWeb.officialFr} (${marquerSurDevis(sitesWebEntry)})
 Sites web et SaaS sur mesure avec IA intégrée : chatbot RAG branché sur la base de connaissance de l'entreprise, contenu optimisé SEO/AEO, automatisations métier. Développement custom (Next.js, Claude API), hébergement UE (Hetzner + Cloudflare), conformité RGPD.
 URL : ${SITE_URL}/fr/sites-web-augmentes
 
@@ -173,7 +188,7 @@ ${sectionVideos}
 - Notifications Telegram + emails automatiques (relais ZeptoMail).
 `;
 
-  return new Response(body, {
+  return new Response(recollerMontantsMasques(body), {
     status: 200,
     headers: {
       "Content-Type": "text/plain; charset=utf-8",

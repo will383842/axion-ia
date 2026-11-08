@@ -26,9 +26,10 @@ describe("parseFaqItems — résolution des tokens de prix", () => {
 
     expect(items).toHaveLength(1);
     expect(items[0]!.answer).not.toContain("{{price:");
-    // On n'assert pas le montant exact : il vient du SSOT tarifaire et peut
-    // légitimement changer. Ce qui compte est qu'un prix soit rendu.
-    expect(items[0]!.answer).toMatch(/€/);
+    // R7 (08/11/2026) : aucun montant public hors Journée IA — le jeton est résolu
+    // en « sur devis », jamais laissé brut ni rendu en euros.
+    expect(items[0]!.answer).toBe("Ils sont sur devis.");
+    expect(items[0]!.answer).not.toMatch(/€/);
   });
 
   it("résout aussi dans la question", () => {
