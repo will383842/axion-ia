@@ -76,6 +76,9 @@ function fichiers(...segments: string[]): string[] {
 const SANS_SURFACE_CONNUS: ReadonlyArray<string> = [
   "server/actions/image-bank/publish.action.ts",
   "server/actions/image-bank/translate.action.ts",
+  // 2026-11-08 — assistant de devis : écrans dans les PR E08+ (lot serveur-2).
+  "server/actions/qualiopi/devis-assistant-brouillon.ts",
+  "server/actions/qualiopi/devis-classique-modifier.ts",
   "server/actions/knowledge/add-relation.ts",
   "server/actions/knowledge/assign-reviewer.ts",
   "server/actions/knowledge/rollback-version.ts",

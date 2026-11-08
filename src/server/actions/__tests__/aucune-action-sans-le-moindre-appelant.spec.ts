@@ -88,6 +88,14 @@ const SANS_AUCUN_APPELANT: ReadonlyArray<string> = [
   // l'assistant (lot ÉCRANS, E-lots), livré APRÈS ce lot. Sort de cette liste dès qu'un écran
   // l'appelle (le second test l'exige).
   "server/actions/qualiopi/devis-assistant-apercu.ts::apercuAssistantAction",
+  // 2026-11-08 — assistant de devis : écrans dans les PR E08+ (lot serveur-2).
+  "server/actions/qualiopi/devis-assistant-brouillon.ts::creerBrouillonAssistantAction",
+  "server/actions/qualiopi/devis-assistant-brouillon.ts::listerMesBrouillonsAssistantAction",
+  "server/actions/qualiopi/devis-assistant-brouillon.ts::mettreAEcartBrouillonAssistantAction",
+  "server/actions/qualiopi/devis-assistant-brouillon.ts::reprendreBrouillonAssistantAction",
+  "server/actions/qualiopi/devis-assistant-brouillon.ts::sauverBrouillonAssistantAction",
+  "server/actions/qualiopi/devis-classique-modifier.ts::fixerValiditeDevisBrouillonAction",
+  "server/actions/qualiopi/devis-classique-modifier.ts::modifierDevisClassiqueBrouillonAction",
   "server/actions/qualiopi/devis.ts::reviseDevisAction",
   "server/actions/qualiopi/engine.ts::getGenerationStatusAction",
   "server/actions/qualiopi/enrollments.ts::updateEnrollmentPresenceAction",
