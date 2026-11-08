@@ -44,6 +44,10 @@ describe("cas concrets éteints", () => {
     "src/app/sitemap.ts",
     "src/app/llms.txt/route.ts",
     "src/app/llms-full.txt/route.ts",
+    "src/app/api/markdown/[type]/[slug]/route.ts",
+    "src/content/press.ts",
+    "src/content/faq-resources.ts",
+    "src/lib/email/templates/implementation-confirmed.tsx",
   ])("%s lit l'interrupteur", (fichier) => {
     expect(lire(fichier)).toContain("CAS_CONCRETS_AFFICHES");
   });

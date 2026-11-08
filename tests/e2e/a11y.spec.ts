@@ -20,7 +20,6 @@ const STRATEGIC_PATHS = [
   { path: "/fr/implementation", label: "implementation" },
   { path: "/fr/appel", label: "appel" },
   // Tier 2 — content marketing + AEO/GEO (P1-19 extension 2026-05-15)
-  { path: "/fr/cas-concrets", label: "cas-concrets" },
   { path: "/fr/methodologie", label: "methodologie" },
   { path: "/fr/comparaisons", label: "comparaisons" },
   { path: "/fr/stack-ia", label: "stack-ia" },

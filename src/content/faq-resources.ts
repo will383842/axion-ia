@@ -1,3 +1,4 @@
+import { CAS_CONCRETS_AFFICHES } from "@/content/preuves-sociales";
 // FAQ — liens internes contextuels curés par catégorie (SSOT maillage).
 // Refonte premium hub FAQ 2026-06-01 : le reader `FaqItem` n'expose aucun champ
 // de liens (la DB ne porte ni `tags` ni `relatedLinks`), donc le maillage
@@ -191,5 +192,7 @@ const DEFAULT_RESOURCES: ReadonlyArray<FaqResourceLink> = FAQ_CATEGORY_RESOURCES
  * Fallback sur `general` pour toute catégorie inconnue (ex. legacy/KB).
  */
 export function getFaqResources(category: string): ReadonlyArray<FaqResourceLink> {
-  return FAQ_CATEGORY_RESOURCES[category] ?? DEFAULT_RESOURCES;
+  const liens = FAQ_CATEGORY_RESOURCES[category] ?? DEFAULT_RESOURCES;
+  // Cas concrets éteints (2026-11-08) : pas de lien vers une page en 404.
+  return CAS_CONCRETS_AFFICHES ? liens : liens.filter((l) => l.href !== "/cas-concrets");
 }

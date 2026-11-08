@@ -396,7 +396,7 @@ export async function generateSitemaps(): Promise<Array<{ id: string }>> {
     // `app/sitemap-index.xml/route.ts` manuellement.
     "faq",
     "help",
-    "cas-concrets",
+    ...(CAS_CONCRETS_AFFICHES ? (["cas-concrets"] as const) : []),
     "comparaisons",
     // "guides" RETIRÉ de generateSitemaps() 2026-08-16 (audit GEO/AEO, GEO-147).
     // Ce sub-sitemap ne contenait QU'UNE URL — le hub `/fr/guides` — déjà émise
