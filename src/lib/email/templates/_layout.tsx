@@ -782,8 +782,7 @@ const TXT = {
     signatureEquipe: "The Axion-IA team",
     signaturePositionnement:
       "Hearing about AI everywhere and no longer sure where to start? We cut through the noise, and handle it for you, end to end.",
-    signatureServices:
-      "AI audit · Automated systems implementation · Training · 1-to-1 coaching",
+    signatureServices: "AI audit · Automated systems implementation · Training · 1-to-1 coaching",
     signatureRdv: "Book a call",
     signatureLinkedin: "LinkedIn",
     legalForm: EMAIL_LEGAL.legalFormEn,
