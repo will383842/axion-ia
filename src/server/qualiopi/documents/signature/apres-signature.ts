@@ -34,7 +34,10 @@
  * (alerte `exemplaire_signe_non_transmis`, cron du positionnement).
  */
 
-import { proposerPlansApresAcceptation } from "@/server/qualiopi/devis/proposer-plans";
+import {
+  proposerPlansApresAcceptation,
+  proposerPlansApresAcceptationDetaille,
+} from "@/server/qualiopi/devis/proposer-plans";
 import * as Sentry from "@sentry/nextjs";
 import { prisma } from "@/lib/prisma";
 import { sendTelegram } from "@/lib/telegram";
@@ -194,6 +197,8 @@ export async function reprendreAcceptationDevisFormules(
   confirmationsEchec: string[];
   /** Devis dont la confirmation vient d'être garée en corbeille par CET appel. */
   confirmationsPreparees: string[];
+  /** Devis pour lesquels CET appel vient de créer au moins un plan récurrent (pas « déjà présents »). */
+  plansProposes: string[];
 }> {
   const formules = await accepterDevisAFormules(prisma, documentGenereId);
   if (formules.traite) {
@@ -252,10 +257,11 @@ export async function reprendreAcceptationDevisFormules(
   // préalable → « déjà présents »). Inerte interrupteur éteint. Aucune facture, aucun e-mail.
   const aProposer = formules.traite ? formules.acceptes : dejaAcceptes;
   const plansEchec: string[] = [];
+  const plansProposes: string[] = [];
   for (const id of aProposer) {
-    if ((await proposerPlansApresAcceptation(id, "signature_complete")) !== null) {
-      plansEchec.push(id);
-    }
+    const r = await proposerPlansApresAcceptationDetaille(id, "signature_complete");
+    if (r.echec !== null) plansEchec.push(id);
+    else if (r.proposes) plansProposes.push(id);
   }
   return {
     traite: formules.traite || aProposer.length > 0,
@@ -264,6 +270,7 @@ export async function reprendreAcceptationDevisFormules(
     plansEchec,
     confirmationsEchec,
     confirmationsPreparees,
+    plansProposes,
   };
 }
 

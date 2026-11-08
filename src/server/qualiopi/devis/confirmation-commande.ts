@@ -80,6 +80,13 @@ export interface DependancesConfirmation {
   /** `true` : déjà gardé en corbeille ou déjà journalisé. `null` : base muette, état inconnu. */
   dejaEnvoyee(jobId: string): Promise<boolean | null>;
   enfiler: typeof enqueueEmail;
+  /**
+   * Exécute `corps` sous un verrou exclusif propre au devis (défaut : verrou consultatif
+   * Postgres tenu pendant la transaction). Le contrôle `dejaEnvoyee` ET la mise en corbeille
+   * doivent s'y trouver ensemble : sinon deux appels simultanés (deux clics, deux onglets,
+   * contresignature concurrente) passent tous deux le contrôle avant que l'un ait posé sa ligne.
+   */
+  sousVerrou<T>(devisId: string, corps: () => Promise<T>): Promise<T>;
 }
 
 export interface DemandeConfirmationCommande {
@@ -186,6 +193,17 @@ const dependancesParDefaut: DependancesConfirmation = {
     }
   },
   enfiler: enqueueEmail,
+  // Sans migration : `email_outbox.job_id` n'est pas unique, le verrou consultatif tient lieu
+  // d'unicité. La ligne de corbeille est posée par une autre connexion, mais elle est validée
+  // avant que ce `corps` (donc la transaction et le verrou) ne se termine : le suivant la voit.
+  sousVerrou: (devisId, corps) =>
+    prisma.$transaction(
+      async (tx) => {
+        await tx.$executeRaw`SELECT pg_advisory_xact_lock(hashtext(${`devis-commande-confirmation-${devisId}`}))`;
+        return corps();
+      },
+      { timeout: 30_000, maxWait: 10_000 },
+    ),
 };
 
 export async function envoyerConfirmationCommande(
@@ -254,40 +272,54 @@ export async function envoyerConfirmationCommande(
   }
   const cgvJointes = cleCgv !== null;
 
-  const res = await deps.enfiler(
-    "devis-commande-confirmation",
-    email,
-    "fr",
-    {
-      clientNom: devis.client.raisonSociale,
-      numero: devis.numero,
-      ...(formuleRetenue !== undefined ? { formuleRetenue } : {}),
-      ...(automatisationsRetenues !== undefined && automatisationsRetenues.length > 0
-        ? { automatisationsRetenues: [...automatisationsRetenues] }
-        : {}),
-      ...(recurrent !== undefined && recurrent.length > 0 ? { recurrent: [...recurrent] } : {}),
-      montantHtLabel: eur(totaux.totalHtCents),
-      montantTvaLabel: eur(totaux.totalTvaCents),
-      montantTtcLabel: eur(totaux.totalTtcCents),
-      ...(versionAcceptee !== null ? { cgvVersionLabel: libelleVersionCgv(versionAcceptee) } : {}),
-      cgvJointes,
-    },
-    {
-      jobId,
-      // 🔴 Jamais d'e-mail client automatique : toujours la corbeille « à valider ».
-      exigerValidation: true,
-      clientId: devis.clientId,
-      sujet: `Confirmation de commande — devis ${devis.numero}`,
-      attachments: [
-        { filename: `${devis.numero}-signe.pdf`, r2Key: cleExemplaire },
-        ...(cleCgv !== null && versionAcceptee !== null
-          ? [{ filename: `CGV-${versionAcceptee}.pdf`, r2Key: cleCgv }]
-          : []),
-      ],
-      entityType: "Devis",
-      entityId: devis.id,
-    },
-  );
+  const enfilerConfirmation = () =>
+    deps.enfiler(
+      "devis-commande-confirmation",
+      email,
+      "fr",
+      {
+        clientNom: devis.client.raisonSociale,
+        numero: devis.numero,
+        ...(formuleRetenue !== undefined ? { formuleRetenue } : {}),
+        ...(automatisationsRetenues !== undefined && automatisationsRetenues.length > 0
+          ? { automatisationsRetenues: [...automatisationsRetenues] }
+          : {}),
+        ...(recurrent !== undefined && recurrent.length > 0 ? { recurrent: [...recurrent] } : {}),
+        montantHtLabel: eur(totaux.totalHtCents),
+        montantTvaLabel: eur(totaux.totalTvaCents),
+        montantTtcLabel: eur(totaux.totalTtcCents),
+        ...(versionAcceptee !== null
+          ? { cgvVersionLabel: libelleVersionCgv(versionAcceptee) }
+          : {}),
+        cgvJointes,
+      },
+      {
+        jobId,
+        // 🔴 Jamais d'e-mail client automatique : toujours la corbeille « à valider ».
+        exigerValidation: true,
+        clientId: devis.clientId,
+        sujet: `Confirmation de commande — devis ${devis.numero}`,
+        attachments: [
+          { filename: `${devis.numero}-signe.pdf`, r2Key: cleExemplaire },
+          ...(cleCgv !== null && versionAcceptee !== null
+            ? [{ filename: `CGV-${versionAcceptee}.pdf`, r2Key: cleCgv }]
+            : []),
+        ],
+        entityType: "Devis",
+        entityId: devis.id,
+      },
+    );
+
+  // 🔴 Sous verrou : le contrôle est REFAIT (un appel concurrent a pu garer la confirmation
+  // depuis le contrôle rapide ci-dessus), puis la mise en corbeille suit sans fenêtre.
+  const sousVerrou = await deps.sousVerrou(devis.id, async () => {
+    const dejaSousVerrou = await deps.dejaEnvoyee(jobId);
+    if (dejaSousVerrou === null) return { refus: "etat_inconnu" as const };
+    if (dejaSousVerrou) return { refus: "deja_envoyee" as const };
+    return { res: await enfilerConfirmation() };
+  });
+  if ("refus" in sousVerrou) return { envoye: false, raison: sousVerrou.refus };
+  const res = sousVerrou.res;
   if (!res.enqueued && res.garePourValidation !== true) {
     return { envoye: false, raison: "file_indisponible" };
   }

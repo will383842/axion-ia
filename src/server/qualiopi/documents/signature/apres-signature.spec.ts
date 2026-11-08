@@ -63,8 +63,19 @@ vi.mock("@/server/partners-sync/producteurs/devis", () => ({
 vi.mock("@/server/qualiopi/devis/acceptation-formules", () => ({
   accepterDevisAFormules: vi.fn(async () => ({ traite: false, ids: [], acceptes: [] })),
 }));
+const plans = vi.hoisted(() => {
+  const proposer = vi.fn(async (_id: string, _o: string): Promise<string | null> => null);
+  // `proposes` : vrai si le test le demande (plans réellement créés par l'appel).
+  const proposes = { valeur: false };
+  return { proposer, proposes };
+});
 vi.mock("@/server/qualiopi/devis/proposer-plans", () => ({
-  proposerPlansApresAcceptation: vi.fn(async () => null),
+  proposerPlansApresAcceptation: plans.proposer,
+  // La variante détaillée délègue au même simulacre : les assertions existantes restent valables.
+  proposerPlansApresAcceptationDetaille: vi.fn(async (id: string, o: string) => {
+    const echec = await plans.proposer(id, o);
+    return { echec, proposes: echec === null && plans.proposes.valeur };
+  }),
 }));
 vi.mock("@/server/qualiopi/devis/confirmation-commande", () => ({
   envoyerConfirmationCommande: h.confirmer,
@@ -609,10 +620,25 @@ describe("devis intégralement signé : le prospect passe en client", () => {
       plansEchec: [],
       confirmationsEchec: [],
       confirmationsPreparees: [],
+      plansProposes: [],
     });
     expect(proposerPlansApresAcceptation).toHaveBeenCalledWith("dv-formules", "signature_complete");
     // Aucune montée de fiche : l'acceptation n'a pas eu lieu à cet appel.
     expect(h.monter).not.toHaveBeenCalled();
+  });
+
+  it("🔴 reprise : `plansProposes` distingue « proposés par cet appel » de « déjà présents »", async () => {
+    h.p.devis.findMany.mockResolvedValueOnce([{ id: "dv-formules" }]);
+    plans.proposes.valeur = true;
+    try {
+      const r = await reprendreAcceptationDevisFormules(DOC);
+      expect(r.plansProposes).toEqual(["dv-formules"]);
+      expect(r.plansEchec).toEqual([]);
+    } finally {
+      plans.proposes.valeur = false;
+    }
+    h.p.devis.findMany.mockResolvedValueOnce([{ id: "dv-formules" }]);
+    expect((await reprendreAcceptationDevisFormules(DOC)).plansProposes).toEqual([]);
   });
 
   it("reprise manuelle : aucun devis à formules → rien à proposer", async () => {
@@ -624,6 +650,7 @@ describe("devis intégralement signé : le prospect passe en client", () => {
       plansEchec: [],
       confirmationsEchec: [],
       confirmationsPreparees: [],
+      plansProposes: [],
     });
     expect(proposerPlansApresAcceptation).not.toHaveBeenCalled();
   });

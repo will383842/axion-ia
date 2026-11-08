@@ -77,6 +77,7 @@ function deps(over: Partial<DependancesConfirmation> & { devis?: unknown } = {})
     deposer,
     dejaEnvoyee: async () => false,
     enfiler: enfiler as never,
+    sousVerrou: (_id, corps) => corps(),
     ...over,
   };
   return { d, enfiler, deposer };
@@ -314,5 +315,63 @@ describe("envoyerConfirmationCommande", () => {
           !f.includes("catalogue.ts"),
       );
     expect(importeurs.filter((f) => /webhook|cron|worker|queue/i.test(f))).toEqual([]);
+  });
+});
+
+describe("envoyerConfirmationCommande — appels concurrents (verrou par devis)", () => {
+  /** Corbeille simulée : lit/écrit des lignes avec une latence, comme une vraie base. */
+  function corbeilleSimulee(verrouille: boolean) {
+    const lignes = new Set<string>();
+    let queue: Promise<unknown> = Promise.resolve();
+    const attendre = () => new Promise((r) => setTimeout(r, 5));
+    const sousVerrou: DependancesConfirmation["sousVerrou"] = verrouille
+      ? (_id, corps) => {
+          const suite = queue.then(corps, corps);
+          queue = suite.catch(() => undefined);
+          return suite;
+        }
+      : (_id, corps) => corps();
+    const enfiler = vi.fn(async (_t: string, _to: string, _l: string, _p: unknown, o: unknown) => {
+      await attendre();
+      lignes.add((o as { jobId: string }).jobId);
+      return { enqueued: false, garePourValidation: true };
+    });
+    const dejaEnvoyee = async (jobId: string) => {
+      await attendre();
+      return lignes.has(jobId);
+    };
+    return { lignes, enfiler, d: deps({ sousVerrou, dejaEnvoyee, enfiler: enfiler as never }).d };
+  }
+
+  it("deux appels simultanés : une seule ligne garée, l'autre reçoit deja_envoyee", async () => {
+    const { d, enfiler, lignes } = corbeilleSimulee(true);
+    const [a, b] = await Promise.all([
+      envoyerConfirmationCommande(DEMANDE, d),
+      envoyerConfirmationCommande(DEMANDE, d),
+    ]);
+    expect(enfiler).toHaveBeenCalledTimes(1);
+    expect(lignes.size).toBe(1);
+    expect([a.envoye, b.envoye].sort()).toEqual([false, true]);
+    const refus = [a, b].find((r) => !r.envoye);
+    expect(refus).toEqual({ envoye: false, raison: "deja_envoyee" });
+  });
+
+  it("témoin : sans verrou, la même course gare DEUX lignes (le test rougit sans le correctif)", async () => {
+    const { d, enfiler } = corbeilleSimulee(false);
+    await Promise.all([
+      envoyerConfirmationCommande(DEMANDE, d),
+      envoyerConfirmationCommande(DEMANDE, d),
+    ]);
+    expect(enfiler).toHaveBeenCalledTimes(2);
+  });
+
+  it("le contrôle est refait SOUS le verrou : une base muette sous verrou refuse (etat_inconnu)", async () => {
+    let appels = 0;
+    const { d, enfiler } = deps({
+      dejaEnvoyee: async () => (++appels === 1 ? false : null),
+    });
+    const r = await envoyerConfirmationCommande(DEMANDE, d);
+    expect(r).toEqual({ envoye: false, raison: "etat_inconnu" });
+    expect(enfiler).not.toHaveBeenCalled();
   });
 });

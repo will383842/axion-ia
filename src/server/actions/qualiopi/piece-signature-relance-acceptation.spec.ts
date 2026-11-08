@@ -55,6 +55,7 @@ beforeEach(() => {
     plansEchec: [],
     confirmationsEchec: [],
     confirmationsPreparees: [],
+    plansProposes: [],
   });
 });
 
@@ -73,6 +74,7 @@ describe("relancerAcceptationDevisAction", () => {
       plansEchec: ["dv-1"],
       confirmationsEchec: [],
       confirmationsPreparees: [],
+      plansProposes: [],
     });
     const r = await relancerAcceptationDevisAction({ documentGenereId: DOC });
     expect(r.ok).toBe(false);
@@ -87,6 +89,7 @@ describe("relancerAcceptationDevisAction", () => {
       plansEchec: [],
       confirmationsEchec: ["dv-1"],
       confirmationsPreparees: [],
+      plansProposes: [],
     });
     const r = await relancerAcceptationDevisAction({ documentGenereId: DOC });
     expect(r.ok).toBe(false);
@@ -124,6 +127,7 @@ describe("relancerAcceptationDevisAction", () => {
       plansEchec: [],
       confirmationsEchec: [],
       confirmationsPreparees: [],
+      plansProposes: [],
     });
     const r = await relancerAcceptationDevisAction({ documentGenereId: DOC });
     expect(r.ok).toBe(false);
@@ -137,6 +141,7 @@ describe("relancerAcceptationDevisAction", () => {
       plansEchec: [],
       confirmationsEchec: [],
       confirmationsPreparees: [],
+      plansProposes: [],
     });
     const r = await relancerAcceptationDevisAction({ documentGenereId: DOC });
     expect(r.ok).toBe(false);
@@ -151,6 +156,7 @@ describe("relancerAcceptationDevisAction", () => {
       plansEchec: [],
       confirmationsEchec: [],
       confirmationsPreparees: [],
+      plansProposes: [],
     });
     const r = await relancerAcceptationDevisAction({ documentGenereId: DOC });
     expect(r.ok).toBe(false);
@@ -165,11 +171,44 @@ describe("relancerAcceptationDevisAction", () => {
       plansEchec: [],
       confirmationsEchec: [],
       confirmationsPreparees: ["dv-1"],
+      plansProposes: [],
     });
     expect(await relancerAcceptationDevisAction({ documentGenereId: DOC })).toEqual({
       ok: true,
       devisAcceptes: 1,
     });
+  });
+
+  it("🔴 confirmation déjà garée mais plans reproposés par cet appel : pas de « Rien n'a été fait »", async () => {
+    reprise.mockResolvedValue({
+      traite: true,
+      ids: ["dv-1"],
+      acceptes: [],
+      plansEchec: [],
+      confirmationsEchec: [],
+      confirmationsPreparees: [],
+      plansProposes: ["dv-1"],
+    });
+    expect(await relancerAcceptationDevisAction({ documentGenereId: DOC })).toEqual({
+      ok: true,
+      devisAcceptes: 1,
+    });
+  });
+
+  it("🔴 confirmation ET plans en échec : les deux messages sont affichés", async () => {
+    reprise.mockResolvedValue({
+      traite: true,
+      ids: ["dv-1"],
+      acceptes: ["dv-1"],
+      plansEchec: ["dv-1"],
+      confirmationsEchec: ["dv-1"],
+      confirmationsPreparees: [],
+      plansProposes: [],
+    });
+    const r = await relancerAcceptationDevisAction({ documentGenereId: DOC });
+    expect(r.ok).toBe(false);
+    expect(!r.ok && r.message).toContain("confirmation de commande");
+    expect(!r.ok && r.message).toContain("plans récurrents");
   });
 
   it("nouvel échec : message avec le motif, jamais d'exception", async () => {

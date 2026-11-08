@@ -1136,24 +1136,36 @@ export async function relancerAcceptationDevisAction(input: {
       },
       session,
     });
-    if (res.confirmationsEchec.length > 0) {
+    const confirmationEchec = res.confirmationsEchec.length > 0;
+    const plansEchec = res.plansEchec.length > 0;
+    if (confirmationEchec || plansEchec) {
+      // Les deux échecs sont dits ensemble (comme `accepterDevis`) : n'en montrer qu'un
+      // enverrait Will relancer une étape en croyant l'autre réglée.
+      const messages = [
+        ...(confirmationEchec
+          ? [
+              "la confirmation de commande n'a pas été mise en corbeille (code consigné). " +
+                "Relancez l'acceptation depuis la fiche du devis.",
+            ]
+          : []),
+        ...(plansEchec
+          ? [
+              "les plans récurrents n'ont pas pu être proposés (code consigné). " +
+                "Relancez la proposition des plans.",
+            ]
+          : []),
+      ];
       return {
         ok: false,
-        message:
-          "L'acceptation est enregistrée, mais la confirmation de commande n'a pas été mise en " +
-          "corbeille (code consigné). Relancez l'acceptation depuis la fiche du devis.",
-      };
-    }
-    if (res.plansEchec.length > 0) {
-      return {
-        ok: false,
-        message:
-          "L'acceptation est enregistrée, mais les plans récurrents n'ont pas pu être proposés " +
-          "(code consigné). Relancez la proposition des plans.",
+        message: `L'acceptation est enregistrée, mais ${messages.join(" De plus, ")}`,
       };
     }
     // Jamais de faux succès : ni accepté ni confirmation préparée par cet appel = rien fait.
-    if (res.acceptes.length === 0 && res.confirmationsPreparees.length === 0) {
+    if (
+      res.acceptes.length === 0 &&
+      res.confirmationsPreparees.length === 0 &&
+      res.plansProposes.length === 0
+    ) {
       return {
         ok: false,
         message:
