@@ -241,7 +241,7 @@ export async function fixerValiditeDevisBrouillonAction(
         opcoEstimationAvertissement: opco.opcoEstimationAvertissement ?? null,
         resteAChargeCents: opco.resteAChargeCents ?? null,
       };
-    } else if (actuel.montantOpcoEstimeCents) {
+    } else if (actuel.montantOpcoEstimeCents != null) {
       return {
         error:
           "La date change l'estimation OPCO : fournissez les paramètres pour la recalculer (saisie « estimation »).",

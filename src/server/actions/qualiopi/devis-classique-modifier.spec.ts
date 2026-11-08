@@ -368,6 +368,15 @@ describe("fixerValiditeDevisBrouillonAction (S10)", () => {
       expect(m.devisUpdateMany).not.toHaveBeenCalled();
     });
 
+    it("sans saisie et estimation existante à 0 € : REFUS aussi, rien n'est écrit", async () => {
+      // estimateOpcoCoverage rend 0 € (enveloppe épuisée, 50 salariés ou plus) : 0 n'est pas « absent ».
+      m.devisFindUnique.mockResolvedValueOnce({ ...OPCO, montantOpcoEstimeCents: 0 });
+      const r = await appel("2027-01-15");
+      expect("error" in r && r.error).toMatch(/recalculer/);
+      expect(m.estimate).not.toHaveBeenCalled();
+      expect(m.devisUpdateMany).not.toHaveBeenCalled();
+    });
+
     it("sans saisie mais sans estimation existante : la date s'enregistre seule", async () => {
       m.devisFindUnique
         .mockResolvedValueOnce({ ...OPCO, montantOpcoEstimeCents: null })
