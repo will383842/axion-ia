@@ -181,7 +181,7 @@ Les maisons de maroquinerie (Hermès, Chanel Maroquinerie) ont des supply chains
 
 **Savoir-faire artisanal et traçabilité** : les maisons de luxe investissent dans la traçabilité IA (supply chain transparente, origine des matières) pour répondre aux attentes des consommateurs et aux exigences réglementaires (règlement européen sur la durabilité des produits, ESPR). Hermès publie depuis 2022 un passeport digital pour ses sacs iconiques.
 
-**IA responsable et représentation** : le secteur mode-luxe est scruté sur les biais algorithmiques (diversité des modèles dans les outils d'essayage virtuel, représentativité des données d'entraînement). L'AI Act européen (applicable août 2026) impose des obligations de transparence sur les systèmes d'IA à haut risque, notamment les outils de sélection de profils clients.
+**IA responsable et représentation** : le secteur mode-luxe est scruté sur les biais algorithmiques (diversité des modèles dans les outils d'essayage virtuel, représentativité des données d'entraînement). L'AI Act européen prévoit des obligations de transparence (article 50, applicable depuis le 2 août 2026) et des exigences renforcées pour les systèmes à haut risque, dont l'annexe III est reportée au 2 décembre 2027 par le règlement (UE) 2026/1744. Selon l'usage, un outil de sélection de profils clients peut relever ou non du haut risque : à vérifier sur EUR-Lex selon votre cas.
 
 ## Points d'entrée pour une intervention IA
 
@@ -195,9 +195,11 @@ Axion-IA intervient typiquement sur : (1) audit de la maturité data de la maiso
       "https://auraluxuryblockchain.com/",
       "https://www.euipo.europa.eu/en/ip-crime/ipr-infringement-in-the-eu",
       "https://www.heuritech.com/",
+      "https://eur-lex.europa.eu/eli/reg/2026/1744/oj",
+      "https://eur-lex.europa.eu/eli/reg/2024/1689/oj",
     ],
-    lastReviewedOn: "2026-05-20",
-    reviewedBy: "claude-sonnet-4-6",
+    lastReviewedOn: "2026-11-08",
+    reviewedBy: "relecture-ai-act-2026-11-08",
   },
 
   // ────────────────────────────────────────────────────────────────────────────

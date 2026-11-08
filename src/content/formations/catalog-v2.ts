@@ -1103,7 +1103,7 @@ const IA_POUR_L_AUTOMATISATION: FormationV2 = {
           temps: "20'",
           type: "cadre",
           titre:
-            "Le test de qualification en 4 questions et les textes qui le fondent : données personnelles ? effet sur une personne ? décision sans relecture humaine (art. 22 du RGPD) ? suivi de l'activité de salariés (annexe III §4(b) du règlement européen sur l'IA, applicable depuis le 2 août 2026) ? — avec ce que chaque réponse déclenche : information des salariés, consultation du CSE (art. L.2312-8 II 4° du Code du travail), analyse d'impact (art. 35 du RGPD), ou arrêt pur et simple. Grille imprimée fournie",
+            "Le test de qualification en 4 questions et les textes qui le fondent : données personnelles ? effet sur une personne ? décision sans relecture humaine (art. 22 du RGPD) ? suivi de l'activité de salariés (annexe III §4(b) du règlement européen sur l'IA, applicable au 2 décembre 2027 après report par le règlement (UE) 2026/1744) ? — avec ce que chaque réponse déclenche : information des salariés, consultation du CSE (art. L.2312-8 II 4° du Code du travail), analyse d'impact (art. 35 du RGPD), ou arrêt pur et simple. Grille imprimée fournie",
         },
         {
           temps: "45'",
@@ -1418,7 +1418,7 @@ const IA_POUR_LES_RH: FormationV2 = {
           temps: "15'",
           type: "cadre",
           titre:
-            "Ce que le droit impose AVANT d'ouvrir un CV, en clair (fiche de synthèse remise, sources datées dans le kit formateur) : le candidat doit être informé préalablement des méthodes et techniques d'aide au recrutement utilisées (L.1221-8) ; le CSE doit être informé préalablement à leur utilisation (L.2312-38) ; on ne demande que ce qui a un lien direct et nécessaire avec l'emploi (L.1221-6) ; les critères de discrimination interdits (L.1132-1 — liste sourcée et datée fournie au formateur, à ne jamais citer de mémoire) et la façon dont un prompt les réintroduit sans le dire ; et la qualification du règlement européen sur l'IA : le tri, le filtrage et l'évaluation de candidatures sont classés à HAUT RISQUE (annexe III, point 4 a), obligations applicables depuis le 2 août 2026 — pourquoi la présynthèse sous grille imposée, sans classement ni score, reste en dehors de ce régime",
+            "Ce que le droit impose AVANT d'ouvrir un CV, en clair (fiche de synthèse remise, sources datées dans le kit formateur) : le candidat doit être informé préalablement des méthodes et techniques d'aide au recrutement utilisées (L.1221-8) ; le CSE doit être informé préalablement à leur utilisation (L.2312-38) ; on ne demande que ce qui a un lien direct et nécessaire avec l'emploi (L.1221-6) ; les critères de discrimination interdits (L.1132-1 — liste sourcée et datée fournie au formateur, à ne jamais citer de mémoire) et la façon dont un prompt les réintroduit sans le dire ; et la qualification du règlement européen sur l'IA : le tri, le filtrage et l'évaluation de candidatures sont classés à HAUT RISQUE (annexe III, point 4 a), obligations applicables au 2 décembre 2027 après report par le règlement (UE) 2026/1744 — pourquoi la présynthèse sous grille imposée, sans classement ni score, reste en dehors de ce régime",
         },
         {
           temps: "25'",
