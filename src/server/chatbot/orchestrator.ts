@@ -425,7 +425,7 @@ export async function handleTurn(
         return {
           intent: "explication",
           text: doctrine
-            ? "Je préfère vous orienter vers un échange plutôt que d'avancer une information imprécise. Réservez un rendez-vous gratuit de 45 minutes :"
+            ? "Je préfère vous orienter vers un échange plutôt que d'avancer une information imprécise. Réservez votre Diagnostic IA gratuit de 45 minutes, sans engagement :"
             : "Je préfère ne pas avancer une information incertaine. Voici un échange pour en parler précisément :",
           cards: [],
           sendLinks: false,

@@ -286,7 +286,7 @@ describe("doctrine des interdits en sortie (lot R3)", () => {
       },
     );
     expect(r.text).not.toMatch(/qualiopi|100 ?%/i);
-    expect(r.text).toMatch(/45 minutes/);
+    expect(r.text).toMatch(/Diagnostic IA gratuit de 45 minutes, sans engagement/);
     expect(r.escalate).toBe(false); // le lien vers le rendez-vous suffit
     expect(r.rdvUrl).toBeTruthy();
     expect(r.guard.ok).toBe(false);
