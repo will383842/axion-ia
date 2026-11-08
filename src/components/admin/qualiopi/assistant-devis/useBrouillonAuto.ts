@@ -1,4 +1,5 @@
 "use client";
+// use-client: hook (minuterie, état, useRouter) de sauvegarde automatique.
 
 /**
  * Assistant de devis — sauvegarde automatique du brouillon (fiche E07).

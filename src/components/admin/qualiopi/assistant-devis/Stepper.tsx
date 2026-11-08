@@ -1,4 +1,5 @@
 "use client";
+// use-client: composant interactif (boutons de navigation entre étapes).
 
 /**
  * Assistant de devis — pastilles d'étapes (fiche E06).

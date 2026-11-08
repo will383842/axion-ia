@@ -1,4 +1,5 @@
 "use client";
+// use-client: minuterie d affichage du temps écoulé (setInterval) côté navigateur.
 
 /**
  * Assistant de devis — zone d'état de la sauvegarde (fiche E07).

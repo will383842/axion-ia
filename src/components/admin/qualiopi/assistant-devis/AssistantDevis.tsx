@@ -1,4 +1,5 @@
 "use client";
+// use-client: état local (useReducer), focus et gestionnaires d événements de l assistant.
 
 /**
  * Assistant de devis — coquille (fiche E06). Un seul état (`useReducer`), le stepper, le
