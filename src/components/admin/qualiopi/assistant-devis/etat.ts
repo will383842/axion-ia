@@ -73,7 +73,13 @@ export function etatInitial(p: ParamsInitiaux): EtatAssistant {
       phases: [phaseSolde("phase-a-1")],
       hebergement: "client",
       hebergementMensuelEur: "",
-      maintenance: { regle: "facultative", mensuelEur: "", periodes: [1, 12], dureeMinimale: "" },
+      maintenance: {
+        regle: "facultative",
+        mensuelEur: "",
+        periodes: [1, 12],
+        dureeMinimale: "",
+        moisOfferts: "0",
+      },
     },
     abonnement: {
       miseEnServiceSaisie: "",
@@ -223,6 +229,9 @@ export function controlerEtape(e: EtatAssistant, etape: Etape): string[] {
       }
       if (a && (centsLus(e.achat.maintenance.mensuelEur) ?? 0) <= 0) {
         err.push("Maintenance : un montant mensuel supérieur à 0 est requis.");
+      }
+      if (a && !/^\d+$/.test(e.achat.maintenance.moisOfferts.trim())) {
+        err.push("Maintenance : les mois offerts doivent être un entier supérieur ou égal à 0.");
       }
       if (b && (centsLus(e.abonnement.mensuelCatalogueEur) ?? 0) <= 0) {
         err.push("Abonnement : un montant mensuel supérieur à 0 est requis.");

@@ -18,9 +18,9 @@ export const RIVES_COPY: VilleCopy = {
   ecosystemEn:
     "Rives est intégrée à la communauté d'agglomération du Pays voironnais (~93 000 hab) dans la vallée de la Fure (affluent du Réaumont). Tradition industrielle papetière historique sur la commune (sites industriels successifs depuis le XIXe siècle). Tissu PME industrielles, TPE artisanat BTP, agriculture, commerces et services péri-urbains. Position vers Voiron (10 min).",
   distancesFr:
-    "Gare Rives (TER Grenoble-Lyon, 30 min Grenoble, 1h Lyon). Aéroport Lyon-Saint-Exupéry à 1h. Aéroport Grenoble-Alpes-Isère à 45 min. Voiron à 10 min. Axe A48 vers Lyon et Grenoble.",
+    "Gare Rives (TER vers Lyon, 1h). Aéroport Lyon-Saint-Exupéry à 1h. Voiron à 10 min. Axe A48 vers Lyon.",
   distancesEn:
-    "Gare Rives (TER Grenoble-Lyon, 30 min Grenoble, 1h Lyon). Aéroport Lyon-Saint-Exupéry à 1h. Aéroport Grenoble-Alpes-Isère à 45 min. Voiron à 10 min. Axe A48 vers Lyon et Grenoble.",
+    "Gare Rives (TER vers Lyon, 1h). Aéroport Lyon-Saint-Exupéry à 1h. Voiron à 10 min. Axe A48 vers Lyon.",
   topSectorsNaf: [
     "PME industrielles (héritage papetier)",
     "Industrie diversifiée Voironnais",
@@ -49,7 +49,7 @@ export const RIVES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Rives et Pays voironnais ?",
-      a: "Oui, Axion-IA intervient à Rives et tout le Pays voironnais (Voiron, Moirans, Tullins, La Buisse, Coublevie). Nos consultants viennent de Lyon (1h A48) ou Grenoble (30 min A48).",
+      a: "Oui, Axion-IA intervient à Rives et tout le Pays voironnais (Voiron, Moirans, Tullins, La Buisse, Coublevie). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les PME industrielles du Voironnais ?",
@@ -64,8 +64,8 @@ export const RIVES_COPY: VilleCopy = {
       a: "Pour les commerces et professions libérales à Rives, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas IA : agents IA fidélité client, automatisation gestion RDV, classification dossiers.",
     },
     {
-      q: "Comment se passe une mission depuis Lyon ou Grenoble ?",
-      a: "Nos consultants viennent de Lyon (1h A48) ou Grenoble (30 min A48). Pour les multi-jours, hébergement local possible (hôtels Voiron).",
+      q: "Comment se déroule une intervention ?",
+      a: "Sur place ou à distance, selon votre besoin. Pour les multi-jours, hébergement local possible (hôtels Voiron).",
     },
   ],
 };

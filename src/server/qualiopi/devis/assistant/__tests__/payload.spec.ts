@@ -150,6 +150,34 @@ describe("lirePayload", () => {
     ).toBe(false);
   });
 
+  it("refuse une clé de contact au-delà de la profondeur maximale (niveau 14)", () => {
+    let o: unknown = { email: "x@y.fr" };
+    for (let i = 0; i < 13; i++) o = { n: o };
+    const r = lirePayload({ v: 1, nonImprime: o });
+    expect(r.ok).toBe(false);
+    if (!r.ok) expect(r.error).toContain("imbriqué");
+  });
+
+  it.each([
+    "contact_email",
+    "e-mail",
+    "emailContact",
+    "adresseEmail",
+    "portable",
+    "nom_contact",
+    "Téléphone",
+    "adresse_de_contact",
+  ])("refuse la variante de clé de contact « %s »", (cle) => {
+    expect(lirePayload({ v: 1, nonImprime: { [cle]: "x" } }).ok).toBe(false);
+  });
+
+  it("accepte un payload légitime complet (aucune clé de payloadVide refusée)", () => {
+    const vide = payloadVide(TAUX_TVA_STANDARD);
+    expect(lirePayload({ ...vide, nonImprime: { note: "ok", tarif: { remise: "5" } } }).ok).toBe(
+      true,
+    );
+  });
+
   it("n'invente pas de refus : une valeur texte contenant « email » n'est pas une clé", () => {
     const r = lirePayload({ v: 1, recit: { intitule: "relance par email" } });
     expect(r.ok).toBe(true);

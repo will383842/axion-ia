@@ -1773,6 +1773,15 @@ export const EXCEPTIONS_EFFACEMENT_DOSSIER: ReadonlyArray<{
   readonly motif: string;
 }> = [
   {
+    // Page « Recevoir le guide », lot S0 (2026-11-08) — table posée par migration seule : AUCUN
+    // code ne l'écrit encore (lot S2). Le lot S2 DOIT remplacer cette exception par l'export réel.
+    modele: "ContactGuideReseau",
+    motif:
+      "le contact laissé depuis un réseau pour recevoir le guide (prénom chiffré, empreinte " +
+      "d'adresse, preuve de consentement) : table encore sans écrivain, donc vide ; son effacement " +
+      "sera branché avec le premier code qui l'écrit.",
+  },
+  {
     modele: "EnregistrementConsentement",
     motif:
       "preuve que l'enregistrement était licite (art. 17(3)(e)) ; conservée jusqu'à la fin " +
