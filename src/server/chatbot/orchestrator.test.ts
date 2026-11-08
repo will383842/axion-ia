@@ -257,7 +257,7 @@ describe("réponse financement (mots interdits en public)", () => {
       { retrieve: noopRetrieve },
     );
     expect(r.text).not.toMatch(/cpf|opco|qualiopi/i);
-    expect(r.text).toMatch(/45 minutes/);
+    expect(r.text).toMatch(/Diagnostic IA gratuit de 45 minutes, sans engagement/);
     expect(r.text).not.toMatch(/factur/i);
   });
 });

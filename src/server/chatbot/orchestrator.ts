@@ -166,7 +166,7 @@ export async function handleTurn(
     return {
       ...base,
       intent: "explication",
-      text: "Axion-IA ne propose pas de financement ; parlons-en lors du rendez-vous gratuit de 45 minutes :",
+      text: "Axion-IA ne propose pas de financement ; parlons-en lors du Diagnostic IA gratuit de 45 minutes, sans engagement :",
       cards: [],
       sendLinks: false,
       rdvUrl: RDV_URL,

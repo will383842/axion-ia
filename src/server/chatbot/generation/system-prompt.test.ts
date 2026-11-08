@@ -72,7 +72,7 @@ describe("T-07 assembleSystemPrompt", () => {
       "Le partenaire IA de bout en bout des PME : on chiffre, on forme, on met en place.",
     );
     expect(p).toContain("La Journée IA");
-    expect(p).toMatch(/rendez-vous gratuit de 45 minutes/);
+    expect(p).toMatch(/Diagnostic IA gratuit de 45 minutes, sans engagement/);
     // La durée est un fait fourni : la règle anti-invention reste présente.
     expect(p).toMatch(/anti-invention/);
     expect(p).toMatch(/\{\{price:/);
@@ -103,7 +103,7 @@ describe("relecture directeur", () => {
     expect(p).toContain("Tu es un bot.");
     expect(p).toMatch(/TPE et PME/);
     expect(p).toMatch(/VOUVOY/i);
-    expect(p).toMatch(/rendez-vous gratuit de 45 minutes/);
+    expect(p).toMatch(/Diagnostic IA gratuit de 45 minutes, sans engagement/);
   });
 
   it("interdit les mots de la doctrine dans les réponses, avec ou sans prompt versionné", () => {
