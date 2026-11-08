@@ -136,7 +136,7 @@ describe("doctrine à l'entrée (audit knowledge 08/11/2026)", () => {
     ).toBe(false);
     expect(
       verifierDoctrineTraduction({
-        body: "<p>Une PME.</p><p><em>Source : siège à Grenoble, certifié Qualiopi</em></p>",
+        body: "<p>Une PME.</p><p><em>Source : siège à Grenoble, cite Qualiopi</em></p>",
       }).valid,
     ).toBe(false);
   });
