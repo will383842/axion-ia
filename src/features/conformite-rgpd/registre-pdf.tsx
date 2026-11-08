@@ -24,8 +24,8 @@ import {
 } from "@react-pdf/renderer";
 
 import { IDENTITE_LEGALE, adresseSiegeUneLigne } from "@/lib/identite-legale-ssot";
+import { COULEURS_MARQUE } from "@/lib/brand/couleurs-marque";
 import {
-  brandColor,
   QUALIOPI_BRAND_FONTS as F,
   QUALIOPI_PDF_TYPE as T,
   QUALIOPI_PDF_SPACE as S,
@@ -34,6 +34,9 @@ import { registerQualiopiPdfFonts } from "@/server/qualiopi/documents/fonts";
 import { assainirEspacesPdf } from "@/server/qualiopi/documents/base-layout";
 
 import type { Registre, Traitement } from "./schema";
+
+/** V8-P3 : palette VIVANTE (pièce non signable) — jamais la copie gelée de brand-tokens. */
+const couleurVivante = (jeton: keyof typeof COULEURS_MARQUE): string => COULEURS_MARQUE[jeton];
 
 registerQualiopiPdfFonts();
 
@@ -77,27 +80,27 @@ export const styles = StyleSheet.create({
     paddingBottom: 52,
     fontSize: T.base,
     fontFamily: F.sans,
-    color: brandColor("fg"),
-    backgroundColor: brandColor("paper"),
+    color: couleurVivante("fg"),
+    backgroundColor: couleurVivante("paper"),
   },
-  entite: { fontSize: T.sm, color: brandColor("mocha"), lineHeight: T.lineNormal },
+  entite: { fontSize: T.sm, color: couleurVivante("mocha"), lineHeight: T.lineNormal },
   titre: {
     fontFamily: F.serif,
     fontSize: T.xl,
-    color: brandColor("mocha"),
+    color: couleurVivante("mocha"),
     marginTop: S.xl,
     marginBottom: S.sm,
   },
-  date: { fontSize: T.sm, color: brandColor("sage"), marginBottom: S.xxl },
+  date: { fontSize: T.sm, color: couleurVivante("sage"), marginBottom: S.xxl },
   activite: {
     borderTopWidth: 1,
-    borderTopColor: brandColor("border"),
+    borderTopColor: couleurVivante("border"),
     paddingTop: S.lg,
     marginBottom: S.xl,
   },
-  nom: { fontFamily: F.serif, fontSize: T.lg, color: brandColor("mocha"), marginBottom: S.md },
+  nom: { fontFamily: F.serif, fontSize: T.lg, color: couleurVivante("mocha"), marginBottom: S.md },
   ligne: { flexDirection: "row", marginBottom: S.sm },
-  libelle: { width: 150, fontSize: T.sm, color: brandColor("sage"), lineHeight: T.lineNormal },
+  libelle: { width: 150, fontSize: T.sm, color: couleurVivante("sage"), lineHeight: T.lineNormal },
   valeur: { flex: 1, fontSize: T.sm, lineHeight: T.lineNormal },
   pied: {
     position: "absolute",
@@ -105,7 +108,7 @@ export const styles = StyleSheet.create({
     left: S.page,
     right: S.page,
     fontSize: T.xs,
-    color: brandColor("sage"),
+    color: couleurVivante("sage"),
     flexDirection: "row",
     justifyContent: "space-between",
   },
