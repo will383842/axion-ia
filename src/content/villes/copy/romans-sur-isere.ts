@@ -21,9 +21,9 @@ export const ROMANS_SUR_ISERE_COPY: VilleCopy = {
   ecosystemEn:
     "Romans-sur-Isère est le berceau historique de la chaussure française : Charles Jourdan, Stéphane Kélian, Robert Clergerie et plusieurs ateliers de tannerie ont structuré son économie. Le bassin s'est diversifié vers l'agroalimentaire (ravioles, salaisons), la métallurgie et le commerce. L'unité urbaine Romans–Bourg-de-Péage rassemble environ 58 000 habitants, dans la basse vallée du Rhône à 20 km de Valence.",
   distancesFr:
-    "Romans-sur-Isère est à environ 20 km au nord-est de Valence (gare TGV Valence-Ville et gare TGV Valence-Rhône-Alpes-Sud à environ 11 km), 75 km de Grenoble et environ 110 km de Lyon Saint-Exupéry. La ligne Valence–Grenoble dessert la gare de Romans–Bourg-de-Péage.",
+    "Romans-sur-Isère est à environ 20 km au nord-est de Valence (gare TGV Valence-Ville et gare TGV Valence-Rhône-Alpes-Sud à environ 11 km) et environ 110 km de Lyon Saint-Exupéry. La ligne TER depuis Valence dessert la gare de Romans–Bourg-de-Péage.",
   distancesEn:
-    "Romans-sur-Isère est à environ 20 km au nord-est de Valence (gare TGV Valence-Ville et gare TGV Valence-Rhône-Alpes-Sud à environ 11 km), 75 km de Grenoble et environ 110 km de Lyon Saint-Exupéry. La ligne Valence–Grenoble dessert la gare de Romans–Bourg-de-Péage.",
+    "Romans-sur-Isère est à environ 20 km au nord-est de Valence (gare TGV Valence-Ville et gare TGV Valence-Rhône-Alpes-Sud à environ 11 km) et environ 110 km de Lyon Saint-Exupéry. La ligne TER depuis Valence dessert la gare de Romans–Bourg-de-Péage.",
   topSectorsNaf: [
     "Industrie de la chaussure",
     "Travail du cuir et tannerie",
