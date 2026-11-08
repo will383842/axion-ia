@@ -5,22 +5,20 @@ import type { VilleCopy } from "./types";
 
 export const SASSENAGE_COPY: VilleCopy = {
   pitchFr:
-    "Sassenage (38), nord-ouest de Grenoble, fut une des quatre baronnies du Dauphiné et donne son nom au Bleu du Vercors-Sassenage (AOC fromagère). Sites patrimoniaux remarquables : château XVIIe, Cuves de Sassenage (l'une des 7 merveilles du Dauphiné). Tissu PME tertiaires, TPE artisans, professions libérales et commerces. Axion-IA répond aux besoins de toutes les entreprises.",
+    "Sassenage (38), nord-ouest de l'agglomération grenobloise, fut une des quatre baronnies du Dauphiné et donne son nom au Bleu du Vercors-Sassenage (AOC fromagère). Sites patrimoniaux remarquables : château XVIIe, Cuves de Sassenage (l'une des 7 merveilles du Dauphiné). Tissu PME tertiaires, TPE artisans, professions libérales et commerces. Axion-IA répond aux besoins de toutes les entreprises.",
   pitchEn:
-    "Sassenage (38), nord-ouest de Grenoble, fut une des quatre baronnies du Dauphiné et donne son nom au Bleu du Vercors-Sassenage (AOC fromagère). Sites patrimoniaux remarquables : château XVIIe, Cuves de Sassenage (l'une des 7 merveilles du Dauphiné). Tissu PME tertiaires, TPE artisans, professions libérales et commerces. Axion-IA répond aux besoins de toutes les entreprises.",
+    "Sassenage (38), nord-ouest de l'agglomération grenobloise, fut une des quatre baronnies du Dauphiné et donne son nom au Bleu du Vercors-Sassenage (AOC fromagère). Sites patrimoniaux remarquables : château XVIIe, Cuves de Sassenage (l'une des 7 merveilles du Dauphiné). Tissu PME tertiaires, TPE artisans, professions libérales et commerces. Axion-IA répond aux besoins de toutes les entreprises.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Sassenage (38). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants, fromagers producteurs Bleu du Vercors-Sassenage AOC, acteurs touristiques (château, Cuves), professions libérales, PME tertiaires sassenageoises et entreprises de Grenoble-Alpes Métropole.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Sassenage (38). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants, fromagers producteurs Bleu du Vercors-Sassenage AOC, acteurs touristiques (château, Cuves), professions libérales, PME tertiaires sassenageoises et entreprises de la métropole grenobloise.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Sassenage (38). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants, fromagers producteurs Bleu du Vercors-Sassenage AOC, acteurs touristiques (château, Cuves), professions libérales, PME tertiaires sassenageoises et entreprises de Grenoble-Alpes Métropole.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Sassenage (38). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants, fromagers producteurs Bleu du Vercors-Sassenage AOC, acteurs touristiques (château, Cuves), professions libérales, PME tertiaires sassenageoises et entreprises de la métropole grenobloise.",
   seoHook: "tourisme patrimoine & bleu vercors-sassenage",
   ecosystemFr:
-    "Sassenage est positionnée au pied du massif du Vercors, bordée par l'Isère et traversée par le Furon. La commune a un patrimoine exceptionnel (château XVIIe siècle, Cuves de Sassenage l'une des 7 merveilles du Dauphiné) attirant un tourisme local. Son nom est associé à l'AOC fromagère Bleu du Vercors-Sassenage. Tissu PME tertiaires, TPE artisanat, commerces dans Grenoble-Alpes Métropole.",
+    "Sassenage est positionnée au pied du massif du Vercors, bordée par l'Isère et traversée par le Furon. La commune a un patrimoine exceptionnel (château XVIIe siècle, Cuves de Sassenage l'une des 7 merveilles du Dauphiné) attirant un tourisme local. Son nom est associé à l'AOC fromagère Bleu du Vercors-Sassenage. Tissu PME tertiaires, TPE artisanat, commerces dans la métropole grenobloise.",
   ecosystemEn:
-    "Sassenage est positionnée au pied du massif du Vercors, bordée par l'Isère et traversée par le Furon. La commune a un patrimoine exceptionnel (château XVIIe siècle, Cuves de Sassenage l'une des 7 merveilles du Dauphiné) attirant un tourisme local. Son nom est associé à l'AOC fromagère Bleu du Vercors-Sassenage. Tissu PME tertiaires, TPE artisanat, commerces dans Grenoble-Alpes Métropole.",
-  distancesFr:
-    "Tramway A vers Grenoble centre (15 min). Gare Grenoble à 20 min (TGV Paris 3h). Aéroport Grenoble-Alpes-Isère à 1h. Axe A480 vers Lyon (1h15) et N532 vers stations Vercors (40 min).",
-  distancesEn:
-    "Tramway A vers Grenoble centre (15 min). Gare Grenoble à 20 min (TGV Paris 3h). Aéroport Grenoble-Alpes-Isère à 1h. Axe A480 vers Lyon (1h15) et N532 vers stations Vercors (40 min).",
+    "Sassenage est positionnée au pied du massif du Vercors, bordée par l'Isère et traversée par le Furon. La commune a un patrimoine exceptionnel (château XVIIe siècle, Cuves de Sassenage l'une des 7 merveilles du Dauphiné) attirant un tourisme local. Son nom est associé à l'AOC fromagère Bleu du Vercors-Sassenage. Tissu PME tertiaires, TPE artisanat, commerces dans la métropole grenobloise.",
+  distancesFr: "Axe A480 vers Lyon (1h15) et N532 vers stations Vercors (40 min).",
+  distancesEn: "Axe A480 vers Lyon (1h15) et N532 vers stations Vercors (40 min).",
   topSectorsNaf: [
     "Tourisme patrimoine (château, Cuves de Sassenage)",
     "AOC Bleu du Vercors-Sassenage & fromagerie",
@@ -49,7 +47,7 @@ export const SASSENAGE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Sassenage et Vercors nord ?",
-      a: "Oui, Axion-IA intervient à Sassenage et tout le Vercors nord (« Quatre-Montagnes » : Lans-en-Vercors, Villard-de-Lans, Autrans-Méaudre). Couverture Grenoble-Alpes Métropole et accès depuis Lyon (1h15 A48) ou Paris (TGV Grenoble 3h).",
+      a: "Oui, Axion-IA intervient à Sassenage et tout le Vercors nord (« Quatre-Montagnes » : Lans-en-Vercors, Villard-de-Lans, Autrans-Méaudre). Couverture de la métropole grenobloise.",
     },
     {
       q: "Travaillez-vous avec les fromagers AOC Bleu Vercors-Sassenage ?",
@@ -64,8 +62,8 @@ export const SASSENAGE_COPY: VilleCopy = {
       a: "Pour les TPE et artisans à Sassenage (BTP, commerces, services), audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation pratique, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, classification photos chantier, gestion stocks et planning. Adapté aux petites structures.",
     },
     {
-      q: "Comment se passe une mission depuis Grenoble ou Lyon ?",
-      a: "Nos consultants viennent de Grenoble (15 min tramway A) ou Lyon (1h15 voiture A48). Pour les multi-jours, hébergement local possible (hôtels Vercors).",
+      q: "Comment se déroule une intervention ?",
+      a: "Nous intervenons partout en France, sur place ou à distance. Pour les multi-jours, hébergement local possible (hôtels Vercors).",
     },
   ],
 };

@@ -35,7 +35,10 @@ import {
 import { checkDoctrine } from "@/server/content-gen/quality/doctrine-check";
 import { fautesDures, surfaceDepuisSortie } from "@/server/content-gen/quality/doctrine-surface";
 import { detecterInterditsSurface } from "@/lib/contenu/interdits-publication";
-import { evaluerBarrieresRelecture } from "@/server/content-gen/quality/barrieres-publication";
+import {
+  evaluerBarrieresRelecture,
+  observerTutoiement,
+} from "@/server/content-gen/quality/barrieres-publication";
 import { financementPublicCitable } from "@/server/qualiopi/config/financing";
 import { readContentGenConfig } from "@/server/actions/content-gen/_settings";
 // Fix 2026-08-15 (audit e2e, C8) — lecture du kill switch en fail-SAFE : une
@@ -937,6 +940,19 @@ async function processJob(job: Job<ContentGenJobPayload>): Promise<void> {
             ...(b.detail ?? {}),
           })),
         },
+      );
+    }
+
+    // Observation du vouvoiement (lot R6, 08/11/2026) : JOURNALISÉE seulement. Elle n'entre
+    // ni dans `barrieresFail`, ni dans `blockingFail` : la publication automatique et le
+    // niveau d'indexation ne changent pas.
+    const tutoiement = observerTutoiement(output);
+    if (tutoiement) {
+      await logStep(
+        contentGenJobId,
+        "validation",
+        `Observation (sans effet sur la publication) : texte au tutoiement, ${tutoiement.occurrences} occurrences`,
+        { observation: "tutoiement", ...tutoiement },
       );
     }
 

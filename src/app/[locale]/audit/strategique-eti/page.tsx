@@ -12,16 +12,12 @@ import {
   buildPrimaryImageOfPage,
   buildWebPageJsonLd,
 } from "@/lib/seo";
-import { AUDIT_TIERS, getTierById, formatAmount } from "@/content/pricing";
 
 // Sprint 14.10.8 (Will 2026-05-12) — wrapper Audit Stratégique ETI via template.
 
 const TIER = "audit-strategique-eti" as const;
 
-// SSOT prix — dérivé de pricing.ts (audit-strategique-eti : « À partir de 1 900 € »
-// depuis 2026-06-03 ; ex-12 000 €, cf. décision Will).
-const ETI_TIER = getTierById(AUDIT_TIERS, "audit-strategique-eti");
-const ETI_MIN = ETI_TIER.priceMin ?? 0;
+// Aucun montant dans les métadonnées (R5a, décision n°7) : les audits sont sur devis.
 
 export const revalidate = 3600;
 
@@ -38,8 +34,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     locale,
     path: isFr ? "/audit/strategique-eti" : "/audit/strategic-eti",
     title: isFr
-      ? `Audit Stratégique ETI · à partir de ${formatAmount(ETI_MIN, "fr", { compact: true })} · Axion-IA`
-      : `Mid-cap Strategic AI audit · from ${formatAmount(ETI_MIN, "en", { compact: true })} · Axion-IA`,
+      ? `Audit Stratégique ETI · sur devis · Axion-IA`
+      : `Mid-cap Strategic AI audit · on request · Axion-IA`,
     description: isFr ? c.promiseFr : c.promiseEn,
     alternates: { fr: "/audit/strategique-eti", en: "/audit/strategic-eti" },
   });

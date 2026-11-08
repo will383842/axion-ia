@@ -218,9 +218,11 @@ export const MOTIFS_INTERDITS: ReadonlyArray<MotifInterdit> = [
   },
   {
     code: "etiquette-tpe-pme",
-    re: new RegExp(String.raw`${B}tpe ?[/,-] ?pme${E}|${B}tpe (?:et|ou) pme${E}`, "g"),
+    // Décision du 08/11/2026 : « TPE et PME » est AUTORISÉ dans le texte ; seule l'étiquette
+    // collée « TPE/PME » (barre oblique ou tiret, espaces compris) est interdite.
+    re: new RegExp(String.raw`${B}tpe ?[/-] ?pme${E}`, "g"),
     raison:
-      "L'étiquette « TPE/PME » est interdite : parler d'un dirigeant, d'une petite entreprise.",
+      "L'étiquette « TPE/PME » est interdite : écrire « PME » dans un titre, « TPE et PME » dans le texte.",
   },
   {
     code: "slogan-recopie",

@@ -47,7 +47,9 @@ export const INTERNAL_EXPERTS: ReadonlyArray<InternalExpert> = [
     key: "manon",
     name: "Manon",
     displayName: "Manon",
-    title: "Experte IA chez Axion-IA",
+    // Plume IA DÉCLARÉE (audit d'harmonie du 08/11/2026, n°16) : jamais « experte IA
+    // chez Axion-IA », jamais présentée comme une personne de l'équipe.
+    title: "Plume IA d'Axion-IA, assistance IA supervisée par l'équipe",
     domains: [
       "ia",
       "intelligence artificielle",
@@ -86,8 +88,8 @@ const WILLIAMS = INTERNAL_EXPERTS.find((e) => e.key === "williams") as InternalE
 /**
  * Choisit DÉTERMINISTIQUEMENT l'expert interne le plus pertinent pour un
  * contenu. Williams (fondateur) pour les sujets stratégie / dirigeant / audit /
- * ROI / transformation ou les audiences ETI/grande entreprise ; Manon (experte
- * IA éditoriale) par défaut pour tout le reste.
+ * ROI / transformation ou les audiences ETI/grande entreprise ; Manon (plume
+ * IA éditoriale déclarée) par défaut pour tout le reste.
  */
 export function pickInternalExpert(opts: {
   readonly contentType?: string | undefined;

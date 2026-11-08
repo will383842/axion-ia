@@ -28,6 +28,7 @@ import type { GeneratorOutput } from "../generators/types";
 import { verifierAccrocheTropProche } from "./anti-redite-accroche";
 import { surfaceDepuisSortie, type SortiePourSurface } from "./doctrine-surface";
 import { evaluateSoft404 } from "./soft-404-gate";
+import { detecterTutoiement } from "./vouvoiement";
 
 /** Plancher de mots des articles longs : en dessous, relecture humaine. */
 export const PLANCHER_MOTS_RELECTURE = 850;
@@ -172,6 +173,31 @@ export function evaluerBarrieresRelecture(entree: EntreeBarrieres): BarriereRele
   }
 
   return barrieres;
+}
+
+// ─── Observation du vouvoiement (AUCUN effet sur la publication) ─────────────
+
+export interface ObservationTutoiement {
+  readonly occurrences: number;
+  readonly extrait: string;
+}
+
+/**
+ * Observation, pas une barrière : un texte au tutoiement garde exactement le
+ * même statut de publication. Le worker la journalise (note de relecture) ;
+ * elle ne doit JAMAIS alimenter `evaluerBarrieresRelecture`, `blockingFail`
+ * ni le niveau d'indexation (la publication automatique n'est pas modifiée).
+ */
+export function observerTutoiement(
+  output: Pick<GeneratorOutput, "directAnswer" | "bodyHtml" | "faq">,
+): ObservationTutoiement | null {
+  const textes = [
+    output.directAnswer ?? "",
+    output.bodyHtml ?? "",
+    ...(output.faq ?? []).flatMap((f) => [f.question, f.answer]),
+  ];
+  const r = detecterTutoiement(textes.join("\n"));
+  return r.tutoie ? { occurrences: r.occurrences, extrait: r.extrait } : null;
 }
 
 // ─── Rejeu de la doctrine de surface à la publication ───────────────────────

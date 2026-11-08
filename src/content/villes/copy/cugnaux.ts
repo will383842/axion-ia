@@ -79,7 +79,7 @@ export const CUGNAUX_COPY: VilleCopy = {
           {
             step: "Recette + mise en ligne",
             detail:
-              "Tests d'acceptation, Web Vitals et SEO/AEO validés, mise en production sans downtime depuis nos bureaux toulousains — sans couper votre activité commerciale ni vos échanges avec les donneurs d'ordre aéronautiques de Blagnac et leurs flux de commande.",
+              "Tests d'acceptation, Web Vitals et SEO/AEO validés, mise en production sans downtime, sur place ou à distance — sans couper votre activité commerciale ni vos échanges avec les donneurs d'ordre aéronautiques de Blagnac et leurs flux de commande.",
           },
           {
             step: "Livraison + autonomie",
@@ -165,7 +165,7 @@ export const CUGNAUX_COPY: VilleCopy = {
           {
             step: "Recette + mise en ligne",
             detail:
-              "Tests d'acceptation, Web Vitals et SEO/AEO validés, mise en production sans downtime depuis nos bureaux toulousains — sans couper votre activité commerciale ni vos échanges avec les donneurs d'ordre aéronautiques de Blagnac et leurs flux de commande.",
+              "Tests d'acceptation, Web Vitals et SEO/AEO validés, mise en production sans downtime, sur place ou à distance — sans couper votre activité commerciale ni vos échanges avec les donneurs d'ordre aéronautiques de Blagnac et leurs flux de commande.",
           },
           {
             step: "Livraison + autonomie",
@@ -230,7 +230,7 @@ export const CUGNAUX_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Cugnaux et dans le sud-ouest toulousain ?",
-      a: "Oui, Axion-IA intervient à Cugnaux et toute la couronne sud-ouest de Toulouse (Tournefeuille, Plaisance-du-Touch, Villeneuve-Tolosane). Nos consultants viennent de Toulouse, à 15 minutes.",
+      a: "Oui, Axion-IA intervient à Cugnaux et toute la couronne sud-ouest de Toulouse (Tournefeuille, Plaisance-du-Touch, Villeneuve-Tolosane). Nous intervenons sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les TPE et artisans de Cugnaux ?",

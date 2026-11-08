@@ -229,6 +229,9 @@ const EXCLUDED_FROM_INDEX: ReadonlyArray<PathnameKey> = [
   // que `/mes-donnees/export` ci-dessus.
   "/carrieres/widget",
   "/carrieres/widget-builder",
+  // R5a (08/11/2026) — « Audit sur place · 1 journée » retiré : la page renvoie en 308 vers
+  // /journee-ia. Une URL redirigée n'a pas sa place dans pages.xml (crawl-budget, GSC).
+  "/audit/tpe-1-jour",
 ];
 
 function isSlugTemplate(key: PathnameKey): boolean {

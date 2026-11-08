@@ -31,6 +31,8 @@ export async function Footer() {
   // ❌ NE PAS réintroduire de libellé de service en dur ici ni « Essentielle »
   // (un FORMAT de formation, pas un service).
   const services = [
+    // R5a (08/11/2026) : l'offre phare, en tête de la colonne des offres.
+    { href: "/journee-ia", label: isFr ? "La Journée IA" : "The AI Day" },
     ...SERVICES.map((s) => ({ href: s.href, label: serviceOfficial(s, isFr) })),
     { href: "/tarifs", label: isFr ? "Tarifs" : "Pricing" },
   ];

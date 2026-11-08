@@ -14,13 +14,13 @@ export const VIZILLE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Vizille (38). Nous accompagnons tous types d'activités : acteurs du tourisme patrimoine (Musée Révolution française, château de Vizille), PME industrielles vallée Romanche, TPE artisans BTP, commerçants, indépendants, professions libérales et services aux entreprises sud-grenobloises.",
   seoHook: "tourisme patrimoine & industrielles vallée",
   ecosystemFr:
-    "Vizille a une position historique exceptionnelle : berceau de la Révolution française avec la tenue de l'Assemblée des États du Dauphiné le 21 juillet 1788 au château de Vizille (acte fondateur). Aujourd'hui, le château abrite le Musée de la Révolution française. La commune est traversée par la route Napoléon (Golfe-Juan-Grenoble). Tissu PME industrielles vallée de la Romanche, tourisme patrimoine, TPE artisans BTP, commerces.",
+    "Vizille a une position historique exceptionnelle : berceau de la Révolution française avec la tenue de l'Assemblée des États du Dauphiné le 21 juillet 1788 au château de Vizille (acte fondateur). Aujourd'hui, le château abrite le Musée de la Révolution française. La commune est traversée par la route Napoléon. Tissu PME industrielles vallée de la Romanche, tourisme patrimoine, TPE artisans BTP, commerces.",
   ecosystemEn:
-    "Vizille a une position historique exceptionnelle : berceau de la Révolution française avec la tenue de l'Assemblée des États du Dauphiné le 21 juillet 1788 au château de Vizille (acte fondateur). Aujourd'hui, le château abrite le Musée de la Révolution française. La commune est traversée par la route Napoléon (Golfe-Juan-Grenoble). Tissu PME industrielles vallée de la Romanche, tourisme patrimoine, TPE artisans BTP, commerces.",
+    "Vizille a une position historique exceptionnelle : berceau de la Révolution française avec la tenue de l'Assemblée des États du Dauphiné le 21 juillet 1788 au château de Vizille (acte fondateur). Aujourd'hui, le château abrite le Musée de la Révolution française. La commune est traversée par la route Napoléon. Tissu PME industrielles vallée de la Romanche, tourisme patrimoine, TPE artisans BTP, commerces.",
   distancesFr:
-    "Grenoble centre à 20 min voiture N85 (route Napoléon). Aéroport Grenoble-Alpes-Isère à 1h. Axe N85 vers Bourg-d'Oisans (45 min) et Gap (1h45). Bourg-d'Oisans / Alpe d'Huez à 45 min.",
+    "Axe N85 vers Bourg-d'Oisans (45 min) et Gap (1h45). Bourg-d'Oisans / Alpe d'Huez à 45 min.",
   distancesEn:
-    "Grenoble centre à 20 min voiture N85 (route Napoléon). Aéroport Grenoble-Alpes-Isère à 1h. Axe N85 vers Bourg-d'Oisans (45 min) et Gap (1h45). Bourg-d'Oisans / Alpe d'Huez à 45 min.",
+    "Axe N85 vers Bourg-d'Oisans (45 min) et Gap (1h45). Bourg-d'Oisans / Alpe d'Huez à 45 min.",
   topSectorsNaf: [
     "Tourisme patrimoine (Musée Révolution, château Vizille)",
     "PME industrielles vallée Romanche",
@@ -48,7 +48,7 @@ export const VIZILLE_COPY: VilleCopy = {
   },
   faqGeolocalisee: [
     {
-      q: "Axion-IA intervient-il à Vizille et sud Grenoble ?",
+      q: "Axion-IA intervient-il à Vizille et sud grenoblois ?",
       a: "Oui, Axion-IA intervient à Vizille et toute la vallée de la Romanche jusqu'au Bourg-d'Oisans (Le Péage-de-Vizille, Saint-Pierre-de-Mésage, Jarrie). Couverture également accès Alpe d'Huez et Oisans touristique.",
     },
     {
@@ -64,8 +64,8 @@ export const VIZILLE_COPY: VilleCopy = {
       a: "Pour les TPE artisans BTP et commerçants à Vizille, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, classification photos, gestion stocks.",
     },
     {
-      q: "Comment se passe une mission depuis Grenoble ?",
-      a: "Nos consultants viennent de Grenoble (20 min voiture N85, route Napoléon). Pour les multi-jours, hébergement local possible (hôtels Vizille ou Oisans).",
+      q: "Comment se déroule une intervention ?",
+      a: "Nous intervenons partout en France, sur place ou à distance. Pour les multi-jours, hébergement local possible (hôtels Vizille ou Oisans).",
     },
   ],
 };

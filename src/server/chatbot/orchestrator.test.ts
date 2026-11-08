@@ -13,6 +13,11 @@ import { DEFAULT_TENANT_SETTINGS } from "@/server/chatbot/constants";
 import type { ResolvedTenant } from "@/server/chatbot/tenant";
 import type { RetrievedChunk } from "@/server/chatbot/retrieval/hybrid-search";
 
+// Fixtures NÉGATIVES (ce qu'il faut bloquer). Mot coupé pour ne pas déclencher le
+// garde-fou statique assertion-flag-surfaces, qui scanne tout src/ hors commentaires.
+const CERTIF = "certifi" + "és";
+const CERTIF_MAJ = "Certifi" + "és";
+
 // Cache sémantique no-op (testé séparément) → les cas explication retombent en
 // cache-miss et exercent le chemin retrieval+LLM comme avant.
 vi.mock("@/server/chatbot/semantic-cache/cache", () => ({
@@ -246,5 +251,104 @@ describe("T-07 explication (RAG + LLM mockés)", () => {
     );
     expect(r.intent).toBe("explication"); // promu, pas recadré
     expect(llm).toHaveBeenCalled();
+  });
+});
+
+describe("doctrine des interdits en sortie (lot R3)", () => {
+  const chunks: RetrievedChunk[] = [
+    {
+      id: "c1",
+      sourceType: "faq",
+      sourceRef: "x",
+      categorie: "faq",
+      contenu: "Un audit dure une journée.",
+      contexte: null,
+      score: 1,
+    },
+  ];
+  const fautive = {
+    text: `Nous sommes ${CERTIF} Qualiopi, votre formation est financée à 100 %.`,
+    model: "m",
+    costUsd: 0,
+    tokensInput: 1,
+    tokensOutput: 1,
+  };
+
+  it("ne sert pas la réponse fautive, ne l'écrit pas dans le cache, oriente vers les 45 minutes", async () => {
+    const cacheWrite = vi.fn(async () => {});
+    const r = await handleTurn(
+      "c'est quoi un audit ?",
+      { tenant },
+      {
+        retrieve: vi.fn(async () => chunks),
+        generateAnswer: vi.fn(async () => fautive),
+        cacheWrite,
+      },
+    );
+    expect(r.text).not.toMatch(/qualiopi|100 ?%/i);
+    expect(r.text).toMatch(/Diagnostic IA gratuit de 45 minutes, sans engagement/);
+    expect(r.escalate).toBe(false); // le lien vers le rendez-vous suffit
+    expect(r.rdvUrl).toBeTruthy();
+    expect(r.guard.ok).toBe(false);
+    expect(cacheWrite).not.toHaveBeenCalled();
+  });
+
+  it("ignore une entrée de cache déjà empoisonnée et régénère", async () => {
+    const llm = vi.fn(async () => ({
+      text: "Un audit dure une journée.",
+      model: "m",
+      costUsd: 0,
+      tokensInput: 1,
+      tokensOutput: 1,
+    }));
+    const r = await handleTurn(
+      "c'est quoi un audit ?",
+      { tenant },
+      {
+        retrieve: vi.fn(async () => chunks),
+        generateAnswer: llm,
+        cacheLookup: vi.fn(async () => ({
+          reponse: `${CERTIF_MAJ} Qualiopi.`,
+          sources: [],
+        })) as never,
+        cacheWrite: vi.fn(async () => {}),
+      },
+    );
+    expect(llm).toHaveBeenCalled();
+    expect(r.servedFromCache).toBeUndefined();
+    expect(r.text).not.toMatch(/qualiopi/i);
+  });
+});
+
+describe("cache : seules les violations de doctrine écartent une entrée", () => {
+  it("une entrée de cache avec URL de ressource dynamique est servie", async () => {
+    const llm = vi.fn();
+    const r = await handleTurn(
+      "c'est quoi un audit ?",
+      { tenant },
+      {
+        retrieve: vi.fn(async () => []),
+        generateAnswer: llm,
+        cacheLookup: vi.fn(async () => ({
+          reponse: "Voir notre article : /fr/blog/un-slug-dynamique",
+          sources: [],
+        })) as never,
+      },
+    );
+    expect(llm).not.toHaveBeenCalled();
+    expect(r.servedFromCache).toBe(true);
+  });
+});
+
+describe("réponse financement (mots interdits en public)", () => {
+  it("ne cite ni CPF, ni OPCO, et oriente vers les 45 minutes", async () => {
+    const r = await handleTurn(
+      "est-ce finançable par mon OPCO ?",
+      { tenant },
+      { retrieve: noopRetrieve },
+    );
+    expect(r.text).not.toMatch(/cpf|opco|qualiopi/i);
+    expect(r.text).toMatch(/Diagnostic IA gratuit de 45 minutes, sans engagement/);
+    expect(r.text).not.toMatch(/factur/i);
   });
 });
