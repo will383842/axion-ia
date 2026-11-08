@@ -15,6 +15,7 @@
  * - Quality loop actif (log steps quality_loop_*)
  */
 
+import { taillePourPrompt } from "@/server/content-gen/brand/positionnement";
 import { generate as routerGenerate } from "../providers/provider-router";
 import { hashPrompt } from "../provenance/provenance-logger";
 import { retrieve as kbRetrieve } from "../kb-client";
@@ -115,7 +116,9 @@ export const blogFromKeywordsGenerator: Generator = {
     const safePrimaryKeyword = escapeLlmInput(input.primaryKeyword, { maxLen: 120 });
     const safeModule = escapeLlmInput(input.templateVariant ?? "transversal", { maxLen: 50 });
     const safeIntent = escapeLlmInput(input.targetSearchIntent, { maxLen: 30 });
-    const safeAudienceSize = escapeLlmInput(input.targetAudienceSize ?? "PME", { maxLen: 30 });
+    const safeAudienceSize = escapeLlmInput(taillePourPrompt(input.targetAudienceSize, "PME"), {
+      maxLen: 30,
+    });
     const sectorTagSlugs = input.kbSectorTagSlugs ?? [];
     const secondaryList = (input.secondaryKeywords ?? []).slice(0, 5).join(", ");
 

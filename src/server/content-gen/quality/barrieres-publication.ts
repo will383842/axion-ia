@@ -64,8 +64,7 @@ export type CodeBarriere =
   | "soft-404"
   | "aucun-fait-de-base"
   | "accroche-trop-proche"
-  | "moins-de-850-mots"
-  | "tutoiement";
+  | "moins-de-850-mots";
 
 export interface BarriereRelecture {
   readonly code: CodeBarriere;
@@ -173,23 +172,32 @@ export function evaluerBarrieresRelecture(entree: EntreeBarrieres): BarriereRele
     });
   }
 
-  // Vouvoiement : règle de la marque (audit d'harmonie du 08/11/2026). Relecture
-  // seulement, jamais un blocage : un « tu » isolé est possible hors citation.
-  const textesLus = [
+  return barrieres;
+}
+
+// ─── Observation du vouvoiement (AUCUN effet sur la publication) ─────────────
+
+export interface ObservationTutoiement {
+  readonly occurrences: number;
+  readonly extrait: string;
+}
+
+/**
+ * Observation, pas une barrière : un texte au tutoiement garde exactement le
+ * même statut de publication. Le worker la journalise (note de relecture) ;
+ * elle ne doit JAMAIS alimenter `evaluerBarrieresRelecture`, `blockingFail`
+ * ni le niveau d'indexation (la publication automatique n'est pas modifiée).
+ */
+export function observerTutoiement(
+  output: Pick<GeneratorOutput, "directAnswer" | "bodyHtml" | "faq">,
+): ObservationTutoiement | null {
+  const textes = [
     output.directAnswer ?? "",
-    html,
+    output.bodyHtml ?? "",
     ...(output.faq ?? []).flatMap((f) => [f.question, f.answer]),
   ];
-  const tutoiement = detecterTutoiement(textesLus.join("\n"));
-  if (tutoiement.tutoie) {
-    barrieres.push({
-      code: "tutoiement",
-      libelle: `Texte écrit au tutoiement (${tutoiement.occurrences} occurrence${tutoiement.occurrences > 1 ? "s" : ""}) : Axion-IA vouvoie`,
-      detail: { occurrences: tutoiement.occurrences, extrait: tutoiement.extrait },
-    });
-  }
-
-  return barrieres;
+  const r = detecterTutoiement(textes.join("\n"));
+  return r.tutoie ? { occurrences: r.occurrences, extrait: r.extrait } : null;
 }
 
 // ─── Rejeu de la doctrine de surface à la publication ───────────────────────

@@ -17,6 +17,7 @@
  * - slug dérivé du titre fourni si le LLM diverge
  */
 
+import { taillePourPrompt } from "@/server/content-gen/brand/positionnement";
 import { generate as routerGenerate } from "../providers/provider-router";
 import { hashPrompt } from "../provenance/provenance-logger";
 import { retrieve as kbRetrieve } from "../kb-client";
@@ -117,7 +118,9 @@ export const blogFromTitleGenerator: Generator = {
     const mandatoryTitle = input.primaryKeyword;
     const safeTitle = escapeLlmInput(mandatoryTitle, { maxLen: 140 });
     const safeIntent = escapeLlmInput(input.targetSearchIntent, { maxLen: 30 });
-    const safeAudienceSize = escapeLlmInput(input.targetAudienceSize ?? "PME", { maxLen: 30 });
+    const safeAudienceSize = escapeLlmInput(taillePourPrompt(input.targetAudienceSize, "PME"), {
+      maxLen: 30,
+    });
     const sectorTagSlugs = input.kbSectorTagSlugs ?? [];
 
     // Refonte templates 2026-06-22 — expert interne choisi DÉTERMINISTIQUEMENT

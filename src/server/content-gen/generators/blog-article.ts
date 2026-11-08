@@ -15,6 +15,7 @@
  *      bodyHtml complet par tranches de 4 sections (130-190 mots/section).
  */
 
+import { taillePourPrompt } from "@/server/content-gen/brand/positionnement";
 import { generate as routerGenerate } from "../providers/provider-router";
 import { hashPrompt } from "../provenance/provenance-logger";
 import { retrieve as kbRetrieve } from "../kb-client";
@@ -126,7 +127,9 @@ export const blogArticleGenerator: Generator = {
     const topic = synthesizeTopic(input);
     const safeTopic = escapeLlmInput(topic, { maxLen: 140 });
     const safeIntent = escapeLlmInput(input.targetSearchIntent, { maxLen: 30 });
-    const safeAudienceSize = escapeLlmInput(input.targetAudienceSize ?? "PME", { maxLen: 30 });
+    const safeAudienceSize = escapeLlmInput(taillePourPrompt(input.targetAudienceSize, "PME"), {
+      maxLen: 30,
+    });
     const sectorTagSlugs = input.kbSectorTagSlugs ?? [];
     // Mot-clé effectif pour les gates/SEO : primaryKeyword si présent, sinon le
     // topic synthétisé (les articles de campagne n'ont pas toujours de keyword).

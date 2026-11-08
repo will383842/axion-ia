@@ -41,3 +41,22 @@ describe("generators/ : cible PME, pas ETI ni grandes entreprises", () => {
     expect(s).not.toMatch(/\*\*Grandes entreprises\*\*/);
   });
 });
+
+describe("generators/ : la taille d'audience passe par taillePourPrompt", () => {
+  it.each([
+    "blog-article.ts",
+    "blog-from-keywords.ts",
+    "blog-from-title.ts",
+    "blog-from-rss.ts",
+    "comparison.ts",
+    "faq-standalone.ts",
+  ])("%s ne transmet pas la taille brute au prompt", (f) => {
+    const s = lire(f);
+    expect(s).toContain("taillePourPrompt(input.targetAudienceSize");
+    expect(s).not.toMatch(/escapeLlmInput\(input\.targetAudienceSize/);
+  });
+
+  it("v7-phase8-generators n'a plus de double parenthèse dans l'ouverture", () => {
+    expect(lire("v7-phase8-generators.ts")).not.toContain("l'équipe) (société française)");
+  });
+});

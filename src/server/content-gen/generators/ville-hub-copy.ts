@@ -408,7 +408,7 @@ function computeQualityScore(output: VilleHubCopyOutput): {
 // ===========================================================================
 
 /**
- * 2 personas audience Axion-IA (TPE et PME) (visibles dans la section "Toutes les tailles, une seule exigence")
+ * 2 personas audience Axion-IA, TPE et PME (visibles dans la section "Toutes les tailles, une seule exigence")
  * — le LLM doit écrire COMME SI il parlait directement à un de ces décideurs.
  * People-first content (HCU 2024 Google) : pas écrire POUR le SEO, écrire POUR le prospect.
  */
@@ -417,7 +417,6 @@ const AUDIENCE_PERSONAS = `## Personas cibles — écris COMME SI tu leur parles
 1. **TPE / Artisan** (1-10 salariés) — Dirigeant débordé, pragmatique. Pain point : pas de temps, pas de budget pour expérimenter. Veut : premier outil IA rentable sous 4 semaines, ROI immédiat sur tâches admin/relance/devis.
 
 2. **PME** (10-250 salariés) — DG ou Dir.Opérations. Pain point : processus métier manuels coûteux, équipes saturées, pas de DSI. Veut : audit clair, 3 chantiers prioritaires chiffrés, implémentation clés en main, ROI mesurable trimestre.
-
 
 Ton : sobre, factuel, jamais condescendant. Le prospect est un pro qui sent immédiatement le marketing-speak — évite-le.`;
 

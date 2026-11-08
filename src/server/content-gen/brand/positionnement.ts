@@ -67,3 +67,13 @@ export function consigneAngle(graine: string): string {
   const i = choisirAngleEntree(graine);
   return `ANGLE D'ENTRÉE POUR CET ARTICLE : ${ANGLES_ENTREE[i]}`;
 }
+
+/**
+ * Taille d'audience envoyée aux prompts : les offres publiques visent les PME
+ * (et les TPE), jamais les ETI ni les grandes entreprises (audit d'harmonie du
+ * 08/11/2026). ETI et grande entreprise sont ramenées à « PME ».
+ */
+export function taillePourPrompt(taille: string | undefined, defaut = "PME"): string {
+  if (taille === "ETI" || taille === "GRANDE_ENTREPRISE") return "PME";
+  return taille ?? defaut;
+}

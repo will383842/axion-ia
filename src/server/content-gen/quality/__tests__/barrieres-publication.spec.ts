@@ -9,6 +9,7 @@ import {
   controlerSurfacePublication,
   decisionGardeFactCheck,
   evaluerBarrieresRelecture,
+  observerTutoiement,
   sortieDepuisJson,
   type EntreeBarrieres,
 } from "../barrieres-publication";
@@ -52,16 +53,13 @@ describe("evaluerBarrieresRelecture", () => {
     ).toContain("section-indisponible");
   });
 
-  it("signale un article écrit au tutoiement (relecture), pas un article au vouvoiement", () => {
-    expect(
-      codes(
-        entree({ bodyHtml: "<h2>A</h2><p>Tu peux commencer par tes devis.</p><h2>B</h2><p>b</p>" }),
-      ),
-    ).toContain("tutoiement");
-    expect(codes(entree({ directAnswer: "Tu gagnes du temps dès cette semaine." }))).toContain(
-      "tutoiement",
-    );
-    expect(codes(entree())).not.toContain("tutoiement");
+  it("un article écrit au tutoiement garde EXACTEMENT le même statut : aucune barrière", () => {
+    const tutoye = entree({
+      bodyHtml: "<h2>A</h2><p>Tu peux commencer par tes devis. Tu verras.</p><h2>B</h2><p>b</p>",
+      directAnswer: "Tu gagnes du temps dès cette semaine.",
+    });
+    expect(evaluerBarrieresRelecture(tutoye)).toEqual(evaluerBarrieresRelecture(entree()));
+    expect(codes(tutoye)).toEqual([]);
   });
 
   it("signale des sections manquantes au plan, pas des sections en plus", () => {
@@ -165,5 +163,23 @@ describe("decisionGardeFactCheck", () => {
   it("ne touche pas un article déjà publié ni une garde éteinte", () => {
     expect(decisionGardeFactCheck({ ...base, articleExiste: true, score: 10 })).toBe("passer");
     expect(decisionGardeFactCheck({ ...base, actif: false, score: 10 })).toBe("passer");
+  });
+});
+
+describe("observerTutoiement (observation, sans effet sur la publication)", () => {
+  it("signale un texte au tutoiement dans la réponse directe, le corps ou la FAQ", () => {
+    const o = observerTutoiement(
+      entree({
+        directAnswer: "Tu gagnes du temps.",
+        bodyHtml: "<p>Tu peux commencer.</p>",
+        faq: [{ question: "Et toi ?", answer: "Oui." }],
+      }).output,
+    );
+    expect(o).not.toBeNull();
+    expect(o!.occurrences).toBeGreaterThanOrEqual(2);
+  });
+
+  it("ne dit rien sur un texte au vouvoiement", () => {
+    expect(observerTutoiement(entree().output)).toBeNull();
   });
 });
