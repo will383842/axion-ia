@@ -14,13 +14,13 @@ export const CHAMBERY_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui accompagne les TPE et PME de Chambéry (Savoie, 60 000 habitants) et de son bassin alpin. Nous proposons un Audit sur place sur mesure, des interventions sur site, l'implémentation de solutions IA générative et du coaching un-à-un pour dirigeants. Priorité aux TPE agroalimentaires, PME industrielles de précision, hôtellerie-restauration des stations et commerces du vieux Chambéry. Engagement ROI chiffré, conformité RGPD et AI Act, pas de devis opaque.",
   seoHook: "agroalimentaire & industrie de précision",
   ecosystemFr:
-    "Chambéry concentre un tissu de TPE et PME unique en France : agroalimentaire savoyard sous IGP/AOP (Beaufort, Tomme des Bauges, Tipiak), sous-traitance automobile et mécanique de précision dans l'orbite Renault Trucks/Toyota/Volvo, Université Savoie Mont Blanc (12 000 étudiants), Institut National de l'Énergie Solaire (INES) sur le campus de Technolac, et porte d'entrée des stations alpines (Trois Vallées, Les Arcs, La Plagne, Tarentaise, Maurienne). Le cluster Grenoble-Chambéry-Annecy structure les pôles Tenerrdis (énergie) et Minalogic (microélectronique).",
+    "Chambéry concentre un tissu de TPE et PME unique en France : agroalimentaire savoyard sous IGP/AOP (Beaufort, Tomme des Bauges, Tipiak), sous-traitance automobile et mécanique de précision dans l'orbite Renault Trucks/Toyota/Volvo, Université Savoie Mont Blanc (12 000 étudiants), Institut National de l'Énergie Solaire (INES) sur le campus de Technolac, et porte d'entrée des stations alpines (Trois Vallées, Les Arcs, La Plagne, Tarentaise, Maurienne). Le sillon alpin structure les pôles Tenerrdis (énergie) et Minalogic (microélectronique).",
   ecosystemEn:
-    "Chambéry concentre un tissu de TPE et PME unique en France : agroalimentaire savoyard sous IGP/AOP (Beaufort, Tomme des Bauges, Tipiak), sous-traitance automobile et mécanique de précision dans l'orbite Renault Trucks/Toyota/Volvo, Université Savoie Mont Blanc (12 000 étudiants), Institut National de l'Énergie Solaire (INES) sur le campus de Technolac, et porte d'entrée des stations alpines (Trois Vallées, Les Arcs, La Plagne, Tarentaise, Maurienne). Le cluster Grenoble-Chambéry-Annecy structure les pôles Tenerrdis (énergie) et Minalogic (microélectronique).",
+    "Chambéry concentre un tissu de TPE et PME unique en France : agroalimentaire savoyard sous IGP/AOP (Beaufort, Tomme des Bauges, Tipiak), sous-traitance automobile et mécanique de précision dans l'orbite Renault Trucks/Toyota/Volvo, Université Savoie Mont Blanc (12 000 étudiants), Institut National de l'Énergie Solaire (INES) sur le campus de Technolac, et porte d'entrée des stations alpines (Trois Vallées, Les Arcs, La Plagne, Tarentaise, Maurienne). Le sillon alpin structure les pôles Tenerrdis (énergie) et Minalogic (microélectronique).",
   distancesFr:
-    "Chambéry est un carrefour autoroutier majeur des Alpes du Nord : Lyon à 100 km (A43), Grenoble à 60 km (A41 Sud), Annecy à 50 km (A41 Nord), Genève à 90 km, Turin à 200 km via le tunnel du Fréjus. Gare TGV Chambéry-Challes-les-Eaux au cœur de la ville (Paris 3h, Lyon 1h, Annecy 45 min). Aéroport Chambéry-Savoie Mont Blanc desservi en saison ski par les low-cost UK et Pays-Bas. Stations à 30-90 min : Tarentaise et Maurienne.",
+    "Chambéry est un carrefour autoroutier majeur des Alpes du Nord : Lyon à 100 km (A43), Annecy à 50 km (A41 Nord), Genève à 90 km, Turin à 200 km via le tunnel du Fréjus. Gare TGV Chambéry-Challes-les-Eaux au cœur de la ville (Paris 3h, Lyon 1h, Annecy 45 min). Aéroport Chambéry-Savoie Mont Blanc desservi en saison ski par les low-cost UK et Pays-Bas. Stations à 30-90 min : Tarentaise et Maurienne.",
   distancesEn:
-    "Chambéry est un carrefour autoroutier majeur des Alpes du Nord : Lyon à 100 km (A43), Grenoble à 60 km (A41 Sud), Annecy à 50 km (A41 Nord), Genève à 90 km, Turin à 200 km via le tunnel du Fréjus. Gare TGV Chambéry-Challes-les-Eaux au cœur de la ville (Paris 3h, Lyon 1h, Annecy 45 min). Aéroport Chambéry-Savoie Mont Blanc desservi en saison ski par les low-cost UK et Pays-Bas. Stations à 30-90 min : Tarentaise et Maurienne.",
+    "Chambéry est un carrefour autoroutier majeur des Alpes du Nord : Lyon à 100 km (A43), Annecy à 50 km (A41 Nord), Genève à 90 km, Turin à 200 km via le tunnel du Fréjus. Gare TGV Chambéry-Challes-les-Eaux au cœur de la ville (Paris 3h, Lyon 1h, Annecy 45 min). Aéroport Chambéry-Savoie Mont Blanc desservi en saison ski par les low-cost UK et Pays-Bas. Stations à 30-90 min : Tarentaise et Maurienne.",
   topSectorsNaf: [
     "Agroalimentaire IGP/AOP (fromages Beaufort, Tomme, Tipiak)",
     "Sous-traitance automobile et mécanique de précision",
@@ -38,8 +38,8 @@ export const CHAMBERY_COPY: VilleCopy = {
       en: "Interventions sur site à Chambéry et dans son bassin alpin (Tarentaise, Maurienne, Annecy à 50 km) pour automatiser les processus administratifs, commerciaux et industriels des TPE et PME locales.",
     },
     implementation: {
-      fr: "Implémentation de solutions IA générative sur le campus Technolac de Chambéry et dans le cluster Grenoble-Annecy, en lien avec les pôles Tenerrdis et Minalogic, pour les PME industrielles de précision.",
-      en: "Implémentation de solutions IA générative sur le campus Technolac de Chambéry et dans le cluster Grenoble-Annecy, en lien avec les pôles Tenerrdis et Minalogic, pour les PME industrielles de précision.",
+      fr: "Implémentation de solutions IA générative sur le campus Technolac de Chambéry et dans le sillon alpin, en lien avec les pôles Tenerrdis et Minalogic, pour les PME industrielles de précision.",
+      en: "Implémentation de solutions IA générative sur le campus Technolac de Chambéry et dans le sillon alpin, en lien avec les pôles Tenerrdis et Minalogic, pour les PME industrielles de précision.",
     },
     unAUn: {
       fr: "Coaching un-à-un à Chambéry pour dirigeants de TPE et PME savoyardes : prise en main concrète de l'IA générative appliquée à leur métier (agroalimentaire, industrie, tourisme alpin, commerce de proximité).",
@@ -241,8 +241,8 @@ export const CHAMBERY_COPY: VilleCopy = {
       a: "Nous calons nos interventions sur les périodes creuses des hôteliers-restaurateurs et exploitants de stations (avant-saison et inter-saisons) pour limiter l'impact opérationnel. Les sprints d'implémentation IA sont planifiés hors pics touristiques de Tarentaise et Maurienne.",
     },
     {
-      q: "Axion-IA travaille-t-il avec le cluster Grenoble-Chambéry-Annecy et l'INES Technolac ?",
-      a: "Oui, notre périmètre couvre l'ensemble du cluster Grenoble-Chambéry-Annecy. Nous accompagnons les PME industrielles de précision et les acteurs photovoltaïques en lien avec les pôles de compétitivité Tenerrdis (énergie) et Minalogic (microélectronique) du campus Technolac.",
+      q: "Axion-IA travaille-t-il avec le sillon alpin et l'INES Technolac ?",
+      a: "Oui, notre périmètre couvre l'ensemble du sillon alpin. Nous accompagnons les PME industrielles de précision et les acteurs photovoltaïques en lien avec les pôles de compétitivité Tenerrdis (énergie) et Minalogic (microélectronique) du campus Technolac.",
     },
     {
       q: "Quel est le délai moyen pour démarrer une mission IA à Chambéry ?",

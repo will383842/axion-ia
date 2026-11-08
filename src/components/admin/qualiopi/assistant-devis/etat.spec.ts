@@ -102,6 +102,32 @@ describe("controlerEtape", () => {
     expect(controlerEtape(e, "1b").join(" ")).toMatch(/entre 1 et 100/);
   });
 
+  it("étape 2 : mois offerts de maintenance, entier >= 0 sinon refus lisible", () => {
+    const avecMois = (moisOfferts: string) =>
+      reducteur(etatT1(), {
+        type: "achat",
+        patch: { maintenance: { ...etatT1().achat.maintenance, moisOfferts } },
+      });
+    expect(etatInitial({ ...PARAMS, defaultClientId: "c-1" }).achat.maintenance.moisOfferts).toBe(
+      "0",
+    );
+    for (const ok of ["0", "3", " 12 "]) {
+      expect(controlerEtape(avecMois(ok), 2), ok).toEqual([]);
+    }
+    for (const ko of ["-1", "1.5", "abc", ""]) {
+      expect(controlerEtape(avecMois(ko), 2).join(" "), ko).toMatch(/mois offerts.*entier/);
+    }
+  });
+
+  it("les mois offerts sont gardés à l'aller-retour sérialisé", () => {
+    const e = reducteur(etatT1(), {
+      type: "achat",
+      patch: { maintenance: { ...etatT1().achat.maintenance, moisOfferts: "4" } },
+    });
+    const lu = deserialiser(JSON.parse(JSON.stringify(serialiser(e, 2))));
+    expect(lu.ok && lu.etat.achat.maintenance.moisOfferts).toBe("4");
+  });
+
   it("les jeux d'essai T1 à T5 passent toutes les étapes", () => {
     for (const [nom, f] of Object.entries(FIXTURES)) {
       expect(controlerEtape(f(), 4), nom).toEqual([]);

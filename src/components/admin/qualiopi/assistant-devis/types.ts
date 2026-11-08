@@ -79,6 +79,8 @@ export interface EtatAssistant {
       mensuelEur: string;
       periodes: MoisPeriode[];
       dureeMinimale: string;
+      /** Mois de maintenance offerts (entier >= 0, saisi en texte). */
+      moisOfferts: string;
     };
   };
   abonnement: {

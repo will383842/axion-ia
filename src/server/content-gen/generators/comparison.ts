@@ -22,6 +22,7 @@
  * - indexationTier : tier_1 si qualité ≥ 75 (articles comparatifs = haute valeur SEO)
  */
 
+import { taillePourPrompt } from "@/server/content-gen/brand/positionnement";
 import { generate as routerGenerate } from "../providers/provider-router";
 import { hashPrompt } from "../provenance/provenance-logger";
 import { retrieve as kbRetrieve } from "../kb-client";
@@ -72,7 +73,7 @@ const MIN_WORD_COUNT = 850;
 // DOIT prévoir une section « tableau comparatif » (la table elle-même est rédigée
 // à l'appel 2). PAS de bodyHtml ici.
 const SYSTEM_PROMPT_PLAN =
-  injectBrandVoice(`Tu es Manon, experte IA chez Axion-IA, cabinet de conseil en IA pour les petites et moyennes entreprises françaises.
+  injectBrandVoice(`Tu es Manon, la plume IA d'Axion-IA (assistance IA générative supervisée par l'équipe), partenaire IA de bout en bout des petites et moyennes entreprises françaises.
 Tu prépares le PLAN d'un article COMPARATIF FR optimisé SEO/AEO 2026 (intent commercial_investigation : l'utilisateur compare des options). Le corps sera rédigé séparément. Règles :
 - L'article compare plusieurs options (outils, solutions SaaS, build-vs-buy, cabinet vs interne…). La section Axion-IA est UNE option parmi d'autres, évaluée factuellement.
 - 100 % centré sur les « Sources internes Axion-IA » fournies (faits KB) pour la partie Axion-IA. Rien d'inventé : ni cas client fictif (« Entreprise Anonyme »…), ni chiffre non sourcé.
@@ -92,7 +93,7 @@ Tu prépares le PLAN d'un article COMPARATIF FR optimisé SEO/AEO 2026 (intent c
 // EXIGENCE INTENT : au moins une section (celle « tableau comparatif ») contient
 // un vrai <table> récapitulatif — sinon hard gate → retry BullMQ.
 const SYSTEM_PROMPT_EXPAND =
-  injectBrandVoice(`Tu es Manon, experte IA chez Axion-IA. Tu RÉDIGES le corps HTML d'un article COMPARATIF FR (intent commercial_investigation) à partir d'un plan déjà validé. Règles absolues :
+  injectBrandVoice(`Tu es Manon, la plume IA d'Axion-IA (assistance IA générative supervisée par l'équipe). Tu RÉDIGES le corps HTML d'un article COMPARATIF FR (intent commercial_investigation) à partir d'un plan déjà validé. Règles absolues :
 - GROUNDING OBLIGATOIRE : développe CHAQUE section à partir des « Sources internes Axion-IA » fournies (méthodologie, étapes, livrables, ROI RÉELS) pour la partie Axion-IA. Si un fait précis manque, reste général et factuel SANS rien inventer (ni cas client fictif, ni chiffre non sourcé).
 - La section Axion-IA est présente comme UNE option parmi d'autres, évaluée factuellement. 0 prix en dur, 0 délai chiffré, 0 numéro de téléphone (contact@axion-ia.com uniquement).
 - **TABLEAU COMPARATIF OBLIGATOIRE** : la section dédiée « tableau comparatif » de l'outline DOIT contenir un vrai <table> récapitulatif HTML (3-5 colonnes : Option / Avantages / Inconvénients / Coût / Cible), une ligne par option comparée. C'est le Featured Snippet de l'article : SANS ce <table>, l'article est REJETÉ et ré-généré. Si la tranche en cours contient cette section, le <table> est impératif.
@@ -127,7 +128,9 @@ export const comparisonGenerator: Generator = {
     const topic = input.primaryKeyword ?? "comparatif solutions IA entreprise";
     const safeTopic = escapeLlmInput(topic, { maxLen: 120 });
     const safeIntent = escapeLlmInput(input.targetSearchIntent, { maxLen: 30 });
-    const safeAudienceSize = escapeLlmInput(input.targetAudienceSize ?? "PME", { maxLen: 30 });
+    const safeAudienceSize = escapeLlmInput(taillePourPrompt(input.targetAudienceSize, "PME"), {
+      maxLen: 30,
+    });
     const sectorTagSlugs = input.kbSectorTagSlugs ?? [];
 
     // Refonte templates 2026-06-22 — expert interne choisi DÉTERMINISTIQUEMENT

@@ -56,6 +56,7 @@ export function etatT1(): EtatAssistant {
         mensuelEur: "190",
         periodes: [1, 12],
         dureeMinimale: "",
+        moisOfferts: "0",
       },
     },
   });
