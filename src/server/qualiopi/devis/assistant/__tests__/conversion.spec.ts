@@ -375,6 +375,12 @@ describe("textes d'IA par formule (liste blanche, préfixe « Formule A/B : »)"
     c.nonImprime = { ia: { achat: "compte_client" } };
     expect(JSON.stringify(creation(c))).not.toContain("IA");
   });
+  it("réouverture : intitulé déjà injecté, jamais dupliqué (comparaison rognée)", () => {
+    const p = formules("A");
+    p.textes = [{ texte: "Assistant client", actif: true }];
+    p.recit.intitule = "  Assistant client ";
+    expect(textes(p)).toEqual(["Assistant client"]);
+  });
   it("réouverture : intitulé déjà injecté (texte enregistré avec espaces, récit vide), jamais dupliqué", () => {
     const p = formules("A");
     p.textes = [{ texte: "  Assistant client ", actif: true }];

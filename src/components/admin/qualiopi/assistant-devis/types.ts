@@ -63,8 +63,13 @@ export interface EtatAssistant {
   proposition: Proposition;
   /** Interrupteur `qualiopi.devis_formules.actif`, reçu en props. */
   formulesActives: boolean;
-  garantie: { afficher: boolean; jours: string; phrase: string };
-  delais: { texte: string; fourchette: string };
+  /**
+   * `touche` : la phrase a déjà été initialisée ou modifiée. Une phrase VIDÉE par l'utilisateur
+   * n'est alors jamais remplacée par le texte de la bibliothèque (ni en cours de saisie, ni à la
+   * réouverture du brouillon). Absent d'un ancien brouillon = jamais touchée.
+   */
+  garantie: { afficher: boolean; jours: string; phrase: string; touche?: boolean | undefined };
+  delais: { texte: string; fourchette: string; touche?: boolean | undefined };
   achat: {
     phases: PhaseAssistant[];
     hebergement: "client" | "axion";
