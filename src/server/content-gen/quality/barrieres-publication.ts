@@ -28,6 +28,7 @@ import type { GeneratorOutput } from "../generators/types";
 import { verifierAccrocheTropProche } from "./anti-redite-accroche";
 import { surfaceDepuisSortie, type SortiePourSurface } from "./doctrine-surface";
 import { evaluateSoft404 } from "./soft-404-gate";
+import { detecterTutoiement } from "./vouvoiement";
 
 /** Plancher de mots des articles longs : en dessous, relecture humaine. */
 export const PLANCHER_MOTS_RELECTURE = 850;
@@ -63,7 +64,8 @@ export type CodeBarriere =
   | "soft-404"
   | "aucun-fait-de-base"
   | "accroche-trop-proche"
-  | "moins-de-850-mots";
+  | "moins-de-850-mots"
+  | "tutoiement";
 
 export interface BarriereRelecture {
   readonly code: CodeBarriere;
@@ -168,6 +170,22 @@ export function evaluerBarrieresRelecture(entree: EntreeBarrieres): BarriereRele
         slug_proche: accroche.slugProche,
         source: accroche.source,
       },
+    });
+  }
+
+  // Vouvoiement : règle de la marque (audit d'harmonie du 08/11/2026). Relecture
+  // seulement, jamais un blocage : un « tu » isolé est possible hors citation.
+  const textesLus = [
+    output.directAnswer ?? "",
+    html,
+    ...(output.faq ?? []).flatMap((f) => [f.question, f.answer]),
+  ];
+  const tutoiement = detecterTutoiement(textesLus.join("\n"));
+  if (tutoiement.tutoie) {
+    barrieres.push({
+      code: "tutoiement",
+      libelle: `Texte écrit au tutoiement (${tutoiement.occurrences} occurrence${tutoiement.occurrences > 1 ? "s" : ""}) : Axion-IA vouvoie`,
+      detail: { occurrences: tutoiement.occurrences, extrait: tutoiement.extrait },
     });
   }
 
