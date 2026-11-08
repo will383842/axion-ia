@@ -167,12 +167,12 @@ export const KB_SITES_WEB_AUGMENTES: readonly KbFact[] = [
   // ── AI Act et conformité ─────────────────────────────────────────────────
   {
     id: "web-017",
-    text: "L'AI Act européen (applicable août 2026) impose aux systèmes IA 'interagissant avec des humains' (chatbots) d'informer clairement l'utilisateur qu'il parle à une IA — obligation légale pour tous les chatbots sur sites web européens dès août 2026.",
+    text: "L'AI Act européen (art. 50) demande d'informer clairement l'utilisateur qu'il échange avec une IA lorsqu'un chatbot interagit avec des personnes, sauf si cela ressort clairement du contexte. Dates d'application : à vérifier sur EUR-Lex (modifiées par l'omnibus numérique).",
     source: "EUR-Lex — Règlement AI Act UE 2024/1689, Art. 50",
     sourceUrl: "https://eur-lex.europa.eu/legal-content/FR/TXT/?uri=CELEX:32024R1689",
     verifiedAt: "2026-05-01",
     verticales: ["sites_web_augmentes"],
-    confidence: 0.95,
+    confidence: 0.85,
   },
   {
     id: "web-018",

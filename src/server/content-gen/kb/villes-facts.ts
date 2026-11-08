@@ -382,34 +382,6 @@ export const KB_VILLES_ECONOMY: readonly KbFact[] = [
     verticales: ["villes"],
     confidence: 0.88,
   },
-  // GRENOBLE
-  {
-    id: "ville-040",
-    text: "Grenoble compte environ 158 000 habitants (INSEE 2021) et 700 000 dans sa métropole. La ville est classée parmi les meilleures villes mondiales pour la recherche, avec une densité de chercheurs parmi les plus élevées d'Europe.",
-    source: "INSEE — Recensement 2021",
-    sourceUrl: "https://www.insee.fr/fr/statistiques/2011101?geo=COM-38185",
-    verifiedAt: "2026-05-25",
-    verticales: ["villes"],
-    confidence: 0.93,
-  },
-  {
-    id: "ville-041",
-    text: "Grenoble abrite le CEA-Leti (laboratoire d'électronique mondial de référence), STMicroelectronics, Soitec, et le Synchrotron ESRF. Le pôle Minalogic fédère plus de 300 acteurs en micro-nanotechnologies et logiciel embarqué.",
-    source: "Minalogic — Rapport 2024",
-    sourceUrl: "https://www.minalogic.com",
-    verifiedAt: "2026-05-25",
-    verticales: ["villes"],
-    confidence: 0.92,
-  },
-  {
-    id: "ville-042",
-    text: "La région grenobloise produit 40 % des puces électroniques françaises. Le secteur semi-conducteurs et le deep-tech en font un hub IA matériel (edge computing, neuromorphic chips) en pleine expansion.",
-    source: "Grenoble-Alpes Métropole — Innovation 2024",
-    sourceUrl: "https://www.grenoblealpesmetropole.fr",
-    verifiedAt: "2026-05-25",
-    verticales: ["villes"],
-    confidence: 0.78,
-  },
   // ROUEN
   {
     id: "ville-043",
@@ -980,12 +952,12 @@ export const KB_VILLES_ECONOMY: readonly KbFact[] = [
 export const KB_AI_ACT: readonly KbFact[] = [
   {
     id: "ai-act-001",
-    text: "L'AI Act européen (Règlement UE 2024/1689) est entré en vigueur le 1er août 2024 avec une application progressive : interdictions des pratiques inacceptables depuis le 2 février 2025, obligations pour les IA haut risque depuis le 2 août 2026.",
+    text: "L'AI Act européen (Règlement UE 2024/1689) est entré en vigueur le 1er août 2024 avec une application progressive : interdictions des pratiques inacceptables depuis le 2 février 2025. Le calendrier des obligations pour les systèmes à haut risque a été décalé par l'omnibus numérique : vérifier les dates en vigueur sur EUR-Lex.",
     source: "EUR-Lex — Règlement UE 2024/1689",
     sourceUrl: "https://eur-lex.europa.eu/legal-content/FR/TXT/?uri=CELEX:32024R1689",
     verifiedAt: "2026-05-25",
     verticales: ["audits", "implementations"],
-    confidence: 0.99,
+    confidence: 0.8,
   },
   {
     id: "ai-act-002",
@@ -1034,12 +1006,12 @@ export const KB_AI_ACT: readonly KbFact[] = [
   },
   {
     id: "ai-act-007",
-    text: "L'AI Act impose aux opérateurs de systèmes IA à haut risque une obligation d'enregistrement dans une base de données EU (EUDS) avant mise sur le marché. Cette obligation s'applique depuis le 2 août 2026.",
+    text: "L'AI Act prévoit pour les systèmes d'IA à haut risque une obligation d'enregistrement dans une base de données européenne avant leur mise sur le marché. La date d'application a été décalée par l'omnibus numérique : à vérifier sur EUR-Lex.",
     source: "EUR-Lex — Règlement UE 2024/1689, Art. 49",
     sourceUrl: "https://eur-lex.europa.eu/legal-content/FR/TXT/?uri=CELEX:32024R1689",
     verifiedAt: "2026-05-25",
     verticales: ["audits"],
-    confidence: 0.99,
+    confidence: 0.8,
   },
   {
     id: "ai-act-008",
@@ -1142,12 +1114,12 @@ export const KB_AI_ACT: readonly KbFact[] = [
   },
   {
     id: "ai-act-019",
-    text: "L'AI Act exige que les systèmes IA haut risque dans les RH (recrutement, évaluation des performances, licenciement) fassent l'objet d'une évaluation d'impact sur les droits fondamentaux avant déploiement.",
+    text: "Pour les entreprises qui utilisent un système d'IA à haut risque, l'AI Act (art. 27) prévoit une analyse d'impact sur les droits fondamentaux, mais seulement pour certains utilisateurs : organismes publics, entités privées qui rendent un service public, et usages d'évaluation de solvabilité ou d'assurance vie/santé. Le recrutement n'en fait pas partie à ce titre. À vérifier sur EUR-Lex selon votre cas.",
     source: "EUR-Lex — Règlement UE 2024/1689, Annexe III + Art. 27",
     sourceUrl: "https://eur-lex.europa.eu/legal-content/FR/TXT/?uri=CELEX:32024R1689",
     verifiedAt: "2026-05-25",
     verticales: ["audits"],
-    confidence: 0.99,
+    confidence: 0.8,
   },
   {
     id: "ai-act-020",
@@ -1187,21 +1159,21 @@ export const KB_AI_ACT: readonly KbFact[] = [
   },
   {
     id: "ai-act-024",
-    text: "L'AI Act prévoit une période de transition pour les systèmes IA haut risque déjà en production avant le 2 août 2026 : ils bénéficient d'un délai supplémentaire de mise en conformité jusqu'au 2 août 2027.",
+    text: "L'AI Act prévoit des dispositions transitoires pour les systèmes d'IA à haut risque déjà sur le marché avant la date d'application. Leur périmètre et leurs échéances ont été modifiés par l'omnibus numérique : à vérifier sur EUR-Lex.",
     source: "EUR-Lex — Règlement UE 2024/1689, Art. 111",
     sourceUrl: "https://eur-lex.europa.eu/legal-content/FR/TXT/?uri=CELEX:32024R1689",
     verifiedAt: "2026-05-25",
     verticales: ["audits"],
-    confidence: 0.99,
+    confidence: 0.8,
   },
   {
     id: "ai-act-025",
-    text: "Les obligations de transparence de l'AI Act imposent aux chatbots et assistants virtuels de signaler clairement leur nature artificielle. Cette règle s'applique à partir du 2 août 2026 (Art. 50 et Art. 113).",
+    text: "Les obligations de transparence de l'AI Act (art. 50) imposent notamment d'informer les personnes qu'elles échangent avec un chatbot ou un assistant virtuel, sauf si cela ressort clairement du contexte. Les échéances de mise en conformité : à vérifier sur EUR-Lex.",
     source: "EUR-Lex — Règlement UE 2024/1689, Art. 50",
     sourceUrl: "https://eur-lex.europa.eu/legal-content/FR/TXT/?uri=CELEX:32024R1689",
     verifiedAt: "2026-10-24",
     verticales: ["implementations"],
-    confidence: 0.99,
+    confidence: 0.8,
   },
   {
     id: "ai-act-026",
@@ -1443,7 +1415,7 @@ export const KB_ROI_IA: readonly KbFact[] = [
   },
   {
     id: "roi-ia-021",
-    text: "Selon Numeum (ex-Syntec Numérique, 2024), le marché français de l'IA atteint 6,5 milliards d'euros en 2024 (+35 % vs 2023) avec une projection à 15 milliards d'euros en 2027, tirée par les TPE, PME et ETI adoptant les solutions cloud IA.",
+    text: "Selon Numeum (ex-Syntec Numérique, 2024), le marché français de l'IA atteint 6,5 milliards d'euros en 2024 (+35 % vs 2023) avec une projection à 15 milliards d'euros en 2027, tirée par les PME adoptant les solutions cloud IA.",
     source: "Numeum (ex-Syntec Numérique) — Panorama IA France 2024",
     sourceUrl: "https://numeum.fr",
     verifiedAt: "2026-08-11",
@@ -1704,15 +1676,6 @@ export const KB_ROI_IA: readonly KbFact[] = [
     verifiedAt: "2026-05-25",
     verticales: ["implementations"],
     confidence: 0.8,
-  },
-  {
-    id: "roi-ia-050",
-    text: "Selon le rapport Forvis Mazars/Opinion Way (2024) sur 500 ETI françaises, les entreprises ayant nommé un Chief AI Officer (CAIO) ou un référent IA dédié obtiennent un ROI IA 2,3x supérieur à celles sans leadership IA identifié.",
-    source: "Forvis Mazars + Opinion Way — IA dans les ETI françaises 2024",
-    sourceUrl: "https://www.forvismazars.com/fr",
-    verifiedAt: "2026-08-11",
-    verticales: ["implementations", "audits"],
-    confidence: 0.78,
   },
 ];
 

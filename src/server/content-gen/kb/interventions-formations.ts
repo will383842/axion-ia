@@ -66,7 +66,7 @@ export const KB_INTERVENTIONS_FORMATIONS: readonly KbFact[] = [
   // ── Publics cibles ───────────────────────────────────────────────────────
   {
     id: "form-006",
-    text: "Formations Axion-IA adaptées à 5 profils : dirigeants PME/ETI (décision stratégique), managers (pilotage équipe IA), marketing (génération de contenu), commerciaux (prospection IA) et RH (recrutement + administration).",
+    text: "Formations Axion-IA adaptées à 5 profils : dirigeants de PME (décision stratégique), managers (pilotage équipe IA), marketing (génération de contenu), commerciaux (prospection IA) et RH (recrutement + administration).",
     source: "Axion-IA — Catalogue formations 2026",
     sourceUrl: "https://axion-ia.com/interventions-formations",
     verifiedAt: "2026-05-01",
@@ -139,7 +139,7 @@ export const KB_INTERVENTIONS_FORMATIONS: readonly KbFact[] = [
   // ── Marché de la formation IA en France ─────────────────────────────────
   {
     id: "form-015",
-    text: "Le marché de la formation professionnelle IA en France est estimé à 1,2 milliard d'euros en 2025, avec une croissance annuelle de 35 % portée par la demande des PME et ETI (Numeum, ex-Syntec Numérique, 2025).",
+    text: "Le marché de la formation professionnelle IA en France est estimé à 1,2 milliard d'euros en 2025, avec une croissance annuelle de 35 % portée par la demande des PME (Numeum, ex-Syntec Numérique, 2025).",
     source: "Numeum (ex-Syntec Numérique) — Rapport formation IA 2025",
     sourceUrl: "https://numeum.fr",
     verifiedAt: "2026-08-11",
@@ -492,12 +492,12 @@ export const KB_INTERVENTIONS_FORMATIONS: readonly KbFact[] = [
   // ── Enjeux réglementaires formation ──────────────────────────────────────
   {
     id: "form-059",
-    text: "L'AI Act européen impose aux entreprises utilisant des systèmes IA à « haut risque » (recrutement, crédit, santé) de former leurs équipes à l'usage responsable de l'IA — créant une obligation légale de formation IA pour certaines fonctions dès 2025.",
+    text: "L'AI Act (art. 4) demande aux entreprises qui fournissent ou utilisent des systèmes d'IA de prendre des mesures pour que leur personnel ait un niveau suffisant de maîtrise de l'IA, en tenant compte de son rôle et du contexte d'usage. Cela concerne tous les systèmes d'IA, pas seulement ceux à haut risque. La portée exacte de cet article a été précisée par l'omnibus numérique : à vérifier sur EUR-Lex.",
     source: "EUR-Lex — Règlement UE 2024/1689 (AI Act), Art. 4 et Art. 26",
     sourceUrl: "https://eur-lex.europa.eu/legal-content/FR/TXT/?uri=CELEX:32024R1689",
-    verifiedAt: "2026-05-22",
+    verifiedAt: "2026-05-01",
     verticales: ["interventions_formations"],
-    confidence: 0.94,
+    confidence: 0.8,
   },
   {
     id: "form-060",
