@@ -186,7 +186,8 @@ async function lier(
         "devis_id" = ${devisId}::uuid,
         "statut" = 'lie_au_devis',
         "verrou_depuis" = NULL,
-        "revision" = "revision" + 1
+        "revision" = "revision" + 1,
+        "updated_at" = CURRENT_TIMESTAMP
     WHERE "id" = ${id}::uuid
       AND "created_by_admin_id" = ${adminId}::uuid
       AND "statut" = 'numerotation'
