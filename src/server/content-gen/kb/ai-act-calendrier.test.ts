@@ -11,14 +11,14 @@
 import { describe, it, expect } from "vitest";
 import { readFileSync, readdirSync } from "node:fs";
 import { join } from "node:path";
-import { ALL_SECTOR_KB_ENTRIES } from "./sector-entries";
-import { KB_VILLES_ALL } from "../../server/content-gen/kb/villes-facts";
-import { KB_AUDITS } from "../../server/content-gen/kb/audits";
-import { KB_INTERVENTIONS_FORMATIONS } from "../../server/content-gen/kb/interventions-formations";
-import { KB_IMPLEMENTATIONS } from "../../server/content-gen/kb/implementations";
-import { KB_SITES_WEB_AUGMENTES } from "../../server/content-gen/kb/sites-web-augmentes";
+import { ALL_SECTOR_KB_ENTRIES } from "../../../content/knowledge/sector-entries";
+import { KB_VILLES_ALL } from "./villes-facts";
+import { KB_AUDITS } from "./audits";
+import { KB_INTERVENTIONS_FORMATIONS } from "./interventions-formations";
+import { KB_IMPLEMENTATIONS } from "./implementations";
+import { KB_SITES_WEB_AUGMENTES } from "./sites-web-augmentes";
 
-const RACINE = join(__dirname, "..", "..", "..");
+const RACINE = join(__dirname, "..", "..", "..", "..");
 const dossier = (d: string) =>
   readdirSync(join(RACINE, d))
     .filter((f) => f.endsWith(".ts") && !f.includes(".test.") && !f.includes(".spec."))
