@@ -4,7 +4,8 @@
 /**
  * E-mail au client (fiche E16, décision D9 : PAS d'e-mail personnalisé en v1). Aucun modèle,
  * aucun objet ni message modifiable, aucun exemplaire pour l'administrateur : le contenu est
- * celui de la corbeille de relecture, côté serveur. Ne reste que le destinataire et « Envoyer
+ * celui de la corbeille de relecture, côté serveur. Ne reste que le destinataire (affiché en
+ * LECTURE SEULE : le serveur écrit à la fiche client) et « Envoyer
  * au client », qui appelle l'action UNE fois (verrou immédiat contre le double clic). Aucun
  * envoi à l'affichage, aucune relance.
  */
@@ -23,7 +24,8 @@ export interface PropsEmailEnvoi {
 
 export function EmailEnvoi({ destinataire, envoyer }: PropsEmailEnvoi) {
   const uid = useId();
-  const [a, setA] = useState(destinataire);
+  // Lecture seule : le serveur écrit à la fiche client, aucune adresse n'est saisie ici.
+  const a = destinataire;
   const [erreur, setErreur] = useState<string | null>(null);
   const [statut, setStatut] = useState<string | null>(null);
   const [envoye, setEnvoye] = useState(false);
@@ -33,7 +35,9 @@ export function EmailEnvoi({ destinataire, envoyer }: PropsEmailEnvoi) {
   async function lancerEnvoi() {
     if (verrou.current || envoye) return;
     if (a.trim() === "") {
-      setErreur("Indiquez l'adresse e-mail du client avant d'envoyer.");
+      setErreur(
+        "La fiche du client n'a pas d'adresse e-mail : complétez la fiche avant d'envoyer.",
+      );
       return;
     }
     verrou.current = true;
@@ -62,10 +66,13 @@ export function EmailEnvoi({ destinataire, envoyer }: PropsEmailEnvoi) {
           type="email"
           className="min-h-[44px] rounded border px-2"
           value={a}
-          onChange={(e) => setA(e.target.value)}
-          disabled={envoye}
+          readOnly
+          aria-describedby={`${uid}-adresse`}
         />
       </label>
+      <p id={`${uid}-adresse`} className="text-[length:var(--text-admin-sm)]">
+        Adresse lue sur la fiche du client ; elle ne se modifie pas ici.
+      </p>
       <p className="text-[length:var(--text-admin-sm)]">
         Pièce jointe : le devis en PDF, avec le bouton pour choisir et signer. L&apos;e-mail sera
         relu dans la corbeille avant envoi. Le client reçoit uniquement ce message, jamais de
