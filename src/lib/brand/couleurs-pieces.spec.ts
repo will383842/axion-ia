@@ -20,7 +20,11 @@ const JSON_MARQUE = {
 const A_CONFIRMER = { "terracotta-survol": "#8F3412", attention: "#8F3412" };
 
 function teinte(hex: string): number {
-  const [r, g, b] = [1, 3, 5].map((i) => parseInt(hex.slice(i, i + 2), 16) / 255);
+  const composantes = [1, 3, 5].map((i) => parseInt(hex.slice(i, i + 2), 16) / 255);
+  const [r, g, b] = composantes;
+  if (r === undefined || g === undefined || b === undefined) {
+    throw new Error(`couleur hexadécimale invalide : ${hex}`);
+  }
   const max = Math.max(r, g, b);
   const d = max - Math.min(r, g, b);
   if (d === 0) return 0;
