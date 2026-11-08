@@ -114,3 +114,15 @@ montpellier.ts:1023, nice.ts:1016, paris.ts:1016, reims.ts:1018.
 - `vizille.ts` : « Grenoble »
 - `voiron.ts` : « Grenoble » (INDEXABLE)
 - `voreppe.ts` : « Grenoble »
+
+## Corrections de relecture (étape 2 du script)
+
+- Contradictions d'origine des consultants, pages indexables : cugnaux, bourgoin-jallieu (l.21, 23), romans-sur-isere, echirolles.
+- `chambery.ts` : « sillon alpin » à la place de « cluster Chambéry-Annecy » / « cluster d'Annecy ».
+- `la-tour-du-pin.ts` : « sur l'axe A43 Lyon-Chambéry ».
+- `gieres.ts` : « gare de Gières », phrase « à l'est » complétée.
+- `saint-martin-le-vinoux.ts` : phrase avec verbe.
+- `saint-martin-d-heres.ts` : « l'institut d'études politiques (IEP) » ; 13 fichiers : « (TER vers Lyon) » et variantes ; `crolles.ts` : durée orpheline retirée ; `meylan.ts` : seoHook « Inovallée ».
+- `bouguenais.ts` : « dans nos locaux et à distance » remplacé (fausse présence, repéré par le nouveau garde « nos locaux »).
+- 18 fichiers : réponse en doublon reformulée.
+- 27 fichiers : question « Comment se déroule une intervention ? ».

@@ -12,6 +12,8 @@
  *   · « Nos consultants sont basés… » ;
  *   · « depuis nos bureaux » / « bureaux proches de » ;
  *   · « nos bureaux <ville> », sauf les deux questions de client listées ;
+ *   · « notre bureau », « nos locaux » (hors questions de client listées),
+ *     « our office(s) » et « we are / our team … based in » ;
  *   · le mot « Grenoble » dans tout fichier autre que `grenoble.ts` ;
  *   · dans `grenoble.ts` (page DE la ville, le nom y est le sujet), toute
  *     phrase qui place Axion-IA à Grenoble.
@@ -64,6 +66,19 @@ const QUESTIONS_CLIENT: ReadonlyArray<readonly [string, string]> = [
   ["reims.ts", 'q: "Pouvez-vous intervenir sur site à Reims dans nos bureaux ou caves ?",'],
 ];
 
+/**
+ * « nos locaux » : mêmes questions de client que ci-dessus, phrase exacte exigée.
+ */
+const QUESTIONS_CLIENT_LOCAUX: ReadonlyArray<readonly [string, string]> = [
+  [
+    "angers.ts",
+    'q: "Pouvez-vous intervenir sur site dans nos locaux angevins ou dans les communes alentour ?",',
+  ],
+  ["marseille.ts", 'q: "Pouvez-vous intervenir sur site dans nos locaux marseillais ?",'],
+  ["nantes.ts", 'q: "Pouvez-vous intervenir sur site dans nos locaux nantais ?",'],
+  ["nimes.ts", 'q: "Pouvez-vous intervenir sur site dans nos locaux à Nîmes ?",'],
+];
+
 describe("villes · aucune fausse présence physique", () => {
   it("le dossier est bien lu (garde contre un test vide)", () => {
     expect(FICHIERS.length).toBeGreaterThan(2000);
@@ -91,6 +106,40 @@ describe("villes · aucune fausse présence physique", () => {
       });
     }
     expect(fautives).toEqual([]);
+  });
+
+  it("« nos locaux » n'apparaît que dans les questions de client listées", () => {
+    const autorisees = new Set(QUESTIONS_CLIENT_LOCAUX.map(([nom, phrase]) => `${nom}|${phrase}`));
+    const fautives: string[] = [];
+    for (const [nom, texte] of CONTENUS) {
+      texte.split("\n").forEach((ligne, i) => {
+        if (!/\bnos locaux\b/i.test(ligne)) return;
+        if (!autorisees.has(`${nom}|${ligne.trim()}`)) fautives.push(`${nom}:${i + 1}`);
+      });
+    }
+    expect(fautives).toEqual([]);
+  });
+
+  it("chaque exception « nos locaux » existe encore telle quelle", () => {
+    for (const [nom, phrase] of QUESTIONS_CLIENT_LOCAUX) {
+      const lignes = (CONTENUS.get(nom) ?? "").split("\n").map((l) => l.trim());
+      expect(lignes, `${nom} : exception introuvable`).toContain(phrase);
+    }
+  });
+
+  it("aucun « notre bureau », « our office(s) » ni « we are / our team … based in »", () => {
+    expect(violations(/\bnotre bureau/i)).toEqual([]);
+    expect(violations(/\bour offices?\b/i)).toEqual([]);
+    expect(
+      violations(
+        /\b(we are|we're|our (team|consultants|experts|firm)( is| are)?|Axion-IA (is|are)) based (in|at)\b/i,
+      ),
+    ).toEqual([]);
+    expect(
+      violations(
+        /\b(nos (consultants|équipes)|notre (équipe|cabinet))\s+(est |sont )?(basée?s?|installée?s?|implantée?s?)\s+(à|au|aux|sur|dans)\b/i,
+      ),
+    ).toEqual([]);
   });
 
   it("chaque exception « nos bureaux » existe encore telle quelle (pas de liste morte)", () => {
