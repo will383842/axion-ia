@@ -5450,6 +5450,8 @@ model VenteBrouillon {
 /// (`statut`), jamais effacé. `adminId` et `venteBrouillonId` sont des liens logiques sans FK.
 /// `devisId` est unique : un seul brouillon d'assistant par devis (rejeu sûr).
 /// Le code qui lit ou écrit cette table arrive APRÈS la mise en ligne de cette migration.
+///
+/// rgpd: technique — brouillon de travail de l'organisme : aucun contact libre dans le payload (plan assistant §5.11), seulement un lien `client_id` ; à requalifier en `dossier-client` par la fiche S17 (export art. 15 + fusion), qui lira la table.
 model DevisAssistantBrouillon {
   id                   String    @id @default(uuid()) @db.Uuid
   /// Propriétaire (uuid AdminUser, sans FK — comme `vente_brouillons`).
