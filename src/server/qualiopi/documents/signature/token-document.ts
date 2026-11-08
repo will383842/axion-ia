@@ -336,10 +336,17 @@ export async function statutDevisDuLien(
   if (ligne === null) return null;
   const devis = await prisma.devis.findFirst({
     where: { documentGenereId: ligne.documentGenereId },
-    select: { statut: true },
+    select: { id: true, statut: true },
   });
   if (devis === null) return null;
-  return devis.statut === "refuse" || devis.statut === "expire" ? devis.statut : "autre";
+  if (devis.statut === "refuse") return "refuse";
+  if (devis.statut === "expire") {
+    // Devis révisé : l'ancien passe `expire` mais un successeur existe → message « version
+    // révisée » conservé ("autre"). Un expire SANS successeur reste "expire".
+    const successeurs = await prisma.devis.count({ where: { replacesDevisId: devis.id } });
+    return successeurs > 0 ? "autre" : "expire";
+  }
+  return "autre";
 }
 
 /**
