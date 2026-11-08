@@ -832,8 +832,8 @@ export default async function StackIaPage({ params }: Props) {
         titleEm={isFr ? "votre entreprise ?" : "your company?"}
         description={
           isFr
-            ? "45 minutes en visio, gratuit. On regarde ensemble ce que vous utilisez déjà, ce qui manque, ce qui peut sortir. Vous repartez avec votre stack ciblée — qu'on déploie ensuite ou non."
-            : "45 minutes on video, free. Together we look at what you already use, what's missing, what can go. You leave with your targeted stack — whether or not we then deploy it."
+            ? "45 minutes en visio ou par téléphone, gratuit. On regarde ensemble ce que vous utilisez déjà, ce qui manque, ce qui peut sortir. Vous repartez avec votre stack ciblée — qu'on déploie ensuite ou non."
+            : "45 minutes by video or phone, free. Together we look at what you already use, what's missing, what can go. You leave with your targeted stack — whether or not we then deploy it."
         }
         cta={
           <>

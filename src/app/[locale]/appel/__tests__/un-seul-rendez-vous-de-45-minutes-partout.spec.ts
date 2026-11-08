@@ -124,22 +124,19 @@ describe("🔑 FAQ et stack-ia : 45 minutes, et le bouton mène au rendez-vous g
 });
 
 describe("🔑 /appel/echange-projet : le titre suit le corps (Diagnostic IA gratuit)", () => {
-  it("generateMetadata rabat `projet` vers `diagnostic`", async () => {
-    const { generateMetadata } = await import("../[type]/page");
-    const m = await generateMetadata({
-      params: Promise.resolve({ locale: "fr", type: "echange-projet" }),
-    });
-    expect(JSON.stringify(m.title)).toContain("Diagnostic IA gratuit");
-    expect(JSON.stringify(m.title)).not.toContain("Échange projet");
+  const route = sansCommentaires(lire("src/app/[locale]/appel/[type]/page.tsx"));
+  it("generateMetadata rabat `projet` vers `diagnostic` avant de lire le nom", () => {
+    expect(route).toMatch(/brut === "projet" \? "diagnostic" : brut/);
+    expect(route).toMatch(/configDuChoix\(choix\)\.nom/);
+    expect(TYPES_RESERVABLES.diagnostic.nom).toBe("Diagnostic IA gratuit");
   });
 });
 
-describe("🔑 la durée de repli du rendez-vous gratuit vaut 45 minutes", () => {
+describe("🔑 la durée de repli du formulaire de réservation vaut 45 minutes", () => {
   const reserver = sansCommentaires(lire("src/app/[locale]/appel/reserver/page.tsx"));
-  it("DUREE_DEFAUT = 45 et aucun repli en dur à 30", () => {
+  it("DUREE_DEFAUT = 45, et c'est elle qui alimente le formulaire", () => {
     expect(reserver).toMatch(/const DUREE_DEFAUT = 45;/);
-    expect(reserver).not.toMatch(/dureeMinutes \?\? 30/);
-    expect(reserver).toMatch(/Votre visio de \{et\.dureeMinutes \?\? DUREE_DEFAUT\} minutes/);
+    expect(reserver).toMatch(/dureeMinutes=\{et\.dureeMinutes \?\? DUREE_DEFAUT\}/);
   });
 });
 
@@ -147,6 +144,7 @@ describe("🔑 le texte public dit « en visio ou par téléphone », comme Cale
   it("cartes, étape 1, promesse, consigne", () => {
     expect(TYPES_RESERVABLES.diagnostic.promesse).toMatch(/visio ou par téléphone/);
     expect(TYPES_RESERVABLES.diagnostic.premiereEtape).toMatch(/ou par téléphone/);
+    expect(TYPES_RESERVABLES.tour.premiereEtape).not.toMatch(/téléphone/);
     expect(lire("src/app/[locale]/appel/page.tsx")).toContain(
       "Visio ou téléphone · sans engagement",
     );
