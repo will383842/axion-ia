@@ -187,7 +187,7 @@
 
   /* ----- Accent doux : vert sauge (proof/succès) ----- */
   --color-sage: #5e7050; /* assombri pour WCAG AA sur paper (5.0:1) */
-  --color-sage-soft: #e6ebe2;
+  --color-sage-soft: #eef1eb;
 
   /* ----- Accent chaud : ocre / or — 5e ton palette services (« pep par activité ») -----
      Complète terracotta/bleu/sauge pour donner à chacun des 5 services SA couleur.

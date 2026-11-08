@@ -22,6 +22,7 @@ const TABLEAU_A: Record<string, string> = {
   "gray-300": "#b0aea5",
   sage: "#5e7050",
   "accent-green": "#5e7050",
+  "sage-soft": "#eef1eb",
   "accent-red": "#b8341c",
   // inchangés mais figés
   paper: "#ffffff",

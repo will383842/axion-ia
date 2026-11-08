@@ -88,6 +88,7 @@ const palette = {
   // connectés). Le terracotta de marque n'y donne que 2,61:1.
   terracottaOnMocha: "#eb8560",
   sage: "#5e7050",
+  sageSoft: "#eef1eb",
   // Compat v1 (legacy bg-accent-* tokens still emitted by Badge etc.)
   accentOrange: "#ff6b00",
   accentPurple: "#7a3dff",
@@ -110,6 +111,8 @@ const pairs: Pair[] = [
   { fg: palette.primary, bg: palette.paper, label: "primary on paper" },
   { fg: palette.terracotta, bg: palette.paper, label: "terracotta on paper" },
   { fg: palette.sage, bg: palette.paper, label: "sage on paper" },
+  { fg: palette.sage, bg: palette.sageSoft, label: "sage on sage-soft" },
+  { fg: palette.accentGreen, bg: palette.sageSoft, label: "success on sage-soft" },
   // Text on sand (intermissions)
   { fg: palette.fg, bg: palette.sand, label: "fg on sand" },
   { fg: palette.fgSoft, bg: palette.sand, label: "fg-soft on sand" },
@@ -251,6 +254,7 @@ const MIRROR_TO_CSS: Record<keyof typeof palette, string> = {
   terracottaDeep: "terracotta-deep",
   terracottaOnMocha: "terracotta-on-mocha",
   sage: "sage",
+  sageSoft: "sage-soft",
   accentOrange: "accent-orange",
   accentPurple: "accent-purple",
   accentGreen: "accent-green",

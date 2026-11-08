@@ -55,7 +55,7 @@ export const COULEURS_MARQUE = {
   "terracotta-soft": "#f5e3d8",
   "terracotta-deep": "#8c3010",
   sage: "#5e7050",
-  "sage-soft": "#e6ebe2",
+  "sage-soft": "#eef1eb",
   border: "#e8e6dc",
   "border-strong": "#b0aea5",
 } as const;
