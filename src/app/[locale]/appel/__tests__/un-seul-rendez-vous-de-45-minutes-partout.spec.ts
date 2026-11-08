@@ -4,11 +4,11 @@
  * Verrou — UN SEUL rendez-vous gratuit de 45 minutes, dit pareil partout sur le site
  * HORS Tour France IA (chantier séparé : ni sa landing, ni son type de réservation,
  * ni sa vue console ne sont couverts ni modifiés ici)
- * (audit harmonie A08, décision n° 12 ; relecture Opus de la PR R5b).
+ * (audit harmonie A08, décision n° 12 ; règle r10 du Brain, décidée par Williams le 07/11/2026).
  *
- * - le type `projet` change de LIBELLÉ seulement (clés, routes, slugs, types inchangés) ;
- * - un ancien lien `?rdv=diagnostic` s'affiche comme le rendez-vous de 45 min, sans toucher
- *   au report ni à l'annulation d'un diagnostic déjà réservé.
+ * - le type `diagnostic` change de LIBELLÉ seulement (clés, routes, slugs, types inchangés) ;
+ * - un ancien lien `?rdv=projet` s'affiche comme le Diagnostic IA gratuit, sans toucher
+ *   au report ni à l'annulation d'un échange projet déjà réservé.
  */
 
 import { readFileSync } from "node:fs";
@@ -22,11 +22,22 @@ const lire = (c: string) => readFileSync(join(process.cwd(), c), "utf8");
 const sansCommentaires = (s: string) =>
   s.replace(/\/\*[\s\S]*?\*\//g, " ").replace(/^\s*\/\/.*$/gm, " ");
 
-describe("🔑 le type `projet` est « Rendez-vous gratuit de 45 minutes »", () => {
-  const projet = TYPES_RESERVABLES.projet;
+describe("🔑 le type `diagnostic` est le rendez-vous gratuit de 45 minutes (règle r10 du Brain)", () => {
+  const diag = TYPES_RESERVABLES.diagnostic;
   it("libellés changés, identifiants intacts", () => {
-    expect(projet.nom).toBe("Rendez-vous gratuit de 45 minutes");
-    expect(projet.titre).toBe("Votre rendez-vous gratuit");
+    expect(diag.nom).toBe("Diagnostic IA gratuit");
+    expect(diag.titre).toBe("Votre diagnostic IA gratuit");
+    expect(diag.promesse).toMatch(/45 minutes/);
+    expect(diag.promesse).toMatch(/gratuit/i);
+    expect(diag.promesse).toMatch(/sans engagement/i);
+    expect(diag.choix).toBe("diagnostic");
+    expect(diag.route).toBe("diagnostic");
+    expect(diag.type).toBe("diagnostic");
+  });
+  it("le type `projet` garde son nom et son titre d'origine (rendez-vous déjà réservés)", () => {
+    const projet = TYPES_RESERVABLES.projet;
+    expect(projet.nom).toBe("Échange projet");
+    expect(projet.titre).toBe("Votre échange projet");
     expect(projet.choix).toBe("projet");
     expect(projet.route).toBe("echange-projet");
     expect(projet.type).toBe("echange_projet");
@@ -39,11 +50,11 @@ describe("🔑 le type `projet` est « Rendez-vous gratuit de 45 minutes »", ()
   });
 });
 
-describe("🔑 /appel : l'ancien diagnostic s'affiche comme le rendez-vous de 45 minutes", () => {
+describe("🔑 /appel : l'ancien échange projet s'affiche comme le Diagnostic IA gratuit", () => {
   const page = sansCommentaires(lire("src/app/[locale]/appel/page.tsx"));
 
-  it("`diagnostic` est rabattu sur `projet` à l'affichage", () => {
-    expect(page).toMatch(/=== "diagnostic" \? "projet"/);
+  it("`projet` est rabattu sur `diagnostic` à l'affichage", () => {
+    expect(page).toMatch(/=== "projet" \? "diagnostic"/);
   });
 
   it("`depuis` et les UTM suivent le choix rabattu (même variables)", () => {
@@ -51,7 +62,7 @@ describe("🔑 /appel : l'ancien diagnostic s'affiche comme le rendez-vous de 45
     expect(page).toContain("utmContentDuChoix(choix, depuis)");
   });
 
-  it("report et annulation ne passent pas par ce rabat (type d'ORIGINE du rendez-vous)", () => {
+  it("report et annulation ne passent pas par ce rabat (type d'ORIGINE du rendez-vous, y compris un échange projet déjà réservé)", () => {
     for (const f of [
       "src/app/[locale]/appel/reporter/page.tsx",
       "src/app/[locale]/appel/reporter/actions.ts",
@@ -68,9 +79,14 @@ describe("🔑 /appel : l'ancien diagnostic s'affiche comme le rendez-vous de 45
     expect(page.slice(Math.max(0, i - 500), i)).toMatch(/CHOIX_AFFICHES\.length > 1/);
   });
 
-  it("la carte lit la durée de Calendly, avec 45 en repli", () => {
-    expect(page).toContain("libelleDuree(resolus.projet)");
-    expect(page).toContain("DUREE_REPLI_MINUTES");
+  it("la carte annonce 45 minutes en dur ; la durée Calendly ne sert qu'au calendrier", () => {
+    const carte = page.slice(
+      page.indexOf("function ChoixDuRendezVous"),
+      page.indexOf("function Calendrier"),
+    );
+    expect(carte).toContain("Gratuit · 45 minutes · Sans engagement");
+    expect(carte).not.toContain("libelleDuree");
+    expect(page).toContain("const duree = libelleDuree(resolu)");
   });
 
   it("le JSON-LD et la meta disent « l'équipe », comme l'encart visible", () => {

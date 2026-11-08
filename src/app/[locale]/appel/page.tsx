@@ -80,17 +80,18 @@ interface Props {
 }
 
 /**
- * UN SEUL rendez-vous gratuit de 45 minutes (décision n° 12, 2026-11-08 ; avant :
- * deux rendez-vous au choix, chantier « Types de rendez-vous », L2, 2026-10-04).
+ * UN SEUL rendez-vous gratuit, le « Diagnostic IA gratuit » de 45 minutes (règle r10
+ * du Brain, décidée par Williams le 07/11/2026 ; avant : deux rendez-vous au choix,
+ * chantier « Types de rendez-vous », L2, 2026-10-04).
  *
- * `?rdv=projet` ouvre directement le calendrier ; sans paramètre, la page montre
- * la carte unique. Un ancien lien `?rdv=diagnostic` (ou `/appel/diagnostic`) est
- * rabattu sur `projet` à l'AFFICHAGE, `depuis` et les UTM conservés ; le report
- * et l'annulation d'un diagnostic déjà réservé ne passent pas par cette page
+ * `?rdv=diagnostic` ouvre directement le calendrier ; sans paramètre, la page montre
+ * la carte unique. Un ancien lien `?rdv=projet` (ou `/appel/echange-projet`) est
+ * rabattu sur `diagnostic` à l'AFFICHAGE, `depuis` et les UTM conservés ; le report
+ * et l'annulation d'un échange projet déjà réservé ne passent pas par cette page
  * (ils lisent le type d'origine du rendez-vous). Les URL Calendly ne sont plus lues ici : elles
  * passent TOUTES par `server/calendly/choix-rendez-vous.ts`, qui porte aussi le
  * repli silencieux du diagnostic sur le type appel quand il est introuvable.
- * `?depuis=<emplacement>` est recopié dans `utm_content` (`projet:accueil-hero`).
+ * `?depuis=<emplacement>` est recopié dans `utm_content` (`diagnostic:accueil-hero`).
  *
  * Le choix est rendu CÔTÉ SERVEUR, en liens simples : aucun JavaScript ajouté,
  * aucun saut de mise en page (CLS 0).
@@ -119,7 +120,7 @@ export async function generateMetadata({ params, searchParams }: Props): Promise
       locale,
       path: "/appel",
       title: titleStr,
-      // 2026-11-08 : UN seul rendez-vous gratuit de 45 minutes — sous
+      // 2026-11-08 : UN seul rendez-vous gratuit (Diagnostic IA, 45 minutes) — sous
       // `META_DESCRIPTION_MAX` (158), donc servie ENTIÈRE.
       // 2026-09-25 : « Sans engagement ni pression commerciale » → « Gratuit et
       // sans engagement ». Règle de Will : le diagnostic est GRATUIT, et
@@ -131,8 +132,8 @@ export async function generateMetadata({ params, searchParams }: Props): Promise
       // retirée en même temps que ce raccourcissement — le cliquet exige que le
       // chiffre reste exact, il rougit donc si l'un bouge sans l'autre.
       description: isFr
-        ? "Un rendez-vous gratuit de 45 minutes en visio avec l’équipe d’Axion-IA : on fait le point sur votre projet IA, sans engagement."
-        : "Un rendez-vous gratuit de 45 minutes en visio avec l’équipe d’Axion-IA : on fait le point sur votre projet IA, sans engagement.",
+        ? "Diagnostic IA gratuit, 45 min, en visio ou par téléphone, sans engagement : on fait le point sur votre projet IA avec l’équipe d’Axion-IA."
+        : "Diagnostic IA gratuit, 45 min, en visio ou par téléphone, sans engagement : on fait le point sur votre projet IA avec l’équipe d’Axion-IA.",
       alternates: { fr: "/appel", en: "/book-a-call" },
       // Image de partage dédiée (2026-09-27) : ce lien est épinglé dans la
       // « Sélection » du profil LinkedIn, où la vignette ne fait que ~190 px de
@@ -154,8 +155,9 @@ export default async function AppelPage({ params, searchParams }: Props) {
   const isFr = locale === "fr";
 
   const choixBrut = lireChoixRendezVous(sp[PARAM_RDV]);
-  // Un seul rendez-vous public : l'ancien diagnostic s'affiche comme lui.
-  const choix = choixBrut === "diagnostic" ? "projet" : choixBrut;
+  // Un seul rendez-vous public (règle r10 du Brain) : l'ancien échange projet s'affiche
+  // comme le Diagnostic IA gratuit.
+  const choix = choixBrut === "projet" ? "diagnostic" : choixBrut;
   const depuis = lireDepuis(sp[PARAM_DEPUIS]);
   // Les UTM d'ARRIVÉE (L5a) : lus une fois, bornés, puis recopiés par chaque
   // lien du parcours — sans quoi le premier clic effaçait l'attribution.
@@ -187,7 +189,7 @@ export default async function AppelPage({ params, searchParams }: Props) {
   // Les deux types privés (apporteur, salon) ne sont pas dans `resolus` : ils se
   // résolvent à part, avec la même règle (`resoudreChoix`).
   const resolu: ChoixResolu = !choix
-    ? resolus.projet
+    ? resolus.diagnostic
     : estUnChoixPublic(choix)
       ? resolus[choix]
       : await resoudreChoix(choix);
@@ -216,10 +218,10 @@ export default async function AppelPage({ params, searchParams }: Props) {
   const jsonLd = buildServiceJsonLd({
     locale: locale as "fr" | "en",
     path: "/appel",
-    name: isFr ? "Rendez-vous projet IA · Axion-IA" : "Rendez-vous projet IA · Axion-IA",
+    name: isFr ? "Diagnostic IA gratuit · Axion-IA" : "Diagnostic IA gratuit · Axion-IA",
     description: isFr
-      ? "Un rendez-vous gratuit de 45 minutes en visioconférence Google Meet avec l’équipe d’Axion-IA : on fait le point sur votre besoin — audit, formation, intégration et automatisation, coaching. Sans engagement."
-      : "Un rendez-vous gratuit de 45 minutes en visioconférence Google Meet avec l’équipe d’Axion-IA : on fait le point sur votre besoin — audit, formation, intégration et automatisation, coaching. Sans engagement.",
+      ? "Diagnostic IA gratuit de 45 minutes, en visioconférence Google Meet ou par téléphone, avec l’équipe d’Axion-IA : on fait le point sur votre besoin — audit, formation, intégration et automatisation, coaching. Sans engagement."
+      : "Diagnostic IA gratuit de 45 minutes, en visioconférence Google Meet ou par téléphone, avec l’équipe d’Axion-IA : on fait le point sur votre besoin — audit, formation, intégration et automatisation, coaching. Sans engagement.",
   });
 
   const breadcrumbJsonLd = {
@@ -275,7 +277,7 @@ export default async function AppelPage({ params, searchParams }: Props) {
             trackingContext={trackingContext}
           />
         ) : (
-          <ChoixDuRendezVous resolus={resolus} depuis={depuis} suivi={suivi} locale={locale} />
+          <ChoixDuRendezVous depuis={depuis} suivi={suivi} locale={locale} />
         )}
 
         {/* CTA fallback bas de page — pour les visiteurs qui préfèrent un autre
@@ -337,10 +339,7 @@ function classeDepuis(depuis: string | null): string {
 }
 
 /** Les choix que l'écran d'entrée PROPOSE : un seul (le diagnostic est rabattu sur lui). */
-const CHOIX_AFFICHES: readonly ChoixPublic[] = ["projet"];
-
-/** La durée annoncée si Calendly ne la donne pas : c'est la promesse du site. */
-const DUREE_REPLI_MINUTES = 45;
+const CHOIX_AFFICHES: readonly ChoixPublic[] = ["diagnostic"];
 
 /** « 45 min », lue chez Calendly ; rien si la durée est inconnue. */
 function libelleDuree(resolu: ChoixResolu): string | null {
@@ -348,26 +347,23 @@ function libelleDuree(resolu: ChoixResolu): string | null {
 }
 
 /**
- * L'ÉCRAN D'ENTRÉE — UNE SEULE carte : le rendez-vous gratuit de 45 minutes
- * (audit harmonie A08, décision n° 12 de Williams, 2026-11-08).
+ * L'ÉCRAN D'ENTRÉE — UNE SEULE carte : le Diagnostic IA gratuit de 45 minutes
+ * (audit harmonie A08, décision n° 12 ; règle r10 du Brain).
  *
- * 🔑 Elle mène au type `projet` (45 min chez Calendly). Le type `diagnostic`
- * reste joignable par `?rdv=diagnostic` (anciens liens, e-mails déjà partis),
- * mais l'écran ne le propose plus. La durée de la carte est la PROMESSE du
- * site ; l'écran du calendrier lit toujours la durée réelle chez Calendly.
+ * 🔑 Elle mène au type `diagnostic`. Le type `projet` reste joignable par
+ * `?rdv=projet` (anciens liens, e-mails déjà partis) mais s'affiche comme lui.
+ * La durée de la carte est la PROMESSE du site (45 minutes, en dur) ; l'écran du
+ * calendrier lit toujours la durée réelle chez Calendly.
  */
 function ChoixDuRendezVous({
-  resolus,
   depuis,
   suivi,
   locale,
 }: {
-  resolus: Readonly<Record<ChoixPublic, ChoixResolu>>;
   depuis: string | null;
   suivi: SuiviArrivee;
   locale: string;
 }) {
-  const minutes = resolus.projet.dureeMinutes ?? DUREE_REPLI_MINUTES;
   return (
     <section aria-labelledby="appel-hero-h1" className="bg-canvas pt-6 pb-12 sm:pt-10 sm:pb-16">
       <Container>
@@ -397,14 +393,14 @@ function ChoixDuRendezVous({
               className="text-fg mt-4 text-2xl font-semibold tracking-tight"
               style={{ fontFamily: "var(--font-serif)" }}
             >
-              Rendez-vous gratuit de {minutes} minutes
+              Diagnostic IA gratuit
             </h2>
             <p className="text-terracotta-deep mt-1 text-sm font-semibold">
-              Gratuit · {libelleDuree(resolus.projet) ?? `${DUREE_REPLI_MINUTES} min`} · Sans
-              engagement
+              Gratuit · 45 minutes · Sans engagement
             </p>
             <p className="text-fg mt-4 text-base font-medium">
-              Vous savez ce que vous voulez, ou pas encore : on fait le point ensemble.
+              Vous ne savez pas par où commencer, ou vous savez déjà ce que vous voulez : on fait le
+              point ensemble.
             </p>
             <p className="text-fg-soft mt-1 text-[15px] leading-relaxed">
               Quelques questions sur votre activité, et vous repartez avec des pistes concrètes.
@@ -421,11 +417,11 @@ function ChoixDuRendezVous({
             </ul>
             <div className="mt-auto pt-6">
               <a
-                href={lienDuChoix(locale, "projet", depuis, suivi)}
-                data-cta="appel_choix_projet"
-                className={`plausible-event-name=Appel+choix plausible-event-rdv=projet ${classeDepuis(depuis)} bg-terracotta text-mocha-fg hover:bg-terracotta-deep focus-visible:ring-terracotta inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-full px-6 text-base font-semibold transition focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none`}
+                href={lienDuChoix(locale, "diagnostic", depuis, suivi)}
+                data-cta="appel_choix_diagnostic"
+                className={`plausible-event-name=Appel+choix plausible-event-rdv=diagnostic ${classeDepuis(depuis)} bg-terracotta text-mocha-fg hover:bg-terracotta-deep focus-visible:ring-terracotta inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-full px-6 text-base font-semibold transition focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none`}
               >
-                Réserver mon rendez-vous gratuit
+                Réserver mon diagnostic gratuit
                 <ArrowRight className="h-4 w-4" aria-hidden="true" />
               </a>
             </div>

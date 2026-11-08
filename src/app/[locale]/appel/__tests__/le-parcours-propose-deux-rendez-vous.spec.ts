@@ -53,18 +53,19 @@ describe("🔑 /appel montre le choix, puis le bon calendrier", () => {
     expect(page).toContain("<ChoixDuRendezVous");
   });
 
-  it("🔑 UN SEUL rendez-vous gratuit de 45 minutes : une carte, vers l'échange de 45 min", () => {
-    const projet = page.indexOf('data-cta="appel_choix_projet"');
-    expect(projet).toBeGreaterThan(-1);
-    // Plus de carte « Diagnostic IA » : aucun bouton ne mène au diagnostic de 30 min.
-    expect(page).not.toContain('data-cta="appel_choix_diagnostic"');
-    expect(page).not.toContain("Diagnostic IA");
-    expect(page).not.toContain("Réserver mon diagnostic");
+  it("🔑 UN SEUL rendez-vous gratuit (règle r10 du Brain) : la carte « Diagnostic IA gratuit », 45 minutes", () => {
+    const diag = page.indexOf('data-cta="appel_choix_diagnostic"');
+    expect(diag).toBeGreaterThan(-1);
+    // Plus de carte « Échange projet » : une seule carte, un seul bouton.
+    expect(page).not.toContain('data-cta="appel_choix_projet"');
+    expect(page).not.toContain("Échange projet");
     expect(page.match(/data-cta="appel_choix_/g)).toHaveLength(1);
-    expect(page).toContain("Rendez-vous gratuit de {minutes} minutes");
-    expect(page).toContain("DUREE_REPLI_MINUTES = 45");
+    expect(page).toContain("Diagnostic IA gratuit");
+    // La durée de la carte est la promesse du site, écrite en dur : la durée lue chez
+    // Calendly ne sert qu'à l'écran du calendrier.
+    expect(page).toContain("Gratuit · 45 minutes · Sans engagement");
     // La carte unique porte le bouton PLEIN (couleur de marque).
-    const bouton = page.slice(page.lastIndexOf("<a", projet), projet + 400);
+    const bouton = page.slice(page.lastIndexOf("<a", diag), diag + 400);
     expect(bouton).toContain("bg-terracotta");
   });
 

@@ -97,7 +97,7 @@ describe("🔑 les e-mails mènent à /appel, avec leur emplacement", () => {
 describe("🔑 le clic sur chaque carte est mesuré dans Plausible, sans JS", () => {
   const page = sansCommentaires(lire("src/app/[locale]/appel/page.tsx"));
 
-  it.each(["projet"])("carte %s", (choix) => {
+  it.each(["diagnostic"])("carte %s", (choix) => {
     const i = page.indexOf(`data-cta="appel_choix_${choix}"`);
     expect(i).toBeGreaterThan(-1);
     const lien = page.slice(page.lastIndexOf("<a", i), page.indexOf(">", i));
@@ -110,12 +110,12 @@ describe("🔑 le clic sur chaque carte est mesuré dans Plausible, sans JS", ()
   });
 });
 
-describe("🔑 la consigne du compte rendu visio dit UN seul rendez-vous gratuit de 45 minutes", () => {
+describe("🔑 la consigne du compte rendu visio dit UN seul rendez-vous gratuit, le Diagnostic IA de 45 minutes", () => {
   const consigne = lire("src/server/visio/consignes/commun.md");
 
-  it("45 minutes, un seul : ni « Diagnostic IA » de 30 minutes, ni deux rendez-vous", () => {
+  it("45 minutes, un seul : ni « Échange projet » proposé, ni deux rendez-vous", () => {
     expect(consigne).toContain(
-      "le plus souvent le rendez-vous gratuit de 45 minutes réservé sur le site",
+      "le plus souvent le Diagnostic IA gratuit de 45 minutes réservé sur le site",
     );
     expect(consigne).not.toMatch(/\b(15|20|30) minutes/);
     expect(consigne).not.toMatch(/l'un des deux rendez-vous/);
