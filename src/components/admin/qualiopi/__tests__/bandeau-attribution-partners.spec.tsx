@@ -109,12 +109,14 @@ describe("REQ-INT-014 — le MARQUEUR : le nom ne sort que vers le bandeau", () 
     ]);
   });
 
-  it("REQ-INT-014 — TÉMOIN STATIQUE : le bandeau n'est rendu que par le devis, l'assistant de vente et la fiche, jamais par un document, un PDF ou un courriel", () => {
+  it("REQ-INT-014 — TÉMOIN STATIQUE : le bandeau n'est rendu que par le devis, l'assistant de devis, l'assistant de vente et la fiche, jamais par un document, un PDF ou un courriel", () => {
     expect(importeurs(/BandeauAttributionPartners"/)).toEqual([
       // Déplacé de page.tsx au lot 0 : le bloc devis-factures vit maintenant dans ce fichier.
       "src/components/admin/dossier-client/fiche/OngletDevisFactures.tsx",
       "src/components/admin/qualiopi/DevisForm.tsx",
       "src/components/admin/qualiopi/VenteWizard.tsx",
+      // Assistant de devis (fiche E08) : même bandeau, choix du client à l'étape 1.
+      "src/components/admin/qualiopi/assistant-devis/etapes/un/BlocClient.tsx",
     ]);
     const documents = SRC.filter((f) => /documents\/templates|\/emails?\/|pdf/i.test(f));
     expect(documents.length).toBeGreaterThan(0);
