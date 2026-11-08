@@ -282,7 +282,7 @@ describe("doctrine des interdits en sortie (lot R3)", () => {
     );
     expect(r.text).not.toMatch(/qualiopi|100 ?%/i);
     expect(r.text).toMatch(/45 minutes/);
-    expect(r.escalate).toBe(true);
+    expect(r.escalate).toBe(false); // le lien vers le rendez-vous suffit
     expect(r.rdvUrl).toBeTruthy();
     expect(r.guard.ok).toBe(false);
     expect(cacheWrite).not.toHaveBeenCalled();
@@ -312,5 +312,25 @@ describe("doctrine des interdits en sortie (lot R3)", () => {
     expect(llm).toHaveBeenCalled();
     expect(r.servedFromCache).toBeUndefined();
     expect(r.text).not.toMatch(/qualiopi/i);
+  });
+});
+
+describe("cache : seules les violations de doctrine écartent une entrée", () => {
+  it("une entrée de cache avec URL de ressource dynamique est servie", async () => {
+    const llm = vi.fn();
+    const r = await handleTurn(
+      "c'est quoi un audit ?",
+      { tenant },
+      {
+        retrieve: vi.fn(async () => []),
+        generateAnswer: llm,
+        cacheLookup: vi.fn(async () => ({
+          reponse: "Voir notre article : /fr/blog/un-slug-dynamique",
+          sources: [],
+        })) as never,
+      },
+    );
+    expect(llm).not.toHaveBeenCalled();
+    expect(r.servedFromCache).toBe(true);
   });
 });

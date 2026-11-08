@@ -65,6 +65,18 @@ describe("ingestAllSources — jamais de base vide", () => {
     expect(journal).toEqual([]);
   });
 
+  it("embedding de repli « -stub » : refus hors environnement de test, base intacte", async () => {
+    vi.stubEnv("NODE_ENV", "production");
+    try {
+      embed.mockResolvedValue({ embedding: [0.1], modelVersion: "voyage-stub" });
+      await expect(ingestAllSources([src("a")])).rejects.toThrow(/stub/);
+      expect(prismaMock.$transaction).not.toHaveBeenCalled();
+      expect(journal).toEqual([]);
+    } finally {
+      vi.unstubAllEnvs();
+    }
+  });
+
   it("aucun chunk à écrire : refuse de vider la base", async () => {
     await expect(ingestAllSources([])).rejects.toThrow();
     expect(journal).toEqual([]);

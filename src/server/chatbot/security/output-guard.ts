@@ -125,10 +125,12 @@ export function verifyOutput(text: string, opts: VerifyOutputOptions = {}): Outp
 
   // Doctrine des interdits : un chatbot ne doit pas dire en direct ce qu'un
   // article n'a pas le droit de publier. Le code de l'interdit sert de valeur.
+  // « reservation-paiement » est exclu : le chatbot oriente justement vers la
+  // réservation du rendez-vous (« Réservez votre créneau de 45 minutes »).
   const interdits = detecterInterditsSurface(
     { reponse: text },
     { actualite: false, financementPublicAutorise: financementPublicCitable() },
-  );
+  ).filter((i) => i.code !== "reservation-paiement");
   for (const i of interdits) {
     violations.push({
       type: "interdit",

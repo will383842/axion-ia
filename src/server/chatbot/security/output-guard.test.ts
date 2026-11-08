@@ -110,6 +110,14 @@ describe("doctrine des interdits en sortie (lot R3)", () => {
     expect(r.violations.some((v) => v.type === "interdit")).toBe(true);
   });
 
+  it("laisse passer « Réservez votre créneau de 45 minutes » (parcours principal)", () => {
+    expect(verifyOutput("Réservez votre créneau de 45 minutes.").ok).toBe(true);
+  });
+
+  // Dépend du lot R6 : sur main, le motif « etiquette-tpe-pme » bloque aussi « TPE et PME ».
+  // À activer (it.todo -> it) quand la PR R6 (prompts) est fusionnée.
+  it.todo("laisse passer « …les TPE et PME… » (après fusion du lot R6)");
+
   it("laisse passer une réponse propre", () => {
     expect(verifyOutput("Réservons un rendez-vous gratuit de 45 minutes.").ok).toBe(true);
   });

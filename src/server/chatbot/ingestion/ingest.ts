@@ -22,7 +22,6 @@ export interface IngestStats {
   readonly durationMs: number;
 }
 
-/** Insère les chunks d'une source (déjà chunkée + embeddée). */
 type Executeur = Pick<typeof prisma, "$executeRaw">;
 
 interface ChunkPrepare {
@@ -33,6 +32,7 @@ interface ChunkPrepare {
   readonly embedding: readonly number[];
 }
 
+/** Insère les chunks d'une source (déjà chunkée + embeddée). */
 async function insertChunk(
   db: Executeur,
   tenantId: string,
@@ -86,7 +86,14 @@ export async function ingestAllSources(
     const chunks = chunkText(src.contenu, { contextLabel: src.contexte });
     for (const ch of chunks) {
       // Refus confidentialité géré dans embedChatbotText (et déjà filtré en amont).
-      const { embedding } = await embedChatbotText(ch.contenu, src.confidentiality);
+      const emb = await embedChatbotText(ch.contenu, src.confidentiality);
+      // Un vecteur de repli factice (« -stub ») ne doit jamais remplacer la base réelle.
+      if (process.env.NODE_ENV !== "test" && emb.modelVersion?.endsWith("-stub")) {
+        throw new Error(
+          "[chatbot:ingest] embedding de repli (-stub) : reconstruction refusée, base conservée.",
+        );
+      }
+      const { embedding } = emb;
       const ref = chunks.length > 1 ? `${src.sourceRef}#${ch.index}` : src.sourceRef;
       prepares.push({ src, ref, contenu: ch.contenu, contexte: ch.contexte ?? null, embedding });
     }

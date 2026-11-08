@@ -288,7 +288,7 @@ export async function handleTurn(
       // T-26 cache sémantique : question proche déjà répondue → 0 retrieval, 0 LLM.
       const cached = await cacheLookup(tenantId, message, ctx.tenant.settings);
       // Une entrée écrite avant le contrôle de doctrine ne doit jamais être servie.
-      if (cached && verifyOutput(cached.reponse).ok) {
+      if (cached && !verifyOutput(cached.reponse).violations.some((v) => v.type === "interdit")) {
         return {
           intent: "explication",
           text: cached.reponse,
@@ -433,7 +433,7 @@ export async function handleTurn(
           slots,
           sources,
           linkFlow: INITIAL_FLOW,
-          escalate: true,
+          escalate: !doctrine, // blocage de doctrine : le lien RDV suffit
           guard,
         };
       }
