@@ -25,8 +25,7 @@ export const CONTENU = {
     phrase:
       "Nous venons chez vous, nous chiffrons avec vos équipes le temps perdu sur les tâches qui reviennent, et nous les formons sur leurs propres dossiers.",
     cta: LIBELLE_CTA,
-    microTexte:
-      "Rendez-vous gratuit de 45 minutes, en visio ou par téléphone, sans engagement.",
+    microTexte: "Rendez-vous gratuit de 45 minutes, en visio ou par téléphone, sans engagement.",
   },
   questions: {
     titre: "Les questions que vous vous posez",
@@ -51,8 +50,7 @@ export const CONTENU = {
       },
       {
         moment: "En fin de journée",
-        texte:
-          "Nous validons avec vous les gains chiffrés et les premières priorités.",
+        texte: "Nous validons avec vous les gains chiffrés et les premières priorités.",
       },
     ],
   },
@@ -61,8 +59,7 @@ export const CONTENU = {
     elements: [
       {
         titre: "Votre rapport complet",
-        legende:
-          "vos gains chiffrés et les tâches à automatiser, classées par rentabilité",
+        legende: "vos gains chiffrés et les tâches à automatiser, classées par rentabilité",
       },
       {
         titre: "Un plan d’action sur 90 jours",
