@@ -18183,7 +18183,7 @@ model GuideReseauOrigine {
 /// · `guide_request_id` est facultatif : la demande de guide peut ne pas (encore) exister. SET NULL à sa suppression.
 /// · `jeton_empreinte` = SHA-256 du jeton du lien, UNIQUE : le lien est à usage unique ; le jeton lui-même n'est pas gardé.
 /// · `consent_empreinte` = SHA-256 du texte exact de la case cochée, `version_consentement` sa version.
-/// · `merci_statut` en VARCHAR (a_envoyer | envoye | hors_fenetre | expire | aucun) : aucune énumération
+/// · `merci_statut` en VARCHAR (a_envoyer | envoye | hors_fenetre | expire | aucun | ecarte ; l'ancienne graphie « ecartee » est lue comme écartée) : aucune énumération
 ///   Postgres, la migration reste additive.
 model ContactGuideReseau {
   id                  String        @id @default(cuid())
@@ -18192,11 +18192,14 @@ model ContactGuideReseau {
   guideRequest        GuideRequest? @relation(fields: [guideRequestId], references: [id], onDelete: SetNull)
   /// Chiffré (`encryptPii`).
   prenom              String        @db.Text
-  mot                 String        @db.VarChar(30)
-  reseau              String        @db.VarChar(20)
-  compteRef           String        @map("compte_ref") @db.VarChar(80)
+  /// ⚠️ mot, reseau, compteRef, postRef, versionM1 : NULLABLES depuis la migration
+  /// 20261108150000. L'ORIGINE vit dans `guide_reseau_origines` (historique v3) et au CRM Pro,
+  /// jamais recopiée ici : la page n'écrit plus ces colonnes (anciennes lignes seulement).
+  mot                 String?       @db.VarChar(30)
+  reseau              String?       @db.VarChar(20)
+  compteRef           String?       @map("compte_ref") @db.VarChar(80)
   postRef             String?       @map("post_ref") @db.VarChar(80)
-  versionM1           String        @map("version_m1") @db.VarChar(64)
+  versionM1           String?       @map("version_m1") @db.VarChar(64)
   versionConsentement String        @map("version_consentement") @db.VarChar(64)
   /// SHA-256 (hex) du texte de la case de consentement.
   consentEmpreinte    String        @map("consent_empreinte") @db.Char(64)

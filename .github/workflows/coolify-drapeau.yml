@@ -78,6 +78,9 @@ on:
           # incident (un « stop » refusé en 503 serait perdu) : l'extinction exige `confirmer_extinction`.
           - "OPPOSITIONS_RESEAU_ENABLED"
           - "GUIDES_RESEAU_ENABLED"
+          # Page « Recevoir le guide » (lot S2) : `/guide-reseau?j=…` (404) et sa route d'envoi (503) tant
+          # que la valeur n'est pas exactement `true`. Cible : site seulement. Valeurs : true | false.
+          - "PAGE_GUIDE_RESEAU_ENABLED"
       valeur:
         description: "Valeur : true, false, essai, une date ISO (DOSSIER_FICHE_AUTO_DEPUIS), un identifiant de salon ou une adresse d'essai"
         required: true
@@ -142,7 +145,7 @@ jobs:
         run: |
           set -euo pipefail
           # Parcours viral : lus par le site seulement ; les oppositions ne s'éteignent pas sans confirmation.
-          if [[ "$CLE" =~ ^(GUIDES|OPPOSITIONS)_RESEAU_ENABLED$ ]] && [ "$CIBLE" != "site" ]; then
+          if [[ "$CLE" =~ ^(GUIDES|OPPOSITIONS|PAGE_GUIDE)_RESEAU_ENABLED$ ]] && [ "$CIBLE" != "site" ]; then
             echo "::error::$CLE se pose sur « site » seulement"; exit 1
           fi
           if [ "$CLE" = "OPPOSITIONS_RESEAU_ENABLED" ] && [ "$VALEUR" = "false" ] && [ "$CONFIRMER_EXTINCTION" != "true" ]; then

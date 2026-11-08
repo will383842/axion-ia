@@ -915,6 +915,36 @@ const nextConfig: NextConfig = {
       // 🔑 Une règle d'en-tête posée sur une route qui pose déjà le sien ne
       // gagne pas : elle double. Vérifier la réponse, pas la configuration.
       //
+      // Page « Recevoir le guide » (lot S2, 2026-11-08) — `/guide-reseau?j=<jeton>` et
+      // `/guide-reseau/envoyer|merci`. Page racine EXCLUE du proxy (comme le questionnaire) : il ne lui
+      // pose donc ni CSP ni Referrer-Policy. Le jeton est dans l'adresse, donc `no-referrer` (l'adresse
+      // ne part vers aucun site) — la page n'a AUCUNE action serveur, son formulaire est un POST natif
+      // vers une route qui ne contrôle pas `Origin` (que `no-referrer` rend `null`) : c'est la raison
+      // pour laquelle elle n'utilise PAS de Server Action. `noindex`. CSP stricte : aucun hôte tiers, aucun script (`script-src 'none'`).
+      // Placée APRÈS `/:path*` : la dernière règle gagne. Garde : `src/app/guide-reseau/__tests__/`.
+      {
+        source: "/guide-reseau/:path*",
+        headers: [
+          { key: "Referrer-Policy", value: "no-referrer" },
+          { key: "X-Robots-Tag", value: "noindex, nofollow, noarchive" },
+          {
+            key: "Content-Security-Policy",
+            value: [
+              "default-src 'self'",
+              // Aucune page (formulaire, merci, redirections) n'a de script : routes HTML sans JS.
+              "script-src 'none'",
+              "style-src 'self' 'unsafe-inline'",
+              "img-src 'self' data:",
+              "font-src 'self'",
+              "connect-src 'self'",
+              "form-action 'self'",
+              "frame-ancestors 'none'",
+              "base-uri 'none'",
+              "object-src 'none'",
+            ].join("; "),
+          },
+        ],
+      },
       // Questionnaire de cadrage EN LIGNE (2026-10-01) — `/questionnaire/<id>/<jeton>`.
       // Page racine EXCLUE du proxy (sinon 301 vers `/fr/…`) : le proxy ne lui
       // pose donc pas de CSP. Elle a la sienne, plus stricte que la CSP souple du
