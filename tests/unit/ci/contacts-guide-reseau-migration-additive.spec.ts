@@ -114,7 +114,7 @@ describe("migration contacts_guide_reseau : additive", () => {
     // Écrivain : la validation de la page. Lecteurs : la page (usage unique), l'export art. 15,
     // la mise à l'écart de l'effacement art. 17.
     expect(fautifs).toEqual([
-      "src/app/guide-reseau/page.tsx",
+      "src/app/guide-reseau/route.ts",
       "src/lib/rgpd-erase.ts",
       "src/lib/rgpd-guide-reseau.ts",
       "src/server/guides-reseau/page-confirmation.ts",

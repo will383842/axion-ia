@@ -5,7 +5,6 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { readFileSync, readdirSync, statSync } from "node:fs";
 import { join } from "node:path";
-import { renderToStaticMarkup } from "react-dom/server";
 import { NextRequest } from "next/server";
 
 type Ligne = Record<string, unknown>;
@@ -38,7 +37,8 @@ vi.mock("@/server/guides-reseau/page-confirmation", () => ({
   },
 }));
 
-import PageRecevoirLeGuide from "../page";
+import { GET as PageGET } from "../route";
+import { echapper } from "../html-statique";
 import { GET as MerciGET } from "../merci/route";
 import { POST, GET } from "../envoyer/route";
 import { creerJeton, empreinteJeton } from "@/server/guides-reseau/lien-page-guide";
@@ -86,10 +86,11 @@ afterEach(() => {
 });
 
 async function rendre(j: string | undefined): Promise<string> {
-  const el = await PageRecevoirLeGuide({
-    searchParams: Promise.resolve(j === undefined ? {} : { j }),
-  });
-  return renderToStaticMarkup(el);
+  const url = new URL("http://localhost/guide-reseau");
+  if (j !== undefined) url.searchParams.set("j", j);
+  const r = await PageGET(new NextRequest(url));
+  if (r.status === 404) throw new Error("404");
+  return r.text();
 }
 
 function envoi(champs: Record<string, string>): NextRequest {
@@ -104,9 +105,7 @@ function envoi(champs: Record<string, string>): NextRequest {
 describe("interrupteur PAGE_GUIDE_RESEAU_ENABLED (éteint par défaut)", () => {
   it("absent → la page est un 404, la merci aussi, la route répond 503 sans rien lire", async () => {
     delete process.env.PAGE_GUIDE_RESEAU_ENABLED;
-    await expect(rendre(JETON)).rejects.toMatchObject({
-      digest: expect.stringContaining("NEXT_HTTP_ERROR_FALLBACK;404"),
-    });
+    await expect(rendre(JETON)).rejects.toThrow("404");
     expect((await MerciGET()).status).toBe(404);
     const r = await POST(
       envoi({ j: JETON, prenom: "Camille", email: "a@example.test", accord: "oui" }),
@@ -133,12 +132,12 @@ describe("page allumée", () => {
     expect(html).toContain('method="post"');
     expect(html).toContain('action="/guide-reseau/envoyer"');
     expect(html).toContain('name="prenom"');
-    expect(html).toContain('maxLength="50"');
+    expect(html).toContain('maxlength="50"');
     expect(html).toContain('name="email"');
     expect(html).toContain('type="checkbox"');
     expect(html).toContain("required");
     expect(html).toContain('name="website"');
-    expect(html).toContain(TEXTE_CASE_PAGE_GUIDE.replace(/'/g, "&#x27;"));
+    expect(html).toContain(echapper(TEXTE_CASE_PAGE_GUIDE));
     expect(html).toContain("/fr/politique-confidentialite");
   });
 
