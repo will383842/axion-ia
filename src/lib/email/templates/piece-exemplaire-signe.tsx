@@ -28,6 +28,12 @@ import type { Locale } from "../../../../prisma/generated/client";
 interface Payload {
   /** N° de la pièce. Ex. « AXI-DOC-2026-039 ». */
   numero: string;
+  /**
+   * N° du DEVIS (AXI-DEV-…) quand la pièce est un devis : c'est le numéro que le client
+   * connaît. FACULTATIF — un job posé par l'ancien code n'en porte pas, et le gabarit
+   * retombe alors sur `numero`.
+   */
+  numeroDevis?: string;
   /** Libellé du circuit. Ex. « la convention de formation ». */
   libellePiece: string;
   /** Noms des signataires, dans l'ordre où ils ont signé. */
@@ -48,6 +54,12 @@ interface Payload {
 function field(p: Partial<Payload>, key: "numero" | "libellePiece", fallback: string): string {
   const v = p[key];
   return v === undefined || v === null || `${v}`.trim() === "" ? fallback : `${v}`;
+}
+
+/** Le numéro à montrer : celui du devis s'il est fourni, sinon celui de la pièce. */
+function numeroAffiche(p: Partial<Payload>): string {
+  const d = typeof p.numeroDevis === "string" ? p.numeroDevis.trim() : "";
+  return d !== "" ? d : field(p, "numero", "");
 }
 
 function listeSignataires(p: Partial<Payload>): string {
@@ -72,6 +84,7 @@ const COPY = {
       "Ce document fait foi de l'accord conclu entre nous : conservez-le, il vous sera demandé en cas de contrôle de votre financeur.",
     qui: (noms: string) => `Signataires : ${noms}.`,
     ref: (n: string) => `Référence du document : ${n}`,
+    pieceRef: (n: string) => `Référence de la pièce : ${n}`,
     empreinte: (e: string) => `Empreinte SHA-256 du document signé : ${e}`,
     titlePartielle: "Copie de votre signature",
     bodyPartielle: (libelle: string) =>
@@ -93,6 +106,7 @@ const COPY = {
       "This document evidences the agreement between us: please keep it, your funding body may ask for it.",
     qui: (noms: string) => `Signatories: ${noms}.`,
     ref: (n: string) => `Document reference: ${n}`,
+    pieceRef: (n: string) => `Document file reference: ${n}`,
     empreinte: (e: string) => `SHA-256 fingerprint of the signed document: ${e}`,
     titlePartielle: "Copy of your signature",
     bodyPartielle: (libelle: string) =>
@@ -111,7 +125,7 @@ export const pieceExemplaireSigneSubject = (
   payload: Record<string, unknown>,
 ): string => {
   const p = payload as Partial<Payload>;
-  const numero = field(p, "numero", "");
+  const numero = numeroAffiche(p);
   if (p.partielle === true) {
     return locale === "fr"
       ? objetCompose("Copie de votre signature —", numero)
@@ -157,8 +171,13 @@ export function PieceExemplaireSigneEmail({
         </Text>
       )}
       <Text style={{ ...emailStyles.paragraphStyle, color: emailStyles.COLORS.textMuted }}>
-        {t.ref(field(p, "numero", ""))}
+        {t.ref(numeroAffiche(p))}
       </Text>
+      {numeroAffiche(p) !== field(p, "numero", "") && (
+        <Text style={{ ...emailStyles.paragraphStyle, color: emailStyles.COLORS.textMuted }}>
+          {t.pieceRef(field(p, "numero", ""))}
+        </Text>
+      )}
       {empreinte !== "" && (
         <Text
           style={{
