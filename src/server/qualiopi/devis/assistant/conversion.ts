@@ -368,11 +368,6 @@ export function devisVersPayload(d: DevisPourAssistant, tvaStandardPct: number):
       prixEur: centsVersTexte(l.prixHtCents),
     }));
   } else {
-    if (
-      (d.financementSuggere != null && d.financementSuggere !== "direct") ||
-      (d.montantOpcoEstimeCents ?? null) !== null
-    )
-      return refus("il porte un financement ou une estimation OPCO.", "opco");
     if (Array.isArray(d.lignes)) {
       for (const l of d.lignes) {
         const x = l && typeof l === "object" ? (l as Record<string, unknown>) : {};
@@ -388,6 +383,13 @@ export function devisVersPayload(d: DevisPourAssistant, tvaStandardPct: number):
           );
       }
     }
+    // Le motif TVA passe AVANT l'OPCO : il n'est jamais levé par le passe-droit du brouillon lié
+    // (charger.ts), qui ne lève que le motif « opco ».
+    if (
+      (d.financementSuggere != null && d.financementSuggere !== "direct") ||
+      (d.montantOpcoEstimeCents ?? null) !== null
+    )
+      return refus("il porte un financement ou une estimation OPCO.", "opco");
     p.typeDevis = "classique";
     const l = lignesClassiquesDe(d.lignes);
     if (l.length > 0) p.lignesClassiques = l;

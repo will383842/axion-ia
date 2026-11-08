@@ -391,6 +391,24 @@ describe("chargerAssistantDevis — brouillon lié, brouillon écarté, refus d'
     aucuneEcriture();
   });
 
+  it("?devis OPCO + ligne à 10 % + brouillon lié lisible : refus (redirection vers la fiche)", async () => {
+    db.devisAssistantBrouillon.findFirst.mockResolvedValue({
+      id: BROUILLON,
+      revision: 4,
+      payload: JSON.parse(JSON.stringify(payloadVide(20))),
+    });
+    db.devis.findUnique.mockResolvedValue(
+      devisBrouillon({
+        financementSuggere: "opco",
+        lignes: [{ designation: "x", quantite: 1, prixUnitaireHtCents: 1, tauxTvaPercent: 10 }],
+      }),
+    );
+    const r = await chargerAssistantDevis({ adminId: ADMIN, devisId: DEVIS });
+    expect(r).toMatchObject({ redirection: `/qualiopi/devis/${DEVIS}` });
+    expect((r as { message?: string }).message).toMatch(/ne peut pas être rouvert/);
+    aucuneEcriture();
+  });
+
   it("?devis classique OPCO sans brouillon lisible (absent ou illisible) : refus", async () => {
     db.devis.findUnique.mockResolvedValue(devisBrouillon({ financementSuggere: "opco" }));
     for (const lie of [null, { id: BROUILLON, revision: 1, payload: { v: 9 } }]) {

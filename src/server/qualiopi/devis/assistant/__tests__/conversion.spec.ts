@@ -486,6 +486,14 @@ describe("devisVersPayload — refus d'ouverture", () => {
       motif(classique({ financementSuggere: "direct", montantOpcoEstimeCents: null })),
     ).toBeNull();
   });
+  it("classique OPCO ET ligne à 10 % : le motif TVA l'emporte sur le motif OPCO", () => {
+    const d = classique({
+      financementSuggere: "opco",
+      lignes: [{ designation: "x", quantite: 1, prixUnitaireHtCents: 1, tauxTvaPercent: 10 }],
+    });
+    const r = devisVersPayloadBrut(d, 20);
+    expect("refus" in r && r.motif).toBe("tva_non_standard");
+  });
   it("offre présente mais illisible : refusée, jamais rouverte en classique", () => {
     expect(motif({ ...devisDepuis(offreStandard()), offre: { v: 99, n: "x" } })).toMatch(
       /illisible/,
