@@ -96,6 +96,12 @@ const POINTS_D_ENTREE = [
   "etapes/formules/CarteFormuleB.tsx",
   "etapes/formules/BlocAvantages.tsx",
   "etapes/formules/ServicesExterieurs.tsx",
+  "etapes/paiement/EtapePaiement.tsx",
+  "etapes/paiement/PaiementA.tsx",
+  "etapes/paiement/PaiementB.tsx",
+  "etapes/paiement/BlocFinancement.tsx",
+  "etapes/paiement/ApercuClientVerra.tsx",
+  "etapes/paiement/RappelPhases.tsx",
 ];
 
 describe("l'assistant de devis est sûr côté client", () => {
