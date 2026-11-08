@@ -12,13 +12,13 @@ export interface AvatarStyle {
   rotation: number;
 }
 
-/** Palettes duotone alignées sur les tokens de marque (globals.css @theme). */
+/** Palettes (aplats, sans dégradé) alignées sur les tokens de marque (globals.css @theme). */
 const PALETTES: ReadonlyArray<{ from: string; to: string; accent: string }> = [
-  { from: "#c24a1b", to: "#8c3010", accent: "#f5e3d8" }, // terracotta
-  { from: "#1a4dd9", to: "#12379e", accent: "#dbe4ff" }, // bleu
-  { from: "#5e6c54", to: "#3f4a38", accent: "#e4e8df" }, // sage
-  { from: "#2a2520", to: "#4a4038", accent: "#e6dcc4" }, // mocha
-  { from: "#a8431c", to: "#c24a1b", accent: "#f0e9da" }, // sable chaud
+  { from: "#b23f16", to: "#b23f16", accent: "#faf9f5" }, // terracotta
+  { from: "#141413", to: "#141413", accent: "#d97757" }, // noir, orange sur noir
+  { from: "#5e7050", to: "#5e7050", accent: "#faf9f5" }, // sauge
+  { from: "#8f3412", to: "#8f3412", accent: "#e8e6dc" }, // terracotta de survol
+  { from: "#141413", to: "#141413", accent: "#b0aea5" }, // noir, gris sur noir
 ];
 
 /** Hash FNV-1a 32 bits, stable et déterministe. */
