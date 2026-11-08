@@ -8,7 +8,7 @@ import {
   QUALIOPI_PDF_SPACE,
   QUALIOPI_PDF_TYPE,
 } from "@/server/qualiopi/brand/brand-tokens";
-import { COULEURS_MARQUE_GELEES_2026_11 as GELE } from "./couleurs-marque-gelees-2026-11";
+import { COULEURS_MARQUE_GELEES_2026_11 as GELE } from "@/lib/brand/couleurs-marque-gelees-2026-11";
 
 // ⛔ Constantes relevées AVANT le gel, sur le code d'origine. Rouge = annuler, jamais « mettre à jour ».
 const EMPREINTE_AVANT = "24af1bdebf79c46521d336d6b8e09194b9974917b8d179337359088dc8320306";
