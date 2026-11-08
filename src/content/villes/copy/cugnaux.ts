@@ -79,7 +79,7 @@ export const CUGNAUX_COPY: VilleCopy = {
           {
             step: "Recette + mise en ligne",
             detail:
-              "Tests d'acceptation, Web Vitals et SEO/AEO validés, mise en production sans downtime depuis nos bureaux toulousains — sans couper votre activité commerciale ni vos échanges avec les donneurs d'ordre aéronautiques de Blagnac et leurs flux de commande.",
+              "Tests d'acceptation, Web Vitals et SEO/AEO validés, mise en production sans downtime, sur place ou à distance — sans couper votre activité commerciale ni vos échanges avec les donneurs d'ordre aéronautiques de Blagnac et leurs flux de commande.",
           },
           {
             step: "Livraison + autonomie",
@@ -165,7 +165,7 @@ export const CUGNAUX_COPY: VilleCopy = {
           {
             step: "Recette + mise en ligne",
             detail:
-              "Tests d'acceptation, Web Vitals et SEO/AEO validés, mise en production sans downtime depuis nos bureaux toulousains — sans couper votre activité commerciale ni vos échanges avec les donneurs d'ordre aéronautiques de Blagnac et leurs flux de commande.",
+              "Tests d'acceptation, Web Vitals et SEO/AEO validés, mise en production sans downtime, sur place ou à distance — sans couper votre activité commerciale ni vos échanges avec les donneurs d'ordre aéronautiques de Blagnac et leurs flux de commande.",
           },
           {
             step: "Livraison + autonomie",
