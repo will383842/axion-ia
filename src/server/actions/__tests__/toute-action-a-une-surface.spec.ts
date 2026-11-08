@@ -79,6 +79,8 @@ const SANS_SURFACE_CONNUS: ReadonlyArray<string> = [
   // 2026-11-08 — assistant de devis : écrans dans les PR E08+ (lot serveur-2).
   "server/actions/qualiopi/devis-assistant-brouillon.ts",
   "server/actions/qualiopi/devis-classique-modifier.ts",
+  // Lot serveur-3 (S08) : numérotation/envoi, écran de l'étape 4 dans le lot ÉCRANS.
+  "server/actions/qualiopi/devis-assistant-finaliser.ts",
   "server/actions/knowledge/add-relation.ts",
   "server/actions/knowledge/assign-reviewer.ts",
   "server/actions/knowledge/rollback-version.ts",
