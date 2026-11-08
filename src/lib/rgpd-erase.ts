@@ -1782,6 +1782,15 @@ export const EXCEPTIONS_EFFACEMENT_DOSSIER: ReadonlyArray<{
       "sera branché avec le premier code qui l'écrit.",
   },
   {
+    // Assistant de devis, fiche S17 — requalifié `dossier-client` AVANT l'allumage de S06.
+    modele: "DevisAssistantBrouillon",
+    motif:
+      "brouillon de travail d'un devis, rattaché à une fiche par un simple lien `client_id` " +
+      "(aucune coordonnée dans son contenu) ; jamais supprimé ni purgé (décision de Williams) : " +
+      "un brouillon abandonné est mis à l'écart, pas effacé. Une demande qui vise un brouillon " +
+      "précis est traitée à la main.",
+  },
+  {
     modele: "EnregistrementConsentement",
     motif:
       "preuve que l'enregistrement était licite (art. 17(3)(e)) ; conservée jusqu'à la fin " +
