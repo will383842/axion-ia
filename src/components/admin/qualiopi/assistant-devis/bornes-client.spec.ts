@@ -80,6 +80,9 @@ const POINTS_D_ENTREE = [
   "etapes/un/ChoixModele.tsx",
   "etapes/un/BlocClient.tsx",
   "etapes/un/NouveauContact.tsx",
+  "etapes/un/BlocMotsDuClient.tsx",
+  "etapes/un/ListeLignes.tsx",
+  "etapes/un/LigneContenu.tsx",
 ];
 
 describe("l'assistant de devis est sûr côté client", () => {
