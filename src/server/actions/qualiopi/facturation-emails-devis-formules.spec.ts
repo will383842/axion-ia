@@ -101,6 +101,15 @@ describe("envoyerDevisEmailAction — devis à formules", () => {
     expect(d.enqueueEmail).not.toHaveBeenCalled();
   });
 
+  it("sans pièce générée (documentGenereId null) : refus, aucun lien, aucun e-mail", async () => {
+    d.findUnique.mockResolvedValue(devis({ documentGenereId: null }));
+    const r = await envoyerDevisEmailAction({ devisId: ID });
+    expect("error" in r).toBe(true);
+    if ("error" in r) expect(r.error).toContain("aucun e-mail sans lien de signature");
+    expect(d.creerToken).not.toHaveBeenCalled();
+    expect(d.enqueueEmail).not.toHaveBeenCalled();
+  });
+
   it("lien de signature non créé : refus, aucun e-mail sans bouton signer", async () => {
     d.creerToken.mockRejectedValue(new Error("boom"));
     const r = await envoyerDevisEmailAction({ devisId: ID });
@@ -120,6 +129,7 @@ describe("envoyerDevisEmailAction — devis à formules", () => {
     d.findUnique.mockResolvedValue(devis({ montantTotalHtCents: 90000 }));
     d.docFindUnique.mockResolvedValue({ metadata: null });
     await envoyerDevisEmailAction({ devisId: ID });
+    expect(d.enqueueEmail).toHaveBeenCalledOnce();
     const payload = d.enqueueEmail.mock.calls[0]?.[3] as Record<string, unknown>;
     expect(payload).not.toHaveProperty("montantLabel");
   });

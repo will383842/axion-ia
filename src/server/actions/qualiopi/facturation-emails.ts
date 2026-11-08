@@ -97,6 +97,14 @@ export async function envoyerDevisEmailAction(
         "Ce devis à formules ne peut être renvoyé que s'il est au statut « envoyé » (aucun e-mail sans lien de signature).",
     };
   }
+  // Un devis à formules ne part jamais sans lien : sans pièce générée, aucun jeton n'est
+  // émissible. Refuser AVANT toute écriture (ni lien créé, ni e-mail en file).
+  if (aFormules && devis.documentGenereId === null) {
+    return {
+      error:
+        "Ce devis à formules n'a pas de pièce générée : aucun e-mail sans lien de signature. Générer d'abord le devis.",
+    };
+  }
   const pieceEnvoyee =
     devis.documentGenereId !== null
       ? await prisma.documentGenere.findUnique({
@@ -135,6 +143,9 @@ export async function envoyerDevisEmailAction(
   let signatureNote: string | null = null;
   if (devis.documentGenereId !== null && devis.statut === "envoye") {
     try {
+      // Calculée AVANT le jeton : si elle lève, aucun jeton n'est créé (créer le jeton révoque
+      // l'ancien lien, le client resterait sans lien valable).
+      const baseSignature = publicUrl("/fr/portail/signer/").toString();
       const { token } = await creerTokenDocument({
         documentGenereId: devis.documentGenereId,
         partie: "client",
@@ -143,7 +154,7 @@ export async function envoyerDevisEmailAction(
         signataireQualite: devis.client.contactFonction,
         borneMetier: devis.dateValidite,
       });
-      signatureUrl = publicUrl(`/fr/portail/signer/${token}`).toString();
+      signatureUrl = `${baseSignature}${token}`;
     } catch (err) {
       if (aFormules) {
         console.warn("[envoyerDevisEmailAction] émission du lien de signature échouée", err);
