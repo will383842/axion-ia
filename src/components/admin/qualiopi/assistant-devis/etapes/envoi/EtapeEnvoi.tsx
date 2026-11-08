@@ -5,13 +5,16 @@
  * Étape 4 assemblée (fiche E16) : à l'entrée, UN appel à l'aperçu serveur (C4, simulé par la
  * prop `preparer`) dans un cadre de hauteur fixe avec squelette (CLS = 0) ; puis l'aperçu
  * rendu depuis la `VueApercuDevis`, et l'e-mail. Rien n'est envoyé tant que l'on ne clique pas.
- * Les actions (C4, C5, C6) sont injectées : la page les branche en E17.
+ * Les actions (C4, C5) sont injectées : la page les branche en E17.
  */
-import { useEffect, useRef, useState } from "react";
+import { lazy, Suspense, useEffect, useRef, useState } from "react";
 
 import type { Etape } from "../../types";
-import { ApercuDevis, type VueApercuDevis } from "./ApercuDevis";
-import { EmailEnvoi, type EmailAEnvoyer, type ModeleEmail } from "./EmailEnvoi";
+import type { VueApercuDevis } from "./ApercuDevis";
+import { EmailEnvoi, type EmailAEnvoyer } from "./EmailEnvoi";
+
+// Chargé à la demande : l'aperçu n'existe qu'après la réponse du serveur.
+const ApercuDevis = lazy(() => import("./ApercuDevis").then((m) => ({ default: m.ApercuDevis })));
 
 export type ResultatAction<T> = { data: T } | { error: string };
 
@@ -31,9 +34,6 @@ export interface PropsEtapeEnvoi {
     majLe: string,
     email: EmailAEnvoyer,
   ) => Promise<ResultatAction<{ enCorbeille: true; note?: string }>>;
-  envoyerExemplaire: (devisId: string) => Promise<ResultatAction<{ ok: true }>>;
-  modelesEmail: readonly ModeleEmail[];
-  signataire: string;
   destinataire: string;
   onModifier?: (() => void) | undefined;
 }
@@ -43,24 +43,24 @@ type Chargement =
   | { etat: "erreur"; message: string }
   | { etat: "pret"; prepare: ApercuPrepare };
 
-export function EtapeEnvoi({
-  preparer,
-  envoyer,
-  envoyerExemplaire,
-  modelesEmail,
-  signataire,
-  destinataire,
-  onModifier,
-}: PropsEtapeEnvoi) {
+export function EtapeEnvoi({ preparer, envoyer, destinataire, onModifier }: PropsEtapeEnvoi) {
   const [chargement, setChargement] = useState<Chargement>({ etat: "attente" });
   const lance = useRef(false);
+  // Verrou anti double clic de « Réessayer » : un seul appel à la fois.
+  const enVol = useRef(false);
 
   async function charger() {
+    if (enVol.current) return;
+    enVol.current = true;
     setChargement({ etat: "attente" });
-    const r = await preparer();
-    setChargement(
-      "error" in r ? { etat: "erreur", message: r.error } : { etat: "pret", prepare: r.data },
-    );
+    try {
+      const r = await preparer();
+      setChargement(
+        "error" in r ? { etat: "erreur", message: r.error } : { etat: "pret", prepare: r.data },
+      );
+    } finally {
+      enVol.current = false;
+    }
   }
 
   useEffect(() => {
@@ -99,15 +99,16 @@ export function EtapeEnvoi({
             </button>
           </div>
         ) : null}
-        {prete ? <ApercuDevis vue={prete.vue} urlPdf={prete.apercuPdfUrl} /> : null}
+        {prete ? (
+          <Suspense fallback={<p className="p-3">Chargement de l&apos;aperçu…</p>}>
+            <ApercuDevis vue={prete.vue} urlPdf={prete.apercuPdfUrl} />
+          </Suspense>
+        ) : null}
       </div>
       {prete ? (
         <EmailEnvoi
-          modeles={modelesEmail}
-          signataire={signataire}
           destinataire={destinataire}
           envoyer={(email) => envoyer(prete.devisId, prete.majLe, email)}
-          envoyerExemplaire={() => envoyerExemplaire(prete.devisId)}
         />
       ) : null}
       {onModifier ? (

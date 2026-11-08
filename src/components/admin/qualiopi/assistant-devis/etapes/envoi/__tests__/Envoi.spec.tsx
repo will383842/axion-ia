@@ -1,8 +1,8 @@
-import { act, fireEvent, render, screen, waitFor, within } from "@testing-library/react";
+import { act, fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 
 import { ApercuDevis, type VueApercuDevis } from "../ApercuDevis";
-import { EmailEnvoi, type ModeleEmail } from "../EmailEnvoi";
+import { EmailEnvoi } from "../EmailEnvoi";
 import { EtapeEnvoi, type ResultatAction } from "../EtapeEnvoi";
 
 const nettoyer = (s: string) => s.replace(/[\s  ]/g, "");
@@ -42,17 +42,6 @@ const VUE: VueApercuDevis = {
   mentionTva: "TVA 20 % en sus.",
   versionCgv: "version en vigueur de test",
 };
-const MODELES: ModeleEmail[] = [
-  {
-    cle: "standard",
-    libelle: "Proposition standard",
-    objet: "Objet standard",
-    corps: "Corps standard",
-  },
-  { cle: "deux_formules", libelle: "Deux formules", objet: "Objet deux", corps: "Corps deux" },
-  { cle: "apres_rdv", libelle: "Après notre rendez-vous", objet: "Objet rdv", corps: "Corps rdv" },
-  { cle: "libre", libelle: "Mon propre texte", objet: "", corps: "" },
-];
 const PREPARE = {
   devisId: "d1",
   numero: VUE.numero,
@@ -66,24 +55,18 @@ function monter(over: Partial<React.ComponentProps<typeof EtapeEnvoi>> = {}) {
   const envoyer = vi.fn(async (): Promise<ResultatAction<{ enCorbeille: true }>> => ({
     data: { enCorbeille: true },
   }));
-  const exemplaire = vi.fn(async (): Promise<ResultatAction<{ ok: true }>> => ({
-    data: { ok: true },
-  }));
   const onModifier = vi.fn();
   render(
     <EtapeEnvoi
       etape={4}
       preparer={preparer}
       envoyer={envoyer}
-      envoyerExemplaire={exemplaire}
-      modelesEmail={MODELES}
-      signataire="Signataire de test, Axion-IA"
       destinataire="client@example.test"
       onModifier={onModifier}
       {...over}
     />,
   );
-  return { preparer, envoyer, exemplaire, onModifier };
+  return { preparer, envoyer, onModifier };
 }
 
 describe("EtapeEnvoi : entrée", () => {
@@ -100,10 +83,9 @@ describe("EtapeEnvoi : entrée", () => {
   });
 
   it("AUCUN envoi au simple affichage", async () => {
-    const { envoyer, exemplaire } = monter();
+    const { envoyer } = monter();
     await screen.findByText(VUE.numero, { exact: false });
     expect(envoyer).not.toHaveBeenCalled();
-    expect(exemplaire).not.toHaveBeenCalled();
   });
 
   it("un échec de l'aperçu est dit (role=alert) et laisse réessayer, sans rien envoyer", async () => {
@@ -116,6 +98,21 @@ describe("EtapeEnvoi : entrée", () => {
     expect(envoyer).not.toHaveBeenCalled();
     fireEvent.click(screen.getByRole("button", { name: /Réessayer/ }));
     await screen.findByText(VUE.numero, { exact: false });
+    expect(preparer).toHaveBeenCalledTimes(2);
+  });
+
+  it("« Réessayer » : un double clic ne lance qu'un seul nouvel appel", async () => {
+    let fin!: (v: ResultatAction<typeof PREPARE>) => void;
+    const preparer = vi
+      .fn()
+      .mockResolvedValueOnce({ error: "Aperçu impossible." })
+      .mockImplementationOnce(() => new Promise((r) => (fin = r)));
+    monter({ preparer });
+    const b = await screen.findByRole("button", { name: /Réessayer/ });
+    fireEvent.click(b);
+    fireEvent.click(b);
+    expect(preparer).toHaveBeenCalledTimes(2);
+    await act(async () => fin({ data: PREPARE }));
     expect(preparer).toHaveBeenCalledTimes(2);
   });
 
@@ -158,78 +155,24 @@ describe("ApercuDevis : rendu de la vue serveur", () => {
   });
 });
 
-describe("EmailEnvoi", () => {
+describe("EmailEnvoi (D9 : pas d'e-mail personnalisé en v1)", () => {
   function email(over: Partial<React.ComponentProps<typeof EmailEnvoi>> = {}) {
     const envoyer = vi.fn(async () => ({ data: { enCorbeille: true as const } }));
-    const exemplaire = vi.fn(async () => ({ data: { ok: true as const } }));
-    render(
-      <EmailEnvoi
-        modeles={MODELES}
-        signataire="Signataire de test, Axion-IA"
-        destinataire="client@example.test"
-        envoyer={envoyer}
-        envoyerExemplaire={exemplaire}
-        {...over}
-      />,
-    );
-    return { envoyer, exemplaire };
+    render(<EmailEnvoi destinataire="client@example.test" envoyer={envoyer} {...over} />);
+    return { envoyer };
   }
 
-  it("pré-remplit objet et corps depuis le premier modèle, avec la signature reçue en prop", () => {
+  it("aucun choix de modèle, objet, message ni exemplaire : seul le destinataire se saisit", () => {
     email();
-    expect((screen.getByLabelText("Objet") as HTMLInputElement).value).toBe("Objet standard");
-    const corps = (screen.getByLabelText("Message") as HTMLTextAreaElement).value;
-    expect(corps).toContain("Corps standard");
-    expect(corps).toContain("Signataire de test, Axion-IA");
-    expect(corps).not.toMatch(/Will\b/);
-  });
-
-  it("changer de modèle sans modification remplace directement", () => {
-    email();
-    fireEvent.change(screen.getByLabelText("Modèle d'e-mail"), {
-      target: { value: "deux_formules" },
-    });
-    expect((screen.getByLabelText("Objet") as HTMLInputElement).value).toBe("Objet deux");
+    expect(screen.queryByLabelText(/Modèle d'e-mail/)).toBeNull();
+    expect(screen.queryByLabelText("Objet")).toBeNull();
+    expect(screen.queryByLabelText("Message")).toBeNull();
+    expect(screen.queryByRole("button", { name: /exemplaire/i })).toBeNull();
     expect(screen.queryByRole("alertdialog")).toBeNull();
+    expect((screen.getByLabelText("À") as HTMLInputElement).value).toBe("client@example.test");
   });
 
-  it("changer de modèle après modification demande confirmation, et on peut refuser", () => {
-    email();
-    fireEvent.change(screen.getByLabelText("Objet"), { target: { value: "Mon objet" } });
-    fireEvent.change(screen.getByLabelText("Modèle d'e-mail"), {
-      target: { value: "deux_formules" },
-    });
-    const dlg = screen.getByRole("alertdialog");
-    expect((screen.getByLabelText("Objet") as HTMLInputElement).value).toBe("Mon objet");
-    fireEvent.click(within(dlg).getByRole("button", { name: /Garder mon texte/ }));
-    expect(screen.queryByRole("alertdialog")).toBeNull();
-    expect((screen.getByLabelText("Objet") as HTMLInputElement).value).toBe("Mon objet");
-    expect((screen.getByLabelText("Modèle d'e-mail") as HTMLSelectElement).value).toBe("standard");
-  });
-
-  it("accepter la confirmation applique le nouveau modèle", () => {
-    email();
-    fireEvent.change(screen.getByLabelText("Message"), { target: { value: "Mon message" } });
-    fireEvent.change(screen.getByLabelText("Modèle d'e-mail"), { target: { value: "apres_rdv" } });
-    fireEvent.click(
-      within(screen.getByRole("alertdialog")).getByRole("button", { name: /Remplacer/ }),
-    );
-    expect((screen.getByLabelText("Objet") as HTMLInputElement).value).toBe("Objet rdv");
-    expect((screen.getByLabelText("Message") as HTMLTextAreaElement).value).toContain("Corps rdv");
-  });
-
-  it("« Revenir au texte d'origine » rétablit objet et corps du modèle", () => {
-    email();
-    fireEvent.change(screen.getByLabelText("Objet"), { target: { value: "X" } });
-    fireEvent.change(screen.getByLabelText("Message"), { target: { value: "Y" } });
-    fireEvent.click(screen.getByRole("button", { name: /Revenir au texte d'origine/ }));
-    expect((screen.getByLabelText("Objet") as HTMLInputElement).value).toBe("Objet standard");
-    expect((screen.getByLabelText("Message") as HTMLTextAreaElement).value).toContain(
-      "Corps standard",
-    );
-  });
-
-  it("« Envoyer au client » appelle l'envoi UNE fois (double clic neutralisé) avec le contenu saisi", async () => {
+  it("« Envoyer au client » appelle l'envoi UNE fois (double clic neutralisé)", async () => {
     let fin!: (v: { data: { enCorbeille: true } }) => void;
     const envoyer = vi.fn(() => new Promise<{ data: { enCorbeille: true } }>((r) => (fin = r)));
     email({ envoyer });
@@ -237,18 +180,17 @@ describe("EmailEnvoi", () => {
     fireEvent.click(b);
     fireEvent.click(b);
     expect(envoyer).toHaveBeenCalledTimes(1);
-    expect(envoyer).toHaveBeenCalledWith(
-      expect.objectContaining({
-        a: "client@example.test",
-        objet: "Objet standard",
-        modele: "standard",
-      }),
-    );
+    expect(envoyer).toHaveBeenCalledWith({ a: "client@example.test" });
     await act(async () => fin({ data: { enCorbeille: true } }));
     expect(await screen.findByText(/en corbeille, à valider/i)).toBeTruthy();
     expect(
       (screen.getByRole("button", { name: /Envoyer au client/ }) as HTMLButtonElement).disabled,
     ).toBe(true);
+  });
+
+  it("aucun envoi à l'affichage", () => {
+    const { envoyer } = email();
+    expect(envoyer).not.toHaveBeenCalled();
   });
 
   it("un échec d'envoi est dit et laisse réessayer", async () => {
@@ -269,13 +211,6 @@ describe("EmailEnvoi", () => {
     fireEvent.click(screen.getByRole("button", { name: /Envoyer au client/ }));
     expect(envoyer).not.toHaveBeenCalled();
     expect(screen.getByRole("alert").textContent).toMatch(/adresse/i);
-  });
-
-  it("« M'envoyer un exemplaire » appelle l'action d'exemplaire, jamais l'envoi au client", async () => {
-    const { envoyer, exemplaire } = email();
-    fireEvent.click(screen.getByRole("button", { name: /M'envoyer un exemplaire/ }));
-    await waitFor(() => expect(exemplaire).toHaveBeenCalledTimes(1));
-    expect(envoyer).not.toHaveBeenCalled();
   });
 
   it("annonce « relu dans la corbeille avant envoi » et aucune relance automatique", () => {
