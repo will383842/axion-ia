@@ -377,10 +377,9 @@ Ce template permet d'estimer le ROI d'un audit IA avant de prendre la décision 
 | Poste | Valeur à renseigner | Exemple ETI 200 sal. |
 |---|---|---|
 | Durée de l'audit (jours) | [ ] jours | 5 jours |
-| Tarif journalier Axion-IA | cf. grille tarifaire | 2 200 € HT/jour |
-| **Coût total de l'audit** | **[ ]** | **11 000 € HT** |
+| **Coût de l'audit Axion-IA** | sur devis | sur devis (parlons-en lors du rendez-vous gratuit de 45 minutes) |
 | Coût interne (temps équipe client) | [ ] jours × salaire chargé | 3 j × 500 € = 1 500 € |
-| **Investissement total** | **[ ]** | **12 500 € HT** |
+| **Investissement total** | **[ ]** | **[coût de l'audit] + 1 500 €** |
 
 ---
 
@@ -436,13 +435,13 @@ Au-delà des pénalités évitées, un audit IA produit une valeur de conformit�
 
 | Indicateur | Montant |
 |---|---|
-| Investissement total (audit + temps interne) | 12 500 € HT |
+| Investissement total (audit + temps interne) | [coût de l'audit, sur devis] + 1 500 € |
 | Économies logicielles année 1 | 10 800 € |
 | Évitement pénalités (valeur espérée) | 22 500 € |
 | Gains productivité année 1 | 17 368 € |
 | **Bénéfices année 1** | **50 668 €** |
-| **ROI année 1** | **305 %** |
-| **Période de retour sur investissement** | **~3 mois** |
+| **ROI année 1** | **(bénéfices − investissement) / investissement** |
+| **Période de retour sur investissement** | **investissement / bénéfices mensuels** |
 
 ---
 

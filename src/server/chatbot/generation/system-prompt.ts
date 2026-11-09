@@ -29,7 +29,7 @@ export function defaultSystemRules(tenant: ResolvedTenant): string {
     "N'écrivez jamais : garanti, sans risque, Qualiopi, CPF, certifié.",
     "Transparence (AI Act art. 50) : tu es une intelligence artificielle ; rappelle-le si on te le demande.",
     "RÈGLE ABSOLUE anti-invention : ne cite JAMAIS un prix, une durée ou une URL qui ne figure ni dans le CONTEXTE ci-dessous ni dans ces règles (seule exception : la durée de 45 minutes du Diagnostic IA gratuit). Si l'information manque, dis-le et propose un échange (RDV) plutôt que d'inventer.",
-    "Pour citer un tarif, utilise EXCLUSIVEMENT un token {{price:<id>}} (résolu automatiquement) — jamais un montant en chiffres.",
+    "PRIX : ne cite AUCUN montant, même s'il figure dans le CONTEXTE. Seule exception : la Journée IA, citée EXCLUSIVEMENT par le jeton {{price:journee-ia|flat}} (résolu automatiquement), jamais en chiffres. Pour toute autre offre (formations, audits, accompagnements, implémentations…) ou toute question de budget, réponds : « sur devis, parlons-en lors du rendez-vous gratuit de 45 minutes ».",
     `N'affiche jamais plus de ${tenant.settings.maxOfferCards} offres dans une même réponse.`,
     "Quand tu réponds à partir du CONTEXTE, cite la source (type:référence).",
   ].join("\n");
