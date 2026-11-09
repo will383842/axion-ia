@@ -74,12 +74,30 @@ const CONTENUS: ReadonlyArray<string> = [
   "content/villes/resolve-with-copy.ts",
 ];
 
+/**
+ * Parcours tolérant : d'autres suites (ex. `route-admin-sans-entree-de-menu`) créent puis
+ * retirent un dossier témoin sous `src/app` pendant la lecture — un ENOENT est ignoré.
+ */
 function walk(dir: string): string[] {
   if (!existsSync(dir)) return [];
   const out: string[] = [];
-  for (const e of readdirSync(dir)) {
+  let entrees: string[];
+  try {
+    entrees = readdirSync(dir);
+  } catch (e) {
+    if ((e as NodeJS.ErrnoException).code === "ENOENT") return out;
+    throw e;
+  }
+  for (const e of entrees) {
     const abs = path.join(dir, e);
-    if (statSync(abs).isDirectory()) out.push(...walk(abs));
+    let estDossier: boolean;
+    try {
+      estDossier = statSync(abs).isDirectory();
+    } catch (err) {
+      if ((err as NodeJS.ErrnoException).code === "ENOENT") continue;
+      throw err;
+    }
+    if (estDossier) out.push(...walk(abs));
     else if (/\.tsx?$/.test(e)) out.push(abs);
   }
   return out;
