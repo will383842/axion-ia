@@ -166,7 +166,8 @@ export const CONTENU = {
     titre: "On ne promet pas l’excellence. On la livre.",
     texte:
       "Nous partons de ce que vivent un dirigeant et ses équipes quand le temps manque, dans votre métier. Tout est écrit avant de commencer : le déroulé, ce que vous recevez, le prix.",
-    citation: "« Si nous ne trouvons rien d’utile chez vous, nous vous le dirons. »",
+    citation:
+      "« Dans chaque entreprise, des heures se perdent sans bruit. Nous les trouvons, nous les chiffrons et nous les rendons à votre productivité, à votre rentabilité et à votre chiffre d’affaires. Nous en sommes sûrs au point de garantir la journée sur les gains identifiés. »",
     signature: "Williams Jullin, fondateur d’Axion-IA",
     lien: "Voir le parcours de Williams Jullin",
     altPortrait: "Portrait de Williams Jullin, fondateur d’Axion-IA",
