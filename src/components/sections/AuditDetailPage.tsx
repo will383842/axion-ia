@@ -43,7 +43,13 @@ import { ClientLogosMarqueeBand } from "@/components/services/audit/ClientLogosM
 import { FaqAccordion } from "@/components/marketing/FaqAccordion";
 import { AUDIT_DETAIL_CONFIGS } from "@/content/audit-detail-configs";
 import { type AuditTier, getAuditTierMeta } from "@/content/audit-taxonomy";
-import { AUDIT_TIERS, formatAmount, getTierById } from "@/content/pricing";
+import {
+  AUDIT_TIERS,
+  formatTierPrice,
+  getTierById,
+  libelleSurDevis,
+  prixAffichable,
+} from "@/content/pricing";
 import { CLIENT_SECTORS } from "@/content/sectors";
 import { getVillesCoreIndexableNow } from "@/content/villes/core";
 import { buildServiceJsonLd, buildFaqJsonLd, buildHowToJsonLd } from "@/lib/seo";
@@ -69,15 +75,12 @@ export function AuditDetailPage({ tier, locale }: Props): ReactNode {
 
   // ── Prix d'entrée (SSOT pricing.ts) — priceFlat (fixe) ou priceMin (range) ──
   const tierPricing = getTierById(AUDIT_TIERS, tier);
+  // R7 (ordre de Williams du 08/11/2026) : aucun prix d'audit au public — « Sur devis »
+  // tant que l'interrupteur de pricing.ts est coupé (ou que le palier est masqué).
   const entryValue = tierPricing.priceFlat ?? tierPricing.priceMin ?? null;
-  // R5a : palier masqué (`prixPublicMasque`) -> « Sur devis », sans « À partir de ».
-  const prixMasque = tierPricing.prixPublicMasque === true;
-  const priceValue =
-    entryValue != null && !prixMasque
-      ? formatAmount(entryValue, isFr ? "fr" : "en")
-      : isFr
-        ? "Sur devis"
-        : "On request";
+  // `prixAffichable` couvre `prixPublicMasque` (R5a) ET l'interrupteur R7.
+  const prixMasque = entryValue == null || !prixAffichable(tierPricing);
+  const priceValue = prixMasque ? libelleSurDevis(locale) : formatTierPrice(tierPricing, locale);
 
   // ── CTA héro : réservation calendrier (Flash) ou cadrage par formulaire ────
   const featuredSubTier = config.subTiers.find((s) => s.isFeatured) ?? config.subTiers[0]!;

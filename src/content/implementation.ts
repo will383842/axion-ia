@@ -12,22 +12,11 @@
 // portés par `implementation-fr-overrides.ts` (les valeurs ci-dessous ne sont
 // que le repli de forme).
 
-import { IMPLEMENTATION_TIERS, formatAmountRange, getTierById } from "./pricing";
+import { IMPLEMENTATION_TIERS, getTierById } from "./pricing";
 import { IMPL_FR_OVERRIDES } from "./implementation-fr-overrides";
 
 const IA_CUSTOM_TIER = getTierById(IMPLEMENTATION_TIERS, "impl-ia-custom");
-const IA_CUSTOM_RANGE_FR = formatAmountRange(
-  IA_CUSTOM_TIER.priceMin!,
-  IA_CUSTOM_TIER.priceMax!,
-  "fr",
-  { compact: true },
-);
-const IA_CUSTOM_RANGE_EN = formatAmountRange(
-  IA_CUSTOM_TIER.priceMin!,
-  IA_CUSTOM_TIER.priceMax!,
-  "en",
-  { compact: true },
-);
+// R7 (ordre de Williams du 08/11/2026) : le titre ne porte plus la fourchette de prix.
 
 export type ImplementationSlug =
   | "ia-custom"
@@ -102,12 +91,12 @@ export const IMPLEMENTATIONS: ReadonlyArray<ImplementationContent> = [
     fr: makeFr({
       ...IMPL_FR_OVERRIDES["ia-custom"],
       eyebrow: "Service premium · Module 3",
-      title: `IA custom d'entreprise (${IA_CUSTOM_RANGE_FR})`,
+      title: "IA custom d'entreprise (sur devis)",
       answer: `Implémentation IA sur mesure pour grands comptes : modèles ajustés à vos données, intégration profonde dans vos systèmes, équipe dédiée. Vous repartez avec la solution en production, son code, ses pipelines et sa documentation d'exploitation, hébergés dans votre périmètre. Tarif sur devis, livraison ${IA_CUSTOM_TIER.durationFr}.`,
     }),
     en: makeEn({
       eyebrow: "Premium service · Module 3",
-      title: `Custom enterprise AI (${IA_CUSTOM_RANGE_EN})`,
+      title: "Custom enterprise AI (on quote)",
       answer: `Tailor-made AI implementation for large accounts: models fine-tuned on your data, deep integration into your systems, dedicated team. Pricing on request, ${IA_CUSTOM_TIER.durationEn} delivery.`,
     }),
   },

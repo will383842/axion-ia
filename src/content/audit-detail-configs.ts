@@ -654,8 +654,8 @@ const ETI_FAQ: ReadonlyArray<AuditFaq> = [
   {
     qFr: "Et pour les groupes très grands (3+ BU, multi-sites, multinational) ?",
     qEn: "What about very large groups (3+ BUs, multi-site, multinational)?",
-    aFr: "Sur devis selon le périmètre : nombre de BU, nombre de sites, langues (FR/EN/autres), profondeur sectorielle. On démarre toujours par 1 phase de cadrage (1-2 semaines) pour figer le périmètre avant engagement ferme. Possible 50k € à 200k € selon ambition." /* price-exempt: fourchette indicative multi-BU hors tiers Axion-IA */,
-    aEn: "On request based on scope: number of BUs, number of sites, languages (FR/EN/others), sector depth. Always start with 1 framing phase (1-2 weeks) to lock scope before firm commitment. Possible €50k to €200k depending on ambition." /* price-exempt: fourchette indicative multi-BU hors tiers Axion-IA */,
+    aFr: "Sur devis selon le périmètre : nombre de BU, nombre de sites, langues (FR/EN/autres), profondeur sectorielle. On démarre toujours par 1 phase de cadrage (1-2 semaines) pour figer le périmètre avant engagement ferme. Le montant est fixé au devis, selon l'ambition.",
+    aEn: "On request based on scope: number of BUs, number of sites, languages (FR/EN/others), sector depth. Always start with 1 framing phase (1-2 weeks) to lock scope before firm commitment. The amount is set in the quote, depending on ambition.",
   },
   {
     qFr: "Quels secteurs ou conformités spécifiques ?",

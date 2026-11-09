@@ -14,7 +14,7 @@ import {
   getFormationsV2ByCategorie,
   getFormationV2EntryPrice,
 } from "@/content/formations/catalog-v2";
-import { formatAmount } from "@/content/pricing";
+import { PRIX_PUBLICS_AFFICHES, formatMontantPublic } from "@/content/pricing";
 
 // Server Component. Header v5 2026-05-28 (Will) — layout 2026 dual-CTA :
 //   [Logo · Cabinet IA pour entreprises]   nav 6 items     [Nous écrire ghost] [Réserver un appel primary]
@@ -84,7 +84,8 @@ export async function Header() {
   // client `HeaderFormationsMenu`. Refonte 2026-07-19 : les 4 offres générales
   // (les 2 formats « bien commencer » séparés — Will) + 2 entrées catégorie
   // (métiers / secteurs) — l'axe durée disparaît.
-  // Prix dérivés de la matrice (`formatAmount` non-compact porte déjà « € HT »).
+  // R7 : le prix n'apparaît qu'interrupteur `PRIX_PUBLICS_AFFICHES` rallumé ; coupé, la
+  // ligne ne porte que la durée (pas de « Sur devis » répété six fois dans un menu).
   const menuGenerales = getFormationsV2ByCategorie("generale").map((f) => {
     const facts = FORMATION_DUREE_FACTS[f.duree];
     const dureeLbl = f.duree === "4h" ? facts.heuresLabelFr : facts.joursLabelFr;
@@ -92,7 +93,10 @@ export async function Header() {
     return {
       href: `/formations/${f.slugFr}`,
       label: f.titreFr,
-      sub: typeof prix === "number" ? `${dureeLbl} · ${formatAmount(prix, "fr")}` : dureeLbl,
+      sub:
+        PRIX_PUBLICS_AFFICHES && typeof prix === "number"
+          ? `${dureeLbl} · ${formatMontantPublic(prix, "fr")}`
+          : dureeLbl,
     };
   });
   const metiersCount = getFormationsV2ByCategorie("metier").length;

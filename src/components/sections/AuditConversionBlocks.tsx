@@ -118,7 +118,7 @@ export function WhyAxionIA({ isFr }: { isFr: boolean }): ReactNode {
         {
           icon: Wallet,
           title: "Pas de black box",
-          body: "Prix d'entrée affiché, devis clair pour le reste. Pas de 30 k€ qui tombent après 3 réunions." /* price-exempt: devis opaque concurrent (repoussoir), pas un tarif Axion-IA */,
+          body: "Devis clair et ferme, établi avant de commencer. Pas de 30 k€ qui tombent après 3 réunions." /* price-exempt: devis opaque concurrent (repoussoir), pas un tarif Axion-IA */,
         },
         {
           icon: Layers,
@@ -144,8 +144,8 @@ export function WhyAxionIA({ isFr }: { isFr: boolean }): ReactNode {
         },
         {
           icon: Wallet,
-          title: "Public pricing, no black box",
-          body: "Our pyramid is published. No opaque quote landing at €30k after 3 framing meetings. You know where you're going before signing." /* price-exempt: competitor opaque quote (foil), not an Axion-IA price */,
+          title: "Clear quote, no black box",
+          body: "A clear, firm quote before we start. No opaque quote landing at €30k after 3 framing meetings. You know where you're going before signing." /* price-exempt: competitor opaque quote (foil), not an Axion-IA price */,
         },
         {
           icon: Layers,

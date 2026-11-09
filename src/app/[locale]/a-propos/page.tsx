@@ -29,7 +29,6 @@ import {
 import { buildSpeakableSpecification } from "@/lib/seo/speakable-universal";
 // Prix formation dérivé du SSOT (jamais hardcodé) — même entrée de gamme que la
 // page /tarifs vers laquelle la réponse renvoie (audit FAQ prix 2026-07-06).
-import { formatAmount, getTierById, INTERVENTION_TIERS } from "@/content/pricing";
 // Nom du fondateur via SSOT `FOUNDER` (displayName « Williams ») — Q/R PAA entité.
 import { FOUNDER, FOUNDER_PERSON_ID } from "@/lib/brand";
 // Flag divulgation OF (Qualiopi/financement) — les Q/R Qualiopi/financement ne
@@ -189,7 +188,8 @@ export default async function About({ params }: Props) {
         {
           id: "prix-formation-ia",
           question: "Combien coûte une formation IA en entreprise ?",
-          answer: `Les formations IA en entreprise démarrent à ${formatAmount(getTierById(INTERVENTION_TIERS, "intervention-4h").priceFlat!, "fr")} HT pour un format court sur site. Le prix varie ensuite selon la durée, la gamme et le nombre de participants. Tous les tarifs sont publics sur la page Tarifs, et le devis précis se construit après un échange sur votre contexte.`,
+          answer:
+            "Les formations IA en entreprise sont établies sur devis, par groupe : le prix dépend de la durée (de 4 h à 2 jours), du format et du nombre de participants. Le devis précis se construit après un échange sur votre contexte, sous 48 h ouvrées.",
         },
         {
           id: "contact",
@@ -264,7 +264,8 @@ export default async function About({ params }: Props) {
         {
           id: "prix-formation-ia",
           question: "How much does corporate AI training cost?",
-          answer: `Corporate AI training starts at ${formatAmount(getTierById(INTERVENTION_TIERS, "intervention-4h").priceFlat!, "en")} ex. VAT for a short on-site format. The price then varies with duration, track and number of participants. All rates are public on the Pricing page, and the precise quote is built after a call about your context.`,
+          answer:
+            "Corporate AI training is quoted per group: the price depends on duration (4 h to 2 days), format and number of participants. The precise quote is built after a call about your context, within 48 business hours.",
         },
         {
           id: "contact",

@@ -27,8 +27,11 @@ import {
   IMPLEMENTATION_TIERS,
   INTERVENTION_TIERS,
   UN_A_UN_TIERS,
-  formatAmount,
-  getEntryPriceEur,
+  JOURNEE_IA_TIER,
+  PRIX_PUBLICS_AFFICHES,
+  formatTierPrice,
+  getEntryLabel,
+  type PricingTier,
 } from "@/content/pricing";
 import {
   buildProductMetadata,
@@ -100,7 +103,7 @@ export async function generateMetadata({ params }: HomeProps): Promise<Metadata>
           isQualiopiCertificationObtenue()
           ? "Formations IA finançables OPCO, certifié Qualiopi. Audits, coaching 1-to-1, automatisation. Vos équipes gagnent du temps dès le lendemain de l'intervention entreprise."
           : "Formations IA en entreprise, audits, coaching 1-to-1, automatisation. Vos équipes gagnent du temps dès le lendemain de l'intervention, partout en France."
-        : `Senior-only AI consultancy, zero middlemen. Audits, training, 1-to-1 coaching, implementations for SMBs. Measurable results, EU hosting, from ${formatAmount(getEntryPriceEur(INTERVENTION_TIERS) ?? 0, "en", { compact: true })}.`,
+        : `Senior-only AI consultancy, zero middlemen. Audits, training, 1-to-1 coaching, implementations for SMBs. Measurable results, EU hosting. Pricing on request.`,
       alternates: { fr: "/", en: "/" },
     })),
     title: { absolute: titleStr },
@@ -135,31 +138,17 @@ export default async function Home({ params }: HomeProps) {
     ? homeReviewsAgg.breakdown[4] + homeReviewsAgg.breakdown[5]
     : null;
 
-  // Prix dérivés du SSOT pricing.ts — injectés dans les messages i18n via {price}/{priceRange}.
-  // Sprint 14.10.5 : zéro hardcode. Range audit obsolète (290-1990 €) remplacé par
-  // le range complet du catalogue (Flash priceFlat → ETI priceMin) ; alternative
-  // ciblé+PME (1 900-9 900) plus restrictive — choix : range complet pour englober
-  // toute la pyramide audit dans la copy "Cartographie complète".
-  const interventionEntryPrice = formatAmount(getEntryPriceEur(INTERVENTION_TIERS) ?? 0, loc, {
-    compact: true,
-  });
-  const implEntryPrice = formatAmount(getEntryPriceEur(IMPLEMENTATION_TIERS) ?? 0, loc, {
-    compact: true,
-  });
-  // auditRange retiré post-refonte pricing single-block 2026-05-24
-  // (la grille utilise désormais auditEntryPrice + "à partir de" plutôt qu un range).
-  // Préservé en commentaire pour réintroduction facile si Will veut revenir à un affichage range :
-  //   const auditRange = formatAmountRange(getEntryPriceEur(AUDIT_TIERS) ?? 0,
-  //     getTierById(AUDIT_TIERS, "audit-strategique-eti").priceMin!, loc, { compact: true });
-  const auditEntryPrice = formatAmount(getEntryPriceEur(AUDIT_TIERS) ?? 0, loc, {
-    compact: true,
-  });
-  const unAUnEntryPrice = formatAmount(getEntryPriceEur(UN_A_UN_TIERS) ?? 0, loc, {
-    compact: true,
-  });
+  // R7 (ordre de Williams du 08/11/2026) : plus aucun prix d'offre au public, sauf la
+  // Journée IA. Les libellés passent par `getEntryLabel` (interrupteur
+  // `PRIX_PUBLICS_AFFICHES` de pricing.ts) : « Sur devis » tant qu'il est coupé,
+  // « À partir de 490 € HT » s'il est rallumé.
+  const entree = (tiers: ReadonlyArray<PricingTier>) => getEntryLabel(tiers, loc);
+  const interventionEntryPrice = entree(INTERVENTION_TIERS);
+  const implEntryPrice = entree(IMPLEMENTATION_TIERS);
+  const auditEntryPrice = entree(AUDIT_TIERS);
+  const unAUnEntryPrice = entree(UN_A_UN_TIERS);
   // Plateforme web augmentée IA : pas de TIERS dédié dans pricing.ts SSOT
-  // → on s'aligne sur le prix d'entrée implémentation (porte d'entrée la
-  // plus proche en coût/durée). Will pourra ajouter un WEB_TIERS dédié plus tard.
+  // → on s'aligne sur le prix d'entrée implémentation.
   const webEntryPrice = implEntryPrice;
 
   // 5 services — Blueprint 2026 (Section 4) : Formations / 1-to-1 / Audits /
@@ -179,9 +168,7 @@ export default async function Home({ params }: HomeProps) {
       official: serviceOfficial(SERVICE_BY_ID.formations, isFr),
       tagline: isFr ? "IA en entreprise" : "AI for companies",
       headline: t("value1Headline"),
-      priceLabel: isFr
-        ? `À partir de ${interventionEntryPrice} HT`
-        : `From ${interventionEntryPrice} excl. tax`,
+      priceLabel: interventionEntryPrice,
       gain: t("value1Gain"),
       href: "/formations" as const,
     },
@@ -192,7 +179,7 @@ export default async function Home({ params }: HomeProps) {
       official: serviceOfficial(SERVICE_BY_ID.unAUn, isFr),
       tagline: isFr ? "Accompagnement individuel" : "Personal support",
       headline: t("value4Headline"),
-      priceLabel: isFr ? `À partir de ${unAUnEntryPrice} HT` : `From ${unAUnEntryPrice} excl. tax`,
+      priceLabel: unAUnEntryPrice,
       gain: t("value4Gain"),
       href: "/un-a-un" as const,
     },
@@ -203,7 +190,7 @@ export default async function Home({ params }: HomeProps) {
       official: serviceOfficial(SERVICE_BY_ID.audit, isFr),
       tagline: isFr ? "Diagnostic & roadmap" : "Diagnosis & roadmap",
       headline: t("value2Headline"),
-      priceLabel: isFr ? `À partir de ${auditEntryPrice} HT` : `From ${auditEntryPrice} excl. tax`,
+      priceLabel: auditEntryPrice,
       gain: t("value2Gain"),
       href: "/audit" as const,
     },
@@ -214,7 +201,7 @@ export default async function Home({ params }: HomeProps) {
       official: serviceOfficial(SERVICE_BY_ID.implementation, isFr),
       tagline: isFr ? "Automatisations sur mesure" : "Custom automation",
       headline: t("value3Headline"),
-      priceLabel: isFr ? `À partir de ${implEntryPrice} HT` : `From ${implEntryPrice} excl. tax`,
+      priceLabel: implEntryPrice,
       gain: t("value3Gain"),
       href: "/implementation" as const,
     },
@@ -225,7 +212,7 @@ export default async function Home({ params }: HomeProps) {
       official: serviceOfficial(SERVICE_BY_ID.sitesWeb, isFr),
       tagline: isFr ? "Sites & apps augmentés IA" : "AI-augmented sites & apps",
       headline: t("value5Headline"),
-      priceLabel: isFr ? `À partir de ${webEntryPrice} HT` : `From ${webEntryPrice} excl. tax`,
+      priceLabel: webEntryPrice,
       gain: t("value5Gain"),
       href: "/sites-web-augmentes" as const,
     },
@@ -793,13 +780,25 @@ export default async function Home({ params }: HomeProps) {
             <div className="mx-auto mb-14 max-w-3xl text-center">
               <p className="text-fg-muted mb-5 text-[13px] font-medium tracking-[0.16em] uppercase">
                 <span className="bg-terracotta mr-3 inline-block h-1.5 w-1.5 rounded-full align-middle" />
-                {isFr ? "Tarifs transparents" : "Transparent pricing"}
+                {PRIX_PUBLICS_AFFICHES
+                  ? isFr
+                    ? "Tarifs transparents"
+                    : "Transparent pricing"
+                  : isFr
+                    ? "Tarifs sur devis"
+                    : "Pricing on quote"}
               </p>
               <h2
                 id="pricing-heading"
                 className="text-fg text-[clamp(2.25rem,4.5vw,4rem)] leading-[1.04] font-semibold tracking-tight"
               >
-                {isFr ? "Un prix de départ " : "A starting price "}
+                {PRIX_PUBLICS_AFFICHES
+                  ? isFr
+                    ? "Un prix de départ "
+                    : "A starting price "
+                  : isFr
+                    ? "Un devis sur mesure "
+                    : "A tailored quote "}
                 <span
                   className="italic-editorial text-terracotta"
                   style={{ fontFamily: "var(--font-serif)" }}
@@ -808,9 +807,39 @@ export default async function Home({ params }: HomeProps) {
                 </span>
               </h2>
               <p className="text-fg-soft mx-auto mt-5 max-w-2xl text-lg leading-relaxed">
-                {isFr
-                  ? "Chaque projet est unique — la complexité dépend de votre infrastructure, de vos process et de votre maturité IA. Voici les prix de départ par service. Le devis précis se construit ensemble, après diagnostic."
-                  : "Every project is unique — complexity depends on your infrastructure, your processes and your AI maturity. Below are the starting prices per service. The precise quote is built together, after diagnosis."}
+                {PRIX_PUBLICS_AFFICHES ? (
+                  isFr ? (
+                    "Chaque projet est unique — la complexité dépend de votre infrastructure, de vos process et de votre maturité IA. Voici les prix de départ par service. Le devis précis se construit ensemble, après diagnostic."
+                  ) : (
+                    "Every project is unique — complexity depends on your infrastructure, your processes and your AI maturity. Below are the starting prices per service. The precise quote is built together, after diagnosis."
+                  )
+                ) : isFr ? (
+                  <>
+                    Chaque projet est unique — la complexité dépend de votre infrastructure, de vos
+                    process et de votre maturité IA. Voici les cinq services : le devis se construit
+                    ensemble, après un premier échange. Seul prix fixe :{" "}
+                    <Link
+                      href="/journee-ia"
+                      className="text-terracotta font-semibold hover:underline"
+                    >
+                      la Journée IA, {formatTierPrice(JOURNEE_IA_TIER, "fr")}
+                    </Link>
+                    .
+                  </>
+                ) : (
+                  <>
+                    Every project is unique — complexity depends on your infrastructure, your
+                    processes and your AI maturity. Here are the five services: the quote is built
+                    together, after a first call. Only fixed price:{" "}
+                    <Link
+                      href="/journee-ia"
+                      className="text-terracotta font-semibold hover:underline"
+                    >
+                      the AI Day, {formatTierPrice(JOURNEE_IA_TIER, "en")}
+                    </Link>
+                    .
+                  </>
+                )}
               </p>
             </div>
           </FadeInOnView>
@@ -841,12 +870,20 @@ export default async function Home({ params }: HomeProps) {
                     comme un row visuel uniquement, masqué aux AT via aria-hidden. */}
                 <li
                   aria-hidden="true"
-                  className="bg-sand text-fg-muted border-border hidden border-b px-8 py-4 text-[11px] font-bold tracking-[0.18em] uppercase md:grid md:grid-cols-[2.2fr_1fr_2.4fr_1.3fr] md:items-center md:gap-6"
+                  className={cn(
+                    "bg-sand text-fg-muted border-border hidden border-b px-8 py-4 text-[11px] font-bold tracking-[0.18em] uppercase md:grid md:items-center md:gap-6",
+                    PRIX_PUBLICS_AFFICHES
+                      ? "md:grid-cols-[2.2fr_1fr_2.4fr_1.3fr]"
+                      : "md:grid-cols-[2.2fr_1fr_2.4fr_auto]",
+                  )}
                 >
                   <span>{isFr ? "Service" : "Service"}</span>
                   <span>{isFr ? "Catégorie" : "Category"}</span>
                   <span>{isFr ? "Inclus" : "Included"}</span>
-                  <span className="text-right">{isFr ? "Prix HT" : "Price excl. tax"}</span>
+                  {/* R7 : colonne prix retirée tant que l'interrupteur est coupé. */}
+                  <span className="text-right">
+                    {PRIX_PUBLICS_AFFICHES ? (isFr ? "Prix HT" : "Price excl. tax") : ""}
+                  </span>
                 </li>
 
                 {/* 5 lignes services */}
@@ -933,7 +970,10 @@ export default async function Home({ params }: HomeProps) {
                     <Link
                       href={s.href}
                       className={cn(
-                        "group hover:bg-sand/50 focus-visible:bg-sand/70 relative grid items-center gap-4 px-6 py-6 transition-colors focus-visible:outline-none md:grid-cols-[2.2fr_1fr_2.4fr_1.3fr] md:gap-6 md:px-8 md:py-7",
+                        "group hover:bg-sand/50 focus-visible:bg-sand/70 relative grid items-center gap-4 px-6 py-6 transition-colors focus-visible:outline-none md:gap-6 md:px-8 md:py-7",
+                        PRIX_PUBLICS_AFFICHES
+                          ? "md:grid-cols-[2.2fr_1fr_2.4fr_1.3fr]"
+                          : "md:grid-cols-[2.2fr_1fr_2.4fr_auto]",
                         idx > 0 && "border-border border-t",
                       )}
                     >
@@ -974,19 +1014,18 @@ export default async function Home({ params }: HomeProps) {
                         {isFr ? s.includesFr : s.includesEn}
                       </div>
 
-                      {/* Colonne 4 — Prix HT + flèche */}
-                      <div className="flex items-center justify-between gap-3 md:justify-end">
-                        <div className="text-right">
-                          <p
-                            className="text-fg text-xl font-bold tracking-tight sm:text-2xl"
-                            style={{ fontFamily: "var(--font-serif)" }}
-                          >
-                            {s.price}
-                          </p>
-                          <p className="text-fg-muted text-[11px] leading-snug">
-                            {isFr ? "à partir de" : "starting at"}
-                          </p>
-                        </div>
+                      {/* Colonne 4 — Prix (seulement interrupteur R7 rallumé) + flèche */}
+                      <div className="flex items-center justify-end gap-3">
+                        {PRIX_PUBLICS_AFFICHES ? (
+                          <div className="text-right">
+                            <p
+                              className="text-fg text-xl font-bold tracking-tight sm:text-2xl"
+                              style={{ fontFamily: "var(--font-serif)" }}
+                            >
+                              {s.price}
+                            </p>
+                          </div>
+                        ) : null}
                         <span
                           aria-hidden="true"
                           className="bg-paper border-border text-fg-soft group-hover:border-terracotta group-hover:bg-terracotta group-hover:text-paper inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-full border transition-all"

@@ -1409,6 +1409,20 @@ export function formatPricePublic(tier: PricingTier, locale: "fr" | "en" = "fr")
   return prixAffichable(tier) ? formatPrice(tier, locale) : libelleSurDevis(locale);
 }
 
+/**
+ * `formatAmount` pour l'AFFICHAGE PUBLIC d'un montant d'offre qui n'est pas porté par un
+ * palier (case de la matrice formations, `priceFlatEur` d'une fiche) : « Sur devis » tant
+ * que l'interrupteur R7 est coupé. Jamais pour la Journée IA (passer par son palier).
+ */
+export function formatMontantPublic(
+  amount: number | undefined,
+  locale: "fr" | "en" = "fr",
+  opts: FormatAmountOptions = {},
+): string {
+  if (amount == null || !PRIX_PUBLICS_AFFICHES) return libelleSurDevis(locale);
+  return formatAmount(amount, locale, opts);
+}
+
 /** Tier d'entrée d'une catégorie (le moins cher) — utile pour CTA prix. */
 export function getEntryTier(tiers: ReadonlyArray<PricingTier>): PricingTier {
   const found = tiers.find(
