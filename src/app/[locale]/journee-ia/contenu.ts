@@ -49,7 +49,7 @@ export const CONTENU = {
     // Mots mis en terracotta dans le titre.
     titreAccent: "vos équipes formées.",
     phrase:
-      "Le matin, nous cartographions votre entreprise et faisons le point ensemble sur vos priorités\u202f: vos plus gros gains, chiffrés. L’après-midi, nous formons vos équipes. Dans vos locaux, partout en France.",
+      "Le matin, nous cartographions votre entreprise et faisons le point ensemble sur vos priorités\u202f: vos plus gros gains, chiffrés le jour même, ceux qui rapportent le plus et se mettent en place le plus vite. L’après-midi, nous formons vos équipes. Dans vos locaux, partout en France.",
     cta: LIBELLE_CTA,
     lienDecide: "Déjà décidé\u202f? Fixons la date ensemble",
     microTexte: "Diagnostic IA gratuit · 45 minutes · en visio ou par téléphone · sans engagement",
@@ -68,20 +68,20 @@ export const CONTENU = {
       etiquette: "Exemple type",
       titre: "Votre entreprise, cartographiée",
       sousTitre:
-        "Chiffres d’exemple\u202f: les vôtres sont relevés avec vous, service par service.",
+        "Un exemple, pas le vôtre\u202f: vos chiffres sont relevés sur place avec vous, service par service.",
       lignes: [
         {
-          libelle: "Devis et relances",
+          libelle: "Ressaisies entre services",
           heures: "6\u00a0h",
           largeur: 100,
           plusGrosGain: "Plus gros gain",
         },
-        { libelle: "Comptes rendus", heures: "3\u00a0h", largeur: 50 },
-        { libelle: "Saisie et facturation", heures: "2\u00a0h", largeur: 33 },
+        { libelle: "Devis et relances", heures: "3\u00a0h", largeur: 50 },
+        { libelle: "Comptes rendus", heures: "2\u00a0h", largeur: 33 },
         { libelle: "Réponses clients", heures: "1\u00a0h\u00a030", largeur: 25 },
       ],
       total: {
-        phrase: "Devis et relances\u202f: {{HEURES_EXEMPLE}} par semaine",
+        phrase: "Ressaisies entre services\u202f: {{HEURES_EXEMPLE}} par semaine",
         montant: "{{GAIN_EXEMPLE}}",
         suite: "de temps payé par an",
       },
@@ -184,7 +184,11 @@ export const CONTENU = {
         vedette: true,
       },
       { icone: "audit", titre: "La carte de vos services\u202f: où partent vos heures" },
-      { icone: "calcul", titre: "Vos 3 à 5 plus gros gains, en heures et en euros" },
+      {
+        icone: "calcul",
+        titre:
+          "Vos 3 à 5 plus gros gains, découverts le jour même et chiffrés en heures et en euros\u202f: ceux au meilleur retour sur investissement, les plus rapides à mettre en place",
+      },
       { icone: "formation", titre: "Formation sur vos dossiers" },
       { icone: "regles", titre: "Vos règles d’usage de l’IA" },
       {

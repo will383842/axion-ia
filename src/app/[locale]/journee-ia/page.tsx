@@ -7,7 +7,7 @@
 // Aucune modalité d'argent hors le prix de la journée, aucun prix de formation.
 //
 // Un seul bloc sombre : la section « prix ». Mobile d'abord (390 px), cibles de 44 px au moins.
-// `FadeInOnView` seulement sous la ligne de flottaison : jamais sur le h1, les tuiles ni la carte
+// Apparition CSS (`s.apparition`) seulement sous la ligne de flottaison : jamais sur le h1, les tuiles ni la carte
 // des gains (LCP).
 //
 // La langue anglaise est désactivée (proxy 301) : toute autre locale part vers /fr/journee-ia.
@@ -41,7 +41,6 @@ import { FaqAccordion } from "@/components/marketing/FaqAccordion";
 import { JsonLd } from "@/components/marketing/JsonLd";
 import { StickyMobileCta } from "@/components/marketing/StickyMobileCta";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
-import { FadeInOnView } from "@/components/motion/FadeInOnView";
 import {
   DATE_MISE_A_JOUR_JOURNEE_IA,
   EN_BREF_JOURNEE_IA_PARAGRAPHES,
@@ -102,14 +101,20 @@ type NomIcone = keyof typeof ICONES;
 
 // Rythme vertical sur l'échelle de 8 px : 48 px sur téléphone, 96 px dès 768 px, 128 px dès 1024 px.
 const SECTION = "py-12 md:py-24 lg:py-32";
-// Filet de 1 px entre deux sections claires (jamais autour du mocha, du terracotta pâle ni du terracotta).
-const FILET = "border-border border-t";
+// Filet de 1 px entre deux sections claires (jamais autour du mocha, du terracotta pâle ni du terracotta),
+// en sable saturé pour qu'il se voie vraiment (v5 : contraste).
+const FILET = "border-sand-deep border-t";
+// v5 (contraste) : les fonds alternent ivoire → sable saturé → blanc → sable saturé → pêche → mocha → …,
+// jamais deux fonds clairs identiques à la suite. Le sable saturé porte les cartes blanches. Le
+// terracotta de marque n'y fait que 4,26:1 : sur ce fond, textes et liens terracotta passent en
+// `terracotta-deep` (6,05:1, AA).
+const FOND_SABLE = "bg-sand-deep";
 // h2 : 26 px sur téléphone (règle J10), 40 px dès 768 px, 48 px dès 1024 px.
 const H2_BASE =
   "mb-4 text-[1.625rem] leading-[1.06] font-extrabold tracking-[-0.03em] text-balance md:mb-6 md:text-[2.5rem] lg:mb-8";
 const H2 = `${H2_BASE} lg:text-[3rem]`;
-// Carte : fond blanc, bordure 1 px, rayon 20 px (--radius-xl), ombre douce du module.
-const CARTE = `bg-paper border-border rounded-xl border ${s["ombre-carte"]}`;
+// Carte : fond blanc, bordure 1 px sable saturé, rayon 20 px (--radius-xl), ombre douce du module.
+const CARTE = `bg-paper border-sand-deep rounded-xl border ${s["ombre-carte"]}`;
 // Étiquette « Exemple type » : pastille terracotta pâle avec son point (le fond se pose à l'appel).
 const ETIQUETTE =
   "text-terracotta-deep inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-sm leading-snug font-bold before:size-1.5 before:rounded-full before:bg-terracotta before:content-['']";
@@ -122,7 +127,7 @@ const FOCUS_TERRA =
 // Bouton secondaire : fond blanc, bordure encre, survol inversé.
 const SECONDAIRE = "bg-paper! border-fg! hover:bg-fg! hover:text-paper!";
 const LIEN_FLECHE =
-  "text-terracotta mt-3 inline-flex min-h-12 items-center gap-1.5 font-bold hover:underline";
+  "text-terracotta-deep mt-3 inline-flex min-h-12 items-center gap-1.5 font-bold hover:underline";
 const PORTE =
   "text-fg decoration-terracotta hover:text-terracotta inline-flex min-h-12 items-center justify-center text-base font-semibold underline decoration-[1.5px] underline-offset-[3px]";
 
@@ -167,12 +172,13 @@ function Surtitre({
   children,
 }: {
   n?: string;
-  ton?: "terracotta" | "mocha" | "terra";
+  ton?: "terracotta" | "sable" | "mocha" | "terra";
   className?: string;
   children: ReactNode;
 }) {
   const couleur = {
     terracotta: "text-terracotta",
+    sable: "text-terracotta-deep",
     mocha: "text-terracotta-on-mocha",
     terra: "text-mocha-fg",
   }[ton];
@@ -314,7 +320,7 @@ export default async function JourneeIaPage({ params }: Props) {
       <section
         id="s-heros"
         aria-labelledby="hero-heading"
-        className={`${s.halo} bg-sand text-fg pt-3 pb-12 sm:pt-6 lg:pb-24`}
+        className={`${s.halo} text-fg pt-3 pb-12 sm:pt-6 lg:pb-24`}
       >
         <Container>
           <div className="grid gap-10 lg:grid-cols-[7fr_5fr] lg:items-center lg:gap-14">
@@ -382,7 +388,7 @@ export default async function JourneeIaPage({ params }: Props) {
                   return (
                     <li
                       key={t.valeur}
-                      className={`border-border rounded-xl border p-4 lg:px-5 ${s["ombre-carte"]} ${
+                      className={`border-sand-deep rounded-xl border p-4 lg:px-5 ${s["ombre-carte"]} ${
                         "ancre" in t
                           ? "bg-terracotta-soft border-terracotta/20"
                           : "attestation" in t
@@ -428,15 +434,19 @@ export default async function JourneeIaPage({ params }: Props) {
       <section
         id="pour-qui"
         aria-labelledby="h-pour-qui"
-        className={`bg-paper ${SECTION} ${FILET}`}
+        className={`${FOND_SABLE} ${SECTION} ${FILET}`}
       >
         <Container>
-          <Surtitre n="01">{pourQui.surtitre}</Surtitre>
+          <Surtitre n="01" ton="sable">
+            {pourQui.surtitre}
+          </Surtitre>
           <h2 id="h-pour-qui" className={`${H2} text-fg`}>
             {pourQui.titre}
           </h2>
           <div className="grid gap-4 sm:grid-cols-2">
-            <div className="bg-sand border-border rounded-xl border p-6">
+            <div
+              className={`bg-paper border-border-strong rounded-xl border p-6 ${s["ombre-carte"]}`}
+            >
               <p className="text-fg mb-4 text-lg font-extrabold tracking-[-0.02em]">
                 {pourQui.titreOui}
               </p>
@@ -444,7 +454,7 @@ export default async function JourneeIaPage({ params }: Props) {
                 {pourQui.pourVous.map((t) => (
                   <li
                     key={t}
-                    className="bg-paper border-border flex min-h-12 items-center gap-3 rounded-lg border px-3.5 py-2.5 text-base leading-snug font-semibold"
+                    className="bg-bg border-border flex min-h-12 items-center gap-3 rounded-lg border px-3.5 py-2.5 text-base leading-snug font-semibold"
                   >
                     <span
                       aria-hidden="true"
@@ -457,7 +467,7 @@ export default async function JourneeIaPage({ params }: Props) {
                 ))}
               </ul>
             </div>
-            <div className="border-border-strong bg-paper rounded-xl border-[1.5px] border-dashed p-6">
+            <div className="border-border-field rounded-xl border-[1.5px] border-dashed p-6">
               <p className="text-fg-soft mb-4 text-lg font-extrabold tracking-[-0.02em]">
                 {pourQui.titreNon}
               </p>
@@ -465,11 +475,11 @@ export default async function JourneeIaPage({ params }: Props) {
                 {pourQui.pasPourVous.map((t) => (
                   <li
                     key={t}
-                    className="border-border text-fg-soft flex min-h-12 items-center gap-3 rounded-lg border px-3.5 py-2.5 text-base leading-snug font-medium"
+                    className="border-border-strong text-fg-soft flex min-h-12 items-center gap-3 rounded-lg border px-3.5 py-2.5 text-base leading-snug font-medium"
                   >
                     <span
                       aria-hidden="true"
-                      className="bg-sand text-fg-soft inline-grid size-6 flex-none place-items-center rounded-full"
+                      className="bg-paper text-fg-soft inline-grid size-6 flex-none place-items-center rounded-full"
                     >
                       <X className="size-3.5" strokeWidth={3} aria-hidden="true" />
                     </span>
@@ -525,13 +535,13 @@ export default async function JourneeIaPage({ params }: Props) {
               ))}
             </ul>
           </div>
-          <p className="text-fg-soft border-border mt-6 border-t pt-4 text-sm">
+          <p className="text-fg-soft border-border-strong mt-6 border-t pt-4 text-sm">
             {pourQui.insee.texte}{" "}
             <a
               href={pourQui.insee.url}
               target="_blank"
               rel="noopener"
-              className="text-terracotta inline-flex min-h-11 items-center underline underline-offset-2"
+              className="text-terracotta-deep inline-flex min-h-11 items-center underline underline-offset-2"
             >
               {pourQui.insee.source}
               <span className="sr-only">{TEXTES_ANNEXES.nouvelOnglet}</span>
@@ -542,9 +552,9 @@ export default async function JourneeIaPage({ params }: Props) {
       </section>
 
       {/* 3. LE DÉROULÉ */}
-      <section id="deroule" aria-labelledby="h-deroule" className={`bg-sand ${SECTION} ${FILET}`}>
+      <section id="deroule" aria-labelledby="h-deroule" className={`bg-paper ${SECTION} ${FILET}`}>
         <Container>
-          <FadeInOnView>
+          <div className={s.apparition}>
             <Surtitre n="02">{deroule.surtitre}</Surtitre>
             <h2 id="h-deroule" className={`${H2} text-fg`}>
               {deroule.titre}
@@ -590,15 +600,21 @@ export default async function JourneeIaPage({ params }: Props) {
                 {accroche.cta}
               </Cta>
             </div>
-          </FadeInOnView>
+          </div>
         </Container>
       </section>
 
       {/* 4. CE QUE VOUS RECEVEZ */}
-      <section id="recevez" aria-labelledby="h-recevez" className={`bg-paper ${SECTION} ${FILET}`}>
+      <section
+        id="recevez"
+        aria-labelledby="h-recevez"
+        className={`${FOND_SABLE} ${SECTION} ${FILET}`}
+      >
         <Container>
-          <FadeInOnView>
-            <Surtitre n="03">{recevez.surtitre}</Surtitre>
+          <div className={s.apparition}>
+            <Surtitre n="03" ton="sable">
+              {recevez.surtitre}
+            </Surtitre>
             <h2 id="h-recevez" className={`${H2} text-fg`}>
               {recevez.titre}
             </h2>
@@ -645,14 +661,14 @@ export default async function JourneeIaPage({ params }: Props) {
                 ),
               )}
             </ul>
-          </FadeInOnView>
+          </div>
         </Container>
       </section>
 
       {/* 5. COMBIEN VOUS COÛTENT CES HEURES ? */}
       <section id="exemple" aria-labelledby="h-exemple" className={`bg-terracotta-soft ${SECTION}`}>
         <Container>
-          <FadeInOnView>
+          <div className={s.apparition}>
             <Surtitre n="04">{calcul.surtitre}</Surtitre>
             <h2 id="h-exemple" className={`${H2} text-fg`}>
               {calcul.titre}
@@ -709,7 +725,7 @@ export default async function JourneeIaPage({ params }: Props) {
                 {calcul.lien}
               </Cta>
             </div>
-          </FadeInOnView>
+          </div>
         </Container>
       </section>
 
@@ -782,7 +798,7 @@ export default async function JourneeIaPage({ params }: Props) {
               track="journee-ia-prix"
               variant="terracotta"
               size="xl"
-              className={`bg-terracotta-on-mocha text-ink hover:bg-terracotta-on-mocha/90 w-full sm:w-auto ${FOCUS_MOCHA}`}
+              className={`bg-terracotta-on-mocha text-ink hover:bg-terracotta-on-mocha/90 w-full shrink-0 sm:w-auto ${FOCUS_MOCHA}`}
             >
               <CalendarDays className="size-5" aria-hidden="true" />
               {accroche.cta}
@@ -802,9 +818,9 @@ export default async function JourneeIaPage({ params }: Props) {
       </section>
 
       {/* 7. CE QUE DIT L'AI ACT */}
-      <section id="ai-act" aria-labelledby="h-ai-act" className={`bg-paper ${SECTION}`}>
+      <section id="ai-act" aria-labelledby="h-ai-act" className={`bg-sand ${SECTION}`}>
         <Container>
-          <FadeInOnView>
+          <div className={s.apparition}>
             <Surtitre n="06">{aiAct.surtitre}</Surtitre>
             <h2 id="h-ai-act" className={`${H2} text-fg`}>
               {aiAct.titre}
@@ -816,7 +832,7 @@ export default async function JourneeIaPage({ params }: Props) {
                   className={`flex flex-col gap-2.5 rounded-xl border p-6 ${s["ombre-carte"]} ${
                     "attestation" in c
                       ? "bg-terracotta-soft border-terracotta/20 border-t-terracotta border-t-4"
-                      : "bg-paper border-border"
+                      : "bg-paper border-sand-deep"
                   }`}
                 >
                   <Rond nom={c.icone} sur={"attestation" in c ? "plein" : "terracotta-doux"} />
@@ -843,14 +859,14 @@ export default async function JourneeIaPage({ params }: Props) {
                 <span className="sr-only">{TEXTES_ANNEXES.nouvelOnglet}</span>
               </a>
             </p>
-          </FadeInOnView>
+          </div>
         </Container>
       </section>
 
       {/* 8. QUI EST DERRIÈRE */}
-      <section id="qui" aria-labelledby="h-qui" className={`bg-sand ${SECTION} ${FILET}`}>
+      <section id="qui" aria-labelledby="h-qui" className={`bg-paper ${SECTION} ${FILET}`}>
         <Container>
-          <FadeInOnView>
+          <div className={s.apparition}>
             <div className="grid max-w-[1000px] gap-5 sm:grid-cols-[120px_1fr] sm:items-start sm:gap-8 lg:grid-cols-[300px_1fr] lg:items-center lg:gap-14">
               <Image
                 src="/illustrations/william-fondateur-formateur-ia-axion-ia.webp"
@@ -869,7 +885,7 @@ export default async function JourneeIaPage({ params }: Props) {
                 <p className="text-fg-soft mt-1.5 mb-3.5">{qui.phrase}</p>
                 <figure className="mb-1">
                   <blockquote
-                    className={`bg-paper border-border border-l-terracotta mb-1.5 rounded-r-xl border border-l-4 px-6 py-4 text-[1.3125rem] leading-snug font-bold tracking-[-0.01em] text-balance lg:text-[1.75rem] ${s["ombre-carte"]}`}
+                    className={`bg-sand border-sand-deep border-l-terracotta mb-1.5 rounded-r-xl border border-l-4 px-6 py-4 text-[1.3125rem] leading-snug font-bold tracking-[-0.01em] text-balance lg:text-[1.75rem] ${s["ombre-carte"]}`}
                   >
                     {qui.citation}
                   </blockquote>
@@ -881,7 +897,7 @@ export default async function JourneeIaPage({ params }: Props) {
                 </Link>
               </div>
             </div>
-          </FadeInOnView>
+          </div>
         </Container>
       </section>
 
@@ -889,11 +905,13 @@ export default async function JourneeIaPage({ params }: Props) {
       <section
         id="questions"
         aria-labelledby="h-questions"
-        className={`bg-paper ${SECTION} ${FILET}`}
+        className={`${FOND_SABLE} ${SECTION} ${FILET}`}
       >
         <Container className="grid gap-5 lg:grid-cols-[4fr_8fr] lg:items-start lg:gap-14">
           <div className="lg:sticky lg:top-24">
-            <Surtitre n="08">{TEXTES_ANNEXES.faqEntete.surtitre}</Surtitre>
+            <Surtitre n="08" ton="sable">
+              {TEXTES_ANNEXES.faqEntete.surtitre}
+            </Surtitre>
             <h2 id="h-questions" className={`${H2_BASE} text-fg mb-0! lg:text-[2.5rem]`}>
               {TEXTES_ANNEXES.faqEntete.titre}
             </h2>
