@@ -252,7 +252,8 @@ export const CONTENU = {
     titre: "Qui est derrière la Journée IA\u202f?",
     phrase:
       "Les intervenants d’Axion-IA qui viennent chez vous sont nommés dans votre devis, avec leurs qualités.",
-    citation: "«\u202fSi nous ne trouvons rien d’utile chez vous, nous vous le dirons.\u202f»",
+    citation:
+      "«\u202fDans chaque entreprise, des heures se perdent sans bruit. Nous les trouvons, nous les chiffrons et nous les rendons à votre productivité, à votre rentabilité et à votre chiffre d’affaires. Nous en sommes sûrs au point de garantir la journée sur les gains identifiés.\u202f»",
     auteur: "Williams Jullin, fondateur d’Axion-IA",
     lien: "Le parcours de Williams Jullin",
     lienHref: "/equipe/williams",
@@ -328,7 +329,7 @@ export const CONTENU = {
       liens: [{ href: "/secteurs", libelle: "L’IA par secteur" }],
       question: "Est-ce que ça marche dans notre secteur\u202f?",
       reponse:
-        "Nous intervenons dans tous les secteurs. Nous partons de vos tâches, pas d’un métier\u00a0: un atelier ne vit pas la même journée qu’un cabinet, et l’audit le montre dès le matin. Si nous ne trouvons rien d’utile, nous vous le disons. Voir l’IA par secteur.",
+        "Nous intervenons dans tous les secteurs. Nous partons de vos tâches, pas d’un métier\u00a0: un atelier ne vit pas la même journée qu’un cabinet, et l’audit le montre dès le matin. Il y a toujours des heures à récupérer : l’audit les chiffre, et la garantie porte dessus. Voir l’IA par secteur.",
     },
     {
       id: "faq-connaitre",
