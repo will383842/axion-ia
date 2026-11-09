@@ -4,6 +4,7 @@
 
 import { describe, it, expect } from "vitest";
 import { buildCourseJsonLd } from "../seo";
+import { PRIX_PUBLICS_AFFICHES } from "@/content/pricing";
 
 describe("buildCourseJsonLd — P1-2 Course schema interventions/collectives", () => {
   it("émet @type Course + @id + provider org", () => {
@@ -60,7 +61,10 @@ describe("buildCourseJsonLd — P1-2 Course schema interventions/collectives", (
     expect((out.hasCourseInstance[1] as Record<string, unknown>).courseMode).toBe("Hybrid");
   });
 
-  it("émet Offer si priceEurHt fourni", () => {
+  // R7 (ordre de Williams du 08/11/2026) : interrupteur des prix publics coupé, une
+  // formation n'émet plus d'Offer chiffrée, même si `priceEurHt` est fourni.
+  it("n'émet qu'une Offer sans montant interrupteur des prix publics coupé (R7)", () => {
+    expect(PRIX_PUBLICS_AFFICHES).toBe(false);
     const out = buildCourseJsonLd({
       locale: "fr",
       path: "/interventions/collectives/1-jour",
@@ -68,11 +72,8 @@ describe("buildCourseJsonLd — P1-2 Course schema interventions/collectives", (
       description: "Description complète intervention 1 jour pour test offre prix HT.",
       priceEurHt: 1990,
     });
-    const offers = out.offers as Record<string, unknown> | undefined;
-    expect(offers).toBeDefined();
-    expect(offers?.["@type"]).toBe("Offer");
-    expect(offers?.priceCurrency).toBe("EUR");
-    expect(offers?.price).toBe("1990");
+    // Offer sans montant, « Paid » : éligibilité Google « Course info » conservée.
+    expect((out as Record<string, unknown>).offers).toEqual({ "@type": "Offer", category: "Paid" });
   });
 
   it("émet audience BusinessAudience si audienceType fourni", () => {

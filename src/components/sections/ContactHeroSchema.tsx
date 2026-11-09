@@ -10,7 +10,7 @@
 
 import type { ReactNode } from "react";
 import { Mail, CalendarClock, ClipboardCheck } from "lucide-react";
-import { INTERVENTION_TIERS, formatAmount, getTierById } from "@/content/pricing";
+import { INTERVENTION_TIERS, formatTierPrice, getTierById } from "@/content/pricing";
 
 export interface ContactHeroSchemaProps {
   isFr: boolean;
@@ -23,7 +23,9 @@ export function ContactHeroSchema({
   ariaLabel,
   className,
 }: ContactHeroSchemaProps): ReactNode {
-  const formationJourAmount = getTierById(INTERVENTION_TIERS, "formation-generale-1j").priceFlat!;
+  // R7 (ordre de Williams du 08/11/2026) : formateur d'AFFICHAGE, qui rend « Sur devis »
+  // interrupteur des prix publics coupé (seule la Journée IA garde son montant).
+  const formationJour = getTierById(INTERVENTION_TIERS, "formation-generale-1j");
   const channels = isFr
     ? [
         {
@@ -36,7 +38,7 @@ export function ContactHeroSchema({
         {
           icon: CalendarClock,
           eyebrow: "Intervention",
-          title: `Formation collective · ${formatAmount(formationJourAmount, "fr", { compact: true })}`,
+          title: `Formation collective · ${formatTierPrice(formationJour, "fr", { compact: true })}`,
           detail: "Diagnostic 90 min + plan d'action.",
           lead: false,
         },
@@ -59,7 +61,7 @@ export function ContactHeroSchema({
         {
           icon: CalendarClock,
           eyebrow: "Session",
-          title: `Group training · ${formatAmount(formationJourAmount, "en", { compact: true })}`,
+          title: `Group training · ${formatTierPrice(formationJour, "en", { compact: true })}`,
           detail: "90-min diagnostic + action plan.",
           lead: false,
         },

@@ -21,7 +21,20 @@ import { buildLocalBusinessSameAsFR } from "@/lib/seo/local-citations";
 import { SITE_URL } from "@/lib/site-url";
 import { OG_IMAGE_LARGEUR, OG_IMAGE_HAUTEUR } from "@/lib/og-format";
 import { surchargeOgPour } from "@/server/seo/og-overrides";
+import { PRIX_PUBLICS_AFFICHES } from "@/content/pricing";
 export { SITE_URL };
+
+/**
+ * R7 (ordre de Williams du 08/11/2026) — un montant ne sort dans les données
+ * structurées publiques que si l'interrupteur `PRIX_PUBLICS_AFFICHES` est allumé, ou si
+ * l'appelant certifie que CE palier reste affiché (`prixPublic: prixAffichable(palier)`,
+ * vrai pour la seule Journée IA). Les montants restent dans `pricing.ts` : rallumer
+ * l'interrupteur réémet les `Offer` telles qu'avant. Garde :
+ * `src/app/canaux-machine-sans-prix.spec.ts`.
+ */
+function montantJsonLdAutorise(prixPublic?: boolean): boolean {
+  return PRIX_PUBLICS_AFFICHES || prixPublic === true;
+}
 
 // Logo carré officiel Axion-IA (512×512, PNG, fond blanc) — cible de
 // `Organization.logo` pour le Knowledge Panel Google + carte éditeur (publisher).
@@ -509,6 +522,12 @@ interface ServiceJsonLdInput {
   description: string;
   /** Price in EUR HT. Omit for "on-quote" services. */
   priceEur?: number;
+  /**
+   * R7 — `priceEur` n'est émis (Offer) que si l'interrupteur des prix publics est allumé
+   * ou si ce drapeau vaut `true`. Passer `prixAffichable(palier)` : seule la Journée IA
+   * le rend vrai interrupteur coupé.
+   */
+  prixPublic?: boolean;
   serviceType?: string;
   /**
    * ISO date string — signal de fraîcheur Google AI Overviews 2026. Default :
@@ -556,6 +575,7 @@ export function buildServiceJsonLd({
   name,
   description,
   priceEur,
+  prixPublic,
   serviceType,
   dateModified,
   area,
@@ -618,7 +638,7 @@ export function buildServiceJsonLd({
           })),
         }
       : {}),
-    ...(typeof priceEur === "number"
+    ...(typeof priceEur === "number" && montantJsonLdAutorise(prixPublic)
       ? {
           offers: {
             "@type": "Offer",
@@ -1669,7 +1689,9 @@ export function buildLocalBusinessJsonLd({
     // l'erreur que les moteurs arbitrent deja contre nous. L'ordre est :
     // corriger les fiches (R-01 a R-03), puis renseigner ici.
     ...(sameAsAnnuaires.length > 0 ? { sameAs: [...sameAsAnnuaires] } : {}),
-    ...(priceRange ? { priceRange } : {}),
+    // R7 — un `priceRange` symbolique (« €€ ») passe ; une fourchette chiffrée seulement
+    // interrupteur des prix publics allumé.
+    ...(priceRange && (!/\d/.test(priceRange) || PRIX_PUBLICS_AFFICHES) ? { priceRange } : {}),
     ...(address
       ? {
           address: {
@@ -1898,7 +1920,8 @@ export function buildHowToJsonLd({
     url,
     inLanguage: locale,
     ...(totalTime ? { totalTime } : {}),
-    ...(estimatedCost
+    // R7 — un coût estimé en euros est un montant public : interrupteur requis.
+    ...(estimatedCost && PRIX_PUBLICS_AFFICHES
       ? {
           estimatedCost: {
             "@type": "MonetaryAmount",
@@ -2013,17 +2036,22 @@ export function buildCourseJsonLd(input: CourseJsonLdInput) {
           }
         : {}),
     })),
+    // R7 — formations : aucun prix public interrupteur coupé (cf. `montantJsonLdAutorise`).
+    // Une formation payante garde alors une Offer SANS montant, `category: "Paid"` : c'est
+    // ce que demande l'éligibilité Google « Course info » quand le prix n'est pas publié.
     ...(typeof input.priceEurHt === "number"
-      ? {
-          offers: {
-            "@type": "Offer",
-            url,
-            price: input.priceEurHt.toString(),
-            priceCurrency: "EUR",
-            availability: "https://schema.org/InStock",
-            category: "Professional training",
-          },
-        }
+      ? montantJsonLdAutorise()
+        ? {
+            offers: {
+              "@type": "Offer",
+              url,
+              price: input.priceEurHt.toString(),
+              priceCurrency: "EUR",
+              availability: "https://schema.org/InStock",
+              category: "Professional training",
+            },
+          }
+        : { offers: { "@type": "Offer", category: "Paid" } }
       : {}),
   } as const;
 }
