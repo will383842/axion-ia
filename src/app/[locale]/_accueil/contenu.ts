@@ -56,7 +56,7 @@ export const CONTENU = {
     titreEm: "Nous, si.",
     titrePartie2: "",
     sousTitre:
-      "Commencez par la Journée IA, chez vous. Le matin, nous cartographions votre entreprise, faisons le point ensemble sur vos priorités et chiffrons vos plus gros gains, en heures et en euros. L’après-midi, nous formons vos équipes.",
+      "Commencez par la Journée IA, chez vous. Le matin, nous cartographions votre entreprise, faisons le point ensemble sur vos priorités et chiffrons vos plus gros gains le jour même, en heures et en euros\u202f: ceux qui rapportent le plus et se mettent en place le plus vite. L’après-midi, nous formons vos équipes.",
     lienJournee: "Découvrir la Journée IA · {{PRIX}}",
     reassurance: "Diagnostic IA gratuit · 45 minutes · en visio ou par téléphone · sans engagement",
   },
@@ -75,7 +75,7 @@ export const CONTENU = {
         {
           repere: "Le matin · 2 à 4 h d’audit",
           texte:
-            "Votre entreprise cartographiée service par service, le point fait ensemble sur vos priorités : les 3 à 5 tâches au meilleur retour sur investissement, chiffrées en heures et en euros.",
+            "Votre entreprise cartographiée service par service, le point fait ensemble sur vos priorités : les 3 à 5 tâches au meilleur retour sur investissement et les plus rapides à mettre en place, découvertes le jour même et chiffrées en heures et en euros.",
         },
         {
           repere: "L’après-midi · 4 h de formation",

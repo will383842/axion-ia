@@ -75,18 +75,36 @@ const H2 =
 const CHAPEAU = "text-fg-soft mt-4 max-w-3xl text-lg leading-relaxed";
 const SECTION = "py-14 md:py-24 lg:py-32";
 // Section claire qui suit une section claire : un filet de 1 px la sépare.
-const SECTION_CLAIRE = `${SECTION} border-border border-t`;
+const SECTION_CLAIRE = `${SECTION} border-sand-deep border-t`;
+// v5 (contraste) : les fonds alternent ivoire → sable saturé → blanc → mocha → sable saturé → pêche →
+// sable saturé → terracotta, jamais deux fonds clairs identiques à la suite. Le terracotta de marque
+// ne fait que 4,26:1 sur le sable saturé : textes et liens terracotta y passent en `terracotta-deep`.
+const FOND_SABLE = `bg-sand-deep ${SECTION}`;
+const H2_SOMBRE = H2.replace("text-fg ", "text-mocha-fg ");
+const LIEN_SOMBRE = "text-terracotta-on-mocha font-semibold underline underline-offset-4";
 const ETIQUETTE =
   "bg-terracotta-soft text-terracotta-deep before:bg-terracotta inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-sm font-bold before:size-1.5 before:rounded-full";
 const LIEN = "text-terracotta font-semibold underline-offset-4 hover:underline";
 
 /** Numéro de section « 01 —— » : décoratif, les lecteurs d’écran ne le lisent pas. */
-function Numero({ n, clair = false }: { n: string; clair?: boolean }) {
+function Numero({
+  n,
+  clair = false,
+  ton,
+}: {
+  n: string;
+  clair?: boolean;
+  ton?: "sable" | "sombre";
+}) {
+  const variante = clair
+    ? styles.numeroClair
+    : ton === "sable"
+      ? styles.numeroSable
+      : ton === "sombre"
+        ? styles.numeroSombre
+        : "";
   return (
-    <p
-      aria-hidden="true"
-      className={clair ? `${styles.numero} ${styles.numeroClair}` : styles.numero}
-    >
+    <p aria-hidden="true" className={variante ? `${styles.numero} ${variante}` : styles.numero}>
       {n}
     </p>
   );
@@ -120,7 +138,7 @@ export default async function Home({ params }: HomeProps) {
       <section
         id="s-heros"
         aria-labelledby="hero-heading"
-        className={`bg-sand ${styles.heroHalo} relative overflow-hidden pt-12 pb-20 sm:pt-14 sm:pb-24 lg:pt-16 lg:pb-28`}
+        className={`bg-bg ${styles.heroHalo} relative overflow-hidden pt-12 pb-20 sm:pt-14 sm:pb-24 lg:pt-16 lg:pb-28`}
       >
         <Container className="relative">
           <HeroBadge className="mb-10 sm:mb-12">
@@ -139,17 +157,19 @@ export default async function Home({ params }: HomeProps) {
               <p className="text-fg-soft mt-8 max-w-2xl text-lg leading-relaxed sm:text-xl">
                 {heros.sousTitre}
               </p>
-              <div className="mt-10 flex flex-col gap-3 sm:flex-row sm:items-center">
+              {/* v5 : libellés sur une ligne dès 640 px ; si la colonne est trop étroite, le 2e bouton passe
+                  dessous au lieu de couper son libellé (mesuré à 1024 et 1280 px). */}
+              <div className="mt-10 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center">
                 <Link
                   href={{ pathname: "/appel", query: { depuis: "accueil-hero" } }}
-                  className={BOUTON_PLEIN}
+                  className={`${BOUTON_PLEIN} sm:whitespace-nowrap`}
                 >
                   <CalendarDays className="h-5 w-5 shrink-0" aria-hidden="true" />
                   Je réserve un appel
                 </Link>
-                <a href="#journee-ia" className={BOUTON_CONTOUR}>
+                <Link href="/journee-ia" className={`${BOUTON_CONTOUR} sm:whitespace-nowrap`}>
                   {T(heros.lienJournee)}
-                </a>
+                </Link>
               </div>
               <p className="text-fg-soft mt-4 text-[15px]">{heros.reassurance}</p>
             </div>
@@ -197,20 +217,16 @@ export default async function Home({ params }: HomeProps) {
       </section>
 
       {/* ───────────── 2. DEUX FAÇONS DE COMMENCER ───────────── */}
-      <section
-        id="deux-facons"
-        aria-labelledby="h-deux-facons"
-        className={`bg-paper ${SECTION_CLAIRE}`}
-      >
+      <section id="deux-facons" aria-labelledby="h-deux-facons" className={FOND_SABLE}>
         <Container>
-          <Numero n="01" />
+          <Numero n="01" ton="sable" />
           <h2 id="h-deux-facons" className={H2}>
             {deuxFacons.titre}
           </h2>
           <p className={CHAPEAU}>
-            <b className="text-terracotta">{deuxFacons.chapeauDebut}</b>
+            <b className="text-terracotta-deep">{deuxFacons.chapeauDebut}</b>
             {deuxFacons.chapeauMilieu}
-            <b className="text-terracotta">{deuxFacons.chapeauFin}</b>.
+            <b className="text-terracotta-deep">{deuxFacons.chapeauFin}</b>.
           </p>
 
           <div className="mt-10 grid items-start gap-6 lg:grid-cols-12">
@@ -375,7 +391,7 @@ export default async function Home({ params }: HomeProps) {
       <section
         id="mise-en-place"
         aria-labelledby="h-mise-en-place"
-        className={`bg-sand ${SECTION}`}
+        className={`bg-paper ${SECTION_CLAIRE}`}
       >
         <Container>
           <FadeInOnView>
@@ -388,7 +404,10 @@ export default async function Home({ params }: HomeProps) {
               {miseEnPlace.cartes.map((carte, i) => {
                 const Schema = SCHEMAS[i] ?? SchemaDevis;
                 return (
-                  <li key={carte.titre} className={`${styles.carte} ${styles.carteSurvol} p-6`}>
+                  <li
+                    key={carte.titre}
+                    className={`${styles.carte} ${styles.carteSable} ${styles.carteSurvol} p-6`}
+                  >
                     <div className={styles.schema}>
                       <Schema />
                     </div>
@@ -413,7 +432,7 @@ export default async function Home({ params }: HomeProps) {
                     <li key={p.id}>
                       <Link
                         href={href}
-                        className="bg-paper border-border text-terracotta-deep hover:bg-terracotta hover:border-terracotta hover:text-paper inline-flex min-h-11 items-center gap-2 rounded-full border px-4 py-2.5 text-[15px] font-semibold transition-colors"
+                        className="bg-sand border-sand-deep text-terracotta-deep hover:bg-terracotta hover:border-terracotta hover:text-paper inline-flex min-h-11 items-center gap-2 rounded-full border px-4 py-2.5 text-[15px] font-semibold transition-colors"
                       >
                         <Icon className="h-[18px] w-[18px]" aria-hidden="true" />
                         {p.libelle}
@@ -428,7 +447,11 @@ export default async function Home({ params }: HomeProps) {
       </section>
 
       {/* ───────────── 4. WILLIAMS ───────────── */}
-      <section id="williams" aria-labelledby="h-williams" className={`bg-paper ${SECTION_CLAIRE}`}>
+      <section
+        id="williams"
+        aria-labelledby="h-williams"
+        className={`${styles.sombre} bg-mocha text-mocha-fg ${SECTION}`}
+      >
         <Container className="grid items-center gap-10 lg:grid-cols-12 lg:gap-14">
           <div className="lg:col-span-5">
             <div
@@ -444,19 +467,21 @@ export default async function Home({ params }: HomeProps) {
             </div>
           </div>
           <div className="lg:col-span-7">
-            <Numero n="03" />
-            <h2 id="h-williams" className={H2}>
+            <Numero n="03" ton="sombre" />
+            <h2 id="h-williams" className={H2_SOMBRE}>
               {williams.titre}
             </h2>
-            <p className="text-fg-soft mt-5 text-lg leading-relaxed">{williams.texte}</p>
-            <blockquote className={`${styles.citation} text-fg mt-6 px-5 py-4 text-lg`}>
+            <p className="text-mocha-fg-muted mt-5 text-lg leading-relaxed">{williams.texte}</p>
+            <blockquote
+              className={`${styles.citation} ${styles.citationSombre} text-mocha-fg mt-6 px-5 py-4 text-lg`}
+            >
               {williams.citation}
             </blockquote>
-            <p className="text-fg-soft mt-3 text-sm font-semibold">{williams.signature}</p>
+            <p className="text-mocha-fg-muted mt-3 text-sm font-semibold">{williams.signature}</p>
             <p className="mt-4">
               <Link
                 href={{ pathname: "/equipe/[slug]", params: { slug: "williams" } }}
-                className={LIEN}
+                className={LIEN_SOMBRE}
               >
                 {williams.lien}
               </Link>
@@ -466,9 +491,9 @@ export default async function Home({ params }: HomeProps) {
       </section>
 
       {/* ───────────── 5. SIX RAISONS ───────────── */}
-      <section id="raisons" aria-labelledby="h-raisons" className={`bg-sand ${SECTION}`}>
+      <section id="raisons" aria-labelledby="h-raisons" className={FOND_SABLE}>
         <Container>
-          <Numero n="04" />
+          <Numero n="04" ton="sable" />
           <h2 id="h-raisons" className={`${H2} mb-10`}>
             {CONTENU.raisonsTitre}
           </h2>
@@ -485,7 +510,7 @@ export default async function Home({ params }: HomeProps) {
       </section>
 
       {/* ───────────── 6. PME ET TPE · SECTEURS · FRANCE ───────────── */}
-      <section id="pme-tpe" aria-labelledby="h-pme-tpe" className={`bg-paper ${SECTION_CLAIRE}`}>
+      <section id="pme-tpe" aria-labelledby="h-pme-tpe" className={`bg-terracotta-soft ${SECTION}`}>
         <Container>
           <Numero n="05" />
           <h2 id="h-pme-tpe" className={H2}>
@@ -586,7 +611,7 @@ export default async function Home({ params }: HomeProps) {
                         params: { region: region.slug },
                       }}
                       data-cta-tracking="audit_local_coverage_region"
-                      className="hover:text-terracotta inline-flex min-h-8 items-center underline-offset-4 hover:underline"
+                      className="hover:text-terracotta-deep inline-flex min-h-11 items-center underline-offset-4 hover:underline"
                     >
                       {region.nameFr}
                     </Link>
@@ -600,7 +625,7 @@ export default async function Home({ params }: HomeProps) {
       </section>
 
       {/* ───────────── 7. QUESTIONS FRÉQUENTES ───────────── */}
-      <section id="questions" aria-labelledby="h-questions" className={`bg-sand ${SECTION}`}>
+      <section id="questions" aria-labelledby="h-questions" className={FOND_SABLE}>
         <Container className="max-w-4xl">
           <div className={`${styles.carte} rounded-3xl p-5 sm:p-10`}>
             <Numero n="06" />
