@@ -37,13 +37,23 @@ test.describe("@tunnel-apporteur parcours public", () => {
     await expect(page).toHaveURL(/\/fr\/apporteur-affaires$/);
   });
 
-  test("la page affiche le montant, le formulaire, et ne nomme aucun statut de mandataire", async ({
+  test("la page annonce la commission sans montant, le formulaire, et ne nomme aucun statut de mandataire", async ({
     page,
   }) => {
     await page.goto("/fr/apporteur-affaires");
 
-    // Le montant est l'accroche des deux premières secondes.
-    await expect(page.getByText("500", { exact: false }).first()).toBeVisible();
+    // R7 (ordre de Williams du 08/11/2026) : plus aucun montant public — la commission est
+    // annoncée sans chiffre (interrupteur `COMMISSIONS_PUBLIQUES_AFFICHEES`).
+    await expect(
+      page.getByText("Une commission sur chaque mission signée", { exact: false }).first(),
+    ).toBeVisible();
+    // Seule la Journée IA (1 490 € HT) peut porter un montant au public. On lit le contenu
+    // PROPRE à la page (`<main>`) : l'en-tête, le pied et les messages globaux sont communs à
+    // tout le site et verrouillés par la garde de bout en bout `tests/e2e/prix-publics.spec.ts`.
+    const servi = (await page.locator("main").first().innerHTML())
+      .replace(/&nbsp;|&#160;|\u00a0|\u202f/g, " ")
+      .replace(/1 ?490 ?€/g, "");
+    expect(servi.match(/\d[\d.,]*(?: \d{3})* ?€/g) ?? [], "montant affiché").toEqual([]);
 
     // ⛔ « agent commercial » est un statut de MANDATAIRE. L'article 1.2 du
     // contrat repose sur « aucun mandat », et le registre des risques du contrat

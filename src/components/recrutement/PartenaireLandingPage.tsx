@@ -47,6 +47,11 @@ import { UnsplashCredit } from "@/components/media/UnsplashCredit";
 import { FaqBlock } from "@/components/sections/FaqBlock";
 import { CtaBlock } from "@/components/sections/CtaBlock";
 import { memoPhoto, type MemoIserePhotoSlot } from "@/content/recrutement/memo-isere-photos";
+import {
+  COMMISSIONS_PUBLIQUES_AFFICHEES,
+  COMMISSION_QUALITATIVE,
+} from "@/content/recrutement/commission-publique";
+import { CommissionQualitative } from "./CommissionQualitative";
 import { isQualiopiCertificationObtenue } from "@/server/qualiopi/config/flag";
 import {
   COMMISSION_FORMATION_PAR_JOURNEE_EUR,
@@ -262,7 +267,10 @@ export async function PartenaireLandingPage({ params, source }: Props) {
     {
       id: "gains",
       question: "Combien je gagne, concrètement ?",
-      answer: `À titre indicatif, ${commission(1)} par journée de formation vendue et encaissée : une formation de 2 journées, c'est ${commission(2)} ; de 3 journées, ${commission(3)}. Sur un audit, ${pctAudit} % de la facture — le plus petit audit démarre à ${euros(auditTpe)} HT, soit au moins ${euros(commissionAuditTpe)} pour vous. Ce sont des exemples de calcul, pas une promesse : vos revenus dépendent de vos ventes.`,
+      // R7 (08/11/2026) : aucun montant ni taux au public (`commission-publique.ts`).
+      answer: COMMISSIONS_PUBLIQUES_AFFICHEES
+        ? `À titre indicatif, ${commission(1)} par journée de formation vendue et encaissée : une formation de 2 journées, c'est ${commission(2)} ; de 3 journées, ${commission(3)}. Sur un audit, ${pctAudit} % de la facture — le plus petit audit démarre à ${euros(auditTpe)} HT, soit au moins ${euros(commissionAuditTpe)} pour vous. Ce sont des exemples de calcul, pas une promesse : vos revenus dépendent de vos ventes.`
+        : COMMISSION_QUALITATIVE.faq,
     },
     {
       id: "connaissances-ia",
@@ -419,46 +427,57 @@ export async function PartenaireLandingPage({ params, source }: Props) {
         description="Pas de catalogue de 40 pages à apprendre. Deux choses à retenir, et c'est tout."
         className="py-10 sm:py-14"
       >
-        <div className="mt-8 grid gap-5 sm:grid-cols-2">
-          <article className="bg-paper border-border rounded-2xl border p-6 sm:p-7">
-            <h3 className="text-fg font-serif text-xl font-semibold">Une formation IA</h3>
-            <p className="text-terracotta mt-3 font-serif text-3xl font-semibold">
-              {commission(1)}
-              <span className="text-fg-muted block font-sans text-sm font-medium">
-                pour vous, à titre indicatif, par journée vendue
-              </span>
+        {COMMISSIONS_PUBLIQUES_AFFICHEES ? (
+          <>
+            <div className="mt-8 grid gap-5 sm:grid-cols-2">
+              <article className="bg-paper border-border rounded-2xl border p-6 sm:p-7">
+                <h3 className="text-fg font-serif text-xl font-semibold">Une formation IA</h3>
+                <p className="text-terracotta mt-3 font-serif text-3xl font-semibold">
+                  {commission(1)}
+                  <span className="text-fg-muted block font-sans text-sm font-medium">
+                    pour vous, à titre indicatif, par journée vendue
+                  </span>
+                </p>
+                <ul className="text-fg-soft mt-4 space-y-1.5 text-sm">
+                  <li>À titre indicatif, 2 journées : {commission(2)}</li>
+                  <li>De 3 journées : {commission(3)}</li>
+                  {certifie ? (
+                    <li>
+                      Peut être prise en charge par l&apos;OPCO de l&apos;entreprise, selon ses
+                      critères
+                    </li>
+                  ) : null}
+                </ul>
+              </article>
+
+              <article className="bg-paper border-border rounded-2xl border p-6 sm:p-7">
+                <h3 className="text-fg font-serif text-xl font-semibold">Un audit IA</h3>
+                <p className="text-terracotta mt-3 font-serif text-3xl font-semibold">
+                  {pctAudit} %
+                </p>
+                <p className="text-fg-muted text-sm font-medium">de la facture, pour vous</p>
+                <ul className="text-fg-soft mt-4 space-y-1.5 text-sm">
+                  <li>
+                    Le plus petit audit démarre à {euros(auditTpe)} HT → au moins{" "}
+                    {euros(commissionAuditTpe)}
+                  </li>
+                  <li>
+                    Un audit de PME démarre à {euros(auditPme)} HT → au moins{" "}
+                    {euros(commissionAuditPme)}
+                  </li>
+                </ul>
+              </article>
+            </div>
+
+            <p className="text-fg-muted mt-5 text-sm">
+              Ce sont des exemples de calcul, pas une promesse : vos revenus dépendent de vos
+              ventes.
             </p>
-            <ul className="text-fg-soft mt-4 space-y-1.5 text-sm">
-              <li>À titre indicatif, 2 journées : {commission(2)}</li>
-              <li>De 3 journées : {commission(3)}</li>
-              {certifie ? (
-                <li>
-                  Peut être prise en charge par l&apos;OPCO de l&apos;entreprise, selon ses critères
-                </li>
-              ) : null}
-            </ul>
-          </article>
-
-          <article className="bg-paper border-border rounded-2xl border p-6 sm:p-7">
-            <h3 className="text-fg font-serif text-xl font-semibold">Un audit IA</h3>
-            <p className="text-terracotta mt-3 font-serif text-3xl font-semibold">{pctAudit} %</p>
-            <p className="text-fg-muted text-sm font-medium">de la facture, pour vous</p>
-            <ul className="text-fg-soft mt-4 space-y-1.5 text-sm">
-              <li>
-                Le plus petit audit démarre à {euros(auditTpe)} HT → au moins{" "}
-                {euros(commissionAuditTpe)}
-              </li>
-              <li>
-                Un audit de PME démarre à {euros(auditPme)} HT → au moins{" "}
-                {euros(commissionAuditPme)}
-              </li>
-            </ul>
-          </article>
-        </div>
-
-        <p className="text-fg-muted mt-5 text-sm">
-          Ce sont des exemples de calcul, pas une promesse : vos revenus dépendent de vos ventes.
-        </p>
+          </>
+        ) : (
+          // R7 (08/11/2026) : aucun montant ni taux au public (`commission-publique.ts`).
+          <CommissionQualitative />
+        )}
       </Section>
 
       {/* 5 ── « Je n'y connais rien en IA » — le frein n°1 */}

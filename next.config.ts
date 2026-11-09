@@ -274,6 +274,31 @@ const nextConfig: NextConfig = {
   // expose l'URL legacy au sitemap auto + au crawler.
   async redirects() {
     return [
+      // ⛔ R7 (08/11/2026, ordre de Williams : plus aucun prix public hors Journée IA à
+      // 1 490 € HT). Fichiers STATIQUES de `public/` porteurs de prix : servis hors du
+      // middleware et des pages, l'interrupteur `PRIX_PUBLICS_AFFICHES` ne les atteint pas.
+      // Une redirection TEMPORAIRE passe AVANT le système de fichiers : elle les masque sans les
+      // supprimer (un QR imprimé, un e-mail déjà envoyé y pointent).
+      //   · `/catalogue/*` — le feuilletoir : un prix par offre, p. 36 « Tous nos tarifs ».
+      //     `:path+` exige un segment : `/catalogue` nu reste au middleware (→ /fr/catalogue,
+      //     qui redirige elle-même tant que les prix sont masqués).
+      //   · le PDF « Devenir apporteur d'affaires » : commissions et prix de vente.
+      // Garde : `src/content/__tests__/fichiers-publics-a-prix-masques.spec.ts`.
+      // Pour rétablir : retirer ces deux entrées ET repasser l'interrupteur (décision Will).
+      {
+        source: "/catalogue/:path+",
+        destination: "/fr/formations",
+        // 307 et non 308 : masquage réversible (R7) ; une 308 se met en cache pour
+        // toujours et survivrait au rétablissement.
+        permanent: false,
+      },
+      {
+        source: "/imprimes/devenir-apporteur-d-affaires-axion-ia.pdf",
+        destination: "/fr/apporteur-affaires",
+        // 307 et non 308 : masquage réversible (R7) ; une 308 se met en cache pour
+        // toujours et survivrait au rétablissement.
+        permanent: false,
+      },
       // Alias de vocabulaire pour les apporteurs d'affaires (LinkedIn, 09/2026).
       // Les publications disent « apporteur d'affaires » ; l'ecart avec une URL
       // qui dit « commercial » se voit, et c'est le vocabulaire que Will a
