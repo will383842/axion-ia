@@ -157,6 +157,12 @@ interface ProductSeoInput {
    */
   ogAccent?: "purple" | "orange" | "green";
   /**
+   * Texte alternatif de l'image d'aperçu (Open Graph ET Twitter). Sans ce
+   * paramètre l'alt Open Graph reprend le titre d'aperçu et l'image Twitter
+   * reste une simple URL : rien ne change pour les pages existantes.
+   */
+  ogImageAlt?: string;
+  /**
    * VIS-05/SEO-05 — type OpenGraph. Défaut "website" (rétro-compat). Les pages
    * d'article (blog/actualites/guides/connaissances/centre-aide) passent
    * "article" pour un og:type correct (preview sociale + signal éditorial).
@@ -339,6 +345,7 @@ export async function buildProductMetadata({
   ogImageHeight,
   ogEyebrow,
   ogAccent,
+  ogImageAlt,
   ogType = "website",
   article,
   rssFeed,
@@ -369,9 +376,7 @@ export async function buildProductMetadata({
   // For pages that need a custom static OG (homepage), pass `ogImage`.
   const resolvedOgImage =
     ogImageEffectif ??
-    `${SITE_URL}/api/og?title=${encodeURIComponent(ogTitreEffectif)}` +
-      `${ogAccent ? `&accent=${ogAccent}` : ""}` +
-      `${ogEyebrowEffectif ? `&eyebrow=${encodeURIComponent(ogEyebrowEffectif)}` : ""}`;
+    urlOgParDefaut({ title: ogTitreEffectif, accent: ogAccent, eyebrow: ogEyebrowEffectif });
   // Dimensions déclarées aux réseaux sociaux (`og:image:width` / `height`).
   //
   // 🔴 Recensement OG 2026-08-17 — ces deux nombres étaient écrits en dur à
@@ -487,7 +492,7 @@ export async function buildProductMetadata({
         {
           url: resolvedOgImage,
           ...dimensionsDeclarees,
-          alt: ogTitreEffectif,
+          alt: ogImageAlt ?? ogTitreEffectif,
         },
       ],
       ...ogArticleFields,
@@ -496,7 +501,7 @@ export async function buildProductMetadata({
       card: "summary_large_image",
       title: ogTitreEffectif,
       description: ogDescriptionEffective,
-      images: [resolvedOgImage],
+      images: ogImageAlt ? [{ url: resolvedOgImage, alt: ogImageAlt }] : [resolvedOgImage],
     },
     // Refonte AEO 2026-06-22 — directives fines : snippets illimités (réponses
     // directes citées par Google/AI Overviews) + vignettes large (Discover/Images)
@@ -513,6 +518,28 @@ export async function buildProductMetadata({
       },
     },
   };
+}
+
+/**
+ * URL de la carte d'aperçu dynamique `/api/og` (titre, accent et surtitre
+ * facultatifs). Source unique du calcul : `buildProductMetadata` l'appelle, et
+ * les pages qui déclarent leur `primaryImageOfPage` en JSON-LD s'en servent
+ * pour pointer vers la même image que l'aperçu social.
+ */
+export function urlOgParDefaut({
+  title,
+  eyebrow,
+  accent,
+}: {
+  title: string;
+  eyebrow?: string | undefined;
+  accent?: string | undefined;
+}): string {
+  return (
+    `${SITE_URL}/api/og?title=${encodeURIComponent(title)}` +
+    `${accent ? `&accent=${accent}` : ""}` +
+    `${eyebrow ? `&eyebrow=${encodeURIComponent(eyebrow)}` : ""}`
+  );
 }
 
 interface ServiceJsonLdInput {
@@ -556,7 +583,31 @@ interface ServiceJsonLdInput {
    * aux LLMs d'énumérer les villes éligibles quand un utilisateur demande
    * « où est-ce que ce service est disponible ? ».
    */
-  availableChannels?: ReadonlyArray<{ name: string; url: string }>;
+  availableChannels?: ReadonlyArray<{ name: string; url?: string }>;
+  /** `@id` du nœud Service (permet aux autres nœuds de la page de le référencer). */
+  id?: string;
+  /**
+   * `@id` d'un nœud Organization émis ailleurs sur la page (layout). Si fourni,
+   * `provider` devient une simple référence ; sinon le nœud en ligne historique.
+   */
+  providerId?: string;
+  /** Public visé (BusinessAudience) avec fourchette d'effectif facultative. */
+  audience?: { audienceType: string; minEmployees?: number; maxEmployees?: number };
+  /**
+   * Précisions de l'offre. Sans effet si `priceEur` est absent. Chaque champ
+   * n'est émis que s'il est fourni.
+   */
+  offer?: {
+    unitText?: string;
+    unitCode?: string;
+    valueAddedTaxIncluded?: boolean;
+    eligibleCustomerType?: string;
+    sellerId?: string;
+  };
+  /** URL des conditions applicables au service. */
+  termsOfService?: string;
+  /** `@id` du nœud WebPage dont ce service est l'objet principal. */
+  mainEntityOfPageId?: string;
   /**
    * Speakable specification — auto-injecte `speakable` (selectors CSS) sur
    * Service JSON-LD pour citation Google Assistant / Alexa / Claude voice.
@@ -582,6 +633,12 @@ export function buildServiceJsonLd({
   areasServed,
   availableChannels,
   speakable,
+  id,
+  providerId,
+  audience,
+  offer,
+  termsOfService,
+  mainEntityOfPageId,
 }: ServiceJsonLdInput) {
   const url = `${SITE_URL}/${locale}${path}`;
 
@@ -612,6 +669,7 @@ export function buildServiceJsonLd({
   return {
     "@context": "https://schema.org",
     "@type": "Service",
+    ...(id ? { "@id": id } : {}),
     name,
     description,
     url,
@@ -622,11 +680,34 @@ export function buildServiceJsonLd({
     // Mieux vaut OMETTRE le champ que mentir : Google tolère l'absence.
     // Cf. `_AUDIT/PLAN-FRESHNESS-EXHAUSTIF-2026-06-08.md`.
     ...(dateModified ? { dateModified } : {}),
-    provider: {
-      "@type": "Organization",
-      name: "Axion-IA",
-      url: SITE_URL,
-    },
+    provider: providerId
+      ? { "@id": providerId }
+      : {
+          "@type": "Organization",
+          name: "Axion-IA",
+          url: SITE_URL,
+        },
+    ...(audience
+      ? {
+          audience: {
+            "@type": "BusinessAudience",
+            audienceType: audience.audienceType,
+            ...(audience.minEmployees !== undefined || audience.maxEmployees !== undefined
+              ? {
+                  numberOfEmployees: {
+                    "@type": "QuantitativeValue",
+                    ...(audience.minEmployees !== undefined
+                      ? { minValue: audience.minEmployees }
+                      : {}),
+                    ...(audience.maxEmployees !== undefined
+                      ? { maxValue: audience.maxEmployees }
+                      : {}),
+                  },
+                }
+              : {}),
+          },
+        }
+      : {}),
     ...(serviceType ? { serviceType } : {}),
     ...(areaServedNode !== undefined ? { areaServed: areaServedNode } : {}),
     ...(availableChannels && availableChannels.length > 0
@@ -634,7 +715,7 @@ export function buildServiceJsonLd({
           availableChannel: availableChannels.map((c) => ({
             "@type": "ServiceChannel",
             name: c.name,
-            serviceUrl: c.url,
+            ...(c.url ? { serviceUrl: c.url } : {}),
           })),
         }
       : {}),
@@ -646,9 +727,29 @@ export function buildServiceJsonLd({
             priceCurrency: "EUR",
             availability: "https://schema.org/InStock",
             url,
+            ...(offer
+              ? {
+                  priceSpecification: {
+                    "@type": "UnitPriceSpecification",
+                    price: priceEur,
+                    priceCurrency: "EUR",
+                    ...(offer.valueAddedTaxIncluded !== undefined
+                      ? { valueAddedTaxIncluded: offer.valueAddedTaxIncluded }
+                      : {}),
+                    ...(offer.unitText ? { unitText: offer.unitText } : {}),
+                    ...(offer.unitCode ? { unitCode: offer.unitCode } : {}),
+                  },
+                  ...(offer.eligibleCustomerType
+                    ? { eligibleCustomerType: offer.eligibleCustomerType }
+                    : {}),
+                  ...(offer.sellerId ? { seller: { "@id": offer.sellerId } } : {}),
+                }
+              : {}),
           },
         }
       : {}),
+    ...(termsOfService ? { termsOfService } : {}),
+    ...(mainEntityOfPageId ? { mainEntityOfPage: { "@id": mainEntityOfPageId } } : {}),
     // Speakable specification — OPT-IN depuis 2026-06-22 (révision AEO Will).
     // Speakable est pertinent pour le CONTENU-RÉPONSE (articles/news/FAQ), pas
     // pour les pages services/villes/tarifs où la valeur vocale est nulle et où
