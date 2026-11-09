@@ -935,11 +935,11 @@ export default async function JourneeIaPage({ params }: Props) {
           <h2 id="h-rendez-vous" className={`${H2} text-white`}>
             {rendezVous.titre}
           </h2>
-          <ol className="mt-2 mb-5 flex flex-col gap-2 sm:flex-row sm:flex-wrap sm:justify-center lg:flex-nowrap">
+          <ol className="mt-2 mb-5 flex flex-col gap-2 sm:flex-row sm:flex-wrap sm:justify-center xl:flex-nowrap">
             {rendezVous.etapes.map((e, i) => (
               <li
                 key={e}
-                className="flex min-h-12 items-center gap-3 rounded-full border border-white/40 bg-white/12 py-2 pr-4 pl-2 text-left text-base leading-snug font-semibold text-white lg:whitespace-nowrap"
+                className="flex min-h-12 items-center gap-3 rounded-full border border-white/40 bg-white/12 py-2 pr-4 pl-2 text-left text-base leading-snug font-semibold text-white xl:whitespace-nowrap"
               >
                 <span
                   aria-hidden="true"
