@@ -64,7 +64,8 @@ export type CodeBarriere =
   | "soft-404"
   | "aucun-fait-de-base"
   | "accroche-trop-proche"
-  | "moins-de-850-mots";
+  | "moins-de-850-mots"
+  | "fidelite-kb";
 
 export interface BarriereRelecture {
   readonly code: CodeBarriere;
