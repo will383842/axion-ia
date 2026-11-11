@@ -20,7 +20,7 @@ export const alt = "Axion-IA — IA pour votre entreprise";
 export const size = { width: 1200, height: 675 };
 export const contentType = "image/png";
 
-// hex-ok: Edge runtime ne charge pas Tailwind ; valeurs miroir globals.css v3.
+// hex-ok: Edge runtime ne charge pas Tailwind ; valeurs de la charte 2027 (ivoire, terracotta, noir, blanc).
 const TERRACOTTA = "#B23F16"; // hex-ok: Edge OG image, no Tailwind runtime
 const IVOIRE = "#FAF9F5"; // hex-ok: Edge OG image, no Tailwind runtime
 const PAPER = "#FFFFFF"; // hex-ok: Edge OG image, no Tailwind runtime
