@@ -336,6 +336,25 @@ export async function transmettreClicGuide(
     // reçu, origine). Éteint : chemin v1 inchangé.
     const viaReseau = synchroCrmV3Active() && demande.origine === "message_prive";
 
+    // Ce que v1 envoie : conservé tel quel dans la charge v3 (rien n'est perdu en changeant de version).
+    const consentV1 =
+      base === "consent" && abonne !== null
+        ? { version: abonne.consentVersion, at: abonne.confirmedAt }
+        : null;
+    const payloadV1 = {
+      aimant: AIMANT_CRM[demande.aimant] ?? demande.aimant,
+      ...(demande.source ? { placement: demande.source } : {}),
+      locale: localeCrm(demande.locale),
+      // Le clic prouve la possession de la boîte (décision D1).
+      verifie: true,
+      email_nature: nature,
+      base_legale: base,
+      lettre: statutLettre(abonne),
+      // La version de la MENTION affichée au point de collecte :
+      // l'information donnée, fondement d'un demandeur sans la case.
+      version_mention: demande.version,
+    };
+
     let outboxId: string | null = null;
     let reservee = false;
     let opposeePendantLaTransaction = false;
@@ -351,11 +370,14 @@ export async function transmettreClicGuide(
           // Nouveau contrôle d'opposition, DANS la transaction, juste avant d'écrire : une
           // opposition arrivée depuis la lecture du début l'emporte. La demande reste réservée
           // (traitée), rien n'est supprimé, aucune ligne d'outbox n'est écrite.
-          if (await estOpposee(demande.email)) {
+          if (await estOpposee(demande.email, tx)) {
             opposeePendantLaTransaction = true;
             return null;
           }
-          const v3 = await evenementDuClicPageGuide(tx, demande, firstClickAt);
+          const v3 = await evenementDuClicPageGuide(tx, demande, firstClickAt, {
+            ...(consentV1 ? { consent: consentV1 } : {}),
+            payloadBase: payloadV1,
+          });
           if (v3.ok) {
             const id = await enqueueCrmSyncEvent(v3.evenement as unknown as CrmSyncEvent, {
               tx,
@@ -375,22 +397,8 @@ export async function transmettreClicGuide(
           person: { email: demande.email },
           // Un bloc `consent` pour un CONSENTEMENT seulement : la case cochée
           // (adresse perso inscrite). Sinon, aucun — personne n'a consenti.
-          ...(base === "consent" && abonne !== null
-            ? { consent: { version: abonne.consentVersion, at: abonne.confirmedAt } }
-            : {}),
-          payload: {
-            aimant: AIMANT_CRM[demande.aimant] ?? demande.aimant,
-            ...(demande.source ? { placement: demande.source } : {}),
-            locale: localeCrm(demande.locale),
-            // Le clic prouve la possession de la boîte (décision D1).
-            verifie: true,
-            email_nature: nature,
-            base_legale: base,
-            lettre: statutLettre(abonne),
-            // La version de la MENTION affichée au point de collecte :
-            // l'information donnée, fondement d'un demandeur sans la case.
-            version_mention: demande.version,
-          },
+          ...(consentV1 ? { consent: consentV1 } : {}),
+          payload: payloadV1,
           tx,
           mettreEnFile: false,
         });

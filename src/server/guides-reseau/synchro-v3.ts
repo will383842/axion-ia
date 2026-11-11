@@ -13,6 +13,7 @@ import { createHash } from "node:crypto";
 import { hashEmailForLookup } from "@/lib/security/email-hash";
 import { enqueueCrmSyncEvent } from "@/server/crm-sync/enqueue";
 import { eventIdDemandeGuide } from "@/server/crm-sync/event-id";
+import { estExclueDuCrm } from "@/server/crm-sync/exclusions";
 import type { CrmSyncEvent } from "@/server/crm-sync/types";
 import type { OrigineAEcrire } from "./origines";
 
@@ -107,6 +108,8 @@ export async function transmettreOriginesV3(args: {
   quand: Date;
 }): Promise<"eteinte" | "mise_en_file" | "ignoree"> {
   if (!synchroCrmV3Active()) return "eteinte";
+  // Exclusion persistante (décision D4) : une adresse de la maison n'entre jamais au CRM.
+  if (estExclueDuCrm(args.email)) return "ignoree";
   try {
     const personKey = hashEmailForLookup(args.email);
     const c = chargeCrmV3(args.origines);
@@ -173,6 +176,13 @@ export interface EntreeEvenementPageGuide {
   readonly versionConsentement: string;
   readonly guide: string;
   readonly origines: readonly OrigineAEcrire[];
+  /** Bloc `consent` de v1 (adresse perso inscrite par consentement), à ne pas perdre. */
+  readonly consent?: { readonly version?: string | null; readonly at?: Date | null };
+  /**
+   * Clés du payload v1 (aimant, placement, locale, email_nature, base_legale, lettre,
+   * version_mention…) : fusionnées, la charge v3 (origines, verifie…) l'emporte en cas de doublon.
+   */
+  readonly payloadBase?: Readonly<Record<string, unknown>>;
 }
 
 export type EvenementPageGuideV3 = Omit<CrmSyncEvent, "schema_version"> & {
@@ -230,7 +240,15 @@ export function evenementPageGuideV3(
         },
       ],
       guides_recus: [{ guide: e.guide, date: e.clicLe.toISOString() }],
-      payload: { ...c.charge, verifie: true },
+      ...(e.consent
+        ? {
+            consent: {
+              ...(e.consent.version ? { version: e.consent.version } : {}),
+              ...(e.consent.at ? { at: e.consent.at.toISOString() } : {}),
+            },
+          }
+        : {}),
+      payload: { ...e.payloadBase, ...c.charge, verifie: true },
     },
   };
 }

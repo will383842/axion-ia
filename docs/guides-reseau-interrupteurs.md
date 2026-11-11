@@ -61,11 +61,12 @@ Page du site, **sans JavaScript client**, ouverte par le lien `https://axion-ia.
   l'origine (`payload.origines`). Il passe en plus par `CRM_SYNC_ENABLED` et
   `CRM_SYNC_GUIDE_ENABLED`. Éteint : le chemin v1 est inchangé.
 - Opposition à l'adresse et exclusion (`CRM_SYNC_EXCLUSIONS_SHA256`) : contrôlées avant la
-  transaction du clic, puis l'opposition **de nouveau dans la transaction**, avant d'écrire.
+  transaction du clic, puis l'opposition **de nouveau, lue par la transaction elle-même**, avant d'écrire.
   Rien n'est supprimé : la demande est marquée traitée.
 - `SYNCHRO_CRM_V3_NEWSLETTER_OPTIN` : interrupteur **séparé, éteint**, que rien ne lit encore ;
   il ne s'allumera qu'après l'avis de l'auditeur RGPD (consentement couplé, art. 7.4). Aucune ligne
   `newsletter_subscribers` n'est écrite par ce lot.
+- Le chemin « adresse tapée dans la conversation » n'envoie plus rien au CRM à la réception (D1) ; son origine v3 reste écrite sur le site.
 - Pas encore livré : la route « stop sans adresse » (Studio → site, 4.4) et le rattrapage dédié.
 
 ## Secret

@@ -46,6 +46,15 @@ const entree = (sur: Partial<EntreeEvenementPageGuide> = {}): EntreeEvenementPag
   versionConsentement: "page-guide-2026-11-08",
   guide: "guide-ia",
   origines: [origine()],
+  payloadBase: {
+    aimant: "guide-ia-entreprise",
+    placement: "mot-guide:instagram",
+    locale: "fr",
+    email_nature: "pro",
+    base_legale: "legitimate_interest_b2b",
+    lettre: "non_abonne",
+    version_mention: "m1-v1",
+  },
   ...sur,
 });
 
@@ -74,6 +83,21 @@ describe("evenementPageGuideV3 — contrat", () => {
     const autre = evenementPageGuideV3(entree({ demandeId: "demande-2" }));
     if (!autre.ok) throw new Error("attendu ok");
     expect(autre.evenement.event_id).not.toBe(a.evenement.event_id);
+  });
+
+  it("rien de v1 n'est perdu : consent et champs du payload fusionnés, la charge v3 prime", () => {
+    const r = evenementPageGuideV3(
+      entree({
+        consent: { version: "mention-3", at: new Date("2026-10-30T09:00:00.000Z") },
+        payloadBase: { base_legale: "consent", origines: "ne doit pas écraser", verifie: false },
+      }),
+    );
+    if (!r.ok) throw new Error("attendu ok");
+    expect(r.evenement.consent).toEqual({ version: "mention-3", at: "2026-10-30T09:00:00.000Z" });
+    const p = r.evenement.payload as Record<string, unknown>;
+    expect(p.base_legale).toBe("consent");
+    expect(Array.isArray(p.origines)).toBe(true);
+    expect(p.verifie).toBe(true);
   });
 
   it("occurred_at = l'instant du CLIC, la case garde sa propre date", () => {

@@ -14,6 +14,7 @@ import { decryptPii, PII_DECRYPT_PLACEHOLDER } from "@/lib/pii-crypto";
 import type { OrigineAEcrire } from "./origines";
 import {
   evenementPageGuideV3,
+  type EntreeEvenementPageGuide,
   type ErreurEvenementPageGuide,
   type EvenementPageGuideV3,
 } from "./synchro-v3";
@@ -58,6 +59,8 @@ export async function evenementDuClicPageGuide(
   tx: LecteurPageGuide,
   d: DemandePourClic,
   clicLe: Date,
+  /** Ce que v1 envoie déjà (consent, payload) : rien n'en est perdu en passant à v3. */
+  complement: Pick<EntreeEvenementPageGuide, "consent" | "payloadBase"> = {},
 ): Promise<LectureClicPageGuide> {
   const contact = await tx.contactGuideReseau.findFirst({
     where: { guideRequestId: d.id },
@@ -101,6 +104,7 @@ export async function evenementDuClicPageGuide(
     versionConsentement: contact.versionConsentement,
     guide: d.aimant,
     origines: lignes.map((o) => ({ ...o, cleIdempotence: "" })),
+    ...complement,
   });
   return r.ok ? r : { ok: false, raison: r.erreur };
 }
