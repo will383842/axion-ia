@@ -112,5 +112,8 @@ describe("essai à blanc", () => {
     const md = rapportMarkdown([], "2026-11-11");
     expect(md).toContain("« escalade » veut dire « aucun résultat »");
     expect(md).toContain("service externe de reclassement");
+    expect(md).toContain("confiance normalisée de 0,5 (> 0,35)");
+    expect(md).toContain("30 appels d'embedding OpenAI");
+    expect(md).toContain("sans le filtre des doublons");
   });
 });
