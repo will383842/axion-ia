@@ -171,6 +171,17 @@ const JEUX: Record<string, () => unknown> = {
     ],
     meta: meta(1, { failedSources: ["github"], hasMore: false }),
   }),
+  "methode.contexte": () => {
+    const items = Array.from({ length: 11 }, (_, i) => ({
+      role: i === 0 ? "noyau" : "extrait",
+      slug: `methode/fiche-${String(i)}/section-${String(i)}`,
+      titre: texte("titre", i, 160),
+      texte: texte("texte", i, i === 0 ? 2_000 : 1_520),
+      collection: i === 0 ? null : "methode-vente",
+      ...(i === 0 ? {} : { etiquettes: ["livre:hormozi", "type:script", "chiffres-exercice"] }),
+    }));
+    return { items, meta: meta(items.length, { failedSources: [], hasMore: false }) };
+  },
   "qualiopi.conformite": () => {
     const items = Array.from({ length: 60 }, (_, i) => ({
       id: uuidFabrique(i),

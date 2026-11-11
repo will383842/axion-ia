@@ -73,4 +73,9 @@ export const SYMBOLES_AUTORISES: readonly AutorisationDImport[] = [
     symboles: ["peutVoirLesAppels"],
     motif: "le pont d'identité : la même fonction que la console (W-6)",
   },
+  {
+    module: "@/server/methode",
+    symboles: ["methodeActive", "obtenirContexteMethode"],
+    motif: "le point d'entrée UNIQUE de la couche Méthode (ADR 0076), lecture seule",
+  },
 ];

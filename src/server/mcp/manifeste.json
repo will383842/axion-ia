@@ -1,7 +1,7 @@
 {
   "$note": "Généré par `pnpm mcp:manifeste`. Ne pas éditer à la main : la garde compare au code. `manifestSha` couvre le texte canonique, pas ce fichier.",
-  "manifestSha": "sha256:b2fe01044f8940afdca5fb0eceb9c3cc133c94f466edad500fc7877cede543df",
-  "octetsCanoniques": 25391,
+  "manifestSha": "sha256:8e20760f27fff7055f9820f1577cf96bb47b8dbe462bec38641510705d6a0b63",
+  "octetsCanoniques": 28050,
   "manifeste": {
     "manifestVersion": 1,
     "id": "axionia",
@@ -1637,6 +1637,191 @@
         "idFields": ["commit", "commitEnService"],
         "governanceFields": [],
         "bytes": 3124
+      },
+      {
+        "name": "methode.contexte",
+        "version": "1.0.0",
+        "description": "La méthode de vente interne d'Axion-IA pour un sujet donné : le noyau (l'essentiel en 30 secondes et le chemin), puis les fiches les plus proches (règles, scripts, objections). Les montants des fiches sont des exercices, jamais des prix publics. Vide si la couche est éteinte.",
+        "effect": "read",
+        "dataClass": "internal",
+        "idempotency": "n/a",
+        "pagination": "none",
+        "inputSchema": {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "type": "object",
+          "properties": {
+            "sujet": {
+              "type": "string",
+              "minLength": 2,
+              "maxLength": 300
+            },
+            "secteur": {
+              "type": "string",
+              "enum": ["sante"]
+            },
+            "max": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 10
+            }
+          },
+          "required": ["sujet"],
+          "additionalProperties": false
+        },
+        "outputSchema": {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "type": "object",
+          "properties": {
+            "items": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "role": {
+                    "type": "string",
+                    "enum": ["noyau", "extrait"]
+                  },
+                  "slug": {
+                    "type": "string",
+                    "pattern": "^methode\\/[a-z0-9-]+\\/[a-z0-9-]+$"
+                  },
+                  "titre": {
+                    "type": "string"
+                  },
+                  "texte": {
+                    "type": "string"
+                  },
+                  "collection": {
+                    "anyOf": [
+                      {
+                        "type": "string"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "etiquettes": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "required": ["role", "slug", "titre", "texte", "collection"],
+                "additionalProperties": false
+              }
+            },
+            "meta": {
+              "type": "object",
+              "properties": {
+                "returned": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 9007199254740991
+                },
+                "hasMore": {
+                  "type": "boolean"
+                },
+                "cursor": {
+                  "anyOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "mode": {
+                  "type": "string",
+                  "enum": ["items", "aggregate"]
+                },
+                "truncated": {
+                  "type": "boolean"
+                },
+                "truncationNote": {
+                  "anyOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "sourceIncomplete": {
+                  "type": "boolean"
+                },
+                "sourceNote": {
+                  "anyOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "failedSources": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "version": {
+                  "type": "string",
+                  "pattern": "^\\d+\\.\\d+\\.\\d+$"
+                },
+                "deprecated": {
+                  "type": "boolean"
+                },
+                "sunsetAt": {
+                  "anyOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "asOf": {
+                  "type": "string",
+                  "format": "date-time",
+                  "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d(?::[0-5]\\d(?:\\.\\d+)?)?(?:Z))$"
+                }
+              },
+              "required": [
+                "returned",
+                "hasMore",
+                "cursor",
+                "mode",
+                "truncated",
+                "truncationNote",
+                "sourceIncomplete",
+                "sourceNote",
+                "failedSources",
+                "version",
+                "deprecated",
+                "sunsetAt",
+                "asOf"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "required": ["items", "meta"],
+          "additionalProperties": false
+        },
+        "maxBytes": 40960,
+        "compaction": {
+          "free": ["texte"],
+          "tier2": ["etiquettes"],
+          "aggregateBy": "role"
+        },
+        "idFields": ["slug"],
+        "governanceFields": [],
+        "bytes": 2645
       }
     ]
   }
