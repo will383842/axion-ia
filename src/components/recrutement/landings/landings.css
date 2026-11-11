@@ -5720,13 +5720,15 @@
 }
 .lp-app .ruban-j .aprem i {
   color: #fff !important;
+  opacity: 1 !important;
 }
 .lp-app .indicatif {
   color: #d9d7ce !important;
 }
 .lp-app .prix-xl.com {
-  font-size: clamp(2rem, 9.5vw, 3.75rem);
+  font-size: clamp(2rem, 6.5vw, 3.5rem) !important;
   overflow-wrap: anywhere;
+  line-height: 1.05;
 }
 .lp-app .btn {
   white-space: normal;
