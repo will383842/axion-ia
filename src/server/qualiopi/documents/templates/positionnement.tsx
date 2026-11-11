@@ -13,13 +13,13 @@ import React from "react";
 import { Document, View, Text, StyleSheet } from "@react-pdf/renderer";
 import {
   QualiopiPage,
-  pdfStyles,
   DocSection,
   FieldRow,
   LegalCallout,
-} from "@/server/qualiopi/documents/base-layout";
+} from "@/server/qualiopi/documents/cadre-pieces";
+import { pdfStylesPieces } from "@/server/qualiopi/documents/cadre-pieces/styles-blocs";
 import type { OrganismeIdentite } from "@/server/qualiopi/documents/organisme";
-import { brandColor } from "@/server/qualiopi/brand/brand-tokens";
+import { couleurPiece } from "@/server/qualiopi/brand/jetons-pieces";
 
 // ============================================================
 // Styles locaux
@@ -35,24 +35,24 @@ const localStyles = StyleSheet.create({
     width: 12,
     height: 12,
     borderWidth: 1,
-    borderColor: brandColor("border-strong"),
+    borderColor: couleurPiece("border-strong"),
     marginRight: 6,
     marginTop: 1,
   },
   checkLabel: {
     fontSize: 10,
-    color: brandColor("fg"),
+    color: couleurPiece("fg"),
     flex: 1,
   },
   emptyLine: {
     borderBottomWidth: 1,
-    borderBottomColor: brandColor("border-strong"),
+    borderBottomColor: couleurPiece("border-strong"),
     marginBottom: 10,
     minHeight: 20,
   },
   questionLabel: {
     fontSize: 9,
-    color: brandColor("fg-soft"),
+    color: couleurPiece("fg-soft"),
     fontWeight: "bold",
     marginBottom: 3,
   },
@@ -113,11 +113,11 @@ export function PositionnementPdf({
       >
         {/* Mention introductive */}
         <View style={{ marginBottom: 12 }}>
-          <Text style={[pdfStyles.paragraph, { fontWeight: "bold" }]}>
+          <Text style={[pdfStylesPieces.paragraph, { fontWeight: "bold" }]}>
             À remplir avant la formation — ce questionnaire ne conditionne pas l'accès à la
             formation.
           </Text>
-          <Text style={pdfStyles.paragraph}>
+          <Text style={pdfStylesPieces.paragraph}>
             Ces informations permettent au formateur d'adapter le contenu à vos besoins réels. Vos
             réponses sont confidentielles.
           </Text>
@@ -195,7 +195,7 @@ export function PositionnementPdf({
           <View style={{ marginTop: 8 }}>
             <FreeTextField label="Contraintes spécifiques à signaler (handicap, aménagement, autre)" />
           </View>
-          <Text style={[pdfStyles.legalNote, { marginTop: 4 }]}>
+          <Text style={[pdfStylesPieces.legalNote, { marginTop: 4 }]}>
             {`En cas de besoin d'aménagement, notre référent handicap est à votre disposition.`}
           </Text>
         </DocSection>

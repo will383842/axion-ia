@@ -28,9 +28,9 @@ import {
   DocSection,
   FieldRow,
   LegalCallout,
-} from "@/server/qualiopi/documents/base-layout";
+} from "@/server/qualiopi/documents/cadre-pieces";
 import type { OrganismeIdentite } from "@/server/qualiopi/documents/organisme";
-import { brandColor } from "@/server/qualiopi/brand/brand-tokens";
+import { couleurPiece } from "@/server/qualiopi/brand/jetons-pieces";
 
 // ============================================================
 // Styles locaux
@@ -42,7 +42,7 @@ const localStyles = StyleSheet.create({
   },
   questionText: {
     fontSize: 10,
-    color: brandColor("fg"),
+    color: couleurPiece("fg"),
     marginBottom: 4,
     fontWeight: "bold",
   },
@@ -59,12 +59,12 @@ const localStyles = StyleSheet.create({
     width: 14,
     height: 14,
     borderWidth: 1,
-    borderColor: brandColor("border-strong"),
+    borderColor: couleurPiece("border-strong"),
     borderRadius: 7,
   },
   scaleLabel: {
     fontSize: 9,
-    color: brandColor("fg-soft"),
+    color: couleurPiece("fg-soft"),
   },
   yesNoRow: {
     flexDirection: "row",
@@ -80,15 +80,15 @@ const localStyles = StyleSheet.create({
     width: 12,
     height: 12,
     borderWidth: 1,
-    borderColor: brandColor("border-strong"),
+    borderColor: couleurPiece("border-strong"),
   },
   yesNoLabel: {
     fontSize: 10,
-    color: brandColor("fg"),
+    color: couleurPiece("fg"),
   },
   freeTextBox: {
     borderWidth: 1,
-    borderColor: brandColor("border"),
+    borderColor: couleurPiece("border"),
     minHeight: 36,
     padding: 4,
     borderRadius: 2,
@@ -98,7 +98,7 @@ const localStyles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     gap: 8,
-    backgroundColor: brandColor("sand"),
+    backgroundColor: couleurPiece("sand"),
     borderRadius: 2,
     padding: 10,
     marginBottom: 12,
@@ -106,12 +106,12 @@ const localStyles = StyleSheet.create({
   noteLabel: {
     fontSize: 12,
     fontWeight: "bold",
-    color: brandColor("mocha"),
+    color: couleurPiece("mocha"),
     flex: 1,
   },
   noteValueBox: {
     borderWidth: 2,
-    borderColor: brandColor("terracotta"),
+    borderColor: couleurPiece("terracotta"),
     borderRadius: 4,
     width: 50,
     height: 28,
@@ -207,7 +207,7 @@ export function SatisfactionPdf({
         <View style={localStyles.noteGlobaleBox}>
           <Text style={localStyles.noteLabel}>Note globale de la formation</Text>
           <View style={localStyles.noteValueBox}>
-            <Text style={{ fontSize: 12, fontWeight: "bold", color: brandColor("terracotta") }}>
+            <Text style={{ fontSize: 12, fontWeight: "bold", color: couleurPiece("terracotta") }}>
               /10
             </Text>
           </View>
