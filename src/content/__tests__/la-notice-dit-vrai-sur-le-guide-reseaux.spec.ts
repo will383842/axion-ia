@@ -32,7 +32,7 @@ describe("la politique dit la demande de guide par les réseaux sociaux", () => 
       "Zernio",
       "pas supprimées automatiquement",
       "« STOP »",
-      "strict minimum",
+      "nous vous mettons à l'écart de tout envoi ; vos données sont conservées pour garantir que ce choix soit respecté",
       "portabilité",
       "11 novembre 2026",
     ]) {
@@ -48,9 +48,17 @@ describe("la politique dit la demande de guide par les réseaux sociaux", () => 
       "Zernio",
       '"STOP"',
       "not deleted automatically",
+      "we set you aside from any sending; your data is kept to make sure this choice is respected",
       "portability",
     ]) {
       expect(s.body, m).toContain(m);
+    }
+  });
+
+  it("⛔ l'ancienne promesse de réduction des données est interdite (rien n'est supprimé)", () => {
+    for (const loc of ["fr", "en"] as const) {
+      const s = section(loc, loc === "fr" ? /^Demande d'un guide/ : /^Requesting a guide/);
+      expect(s.body).not.toMatch(/strict minimum|strict minimum nécessaire/i);
     }
   });
 
