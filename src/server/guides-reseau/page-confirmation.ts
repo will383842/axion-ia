@@ -273,6 +273,8 @@ async function traiterConfirmation(e: EntreeConfirmation): Promise<ResultatConfi
               jetonEmpreinte: empreinte,
               convRef: MARQUE.convRef,
               merciStatut: MARQUE.statut,
+              // Aucune donnée de personne, donc aucune preuve d'accord à porter.
+              preuveStatut: "sans_objet",
             },
             select: { id: true },
           });
@@ -291,6 +293,9 @@ async function traiterConfirmation(e: EntreeConfirmation): Promise<ResultatConfi
             jetonEmpreinte: empreinte,
             convRef: hmacConversationRef(donnees.conv),
             merciStatut: "a_envoyer",
+            // L'adresse n'est qu'une SAISIE : l'accord est « en attente » jusqu'au clic sur le
+            // bouton du lien du guide (`preuve-page-guide.ts`).
+            preuveStatut: "en_attente",
           },
           select: { id: true },
         });
@@ -310,7 +315,7 @@ async function traiterConfirmation(e: EntreeConfirmation): Promise<ResultatConfi
             personKey: emailKey,
             formRef: FORM_REF_PAGE_GUIDE,
             consentVersion: versionPreuveCase(),
-            action: "consent",
+            action: "consent_attente",
             occurredAt: maintenant,
             ipHash,
             userAgent: agentHash,
