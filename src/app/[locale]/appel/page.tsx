@@ -306,6 +306,13 @@ export default async function AppelPage({ params, searchParams }: Props) {
                 {isFr ? "Écrire un message" : "Send a message"}
                 <ArrowRight className="h-4 w-4" aria-hidden="true" />
               </Link>
+              {isFr ? (
+                <p className="text-paper/90 mt-6 text-sm">
+                  <Link href="/journee-ia" className="underline underline-offset-4">
+                    Voir comment se passe la Journée IA : audit le matin, formation l’après-midi
+                  </Link>
+                </p>
+              ) : null}
             </div>
           </Container>
         </section>

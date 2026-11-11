@@ -84,9 +84,11 @@ export default async function Contact({ params }: Props) {
         linksTitle: "Aussi utile",
         links: [
           { href: "/appel", label: "Réserver un appel" },
+          { href: "/journee-ia", label: "La Journée IA (audit et formation)" },
           { href: "/tarifs", label: "Tarifs" },
           { href: "/formations", label: "Formations IA" },
           { href: "/audit", label: "Audit IA" },
+          { href: "/implementation", label: "Automatisation et agents IA" },
           { href: "/faq", label: "Questions fréquentes" },
           { href: "/mentions-legales", label: "Mentions légales" },
         ],

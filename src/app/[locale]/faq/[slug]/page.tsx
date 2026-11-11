@@ -305,6 +305,17 @@ export default async function FaqEntryPage({ params }: Props) {
       Icon: Sparkles,
     },
     { href: `/${locale}/faq/feed.xml`, label: isFr ? "Flux RSS" : "RSS feed", Icon: Rss },
+    // Lien retour de la FAQ AI Act vers la Journée IA (maillage du lot SEO C) :
+    // l'article 4 demande des mesures de maîtrise de l'IA, la Journée IA y répond.
+    ...(isFr && slug === "ai-act-2026"
+      ? [
+          {
+            href: `/${locale}/journee-ia`,
+            label: "Former ses équipes à l’IA en une journée",
+            Icon: Sparkles,
+          },
+        ]
+      : []),
   ];
 
   return (

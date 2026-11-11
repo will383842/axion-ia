@@ -51,7 +51,7 @@ export async function Footer() {
   // l'en-tête (`prestations-nav.ts` — libellés de la maquette, `href` du SSOT
   // `services.ts`), la page AI Act, et Tarifs en clôture.
   const services = [
-    { href: "/journee-ia", label: isFr ? "La Journée IA" : "The AI Day" },
+    { href: "/journee-ia", label: isFr ? "La Journée IA : audit et formation" : "The AI Day" },
     ...PRESTATIONS_NAV.map((p) => ({ href: p.href, label: isFr ? p.labelFr : p.labelEn })),
     { href: AI_ACT_NAV.href, label: isFr ? AI_ACT_NAV.labelFr : AI_ACT_NAV.labelEn },
     { href: "/tarifs", label: isFr ? "Tarifs" : "Pricing" },

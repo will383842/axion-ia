@@ -141,7 +141,7 @@ export function careerCategoryService(slug: string): CareerCategory["service"] |
 }
 
 /**
- * Les 5 verticales Axion-IA.com (maillage interne SEO) — URLs alignées sur la nav
+ * Les verticales Axion-IA.com (la Journée IA en tête, puis les 5 prestations) (maillage interne SEO) — URLs alignées sur la nav
  * principale (Header.tsx). Affichées sur chaque page offre.
  */
 export const CAREER_VERTICALS: ReadonlyArray<{
@@ -149,6 +149,7 @@ export const CAREER_VERTICALS: ReadonlyArray<{
   fr: string;
   en: string;
 }> = [
+  { href: "/journee-ia", fr: "Audit et formation IA en une journée", en: "The AI Day" },
   {
     href: "/formations",
     fr: "Formations IA",
@@ -156,7 +157,7 @@ export const CAREER_VERTICALS: ReadonlyArray<{
   },
   { href: "/un-a-un", fr: "Coaching 1 to 1", en: "1-to-1 coaching" },
   { href: "/audit", fr: "Audit IA", en: "AI audit" },
-  { href: "/implementation", fr: "Intégration IA", en: "AI integration" },
+  { href: "/implementation", fr: "Automatisation et agents IA", en: "AI automation and agents" },
   {
     href: "/sites-web-augmentes",
     fr: "Sites web & SaaS IA",

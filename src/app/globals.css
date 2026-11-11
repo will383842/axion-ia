@@ -12,6 +12,20 @@
 @source not "../../.claude";
 @source not "../../.github";
 @source not "../../.husky";
+@source not "../../_KIT";
+@source not "../../_PLANS";
+@source not "../../_PRESSE";
+@source not "../../_PROSPECTION-BASE-ENTREPRISES";
+@source not "../../_SUIVI";
+@source not "../../Documents";
+@source not "../../audit-content-engine";
+@source not "../../careers-gen";
+@source not "../../deploy";
+@source not "../../infra";
+@source not "../../private";
+@source not "../../extensions";
+@source not "../../*.md";
+@source not "../../*.json";
 @source not "../server";
 @source not "../instrumentation.ts";
 

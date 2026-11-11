@@ -197,3 +197,32 @@ describe("urlOgParDefaut", () => {
     expect(og.height).toBe(OG_IMAGE_HAUTEUR);
   });
 });
+
+describe("lot SEO D : le nœud Service relie le nom propre aux expressions courantes", () => {
+  it("la Journée IA porte alternateName et category", () => {
+    const noeud = buildJourneeIaServiceJsonLd() as Record<string, unknown>;
+    expect(noeud.alternateName).toEqual([
+      "Journée d’audit et de formation IA",
+      "Audit IA et formation IA pour PME",
+    ]);
+    expect(noeud.category).toBe("Formation et conseil en intelligence artificielle");
+  });
+
+  it("sans ces champs, le nœud n'en émet aucun (sortie inchangée)", () => {
+    const noeud = buildServiceJsonLd({
+      locale: "fr",
+      path: "/audit",
+      name: "Audit IA",
+      description: "Description de test.",
+    }) as Record<string, unknown>;
+    expect(noeud).not.toHaveProperty("alternateName");
+    expect(noeud).not.toHaveProperty("category");
+  });
+
+  it("la description commence par une définition (audit IA et formation des équipes)", async () => {
+    const { DESCRIPTION_SERVICE_JOURNEE_IA } = await import("@/content/journee-ia-commun");
+    expect(DESCRIPTION_SERVICE_JOURNEE_IA).toMatch(
+      /^Audit IA et formation des équipes en une seule journée, dans l’entreprise, partout en France/,
+    );
+  });
+});
