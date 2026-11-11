@@ -42,21 +42,10 @@
   box-shadow: 0 40px 80px -40px color-mix(in srgb, var(--color-ink) 70%, transparent);
 }
 
-/* Héros : ivoire + halo terracotta discret (même recette que `.bg-halo-warm`). v5 : ivoire, pour
+/* Héros : ivoire + halo terracotta discret (aplat, sans dégradé). v5 : ivoire, pour
    que la section suivante, en sable saturé, s'en détache nettement. */
 .halo {
   background-color: var(--color-bg);
-  background-image:
-    radial-gradient(
-      900px 520px at 88% 8%,
-      color-mix(in srgb, var(--color-terracotta) 12%, transparent),
-      transparent 70%
-    ),
-    radial-gradient(
-      640px 420px at 0% 100%,
-      color-mix(in srgb, var(--color-terracotta) 7%, transparent),
-      transparent 70%
-    );
 }
 
 /* ── Carte des gains (héros) ───────────────────────────────────────────────── */
@@ -413,7 +402,7 @@
     width: auto;
     height: 3px;
     opacity: 1;
-    background: linear-gradient(90deg, var(--color-border-strong), var(--color-terracotta));
+    background: var(--color-terracotta);
   }
 
   .etape {
