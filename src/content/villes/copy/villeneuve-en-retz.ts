@@ -64,8 +64,8 @@ export const VILLENEUVE_EN_RETZ_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les TPE artisans et commerçants de Villeneuve-en-Retz sur des cas IA concrets : automatisation devis, gestion planning, communication digitale, agents IA prise de rendez-vous et optimisation stocks.",
     },
     {
-      q: "Comment vos consultants accèdent-ils à Villeneuve-en-Retz ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. L'aéroport Nantes Atlantique est à 35 min.",
+      q: "Comment se passe une intervention à Villeneuve-en-Retz ?",
+      a: "Nous intervenons partout en France, sur place ou à distance. Villeneuve-en-Retz est à 35 min de l'aéroport Nantes Atlantique.",
     },
   ],
 };

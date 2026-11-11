@@ -126,7 +126,7 @@ export const SAINT_CHAMOND_COPY: VilleCopy = {
           },
           {
             q: "Vos consultants se déplacent-ils réellement à Saint-Chamond ?",
-            a: "Oui. Nous arrivons par la gare TER de Saint-Chamond (ligne du Gier, Saint-Étienne ↔ Lyon) ou par l'A47. Le cadrage et la recette se font sur site — atelier ZI du Clos Marquet, locaux vallée du Gier ou espace Novaciéries — puis les itérations peuvent continuer à distance si vous préférez.",
+            a: "Oui. Le cadrage et la recette se font sur site — atelier ZI du Clos Marquet, locaux vallée du Gier ou espace Novaciéries — puis les itérations peuvent continuer à distance si vous préférez. Nous intervenons partout en France, sur place ou à distance.",
           },
           {
             q: "Sous quel délai obtenir un devis, et serai-je dépendant d'Axion-IA ensuite ?",
@@ -142,7 +142,7 @@ export const SAINT_CHAMOND_COPY: VilleCopy = {
           "Core target: the industrial subcontractors and makers of the Gier valley (mechanics, steel like Loire Industrie on the Clos Marquet estate, metal braiding for sheaths and cables inherited from the lace trade, plastics processing like Agripolyane), for whom a website must expose a living technical catalogue rather than a static brochure.",
           "Saint-Chamond combines a demanding defence sector (NBC-Sys / KNDS, sovereign NRBC equipment) and precision steel subcontracting: we build client portals and configurators where data confidentiality and EU hosting are non-negotiable prerequisites, not options.",
           "The Novaciéries eco-district (former 45-hectare Creusot-Loire wasteland) is bringing ~100 firms and new retail around the Veo Grand Lumière cinema: new showcase sites, e-commerce and online booking find direct ground here, from local retail to Novasoie and luxury silk.",
-          "We travel along the Saint-Étienne–Lyon axis (Gier valley TER station, A47): on-site kick-off in your Clos Marquet workshops, Gier valley premises or Novaciéries, then remote iterations — the architecture stays maintainable by your team or a local provider.",
+          "On-site kick-off in your Clos Marquet workshops, Gier valley premises or Novaciéries, then remote iterations — the architecture stays maintainable by your team or a local provider. We work anywhere in France, on site or remotely.",
         ],
         methodology: [
           {
@@ -212,7 +212,7 @@ export const SAINT_CHAMOND_COPY: VilleCopy = {
           },
           {
             q: "Do your consultants actually travel to Saint-Chamond?",
-            a: "Yes. We arrive via the Saint-Chamond TER station (Gier line, Saint-Étienne ↔ Lyon) or the A47. Framing and acceptance happen on site — Clos Marquet workshop, Gier valley premises or Novaciéries space — then iterations can continue remotely if you prefer.",
+            a: "Yes. Framing and acceptance happen on site — Clos Marquet workshop, Gier valley premises or Novaciéries space — then iterations can continue remotely if you prefer. We work anywhere in France, on site or remotely.",
           },
           {
             q: "How quickly do I get a quote, and will I then depend on Axion-IA?",
@@ -232,7 +232,7 @@ export const SAINT_CHAMOND_COPY: VilleCopy = {
     },
     {
       q: "Vos consultants se déplacent-ils réellement à Saint-Chamond ?",
-      a: "Oui. Nous arrivons par la gare TER de Saint-Chamond (ligne Saint-Étienne–Lyon) ou par l'A47. Les phases d'observation et de mise en route se font sur site ; le suivi peut ensuite continuer en visio si vous préférez.",
+      a: "Oui. Les phases d'observation et de mise en route se font sur site à Saint-Chamond ; le suivi peut ensuite continuer en visio si vous préférez. Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Intervenez-vous aussi dans les communes proches de Saint-Chamond ?",

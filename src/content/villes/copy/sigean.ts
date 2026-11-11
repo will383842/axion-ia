@@ -65,7 +65,7 @@ export const SIGEAN_COPY: VilleCopy = {
     },
     {
       q: "Proposez-vous du coaching individuel IA à Sigean ?",
-      a: "Oui, sessions 1-to-1 pour dirigeants TPE et PME à Sigean. Format flexible : dans vos locaux, au domaine, en visio ou à Narbonne. Accompagnement personnalisé à partir de {{price:intervention-dirigeants|flat}}.",
+      a: "Oui, sessions 1-to-1 pour dirigeants TPE et PME à Sigean. Format flexible : dans vos locaux, au domaine ou en visio. Accompagnement personnalisé à partir de {{price:intervention-dirigeants|flat}}.",
     },
   ],
 };

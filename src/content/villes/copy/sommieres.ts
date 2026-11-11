@@ -65,7 +65,7 @@ export const SOMMIERES_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Sommières ?",
-      a: "Sommières est à 30 min de Nîmes et 30 min de Montpellier. Nos consultants interviennent sur site. Échangeur A9 Lunel à 15 min. Gare TGV Nîmes à 30 min voiture.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Sommières est à 30 min de Nîmes et de Montpellier, à 15 min de l'échangeur A9 de Lunel et 30 min de la gare TGV de Nîmes en voiture.",
     },
   ],
 };

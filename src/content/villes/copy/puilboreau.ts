@@ -65,7 +65,7 @@ export const PUILBOREAU_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA sur site à Puilboreau ?",
-      a: "Nous intervenons à Puilboreau, à 12 min de la gare TGV de La Rochelle. Mission sur site dans vos locaux commerciaux, bureau ou entrepôt.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Mission sur site dans vos locaux commerciaux, bureau ou entrepôt à Puilboreau, commune à 12 min de la gare TGV de La Rochelle.",
     },
   ],
 };

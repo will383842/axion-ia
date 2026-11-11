@@ -65,7 +65,7 @@ export const SCHWEIGHOUSE_SUR_MODER_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission Axion-IA à Schweighouse-sur-Moder ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Schweighouse-sur-Moder appartient à la CA Haguenau, déplacements quotidiens sans surcoût hébergement. Sessions sur site ou en visio selon vos préférences.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Schweighouse-sur-Moder appartient à la CA Haguenau. Sessions sur site ou en visio selon vos préférences.",
     },
   ],
 };

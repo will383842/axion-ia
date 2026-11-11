@@ -246,7 +246,7 @@ export const VIGNEUX_SUR_SEINE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Vigneux-sur-Seine ?",
-      a: "Vigneux-sur-Seine est à 25 minutes de Paris-Gare de Lyon par le RER D et 10 minutes d'Orly. Nous intervenons sur site.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Vigneux-sur-Seine est desservie par le RER D, à 10 minutes d'Orly.",
     },
   ],
 };

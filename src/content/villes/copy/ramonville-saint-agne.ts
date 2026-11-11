@@ -49,7 +49,7 @@ export const RAMONVILLE_SAINT_AGNE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Ramonville-Saint-Agne ?",
-      a: "Oui, Axion-IA intervient à Ramonville-Saint-Agne et dans tout le sud de Toulouse (Castanet-Tolosan, Auzeville, Labège). Nos consultants rejoignent Ramonville en 12 min via le métro B.",
+      a: "Oui, Axion-IA intervient à Ramonville-Saint-Agne et dans tout le sud de Toulouse (Castanet-Tolosan, Auzeville, Labège). Nous intervenons partout en France, sur place ou à distance. Ramonville est desservie par le métro B.",
     },
     {
       q: "Quels secteurs accompagnez-vous à Ramonville ?",
@@ -61,7 +61,7 @@ export const RAMONVILLE_SAINT_AGNE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une intervention sur site à Ramonville ?",
-      a: "Nos consultants se déplacent à Ramonville-Saint-Agne (12 min métro B). Intervention 1 journée minimum, format atelier pratique dans vos locaux. Vos collaborateurs gèrent ensuite la stack en autonomie.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Intervention 1 journée minimum, format atelier pratique dans vos locaux à Ramonville-Saint-Agne. Vos collaborateurs gèrent ensuite la stack en autonomie.",
     },
     {
       q: "Accompagnez-vous les startups tech de Ramonville ?",

@@ -70,7 +70,7 @@ export const SAUMUR_COPY: VilleCopy = {
           {
             step: "Développement par sprints",
             detail:
-              "Greffe IA sur l'existant ou build IA-native : e-commerce direct producteur multi-CMS (WooCommerce, Shopify, PrestaShop, Magento), réservation de visites de caves, chatbot RAG multilingue, recherche sémantique de cuvées, agents d'automatisation. Démos hebdomadaires en visio depuis Saumur.",
+              "Greffe IA sur l'existant ou build IA-native : e-commerce direct producteur multi-CMS (WooCommerce, Shopify, PrestaShop, Magento), réservation de visites de caves, chatbot RAG multilingue, recherche sémantique de cuvées, agents d'automatisation. Démos hebdomadaires en visio.",
           },
           {
             step: "Recette + mise en ligne",
@@ -156,7 +156,7 @@ export const SAUMUR_COPY: VilleCopy = {
           {
             step: "Développement par sprints",
             detail:
-              "Greffe IA sur l'existant ou build IA-native : e-commerce direct producteur multi-CMS (WooCommerce, Shopify, PrestaShop, Magento), réservation de visites de caves, chatbot RAG multilingue, recherche sémantique de cuvées, agents d'automatisation. Démos hebdomadaires en visio depuis Saumur.",
+              "Greffe IA sur l'existant ou build IA-native : e-commerce direct producteur multi-CMS (WooCommerce, Shopify, PrestaShop, Magento), réservation de visites de caves, chatbot RAG multilingue, recherche sémantique de cuvées, agents d'automatisation. Démos hebdomadaires en visio.",
           },
           {
             step: "Recette + mise en ligne",

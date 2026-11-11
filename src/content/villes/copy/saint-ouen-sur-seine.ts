@@ -114,7 +114,7 @@ export const SAINT_OUEN_SUR_SEINE_COPY: VilleCopy = {
         faq: [
           {
             q: "Intervenez-vous sur site à Saint-Ouen-sur-Seine pour un projet de site ou de SaaS ?",
-            a: "Oui. Le kick-off se tient dans vos locaux à Saint-Ouen — ZAC Victor-Hugo, plateaux des Docks, siège Alstom ou boutique des Puces — et nous nous déplaçons sur tout le nord du Grand Paris (Saint-Denis, Clichy, Asnières, 17e/18e). Accès direct par le métro 14, le métro 13, le RER C et le tramway T3b.",
+            a: "Oui. Le kick-off se tient dans vos locaux à Saint-Ouen — ZAC Victor-Hugo, plateaux des Docks, siège Alstom ou boutique des Puces — et nous nous déplaçons sur tout le nord du Grand Paris (Saint-Denis, Clichy, Asnières, 17e/18e). Saint-Ouen est desservie par le métro 14, le métro 13, le RER C et le tramway T3b.",
           },
           {
             q: "Pouvez-vous créer une boutique en ligne pour un antiquaire ou un marchand des Puces de Saint-Ouen ?",
@@ -200,7 +200,7 @@ export const SAINT_OUEN_SUR_SEINE_COPY: VilleCopy = {
         faq: [
           {
             q: "Do you work on site in Saint-Ouen-sur-Seine for a website or SaaS project?",
-            a: "Yes. The kick-off takes place at your premises in Saint-Ouen — ZAC Victor-Hugo, Docks floors, Alstom HQ or a Flea Market shop — and we travel across the northern Grand Paris area (Saint-Denis, Clichy, Asnières, 17th/18th). Direct access via metro 14, metro 13, RER C and tram T3b.",
+            a: "Yes. The kick-off takes place at your premises in Saint-Ouen — ZAC Victor-Hugo, Docks floors, Alstom HQ or a Flea Market shop — and we travel across the northern Grand Paris area (Saint-Denis, Clichy, Asnières, 17th/18th). Saint-Ouen is served by metro 14, metro 13, RER C and tram T3b.",
           },
           {
             q: "Can you build an online shop for a Saint-Ouen antique or flea-market dealer?",

@@ -49,7 +49,7 @@ export const SAINT_POL_DE_LEON_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Saint-Pol-de-Léon et dans la Ceinture dorée ?",
-      a: "Oui, Axion-IA intervient à Saint-Pol-de-Léon et dans toute la Ceinture dorée du nord Finistère (Roscoff, Cléder, Plouescat, Sibiril). Déplacement depuis Morlaix en 20 min, depuis Brest en 55 min.",
+      a: "Oui, Axion-IA intervient à Saint-Pol-de-Léon et dans toute la Ceinture dorée du nord Finistère (Roscoff, Cléder, Plouescat, Sibiril). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les coopératives maraîchères et les PME agroalimentaires ?",

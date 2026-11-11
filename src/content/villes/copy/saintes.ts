@@ -72,7 +72,7 @@ export const SAINTES_COPY: VilleCopy = {
           {
             step: "Développement par sprints",
             detail:
-              "Greffe IA sur l'existant ou build IA-native depuis le bassin saintais : e-commerce multi-CMS, portail adhérents ou client, chatbot RAG multilingue, recherche sémantique, agents et automatisations back-office. Démos hebdomadaires en visio, code versionné et revu à chaque itération.",
+              "Greffe IA sur l'existant ou build IA-native pour le bassin saintais : e-commerce multi-CMS, portail adhérents ou client, chatbot RAG multilingue, recherche sémantique, agents et automatisations back-office. Démos hebdomadaires en visio, code versionné et revu à chaque itération.",
           },
           {
             step: "Recette + mise en ligne",
@@ -158,7 +158,7 @@ export const SAINTES_COPY: VilleCopy = {
           {
             step: "Développement par sprints",
             detail:
-              "Greffe IA sur l'existant ou build IA-native depuis le bassin saintais : e-commerce multi-CMS, portail adhérents ou client, chatbot RAG multilingue, recherche sémantique, agents et automatisations back-office. Démos hebdomadaires en visio, code versionné et revu à chaque itération.",
+              "Greffe IA sur l'existant ou build IA-native pour le bassin saintais : e-commerce multi-CMS, portail adhérents ou client, chatbot RAG multilingue, recherche sémantique, agents et automatisations back-office. Démos hebdomadaires en visio, code versionné et revu à chaque itération.",
           },
           {
             step: "Recette + mise en ligne",
@@ -232,7 +232,7 @@ export const SAINTES_COPY: VilleCopy = {
     },
     {
       q: "Williams se déplace-t-il à Saintes pour intervenir sur site ?",
-      a: "Oui. Williams se déplace à Saintes (17100) et dans les communes limitrophes : Chaniers, Chermignac, Fontcouverte, Bussac-sur-Charente. Couvre également Cognac (25 km) et le département de Charente-Maritime, sans frais kilométriques additionnels dans un rayon de 50 km.",
+      a: "Oui. Williams se déplace à Saintes (17100) et dans les communes limitrophes : Chaniers, Chermignac, Fontcouverte, Bussac-sur-Charente, ainsi qu'à Cognac et dans toute la Charente-Maritime. Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quels délais pour démarrer une mission IA à Saintes ?",

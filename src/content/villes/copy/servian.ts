@@ -74,7 +74,7 @@ export const SERVIAN_COPY: VilleCopy = {
     },
     {
       q: "Vos consultants se déplacent-ils à Servian ?",
-      a: "Oui, depuis Montpellier (1 h A75 sortie 62) ou Béziers (15 min). Visio possible pour cadrage et coaching, présentiel recommandé pour ateliers d'équipe.",
+      a: "Oui. Nous intervenons partout en France, sur place ou à distance. Visio possible pour cadrage et coaching, présentiel recommandé pour ateliers d'équipe.",
     },
   ],
 };

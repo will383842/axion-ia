@@ -65,7 +65,7 @@ export const SAINT_XANDRE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA sur site à Saint-Xandre ?",
-      a: "Nous intervenons à Saint-Xandre, à 15 min de la gare TGV de La Rochelle. Mission sur site dans vos locaux, cabinet ou commerce.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Mission sur site dans vos locaux, cabinet ou commerce à Saint-Xandre, commune à 15 min de la gare TGV de La Rochelle.",
     },
   ],
 };

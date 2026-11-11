@@ -142,7 +142,7 @@ export const VILLIERS_SUR_MARNE_COPY: VilleCopy = {
           "Eastern Paris Image and Sound cluster (INA, Studios de Bry, École Georges Méliès) straddling Villiers/Bry: we design SaaS platforms for audiovisual archive management, AI-assisted cataloguing, media libraries and the websites of the cluster's production companies and technical providers.",
           "Marne Europe development zone (EPAMARNE, 80,000 m² of offices, 17,000 m² of retail, convention centre) on the former VDO right-of-way: we support upcoming tertiary tenants, events venues and new retail with AI-native sites and back-offices ready for the Line 15 station opening.",
           "Big-box retail zones (IKEA, Bricorama, zones created from 1977 to 1999) and Marne-la-Vallée e-commerce logistics at the A4/A104 junction: we build multi-CMS e-commerce sites and logistics-tracking platforms for retail, cosmetics, medical devices and events.",
-          "A fabric of ~4,388 mostly micro and small businesses (retail, construction, transport, consulting): we deliver high-performance showcase and e-commerce sites (UX/UI, mobile, Web Vitals) reachable from Paris via RER E (Villiers-sur-Marne — Le Plessis-Trévise station, ~18-32 min) or the A4.",
+          "A fabric of ~4,388 mostly micro and small businesses (retail, construction, transport, consulting): we deliver high-performance showcase and e-commerce sites (UX/UI, mobile, Web Vitals). Villiers-sur-Marne is served by the RER E (Villiers-sur-Marne — Le Plessis-Trévise station) and the A4.",
         ],
         methodology: [
           {

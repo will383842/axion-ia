@@ -65,7 +65,7 @@ export const ROOST_WARENDIN_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission Axion-IA à Roost-Warendin ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Roost-Warendin étant intégrée à l'agglomération douaisienne, déplacements sans surcoût hébergement. Sessions sur site ou en visio selon vos préférences.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Roost-Warendin est intégrée à l'agglomération douaisienne. Sessions sur site ou en visio selon vos préférences.",
     },
   ],
 };

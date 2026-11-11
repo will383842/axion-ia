@@ -58,7 +58,7 @@ export const VITROLLES_COPY: VilleCopy = {
           "La chaîne de sous-traitance aéronautique de Vitrolles (autour d'Airbus Helicopters et du technocentre Henri-Fabre) a des besoins web spécifiques : portails fournisseurs, suivi de commandes pièces, espaces documentaires techniques — nous concevons ces plateformes avec recherche sémantique IA sur catalogues et nomenclatures.",
           "Le pôle logistique des Estroublans et de l'Anjoly (Daher Logistics, Géodis, GXO, CEVA) tourne autour du suivi de flux : nous construisons des portails clients de tracking, des espaces de réservation de créneaux et des tableaux de bord d'expédition, enrichis par l'IA pour les relances et la qualification automatique des demandes.",
           "Les enseignes du Centre Commercial Carrefour Grand Vitrolles (Griffon) et du commerce des parcs d'activités ont besoin de sites e-commerce et de prise de rendez-vous : nous déployons des boutiques multi-CMS (Shopify, WooCommerce, headless) avec recommandation produit et chatbot de pré-vente.",
-          "Vitrolles est à quelques minutes de l'aéroport Marseille-Provence, sur les axes A7/A55 et reliée par sa gare (Marseille ~20 min) : nous nous déplaçons sur site dans les parcs de l'Anjoly, Couperigne et des Estroublans pour cadrer le projet avec vos équipes avant toute ligne de code.",
+          "Vitrolles est à quelques minutes de l'aéroport Marseille-Provence, sur les axes A7/A55 et desservie par sa gare. Nous nous déplaçons sur site dans les parcs de l'Anjoly, Couperigne et des Estroublans pour cadrer le projet avec vos équipes avant toute ligne de code.",
         ],
         methodology: [
           {
@@ -144,7 +144,7 @@ export const VITROLLES_COPY: VilleCopy = {
           "Vitrolles' aerospace subcontracting chain (around Airbus Helicopters and the Henri-Fabre technocentre) has specific web needs: supplier portals, parts order tracking, technical documentation spaces — we build these platforms with AI semantic search over catalogues and bills of materials.",
           "The Estroublans and Anjoly logistics hub (Daher Logistics, Géodis, GXO, CEVA) revolves around flow tracking: we build client tracking portals, slot-booking spaces and shipment dashboards, enriched by AI for follow-ups and automatic request qualification.",
           "Retailers at the Carrefour Grand Vitrolles shopping centre (Le Griffon) and across the business parks need e-commerce and booking sites: we deploy multi-CMS stores (Shopify, WooCommerce, headless) with product recommendation and pre-sale chatbot.",
-          "Vitrolles sits minutes from Marseille-Provence Airport, on the A7/A55 corridors and served by its station (Marseille ~20 min): we travel on site to the Anjoly, Couperigne and Estroublans parks to frame the project with your teams before any line of code.",
+          "Vitrolles sits minutes from Marseille-Provence Airport, on the A7/A55 corridors and served by its own station. We travel on site to the Anjoly, Couperigne and Estroublans parks to frame the project with your teams before any line of code.",
         ],
         methodology: [
           {

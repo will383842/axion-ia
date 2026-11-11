@@ -65,7 +65,7 @@ export const SAINT_PAUL_LES_DAX_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Saint-Paul-lès-Dax ?",
-      a: "Nos consultants se déplacent facilement : Bayonne à 45 min par A63, Bordeaux à 1h30 par A63. Gare TGV Dax à 5 min. Pour les multi-jours, hébergement local Grand Dax.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Saint-Paul-lès-Dax est à 5 min de la gare TGV de Dax. Pour les multi-jours, hébergement local Grand Dax.",
     },
   ],
 };

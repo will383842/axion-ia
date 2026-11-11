@@ -65,7 +65,7 @@ export const PETITE_ROSSELLE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission Axion-IA à Petite-Rosselle ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Petite-Rosselle est accessible en 50 min de Metz ou directement par TGV à Forbach (1h47 de Paris). Sessions sur site ou en visio selon vos préférences.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Petite-Rosselle est desservie par la gare TGV de Forbach. Sessions sur site ou en visio selon vos préférences.",
     },
   ],
 };

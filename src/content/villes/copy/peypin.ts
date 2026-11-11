@@ -67,7 +67,7 @@ export const PEYPIN_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une intervention à Peypin ?",
-      a: "Nous intervenons partout en France, sur place ou à distance : sur chantier ou en atelier dans vos locaux (Peypin est à 12 min d'Aubagne via A52 et 30 min de Marseille via A50). Possibilité de regrouper plusieurs artisans du bassin (Auriol, La Bouilladisse) sur une même session.",
+      a: "Nous intervenons partout en France, sur place ou à distance : sur chantier ou en atelier dans vos locaux. Peypin est à 12 min d'Aubagne via A52 et 30 min de Marseille via A50. Possibilité de regrouper plusieurs artisans du bassin (Auriol, La Bouilladisse) sur une même session.",
     },
   ],
 };

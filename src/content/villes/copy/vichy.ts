@@ -74,7 +74,7 @@ export const VICHY_COPY: VilleCopy = {
           {
             step: "Développement par sprints",
             detail:
-              "Greffe IA sur l'existant ou build IA-native : moteur de réservation de cures et de soins, boutique e-commerce de cosmétique multi-CMS, chatbot RAG multilingue, recherche sémantique, agents d'accueil et automatisations. Démos hebdomadaires en visio depuis votre établissement du quartier thermal pour ajuster au fil de l'eau.",
+              "Greffe IA sur l'existant ou build IA-native : moteur de réservation de cures et de soins, boutique e-commerce de cosmétique multi-CMS, chatbot RAG multilingue, recherche sémantique, agents d'accueil et automatisations. Démos hebdomadaires en visio avec votre établissement du quartier thermal pour ajuster au fil de l'eau.",
           },
           {
             step: "Recette + mise en ligne",
@@ -160,7 +160,7 @@ export const VICHY_COPY: VilleCopy = {
           {
             step: "Développement par sprints",
             detail:
-              "Greffe IA sur l'existant ou build IA-native : moteur de réservation de cures et de soins, boutique e-commerce de cosmétique multi-CMS, chatbot RAG multilingue, recherche sémantique, agents d'accueil et automatisations. Démos hebdomadaires en visio depuis votre établissement du quartier thermal pour ajuster au fil de l'eau.",
+              "Greffe IA sur l'existant ou build IA-native : moteur de réservation de cures et de soins, boutique e-commerce de cosmétique multi-CMS, chatbot RAG multilingue, recherche sémantique, agents d'accueil et automatisations. Démos hebdomadaires en visio avec votre établissement du quartier thermal pour ajuster au fil de l'eau.",
           },
           {
             step: "Recette + mise en ligne",
@@ -230,7 +230,7 @@ export const VICHY_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Vichy et dans l'Allier ?",
-      a: "Oui, Axion-IA accompagne les TPE et PME de Vichy et de son agglomération thermale. Nous intervenons sur site ou en visio, avec Clermont-Ferrand à 35 minutes.",
+      a: "Oui, Axion-IA accompagne les TPE et PME de Vichy et de son agglomération thermale. Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les établissements thermaux et de bien-être ?",
@@ -246,7 +246,7 @@ export const VICHY_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Vichy ?",
-      a: "Vichy est à 35 minutes de Clermont-Ferrand, 3 heures de Paris en train direct et reliée à l'A71 par l'A719. Nous intervenons sur site.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Vichy est à 35 minutes de Clermont-Ferrand et reliée à l'A71 par l'A719.",
     },
   ],
 };

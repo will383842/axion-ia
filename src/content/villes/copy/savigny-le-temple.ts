@@ -130,7 +130,7 @@ export const SAVIGNY_LE_TEMPLE_COPY: VilleCopy = {
           },
           {
             q: "Quels sont vos délais pour un devis à Savigny-le-Temple ?",
-            a: "Un devis est remis à partir de 24-48 h selon la complexité du projet. Nous nous déplaçons sur site (RER D Savigny-le-Temple-Nandy, A5, Francilienne N104) pour le cadrage.",
+            a: "Un devis est remis à partir de 24-48 h selon la complexité du projet. Nous nous déplaçons sur site à Savigny-le-Temple pour le cadrage. Nous intervenons partout en France, sur place ou à distance.",
           },
         ],
         guarantees:
@@ -216,7 +216,7 @@ export const SAVIGNY_LE_TEMPLE_COPY: VilleCopy = {
           },
           {
             q: "What are your lead times for a quote in Savigny-le-Temple?",
-            a: "A quote is delivered from 24-48 hours depending on project complexity. We travel on site (RER D Savigny-le-Temple-Nandy, A5, Francilienne N104) for framing, with no additional travel fees within Île-de-France.",
+            a: "A quote is delivered from 24-48 hours depending on project complexity. We travel on site in Savigny-le-Temple for framing. We work anywhere in France, on site or remotely.",
           },
         ],
         guarantees:

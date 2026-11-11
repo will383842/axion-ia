@@ -246,7 +246,7 @@ export const VIRY_CHATILLON_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Viry-Châtillon ?",
-      a: "Viry-Châtillon est à 30 minutes de Paris par le RER D, 10 minutes d'Orly et sur l'A6. Nous intervenons sur site.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Viry-Châtillon est desservie par le RER D et l'A6, à 10 minutes d'Orly.",
     },
   ],
 };

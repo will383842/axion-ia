@@ -65,7 +65,7 @@ export const SAINT_CLEMENT_DE_RIVIERE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Saint-Clément-de-Rivière ?",
-      a: "Saint-Clément-de-Rivière est à 15 min de Montpellier centre. Nos consultants interviennent sur site dans le forfait agglo Montpellier. Gare TGV Saint-Roch à 20 min voiture.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Saint-Clément-de-Rivière est à 15 min de Montpellier centre et 20 min de la gare TGV Saint-Roch en voiture.",
     },
   ],
 };

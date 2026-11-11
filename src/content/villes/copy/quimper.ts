@@ -234,7 +234,7 @@ export const QUIMPER_COPY: VilleCopy = {
     },
     {
       q: "Williams se déplace-t-il à Quimper ?",
-      a: "Oui. Quimper est accessible en TGV InOui. Williams intervient directement dans vos locaux, du centre historique aux zones d'activité de Créac'h Gwen et aux faïenceries de Locmaria.",
+      a: "Oui. Williams intervient directement dans vos locaux, du centre historique aux zones d'activité de Créac'h Gwen et aux faïenceries de Locmaria. Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quels délais pour une intervention IA à Quimper ?",
@@ -246,7 +246,7 @@ export const QUIMPER_COPY: VilleCopy = {
     },
     {
       q: "Intervenez-vous aussi dans les communes de Quimper Bretagne Occidentale ?",
-      a: "Oui. Nous nous déplaçons également à Pluguffan, Plomelin, Plonéis, Ergué-Gabéric et dans les autres communes de la communauté d'agglomération. Le déplacement est inclus dans le forfait dans un rayon de 20 km autour de Quimper.",
+      a: "Oui. Nous nous déplaçons également à Pluguffan, Plomelin, Plonéis, Ergué-Gabéric et dans les autres communes de la communauté d'agglomération. Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Comment Axion-IA garantit la conformité RGPD à Quimper ?",

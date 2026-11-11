@@ -49,7 +49,7 @@ export const SOUSTONS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Soustons et alentours ?",
-      a: "Oui, Axion-IA intervient à Soustons et les communes voisines de la côte d'Argent (Azur, Messanges, Vieux-Boucau, Tosse, Seignosse). Couverture lacs, plage et bourg. Déplacement depuis Dax ou Bayonne.",
+      a: "Oui, Axion-IA intervient à Soustons et les communes voisines de la côte d'Argent (Azur, Messanges, Vieux-Boucau, Tosse, Seignosse) : lacs, plage et bourg. Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Proposez-vous des audits IA pour les campings et hébergeurs ?",

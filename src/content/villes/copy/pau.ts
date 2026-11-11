@@ -228,7 +228,7 @@ export const PAU_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Pau et dans l'agglomération Pau Béarn Pyrénées ?",
-      a: "Oui. Nous intervenons à Pau (64000) et dans les 31 communes de la Communauté d'agglomération Pau Béarn Pyrénées : Jurançon, Bizanos, Gelos, Lons, Billère, Lescar, Idron et au-delà. Déplacement depuis le centre-ville en 5 à 20 min.",
+      a: "Oui. Nous intervenons à Pau (64000) et dans les 31 communes de la Communauté d'agglomération Pau Béarn Pyrénées : Jurançon, Bizanos, Gelos, Lons, Billère, Lescar, Idron et au-delà. Plus largement, nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quels sont vos tarifs pour une intervention IA à Pau ?",

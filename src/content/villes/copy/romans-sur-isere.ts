@@ -238,7 +238,7 @@ export const ROMANS_SUR_ISERE_COPY: VilleCopy = {
     },
     {
       q: "Axion-IA intervient-elle dans les communes proches de Romans-sur-Isère ?",
-      a: "Oui. Nous couvrons sans surcoût Bourg-de-Péage, Saint-Paul-lès-Romans, Mours-Saint-Eusèbe, Chatuzange-le-Goubet, Génissieux et l'ensemble de l'unité urbaine Romans–Bourg-de-Péage.",
+      a: "Oui. Nous intervenons à Bourg-de-Péage, Saint-Paul-lès-Romans, Mours-Saint-Eusèbe, Chatuzange-le-Goubet, Génissieux et dans l'ensemble de l'unité urbaine Romans–Bourg-de-Péage. Plus largement, nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Comment Axion-IA garantit-elle le respect du RGPD lors d'une mission à Romans-sur-Isère ?",

@@ -65,7 +65,7 @@ export const TREGUEUX_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Trégueux ?",
-      a: "Trégueux est à 10 min de la gare de Saint-Brieuc (TGV) et desservie par la RN12.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Trégueux est à 10 min de la gare de Saint-Brieuc (TGV) et desservie par la RN12.",
     },
   ],
 };

@@ -49,7 +49,7 @@ export const VAUX_SUR_SEINE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Vaux-sur-Seine ?",
-      a: "Oui, Axion-IA intervient à Vaux-sur-Seine et sur les bords de Seine ouest (Meulan à 5 min, Les Mureaux à 10 min, Poissy à 20 min, La Défense à 35 min). Nos consultants se déplacent sur site ou en visio.",
+      a: "Oui, Axion-IA intervient à Vaux-sur-Seine et sur les bords de Seine ouest (Meulan, Les Mureaux, Poissy). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Tarifs audit IA à Vaux-sur-Seine  : quel budget prévoir ?",

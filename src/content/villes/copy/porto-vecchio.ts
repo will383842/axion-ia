@@ -49,7 +49,7 @@ export const PORTO_VECCHIO_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Porto-Vecchio et sud-est Corse ?",
-      a: "Oui, Axion-IA intervient à Porto-Vecchio et tout le sud-est corse (Bonifacio, Zonza, Lecci, Sainte-Lucie-de-Porto-Vecchio). Nos consultants se déplacent sur site via l'aéroport Figari-Sud Corse (25 min) ou Ajaccio.",
+      a: "Oui, Axion-IA intervient à Porto-Vecchio et tout le sud-est corse (Bonifacio, Zonza, Lecci, Sainte-Lucie-de-Porto-Vecchio). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les hôteliers et restaurateurs haut de gamme ?",
@@ -65,7 +65,7 @@ export const PORTO_VECCHIO_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Porto-Vecchio ?",
-      a: "Porto-Vecchio est à 25 min de l'aéroport Figari-Sud Corse (vols directs en saison). Hors saison, Ajaccio (2h30) ou ferry Marseille/Toulon.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Porto-Vecchio est à 25 min de l'aéroport Figari-Sud Corse (vols directs en saison).",
     },
   ],
 };

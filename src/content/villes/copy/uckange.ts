@@ -65,7 +65,7 @@ export const UCKANGE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission Axion-IA à Uckange ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Uckange est accessible en 30-40 min via A30/A31. Sessions sur site ou en visio selon vos préférences, sans surcoût de déplacement pour les missions courtes.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Uckange est desservie par l'A30 et l'A31. Sessions sur site ou en visio selon vos préférences.",
     },
   ],
 };

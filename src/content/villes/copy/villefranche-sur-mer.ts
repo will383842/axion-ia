@@ -65,7 +65,7 @@ export const VILLEFRANCHE_SUR_MER_COPY: VilleCopy = {
     },
     {
       q: "Proposez-vous du coaching individuel IA à Villefranche-sur-Mer ?",
-      a: "Oui, sessions 1-to-1 pour dirigeants TPE et PME à Villefranche-sur-Mer. Format flexible : dans vos locaux, en visio ou en espace partagé à Nice. Accompagnement personnalisé à partir de {{price:intervention-dirigeants|flat}}.",
+      a: "Oui, sessions 1-to-1 pour dirigeants TPE et PME à Villefranche-sur-Mer. Format flexible : dans vos locaux, en visio ou en espace partagé. Accompagnement personnalisé à partir de {{price:intervention-dirigeants|flat}}.",
     },
   ],
 };

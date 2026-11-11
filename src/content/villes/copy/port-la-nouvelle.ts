@@ -65,7 +65,7 @@ export const PORT_LA_NOUVELLE_COPY: VilleCopy = {
     },
     {
       q: "Proposez-vous du coaching individuel IA à Port-la-Nouvelle ?",
-      a: "Oui, sessions 1-to-1 pour dirigeants TPE et PME à Port-la-Nouvelle. Format flexible : dans vos locaux, en visio ou à Narbonne. Accompagnement personnalisé à partir de {{price:intervention-dirigeants|flat}}.",
+      a: "Oui, sessions 1-to-1 pour dirigeants TPE et PME à Port-la-Nouvelle. Format flexible : dans vos locaux ou en visio. Accompagnement personnalisé à partir de {{price:intervention-dirigeants|flat}}.",
     },
   ],
 };

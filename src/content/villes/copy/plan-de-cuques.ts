@@ -65,7 +65,7 @@ export const PLAN_DE_CUQUES_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Plan-de-Cuques ?",
-      a: "Nos consultants interviennent sur site à Plan-de-Cuques sous 5 jours ouvrés. Marseille centre à 15 min, Aix à 30 min.",
+      a: "Nos consultants interviennent sur site à Plan-de-Cuques sous 5 jours ouvrés. Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };

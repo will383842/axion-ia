@@ -49,7 +49,7 @@ export const SAINTE_SAVINE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Sainte-Savine et dans l'agglo Troyes ?",
-      a: "Oui, Axion-IA intervient à Sainte-Savine et dans toute l'agglomération de Troyes. Troyes centre à 5 min, A5 à 10 min, Paris-Est à 1 h 30 en TGV depuis Troyes.",
+      a: "Oui, Axion-IA intervient à Sainte-Savine et dans toute l'agglomération de Troyes. Nous intervenons partout en France, sur place ou à distance. Sainte-Savine est à 5 min de Troyes centre et 10 min de l'A5.",
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Sainte-Savine  ?",

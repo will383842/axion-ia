@@ -65,7 +65,7 @@ export const PLOUFRAGAN_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Ploufragan ?",
-      a: "Ploufragan est à 10 min de la gare de Saint-Brieuc (TGV) et desservie par la RN12.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Ploufragan est à 10 min de la gare de Saint-Brieuc (TGV) et desservie par la RN12.",
     },
   ],
 };

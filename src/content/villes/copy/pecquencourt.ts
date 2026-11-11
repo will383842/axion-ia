@@ -65,7 +65,7 @@ export const PECQUENCOURT_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission Axion-IA à Pecquencourt ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Pecquencourt étant intégrée à l'agglomération douaisienne, déplacements sans surcoût hébergement. Sessions sur site ou en visio selon vos préférences.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Pecquencourt est intégrée à l'agglomération douaisienne. Sessions sur site ou en visio selon vos préférences.",
     },
   ],
 };

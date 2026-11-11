@@ -65,7 +65,7 @@ export const SOYAUX_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA sur site à Soyaux ?",
-      a: "Nous intervenons à Soyaux, à 10 min de la gare TGV d'Angoulême. Mission sur site dans vos locaux, bureau ou commerce.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Mission sur site dans vos locaux, bureau ou commerce à Soyaux, commune à 10 min de la gare TGV d'Angoulême.",
     },
   ],
 };

@@ -18,9 +18,9 @@ export const ROCHEFORT_COPY: VilleCopy = {
   ecosystemEn:
     "Rochefort concentre un tissu rare en France : l'arsenal historique de Colbert reconverti en pôle aéronautique de pointe (Stelia Aerospace pour les fuselages A350 d'Airbus, Sabena Technics pour la maintenance Boeing/Airbus, écosystème DGAC, École de Gendarmerie Maritime, BAN Rochefort-Soubise), un port commerce/plaisance actif sur la Charente navigable, le 4e centre thermal français (Casino-Thermes) et un patrimoine UNESCO-compatible (Corderie Royale de 374 m, Hermione, Pont Transbordeur 1900). L'agglomération CARO mutualise les zones d'activités (Béligon, Les Pertuis) et la proximité immédiate de La Rochelle (30 km), Saintes (35 km), Niort (60 km) et Bordeaux (130 km) ouvre un bassin TPE/PME élargi, complété par les ostréiculteurs de Marennes-Oléron (40 km) et les sauniers de l'Île de Ré.",
   distancesFr:
-    "La Rochelle est à 30 km (30 min), Saintes à 35 km, Niort à 60 km, Bordeaux à 130 km (1h30). Williams se déplace sur site dans toute la Charente-Maritime, sur l'Île d'Aix, à Marennes-Oléron (40 km) et sur le bassin Saintonge-Aunis.",
+    "La Rochelle est à 30 km (30 min), Saintes à 35 km, Niort à 60 km, Bordeaux à 130 km (1h30). Williams se déplace sur site dans toute la Charente-Maritime, sur l'Île d'Aix, à Marennes-Oléron et sur le bassin Saintonge-Aunis. Nous intervenons partout en France, sur place ou à distance.",
   distancesEn:
-    "La Rochelle est à 30 km (30 min), Saintes à 35 km, Niort à 60 km, Bordeaux à 130 km (1h30). Williams se déplace sur site dans toute la Charente-Maritime, sur l'Île d'Aix, à Marennes-Oléron (40 km) et sur le bassin Saintonge-Aunis.",
+    "La Rochelle est à 30 km (30 min), Saintes à 35 km, Niort à 60 km, Bordeaux à 130 km (1h30). Williams se déplace sur site dans toute la Charente-Maritime, sur l'Île d'Aix, à Marennes-Oléron et sur le bassin Saintonge-Aunis. Nous intervenons partout en France, sur place ou à distance.",
   topSectorsNaf: [
     "Construction aéronautique et spatiale (Stelia Aerospace, Sabena Technics)",
     "Réparation et maintenance d'aéronefs (MRO Boeing/Airbus)",
@@ -70,7 +70,7 @@ export const ROCHEFORT_COPY: VilleCopy = {
           {
             step: "Développement par sprints",
             detail:
-              "Greffe IA sur l'existant ou build IA-native : billetterie patrimoine maritime, e-commerce de produits charentais, chatbot RAG multilingue, recherche sémantique, agents et portails fournisseurs aéronautiques. Démos hebdomadaires en visio depuis le bassin Saintonge-Aunis, ajustements à chaque itération.",
+              "Greffe IA sur l'existant ou build IA-native : billetterie patrimoine maritime, e-commerce de produits charentais, chatbot RAG multilingue, recherche sémantique, agents et portails fournisseurs aéronautiques. Démos hebdomadaires en visio, ajustements à chaque itération.",
           },
           {
             step: "Recette + mise en ligne",
@@ -156,7 +156,7 @@ export const ROCHEFORT_COPY: VilleCopy = {
           {
             step: "Développement par sprints",
             detail:
-              "Greffe IA sur l'existant ou build IA-native : billetterie patrimoine maritime, e-commerce de produits charentais, chatbot RAG multilingue, recherche sémantique, agents et portails fournisseurs aéronautiques. Démos hebdomadaires en visio depuis le bassin Saintonge-Aunis, ajustements à chaque itération.",
+              "Greffe IA sur l'existant ou build IA-native : billetterie patrimoine maritime, e-commerce de produits charentais, chatbot RAG multilingue, recherche sémantique, agents et portails fournisseurs aéronautiques. Démos hebdomadaires en visio, ajustements à chaque itération.",
           },
           {
             step: "Recette + mise en ligne",

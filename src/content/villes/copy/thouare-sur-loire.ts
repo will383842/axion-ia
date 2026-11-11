@@ -49,7 +49,7 @@ export const THOUARE_SUR_LOIRE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Thouaré-sur-Loire et est nantais ?",
-      a: "Oui, Axion-IA intervient à Thouaré-sur-Loire et tout l'est de Nantes Métropole (Sainte-Luce, Mauves-sur-Loire, Le Cellier, Carquefou). Nos consultants sont à Nantes en 15 min via le périphérique est.",
+      a: "Oui, Axion-IA intervient à Thouaré-sur-Loire et tout l'est de Nantes Métropole (Sainte-Luce, Mauves-sur-Loire, Le Cellier, Carquefou). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les viticulteurs Muscadet ?",

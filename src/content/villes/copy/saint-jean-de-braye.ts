@@ -71,7 +71,7 @@ export const SAINT_JEAN_DE_BRAYE_COPY: VilleCopy = {
           {
             step: "Développement par sprints",
             detail:
-              "Greffe IA sur l'existant ou build IA-native : e-commerce multi-CMS, portail de suivi de production, chatbot RAG multilingue, recherche sémantique, agents et automatisations. Démos hebdomadaires en visio depuis Orléans, ajustements en continu.",
+              "Greffe IA sur l'existant ou build IA-native : e-commerce multi-CMS, portail de suivi de production, chatbot RAG multilingue, recherche sémantique, agents et automatisations. Démos hebdomadaires en visio, ajustements en continu.",
           },
           {
             step: "Recette + mise en ligne",
@@ -157,7 +157,7 @@ export const SAINT_JEAN_DE_BRAYE_COPY: VilleCopy = {
           {
             step: "Développement par sprints",
             detail:
-              "Greffe IA sur l'existant ou build IA-native : e-commerce multi-CMS, portail de suivi de production, chatbot RAG multilingue, recherche sémantique, agents et automatisations. Démos hebdomadaires en visio depuis Orléans, ajustements en continu.",
+              "Greffe IA sur l'existant ou build IA-native : e-commerce multi-CMS, portail de suivi de production, chatbot RAG multilingue, recherche sémantique, agents et automatisations. Démos hebdomadaires en visio, ajustements en continu.",
           },
           {
             step: "Recette + mise en ligne",
@@ -231,11 +231,11 @@ export const SAINT_JEAN_DE_BRAYE_COPY: VilleCopy = {
     },
     {
       q: "Quel est le délai pour une intervention à Saint-Jean-de-Braye ?",
-      a: "Déplacement sur site dans les 5 jours ouvrés après confirmation. Accès direct par A10 (15 km), RN 20 (11 km) ou tramway ligne B depuis Orléans.",
+      a: "Déplacement sur site dans les 5 jours ouvrés après confirmation. Nous intervenons partout en France, sur place ou à distance. Saint-Jean-de-Braye est desservie par l'A10, la RN 20 et la ligne B du tramway.",
     },
     {
-      q: "Quelles communes proches sont couvertes depuis Saint-Jean-de-Braye ?",
-      a: "Nous couvrons les communes limitrophes : Orléans, Semoy, Marigny-les-Usages, Boigny-sur-Bionne, Chécy et Combleux, sans frais supplémentaires de déplacement.",
+      q: "Quelles communes autour de Saint-Jean-de-Braye sont couvertes ?",
+      a: "Nous couvrons les communes limitrophes : Orléans, Semoy, Marigny-les-Usages, Boigny-sur-Bionne, Chécy et Combleux. Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Comment Axion-IA assure-t-il la conformité RGPD à Saint-Jean-de-Braye ?",

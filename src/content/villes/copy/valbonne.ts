@@ -65,7 +65,7 @@ export const VALBONNE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Sophia Antipolis ?",
-      a: "Nos consultants interviennent directement sur le parc Sophia Antipolis ou dans votre bureau à Valbonne. Formats flexibles : demi-journée audit, journée intervention, mission implémentation multi-semaines. Accès depuis Nice (30 min), aéroport (25 min).",
+      a: "Nos consultants interviennent directement sur le parc Sophia Antipolis ou dans votre bureau à Valbonne. Formats flexibles : demi-journée audit, journée intervention, mission implémentation multi-semaines. Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };

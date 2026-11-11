@@ -49,7 +49,7 @@ export const VARENNES_VAUZELLES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Varennes-Vauzelles et dans l'agglomération de Nevers ?",
-      a: "Oui, Axion-IA intervient à Varennes-Vauzelles et dans toute l'agglomération neversoise (Nevers à 5 min, Moulins à 50 min, Bourges à 1 h). Nos consultants couvrent la Nièvre et le sud Bourgogne.",
+      a: "Oui, Axion-IA intervient à Varennes-Vauzelles et dans toute l'agglomération neversoise. Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les entreprises logistiques et de transport ?",

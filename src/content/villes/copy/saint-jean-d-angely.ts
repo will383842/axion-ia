@@ -49,7 +49,7 @@ export const SAINT_JEAN_D_ANGELY_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Saint-Jean-d'Angély ?",
-      a: "Oui, Axion-IA intervient à Saint-Jean-d'Angély et tout le bassin angérien. Nos consultants accèdent facilement via Saintes (30 min) ou La Rochelle (50 min). Position centrale entre Cognac, Niort et La Rochelle.",
+      a: "Oui, Axion-IA intervient à Saint-Jean-d'Angély et tout le bassin angérien. Nous intervenons partout en France, sur place ou à distance. Saint-Jean-d'Angély occupe une position centrale entre Cognac, Niort et La Rochelle.",
     },
     {
       q: "Quels services IA pour l'agroalimentaire à Saint-Jean-d'Angély ?",
@@ -65,7 +65,7 @@ export const SAINT_JEAN_D_ANGELY_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA sur site à Saint-Jean-d'Angély ?",
-      a: "Nos consultants accèdent à Saint-Jean-d'Angély par voiture (Saintes 30 min, La Rochelle 50 min). Mission sur site dans vos locaux, exploitation ou commerce.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Mission sur site dans vos locaux, exploitation ou commerce à Saint-Jean-d'Angély, à 30 min de Saintes et 50 min de La Rochelle.",
     },
   ],
 };

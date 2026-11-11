@@ -64,7 +64,7 @@ export const SAINT_LYPHARD_COPY: VilleCopy = {
       a: "L'Audit sur place 4h démarre à {{price:audit-flash|flat}}, parfaitement adapté aux TPE touristiques et gîtes de Brière. Il identifie les opportunités IA : automatisation réservations, communication multilingue, gestion saisonnalité, optimisation référencement local.",
     },
     {
-      q: "Comment vos consultants se rendent-ils à Saint-Lyphard ?",
+      q: "Comment se passe une intervention à Saint-Lyphard ?",
       a: "Nous intervenons partout en France, sur place ou à distance. Hébergement local possible pour missions multi-jours.",
     },
   ],

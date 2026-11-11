@@ -65,7 +65,7 @@ export const RIXHEIM_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission Axion-IA à Rixheim ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Rixheim appartient à Mulhouse Alsace Agglomération, déplacements quotidiens sans surcoût hébergement. Sessions sur site ou en visio selon vos préférences.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Rixheim appartient à Mulhouse Alsace Agglomération. Sessions sur site ou en visio selon vos préférences.",
     },
   ],
 };

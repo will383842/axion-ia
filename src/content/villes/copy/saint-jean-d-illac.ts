@@ -65,7 +65,7 @@ export const SAINT_JEAN_D_ILLAC_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Saint-Jean-d'Illac ?",
-      a: "Nos consultants interviennent dans vos locaux à Saint-Jean-d'Illac ou en visio. Proche aéroport Mérignac (10 min). Tarifs et planning convenus en amont.",
+      a: "Nos consultants interviennent dans vos locaux à Saint-Jean-d'Illac ou en visio. Nous intervenons partout en France, sur place ou à distance. Tarifs et planning convenus en amont.",
     },
   ],
 };

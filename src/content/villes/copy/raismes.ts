@@ -65,7 +65,7 @@ export const RAISMES_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission Axion-IA à Raismes ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Raismes fait partie de Valenciennes Métropole, déplacements sans surcoût hébergement en zone agglo. Sessions sur site ou en visio selon vos préférences.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Raismes fait partie de Valenciennes Métropole. Sessions sur site ou en visio selon vos préférences.",
     },
   ],
 };

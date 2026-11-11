@@ -49,7 +49,7 @@ export const TREILLIERES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Treillières et nord Nantes ?",
-      a: "Oui, Axion-IA intervient à Treillières et toute la couronne nord de Nantes Métropole (La Chapelle-sur-Erdre, Grandchamp-des-Fontaines, Sautron, Orvault). Nos consultants sont à Nantes en 15 min via la RN137.",
+      a: "Oui, Axion-IA intervient à Treillières et toute la couronne nord de Nantes Métropole (La Chapelle-sur-Erdre, Grandchamp-des-Fontaines, Sautron, Orvault). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les PME tertiaires de l'axe Nantes-Rennes ?",

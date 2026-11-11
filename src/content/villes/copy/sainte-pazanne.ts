@@ -65,7 +65,7 @@ export const SAINTE_PAZANNE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission sur site à Sainte-Pazanne ?",
-      a: "Nos consultants se déplacent directement dans votre bureau, cabinet, commerce ou chantier à Sainte-Pazanne. Depuis Nantes, 30 min de trajet. Formats demi-journée ou journée complète.",
+      a: "Nos consultants se déplacent directement dans votre bureau, cabinet, commerce ou chantier à Sainte-Pazanne. Nous intervenons partout en France, sur place ou à distance. Formats demi-journée ou journée complète.",
     },
   ],
 };

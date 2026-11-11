@@ -49,7 +49,7 @@ export const PLOUDALMEZEAU_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Ploudalmézeau et dans le pays d'Iroise ?",
-      a: "Oui, Axion-IA intervient à Ploudalmézeau et dans tout le pays d'Iroise (Portsall, Lampaul-Ploudalmézeau, Saint-Pabu, Landunvez). Déplacement depuis Brest en 30 min, couverture de tout le littoral nord-ouest Finistère.",
+      a: "Oui, Axion-IA intervient à Ploudalmézeau et dans tout le pays d'Iroise (Portsall, Lampaul-Ploudalmézeau, Saint-Pabu, Landunvez), sur tout le littoral nord-ouest Finistère. Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les goémoniers et les PME de la filière algues ?",

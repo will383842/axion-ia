@@ -65,7 +65,7 @@ export const SAINT_GIRONS_COPY: VilleCopy = {
     },
     {
       q: "Saint-Girons est-il accessible pour une mission sur site ?",
-      a: "Saint-Girons est accessible en voiture depuis Toulouse (1h30 A64+D117) ou Saint-Gaudens (40 min). Pas de gare directe, mais bus régionaux. Nos consultants interviennent sur site, y compris en vallées de montagne.",
+      a: "Nous intervenons partout en France, sur place ou à distance, y compris en vallées de montagne. Saint-Girons est accessible en voiture par l'A64 et la D117 ; pas de gare directe, mais des bus régionaux.",
     },
   ],
 };

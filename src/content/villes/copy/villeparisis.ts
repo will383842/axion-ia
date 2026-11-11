@@ -236,7 +236,7 @@ export const VILLEPARISIS_COPY: VilleCopy = {
     },
     {
       q: "Quels délais pour une intervention sur site à Villeparisis ?",
-      a: "Déplacement de nos consultants sous 5 jours ouvrés. Pour les TPE/PME pressées (commerce, restaurant, logistique CDG), audit visio sous 48 h. RER B direct évite les contraintes de stationnement.",
+      a: "Déplacement de nos consultants sous 5 jours ouvrés. Pour les TPE/PME pressées (commerce, restaurant, logistique CDG), audit visio sous 48 h.",
     },
     {
       q: "Quelles garanties RGPD pour les données traitées à Villeparisis ?",

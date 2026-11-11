@@ -74,7 +74,7 @@ export const TASSIN_LA_DEMI_LUNE_COPY: VilleCopy = {
           {
             step: "Développement par sprints",
             detail:
-              "Greffe IA sur l'existant ou build IA-native : prise de rendez-vous, espace client, e-commerce multi-CMS, chatbot RAG ancré sur vos contenus, recherche sémantique, agents et automatisations de devis et relances. Démos hebdomadaires en visio depuis Tassin pour valider chaque incrément.",
+              "Greffe IA sur l'existant ou build IA-native : prise de rendez-vous, espace client, e-commerce multi-CMS, chatbot RAG ancré sur vos contenus, recherche sémantique, agents et automatisations de devis et relances. Démos hebdomadaires en visio pour valider chaque incrément.",
           },
           {
             step: "Recette + mise en ligne",
@@ -160,7 +160,7 @@ export const TASSIN_LA_DEMI_LUNE_COPY: VilleCopy = {
           {
             step: "Développement par sprints",
             detail:
-              "Greffe IA sur l'existant ou build IA-native : prise de rendez-vous, espace client, e-commerce multi-CMS, chatbot RAG ancré sur vos contenus, recherche sémantique, agents et automatisations de devis et relances. Démos hebdomadaires en visio depuis Tassin pour valider chaque incrément.",
+              "Greffe IA sur l'existant ou build IA-native : prise de rendez-vous, espace client, e-commerce multi-CMS, chatbot RAG ancré sur vos contenus, recherche sémantique, agents et automatisations de devis et relances. Démos hebdomadaires en visio pour valider chaque incrément.",
           },
           {
             step: "Recette + mise en ligne",

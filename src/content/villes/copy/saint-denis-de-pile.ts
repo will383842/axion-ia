@@ -65,7 +65,7 @@ export const SAINT_DENIS_DE_PILE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Saint-Denis-de-Pile ?",
-      a: "Nos consultants interviennent dans vos locaux ou en visio. Gare TER Saint-Denis-de-Pile. Livrables documentés, tarifs publics.",
+      a: "Nos consultants interviennent dans vos locaux ou en visio. Nous intervenons partout en France, sur place ou à distance. Livrables documentés, tarifs publics.",
     },
   ],
 };

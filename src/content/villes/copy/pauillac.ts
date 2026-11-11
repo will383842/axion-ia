@@ -65,7 +65,7 @@ export const PAUILLAC_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Pauillac ?",
-      a: "Nos consultants interviennent dans votre chai à Pauillac ou en visio. Gare SNCF Pauillac (TER Bordeaux). Missions adaptées aux rythmes viticoles.",
+      a: "Nos consultants interviennent dans votre chai à Pauillac ou en visio. Nous intervenons partout en France, sur place ou à distance. Missions adaptées aux rythmes viticoles.",
     },
   ],
 };

@@ -65,7 +65,7 @@ export const URRUGNE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA sur site à Urrugne ?",
-      a: "Nous intervenons à Urrugne, à 5 min de la gare d'Hendaye et 20 min de l'aéroport Biarritz Pays Basque. Mission sur site dans votre exploitation, atelier ou hébergement.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Mission sur site dans votre exploitation, atelier ou hébergement à Urrugne, commune à 5 min de la gare d'Hendaye et 20 min de l'aéroport Biarritz Pays Basque.",
     },
   ],
 };

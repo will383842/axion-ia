@@ -49,7 +49,7 @@ export const SAINT_MITRE_LES_REMPARTS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Saint-Mitre-les-Remparts ?",
-      a: "Oui, Axion-IA intervient à Saint-Mitre-les-Remparts et dans tout le bassin Fos-étang de Berre (Istres, Fos-sur-Mer, Martigues, Port-de-Bouc). Accès rapide depuis Marseille et Aix.",
+      a: "Oui, Axion-IA intervient à Saint-Mitre-les-Remparts et dans tout le bassin Fos-étang de Berre (Istres, Fos-sur-Mer, Martigues, Port-de-Bouc). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Combien coûte un audit IA à Saint-Mitre-les-Remparts  ?",
@@ -64,8 +64,8 @@ export const SAINT_MITRE_LES_REMPARTS_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les exploitants agricoles (maraîchage, oliveraies) : traçabilité parcellaire, prévision rendements, automatisation commandes circuits courts, agents IA vente directe.",
     },
     {
-      q: "Comment se déplace Axion-IA à Saint-Mitre-les-Remparts ?",
-      a: "Saint-Mitre est à 10 min d'Istres et 45 min de Marseille par A55. Nos consultants se déplacent dans vos locaux.",
+      q: "Comment se passe une intervention à Saint-Mitre-les-Remparts ?",
+      a: "Nous intervenons partout en France, sur place ou à distance. Saint-Mitre est à 10 min d'Istres et 45 min de Marseille par A55.",
     },
   ],
 };

@@ -65,7 +65,7 @@ export const PERIGNY_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA sur site à Périgny ?",
-      a: "Nous intervenons à Périgny, à 12 min de la gare TGV de La Rochelle. Mission sur site dans vos locaux, bureau ou cabinet.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Mission sur site dans vos locaux, bureau ou cabinet à Périgny, commune à 12 min de la gare TGV de La Rochelle.",
     },
   ],
 };
