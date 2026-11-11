@@ -61,7 +61,7 @@ on:
   merge_group:
   # 2026-10-26 : un passage COMPLET par jour (10 h 15 Paris l'hiver, 11 h 15 l'été), car un push sur main ne relance plus
   # la couverture ×3 ni Gate C (doublon de la CI de PR, ~58 min-machine par push, voir plus bas).
-  # Depuis le 2026-11-08 (CI-LOT1), c'est le SEUL passage de la CI sur `main` (plus de déclencheur `push`).
+  # Depuis le 2026-11-08 (CI-LOT1), c'est le seul passage COMPLET (couverture, Gate B) sur `main` ; le push ne lance que Gate A et Gate D.
   schedule:
     - cron: "15 9 * * *"
   # 🔵 MESURE D'ACCESSIBILITÉ À LA DEMANDE (2026-09-12).
@@ -91,8 +91,8 @@ on:
 
 concurrency:
   # Le type d'événement entre dans le groupe : sans lui, un push sur main annulerait le passage
-  # quotidien (même ref). Il n'y a plus de déclencheur `push` depuis le 2026-11-08 (CI-LOT1) ; le type
-  # d'événement reste dans le groupe pour qu'un dispatch manuel n'annule pas le passage quotidien.
+  # quotidien (même ref). Le type d'événement reste aussi dans le groupe
+  # pour qu'un dispatch manuel n'annule pas le passage quotidien.
   group: ci-${{ github.event_name }}-${{ github.ref }}
   cancel-in-progress: true
 
@@ -368,8 +368,8 @@ jobs:
     timeout-minutes: 30
     # Pas sur un push vers main/staging : la PR l'a déjà passé (~48 min-machine économisées).
     # Il reste exécuté sur PR, file de fusion, passage quotidien et à la demande.
-    # (Le déclencheur `push` est retiré depuis le 2026-11-08 : `!= 'push'` est gardé par
-    # prudence, au cas où il serait remis, et la garde la-suite-vitest-tourne-une-fois l'exige.)
+    # (`!= 'push'` : pas de couverture sur un push vers main ; la garde
+    # la-suite-vitest-tourne-une-fois l'exige.)
     # 2026-11-08 (CI-LOT1) : ni sur une PR en BROUILLON (relancé par `ready_for_review`).
     if: github.event_name != 'push' && (github.event_name != 'pull_request' || github.event.pull_request.draft == false)
     strategy:

@@ -48,7 +48,7 @@
  * que le découpage RETROUVE la ligne `types:` du bloc `pull_request:` : c'est la
  * preuve que la lecture atteint bien le bloc et en sépare les lignes filles.
  * (Jusqu'au 2026-11-08, le témoin lisait le filtre du déclencheur `push:`,
- * retiré ce jour-là par CI-LOT1.)
+ * limité à `main` par CI-LOT1.)
  */
 
 import { readdirSync, readFileSync } from "node:fs";
@@ -131,7 +131,7 @@ describe("une PR empilée est gardée comme les autres", () => {
     // trouvé aucun filtre » et « je ne sais pas lire » ont la même couleur.
     //
     // 2026-11-08 (CI-LOT1) : le témoin lisait le filtre `branches:` du déclencheur
-    // `push:`, RETIRÉ ce jour-là (10 runs sur 13 annulés sur main ; main est rejoué
+    // `push:`, LIMITÉ à `main` ce jour-là (10 runs sur 13 annulés sur main ; main est rejoué
     // en entier par le passage quotidien). Il lit désormais la ligne `types:` du
     // bloc `pull_request:` lui-même — preuve plus directe encore que la lecture
     // atteint le bloc qu'on inspecte, et qu'elle en sépare bien les lignes filles.
