@@ -683,7 +683,7 @@ export default async function FormationsHub({ params }: Props) {
             href="/tarifs"
             className="text-terracotta hover:text-terracotta-deep inline-flex items-center gap-1 text-sm font-semibold underline-offset-4 hover:underline focus-visible:underline focus-visible:outline-none"
           >
-            {isFr ? "Voir tous les tarifs en détail" : "See all prices in detail"}
+            {isFr ? "Voir nos tarifs et conditions" : "See our prices and terms"}
             <ArrowRight className="h-4 w-4" aria-hidden="true" />
           </Link>
         </p>
