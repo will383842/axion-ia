@@ -74,7 +74,7 @@ export const SAINT_GRATIEN_COPY: VilleCopy = {
           {
             step: "Développement par sprints",
             detail:
-              "Greffe IA sur l'existant ou build IA-native : boutique e-commerce multi-CMS, moteur de réservation, devis intelligents, chatbot RAG multilingue, recherche sémantique, agents et automatisations. Démos hebdomadaires en visio depuis Paris, à 15-20 min en RER C ou Transilien H.",
+              "Greffe IA sur l'existant ou build IA-native : boutique e-commerce multi-CMS, moteur de réservation, devis intelligents, chatbot RAG multilingue, recherche sémantique, agents et automatisations.",
           },
           {
             step: "Recette + mise en ligne",
@@ -160,7 +160,7 @@ export const SAINT_GRATIEN_COPY: VilleCopy = {
           {
             step: "Développement par sprints",
             detail:
-              "Greffe IA sur l'existant ou build IA-native : boutique e-commerce multi-CMS, moteur de réservation, devis intelligents, chatbot RAG multilingue, recherche sémantique, agents et automatisations. Démos hebdomadaires en visio depuis Paris, à 15-20 min en RER C ou Transilien H.",
+              "Greffe IA sur l'existant ou build IA-native : boutique e-commerce multi-CMS, moteur de réservation, devis intelligents, chatbot RAG multilingue, recherche sémantique, agents et automatisations.",
           },
           {
             step: "Recette + mise en ligne",
@@ -245,7 +245,7 @@ export const SAINT_GRATIEN_COPY: VilleCopy = {
       a: "Audit sur place, intervention d'une journée de formation et coaching 1-to-1. Nous adaptons les formats au quotidien des TPE locales, sans jargon technique.",
     },
     {
-      q: "Comment se passe une mission depuis Paris ?",
+      q: "Comment se déroule une mission à Saint-Gratien ?",
       a: "Nous intervenons partout en France, sur place ou à distance.",
     },
   ],

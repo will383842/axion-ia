@@ -49,7 +49,7 @@ export const VALLONS_DE_L_ERDRE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Vallons-de-l'Erdre et nord Loire-Atlantique ?",
-      a: "Oui, Axion-IA intervient à Vallons-de-l'Erdre et tout le nord Loire-Atlantique (Ancenis, Châteaubriant, Nort-sur-Erdre). Consultants depuis Nantes (50 min) ou Angers (50 min). Couverture complète du secteur rural nord.",
+      a: "Oui, Axion-IA intervient à Vallons-de-l'Erdre et tout le nord Loire-Atlantique (Ancenis, Châteaubriant, Nort-sur-Erdre). Nous intervenons partout en France, sur place ou à distance. Couverture complète du secteur rural nord.",
     },
     {
       q: "Accompagnez-vous les exploitations agricoles et d'élevage ?",

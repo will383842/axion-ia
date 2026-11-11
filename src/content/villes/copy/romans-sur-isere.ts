@@ -230,7 +230,7 @@ export const ROMANS_SUR_ISERE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs publics d'Axion-IA pour intervenir à Romans-sur-Isère ?",
-      a: "Nos tarifs publics démarrent à {{price:audit-flash|flat}} pour l'Audit sur place 4h, {{price:intervention-4h|flat}} pour une intervention en format collectif (1 journée) et {{price:intervention-dirigeants|flat}} pour une Implémentation ou un accompagnement un-à-un. Le déplacement depuis Paris est inclus pour ces formats.",
+      a: "Nos tarifs publics démarrent à {{price:audit-flash|flat}} pour l'Audit sur place 4h, {{price:intervention-4h|flat}} pour une intervention en format collectif (1 journée) et {{price:intervention-dirigeants|flat}} pour une Implémentation ou un accompagnement un-à-un.",
     },
     {
       q: "Quels délais pour une intervention IA à Romans-sur-Isère après prise de contact ?",

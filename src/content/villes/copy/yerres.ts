@@ -245,7 +245,7 @@ export const YERRES_COPY: VilleCopy = {
       a: "Prise de rendez-vous IA, rédaction et synthèse de documents, gestion des relances et reporting. Nous démarrons par un audit sur place qui identifie les usages les plus rentables pour votre cabinet.",
     },
     {
-      q: "Comment se déroule une mission depuis Paris ?",
+      q: "Comment se déroule une mission à Yerres ?",
       a: "Yerres est à 25 minutes de Paris-Gare de Lyon par le RER D et à 15 minutes d'Orly. Nos consultants se déplacent sur site.",
     },
   ],

@@ -232,7 +232,7 @@ export const SAINT_CYR_L_ECOLE_COPY: VilleCopy = {
     },
     {
       q: "Quels délais pour une intervention Axion-IA à Saint-Cyr-l'École ?",
-      a: "Williams se déplace à Saint-Cyr-l'École sous 5 à 10 jours ouvrés après validation. La gare Transilien (lignes N, U, RER C) et le tramway T13 facilitent des interventions express depuis Paris.",
+      a: "Williams se déplace à Saint-Cyr-l'École sous 5 à 10 jours ouvrés après validation. La gare Transilien (lignes N, U, RER C) et le tramway T13 facilitent des interventions express.",
     },
     {
       q: "Intervenez-vous dans les communes proches de Saint-Cyr-l'École ?",

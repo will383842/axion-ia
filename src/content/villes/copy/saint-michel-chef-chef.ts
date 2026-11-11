@@ -49,7 +49,7 @@ export const SAINT_MICHEL_CHEF_CHEF_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Saint-Michel-Chef-Chef et Côte de Jade ?",
-      a: "Oui, Axion-IA intervient à Saint-Michel-Chef-Chef et toute la Côte de Jade (Pornic, Saint-Brevin, La Plaine-sur-Mer, Préfailles). Consultants depuis Nantes (50 min). Couverture complète littoral sud Loire-Atlantique.",
+      a: "Oui, Axion-IA intervient à Saint-Michel-Chef-Chef et toute la Côte de Jade (Pornic, Saint-Brevin, La Plaine-sur-Mer, Préfailles). Nous intervenons partout en France, sur place ou à distance. Couverture complète littoral sud Loire-Atlantique.",
     },
     {
       q: "Accompagnez-vous les campings et hébergements touristiques ?",

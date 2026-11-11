@@ -49,7 +49,7 @@ export const SAINT_PIERRE_EN_AUGE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Saint-Pierre-en-Auge et dans le Pays d'Auge ?",
-      a: "Oui, Axion-IA intervient à Saint-Pierre-en-Auge et tout le Pays d'Auge (Livarot, Mézidon, Orbec, Lisieux). Consultants depuis Caen (45 min N13) ou via gare SNCF Mézidon (15 min).",
+      a: "Oui, Axion-IA intervient à Saint-Pierre-en-Auge et tout le Pays d'Auge (Livarot, Mézidon, Orbec, Lisieux). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les fromageries AOP du Pays d'Auge ?",

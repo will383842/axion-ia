@@ -245,7 +245,7 @@ export const VIERZON_COPY: VilleCopy = {
       a: "Oui, les TPE sont notre priorité. Pour artisans et commerçants, nous mettons en place devis automatisés, gestion de planning, relances clients et facturation intelligente, après un audit qui chiffre le retour attendu.",
     },
     {
-      q: "Comment se déroule une mission depuis Paris ou Bourges ?",
+      q: "Comment se déroule une mission à Vierzon ?",
       a: "Vierzon est à 1 h 40 de Paris-Austerlitz, 20 minutes de Bourges et sur l'A71. Nos consultants se déplacent sur site.",
     },
   ],

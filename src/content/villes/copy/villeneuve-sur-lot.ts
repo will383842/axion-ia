@@ -241,7 +241,7 @@ export const VILLENEUVE_SUR_LOT_COPY: VilleCopy = {
       a: "Pour les TPE artisans et commerçants à Villeneuve (BTP, bastide commerçante, services), audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation pratique, coaching 1-to-1. Cas typiques : automatisation devis, agents IA pour relation client, classification photos, gestion stocks et planning.",
     },
     {
-      q: "Comment se passe une mission depuis Paris ou Bordeaux ?",
+      q: "Comment se déroule une mission à Villeneuve-sur-Lot ?",
       a: "Nous intervenons partout en France, sur place ou à distance. Pour les missions multi-jours, hébergement local possible (hôtels Villeneuve ou Agen).",
     },
   ],

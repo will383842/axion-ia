@@ -64,7 +64,7 @@ export const SAINT_PAUL_LES_DAX_COPY: VilleCopy = {
       a: "Pour les professions de santé et paramédicales à Saint-Paul-lès-Dax, audit sur place {{price:audit-flash|flat}}, coaching 1-to-1 outils IA métier. Cas typiques : automatisation secrétariat, tri documents patients, aide rédaction comptes-rendus, gestion agenda.",
     },
     {
-      q: "Comment se passe une mission depuis Bayonne ou Bordeaux ?",
+      q: "Comment se déroule une mission à Saint-Paul-lès-Dax ?",
       a: "Nos consultants se déplacent facilement : Bayonne à 45 min par A63, Bordeaux à 1h30 par A63. Gare TGV Dax à 5 min. Pour les multi-jours, hébergement local Grand Dax.",
     },
   ],

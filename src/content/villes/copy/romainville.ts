@@ -120,7 +120,7 @@ export const ROMAINVILLE_COPY: VilleCopy = {
           },
           {
             q: "Comment intervenez-vous concrètement à Romainville ?",
-            a: "Nos experts seniors se déplacent sur site à Romainville — sur Biocitech, dans une galerie de Komunuma, dans une enseigne de l'outlet Paddock Paris ou dans vos locaux du quartier Bas-Pays / ZAC de l'Horloge. Depuis Paris, c'est environ 30 minutes par le métro ligne 11 (station Romainville-Carnot, ouverte en juin 2024) ou le tram T1. Le kick-off et la recette se font toujours en présentiel.",
+            a: "Nos experts seniors se déplacent sur site à Romainville — sur Biocitech, dans une galerie de Komunuma, dans une enseigne de l'outlet Paddock Paris ou dans vos locaux du quartier Bas-Pays / ZAC de l'Horloge. Le kick-off et la recette se font toujours en présentiel.",
           },
           {
             q: "Faites-vous de l'e-commerce pour les enseignes de Paddock Paris et du commerce local ?",
@@ -226,7 +226,7 @@ export const ROMAINVILLE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il vraiment à Romainville et dans l'EPT Est Ensemble ?",
-      a: "Oui. Nous nous déplaçons à Romainville et dans toutes les communes d'Est Ensemble (Pantin, Bagnolet, Les Lilas, Le Pré-Saint-Gervais, Bobigny, Bondy, Noisy-le-Sec) depuis Paris en 30 minutes par le métro ligne 5 ou le tram T1. Nos missions sont calibrées pour les TPE et PME locales en priorité, avec une expertise particulière sur l'axe biotech Pantin-Romainville.",
+      a: "Oui. Nous nous déplaçons à Romainville et dans toutes les communes d'Est Ensemble (Pantin, Bagnolet, Les Lilas, Le Pré-Saint-Gervais, Bobigny, Bondy, Noisy-le-Sec). Nos missions sont calibrées pour les TPE et PME locales en priorité, avec une expertise particulière sur l'axe biotech Pantin-Romainville.",
     },
     {
       q: "Avez-vous une expérience concrète avec l'écosystème pharma/biotech autour de Sanofi et Servier ?",

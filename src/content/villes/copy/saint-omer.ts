@@ -64,7 +64,7 @@ export const SAINT_OMER_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les professionnels du tourisme à Saint-Omer (hôtels, restaurants, offices de tourisme, sites patrimoniaux) sur agents conversationnels multilingues, automatisation réservations, classification avis, optimisation tarification dynamique.",
     },
     {
-      q: "Comment se passe une mission depuis Lille ou Calais ?",
+      q: "Comment se déroule une mission à Saint-Omer ?",
       a: "Nous intervenons partout en France, sur place ou à distance. Gare TGV Calais-Fréthun à 35 min. Hébergement local possible.",
     },
   ],

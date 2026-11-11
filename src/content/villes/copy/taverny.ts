@@ -232,7 +232,7 @@ export const TAVERNY_COPY: VilleCopy = {
     },
     {
       q: "Sous quel délai pouvez-vous intervenir à Taverny ?",
-      a: "Notre équipe se déplace à Taverny dans un délai de 5 jours ouvrés après validation. Taverny est accessible en 30 min depuis Paris-Nord (ligne Paris-Persan-Beaumont).",
+      a: "Notre équipe se déplace à Taverny dans un délai de 5 jours ouvrés après validation.",
     },
     {
       q: "Couvrez-vous les communes proches de Taverny ?",

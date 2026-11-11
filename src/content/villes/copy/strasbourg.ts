@@ -276,7 +276,7 @@ export const STRASBOURG_COPY: VilleCopy = {
       fr: {
         hero: "Les interventions IA Axion-IA à Strasbourg se déclinent en formats sur site d'une à plusieurs journées selon vos équipes. Vos collaborateurs ne repartent pas avec des slides : ils repartent avec des outils IA installés sur leur poste, configurés pour leur travail réel.",
         whyHere: [
-          "Strasbourg est desservie en moins de 2h depuis Paris en TGV et en 1h15 depuis Francfort en ICE : nos consultants arrivent le matin et repartent le soir, limitant les coûts logistiques pour vous.",
+          "Strasbourg est desservie en TGV et en ICE : nos consultants arrivent le matin et repartent le soir, limitant les coûts logistiques pour vous.",
           "Tous les secteurs du bassin strasbourgeois couverts en présentiel : Wacken-Europe, Presqu'île, Parc d'Innovation d'Illkirch (PII), Espace Européen de l'Entreprise à Schiltigheim, Port du Rhin, communes de l'Eurométropole.",
           "Dimension bilingue FR/DE gérée nativement : pour les équipes franco-allemandes de l'Eurodistrict, les démos et ateliers peuvent être conduits en français, en allemand ou en mode mixte selon les participants.",
           "Le format collectif (1 journée) est calibré pour les TPE, PME et ETI industrielles, biotech et de services strasbourgeoises jusqu'à une centaine de collaborateurs.",

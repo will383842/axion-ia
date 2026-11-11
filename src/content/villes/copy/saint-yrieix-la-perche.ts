@@ -64,7 +64,7 @@ export const SAINT_YRIEIX_LA_PERCHE_COPY: VilleCopy = {
       a: "Pour les PME céramique et kaolin à Saint-Yrieix, contrôle qualité par vision IA (détection défauts pièces), optimisation fours, prédiction maintenance, traçabilité lots, automatisation devis clients. Audit sur place {{price:audit-flash|flat}} en premier jalon.",
     },
     {
-      q: "Comment se passe une mission depuis Limoges ?",
+      q: "Comment se déroule une mission à Saint-Yrieix-la-Perche ?",
       a: "Nous intervenons partout en France, sur place ou à distance. Pour les missions multi-jours, hébergement local possible.",
     },
   ],

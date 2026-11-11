@@ -53,7 +53,7 @@ export const VENDOME_COPY: VilleCopy = {
     },
     {
       q: "Comment l'atout TGV Paris 42 min profite-t-il aux missions ?",
-      a: "La gare TGV Vendôme-Villiers (Paris Montparnasse 42 min) permet des missions aller-retour journée depuis Paris. Nos consultants peuvent intervenir le matin et repartir le soir, réduisant les frais d'hébergement pour votre entreprise.",
+      a: "La gare TGV Vendôme-Villiers (Paris Montparnasse 42 min) permet des missions aller-retour journée. Nos consultants peuvent intervenir le matin et repartir le soir, réduisant les frais d'hébergement pour votre entreprise.",
     },
     {
       q: "Accompagnez-vous les PME industrielles du Vendômois ?",

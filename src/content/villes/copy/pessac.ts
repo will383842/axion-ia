@@ -232,7 +232,7 @@ export const PESSAC_COPY: VilleCopy = {
     },
     {
       q: "Sous quel délai un consultant Axion-IA peut-il se déplacer à Pessac ?",
-      a: "Depuis Paris, nous rejoignons Pessac via la gare TGV Bordeaux-Saint-Jean (~2 h 10 min de TGV) puis le tramway B. Notre délai standard d'intervention sur site est de 5 jours ouvrés après validation du devis.",
+      a: "Notre délai standard d'intervention sur site est de 5 jours ouvrés après validation du devis.",
     },
     {
       q: "Intervenez-vous aussi dans les communes voisines de Pessac ?",

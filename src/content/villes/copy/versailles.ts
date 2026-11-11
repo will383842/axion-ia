@@ -245,7 +245,7 @@ export const VERSAILLES_COPY: VilleCopy = {
       a: "Automatisation des devis, qualification des demandes entrantes, rédaction d'offres personnalisées, suivi des prestataires et synthèses post-évènement. L'objectif est de libérer du temps commercial sans perdre la touche sur mesure.",
     },
     {
-      q: "Comment se déroule une mission depuis Paris ?",
+      q: "Comment se déroule une mission à Versailles ?",
       a: "Versailles est à 12 minutes de Paris par le RER C, 10 minutes de Saint-Quentin-en-Yvelines et 30 minutes d'Orly. Nos consultants se déplacent sur site.",
     },
   ],

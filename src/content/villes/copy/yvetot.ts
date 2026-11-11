@@ -49,7 +49,7 @@ export const YVETOT_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il a Yvetot et dans le pays de Caux ?",
-      a: "Oui, Axion-IA intervient a Yvetot et dans tout le pays de Caux (Barentin, Bolbec, Fecamp, Cany-Barville). Consultants depuis Rouen (35 min) ou Le Havre (35 min).",
+      a: "Oui, Axion-IA intervient a Yvetot et dans tout le pays de Caux (Barentin, Bolbec, Fecamp, Cany-Barville). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quels services IA pour les commercants d'Yvetot ?",

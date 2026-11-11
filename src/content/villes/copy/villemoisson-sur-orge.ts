@@ -64,7 +64,7 @@ export const VILLEMOISSON_SUR_ORGE_COPY: VilleCopy = {
       a: "Pour les TPE artisans BTP et commerçants de la vallée de l'Orge, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, classification photos, gestion stocks.",
     },
     {
-      q: "Comment se passe une mission depuis Paris ou Massy ?",
+      q: "Comment se déroule une mission à Villemoisson-sur-Orge ?",
       a: "Nous intervenons partout en France, sur place ou à distance. Accès rapide via RER C ou A6.",
     },
   ],

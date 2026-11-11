@@ -235,7 +235,7 @@ export const PAU_COPY: VilleCopy = {
       a: "Audit sur place {{price:audit-flash|flat}} (diagnostic et plan d'action sous 7 jours), Formation 4 h {{price:intervention-4h|flat}} (atelier sur site), Implémentation et Coaching 1-to-1 dès {{price:intervention-dirigeants|flat}}. Tarifs publics affichés, pas de devis opaque.",
     },
     {
-      q: "Quels délais de déplacement pour une mission à Pau depuis Paris ou Bordeaux ?",
+      q: "Quels délais de déplacement pour une mission à Pau ?",
       a: "Nos consultants se déplacent sous 5 jours ouvrés. Accès Pau via TGV Paris-Montparnasse (4 h), TGV Bordeaux Saint-Jean (2 h via A65 ou rail), aéroport Pau Pyrénées (vols quotidiens Paris-Orly, Lyon, Amsterdam). Possibilité d'audit visio sous 48 h.",
     },
     {

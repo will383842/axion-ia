@@ -64,7 +64,7 @@ export const SAINT_ANDRE_DE_LA_ROCHE_COPY: VilleCopy = {
       a: "Pour les professions libérales de Saint-André-de-la-Roche (médecins, avocats, comptables), nous proposons : automatisation secrétariat, transcription, classification dossiers, agents IA prise de RDV. Audit sur place {{price:audit-flash|flat}} ou coaching 1-to-1.",
     },
     {
-      q: "Comment se déroule une mission depuis Nice ?",
+      q: "Comment se déroule une mission à Saint-André-de-la-Roche ?",
       a: "Nous intervenons partout en France, sur place ou à distance. Formats flexibles : demi-journée audit, journée intervention, mission implémentation multi-semaines.",
     },
   ],

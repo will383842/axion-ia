@@ -64,7 +64,7 @@ export const PORDIC_COPY: VilleCopy = {
       a: "Audit sur place {{price:audit-flash|flat}}, implémentation outils IA métier, coaching 1-to-1, CRM augmenté, automatisation tâches administratives, prise de rendez-vous et secrétariat IA.",
     },
     {
-      q: "Comment se déroule une mission depuis Paris ou Rennes ?",
+      q: "Comment se déroule une mission à Pordic ?",
       a: "Paris-Saint-Brieuc en 2h45 (TGV direct), puis 15 min jusqu'à Pordic. Rennes à 1h10.",
     },
   ],

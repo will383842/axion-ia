@@ -241,7 +241,7 @@ export const VANNES_COPY: VilleCopy = {
       a: "Nous intervenons dans Vannes intra-muros et dans toutes les communes du Golfe : Séné, Arradon, Ploeren, Saint-Avé, Theix-Noyalo, Sarzeau et la presqu'île de Rhuys, ainsi qu'à Auray, Lorient et dans le sud-Morbihan plus largement.",
     },
     {
-      q: "Comment rejoindre vos clients vannetais depuis Paris ?",
+      q: "Comment rejoindre vos clients vannetais ?",
       a: "Vannes est reliée à Paris-Montparnasse par TGV en 2 h 45, gare en centre-ville. L'aéroport Lorient Bretagne Sud (50 km) et Rennes-Saint-Jacques (110 km) complètent la desserte. Nous intervenons partout en France, sur place ou à distance.",
     },
     {

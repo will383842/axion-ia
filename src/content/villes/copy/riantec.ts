@@ -64,7 +64,7 @@ export const RIANTEC_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les PME nautiques du bassin lorientais (construction, réparation, équipement naval) sur leurs cas IA : optimisation planification chantier, classification documents techniques, prédiction maintenance, automatisation devis complexes.",
     },
     {
-      q: "Comment se déroule une mission à Riantec depuis Lorient ?",
+      q: "Comment se déroule une mission à Riantec ?",
       a: "Nous intervenons partout en France, sur place ou à distance. Pour les multi-jours, hébergement local possible (gîtes littoraux Riantec/Étel).",
     },
   ],

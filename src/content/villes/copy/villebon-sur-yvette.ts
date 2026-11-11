@@ -64,7 +64,7 @@ export const VILLEBON_SUR_YVETTE_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les PME ingénierie et services de Courtaboeuf sur leurs cas IA : automatisation reporting, classification documents techniques, prédiction délais, CRM, gestion projet assistée.",
     },
     {
-      q: "Comment se passe une mission à Villebon-sur-Yvette depuis Paris ?",
+      q: "Comment se déroule une mission à Villebon-sur-Yvette ?",
       a: "Nous intervenons partout en France, sur place ou à distance. Aéroport Orly à 20 min.",
     },
   ],

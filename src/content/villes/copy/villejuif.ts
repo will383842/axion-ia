@@ -245,7 +245,7 @@ export const VILLEJUIF_COPY: VilleCopy = {
       a: "Oui, les TPE et professions libérales sont notre priorité à Villejuif. Nous déployons prise de rendez-vous IA, gestion des demandes patients, relances et reporting, après un audit qui chiffre le retour sur investissement.",
     },
     {
-      q: "Comment se déroule une mission depuis Paris ?",
+      q: "Comment se déroule une mission à Villejuif ?",
       a: "Villejuif est à 20 minutes de Paris-centre, 15 minutes d'Orly et reliée au Grand Paris Express (gare Institut Gustave Roussy). Nos consultants se déplacent sur site.",
     },
   ],

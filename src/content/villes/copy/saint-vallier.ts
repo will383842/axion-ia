@@ -64,7 +64,7 @@ export const SAINT_VALLIER_COPY: VilleCopy = {
       a: "Optimisation tournées livraison, prédiction demande, gestion flotte véhicules, automatisation administrative transport. Intervention sur site entrepôt ou en visio.",
     },
     {
-      q: "Comment se passe une mission depuis Lyon ou Chalon ?",
+      q: "Comment se déroule une mission à Saint-Vallier ?",
       a: "Le Creusot-TGV à 20 min de Saint-Vallier. Lyon à 1h30, Chalon-sur-Saône à 40 min.",
     },
   ],

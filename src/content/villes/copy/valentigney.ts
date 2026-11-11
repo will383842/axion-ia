@@ -49,7 +49,7 @@ export const VALENTIGNEY_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Valentigney et dans le Pays de Montbéliard ?",
-      a: "Oui, Axion-IA intervient à Valentigney et dans tout le Pays de Montbéliard (Audincourt, Montbéliard, Sochaux, Hérimoncourt, Bavans). Gare TGV Belfort-Montbéliard à 20 min. Consultants depuis Besançon (1h15) ou Belfort (25 min).",
+      a: "Oui, Axion-IA intervient à Valentigney et dans tout le Pays de Montbéliard (Audincourt, Montbéliard, Sochaux, Hérimoncourt, Bavans). Gare TGV Belfort-Montbéliard à 20 min. Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les sous-traitants automobile du bassin ?",

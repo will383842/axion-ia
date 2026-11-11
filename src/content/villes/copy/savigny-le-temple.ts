@@ -232,7 +232,7 @@ export const SAVIGNY_LE_TEMPLE_COPY: VilleCopy = {
     },
     {
       q: "Quels délais pour intervenir à Savigny-le-Temple ?",
-      a: "Nous intervenons sous 5 à 10 jours ouvrés à Savigny-le-Temple. Le RER D et l'A5 / Francilienne assurent un accès rapide depuis Paris (~35 min) ou Melun (~10 min).",
+      a: "Nous intervenons sous 5 à 10 jours ouvrés à Savigny-le-Temple.",
     },
     {
       q: "Intervenez-vous dans les communes proches de Savigny-le-Temple ?",

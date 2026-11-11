@@ -68,7 +68,7 @@ export const TERNAY_COPY: VilleCopy = {
       a: "Oui, les TPE sont notre priorité : artisans BTP, commerçants, indépendants. Audit sur place {{price:audit-flash|flat}}, intervention d'une journée, coaching 1-to-1. Cas typiques : automatisation des devis et de la relation client.",
     },
     {
-      q: "Comment se déroule une mission depuis Lyon ?",
+      q: "Comment se déroule une mission à Ternay ?",
       a: "Nous intervenons partout en France, sur place ou à distance. Sessions sur site ou en visio selon votre préférence.",
     },
   ],

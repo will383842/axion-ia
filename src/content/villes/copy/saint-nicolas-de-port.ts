@@ -49,7 +49,7 @@ export const SAINT_NICOLAS_DE_PORT_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Saint-Nicolas-de-Port et au sud-est de Nancy ?",
-      a: "Oui, Axion-IA intervient à Saint-Nicolas-de-Port et tout le sud-est de la Métropole du Grand Nancy (Varangéville, Dombasle-sur-Meurthe, Rosières-aux-Salines, Lunéville). Consultants depuis Nancy centre (15 min).",
+      a: "Oui, Axion-IA intervient à Saint-Nicolas-de-Port et tout le sud-est de la Métropole du Grand Nancy (Varangéville, Dombasle-sur-Meurthe, Rosières-aux-Salines, Lunéville). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les commerçants et restaurateurs de Saint-Nicolas-de-Port ?",

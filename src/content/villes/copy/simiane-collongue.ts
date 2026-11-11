@@ -51,7 +51,7 @@ export const SIMIANE_COLLONGUE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Simiane-Collongue et dans le nord d'Aix-en-Provence ?",
-      a: "Oui, Axion-IA intervient à Simiane-Collongue et dans toutes les communes voisines du nord aixois : Bouc-Bel-Air, Cabriès (Plan de Campagne), Mimet, Gardanne. Accès direct via A51, consultants depuis Aix-en-Provence (15 min) ou la gare TGV (20 min).",
+      a: "Oui, Axion-IA intervient à Simiane-Collongue et dans toutes les communes voisines du nord aixois : Bouc-Bel-Air, Cabriès (Plan de Campagne), Mimet, Gardanne. Accès direct via A51. Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les cabinets médicaux et professions de santé libérales ?",

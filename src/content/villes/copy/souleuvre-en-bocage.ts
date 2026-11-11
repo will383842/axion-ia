@@ -49,7 +49,7 @@ export const SOULEUVRE_EN_BOCAGE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Souleuvre en Bocage et dans le bocage normand ?",
-      a: "Oui, Axion-IA intervient à Souleuvre en Bocage et tout le Bocage virois (Vire Normandie, Condé-en-Normandie, Valdallière, Tinchebray). Consultants depuis Caen (1h A84) ou Vire (15 min).",
+      a: "Oui, Axion-IA intervient à Souleuvre en Bocage et tout le Bocage virois (Vire Normandie, Condé-en-Normandie, Valdallière, Tinchebray). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les exploitations agricoles du bocage ?",

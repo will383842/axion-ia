@@ -64,7 +64,7 @@ export const SAINT_PIERRE_EN_FAUCIGNY_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les TPE artisans BTP à Saint-Pierre-en-Faucigny sur des cas IA pratiques : automatisation devis chantier, agents IA prise de RDV, classification photos chantier, gestion planning équipes et suivi de chantier.",
     },
     {
-      q: "Comment se déroule une mission depuis Annecy ou Genève ?",
+      q: "Comment se déroule une mission à Saint-Pierre-en-Faucigny ?",
       a: "Nos consultants se déplacent dans vos locaux à Saint-Pierre-en-Faucigny (atelier, chantier, commerce). Annecy à 30 min, Genève à 35 min.",
     },
   ],

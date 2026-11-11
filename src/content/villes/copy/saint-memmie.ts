@@ -64,7 +64,7 @@ export const SAINT_MEMMIE_COPY: VilleCopy = {
       a: "Oui, planification chantiers IA, devis automatisés, gestion planning cabinet, prise de rendez-vous IA, facturation intelligente.",
     },
     {
-      q: "Comment se déroule une mission depuis Paris ?",
+      q: "Comment se déroule une mission à Saint-Memmie ?",
       a: "Paris-Est à 1 h 30 via TGV ou autoroute A4. Gare SNCF Châlons-en-Champagne à 7 min de Saint-Memmie.",
     },
   ],

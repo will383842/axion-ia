@@ -231,7 +231,7 @@ export const ROISSY_EN_BRIE_COPY: VilleCopy = {
     },
     {
       q: "Williams se déplace-t-il vraiment à Roissy-en-Brie ?",
-      a: "Oui. Roissy-en-Brie est accessible en 40 minutes depuis Paris via le RER E (branche Tournan) et en voiture par l'A4 et la RN 104. Les interventions se déroulent dans vos locaux, à Roissy-en-Brie ou dans les communes limitrophes.",
+      a: "Oui. Roissy-en-Brie est accessible en 40 minutes. Les interventions se déroulent dans vos locaux, à Roissy-en-Brie ou dans les communes limitrophes.",
     },
     {
       q: "Quels délais pour une implémentation IA à Roissy-en-Brie ?",

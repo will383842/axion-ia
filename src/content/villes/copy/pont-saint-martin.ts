@@ -49,7 +49,7 @@ export const PONT_SAINT_MARTIN_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Pont-Saint-Martin et sud Nantes ?",
-      a: "Oui, Axion-IA intervient à Pont-Saint-Martin et tout le sud nantais (Rezé, Bouguenais, La Chevrolière, Vertou). Consultants depuis Nantes centre (15 min). Couverture complète Nantes Métropole sud.",
+      a: "Oui, Axion-IA intervient à Pont-Saint-Martin et tout le sud nantais (Rezé, Bouguenais, La Chevrolière, Vertou). Nous intervenons partout en France, sur place ou à distance. Couverture complète Nantes Métropole sud.",
     },
     {
       q: "Accompagnez-vous les professions libérales de Pont-Saint-Martin ?",

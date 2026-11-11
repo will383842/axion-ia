@@ -49,7 +49,7 @@ export const VALDALLIERE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Valdallière et dans le bocage sud-ouest ?",
-      a: "Oui, Axion-IA intervient à Valdallière et tout le bocage sud-ouest Calvados (Vire Normandie, Souleuvre-en-Bocage, Condé-en-Normandie). Consultants depuis Caen (1h10 A84) ou Vire (15 min).",
+      a: "Oui, Axion-IA intervient à Valdallière et tout le bocage sud-ouest Calvados (Vire Normandie, Souleuvre-en-Bocage, Condé-en-Normandie). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les éleveurs et exploitations laitières du bocage ?",

@@ -64,7 +64,7 @@ export const PREVESSIN_MOENS_COPY: VilleCopy = {
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
     },
     {
-      q: "Comment se passe une mission depuis Lyon ou Genève ?",
+      q: "Comment se déroule une mission à Prévessin-Moëns ?",
       a: "Nous intervenons partout en France, sur place ou à distance.",
     },
   ],

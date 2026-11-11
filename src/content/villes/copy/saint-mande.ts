@@ -12,9 +12,9 @@ export const SAINT_MANDE_COPY: VilleCopy = {
   pitchEn:
     "Axion-IA accompagne les TPE et PME de Saint-Mandé, commune résidentielle haut de gamme du Val-de-Marne de 21 071 habitants, située en bordure du Bois de Vincennes et limitrophe des 12e et 20e arrondissements de Paris. Sur seulement 0,92 km² — l'une des cinq plus petites communes d'Île-de-France — Saint-Mandé concentre des sièges sociaux structurants (IGN, Météo-France, Ubisoft depuis 2021) et un tissu dense de PME de services. Notre cabinet conçoit du code IA sur mesure — pas du no-code — pour ce tissu de prestataires intellectuels, commerces de proximité et professions libérales.",
   directAnswerFr:
-    "Axion-IA intervient à Saint-Mandé pour les TPE, PME et plus rarement ETI du Val-de-Marne. Nous réalisons des audits IA sur site, des interventions ciblées d'automatisation et des implémentations sur mesure pour les sièges sociaux (IGN, Météo-France, Ubisoft), commerces de proximité et professions libérales nombreuses dans la commune. Notre équipe accède à Saint-Mandé en 10 minutes depuis Paris via le métro ligne 1 (stations Saint-Mandé et Bérault), et couvre aussi Vincennes, Montreuil ainsi que les 12e et 20e arrondissements limitrophes.",
+    "Axion-IA intervient à Saint-Mandé pour les TPE, PME et plus rarement ETI du Val-de-Marne. Nous réalisons des audits IA sur site, des interventions ciblées d'automatisation et des implémentations sur mesure pour les sièges sociaux (IGN, Météo-France, Ubisoft), commerces de proximité et professions libérales nombreuses dans la commune. Notre équipe accède à Saint-Mandé sur site, et couvre aussi Vincennes, Montreuil ainsi que les 12e et 20e arrondissements limitrophes.",
   directAnswerEn:
-    "Axion-IA intervient à Saint-Mandé pour les TPE, PME et plus rarement ETI du Val-de-Marne. Nous réalisons des audits IA sur site, des interventions ciblées d'automatisation et des implémentations sur mesure pour les sièges sociaux (IGN, Météo-France, Ubisoft), commerces de proximité et professions libérales nombreuses dans la commune. Notre équipe accède à Saint-Mandé en 10 minutes depuis Paris via le métro ligne 1 (stations Saint-Mandé et Bérault), et couvre aussi Vincennes, Montreuil ainsi que les 12e et 20e arrondissements limitrophes.",
+    "Axion-IA intervient à Saint-Mandé pour les TPE, PME et plus rarement ETI du Val-de-Marne. Nous réalisons des audits IA sur site, des interventions ciblées d'automatisation et des implémentations sur mesure pour les sièges sociaux (IGN, Météo-France, Ubisoft), commerces de proximité et professions libérales nombreuses dans la commune. Notre équipe accède à Saint-Mandé sur site, et couvre aussi Vincennes, Montreuil ainsi que les 12e et 20e arrondissements limitrophes.",
   seoHook: "sièges sociaux, services & professions libérales",
   ecosystemFr:
     "Saint-Mandé concentre sur 0,92 km² un écosystème économique singulier dominé par des sièges sociaux nationaux (IGN — Institut national de l'information géographique et forestière, Météo-France, Ubisoft installé en 2021), un tissu dense de PME de services et de professions libérales, et un commerce de proximité haut de gamme. La commune est desservie par la ligne 1 du métro (stations Saint-Mandé et Bérault), la ligne 8 et le RER A à Vincennes, et bordée par Vincennes, Montreuil, Paris 12e, Paris 20e et le Bois de Vincennes.",
@@ -41,8 +41,8 @@ export const SAINT_MANDE_COPY: VilleCopy = {
       en: "Nos interventions à Saint-Mandé ciblent les tâches répétitives des PME de services et professions libérales : automatisation documentaire, traitement de courriels clients, ou pré-qualification de dossiers.",
     },
     implementation: {
-      fr: "Pour les TPE et PME de Saint-Mandé, nous implémentons des solutions IA en code custom intégrées aux outils existants (ERP, CRM, comptabilité), sans dépendance no-code, avec déplacements depuis Paris en 10 minutes via la ligne 1.",
-      en: "Pour les TPE et PME de Saint-Mandé, nous implémentons des solutions IA en code custom intégrées aux outils existants (ERP, CRM, comptabilité), sans dépendance no-code, avec déplacements depuis Paris en 10 minutes via la ligne 1.",
+      fr: "Pour les TPE et PME de Saint-Mandé, nous implémentons des solutions IA en code custom intégrées aux outils existants (ERP, CRM, comptabilité), sans dépendance no-code.",
+      en: "Pour les TPE et PME de Saint-Mandé, nous implémentons des solutions IA en code custom intégrées aux outils existants (ERP, CRM, comptabilité), sans dépendance no-code.",
     },
     unAUn: {
       fr: "L'accompagnement un-à-un à Saint-Mandé permet aux dirigeants de TPE/PME et professions libérales de monter en compétence IA à leur rythme, avec un référent unique sur 3 à 6 mois.",
@@ -233,7 +233,7 @@ export const SAINT_MANDE_COPY: VilleCopy = {
     },
     {
       q: "Sous quel délai Axion-IA peut-il se déplacer à Saint-Mandé ?",
-      a: "Notre équipe se déplace sur site à Saint-Mandé sous 5 jours ouvrés en moyenne, avec un accès direct depuis Paris en 10 minutes via la ligne 1 du métro (stations Saint-Mandé ou Bérault).",
+      a: "Notre équipe se déplace sur site à Saint-Mandé sous 5 jours ouvrés en moyenne.",
     },
     {
       q: "Couvrez-vous les communes limitrophes de Saint-Mandé ?",

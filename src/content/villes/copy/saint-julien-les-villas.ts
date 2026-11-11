@@ -49,7 +49,7 @@ export const SAINT_JULIEN_LES_VILLAS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Saint-Julien-les-Villas et agglo Troyes ?",
-      a: "Oui, Axion-IA intervient à Saint-Julien-les-Villas et toute l'agglomération Troyes Champagne Métropole. Consultants depuis Reims (1 h 20) ou Paris (1 h 30 via TGV).",
+      a: "Oui, Axion-IA intervient à Saint-Julien-les-Villas et toute l'agglomération Troyes Champagne Métropole. Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Combien coûte un audit IA à Saint-Julien-les-Villas  ?",
@@ -64,7 +64,7 @@ export const SAINT_JULIEN_LES_VILLAS_COPY: VilleCopy = {
       a: "Oui, devis intelligents, planning chantiers, automatisation administrative, gestion documentaire cabinets, facturation augmentée pour artisans et professionnels libéraux.",
     },
     {
-      q: "Comment accéder à Saint-Julien-les-Villas depuis Paris ?",
+      q: "Comment accéder à Saint-Julien-les-Villas ?",
       a: "Paris-Est à 1 h 30 (TER + TGV via Troyes). Autoroute A5 accessible en 5 min. Reims à 1 h 20.",
     },
   ],

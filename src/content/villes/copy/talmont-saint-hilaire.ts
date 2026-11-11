@@ -49,7 +49,7 @@ export const TALMONT_SAINT_HILAIRE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Talmont-Saint-Hilaire et sur le littoral vendéen ?",
-      a: "Oui, Axion-IA intervient à Talmont-Saint-Hilaire et sur tout le littoral vendéen (Les Sables-d'Olonne, Jard-sur-Mer). Consultants depuis La Roche-sur-Yon (30 min) ou Les Sables (10 min).",
+      a: "Oui, Axion-IA intervient à Talmont-Saint-Hilaire et sur tout le littoral vendéen (Les Sables-d'Olonne, Jard-sur-Mer). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les ostréiculteurs du port du Payré ?",

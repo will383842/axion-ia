@@ -233,8 +233,8 @@ export const QUIMPER_COPY: VilleCopy = {
       a: "L'Audit sur place Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures sur site à Quimper, livré sous 5 jours ouvrés. Formation 4 h dès {{price:intervention-4h|flat}}, implémentation complète dès {{price:impl-poc|entry}}. Tous nos tarifs sont publics et fixes.",
     },
     {
-      q: "Williams se déplace-t-il à Quimper depuis Paris ?",
-      a: "Oui. Quimper est accessible en TGV InOui depuis Paris-Montparnasse en environ 3h30. Williams intervient directement dans vos locaux, du centre historique aux zones d'activité de Créac'h Gwen et aux faïenceries de Locmaria.",
+      q: "Williams se déplace-t-il à Quimper ?",
+      a: "Oui. Quimper est accessible en TGV InOui. Williams intervient directement dans vos locaux, du centre historique aux zones d'activité de Créac'h Gwen et aux faïenceries de Locmaria.",
     },
     {
       q: "Quels délais pour une intervention IA à Quimper ?",

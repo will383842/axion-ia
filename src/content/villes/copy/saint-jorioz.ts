@@ -64,7 +64,7 @@ export const SAINT_JORIOZ_COPY: VilleCopy = {
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, gestion stocks saisonniers, classification photos chantier.",
     },
     {
-      q: "Comment se passe une mission depuis Annecy ?",
+      q: "Comment se déroule une mission à Saint-Jorioz ?",
       a: "Nous intervenons partout en France, sur place ou à distance. Pour les multi-jours, hébergement local bord de lac possible.",
     },
   ],

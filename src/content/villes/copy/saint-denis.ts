@@ -552,7 +552,7 @@ export const SAINT_DENIS_COPY: VilleCopy = {
       a: "Oui. La Plaine Saint-Denis concentre des studios de tournage, sociétés de production et agences créatives avec lesquels nous travaillons. Les cas récents couvrent : automatisation scripts et plans de tournage, gestion post-production, qualification de contrats. Filtrables par secteur dans la rubrique Cas concrets.",
     },
     {
-      q: "Comment rejoindre Saint-Denis pour une intervention depuis Paris ?",
+      q: "Comment rejoindre Saint-Denis pour une intervention ?",
       a: "Saint-Denis est directement desservi par le RER D (Gare du Nord ~10 min), le RER B (La Plaine–Stade de France) et le métro ligne 13. Nos consultants gèrent leur déplacement",
     },
     {

@@ -245,7 +245,7 @@ export const VIGNEUX_SUR_SEINE_COPY: VilleCopy = {
       a: "Oui, les TPE sont notre priorité. Pour commerces et restauration, nous déployons fidélisation client automatisée, gestion des réservations, optimisation des stocks et reporting clair adaptés aux petites structures.",
     },
     {
-      q: "Comment se déroule une mission depuis Paris ou Orly ?",
+      q: "Comment se déroule une mission à Vigneux-sur-Seine ?",
       a: "Vigneux-sur-Seine est à 25 minutes de Paris-Gare de Lyon par le RER D et 10 minutes d'Orly. Nos consultants se déplacent sur site.",
     },
   ],

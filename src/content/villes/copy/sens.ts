@@ -226,7 +226,7 @@ export const SENS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Sens et dans le Sénonais ?",
-      a: "Oui, Axion-IA intervient à Sens et dans les communes voisines (Paron, Saint-Clément, Maillot, Gron, Saint-Denis-lès-Sens, Saint-Martin-du-Tertre, Malay-le-Grand, Rosoy, Saligny). Déplacement depuis Paris en 55 min TER direct.",
+      a: "Oui, Axion-IA intervient à Sens et dans les communes voisines (Paron, Saint-Clément, Maillot, Gron, Saint-Denis-lès-Sens, Saint-Martin-du-Tertre, Malay-le-Grand, Rosoy, Saligny).",
     },
     {
       q: "Quel est le tarif d'un audit IA pour une TPE à Sens ?",
@@ -238,7 +238,7 @@ export const SENS_COPY: VilleCopy = {
     },
     {
       q: "Quel délai pour une intervention IA à Sens ?",
-      a: "Nous nous engageons à intervenir sur site à Sens dans un délai de 5 à 8 jours ouvrés après prise de contact, via la gare SNCF (TER 55 min depuis Paris-Bercy) ou l'A19.",
+      a: "Nous nous engageons à intervenir sur site à Sens dans un délai de 5 à 8 jours ouvrés après prise de contact, via la gare SNCF ou l'A19.",
     },
     {
       q: "Comment Axion-IA garantit-elle la conformité RGPD à Sens ?",

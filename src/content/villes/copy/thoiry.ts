@@ -68,7 +68,7 @@ export const THOIRY_COPY: VilleCopy = {
       a: "Audit sur place pour cadrer les priorités, intervention d'une journée pour rendre vos équipes autonomes, et coaching individuel. Tous nos tarifs sont publics et transparents.",
     },
     {
-      q: "Comment se déroule une mission depuis Lyon ou Genève ?",
+      q: "Comment se déroule une mission à Thoiry ?",
       a: "Nous intervenons partout en France, sur place ou à distance. Les déplacements sont facturés séparément selon des tarifs publics, sans surprise ni devis opaque.",
     },
     {

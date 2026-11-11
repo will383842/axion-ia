@@ -64,7 +64,7 @@ export const ROQUEFORT_LES_PINS_COPY: VilleCopy = {
       a: "Pour les professions libérales de Roquefort-les-Pins (avocats, médecins, comptables, architectes), nous proposons : automatisation secrétariat, transcription, classification dossiers, agents IA prise de RDV. Audit sur place {{price:audit-flash|flat}}.",
     },
     {
-      q: "Comment se déroule une mission depuis le littoral ?",
+      q: "Comment se déroule une mission à Roquefort-les-Pins ?",
       a: "Nous intervenons partout en France, sur place ou à distance. Formats flexibles : demi-journée audit, journée intervention, mission implémentation multi-semaines.",
     },
   ],

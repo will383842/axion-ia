@@ -65,7 +65,7 @@ export const PEYMEINADE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Peymeinade ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Formats flexibles : demi-journée audit, journée intervention, mission implémentation multi-semaines. Déplacement arrière-pays inclus dans le forfait depuis le littoral azuréen.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Formats flexibles : demi-journée audit, journée intervention, mission implémentation multi-semaines. Déplacement arrière-pays inclus dans le forfait.",
     },
   ],
 };

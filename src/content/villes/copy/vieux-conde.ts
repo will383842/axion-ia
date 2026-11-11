@@ -49,7 +49,7 @@ export const VIEUX_CONDE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Vieux-Condé et Valenciennois ?",
-      a: "Oui, Axion-IA intervient à Vieux-Condé et tout le Valenciennois (Condé-sur-l'Escaut limitrophe, Valenciennes, Anzin, Bruay-sur-l'Escaut). Consultants depuis Lille (50 min).",
+      a: "Oui, Axion-IA intervient à Vieux-Condé et tout le Valenciennois (Condé-sur-l'Escaut limitrophe, Valenciennes, Anzin, Bruay-sur-l'Escaut). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les TPE artisans BTP vieux-condéens ?",
@@ -64,7 +64,7 @@ export const VIEUX_CONDE_COPY: VilleCopy = {
       a: "Pour les commerçants et professions libérales à Vieux-Condé, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : agents conversationnels, automatisation RDV, fidélisation.",
     },
     {
-      q: "Comment se passe une mission depuis Lille ?",
+      q: "Comment se déroule une mission à Vieux-Condé ?",
       a: "Nous intervenons partout en France, sur place ou à distance.",
     },
   ],

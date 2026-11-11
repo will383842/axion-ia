@@ -232,7 +232,7 @@ export const SCHILTIGHEIM_COPY: VilleCopy = {
       a: "Nos interventions IA à Schiltigheim démarrent à {{price:intervention-4h|flat}} pour le format collectif (1 journée), après un Audit sur place à {{price:audit-flash|flat}}. Tarifs publics affichés.",
     },
     {
-      q: "Williams se déplace-t-il à Schiltigheim depuis Paris ?",
+      q: "Williams se déplace-t-il à Schiltigheim ?",
       a: "Oui, Williams se déplace à Schiltigheim (gare TGV de Strasbourg à 5 km, 1h45 de Paris en TGV) dans les 5 jours ouvrés suivant la signature, pour intervenir directement chez vous ou à l'Espace Européen de l'Entreprise.",
     },
     {

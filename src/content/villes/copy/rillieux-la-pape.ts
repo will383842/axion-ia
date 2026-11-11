@@ -245,7 +245,7 @@ export const RILLIEUX_LA_PAPE_COPY: VilleCopy = {
       a: "Agents conversationnels B2B, automatisation de workflows, classification documentaire et CRM augmentés. Tarifs publics, sans devis opaque.",
     },
     {
-      q: "Comment se passe une mission depuis Lyon ?",
+      q: "Comment se déroule une mission à Rillieux-la-Pape ?",
       a: "Nous intervenons partout en France, sur place ou à distance.",
     },
     {

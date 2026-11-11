@@ -245,7 +245,7 @@ export const TOURNEFEUILLE_COPY: VilleCopy = {
       a: "Non. Nous partons de vos logiciels existants et formons vos équipes pas à pas. L'objectif est un gain de temps concret et mesurable, accessible à une TPE comme à une PME, sans recruter de profil technique.",
     },
     {
-      q: "Comment se déroule une mission à Tournefeuille depuis Toulouse ?",
+      q: "Comment se déroule une mission à Tournefeuille ?",
       a: "Le diagnostic et les sessions clés se font sur site ; le suivi se poursuit en visio. La proximité de Toulouse (15 min) permet des déplacements rapides, dont les frais sont indiqués séparément et en toute transparence.",
     },
   ],

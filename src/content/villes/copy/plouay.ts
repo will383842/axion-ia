@@ -64,7 +64,7 @@ export const PLOUAY_COPY: VilleCopy = {
       a: "Pour les TPE artisans BTP et commerçants à Plouay, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation pratique, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, classification photos chantier, gestion stocks.",
     },
     {
-      q: "Comment se passe une mission à Plouay depuis Lorient ?",
+      q: "Comment se déroule une mission à Plouay ?",
       a: "Nous intervenons partout en France, sur place ou à distance. Pour les multi-jours, hébergement local possible (gîtes centre Morbihan).",
     },
   ],

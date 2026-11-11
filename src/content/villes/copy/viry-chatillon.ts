@@ -245,7 +245,7 @@ export const VIRY_CHATILLON_COPY: VilleCopy = {
       a: "Optimisation des tournées, suivi automatisé des livraisons, traitement des demandes entrantes et reporting d'activité. L'objectif est de réduire les tâches répétitives et de fiabiliser le pilotage pour des structures à taille humaine.",
     },
     {
-      q: "Comment se déroule une mission depuis Paris ou Orly ?",
+      q: "Comment se déroule une mission à Viry-Châtillon ?",
       a: "Viry-Châtillon est à 30 minutes de Paris par le RER D, 10 minutes d'Orly et sur l'A6. Nos consultants se déplacent sur site.",
     },
   ],

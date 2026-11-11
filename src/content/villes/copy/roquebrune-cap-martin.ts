@@ -64,7 +64,7 @@ export const ROQUEBRUNE_CAP_MARTIN_COPY: VilleCopy = {
       a: "Pour les commerces balnéaires et saisonniers du Cap-Martin, nous proposons : gestion stocks prédictive (pics été), automatisation commandes fournisseurs, agents conversationnels client multilingues, CRM fidélisation. Intervention ponctuelle ou implémentation complète.",
     },
     {
-      q: "Comment se déroule une mission depuis Nice ou Monaco ?",
+      q: "Comment se déroule une mission à Roquebrune-Cap-Martin ?",
       a: "Nous intervenons partout en France, sur place ou à distance. Formats flexibles : demi-journée audit, journée intervention, mission implémentation multi-semaines.",
     },
   ],

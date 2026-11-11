@@ -50,7 +50,7 @@ export const PERONNAS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Péronnas et dans l'agglomération de Bourg-en-Bresse ?",
-      a: "Oui, nous intervenons à Péronnas et dans les communes voisines de Bourg-en-Bresse, Viriat, Saint-Denis-lès-Bourg, Buellas, Polliat, Montagnat et Ceyzériat. Consultants depuis Lyon (~1h) ou TGV Paris-Bourg (2h).",
+      a: "Oui, nous intervenons à Péronnas et dans les communes voisines de Bourg-en-Bresse, Viriat, Saint-Denis-lès-Bourg, Buellas, Polliat, Montagnat et Ceyzériat. Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quels sont vos tarifs pour une intervention IA à Péronnas ?",

@@ -64,7 +64,7 @@ export const THOUARE_SUR_LOIRE_COPY: VilleCopy = {
       a: "Pour les TPE tertiaires et professions libérales à Thouaré-sur-Loire, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation administratif, agents IA prise de RDV, classification dossiers.",
     },
     {
-      q: "Comment se passe une mission depuis Nantes centre ?",
+      q: "Comment se déroule une mission à Thouaré-sur-Loire ?",
       a: "Nous intervenons partout en France, sur place ou à distance. Thouaré est en première couronne, aucun frais de déplacement excessif. Tarifs publics, frais facturés à part du forfait.",
     },
   ],

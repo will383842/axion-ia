@@ -64,7 +64,7 @@ export const TARNOS_COPY: VilleCopy = {
       a: "Pour les TPE artisans BTP et commerçants à Tarnos, audit sur place {{price:audit-flash|flat}}, coaching 1-to-1, intervention formation 1 journée. Cas typiques : automatisation devis, agents IA prise de RDV, gestion stocks, facturation automatisée.",
     },
     {
-      q: "Comment se passe une mission à Tarnos depuis Bayonne ?",
+      q: "Comment se déroule une mission à Tarnos ?",
       a: "Tarnos est à 10 min de Bayonne centre. Nos consultants interviennent facilement sur site (zone industrielle ou bureau). Gare Bayonne à 15 min, aéroport Biarritz à 20 min.",
     },
   ],

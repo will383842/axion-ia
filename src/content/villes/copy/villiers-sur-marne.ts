@@ -56,7 +56,7 @@ export const VILLIERS_SUR_MARNE_COPY: VilleCopy = {
           "Pôle Image et Son de l'Est parisien (INA, Studios de Bry, École Georges Méliès) à cheval Villiers/Bry : nous concevons des plateformes SaaS pour la gestion d'archives audiovisuelles, le catalogage assisté par IA, les médiathèques et les sites des sociétés de production et prestataires techniques du cluster.",
           "ZAC Marne Europe (EPAMARNE, 80 000 m² de bureaux, 17 000 m² de commerces, palais des congrès) sur l'ancienne emprise VDO : nous accompagnons les futures implantations tertiaires, l'événementiel et les commerces neufs avec des sites et back-offices IA-native prêts pour l'ouverture de la gare ligne 15.",
           "Zones d'activité grande distribution (IKEA, Bricorama, zones créées de 1977 à 1999) et logistique e-commerce de Marne-la-Vallée au carrefour A4/A104 : nous bâtissons des sites e-commerce multi-CMS et des plateformes de suivi logistique pour le retail, la cosmétique, le dispositif médical et l'événementiel.",
-          "Tissu de ~4 388 entreprises majoritairement TPE/PME (commerce de détail, BTP, transport, conseil) : nous livrons des sites vitrines et e-commerce performants (UX/UI, mobile, Web Vitals) accessibles depuis Paris en RER E (gare Villiers-sur-Marne — Le Plessis-Trévise, ~18-32 min) ou par l'A4.",
+          "Tissu de ~4 388 entreprises majoritairement TPE/PME (commerce de détail, BTP, transport, conseil) : nous livrons des sites vitrines et e-commerce performants (UX/UI, mobile, Web Vitals).",
         ],
         methodology: [
           {

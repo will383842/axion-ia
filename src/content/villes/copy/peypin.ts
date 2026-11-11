@@ -51,7 +51,7 @@ export const PEYPIN_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Peypin et dans le bassin minier reconverti ?",
-      a: "Oui, Axion-IA intervient à Peypin et dans toutes les communes du pays minier reconverti : Auriol, La Bouilladisse, La Destrousse, Saint-Savournin, Cadolive. Accès direct via A52, consultants depuis Aubagne (12 min) ou Marseille (30 min).",
+      a: "Oui, Axion-IA intervient à Peypin et dans toutes les communes du pays minier reconverti : Auriol, La Bouilladisse, La Destrousse, Saint-Savournin, Cadolive. Accès direct via A52. Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les artisans BTP rénovation énergétique ?",

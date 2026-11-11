@@ -49,7 +49,7 @@ export const SAINT_AMAND_MONTROND_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Saint-Amand-Montrond et sud Cher ?",
-      a: "Oui, Axion-IA intervient à Saint-Amand-Montrond et dans tout le sud du Cher (Dun-sur-Auron, Châteauneuf-sur-Cher, Lignières). Consultants depuis Bourges (45 min) ou Clermont-Ferrand (1h45). Couverture complète sous-préfecture.",
+      a: "Oui, Axion-IA intervient à Saint-Amand-Montrond et dans tout le sud du Cher (Dun-sur-Auron, Châteauneuf-sur-Cher, Lignières). Nous intervenons partout en France, sur place ou à distance. Couverture complète sous-préfecture.",
     },
     {
       q: "Travaillez-vous avec les artisans bijoutiers et métiers d'art ?",

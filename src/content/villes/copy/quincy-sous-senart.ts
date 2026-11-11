@@ -64,7 +64,7 @@ export const QUINCY_SOUS_SENART_COPY: VilleCopy = {
       a: "Oui, notre Audit sur place de 4 heures est disponible à partir de {{price:audit-flash|flat}}, idéal pour les PME de Quincy-sous-Sénart souhaitant un diagnostic rapide de leurs processus avant toute implémentation IA.",
     },
     {
-      q: "Comment se passe une mission à Quincy-sous-Sénart depuis Paris ?",
+      q: "Comment se déroule une mission à Quincy-sous-Sénart ?",
       a: "Nous intervenons partout en France, sur place ou à distance. Zone Sénart à 10 min.",
     },
   ],

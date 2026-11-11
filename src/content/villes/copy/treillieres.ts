@@ -64,7 +64,7 @@ export const TREILLIERES_COPY: VilleCopy = {
       a: "Pour les TPE artisans et commerçants à Treillières, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, gestion planning IA, agents IA prise de commandes.",
     },
     {
-      q: "Comment se passe une mission depuis Nantes ?",
+      q: "Comment se déroule une mission à Treillières ?",
       a: "Nous intervenons partout en France, sur place ou à distance. Treillières est en couronne nord Nantes Métropole, très accessible. Coûts de déplacement séparés du forfait, tarifs transparents.",
     },
   ],

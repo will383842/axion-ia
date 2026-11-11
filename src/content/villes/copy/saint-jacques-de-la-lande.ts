@@ -64,8 +64,8 @@ export const SAINT_JACQUES_DE_LA_LANDE_COPY: VilleCopy = {
       a: "Pour les TPE, artisans et commerçants à Saint-Jacques-de-la-Lande, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, gestion stocks.",
     },
     {
-      q: "Comment accéder à vos consultants depuis Saint-Jacques ?",
-      a: "Saint-Jacques-de-la-Lande est directement connectée au centre de Rennes par le métro ligne B (10 min). Nos consultants interviennent sur site dans vos locaux.",
+      q: "Comment se déroule une mission à Saint-Jacques-de-la-Lande ?",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };

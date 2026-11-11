@@ -49,7 +49,7 @@ export const SAINT_FLORENT_SUR_CHER_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Saint-Florent-sur-Cher et vallée du Cher ?",
-      a: "Oui, Axion-IA intervient à Saint-Florent-sur-Cher et dans toute la vallée du Cher (Bourges, Mehun-sur-Yèvre, Lunery, Chârost). Consultants depuis Bourges (15 min). Couverture complète agglo Bourges Plus sud.",
+      a: "Oui, Axion-IA intervient à Saint-Florent-sur-Cher et dans toute la vallée du Cher (Bourges, Mehun-sur-Yèvre, Lunery, Chârost). Nous intervenons partout en France, sur place ou à distance. Couverture complète agglo Bourges Plus sud.",
     },
     {
       q: "Travaillez-vous avec les PME industrielles du Cher ?",

@@ -64,7 +64,7 @@ export const SAINTE_SAVINE_COPY: VilleCopy = {
       a: "Oui, gestion rendez-vous, automatisation comptes-rendus, CRM patient, facturation, reporting cabinet, télésecrétariat IA pour professions libérales et cabinets santé TPE/PME.",
     },
     {
-      q: "Comment accéder à Sainte-Savine depuis Paris ?",
+      q: "Comment accéder à Sainte-Savine ?",
       a: "TGV Paris-Est à Troyes en 1 h 30, puis 5 min en voiture. Autoroute A5 directe en 1 h 45. Aéroport CDG à 1 h 45.",
     },
   ],

@@ -60,7 +60,7 @@ export const WERVICQ_SUD_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les acteurs transfrontaliers à Wervicq-Sud. Cas typiques IA : agents conversationnels bilingues FR/NL, automatisation documents douaniers, optimisation flux logistique cross-border Lys-Flandre occidentale.",
     },
     {
-      q: "Comment se passe une mission à Wervicq-Sud depuis Lille ?",
+      q: "Comment se déroule une mission à Wervicq-Sud ?",
       a: "Nous intervenons partout en France, sur place ou à distance. Aéroport Lille-Lesquin à 35 min. Pour les missions multi-jours, hébergement local possible.",
     },
     {

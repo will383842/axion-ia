@@ -240,7 +240,7 @@ export const SAINT_OUEN_SUR_SEINE_COPY: VilleCopy = {
     },
     {
       q: "Quels délais d'intervention sur site à Saint-Ouen-sur-Seine ?",
-      a: "Nos consultants se déplacent sur site sous 5 jours ouvrés après validation. Accès direct depuis Paris par les métros 13 et 14, le RER C ou le tramway T3b. Très proche des 17e et 18e arrondissements.",
+      a: "Nos consultants se déplacent sur site sous 5 jours ouvrés après validation. Très proche des 17e et 18e arrondissements.",
     },
     {
       q: "Comment Axion-IA assure la conformité RGPD à Saint-Ouen ?",

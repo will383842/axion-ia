@@ -49,7 +49,7 @@ export const SAINT_BRICE_SOUS_FORET_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Saint-Brice-sous-Forêt et vallée de Montmorency ?",
-      a: "Oui, Axion-IA intervient à Saint-Brice-sous-Forêt et toute la vallée de Montmorency (Montmorency, Sarcelles, Enghien-les-Bains, Groslay, Deuil-la-Barre). Consultants depuis Paris Gare du Nord (25 min Transilien H).",
+      a: "Oui, Axion-IA intervient à Saint-Brice-sous-Forêt et toute la vallée de Montmorency (Montmorency, Sarcelles, Enghien-les-Bains, Groslay, Deuil-la-Barre). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les TPE et commerçants de Saint-Brice ?",
@@ -64,7 +64,7 @@ export const SAINT_BRICE_SOUS_FORET_COPY: VilleCopy = {
       a: "Pour les PME tertiaires du nord parisien installées à Saint-Brice-sous-Forêt, audit Stratégique, intervention formation équipes, implémentation IA complète (agents, automatisation, classification). ROI chiffré contractuel.",
     },
     {
-      q: "Comment se passe une mission depuis Paris ?",
+      q: "Comment se déroule une mission à Saint-Brice-sous-Forêt ?",
       a: "Nous intervenons partout en France, sur place ou à distance.",
     },
   ],

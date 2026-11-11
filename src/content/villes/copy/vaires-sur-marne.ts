@@ -64,7 +64,7 @@ export const VAIRES_SUR_MARNE_COPY: VilleCopy = {
       a: "Oui, nos interventions IA sur site à Vaires-sur-Marne sont adaptées aux TPE artisans et commerces. Formats demi-journée ou journée complète, vos équipes repartent autonomes sur les outils IA configurés métier.",
     },
     {
-      q: "Comment accédez-vous à Vaires-sur-Marne depuis Paris ?",
+      q: "Comment accédez-vous à Vaires-sur-Marne ?",
       a: "Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
