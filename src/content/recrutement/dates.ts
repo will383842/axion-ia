@@ -8,15 +8,17 @@
 // sur Telegram quand une offre dépasse 45 jours).
 
 /**
- * Date de référence de la page /devenir-commercial-ia (republication « France
- * entière » du 2026-08-12).
+ * Date de référence des landings apporteurs d'affaires (/devenir-commercial-ia et ses pages
+ * sœurs) : refonte complète depuis les maquettes validées, le 2026-11-09. Elle alimente le
+ * « Mis à jour le » visible, le `dateModified` du JSON-LD et le `lastmod` du sitemap.
+ * (Précédente republication « France entière » : 2026-08-12.)
  *
  * Elle ne date plus d'offre d'emploi Google : le JSON-LD qu'elle alimentait a
  * été retiré le 2026-09-19 (décision Will B5, un apporteur indépendant n'est
  * pas un poste). Elle reste le `lastmod` de `sitemap-recrutement.xml` — une
  * date stable, qui n'avance pas à chaque déploiement sans changement de page.
  */
-export const COMMERCIAL_OFFER_DATE_POSTED = "2026-08-12T00:00:00.000Z";
+export const COMMERCIAL_OFFER_DATE_POSTED = "2026-11-09T00:00:00.000Z";
 
 /** Âge maximal (jours) avant que le cron fraîcheur signale une offre à republier. */
 export const JOB_OFFER_FRESHNESS_MAX_DAYS = 45;

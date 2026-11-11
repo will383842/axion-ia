@@ -166,38 +166,8 @@ export const EXCEPTIONS_REMUNERATION: ReadonlyArray<{
   readonly ligne: string;
   readonly motif: string;
 }> = [
-  {
-    chemin: "src/components/recrutement/PartenaireLandingPage.tsx",
-    ligne: `"Aucune limite d'âge, et les commerciaux à la retraite`,
-    motif: "« aucune limite » d'ÂGE : une condition d'accès, pas un revenu illimité.",
-  },
-  {
-    chemin: "src/components/recrutement/PartenaireLandingPage.tsx",
-    ligne: "{/* 7 ── À qui ça va + aucune limite d'âge */}",
-    motif: "Commentaire JSX (non servi) sur la limite d'ÂGE, pas sur un revenu.",
-  },
-  {
-    chemin: "src/components/recrutement/PartenaireLandingPage.tsx",
-    ligne: "Aucune limite d&apos;âge</h3>",
-    motif: "Titre « Aucune limite d'âge » : une condition d'accès, pas un revenu illimité.",
-  },
-  {
-    chemin: "src/app/[locale]/apporteur-affaires-independant-formation-ia-entreprise/page.tsx",
-    ligne: "Aucune limite d&apos;âge</h3>",
-    motif: "Titre « Aucune limite d'âge » : une condition d'accès, pas un revenu illimité.",
-  },
-  {
-    chemin: "src/app/[locale]/apporteur-affaires-independant-formation-ia-entreprise/page.tsx",
-    ligne: "L&apos;activité est ouverte à tout indépendant en capacité de facturer, sans limite",
-    motif:
-      "« sans limite » d'ÂGE, dont « d'âge » ouvre la ligne suivante (JSX coupé) : une condition " +
-      "d'accès, pas un revenu illimité.",
-  },
-  {
-    chemin: "src/app/[locale]/memo-isere/page.tsx",
-    ligne: `"Oui. L'activité est 100 % à la commission et sans quota horaire`,
-    motif: "« 100 % à la commission » dit le MODE de rémunération (aucun fixe), pas un taux.",
-  },
+  // Exceptions retirées le 09/11/2026 : les pages qui les portaient (PartenaireLandingPage, page « apporteur
+  // indépendant », memo-isere) sont générées depuis les maquettes et ne contiennent plus ces lignes.
 ];
 
 export function fautesDeRemuneration(

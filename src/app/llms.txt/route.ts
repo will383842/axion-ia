@@ -135,8 +135,8 @@ ${CAS_CONCRETS_AFFICHES ? `- [Cas concrets](${SITE_URL}/fr/cas-concrets) — ré
 
 ## Réseau d'apporteurs d'affaires indépendants
 
-- [Devenir apporteur d'affaires](${SITE_URL}/fr/devenir-commercial-ia) — Axion-IA constitue un réseau d'apporteurs d'affaires indépendants partout en France, qui recommandent ses formations, audits, accompagnements 1-to-1 et intégrations IA aux TPE et PME, artisans et commerçants compris. L'apporteur met en relation, Axion-IA présente, chiffre et facture. Micro-entreprise ou société, commission à l'encaissement (fixe par journée de formation, % de la facture sur audits/intégrations), démarrage sans coût. Débutants acceptés.
-- [Candidature apporteur](${SITE_URL}/fr/devenir-commercial-ia/candidature) — formulaire de candidature (réponse par e-mail dans les prochaines heures ; un échange de 15 min peut être proposé).
+- [Devenir apporteur d'affaires](${SITE_URL}/fr/devenir-commercial-ia) — Axion-IA constitue un réseau d'apporteurs d'affaires indépendants partout en France, qui présentent la Journée IA (audit le matin, formation de l'équipe l'après-midi, dans les locaux de l'entreprise) à des dirigeants de PME et de TPE qu'ils connaissent. L'apporteur met en relation ; Axion-IA prend le rendez-vous, établit le devis, anime la journée et facture l'entreprise. Statut indépendant avec un SIREN actif ; une commission par Journée IA payée, détaillée dans le contrat d'apport d'affaires ; sans frais d'entrée, sans exclusivité, sans CV. Mis à jour le 9 novembre 2026.
+- [Dossier apporteur d'affaires](${SITE_URL}/fr/devenir-commercial-ia/candidature) — dossier de 3 minutes, une question par écran, sans CV ; réponse par e-mail, puis un échange de 15 min sur invitation.
 - Sitemap dédié : ${SITE_URL}/sitemap-recrutement.xml
 
 ## Carrières — nous rejoindre (salariat)
