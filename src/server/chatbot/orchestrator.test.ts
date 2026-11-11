@@ -380,3 +380,47 @@ describe("réponse financement (mots interdits en public)", () => {
     expect(r.text).not.toMatch(/factur/i);
   });
 });
+
+describe("V3-3 base unique : cache sémantique et interrupteur CHATBOT_KB_UNIFIED", () => {
+  const chunks: RetrievedChunk[] = [
+    {
+      id: "c1",
+      sourceType: "faq",
+      sourceRef: "x",
+      categorie: "faq",
+      contenu: "Un audit dure une journée.",
+      contexte: null,
+      score: 1,
+    },
+  ];
+  const bonne = {
+    text: "Un audit dure une journée.",
+    model: "m",
+    costUsd: 0,
+    tokensInput: 1,
+    tokensOutput: 1,
+  };
+  const tour = (cacheWrite: () => Promise<void>) =>
+    handleTurn(
+      "c'est quoi un audit ?",
+      { tenant },
+      { retrieve: vi.fn(async () => chunks), generateAnswer: vi.fn(async () => bonne), cacheWrite },
+    );
+
+  it("éteint (défaut) : la réponse validée est écrite en cache, comme avant", async () => {
+    vi.stubEnv("CHATBOT_KB_UNIFIED", "");
+    const cacheWrite = vi.fn(async () => {});
+    await tour(cacheWrite);
+    expect(cacheWrite).toHaveBeenCalledTimes(1);
+    vi.unstubAllEnvs();
+  });
+
+  it("allumé : rien en cache, pour que couper la variable suffise à revenir en arrière", async () => {
+    vi.stubEnv("CHATBOT_KB_UNIFIED", "true");
+    const cacheWrite = vi.fn(async () => {});
+    const r = await tour(cacheWrite);
+    expect(r.text).toBe("Un audit dure une journée.");
+    expect(cacheWrite).not.toHaveBeenCalled();
+    vi.unstubAllEnvs();
+  });
+});
