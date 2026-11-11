@@ -92,7 +92,7 @@ vi.mock("@/lib/prisma", () => {
 vi.mock("@/server/queue/queues", () => ({ crmSyncQueue: null }));
 vi.mock("@/lib/email/nature-adresse", () => ({ natureAdresse: () => base.nature }));
 vi.mock("@/lib/security/email-hash", () => ({
-  hashEmailForLookup: (e: string) => `h:${e.trim().toLowerCase()}`,
+  hashEmailForLookup: () => "0000000000000000000000000000000000000000000000000000000000000000", // 64 hex, comme la vraie empreinte (SITE-429)
   normalizeEmail: (e: string) => e.trim().toLowerCase(),
 }));
 vi.mock("@/lib/pii-crypto", () => ({
@@ -360,11 +360,24 @@ describe("opposition et exclusion : rien ne part, rien n'est supprimé", () => {
 });
 
 describe("la page n'envoie plus rien au CRM au POST", () => {
-  it("page-confirmation.ts demande à noterOrigineAvec de NE PAS transmettre (envoi au clic seulement)", () => {
-    const src = readFileSync(
-      join(process.cwd(), "src/server/guides-reseau/page-confirmation.ts"),
-      "utf8",
-    );
-    expect(src).toMatch(/noterOrigineAvec\([\s\S]*?\n\s*false,\n\s*\);/);
+  // Le comportement (aucune charge transmise au CRM pendant le POST, dans tous les parcours) est
+  // prouvé par `guides-reseau/__tests__/page-confirmation.spec.ts` (`bd.crm` reste vide). Ici, la
+  // garantie STRUCTURELLE : depuis la page, ni la page ni l'écriture d'origine ne peuvent atteindre
+  // une émission CRM (l'événement part au clic, `transmettreClicGuide`).
+  const lire = (f: string) =>
+    readFileSync(join(process.cwd(), "src/server/guides-reseau", f), "utf8");
+  const EMISSION_CRM =
+    /crm-sync|transmettreOriginesV3|enqueueCrmSyncEvent|mettreEnFileCrm|crmSyncOutbox|noterOrigineAvec/;
+
+  it("page-confirmation.ts n'importe ni n'appelle aucune émission CRM", () => {
+    expect(lire("page-confirmation.ts")).not.toMatch(EMISSION_CRM);
+  });
+
+  it("l'écriture d'origine de la transaction (origines.ts) n'émet rien vers le CRM", () => {
+    expect(lire("origines.ts")).not.toMatch(EMISSION_CRM);
+  });
+
+  it("l'origine est écrite dans la transaction de la page (relue plus tard par le clic)", () => {
+    expect(lire("page-confirmation.ts")).toMatch(/ecrireOrigineDansTransaction\(tx,/);
   });
 });
