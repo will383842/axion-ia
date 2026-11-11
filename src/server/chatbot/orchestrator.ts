@@ -23,6 +23,10 @@ import {
 } from "@/server/chatbot/catalog/link-flow";
 import { rechercherOffres, type OfferResult } from "@/server/chatbot/tools/rechercher-offres";
 import { hybridSearch, type RetrievedChunk } from "@/server/chatbot/retrieval/hybrid-search";
+import {
+  estKbUnifieeActive,
+  rechercheChatbot,
+} from "@/server/chatbot/retrieval/knowledge-entry-search";
 import { rerankChunks } from "@/server/chatbot/retrieval/rerank";
 import { assessConfidence } from "@/server/chatbot/retrieval/confidence";
 import { verifyOutput, type OutputGuardResult } from "@/server/chatbot/security/output-guard";
@@ -125,7 +129,9 @@ export async function handleTurn(
   deps: OrchestratorDeps = {},
 ): Promise<TurnResult> {
   const llm = deps.generateAnswer ?? generateAnswer;
-  const retrieve = deps.retrieve ?? hybridSearch;
+  // V3-3 : `rechercheChatbot` = `hybridSearch` à l'identique tant que
+  // CHATBOT_KB_UNIFIED n'est pas "true" (base unique KnowledgeEntry, repli chunks).
+  const retrieve = deps.retrieve ?? rechercheChatbot;
   const rerank = deps.rerank ?? rerankChunks;
   const cacheLookup = deps.cacheLookup ?? lookupSemanticCache;
   const cacheWrite = deps.cacheWrite ?? writeSemanticCache;
@@ -462,12 +468,16 @@ export async function handleTurn(
 
       // T-26 : mémorise la réponse validée pour les questions proches futures
       // (best-effort, no-op si cache off / embedding indisponible).
-      await cacheWrite(
-        tenantId,
-        message,
-        { reponse: answer.text, sources: outSources },
-        ctx.tenant.settings,
-      );
+      // V3-3 : base unique allumée → rien en cache, pour qu'éteindre l'interrupteur
+      // ne laisse aucune réponse bâtie sur les fiches servie depuis le cache.
+      if (!estKbUnifieeActive()) {
+        await cacheWrite(
+          tenantId,
+          message,
+          { reponse: answer.text, sources: outSources },
+          ctx.tenant.settings,
+        );
+      }
 
       return {
         intent: "explication",
