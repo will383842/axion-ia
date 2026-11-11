@@ -79,12 +79,12 @@ const MONTANT =
  * ENTREPRISE CLIENTE (6 h × 45 sem. × 35 €/h, cf. `EXEMPLE_TYPE` dans
  * `src/content/journee-ia-commun.ts`) : ce n'est le tarif d'aucune offre d'Axion-IA.
  * Ne sont exemptés que ces deux montants exacts, et seulement sur `/fr` et `/fr/journee-ia`
- * (« 9 450 € » seulement s'il est suivi de « de temps payé »). Tout autre montant reste interdit.
+ * (« 9 450 € » seulement s'il est suivi, dans les 2 500 caractères, de « de temps payé » : le montant est dans un badge, la légende vient après le balisage). Tout autre montant reste interdit.
  */
 const URLS_EXEMPLE_DE_CALCUL = new Set(["/fr", "/fr/journee-ia"]);
 const EXEMPLE_DE_CALCUL = [
   /(?<![\d.,])35 € de l(?:’|'|&#x27;|&#39;|\\+u2019)heure/g,
-  /(?<![\d.,])9 450 €(?=[\s\S]{0,400}?de temps pay[ée])/g,
+  /(?<![\d.,])9 450 €(?=[\s\S]{0,2500}?de temps pay[ée])/g,
 ];
 
 function montantsInterdits(corps: string, url?: string): string[] {
