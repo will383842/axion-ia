@@ -98,12 +98,10 @@ export default async function DevenirCommercialHub({ params }: Props) {
           speakable: [".en-bref p", "h1"],
           ariane: true,
         })}
-        strategy="afterInteractive"
         scriptId="jsonld-commercial-webpage"
       />
       <JsonLd
         data={faqApporteurs(faq)}
-        strategy="afterInteractive"
         scriptId="jsonld-commercial-faq"
       />
 

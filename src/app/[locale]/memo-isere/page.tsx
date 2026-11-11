@@ -104,7 +104,6 @@ export default async function MemoIserePage({ params }: Props) {
           speakable: ["h1", ".h-sous"],
           ariane: true,
         })}
-        strategy="afterInteractive"
         scriptId="jsonld-memo-webpage"
       />
 
