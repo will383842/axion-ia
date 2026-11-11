@@ -96,7 +96,6 @@ export const AI_ACT_NAV = {
   href: "/faq/ai-act-2026",
   labelFr: "Former vos équipes à l’IA (AI Act)",
   labelEn: "Train your teams in AI (AI Act)",
-  descriptionFr:
-    "Ce que demande le règlement européen sur l’IA, et comment la Journée IA y répond.",
-  descriptionEn: "What the EU AI regulation requires, and how the AI Day addresses it.",
+  descriptionFr: "Ce que l’article 4 du règlement européen sur l’IA demande aux entreprises.",
+  descriptionEn: "What Article 4 of the EU AI regulation requires of companies.",
 } as const;

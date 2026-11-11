@@ -27,6 +27,9 @@ import { ChevronDown } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const INTENTION_SURVOL_MS = 150;
+// Fermeture plus lente que l'ouverture : laisse le temps de traverser le vide
+// entre le bouton et le panneau (doublé d'un pont invisible, `before:` du panneau).
+const DELAI_FERMETURE_MS = 350;
 
 interface HeaderPrestationsMenuProps {
   label: string;
@@ -54,10 +57,13 @@ export function HeaderPrestationsMenu({ label, panelLabel, children }: HeaderPre
   const planifier = useCallback(
     (ouvrir: boolean) => {
       annuler();
-      minuteur.current = setTimeout(() => {
-        ouvertParSurvol.current = ouvrir;
-        setOpen(ouvrir);
-      }, INTENTION_SURVOL_MS);
+      minuteur.current = setTimeout(
+        () => {
+          ouvertParSurvol.current = ouvrir;
+          setOpen(ouvrir);
+        },
+        ouvrir ? INTENTION_SURVOL_MS : DELAI_FERMETURE_MS,
+      );
     },
     [annuler],
   );
@@ -156,9 +162,9 @@ export function HeaderPrestationsMenu({ label, panelLabel, children }: HeaderPre
         role="region"
         aria-label={panelLabel}
         hidden={!open}
-        className="bg-paper border-border shadow-card absolute top-full left-1/2 z-50 w-[min(40rem,calc(100vw-2rem))] -translate-x-1/2 overflow-hidden rounded-2xl border text-left"
+        className="bg-paper border-border shadow-card absolute top-full left-1/2 z-50 w-[min(40rem,calc(100vw-2rem))] -translate-x-1/2 rounded-2xl border text-left before:absolute before:inset-x-0 before:-top-5 before:h-5"
       >
-        {children}
+        <div className="overflow-hidden rounded-[inherit]">{children}</div>
       </div>
     </div>
   );

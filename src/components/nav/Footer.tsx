@@ -7,11 +7,12 @@ import { QualiopiBadge } from "@/components/qualiopi/QualiopiBadge";
 import { isQualiopiCertificationObtenue } from "@/server/qualiopi/config/flag";
 import { MENTION_NON_AGREMENT, NDA_NUMERO } from "@/server/qualiopi/legal/legal-mentions";
 import { BRAND } from "@/lib/brand";
+import { EMAIL_LEGAL } from "@/lib/email/legal-footer";
 import { ROUTES } from "@/lib/routes";
 import { avisPublies } from "@/server/reviews/presence";
 import { AI_ACT_NAV, PRESTATIONS_NAV } from "./prestations-nav";
 
-const EMAIL_CONTACT = "contact@axion-ia.com";
+const EMAIL_CONTACT = EMAIL_LEGAL.contactEmail;
 
 /**
  * Pied de page v6 — refonte du 2026-11-11 d'après la maquette validée par Williams
