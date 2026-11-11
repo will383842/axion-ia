@@ -301,7 +301,7 @@ export default async function UnAUnHubPage({ params }: Props) {
             <Cta
               href="/appel?depuis=page-coaching"
               size="lg"
-              className="bg-primary text-primary-fg hover:bg-primary-hover shadow-[0_8px_24px_-8px_rgba(20,20,19,0.18)] hover:shadow-[0_12px_32px_-8px_rgba(20,20,19,0.18)]"
+              className="bg-primary text-primary-fg hover:bg-primary-hover shadow-[0_8px_24px_-8px_rgba(20,20,19,0.18)] hover:shadow-[0_12px_32px_-8px_rgba(20,20,19,0.24)]"
               track="un-a-un-hero-book-call"
             >
               {isFr ? "Réserver un appel" : "Book a call"}
@@ -539,7 +539,7 @@ export default async function UnAUnHubPage({ params }: Props) {
                   <Cta
                     href="/appel"
                     size="lg"
-                    className="bg-primary text-primary-fg hover:bg-primary-hover w-full justify-center shadow-[0_8px_24px_-8px_rgba(20,20,19,0.18)] hover:shadow-[0_12px_32px_-8px_rgba(20,20,19,0.18)]"
+                    className="bg-primary text-primary-fg hover:bg-primary-hover w-full justify-center shadow-[0_8px_24px_-8px_rgba(20,20,19,0.18)] hover:shadow-[0_12px_32px_-8px_rgba(20,20,19,0.24)]"
                     track="un-a-un-recurring-monthly-call"
                   >
                     {isFr ? "Réserver un appel" : "Book a call"}
@@ -594,7 +594,7 @@ export default async function UnAUnHubPage({ params }: Props) {
                   <Cta
                     href="/appel"
                     size="lg"
-                    className="bg-primary text-primary-fg hover:bg-primary-hover w-full justify-center shadow-[0_8px_24px_-8px_rgba(20,20,19,0.18)] hover:shadow-[0_12px_32px_-8px_rgba(20,20,19,0.18)]"
+                    className="bg-primary text-primary-fg hover:bg-primary-hover w-full justify-center shadow-[0_8px_24px_-8px_rgba(20,20,19,0.18)] hover:shadow-[0_12px_32px_-8px_rgba(20,20,19,0.24)]"
                     track="un-a-un-recurring-bimonthly-call"
                   >
                     {isFr ? "Réserver un appel" : "Book a call"}
@@ -814,7 +814,7 @@ export default async function UnAUnHubPage({ params }: Props) {
               <Cta
                 href="/appel"
                 size="lg"
-                className="bg-primary text-primary-fg hover:bg-primary-hover shadow-[0_8px_24px_-8px_rgba(20,20,19,0.18)] hover:shadow-[0_12px_32px_-8px_rgba(20,20,19,0.18)]"
+                className="bg-primary text-primary-fg hover:bg-primary-hover shadow-[0_8px_24px_-8px_rgba(20,20,19,0.18)] hover:shadow-[0_12px_32px_-8px_rgba(20,20,19,0.24)]"
                 track="un-a-un-terracotta-band-call"
               >
                 {isFr ? "Réserver un appel" : "Book a call"}
@@ -1033,7 +1033,7 @@ export default async function UnAUnHubPage({ params }: Props) {
           <Cta
             href="/appel"
             size="lg"
-            className="bg-primary text-primary-fg hover:bg-primary-hover shadow-[0_8px_24px_-8px_rgba(20,20,19,0.18)] hover:shadow-[0_12px_32px_-8px_rgba(20,20,19,0.18)]"
+            className="bg-primary text-primary-fg hover:bg-primary-hover shadow-[0_8px_24px_-8px_rgba(20,20,19,0.18)] hover:shadow-[0_12px_32px_-8px_rgba(20,20,19,0.24)]"
             track="un-a-un-ctablock-consultation"
           >
             {isFr ? "Réserver un appel" : "Book a call"} →
