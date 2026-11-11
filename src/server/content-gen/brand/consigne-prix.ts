@@ -9,8 +9,10 @@
  * Journée IA dans un contenu à publier.
  */
 
+import { DUREE_RDV } from "@/content/offre";
+
 /** Formule à écrire à la place d'un prix, pour toute offre autre que la Journée IA. */
-export const FORMULE_SUR_DEVIS = "sur devis, parlons-en lors du rendez-vous gratuit de 45 minutes";
+export const FORMULE_SUR_DEVIS = `sur devis, parlons-en lors du rendez-vous gratuit de ${DUREE_RDV}`;
 
 /** Jeton (résolu au rendu depuis `pricing.ts`) du seul montant citable : la Journée IA. */
 export const JETON_PRIX_JOURNEE_IA = "{{price:journee-ia|flat}}";

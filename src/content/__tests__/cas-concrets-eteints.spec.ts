@@ -38,9 +38,10 @@ describe("cas concrets éteints", () => {
   });
 
   it.each([
-    "src/components/nav/Header.tsx",
+    // L'en-tête ne porte plus de lien « Cas concrets » depuis la refonte du
+    // 2026-11-11 (« Ressources » est passé au pied de page) : seul le pied lit
+    // l'interrupteur.
     "src/components/nav/Footer.tsx",
-    "src/components/nav/HeaderResourcesMenu.tsx",
     "src/app/sitemap.ts",
     "src/app/llms.txt/route.ts",
     "src/app/llms-full.txt/route.ts",
