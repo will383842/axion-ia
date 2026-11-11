@@ -64,8 +64,8 @@ export const VOISINS_LE_BRETONNEUX_COPY: VilleCopy = {
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1, implémentation outils IA métier.",
     },
     {
-      q: "Comment se déroule une mission depuis Paris ?",
-      a: "Paris-Montparnasse (30 min Transilien N), gare SQY à 10 min de Voisins-le-Bretonneux. Aéroport Orly à 25 min. Tarifs publics.",
+      q: "Comment se déroule une mission à Voisins-le-Bretonneux ?",
+      a: "Nous intervenons partout en France, sur place ou à distance. Voisins-le-Bretonneux est à 10 min de la gare de SQY et 25 min de l'aéroport d'Orly. Tarifs publics.",
     },
   ],
 };

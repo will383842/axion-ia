@@ -49,7 +49,7 @@ export const ROSPORDEN_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Rosporden et sud Finistère ?",
-      a: "Oui, Axion-IA intervient à Rosporden et tout le sud Finistère (Concarneau, Quimperlé, Bannalec, Scaër, Elliant). Nos consultants viennent de Quimper (20 min) ou Lorient (50 min).",
+      a: "Oui, Axion-IA intervient à Rosporden et tout le sud Finistère (Concarneau, Quimperlé, Bannalec, Scaër, Elliant). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les PME agroalimentaires et biscuiteries ?",
@@ -65,7 +65,7 @@ export const ROSPORDEN_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Rosporden ?",
-      a: "Nos consultants viennent de Quimper (20 min) ou Lorient (50 min). Gare TER Rosporden accessible (ligne Quimper-Lorient). Pour les multi-jours, hébergement local possible. Coûts de déplacement à part, tarification transparente.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Gare TER Rosporden accessible (ligne Quimper-Lorient). Pour les multi-jours, hébergement local possible. Coûts de déplacement à part, tarification transparente.",
     },
   ],
 };

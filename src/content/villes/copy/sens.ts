@@ -49,7 +49,7 @@ export const SENS_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "Axion-IA conçoit des sites web et plateformes SaaS augmentés par l'IA pour les entreprises de Sens (89) et du Sénonais. Le tissu local — industrie du câble (site Prysmian Group à Gron), plasturgie et emballage (Plast'n Bio, Solodem, Plastikpack, nouvelle usine Allemandou), logistique multimodale (port fluvial de Gron sur l'Yonne, embranchement ferré ligne Paris-Lyon, zones de Salcy et des Vauguillettes au carrefour A5/A6/A19) — partage un même besoin : des portails B2B, catalogues techniques et back-offices reliés à l'IA, à 55 min de Paris-Bercy en TER. Nous construisons du sur-mesure : sites vitrines, e-commerce multi-CMS, applications métier, chatbot RAG sur vos documentations, le tout hébergé en UE et conforme RGPD.",
+        hero: "Axion-IA conçoit des sites web et plateformes SaaS augmentés par l'IA pour les entreprises de Sens (89) et du Sénonais. Le tissu local — industrie du câble (site Prysmian Group à Gron), plasturgie et emballage (Plast'n Bio, Solodem, Plastikpack, nouvelle usine Allemandou), logistique multimodale (port fluvial de Gron sur l'Yonne, embranchement ferré ligne Paris-Lyon, zones de Salcy et des Vauguillettes au carrefour A5/A6/A19) — partage un même besoin : des portails B2B, catalogues techniques et back-offices reliés à l'IA. Nous construisons du sur-mesure : sites vitrines, e-commerce multi-CMS, applications métier, chatbot RAG sur vos documentations, le tout hébergé en UE et conforme RGPD.",
         whyHere: [
           "Filière industrielle câble et équipements : le site Prysmian Group de Gron (câbles moyenne et haute tension) et les entreprises de la zone des Vauguillettes (126 ha, ~164 sociétés, équipements pétroliers, câblage, dont Senaxes en impression 3D) ont besoin de catalogues techniques en ligne, configurateurs produits et portails revendeurs pilotés par l'IA.",
           "Plasturgie et emballage : Plast'n Bio (plastiques bio-sourcés), Solodem (emballage carton/papier), Plastikpack à Gron et la nouvelle usine de plasturgie portée par les frères Allemandou (11 M€) sont des cibles e-commerce B2B et fiches produits multi-références où le search sémantique et la génération de descriptifs font gagner un temps réel.",
@@ -124,7 +124,7 @@ export const SENS_COPY: VilleCopy = {
           },
           {
             q: "Devez-vous vous déplacer à Sens et sous quel délai obtient-on un devis ?",
-            a: "Oui, le cadrage se fait sur site à Sens (Vauguillettes, Salcy, centre-ville, Gron), Paris-Bercy étant à 55 min en TER direct. Après un premier échange, nous remettons un devis à partir de 24 à 48 h selon la complexité du projet.",
+            a: "Oui, le cadrage se fait sur site à Sens (Vauguillettes, Salcy, centre-ville, Gron). Après un premier échange, nous remettons un devis à partir de 24 à 48 h selon la complexité du projet.",
           },
           {
             q: "Le site et l'IA respectent-ils le RGPD ?",
@@ -135,7 +135,7 @@ export const SENS_COPY: VilleCopy = {
           "Devis remis à partir de 24 à 48 h selon la complexité. Hébergement en UE, conformité RGPD, données et code portables : votre site et vos briques IA sont exécutables par tout intégrateur de l'Yonne ou repris en interne, sans verrou éditeur ni dépendance Axion-IA. On revendique l'ensemble du périmètre — UX/UI, mobile, e-commerce multi-CMS et IA — adapté au tissu réel du Sénonais (câble, plasturgie, emballage, logistique multimodale, commerce de centre-ville). Votre équipe garde la maîtrise complète du CMS et des contenus après la mise en ligne.",
       },
       en: {
-        hero: "Axion-IA designs AI-augmented websites and SaaS platforms for businesses in Sens (89) and the Sénonais area. The local fabric — cable industry (Prysmian Group site in Gron), plastics and packaging (Plast'n Bio, Solodem, Plastikpack, the new Allemandou factory), multimodal logistics (Gron river port on the Yonne, rail siding on the Paris-Lyon line, the Salcy and Vauguillettes zones at the A5/A6/A19 crossroads) — shares one need: B2B portals, technical catalogues and back-offices wired to AI, 55 minutes from Paris-Bercy by direct TER. We build bespoke: showcase sites, multi-CMS e-commerce, business apps, RAG chatbots on your documentation, all hosted in the EU and GDPR-compliant.",
+        hero: "Axion-IA designs AI-augmented websites and SaaS platforms for businesses in Sens (89) and the Sénonais area. The local fabric — cable industry (Prysmian Group site in Gron), plastics and packaging (Plast'n Bio, Solodem, Plastikpack, the new Allemandou factory), multimodal logistics (Gron river port on the Yonne, rail siding on the Paris-Lyon line, the Salcy and Vauguillettes zones at the A5/A6/A19 crossroads) — shares one need: B2B portals, technical catalogues and back-offices wired to AI. We build bespoke: showcase sites, multi-CMS e-commerce, business apps, RAG chatbots on your documentation, all hosted in the EU and GDPR-compliant.",
         whyHere: [
           "Cable and equipment industry: the Prysmian Group site in Gron (medium and high voltage cables) and the companies of the Vauguillettes zone (126 ha, ~164 firms, petroleum equipment, cabling, including Senaxes in 3D printing) need online technical catalogues, product configurators and reseller portals driven by AI.",
           "Plastics and packaging: Plast'n Bio (bio-sourced plastics), Solodem (cardboard/paper packaging), Plastikpack in Gron and the new plastics factory backed by the Allemandou brothers (€11M) are B2B e-commerce and multi-reference product-sheet targets where semantic search and description generation save real time.",
@@ -210,7 +210,7 @@ export const SENS_COPY: VilleCopy = {
           },
           {
             q: "Do you travel to Sens, and how fast do I get a quote?",
-            a: "Yes, framing happens on site in Sens (Vauguillettes, Salcy, town centre, Gron), with Paris-Bercy 55 minutes away by direct TER. After a first exchange, we deliver a quote from 24 to 48 hours depending on project complexity.",
+            a: "Yes, framing happens on site in Sens (Vauguillettes, Salcy, town centre, Gron). After a first exchange, we deliver a quote from 24 to 48 hours depending on project complexity.",
           },
           {
             q: "Are the site and the AI GDPR-compliant?",
@@ -226,7 +226,7 @@ export const SENS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Sens et dans le Sénonais ?",
-      a: "Oui, Axion-IA intervient à Sens et dans les communes voisines (Paron, Saint-Clément, Maillot, Gron, Saint-Denis-lès-Sens, Saint-Martin-du-Tertre, Malay-le-Grand, Rosoy, Saligny). Déplacement depuis Paris en 55 min TER direct.",
+      a: "Oui, Axion-IA intervient à Sens et dans les communes voisines (Paron, Saint-Clément, Maillot, Gron, Saint-Denis-lès-Sens, Saint-Martin-du-Tertre, Malay-le-Grand, Rosoy, Saligny).",
     },
     {
       q: "Quel est le tarif d'un audit IA pour une TPE à Sens ?",
@@ -238,7 +238,7 @@ export const SENS_COPY: VilleCopy = {
     },
     {
       q: "Quel délai pour une intervention IA à Sens ?",
-      a: "Nous nous engageons à intervenir sur site à Sens dans un délai de 5 à 8 jours ouvrés après prise de contact, via la gare SNCF (TER 55 min depuis Paris-Bercy) ou l'A19.",
+      a: "Nous nous engageons à intervenir sur site à Sens dans un délai de 5 à 8 jours ouvrés après prise de contact, via la gare SNCF ou l'A19.",
     },
     {
       q: "Comment Axion-IA garantit-elle la conformité RGPD à Sens ?",

@@ -49,7 +49,7 @@ export const SAINT_ETIENNE_AU_MONT_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il a Saint-Etienne-au-Mont et dans l'agglo de Boulogne ?",
-      a: "Oui, Axion-IA intervient a Saint-Etienne-au-Mont et dans toute l'agglomeration boulonnaise (Boulogne-sur-Mer, Outreau, Le Portel, Wimille). Consultants depuis Lille (1h30 TER) ou Paris (TGV 2h45).",
+      a: "Oui, Axion-IA intervient a Saint-Etienne-au-Mont et dans toute l'agglomeration boulonnaise (Boulogne-sur-Mer, Outreau, Le Portel, Wimille). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quel est le tarif d'un audit IA a Saint-Etienne-au-Mont ?",

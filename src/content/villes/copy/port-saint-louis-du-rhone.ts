@@ -64,8 +64,8 @@ export const PORT_SAINT_LOUIS_DU_RHONE_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les acteurs du tourisme camarguais (hébergements, guides, restaurateurs) sur des cas IA : agents conversationnels réservation, traduction multilingue, optimisation gestion saisonnière, marketing personnalisé.",
     },
     {
-      q: "Comment se déroule un déplacement à Port-Saint-Louis-du-Rhône ?",
-      a: "Nos consultants se déplacent dans vos locaux. Accès via A55 depuis Marseille (55 min) ou A54 depuis Arles (40 min).",
+      q: "Comment se passe une intervention à Port-Saint-Louis-du-Rhône ?",
+      a: "Nous intervenons partout en France, sur place ou à distance, dans vos locaux. Port-Saint-Louis-du-Rhône est accessible par l'A55 et l'A54.",
     },
   ],
 };

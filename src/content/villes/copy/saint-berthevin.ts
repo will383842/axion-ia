@@ -65,7 +65,7 @@ export const SAINT_BERTHEVIN_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission IA à Saint-Berthevin ?",
-      a: "Nos consultants interviennent directement dans vos locaux à Saint-Berthevin (zones d'activités est Laval). Gare TGV Laval à 5 km. Accès A81 direct.",
+      a: "Nos consultants interviennent directement dans vos locaux à Saint-Berthevin (zones d'activités est Laval). Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };

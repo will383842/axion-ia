@@ -65,7 +65,7 @@ export const VENDENHEIM_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Vendenheim ?",
-      a: "Nos consultants se déplacent via autoroutes A4/A35 (accès direct 5 min) ou tram strasbourgeois. Proximité immédiate de la gare TGV de Strasbourg (15 min) et des zones d'activités.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Vendenheim est desservie par les autoroutes A4/A35 et le tram strasbourgeois, à 15 min de la gare TGV de Strasbourg et au plus près des zones d'activités.",
     },
   ],
 };

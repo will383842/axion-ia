@@ -49,7 +49,7 @@ export const PAUILLAC_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Pauillac et dans le Médoc viticole ?",
-      a: "Oui, Axion-IA intervient à Pauillac et dans tout le Médoc (Saint-Julien, Saint-Estèphe, Margaux, Lesparre-Médoc). Nos consultants se déplacent depuis Bordeaux (1h) ou Paris (TGV 2h + 1h).",
+      a: "Oui, Axion-IA intervient à Pauillac et dans tout le Médoc (Saint-Julien, Saint-Estèphe, Margaux, Lesparre-Médoc). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quel est le tarif d'un audit IA pour un domaine viticole à Pauillac ?",
@@ -65,7 +65,7 @@ export const PAUILLAC_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Pauillac ?",
-      a: "Nos consultants interviennent dans votre chai à Pauillac ou en visio. Gare SNCF Pauillac (TER Bordeaux). Missions adaptées aux rythmes viticoles.",
+      a: "Nos consultants interviennent dans votre chai à Pauillac ou en visio. Nous intervenons partout en France, sur place ou à distance. Missions adaptées aux rythmes viticoles.",
     },
   ],
 };

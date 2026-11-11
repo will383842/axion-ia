@@ -49,7 +49,7 @@ export const PUILBOREAU_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Puilboreau et sa zone commerciale ?",
-      a: "Oui, Axion-IA intervient à Puilboreau, sa zone commerciale Beaulieu et toute l'agglomération de La Rochelle. Nos consultants accèdent facilement via la gare TGV de La Rochelle à 12 min.",
+      a: "Oui, Axion-IA intervient à Puilboreau, sa zone commerciale Beaulieu et toute l'agglomération de La Rochelle. La gare TGV de La Rochelle est à 12 min.",
     },
     {
       q: "Quels services IA pour les enseignes commerciales à Puilboreau ?",
@@ -65,7 +65,7 @@ export const PUILBOREAU_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA sur site à Puilboreau ?",
-      a: "Nos consultants accèdent à Puilboreau via la gare TGV de La Rochelle (12 min, Paris 2h50 direct). Mission sur site dans vos locaux commerciaux, bureau ou entrepôt.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Mission sur site dans vos locaux commerciaux, bureau ou entrepôt à Puilboreau, commune à 12 min de la gare TGV de La Rochelle.",
     },
   ],
 };

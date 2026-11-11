@@ -226,7 +226,7 @@ export const VILLENEUVE_SUR_LOT_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Villeneuve-sur-Lot et Lot-et-Garonne ?",
-      a: "Oui, Axion-IA intervient à Villeneuve-sur-Lot et tout le Lot-et-Garonne (Agen à 30 min, Marmande, Tonneins, Casseneuil). Nos consultants viennent de Paris (TGV Agen 4h + 30 min voiture) ou Bordeaux (2h voiture).",
+      a: "Oui, Axion-IA intervient à Villeneuve-sur-Lot et tout le Lot-et-Garonne (Agen à 30 min, Marmande, Tonneins, Casseneuil). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les arboriculteurs (pruneaux, fruits) ?",
@@ -241,8 +241,8 @@ export const VILLENEUVE_SUR_LOT_COPY: VilleCopy = {
       a: "Pour les TPE artisans et commerçants à Villeneuve (BTP, bastide commerçante, services), audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation pratique, coaching 1-to-1. Cas typiques : automatisation devis, agents IA pour relation client, classification photos, gestion stocks et planning.",
     },
     {
-      q: "Comment se passe une mission depuis Paris ou Bordeaux ?",
-      a: "Nos consultants viennent de Paris (TGV Agen 4h puis 30 min voiture) ou de Bordeaux (2h voiture). Pour les missions multi-jours, hébergement local possible (hôtels Villeneuve ou Agen).",
+      q: "Comment se déroule une mission à Villeneuve-sur-Lot ?",
+      a: "Nous intervenons partout en France, sur place ou à distance. Pour les missions multi-jours, hébergement local possible (hôtels Villeneuve ou Agen).",
     },
   ],
 };

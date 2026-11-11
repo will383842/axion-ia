@@ -49,7 +49,7 @@ export const VINDRY_SUR_TURDINE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Vindry-sur-Turdine et NO lyonnais ?",
-      a: "Oui, Axion-IA intervient à Vindry-sur-Turdine et tout le NO lyonnais (Tarare à 5 min, L'Arbresle, Amplepuis). Consultants depuis Lyon (40 min).",
+      a: "Oui, Axion-IA intervient à Vindry-sur-Turdine et tout le NO lyonnais (Tarare à 5 min, L'Arbresle, Amplepuis). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les PME industrielles ?",
@@ -64,8 +64,8 @@ export const VINDRY_SUR_TURDINE_COPY: VilleCopy = {
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
     },
     {
-      q: "Comment se passe une mission depuis Lyon ?",
-      a: "Nos consultants viennent de Lyon (40 min).",
+      q: "Comment se déroule une mission à Vindry-sur-Turdine ?",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };

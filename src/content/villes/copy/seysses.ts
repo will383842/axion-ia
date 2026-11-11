@@ -49,7 +49,7 @@ export const SEYSSES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Seysses ?",
-      a: "Oui, Axion-IA intervient à Seysses et dans tout le sud-ouest de Toulouse (Muret, Cugnaux, Villeneuve-Tolosane). Nos consultants se déplacent en 20 min depuis Toulouse.",
+      a: "Oui, Axion-IA intervient à Seysses et dans tout le sud-ouest de Toulouse (Muret, Cugnaux, Villeneuve-Tolosane). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quels secteurs accompagnez-vous à Seysses ?",
@@ -61,7 +61,7 @@ export const SEYSSES_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une intervention IA à Seysses ?",
-      a: "Nos consultants se déplacent à Seysses depuis Toulouse (20 min D15). Intervention 1 journée minimum, atelier pratique dans vos locaux. Équipes autonomes en fin de session.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Intervention 1 journée minimum, atelier pratique dans vos locaux. Équipes autonomes en fin de session.",
     },
     {
       q: "L'IA est-elle utile pour un artisan BTP à Seysses ?",

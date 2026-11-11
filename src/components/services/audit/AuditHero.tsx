@@ -138,7 +138,6 @@ export function AuditHero({ isFr, villeContext }: AuditHeroProps): ReactNode {
       />
       <JsonLd
         data={speakableJsonLd}
-        strategy="afterInteractive"
         scriptId={
           villeContext
             ? `jsonld-audit-hero-speakable-${villeContext.villeSlug}`

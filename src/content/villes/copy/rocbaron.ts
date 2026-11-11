@@ -34,8 +34,8 @@ export const ROCBARON_COPY: VilleCopy = {
       en: "Audit IA à Rocbaron : diagnostic adapté aux TPE artisans, PME viticoles, exploitations agricoles et commerces du Centre-Var. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Rocbaron : ateliers pour équipes TPE/PME, viticulteurs, agriculteurs et artisans. Outils IA configurés métier réel, dans vos locaux ou à Brignoles.",
-      en: "Interventions IA sur site à Rocbaron : ateliers pour équipes TPE/PME, viticulteurs, agriculteurs et artisans. Outils IA configurés métier réel, dans vos locaux ou à Brignoles.",
+      fr: "Interventions IA sur site à Rocbaron : ateliers pour équipes TPE/PME, viticulteurs, agriculteurs et artisans. Outils IA configurés métier réel, dans vos locaux.",
+      en: "Interventions IA sur site à Rocbaron : ateliers pour équipes TPE/PME, viticulteurs, agriculteurs et artisans. Outils IA configurés métier réel, dans vos locaux.",
     },
     implementation: {
       fr: "Implémentation IA à Rocbaron : automatisation gestion vignobles et traçabilité AOP, devis BTP artisans, content marketing domaines viticoles, agents conversationnels caveaux, optimisation comptabilité TPE. RGPD strict.",
@@ -64,8 +64,8 @@ export const ROCBARON_COPY: VilleCopy = {
       a: "Oui, nous intervenons en BTP, artisanat et commerce de proximité sur automatisation devis, gestion planning chantiers, content marketing local, fiches Google Business, SAV conversationnel.",
     },
     {
-      q: "Comment se déplace Axion-IA à Rocbaron ?",
-      a: "Rocbaron est à 15 min de Brignoles et 40 min de Toulon via A57. Nos consultants se déplacent dans vos locaux ou domaines.",
+      q: "Comment se passe une intervention à Rocbaron ?",
+      a: "Nous intervenons partout en France, sur place ou à distance, dans vos locaux ou domaines. Rocbaron est à 15 min de Brignoles et 40 min de Toulon via A57.",
     },
   ],
 };

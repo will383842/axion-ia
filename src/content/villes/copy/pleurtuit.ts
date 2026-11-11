@@ -49,7 +49,7 @@ export const PLEURTUIT_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Pleurtuit et sur la Côte d'Émeraude ?",
-      a: "Oui, Axion-IA intervient à Pleurtuit et sur toute la Côte d'Émeraude (Saint-Malo, Dinard, Dinan, Cancale, Saint-Lunaire). Nos consultants se déplacent depuis Rennes en 1h ou directement sur zone.",
+      a: "Oui, Axion-IA intervient à Pleurtuit et sur toute la Côte d'Émeraude (Saint-Malo, Dinard, Dinan, Cancale, Saint-Lunaire). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Tarifs audit IA à Pleurtuit  : quel budget prévoir ?",
@@ -65,7 +65,7 @@ export const PLEURTUIT_COPY: VilleCopy = {
     },
     {
       q: "L'aéroport Dinard-Bretagne facilite-t-il vos déplacements ?",
-      a: "L'aéroport Dinard-Bretagne est sur la commune de Pleurtuit, mais nos consultants interviennent principalement depuis Rennes (1h RN176) ou la gare TGV Saint-Malo (15 min).",
+      a: "L'aéroport Dinard-Bretagne est sur la commune de Pleurtuit, mais nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };

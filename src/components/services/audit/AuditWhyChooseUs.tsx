@@ -112,9 +112,9 @@ export function AuditWhyChooseUs({ isFr }: AuditWhyChooseUsProps): ReactNode {
       titleFr: "Des solutions sur-mesure et pérennes",
       titleEn: "Bespoke, production-grade software",
       bodyFr:
-        "Des solutions développées sur-mesure et maîtrisées de bout en bout — robustes et durables, là où les connecteurs no-code grand public montrent vite leurs limites.",
+        "Des solutions développées sur-mesure et maîtrisées de bout en bout — robustes et durables, là où les connecteurs grand public prêts à l'emploi montrent vite leurs limites.",
       bodyEn:
-        "Bespoke solutions we own end to end — robust and durable, where mass-market no-code connectors quickly hit their limits.",
+        "Bespoke solutions we own end to end — robust and durable, where mass-market off-the-shelf connectors quickly hit their limits.",
     },
     {
       icon: Award,
@@ -278,7 +278,7 @@ export function AuditWhyChooseUs({ isFr }: AuditWhyChooseUsProps): ReactNode {
                 { icon: MapPin, label: "Présentiel partout en France" },
                 { icon: Award, label: "Ingénieurs & experts seniors" },
                 { icon: Code2, label: "Solutions sur-mesure, pas de boîte noire" },
-                { icon: ShieldCheck, label: "Conforme RGPD & AI Act 2026" },
+                { icon: ShieldCheck, label: "RGPD et AI Act 2026 pris en compte" },
               ]
             : [
                 { icon: MapPin, label: "On-site across France" },

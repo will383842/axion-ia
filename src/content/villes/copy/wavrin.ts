@@ -49,7 +49,7 @@ export const WAVRIN_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il a Wavrin et dans l'agglo lilloise sud ?",
-      a: "Oui, Axion-IA intervient a Wavrin et dans toute l'agglomeration lilloise sud-ouest (Haubourdin, Seclin, La Bassee). Consultants depuis Lille (20 min TER) ou Paris (TGV Lille Europe 1h + 25 min).",
+      a: "Oui, Axion-IA intervient a Wavrin et dans toute l'agglomeration lilloise sud-ouest (Haubourdin, Seclin, La Bassee). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quels services IA pour les logisticiens de Wavrin ?",

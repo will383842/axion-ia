@@ -49,7 +49,7 @@ export const SAINT_JEAN_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Saint-Jean ?",
-      a: "Oui, Axion-IA intervient à Saint-Jean et dans tout le sud de Toulouse (Castanet-Tolosan, Ramonville, Portet-sur-Garonne). Nos consultants se déplacent en 15 min depuis Toulouse.",
+      a: "Oui, Axion-IA intervient à Saint-Jean et dans tout le sud de Toulouse (Castanet-Tolosan, Ramonville, Portet-sur-Garonne). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quels secteurs accompagnez-vous à Saint-Jean ?",
@@ -61,7 +61,7 @@ export const SAINT_JEAN_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une intervention IA à Saint-Jean ?",
-      a: "Nos consultants se déplacent à Saint-Jean depuis Toulouse (15 min D813). Intervention 1 journée minimum, atelier pratique dans vos locaux. Équipes autonomes en fin de session.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Intervention 1 journée minimum, atelier pratique dans vos locaux. Équipes autonomes en fin de session.",
     },
     {
       q: "Proposez-vous du coaching IA individuel à Saint-Jean ?",

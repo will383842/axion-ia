@@ -49,7 +49,7 @@ export const SAINT_GENIS_LES_OLLIERES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Saint-Genis-les-Ollières et ouest lyonnais ?",
-      a: "Oui, Axion-IA intervient à Saint-Genis-les-Ollières et tout l'ouest lyonnais (Craponne à 5 min, Grézieu-la-Varenne, Tassin). Consultants depuis Lyon (20 min).",
+      a: "Oui, Axion-IA intervient à Saint-Genis-les-Ollières et tout l'ouest lyonnais (Craponne à 5 min, Grézieu-la-Varenne, Tassin). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les professions libérales ?",
@@ -64,8 +64,8 @@ export const SAINT_GENIS_LES_OLLIERES_COPY: VilleCopy = {
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
     },
     {
-      q: "Comment se passe une mission depuis Lyon ?",
-      a: "Nos consultants viennent de Lyon (20 min). Coûts de déplacement séparés du forfait, tarifs transparents.",
+      q: "Comment se déroule une mission à Saint-Genis-les-Ollières ?",
+      a: "Nous intervenons partout en France, sur place ou à distance. Coûts de déplacement séparés du forfait, tarifs transparents.",
     },
   ],
 };

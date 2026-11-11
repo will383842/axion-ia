@@ -49,7 +49,7 @@ export const ROQUEBRUNE_CAP_MARTIN_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Roquebrune-Cap-Martin et sur la Riviera ?",
-      a: "Oui, Axion-IA intervient à Roquebrune-Cap-Martin et sur toute la Riviera entre Monaco et Menton (Beausoleil, La Turbie, Carnolès). Couverture littoral azuréen et accès rapide depuis Nice (35 min TER ou 40 min voiture).",
+      a: "Oui, Axion-IA intervient à Roquebrune-Cap-Martin et sur toute la Riviera entre Monaco et Menton (Beausoleil, La Turbie, Carnolès). Couverture littoral azuréen. Nous intervenons sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les hôtels et restaurants haut de gamme ?",
@@ -64,8 +64,8 @@ export const ROQUEBRUNE_CAP_MARTIN_COPY: VilleCopy = {
       a: "Pour les commerces balnéaires et saisonniers du Cap-Martin, nous proposons : gestion stocks prédictive (pics été), automatisation commandes fournisseurs, agents conversationnels client multilingues, CRM fidélisation. Intervention ponctuelle ou implémentation complète.",
     },
     {
-      q: "Comment se déroule une mission depuis Nice ou Monaco ?",
-      a: "Nos consultants interviennent depuis Nice (35 min TER Cap-Martin-Roquebrune) ou Monaco (5 min). Formats flexibles : demi-journée audit, journée intervention, mission implémentation multi-semaines.",
+      q: "Comment se déroule une mission à Roquebrune-Cap-Martin ?",
+      a: "Nous intervenons partout en France, sur place ou à distance. Formats flexibles : demi-journée audit, journée intervention, mission implémentation multi-semaines.",
     },
   ],
 };

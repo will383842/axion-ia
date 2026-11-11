@@ -65,7 +65,7 @@ export const STIRING_WENDEL_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Stiring-Wendel ?",
-      a: "Nos consultants se déplacent via autoroute A4 (accès 10 min) ou gare SNCF Forbach. Position frontalière stratégique agglomération Sarrebruck-Forbach (Sarrebruck à 15 min).",
+      a: "Nous intervenons partout en France, sur place ou à distance. Stiring-Wendel, au cœur de l'agglomération frontalière Sarrebruck-Forbach, est à 10 min de l'autoroute A4, proche de la gare SNCF de Forbach et à 15 min de Sarrebruck.",
     },
   ],
 };

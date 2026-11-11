@@ -49,7 +49,7 @@ export const PLONEOUR_LANVERN_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Plonéour-Lanvern et Pays Bigouden ?",
-      a: "Oui, Axion-IA intervient à Plonéour-Lanvern et tout le Pays Bigouden Sud (Pont-l'Abbé, Penmarch, Loctudy, Tréffiagat, Guilvinec). Nos consultants viennent de Quimper (25 min) ou Brest (1h15).",
+      a: "Oui, Axion-IA intervient à Plonéour-Lanvern et tout le Pays Bigouden Sud (Pont-l'Abbé, Penmarch, Loctudy, Tréffiagat, Guilvinec). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les maraîchers et agriculteurs bigoudens ?",
@@ -64,8 +64,8 @@ export const PLONEOUR_LANVERN_COPY: VilleCopy = {
       a: "Pour les TPE artisans BTP et commerçants à Plonéour-Lanvern, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, gestion stocks, comptabilité simplifiée.",
     },
     {
-      q: "Comment se passe une mission depuis Quimper ou Brest ?",
-      a: "Nos consultants viennent de Quimper (25 min) ou Brest (1h15 voiture). Pour les multi-jours, hébergement local possible (hôtels Pont-l'Abbé ou littoral bigouden).",
+      q: "Comment se déroule une mission à Plonéour-Lanvern ?",
+      a: "Nous intervenons partout en France, sur place ou à distance. Pour les multi-jours, hébergement local possible (hôtels Pont-l'Abbé ou littoral bigouden).",
     },
   ],
 };

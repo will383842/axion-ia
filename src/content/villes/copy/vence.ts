@@ -49,7 +49,7 @@ export const VENCE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Vence et dans l'arrière-pays niçois ?",
-      a: "Oui, Axion-IA intervient à Vence et dans tout l'arrière-pays niçois (Saint-Paul-de-Vence, Tourrettes-sur-Loup, La Gaude, Gattières). Nos consultants viennent de Nice (20 min) ou Sophia Antipolis (30 min).",
+      a: "Oui, Axion-IA intervient à Vence et dans tout l'arrière-pays niçois (Saint-Paul-de-Vence, Tourrettes-sur-Loup, La Gaude, Gattières). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les galeries et artisans d'art ?",
@@ -65,7 +65,7 @@ export const VENCE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Vence ?",
-      a: "Nos consultants se déplacent sur site à Vence depuis Nice (20 min) ou Sophia Antipolis (30 min). Tarifs publics.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Tarifs publics.",
     },
   ],
 };

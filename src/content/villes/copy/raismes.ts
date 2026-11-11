@@ -49,7 +49,7 @@ export const RAISMES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Raismes et dans le Valenciennois ?",
-      a: "Oui, Axion-IA intervient à Raismes et dans toute l'agglomération de Valenciennes (Anzin, Bruay-sur-l'Escaut, Valenciennes, Saint-Amand-les-Eaux). Nos consultants se déplacent depuis Lille ou Valenciennes en 10 min.",
+      a: "Oui, Axion-IA intervient à Raismes et dans toute l'agglomération de Valenciennes (Anzin, Bruay-sur-l'Escaut, Valenciennes, Saint-Amand-les-Eaux). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quel est le tarif d'un audit IA à Raismes  ?",
@@ -65,7 +65,7 @@ export const RAISMES_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission Axion-IA à Raismes ?",
-      a: "Nos consultants interviennent depuis Valenciennes (10 min) ou Lille (45 min via A23). Raismes fait partie de Valenciennes Métropole, déplacements sans surcoût hébergement en zone agglo. Sessions sur site ou en visio selon vos préférences.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Raismes fait partie de Valenciennes Métropole. Sessions sur site ou en visio selon vos préférences.",
     },
   ],
 };

@@ -49,7 +49,7 @@ export const SORBIERS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Sorbiers et nord-est Saint-Étienne ?",
-      a: "Oui, Axion-IA intervient à Sorbiers et toute la banlieue nord-est stéphanoise (La Talaudière limitrophe, Saint-Jean-Bonnefonds, Villars). Couverture Saint-Étienne Métropole. Consultants depuis Lyon (50 min) ou Saint-Étienne (15 min).",
+      a: "Oui, Axion-IA intervient à Sorbiers et toute la banlieue nord-est stéphanoise (La Talaudière limitrophe, Saint-Jean-Bonnefonds, Villars). Couverture Saint-Étienne Métropole. Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les professions libérales sorbiéroises ?",
@@ -64,8 +64,8 @@ export const SORBIERS_COPY: VilleCopy = {
       a: "Pour les PME tertiaires et commerces à Sorbiers, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : agents IA fidélité client, automatisation workflow, classification documents.",
     },
     {
-      q: "Comment se passe une mission depuis Lyon ou Saint-Étienne ?",
-      a: "Nos consultants viennent de Lyon (50 min) ou Saint-Étienne (15 min). Pour les multi-jours, hébergement local possible.",
+      q: "Comment se déroule une mission à Sorbiers ?",
+      a: "Nous intervenons partout en France, sur place ou à distance. Pour les multi-jours, hébergement local possible.",
     },
   ],
 };

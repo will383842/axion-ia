@@ -50,7 +50,7 @@ export const PIGNAN_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Pignan ?",
-      a: "Oui, Axion-IA intervient à Pignan (34) et dans les communes proches : Cournonterral, Fabrègues, Lavérune, Murviel-lès-Montpellier, Saint-Georges-d'Orques. Nos consultants se déplacent depuis Montpellier en 15 min ou interviennent en visio.",
+      a: "Oui, Axion-IA intervient à Pignan (34) et dans les communes proches : Cournonterral, Fabrègues, Lavérune, Murviel-lès-Montpellier, Saint-Georges-d'Orques. Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Proposez-vous un audit IA pour les viticulteurs AOC Languedoc ?",
@@ -66,7 +66,7 @@ export const PIGNAN_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'entrée et les délais à Pignan ?",
-      a: "Audit sur place {{price:audit-flash|flat}}, Formation 4 h {{price:intervention-4h|flat}}, Implémentation et coaching 1-to-1 dès {{price:intervention-dirigeants|flat}}. Williams se déplace à Pignan sous 5 jours ouvrés depuis Montpellier (15 min). Tarifs publics, pas de devis opaque.",
+      a: "Audit sur place {{price:audit-flash|flat}}, Formation 4 h {{price:intervention-4h|flat}}, Implémentation et coaching 1-to-1 dès {{price:intervention-dirigeants|flat}}. Williams intervient à Pignan sous 5 jours ouvrés, sur place ou à distance. Tarifs publics, pas de devis opaque.",
     },
     {
       q: "Comment garantissez-vous la conformité RGPD à Pignan ?",

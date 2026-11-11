@@ -49,7 +49,7 @@ export const THEIX_NOYALO_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Theix-Noyalo et dans l'agglomération de Vannes ?",
-      a: "Oui, Axion-IA intervient à Theix-Noyalo et dans toute l'agglomération vannetaise (Vannes, Séné, Arradon, Saint-Avé, Elven, Sulniac). Nos consultants sont à 10 minutes de Vannes centre par voie express.",
+      a: "Oui, Axion-IA intervient à Theix-Noyalo et dans toute l'agglomération vannetaise (Vannes, Séné, Arradon, Saint-Avé, Elven, Sulniac). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les PME des zones d'activités de Theix-Noyalo ?",

@@ -49,7 +49,7 @@ export const SAINT_CHAMAS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Saint-Chamas et autour de l'étang de Berre ?",
-      a: "Oui, Axion-IA intervient à Saint-Chamas et tout le bassin de l'étang de Berre (Miramas, Istres, Berre-l'Étang, Saint-Mitre-les-Remparts). Accès rapide via A7 depuis Salon-de-Provence ou Aix-en-Provence.",
+      a: "Oui, Axion-IA intervient à Saint-Chamas et tout le bassin de l'étang de Berre (Miramas, Istres, Berre-l'Étang, Saint-Mitre-les-Remparts). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quel est le tarif d'un audit IA à Saint-Chamas  ?",

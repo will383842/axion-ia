@@ -49,7 +49,7 @@ export const PERSAN_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Persan et nord Val-d'Oise ?",
-      a: "Oui, Axion-IA intervient à Persan et tout le nord Val-d'Oise (Beaumont-sur-Oise, Chambly, L'Isle-Adam, Bernes-sur-Oise). Consultants depuis Paris Gare du Nord (40 min Transilien H).",
+      a: "Oui, Axion-IA intervient à Persan et tout le nord Val-d'Oise (Beaumont-sur-Oise, Chambly, L'Isle-Adam, Bernes-sur-Oise). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les PME industrielles persanaises ?",
@@ -64,8 +64,8 @@ export const PERSAN_COPY: VilleCopy = {
       a: "Pour les professions libérales à Persan, nous proposons audit IA adapté, intervention formation 1 journée, coaching 1-to-1, implémentation agents conversationnels et automatisation. RGPD strict, secret professionnel respecté.",
     },
     {
-      q: "Comment se passe une mission depuis Paris ?",
-      a: "Nos consultants viennent de Paris (40 min Transilien H Gare du Nord → Persan-Beaumont ou voiture A1/N1).",
+      q: "Comment se déroule une mission à Persan ?",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };

@@ -49,7 +49,7 @@ export const SARRIANS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Sarrians et dans le Comtat Venaissin ?",
-      a: "Oui, Axion-IA intervient à Sarrians et dans tout le Comtat Venaissin (Beaumes-de-Venise, Carpentras, Aubignan, Vacqueyras, Gigondas). Consultants accessibles en 10 min depuis Carpentras et 20 min depuis Orange.",
+      a: "Oui, Axion-IA intervient à Sarrians et dans tout le Comtat Venaissin (Beaumes-de-Venise, Carpentras, Aubignan, Vacqueyras, Gigondas). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quels services IA pour les domaines viticoles AOC Beaumes-de-Venise ?",
@@ -65,7 +65,7 @@ export const SARRIANS_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Sarrians ?",
-      a: "Nos consultants interviennent depuis Carpentras (10 min) ou Orange (20 min). Déplacement sur site dans vos locaux professionnels, domaine viticole, exploitation ou commerce. Comtat Venaissin bien desservi via A7 et D950.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Déplacement sur site dans vos locaux professionnels, domaine viticole, exploitation ou commerce. Comtat Venaissin bien desservi via A7 et D950.",
     },
   ],
 };

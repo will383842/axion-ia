@@ -49,7 +49,7 @@ export const VILLENEUVE_LOUBET_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Villeneuve-Loubet et littoral azuréen ?",
-      a: "Oui, Axion-IA intervient à Villeneuve-Loubet et sur tout le littoral azuréen (Cagnes-sur-Mer, Antibes, Nice, Saint-Laurent-du-Var). Nos consultants sont à 10 min de l'aéroport Nice-Côte d'Azur.",
+      a: "Oui, Axion-IA intervient à Villeneuve-Loubet et sur tout le littoral azuréen (Cagnes-sur-Mer, Antibes, Nice, Saint-Laurent-du-Var). Villeneuve-Loubet est à 10 min de l'aéroport Nice-Côte d'Azur. Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les hébergeurs de la Marina Baie des Anges ?",
@@ -65,7 +65,7 @@ export const VILLENEUVE_LOUBET_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Villeneuve-Loubet ?",
-      a: "Nos consultants se déplacent sur site à Villeneuve-Loubet, central entre Nice (15 min) et Antibes (20 min). Aéroport Nice-Côte d'Azur à 10 min. Tarifs publics.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Villeneuve-Loubet, entre Nice (15 min) et Antibes (20 min), est à 10 min de l'aéroport Nice-Côte d'Azur. Tarifs publics.",
     },
   ],
 };
