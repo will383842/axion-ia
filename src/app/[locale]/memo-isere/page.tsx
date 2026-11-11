@@ -72,6 +72,11 @@ import { UnsplashCredit } from "@/components/media/UnsplashCredit";
 import { cn } from "@/lib/utils";
 import { memoPhoto, type MemoIserePhotoSlot } from "@/content/recrutement/memo-isere-photos";
 import { COMMISSION_FORMATION_PAR_JOURNEE_EUR } from "@/content/pricing";
+import {
+  COMMISSIONS_PUBLIQUES_AFFICHEES,
+  COMMISSION_QUALITATIVE,
+} from "@/content/recrutement/commission-publique";
+import { CommissionQualitative } from "@/components/recrutement/CommissionQualitative";
 import { buildFaqJsonLd, buildProductMetadata, buildWebPageJsonLd } from "@/lib/seo";
 import { getPublishedReviews, type PublicReview } from "@/server/reviews/queries";
 import { MEMO_ZONE_CLUSTERS, MEMO_ZONE_TOTAL } from "@/content/recrutement/memo-isere-zone";
@@ -349,17 +354,26 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
   if (!hasLocale(routing.locales, locale)) return {};
   const isFr = locale === "fr";
-  const title = isFr
-    ? `${commission(1)} par journée, à titre indicatif · commercial IA Grenoble-Lyon`
-    : `€${COMMISSION_PAR_JOURNEE} per day, as an indication · AI sales rep, Grenoble-Lyon`;
+  // R7 (08/11/2026) : aucun montant au public (`commission-publique.ts`).
+  const title = !COMMISSIONS_PUBLIQUES_AFFICHEES
+    ? isFr
+      ? "Commercial IA indépendant Grenoble-Lyon · commission sur chaque mission signée"
+      : "Independent AI sales rep, Grenoble-Lyon · a commission on every signed engagement"
+    : isFr
+      ? `${commission(1)} par journée, à titre indicatif · commercial IA Grenoble-Lyon`
+      : `€${COMMISSION_PAR_JOURNEE} per day, as an indication · AI sales rep, Grenoble-Lyon`;
   return {
     ...(await buildProductMetadata({
       locale,
       path: "/memo-isere",
       title,
-      description: isFr
-        ? `À titre indicatif, ${commission(1)} par journée de formation IA vendue. L'AI Act crée des obligations pour les entreprises qui utilisent l'IA : 474 communes au choix.`
-        : `As an indication, €${COMMISSION_PAR_JOURNEE} per AI training day sold. The AI Act sets obligations for companies that use AI: 474 towns to pick from.`,
+      description: !COMMISSIONS_PUBLIQUES_AFFICHEES
+        ? isFr
+          ? `Apporteur d'affaires indépendant en Isère : ${COMMISSION_QUALITATIVE.phrase}. L'AI Act crée des obligations pour les entreprises qui utilisent l'IA : 474 communes au choix.`
+          : `Independent business referrer in Isère: ${COMMISSION_QUALITATIVE.phraseEn}. The AI Act sets obligations for companies that use AI: 474 towns to pick from.`
+        : isFr
+          ? `À titre indicatif, ${commission(1)} par journée de formation IA vendue. L'AI Act crée des obligations pour les entreprises qui utilisent l'IA : 474 communes au choix.`
+          : `As an indication, €${COMMISSION_PAR_JOURNEE} per AI training day sold. The AI Act sets obligations for companies that use AI: 474 towns to pick from.`,
     })),
     title: { absolute: title },
   };
@@ -647,7 +661,10 @@ export default async function MemoIserePage({ params }: Props) {
     {
       id: "remuneration",
       question: "Combien gagne-t-on exactement ?",
-      answer: `Votre commission se compte en JOURNÉES de formation vendues et encaissées : à titre indicatif, ${commission(1)} par journée. Une formation d'une journée — ${commission(1)} pour vous. Une formation de 2 journées consécutives — ${commission(2)}. Un programme sur mesure de 3 journées — ${commission(3)}. Et une grande équipe se forme en plusieurs groupes : 40 salariés, c'est 3 groupes, donc 3 sessions facturées chez un seul client. Les audits et intégrations IA rapportent en plus un pourcentage de la facture. Ce sont des exemples de calcul, pas une promesse : vos revenus dépendent de vos ventes.`,
+      // R7 (08/11/2026) : aucun montant au public (`commission-publique.ts`).
+      answer: !COMMISSIONS_PUBLIQUES_AFFICHEES
+        ? COMMISSION_QUALITATIVE.faq
+        : `Votre commission se compte en JOURNÉES de formation vendues et encaissées : à titre indicatif, ${commission(1)} par journée. Une formation d'une journée — ${commission(1)} pour vous. Une formation de 2 journées consécutives — ${commission(2)}. Un programme sur mesure de 3 journées — ${commission(3)}. Et une grande équipe se forme en plusieurs groupes : 40 salariés, c'est 3 groupes, donc 3 sessions facturées chez un seul client. Les audits et intégrations IA rapportent en plus un pourcentage de la facture. Ce sont des exemples de calcul, pas une promesse : vos revenus dépendent de vos ventes.`,
     },
     {
       id: "statut",
@@ -693,7 +710,7 @@ export default async function MemoIserePage({ params }: Props) {
     {
       id: "paiement",
       question: "Comment et quand suis-je payé ?",
-      answer: `En tant qu'indépendant, vous facturez votre commission à Axion-IA une fois que le client a réglé sa facture — pas à la signature. C'est la règle du jeu de l'apport d'affaires : la commission est due quand l'argent est encaissé. À titre indicatif : ${commission(1)} par journée de formation vendue, pourcentage sur les audits et intégrations. Chaque entreprise que vous nous déclarez est enregistrée à votre nom par notre équipe : c'est cette déclaration qui fait foi.`,
+      answer: `En tant qu'indépendant, vous facturez votre commission à Axion-IA une fois que le client a réglé sa facture — pas à la signature. C'est la règle du jeu de l'apport d'affaires : la commission est due quand l'argent est encaissé. ${COMMISSIONS_PUBLIQUES_AFFICHEES ? `À titre indicatif : ${commission(1)} par journée de formation vendue, pourcentage sur les audits et intégrations.` : "Son mode de calcul est détaillé dans votre contrat."} Chaque entreprise que vous nous déclarez est enregistrée à votre nom par notre équipe : c'est cette déclaration qui fait foi.`,
     },
     {
       id: "engagement",
@@ -772,9 +789,19 @@ export default async function MemoIserePage({ params }: Props) {
                   repoussait le CTA hors du premier écran. */}
               <p data-speakable className="text-fg-soft mt-5 max-w-xl text-lg leading-relaxed">
                 Vous recommandez aux <strong>TPE, PME, ETI et grands groupes</strong> que vous
-                connaissez des formations IA — l’AI Act les rend incontournables. Vous touchez, à
-                titre indicatif, <strong>{`${commission(1)} par journée vendue`}</strong>. De
-                Grenoble à Lyon, là où vous avez votre réseau.
+                connaissez des formations IA — l’AI Act les rend incontournables.{" "}
+                {COMMISSIONS_PUBLIQUES_AFFICHEES ? (
+                  <>
+                    Vous touchez, à titre indicatif,{" "}
+                    <strong>{`${commission(1)} par journée vendue`}</strong>.{" "}
+                  </>
+                ) : (
+                  // R7 (08/11/2026) : sans chiffre (`commission-publique.ts`).
+                  <>
+                    <strong>{COMMISSION_QUALITATIVE.titre}</strong>, détaillée au contrat.{" "}
+                  </>
+                )}
+                De Grenoble à Lyon, là où vous avez votre réseau.
               </p>
 
               {/* CTA remonté AVANT la photo : sur mobile il était sous une image
@@ -807,14 +834,23 @@ export default async function MemoIserePage({ params }: Props) {
                     background: "linear-gradient(to top, rgba(26,24,21,0.62), transparent)",
                   }}
                 />
-                <div className="absolute bottom-4 left-4 sm:bottom-5 sm:left-5">
-                  <p className="font-serif text-3xl leading-none font-semibold text-white drop-shadow sm:text-4xl">
-                    {commission(1)}
-                    <span className="mt-1 block font-sans text-[11px] leading-normal font-bold tracking-[0.14em] text-white/85 uppercase">
-                      par journée de formation vendue, à titre indicatif
-                    </span>
-                  </p>
-                </div>
+                {COMMISSIONS_PUBLIQUES_AFFICHEES ? (
+                  <div className="absolute bottom-4 left-4 sm:bottom-5 sm:left-5">
+                    <p className="font-serif text-3xl leading-none font-semibold text-white drop-shadow sm:text-4xl">
+                      {commission(1)}
+                      <span className="mt-1 block font-sans text-[11px] leading-normal font-bold tracking-[0.14em] text-white/85 uppercase">
+                        par journée de formation vendue, à titre indicatif
+                      </span>
+                    </p>
+                  </div>
+                ) : (
+                  // R7 (08/11/2026) : la pastille garde sa place, sans chiffre.
+                  <div className="absolute bottom-4 left-4 sm:bottom-5 sm:left-5">
+                    <p className="font-serif text-2xl leading-tight font-semibold text-white drop-shadow sm:text-3xl">
+                      {COMMISSION_QUALITATIVE.titre}
+                    </p>
+                  </div>
+                )}
               </Photo>
             </div>
 
@@ -826,11 +862,22 @@ export default async function MemoIserePage({ params }: Props) {
                 2026-08-18). Le nombre de secteurs est repris juste en dessous,
                 dans le panneau sombre. */}
             <ul className="grid grid-cols-3 gap-2 sm:gap-3 lg:col-span-2" role="list">
-              {[
-                { label: "1 journée vendue, à titre indicatif", value: commission(1) },
-                { label: "Un programme de 3 journées, à titre indicatif", value: commission(3) },
-                { label: "Plafond de revenus", value: "Aucun" },
-              ].map((f) => (
+              {(COMMISSIONS_PUBLIQUES_AFFICHEES
+                ? [
+                    { label: "1 journée vendue, à titre indicatif", value: commission(1) },
+                    {
+                      label: "Un programme de 3 journées, à titre indicatif",
+                      value: commission(3),
+                    },
+                    { label: "Plafond de revenus", value: "Aucun" },
+                  ]
+                : // R7 (08/11/2026) : sans chiffre ni promesse (`commission-publique.ts`).
+                  [
+                    { label: "Sur chaque mission signée", value: "Commission" },
+                    { label: "Détaillée au contrat", value: "Clair" },
+                    { label: "Micro-entreprise ou société", value: "Indépendant" },
+                  ]
+              ).map((f) => (
                 <li
                   key={f.label}
                   className="border-border bg-paper/80 shadow-subtle rounded-2xl border px-3 py-3 sm:px-4"
@@ -910,14 +957,18 @@ export default async function MemoIserePage({ params }: Props) {
               <h2 className="font-serif text-[26px] leading-snug font-semibold text-[color:var(--color-bg)] sm:text-4xl">
                 L’IA, tout le monde en parle.{" "}
                 <span className="text-terracotta-soft italic">
-                  Vous, vous êtes payé à la journée vendue. 💶
+                  {COMMISSIONS_PUBLIQUES_AFFICHEES
+                    ? "Vous, vous êtes payé à la journée vendue. 💶"
+                    : "Vous, vous ouvrez la porte. 💶"}
                 </span>
               </h2>
               {/* Le compte d'avis n'apparaît que s'il y a des avis publiés :
                   aucun chiffre de repli. */}
               <dl className={`grid gap-3 sm:gap-4 ${totalAll > 0 ? "grid-cols-3" : "grid-cols-2"}`}>
                 {[
-                  { v: commission(1), l: "par journée vendue, à titre indicatif" },
+                  COMMISSIONS_PUBLIQUES_AFFICHEES
+                    ? { v: commission(1), l: "par journée vendue, à titre indicatif" }
+                    : { v: "Commission", l: "sur chaque mission signée" },
                   { v: String(MEMO_ZONE_CLUSTERS.length), l: "territoires couverts" },
                   ...(totalAll > 0 ? [{ v: `${totalAll} avis`, l: "clients conquis" }] : []),
                 ].map((s) => (
@@ -1120,7 +1171,7 @@ export default async function MemoIserePage({ params }: Props) {
         title="Votre prochain client ? Le site industriel"
         titleEm="d'à côté"
         titleTail=" — ou le cabinet d'avocats d'en face"
-        description="De la TPE au grand groupe, chaque taille a ses clients. Les petites structures signent vite, les grandes rapportent gros — les quatre sont concernées, et voici à quoi elles ressemblent autour de vous."
+        description="De la TPE au grand groupe, chaque taille a ses clients. Les petites structures signent vite, les grandes engagent des équipes entières — les quatre sont concernées, et voici à quoi elles ressemblent autour de vous."
       >
         <>
           {/* Triptyque : trois tuiles VERTICALES sur mobile (une bande d'un seul
@@ -1302,130 +1353,145 @@ export default async function MemoIserePage({ params }: Props) {
       <Section
         className={SEC}
         eyebrow="Rémunération"
-        title="Vous ne vendez pas des contrats."
-        titleEm="Vous vendez des journées."
-        description="Votre commission ne dépend ni du prix payé par le client, ni de la taille de l’équipe formée : elle se compte en journées de formation. Une journée vendue, une commission. Deux journées, deux commissions."
+        // R7 (08/11/2026) : interrupteur coupé → aucun barème, aucune promesse.
+        title={
+          COMMISSIONS_PUBLIQUES_AFFICHEES ? "Vous ne vendez pas des contrats." : "Vous présentez,"
+        }
+        titleEm={COMMISSIONS_PUBLIQUES_AFFICHEES ? "Vous vendez des journées." : "nous vendons."}
+        description={
+          COMMISSIONS_PUBLIQUES_AFFICHEES
+            ? "Votre commission ne dépend ni du prix payé par le client, ni de la taille de l’équipe formée : elle se compte en journées de formation. Une journée vendue, une commission. Deux journées, deux commissions."
+            : "Votre commission porte sur chaque mission signée et payée ; son mode de calcul est détaillé dans votre contrat."
+        }
       >
         <>
-          {/* ── L'équation, en trois temps ───────────────────────────────── */}
-          <div className="border-terracotta/30 bg-terracotta-soft/40 mx-auto max-w-3xl rounded-3xl border p-5 sm:p-8">
-            <ol
-              className="grid grid-cols-[1fr_auto_1fr] items-center gap-2 text-center sm:gap-4"
-              role="list"
-            >
-              <li>
-                <p className="text-terracotta-deep font-serif text-3xl leading-none font-semibold sm:text-5xl">
-                  1
+          {COMMISSIONS_PUBLIQUES_AFFICHEES ? (
+            <>
+              {/* ── L'équation, en trois temps ───────────────────────────────── */}
+              <div className="border-terracotta/30 bg-terracotta-soft/40 mx-auto max-w-3xl rounded-3xl border p-5 sm:p-8">
+                <ol
+                  className="grid grid-cols-[1fr_auto_1fr] items-center gap-2 text-center sm:gap-4"
+                  role="list"
+                >
+                  <li>
+                    <p className="text-terracotta-deep font-serif text-3xl leading-none font-semibold sm:text-5xl">
+                      1
+                    </p>
+                    <p className="text-fg-soft mt-2 text-[11px] leading-tight font-bold tracking-[0.12em] uppercase sm:text-xs">
+                      journée vendue
+                    </p>
+                  </li>
+                  <li aria-hidden="true" className="text-fg-muted font-serif text-2xl sm:text-4xl">
+                    =
+                  </li>
+                  <li>
+                    <p className="text-terracotta-deep font-serif text-3xl leading-none font-semibold sm:text-5xl">
+                      {commission(1)}
+                      <span className="text-fg-soft mt-2 block font-sans text-[11px] leading-tight font-bold tracking-[0.12em] uppercase sm:text-xs">
+                        pour vous, à titre indicatif
+                      </span>
+                    </p>
+                  </li>
+                </ol>
+                <p className="text-fg mt-5 text-center text-[15px] leading-relaxed sm:text-base">
+                  {`Et ça se multiplie : à titre indicatif, un programme de 3 journées, c’est ${commission(3)}. Une semaine de 5 journées, ${commission(5)}.`}
                 </p>
-                <p className="text-fg-soft mt-2 text-[11px] leading-tight font-bold tracking-[0.12em] uppercase sm:text-xs">
-                  journée vendue
-                </p>
-              </li>
-              <li aria-hidden="true" className="text-fg-muted font-serif text-2xl sm:text-4xl">
-                =
-              </li>
-              <li>
-                <p className="text-terracotta-deep font-serif text-3xl leading-none font-semibold sm:text-5xl">
-                  {commission(1)}
-                  <span className="text-fg-soft mt-2 block font-sans text-[11px] leading-tight font-bold tracking-[0.12em] uppercase sm:text-xs">
-                    pour vous, à titre indicatif
-                  </span>
-                </p>
-              </li>
-            </ol>
-            <p className="text-fg mt-5 text-center text-[15px] leading-relaxed sm:text-base">
-              {`Et ça se multiplie : à titre indicatif, un programme de 3 journées, c’est ${commission(3)}. Une semaine de 5 journées, ${commission(5)}.`}
-            </p>
-          </div>
+              </div>
 
-          {/* ── Le catalogue réel, avec la commission en face ─────────────── */}
-          <h3 className="text-fg mt-10 text-center font-serif text-xl font-semibold sm:mt-14 sm:text-2xl">
-            Ce que vous vendez · votre commission indicative
-          </h3>
-          <p className="text-fg-muted mx-auto mt-2 max-w-2xl text-center text-sm">
-            Le catalogue Axion-IA, tel qu’il est vendu aujourd’hui.
-          </p>
-          <ul className="mx-auto mt-6 max-w-3xl space-y-2.5" role="list">
-            {CATALOGUE_COMMISSIONS.map((f) => (
-              <li
-                key={f.nom}
-                className={cn(
-                  "flex items-center justify-between gap-4 rounded-2xl border p-4 transition-all duration-300 hover:-translate-y-0.5 sm:p-5",
-                  f.etPlus
-                    ? "border-terracotta bg-terracotta/5 shadow-card"
-                    : "border-border bg-paper shadow-subtle",
-                )}
-              >
-                <span className="min-w-0">
-                  <span className="text-fg block font-serif text-base leading-snug font-semibold sm:text-lg">
-                    {f.nom}
-                  </span>
-                  <span className="text-fg-muted mt-0.5 block text-[13px] leading-snug">
-                    {f.detail}
-                  </span>
-                </span>
-                <span className="shrink-0 text-right">
-                  <span className="text-terracotta-deep block font-serif text-2xl leading-none font-semibold whitespace-nowrap sm:text-3xl">
-                    <span className="text-fg-muted mb-1 block font-sans text-[11px] font-semibold tracking-wide uppercase">
-                      à titre indicatif
+              {/* ── Le catalogue réel, avec la commission en face ─────────────── */}
+              <h3 className="text-fg mt-10 text-center font-serif text-xl font-semibold sm:mt-14 sm:text-2xl">
+                Ce que vous vendez · votre commission indicative
+              </h3>
+              <p className="text-fg-muted mx-auto mt-2 max-w-2xl text-center text-sm">
+                Le catalogue Axion-IA, tel qu’il est vendu aujourd’hui.
+              </p>
+              <ul className="mx-auto mt-6 max-w-3xl space-y-2.5" role="list">
+                {CATALOGUE_COMMISSIONS.map((f) => (
+                  <li
+                    key={f.nom}
+                    className={cn(
+                      "flex items-center justify-between gap-4 rounded-2xl border p-4 transition-all duration-300 hover:-translate-y-0.5 sm:p-5",
+                      f.etPlus
+                        ? "border-terracotta bg-terracotta/5 shadow-card"
+                        : "border-border bg-paper shadow-subtle",
+                    )}
+                  >
+                    <span className="min-w-0">
+                      <span className="text-fg block font-serif text-base leading-snug font-semibold sm:text-lg">
+                        {f.nom}
+                      </span>
+                      <span className="text-fg-muted mt-0.5 block text-[13px] leading-snug">
+                        {f.detail}
+                      </span>
                     </span>
-                    {commission(f.jours)}
-                    {f.etPlus ? <span className="text-lg sm:text-xl">+</span> : null}
-                  </span>
-                  <span className="text-fg-muted mt-1 block text-[11px] font-semibold tracking-wide uppercase">
-                    pour vous
-                  </span>
-                </span>
-              </li>
-            ))}
-          </ul>
+                    <span className="shrink-0 text-right">
+                      <span className="text-terracotta-deep block font-serif text-2xl leading-none font-semibold whitespace-nowrap sm:text-3xl">
+                        <span className="text-fg-muted mb-1 block font-sans text-[11px] font-semibold tracking-wide uppercase">
+                          à titre indicatif
+                        </span>
+                        {commission(f.jours)}
+                        {f.etPlus ? <span className="text-lg sm:text-xl">+</span> : null}
+                      </span>
+                      <span className="text-fg-muted mt-1 block text-[11px] font-semibold tracking-wide uppercase">
+                        pour vous
+                      </span>
+                    </span>
+                  </li>
+                ))}
+              </ul>
 
-          {/* ── Ce que ça donne sur un mois ───────────────────────────────── */}
-          <h3 className="text-fg mt-10 text-center font-serif text-xl font-semibold sm:mt-14 sm:text-2xl">
-            Ce que ça donne sur un mois
-          </h3>
-          <ul className="mx-auto mt-6 grid max-w-4xl gap-3 sm:grid-cols-3 sm:gap-4" role="list">
-            {SCENARIOS_MOIS.map((s) => (
-              <li
-                key={s.titre}
-                className={cn(
-                  "flex h-full flex-col rounded-2xl border p-5",
-                  s.fort
-                    ? "border-terracotta bg-terracotta/5 shadow-card"
-                    : "border-border bg-paper shadow-subtle",
-                )}
-              >
-                <p className="text-terracotta text-xs font-bold tracking-wide uppercase">
-                  {s.titre}
-                </p>
-                <p className="text-terracotta-deep mt-2 font-serif text-3xl leading-none font-semibold sm:text-4xl">
-                  {commission(s.jours)}
-                  <span className="text-fg-muted mt-1 block font-sans text-xs leading-normal font-semibold tracking-wide uppercase">
-                    {`${s.jours} journées vendues, à titre indicatif`}
-                  </span>
-                </p>
-                <p className="text-fg-soft mt-3 text-sm leading-relaxed">{s.detail}</p>
-              </li>
-            ))}
-          </ul>
-          <p className="text-fg-muted mx-auto mt-4 max-w-2xl text-center text-sm">
-            {/* Chaîne JS unique + marqueur ATTACHÉS : prettier avait éclaté le
-                texte JSX et déplacé le marqueur hors de la ligne du montant →
-                garde-fou prix rouge en CI alors qu'il passait en local.
-                Ici les montants sont CALCULÉS, donc plus aucun littéral à
-                exempter — mais le principe reste : un exemple n'est pas une
-                promesse, et ça doit se lire. */}
-            Ce sont des exemples de calcul, à titre indicatif, pas une promesse de revenus : vos
-            commissions dépendent de vos ventes.
-          </p>
-
+              {/* ── Ce que ça donne sur un mois ───────────────────────────────── */}
+              <h3 className="text-fg mt-10 text-center font-serif text-xl font-semibold sm:mt-14 sm:text-2xl">
+                Ce que ça donne sur un mois
+              </h3>
+              <ul className="mx-auto mt-6 grid max-w-4xl gap-3 sm:grid-cols-3 sm:gap-4" role="list">
+                {SCENARIOS_MOIS.map((s) => (
+                  <li
+                    key={s.titre}
+                    className={cn(
+                      "flex h-full flex-col rounded-2xl border p-5",
+                      s.fort
+                        ? "border-terracotta bg-terracotta/5 shadow-card"
+                        : "border-border bg-paper shadow-subtle",
+                    )}
+                  >
+                    <p className="text-terracotta text-xs font-bold tracking-wide uppercase">
+                      {s.titre}
+                    </p>
+                    <p className="text-terracotta-deep mt-2 font-serif text-3xl leading-none font-semibold sm:text-4xl">
+                      {commission(s.jours)}
+                      <span className="text-fg-muted mt-1 block font-sans text-xs leading-normal font-semibold tracking-wide uppercase">
+                        {`${s.jours} journées vendues, à titre indicatif`}
+                      </span>
+                    </p>
+                    <p className="text-fg-soft mt-3 text-sm leading-relaxed">{s.detail}</p>
+                  </li>
+                ))}
+              </ul>
+              <p className="text-fg-muted mx-auto mt-4 max-w-2xl text-center text-sm">
+                {/* Chaîne JS unique + marqueur ATTACHÉS : prettier avait éclaté le
+                    texte JSX et déplacé le marqueur hors de la ligne du montant →
+                    garde-fou prix rouge en CI alors qu'il passait en local.
+                    Ici les montants sont CALCULÉS, donc plus aucun littéral à
+                    exempter — mais le principe reste : un exemple n'est pas une
+                    promesse, et ça doit se lire. */}
+                Ce sont des exemples de calcul, à titre indicatif, pas une promesse de revenus : vos
+                commissions dépendent de vos ventes.
+              </p>
+            </>
+          ) : (
+            // R7 (08/11/2026) : aucun montant au public (`commission-publique.ts`).
+            <CommissionQualitative className="mx-auto mt-0 max-w-3xl" />
+          )}
           <div className="mx-auto mt-10 grid max-w-3xl gap-4 sm:grid-cols-2">
             <div className="border-border bg-paper shadow-subtle rounded-2xl border p-5 sm:p-6">
               <p className="text-terracotta text-xs font-bold tracking-wide uppercase">
                 Produit n°1 — Formations IA
               </p>
               <p className="mt-2 font-serif text-xl font-semibold">
-                {`${commission(1)} par journée vendue, à titre indicatif`}
+                {COMMISSIONS_PUBLIQUES_AFFICHEES
+                  ? `${commission(1)} par journée vendue, à titre indicatif`
+                  : "Commission sur chaque mission signée"}
               </p>
               <p className="text-fg-soft mt-2 text-sm leading-relaxed">
                 Formations au poste de travail, rendues incontournables par l’AI Act. Une grande
@@ -1511,9 +1577,14 @@ export default async function MemoIserePage({ params }: Props) {
                 {
                   accent: "plum" as const,
                   Icon: LineChart,
+                  // R7 (08/11/2026) : sans chiffre au public (`commission-publique.ts`).
                   title: "Vous touchez à chaque vente",
-                  description: `À titre indicatif, ${commission(1)} par journée de formation vendue — donc ${commission(2)} pour une formation de 2 journées, ${commission(3)} pour un programme de 3. Commission en plus sur les audits IA.`,
-                  stat: { figure: commission(1), label: "par journée vendue, à titre indicatif" },
+                  description: COMMISSIONS_PUBLIQUES_AFFICHEES
+                    ? `À titre indicatif, ${commission(1)} par journée de formation vendue — donc ${commission(2)} pour une formation de 2 journées, ${commission(3)} pour un programme de 3. Commission en plus sur les audits IA.`
+                    : `${COMMISSION_QUALITATIVE.detail} ${COMMISSION_QUALITATIVE.prudence}`,
+                  stat: COMMISSIONS_PUBLIQUES_AFFICHEES
+                    ? { figure: commission(1), label: "par journée vendue, à titre indicatif" }
+                    : { figure: "Commission", label: "sur chaque mission signée" },
                 },
               ].map((c, i) => (
                 <li key={c.title} className="h-full">
