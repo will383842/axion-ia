@@ -10,7 +10,7 @@
  *
  * Schémas émis (2026 best practices) :
  *   1. Service (areaServed City + Region + Country + alternativeHeadline)
- *   2. LocalBusiness/ProfessionalService (@id + geo + telephone + email + sameAs ville)
+ *   2. (retiré le 2026-11-11 : fausse implantation par ville — voir le corps)
  *   3. BreadcrumbList (3 niveaux + @id)
  *   4. FAQPage + Speakable (cible #axion-direct-answer + #axion-faq ; NB : Google
  *      a restreint le rich result FAQ en 2023, conservé pour l'AEO/GEO + LLMs)
@@ -26,7 +26,6 @@
  */
 
 import type { Locale } from "@/i18n/routing";
-import { BRAND } from "@/lib/brand";
 import {
   buildServiceJsonLd,
   buildBreadcrumbJsonLd,
@@ -35,6 +34,7 @@ import {
   buildWebPageJsonLd,
   SITE_URL,
 } from "@/lib/seo";
+import { JOURNEE_IA_SERVICE_ID, buildJourneeIaServiceJsonLd } from "@/lib/seo/journee-ia-service";
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 
@@ -129,13 +129,6 @@ export function buildVilleServiceJsonLdGraph(
 
   const path = `${servicePathFr}/${ville.slug}` as `/${string}`;
   const url = `${SITE_URL}/${locale}${path}`;
-  const wikiTitle = ville.nameFr.replace(/ /g, "_");
-  const cityWikiUrl = `https://fr.wikipedia.org/wiki/${encodeURIComponent(wikiTitle)}`;
-  // Wikidata sameAs ville — Audit Will 2026-05-27 (P2 fix E-E-A-T).
-  // Special:GoToLinkedPage redirige proprement vers le Q-ID Wikidata via le
-  // titre Wikipedia FR (meilleur que Special:Search qui retourne une SERP).
-  const cityWikidataUrl = `https://www.wikidata.org/wiki/Special:GoToLinkedPage?site=frwiki&page=${encodeURIComponent(wikiTitle)}`;
-
   const schemas: Record<string, unknown>[] = [];
 
   // ── 1. Service ─────────────────────────────────────────────────────────────
@@ -165,47 +158,11 @@ export function buildVilleServiceJsonLdGraph(
     } as Parameters<typeof buildServiceJsonLd>[0]),
   );
 
-  // ── 2. LocalBusiness / ProfessionalService (Service Area Business safe) ──
-  // Sprint correctif P1-1 (2026-05-23) — Axion-IA = 1 siège FR + interventions
-  // mixtes (présentiel/remote). Pattern Schema.org "Service Area Business"
-  // légitime mais ASSAINI pour éviter sanction Google "fake local SEO" :
-  //   ❌ RETIRÉ `geo` (GPS = revendique bureau physique → faux pour villes hors siège)
-  //   ❌ RETIRÉ `openingHoursSpecification` (9h-18h = bureau ouvert chaque ville → faux)
-  //   ❌ RETIRÉ `priceRange` (varie par mission, pas par ville)
-  //   ❌ RETIRÉ `address.postalCode` (CP = revendique adresse précise)
-  //   ✅ GARDÉ `address.addressLocality` (= zone de service couverte, légitime SAB)
-  //   ✅ GARDÉ `parentOrganization` (essentiel : pointe vers entité unique root)
-  //   ✅ GARDÉ `areaServed` (cœur du pattern Service Area Business)
-  // Référence : https://developers.google.com/search/docs/appearance/structured-data/local-business
-  // « Do not mark up an address that is not a real, accurate physical address. »
-  schemas.push({
-    "@context": "https://schema.org",
-    "@type": ["LocalBusiness", "ProfessionalService"],
-    "@id": `${url}#business`,
-    name: isFr
-      ? `Axion-IA · ${serviceNameFr} à ${ville.nameFr}`
-      : `Axion-IA · ${serviceNameEn} in ${ville.nameFr}`,
-    description: hero,
-    url,
-    email: "contact@axion-ia.com",
-    image: `${SITE_URL}/opengraph-image`,
-    address: {
-      "@type": "PostalAddress",
-      addressLocality: ville.nameFr,
-      addressRegion: region.nameFr,
-      addressCountry: "FR",
-    },
-    sameAs: ["https://www.linkedin.com/company/axion-ia-france", cityWikiUrl, cityWikidataUrl],
-    parentOrganization: {
-      "@type": "Organization",
-      "@id": `${SITE_URL}/#organization`,
-      name: BRAND.name,
-      legalName: BRAND.legalName,
-      url: SITE_URL,
-    },
-    areaServed: { "@type": "City", name: ville.nameFr },
-    knowsLanguage: ["fr", "en"],
-  });
+  // ── 2. (retiré le 2026-11-11) LocalBusiness / ProfessionalService ──────────
+  // Le nœud déclarait une `PostalAddress` dont la localité était la ville servie et un
+  // `sameAs` vers la page Wikipédia/Wikidata DE LA VILLE : une fausse implantation par
+  // ville. Axion-IA n'a pas de bureau dans chaque commune ; la zone servie est portée
+  // par `Service.areaServed` (ci-dessus), et l'entreprise par `#organization` (layout).
 
   // ── 3. BreadcrumbList ──────────────────────────────────────────────────────
   schemas.push(
@@ -357,4 +314,106 @@ export function buildVilleServiceJsonLdGraph(
   }
 
   return schemas as ReadonlyArray<Record<string, unknown>>;
+}
+
+// ═════════════════════════════════════════════════════════════════════════════
+// La Journée IA, ville par ville et région par région (2026-11-11)
+// ═════════════════════════════════════════════════════════════════════════════
+//
+// Les pages `/fr/implantations/**` émettent TROIS nœuds, en ligne dans le HTML :
+//   1. `Service` — le MÊME `@id` que le Service de la landing `/fr/journee-ia`
+//      (construit par `buildJourneeIaServiceJsonLd`), dont seul `areaServed` est
+//      précisé : la ville (nœud `City`, `sameAs` Wikidata DANS ce nœud) ou la région ;
+//   2. `BreadcrumbList` ;
+//   3. `WebPage`, `about` → le Service.
+// Aucun `LocalBusiness`, aucune adresse, aucun `Review`/`AggregateRating` : Axion-IA
+// n'a pas de bureau dans chaque ville, elle vient dans les locaux de l'entreprise.
+
+const LOCALE_FR = "fr" as const;
+
+interface FilAriane {
+  readonly name: string;
+  readonly href: string;
+}
+
+interface PageLocaleInput {
+  /** Chemin sans locale, ex. `/implantations/bretagne/brest`. */
+  readonly path: string;
+  /** Title servi (nom de la WebPage). */
+  readonly titre: string;
+  readonly description: string;
+  /** Fil d'Ariane, accueil compris. */
+  readonly filAriane: ReadonlyArray<FilAriane>;
+  /** Sélecteurs CSS des passages « speakable ». */
+  readonly speakable: ReadonlyArray<string>;
+  readonly datePublished: string;
+  readonly dateModified: string;
+}
+
+function noeudsPageLocale(
+  input: PageLocaleInput,
+  areaServed: Record<string, unknown>,
+): ReadonlyArray<Record<string, unknown>> {
+  const url = `${SITE_URL}/${LOCALE_FR}${input.path}`;
+  const service = { ...buildJourneeIaServiceJsonLd(), areaServed };
+  const breadcrumb = buildBreadcrumbJsonLd({ locale: LOCALE_FR, items: input.filAriane });
+  const webPage = buildWebPageJsonLd({
+    locale: LOCALE_FR,
+    path: input.path,
+    name: input.titre,
+    description: input.description,
+    inLanguage: "fr-FR",
+    about: { "@id": JOURNEE_IA_SERVICE_ID },
+    breadcrumb: { "@id": `${url}#breadcrumb` },
+    speakable: { selectors: [...input.speakable] },
+    datePublished: input.datePublished,
+    dateModified: input.dateModified,
+    extra: { spatialCoverage: areaServed },
+  });
+  return [service, breadcrumb, webPage];
+}
+
+export interface JourneeIaVilleJsonLdInput extends PageLocaleInput {
+  readonly ville: { readonly nameFr: string };
+  readonly region: { readonly nameFr: string };
+  /** URL Wikidata de la commune (placée dans le nœud `City`). */
+  readonly wikidataUrl: string;
+}
+
+/** Service (Journée IA, `areaServed` = la ville) + BreadcrumbList + WebPage. */
+export function buildJourneeIaVilleJsonLd(
+  input: JourneeIaVilleJsonLdInput,
+): ReadonlyArray<Record<string, unknown>> {
+  return noeudsPageLocale(input, {
+    "@type": "City",
+    name: input.ville.nameFr,
+    sameAs: input.wikidataUrl,
+    containedInPlace: {
+      "@type": "AdministrativeArea",
+      name: input.region.nameFr,
+      containedInPlace: { "@type": "Country", name: "France" },
+    },
+  });
+}
+
+export interface JourneeIaRegionJsonLdInput extends PageLocaleInput {
+  readonly region: { readonly nameFr: string };
+}
+
+/** Service (Journée IA, `areaServed` = la région) + BreadcrumbList + WebPage. */
+export function buildJourneeIaRegionJsonLd(
+  input: JourneeIaRegionJsonLdInput,
+): ReadonlyArray<Record<string, unknown>> {
+  return noeudsPageLocale(input, {
+    "@type": "AdministrativeArea",
+    name: input.region.nameFr,
+    containedInPlace: { "@type": "Country", name: "France" },
+  });
+}
+
+/** Le hub `/fr/implantations` : Service (France) + BreadcrumbList + WebPage. */
+export function buildJourneeIaHubJsonLd(
+  input: PageLocaleInput,
+): ReadonlyArray<Record<string, unknown>> {
+  return noeudsPageLocale(input, { "@type": "Country", name: "France" });
 }
