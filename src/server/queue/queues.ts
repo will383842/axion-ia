@@ -7,6 +7,7 @@
 // les helpers `enqueueEmail` / `bootRepeatableJobs` no-op proprement.
 
 import { randomUUID } from "node:crypto";
+import { redactEmail } from "@/lib/pii-redaction";
 import { Queue } from "bullmq";
 import { getBullConnection, isBullmqDisabled } from "./connection";
 import { resoudreMode, garerPourValidation } from "@/server/email/outbox-service";
@@ -992,7 +993,7 @@ export async function enqueueEmail(
 }> {
   if (!emailsQueue) {
     if (process.env.NODE_ENV !== "production" && !isBullmqDisabled()) {
-      console.warn(`[bullmq] no connection, skipping enqueueEmail(${template}, ${to})`);
+      console.warn(`[bullmq] no connection, skipping enqueueEmail(${template}, ${redactEmail(to)})`);
     }
     // Retour détectable : les appelants qui exigent une garantie de mise en file
     // (ex. reply admin) peuvent marquer un échec explicite au lieu d'un faux succès.
