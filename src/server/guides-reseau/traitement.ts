@@ -149,7 +149,8 @@ export async function noterOrigineV3(
   emailKey: string,
   quand: Date,
 ): Promise<void> {
-  await noterOrigineAvec(() => construireOrigine(d, quand), d.email, emailKey, quand);
+  // Lot S3 (D1) : rien au CRM à la réception ; l'événement part au clic du lien.
+  await noterOrigineAvec(() => construireOrigine(d, quand), d.email, emailKey, quand, false);
 }
 
 /**
@@ -162,7 +163,8 @@ export async function noterOrigineAvec(
   email: string,
   emailKey: string,
   quand: Date,
-  versLeCrm = true,
+  // Éteint par défaut (lot S3, D1) : aucun appelant n'envoie plus l'origine au CRM avant le clic.
+  versLeCrm = false,
 ): Promise<void> {
   try {
     const origine = construire();
