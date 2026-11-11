@@ -155,7 +155,7 @@ export const NICE_COPY: VilleCopy = {
           },
           {
             q: "Couvrez-vous le bassin Sophia Antipolis ?",
-            a: "Oui. Nos consultants se déplacent sur site dans toute la métropole Nice Côte d'Azur, ainsi qu'à Sophia Antipolis, Antibes, Cannes, Grasse et Menton. Sophia est à 20 min de Nice-Ville, une distance de travail courante pour nos missions.",
+            a: "Oui. Nos consultants se déplacent sur site dans toute la métropole Nice Côte d'Azur, ainsi qu'à Sophia Antipolis, Antibes, Cannes, Grasse et Menton.",
           },
           {
             q: "Différence avec un audit Big Four ou un cabinet de conseil traditionnel ?",
@@ -245,8 +245,8 @@ export const NICE_COPY: VilleCopy = {
             a: "Yes. Confidentiality ensured from kick-off, data processed exclusively on your infrastructure, no extraction to our servers. GDPR compliance, models tested locally or on dedicated infra at your premises if sovereignty is required.",
           },
           {
-            q: "Do you cover the Sophia Antipolis basin from Nice?",
-            a: "Yes. Our consultants travel on site across the Nice Côte d'Azur metro and to Sophia Antipolis, Antibes, Cannes, Grasse and Menton. Sophia is 20 minutes from Nice-Ville, a routine working distance for our missions.",
+            q: "Do you cover the Sophia Antipolis basin?",
+            a: "Yes. Our consultants travel on site across the Nice Côte d'Azur metro and to Sophia Antipolis, Antibes, Cannes, Grasse and Menton.",
           },
           {
             q: "Difference with a Big Four audit or traditional consulting?",
@@ -1002,7 +1002,7 @@ export const NICE_COPY: VilleCopy = {
     },
     {
       q: "Intervenez-vous à Sophia Antipolis ?",
-      a: "Oui. Sophia Antipolis est à 20 km de Nice-Ville, une distance de travail courante pour nos consultants. Nous couvrons l'ensemble du bassin métropolitain : Grand Arénas, Nice Méridia, Sophia Antipolis, Antibes, Cannes, Grasse et Menton. Tous les formats (audit, intervention, implémentation) sont disponibles en présentiel sur ce périmètre.",
+      a: "Oui. Nous intervenons partout en France, sur place ou à distance. Nous couvrons l'ensemble du bassin métropolitain : Grand Arénas, Nice Méridia, Sophia Antipolis, Antibes, Cannes, Grasse et Menton. Tous les formats (audit, intervention, implémentation) sont disponibles en présentiel sur ce périmètre.",
     },
     {
       q: "Quels secteurs sont prioritaires à Nice et sur la Côte d'Azur ?",

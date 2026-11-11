@@ -49,7 +49,7 @@ export const MULSANNE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Mulsanne et dans l'agglomération du Mans ?",
-      a: "Oui, Axion-IA intervient à Mulsanne et dans toute l'agglomération du Mans. Le Mans centre est à 12 min. Déplacements sur site inclus dans le périmètre métropole.",
+      a: "Oui, Axion-IA intervient à Mulsanne et dans toute l'agglomération du Mans. Le Mans centre est à 12 min. Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quels services IA pour les PME industrielles de Mulsanne ?",

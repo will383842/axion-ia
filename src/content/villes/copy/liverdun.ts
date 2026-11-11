@@ -49,7 +49,7 @@ export const LIVERDUN_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Liverdun ?",
-      a: "Oui, Axion-IA intervient à Liverdun et dans les communes voisines (Frouard, Pompey, Champigneulles, Toul). Consultants via gare SNCF Liverdun ou autoroute A31.",
+      a: "Oui, Axion-IA intervient à Liverdun et dans les communes voisines (Frouard, Pompey, Champigneulles, Toul). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les artisans et commerçants liverdunois ?",
@@ -65,7 +65,7 @@ export const LIVERDUN_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Liverdun ?",
-      a: "Nos consultants se déplacent via gare SNCF Liverdun (ligne Nancy–Paris) ou autoroute A31. Position stratégique entre Nancy (20 min) et Toul (15 min).",
+      a: "Nous intervenons partout en France, sur place ou à distance. Liverdun se situe entre Nancy (20 min) et Toul (15 min).",
     },
   ],
 };

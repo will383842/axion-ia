@@ -49,7 +49,7 @@ export const LE_LOROUX_BOTTEREAU_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il au Loroux-Bottereau ?",
-      a: "Oui, Axion-IA intervient au Loroux-Bottereau et dans tout le vignoble nantais (Vallet, La Chapelle-Heulin, Le Pallet, Clisson). Couverture complète Loire-Atlantique, Nantes centre à 25 min.",
+      a: "Oui, Axion-IA intervient au Loroux-Bottereau et dans tout le vignoble nantais (Vallet, La Chapelle-Heulin, Le Pallet, Clisson). Couverture complète de la Loire-Atlantique, Nantes comprise.",
     },
     {
       q: "Accompagnez-vous les vignerons et exploitants du Muscadet ?",

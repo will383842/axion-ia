@@ -130,7 +130,7 @@ export const HAGUENAU_COPY: VilleCopy = {
           },
           {
             q: "Sous quel délai recevons-nous un devis pour un site à Haguenau ?",
-            a: "Nous remettons un devis à partir de 24 à 48 h selon la complexité du projet. Williams se déplace ensuite sur site à Haguenau (gare TER à 15 min de Strasbourg, A4 via la D1340) pour le cadrage avant tout développement.",
+            a: "Nous remettons un devis à partir de 24 à 48 h selon la complexité du projet. Williams se déplace ensuite sur site à Haguenau pour le cadrage avant tout développement.",
           },
         ],
         guarantees:

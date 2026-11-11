@@ -65,7 +65,7 @@ export const LA_BOUILLADISSE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déplace Axion-IA à La Bouilladisse ?",
-      a: "La Bouilladisse est à 10 min d'Aubagne et 30 min de Marseille par A52. Nos consultants se déplacent dans vos locaux.",
+      a: "La Bouilladisse est à 10 min d'Aubagne et 30 min de Marseille par A52. Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };

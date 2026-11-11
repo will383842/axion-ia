@@ -49,7 +49,7 @@ export const MANDUEL_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Manduel et zone gare TGV ?",
-      a: "Oui, Axion-IA intervient à Manduel et dans toute la zone Costières / gare TGV (Redessan, Marguerittes, Bouillargues, Garons). Nos consultants arrivent facilement via la gare TGV ou Nîmes (15 min).",
+      a: "Oui, Axion-IA intervient à Manduel et dans toute la zone Costières / gare TGV (Redessan, Marguerittes, Bouillargues, Garons). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quel est le tarif d'un audit IA à Manduel  ?",

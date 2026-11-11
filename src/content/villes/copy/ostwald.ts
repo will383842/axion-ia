@@ -49,7 +49,7 @@ export const OSTWALD_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Ostwald ?",
-      a: "Oui, Axion-IA intervient à Ostwald et dans toute l'agglomération strasbourgeoise (Illkirch-Graffenstaden, Lingolsheim, Geispolsheim, Strasbourg). Consultants via tram CTS, autoroute A35 ou gare de Strasbourg.",
+      a: "Oui, Axion-IA intervient à Ostwald et dans toute l'agglomération strasbourgeoise (Illkirch-Graffenstaden, Lingolsheim, Geispolsheim, Strasbourg). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les entreprises de services et le numérique ?",
@@ -65,7 +65,7 @@ export const OSTWALD_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Ostwald ?",
-      a: "Nos consultants se déplacent via tram CTS, autoroute A35 ou gare de Strasbourg (TGV Paris 1h46). Strasbourg centre à 10 min, aéroport Entzheim à 10 min.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Strasbourg centre à 10 min, aéroport Entzheim à 10 min.",
     },
   ],
 };

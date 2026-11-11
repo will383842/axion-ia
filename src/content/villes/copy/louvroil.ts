@@ -49,7 +49,7 @@ export const LOUVROIL_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Louvroil ?",
-      a: "Oui, Axion-IA intervient à Louvroil et dans toute l'agglomération Maubeuge-Val de Sambre (Hautmont, Feignies, Jeumont, Ferrière-la-Grande). Nos consultants viennent via gare de Louvroil (TER) ou Maubeuge (5 min) ou en visio selon vos contraintes.",
+      a: "Oui, Axion-IA intervient à Louvroil et dans toute l'agglomération Maubeuge-Val de Sambre (Hautmont, Feignies, Jeumont, Ferrière-la-Grande). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quels tarifs pour un audit IA à Louvroil ?",
@@ -65,7 +65,7 @@ export const LOUVROIL_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Louvroil ?",
-      a: "Nos consultants viennent via gare de Louvroil (TER Maubeuge-Jeumont sur place) ou gare Maubeuge (TER Lille/Paris, 5 min). Valenciennes à 25 min, Mons (Belgique) à 25 min.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Valenciennes à 25 min, Mons (Belgique) à 25 min.",
     },
   ],
 };

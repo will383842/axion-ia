@@ -49,7 +49,7 @@ export const LAUDUN_L_ARDOISE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Laudun-l'Ardoise et nord Gard ?",
-      a: "Oui, Axion-IA intervient à Laudun-l'Ardoise et dans tout le nord Gard (Bagnols-sur-Cèze, Pont-Saint-Esprit, Roquemaure). Nos consultants viennent d'Avignon (35 min) ou Orange (20 min).",
+      a: "Oui, Axion-IA intervient à Laudun-l'Ardoise et dans tout le nord Gard (Bagnols-sur-Cèze, Pont-Saint-Esprit, Roquemaure). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les viticulteurs Côtes du Rhône Laudun ?",

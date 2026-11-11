@@ -240,7 +240,7 @@ export const MEAUX_COPY: VilleCopy = {
     },
     {
       q: "Couvrez-vous Trilport, Villenoy et Nanteuil-lès-Meaux ?",
-      a: "Oui, nous nous déplaçons sans surcoût dans les communes limitrophes de Meaux : Chambry, Chauconin-Neufmontiers, Crégy-lès-Meaux, Fublaines, Mareuil-lès-Meaux, Nanteuil-lès-Meaux, Poincy, Trilport et Villenoy.",
+      a: "Oui, nous nous déplaçons aussi dans les communes limitrophes de Meaux : Chambry, Chauconin-Neufmontiers, Crégy-lès-Meaux, Fublaines, Mareuil-lès-Meaux, Nanteuil-lès-Meaux, Poincy, Trilport et Villenoy.",
     },
     {
       q: "Comment Axion-IA garantit-il la conformité RGPD à Meaux ?",

@@ -64,8 +64,8 @@ export const IFS_COPY: VilleCopy = {
       a: "L'Audit sur place démarre à {{price:audit-flash|flat}}. Tarifs publics consultables sur notre site. Devis adapté selon la taille de votre structure (TPE, PME, ETI) et la complexité de vos processus métier.",
     },
     {
-      q: "Êtes-vous accessibles en transport en commun depuis Ifs ?",
-      a: "Oui, Ifs est desservie par le tramway T1 (arrêt Ifs–Jean Vilar) depuis Caen centre. Nos consultants se déplacent directement sur site.",
+      q: "Comment se déroule une intervention à Ifs ?",
+      a: "Nous intervenons partout en France, sur place ou à distance. Ifs est desservie par le tramway T1 (arrêt Ifs–Jean Vilar), qui la relie à Caen centre.",
     },
   ],
 };

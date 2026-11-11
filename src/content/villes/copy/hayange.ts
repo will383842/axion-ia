@@ -49,7 +49,7 @@ export const HAYANGE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Hayange ?",
-      a: "Oui, Axion-IA intervient à Hayange et dans toute la Vallée de la Fensch (Florange, Sérémange-Erzange, Algrange, Knutange). Consultants via gare SNCF Hayange ou autoroute A30. Luxembourg accessible en 35 min.",
+      a: "Oui, Axion-IA intervient à Hayange et dans toute la Vallée de la Fensch (Florange, Sérémange-Erzange, Algrange, Knutange). Nous intervenons partout en France, sur place ou à distance. Luxembourg accessible en 35 min.",
     },
     {
       q: "Travaillez-vous avec les PME industrielles et sous-traitants ?",
@@ -65,7 +65,7 @@ export const HAYANGE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Hayange ?",
-      a: "Nos consultants se déplacent via gare SNCF Hayange (ligne Metz–Luxembourg) ou autoroute A30. Thionville à 10 min, Metz à 30 min, Luxembourg à 35 min.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Thionville à 10 min, Metz à 30 min, Luxembourg à 35 min.",
     },
   ],
 };

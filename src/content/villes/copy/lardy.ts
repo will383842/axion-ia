@@ -61,7 +61,7 @@ export const LARDY_COPY: VilleCopy = {
     },
     {
       q: "Travaillez-vous avec les PME tertiaires sud-Essonne ?",
-      a: "Oui, implémentation IA pour PME tertiaires du sud-Essonne depuis Lardy : CRM augmentés, classification documents, automatisations workflow. Tarifs publics, ROI chiffré contractuel.",
+      a: "Oui, implémentation IA pour les PME tertiaires de Lardy et du sud-Essonne : CRM augmentés, classification documents, automatisations workflow. Tarifs publics, ROI chiffré contractuel.",
     },
     {
       q: "Comment se déroule une mission à Lardy ?",

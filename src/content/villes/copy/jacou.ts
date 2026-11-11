@@ -69,8 +69,8 @@ export const JACOU_COPY: VilleCopy = {
       a: "Commerces de détail (premier secteur, 23,6 % des entreprises), cabinets libéraux santé/conseil, artisans BTP, PME services aux entreprises, restauration, immobilier. Cas typiques : agents IA RDV cabinet médical, chatbot commerce, automatisation devis artisan, suivi stock restaurant.",
     },
     {
-      q: "Êtes-vous accessibles depuis Castelnau-le-Lez ou Le Crès en transports ?",
-      a: "Oui. Le tramway T2 dessert Castelnau-le-Lez puis Jacou (terminus). Bus 22 et 36 connectent Le Crès, Clapiers et Teyran. Pour vos équipes basées dans ces communes, les ateliers Axion-IA à Jacou sont accessibles sans voiture.",
+      q: "Comment se déroule une intervention à Jacou ?",
+      a: "Nous intervenons partout en France, sur place ou à distance. Jacou est le terminus du tramway T2, qui la relie à Castelnau-le-Lez ; les bus 22 et 36 la connectent au Crès, à Clapiers et à Teyran.",
     },
   ],
 };

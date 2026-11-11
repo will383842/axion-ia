@@ -180,7 +180,7 @@ export const PARIS_COPY: VilleCopy = {
         whyHere: [
           "Paris is our top engagement hub: most of our audits originate there.",
           "Paris B2B fabric over-represented in our cases: accounting firms, family offices, asset managers, 8th/9th/16th consulting, Sentier-République scale-ups, Marais fashion houses.",
-          "Our consultants are Paris-based and travel across all 20 arrondissements and the inner suburbs.",
+          "Our consultants travel across all 20 arrondissements and the inner suburbs.",
           "Read-outs always in person: ideation workshops, deliverable walk-through with your leadership, action plan handed over face to face.",
           "No opaque quote game: public pricing, you know exactly what you pay before signing.",
           "You keep control: your action plan is executable with any vendor or in-house after our audit.",
@@ -735,7 +735,7 @@ export const PARIS_COPY: VilleCopy = {
         whyHere: [
           "Paris is France's decision-making epicentre: 8th-arrondissement SME executives, Sentier startup CEOs, La Défense mid-cap leaders — all our 1-to-1 profiles are over-represented there.",
           "Unmatched multi-sector Paris B2B fabric: every session is calibrated to your real sector (finance, consulting, tech, fashion, retail) and your own data.",
-          "Intra-city travel or video depending on your schedule: our consultants come directly to your offices, no commute required on your side.",
+          "On site or by video depending on your schedule: our consultants come directly to your offices, no commute required on your side.",
           "No lock-in of any kind: no imposed software suite, no compulsory recurring contract — you advance at the pace you decide.",
           "Real cases only: we work on your actual emails, documents and business processes, not textbook exercises.",
           "Paris AI ecosystem at your fingertips: Station F, Mistral AI, Hugging Face — we also help you position yourself strategically within this landscape.",

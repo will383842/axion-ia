@@ -49,7 +49,7 @@ export const GOUVIEUX_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Gouvieux et dans le bassin de Chantilly ?",
-      a: "Oui, Axion-IA intervient à Gouvieux et dans tout le bassin de Chantilly (Chantilly, Lamorlaye, Coye-la-Forêt, Senlis). Consultants accessibles via gare SNCF Chantilly-Gouvieux (TER Paris-Nord en 25 min). Aéroport CDG à 25 min.",
+      a: "Oui, Axion-IA intervient à Gouvieux et dans tout le bassin de Chantilly (Chantilly, Lamorlaye, Coye-la-Forêt, Senlis). Nous intervenons partout en France, sur place ou à distance. Aéroport CDG à 25 min.",
     },
     {
       q: "Combien coûte un audit IA à Gouvieux  ?",

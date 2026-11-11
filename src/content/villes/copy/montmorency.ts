@@ -74,7 +74,7 @@ export const MONTMORENCY_COPY: VilleCopy = {
           {
             step: "Développement par sprints",
             detail:
-              "Greffe IA sur l'existant ou build IA-native : prise de rendez-vous en ligne, boutique e-commerce multi-CMS, chatbot RAG multilingue, recherche sémantique, agents de relance et automatisations branchés sur votre CRM ou ERP. Démos hebdomadaires en visio depuis Montmorency.",
+              "Greffe IA sur l'existant ou build IA-native : prise de rendez-vous en ligne, boutique e-commerce multi-CMS, chatbot RAG multilingue, recherche sémantique, agents de relance et automatisations branchés sur votre CRM ou ERP. Démos hebdomadaires en visio.",
           },
           {
             step: "Recette + mise en ligne",
@@ -160,7 +160,7 @@ export const MONTMORENCY_COPY: VilleCopy = {
           {
             step: "Développement par sprints",
             detail:
-              "Greffe IA sur l'existant ou build IA-native : prise de rendez-vous en ligne, boutique e-commerce multi-CMS, chatbot RAG multilingue, recherche sémantique, agents de relance et automatisations branchés sur votre CRM ou ERP. Démos hebdomadaires en visio depuis Montmorency.",
+              "Greffe IA sur l'existant ou build IA-native : prise de rendez-vous en ligne, boutique e-commerce multi-CMS, chatbot RAG multilingue, recherche sémantique, agents de relance et automatisations branchés sur votre CRM ou ERP. Démos hebdomadaires en visio.",
           },
           {
             step: "Recette + mise en ligne",

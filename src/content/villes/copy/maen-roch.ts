@@ -49,7 +49,7 @@ export const MAEN_ROCH_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Maen Roch et dans le Pays de Fougères ?",
-      a: "Oui, Axion-IA intervient à Maen Roch et dans tout le Pays de Fougères (Fougères, Louvigné-du-Désert, Saint-Brice-en-Coglès, Bazouges-la-Pérouse). Rennes à 50 min (A84), TGV Paris 1h25 depuis Rennes.",
+      a: "Oui, Axion-IA intervient à Maen Roch et dans tout le Pays de Fougères (Fougères, Louvigné-du-Désert, Saint-Brice-en-Coglès, Bazouges-la-Pérouse). Maen Roch est à 50 min de Rennes par l'A84 (Paris à 1h25 en TGV au départ de Rennes). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Tarifs audit IA à Maen Roch  : quel budget prévoir ?",

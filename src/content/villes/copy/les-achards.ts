@@ -65,7 +65,7 @@ export const LES_ACHARDS_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission aux Achards ?",
-      a: "Nos consultants interviennent directement dans vos locaux aux Achards. La Roche-sur-Yon à 22 km, Les Sables-d'Olonne à 20 km, Nantes à 80 km. Accès A87 à 25 km.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Les Achards sont à 22 km de La Roche-sur-Yon, 20 km des Sables-d'Olonne et 80 km de Nantes (accès A87 à 25 km).",
     },
   ],
 };

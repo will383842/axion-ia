@@ -49,7 +49,7 @@ export const LE_MESNIL_SAINT_DENIS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il au Mesnil-Saint-Denis et dans le sud Yvelines ?",
-      a: "Oui, Axion-IA intervient au Mesnil-Saint-Denis et dans tout le sud des Yvelines (Trappes à 8 min, Saint-Quentin-en-Yvelines à 10 min, Chevreuse, Versailles à 20 min). Nos consultants se déplacent via A12/N10.",
+      a: "Oui, Axion-IA intervient au Mesnil-Saint-Denis et dans tout le sud des Yvelines (Trappes à 8 min, Saint-Quentin-en-Yvelines à 10 min, Chevreuse, Versailles à 20 min). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les PME informatiques près de Saint-Quentin-en-Yvelines ?",

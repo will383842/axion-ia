@@ -671,7 +671,7 @@ export const MONTREUIL_COPY: VilleCopy = {
           "La confidentialité est totale : vos données, vos projets et vos enjeux stratégiques restent dans le cadre de la session. Confidentialité stricte avant chaque accompagnement.",
           "Le rythme est le vôtre : sessions ponctuelles à la demande, suivi régulier mensuel ou intensif sur quelques semaines selon votre objectif.",
           "Chaque session part de vos vrais documents et de vos vrais workflows — pas d'exercices fictifs. Vous repartez avec des outils et des pratiques opérationnels.",
-          "Accessible depuis Montreuil sans contrainte : sessions sur site dans vos locaux ou en visio selon votre préférence.",
+          "Nous intervenons partout en France, sur place ou à distance : sessions sur site ou en visio selon votre préférence.",
           "Tarif d'entrée accessible aux profils indépendants et TPE — pas réservé aux grandes structures.",
         ],
         methodology: [
@@ -759,7 +759,7 @@ export const MONTREUIL_COPY: VilleCopy = {
           "Full confidentiality: your data, your projects and your strategic issues stay within the session framework. Strict confidentiality before each engagement.",
           "The pace is yours: ad-hoc sessions on demand, regular monthly follow-up or intensive over a few weeks depending on your goal.",
           "Each session starts from your real documents and your real workflows — no fictional exercises. You leave with operational tools and practices.",
-          "Accessible from Montreuil without constraints: on-site sessions at your offices or video call depending on your preference.",
+          "We work anywhere in France, on site or remotely: on-site sessions at your offices or video call depending on your preference.",
           "Entry price accessible to freelancers and micro-businesses — not reserved for large organisations.",
         ],
         methodology: [

@@ -232,7 +232,7 @@ export const MONTAUBAN_COPY: VilleCopy = {
     },
     {
       q: "Quels délais pour une intervention sur site à Montauban ?",
-      a: "Williams se déplace à Montauban sous 5 jours ouvrés après validation du devis (TGV ou Intercités via Ville-Bourbon, ou A20). Audit livré sous 5 jours après visite. Implémentation : 2 à 6 semaines.",
+      a: "Williams se déplace à Montauban sous 5 jours ouvrés après validation du devis. Audit livré sous 5 jours après visite. Implémentation : 2 à 6 semaines.",
     },
     {
       q: "Intervenez-vous dans les communes proches de Montauban ?",

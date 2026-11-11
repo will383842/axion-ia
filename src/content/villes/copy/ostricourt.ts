@@ -65,7 +65,7 @@ export const OSTRICOURT_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission Axion-IA à Ostricourt ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Ostricourt est au carrefour du bassin minier, déplacements sans surcoût hébergement. Sessions sur site ou en visio selon vos préférences.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Ostricourt est au carrefour du bassin minier. Sessions sur site ou en visio selon vos préférences.",
     },
   ],
 };

@@ -49,7 +49,7 @@ export const NEUVES_MAISONS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Neuves-Maisons et dans la vallée de la Moselle ?",
-      a: "Oui, Axion-IA intervient à Neuves-Maisons et sur toute la vallée de la Moselle (Pont-Saint-Vincent, Chaligny, Pulnoy, Toul, Nancy). Accès direct via A33, Paris à 1h30 en TGV depuis la gare Lorraine.",
+      a: "Oui, Axion-IA intervient à Neuves-Maisons et sur toute la vallée de la Moselle (Pont-Saint-Vincent, Chaligny, Pulnoy, Toul, Nancy). Neuves-Maisons est desservie par l'A33 ; la gare Lorraine TGV met Paris à 1h30. Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Combien coûte un audit IA à Neuves-Maisons  ?",

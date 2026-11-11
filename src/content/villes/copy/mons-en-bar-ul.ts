@@ -74,7 +74,7 @@ export const MONS_EN_BAR_UL_COPY: VilleCopy = {
           {
             step: "Développement par sprints",
             detail:
-              "Greffe IA sur l'existant ou build IA-native depuis le quartier du Fort : e-commerce multi-CMS, portail client, chatbot RAG multilingue, recherche sémantique, agents d'automatisation des devis et relances. Démos hebdomadaires en visio, code versionné et relu à chaque itération.",
+              "Greffe IA sur l'existant ou build IA-native, du quartier du Fort au reste de la commune : e-commerce multi-CMS, portail client, chatbot RAG multilingue, recherche sémantique, agents d'automatisation des devis et relances. Démos hebdomadaires en visio, code versionné et relu à chaque itération.",
           },
           {
             step: "Recette + mise en ligne",
@@ -160,7 +160,7 @@ export const MONS_EN_BAR_UL_COPY: VilleCopy = {
           {
             step: "Développement par sprints",
             detail:
-              "Greffe IA sur l'existant ou build IA-native depuis le quartier du Fort : e-commerce multi-CMS, portail client, chatbot RAG multilingue, recherche sémantique, agents d'automatisation des devis et relances. Démos hebdomadaires en visio, code versionné et relu à chaque itération.",
+              "Greffe IA sur l'existant ou build IA-native, du quartier du Fort au reste de la commune : e-commerce multi-CMS, portail client, chatbot RAG multilingue, recherche sémantique, agents d'automatisation des devis et relances. Démos hebdomadaires en visio, code versionné et relu à chaque itération.",
           },
           {
             step: "Recette + mise en ligne",

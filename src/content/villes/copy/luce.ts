@@ -65,7 +65,7 @@ export const LUCE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Lucé ?",
-      a: "Paris Montparnasse à Chartres en 1h15 (TER direct), Lucé à 5 min de Chartres.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Lucé est à 5 min de Chartres, elle-même à 1h15 de Paris-Montparnasse en TER direct.",
     },
   ],
 };

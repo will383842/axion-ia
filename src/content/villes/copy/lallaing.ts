@@ -65,7 +65,7 @@ export const LALLAING_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission Axion-IA à Lallaing ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Lallaing étant intégrée à l'agglomération douaisienne, déplacements sans surcoût hébergement. Sessions sur site ou en visio selon vos préférences.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Lallaing fait partie de l'agglomération douaisienne. Sessions sur site ou en visio selon vos préférences.",
     },
   ],
 };

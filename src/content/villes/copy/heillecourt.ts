@@ -49,7 +49,7 @@ export const HEILLECOURT_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Heillecourt ?",
-      a: "Oui, Axion-IA intervient à Heillecourt et dans les communes du sud nancéien (Vandœuvre-lès-Nancy, Houdemont, Fléville-devant-Nancy, Ludres). Consultants via autoroute A330 ou gare SNCF Nancy.",
+      a: "Oui, Axion-IA intervient à Heillecourt et dans les communes du sud nancéien (Vandœuvre-lès-Nancy, Houdemont, Fléville-devant-Nancy, Ludres). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les PME services aux entreprises ?",
@@ -65,7 +65,7 @@ export const HEILLECOURT_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Heillecourt ?",
-      a: "Nos consultants se déplacent via autoroute A330 ou gare SNCF Nancy (10 min). Position stratégique au sud immédiat de Nancy.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Heillecourt est au sud immédiat de Nancy.",
     },
   ],
 };

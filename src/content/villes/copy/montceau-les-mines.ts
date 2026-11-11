@@ -49,7 +49,7 @@ export const MONTCEAU_LES_MINES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Montceau-les-Mines et dans le bassin montcellien ?",
-      a: "Oui, Axion-IA intervient à Montceau-les-Mines et sur tout le bassin montcellien (Blanzy, Saint-Vallier, Sanvignes, Le Creusot). Nos consultants arrivent par TGV Le Creusot-Montchanin (1h20 Paris) à 15 min.",
+      a: "Oui, Axion-IA intervient à Montceau-les-Mines et sur tout le bassin montcellien (Blanzy, Saint-Vallier, Sanvignes, Le Creusot). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Tarifs audit IA à Montceau-les-Mines  : quel budget prévoir ?",
@@ -65,7 +65,7 @@ export const MONTCEAU_LES_MINES_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Montceau-les-Mines ?",
-      a: "Nos consultants arrivent par TGV Le Creusot-Montchanin (1h20 Paris) puis 15 min route. Interventions sur site (atelier, commerce, bureau). Formats journée ou demi-journée.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Interventions sur site (atelier, commerce, bureau). Formats journée ou demi-journée.",
     },
   ],
 };

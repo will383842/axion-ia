@@ -49,7 +49,7 @@ export const LES_SORINIERES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il aux Sorinières et sud Nantes ?",
-      a: "Oui, Axion-IA intervient aux Sorinières et toute la couronne sud de Nantes Métropole (Vertou, Rezé, Saint-Sébastien-sur-Loire, Pont-Saint-Martin, Basse-Goulaine). Nos consultants sont à Nantes en 12 min via le périphérique sud.",
+      a: "Oui, Axion-IA intervient aux Sorinières et toute la couronne sud de Nantes Métropole (Vertou, Rezé, Saint-Sébastien-sur-Loire, Pont-Saint-Martin, Basse-Goulaine). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les PME logistiques et de distribution ?",

@@ -49,7 +49,7 @@ export const KINGERSHEIM_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Kingersheim ?",
-      a: "Oui, Axion-IA intervient à Kingersheim et dans l'agglomération mulhousienne (Mulhouse, Wittenheim, Illzach). Consultants via A36 ou gare de Mulhouse-Ville. Proximité de l'aéroport Bâle-Mulhouse (20 min) et de la Suisse.",
+      a: "Oui, Axion-IA intervient à Kingersheim et dans l'agglomération mulhousienne (Mulhouse, Wittenheim, Illzach). Nous intervenons partout en France, sur place ou à distance. Proximité de l'aéroport Bâle-Mulhouse (20 min) et de la Suisse.",
     },
     {
       q: "Travaillez-vous avec les TPE/PME commerce et distribution ?",
@@ -65,7 +65,7 @@ export const KINGERSHEIM_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Kingersheim ?",
-      a: "Nos consultants se déplacent via autoroute A36 (accès direct) ou gare de Mulhouse-Ville (15 min). Position stratégique au croisement Alsace-Suisse-Allemagne.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Kingersheim est au croisement Alsace-Suisse-Allemagne.",
     },
   ],
 };

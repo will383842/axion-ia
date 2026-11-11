@@ -65,7 +65,7 @@ export const HAGONDANGE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Hagondange ?",
-      a: "Nos consultants arrivent via gare SNCF Hagondange ou autoroute A31. Metz à 20 min, Thionville à 15 min, Luxembourg à 55 min.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Metz à 20 min, Thionville à 15 min, Luxembourg à 55 min.",
     },
   ],
 };

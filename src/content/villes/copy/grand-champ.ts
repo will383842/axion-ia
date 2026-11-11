@@ -49,7 +49,7 @@ export const GRAND_CHAMP_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Grand-Champ et dans l'arrière-pays vannetais ?",
-      a: "Oui, Axion-IA intervient à Grand-Champ et dans tout l'arrière-pays vannetais (Locminé, Plaudren, Moustoir-Ac, Brandivy, Colpo). Couverture Vannes (15 min) et axe Vannes-Pontivy.",
+      a: "Oui, Axion-IA intervient à Grand-Champ et dans tout l'arrière-pays vannetais (Locminé, Plaudren, Moustoir-Ac, Brandivy, Colpo). Couverture également Vannes et l'axe Vannes-Pontivy.",
     },
     {
       q: "Travaillez-vous avec les exploitations agricoles et PME agroalimentaires de Grand-Champ ?",
@@ -65,7 +65,7 @@ export const GRAND_CHAMP_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA sur site à Grand-Champ ?",
-      a: "Nos consultants se déplacent dans vos locaux à Grand-Champ ou interviennent en visio. Vannes est à 15 min. Pour les missions multi-jours, hébergement local possible.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Grand-Champ est à 15 min de Vannes. Pour les missions multi-jours, hébergement local possible.",
     },
   ],
 };

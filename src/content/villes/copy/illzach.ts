@@ -65,7 +65,7 @@ export const ILLZACH_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission Axion-IA à Illzach ?",
-      a: "Nous intervenons sur site à Illzach, qui appartient à Mulhouse Alsace Agglomération, sans surcoût de déplacement ni d'hébergement. Sessions sur site ou en visio selon vos préférences.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Illzach appartient à Mulhouse Alsace Agglomération. Sessions sur site ou en visio selon vos préférences.",
     },
   ],
 };

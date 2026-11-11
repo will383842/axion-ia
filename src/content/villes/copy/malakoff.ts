@@ -57,7 +57,7 @@ export const MALAKOFF_COPY: VilleCopy = {
           "Filière audiovisuelle/postproduction sur-représentée localement : Malakoff Studio, Time-Line Factory (rue Paul Vaillant-Couturier), Black Snow Production (rue de la Tour), McFly Prod, Teslart et Le Magasin génèrent des besoins très concrets — catalogues d'assets vidéo, transcription/dérushage, sous-titrage et doublage, devis et plannings de tournage — où l'IA apporte un gain mesurable.",
           "Écosystème coopératif et ESS dense : le tiers-lieu CASACO (SCIC, ~45 postes, une centaine de coworkers) et la démarche MALACOOP (CASACO, la Ressourcerie, le tiers-lieu La Tréso artisanat/numérique/fabrication) concentrent indépendants, télétravailleurs et équipes de startups qui ont besoin de plateformes légères et d'outils mutualisés plutôt que d'usines à gaz.",
           "Tissu de très petites structures : ~5 800 entreprises majoritairement en entreprise individuelle, effectif moyen autour de 5 salariés ; le premier secteur de créations 2024 est « activités spécialisées, scientifiques et techniques » — un public d'agences, cabinets et freelances pour qui un site rapide et un SaaS sobre comptent plus qu'un site vitrine surdimensionné.",
-          "Proximité immédiate de Paris sans les coûts parisiens : quatre stations de la ligne 13 et la gare Transilien Vanves-Malakoff (ligne N) placent Montparnasse à ~4 km ; nous nous déplaçons sur site à Malakoff, Vanves, Montrouge, Châtillon, Clamart, Bagneux et les 14e/15e arrondissements limitrophes.",
+          "Quatre stations de la ligne 13 et la gare Transilien Vanves-Malakoff (ligne N) placent Montparnasse à ~4 km. Nous intervenons partout en France, sur place ou à distance. Nous nous déplaçons notamment sur site à Malakoff, Vanves, Montrouge, Châtillon, Clamart, Bagneux et les 14e/15e arrondissements limitrophes.",
         ],
         methodology: [
           {
@@ -143,7 +143,7 @@ export const MALAKOFF_COPY: VilleCopy = {
           "Audiovisual/post-production sector over-represented locally: Malakoff Studio, Time-Line Factory (rue Paul Vaillant-Couturier), Black Snow Production (rue de la Tour), McFly Prod, Teslart and Le Magasin generate very concrete needs — video asset catalogues, transcription/rough-cut, subtitling and dubbing, shoot quotes and scheduling — where AI delivers measurable gains.",
           "Dense cooperative and social-economy ecosystem: the CASACO third-place (SCIC, ~45 workstations, around a hundred coworkers) and the MALACOOP initiative (CASACO, the Ressourcerie, the La Tréso craft/digital/fabrication third-place) concentrate freelancers, remote workers and startup teams who need lightweight platforms and shared tools rather than over-engineered systems.",
           "Fabric of very small structures: ~5,800 businesses, mostly sole proprietorships, average headcount around 5; the top business-creation sector in 2024 is 'specialised, scientific and technical activities' — an audience of agencies, practices and freelancers for whom a fast site and a lean SaaS matter more than an oversized showcase site.",
-          "Immediate proximity to Paris without Paris costs: four Line 13 metro stations and the Vanves-Malakoff Transilien station (Line N) put Montparnasse ~4 km away; we travel on site to Malakoff, Vanves, Montrouge, Châtillon, Clamart, Bagneux and the bordering 14th/15th arrondissements.",
+          "Four Line 13 metro stations and the Vanves-Malakoff Transilien station (Line N) put Montparnasse ~4 km away. We work anywhere in France, on site or remotely. We travel on site to Malakoff, Vanves, Montrouge, Châtillon, Clamart, Bagneux and the bordering 14th/15th arrondissements.",
         ],
         methodology: [
           {
@@ -233,7 +233,7 @@ export const MALAKOFF_COPY: VilleCopy = {
     },
     {
       q: "Comment Axion-IA se déplace-t-il à Malakoff ?",
-      a: "Williams et l'équipe Axion-IA se déplacent sur site à Malakoff sous 5 jours ouvrés en moyenne après validation du devis. La ligne 13 et la gare Transilien Vanves-Malakoff facilitent l'accès depuis le reste de l'Île-de-France.",
+      a: "Williams et l'équipe Axion-IA se déplacent sur site à Malakoff sous 5 jours ouvrés en moyenne après validation du devis.",
     },
     {
       q: "Quels délais pour un audit IA à Malakoff ?",
@@ -245,7 +245,7 @@ export const MALAKOFF_COPY: VilleCopy = {
     },
     {
       q: "Axion-IA couvre-t-il les communes autour de Malakoff ?",
-      a: "Oui, nous intervenons également à Vanves, Montrouge, Châtillon, Clamart, Bagneux et dans les arrondissements limitrophes de Paris (14e et 15e), depuis notre base à Malakoff.",
+      a: "Oui, nous intervenons également à Vanves, Montrouge, Châtillon, Clamart, Bagneux et dans les arrondissements limitrophes de Paris (14e et 15e). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quels secteurs locaux servez-vous à Malakoff ?",

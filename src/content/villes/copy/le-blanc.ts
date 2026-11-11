@@ -49,7 +49,7 @@ export const LE_BLANC_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il au Blanc et en Brenne ?",
-      a: "Oui, Axion-IA intervient au Blanc et dans tout le sud Berry, y compris le Parc naturel régional de la Brenne (Mézières-en-Brenne, Bélâbre, Saint-Gaultier). Couverture également Châteauroux à 1h, Poitiers à 1h et Tours à 1h45.",
+      a: "Oui, Axion-IA intervient au Blanc et dans tout le sud Berry, y compris le Parc naturel régional de la Brenne (Mézières-en-Brenne, Bélâbre, Saint-Gaultier). Couverture également Châteauroux, Poitiers et Tours.",
     },
     {
       q: "Travaillez-vous avec les exploitations agricoles et PME du sud Berry ?",

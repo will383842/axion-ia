@@ -74,7 +74,7 @@ export const LA_GARDE_COPY: VilleCopy = {
           {
             step: "Développement par sprints",
             detail:
-              "Greffe IA sur l'existant ou build IA-native depuis le quartier Toulon-Est : boutique e-commerce, devis et rendez-vous en ligne, chatbot RAG multilingue, recherche sémantique, agents et automatisations. Démos hebdomadaires en visio pour ajuster au fil de l'eau.",
+              "Greffe IA sur l'existant ou build IA-native, du quartier Toulon-Est au reste de la commune : boutique e-commerce, devis et rendez-vous en ligne, chatbot RAG multilingue, recherche sémantique, agents et automatisations. Démos hebdomadaires en visio pour ajuster au fil de l'eau.",
           },
           {
             step: "Recette + mise en ligne",
@@ -160,7 +160,7 @@ export const LA_GARDE_COPY: VilleCopy = {
           {
             step: "Développement par sprints",
             detail:
-              "Greffe IA sur l'existant ou build IA-native depuis le quartier Toulon-Est : boutique e-commerce, devis et rendez-vous en ligne, chatbot RAG multilingue, recherche sémantique, agents et automatisations. Démos hebdomadaires en visio pour ajuster au fil de l'eau.",
+              "Greffe IA sur l'existant ou build IA-native, du quartier Toulon-Est au reste de la commune : boutique e-commerce, devis et rendez-vous en ligne, chatbot RAG multilingue, recherche sémantique, agents et automatisations. Démos hebdomadaires en visio pour ajuster au fil de l'eau.",
           },
           {
             step: "Recette + mise en ligne",

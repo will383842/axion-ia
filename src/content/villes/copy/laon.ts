@@ -70,12 +70,12 @@ export const LAON_COPY: VilleCopy = {
           {
             step: "Développement par sprints",
             detail:
-              "Greffe IA sur l'existant ou build IA-native depuis l'A26 et en visio : e-commerce multi-CMS, réservation directe, chatbot RAG multilingue, recherche sémantique, agents et automatisations branchés sur votre SI. Démos hebdomadaires, code versionné et livré au fil de l'eau, hébergement UE.",
+              "Greffe IA sur l'existant ou build IA-native, sur place ou en visio : e-commerce multi-CMS, réservation directe, chatbot RAG multilingue, recherche sémantique, agents et automatisations branchés sur votre SI. Démos hebdomadaires, code versionné et livré au fil de l'eau, hébergement UE.",
           },
           {
             step: "Recette + mise en ligne",
             detail:
-              "Tests d'acceptation depuis la gare de Laon ou à distance, Web Vitals et SEO/AEO validés, conformité RGPD et AI Act vérifiée, mise en production sans downtime — y compris en pleine saison touristique estivale quand le trafic des hébergeurs de la ville haute culmine.",
+              "Tests d'acceptation sur place ou à distance, Web Vitals et SEO/AEO validés, conformité RGPD et AI Act vérifiée, mise en production sans downtime — y compris en pleine saison touristique estivale quand le trafic des hébergeurs de la ville haute culmine.",
           },
           {
             step: "Livraison + autonomie",
@@ -156,12 +156,12 @@ export const LAON_COPY: VilleCopy = {
           {
             step: "Développement par sprints",
             detail:
-              "Greffe IA sur l'existant ou build IA-native depuis l'A26 et en visio : e-commerce multi-CMS, réservation directe, chatbot RAG multilingue, recherche sémantique, agents et automatisations branchés sur votre SI. Démos hebdomadaires, code versionné et livré au fil de l'eau, hébergement UE.",
+              "Greffe IA sur l'existant ou build IA-native, sur place ou en visio : e-commerce multi-CMS, réservation directe, chatbot RAG multilingue, recherche sémantique, agents et automatisations branchés sur votre SI. Démos hebdomadaires, code versionné et livré au fil de l'eau, hébergement UE.",
           },
           {
             step: "Recette + mise en ligne",
             detail:
-              "Tests d'acceptation depuis la gare de Laon ou à distance, Web Vitals et SEO/AEO validés, conformité RGPD et AI Act vérifiée, mise en production sans downtime — y compris en pleine saison touristique estivale quand le trafic des hébergeurs de la ville haute culmine.",
+              "Tests d'acceptation sur place ou à distance, Web Vitals et SEO/AEO validés, conformité RGPD et AI Act vérifiée, mise en production sans downtime — y compris en pleine saison touristique estivale quand le trafic des hébergeurs de la ville haute culmine.",
           },
           {
             step: "Livraison + autonomie",

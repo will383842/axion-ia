@@ -72,7 +72,7 @@ export const LA_VALETTE_DU_VAR_COPY: VilleCopy = {
           {
             step: "Développement par sprints",
             detail:
-              "Greffe IA sur l'existant ou build IA-native : boutique e-commerce multi-CMS, espace client SaaS, chatbot RAG multilingue, recherche sémantique, agents de relance et de devis. Démos hebdomadaires en visio depuis l'aire toulonnaise, code versionné et livré au fil de l'eau.",
+              "Greffe IA sur l'existant ou build IA-native : boutique e-commerce multi-CMS, espace client SaaS, chatbot RAG multilingue, recherche sémantique, agents de relance et de devis. Démos hebdomadaires en visio, code versionné et livré au fil de l'eau.",
           },
           {
             step: "Recette + mise en ligne",
@@ -158,7 +158,7 @@ export const LA_VALETTE_DU_VAR_COPY: VilleCopy = {
           {
             step: "Développement par sprints",
             detail:
-              "Greffe IA sur l'existant ou build IA-native : boutique e-commerce multi-CMS, espace client SaaS, chatbot RAG multilingue, recherche sémantique, agents de relance et de devis. Démos hebdomadaires en visio depuis l'aire toulonnaise, code versionné et livré au fil de l'eau.",
+              "Greffe IA sur l'existant ou build IA-native : boutique e-commerce multi-CMS, espace client SaaS, chatbot RAG multilingue, recherche sémantique, agents de relance et de devis. Démos hebdomadaires en visio, code versionné et livré au fil de l'eau.",
           },
           {
             step: "Recette + mise en ligne",

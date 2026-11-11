@@ -65,7 +65,7 @@ export const LE_HAILLAN_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission au Haillan ?",
-      a: "Nos consultants interviennent dans vos locaux au Haillan ou en visio. Nous intervenons partout en France, sur place ou à distance. Proche aéroport Mérignac (10 min). Livrables documentés.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Le Haillan est à 10 min de l'aéroport de Mérignac. Livrables documentés.",
     },
   ],
 };

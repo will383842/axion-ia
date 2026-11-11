@@ -65,7 +65,7 @@ export const LANGUEUX_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Langueux ?",
-      a: "Paris-Saint-Brieuc en 2h45 (TGV direct). Rennes à 1h (N12). Gare Saint-Brieuc à 10 min de Langueux.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Langueux est à 10 min de la gare de Saint-Brieuc (Paris en 2h45 en TGV direct) et à 1h de Rennes par la N12.",
     },
   ],
 };

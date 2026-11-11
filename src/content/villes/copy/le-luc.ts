@@ -63,7 +63,7 @@ export const LE_LUC_COPY: VilleCopy = {
     },
     {
       q: "Quels délais pour une mission au Luc ?",
-      a: "Intervention sous 5 jours ouvrés. Gare TGV Les Arcs-Draguignan à 25 min (Paris 4h00), aéroport Toulon-Hyères à 50 min, axe A8. Nos consultants se déplacent sur site.",
+      a: "Intervention sous 5 jours ouvrés. Nous intervenons partout en France, sur place ou à distance. Accès à Le Luc : Gare TGV Les Arcs-Draguignan à 25 min (Paris 4h00), aéroport Toulon-Hyères à 50 min, axe A8.",
     },
   ],
 };

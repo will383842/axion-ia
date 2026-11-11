@@ -49,7 +49,7 @@ export const LA_BASSEE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à La Bassée ?",
-      a: "Oui, Axion-IA intervient à La Bassée et dans tout le pays de Weppes (Illies, Herlies, Salomé, Violaines). Nos consultants viennent via gare La Bassée-Violaines (TER Lille-Béthune) ou A1/A26. Lille à 25 min.",
+      a: "Oui, Axion-IA intervient à La Bassée et dans tout le pays de Weppes (Illies, Herlies, Salomé, Violaines). Nous intervenons partout en France, sur place ou à distance. Lille à 25 min.",
     },
     {
       q: "Quels tarifs pour un audit IA à La Bassée ?",
@@ -65,7 +65,7 @@ export const LA_BASSEE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à La Bassée ?",
-      a: "Nos consultants viennent via gare La Bassée-Violaines (TER Lille-Béthune sur place) ou autoroute A1/A26. Lille à 25 min, Lens à 20 min, Béthune à 15 min.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Lille à 25 min, Lens à 20 min, Béthune à 15 min.",
     },
   ],
 };

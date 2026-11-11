@@ -72,7 +72,7 @@ export const LES_LILAS_COPY: VilleCopy = {
           {
             step: "Développement par sprints",
             detail:
-              "Greffe IA sur l'existant ou build IA-native depuis la ZAC Cœur de Ville aux quartiers résidentiels : e-commerce multi-CMS, prise de rendez-vous en ligne, chatbot RAG multilingue, recherche sémantique, agents et automatisations. Démos hebdomadaires en visio pour piloter le périmètre.",
+              "Greffe IA sur l'existant ou build IA-native, de la ZAC Cœur de Ville aux quartiers résidentiels : e-commerce multi-CMS, prise de rendez-vous en ligne, chatbot RAG multilingue, recherche sémantique, agents et automatisations. Démos hebdomadaires en visio pour piloter le périmètre.",
           },
           {
             step: "Recette + mise en ligne",
@@ -158,7 +158,7 @@ export const LES_LILAS_COPY: VilleCopy = {
           {
             step: "Développement par sprints",
             detail:
-              "Greffe IA sur l'existant ou build IA-native depuis la ZAC Cœur de Ville aux quartiers résidentiels : e-commerce multi-CMS, prise de rendez-vous en ligne, chatbot RAG multilingue, recherche sémantique, agents et automatisations. Démos hebdomadaires en visio pour piloter le périmètre.",
+              "Greffe IA sur l'existant ou build IA-native, de la ZAC Cœur de Ville aux quartiers résidentiels : e-commerce multi-CMS, prise de rendez-vous en ligne, chatbot RAG multilingue, recherche sémantique, agents et automatisations. Démos hebdomadaires en visio pour piloter le périmètre.",
           },
           {
             step: "Recette + mise en ligne",

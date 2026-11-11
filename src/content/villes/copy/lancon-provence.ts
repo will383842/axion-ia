@@ -65,7 +65,7 @@ export const LANCON_PROVENCE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déplace Axion-IA à Lançon-Provence ?",
-      a: "Lançon-Provence est à 10 min de Salon et 35 min de Marseille via A7-A8. Nos consultants se déplacent dans vos locaux.",
+      a: "Lançon-Provence est à 10 min de Salon et 35 min de Marseille via A7-A8. Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };

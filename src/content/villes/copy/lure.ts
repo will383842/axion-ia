@@ -65,7 +65,7 @@ export const LURE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Lure ?",
-      a: "Nos consultants arrivent par TGV Belfort-Montbéliard (2h20 Paris) puis route vers Lure (40 min). Pour les multi-jours, hébergement local possible.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Pour les multi-jours, hébergement local possible.",
     },
   ],
 };

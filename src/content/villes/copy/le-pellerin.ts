@@ -64,7 +64,7 @@ export const LE_PELLERIN_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les TPE artisans BTP et commerçants du Pellerin sur des cas IA concrets : automatisation devis, planification chantiers, gestion stocks, communication locale et agents IA de prise de rendez-vous.",
     },
     {
-      q: "Comment accédez-vous au Pellerin pour vos interventions ?",
+      q: "Comment se déroule une intervention au Pellerin ?",
       a: "Nous intervenons partout en France, sur place ou à distance. L'aéroport Nantes Atlantique est à 15 min.",
     },
   ],

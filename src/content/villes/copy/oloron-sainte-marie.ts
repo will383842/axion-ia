@@ -49,7 +49,7 @@ export const OLORON_SAINTE_MARIE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Oloron-Sainte-Marie et dans le Haut-Béarn ?",
-      a: "Oui, Axion-IA intervient à Oloron-Sainte-Marie et dans tout le Haut-Béarn (vallées d'Aspe et d'Ossau, Arudy, Bedous). Nos consultants accèdent via le TER Pau-Oloron (35 min) ou par la route (35 min Pau).",
+      a: "Oui, Axion-IA intervient à Oloron-Sainte-Marie et dans tout le Haut-Béarn (vallées d'Aspe et d'Ossau, Arudy, Bedous). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quels services IA pour les artisans textile et béretiers d'Oloron ?",
@@ -65,7 +65,7 @@ export const OLORON_SAINTE_MARIE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA sur site à Oloron-Sainte-Marie ?",
-      a: "Nos consultants accèdent à Oloron-Sainte-Marie par TER (35 min Pau) ou voiture. Mission sur site dans vos ateliers, fromageries, hébergements ou commerces.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Mission sur site dans vos ateliers, fromageries, hébergements ou commerces.",
     },
   ],
 };

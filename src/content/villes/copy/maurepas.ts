@@ -246,7 +246,7 @@ export const MAUREPAS_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Maurepas ?",
-      a: "Maurepas est à 20 km de Versailles et à une quarantaine de minutes de Paris. Nous couvrons tout l'ouest des Yvelines.",
+      a: "Maurepas est à 20 km de Versailles et à une quarantaine de minutes de Paris. Nous intervenons partout en France, sur place ou à distance. Nous couvrons notamment tout l'ouest des Yvelines.",
     },
   ],
 };

@@ -128,7 +128,7 @@ export const LE_CANNET_COPY: VilleCopy = {
           },
           {
             q: "Intervenez-vous au-delà du Cannet, dans l'agglomération Cannes Pays de Lérins ?",
-            a: "Oui, sans surcoût de périmètre : Cannes, Mougins, Vallauris, Mandelieu-la-Napoule, Théoule-sur-Mer et l'ensemble de la Communauté d'agglomération Cannes Pays de Lérins, ainsi qu'Antibes et Grasse à proximité. Le kick-off se tient sur site, le développement se poursuit à distance avec points réguliers.",
+            a: "Oui : Cannes, Mougins, Vallauris, Mandelieu-la-Napoule, Théoule-sur-Mer et l'ensemble de la Communauté d'agglomération Cannes Pays de Lérins, ainsi qu'Antibes et Grasse à proximité. Le kick-off se tient sur site, le développement se poursuit à distance avec points réguliers.",
           },
           {
             q: "Sous quel délai recevons-nous un devis pour un site ou une plateforme SaaS ?",
@@ -238,7 +238,7 @@ export const LE_CANNET_COPY: VilleCopy = {
     },
     {
       q: "Axion-IA intervient-elle dans les communes proches du Cannet ?",
-      a: "Oui. Nous couvrons sans surcoût Cannes, Mougins, Vallauris, Mandelieu-la-Napoule et l'ensemble de la Communauté d'agglomération Cannes Pays de Lérins, ainsi qu'Antibes et Grasse à proximité.",
+      a: "Oui. Nous couvrons aussi Cannes, Mougins, Vallauris, Mandelieu-la-Napoule et l'ensemble de la Communauté d'agglomération Cannes Pays de Lérins, ainsi qu'Antibes et Grasse à proximité.",
     },
     {
       q: "Comment Axion-IA garantit-elle le respect du RGPD lors d'une mission au Cannet ?",

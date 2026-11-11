@@ -58,7 +58,7 @@ export const GRADIGNAN_COPY: VilleCopy = {
           "La majorité de nos sites à Gradignan sont commandés par des TPE et petites PME des huit ZAE et du centre commercial de Laurenzane : commerces de proximité, restauration, services à la personne. Nous concevons pour elles des vitrines et boutiques en ligne (WordPress/WooCommerce, Shopify, Prestashop ou code sur mesure) avec prise de rendez-vous et devis assistés par IA.",
           "Forte demande des professions libérales et de santé de la commune : sites de prise de rendez-vous, formulaires de pré-qualification et assistants qui orientent les patients ou clients vers le bon interlocuteur, avec un traitement des données conforme RGPD et un hébergement en Union européenne.",
           "Proximité immédiate du domaine universitaire de Talence-Pessac-Gradignan (ENSEGID, ENSC, Université de Bordeaux) et de l'incubateur Gradignan Premières au Château de l'Ermitage : nous accompagnons les porteurs de projet et jeunes pousses sur des MVP web et des plateformes SaaS IA-native (chatbot RAG, recherche sémantique, agents).",
-          "Nous intervenons sur place — à la Canopée, dans votre local de la ZAE ou votre cabinet — et sur tout le sud de la Métropole bordelaise : Gradignan, Talence, Pessac, Villenave d'Ornon, à 20 minutes de Bordeaux par la rocade et le tramway.",
+          "Nous intervenons sur place — à la Canopée, dans votre local de la ZAE ou votre cabinet — et sur tout le sud de la Métropole bordelaise : Gradignan, Talence, Pessac, Villenave d'Ornon, communes reliées à Bordeaux par la rocade et le tramway.",
         ],
         methodology: [
           {
@@ -144,7 +144,7 @@ export const GRADIGNAN_COPY: VilleCopy = {
           "Most of our Gradignan sites are commissioned by micro-businesses and small SMEs from the eight activity zones and the Laurenzane shopping centre: neighbourhood shops, restaurants, personal services. We build them showcase sites and online stores (WordPress/WooCommerce, Shopify, Prestashop or custom code) with AI-assisted booking and quotes.",
           "Strong demand from the town's healthcare and liberal professions: appointment-booking sites, pre-qualification forms and assistants that route patients or clients to the right contact, with GDPR-compliant data handling and EU hosting.",
           "Immediate proximity to the Talence-Pessac-Gradignan university domain (ENSEGID, ENSC, Université de Bordeaux) and the Gradignan Premières incubator at the Château de l'Ermitage: we support project leaders and startups on web MVPs and AI-native SaaS platforms (RAG chatbot, semantic search, agents).",
-          "Our consultants come on site — at La Canopée, at your unit in an activity zone or at your practice — and cover the whole south of Bordeaux Métropole: Gradignan, Talence, Pessac, Villenave d'Ornon, 20 minutes from Bordeaux by ring road and tram.",
+          "Our consultants come on site — at La Canopée, at your unit in an activity zone or at your practice — and cover the whole south of Bordeaux Métropole: Gradignan, Talence, Pessac, Villenave d'Ornon, towns linked to Bordeaux by ring road and tram.",
         ],
         methodology: [
           {

@@ -58,7 +58,7 @@ export const LEVALLOIS_PERRET_COPY: VilleCopy = {
           "Tissu de services premium ultra-dense : conseil de gestion, agences de communication, activités des sièges sociaux et programmation informatique dominent — exactement les métiers où un site web et une plateforme SaaS qui qualifient, briefent et convertissent en continu font la différence face à une clientèle parisienne exigeante.",
           "Voisinage de grands donneurs d'ordre (Devoteam et ses entités groupe rue Anatole France, L'Oréal rue d'Alsace, Alstom avenue André Malraux, Saft) qui irriguent un écosystème de sous-traitants, agences et freelances — autant de TPE/PME pour qui un portail client, un espace devis ou un configurateur IA-native devient un argument commercial.",
           "Densité de création d'entreprises (plus de 2 000 nouveaux établissements en 2024, dont des centaines en activités scientifiques/techniques et en information-communication) : des structures jeunes qui ont besoin d'un site vitrine ou e-commerce crédible et d'outils SaaS dès le lancement.",
-          "Ville sans logistique lourde, à 5 minutes de La Défense et desservie par le métro 3 et le Transilien : nos ateliers de cadrage UX/UI se tiennent sur site, dans vos locaux du quartier Eiffel ou du front de Seine.",
+          "Nous intervenons partout en France, sur place ou à distance : nos ateliers de cadrage UX/UI se tiennent sur site, dans vos locaux du quartier Eiffel ou du front de Seine.",
         ],
         methodology: [
           {
@@ -128,7 +128,7 @@ export const LEVALLOIS_PERRET_COPY: VilleCopy = {
           },
           {
             q: "Intervenez-vous sur site à Levallois-Perret pour la conception ?",
-            a: "Oui. La centralité de Levallois — métro 3, Transilien à quelques minutes de Saint-Lazare, La Défense à 5 minutes — nous permet de tenir les ateliers UX/UI et les points de recette directement dans vos locaux, sans logistique lourde.",
+            a: "Oui. Nous intervenons partout en France, sur place ou à distance. Les ateliers UX/UI et les points de recette se tiennent directement chez vous.",
           },
           {
             q: "Comment garantissez-vous la conformité RGPD pour mon site ou ma plateforme ?",
@@ -144,7 +144,7 @@ export const LEVALLOIS_PERRET_COPY: VilleCopy = {
           "An ultra-dense premium services fabric: management consulting, communication agencies, head-office activities and software programming dominate — precisely the trades where a website and SaaS platform that continuously qualify, brief and convert make the difference with a demanding Paris-region clientele.",
           "Proximity to large buyers (Devoteam and its group entities on rue Anatole France, L'Oréal on rue d'Alsace, Alstom on avenue André Malraux, Saft) feeding an ecosystem of subcontractors, agencies and freelancers — micro-businesses and SMEs for whom a client portal, quote space or AI-native configurator becomes a commercial argument.",
           "High business-creation density (over 2,000 new establishments in 2024, including hundreds in scientific/technical activities and information-communication): young structures needing a credible showcase or e-commerce site and SaaS tools from day one.",
-          "A town with no heavy logistics, five minutes from La Défense and served by metro line 3 and the Transilien: our UX/UI framing workshops run on site, at your offices in the Eiffel district or along the Seine front, without disproportionate travel costs.",
+          "We work anywhere in France, on site or remotely: our UX/UI framing workshops run on site, at your offices in the Eiffel district or along the Seine front.",
         ],
         methodology: [
           {
@@ -214,7 +214,7 @@ export const LEVALLOIS_PERRET_COPY: VilleCopy = {
           },
           {
             q: "Do you work on site in Levallois-Perret for the design phase?",
-            a: "Yes. Levallois's centrality — metro line 3, the Transilien minutes from Saint-Lazare, La Défense five minutes away — lets us hold UX/UI workshops and QA reviews directly at your offices, without heavy logistics or disproportionate travel costs.",
+            a: "Yes. We work anywhere in France, on site or remotely. UX/UI workshops and QA reviews take place directly at your offices.",
           },
           {
             q: "How do you ensure GDPR compliance for my site or platform?",
@@ -238,7 +238,7 @@ export const LEVALLOIS_PERRET_COPY: VilleCopy = {
     },
     {
       q: "Intervenez-vous sur site à Levallois-Perret ?",
-      a: "Oui. Grâce à la centralité de Levallois-Perret, desservie par le métro 3 et le Transilien à quelques minutes de Saint-Lazare et de La Défense, un expert senior se déplace facilement dans vos locaux pour les ateliers de cadrage et les points clés du projet.",
+      a: "Oui. Nous intervenons partout en France, sur place ou à distance. Un expert senior se déplace chez vous pour les ateliers de cadrage et les points clés du projet.",
     },
     {
       q: "Par où commencer un projet IA à Levallois-Perret ?",

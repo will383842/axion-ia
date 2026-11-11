@@ -49,7 +49,7 @@ export const NEUFCHATEAU_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Neufchâteau et dans l'ouest vosgien ?",
-      a: "Oui, Axion-IA intervient à Neufchâteau et dans l'ouest vosgien (Mirecourt, Vittel, Contrexéville, Liffol-le-Grand). Consultants accessibles via gare SNCF Neufchâteau (TER Nancy-Dijon). Nancy à 1h, Épinal à 45 min.",
+      a: "Oui, Axion-IA intervient à Neufchâteau et dans l'ouest vosgien (Mirecourt, Vittel, Contrexéville, Liffol-le-Grand). Nous intervenons partout en France, sur place ou à distance. Nancy à 1h, Épinal à 45 min.",
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Neufchâteau  ?",

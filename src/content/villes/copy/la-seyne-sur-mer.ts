@@ -128,7 +128,7 @@ export const LA_SEYNE_SUR_MER_COPY: VilleCopy = {
           },
           {
             q: "Williams se déplace-t-il à La Seyne-sur-Mer ?",
-            a: "Oui. La Seyne-sur-Mer est accessible par TGV via Toulon, puis une dizaine de minutes en TER ou voiture. Le kick-off se tient toujours dans vos locaux — du Technopôle de la Mer et de Brégaillon au centre-ville et aux Sablettes — et nous nous déplaçons aussi à Ollioules, Six-Fours-les-Plages, Saint-Mandrier-sur-Mer, Toulon et Sanary-sur-Mer.",
+            a: "Oui. Nous intervenons partout en France, sur place ou à distance. Le kick-off se tient toujours dans vos locaux — du Technopôle de la Mer et de Brégaillon au centre-ville et aux Sablettes — et nous nous déplaçons aussi à Ollioules, Six-Fours-les-Plages, Saint-Mandrier-sur-Mer, Toulon et Sanary-sur-Mer.",
           },
           {
             q: "Comment garantissez-vous la conformité RGPD et la souveraineté des données ?",
@@ -214,7 +214,7 @@ export const LA_SEYNE_SUR_MER_COPY: VilleCopy = {
           },
           {
             q: "Williams se déplace-t-il à La Seyne-sur-Mer ?",
-            a: "Oui. La Seyne-sur-Mer est accessible par TGV via Toulon, puis une dizaine de minutes en TER ou voiture. Le kick-off se tient toujours dans vos locaux — du Technopôle de la Mer et de Brégaillon au centre-ville et aux Sablettes — et nous nous déplaçons aussi à Ollioules, Six-Fours-les-Plages, Saint-Mandrier-sur-Mer, Toulon et Sanary-sur-Mer.",
+            a: "Oui. Nous intervenons partout en France, sur place ou à distance. Le kick-off se tient toujours dans vos locaux — du Technopôle de la Mer et de Brégaillon au centre-ville et aux Sablettes — et nous nous déplaçons aussi à Ollioules, Six-Fours-les-Plages, Saint-Mandrier-sur-Mer, Toulon et Sanary-sur-Mer.",
           },
           {
             q: "Comment garantissez-vous la conformité RGPD et la souveraineté des données ?",
@@ -234,7 +234,7 @@ export const LA_SEYNE_SUR_MER_COPY: VilleCopy = {
     },
     {
       q: "Williams se déplace-t-il à La Seyne-sur-Mer ?",
-      a: "Oui. La Seyne-sur-Mer est accessible par TGV via Toulon (3h45 depuis Paris-Gare de Lyon), puis ~10 min en TER ou voiture. Williams intervient directement dans vos locaux, des Sablettes au centre-ville en passant par les zones d'activité.",
+      a: "Oui. Nous intervenons partout en France, sur place ou à distance. Williams intervient directement dans vos locaux, des Sablettes au centre-ville en passant par les zones d'activité.",
     },
     {
       q: "Quels délais pour une intervention IA à La Seyne-sur-Mer ?",

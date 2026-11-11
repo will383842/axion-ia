@@ -248,7 +248,7 @@ export const PANTIN_COPY: VilleCopy = {
     },
     {
       q: "Vous déplacez-vous sur site à Pantin ?",
-      a: "Oui, notre équipe se déplace directement à Pantin pour audits, interventions et implémentations. Le métro 5 et 7 et le RER E rendent l'accès très simple depuis tout Paris et sa première couronne.",
+      a: "Oui, notre équipe se déplace directement à Pantin pour audits, interventions et implémentations. Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };

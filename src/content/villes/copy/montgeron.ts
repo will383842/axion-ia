@@ -10,9 +10,9 @@ export const MONTGERON_COPY: VilleCopy = {
   pitchEn:
     "Axion-IA intervient à Montgeron (24 022 habitants, Essonne), commune située à 19 km au sud-est de Paris, intégrée à la Communauté d'agglomération Val d'Yerres Val de Seine. Cabinet IA dédié aux TPE et PME francophones, nous concevons du code custom (pas de no-code) pour le tissu de commerces de proximité, services aux particuliers, professions libérales et artisans du sud-est francilien, dans une commune dont une partie du territoire est couverte par la forêt de Sénart et bordée à l'est par l'Yerres.",
   directAnswerFr:
-    "À Montgeron, Axion-IA accompagne en priorité les TPE puis les PME (et ponctuellement les ETI) du Val d'Yerres Val de Seine : commerces du centre-ville, cabinets de santé et professions libérales, agences immobilières, artisans BTP, sociétés de services présentes dans le sud-est francilien. Nous nous déplaçons via la gare RER D Montgeron-Crosne, la RN6, et l'aéroport Paris-Orly distant de 8 km. Tarifs publics : Audit sur place dès {{price:audit-flash|flat}}, intervention dès {{price:intervention-4h|flat}}, implémentation dès {{price:intervention-dirigeants|flat}}, sans devis caché.",
+    "À Montgeron, Axion-IA accompagne en priorité les TPE puis les PME (et ponctuellement les ETI) du Val d'Yerres Val de Seine : commerces du centre-ville, cabinets de santé et professions libérales, agences immobilières, artisans BTP, sociétés de services présentes dans le sud-est francilien. Nous intervenons partout en France, sur place ou à distance. Tarifs publics : Audit sur place dès {{price:audit-flash|flat}}, intervention dès {{price:intervention-4h|flat}}, implémentation dès {{price:intervention-dirigeants|flat}}, sans devis caché.",
   directAnswerEn:
-    "À Montgeron, Axion-IA accompagne en priorité les TPE puis les PME (et ponctuellement les ETI) du Val d'Yerres Val de Seine : commerces du centre-ville, cabinets de santé et professions libérales, agences immobilières, artisans BTP, sociétés de services présentes dans le sud-est francilien. Nous nous déplaçons via la gare RER D Montgeron-Crosne, la RN6, et l'aéroport Paris-Orly distant de 8 km. Tarifs publics : Audit sur place dès {{price:audit-flash|flat}}, intervention dès {{price:intervention-4h|flat}}, implémentation dès {{price:intervention-dirigeants|flat}}, sans devis caché.",
+    "À Montgeron, Axion-IA accompagne en priorité les TPE puis les PME (et ponctuellement les ETI) du Val d'Yerres Val de Seine : commerces du centre-ville, cabinets de santé et professions libérales, agences immobilières, artisans BTP, sociétés de services présentes dans le sud-est francilien. Nous intervenons partout en France, sur place ou à distance. Tarifs publics : Audit sur place dès {{price:audit-flash|flat}}, intervention dès {{price:intervention-4h|flat}}, implémentation dès {{price:intervention-dirigeants|flat}}, sans devis caché.",
   seoHook: "commerces de proximité & services franciliens",
   ecosystemFr:
     "Le tissu économique de Montgeron est principalement résidentiel et tertiaire de proximité : commerces de centre-ville le long de la RN6, professions libérales (santé, juridique, expertise comptable), agences immobilières et artisans BTP. La Communauté d'agglomération Val d'Yerres Val de Seine fédère plusieurs communes du sud-est francilien (Yerres, Crosne, Brunoy, Vigneux-sur-Seine, Draveil). Le restaurant historique \"Au réveil matin\" a accueilli en 1903 le départ du premier Tour de France, marquant une identité patrimoniale forte.",
@@ -231,7 +231,7 @@ export const MONTGERON_COPY: VilleCopy = {
     },
     {
       q: "Quels délais pour une mission à Montgeron ?",
-      a: "Williams se déplace à Montgeron sous 5 à 7 jours ouvrés (RER D Montgeron-Crosne, RN6 ou Paris-Orly à 8 km). Audit sur place livré en 4 heures sur site, implémentations entre 2 et 6 semaines.",
+      a: "Williams se déplace à Montgeron sous 5 à 7 jours ouvrés. Audit sur place livré en 4 heures sur site, implémentations entre 2 et 6 semaines.",
     },
     {
       q: "Axion-IA intervient-elle dans les communes proches de Montgeron ?",
