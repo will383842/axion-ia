@@ -54,7 +54,7 @@ export const LAMBERSART_COPY: VilleCopy = {
           "Le parc du Pont Royal (avenue du Bois, ~113 établissements, extension de ~23 000 m²) concentre un pôle numérique et industriel exigeant — Thales SIX GTS France, OPEN-Sopra Steria, Engie — pour qui une plateforme IA doit tenir des standards de sécurité, de souveraineté et d'intégration que nous traitons en code custom, pas en template.",
           "La zone de La Cessoie (~6,75 ha, ~164 établissements BTP et services industriels : Nord France Constructions, Soc Nord Inox, Cofrino, Sixense Engineering, Pro Impec) a besoin de sites vitrines crédibles, de portails de devis/chantier et d'e-commerce pièces ou prestations — des outils métier, pas des plaquettes.",
           "Les professions libérales lambersartoises (médecins, avocats, expert-comptables, consultants) et les commerces du Canon d'Or attendent des sites de prise de RDV, des espaces clients confidentiels et un e-commerce de proximité reliés à la dynamique « J'achète à Lambersart » — UX mobile-first, RGPD strict pour les données sensibles.",
-          "Tout se pilote dans la MEL : Lille centre à ~10 min en métro ligne 2, Lille-Europe à ~15 min (TGV Paris ~1h, Bruxelles ~35 min), ce qui rend les ateliers de conception sur site à Lambersart simples à caler, y compris pour les équipes du Pont Royal et de La Cessoie.",
+          "Ateliers de conception sur site à Lambersart, y compris pour les équipes du Pont Royal et de La Cessoie. Nous intervenons partout en France, sur place ou à distance.",
         ],
         methodology: [
           {
@@ -112,7 +112,7 @@ export const LAMBERSART_COPY: VilleCopy = {
         faq: [
           {
             q: "Intervenez-vous sur le parc du Pont Royal et la zone de La Cessoie à Lambersart ?",
-            a: "Oui. Nous nous déplaçons sur site à Lambersart, aussi bien au parc du Pont Royal (Thales SIX GTS France, OPEN-Sopra Steria, Engie et les autres établissements de l'avenue du Bois) que sur la zone d'activités de La Cessoie (BTP, froid industriel, ingénierie, propreté). Lille centre est à ~10 min en métro ligne 2 et Lille-Europe à ~15 min, ce qui facilite les ateliers de conception en présentiel.",
+            a: "Oui. Nous nous déplaçons sur site à Lambersart, aussi bien au parc du Pont Royal (Thales SIX GTS France, OPEN-Sopra Steria, Engie et les autres établissements de l'avenue du Bois) que sur la zone d'activités de La Cessoie (BTP, froid industriel, ingénierie, propreté). Les ateliers de conception se tiennent en présentiel.",
           },
           {
             q: "Pouvez-vous gérer les contraintes de sécurité et de souveraineté des acteurs tech de Lambersart ?",
@@ -140,7 +140,7 @@ export const LAMBERSART_COPY: VilleCopy = {
           "The Pont Royal park (avenue du Bois, ~113 establishments, ~23,000 sq m extension) concentrates a demanding digital and industrial hub — Thales SIX GTS France, OPEN-Sopra Steria, Engie — for whom an AI platform must meet security, sovereignty and integration standards we handle in custom code, not templates.",
           "The La Cessoie zone (~6.75 ha, ~164 construction and industrial-services establishments: Nord France Constructions, Soc Nord Inox, Cofrino, Sixense Engineering, Pro Impec) needs credible showcase sites, quote/site-management portals and parts or services e-commerce — operational tools, not brochures.",
           "Lambersart's independent professionals (doctors, lawyers, chartered accountants, consultants) and Canon d'Or shops expect booking sites, confidential client areas and local e-commerce tied to the 'J'achète à Lambersart' traders' federation — mobile-first UX, strict GDPR for sensitive data.",
-          "Everything is run from within the MEL: Lille centre ~10 min by metro line 2, Lille-Europe ~15 min (TGV Paris ~1h, Brussels ~35 min), making on-site design workshops in Lambersart easy to schedule, including for Pont Royal and La Cessoie teams.",
+          "On-site design workshops in Lambersart, including for Pont Royal and La Cessoie teams. We work anywhere in France, on site or remotely.",
         ],
         methodology: [
           {
@@ -198,7 +198,7 @@ export const LAMBERSART_COPY: VilleCopy = {
         faq: [
           {
             q: "Do you work at the Pont Royal park and the La Cessoie zone in Lambersart?",
-            a: "Yes. We travel on site in Lambersart, both at the Pont Royal park (Thales SIX GTS France, OPEN-Sopra Steria, Engie and the other establishments on avenue du Bois) and in the La Cessoie business zone (construction, industrial refrigeration, engineering, cleaning). Lille centre is ~10 min by metro line 2 and Lille-Europe ~15 min, which makes in-person design workshops easy.",
+            a: "Yes. We travel on site in Lambersart, both at the Pont Royal park (Thales SIX GTS France, OPEN-Sopra Steria, Engie and the other establishments on avenue du Bois) and in the La Cessoie business zone (construction, industrial refrigeration, engineering, cleaning). Design workshops are held in person.",
           },
           {
             q: "Can you handle the security and sovereignty constraints of Lambersart's tech players?",

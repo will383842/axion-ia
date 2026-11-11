@@ -18,9 +18,9 @@ export const ORLY_COPY: VilleCopy = {
   ecosystemEn:
     "Orly tire toute sa dynamique économique de l'aéroport Paris-Orly, deuxième de France, autour duquel gravitent maintenance aéronautique, fret, transitaires et une dense filière logistique. Les zones d'activités et entrepôts du Grand Paris Sud-Est, le futur essor lié à la ligne 14 prolongée et au Grand Paris Express renforcent ce tissu. Entre TPE de services, commerces et PME logistiques soumises à de fortes contraintes de délais et de traçabilité, l'automatisation IA constitue un levier direct de productivité et de fiabilité.",
   distancesFr:
-    "Orly est directement reliée à l'aéroport Paris-Orly, désormais desservi par la ligne 14 du métro qui rejoint le centre de Paris en une vingtaine de minutes. La gare de Lyon est à 15 km, la gare Massy TGV à une quinzaine de minutes, et les A6 et A86 placent la ville au cœur des grands flux logistiques du sud francilien. Cette position de carrefour facilite nos interventions sur tout le Grand Paris Sud-Est.",
+    "Orly est directement reliée à l'aéroport Paris-Orly, désormais desservi par la ligne 14 du métro qui rejoint le centre de Paris en une vingtaine de minutes. La gare de Lyon est à 15 km, la gare Massy TGV à une quinzaine de minutes, et les A6 et A86 placent la ville au cœur des grands flux logistiques du sud francilien. Nous intervenons partout en France, sur place ou à distance.",
   distancesEn:
-    "Orly est directement reliée à l'aéroport Paris-Orly, désormais desservi par la ligne 14 du métro qui rejoint le centre de Paris en une vingtaine de minutes. La gare de Lyon est à 15 km, la gare Massy TGV à une quinzaine de minutes, et les A6 et A86 placent la ville au cœur des grands flux logistiques du sud francilien. Cette position de carrefour facilite nos interventions sur tout le Grand Paris Sud-Est.",
+    "Orly est directement reliée à l'aéroport Paris-Orly, désormais desservi par la ligne 14 du métro qui rejoint le centre de Paris en une vingtaine de minutes. La gare de Lyon est à 15 km, la gare Massy TGV à une quinzaine de minutes, et les A6 et A86 placent la ville au cœur des grands flux logistiques du sud francilien. Nous intervenons partout en France, sur place ou à distance.",
   topSectorsNaf: [
     "Logistique, fret et entreposage",
     "Maintenance et services aéronautiques",

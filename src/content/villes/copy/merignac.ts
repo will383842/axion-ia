@@ -18,9 +18,9 @@ export const MERIGNAC_COPY: VilleCopy = {
   ecosystemEn:
     "Mérignac concentre l'un des plus importants pôles aéronautique-défense de France : Dassault Aviation y assemble le Rafale, Thales y déploie ses activités, autour d'un dense réseau de sous-traitants industriels. L'aéroport de Bordeaux-Mérignac, le parc d'activités du Phare et le cluster Aerospace Valley irriguent ce tissu, complété par la grande zone commerciale Mérignac-Soleil et de nombreuses ESN. Ce mélange d'industrie de pointe et de services en fait un terrain riche pour l'automatisation IA et les agents métier.",
   distancesFr:
-    "Mérignac jouxte l'aéroport de Bordeaux-Mérignac, à seulement 3 km du centre-ville, et Bordeaux centre est à 10 km, accessible par le tramway A et la rocade. La gare Bordeaux Saint-Jean, desservie par la LGV qui place Paris à un peu plus de deux heures, est à 20 minutes. Le parc d'activités du Phare et la zone Mérignac-Soleil sont au cœur de la ville, facilitant nos interventions sur toute la métropole bordelaise.",
+    "Mérignac jouxte l'aéroport de Bordeaux-Mérignac, à seulement 3 km du centre-ville, et Bordeaux centre est à 10 km, accessible par le tramway A et la rocade. La gare Bordeaux Saint-Jean, desservie par la LGV qui place Paris à un peu plus de deux heures, est à 20 minutes. Le parc d'activités du Phare et la zone Mérignac-Soleil sont au cœur de la ville.",
   distancesEn:
-    "Mérignac jouxte l'aéroport de Bordeaux-Mérignac, à seulement 3 km du centre-ville, et Bordeaux centre est à 10 km, accessible par le tramway A et la rocade. La gare Bordeaux Saint-Jean, desservie par la LGV qui place Paris à un peu plus de deux heures, est à 20 minutes. Le parc d'activités du Phare et la zone Mérignac-Soleil sont au cœur de la ville, facilitant nos interventions sur toute la métropole bordelaise.",
+    "Mérignac jouxte l'aéroport de Bordeaux-Mérignac, à seulement 3 km du centre-ville, et Bordeaux centre est à 10 km, accessible par le tramway A et la rocade. La gare Bordeaux Saint-Jean, desservie par la LGV qui place Paris à un peu plus de deux heures, est à 20 minutes. Le parc d'activités du Phare et la zone Mérignac-Soleil sont au cœur de la ville.",
   topSectorsNaf: [
     "Construction aéronautique et défense",
     "Sous-traitance industrielle de précision",

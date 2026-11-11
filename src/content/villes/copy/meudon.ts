@@ -218,7 +218,7 @@ export const MEUDON_COPY: VilleCopy = {
           },
           {
             q: "How fast do you send a quote in Meudon?",
-            a: "We send a quote from 24 to 48 hours depending on project complexity, after an initial framing exchange. We work across France, on site or remotely, including the western Hauts-de-Seine (Transilien N / line L via Meudon-Val-Fleury, about 15 min).",
+            a: "We send a quote from 24 to 48 hours depending on project complexity, after an initial framing exchange. We work across France, on site or remotely, including the western Hauts-de-Seine.",
           },
         ],
         guarantees:

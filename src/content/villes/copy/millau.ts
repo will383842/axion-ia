@@ -18,9 +18,9 @@ export const MILLAU_COPY: VilleCopy = {
   ecosystemEn:
     "Millau conjugue un patrimoine artisanal rare, la ganterie et la mégisserie du cuir, avec une forte économie touristique portée par le Viaduc, les gorges du Tarn et les sports de pleine nature. Le voisinage du plateau de Roquefort ajoute une dimension agroalimentaire reconnue. Ce tissu de TPE et PME, ateliers de maroquinerie, hôtels, restaurants et commerces, gère beaucoup de saisonnalité, de commandes et de relances : autant de processus que l'IA opérationnelle peut fiabiliser et automatiser.",
   distancesFr:
-    "Millau est traversée par l'A75 et son célèbre Viaduc, qui la relie à Clermont-Ferrand au nord et à Béziers et la Méditerranée au sud. Montpellier et sa gare TGV sont à environ 110 km, son aéroport à 115 km, Rodez et son aéroport à une heure de route. Cette position de carrefour des grands causses facilite nos interventions sur le sud de l'Aveyron et le nord de l'Hérault.",
+    "Millau est traversée par l'A75 et son célèbre Viaduc, qui la relie à Clermont-Ferrand au nord et à Béziers et la Méditerranée au sud. Montpellier et sa gare TGV sont à environ 110 km, son aéroport à 115 km, Rodez et son aéroport à une heure de route. Nous intervenons partout en France, sur place ou à distance.",
   distancesEn:
-    "Millau est traversée par l'A75 et son célèbre Viaduc, qui la relie à Clermont-Ferrand au nord et à Béziers et la Méditerranée au sud. Montpellier et sa gare TGV sont à environ 110 km, son aéroport à 115 km, Rodez et son aéroport à une heure de route. Cette position de carrefour des grands causses facilite nos interventions sur le sud de l'Aveyron et le nord de l'Hérault.",
+    "Millau est traversée par l'A75 et son célèbre Viaduc, qui la relie à Clermont-Ferrand au nord et à Béziers et la Méditerranée au sud. Montpellier et sa gare TGV sont à environ 110 km, son aéroport à 115 km, Rodez et son aéroport à une heure de route. Nous intervenons partout en France, sur place ou à distance.",
   topSectorsNaf: [
     "Ganterie, mégisserie et travail du cuir",
     "Hébergement touristique et restauration",

@@ -231,7 +231,7 @@ export const LIVRY_GARGAN_COPY: VilleCopy = {
     },
     {
       q: "Sous quel délai Axion-IA peut intervenir à Livry-Gargan ?",
-      a: "Nous nous engageons à intervenir sur site à Livry-Gargan dans un délai de 5 jours ouvrés après validation. L'accès se fait via la RN3, l'A3 ou par les gares RER B / T4 des communes voisines.",
+      a: "Nous nous engageons à intervenir sur site à Livry-Gargan dans un délai de 5 jours ouvrés après validation. Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quelles communes proches de Livry-Gargan couvrez-vous ?",

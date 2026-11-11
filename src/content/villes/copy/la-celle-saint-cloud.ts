@@ -232,7 +232,7 @@ export const LA_CELLE_SAINT_CLOUD_COPY: VilleCopy = {
     },
     {
       q: "Sous quels délais Axion-IA intervient-il à La Celle-Saint-Cloud ?",
-      a: "Nous nous déplaçons sur site à La Celle-Saint-Cloud sous 5 jours ouvrés. L'accès Transilien L et les autoroutes A13/A86 facilitent les interventions courtes.",
+      a: "Nous nous déplaçons sur site à La Celle-Saint-Cloud sous 5 jours ouvrés. Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Axion-IA couvre-t-il les communes autour de La Celle-Saint-Cloud ?",

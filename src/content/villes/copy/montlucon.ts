@@ -18,9 +18,9 @@ export const MONTLUCON_COPY: VilleCopy = {
   ecosystemEn:
     "Montluçon porte l'empreinte d'un passé industriel marqué par la métallurgie et le pneumatique, avec l'usine Dunlop comme symbole de son âge d'or ouvrier. Le territoire a engagé une reconversion vers une industrie diversifiée : mécanique de précision, fabrication de produits métalliques et de machines, sous-traitance, complétée par le commerce et les services. Ce tissu de TPE et PME, souvent ancrées dans des process manuels hérités, dispose d'un fort potentiel de gains via l'automatisation IA des tâches administratives et de production.",
   distancesFr:
-    "Montluçon est reliée à Clermont-Ferrand à environ 100 km et à Moulins, dont la gare TGV est à 80 km. Bourges est à une heure de route et l'agglomération est desservie par les axes routiers vers le centre de la France. Cette position au carrefour de l'Allier, de la Creuse et du Cher facilite nos interventions sur tout le bassin de Montluçon, jusqu'aux communes voisines de Domérat et Désertines.",
+    "Montluçon est reliée à Clermont-Ferrand à environ 100 km et à Moulins, dont la gare TGV est à 80 km. Bourges est à une heure de route et l'agglomération est desservie par les axes routiers vers le centre de la France. Nous intervenons partout en France, sur place ou à distance.",
   distancesEn:
-    "Montluçon est reliée à Clermont-Ferrand à environ 100 km et à Moulins, dont la gare TGV est à 80 km. Bourges est à une heure de route et l'agglomération est desservie par les axes routiers vers le centre de la France. Cette position au carrefour de l'Allier, de la Creuse et du Cher facilite nos interventions sur tout le bassin de Montluçon, jusqu'aux communes voisines de Domérat et Désertines.",
+    "Montluçon est reliée à Clermont-Ferrand à environ 100 km et à Moulins, dont la gare TGV est à 80 km. Bourges est à une heure de route et l'agglomération est desservie par les axes routiers vers le centre de la France. Nous intervenons partout en France, sur place ou à distance.",
   topSectorsNaf: [
     "Fabrication de produits métalliques",
     "Mécanique et fabrication de machines",

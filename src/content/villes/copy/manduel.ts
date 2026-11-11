@@ -60,8 +60,8 @@ export const MANDUEL_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les viticulteurs Costières de Nîmes autour de Manduel : prédiction vendanges, classification parcelles, automatisation traçabilité, vente directe.",
     },
     {
-      q: "L'accessibilité TGV facilite-t-elle vos interventions ?",
-      a: "Oui, la gare TGV Nîmes Pont du Gard à Manduel (Paris 2h50) facilite nos interventions. Nos consultants peuvent venir de toute la France en demi-journée pour des missions sur site.",
+      q: "Comment se déroulent vos interventions à Manduel ?",
+      a: "Nous intervenons partout en France, sur place ou à distance. Les missions se déroulent sur site, dans vos locaux à Manduel.",
     },
     {
       q: "Quels délais pour démarrer une mission IA à Manduel ?",

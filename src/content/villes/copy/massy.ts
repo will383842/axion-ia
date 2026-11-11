@@ -18,9 +18,9 @@ export const MASSY_COPY: VilleCopy = {
   ecosystemEn:
     "Massy doit son dynamisme à sa position de hub : la gare Massy TGV relie province et province sans passer par Paris, croisant les RER B et C. Le quartier Atlantis et le pôle Vilgénis concentrent sièges, ESN, cabinets de conseil et activités de services aux entreprises, à proximité du plateau de Saclay. Ce tissu dense de TPE et PME tertiaires, riche en tâches administratives répétitives, se prête particulièrement bien à l'automatisation et aux agents IA métier.",
   distancesFr:
-    "La gare Massy TGV met Lyon, Bordeaux ou Lille à portée directe sans passer par Paris, tandis que les RER B et C desservent la capitale en une trentaine de minutes. L'aéroport Paris-Orly est à 10 km, le plateau de Saclay et l'École polytechnique à quelques minutes. Les A6 et A10 placent Massy au croisement des grands axes du sud francilien, facilitant les interventions sur tout l'ouest de l'Essonne.",
+    "La gare Massy TGV met Lyon, Bordeaux ou Lille à portée directe sans passer par Paris, tandis que les RER B et C desservent la capitale en une trentaine de minutes. L'aéroport Paris-Orly est à 10 km, le plateau de Saclay et l'École polytechnique à quelques minutes. Les A6 et A10 placent Massy au croisement des grands axes du sud francilien.",
   distancesEn:
-    "La gare Massy TGV met Lyon, Bordeaux ou Lille à portée directe sans passer par Paris, tandis que les RER B et C desservent la capitale en une trentaine de minutes. L'aéroport Paris-Orly est à 10 km, le plateau de Saclay et l'École polytechnique à quelques minutes. Les A6 et A10 placent Massy au croisement des grands axes du sud francilien, facilitant les interventions sur tout l'ouest de l'Essonne.",
+    "La gare Massy TGV met Lyon, Bordeaux ou Lille à portée directe sans passer par Paris, tandis que les RER B et C desservent la capitale en une trentaine de minutes. L'aéroport Paris-Orly est à 10 km, le plateau de Saclay et l'École polytechnique à quelques minutes. Les A6 et A10 placent Massy au croisement des grands axes du sud francilien.",
   topSectorsNaf: [
     "Conseil et services aux entreprises",
     "Programmation et édition de logiciels",
@@ -132,7 +132,7 @@ export const MASSY_COPY: VilleCopy = {
           },
           {
             q: "Intervenez-vous au-delà de Massy, dans le sud de l'Essonne et vers Saclay ?",
-            a: "Oui. Depuis Massy, interconnectée par la gare TGV et les RER B et C, nous couvrons l'ouest de l'Essonne, le plateau de Saclay et le sud francilien. Le kick-off et la recette se font sur site ; les itérations de développement se déroulent en hybride présentiel/distance.",
+            a: "Oui. Nous intervenons partout en France, sur place ou à distance, y compris dans l'ouest de l'Essonne, sur le plateau de Saclay et dans le sud francilien. Le kick-off et la recette se font sur site ; les itérations de développement se déroulent en hybride présentiel/distance.",
           },
         ],
         guarantees:
@@ -218,7 +218,7 @@ export const MASSY_COPY: VilleCopy = {
           },
           {
             q: "Do you operate beyond Massy, across the southern Essonne and towards Saclay?",
-            a: "Yes. From Massy, interconnected by the TGV station and the RER B and C lines, we cover western Essonne, the Saclay plateau and the southern Paris region. Kick-off and acceptance happen on site; development iterations run in a hybrid on-site/remote mode.",
+            a: "Yes. We work anywhere in France, on site or remotely, including western Essonne, the Saclay plateau and the southern Paris region. Kick-off and acceptance happen on site; development iterations run in a hybrid on-site/remote mode.",
           },
         ],
         guarantees:

@@ -132,7 +132,7 @@ export const NOISY_LE_GRAND_COPY: VilleCopy = {
           },
           {
             q: "Où sont hébergées les données et comment intervenez-vous à Noisy-le-Grand ?",
-            a: "Hébergement en Union européenne par défaut, conformité RGPD intégrée dès la conception. Nous intervenons sur site dans vos locaux du Mont d'Est, du Pavé Neuf ou du centre-ville — accessibles par le RER A et bientôt par la gare Noisy-Champs du Grand Paris Express — ou en visio pour les itérations. Le kick-off est toujours présentiel.",
+            a: "Hébergement en Union européenne par défaut, conformité RGPD intégrée dès la conception. Nous intervenons sur site dans vos locaux du Mont d'Est, du Pavé Neuf ou du centre-ville, ou en visio pour les itérations. Le kick-off est toujours présentiel.",
           },
         ],
         guarantees:
@@ -218,7 +218,7 @@ export const NOISY_LE_GRAND_COPY: VilleCopy = {
           },
           {
             q: "Where is data hosted and how do you operate in Noisy-le-Grand?",
-            a: "European Union hosting by default, GDPR compliance built in from the design stage. We work on site at your Mont d'Est, Pavé Neuf or town-centre offices — reachable by the RER A and soon by the Grand Paris Express Noisy-Champs station — or by video for iterations. The kick-off is always in person.",
+            a: "European Union hosting by default, GDPR compliance built in from the design stage. We work on site at your Mont d'Est, Pavé Neuf or town-centre offices, or by video for iterations. The kick-off is always in person.",
           },
         ],
         guarantees:

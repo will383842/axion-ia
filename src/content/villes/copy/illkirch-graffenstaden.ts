@@ -235,7 +235,7 @@ const VILLE_COPY: VilleCopy = {
     },
     {
       q: "Williams se déplace-t-il vraiment à Illkirch-Graffenstaden ?",
-      a: "Oui. Nous intervenons partout en France, sur place ou à distance. Williams se déplace sur site à Illkirch-Graffenstaden, y compris au Parc d'Innovation (station « Parc d'Innovation » sur la ligne A du tram).",
+      a: "Oui. Nous intervenons partout en France, sur place ou à distance. Williams se déplace sur site à Illkirch-Graffenstaden, y compris au Parc d'Innovation.",
     },
     {
       q: "Quels secteurs locaux Axion-IA accompagne-t-il à Illkirch-Graffenstaden ?",

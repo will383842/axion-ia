@@ -18,9 +18,9 @@ export const L_ISLE_SUR_LA_SORGUE_COPY: VilleCopy = {
   ecosystemEn:
     "L'Isle-sur-la-Sorgue est l'une des trois plus grandes places d'antiquités et de brocante d'Europe, avec ses villages d'antiquaires, son marché flottant et ses foires internationales. Cette spécialité s'accompagne d'un tourisme provençal soutenu, d'un hébergement de charme, d'une restauration et d'un commerce de détail dynamiques. Ce tissu de TPE de marchands d'art, de galeristes et de commerçants gagne à automatiser la gestion de catalogue, l'estimation, la relation client multilingue et la vente en ligne. Axion-IA cible en priorité ces TPE d'antiquaires et de tourisme, puis les PME hôtelières et commerçantes.",
   distancesFr:
-    "L'Isle-sur-la-Sorgue est à environ 20 km d'Avignon, dont la gare TGV relie Paris en moins de trois heures, et à 30 km de Carpentras et Cavaillon. L'aéroport d'Avignon-Provence est à 18 km et celui de Marseille-Provence à 70 km, ce qui facilite nos déplacements sur site dans tout le Comtat Venaissin.",
+    "L'Isle-sur-la-Sorgue est à environ 20 km d'Avignon, dont la gare TGV relie Paris en moins de trois heures, et à 30 km de Carpentras et Cavaillon. L'aéroport d'Avignon-Provence est à 18 km et celui de Marseille-Provence à 70 km. Nous intervenons partout en France, sur place ou à distance.",
   distancesEn:
-    "L'Isle-sur-la-Sorgue est à environ 20 km d'Avignon, dont la gare TGV relie Paris en moins de trois heures, et à 30 km de Carpentras et Cavaillon. L'aéroport d'Avignon-Provence est à 18 km et celui de Marseille-Provence à 70 km, ce qui facilite nos déplacements sur site dans tout le Comtat Venaissin.",
+    "L'Isle-sur-la-Sorgue est à environ 20 km d'Avignon, dont la gare TGV relie Paris en moins de trois heures, et à 30 km de Carpentras et Cavaillon. L'aéroport d'Avignon-Provence est à 18 km et celui de Marseille-Provence à 70 km. Nous intervenons partout en France, sur place ou à distance.",
   topSectorsNaf: [
     "Commerce d'antiquités et brocante",
     "Hébergement touristique de charme",

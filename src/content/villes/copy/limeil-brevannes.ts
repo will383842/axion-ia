@@ -125,7 +125,7 @@ export const LIMEIL_BREVANNES_COPY: VilleCopy = {
           },
           {
             q: "Comment se passent vos déplacements à Limeil-Brévannes ?",
-            a: "Nos consultants se déplacent sur site pour les ateliers de cadrage et la recette. Le bassin est désormais desservi par le Câble C1, premier téléphérique urbain d'Île-de-France (ouvert le 13 décembre 2025) reliant Pointe du Lac (métro 8) à Villeneuve-Saint-Georges via Limeil-Brévannes, en complément des RN19 et A86. Nous couvrons aussi Créteil, Valenton, Bonneuil-sur-Marne, Boissy-Saint-Léger et Villecresnes.",
+            a: "Nos consultants se déplacent sur site pour les ateliers de cadrage et la recette. Nous intervenons partout en France, sur place ou à distance. Nous couvrons aussi Créteil, Valenton, Bonneuil-sur-Marne, Boissy-Saint-Léger et Villecresnes.",
           },
           {
             q: "Sous quel délai obtient-on un devis ?",
@@ -211,7 +211,7 @@ export const LIMEIL_BREVANNES_COPY: VilleCopy = {
           },
           {
             q: "How do your trips to Limeil-Brévannes work?",
-            a: "Our consultants travel on site for framing workshops and acceptance. The area is now served by the Câble C1, the first urban cable car in Île-de-France (launched 13 December 2025) linking Pointe du Lac (metro line 8) to Villeneuve-Saint-Georges via Limeil-Brévannes, alongside the RN19 and A86. We also cover Créteil, Valenton, Bonneuil-sur-Marne, Boissy-Saint-Léger and Villecresnes.",
+            a: "Our consultants travel on site for framing workshops and acceptance. We work anywhere in France, on site or remotely. We also cover Créteil, Valenton, Bonneuil-sur-Marne, Boissy-Saint-Léger and Villecresnes.",
           },
           {
             q: "How quickly do we get a quote?",

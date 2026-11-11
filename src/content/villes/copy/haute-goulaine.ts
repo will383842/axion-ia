@@ -65,7 +65,7 @@ export const HAUTE_GOULAINE_COPY: VilleCopy = {
     },
     {
       q: "Intervenez-vous dans les domaines viticoles sur site ?",
-      a: "Oui, nos consultants se déplacent directement dans votre domaine, chai, bureau ou commerce à Haute-Goulaine. Depuis Nantes, 15 min. Formats demi-journée ou journée complète.",
+      a: "Oui, nos consultants se déplacent directement dans votre domaine, chai, bureau ou commerce à Haute-Goulaine. Formats demi-journée ou journée complète.",
     },
   ],
 };

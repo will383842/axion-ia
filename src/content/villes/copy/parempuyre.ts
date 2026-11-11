@@ -65,7 +65,7 @@ export const PAREMPUYRE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Parempuyre ?",
-      a: "Nos consultants interviennent dans vos locaux à Parempuyre ou en visio. Tramway C à proximité (Blanquefort). Tarifs et planning convenus en amont.",
+      a: "Nos consultants interviennent dans vos locaux à Parempuyre ou en visio. Tarifs et planning convenus en amont.",
     },
   ],
 };

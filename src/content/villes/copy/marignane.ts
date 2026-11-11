@@ -132,7 +132,7 @@ export const MARIGNANE_COPY: VilleCopy = {
           },
           {
             q: "Intervenez-vous au-delà de Marignane, sur le bassin de l'étang de Berre ?",
-            a: "Oui. Nous couvrons tout le bassin est de l'étang de Berre et le cluster Henri Fabre — Marignane (Florides), Saint-Victoret (Empallières), Vitrolles (Cap Horizon) — ainsi que Marseille (25 km) et Aix-en-Provence (30 km). Le kick-off se fait sur site ; les itérations se poursuivent à distance avec des points réguliers.",
+            a: "Oui. Nous couvrons tout le bassin est de l'étang de Berre et le cluster Henri Fabre — Marignane (Florides), Saint-Victoret (Empallières), Vitrolles (Cap Horizon) — ainsi que Marseille et Aix-en-Provence. Le kick-off se fait sur site ; les itérations se poursuivent à distance avec des points réguliers.",
           },
         ],
         guarantees:
@@ -218,7 +218,7 @@ export const MARIGNANE_COPY: VilleCopy = {
           },
           {
             q: "Do you work beyond Marignane, across the Étang de Berre basin?",
-            a: "Yes. We cover the entire eastern Étang de Berre basin and the Henri Fabre cluster — Marignane (Florides), Saint-Victoret (Empallières), Vitrolles (Cap Horizon) — as well as Marseille (25 km) and Aix-en-Provence (30 km). Kick-off is on site; iterations continue remotely with regular check-ins.",
+            a: "Yes. We cover the entire eastern Étang de Berre basin and the Henri Fabre cluster — Marignane (Florides), Saint-Victoret (Empallières), Vitrolles (Cap Horizon) — as well as Marseille and Aix-en-Provence. Kick-off is on site; iterations continue remotely with regular check-ins.",
           },
         ],
         guarantees:

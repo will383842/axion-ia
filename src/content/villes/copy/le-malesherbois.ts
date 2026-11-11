@@ -49,7 +49,7 @@ export const LE_MALESHERBOIS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il au Malesherbois et dans le Gâtinais ?",
-      a: "Oui, Axion-IA intervient au Malesherbois et dans tout le Gâtinais sud-Loiret (Pithiviers, Puiseaux, Beaune-la-Rolande). Couverture nationale, déplacement sur site inclus dans le forfait mission. Accès direct Paris via RER D (terminus Malesherbes).",
+      a: "Oui, Axion-IA intervient au Malesherbois et dans tout le Gâtinais sud-Loiret (Pithiviers, Puiseaux, Beaune-la-Rolande). Couverture nationale, déplacement sur site inclus dans le forfait mission.",
     },
     {
       q: "Travaillez-vous avec les TPE et artisans du Malesherbois ?",

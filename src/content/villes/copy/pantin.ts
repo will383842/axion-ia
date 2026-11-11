@@ -232,7 +232,7 @@ export const PANTIN_COPY: VilleCopy = {
     },
     {
       q: "Quels délais pour une intervention à Pantin ?",
-      a: "Nous intervenons sur site à Pantin dans les 5 jours ouvrés après validation. La desserte par les lignes 5 et 7 du métro et le RER E rend l'accès rapide.",
+      a: "Nous intervenons sur site à Pantin dans les 5 jours ouvrés après validation. Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quelles communes proches couvrez-vous ?",

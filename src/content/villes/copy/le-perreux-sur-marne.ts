@@ -130,7 +130,7 @@ export const LE_PERREUX_SUR_MARNE_COPY: VilleCopy = {
           },
           {
             q: "Couvrez-vous aussi les communes autour du Perreux-sur-Marne ?",
-            a: "Oui : Nogent-sur-Marne, Bry-sur-Marne, Fontenay-sous-Bois, Neuilly-Plaisance et Champigny-sur-Marne, et plus largement l'Est parisien. La gare RER E de Nogent – Le Perreux et la future gare Ligne 15 Est du Grand Paris Express facilitent nos interventions sur site.",
+            a: "Oui : Nogent-sur-Marne, Bry-sur-Marne, Fontenay-sous-Bois, Neuilly-Plaisance et Champigny-sur-Marne, et plus largement l'Est parisien. Nous intervenons partout en France, sur place ou à distance.",
           },
         ],
         guarantees:
@@ -216,7 +216,7 @@ export const LE_PERREUX_SUR_MARNE_COPY: VilleCopy = {
           },
           {
             q: "Do you also cover the communes around Le Perreux-sur-Marne?",
-            a: "Yes: Nogent-sur-Marne, Bry-sur-Marne, Fontenay-sous-Bois, Neuilly-Plaisance and Champigny-sur-Marne, and more broadly eastern Paris. The Nogent – Le Perreux RER E station and the future Line 15 East Grand Paris Express station make on-site work easy.",
+            a: "Yes: Nogent-sur-Marne, Bry-sur-Marne, Fontenay-sous-Bois, Neuilly-Plaisance and Champigny-sur-Marne, and more broadly eastern Paris. We work anywhere in France, on site or remotely.",
           },
         ],
         guarantees:

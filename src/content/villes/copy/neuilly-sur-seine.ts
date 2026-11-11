@@ -10,9 +10,9 @@ export const NEUILLY_SUR_SEINE_COPY: VilleCopy = {
   pitchEn:
     "Axion-IA accompagne les TPE et PME de Neuilly-sur-Seine, commune des Hauts-de-Seine de 59 538 habitants intégrée à la Métropole du Grand Paris et à l'EPT Paris Ouest La Défense. Frontalière de Paris à l'est, Levallois-Perret au nord et Courbevoie au nord-ouest, la ville concentre cabinets de conseil, sièges sociaux, agences de communication et professions libérales. Notre cabinet IA opérationnelle se déplace sur site pour auditer, prototyper et déployer des automatisations métier (devis, relances, knowledge base, OCR), avec un focus marqué TPE-PME et un complément ETI ponctuel.",
   directAnswerFr:
-    "Axion-IA intervient à Neuilly-sur-Seine (Hauts-de-Seine, EPT Paris Ouest La Défense) auprès des TPE, PME et professions libérales du quartier d'affaires axial Champs-Élysées / La Défense. Williams se déplace sur site (métro ligne 1, stations Porte Maillot, Les Sablons, Pont de Neuilly) pour un Audit sur place 4h à {{price:audit-flash|flat}}, une intervention ciblée à {{price:intervention-4h|flat}} ou une implémentation complète à partir de {{price:impl-poc|entry}}, livrée en code custom (Python, Node, n8n self-host), conforme RGPD, hébergée en Europe et sans no-code propriétaire.",
+    "Axion-IA intervient à Neuilly-sur-Seine (Hauts-de-Seine, EPT Paris Ouest La Défense) auprès des TPE, PME et professions libérales du quartier d'affaires axial Champs-Élysées / La Défense. Williams se déplace sur site pour un Audit sur place 4h à {{price:audit-flash|flat}}, une intervention ciblée à {{price:intervention-4h|flat}} ou une implémentation complète à partir de {{price:impl-poc|entry}}, livrée en code custom (Python, Node, n8n self-host), conforme RGPD, hébergée en Europe et sans no-code propriétaire.",
   directAnswerEn:
-    "Axion-IA intervient à Neuilly-sur-Seine (Hauts-de-Seine, EPT Paris Ouest La Défense) auprès des TPE, PME et professions libérales du quartier d'affaires axial Champs-Élysées / La Défense. Williams se déplace sur site (métro ligne 1, stations Porte Maillot, Les Sablons, Pont de Neuilly) pour un Audit sur place 4h à {{price:audit-flash|flat}}, une intervention ciblée à {{price:intervention-4h|flat}} ou une implémentation complète à partir de {{price:impl-poc|entry}}, livrée en code custom (Python, Node, n8n self-host), conforme RGPD, hébergée en Europe et sans no-code propriétaire.",
+    "Axion-IA intervient à Neuilly-sur-Seine (Hauts-de-Seine, EPT Paris Ouest La Défense) auprès des TPE, PME et professions libérales du quartier d'affaires axial Champs-Élysées / La Défense. Williams se déplace sur site pour un Audit sur place 4h à {{price:audit-flash|flat}}, une intervention ciblée à {{price:intervention-4h|flat}} ou une implémentation complète à partir de {{price:impl-poc|entry}}, livrée en code custom (Python, Node, n8n self-host), conforme RGPD, hébergée en Europe et sans no-code propriétaire.",
   seoHook: "conseil, sièges sociaux & professions libérales",
   ecosystemFr:
     "Neuilly-sur-Seine s'est imposée comme prolongement résidentiel et tertiaire de l'axe Champs-Élysées / La Défense via la RN 13 (Avenue Charles-de-Gaulle). La commune se classe troisième nationale en concentration de richesse parmi les communes de plus de 20 000 habitants. Le tissu local est dominé par les cabinets de conseil, agences de communication, services financiers, professions libérales (avocats, notaires, médecins) et sièges sociaux, dans un cadre bordé par le Bois de Boulogne et l'Île de la Jatte.",
@@ -56,7 +56,7 @@ export const NEUILLY_SUR_SEINE_COPY: VilleCopy = {
           "Capitale française des sièges de luxe et de cosmétique : Chanel (135 avenue Charles-de-Gaulle), Sephora-LVMH (rue Ybry) et Dior imposent des standards e-commerce, fiches produit multilingues, configurateurs et expériences mobiles que nous outillons avec de la recherche sémantique et de la génération de contenu IA.",
           "Pôle médias, broadcast et publicité avec le Groupe M6 (89 avenue Charles-de-Gaulle), RTL et JCDecaux : portails de contenu à fort trafic, gestion d'actifs média (DAM), recommandation et modération assistées par IA exigent des plateformes performantes et observables.",
           "Concentration de cabinets de conseil et d'audit — Deloitte, PwC, Bureau Veritas — et de professions libérales d'affaires (avocats, notaires) : nous construisons des portails clients sécurisés, des bases de connaissances RAG et des assistants documentaires avec un cloisonnement RGPD strict des données sensibles.",
-          "Densité exceptionnelle d'environ 13 000 entreprises sur 3,7 km² desservie par la ligne 1 (Pont de Neuilly, Les Sablons, Porte Maillot) à deux pas de La Défense : intervention sur site rapide, kick-off et recette en présentiel dans vos locaux neuilléens.",
+          "Densité exceptionnelle d'environ 13 000 entreprises sur 3,7 km² desservie par la ligne 1 (Pont de Neuilly, Les Sablons, Porte Maillot), voisine de La Défense : kick-off et recette en présentiel dans vos locaux neuilléens.",
         ],
         methodology: [
           {
@@ -126,7 +126,7 @@ export const NEUILLY_SUR_SEINE_COPY: VilleCopy = {
           },
           {
             q: "Intervenez-vous sur site à Neuilly-sur-Seine ?",
-            a: "Oui. Williams se déplace dans vos locaux de l'avenue Charles-de-Gaulle, de l'Île de la Jatte ou du quartier Ybry, par la ligne 1 (Pont de Neuilly, Les Sablons, Porte Maillot). Kick-off et recette se font en présentiel ; les communes voisines (Levallois-Perret, Courbevoie, Puteaux, La Défense, Paris 16e et 17e) sont couvertes lors d'un même déplacement.",
+            a: "Oui. Williams se déplace dans vos locaux de l'avenue Charles-de-Gaulle, de l'Île de la Jatte ou du quartier Ybry. Kick-off et recette se font en présentiel ; les communes voisines (Levallois-Perret, Courbevoie, Puteaux, La Défense, Paris 16e et 17e) sont couvertes lors d'un même déplacement.",
           },
           {
             q: "Sous quel délai recevons-nous un devis et quelle technologie utilisez-vous ?",
@@ -142,7 +142,7 @@ export const NEUILLY_SUR_SEINE_COPY: VilleCopy = {
           "French capital of luxury and cosmetics headquarters: Chanel (135 avenue Charles-de-Gaulle), Sephora-LVMH (rue Ybry) and Dior set e-commerce, multilingual product page, configurator and mobile-experience standards that we power with semantic search and AI content generation.",
           "Media, broadcast and advertising hub with Groupe M6 (89 avenue Charles-de-Gaulle), RTL and JCDecaux: high-traffic content portals, digital asset management (DAM), AI-assisted recommendation and moderation demand performant, observable platforms.",
           "Concentration of consulting and audit firms — Deloitte, PwC, Bureau Veritas — and business legal professions (lawyers, notaries): we build secure client portals, RAG knowledge bases and document assistants with strict GDPR isolation of sensitive data.",
-          "Exceptional density of around 13,000 companies over 3.7 km² served by metro line 1 (Pont de Neuilly, Les Sablons, Porte Maillot) next to La Défense: fast on-site work, kick-off and acceptance in person at your Neuilly offices.",
+          "Exceptional density of around 13,000 companies over 3.7 km² served by metro line 1 (Pont de Neuilly, Les Sablons, Porte Maillot), next to La Défense: kick-off and acceptance in person at your Neuilly offices.",
         ],
         methodology: [
           {
@@ -212,7 +212,7 @@ export const NEUILLY_SUR_SEINE_COPY: VilleCopy = {
           },
           {
             q: "Do you work on site in Neuilly-sur-Seine?",
-            a: "Yes. Williams travels to your offices on avenue Charles-de-Gaulle, Île de la Jatte or the Ybry district via metro line 1 (Pont de Neuilly, Les Sablons, Porte Maillot). Kick-off and acceptance happen in person; neighboring towns (Levallois-Perret, Courbevoie, Puteaux, La Défense, Paris 16th and 17th) are covered in the same visit.",
+            a: "Yes. Williams travels to your offices on avenue Charles-de-Gaulle, Île de la Jatte or the Ybry district. Kick-off and acceptance happen in person; neighboring towns (Levallois-Perret, Courbevoie, Puteaux, La Défense, Paris 16th and 17th) are covered in the same visit.",
           },
           {
             q: "How fast is a quote and what technology do you use?",
@@ -232,7 +232,7 @@ export const NEUILLY_SUR_SEINE_COPY: VilleCopy = {
     },
     {
       q: "Williams se déplace-t-il à Neuilly-sur-Seine ?",
-      a: "Oui, Williams se déplace sur site à Neuilly-sur-Seine sous 5 jours ouvrés. L'accès s'effectue par la ligne 1 (Pont de Neuilly, Les Sablons, Porte Maillot), le tramway T3b ou la RN 13.",
+      a: "Oui, Williams se déplace sur site à Neuilly-sur-Seine sous 5 jours ouvrés. Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quelles communes proches de Neuilly-sur-Seine couvrez-vous ?",

@@ -235,7 +235,7 @@ const VILLE_COPY: VilleCopy = {
     },
     {
       q: "Williams se déplace-t-il vraiment à Ozoir-la-Ferrière ?",
-      a: "Oui. Williams prend le RER E (branche E4 vers Tournan-en-Brie, gare d'Ozoir-la-Ferrière) pour intervenir sur site auprès des TPE et PME ozoiriennes.",
+      a: "Oui. Williams se déplace pour intervenir sur site auprès des TPE et PME ozoiriennes.",
     },
     {
       q: "Quels secteurs locaux Axion-IA accompagne-t-il à Ozoir-la-Ferrière ?",

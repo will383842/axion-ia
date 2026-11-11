@@ -149,6 +149,30 @@ const REGLES: readonly Regle[] = [
     ],
   },
   {
+    // Relecture 7 : la desserte ou la position de la commune présentée comme
+    // facilitant les déplacements de l'équipe, ou le trajet de l'équipe en
+    // transport en commun. Tolérance zéro.
+    nom: "« facilite nos déplacements » · accès/trajet de l'équipe",
+    motif:
+      /(?:facilit|rend)[^."]{0,20} (?:nos|les) (?:déplacements|interventions)|déplacements de nos consultants|accès direct (?:par les |métro)|Accès direct métro|rend l'accès rapide|accès s'effectue|Williams prend le |arrivent en une station|trajet est court|itérations à distance via|zone d'intervention principale|primary intervention zone|make on-site work easy|easily reached via|reachable (?:by|via) the/giu,
+    sansListeBlanche: true,
+    fautives: [
+      "La gare RER E facilite nos interventions sur site.",
+      "Ce qui facilite nos déplacements sur site dans toute la métropole.",
+      "Cette desserte facilite les déplacements de nos consultants.",
+      "Kick-off sur site, accès direct métro M4/M13.",
+      "La desserte par les lignes 5 et 7 du métro et le RER E rend l'accès rapide.",
+      "Williams prend le RER E pour intervenir sur site.",
+      "Kick-off en présentiel, itérations à distance via le RER D.",
+      "The kick-off takes place on site, easily reached via metro line 7.",
+    ],
+    saines: [
+      "Nous intervenons partout en France, sur place ou à distance.",
+      "Kick-off en présentiel à Laon, itérations à distance.",
+      "Commune desservie par la ligne 7 du métro et le RER C.",
+    ],
+  },
+  {
     nom: "« accédez-vous »",
     motif: /accédez-vous/gu,
     fautives: ["Comment accédez-vous au Pellerin pour vos interventions ?"],

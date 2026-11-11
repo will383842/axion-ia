@@ -18,9 +18,9 @@ export const MONTMORENCY_COPY: VilleCopy = {
   ecosystemEn:
     "Montmorency cultive un cadre résidentiel et patrimonial, entre sa collégiale Saint-Martin, la maison de Jean-Jacques Rousseau et la vaste forêt de Montmorency qui structure le territoire. Son économie de proximité s'appuie sur les commerces du centre, les professions de santé, les cabinets libéraux et l'artisanat, dans un bassin résidentiel aisé du Val-d'Oise relié à Paris et à Enghien-les-Bains. Ces TPE et PME de services, riches en rendez-vous et relances, sont idéales pour l'automatisation IA et les agents conversationnels.",
   distancesFr:
-    "Montmorency est reliée à Paris en une vingtaine de minutes via la gare d'Enghien-les-Bains, voisine, qui dessert la gare Paris-Nord par le Transilien. Le centre de Paris est à environ 15 km, l'aéroport Paris-Charles-de-Gaulle à 25 km. La forêt de Montmorency, Sannois et Saint-Leu-la-Forêt sont aux portes de la ville. Cette position dans le nord du Val-d'Oise facilite nos interventions sur tout le bassin résidentiel local.",
+    "Montmorency est reliée à Paris en une vingtaine de minutes via la gare d'Enghien-les-Bains, voisine, qui dessert la gare Paris-Nord par le Transilien. Le centre de Paris est à environ 15 km, l'aéroport Paris-Charles-de-Gaulle à 25 km. La forêt de Montmorency, Sannois et Saint-Leu-la-Forêt sont aux portes de la ville. Nous intervenons partout en France, sur place ou à distance.",
   distancesEn:
-    "Montmorency est reliée à Paris en une vingtaine de minutes via la gare d'Enghien-les-Bains, voisine, qui dessert la gare Paris-Nord par le Transilien. Le centre de Paris est à environ 15 km, l'aéroport Paris-Charles-de-Gaulle à 25 km. La forêt de Montmorency, Sannois et Saint-Leu-la-Forêt sont aux portes de la ville. Cette position dans le nord du Val-d'Oise facilite nos interventions sur tout le bassin résidentiel local.",
+    "Montmorency est reliée à Paris en une vingtaine de minutes via la gare d'Enghien-les-Bains, voisine, qui dessert la gare Paris-Nord par le Transilien. Le centre de Paris est à environ 15 km, l'aéroport Paris-Charles-de-Gaulle à 25 km. La forêt de Montmorency, Sannois et Saint-Leu-la-Forêt sont aux portes de la ville. Nous intervenons partout en France, sur place ou à distance.",
   topSectorsNaf: [
     "Commerce de détail de proximité",
     "Activités de santé humaine",

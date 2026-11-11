@@ -49,7 +49,7 @@ export const HORBOURG_WIHR_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Horbourg-Wihr dans le Haut-Rhin ?",
-      a: "Oui, Axion-IA intervient à Horbourg-Wihr et dans toute l'agglomération colmarienne (Colmar, Andolsheim, Wintzenheim, Ingersheim, Turckheim). Nos consultants se déplacent sur site ou en visio, A35 et D415 directes.",
+      a: "Oui, Axion-IA intervient à Horbourg-Wihr et dans toute l'agglomération colmarienne (Colmar, Andolsheim, Wintzenheim, Ingersheim, Turckheim). Nos consultants se déplacent sur site ou interviennent en visio.",
     },
     {
       q: "Quel est le prix d'un audit IA à Horbourg-Wihr ?",

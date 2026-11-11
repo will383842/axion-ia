@@ -18,9 +18,9 @@ export const LA_CIOTAT_COPY: VilleCopy = {
   ecosystemEn:
     "La Ciotat a transformé ses chantiers navals historiques en un pôle de réparation et de refit de grands yachts qui irrigue une filière de TPE et PME sous-traitantes : mécanique, peinture, sellerie, électronique de bord, services techniques. À cela s'ajoutent un tourisme de calanques, un hébergement saisonnier, une restauration et un commerce dynamiques, sur les traces du cinéma des frères Lumière. Ces petites structures gagnent à automatiser devis, planning d'atelier, gestion de chantier et relation client multilingue. Axion-IA cible en priorité ces TPE nautiques et touristiques, puis les PME de la sous-traitance navale.",
   distancesFr:
-    "La Ciotat est à environ 35 km de Marseille et 40 km de Toulon. Sa gare TER relie Marseille en une trentaine de minutes, la gare TGV d'Aix-en-Provence est à 60 km et l'aéroport de Marseille-Provence à 58 km. Les communes voisines comme Cassis, Aubagne et Saint-Cyr-sur-Mer sont toutes proches, ce qui facilite nos déplacements sur site.",
+    "La Ciotat est à environ 35 km de Marseille et 40 km de Toulon. Sa gare TER relie Marseille en une trentaine de minutes, la gare TGV d'Aix-en-Provence est à 60 km et l'aéroport de Marseille-Provence à 58 km. Les communes voisines comme Cassis, Aubagne et Saint-Cyr-sur-Mer sont toutes proches. Nous intervenons partout en France, sur place ou à distance.",
   distancesEn:
-    "La Ciotat est à environ 35 km de Marseille et 40 km de Toulon. Sa gare TER relie Marseille en une trentaine de minutes, la gare TGV d'Aix-en-Provence est à 60 km et l'aéroport de Marseille-Provence à 58 km. Les communes voisines comme Cassis, Aubagne et Saint-Cyr-sur-Mer sont toutes proches, ce qui facilite nos déplacements sur site.",
+    "La Ciotat est à environ 35 km de Marseille et 40 km de Toulon. Sa gare TER relie Marseille en une trentaine de minutes, la gare TGV d'Aix-en-Provence est à 60 km et l'aéroport de Marseille-Provence à 58 km. Les communes voisines comme Cassis, Aubagne et Saint-Cyr-sur-Mer sont toutes proches. Nous intervenons partout en France, sur place ou à distance.",
   topSectorsNaf: [
     "Réparation et refit naval (yachting)",
     "Sous-traitance technique (mécanique, sellerie, électronique)",
