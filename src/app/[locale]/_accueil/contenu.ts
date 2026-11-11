@@ -86,7 +86,7 @@ export const CONTENU = {
         {
           repere: "Sous 3 jours ouvrés · vos priorités",
           texte:
-            "Vos priorités écrites avant notre départ ; rapport complet et plan d’action sur 90 jours sous 3 jours ouvrés.",
+            "Vos priorités écrites dans le rapport détaillé remis sous 3 jours ouvrés, avec le plan d’action sur 90 jours.",
         },
       ],
       lignes: [
