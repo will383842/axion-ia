@@ -14,6 +14,8 @@ import { useEffect, useState } from "react";
 import { ArrowRight } from "lucide-react";
 import { Link } from "@/i18n/navigation";
 import { trackFunnel } from "@/lib/tracking";
+import { buttonVariants } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 
 interface StickyMobileCtaProps {
   /** Cible du CTA principal (path interne i18n). */
@@ -56,10 +58,12 @@ export function StickyMobileCta({
   couleur,
   masquerQuandVisible,
 }: StickyMobileCtaProps) {
-  const teinte =
-    couleur === "terracotta"
-      ? "bg-terracotta text-paper hover:bg-terracotta-deep focus-visible:ring-terracotta-on-mocha"
-      : "bg-primary text-primary-fg hover:bg-primary-hover focus-visible:ring-primary";
+  const terracotta = couleur === "terracotta";
+  // Le bouton du tunnel garde l'anneau de focus d'origine (terracotta clair), jamais « primary ».
+  const bouton = cn(
+    buttonVariants({ variant: terracotta ? "terracotta" : "primary" }),
+    terracotta && "focus-visible:ring-terracotta-on-mocha",
+  );
   const [visible, setVisible] = useState(false);
   const landingSuivi = suivi?.landing;
   const auClic = landingSuivi
@@ -136,7 +140,7 @@ export function StickyMobileCta({
             onClick={auClic}
             {...(track ? { "data-cta": track } : {})}
             {...(visible ? {} : { tabIndex: -1 })}
-            className={`${teinte} flex min-h-11 w-full items-center justify-center gap-2 rounded-full px-4 py-3.5 text-sm font-semibold tracking-tight whitespace-nowrap focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none sm:px-6`}
+            className={cn(bouton, "w-full whitespace-nowrap")}
           >
             {label}
             <ArrowRight aria-hidden="true" className="h-4 w-4" />
@@ -160,9 +164,11 @@ export function StickyMobileCta({
           onClick={auClic}
           {...(track ? { "data-cta": `${track}-desktop` } : {})}
           {...(visible ? {} : { tabIndex: -1 })}
-          className={`${teinte} inline-flex items-center gap-2 rounded-full px-6 py-3.5 text-sm font-semibold tracking-tight whitespace-nowrap shadow-[0_12px_28px_-8px_rgba(0,0,0,0.35)] focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none ${
-            visible ? "pointer-events-auto" : "pointer-events-none"
-          }`}
+          className={cn(
+            bouton,
+            "whitespace-nowrap shadow-[0_12px_28px_-8px_rgba(0,0,0,0.35)]",
+            visible ? "pointer-events-auto" : "pointer-events-none",
+          )}
         >
           {label}
           <ArrowRight aria-hidden="true" className="h-4 w-4" />
