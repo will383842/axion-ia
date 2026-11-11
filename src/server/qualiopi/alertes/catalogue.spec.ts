@@ -272,6 +272,9 @@ const CODES_ATTENDUS: string[] = [
   "email_retenu_rebond_dur",
   "email_retenu_desabonne",
   "email_retenu_oppose",
+  // Décision du 11/11/2026 : demande d'effacement → mise à l'écart, alerte cloche.
+  "email_retenu_ecarte_effacement",
+  "rgpd_effacement_a_traiter",
   // Chantier visio, PR 4 (correction anti-doublon A3) : les pannes du balayage
   // du dossier client, levées hors du balayage quotidien.
   "visio.balayage_en_panne",
@@ -437,6 +440,8 @@ describe("ALERTE_CATALOGUE", () => {
     "email_retenu_rebond_dur",
     "email_retenu_desabonne",
     "email_retenu_oppose",
+    "email_retenu_ecarte_effacement",
+    "rgpd_effacement_a_traiter",
     "visio.balayage_en_panne",
     "visio.rendez_vous_a_classer",
     "visio.doublon_possible",

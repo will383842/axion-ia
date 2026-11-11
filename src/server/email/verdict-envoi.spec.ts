@@ -17,13 +17,17 @@ import { describe, it, expect, vi, beforeEach } from "vitest";
 
 const findFirst = vi.fn();
 const oppositionFindUnique = vi.fn();
+const oppositionFindFirst = vi.fn();
 const abonneFindUnique = vi.fn();
 
 vi.mock("@/lib/prisma", () => ({
   prisma: {
     emailLog: { findFirst: (...a: unknown[]) => findFirst(...a) },
     newsletterSubscriber: { findUnique: (...a: unknown[]) => abonneFindUnique(...a) },
-    emailOpposition: { findUnique: (...a: unknown[]) => oppositionFindUnique(...a) },
+    emailOpposition: {
+      findUnique: (...a: unknown[]) => oppositionFindUnique(...a),
+      findFirst: (...a: unknown[]) => oppositionFindFirst(...a),
+    },
   },
 }));
 
@@ -40,6 +44,7 @@ import {
 beforeEach(() => {
   findFirst.mockReset().mockResolvedValue(null);
   oppositionFindUnique.mockReset().mockResolvedValue(null);
+  oppositionFindFirst.mockReset().mockResolvedValue(null);
   abonneFindUnique.mockReset().mockResolvedValue(null);
   vi.spyOn(console, "error").mockImplementation(() => {});
 });
@@ -132,6 +137,54 @@ describe("verdictAvantEnvoi — drapeau `sollicitation` explicite", () => {
     const v = await verdictAvantEnvoi("oppose@exemple.fr", {
       template: "lead-apporteur-relance",
       marketing: false,
+    });
+    expect(v).toEqual({ retenu: true, motif: "oppose", depuis: null });
+  });
+});
+
+describe("verdictAvantEnvoi — personne écartée après une demande d'effacement (11/11/2026)", () => {
+  const LE = new Date("2026-11-11T10:00:00Z");
+
+  it.each([
+    ["qualiopi-convocation", false],
+    ["guide-ia-envoi", false],
+    ["lead-apporteur-recu", false],
+    ["campagne-x", true],
+  ])(
+    "🔴 « %s » (marketing : %s) est RETENU, quel que soit le gabarit",
+    async (template, marketing) => {
+      oppositionFindFirst.mockResolvedValue({ effacementDemandeLe: LE });
+      const v = await verdictAvantEnvoi("ecartee@exemple.fr", { template, marketing });
+      expect(v).toEqual({ retenu: true, motif: "ecarte_effacement", depuis: LE });
+    },
+  );
+
+  it("lu par empreinte, jamais par adresse", async () => {
+    oppositionFindFirst.mockResolvedValue({ effacementDemandeLe: LE });
+    await verdictAvantEnvoi("ecartee@exemple.fr", {
+      template: "qualiopi-convocation",
+      marketing: false,
+    });
+    const lu = oppositionFindFirst.mock.calls[0]![0] as { where: Record<string, unknown> };
+    expect(lu.where).not.toHaveProperty("email");
+    expect(String(lu.where["emailHash"])).toMatch(/^[0-9a-f]{64}$/);
+  });
+
+  it("sans marque, un envoi transactionnel part (une simple opposition ne le retient pas)", async () => {
+    oppositionFindUnique.mockResolvedValue({ id: "opp-1" });
+    const v = await verdictAvantEnvoi("oppose@exemple.fr", {
+      template: "qualiopi-convocation",
+      marketing: false,
+    });
+    expect(v).toEqual({ retenu: false });
+  });
+
+  it("lecture en panne (colonne pas encore migrée) : repli ouvert, les autres contrôles tiennent", async () => {
+    oppositionFindFirst.mockRejectedValue(new Error("column does not exist"));
+    oppositionFindUnique.mockResolvedValue({ id: "opp-1" });
+    const v = await verdictAvantEnvoi("oppose@exemple.fr", {
+      template: "campagne-x",
+      marketing: true,
     });
     expect(v).toEqual({ retenu: true, motif: "oppose", depuis: null });
   });

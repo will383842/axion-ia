@@ -1866,6 +1866,26 @@ export const ALERTE_CATALOGUE: Record<string, AlerteCatalogueEntry> = {
     guichet: "administratif",
   },
 
+  // Décision de Williams du 11/11/2026 — une demande d'effacement MET À L'ÉCART au lieu de
+  // supprimer (`server/rgpd/ecarter-au-lieu-d-effacer.ts`). Deux codes, niveau `info` : la
+  // cloche seulement, jamais l'e-mail groupé (réservé à `important` et `critique`).
+  email_retenu_ecarte_effacement: {
+    niveau: "info",
+    titre: "Envoi retenu : la personne a demandé l'effacement de ses données",
+    resolutionAuto: false,
+    motifSansResolutionAuto:
+      "STRUCTUREL — levée à l'instant de l'envoi, jamais par `evaluerAlertes`. La mise à l'écart pour effacement est définitive : l'alerte est la trace d'un envoi qui n'est pas parti, et doit survivre au balayage qui ne la voit pas.",
+    guichet: "direction",
+  },
+  rgpd_effacement_a_traiter: {
+    niveau: "info",
+    titre: "Demande d'effacement RGPD à traiter à la main",
+    resolutionAuto: false,
+    motifSansResolutionAuto:
+      "STRUCTUREL — levée par la demande d'effacement (`/api/gdpr-erase` ou la console Lettre), jamais par `evaluerAlertes`. Rien n'est supprimé automatiquement : seule la personne qui a traité la demande à la main peut la refermer.",
+    guichet: "direction",
+  },
+
   // ── Circuit visio (chantier « enregistrement des visios », PR 4) ──────────
   //
   // Correction anti-doublon A3 : les pannes du circuit s'écrivent ICI, pas dans

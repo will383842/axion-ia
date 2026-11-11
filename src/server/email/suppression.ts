@@ -66,27 +66,34 @@ export async function signalerRetenue(
     `[email-suppression] envoi « ${template} » RETENU vers ${destinataire} : ${verdict.motif}${quand}.`,
   );
   const titre =
-    verdict.motif === "rebond_dur"
-      ? "Un envoi a été retenu : l'adresse a déjà rebondi définitivement"
-      : verdict.motif === "oppose"
-        ? "Un envoi a été retenu : la personne s'est opposée aux sollicitations"
-        : "Un envoi marketing a été retenu : la personne s'est désabonnée";
+    verdict.motif === "ecarte_effacement"
+      ? "Un envoi a été retenu : la personne a demandé l'effacement de ses données"
+      : verdict.motif === "rebond_dur"
+        ? "Un envoi a été retenu : l'adresse a déjà rebondi définitivement"
+        : verdict.motif === "oppose"
+          ? "Un envoi a été retenu : la personne s'est opposée aux sollicitations"
+          : "Un envoi marketing a été retenu : la personne s'est désabonnée";
   const message =
-    verdict.motif === "rebond_dur"
-      ? `« ${template} » n'est pas parti vers ${destinataire}${quand} : le serveur destinataire a déjà refusé ` +
-        `cette adresse pour de bon, et chaque nouvel envoi rebondirait en abîmant la réputation du domaine. ` +
-        `Corriger l'adresse dans la fiche concernée (client, stagiaire, candidat), puis ré-émettre l'envoi ` +
-        `depuis son écran d'origine. Tant que l'adresse n'est pas corrigée, cette personne ne recevra ` +
-        `ni convocation, ni attestation, ni facture.`
-      : // 2026-09-19 — l'opposition avait le texte du désabonnement newsletter :
-        // la console expliquait un refus de sollicitation par un retrait de
-        // consentement qui n'avait pas eu lieu.
-        verdict.motif === "oppose"
-        ? `« ${template} » n'est pas parti vers ${destinataire}${quand} : la personne s'est opposée aux ` +
-          `sollicitations ; aucune action, l'opposition est honorée.`
-        : `« ${template} » n'est pas parti vers ${destinataire}${quand} : cette personne a retiré son ` +
-          `consentement newsletter. Un envoi marketing vers un désabonné est une plainte pour spam en ` +
-          `puissance, et la plainte abîme le domaine pour tous les flux. Aucune action : le retrait est honoré.`;
+    verdict.motif === "ecarte_effacement"
+      ? `« ${template} » n'est pas parti vers ${destinataire}${quand} : la personne a demandé ` +
+        `l'effacement de ses données et a été mise à l'écart. Plus aucun envoi ne part vers elle, ` +
+        `quel que soit le message. Si l'envoi était nécessaire (convocation, facture), la contacter ` +
+        `autrement, à la main.`
+      : verdict.motif === "rebond_dur"
+        ? `« ${template} » n'est pas parti vers ${destinataire}${quand} : le serveur destinataire a déjà refusé ` +
+          `cette adresse pour de bon, et chaque nouvel envoi rebondirait en abîmant la réputation du domaine. ` +
+          `Corriger l'adresse dans la fiche concernée (client, stagiaire, candidat), puis ré-émettre l'envoi ` +
+          `depuis son écran d'origine. Tant que l'adresse n'est pas corrigée, cette personne ne recevra ` +
+          `ni convocation, ni attestation, ni facture.`
+        : // 2026-09-19 — l'opposition avait le texte du désabonnement newsletter :
+          // la console expliquait un refus de sollicitation par un retrait de
+          // consentement qui n'avait pas eu lieu.
+          verdict.motif === "oppose"
+          ? `« ${template} » n'est pas parti vers ${destinataire}${quand} : la personne s'est opposée aux ` +
+            `sollicitations ; aucune action, l'opposition est honorée.`
+          : `« ${template} » n'est pas parti vers ${destinataire}${quand} : cette personne a retiré son ` +
+            `consentement newsletter. Un envoi marketing vers un désabonné est une plainte pour spam en ` +
+            `puissance, et la plainte abîme le domaine pour tous les flux. Aucune action : le retrait est honoré.`;
   try {
     // 🔴 Import DYNAMIQUE, jamais statique : `alertes-service` tire son
     // évaluateur, qui tire `next-auth` → `next/server`. Ce module est importé par
@@ -98,7 +105,9 @@ export async function signalerRetenue(
     const { creerOuDedup } = await import("@/server/qualiopi/alertes/alertes-service");
     await creerOuDedup({
       code: `email_retenu_${verdict.motif}`,
-      niveau: "important",
+      // Décision du 11/11/2026 : l'écart pour effacement ne prévient que par la cloche
+      // (`info` ne part jamais dans l'e-mail groupé des alertes).
+      niveau: verdict.motif === "ecarte_effacement" ? "info" : "important",
       titre,
       message,
       cibleType: "EmailLog",

@@ -18,10 +18,17 @@ const sansCommentaires = (t: string): string =>
 const lire = (f: string): string => readFileSync(join(DOSSIER, f), "utf8");
 
 describe("migration contacts_guide_reseau_origine_optionnelle", () => {
-  it("est horodatée APRÈS la création de la table et après toute autre migration", () => {
-    const dossiers = readdirSync(MIGRATIONS).filter((d) => /^\d{14}_/.test(d));
+  it("est horodatée APRÈS la création de la table et après les migrations qui la précédaient", () => {
+    // « Dernière de toutes » valait à son arrivée ; une migration plus récente (11/11/2026,
+    // `oppositions_effacement_demande`) ne change rien à l'ordre qui compte ici.
+    const dossiers = readdirSync(MIGRATIONS)
+      .filter((d) => /^\d{14}_/.test(d))
+      .sort();
     expect(dossiers).toContain("20261108140000_contacts_guide_reseau");
-    expect(dossiers.sort().at(-1)).toBe(NOM);
+    expect(dossiers.indexOf(NOM)).toBeGreaterThan(
+      dossiers.indexOf("20261108140000_contacts_guide_reseau"),
+    );
+    expect(dossiers.filter((d) => d < "20261111000000").at(-1)).toBe(NOM);
   });
 
   it("ne fait que relâcher NOT NULL de mot, reseau, compte_ref, version_m1 (post_ref l'est déjà)", () => {

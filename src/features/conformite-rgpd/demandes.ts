@@ -3,14 +3,18 @@
 // Recensement fait le 2026-10-10 :
 // · `RgpdDemande` (portail stagiaire) est la SEULE file de demandes « à traiter » ;
 //   on y répond depuis Qualiopi › Demandes RGPD.
-// · Le libre-service public (/mes-donnees → /api/gdpr-export, /api/gdpr-erase) exécute
-//   la demande sur-le-champ, candidatures et réseau d'apporteurs compris : il n'en reste
-//   qu'une ligne du journal d'activité, sans adresse en clair. Déjà faites, donc.
+// · Le libre-service public (/mes-donnees → /api/gdpr-export) exécute l'export sur-le-champ :
+//   il n'en reste qu'une ligne du journal d'activité, sans adresse en clair. Déjà fait, donc.
+// · 🔴 Depuis le 11/11/2026 (décision de Williams), une demande d'EFFACEMENT (route publique
+//   `/api/gdpr-erase` ou console Lettre) ne supprime plus rien : la personne est mise à l'écart
+//   et la demande reste À TRAITER à la main (trace `gdpr.erase.requested`, alerte dans la
+//   cloche, qui porte l'adresse). Les anciennes traces `gdpr.erase.completed` restent « faites ».
 // · Une demande écrite par e-mail n'est enregistrée nulle part : la page le dit.
 //
 // Rien ici ne traite une demande : chaque ligne renvoie vers l'outil qui le fait déjà.
 
 import { prisma } from "@/lib/prisma";
+import { ACTION_DEMANDE_EFFACEMENT } from "@/server/rgpd/constantes";
 
 export type OrigineDemande = "stagiaire" | "libre_service";
 
@@ -31,7 +35,11 @@ export const LIBELLE_ORIGINE: Readonly<Record<OrigineDemande, string>> = {
   libre_service: "Site (libre-service)",
 };
 
-const ACTIONS_LIBRE_SERVICE = ["gdpr.export.delivered", "gdpr.erase.completed"] as const;
+const ACTIONS_LIBRE_SERVICE = [
+  "gdpr.export.delivered",
+  "gdpr.erase.completed",
+  ACTION_DEMANDE_EFFACEMENT,
+] as const;
 
 async function sansPanne<T>(lire: () => Promise<T[]>): Promise<T[]> {
   try {
@@ -79,16 +87,30 @@ export async function listerDemandes(): Promise<DemandeRgpd[]> {
     outil: "qualiopi/rgpd",
   }));
 
-  const duSite: DemandeRgpd[] = libreService.map((l) => ({
-    id: l.id,
-    origine: "libre_service",
-    type: l.action === "gdpr.erase.completed" ? "effacement" : "acces",
-    personne: "Visiteur du site (adresse non conservée)",
-    demandeLe: l.createdAt,
-    aTraiter: false,
-    faiteLe: l.createdAt,
-    outil: `activity-logs?action=${l.action}`,
-  }));
+  const duSite: DemandeRgpd[] = libreService.map((l) =>
+    l.action === ACTION_DEMANDE_EFFACEMENT
+      ? {
+          id: l.id,
+          origine: "libre_service",
+          type: "effacement",
+          // L'adresse n'est pas au journal (empreintes seulement) : elle est dans l'alerte.
+          personne: "Voir l'alerte « Demande d'effacement RGPD à traiter à la main »",
+          demandeLe: l.createdAt,
+          aTraiter: true,
+          faiteLe: null,
+          outil: "qualiopi/alertes",
+        }
+      : {
+          id: l.id,
+          origine: "libre_service",
+          type: l.action === "gdpr.erase.completed" ? "effacement" : "acces",
+          personne: "Visiteur du site (adresse non conservée)",
+          demandeLe: l.createdAt,
+          aTraiter: false,
+          faiteLe: l.createdAt,
+          outil: `activity-logs?action=${l.action}`,
+        },
+  );
 
   // À traiter d'abord (la plus ancienne en tête : c'est elle qui presse), puis le reste.
   return [...deStagiaires, ...duSite].sort((a, b) =>

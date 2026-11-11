@@ -31,7 +31,7 @@
 import { prisma } from "@/lib/prisma";
 import { hashEmailForLookup } from "@/lib/security/email-hash";
 
-export type MotifRetenue = "rebond_dur" | "desabonne" | "oppose";
+export type MotifRetenue = "rebond_dur" | "desabonne" | "oppose" | "ecarte_effacement";
 
 export type VerdictEnvoi =
   | { readonly retenu: false }
@@ -187,6 +187,34 @@ export async function verdictAvantEnvoi(
   if (estStub()) return { retenu: false };
   const adresse = destinataire.trim();
   if (adresse === "") return { retenu: false };
+
+  // 🔴 Décision de Williams du 11/11/2026 — une DEMANDE D'EFFACEMENT met la personne à l'écart
+  // au lieu de supprimer ses données (`server/rgpd/ecarter-au-lieu-d-effacer.ts`). Elle ne doit
+  // plus rien recevoir, QUEL QUE SOIT le gabarit : convocation, facture et guide compris. Lu en
+  // premier, pour tous les envois.
+  //
+  // Lecture SÉPARÉE (`findFirst`, pas la `findUnique` de l'opposition plus bas) et en repli
+  // OUVERT : le worker atterrit avant que l'application ne migre la colonne
+  // `effacement_demande_le`. Pendant cette fenêtre, la lecture échoue — aucune marque n'a pu
+  // être posée non plus — et les autres contrôles (rebond, désabonnement, opposition) tiennent.
+  try {
+    const empreinte = hashEmailForLookup(adresse);
+    const ecartee =
+      empreinte === null
+        ? null
+        : await prisma.emailOpposition.findFirst({
+            where: { emailHash: empreinte, effacementDemandeLe: { not: null } },
+            select: { effacementDemandeLe: true },
+          });
+    if (ecartee?.effacementDemandeLe) {
+      return { retenu: true, motif: "ecarte_effacement", depuis: ecartee.effacementDemandeLe };
+    }
+  } catch (e) {
+    console.error(
+      `[email-suppression] lecture de la mise à l'écart (effacement) impossible — contrôle sauté :`,
+      e instanceof Error ? e.name : "erreur",
+    );
+  }
 
   try {
     // `recipient` est en citext : l'égalité est insensible à la casse.
