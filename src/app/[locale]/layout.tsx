@@ -72,89 +72,8 @@ const manrope = localFont({
   adjustFontFallback: false,
 });
 
-// P3-35 (audit re-run 2026-05-15 AGENT 6) — Inconsolata preload:false.
-// Inconsolata est utilisée uniquement pour `<code>` et numbers tabulaires
-// (~5 % du contenu). next/font preload par défaut = waste LCP budget sur
-// 90 %+ des pages publiques qui n'affichent jamais de Inconsolata above-fold.
-// `preload: false` retire le `<link rel="preload">` mais garde le swap CSS
-// — les pages qui utilisent vraiment Inconsolata chargeront le font dans
-// la cascade normale (~150-300ms après FCP, invisible UX).
-const inconsolata = localFont({
-  src: [
-    {
-      path: "../../fonts/inconsolata-latin-var.woff2",
-      weight: "200 900",
-      style: "normal",
-    },
-  ],
-  variable: "--font-inconsolata",
-  display: "swap",
-  preload: false,
-});
-
-// Fraunces = serif éditorial premium (style Anthropic/Mistral).
-// Loaded latin only, italic for emphasis on display headings.
-//
-// P-105 — la `variable` next/font expose désormais `--font-fraunces` (et non
-// plus `--font-serif`). Raison : `globals.css` exposait `--font-serif:
-// var(--font-serif), …` ce qui auto-référençait la variable et empêchait la
-// cascade des fallbacks intermédiaires. Le renommage casse l'auto-ref :
-// next/font écrit `--font-fraunces` puis globals.css chaîne via
-// `--font-serif: var(--font-fraunces), "Iowan Old Style", …`.
-// P0 audit Perfection 2026 — CLS / LCP fix.
-//
-// `.display-editorial` + `.italic-editorial` utilisent Fraunces weight 500
-// + letter-spacing: -0.035em.
-//
-// Décision Will 2026-06-03 (révise le choix `optional` du P0 audit Perfection
-// 2026) — passage à `display: "swap"`. Raisons :
-//   1. `optional` refusait Fraunces tant qu'elle n'était pas prête en ~100 ms
-//      — y compris CACHE CHAUD. Conséquence réelle constatée : TOUS les
-//      visiteurs (même récurrents) revoyaient le fallback serif (Iowan /
-//      Palatino, plus fin → titres « pas gras ») à chaque réouverture de page.
-//      Inacceptable pour une marque dont l'identité repose sur la typo.
-//   2. La mesure historique « CLS > 0.05 avec swap » a été prise alors que la
-//      chaîne de fallback était cassée (auto-réf `--font-serif: var(--font-serif)`,
-//      cf. P-105 globals.css). Cette chaîne est désormais réparée
-//      (`--font-fraunces` → fallback métrique next/font → Iowan…), donc le
-//      reflow au swap est aujourd'hui fortement réduit.
-//   3. Repli métrique MANUEL (`adjustFontFallback: false` ci-dessous + `@font-face`
-//      « Fraunces Fallback » dans globals.css). Celui de next/font est calé sur
-//      l'instance par défaut du fichier variable (wght 900) : ~9 % trop large
-//      au poids affiché (500), d'où un reflow au swap. Six faces (Times New Roman
-//      Regular/Bold/Italic/Bold Italic ; 400 et 500 séparés) : size-adjust mesuré
-//      avec l'algorithme de next/font au poids de chaque face (méthode : globals.css).
-// Trade-off assumé : CLS peut passer de 0 strict (cible interne) à ~0.0-0.02
-// (très en dessous du « good » Google = 0.1). À valider par le gate Lighthouse
-// CI (job `lhci`, autorité Web Vitals) au prochain deploy ; rollback = remettre
-// `display: "optional"` si régression au-delà du budget.
-//
-const fraunces = localFont({
-  src: [
-    { path: "../../fonts/fraunces-latin-var.woff2", weight: "400", style: "normal" },
-    { path: "../../fonts/fraunces-latin-var.woff2", weight: "500", style: "normal" },
-    { path: "../../fonts/fraunces-latin-var.woff2", weight: "600", style: "normal" },
-    {
-      path: "../../fonts/fraunces-latin-var-italic.woff2",
-      weight: "400",
-      style: "italic",
-    },
-    {
-      path: "../../fonts/fraunces-latin-var-italic.woff2",
-      weight: "500",
-      style: "italic",
-    },
-    {
-      path: "../../fonts/fraunces-latin-var-italic.woff2",
-      weight: "600",
-      style: "italic",
-    },
-  ],
-  variable: "--font-fraunces",
-  display: "swap",
-  // Repli métrique manuel (globals.css « Fraunces Fallback ») : celui de next/font est calé sur wght 900.
-  adjustFontFallback: false,
-});
+// Charte 2027 : Manrope seule. Inconsolata et Fraunces ne sont plus chargées ;
+// `--font-serif` / `--font-mono` (globals.css) valent Manrope.
 
 // Pre-render only the build-time locales (FR ; EN exclu tant que désactivé —
 // voir STATIC_LOCALES). Les pages enfant sans locale propre héritent de ce set.
@@ -357,7 +276,7 @@ export default async function LocaleLayout({ children, params }: LocaleLayoutPro
     <html
       lang={locale}
       dir="ltr"
-      className={`${manrope.variable} ${inconsolata.variable} ${fraunces.variable} h-full antialiased`}
+      className={`${manrope.variable} h-full antialiased`}
     >
       <body className="bg-bg text-fg flex min-h-full flex-col font-sans">
         {/* P1-14 Resource Hints — React 19 hoist automatique vers <head>. */}

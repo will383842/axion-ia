@@ -25,13 +25,6 @@ const manrope = localFont({
   display: "swap",
 });
 
-const fraunces = localFont({
-  src: [{ path: "../../fonts/fraunces-latin-var.woff2", weight: "500", style: "normal" }],
-  variable: "--font-fraunces",
-  display: "swap",
-  adjustFontFallback: "Times New Roman",
-});
-
 export const metadata: Metadata = {
   // Aucun `metadataBase` utile ici : pas d'image sociale, pas d'URL canonique
   // (la page ne doit être ni partagée ni indexée). Valeur fixe pour taire
@@ -46,7 +39,7 @@ export const metadata: Metadata = {
 
 export default function QuestionnaireLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="fr" className={`${manrope.variable} ${fraunces.variable}`}>
+    <html lang="fr" className={`${manrope.variable}`}>
       <body className="bg-bg text-fg min-h-screen font-sans antialiased">{children}</body>
     </html>
   );

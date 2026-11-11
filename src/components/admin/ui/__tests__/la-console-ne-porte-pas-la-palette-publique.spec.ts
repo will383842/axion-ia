@@ -89,7 +89,7 @@ function estJetonAdmin(nom: string): boolean {
  *
  * `@layer admin-tokens` est le SEUL endroit où la console a le droit de
  * nommer un jeton du site public : c'est là qu'elle emprunte sa fonte de
- * chasse fixe (`--font-admin-mono: var(--font-inconsolata, …)`). Le laisser
+ * chasse fixe (`--font-admin`, qui emprunte `--font-manrope`). Le laisser
  * dans le balayage ferait échouer la garde sur le point d'emprunt unique
  * qu'elle a justement pour but d'établir. Tout le reste du fichier — les
  * règles — est analysé.
@@ -170,22 +170,15 @@ describe("la console ne se style pas avec la palette du site public", () => {
   });
 
   it("n'emprunte la fonte publique QU'À UN SEUL endroit — la déclaration du jeton", () => {
-    // Le bloc de déclaration est retiré du balayage ci-dessus. Ce test le
-    // regarde donc à part : la console emprunte bien l'Inconsolata du site
-    // (il n'y en a qu'une), mais elle doit le faire une fois, dans son propre
-    // jeton, et jamais depuis une règle. Sans cette vérification, l'exclusion
-    // du bloc serait un angle mort au lieu d'être une exception cadrée.
+    // Charte 2027 : Manrope seule, plus d'Inconsolata. La console emprunte la
+    // fonte du site (il n'y en a qu'une) UNE fois, dans `--font-admin` ; la
+    // « chasse fixe » `--font-admin-mono` n'est qu'un alias de `--font-admin`.
     const brut = readFileSync(ADMIN_CSS, "utf8").replace(/\/\*[\s\S]*?\*\//g, "");
-    const emprunts = [...brut.matchAll(/var\(\s*--font-inconsolata/g)];
     expect(
-      emprunts.length,
-      "la fonte de chasse fixe du site public doit être empruntée EXACTEMENT une fois, " +
-        "dans la déclaration de `--font-admin-mono`",
-    ).toBe(1);
-    expect(
-      brut.includes("--font-admin-mono: var(--font-inconsolata"),
-      "l'unique emprunt doit être celui de `--font-admin-mono`",
-    ).toBe(true);
+      [...brut.matchAll(/--font-inconsolata/g)].length,
+      "Inconsolata est retirée de la charte : plus aucune référence dans la console",
+    ).toBe(0);
+    expect(brut.includes("--font-admin-mono: var(--font-admin)")).toBe(true);
     expect([...brut.matchAll(/var\(\s*--font-manrope/g)].length).toBe(1);
     expect(brut.includes("--font-admin: var(--font-manrope)")).toBe(true);
   });
@@ -196,8 +189,8 @@ describe("la console ne se style pas avec la palette du site public", () => {
       fautives,
       "🔴 Une règle de la console impose une police du site PUBLIC.\n" +
         "\n" +
-        "   La console est en Manrope (`--font-admin`) et en Inconsolata pour la\n" +
-        "   chasse fixe (`--font-admin-mono`). `--font-manrope`, `--font-sans`,\n" +
+        "   La console est en Manrope (`--font-admin`) et en Manrope pour la\n" +
+        "   chasse fixe (`--font-admin-mono`, alias). `--font-manrope`, `--font-sans`,\n" +
         "   `--font-serif`, `--font-fraunces` et `--font-mono` appartiennent au\n" +
         "   site éditorial : posés ici, ils rendent le texte concerné dans une\n" +
         "   AUTRE police que le reste de l'écran — et comme ces règles sont hors\n" +
