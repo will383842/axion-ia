@@ -177,7 +177,7 @@ function Surtitre({
     terracotta: "text-terracotta",
     sable: "text-terracotta-deep",
     mocha: "text-terracotta-on-mocha",
-    terra: "text-mocha-fg",
+    terra: "text-paper",
   }[ton];
   return (
     <p
@@ -936,7 +936,7 @@ export default async function JourneeIaPage({ params }: Props) {
       <section
         id="rendez-vous"
         aria-labelledby="h-rendez-vous"
-        className={`bg-terracotta text-mocha-fg ${SECTION}`}
+        className={`bg-terracotta text-paper ${SECTION}`}
       >
         <Container className="max-w-[760px] text-center lg:max-w-[1000px]">
           <Surtitre n="09" ton="terra">
@@ -973,11 +973,11 @@ export default async function JourneeIaPage({ params }: Props) {
             {rendezVous.cta}
           </Cta>
           {rendezVous.rassurances.map((r) => (
-            <p key={r} className="text-mocha-fg mt-2.5 text-[15px]">
+            <p key={r} className="text-paper mt-2.5 text-[15px]">
               {r}
             </p>
           ))}
-          <p className="text-mocha-fg mt-8 text-sm">
+          <p className="text-paper mt-8 text-sm">
             {TEXTES_ANNEXES.miseAJour} <time dateTime={DATE_MISE_A_JOUR_JOURNEE_IA}>{dateMaj}</time>
             .
           </p>

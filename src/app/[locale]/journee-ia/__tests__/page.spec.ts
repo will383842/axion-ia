@@ -41,7 +41,8 @@ describe("page /journee-ia", () => {
     expect(page).toMatch(/aria-hidden="true"\s+className="[^"]*tabular-nums/);
     expect(page).toContain("bg-mocha text-mocha-fg");
     expect(page).not.toContain("bg-mocha-rich");
-    expect(page).toContain("bg-terracotta text-mocha-fg");
+    expect(page).toContain("bg-terracotta text-paper");
+    expect(page).not.toContain("bg-terracotta text-mocha-fg");
   });
 
   it("carte des gains : largeurs des barres en style inline serveur, aucune règle `.js` qui les met à 0", () => {
