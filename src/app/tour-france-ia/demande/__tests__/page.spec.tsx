@@ -77,7 +77,7 @@ describe("la page de la demande", () => {
     for (const nom of ["nom", "email", "ville"]) {
       expect(container.querySelector(`input[name="${nom}"]`)?.className, nom).toBe(CHAMP_HAUT);
     }
-    expect(container.querySelector("h1")?.textContent).toBe("Votre Journée IA commence ici");
+    expect(container.querySelector("h1")?.textContent).toBe("Votre journée offerte commence ici");
     expect(container.querySelector("main")?.className).toMatch(/\bbg-canvas\b/);
     expect(container.querySelector('[aria-current="step"]')?.textContent).toBe("Votre demande");
     // Les trois champs requis portent un astérisque décoratif.

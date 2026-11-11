@@ -1,10 +1,9 @@
 // `/tour-france-ia` — la landing du Tour France IA (2026-10-25, refonte
 // « page de conversion » le 2026-10-26, refonte VISUELLE le 2026-10-27, nouveau
-// modèle « 5 entreprises retenues par ville » le 2026-10-27 ; réaligné sur La
-// Journée IA le 2026-11-11, sans aucune gratuité promise).
+// modèle « 5 journées offertes par ville, sur sélection » le 2026-10-27).
 //
 // Tunnel : post Facebook, LinkedIn ou Instagram (UTM) → cette page → « Demander
-// ma Journée IA » → `/tour-france-ia/demande` (trois champs) →
+// ma journée offerte » → `/tour-france-ia/demande` (trois champs) →
 // `/fr/appel/tour-france-ia` (la visio, type `tour` de `types-reservables.ts`) → Calendly → console.
 //
 // Écrite pour ce trafic-là : mobile d'abord, navigateur intégré des réseaux, 4G,
@@ -58,7 +57,6 @@ import {
   LIBELLE_CTA,
   LIBELLE_CTA_COURT,
   LIEN_CONDITIONS,
-  LIEN_OFFRE,
   META,
   MICRO_TEXTE_CTA,
   PIED,
@@ -258,15 +256,6 @@ export default async function TourDeFranceIaPage() {
               </h1>
               <p className="text-fg-soft mt-3 max-w-xl text-lg leading-snug font-semibold sm:mt-5 sm:text-xl">
                 {HEROS.promesse}
-              </p>
-              {/* Le renvoi vers La Journée IA : son déroulé et ses conditions vivent sur sa page. */}
-              <p className="mt-2 text-sm sm:mt-3 sm:text-base">
-                <a
-                  href={LIEN_OFFRE.href}
-                  className="text-primary font-semibold underline underline-offset-2"
-                >
-                  {LIEN_OFFRE.libelle}
-                </a>
               </p>
             </div>
             <div className="mt-4 sm:mt-8 lg:col-start-2 lg:row-span-2 lg:row-start-1 lg:mt-0 lg:self-center">

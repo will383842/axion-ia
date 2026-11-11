@@ -179,17 +179,18 @@ export default async function AuditHub({ params }: Props) {
           numéros : l'ordre est porté par la séquence JSX (réordonnable sans
           renumérotation). */}
 
+      {/* HERO value-first — sans prix (best practice 2026) */}
+      <AuditHero isFr={isFr} />
+
       {/* POINT DE DÉPART RECOMMANDÉ — La Journée IA (audit SEO/GEO du 11/11/2026) :
-          cette page ne concurrence plus la landing /journee-ia, elle y renvoie. */}
+          cette page ne concurrence plus la landing /journee-ia, elle y renvoie.
+          Placé juste après le héros : le h1 reste le premier titre de la page. */}
       {isFr ? (
         <RenvoiJourneeIa
           depuis="page-audit-renvoi"
           precision="L’audit approfondi, au-delà de cette journée, est un autre cadrage : nous le chiffrons sur devis écrit, sous 48 h ouvrées."
         />
       ) : null}
-
-      {/* HERO value-first — sans prix (best practice 2026) */}
-      <AuditHero isFr={isFr} />
 
       {/* PREUVE SOCIALE — bandeau logos clients défilant, juste après le hero
           (Will 2026-05-31). */}
@@ -281,10 +282,12 @@ export default async function AuditHub({ params }: Props) {
       />
 
       {/* V-04 P1 (Sprint Correctif suite 2026-05-22) — Service inline (SEO racine
-          critique), ItemList déféré afterInteractive (-100 à -200 ms TBT). */}
+          critique). 2026-11-11 : l'ItemList n'est plus déféré, il est servi dans le
+          HTML comme les autres nœuds (lisible par les robots qui n'exécutent pas
+          de JavaScript). */}
       <JsonLd data={serviceJsonLd} />
       <JsonLd data={auditPageJsonLd} />
-      <JsonLd data={itemListJsonLd} strategy="afterInteractive" scriptId="jsonld-audit-itemlist" />
+      <JsonLd data={itemListJsonLd} />
       {auditImagesJsonLd ? <JsonLd data={auditImagesJsonLd} /> : null}
       <JsonLd data={auditHowToJsonLd} />
     </>

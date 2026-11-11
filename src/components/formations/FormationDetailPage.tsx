@@ -371,15 +371,6 @@ export function FormationDetailPage({
         <Breadcrumbs items={breadcrumbItems} />
       </Container>
 
-      {/* ── RENVOI LA JOURNÉE IA — sur les fiches qui la prolongent (audit
-          SEO/GEO du 11/11/2026) : le point de départ recommandé, en tête. */}
-      {f.renvoiJourneeIa ? (
-        <RenvoiJourneeIa
-          depuis={f.renvoiJourneeIa.depuis}
-          precision={f.renvoiJourneeIa.precisionFr}
-        />
-      ) : null}
-
       {/* ── HÉRO — contenu (gauche) + CARTE INFOS-CLÉS (droite) ──────────── */}
       <section className="bg-halo-warm relative overflow-hidden py-12 md:py-16 lg:py-20">
         <Container className="relative">
@@ -532,6 +523,16 @@ export function FormationDetailPage({
           </div>
         </Container>
       </section>
+
+      {/* ── RENVOI LA JOURNÉE IA — sur les fiches qui la prolongent (audit
+          SEO/GEO du 11/11/2026) : le point de départ recommandé, juste
+          après le héros (le h1 reste le premier titre de la page). */}
+      {f.renvoiJourneeIa ? (
+        <RenvoiJourneeIa
+          depuis={f.renvoiJourneeIa.depuis}
+          precision={f.renvoiJourneeIa.precisionFr}
+        />
+      ) : null}
 
       {/* ── NAV ANCRES — accès direct aux sections clés (disposition type
           fiche référence : « Programme · Tarifs · Infos pratiques · FAQ »). */}

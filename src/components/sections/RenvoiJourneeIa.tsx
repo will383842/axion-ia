@@ -3,23 +3,25 @@
 // SEO/GEO du 11/11/2026). Composant serveur, sans JavaScript client, sans
 // image : rien qui pèse sur le LCP ni sur le CLS.
 //
-// Tout le texte vient de `@/content/renvoi-journee-ia` (prix lu dans
-// `pricing.ts`, garantie mot pour mot depuis `journee-ia-commun.ts`).
+// Les libellés du bloc viennent de `@/content/renvoi-journee-ia` ; le reste (prix lu
+// dans `pricing.ts`, rapport, garantie mot pour mot) de `journee-ia-commun.ts`.
 
 import { ArrowRight } from "lucide-react";
 import { Container } from "@/components/layout/Container";
 import { Cta } from "@/components/marketing/Cta";
 import {
-  ANCRE_JOURNEE_IA,
   CHEMIN_JOURNEE_IA,
-  CONDITION_RENVOI,
+  CONDITION_GARANTIE,
   DEROULE_JOURNEE_IA,
-  GARANTIE_RENVOI,
+  GARANTIE_PHRASE,
+  RAPPORT_COMPLET,
+  lienDiagnostic,
+} from "@/content/journee-ia-commun";
+import {
+  ANCRE_JOURNEE_IA,
   LIBELLE_RENDEZ_VOUS_RENVOI,
-  RAPPORT_JOURNEE_IA,
   SURTITRE_RENVOI,
   TITRE_RENVOI,
-  lienRendezVousJourneeIa,
   phrasePrixJourneeIa,
 } from "@/content/renvoi-journee-ia";
 
@@ -43,10 +45,10 @@ export function RenvoiJourneeIa({ depuis, precision }: Props) {
             {TITRE_RENVOI}
           </h2>
           <p className="text-fg-soft mt-3 max-w-3xl text-base leading-relaxed">
-            {DEROULE_JOURNEE_IA} {phrasePrixJourneeIa()} {RAPPORT_JOURNEE_IA}
+            {DEROULE_JOURNEE_IA} {phrasePrixJourneeIa()} {RAPPORT_COMPLET}
           </p>
           <p className="text-fg-soft mt-3 max-w-3xl text-sm leading-relaxed">
-            {GARANTIE_RENVOI} {CONDITION_RENVOI}
+            {GARANTIE_PHRASE} {CONDITION_GARANTIE}
           </p>
           {precision ? (
             <p className="text-fg-muted mt-3 max-w-3xl text-sm leading-relaxed">{precision}</p>
@@ -63,7 +65,7 @@ export function RenvoiJourneeIa({ depuis, precision }: Props) {
               <ArrowRight className="ml-1.5 h-4 w-4" aria-hidden="true" />
             </Cta>
             <Cta
-              href={lienRendezVousJourneeIa(depuis)}
+              href={lienDiagnostic(depuis)}
               variant="secondary"
               shape="pill"
               size="md"

@@ -1,13 +1,13 @@
 /**
  * Alignement de l'offre sur La Journée IA (audit SEO/GEO du 11/11/2026).
  *
- * `/fr/audit`, `/fr/formations/ia-pour-bien-commencer-journee`, `/fr/tarifs` et la
- * landing du Tour France IA se concurrençaient sur « audit / formation IA PME » et
- * contredisaient la landing `/fr/journee-ia` (rapport « sous 7 jours », « formation
- * 1 jour sur devis », « audits, coaching… », « journée offerte »). Décision de
- * Williams : on GARDE ces pages, on les aligne, et elles renvoient à La Journée IA.
+ * `/fr/audit`, `/fr/formations/ia-pour-bien-commencer-journee` et `/fr/tarifs` se
+ * concurrençaient sur « audit / formation IA PME » et contredisaient la landing
+ * `/fr/journee-ia` (rapport « sous 7 jours », « formation 1 jour sur devis »,
+ * « audits, coaching… »). Décision de Williams : on GARDE ces pages, on les aligne,
+ * et elles renvoient à La Journée IA. Le Tour France IA est hors de ce périmètre.
  *
- * Ce test garantit, sur ces quatre pages :
+ * Ce test garantit, sur ces trois pages :
  *   · la présence du lien vers `/fr/journee-ia` (et d'un rendez-vous `depuis=`) ;
  *   · aucune occurrence de « 7 jours » (le rapport arrive sous 3 jours ouvrés) ;
  *   · aucun montant hors jeton (le seul prix public est celui de La Journée IA,
@@ -19,19 +19,17 @@ import path from "node:path";
 import { describe, expect, it } from "vitest";
 
 import { routing } from "@/i18n/routing";
-import { JOURNEE_IA_TIER, formatTierPrice } from "@/content/pricing";
-import { GARANTIE_PHRASE } from "@/content/journee-ia-commun";
+import { prixDeLaJournee } from "@/app/[locale]/journee-ia/prix";
 import {
   CHEMIN_JOURNEE_IA,
-  GARANTIE_RENVOI,
-  RAPPORT_JOURNEE_IA,
-  lienRendezVousJourneeIa,
-  prixJourneeIa,
-  texteDuRenvoi,
-} from "@/content/renvoi-journee-ia";
+  DEROULE_JOURNEE_IA,
+  EN_BREF_JOURNEE_IA_PARAGRAPHES,
+  GARANTIE_PHRASE,
+  RAPPORT_COMPLET,
+  lienDiagnostic,
+} from "@/content/journee-ia-commun";
+import { phrasePrixJourneeIa, texteDuRenvoi } from "@/content/renvoi-journee-ia";
 import { getFormationV2 } from "@/content/formations/catalog-v2";
-import { LIEN_OFFRE, toutLeTexte as toutLeTexteDuTour } from "@/app/tour-france-ia/contenu";
-import { jsonLdDuTour } from "@/app/tour-france-ia/jsonld";
 
 const RACINE = process.cwd();
 const lire = (rel: string) => readFileSync(path.join(RACINE, rel), "utf8");
@@ -97,7 +95,7 @@ const MOTS_INTERDITS: ReadonlyArray<RegExp> = [
   /freelance/i,
 ];
 
-describe("lien vers /fr/journee-ia sur les quatre pages", () => {
+describe("lien vers /fr/journee-ia sur les trois pages", () => {
   it("le chemin est déclaré au routage, donc servi en /fr/journee-ia", () => {
     expect(CHEMIN_JOURNEE_IA).toBe("/journee-ia");
     expect(Object.keys(routing.pathnames)).toContain("/journee-ia");
@@ -106,26 +104,26 @@ describe("lien vers /fr/journee-ia sur les quatre pages", () => {
   it("le bloc de renvoi porte le lien et un rendez-vous `depuis=` explicite", () => {
     const src = sansCommentaires(lire(COMPOSANT_RENVOI));
     expect(src).toMatch(/href=\{CHEMIN_JOURNEE_IA\}/);
-    expect(src).toMatch(/href=\{lienRendezVousJourneeIa\(depuis\)\}/);
-    expect(lienRendezVousJourneeIa("page-audit-renvoi")).toBe(
+    expect(src).toMatch(/href=\{lienDiagnostic\(depuis\)\}/);
+    expect(lienDiagnostic("page-audit-renvoi")).toBe(
       "/appel?rdv=diagnostic&depuis=page-audit-renvoi",
     );
   });
 
-  it("/fr/audit : le bloc est en tête, avant le héros, avec son emplacement", () => {
+  it("/fr/audit : le bloc suit le héros (qui porte le h1), avec son emplacement", () => {
     const src = sansCommentaires(lire(PAGE_AUDIT));
     const renvoi = src.indexOf("<RenvoiJourneeIa");
     expect(renvoi).toBeGreaterThan(-1);
-    expect(renvoi).toBeLessThan(src.indexOf("<AuditHero"));
+    expect(renvoi).toBeGreaterThan(src.indexOf("<AuditHero"));
     expect(src).toMatch(/depuis="page-audit-renvoi"/);
   });
 
-  it("/fr/formations/ia-pour-bien-commencer-journee : la fiche pose le bloc en tête", () => {
+  it("/fr/formations/ia-pour-bien-commencer-journee : la fiche pose le bloc après le h1", () => {
     expect(formation?.renvoiJourneeIa?.depuis).toBe("formation-journee-complete-renvoi");
     const src = sansCommentaires(lire(FICHE_FORMATION));
     const renvoi = src.indexOf("<RenvoiJourneeIa");
     expect(renvoi).toBeGreaterThan(-1);
-    expect(renvoi).toBeLessThan(src.indexOf("<h1"));
+    expect(renvoi).toBeGreaterThan(src.indexOf("<h1"));
   });
 
   it("/fr/tarifs : La Journée IA en tête (héros et première section), avec son lien", () => {
@@ -133,16 +131,8 @@ describe("lien vers /fr/journee-ia sur les quatre pages", () => {
     expect(src).toMatch(/title=\{isFr \? "La Journée IA :" : "The AI Day:"\}/);
     expect(src).toMatch(/titleEm=\{prixJournee\}/);
     expect(src).toMatch(/href=\{CHEMIN_JOURNEE_IA\}/);
-    expect(src).toMatch(/lienRendezVousJourneeIa\("tarifs-heros"\)/);
+    expect(src).toMatch(/lienDiagnostic\("tarifs-heros"\)/);
     expect(src.indexOf('id="journee-ia"')).toBeLessThan(src.indexOf("{cartes.map("));
-  });
-
-  it("/tour-france-ia : le lien vers /fr/journee-ia, sous la promesse et dans le pied", () => {
-    expect(LIEN_OFFRE.href).toBe("https://axion-ia.com/fr/journee-ia");
-    expect(toutLeTexteDuTour()).toMatch(/axion-ia\.com\/fr\/journee-ia/);
-    expect(sansCommentaires(lire("src/app/tour-france-ia/page.tsx"))).toMatch(
-      /href=\{LIEN_OFFRE\.href\}/,
-    );
   });
 });
 
@@ -150,7 +140,8 @@ describe("le rapport : sous 3 jours ouvrés, jamais « 7 jours »", () => {
   const SEPT_JOURS = /\b7\s?jours\b|\bsept jours\b|\b7\s?days\b/i;
 
   it("le bloc de renvoi dit 3 jours ouvrés", () => {
-    expect(RAPPORT_JOURNEE_IA).toMatch(/sous 3 jours ouvrés/);
+    expect(RAPPORT_COMPLET).toMatch(/sous 3 jours ouvrés/i);
+    expect(texteDuRenvoi()).toContain(RAPPORT_COMPLET);
   });
 
   it("aucune page ni aucun composant aligné ne dit « 7 jours »", () => {
@@ -158,7 +149,6 @@ describe("le rapport : sous 3 jours ouvrés, jamais « 7 jours »", () => {
       expect(sansCommentaires(lire(f)), f).not.toMatch(SEPT_JOURS);
     }
     expect(texteFormation()).not.toMatch(SEPT_JOURS);
-    expect(toutLeTexteDuTour()).not.toMatch(SEPT_JOURS);
     expect(texteDuRenvoi()).not.toMatch(SEPT_JOURS);
   });
 });
@@ -167,8 +157,8 @@ describe("un seul prix public : celui de La Journée IA, lu dans pricing.ts", ()
   const MONTANT = /\d[\d\s  .,]*\s?(€|k€|euros?\b|EUR\b)/i;
 
   it("le bloc de renvoi n'affiche que le jeton", () => {
-    expect(prixJourneeIa()).toBe(formatTierPrice(JOURNEE_IA_TIER, "fr"));
-    const sansJeton = texteDuRenvoi().split(prixJourneeIa()).join("");
+    expect(phrasePrixJourneeIa()).toContain(prixDeLaJournee());
+    const sansJeton = texteDuRenvoi().split(prixDeLaJournee()).join("");
     expect(sansJeton).not.toMatch(MONTANT);
     expect(sansJeton).not.toMatch(/\bHT\b/);
   });
@@ -190,18 +180,17 @@ describe("un seul prix public : celui de La Journée IA, lu dans pricing.ts", ()
     expect(src).toMatch(/Sur devis écrit/);
   });
 
-  it("la fiche formation et le Tour n'écrivent aucun montant", () => {
-    expect(texteFormation().split(prixJourneeIa()).join("")).not.toMatch(MONTANT);
-    expect(toutLeTexteDuTour()).not.toMatch(MONTANT);
-    expect(JSON.stringify(jsonLdDuTour())).not.toMatch(/"price"/);
+  it("la fiche formation n'écrit aucun montant", () => {
+    expect(texteFormation().split(prixDeLaJournee()).join("")).not.toMatch(MONTANT);
   });
 
-  it("la garantie est reprise mot pour mot", () => {
-    expect(GARANTIE_RENVOI).toBe(GARANTIE_PHRASE);
+  it("la garantie est reprise mot pour mot, et le déroulé vient du « En bref »", () => {
+    expect(texteDuRenvoi()).toContain(GARANTIE_PHRASE);
+    expect(DEROULE_JOURNEE_IA).toBe(EN_BREF_JOURNEE_IA_PARAGRAPHES[1]);
   });
 });
 
-describe("aucun mot interdit sur les quatre pages", () => {
+describe("aucun mot interdit sur les trois pages", () => {
   /** Les clés internes « ETI » (segments, jamais affichées) ne sont pas du texte servi. */
   const sansClesInternes = (src: string) =>
     src
@@ -212,9 +201,6 @@ describe("aucun mot interdit sur les quatre pages", () => {
   const surfaces = (): ReadonlyArray<readonly [string, string]> => [
     ["renvoi", texteDuRenvoi()],
     ["formation", texteFormation()],
-    ["tour", toutLeTexteDuTour()],
-    ["tour JSON-LD", JSON.stringify(jsonLdDuTour())],
-    ["tour image", lire("src/app/tour-france-ia/opengraph-image.alt.txt")],
     ...[PAGE_AUDIT, PAGE_TARIFS, COMPOSANT_RENVOI, ...COMPOSANTS_AUDIT].map(
       (f) => [f, sansClesInternes(sansCommentaires(lire(f)))] as const,
     ),
@@ -229,9 +215,5 @@ describe("aucun mot interdit sur les quatre pages", () => {
       }
     }
     expect(fautes).toEqual([]);
-  });
-
-  it("aucune gratuité promise sur le Tour", () => {
-    expect(toutLeTexteDuTour()).not.toMatch(/gratuit/i);
   });
 });

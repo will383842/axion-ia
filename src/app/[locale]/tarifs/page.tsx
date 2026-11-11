@@ -27,15 +27,14 @@ import {
   formatTierPrice,
 } from "@/content/pricing";
 import {
-  ANCRE_JOURNEE_IA,
   CHEMIN_JOURNEE_IA,
-  CONDITION_RENVOI,
+  CONDITION_GARANTIE,
   DEROULE_JOURNEE_IA,
-  GARANTIE_RENVOI,
-  LIBELLE_RENDEZ_VOUS_RENVOI,
-  RAPPORT_JOURNEE_IA,
-  lienRendezVousJourneeIa,
-} from "@/content/renvoi-journee-ia";
+  GARANTIE_PHRASE,
+  RAPPORT_COMPLET,
+  lienDiagnostic,
+} from "@/content/journee-ia-commun";
+import { ANCRE_JOURNEE_IA, LIBELLE_RENDEZ_VOUS_RENVOI } from "@/content/renvoi-journee-ia";
 import { getFormationsV2 } from "@/content/formations/catalog-v2";
 import { EFFECTIF_PLAGE_EN, EFFECTIF_PLAGE_FR } from "@/content/formations/effectif";
 import { SERVICE_BY_ID, serviceOfficial } from "@/content/services";
@@ -148,7 +147,7 @@ export default async function PricingPage({ params }: Props) {
   const metaDescription = descriptionMeta(isFr);
 
   const heroDesc = isFr
-    ? `${RAPPORT_JOURNEE_IA} ${GARANTIE_RENVOI} Tout le reste — formations, audit approfondi, accompagnement individuel, mise en place de l'IA — est sur devis écrit, sous 48 h ouvrées.`
+    ? `${RAPPORT_COMPLET} ${GARANTIE_PHRASE} Tout le reste — formations, audit approfondi, accompagnement individuel, mise en place de l'IA — est sur devis écrit, sous 48 h ouvrées.`
     : `Full report within 3 business days after the day. If the gains identified do not exceed 3 times the price of the day, we refund you within 30 days. Everything else — trainings, in-depth audit, 1-to-1 support, AI deployment — is on written quote, within 48 business hours.`;
 
   // Accompagnement individuel : Collaborateur & Dirigeant × 1 jour + suivi régulier.
@@ -242,7 +241,7 @@ export default async function PricingPage({ params }: Props) {
         {
           id: "prix-journee-ia",
           question: "Combien coûte La Journée IA ?",
-          answer: `${prixJournee}, prix unique. ${DEROULE_JOURNEE_IA} ${RAPPORT_JOURNEE_IA} ${GARANTIE_RENVOI} ${CONDITION_RENVOI}`,
+          answer: `${prixJournee}, prix unique. ${DEROULE_JOURNEE_IA} ${RAPPORT_COMPLET} ${GARANTIE_PHRASE} ${CONDITION_GARANTIE}`,
         },
         {
           id: "prix-formation-ia",
@@ -277,7 +276,7 @@ export default async function PricingPage({ params }: Props) {
         {
           id: "prix-journee-ia",
           question: "How much does the AI Day cost?",
-          answer: `${prixJournee}, single price. A 2 to 4 h audit in the morning on your premises, 4 h of team training in the afternoon. Full report within 3 business days. If the gains identified do not exceed 3 times the price of the day, we refund you within 30 days.`,
+          answer: `${prixJournee}, single price. A 2 to 4 h audit in the morning on your premises, 4 h of team training in the afternoon. Full report within 3 business days. ${GARANTIE_PHRASE}`,
         },
         {
           id: "prix-formation-ia",
@@ -368,7 +367,7 @@ export default async function PricingPage({ params }: Props) {
               <ArrowRight className="ml-1.5 h-4 w-4" aria-hidden="true" />
             </Cta>
             <Cta
-              href={lienRendezVousJourneeIa("tarifs-heros")}
+              href={lienDiagnostic("tarifs-heros")}
               variant="secondary"
               shape="pill"
               size="md"
@@ -419,10 +418,10 @@ export default async function PricingPage({ params }: Props) {
             {isFr ? (
               <>
                 <p className="text-fg-soft mt-4 max-w-2xl text-sm leading-relaxed">
-                  {DEROULE_JOURNEE_IA} {RAPPORT_JOURNEE_IA}
+                  {DEROULE_JOURNEE_IA} {RAPPORT_COMPLET}
                 </p>
                 <p className="text-fg-soft mt-3 max-w-2xl text-sm leading-relaxed">
-                  {GARANTIE_RENVOI} {CONDITION_RENVOI}
+                  {GARANTIE_PHRASE} {CONDITION_GARANTIE}
                 </p>
               </>
             ) : (
@@ -436,7 +435,7 @@ export default async function PricingPage({ params }: Props) {
                 <ArrowRight className="ml-1.5 h-4 w-4" aria-hidden="true" />
               </Cta>
               <Cta
-                href={lienRendezVousJourneeIa("tarifs-journee-ia")}
+                href={lienDiagnostic("tarifs-journee-ia")}
                 variant="secondary"
                 shape="pill"
                 size="md"

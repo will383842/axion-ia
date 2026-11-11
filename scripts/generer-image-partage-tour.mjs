@@ -19,49 +19,47 @@ process.env.FONTCONFIG_FILE = conf;
 const { default: sharp } = await import("sharp");
 
 const C = {
-  ink: "#1c1714",
-  canvas: "#faf8f3",
-  attenue: "#5a4f44",
+  mocha: "#2a2520",
+  ink: "#14100e",
+  ivoire: "#f7f3ea",
+  ivoireAttenue: "#b5aa9c",
   terracotta: "#b23f16",
+  terracottaSurMocha: "#eb8560",
   primaire: "#1a4dd9",
-  blanc: "#ffffff",
 };
 
-// Fond clair ivoire, lueurs terracotta (haut droite) et bleue (bas gauche), comme le
-// héros de la landing. Texte : le H1 validé, puis la promesse « La Journée IA »
-// (réalignement du 2026-11-11 : aucun mot de gratuité, ni « ETI »).
 const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
   <defs>
-    <radialGradient id="lueurT" cx="1150" cy="0" r="620" gradientUnits="userSpaceOnUse">
-      <stop offset="0" stop-color="${C.terracotta}" stop-opacity="0.16"/>
+    <radialGradient id="lueurT" cx="1056" cy="-50" r="620" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="${C.terracotta}" stop-opacity="0.7"/>
       <stop offset="1" stop-color="${C.terracotta}" stop-opacity="0"/>
     </radialGradient>
-    <radialGradient id="lueurB" cx="0" cy="680" r="520" gradientUnits="userSpaceOnUse">
-      <stop offset="0" stop-color="${C.primaire}" stop-opacity="0.10"/>
+    <radialGradient id="lueurB" cx="-140" cy="680" r="520" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="${C.primaire}" stop-opacity="0.45"/>
       <stop offset="1" stop-color="${C.primaire}" stop-opacity="0"/>
     </radialGradient>
   </defs>
-  <rect width="1200" height="630" fill="${C.canvas}"/>
+  <rect width="1200" height="630" fill="${C.mocha}"/>
   <rect width="1200" height="630" fill="url(#lueurT)"/>
   <rect width="1200" height="630" fill="url(#lueurB)"/>
   <rect width="1200" height="12" fill="${C.terracotta}"/>
 
-  <g font-family="Manrope" font-weight="700" fill="${C.ink}">
-    <rect x="80" y="64" width="18" height="18" rx="9" fill="${C.terracotta}"/>
-    <text x="114" y="81" font-size="22" letter-spacing="1">TOUR FRANCE IA</text>
-    <text x="1120" y="81" font-size="22" text-anchor="end" fill="${C.attenue}" font-weight="500">Axion-IA</text>
+  <g font-family="Manrope" font-weight="700" fill="${C.ivoire}">
+    <rect x="80" y="64" width="16" height="16" rx="8" fill="${C.terracottaSurMocha}"/>
+    <text x="110" y="79" font-size="22" letter-spacing="3">TOUR FRANCE IA</text>
+    <text x="1120" y="79" font-size="22" text-anchor="end" fill="${C.ivoireAttenue}" font-weight="500">Axion-IA</text>
   </g>
 
-  <g font-family="Fraunces" font-weight="700" font-size="56" fill="${C.ink}">
-    <text x="80" y="215">Vous entendez parler d’IA partout</text>
+  <g font-family="Fraunces" font-size="60" fill="${C.ivoire}">
+    <text x="80" y="210">Vous entendez parler d’IA partout</text>
     <text x="80" y="290">et ne savez plus par où commencer ?</text>
+    <text x="80" y="378" font-style="italic" fill="${C.terracottaSurMocha}" font-size="72">Nous, si.</text>
   </g>
-  <text x="80" y="378" font-family="Fraunces" font-style="italic" font-weight="700" font-size="72" fill="${C.terracotta}">Nous, si.</text>
+  <rect x="80" y="394" width="262" height="7" fill="${C.terracotta}"/>
 
-  <rect x="80" y="430" width="636" height="68" rx="34" fill="${C.primaire}"/>
-  <text x="112" y="475" font-family="Manrope" font-weight="700" font-size="30" fill="${C.blanc}">La Journée IA dans votre entreprise</text>
-
-  <text xml:space="preserve" x="80" y="575" font-family="Manrope" font-weight="700" font-size="28" fill="${C.ink}">Audit le matin<tspan fill="${C.terracotta}">  •  </tspan>Formation de 4 h l’après-midi<tspan fill="${C.terracotta}">  •  </tspan>PME et TPE</text>
+  <rect x="80" y="468" width="1040" height="2" fill="${C.ivoire}" fill-opacity="0.18"/>
+  <text xml:space="preserve" x="80" y="528" font-family="Manrope" font-weight="700" font-size="32" fill="${C.ivoire}">Audit offert<tspan fill="${C.terracottaSurMocha}">  ·  </tspan>Formation de 4 h offerte<tspan fill="${C.terracottaSurMocha}">  ·  </tspan>De la TPE à l’ETI</text>
+  <text x="80" y="578" font-family="Manrope" font-weight="500" font-size="24" fill="${C.ivoireAttenue}">Tour France IA, organisé par Axion-IA</text>
 </svg>`;
 
 const jpeg = await sharp(Buffer.from(svg), { density: 72 })

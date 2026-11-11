@@ -94,7 +94,7 @@ export default async function DemandePage({ searchParams }: Props) {
           className="text-fg mt-2.5 mb-1.5 text-[clamp(1.625rem,5.5vw,2.125rem)] leading-tight font-semibold tracking-tight"
           style={{ fontFamily: "var(--font-serif)" }}
         >
-          Votre Journée IA commence ici
+          Votre journée offerte commence ici
         </h1>
         <p className="text-fg-soft mb-5 text-[15px] leading-relaxed">
           Une minute, trois champs, puis vous choisissez votre visio.
