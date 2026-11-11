@@ -180,7 +180,7 @@ export default async function ImplementationByTechPage({ params }: Props) {
         <FaqAccordion items={faqs} className="mx-auto max-w-3xl" emitJsonLd={false} />
       </Section>
 
-      <JsonLd data={faqJsonLd} strategy="afterInteractive" scriptId="jsonld-par-techno-faq" />
+      <JsonLd data={faqJsonLd} scriptId="jsonld-par-techno-faq" />
 
       <CtaBlock
         eyebrow={isFr ? "Premium" : "Premium"}

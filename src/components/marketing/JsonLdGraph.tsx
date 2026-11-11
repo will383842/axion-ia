@@ -40,9 +40,12 @@ interface JsonLdGraphProps {
    * - `"lazyOnload"` : injection en idle (window.onload). Plus permissif TBT
    *   mais risque de retarder l'indexation initiale par certains bots.
    *
-   * Recommandation : `"afterInteractive"` pour pages pSEO ville × service
-   * (4 schemas+, ~3 KB JSON), `"inline"` (default) pour Organization/WebSite
-   * (critique SEO racine).
+   * ⛔ Audit SEO 2026-11-11 (I1) : `"inline"` partout. Un JSON-LD différé est
+   * absent du HTML servi aux robots sans JavaScript, et ne fait gagner aucun TBT
+   * (un script `application/ld+json` n'est pas exécuté). Les valeurs différées
+   * restent typées le temps que les pages villes (autre chantier) migrent ; le
+   * verrou `tests/unit/seo/jsonld-dans-le-html-servi.spec.ts` interdit tout
+   * nouvel usage.
    */
   strategy?: "inline" | "afterInteractive" | "lazyOnload";
   /**
@@ -68,7 +71,9 @@ export function JsonLdGraph({ schemas, strategy = "inline", scriptId }: JsonLdGr
     "@context": "https://schema.org",
     "@graph": cleaned,
   };
-  const json = JSON.stringify(payload);
+  // « < » échappé, comme dans `JsonLd` : un texte libre contenant `</script>` ne
+  // peut pas fermer la balise. `\u003c` est relu à l'identique par tout parseur JSON.
+  const json = JSON.stringify(payload).replace(/</g, "\\u003c");
 
   // Defer via next/script — id obligatoire pour identifier le script injecté
   // (next/script dédoublonne par id si plusieurs JsonLdGraph cohabitent).

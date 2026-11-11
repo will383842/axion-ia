@@ -16,7 +16,7 @@
  * Pas de DB, full server component, ISR statique 1j. Cf. ADR 0024.
  *
  * JSON-LD : WebPage (publisher Organization + datePublished + dateModified
- * SITE_EDITORIAL_DATE + speakable h1/FAQ) + FAQPage (via FaqAccordion). Lien retour
+ * date réelle de la route (`dateRoute`) + speakable h1/FAQ) + FAQPage (via FaqAccordion). Lien retour
  * symétrique vers /charte-editoriale.
  */
 
@@ -35,7 +35,7 @@ import { JsonLd } from "@/components/marketing/JsonLd";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { Link } from "@/i18n/navigation";
 import { FaqAccordion } from "@/components/marketing/FaqAccordion";
-import { buildProductMetadata, buildWebPageJsonLd, SITE_EDITORIAL_DATE } from "@/lib/seo";
+import { buildProductMetadata, buildWebPageJsonLd } from "@/lib/seo";
 
 interface Props {
   params: Promise<{ locale: string }>;
@@ -207,7 +207,7 @@ export default async function TransparencePage({ params }: Props) {
 
   // Aligné sur /charte-editoriale : publisher Organization (défaut factory) +
   // dates (freshness AEO). datePublished = création du hub (ADR 0024) ;
-  // dateModified = SITE_EDITORIAL_DATE. isPartOf #website = défaut factory.
+  // dateModified calculé par la fabrique depuis `path` (même source que le sitemap). isPartOf #website = défaut factory.
   const webPageJsonLd = buildWebPageJsonLd({
     locale: locale as Locale,
     path: isFr ? "/transparence" : "/transparency",
@@ -215,7 +215,6 @@ export default async function TransparencePage({ params }: Props) {
     description: tagline,
     inLanguage: isFr ? "fr-FR" : "en-US",
     datePublished: "2026-05-18",
-    dateModified: SITE_EDITORIAL_DATE,
     about: {
       "@type": "Thing",
       name: "EU AI Act 2024/1689 transparency",

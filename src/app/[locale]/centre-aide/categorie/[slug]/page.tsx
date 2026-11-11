@@ -169,11 +169,7 @@ export default async function HelpCategoryPage({ params }: Props) {
         </Container>
       </Section>
       <JsonLd data={collectionJsonLd} />
-      <JsonLd
-        data={itemListJsonLd}
-        strategy="afterInteractive"
-        scriptId="jsonld-centre-aide-categorie-itemlist"
-      />
+      <JsonLd data={itemListJsonLd} scriptId="jsonld-centre-aide-categorie-itemlist" />
     </>
   );
 }
