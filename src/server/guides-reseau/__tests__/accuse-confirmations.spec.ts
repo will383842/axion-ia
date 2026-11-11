@@ -19,10 +19,40 @@ const { bd } = vi.hoisted(() => ({
 
 vi.mock("@/lib/prisma", () => {
   const tx = {
+    // Le faux client distingue les requêtes par leur TEXTE SQL (jamais par l'ordre des valeurs seul),
+    // pour que la REPRISE et l'expiration de `reserverConfirmations` soient réellement exécutées.
     $executeRaw: async (sql: { sql: string; values: unknown[] }) => {
       const v = sql.values;
       let m = 0;
-      if (sql.sql.includes(" IN (")) {
+      if (sql.sql.includes("CASE")) {
+        // REPRISE : [debutFenetre, aEnvoyer, expire, maintenant, reserve, seuil]
+        const [debut, relance, expire, quand, ancien, seuil] = v as [
+          Date,
+          string,
+          string,
+          Date,
+          string,
+          Date,
+        ];
+        // Les statuts visés sont ceux liés ET tout littéral SQL ajouté (`IN ('reserve','envoye')`) :
+        // une reprise élargie à `envoye` doit faire rougir les tests.
+        const vises = [ancien, ...(sql.sql.match(/'(\w+)'/g) ?? []).map((x) => x.slice(1, -1))];
+        for (const l of bd.contacts)
+          if (vises.includes(l.merci_statut) && (l.updated_at ?? l.consenti_le) < seuil) {
+            l.merci_statut = l.consenti_le >= debut ? relance : expire;
+            l.updated_at = quand;
+            m++;
+          }
+      } else if (!sql.sql.includes('"jeton_empreinte" =')) {
+        // Expiration des a_envoyer hors fenêtre : [expire, maintenant, aEnvoyer, debut]
+        const [statut, quand, ancien, debut] = v as [string, Date, string, Date];
+        for (const l of bd.contacts)
+          if (l.merci_statut === ancien && l.consenti_le < debut) {
+            l.merci_statut = statut;
+            l.updated_at = quand;
+            m++;
+          }
+      } else if (sql.sql.includes(" IN (")) {
         // Terminal : [statut, quand, ref, reserve, a_envoyer]
         const [statut, quand, ref, s1, s2] = v as [string, Date, string, string, string];
         for (const l of bd.contacts)
@@ -32,14 +62,23 @@ vi.mock("@/lib/prisma", () => {
             m++;
           }
       } else {
-        // Échec : [statut, quand, ref, reserve, debut]
-        const [statut, quand, ref, ancien, debut] = v as [string, Date, string, string, Date];
+        // Échec : [statut, quand, ref, reserve, debut, seuilReprise]
+        const [statut, quand, ref, ancien, debut, seuil] = v as [
+          string,
+          Date,
+          string,
+          string,
+          Date,
+          Date,
+        ];
         const dedans = sql.sql.includes('"consenti_le" >=');
+        const ancienne = !sql.sql.includes('"updated_at" <');
         for (const l of bd.contacts)
           if (
             l.jeton_empreinte === ref &&
             l.merci_statut === ancien &&
-            (dedans ? l.consenti_le >= debut : l.consenti_le < debut)
+            (dedans ? l.consenti_le >= debut : l.consenti_le < debut) &&
+            (ancienne || (l.updated_at ?? l.consenti_le) < seuil)
           ) {
             l.merci_statut = statut;
             l.updated_at = quand;
@@ -137,14 +176,14 @@ describe("accusé", () => {
   });
 
   it("echec dans la fenêtre : la ligne ressort", async () => {
-    const l = ajouter();
+    const l = ajouter({ updated_at: il_y_a(1) });
     await accuserConfirmations([{ ref: l.jeton_empreinte, issue: "echec" }], MAINTENANT);
     expect(l.merci_statut).toBe("a_envoyer");
     expect(await reserverConfirmations(MAINTENANT)).toHaveLength(1);
   });
 
   it("echec hors fenêtre de 48 h : expire, ne ressort pas", async () => {
-    const l = ajouter({ consenti_le: il_y_a(FENETRE_MERCI_H + 1) });
+    const l = ajouter({ consenti_le: il_y_a(FENETRE_MERCI_H + 1), updated_at: il_y_a(1) });
     await accuserConfirmations([{ ref: l.jeton_empreinte, issue: "echec" }], MAINTENANT);
     expect(l.merci_statut).toBe("expire");
     expect(await reserverConfirmations(MAINTENANT)).toEqual([]);
@@ -178,6 +217,50 @@ describe("accusé", () => {
     const l = ajouter({ merci_statut: "a_envoyer" });
     await accuserConfirmations([{ ref: l.jeton_empreinte, issue: "envoye" }], MAINTENANT);
     expect(l.merci_statut).toBe("envoye");
+  });
+
+  it("la reprise est RÉELLEMENT exécutée : une réservation de plus de 10 min repasse à a_envoyer puis ressort", async () => {
+    const l = ajouter({ merci_statut: "reserve", updated_at: il_y_a(1) });
+    const r = await reserverConfirmations(MAINTENANT);
+    expect(r.map((x) => x.ref)).toEqual([l.jeton_empreinte]);
+    expect(l.merci_statut).toBe("reserve");
+    expect(l.updated_at).toEqual(MAINTENANT);
+  });
+
+  it("la reprise envoie à expire une réservation perdue hors fenêtre de 48 h", async () => {
+    const l = ajouter({
+      merci_statut: "reserve",
+      consenti_le: il_y_a(FENETRE_MERCI_H + 1),
+      updated_at: il_y_a(1),
+    });
+    expect(await reserverConfirmations(MAINTENANT)).toEqual([]);
+    expect(l.merci_statut).toBe("expire");
+  });
+
+  it("une réservation de moins de 10 min n'est pas reprise", async () => {
+    const l = ajouter({ merci_statut: "reserve", updated_at: il_y_a(0.01) });
+    expect(await reserverConfirmations(MAINTENANT)).toEqual([]);
+    expect(l.merci_statut).toBe("reserve");
+  });
+
+  it("« envoye » : même 3 h plus tard, la reprise (réellement exécutée) ne le reprend pas", async () => {
+    const l = ajouter({ merci_statut: "reserve", updated_at: il_y_a(0.01) });
+    await accuserConfirmations([{ ref: l.jeton_empreinte, issue: "envoye" }], MAINTENANT);
+    const tard = new Date(MAINTENANT.getTime() + 3 * 3_600_000);
+    l.updated_at = new Date(MAINTENANT.getTime() - 3_600_000); // ancien : la reprise le viserait s'il était reserve
+    expect(await reserverConfirmations(tard)).toEqual([]);
+    expect(l.merci_statut).toBe("envoye");
+  });
+
+  it("désordre : un echec TARDIF de R1 n'annule pas la réservation R2 en cours (pas de merci en double)", async () => {
+    const l = ajouter({ merci_statut: "a_envoyer" });
+    await reserverConfirmations(il_y_a(1)); // R1
+    await reserverConfirmations(MAINTENANT); // reprise de R1 puis R2
+    expect(l.merci_statut).toBe("reserve");
+    // l'echec de R1 arrive maintenant : R2 est toute fraîche
+    await accuserConfirmations([{ ref: l.jeton_empreinte, issue: "echec" }], MAINTENANT);
+    expect(l.merci_statut).toBe("reserve");
+    expect(await reserverConfirmations(MAINTENANT)).toEqual([]); // pas de R3
   });
 
   it("la reprise ne reprend jamais envoye / hors_fenetre", async () => {

@@ -6,7 +6,11 @@
  * Règles (UPDATE conditionnels, jamais de DELETE) :
  *   · `envoye` / `hors_fenetre` : `reserve` → statut demandé. Un accusé tardif, arrivé après une reprise
  *     (ligne revenue à `a_envoyer`), est aussi accepté : le merci est parti, il ne doit pas repartir.
- *   · `echec` : `reserve` → `a_envoyer` si la ligne est encore dans la fenêtre de 48 h, sinon `expire`.
+ *   · `echec` : `reserve` → `a_envoyer` si la ligne est encore dans la fenêtre de 48 h, sinon `expire`,
+ *     MAIS seulement si la réservation date de plus de `DELAI_REPRISE_RESERVATION_MIN` minutes. L'accusé ne
+ *     porte pas d'identité de réservation : un `echec` retardé de la réservation R1 ne doit pas annuler la
+ *     réservation R2 toute récente (deux « merci » partiraient). Une réservation plus vieille est de toute
+ *     façon reprise par `reserverConfirmations` : l'`echec` n'avance que le moment de la reprise.
  *   · une ligne `envoye` (ou `hors_fenetre`, `expire`, `ecarte`…) ne change plus jamais : rejeu sans effet ;
  *   · une `ref` inconnue est ignorée sans erreur (aucune distinction visible : pas d'oracle d'existence).
  * Ni adresse, ni `ref`, ni référence de conversation dans la réponse ni dans le journal.
@@ -18,6 +22,7 @@ import { prisma } from "@/lib/prisma";
 import type { EntreeSignee } from "@/server/videos/entree";
 import { reponseJson } from "@/server/videos/reponse";
 import { FENETRE_MERCI_H, LOT_MAX_CONFIRMATIONS } from "./config";
+import { DELAI_REPRISE_RESERVATION_MIN } from "./confirmations";
 import {
   MERCI_STATUT_A_ENVOYER,
   MERCI_STATUT_ENVOYE,
@@ -50,6 +55,7 @@ export async function accuserConfirmations(
   maintenant: Date,
 ): Promise<void> {
   const debut = new Date(maintenant.getTime() - FENETRE_MERCI_H * 3_600_000);
+  const seuilReprise = new Date(maintenant.getTime() - DELAI_REPRISE_RESERVATION_MIN * 60_000);
   await prisma.$transaction(async (tx) => {
     for (const { ref, issue } of issues) {
       if (issue === "echec") {
@@ -59,6 +65,7 @@ export async function accuserConfirmations(
            WHERE "jeton_empreinte" = ${ref}
              AND "merci_statut" = ${MERCI_STATUT_RESERVE}
              AND "consenti_le" >= ${debut}
+             AND "updated_at" < ${seuilReprise}
         `);
         await tx.$executeRaw(Prisma.sql`
           UPDATE "contacts_guide_reseau"
@@ -66,6 +73,7 @@ export async function accuserConfirmations(
            WHERE "jeton_empreinte" = ${ref}
              AND "merci_statut" = ${MERCI_STATUT_RESERVE}
              AND "consenti_le" < ${debut}
+             AND "updated_at" < ${seuilReprise}
         `);
       } else {
         const statut = issue === "envoye" ? MERCI_STATUT_ENVOYE : MERCI_STATUT_HORS_FENETRE;
