@@ -103,7 +103,6 @@ validation de la page, pas au clic du lien : la fenêtre de messagerie du résea
 - Une ligne réservée passe à `reserve` et ne ressort plus. Les lignes `a_envoyer` de plus de 48 h passent à `expire` (conservées). Une adresse opposée, la marque `email_key = '-'` et les statuts `ecarte`/`ecartee` ne sont jamais proposés ; leur ligne n'est jamais supprimée, jamais réservée ; elle peut passer à `expire` après 48 h. Une ligne `reserve` depuis plus de 10 min (`DELAI_REPRISE_RESERVATION_MIN`, réponse perdue) est reprise : `a_envoyer` si encore dans la fenêtre de 48 h, sinon `expire`. **Engagement du Studio (STU-Z4) : revérifier l'opposition juste avant l'envoi.**
 - **Aucune suppression.** Cette route ne fait que lire-réserver ; l'accusé de réception (`envoye`) viendra dans un lot suivant.
 
-
 ## Interrupteurs du lot S3 et ordre d'allumage
 
 Deux interrupteurs de plus figurent dans la liste fermée du workflow `coolify-drapeau.yml`,
