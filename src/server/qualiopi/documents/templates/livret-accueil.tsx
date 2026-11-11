@@ -15,8 +15,8 @@ import {
   FieldRow,
   NdaFieldRow,
   BulletList,
-  pdfStyles,
-} from "@/server/qualiopi/documents/base-layout";
+} from "@/server/qualiopi/documents/cadre-pieces";
+import { pdfStylesPieces } from "@/server/qualiopi/documents/cadre-pieces/styles-blocs";
 import { LEGAL_MENTIONS, HANDICAP_PARTENAIRES } from "@/server/qualiopi/legal/legal-mentions";
 import { ASSISTANCE_DISTANCE } from "@/server/qualiopi/legal/assistance-distance";
 import { ENCART_VIOLENCES, TITRE_ENCART_VIOLENCES } from "@/content/prevention-violences";
@@ -117,7 +117,7 @@ export function LivretAccueilPdf({
             et les informations pratiques dont vous aurez besoin tout au long de votre parcours de
             formation.
           </Text>
-          <Text style={pdfStyles.legalNote}>Version du {data.dateVersion}</Text>
+          <Text style={pdfStylesPieces.legalNote}>Version du {data.dateVersion}</Text>
         </DocSection>
 
         {/* Présentation de l'organisme */}
@@ -294,7 +294,7 @@ export function LivretAccueilPdf({
             Nos partenaires et relais spécialisés
           </Text>
           <BulletList items={HANDICAP_PARTENAIRES.map((p) => `${p.nom} — ${p.role} (${p.url})`)} />
-          <Text style={pdfStyles.legalNote}>
+          <Text style={pdfStylesPieces.legalNote}>
             Nous vous encourageons à nous contacter avant le début de la formation pour anticiper
             tout aménagement spécifique.
           </Text>
@@ -350,7 +350,7 @@ export function LivretAccueilPdf({
                   {identite.adresseSiege ? ` (${identite.adresseSiege})` : ""}.
                 </Text>
               )}
-              <Text style={pdfStyles.legalNote}>
+              <Text style={pdfStylesPieces.legalNote}>
                 {siteBase
                   ? `Procédure complète (dépôt, traitement, suivi et voies de recours) : ${siteBase}/reclamations`
                   : "La procédure complète (dépôt, traitement, suivi et voies de recours) est publiée sur notre site, rubrique « Réclamations », et communiquée sur simple demande."}
@@ -358,13 +358,15 @@ export function LivretAccueilPdf({
               {data.qrReclamationsDataUrl ? (
                 <View style={{ marginTop: 6, alignItems: "flex-start" }}>
                   <Image src={data.qrReclamationsDataUrl} style={{ width: 80, height: 80 }} />
-                  <Text style={pdfStyles.legalNote}>Scannez pour ouvrir la page Réclamations.</Text>
+                  <Text style={pdfStylesPieces.legalNote}>
+                    Scannez pour ouvrir la page Réclamations.
+                  </Text>
                 </View>
               ) : null}
             </>
           ) : (
             <>
-              <Text style={pdfStyles.legalNote}>
+              <Text style={pdfStylesPieces.legalNote}>
                 {siteBase
                   ? `Procédure complète (dépôt, traitement, suivi et voies de recours) : ${siteBase}/reclamations`
                   : "La procédure complète (dépôt, traitement, suivi et voies de recours) est publiée sur notre site, rubrique « Réclamations », et communiquée sur simple demande."}
@@ -390,7 +392,7 @@ export function LivretAccueilPdf({
             </Text>
           ))}
           {siteBase ? (
-            <Text style={pdfStyles.legalNote}>
+            <Text style={pdfStylesPieces.legalNote}>
               Règlement intérieur publié : {siteBase}/reglement-interieur
             </Text>
           ) : null}
@@ -413,7 +415,7 @@ export function LivretAccueilPdf({
             label="Exercice de vos droits (RGPD)"
             value={identite.dpoEmail || identite.email || "—"}
           />
-          <Text style={pdfStyles.legalNote}>
+          <Text style={pdfStylesPieces.legalNote}>
             Pour toute question relative au traitement de vos données, vous pouvez également
             contacter la Commission Nationale de l'Informatique et des Libertés (CNIL) :
             www.cnil.fr.

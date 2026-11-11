@@ -23,8 +23,8 @@ import {
   DocSection,
   FieldRow,
   DataTable,
-  pdfStyles,
-} from "@/server/qualiopi/documents/base-layout";
+} from "@/server/qualiopi/documents/cadre-pieces";
+import { pdfStylesPieces } from "@/server/qualiopi/documents/cadre-pieces/styles-blocs";
 import type { OrganismeIdentite } from "@/server/qualiopi/documents/organisme";
 
 // ============================================================
@@ -133,7 +133,7 @@ export function OrganisationActionPdf({
                 }))}
               />
               {auMoinsUnPrevisionnel ? (
-                <Text style={pdfStyles.legalNote}>
+                <Text style={pdfStylesPieces.legalNote}>
                   * Horaires prévisionnels, non encore confirmés. Les horaires constatés figurent
                   sur les feuilles d&apos;émargement.
                 </Text>
@@ -145,7 +145,7 @@ export function OrganisationActionPdf({
               section vide : les dates de début et de fin restent portées par la
               convention, et une pièce qui nomme sa lacune est vérifiable.
             */
-            <Text style={pdfStyles.legalNote}>
+            <Text style={pdfStylesPieces.legalNote}>
               Le calendrier détaillé n&apos;est pas encore arrêté pour cette session. Les dates de
               début et de fin figurent sur la convention de formation.
             </Text>
@@ -155,7 +155,7 @@ export function OrganisationActionPdf({
         {/* 3. Rythme */}
         <DocSection title="3. Durée et rythme">
           <FieldRow label="Rythme" value={data.rythme} />
-          <Text style={pdfStyles.paragraph}>
+          <Text style={pdfStylesPieces.paragraph}>
             L&apos;assiduité est suivie par demi-journée : émargement signé par le stagiaire et le
             formateur en présentiel, relevé de connexion horodaté en distanciel. Ces pièces
             constituent la preuve de l&apos;exécution de l&apos;action.
@@ -182,14 +182,14 @@ export function OrganisationActionPdf({
             label="Contact référent"
             value={data.referentHandicapEmail || identite.email || "—"}
           />
-          <Text style={pdfStyles.paragraph}>
+          <Text style={pdfStylesPieces.paragraph}>
             Les stagiaires reçoivent une convocation précisant dates, horaires et lieu, ainsi
             qu&apos;un livret d&apos;accueil. Toute difficulté d&apos;organisation peut être
             signalée au contact ci-dessus ; les réclamations sont tracées et suivies.
           </Text>
         </DocSection>
 
-        <Text style={pdfStyles.legalNote}>
+        <Text style={pdfStylesPieces.legalNote}>
           Pièce établie au titre de l&apos;organisation des actions de formation (art. R.6351-5 du
           Code du travail). Le contenu pédagogique de l&apos;action figure au programme, annexé à la
           convention de formation.

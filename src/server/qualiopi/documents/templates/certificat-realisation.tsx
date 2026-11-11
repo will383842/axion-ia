@@ -17,14 +17,14 @@ import React from "react";
 import { Document, View, Text, StyleSheet, Image } from "@react-pdf/renderer";
 import {
   QualiopiPage,
-  pdfStyles,
   DocSection,
   FieldRow,
   NdaFieldRow,
-} from "@/server/qualiopi/documents/base-layout";
+} from "@/server/qualiopi/documents/cadre-pieces";
+import { pdfStylesPieces } from "@/server/qualiopi/documents/cadre-pieces/styles-blocs";
 import type { OrganismeIdentite } from "@/server/qualiopi/documents/organisme";
 import { LEGAL_MENTIONS, formatHeuresCentiemes } from "@/server/qualiopi/legal/legal-mentions";
-import { brandColor } from "@/server/qualiopi/brand/brand-tokens";
+import { couleurPiece } from "@/server/qualiopi/brand/jetons-pieces";
 import { heuresMinutesFr } from "@/server/qualiopi/evaluations/heures-suivies";
 import {
   identificationSignataire,
@@ -45,14 +45,14 @@ export const ENGAGEMENT_CONSERVATION_CERTIFICAT =
 
 const styles = StyleSheet.create({
   dureeBlock: {
-    backgroundColor: brandColor("sand"),
+    backgroundColor: couleurPiece("sand"),
     padding: 10,
     marginBottom: 12,
     borderRadius: 2,
   },
   dureeLabel: {
     fontSize: 9,
-    color: brandColor("fg-soft"),
+    color: couleurPiece("fg-soft"),
     fontWeight: "bold",
     marginBottom: 2,
   },
@@ -60,11 +60,11 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontFamily: "Inconsolata",
     fontWeight: "bold",
-    color: brandColor("terracotta"),
+    color: couleurPiece("terracotta"),
   },
   dureeNote: {
     fontSize: 8,
-    color: brandColor("fg-muted"),
+    color: couleurPiece("fg-muted"),
     fontStyle: "italic",
     marginTop: 2,
   },
@@ -84,7 +84,7 @@ const styles = StyleSheet.create({
   },
   qrUrl: {
     fontSize: 8,
-    color: brandColor("fg-muted"),
+    color: couleurPiece("fg-muted"),
     fontStyle: "italic",
   },
 });
@@ -211,9 +211,9 @@ export function CertificatRealisationPdf({
         {...(data.estCopie === true ? { estCopie: true } : {})}
       >
         {/* Mention légale */}
-        <View style={pdfStyles.section}>
-          <Text style={pdfStyles.paragraph}>{phraseModele}</Text>
-          <Text style={pdfStyles.legalNote}>{LEGAL_MENTIONS.certificatRealisation}</Text>
+        <View style={pdfStylesPieces.section}>
+          <Text style={pdfStylesPieces.paragraph}>{phraseModele}</Text>
+          <Text style={pdfStylesPieces.legalNote}>{LEGAL_MENTIONS.certificatRealisation}</Text>
         </View>
 
         {/* Organisme de formation — identifiants jamais masqués (pièce d'audit) */}
@@ -298,7 +298,7 @@ export function CertificatRealisationPdf({
               <View style={styles.qrTextBlock}>
                 <Text style={styles.qrToken}>{`Token : ${data.qrToken}`}</Text>
                 <Text style={styles.qrUrl}>{verifyUrl}</Text>
-                <Text style={pdfStyles.legalNote}>
+                <Text style={pdfStylesPieces.legalNote}>
                   Scannez le QR code ou saisissez l'URL ci-dessus pour vérifier l'authenticité de ce
                   certificat.
                 </Text>
@@ -308,23 +308,23 @@ export function CertificatRealisationPdf({
         ) : null}
 
         {/* Engagement de conservation — verbatim du modèle du ministère. */}
-        <View style={pdfStyles.section}>
-          <Text style={pdfStyles.paragraph}>{ENGAGEMENT_CONSERVATION_CERTIFICAT}</Text>
+        <View style={pdfStylesPieces.section}>
+          <Text style={pdfStylesPieces.paragraph}>{ENGAGEMENT_CONSERVATION_CERTIFICAT}</Text>
         </View>
 
         {/* Signature */}
         <DocSection title="Signature et cachet">
-          <View style={pdfStyles.signatureZone}>
-            <View style={pdfStyles.signatureBox}>
-              <Text style={pdfStyles.paragraph}>
+          <View style={pdfStylesPieces.signatureZone}>
+            <View style={pdfStylesPieces.signatureBox}>
+              <Text style={pdfStylesPieces.paragraph}>
                 {`Fait à ${identite.rcsVille || identite.adresseSiege || "—"}, le ${data.dateEmission}`}
               </Text>
-              <Text style={pdfStyles.paragraph}>
+              <Text style={pdfStylesPieces.paragraph}>
                 {`Cachet et signature du responsable du dispensateur de formation : ${identificationSignataire(signataire)}`}
               </Text>
             </View>
-            <View style={pdfStyles.signatureBox}>
-              <Text style={pdfStyles.paragraph}>Cachet de l'organisme</Text>
+            <View style={pdfStylesPieces.signatureBox}>
+              <Text style={pdfStylesPieces.paragraph}>Cachet de l'organisme</Text>
             </View>
           </View>
         </DocSection>
