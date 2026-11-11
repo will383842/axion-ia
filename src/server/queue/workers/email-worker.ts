@@ -21,7 +21,12 @@ import { sendEmail, verifyTransport } from "@/lib/email/client";
 import type { SendEmailParams } from "@/lib/email/client";
 import { decryptPii, isDecryptedEmailUsable } from "@/lib/pii-crypto";
 import { renderEmailTemplate } from "@/lib/email/templates";
-import { jetonOpposition } from "@/server/email/opposition-jeton";
+import {
+  estJetonOpposition,
+  jetonOpposition,
+  lireJetonOpposition,
+  normaliserAdresse,
+} from "@/server/email/opposition-jeton";
 import { prisma } from "@/lib/prisma";
 import { isR2Configured, getObjectBufferR2 } from "@/lib/r2-storage";
 import { cloturerJournal, marquerAnnule, noterTentativeEchouee } from "@/server/email/email-log";
@@ -265,8 +270,22 @@ export function startEmailWorker(): Worker<EmailJobData, void, EmailJobName> {
               ? (payload as { unsubscribeToken: string }).unsubscribeToken
               : undefined
             : undefined;
+        // Guide de la page « Recevoir le guide » : le payload porte le jeton d'opposition de
+        // l'adresse. Accepté seulement s'il est signé ET s'il désigne CE destinataire (jamais
+        // un en-tête qui désinscrirait un tiers). Jamais journalisé.
+        const jetonPage =
+          payload && typeof payload === "object" && "oppositionToken" in payload
+            ? (payload as { oppositionToken?: unknown }).oppositionToken
+            : undefined;
+        const jetonOppositionPage =
+          typeof jetonPage === "string" &&
+          estJetonOpposition(jetonPage) &&
+          lireJetonOpposition(jetonPage) === normaliserAdresse(to)
+            ? jetonPage
+            : undefined;
         const unsubscribeToken =
           jetonNewsletter ??
+          jetonOppositionPage ??
           (famille !== null && famille !== "A" ? jetonOpposition(to) : undefined);
         const result = await sendEmail({
           to,
