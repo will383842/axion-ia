@@ -49,7 +49,7 @@ export const SAINT_HILAIRE_DU_HARCOUET_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Saint-Hilaire-du-Harcouët ?",
-      a: "Oui, Axion-IA intervient à Saint-Hilaire-du-Harcouët et dans le bocage sud-manchois (Mortain, Avranches, Fougères, Barenton). Nos consultants se déplacent depuis Rennes (1 h A84) ou Caen (1 h 30), ou en visio.",
+      a: "Oui, Axion-IA intervient à Saint-Hilaire-du-Harcouët et dans le bocage sud-manchois (Mortain, Avranches, Fougères, Barenton). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les éleveurs bovins du bocage manchois ?",
@@ -65,7 +65,7 @@ export const SAINT_HILAIRE_DU_HARCOUET_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Saint-Hilaire-du-Harcouët ?",
-      a: "Nos consultants viennent de Rennes (1 h A84) ou Avranches (25 min). Gare d'Avranches ou Fougères (TER). Multi-jours : hébergement local. Coûts de déplacement séparés du forfait, tarifs transparents.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Gare d'Avranches ou Fougères (TER). Multi-jours : hébergement local. Coûts de déplacement séparés du forfait, tarifs transparents.",
     },
   ],
 };

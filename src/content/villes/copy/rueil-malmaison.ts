@@ -58,7 +58,7 @@ export const RUEIL_MALMAISON_COPY: VilleCopy = {
           "Rueil-Malmaison est un terrain B2B atypique : trois sièges d'envergure mondiale ou nationale (Schneider Electric, plus grand siège mondial de Danone, PSA/Stellantis) concentrés autour de la gare RER A, et tout un écosystème de fournisseurs, sous-traitants et cabinets qui ont besoin d'un site et d'outils web à la hauteur de ces donneurs d'ordre.",
           "Le quartier Rueil-sur-Seine concentre plus de 70 % des emplois de la ville : nos sites web et SaaS y ciblent en priorité les bureaux d'études, sociétés d'ingénierie et cabinets de conseil qui travaillent pour l'énergie (mouvance Schneider Electric, VINCI Energies), l'agroalimentaire (mouvance Danone) et la mobilité (mouvance Stellantis).",
           "Nous revendiquons l'ensemble de la chaîne — UX/UI, responsive mobile, e-commerce multi-CMS (Shopify, WooCommerce, PrestaShop) et briques IA — pour ne pas renvoyer un cabinet rueillois vers trois prestataires différents : un seul interlocuteur du design au déploiement.",
-          "Proximité immédiate de La Défense (~8 km) et accès Mobipôle RER A : nos consultants se déplacent sur site à Rueil et dans l'Ouest parisien (Nanterre, Suresnes, Puteaux, Chatou, Croissy) pour les ateliers de cadrage, puis itèrent à distance.",
+          "Rueil-Malmaison est à ~8 km de La Défense et desservie par le Mobipôle RER A : nos consultants se déplacent sur site à Rueil et dans l'Ouest parisien (Nanterre, Suresnes, Puteaux, Chatou, Croissy) pour les ateliers de cadrage, puis itèrent à distance.",
         ],
         methodology: [
           {
@@ -144,7 +144,7 @@ export const RUEIL_MALMAISON_COPY: VilleCopy = {
           "Rueil-Malmaison is an unusual B2B ground: three headquarters of global or national scale (Schneider Electric, Danone's largest worldwide HQ, PSA/Stellantis) clustered around the RER A station, plus an entire ecosystem of suppliers, subcontractors and firms needing a website and web tools worthy of those clients.",
           "The Rueil-sur-Seine district concentrates over 70% of the city's jobs: our websites and SaaS target first the engineering offices, design bureaus and consulting firms working for energy (Schneider Electric, VINCI Energies orbit), food (Danone orbit) and mobility (Stellantis orbit).",
           "We own the whole chain — UX/UI, mobile responsive, multi-CMS e-commerce (Shopify, WooCommerce, PrestaShop) and AI components — so a Rueil firm never has to juggle three providers: one contact from design to deployment.",
-          "Immediate proximity to La Défense (~8 km) and Mobipôle RER A access: our consultants travel on site in Rueil and across western Paris (Nanterre, Suresnes, Puteaux, Chatou, Croissy) for framing workshops, then iterate remotely.",
+          "Rueil-Malmaison is ~8 km from La Défense and served by the Mobipôle RER A hub: our consultants travel on site in Rueil and across western Paris (Nanterre, Suresnes, Puteaux, Chatou, Croissy) for framing workshops, then iterate remotely.",
         ],
         methodology: [
           {

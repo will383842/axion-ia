@@ -65,7 +65,7 @@ export const UGINE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Ugine ?",
-      a: "Nos consultants se déplacent à Ugine (10 min depuis Albertville, 35 min depuis Annecy). Interventions en usine, atelier ou locaux commerciaux. Formats demi-journée ou journée complète. Visio possible pour les sessions coaching.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Interventions en usine, atelier ou locaux commerciaux. Formats demi-journée ou journée complète. Visio possible pour les sessions coaching.",
     },
   ],
 };

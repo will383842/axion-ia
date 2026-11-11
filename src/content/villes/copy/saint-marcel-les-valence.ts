@@ -49,7 +49,7 @@ export const SAINT_MARCEL_LES_VALENCE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Saint-Marcel-lès-Valence et Valence Romans Agglo ?",
-      a: "Oui, Axion-IA intervient à Saint-Marcel-lès-Valence et toute Valence Romans Agglo (Valence, Bourg-lès-Valence, Romans-sur-Isère, Portes-lès-Valence). Nos consultants viennent de Paris (TGV Valence 2h15) ou Lyon (1h A7).",
+      a: "Oui, Axion-IA intervient à Saint-Marcel-lès-Valence et toute Valence Romans Agglo (Valence, Bourg-lès-Valence, Romans-sur-Isère, Portes-lès-Valence). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les PME zones d'activités gare TGV ?",
@@ -64,8 +64,8 @@ export const SAINT_MARCEL_LES_VALENCE_COPY: VilleCopy = {
       a: "Pour les TPE artisans BTP et commerçants à Saint-Marcel-lès-Valence, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV.",
     },
     {
-      q: "Comment se passe une mission depuis Paris ou Lyon ?",
-      a: "Nos consultants viennent de Paris (TGV Valence 2h15 + 5 min) ou Lyon (1h A7). Pour les multi-jours, hébergement local possible (hôtels Valence).",
+      q: "Comment se déroule une mission à Saint-Marcel-lès-Valence ?",
+      a: "Nous intervenons partout en France, sur place ou à distance. Pour les multi-jours, hébergement local possible (hôtels Valence).",
     },
   ],
 };

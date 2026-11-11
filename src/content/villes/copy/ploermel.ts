@@ -49,7 +49,7 @@ export const PLOERMEL_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Ploërmel et dans le centre Morbihan ?",
-      a: "Oui, Axion-IA intervient à Ploërmel et dans tout le centre Morbihan (Josselin, Malestroit, Guer, Mauron, La Trinité-Porhoët). Nos consultants se déplacent depuis Vannes en 50 minutes ou depuis Rennes en 55 minutes.",
+      a: "Oui, Axion-IA intervient à Ploërmel et dans tout le centre Morbihan (Josselin, Malestroit, Guer, Mauron, La Trinité-Porhoët). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les acteurs du tourisme intérieur à Ploërmel ?",

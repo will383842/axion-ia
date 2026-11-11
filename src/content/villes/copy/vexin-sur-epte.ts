@@ -49,7 +49,7 @@ export const VEXIN_SUR_EPTE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Vexin-sur-Epte et dans le Vexin normand ?",
-      a: "Oui, Axion-IA intervient à Vexin-sur-Epte et dans tout le Vexin normand (Gisors, Étrépagny, Écouis, Lyons-la-Forêt). Nos consultants se déplacent depuis Paris (1h20 train via Gisors) ou Rouen (1h).",
+      a: "Oui, Axion-IA intervient à Vexin-sur-Epte et dans tout le Vexin normand (Gisors, Étrépagny, Écouis, Lyons-la-Forêt). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les exploitations agricoles céréalières du Vexin ?",
@@ -64,8 +64,8 @@ export const VEXIN_SUR_EPTE_COPY: VilleCopy = {
       a: "Pour les TPE artisans et commerçants ruraux à Vexin-sur-Epte, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, gestion stocks, chatbot accueil, facturation.",
     },
     {
-      q: "Comment se passe une mission depuis Paris ou Gisors ?",
-      a: "Nos consultants viennent de Paris (1h20 train via gare Gisors) ou de Gisors (10 min). Pour les multi-jours, hébergement local possible.",
+      q: "Comment se déroule une mission à Vexin-sur-Epte ?",
+      a: "Nous intervenons partout en France, sur place ou à distance. Pour les multi-jours, hébergement local possible.",
     },
   ],
 };

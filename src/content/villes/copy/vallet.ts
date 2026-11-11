@@ -49,7 +49,7 @@ export const VALLET_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Vallet et dans le vignoble Muscadet ?",
-      a: "Oui, Axion-IA intervient à Vallet et tout le vignoble Muscadet Sèvre-et-Maine (Clisson, Le Pallet, Mouzillon, La Chapelle-Heulin, Le Loroux-Bottereau). Nos consultants viennent de Nantes (30 min D763).",
+      a: "Oui, Axion-IA intervient à Vallet et tout le vignoble Muscadet Sèvre-et-Maine (Clisson, Le Pallet, Mouzillon, La Chapelle-Heulin, Le Loroux-Bottereau). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les viticulteurs Muscadet ?",

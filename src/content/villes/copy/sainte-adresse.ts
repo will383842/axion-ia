@@ -49,7 +49,7 @@ export const SAINTE_ADRESSE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il a Sainte-Adresse et dans l'agglo du Havre ?",
-      a: "Oui, Axion-IA intervient a Sainte-Adresse et dans toute l'agglomeration havraise (Le Havre, Harfleur, Octeville-sur-Mer, Gonfreville-l'Orcher). Consultants depuis Le Havre (5 min) ou Paris (2h15).",
+      a: "Oui, Axion-IA intervient a Sainte-Adresse et dans toute l'agglomeration havraise (Le Havre, Harfleur, Octeville-sur-Mer, Gonfreville-l'Orcher). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quels services IA pour les professions liberales de Sainte-Adresse ?",

@@ -49,7 +49,7 @@ export const VEAUCHE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Veauche et plaine Forez ?",
-      a: "Oui, Axion-IA intervient à Veauche et toute la plaine du Forez (Andrézieux-Bouthéon limitrophe, Saint-Galmier, Saint-Just-Saint-Rambert). Couverture Saint-Étienne Métropole. Consultants depuis Lyon (50 min) ou Saint-Étienne (20 min).",
+      a: "Oui, Axion-IA intervient à Veauche et toute la plaine du Forez (Andrézieux-Bouthéon limitrophe, Saint-Galmier, Saint-Just-Saint-Rambert). Couverture Saint-Étienne Métropole. Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les PME filière verre à Veauche ?",
@@ -64,8 +64,8 @@ export const VEAUCHE_COPY: VilleCopy = {
       a: "Pour les TPE artisans BTP et commerçants à Veauche, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV.",
     },
     {
-      q: "Comment se passe une mission depuis Lyon ou Saint-Étienne ?",
-      a: "Nos consultants viennent de Lyon (50 min) ou Saint-Étienne (20 min). Pour les multi-jours, hébergement local possible.",
+      q: "Comment se déroule une mission à Veauche ?",
+      a: "Nous intervenons partout en France, sur place ou à distance. Pour les multi-jours, hébergement local possible.",
     },
   ],
 };

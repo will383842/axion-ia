@@ -49,7 +49,7 @@ export const VERNAISON_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Vernaison et sud lyonnais ?",
-      a: "Oui, Axion-IA intervient à Vernaison et tout le sud lyonnais (Irigny limitrophe, Pierre-Bénite, Charly). Consultants depuis Lyon (20 min).",
+      a: "Oui, Axion-IA intervient à Vernaison et tout le sud lyonnais (Irigny limitrophe, Pierre-Bénite, Charly). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les professions libérales ?",
@@ -64,8 +64,8 @@ export const VERNAISON_COPY: VilleCopy = {
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
     },
     {
-      q: "Comment se passe une mission depuis Lyon ?",
-      a: "Nos consultants viennent de Lyon (20 min).",
+      q: "Comment se déroule une mission à Vernaison ?",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };

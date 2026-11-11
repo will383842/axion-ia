@@ -49,7 +49,7 @@ export const SAINT_JAMES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Saint-James et dans le bocage sud-manchois ?",
-      a: "Oui, Axion-IA intervient à Saint-James et dans tout le bocage sud-manchois (Avranches, Fougères, Pontorson, Ducey). Nos consultants se déplacent depuis Rennes (50 min A84) ou Avranches (15 min), ou en visio.",
+      a: "Oui, Axion-IA intervient à Saint-James et dans tout le bocage sud-manchois (Avranches, Fougères, Pontorson, Ducey). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les éleveurs et agriculteurs du bocage ?",
@@ -65,7 +65,7 @@ export const SAINT_JAMES_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Saint-James ?",
-      a: "Nos consultants viennent de Rennes (50 min A84) ou Avranches (15 min). Gare d'Avranches (TER). Multi-jours : hébergement Avranches.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Gare d'Avranches (TER). Multi-jours : hébergement Avranches.",
     },
   ],
 };

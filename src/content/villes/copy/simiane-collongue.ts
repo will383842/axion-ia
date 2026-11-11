@@ -51,7 +51,7 @@ export const SIMIANE_COLLONGUE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Simiane-Collongue et dans le nord d'Aix-en-Provence ?",
-      a: "Oui, Axion-IA intervient à Simiane-Collongue et dans toutes les communes voisines du nord aixois : Bouc-Bel-Air, Cabriès (Plan de Campagne), Mimet, Gardanne. Accès direct via A51, consultants depuis Aix-en-Provence (15 min) ou la gare TGV (20 min).",
+      a: "Oui, Axion-IA intervient à Simiane-Collongue et dans toutes les communes voisines du nord aixois : Bouc-Bel-Air, Cabriès (Plan de Campagne), Mimet, Gardanne. Accès direct via A51. Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les cabinets médicaux et professions de santé libérales ?",
@@ -66,8 +66,8 @@ export const SIMIANE_COLLONGUE_COPY: VilleCopy = {
       a: "Oui, les commerces de prestige situés à Plan de Campagne (Cabriès, à 10 min de Simiane-Collongue) bénéficient de nos missions content marketing local, fiches Google Business, agents conversationnels SAV, automatisation campagnes email, classification feedback clients.",
     },
     {
-      q: "Comment se déplace Axion-IA à Simiane-Collongue ?",
-      a: "Simiane-Collongue est à 15 min d'Aix-en-Provence centre via A51, 30 min de Marseille et 20 min de la gare TGV Aix. Nos consultants se déplacent dans vos cabinets ou locaux.",
+      q: "Comment se passe une intervention à Simiane-Collongue ?",
+      a: "Nous intervenons partout en France, sur place ou à distance, dans vos cabinets ou locaux. Simiane-Collongue est à 15 min d'Aix-en-Provence centre via A51, 30 min de Marseille et 20 min de la gare TGV Aix.",
     },
   ],
 };

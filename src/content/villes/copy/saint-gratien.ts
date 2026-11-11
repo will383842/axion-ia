@@ -18,9 +18,9 @@ export const SAINT_GRATIEN_COPY: VilleCopy = {
   ecosystemEn:
     "Saint-Gratien, commune résidentielle du Val-d'Oise, s'inscrit dans le bassin de vie dense du nord parisien, aux côtés d'Enghien-les-Bains et de son lac, d'Argenteuil et de Sannois. Son économie locale repose sur le commerce de centre-ville, la restauration, l'artisanat du bâtiment, les services aux particuliers et les professions libérales installées au plus près des habitants. Ce maillage de TPE et de petites PME, souvent sans fonction support dédiée, tire un bénéfice immédiat de l'IA pour automatiser devis, relances et gestion du quotidien.",
   distancesFr:
-    "Saint-Gratien est à 12 km au nord de Paris, reliée par la ligne C du RER et le Transilien H (15-20 min vers Paris-Nord et Saint-Lazare). L'aéroport Paris-Charles de Gaulle est à 25 km. Nos consultants se déplacent depuis Paris sur tout l'est du Val-d'Oise : Enghien-les-Bains, Argenteuil, Sannois, Ermont et Eaubonne.",
+    "Saint-Gratien est à 12 km au nord de Paris, reliée par la ligne C du RER et le Transilien H (15-20 min vers Paris-Nord et Saint-Lazare). L'aéroport Paris-Charles de Gaulle est à 25 km. Nous intervenons partout en France, sur place ou à distance.",
   distancesEn:
-    "Saint-Gratien est à 12 km au nord de Paris, reliée par la ligne C du RER et le Transilien H (15-20 min vers Paris-Nord et Saint-Lazare). L'aéroport Paris-Charles de Gaulle est à 25 km. Nos consultants se déplacent depuis Paris sur tout l'est du Val-d'Oise : Enghien-les-Bains, Argenteuil, Sannois, Ermont et Eaubonne.",
+    "Saint-Gratien est à 12 km au nord de Paris, reliée par la ligne C du RER et le Transilien H (15-20 min vers Paris-Nord et Saint-Lazare). L'aéroport Paris-Charles de Gaulle est à 25 km. Nous intervenons partout en France, sur place ou à distance.",
   topSectorsNaf: [
     "BTP et artisanat du bâtiment",
     "Commerce et restauration de centre-ville",
@@ -74,7 +74,7 @@ export const SAINT_GRATIEN_COPY: VilleCopy = {
           {
             step: "Développement par sprints",
             detail:
-              "Greffe IA sur l'existant ou build IA-native : boutique e-commerce multi-CMS, moteur de réservation, devis intelligents, chatbot RAG multilingue, recherche sémantique, agents et automatisations. Démos hebdomadaires en visio depuis Paris, à 15-20 min en RER C ou Transilien H.",
+              "Greffe IA sur l'existant ou build IA-native : boutique e-commerce multi-CMS, moteur de réservation, devis intelligents, chatbot RAG multilingue, recherche sémantique, agents et automatisations.",
           },
           {
             step: "Recette + mise en ligne",
@@ -160,7 +160,7 @@ export const SAINT_GRATIEN_COPY: VilleCopy = {
           {
             step: "Développement par sprints",
             detail:
-              "Greffe IA sur l'existant ou build IA-native : boutique e-commerce multi-CMS, moteur de réservation, devis intelligents, chatbot RAG multilingue, recherche sémantique, agents et automatisations. Démos hebdomadaires en visio depuis Paris, à 15-20 min en RER C ou Transilien H.",
+              "Greffe IA sur l'existant ou build IA-native : boutique e-commerce multi-CMS, moteur de réservation, devis intelligents, chatbot RAG multilingue, recherche sémantique, agents et automatisations.",
           },
           {
             step: "Recette + mise en ligne",
@@ -230,7 +230,7 @@ export const SAINT_GRATIEN_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Saint-Gratien et dans l'est du Val-d'Oise ?",
-      a: "Oui, Axion-IA accompagne les TPE et PME de Saint-Gratien et des communes voisines (Enghien-les-Bains, Argenteuil, Sannois, Ermont). Nos consultants viennent de Paris, à 15-20 min.",
+      a: "Oui, Axion-IA accompagne les TPE et PME de Saint-Gratien et des communes voisines (Enghien-les-Bains, Argenteuil, Sannois, Ermont). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les commerces et restaurants de Saint-Gratien ?",
@@ -245,8 +245,8 @@ export const SAINT_GRATIEN_COPY: VilleCopy = {
       a: "Audit sur place, intervention d'une journée de formation et coaching 1-to-1. Nous adaptons les formats au quotidien des TPE locales, sans jargon technique.",
     },
     {
-      q: "Comment se passe une mission depuis Paris ?",
-      a: "Nos consultants se déplacent depuis Paris (15-20 min en RER C ou Transilien H).",
+      q: "Comment se déroule une mission à Saint-Gratien ?",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };

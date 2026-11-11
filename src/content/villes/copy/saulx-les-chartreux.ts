@@ -64,7 +64,7 @@ export const SAULX_LES_CHARTREUX_COPY: VilleCopy = {
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : gestion RDV, CRM patients/clients, conformité RGPD, fidélisation, marketing local.",
     },
     {
-      q: "Comment se passe une mission depuis Massy ou Paris ?",
+      q: "Comment se déroule une mission à Saulx-les-Chartreux ?",
       a: "Massy TGV (10 min). Paris centre (30 min par N20 ou A6). Orly (15 min).",
     },
   ],

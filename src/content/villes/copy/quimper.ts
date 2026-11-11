@@ -233,8 +233,8 @@ export const QUIMPER_COPY: VilleCopy = {
       a: "L'Audit sur place Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures sur site à Quimper, livré sous 5 jours ouvrés. Formation 4 h dès {{price:intervention-4h|flat}}, implémentation complète dès {{price:impl-poc|entry}}. Tous nos tarifs sont publics et fixes.",
     },
     {
-      q: "Williams se déplace-t-il à Quimper depuis Paris ?",
-      a: "Oui. Quimper est accessible en TGV InOui depuis Paris-Montparnasse en environ 3h30. Williams intervient directement dans vos locaux, du centre historique aux zones d'activité de Créac'h Gwen et aux faïenceries de Locmaria.",
+      q: "Williams se déplace-t-il à Quimper ?",
+      a: "Oui. Williams intervient directement dans vos locaux, du centre historique aux zones d'activité de Créac'h Gwen et aux faïenceries de Locmaria. Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quels délais pour une intervention IA à Quimper ?",
@@ -246,7 +246,7 @@ export const QUIMPER_COPY: VilleCopy = {
     },
     {
       q: "Intervenez-vous aussi dans les communes de Quimper Bretagne Occidentale ?",
-      a: "Oui. Nous nous déplaçons également à Pluguffan, Plomelin, Plonéis, Ergué-Gabéric et dans les autres communes de la communauté d'agglomération. Le déplacement est inclus dans le forfait dans un rayon de 20 km autour de Quimper.",
+      a: "Oui. Nous nous déplaçons également à Pluguffan, Plomelin, Plonéis, Ergué-Gabéric et dans les autres communes de la communauté d'agglomération. Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Comment Axion-IA garantit la conformité RGPD à Quimper ?",

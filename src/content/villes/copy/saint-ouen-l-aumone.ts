@@ -127,7 +127,7 @@ export const SAINT_OUEN_L_AUMONE_COPY: VilleCopy = {
           },
           {
             q: "Intervenez-vous au-delà de Saint-Ouen-l'Aumône, dans Cergy-Pontoise ?",
-            a: "Oui. Depuis Saint-Ouen-l'Aumône, on couvre toute l'agglomération de Cergy-Pontoise — Cergy, Pontoise, Osny, Éragny-sur-Oise, Jouy-le-Moutier, Vauréal — et le Vexin via l'A15 et la Francilienne. Kick-off en présentiel, puis itérations à distance avec démos hebdomadaires, pour les négoces, industriels et services du bassin.",
+            a: "Oui. Nous intervenons dans toute l'agglomération de Cergy-Pontoise — Cergy, Pontoise, Osny, Éragny-sur-Oise, Jouy-le-Moutier, Vauréal — et dans le Vexin. Plus largement, nous intervenons partout en France, sur place ou à distance : kick-off en présentiel, puis itérations à distance avec démos hebdomadaires, pour les négoces, industriels et services du bassin.",
           },
           {
             q: "Mes données restent-elles en Europe et le devis est-il ferme ?",
@@ -213,7 +213,7 @@ export const SAINT_OUEN_L_AUMONE_COPY: VilleCopy = {
           },
           {
             q: "Intervenez-vous au-delà de Saint-Ouen-l'Aumône, dans Cergy-Pontoise ?",
-            a: "Oui. Depuis Saint-Ouen-l'Aumône, on couvre toute l'agglomération de Cergy-Pontoise — Cergy, Pontoise, Osny, Éragny-sur-Oise, Jouy-le-Moutier, Vauréal — et le Vexin via l'A15 et la Francilienne. Kick-off en présentiel, puis itérations à distance avec démos hebdomadaires, pour les négoces, industriels et services du bassin.",
+            a: "Oui. Nous intervenons dans toute l'agglomération de Cergy-Pontoise — Cergy, Pontoise, Osny, Éragny-sur-Oise, Jouy-le-Moutier, Vauréal — et dans le Vexin. Plus largement, nous intervenons partout en France, sur place ou à distance : kick-off en présentiel, puis itérations à distance avec démos hebdomadaires, pour les négoces, industriels et services du bassin.",
           },
           {
             q: "Mes données restent-elles en Europe et le devis est-il ferme ?",
@@ -241,7 +241,7 @@ export const SAINT_OUEN_L_AUMONE_COPY: VilleCopy = {
     },
     {
       q: "Axion-IA couvre-t-il les communes autour de Saint-Ouen-l'Aumône ?",
-      a: "Oui, nous intervenons dans l'agglomération de Cergy-Pontoise et notamment à Cergy, Pontoise, Éragny-sur-Oise, Osny, Jouy-le-Moutier et Vauréal, depuis Saint-Ouen-l'Aumône.",
+      a: "Oui, nous intervenons dans l'agglomération de Cergy-Pontoise et notamment à Cergy, Pontoise, Éragny-sur-Oise, Osny, Jouy-le-Moutier et Vauréal.",
     },
     {
       q: "Quels secteurs locaux servez-vous à Saint-Ouen-l'Aumône ?",

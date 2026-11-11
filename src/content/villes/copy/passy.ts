@@ -49,7 +49,7 @@ export const PASSY_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Passy et vallée de l'Arve ?",
-      a: "Oui, Axion-IA intervient à Passy et dans toute la vallée de l'Arve (Sallanches à 5 min, Chamonix à 20 min, Cluses à 25 min). Déplacements depuis Annecy (50 min) ou Genève (1h10).",
+      a: "Oui, Axion-IA intervient à Passy et dans toute la vallée de l'Arve (Sallanches à 5 min, Chamonix à 20 min, Cluses à 25 min). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Combien coûte un audit IA à Passy  ?",

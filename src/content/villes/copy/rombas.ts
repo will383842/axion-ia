@@ -49,7 +49,7 @@ export const ROMBAS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Rombas et Pays Orne-Moselle ?",
-      a: "Oui, Axion-IA intervient à Rombas et toute la Communauté de communes du Pays Orne-Moselle (Amnéville, Clouange, Moyeuvre-Grande, Pierrevillers). Nos consultants viennent de Metz (20 min A31), Nancy (50 min) ou Luxembourg (55 min).",
+      a: "Oui, Axion-IA intervient à Rombas et toute la Communauté de communes du Pays Orne-Moselle (Amnéville, Clouange, Moyeuvre-Grande, Pierrevillers). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les PME industrielles reconverties ?",
@@ -64,8 +64,8 @@ export const ROMBAS_COPY: VilleCopy = {
       a: "Pour les TPE artisans BTP et commerçants à Rombas, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, classification photos chantiers, gestion stocks.",
     },
     {
-      q: "Comment se passe une mission depuis Metz ou Luxembourg ?",
-      a: "Nos consultants viennent de Metz (20 min A31), Nancy (50 min) ou Luxembourg-Ville (55 min). Pour les multi-jours, hébergement local possible.",
+      q: "Comment se déroule une mission à Rombas ?",
+      a: "Nous intervenons partout en France, sur place ou à distance. Pour les multi-jours, hébergement local possible.",
     },
   ],
 };

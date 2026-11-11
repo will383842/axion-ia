@@ -49,7 +49,7 @@ export const SAINT_PIERRE_LES_ELBEUF_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il a Saint-Pierre-les-Elbeuf ?",
-      a: "Oui, Axion-IA intervient a Saint-Pierre-les-Elbeuf et dans toute l'agglo d'Elbeuf (Elbeuf, Caudebec-les-Elbeuf, Saint-Aubin-les-Elbeuf). Consultants depuis Rouen (25 min) ou Paris (1h40).",
+      a: "Oui, Axion-IA intervient a Saint-Pierre-les-Elbeuf et dans toute l'agglo d'Elbeuf (Elbeuf, Caudebec-les-Elbeuf, Saint-Aubin-les-Elbeuf). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quels services IA pour les commercants de Saint-Pierre-les-Elbeuf ?",

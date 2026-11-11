@@ -49,8 +49,8 @@ const HORS_PERIMETRE: ReadonlyArray<RegExp> = [
   /^components\/qualiopi\//,
   /^components\/tour\//, // Tour France IA : ne pas toucher
   /^components\/booking\//, // réservation transactionnelle
-  // Portés par le lot `fix/prix-jsonld-llms` (ItemList JSON-LD, schéma du héros contact).
-  /^app\/\[locale\]\/implantations\/page\.tsx$/,
+  // Porté par le lot `fix/prix-jsonld-llms` (schéma du héros contact). Le hub
+  // `/implantations` en est SORTI le 2026-11-11 : il n'affiche plus que la Journée IA.
   /^components\/sections\/ContactHeroSchema\.tsx$/,
 ];
 
@@ -269,11 +269,6 @@ const EXCEPTIONS: ReadonlyArray<{ fichier: string; motif: RegExp; raison: string
     raison: "seuil des conditions de paiement (CGV), pas un prix d'offre",
   },
   {
-    fichier: "app/[locale]/tarifs/page.tsx",
-    motif: /> 5 000 € HT|> €5,000/,
-    raison: "seuil de qualification d'une demande de devis, pas un prix d'offre",
-  },
-  {
     fichier: "content/transversal.ts",
     motif:
       /formatAmount\((auditFlashTier|auditCibleTier|auditPmeTier|auditEtiTier)\.price|Module 1 — On-site sessions \(1 day from \$\{formatAmount/,
@@ -406,9 +401,11 @@ describe("R7 — pages et composants publics : aucun montant hors Journée IA", 
     const tarifs = lire("app/[locale]/tarifs/page.tsx");
     // Carte en tête : le prix de la Journée IA lu dans pricing.ts, et un lien vers sa page.
     expect(tarifs).toMatch(/formatTierPrice\(JOURNEE_IA_TIER/);
-    expect(tarifs).toMatch(/href="\/journee-ia"/);
-    // Les cartes de paliers ne montrent un prix que si le palier est affichable.
-    expect(tarifs).toMatch(/prixAffichable\(tier\)/);
+    expect(tarifs).toMatch(/href=\{CHEMIN_JOURNEE_IA\}/);
+    // 2026-11-11 (audit SEO/GEO) : les cartes de paliers n'affichent JAMAIS de montant,
+    // même interrupteur levé — « Sur devis écrit » partout hors La Journée IA.
+    expect(tarifs).not.toMatch(/formatPricePublic|prixAffichable\(tier\)/);
+    expect(tarifs).toMatch(/Sur devis écrit/);
     const accueil = lire("app/[locale]/page.tsx");
     // Maquette v4 : l'accueil ne formate plus lui-même, il résout le jeton {{PRIX}} via
     // `remplacerJetons`, qui lit `formatTierPrice(JOURNEE_IA_TIER)` dans journee-ia-commun.ts.

@@ -65,7 +65,7 @@ export const SOUFFELWEYERSHEIM_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Souffelweyersheim ?",
-      a: "Nos consultants se déplacent via tramway CTS ligne B ou autoroute A35. Strasbourg centre à 10 min, aéroport Entzheim à 25 min.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Souffelweyersheim est desservie par la ligne B du tramway CTS et l'autoroute A35, à 10 min de Strasbourg centre et 25 min de l'aéroport d'Entzheim.",
     },
   ],
 };

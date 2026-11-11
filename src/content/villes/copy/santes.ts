@@ -49,7 +49,7 @@ export const SANTES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Santes et dans le sud de la métropole lilloise ?",
-      a: "Oui, Axion-IA intervient à Santes et dans tout le sud de la Métropole Européenne de Lille (Haubourdin, Wavrin, Seclin, Gondecourt, Don, Emmerin). Nos consultants couvrent l'ensemble du bassin lillois sud depuis Lille centre (15 min).",
+      a: "Oui, Axion-IA intervient à Santes et dans tout le sud de la Métropole Européenne de Lille (Haubourdin, Wavrin, Seclin, Gondecourt, Don, Emmerin). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les professions libérales et TPE de services ?",
@@ -65,7 +65,7 @@ export const SANTES_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Santes ?",
-      a: "Nos consultants interviennent à Santes depuis Lille centre (15 min). Intervention sur site dans votre cabinet, bureau, commerce, entrepôt ou en visio. Proximité immédiate de Lille pour toute logistique mission multi-jours.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Intervention sur site dans votre cabinet, bureau, commerce, entrepôt ou en visio. Proximité immédiate de Lille pour toute logistique mission multi-jours.",
     },
   ],
 };

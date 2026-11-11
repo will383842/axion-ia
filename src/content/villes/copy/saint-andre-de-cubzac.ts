@@ -49,7 +49,7 @@ export const SAINT_ANDRE_DE_CUBZAC_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Saint-André-de-Cubzac ?",
-      a: "Oui, Axion-IA intervient à Saint-André-de-Cubzac et dans tout le Cubzaguais (Cubzac-les-Ponts, Saint-Loubès, Gauriaguet). Nos consultants se déplacent depuis Bordeaux (25 min A10) ou Paris (TGV 2h + 25 min).",
+      a: "Oui, Axion-IA intervient à Saint-André-de-Cubzac et dans tout le Cubzaguais (Cubzac-les-Ponts, Saint-Loubès, Gauriaguet). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Saint-André-de-Cubzac  ?",
@@ -65,7 +65,7 @@ export const SAINT_ANDRE_DE_CUBZAC_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Saint-André-de-Cubzac ?",
-      a: "Nos consultants interviennent dans vos locaux ou en visio. Depuis Bordeaux (25 min A10). Tarifs et planning fixés en amont, livrables documentés.",
+      a: "Nos consultants interviennent dans vos locaux ou en visio. Nous intervenons partout en France, sur place ou à distance. Tarifs et planning fixés en amont, livrables documentés.",
     },
   ],
 };

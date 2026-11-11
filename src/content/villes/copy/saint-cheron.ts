@@ -64,7 +64,7 @@ export const SAINT_CHERON_COPY: VilleCopy = {
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Outils IA réservation, gestion salle, fidélisation clientèle.",
     },
     {
-      q: "Comment se passe une mission depuis Dourdan ou Paris ?",
+      q: "Comment se déroule une mission à Saint-Chéron ?",
       a: "Dourdan (10 min). Arpajon (15 min). Évry-Courcouronnes (25 min). Paris centre (50 min RER C). Orly (30 min). Coûts de déplacement à part, tarification transparente.",
     },
   ],

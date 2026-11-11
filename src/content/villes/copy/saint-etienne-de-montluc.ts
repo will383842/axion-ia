@@ -60,8 +60,8 @@ export const SAINT_ETIENNE_DE_MONTLUC_COPY: VilleCopy = {
       a: "Pour les PME tertiaires du nord-ouest nantais, nous proposons audit IA (Sur place à Stratégique), interventions sur site, implémentation IA (agents, automatisations), coaching 1-to-1 dirigeants, et plateformes web/SaaS IA sur mesure. Tarifs publics.",
     },
     {
-      q: "La gare TER facilite-t-elle vos interventions ?",
-      a: "Oui, la gare TER de Saint-Étienne-de-Montluc (ligne Nantes-Saint-Nazaire) facilite nos déplacements. Nantes gare à 20 min, Saint-Nazaire à 35 min. Interventions sur site directement dans vos locaux.",
+      q: "Comment se passe une intervention à Saint-Étienne-de-Montluc ?",
+      a: "Nous intervenons partout en France, sur place ou à distance, directement dans vos locaux. Saint-Étienne-de-Montluc est desservie par la gare TER de la ligne Nantes-Saint-Nazaire, à 20 min de la gare de Nantes.",
     },
     {
       q: "Travaillez-vous avec les professions libérales ?",

@@ -64,7 +64,7 @@ export const WISSOUS_COPY: VilleCopy = {
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, gestion stocks, suivi chantier.",
     },
     {
-      q: "Comment se déroule une mission depuis Paris ou Massy ?",
+      q: "Comment se déroule une mission à Wissous ?",
       a: "Paris centre (25 min par A6 ou RER C). Massy TGV (10 min). Orly (5 min).",
     },
   ],

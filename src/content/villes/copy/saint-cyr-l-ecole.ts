@@ -72,7 +72,7 @@ export const SAINT_CYR_L_ECOLE_COPY: VilleCopy = {
           {
             step: "Développement par sprints",
             detail:
-              "Greffe IA sur l'existant ou build IA-native depuis Saint-Cyr-l'École : e-commerce multi-CMS, chatbot RAG multilingue, recherche sémantique sur vos catalogues, agents et automatisations métier (devis, relances, reporting). Démos hebdomadaires en visio, code versionné, lisible et transparent — sans no-code ni dépendance à un éditeur tiers, livré prêt à reprendre en interne.",
+              "Greffe IA sur l'existant ou build IA-native pour Saint-Cyr-l'École : e-commerce multi-CMS, chatbot RAG multilingue, recherche sémantique sur vos catalogues, agents et automatisations métier (devis, relances, reporting). Démos hebdomadaires en visio, code versionné, lisible et transparent — sans no-code ni dépendance à un éditeur tiers, livré prêt à reprendre en interne.",
           },
           {
             step: "Recette + mise en ligne",
@@ -158,7 +158,7 @@ export const SAINT_CYR_L_ECOLE_COPY: VilleCopy = {
           {
             step: "Développement par sprints",
             detail:
-              "Greffe IA sur l'existant ou build IA-native depuis Saint-Cyr-l'École : e-commerce multi-CMS, chatbot RAG multilingue, recherche sémantique sur vos catalogues, agents et automatisations métier (devis, relances, reporting). Démos hebdomadaires en visio, code versionné, lisible et transparent — sans no-code ni dépendance à un éditeur tiers, livré prêt à reprendre en interne.",
+              "Greffe IA sur l'existant ou build IA-native pour Saint-Cyr-l'École : e-commerce multi-CMS, chatbot RAG multilingue, recherche sémantique sur vos catalogues, agents et automatisations métier (devis, relances, reporting). Démos hebdomadaires en visio, code versionné, lisible et transparent — sans no-code ni dépendance à un éditeur tiers, livré prêt à reprendre en interne.",
           },
           {
             step: "Recette + mise en ligne",
@@ -232,7 +232,7 @@ export const SAINT_CYR_L_ECOLE_COPY: VilleCopy = {
     },
     {
       q: "Quels délais pour une intervention Axion-IA à Saint-Cyr-l'École ?",
-      a: "Williams se déplace à Saint-Cyr-l'École sous 5 à 10 jours ouvrés après validation. La gare Transilien (lignes N, U, RER C) et le tramway T13 facilitent des interventions express depuis Paris.",
+      a: "Williams se déplace à Saint-Cyr-l'École sous 5 à 10 jours ouvrés après validation. Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Intervenez-vous dans les communes proches de Saint-Cyr-l'École ?",

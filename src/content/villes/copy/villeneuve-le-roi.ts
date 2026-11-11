@@ -226,7 +226,7 @@ export const VILLENEUVE_LE_ROI_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Villeneuve-le-Roi et bassin Orly ?",
-      a: "Oui, Axion-IA intervient à Villeneuve-le-Roi et tout le bassin Orly (Athis-Mons, Paray-Vieille-Poste, Wissous, Rungis MIN). Couverture sud-94 et accès Paris (25 min RER C). Nos consultants peuvent venir de Paris intra-muros rapidement.",
+      a: "Oui, Axion-IA intervient à Villeneuve-le-Roi et tout le bassin Orly (Athis-Mons, Paray-Vieille-Poste, Wissous, Rungis MIN). Couverture sud-94 et accès Paris (25 min RER C). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les opérateurs aéroportuaires d'Orly ?",
@@ -242,7 +242,7 @@ export const VILLENEUVE_LE_ROI_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une intervention près de l'aéroport Orly ?",
-      a: "Nos consultants viennent de Paris (25 min RER C) pour les missions sur site à Villeneuve-le-Roi et zone aéroportuaire Orly. Pour les opérateurs Orly avec exigences sécurité, nous adaptons les protocoles (habilitations, contrôles d'accès).",
+      a: "Nous intervenons partout en France, sur place ou à distance. Pour les opérateurs Orly avec exigences sécurité, nous adaptons les protocoles (habilitations, contrôles d'accès).",
     },
   ],
 };

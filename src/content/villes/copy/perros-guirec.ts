@@ -49,7 +49,7 @@ export const PERROS_GUIREC_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Perros-Guirec et Côte de Granit Rose ?",
-      a: "Oui, Axion-IA intervient à Perros-Guirec et toute la Côte de Granit Rose (Trégastel, Pleumeur-Bodou, Lannion, Trébeurden). Nos consultants arrivent via TGV Lannion (3h20 Paris) puis 15 min.",
+      a: "Oui, Axion-IA intervient à Perros-Guirec et toute la Côte de Granit Rose (Trégastel, Pleumeur-Bodou, Lannion, Trébeurden). La gare TGV de Lannion est à 15 min.",
     },
     {
       q: "Travaillez-vous avec les hôteliers et restaurateurs saisonniers ?",

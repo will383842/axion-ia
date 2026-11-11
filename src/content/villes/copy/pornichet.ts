@@ -49,7 +49,7 @@ export const PORNICHET_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Pornichet ?",
-      a: "Oui, Axion-IA intervient à Pornichet et dans toute la baie de La Baule (La Baule, Saint-Nazaire, Le Pouliguen). Nos consultants se déplacent depuis Nantes (1h) ou Saint-Nazaire (10 min).",
+      a: "Oui, Axion-IA intervient à Pornichet et dans toute la baie de La Baule (La Baule, Saint-Nazaire, Le Pouliguen). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Combien coûte un audit IA à Pornichet  ?",

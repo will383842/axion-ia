@@ -49,7 +49,7 @@ export const SAINT_CHRISTOL_LEZ_ALES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Saint-Christol-lez-Alès ?",
-      a: "Oui, Axion-IA intervient à Saint-Christol-lez-Alès et dans toute l'agglomération d'Alès (Alès, Saint-Privat-des-Vieux, Saint-Martin-de-Valgalgues). Nos consultants viennent de Nîmes (40 min).",
+      a: "Oui, Axion-IA intervient à Saint-Christol-lez-Alès et dans toute l'agglomération d'Alès (Alès, Saint-Privat-des-Vieux, Saint-Martin-de-Valgalgues). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Saint-Christol-lez-Alès  ?",

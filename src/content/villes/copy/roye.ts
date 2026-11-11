@@ -49,7 +49,7 @@ export const ROYE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Roye et dans le Santerre ?",
-      a: "Oui, Axion-IA intervient à Roye et tout le Santerre (Montdidier, Péronne, Chaulnes, Nesle). Nos consultants viennent depuis Amiens (40 min voiture) ou Paris (1h20 A1 sortie Roye).",
+      a: "Oui, Axion-IA intervient à Roye et tout le Santerre (Montdidier, Péronne, Chaulnes, Nesle). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quels services IA pour les PME agroalimentaires à Roye ?",

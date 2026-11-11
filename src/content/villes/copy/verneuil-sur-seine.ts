@@ -49,7 +49,7 @@ export const VERNEUIL_SUR_SEINE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Verneuil-sur-Seine et boucle de Seine ?",
-      a: "Oui, Axion-IA intervient à Verneuil-sur-Seine et toute la boucle de Seine yvelinoise (Les Mureaux, Meulan-en-Yvelines, Triel-sur-Seine, Poissy, Orgeval). Nos consultants se déplacent depuis Paris (45 min Transilien ligne J).",
+      a: "Oui, Axion-IA intervient à Verneuil-sur-Seine et toute la boucle de Seine yvelinoise (Les Mureaux, Meulan-en-Yvelines, Triel-sur-Seine, Poissy, Orgeval). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les professions libérales à Verneuil-sur-Seine ?",

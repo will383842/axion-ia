@@ -230,7 +230,7 @@ export const VIENNE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Vienne ?",
-      a: "Oui, Axion-IA intervient à Vienne et dans le sud lyonnais (Pont-Évêque, Chasse-sur-Rhône, Givors, Estrablin). Nos experts IA seniors se déplacent depuis Lyon (30 min) ou travaillent en visio.",
+      a: "Oui, Axion-IA intervient à Vienne et dans le sud lyonnais (Pont-Évêque, Chasse-sur-Rhône, Givors, Estrablin). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quel est le tarif d'un audit IA à Vienne ?",
@@ -250,7 +250,7 @@ export const VIENNE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Vienne ?",
-      a: "Nous démarrons par un audit, puis intervenons sur site ou en visio depuis Lyon (30 min). Livrables documentés, équipes formées, aucune dépendance technique imposée.",
+      a: "Nous démarrons par un audit, puis intervenons sur site ou en visio, partout en France. Livrables documentés, équipes formées, aucune dépendance technique imposée.",
     },
   ],
 };

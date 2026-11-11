@@ -49,7 +49,7 @@ export const VILLEFRANCHE_DE_LAURAGAIS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Villefranche-de-Lauragais ?",
-      a: "Oui, Axion-IA intervient à Villefranche-de-Lauragais et dans tout le Lauragais (Renneville, Gardouch, Saint-Rome, Nailloux, Castelnaudary, Revel). Nos consultants se déplacent en 35 min depuis Toulouse via l'A61, sortie 20.",
+      a: "Oui, Axion-IA intervient à Villefranche-de-Lauragais et dans tout le Lauragais (Renneville, Gardouch, Saint-Rome, Nailloux, Castelnaudary, Revel). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quels secteurs accompagnez-vous à Villefranche-de-Lauragais ?",
@@ -69,7 +69,7 @@ export const VILLEFRANCHE_DE_LAURAGAIS_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une intervention IA à Villefranche-de-Lauragais ?",
-      a: "Nos consultants se déplacent à Villefranche-de-Lauragais (35 min A61 depuis Toulouse, sortie 20). Demi-journée découverte ou journée atelier pratique selon le besoin.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Demi-journée découverte ou journée atelier pratique selon le besoin.",
     },
   ],
 };

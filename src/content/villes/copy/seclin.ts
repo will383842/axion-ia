@@ -49,7 +49,7 @@ export const SECLIN_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Seclin et dans le sud de la métropole lilloise ?",
-      a: "Oui, Axion-IA intervient à Seclin et dans tout le sud de la Métropole Européenne de Lille (Lesquin, Templemars, Vendeville, Noyelles-lès-Seclin, Houplin-Ancoisne) ainsi que la zone aéroportuaire Lille-Lesquin. Nos consultants couvrent l'ensemble du bassin lillois depuis Lille centre (15 min).",
+      a: "Oui, Axion-IA intervient à Seclin et dans tout le sud de la Métropole Européenne de Lille (Lesquin, Templemars, Vendeville, Noyelles-lès-Seclin, Houplin-Ancoisne) ainsi que la zone aéroportuaire Lille-Lesquin. Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les établissements de santé à Seclin ?",
@@ -65,7 +65,7 @@ export const SECLIN_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Seclin ?",
-      a: "Nos consultants interviennent à Seclin depuis Lille (15 min) ou directement sur site zone aéroportuaire Lesquin (5 min). Intervention dans votre établissement de santé, entrepôt, bureau ou en visio. Pour missions multi-jours, hébergement à Lille.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Intervention dans votre établissement de santé, entrepôt, bureau ou en visio. Pour missions multi-jours, hébergement à Lille.",
     },
   ],
 };

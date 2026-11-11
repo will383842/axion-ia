@@ -49,7 +49,7 @@ export const SILLINGY_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Sillingy et dans le Grand Annecy ?",
-      a: "Oui, Axion-IA intervient à Sillingy et dans tout le Grand Annecy (Annecy, Meythet, Cran-Gevrier, Epagny Metz-Tessy, Poisy). Nos consultants sont à 10 min d'Annecy centre, déplacement inclus.",
+      a: "Oui, Axion-IA intervient à Sillingy et dans tout le Grand Annecy (Annecy, Meythet, Cran-Gevrier, Epagny Metz-Tessy, Poisy). Nous intervenons partout en France, sur place ou à distance. Sillingy est à 10 min d'Annecy centre.",
     },
     {
       q: "Quel est le prix d'un audit IA à Sillingy ?",

@@ -57,7 +57,7 @@ export const TOURCOING_COPY: VilleCopy = {
           "Le bassin Roubaix-Tourcoing est le berceau de la vente à distance (La Redoute, 3 Suisses) et reste un pôle e-commerce vivant avec Showroomprivé : nous formons les équipes catalogue, marketing et service client à automatiser la rédaction de fiches produit et le tri des demandes entrantes.",
           "Le quartier de l'Union réunit le CETI et des ateliers de textile technique (UTTI en filature laine, Clubtex en agrotextiles et textiles médicaux) : pour ces équipes industrielles, les démos portent sur la génération de fiches techniques et l'exploitation de la documentation produit.",
           "Plaine Images rassemble plus de 150 entreprises d'audiovisuel, jeu vidéo, XR, design et marketing digital, à côté du Fresnoy : ces studios et éditeurs sont un public naturel pour des sessions orientées production de contenu, recherche et agents conversationnels.",
-          "Toute la métropole est couverte en présentiel — quartier de l'Union, Parc de la Marlière, centre-ville — desservie par 2 lignes de métro/tram et à 16 km de la gare TGV Lille-Europe : intervention sur site sans contrainte logistique.",
+          "Toute la métropole est couverte en présentiel — quartier de l'Union, Parc de la Marlière, centre-ville. Tourcoing est desservie par 2 lignes de métro/tram et à 16 km de la gare TGV Lille-Europe.",
           "Grands groupes locaux (Kiabi, Auchan Retail, Bonduelle) comme PME du Parc de la Marlière : le format est dimensionné à la taille de l'équipe, du petit groupe de 4 heures à la plénière en Conférence.",
         ],
         methodology: [
@@ -149,7 +149,7 @@ export const TOURCOING_COPY: VilleCopy = {
           "Le bassin Roubaix-Tourcoing est le berceau de la vente à distance (La Redoute, 3 Suisses) et reste un pôle e-commerce vivant avec Showroomprivé : nous formons les équipes catalogue, marketing et service client à automatiser la rédaction de fiches produit et le tri des demandes entrantes.",
           "Le quartier de l'Union réunit le CETI et des ateliers de textile technique (UTTI en filature laine, Clubtex en agrotextiles et textiles médicaux) : pour ces équipes industrielles, les démos portent sur la génération de fiches techniques et l'exploitation de la documentation produit.",
           "Plaine Images rassemble plus de 150 entreprises d'audiovisuel, jeu vidéo, XR, design et marketing digital, à côté du Fresnoy : ces studios et éditeurs sont un public naturel pour des sessions orientées production de contenu, recherche et agents conversationnels.",
-          "Toute la métropole est couverte en présentiel — quartier de l'Union, Parc de la Marlière, centre-ville — desservie par 2 lignes de métro/tram et à 16 km de la gare TGV Lille-Europe : intervention sur site sans contrainte logistique.",
+          "Toute la métropole est couverte en présentiel — quartier de l'Union, Parc de la Marlière, centre-ville. Tourcoing est desservie par 2 lignes de métro/tram et à 16 km de la gare TGV Lille-Europe.",
           "Grands groupes locaux (Kiabi, Auchan Retail, Bonduelle) comme PME du Parc de la Marlière : le format est dimensionné à la taille de l'équipe, du petit groupe de 4 heures à la plénière en Conférence.",
         ],
         methodology: [
@@ -242,7 +242,7 @@ export const TOURCOING_COPY: VilleCopy = {
           "Tourcoing-Roubaix est le berceau de la vente à distance (La Redoute, 3 Suisses) et un pôle e-commerce vivant (Showroomprivé) : nous y concevons des boutiques et plateformes produit à fort volume catalogue, avec recherche sémantique et recommandations IA branchées sur vos vraies fiches.",
           "Le quartier de l'Union concentre le CETI et des ateliers de textile technique (UTTI en filature laine, Clubtex en agrotextiles et textiles médicaux) : nous bâtissons des configurateurs produit, des portails B2B et des outils de génération de fiches techniques adaptés à ces process textile.",
           "Plaine Images réunit 150+ entreprises d'audiovisuel, jeu vidéo, XR, design et marketing digital, à côté du Fresnoy : pour ces studios et éditeurs nous développons des SaaS IA-native, des portfolios performants et des agents conversationnels intégrés.",
-          "Nous nous déplaçons sur tout le bassin tourquennois — quartier de l'Union, Parc de la Marlière, centre-ville — desservi par 2 lignes de métro/tram et à 16 km de la gare TGV Lille-Europe : kick-off et recette en présentiel.",
+          "Nous nous déplaçons sur tout le bassin tourquennois — quartier de l'Union, Parc de la Marlière, centre-ville — pour le kick-off et la recette en présentiel. Nous intervenons partout en France, sur place ou à distance.",
         ],
         methodology: [
           {
@@ -328,7 +328,7 @@ export const TOURCOING_COPY: VilleCopy = {
           "Tourcoing-Roubaix is the cradle of distance selling (La Redoute, 3 Suisses) and a living e-commerce hub (Showroomprivé): here we build high-volume product stores and platforms, with semantic search and AI recommendations wired to your real catalogue entries.",
           "The Union district concentrates CETI and technical-textile workshops (UTTI in wool spinning, Clubtex in agrotextiles and medical textiles): we build product configurators, B2B portals and technical-datasheet generation tools tailored to these textile processes.",
           "Plaine Images gathers 150+ companies in audiovisual, video games, XR, design and digital marketing, alongside Le Fresnoy: for these studios and publishers we develop AI-native SaaS, high-performance portfolios and integrated conversational agents.",
-          "We travel across the whole Tourcoing basin — Union district, Parc de la Marlière, city centre — served by 2 metro/tram lines and 16 km from Lille-Europe TGV station: kick-off and acceptance held in person.",
+          "We travel across the whole Tourcoing basin — Union district, Parc de la Marlière, city centre — for kick-off and acceptance in person. We work anywhere in France, on site or remotely.",
         ],
         methodology: [
           {

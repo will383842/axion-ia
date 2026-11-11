@@ -49,7 +49,7 @@ export const PONT_L_EVEQUE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Pont-l'Évêque et dans le Pays d'Auge ?",
-      a: "Oui, Axion-IA intervient à Pont-l'Évêque et tout le Pays d'Auge (Lisieux, Deauville, Honfleur, Livarot). Consultants depuis Caen (40 min A13) ou gare SNCF Lisieux (15 min).",
+      a: "Oui, Axion-IA intervient à Pont-l'Évêque et tout le Pays d'Auge (Lisieux, Deauville, Honfleur, Livarot). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les fromageries Pont-l'Évêque AOP ?",
@@ -65,7 +65,7 @@ export const PONT_L_EVEQUE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Pont-l'Évêque ?",
-      a: "Nos consultants viennent de Caen (40 min A13) ou par train (gare SNCF Lisieux à 15 min). Déplacement sur site (fromagerie, hôtel, restaurant, commerce).",
+      a: "Nous intervenons partout en France, sur place ou à distance. Déplacement sur site (fromagerie, hôtel, restaurant, commerce).",
     },
   ],
 };

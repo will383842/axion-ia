@@ -232,7 +232,7 @@ export const PLAISANCE_DU_TOUCH_COPY: VilleCopy = {
     },
     {
       q: "Sous quels délais intervenez-vous à Plaisance-du-Touch ?",
-      a: "Nous nous engageons à intervenir sur site à Plaisance-du-Touch sous 5 jours ouvrés après validation de votre demande, depuis Toulouse via Linéo 3 ou la rocade ouest.",
+      a: "Nous nous engageons à intervenir sur site à Plaisance-du-Touch sous 5 jours ouvrés après validation de votre demande. Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Intervenez-vous dans les communes proches de Plaisance-du-Touch ?",

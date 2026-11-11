@@ -64,8 +64,8 @@ export const ROMAGNAT_COPY: VilleCopy = {
       a: "Pour les TPE artisans et commerçants à Romagnat, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, gestion stocks, classification documents.",
     },
     {
-      q: "Comment se passe une mission depuis Clermont-Ferrand ?",
-      a: "Nos consultants interviennent depuis Clermont-Ferrand (10 min voiture). Proximité directe Beaumont et Ceyrat.",
+      q: "Comment se déroule une mission à Romagnat ?",
+      a: "Nous intervenons partout en France, sur place ou à distance. Proximité directe Beaumont et Ceyrat.",
     },
   ],
 };

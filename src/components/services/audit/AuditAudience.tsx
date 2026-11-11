@@ -73,7 +73,7 @@ const CARDS: ReadonlyArray<AudienceCard> = [
   },
   {
     segment: "ETI",
-    sizeFr: "ETI & grandes entreprises",
+    sizeFr: "PME multi-sites",
     sizeEn: "Mid-caps & large enterprises",
     titleFr: "Gouvernance et impact à grande échelle",
     titleEn: "Governance and impact at scale",
@@ -138,7 +138,7 @@ export function AuditAudience({ isFr }: { isFr: boolean }): ReactNode {
       titleEm={isFr ? "chaque profil" : "every profile"}
       description={
         isFr
-          ? "De l'artisan à l'ETI, on calibre la profondeur de l'audit à votre taille et vos enjeux."
+          ? "De l'artisan à la PME multi-sites, nous calibrons la profondeur de l'audit à votre taille et à vos enjeux."
           : "From sole trader to mid-cap, we calibrate the audit depth to your size and challenges."
       }
     >

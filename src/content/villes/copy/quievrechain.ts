@@ -49,7 +49,7 @@ export const QUIEVRECHAIN_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Quiévrechain et dans le Valenciennois ?",
-      a: "Oui, Axion-IA intervient à Quiévrechain et dans toute l'agglomération de Valenciennes (Anzin, Bruay-sur-l'Escaut, Condé-sur-l'Escaut, Onnaing), incluant les flux transfrontaliers vers la Belgique (Quévy, Mons à 20 min). Nos consultants couvrent l'ensemble du Hainaut franco-belge.",
+      a: "Oui, Axion-IA intervient à Quiévrechain et dans toute l'agglomération de Valenciennes (Anzin, Bruay-sur-l'Escaut, Condé-sur-l'Escaut, Onnaing), incluant les flux transfrontaliers vers la Belgique (Quévy, Mons). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les TPE et PME industrielles du Valenciennois ?",
@@ -65,7 +65,7 @@ export const QUIEVRECHAIN_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Quiévrechain ?",
-      a: "Nos consultants interviennent à Quiévrechain depuis Valenciennes (10 min) ou Lille (50 min). Intervention sur site dans vos locaux industriels, bureau, commerce ou en visio. Pour missions multi-jours, hébergement à Valenciennes.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Intervention sur site dans vos locaux industriels, bureau, commerce ou en visio. Pour missions multi-jours, hébergement à Valenciennes.",
     },
   ],
 };

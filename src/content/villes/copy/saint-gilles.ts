@@ -49,7 +49,7 @@ export const SAINT_GILLES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Saint-Gilles et en Petite Camargue ?",
-      a: "Oui, Axion-IA intervient à Saint-Gilles et dans toute la Petite Camargue gardoise (Vauvert, Aimargues, Beauvoisin, Le Grau-du-Roi). Nos consultants viennent de Nîmes (20 min) ou Montpellier (45 min).",
+      a: "Oui, Axion-IA intervient à Saint-Gilles et dans toute la Petite Camargue gardoise (Vauvert, Aimargues, Beauvoisin, Le Grau-du-Roi). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les agriculteurs de la Camargue gardoise ?",

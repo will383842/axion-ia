@@ -49,7 +49,7 @@ export const SEVREMONT_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Sèvremont et dans le haut bocage vendéen ?",
-      a: "Oui, Axion-IA intervient à Sèvremont et dans tout le haut bocage vendéen (Les Herbiers, Pouzauges, Mortagne-sur-Sèvre). Consultants accessibles depuis Les Herbiers (15 min) ou Cholet (35 min).",
+      a: "Oui, Axion-IA intervient à Sèvremont et dans tout le haut bocage vendéen (Les Herbiers, Pouzauges, Mortagne-sur-Sèvre). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quels services IA pour les exploitations agricoles de Sèvremont ?",
@@ -65,7 +65,7 @@ export const SEVREMONT_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Sèvremont ?",
-      a: "Nos consultants interviennent depuis Les Herbiers (15 min) ou Cholet (35 min). Déplacement sur site dans vos locaux professionnels, atelier ou exploitation agricole.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Déplacement sur site dans vos locaux professionnels, atelier ou exploitation agricole.",
     },
   ],
 };

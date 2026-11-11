@@ -49,7 +49,7 @@ export const VILLERS_LE_LAC_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Villers-le-Lac et dans le Haut-Doubs ?",
-      a: "Oui, Axion-IA intervient à Villers-le-Lac et dans tout le Haut-Doubs (Morteau, Les Fins, Le Locle côté suisse, Pontarlier). Couverture également Besançon métropole à 1h10 et déplacements possibles depuis la Suisse voisine.",
+      a: "Oui, Axion-IA intervient à Villers-le-Lac et dans tout le Haut-Doubs (Morteau, Les Fins, Le Locle côté suisse, Pontarlier). Couverture également Besançon métropole à 1h10 et clients suisses voisins également accompagnés.",
     },
     {
       q: "Travaillez-vous avec les entreprises horlogères du Val de Morteau ?",
@@ -64,8 +64,8 @@ export const VILLERS_LE_LAC_COPY: VilleCopy = {
       a: "L'audit sur place est tarifé selon vos enjeux, accessible aux TPE. Pour les PME horlogères ou de micro-mécanique, les audits Stratégiques et implémentations sont dimensionnés selon vos effectifs et cas d'usage. Tarifs publics, transparents, sans engagement longue durée.",
     },
     {
-      q: "Comment se déroule une mission IA depuis Besançon ou la Suisse ?",
-      a: "Nos consultants se déplacent depuis Besançon (1h10) ou peuvent intervenir depuis la zone transfrontalière suisse. Pour les missions multi-jours, hébergement local possible.",
+      q: "Comment se déroule une mission IA à Villers-le-Lac ?",
+      a: "Nous intervenons partout en France, sur place ou à distance. Pour les missions multi-jours, hébergement local possible.",
     },
   ],
 };

@@ -49,7 +49,7 @@ export const PEROLS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Pérols ?",
-      a: "Oui, Axion-IA intervient à Pérols et dans toute l'agglomération sud de Montpellier (Lattes, Palavas, Villeneuve-lès-Maguelone, Carnon). Nos consultants se déplacent depuis Montpellier en 10 min.",
+      a: "Oui, Axion-IA intervient à Pérols et dans toute l'agglomération sud de Montpellier (Lattes, Palavas, Villeneuve-lès-Maguelone, Carnon). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Proposez-vous des audits IA pour les commerces et la distribution ?",

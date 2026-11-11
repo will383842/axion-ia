@@ -6,9 +6,9 @@ import type { VilleCopy } from "./types";
 
 export const VENISSIEUX_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA accompagne les TPE et PME de Vénissieux, troisième commune la plus peuplée du Rhône (65 502 habitants en 2023) après Lyon et Villeurbanne, intégrée à la Métropole de Lyon. La ville héberge des sites industriels structurants (Renault Trucks au Parilly, Bosch, anciennement Veninov) et un tissu dense de sous-traitants automobile, métallurgie, logistique et BTP. Williams intervient depuis Paris pour livrer du code Python/TypeScript sur mesure — pas du no-code à l'année — adapté aux contraintes industrielles 4.0 et aux donneurs d'ordre automobiles.",
+    "Axion-IA accompagne les TPE et PME de Vénissieux, troisième commune la plus peuplée du Rhône (65 502 habitants en 2023) après Lyon et Villeurbanne, intégrée à la Métropole de Lyon. La ville héberge des sites industriels structurants (Renault Trucks au Parilly, Bosch, anciennement Veninov) et un tissu dense de sous-traitants automobile, métallurgie, logistique et BTP. Williams livre du code Python/TypeScript sur mesure — pas du no-code à l'année — adapté aux contraintes industrielles 4.0 et aux donneurs d'ordre automobiles.",
   pitchEn:
-    "Axion-IA accompagne les TPE et PME de Vénissieux, troisième commune la plus peuplée du Rhône (65 502 habitants en 2023) après Lyon et Villeurbanne, intégrée à la Métropole de Lyon. La ville héberge des sites industriels structurants (Renault Trucks au Parilly, Bosch, anciennement Veninov) et un tissu dense de sous-traitants automobile, métallurgie, logistique et BTP. Williams intervient depuis Paris pour livrer du code Python/TypeScript sur mesure — pas du no-code à l'année — adapté aux contraintes industrielles 4.0 et aux donneurs d'ordre automobiles.",
+    "Axion-IA accompagne les TPE et PME de Vénissieux, troisième commune la plus peuplée du Rhône (65 502 habitants en 2023) après Lyon et Villeurbanne, intégrée à la Métropole de Lyon. La ville héberge des sites industriels structurants (Renault Trucks au Parilly, Bosch, anciennement Veninov) et un tissu dense de sous-traitants automobile, métallurgie, logistique et BTP. Williams livre du code Python/TypeScript sur mesure — pas du no-code à l'année — adapté aux contraintes industrielles 4.0 et aux donneurs d'ordre automobiles.",
   directAnswerFr:
     "Axion-IA est un cabinet IA français qui sert les TPE et PME de Vénissieux et de la Métropole de Lyon. Williams se déplace sur site dans le Rhône pour livrer trois prestations : Audit sur place 4h à {{price:audit-flash|flat}} (cartographie des processus automatisables, y compris pour sous-traitants Renault Trucks ou Bosch), Formation 4 h à {{price:intervention-4h|flat}} (automatisation d'un workflow ciblé : reporting MES, qualité fournisseurs, gestion d'OF) et Implémentation longue (raccordement à l'ERP/MES existant). Tous les tarifs sont publics. Contrat DPA, hébergement UE.",
   directAnswerEn:
@@ -55,7 +55,7 @@ export const VENISSIEUX_COPY: VilleCopy = {
           "Vénissieux est une commune industrielle, pas un quartier d'affaires : nos plateformes s'adressent aux équipementiers (Aldes, génie climatique et ventilation), à la filière poids lourds (Renault Trucks et son réseau de sous-traitants) et à la métallurgie-mécanique, avec des intégrations ERP/MES qu'un site vitrine standard n'aborde jamais.",
           "La reconversion de l'ancien site Bosch en Campus industriel de Vénissieux (industrie 4.0, 11 ha au Puisoz) crée une demande concrète de portails techniques, d'extranets fournisseurs et de SaaS de suivi de production que nous développons en code maîtrisé, pas en no-code verrouillé.",
           "La ZI Lyon Sud-Est (Vénissieux–Corbas–Saint-Priest, ~900 entreprises, ~21 000 emplois) et le Marché de Gros Lyon-Corbas concentrent du négoce et de la logistique B2B : nous y déployons des e-commerces multi-CMS, des catalogues à prix négociés par client et des espaces de commande adaptés au gros volume.",
-          "Le projet urbain Grand Parilly–Puisoz et la desserte tram T4 / métro D rapprochent Vénissieux de Lyon 8e : nous nous déplaçons sur site pour le cadrage et la recette, des ateliers du Parilly aux bureaux des zones d'activité.",
+          "Le projet urbain Grand Parilly–Puisoz et la desserte tram T4 / métro D relient Vénissieux à Lyon 8e. Nous nous déplaçons sur site pour le cadrage et la recette, des ateliers du Parilly aux bureaux des zones d'activité.",
         ],
         methodology: [
           {
@@ -141,7 +141,7 @@ export const VENISSIEUX_COPY: VilleCopy = {
           "Vénissieux is an industrial town, not a business district: our platforms target equipment makers (Aldes, HVAC and ventilation), the heavy-truck supply chain (Renault Trucks and its subcontractors) and metalworking-mechanics, with ERP/MES integrations a standard showcase site never touches.",
           "The conversion of the former Bosch site into the Vénissieux Industrial Campus (Industry 4.0, 11 ha at Puisoz) creates concrete demand for technical portals, supplier extranets and production-tracking SaaS, which we build in controlled code, not locked-in no-code.",
           "The Lyon Sud-Est industrial zone (Vénissieux–Corbas–Saint-Priest, ~900 companies, ~21,000 jobs) and the Lyon-Corbas wholesale market concentrate B2B trade and logistics: we deploy multi-CMS e-commerce, per-client negotiated catalogues and high-volume ordering spaces there.",
-          "The Grand Parilly–Puisoz urban project and the T4 tram / Metro D service bring Vénissieux close to Lyon's 8th: we travel on site for framing and acceptance, from Parilly workshops to the industrial-zone offices.",
+          "The Grand Parilly–Puisoz urban project and the T4 tram / Metro D service connect Vénissieux to Lyon's 8th. We travel on site for framing and acceptance, from Parilly workshops to the industrial-zone offices.",
         ],
         methodology: [
           {
@@ -247,7 +247,7 @@ export const VENISSIEUX_COPY: VilleCopy = {
     },
     {
       q: "Williams se déplace-t-il vraiment sur site à Vénissieux ou tout se fait à distance ?",
-      a: "Williams se déplace physiquement à Vénissieux (TGV Paris-Lyon Part-Dieu 2h + métro D direct) pour les phases Audit et Implémentation. Les développements code sont remote, avec démos hebdomadaires et recette sur site dans la ZI ou au Parilly.",
+      a: "Williams se déplace physiquement à Vénissieux pour les phases Audit et Implémentation. Les développements code sont remote, avec démos hebdomadaires et recette sur site dans la ZI ou au Parilly.",
     },
   ],
 };

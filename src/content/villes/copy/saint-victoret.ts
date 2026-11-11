@@ -64,8 +64,8 @@ export const SAINT_VICTORET_COPY: VilleCopy = {
       a: "Oui, nous implémentons des solutions IA pour le fret : optimisation planification chargements, traçabilité documentaire, maintenance prédictive équipements, automatisation déclarations douanières.",
     },
     {
-      q: "Comment se déplace Axion-IA à Saint-Victoret ?",
-      a: "Saint-Victoret est à 5 min de l'aéroport et 25 min de Marseille par A55. Nos consultants se déplacent dans vos locaux.",
+      q: "Comment se passe une intervention à Saint-Victoret ?",
+      a: "Nous intervenons partout en France, sur place ou à distance. Saint-Victoret est à 5 min de l'aéroport et 25 min de Marseille par A55.",
     },
   ],
 };

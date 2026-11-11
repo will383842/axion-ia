@@ -49,7 +49,7 @@ export const ROOST_WARENDIN_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Roost-Warendin et dans l'agglomération de Douai ?",
-      a: "Oui, Axion-IA intervient à Roost-Warendin et dans toute la Communauté d'Agglomération du Douaisis (Douai, Sin-le-Noble, Lallaing, Pecquencourt). Nos consultants se déplacent depuis Lille en 35 min ou Douai en 8 min.",
+      a: "Oui, Axion-IA intervient à Roost-Warendin et dans toute la Communauté d'Agglomération du Douaisis (Douai, Sin-le-Noble, Lallaing, Pecquencourt). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Roost-Warendin  ?",
@@ -65,7 +65,7 @@ export const ROOST_WARENDIN_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission Axion-IA à Roost-Warendin ?",
-      a: "Nos consultants interviennent depuis Douai (8 min) ou Lille (35 min via A21). Roost-Warendin étant intégrée à l'agglomération douaisienne, déplacements sans surcoût hébergement. Sessions sur site ou en visio selon vos préférences.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Roost-Warendin est intégrée à l'agglomération douaisienne. Sessions sur site ou en visio selon vos préférences.",
     },
   ],
 };

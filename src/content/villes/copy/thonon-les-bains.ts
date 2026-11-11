@@ -18,9 +18,9 @@ export const THONON_LES_BAINS_COPY: VilleCopy = {
   ecosystemEn:
     "Thonon-les-Bains tire son identité de l'eau : eau minérale réputée, thermalisme et tourisme sur les rives du lac Léman façonnent une économie où l'hôtellerie, la restauration et les loisirs occupent une place centrale. Ville frontalière, elle profite aussi du dynamisme du bassin lémanique et du travail frontalier vers Genève et Lausanne, qui soutient un commerce de proximité actif et des PME de services. Les artisans du bâtiment et les professions de santé complètent ce tissu, où l'IA peut optimiser la gestion saisonnière, les réservations et la relation client.",
   distancesFr:
-    "Genève et son aéroport à 45 min, Lausanne par bateau à 30 min, Annemasse à 35 min, Évian à 10 min et Annecy à 1h. Nos consultants se déplacent depuis Lyon, Annecy et Genève.",
+    "Genève et son aéroport à 45 min, Lausanne par bateau à 30 min, Annemasse à 35 min, Évian à 10 min et Annecy à 1h. Nous intervenons partout en France, sur place ou à distance.",
   distancesEn:
-    "Genève et son aéroport à 45 min, Lausanne par bateau à 30 min, Annemasse à 35 min, Évian à 10 min et Annecy à 1h. Nos consultants se déplacent depuis Lyon, Annecy et Genève.",
+    "Genève et son aéroport à 45 min, Lausanne par bateau à 30 min, Annemasse à 35 min, Évian à 10 min et Annecy à 1h. Nous intervenons partout en France, sur place ou à distance.",
   topSectorsNaf: [
     "Hôtellerie et tourisme lacustre",
     "Thermalisme et bien-être",
@@ -230,7 +230,7 @@ export const THONON_LES_BAINS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Thonon-les-Bains et dans le Chablais ?",
-      a: "Oui, Axion-IA accompagne les TPE et PME de Thonon-les-Bains, Évian, Annemasse et tout le Chablais. Nos consultants se déplacent depuis Lyon, Annecy et Genève pour les missions sur site.",
+      a: "Oui, Axion-IA accompagne les TPE et PME de Thonon-les-Bains, Évian, Annemasse et tout le Chablais. Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec l'hôtellerie et les acteurs du tourisme ?",

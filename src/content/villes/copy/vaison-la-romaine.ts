@@ -49,7 +49,7 @@ export const VAISON_LA_ROMAINE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Vaison-la-Romaine et dans le Haut-Vaucluse ?",
-      a: "Oui, Axion-IA intervient à Vaison-la-Romaine et dans tout le Haut-Vaucluse (Cairanne, Rasteau, Sablet, Séguret, Buisson). Consultants accessibles en 30 min depuis Orange et 50 min depuis Avignon.",
+      a: "Oui, Axion-IA intervient à Vaison-la-Romaine et dans tout le Haut-Vaucluse (Cairanne, Rasteau, Sablet, Séguret, Buisson). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quels services IA pour les domaines viticoles Cairanne et Côtes-du-Rhône ?",
@@ -65,7 +65,7 @@ export const VAISON_LA_ROMAINE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Vaison-la-Romaine ?",
-      a: "Nos consultants interviennent depuis Orange (30 min) ou Avignon (50 min). Déplacement sur site dans vos locaux professionnels, domaine viticole, hébergement, restaurant ou commerce. Haut-Vaucluse accessible via A7 et D975.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Déplacement sur site dans vos locaux professionnels, domaine viticole, hébergement, restaurant ou commerce. Haut-Vaucluse accessible via A7 et D975.",
     },
   ],
 };

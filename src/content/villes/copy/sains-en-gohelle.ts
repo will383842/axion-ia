@@ -49,7 +49,7 @@ export const SAINS_EN_GOHELLE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il a Sains-en-Gohelle et dans le bassin minier ?",
-      a: "Oui, Axion-IA intervient a Sains-en-Gohelle et dans tout le bassin minier (Bully-les-Mines, Grenay, Lens, Bethune). Consultants depuis Lille (55 min TER) ou Paris (TGV 1h15 via Lens).",
+      a: "Oui, Axion-IA intervient a Sains-en-Gohelle et dans tout le bassin minier (Bully-les-Mines, Grenay, Lens, Bethune). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quels services IA pour les professionnels de sante de Sains-en-Gohelle ?",

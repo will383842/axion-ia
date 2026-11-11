@@ -49,7 +49,7 @@ export const WITTENHEIM_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Wittenheim et dans le bassin potassique ?",
-      a: "Oui, Axion-IA intervient à Wittenheim et dans toute m2A nord (Kingersheim, Illzach, Sausheim, Cernay). Nos consultants se déplacent depuis Strasbourg en 1h via l'A35, ou Mulhouse centre en 10 min.",
+      a: "Oui, Axion-IA intervient à Wittenheim et dans toute m2A nord (Kingersheim, Illzach, Sausheim, Cernay). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Tarifs audit IA à Wittenheim  : quel budget prévoir ?",
@@ -65,7 +65,7 @@ export const WITTENHEIM_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission Axion-IA à Wittenheim ?",
-      a: "Nos consultants interviennent depuis Strasbourg en 1h via l'A35, ou depuis Mulhouse centre en 10 min. Wittenheim appartient à Mulhouse Alsace Agglomération, déplacements quotidiens sans surcoût hébergement. Sessions sur site ou en visio selon vos préférences.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Wittenheim appartient à Mulhouse Alsace Agglomération. Sessions sur site ou en visio selon vos préférences.",
     },
   ],
 };

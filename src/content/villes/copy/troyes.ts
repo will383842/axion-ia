@@ -18,9 +18,9 @@ export const TROYES_COPY: VilleCopy = {
   ecosystemEn:
     "Troyes doit sa renommée à la bonneterie et à la maille, dont l'héritage perdure à travers les marques de prêt-à-porter et le concept des magasins d'usine qui attirent une clientèle nationale. La proximité du vignoble champenois de l'Aube soutient une filière de producteurs et de négociants, tandis que l'agroalimentaire et la logistique structurent une part de l'emploi. Le centre médiéval à pans de bois nourrit un tourisme et un commerce de proximité dynamiques. Sur ce tissu de TPE et PME, l'IA peut automatiser la gestion des stocks, le e-commerce et la relation client.",
   distancesFr:
-    "Paris-Gare de l'Est à 1h30 en train, aéroport de Paris-Vatry à 1h, Reims à 1h15 et Dijon à 1h45. Nos consultants se déplacent depuis Paris et Reims.",
+    "Paris-Gare de l'Est à 1h30 en train, aéroport de Paris-Vatry à 1h, Reims à 1h15 et Dijon à 1h45. Nous intervenons partout en France, sur place ou à distance.",
   distancesEn:
-    "Paris-Gare de l'Est à 1h30 en train, aéroport de Paris-Vatry à 1h, Reims à 1h15 et Dijon à 1h45. Nos consultants se déplacent depuis Paris et Reims.",
+    "Paris-Gare de l'Est à 1h30 en train, aéroport de Paris-Vatry à 1h, Reims à 1h15 et Dijon à 1h45. Nous intervenons partout en France, sur place ou à distance.",
   topSectorsNaf: [
     "Textile, maille et magasins d'usine",
     "Champagne et viticulture de l'Aube",
@@ -230,7 +230,7 @@ export const TROYES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Troyes et dans l'Aube ?",
-      a: "Oui, Axion-IA accompagne les TPE et PME de Troyes, Saint-André-les-Vergers, Romilly-sur-Seine et tout le département. Nos consultants se déplacent depuis Paris et Reims pour les missions sur site.",
+      a: "Oui, Axion-IA accompagne les TPE et PME de Troyes, Saint-André-les-Vergers, Romilly-sur-Seine et tout le département. Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les acteurs du textile et des magasins d'usine ?",

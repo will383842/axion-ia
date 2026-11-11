@@ -238,7 +238,7 @@ export const VILLENEUVE_LA_GARENNE_COPY: VilleCopy = {
     },
     {
       q: "Intervenez-vous sur site à Villeneuve-la-Garenne ?",
-      a: "Oui. La commune est reliée au tramway T1, au RER C à proximité et à l'A86. Un expert senior se déplace dans vos locaux pour les ateliers de cadrage et les étapes clés, le reste du projet pouvant être mené à distance.",
+      a: "Oui. Un expert senior se déplace dans vos locaux pour les ateliers de cadrage et les étapes clés, le reste du projet pouvant être mené à distance. Villeneuve-la-Garenne est reliée au tramway T1, au RER C et à l'A86.",
     },
     {
       q: "Par où commencer un projet IA à Villeneuve-la-Garenne ?",

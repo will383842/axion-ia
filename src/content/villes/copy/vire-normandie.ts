@@ -49,7 +49,7 @@ export const VIRE_NORMANDIE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Vire Normandie et dans le bocage ?",
-      a: "Oui, Axion-IA intervient à Vire Normandie et tout le Bocage virois (Souleuvre-en-Bocage, Condé-en-Normandie, Valdallière, Tinchebray-Bocage). Consultants depuis Caen (1h A84).",
+      a: "Oui, Axion-IA intervient à Vire Normandie et tout le Bocage virois (Souleuvre-en-Bocage, Condé-en-Normandie, Valdallière, Tinchebray-Bocage). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les entreprises agroalimentaires du bocage ?",
@@ -64,8 +64,8 @@ export const VIRE_NORMANDIE_COPY: VilleCopy = {
       a: "L'Audit sur place démarre à {{price:audit-flash|flat}}. Tarifs publics consultables sur notre site. Devis adapté selon la taille de votre structure (TPE, PME, ETI) et la complexité de vos processus métier.",
     },
     {
-      q: "Comment se déroule une mission IA depuis Caen ?",
-      a: "Nos consultants viennent de Caen (1h A84) ou Flers (25 min). Pour les missions multi-jours, hébergement local possible.",
+      q: "Comment se déroule une mission IA à Vire Normandie ?",
+      a: "Nous intervenons partout en France, sur place ou à distance. Pour les missions multi-jours, hébergement local possible.",
     },
   ],
 };

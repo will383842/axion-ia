@@ -49,7 +49,7 @@ export const SAINT_DENIS_DE_PILE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Saint-Denis-de-Pile ?",
-      a: "Oui, Axion-IA intervient à Saint-Denis-de-Pile et dans le Libournais (Libourne, Coutras, Izon). Nos consultants se déplacent depuis Bordeaux (30 min A89) ou Paris (TGV Libourne 3h).",
+      a: "Oui, Axion-IA intervient à Saint-Denis-de-Pile et dans le Libournais (Libourne, Coutras, Izon). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Tarifs audit IA à Saint-Denis-de-Pile  : quel budget prévoir ?",
@@ -65,7 +65,7 @@ export const SAINT_DENIS_DE_PILE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Saint-Denis-de-Pile ?",
-      a: "Nos consultants interviennent dans vos locaux ou en visio. Gare TER Saint-Denis-de-Pile. Livrables documentés, tarifs publics.",
+      a: "Nos consultants interviennent dans vos locaux ou en visio. Nous intervenons partout en France, sur place ou à distance. Livrables documentés, tarifs publics.",
     },
   ],
 };
