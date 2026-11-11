@@ -100,10 +100,7 @@ export default async function DevenirCommercialHub({ params }: Props) {
         })}
         scriptId="jsonld-commercial-webpage"
       />
-      <JsonLd
-        data={faqApporteurs(faq)}
-        scriptId="jsonld-commercial-faq"
-      />
+      <JsonLd data={faqApporteurs(faq)} scriptId="jsonld-commercial-faq" />
 
       <StickyMobileCta
         href={DOSSIER}
