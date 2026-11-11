@@ -20,10 +20,37 @@ const bd = vi.hoisted(() => ({
   enfile: { reponse: { enqueued: true } as Record<string, unknown> },
   echecFinal: false,
   n: 0,
+  contacts: [] as Ligne[],
+  suppressionsContacts: 0,
 }));
 
 vi.mock("@/lib/prisma", () => ({
   prisma: {
+    contactGuideReseau: {
+      updateMany: async ({
+        where,
+        data,
+      }: {
+        where: { emailKey: string; merciStatut: { notIn: string[] } };
+        data: Ligne;
+      }) => {
+        const cibles = bd.contacts.filter(
+          (c) =>
+            c.emailKey === where.emailKey &&
+            !where.merciStatut.notIn.includes(String(c.merciStatut)),
+        );
+        cibles.forEach((c) => Object.assign(c, data));
+        return { count: cibles.length };
+      },
+      deleteMany: async () => {
+        bd.suppressionsContacts++;
+        throw new Error("interdit : aucune suppression");
+      },
+      delete: async () => {
+        bd.suppressionsContacts++;
+        throw new Error("interdit : aucune suppression");
+      },
+    },
     guideRequest: {
       findUnique: async () => null,
       create: async () => {
@@ -89,6 +116,7 @@ vi.mock("@/server/queue/queues", () => ({
 import { POST } from "@/app/api/interne/demandes-guide-reseau/route";
 import { signerRequete } from "@/server/videos/signature";
 import { analyserCorps } from "../contrat";
+import { hashEmailForLookup } from "@/lib/security/email-hash";
 
 const SECRET = "s".repeat(40);
 const CHEMIN = "/api/interne/demandes-guide-reseau";
@@ -144,6 +172,8 @@ beforeEach(() => {
   bd.enfile.reponse = { enqueued: true };
   bd.echecFinal = false;
   bd.n = 0;
+  bd.contacts.length = 0;
+  bd.suppressionsContacts = 0;
   process.env.GUIDES_RESEAU_ENABLED = "true";
   process.env.VIDEOS_STUDIO_HMAC_SECRET = SECRET;
   process.env.DATABASE_URL = "postgresql://u:p@db.example.test:5432/x";
@@ -233,6 +263,71 @@ describe("demande d'effacement", () => {
     expect(bd.journal).toHaveLength(0);
     expect(bd.alertes).toHaveLength(0);
     expect(bd.ecartees).toHaveLength(0);
+  });
+});
+
+describe("demande d'effacement : contacts de la page guide mis à l'écart", () => {
+  const cle = hashEmailForLookup(ADRESSE)!;
+  const cleAutre = hashEmailForLookup("autre@exemple.test")!;
+
+  function contacts() {
+    bd.contacts.push(
+      { id: "c1", emailKey: cle, merciStatut: "a_envoyer" },
+      { id: "c2", emailKey: cle, merciStatut: "envoye" },
+      { id: "c3", emailKey: cle, merciStatut: "ecartee" },
+      { id: "c4", emailKey: cleAutre, merciStatut: "a_envoyer" },
+      { id: "marque", emailKey: "-", merciStatut: "a_envoyer" },
+    );
+  }
+  const statut = (id: string) => bd.contacts.find((c) => c.id === id)!.merciStatut;
+
+  it("les contacts de l'adresse passent à ecarte ; aucun deleteMany ; UNE alerte masquée", async () => {
+    contacts();
+    expect((await appel()).status).toBe(200);
+    expect(statut("c1")).toBe("ecarte");
+    expect(statut("c2")).toBe("ecarte");
+    expect(bd.suppressionsContacts).toBe(0);
+    expect(bd.contacts).toHaveLength(5);
+    expect(bd.alertes).toHaveLength(1);
+    expect(JSON.stringify(bd.alertes)).not.toContain(ADRESSE);
+    expect(JSON.stringify(bd.alertes)).toContain("p****@exemple.test");
+  });
+
+  it("l'ancienne graphie ecartee n'est pas réécrite", async () => {
+    contacts();
+    await appel();
+    expect(statut("c3")).toBe("ecartee");
+  });
+
+  it("les lignes d'une autre adresse ne bougent pas, ni la marque email_key='-'", async () => {
+    contacts();
+    await appel();
+    expect(statut("c4")).toBe("a_envoyer");
+    expect(statut("marque")).toBe("a_envoyer");
+  });
+
+  it("adresse inconnue : aucune ligne touchée, pas d'erreur, alerte quand même", async () => {
+    contacts();
+    const r = await appel({ ...effacement, email: "inconnue@exemple.test" });
+    expect(r.status).toBe(200);
+    expect(bd.contacts.map((c) => c.merciStatut)).toEqual([
+      "a_envoyer",
+      "envoye",
+      "ecartee",
+      "a_envoyer",
+      "a_envoyer",
+    ]);
+    expect(bd.alertes).toHaveLength(1);
+  });
+
+  it("rejeu : aucun changement de plus, toujours une seule alerte, jamais de suppression", async () => {
+    contacts();
+    await appel();
+    const apres = JSON.stringify(bd.contacts);
+    await appel();
+    expect(JSON.stringify(bd.contacts)).toBe(apres);
+    expect(bd.alertes).toHaveLength(1);
+    expect(bd.suppressionsContacts).toBe(0);
   });
 });
 

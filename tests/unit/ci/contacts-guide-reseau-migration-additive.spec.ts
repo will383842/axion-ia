@@ -115,13 +115,16 @@ describe("migration contacts_guide_reseau : additive", () => {
     // la mise à l'écart de l'effacement art. 17, et (lot S3) le lecteur au clic du lien du guide
     // (`clic-page-guide.ts` : un `findFirst` seulement, aucune écriture ni suppression), et le
     // rattrapage horaire du guide (`rattrapage.ts` : un `findFirst` pour savoir si la demande vient
-    // de la page, afin de rendre le lien de désinscription ; aucune écriture ni suppression).
+    // de la page, afin de rendre le lien de désinscription ; aucune écriture ni suppression), et
+    // la mise à l'écart par adresse (`mise-a-l-ecart.ts` : un `updateMany` vers `ecarte`, jamais
+    // de suppression ; appelé par l'effacement et l'opposition reçus en message privé).
     expect(fautifs).toEqual([
       "src/app/guide-reseau/route.ts",
       "src/lib/rgpd-erase.ts",
       "src/lib/rgpd-guide-reseau.ts",
       "src/server/guide-ia/rattrapage.ts",
       "src/server/guides-reseau/clic-page-guide.ts",
+      "src/server/guides-reseau/mise-a-l-ecart.ts",
       "src/server/guides-reseau/page-confirmation.ts",
     ]);
   });

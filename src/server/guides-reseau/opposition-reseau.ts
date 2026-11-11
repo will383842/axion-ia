@@ -21,6 +21,7 @@ import { enregistrerOppositionPourAdresse } from "@/server/email/opposition";
 import type { EntreeSignee } from "@/server/videos/entree";
 import { reponseJson } from "@/server/videos/reponse";
 import { ORIGINE_OPPOSITION_RESEAU_STOP } from "./config";
+import { mettreContactsAEcart } from "./mise-a-l-ecart";
 
 export const SchemaOppositionReseau = z
   .object({
@@ -78,6 +79,8 @@ export async function recevoirOpposition(e: EntreeSignee): Promise<Response> {
     if (!r.ok || !r.crmAverti) {
       return reponseJson(500, { ok: false, erreur: "erreur_interne" });
     }
+    // Contacts de la page guide : `merci_statut` → « ecarte » (jamais supprimés ; rejeu sans effet).
+    await mettreContactsAEcart(d.email);
   } catch (err) {
     try {
       Sentry.captureException(
