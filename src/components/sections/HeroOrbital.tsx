@@ -4,7 +4,7 @@
 // Différences vs `ImplementationHeroSchema` (orbital générique) :
 //  - Glyphes brand SVG inline dans chaque satellite (ChatGPT, Claude, Mistral,
 //    Copilot, Perplexity, Midjourney, Sora, HeyGen) au lieu de dots colorés.
-//  - Plus de profondeur visuelle : gradients radiaux sur les satellites, ombre
+//  - Plus de profondeur visuelle : satellites en aplat, ombre
 //    portée subtile, anneau supplémentaire de raffinement.
 //  - Typo serif italique sur les labels d'outils (cohérent identité Axion-IA
 //    éditoriale).
@@ -73,8 +73,6 @@ const BRAND_LOGOS: Record<ToolNode["slug"], { path: string; mode: "fill" | "stro
     mode: "stroke",
   },
 };
-
-const ACCENTS: readonly Accent[] = ["terracotta", "primary", "sage", "mocha"];
 
 const accentColor: Record<Accent, string> = {
   terracotta: "var(--color-terracotta)",
@@ -154,26 +152,6 @@ export function HeroOrbital({
         <defs>
           {/* Halos atmosphériques diffus — terracotta centre, primary haut-droit,
               sage bas-gauche. Crée un effet de lumière naturelle. */}
-          <radialGradient id="ho-halo-tc" cx="50%" cy="50%" r="50%">
-            <stop offset="0%" stopColor="var(--color-terracotta)" stopOpacity="0.32" />
-            <stop offset="55%" stopColor="var(--color-terracotta)" stopOpacity="0.08" />
-            <stop offset="100%" stopColor="var(--color-terracotta)" stopOpacity="0" />
-          </radialGradient>
-          <radialGradient id="ho-halo-pr" cx="50%" cy="50%" r="50%">
-            <stop offset="0%" stopColor="var(--color-primary)" stopOpacity="0.16" />
-            <stop offset="100%" stopColor="var(--color-primary)" stopOpacity="0" />
-          </radialGradient>
-          <radialGradient id="ho-halo-sg" cx="50%" cy="50%" r="50%">
-            <stop offset="0%" stopColor="var(--color-sage)" stopOpacity="0.18" />
-            <stop offset="100%" stopColor="var(--color-sage)" stopOpacity="0" />
-          </radialGradient>
-
-          {/* Gradient sur les satellites — bg paper → sand pour profondeur 3D
-              légère, donne un effet de "bouton physique" plutôt qu'un dot plat. */}
-          <radialGradient id="ho-satellite-bg" cx="35%" cy="35%" r="70%">
-            <stop offset="0%" stopColor="var(--color-paper)" stopOpacity="1" />
-            <stop offset="100%" stopColor="var(--color-sand)" stopOpacity="1" />
-          </radialGradient>
 
           {/* Ombre portée légère pour les satellites — donne profondeur sans
               être tape-à-l'œil. */}
@@ -197,44 +175,6 @@ export function HeroOrbital({
               strokeOpacity="0.15"
             />
           </pattern>
-          <radialGradient id="ho-grid-mask" cx="50%" cy="50%" r="55%">
-            <stop offset="0%" stopColor="white" stopOpacity="0.6" />
-            <stop offset="100%" stopColor="white" stopOpacity="0" />
-          </radialGradient>
-          <mask id="ho-vignette">
-            <rect width="100%" height="100%" fill="url(#ho-grid-mask)" />
-          </mask>
-
-          {/* Dégradé radial des connecteurs : faible au centre, vif au nœud.
-              userSpaceOnUse → s'aligne quel que soit l'angle. (cohérence v4.1) */}
-          {ACCENTS.map((a) => (
-            <radialGradient
-              key={`ho-spoke-${a}`}
-              id={`ho-spoke-${a}`}
-              gradientUnits="userSpaceOnUse"
-              cx={cx}
-              cy={cy}
-              r={rx}
-            >
-              <stop offset="0%" stopColor={accentColor[a]} stopOpacity="0.04" />
-              <stop offset="50%" stopColor={accentColor[a]} stopOpacity="0.20" />
-              <stop offset="100%" stopColor={accentColor[a]} stopOpacity="0.55" />
-            </radialGradient>
-          ))}
-
-          {/* Dégradé de l'anneau principal (fade gauche/droite). */}
-          <linearGradient id="ho-orbit" x1="0" y1="0" x2="1" y2="0">
-            <stop offset="0%" stopColor="var(--color-terracotta)" stopOpacity="0.04" />
-            <stop offset="50%" stopColor="var(--color-terracotta)" stopOpacity="0.32" />
-            <stop offset="100%" stopColor="var(--color-terracotta)" stopOpacity="0.04" />
-          </linearGradient>
-
-          {/* Sheen + base du centre (cohérence v4.1). */}
-          <radialGradient id="ho-center-sheen" cx="42%" cy="36%" r="68%">
-            <stop offset="0%" stopColor="white" stopOpacity="0.85" />
-            <stop offset="55%" stopColor="var(--color-paper)" stopOpacity="0.4" />
-            <stop offset="100%" stopColor="var(--color-paper)" stopOpacity="0" />
-          </radialGradient>
 
           {/* Ombre portée du centre. */}
           <filter id="ho-center-shadow" x="-60%" y="-60%" width="220%" height="220%">
@@ -248,13 +188,8 @@ export function HeroOrbital({
           </filter>
         </defs>
 
-        {/* Background grille avec masque vignette */}
-        <rect width={W} height={H} fill="url(#ho-grid)" mask="url(#ho-vignette)" />
-
-        {/* 3 halos atmosphériques superposés */}
-        <circle cx={cx} cy={cy} r={380} fill="url(#ho-halo-tc)" />
-        <circle cx={W - 80} cy={110} r={200} fill="url(#ho-halo-pr)" />
-        <circle cx={80} cy={H - 100} r={190} fill="url(#ho-halo-sg)" />
+        {/* Background grille */}
+        <rect width={W} height={H} fill="url(#ho-grid)" />
 
         {/* Anneaux gyroscopiques inclinés — profondeur d'un système en orbite */}
         <ellipse
@@ -309,7 +244,8 @@ export function HeroOrbital({
           cy={cy}
           rx={rx}
           ry={ry}
-          stroke="url(#ho-orbit)"
+          stroke="var(--color-terracotta)"
+          strokeOpacity="0.2"
           strokeWidth="1.25"
           fill="none"
         />
@@ -364,7 +300,8 @@ export function HeroOrbital({
               <path
                 d={`M ${cx} ${cy} Q ${ctrlX} ${ctrlY} ${pos.x} ${pos.y}`}
                 fill="none"
-                stroke={`url(#ho-spoke-${node.accent})`}
+                stroke={accentColor[node.accent]}
+                strokeOpacity="0.3"
                 strokeWidth="1.5"
                 strokeLinecap="round"
               />
@@ -395,12 +332,12 @@ export function HeroOrbital({
               <circle cx={pos.x} cy={pos.y} r={38} fill={accent} fillOpacity="0.08" />
               {/* Halo intermédiaire — couleur accent atténuée */}
               <circle cx={pos.x} cy={pos.y} r={28} fill={accent} fillOpacity="0.15" />
-              {/* Disque blanc avec gradient + ombre portée — base du satellite */}
+              {/* Disque blanc en aplat + ombre portée — base du satellite */}
               <circle
                 cx={pos.x}
                 cy={pos.y}
                 r={22}
-                fill="url(#ho-satellite-bg)"
+                fill="var(--color-paper)"
                 stroke={accent}
                 strokeWidth="2"
                 filter="url(#ho-shadow)"
@@ -488,8 +425,8 @@ export function HeroOrbital({
             strokeOpacity="0.14"
             strokeWidth="14"
           />
-          {/* Disque de base (gradient paper → sand) */}
-          <circle cx={cx} cy={cy} r={78} fill="url(#ho-satellite-bg)" />
+          {/* Disque de base (aplat) */}
+          <circle cx={cx} cy={cy} r={78} fill="var(--color-paper)" />
           {/* Anneau net */}
           <circle
             cx={cx}
@@ -501,8 +438,6 @@ export function HeroOrbital({
             strokeWidth="1.5"
           />
         </g>
-        {/* Sheen intérieur (au-dessus, hors ombre) */}
-        <circle cx={cx} cy={cy} r={78} fill="url(#ho-center-sheen)" />
         {/* Anneau hairline intérieur */}
         <circle
           cx={cx}

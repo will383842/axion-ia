@@ -112,15 +112,6 @@ function PageHeroDecoration() {
         preserveAspectRatio="xMidYMid slice"
       >
         <defs>
-          <radialGradient id="hero-halo-tc" cx="50%" cy="50%" r="50%">
-            <stop offset="0%" stopColor="var(--color-terracotta)" stopOpacity="0.18" />
-            <stop offset="60%" stopColor="var(--color-terracotta)" stopOpacity="0.04" />
-            <stop offset="100%" stopColor="var(--color-terracotta)" stopOpacity="0" />
-          </radialGradient>
-          <radialGradient id="hero-halo-pr" cx="50%" cy="50%" r="50%">
-            <stop offset="0%" stopColor="var(--color-primary)" stopOpacity="0.10" />
-            <stop offset="100%" stopColor="var(--color-primary)" stopOpacity="0" />
-          </radialGradient>
           <pattern id="hero-grid" width="40" height="40" patternUnits="userSpaceOnUse">
             <path
               d="M 40 0 L 0 0 0 40"
@@ -130,22 +121,10 @@ function PageHeroDecoration() {
               strokeOpacity="0.25"
             />
           </pattern>
-          <radialGradient id="hero-grid-mask" cx="65%" cy="50%" r="50%">
-            <stop offset="0%" stopColor="white" stopOpacity="0.5" />
-            <stop offset="100%" stopColor="white" stopOpacity="0" />
-          </radialGradient>
-          <mask id="hero-vignette-mask">
-            <rect width="100%" height="100%" fill="url(#hero-grid-mask)" />
-          </mask>
         </defs>
 
-        {/* Grid texturé fade vignette */}
-        <rect width="600" height="540" fill="url(#hero-grid)" mask="url(#hero-vignette-mask)" />
-
-        {/* Halo principal terracotta (centre-droite) */}
-        <circle cx="420" cy="270" r="280" fill="url(#hero-halo-tc)" />
-        {/* Halo secondaire primary (haut-droite) */}
-        <circle cx="520" cy="120" r="180" fill="url(#hero-halo-pr)" />
+        {/* Grid texturé (aplat) */}
+        <rect width="600" height="540" fill="url(#hero-grid)" />
 
         {/* Anneaux concentriques décoratifs */}
         <circle

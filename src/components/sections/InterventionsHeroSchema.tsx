@@ -94,19 +94,6 @@ export function InterventionsHeroSchema({
         overflow="visible"
       >
         <defs>
-          <radialGradient id="iv-halo-tc" cx="50%" cy="50%" r="50%">
-            <stop offset="0%" stopColor="var(--color-terracotta)" stopOpacity="0.25" />
-            <stop offset="60%" stopColor="var(--color-terracotta)" stopOpacity="0.06" />
-            <stop offset="100%" stopColor="var(--color-terracotta)" stopOpacity="0" />
-          </radialGradient>
-          <radialGradient id="iv-halo-pr" cx="50%" cy="50%" r="50%">
-            <stop offset="0%" stopColor="var(--color-primary)" stopOpacity="0.14" />
-            <stop offset="100%" stopColor="var(--color-primary)" stopOpacity="0" />
-          </radialGradient>
-          <radialGradient id="iv-halo-sg" cx="50%" cy="50%" r="50%">
-            <stop offset="0%" stopColor="var(--color-sage)" stopOpacity="0.18" />
-            <stop offset="100%" stopColor="var(--color-sage)" stopOpacity="0" />
-          </radialGradient>
           <pattern id="iv-grid" width="48" height="48" patternUnits="userSpaceOnUse">
             <path
               d="M 48 0 L 0 0 0 48"
@@ -116,22 +103,10 @@ export function InterventionsHeroSchema({
               strokeOpacity="0.18"
             />
           </pattern>
-          <radialGradient id="iv-grid-mask" cx="50%" cy="50%" r="55%">
-            <stop offset="0%" stopColor="white" stopOpacity="0.55" />
-            <stop offset="100%" stopColor="white" stopOpacity="0" />
-          </radialGradient>
-          <mask id="iv-vignette-mask">
-            <rect width="100%" height="100%" fill="url(#iv-grid-mask)" />
-          </mask>
         </defs>
 
-        {/* Grille texturée fade vignette */}
-        <rect width={W} height={H} fill="url(#iv-grid)" mask="url(#iv-vignette-mask)" />
-
-        {/* Halos diffus — top-right primary, bottom-left sage, centre terracotta */}
-        <circle cx={cx} cy={cy} r={360} fill="url(#iv-halo-tc)" />
-        <circle cx={W - 70} cy={120} r={160} fill="url(#iv-halo-pr)" />
-        <circle cx={70} cy={H - 110} r={150} fill="url(#iv-halo-sg)" />
+        {/* Grille texturée (aplat) */}
+        <rect width={W} height={H} fill="url(#iv-grid)" />
 
         {/* Anneaux concentriques décoratifs centre — ellipses pour matcher orbit */}
         <ellipse
