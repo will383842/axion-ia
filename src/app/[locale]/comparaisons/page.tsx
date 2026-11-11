@@ -27,13 +27,6 @@ import { ComparisonsHeroSchema } from "@/components/sections/ComparisonsHeroSche
 import { COMPARISONS } from "@/content/comparaisons";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { buildProductMetadata, SITE_URL, buildCollectionPageJsonLd } from "@/lib/seo";
-import {
-  IMPLEMENTATION_TIERS,
-  INTERVENTION_TIERS,
-  formatAmount,
-  formatAmountRange,
-  getTierById,
-} from "@/content/pricing";
 
 interface Props {
   params: Promise<{ locale: string }>;
@@ -217,8 +210,8 @@ export default async function ComparisonsListPage({ params }: Props) {
               <CardContent>
                 <p className="text-fg-soft text-sm leading-snug">
                   {isFr
-                    ? `Recommandation par défaut : SaaS générique ou cabinet en mission courte (formation collective ${formatAmount(getTierById(INTERVENTION_TIERS, "formation-generale-1j").priceFlat!, "fr", { compact: true })}). Pas d'investissement custom à ce stade.`
-                    : `Default recommendation: generic SaaS or short consultancy mission (group training ${formatAmount(getTierById(INTERVENTION_TIERS, "formation-generale-1j").priceFlat!, "en", { compact: true })}). No custom investment at this stage.`}
+                    ? `Recommandation par défaut : SaaS générique ou cabinet en mission courte (formation collective). Pas d'investissement custom à ce stade.`
+                    : `Default recommendation: generic SaaS or short consultancy mission (group training). No custom investment at this stage.`}
                 </p>
               </CardContent>
             </Card>
@@ -257,8 +250,8 @@ export default async function ComparisonsListPage({ params }: Props) {
               <CardContent>
                 <p className="text-fg-soft text-sm leading-snug">
                   {isFr
-                    ? `Recommandation par défaut : équipe interne renforcée par cabinet IA en architecture + IA Custom (${formatAmountRange(getTierById(IMPLEMENTATION_TIERS, "impl-ia-custom").priceMin!, getTierById(IMPLEMENTATION_TIERS, "impl-ia-custom").priceMax!, "fr", { compact: true })}). Désengagement progressif des SaaS.`
-                    : `Default recommendation: in-house team augmented by AI consultancy on architecture + Custom AI (${formatAmountRange(getTierById(IMPLEMENTATION_TIERS, "impl-ia-custom").priceMin!, getTierById(IMPLEMENTATION_TIERS, "impl-ia-custom").priceMax!, "en", { compact: true })}). Progressive SaaS disengagement.`}
+                    ? `Recommandation par défaut : équipe interne renforcée par cabinet IA en architecture + IA Custom (sur devis). Désengagement progressif des SaaS.`
+                    : `Default recommendation: in-house team augmented by AI consultancy on architecture + Custom AI (on quote). Progressive SaaS disengagement.`}
                 </p>
               </CardContent>
             </Card>
@@ -287,8 +280,8 @@ export default async function ComparisonsListPage({ params }: Props) {
         title={isFr ? "Une décision IA à prendre ?" : "An AI decision to make?"}
         description={
           isFr
-            ? `Réservez notre formation en groupe ${formatAmount(getTierById(INTERVENTION_TIERS, "formation-generale-1j").priceFlat!, "fr", { compact: true })} : on cartographie votre situation et on tranche sur vos données, pas sur des slides.`
-            : `Book our group training ${formatAmount(getTierById(INTERVENTION_TIERS, "formation-generale-1j").priceFlat!, "en", { compact: true })}: we map your situation and decide on your data, not on slides.`
+            ? `Réservez notre formation en groupe : on cartographie votre situation et on tranche sur vos données, pas sur des slides.`
+            : `Book our group training: we map your situation and decide on your data, not on slides.`
         }
         cta={
           <Cta href="/formations" size="lg">

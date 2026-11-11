@@ -8,6 +8,10 @@
 // parties VARIABLES par ville (territoire de vente, secteurs réels, bassin) sont
 // dérivées des données INSEE/economic-data dans les composants, pas ici.
 //
+// R7 (08/11/2026) : aucun barème ni promesse au public tant que
+// `COMMISSIONS_PUBLIQUES_AFFICHEES` est faux (`commission-publique.ts`).
+import { COMMISSIONS_PUBLIQUES_AFFICHEES } from "./commission-publique";
+
 // FR canonique — EN miroir (locale EN 301→FR, règle Will 2026-05-16). On garde
 // les deux langues pour ne pas casser le pré-rendu FR+EN.
 
@@ -161,10 +165,12 @@ export const COMMERCIAL_STEPS: ReadonlyArray<CommercialStep> = [
   {
     titleFr: "Vos commissions, à l'encaissement",
     titleEn: "Your commissions, on collection",
-    textFr:
-      "À titre indicatif : commission fixe sur les formations, pourcentage de la facture sur les audits et les intégrations. Plus vous recommandez d'entreprises, plus vos commissions progressent.",
-    textEn:
-      "As an indication: flat commission on trainings, a percentage of the invoice on audits and integrations. The more companies you introduce, the more your commissions grow.",
+    textFr: COMMISSIONS_PUBLIQUES_AFFICHEES
+      ? "À titre indicatif : commission fixe sur les formations, pourcentage de la facture sur les audits et les intégrations. Plus vous recommandez d'entreprises, plus vos commissions progressent."
+      : "Vous êtes payé à la commission sur chaque mission signée et payée ; son mode de calcul est détaillé dans votre contrat d'apporteur.",
+    textEn: COMMISSIONS_PUBLIQUES_AFFICHEES
+      ? "As an indication: flat commission on trainings, a percentage of the invoice on audits and integrations. The more companies you introduce, the more your commissions grow."
+      : "You are paid on commission for every engagement signed and paid; how it is calculated is set out in your referral agreement.",
   },
 ];
 
@@ -265,8 +271,12 @@ export const COMMERCIAL_FAQ_FIXED: ReadonlyArray<FaqItem> = [
   {
     q: { fr: "Quel statut et quelle rémunération ?", en: "What status and pay?" },
     a: {
-      fr: "Statut indépendant. Vous êtes payé à la commission : montant fixe par formation vendue, pourcentage de la facture sur les audits et les intégrations. Le barème publié est indicatif : votre contrat d'apporteur fait foi.",
-      en: "Self-employed. You're paid on commission: a flat amount per training sold, a percentage of the invoice on audits and integrations. The published rates are indicative: your referral agreement prevails.",
+      fr: COMMISSIONS_PUBLIQUES_AFFICHEES
+        ? "Statut indépendant. Vous êtes payé à la commission : montant fixe par formation vendue, pourcentage de la facture sur les audits et les intégrations. Le barème publié est indicatif : votre contrat d'apporteur fait foi."
+        : "Statut indépendant. Vous êtes payé à la commission sur chaque mission signée et payée ; son mode de calcul est détaillé dans votre contrat d'apporteur.",
+      en: COMMISSIONS_PUBLIQUES_AFFICHEES
+        ? "Self-employed. You're paid on commission: a flat amount per training sold, a percentage of the invoice on audits and integrations. The published rates are indicative: your referral agreement prevails."
+        : "Self-employed. You're paid on commission for every engagement signed and paid; how it is calculated is set out in your referral agreement.",
     },
   },
   {

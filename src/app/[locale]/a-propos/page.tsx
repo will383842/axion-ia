@@ -29,7 +29,6 @@ import {
 import { buildSpeakableSpecification } from "@/lib/seo/speakable-universal";
 // Prix formation dérivé du SSOT (jamais hardcodé) — même entrée de gamme que la
 // page /tarifs vers laquelle la réponse renvoie (audit FAQ prix 2026-07-06).
-import { formatAmount, getTierById, INTERVENTION_TIERS } from "@/content/pricing";
 // Nom du fondateur via SSOT `FOUNDER` (displayName « Williams ») — Q/R PAA entité.
 import { FOUNDER, FOUNDER_PERSON_ID } from "@/lib/brand";
 // Flag divulgation OF (Qualiopi/financement) — les Q/R Qualiopi/financement ne
@@ -161,7 +160,7 @@ export default async function About({ params }: Props) {
           id: "couverture-paris",
           question: "Axion-IA intervient-il à Paris et en Île-de-France ?",
           answer:
-            "Oui. Paris et l'Île-de-France sont le premier terrain d'intervention d'Axion-IA : audits, formations et implémentations y sont assurés dans les arrondissements parisiens et la première couronne, au même tarif public qu'en région. Les interventions sont menées partout en France.",
+            "Oui. Paris et l'Île-de-France sont le premier terrain d'intervention d'Axion-IA : audits, formations et implémentations y sont assurés dans les arrondissements parisiens et la première couronne, aux mêmes conditions tarifaires qu'en région. Les interventions sont menées partout en France.",
         },
         {
           id: "depuis-quand",
@@ -189,7 +188,8 @@ export default async function About({ params }: Props) {
         {
           id: "prix-formation-ia",
           question: "Combien coûte une formation IA en entreprise ?",
-          answer: `Les formations IA en entreprise démarrent à ${formatAmount(getTierById(INTERVENTION_TIERS, "intervention-4h").priceFlat!, "fr")} HT pour un format court sur site. Le prix varie ensuite selon la durée, la gamme et le nombre de participants. Tous les tarifs sont publics sur la page Tarifs, et le devis précis se construit après un échange sur votre contexte.`,
+          answer:
+            "Les formations IA en entreprise sont établies sur devis, par groupe : le prix dépend de la durée (de 4 h à 2 jours), du format et du nombre de participants. Le devis précis se construit après un échange sur votre contexte, sous 48 h ouvrées.",
         },
         {
           id: "contact",
@@ -236,7 +236,7 @@ export default async function About({ params }: Props) {
           id: "couverture-paris",
           question: "Does Axion-IA operate in Paris and the Île-de-France region?",
           answer:
-            "Yes. Paris and Greater Paris are Axion-IA's primary engagement ground: audits, training and implementations are delivered in the Paris arrondissements and inner suburbs, at the same public rate as the rest of the country. Engagements are run across France.",
+            "Yes. Paris and Greater Paris are Axion-IA's primary engagement ground: audits, training and implementations are delivered in the Paris arrondissements and inner suburbs, on the same pricing terms as the rest of the country. Engagements are run across France.",
         },
         {
           id: "depuis-quand",
@@ -264,7 +264,8 @@ export default async function About({ params }: Props) {
         {
           id: "prix-formation-ia",
           question: "How much does corporate AI training cost?",
-          answer: `Corporate AI training starts at ${formatAmount(getTierById(INTERVENTION_TIERS, "intervention-4h").priceFlat!, "en")} ex. VAT for a short on-site format. The price then varies with duration, track and number of participants. All rates are public on the Pricing page, and the precise quote is built after a call about your context.`,
+          answer:
+            "Corporate AI training is quoted per group: the price depends on duration (4 h to 2 days), format and number of participants. The precise quote is built after a call about your context, within 48 business hours.",
         },
         {
           id: "contact",

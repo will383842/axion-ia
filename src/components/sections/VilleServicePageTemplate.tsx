@@ -37,7 +37,7 @@ import {
   IMPLEMENTATION_TIERS,
   UN_A_UN_TIERS,
   CODAGE_TIERS,
-  formatPrice,
+  formatPricePublic,
   getEntryPriceEur,
   getEntryTier,
 } from "@/content/pricing";
@@ -230,8 +230,8 @@ export async function buildPageMetadata(
       ? serviceCopy.fr.hero.slice(0, 157) + (serviceCopy.fr.hero.length > 157 ? "…" : "")
       : serviceCopy.en.hero.slice(0, 157) + (serviceCopy.en.hero.length > 157 ? "…" : "")
     : isFr
-      ? `Axion-IA délivre ${meta.nameFr.toLowerCase()} à ${ville.nameFr} sur site. Tarifs publics affichés, calendrier en temps réel, vous gardez la main sur vos données.`
-      : `Axion-IA delivers ${meta.nameEn.toLowerCase()} in ${ville.nameFr} on site. Public pricing displayed, real-time calendar, you keep control of your data.`;
+      ? `Axion-IA délivre ${meta.nameFr.toLowerCase()} à ${ville.nameFr} sur site. Devis sous 48 h ouvrées, calendrier en temps réel, vous gardez la main sur vos données.`
+      : `Axion-IA delivers ${meta.nameEn.toLowerCase()} in ${ville.nameFr} on site. Quote within 48 business hours, real-time calendar, you keep control of your data.`;
 
   const result = await buildProductMetadata({
     locale,
@@ -307,7 +307,9 @@ export async function renderVilleServicePage({
     ? isFr
       ? "sur devis"
       : "on quote"
-    : formatPrice(getEntryTier(meta.tiers), isFr ? "fr" : "en");
+    : // R7 (ordre de Williams du 08/11/2026) : « Sur devis » tant que l'interrupteur
+      // des prix publics de pricing.ts est coupé.
+      formatPricePublic(getEntryTier(meta.tiers), isFr ? "fr" : "en");
   // sites-web = prestation sur devis/projet (pas de réservation agenda ni
   // d'acompte) → CTA alignés sur le header : « Réserver un appel » (/appel) +
   // « Nous écrire » (/contact). Les autres verticales gardent le flux calendrier.

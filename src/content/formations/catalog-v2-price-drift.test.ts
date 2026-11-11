@@ -50,11 +50,10 @@ describe("Garde anti-dérive — prix prose catalog-v2 ⊆ FORMATION_PRICE_MATRI
       }
     });
 
-    // Refonte 2026-07-19 : les prix sont PUBLICS → des montants € figurent en
-    // prose (metaDescription notamment). Ils doivent tous exister dans la
-    // matrice SSOT ; on vérifie aussi qu'au moins un montant est scanné (si le
-    // scan tombe à 0, le pattern de détection a probablement cassé).
-    expect(scanned, "au moins un prix € attendu en prose (prix publics)").toBeGreaterThan(0);
+    // R7 (ordre de Williams du 08/11/2026) : plus aucun prix de formation au public.
+    // La prose (metaDescription notamment) dit « Prix par groupe sur devis » : AUCUN
+    // montant ne doit plus y être scanné. (Avant R7 : au moins un montant attendu.)
+    expect(scanned, "aucun prix € attendu en prose depuis R7").toBe(0);
 
     expect(
       offenders,

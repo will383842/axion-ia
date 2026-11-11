@@ -66,7 +66,7 @@ import {
   getFormationImage,
   getFormationImageCredit,
 } from "@/content/formations/catalog-v2-facts";
-import { formatAmount, getFormationCatalogPriceRange } from "@/content/pricing";
+import { PRIX_PUBLICS_AFFICHES, formatMontantPublic } from "@/content/pricing";
 import { isQualiopiCertificationObtenue } from "@/server/qualiopi/config/flag";
 import {
   buildProductMetadata,
@@ -96,7 +96,6 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (!hasLocale(routing.locales, locale)) return {};
   const loc: "fr" | "en" = locale === "fr" ? "fr" : "en";
   const isFr = loc === "fr";
-  // formatAmount renvoie déjà « … € HT » — ne jamais ré-ajouter « HT ».
   // Compteur dérivé du SSOT : ajouter/retirer une formation dans FORMATIONS_V2
   // met à jour tous les libellés (titre, meta, JSON-LD, chips…) automatiquement.
   // 2026-09-30 (audit) : compte les FORMATIONS, séminaire exclu — il est sur
@@ -113,8 +112,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     ? `Formations IA en entreprise — nos ${total} formations sur mesure | Axion-IA`
     : `Corporate AI training — our ${total} tailored trainings | Axion-IA`;
   const description = isFr
-    ? `Le catalogue complet des formations IA en entreprise Axion-IA : ${total} formations opérationnelles — offres générales, par métier, par secteur d'activité — partout en France.${finBit} Prix publics par groupe (2 à 15 pers.).`
-    : `The full catalogue of Axion-IA corporate AI trainings: ${total} operational trainings — general, role-specific, industry-specific — across France.${finBit} Public prices per group (2-15 people).`;
+    ? `Le catalogue complet des formations IA en entreprise Axion-IA : ${total} formations opérationnelles — offres générales, par métier, par secteur d'activité — partout en France.${finBit} Prix par groupe (2 à 15 pers.), sur devis.`
+    : `The full catalogue of Axion-IA corporate AI trainings: ${total} operational trainings — general, role-specific, industry-specific — across France.${finBit} Priced per group (2-15 people), on quote.`;
   return {
     ...(await buildProductMetadata({ locale, path: PATH, title, description })),
     title: { absolute: title },
@@ -150,8 +149,8 @@ export default async function FormationsEntreprise({ params }: Props) {
     path: PATH,
     name: isFr ? "Toutes nos formations IA en entreprise" : "All our corporate AI trainings",
     description: isFr
-      ? `Catalogue complet des ${total} formations IA en entreprise Axion-IA, sur site ou à distance partout en France — offres générales, par métier, par secteur, prix publics par groupe (jamais par personne).`
-      : `Full catalogue of the ${total} Axion-IA corporate AI trainings, on site or remote across France — general, role and industry offers, public prices per group (never per person).`,
+      ? `Catalogue complet des ${total} formations IA en entreprise Axion-IA, sur site ou à distance partout en France — offres générales, par métier, par secteur, prix par groupe sur devis (jamais par personne).`
+      : `Full catalogue of the ${total} Axion-IA corporate AI trainings, on site or remote across France — general, role and industry offers, priced per group on quote (never per person).`,
     speakable: true,
     ...(primaryImage ? { extra: { primaryImageOfPage: primaryImage } } : {}),
   });
@@ -189,8 +188,8 @@ export default async function FormationsEntreprise({ params }: Props) {
       ? "Formations IA en entreprise · sur site · Axion-IA"
       : "Corporate AI training · on site · Axion-IA",
     description: isFr
-      ? `${total} formations IA opérationnelles pour vos équipes, animées dans vos locaux partout en France — prix publics par groupe (2 à 15 participants), jamais par personne.`
-      : `${total} operational AI trainings for your teams, delivered on site across France — public prices per group (2-15 people), never per person.`,
+      ? `${total} formations IA opérationnelles pour vos équipes, animées dans vos locaux partout en France — prix par groupe (2 à 15 participants) sur devis, jamais par personne.`
+      : `${total} operational AI trainings for your teams, delivered on site across France — priced per group (2-15 people) on quote, never per person.`,
     serviceType: "AI training",
     areasServed: buildServiceAreasServed(loc),
   });
@@ -387,8 +386,8 @@ export default async function FormationsEntreprise({ params }: Props) {
       label: isFr ? "par formation" : "per training",
     },
     {
-      value: isFr ? "Prix publics" : "Public prices",
-      label: isFr ? "par groupe de 2 à 15" : "per group of 2-15",
+      value: isFr ? "Sur devis" : "On quote",
+      label: isFr ? "prix par groupe de 2 à 15" : "price per group of 2-15",
     },
   ];
 
@@ -411,8 +410,9 @@ export default async function FormationsEntreprise({ params }: Props) {
       ...(f.axeLabelFr ? { axeLabel: f.axeLabelFr } : {}),
       dureeLabel: f.scindable ? `${dureeBase} · scindable 2×1j` : dureeBase,
       featured: f.featured ?? false,
-      priceLabel: p !== undefined ? formatAmount(p, loc) : isFr ? "Sur devis" : "On quote",
-      fixedPrice: p !== undefined,
+      // R7 : « Sur devis » tant que l'interrupteur des prix publics est coupé.
+      priceLabel: formatMontantPublic(p, loc),
+      fixedPrice: PRIX_PUBLICS_AFFICHES && p !== undefined,
       imageSrc: image.src,
       imageAlt: image.altFr,
       ...(credit ? { creditName: credit.name, creditUrl: credit.url } : {}),
@@ -428,8 +428,8 @@ export default async function FormationsEntreprise({ params }: Props) {
         ? "Qu'est-ce qu'une formation IA en entreprise ?"
         : "What is a corporate AI training?",
       answer: isFr
-        ? `Une formation IA en entreprise est une session courte (de 4 heures à 2 jours) qui apprend à vos équipes à utiliser l'intelligence artificielle (ChatGPT, Claude, Gemini) sur leurs tâches réelles. Chez Axion-IA, elle a lieu dans vos locaux ou à distance${ofPublic ? ", est certifiée Qualiopi et finançable OPCO" : ""}, à prix public par groupe (2 à 15 participants, jamais par personne).`
-        : `A corporate AI training is a short session (4 hours to 2 days) that teaches your teams to use artificial intelligence (ChatGPT, Claude, Gemini) on their real tasks. At Axion-IA it takes place on site or remotely${ofPublic ? ", is Qualiopi-certified and OPCO-fundable" : ""}, at a public price per group (2-15 people, never per person).`,
+        ? `Une formation IA en entreprise est une session courte (de 4 heures à 2 jours) qui apprend à vos équipes à utiliser l'intelligence artificielle (ChatGPT, Claude, Gemini) sur leurs tâches réelles. Chez Axion-IA, elle a lieu dans vos locaux ou à distance${ofPublic ? ", est certifiée Qualiopi et finançable OPCO" : ""}, avec un prix par groupe établi sur devis (2 à 15 participants, jamais par personne).`
+        : `A corporate AI training is a short session (4 hours to 2 days) that teaches your teams to use artificial intelligence (ChatGPT, Claude, Gemini) on their real tasks. At Axion-IA it takes place on site or remotely${ofPublic ? ", is Qualiopi-certified and OPCO-fundable" : ""}, priced per group on quote (2-15 people, never per person).`,
     },
     {
       id: "combien-coute",
@@ -437,8 +437,8 @@ export default async function FormationsEntreprise({ params }: Props) {
         ? "Combien coûte une formation IA en entreprise ?"
         : "How much does a corporate AI training cost?",
       answer: isFr
-        ? `Nos prix sont publics et forfaitaires par groupe (2 à 15 participants), jamais par personne : de ${formatAmount(getFormationCatalogPriceRange().minEur, "fr")} (offre générale 4 h) à ${formatAmount(getFormationCatalogPriceRange().maxEur, "fr")} (formation sectorielle 2 jours). Plus le groupe est nombreux, plus le coût par participant baisse. La grille complète est sur la page tarifs ; le séminaire (jusqu'à 50 personnes) est sur devis.`
-        : "Our prices are public and set per group (2-15 participants), never per person. The larger the group, the lower the cost per participant. The full grid is on the pricing page; the company seminar (up to 50 people) is on quote.",
+        ? "Le prix est forfaitaire par groupe (2 à 15 participants), jamais par personne, et établi sur devis selon la formation, sa durée (4 h à 2 jours) et le format. Plus le groupe est nombreux, plus le coût par participant baisse. Le séminaire (jusqu'à 50 personnes) est aussi sur devis."
+        : "The price is a flat rate per group (2-15 participants), never per person, quoted according to the training, its duration (4 h to 2 days) and the format. The larger the group, the lower the cost per participant. The company seminar (up to 50 people) is also on quote.",
     },
     ...(ofPublic
       ? [
