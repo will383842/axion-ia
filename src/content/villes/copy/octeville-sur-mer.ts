@@ -49,7 +49,7 @@ export const OCTEVILLE_SUR_MER_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il a Octeville-sur-Mer et dans l'agglo du Havre ?",
-      a: "Oui, Axion-IA intervient a Octeville-sur-Mer et dans toute l'agglomeration havraise (Le Havre, Sainte-Adresse, Harfleur, Montivilliers). Consultants depuis Le Havre (10 min) ou Paris (2h15).",
+      a: "Oui, Axion-IA intervient a Octeville-sur-Mer et dans toute l'agglomeration havraise (Le Havre, Sainte-Adresse, Harfleur, Montivilliers). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quels services IA pour les professions liberales d'Octeville-sur-Mer ?",

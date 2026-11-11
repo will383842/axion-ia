@@ -60,7 +60,7 @@ export const L_AIGLE_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les TPE artisans BTP et commerçants de L'Aigle sur des cas IA pratiques : automatisation devis, agents IA prise de RDV, gestion administrative simplifiée. Audit sur place {{price:audit-flash|flat}}.",
     },
     {
-      q: "Comment se passe une mission depuis Paris ?",
+      q: "Comment se déroule une mission à L'Aigle ?",
       a: "Nous intervenons partout en France, sur place ou à distance.",
     },
     {

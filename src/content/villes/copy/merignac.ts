@@ -245,7 +245,7 @@ export const MERIGNAC_COPY: VilleCopy = {
       a: "Audit sur place pour cartographier les automatisations utiles, intervention d'une journée pour un premier cas d'usage, puis coaching 1-to-1 du dirigeant. Agents conversationnels pour la relation client et la gestion des demandes.",
     },
     {
-      q: "Comment se passe une mission depuis Bordeaux centre ?",
+      q: "Comment se déroule une mission à Mérignac ?",
       a: "Mérignac est à 10 km de Bordeaux centre, relié par le tramway A et la rocade. Nous couvrons toute la métropole bordelaise.",
     },
   ],

@@ -49,7 +49,7 @@ export const NOGENT_LE_ROTROU_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Nogent-le-Rotrou et dans le Perche ?",
-      a: "Oui, Axion-IA intervient à Nogent-le-Rotrou et tout le Perche eurélien (Thiron-Gardais, La Loupe, Authon-du-Perche). Consultants depuis Paris (1h50) ou Chartres (50 min).",
+      a: "Oui, Axion-IA intervient à Nogent-le-Rotrou et tout le Perche eurélien (Thiron-Gardais, La Loupe, Authon-du-Perche). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les PME industrielles de Nogent-le-Rotrou ?",
@@ -65,7 +65,7 @@ export const NOGENT_LE_ROTROU_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Nogent-le-Rotrou ?",
-      a: "Nos consultants se déplacent depuis Paris (1h50 via A11) ou Chartres (50 min). Gare SNCF Nogent-le-Rotrou sur la ligne TER Chartres-Le Mans. Coûts de déplacement séparés du forfait, tarifs transparents.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Gare SNCF Nogent-le-Rotrou sur la ligne TER Chartres-Le Mans. Coûts de déplacement séparés du forfait, tarifs transparents.",
     },
   ],
 };

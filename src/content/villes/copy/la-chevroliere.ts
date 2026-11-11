@@ -49,7 +49,7 @@ export const LA_CHEVROLIERE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à La Chevrolière et sud Nantes ?",
-      a: "Oui, Axion-IA intervient à La Chevrolière et tout le sud nantais (Pont-Saint-Martin, Saint-Philbert-de-Grand-Lieu, Bouaye, Rezé). Consultants depuis Nantes centre (20 min). Couverture complète sud Loire-Atlantique.",
+      a: "Oui, Axion-IA intervient à La Chevrolière et tout le sud nantais (Pont-Saint-Martin, Saint-Philbert-de-Grand-Lieu, Bouaye, Rezé). Nous intervenons partout en France, sur place ou à distance. Couverture complète sud Loire-Atlantique.",
     },
     {
       q: "Accompagnez-vous les exploitations maraîchères ?",

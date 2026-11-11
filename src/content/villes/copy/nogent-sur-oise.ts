@@ -230,7 +230,7 @@ export const NOGENT_SUR_OISE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Nogent-sur-Oise ?",
-      a: "Oui. Axion-IA se déplace à Nogent-sur-Oise et dans tout le bassin creillois (Creil, Montataire, Villers-Saint-Paul, Pont-Sainte-Maxence). Nos consultants seniors interviennent sur site ou en visio, avec un accès facile depuis Paris en 35 min.",
+      a: "Oui. Axion-IA se déplace à Nogent-sur-Oise et dans tout le bassin creillois (Creil, Montataire, Villers-Saint-Paul, Pont-Sainte-Maxence). Nos consultants seniors interviennent sur site ou en visio, avec un accès facile.",
     },
     {
       q: "Accompagnez-vous les ateliers industriels et mécaniques ?",

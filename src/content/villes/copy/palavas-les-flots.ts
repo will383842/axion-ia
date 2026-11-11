@@ -49,7 +49,7 @@ export const PALAVAS_LES_FLOTS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Palavas-les-Flots ?",
-      a: "Oui, Axion-IA intervient à Palavas-les-Flots et sur tout le littoral montpelliérain (Pérols, Carnon, La Grande-Motte, Villeneuve-lès-Maguelone). Nos consultants se déplacent depuis Montpellier en 12 min.",
+      a: "Oui, Axion-IA intervient à Palavas-les-Flots et sur tout le littoral montpelliérain (Pérols, Carnon, La Grande-Motte, Villeneuve-lès-Maguelone). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Proposez-vous des audits IA pour l'hôtellerie-restauration balnéaire ?",

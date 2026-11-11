@@ -49,7 +49,7 @@ export const MONTARGIS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il a Montargis et dans le Gatinais ?",
-      a: "Oui, Axion-IA intervient a Montargis et dans tout le bassin montargois (Amilly, Chalette-sur-Loing, Villemandeur, Pannes). Nos consultants rejoignent Montargis via la gare TER ou l'A77 depuis Paris en 1 h 15.",
+      a: "Oui, Axion-IA intervient a Montargis et dans tout le bassin montargois (Amilly, Chalette-sur-Loing, Villemandeur, Pannes). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quel est le tarif d'un audit IA a Montargis ?",

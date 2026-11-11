@@ -49,7 +49,7 @@ export const LOUHANS_CHATEAURENAUD_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Louhans-Châteaurenaud et Bresse bourguignonne ?",
-      a: "Oui, Axion-IA intervient à Louhans-Châteaurenaud et toute la Bresse bourguignonne (Cuiseaux, Pierre-de-Bresse, Tournus). Consultants depuis Lyon (1h40) ou Chalon-sur-Saône (35 min).",
+      a: "Oui, Axion-IA intervient à Louhans-Châteaurenaud et toute la Bresse bourguignonne (Cuiseaux, Pierre-de-Bresse, Tournus). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les éleveurs volailles AOC Bresse ?",

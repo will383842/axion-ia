@@ -226,7 +226,7 @@ export const NARBONNE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Narbonne et dans l'Aude ?",
-      a: "Oui, Axion-IA intervient à Narbonne et dans tout le Bas-Languedoc (Béziers, Carcassonne, Perpignan, Lézignan-Corbières, Sigean) ainsi qu'au littoral (Narbonne-Plage, Gruissan). Consultants depuis Montpellier ou Toulouse via A9/A61, ou en visio. Carrefour autoroutier idéal pour combiner plusieurs sites en une journée.",
+      a: "Oui, Axion-IA intervient à Narbonne et dans tout le Bas-Languedoc (Béziers, Carcassonne, Perpignan, Lézignan-Corbières, Sigean) ainsi qu'au littoral (Narbonne-Plage, Gruissan). Nous intervenons partout en France, sur place ou à distance. Carrefour autoroutier idéal pour combiner plusieurs sites en une journée.",
     },
     {
       q: "Accompagnez-vous les domaines viticoles et négociants en vins AOC du Narbonnais ?",

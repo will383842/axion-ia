@@ -64,7 +64,7 @@ export const LEZOUX_COPY: VilleCopy = {
       a: "Pour les TPE artisans et commerçants ruraux à Lezoux, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, gestion stocks, visibilité en ligne.",
     },
     {
-      q: "Comment se passe une mission depuis Clermont-Ferrand ?",
+      q: "Comment se déroule une mission à Lezoux ?",
       a: "Nous intervenons partout en France, sur place ou à distance. Pour les missions multi-jours en Limagne, hébergement local possible. Coûts de déplacement à part, tarification transparente.",
     },
   ],

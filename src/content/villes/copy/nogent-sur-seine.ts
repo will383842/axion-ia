@@ -49,7 +49,7 @@ export const NOGENT_SUR_SEINE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Nogent-sur-Seine et dans le sud de l'Aube ?",
-      a: "Oui, Axion-IA intervient à Nogent-sur-Seine et dans le sud de l'Aube (Romilly-sur-Seine, Villenauxe-la-Grande, Pont-sur-Seine). Consultants depuis Troyes (55 min) ou Paris-Est (1h30).",
+      a: "Oui, Axion-IA intervient à Nogent-sur-Seine et dans le sud de l'Aube (Romilly-sur-Seine, Villenauxe-la-Grande, Pont-sur-Seine). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quel est le tarif d'un audit IA à Nogent-sur-Seine  ?",

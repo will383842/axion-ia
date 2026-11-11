@@ -64,7 +64,7 @@ export const MONTESSON_COPY: VilleCopy = {
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Outils IA réservation, gestion salle, fidélisation clientèle.",
     },
     {
-      q: "Comment se passe une mission depuis Paris ou La Défense ?",
+      q: "Comment se déroule une mission à Montesson ?",
       a: "Le Vésinet (5 min). Sartrouville (5 min). Paris La Défense (15 min). Paris Saint-Lazare (20 min). RER A Le Vésinet–Le Pecq à 10 min.",
     },
   ],

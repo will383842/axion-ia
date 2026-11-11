@@ -245,7 +245,7 @@ export const ORLY_COPY: VilleCopy = {
       a: "Audit sur place pour cartographier les automatisations utiles, intervention d'une journée pour un premier cas d'usage, puis coaching 1-to-1 du dirigeant. Agents conversationnels pour la relation client et fournisseurs.",
     },
     {
-      q: "Comment se passe une mission depuis Paris ou la gare Massy TGV ?",
+      q: "Comment se déroule une mission à Orly ?",
       a: "Orly est reliée à Paris par la ligne 14 en une vingtaine de minutes et à la gare Massy TGV en un quart d'heure. Nous couvrons tout le Grand Paris Sud-Est.",
     },
   ],

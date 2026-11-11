@@ -65,7 +65,7 @@ export const OLLIOULES_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Ollioules ?",
-      a: "Nos consultants interviennent depuis Toulon (15 min) ou Marseille (55 min). Déplacement sur site dans vos locaux professionnels, serre, atelier, usine ou commerce. A50 directe, agglo Toulon ouest bien desservie.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Déplacement sur site dans vos locaux professionnels, serre, atelier, usine ou commerce. A50 directe, agglo Toulon ouest bien desservie.",
     },
   ],
 };

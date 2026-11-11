@@ -64,7 +64,7 @@ export const MARLY_LA_VILLE_COPY: VilleCopy = {
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
     },
     {
-      q: "Comment se passe une mission depuis Roissy ou Paris ?",
+      q: "Comment se déroule une mission à Marly-la-Ville ?",
       a: "Aéroport CDG (10 min). Fosses (5 min). Paris centre (40 min via A1). Luzarches (10 min).",
     },
   ],

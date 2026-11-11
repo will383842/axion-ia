@@ -68,7 +68,7 @@ export const ORNEX_COPY: VilleCopy = {
       a: "Audit sur place pour cartographier les automatisations utiles, intervention d'une journée pour un premier cas d'usage, puis coaching 1-to-1 du dirigeant. Les TPE puis les PME sont prioritaires ; les ETI restent marginales pour nous.",
     },
     {
-      q: "Comment se passe une mission depuis Lyon ou Genève ?",
+      q: "Comment se déroule une mission à Ornex ?",
       a: "Ornex est à un quart d'heure de Genève et à environ une heure trente de Lyon par l'autoroute. Nous couvrons tout le pays de Gex.",
     },
   ],

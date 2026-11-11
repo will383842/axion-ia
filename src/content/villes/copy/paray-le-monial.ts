@@ -49,7 +49,7 @@ export const PARAY_LE_MONIAL_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Paray-le-Monial et en Charolais ?",
-      a: "Oui, Axion-IA intervient à Paray-le-Monial et tout le Charolais-Brionnais. Consultants depuis Le Creusot-TGV (50 min), Roanne (45 min), Mâcon (1h), Lyon (1h45).",
+      a: "Oui, Axion-IA intervient à Paray-le-Monial et tout le Charolais-Brionnais. Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les acteurs du tourisme religieux ?",
@@ -64,8 +64,8 @@ export const PARAY_LE_MONIAL_COPY: VilleCopy = {
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : agents IA prise de RDV, automatisation devis, CRM commerçants centre-ville.",
     },
     {
-      q: "Comment se passe une mission depuis Lyon ou Roanne ?",
-      a: "Nos consultants viennent de Lyon (1h45) ou Roanne (45 min). Le Creusot-TGV à 50 min.",
+      q: "Comment se déroule une mission à Paray-le-Monial ?",
+      a: "Nous intervenons partout en France, sur place ou à distance. Le Creusot-TGV à 50 min.",
     },
   ],
 };

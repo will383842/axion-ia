@@ -49,7 +49,7 @@ export const OUISTREHAM_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Ouistreham et sur la Côte de Nacre ?",
-      a: "Oui, Axion-IA intervient à Ouistreham et toute la Côte de Nacre (Douvres-la-Délivrande, Lion-sur-Mer, Courseulles-sur-Mer, Langrune). Consultants depuis Caen (15 min D515).",
+      a: "Oui, Axion-IA intervient à Ouistreham et toute la Côte de Nacre (Douvres-la-Délivrande, Lion-sur-Mer, Courseulles-sur-Mer, Langrune). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les acteurs du tourisme Débarquement ?",
@@ -65,7 +65,7 @@ export const OUISTREHAM_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Ouistreham ?",
-      a: "Nos consultants viennent de Caen (15 min D515). Déplacement direct sur site (hôtel, restaurant, port, commerce). Pour les multi-jours, hébergement local.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Déplacement direct sur site (hôtel, restaurant, port, commerce). Pour les multi-jours, hébergement local.",
     },
   ],
 };

@@ -49,7 +49,7 @@ export const LONGWY_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Longwy et zone frontalière Luxembourg ?",
-      a: "Oui, Axion-IA intervient à Longwy et toute la zone transfrontalière (Luxembourg à 30 min, Belgique à 20 min). Consultants depuis Metz (1 h) ou Nancy (1 h 15).",
+      a: "Oui, Axion-IA intervient à Longwy et toute la zone transfrontalière (Luxembourg à 30 min, Belgique à 20 min). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Tarifs audit IA à Longwy  : quel budget prévoir ?",

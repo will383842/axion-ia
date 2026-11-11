@@ -49,7 +49,7 @@ export const MIGNE_AUXANCES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Migné-Auxances et Grand Poitiers ?",
-      a: "Oui, Axion-IA intervient à Migné-Auxances et toute l'agglomération Grand Poitiers (Poitiers centre à 10 min, Buxerolles, Neuville-de-Poitou, Biard). Consultants depuis Paris (TGV 1h40 gare Poitiers).",
+      a: "Oui, Axion-IA intervient à Migné-Auxances et toute l'agglomération Grand Poitiers (Poitiers centre à 10 min, Buxerolles, Neuville-de-Poitou, Biard). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les professions libérales à Migné-Auxances ?",

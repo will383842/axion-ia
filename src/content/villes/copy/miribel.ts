@@ -49,7 +49,7 @@ export const MIRIBEL_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Miribel et Côtière Ain ?",
-      a: "Oui, Axion-IA intervient à Miribel et toute la Côtière (Beynost, Neyron, Montluel, Meximieux). Consultants depuis Lyon (20 min).",
+      a: "Oui, Axion-IA intervient à Miribel et toute la Côtière (Beynost, Neyron, Montluel, Meximieux). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les PME tertiaires et industrielles ?",
@@ -64,8 +64,8 @@ export const MIRIBEL_COPY: VilleCopy = {
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
     },
     {
-      q: "Comment se passe une mission depuis Lyon ?",
-      a: "Nos consultants viennent de Lyon (20 min).",
+      q: "Comment se déroule une mission à Miribel ?",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };

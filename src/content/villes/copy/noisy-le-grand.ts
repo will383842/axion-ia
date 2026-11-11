@@ -230,7 +230,7 @@ export const NOISY_LE_GRAND_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Noisy-le-Grand et à Marne-la-Vallée ?",
-      a: "Oui, Axion-IA intervient à Noisy-le-Grand et dans tout l'est francilien (Marne-la-Vallée, Bry-sur-Marne, Champs-sur-Marne). Nos consultants rejoignent le Mont d'Est en 20 min depuis Paris par le RER A.",
+      a: "Oui, Axion-IA intervient à Noisy-le-Grand et dans tout l'est francilien (Marne-la-Vallée, Bry-sur-Marne, Champs-sur-Marne). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les PME tertiaires du quartier du Mont d'Est ?",

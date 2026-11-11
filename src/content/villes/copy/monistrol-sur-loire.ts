@@ -49,7 +49,7 @@ export const MONISTROL_SUR_LOIRE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Monistrol-sur-Loire et bassin Velay ?",
-      a: "Oui, Axion-IA intervient à Monistrol-sur-Loire et tout le bassin Velay-Rochebaron (Bas-en-Basset, Sainte-Sigolène, Aurec-sur-Loire). Consultants depuis Saint-Étienne (40 min) ou Lyon (1h20).",
+      a: "Oui, Axion-IA intervient à Monistrol-sur-Loire et tout le bassin Velay-Rochebaron (Bas-en-Basset, Sainte-Sigolène, Aurec-sur-Loire). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les PME plasturgie et mécanique ?",
@@ -64,7 +64,7 @@ export const MONISTROL_SUR_LOIRE_COPY: VilleCopy = {
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
     },
     {
-      q: "Comment se passe une mission depuis Saint-Étienne ou Lyon ?",
+      q: "Comment se déroule une mission à Monistrol-sur-Loire ?",
       a: "Saint-Étienne (40 min) ou Lyon (1h20).",
     },
   ],

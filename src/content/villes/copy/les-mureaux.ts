@@ -250,7 +250,7 @@ export const LES_MUREAUX_COPY: VilleCopy = {
     },
     {
       q: "Faut-il une implantation locale d'Axion-IA pour intervenir ?",
-      a: "Non. Axion-IA n'a pas d'agence aux Mureaux : nos experts IA se déplacent depuis Paris, avec des frais de transport transparents distincts du forfait.",
+      a: "Non. Axion-IA n'a pas d'agence aux Mureaux : nous intervenons partout en France, sur place ou à distance, avec des frais de transport transparents distincts du forfait.",
     },
   ],
 };

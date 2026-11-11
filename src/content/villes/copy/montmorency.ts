@@ -245,7 +245,7 @@ export const MONTMORENCY_COPY: VilleCopy = {
       a: "Oui. Les TPE puis les PME sont notre public prioritaire à Montmorency. Nous adaptons les formats aux petites structures de services et commerces. Les ETI restent un public marginal de notre activité.",
     },
     {
-      q: "Comment se passe une mission depuis Paris ou Enghien-les-Bains ?",
+      q: "Comment se déroule une mission à Montmorency ?",
       a: "Montmorency est à environ 15 km de Paris et voisine d'Enghien-les-Bains, à une vingtaine de minutes du centre par le Transilien. Nous couvrons tout le nord du Val-d'Oise.",
     },
   ],

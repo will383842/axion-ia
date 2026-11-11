@@ -64,7 +64,7 @@ export const LES_ACHARDS_COPY: VilleCopy = {
       a: "Oui, nos interventions forment vos équipes aux outils IA pratiques : devis automatisé, RDV intelligents, agents conversationnels clients, génération de documents, marketing local, gestion stocks. Sur site aux Achards ou en visio.",
     },
     {
-      q: "Comment se passe une mission IA aux Achards depuis La Roche ou Nantes ?",
+      q: "Comment se déroule une mission aux Achards ?",
       a: "Nos consultants interviennent directement dans vos locaux aux Achards. La Roche-sur-Yon à 22 km, Les Sables-d'Olonne à 20 km, Nantes à 80 km. Accès A87 à 25 km.",
     },
   ],

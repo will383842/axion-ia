@@ -250,7 +250,7 @@ export const LE_PLESSIS_ROBINSON_COPY: VilleCopy = {
     },
     {
       q: "Faut-il une implantation locale d'Axion-IA pour intervenir ?",
-      a: "Non. Axion-IA n'a pas d'agence au Plessis-Robinson : nos experts IA se déplacent depuis Paris, avec des frais de transport transparents distincts du forfait.",
+      a: "Non. Axion-IA n'a pas d'agence au Plessis-Robinson : nous intervenons partout en France, sur place ou à distance, avec des frais de transport transparents distincts du forfait.",
     },
   ],
 };

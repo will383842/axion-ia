@@ -49,7 +49,7 @@ export const GONFREVILLE_L_ORCHER_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il a Gonfreville-l'Orcher et dans la zone industrielle du Havre ?",
-      a: "Oui, Axion-IA intervient a Gonfreville-l'Orcher et dans toute la zone industrielle havraise (Harfleur, Le Havre, Sandouville). Consultants depuis Le Havre (10 min) ou Rouen (1h).",
+      a: "Oui, Axion-IA intervient a Gonfreville-l'Orcher et dans toute la zone industrielle havraise (Harfleur, Le Havre, Sandouville). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quels services IA pour les sous-traitants industriels de Gonfreville ?",

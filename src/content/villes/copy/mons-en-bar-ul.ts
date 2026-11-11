@@ -245,7 +245,7 @@ export const MONS_EN_BAR_UL_COPY: VilleCopy = {
       a: "Audit sur place pour cartographier les automatisations utiles, intervention d'une journée pour un premier cas d'usage, puis coaching 1-to-1 du dirigeant. Agents conversationnels pour la relation client et la prise de rendez-vous.",
     },
     {
-      q: "Comment se passe une mission depuis Lille centre ?",
+      q: "Comment se déroule une mission à Mons-en-Barœul ?",
       a: "Mons-en-Barœul est limitrophe de Lille et reliée par la ligne 2 du métro en quelques minutes. Nous couvrons tout l'est de la métropole.",
     },
   ],

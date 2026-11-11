@@ -245,7 +245,7 @@ export const MILLAU_COPY: VilleCopy = {
       a: "Audit sur place pour cartographier les automatisations utiles, intervention d'une journée pour un premier cas d'usage concret, puis coaching 1-to-1 du dirigeant. Agents conversationnels pour gérer les pics de demande touristique.",
     },
     {
-      q: "Comment se passe une mission depuis Montpellier ou Rodez ?",
+      q: "Comment se déroule une mission à Millau ?",
       a: "Millau est à environ 110 km de Montpellier et à une heure de Rodez, accessible par l'A75 et le Viaduc. Nous couvrons les grands causses.",
     },
   ],

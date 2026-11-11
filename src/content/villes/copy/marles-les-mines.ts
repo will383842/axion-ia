@@ -49,7 +49,7 @@ export const MARLES_LES_MINES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il a Marles-les-Mines et dans le bassin minier ?",
-      a: "Oui, Axion-IA intervient a Marles-les-Mines et dans tout le bassin minier (Auchel, Calonne-Ricouart, Bethune, Bruay-la-Buissiere). Consultants depuis Lille (1h10 TER) ou Paris (TGV via Lens 1h50).",
+      a: "Oui, Axion-IA intervient a Marles-les-Mines et dans tout le bassin minier (Auchel, Calonne-Ricouart, Bethune, Bruay-la-Buissiere). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quels services IA pour les TPE de Marles-les-Mines ?",

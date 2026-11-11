@@ -236,7 +236,7 @@ export const IVRY_SUR_SEINE_COPY: VilleCopy = {
     },
     {
       q: "Quelles communes proches couvrez-vous depuis Ivry-sur-Seine ?",
-      a: "Depuis Ivry-sur-Seine, nous couvrons les communes limitrophes : Paris, Charenton-le-Pont, Alfortville, Vitry-sur-Seine, Le Kremlin-Bicêtre et Villejuif. Tout le sud-est parisien est accessible facilement.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Tout le sud-est parisien est accessible facilement.",
     },
     {
       q: "Quels secteurs locaux accompagnez-vous à Ivry-sur-Seine ?",

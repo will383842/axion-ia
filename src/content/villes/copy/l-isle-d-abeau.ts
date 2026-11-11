@@ -64,7 +64,7 @@ export const L_ISLE_D_ABEAU_COPY: VilleCopy = {
       a: "Pour le siège CAPI et services publics à L'Isle-d'Abeau, nous proposons audit Stratégique, intervention 1-2 jours équipes, implémentation (agents conversationnels usagers, automatisations workflow, classification documents administratifs). RGPD strict, hébergement UE garanti.",
     },
     {
-      q: "Comment se passe une mission depuis Lyon ou Paris ?",
+      q: "Comment se déroule une mission à L'Isle-d'Abeau ?",
       a: "Nous intervenons partout en France, sur place ou à distance. Pour les multi-jours, hébergement local possible (hôtels CAPI).",
     },
   ],

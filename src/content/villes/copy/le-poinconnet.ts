@@ -49,7 +49,7 @@ export const LE_POINCONNET_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il au Poinçonnet et agglo Châteauroux ?",
-      a: "Oui, Axion-IA intervient au Poinçonnet et toute l'agglomération de Châteauroux (Déols, Saint-Maur, Ardentes). Consultants depuis Tours (1h30) ou sur site directement.",
+      a: "Oui, Axion-IA intervient au Poinçonnet et toute l'agglomération de Châteauroux (Déols, Saint-Maur, Ardentes). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les TPE artisans BTP du Poinçonnet ?",

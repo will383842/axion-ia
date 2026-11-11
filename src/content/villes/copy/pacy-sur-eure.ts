@@ -49,7 +49,7 @@ export const PACY_SUR_EURE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Pacy-sur-Eure et dans la vallée de l'Eure ?",
-      a: "Oui, Axion-IA intervient à Pacy-sur-Eure et dans toute la vallée de l'Eure (Évreux, Vernon, Bueil, Ivry-la-Bataille). Nos consultants se déplacent depuis Paris (1h20 A13) ou Évreux (20 min).",
+      a: "Oui, Axion-IA intervient à Pacy-sur-Eure et dans toute la vallée de l'Eure (Évreux, Vernon, Bueil, Ivry-la-Bataille). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les exploitants agricoles de la vallée de l'Eure ?",
@@ -64,8 +64,8 @@ export const PACY_SUR_EURE_COPY: VilleCopy = {
       a: "Pour les TPE et professions libérales à Pacy-sur-Eure, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation comptabilité, gestion agenda, classification documents, chatbot cabinet.",
     },
     {
-      q: "Comment se passe une mission depuis Paris ou Évreux ?",
-      a: "Nos consultants viennent de Paris (1h20 A13, ou train via Vernon-Giverny à 20 min) ou d'Évreux (20 min). Pour les multi-jours, hébergement local possible. Coûts de déplacement séparés du forfait, tarifs transparents.",
+      q: "Comment se déroule une mission à Pacy-sur-Eure ?",
+      a: "Nous intervenons partout en France, sur place ou à distance. Pour les multi-jours, hébergement local possible. Coûts de déplacement séparés du forfait, tarifs transparents.",
     },
   ],
 };

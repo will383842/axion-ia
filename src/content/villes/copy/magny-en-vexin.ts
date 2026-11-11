@@ -64,7 +64,7 @@ export const MAGNY_EN_VEXIN_COPY: VilleCopy = {
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
     },
     {
-      q: "Comment se passe une mission depuis Cergy ou Paris ?",
+      q: "Comment se déroule une mission à Magny-en-Vexin ?",
       a: "Cergy-Pontoise (25 min). Mantes-la-Jolie (20 min). Paris centre (55 min via A15). Aéroport CDG (60 min). Coûts de déplacement à part, tarification transparente.",
     },
   ],

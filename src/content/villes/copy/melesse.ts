@@ -64,7 +64,7 @@ export const MELESSE_COPY: VilleCopy = {
       a: "Nous proposons audit sur place 4h, interventions sur site demi-journée ou journée, coaching dirigeant 1-to-1 et implémentation clé en main. Formats adaptés aux contraintes des PME de services du nord rennais.",
     },
     {
-      q: "Comment se passe une mission Axion-IA depuis Rennes ?",
+      q: "Comment se déroule une mission à Melesse ?",
       a: "Nous intervenons partout en France, sur place ou à distance.",
     },
   ],

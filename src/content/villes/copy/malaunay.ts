@@ -49,7 +49,7 @@ export const MALAUNAY_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il a Malaunay et dans l'agglo de Rouen ?",
-      a: "Oui, Axion-IA intervient a Malaunay et dans toute la metropole rouennaise (Rouen, Maromme, Notre-Dame-de-Bondeville, Barentin). Consultants depuis Rouen (15 min) ou Paris (1h30).",
+      a: "Oui, Axion-IA intervient a Malaunay et dans toute la metropole rouennaise (Rouen, Maromme, Notre-Dame-de-Bondeville, Barentin). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quels services IA pour les PME engagees RSE de Malaunay ?",

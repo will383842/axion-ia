@@ -49,7 +49,7 @@ export const N_UX_LES_MINES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Nœux-les-Mines et dans l'agglo béthunoise ?",
-      a: "Oui, Axion-IA intervient à Nœux-les-Mines et dans toute l'agglomération béthunoise (Béthune, Bruay-la-Buissière, Barlin, Labourse). Nos consultants viennent de Lille (35 min A26) ou Lens (15 min).",
+      a: "Oui, Axion-IA intervient à Nœux-les-Mines et dans toute l'agglomération béthunoise (Béthune, Bruay-la-Buissière, Barlin, Labourse). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les TPE artisans BTP du bassin minier ?",
@@ -64,8 +64,8 @@ export const N_UX_LES_MINES_COPY: VilleCopy = {
       a: "Pour les commerçants et professions libérales à Nœux-les-Mines, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : agents IA conversationnels, automatisation RDV, fidélisation.",
     },
     {
-      q: "Comment se passe une mission à Nœux-les-Mines depuis Lille ?",
-      a: "Nos consultants viennent de Lille (35 min A26/A1) ou Lens (15 min). Béthune est à 10 min. Coûts de déplacement séparés du forfait, tarifs transparents.",
+      q: "Comment se déroule une mission à Nœux-les-Mines ?",
+      a: "Nous intervenons partout en France, sur place ou à distance. Coûts de déplacement séparés du forfait, tarifs transparents.",
     },
   ],
 };

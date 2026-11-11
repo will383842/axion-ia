@@ -1014,7 +1014,7 @@ export const NICE_COPY: VilleCopy = {
     },
     {
       q: "Pouvez-vous intervenir sur site dans nos bureaux niçois ou à Sophia Antipolis ?",
-      a: "Oui. Toutes nos interventions sont par défaut sur site dans vos locaux. Nos consultants couvrent Nice centre, Grand Arénas, Nice Méridia, Sophia Antipolis, Antibes et Cannes. Les ateliers d'idéation et les restitutions clés se tiennent toujours en présentiel.",
+      a: "Oui. Toutes nos interventions sont par défaut sur site dans vos locaux. Nous intervenons partout en France, sur place ou à distance. Les ateliers d'idéation et les restitutions clés se tiennent toujours en présentiel.",
     },
     {
       q: "Travaillez-vous avec les startups et scale-ups de la French Tech Côte d'Azur ?",

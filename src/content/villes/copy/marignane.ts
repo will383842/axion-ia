@@ -245,7 +245,7 @@ export const MARIGNANE_COPY: VilleCopy = {
       a: "Audit sur place pour cartographier les automatisations utiles, intervention d'une journée pour déployer un premier cas d'usage, puis coaching 1-to-1 du dirigeant. Agents conversationnels et classification documentaire pour la logistique.",
     },
     {
-      q: "Comment se passe une mission depuis Marseille ou Aix-en-Provence ?",
+      q: "Comment se déroule une mission à Marignane ?",
       a: "Marseille centre est à 25 km et Aix-en-Provence à 30 km de Marignane. Nous intervenons sur tout le secteur.",
     },
   ],

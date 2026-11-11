@@ -136,7 +136,7 @@ export const MARCQ_EN_BAR_UL_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Code sur mesure et propriété intégrale : vos sources, vos contenus, vos modèles IA et votre design system restent chez vous, repris par n'importe quel intégrateur de la Métropole Européenne de Lille — aucun lock-in éditeur ni dépendance contractuelle à Axion-IA. Hébergement Europe RGPD par défaut, point cadré dès la conception compte tenu de la proximité immédiate de la frontière belge pour les boutiques e-commerce multi-pays. UX/UI, mobile, e-commerce multi-CMS et IA livrés par une seule équipe. Devis établi à partir de 24-48 h selon la complexité ; frais de déplacement depuis Lille transparents et distincts du forfait.",
+          "Code sur mesure et propriété intégrale : vos sources, vos contenus, vos modèles IA et votre design system restent chez vous, repris par n'importe quel intégrateur de la Métropole Européenne de Lille — aucun lock-in éditeur ni dépendance contractuelle à Axion-IA. Hébergement Europe RGPD par défaut, point cadré dès la conception compte tenu de la proximité immédiate de la frontière belge pour les boutiques e-commerce multi-pays. UX/UI, mobile, e-commerce multi-CMS et IA livrés par une seule équipe. Devis établi à partir de 24-48 h selon la complexité ; frais de déplacement transparents et distincts du forfait.",
       },
       en: {
         hero: "In Marcq-en-Barœul, home town to the headquarters of Promod (women's ready-to-wear, ~394 stores across 7 countries, founded in 1975 by Francis-Charles Pollet) and a base for Keolis Lille Métropole at Parc Europe, the need is not yet another brochure site: it is e-commerce and business software that hold up under multi-country load and mobility demands. Axion-IA designs sites and AI-augmented SaaS platforms here — UX/UI, mobile, multi-CMS e-commerce and intelligent agents — for fashion and retail brands, shared-mobility players, the tertiary HQs of Parc Europe and Parc Europe Jean Monnet, and the dense fabric of Marcq micro-businesses and SMEs. Custom code, EU GDPR hosting, no vendor lock-in.",
@@ -250,7 +250,7 @@ export const MARCQ_EN_BAR_UL_COPY: VilleCopy = {
     },
     {
       q: "Faut-il une implantation locale d'Axion-IA pour intervenir ?",
-      a: "Non. Axion-IA n'a pas d'agence à Marcq-en-Barœul : nos experts IA se déplacent depuis Lille, avec des frais de transport transparents distincts du forfait.",
+      a: "Non. Axion-IA n'a pas d'agence à Marcq-en-Barœul : nous intervenons partout en France, sur place ou à distance, avec des frais de transport transparents distincts du forfait.",
     },
   ],
 };

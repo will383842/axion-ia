@@ -49,7 +49,7 @@ export const MUNDOLSHEIM_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Mundolsheim et Eurométropole nord ?",
-      a: "Oui, Axion-IA intervient à Mundolsheim et toute l'Eurométropole de Strasbourg nord (Schiltigheim, Bischheim, Hoenheim, Reichstett, Lampertheim). Consultants depuis Strasbourg (12 min) ou gare TER Mundolsheim.",
+      a: "Oui, Axion-IA intervient à Mundolsheim et toute l'Eurométropole de Strasbourg nord (Schiltigheim, Bischheim, Hoenheim, Reichstett, Lampertheim). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les commerces et grande distribution ?",

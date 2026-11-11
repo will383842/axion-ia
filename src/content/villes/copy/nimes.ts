@@ -1010,7 +1010,7 @@ export const NIMES_COPY: VilleCopy = {
     },
     {
       q: "Pouvez-vous intervenir sur site dans nos locaux à Nîmes ?",
-      a: "Oui. Toutes nos interventions nîmoises sont par défaut sur site dans vos bureaux ou ateliers. Nos consultants couvrent Nîmes centre, le Parc Georges Besse, la zone Grézan, et le bassin nîmois (Marguerittes, Bouillargues, Manduel, Beaucaire).",
+      a: "Oui. Toutes nos interventions nîmoises sont par défaut sur site dans vos bureaux ou ateliers. Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Axion-IA peut-il intervenir pour des entreprises liées au tourisme ou à la Féria de Nîmes ?",

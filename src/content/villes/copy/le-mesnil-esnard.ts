@@ -49,7 +49,7 @@ export const LE_MESNIL_ESNARD_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il au Mesnil-Esnard et dans l'agglo de Rouen ?",
-      a: "Oui, Axion-IA intervient au Mesnil-Esnard et dans toute la metropole rouennaise (Rouen, Bonsecours, Darnetal, Franqueville-Saint-Pierre). Consultants depuis Rouen (10 min) ou Paris (1h25).",
+      a: "Oui, Axion-IA intervient au Mesnil-Esnard et dans toute la metropole rouennaise (Rouen, Bonsecours, Darnetal, Franqueville-Saint-Pierre). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quels services IA pour les professions liberales du Mesnil-Esnard ?",

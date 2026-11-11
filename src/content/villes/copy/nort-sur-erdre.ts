@@ -49,7 +49,7 @@ export const NORT_SUR_ERDRE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Nort-sur-Erdre et nord nantais ?",
-      a: "Oui, Axion-IA intervient à Nort-sur-Erdre et tout le nord nantais (Sucé-sur-Erdre, Petit-Mars, Héric, Blain, Treillières). Nos consultants viennent de Nantes (25 min TER ou 30 min route D178).",
+      a: "Oui, Axion-IA intervient à Nort-sur-Erdre et tout le nord nantais (Sucé-sur-Erdre, Petit-Mars, Héric, Blain, Treillières). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les PME agroalimentaires du secteur ?",
@@ -64,8 +64,8 @@ export const NORT_SUR_ERDRE_COPY: VilleCopy = {
       a: "Pour les TPE artisans BTP et agriculteurs à Nort-sur-Erdre, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, traçabilité élevage, gestion planning et stocks.",
     },
     {
-      q: "Comment se passe une mission depuis Nantes ?",
-      a: "Nos consultants viennent de Nantes en 25 min par TER (ligne Nantes-Châteaubriant) ou 30 min par route (D178). Pour les multi-jours, hébergement local possible.",
+      q: "Comment se déroule une mission à Nort-sur-Erdre ?",
+      a: "Nous intervenons partout en France, sur place ou à distance. Pour les multi-jours, hébergement local possible.",
     },
   ],
 };

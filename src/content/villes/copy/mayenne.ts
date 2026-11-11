@@ -64,7 +64,7 @@ export const MAYENNE_COPY: VilleCopy = {
       a: "Oui, nos interventions forment vos équipes aux outils IA adaptés à la plasturgie : contrôle qualité par vision, maintenance prédictive, optimisation cycles de production, automatisation tri et conditionnement.",
     },
     {
-      q: "Comment se passe une mission IA à Mayenne depuis Laval ?",
+      q: "Comment se déroule une mission à Mayenne ?",
       a: "Nous intervenons partout en France, sur place ou à distance. Gare TER Mayenne desservie. Pour les missions multi-jours, hébergement local possible. Format mixte sur site + visio. Tarifs publics.",
     },
   ],

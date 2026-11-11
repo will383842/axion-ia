@@ -72,7 +72,7 @@ export const LAGNIEU_COPY: VilleCopy = {
       a: "Chaque déploiement intègre l'analyse RGPD (données techniques, clients, agricoles) et nous privilégions un hébergement européen. Vous restez propriétaire de vos données, sans dépendance technique.",
     },
     {
-      q: "Comment se passe une mission depuis Lyon ?",
+      q: "Comment se déroule une mission à Lagnieu ?",
       a: "Nous intervenons partout en France, sur place ou à distance. Les coûts de déplacement sont séparés du forfait et facturés en toute transparence, avec des tarifs publics consultables sur notre site.",
     },
   ],

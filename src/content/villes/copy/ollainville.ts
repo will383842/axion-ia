@@ -64,7 +64,7 @@ export const OLLAINVILLE_COPY: VilleCopy = {
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Outils IA de planification, suivi parcelles, gestion administrative.",
     },
     {
-      q: "Comment se passe une mission depuis Arpajon ou Évry ?",
+      q: "Comment se déroule une mission à Ollainville ?",
       a: "Arpajon (5 min). Brétigny-sur-Orge (10 min). Évry-Courcouronnes (20 min). Paris centre (45 min). Orly (25 min). Coûts de déplacement à part, tarification transparente.",
     },
   ],

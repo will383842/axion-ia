@@ -64,7 +64,7 @@ export const LUCCIANA_COPY: VilleCopy = {
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
     },
     {
-      q: "Comment se passe une mission depuis le continent ?",
+      q: "Comment se déroule une mission à Lucciana ?",
       a: "Aéroport Bastia-Poretta sur la commune même, port de Bastia à 20 min. Vols et ferries quotidiens depuis le continent.",
     },
   ],

@@ -64,7 +64,7 @@ export const LUZARCHES_COPY: VilleCopy = {
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Outils IA planification chantier, devis automatisés, suivi temps et facturation.",
     },
     {
-      q: "Comment se passe une mission depuis Chantilly ou Paris ?",
+      q: "Comment se déroule une mission à Luzarches ?",
       a: "Chantilly (10 min). Sarcelles (20 min). Paris Gare du Nord (45 min). CDG (20 min). Coûts de déplacement à part, tarification transparente.",
     },
   ],

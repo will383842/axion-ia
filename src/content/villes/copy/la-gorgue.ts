@@ -60,7 +60,7 @@ export const LA_GORGUE_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les TPE artisans BTP, commerçants et indépendants à La Gorgue. Cas typiques : automatisation devis, agents IA prise de RDV, classification photos chantier, gestion stocks.",
     },
     {
-      q: "Comment se passe une mission à La Gorgue depuis Lille ?",
+      q: "Comment se déroule une mission à La Gorgue ?",
       a: "Nous intervenons partout en France, sur place ou à distance. Pour les missions multi-jours, hébergement local possible.",
     },
     {

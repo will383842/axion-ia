@@ -64,7 +64,7 @@ export const LURE_COPY: VilleCopy = {
       a: "Oui, interventions et coaching 1-to-1 adaptés aux commerçants : gestion stocks IA, marketing local automatisé, agents conversationnels, comptabilité simplifiée. Formats journée ou demi-journée sur site à Lure.",
     },
     {
-      q: "Comment se passe une mission IA à Lure depuis Paris ou Lyon ?",
+      q: "Comment se déroule une mission à Lure ?",
       a: "Nos consultants arrivent par TGV Belfort-Montbéliard (2h20 Paris) puis route vers Lure (40 min). Pour les multi-jours, hébergement local possible.",
     },
   ],

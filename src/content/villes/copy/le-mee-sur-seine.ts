@@ -64,7 +64,7 @@ export const LE_MEE_SUR_SEINE_COPY: VilleCopy = {
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Outils IA réservation, gestion salle, fidélisation clientèle.",
     },
     {
-      q: "Comment se passe une mission depuis Melun ou Paris ?",
+      q: "Comment se déroule une mission au Mée-sur-Seine ?",
       a: "Melun (5 min). Corbeil-Essonnes (20 min). Fontainebleau (25 min). Paris Gare de Lyon (45 min RER D). Orly (35 min).",
     },
   ],

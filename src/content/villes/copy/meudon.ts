@@ -245,7 +245,7 @@ export const MEUDON_COPY: VilleCopy = {
       a: "Audit sur place, journée de formation sur site et coaching 1-to-1. Nous adaptons les formats au quotidien des TPE locales, sans jargon technique.",
     },
     {
-      q: "Comment se passe une mission depuis Paris ?",
+      q: "Comment se déroule une mission à Meudon ?",
       a: "Nous intervenons partout en France, sur place ou à distance.",
     },
   ],

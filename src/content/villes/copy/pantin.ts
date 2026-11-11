@@ -236,7 +236,7 @@ export const PANTIN_COPY: VilleCopy = {
     },
     {
       q: "Quelles communes proches couvrez-vous depuis Pantin ?",
-      a: "Depuis Pantin, nous couvrons les communes limitrophes : Paris (19e arrondissement), Aubervilliers, Bobigny, La Courneuve, Les Lilas, Noisy-le-Sec, Le Pré-Saint-Gervais et Romainville.",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quels secteurs locaux accompagnez-vous à Pantin ?",

@@ -64,7 +64,7 @@ export const LABENNE_COPY: VilleCopy = {
       a: "Pour les TPE artisans BTP et restaurateurs à Labenne, audit sur place {{price:audit-flash|flat}}, coaching 1-to-1, intervention formation. Cas typiques : automatisation devis, gestion réservations, classification avis clients, facturation.",
     },
     {
-      q: "Comment se passe une mission à Labenne depuis Bayonne ?",
+      q: "Comment se déroule une mission à Labenne ?",
       a: "Labenne est à 15 min de Bayonne par A63 (sortie directe). Nos consultants interviennent facilement sur site. Aéroport Biarritz à 20 min. Coûts de déplacement séparés du forfait, tarifs transparents.",
     },
   ],

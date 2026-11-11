@@ -64,7 +64,7 @@ export const LA_CHAPELLE_SAINT_MESMIN_COPY: VilleCopy = {
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
     },
     {
-      q: "Comment se passe une mission depuis Orléans ou Paris ?",
+      q: "Comment se déroule une mission à La Chapelle-Saint-Mesmin ?",
       a: "Orléans (10 min), Paris (1h15). Gare TGV Orléans à 15 min, A10 à proximité.",
     },
   ],

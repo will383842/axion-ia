@@ -49,7 +49,7 @@ export const MOISSAC_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Moissac ?",
-      a: "Oui, Axion-IA intervient à Moissac et dans tout le Moissagais (Castelsarrasin, Lauzerte, Valence-d'Agen, Bourg-de-Visa). Nos consultants se déplacent depuis Montauban (30 min) ou Toulouse (1h10).",
+      a: "Oui, Axion-IA intervient à Moissac et dans tout le Moissagais (Castelsarrasin, Lauzerte, Valence-d'Agen, Bourg-de-Visa). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Moissac  ?",

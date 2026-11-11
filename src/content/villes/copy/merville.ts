@@ -64,7 +64,7 @@ export const MERVILLE_COPY: VilleCopy = {
       a: "Pour les TPE artisans BTP et commerçants à Merville, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, classification photos chantiers, gestion stocks, marketing local.",
     },
     {
-      q: "Comment se passe une mission depuis Lille ou Béthune ?",
+      q: "Comment se déroule une mission à Merville ?",
       a: "Nous intervenons partout en France, sur place ou à distance. Pour les multi-jours, hébergement local possible.",
     },
   ],

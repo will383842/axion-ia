@@ -49,7 +49,7 @@ export const MUZILLAC_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Muzillac et littoral Morbihan ?",
-      a: "Oui, Axion-IA intervient à Muzillac et sur tout le littoral morbihannais (La Roche-Bernard, Damgan, Ambon, Billiers). Consultants depuis Vannes (25 min) ou Nantes (1h15). Couverture complète bassin Vilaine-océan.",
+      a: "Oui, Axion-IA intervient à Muzillac et sur tout le littoral morbihannais (La Roche-Bernard, Damgan, Ambon, Billiers). Nous intervenons partout en France, sur place ou à distance. Couverture complète bassin Vilaine-océan.",
     },
     {
       q: "Travaillez-vous avec les ostréiculteurs et acteurs de la pêche ?",
@@ -65,7 +65,7 @@ export const MUZILLAC_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Muzillac depuis Vannes ?",
-      a: "Nos consultants viennent de Vannes (25 min) ou Nantes (1h15). Intervention sur site dans vos locaux ou en visio. Multi-jours possibles avec hébergement local.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Intervention sur site dans vos locaux ou en visio. Multi-jours possibles avec hébergement local.",
     },
   ],
 };

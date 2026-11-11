@@ -65,7 +65,7 @@ export const MOISSY_CRAMAYEL_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission Axion-IA à Moissy-Cramayel ?",
-      a: "Nos consultants interviennent à Moissy-Cramayel (45 min depuis Paris via A5, gare RER D Lieusaint-Moissy à 5 min). Intervention dans vos locaux, atelier pratique avec vos équipes, livraison d'outils configurés.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Intervention dans vos locaux, atelier pratique avec vos équipes, livraison d'outils configurés.",
     },
   ],
 };

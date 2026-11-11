@@ -49,7 +49,7 @@ export const MONTAUBAN_DE_BRETAGNE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Montauban-de-Bretagne ?",
-      a: "Oui, Axion-IA intervient à Montauban-de-Bretagne et dans tout le centre Ille-et-Vilaine (Bédée, Irodouër, Saint-Méen-le-Grand, Médréac). Nos consultants viennent de Rennes (30 min) ou interviennent en visio.",
+      a: "Oui, Axion-IA intervient à Montauban-de-Bretagne et dans tout le centre Ille-et-Vilaine (Bédée, Irodouër, Saint-Méen-le-Grand, Médréac). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les exploitants agricoles bretons ?",
@@ -65,7 +65,7 @@ export const MONTAUBAN_DE_BRETAGNE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Montauban-de-Bretagne ?",
-      a: "Nos consultants viennent de Rennes centre (30 min via N12). TER possible gare de Montauban-de-Bretagne. Intervention sur site ou en visio.",
+      a: "Nous intervenons partout en France, sur place ou à distance. TER possible gare de Montauban-de-Bretagne. Intervention sur site ou en visio.",
     },
   ],
 };

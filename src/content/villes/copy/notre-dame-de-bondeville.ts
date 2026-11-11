@@ -49,7 +49,7 @@ export const NOTRE_DAME_DE_BONDEVILLE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il a Notre-Dame-de-Bondeville ?",
-      a: "Oui, Axion-IA intervient a Notre-Dame-de-Bondeville et dans toute la metropole rouennaise (Rouen, Maromme, Deville-les-Rouen, Canteleu). Consultants depuis Rouen (15 min) ou Paris (1h25).",
+      a: "Oui, Axion-IA intervient a Notre-Dame-de-Bondeville et dans toute la metropole rouennaise (Rouen, Maromme, Deville-les-Rouen, Canteleu). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quels services IA pour les commercants de Notre-Dame-de-Bondeville ?",

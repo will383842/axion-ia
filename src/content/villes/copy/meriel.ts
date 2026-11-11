@@ -64,7 +64,7 @@ export const MERIEL_COPY: VilleCopy = {
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Outils IA réservation, gestion salle, fidélisation clientèle.",
     },
     {
-      q: "Comment se passe une mission depuis L'Isle-Adam ou Paris ?",
+      q: "Comment se déroule une mission à Mériel ?",
       a: "L'Isle-Adam (5 min). Auvers-sur-Oise (10 min). Cergy-Pontoise (20 min). Paris Gare du Nord (40 min). CDG (30 min).",
     },
   ],

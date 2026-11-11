@@ -247,7 +247,7 @@ export const MONTGERON_COPY: VilleCopy = {
     },
     {
       q: "Williams se déplace-t-il vraiment sur site à Montgeron ?",
-      a: "Oui, déplacement systématique sur site à Montgeron via RER D (gare Montgeron-Crosne) ou véhicule (19 km depuis Paris). Aucune mission initiale en distanciel : observation des processus réels dans vos locaux.",
+      a: "Oui, déplacement systématique sur site à Montgeron via RER D (gare Montgeron-Crosne) ou véhicule. Aucune mission initiale en distanciel : observation des processus réels dans vos locaux.",
     },
   ],
 };

@@ -245,7 +245,7 @@ export const MASSY_COPY: VilleCopy = {
       a: "Audit sur place pour cartographier les automatisations utiles, intervention d'une journée pour un premier cas d'usage concret, puis coaching 1-to-1 du dirigeant. Agents conversationnels pour la relation client B2B.",
     },
     {
-      q: "Comment se passe une mission depuis Paris ou le plateau de Saclay ?",
+      q: "Comment se déroule une mission à Massy ?",
       a: "Massy est à une trentaine de minutes de Paris en RER et à quelques minutes du plateau de Saclay. Nous couvrons tout l'ouest de l'Essonne.",
     },
   ],

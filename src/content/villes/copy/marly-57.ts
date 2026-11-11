@@ -64,7 +64,7 @@ export const MARLY_57_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les PME tertiaires des zones d'activités de Marly et environs (Frescaty, Actisud) sur leurs cas IA : classification documents, automatisation back-office, agents IA support client, analyse données commerciales.",
     },
     {
-      q: "Comment se passe une mission depuis Metz ou Nancy ?",
+      q: "Comment se déroule une mission à Marly ?",
       a: "Nous intervenons partout en France, sur place ou à distance. Pour les multi-jours, hébergement local possible.",
     },
   ],

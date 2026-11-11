@@ -246,7 +246,7 @@ export const OULLINS_PIERRE_BENITE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une intervention IA à Oullins-Pierre-Bénite ?",
-      a: "Nos consultants se déplacent depuis Lyon (métro B, terminus Oullins, 15 min de Part-Dieu). L'intervention dure au moins une journée, sous forme d'atelier pratique dans vos locaux, pour rendre vos équipes autonomes.",
+      a: "Nous intervenons partout en France, sur place ou à distance. L'intervention dure au moins une journée, sous forme d'atelier pratique dans vos locaux, pour rendre vos équipes autonomes.",
     },
     {
       q: "Axion-IA respecte-t-il le RGPD lors de ses interventions ?",
