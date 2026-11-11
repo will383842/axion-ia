@@ -33,6 +33,9 @@ export const dynamic = "force-dynamic";
 
 const ENTETES = ENTETES_PAGE_GUIDE;
 
+/** Plafond du corps du POST : jeton, prénom, e-mail et case tiennent largement dans 8 Kio. */
+const CORPS_MAX_OCTETS = 8 * 1024;
+
 function vers(chemin: string): NextResponse {
   // URL PUBLIQUE du site (`publicUrl`) : derrière le proxy, `req.url` porte l'adresse d'écoute
   // INTERNE du conteneur (Location: https://0.0.0.0:3000/…). 303 : le navigateur rejoue en GET.
@@ -44,7 +47,7 @@ function pageErreur(message: string, jeton: string, statut: number): NextRespons
   const retour = jeton ? `${CHEMIN_PAGE_GUIDE}?j=${encodeURIComponent(jeton)}` : CHEMIN_PAGE_GUIDE;
   return pageStatique(
     T.titre,
-    `<p role="alert">${echapper(message)}</p><p><a href="${echapper(retour)}">${echapper(T.retour)}</a></p>`,
+    `<p id="erreur" role="alert">${echapper(message)}</p><p><a href="${echapper(retour)}" aria-describedby="erreur">${echapper(T.retour)}</a></p>`,
     statut,
   );
 }
@@ -73,9 +76,18 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     });
   }
 
+  // Plafond de taille du corps : au-delà, réponse neutre (celle d'un corps illisible), rien n'est lu.
+  const annonce = Number(req.headers.get("content-length") ?? "0");
+  if (Number.isFinite(annonce) && annonce > CORPS_MAX_OCTETS)
+    return pageErreur(T.erreurs.email, "", 422);
+
   let form: FormData;
   try {
-    form = await req.formData();
+    const brut = await req.arrayBuffer();
+    if (brut.byteLength > CORPS_MAX_OCTETS) return pageErreur(T.erreurs.email, "", 422);
+    form = await new Response(brut, {
+      headers: { "content-type": req.headers.get("content-type") ?? "" },
+    }).formData();
   } catch {
     return pageErreur(T.erreurs.email, "", 422);
   }

@@ -237,6 +237,63 @@ describe("page allumée", () => {
   });
 });
 
+describe("page allumée — chemin sans case et accessibilité", () => {
+  beforeEach(() => {
+    process.env.PAGE_GUIDE_RESEAU_ENABLED = "true";
+  });
+  const PHRASE =
+    "Vous pouvez aussi recevoir le guide sans cocher cette case : écrivez simplement votre adresse e-mail dans la conversation, ou utilisez le formulaire du guide.";
+
+  it("sous le formulaire, un paragraphe visible avec lien vers /fr/guide-ia", async () => {
+    const html = await rendre(JETON);
+    const apres = html.slice(html.indexOf("</form>"));
+    expect(apres).toContain(echapper(PHRASE.replace(" ou utilisez le formulaire du guide.", "")));
+    expect(apres).toMatch(/<a href="\/fr\/guide-ia">[^<]*formulaire du guide[^<]*<\/a>/);
+    expect(apres).not.toMatch(/hidden|display:\s*none/);
+  });
+
+  it("le texte de la case est inchangé", async () => {
+    expect(await rendre(JETON)).toContain(echapper(TEXTE_CASE_PAGE_GUIDE));
+  });
+
+  it("<main>, libellés reliés, focus visible", async () => {
+    const html = await rendre(JETON);
+    expect(html).toMatch(/<main[ >]/);
+    expect(html).toContain('<label for="prenom"');
+    expect(html).toContain('<label for="email"');
+    expect(html).toContain('<label for="accord"');
+    expect(html).toContain(":focus-visible");
+  });
+
+  it("page d'erreur : message en HTML relié par aria-describedby, sans <script>", async () => {
+    etat.confirmer.retour = { ok: false, statut: 422, erreur: "case" };
+    process.env.PAGE_GUIDE_RESEAU_ENABLED = "true";
+    const r = await POST(envoi({ j: JETON, prenom: "Camille", email: "a@example.test" }));
+    const html = await r.text();
+    expect(html).toMatch(/<main[ >]/);
+    expect(html).toContain('id="erreur"');
+    expect(html).toContain('aria-describedby="erreur"');
+    expect(html).toContain(":focus-visible");
+  });
+
+  it("corps du POST trop gros : réponse neutre, rien n'est confirmé", async () => {
+    const r = await POST(
+      envoi({
+        j: JETON,
+        prenom: "Camille",
+        email: "a@example.test",
+        accord: "oui",
+        bruit: "x".repeat(20000),
+      }),
+    );
+    expect(r.status).toBe(422);
+    expect(etat.appels).toHaveLength(0);
+    const html = await r.text();
+    expect(html).not.toContain("Camille");
+    expect(html).not.toContain("a@example.test");
+  });
+});
+
 describe("route d'envoi allumée", () => {
   beforeEach(() => {
     process.env.PAGE_GUIDE_RESEAU_ENABLED = "true";
