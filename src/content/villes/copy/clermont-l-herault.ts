@@ -49,7 +49,7 @@ export const CLERMONT_L_HERAULT_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Clermont-l'Hérault ?",
-      a: "Oui, Axion-IA intervient à Clermont-l'Hérault et dans tout le Clermontais-Lodévois (Lodève, Gignac, Paulhan, lac du Salagou). Nos consultants viennent depuis Montpellier en 45 min par A75.",
+      a: "Oui, Axion-IA intervient à Clermont-l'Hérault et dans tout le Clermontais-Lodévois (Lodève, Gignac, Paulhan, lac du Salagou). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Proposez-vous un audit IA pour les domaines viticoles Terrasses du Larzac ?",

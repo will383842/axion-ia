@@ -53,7 +53,7 @@ export const BAILLARGUES_COPY: VilleCopy = {
     },
     {
       q: "La proximité de la gare TGV facilite-t-elle les missions ?",
-      a: "Oui, la gare TGV Montpellier Sud de France est à 5 min de Baillargues. Nos consultants peuvent intervenir en aller-retour journée depuis Paris (3h20 TGV). Missions multi-jours possibles aussi.",
+      a: "Oui, la gare TGV Montpellier Sud de France est à 5 min de Baillargues. Nous intervenons partout en France, sur place ou à distance. Missions multi-jours possibles aussi.",
     },
     {
       q: "Quels services pour les PME de services tertiaires ?",

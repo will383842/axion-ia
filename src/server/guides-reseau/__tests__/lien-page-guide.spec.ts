@@ -7,6 +7,8 @@ import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
+import { COMPTES_PUBLICATION } from "../contrat";
+
 import {
   DERIVE_HORLOGE_SECONDES,
   DUREE_JETON_SECONDES,
@@ -25,7 +27,7 @@ const DONNEES = {
   mot: "GUIDE",
   reseau: "linkedin",
   guide: "guide-reseau-exemple",
-  compte: "compte_example_01",
+  compte: "page_principale",
   post_ref: "post_example_01",
   version_m1: "m1.2",
 } as const;
@@ -119,6 +121,32 @@ describe("lien-page-guide — refus", () => {
       motif: "champs",
     });
     expect(() => creerJeton({ ...DONNEES, conv }, SECRET, T0)).toThrow();
+  });
+
+  it.each([
+    "compte_example_01",
+    "Page_Principale",
+    "page-principale",
+    "autre",
+    "x",
+    "a".repeat(64),
+  ])(
+    "SITE-COMPTE : compte hors liste fermée du contrat (%s) → champs, et création refusée",
+    (compte) => {
+      expect(verifierJeton(signer({ ...chargeValide(), compte }), SECRET, T0)).toEqual({
+        ok: false,
+        motif: "champs",
+      });
+      expect(() => creerJeton({ ...DONNEES, compte }, SECRET, T0)).toThrow();
+    },
+  );
+
+  it("SITE-COMPTE : chaque compte de la liste fermée du contrat est accepté", () => {
+    for (const compte of COMPTES_PUBLICATION) {
+      const j = creerJeton({ ...DONNEES, compte }, SECRET, T0);
+      const r = verifierJeton(j, SECRET, T0);
+      expect(r.ok).toBe(true);
+    }
   });
 
   it("champ en trop (signé correctement) → champs", () => {

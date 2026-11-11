@@ -18208,6 +18208,12 @@ model ContactGuideReseau {
   /// SHA-256 (hex) du texte de la case de consentement.
   consentEmpreinte    String        @map("consent_empreinte") @db.Char(64)
   consentiLe          DateTime      @map("consenti_le") @db.Timestamptz(3)
+  /// Case FACULTATIVE « informations d'Axion-IA » : 'aucune' (non cochée) ou 'non_transmise'
+  /// (cochée, enregistrée ici ; le CRM ne la reçoit que si l'interrupteur newsletter_optin est allumé).
+  infosStatut         String        @default("aucune") @map("infos_statut") @db.VarChar(20)
+  infosVersion        String?       @map("infos_version") @db.VarChar(64)
+  infosEmpreinte      String?       @map("infos_empreinte") @db.Char(64)
+  infosConsentiLe     DateTime?     @map("infos_consenti_le") @db.Timestamptz(3)
   /// SHA-256 (hex) du jeton du lien : unique, usage unique.
   jetonEmpreinte      String        @unique @map("jeton_empreinte") @db.Char(64)
   /// Référence opaque de la conversation du réseau.

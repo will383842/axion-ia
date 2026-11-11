@@ -9,9 +9,9 @@ export const FLEURY_LES_AUBRAIS_COPY: VilleCopy = {
   pitchEn:
     "Fleury-les-Aubrais (45), commune limitrophe d'Orléans dans le Loiret (~21 800 hab.), pôle d'emploi majeur de la métropole Orléans Métropole avec ~10 000 emplois. Hub ferroviaire historique (gare des Aubrais, 1853), présence Thales, zones d'activités Dessaux, Fleury-Saran, Lignerolles. Tissu TPE, PME, artisans. Axion-IA accompagne en code custom.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Fleury-les-Aubrais (45), commune intégrée à Orléans Métropole. Nous accompagnons en priorité les TPE commerçantes et artisanales, les PME industrielles et logistiques des zones Dessaux, Fleury-Saran et Lignerolles, ainsi que les ETI implantées localement. Audit sur place {{price:audit-flash|flat}}, déplacement depuis Paris ou Orléans, code custom, conformité RGPD.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Fleury-les-Aubrais (45), commune intégrée à Orléans Métropole. Nous accompagnons en priorité les TPE commerçantes et artisanales, les PME industrielles et logistiques des zones Dessaux, Fleury-Saran et Lignerolles, ainsi que les ETI implantées localement. Audit sur place {{price:audit-flash|flat}}, déplacement sur site, code custom, conformité RGPD.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Fleury-les-Aubrais (45), commune intégrée à Orléans Métropole. Nous accompagnons en priorité les TPE commerçantes et artisanales, les PME industrielles et logistiques des zones Dessaux, Fleury-Saran et Lignerolles, ainsi que les ETI implantées localement. Audit sur place {{price:audit-flash|flat}}, déplacement depuis Paris ou Orléans, code custom, conformité RGPD.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Fleury-les-Aubrais (45), commune intégrée à Orléans Métropole. Nous accompagnons en priorité les TPE commerçantes et artisanales, les PME industrielles et logistiques des zones Dessaux, Fleury-Saran et Lignerolles, ainsi que les ETI implantées localement. Audit sur place {{price:audit-flash|flat}}, déplacement sur site, code custom, conformité RGPD.",
   seoHook: "agglo Orléans, ferroviaire & industrie",
   ecosystemFr:
     "Fleury-les-Aubrais est l'un des principaux pôles d'emploi de la métropole d'Orléans avec environ 10 000 emplois répartis sur les zones d'activités Dessaux, Fleury-Saran, l'Herveline, Lignerolles et Bicharderies. La gare des Aubrais, ouverte en 1853, accueille ~7 000 voyageurs/jour. Thales y est implantée. Tissu majoritairement TPE et PME, artisanat, services.",
@@ -226,7 +226,7 @@ export const FLEURY_LES_AUBRAIS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Fleury-les-Aubrais et dans Orléans Métropole ?",
-      a: "Oui, nous intervenons à Fleury-les-Aubrais et dans toute Orléans Métropole (Orléans, Saran, Semoy, Chanteau, Cercottes, Olivet, Saint-Jean-de-Braye). Déplacement depuis Paris (1 h Intercités) ou Orléans.",
+      a: "Oui, nous intervenons à Fleury-les-Aubrais et dans toute Orléans Métropole (Orléans, Saran, Semoy, Chanteau, Cercottes, Olivet, Saint-Jean-de-Braye). Déplacement sur site.",
     },
     {
       q: "Quels sont vos tarifs à Fleury-les-Aubrais ?",

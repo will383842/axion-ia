@@ -49,7 +49,7 @@ export const FONTENILLES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Fontenilles ?",
-      a: "Oui, Axion-IA intervient à Fontenilles et dans tout l'ouest de Toulouse (Fonsorbes, Léguevin, Saint-Lys). Nos consultants se déplacent en 28 min depuis Toulouse.",
+      a: "Oui, Axion-IA intervient à Fontenilles et dans tout l'ouest de Toulouse (Fonsorbes, Léguevin, Saint-Lys). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quels secteurs accompagnez-vous à Fontenilles ?",
@@ -61,7 +61,7 @@ export const FONTENILLES_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une intervention IA à Fontenilles ?",
-      a: "Nos consultants se déplacent à Fontenilles depuis Toulouse (28 min D632). Intervention 1 journée minimum, atelier pratique.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Intervention 1 journée minimum, atelier pratique.",
     },
     {
       q: "Proposez-vous du coaching individuel à Fontenilles ?",

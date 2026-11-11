@@ -177,7 +177,10 @@ export function sansCommentaires(src: string): string {
         haut.accolades--;
       }
     }
-    if (c === "/" && n === "/" && src[i - 1] !== "\\") {
+    // « // » d'une URL en texte nu (JSX : « http://… ») : pas un commentaire. Seuls les schémas
+    // usuels sont reconnus, pour que « case x:// vrai commentaire » reste blanchi.
+    const urlNue = /\b(?:https?|ftp|wss?|file):$/i.test(src.slice(Math.max(0, i - 6), i));
+    if (c === "/" && n === "/" && src[i - 1] !== "\\" && !urlNue) {
       while (i < src.length && src[i] !== "\n") {
         out += " ";
         i++;
@@ -185,7 +188,7 @@ export function sansCommentaires(src: string): string {
       if (i < src.length) out += "\n";
       continue;
     }
-    if (c === "/" && n === "*") {
+    if (c === "/" && n === "*" && src[i - 1] !== "\\") {
       const fin = src.indexOf("*/", i + 2);
       const stop = fin === -1 ? src.length : fin + 2;
       out += src.slice(i, stop).replace(/[^\n]/g, " ");
@@ -357,6 +360,25 @@ describe("sansCommentaires — ne confond pas une chaîne avec un commentaire", 
     const src = ['const r = /\\/\\//; const p = 49 + " €";', "// vrai 99 €"].join("\n");
     const out = sansCommentaires(src);
     expect(out).toContain('49 + " €"');
+    expect(out).not.toContain("99 €");
+  });
+
+  it("« /* » précédé d'un antislash (regex ou chaîne) n'ouvre pas de commentaire", () => {
+    const src = [
+      'const r = /\\/*/; const p = 49 + " €";',
+      'const s = "a\\/* 59 € */";',
+      "// vrai 99 €",
+    ].join("\n");
+    const out = sansCommentaires(src);
+    expect(out).toContain('49 + " €"');
+    expect(out).toContain("59 €");
+    expect(out).not.toContain("99 €");
+  });
+
+  it("« // » après « : » dans une URL nue ne blanchit pas la fin de ligne", () => {
+    const src = ["<a>http://x.fr/tarifs 49 €</a>", "const k = {a:// vrai 99 €", "}"].join("\n");
+    const out = sansCommentaires(src);
+    expect(out).toContain("49 €");
     expect(out).not.toContain("99 €");
   });
 

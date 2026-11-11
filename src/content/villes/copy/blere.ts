@@ -49,7 +49,7 @@ export const BLERE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Bléré et vallée du Cher ?",
-      a: "Oui, Axion-IA intervient à Bléré et toute la vallée du Cher tourangelle (Chenonceaux, Athée-sur-Cher, Cigogné, Sublaines). Consultants depuis Tours centre (25 min) ou gare TGV Saint-Pierre-des-Corps (20 min).",
+      a: "Oui, Axion-IA intervient à Bléré et toute la vallée du Cher tourangelle (Chenonceaux, Athée-sur-Cher, Cigogné, Sublaines). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les acteurs du tourisme patrimonial Loire ?",
@@ -64,7 +64,7 @@ export const BLERE_COPY: VilleCopy = {
       a: "Pour les TPE artisans et commerçants à Bléré, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, classification documents, gestion stocks.",
     },
     {
-      q: "Comment se passe une mission depuis Tours ?",
+      q: "Comment se déroule une mission à Bléré ?",
       a: "Nous intervenons partout en France, sur place ou à distance. Accès direct A85 ou D976 vallée du Cher. Pour les multi-jours, hébergement local possible (gîtes vallée du Cher).",
     },
   ],

@@ -49,7 +49,7 @@ export const ANN_ULLIN_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Annœullin et sud lillois ?",
-      a: "Oui, Axion-IA intervient à Annœullin et tout le sud lillois (Seclin, Carvin, Wattignies, Faches-Thumesnil). Consultants depuis Lille (25 min).",
+      a: "Oui, Axion-IA intervient à Annœullin et tout le sud lillois (Seclin, Carvin, Wattignies, Faches-Thumesnil). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les TPE artisans BTP annœullinois ?",
@@ -64,7 +64,7 @@ export const ANN_ULLIN_COPY: VilleCopy = {
       a: "Pour les commerçants et professions libérales à Annœullin, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : agents conversationnels, automatisation RDV, fidélisation.",
     },
     {
-      q: "Comment se passe une mission depuis Lille ?",
+      q: "Comment se déroule une mission à Annœullin ?",
       a: "Nous intervenons partout en France, sur place ou à distance. Coûts de déplacement séparés du forfait, tarifs transparents.",
     },
   ],

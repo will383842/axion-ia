@@ -250,7 +250,7 @@ export const AUBAGNE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Aubagne ?",
-      a: "Nous démarrons par un audit, puis intervenons sur site ou en visio depuis Marseille (20 min). Livrables documentés, équipes formées, aucune dépendance technique imposée.",
+      a: "Nous démarrons par un audit, puis intervenons sur site ou en visio. Livrables documentés, équipes formées, aucune dépendance technique imposée.",
     },
   ],
 };

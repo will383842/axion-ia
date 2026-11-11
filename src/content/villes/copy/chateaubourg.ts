@@ -65,7 +65,7 @@ export const CHATEAUBOURG_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une intervention sur site à Châteaubourg ?",
-      a: "Nos consultants interviennent depuis Rennes en 25 min (RN157). Intervention sur site dans vos locaux ou en zone d'activités. Formats demi-journée ou journée complète adaptés aux contraintes de production.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Intervention sur site dans vos locaux ou en zone d'activités. Formats demi-journée ou journée complète adaptés aux contraintes de production.",
     },
   ],
 };

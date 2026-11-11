@@ -61,7 +61,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const loc: "fr" | "en" = locale === "fr" ? "fr" : "en";
   const titleStr =
     loc === "fr"
-      ? "Audit IA en entreprise · cartographie, priorités · Axion-IA"
+      ? "Audit IA PME et entreprise, plan d'action chiffré · Axion-IA"
       : "Enterprise AI audit · costed action plan · Axion-IA";
   return {
     ...(await buildProductMetadata({
@@ -70,7 +70,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       title: titleStr,
       description:
         loc === "fr"
-          ? "Audit IA : nous cartographions vos tâches et chiffrons vos priorités. Point de départ recommandé : La Journée IA, rapport complet sous 3 jours ouvrés."
+          ? "Audit IA de votre PME ou entreprise : où l'IA vous fait gagner du temps, par quoi commencer, à quel coût. Point de départ : la Journée IA, partout en France."
           : "Enterprise AI audit across France: we map where AI saves you time and money, and you leave with a costed, prioritised action plan.",
     })),
     title: { absolute: titleStr },
@@ -235,7 +235,7 @@ export default async function AuditHub({ params }: Props) {
 
       {/* BANDEAU CONTACT — après les réalisations, conversion « Réserver un appel /
           Nous écrire » (calqué bandeau bas de home, Will 2026-05-31). */}
-      <AuditContactBand isFr={isFr} />
+      <AuditContactBand isFr={isFr} finale />
 
       {/* AVIS CLIENTS — preuve sociale (5 étoiles + avatar), réaliste sans
           inventer de marque (prénom + initiale + fonction). (Will 2026-05-31) */}

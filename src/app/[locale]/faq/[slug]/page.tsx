@@ -28,7 +28,7 @@ import { FaqRelatedResources } from "@/components/sections/FaqRelatedResources";
 import { FaqHeroImage } from "@/components/sections/FaqHeroImage";
 import { JsonLd } from "@/components/marketing/JsonLd";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
-import { buildProductMetadata, SITE_URL } from "@/lib/seo";
+import { buildProductMetadata, SITE_URL, truncateMetaDescription } from "@/lib/seo";
 import { resolvePriceTokensDeep } from "@/content/pricing-tokens";
 import { buildQAPageJsonLd } from "@/lib/seo-content-gen-factories";
 import { getManonPersonJsonLd } from "@/lib/seo/manon-person";
@@ -96,12 +96,16 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   // requête (H1 = title). On évite la troncature SERP (~60 car.) : on n'ajoute le
   // suffixe marque que si la question est courte, sinon on la laisse intacte.
   const brand = isFr ? "FAQ Axion-IA" : "Axion-IA FAQ";
-  const title = copy.question.length > 50 ? copy.question : `${copy.question} · ${brand}`;
+  const titreParDefaut = copy.question.length > 50 ? copy.question : `${copy.question} · ${brand}`;
+  // Titre et description propres à l'entrée (français seul) : sinon repli ci-dessus.
+  const title = isFr && entry.metaTitleFr ? entry.metaTitleFr : titreParDefaut;
   const meta = await buildProductMetadata({
     locale,
     path: `/faq/${slug}`,
     title,
-    description: copy.answer.length > 155 ? `${copy.answer.slice(0, 152).trimEnd()}…` : copy.answer,
+    description: truncateMetaDescription(
+      isFr && entry.metaDescriptionFr ? entry.metaDescriptionFr : copy.answer,
+    ),
     // Le flux existe (`/fr/faq/feed.xml`, 200) et était linké visuellement dans
     // le rail, mais jamais déclaré en `<link rel="alternate">` machine-lisible.
     rssFeed: `/${locale}/faq/feed.xml`,
@@ -305,6 +309,17 @@ export default async function FaqEntryPage({ params }: Props) {
       Icon: Sparkles,
     },
     { href: `/${locale}/faq/feed.xml`, label: isFr ? "Flux RSS" : "RSS feed", Icon: Rss },
+    // Lien retour de la FAQ AI Act vers la Journée IA (maillage du lot SEO C) :
+    // l'article 4 demande des mesures de maîtrise de l'IA, la Journée IA y répond.
+    ...(isFr && slug === "ai-act-2026"
+      ? [
+          {
+            href: `/${locale}/journee-ia`,
+            label: "Former ses équipes à l’IA en une journée",
+            Icon: Sparkles,
+          },
+        ]
+      : []),
   ];
 
   return (

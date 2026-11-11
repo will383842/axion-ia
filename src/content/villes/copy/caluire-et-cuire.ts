@@ -218,7 +218,7 @@ export const CALUIRE_ET_CUIRE_COPY: VilleCopy = {
           },
           {
             q: "How quickly do we get a quote?",
-            a: "From 24 to 48 hours depending on complexity, after an initial discussion. Our consultants come from Lyon (Part-Dieu ~10 min away) and travel to your premises in Caluire — town centre, Perica or Poumeyrol.",
+            a: "From 24 to 48 hours depending on complexity, after an initial discussion. We work across France, on site or remotely, and travel to your premises in Caluire — town centre, Perica or Poumeyrol.",
           },
         ],
         guarantees:

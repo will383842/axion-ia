@@ -49,7 +49,7 @@ export const CHAMONIX_MONT_BLANC_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Chamonix-Mont-Blanc ?",
-      a: "Oui, Axion-IA intervient à Chamonix-Mont-Blanc et dans toute la vallée (Les Houches, Servoz, Vallorcine, Argentière). Nos consultants se déplacent depuis Genève (1h) ou Annecy (1h15).",
+      a: "Oui, Axion-IA intervient à Chamonix-Mont-Blanc et dans toute la vallée (Les Houches, Servoz, Vallorcine, Argentière). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les hôtels et restaurants premium de Chamonix ?",

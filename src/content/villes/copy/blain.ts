@@ -64,7 +64,7 @@ export const BLAIN_COPY: VilleCopy = {
       a: "Pour les TPE artisans BTP et agriculteurs à Blain, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, traçabilité élevage, gestion stocks et planning.",
     },
     {
-      q: "Comment se passe une mission depuis Nantes ?",
+      q: "Comment se déroule une mission à Blain ?",
       a: "Nous intervenons partout en France, sur place ou à distance. Pour les multi-jours, hébergement local possible (gîtes canal Nantes-Brest).",
     },
   ],

@@ -24,7 +24,7 @@ import {
 import { EFFECTIF_CIBLE, MICRO_TEXTE_RDV } from "@/content/offre";
 
 /** Titre de la page : porte la marque, donc rendu tel quel (`title.absolute`). */
-export const TITRE = "Axion-IA · Audit, formation et automatisation IA pour PME";
+export const TITRE = "Axion-IA · Audit et formation IA pour PME et TPE";
 
 /** Meta description (le prix est un jeton ; ≤ `META_DESCRIPTION_MAX` une fois résolue). */
 export const DESCRIPTION_META =
@@ -63,13 +63,13 @@ export const CONTENU = {
   },
 
   deuxFacons: {
-    titre: "Deux façons de commencer avec l’IA",
+    titre: "Deux façons de commencer avec l’IA dans votre PME",
     chapeauDebut: "Une journée chez vous",
     chapeauMilieu: ", ou ",
     chapeauFin: "45 minutes au téléphone",
     blocJournee: {
       surtitre: "Dans votre entreprise · partout en France",
-      titre: "La Journée IA",
+      titre: "La Journée IA : audit et formation IA chez vous",
       accroche:
         "En une journée, vous savez par où commencer, chiffres à l’appui, et vos équipes sont formées.",
       tuiles: [
@@ -102,14 +102,14 @@ export const CONTENU = {
       garantieDebut: GARANTIE_PHRASE.slice(0, POINT_DE_COUPURE),
       garantieEngagement: GARANTIE_PHRASE.slice(POINT_DE_COUPURE),
       condition: CONDITION_GARANTIE,
-      lienDetail: "Voir la Journée IA en détail",
+      lienDetail: "Voir le déroulé de l’audit et de la formation",
       decideDebut: "Déjà décidé ?",
       decideLien: "Fixons la date ensemble",
       mention: MENTION_DECLARATION_OF,
     },
     blocAppel: {
       surtitre: "Pas encore sûr ? Une question ?",
-      titre: "Réserver un appel",
+      titre: "Diagnostic IA gratuit de 45 minutes",
       accroche: "Diagnostic IA gratuit : 45 minutes, en visio ou par téléphone.",
       repartezAvec: "Vous repartez avec",
       repartez: [
@@ -125,14 +125,14 @@ export const CONTENU = {
   },
 
   enBref: {
-    titre: "En bref",
+    titre: "Axion-IA en bref",
     texte: EN_BREF_ACCUEIL,
-    lienJournee: "La Journée IA en détail",
+    lienJournee: "Audit et formation IA en une journée : la Journée IA",
     lienDiagnostic: "Réserver le diagnostic gratuit",
   },
 
   miseEnPlace: {
-    titre: "Des implémentations sur mesure",
+    titre: "Des implémentations IA sur mesure",
     chapeau:
       "Après la journée, nous mettons en place ce qui rapporte le plus chez vous. L’IA prépare, vous validez. Sur devis écrit, au forfait, si vous le décidez.",
     etiquette: "Exemple type",
@@ -211,7 +211,7 @@ export const CONTENU = {
   ],
 
   pmeTpe: {
-    titre: "Nous accompagnons les PME et les TPE",
+    titre: "Nous accompagnons les PME et les TPE dans l’IA",
     chapeau: `Axion-IA aide les PME et les TPE françaises, ${EFFECTIF_CIBLE}, à commencer avec l’IA : une journée sur place pour cartographier l’entreprise, chiffrer ses plus gros gains et former les équipes, puis la mise en place.`,
     tpe: {
       titre: "TPE",
@@ -278,7 +278,7 @@ export const CONTENU = {
   },
 
   faq: {
-    titre: "Questions fréquentes",
+    titre: "Questions fréquentes sur l’IA en PME",
     chapeau: "Ce que les dirigeants nous demandent avant de se lancer.",
     questions: [
       {

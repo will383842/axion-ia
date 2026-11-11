@@ -49,7 +49,7 @@ export const GAILLAC_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Gaillac et dans le vignoble tarnais ?",
-      a: "Oui, Axion-IA intervient à Gaillac et dans tout le Gaillacois (Lisle-sur-Tarn, Rabastens, Cordes-sur-Ciel, Cahuzac-sur-Vère). Nos consultants se déplacent depuis Toulouse (50 min A68) ou Albi (25 min).",
+      a: "Oui, Axion-IA intervient à Gaillac et dans tout le Gaillacois (Lisle-sur-Tarn, Rabastens, Cordes-sur-Ciel, Cahuzac-sur-Vère). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quel est le tarif d'un audit IA pour une TPE viticole à Gaillac ?",

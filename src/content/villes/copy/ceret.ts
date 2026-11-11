@@ -65,7 +65,7 @@ export const CERET_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Céret ?",
-      a: "Nos consultants interviennent depuis Perpignan (30 min). Missions sur site dans votre atelier, exploitation ou commerce. Visio possible.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Missions sur site dans votre atelier, exploitation ou commerce. Visio possible.",
     },
   ],
 };

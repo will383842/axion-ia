@@ -49,7 +49,7 @@ export const ALLINGES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Allinges et dans le Chablais ?",
-      a: "Oui, Axion-IA intervient à Allinges et dans tout le Chablais haut-savoyard (Thonon-les-Bains à 5 min, Évian-les-Bains, Sciez, Bons-en-Chablais). Nos consultants couvrent le bassin thononais depuis Genève (40 min) ou Annemasse.",
+      a: "Oui, Axion-IA intervient à Allinges et dans tout le Chablais haut-savoyard (Thonon-les-Bains à 5 min, Évian-les-Bains, Sciez, Bons-en-Chablais). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les entreprises touristiques du Chablais ?",
@@ -65,7 +65,7 @@ export const ALLINGES_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Allinges ?",
-      a: "Nos consultants interviennent à Allinges depuis Genève (40 min) ou Annemasse (30 min). Intervention sur site dans vos locaux, cabinet ou atelier. Tarifs publics et transparents.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Intervention sur site dans vos locaux, cabinet ou atelier. Tarifs publics et transparents.",
     },
   ],
 };

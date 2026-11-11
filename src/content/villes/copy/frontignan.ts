@@ -230,7 +230,7 @@ export const FRONTIGNAN_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Frontignan et autour de l'étang de Thau ?",
-      a: "Oui, Axion-IA intervient à Frontignan et dans tout le bassin de Thau (Sète à 10 min, Mèze, Balaruc-les-Bains). Nos consultants se déplacent depuis Montpellier (25 min) ou par l'aéroport Montpellier-Méditerranée.",
+      a: "Oui, Axion-IA intervient à Frontignan et dans tout le bassin de Thau (Sète à 10 min, Mèze, Balaruc-les-Bains). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les viticulteurs du Muscat de Frontignan ?",
@@ -245,8 +245,8 @@ export const FRONTIGNAN_COPY: VilleCopy = {
       a: "Oui, les TPE sont notre priorité : restaurateurs, hôteliers, commerçants. Audit sur place {{price:audit-flash|flat}}, intervention d'une journée, coaching 1-to-1. Cas typiques : agents conversationnels multilingues et réservations automatisées.",
     },
     {
-      q: "Comment se déroule une mission depuis Montpellier ?",
-      a: "Nos consultants rejoignent Frontignan en 25 min depuis Montpellier. Sessions sur site ou en visio selon votre préférence.",
+      q: "Comment se déroule une mission à Frontignan ?",
+      a: "Nous intervenons partout en France, sur place ou à distance. Sessions sur site ou en visio selon votre préférence.",
     },
   ],
 };

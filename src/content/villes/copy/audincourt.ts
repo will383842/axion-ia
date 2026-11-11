@@ -49,7 +49,7 @@ export const AUDINCOURT_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Audincourt et dans le Pays de Montbéliard ?",
-      a: "Oui, Axion-IA intervient à Audincourt et dans tout le Pays de Montbéliard (Montbéliard, Valentigney, Sochaux, Hérimoncourt, Bavans). Gare TGV Belfort-Montbéliard à 15 min. Consultants depuis Besançon (1h10) ou Belfort (20 min).",
+      a: "Oui, Axion-IA intervient à Audincourt et dans tout le Pays de Montbéliard (Montbéliard, Valentigney, Sochaux, Hérimoncourt, Bavans). Gare TGV Belfort-Montbéliard à 15 min. Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les sous-traitants automobile et équipementiers ?",
@@ -65,7 +65,7 @@ export const AUDINCOURT_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Audincourt ?",
-      a: "Nos consultants se déplacent à Audincourt (gare TGV Belfort-Montbéliard à 15 min, A36 depuis Besançon 1h10). Interventions dans vos locaux usine ou atelier. Visio possible pour le suivi.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Interventions dans vos locaux usine ou atelier. Visio possible pour le suivi.",
     },
   ],
 };

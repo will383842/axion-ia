@@ -17,6 +17,7 @@
 import { randomUUID } from "node:crypto";
 import { prisma } from "@/lib/prisma";
 import { embedChatbotText } from "@/server/chatbot/embeddings";
+import { estKbUnifieeActive } from "@/server/chatbot/retrieval/knowledge-entry-search";
 import type { TenantSettings } from "@/server/chatbot/constants";
 
 export interface CachedAnswer {
@@ -57,6 +58,21 @@ async function currentKnowledgeVersion(tenantId: string): Promise<number> {
   return rows[0]?.v ?? 1;
 }
 
+/** Décalage de version appliqué quand CHATBOT_KB_UNIFIED est allumé (int4, très au-dessus des versions réelles). */
+export const DECALAGE_VERSION_KB_UNIFIEE = 1_000_000;
+
+/**
+ * Version de CLÉ de cache : la version de knowledge, décalée quand la base unique est allumée.
+ * Une réponse mise en cache avant l'allumage (tirée des chunks seuls) ne peut donc plus être
+ * servie une fois l'interrupteur allumé, et inversement. Sans changement de schéma.
+ */
+export function versionDeCle(
+  versionKnowledge: number,
+  env: Record<string, string | undefined> = process.env,
+): number {
+  return versionKnowledge + (estKbUnifieeActive(env) ? DECALAGE_VERSION_KB_UNIFIEE : 0);
+}
+
 /**
  * Cherche une réponse en cache pour une question proche (cosine ≥ seuil tenant),
  * à la version de knowledge courante. Incrémente `hits` sur hit. Renvoie null
@@ -72,7 +88,7 @@ export async function lookupSemanticCache(
   const literal = await embedToLiteral(question);
   if (!literal) return null;
 
-  const version = await currentKnowledgeVersion(tenantId);
+  const version = versionDeCle(await currentKnowledgeVersion(tenantId));
   const rows = await prisma.$queryRaw<CacheRow[]>`
     SELECT "id", "reponse", "sources",
            (1 - ("question_embedding" <=> ${literal}::vector)) AS sim
@@ -113,7 +129,7 @@ export async function writeSemanticCache(
   const literal = await embedToLiteral(question);
   if (!literal) return;
 
-  const version = await currentKnowledgeVersion(tenantId);
+  const version = versionDeCle(await currentKnowledgeVersion(tenantId));
   const valideJusqu = new Date(Date.now() + settings.cache.ttlHours * 3_600_000);
   const id = randomUUID();
   const sourcesJson = JSON.stringify(answer.sources);

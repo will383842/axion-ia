@@ -49,7 +49,7 @@ export const BAYEUX_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Bayeux et dans le Bessin ?",
-      a: "Oui, Axion-IA intervient à Bayeux et tout le Bessin (Arromanches, Port-en-Bessin, Isigny-sur-Mer, Courseulles-sur-Mer). Couverture plages du Débarquement. Consultants depuis Caen (30 min N13).",
+      a: "Oui, Axion-IA intervient à Bayeux et tout le Bessin (Arromanches, Port-en-Bessin, Isigny-sur-Mer, Courseulles-sur-Mer). Couverture plages du Débarquement. Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les acteurs du tourisme patrimoine à Bayeux ?",

@@ -64,7 +64,7 @@ export const EPINAY_SUR_ORGE_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les PME du bassin Massy-Longjumeau sur leurs cas IA : automatisation reporting, CRM intelligent, classification documents, optimisation processus RH, gestion projet assistée.",
     },
     {
-      q: "Comment se passe une mission à Épinay-sur-Orge depuis Paris ?",
+      q: "Comment se déroule une mission à Épinay-sur-Orge ?",
       a: "Nos consultants interviennent via RER C (35 min Paris centre, gare Épinay-sur-Orge directe). Massy TGV à 10 min. Aéroport Orly à 20 min.",
     },
   ],

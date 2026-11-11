@@ -94,6 +94,10 @@ export const revalidate = 3600;
 // relu au runtime, donc le geste côté Coolify produit son effet sous 1 h.
 const PAGES_RESERVEES_AUX_CERTIFIES = new Set(["/certification-qualiopi"]);
 
+// Pages servies en 301 (next.config, 2026-11) : une URL redirigée n'a pas à figurer dans un sitemap.
+// L'entrée reste dans le manifeste d'images (lu par images-declarees-vs-rendues.spec.ts).
+const PAGES_REDIRIGEES = new Set(["/formations/entreprise"]);
+
 // GEO-037 (audit GEO/AEO 2026-08-14) — cette licence n'est déclarée QUE sur les
 // images dont Axion-IA détient les droits (`origin` absent ou `"own"` dans le
 // manifeste). Les photos tierces curées localement (`origin: "unsplash"`) sont
@@ -115,6 +119,7 @@ export function GET(): Response {
     // Tant que la certification n'est pas obtenue, ces images (et leurs légendes
     // affirmatives) ne partent pas à l'indexation — cf. le bloc d'en-tête.
     if (!certifie && PAGES_RESERVEES_AUX_CERTIFIES.has(page.path)) continue;
+    if (PAGES_REDIRIGEES.has(page.path)) continue;
     const absPageUrl = `${SITE_URL}/fr${page.path === "/" ? "" : page.path}`;
     const imageBlocks = page.images.map((img) => {
       totalImages += 1;

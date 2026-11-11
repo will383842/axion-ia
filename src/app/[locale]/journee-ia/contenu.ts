@@ -28,12 +28,12 @@ export { GARANTIE, JETON_PRIX };
 /** Le seul libellé de bouton de la page (haut, déroulé, prix, appel final, barre mobile). */
 export const LIBELLE_CTA = "Réserver un appel";
 
-/** Titre de la page (55 caractères) : il porte la marque, donc il est rendu tel quel. */
-export const TITRE = "La Journée IA : audit et formation IA en PME · Axion-IA";
+/** Titre de la page (56 caractères) : il porte la marque, donc il est rendu tel quel. */
+export const TITRE = "Audit et formation IA en une journée pour PME · Axion-IA";
 
 /** Description de la page, de l'aperçu social et de `WebPage.description` (décision 19). */
 export const DESCRIPTION_META =
-  "La Journée IA dans vos locaux, partout en France : vos plus gros gains chiffrés, vos équipes formées. {{PRIX}}, garantie écrite sous condition.";
+  "Audit IA le matin, formation de vos équipes l’après-midi : la Journée IA, dans vos locaux partout en France. Attestation par personne. {{PRIX}}.";
 
 /** Texte alternatif de l'image d'aperçu (Open Graph et Twitter). */
 export const OG_IMAGE_ALT =
@@ -45,9 +45,10 @@ export const DEBUT_PROMESSE = "nous vous remboursons";
 export const CONTENU = {
   accroche: {
     surtitre: "PME et TPE",
-    titre: "La Journée IA\u202f: vos plus gros gains chiffrés, vos équipes formées.",
+    titre:
+      "La Journée IA\u202f: l’audit IA de votre PME le matin, vos équipes formées l’après-midi.",
     // Mots mis en terracotta dans le titre.
-    titreAccent: "vos équipes formées.",
+    titreAccent: "vos équipes formées l’après-midi.",
     phrase:
       "Le matin, nous cartographions votre entreprise et faisons le point ensemble sur vos priorités\u202f: vos plus gros gains, chiffrés le jour même, ceux qui rapportent le plus et se mettent en place le plus vite. L’après-midi, nous formons vos équipes. Dans vos locaux, partout en France.",
     cta: LIBELLE_CTA,
@@ -98,7 +99,7 @@ export const CONTENU = {
   enBref: EN_BREF_JOURNEE_IA,
   pourQui: {
     surtitre: "Avant de réserver",
-    titre: "Pour qui est la Journée IA\u202f?",
+    titre: "La Journée IA, pour quelles PME et TPE\u202f?",
     titreOui: "C’est pour vous",
     titreNon: "Pas pour vous",
     pourVous: [
@@ -145,7 +146,7 @@ export const CONTENU = {
   },
   deroule: {
     surtitre: "Le déroulé",
-    titre: "Votre journée, heure par heure",
+    titre: "Le déroulé\u202f: audit IA le matin, formation IA l’après-midi",
     etapes: [
       {
         icone: "fichier",
@@ -172,7 +173,7 @@ export const CONTENU = {
   },
   recevez: {
     surtitre: "Compris dans le prix",
-    titre: "Ce que vous recevez",
+    titre: "Ce que vous recevez\u202f: rapport chiffré, plan à 90 jours, attestations",
     elements: [
       // En premier et pleine largeur : l’attestation nominative de chaque personne formée.
       {
@@ -184,8 +185,7 @@ export const CONTENU = {
       { icone: "audit", titre: "La carte de vos services\u202f: où partent vos heures" },
       {
         icone: "calcul",
-        titre:
-          "Vos 3 à 5 plus gros gains, découverts le jour même et chiffrés en heures et en euros\u202f: ceux au meilleur retour sur investissement, les plus rapides à mettre en place",
+        titre: "Vos 3 à 5 plus gros gains, chiffrés en heures et en euros le jour même",
       },
       { icone: "formation", titre: "Formation sur vos dossiers" },
       { icone: "regles", titre: "Vos règles d’usage de l’IA" },
@@ -221,7 +221,7 @@ export const CONTENU = {
   },
   aiAct: {
     surtitre: "Règlement européen",
-    titre: "Que demande l’article 4 de l’AI Act\u202f?",
+    titre: "Former ses équipes à l’IA\u202f: une mesure au titre de l’article 4",
     cartes: [
       {
         icone: "fichier",
@@ -242,6 +242,9 @@ export const CONTENU = {
         attestation: true,
       },
     ],
+    lienAiAct: {
+      libelle: "Obligations de l’AI Act pour les entreprises",
+    },
     source: {
       prefixe: "Source\u202f:",
       libelle: "Règlement (UE) 2024/1689, art. 4, modifié par le règlement (UE) 2026/1744",
@@ -348,7 +351,7 @@ export const CONTENU = {
   ],
   rendezVous: {
     surtitre: "Prochaine étape",
-    titre: "45 minutes gratuites pour commencer",
+    titre: "Diagnostic IA gratuit\u202f: 45 minutes pour commencer",
     etapes: [
       "Diagnostic IA, 45 min\u202f: une première tâche chiffrée",
       "Journée IA, chez vous",
@@ -377,7 +380,7 @@ export const TEXTES_ANNEXES = {
   miseAJour: "Page mise à jour le",
   faqEntete: {
     surtitre: "Questions fréquentes",
-    titre: "Vos questions sur la Journée IA",
+    titre: "Questions fréquentes\u202f: audit et formation IA en PME",
     lienTous: "Toutes les questions sur l’IA en entreprise",
     lienTousHref: "/faq",
   },

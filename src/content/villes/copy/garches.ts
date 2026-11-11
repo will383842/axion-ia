@@ -65,7 +65,7 @@ export const GARCHES_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Garches ?",
-      a: "Nos consultants interviennent à Garches depuis Paris ou La Défense (10-25 min). Gare Garches — Marnes-la-Coquette sur le Transilien L.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Gare Garches — Marnes-la-Coquette sur le Transilien L.",
     },
   ],
 };
