@@ -87,6 +87,10 @@ export const env = createEnv({
     // étendue, cas d'usage), gelés par défaut : aucune page ne lit leurs tables.
     // Actif SEULEMENT si "true" (villes/generateurs-annexes-geles.ts).
     VILLES_GENERATEURS_ANNEXES_ACTIFS: z.enum(["true", "false"]).optional(),
+    // X-4 (vague 3) : bloc « repères publics » des pages ville (faits sourcés et datés lus
+    // dans src/content/villes/donnees-factuelles/donnees.json, aucun appel réseau).
+    // Actif SEULEMENT si "true" ; absent ou "false" = page ville identique à avant.
+    VILLE_DONNEES_FACTUELLES: z.enum(["true", "false"]).optional(),
     // Fiche prospect créée toute seule à la réservation d'un rendez-vous Calendly
     // de la liste blanche (décision de Will, 24/10/2026). Lu par le WORKER (balayage).
     // Actif SEULEMENT si "true" (comme DOSSIER_BALAYAGE_ENABLED) ; "essai" = à blanc
@@ -766,6 +770,7 @@ export const env = createEnv({
     DOSSIER_BALAYAGE_ENABLED: process.env.DOSSIER_BALAYAGE_ENABLED,
     CHATBOT_KB_UNIFIED: process.env.CHATBOT_KB_UNIFIED,
     VILLES_GENERATEURS_ANNEXES_ACTIFS: process.env.VILLES_GENERATEURS_ANNEXES_ACTIFS,
+    VILLE_DONNEES_FACTUELLES: process.env.VILLE_DONNEES_FACTUELLES,
     DOSSIER_FICHE_AUTO: process.env.DOSSIER_FICHE_AUTO,
     DOSSIER_FICHE_AUTO_DEPUIS: process.env.DOSSIER_FICHE_AUTO_DEPUIS,
     DOSSIER_FICHE_DEMANDE: process.env.DOSSIER_FICHE_DEMANDE,

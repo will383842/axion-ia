@@ -77,6 +77,8 @@ import { VilleTissuEconomique } from "@/components/ville/VilleTissuEconomique";
 import { VilleCommunesProches } from "@/components/ville/VilleCommunesProches";
 import { VilleFaqGeolocalisee } from "@/components/ville/VilleFaqGeolocalisee";
 import { OrangeContactBanner } from "@/components/ville/OrangeContactBanner";
+import { VilleDonneesFactuelles } from "@/components/ville/VilleDonneesFactuelles";
+import { getVilleDonneesFactuellesAffichables } from "@/content/villes/donnees-factuelles";
 // ─────────────────────────────────────────────────────────────────────────────
 
 interface Props {
@@ -326,6 +328,9 @@ export default async function VilleHubPage({ params }: Props) {
     population: ville.population,
   };
   const villeAsCity = adaptVilleToCity(ville, region.nameFr);
+  // X-4 (vague 3) : repères publics sourcés. `null` si VILLE_DONNEES_FACTUELLES n'est pas
+  // "true" ou si la ville n'a aucun fait sourcé → aucun bloc, rendu identique à avant.
+  const donneesFactuelles = getVilleDonneesFactuellesAffichables(ville.slug);
 
   // P2 maillage ville (2026-06-21) — articles content-gen tier-1 ancrés sur cette
   // ville (via mentionedCities[]). Croise le hub géographique avec les contenus
@@ -825,6 +830,15 @@ export default async function VilleHubPage({ params }: Props) {
 
       {/* ── Tissu économique : secteurs, opportunités IA (composant ville Phase 4) ── */}
       <VilleTissuEconomique ville={ville} isFr={isFr} />
+
+      {/* ── Repères publics sourcés (X-4) — derrière VILLE_DONNEES_FACTUELLES, éteint par défaut ── */}
+      {donneesFactuelles ? (
+        <VilleDonneesFactuelles
+          donnees={donneesFactuelles}
+          villeNameFr={ville.nameFr}
+          isFr={isFr}
+        />
+      ) : null}
 
       {/* ── Communes proches (composant ville Phase 4) — sans verticale → liens hub ── */}
       <VilleCommunesProches ville={ville} isFr={isFr} />
