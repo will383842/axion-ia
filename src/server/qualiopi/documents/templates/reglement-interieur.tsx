@@ -14,8 +14,8 @@ import {
   DocSection,
   FieldRow,
   BulletList,
-  pdfStyles,
-} from "@/server/qualiopi/documents/base-layout";
+} from "@/server/qualiopi/documents/cadre-pieces";
+import { pdfStylesPieces } from "@/server/qualiopi/documents/cadre-pieces/styles-blocs";
 import { LEGAL_MENTIONS } from "@/server/qualiopi/legal/legal-mentions";
 import type { OrganismeIdentite } from "@/server/qualiopi/documents/organisme";
 import { TITRE_ARTICLE_VIOLENCES, VIOLENCES_PROCEDURE } from "@/content/prevention-violences";
@@ -45,7 +45,7 @@ const local = StyleSheet.create({
     fontSize: 8,
     fontStyle: "italic",
     marginBottom: 12,
-    color: pdfStyles.legalNote.color,
+    color: pdfStylesPieces.legalNote.color,
   },
 });
 
@@ -76,7 +76,7 @@ export function ReglementInterieurPdf({
         {...(data.estCopie ? { estCopie: true as const } : {})}
       >
         {/* Mention légale de tête */}
-        <Text style={pdfStyles.legalNote}>
+        <Text style={pdfStylesPieces.legalNote}>
           {LEGAL_MENTIONS.reglementInterieur} — Version du {data.dateVersion}
         </Text>
 
@@ -365,7 +365,7 @@ export function ReglementInterieurPdf({
             de sa réception.
           </Text>
           <FieldRow label="Email réclamations" value={identite.email || "—"} />
-          <Text style={pdfStyles.legalNote}>
+          <Text style={pdfStylesPieces.legalNote}>
             {siteBase
               ? `Les modalités détaillées de dépôt, de traitement et de recours figurent dans la procédure de réclamation publiée sur ${siteBase}/reclamations.`
               : "Les modalités détaillées de dépôt, de traitement et de recours figurent dans la procédure de réclamation publiée sur notre site, rubrique « Réclamations », et communiquée sur simple demande."}

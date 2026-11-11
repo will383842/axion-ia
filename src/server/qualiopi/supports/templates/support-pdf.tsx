@@ -4,15 +4,17 @@
  * Rend tous les types de supports via un seul composant `SupportPdf`.
  * La mise en page s'adapte selon `data.type` (en-tête différencié, styles spéciaux).
  *
- * Charte : base-layout (QualiopiPage, DocSection, FieldRow, pdfStyles) + brand-tokens.
- * ZÉRO couleur en dur — uniquement brandColor().
+ * Charte : cadre-pieces (QualiopiPage, DocSection, FieldRow, pdfStylesPieces) + jetons-pieces.
+ * ZÉRO couleur en dur — uniquement couleurPiece().
  * NE PAS "use client" — rendu serveur exclusif (@react-pdf/renderer).
  */
 
 import React from "react";
 import { Document, Page, View, Text, StyleSheet } from "@react-pdf/renderer";
-import { QualiopiPage, DocSection, pdfStyles } from "@/server/qualiopi/documents/base-layout";
-import { brandColor, QUALIOPI_BRAND_FONTS } from "@/server/qualiopi/brand/brand-tokens";
+import { QualiopiPage, DocSection } from "@/server/qualiopi/documents/cadre-pieces";
+import { pdfStylesPieces } from "@/server/qualiopi/documents/cadre-pieces/styles-blocs";
+import { QUALIOPI_BRAND_FONTS } from "@/server/qualiopi/brand/brand-tokens";
+import { couleurPiece } from "@/server/qualiopi/brand/jetons-pieces";
 import type { SupportRenderInput, SupportContenu, BlocContenu } from "../types";
 
 // ============================================================
@@ -22,8 +24,8 @@ import type { SupportRenderInput, SupportContenu, BlocContenu } from "../types";
 const local = StyleSheet.create({
   typeTag: {
     fontSize: 8,
-    color: brandColor("primary-fg"),
-    backgroundColor: brandColor("primary"),
+    color: couleurPiece("primary-fg"),
+    backgroundColor: couleurPiece("primary"),
     paddingHorizontal: 6,
     paddingVertical: 2,
     borderRadius: 3,
@@ -32,30 +34,30 @@ const local = StyleSheet.create({
     fontFamily: QUALIOPI_BRAND_FONTS.mono,
   },
   typeTagFormateur: {
-    backgroundColor: brandColor("terracotta"),
+    backgroundColor: couleurPiece("terracotta"),
   },
   typeTagStagiaire: {
-    backgroundColor: brandColor("primary"),
+    backgroundColor: couleurPiece("primary"),
   },
   typeTagEval: {
-    backgroundColor: brandColor("mocha"),
+    backgroundColor: couleurPiece("mocha"),
   },
   paragraph: {
     fontSize: 10,
-    color: brandColor("fg"),
+    color: couleurPiece("fg"),
     marginBottom: 4,
     lineHeight: 1.5,
   },
   bulletItem: {
     fontSize: 10,
-    color: brandColor("fg"),
+    color: couleurPiece("fg"),
     paddingLeft: 10,
     marginBottom: 3,
     lineHeight: 1.5,
   },
   objectifItem: {
     fontSize: 10,
-    color: brandColor("primary"),
+    color: couleurPiece("primary"),
     paddingLeft: 10,
     marginBottom: 3,
     lineHeight: 1.5,
@@ -63,30 +65,30 @@ const local = StyleSheet.create({
   },
   exerciceBox: {
     borderLeftWidth: 3,
-    borderLeftColor: brandColor("terracotta"),
+    borderLeftColor: couleurPiece("terracotta"),
     paddingLeft: 8,
     paddingVertical: 4,
     marginBottom: 6,
-    backgroundColor: brandColor("sand"),
+    backgroundColor: couleurPiece("sand"),
   },
   exerciceTitle: {
     fontSize: 10,
     fontFamily: QUALIOPI_BRAND_FONTS.serif,
     fontWeight: "bold",
-    color: brandColor("terracotta"),
+    color: couleurPiece("terracotta"),
     marginBottom: 3,
   },
   noteBox: {
     borderLeftWidth: 2,
-    borderLeftColor: brandColor("sage"),
+    borderLeftColor: couleurPiece("sage"),
     paddingLeft: 8,
     paddingVertical: 3,
     marginBottom: 4,
-    backgroundColor: brandColor("sage-soft"),
+    backgroundColor: couleurPiece("sage-soft"),
   },
   noteText: {
     fontSize: 9,
-    color: brandColor("fg-soft"),
+    color: couleurPiece("fg-soft"),
     lineHeight: 1.4,
     fontStyle: "italic",
   },
@@ -98,19 +100,19 @@ const local = StyleSheet.create({
   },
   versionText: {
     fontSize: 8,
-    color: brandColor("fg-muted"),
+    color: couleurPiece("fg-muted"),
     fontFamily: QUALIOPI_BRAND_FONTS.mono,
   },
   grilleItem: {
     flexDirection: "row",
     paddingVertical: 5,
     borderBottomWidth: 1,
-    borderBottomColor: brandColor("border"),
+    borderBottomColor: couleurPiece("border"),
     marginBottom: 2,
   },
   grilleItemText: {
     fontSize: 10,
-    color: brandColor("fg"),
+    color: couleurPiece("fg"),
     flex: 1,
   },
 
@@ -120,7 +122,7 @@ const local = StyleSheet.create({
     paddingHorizontal: 56,
     paddingBottom: 64,
     fontFamily: QUALIOPI_BRAND_FONTS.sans,
-    backgroundColor: brandColor("paper"),
+    backgroundColor: couleurPiece("paper"),
     position: "relative",
   },
   coverBand: {
@@ -129,7 +131,7 @@ const local = StyleSheet.create({
     left: 0,
     right: 0,
     height: 10,
-    backgroundColor: brandColor("terracotta"),
+    backgroundColor: couleurPiece("terracotta"),
   },
   coverEyebrow: {
     fontSize: 9,
@@ -137,20 +139,20 @@ const local = StyleSheet.create({
     fontWeight: "bold",
     letterSpacing: 2,
     textTransform: "uppercase",
-    color: brandColor("terracotta"),
+    color: couleurPiece("terracotta"),
     marginBottom: 6,
   },
   coverOrg: {
     fontSize: 13,
     fontFamily: QUALIOPI_BRAND_FONTS.serif,
     fontWeight: "bold",
-    color: brandColor("mocha"),
+    color: couleurPiece("mocha"),
     marginBottom: 48,
   },
   coverTypeLabel: {
     fontSize: 11,
     fontFamily: QUALIOPI_BRAND_FONTS.mono,
-    color: brandColor("terracotta-deep"),
+    color: couleurPiece("terracotta-deep"),
     letterSpacing: 1,
     marginBottom: 10,
   },
@@ -158,20 +160,20 @@ const local = StyleSheet.create({
     fontSize: 30,
     fontFamily: QUALIOPI_BRAND_FONTS.serif,
     fontWeight: "bold",
-    color: brandColor("mocha"),
+    color: couleurPiece("mocha"),
     lineHeight: 1.15,
     marginBottom: 20,
   },
   coverRule: {
     width: 80,
     height: 3,
-    backgroundColor: brandColor("terracotta"),
+    backgroundColor: couleurPiece("terracotta"),
     marginBottom: 24,
   },
   coverMetaBox: {
     marginTop: 8,
     borderTopWidth: 1,
-    borderTopColor: brandColor("border"),
+    borderTopColor: couleurPiece("border"),
     paddingTop: 16,
   },
   coverMetaRow: {
@@ -181,14 +183,14 @@ const local = StyleSheet.create({
   coverMetaLabel: {
     fontSize: 9,
     fontWeight: "bold",
-    color: brandColor("fg-muted"),
+    color: couleurPiece("fg-muted"),
     width: 90,
     textTransform: "uppercase",
     letterSpacing: 0.5,
   },
   coverMetaValue: {
     fontSize: 10,
-    color: brandColor("fg"),
+    color: couleurPiece("fg"),
     flex: 1,
   },
   coverFooter: {
@@ -197,12 +199,12 @@ const local = StyleSheet.create({
     left: 56,
     right: 56,
     borderTopWidth: 1,
-    borderTopColor: brandColor("border"),
+    borderTopColor: couleurPiece("border"),
     paddingTop: 10,
   },
   coverFooterLine: {
     fontSize: 8,
-    color: brandColor("fg-muted"),
+    color: couleurPiece("fg-muted"),
     marginTop: 1,
   },
 
@@ -212,18 +214,18 @@ const local = StyleSheet.create({
     alignItems: "flex-start",
     paddingVertical: 4,
     borderBottomWidth: 1,
-    borderBottomColor: brandColor("sand"),
+    borderBottomColor: couleurPiece("sand"),
     marginBottom: 2,
   },
   tocNum: {
     fontSize: 10,
     fontFamily: QUALIOPI_BRAND_FONTS.mono,
-    color: brandColor("terracotta-deep"),
+    color: couleurPiece("terracotta-deep"),
     width: 24,
   },
   tocLabel: {
     fontSize: 10,
-    color: brandColor("fg"),
+    color: couleurPiece("fg"),
     flex: 1,
   },
 });
@@ -493,7 +495,7 @@ export function SupportPdf({ data, identite }: SupportPdfProps): React.ReactElem
 
         {/* Note légère de bas de document si méta disponible */}
         {data.contenu.meta?.formation ? (
-          <Text style={pdfStyles.legalNote}>
+          <Text style={pdfStylesPieces.legalNote}>
             Document pédagogique interne — Formation : {data.contenu.meta.formation}
           </Text>
         ) : null}

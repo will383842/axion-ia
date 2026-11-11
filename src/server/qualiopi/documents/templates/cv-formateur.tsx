@@ -24,8 +24,8 @@ import {
   DataTable,
   BulletList,
   LegalCallout,
-  pdfStyles,
-} from "@/server/qualiopi/documents/base-layout";
+} from "@/server/qualiopi/documents/cadre-pieces";
+import { pdfStylesPieces } from "@/server/qualiopi/documents/cadre-pieces/styles-blocs";
 import type { OrganismeIdentite } from "@/server/qualiopi/documents/organisme";
 
 // ============================================================
@@ -164,7 +164,7 @@ export function CvFormateurPdf({
         {/* Domaines de compétences */}
         <DocSection title="Domaines de compétences">
           {data.domainesCompetences.length === 0 ? (
-            <Text style={pdfStyles.legalNote}>Aucun domaine de compétence renseigné.</Text>
+            <Text style={pdfStylesPieces.legalNote}>Aucun domaine de compétence renseigné.</Text>
           ) : (
             <DataTable
               columns={[
@@ -184,7 +184,7 @@ export function CvFormateurPdf({
         {/* Formations habilitées */}
         <DocSection title="Formations habilitées">
           {data.formationsHabilitees.length === 0 ? (
-            <Text style={pdfStyles.legalNote}>
+            <Text style={pdfStylesPieces.legalNote}>
               Aucune habilitation formation enregistrée pour cet intervenant.
             </Text>
           ) : (
@@ -198,7 +198,7 @@ export function CvFormateurPdf({
         {data.actionsDeveloppement ? (
           <DocSection title="Entretien et développement des compétences (ind. 22)">
             {data.actionsDeveloppement.length === 0 ? (
-              <Text style={pdfStyles.legalNote}>
+              <Text style={pdfStylesPieces.legalNote}>
                 Aucune action d&apos;entretien ou de développement des compétences enregistrée pour
                 cet intervenant à la date d&apos;édition.
               </Text>

@@ -17,8 +17,8 @@ import {
   DocSection,
   DataTable,
   LegalCallout,
-  pdfStyles,
-} from "@/server/qualiopi/documents/base-layout";
+} from "@/server/qualiopi/documents/cadre-pieces";
+import { pdfStylesPieces } from "@/server/qualiopi/documents/cadre-pieces/styles-blocs";
 import type { OrganismeIdentite } from "@/server/qualiopi/documents/organisme";
 
 // ============================================================
@@ -77,13 +77,15 @@ export function InventaireMoyensPdf({
         identite={identite}
         {...(data.estCopie ? { estCopie: true as const } : {})}
       >
-        <Text style={pdfStyles.paragraph}>
+        <Text style={pdfStylesPieces.paragraph}>
           Inventaire des moyens pédagogiques, techniques et humains mobilisés par l&apos;organisme
           de formation pour la réalisation de ses prestations — édité le {data.dateEdition}.
         </Text>
 
         {data.moyens.length === 0 ? (
-          <Text style={pdfStyles.legalNote}>Aucun moyen pédagogique enregistré à ce jour.</Text>
+          <Text style={pdfStylesPieces.legalNote}>
+            Aucun moyen pédagogique enregistré à ce jour.
+          </Text>
         ) : (
           CATEGORIE_ORDER.map((categorie) => {
             const moyens = data.moyens.filter((m) => m.categorie === categorie);
