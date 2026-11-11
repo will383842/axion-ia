@@ -100,7 +100,7 @@ export const EN_BREF_JOURNEE_IA = EN_BREF_JOURNEE_IA_PARAGRAPHES.join(" ");
 
 /** La description du nœud JSON-LD « Service » de la Journée IA (le prix est un jeton). */
 export const DESCRIPTION_SERVICE_JOURNEE_IA =
-  "Une journée dans l’entreprise, partout en France\u202f: le matin, 2 à 4\u00a0h d’audit qui cartographie l’entreprise service par service, fait le point avec le dirigeant sur ses priorités et retient les 3 à 5 tâches au meilleur retour sur investissement, chacune chiffrée en heures et en euros\u202f; l’après-midi, 4\u00a0h de formation des équipes sur leurs propres dossiers, qui s’inscrit dans l’article 4 du règlement européen sur l’IA, avec une attestation de formation par participant\u202f; priorités écrites le soir même, rapport chiffré et plan d’action sur 90 jours remis sous 3 jours ouvrés. {{PRIX}}, prix unique.";
+  "Une journée dans l’entreprise, partout en France\u202f: le matin, un audit de 2 à 4\u00a0h selon la structuration de l’entreprise, qui cartographie l’entreprise service par service, fait le point avec le dirigeant sur ses priorités et retient les 3 à 5 tâches au meilleur retour sur investissement, chacune chiffrée en heures et en euros\u202f; l’après-midi, 4\u00a0h de formation des équipes sur leurs propres dossiers, qui s’inscrit dans l’article 4 du règlement européen sur l’IA, avec une attestation de formation par participant\u202f; priorités écrites dans le rapport détaillé remis sous 3 jours ouvrés, avec chiffrage et plan d’action sur 90 jours. {{PRIX}}, prix unique.";
 
 /**
  * L'exemple chiffré montré sur la landing et l'accueil. Le gain est calculé :

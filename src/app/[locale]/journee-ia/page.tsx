@@ -283,6 +283,8 @@ export default async function JourneeIaPage({ params }: Props) {
 
   // `rdv=diagnostic` : le Diagnostic IA gratuit de 45 minutes, seul rendez-vous.
   const lien = (depuis: string) => `/appel?rdv=diagnostic&depuis=${depuis}`;
+  // Le diagnostic est facultatif : « Déjà décidé ? » mène directement au contact, sans diagnostic ni paiement en ligne.
+  const lienDirect = (depuis: string) => `/contact?depuis=${depuis}`;
 
   const [serviceJsonLd, webPageJsonLd, faqJsonLd] = jsonLdJourneeIa();
 
@@ -345,7 +347,7 @@ export default async function JourneeIaPage({ params }: Props) {
                   {accroche.cta}
                 </Cta>
                 <Link
-                  href={lien("journee-ia-decide") as never}
+                  href={lienDirect("journee-ia-decide") as never}
                   data-cta="journee-ia-decide"
                   className={PORTE}
                 >
@@ -796,7 +798,7 @@ export default async function JourneeIaPage({ params }: Props) {
               {accroche.cta}
             </Cta>
             <Link
-              href={lien("journee-ia-prix-decide") as never}
+              href={lienDirect("journee-ia-prix-decide") as never}
               data-cta="journee-ia-prix-decide"
               className={`${PORTE} text-mocha-fg decoration-terracotta-on-mocha hover:text-terracotta-on-mocha`}
             >

@@ -52,7 +52,7 @@ export const CONTENU = {
       "Le matin, nous cartographions votre entreprise et faisons le point ensemble sur vos priorités\u202f: vos plus gros gains, chiffrés le jour même, ceux qui rapportent le plus et se mettent en place le plus vite. L’après-midi, nous formons vos équipes. Dans vos locaux, partout en France.",
     cta: LIBELLE_CTA,
     lienDecide: "Déjà décidé\u202f? Fixons la date ensemble",
-    microTexte: "Diagnostic IA gratuit · 45 minutes · en visio ou par téléphone · sans engagement",
+    microTexte: "Diagnostic IA gratuit et facultatif · 45 minutes · en visio ou par téléphone · sans engagement",
     tuiles: [
       { valeur: JETON_PRIX, legende: "une fois, sans remise" },
       // Tuile mise en valeur (filet terracotta) : l’attestation remise à chaque personne formée.
@@ -61,7 +61,7 @@ export const CONTENU = {
         legende: "formation + attestation par personne",
         attestation: true,
       },
-      { valeur: "Le soir même", legende: "vos priorités écrites" },
+      { valeur: "Sous 3 jours ouvrés", legende: "vos priorités, dans le rapport détaillé" },
       { valeur: "Garantie ×3", legende: "voir la condition →", ancre: "#garantie" },
     ],
     carteDesGains: {
@@ -92,7 +92,7 @@ export const CONTENU = {
         heures: ["9\u00a0h", "12\u00a0h", "13\u00a0h 30", "17\u00a0h 30"],
       },
       ariaLabelRuban:
-        "Déroulé\u202f: audit de 9\u00a0h à 12\u00a0h, formation de 13\u00a0h 30 à 17\u00a0h 30, priorités écrites à 17\u00a0h 30",
+        "Déroulé\u202f: audit de 9\u00a0h à 12\u00a0h, formation de 13\u00a0h 30 à 17\u00a0h 30, priorités dans le rapport détaillé remis sous 3 jours ouvrés",
     },
   },
   enBref: EN_BREF_JOURNEE_IA,
@@ -164,7 +164,7 @@ export const CONTENU = {
       {
         icone: "plan",
         jalons: [
-          { moment: "17\u00a0h 30", texte: "Vos 3 à 5 priorités, écrites avant notre départ" },
+          { moment: "17\u00a0h 30", texte: "Vos 3 à 5 priorités, écrites dans le rapport détaillé remis sous 3 jours ouvrés" },
           { moment: "Sous 3 jours ouvrés", texte: "Le rapport complet" },
         ],
       },
@@ -271,7 +271,7 @@ export const CONTENU = {
       id: "faq-audit-cout",
       question: "Combien coûte un audit IA pour une PME\u202f?",
       reponse:
-        "Chez Axion-IA, l’audit commence par la Journée IA\u202f: 2 à 4\u00a0h d’audit le matin, comprises dans {{PRIX}} avec la formation de l’après-midi. Un audit plus poussé, sur plusieurs sites ou services, se fait sur devis.",
+        "Chez Axion-IA, l’audit commence par la Journée IA\u202f: un audit de 2 à 4\u00a0h selon la structuration de l’entreprise le matin, compris dans {{PRIX}} avec la formation de l’après-midi. Un audit plus poussé, sur plusieurs sites ou services, se fait sur devis.",
     },
     {
       id: "faq-garantie",
@@ -294,7 +294,7 @@ export const CONTENU = {
       id: "faq-rapport",
       question: "Quand recevons-nous le rapport\u202f?",
       reponse:
-        "Le soir même, vous avez vos priorités écrites. Le rapport complet et le plan d’action sur 90 jours suivent sous 3 jours ouvrés\u00a0: ce délai nous permet de vérifier chaque chiffre.",
+        "Vos priorités sont écrites dans le rapport détaillé remis sous 3 jours ouvrés, avec le plan d’action sur 90 jours\u00a0: ce délai nous permet de vérifier chaque chiffre.",
     },
     {
       id: "faq-personnes",
