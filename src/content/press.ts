@@ -2,6 +2,7 @@
 // Doctrine éditoriale v3 : ton factuel, anti-marketing. Anti-formation strict.
 // FR canonical · EN miroir. Parité enforced via tests/content/press.test.ts.
 
+import { CAS_CONCRETS_AFFICHES } from "@/content/preuves-sociales";
 import {
   IMPLEMENTATION_TIERS,
   INTERVENTION_TIERS,
@@ -466,7 +467,7 @@ export const PRESS_SPOKESPERSONS: ReadonlyArray<PressSpokesperson> = [
 // ─────────────────────────────────────────────────────────────────
 // FAQ presse — questions journalistes (FAQPage JSON-LD via FaqAccordion).
 // ─────────────────────────────────────────────────────────────────
-export const PRESS_FAQ: ReadonlyArray<PressFaqEntry> = [
+const ALL_PRESS_FAQ: ReadonlyArray<PressFaqEntry> = [
   {
     id: "company",
     fr: {
@@ -546,6 +547,11 @@ export const PRESS_FAQ: ReadonlyArray<PressFaqEntry> = [
     },
   },
 ] as const;
+
+/** Sans l'entrée « cas concrets » tant que les cas sont éteints (2026-11-08). */
+export const PRESS_FAQ: ReadonlyArray<PressFaqEntry> = ALL_PRESS_FAQ.filter(
+  (e) => CAS_CONCRETS_AFFICHES || e.id !== "case-studies",
+);
 
 // ─────────────────────────────────────────────────────────────────
 // HELPERS — accès slug pour /presse/[slug] (Phase 2, sprint suivant).

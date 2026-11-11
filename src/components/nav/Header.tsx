@@ -1,3 +1,4 @@
+import { CAS_CONCRETS_AFFICHES } from "@/content/preuves-sociales";
 import { getLocale, getTranslations } from "next-intl/server";
 import { Mail, Phone, Search } from "lucide-react";
 import { Link } from "@/i18n/navigation";
@@ -58,7 +59,7 @@ export async function Header() {
   // fichier (messages/fr.json appartient à un autre lot).
   const navMobileExtras = [
     { href: "/journee-ia", label: isFr ? "La Journée IA" : "The AI Day" },
-    { href: "/cas-concrets", label: t("nav.caseStudies") },
+    ...(CAS_CONCRETS_AFFICHES ? [{ href: "/cas-concrets", label: t("nav.caseStudies") }] : []),
     { href: "/blog", label: t("nav.blog") },
     { href: "/faq", label: "FAQ" },
     { href: "/a-propos", label: t("nav.about") },

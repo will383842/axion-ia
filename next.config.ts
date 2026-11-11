@@ -276,6 +276,12 @@ const nextConfig: NextConfig = {
   // expose l'URL legacy au sitemap auto + au crawler.
   async redirects() {
     return [
+      // Cas concrets éteints (2026-11-08, retrait juridique) : URLs déjà indexées → 301 vers la
+      // page la plus proche (/fr/methodologie), plutôt qu'un 404 sec. Les notFound() des pages
+      // restent en filet. Garde : src/content/__tests__/cas-concrets-eteints.spec.ts.
+      { source: "/fr/cas-concrets", destination: "/fr/methodologie", statusCode: 301 },
+      { source: "/fr/cas-concrets/:path+", destination: "/fr/methodologie", statusCode: 301 },
+      { source: "/en/case-studies/:path*", destination: "/fr/methodologie", statusCode: 301 },
       // ⛔ R7 (08/11/2026, ordre de Williams : plus aucun prix public hors Journée IA à
       // 1 490 € HT). Fichiers STATIQUES de `public/` porteurs de prix : servis hors du
       // middleware et des pages, l'interrupteur `PRIX_PUBLICS_AFFICHES` ne les atteint pas.
@@ -286,7 +292,17 @@ const nextConfig: NextConfig = {
       //     qui redirige elle-même tant que les prix sont masqués).
       //   · le PDF « Devenir apporteur d'affaires » : commissions et prix de vente.
       // Garde : `src/content/__tests__/fichiers-publics-a-prix-masques.spec.ts`.
-      // Pour rétablir : retirer ces deux entrées ET repasser l'interrupteur (décision Will).
+      // Les fichiers vivent désormais sous docs/pdf-hors-ligne-certification/ (ils ne sont plus
+      // dans public/) : la redirection est donc un filet pour les anciennes adresses, pas un
+      // masque. Pour rétablir : retirer ces entrées, REMETTRE les fichiers dans public/ depuis
+      // l'archive, ET repasser l'interrupteur (décision Williams).
+      // Entrée explicite `/catalogue/index.html` conservée : exigée par
+      // tests/unit/ci/public-sans-certification-ni-opco.spec.ts (le motif `:path+` la couvre aussi).
+      {
+        source: "/catalogue/index.html",
+        destination: "/fr/formations",
+        permanent: false,
+      },
       {
         source: "/catalogue/:path+",
         destination: "/fr/formations",

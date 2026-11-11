@@ -131,7 +131,10 @@ describe("garde R7 — les détecteurs voient ce qu'ils doivent voir (anti-test-
  * vocale, un seuil de validation dans un cas client. Tout autre montant fait rougir.
  */
 const EXEMPTIONS: Record<string, readonly string[]> = {
-  "cas-concrets/industrie-comptabilite": ["5000 €"], // seuil de validation des factures du client
+  // Exemption « cas-concrets/industrie-comptabilite : 5000 € » RETIRÉE (PR 1871) : les cas concrets
+  // sont éteints (CAS_CONCRETS_AFFICHES = false, retrait juridique du 2026-11-08) ; /api/markdown
+  // répond 404, donc plus aucun corps ne peut servir ce montant. Si les cas reviennent, la
+  // ré-ajouter (seuil de validation des factures du client).
   "glossaire/fine-tuning": ["50 k€"], // coût marché d'un fine-tuning
   "glossaire/vectorisation": ["5 €"], // coût d'API d'embeddings (tiers)
   "glossaire/tokens": ["0,75 €"], // coût d'API au million de jetons (tiers)

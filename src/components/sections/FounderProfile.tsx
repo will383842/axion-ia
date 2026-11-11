@@ -22,6 +22,7 @@
  * pas ici : le composant reste un rendu, la route reste le point d'entrée.
  */
 
+import { CAS_CONCRETS_AFFICHES } from "@/content/preuves-sociales";
 import Image from "next/image";
 import {
   ArrowRight,
@@ -422,12 +423,14 @@ export function FounderProfile({ faq, financementPublic }: FounderProfileProps) 
                   Nos zones d&apos;intervention
                   <ArrowRight className="h-4 w-4" aria-hidden="true" />
                 </Link>
-                <Link
-                  href="/cas-concrets"
-                  className="text-fg-muted hover:text-fg text-sm underline-offset-4 hover:underline focus-visible:underline focus-visible:outline-none"
-                >
-                  Cas concrets
-                </Link>
+                {CAS_CONCRETS_AFFICHES ? (
+                  <Link
+                    href="/cas-concrets"
+                    className="text-fg-muted hover:text-fg text-sm underline-offset-4 hover:underline focus-visible:underline focus-visible:outline-none"
+                  >
+                    Cas concrets
+                  </Link>
+                ) : null}
               </p>
             </div>
           </div>

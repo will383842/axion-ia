@@ -36,11 +36,17 @@ const { pathToRegexp } = createRequire(import.meta.url)("next/dist/compiled/path
 
 const RACINE = process.cwd();
 
-/** Chemins publics (URL) porteurs de prix. Chaque entrée DOIT exister dans `public/`. */
+/**
+ * Depuis #1871 les fichiers ne sont plus sous `public/` : ils sont archivés ici (rien n'est
+ * supprimé). Les redirections restent le filet des anciennes adresses (QR, e-mails).
+ */
+const ARCHIVE = "docs/pdf-hors-ligne-certification";
+
+/** Chemins publics (URL) porteurs de prix. Chaque entrée DOIT exister dans l'archive. */
 const FICHIERS_A_PRIX: readonly string[] = [
   "/catalogue/index.html",
   "/catalogue/og-catalogue.jpg",
-  ...readdirSync(join(RACINE, "public/catalogue/pages-web")).map(
+  ...readdirSync(join(RACINE, ARCHIVE, "catalogue-feuilletoir/pages-web")).map(
     (f) => `/catalogue/pages-web/${f}`,
   ),
   "/imprimes/devenir-apporteur-d-affaires-axion-ia.pdf",
@@ -74,9 +80,16 @@ function fichiers(d: string): string[] {
 }
 
 describe("fichiers publics porteurs de prix : masqués par une redirection temporaire (307)", () => {
-  it("l'inventaire n'est pas vide et chaque fichier existe toujours (on masque, on ne supprime pas)", () => {
+  it("l'inventaire n'est pas vide, chaque fichier est archivé et plus servi par public/ (on retire, on ne supprime pas)", () => {
     expect(FICHIERS_A_PRIX.length).toBeGreaterThan(40);
-    for (const c of FICHIERS_A_PRIX) expect(existsSync(join(RACINE, "public", c)), c).toBe(true);
+    const archive = (c: string) =>
+      c.startsWith("/catalogue/")
+        ? join(RACINE, ARCHIVE, "catalogue-feuilletoir", c.replace("/catalogue/", ""))
+        : join(RACINE, ARCHIVE, "apporteur", c.replace("/imprimes/", ""));
+    for (const c of FICHIERS_A_PRIX) {
+      expect(existsSync(archive(c)), c).toBe(true);
+      expect(existsSync(join(RACINE, "public", c)), c).toBe(false);
+    }
   });
 
   it("chaque fichier est masqué par une redirection TEMPORAIRE (307), sans condition, vers une page neutre", async () => {
