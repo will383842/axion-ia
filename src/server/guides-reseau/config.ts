@@ -143,3 +143,24 @@ export function secretsConfirmationsPageGuide(
   if (!courant) return null;
   return { courant, precedent: secretValide(env.GUIDES_RESEAU_HMAC_SECRET_PRECEDENT) };
 }
+
+/**
+ * PREUVE DE L'ACCORD de la page « Recevoir le guide » — nombre de jours, SANS clic sur le bouton du
+ * lien du guide, avant que l'accord « en attente » passe « non vérifiée, à l'écart » (mise à
+ * l'écart : RIEN n'est supprimé). Le guide peut partir jusqu'à J+7 (rattrapage,
+ * `HORIZON_RATTRAPAGE_MS`) : 14 laisse au moins 7 jours de lecture après le dernier envoi possible,
+ * sans garder indéfiniment un accord jamais vérifié. Garde : `config.spec.ts`.
+ */
+export const JOURS_AVANT_ECART_PREUVE = 14;
+
+/**
+ * INTERRUPTEUR de la mise à l'écart (job quotidien `guide-ia-crons` / `preuves`).
+ *
+ * 🔴 ÉTEINT PAR DÉFAUT : vrai seulement si la variable vaut exactement `"true"`. Lu au runtime
+ * (`process.env` brut), conteneur WORKER. Éteint = le job sort sans lire la base.
+ * ⚠️ Ne s'allume qu'APRÈS l'atterrissage de la migration ET de la confirmation au clic : sinon on
+ * écarterait des personnes qui ont cliqué pendant que le clic ne confirmait pas encore.
+ */
+export function preuveEcartActif(): boolean {
+  return process.env.PREUVE_PAGE_GUIDE_ECART_ENABLED === "true";
+}

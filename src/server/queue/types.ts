@@ -268,7 +268,7 @@ export interface VivierCronJobData {
  * et des confirmations, sentinelle quotidienne. Types déclarés ICI pour la
  * même raison que ceux du vivier (pas d'arête `queues.ts` → worker).
  */
-export type GuideIaCronJobType = "rattrapage" | "sentinelle";
+export type GuideIaCronJobType = "rattrapage" | "sentinelle" | "preuves";
 
 export interface GuideIaCronJobData {
   readonly type?: GuideIaCronJobType;

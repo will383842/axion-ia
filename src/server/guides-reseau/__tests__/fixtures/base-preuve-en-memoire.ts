@@ -13,6 +13,8 @@ export interface BasePreuve {
   /** Nombre de requêtes sur les contacts de la page (l'interrupteur éteint → 0). */
   requetes: number;
   panneContacts: Error | null;
+  /** Appelé APRÈS une lecture de contacts, avant que l'appelant n'écrive (simule une course). */
+  apresLecture: (() => void) | null;
 }
 
 export function nouvelleBase(): BasePreuve {
@@ -23,18 +25,22 @@ export function nouvelleBase(): BasePreuve {
     suppressions: [],
     requetes: 0,
     panneContacts: null,
+    apresLecture: null,
   };
 }
 
-const t = (v: unknown): number | null => (v instanceof Date ? v.getTime() : null);
+const t = (v: unknown): number | string | null =>
+  v instanceof Date ? v.getTime() : typeof v === "string" ? v : null;
+const avant = (a: unknown, b: unknown): boolean => t(a)! < t(b)!;
 
 function conditionValeur(valeur: unknown, cond: unknown): boolean {
   if (cond !== null && typeof cond === "object" && !(cond instanceof Date)) {
     const c = cond as Record<string, unknown>;
     if ("in" in c) return (c["in"] as unknown[]).includes(valeur);
-    if ("lte" in c) return t(valeur) !== null && t(valeur)! <= t(c["lte"])!;
-    if ("lt" in c) return t(valeur) !== null && t(valeur)! < t(c["lt"])!;
-    if ("gt" in c) return t(valeur) !== null && t(valeur)! > t(c["gt"])!;
+    if ("lte" in c) return t(valeur) !== null && !avant(c["lte"], valeur);
+    if ("lt" in c) return t(valeur) !== null && avant(valeur, c["lt"]);
+    if ("gt" in c) return t(valeur) !== null && avant(c["gt"], valeur);
+    if ("gte" in c) return t(valeur) !== null && !avant(valeur, c["gte"]);
     if ("not" in c) return valeur !== c["not"];
     throw new Error(`condition non gérée : ${JSON.stringify(Object.keys(c))}`);
   }
@@ -92,6 +98,7 @@ export function clientPrisma(base: BasePreuve) {
           return 0;
         });
         const lignes = take === undefined ? r : r.slice(0, take);
+        base.apresLecture?.();
         // Jointure « guideRequest » demandée par select/include : on la rend à plat.
         return lignes.map((c) => ({
           ...c,

@@ -4,7 +4,10 @@
  *   · `rattrapage` (horaire, :07)  — reprend les guides restés sans envoi
  *     (`server/guide-ia/rattrapage.ts`) ;
  *   · `sentinelle` (06:40 UTC)     — compare demandes et envois, alerte si la
- *     chaîne est coupée, et envoie le récapitulatif du jour.
+ *     chaîne est coupée, et envoie le récapitulatif du jour ;
+ *   · `preuves` (04:23 UTC)        — preuve de l'accord de la page « Recevoir le guide » :
+ *     mise à l'écart (jamais une suppression) des accords jamais vérifiés après N jours, et
+ *     réparation du registre. ÉTEINT PAR DÉFAUT (`PREUVE_PAGE_GUIDE_ECART_ENABLED`).
  *
  * Doctrine de log : on ne journalise que ce qui s'est passé. Un « rien à faire »
  * horaire noierait les journaux ; dès qu'il y a du travail, le compte rendu est
@@ -29,6 +32,16 @@ async function processJob(job: Job<GuideIaCronJobData>): Promise<void> {
     // n'existe que dans le worker.
     const { passerSentinelle } = await import("@/server/guide-ia/sentinelle");
     await passerSentinelle();
+    return;
+  }
+
+  if (type === "preuves") {
+    // Import PARESSEUX, comme la sentinelle. Éteint, les deux fonctions sortent SANS lire la base.
+    const { ecarterPreuvesNonVerifiees, reparerRegistrePreuves } =
+      await import("@/server/guides-reseau/preuve-page-guide");
+    const maintenant = new Date();
+    await ecarterPreuvesNonVerifiees(maintenant);
+    await reparerRegistrePreuves(maintenant);
     return;
   }
 
