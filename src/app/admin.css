@@ -93,10 +93,9 @@
      * PALETTE D'IDENTITÉ — une teinte par FAMILLE MÉTIER (2026-08-02).
      * Réponse au retour « toujours du blanc et du terracotta » : la couleur
      * SIGNIFIE — à l'origine financier = or, planning = bleu, formateurs =
-     * violet… Valeur actuelle : ces jetons `--color-admin-id-*` sont tous des
-     * gris chauds (#5e5d59) ou le vert #5e7050 ; ni bleu ni jaune. Palette
-     * validée par le validateur dataviz (daltonisme, chroma, contraste) :
-     * ΔE CVD adjacent min 12,9 · tous ≥ 3:1 sur surface.
+     * violet… Valeur actuelle : terracotta (#b23f16), sauge (#5e7050) ou gris
+     * (#5e5d59) ; plusieurs familles partagent désormais la même teinte — la
+     * validation dataviz d'origine (ΔE 12,9) ne s'applique plus.
      * Les STATUTS (succès/alerte/danger) restent une palette réservée.
      *
      * ⚠️ CONTRAT D'EMPLOI — LA TEINTE NE PORTE JAMAIS L'INFORMATION SEULE.
@@ -909,8 +908,8 @@
  * Modernisation appliquée (ex-override P0/P3, désormais baké à la source) :
  *  - rayons cartes/inputs/boutons/alertes 6-8px → 10-12px (tokens admin)
  *  - .admin-card : ombre douce --shadow-admin-1
- *  - .admin-layout : font-family retirée (Manrope géré plus haut, sinon Manrope
- *    réapparaîtrait par ordre source)
+ *  - .admin-layout : font-family retirée (Manrope est imposé plus haut ; la
+ *    redéclarer ici écraserait la pile de la console par ordre source)
  *  - largeur .admin-main : voir override P0 conservé plus haut
  * =============================================================*/
 /* =============================================================
@@ -926,8 +925,7 @@
   min-height: 100vh;
   background-color: var(--color-admin-paper-alt);
   /* font-family retirée à la relocalisation : Manrope est imposé plus haut
-     (`.admin-layout-v2, .admin-layout`). Sinon Manrope réapparaîtrait ici
-     par ordre source (régression police admin). */
+     (`.admin-layout-v2, .admin-layout`) ; ne pas redéclarer `font-family` ici. */
   color: var(--color-admin-fg);
 }
 .admin-header {
@@ -1910,13 +1908,10 @@
   border-radius: var(
     --radius-admin-md
   ); /* 10px — cohérence inputs (était hérité de .admin-input) */
-  /* 🔴 2026-09-06 — la police du site public (Manrope) est retiree ici.
-     Manrope est la police du site PUBLIC ; la console est en Manrope depuis la
-     refonte de juin 2026. Cette règle est hors couche, elle écrasait donc le
-     `font-family: inherit` posé par `@layer base` sur les contrôles : toutes
-     les zones de texte de la console (réponses aux contacts, gabarits) étaient
-     rendues dans une AUTRE police que les champs juste au-dessus. Ne rien
-     remettre ici — l'héritage donne Manrope. */
+  /* 🔴 2026-09-06 — une `font-family` codée en dur est retirée ici : hors couche,
+     elle écrasait le `font-family: inherit` posé par `@layer base` et les zones
+     de texte n'avaient pas la police des champs voisins. Ne rien remettre :
+     l'héritage donne Manrope. */
 }
 
 /* M9 T1.2 — Options admin urgency + boutons */
