@@ -348,12 +348,10 @@
     --font-weight-admin-semibold: 600;
     --font-weight-admin-bold: 700;
 
-    /* Chasse fixe de la console. Les huit règles qui en ont besoin pointaient
-       `--font-inconsolata` en direct — un jeton déclaré par le layout du site
-       PUBLIC. La console emprunte encore la fonte (il n'y en a qu'une), mais
-       elle passe désormais par un jeton à elle : le jour où l'on change la
-       police de code de l'admin, ou celle du site, un seul endroit bouge. */
-    --font-admin-mono: var(--font-inconsolata, ui-monospace, monospace);
+    /* Chasse fixe de la console : charte 2027 = Manrope seule. Le jeton reste (les
+       règles de la console le pointent) mais vaut `--font-admin` ; l'alignement des
+       chiffres vient de `tabular-nums` (admin.css, règle de base du shell). */
+    --font-admin-mono: var(--font-admin);
     /* Texte de la console : Manrope, comme le site (V6-02). Emprunt unique,
        dans la déclaration du jeton, au même titre que la chasse fixe. */
     --font-admin: var(--font-manrope);
@@ -1188,11 +1186,6 @@
  * =============================================================*/
 .admin-button {
   box-shadow: var(--shadow-admin-1);
-  background-image: linear-gradient(
-    180deg,
-    color-mix(in srgb, white 14%, transparent),
-    transparent 55%
-  );
 
   display: inline-flex;
   align-items: center;

@@ -18,13 +18,6 @@ const manrope = localFont({
   display: "swap",
 });
 
-const fraunces = localFont({
-  src: [{ path: "../../fonts/fraunces-latin-var.woff2", weight: "500", style: "normal" }],
-  variable: "--font-fraunces",
-  display: "swap",
-  adjustFontFallback: "Times New Roman",
-});
-
 export const metadata: Metadata = {
   // Valeur fixe pour taire l'avertissement de Next sur l'image OG racine héritée.
   metadataBase: new URL("https://axion-ia.com"),
@@ -37,7 +30,7 @@ export const metadata: Metadata = {
 
 export default function ApporteurLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="fr" className={`${manrope.variable} ${fraunces.variable}`}>
+    <html lang="fr" className={`${manrope.variable}`}>
       <body className="bg-bg text-fg min-h-screen font-sans antialiased">{children}</body>
     </html>
   );

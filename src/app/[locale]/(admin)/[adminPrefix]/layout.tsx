@@ -29,7 +29,6 @@ import {
 } from "@/server/qualiopi/formateurs-independants/nav-counts";
 import type { Metadata } from "next";
 import { ID_BANNIERE_CONSENTEMENT } from "@/lib/analytics/surface-console";
-import localFont from "next/font/local";
 import { redirect, notFound } from "next/navigation";
 import { setRequestLocale } from "next-intl/server";
 import { auth, signOut } from "@/auth";
@@ -53,17 +52,6 @@ import { prisma } from "@/lib/prisma";
 // déclarée par admin.css et vaut `var(--font-manrope)`, variable posée par le
 // layout racine `[locale]/layout.tsx`. Plus de police propre à la console.
 //
-// V6-02 — déclaration DORMANTE, retirée à la PR 5 (avec la mise à jour de
-// tests/unit/ci/fontes-build-hermetique.spec.ts, qui compte 5 woff2 locaux).
-// Ni `variable` ni classe posée : `--font-admin` reste Manrope (admin.css).
-// `preload: false` : aucun lien de préchargement, le fichier n'est jamais
-// téléchargé.
-const _interReserveV6 = localFont({
-  src: "../../../../fonts/inter-latin-var.woff2",
-  display: "swap",
-  preload: false,
-});
-
 // Sprint Notif Infra 2026-05-26 / fix P1-1 audit 2026-05-27 — cache 30s du
 // compteur "contacts sans réponse" pour éviter une query DB à chaque render
 // SSR du layout admin (force-dynamic). Invalidation via revalidateTag

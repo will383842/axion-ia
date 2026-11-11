@@ -37,7 +37,7 @@
  ⚠️ Jamais « étoile + barre oblique » dans ce commentaire : il le fermait, et le navigateur jetait la face Manrope 400 qui suit.
  Chrome n'accepte qu'un nom EXACT pour local() (pas de substitution fontconfig) : sans les noms Liberation, la face
  échouait en silence sur Linux (runner Lighthouse) et sur Android, et le CLS restait à 0,27 (run 40848411969).
- adjustFontFallback est donc coupé dans layout.tsx et ces faces prennent le relais (--font-sans / --font-serif). */
+ adjustFontFallback est donc coupé dans layout.tsx et ces faces prennent le relais (--font-sans). */
 @font-face {
   font-family: "Manrope Fallback";
   src: local("Arial"), local("ArialMT"), local("Liberation Sans"), local("LiberationSans");
@@ -58,78 +58,6 @@
   size-adjust: 99.27%;
   ascent-override: 107.38%;
   descent-override: 30.22%;
-  line-gap-override: 0%;
-}
-@font-face {
-  font-family: "Fraunces Fallback";
-  src:
-    local("Times New Roman"), local("TimesNewRomanPSMT"), local("Liberation Serif"),
-    local("LiberationSerif");
-  font-weight: 400;
-  font-style: normal;
-  size-adjust: 115.46%;
-  ascent-override: 84.71%;
-  descent-override: 22.09%;
-  line-gap-override: 0%;
-}
-@font-face {
-  font-family: "Fraunces Fallback";
-  src:
-    local("Times New Roman"), local("TimesNewRomanPSMT"), local("Liberation Serif"),
-    local("LiberationSerif");
-  font-weight: 500;
-  font-style: normal;
-  size-adjust: 117.37%;
-  ascent-override: 83.33%;
-  descent-override: 21.73%;
-  line-gap-override: 0%;
-}
-@font-face {
-  font-family: "Fraunces Fallback";
-  src:
-    local("Times New Roman Bold"), local("TimesNewRomanPS-BoldMT"), local("Liberation Serif Bold"),
-    local("LiberationSerif-Bold");
-  font-weight: 600 900;
-  font-style: normal;
-  size-adjust: 112.22%;
-  ascent-override: 87.15%;
-  descent-override: 22.72%;
-  line-gap-override: 0%;
-}
-@font-face {
-  font-family: "Fraunces Fallback";
-  src:
-    local("Times New Roman Italic"), local("TimesNewRomanPS-ItalicMT"),
-    local("Liberation Serif Italic"), local("LiberationSerif-Italic");
-  font-weight: 400;
-  font-style: italic;
-  size-adjust: 111.67%;
-  ascent-override: 87.58%;
-  descent-override: 22.84%;
-  line-gap-override: 0%;
-}
-@font-face {
-  font-family: "Fraunces Fallback";
-  src:
-    local("Times New Roman Italic"), local("TimesNewRomanPS-ItalicMT"),
-    local("Liberation Serif Italic"), local("LiberationSerif-Italic");
-  font-weight: 500;
-  font-style: italic;
-  size-adjust: 114.32%;
-  ascent-override: 85.55%;
-  descent-override: 22.3%;
-  line-gap-override: 0%;
-}
-@font-face {
-  font-family: "Fraunces Fallback";
-  src:
-    local("Times New Roman Bold Italic"), local("TimesNewRomanPS-BoldItalicMT"),
-    local("Liberation Serif Bold Italic"), local("LiberationSerif-BoldItalic");
-  font-weight: 600 900;
-  font-style: italic;
-  size-adjust: 114.07%;
-  ascent-override: 85.74%;
-  descent-override: 22.35%;
   line-gap-override: 0%;
 }
 
@@ -236,13 +164,11 @@
   --font-sans:
     var(--font-manrope), "Manrope Fallback", -apple-system, BlinkMacSystemFont, "Segoe UI",
     system-ui, sans-serif;
-  /* P-105 : chaîne désormais `--font-fraunces` (variable next/font renommée)
-     pour éviter l'auto-référence `--font-serif: var(--font-serif)` qui
-     empêchait les fallbacks intermédiaires d'être actifs. */
-  --font-serif:
-    var(--font-fraunces), "Fraunces Fallback", "Iowan Old Style", "Palatino Linotype", Palatino,
-    "URW Palladio L", P052, serif;
-  --font-mono: var(--font-inconsolata), ui-monospace, SFMono-Regular, Menlo, monospace;
+  /* Charte 2027 : police UNIQUE Manrope. `--font-serif` et `--font-mono` restent déclarés
+     (≈ 300 classes `font-serif` / `font-mono` les utilisent encore) mais valent Manrope ;
+     le nettoyage des classes est un lot ultérieur. Chiffres alignés : `tabular-nums`. */
+  --font-serif: var(--font-sans);
+  --font-mono: var(--font-sans);
 
   /* Type scale v3.2 — Modular hierarchy 2026 (ADR 0007, anchored body 18px Major Third 1.25)
    *
@@ -1132,6 +1058,7 @@
   /* Code */
   .prose-axionia :not(pre) > code {
     font-family: var(--font-mono);
+    font-variant-numeric: tabular-nums;
     font-size: 0.9em;
     background: var(--color-sand);
     color: var(--color-terracotta-deep);
@@ -1150,6 +1077,7 @@
   }
   .prose-axionia pre code {
     font-family: var(--font-mono);
+    font-variant-numeric: tabular-nums;
     background: transparent;
     color: inherit;
     padding: 0;

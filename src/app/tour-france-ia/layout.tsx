@@ -31,23 +31,6 @@ const manrope = localFont({
   adjustFontFallback: false,
 });
 
-const fraunces = localFont({
-  src: [{ path: "../../fonts/fraunces-latin-var.woff2", weight: "500", style: "normal" }],
-  variable: "--font-fraunces",
-  display: "swap",
-  preload: true,
-  adjustFontFallback: false,
-});
-
-// Repères (numéros, surtitres) : ~5 % du texte, jamais au-dessus de la ligne de
-// flottaison en LCP — pas de préchargement, comme sur le reste du site.
-const inconsolata = localFont({
-  src: [{ path: "../../fonts/inconsolata-latin-var.woff2", weight: "200 900", style: "normal" }],
-  variable: "--font-inconsolata",
-  display: "swap",
-  preload: false,
-});
-
 // Même garde que `maintenance/layout.tsx` : au prérendu, `SITE_URL` peut valoir
 // localhost ; l'image de partage et la canonique doivent viser la production.
 const ORIGINE = SITE_URL.startsWith("http://localhost") ? "https://axion-ia.com" : SITE_URL;
@@ -72,7 +55,7 @@ export default function TourLayout({ children }: { children: React.ReactNode }) 
   return (
     <html
       lang="fr"
-      className={`${manrope.variable} ${fraunces.variable} ${inconsolata.variable} max-md:scroll-pb-28`}
+      className={`${manrope.variable} max-md:scroll-pb-28`}
     >
       <body className="bg-bg text-fg min-h-screen overflow-x-clip font-sans antialiased">
         {children}
