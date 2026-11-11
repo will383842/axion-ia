@@ -47,11 +47,11 @@ const rgbDe = (src: string) =>
 
 /**
  * Halos bleus restants : décision de Williams requise (lot V4 suivant).
- * Exceptions NOMMÉES, limitées à ces trois sélecteurs et à ce seul bleu rgba(26, 77, 217, …) :
+ * Exception NOMMÉE, limitée à ce seul sélecteur (V9-S5 a aplati .bg-halo-warm et .bg-halo-cool) et à ce seul bleu rgba(26, 77, 217, …) :
  * tout NOUVEAU rgba bleu ou jaune, ailleurs, fait échouer le test.
  */
 const HALOS_BLEUS_RESTANTS = {
-  selecteurs: [".bg-halo-warm", ".bg-halo-cool", ".bg-mocha-rich"],
+  selecteurs: [".bg-mocha-rich"],
   hex: versHex(26, 77, 217),
 };
 
@@ -77,7 +77,7 @@ describe("V4-02 : aucune teinte bleue (190-260°) ni jaune (40-70°)", () => {
     expect(fautifs).toEqual([]);
   });
 
-  it("les halos bleus restants sont bien les trois sélecteurs nommés (rien de plus)", () => {
+  it("le halo bleu restant est bien le sélecteur nommé (rien de plus)", () => {
     const portes = rgbDe(lire("src/app/globals.css"))
       .filter((c) => c.hex === HALOS_BLEUS_RESTANTS.hex)
       .map((c) => c.selecteur);
