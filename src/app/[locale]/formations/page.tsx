@@ -380,7 +380,7 @@ export default async function FormationsHub({ params }: Props) {
             <Cta
               href="/appel?depuis=page-formation"
               size="lg"
-              className="bg-primary text-primary-fg hover:bg-primary-hover shadow-[0_8px_24px_-8px_rgba(26,77,217,0.6)] hover:shadow-[0_12px_32px_-8px_rgba(26,77,217,0.7)]"
+              className="bg-primary text-primary-fg hover:bg-primary-hover shadow-[0_8px_24px_-8px_rgba(20,20,19,0.18)] hover:shadow-[0_12px_32px_-8px_rgba(20,20,19,0.18)]"
               track="collectives-hero-book-call"
             >
               {isFr ? "Réserver un appel" : "Book a call"}
@@ -849,7 +849,7 @@ export default async function FormationsHub({ params }: Props) {
                   <Cta
                     href="/appel"
                     size="lg"
-                    className="bg-primary text-primary-fg hover:bg-primary-hover w-full justify-center shadow-[0_8px_24px_-8px_rgba(26,77,217,0.6)] hover:shadow-[0_12px_32px_-8px_rgba(26,77,217,0.7)]"
+                    className="bg-primary text-primary-fg hover:bg-primary-hover w-full justify-center shadow-[0_8px_24px_-8px_rgba(20,20,19,0.18)] hover:shadow-[0_12px_32px_-8px_rgba(20,20,19,0.18)]"
                     track="collectives-recurring-monthly-call"
                   >
                     {isFr ? "Réserver un appel" : "Book a call"}
@@ -915,7 +915,7 @@ export default async function FormationsHub({ params }: Props) {
                   <Cta
                     href="/appel"
                     size="lg"
-                    className="bg-primary text-primary-fg hover:bg-primary-hover w-full justify-center shadow-[0_8px_24px_-8px_rgba(26,77,217,0.6)] hover:shadow-[0_12px_32px_-8px_rgba(26,77,217,0.7)]"
+                    className="bg-primary text-primary-fg hover:bg-primary-hover w-full justify-center shadow-[0_8px_24px_-8px_rgba(20,20,19,0.18)] hover:shadow-[0_12px_32px_-8px_rgba(20,20,19,0.18)]"
                     track="collectives-recurring-bimonthly-call"
                   >
                     {isFr ? "Réserver un appel" : "Book a call"}
@@ -1312,7 +1312,7 @@ export default async function FormationsHub({ params }: Props) {
               <Cta
                 href="/appel"
                 size="lg"
-                className="bg-primary text-primary-fg hover:bg-primary-hover shadow-[0_8px_24px_-8px_rgba(26,77,217,0.6)] hover:shadow-[0_12px_32px_-8px_rgba(26,77,217,0.7)]"
+                className="bg-primary text-primary-fg hover:bg-primary-hover shadow-[0_8px_24px_-8px_rgba(20,20,19,0.18)] hover:shadow-[0_12px_32px_-8px_rgba(20,20,19,0.18)]"
                 track="collectives-terracotta-band-call"
               >
                 {isFr ? "Réserver un appel" : "Book a call"}
@@ -1597,7 +1597,7 @@ export default async function FormationsHub({ params }: Props) {
           <Cta
             href="/appel"
             size="lg"
-            className="bg-primary text-primary-fg hover:bg-primary-hover shadow-[0_8px_24px_-8px_rgba(26,77,217,0.6)] hover:shadow-[0_12px_32px_-8px_rgba(26,77,217,0.7)]"
+            className="bg-primary text-primary-fg hover:bg-primary-hover shadow-[0_8px_24px_-8px_rgba(20,20,19,0.18)] hover:shadow-[0_12px_32px_-8px_rgba(20,20,19,0.18)]"
             track="collectives-ctablock-consultation"
           >
             {isFr ? "Réserver un appel" : "Book a call"} →

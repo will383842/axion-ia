@@ -21,11 +21,10 @@ export const size = { width: 1200, height: 675 };
 export const contentType = "image/png";
 
 // hex-ok: Edge runtime ne charge pas Tailwind ; valeurs miroir globals.css v3.
-const TERRACOTTA = "#c24a1b"; // hex-ok: Edge OG image, no Tailwind runtime
-const TERRACOTTA_DEEP = "#8c3010"; // hex-ok: Edge OG image, no Tailwind runtime
-const IVOIRE = "#faf8f3"; // hex-ok: Edge OG image, no Tailwind runtime
-const PAPER = "#ffffff"; // hex-ok: Edge OG image, no Tailwind runtime
-const FG = "#1a1815"; // hex-ok: Edge OG image, no Tailwind runtime
+const TERRACOTTA = "#B23F16"; // hex-ok: Edge OG image, no Tailwind runtime
+const IVOIRE = "#FAF9F5"; // hex-ok: Edge OG image, no Tailwind runtime
+const PAPER = "#FFFFFF"; // hex-ok: Edge OG image, no Tailwind runtime
+const FG = "#141413"; // hex-ok: Edge OG image, no Tailwind runtime
 
 interface Params {
   params: Promise<{ locale: string; region: string; ville: string }>;
@@ -47,7 +46,7 @@ export default async function VilleOpengraphImage({ params }: Params) {
         height: "100%",
         display: "flex",
         flexDirection: "column",
-        background: `linear-gradient(135deg, ${TERRACOTTA} 0%, ${TERRACOTTA_DEEP} 100%)`,
+        background: TERRACOTTA, // aplat charte 2027 (ivoire dessus : contraste 5,51)
         padding: 72,
       }}
     >
@@ -88,7 +87,6 @@ export default async function VilleOpengraphImage({ params }: Params) {
             fontWeight: 400,
             lineHeight: 1.1,
             letterSpacing: "-0.01em",
-            opacity: 0.95,
           }}
         >
           {isFr ? "Structurez et déployez l'IA" : "Structure and deploy AI"}
@@ -99,7 +97,6 @@ export default async function VilleOpengraphImage({ params }: Params) {
             fontWeight: 400,
             lineHeight: 1.1,
             letterSpacing: "-0.01em",
-            opacity: 0.95,
             marginTop: 4,
           }}
         >
@@ -125,7 +122,6 @@ export default async function VilleOpengraphImage({ params }: Params) {
               style={{
                 fontSize: 36,
                 fontStyle: "normal",
-                opacity: 0.7,
                 marginLeft: 16,
                 fontWeight: 400,
               }}
@@ -146,7 +142,6 @@ export default async function VilleOpengraphImage({ params }: Params) {
           color: IVOIRE,
           fontSize: 22,
           fontFamily: "sans-serif",
-          opacity: 0.9,
         }}
       >
         <span style={{ display: "flex", flexDirection: "column", gap: 4 }}>
@@ -155,9 +150,7 @@ export default async function VilleOpengraphImage({ params }: Params) {
               ? "Audit · Formation · Implémentation · Coaching · Web/SaaS IA"
               : "Audit · Training · Implementation · Coaching · AI Web/SaaS"}
           </span>
-          {seoHook && (
-            <span style={{ fontSize: 18, opacity: 0.85, fontStyle: "italic" }}>{seoHook}</span>
-          )}
+          {seoHook && <span style={{ fontSize: 18, fontStyle: "italic" }}>{seoHook}</span>}
         </span>
         <span style={{ fontWeight: 600 }}>axion-ia.com</span>
       </div>

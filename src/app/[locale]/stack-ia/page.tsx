@@ -295,7 +295,7 @@ export default async function StackIaPage({ params }: Props) {
                 <Cta
                   href="/formations"
                   size="lg"
-                  className="bg-primary text-primary-fg hover:bg-primary-hover shadow-[0_8px_24px_-8px_rgba(26,77,217,0.6)]"
+                  className="bg-primary text-primary-fg hover:bg-primary-hover shadow-[0_8px_24px_-8px_rgba(20,20,19,0.18)]"
                 >
                   {isFr ? "Voir nos formations" : "See our trainings"}
                   <ArrowRight aria-hidden="true" className="h-4 w-4" />
