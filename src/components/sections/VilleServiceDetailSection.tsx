@@ -62,8 +62,12 @@ const SERVICE_META = {
     labelEn: "AI audit",
     eyebrowFr: "Audit IA opérationnel",
     eyebrowEn: "Operational AI audit",
-    ctaFr: `Demander un audit Flash · ${formatTierPrice(auditFlashTier, "fr", { compact: true })}`,
-    ctaEn: `Request a Flash audit · ${formatTierPrice(auditFlashTier, "en", { compact: true })}`,
+    ctaFr: prixAffichable(auditFlashTier)
+      ? `Demander un audit Flash · ${formatTierPrice(auditFlashTier, "fr", { compact: true })}`
+      : "Demander un audit Flash",
+    ctaEn: prixAffichable(auditFlashTier)
+      ? `Request a Flash audit · ${formatTierPrice(auditFlashTier, "en", { compact: true })}`
+      : "Request a Flash audit",
   },
   interventions: {
     accent: "terracotta" as const,
