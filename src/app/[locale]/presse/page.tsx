@@ -638,8 +638,8 @@ export default async function PressePage({ params, searchParams }: Props) {
         titleEm={isFr ? "demande presse" : "press request"}
         description={
           isFr
-            ? "Interview, presskit, citation, podcast, fact-check — décrivez votre demande, on revient sous 48 h ouvrées avec une réponse personnalisée."
-            : "Interview, presskit, quote, podcast, fact-check — describe your request and we get back within 48 business hours with a personalized reply."
+            ? "Interview, presskit, citation, podcast, fact-check — décrivez votre demande, on revient vers vous avec une réponse personnalisée."
+            : "Interview, presskit, quote, podcast, fact-check — describe your request and we get back to you with a personalized reply."
         }
       >
         <Container>

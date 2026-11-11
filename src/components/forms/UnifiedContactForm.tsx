@@ -159,7 +159,7 @@ const LABELS = {
     sending: "Envoi…",
     successTitle: "Demande reçue.",
     successBody:
-      "Un consultant senior Axion-IA vous recontacte personnellement sous 48 h ouvrées. Votre projet a notre entière attention.",
+      "Un consultant senior Axion-IA vous recontacte personnellement. Votre projet a notre entière attention.",
     failure: "Une erreur est survenue. Réessayez ou écrivez à contact@axion-ia.com.",
     captchaBlocked:
       "Le contrôle anti-spam (Cloudflare) est bloqué par votre navigateur ou une extension. Autorisez « challenges.cloudflare.com » (ou désactivez votre bloqueur pour ce site), puis réessayez — ou écrivez-nous directement à contact@axion-ia.com.",
@@ -169,7 +169,7 @@ const LABELS = {
     submitAgain: "Faire une autre demande",
     referenceLabel: "Référence",
     trustPills: [
-      "⏱️ Réponse sous 48 h ouvrées",
+      "✉️ Réponse personnelle",
       "🧑 Lu par un consultant senior",
       "🔒 RGPD · données en UE",
       "🙂 Sans engagement",
@@ -250,7 +250,7 @@ const LABELS = {
     sending: "Sending…",
     successTitle: "Request received.",
     successBody:
-      "A senior Axion-IA consultant will get back to you personally within 48 business hours. Your project has our full attention.",
+      "A senior Axion-IA consultant will get back to you personally. Your project has our full attention.",
     failure: "An error occurred. Try again or email contact@axion-ia.com.",
     captchaBlocked:
       "The anti-spam check (Cloudflare) is blocked by your browser or an extension. Allow « challenges.cloudflare.com » (or disable your blocker for this site) and try again — or email us directly at contact@axion-ia.com.",
@@ -260,7 +260,7 @@ const LABELS = {
     submitAgain: "Send another request",
     referenceLabel: "Reference",
     trustPills: [
-      "⏱️ Reply within 48 business hours",
+      "✉️ Personal reply",
       "🧑 Read by a senior consultant",
       "🔒 GDPR · data in the EU",
       "🙂 No commitment",

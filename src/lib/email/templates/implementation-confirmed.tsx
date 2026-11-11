@@ -16,20 +16,20 @@ interface Payload {
 const COPY = {
   fr: {
     title: "Demande d'implémentation reçue",
-    preview: "Réponse sous 48 heures ouvrées, avec une proposition cadrée.",
+    preview: "Nous revenons vers vous avec une proposition cadrée.",
     intro: (n: string) => `Bonjour ${n},`,
     body: (i: string | undefined, b: string | undefined) =>
-      `Nous avons bien reçu votre demande d'implémentation${i ? ` (${i})` : ""}${b ? `, fourchette ${b}` : ""}. Notre équipe revient vers vous sous 48 heures ouvrées avec une proposition cadrée.`,
+      `Nous avons bien reçu votre demande d'implémentation${i ? ` (${i})` : ""}${b ? `, fourchette ${b}` : ""}. Notre équipe revient vers vous avec une proposition cadrée.`,
     next: "Délais types : 1 à 3 semaines automatisation simple, 6 à 10 semaines projet complet, 4 à 12 semaines IA custom. Tous nos déploiements sont hébergés sur infrastructure UE Hetzner conforme RGPD.",
     cta: "Cas concrets",
     refRow: (id: string) => `Référence : ${id}`,
   },
   en: {
     title: "Implementation request received",
-    preview: "Reply within 48 working hours, with a scoped proposal.",
+    preview: "We will get back to you with a scoped proposal.",
     intro: (n: string) => `Hello ${n},`,
     body: (i: string | undefined, b: string | undefined) =>
-      `We received your implementation request${i ? ` (${i})` : ""}${b ? `, ${b} budget range` : ""}. Our team gets back to you within 48 working hours with a scoped proposal.`,
+      `We received your implementation request${i ? ` (${i})` : ""}${b ? `, ${b} budget range` : ""}. Our team gets back to you with a scoped proposal.`,
     next: "Typical timelines: 1-3 weeks simple automation, 6-10 weeks complete project, 4-12 weeks custom AI. All our deployments are hosted on EU Hetzner infrastructure, GDPR-compliant.",
     cta: "Case studies",
     refRow: (id: string) => `Reference: ${id}`,

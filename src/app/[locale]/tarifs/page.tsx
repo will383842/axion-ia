@@ -269,7 +269,7 @@ export default async function PricingPage({ params }: Props) {
           id: "devis-personnalise",
           question: "Puis-je avoir un devis personnalisé ?",
           answer:
-            "Oui. Décrivez votre besoin via la page Contact : nous vous répondons sous 48 h ouvrées. Pour un projet de mise en place, nous proposons aussi un cadrage gratuit de 45 minutes avant le devis détaillé.",
+            "Oui. Décrivez votre besoin via la page Contact : nous vous répondons. Pour un projet de mise en place, nous proposons aussi un cadrage gratuit de 45 minutes avant le devis détaillé.",
         },
       ]
     : [
@@ -304,7 +304,7 @@ export default async function PricingPage({ params }: Props) {
           id: "devis-personnalise",
           question: "Can I get a custom quote?",
           answer:
-            "Yes — describe your need via the Contact page, personalised reply within 48 business hours. For deployment projects, we also offer a free 45-minute scoping call before the detailed quote.",
+            "Yes — describe your need via the Contact page, personalised reply. For deployment projects, we also offer a free 45-minute scoping call before the detailed quote.",
         },
       ];
 

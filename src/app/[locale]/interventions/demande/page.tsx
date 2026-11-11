@@ -38,12 +38,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     path: "/interventions/demande",
     title:
       locale === "fr"
-        ? "Demander une intervention IA · cadrage 48 h · Axion-IA"
-        : "Request an AI session · 48 h framing · Axion-IA",
+        ? "Demander une intervention IA · Axion-IA"
+        : "Request an AI session · Axion-IA",
     description:
       locale === "fr"
-        ? "Formulaire dédié pour cadrer votre intervention IA (formation équipe, coaching individuel, journée dirigeant ou conférence). Réponse personnalisée sous 48 h ouvrées. Sans engagement."
-        : "Dedicated form to frame your AI session (team training, individual coaching, executive day or talk). Personalised reply within 48 business hours. No commitment.",
+        ? "Formulaire dédié pour cadrer votre intervention IA (formation équipe, coaching individuel, journée dirigeant ou conférence). Réponse personnalisée. Sans engagement."
+        : "Dedicated form to frame your AI session (team training, individual coaching, executive day or talk). Personalised reply. No commitment.",
     alternates: { fr: "/interventions/demande", en: "/interventions/request" },
   });
 }
@@ -106,13 +106,13 @@ export default async function InterventionsDemande({ params, searchParams }: Pro
 
   const pills = isFr
     ? [
-        { icon: Clock, label: "Réponse 48 h ouvrées" },
+        { icon: Clock, label: "Réponse personnalisée" },
         { icon: HeartHandshake, label: "Sans engagement" },
         { icon: ShieldCheck, label: "RGPD · UE" },
         { icon: BookOpenCheck, label: "Méthode documentée" },
       ]
     : [
-        { icon: Clock, label: "Reply within 48 business hours" },
+        { icon: Clock, label: "Personalised reply" },
         { icon: HeartHandshake, label: "No commitment" },
         { icon: ShieldCheck, label: "GDPR · EU" },
         { icon: BookOpenCheck, label: "Documented method" },
@@ -153,8 +153,8 @@ export default async function InterventionsDemande({ params, searchParams }: Pro
 
               <p className="text-fg-soft mt-4 max-w-lg text-base leading-relaxed sm:text-lg">
                 {isFr
-                  ? "Décrivez votre besoin (intervention souhaitée, taille d'équipe, contexte). Nous revenons sous 48 h ouvrées avec un cadrage personnalisé."
-                  : "Describe your need (preferred session, team size, context). We get back within 48 business hours with a personalised framing."}
+                  ? "Décrivez votre besoin (intervention souhaitée, taille d'équipe, contexte). Nous revenons vers vous avec un cadrage personnalisé."
+                  : "Describe your need (preferred session, team size, context). We get back to you with a personalised framing."}
               </p>
 
               <ul className="mt-5 flex flex-wrap gap-2">
@@ -191,7 +191,7 @@ export default async function InterventionsDemande({ params, searchParams }: Pro
         tone="paper"
         eyebrow={isFr ? "Comment ça fonctionne" : "How it works"}
         title={isFr ? "Une réponse personnalisée" : "A personalised reply"}
-        titleEm={isFr ? "sous 48 h ouvrées" : "within 48 business hours"}
+        titleEm={isFr ? "avec un cadrage personnalisé" : "with a personalised framing"}
         description={
           isFr
             ? "Plus le contexte est précis, plus notre réponse sera ciblée. Nous traitons chaque demande individuellement — pas de pipeline automatique."
@@ -208,7 +208,7 @@ export default async function InterventionsDemande({ params, searchParams }: Pro
                       "Quelques minutes : prénom, nom, société, email, téléphone, objet, description. Pas de tracking, pas de profilage.",
                   },
                   {
-                    title: "Nous vous appelons sous 48 h ouvrées",
+                    title: "Nous vous appelons",
                     description:
                       "Pour comprendre votre contexte, valider l'intervention adaptée, et chiffrer si nécessaire. Sans engagement.",
                   },
@@ -225,7 +225,7 @@ export default async function InterventionsDemande({ params, searchParams }: Pro
                       "A few minutes: first name, last name, company, email, phone, subject, description. No tracking, no profiling.",
                   },
                   {
-                    title: "We call you within 48 business hours",
+                    title: "We call you",
                     description:
                       "To understand your context, validate the right session, and quote if needed. No commitment.",
                   },

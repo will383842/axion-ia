@@ -249,8 +249,8 @@ export default async function HelpCenter({ params }: Props) {
         title={isFr ? "Question non couverte ?" : "Question not covered?"}
         description={
           isFr
-            ? "Contactez-nous — réponse sous 48 h ouvrées."
-            : "Contact us — reply within 48 business hours."
+            ? "Contactez-nous."
+            : "Contact us."
         }
         cta={
           <Cta href="/contact" size="lg">
