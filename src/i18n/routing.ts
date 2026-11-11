@@ -309,8 +309,6 @@ export const routing = defineRouting({
     // (Audit / Formations / 1-to-1 / Implémentation / Plateforme). Source de
     // vérité unique = pricing.ts. Sert le nouvel onglet header « Tarifs ».
     "/tarifs": { fr: "/tarifs", en: "/pricing" },
-    // Page Journée IA (brand V5-02) — slug identique FR/EN : pas de boucle 307 next-intl.
-    "/journee-ia": { fr: "/journee-ia", en: "/journee-ia" },
     "/roi": "/roi",
     // Simulateur de gains v2 (2026-08-12) — même moteur que `/roi`, servi sans
     // en-tête ni pied de page pour le trafic payant. `noindex` : c'est la
