@@ -81,7 +81,7 @@ export const ANGERS_COPY: VilleCopy = {
 
   // === SERVICES LONG-FORM ANGERS ===
   // Aucun prix en dur, aucun délai chiffré, aucune mention « frais inclus »,
-  // aucune demi-journée, aucune mention de frais de déplacement.
+  // aucune demi-journée.
   services: {
     audit: {
       fr: {

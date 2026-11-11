@@ -65,7 +65,7 @@ export const SAINT_PIERRE_DES_CORPS_COPY: VilleCopy = {
     },
     {
       q: "Comment se rendre à Saint-Pierre-des-Corps ?",
-      a: "Gare TGV Saint-Pierre-des-Corps directement sur place (Paris-Montparnasse 1h05). Accès immédiat. Frais de déplacement en sus du forfait.",
+      a: "Gare TGV Saint-Pierre-des-Corps directement sur place (Paris-Montparnasse 1h05). Accès immédiat.",
     },
   ],
 };

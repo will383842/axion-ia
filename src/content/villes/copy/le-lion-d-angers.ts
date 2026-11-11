@@ -65,7 +65,7 @@ export const LE_LION_D_ANGERS_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission IA depuis Angers ?",
-      a: "Nos consultants viennent d'Angers (25 min N162). Déplacement inclus en zone nord-ouest angevin. Pour les missions multi-jours, hébergement local possible. Tarifs publics.",
+      a: "Nos consultants viennent d'Angers (25 min N162). Pour les missions multi-jours, hébergement local possible. Tarifs publics.",
     },
   ],
 };

@@ -816,7 +816,7 @@ export const NICE_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Fixed entry rate for the discovery session, quoted on request: you know exactly what you pay before booking. Usable deliverable handed over at the end of each session — no session without a concrete output. Strict confidentiality ensured from kick-off. On-site travel expenses presented separately, never bundled in the rate. No lock-in: at programme end, you are autonomous and free to use your AI skills with any tool or provider.",
+          "Fixed entry rate for the discovery session, quoted on request: you know exactly what you pay before booking. Usable deliverable handed over at the end of each session — no session without a concrete output. Strict confidentiality ensured from kick-off. No lock-in: at programme end, you are autonomous and free to use your AI skills with any tool or provider.",
       },
     },
     sitesWeb: {

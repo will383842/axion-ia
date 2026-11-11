@@ -232,7 +232,7 @@ export const LES_LILAS_COPY: VilleCopy = {
     },
     {
       q: "Williams se déplace-t-il aux Lilas pour intervenir sur site ?",
-      a: "Oui. Williams se déplace aux Lilas (93260) et dans les communes limitrophes : Pantin, Bagnolet, Le Pré-Saint-Gervais, Romainville, ainsi que le 19e et 20e arrondissements de Paris, sans frais kilométriques additionnels.",
+      a: "Oui. Williams intervient aux Lilas (93260) et dans les communes limitrophes : Pantin, Bagnolet, Le Pré-Saint-Gervais, Romainville, ainsi que le 19e et 20e arrondissements de Paris.",
     },
     {
       q: "Quels délais pour démarrer une mission IA aux Lilas ?",

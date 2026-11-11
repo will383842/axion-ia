@@ -130,7 +130,7 @@ export const CASTELNAU_LE_LEZ_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage sur site à Castelnau-le-Lez, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, pas de surcoût de déplacement : la ligne 2 du tramway et la proximité de la gare Saint-Roch rendent nos venues sur site simples.",
+            a: "Oui. Après le cadrage sur site à Castelnau-le-Lez, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 24-48 h pour un projet simple.",
           },
         ],
         guarantees:
@@ -216,7 +216,7 @@ export const CASTELNAU_LE_LEZ_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage sur site à Castelnau-le-Lez, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, pas de surcoût de déplacement : la ligne 2 du tramway et la proximité de la gare Saint-Roch rendent nos venues sur site simples.",
+            a: "Oui. Après le cadrage sur site à Castelnau-le-Lez, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 24-48 h pour un projet simple.",
           },
         ],
         guarantees:

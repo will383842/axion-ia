@@ -65,7 +65,7 @@ export const SAINT_PIERRE_DU_MONT_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'entrée pour une mission IA à Saint-Pierre-du-Mont ?",
-      a: "L'audit sur place débute selon la taille de votre activité, livrable en 5 jours ouvrés. Inclut diagnostic complet, cartographie processus automatisables, ROI chiffré et feuille de route IA. Déplacement inclus dans l'agglomération montoise.",
+      a: "L'audit sur place débute selon la taille de votre activité, livrable en 5 jours ouvrés. Inclut diagnostic complet, cartographie processus automatisables, ROI chiffré et feuille de route IA.",
     },
   ],
 };

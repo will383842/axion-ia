@@ -222,7 +222,7 @@ export const LE_PLESSIS_ROBINSON_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Quote provided from 24-48 h depending on complexity. EU hosting by default and GDPR compliance built in from design. We claim UX/UI, mobile-first, multi-CMS e-commerce and AI building blocks (RAG chatbot, semantic search, automated quotes). You keep full ownership of code, content and models: no vendor lock-in, no imposed technical dependency. Transparent travel costs, separate from the package, calculated case by case.",
+          "Quote provided from 24-48 h depending on complexity. EU hosting by default and GDPR compliance built in from design. We claim UX/UI, mobile-first, multi-CMS e-commerce and AI building blocks (RAG chatbot, semantic search, automated quotes). You keep full ownership of code, content and models: no vendor lock-in, no imposed technical dependency.",
       },
     },
   },

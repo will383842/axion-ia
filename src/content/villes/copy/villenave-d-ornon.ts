@@ -137,7 +137,7 @@ const VILLE_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Code custom propriétaire et documenté : vous êtes propriétaire de votre site ou plateforme, sans licence SaaS récurrente ni verrou éditeur. Hébergement sur cloud UE (OVHcloud, Scaleway), conformité RGPD par défaut, registre des traitements et DPA fournis. Stack portable, reprenable par tout intégrateur de Bordeaux Métropole ou par vos équipes. Devis détaillé à partir de 24 à 48 h selon la complexité ; frais de déplacement calculés selon la zone, en sus.",
+          "Code custom propriétaire et documenté : vous êtes propriétaire de votre site ou plateforme, sans licence SaaS récurrente ni verrou éditeur. Hébergement sur cloud UE (OVHcloud, Scaleway), conformité RGPD par défaut, registre des traitements et DPA fournis. Stack portable, reprenable par tout intégrateur de Bordeaux Métropole ou par vos équipes. Devis détaillé à partir de 24 à 48 h selon la complexité .",
       },
       en: {
         hero: "Axion-IA designs AI-augmented websites and SaaS platforms in Villenave-d'Ornon, Gironde's 6th-largest town and the southern gateway of Bordeaux Métropole. The town concentrates a very specific fabric: the environmental, water and waste services hub of the Centre Commercial Bordeaux Sud (SUEZ RV Sud-Ouest, SUEZ Organique, Dégremont France), the vine-and-wine research hub of the ISVV on the INRAE site (EGFV unit, Inno'Vin cluster, CIVB) and the emerging health-innovation cluster on the Robert-Picqué site. We deliver custom code — UX/UI, showcase sites, multi-CMS e-commerce, AI-native platforms (RAG chatbot, semantic search, agents) — hosted in the EU, GDPR by default, with no vendor lock-in.",
@@ -223,7 +223,7 @@ const VILLE_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Proprietary, documented custom code: you own your site or platform, with no recurring SaaS license or vendor lock-in. Hosting on EU cloud (OVHcloud, Scaleway), GDPR compliance by default, processing register and DPA provided. Portable stack, recoverable by any Bordeaux Métropole integrator or by your teams. Detailed quote from 24 to 48 hours depending on complexity; travel costs calculated by zone, billed separately.",
+          "Proprietary, documented custom code: you own your site or platform, with no recurring SaaS license or vendor lock-in. Hosting on EU cloud (OVHcloud, Scaleway), GDPR compliance by default, processing register and DPA provided. Portable stack, recoverable by any Bordeaux Métropole integrator or by your teams. Detailed quote from 24 to 48 hours depending on complexity.",
       },
     },
   },

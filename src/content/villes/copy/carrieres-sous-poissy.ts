@@ -248,7 +248,7 @@ export const CARRIERES_SOUS_POISSY_COPY: VilleCopy = {
     },
     {
       q: "Williams se déplace-t-il sur site à Carrières-sous-Poissy ?",
-      a: "Oui, Williams se déplace depuis Paris (30 km, gare de Poissy RER A à proximité). Les interventions se font directement dans vos locaux, sans frais kilométriques supplémentaires sur l'Île-de-France.",
+      a: "Oui, Williams se déplace depuis Paris (30 km, gare de Poissy RER A à proximité).",
     },
   ],
 };

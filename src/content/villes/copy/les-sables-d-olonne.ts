@@ -136,7 +136,7 @@ export const LES_SABLES_D_OLONNE_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Sites web et plateformes SaaS développés sur des standards ouverts (multi-CMS ou code custom), hébergés en Europe et conformes RGPD, avec analyse des données clients (réservations, paiements, contacts criée et chantiers) dès la conception. Vous restez propriétaire de l'ensemble — code, contenus, accès — repris en interne ou par tout intégrateur de l'agglomération sablaise, sans verrou éditeur. Devis remis à partir de 24-48 h selon la complexité, frais de déplacement transparents distincts du forfait.",
+          "Sites web et plateformes SaaS développés sur des standards ouverts (multi-CMS ou code custom), hébergés en Europe et conformes RGPD, avec analyse des données clients (réservations, paiements, contacts criée et chantiers) dès la conception. Vous restez propriétaire de l'ensemble — code, contenus, accès — repris en interne ou par tout intégrateur de l'agglomération sablaise, sans verrou éditeur.",
       },
       en: {
         hero: "In Les Sables-d'Olonne, the economy rests on two quays: the sea — France's 3rd fishing port by value, Port Olona and its Vendée Globe start quay, the OCEA shipyard (aluminium vessels up to 85 m, La Cabaude) and Privilège Marine (luxury catamarans) — and the digital one, with the NUMERIMER technology park, its Etix Olona data centre, the ESAIP engineering school and a startup incubator (Zelok, Aïoli Digital, Innlog). Axion-IA designs AI-augmented websites and SaaS platforms for this fabric: multilingual tourism booking engines, nautical quote portals, customer spaces for the fish market and the maritime sector, hosted in Europe and GDPR-compliant.",

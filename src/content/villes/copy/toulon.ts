@@ -813,7 +813,7 @@ export const TOULON_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Positioning interview included. Programme delivered before any financial commitment. Sessions invoiced at a flat rate, not by the hour — you know exactly what you pay. Travel expenses detailed and validated with you before each in-person session. No lock-in: tools and methods learned are usable in full autonomy without Axion-IA dependency.",
+          "Positioning interview included. Programme delivered before any financial commitment. Sessions invoiced at a flat rate, not by the hour — you know exactly what you pay. No lock-in: tools and methods learned are usable in full autonomy without Axion-IA dependency.",
       },
     },
     sitesWeb: {

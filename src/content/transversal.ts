@@ -174,7 +174,7 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
     fr: {
       question: "Couvrez-vous toute la France et l'international ?",
       answer:
-        "Oui, toute la France. Nous intervenons sur site dans les 13 régions de France métropolitaine, Corse comprise, et dans les 5 DROM — Guadeloupe, Martinique, Guyane, La Réunion, Mayotte. Nous accompagnons également les entreprises francophones à l'étranger : Belgique, Suisse, Luxembourg, Monaco, Maghreb, Afrique francophone, Québec — sur devis selon la zone et la mission.\n\nAxion-IA ne fonctionne pas en réseau d'agences : ce sont les intervenants qui se déplacent, ou la mission se tient à distance quand c'est plus efficace. Conséquence directe, les tarifs sont les mêmes partout, sans surcoût géographique. Les frais de déplacement, eux, sont facturés en sus et figurent sur une ligne distincte du devis : vous savez ce que vous payez avant de signer.\n\nLes 5 prestations sont accessibles sur tout le territoire — audit IA, formations collectives, coaching 1-to-1, implémentation, sites web & SaaS IA. Le même expert senior vous suit du cadrage à la livraison, quelle que soit votre région, et le devis arrive sous 48 h ouvrées.",
+        "Oui, toute la France. Nous intervenons sur site dans les 13 régions de France métropolitaine, Corse comprise, et dans les 5 DROM — Guadeloupe, Martinique, Guyane, La Réunion, Mayotte. Nous accompagnons également les entreprises francophones à l'étranger : Belgique, Suisse, Luxembourg, Monaco, Maghreb, Afrique francophone, Québec — sur devis selon la zone et la mission.\n\nAxion-IA ne fonctionne pas en réseau d'agences : ce sont les intervenants qui se déplacent, ou la mission se tient à distance quand c'est plus efficace. Conséquence directe, les tarifs sont les mêmes partout, sans surcoût géographique.\n\nLes 5 prestations sont accessibles sur tout le territoire — audit IA, formations collectives, coaching 1-to-1, implémentation, sites web & SaaS IA. Le même expert senior vous suit du cadrage à la livraison, quelle que soit votre région, et le devis arrive sous 48 h ouvrées.",
       keyPoints: [
         "13 régions métropolitaines, Corse comprise, et les 5 DROM",
         "Entreprises francophones à l'étranger, sur devis selon la zone",
@@ -202,7 +202,7 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
         {
           title: "Les frais de déplacement ne sont pas inclus",
           detail:
-            "Les tarifs ne varient pas d'une région à l'autre, mais les frais de déplacement s'ajoutent : ils sont chiffrés selon la zone et apparaissent séparément sur le devis.",
+            "Les tarifs ne varient pas d'une région à l'autre.",
         },
       ],
     },
@@ -270,7 +270,7 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
     fr: {
       question: "Et pour les TPE, PME et artisans en zone rurale ou petites villes ?",
       answer:
-        "Oui, sans réserve. Artisans, commerçants, TPE et PME sont accompagnés partout en France, y compris en zone rurale et dans les petites villes. La taille de votre commune ne change ni l'accès aux prestations, ni les conditions tarifaires : elles sont identiques d'un bout à l'autre du territoire.\n\nPour une petite structure, le format à distance est souvent le plus rentable : aucun frais de déplacement à supporter, aucune journée perdue en trajets, et la même qualité d'accompagnement — même intervenant senior, mêmes livrables, mêmes méthodes. Quand le terrain est indispensable, parce qu'il faut voir un atelier, un poste de production ou réunir toute l'équipe, l'intervention sur site reste évidemment possible.\n\nConcrètement, un artisan ou un commerçant ne démarre pas par un chantier lourd. Une journée de coaching 1-to-1 de 7 à 8 heures sur son propre poste, ou une formation courte à partir de 4 h pour deux ou trois personnes, suffit à débloquer les usages du quotidien : devis, relances, réponses clients, comptes rendus.",
+        "Oui, sans réserve. Artisans, commerçants, TPE et PME sont accompagnés partout en France, y compris en zone rurale et dans les petites villes. La taille de votre commune ne change ni l'accès aux prestations, ni les conditions tarifaires : elles sont identiques d'un bout à l'autre du territoire.\n\nPour une petite structure. Quand le terrain est indispensable, parce qu'il faut voir un atelier, un poste de production ou réunir toute l'équipe, l'intervention sur site reste évidemment possible.\n\nConcrètement, un artisan ou un commerçant ne démarre pas par un chantier lourd. Une journée de coaching 1-to-1 de 7 à 8 heures sur son propre poste, ou une formation courte à partir de 4 h pour deux ou trois personnes, suffit à débloquer les usages du quotidien : devis, relances, réponses clients, comptes rendus.",
       keyPoints: [
         "Artisans, commerçants, TPE et PME, partout en France",
         "Zones rurales et petites villes incluses, sans condition de taille",

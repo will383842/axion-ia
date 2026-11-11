@@ -232,7 +232,7 @@ export const PALAISEAU_COPY: VilleCopy = {
     },
     {
       q: "Williams se déplace-t-il sur site à Palaiseau ?",
-      a: "Oui, Williams se déplace depuis Paris via le RER B (gares Palaiseau, Palaiseau-Villebon, Lozère). Pas de frais kilométriques additionnels sur l'Île-de-France.",
+      a: "Oui, Williams se déplace depuis Paris via le RER B (gares Palaiseau, Palaiseau-Villebon, Lozère).",
     },
     {
       q: "Quels délais pour un audit à Palaiseau ?",

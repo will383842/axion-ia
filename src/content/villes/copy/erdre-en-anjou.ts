@@ -65,7 +65,7 @@ export const ERDRE_EN_ANJOU_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission IA depuis Angers ?",
-      a: "Nos consultants viennent d'Angers (25 min N162). Déplacement inclus dans la zone nord angevin. Pour les missions multi-jours, hébergement local possible. Tarifs publics.",
+      a: "Nos consultants viennent d'Angers (25 min N162). Pour les missions multi-jours, hébergement local possible. Tarifs publics.",
     },
   ],
 };
