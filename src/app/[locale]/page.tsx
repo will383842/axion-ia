@@ -183,6 +183,9 @@ export default async function Home({ params }: HomeProps) {
                 caption="L'équipe Axion-IA — l'IA au service de l'humain"
                 alt="Photo de l'équipe Axion-IA en pulls terracotta sous le logo « Axion-IA.com — L'intelligence artificielle au service de l'humain »."
                 priority
+                // Audit SEO 2026-11-11 (I5) : seule image LCP de l'accueil (desktop).
+                // `priority` précharge, `fetchPriority` hisse aussi l'`<img>` elle-même.
+                fetchPriority="high"
                 // 🔴 GEO-125 (audit GEO/AEO 2026-08-15) — mesuré en production le
                 // 2026-08-14 sur Pixel 7 (412 px, DPR 2,625) : 62 Ko d'image hero
                 // téléchargés à t = 146 ms, en plein dans la fenêtre du LCP, pour
