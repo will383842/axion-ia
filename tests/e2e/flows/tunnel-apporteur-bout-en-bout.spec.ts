@@ -45,7 +45,7 @@ test.describe("@tunnel-apporteur parcours public", () => {
     // R7 (ordre de Williams du 08/11/2026) : plus aucun montant public — la commission est
     // annoncée sans chiffre (interrupteur `COMMISSIONS_PUBLIQUES_AFFICHEES`).
     await expect(
-      page.getByText("Une commission sur chaque mission signée", { exact: false }).first(),
+      page.getByText("Une commission sur chaque journée payée", { exact: false }).first(),
     ).toBeVisible();
     // Seule la Journée IA (1 490 € HT) peut porter un montant au public. On lit le contenu
     // PROPRE à la page (`<main>`) : l'en-tête, le pied et les messages globaux sont communs à
