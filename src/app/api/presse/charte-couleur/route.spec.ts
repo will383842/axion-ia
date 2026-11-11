@@ -29,9 +29,9 @@ describe("GET /api/presse/charte-couleur", () => {
 
   it("dérive le RGB du HEX plutôt que de le saisir à côté", async () => {
     const txt = await corps();
-    // hex-ok: charte presse — Terracotta #C24A1B → 194, 74, 27. Si le RGB était recopié à la main, il
+    // hex-ok: charte presse — Terracotta #B23F16 → 178, 63, 22. Si le RGB était recopié à la main, il
     // pourrait diverger du HEX sans que rien ne le signale.
-    expect(txt).toContain("rgb(194, 74, 27)");
+    expect(txt).toContain("rgb(178, 63, 22)");
   });
 
   it("🔴 ne publie AUCUNE valeur CMJN inventée", async () => {

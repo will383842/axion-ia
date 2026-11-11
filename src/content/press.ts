@@ -225,13 +225,13 @@ export interface BrandColor {
 
 export const BRAND_PALETTE: ReadonlyArray<BrandColor> = [
   // hex-ok: charte couleur presse — HEX officiels affichés aux journalistes, miroir des tokens globals.css (la COULEUR du swatch vient de className).
-  { name: "Terracotta", hex: "#C24A1B", className: "bg-terracotta" }, // hex-ok: charte presse
-  { name: "Mocha", hex: "#2A2520", className: "bg-mocha" }, // hex-ok: charte presse
-  { name: "Bleu éditorial", hex: "#1A4DD9", className: "bg-primary" }, // hex-ok: charte presse
-  { name: "Sauge", hex: "#5E6C54", className: "bg-sage" }, // hex-ok: charte presse
-  { name: "Sable", hex: "#F0E9DA", className: "bg-sand", ring: true }, // hex-ok: charte presse
-  { name: "Ivoire", hex: "#FAF8F3", className: "bg-canvas", ring: true }, // hex-ok: charte presse
-  { name: "Anthracite", hex: "#1A1815", className: "bg-fg" }, // hex-ok: charte presse
+  { name: "Terracotta", hex: "#B23F16", className: "bg-terracotta" }, // hex-ok: charte presse
+  { name: "Noir", hex: "#141413", className: "bg-mocha" }, // hex-ok: charte presse
+  { name: "Orange (sur noir seulement)", hex: "#D97757", className: "bg-terracotta-on-mocha" }, // hex-ok: charte presse
+  { name: "Gris (sur noir seulement)", hex: "#B0AEA5", className: "bg-mocha-fg-muted" }, // hex-ok: charte presse
+  { name: "Sauge", hex: "#5E7050", className: "bg-sage" }, // hex-ok: charte presse
+  { name: "Gris chaud", hex: "#E8E6DC", className: "bg-sand", ring: true }, // hex-ok: charte presse
+  { name: "Ivoire", hex: "#FAF9F5", className: "bg-canvas", ring: true }, // hex-ok: charte presse
 ];
 
 // ─────────────────────────────────────────────────────────────────

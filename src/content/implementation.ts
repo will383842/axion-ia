@@ -1,5 +1,5 @@
 // Content pack — Module 3 Implémentation IA (10 pages).
-// Purple #7a3dff accent. Source: docs 04 + 22.
+// Accent terracotta #B23F16. Source: docs 04 + 22.
 // Sprint 7 baseline. Note: ban du mot « formation » levé 2026-05-07 (ADR
 // `axionia/docs/adr/0003-lift-formation-ban.md`) — vocabulaire libre désormais.
 // Sprint 14.10.5 (2026-05-08) : prix IA custom dérivés de pricing.ts (SSOT).

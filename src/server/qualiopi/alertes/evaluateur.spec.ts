@@ -2175,13 +2175,16 @@ describe("evaluerAlertes — signatures_en_attente", () => {
 // RC pro absente ≠ RC pro expirée est une décision métier (procédure § 4.2)
 // qu'une régression silencieuse effacerait.
 describe("vigilance sous-traitance", () => {
+  // Échéances relatives à la date du jour (+400 j) : une date figée finit par
+  // entrer dans la fenêtre d'alerte et fait échouer le test sans raison métier.
+  const LOIN = new Date(Date.now() + 400 * 24 * 3600 * 1000);
   const CONFORME = {
     id: "st-1",
     nom: "Organisme X",
     contratSigneAt: new Date("2026-01-10"),
-    rcProEcheanceAt: new Date("2027-01-10"),
+    rcProEcheanceAt: LOIN,
     rcProAttestationUrl: "https://r2/rc.pdf",
-    prochaineVerifAt: new Date("2027-01-10"),
+    prochaineVerifAt: LOIN,
   };
 
   beforeEach(() => {
@@ -2250,9 +2253,9 @@ describe("vigilance sous-traitance", () => {
       nom: "Dupont",
       prenom: "Marie",
       sousTraitantContratSigneAt: new Date("2026-01-10"),
-      rcProEcheanceAt: new Date("2027-01-10"),
+      rcProEcheanceAt: LOIN,
       rcProAttestationUrl: "https://r2/rc.pdf",
-      sousTraitantProchaineVerifAt: new Date("2027-01-10"),
+      sousTraitantProchaineVerifAt: LOIN,
     };
 
     it("un seul incident bloquant ne lève RIEN — un accident n'est pas un motif", async () => {

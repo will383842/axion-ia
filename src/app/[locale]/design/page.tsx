@@ -22,14 +22,21 @@ export default function DesignPage() {
         description="Reference page rendering palette, typography, radius, shadows, halos and motion. Source of truth: Design.md + ADR 0002 (pivot v3) + ADR 0004 (typography v3.1)."
       />
 
-      {/* ── 2.1 Surfaces — 4 tons éditoriaux, sans noir ── */}
-      <Section eyebrow="Palette · surfaces (sans noir)">
+      {/* ── 2.1 Surfaces — ivoire, gris chaud, noir ── */}
+      <Section eyebrow="Palette · surfaces (ivoire, gris chaud, noir)">
         <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
-          <Swatch name="bg-bg" className="bg-bg text-fg ring-border ring-1" hex="#faf8f3" />
-          <Swatch name="bg-paper" className="bg-paper text-fg ring-border ring-1" hex="#ffffff" />
-          <Swatch name="bg-sand" className="bg-sand text-fg" hex="#f0e9da" />
-          <Swatch name="bg-sand-deep" className="bg-sand-deep text-fg" hex="#e6dcc4" />
-          <Swatch name="bg-mocha-rich" className="bg-mocha-rich text-mocha-fg" hex="#2a2520" />
+          <Swatch
+            name="bg-bg · ivoire"
+            className="bg-bg text-fg ring-border ring-1"
+            hex="#faf9f5"
+          />
+          <Swatch name="bg-paper · papier" className="bg-paper text-fg ring-border ring-1" />
+          <Swatch name="bg-sand · gris chaud" className="bg-sand text-fg" hex="#e8e6dc" />
+          <Swatch
+            name="bg-mocha-rich · noir"
+            className="bg-mocha-rich text-mocha-fg"
+            hex="#141413"
+          />
           <Swatch name="bg-halo-warm" className="bg-halo-warm text-fg ring-border ring-1" />
           <Swatch name="bg-halo-cool" className="bg-halo-cool text-fg ring-border ring-1" />
         </div>
@@ -38,25 +45,25 @@ export default function DesignPage() {
       {/* ── 2.2 Foreground ── */}
       <Section eyebrow="Foreground · texte sur surfaces claires">
         <div className="grid grid-cols-2 gap-4 sm:grid-cols-3">
-          <Swatch name="text-fg" className="bg-fg text-bg" hex="#1a1815" />
-          <Swatch name="text-fg-soft" className="bg-fg-soft text-bg" hex="#524b41" />
-          <Swatch name="text-fg-muted" className="bg-fg-muted text-bg" hex="#6b6155" />
+          <Swatch name="text-fg" className="bg-fg text-bg" hex="#141413" />
+          <Swatch name="text-fg-soft" className="bg-fg-soft text-bg" hex="#5e5d59" />
+          <Swatch name="text-fg-muted" className="bg-fg-muted text-bg" hex="#5e5d59" />
         </div>
       </Section>
 
-      {/* ── 2.3 Accent primary — Editorial Blue ── */}
-      <Section eyebrow="Accent primary · Editorial Blue (CTA primaire UNIQUE)">
+      {/* ── 2.3 Accent primary — terracotta ── */}
+      <Section eyebrow="Accent primary · terracotta (CTA primaire UNIQUE)">
         <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
-          <Swatch name="bg-primary" className="bg-primary text-primary-fg" hex="#1a4dd9" />
+          <Swatch name="bg-primary" className="bg-primary text-primary-fg" hex="#b23f16" />
           <Swatch
-            name="bg-primary-hover"
+            name="bg-primary-hover · survol"
             className="bg-primary-hover text-primary-fg"
-            hex="#0f3aae"
+            hex="#8f3412"
           />
-          <Swatch name="bg-primary-soft" className="bg-primary-soft text-primary" hex="#e8efff" />
+          <Swatch name="bg-primary-soft" className="bg-primary-soft text-primary" hex="#e8e6dc" />
         </div>
         <p className="text-fg-soft mt-4 max-w-2xl text-sm">
-          <strong className="text-fg">Règle stricte</strong> — `#1a4dd9` est{" "}
+          <strong className="text-fg">Règle stricte</strong> — `#b23f16` est{" "}
           <strong className="text-fg">la seule couleur</strong> autorisée sur un CTA primaire
           (button bg, link underline, focus ring). Aucune autre couleur ne joue ce rôle.
         </p>
@@ -65,44 +72,54 @@ export default function DesignPage() {
       {/* ── 2.4 Accent éditorial terracotta ── */}
       <Section eyebrow="Accent éditorial · terracotta (italiques signature)">
         <div className="grid grid-cols-2 gap-4 sm:grid-cols-3">
-          <Swatch name="bg-terracotta" className="bg-terracotta text-mocha-fg" hex="#c24a1b" />
+          <Swatch name="bg-terracotta" className="bg-terracotta text-mocha-fg" hex="#b23f16" />
           <Swatch
             name="bg-terracotta-soft"
             className="bg-terracotta-soft text-terracotta-deep"
-            hex="#f5e3d8"
+            hex="#e8e6dc"
           />
           <Swatch
-            name="bg-terracotta-deep"
+            name="bg-terracotta-deep · survol"
             className="bg-terracotta-deep text-mocha-fg"
-            hex="#8c3010"
+            hex="#8f3412"
+          />
+          <Swatch
+            name="orange · sur noir seulement"
+            className="bg-mocha-rich text-terracotta-on-mocha"
+            hex="#d97757"
+          />
+          <Swatch
+            name="gris · sur noir seulement"
+            className="bg-mocha-rich text-mocha-fg-muted"
+            hex="#b0aea5"
           />
         </div>
         <p className="text-fg-soft mt-4 max-w-2xl text-sm">
           Jamais sur un CTA primaire — toujours en signature : italique serif, dot indicator hero,
-          divider footer, hover éditorial.
+          divider footer, hover éditorial. L&apos;orange et le gris ne se posent que sur fond noir.
         </p>
       </Section>
 
-      {/* ── 2.5 Accent doux sage ── */}
-      <Section eyebrow="Accent doux · sage (Module Cas concrets)">
+      {/* ── 2.5 Vert sauge — exception documentée ── */}
+      <Section eyebrow="Exception documentée · vert sauge (décision Williams, 08/11)">
         <div className="grid grid-cols-2 gap-4 sm:grid-cols-3">
-          <Swatch name="bg-sage" className="bg-sage text-mocha-fg" hex="#5e6c54" />
-          <Swatch name="bg-sage-soft" className="bg-sage-soft text-sage" hex="#e6ebe2" />
+          <Swatch name="bg-sage" className="bg-sage text-mocha-fg" hex="#5e7050" />
+          <Swatch name="bg-sage-soft" className="bg-sage-soft text-sage" hex="#eef1eb" />
         </div>
       </Section>
 
       {/* ── 2.6 Module-color mapping ── */}
       <Section eyebrow="Module mapping · 1 couleur par section">
         <ul className="border-border divide-border max-w-3xl divide-y border-y">
-          <ModuleRow module="Module 1 · Interventions" accent="primary" hex="#1a4dd9" />
-          <ModuleRow module="Module 2 · Audit" accent="accent-orange" hex="#ff6b00" />
-          <ModuleRow module="Module 3 · Implémentation" accent="accent-purple" hex="#7a3dff" />
-          <ModuleRow module="Cas concrets" accent="sage" hex="#5e6c54" />
+          <ModuleRow module="Module 1 · Interventions" accent="primary" hex="#b23f16" />
+          <ModuleRow module="Module 2 · Audit" accent="accent-orange (sur noir)" hex="#d97757" />
+          <ModuleRow module="Module 3 · Implémentation" accent="accent-purple" hex="#b23f16" />
+          <ModuleRow module="Cas concrets" accent="sage" hex="#5e7050" />
           <ModuleRow module="Blog / transversales" accent="—" hex="neutral" />
           <ModuleRow module="Légal" accent="—" hex="neutral" />
         </ul>
         <p className="text-fg-soft mt-4 max-w-2xl text-sm">
-          Le CTA primaire reste <strong className="text-fg">toujours Editorial Blue</strong>. Les
+          Le CTA primaire reste <strong className="text-fg">toujours terracotta</strong>. Les
           accents modules ne servent qu&apos;aux badges, eyebrow dot, illustrations.
         </p>
       </Section>
@@ -226,15 +243,13 @@ export default function DesignPage() {
       <Section eyebrow="Anti-patterns · linter CI" tone="paper">
         <ul className="text-fg-soft max-w-2xl space-y-3 text-base leading-relaxed">
           <li>
-            ✗ <code className="font-mono text-sm">#000000</code>,{" "}
-            <code className="font-mono text-sm">#0a0a0a</code>,{" "}
-            <code className="font-mono text-sm">#080808</code> — pas de noir pur. Utiliser{" "}
+            ✗ noir pur — pas de noir sorti de la palette. Utiliser{" "}
             <code className="font-mono text-sm">--color-fg</code> ou{" "}
             <code className="font-mono text-sm">--color-mocha</code>.
           </li>
           <li>
-            ✗ <code className="font-mono text-sm">#ffffff</code> en bg principal. Utiliser{" "}
-            <code className="font-mono text-sm">--color-bg</code> (ivoire `#faf8f3`).
+            ✗ blanc pur en bg principal. Utiliser{" "}
+            <code className="font-mono text-sm">--color-bg</code> (ivoire `#faf9f5`).
           </li>
           <li>
             ✗ <code className="font-mono text-sm">font-family: Inter, Geist, Newsreader</code> —
