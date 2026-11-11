@@ -15,7 +15,6 @@ import { ArrowRight } from "lucide-react";
 import { Link } from "@/i18n/navigation";
 import { trackFunnel } from "@/lib/tracking";
 import { buttonVariants } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
 
 interface StickyMobileCtaProps {
   /** Cible du CTA principal (path interne i18n). */
@@ -59,11 +58,8 @@ export function StickyMobileCta({
   masquerQuandVisible,
 }: StickyMobileCtaProps) {
   const terracotta = couleur === "terracotta";
-  // Le bouton du tunnel garde l'anneau de focus d'origine (terracotta clair), jamais « primary ».
-  const bouton = cn(
-    buttonVariants({ variant: terracotta ? "terracotta" : "primary" }),
-    terracotta && "focus-visible:ring-terracotta-on-mocha",
-  );
+  // Anneau de focus propre à la variante (jeton terracotta pour le tunnel), sans fusion de classes côté client.
+  const bouton = buttonVariants({ variant: terracotta ? "terracotta" : "primary" });
   const [visible, setVisible] = useState(false);
   const landingSuivi = suivi?.landing;
   const auClic = landingSuivi
@@ -140,7 +136,7 @@ export function StickyMobileCta({
             onClick={auClic}
             {...(track ? { "data-cta": track } : {})}
             {...(visible ? {} : { tabIndex: -1 })}
-            className={cn(bouton, "w-full whitespace-nowrap")}
+            className={`${bouton} w-full whitespace-nowrap`}
           >
             {label}
             <ArrowRight aria-hidden="true" className="h-4 w-4" />
@@ -164,11 +160,9 @@ export function StickyMobileCta({
           onClick={auClic}
           {...(track ? { "data-cta": `${track}-desktop` } : {})}
           {...(visible ? {} : { tabIndex: -1 })}
-          className={cn(
-            bouton,
-            "whitespace-nowrap shadow-[0_12px_28px_-8px_rgba(0,0,0,0.35)]",
-            visible ? "pointer-events-auto" : "pointer-events-none",
-          )}
+          className={`${bouton} whitespace-nowrap shadow-[0_12px_28px_-8px_rgba(0,0,0,0.35)] ${
+            visible ? "pointer-events-auto" : "pointer-events-none"
+          }`}
         >
           {label}
           <ArrowRight aria-hidden="true" className="h-4 w-4" />

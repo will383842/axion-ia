@@ -9,18 +9,19 @@ import { cn } from "@/lib/utils";
 // aucun appelant, mais « pill » et « rounded » donnent le même rayon.
 // cta-lift : survol (translate-y -2px + ombre).
 const buttonVariants = cva(
-  "inline-flex h-[52px] items-center justify-center gap-2 rounded-lg font-semibold tracking-tight transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50",
+  "inline-flex items-center justify-center gap-2 rounded-lg font-semibold tracking-tight transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50",
   {
     variants: {
       variant: {
-        primary: "bg-primary text-primary-fg hover:bg-primary-hover cta-lift",
-        secondary: "bg-fg text-bg hover:bg-mocha cta-lift",
-        ghost: "text-fg hover:bg-sand cta-lift",
+        primary: "h-[52px] focus-visible:ring-primary bg-primary text-primary-fg hover:bg-primary-hover cta-lift",
+        secondary: "h-[52px] focus-visible:ring-primary bg-fg text-bg hover:bg-mocha cta-lift",
+        ghost: "h-[52px] focus-visible:ring-primary text-fg hover:bg-sand cta-lift",
         outline:
-          "border border-border-strong text-fg bg-paper/60 hover:bg-paper hover:border-fg cta-lift backdrop-blur",
-        terracotta: "bg-terracotta text-mocha-fg hover:bg-terracotta-deep cta-lift",
-        link: "text-primary underline-offset-4 hover:underline",
-        destructive: "bg-error text-primary-fg hover:opacity-90 cta-lift",
+          "h-[52px] focus-visible:ring-primary border border-border-strong text-fg bg-paper/60 hover:bg-paper hover:border-fg cta-lift backdrop-blur",
+        terracotta:
+          "h-[52px] focus-visible:ring-terracotta bg-terracotta text-paper hover:bg-terracotta-deep cta-lift",
+        link: "focus-visible:ring-primary text-primary underline-offset-4 hover:underline",
+        destructive: "h-[52px] focus-visible:ring-primary bg-error text-primary-fg hover:opacity-90 cta-lift",
       },
       size: {
         sm: "px-4 text-sm",
@@ -34,6 +35,8 @@ const buttonVariants = cva(
         pill: "",
       },
     },
+    // Le lien texte n'est pas une boîte de 52 px : on retire hauteur et padding horizontal.
+    compoundVariants: [{ variant: "link", class: "h-auto px-0" }],
     defaultVariants: { variant: "primary", size: "md", shape: "rounded" },
   },
 );

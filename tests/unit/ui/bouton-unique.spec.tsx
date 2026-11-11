@@ -9,9 +9,8 @@ import { Button, buttonVariants } from "@/components/ui/button";
 const TAILLES = ["sm", "md", "lg", "xl", "icon"] as const;
 const FORMES = ["rounded", "pill"] as const;
 
-function hauteurMin(classes: string): number | null {
-  const m = classes.match(/(?:^|\s)min-h-\[(\d+)px\]/);
-  return m ? Number(m[1]) : null;
+function hauteursClasses(classes: string): string[] {
+  return classes.split(/\s+/).filter((c) => /^(min-)?h-/.test(c));
 }
 
 describe("Button — bouton unique", () => {
@@ -27,11 +26,21 @@ describe("Button — bouton unique", () => {
     }
   });
 
-  it("la cible tactile est d'au moins 48 px", () => {
+  it("la cible tactile est d'au moins 48 px (hauteur réelle lue dans la classe)", () => {
     for (const size of TAILLES) {
-      const c = buttonVariants({ size });
-      const h = hauteurMin(c) ?? 52;
-      expect(h).toBeGreaterThanOrEqual(48);
+      for (const shape of FORMES) {
+        const c = buttonVariants({ size, shape });
+        const m = c.match(/(?:^|\s)h-\[(\d+)px\]/);
+        expect(m, `${size}/${shape} : h-[Npx] absent`).not.toBeNull();
+        expect(Number(m![1]), `${size}/${shape}`).toBeGreaterThanOrEqual(48);
+        const hs = hauteursClasses(c);
+        const apres = hs.slice(hs.indexOf(`h-[${m![1]}px]`) + 1);
+        const plusPetit = apres.filter((h) => {
+          const n = h.match(/^(?:min-)?h-\[(\d+)px\]$/);
+          return !n || Number(n[1]) < 48;
+        });
+        expect(plusPetit, `${size}/${shape} : h-* plus petit après`).toEqual([]);
+      }
     }
     expect(buttonVariants({ size: "icon" })).toContain("w-[52px]");
   });
@@ -41,6 +50,11 @@ describe("Button — bouton unique", () => {
     expect(c).toContain("focus-visible:ring-2");
     expect(c).toContain("focus-visible:ring-offset-2");
     expect(c).toContain("focus-visible:ring-primary");
+    // L'anneau du bouton terracotta lui est propre (#B23F16), sans ring-primary.
+    const t = buttonVariants({ variant: "terracotta" });
+    expect(t).toContain("focus-visible:ring-terracotta");
+    expect(t).not.toContain("ring-primary");
+    expect(t).toContain("text-paper");
     expect(c).not.toContain("focus-visible:ring-0");
   });
 

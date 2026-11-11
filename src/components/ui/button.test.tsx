@@ -81,7 +81,35 @@ describe("<Button>", () => {
     for (const lien of Array.from(container.querySelectorAll("a"))) {
       for (const c of base) expect(lien.className).toContain(c);
     }
-    // Barre fixe : hors flux, donc aucun décalage (CLS) à l'apparition.
-    expect(container.innerHTML).toContain("fixed");
+    // Barre fixe : le conteneur du lien est hors flux et masqué par transform seul.
+    const barre = container.querySelector("a")!.closest("div[aria-hidden]") as HTMLElement;
+    expect(barre.className).toMatch(/(^|\s)fixed(\s|$)/);
+    expect(barre.className).toContain("translate-y-full");
+    expect(barre.className).toContain("transition-transform");
+    const toutes = [barre, ...Array.from(barre.querySelectorAll("div"))]
+      .map((d) => d.className)
+      .join(" ");
+    expect(toutes).not.toMatch(/(^|\s)(min-)?h-/);
+    expect(toutes).not.toMatch(/transition-(all|\[)/);
+  });
+
+  it("la variante link n'est pas une boîte de 52 px", () => {
+    render(<Button variant="link">Lien</Button>);
+    const c = screen.getByRole("button").className.split(/\s+/);
+    expect(c).toContain("h-auto");
+    expect(c).toContain("px-0");
+    expect(c).not.toContain("h-[52px]");
+    expect(c).not.toContain("px-5");
+  });
+
+  it("la barre mobile n'importe pas cn : classes concaténées, anneau terracotta, texte blanc", () => {
+    const { container } = render(
+      <StickyMobileCta href="#x" label="Réserver" couleur="terracotta" />,
+    );
+    for (const lien of Array.from(container.querySelectorAll("a"))) {
+      expect(lien.className).toContain("focus-visible:ring-terracotta");
+      expect(lien.className).toContain("text-paper");
+      expect(lien.className).not.toContain("ring-terracotta-on-mocha");
+    }
   });
 });
