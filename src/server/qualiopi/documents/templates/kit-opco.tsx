@@ -12,15 +12,15 @@ import React from "react";
 import { Document, View, Text, StyleSheet } from "@react-pdf/renderer";
 import {
   QualiopiPage,
-  pdfStyles,
   DocSection,
   FieldRow,
   DataTable,
   formatEurosFromCents,
-} from "@/server/qualiopi/documents/base-layout";
+} from "@/server/qualiopi/documents/cadre-pieces";
+import { pdfStylesPieces } from "@/server/qualiopi/documents/cadre-pieces/styles-blocs";
 import type { OrganismeIdentite } from "@/server/qualiopi/documents/organisme";
 import { formatHeuresCentiemes } from "@/server/qualiopi/legal/legal-mentions";
-import { brandColor } from "@/server/qualiopi/brand/brand-tokens";
+import { couleurPiece } from "@/server/qualiopi/brand/jetons-pieces";
 import type { EncartDepot } from "@/server/qualiopi/financements/dossier-pret-a-deposer";
 
 // ============================================================
@@ -32,7 +32,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     paddingVertical: 4,
     borderBottomWidth: 1,
-    borderBottomColor: brandColor("sand"),
+    borderBottomColor: couleurPiece("sand"),
     alignItems: "center",
   },
   pieceCheck: {
@@ -43,16 +43,16 @@ const styles = StyleSheet.create({
     borderWidth: 0.8,
     borderStyle: "solid",
     fontSize: 10,
-    borderColor: brandColor("sage"),
-    color: brandColor("sage"),
+    borderColor: couleurPiece("sage"),
+    color: couleurPiece("sage"),
   },
   /** Conteneur des deux lignes. C'est LUI qui prend la largeur restante. */
   /** Case COCHÉE : remplie, en géométrie (aucun glyphe, cf. correctif 2026-07-26). */
-  pieceCheckCochee: { backgroundColor: brandColor("sage") },
+  pieceCheckCochee: { backgroundColor: couleurPiece("sage") },
   piecesManquantes: {
     marginTop: 6,
     fontSize: 9,
-    color: brandColor("terracotta"),
+    color: couleurPiece("terracotta"),
   },
   pieceLabelBlock: { flex: 1 },
   pieceLabel: {
@@ -68,17 +68,17 @@ const styles = StyleSheet.create({
     // rend qu'UNE ligne par pièce. `kit-france-travail.tsx`, qui a la même
     // structure à deux lignes que ce fichier, met bien le `flex` sur le
     // conteneur — c'est le modèle repris ici.
-    color: brandColor("fg"),
+    color: couleurPiece("fg"),
   },
   pieceNote: {
     fontSize: 8,
-    color: brandColor("fg-muted"),
+    color: couleurPiece("fg-muted"),
     fontStyle: "italic",
   },
   ventilTotalRow: {
     flexDirection: "row",
     paddingVertical: 5,
-    backgroundColor: brandColor("sand"),
+    backgroundColor: couleurPiece("sand"),
     paddingHorizontal: 4,
     marginTop: 4,
     borderRadius: 2,
@@ -86,13 +86,13 @@ const styles = StyleSheet.create({
   ventilTotalLabel: {
     fontSize: 10,
     fontWeight: "bold",
-    color: brandColor("mocha"),
+    color: couleurPiece("mocha"),
     flex: 2,
   },
   ventilTotalValue: {
     fontSize: 10,
     fontWeight: "bold",
-    color: brandColor("terracotta"),
+    color: couleurPiece("terracotta"),
     fontFamily: "Inconsolata",
     flex: 1.5,
     textAlign: "right",
@@ -310,7 +310,9 @@ export function KitOpcoPdf({ data }: { data: KitOpcoData }): React.ReactElement 
               {formatEurosFromCents(data.totalPrisEnChargeCents)}
             </Text>
           </View>
-          <View style={[styles.ventilTotalRow, { backgroundColor: brandColor("terracotta-soft") }]}>
+          <View
+            style={[styles.ventilTotalRow, { backgroundColor: couleurPiece("terracotta-soft") }]}
+          >
             <Text style={styles.ventilTotalLabel}>Total reste à charge</Text>
             <Text style={styles.ventilTotalValue}>
               {formatEurosFromCents(data.totalResteAChargeCents)}
@@ -319,8 +321,8 @@ export function KitOpcoPdf({ data }: { data: KitOpcoData }): React.ReactElement 
         </DocSection>
 
         {/* Mentions légales */}
-        <View style={pdfStyles.section}>
-          <Text style={pdfStyles.legalNote}>{qualiopiLigne(identite)}</Text>
+        <View style={pdfStylesPieces.section}>
+          <Text style={pdfStylesPieces.legalNote}>{qualiopiLigne(identite)}</Text>
           {/*
             🔴 F25 — la mention TVA vient du régime CONFIGURÉ, jamais d'une
             constante. L'exonération 261-4-4° était imprimée en dur alors que
@@ -329,7 +331,7 @@ export function KitOpcoPdf({ data }: { data: KitOpcoData }): React.ReactElement 
             `null` en régime assujetti → aucun bloc, ce qui est correct.
           */}
           {identite.mentionTvaRegime ? (
-            <Text style={pdfStyles.legalNote}>{identite.mentionTvaRegime}</Text>
+            <Text style={pdfStylesPieces.legalNote}>{identite.mentionTvaRegime}</Text>
           ) : null}
         </View>
       </QualiopiPage>

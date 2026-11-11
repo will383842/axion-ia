@@ -61,6 +61,22 @@ describe("cadre-pieces séparé des pièces signables", () => {
     expect(types.sort()).toEqual(["OrganismeIdentite"]);
   });
 
+  /** Liste fermée (sentinelle) des pièces basculées par la fiche G4. */
+  const KITS_G4 = ["kit-opco", "kit-cpf", "kit-france-travail"];
+  const DOSSIER_TEMPLATES = join(RACINE, "server/qualiopi/documents/templates");
+
+  it("G4 : les 3 kits importent le cadre des pièces et plus celui de base-layout", () => {
+    expect(KITS_G4).toHaveLength(3);
+    for (const kit of KITS_G4) {
+      const src = sansCommentaires(readFileSync(join(DOSSIER_TEMPLATES, `${kit}.tsx`), "utf8"));
+      expect(src, kit).toMatch(/from\s*["']@\/server\/qualiopi\/documents\/cadre-pieces["']/);
+      expect(src, kit).not.toMatch(/documents\/base-layout/);
+      expect(src, kit).not.toMatch(/\bbrandColor\b/);
+      expect(src, kit).not.toMatch(/\bpdfStyles\b/);
+      expect(src, kit).not.toMatch(/\bSignatureZone\b/);
+    }
+  });
+
   it("le cadre des pièces n'est jamais importé par un fichier de devis", () => {
     const devis = fichiers(RACINE).filter(
       (f) =>

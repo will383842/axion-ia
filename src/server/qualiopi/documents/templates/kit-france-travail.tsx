@@ -13,15 +13,15 @@ import React from "react";
 import { Document, View, Text, StyleSheet } from "@react-pdf/renderer";
 import {
   QualiopiPage,
-  pdfStyles,
   DocSection,
   FieldRow,
   DataTable,
   LegalCallout,
   formatEurosFromCents,
-} from "@/server/qualiopi/documents/base-layout";
+} from "@/server/qualiopi/documents/cadre-pieces";
+import { pdfStylesPieces } from "@/server/qualiopi/documents/cadre-pieces/styles-blocs";
 import type { OrganismeIdentite } from "@/server/qualiopi/documents/organisme";
-import { brandColor } from "@/server/qualiopi/brand/brand-tokens";
+import { couleurPiece } from "@/server/qualiopi/brand/jetons-pieces";
 
 // ============================================================
 // Styles spécifiques
@@ -32,7 +32,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     paddingVertical: 4,
     borderBottomWidth: 1,
-    borderBottomColor: brandColor("sand"),
+    borderBottomColor: couleurPiece("sand"),
     alignItems: "flex-start",
   },
   pieceCheck: {
@@ -43,17 +43,17 @@ const styles = StyleSheet.create({
     borderWidth: 0.8,
     borderStyle: "solid",
     fontSize: 10,
-    color: brandColor("sage"),
+    color: couleurPiece("sage"),
     fontWeight: "bold",
   },
   pieceLabelBlock: { flex: 1 },
   pieceLabel: {
     fontSize: 10,
-    color: brandColor("fg"),
+    color: couleurPiece("fg"),
   },
   pieceCondition: {
     fontSize: 8,
-    color: brandColor("fg-muted"),
+    color: couleurPiece("fg-muted"),
     fontStyle: "italic",
   },
   racRow: {
@@ -63,13 +63,13 @@ const styles = StyleSheet.create({
   racLabel: {
     fontSize: 10,
     fontWeight: "bold",
-    color: brandColor("mocha"),
+    color: couleurPiece("mocha"),
     flex: 1,
   },
   racValue: {
     fontSize: 12,
     fontWeight: "bold",
-    color: brandColor("terracotta"),
+    color: couleurPiece("terracotta"),
     fontFamily: "Inconsolata",
   },
 });
@@ -281,7 +281,7 @@ export function KitFranceTravailPdf({ data }: { data: KitFranceTravailData }): R
         </DocSection>
 
         {/* Mentions légales */}
-        <View style={pdfStyles.section}>
+        <View style={pdfStylesPieces.section}>
           {/*
             🔴 F25 — la mention TVA vient du régime CONFIGURÉ, jamais d'une
             constante. L'exonération 261-4-4° était imprimée en dur alors que
@@ -290,9 +290,9 @@ export function KitFranceTravailPdf({ data }: { data: KitFranceTravailData }): R
             `null` en régime assujetti → aucun bloc, ce qui est correct.
           */}
           {identite.mentionTvaRegime ? (
-            <Text style={pdfStyles.legalNote}>{identite.mentionTvaRegime}</Text>
+            <Text style={pdfStylesPieces.legalNote}>{identite.mentionTvaRegime}</Text>
           ) : null}
-          <Text style={pdfStyles.legalNote}>{qualiopiLigne(identite)}</Text>
+          <Text style={pdfStylesPieces.legalNote}>{qualiopiLigne(identite)}</Text>
         </View>
       </QualiopiPage>
     </Document>
