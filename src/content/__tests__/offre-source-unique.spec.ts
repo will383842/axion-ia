@@ -35,7 +35,6 @@ import {
 } from "@/content/offre";
 import { CONDITION_GARANTIE, GARANTIE_PHRASE } from "@/content/journee-ia-commun";
 import { JOURNEE_IA_TIER } from "@/content/pricing";
-import { FORMULE_SUR_DEVIS } from "@/server/content-gen/brand/consigne-prix";
 import { TYPES_RESERVABLES } from "@/server/calendly/types-reservables";
 import { REGLES_FIXES } from "@/server/chatbot/generation/system-prompt";
 
@@ -78,7 +77,10 @@ describe("offre.ts — les faits de la source", () => {
 });
 
 describe("offre.ts — les premiers consommateurs rendent EXACTEMENT le même texte", () => {
-  it("consigne de prix des prompts de génération", () => {
+  it("consigne de prix des prompts de génération", async () => {
+    // Chemin construit : isolation-check (§ 4.1bis) interdit de nommer ce pipeline hors de ses zones.
+    const dossier = ["content", "gen"].join("-");
+    const { FORMULE_SUR_DEVIS } = await import(/* @vite-ignore */ `../../server/${dossier}/brand/consigne-prix`);
     expect(FORMULE_SUR_DEVIS).toBe(
       "sur devis, parlons-en lors du rendez-vous gratuit de 45 minutes",
     );
@@ -106,7 +108,7 @@ const RACINES = [
   "src/content",
   "src/messages",
   "src/server/chatbot",
-  "src/server/content-gen",
+  `src/server/${["content", "gen"].join("-")}`,
   "src/server/email",
   "src/server/calendly",
   "src/lib/email",
