@@ -804,10 +804,6 @@ export const GRENOBLE_COPY: VilleCopy = {
             a: "No. Coaching adapts to your level — from beginner to advanced practitioner wishing to go further. The initial framing brief allows adjusting the programme before the session.",
           },
           {
-            q: "Are travel costs included?",
-            a: "No. These costs are communicated on a prior quote before confirmation.",
-          },
-          {
             q: "Can we organise several individual coachings for an R&D team?",
             a: "Yes. Some Grenoble mid-caps and spin-offs organise several individual sessions for their key engineers or researchers rather than a group session. Volume discount possible — to be specified at framing.",
           },

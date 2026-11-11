@@ -814,10 +814,6 @@ export const CLERMONT_FERRAND_COPY: VilleCopy = {
             a: "No. Coaching adapts to your level, from absolute beginner to advanced practitioner wishing to go further. The initial framing brief allows adjusting the programme before the session.",
           },
           {
-            q: "Are travel costs included?",
-            a: "No. These costs are communicated on a prior quote before confirmation.",
-          },
-          {
             q: "Can I organise several individual sessions for different staff members?",
             a: "Yes. Some Clermont companies organise several successive individual coachings for their key managers or experts rather than a group session. Volume discount possible — to be specified at framing.",
           },

@@ -200,7 +200,7 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
             "Beaucoup de missions se tiennent très bien à distance, et c'est souvent plus rentable pour une petite structure. Le format se décide au cadrage, pas d'après la géographie.",
         },
         {
-          title: "Les frais de déplacement ne sont pas inclus",
+          title: "Les tarifs sont les mêmes partout",
           detail:
             "Les tarifs ne varient pas d'une région à l'autre.",
         },
@@ -220,11 +220,10 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
       question:
         "Intervenez-vous dans les métropoles régionales (Lyon, Marseille, Toulouse, Bordeaux, Lille, Nantes…) ?",
       answer:
-        "Oui, dans toutes. Nos intervenants se déplacent à Lyon, Marseille, Toulouse, Bordeaux, Lille, Nantes, Strasbourg, Montpellier, Rennes, Nice, Reims, Saint-Étienne, Le Havre, Dijon, Angers — et plus généralement dans toute ville française, métropole ou non.\n\nAucune ville n'est traitée comme une périphérie : les conditions tarifaires sont identiques partout, sans surcoût géographique. Ce qui change d'un déplacement à l'autre, ce sont les frais de trajet, facturés en sus et détaillés sur une ligne distincte du devis. Vous connaissez donc le montant total avant de vous engager.\n\nSur place, l'intervention prend la forme qui sert votre besoin : formation collective en intra, de 4 h à 2 journées, pour un groupe de 2 à 15 participants ; journée de coaching 1-to-1 de 7 à 8 heures sur le poste réel d'une seule personne ; ou phase de terrain d'un audit IA. Le même expert senior mène le cadrage et la livraison. Et si le déplacement n'apporte rien à votre cas, la mission se tient à distance.",
+        "Oui, dans toutes. Nos intervenants se déplacent à Lyon, Marseille, Toulouse, Bordeaux, Lille, Nantes, Strasbourg, Montpellier, Rennes, Nice, Reims, Saint-Étienne, Le Havre, Dijon, Angers — et plus généralement dans toute ville française, métropole ou non.\n\nAucune ville n'est traitée comme une périphérie : les conditions tarifaires sont identiques partout, sans surcoût géographique.\n\nSur place, l'intervention prend la forme qui sert votre besoin : formation collective en intra, de 4 h à 2 journées, pour un groupe de 2 à 15 participants ; journée de coaching 1-to-1 de 7 à 8 heures sur le poste réel d'une seule personne ; ou phase de terrain d'un audit IA. Le même expert senior mène le cadrage et la livraison. Et si le déplacement n'apporte rien à votre cas, la mission se tient à distance.",
       keyPoints: [
         "Toutes les capitales régionales, et plus largement toute ville française",
         "Mêmes conditions tarifaires partout, sans surcoût géographique",
-        "Frais de déplacement en sus, sur une ligne distincte du devis",
         "Formation collective, coaching 1-to-1 ou phase terrain d'audit",
         "Le format à distance reste possible quand le déplacement n'apporte rien",
       ],
@@ -275,7 +274,6 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
         "Artisans, commerçants, TPE et PME, partout en France",
         "Zones rurales et petites villes incluses, sans condition de taille",
         "Mêmes conditions tarifaires quelle que soit la commune",
-        "Le distanciel évite les frais de déplacement, à qualité égale",
         "Sur site quand le terrain l'exige : atelier, production, équipe entière",
       ],
       facts: [
