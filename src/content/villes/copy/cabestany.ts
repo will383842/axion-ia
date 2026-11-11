@@ -65,7 +65,7 @@ export const CABESTANY_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Cabestany ?",
-      a: "Nos consultants interviennent depuis Perpignan (7 min). Missions sur site dans votre commerce, bureau ou cabinet. Visio possible. Coûts de déplacement séparés du forfait, tarifs transparents.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Missions sur site dans votre commerce, bureau ou cabinet. Visio possible. Coûts de déplacement séparés du forfait, tarifs transparents.",
     },
   ],
 };

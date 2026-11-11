@@ -49,7 +49,7 @@ export const BRETIGNOLLES_SUR_MER_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Bretignolles-sur-Mer ?",
-      a: "Oui, Axion-IA intervient à Bretignolles-sur-Mer et sur toute la côte de Lumière vendéenne (Saint-Gilles-Croix-de-Vie, Brem-sur-Mer, Saint-Hilaire-de-Riez). Nos consultants se déplacent depuis Nantes (1h10) ou La Roche-sur-Yon (40 min).",
+      a: "Oui, Axion-IA intervient à Bretignolles-sur-Mer et sur toute la côte de Lumière vendéenne (Saint-Gilles-Croix-de-Vie, Brem-sur-Mer, Saint-Hilaire-de-Riez). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Tarifs audit IA à Bretignolles-sur-Mer  : quel budget prévoir ?",

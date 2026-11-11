@@ -49,7 +49,7 @@ export const BLAYE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Blaye et dans le Blayais ?",
-      a: "Oui, Axion-IA intervient à Blaye et dans tout le Blayais (Bourg, Saint-André-de-Cubzac, Plassac). Nos consultants se déplacent depuis Bordeaux (45 min) ou Paris (TGV 2h + 45 min).",
+      a: "Oui, Axion-IA intervient à Blaye et dans tout le Blayais (Bourg, Saint-André-de-Cubzac, Plassac). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Combien coûte un audit IA à Blaye  ?",

@@ -49,7 +49,7 @@ export const AIMARGUES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Aimargues et Petite Camargue ?",
-      a: "Oui, Axion-IA intervient à Aimargues et dans toute la Petite Camargue (Vauvert, Saint-Gilles, Beauvoisin, Le Cailar). Nos consultants viennent de Nîmes (25 min) ou Montpellier (30 min).",
+      a: "Oui, Axion-IA intervient à Aimargues et dans toute la Petite Camargue (Vauvert, Saint-Gilles, Beauvoisin, Le Cailar). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les viticulteurs d'Aimargues ?",

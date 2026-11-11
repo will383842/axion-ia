@@ -39,6 +39,11 @@ import {
   evaluerBarrieresRelecture,
   observerTutoiement,
 } from "@/server/content-gen/quality/barrieres-publication";
+import { controleFidelite } from "@/server/content-gen/fact-check/controle-fidelite";
+import {
+  barriereDepuisConstats,
+  modeControleFidelite,
+} from "@/server/content-gen/fact-check/fidelite-branchement";
 import { financementPublicCitable } from "@/server/qualiopi/config/financing";
 import { readContentGenConfig } from "@/server/actions/content-gen/_settings";
 // Fix 2026-08-15 (audit e2e, C8) — lecture du kill switch en fail-SAFE : une
@@ -927,6 +932,46 @@ async function processJob(job: Job<ContentGenJobPayload>): Promise<void> {
       corpus,
       ancreVille: Boolean(dbJob.anchorVilleSlug),
     });
+
+    // Vague 3 (11/11/2026) — contrôle de FIDÉLITÉ aux fiches (`CONTENT_FIDELITY_CHECK`, ÉTEINT
+    // par défaut ; « dry-run » = journal seul). Actif : envoie en RELECTURE, jamais de
+    // suppression ni de dépublication. Fail-open. Cf. docs/knowledge/CONTROLE-FIDELITE.md.
+    const modeFidelite = modeControleFidelite();
+    if (
+      modeFidelite !== "eteint" &&
+      Array.isArray(output.kbEntryIds) &&
+      output.kbEntryIds.length > 0
+    ) {
+      try {
+        const fichesKb = await prisma.knowledgeTranslation.findMany({
+          where: { entryId: { in: [...output.kbEntryIds] }, locale: "fr" },
+          select: { entryId: true, title: true, body: true, bodyText: true },
+        });
+        const barriereFidelite = barriereDepuisConstats(
+          controleFidelite(
+            output.bodyHtml ?? "",
+            fichesKb.map((t) => ({ id: t.entryId, titre: t.title, texte: t.bodyText || t.body })),
+          ),
+        );
+        await logStep(
+          contentGenJobId,
+          "validation",
+          barriereFidelite
+            ? `Contrôle de fidélité (${modeFidelite === "actif" ? "actif" : "essai à blanc, sans effet"}) : ${barriereFidelite.libelle}`
+            : `Contrôle de fidélité (${modeFidelite}) : aucune affirmation à relire (${fichesKb.length} fiches)`,
+          { mode: modeFidelite, fiches: fichesKb.length, ...(barriereFidelite?.detail ?? {}) },
+        );
+        if (barriereFidelite && modeFidelite === "actif") barrieresRelecture.push(barriereFidelite);
+      } catch (err) {
+        await logStep(
+          contentGenJobId,
+          "validation",
+          `Contrôle de fidélité ignoré (erreur de lecture des fiches) : ${err instanceof Error ? err.message : String(err)}`,
+          { mode: modeFidelite, erreur: true },
+        );
+      }
+    }
+
     const barrieresFail = barrieresRelecture.length > 0;
     if (barrieresFail) {
       await logStep(
