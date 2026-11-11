@@ -49,7 +49,7 @@ export const LODEVE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Lodève ?",
-      a: "Oui, Axion-IA intervient à Lodève et dans tout le Lodévois-Larzac (Clermont-l'Hérault, Le Caylar, Soubès, lac du Salagou). Nos consultants viennent depuis Montpellier en 50 min par A75.",
+      a: "Oui, Axion-IA intervient à Lodève et dans tout le Lodévois-Larzac (Clermont-l'Hérault, Le Caylar, Soubès, lac du Salagou). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Proposez-vous des audits IA pour les services publics ?",

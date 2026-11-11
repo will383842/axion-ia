@@ -49,7 +49,7 @@ export const LISSES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Lisses et Grand Paris Sud ?",
-      a: "Oui, Axion-IA intervient à Lisses et toute la communauté d'agglomération Grand Paris Sud (Évry-Courcouronnes, Corbeil-Essonnes, Ris-Orangis, Bondoufle, Courcouronnes). Nos consultants se déplacent depuis Paris (40 min) ou Évry (10 min).",
+      a: "Oui, Axion-IA intervient à Lisses et toute la communauté d'agglomération Grand Paris Sud (Évry-Courcouronnes, Corbeil-Essonnes, Ris-Orangis, Bondoufle, Courcouronnes). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quel est le tarif d'un audit IA à Lisses  ?",
@@ -65,7 +65,7 @@ export const LISSES_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Paris ou Évry ?",
-      a: "Nos consultants viennent de Paris (40 min A6/N104) ou Évry-Courcouronnes (10 min). Accès direct aux ZAE de Lisses.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Accès direct aux ZAE de Lisses.",
     },
   ],
 };

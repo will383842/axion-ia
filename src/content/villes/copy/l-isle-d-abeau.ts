@@ -65,7 +65,7 @@ export const L_ISLE_D_ABEAU_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Lyon ou Paris ?",
-      a: "Nos consultants viennent de Lyon (40 min A43) ou Paris (TGV Lyon 2h + voiture). Pour les multi-jours, hébergement local possible (hôtels CAPI).",
+      a: "Nous intervenons partout en France, sur place ou à distance. Pour les multi-jours, hébergement local possible (hôtels CAPI).",
     },
   ],
 };

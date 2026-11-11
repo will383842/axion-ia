@@ -9,18 +9,18 @@ export const LINGOLSHEIM_COPY: VilleCopy = {
   pitchEn:
     "Lingolsheim (67), deuxième commune de l'Eurométropole de Strasbourg, est une ville résidentielle et tertiaire du Bas-Rhin, directement reliée au centre strasbourgeois par le tram. Son tissu économique mêle TPE de services et commerces, artisans, professions libérales, indépendants et PME prestataires ou sous-traitantes des grands employeurs de l'agglomération. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne en priorité ces TPE puis les PME lingolsheimoises, l'ETI restant marginale.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Lingolsheim (67). Nous accompagnons en priorité les TPE — commerces, artisans, professions libérales, indépendants, prestataires de services — puis les PME tertiaires et de santé de l'Eurométropole, et plus marginalement les ETI. Nos consultants se déplacent sur site depuis Strasbourg pour auditer vos processus, former vos équipes et déployer des automatisations concrètes (devis, relances, support, traitement documentaire). Tarifs publics, frais de déplacement transparents.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Lingolsheim (67). Nous accompagnons en priorité les TPE — commerces, artisans, professions libérales, indépendants, prestataires de services — puis les PME tertiaires et de santé de l'Eurométropole, et plus marginalement les ETI. Nous intervenons partout en France, sur place ou à distance. Tarifs publics, frais de déplacement transparents.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Lingolsheim (67). Nous accompagnons en priorité les TPE — commerces, artisans, professions libérales, indépendants, prestataires de services — puis les PME tertiaires et de santé de l'Eurométropole, et plus marginalement les ETI. Nos consultants se déplacent sur site depuis Strasbourg pour auditer vos processus, former vos équipes et déployer des automatisations concrètes (devis, relances, support, traitement documentaire). Tarifs publics, frais de déplacement transparents.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Lingolsheim (67). Nous accompagnons en priorité les TPE — commerces, artisans, professions libérales, indépendants, prestataires de services — puis les PME tertiaires et de santé de l'Eurométropole, et plus marginalement les ETI. Nous intervenons partout en France, sur place ou à distance. Tarifs publics, frais de déplacement transparents.",
   seoHook: "tertiaire & services Eurométropole",
   ecosystemFr:
     "Lingolsheim profite de son intégration à l'Eurométropole de Strasbourg, l'un des plus grands bassins d'emploi du Grand Est, et de sa desserte directe par le tram. Son économie locale repose sur les TPE — commerces, artisans, professions libérales, services de proximité — et sur des PME tertiaires, de santé et prestataires gravitant autour des grands employeurs strasbourgeois. Ce profil résidentiel et tertiaire produit un volume élevé de tâches répétitives : devis, prise de rendez-vous, relances, support, gestion documentaire. Axion-IA y privilégie les TPE et PME, pour qui l'automatisation de ces flux dégage un temps directement réinvesti dans le métier.",
   ecosystemEn:
     "Lingolsheim profite de son intégration à l'Eurométropole de Strasbourg, l'un des plus grands bassins d'emploi du Grand Est, et de sa desserte directe par le tram. Son économie locale repose sur les TPE — commerces, artisans, professions libérales, services de proximité — et sur des PME tertiaires, de santé et prestataires gravitant autour des grands employeurs strasbourgeois. Ce profil résidentiel et tertiaire produit un volume élevé de tâches répétitives : devis, prise de rendez-vous, relances, support, gestion documentaire. Axion-IA y privilégie les TPE et PME, pour qui l'automatisation de ces flux dégage un temps directement réinvesti dans le métier.",
   distancesFr:
-    "Tram B relie Lingolsheim au centre de Strasbourg en ~20 min. Gare de Strasbourg (TGV) à 7 km, aéroport de Strasbourg-Entzheim à 5 km. Illkirch-Graffenstaden à 6 km, frontière allemande à ~10 km. Nos consultants rejoignent Lingolsheim depuis Strasbourg.",
+    "Tram B relie Lingolsheim au centre de Strasbourg en ~20 min. Gare de Strasbourg (TGV) à 7 km, aéroport de Strasbourg-Entzheim à 5 km. Illkirch-Graffenstaden à 6 km, frontière allemande à ~10 km. Nous intervenons partout en France, sur place ou à distance.",
   distancesEn:
-    "Tram B relie Lingolsheim au centre de Strasbourg en ~20 min. Gare de Strasbourg (TGV) à 7 km, aéroport de Strasbourg-Entzheim à 5 km. Illkirch-Graffenstaden à 6 km, frontière allemande à ~10 km. Nos consultants rejoignent Lingolsheim depuis Strasbourg.",
+    "Tram B relie Lingolsheim au centre de Strasbourg en ~20 min. Gare de Strasbourg (TGV) à 7 km, aéroport de Strasbourg-Entzheim à 5 km. Illkirch-Graffenstaden à 6 km, frontière allemande à ~10 km. Nous intervenons partout en France, sur place ou à distance.",
   topSectorsNaf: [
     "Commerce de détail de proximité",
     "Artisanat du bâtiment",
@@ -230,7 +230,7 @@ export const LINGOLSHEIM_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Lingolsheim et dans l'Eurométropole ?",
-      a: "Oui. Nos consultants se déplacent à Lingolsheim et dans l'Eurométropole de Strasbourg (Strasbourg, Illkirch-Graffenstaden, Ostwald, Eckbolsheim), depuis Strasbourg.",
+      a: "Oui. Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les TPE et artisans lingolsheimois ?",

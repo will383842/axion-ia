@@ -53,7 +53,7 @@ export const IZON_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Izon ?",
-      a: "Oui, Axion-IA intervient à Izon et dans tout le Libournais (Libourne, Saint-Denis-de-Pile, Coutras). Nos consultants se déplacent depuis Bordeaux (25 min A89) ou par TGV via Libourne (Paris 3h).",
+      a: "Oui, Axion-IA intervient à Izon et dans tout le Libournais (Libourne, Saint-Denis-de-Pile, Coutras). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Combien coûte un audit IA à Izon ?",
@@ -69,7 +69,7 @@ export const IZON_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Izon ?",
-      a: "Nos consultants interviennent dans vos locaux, au chai ou en visio, depuis Bordeaux (25 min A89). Périmètre, planning et tarifs sont convenus en amont.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Périmètre, planning et tarifs sont convenus en amont.",
     },
     {
       q: "Comment garantissez-vous la conformité RGPD ?",

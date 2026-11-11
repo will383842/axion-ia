@@ -49,7 +49,7 @@ export const MAZE_MILON_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Mazé-Milon et dans le val d'Authion ?",
-      a: "Oui, Axion-IA intervient à Mazé-Milon et dans tout le val d'Authion (Beaufort-en-Anjou, Brain-sur-l'Authion, Corné, La Bohalle). Nos consultants se déplacent depuis Angers (20 min D347).",
+      a: "Oui, Axion-IA intervient à Mazé-Milon et dans tout le val d'Authion (Beaufort-en-Anjou, Brain-sur-l'Authion, Corné, La Bohalle). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les exploitations horticoles et maraîchères ?",

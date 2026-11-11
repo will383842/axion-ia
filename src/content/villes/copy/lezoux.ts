@@ -65,7 +65,7 @@ export const LEZOUX_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Clermont-Ferrand ?",
-      a: "Nos consultants interviennent depuis Clermont-Ferrand (30 min voiture via A89/Thiers). Pour les missions multi-jours en Limagne, hébergement local possible. Coûts de déplacement à part, tarification transparente.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Pour les missions multi-jours en Limagne, hébergement local possible. Coûts de déplacement à part, tarification transparente.",
     },
   ],
 };

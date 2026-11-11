@@ -49,7 +49,7 @@ export const LESQUIN_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Lesquin et dans la zone aéroportuaire ?",
-      a: "Oui, Axion-IA intervient à Lesquin et dans toute la zone aéroportuaire de Lille-Lesquin (Fretin, Vendeville, Templemars, Seclin), ainsi que dans la Métropole Européenne de Lille. Nos consultants couvrent l'ensemble du pôle logistique et aéroportuaire des Hauts-de-France.",
+      a: "Oui, Axion-IA intervient à Lesquin et dans toute la zone aéroportuaire de Lille-Lesquin (Fretin, Vendeville, Templemars, Seclin), ainsi que dans la Métropole Européenne de Lille. Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les TPE et PME de la logistique et du transport ?",
@@ -65,7 +65,7 @@ export const LESQUIN_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Lesquin ?",
-      a: "Nos consultants interviennent à Lesquin depuis Lille centre (10 min). Intervention sur site dans votre entrepôt, bureau de zone, hôtel ou en visio. Proximité immédiate de l'aéroport Lille-Lesquin et nœud A1/A27.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Intervention sur site dans votre entrepôt, bureau de zone, hôtel ou en visio. Proximité immédiate de l'aéroport Lille-Lesquin et nœud A1/A27.",
     },
   ],
 };

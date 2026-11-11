@@ -65,7 +65,7 @@ export const LA_ROQUETTE_SUR_SIAGNE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission depuis Cannes ?",
-      a: "Nos consultants interviennent depuis Cannes (10 min). Formats flexibles : demi-journée audit, journée intervention, mission implémentation multi-semaines. Déplacement arrière-pays cannois inclus dans le forfait.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Formats flexibles : demi-journée audit, journée intervention, mission implémentation multi-semaines. Déplacement arrière-pays cannois inclus dans le forfait.",
     },
   ],
 };

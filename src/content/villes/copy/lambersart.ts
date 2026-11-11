@@ -226,7 +226,7 @@ export const LAMBERSART_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Lambersart et MEL ?",
-      a: "Oui, Axion-IA intervient à Lambersart et toute la Métropole Européenne de Lille (Lille, Roubaix, Tourcoing, Villeneuve-d'Ascq, Marcq-en-Barœul). Nos consultants viennent de Paris (TGV 1h) ou Bruxelles (TGV 35 min).",
+      a: "Oui, Axion-IA intervient à Lambersart et toute la Métropole Européenne de Lille (Lille, Roubaix, Tourcoing, Villeneuve-d'Ascq, Marcq-en-Barœul). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les professions libérales (médecins, avocats) ?",
@@ -242,7 +242,7 @@ export const LAMBERSART_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une intervention depuis Paris ?",
-      a: "Nos consultants viennent de Paris en TGV (1h Lille-Europe) pour les missions sur site à Lambersart. Pour les multi-jours, hébergement local possible (hôtels MEL).",
+      a: "Nous intervenons partout en France, sur place ou à distance. Pour les multi-jours, hébergement local possible (hôtels MEL).",
     },
   ],
 };

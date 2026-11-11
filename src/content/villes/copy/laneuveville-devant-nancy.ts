@@ -65,7 +65,7 @@ export const LANEUVEVILLE_DEVANT_NANCY_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Laneuveville-devant-Nancy ?",
-      a: "Nos consultants interviennent depuis Nancy centre (10 min). Missions sur site dans vos ateliers industriels, bureaux, chantiers, entrepôts ou commerces.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Missions sur site dans vos ateliers industriels, bureaux, chantiers, entrepôts ou commerces.",
     },
   ],
 };

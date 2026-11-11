@@ -65,7 +65,7 @@ export const LIGNE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une intervention depuis Nantes ?",
-      a: "Nos consultants se déplacent depuis Nantes centre (30 min). Formats demi-journée ou journée complète, sur site ou en visio.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Formats demi-journée ou journée complète, sur site ou en visio.",
     },
   ],
 };

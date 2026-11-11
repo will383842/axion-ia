@@ -49,7 +49,7 @@ export const LA_ROCHE_SUR_FORON_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il a La Roche-sur-Foron et dans le Pays Rochois ?",
-      a: "Oui, Axion-IA intervient a La Roche-sur-Foron et dans tout le Pays Rochois (Reignier-Esery, Saint-Pierre-en-Faucigny, Bonneville). Nos consultants se deplacent depuis Annecy (25 min) ou Geneve (35 min).",
+      a: "Oui, Axion-IA intervient a La Roche-sur-Foron et dans tout le Pays Rochois (Reignier-Esery, Saint-Pierre-en-Faucigny, Bonneville). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les agriculteurs et eleveurs du Pays Rochois ?",

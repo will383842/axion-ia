@@ -65,7 +65,7 @@ export const LA_CRAU_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à La Crau ?",
-      a: "Nos consultants interviennent depuis Toulon (15 min) ou l'aéroport Toulon-Hyères (12 min). Déplacement sur site dans vos locaux professionnels, exploitation, domaine ou commerce. Agglo Toulon est bien desservie.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Déplacement sur site dans vos locaux professionnels, exploitation, domaine ou commerce. Agglo Toulon est bien desservie.",
     },
   ],
 };

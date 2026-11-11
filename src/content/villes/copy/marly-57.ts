@@ -49,7 +49,7 @@ export const MARLY_57_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Marly (57) et Metz Métropole ?",
-      a: "Oui, Axion-IA intervient à Marly (57, Moselle) et toute Metz Métropole (Metz, Montigny-lès-Metz, Woippy, Augny, Jouy-aux-Arches). Nos consultants viennent de Metz centre (10 min), Nancy (50 min) ou Luxembourg (1h).",
+      a: "Oui, Axion-IA intervient à Marly (57, Moselle) et toute Metz Métropole (Metz, Montigny-lès-Metz, Woippy, Augny, Jouy-aux-Arches). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quelle différence avec Marly (78) en Yvelines ?",
@@ -65,7 +65,7 @@ export const MARLY_57_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Metz ou Nancy ?",
-      a: "Nos consultants viennent de Metz centre (10 min), Nancy (50 min) ou Luxembourg-Ville (1h). Pour les multi-jours, hébergement local possible.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Pour les multi-jours, hébergement local possible.",
     },
   ],
 };

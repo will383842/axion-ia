@@ -9,18 +9,18 @@ export const MARCQ_EN_BAR_UL_COPY: VilleCopy = {
   pitchEn:
     "Marcq-en-Barœul (59), commune résidentielle prisée de la Métropole Européenne de Lille, est un pôle tertiaire reconnu, accueillant sièges sociaux, cabinets de conseil et services aux entreprises, à proximité immédiate des grands groupes nordistes (univers Auchan, Décathlon). Son tissu mêle TPE de services et commerces, professions libérales, indépendants et PME tertiaires. Connue pour son hippodrome, la ville offre un environnement d'affaires dense. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne en priorité ces TPE puis les PME marcquoises, l'ETI restant marginale.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Marcq-en-Barœul (59). Nous accompagnons en priorité les TPE — cabinets de conseil, professions libérales, agences, commerces, indépendants — puis les PME tertiaires et de services aux entreprises, et plus marginalement les ETI. Nos consultants se déplacent sur site depuis Lille pour auditer vos processus, former vos équipes et déployer des automatisations concrètes (propositions commerciales, relances, reporting, support client). Tarifs publics, frais de déplacement transparents.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Marcq-en-Barœul (59). Nous accompagnons en priorité les TPE — cabinets de conseil, professions libérales, agences, commerces, indépendants — puis les PME tertiaires et de services aux entreprises, et plus marginalement les ETI. Nous intervenons partout en France, sur place ou à distance. Tarifs publics, frais de déplacement transparents.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Marcq-en-Barœul (59). Nous accompagnons en priorité les TPE — cabinets de conseil, professions libérales, agences, commerces, indépendants — puis les PME tertiaires et de services aux entreprises, et plus marginalement les ETI. Nos consultants se déplacent sur site depuis Lille pour auditer vos processus, former vos équipes et déployer des automatisations concrètes (propositions commerciales, relances, reporting, support client). Tarifs publics, frais de déplacement transparents.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Marcq-en-Barœul (59). Nous accompagnons en priorité les TPE — cabinets de conseil, professions libérales, agences, commerces, indépendants — puis les PME tertiaires et de services aux entreprises, et plus marginalement les ETI. Nous intervenons partout en France, sur place ou à distance. Tarifs publics, frais de déplacement transparents.",
   seoHook: "tertiaire, conseil & sièges Lille",
   ecosystemFr:
     "Marcq-en-Barœul s'affirme comme l'un des pôles tertiaires les plus dynamiques de la Métropole Européenne de Lille : sièges sociaux, cabinets de conseil, agences de communication et services aux entreprises y sont nombreux, en lien avec l'écosystème des grands groupes nordistes (distribution, retail). Le tissu local mêle ces structures à un dense réseau de TPE — professions libérales, commerces, indépendants. Ce profil d'affaires génère un volume élevé de tâches répétitives : propositions commerciales, reporting, suivi client, veille. Axion-IA y privilégie les TPE et PME, pour qui l'automatisation de ces flux libère un temps directement réinvesti dans le conseil et la croissance.",
   ecosystemEn:
     "Marcq-en-Barœul s'affirme comme l'un des pôles tertiaires les plus dynamiques de la Métropole Européenne de Lille : sièges sociaux, cabinets de conseil, agences de communication et services aux entreprises y sont nombreux, en lien avec l'écosystème des grands groupes nordistes (distribution, retail). Le tissu local mêle ces structures à un dense réseau de TPE — professions libérales, commerces, indépendants. Ce profil d'affaires génère un volume élevé de tâches répétitives : propositions commerciales, reporting, suivi client, veille. Axion-IA y privilégie les TPE et PME, pour qui l'automatisation de ces flux libère un temps directement réinvesti dans le conseil et la croissance.",
   distancesFr:
-    "Métro et tramway de la MEL relient Marcq-en-Barœul au centre de Lille en ~15 min. Gare de Lille-Europe (TGV, Eurostar) à 6 km, aéroport de Lille-Lesquin à 15 km. Roubaix à 8 km, Tourcoing à 10 km, frontière belge à ~10 km. Nos consultants rejoignent Marcq-en-Barœul depuis Lille.",
+    "Métro et tramway de la MEL relient Marcq-en-Barœul au centre de Lille en ~15 min. Gare de Lille-Europe (TGV, Eurostar) à 6 km, aéroport de Lille-Lesquin à 15 km. Roubaix à 8 km, Tourcoing à 10 km, frontière belge à ~10 km. Nous intervenons partout en France, sur place ou à distance.",
   distancesEn:
-    "Métro et tramway de la MEL relient Marcq-en-Barœul au centre de Lille en ~15 min. Gare de Lille-Europe (TGV, Eurostar) à 6 km, aéroport de Lille-Lesquin à 15 km. Roubaix à 8 km, Tourcoing à 10 km, frontière belge à ~10 km. Nos consultants rejoignent Marcq-en-Barœul depuis Lille.",
+    "Métro et tramway de la MEL relient Marcq-en-Barœul au centre de Lille en ~15 min. Gare de Lille-Europe (TGV, Eurostar) à 6 km, aéroport de Lille-Lesquin à 15 km. Roubaix à 8 km, Tourcoing à 10 km, frontière belge à ~10 km. Nous intervenons partout en France, sur place ou à distance.",
   topSectorsNaf: [
     "Conseil de gestion et stratégie",
     "Agences de communication et marketing",
@@ -230,7 +230,7 @@ export const MARCQ_EN_BAR_UL_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Marcq-en-Barœul et dans la MEL ?",
-      a: "Oui. Nos consultants se déplacent à Marcq-en-Barœul et dans la Métropole Européenne de Lille (Lille, Roubaix, Tourcoing, Villeneuve-d'Ascq), depuis Lille.",
+      a: "Oui. Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les cabinets de conseil et agences marcquois ?",

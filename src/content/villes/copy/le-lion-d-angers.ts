@@ -49,7 +49,7 @@ export const LE_LION_D_ANGERS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il au Lion-d'Angers et dans le nord-ouest angevin ?",
-      a: "Oui, Axion-IA intervient au Lion-d'Angers et dans tout le nord-ouest angevin (Grez-Neuville, Segré, Candé, Le Plessis-Macé). Nos consultants se déplacent depuis Angers (25 min N162).",
+      a: "Oui, Axion-IA intervient au Lion-d'Angers et dans tout le nord-ouest angevin (Grez-Neuville, Segré, Candé, Le Plessis-Macé). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les acteurs de la filière équine ?",

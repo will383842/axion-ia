@@ -65,7 +65,7 @@ export const LE_CATEAU_CAMBRESIS_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Lille ?",
-      a: "Nos consultants viennent de Lille (1 h 10).",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };

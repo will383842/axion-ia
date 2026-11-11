@@ -65,7 +65,7 @@ export const LEMPDES_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Clermont-Ferrand ?",
-      a: "Nos consultants interviennent depuis Clermont-Ferrand (10 min voiture). Proximité immédiate aéroport Clermont-Ferrand Auvergne pour consultants hors région. Coûts de déplacement à part, tarification transparente.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Proximité immédiate aéroport Clermont-Ferrand Auvergne pour consultants hors région. Coûts de déplacement à part, tarification transparente.",
     },
   ],
 };

@@ -49,7 +49,7 @@ export const LAVELANET_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Lavelanet et dans le Pays d'Olmes ?",
-      a: "Oui, Axion-IA intervient à Lavelanet et dans tout le Pays d'Olmes (Montségur, Laroque-d'Olmes, Mirepoix, Bélesta). Nos consultants se déplacent depuis Foix (30 min D117) ou Toulouse (1h30).",
+      a: "Oui, Axion-IA intervient à Lavelanet et dans tout le Pays d'Olmes (Montségur, Laroque-d'Olmes, Mirepoix, Bélesta). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les PME textile et industries reconverties ?",

@@ -65,7 +65,7 @@ export const MELESSE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission Axion-IA depuis Rennes ?",
-      a: "Nos consultants interviennent depuis Rennes en 15 min via la N137. Pour les missions multi-jours, déplacements quotidiens sans surcoût hébergement.",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };

@@ -230,7 +230,7 @@ export const LOOS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Loos ?",
-      a: "Oui, Axion-IA intervient à Loos et dans toute la Métropole Européenne de Lille. Nos consultants se déplacent depuis Lille (6 km) pour rencontrer cabinets de santé, professions libérales et PME sur site.",
+      a: "Oui, Axion-IA intervient à Loos et dans toute la Métropole Européenne de Lille. Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Combien coûte un audit IA à Loos ?",
@@ -246,7 +246,7 @@ export const LOOS_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Loos ?",
-      a: "Nos consultants interviennent dans vos locaux ou en visio, depuis Lille. Périmètre, planning et tarifs sont fixés en amont, sans surprise.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Périmètre, planning et tarifs sont fixés en amont, sans surprise.",
     },
     {
       q: "Comment garantissez-vous la conformité RGPD ?",

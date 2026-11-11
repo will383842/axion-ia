@@ -49,7 +49,7 @@ export const LA_FERTE_BERNARD_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à La Ferté-Bernard et dans le Perche sarthois ?",
-      a: "Oui, Axion-IA intervient à La Ferté-Bernard et dans tout le Perche sarthois (Montmirail, Tuffé, Vibraye, Bouloire). Nos consultants se déplacent depuis Le Mans (45 min A11) ou Paris (TER direct).",
+      a: "Oui, Axion-IA intervient à La Ferté-Bernard et dans tout le Perche sarthois (Montmirail, Tuffé, Vibraye, Bouloire). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les PME agroalimentaires du Perche sarthois ?",
@@ -65,7 +65,7 @@ export const LA_FERTE_BERNARD_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission IA à La Ferté-Bernard ?",
-      a: "Nos consultants arrivent depuis Le Mans (45 min A11) ou par TER direct Paris. Intervention dans vos locaux. Format mixte sur site + visio. Tarifs publics.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Intervention dans vos locaux. Format mixte sur site + visio. Tarifs publics.",
     },
   ],
 };

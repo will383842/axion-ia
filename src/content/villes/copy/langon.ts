@@ -49,7 +49,7 @@ export const LANGON_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Langon et dans le sud-Gironde ?",
-      a: "Oui, Axion-IA intervient à Langon et dans tout le sud-Gironde (Sauternes, Bazas, La Réole, Cadillac). Nos consultants se déplacent depuis Bordeaux (45 min A62) ou Paris (TGV + TER).",
+      a: "Oui, Axion-IA intervient à Langon et dans tout le sud-Gironde (Sauternes, Bazas, La Réole, Cadillac). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Langon  ?",

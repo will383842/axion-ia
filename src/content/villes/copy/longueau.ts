@@ -49,7 +49,7 @@ export const LONGUEAU_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Longueau et dans l'agglomération amiénoise ?",
-      a: "Oui, Axion-IA intervient à Longueau et toute l'agglomération amiénoise (Amiens, Camon, Rivery, Salouël, Dury). Nos consultants sont à 10 min du centre d'Amiens et couvrent tout le bassin d'emploi picard.",
+      a: "Oui, Axion-IA intervient à Longueau et toute l'agglomération amiénoise (Amiens, Camon, Rivery, Salouël, Dury). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quels services IA pour les entreprises ferroviaires à Longueau ?",

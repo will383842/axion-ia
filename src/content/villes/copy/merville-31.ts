@@ -53,7 +53,7 @@ export const MERVILLE_31_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Merville (31) ?",
-      a: "Oui, Axion-IA intervient à Merville et dans tout le nord-ouest de la Haute-Garonne (Grenade, Aussonne, Beauzelle). Nos consultants se déplacent en 22 min depuis Toulouse par la D2, ou animent les sessions en visio.",
+      a: "Oui, Axion-IA intervient à Merville et dans tout le nord-ouest de la Haute-Garonne (Grenade, Aussonne, Beauzelle). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quels secteurs accompagnez-vous en priorité à Merville ?",
@@ -73,7 +73,7 @@ export const MERVILLE_31_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une intervention IA à Merville ?",
-      a: "Nos consultants se déplacent depuis Toulouse (22 min, D2). L'intervention dure au moins une journée, sous forme d'atelier pratique dans vos locaux, pour rendre vos équipes autonomes.",
+      a: "Nous intervenons partout en France, sur place ou à distance. L'intervention dure au moins une journée, sous forme d'atelier pratique dans vos locaux, pour rendre vos équipes autonomes.",
     },
   ],
 };

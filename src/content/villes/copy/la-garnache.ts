@@ -49,7 +49,7 @@ export const LA_GARNACHE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à La Garnache ?",
-      a: "Oui, Axion-IA intervient à La Garnache et dans tout le marais breton vendéen (Challans, Saint-Gilles-Croix-de-Vie, Beauvoir-sur-Mer). Nos consultants se déplacent depuis Nantes (45 min) ou La Roche-sur-Yon (45 min).",
+      a: "Oui, Axion-IA intervient à La Garnache et dans tout le marais breton vendéen (Challans, Saint-Gilles-Croix-de-Vie, Beauvoir-sur-Mer). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Combien coûte un audit IA à La Garnache  ?",

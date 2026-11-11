@@ -49,7 +49,7 @@ export const MERVILLE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Merville et plaine de la Lys ?",
-      a: "Oui, Axion-IA intervient à Merville et toute la plaine de la Lys (Estaires, Laventie, Hazebrouck, Bailleul). Nos consultants viennent de Lille (35 min A25), Béthune (15 min) ou en visio selon vos contraintes.",
+      a: "Oui, Axion-IA intervient à Merville et toute la plaine de la Lys (Estaires, Laventie, Hazebrouck, Bailleul). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les exploitations agricoles flamandes ?",
@@ -65,7 +65,7 @@ export const MERVILLE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Lille ou Béthune ?",
-      a: "Nos consultants viennent de Lille (35 min A25), Béthune (15 min) ou Hazebrouck (15 min). Pour les multi-jours, hébergement local possible.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Pour les multi-jours, hébergement local possible.",
     },
   ],
 };

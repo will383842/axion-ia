@@ -65,7 +65,7 @@ export const LONGPONT_SUR_ORGE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Paris ?",
-      a: "Nos consultants viennent de Paris en RER C (35 min Gare d'Austerlitz) ou en voiture via A6/N20 (40 min). Coûts de déplacement séparés du forfait, tarifs transparents.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Coûts de déplacement séparés du forfait, tarifs transparents.",
     },
   ],
 };

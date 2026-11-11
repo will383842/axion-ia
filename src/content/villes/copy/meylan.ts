@@ -63,7 +63,7 @@ export const MEYLAN_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission Inovallée depuis Paris ?",
-      a: "Nos consultants viennent de Paris en TGV (Lyon 2h + tram + voiture, ~3h30 total) ou avion Lyon-Saint-Exupéry (1h vol + 1h15 voiture). Pour les multi-jours, hébergement local possible.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Pour les multi-jours, hébergement local possible.",
     },
   ],
 };

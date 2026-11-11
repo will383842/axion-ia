@@ -65,7 +65,7 @@ export const LE_MESNIL_LE_ROI_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA au Mesnil-le-Roi ?",
-      a: "Nos consultants rejoignent Le Mesnil-le-Roi via la gare de Maisons-Laffitte (RER A, 25 min Paris Étoile) à 5 min.",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };

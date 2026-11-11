@@ -246,7 +246,7 @@ export const MANOSQUE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Manosque ?",
-      a: "Nos consultants se déplacent depuis Aix-en-Provence ou en visio.",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Vos interventions sont-elles conformes au RGPD ?",

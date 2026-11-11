@@ -49,7 +49,7 @@ export const LIMOUX_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Limoux et dans le Limouxin ?",
-      a: "Oui, Axion-IA intervient à Limoux et dans tout le Limouxin (Alet-les-Bains, Quillan, Couiza, Pieusse). Nos consultants viennent de Carcassonne (25 min D118) ou Toulouse (1h20).",
+      a: "Oui, Axion-IA intervient à Limoux et dans tout le Limouxin (Alet-les-Bains, Quillan, Couiza, Pieusse). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les caves viticoles et la filière Blanquette ?",

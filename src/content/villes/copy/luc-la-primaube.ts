@@ -49,7 +49,7 @@ export const LUC_LA_PRIMAUBE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Luc-la-Primaube ?",
-      a: "Oui, Axion-IA intervient à Luc-la-Primaube et dans toute l'agglomération de Rodez (Rodez, Onet-le-Château, Sébazac-Concourès, Le Monastère, Druelle). Nos consultants se déplacent depuis Rodez en 10 min.",
+      a: "Oui, Axion-IA intervient à Luc-la-Primaube et dans toute l'agglomération de Rodez (Rodez, Onet-le-Château, Sébazac-Concourès, Le Monastère, Druelle). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quels secteurs accompagnez-vous à Luc-la-Primaube ?",
@@ -61,7 +61,7 @@ export const LUC_LA_PRIMAUBE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une intervention IA à Luc-la-Primaube ?",
-      a: "Nos consultants se déplacent depuis Rodez centre (10 min). Intervention 1 journée minimum, format atelier pratique dans vos locaux (atelier, bureau, commerce). Vos collaborateurs sont autonomes ensuite.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Intervention 1 journée minimum, format atelier pratique dans vos locaux (atelier, bureau, commerce). Vos collaborateurs sont autonomes ensuite.",
     },
     {
       q: "Proposez-vous du coaching individuel IA à Luc-la-Primaube ?",

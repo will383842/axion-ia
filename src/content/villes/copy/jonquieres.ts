@@ -65,7 +65,7 @@ export const JONQUIERES_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Jonquières ?",
-      a: "Nos consultants interviennent depuis Orange (10 min) ou Avignon (30 min via A7). Déplacement sur site dans vos locaux professionnels, domaine viticole, exploitation agricole ou commerce. Vallée du Rhône bien desservie via A7.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Déplacement sur site dans vos locaux professionnels, domaine viticole, exploitation agricole ou commerce. Vallée du Rhône bien desservie via A7.",
     },
   ],
 };

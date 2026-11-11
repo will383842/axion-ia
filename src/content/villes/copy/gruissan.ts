@@ -49,7 +49,7 @@ export const GRUISSAN_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Gruissan et sur le littoral audois ?",
-      a: "Oui, Axion-IA intervient à Gruissan et sur tout le littoral audois (Narbonne-Plage, Port-la-Nouvelle, Sigean, Leucate). Nos consultants se déplacent depuis Narbonne en 15 min.",
+      a: "Oui, Axion-IA intervient à Gruissan et sur tout le littoral audois (Narbonne-Plage, Port-la-Nouvelle, Sigean, Leucate). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les professionnels du tourisme balnéaire à Gruissan ?",

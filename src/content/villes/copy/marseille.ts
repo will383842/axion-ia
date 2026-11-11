@@ -1009,7 +1009,7 @@ export const MARSEILLE_COPY: VilleCopy = {
     },
     {
       q: "Pouvez-vous intervenir sur site dans nos locaux marseillais ?",
-      a: "Oui. Toutes nos interventions à Marseille sont par défaut en présentiel, dans vos locaux. Nos consultants couvrent les 16 arrondissements, Euroméditerranée, Château-Gombert, Luminy, et le bassin Aubagne/Aix/La Ciotat. Les restitutions et ateliers clés se tiennent toujours sur site.",
+      a: "Oui. Toutes nos interventions à Marseille sont par défaut en présentiel, dans vos locaux. Nous intervenons partout en France, sur place ou à distance. Les restitutions et ateliers clés se tiennent toujours sur site.",
     },
     {
       q: "Travaillez-vous avec les startups de la French Tech Aix-Marseille ?",

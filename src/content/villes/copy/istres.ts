@@ -230,7 +230,7 @@ export const ISTRES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Istres et autour de l'étang de Berre ?",
-      a: "Oui, Axion-IA intervient à Istres et tout le pourtour de l'étang de Berre (Martigues, Fos-sur-Mer, Miramas, Saint-Mitre). Nos consultants viennent de Marseille ou d'Aix-en-Provence.",
+      a: "Oui, Axion-IA intervient à Istres et tout le pourtour de l'étang de Berre (Martigues, Fos-sur-Mer, Miramas, Saint-Mitre). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous la sous-traitance aéronautique et défense ?",
@@ -246,7 +246,7 @@ export const ISTRES_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Istres ?",
-      a: "Nos consultants se déplacent depuis Marseille ou Aix-en-Provence, ou en visio.",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Vos interventions sont-elles conformes au RGPD ?",

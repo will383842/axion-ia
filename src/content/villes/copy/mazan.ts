@@ -65,7 +65,7 @@ export const MAZAN_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Mazan ?",
-      a: "Nos consultants interviennent depuis Carpentras (10 min) ou Avignon (35 min). Déplacement sur site dans vos locaux professionnels, domaine viticole, exploitation, hébergement ou commerce. Comtat Venaissin bien desservi.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Déplacement sur site dans vos locaux professionnels, domaine viticole, exploitation, hébergement ou commerce. Comtat Venaissin bien desservi.",
     },
   ],
 };

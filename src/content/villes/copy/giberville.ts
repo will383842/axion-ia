@@ -49,7 +49,7 @@ export const GIBERVILLE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Giberville et dans l'agglo Caen est ?",
-      a: "Oui, Axion-IA intervient à Giberville et dans toute l'agglomération Caen la Mer (Colombelles, Mondeville, Hérouville, Caen). Nos consultants se déplacent depuis Caen (10 min) ou Paris (2h15 TGV).",
+      a: "Oui, Axion-IA intervient à Giberville et dans toute l'agglomération Caen la Mer (Colombelles, Mondeville, Hérouville, Caen). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les PME industrie et logistique zone Colombelles ?",
@@ -65,7 +65,7 @@ export const GIBERVILLE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Caen ou Paris ?",
-      a: "Nos consultants viennent de Caen (10 min) ou Paris (2h15 TGV gare Caen). Pour les multi-jours, hébergement local possible.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Pour les multi-jours, hébergement local possible.",
     },
   ],
 };

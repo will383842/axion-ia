@@ -9,18 +9,18 @@ export const LA_GARENNE_COLOMBES_COPY: VilleCopy = {
   pitchEn:
     "La Garenne-Colombes (92) est une commune résidentielle et tertiaire des Hauts-de-Seine, collée à La Défense et Courbevoie. Son tissu est dense en TPE de services, indépendants, cabinets (conseil, comptabilité, droit), commerces de proximité et PME tournées vers les grands comptes voisins. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne en priorité ces TPE puis les PME garennoises, plus marginalement les ETI, pour transformer un quotidien administratif chargé en flux automatisés et fiables.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à La Garenne-Colombes (92). Nous accompagnons en priorité les TPE — cabinets de conseil, experts-comptables, professions libérales, commerçants, indépendants — puis les PME de services, et plus marginalement les ETI. Nos consultants se déplacent sur site depuis Paris pour auditer vos processus, former vos équipes et déployer des automatisations concrètes (devis, relances, reporting, support client). Tarifs publics, frais de déplacement transparents.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à La Garenne-Colombes (92). Nous accompagnons en priorité les TPE — cabinets de conseil, experts-comptables, professions libérales, commerçants, indépendants — puis les PME de services, et plus marginalement les ETI. Nous intervenons partout en France, sur place ou à distance. Tarifs publics, frais de déplacement transparents.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à La Garenne-Colombes (92). Nous accompagnons en priorité les TPE — cabinets de conseil, experts-comptables, professions libérales, commerçants, indépendants — puis les PME de services, et plus marginalement les ETI. Nos consultants se déplacent sur site depuis Paris pour auditer vos processus, former vos équipes et déployer des automatisations concrètes (devis, relances, reporting, support client). Tarifs publics, frais de déplacement transparents.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à La Garenne-Colombes (92). Nous accompagnons en priorité les TPE — cabinets de conseil, experts-comptables, professions libérales, commerçants, indépendants — puis les PME de services, et plus marginalement les ETI. Nous intervenons partout en France, sur place ou à distance. Tarifs publics, frais de déplacement transparents.",
   seoHook: "tertiaire & services proche La Défense",
   ecosystemFr:
     "La Garenne-Colombes vit dans l'orbite immédiate de La Défense, premier quartier d'affaires européen. Son économie locale repose sur les TPE de services (conseil, comptabilité, droit, communication), les indépendants en télétravail, les commerces de centre-ville et les PME sous-traitantes des grands comptes voisins. Ce profil tertiaire génère un volume élevé de tâches répétitives — propositions commerciales, facturation, suivi client, veille — directement adressables par l'IA. Axion-IA y privilégie les TPE et PME, là où un gain de quelques heures par semaine change réellement la donne, l'ETI restant minoritaire dans ce tissu.",
   ecosystemEn:
     "La Garenne-Colombes vit dans l'orbite immédiate de La Défense, premier quartier d'affaires européen. Son économie locale repose sur les TPE de services (conseil, comptabilité, droit, communication), les indépendants en télétravail, les commerces de centre-ville et les PME sous-traitantes des grands comptes voisins. Ce profil tertiaire génère un volume élevé de tâches répétitives — propositions commerciales, facturation, suivi client, veille — directement adressables par l'IA. Axion-IA y privilégie les TPE et PME, là où un gain de quelques heures par semaine change réellement la donne, l'ETI restant minoritaire dans ce tissu.",
   distancesFr:
-    "Gare de La Garenne-Colombes (ligne L Saint-Lazare) à 9 min de Paris-Saint-Lazare. La Défense à 10 min en transilien ou tramway T2. Aéroport Paris-Charles-de-Gaulle à 30 km, Paris-Orly à 25 km. Nos consultants rejoignent la commune en moins de 20 min depuis Paris intra-muros.",
+    "Gare de La Garenne-Colombes (ligne L Saint-Lazare) à 9 min de Paris-Saint-Lazare. La Défense à 10 min en transilien ou tramway T2. Aéroport Paris-Charles-de-Gaulle à 30 km, Paris-Orly à 25 km. Nous intervenons partout en France, sur place ou à distance.",
   distancesEn:
-    "Gare de La Garenne-Colombes (ligne L Saint-Lazare) à 9 min de Paris-Saint-Lazare. La Défense à 10 min en transilien ou tramway T2. Aéroport Paris-Charles-de-Gaulle à 30 km, Paris-Orly à 25 km. Nos consultants rejoignent la commune en moins de 20 min depuis Paris intra-muros.",
+    "Gare de La Garenne-Colombes (ligne L Saint-Lazare) à 9 min de Paris-Saint-Lazare. La Défense à 10 min en transilien ou tramway T2. Aéroport Paris-Charles-de-Gaulle à 30 km, Paris-Orly à 25 km. Nous intervenons partout en France, sur place ou à distance.",
   topSectorsNaf: [
     "Conseil de gestion et stratégie",
     "Activités comptables et juridiques",
@@ -230,7 +230,7 @@ export const LA_GARENNE_COLOMBES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA se déplace-t-il à La Garenne-Colombes ?",
-      a: "Oui. Nos consultants rejoignent La Garenne-Colombes en moins de 20 min depuis Paris et interviennent directement dans vos locaux, ainsi qu'à Courbevoie, Colombes, Bois-Colombes et sur La Défense.",
+      a: "Oui. Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les TPE et indépendants garennois ?",

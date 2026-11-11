@@ -49,7 +49,7 @@ export const LIFFRE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Liffré et nord-est de Rennes ?",
-      a: "Oui, Axion-IA intervient à Liffré et dans tout le nord-est rennais (Chasné-sur-Illet, La Bouëxière, Saint-Aubin-du-Cormier, Gosné). Nos consultants viennent de Rennes centre (20 min) ou interviennent en visio.",
+      a: "Oui, Axion-IA intervient à Liffré et dans tout le nord-est rennais (Chasné-sur-Illet, La Bouëxière, Saint-Aubin-du-Cormier, Gosné). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les PME de services du nord-est rennais ?",
@@ -65,7 +65,7 @@ export const LIFFRE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Liffré ?",
-      a: "Nos consultants viennent de Rennes centre (20 min via D175). Possibilité visio pour les sessions courtes. Pour les interventions multi-jours, hébergement Rennes.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Possibilité visio pour les sessions courtes. Pour les interventions multi-jours, hébergement Rennes.",
     },
   ],
 };

@@ -49,7 +49,7 @@ export const MAYENNE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Mayenne et dans le nord du département ?",
-      a: "Oui, Axion-IA intervient à Mayenne et dans tout le nord-Mayenne (Gorron, Ambrières-les-Vallées, Lassay-les-Châteaux, Villaines-la-Juhel). Nos consultants se déplacent depuis Laval (30 min N162).",
+      a: "Oui, Axion-IA intervient à Mayenne et dans tout le nord-Mayenne (Gorron, Ambrières-les-Vallées, Lassay-les-Châteaux, Villaines-la-Juhel). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les PME agroalimentaires et laitières du nord-Mayenne ?",
@@ -65,7 +65,7 @@ export const MAYENNE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission IA à Mayenne depuis Laval ?",
-      a: "Nos consultants viennent de Laval (30 min N162). Gare TER Mayenne desservie. Pour les missions multi-jours, hébergement local possible. Format mixte sur site + visio. Tarifs publics.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Gare TER Mayenne desservie. Pour les missions multi-jours, hébergement local possible. Format mixte sur site + visio. Tarifs publics.",
     },
   ],
 };

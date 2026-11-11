@@ -49,7 +49,7 @@ export const MERICOURT_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Méricourt et dans l'agglo Lens-Liévin ?",
-      a: "Oui, Axion-IA intervient à Méricourt et dans toute l'agglomération Lens-Liévin (Lens, Liévin, Avion, Sallaumines, Bully-les-Mines). Nos consultants viennent de Lille (30 min A21) ou Arras (25 min).",
+      a: "Oui, Axion-IA intervient à Méricourt et dans toute l'agglomération Lens-Liévin (Lens, Liévin, Avion, Sallaumines, Bully-les-Mines). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les TPE artisans BTP du bassin minier ?",
@@ -65,7 +65,7 @@ export const MERICOURT_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Méricourt depuis Lille ?",
-      a: "Nos consultants viennent de Lille (30 min A21/A1) ou Arras (25 min). Lens est à 5 min.",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };

@@ -65,7 +65,7 @@ export const MEHUN_SUR_YEVRE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Bourges ?",
-      a: "Nos consultants viennent de Bourges (15 min).",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };

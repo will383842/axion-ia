@@ -65,7 +65,7 @@ export const MEZIDON_VALLEE_D_AUGE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA dans le Pays d'Auge ?",
-      a: "Nos consultants viennent de Caen (30 min N13) ou par train (gare SNCF Mézidon, nœud ferroviaire). Déplacement sur site (fromagerie, cidrerie, exploitation, commerce).",
+      a: "Nous intervenons partout en France, sur place ou à distance. Déplacement sur site (fromagerie, cidrerie, exploitation, commerce).",
     },
   ],
 };

@@ -49,7 +49,7 @@ export const MESNILS_SUR_ITON_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Mesnils-sur-Iton et dans l'agglo Évreux ?",
-      a: "Oui, Axion-IA intervient à Mesnils-sur-Iton et dans toute l'agglomération Évreux Portes de Normandie (Évreux, Saint-Sébastien-de-Morsent, Gravigny, Normanville). Nos consultants se déplacent depuis Paris (1h15 train) ou Rouen (50 min).",
+      a: "Oui, Axion-IA intervient à Mesnils-sur-Iton et dans toute l'agglomération Évreux Portes de Normandie (Évreux, Saint-Sébastien-de-Morsent, Gravigny, Normanville). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les PME de services et tertiaire agglo Évreux ?",
@@ -65,7 +65,7 @@ export const MESNILS_SUR_ITON_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Paris ou Évreux ?",
-      a: "Nos consultants viennent de Paris (1h15 train gare Évreux-Normandie) ou d'Évreux centre (10 min). Pour les multi-jours, hébergement local possible. Coûts de déplacement séparés du forfait, tarifs transparents.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Pour les multi-jours, hébergement local possible. Coûts de déplacement séparés du forfait, tarifs transparents.",
     },
   ],
 };

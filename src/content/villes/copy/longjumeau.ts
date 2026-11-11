@@ -18,9 +18,9 @@ export const LONGJUMEAU_COPY: VilleCopy = {
   ecosystemEn:
     "Longjumeau s'inscrit dans la dynamique du sud francilien, entre Massy, Palaiseau et le plateau de Saclay. Son économie locale s'appuie sur un pôle santé marqué par l'hôpital et un tissu de laboratoires, répartiteurs et officines pharmaceutiques, complété par un commerce de détail le long de la RN20 et des PME de services et de logistique légère. Les TPE et petites PME y composent l'essentiel des employeurs, dirigées par des indépendants qui gèrent eux-mêmes facturation, prises de rendez-vous et relances clients.",
   distancesFr:
-    "Gare de Longjumeau (RER C) à proximité immédiate. Gare TGV de Massy à 10 km, aéroport de Paris-Orly à 15 km, plateau de Saclay à 15 min. Paris intra-muros à 20 km par la RN20 ou l'A6. Nos consultants se déplacent sur site depuis Paris, frais indiqués séparément.",
+    "Gare de Longjumeau (RER C) à proximité immédiate. Gare TGV de Massy à 10 km, aéroport de Paris-Orly à 15 km, plateau de Saclay à 15 min. Paris intra-muros à 20 km par la RN20 ou l'A6. Nous intervenons partout en France, sur place ou à distance.",
   distancesEn:
-    "Gare de Longjumeau (RER C) à proximité immédiate. Gare TGV de Massy à 10 km, aéroport de Paris-Orly à 15 km, plateau de Saclay à 15 min. Paris intra-muros à 20 km par la RN20 ou l'A6. Nos consultants se déplacent sur site depuis Paris, frais indiqués séparément.",
+    "Gare de Longjumeau (RER C) à proximité immédiate. Gare TGV de Massy à 10 km, aéroport de Paris-Orly à 15 km, plateau de Saclay à 15 min. Paris intra-muros à 20 km par la RN20 ou l'A6. Nous intervenons partout en France, sur place ou à distance.",
   topSectorsNaf: [
     "Santé humaine et établissements hospitaliers",
     "Pharmacie, laboratoires et répartition",
@@ -230,7 +230,7 @@ export const LONGJUMEAU_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Longjumeau et dans le sud de l'Essonne ?",
-      a: "Oui. Nous couvrons Longjumeau et le sud francilien (Massy, Palaiseau, Chilly-Mazarin, Saclay). Nos consultants se déplacent sur site depuis Paris, à 20 km, ou interviennent en visio selon le format retenu avec vous.",
+      a: "Oui. Nous couvrons Longjumeau et le sud francilien (Massy, Palaiseau, Chilly-Mazarin, Saclay). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les TPE et commerces de l'axe RN20 ?",

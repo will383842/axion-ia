@@ -49,7 +49,7 @@ export const LE_BOULOU_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il au Boulou et dans le Vallespir frontalier ?",
-      a: "Oui, Axion-IA intervient au Boulou et tout le Vallespir frontalier (Céret à 10 min, Le Perthus à 10 min, Maureillas, Saint-Jean-Pla-de-Corts). Nos consultants viennent de Perpignan (25 min).",
+      a: "Oui, Axion-IA intervient au Boulou et tout le Vallespir frontalier (Céret à 10 min, Le Perthus à 10 min, Maureillas, Saint-Jean-Pla-de-Corts). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les PME transport et logistique transfrontalière ?",
@@ -65,7 +65,7 @@ export const LE_BOULOU_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission au Boulou ?",
-      a: "Nos consultants viennent de Perpignan (25 min). Missions sur site dans votre dépôt, établissement ou commerce. Visio possible.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Missions sur site dans votre dépôt, établissement ou commerce. Visio possible.",
     },
   ],
 };

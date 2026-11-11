@@ -49,7 +49,7 @@ export const MARLY_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Marly et dans le sud valenciennois ?",
-      a: "Oui, Axion-IA intervient à Marly et dans toute l'agglomération sud de Valenciennes (Aulnoy-lez-Valenciennes, Famars, Artres, Querenaing, Prouvy, Rouvignies) ainsi que l'ensemble du Valenciennois. Nos consultants couvrent la zone depuis Valenciennes centre (5 min).",
+      a: "Oui, Axion-IA intervient à Marly et dans toute l'agglomération sud de Valenciennes (Aulnoy-lez-Valenciennes, Famars, Artres, Querenaing, Prouvy, Rouvignies) ainsi que l'ensemble du Valenciennois. Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les commerces de la zone commerciale de Marly ?",
@@ -65,7 +65,7 @@ export const MARLY_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Marly ?",
-      a: "Nos consultants interviennent à Marly depuis Valenciennes centre (5 min). Intervention sur site dans votre commerce, cabinet, bureau ou en visio. Proximité immédiate du centre-ville valenciennois : aucun hébergement nécessaire.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Intervention sur site dans votre commerce, cabinet, bureau ou en visio. Proximité immédiate du centre-ville valenciennois : aucun hébergement nécessaire.",
     },
   ],
 };

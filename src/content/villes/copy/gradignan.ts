@@ -58,7 +58,7 @@ export const GRADIGNAN_COPY: VilleCopy = {
           "La majorité de nos sites à Gradignan sont commandés par des TPE et petites PME des huit ZAE et du centre commercial de Laurenzane : commerces de proximité, restauration, services à la personne. Nous concevons pour elles des vitrines et boutiques en ligne (WordPress/WooCommerce, Shopify, Prestashop ou code sur mesure) avec prise de rendez-vous et devis assistés par IA.",
           "Forte demande des professions libérales et de santé de la commune : sites de prise de rendez-vous, formulaires de pré-qualification et assistants qui orientent les patients ou clients vers le bon interlocuteur, avec un traitement des données conforme RGPD et un hébergement en Union européenne.",
           "Proximité immédiate du domaine universitaire de Talence-Pessac-Gradignan (ENSEGID, ENSC, Université de Bordeaux) et de l'incubateur Gradignan Premières au Château de l'Ermitage : nous accompagnons les porteurs de projet et jeunes pousses sur des MVP web et des plateformes SaaS IA-native (chatbot RAG, recherche sémantique, agents).",
-          "Nos consultants se déplacent sur place — à la Canopée, dans votre local de la ZAE ou votre cabinet — et couvrent tout le sud de la Métropole bordelaise : Gradignan, Talence, Pessac, Villenave d'Ornon, à 20 minutes de Bordeaux par la rocade et le tramway.",
+          "Nous intervenons partout en France, sur place ou à distance.",
         ],
         methodology: [
           {

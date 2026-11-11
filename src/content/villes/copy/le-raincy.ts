@@ -65,7 +65,7 @@ export const LE_RAINCY_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe le déplacement pour une mission au Raincy ?",
-      a: "Nos consultants se déplacent dans vos locaux au Raincy, accessibles en 25 min depuis Paris (RER E Gare de l'Est). Intervention sur vos cas métier réels, équipes autonomes en fin de journée.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Intervention sur vos cas métier réels, équipes autonomes en fin de journée.",
     },
   ],
 };

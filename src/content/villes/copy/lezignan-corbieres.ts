@@ -49,7 +49,7 @@ export const LEZIGNAN_CORBIERES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Lézignan-Corbières ?",
-      a: "Oui, Axion-IA intervient à Lézignan-Corbières et dans tout le vignoble des Corbières (Fabrezan, Ferrals-les-Corbières, Boutenac, Lagrasse). Nos consultants viennent de Narbonne (20 min) ou Carcassonne (35 min).",
+      a: "Oui, Axion-IA intervient à Lézignan-Corbières et dans tout le vignoble des Corbières (Fabrezan, Ferrals-les-Corbières, Boutenac, Lagrasse). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les caves coopératives et viticulteurs AOC Corbières ?",

@@ -49,7 +49,7 @@ export const LURE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Lure et dans le nord Haute-Saône ?",
-      a: "Oui, Axion-IA intervient à Lure et sur tout le nord Haute-Saône (Luxeuil-les-Bains, Héricourt, Ronchamp, Faucogney). Nos consultants se déplacent depuis Belfort (30 min) ou Besançon (1h).",
+      a: "Oui, Axion-IA intervient à Lure et sur tout le nord Haute-Saône (Luxeuil-les-Bains, Héricourt, Ronchamp, Faucogney). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Lure  ?",

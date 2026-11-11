@@ -61,7 +61,7 @@ export const LA_SALVETAT_SAINT_GILLES_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une intervention IA à La Salvetat-Saint-Gilles ?",
-      a: "Nos consultants se déplacent à La Salvetat-Saint-Gilles depuis Toulouse (22 min D632). Intervention 1 journée minimum, atelier pratique.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Intervention 1 journée minimum, atelier pratique.",
     },
     {
       q: "Proposez-vous du coaching individuel à La Salvetat-Saint-Gilles ?",

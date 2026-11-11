@@ -49,7 +49,7 @@ export const LA_GRANDE_MOTTE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à La Grande-Motte ?",
-      a: "Oui, Axion-IA intervient à La Grande-Motte et sur tout le littoral héraultais (Palavas, Carnon, Aigues-Mortes, Le Grau-du-Roi). Nos consultants se déplacent depuis Montpellier en 20 min.",
+      a: "Oui, Axion-IA intervient à La Grande-Motte et sur tout le littoral héraultais (Palavas, Carnon, Aigues-Mortes, Le Grau-du-Roi). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Proposez-vous des audits IA pour l'hôtellerie-restauration ?",

@@ -49,7 +49,7 @@ export const LESPARRE_MEDOC_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Lesparre-Médoc et dans le Médoc ?",
-      a: "Oui, Axion-IA intervient à Lesparre-Médoc et dans tout le Médoc (Pauillac, Saint-Estèphe, Margaux, Lacanau). Nos consultants se déplacent depuis Bordeaux (1h) ou Paris (TGV 2h + 1h).",
+      a: "Oui, Axion-IA intervient à Lesparre-Médoc et dans tout le Médoc (Pauillac, Saint-Estèphe, Margaux, Lacanau). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quel est le tarif d'un audit IA à Lesparre-Médoc  ?",

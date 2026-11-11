@@ -49,7 +49,7 @@ export const LOUDUN_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Loudun et nord Vienne ?",
-      a: "Oui, Axion-IA intervient à Loudun et tout le Loudunais / nord Vienne (Monts-sur-Guesnes, Trois-Moutiers, Richelieu à proximité). Nos consultants viennent depuis Tours (1h15) ou Poitiers (1h).",
+      a: "Oui, Axion-IA intervient à Loudun et tout le Loudunais / nord Vienne (Monts-sur-Guesnes, Trois-Moutiers, Richelieu à proximité). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les PME agroalimentaires du Loudunais ?",
@@ -65,7 +65,7 @@ export const LOUDUN_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission depuis Paris ?",
-      a: "Nos consultants viennent de Paris en TGV (Tours 1h15 puis 1h route, ou Poitiers 1h40 puis 1h route). Pour les multi-jours, hébergement local possible (hôtels Loudun ou Saumur).",
+      a: "Nous intervenons partout en France, sur place ou à distance. Pour les multi-jours, hébergement local possible (hôtels Loudun ou Saumur).",
     },
   ],
 };

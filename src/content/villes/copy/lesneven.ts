@@ -49,7 +49,7 @@ export const LESNEVEN_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Lesneven et nord Finistère ?",
-      a: "Oui, Axion-IA intervient à Lesneven et tout le Pays de Léon (Ploudaniel, Le Folgoët, Plouider, Plabennec, côte des Abers). Nos consultants se déplacent depuis Brest (30 min).",
+      a: "Oui, Axion-IA intervient à Lesneven et tout le Pays de Léon (Ploudaniel, Le Folgoët, Plouider, Plabennec, côte des Abers). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quels services pour les PME agroalimentaires du Pays de Léon ?",
@@ -65,7 +65,7 @@ export const LESNEVEN_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Lesneven ?",
-      a: "Nos consultants viennent de Brest (30 min D788). Pour les multi-jours, hébergement local possible (hôtels Lesneven ou côte des Abers).",
+      a: "Nous intervenons partout en France, sur place ou à distance. Pour les multi-jours, hébergement local possible (hôtels Lesneven ou côte des Abers).",
     },
   ],
 };

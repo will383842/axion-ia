@@ -49,7 +49,7 @@ export const LEGUEVIN_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Léguevin ?",
-      a: "Oui, Axion-IA intervient à Léguevin et dans tout l'ouest de Toulouse (Pibrac, Brax, Fonsorbes). Nos consultants se déplacent en 25 min depuis Toulouse.",
+      a: "Oui, Axion-IA intervient à Léguevin et dans tout l'ouest de Toulouse (Pibrac, Brax, Fonsorbes). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quels secteurs accompagnez-vous à Léguevin ?",
@@ -61,7 +61,7 @@ export const LEGUEVIN_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une intervention IA à Léguevin ?",
-      a: "Nos consultants se déplacent à Léguevin depuis Toulouse (25 min RN124). Intervention 1 journée minimum, atelier pratique dans vos locaux. Équipes autonomes.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Intervention 1 journée minimum, atelier pratique dans vos locaux. Équipes autonomes.",
     },
     {
       q: "Proposez-vous du coaching individuel à Léguevin ?",

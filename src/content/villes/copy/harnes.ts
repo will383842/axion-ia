@@ -49,7 +49,7 @@ export const HARNES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Harnes et dans l'agglo Lens-Liévin ?",
-      a: "Oui, Axion-IA intervient à Harnes et dans toute l'agglomération Lens-Liévin (Lens, Liévin, Sallaumines, Avion, Noyelles-sous-Lens). Nos consultants viennent de Lille (25 min A21) ou Douai (15 min).",
+      a: "Oui, Axion-IA intervient à Harnes et dans toute l'agglomération Lens-Liévin (Lens, Liévin, Sallaumines, Avion, Noyelles-sous-Lens). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les TPE artisans BTP du bassin minier ?",
@@ -65,7 +65,7 @@ export const HARNES_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Harnes depuis Lille ?",
-      a: "Nos consultants viennent de Lille (25 min A21/A1) ou Douai (15 min). Lens est à 5 min.",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };
