@@ -104,3 +104,42 @@ export function pageGuideReseauActive(): boolean {
 export const PREFIXE_DEBIT_PAGE_GUIDE = "page-guide-reseau:ip";
 export const LIMITE_PAGE_GUIDE_PAR_IP = 5;
 export const FENETRE_PAGE_GUIDE_SEC = 600;
+
+/**
+ * CONFIRMATIONS DE LA PAGE « RECEVOIR LE GUIDE » (lot S4a) — l'INTERRUPTEUR de
+ * `POST /api/interne/confirmations-page-guide` (le Studio y RÉSERVE la liste des « merci » à envoyer).
+ *
+ * 🔴 ÉTEINT PAR DÉFAUT : vrai seulement si la variable vaut exactement `"true"`. Lu au runtime
+ * (`process.env` brut, hors `env.ts`). Éteint = 503 `reception_eteinte`, rien n'est lu ni écrit.
+ */
+export function confirmationsPageGuideActives(): boolean {
+  return process.env.CONFIRMATIONS_PAGE_GUIDE_ENABLED === "true";
+}
+
+/** Seau de débit PROPRE à la route des confirmations (distinct des autres routes internes). */
+export const PREFIXE_DEBIT_CONFIRMATIONS = "internal:confirmations-page-guide";
+
+/** Corps maximal accepté : 4 Ko (le corps utile tient en une quarantaine d'octets). */
+export const CORPS_MAX_CONFIRMATIONS = 4096;
+
+/** Nombre maximal de « merci » réservés par appel (et valeur par défaut). */
+export const LOT_MAX_CONFIRMATIONS = 50;
+
+/**
+ * Fenêtre d'un « merci », en heures, comptée depuis la validation de la page : au-delà, la ligne
+ * passe à `expire` (la fenêtre de messagerie du réseau, courte, est refermée). Rien n'est supprimé.
+ */
+export const FENETRE_MERCI_H = 48;
+
+/**
+ * Secret HMAC de la route des confirmations : `GUIDES_RESEAU_HMAC_SECRET` (+ `_PRECEDENT` pendant
+ * une rotation), SANS AUCUN REPLI sur `VIDEOS_STUDIO_HMAC_SECRET`. Absent ou < 32 caractères → null
+ * (503 `reception_non_configuree`).
+ */
+export function secretsConfirmationsPageGuide(
+  env: Readonly<Record<string, string | undefined>> = process.env,
+): { courant: string; precedent: string | null } | null {
+  const courant = secretValide(env.GUIDES_RESEAU_HMAC_SECRET);
+  if (!courant) return null;
+  return { courant, precedent: secretValide(env.GUIDES_RESEAU_HMAC_SECRET_PRECEDENT) };
+}
