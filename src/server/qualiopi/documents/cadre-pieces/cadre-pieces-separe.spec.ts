@@ -35,6 +35,32 @@ describe("cadre-pieces séparé des pièces signables", () => {
     }
   });
 
+  it("l'API publique du cadre n'expose ni SignatureZone, ni pdfStyles, ni brandColor", async () => {
+    const cadre = await import("./index");
+    expect(cadre).not.toHaveProperty("SignatureZone");
+    expect(cadre).not.toHaveProperty("pdfStyles");
+    expect(cadre).not.toHaveProperty("brandColor");
+  });
+
+  it("index.ts ne ré-exporte de base-layout que les noms autorisés (aucun `export *`)", () => {
+    const src = sansCommentaires(readFileSync(join(DOSSIER, "index.ts"), "utf8"));
+    expect(src).not.toMatch(/export\s*\*\s*(as\s+\w+\s+)?from\s*["'][^"']*base-layout["']/);
+    const reexports = [
+      ...src.matchAll(/export\s+(type\s+)?\{([^}]*)\}\s*from\s*["'][^"']*base-layout["']/g),
+    ];
+    const valeurs: string[] = [];
+    const types: string[] = [];
+    for (const m of reexports) {
+      const noms = (m[2] ?? "")
+        .split(",")
+        .map((n) => n.trim())
+        .filter(Boolean);
+      (m[1] ? types : valeurs).push(...noms);
+    }
+    expect(valeurs.sort()).toEqual(["assainirEspacesPdf", "formatEur", "formatEurosFromCents"]);
+    expect(types.sort()).toEqual(["OrganismeIdentite"]);
+  });
+
   it("le cadre des pièces n'est jamais importé par un fichier de devis", () => {
     const devis = fichiers(RACINE).filter(
       (f) =>
