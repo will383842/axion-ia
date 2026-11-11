@@ -13,7 +13,7 @@ import { env } from "@/env";
 // fichier : `brand.ts` tire `@/env`, et le rendu d'e-mail tourne dans le
 // worker, sur un trajet qui ne charge pas la validation Zod des secrets.
 // Déplacer le littéral plutôt que le recopier — cf. `identite-legale-ssot.ts`.
-import { IDENTITE_LEGALE } from "@/lib/identite-legale-ssot";
+import { COORDONNEES_PUBLIQUES, IDENTITE_LEGALE } from "@/lib/identite-legale-ssot";
 
 export const BRAND = {
   /** Nom canonique customer-facing (logo, header, JSON-LD `name`, OG, titles). */
@@ -51,6 +51,27 @@ export const BRAND = {
 } as const;
 
 export type Brand = typeof BRAND;
+
+/**
+ * Coordonnées PUBLIQUES de l'entreprise, à UN seul endroit pour les données
+ * structurées (`src/lib/seo*.ts`). Avant (audit SEO du 2026-11-11) : l'e-mail
+ * de contact et l'URL LinkedIn entreprise étaient recopiés en dur dans plusieurs
+ * fabriques JSON-LD (`seo.ts`, `seo/job-posting.ts`…) ; une correction devait
+ * être propagée à la main, fichier par fichier.
+ *
+ * Les deux valeurs dérivent de `COORDONNEES_PUBLIQUES`
+ * (`identite-legale-ssot.ts`, module pur) — la même source que
+ * `EMAIL_LEGAL.contactEmail` et que le lien LinkedIn des gabarits d'e-mail.
+ *
+ * - `email` : adresse de contact affichée publiquement (repli quand
+ *   `COMPANY_EMAIL` n'est pas posé côté Coolify).
+ * - `linkedinEntreprise` : page ENTREPRISE, jamais le profil personnel du
+ *   fondateur (`FOUNDER.linkedin`).
+ */
+export const CONTACT_PUBLIC = {
+  email: COORDONNEES_PUBLIQUES.contactEmail,
+  linkedinEntreprise: COORDONNEES_PUBLIQUES.linkedinEntreprise,
+} as const;
 
 /**
  * SSOT identité du fondateur (audit E-E-A-T 2026-06-22, P1).
