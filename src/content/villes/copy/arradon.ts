@@ -49,7 +49,7 @@ export const ARRADON_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Arradon et sur le golfe du Morbihan ?",
-      a: "Oui, Axion-IA intervient à Arradon et tout le golfe du Morbihan (Vannes, Séné, Île-aux-Moines, Baden, Larmor-Baden). Nos consultants se déplacent depuis Vannes (5 min) ou Lorient (50 min).",
+      a: "Oui, Axion-IA intervient à Arradon et tout le golfe du Morbihan (Vannes, Séné, Île-aux-Moines, Baden, Larmor-Baden). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les professions libérales et cabinets de conseil à Arradon ?",
@@ -65,7 +65,7 @@ export const ARRADON_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Arradon depuis Vannes ?",
-      a: "Nos consultants viennent de Vannes (5 min voiture). Pour les multi-jours, hébergement local possible (hôtels de charme Arradon/golfe).",
+      a: "Nous intervenons partout en France, sur place ou à distance. Pour les multi-jours, hébergement local possible (hôtels de charme Arradon/golfe).",
     },
   ],
 };

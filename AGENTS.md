@@ -110,7 +110,7 @@ et l'a toujours été :
   honnête — cumulatif comme son nom l'annonce. ⚠️ Les deux chiffres qui circulaient
   auparavant dans ce fichier (135,78 puis 134,87) étaient tous les deux **faux** : lire la
   sortie de l'étape « Poids du bundle » d'un run récent, jamais cette page.
-  Le bucket porte désormais un **CLIQUET à 138 KB** (mesure + ~2 KB de marge de bruit) et
+  Le bucket porte désormais un **CLIQUET à 138 KB** (mesure + ~2 KB de marge de bruit ; **relevé à 139 KB le 2026-11-11**, ADR 0075 — il ne doit plus monter sans réduction) et
   la **CIBLE de 100 KB reste écrite dans son nom**. Le cliquet n'excuse pas la dette : il
   empêche qu'elle grossisse, ce qui est le seul risque qu'une gate sache traiter. Abaisser
   ce seuil se fait APRÈS le travail de réduction — jamais avant, sous peine de rouvrir un
@@ -132,6 +132,14 @@ dernier à 30 KB) — l'étape est donc devenue bloquante **en passant**, ce qui
 état dans lequel poser une gate.
 
 Source de vérité : `_AUDIT/AUDIT-WEB-VITALS-2026-BUDGETS.md`.
+
+## CI : brouillon = pas de CI lourde (CI-LOT1, 2026-11-08)
+
+- Une PR **reste en brouillon pendant le travail** (règle pour tout agent : ouvrir en brouillon, ne passer en « prête » qu'une fois, à la fin du lot). En brouillon, Gate A (types, lint, gitleaks, anti-SIREN, admin-gardes…) et Gate D tournent ; la couverture ×3 et Gate B ×2 sautent ; `ready_for_review` relance tout.
+- ⛔ Les deux VERDICTS exigés (« Gate A · couverture », « Gate B · per-PR ») **ne sautent jamais** : un contexte exigé `skipped` compte comme réussi pour GitHub (fenêtre de contournement sur le même SHA après `ready_for_review`). En brouillon, leur première étape « Refus en brouillon » les rend **rouges** (« verdict non rendu »). Une PR en brouillon est donc rouge sur ces deux contextes, par construction.
+- `push: branches: [main]` est conservé : Gate A et Gate D tournent après chaque fusion ; couverture, Gate B et verdicts n'y tournent pas. Le passage quotidien (`schedule`) rejoue `main` en entier.
+- Gate B build avec `SKIP_NEXT_TYPECHECK=true` ; la vérification de types (y compris `.next/types` via `next typegen`) est faite par « Gate A · per-commit ».
+- ⚠️ Un « Re-run » d'un vieux run lancé en brouillon rejoue `draft: true` : les verdicts restent rouges. Ne relancer que le run de `ready_for_review`, ou pousser un commit.
 
 ## Build externalisé GitHub Actions + stubs Prisma/Redis (ADR 0026)
 

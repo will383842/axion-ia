@@ -49,7 +49,7 @@ export const BETTON_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Betton et nord Rennes ?",
-      a: "Oui, Axion-IA intervient à Betton et tout le nord de Rennes Métropole (Melesse, Chevaigné, La Chapelle-des-Fougeretz, Saint-Grégoire). Nos consultants se déplacent directement dans vos locaux depuis le centre de Rennes (10 min).",
+      a: "Oui, Axion-IA intervient à Betton et tout le nord de Rennes Métropole (Melesse, Chevaigné, La Chapelle-des-Fougeretz, Saint-Grégoire). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les professions libérales de Betton ?",
@@ -65,7 +65,7 @@ export const BETTON_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Betton ?",
-      a: "Nos consultants viennent de Rennes centre (10 min route D175). Intervention sur site dans vos locaux ou en visio selon vos préférences.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Intervention sur site dans vos locaux ou en visio selon vos préférences.",
     },
   ],
 };

@@ -49,7 +49,7 @@ Trois formes principales sont identifiées dans le contexte IA d'entreprise :
 Axion-IA refuse tout accord commercial avec un fournisseur IA lorsque :
 
 - Le partenariat imposerait de recommander exclusivement ce fournisseur, indépendamment de l'adéquation au besoin client.
-- Les termes d'utilisation du fournisseur autorisent le réentraînement sur les données client sans consentement explicite (violation RGPD / AI Act article 13).
+- Les termes d'utilisation du fournisseur autorisent le réentraînement sur les données client sans consentement explicite (violation RGPD).
 - Le fournisseur ne dispose pas d'une politique de rétention et d'export des données conforme aux standards CNIL.
 
 ## Exception tolérée
@@ -69,9 +69,11 @@ Cette doctrine s'appuie sur le cadre juridique suivant :
       "https://eur-lex.europa.eu/legal-content/FR/TXT/?uri=CELEX%3A32024R1689",
       "https://eur-lex.europa.eu/legal-content/FR/TXT/?uri=CELEX%3A32023R2854",
       "https://eur-lex.europa.eu/legal-content/FR/TXT/?uri=CELEX%3A32016R0679",
+      "https://eur-lex.europa.eu/eli/reg/2026/1744/oj",
+      "https://eur-lex.europa.eu/eli/reg/2024/1689/oj",
     ],
-    lastReviewedOn: "2026-05-20",
-    reviewedBy: "claude-sonnet-4-6",
+    lastReviewedOn: "2026-11-08",
+    reviewedBy: "relecture-ai-act-2026-11-08",
   },
 
   // ─────────────────────────────────────────────────────────────
@@ -268,12 +270,13 @@ Les établissements ESR publics sont soumis aux règles de la commande publique 
 
 **R :** Le règlement UE 2024/1689 (AI Act) a été publié au Journal Officiel de l'Union Européenne le 12 juillet 2024. Il est entré en application de manière progressive :
 
-- **2 février 2025** : interdiction des pratiques IA inacceptables (manipulation subliminale, scoring social par les pouvoirs publics, exploitation des vulnérabilités).
+- **2 février 2025** : interdiction des pratiques IA inacceptables (manipulation subliminale, notation sociale, exploitation des vulnérabilités).
 - **2 août 2025** : obligations applicables aux fournisseurs de modèles d'IA à usage général (GPAI — General Purpose AI), dont les exigences de transparence de l'article 53 (documentation technique, politique de droit d'auteur).
-- **2 août 2026** : obligations applicables aux systèmes IA à haut risque listés à l'Annexe III (RH, crédit, éducation, infrastructure critique, etc.) — mise en conformité requise pour les fournisseurs et déployeurs.
-- **2 août 2027** : exigences étendues aux systèmes IA intégrés dans des produits couverts par d'autres directives (machines, dispositifs médicaux).
+- **2 août 2026** : application générale du règlement, dont la transparence de l'article 50 (le marquage technique des contenus générés, art. 50 §2, a un délai jusqu'au 2 décembre 2026 pour les systèmes déjà sur le marché).
+- **2 décembre 2027** : obligations haut risque de l'Annexe III (RH, crédit, éducation, infrastructure critique, etc.), initialement prévues en août 2026, reportées par le règlement (UE) 2026/1744 (« omnibus numérique IA », en vigueur le 27 juillet 2026).
+- **2 août 2028** : obligations haut risque pour l'IA intégrée dans des produits réglementés (annexe I : machines, dispositifs médicaux), initialement prévues en août 2027, reportées par le même règlement.
 
-En France, le règlement s'applique directement sans transposition nationale (droit UE d'application directe). La CNIL et l'ANIAI (Autorité Nationale de l'Intelligence Artificielle, structure en cours de création au sein de la DGE) sont les autorités compétentes désignées.
+En France, le règlement s'applique directement sans transposition nationale (droit UE d'application directe). Les autorités de surveillance sont en cours de désignation (projet de loi en cours ; schéma envisagé : DGCCRF coordinatrice, avec la CNIL), à vérifier.
 
 ---
 
@@ -289,7 +292,7 @@ Exemples de catégories à haut risque directement pertinentes pour les entrepri
 - **Gestion d'infrastructures critiques** (eau, énergie, transports).
 - **Application de la loi** et **administration de la justice** (secteur public).
 
-Un système IA interne d'aide à la décision RH (tri de CV, scoring d'entretien) entre dans cette catégorie pour les entreprises de toute taille. L'obligation s'applique au **déployeur** (l'entreprise qui utilise) autant qu'au **fournisseur** (l'éditeur qui produit le système).
+Un système IA interne d'aide à la décision RH (tri de CV, scoring d'entretien) entre dans cette catégorie pour les entreprises de toute taille. Le **fournisseur** (l'éditeur qui produit le système) et le **déployeur** (l'entreprise qui l'utilise) ont chacun des obligations distinctes.
 
 ---
 
@@ -301,7 +304,7 @@ Un système IA interne d'aide à la décision RH (tri de CV, scoring d'entretien
 
 2. **Systèmes IA générant du contenu synthétique** (texte, audio, image, vidéo — deepfakes) : le contenu généré doit être marqué de manière machine-lisible (watermarking ou métadonnées C2PA) permettant sa détection comme contenu synthétique.
 
-Pour les entreprises qui déploient un chatbot IA en contact client ou qui utilisent des LLM pour générer des contenus publiés sous leur nom, ces obligations sont déjà applicables depuis août 2025. L'absence de marquage constitue une infraction sanctionnable.
+Pour les entreprises qui déploient un chatbot IA en contact client ou qui utilisent des LLM pour générer des contenus publiés sous leur nom, l'utilisateur doit signaler les hypertrucages et certains textes d'intérêt public générés (art. 50 §4) depuis le 2 août 2026 ; le marquage technique des contenus relève du fournisseur de l'outil (délai jusqu'au 2 décembre 2026 pour les systèmes déjà sur le marché). Un manquement peut être sanctionné selon l'article 99.
 
 ---
 
@@ -310,25 +313,25 @@ Pour les entreprises qui déploient un chatbot IA en contact client ou qui utili
 **R :** Le régime de sanctions de l'AI Act (article 99) est le suivant :
 
 - **Violation des pratiques interdites** (art. 5) : jusqu'à **35 millions d'euros** ou 7 % du chiffre d'affaires mondial annuel (le montant le plus élevé).
-- **Non-conformité des systèmes à haut risque** ou obligations GPAI : jusqu'à **15 millions d'euros** ou 3 % du CA mondial.
-- **Fourniture d'informations incorrectes** aux autorités : jusqu'à **7,5 millions d'euros** ou 1,5 % du CA mondial.
+- **Non-respect des obligations des systèmes à haut risque** : jusqu'à **15 millions d'euros** ou 3 % du CA mondial (art. 99). Pour les modèles d'IA à usage général (GPAI), les amendes relèvent de l'article 101 et sont prononcées par la Commission.
+- **Fourniture d'informations incorrectes** aux autorités : jusqu'à **7,5 millions d'euros** ou 1 % du CA mondial.
 
-Pour les PME et start-ups, les montants sont plafonnés aux pourcentages du CA. Ces sanctions sont cumulables avec celles du RGPD (jusqu'à 4 % du CA mondial) lorsque des données personnelles sont impliquées.
+Pour les PME, le plafond applicable est le montant le plus bas des deux (montant fixe ou pourcentage). Ces sanctions sont cumulables avec celles du RGPD (jusqu'à 4 % du CA mondial) lorsque des données personnelles sont impliquées.
 
 ---
 
 ## Q : Quelle est la checklist prioritaire pour une PME française en 2026 ?
 
-**R :** Voici les actions prioritaires pour une PME ou ETI française avant la date d'obligation **août 2026** (systèmes haut risque) :
+**R :** Voici les actions prioritaires pour une PME ou ETI française avant l'application des obligations haut risque (**2 décembre 2027** pour l'annexe III selon le règlement (UE) 2026/1744, initialement prévues en août 2026) :
 
 **Inventaire (J-6 mois minimum)**
 - [ ] Lister tous les systèmes IA utilisés dans l'entreprise (internes et SaaS tiers).
 - [ ] Pour chaque système, identifier s'il entre dans une catégorie Annexe III (haut risque).
 - [ ] Vérifier si les fournisseurs SaaS ont publié leur déclaration de conformité AI Act.
 
-**Obligations immédiates (déjà applicables depuis août 2025)**
-- [ ] Tout chatbot ou assistant IA en contact avec des tiers doit afficher une mention « Vous interagissez avec une IA ».
-- [ ] Les modèles GPAI intégrés (GPT, Gemini, Claude, Mistral via API) : vérifier que le contrat fournisseur mentionne leur conformité GPAI article 53.
+**Obligations déjà applicables**
+- [ ] Tout chatbot ou assistant IA en contact avec des tiers doit afficher une mention « Vous interagissez avec une IA » (article 50, depuis le 2 août 2026).
+- [ ] Les modèles GPAI intégrés (GPT, Gemini, Claude, Mistral via API) : vérifier que le contrat fournisseur mentionne le respect des obligations GPAI de l'article 53 (depuis le 2 août 2025).
 
 **Pour les systèmes haut risque RH (recrutement, évaluation)**
 - [ ] Réaliser une analyse d'impact (DPIA RGPD + évaluation AI Act conjointe).
@@ -346,9 +349,11 @@ Pour les PME et start-ups, les montants sont plafonnés aux pourcentages du CA. 
       "https://www.cnil.fr/fr/ia-act-ce-que-contient-le-reglement-europeen-sur-lintelligence-artificielle",
       "https://digital-strategy.ec.europa.eu/fr/policies/regulatory-framework-ai",
       "https://www.economie.gouv.fr/intelligence-artificielle/reglementation-intelligence-artificielle",
+      "https://eur-lex.europa.eu/eli/reg/2026/1744/oj",
+      "https://eur-lex.europa.eu/eli/reg/2024/1689/oj",
     ],
-    lastReviewedOn: "2026-05-20",
-    reviewedBy: "claude-sonnet-4-6",
+    lastReviewedOn: "2026-11-08",
+    reviewedBy: "relecture-ai-act-2026-11-08",
   },
 
   // ─────────────────────────────────────────────────────────────
@@ -377,10 +382,9 @@ Ce template permet d'estimer le ROI d'un audit IA avant de prendre la décision 
 | Poste | Valeur à renseigner | Exemple ETI 200 sal. |
 |---|---|---|
 | Durée de l'audit (jours) | [ ] jours | 5 jours |
-| Tarif journalier Axion-IA | cf. grille tarifaire | 2 200 € HT/jour |
-| **Coût total de l'audit** | **[ ]** | **11 000 € HT** |
+| **Coût de l'audit Axion-IA** | sur devis | sur devis (parlons-en lors du rendez-vous gratuit de 45 minutes) |
 | Coût interne (temps équipe client) | [ ] jours × salaire chargé | 3 j × 500 € = 1 500 € |
-| **Investissement total** | **[ ]** | **12 500 € HT** |
+| **Investissement total** | **[ ]** | **[coût de l'audit] + 1 500 €** |
 
 ---
 
@@ -426,7 +430,7 @@ Un audit IA identifie typiquement des tâches manuelles automatisables à court 
 
 Au-delà des pénalités évitées, un audit IA produit une valeur de conformité difficile à quantifier mais réelle :
 
-- Documentation de l'inventaire IA (obligatoire AI Act systèmes haut risque à partir d'août 2026).
+- Documentation de l'inventaire IA (utile pour préparer les obligations haut risque de l'AI Act, reportées au 2 décembre 2027 pour l'annexe III par le règlement (UE) 2026/1744).
 - Identification des points de blocage RGPD avant un incident (coût moyen d'une notification de violation RGPD en France : ~80 000 € selon les études Ponemon/IBM 2023, incluant frais juridiques, notification, mesures correctives).
 - Crédibilité renforcée lors d'audits clients ou appels d'offres exigeant une maturité IA documentée.
 
@@ -436,13 +440,13 @@ Au-delà des pénalités évitées, un audit IA produit une valeur de conformit�
 
 | Indicateur | Montant |
 |---|---|
-| Investissement total (audit + temps interne) | 12 500 € HT |
+| Investissement total (audit + temps interne) | [coût de l'audit, sur devis] + 1 500 € |
 | Économies logicielles année 1 | 10 800 € |
 | Évitement pénalités (valeur espérée) | 22 500 € |
 | Gains productivité année 1 | 17 368 € |
 | **Bénéfices année 1** | **50 668 €** |
-| **ROI année 1** | **305 %** |
-| **Période de retour sur investissement** | **~3 mois** |
+| **ROI année 1** | **(bénéfices − investissement) / investissement** |
+| **Période de retour sur investissement** | **investissement / bénéfices mensuels** |
 
 ---
 
@@ -459,8 +463,10 @@ Au-delà des pénalités évitées, un audit IA produit une valeur de conformit�
       "https://www.ibm.com/reports/data-breach",
       "https://www.bpifrance.fr/nos-actualites/barometre-bpifrance-pme-eti",
       "https://eur-lex.europa.eu/legal-content/FR/TXT/?uri=CELEX%3A32024R1689",
+      "https://eur-lex.europa.eu/eli/reg/2026/1744/oj",
+      "https://eur-lex.europa.eu/eli/reg/2024/1689/oj",
     ],
-    lastReviewedOn: "2026-05-20",
-    reviewedBy: "claude-sonnet-4-6",
+    lastReviewedOn: "2026-11-08",
+    reviewedBy: "relecture-ai-act-2026-11-08",
   },
 ];

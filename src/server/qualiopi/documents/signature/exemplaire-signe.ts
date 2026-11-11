@@ -41,10 +41,19 @@
  * elles rendent `instantane_absent`, et le dire vaut mieux qu'un PDF reconstruit
  * dont personne ne pourrait garantir la fidélité.
  *
+ * ## Devis à formules (2026-11-07)
+ *
+ * L'exemplaire signé d'un devis à formules imprime aussi le CHOIX scellé du client (formule,
+ * automatisations, totaux, récurrent, empreinte). Il est relu sur le `choixOffre` de la ligne
+ * client (sceau V4) et revérifié contre l'offre figée (`choix-exemplaire.ts`) : jamais sur
+ * `devis.choixRetenu`, qui n'est rempli qu'à l'acceptation, après la contresignature. Sceau
+ * absent ou incohérent : rien n'est imprimé et un avertissement part, le rendu continue.
+ *
  * Node runtime (Prisma + R2 + react-pdf). Stub-aware.
  */
 
 import React from "react";
+import * as Sentry from "@sentry/nextjs";
 import { prisma } from "@/lib/prisma";
 import { renderPdfToBuffer } from "@/server/qualiopi/documents/render";
 import { getSignedUrlR2 } from "@/lib/r2-storage";
@@ -60,6 +69,7 @@ import { LettreMissionPdf } from "@/server/qualiopi/documents/templates/lettre-m
 import { MandatOpcoPdf } from "@/server/qualiopi/documents/templates/mandat-opco";
 import { AutorisationCaptationPdf } from "@/server/qualiopi/documents/templates/autorisation-captation";
 import { nomFichierDocument } from "@/server/qualiopi/documents/nom-fichier";
+import { choixImprimable, type ChoixImprimable } from "@/server/qualiopi/devis/choix-exemplaire";
 import { allumageExemplaireCaptation } from "./interrupteur-captation";
 import {
   typeGabarit,
@@ -341,6 +351,10 @@ export async function rendreExemplaireSigne(documentGenereId: string): Promise<R
       provider: true,
       signatureKey: true,
       imagePurgeeAt: true,
+      // Sceau V4 du devis à formules : le choix imprimé sur l'exemplaire.
+      hashVersion: true,
+      choixOffre: true,
+      choixOffreSha256: true,
     },
     // ⚠️ Même tri que la chaîne (`createdAt`, puis `id`) : trier sur `signeAt`
     // rendrait un ordre pouvant différer de celui du chaînage.
@@ -355,11 +369,45 @@ export async function rendreExemplaireSigne(documentGenereId: string): Promise<R
     signatures[l.partie] = await versPreuve(l);
   }
 
-  // 🔴 L'instantané est rejoué TEL QUEL, seules les signatures sont injectées.
-  // Écraser un autre champ ici ferait diverger l'exemplaire de la pièce signée.
+  // 🔴 Devis à formules : le choix SCELLÉ du client s'imprime à côté des signatures. Source =
+  // `choixOffre` de la ligne client (sceau V4), JAMAIS `devis.choixRetenu` (vide tant que
+  // l'acceptation n'a pas eu lieu, c'est-à-dire à la contresignature). Incohérence : rien n'est
+  // imprimé, un avertissement part, le rendu n'est pas bloqué.
+  let choixRetenu: ChoixImprimable | null = null;
+  if (piece.type === "devis") {
+    const ligneClient = lignes.find((l) => l.partie === "client" && l.choixOffre != null);
+    if (ligneClient !== undefined) {
+      const devis = await prisma.devis.findFirst({
+        where: { documentGenereId, offreSha256: { not: null } },
+        select: { numero: true, offre: true, offreSha256: true },
+      });
+      if (devis !== null && devis.offreSha256 !== null) {
+        const r = choixImprimable(
+          { offre: devis.offre, offreSha256: devis.offreSha256, numero: devis.numero },
+          ligneClient,
+        );
+        if (r.ok) {
+          choixRetenu = r.choix;
+        } else {
+          Sentry.captureMessage("Choix scellé non imprimé sur l'exemplaire signé", {
+            level: "warning",
+            tags: { action: "exemplaireSigne:choix", motif: r.motif },
+            extra: { documentGenereId },
+          });
+        }
+      }
+    }
+  }
+
+  // 🔴 L'instantané est rejoué TEL QUEL, seules les signatures (et le choix scellé) sont
+  // injectés. Écraser un autre champ ici ferait diverger l'exemplaire de la pièce signée.
   const rendu = await renderPdfToBuffer(
     React.createElement(Composant, {
-      data: { ...snap.data, signatures } as never,
+      data: {
+        ...snap.data,
+        signatures,
+        ...(choixRetenu !== null ? { choixRetenu } : {}),
+      } as never,
       ...(snap.identite !== undefined ? { identite: snap.identite as never } : {}),
     }),
   );

@@ -512,7 +512,7 @@ const COPY = {
           : `Rien à préparer. Les liens pour reporter ou annuler sont dans le message.`,
       eyebrow: "Rendez-vous de découverte",
       title: "C'est confirmé",
-      signature: "À très vite,\nL'équipe Axion-IA",
+      signature: "À très vite,\nWilliams",
     },
     j1: {
       preview: (d: string | null) =>
@@ -522,7 +522,7 @@ const COPY = {
       title: "Votre rendez-vous a lieu demain",
       quand: (h: string, d: string | null) =>
         `Petit rappel : nous nous retrouvons demain à ${h} (heure de Paris)${d ? `, pour ${d}` : ""}.`,
-      signature: "À demain,\nL'équipe Axion-IA",
+      signature: "À demain,\nWilliams",
     },
     h1: {
       preview: (d: string | null) =>
@@ -530,7 +530,7 @@ const COPY = {
       title: "Votre rendez-vous a lieu dans une heure",
       quand: (h: string, d: string | null) =>
         `Petit rappel : nous nous retrouvons à ${h} (heure de Paris)${d ? `, pour ${d}` : ""}.`,
-      signature: "À tout à l'heure,\nL'équipe Axion-IA",
+      signature: "À tout à l'heure,\nWilliams",
     },
   },
   en: {
@@ -541,7 +541,7 @@ const COPY = {
           : `Nothing to prepare. Links to reschedule or cancel are inside.`,
       eyebrow: "Discovery meeting",
       title: "You're all set",
-      signature: "Talk soon,\nThe Axion-IA team",
+      signature: "Talk soon,\nWilliams",
     },
     j1: {
       preview: (d: string | null) =>
@@ -551,7 +551,7 @@ const COPY = {
       title: "Your meeting is tomorrow",
       quand: (h: string, d: string | null) =>
         `A quick reminder: we meet tomorrow at ${h} (Paris time)${d ? `, for ${d}` : ""}.`,
-      signature: "Talk tomorrow,\nThe Axion-IA team",
+      signature: "Talk tomorrow,\nWilliams",
     },
     h1: {
       preview: (d: string | null) =>
@@ -559,7 +559,7 @@ const COPY = {
       title: "Your meeting is in one hour",
       quand: (h: string, d: string | null) =>
         `A quick reminder: we meet at ${h} (Paris time)${d ? `, for ${d}` : ""}.`,
-      signature: "Talk soon,\nThe Axion-IA team",
+      signature: "Talk soon,\nWilliams",
     },
   },
 } as const;

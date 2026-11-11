@@ -23,7 +23,7 @@ import {
   getFormationImage,
   getFormationImageCredit,
 } from "@/content/formations/catalog-v2-facts";
-import { formatAmount, type FormationBracket } from "@/content/pricing";
+import { formatMontantPublic, type FormationBracket } from "@/content/pricing";
 
 // Accent visuel par gamme (sous-ensemble de FormatAccent — terracotta / sage /
 // claude). Classes copiées à l'identique d'InterventionFormatCard pour un rendu
@@ -99,10 +99,10 @@ export function FormationFormatCard({ formation: f, locale }: Props): ReactNode 
   const href = `/formations/${f.slugFr}`;
   const ctaLabel = isFr ? "Voir le programme" : "See the programme";
 
-  // Prix FIXE public par groupe (refonte 2026-07-19) — `formatAmount`
-  // non-compact porte déjà « € HT », ne pas resuffixer.
+  // R7 (ordre de Williams du 08/11/2026) : « Sur devis » tant que l'interrupteur des prix
+  // publics de pricing.ts est coupé.
   const entryPrice = getFormationV2EntryPrice(f);
-  const priceLabel = entryPrice ? formatAmount(entryPrice, "fr") : "Sur devis";
+  const priceLabel = formatMontantPublic(entryPrice, "fr");
   const groupSize = groupSizeLabel(getFormationV2Brackets(f));
   // Badge principal : axe métier/secteur (« RH », « Santé »…), sinon catégorie.
   const axeBadge = f.axeLabelFr ?? (f.categorie ? getCategorieMeta(f.categorie).shortFr : null);

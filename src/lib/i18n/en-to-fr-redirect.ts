@@ -75,9 +75,6 @@ const EN_TO_FR_PREFIXES: ReadonlyArray<readonly [string, string]> = [
   ["/en/subprocessors", "/fr/sous-processeurs"],
   ["/en/transparency", "/fr/transparence"],
   // Important: /industry/ AVANT /case-studies/ pour matcher la sous-route en premier.
-  ["/en/case-studies/industry/", "/fr/cas-concrets/secteur/"],
-  ["/en/case-studies/", "/fr/cas-concrets/"],
-  ["/en/case-studies", "/fr/cas-concrets"],
   ["/en/about", "/fr/a-propos"],
   ["/en/press", "/fr/presse"],
   ["/en/blog/category/", "/fr/blog/categorie/"],
@@ -138,6 +135,12 @@ const EN_TO_FR_PREFIXES: ReadonlyArray<readonly [string, string]> = [
  * `/actualites`, `/connaissances`, etc.).
  */
 export function mapEnToFr(pathname: string): string {
+  // Cas concrets éteints (2026-11-08) : un seul saut vers /fr/methodologie, jamais vers
+  // /fr/cas-concrets (qui redirigerait à son tour : chaîne, voire 404). Pas de table de
+  // préfixes ici : elle recolle le reste du chemin.
+  if (pathname === "/en/case-studies" || pathname.startsWith("/en/case-studies/")) {
+    return "/fr/methodologie";
+  }
   for (const [enPrefix, frPrefix] of EN_TO_FR_PREFIXES) {
     // Frontière de SEGMENT (GEO-060) : un préfixe sans `/` final ne doit matcher
     // que le chemin exact ou un sous-chemin `<préfixe>/…`. Sans cette borne,

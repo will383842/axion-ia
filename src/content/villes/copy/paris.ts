@@ -86,7 +86,7 @@ export const PARIS_COPY: VilleCopy = {
         whyHere: [
           "Paris est notre premier pôle d'intervention : la majorité de nos audits y sont déclenchés.",
           "Tissu B2B parisien sur-représenté chez nos clients : cabinets d'expertise comptable, family offices, asset managers, conseil 8e/9e/16e, scale-ups Sentier-République, maisons de mode Marais.",
-          "Nos consultants sont basés à Paris et se déplacent dans les 20 arrondissements ainsi que dans la première couronne.",
+          "Nous intervenons dans les 20 arrondissements ainsi que dans la première couronne, sur place ou à distance.",
           "Restitutions toujours en présentiel : ateliers d'idéation, lecture du livrable avec votre comité de direction, plan d'attaque transmis en main propre.",
           "Aucun jeu de devis opaque : tarifs publics, vous savez exactement ce que vous payez avant de signer.",
           "Vous gardez le contrôle : votre plan d'action est exécutable avec n'importe quel prestataire ou en interne après notre audit.",
@@ -770,7 +770,7 @@ export const PARIS_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "Micro-business",
-            price: "From €990 excl. VAT",
+            price: "Price on request",
             detail:
               "For Paris freelancers, consultants and micro-business owners who want to gain AI efficiency on their daily tasks.",
           },

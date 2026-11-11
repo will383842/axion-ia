@@ -18,9 +18,9 @@ export const EMBRUN_COPY: VilleCopy = {
   ecosystemEn:
     "Embrun est sous-préfecture des Hautes-Alpes (~6 400 hab), perchée au-dessus du lac de Serre-Ponçon (2 800 ha, plus grand lac artificiel de France métropolitaine). Tourisme été (voile, kayak, VTT, randonnée) et hiver (ski aux Orres, Réallon). PME hébergement/camping/restauration, TPE artisans BTP, commerces, agriculture montagne (vergers, élevage) et services sous-préfectoraux.",
   distancesFr:
-    "Gare Embrun (TER Marseille-Briançon via Gap, 45 min Gap). Briançon à 50 min nord. Gap à 45 min sud. Grenoble à 2h30. Aéroport Marseille-Provence à 2h30. Accès N94 vallée Durance.",
+    "Gare Embrun (TER Marseille-Briançon via Gap, 45 min Gap). Briançon à 50 min nord. Gap à 45 min sud. Aéroport Marseille-Provence à 2h30. Accès N94 vallée Durance.",
   distancesEn:
-    "Gare Embrun (TER Marseille-Briançon via Gap, 45 min Gap). Briançon à 50 min nord. Gap à 45 min sud. Grenoble à 2h30. Aéroport Marseille-Provence à 2h30. Accès N94 vallée Durance.",
+    "Gare Embrun (TER Marseille-Briançon via Gap, 45 min Gap). Briançon à 50 min nord. Gap à 45 min sud. Aéroport Marseille-Provence à 2h30. Accès N94 vallée Durance.",
   topSectorsNaf: [
     "Tourisme & sports nature (lac Serre-Ponçon)",
     "Hôtellerie, camping & hébergement",

@@ -18,9 +18,9 @@ export const LA_RAVOIRE_COPY: VilleCopy = {
   ecosystemEn:
     "La Ravoire est la 3e commune de l'agglomération de Chambéry (9 300 habitants), ancien village agricole devenu résidentiel au pied du Mont Peney. Proximité immédiate de Chambéry et Challes-les-Eaux (station thermale). Tissu PME tertiaires services, professions libérales, TPE artisanat, commerces de proximité et acteurs de l'immobilier résidentiel en forte croissance.",
   distancesFr:
-    "Chambéry centre à 5 min. Challes-les-Eaux à 5 min. Aéroport Chambéry-Savoie à 15 min. Lyon à 1h30 par A43. Grenoble à 1h.",
+    "Chambéry centre à 5 min. Challes-les-Eaux à 5 min. Aéroport Chambéry-Savoie à 15 min. Lyon à 1h30 par A43.",
   distancesEn:
-    "Chambéry centre à 5 min. Challes-les-Eaux à 5 min. Aéroport Chambéry-Savoie à 15 min. Lyon à 1h30 par A43. Grenoble à 1h.",
+    "Chambéry centre à 5 min. Challes-les-Eaux à 5 min. Aéroport Chambéry-Savoie à 15 min. Lyon à 1h30 par A43.",
   topSectorsNaf: [
     "PME tertiaires & services",
     "Professions libérales",

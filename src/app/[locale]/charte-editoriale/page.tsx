@@ -8,7 +8,7 @@
  *
  * Sections :
  *   1. Mission éditoriale (cabinet IA opérationnel B2B)
- *   2. Process de revue (review-queue admin, validation Will)
+ *   2. Process de revue (contrôles automatiques bloquants, file de relecture humaine ciblée)
  *   3. Sources & autorités externes (Légifrance, AI Act, INSEE, MIT)
  *   4. Transparence IA (Manon AI-author, AI Act art. 50 disclosure)
  *   5. Fact-check & vérification
@@ -18,7 +18,7 @@
  *   9. FAQ AEO (citabilité IA — écrit par IA ?, signaler erreur, indépendance)
  *
  * Server component, ISR 1j. JSON-LD WebPage + Article (EEAT, author Person +
- * publisher Organization, dateModified=SITE_EDITORIAL_DATE) + FAQPage (via FaqAccordion).
+ * publisher Organization, dateModified = date réelle de la route, `dateRoute`) + FAQPage (via FaqAccordion).
  * Cohérent avec /transparence (hub IA Act) + /sous-processeurs (DPA).
  */
 
@@ -36,12 +36,8 @@ import { JsonLd } from "@/components/marketing/JsonLd";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { Link } from "@/i18n/navigation";
 import { FaqAccordion } from "@/components/marketing/FaqAccordion";
-import {
-  buildProductMetadata,
-  buildArticleJsonLd,
-  buildWebPageJsonLd,
-  SITE_EDITORIAL_DATE,
-} from "@/lib/seo";
+import { buildProductMetadata, buildArticleJsonLd, buildWebPageJsonLd } from "@/lib/seo";
+import { dateRoute } from "@/lib/seo/fraicheur";
 
 interface Props {
   params: Promise<{ locale: string }>;
@@ -51,7 +47,13 @@ export const revalidate = 86400;
 
 // Date de dernière révision (mise à jour manuelle à chaque modification
 // substantielle de cette charte). Émise dans dateModified JSON-LD + visible UX.
-const LAST_REVIEWED = "2026-05-18";
+const LAST_REVIEWED = "2026-11-08";
+
+// ⚠️ Ce que la page affirme de la relecture suppose que les réglages de publication
+// automatique `factoryAutoPublishAllBlogTypes` et `newsAutoPublish` sont VRAIS
+// (réglages en base, configuration éditoriale, clé `policies` ; défauts du code : true, cf.
+// policies.ts, réglages de publication du pipeline éditorial). Si l'un est désactivé, des articles
+// attendent une validation humaine avant publication : relire les sections 2 et 4.
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
@@ -64,8 +66,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       ? "Charte éditoriale & transparence IA — Axion-IA"
       : "Editorial policy & AI transparency — Axion-IA",
     description: isFr
-      ? "Mission éditoriale Axion-IA, process de revue, sources, transparence IA (AI Act art. 50), corrections et indépendance. Charte publique mise à jour 2026-05-18."
-      : "Axion-IA editorial mission, review process, sources, AI transparency (EU AI Act art. 50), corrections and independence. Public policy updated 2026-05-18.",
+      ? `Mission éditoriale Axion-IA, process de revue, sources, transparence IA (AI Act art. 50), corrections et indépendance. Charte publique mise à jour ${LAST_REVIEWED}.`
+      : `Axion-IA editorial mission, review process, sources, AI transparency (EU AI Act art. 50), corrections and independence. Public policy updated ${LAST_REVIEWED}.`,
     alternates: { fr: "/charte-editoriale", en: "/editorial-policy" },
   });
 }
@@ -87,9 +89,6 @@ export default async function CharteEditorialePage({ params }: Props) {
       : "Axion-IA public editorial policy — mission, sources, AI transparency, corrections.",
     inLanguage: isFr ? "fr-FR" : "en-US",
     datePublished: "2026-05-18",
-    // SITE_EDITORIAL_DATE = signal de fraîcheur AEO (re-render ISR quotidien). LAST_REVIEWED
-    // reste la date éditoriale affichée en UX (révision substantielle manuelle).
-    dateModified: SITE_EDITORIAL_DATE,
     speakable: {
       selectors: [".tldr-answer", '[data-aeo="tldr"]'],
     },
@@ -100,7 +99,7 @@ export default async function CharteEditorialePage({ params }: Props) {
   });
 
   // Article JSON-LD (EEAT) — la charte EST un document éditorial signé : author
-  // Person (Will) + publisher Organization + dateModified SITE_EDITORIAL_DATE. Renforce la
+  // Person (Williams) + publisher Organization + dateModified = dateRoute(). Renforce la
   // citabilité IA (« quelle est la politique éditoriale d'Axion-IA ? »).
   const articleJsonLd = buildArticleJsonLd({
     locale: isFr ? "fr" : "en",
@@ -110,7 +109,7 @@ export default async function CharteEditorialePage({ params }: Props) {
       ? "Mission, process de revue, sources, transparence IA (AI Act art. 50), corrections et indépendance éditoriale d'Axion-IA."
       : "Axion-IA editorial mission, review process, sources, AI transparency (EU AI Act art. 50), corrections and editorial independence.",
     datePublished: "2026-05-18",
-    dateModified: SITE_EDITORIAL_DATE,
+    dateModified: dateRoute("/charte-editoriale"),
     articleSection: isFr ? "Transparence éditoriale" : "Editorial transparency",
     keywords: isFr
       ? ["charte éditoriale", "transparence IA", "AI Act art. 50", "EEAT", "corrections"]
@@ -125,7 +124,7 @@ export default async function CharteEditorialePage({ params }: Props) {
           id: "contenus-ia",
           question: "Vos contenus sont-ils écrits par une IA ?",
           answer:
-            "Nos contenus éditoriaux sont rédigés avec l'assistance d'IA générative supervisée, sous la persona « Manon », puis relus et validés par l'équipe Axion-IA avant publication. Cette assistance IA est divulguée (AI Act art. 50) sur chaque article et sur la page persona dédiée.",
+            "Nos contenus éditoriaux sont rédigés avec l'assistance d'IA générative, sous la persona « Manon », puis publiés après des contrôles automatiques bloquants. La relecture humaine n'est pas systématique avant publication : elle intervient quand ces contrôles bloquent un article, et à tout moment sur signalement. Cette assistance IA est divulguée (AI Act art. 50) sur chaque article et sur la page persona dédiée.",
         },
         {
           id: "signaler-erreur",
@@ -151,7 +150,7 @@ export default async function CharteEditorialePage({ params }: Props) {
           id: "contenus-ia",
           question: "Is your content written by an AI?",
           answer:
-            "Our editorial content is drafted with supervised generative AI assistance under the « Manon » persona, then reviewed and validated by the Axion-IA team before publication. This AI assistance is disclosed (EU AI Act art. 50) on every article and on the dedicated persona page.",
+            "Our editorial content is drafted with generative AI assistance under the « Manon » persona, then published after blocking automated checks. Human review is not systematic before publication: it applies when those checks block an article, and at any time when an error is reported. This AI assistance is disclosed (EU AI Act art. 50) on every article and on the dedicated persona page.",
         },
         {
           id: "signaler-erreur",
@@ -217,8 +216,8 @@ export default async function CharteEditorialePage({ params }: Props) {
           </p>
           <p>
             {isFr
-              ? "Nous écrivons en priorité pour les décideurs PME/ETI/grandes entreprises qui doivent trancher en quelques semaines sur une initiative IA (adoption, audit, implémentation, formation). Notre objectif éditorial est l'aide à la décision étayée — pas la notoriété, pas l'engagement temps-passé."
-              : "We write primarily for SMB/Mid-cap/Enterprise decision-makers who must decide on an AI initiative within weeks (adoption, audit, implementation, training). Our editorial goal is decision support — not brand awareness, not time-on-site."}
+              ? "Nous écrivons en priorité pour les dirigeants de PME et de TPE qui doivent trancher en quelques semaines sur une initiative IA (adoption, audit, implémentation, formation). Notre objectif éditorial est l'aide à la décision étayée — pas la notoriété, pas l'engagement temps-passé."
+              : "We write primarily for owners and managers of small and medium-sized businesses who must decide on an AI initiative within weeks (adoption, audit, implementation, training). Our editorial goal is decision support — not brand awareness, not time-on-site."}
           </p>
         </Container>
       </Section>
@@ -231,13 +230,13 @@ export default async function CharteEditorialePage({ params }: Props) {
         <Container className="text-fg max-w-3xl space-y-5 text-lg leading-relaxed">
           <p>
             {isFr
-              ? "Chaque article passe par un pipeline éditorial documenté en 6 étapes : briefing (intent SEO/AEO + cible), recherche (KB interne + sources externes datées), rédaction (Manon — assistance IA générative supervisée), revue qualité (gates automatiques + revue humaine), publication (review-queue admin validée par Will), suivi (refresh annuel + corrections sur signalement)."
-              : "Every article goes through a documented 6-step editorial pipeline: briefing (SEO/AEO intent + target), research (internal KB + dated external sources), drafting (Manon — supervised AI assistance), quality review (automatic gates + human review), publication (admin review-queue validated by Will), follow-up (annual refresh + reader-flagged corrections)."}
+              ? "Chaque article passe par un pipeline éditorial en 5 étapes : briefing (intention de recherche + cible), recherche (base de connaissances interne + sources externes datées), rédaction (IA générative, sous le nom de plume « Manon »), contrôles automatiques bloquants, puis publication. Après la mise en ligne : vérification factuelle des chiffres, mises à jour et corrections sur signalement."
+              : "Every article goes through a 5-step editorial pipeline: briefing (search intent + target), research (internal knowledge base + dated external sources), drafting (generative AI, under the pen-name « Manon »), blocking automated checks, then publication. After going live: factual verification of figures, updates, and corrections when errors are reported."}
           </p>
           <p>
             {isFr
-              ? "Les gates qualité automatiques vérifient la longueur, la lisibilité (Flesch FR ≥ 60), la doctrine éditoriale (anti-marketing-hype), la déduplication (anti-doorway HCU 2024), le plagiat (sources internes + externes croisées) et l'absence de PII (helper pii-safe). Score < 70/100 = rejet automatique avec re-génération."
-              : "Automatic quality gates check length, readability (Flesch FR ≥ 60), editorial doctrine (anti-marketing-hype), deduplication (anti-doorway HCU 2024), plagiarism (cross-checked internal + external sources), and absence of PII (pii-safe helper). Score < 70/100 = automatic rejection with regeneration."}
+              ? "Les contrôles automatiques portent sur la qualité (score), la doctrine éditoriale, les doublons de sujet, le plagiat et le respect de l'intention de recherche. Un article sous le seuil de qualité est régénéré automatiquement, deux fois au plus ; s'il reste sous le seuil, ou s'il échoue à un contrôle bloquant, il n'est pas publié automatiquement et attend une relecture humaine. Un article qui franchit ces contrôles est publié sans validation humaine préalable : la relecture humaine n'est pas systématique."
+              : "Automated checks cover quality (score), editorial doctrine, topic duplicates, plagiarism and fit with the search intent. An article below the quality threshold is regenerated automatically, at most twice; if it stays below it, or fails a blocking check, it is not published automatically and waits for human review. An article that clears these checks is published without prior human validation: human review is not systematic."}
           </p>
         </Container>
       </Section>
@@ -264,16 +263,16 @@ export default async function CharteEditorialePage({ params }: Props) {
         eyebrow={isFr ? "4 · IA & transparence" : "4 · AI & transparency"}
         title={
           isFr
-            ? "Contenus rédigés avec assistance IA — supervision humaine"
-            : "AI-assisted editorial content — human supervision"
+            ? "Contenus rédigés avec assistance IA — contrôles automatiques, relecture humaine ciblée"
+            : "AI-assisted editorial content — automated checks, targeted human review"
         }
         tone="sand"
       >
         <Container className="text-fg max-w-3xl space-y-5 text-lg leading-relaxed">
           <p>
             {isFr
-              ? "Nos contenus éditoriaux sont rédigés par une IA générative (OpenAI GPT-4o pour la rédaction, Perplexity Sonar pour la vérification factuelle) sous le nom de plume « Manon » — persona éditoriale d'Axion-IA. Chaque article passe par des contrôles automatisés avant publication ; la relecture humaine intervient sur les contenus sensibles, sans être systématique."
-              : 'Our editorial content is written by generative AI (OpenAI GPT-4o for drafting, Perplexity Sonar for fact-checking) under the pen-name "Manon" — Axion-IA\'s editorial persona. Every article goes through automated checks before publication; human review applies to sensitive content but is not systematic.'}
+              ? "Nos contenus éditoriaux sont rédigés par une IA générative (OpenAI GPT-4o pour la rédaction, Perplexity Sonar pour la vérification factuelle) sous le nom de plume « Manon » — persona éditoriale d'Axion-IA. Chaque article passe par des contrôles automatisés avant publication. Nous ne relisons pas chaque article avant sa mise en ligne : la relecture humaine intervient lorsque les contrôles bloquent un article (il attend alors dans une file de relecture), puis sur signalement d'une erreur."
+              : 'Our editorial content is written by generative AI (OpenAI GPT-4o for drafting, Perplexity Sonar for fact-checking) under the pen-name "Manon" — Axion-IA\'s editorial persona. Every article goes through automated checks before publication. We do not read every article before it goes live: human review applies when the checks block an article (it then waits in a review queue), and when an error is reported.'}
           </p>
           <p>
             {isFr
@@ -312,8 +311,8 @@ export default async function CharteEditorialePage({ params }: Props) {
         <Container className="text-fg max-w-3xl space-y-5 text-lg leading-relaxed">
           <p>
             {isFr
-              ? "Chaque article passe par un fact-check automatique post-rédaction qui compare les affirmations chiffrées (prix, dates, statistiques) à notre Knowledge Base interne. Les affirmations non-corroborées sont flaggées et révisées avant publication. Les sources externes datées sont citées explicitement dans l'article ET dans le JSON-LD `Article.citation[]`."
-              : "Every article goes through an automatic post-drafting fact-check that compares numbered claims (prices, dates, statistics) to our internal Knowledge Base. Uncorroborated claims are flagged and revised before publication. Dated external sources are explicitly cited in the article AND in JSON-LD `Article.citation[]`."}
+              ? "Chaque article publié fait l'objet d'une vérification factuelle automatique des affirmations chiffrées (prix, dates, statistiques). Lorsqu'un chiffre est réfuté, nous le corrigeons automatiquement dans l'article, ou reformulons la phrase sans le chiffre ; si la correction automatique échoue, l'article reste en l'état jusqu'à correction manuelle. Les sources externes datées sont citées explicitement dans l'article ET dans le JSON-LD `Article.citation[]`."
+              : "Every published article goes through an automatic factual check of its numbered claims (prices, dates, statistics). When a figure is refuted, we correct it automatically in the article, or reword the sentence without the figure; if the automatic correction fails, the article stays as it is until it is corrected manually. Dated external sources are explicitly cited in the article AND in JSON-LD `Article.citation[]`."}
           </p>
         </Container>
       </Section>

@@ -36,7 +36,7 @@ describe("payloadDevisEnvoi", () => {
     expect(JSON.stringify(p)).not.toMatch(/token|jeton/i);
   });
 
-  it("une seule formule : montant annoncé, pas de mention « 2 formules »", () => {
+  it("une seule formule : pas de mention « 2 formules », et AUCUN montant unique annoncé", () => {
     const o = offreFictive();
     o.formulesProposees = ["achat"];
     const p = payloadDevisEnvoi({
@@ -45,7 +45,19 @@ describe("payloadDevisEnvoi", () => {
       formules: vueFormules(o),
     });
     expect(p).not.toHaveProperty("nbFormules");
-    expect(p["montantLabel"]).toBe("1 000,00 € HT");
+    expect(p).not.toHaveProperty("montantLabel");
+  });
+
+  it("UNE formule abonnement : le total (mise en service) ne sous-annonce pas le prix", () => {
+    const o = offreFictive();
+    o.formulesProposees = ["abonnement"];
+    const p = payloadDevisEnvoi({
+      ...base,
+      montantTotalHtCents: 30000,
+      montantLabel: "300,00 € HT",
+      formules: vueFormules(o),
+    });
+    expect(p).not.toHaveProperty("montantLabel");
   });
 
   it("relit les formules figées dans la pièce envoyée (renvoi)", () => {
@@ -54,5 +66,17 @@ describe("payloadDevisEnvoi", () => {
     expect(relu?.formules).toHaveLength(2);
     expect(formulesDepuisMetadata({ renderData: { data: {} } })).toBeUndefined();
     expect(formulesDepuisMetadata(null)).toBeUndefined();
+  });
+
+  it("devisAFormules : aucun montant annoncé même sans formules lisibles", () => {
+    const p = payloadDevisEnvoi({
+      clientNom: "C",
+      numero: "N",
+      montantTotalHtCents: 90000,
+      montantLabel: "900,00 € HT",
+      dateValiditeLabel: "01/01/2027",
+      devisAFormules: true,
+    });
+    expect(p).not.toHaveProperty("montantLabel");
   });
 });

@@ -65,7 +65,7 @@ export const AUTUN_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Dijon ou Lyon ?",
-      a: "Nos consultants viennent de Dijon (1h15) ou Lyon (2h) via Le Creusot-TGV (30 min d'Autun). Coûts de déplacement séparés du forfait, tarifs transparents.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Coûts de déplacement séparés du forfait, tarifs transparents.",
     },
   ],
 };

@@ -22,6 +22,7 @@
  * pas ici : le composant reste un rendu, la route reste le point d'entrée.
  */
 
+import { CAS_CONCRETS_AFFICHES } from "@/content/preuves-sociales";
 import Image from "next/image";
 import {
   ArrowRight,
@@ -70,8 +71,8 @@ interface FounderProfileProps {
 }
 
 const PILLS: ReadonlyArray<{ icon: LucideIcon; label: string }> = [
-  { icon: MapPin, label: "Toute la France · siège à Grenoble" },
-  { icon: Users, label: "De la PME au grand groupe" },
+  { icon: MapPin, label: "Interventions partout en France" },
+  { icon: Users, label: "Pour les PME et les TPE" },
   // 2026-09-30 — « Top 1 % » retiré (ordre permanent du dirigeant : non étayé).
   { icon: Sparkles, label: "Formateur et consultant en IA générative" },
   { icon: ShieldCheck, label: "Hébergement des données en UE" },
@@ -409,11 +410,10 @@ export function FounderProfile({ faq, financementPublic }: FounderProfileProps) 
                 Partout en France, tous secteurs
               </h3>
               <p className="text-fg-soft mt-4 text-base leading-relaxed">
-                Le siège est à Grenoble, en Auvergne-Rhône-Alpes ; les missions se mènent dans toute
-                la France, sur site — Paris et l&apos;Île-de-France compris — au même tarif public
-                qu&apos;ailleurs. Industrie, services, santé, immobilier, juridique, commerce,
-                transport, secteur public : la méthode ne change pas, seuls les cas d&apos;usage
-                changent.
+                Les missions se mènent partout en France, sur site — Paris et l&apos;Île-de-France
+                compris — aux mêmes conditions tarifaires qu&apos;ailleurs. Industrie, services,
+                santé, immobilier, juridique, commerce, transport, secteur public : la méthode ne
+                change pas, seuls les cas d&apos;usage changent.
               </p>
               <p className="mt-5 flex flex-wrap gap-x-6 gap-y-2">
                 <Link
@@ -423,12 +423,14 @@ export function FounderProfile({ faq, financementPublic }: FounderProfileProps) 
                   Nos zones d&apos;intervention
                   <ArrowRight className="h-4 w-4" aria-hidden="true" />
                 </Link>
-                <Link
-                  href="/cas-concrets"
-                  className="text-fg-muted hover:text-fg text-sm underline-offset-4 hover:underline focus-visible:underline focus-visible:outline-none"
-                >
-                  Cas concrets
-                </Link>
+                {CAS_CONCRETS_AFFICHES ? (
+                  <Link
+                    href="/cas-concrets"
+                    className="text-fg-muted hover:text-fg text-sm underline-offset-4 hover:underline focus-visible:underline focus-visible:outline-none"
+                  >
+                    Cas concrets
+                  </Link>
+                ) : null}
               </p>
             </div>
           </div>

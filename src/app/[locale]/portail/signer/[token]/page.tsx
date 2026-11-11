@@ -24,7 +24,10 @@ import { CGV_VERSION, CGV_VERSION_LIBELLE } from "@/content/cgv-version";
 import { signedDocumentPdfUrl } from "@/lib/r2-storage";
 import { getOrganismeIdentite } from "@/server/qualiopi/documents/organisme";
 import { getQualiopiConfig } from "@/server/qualiopi/config/site-settings";
-import { verifierTokenDocument } from "@/server/qualiopi/documents/signature/token-document";
+import {
+  statutDevisDuLien,
+  verifierTokenDocument,
+} from "@/server/qualiopi/documents/signature/token-document";
 import { lireDevisASigner } from "@/server/qualiopi/documents/signature/devis-signature-queries";
 import { circuitPour } from "@/server/qualiopi/documents/signature/parties-requises";
 import { mentionCompleteDocument } from "@/server/qualiopi/documents/signature/mentions-document";
@@ -61,6 +64,11 @@ interface PageProps {
   params: Promise<{ locale: string; token: string }>;
 }
 
+const MESSAGE_DEVIS_FERME = {
+  titre: "Ce devis n'est plus ouvert à la signature",
+  detail: "Ce devis ne peut plus être signé en ligne. Contactez votre interlocuteur.",
+};
+
 function Message({ titre, detail }: { titre: string; detail: string }) {
   return (
     <div className="mx-auto w-full max-w-md px-4 py-16">
@@ -94,6 +102,14 @@ export default async function SignerDevisPage({ params }: PageProps) {
           "Une version révisée du devis vous a probablement été adressée. Utilisez le lien le plus récent, ou contactez votre interlocuteur.",
       },
     };
+    // 🔴 Un lien révoqué ou périmé parce que le devis est REFUSÉ ou expiré ne doit pas dire
+    // « une version révisée vous a été adressée » : c'est faux. Message neutre, sans motif.
+    if (verif.raison === "revoque" || verif.raison === "expire") {
+      const statutDevis = await statutDevisDuLien(token);
+      if (statutDevis === "refuse" || statutDevis === "expire") {
+        return <Message titre={MESSAGE_DEVIS_FERME.titre} detail={MESSAGE_DEVIS_FERME.detail} />;
+      }
+    }
     const m = messages[verif.raison] ?? {
       titre: "Lien invalide",
       detail: "Ce lien ne permet pas d'accéder à un devis à signer.",
@@ -306,6 +322,7 @@ export default async function SignerDevisPage({ params }: PageProps) {
     <PieceSignatureForm
       token={token}
       numero={piece.numero}
+      {...(devis !== null ? { numeroDevis: devis.numero } : {})}
       pieceLibelle={circuit.libelle}
       dateValiditeLisible={devis?.dateValiditeLisible ?? null}
       organismeNom={identite.raisonSociale}

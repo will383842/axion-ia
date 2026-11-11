@@ -34,6 +34,7 @@
 //
 // Module NEUTRE (ni `server-only`, ni Next) : le worker et les tests l'importent.
 
+import { DUREE_RDV, OFFRE_JOURNEE_IA } from "@/content/offre";
 import type { FormatDemande } from "@/server/calendly/reservation";
 import {
   URL_CALENDLY_APPEL_PAR_DEFAUT,
@@ -145,6 +146,9 @@ const LECTURE_DE_LA_VARIABLE: Readonly<Record<ChoixRendezVous, () => string | un
 
 // 🔴 Le CHOIX DU FORMAT s'annonce à l'étape 1, et pas ailleurs : c'est le moment où
 // l'on s'apprête à cliquer (chantier visio B5, Will 28/09 : Google Meet seulement).
+const PREMIERE_ETAPE_VISIO_OU_TELEPHONE =
+  "Choisissez un créneau : le rendez-vous se tient en visioconférence Google Meet ou par téléphone.";
+
 const PREMIERE_ETAPE_VISIO =
   "Choisissez un créneau : le rendez-vous se tient en visioconférence Google Meet.";
 
@@ -159,10 +163,10 @@ export const TYPES_RESERVABLES: Readonly<Record<ChoixRendezVous, ConfigRendezVou
     route: "diagnostic",
     type: "diagnostic",
     public: true,
-    nom: "Diagnostic IA",
-    titre: "Votre diagnostic IA",
-    promesse: "Gratuit et sans engagement",
-    premiereEtape: PREMIERE_ETAPE_VISIO,
+    nom: "Diagnostic IA gratuit",
+    titre: "Votre diagnostic IA gratuit",
+    promesse: `${OFFRE_JOURNEE_IA.rendezVous.nom}, ${DUREE_RDV}, en visio ou par téléphone, sans engagement`,
+    premiereEtape: PREMIERE_ETAPE_VISIO_OU_TELEPHONE,
     deuxiemeEtape: CONFIRMATION_CLIENT,
     troisiemeEtape:
       "Quelques questions sur votre activité, et vous repartez avec des pistes concrètes.",
@@ -178,7 +182,7 @@ export const TYPES_RESERVABLES: Readonly<Record<ChoixRendezVous, ConfigRendezVou
     nom: "Échange projet",
     titre: "Votre échange projet",
     promesse: "Gratuit et sans engagement",
-    premiereEtape: PREMIERE_ETAPE_VISIO,
+    premiereEtape: PREMIERE_ETAPE_VISIO_OU_TELEPHONE,
     deuxiemeEtape: CONFIRMATION_CLIENT,
     troisiemeEtape: "On discute de votre projet ou tout autre besoin de renseignements.",
     formats: ["visio", "telephone"],

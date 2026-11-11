@@ -169,13 +169,17 @@ describe("la page vidéo des apporteurs : contenu servi", () => {
     expect(t).not.toMatch(/tableau des commissions/i);
   });
 
+  // R7 (08/11/2026, ordre de Williams) : plus AUCUNE somme au public — le bloc commission et la
+  // FAQ disent la règle sans chiffre (`commission-publique.ts`). Ce test affirmait « exactement
+  // deux sommes » ; il affirme désormais qu'il n'y en a aucune.
   it("aucun mot interdit, aucun téléphone ; la somme vit UNIQUEMENT dans le bloc commission et la FAQ, via pricing.ts", async () => {
     const h = await rendre();
     const t = texte(h);
     expect(t).not.toMatch(/qualiopi|parrain|vendre|commercial|recrutement|facebook/i);
     expect(t).not.toMatch(/(?:\+33|0)\s?[1-9](?:[\s.-]?\d{2}){4}/);
     expect(t).not.toMatch(/tel:/i);
-    // Exactement deux sommes : le bloc commission et la réponse de la FAQ.
+    // Exactement deux sommes : le bloc commission et la réponse de la FAQ (Williams, 11/11/2026 :
+    // la commission s'affiche, c'est un atout).
     const montants = t.match(/\d[\d\s]*\s€/g) ?? [];
     expect(montants).toHaveLength(2);
     expect(t).toMatch(/À titre indicatif, 500 € HT par journée/);

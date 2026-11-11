@@ -74,7 +74,7 @@ export const CHALLANS_COPY: VilleCopy = {
           {
             step: "Développement par sprints",
             detail:
-              "Greffe IA sur l'existant ou build IA-native : e-boutique terroir multi-CMS, moteur de réservation directe, chatbot RAG multilingue, recherche sémantique, agents de devis et de gestion de stock. Démos hebdomadaires en visio depuis nos bureaux, à 40 minutes de Nantes.",
+              "Greffe IA sur l'existant ou build IA-native : e-boutique terroir multi-CMS, moteur de réservation directe, chatbot RAG multilingue, recherche sémantique, agents de devis et de gestion de stock. Démos hebdomadaires en visio.",
           },
           {
             step: "Recette + mise en ligne",
@@ -160,7 +160,7 @@ export const CHALLANS_COPY: VilleCopy = {
           {
             step: "Développement par sprints",
             detail:
-              "Greffe IA sur l'existant ou build IA-native : e-boutique terroir multi-CMS, moteur de réservation directe, chatbot RAG multilingue, recherche sémantique, agents de devis et de gestion de stock. Démos hebdomadaires en visio depuis nos bureaux, à 40 minutes de Nantes.",
+              "Greffe IA sur l'existant ou build IA-native : e-boutique terroir multi-CMS, moteur de réservation directe, chatbot RAG multilingue, recherche sémantique, agents de devis et de gestion de stock. Démos hebdomadaires en visio.",
           },
           {
             step: "Recette + mise en ligne",

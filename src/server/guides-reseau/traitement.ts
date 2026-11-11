@@ -30,7 +30,12 @@ import { checkRateLimit } from "@/lib/rate-limit";
 import { occurredAtValide, type DemandeGuideReseau } from "./contrat";
 import { LIMITE_JOUR_PAR_PERSONNE, LIMITE_JOUR_PAR_POST } from "./config";
 import * as Sentry from "@sentry/nextjs";
-import { CleHmacManquanteError, construireOrigine, enregistrerOrigine } from "./origines";
+import {
+  CleHmacManquanteError,
+  construireOrigine,
+  enregistrerOrigine,
+  type OrigineAEcrire,
+} from "./origines";
 import { transmettreOriginesV3 } from "./synchro-v3";
 
 export type ResultatTraitement =
@@ -47,19 +52,35 @@ function estConflitUnique(e: unknown): boolean {
   return typeof e === "object" && e !== null && (e as { code?: unknown }).code === "P2002";
 }
 
-async function retrouverOuCreerDemande(
-  d: DemandeGuideReseau,
+/** Ce dont la création de la demande a besoin : la demande du Studio, ou celle de la page. */
+export type EntreeDemande = Pick<
+  DemandeGuideReseau,
+  "email" | "mot" | "reseau" | "guide" | "locale" | "versionTexteM1"
+>;
+
+/** Client Prisma ou transaction : la page y écrit le contact dans la MÊME transaction. */
+export type ClientDemande = Pick<typeof prisma, "guideRequest">;
+
+/**
+ * Crée ou retrouve la demande du guide (cœur réutilisé par la page, lot S2 — comportement du
+ * chemin « adresse tapée dans la conversation » inchangé). Dans une transaction (`db` ≠ client
+ * global), un conflit d'unicité n'est PAS rattrapé : l'erreur a déjà fait échouer la transaction,
+ * l'appelant la rejoue ; la page se protège par un verrou consultatif de l'adresse.
+ */
+export async function retrouverOuCreerDemande(
+  d: EntreeDemande,
   emailKey: string,
   maintenant: Date,
+  db: ClientDemande = prisma,
 ): Promise<{ id: string; downloadToken: string; nouvelle: boolean }> {
   const source = sourceReseau(d.mot, d.reseau);
   const cle = { emailKey_aimant: { emailKey, aimant: d.guide } };
-  const existante = await prisma.guideRequest.findUnique({
+  const existante = await db.guideRequest.findUnique({
     where: cle,
     select: { id: true, downloadToken: true, origine: true },
   });
   if (existante) {
-    await prisma.guideRequest.update({
+    await db.guideRequest.update({
       where: { id: existante.id },
       data: {
         locale: d.locale,
@@ -73,7 +94,7 @@ async function retrouverOuCreerDemande(
     return { id: existante.id, downloadToken: existante.downloadToken, nouvelle: false };
   }
   try {
-    const creee = await prisma.guideRequest.create({
+    const creee = await db.guideRequest.create({
       data: {
         email: d.email,
         emailKey,
@@ -89,7 +110,7 @@ async function retrouverOuCreerDemande(
     });
     return { ...creee, nouvelle: true };
   } catch (e) {
-    if (!estConflitUnique(e)) throw e;
+    if (!estConflitUnique(e) || db !== prisma) throw e;
     const gagnante = await prisma.guideRequest.findUniqueOrThrow({
       where: cle,
       select: { id: true, downloadToken: true },
@@ -98,10 +119,14 @@ async function retrouverOuCreerDemande(
   }
 }
 
-async function sousLesLimites(
-  d: DemandeGuideReseau,
+/**
+ * Limites par jour (cœur réutilisé par la page) : par personne, puis — si la demande vient d'un
+ * post — par (post_ref, canal). `post` est `null` quand la demande n'en porte pas.
+ */
+export async function sousLesLimites(
   emailKey: string,
   maintenant: Date,
+  post: { readonly ref: string; readonly canal: string | null } | null,
 ): Promise<boolean> {
   const jour = maintenant.toISOString().slice(0, 10);
   // Toutes versions signées (v1 comprise) : le débit par personne ne dépend pas du schéma.
@@ -110,9 +135,9 @@ async function sousLesLimites(
     windowSec: 86_400,
   });
   if (!parPersonne.allowed) return false;
-  if (d.schemaVersion !== 3 || !d.post_ref) return true;
+  if (post === null) return true;
   const parPost = await checkRateLimit(
-    `guides-reseau:post:${d.post_ref}:${d.canal ?? "-"}:${jour}`,
+    `guides-reseau:post:${post.ref}:${post.canal ?? "-"}:${jour}`,
     { limit: LIMITE_JOUR_PAR_POST, windowSec: 86_400 },
   );
   return parPost.allowed;
@@ -124,15 +149,34 @@ export async function noterOrigineV3(
   emailKey: string,
   quand: Date,
 ): Promise<void> {
+  // Lot S3 (D1) : rien au CRM à la réception ; l'événement part au clic du lien.
+  await noterOrigineAvec(() => construireOrigine(d, quand), d.email, emailKey, quand, false);
+}
+
+/**
+ * Cœur de `noterOrigineV3`, partagé avec la page « Recevoir le guide » (lot S2) : écrit l'origine
+ * dans `guide_reseau_origines` puis, sauf `versLeCrm: false`, la met en file vers le CRM.
+ * Ne lève jamais. La construction de l'origine reste DANS le `try` (clé HMAC absente → alerte).
+ */
+export async function noterOrigineAvec(
+  construire: () => OrigineAEcrire,
+  email: string,
+  emailKey: string,
+  quand: Date,
+  // Éteint par défaut (lot S3, D1) : aucun appelant n'envoie plus l'origine au CRM avant le clic.
+  versLeCrm = false,
+): Promise<void> {
   try {
-    const origine = construireOrigine(d, quand);
+    const origine = construire();
     await enregistrerOrigine(emailKey, origine);
-    await transmettreOriginesV3({
-      email: d.email,
-      cleIdempotence: d.cleIdempotence,
-      origines: [origine],
-      quand,
-    });
+    if (versLeCrm) {
+      await transmettreOriginesV3({
+        email,
+        cleIdempotence: origine.cleIdempotence,
+        origines: [origine],
+        quand,
+      });
+    }
   } catch (e) {
     // Clé HMAC absente en production : ce n'est pas un aléa, c'est une panne de configuration.
     // JOURNAL + ALERTE (Sentry, sans donnée de personne) : jamais avalée en silence.
@@ -194,7 +238,9 @@ export async function traiterDemande(
   }
 
   // I3 : limites par jour, par personne (v1 ET v3) et par (post_ref, canal) (v3). Rien n'est écrit avant.
-  if (!(await sousLesLimites(d, emailKey, maintenant))) {
+  const post =
+    d.schemaVersion === 3 && d.post_ref ? { ref: d.post_ref, canal: d.canal ?? null } : null;
+  if (!(await sousLesLimites(emailKey, maintenant, post))) {
     return { ok: false, erreur: "trop_de_requetes" };
   }
 

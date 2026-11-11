@@ -53,16 +53,20 @@ describe("🔑 /appel montre le choix, puis le bon calendrier", () => {
     expect(page).toContain("<ChoixDuRendezVous");
   });
 
-  it("les deux rendez-vous sont nommés, le diagnostic EN PREMIER et en bouton plein", () => {
+  it("🔑 UN SEUL rendez-vous gratuit (règle r10 du Brain) : la carte « Diagnostic IA gratuit », 45 minutes", () => {
     const diag = page.indexOf('data-cta="appel_choix_diagnostic"');
-    const projet = page.indexOf('data-cta="appel_choix_projet"');
     expect(diag).toBeGreaterThan(-1);
-    expect(projet).toBeGreaterThan(diag);
-    expect(page).toContain("Diagnostic IA");
-    expect(page).toContain("Échange projet");
-    // Le bouton du diagnostic est le bouton PLEIN (couleur de marque).
-    const boutonDiag = page.slice(page.lastIndexOf("<a", diag), diag + 400);
-    expect(boutonDiag).toContain("bg-terracotta");
+    // Plus de carte « Échange projet » : une seule carte, un seul bouton.
+    expect(page).not.toContain('data-cta="appel_choix_projet"');
+    expect(page).not.toContain("Échange projet");
+    expect(page.match(/data-cta="appel_choix_/g)).toHaveLength(1);
+    expect(page).toContain("Diagnostic IA gratuit");
+    // La durée de la carte est la promesse du site, écrite en dur : la durée lue chez
+    // Calendly ne sert qu'à l'écran du calendrier.
+    expect(page).toContain("Gratuit · 45 minutes · Sans engagement");
+    // La carte unique porte le bouton PLEIN (couleur de marque).
+    const bouton = page.slice(page.lastIndexOf("<a", diag), diag + 400);
+    expect(bouton).toContain("bg-terracotta");
   });
 
   it("un lien discret permet de changer de rendez-vous", () => {
@@ -85,8 +89,10 @@ describe("🔑 /appel montre le choix, puis le bon calendrier", () => {
     expect(page).not.toContain("StickyMobileCta");
   });
 
-  it("aucune durée écrite en dur sur la page : elles viennent de Calendly", () => {
-    expect(page).not.toMatch(/\b(30|45) ?min/);
+  it("la seule durée écrite est « 45 minutes » : jamais 15, 20 ni 30", () => {
+    expect(page).toContain("45 minutes");
+    expect(page).not.toMatch(/\b(15|20|30) ?min/);
+    expect(page).not.toMatch(/quart d'heure|demi-heure/i);
   });
 });
 

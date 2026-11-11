@@ -86,6 +86,9 @@ const OFFER_FR_PATH: Readonly<Record<string, string>> = {
 
   // — Un-à-un récurrent (standalone) —
   "un-a-un-recurrent": "/un-a-un",
+
+  // R7 (08/11/2026) : l'offre mise en avant, seul prix affiché au public.
+  "journee-ia": "/journee-ia",
 };
 
 // Invariant structurel : toute cible DOIT être une route FR connue. Sinon throw

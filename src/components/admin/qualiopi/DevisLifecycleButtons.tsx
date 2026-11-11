@@ -224,6 +224,16 @@ export function DevisLifecycleButtons({
             {isPending ? "…" : "Renvoyer par email"}
           </button>
         )}
+        {statut === "envoye" && (
+          <p
+            data-testid="avertissement-renvoi-lien"
+            className="basis-full text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]"
+          >
+            Renvoyer par email désactive dès maintenant l&apos;ancien lien de signature, avant
+            l&apos;approbation de l&apos;e-mail en corbeille : s&apos;il est refusé ou supprimé, le
+            client n&apos;a plus de lien valable.
+          </p>
+        )}
 
         {statut === "accepte" && (
           <button

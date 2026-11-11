@@ -8,139 +8,118 @@
  * quasi-totalité des portables. Personne ne l'avait vu pendant un mois.
  *
  * La cause n'était pas un réglage maladroit. Le budget avait été calculé, à la
- * main, pour **6 onglets** (commentaire du 2026-06-08). Un 7ᵉ a été ajouté le
- * 2026-07-03 — le méga-menu « Ressources » — avec, dans son propre commentaire,
- * la mention « à surveiller sur la bande 1280–1400 ». La surveillance reposait
- * sur la vigilance humaine : elle n'a pas eu lieu.
+ * main, pour 6 onglets. Un 7ᵉ a été ajouté (le méga-menu « Ressources ») avec,
+ * dans son propre commentaire, « à surveiller ». La surveillance reposait sur la
+ * vigilance humaine : elle n'a pas eu lieu.
+ *
+ * ## Refonte du 2026-11-11 : 4 onglets, budget refait
+ *
+ * La maquette validée par Williams ramène la barre à **4 onglets** — Accueil ·
+ * La Journée IA · Nos prestations ▾ · Tarifs — et montre « Nous écrire » dès que
+ * la barre est là. La nav horizontale apparaît donc à 1280 px (au lieu de 1440),
+ * et le seuil intermédiaire `--breakpoint-navcta` disparaît.
  *
  * ## Pourquoi un cliquet plutôt qu'un test de rendu
  *
- * La largeur réelle d'un onglet dépend de la police, du crénage et du navigateur
- * — jsdom ne mesure rien de tout ça, et un test qui prétendrait le faire
- * mentirait. Ce que l'on PEUT verrouiller, c'est l'entrée du calcul : le nombre
- * d'onglets pour lequel les seuils ont été mesurés. Si quelqu'un en ajoute un,
- * ce test rougit et exige de refaire la mesure — ce qui est exactement le geste
- * qui a manqué en juillet.
+ * jsdom ne mesure aucune largeur. Ce que l'on PEUT verrouiller, c'est l'entrée
+ * du calcul : la liste d'onglets pour laquelle les seuils ont été mesurés. Si
+ * quelqu'un en ajoute un, ce test rougit et exige de refaire la mesure. La mesure
+ * VIVANTE est `tests/e2e/qualiopi/header-tient-dans-sa-boite.spec.ts`.
  *
- * Refaire la mesure : ouvrir une page en production, réduire la rangée du
- * header par dichotomie jusqu'à ce que `scrollWidth` dépasse, pour chacune des
- * trois configurations (gap-8 sans « Nous écrire », gap-8 avec, gap-12 avec),
- * puis reporter les seuils + ~25 px de marge dans `globals.css`.
+ * Refaire la mesure : `next dev`, ouvrir `/fr` et `/fr/tarifs` dans Chromium, et
+ * relever pour chaque bande la largeur de la rangée (de la gauche du logo à la
+ * droite du bouton « Réserver un appel ») ; la reporter dans ROW_* ci-dessous.
  */
 import { describe, it, expect } from "vitest";
 import { readFileSync } from "node:fs";
 
-import { SERVICES } from "@/content/services";
+/** Les onglets de la barre, dans l'ordre, pour lesquels les seuils ont été MESURÉS. */
+const ONGLETS_MESURES = ["Accueil", "La Journée IA", "Nos prestations", "Tarifs"] as const;
+
+/** Rembourrage horizontal de la rangée au-dessus de 992 px (`lg:px-10`, 2 × 40 px). */
+const REMBOURRAGE = 80;
 
 /**
- * Nombre d'onglets pour lequel les seuils de `globals.css` ont été MESURÉS.
+ * Largeurs de rangée MESURÉES le 2026-11-11 (Chromium headless, `next dev`, `/fr`
+ * et `/fr/tarifs`, on retient la pire), réserve non comprise :
+ *   - bande `nav`    : sans tagline, écart de rangée 24 px ;
+ *   - bande `navair` : tagline « Partenaire IA des PME et TPE » + écart 32 px.
  *
- * = SERVICES + « Tarifs » + méga-menu « Ressources ».
- * Le faire monter sans refaire la mesure remet le header en débordement.
+ * REMESURÉ le 2026-11-11 après le retour de la barre terracotta (le logo reprend
+ * son badge ivoire, `px-3`, +24 px ; « Nous écrire » perd son contour, −2 px) :
+ * 1105 → 1127 et 1173 → 1195. Réserve vivante : 73 px à 1280, 91 px à 1366.
  */
-const ONGLETS_MESURES = 7;
+const ROW_NAV = 1127;
+const ROW_NAVAIR = 1195;
 
-const ongletsActuels = SERVICES.length + 2;
+/** Réserve exigée par la mesure vivante (`header-tient-dans-sa-boite.spec.ts`). */
+const RESERVE = 16;
 
-/** Le fichier de tokens, décapé de ses commentaires. */
-function globalsSansCommentaires(): string {
-  // 🔴 Sans ce décapage, le test se trouverait LUI-MÊME : `globals.css`
-  // documente longuement les anciens seuils (`xl`, `2xl`, 1400) dans les
-  // commentaires qui expliquent pourquoi ils ont changé. Chercher « 2xl » dans
-  // le fichier brut passerait au vert sur une régression, ou au rouge sans.
-  return readFileSync("src/app/globals.css", "utf8").replace(/\/\*[\s\S]*?\*\//g, "");
-}
-
-function headerSansCommentaires(): string {
-  return readFileSync("src/components/nav/Header.tsx", "utf8")
+function sansCommentaires(chemin: string): string {
+  // 🔴 Sans ce décapage, le test se trouverait LUI-MÊME : les fichiers
+  // documentent longuement les anciens seuils dans leurs commentaires.
+  return readFileSync(chemin, "utf8")
     .replace(/\/\*[\s\S]*?\*\//g, "")
+    .replace(/\{\/\*[\s\S]*?\*\/\}/g, "")
     .replace(/^\s*\/\/.*$/gm, "");
 }
 
+const lireSeuil = (css: string, nom: string): number =>
+  Number(new RegExp(`--breakpoint-${nom}:\\s*(\\d+)px`).exec(css)?.[1] ?? 0);
+
 describe("budget d'espace du header", () => {
-  it("🔴 le nombre d'onglets n'a pas bougé depuis la mesure", () => {
-    expect(ongletsActuels).toBe(ONGLETS_MESURES);
+  it("🔴 la barre porte exactement les onglets mesurés, dans l'ordre", () => {
+    const src = sansCommentaires("src/components/nav/Header.tsx");
+    const nav = src.slice(src.indexOf("<nav"), src.indexOf("</nav>"));
+    // Chaque onglet de la barre est soit un `NavLink` (sans `variant`), soit le
+    // bouton du méga-menu. Leur ordre d'apparition dans la barre doit être celui-ci.
+    const ordre = [...nav.matchAll(/<NavLink href=\{(\w+)\.href\}|<HeaderPrestationsMenu/g)].map(
+      (m) => m[1] ?? "prestations",
+    );
+    expect(ordre).toEqual(["accueil", "journeeIa", "prestations", "tarifs"]);
+    expect(ONGLETS_MESURES).toHaveLength(ordre.length);
   });
 
-  it("les trois seuils mesurés existent dans les tokens", () => {
-    const css = globalsSansCommentaires();
+  it("les deux seuils mesurés existent, et `navcta` a disparu", () => {
+    const css = sansCommentaires("src/app/globals.css");
     expect(css).toContain("--breakpoint-nav:");
-    expect(css).toContain("--breakpoint-navcta:");
     expect(css).toContain("--breakpoint-navair:");
+    expect(css).not.toContain("--breakpoint-navcta:");
   });
 
-  it("les seuils restent ordonnés et au-dessus des largeurs mesurées", () => {
-    const css = globalsSansCommentaires();
-    const lire = (nom: string): number =>
-      Number(new RegExp(`--breakpoint-${nom}:\\s*(\\d+)px`).exec(css)?.[1] ?? 0);
-    const nav = lire("nav");
-    const navcta = lire("navcta");
-    const navair = lire("navair");
-
-    // 🔴 2026-08-21 — CETTE COMPARAISON OUBLIAIT LE REMBOURRAGE, ET C'EST
-    // EXACTEMENT LE DÉFAUT QU'ELLE CROYAIT GARDER.
-    //
-    // Elle exigeait `nav >= 1397 + 17` : la largeur de rangée mesurée, plus une
-    // barre de défilement. Or la rangée ne dispose pas de la largeur de l'écran :
-    // le conteneur porte `xl:px-16`, soit **128 px** pris des deux côtés. À
-    // 1440 px la place réelle est 1312, pas 1440. Le budget était donc validé
-    // contre une largeur que la rangée n'a jamais eue, et le header débordait sa
-    // boîte de contenu dans les TROIS bandes — de 50 à 60 px, pour ne survivre
-    // qu'à 4 px du bord du document. Le Chromium Linux de la CI, dont les
-    // chasses diffèrent d'environ 0,8 %, franchissait ces 4 px sur 90 des
-    // 117 routes publiques.
-    //
-    // Le terme manquant est ajouté ici. Les largeurs de rangée sont celles
-    // relevées APRÈS resserrement des écarts internes (`nav:gap-4` / `nav:gap-5`),
-    // au point le plus serré de chaque bande :
-    //
-    //     bande nav      (1440–1699)   contenu 1286 px
-    //     bande navcta   (1700–1799)   contenu 1476 px   (+ CTA « Nous écrire »)
-    //     bande navair   (≥ 1800)      contenu 1548 px   (onglets aérés)
-    //
-    // ⚠️ Ces trois nombres sont des ENTRÉES de calcul, pas une mesure vivante.
-    // La mesure vivante est `tests/e2e/qualiopi/header-tient-dans-sa-boite.spec.ts`,
-    // qui ouvre réellement la page à treize largeurs et exige une réserve de
-    // 16 px. Ce test-ci garde le raisonnement ; celui-là garde le résultat.
-    const REMBOURRAGE = 128;
-    expect(nav).toBeGreaterThanOrEqual(1286 + REMBOURRAGE);
-    expect(navcta).toBeGreaterThanOrEqual(1476 + REMBOURRAGE);
-    expect(navair).toBeGreaterThanOrEqual(1548 + REMBOURRAGE);
-    // Un seuil qui doublerait l'autre ferait apparaître les deux états en même
-    // temps — donc le débordement qu'on vient de retirer.
-    expect(nav).toBeLessThan(navcta);
-    expect(navcta).toBeLessThan(navair);
+  it("les seuils restent ordonnés et au-dessus des largeurs mesurées, rembourrage compris", () => {
+    // 🔴 2026-08-21 — la comparaison d'origine oubliait le rembourrage : elle
+    // validait la rangée contre une largeur qu'elle n'a jamais eue. Le terme est
+    // ici, avec la réserve exigée par la mesure vivante.
+    const css = sansCommentaires("src/app/globals.css");
+    const nav = lireSeuil(css, "nav");
+    const navair = lireSeuil(css, "navair");
+    expect(nav).toBeGreaterThanOrEqual(ROW_NAV + REMBOURRAGE + RESERVE);
+    expect(navair).toBeGreaterThanOrEqual(ROW_NAVAIR + REMBOURRAGE + RESERVE);
+    expect(nav).toBeLessThan(navair);
   });
 
-  it("🔴 la bascule nav/drawer ne repasse pas sur `xl` ni `2xl`", () => {
-    // Le défaut d'origine, mot pour mot : la nav se montrait à `xl` (1280) et
-    // s'aérait à `2xl` (1536), deux seuils sous ce qu'elle réclame.
-    const src = headerSansCommentaires();
-    for (const interdit of ["xl:flex", "xl:hidden", "xl:block", "2xl:gap-12", "2xl:ml-6"]) {
+  it("🔴 la bascule nav/tiroir ne repasse pas sur `xl` ni `2xl`", () => {
+    const src = sansCommentaires("src/components/nav/Header.tsx");
+    for (const interdit of ["xl:flex", "xl:hidden", "xl:block", "2xl:gap", "navcta:"]) {
       expect(src).not.toContain(interdit);
     }
     expect(src).toContain("nav:flex");
     expect(src).toContain("nav:hidden");
-    expect(src).toContain("navcta:inline-flex");
-    // 🔴 `navair:gap-12` → `navair:gap-8` le 2026-08-21. L'écart aéré de 48 px
-    // coûtait ~150 px à la rangée, dont seulement une centaine était disponible
-    // une fois le rembourrage compté. Ce qu'il faut garder ici, ce n'est pas une
-    // valeur d'écart mais le FAIT que l'aération dépende du seuil `navair` — un
-    // `gap-12` sans variante, ou une aération accrochée à `2xl`, ramènerait le
-    // défaut d'origine.
+    // L'aération (écart et tagline) dépend du seuil `navair`, jamais d'un `gap`
+    // sans variante plus large que l'écart de base.
     expect(src).toContain("navair:gap-8");
-    expect(src).not.toMatch(/(?:^|[^:])\bgap-12\b/);
+    expect(src).toContain("navair:block");
+    expect(src).not.toMatch(/(?:^|[^:])\bgap-(?:10|12|16)\b/);
   });
 });
 
 describe("bouton du menu ☰", () => {
   it("🔴 n'a aucune visibilité propre : le seuil `nav` du Header décide seul", () => {
     // Le 2026-10-16 : le bouton portait `xl:hidden` (1280) alors que la nav
-    // horizontale attend `nav` (1440). Entre 1280 et 1440 — portable 14 pouces
-    // à 150 %, portable 1366 — l'en-tête n'affichait plus que le logo.
-    const src = readFileSync("src/components/nav/MobileNav.tsx", "utf8")
-      .replace(/\/\*[\s\S]*?\*\//g, "")
-      .replace(/^\s*\/\/.*$/gm, "");
-    expect(src).not.toMatch(/\b(?:sm|md|lg|xl|2xl|nav|navcta|navair|min-\[[^\]]+\]):hidden\b/);
+    // horizontale attendait `nav` (1440). Entre 1280 et 1440, l'en-tête
+    // n'affichait plus que le logo.
+    const src = sansCommentaires("src/components/nav/MobileNav.tsx");
+    expect(src).not.toMatch(/\b(?:sm|md|lg|xl|2xl|nav|navair|min-\[[^\]]+\]):hidden\b/);
   });
 });

@@ -6,6 +6,7 @@
  * Sortie DB : bodyHtml pour la page dédiée /faq/[slug] + faq[] pour FAQPage JSON-LD.
  */
 
+import { taillePourPrompt } from "@/server/content-gen/brand/positionnement";
 import { generate as routerGenerate } from "../providers/provider-router";
 import { hashPrompt } from "../provenance/provenance-logger";
 import { retrieve as kbRetrieve } from "../kb-client";
@@ -38,7 +39,7 @@ const MAX_QUALITY_ITERATIONS = 2;
 const BUDGET_CAP_USD = 0.1;
 
 const SYSTEM_PROMPT =
-  injectBrandVoice(`Tu es Manon, experte IA chez Axion-IA, cabinet de conseil en IA pour les petites et moyennes entreprises françaises.
+  injectBrandVoice(`Tu es Manon, la plume IA d'Axion-IA (assistance IA générative supervisée par l'équipe), partenaire IA de bout en bout des petites et moyennes entreprises françaises.
 Produis une page FAQ complète en français optimisée AEO/SEO 2026. Règles absolues :
 - 10 à 15 questions réelles posées par des dirigeants PME sur l'IA en entreprise.
 - Chaque réponse : 3-6 phrases, directes, sans jargon inutile, ancrées sur Axion-IA.
@@ -83,7 +84,9 @@ export const faqStandaloneGenerator: Generator = {
   async generate(input: GeneratorBaseInput): Promise<GeneratorOutput> {
     const topic = synthesizeFaqTopic(input);
     const safeTopic = escapeLlmInput(topic, { maxLen: 140 });
-    const safeAudienceSize = escapeLlmInput(input.targetAudienceSize ?? "PME", { maxLen: 30 });
+    const safeAudienceSize = escapeLlmInput(taillePourPrompt(input.targetAudienceSize, "PME"), {
+      maxLen: 30,
+    });
     const sectorTagSlugs = input.kbSectorTagSlugs ?? [];
 
     // Refonte templates 2026-06-22 — expert interne choisi DÉTERMINISTIQUEMENT

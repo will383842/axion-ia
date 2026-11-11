@@ -65,7 +65,7 @@ export const BETHENY_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Bétheny ?",
-      a: "Nos consultants se déplacent à Bétheny depuis la gare TGV de Reims (10 min). Intervention dans vos locaux, atelier pratique avec vos équipes. Sessions en visio également possibles pour les TPE éloignées.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Intervention dans vos locaux, atelier pratique avec vos équipes. Sessions en visio également possibles pour les TPE éloignées.",
     },
   ],
 };

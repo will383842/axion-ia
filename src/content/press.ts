@@ -2,38 +2,29 @@
 // Doctrine éditoriale v3 : ton factuel, anti-marketing. Anti-formation strict.
 // FR canonical · EN miroir. Parité enforced via tests/content/press.test.ts.
 
+import { CAS_CONCRETS_AFFICHES } from "@/content/preuves-sociales";
 import {
-  AUDIT_TIERS,
   IMPLEMENTATION_TIERS,
   INTERVENTION_TIERS,
-  formatAmount,
+  formatTierPrice,
   getEntryLabel,
   getTierById,
 } from "@/content/pricing";
 
 // ─────────────────────────────────────────────────────────────────
-// Helpers prix dérivés (zéro hardcode — Sprint 14.10.5).
+// Helpers prix dérivés (zéro hardcode — Sprint 14.10.5). R7 (ordre de Williams du
+// 08/11/2026) : plus aucun montant d'offre au public — `getEntryLabel` et
+// `formatTierPrice` lisent l'interrupteur de pricing.ts et rendent « Sur devis ».
 // ─────────────────────────────────────────────────────────────────
-const auditFlash = getTierById(AUDIT_TIERS, "audit-flash");
-const auditCible = getTierById(AUDIT_TIERS, "audit-cible");
-const auditPme = getTierById(AUDIT_TIERS, "audit-strategique-pme");
-const auditEti = getTierById(AUDIT_TIERS, "audit-strategique-eti");
 const formationJour = getTierById(INTERVENTION_TIERS, "formation-generale-1j");
 
 function pressReleaseLaunchBody(loc: "fr" | "en"): string {
   const interventionsEntry = getEntryLabel(INTERVENTION_TIERS, loc, { compact: true });
-  const flash = formatAmount(auditFlash.priceFlat!, loc, { compact: true });
-  // Ciblé / PME / ETI = « à partir de 1 900 € · sur devis » (Will 2026-06-03,
-  // bornes hautes supprimées) → prix d'entrée uniquement (l'ancien « à ${max} »
-  // rendait « NaN », priceMax étant absent).
-  const cibleMin = formatAmount(auditCible.priceMin!, loc, { compact: true });
-  const pmeMin = formatAmount(auditPme.priceMin!, loc, { compact: true });
-  const etiFrom = formatAmount(auditEti.priceMin!, loc, { compact: true });
   const implEntry = getEntryLabel(IMPLEMENTATION_TIERS, loc, { compact: true });
   if (loc === "fr") {
-    return `Axion-IA, cabinet IA opérationnel, annonce le lancement de sa plateforme axion-ia.com. Le site présente trois modules d'intervention — sessions terrain ${interventionsEntry}, audits IA chiffrés en 4 niveaux (Flash dès ${flash}, Ciblé dès ${cibleMin}, Stratégique PME dès ${pmeMin}, Stratégique ETI à partir de ${etiFrom}), et implémentations sur mesure ${implEntry} — avec une promesse mesurable : un retour sur investissement chiffré dès la mise en production. Hébergée en UE, la plateforme cible les entreprises de toutes tailles, de l'artisan à l'ETI.`;
+    return `Axion-IA, cabinet IA opérationnel, annonce le lancement de sa plateforme axion-ia.com. Le site présente trois modules d'intervention — sessions terrain ${interventionsEntry}, audits IA chiffrés en 4 niveaux (Flash, Ciblé, Stratégique PME, Stratégique ETI), et implémentations sur mesure ${implEntry} — avec une promesse mesurable : un retour sur investissement chiffré dès la mise en production. Hébergée en UE, la plateforme cible les entreprises de toutes tailles, de l'artisan à l'ETI.`;
   }
-  return `Axion-IA, an operational AI consultancy, announces the launch of its platform axion-ia.com. The site presents three service modules — on-site sessions ${interventionsEntry}, AI audits in 4 tiers (Flash from ${flash}, Targeted from ${cibleMin}, Strategic SME from ${pmeMin}, Strategic Mid-cap from ${etiFrom}), and custom implementations ${implEntry} — with one measurable promise: a costed return on investment from the moment of go-live. Hosted in the EU, the platform targets companies of all sizes, from sole traders to mid-caps.`;
+  return `Axion-IA, an operational AI consultancy, announces the launch of its platform axion-ia.com. The site presents three service modules — on-site sessions ${interventionsEntry}, AI audits in 4 tiers (Flash, Targeted, Strategic SME, Strategic Mid-cap), and custom implementations ${implEntry} — with one measurable promise: a costed return on investment from the moment of go-live. Hosted in the EU, the platform targets companies of all sizes, from sole traders to mid-caps.`;
 }
 
 export type PressReleaseTag = "launch" | "partnership" | "study" | "product" | "milestone";
@@ -182,12 +173,12 @@ export const PRESS_FACTS: ReadonlyArray<PressFact> = [
   {
     id: "starting-price",
     fr: {
-      label: "Prix d'entrée",
-      value: `${formatAmount(formationJour.priceFlat!, "fr", { compact: true })} · ${formationJour.durationFr ?? "1 journée"}`,
+      label: "Tarif",
+      value: `${formatTierPrice(formationJour, "fr", { compact: true })} · ${formationJour.durationFr ?? "1 journée"}`,
     },
     en: {
-      label: "Starting price",
-      value: `${formatAmount(formationJour.priceFlat!, "en", { compact: true })} · ${formationJour.durationEn ?? "1 day"}`,
+      label: "Pricing",
+      value: `${formatTierPrice(formationJour, "en", { compact: true })} · ${formationJour.durationEn ?? "1 day"}`,
     },
   },
   {
@@ -476,7 +467,7 @@ export const PRESS_SPOKESPERSONS: ReadonlyArray<PressSpokesperson> = [
 // ─────────────────────────────────────────────────────────────────
 // FAQ presse — questions journalistes (FAQPage JSON-LD via FaqAccordion).
 // ─────────────────────────────────────────────────────────────────
-export const PRESS_FAQ: ReadonlyArray<PressFaqEntry> = [
+const ALL_PRESS_FAQ: ReadonlyArray<PressFaqEntry> = [
   {
     id: "company",
     fr: {
@@ -556,6 +547,11 @@ export const PRESS_FAQ: ReadonlyArray<PressFaqEntry> = [
     },
   },
 ] as const;
+
+/** Sans l'entrée « cas concrets » tant que les cas sont éteints (2026-11-08). */
+export const PRESS_FAQ: ReadonlyArray<PressFaqEntry> = ALL_PRESS_FAQ.filter(
+  (e) => CAS_CONCRETS_AFFICHES || e.id !== "case-studies",
+);
 
 // ─────────────────────────────────────────────────────────────────
 // HELPERS — accès slug pour /presse/[slug] (Phase 2, sprint suivant).

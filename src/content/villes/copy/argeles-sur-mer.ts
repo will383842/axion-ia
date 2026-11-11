@@ -49,7 +49,7 @@ export const ARGELES_SUR_MER_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Argelès-sur-Mer et sur la Côte Vermeille ?",
-      a: "Oui, Axion-IA intervient à Argelès-sur-Mer et toute la Côte Vermeille (Collioure à 8 min, Saint-Cyprien, Banyuls, Port-Vendres). Nos consultants sont basés à proximité de Perpignan (25 min).",
+      a: "Oui, Axion-IA intervient à Argelès-sur-Mer et toute la Côte Vermeille (Collioure à 8 min, Saint-Cyprien, Banyuls, Port-Vendres). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les campings et l'hôtellerie de plein air ?",
@@ -65,7 +65,7 @@ export const ARGELES_SUR_MER_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Argelès-sur-Mer ?",
-      a: "Nos consultants interviennent depuis Perpignan (25 min). Missions sur site dans votre camping, établissement ou commerce. Visio possible.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Missions sur site dans votre camping, établissement ou commerce. Visio possible.",
     },
   ],
 };

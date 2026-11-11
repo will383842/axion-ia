@@ -22,9 +22,14 @@ const coupeCircuitDeclenche = vi.fn();
 const verdictAvantEnvoi = vi.fn();
 const enqueueEmail = vi.fn();
 const estOpposee = vi.fn();
+const contactFindFirst = vi.fn();
 
+vi.mock("@/server/email/opposition-jeton", () => ({
+  jetonOpposition: (email: string) => `opp.jeton-opaque.${email.length}`,
+}));
 vi.mock("@/lib/prisma", () => ({
   prisma: {
+    contactGuideReseau: { findFirst: (...a: unknown[]) => contactFindFirst(...a) },
     guideRequest: {
       findMany: (...a: unknown[]) => guideFindMany(...a),
       findUnique: (...a: unknown[]) => guideFindUnique(...a),
@@ -88,6 +93,7 @@ beforeEach(() => {
   verdictAvantEnvoi.mockReset().mockResolvedValue({ retenu: false });
   enqueueEmail.mockReset().mockResolvedValue({ enqueued: true });
   estOpposee.mockReset().mockResolvedValue(false);
+  contactFindFirst.mockReset().mockResolvedValue(null);
 });
 
 describe("rattraperGuides — adresse opposée (toutes origines)", () => {
@@ -117,6 +123,8 @@ describe("rattraperGuides — adresse opposée (toutes origines)", () => {
     expect(abonneFindUnique).not.toHaveBeenCalled();
     expect(guideUpdateMany).not.toHaveBeenCalled();
     expect(estOpposee).toHaveBeenCalledWith(CANDIDATE.email);
+    // Ordre exigé : réparation → opposition → verdict → lettre. Le verdict n'est jamais consulté.
+    expect(verdictAvantEnvoi).not.toHaveBeenCalled();
   });
 
   it("ligne sans origine + adresse opposée : écartée", async () => {
@@ -296,5 +304,90 @@ describe("🔴 plus de rattrapage des confirmations (relecture du 24/09)", () =>
     await rattraperGuides(MAINTENANT);
     expect(enqueueEmail).not.toHaveBeenCalled();
     expect(abonneFindMany).not.toHaveBeenCalled();
+  });
+});
+
+describe("🔴 rattrapage d'une demande venue de la page « Recevoir le guide » — lien de désinscription", () => {
+  const DEMANDE_PAGE = { ...CANDIDATE, origine: "message_prive" };
+
+  it("demande issue de la page : pageGuide + jeton d'opposition, comme au premier envoi", async () => {
+    guideFindMany.mockResolvedValue([DEMANDE_PAGE]);
+    contactFindFirst.mockResolvedValue({ id: "contact-1" });
+    const r = await rattraperGuides(MAINTENANT);
+    expect(r.relancees).toBe(1);
+    expect(contactFindFirst).toHaveBeenCalledWith(
+      expect.objectContaining({ where: { guideRequestId: CANDIDATE.id } }),
+    );
+    expect(mettreEnFileGuide.mock.calls[0]?.[1]).toMatchObject({
+      reseau: true,
+      pageGuide: { oppositionToken: `opp.jeton-opaque.${CANDIDATE.email.length}` },
+    });
+  });
+
+  it("le jeton transmis ne contient jamais l'adresse", async () => {
+    guideFindMany.mockResolvedValue([DEMANDE_PAGE]);
+    contactFindFirst.mockResolvedValue({ id: "contact-1" });
+    await rattraperGuides(MAINTENANT);
+    const options = mettreEnFileGuide.mock.calls[0]?.[1] as {
+      pageGuide: { oppositionToken: string };
+    };
+    expect(options.pageGuide.oppositionToken).not.toContain(CANDIDATE.email);
+  });
+
+  it("demande SANS page (aucune ligne liée) : comportement inchangé, pas de pageGuide", async () => {
+    guideFindMany.mockResolvedValue([DEMANDE_PAGE]);
+    contactFindFirst.mockResolvedValue(null);
+    await rattraperGuides(MAINTENANT);
+    const options = mettreEnFileGuide.mock.calls[0]?.[1] as Record<string, unknown>;
+    expect(options).not.toHaveProperty("pageGuide");
+    expect(options["reseau"]).toBe(true);
+  });
+
+  it("demande formulaire sans page : inchangée (lettre, pas de pageGuide)", async () => {
+    guideFindMany.mockResolvedValue([{ ...CANDIDATE, origine: "formulaire" }]);
+    await rattraperGuides(MAINTENANT);
+    const options = mettreEnFileGuide.mock.calls[0]?.[1] as Record<string, unknown>;
+    expect(options).not.toHaveProperty("pageGuide");
+    expect(options["reseau"]).toBe(false);
+  });
+
+  it("table des contacts absente (P2021, fenêtre worker/app) : rattrapage inchangé", async () => {
+    guideFindMany.mockResolvedValue([DEMANDE_PAGE]);
+    contactFindFirst.mockRejectedValue(Object.assign(new Error("absente"), { code: "P2021" }));
+    const r = await rattraperGuides(MAINTENANT);
+    expect(r.relancees).toBe(1);
+    expect(mettreEnFileGuide.mock.calls[0]?.[1]).not.toHaveProperty("pageGuide");
+  });
+
+  it("opposition => aucun envoi, et la ligne liée n'est même pas lue", async () => {
+    guideFindMany.mockResolvedValue([DEMANDE_PAGE]);
+    contactFindFirst.mockResolvedValue({ id: "contact-1" });
+    estOpposee.mockResolvedValue(true);
+    await rattraperGuides(MAINTENANT);
+    expect(mettreEnFileGuide).not.toHaveBeenCalled();
+  });
+
+  it.each([
+    ["plafond", "plafond"],
+    ["non-parti", "non-parti"],
+  ])(
+    "résultat « %s » de la mise en file : pas de relance comptée, pageGuide transmis",
+    async (_n, res) => {
+      guideFindMany.mockResolvedValue([DEMANDE_PAGE]);
+      contactFindFirst.mockResolvedValue({ id: "contact-1" });
+      mettreEnFileGuide.mockResolvedValue(res);
+      const r = await rattraperGuides(MAINTENANT);
+      expect(r.relancees).toBe(0);
+      expect(mettreEnFileGuide.mock.calls[0]?.[1]).toHaveProperty("pageGuide");
+    },
+  );
+
+  it("corbeille de validation : rien n'est mis en file", async () => {
+    guideFindMany.mockResolvedValue([DEMANDE_PAGE]);
+    contactFindFirst.mockResolvedValue({ id: "contact-1" });
+    outboxCount.mockResolvedValue(1);
+    const r = await rattraperGuides(MAINTENANT);
+    expect(r.ecartees).toBe(1);
+    expect(mettreEnFileGuide).not.toHaveBeenCalled();
   });
 });

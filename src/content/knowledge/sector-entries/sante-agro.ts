@@ -39,7 +39,7 @@ Ces déploiements sont encadrés par un empilement réglementaire complexe que l
 Depuis mai 2021, tout logiciel IA qui constitue ou intègre un dispositif médical au sens du MDR doit disposer d'un marquage CE de classe adéquate (I à III selon les risques). L'ANSM est l'autorité compétente française pour la désignation des organismes notifiés. Un audit Axion-IA doit cartographier les logiciels IA existants et vérifier si leur qualification en tant que dispositif médical a été évaluée — lacune fréquente dans les établissements adoptant des outils IA SaaS tiers.
 
 **AI Act (Règlement UE 2024/1689) — systèmes IA à haut risque**
-L'AI Act, applicable progressivement à partir de 2025-2026, classe explicitement dans la catégorie « haut risque » les systèmes IA utilisés pour le triage médical, l'aide au diagnostic et la gestion des soins (Annexe III, point 5). Les obligations sont substantielles : système de gestion des risques documenté, données d'entraînement représentatives et auditées, transparence envers les professionnels de santé, supervision humaine obligatoire, enregistrement dans la base de données EU AI Act (EUID). Les établissements de santé disposent d'un délai de mise en conformité jusqu'au 2 août 2026 pour les systèmes déjà en production.
+L'AI Act, applicable par paliers de 2025 à 2028, classe notamment dans la catégorie « haut risque » les systèmes IA utilisés pour le triage des patients en urgence (annexe III, point 5 d) ; l'aide au diagnostic intégrée à un dispositif médical relève de l'annexe I (échéance 2 août 2028). Les obligations sont substantielles : système de gestion des risques documenté, données d'entraînement représentatives et auditées, transparence envers les professionnels de santé, supervision humaine obligatoire. Selon le règlement (UE) 2026/1744, ces obligations s'appliquent à partir du 2 décembre 2027 (annexe III) ou du 2 août 2028 (IA intégrée dans un dispositif médical, annexe I), initialement prévues en août 2026 (annexe III) et août 2027 (annexe I). À vérifier sur EUR-Lex selon votre cas.
 
 **Référentiel HAS sur les logiciels d'aide à la décision médicale (LADM)**
 La Haute Autorité de Santé publie un cadre d'évaluation des LADM (logiciels d'aide à la décision médicale), incluant les LADM à base d'IA. L'évaluation porte sur la pertinence clinique, la sécurité, l'ergonomie et l'impact sur l'organisation des soins. Un audit Axion-IA vérifie l'alignement avec ce référentiel pour tout outil d'aide à la décision en production.
@@ -92,15 +92,15 @@ Cette phase, souvent absente des audits classiques, est critique en santé :
 Pour les systèmes classifiés haut risque (aide au diagnostic, triage) :
 - Vérification de l'existence ou de la planification d'un système de gestion des risques AI Act
 - Revue de la documentation technique exigée (Annexe IV de l'AI Act)
-- Vérification de l'enregistrement dans la base EU AI Act (applicable à partir d'août 2026)
-- Évaluation du plan de mise en conformité si deadline non encore atteinte
+- Vérification de l'enregistrement dans la base EU AI Act (obligation haut risque reportée par le règlement (UE) 2026/1744)
+- Évaluation du plan de mise en conformité au regard des échéances reportées (2 décembre 2027 pour l'annexe III, 2 août 2028 pour l'annexe I)
 
 ## Livrables standard de l'audit
 
 1. **Rapport d'inventaire IA** — tableau de qualification DM, statuts réglementaires
 2. **Cartographie RGPD santé** — traitements IA, bases légales, lacunes AIPD
 3. **Note de risques biais algorithmiques** — évaluation par outil critique
-4. **Feuille de route conformité** — priorisée par risque, avec délais réglementaires (AI Act août 2026)
+4. **Feuille de route conformité** — priorisée par risque, avec délais réglementaires (AI Act : échéances haut risque reportées, selon le règlement (UE) 2026/1744)
 5. **Recommandations HDS** — audit de la chaîne d'hébergement IA
 
 ## Points d'attention spécifiques Axion-IA
@@ -117,9 +117,11 @@ Pour les systèmes classifiés haut risque (aide au diagnostic, triage) :
       "https://eur-lex.europa.eu/legal-content/FR/TXT/?uri=CELEX%3A32017R0745",
       "https://eur-lex.europa.eu/legal-content/FR/TXT/?uri=CELEX%3A32024R1689",
       "https://esante.gouv.fr/produits-services/hds",
+      "https://eur-lex.europa.eu/eli/reg/2026/1744/oj",
+      "https://eur-lex.europa.eu/eli/reg/2024/1689/oj",
     ],
-    lastReviewedOn: "2026-05-20",
-    reviewedBy: "claude-sonnet-4-6",
+    lastReviewedOn: "2026-11-08",
+    reviewedBy: "relecture-ai-act-2026-11-08",
   },
 
   // ─────────────────────────────────────────────────────────────────────────
@@ -229,7 +231,7 @@ Le Health Data Hub, groupement d'intérêt public piloté par le Ministère de l
 
 ## Q : Quel est le rôle de la CNIL dans la régulation de l'IA médicale en France ?
 
-**R :** La CNIL (Commission Nationale de l'Informatique et des Libertés) est l'autorité de contrôle française compétente pour le RGPD, y compris pour les traitements IA utilisant des données de santé. Ses interventions dans le domaine IA médical portent sur : (1) les AIPD — la CNIL publie une liste des traitements pour lesquels l'AIPD est obligatoire, qui inclut explicitement les traitements IA sur données de santé à grande échelle ; (2) les audits et mises en demeure — la CNIL peut contrôler tout opérateur déployant de l'IA médicale et prononcer des amendes jusqu'à 4 % du chiffre d'affaires mondial en cas de violation RGPD ; (3) l'accompagnement — la CNIL a publié un guide pratique sur l'IA et les données de santé (2022) et participe au comité de l'EDPB sur les lignes directrices IA. En 2023, la CNIL a ouvert des contrôles sur plusieurs startups HealthTech françaises dans le cadre de son plan d'action IA. Depuis l'entrée en application partielle de l'AI Act en 2024, la CNIL est désignée comme autorité de surveillance de marché compétente pour les systèmes IA à haut risque dans le domaine de la santé. Source : [CNIL — Plan d'action IA 2023-2024](https://www.cnil.fr/fr/intelligence-artificielle).
+**R :** La CNIL (Commission Nationale de l'Informatique et des Libertés) est l'autorité de contrôle française compétente pour le RGPD, y compris pour les traitements IA utilisant des données de santé. Ses interventions dans le domaine IA médical portent sur : (1) les AIPD — la CNIL publie une liste des traitements pour lesquels l'AIPD est obligatoire, qui inclut explicitement les traitements IA sur données de santé à grande échelle ; (2) les audits et mises en demeure — la CNIL peut contrôler tout opérateur déployant de l'IA médicale et prononcer des amendes jusqu'à 4 % du chiffre d'affaires mondial en cas de violation RGPD ; (3) l'accompagnement — la CNIL a publié un guide pratique sur l'IA et les données de santé (2022) et participe au comité de l'EDPB sur les lignes directrices IA. En 2023, la CNIL a ouvert des contrôles sur plusieurs startups HealthTech françaises dans le cadre de son plan d'action IA. Pour l'AI Act, les autorités de surveillance du marché sont en cours de désignation en France (projet de loi en cours ; schéma envisagé : DGCCRF coordinatrice, CNIL), à vérifier. Source : [CNIL — Plan d'action IA 2023-2024](https://www.cnil.fr/fr/intelligence-artificielle).
 `,
     sources: [
       "https://www.cnil.fr/fr/intelligence-artificielle",

@@ -18,7 +18,7 @@ export const KB_IMPLEMENTATIONS: readonly KbFact[] = [
   // ── Offre Axion-IA implémentations ───────────────────────────────────────
   {
     id: "impl-001",
-    text: "Axion-IA conçoit et déploie des chatbots IA métier pour les PME/ETI : traitement des demandes clients, FAQ dynamique, assistance interne RH/finance — basés sur Claude API (Anthropic) avec base de connaissance RAG.",
+    text: "Axion-IA conçoit et déploie des chatbots IA métier pour les PME : traitement des demandes clients, FAQ dynamique, assistance interne RH/finance — basés sur Claude API (Anthropic) avec base de connaissance RAG.",
     source: "Axion-IA — Catalogue implémentations 2026",
     sourceUrl: "https://axion-ia.com/implementations",
     verifiedAt: "2026-05-01",
@@ -84,7 +84,7 @@ export const KB_IMPLEMENTATIONS: readonly KbFact[] = [
   {
     id: "impl-008",
     text: "Chatbot RAG basique Axion-IA (jusqu'à 1 000 documents, 1 canal, 2 intégrations) — développement + maintenance/infra sur devis selon le périmètre.",
-    source: "Axion-IA — Grille tarifaire implémentations 2026",
+    source: "Axion-IA — Offre implémentations 2026",
     sourceUrl: "https://axion-ia.com/implementations",
     verifiedAt: "2026-05-01",
     verticales: ["implementations"],
@@ -93,7 +93,7 @@ export const KB_IMPLEMENTATIONS: readonly KbFact[] = [
   {
     id: "impl-009",
     text: "Automatisation de workflow IA Axion-IA — sur devis selon le périmètre, selon le nombre d'étapes et d'intégrations — gains opérationnels mesurables dès la mise en production (généralement sous 4 à 8 semaines), ROI complet sous quelques mois. Notre approche par défaut est le code custom (Node.js, Python, infrastructures cloud-native) pour la souveraineté des données et zéro lock-in éditeur. Plateformes no-code (Make, Zapier, n8n) disponibles uniquement sur demande client explicite.",
-    source: "Axion-IA — Grille tarifaire implémentations 2026",
+    source: "Axion-IA — Offre implémentations 2026",
     sourceUrl: "https://axion-ia.com/implementations",
     verifiedAt: "2026-05-01",
     verticales: ["implementations"],
@@ -102,7 +102,7 @@ export const KB_IMPLEMENTATIONS: readonly KbFact[] = [
   {
     id: "impl-010",
     text: "Projet d'implémentation IA complexe Axion-IA (système multi-agents, intégration ERP, tableau de bord IA) — sur devis selon le périmètre — avec objectifs de résultat définis contractuellement.",
-    source: "Axion-IA — Grille tarifaire implémentations 2026",
+    source: "Axion-IA — Offre implémentations 2026",
     sourceUrl: "https://axion-ia.com/implementations",
     verifiedAt: "2026-05-01",
     verticales: ["implementations"],
@@ -148,12 +148,12 @@ export const KB_IMPLEMENTATIONS: readonly KbFact[] = [
   },
   {
     id: "impl-015",
-    text: "Les chatbots IA Axion-IA intègrent nativement une bannière de transparence AI Act art. 50 : l'utilisateur est informé qu'il interagit avec un système IA — obligation légale en vigueur depuis août 2026.",
+    text: "Les chatbots IA Axion-IA affichent une information de transparence : l'utilisateur est informé qu'il échange avec un système IA, conformément à l'AI Act (art. 50, dates d'application à vérifier sur EUR-Lex).",
     source: "EUR-Lex — Règlement UE 2024/1689 (AI Act) art. 50",
     sourceUrl: "https://eur-lex.europa.eu/legal-content/FR/TXT/?uri=CELEX:32024R1689",
-    verifiedAt: "2026-05-01",
+    verifiedAt: "2026-11-08",
     verticales: ["implementations"],
-    confidence: 0.98,
+    confidence: 0.85,
   },
   {
     id: "impl-016",
@@ -268,15 +268,6 @@ export const KB_IMPLEMENTATIONS: readonly KbFact[] = [
     verifiedAt: "2026-05-01",
     verticales: ["implementations"],
     confidence: 0.88,
-  },
-  {
-    id: "impl-027",
-    text: "DGE (Direction Générale des Entreprises, 2024) : les ETI françaises (250-4 999 salariés) ayant déployé au moins 3 cas d'usage IA opérationnels affichent une croissance de productivité 1,4 point supérieure à la moyenne sectorielle.",
-    source: "DGE — Rapport IA et compétitivité des ETI 2024",
-    sourceUrl: "https://www.entreprises.gouv.fr",
-    verifiedAt: "2026-05-01",
-    verticales: ["implementations"],
-    confidence: 0.78,
   },
   // ── Erreurs courantes et bonnes pratiques ─────────────────────────────────
   {
@@ -407,7 +398,7 @@ export const KB_IMPLEMENTATIONS: readonly KbFact[] = [
   },
   {
     id: "impl-041",
-    text: "L'industrie manufacturière française est en retard sur l'IA : seulement 34 % des PME industrielles ont déployé au moins un outil IA opérationnel en 2024, contre 68 % dans les services aux entreprises (DGE, Baromètre IA PME-ETI 2024).",
+    text: "L'industrie manufacturière française est en retard sur l'IA : seulement 34 % des PME industrielles ont déployé au moins un outil IA opérationnel en 2024, contre 68 % dans les services aux entreprises (DGE, baromètre IA 2024).",
     source: "DGE — Baromètre IA PME-ETI 2024",
     sourceUrl: "https://www.entreprises.gouv.fr",
     verifiedAt: "2026-05-22",
@@ -484,12 +475,13 @@ export const KB_IMPLEMENTATIONS: readonly KbFact[] = [
   // ── AI Act et impact projets ──────────────────────────────────────────────
   {
     id: "impl-050",
-    text: "L'AI Act européen (applicable progressivement 2024-2027) impose des obligations spécifiques pour les systèmes IA à « risque élevé » (recrutement, crédit, contrôle des travailleurs) : documentation technique, évaluation de conformité, registre de supervision humaine.",
-    source: "EUR-Lex — Règlement UE 2024/1689 (AI Act), Annexe III",
-    sourceUrl: "https://eur-lex.europa.eu/legal-content/FR/TXT/?uri=CELEX:32024R1689",
-    verifiedAt: "2026-05-22",
+    text: "L'AI Act européen prévoit des obligations spécifiques pour les systèmes IA « à haut risque » (recrutement, crédit, contrôle des travailleurs) : documentation technique, évaluation de conformité, supervision humaine. Le règlement (UE) 2026/1744 (omnibus IA) les a reportées au 2 décembre 2027 pour ces usages de l'annexe III : à vérifier sur EUR-Lex.",
+    source:
+      "EUR-Lex — Règlement (UE) 2024/1689, modifié par le règlement (UE) 2026/1744 (omnibus IA, JO du 24/07/2026)",
+    sourceUrl: "https://eur-lex.europa.eu/eli/reg/2026/1744/oj",
+    verifiedAt: "2026-11-08",
     verticales: ["implementations"],
-    confidence: 0.95,
+    confidence: 0.8,
   },
   {
     id: "impl-051",
@@ -710,7 +702,7 @@ export const KB_IMPLEMENTATIONS: readonly KbFact[] = [
   },
   {
     id: "impl-076",
-    text: "Le programme « France 2030 » alloue 1,8 milliard d'euros aux projets d'IA industrielle et de souveraineté numérique sur 5 ans — dont une part significative destine au financement d'implémentations IA dans les PME/ETI françaises via des appels à projets sectoriels." /* price-exempt: stat marché tierce */,
+    text: "Le programme « France 2030 » alloue 1,8 milliard d'euros aux projets d'IA industrielle et de souveraineté numérique sur 5 ans — dont une part significative destine au financement d'implémentations IA dans les PME françaises via des appels à projets sectoriels." /* price-exempt: stat marché tierce */,
     source: "Gouvernement français — Plan France 2030, volet IA 2024",
     sourceUrl: "https://www.gouvernement.fr/france-2030",
     verifiedAt: "2026-05-22",

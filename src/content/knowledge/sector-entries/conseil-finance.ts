@@ -43,7 +43,7 @@ L'ACPR (Autorité de contrôle prudentiel et de résolution) surveille la confor
 
 ### Biais et équité algorithmique
 
-Le Règlement UE sur l'IA (AI Act, UE 2024/1689) classe les systèmes de scoring crédit destinés aux particuliers comme **systèmes à haut risque** (Annexe III, point 5b), avec obligation de documentation technique, test anti-biais, et supervision humaine.
+Le Règlement UE sur l'IA (AI Act, UE 2024/1689) classe les systèmes de scoring crédit destinés aux particuliers comme **systèmes à haut risque** (Annexe III, point 5b), avec obligation de documentation technique, test anti-biais, et supervision humaine. Selon le règlement (UE) 2026/1744, ces obligations de l'annexe III s'appliquent à partir du 2 décembre 2027 (initialement prévues en août 2026).
 
 ---
 
@@ -102,9 +102,11 @@ L'intervention combine des entretiens semi-directifs avec les équipes métier e
       "https://www.eba.europa.eu/sites/default/files/document_library/Publications/Guidelines/2020/Guidelines%20on%20ICT%20and%20security%20risk%20management/872936/EBA%20revised%20Guidelines%20on%20ICT%20and%20Security%20Risk%20Management.pdf",
       "https://acpr.banque-france.fr/sites/default/files/medias/documents/20200224_discussion_paper_ia.pdf",
       "https://eur-lex.europa.eu/legal-content/FR/TXT/?uri=CELEX%3A32024R1689",
+      "https://eur-lex.europa.eu/eli/reg/2026/1744/oj",
+      "https://eur-lex.europa.eu/eli/reg/2024/1689/oj",
     ],
-    lastReviewedOn: "2026-05-20",
-    reviewedBy: "claude-sonnet-4-6",
+    lastReviewedOn: "2026-11-08",
+    reviewedBy: "relecture-ai-act-2026-11-08",
   },
 
   // ─────────────────────────────────────────────────────────────────────────
@@ -157,7 +159,7 @@ Le secteur bancaire français est soumis à une superposition de cadres régleme
 - **Règlement DORA** (applicable depuis janvier 2025) : gestion du risque ICT, résilience opérationnelle numérique, obligations sur les prestataires tiers critiques (dont les fournisseurs de modèles IA cloud)
 - **Guidelines EBA sur le risque ICT** (EBA/GL/2019/04) : documentation des systèmes, tests de résilience, gouvernance des modèles
 - **Supervision ACPR** : l'ACPR intègre dans ses inspections thématiques la gouvernance des algorithmes de scoring et de détection de fraude depuis 2021
-- **AI Act européen** (applicable progressivement 2024-2027) : scoring crédit aux particuliers classé haut risque → exigences de documentation, tests de robustesse et de non-discrimination, supervision humaine obligatoire
+- **AI Act européen** (applicable par paliers de 2025 à 2028) : scoring crédit aux particuliers classé haut risque (annexe III) → exigences de documentation, tests de robustesse et de non-discrimination, supervision humaine ; échéance reportée au 2 décembre 2027 par le règlement (UE) 2026/1744
 
 ---
 
@@ -175,9 +177,11 @@ Pour les établissements n'ayant pas encore industrialisé leur IA, les gains le
       "https://www.eba.europa.eu/regulation-and-policy/internal-governance/guidelines-on-ict-and-security-risk-management",
       "https://www.legifrance.gouv.fr/jorf/id/JORFTEXT000049117468",
       "https://www.banque-france.fr/fr/stabilite-financiere/stabilite-financiere-et-risques-systemiques/intelligence-artificielle-et-finance",
+      "https://eur-lex.europa.eu/eli/reg/2026/1744/oj",
+      "https://eur-lex.europa.eu/eli/reg/2024/1689/oj",
     ],
-    lastReviewedOn: "2026-05-20",
-    reviewedBy: "claude-sonnet-4-6",
+    lastReviewedOn: "2026-11-08",
+    reviewedBy: "relecture-ai-act-2026-11-08",
   },
 
   // ─────────────────────────────────────────────────────────────────────────
@@ -366,17 +370,11 @@ Rapport structuré en trois niveaux de priorité :
     titleFr: "FAQ — Tarifs d'un audit IA pour TPE, PME et ETI",
     titleEn: "[EN] FAQ — AI Audit Pricing for SMEs and Mid-Market Companies",
     summaryFr:
-      "Réponses aux questions les plus fréquentes des dirigeants de TPE, PME et ETI sur les tarifs, le contenu et le retour sur investissement d'un audit IA réalisé par Axion-IA.",
+      "Réponses aux questions les plus fréquentes des dirigeants de TPE, PME et ETI sur le coût (sur devis), le contenu et le retour sur investissement d'un audit IA réalisé par Axion-IA.",
     bodyMarkdownFr: `
-## Q : Quelle est la fourchette de prix pour un audit IA ?
+## Q : Combien coûte un audit IA ?
 
-**R :** Les tarifs varient principalement selon la taille de l'entreprise auditée et la profondeur de l'intervention :
-
-- **PME (10 à 250 salariés)** : entre **8 000 € et 20 000 € HT** pour un audit de maturité IA complet. Un audit ciblé sur un périmètre restreint (un seul département, un seul outil) peut descendre à **4 000 – 6 000 € HT**.
-- **ETI (250 à 5 000 salariés)** : entre **18 000 € et 60 000 € HT** selon le nombre de directions couvertes, la complexité des systèmes IA en place et les exigences de conformité réglementaire (AI Act, DORA pour le secteur financier).
-- **Grand compte (> 5 000 salariés, périmètre partiel)** : à partir de **50 000 € HT**, sur appel d'offres.
-
-Ces fourchettes sont exprimées en jours·consultant, généralement facturés entre **1 200 € et 2 500 € HT/jour** selon le niveau de séniorité requis et la spécialité sectorielle.
+**R :** Un audit IA Axion-IA est **sur devis** : l'effort dépend de la taille de l'entreprise auditée, du nombre de directions couvertes, de la complexité des systèmes IA en place et des exigences de conformité réglementaire (AI Act, DORA pour le secteur financier). Parlons-en lors du rendez-vous gratuit de 45 minutes : il sert précisément à cadrer ce périmètre.
 
 ---
 
@@ -411,7 +409,7 @@ En pratique, les deux approches sont souvent combinées : l'audit de maturité f
 
 **R :** Le ROI d'un audit IA est indirect mais documenté sur trois axes :
 
-1. **Évitement de coûts réglementaires** : les sanctions AI Act pour les systèmes à haut risque non conformes peuvent atteindre **3 % du chiffre d'affaires mondial** (article 99 AI Act). Un audit préventif coûte en général 1 à 5 % de ce risque potentiel.
+1. **Évitement de coûts réglementaires** : les sanctions AI Act pour les systèmes à haut risque non conformes peuvent atteindre **15 millions d'euros ou 3 % du chiffre d'affaires mondial** (le montant le plus élevé ; le plus bas pour les PME) selon l'article 99 de l'AI Act. Un audit préventif coûte en général bien moins que ce risque potentiel.
 
 2. **Optimisation des dépenses IA** : la majorité des entreprises auditées découvrent qu'elles dépensent 20 à 40 % de leur budget IA sur des outils sous-utilisés ou redondants. Un audit permet une rationalisation rapide.
 
@@ -425,10 +423,7 @@ Les organisations ayant réalisé un audit de maturité avant de lancer un proje
 
 **R :**
 
-**Modalités de paiement** : Axion-IA facture en deux ou trois acomptes selon le montant total :
-- Missions < 15 000 € HT : 50 % à la commande, 50 % à la remise du rapport final
-- Missions 15 000 – 50 000 € HT : 30 % à la commande, 40 % à mi-mission, 30 % à la remise du rapport
-- Missions > 50 000 € HT : modalités négociées au cas par cas
+**Modalités de paiement** : Axion-IA facture en deux ou trois acomptes selon l'ampleur de la mission (par exemple 50 % à la commande et 50 % à la remise du rapport final, ou 30 % / 40 % / 30 % pour une mission plus longue) ; l'échéancier est précisé dans le devis.
 
 **Délais** :
 - Audit PME (périmètre restreint) : **3 à 6 semaines** du kick-off à la remise du rapport

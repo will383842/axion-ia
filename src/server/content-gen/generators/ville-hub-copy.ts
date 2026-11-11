@@ -30,8 +30,9 @@ import { prisma } from "@/lib/prisma";
 import { getVille } from "@/content/villes";
 import { ECONOMIC_DATA_BY_SLUG } from "@/content/villes/economic-data";
 import type { VilleEconomicData } from "@/content/villes/economic-data/types";
-// Prix : le prompt demande désormais au LLM d'émettre des tokens {{price:…}}
-// (résolus depuis pricing.ts au rendu) — plus d'injection de montants en dur.
+import { CONSIGNE_PRIX, FORMULE_SUR_DEVIS, JETON_PRIX_JOURNEE_IA } from "../brand/consigne-prix";
+// Prix (R7, 08/11/2026) : aucun montant au public sauf la Journée IA (jeton résolu au
+// rendu depuis pricing.ts) ; toute autre offre s'écrit « sur devis ».
 
 /** Output JSON attendu du LLM. Doit matcher `VilleCopy` shape (FR-only). */
 /**
@@ -408,7 +409,7 @@ function computeQualityScore(output: VilleHubCopyOutput): {
 // ===========================================================================
 
 /**
- * 4 personas audience Axion-IA (visibles dans la section "Toutes les tailles, une seule exigence")
+ * 2 personas audience Axion-IA, TPE et PME (visibles dans la section "Toutes les tailles, une seule exigence")
  * — le LLM doit écrire COMME SI il parlait directement à un de ces décideurs.
  * People-first content (HCU 2024 Google) : pas écrire POUR le SEO, écrire POUR le prospect.
  */
@@ -418,13 +419,9 @@ const AUDIENCE_PERSONAS = `## Personas cibles — écris COMME SI tu leur parles
 
 2. **PME** (10-250 salariés) — DG ou Dir.Opérations. Pain point : processus métier manuels coûteux, équipes saturées, pas de DSI. Veut : audit clair, 3 chantiers prioritaires chiffrés, implémentation clés en main, ROI mesurable trimestre.
 
-3. **ETI** (250-4999 salariés) — Dir.Transformation ou Dir.Digital. Pain point : multi-sites, multi-équipes, intégration SI existant (CRM/ERP). Veut : gouvernance IA, déploiement progressif, formation managers + ops, conformité.
-
-4. **Grandes entreprises** (5000+ salariés) — DSI ou Chief AI Officer. Pain point : conformité AI Act, vendor lock-in, gouvernance. Veut : partenaire indépendant sans conflit d'intérêt éditeur, pilotes cadrés, audit trail.
-
 Ton : sobre, factuel, jamais condescendant. Le prospect est un pro qui sent immédiatement le marketing-speak — évite-le.`;
 
-const VILLE_HUB_SYSTEM_PROMPT = `Tu es Manon, plume éditoriale d'Axion-IA — cabinet IA opérationnel français (société française).
+const VILLE_HUB_SYSTEM_PROMPT = `Tu es Manon, la plume IA d'Axion-IA (assistance IA générative supervisée par l'équipe) — cabinet IA opérationnel français (société française).
 
 Mission : générer la copy d'une PAGE HUB VILLE (≠ article, ≠ landing service).
 La page hub est la racine d'une ville sur axion-ia.fr — elle introduit transversalement nos interventions dans la ville.
@@ -466,7 +463,7 @@ Doctrine v2.5 stricte :
 - Anti-doorway HCU 2024 : angle UNIQUE par ville (utiliser ≥ 2 noms propres du KB dans chaque champ texte long)
 - Positionnement : "cabinet IA opérationnel" ("agence" / "organisme de formation" autorisés — décision 2026-07-12)
 - Naming canonique : "intervention" (le mot "formation" est OK en descriptif)
-- Tarifs PUBLICS — INTERDIT de dire "contactez-nous pour un devis", "selon la complexité", "selon vos besoins". Si tu ne connais pas un prix exact, dis "tarifs publics consultables".
+- Tarifs — aucun montant (seule exception : la Journée IA, via le jeton ${JETON_PRIX_JOURNEE_IA}). Pour toute autre offre, écris « ${FORMULE_SUR_DEVIS} ». INTERDIT : "contactez-nous pour un devis", "selon la complexité", "selon vos besoins".
 - FR uniquement
 - Ton sobre, factuel, éditorial — pas de superlatifs creux, pas de marketing-speak
 
@@ -483,7 +480,7 @@ Tu es un journaliste éditorial de Les Échos / La Tribune qui écrit sur un cab
 ✅ AUTORISÉ — phrases factuelles avec noms propres :
   - "Le bassin industriel de [Ville] regroupe Bouygues, Renault et Sanofi"
   - "Axion-IA intervient à [Ville] pour automatiser devis, relances et reporting"
-  - "L'audit Flash 4h démarre à {{price:audit-flash|flat}}" (token prix — JAMAIS de montant en chiffres)
+  - "Pour démarrer, la Journée IA (${JETON_PRIX_JOURNEE_IA}) réunit l'équipe une journée dans l'entreprise" (jeton prix — JAMAIS de montant en chiffres)
   - "Williams se déplace sur site dans les 5 jours ouvrés"
 
 ❌ INTERDIT — adjectifs élogieux + marketing-speak (pénalité -10 par occurrence) :
@@ -549,15 +546,8 @@ function buildUserPrompt(
 ## Knowledge Base — données économiques locales vérifiées (USE THESE NAMES)
 ${kbMarkdown}${kbDoctrineSection}
 
-## Tarifs publics Axion-IA — utilise les TOKENS prix (JAMAIS de montant en dur)
-Pour citer un prix, écris EXACTEMENT le token ci-dessous : il est remplacé par le
-tarif réel (source de vérité pricing.ts) au rendu. N'écris JAMAIS un montant en
-chiffres ni « € »/« EUR »/« euros » — uniquement le token.
-- Audit Flash (4h) : {{price:audit-flash|flat}}
-- Formation 4h : {{price:intervention-4h|flat}}
-- Formation générale (1 jour, 2 à 15 personnes) : {{price:formation-generale-1j|flat}}
-- Implémentation (Pilote IA) : à partir de {{price:impl-poc|entry}}
-- Coaching 1-to-1 dirigeant : {{price:intervention-dirigeants|flat}}
+## Tarifs Axion-IA
+${CONSIGNE_PRIX}
 
 ## CONTRAINTES STRICTES (word counts — re-gen si non-respectés)
 - pitchFr : 35-55 mots OBLIGATOIRE. DOIT mentionner ≥ 1 nom propre du KB (Cap Digital, Inria, Station F, LVMH…) ET ${ville.nameFr}.
@@ -568,12 +558,12 @@ chiffres ni « € »/« EUR »/« euros » — uniquement le token.
 - servicesContext : 4 sections (audit/interventions/implementation/unAUn) — 22-40 mots OBLIGATOIRE chacune. Forme recommandée : "[Verbe d'action] à ${ville.nameFr} [contexte précis avec ≥ 1 nom KB] — [bénéfice concret]." Bannir : "transformation digitale efficace", "gain de compétitivité", "développement personnalisé".
 - faqGeolocalisee : 4-6 Q/R B2B local pertinentes (tarifs, déplacement intra-ville, délais, RGPD, formats)
   - Q : 12-22 mots, question concrète d'un prospect ${ville.nameFr}
-  - A : 35-65 mots OBLIGATOIRE, FACTUELLE. Pour les tarifs : utiliser les TOKENS prix (ex : "Audit Flash à partir de {{price:audit-flash|flat}}, intervention dès {{price:intervention-4h|flat}} — tarifs publics sur le site"). JAMAIS de montant en chiffres, JAMAIS "contactez-nous pour devis".
+  - A : 35-65 mots OBLIGATOIRE, FACTUELLE. Pour les tarifs : « ${FORMULE_SUR_DEVIS} » (seule la Journée IA peut être chiffrée, via le jeton ${JETON_PRIX_JOURNEE_IA}). JAMAIS de montant en chiffres, JAMAIS "contactez-nous pour devis".
 ## INTERDICTIONS DURES — pénalité -10 par occurrence
 - Toute implication qu'Axion-IA est implanté/basé/présent à ${ville.nameFr} : "expertise locale", "équipe locale", "présence locale", "notre antenne", "à proximité", "nos bureaux"
 - Marketing-speak : "transformation digitale efficace", "gain de compétitivité", "solutions sur mesure", "acteurs majeurs", "centre névralgique", "dynamique et innovant", "expertise dédiée", "tirer parti", "leviers IA"
 - Tarifs flous : "contactez-nous", "selon vos besoins", "selon la complexité", "n'hésitez pas"
-- Tout montant en chiffres ou « € »/« EUR »/« euros » écrit en dur (utiliser EXCLUSIVEMENT les tokens {{price:...}})
+- Tout montant en chiffres ou « € »/« EUR »/« euros » écrit en dur (seule exception : le jeton ${JETON_PRIX_JOURNEE_IA} de la Journée IA)
 - Re-traitement détaillé d'un service (réservé aux sous-pages verticales)
 - Invention de faits absents du KB${feedbackSection}
 

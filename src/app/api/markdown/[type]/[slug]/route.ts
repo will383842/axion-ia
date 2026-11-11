@@ -37,6 +37,7 @@
  * Sitemap : non listé (sert d'alternate format, pas de URL canonique).
  */
 
+import { CAS_CONCRETS_AFFICHES } from "@/content/preuves-sociales";
 import type { NextRequest } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { collapsePriceProseDuplicates, resolvePriceTokens } from "@/content/pricing-tokens";
@@ -141,6 +142,8 @@ async function loadContent(type: string, slug: string): Promise<MarkdownContent 
   }
 
   if (type === "cas-concrets") {
+    // Cas concrets éteints (2026-11-08) : cas inventés, 404.
+    if (!CAS_CONCRETS_AFFICHES) return null;
     // 🔴 CORRIGÉ 2026-08-15 (GEO-039) — cette branche lisait
     // `CaseStudyTranslation.bodyText ?? .body`. Ces deux colonnes N'EXISTENT PAS
     // sur ce modèle (cf. `schema.prisma` : `problem` / `solution` +

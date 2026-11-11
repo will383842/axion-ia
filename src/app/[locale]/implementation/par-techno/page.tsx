@@ -11,13 +11,6 @@ import { Container } from "@/components/layout/Container";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { JsonLd } from "@/components/marketing/JsonLd";
 import { IMPLEMENTATIONS } from "@/content/implementation";
-import {
-  IMPLEMENTATION_TIERS,
-  formatAmount,
-  formatAmountRange,
-  getEntryPriceEur,
-  getTierById,
-} from "@/content/pricing";
 import { FaqAccordion } from "@/components/marketing/FaqAccordion";
 import { buildProductMetadata, buildItemListJsonLd, buildFaqJsonLd, SITE_URL } from "@/lib/seo";
 
@@ -155,8 +148,8 @@ export default async function ImplementationByTechPage({ params }: Props) {
         titleEm={isFr ? "brique techno" : "building block"}
         description={
           isFr
-            ? `Si vous raisonnez en briques techniques (chatbot, agents autonomes, structuration de données, IA Custom...), 9 prestations packagées vous attendent. À partir de ${formatAmount(getEntryPriceEur(IMPLEMENTATION_TIERS) ?? 0, "fr", { compact: true })}, jusqu'à l'IA Custom sur devis, livraison 2 à 12 semaines.`
-            : `If you think in technical building blocks (chatbot, autonomous agents, data structuring, custom AI...), 9 packaged services are ready. From ${formatAmount(getEntryPriceEur(IMPLEMENTATION_TIERS) ?? 0, "en", { compact: true })}, up to custom AI on request, 2-12 week delivery.`
+            ? `Si vous raisonnez en briques techniques (chatbot, agents autonomes, structuration de données, IA Custom...), 9 prestations packagées vous attendent, chacune sur devis, livraison 2 à 12 semaines.`
+            : `If you think in technical building blocks (chatbot, autonomous agents, data structuring, custom AI...), 9 packaged services are ready, each on quote, 2-12 week delivery.`
         }
       />
 
@@ -187,15 +180,15 @@ export default async function ImplementationByTechPage({ params }: Props) {
         <FaqAccordion items={faqs} className="mx-auto max-w-3xl" emitJsonLd={false} />
       </Section>
 
-      <JsonLd data={faqJsonLd} strategy="afterInteractive" scriptId="jsonld-par-techno-faq" />
+      <JsonLd data={faqJsonLd} scriptId="jsonld-par-techno-faq" />
 
       <CtaBlock
         eyebrow={isFr ? "Premium" : "Premium"}
         title={isFr ? "IA Custom · grands comptes" : "Custom AI · large accounts"}
         description={
           isFr
-            ? `Pour les implémentations sur mesure, ${formatAmountRange(getTierById(IMPLEMENTATION_TIERS, "impl-ia-custom").priceMin!, getTierById(IMPLEMENTATION_TIERS, "impl-ia-custom").priceMax!, "fr")}. Équipe dédiée, modèles fine-tuned sur vos données.`
-            : `For tailor-made implementations, ${formatAmountRange(getTierById(IMPLEMENTATION_TIERS, "impl-ia-custom").priceMin!, getTierById(IMPLEMENTATION_TIERS, "impl-ia-custom").priceMax!, "en")}. Dedicated team, models fine-tuned on your data.`
+            ? "Pour les implémentations sur mesure, sur devis. Équipe dédiée, modèles fine-tuned sur vos données."
+            : "For tailor-made implementations, on quote. Dedicated team, models fine-tuned on your data."
         }
         cta={
           <Cta href="/implementation/ia-custom" size="lg" track="par-techno-iacustom">

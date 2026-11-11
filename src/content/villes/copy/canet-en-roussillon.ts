@@ -49,7 +49,7 @@ export const CANET_EN_ROUSSILLON_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Canet-en-Roussillon et sur le littoral catalan ?",
-      a: "Oui, Axion-IA intervient à Canet-en-Roussillon et tout le littoral catalan (Saint-Cyprien, Argelès-sur-Mer, Le Barcarès, Sainte-Marie-la-Mer). Nos consultants sont basés à proximité de Perpignan (12 min).",
+      a: "Oui, Axion-IA intervient à Canet-en-Roussillon et tout le littoral catalan (Saint-Cyprien, Argelès-sur-Mer, Le Barcarès, Sainte-Marie-la-Mer). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les professionnels du tourisme balnéaire ?",
@@ -65,7 +65,7 @@ export const CANET_EN_ROUSSILLON_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Canet-en-Roussillon ?",
-      a: "Nos consultants interviennent depuis Perpignan (12 min). Missions sur site dans votre établissement, commerce ou bureau. Visio possible.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Missions sur site dans votre établissement, commerce ou bureau. Visio possible.",
     },
   ],
 };

@@ -675,7 +675,7 @@ export const KW_AUDIT_G1: KeywordSeed[] = [
     priorite: 1,
     niveau: 3,
     injection: {
-      h1: "Combien coûte un audit IA pour une petite entreprise ? — Tarifs transparents",
+      h1: "Combien coûte un audit IA pour une petite entreprise ? — Devis sans surprise",
       metaTitle: "Prix audit IA petite entreprise | Axion-IA FAQ",
       metaDescription:
         "Tarif de l'audit IA Axion-IA pour TPE. Forfait flash demi-journée. Livrable plan d'action priorisé. Devis gratuit en 24 h.",
@@ -1670,10 +1670,10 @@ export const KW_AUDIT_G1: KeywordSeed[] = [
     priorite: 1,
     niveau: 3,
     injection: {
-      h1: "Audit IA et gouvernance AI Act pour ETI — soyez conformes avant août 2026",
+      h1: "Audit IA et gouvernance AI Act pour ETI — anticipez le calendrier 2025-2028",
       metaTitle: "Agence IA ETI audit gouvernance AI Act | Axion-IA",
       metaDescription:
-        "Axion-IA audite votre conformité AI Act pour les ETI. Gouvernance IA, RACI, politique d'usage, formation équipes. Deadline août 2026.",
+        "Axion-IA audite votre exposition à l'AI Act pour les ETI. Gouvernance IA, RACI, politique d'usage, formation équipes. Calendrier 2025-2028.",
       h2Variants: [
         "AI Act et ETI : obligations de conformité à connaître en 2026",
         "Comment l'audit IA intègre la conformité AI Act dans une ETI ?",
@@ -1681,15 +1681,15 @@ export const KW_AUDIT_G1: KeywordSeed[] = [
     },
     variables: {
       process: "conformité AI Act",
-      resultat: "ETI conforme AI Act",
-      chiffre: "2026",
-      unite: "deadline (août)",
-      delai: "avant août 2026",
+      resultat: "ETI prête pour l'AI Act",
+      chiffre: "2027",
+      unite: "échéance haut risque (décembre 2027, annexe III, après report)",
+      delai: "avant le 2 décembre 2027 (annexe III, après report)",
     },
     urlCible: "/fr/audit/eti",
     canonicalParent: "/fr/audit/",
     source: "manuel",
-    note: "Urgence deadline AI Act août 2026 — fort signal commercial",
+    note: "Calendrier AI Act 2025-2028 (haut risque annexe III reporté au 2 décembre 2027) — fort signal commercial",
   },
 
   {
@@ -1704,7 +1704,7 @@ export const KW_AUDIT_G1: KeywordSeed[] = [
       h1: "Demandez votre devis audit IA ETI — livrable CODIR et feuille de route inclus",
       metaTitle: "Devis audit IA ETI | Livrable CODIR Axion-IA",
       metaDescription:
-        "Devis audit IA sur mesure pour ETI. Livrable CODIR, feuille de route 12 mois, conformité AI Act. Réponse sous 48 h. Cabinet IA certifié.",
+        "Devis audit IA sur mesure pour ETI. Livrable CODIR, feuille de route 12 mois, préparation à l'AI Act. Réponse sous 48 h.",
       h2Variants: [
         "Que contient le livrable audit IA CODIR pour une ETI ?",
         "Quel budget prévoir pour un audit IA stratégique ETI ?",
@@ -2071,27 +2071,27 @@ export const KW_AUDIT_G1: KeywordSeed[] = [
     priorite: 1,
     niveau: 3,
     injection: {
-      h1: "AI Act 2026 et les ETI françaises — ce qui change, ce qui est obligatoire",
+      h1: "Impact de l'AI Act sur les ETI françaises en 2026 : ce qui s'applique, ce qui est reporté",
       metaTitle: "AI Act impact ETI françaises 2026 | Axion-IA",
       metaDescription:
-        "Le règlement européen AI Act entre en vigueur en 2026. Ce que chaque ETI française doit faire : audit de conformité, classification des systèmes IA",
+        "L'AI Act s'applique par étapes de 2025 à 2028. Ce qu'une ETI française peut préparer : inventaire et classification des systèmes IA",
       h2Variants: [
         "Quelles obligations l'AI Act impose-t-il aux ETI en 2026 ?",
         "Comment une ETI peut-elle se mettre en conformité AI Act ?",
-        "Deadline AI Act : ce que les ETI doivent avoir en place avant août 2026",
+        "Calendrier AI Act : ce que les ETI doivent anticiper d'ici décembre 2027",
       ],
     },
     variables: {
       process: "conformité AI Act",
-      resultat: "ETI conforme avant deadline",
-      chiffre: "2026",
-      unite: "deadline (août)",
-      delai: "avant août 2026",
+      resultat: "ETI prête avant l'échéance",
+      chiffre: "2027",
+      unite: "échéance haut risque (décembre 2027, annexe III, après report)",
+      delai: "avant le 2 décembre 2027 (annexe III, après report)",
     },
     urlCible: "/fr/guides/ai-act-impact-eti-france-2026",
     canonicalParent: "/fr/audit/eti",
     source: "manuel",
-    note: "Urgence deadline août 2026 — article à publier en priorité",
+    note: "Calendrier AI Act 2025-2028 (haut risque annexe III reporté au 2 décembre 2027) — article à publier en priorité",
   },
 
   {

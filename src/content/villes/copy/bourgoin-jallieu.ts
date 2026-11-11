@@ -5,22 +5,22 @@ import type { VilleCopy } from "./types";
 
 export const BOURGOIN_JALLIEU_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui accompagne les TPE et PME de Bourgoin-Jallieu, capitale du Nord-Isère. Berceau de l'ennoblissement textile et devenu carrefour logistique de la CAPI sur l'axe Lyon-Grenoble, Berjallie concentre des prestataires de l'entreposage, du commerce de gros et de l'industrie. Nous y ancrons l'IA dans le quotidien réel : automatisation des devis, suivi des expéditions, relances clients, support administratif.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui accompagne les TPE et PME de Bourgoin-Jallieu, capitale du Nord-Isère. Berceau de l'ennoblissement textile et devenu carrefour logistique de la CAPI sur l'axe A43, Berjallie concentre des prestataires de l'entreposage, du commerce de gros et de l'industrie. Nous y ancrons l'IA dans le quotidien réel : automatisation des devis, suivi des expéditions, relances clients, support administratif.",
   pitchEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui accompagne les TPE et PME de Bourgoin-Jallieu, capitale du Nord-Isère. Berceau de l'ennoblissement textile et devenu carrefour logistique de la CAPI sur l'axe Lyon-Grenoble, Berjallie concentre des prestataires de l'entreposage, du commerce de gros et de l'industrie. Nous y ancrons l'IA dans le quotidien réel : automatisation des devis, suivi des expéditions, relances clients, support administratif.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui accompagne les TPE et PME de Bourgoin-Jallieu, capitale du Nord-Isère. Berceau de l'ennoblissement textile et devenu carrefour logistique de la CAPI sur l'axe A43, Berjallie concentre des prestataires de l'entreposage, du commerce de gros et de l'industrie. Nous y ancrons l'IA dans le quotidien réel : automatisation des devis, suivi des expéditions, relances clients, support administratif.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Bourgoin-Jallieu (Nord-Isère). Nous accompagnons en priorité les TPE et PME locales — entrepôts logistiques de la CAPI, négociants en commerce de gros, ateliers d'ennoblissement textile, artisans du bâtiment, commerces et professions libérales. Audit pragmatique, formation des équipes sur site et implémentation d'outils concrets, sans jargon. Les ETI restent une cible marginale de notre activité.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Bourgoin-Jallieu (Nord-Isère). Nous accompagnons en priorité les TPE et PME locales — entrepôts logistiques de la CAPI, négociants en commerce de gros, ateliers d'ennoblissement textile, artisans du bâtiment, commerces et professions libérales. Audit pragmatique, formation des équipes sur site et implémentation d'outils concrets, sans jargon. Les ETI restent une cible marginale de notre activité.",
   seoHook: "logistique CAPI & textile",
   ecosystemFr:
-    "Bourgoin-Jallieu, ville-centre de la CAPI (Communauté d'Agglomération Porte de l'Isère), s'est construite sur l'industrie textile et l'ennoblissement avant de devenir une grande plateforme logistique du couloir rhodanien Lyon-Grenoble. Le tissu local mêle entrepôts et transport, négoce de gros, sous-traitance industrielle (produits métalliques, agroalimentaire), artisanat du bâtiment et commerces de centre-ville. Ce maillage de TPE et PME, dépendant de marges serrées et de flux tendus, trouve dans l'IA opérationnelle un levier direct de productivité.",
+    "Bourgoin-Jallieu, ville-centre de la CAPI (Communauté d'Agglomération Porte de l'Isère), s'est construite sur l'industrie textile et l'ennoblissement avant de devenir une grande plateforme logistique du couloir rhodanien. Le tissu local mêle entrepôts et transport, négoce de gros, sous-traitance industrielle (produits métalliques, agroalimentaire), artisanat du bâtiment et commerces de centre-ville. Ce maillage de TPE et PME, dépendant de marges serrées et de flux tendus, trouve dans l'IA opérationnelle un levier direct de productivité.",
   ecosystemEn:
-    "Bourgoin-Jallieu, ville-centre de la CAPI (Communauté d'Agglomération Porte de l'Isère), s'est construite sur l'industrie textile et l'ennoblissement avant de devenir une grande plateforme logistique du couloir rhodanien Lyon-Grenoble. Le tissu local mêle entrepôts et transport, négoce de gros, sous-traitance industrielle (produits métalliques, agroalimentaire), artisanat du bâtiment et commerces de centre-ville. Ce maillage de TPE et PME, dépendant de marges serrées et de flux tendus, trouve dans l'IA opérationnelle un levier direct de productivité.",
+    "Bourgoin-Jallieu, ville-centre de la CAPI (Communauté d'Agglomération Porte de l'Isère), s'est construite sur l'industrie textile et l'ennoblissement avant de devenir une grande plateforme logistique du couloir rhodanien. Le tissu local mêle entrepôts et transport, négoce de gros, sous-traitance industrielle (produits métalliques, agroalimentaire), artisanat du bâtiment et commerces de centre-ville. Ce maillage de TPE et PME, dépendant de marges serrées et de flux tendus, trouve dans l'IA opérationnelle un levier direct de productivité.",
   distancesFr:
-    "Bourgoin-Jallieu se situe sur l'A43 entre Lyon (40 km, 35 min) et l'aéroport Lyon-Saint-Exupéry (25 km, 25 min), porte d'entrée vers Grenoble (60 km). La gare relie Lyon Part-Dieu en moins de 40 min. Nos consultants se déplacent depuis Lyon sur tout le Nord-Isère : La Tour-du-Pin, L'Isle-d'Abeau, Villefontaine et la plaine de la CAPI.",
+    "Bourgoin-Jallieu se situe sur l'A43 entre Lyon (40 km, 35 min) et l'aéroport Lyon-Saint-Exupéry (25 km, 25 min). La gare relie Lyon Part-Dieu en moins de 40 min. Nous intervenons sur place ou à distance sur tout le Nord-Isère : La Tour-du-Pin, L'Isle-d'Abeau, Villefontaine et la plaine de la CAPI.",
   distancesEn:
-    "Bourgoin-Jallieu se situe sur l'A43 entre Lyon (40 km, 35 min) et l'aéroport Lyon-Saint-Exupéry (25 km, 25 min), porte d'entrée vers Grenoble (60 km). La gare relie Lyon Part-Dieu en moins de 40 min. Nos consultants se déplacent depuis Lyon sur tout le Nord-Isère : La Tour-du-Pin, L'Isle-d'Abeau, Villefontaine et la plaine de la CAPI.",
+    "Bourgoin-Jallieu se situe sur l'A43 entre Lyon (40 km, 35 min) et l'aéroport Lyon-Saint-Exupéry (25 km, 25 min). La gare relie Lyon Part-Dieu en moins de 40 min. Nous intervenons sur place ou à distance sur tout le Nord-Isère : La Tour-du-Pin, L'Isle-d'Abeau, Villefontaine et la plaine de la CAPI.",
   topSectorsNaf: [
     "Entreposage & logistique",
     "Commerce de gros",
@@ -55,7 +55,7 @@ export const BOURGOIN_JALLIEU_COPY: VilleCopy = {
       fr: {
         hero: "Axion-IA conçoit et augmente à Bourgoin-Jallieu des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure, chatbot RAG ancré sur vos catalogues et fiches techniques, recherche sémantique, suivi d'expédition et automatisations. Pensé pour la réalité du Nord-Isère — logisticiens de la CAPI sur l'A43, textile technique et composites dans la lignée de Porcher Industries, négoce de gros et enseignes du Parc de la Maladière. Devis à partir de 24-48 h selon la complexité, hébergement UE/RGPD, code et données à vous. Kick-off en présentiel à Bourgoin-Jallieu, itérations à distance.",
         whyHere: [
-          "Projets web & SaaS calés sur le tissu berjallien : logistique et entreposage de la CAPI (~10 000 emplois sur l'axe Lyon-Grenoble), textile technique et composites façon Porcher Industries, négoce de gros et industrie (Vicat, Thermador, Minimax, Radiall, Nemera).",
+          "Projets web & SaaS calés sur le tissu berjallien : logistique et entreposage de la CAPI (~10 000 emplois sur l'axe A43), textile technique et composites façon Porcher Industries, négoce de gros et industrie (Vicat, Thermador, Minimax, Radiall, Nemera).",
           "Conception UX/UI complète si besoin — research, wireframes, design system, prototype Figma — pas seulement la brique IA : configurateurs produit textile/composites, portails de suivi de commande, fiches techniques structurées.",
           "Augmentation de l'existant (widget, API, plugin sur votre CMS) ou plateforme IA-native sur mesure, selon le meilleur ROI à 18 mois pour des activités à marges serrées et flux tendus.",
           "E-commerce et drive multi-CMS pour les enseignes du Parc de la Maladière, portails B2B pour le négoce du Nord-Isère, le tout hébergeable en UE et conforme RGPD.",
@@ -110,13 +110,13 @@ export const BOURGOIN_JALLIEU_COPY: VilleCopy = {
             sizeLabel: "Grande entreprise",
             price: "Programme produit",
             detail:
-              "Programmes pluriannuels : refonte de plateformes, design system d'entreprise, équipe dédiée Axion-IA en mode produit pour les grands sites logistiques et industriels du couloir Lyon-Grenoble.",
+              "Programmes pluriannuels : refonte de plateformes, design system d'entreprise, équipe dédiée Axion-IA en mode produit pour les grands sites logistiques et industriels du couloir de l'A43.",
           },
         ],
         faq: [
           {
             q: "Travaillez-vous avec les logisticiens et entrepôts de la CAPI ?",
-            a: "Oui. La logistique pèse environ 10 000 emplois sur le territoire de la CAPI, sur l'A43 entre Lyon et Grenoble. Nous construisons des portails de suivi d'expédition, des espaces clients B2B, de la recherche sémantique de références et des automatisations de devis, en greffe sur votre WMS/ERP ou en plateforme dédiée.",
+            a: "Oui. La logistique pèse environ 10 000 emplois sur le territoire de la CAPI, sur l'A43. Nous construisons des portails de suivi d'expédition, des espaces clients B2B, de la recherche sémantique de références et des automatisations de devis, en greffe sur votre WMS/ERP ou en plateforme dédiée.",
           },
           {
             q: "Pouvez-vous gérer un configurateur produit pour le textile technique ou les composites ?",
@@ -132,7 +132,7 @@ export const BOURGOIN_JALLIEU_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et quel est le délai depuis Lyon ?",
-            a: "Après le cadrage, on remet un devis ferme en forfait fixe, à partir de 24-48 h selon la complexité. Nos consultants viennent de Lyon, à 35 min par l'A43, et se déplacent sur toute la CAPI (L'Isle-d'Abeau, Villefontaine, La Tour-du-Pin). Pas de régie ni de dérive horaire cachée.",
+            a: "Après le cadrage, on remet un devis ferme en forfait fixe, à partir de 24-48 h selon la complexité. Nous intervenons partout en France, sur place ou à distance. Pas de régie ni de dérive horaire cachée.",
           },
         ],
         guarantees:
@@ -141,7 +141,7 @@ export const BOURGOIN_JALLIEU_COPY: VilleCopy = {
       en: {
         hero: "In Bourgoin-Jallieu, Axion-IA designs and augments websites, applications and SaaS platforms with built-in AI: bespoke UX/UI, RAG chatbot grounded in your catalogues and technical sheets, semantic search, shipment tracking and automations. Built for the reality of the Nord-Isère — CAPI logistics operators on the A43, technical textiles and composites in the lineage of Porcher Industries, wholesale trade and the retailers of the Parc de la Maladière. Quote from 24-48 h depending on complexity, EU/GDPR hosting, code and data yours. On-site kick-off in Bourgoin-Jallieu, remote iterations.",
         whyHere: [
-          "Web & SaaS projects tuned to the Berjallie fabric: CAPI logistics and warehousing (~10,000 jobs on the Lyon-Grenoble axis), technical textiles and composites in the Porcher Industries tradition, wholesale trade and industry (Vicat, Thermador, Minimax, Radiall, Nemera).",
+          "Web & SaaS projects tuned to the Berjallie fabric: CAPI logistics and warehousing (~10,000 jobs on the A43 axis), technical textiles and composites in the Porcher Industries tradition, wholesale trade and industry (Vicat, Thermador, Minimax, Radiall, Nemera).",
           "Full UX/UI design if needed — research, wireframes, design system, Figma prototype — not just the AI brick: product configurators for textiles/composites, order-tracking portals, structured technical sheets.",
           "Augment the existing site (widget, API, plugin on your CMS) or a bespoke AI-native platform, whichever pays off best at 18 months for tight-margin, just-in-time operations.",
           "E-commerce and click-and-collect across CMS platforms for the Parc de la Maladière retailers, B2B portals for Nord-Isère wholesalers, all hostable in the EU and GDPR-compliant.",
@@ -196,13 +196,13 @@ export const BOURGOIN_JALLIEU_COPY: VilleCopy = {
             sizeLabel: "Grande entreprise",
             price: "Product programme",
             detail:
-              "Multi-year programmes: platform rebuilds, enterprise design system, dedicated Axion-IA product team for the large logistics and industrial sites of the Lyon-Grenoble corridor.",
+              "Multi-year programmes: platform rebuilds, enterprise design system, dedicated Axion-IA product team for the large logistics and industrial sites of the A43 corridor.",
           },
         ],
         faq: [
           {
             q: "Do you work with CAPI logistics operators and warehouses?",
-            a: "Yes. Logistics accounts for around 10,000 jobs across the CAPI, on the A43 between Lyon and Grenoble. We build shipment-tracking portals, B2B client areas, semantic reference search and quote automations, grafted onto your WMS/ERP or as a dedicated platform.",
+            a: "Yes. Logistics accounts for around 10,000 jobs across the CAPI, on the A43. We build shipment-tracking portals, B2B client areas, semantic reference search and quote automations, grafted onto your WMS/ERP or as a dedicated platform.",
           },
           {
             q: "Can you build a product configurator for technical textiles or composites?",
@@ -230,7 +230,7 @@ export const BOURGOIN_JALLIEU_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Bourgoin-Jallieu et dans la CAPI ?",
-      a: "Oui, Axion-IA accompagne les TPE et PME de Bourgoin-Jallieu et de toute la CAPI (L'Isle-d'Abeau, Villefontaine, La Tour-du-Pin). Nos consultants viennent de Lyon, à 35 min par l'A43.",
+      a: "Oui, Axion-IA accompagne les TPE et PME de Bourgoin-Jallieu et de toute la CAPI (L'Isle-d'Abeau, Villefontaine, La Tour-du-Pin). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les entrepôts et logisticiens du Nord-Isère ?",
@@ -246,7 +246,7 @@ export const BOURGOIN_JALLIEU_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Lyon ?",
-      a: "Nos consultants se déplacent depuis Lyon (35 min par l'A43).",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };

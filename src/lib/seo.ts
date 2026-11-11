@@ -3,9 +3,16 @@ import { routing, type Locale } from "@/i18n/routing";
 import { env } from "@/env";
 import { isEnLocaleDisabled } from "@/lib/i18n/en-to-fr-redirect";
 import { buildServiceAreasServed } from "@/lib/service-coverage";
-import { FOUNDER, FOUNDER_PERSON_ID, founderUrl, BRAND } from "@/lib/brand";
+import { FOUNDER, FOUNDER_PERSON_ID, founderUrl, BRAND, CONTACT_PUBLIC } from "@/lib/brand";
+import {
+  DESCRIPTION_ENTITE_EN,
+  DESCRIPTION_ENTITE_FR,
+  DESCRIPTION_SITE_EN,
+  DESCRIPTION_SITE_FR,
+} from "@/content/journee-ia-commun";
 import { buildOrganizationSameAs } from "@/lib/seo/wikidata-sameas";
 import { buildSpeakableSpecification } from "@/lib/seo/speakable-universal";
+import { EDITORIAL_BASELINE_ISO, dateModifiedDeChemin } from "@/lib/seo/fraicheur";
 import { getPageImages, getRepresentativePageImage } from "@/lib/seo/page-images";
 import { buildLocalBusinessSameAsFR } from "@/lib/seo/local-citations";
 
@@ -21,7 +28,20 @@ import { buildLocalBusinessSameAsFR } from "@/lib/seo/local-citations";
 import { SITE_URL } from "@/lib/site-url";
 import { OG_IMAGE_LARGEUR, OG_IMAGE_HAUTEUR } from "@/lib/og-format";
 import { surchargeOgPour } from "@/server/seo/og-overrides";
+import { PRIX_PUBLICS_AFFICHES } from "@/content/pricing";
 export { SITE_URL };
+
+/**
+ * R7 (ordre de Williams du 08/11/2026) — un montant ne sort dans les données
+ * structurées publiques que si l'interrupteur `PRIX_PUBLICS_AFFICHES` est allumé, ou si
+ * l'appelant certifie que CE palier reste affiché (`prixPublic: prixAffichable(palier)`,
+ * vrai pour la seule Journée IA). Les montants restent dans `pricing.ts` : rallumer
+ * l'interrupteur réémet les `Offer` telles qu'avant. Garde :
+ * `src/app/canaux-machine-sans-prix.spec.ts`.
+ */
+function montantJsonLdAutorise(prixPublic?: boolean): boolean {
+  return PRIX_PUBLICS_AFFICHES || prixPublic === true;
+}
 
 // Logo carré officiel Axion-IA (512×512, PNG, fond blanc) — cible de
 // `Organization.logo` pour le Knowledge Panel Google + carte éditeur (publisher).
@@ -37,6 +57,13 @@ export const BRAND_LOGO = {
   width: 512,
   height: 512,
 } as const;
+
+/**
+ * `@id` du nœud Service de La Journée IA. Défini ici (et ré-exporté par
+ * `seo/journee-ia-service.ts`, qui construit le nœud) pour que le catalogue
+ * d'offres de l'Organization le référence sans dépendance circulaire.
+ */
+export const JOURNEE_IA_SERVICE_ID = `${SITE_URL}/fr/journee-ia#service`;
 
 // ImageObject réutilisable du logo — `@id` `#logo` partagé pour que
 // Organization / LocalBusiness / publisher pointent la MÊME entité image
@@ -82,11 +109,14 @@ export const BUILD_DATE = process.env.BUILD_TIME ?? new Date().toISOString();
  * deploy sans changement de contenu (date-gaming → gaspillage de crawl-budget
  * sur un site jeune). À bumper À LA MAIN lors d'une refonte de contenu large.
  *
- * ⚠️ Garder en sync avec `EDITORIAL_BASELINE` de `src/app/sitemap.ts` et
- * `EDITORIAL_BASELINE_ISO` de `src/app/sitemap-index.xml/route.ts`.
+ * Audit SEO 2026-11-11 (I2) : plus de copie à « garder en sync » — la valeur
+ * DÉRIVE de `EDITORIAL_BASELINE_ISO` (`seo/fraicheur.ts`), que `sitemap.ts` lit
+ * aussi. Pour le `dateModified` d'une page statique, ne PAS utiliser cette
+ * constante : `buildWebPageJsonLd` lit la date réelle de la route
+ * (`dateModifiedDeChemin`), la même que son `<lastmod>`.
  * Cf. `_AUDIT/PLAN-FRESHNESS-EXHAUSTIF-2026-06-08.md`.
  */
-export const SITE_EDITORIAL_DATE = "2026-06-08T00:00:00.000Z";
+export const SITE_EDITORIAL_DATE = EDITORIAL_BASELINE_ISO;
 
 interface ProductSeoInput {
   locale: Locale;
@@ -143,6 +173,12 @@ interface ProductSeoInput {
    * 2026-06-20 — la marque ne doit jamais émettre de carte OG bleue.
    */
   ogAccent?: "purple" | "orange" | "green";
+  /**
+   * Texte alternatif de l'image d'aperçu (Open Graph ET Twitter). Sans ce
+   * paramètre l'alt Open Graph reprend le titre d'aperçu et l'image Twitter
+   * reste une simple URL : rien ne change pour les pages existantes.
+   */
+  ogImageAlt?: string;
   /**
    * VIS-05/SEO-05 — type OpenGraph. Défaut "website" (rétro-compat). Les pages
    * d'article (blog/actualites/guides/connaissances/centre-aide) passent
@@ -326,6 +362,7 @@ export async function buildProductMetadata({
   ogImageHeight,
   ogEyebrow,
   ogAccent,
+  ogImageAlt,
   ogType = "website",
   article,
   rssFeed,
@@ -356,9 +393,7 @@ export async function buildProductMetadata({
   // For pages that need a custom static OG (homepage), pass `ogImage`.
   const resolvedOgImage =
     ogImageEffectif ??
-    `${SITE_URL}/api/og?title=${encodeURIComponent(ogTitreEffectif)}` +
-      `${ogAccent ? `&accent=${ogAccent}` : ""}` +
-      `${ogEyebrowEffectif ? `&eyebrow=${encodeURIComponent(ogEyebrowEffectif)}` : ""}`;
+    urlOgParDefaut({ title: ogTitreEffectif, accent: ogAccent, eyebrow: ogEyebrowEffectif });
   // Dimensions déclarées aux réseaux sociaux (`og:image:width` / `height`).
   //
   // 🔴 Recensement OG 2026-08-17 — ces deux nombres étaient écrits en dur à
@@ -474,7 +509,7 @@ export async function buildProductMetadata({
         {
           url: resolvedOgImage,
           ...dimensionsDeclarees,
-          alt: ogTitreEffectif,
+          alt: ogImageAlt ?? ogTitreEffectif,
         },
       ],
       ...ogArticleFields,
@@ -483,7 +518,7 @@ export async function buildProductMetadata({
       card: "summary_large_image",
       title: ogTitreEffectif,
       description: ogDescriptionEffective,
-      images: [resolvedOgImage],
+      images: ogImageAlt ? [{ url: resolvedOgImage, alt: ogImageAlt }] : [resolvedOgImage],
     },
     // Refonte AEO 2026-06-22 — directives fines : snippets illimités (réponses
     // directes citées par Google/AI Overviews) + vignettes large (Discover/Images)
@@ -502,6 +537,28 @@ export async function buildProductMetadata({
   };
 }
 
+/**
+ * URL de la carte d'aperçu dynamique `/api/og` (titre, accent et surtitre
+ * facultatifs). Source unique du calcul : `buildProductMetadata` l'appelle, et
+ * les pages qui déclarent leur `primaryImageOfPage` en JSON-LD s'en servent
+ * pour pointer vers la même image que l'aperçu social.
+ */
+export function urlOgParDefaut({
+  title,
+  eyebrow,
+  accent,
+}: {
+  title: string;
+  eyebrow?: string | undefined;
+  accent?: string | undefined;
+}): string {
+  return (
+    `${SITE_URL}/api/og?title=${encodeURIComponent(title)}` +
+    `${accent ? `&accent=${accent}` : ""}` +
+    `${eyebrow ? `&eyebrow=${encodeURIComponent(eyebrow)}` : ""}`
+  );
+}
+
 interface ServiceJsonLdInput {
   locale: Locale;
   path: string;
@@ -509,6 +566,12 @@ interface ServiceJsonLdInput {
   description: string;
   /** Price in EUR HT. Omit for "on-quote" services. */
   priceEur?: number;
+  /**
+   * R7 — `priceEur` n'est émis (Offer) que si l'interrupteur des prix publics est allumé
+   * ou si ce drapeau vaut `true`. Passer `prixAffichable(palier)` : seule la Journée IA
+   * le rend vrai interrupteur coupé.
+   */
+  prixPublic?: boolean;
   serviceType?: string;
   /**
    * ISO date string — signal de fraîcheur Google AI Overviews 2026. Default :
@@ -537,7 +600,31 @@ interface ServiceJsonLdInput {
    * aux LLMs d'énumérer les villes éligibles quand un utilisateur demande
    * « où est-ce que ce service est disponible ? ».
    */
-  availableChannels?: ReadonlyArray<{ name: string; url: string }>;
+  availableChannels?: ReadonlyArray<{ name: string; url?: string }>;
+  /** `@id` du nœud Service (permet aux autres nœuds de la page de le référencer). */
+  id?: string;
+  /**
+   * `@id` d'un nœud Organization émis ailleurs sur la page (layout). Si fourni,
+   * `provider` devient une simple référence ; sinon le nœud en ligne historique.
+   */
+  providerId?: string;
+  /** Public visé (BusinessAudience) avec fourchette d'effectif facultative. */
+  audience?: { audienceType: string; minEmployees?: number; maxEmployees?: number };
+  /**
+   * Précisions de l'offre. Sans effet si `priceEur` est absent. Chaque champ
+   * n'est émis que s'il est fourni.
+   */
+  offer?: {
+    unitText?: string;
+    unitCode?: string;
+    valueAddedTaxIncluded?: boolean;
+    eligibleCustomerType?: string;
+    sellerId?: string;
+  };
+  /** URL des conditions applicables au service. */
+  termsOfService?: string;
+  /** `@id` du nœud WebPage dont ce service est l'objet principal. */
+  mainEntityOfPageId?: string;
   /**
    * Speakable specification — auto-injecte `speakable` (selectors CSS) sur
    * Service JSON-LD pour citation Google Assistant / Alexa / Claude voice.
@@ -556,17 +643,26 @@ export function buildServiceJsonLd({
   name,
   description,
   priceEur,
+  prixPublic,
   serviceType,
   dateModified,
   area,
   areasServed,
   availableChannels,
   speakable,
+  id,
+  providerId,
+  audience,
+  offer,
+  termsOfService,
+  mainEntityOfPageId,
 }: ServiceJsonLdInput) {
   const url = `${SITE_URL}/${locale}${path}`;
 
   // Audit perfection 2026-05-12 : auto-injection `areasServed` par défaut
-  // (France + 13 régions indexable + top villes) si la page n'a rien passé
+  // (France + régions indexables, métropole + DROM — AUCUNE ville depuis
+  // l'audit du 2026-11-11 : ~2 157 villes avec URL pesaient ~248 Ko par nœud)
+  // si la page n'a rien passé
   // explicitement. Élimine le boilerplate sur les ~25 pages services qui
   // utilisaient `buildServiceJsonLd` sans préciser leur couverture. Pour
   // bypass (ex. service hors France), passer explicitement `areasServed: []`.
@@ -592,6 +688,7 @@ export function buildServiceJsonLd({
   return {
     "@context": "https://schema.org",
     "@type": "Service",
+    ...(id ? { "@id": id } : {}),
     name,
     description,
     url,
@@ -602,11 +699,34 @@ export function buildServiceJsonLd({
     // Mieux vaut OMETTRE le champ que mentir : Google tolère l'absence.
     // Cf. `_AUDIT/PLAN-FRESHNESS-EXHAUSTIF-2026-06-08.md`.
     ...(dateModified ? { dateModified } : {}),
-    provider: {
-      "@type": "Organization",
-      name: "Axion-IA",
-      url: SITE_URL,
-    },
+    provider: providerId
+      ? { "@id": providerId }
+      : {
+          "@type": "Organization",
+          name: "Axion-IA",
+          url: SITE_URL,
+        },
+    ...(audience
+      ? {
+          audience: {
+            "@type": "BusinessAudience",
+            audienceType: audience.audienceType,
+            ...(audience.minEmployees !== undefined || audience.maxEmployees !== undefined
+              ? {
+                  numberOfEmployees: {
+                    "@type": "QuantitativeValue",
+                    ...(audience.minEmployees !== undefined
+                      ? { minValue: audience.minEmployees }
+                      : {}),
+                    ...(audience.maxEmployees !== undefined
+                      ? { maxValue: audience.maxEmployees }
+                      : {}),
+                  },
+                }
+              : {}),
+          },
+        }
+      : {}),
     ...(serviceType ? { serviceType } : {}),
     ...(areaServedNode !== undefined ? { areaServed: areaServedNode } : {}),
     ...(availableChannels && availableChannels.length > 0
@@ -614,11 +734,11 @@ export function buildServiceJsonLd({
           availableChannel: availableChannels.map((c) => ({
             "@type": "ServiceChannel",
             name: c.name,
-            serviceUrl: c.url,
+            ...(c.url ? { serviceUrl: c.url } : {}),
           })),
         }
       : {}),
-    ...(typeof priceEur === "number"
+    ...(typeof priceEur === "number" && montantJsonLdAutorise(prixPublic)
       ? {
           offers: {
             "@type": "Offer",
@@ -626,9 +746,29 @@ export function buildServiceJsonLd({
             priceCurrency: "EUR",
             availability: "https://schema.org/InStock",
             url,
+            ...(offer
+              ? {
+                  priceSpecification: {
+                    "@type": "UnitPriceSpecification",
+                    price: priceEur,
+                    priceCurrency: "EUR",
+                    ...(offer.valueAddedTaxIncluded !== undefined
+                      ? { valueAddedTaxIncluded: offer.valueAddedTaxIncluded }
+                      : {}),
+                    ...(offer.unitText ? { unitText: offer.unitText } : {}),
+                    ...(offer.unitCode ? { unitCode: offer.unitCode } : {}),
+                  },
+                  ...(offer.eligibleCustomerType
+                    ? { eligibleCustomerType: offer.eligibleCustomerType }
+                    : {}),
+                  ...(offer.sellerId ? { seller: { "@id": offer.sellerId } } : {}),
+                }
+              : {}),
           },
         }
       : {}),
+    ...(termsOfService ? { termsOfService } : {}),
+    ...(mainEntityOfPageId ? { mainEntityOfPage: { "@id": mainEntityOfPageId } } : {}),
     // Speakable specification — OPT-IN depuis 2026-06-22 (révision AEO Will).
     // Speakable est pertinent pour le CONTENU-RÉPONSE (articles/news/FAQ), pas
     // pour les pages services/villes/tarifs où la valeur vocale est nulle et où
@@ -775,7 +915,11 @@ interface WebPageJsonLdInput {
   id?: string;
   /** ISO date de publication. */
   datePublished?: string;
-  /** ISO date de dernière modification (signal de fraîcheur). Omis si absent. */
+  /**
+   * ISO date de dernière modification (signal de fraîcheur). Absent : la date
+   * réelle de la route si `path` est une route statique connue (même source que
+   * son `<lastmod>` de `pages.xml`, `seo/fraicheur.ts`), sinon omis.
+   */
   dateModified?: string;
   /**
    * ISO date de dernière revue éditoriale/conformité (E-E-A-T 2026). Distinct de
@@ -865,6 +1009,15 @@ export function buildWebPageJsonLd(input: WebPageJsonLdInput) {
   const resolvedPublisher =
     publisher === null ? undefined : (publisher ?? { "@id": `${SITE_URL}/#organization` });
 
+  // dateModified : la valeur passée, sinon la date réelle de la route statique
+  // (audit SEO 2026-11-11, I2). Jamais antérieure à `datePublished` : une date
+  // de modification avant la publication serait incohérente, on l'omet alors.
+  const dateRouteConnue = dateModified ?? dateModifiedDeChemin(path, locale);
+  const resolvedDateModified =
+    dateRouteConnue && (!datePublished || dateRouteConnue >= datePublished)
+      ? dateRouteConnue
+      : dateModified;
+
   const resolvedSpeakable =
     speakable === true || (typeof speakable === "object" && speakable?.selectors)
       ? buildSpeakableSpecification(
@@ -887,7 +1040,7 @@ export function buildWebPageJsonLd(input: WebPageJsonLdInput) {
     ...(resolvedIsPartOf ? { isPartOf: resolvedIsPartOf } : {}),
     ...(resolvedPublisher ? { publisher: resolvedPublisher } : {}),
     ...(datePublished ? { datePublished } : {}),
-    ...(dateModified ? { dateModified } : {}),
+    ...(resolvedDateModified ? { dateModified: resolvedDateModified } : {}),
     ...(lastReviewed ? { lastReviewed } : {}),
     ...(reviewedBy
       ? {
@@ -921,7 +1074,7 @@ export function buildCollectionPageJsonLd(input: Omit<WebPageJsonLdInput, "type"
 
 interface OrganizationJsonLdInput {
   locale: Locale;
-  /** Override default contact email. Defaults to `presse@axion-ia.com`. */
+  /** Override default contact email. Défaut : `COMPANY_EMAIL`, sinon `CONTACT_PUBLIC.email`. */
   contactEmail?: string;
   /** Override default contact type label. Defaults to FR/EN customer service. */
   contactType?: string;
@@ -949,39 +1102,23 @@ interface OrganizationJsonLdInput {
 }
 
 /**
- * Adresse du siège social, recopiée du Kbis (RCS Grenoble, à jour au 30/07/2026)
- * et de l'avis de situation SIRENE du 02/08/2026, qui concordent :
+ * Adresse publique du nœud `#organization` : le PAYS SEULEMENT.
  *
- *   11 Avenue Paul Verlaine — ELITE BUREAUX - boîte 53 — 38100 Grenoble
+ * Décision de Williams Jullin du 2026-11-08 (audit harmonie, décision n°19) :
+ * aucune rue, aucun code postal, aucune localité, aucune région dans les
+ * données structurées. Axion-IA intervient partout en France ; une adresse de
+ * siège dans le JSON-LD ancrait l'entité sur une ville et contredisait ce
+ * positionnement.
  *
- * 🔴 Le complément « ELITE BUREAUX - boîte 53 » fait partie de l'adresse
- * immatriculée : l'omettre casse le rapprochement exact-match NAP que Google
- * fait entre le JSON-LD et SIRENE (audit Knowledge Panel 2026-07-06). Il était
- * absent jusqu'au 02/08/2026.
+ * L'adresse complète du siège, telle qu'au Kbis, reste dans les documents où
+ * la loi l'exige : mentions légales, CGV, devis et pied d'e-mail
+ * (`src/content/legal.ts`, `src/lib/email/legal-footer.ts`). Elle n'est PAS
+ * retirée de là, et ce n'est pas ce fichier qui la porte.
  *
- * 🔴 AUCUN override par `COMPANY_ADDRESS` ici — c'était la cause d'une entité
- * à DEUX adresses en production, constatée le 02/08/2026 :
- *
- *   - pages figées au build (`/a-propos`, `/contact`) : les env `COMPANY_*` ne
- *     sont pas des build-args du workflow GH Actions, donc absentes au SSG →
- *     le défaut du code était rendu ;
- *   - pages rendues au runtime (`/presse`) : `COMPANY_ADDRESS` était présente
- *     et valait « 11 Avenue Paul Verlaine, 38100 Grenoble », sans le complément.
- *
- * Résultat : le même nœud `#organization` déclarait deux `streetAddress`
- * différentes selon la page — pire pour le rapprochement d'entité que
- * l'omission d'origine. Une adresse de siège n'a pas à être configurable :
- * elle est publique, figée au Kbis, et ne change que lors d'un transfert de
- * siège — qui passera de toute façon par une modification de code. La rendre
- * env-dépendante garantissait la re-divergence.
- *
- * ✅ 2026-08-31 — CETTE PR-LÀ A ÉTÉ FAITE. Le paragraphe disait jusqu'ici :
- * « `COMPANY_ADDRESS` continue de servir le pied de page des emails
- * (`src/lib/email/templates/_layout.tsx`) — cette PR n'y touche pas. »
- * C'est faux depuis la refonte e-mail : le pied de page tire désormais son
- * identité légale de `src/lib/email/legal-footer.ts`, figée dans le code pour
- * exactement le même motif qu'ici, et `legal-footer.spec.ts` vérifie qu'elle
- * concorde avec les SSOT. **Plus AUCUN code ne lit `COMPANY_ADDRESS`.**
+ * ⚠️ Ne pas rajouter `streetAddress`, `addressLocality`, `postalCode` ni
+ * `addressRegion` « pour le rapprochement NAP » : cet arbitrage a été fait
+ * (l'ancienne version l'invoquait) et la décision ci-dessus l'emporte.
+ * `identite-legale-registre.spec.ts` verrouille « pays seulement ».
  *
  * FONCTION plutôt que constante de module, par cohérence avec le reste du
  * fichier : `seo.ts` est importé par des composants clients, et une constante
@@ -990,10 +1127,6 @@ interface OrganizationJsonLdInput {
 function buildSiegePostalAddress() {
   return {
     "@type": "PostalAddress",
-    streetAddress: "11 Avenue Paul Verlaine, ELITE BUREAUX - boîte 53",
-    addressLocality: "Grenoble",
-    postalCode: "38100",
-    addressRegion: "Auvergne-Rhône-Alpes",
     addressCountry: "FR",
   } as const;
 }
@@ -1034,7 +1167,7 @@ function describeRegistrationNumber(value: string): string {
 // call sites. Tout reste conditionnel : env absent ⇒ champ omis ⇒ 0 régression.
 export function buildOrganizationJsonLd({
   locale,
-  contactEmail = env.COMPANY_EMAIL ?? "contact@axion-ia.com",
+  contactEmail = env.COMPANY_EMAIL ?? CONTACT_PUBLIC.email,
   contactType,
   vatID = env.COMPANY_VAT_NUMBER,
   registrationNumber = env.COMPANY_REGISTRATION_NUMBER,
@@ -1054,9 +1187,10 @@ export function buildOrganizationJsonLd({
     // ImageObject `#logo` partagé (audit Knowledge Panel 2026-07-06).
     logo: buildBrandLogoImageObject(),
     image: { "@id": `${SITE_URL}/#logo` },
-    description: isFr
-      ? "Cabinet IA opérationnel B2B — interventions, audits et implémentation IA pour entreprises."
-      : "Operational B2B AI consultancy — on-site AI sessions, audits and implementation for companies.",
+    // Positionnement actuel (audit SEO 2026-11-11, B3) : partenaire IA des PME et
+    // des TPE, offre phare La Journée IA. Texte repris de `journee-ia-commun.ts`
+    // (mêmes phrases que l'accueil et `llms.txt`), jamais réécrit ici.
+    description: isFr ? DESCRIPTION_ENTITE_FR : DESCRIPTION_ENTITE_EN,
     // Slogan de marque (SSOT `BRAND`) — signal d'identité pour le Knowledge
     // Panel + citabilité LLM (audit Knowledge Panel 2026-07-06).
     slogan: isFr ? BRAND.sloganFr : BRAND.sloganEn,
@@ -1070,7 +1204,7 @@ export function buildOrganizationJsonLd({
     // page interne /company/123134154).
     sameAs: [
       ...buildOrganizationSameAs(),
-      "https://www.linkedin.com/company/axion-ia-france",
+      CONTACT_PUBLIC.linkedinEntreprise,
       // Page Facebook entreprise — adresse propre fournie par Will le 2026-09-23
       // (remplace `profile.php?id=61591668644032`). Jamais le profil PERSONNEL.
       "https://www.facebook.com/axioniacom",
@@ -1112,19 +1246,27 @@ export function buildOrganizationJsonLd({
       // par Will le 2026-08-16.
       "https://www.crunchbase.com/organization/axion-ia",
     ],
+    // Offre phare (audit SEO 2026-11-11, B3) : le catalogue pointe la Journée IA,
+    // référencée par l'`@id` de son nœud Service (émis en entier par l'accueil et
+    // la landing, `seo/journee-ia-service.ts`) — jamais redéfinie ici, donc
+    // aucun second nœud concurrent sous le même `@id`. Avant : `/interventions`,
+    // un hub redirigé. Aucun prix ici : il vit dans le seul nœud Service.
     hasOfferCatalog: {
       "@type": "OfferCatalog",
-      name: isFr ? "Services IA pour entreprises" : "AI services for businesses",
-      url: `${SITE_URL}/${isFr ? "fr" : "en"}/interventions`,
+      name: isFr ? "Offres IA d’Axion-IA" : "Axion-IA AI offers",
+      url: `${SITE_URL}/fr/journee-ia`,
+      itemListElement: [
+        {
+          "@type": "Offer",
+          position: 1,
+          itemOffered: { "@id": JOURNEE_IA_SERVICE_ID },
+        },
+      ],
     },
     foundingDate: "2026",
-    // Siège social, vérifié sur pièces le 02/08/2026 (Kbis au 30/07/2026,
-    // n° de gestion 2026B01964 + avis de situation SIRENE du 02/08/2026).
-    // L'ancrage entité DOIT refléter le RCS (sinon incohérence NAP ↔ registre
-    // = risque E-E-A-T). La visibilité Paris / Île-de-France / toute la France
-    // reste portée par `areaServed` + les pages pSEO villes/régions (zone
-    // servie), pas par l'adresse du siège. Remplace la décision D7 2026-05-21
-    // (ancrage Paris), caduque depuis l'immatriculation à Grenoble.
+    // Lieu de fondation : pays seulement (décision Williams 2026-11-08, cf.
+    // `buildSiegePostalAddress`). La visibilité Paris / Île-de-France / toute la
+    // France reste portée par `areaServed` + les pages pSEO villes/régions.
     foundingLocation: {
       "@type": "Place",
       address: buildSiegePostalAddress(),
@@ -1154,8 +1296,8 @@ export function buildOrganizationJsonLd({
       availableLanguage: ["French", "English"],
       ...(env.COMPANY_PHONE ? { telephone: env.COMPANY_PHONE } : {}),
     },
-    // Adresse postale complète du siège (audit A-14 + audit Knowledge Panel
-    // 2026-07-06), désormais alignée au caractère près sur le Kbis / SIRENE.
+    // Adresse : pays seulement (décision Williams 2026-11-08). L'adresse du
+    // siège figure dans les mentions légales, pas dans les données structurées.
     address: buildSiegePostalAddress(),
     ...(vatID ? { vatID } : {}),
     ...(registrationNumber
@@ -1214,9 +1356,7 @@ export function buildWebsiteJsonLd({ locale }: WebsiteJsonLdInput) {
     name: "Axion-IA",
     url: `${SITE_URL}/${locale}`,
     inLanguage: locale,
-    description: isFr
-      ? "Cabinet IA opérationnel — interventions, audits et implémentation IA."
-      : "Operational AI consultancy — on-site sessions, audits and implementation.",
+    description: isFr ? DESCRIPTION_SITE_FR : DESCRIPTION_SITE_EN,
     publisher: { "@id": `${SITE_URL}/#organization` },
     potentialAction: {
       "@type": "SearchAction",
@@ -1583,7 +1723,7 @@ interface LocalBusinessJsonLdInput {
   /** Area served — admin region or city. */
   areaServed: { type: "Place" | "AdministrativeArea" | "City"; name: string };
   /** Optional postal address (city-level pages). */
-  address?: { city: string; region?: string; country?: string; postalCode?: string };
+  address?: { city?: string; region?: string; country?: string; postalCode?: string };
   /** Optional geo coordinates. */
   geo?: { latitude: number; longitude: number };
   /** Optional price range (e.g. "€€€"). */
@@ -1594,8 +1734,8 @@ interface LocalBusinessJsonLdInput {
    * Avant : default Mo-Fr 09:00-18:00 → fake-claim de bureau ouvert dans chaque
    * ville où LB émis. Maintenant : omettre = pas d'openingHours dans le JSON-LD
    * (compatible Service Area Business pattern Google). À passer explicitement
-   * UNIQUEMENT pour les pages avec un vrai bureau physique (ex: /a-propos siège
-   * Grenoble).
+   * UNIQUEMENT pour les pages avec un vrai bureau physique (aucune aujourd'hui :
+   * Axion-IA intervient partout en France).
    * Cert C6 2026-05-08 : forme objet typée requise (Google Validator rejette les
    * arrays de strings type "Mo-Fr 09:00-18:00").
    */
@@ -1611,8 +1751,8 @@ interface LocalBusinessJsonLdInput {
 }
 
 /**
- * Default opening hours utilisables par la page /a-propos ou /contact (siège
- * Grenoble réel). Sprint Correctif P1-2 2026-05-23 : ces hours ne sont PLUS
+ * Default opening hours utilisables par la page /a-propos ou /contact (aucun bureau
+ * public aujourd'hui). Sprint Correctif P1-2 2026-05-23 : ces hours ne sont PLUS
  * appliquées automatiquement par `buildLocalBusinessJsonLd` (cf. commentaire
  * de la fonction) — à passer explicitement.
  */
@@ -1627,7 +1767,7 @@ export const DEFAULT_HEADQUARTERS_OPENING_HOURS = [
 // LocalBusiness JSON-LD — Service Area Business safe mode.
 //
 // Sprint Correctif P1-2 (2026-05-23 — audit E2E passe 2 runtime + décision Will
-// 2026-05-23) : Axion-IA = 1 siège FR (Grenoble) qui sert toute la France. Pour
+// 2026-05-23) : Axion-IA = entreprise qui sert toute la France. Pour
 // chaque page ville/région : on émet `ProfessionalService` (compatible LocalBusiness
 // schema.org) avec `areaServed` mais SANS les attributs qui claim un bureau
 // physique (`geo`, `openingHoursSpecification`, `priceRange`, `address.postalCode`)
@@ -1640,8 +1780,9 @@ export const DEFAULT_HEADQUARTERS_OPENING_HOURS = [
 // Maintenant : ces champs ne sont émis QUE si explicitement passés. Les pages
 // ville (`implantations/[ville]`, `audit/par-ville/[ville]`, etc.) appellent
 // sans `geo`/`openingHours`/`priceRange` → JSON-LD propre Service Area Business.
-// Une seule page peut/doit passer les vraies valeurs : `/a-propos` ou `/contact`
-// avec address Grenoble réelle (TODO Will).
+// Décision Williams 2026-11-08 : aucune adresse de siège dans les données
+// structurées publiques (pays seulement) ; l'adresse reste dans les mentions
+// légales.
 //
 // Référence Google : « Do not mark up an address that is not a real, accurate
 // physical address. » → https://developers.google.com/search/docs/appearance/structured-data/local-business
@@ -1692,12 +1833,14 @@ export function buildLocalBusinessJsonLd({
     // l'erreur que les moteurs arbitrent deja contre nous. L'ordre est :
     // corriger les fiches (R-01 a R-03), puis renseigner ici.
     ...(sameAsAnnuaires.length > 0 ? { sameAs: [...sameAsAnnuaires] } : {}),
-    ...(priceRange ? { priceRange } : {}),
+    // R7 — un `priceRange` symbolique (« €€ ») passe ; une fourchette chiffrée seulement
+    // interrupteur des prix publics allumé.
+    ...(priceRange && (!/\d/.test(priceRange) || PRIX_PUBLICS_AFFICHES) ? { priceRange } : {}),
     ...(address
       ? {
           address: {
             "@type": "PostalAddress",
-            addressLocality: address.city,
+            ...(address.city ? { addressLocality: address.city } : {}),
             ...(address.region ? { addressRegion: address.region } : {}),
             ...(address.postalCode ? { postalCode: address.postalCode } : {}),
             addressCountry: address.country ?? "FR",
@@ -1921,7 +2064,8 @@ export function buildHowToJsonLd({
     url,
     inLanguage: locale,
     ...(totalTime ? { totalTime } : {}),
-    ...(estimatedCost
+    // R7 — un coût estimé en euros est un montant public : interrupteur requis.
+    ...(estimatedCost && PRIX_PUBLICS_AFFICHES
       ? {
           estimatedCost: {
             "@type": "MonetaryAmount",
@@ -2036,17 +2180,22 @@ export function buildCourseJsonLd(input: CourseJsonLdInput) {
           }
         : {}),
     })),
+    // R7 — formations : aucun prix public interrupteur coupé (cf. `montantJsonLdAutorise`).
+    // Une formation payante garde alors une Offer SANS montant, `category: "Paid"` : c'est
+    // ce que demande l'éligibilité Google « Course info » quand le prix n'est pas publié.
     ...(typeof input.priceEurHt === "number"
-      ? {
-          offers: {
-            "@type": "Offer",
-            url,
-            price: input.priceEurHt.toString(),
-            priceCurrency: "EUR",
-            availability: "https://schema.org/InStock",
-            category: "Professional training",
-          },
-        }
+      ? montantJsonLdAutorise()
+        ? {
+            offers: {
+              "@type": "Offer",
+              url,
+              price: input.priceEurHt.toString(),
+              priceCurrency: "EUR",
+              availability: "https://schema.org/InStock",
+              category: "Professional training",
+            },
+          }
+        : { offers: { "@type": "Offer", category: "Paid" } }
       : {}),
   } as const;
 }
