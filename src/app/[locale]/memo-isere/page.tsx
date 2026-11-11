@@ -31,9 +31,10 @@ import { isQualiopiCertificationObtenue } from "@/server/qualiopi/config/flag";
 import { buildProductMetadata } from "@/lib/seo";
 import { DOSSIER_COMPLET_PATH } from "@/lib/commercial-application/lead-apporteur";
 import { TunnelFacebookShell } from "@/components/recrutement/TunnelFacebookShell";
-import { webPageApporteurs } from "@/components/recrutement/landings/jsonld";
+import { faqApporteurs, webPageApporteurs } from "@/components/recrutement/landings/jsonld";
 import { chiffresApporteurs } from "@/components/recrutement/landings/chiffres";
 import { SectionsPub } from "@/components/recrutement/landings/SectionsPub";
+import { SectionFaq, faqMemoIsere } from "@/components/recrutement/landings/faq-pages";
 import { ShellLanding } from "@/components/recrutement/landings/ShellLanding";
 
 export const revalidate = 3600;
@@ -80,6 +81,8 @@ export default async function MemoIserePage({ params }: Props) {
   void isQualiopiCertificationObtenue();
 
   const { description } = textesMeta();
+  const p = chiffresApporteurs();
+  const faq = faqMemoIsere(p);
 
   return (
     <TunnelFacebookShell sousTitre="Apporteurs d'affaires">
@@ -92,7 +95,8 @@ export default async function MemoIserePage({ params }: Props) {
       {/* Ancre publiée dans une annonce : à ne pas retirer. */}
       <span id="postuler" />
       <ShellLanding landing={LANDING_MESURE} variante="pub annonce">
-        <SectionsPub p={chiffresApporteurs()} annonce canal={CANAL} />
+        <SectionsPub p={p} annonce canal={CANAL} />
+        <SectionFaq items={faq} id="questions" />
       </ShellLanding>
 
       <JsonLd
@@ -106,6 +110,7 @@ export default async function MemoIserePage({ params }: Props) {
         })}
         scriptId="jsonld-memo-webpage"
       />
+      <JsonLd data={faqApporteurs(faq)} scriptId="jsonld-memo-faq" />
 
       <StickyMobileCta
         href={`${DOSSIER_COMPLET_PATH}?depuis=memo-isere`}
