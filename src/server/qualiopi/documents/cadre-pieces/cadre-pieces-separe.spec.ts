@@ -74,3 +74,89 @@ describe("cadre-pieces séparé des pièces signables", () => {
     }
   });
 });
+
+// ---------------------------------------------------------------------------
+// V8-P2b G1-G3 : bascule des pièces non signables (liste FERMÉE) sur le cadre.
+// ---------------------------------------------------------------------------
+const QUALIOPI = join(RACINE, "server/qualiopi");
+const TEMPLATES = join(QUALIOPI, "documents/templates");
+
+/** G1 pédagogie · G2 évaluations · G3 attestations : 20 pièces, ni plus ni moins. */
+const PIECES_BASCULEES = [
+  // G1
+  "documents/templates/programme-formation.tsx",
+  "documents/templates/convocation.tsx",
+  "documents/templates/livret-accueil.tsx",
+  "documents/templates/reglement-interieur.tsx",
+  "documents/templates/organisation-action.tsx",
+  "documents/templates/inventaire-moyens.tsx",
+  "documents/templates/liste-formateurs.tsx",
+  "documents/templates/cv-formateur.tsx",
+  "documents/templates/registre.tsx",
+  "supports/templates/support-pdf.tsx",
+  // G2
+  "documents/templates/positionnement.tsx",
+  "documents/templates/positionnement-rempli.tsx",
+  "documents/templates/grille-evaluation.tsx",
+  "documents/templates/evaluation-realisee.tsx",
+  "documents/templates/fiche-adaptation.tsx",
+  "documents/templates/satisfaction.tsx",
+  "documents/templates/satisfaction-remplie.tsx",
+  // G3
+  "documents/templates/attestation.tsx",
+  "documents/templates/attestation-partielle.tsx",
+  "documents/templates/certificat-realisation.tsx",
+] as const;
+
+/** Signables (12), non signables gardées sur l'ancien cadre (4) : jamais le cadre des pièces. */
+const PIECES_QUI_RESTENT_SUR_BASE_LAYOUT = [
+  "devis",
+  "convention",
+  "convention-tripartite",
+  "contrat-formation",
+  "contrat-sous-traitance",
+  "contrat-travail",
+  "releve-connexion",
+  "lettre-mission",
+  "mandat-opco",
+  "autorisation-captation",
+  "contrat-cadre",
+  "lettre-mission-v2",
+  "emargement",
+  "procedure-sous-traitance",
+  "facture",
+  "autofacture-honoraires",
+].map((n) => join("documents/templates", `${n}.tsx`));
+
+describe("pièces basculées sur le cadre des pièces (G1-G3)", () => {
+  it("sentinelle : liste fermée de 20 pièces, toutes présentes sur le disque", () => {
+    expect(PIECES_BASCULEES).toHaveLength(20);
+    expect(new Set(PIECES_BASCULEES).size).toBe(20);
+    for (const rel of PIECES_BASCULEES) {
+      expect(() => statSync(join(QUALIOPI, rel)), rel).not.toThrow();
+    }
+  });
+
+  it("les pièces basculées n'importent plus le cadre de base-layout ni brandColor", () => {
+    for (const rel of PIECES_BASCULEES) {
+      const src = sansCommentaires(readFileSync(join(QUALIOPI, rel), "utf8"));
+      expect(src, rel).not.toMatch(/documents\/base-layout["']/);
+      expect(src, rel).not.toMatch(/\bbrandColor\b/);
+      expect(src, rel).not.toMatch(/\bpdfStyles\b/);
+      expect(src, rel).not.toMatch(/\bSignatureZone\b/);
+      expect(src, rel).toMatch(/documents\/cadre-pieces["']/);
+    }
+  });
+
+  it("aucun signable, archivé ni pièce gardée n'importe le cadre des pièces ni ses jetons", () => {
+    for (const rel of PIECES_QUI_RESTENT_SUR_BASE_LAYOUT) {
+      const src = readFileSync(join(QUALIOPI, rel), "utf8");
+      expect(src, rel).not.toMatch(/cadre-pieces|jetons-pieces|couleurPiece/);
+    }
+    const archives = fichiers(join(TEMPLATES, "archives")).filter((f) => /\.(ts|tsx)$/.test(f));
+    expect(archives.length).toBeGreaterThan(0);
+    for (const f of archives) {
+      expect(readFileSync(f, "utf8"), f).not.toMatch(/cadre-pieces|jetons-pieces|couleurPiece/);
+    }
+  });
+});
