@@ -49,7 +49,7 @@ export const DIVATTE_SUR_LOIRE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Divatte-sur-Loire et vignoble nantais ?",
-      a: "Oui, Axion-IA intervient à Divatte-sur-Loire et tout le vignoble nantais est (Vallet, Le Loroux-Bottereau, La Chapelle-Heulin). Consultants depuis Nantes (25 min). Couverture complète Loire-Atlantique est.",
+      a: "Oui, Axion-IA intervient à Divatte-sur-Loire et tout le vignoble nantais est (Vallet, Le Loroux-Bottereau, La Chapelle-Heulin). Nous intervenons partout en France, sur place ou à distance. Couverture complète Loire-Atlantique est.",
     },
     {
       q: "Accompagnez-vous les viticulteurs et maraîchers ?",

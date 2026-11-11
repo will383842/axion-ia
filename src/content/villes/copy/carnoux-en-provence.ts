@@ -49,7 +49,7 @@ export const CARNOUX_EN_PROVENCE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Carnoux-en-Provence ?",
-      a: "Oui, Axion-IA intervient à Carnoux-en-Provence et dans tout l'est marseillais (Cassis, Aubagne, Gémenos, Roquefort-la-Bédoule, La Ciotat). Accès rapide A50 depuis Marseille centre.",
+      a: "Oui, Axion-IA intervient à Carnoux-en-Provence et dans tout l'est marseillais (Cassis, Aubagne, Gémenos, Roquefort-la-Bédoule, La Ciotat).",
     },
     {
       q: "Combien coûte un audit IA à Carnoux-en-Provence  ?",

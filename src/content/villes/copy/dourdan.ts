@@ -64,7 +64,7 @@ export const DOURDAN_COPY: VilleCopy = {
       a: "Audit IA (Sur place {{price:audit-flash|flat}} à Stratégique), interventions sur site, implémentation IA (agents conversationnels, automatisations métier), coaching 1-to-1 dirigeants, plateformes web/SaaS IA sur mesure.",
     },
     {
-      q: "Comment se déroule une mission depuis Paris ?",
+      q: "Comment se déroule une mission à Dourdan ?",
       a: "RER C Dourdan terminus direct depuis Paris (50 min). Arpajon à 20 min. Orly à 35 min. Nos consultants se déplacent sur site.",
     },
   ],

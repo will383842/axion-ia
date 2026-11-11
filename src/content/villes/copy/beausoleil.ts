@@ -49,7 +49,7 @@ export const BEAUSOLEIL_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Beausoleil et vers Monaco ?",
-      a: "Oui, Axion-IA intervient à Beausoleil et sur tout le bassin Monaco-Menton (Roquebrune-Cap-Martin, La Turbie, Cap-d'Ail). Couverture Riviera et accès rapide depuis Nice (30 min) ou directement depuis Monaco à pied.",
+      a: "Oui, Axion-IA intervient à Beausoleil et sur tout le bassin Monaco-Menton (Roquebrune-Cap-Martin, La Turbie, Cap-d'Ail). Couverture Riviera, jusqu'à Monaco à pied.",
     },
     {
       q: "Travaillez-vous avec les commerces de proximité de Beausoleil ?",

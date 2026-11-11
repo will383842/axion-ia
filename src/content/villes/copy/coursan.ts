@@ -49,7 +49,7 @@ export const COURSAN_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Coursan et agglo narbonnaise ?",
-      a: "Oui, Axion-IA intervient à Coursan et dans toute l'agglomération narbonnaise (Narbonne, Cuxac-d'Aude, Vinassan, Salles-d'Aude). Nos consultants se déplacent depuis Narbonne en 5 min.",
+      a: "Oui, Axion-IA intervient à Coursan et dans toute l'agglomération narbonnaise (Narbonne, Cuxac-d'Aude, Vinassan, Salles-d'Aude). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les domaines viticoles autour de Coursan ?",

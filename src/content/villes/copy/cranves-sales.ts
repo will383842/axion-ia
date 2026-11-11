@@ -49,7 +49,7 @@ export const CRANVES_SALES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Cranves-Sales et dans le Grand Genève ?",
-      a: "Oui, Axion-IA intervient à Cranves-Sales et dans toute l'agglomération Grand Genève côté français (Annemasse à 10 min, Ville-la-Grand, Gaillard, Vétraz-Monthoux). Nos consultants couvrent le bassin genevois depuis Genève (15 min) ou Annecy.",
+      a: "Oui, Axion-IA intervient à Cranves-Sales et dans toute l'agglomération Grand Genève côté français (Annemasse à 10 min, Ville-la-Grand, Gaillard, Vétraz-Monthoux). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les PME transfrontalières à Cranves-Sales ?",
@@ -65,7 +65,7 @@ export const CRANVES_SALES_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Cranves-Sales ?",
-      a: "Nos consultants interviennent à Cranves-Sales depuis Genève (15 min) ou Annecy (40 min). Intervention sur site dans vos locaux, cabinet ou atelier.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Intervention sur site dans vos locaux, cabinet ou atelier.",
     },
   ],
 };

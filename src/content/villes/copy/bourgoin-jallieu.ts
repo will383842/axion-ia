@@ -131,7 +131,7 @@ export const BOURGOIN_JALLIEU_COPY: VilleCopy = {
             a: "Oui. Toute la chaîne est hébergeable en UE (Hetzner Frankfurt), conforme RGPD, sans transit hors UE sans DPA. Le code source, les bases et les modèles sont livrés dans votre infrastructure : propriété totale, aucun abonnement imposé, transférable à tout prestataire du Nord-Isère.",
           },
           {
-            q: "Le devis est-il ferme et quel est le délai depuis Lyon ?",
+            q: "Le devis est-il ferme et quel est le délai d'intervention ?",
             a: "Après le cadrage, on remet un devis ferme en forfait fixe, à partir de 24-48 h selon la complexité. Nous intervenons partout en France, sur place ou à distance. Pas de régie ni de dérive horaire cachée.",
           },
         ],
@@ -217,8 +217,8 @@ export const BOURGOIN_JALLIEU_COPY: VilleCopy = {
             a: "Yes. The whole chain is hostable in the EU (Hetzner Frankfurt), GDPR-compliant, with no transit outside the EU without a DPA. Source code, databases and models are delivered into your infrastructure: full ownership, no imposed subscription, transferable to any Nord-Isère provider.",
           },
           {
-            q: "Is the quote firm and how fast can you come from Lyon?",
-            a: "After scoping, we issue a firm fixed-price quote, from 24-48 h depending on complexity. Our consultants come from Lyon, 35 min away on the A43, and travel across the CAPI (L'Isle-d'Abeau, Villefontaine, La Tour-du-Pin). No time-and-materials, no hidden hourly drift.",
+            q: "Is the quote firm and how fast can you come to Bourgoin-Jallieu?",
+            a: "After scoping, we issue a firm fixed-price quote, from 24-48 h depending on complexity. We work across France, on site or remotely, and travel across the CAPI (L'Isle-d'Abeau, Villefontaine, La Tour-du-Pin). No time-and-materials, no hidden hourly drift.",
           },
         ],
         guarantees:
@@ -245,7 +245,7 @@ export const BOURGOIN_JALLIEU_COPY: VilleCopy = {
       a: "Audit sur place, intervention d'une journée de formation et coaching 1-to-1. Nous adaptons les formats au quotidien des TPE locales, sans jargon technique.",
     },
     {
-      q: "Comment se passe une mission depuis Lyon ?",
+      q: "Comment se déroule une mission à Bourgoin-Jallieu ?",
       a: "Nous intervenons partout en France, sur place ou à distance.",
     },
   ],

@@ -64,7 +64,7 @@ export const DELLE_COPY: VilleCopy = {
       a: "Audit sur place {{price:audit-flash|flat}}, outils relation client multilingue FR/DE, gestion devis et facturation transfrontalière, automatisation reporting, optimisation cycles commerciaux Suisse-France.",
     },
     {
-      q: "Comment se déroule une mission depuis Belfort ou Bâle ?",
+      q: "Comment se déroule une mission à Delle ?",
       a: "Belfort à 25 min en train (ligne Belfort-Delle). Montbéliard à 30 min. Bâle à 45 min. EuroAirport à 50 min.",
     },
   ],

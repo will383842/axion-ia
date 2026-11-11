@@ -64,7 +64,7 @@ export const CANTELEU_COPY: VilleCopy = {
       a: "L'audit sur place débute selon la taille de votre activité pour les TPE. Pour les PME tertiaires et logistiques, l'audit stratégique complet est adapté au périmètre. Tarifs publics, pas de devis opaque.",
     },
     {
-      q: "Comment se passe une mission depuis Paris ?",
+      q: "Comment se déroule une mission à Canteleu ?",
       a: "Nous intervenons partout en France, sur place ou à distance.",
     },
   ],

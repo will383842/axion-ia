@@ -49,7 +49,7 @@ export const CHANTEPIE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Chantepie ?",
-      a: "Oui, Axion-IA intervient à Chantepie et dans tout le sud-est de Rennes Métropole (Vern-sur-Seiche, Cesson-Sévigné, Noyal-Châtillon-sur-Seiche). Nos consultants accèdent via métro ligne b ou rocade sud (10 min depuis Rennes centre).",
+      a: "Oui, Axion-IA intervient à Chantepie et dans tout le sud-est de Rennes Métropole (Vern-sur-Seiche, Cesson-Sévigné, Noyal-Châtillon-sur-Seiche). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les PME tertiaires de Chantepie ?",
@@ -65,7 +65,7 @@ export const CHANTEPIE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Chantepie ?",
-      a: "Nos consultants interviennent à Chantepie depuis Rennes (10 min, métro ligne b ou rocade). Intervention sur site dans vos bureaux, atelier ou cabinet.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Intervention sur site dans vos bureaux, atelier ou cabinet.",
     },
   ],
 };

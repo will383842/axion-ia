@@ -49,7 +49,7 @@ export const FLERS_EN_ESCREBIEUX_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Flers-en-Escrebieux et dans le Douaisis ?",
-      a: "Oui, Axion-IA intervient à Flers-en-Escrebieux et toute l'agglomération du Douaisis (Douai, Sin-le-Noble, Dechy, Lambres-lez-Douai). Nos consultants viennent de Lille (35 min A1) ou se déplacent depuis la gare de Douai (TGV Paris 50 min).",
+      a: "Oui, Axion-IA intervient à Flers-en-Escrebieux et toute l'agglomération du Douaisis (Douai, Sin-le-Noble, Dechy, Lambres-lez-Douai). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les entreprises logistiques du nœud A21/A1 ?",
@@ -64,7 +64,7 @@ export const FLERS_EN_ESCREBIEUX_COPY: VilleCopy = {
       a: "Pour les commerçants et professions libérales du Douaisis, nous proposons audit sur place {{price:audit-flash|flat}}, interventions formation sur site, implémentation agents IA (chatbot, automatisation agenda, gestion documents) et coaching 1-to-1 dirigeants.",
     },
     {
-      q: "Comment se passe une mission depuis Lille ou Paris ?",
+      q: "Comment se déroule une mission à Flers-en-Escrebieux ?",
       a: "Depuis Lille : 35 min via A1. Depuis Paris : TGV Douai en 50 min. Missions sur site à Flers-en-Escrebieux ou en visio.",
     },
   ],

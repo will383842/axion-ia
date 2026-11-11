@@ -68,8 +68,8 @@ export const BELLERIVE_SUR_ALLIER_COPY: VilleCopy = {
       a: "Oui, pour les PME tertiaires : agents conversationnels B2B, automatisation des workflows, classification documentaire, CRM augmentés.",
     },
     {
-      q: "Comment se déroule une mission depuis Clermont ou Lyon ?",
-      a: "Nos consultants rejoignent Bellerive depuis Clermont-Ferrand (1h) ou Lyon (2h). Grille tarifaire publique. Sessions sur site ou en visio.",
+      q: "Comment se déroule une mission à Bellerive-sur-Allier ?",
+      a: "Nous intervenons partout en France, sur place ou à distance. Grille tarifaire publique. Sessions sur site ou en visio.",
     },
   ],
 };

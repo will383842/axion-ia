@@ -49,7 +49,7 @@ export const AUXONNE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Auxonne et plaine de Saône ?",
-      a: "Oui, Axion-IA intervient à Auxonne et toute la plaine de Saône (Genlis, Saint-Jean-de-Losne, Pontailler-sur-Saône). Consultants depuis Dijon (30 min A39) ou Dole (20 min).",
+      a: "Oui, Axion-IA intervient à Auxonne et toute la plaine de Saône (Genlis, Saint-Jean-de-Losne, Pontailler-sur-Saône). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les agriculteurs plaine Saône ?",
@@ -64,7 +64,7 @@ export const AUXONNE_COPY: VilleCopy = {
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
     },
     {
-      q: "Comment se passe une mission depuis Dijon ?",
+      q: "Comment se déroule une mission à Auxonne ?",
       a: "Dijon (30 min A39) ou Dole (20 min). Coûts de déplacement à part, tarification transparente.",
     },
   ],

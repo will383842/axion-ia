@@ -49,7 +49,7 @@ export const CRAPONNE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Craponne et ouest lyonnais ?",
-      a: "Oui, Axion-IA intervient à Craponne et tout l'ouest lyonnais (Francheville limitrophe, Tassin-la-Demi-Lune, Brignais, Écully). Consultants depuis Lyon (20 min).",
+      a: "Oui, Axion-IA intervient à Craponne et tout l'ouest lyonnais (Francheville limitrophe, Tassin-la-Demi-Lune, Brignais, Écully). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les professions libérales craponnois ?",
@@ -64,8 +64,8 @@ export const CRAPONNE_COPY: VilleCopy = {
       a: "Pour les TPE artisans BTP et commerçants à Craponne, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA.",
     },
     {
-      q: "Comment se passe une mission depuis Lyon ?",
-      a: "Nos consultants viennent de Lyon (20 min).",
+      q: "Comment se déroule une mission à Craponne ?",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };

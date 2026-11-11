@@ -49,7 +49,7 @@ export const BREBIERES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il a Brebieres et sur l'axe Douai-Arras ?",
-      a: "Oui, Axion-IA intervient a Brebieres et sur tout l'axe Douai-Arras (Vitry-en-Artois, Corbehem, Izel-les-Equerchin). Consultants depuis Lille (35 min TGV via Douai) ou Paris (55 min TGV via Arras).",
+      a: "Oui, Axion-IA intervient a Brebieres et sur tout l'axe Douai-Arras (Vitry-en-Artois, Corbehem, Izel-les-Equerchin). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quels services IA pour les PME tertiaires de Brebieres ?",

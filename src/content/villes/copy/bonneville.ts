@@ -49,7 +49,7 @@ export const BONNEVILLE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il a Bonneville et dans la vallee de l'Arve ?",
-      a: "Oui, Axion-IA intervient a Bonneville et dans toute la vallee de l'Arve (Cluses, Sallanches, La Roche-sur-Foron, Marignier). Nos consultants se deplacent depuis Annecy (40 min) ou Geneve (40 min).",
+      a: "Oui, Axion-IA intervient a Bonneville et dans toute la vallee de l'Arve (Cluses, Sallanches, La Roche-sur-Foron, Marignier). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les PME du decolletage et de l'horlogerie ?",

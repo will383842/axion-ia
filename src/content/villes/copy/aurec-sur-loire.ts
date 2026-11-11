@@ -53,7 +53,7 @@ export const AUREC_SUR_LOIRE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Aurec-sur-Loire ?",
-      a: "Oui, Axion-IA accompagne les TPE et PME d'Aurec-sur-Loire et du nord Haute-Loire (Firminy à 10 min, Monistrol à 15 min, Bas-en-Basset). Nous intervenons depuis le bassin stéphanois. Tarifs publics.",
+      a: "Oui, Axion-IA accompagne les TPE et PME d'Aurec-sur-Loire et du nord Haute-Loire (Firminy à 10 min, Monistrol à 15 min, Bas-en-Basset). Nous intervenons partout en France, sur place ou à distance. Tarifs publics.",
     },
     {
       q: "Travaillez-vous avec les PME industrielles aurécoises ?",
@@ -68,8 +68,8 @@ export const AUREC_SUR_LOIRE_COPY: VilleCopy = {
       a: "L'Audit sur place sur mesure démarre à {{price:audit-flash|flat}} et la Formation 4 h à {{price:intervention-4h|flat}}. Tarifs publics, sans devis opaque ; les implémentations sont chiffrées au cas par cas selon le ROI.",
     },
     {
-      q: "Comment se passe une mission depuis Saint-Étienne ?",
-      a: "Nous intervenons depuis le bassin stéphanois, à environ 25 min d'Aurec-sur-Loire. Déplacement sur site ou sessions en visio possibles. Tarifs publics.",
+      q: "Comment se déroule une mission à Aurec-sur-Loire ?",
+      a: "Nous intervenons partout en France, sur place ou à distance, y compris à Aurec-sur-Loire. Déplacement sur site ou sessions en visio possibles. Tarifs publics.",
     },
   ],
 };

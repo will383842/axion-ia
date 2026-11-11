@@ -49,7 +49,7 @@ export const CHASSIEU_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Chassieu et Eurexpo ?",
-      a: "Oui, Axion-IA intervient à Chassieu et toute la zone Eurexpo/est lyonnais (Genas limitrophe, Bron, aéroport Saint-Exupéry à 10 min). Consultants depuis Lyon (15 min).",
+      a: "Oui, Axion-IA intervient à Chassieu et toute la zone Eurexpo/est lyonnais (Genas limitrophe, Bron, aéroport Saint-Exupéry à 10 min). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les acteurs événementiels Eurexpo ?",
@@ -64,8 +64,8 @@ export const CHASSIEU_COPY: VilleCopy = {
       a: "Pour les TPE artisans BTP et commerçants à Chassieu, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis.",
     },
     {
-      q: "Comment se passe une mission depuis Lyon ?",
-      a: "Nos consultants viennent de Lyon (15 min).",
+      q: "Comment se déroule une mission à Chassieu ?",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };

@@ -49,7 +49,7 @@ export const ESVRES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Esvres et sud-est Tours ?",
-      a: "Oui, Axion-IA intervient à Esvres et dans tout le sud-est de l'agglomération tourangelle (Veigné, Truyes, Cormery, Saint-Branchs). Couverture Tours Métropole et accès depuis Tours (20 min) ou Paris (2h30 TGV via Tours).",
+      a: "Oui, Axion-IA intervient à Esvres et dans tout le sud-est de l'agglomération tourangelle (Veigné, Truyes, Cormery, Saint-Branchs). Couverture Tours Métropole.",
     },
     {
       q: "Quels services pour les TPE et artisans esvriens ?",
@@ -65,7 +65,7 @@ export const ESVRES_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission Axion-IA à Esvres ?",
-      a: "Nos consultants viennent depuis Tours centre (20 min voiture D943). Pour les missions multi-jours, hébergement local possible (Cormery, Montbazon).",
+      a: "Nous intervenons partout en France, sur place ou à distance. Pour les missions multi-jours, hébergement local possible (Cormery, Montbazon).",
     },
   ],
 };

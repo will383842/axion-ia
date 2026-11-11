@@ -64,7 +64,7 @@ export const AVALLON_COPY: VilleCopy = {
       a: "Audit sur place {{price:audit-flash|flat}}, automatisation traçabilité, outils viticulture, gestion stocks et logistique, reporting commercial, optimisation cycles production.",
     },
     {
-      q: "Comment se déroule une mission depuis Paris ou Dijon ?",
+      q: "Comment se déroule une mission à Avallon ?",
       a: "Paris-Bercy à 2h en train (gare Avallon). Dijon à 1h15 par A6. Auxerre à 50 min.",
     },
   ],

@@ -49,7 +49,7 @@ export const FLINES_LEZ_RACHES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Flines-lez-Râches et dans la Pévèle ?",
-      a: "Oui, Axion-IA intervient à Flines-lez-Râches et dans toute la Pévèle (Orchies, Marchiennes, Coutiches, Râches) ainsi que le bassin douaisien (Douai, Sin-le-Noble, Lambres-lez-Douai). Nos consultants couvrent l'ensemble du Douaisis-Pévèle depuis Lille (35 min).",
+      a: "Oui, Axion-IA intervient à Flines-lez-Râches et dans toute la Pévèle (Orchies, Marchiennes, Coutiches, Râches) ainsi que le bassin douaisien (Douai, Sin-le-Noble, Lambres-lez-Douai). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les exploitations agricoles et PME agroalimentaires ?",
@@ -65,7 +65,7 @@ export const FLINES_LEZ_RACHES_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Flines-lez-Râches ?",
-      a: "Nos consultants interviennent à Flines-lez-Râches depuis Lille (35 min) ou Douai (15 min). Intervention sur site dans votre exploitation, atelier, bureau, commerce ou en visio. Pour missions multi-jours, hébergement à Douai ou Orchies.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Intervention sur site dans votre exploitation, atelier, bureau, commerce ou en visio. Pour missions multi-jours, hébergement à Douai ou Orchies.",
     },
   ],
 };

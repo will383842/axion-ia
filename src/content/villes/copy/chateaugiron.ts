@@ -49,7 +49,7 @@ export const CHATEAUGIRON_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Châteaugiron ?",
-      a: "Oui, Axion-IA intervient à Châteaugiron et dans tout le bassin rennais est (Janzé, Noyal-sur-Vilaine, Ossé, Piré-Chancé). Nos consultants couvrent la zone depuis Rennes (20 min).",
+      a: "Oui, Axion-IA intervient à Châteaugiron et dans tout le bassin rennais est (Janzé, Noyal-sur-Vilaine, Ossé, Piré-Chancé). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les PME tertiaires du bassin rennais est ?",
@@ -65,7 +65,7 @@ export const CHATEAUGIRON_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Châteaugiron ?",
-      a: "Nos consultants interviennent à Châteaugiron depuis Rennes (20 min). Intervention sur site dans vos locaux, bureau, atelier ou cabinet.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Intervention sur site dans vos locaux, bureau, atelier ou cabinet.",
     },
   ],
 };

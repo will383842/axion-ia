@@ -49,7 +49,7 @@ export const BIOT_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Biot et Sophia Antipolis ?",
-      a: "Oui, Axion-IA intervient à Biot et sur tout Sophia Antipolis (Valbonne, Mougins, Antibes, Vallauris). Couverture village et technopôle, accès rapide depuis Nice (25 min) ou Cannes (20 min).",
+      a: "Oui, Axion-IA intervient à Biot et sur tout Sophia Antipolis (Valbonne, Mougins, Antibes, Vallauris). Couverture village et technopôle.",
     },
     {
       q: "Travaillez-vous avec les artisans verriers et métiers d'art ?",

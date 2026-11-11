@@ -49,7 +49,7 @@ export const FROUZINS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Frouzins ?",
-      a: "Oui, Axion-IA intervient à Frouzins et dans tout le sud de Toulouse (Cugnaux, Villeneuve-Tolosane, Seysses). Nos consultants se déplacent en 18 min depuis Toulouse.",
+      a: "Oui, Axion-IA intervient à Frouzins et dans tout le sud de Toulouse (Cugnaux, Villeneuve-Tolosane, Seysses). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quels secteurs accompagnez-vous à Frouzins ?",
@@ -61,7 +61,7 @@ export const FROUZINS_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une intervention IA à Frouzins ?",
-      a: "Nos consultants se déplacent à Frouzins depuis Toulouse (18 min). Intervention 1 journée minimum, atelier pratique dans vos locaux. Équipes autonomes en fin de session.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Intervention 1 journée minimum, atelier pratique dans vos locaux. Équipes autonomes en fin de session.",
     },
     {
       q: "Proposez-vous du coaching individuel à Frouzins ?",

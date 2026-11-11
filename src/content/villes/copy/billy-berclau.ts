@@ -49,7 +49,7 @@ export const BILLY_BERCLAU_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il a Billy-Berclau et dans la zone industrielle ?",
-      a: "Oui, Axion-IA intervient a Billy-Berclau et dans toute la zone industrielle Douvrin-Billy (Bethune, La Bassee, Lens). Consultants depuis Lille (40 min TER) ou Paris (TGV 1h20 via Lens).",
+      a: "Oui, Axion-IA intervient a Billy-Berclau et dans toute la zone industrielle Douvrin-Billy (Bethune, La Bassee, Lens). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quels services IA pour les PME industrielles de Billy-Berclau ?",

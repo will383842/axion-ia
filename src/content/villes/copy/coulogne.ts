@@ -49,7 +49,7 @@ export const COULOGNE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il a Coulogne et dans l'agglo de Calais ?",
-      a: "Oui, Axion-IA intervient a Coulogne et dans toute l'agglomeration calaisienne (Calais, Marck, Guines, Sangatte). Consultants depuis Lille (1h15 TER) ou via Calais-Frethun (Eurostar 10 min).",
+      a: "Oui, Axion-IA intervient a Coulogne et dans toute l'agglomeration calaisienne (Calais, Marck, Guines, Sangatte). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quels services IA pour les commercants de Coulogne ?",

@@ -49,7 +49,7 @@ export const ELBEUF_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Elbeuf et boucle de Seine ?",
-      a: "Oui, Axion-IA intervient à Elbeuf et toute la boucle de Seine (Cléon, Saint-Aubin-lès-Elbeuf, Oissel à 8 km, Louviers à 15 km). Nos consultants viennent de Rouen (25 min) ou Paris (TGV Rouen 1h15 + voiture).",
+      a: "Oui, Axion-IA intervient à Elbeuf et toute la boucle de Seine (Cléon, Saint-Aubin-lès-Elbeuf, Oissel à 8 km, Louviers à 15 km). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les PME industrielles d'Elbeuf ?",
@@ -64,8 +64,8 @@ export const ELBEUF_COPY: VilleCopy = {
       a: "L'audit sur place débute selon la taille de votre activité pour les TPE. Pour les PME industrielles, l'audit stratégique complet est adapté au périmètre. Tarifs publics, pas de devis opaque.",
     },
     {
-      q: "Comment se passe une mission depuis Rouen ou Paris ?",
-      a: "Nos consultants viennent de Rouen (25 min voiture) ou Paris (TGV Rouen 1h15 + 25 min voiture).",
+      q: "Comment se déroule une mission à Elbeuf ?",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };

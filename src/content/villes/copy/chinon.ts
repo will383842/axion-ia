@@ -49,7 +49,7 @@ export const CHINON_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Chinon et dans le Chinonais ?",
-      a: "Oui, Axion-IA intervient à Chinon et dans tout le Chinonais (Rivière, Cravant-les-Coteaux, Beaumont-en-Véron, Ligré). Couverture Touraine ouest et accès depuis Tours (50 min TER) ou Paris (3h TGV via Tours).",
+      a: "Oui, Axion-IA intervient à Chinon et dans tout le Chinonais (Rivière, Cravant-les-Coteaux, Beaumont-en-Véron, Ligré). Couverture Touraine ouest.",
     },
     {
       q: "Travaillez-vous avec les vignerons AOC Chinon ?",
@@ -65,7 +65,7 @@ export const CHINON_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission Axion-IA à Chinon ?",
-      a: "Nos consultants viennent depuis Tours (50 min TER ou voiture D751). Pour les missions multi-jours, hébergement local possible (hôtels Chinon ou bords de Vienne).",
+      a: "Nous intervenons partout en France, sur place ou à distance. Pour les missions multi-jours, hébergement local possible (hôtels Chinon ou bords de Vienne).",
     },
   ],
 };

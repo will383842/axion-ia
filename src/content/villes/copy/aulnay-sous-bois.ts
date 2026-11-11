@@ -248,7 +248,7 @@ export const AULNAY_SOUS_BOIS_COPY: VilleCopy = {
     },
     {
       q: "Vous déplacez-vous sur site à Aulnay-sous-Bois ?",
-      a: "Oui. Nos consultants se rendent directement dans vos locaux à Aulnay, depuis Paris via le RER B ou en voiture par l'A3.",
+      a: "Oui. Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };
