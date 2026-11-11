@@ -15,9 +15,13 @@ export const ENTETES_PAGE_GUIDE = {
 export const echapper = (s: string): string =>
   s.replace(/[&<>"']/g, (c) => `&#${c.charCodeAt(0)};`);
 
+/** Focus visible au clavier : le seul CSS de la page hors attributs `style` (aucun JavaScript). */
+const STYLE_FOCUS =
+  "<style>a:focus-visible,input:focus-visible,button:focus-visible{outline:3px solid #1a4dd9;outline-offset:2px}</style>"; // hex-ok: page HTML autonome, aucun jeton Tailwind (réponse de route)
+
 /** Document HTML complet, sans script ; `corps` est du HTML DÉJÀ échappé par l'appelant. */
 export function pageStatique(titre: string, corps: string, statut: number): NextResponse {
-  const html = `<!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow,noarchive"><meta name="referrer" content="no-referrer"><title>${echapper(titre)} — ${echapper(T.marque)}</title></head><body style="font-family:system-ui,sans-serif;max-width:36rem;margin:2rem auto;padding:0 1.25rem"><h1 style="font-size:1.5rem">${echapper(titre)}</h1>${corps}</body></html>`;
+  const html = `<!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow,noarchive"><meta name="referrer" content="no-referrer"><title>${echapper(titre)} — ${echapper(T.marque)}</title>${STYLE_FOCUS}</head><body style="font-family:system-ui,sans-serif;max-width:36rem;margin:2rem auto;padding:0 1.25rem"><main><h1 style="font-size:1.5rem">${echapper(titre)}</h1>${corps}</main></body></html>`;
   return new NextResponse(html, {
     status: statut,
     headers: { ...ENTETES_PAGE_GUIDE, "Content-Type": "text/html; charset=utf-8" },

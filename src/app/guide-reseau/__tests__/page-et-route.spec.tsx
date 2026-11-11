@@ -45,7 +45,7 @@ import { echapper } from "../html-statique";
 import { GET as MerciGET } from "../merci/route";
 import { POST, GET } from "../envoyer/route";
 import { creerJeton, empreinteJeton } from "@/server/guides-reseau/lien-page-guide";
-import { TEXTE_CASE_PAGE_GUIDE } from "@/content/guides-reseau";
+import { TEXTE_CASE_PAGE_GUIDE, TEXTE_CASE_PAGE_GUIDE_INFOS } from "@/content/guides-reseau";
 import { TEXTES_PAGE_GUIDE } from "../textes";
 
 const T_NEUTRE = TEXTES_PAGE_GUIDE.lienNeutre;
@@ -148,6 +148,18 @@ describe("page allumée", () => {
     expect(html).toContain("/fr/politique-confidentialite");
   });
 
+  it("deux cases SÉPARÉES : celle du guide obligatoire, celle des informations facultative et décochée", async () => {
+    const html = await rendre(JETON);
+    const accord = html.match(/<input id="accord"[^>]*>/)?.[0] ?? "";
+    const infos = html.match(/<input id="infos"[^>]*>/)?.[0] ?? "";
+    expect(accord).toContain("required");
+    expect(infos).toContain('name="infos"');
+    expect(infos).not.toContain("required");
+    expect(infos).not.toContain("checked");
+    expect(html).toContain(echapper(TEXTE_CASE_PAGE_GUIDE_INFOS));
+    expect(echapper(TEXTE_CASE_PAGE_GUIDE)).not.toMatch(/informations/);
+  });
+
   it("un j terminé par « . » ouvre la page, avec le jeton SANS le point dans le formulaire", async () => {
     const html = await rendre(`${JETON}.`);
     expect(html).toContain("<form");
@@ -237,6 +249,92 @@ describe("page allumée", () => {
   });
 });
 
+describe("page allumée — chemin sans case et accessibilité", () => {
+  beforeEach(() => {
+    process.env.PAGE_GUIDE_RESEAU_ENABLED = "true";
+  });
+  const PHRASE =
+    "Vous pouvez aussi recevoir le guide sans cocher cette case : écrivez simplement votre adresse e-mail dans la conversation, ou utilisez le formulaire du guide.";
+
+  it("sous le formulaire, un paragraphe visible avec lien vers /fr/guide-ia", async () => {
+    const html = await rendre(JETON);
+    const apres = html.slice(html.indexOf("</form>"));
+    expect(apres).toContain(echapper(PHRASE.replace(" ou utilisez le formulaire du guide.", "")));
+    expect(apres).toMatch(/<a href="\/fr\/guide-ia">[^<]*formulaire du guide[^<]*<\/a>/);
+    expect(apres).not.toMatch(/hidden|display:\s*none/);
+  });
+
+  it("le texte de la case est inchangé", async () => {
+    expect(await rendre(JETON)).toContain(echapper(TEXTE_CASE_PAGE_GUIDE));
+  });
+
+  it("<main>, libellés reliés, focus visible", async () => {
+    const html = await rendre(JETON);
+    expect(html).toMatch(/<main[ >]/);
+    expect(html).toContain('<label for="prenom"');
+    expect(html).toContain('<label for="email"');
+    expect(html).toContain('<label for="accord"');
+    expect(html).toContain(":focus-visible");
+  });
+
+  it("page d'erreur : message en HTML relié par aria-describedby, sans <script>", async () => {
+    etat.confirmer.retour = { ok: false, statut: 422, erreur: "case" };
+    process.env.PAGE_GUIDE_RESEAU_ENABLED = "true";
+    const r = await POST(envoi({ j: JETON, prenom: "Camille", email: "a@example.test" }));
+    const html = await r.text();
+    expect(html).toMatch(/<main[ >]/);
+    expect(html).toContain('id="erreur"');
+    expect(html).toContain('aria-describedby="erreur"');
+    expect(html).toContain(":focus-visible");
+  });
+
+  it("corps trop gros ANNONCÉ en morceaux (sans Content-Length) : lecture arrêtée au plafond, message juste", async () => {
+    let tires = 0;
+    const flux = new ReadableStream<Uint8Array>({
+      pull(c) {
+        tires++;
+        if (tires > 5000) return c.close();
+        c.enqueue(new TextEncoder().encode("x".repeat(1024)));
+      },
+    });
+    const req = new NextRequest("http://localhost/guide-reseau/envoyer", {
+      method: "POST",
+      headers: { "content-type": "application/x-www-form-urlencoded" },
+      body: flux,
+      duplex: "half",
+    });
+    const r = await POST(req);
+    expect(r.status).toBe(413);
+    expect(tires).toBeLessThan(50); // jamais les ~5 Mo du flux
+    expect(etat.appels).toHaveLength(0);
+    const html = await r.text();
+    expect(html).not.toContain("adresse e-mail semble invalide");
+  });
+
+  it("corps trop gros annoncé par Content-Length : même message générique, pas « adresse invalide »", async () => {
+    const r = await POST(envoi({ j: JETON, bruit: "x".repeat(20000) }));
+    expect(r.status).toBe(413);
+    expect(await r.text()).not.toContain("adresse e-mail semble invalide");
+  });
+
+  it("corps du POST trop gros : réponse neutre, rien n'est confirmé", async () => {
+    const r = await POST(
+      envoi({
+        j: JETON,
+        prenom: "Camille",
+        email: "a@example.test",
+        accord: "oui",
+        bruit: "x".repeat(20000),
+      }),
+    );
+    expect(r.status).toBe(413);
+    expect(etat.appels).toHaveLength(0);
+    const html = await r.text();
+    expect(html).not.toContain("Camille");
+    expect(html).not.toContain("a@example.test");
+  });
+});
+
 describe("route d'envoi allumée", () => {
   beforeEach(() => {
     process.env.PAGE_GUIDE_RESEAU_ENABLED = "true";
@@ -252,9 +350,15 @@ describe("route d'envoi allumée", () => {
     expect(etat.appels).toHaveLength(1);
     expect(etat.appels[0]).toMatchObject({
       caseCochee: true,
+      infosCochee: false,
       prenom: "Camille",
       secret: SECRET_LIEN,
     });
+  });
+
+  it("la case des informations n'est jamais déduite de celle du guide", async () => {
+    await POST(envoi({ ...champs, j: JETON, infos: "oui" }));
+    expect(etat.appels[0]).toMatchObject({ caseCochee: true, infosCochee: true });
   });
 
   it("un j terminé par « . » (ou « ) ») est transmis SANS la ponctuation à la confirmation", async () => {

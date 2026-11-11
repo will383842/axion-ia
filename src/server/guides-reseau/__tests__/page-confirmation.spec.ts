@@ -300,6 +300,32 @@ describe("case de consentement", () => {
     expect(ecritures()).toBe(0);
   });
 
+  it("case du guide seule : aucune trace d'accord aux informations (colonnes vides, une seule preuve)", async () => {
+    expect((await confirmerPageGuide(entree())).ok).toBe(true);
+    const c = bd.contacts[0]!;
+    expect(c.infosStatut).toBeUndefined(); // défaut de la base : 'aucune'
+    expect(c.infosConsentiLe).toBeUndefined();
+    expect(bd.preuves.map((p) => p.formRef)).toEqual(["guide-reseau-page"]);
+  });
+
+  it("case des informations cochée : enregistrée « non_transmise », avec sa propre preuve", async () => {
+    expect((await confirmerPageGuide(entree({ infosCochee: true }))).ok).toBe(true);
+    const c = bd.contacts[0]!;
+    expect(c.infosStatut).toBe("non_transmise");
+    expect(c.infosVersion).toBe("page-guide-infos-2026-11-11");
+    expect(c.infosConsentiLe).toEqual(MAINTENANT);
+    expect(bd.preuves.map((p) => p.formRef).sort()).toEqual([
+      "guide-reseau-page",
+      "guide-reseau-page-infos",
+    ]);
+  });
+
+  it("case des informations seule, sans la case du guide → 422, AUCUNE écriture", async () => {
+    const r = await confirmerPageGuide(entree({ caseCochee: false, infosCochee: true }));
+    expect(r).toEqual({ ok: false, statut: 422, erreur: "case" });
+    expect(ecritures()).toBe(0);
+  });
+
   it("prénom vide, espaces seuls, ou plus de 50 caractères → 422 sans écriture", async () => {
     for (const prenom of ["", "   ", "x".repeat(51)]) {
       const r = await confirmerPageGuide(entree({ prenom }));
@@ -663,28 +689,34 @@ describe("B1 — l'origine va dans l'historique v3 (guide_reseau_origines), au C
 });
 
 describe("B3 — formats exigés par le CRM, validés avant toute écriture", () => {
-  it("compte avec majuscules ou tirets : normalisé en minuscules/underscores dans l'historique", async () => {
-    await confirmerPageGuide(entree({ jeton: jeton({ compte: "Page-Principale" }) }));
-    expect(bd.origines[0]).toMatchObject({ compte: "page_principale" });
-    expect(bd.crm).toHaveLength(0);
-  });
-
-  it("compte invalide (1 caractère) : l'origine n'est PAS envoyée au CRM, mais le guide part", async () => {
-    expect(await confirmerPageGuide(entree({ jeton: jeton({ compte: "x" }) }))).toEqual({
-      ok: true,
-    });
-    expect(bd.crm).toHaveLength(0);
-    expect(bd.envois).toHaveLength(1);
-    expect(bd.demandes).toHaveLength(1);
-    // L'historique local garde la trace, sans compte invalide.
-    expect(bd.origines[0]!["compte"]).toBeNull();
-  });
-
-  it("compte trop long pour le CRM (> 40) : même chose, pas d'envoi au CRM", async () => {
-    await confirmerPageGuide(entree({ jeton: jeton({ compte: "a".repeat(41) }) }));
-    expect(bd.crm).toHaveLength(0);
-    expect(bd.envois).toHaveLength(1);
-  });
+  // SITE-COMPTE : le compte du jeton est une liste fermée (contrat) ; un jeton signé avec un autre
+  // compte est refusé AVANT toute écriture, avec le refus neutre « lien » (la cause ne se lit jamais).
+  it.each(["Page-Principale", "x", "a".repeat(41), "compte_example_01"])(
+    "jeton signé avec un compte hors liste fermée (%s) : refus neutre « lien », rien d'écrit, rien envoyé",
+    async (compte) => {
+      const charge = {
+        v: 1,
+        conv: DONNEES.conv,
+        mot: DONNEES.mot,
+        reseau: DONNEES.reseau,
+        guide: DONNEES.guide,
+        compte,
+        post_ref: DONNEES.post_ref,
+        version_m1: DONNEES.version_m1,
+        exp: Math.floor(MAINTENANT.getTime() / 1000) + 48 * 3600,
+      };
+      const partie = Buffer.from(JSON.stringify(charge), "utf8").toString("base64url");
+      const sig = crypto.createHmac("sha256", SECRET).update(partie, "utf8").digest("base64url");
+      expect(await confirmerPageGuide(entree({ jeton: `${partie}.${sig}` }))).toEqual({
+        ok: false,
+        statut: 400,
+        erreur: "lien",
+      });
+      expect(ecritures()).toBe(0);
+      expect(bd.crm).toHaveLength(0);
+      expect(bd.envois).toHaveLength(0);
+    },
+  );
 
   it("post_ref absent : accepté, rien de plus à faire", async () => {
     const { post_ref: _p, ...sansPost } = DONNEES;
