@@ -120,7 +120,7 @@ const FOCUS = "focus-visible:ring-terracotta! focus-visible:ring-offset-[3px]!";
 const FOCUS_MOCHA =
   "focus-visible:ring-mocha-fg! focus-visible:ring-offset-[3px]! focus-visible:ring-offset-mocha!";
 const FOCUS_TERRA =
-  "focus-visible:ring-white! focus-visible:ring-offset-[3px]! focus-visible:ring-offset-terracotta!";
+  "focus-visible:ring-paper! focus-visible:ring-offset-[3px]! focus-visible:ring-offset-terracotta!";
 // Bouton secondaire : fond blanc, bordure encre, survol inversé.
 const SECONDAIRE = "bg-paper! border-fg! hover:bg-fg! hover:text-paper!";
 const LIEN_FLECHE =
@@ -455,7 +455,7 @@ export default async function JourneeIaPage({ params }: Props) {
                   >
                     <span
                       aria-hidden="true"
-                      className="bg-success inline-grid size-6 flex-none place-items-center rounded-full text-white"
+                      className="bg-success text-paper inline-grid size-6 flex-none place-items-center rounded-full"
                     >
                       <Check className="size-3.5" strokeWidth={3} aria-hidden="true" />
                     </span>
@@ -697,7 +697,7 @@ export default async function JourneeIaPage({ params }: Props) {
               </p>
               <p className="text-fg-soft mt-3.5 mb-4 text-[15px]">{calcul.nuance}</p>
               <div aria-hidden="true" className="my-4 grid max-w-[520px] gap-2.5">
-                <div className="bg-terracotta flex h-11 items-center rounded-md px-3.5 font-extrabold text-white">
+                <div className="bg-terracotta text-paper flex h-11 items-center rounded-md px-3.5 font-extrabold">
                   {remplacerJetons(calcul.total)}
                 </div>
                 <div className="bg-fg relative h-11 rounded-md" style={{ width: `${partDuPrix}%` }}>
@@ -942,18 +942,18 @@ export default async function JourneeIaPage({ params }: Props) {
           <Surtitre n="09" ton="terra">
             {rendezVous.surtitre}
           </Surtitre>
-          <h2 id="h-rendez-vous" className={`${H2} text-white`}>
+          <h2 id="h-rendez-vous" className={`${H2} text-paper`}>
             {rendezVous.titre}
           </h2>
           <ol className="mt-2 mb-5 flex flex-col gap-2 sm:flex-row sm:flex-wrap sm:justify-center xl:flex-nowrap">
             {rendezVous.etapes.map((e, i) => (
               <li
                 key={e}
-                className="flex min-h-12 items-center gap-3 rounded-full border border-white/40 bg-white/12 py-2 pr-4 pl-2 text-left text-base leading-snug font-semibold text-white xl:whitespace-nowrap"
+                className="border-paper/40 bg-paper/12 text-paper flex min-h-12 items-center gap-3 rounded-full border py-2 pr-4 pl-2 text-left text-base leading-snug font-semibold xl:whitespace-nowrap"
               >
                 <span
                   aria-hidden="true"
-                  className="text-terracotta inline-grid size-8 flex-none place-items-center rounded-full bg-white text-[15px] font-extrabold"
+                  className="text-terracotta bg-paper inline-grid size-8 flex-none place-items-center rounded-full text-[15px] font-extrabold"
                 >
                   {i + 1}
                 </span>
@@ -961,13 +961,13 @@ export default async function JourneeIaPage({ params }: Props) {
               </li>
             ))}
           </ol>
-          <p className="mb-4 text-[17px] font-bold text-white">{rendezVous.plusieurs}</p>
+          <p className="text-paper mb-4 text-[17px] font-bold">{rendezVous.plusieurs}</p>
           <Cta
             href={lien("journee-ia-bas")}
             track="journee-ia-bas"
             variant="terracotta"
             size="xl"
-            className={`text-terracotta hover:bg-mocha-fg w-full bg-white sm:w-auto sm:px-10 ${FOCUS_TERRA}`}
+            className={`text-terracotta hover:bg-mocha-fg bg-paper w-full sm:w-auto sm:px-10 ${FOCUS_TERRA}`}
           >
             <CalendarDays className="size-5" aria-hidden="true" />
             {rendezVous.cta}
