@@ -663,28 +663,34 @@ describe("B1 — l'origine va dans l'historique v3 (guide_reseau_origines), au C
 });
 
 describe("B3 — formats exigés par le CRM, validés avant toute écriture", () => {
-  it("compte avec majuscules ou tirets : normalisé en minuscules/underscores dans l'historique", async () => {
-    await confirmerPageGuide(entree({ jeton: jeton({ compte: "Page-Principale" }) }));
-    expect(bd.origines[0]).toMatchObject({ compte: "page_principale" });
-    expect(bd.crm).toHaveLength(0);
-  });
-
-  it("compte invalide (1 caractère) : l'origine n'est PAS envoyée au CRM, mais le guide part", async () => {
-    expect(await confirmerPageGuide(entree({ jeton: jeton({ compte: "x" }) }))).toEqual({
-      ok: true,
-    });
-    expect(bd.crm).toHaveLength(0);
-    expect(bd.envois).toHaveLength(1);
-    expect(bd.demandes).toHaveLength(1);
-    // L'historique local garde la trace, sans compte invalide.
-    expect(bd.origines[0]!["compte"]).toBeNull();
-  });
-
-  it("compte trop long pour le CRM (> 40) : même chose, pas d'envoi au CRM", async () => {
-    await confirmerPageGuide(entree({ jeton: jeton({ compte: "a".repeat(41) }) }));
-    expect(bd.crm).toHaveLength(0);
-    expect(bd.envois).toHaveLength(1);
-  });
+  // SITE-COMPTE : le compte du jeton est une liste fermée (contrat) ; un jeton signé avec un autre
+  // compte est refusé AVANT toute écriture, avec le refus neutre « lien » (la cause ne se lit jamais).
+  it.each(["Page-Principale", "x", "a".repeat(41), "compte_example_01"])(
+    "jeton signé avec un compte hors liste fermée (%s) : refus neutre « lien », rien d'écrit, rien envoyé",
+    async (compte) => {
+      const charge = {
+        v: 1,
+        conv: DONNEES.conv,
+        mot: DONNEES.mot,
+        reseau: DONNEES.reseau,
+        guide: DONNEES.guide,
+        compte,
+        post_ref: DONNEES.post_ref,
+        version_m1: DONNEES.version_m1,
+        exp: Math.floor(MAINTENANT.getTime() / 1000) + 48 * 3600,
+      };
+      const partie = Buffer.from(JSON.stringify(charge), "utf8").toString("base64url");
+      const sig = crypto.createHmac("sha256", SECRET).update(partie, "utf8").digest("base64url");
+      expect(await confirmerPageGuide(entree({ jeton: `${partie}.${sig}` }))).toEqual({
+        ok: false,
+        statut: 400,
+        erreur: "lien",
+      });
+      expect(ecritures()).toBe(0);
+      expect(bd.crm).toHaveLength(0);
+      expect(bd.envois).toHaveLength(0);
+    },
+  );
 
   it("post_ref absent : accepté, rien de plus à faire", async () => {
     const { post_ref: _p, ...sansPost } = DONNEES;

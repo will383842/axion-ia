@@ -14,6 +14,7 @@
  * L'usage unique (table) viendra dans un autre lot ; ici seule l'empreinte est fournie.
  */
 import { createHash, createHmac, timingSafeEqual } from "node:crypto";
+import { COMPTES_PUBLICATION } from "./contrat";
 
 export const VERSION_JETON = 1;
 /** Décision du 11/11/2026 : le lien est valable 48 h (et non plus 7 jours). Le format du jeton ne change pas. */
@@ -73,7 +74,8 @@ const CHAMPS: Readonly<Record<string, (x: unknown) => boolean>> = {
   mot: (x) => typeof x === "string" && /^[A-Z0-9_-]{1,30}$/.test(x),
   reseau: (x) => typeof x === "string" && (RESEAUX as readonly string[]).includes(x),
   guide: (x) => typeof x === "string" && x.length <= 64 && /^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(x),
-  compte: (x) => typeof x === "string" && OPAQUE.test(x),
+  // Liste FERMÉE du contrat (`COMPTES_PUBLICATION`), jamais un pseudo : tout autre compte → « champs ».
+  compte: (x) => typeof x === "string" && (COMPTES_PUBLICATION as readonly string[]).includes(x),
   post_ref: (x) => typeof x === "string" && OPAQUE.test(x),
   version_m1: (x) => typeof x === "string" && /^[A-Za-z0-9._-]{1,32}$/.test(x),
   exp: (x) => typeof x === "number" && Number.isSafeInteger(x) && x > 0,
