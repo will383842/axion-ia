@@ -49,7 +49,7 @@ export const ROQUEBRUNE_CAP_MARTIN_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Roquebrune-Cap-Martin et sur la Riviera ?",
-      a: "Oui, Axion-IA intervient à Roquebrune-Cap-Martin et sur toute la Riviera entre Monaco et Menton (Beausoleil, La Turbie, Carnolès). Couverture littoral azuréen et accès rapide depuis Nice (35 min TER ou 40 min voiture).",
+      a: "Oui, Axion-IA intervient à Roquebrune-Cap-Martin et sur toute la Riviera entre Monaco et Menton (Beausoleil, La Turbie, Carnolès). Couverture littoral azuréen. Nous intervenons sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les hôtels et restaurants haut de gamme ?",

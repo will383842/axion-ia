@@ -250,7 +250,7 @@ export const VIENNE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Vienne ?",
-      a: "Nous démarrons par un audit, puis intervenons sur site ou en visio depuis Lyon (30 min). Livrables documentés, équipes formées, aucune dépendance technique imposée.",
+      a: "Nous démarrons par un audit, puis intervenons sur site ou en visio, partout en France. Livrables documentés, équipes formées, aucune dépendance technique imposée.",
     },
   ],
 };

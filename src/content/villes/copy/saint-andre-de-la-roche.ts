@@ -49,7 +49,7 @@ export const SAINT_ANDRE_DE_LA_ROCHE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Saint-André-de-la-Roche ?",
-      a: "Oui, Axion-IA intervient à Saint-André-de-la-Roche et dans tout le bassin niçois est (La Trinité, Drap, Falicon, Nice est). Couverture Métropole Nice Côte d'Azur complète et accès rapide depuis Nice centre (10 min).",
+      a: "Oui, Axion-IA intervient à Saint-André-de-la-Roche et dans tout le bassin niçois est (La Trinité, Drap, Falicon, Nice est). Couverture Métropole Nice Côte d'Azur complète. Nous intervenons sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les TPE artisans BTP de la commune ?",

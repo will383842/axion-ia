@@ -64,7 +64,7 @@ export const POUZAUGES_COPY: VilleCopy = {
       a: "Oui, nos interventions forment vos équipes aux outils IA industriels : maintenance prédictive, contrôle qualité par vision, optimisation production, automatisation tests, gestion stocks intelligents. Sur site à Pouzauges ou en visio.",
     },
     {
-      q: "Comment se passe une mission IA à Pouzauges depuis Cholet ou Nantes ?",
+      q: "Comment se passe une mission IA à Pouzauges ?",
       a: "Nos consultants interviennent directement dans vos locaux à Pouzauges. Cholet à 35 km, Nantes à 90 km. Accès A87 à 25 km.",
     },
   ],

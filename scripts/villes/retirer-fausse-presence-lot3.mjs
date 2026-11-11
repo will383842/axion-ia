@@ -48,6 +48,20 @@ export function nettoyer(ligne) {
   });
 }
 
+/**
+ * Passe finale : RÈGLE GÉNÉRALE (même motif que le test). Aucun texte ne doit laisser
+ * croire que l'équipe part d'une ville. Liste blanche : « Vos équipes pilotent l'outil
+ * en autonomie depuis <Ville> » (équipes du client), accès du lieu pour le client.
+ */
+export const REGLE_GENERALE =
+  /(?:se déplac|déplacements?|interventions?|consultants?|équipe|experts?|Williams|[Nn]ous|accès rapide|missions?)[^."?]{0,80}depuis (?!le |la |les |l'|son |sa |votre |vos )[A-ZÉ]/u;
+export const QUESTION = /Comment se (?:passe|déroule) une (?:mission|intervention)[^"?]* depuis /u;
+export const LISTE_BLANCHE = /autonomie depuis|accès direct depuis Roissy/u;
+
+export function residu(ligne) {
+  return (REGLE_GENERALE.test(ligne) || QUESTION.test(ligne)) && !LISTE_BLANCHE.test(ligne);
+}
+
 const fichiers = readdirSync(DOSSIER)
   .filter((n) => n.endsWith(".ts"))
   .sort();
@@ -73,3 +87,13 @@ for (const nom of tiers) {
 console.log(
   `${tiers.length} fichiers dans le tiers (dès ${tiers[0]}) ; ${touches.length} touché(s), ${modifs} ligne(s).`,
 );
+
+if (process.argv.includes("--verifier")) {
+  const restes = tiers.flatMap((nom) =>
+    readFileSync(join(DOSSIER, nom), "utf8")
+      .split("\n")
+      .flatMap((l, i) => (residu(l) ? [`${nom}:${i + 1}`] : [])),
+  );
+  console.log(`Règle générale : ${restes.length} résidu(s).`, restes.join(" "));
+  if (restes.length) process.exitCode = 1;
+}

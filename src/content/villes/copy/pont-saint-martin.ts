@@ -64,7 +64,7 @@ export const PONT_SAINT_MARTIN_COPY: VilleCopy = {
       a: "L'Audit sur place démarre à {{price:audit-flash|flat}} (4 heures, diagnostic complet avec ROI chiffré). Tarifs publics et transparents adaptés aux TPE et PME du sud nantais.",
     },
     {
-      q: "Comment se passe une intervention depuis Nantes ?",
+      q: "Comment se passe une intervention à Pont-Saint-Martin ?",
       a: "Nous intervenons partout en France, sur place ou à distance. Formats demi-journée ou journée complète, sur site ou en visio.",
     },
   ],

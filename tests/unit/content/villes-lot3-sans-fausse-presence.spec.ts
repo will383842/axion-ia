@@ -13,6 +13,8 @@
  *   · B : la question « Comment se passe/déroule une mission … depuis <Ville> ? » ;
  *   · C : « depuis Paris » / « depuis le littoral » (insensible à la casse).
  *
+ * Passe finale : D (règle générale) et E (questions) remplacent les motifs ponctuels.
+ *
  * Le tiers est borné par NOM de fichier (de `parthenay.ts` à la fin), jamais par
  * un tiers du nombre de fichiers : l'ajout d'une ville ailleurs ne le déplace pas.
  */
@@ -51,7 +53,22 @@ const MOTIFS: ReadonlyArray<readonly [string, RegExp]> = [
     /Comment se (?:passe|déroule) une mission (?:à [^"?]+? )?depuis /u,
   ],
   ["C · « depuis Paris » / « depuis le littoral »", /\b[Dd]epuis (?:Paris|le littoral)/u],
+  [
+    "D · règle générale « équipe/mission/… depuis <Ville> »",
+    /(?:se déplac|déplacements?|interventions?|consultants?|équipe|experts?|Williams|[Nn]ous|accès rapide|missions?)[^."?]{0,80}depuis (?!le |la |les |l'|son |sa |votre |vos )[A-ZÉ]/u,
+  ],
+  [
+    "E · question « Comment se passe/déroule une mission/intervention … depuis »",
+    /Comment se (?:passe|déroule) une (?:mission|intervention)[^"?]* depuis /u,
+  ],
 ];
+
+/**
+ * Liste blanche étroite : faux positifs de la règle D qui décrivent le CLIENT, pas l'équipe.
+ *   · « Vos équipes pilotent l'outil en autonomie depuis <Ville> » : équipes du client ;
+ *   · « accès direct depuis Roissy-CDG » : accès du lieu pour le client (Villepinte).
+ */
+const LISTE_BLANCHE = /autonomie depuis|accès direct depuis Roissy/u;
 
 /** Un exemple fautif par motif : un motif qui ne reconnaît plus rien est mort. */
 const EXEMPLES_FAUTIFS: ReadonlyArray<readonly [number, string]> = [
@@ -70,13 +87,20 @@ const EXEMPLES_FAUTIFS: ReadonlyArray<readonly [number, string]> = [
   [8, "Nos consultants rejoignent le site depuis Paris-Montparnasse."],
   [8, "Déplacement arrière-pays inclus depuis le littoral azuréen."],
   [8, "environ 10 km depuis Paris"],
+  [9, "Williams se déplace sur site depuis Nice ou Antibes."],
+  [9, "Nous nous déplaçons depuis Salon-de-Provence vers Aix."],
+  [9, "Couverture complète et accès rapide depuis Nice (30 min)."],
+  [10, "Comment se déroule une intervention depuis Nantes ?"],
+  [10, "Comment se passe une mission en Corse depuis le continent ?"],
 ];
 
 function fautives(motif: RegExp): string[] {
   return TIERS.flatMap((nom) =>
     readFileSync(join(DOSSIER, nom), "utf8")
       .split("\n")
-      .flatMap((ligne, i) => (motif.test(ligne) ? [`${nom}:${i + 1}`] : [])),
+      .flatMap((ligne, i) =>
+        motif.test(ligne) && !LISTE_BLANCHE.test(ligne) ? [`${nom}:${i + 1}`] : [],
+      ),
   );
 }
 
@@ -106,6 +130,16 @@ describe("villes · lot 3 sans fausse présence locale", () => {
     for (const [k, texte] of EXEMPLES_FAUTIFS) {
       expect(MOTIFS[k]![1].test(texte), `${MOTIFS[k]![0]} ← ${texte}`).toBe(true);
     }
+  });
+
+  it("la liste blanche ne masque que le client (une ligne saine, une ligne fautive)", () => {
+    const sain = "Vos équipes pilotent l'outil en autonomie depuis Lille, sans verrou.";
+    expect(MOTIFS[9]![1].test(sain)).toBe(true);
+    expect(LISTE_BLANCHE.test(sain)).toBe(true);
+    expect(LISTE_BLANCHE.test("Nos consultants se déplacent depuis Lille.")).toBe(false);
+    expect(MOTIFS[9]![1].test("Nous intervenons partout en France, sur place ou à distance.")).toBe(
+      false,
+    );
   });
 
   for (const [nom, motif] of MOTIFS) {

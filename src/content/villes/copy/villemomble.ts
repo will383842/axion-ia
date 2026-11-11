@@ -144,7 +144,7 @@ export const VILLEMOMBLE_COPY: VilleCopy = {
           "A dense fabric of local micro-businesses and SMEs — roughly one business per thirteen residents: our Villemomble projects start from concrete needs, such as a building-trade craftsperson wanting online quotes, an Outrebon retailer wanting a storefront tied to the 'Cœurs de ville' loyalty card, or a Maison de Santé practice wanting smart appointment booking.",
           "The ZA La Garenne business park (about 12.29 hectares, nearly 125 companies) and the Hôtel d'entreprises near the A3/A86 concentrate service SMEs and craft workshops: client portals, automated quoting and bespoke SaaS tools answer real processes there.",
           "Strong local retail around avenue Outrebon and the two municipal markets: we build multi-CMS e-commerce stores, click-and-collect and digital loyalty tied to the retail dynamism driven by the ADEEV (121 avenue de Rosny).",
-          "RER E accessibility (Le Raincy-Villemomble-Montfermeil station, about a 3-minute walk from the Outrebon market): our consultants travel from Paris for scoping workshops and acceptance, then iterate remotely on your data.",
+          "RER E accessibility (Le Raincy-Villemomble-Montfermeil station, about a 3-minute walk from the Outrebon market): we work on site or remotely, anywhere in France, for scoping workshops and acceptance, then iterate remotely on your data.",
         ],
         methodology: [
           {

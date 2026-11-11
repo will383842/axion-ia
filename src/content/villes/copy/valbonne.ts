@@ -49,7 +49,7 @@ export const VALBONNE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Valbonne et Sophia Antipolis ?",
-      a: "Oui, Axion-IA intervient à Valbonne et sur tout le parc Sophia Antipolis (Biot, Mougins, Antibes, Vallauris). Couverture technopôle complète et accès rapide depuis Nice (30 min) ou Cannes (20 min).",
+      a: "Oui, Axion-IA intervient à Valbonne et sur tout le parc Sophia Antipolis (Biot, Mougins, Antibes, Vallauris). Couverture technopôle complète. Nous intervenons sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les startups tech de Sophia Antipolis ?",

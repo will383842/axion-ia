@@ -64,7 +64,7 @@ export const VIRE_NORMANDIE_COPY: VilleCopy = {
       a: "L'Audit sur place démarre à {{price:audit-flash|flat}}. Tarifs publics consultables sur notre site. Devis adapté selon la taille de votre structure (TPE, PME, ETI) et la complexité de vos processus métier.",
     },
     {
-      q: "Comment se déroule une mission IA depuis Caen ?",
+      q: "Comment se déroule une mission IA à Vire Normandie ?",
       a: "Nous intervenons partout en France, sur place ou à distance. Pour les missions multi-jours, hébergement local possible.",
     },
   ],

@@ -49,7 +49,7 @@ export const PEGOMAS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Pégomas et vallée de la Siagne ?",
-      a: "Oui, Axion-IA intervient à Pégomas et dans toute la vallée de la Siagne (La Roquette-sur-Siagne, Mouans-Sartoux, Auribeau-sur-Siagne). Couverture bassin Cannes-Grasse et accès rapide depuis Cannes (15 min) ou Grasse (15 min).",
+      a: "Oui, Axion-IA intervient à Pégomas et dans toute la vallée de la Siagne (La Roquette-sur-Siagne, Mouans-Sartoux, Auribeau-sur-Siagne). Couverture bassin Cannes-Grasse. Nous intervenons sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les horticulteurs et pépiniéristes ?",

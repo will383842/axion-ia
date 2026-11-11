@@ -218,7 +218,7 @@ export const RIS_ORANGIS_COPY: VilleCopy = {
           },
           {
             q: "How quickly can you start a project in Ris-Orangis?",
-            a: "A first quote is provided from 24 to 48 hours depending on complexity, after a framing call. The kick-off happens on site in Ris-Orangis, then iterations continue remotely with regular check-ins; our consultants travel from Paris, about 25 km via the A6 and RER D.",
+            a: "A first quote is provided from 24 to 48 hours depending on complexity, after a framing call. The kick-off happens on site in Ris-Orangis, then iterations continue remotely with regular check-ins; we work anywhere in France, on site or remotely (Ris-Orangis is about 25 km from Paris via the A6 and RER D).",
           },
         ],
         guarantees:

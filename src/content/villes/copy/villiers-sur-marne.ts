@@ -212,7 +212,7 @@ export const VILLIERS_SUR_MARNE_COPY: VilleCopy = {
           },
           {
             q: "How quickly do we receive a quote in Villiers-sur-Marne?",
-            a: "We send a quote from 24-48 h depending on project complexity, after an initial framing exchange. Our consultants travel on site from Paris via RER E (Villiers-sur-Marne — Le Plessis-Trévise station, ~18-32 min) or the A4.",
+            a: "We send a quote from 24-48 h depending on project complexity, after an initial framing exchange. We work anywhere in France, on site or remotely (Villiers-sur-Marne is reachable via RER E, Le Plessis-Trévise station, ~18-32 min, or the A4).",
           },
           {
             q: "Where is the data hosted and does the code stay with us?",

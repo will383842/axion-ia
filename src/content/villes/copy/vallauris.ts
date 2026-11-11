@@ -37,8 +37,8 @@ export const VALLAURIS_COPY: VilleCopy = {
       en: "Audit sur place IA à Vallauris dès {{price:audit-flash|flat}} — 4 heures pour cartographier vos processus TPE/PME (atelier céramique, hôtel, agence immobilière, commerce touristique).",
     },
     interventions: {
-      fr: "Formation collective à Vallauris dès {{price:intervention-4h|flat}} — Williams se déplace sur site depuis Nice ou Antibes pour automatiser réservations, devis ou suivi clients.",
-      en: "Formation collective à Vallauris dès {{price:intervention-4h|flat}} — Williams se déplace sur site depuis Nice ou Antibes pour automatiser réservations, devis ou suivi clients.",
+      fr: "Formation collective à Vallauris dès {{price:intervention-4h|flat}} — Williams intervient sur site ou à distance pour automatiser réservations, devis ou suivi clients.",
+      en: "Formation collective à Vallauris dès {{price:intervention-4h|flat}} — Williams intervient sur site ou à distance pour automatiser réservations, devis ou suivi clients.",
     },
     implementation: {
       fr: "Implémentation IA en code custom à Vallauris dès {{price:impl-poc|entry}} — développement sur mesure et hébergement Europe pour les TPE et PME des Alpes-Maritimes.",

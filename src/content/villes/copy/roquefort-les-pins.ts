@@ -49,7 +49,7 @@ export const ROQUEFORT_LES_PINS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Roquefort-les-Pins et arrière-pays ?",
-      a: "Oui, Axion-IA intervient à Roquefort-les-Pins et dans tout l'arrière-pays azuréen (La Colle-sur-Loup, Valbonne, Opio, Le Rouret). Couverture Sophia Antipolis (15 min) et accès rapide depuis Nice (30 min) ou Cagnes-sur-Mer (15 min).",
+      a: "Oui, Axion-IA intervient à Roquefort-les-Pins et dans tout l'arrière-pays azuréen (La Colle-sur-Loup, Valbonne, Opio, Le Rouret). Couverture Sophia Antipolis (15 min). Nous intervenons sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les TPE artisans BTP locaux ?",

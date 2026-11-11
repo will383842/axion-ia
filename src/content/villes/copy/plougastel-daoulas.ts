@@ -64,7 +64,7 @@ export const PLOUGASTEL_DAOULAS_COPY: VilleCopy = {
       a: "Pour les TPE artisans BTP et commerçants à Plougastel-Daoulas, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, classification photos, gestion stocks.",
     },
     {
-      q: "Comment se déroule une mission sur la presqu'île depuis Brest ?",
+      q: "Comment se déroule une mission sur la presqu'île de Plougastel ?",
       a: "Nous intervenons partout en France, sur place ou à distance. Pour les multi-jours, hébergement possible à Brest ou Daoulas. Coûts de déplacement séparés du forfait, tarifs transparents.",
     },
   ],

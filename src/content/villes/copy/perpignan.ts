@@ -94,7 +94,7 @@ export const PERPIGNAN_COPY: VilleCopy = {
       a: "Oui. La Perpignan Méditerranée Métropole est notre zone d'intervention complète : Saint-Estève, Cabestany, Bompas, Le Soler, Canet-en-Roussillon, Saleilles, Rivesaltes et les autres communes. Aucun supplément de zone.",
     },
     {
-      q: "Pouvez-vous démarrer une mission rapidement depuis Perpignan ?",
+      q: "Pouvez-vous démarrer une mission rapidement à Perpignan ?",
       a: "Le délai de démarrage dépend de votre besoin (urgence, complexité, taille). Nous calons une date lors du brief de cadrage initial et tenons l'engagement contractuel à la signature. La gare TGV intra-muros facilite nos déplacements sur site.",
     },
     {

@@ -132,7 +132,7 @@ export const RILLIEUX_LA_PAPE_COPY: VilleCopy = {
           },
           {
             q: "Où sont hébergées les données et qui garde la main après la livraison ?",
-            a: "Hébergement en Union européenne par défaut, conforme au RGPD. À la livraison, vous récupérez le code, les contenus et les accès : votre équipe administre le site et les outils IA en autonomie, sans verrou éditeur ni dépendance contractuelle à Axion-IA. Vos consultants se déplacent depuis Lyon, à environ 15 minutes.",
+            a: "Hébergement en Union européenne par défaut, conforme au RGPD. À la livraison, vous récupérez le code, les contenus et les accès : votre équipe administre le site et les outils IA en autonomie, sans verrou éditeur ni dépendance contractuelle à Axion-IA. Nous intervenons partout en France, sur place ou à distance.",
           },
         ],
         guarantees:
@@ -218,7 +218,7 @@ export const RILLIEUX_LA_PAPE_COPY: VilleCopy = {
           },
           {
             q: "Where is the data hosted and who keeps control after delivery?",
-            a: "European Union hosting by default, GDPR compliant. On delivery you receive the code, content and access: your team administers the site and AI tools autonomously, with no vendor lock-in or contractual dependency on Axion-IA. Our consultants travel from Lyon, about 15 minutes away.",
+            a: "European Union hosting by default, GDPR compliant. On delivery you receive the code, content and access: your team administers the site and AI tools autonomously, with no vendor lock-in or contractual dependency on Axion-IA. We work anywhere in France, on site or remotely.",
           },
         ],
         guarantees:

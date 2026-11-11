@@ -230,7 +230,7 @@ export const TALENCE_COPY: VilleCopy = {
       a: "Audit sur place {{price:audit-flash|flat}} (4 h sur site, livré sous 5 jours ouvrés), interventions sur site à partir de {{price:intervention-4h|flat}} la demi-journée, coaching 1-to-1 dirigeant à partir de {{price:intervention-dirigeants|flat}}. Tarifs publics consultables.",
     },
     {
-      q: "Axion-IA se déplace-t-il à Talence depuis Bordeaux centre ?",
+      q: "Axion-IA intervient-il à Talence ?",
       a: "Oui. Nous intervenons partout en France, sur place ou à distance. Délai d'intervention sous 5 jours ouvrés.",
     },
     {

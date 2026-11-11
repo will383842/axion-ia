@@ -64,7 +64,7 @@ export const PUBLIER_COPY: VilleCopy = {
       a: "L'audit sur place Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME du Chablais, il identifie les cas d'usage IA à fort ROI pour votre activité (thermalisme, tourisme, hôtellerie, commerce). Tarifs publics, sans engagement.",
     },
     {
-      q: "Comment se déroule une mission IA à Publier depuis Genève ?",
+      q: "Comment se déroule une mission IA à Publier ?",
       a: "Nous intervenons partout en France, sur place ou à distance. Pour les missions multi-jours, hébergement local sur la rive du Léman.",
     },
   ],

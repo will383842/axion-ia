@@ -64,7 +64,7 @@ export const VILLERS_LE_LAC_COPY: VilleCopy = {
       a: "L'audit sur place est tarifé selon vos enjeux, accessible aux TPE. Pour les PME horlogères ou de micro-mécanique, les audits Stratégiques et implémentations sont dimensionnés selon vos effectifs et cas d'usage. Tarifs publics, transparents, sans engagement longue durée.",
     },
     {
-      q: "Comment se déroule une mission IA depuis Besançon ou la Suisse ?",
+      q: "Comment se déroule une mission IA à Villers-le-Lac ?",
       a: "Nous intervenons partout en France, sur place ou à distance. Pour les missions multi-jours, hébergement local possible.",
     },
   ],

@@ -236,7 +236,7 @@ export const SALON_DE_PROVENCE_COPY: VilleCopy = {
     },
     {
       q: "Quelles communes proches de Salon-de-Provence sont couvertes par Axion-IA ?",
-      a: "Nous nous déplaçons depuis Salon-de-Provence vers Pélissanne, Grans, Lançon-Provence, Lamanon, Aurons, Eyguières, Miramas et Saint-Martin-de-Crau, ainsi que vers Aix-en-Provence et Marseille via l'A7.",
+      a: "Nous intervenons à Pélissanne, Grans, Lançon-Provence, Lamanon, Aurons, Eyguières, Miramas et Saint-Martin-de-Crau, ainsi que vers Aix-en-Provence et Marseille via l'A7.",
     },
     {
       q: "Quels secteurs locaux Axion-IA accompagne-t-il à Salon-de-Provence ?",
