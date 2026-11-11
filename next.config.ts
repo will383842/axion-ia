@@ -575,6 +575,29 @@ const nextConfig: NextConfig = {
         destination: "/:locale/audit/cible",
         permanent: true,
       },
+      // 2026-11 (décision de Will) — doublons de contenu que Google hésitait à départager :
+      //   · /formations/entreprise (landing « toutes nos formations ») → le hub /formations ;
+      //   · /formations/tarifs (grille) → la page /tarifs, seule page tarifs.
+      // 301 permanent. La source `/en/...` pointe DIRECTEMENT vers `/fr/...` (EN désactivé) :
+      // un seul saut, jamais EN → FR → destination. Les formes sans préfixe locale sont
+      // aplaties par `src/lib/legacy-redirects.ts` (proxy). Les fichiers de page restent dans
+      // le dépôt (gardes qui les lisent) mais ne sont plus servis : la redirection passe avant.
+      // Garde : src/lib/legacy-redirects.test.ts.
+      {
+        source: "/:locale(fr|en)/formations/entreprise",
+        destination: "/fr/formations",
+        permanent: true,
+      },
+      {
+        source: "/:locale(fr|en)/formations/tarifs",
+        destination: "/fr/tarifs",
+        permanent: true,
+      },
+      {
+        source: "/en/training/pricing",
+        destination: "/fr/tarifs",
+        permanent: true,
+      },
       // /sitemap.xml → /sitemap-index.xml (Sprint X bugs SEO 2026-05-14).
       // Next 16 réserve `/sitemap.xml` à la convention metadata `app/sitemap.ts`
       // qui ne génère que `/sitemap/<id>.xml` (pas d'index racine). On expose

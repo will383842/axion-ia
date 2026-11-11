@@ -29,6 +29,9 @@ const STATIC_LEGACY_REDIRECTS: ReadonlyMap<string, string> = new Map([
   // Audit — anciens slugs.
   ["/audit/flash", "/audit/tpe-1-jour"],
   ["/audit/process", "/audit/cible"],
+  // 2026-11 — pages en doublon retirées (301 aussi dans next.config pour les formes préfixées).
+  ["/formations/entreprise", "/formations"],
+  ["/formations/tarifs", "/tarifs"],
   // Tunnel apporteurs — `/facebook` renommé `/apporteur-affaires` (2026-09-04).
   // Forme NON préfixée : c'est celle qui circulait dans les publicités Meta
   // (`axion-ia.com/facebook`). Sans cette entrée, elle ferait 2 sauts
