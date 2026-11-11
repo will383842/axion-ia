@@ -156,8 +156,9 @@ export interface RechercheChatbotDeps {
  * déclenche l'escalade que s'il n'y a AUCUN résultat. À traiter avant mise en
  * service.
  *
- * Note : avec l'interrupteur allumé, `cacheLookup` peut servir une réponse mise en
- * cache avant l'allumage (sans risque : elle est tirée des chunks).
+ * Note : le cache sémantique est clé sur la version de knowledge DÉCALÉE par
+ * l'interrupteur (`versionDeCle`, semantic-cache/cache.ts) : une réponse mise en cache
+ * avant l'allumage n'est plus servie une fois allumé.
  */
 export function creerRechercheChatbot(deps: RechercheChatbotDeps = {}): typeof hybridSearch {
   const hybrid = deps.hybrid ?? hybridSearch;
