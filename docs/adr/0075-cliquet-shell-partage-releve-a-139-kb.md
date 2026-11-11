@@ -17,7 +17,7 @@ seule) et la PR #1914 ont dépassé la limite de 12 à 97 octets.
 
 Relever la limite du bucket « Shell partagé » de **138 KB à 139 KB**. La **cible de 100 KB
 reste inchangée** et écrite dans le nom du bucket. La dette ouverte est recalculée :
-**36,75 KB** (139 − 100, contre 35,75 KB). Le contrôle reste **bloquant**.
+**≈ 38 KB** (mesure 137,9-138,1 − 100 ; 35,75 KB le 2026-08-24). Le contrôle reste **bloquant**.
 
 ## 3. Conséquences
 

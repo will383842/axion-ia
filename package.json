@@ -250,7 +250,7 @@
   "_size_limit_alias_note": "2026-09-06 — les motifs `gallery/**` et `locations/**` ont ete RETIRES des buckets /galerie et /implantations. Ce sont des alias `pathnames` next-intl, reecrits au runtime : ils n'ont jamais de repertoire propre dans l'App Router, donc jamais de repertoire de chunks. Ils etaient donc incapables PAR CONSTRUCTION de correspondre a un fichier, et verts depuis le jour de leur ecriture, noyes dans un bucket dont l'autre inclusion, elle, correspondait. Detecte par `scripts/ci/bundle-check.mjs`, qui refuse desormais tout motif sans correspondance AU MOMENT DE LA MESURE. Ne pas les remettre a la re-activation du locale EN : le chemin de chunk vient de l'arborescence de fichiers, jamais du pathname localise.",
   "size-limit": [
     {
-      "name": "Shell partagé (framework + main + webpack + polyfills) — CLIQUET 139 KB gz, CIBLE 100 KB (dette ouverte 36,75 KB)",
+      "name": "Shell partagé (framework + main + webpack + polyfills) — CLIQUET 139 KB gz, CIBLE 100 KB (dette ouverte ≈ 38 KB)",
       "path": [
         ".next/static/chunks/framework-*.js",
         ".next/static/chunks/main-*.js",
