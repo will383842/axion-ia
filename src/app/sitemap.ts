@@ -6,6 +6,7 @@ import {
   isQualiopiPublicDisclosureEnabled,
   isQualiopiCertificationObtenue,
 } from "@/server/qualiopi/config/flag";
+import { PRIX_PUBLICS_AFFICHES } from "@/content/pricing";
 import { DB_BLOG_CATEGORY_SLUGS } from "@/server/content-gen/blog/category-loader";
 import {
   isRoutableArticleSlug,
@@ -230,6 +231,9 @@ const EXCLUDED_FROM_INDEX: ReadonlyArray<PathnameKey> = [
   // que `/mes-donnees/export` ci-dessus.
   "/carrieres/widget",
   "/carrieres/widget-builder",
+  // R5a (08/11/2026) — « Audit sur place · 1 journée » retiré : la page renvoie en 308 vers
+  // /journee-ia. Une URL redirigée n'a pas sa place dans pages.xml (crawl-budget, GSC).
+  "/audit/tpe-1-jour",
 ];
 
 function isSlugTemplate(key: PathnameKey): boolean {
@@ -740,7 +744,9 @@ function buildPagesSitemap(now: Date): MetadataRoute.Sitemap {
       continue;
     // Catalogue : redirige vers /fr/formations tant que la certification n'est
     // pas délivrée (feuilletoir avec logo Qualiopi, 2026-10-14) → hors sitemap.
+    // R7 (08/11/2026) : la page redirige aussi tant que les prix publics sont masqués.
     if (key === "/catalogue" && !isQualiopiCertificationObtenue()) continue;
+    if (key === "/catalogue" && !PRIX_PUBLICS_AFFICHES) continue;
     // Page financement OPCO/France Travail : Phase-B only (mentions financement
     // interdites avant l'agrément OF) → hors sitemap en Phase A.
     if (

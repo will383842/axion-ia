@@ -123,7 +123,9 @@ describe("3. les anciens jetons déjà stockés en base", () => {
   ] as const)("{{price:%s}} → le prix de la matrice", async (ancien, duree) => {
     const { resolvePriceTokens } = await import("@/content/pricing-tokens");
     const { FORMATION_PRICE_MATRIX, formatAmount } = await import("@/content/pricing");
-    const rendu = resolvePriceTokens(`Prix : {{price:${ancien}|flat}}.`, "fr");
+    // R7 : rendu public = « sur devis » ; la correspondance vers la matrice se vérifie en brut.
+    expect(resolvePriceTokens(`Prix : {{price:${ancien}|flat}}.`, "fr")).toBe("Prix sur devis.");
+    const rendu = resolvePriceTokens(`Prix : {{price:${ancien}|flat}}.`, "fr", { masquer: false });
     expect(rendu).not.toContain("{{price:");
     expect(rendu).toContain(formatAmount(FORMATION_PRICE_MATRIX.generale[duree]!, "fr"));
     sansMontantErrone(ancien, rendu);

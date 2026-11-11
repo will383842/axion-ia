@@ -232,7 +232,7 @@ export default async function Home({ params }: HomeProps) {
     },
   ];
 
-  // ─── Cible (4 segments TPE/PME/ETI/Grande) — Blueprint Section 8 ───
+  // ─── Cible (2 segments TPE / PME, décision Williams 2026-11-08 n°15) ───
   const audienceSegments = [
     {
       id: "tpe",
@@ -245,18 +245,6 @@ export default async function Home({ params }: HomeProps) {
       title: t("audience2Title"),
       lead: t("audience2Lead"),
       detail: t("audience2Detail"),
-    },
-    {
-      id: "eti",
-      title: t("audience3Title"),
-      lead: t("audience3Lead"),
-      detail: t("audience3Detail"),
-    },
-    {
-      id: "large",
-      title: t("audience4Title"),
-      lead: t("audience4Lead"),
-      detail: t("audience4Detail"),
     },
   ];
 
@@ -1352,9 +1340,8 @@ export default async function Home({ params }: HomeProps) {
                   la méthode s'adapte. » — clé audienceDescription supprimée. */}
             </div>
           </FadeInOnView>
-          {/* 4 segments (refonte Will 2026-08-10) : chaque carte porte une bande
-              visuelle avec une jauge d échelle (1 barre = artisan, 4 = grand
-              groupe). Slots image prêts dans AudienceSegments. */}
+          {/* 2 segments (TPE, PME) : chaque carte porte une bande visuelle avec une
+              jauge d'échelle. Slots image prêts dans AudienceSegments. */}
           <AudienceSegments segments={audienceSegments} isFr={isFr} />
           {/* Nuage de secteurs (Blueprint §11 — éviter section séparée).
               Signal AEO fort : entités sectorielles indexées par LLM. */}

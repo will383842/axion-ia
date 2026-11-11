@@ -52,6 +52,11 @@ import {
 } from "@/content/pricing";
 import { memoPhoto, type MemoIserePhotoSlot } from "@/content/recrutement/memo-isere-photos";
 import {
+  COMMISSIONS_PUBLIQUES_AFFICHEES,
+  COMMISSION_QUALITATIVE,
+} from "@/content/recrutement/commission-publique";
+import { CommissionQualitative } from "@/components/recrutement/CommissionQualitative";
+import {
   PARTENAIRE_CE_QUE_CE_NEST_PAS,
   PARTENAIRE_ETAPES,
   PARTENAIRE_OBJECTION_IA,
@@ -112,7 +117,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       path: PATH,
       title,
       description: isFr
-        ? `Apporteur d'affaires indépendant, formations et audits IA en entreprise, partout en France. À titre indicatif, ${commission(1)} par journée de formation encaissée.` /* price-exempt: commission d'apport d'affaires, pas un tarif client */
+        ? COMMISSIONS_PUBLIQUES_AFFICHEES
+          ? `Apporteur d'affaires indépendant, formations et audits IA en entreprise, partout en France. À titre indicatif, ${commission(1)} par journée de formation encaissée.` /* price-exempt: commission d'apport d'affaires, pas un tarif client */
+          : // R7 (08/11/2026) : aucun montant ni taux au public (`commission-publique.ts`).
+            "Apporteur d'affaires indépendant, formations et audits IA, partout en France : une commission sur chaque mission signée, détaillée au contrat."
         : `Become an independent business introducer for AI training and audits, anywhere in France. You introduce, we sell — no AI knowledge required.`,
     })),
     title: { absolute: title },
@@ -212,7 +220,10 @@ export default async function ApporteurAffairesPage({ params }: Props) {
     {
       id: "remuneration",
       question: "Combien rapporte l'apport d'affaires sur une formation IA ?",
-      answer: `Chez Axion-IA, à titre indicatif, la commission est de ${commission(1)} par journée de formation vendue et encaissée : une formation de deux journées rapporte ${commission(2)}, de trois journées ${commission(3)}. Sur un audit, la commission est de ${pctAudit} % de la facture — le plus petit audit démarre à ${euros(auditTpe)} HT, soit au moins ${euros(commAuditTpe)}. Ce sont des exemples de calcul et non une promesse de revenu : la rémunération dépend des affaires réellement encaissées.`,
+      // R7 (08/11/2026) : aucun montant ni taux au public (`commission-publique.ts`).
+      answer: !COMMISSIONS_PUBLIQUES_AFFICHEES
+        ? COMMISSION_QUALITATIVE.faq
+        : `Chez Axion-IA, à titre indicatif, la commission est de ${commission(1)} par journée de formation vendue et encaissée : une formation de deux journées rapporte ${commission(2)}, de trois journées ${commission(3)}. Sur un audit, la commission est de ${pctAudit} % de la facture — le plus petit audit démarre à ${euros(auditTpe)} HT, soit au moins ${euros(commAuditTpe)}. Ce sont des exemples de calcul et non une promesse de revenu : la rémunération dépend des affaires réellement encaissées.`,
     },
     {
       id: "statut",
@@ -308,10 +319,18 @@ export default async function ApporteurAffairesPage({ params }: Props) {
             </h1>
 
             <p data-speakable className="text-fg-soft mt-5 max-w-xl text-lg leading-relaxed">
-              Vous mettez en relation une entreprise avec notre organisme, et vous touchez une
-              commission une fois l&apos;affaire encaissée. À titre indicatif : {commission(1)} par
-              journée de formation vendue, {pctAudit}&nbsp;% sur un audit. Vous ne négociez pas et
-              vous ne signez rien : nous nous en chargeons.
+              Vous mettez en relation une entreprise avec notre organisme, et une commission vous
+              revient une fois l&apos;affaire encaissée.{" "}
+              {COMMISSIONS_PUBLIQUES_AFFICHEES ? (
+                <>
+                  À titre indicatif : {commission(1)} par journée de formation vendue, {pctAudit}
+                  &nbsp;% sur un audit.{" "}
+                </>
+              ) : (
+                // R7 (08/11/2026) : sans chiffre (`commission-publique.ts`).
+                <>Son mode de calcul est détaillé dans votre contrat. </>
+              )}
+              Vous ne négociez pas et vous ne signez rien : nous nous en chargeons.
             </p>
 
             <div className="mt-7 flex flex-col items-start gap-3 sm:flex-row sm:items-center sm:gap-4">
@@ -411,42 +430,52 @@ export default async function ApporteurAffairesPage({ params }: Props) {
         titleEm="une mise en relation"
         className="py-10 sm:py-14"
       >
-        <div className="mt-8 grid gap-5 sm:grid-cols-2">
-          <article className="bg-paper border-border rounded-2xl border p-6 sm:p-7">
-            <h3 className="text-fg font-serif text-xl font-semibold">Une formation IA</h3>
-            <p className="text-terracotta mt-3 font-serif text-3xl font-semibold">
-              {commission(1)}
-              <span className="text-fg-muted block font-sans text-sm font-medium">
-                par journée vendue, à titre indicatif
-              </span>
-            </p>
-            <ul className="text-fg-soft mt-4 space-y-1.5 text-sm">
-              <li>À titre indicatif, deux journées : {commission(2)}</li>
-              <li>Trois journées : {commission(3)}</li>
-              {certifie ? (
-                <li>Peut être prise en charge par l&apos;OPCO, selon ses critères</li>
-              ) : null}
-            </ul>
-          </article>
+        {COMMISSIONS_PUBLIQUES_AFFICHEES ? (
+          <>
+            <div className="mt-8 grid gap-5 sm:grid-cols-2">
+              <article className="bg-paper border-border rounded-2xl border p-6 sm:p-7">
+                <h3 className="text-fg font-serif text-xl font-semibold">Une formation IA</h3>
+                <p className="text-terracotta mt-3 font-serif text-3xl font-semibold">
+                  {commission(1)}
+                  <span className="text-fg-muted block font-sans text-sm font-medium">
+                    par journée vendue, à titre indicatif
+                  </span>
+                </p>
+                <ul className="text-fg-soft mt-4 space-y-1.5 text-sm">
+                  <li>À titre indicatif, deux journées : {commission(2)}</li>
+                  <li>Trois journées : {commission(3)}</li>
+                  {certifie ? (
+                    <li>Peut être prise en charge par l&apos;OPCO, selon ses critères</li>
+                  ) : null}
+                </ul>
+              </article>
 
-          <article className="bg-paper border-border rounded-2xl border p-6 sm:p-7">
-            <h3 className="text-fg font-serif text-xl font-semibold">Un audit IA</h3>
-            <p className="text-terracotta mt-3 font-serif text-3xl font-semibold">{pctAudit} %</p>
-            <p className="text-fg-muted text-sm font-medium">de la facture</p>
-            <ul className="text-fg-soft mt-4 space-y-1.5 text-sm">
-              <li>
-                Dès {euros(auditTpe)} HT → au moins {euros(commAuditTpe)}
-              </li>
-              <li>
-                Audit de PME dès {euros(auditPme)} HT → au moins {euros(commAuditPme)}
-              </li>
-            </ul>
-          </article>
-        </div>
-
+              <article className="bg-paper border-border rounded-2xl border p-6 sm:p-7">
+                <h3 className="text-fg font-serif text-xl font-semibold">Un audit IA</h3>
+                <p className="text-terracotta mt-3 font-serif text-3xl font-semibold">
+                  {pctAudit} %
+                </p>
+                <p className="text-fg-muted text-sm font-medium">de la facture</p>
+                <ul className="text-fg-soft mt-4 space-y-1.5 text-sm">
+                  <li>
+                    Dès {euros(auditTpe)} HT → au moins {euros(commAuditTpe)}
+                  </li>
+                  <li>
+                    Audit de PME dès {euros(auditPme)} HT → au moins {euros(commAuditPme)}
+                  </li>
+                </ul>
+              </article>
+            </div>
+          </>
+        ) : (
+          // R7 (08/11/2026) : aucun montant ni taux au public (`commission-publique.ts`).
+          <CommissionQualitative />
+        )}
         <p className="text-fg-muted mt-5 text-sm">
-          Ce sont des exemples de calcul, pas une promesse : vos revenus dépendent des ventes
-          conclues. La commission est due lorsque le client a réglé sa facture, pas à la signature.
+          {COMMISSIONS_PUBLIQUES_AFFICHEES
+            ? "Ce sont des exemples de calcul, pas une promesse : vos revenus dépendent des ventes conclues. "
+            : ""}
+          La commission est due lorsque le client a réglé sa facture, pas à la signature.
         </p>
       </Section>
 

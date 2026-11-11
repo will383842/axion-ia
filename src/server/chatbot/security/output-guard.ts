@@ -2,12 +2,18 @@
 //
 // AVANT d'émettre une réponse, vérifie la garantie ZÉRO-HALLUCINATION :
 //   - tout montant « X € » cité ∈ prix réels de pricing.ts (SSOT) ;
-//   - toute URL/chemin cité(e) ∈ routes FR connues (routing.pathnames).
+//   - toute URL/chemin cité(e) ∈ routes FR connues (routing.pathnames) ;
+//   - aucun interdit de la doctrine de publication (Qualiopi, CPF, « 100 % financé »…),
+//     via `detecterInterditsSurface` (même source que les contenus générés).
 // Si violation → l'orchestrateur corrige (re-grounding) ou escalade. Le guard
 // ne réécrit pas : il DÉTECTE et liste les violations (décision côté orchestrateur).
 
 import { PRICING_CATEGORIES, UN_A_UN_RECURRING_TIER } from "@/content/pricing";
 import { isKnownFrUrl, KNOWN_FR_PATHS } from "@/lib/offer-url";
+import { detecterInterditsSurface } from "@/lib/contenu/interdits-publication";
+
+/** Étiquette « TPE/PME » (barre, tiret ou tiret typographique, espaces tolérés). */
+const ETIQUETTE_TPE_PME = /\bTPE[\s\u00a0]*[/\-\u2010-\u2015][\s\u00a0]*PME\b/i;
 
 /** Tous les prix légitimes (€ HT) de la SSOT pricing.ts (tiers + sous-tiers). */
 export const KNOWN_PRICES: ReadonlySet<number> = (() => {
@@ -39,7 +45,7 @@ const KNOWN_TOP_SEGMENTS: ReadonlySet<string> = new Set(
 );
 
 export interface OutputViolation {
-  readonly type: "price" | "url";
+  readonly type: "price" | "url" | "interdit";
   readonly value: string;
   readonly reason: string;
 }
@@ -117,6 +123,30 @@ export function verifyOutput(text: string, opts: VerifyOutputOptions = {}): Outp
         reason: "URL absente des routes FR connues — lien mort / inventé",
       });
     }
+  }
+
+  // Doctrine des interdits : un chatbot ne doit pas dire en direct ce qu'un
+  // article n'a pas le droit de publier. Le code de l'interdit sert de valeur.
+  // « reservation-paiement » est exclu : le chatbot oriente justement vers la
+  // réservation du rendez-vous (« Réservez votre créneau de 45 minutes »).
+  const interdits = detecterInterditsSurface(
+    { reponse: text },
+    // Axion-IA ne propose pas de financement : le chatbot ne le cite jamais (et la
+    // garde n'importe pas le domaine Qualiopi, cf. pnpm qualiopi:isolation-check).
+    { actualite: false, financementPublicAutorise: false },
+  )
+    .filter((i) => i.code !== "reservation-paiement")
+    // « TPE et PME » est la forme autorisée (règle du 07/11) ; seule l'étiquette
+    // « TPE/PME » (barre ou tiret) est interdite. On ne retient donc ce code que si
+    // l'étiquette est réellement présente : le chatbot reste juste quel que soit
+    // l'ordre de fusion avec le lot R6, qui resserre le même motif à la source.
+    .filter((i) => i.code !== "etiquette-tpe-pme" || ETIQUETTE_TPE_PME.test(text));
+  for (const i of interdits) {
+    violations.push({
+      type: "interdit",
+      value: i.code,
+      reason: `interdit de publication (${i.code}) : « ${i.extrait} »`,
+    });
   }
 
   return { ok: violations.length === 0, violations };

@@ -6,6 +6,7 @@ import {
   IMPLEMENTATION_TIERS,
   INTERVENTION_TIERS,
   MAINTENANCE_TIERS,
+  PRIX_PUBLICS_AFFICHES,
   formatAmount,
   formatPrice,
   getEntryLabel,
@@ -31,6 +32,12 @@ const maintenanceStandard = getTierById(MAINTENANCE_TIERS, "maintenance-standard
 // champs riches que le reste du corpus a reçus. L'équivalent EN ci-dessous est
 // conservé : le bloc `en` n'a pas été réécrit.
 function modulesAnswerEn(): string {
+  // R7 (ordre de Williams du 08/11/2026) : aucun montant public hors Journée IA. Cette
+  // réponse est servie telle quelle par llms-full.txt et le flux FAQ : interrupteur coupé,
+  // elle ne cite aucun montant (la version chiffrée ci-dessous revient s'il est rallumé).
+  if (!PRIX_PUBLICS_AFFICHES) {
+    return "Module 1 — On-site sessions (half-day to 2 days, on request). Module 2 — AI audit (4 tiers: Flash, Targeted, Strategic SME, Strategic Mid-cap; on request). Module 3 — AI implementation (production deployment, on request).";
+  }
   const interventionsEntry = getEntryLabel(INTERVENTION_TIERS, "en", { compact: false });
   const flash = formatAmount(auditFlashTier.priceFlat!, "en", { compact: true });
   // Targeted / SME / Mid-cap are all « from €1,900 · on request » (Will
@@ -213,7 +220,7 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
       question:
         "Intervenez-vous dans les métropoles régionales (Lyon, Marseille, Toulouse, Bordeaux, Lille, Nantes…) ?",
       answer:
-        "Oui, dans toutes. Nos intervenants se déplacent à Lyon, Marseille, Toulouse, Bordeaux, Lille, Nantes, Strasbourg, Montpellier, Rennes, Nice, Reims, Saint-Étienne, Le Havre, Grenoble, Dijon, Angers — et plus généralement dans toute ville française, métropole ou non.\n\nAucune ville n'est traitée comme une périphérie : les tarifs publics affichés sont identiques partout, sans surcoût géographique. Ce qui change d'un déplacement à l'autre, ce sont les frais de trajet, facturés en sus et détaillés sur une ligne distincte du devis. Vous connaissez donc le montant total avant de vous engager.\n\nSur place, l'intervention prend la forme qui sert votre besoin : formation collective en intra, de 4 h à 2 journées, pour un groupe de 2 à 15 participants ; journée de coaching 1-to-1 de 7 à 8 heures sur le poste réel d'une seule personne ; ou phase de terrain d'un audit IA. Le même expert senior mène le cadrage et la livraison. Et si le déplacement n'apporte rien à votre cas, la mission se tient à distance.",
+        "Oui, dans toutes. Nos intervenants se déplacent à Lyon, Marseille, Toulouse, Bordeaux, Lille, Nantes, Strasbourg, Montpellier, Rennes, Nice, Reims, Saint-Étienne, Le Havre, Dijon, Angers — et plus généralement dans toute ville française, métropole ou non.\n\nAucune ville n'est traitée comme une périphérie : les tarifs publics affichés sont identiques partout, sans surcoût géographique. Ce qui change d'un déplacement à l'autre, ce sont les frais de trajet, facturés en sus et détaillés sur une ligne distincte du devis. Vous connaissez donc le montant total avant de vous engager.\n\nSur place, l'intervention prend la forme qui sert votre besoin : formation collective en intra, de 4 h à 2 journées, pour un groupe de 2 à 15 participants ; journée de coaching 1-to-1 de 7 à 8 heures sur le poste réel d'une seule personne ; ou phase de terrain d'un audit IA. Le même expert senior mène le cadrage et la livraison. Et si le déplacement n'apporte rien à votre cas, la mission se tient à distance.",
       keyPoints: [
         "Toutes les capitales régionales, et plus largement toute ville française",
         "Tarifs publics identiques partout, sans surcoût géographique",
@@ -253,7 +260,7 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
         // surface du site a l'affirmer, et elle contredisait la doctrine tenue
         // partout ailleurs (frais de deplacement factures en sus, sur une ligne
         // distincte du devis). Ne pas le reintroduire.
-        "Yes. Our consultants travel to every regional capital: Lyon, Marseille, Toulouse, Bordeaux, Lille, Nantes, Strasbourg, Montpellier, Rennes, Nice, Reims, Saint-Étienne, Le Havre, Grenoble, Dijon, Angers — and more broadly any French city. Rates are the same everywhere; travel costs are billed separately.",
+        "Yes. Our consultants travel to every regional capital: Lyon, Marseille, Toulouse, Bordeaux, Lille, Nantes, Strasbourg, Montpellier, Rennes, Nice, Reims, Saint-Étienne, Le Havre, Dijon, Angers — and more broadly any French city. Rates are the same everywhere; travel costs are billed separately.",
     },
   },
   {
@@ -263,9 +270,9 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
     fr: {
       question: "Et pour les TPE, PME et artisans en zone rurale ou petites villes ?",
       answer:
-        "Oui, sans réserve. Artisans, commerçants, TPE, PME et ETI sont accompagnés partout en France, y compris en zone rurale et dans les petites villes. La taille de votre commune ne change ni l'accès aux prestations, ni les tarifs publics affichés : ils sont identiques d'un bout à l'autre du territoire.\n\nPour une petite structure, le format à distance est souvent le plus rentable : aucun frais de déplacement à supporter, aucune journée perdue en trajets, et la même qualité d'accompagnement — même intervenant senior, mêmes livrables, mêmes méthodes. Quand le terrain est indispensable, parce qu'il faut voir un atelier, un poste de production ou réunir toute l'équipe, l'intervention sur site reste évidemment possible.\n\nConcrètement, un artisan ou un commerçant ne démarre pas par un chantier lourd. Une journée de coaching 1-to-1 de 7 à 8 heures sur son propre poste, ou une formation courte à partir de 4 h pour deux ou trois personnes, suffit à débloquer les usages du quotidien : devis, relances, réponses clients, comptes rendus.",
+        "Oui, sans réserve. Artisans, commerçants, TPE et PME sont accompagnés partout en France, y compris en zone rurale et dans les petites villes. La taille de votre commune ne change ni l'accès aux prestations, ni les tarifs publics affichés : ils sont identiques d'un bout à l'autre du territoire.\n\nPour une petite structure, le format à distance est souvent le plus rentable : aucun frais de déplacement à supporter, aucune journée perdue en trajets, et la même qualité d'accompagnement — même intervenant senior, mêmes livrables, mêmes méthodes. Quand le terrain est indispensable, parce qu'il faut voir un atelier, un poste de production ou réunir toute l'équipe, l'intervention sur site reste évidemment possible.\n\nConcrètement, un artisan ou un commerçant ne démarre pas par un chantier lourd. Une journée de coaching 1-to-1 de 7 à 8 heures sur son propre poste, ou une formation courte à partir de 4 h pour deux ou trois personnes, suffit à débloquer les usages du quotidien : devis, relances, réponses clients, comptes rendus.",
       keyPoints: [
-        "Artisans, commerçants, TPE, PME et ETI, partout en France",
+        "Artisans, commerçants, TPE et PME, partout en France",
         "Zones rurales et petites villes incluses, sans condition de taille",
         "Tarifs publics identiques quelle que soit la commune",
         "Le distanciel évite les frais de déplacement, à qualité égale",
@@ -1205,54 +1212,9 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
     },
   },
   {
-    id: "eti-grands-comptes",
-    reviewedAt: "2026-08-12",
-    related: ["audit-ia-definition", "implementation-ia-sur-mesure", "qui-pilote-ia-entreprise"],
-    fr: {
-      question: "Axion-IA travaille-t-il avec les ETI et grands comptes ?",
-      answer:
-        "Oui. Axion-IA accompagne des entreprises de toutes tailles, des TPE aux ETI et aux grands comptes. Pour ces dernières, l'offre prend une forme différente : programmes multi-sites sur devis, audits stratégiques approfondis et implémentations à large envergure avec gouvernance des données.\n\nL'Audit Stratégique ETI est conçu pour les structures de 250 à 5 000 salariés : cartographie multi-directions, 20 à 30 entretiens, restitution en COMEX et devant le conseil, plan de 60 à 80 pages exploitable en instance, puis 30 jours d'accompagnement après la remise. Le cadre AI Act et RGPD y est traité par défaut, avec mise en place d'un comité IA, d'une charte interne et des rôles associés.\n\nCôté implémentation, les missions ETI et les programmes annuels sont sur devis. Le principe reste celui des autres prestations : un intervenant senior, le même du cadrage à la livraison, et des livrables actionnables plutôt qu'un rapport de plus.",
-      keyPoints: [
-        "Toutes les tailles, des TPE aux ETI et grands comptes",
-        "Programmes multi-sites et programmes annuels sur devis",
-        "Audit Stratégique ETI : 250 à 5 000 salariés, 20 à 30 entretiens",
-        "Restitution COMEX et conseil, plan de 60 à 80 pages, 30 jours d'accompagnement",
-        "Gouvernance IA, conformité AI Act et RGPD traitées par défaut",
-      ],
-      facts: [
-        { figure: "250-5000", label: "salariés visés" },
-        { figure: "20-30", label: "entretiens menés" },
-        { figure: "60-80", label: "pages de plan" },
-        { figure: "30 j", label: "d'accompagnement post-audit" },
-      ],
-      nuances: [
-        {
-          title: "Ce n'est pas un cabinet de stratégie",
-          detail:
-            "Les livrables sont exploitables par les équipes : opportunités chiffrées, plan d'implémentation priorisé, gouvernance opérationnelle. Nous mettons ensuite en production ce qui a été retenu.",
-        },
-        {
-          title: "Nous ne remplaçons pas vos équipes internes",
-          detail:
-            "Sur les grandes structures, Axion-IA vient en complément d'une DSI ou d'une équipe data déjà en place — pas à leur place.",
-        },
-        {
-          title: "Les secteurs très régulés se traitent à plusieurs",
-          detail:
-            "Pour le nucléaire, la pharmacie ou la défense, la mission est co-pilotée avec un cabinet spécialisé partenaire.",
-        },
-      ],
-    },
-    en: {
-      question: "Does Axion-IA work with mid-caps and large companies?",
-      answer:
-        "Yes. Axion-IA works with companies of all sizes, from small businesses to mid-caps and large companies. For mid-caps and large accounts, Axion-IA offers multi-site programmes (on request), in-depth strategic audits and large-scale AI implementations with data governance.",
-    },
-  },
-  {
     id: "secteurs-ia",
     reviewedAt: "2026-08-12",
-    related: ["pme-ia", "eti-grands-comptes", "formation-ia-entreprise"],
+    related: ["pme-ia", "formation-ia-entreprise"],
     fr: {
       question: "Quels secteurs sont concernés par l'IA générative ?",
       answer:
@@ -1713,7 +1675,8 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
     en: {
       question: "How much does an AI project cost for an SME?",
       answer:
-        "Axion-IA pricing starts from a few hundred euros for training (half-day) and several thousand euros for a full audit or implementation. Each project has a fixed quote with no surprises. See the pricing page or request a free quote.",
+        // R7 (ordre de Williams du 08/11/2026) : aucune indication de montant hors Journée IA.
+        "Every Axion-IA project is priced on a fixed quote, set after a short scoping call, with no surprises. Request a free quote.",
     },
   },
   {
@@ -2081,7 +2044,7 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
     en: {
       question: "What budget should I plan to get started with AI?",
       answer:
-        "You can start without a big budget. A first AI audit or a targeted session is an investment of a few hundred to a few thousand euros, with ROI often reached within weeks (hours saved, tasks automated). A custom implementation (agents, automations, domain AI) is priced by scope. The right approach: start small on a high-impact case, prove ROI, then scale.",
+        "You can start without a big budget. A first AI audit or a targeted session is priced on quote, with ROI often reached within weeks (hours saved, tasks automated). A custom implementation (agents, automations, domain AI) is priced by scope. The right approach: start small on a high-impact case, prove ROI, then scale.",
     },
   },
   {
@@ -3822,7 +3785,7 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
     en: {
       question: "Qui doit piloter l'IA dans l'entreprise ?",
       answer:
-        "Pas besoin d'un service informatique dédié. Le pilotage idéal associe la direction (vision et priorités), un référent métier motivé (le « champion » interne) et un accompagnement externe pour le cadrage et la montée en compétence. Dans les TPE/PME, c'est souvent le dirigeant lui-même qui impulse. L'essentiel : un sponsor clair et un premier cas d'usage concret pour embarquer les équipes.",
+        "Pas besoin d'un service informatique dédié. Le pilotage idéal associe la direction (vision et priorités), un référent métier motivé (le « champion » interne) et un accompagnement externe pour le cadrage et la montée en compétence. Dans les TPE et PME, c'est souvent le dirigeant lui-même qui impulse. L'essentiel : un sponsor clair et un premier cas d'usage concret pour embarquer les équipes.",
     },
   },
   // ── Batch FAQ #3 — par service (keyword-rich, EN = clone FR car EN désactivé).
@@ -5131,12 +5094,12 @@ export const HELP_ARTICLES: ReadonlyArray<HelpArticle> = [
     fr: {
       title: "Quel support après livraison ?",
       excerpt: "30 jours de maintenance corrective inclus, escalade chaude.",
-      body: `Tout projet Axion-IA inclut 30 jours de support post-livraison : maintenance corrective sur les bugs identifiés, escalade chaude par email/téléphone (réponse sous 4 h ouvrées), 1 itération de fine-tuning si dérive de qualité observée. Au-delà, contrat de maintenance optionnel à ${formatPrice(maintenanceStandard, "fr")} (4 h/mois forfait). Aucun support n'est facturé pendant les 30 jours initiaux.`,
+      body: `Tout projet Axion-IA inclut 30 jours de support post-livraison : maintenance corrective sur les bugs identifiés, escalade chaude par email/téléphone (réponse sous 4 h ouvrées), 1 itération de fine-tuning si dérive de qualité observée. Au-delà, contrat de maintenance optionnel ${PRIX_PUBLICS_AFFICHES ? `à ${formatPrice(maintenanceStandard, "fr")}` : "sur devis"} (4 h/mois forfait). Aucun support n'est facturé pendant les 30 jours initiaux.`,
     },
     en: {
       title: "What post-delivery support?",
       excerpt: "30 days of corrective maintenance included, warm escalation.",
-      body: `Every Axion-IA project includes 30 days of post-delivery support: corrective maintenance on identified bugs, warm escalation by email/phone (response within 4 business hours), 1 fine-tuning iteration if quality drift observed. Beyond that, optional maintenance contract at ${formatPrice(maintenanceStandard, "en")} (4h/month flat fee). No support is billed during the initial 30 days.`,
+      body: `Every Axion-IA project includes 30 days of post-delivery support: corrective maintenance on identified bugs, warm escalation by email/phone (response within 4 business hours), 1 fine-tuning iteration if quality drift observed. Beyond that, optional maintenance contract ${PRIX_PUBLICS_AFFICHES ? `at ${formatPrice(maintenanceStandard, "en")}` : "on request"} (4h/month flat fee). No support is billed during the initial 30 days.`,
     },
   },
 ];

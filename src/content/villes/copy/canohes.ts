@@ -49,7 +49,7 @@ export const CANOHES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Canohès et dans l'agglo Perpignan sud ?",
-      a: "Oui, Axion-IA intervient à Canohès et toute l'agglo Perpignan sud (Toulouges à 5 min, Pollestres à 5 min, Le Soler, Perpignan à 10 min). Nos consultants sont basés à proximité immédiate.",
+      a: "Oui, Axion-IA intervient à Canohès et toute l'agglo Perpignan sud (Toulouges à 5 min, Pollestres à 5 min, Le Soler, Perpignan à 10 min). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les PME tertiaires et services ?",

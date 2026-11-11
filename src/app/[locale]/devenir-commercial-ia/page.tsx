@@ -18,6 +18,10 @@ import {
 } from "@/components/services/devenir-commercial/CommercialPageBody";
 import { COMMISSION_FORMATION_PAR_JOURNEE_EUR } from "@/content/pricing";
 import { buildCommercialKeywords } from "@/content/recrutement/commercial-offer";
+import {
+  COMMISSIONS_PUBLIQUES_AFFICHEES,
+  COMMISSION_QUALITATIVE,
+} from "@/content/recrutement/commission-publique";
 import { isQualiopiCertificationObtenue } from "@/server/qualiopi/config/flag";
 import { buildProductMetadata, buildFaqJsonLd, buildWebPageJsonLd } from "@/lib/seo";
 
@@ -36,17 +40,26 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   // 2026-09-29 (JUR-T29) — le montant vient de `pricing.ts` et se dit indicatif,
   // dans le titre comme dans la description ; « signée » et « sans plafond » sortent.
   const jour = COMMISSION_FORMATION_PAR_JOURNEE_EUR;
-  const title = isFr
-    ? `Apporteur d'affaires IA indépendant · ${jour} € indicatifs par journée payée`
-    : `Independent AI business referrer · €${jour} per paid day, as a guide`;
+  // R7 (08/11/2026) : aucun montant au public (`commission-publique.ts`).
+  const title = !COMMISSIONS_PUBLIQUES_AFFICHEES
+    ? isFr
+      ? "Apporteur d'affaires IA indépendant · commission sur chaque mission signée"
+      : "Independent AI business referrer · a commission on every signed engagement"
+    : isFr
+      ? `Apporteur d'affaires IA indépendant · ${jour} € indicatifs par journée payée`
+      : `Independent AI business referrer · €${jour} per paid day, as a guide`;
   return {
     ...(await buildProductMetadata({
       locale,
       path: "/devenir-commercial-ia",
       title,
-      description: isFr
-        ? `À titre indicatif, ${jour} € pour vous par journée de formation IA payée. L'AI Act crée des obligations pour les entreprises qui utilisent l'IA.`
-        : `As a guide, €${jour} for you per paid AI training day. The AI Act sets obligations for companies that use AI.`,
+      description: !COMMISSIONS_PUBLIQUES_AFFICHEES
+        ? isFr
+          ? `Apporteur d'affaires indépendant : ${COMMISSION_QUALITATIVE.phrase}. L'AI Act crée des obligations pour les entreprises qui utilisent l'IA.`
+          : `Independent business referrer: ${COMMISSION_QUALITATIVE.phraseEn}. The AI Act sets obligations for companies that use AI.`
+        : isFr
+          ? `À titre indicatif, ${jour} € pour vous par journée de formation IA payée. L'AI Act crée des obligations pour les entreprises qui utilisent l'IA.`
+          : `As a guide, €${jour} for you per paid AI training day. The AI Act sets obligations for companies that use AI.`,
     })),
     title: { absolute: title },
     keywords: buildCommercialKeywords({ financementAffichable: isQualiopiCertificationObtenue() }),

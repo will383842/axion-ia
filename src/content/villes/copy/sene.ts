@@ -49,7 +49,7 @@ export const SENE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Séné et dans le Golfe du Morbihan ?",
-      a: "Oui, Axion-IA intervient à Séné et dans tout le bassin du Golfe du Morbihan (Vannes, Arradon, Baden, Île-aux-Moines, Theix-Noyalo). Nos consultants sont basés à proximité immédiate de Vannes, à 10 minutes de Séné.",
+      a: "Oui, Axion-IA intervient à Séné et dans tout le bassin du Golfe du Morbihan (Vannes, Arradon, Baden, Île-aux-Moines, Theix-Noyalo). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les entreprises maritimes et ostréicoles à Séné ?",

@@ -84,6 +84,9 @@ const SANS_AUCUN_APPELANT: ReadonlyArray<string> = [
   "server/actions/knowledge/assign-reviewer.ts::assignReviewerAction",
   "server/actions/knowledge/rollback-version.ts::rollbackVersionAction",
   "server/actions/knowledge/upload-asset.ts::uploadAssetAction",
+  // Assistant de devis : encore sans écran (liste des brouillons et mise à l'écart, E-lots suivants).
+  "server/actions/qualiopi/devis-assistant-brouillon.ts::listerMesBrouillonsAssistantAction",
+  "server/actions/qualiopi/devis-assistant-brouillon.ts::mettreAEcartBrouillonAssistantAction",
   "server/actions/qualiopi/devis.ts::reviseDevisAction",
   "server/actions/qualiopi/engine.ts::getGenerationStatusAction",
   "server/actions/qualiopi/enrollments.ts::updateEnrollmentPresenceAction",

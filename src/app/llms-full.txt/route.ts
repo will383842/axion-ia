@@ -12,10 +12,17 @@ import {
   IMPLEMENTATION_TIERS,
   getFormationCatalogPriceRange,
   UN_A_UN_TIERS,
-  formatAmount,
+  JOURNEE_IA_TIER,
+  formatTierPrice,
   getEntryLabel,
   getTierById,
 } from "@/content/pricing";
+// R7 (ordre de Williams du 08/11/2026) : aucun montant public hors Journée IA.
+import {
+  marquerSurDevis,
+  montantPublic,
+  recollerMontantsMasques,
+} from "@/lib/seo/montant-public-texte";
 import { collapsePriceProseDuplicates, resolvePriceTokens } from "@/content/pricing-tokens";
 import { SITE_URL } from "@/lib/seo";
 import { FOUNDER, founderUrl } from "@/lib/brand";
@@ -43,16 +50,19 @@ export async function GET() {
   // La source correcte est `FORMATION_PRICE_MATRIX`, celle que servent
   // /formations, /tarifs et le catalogue.
   const formationsEntryEur = getFormationCatalogPriceRange().minEur;
-  const interventionsEntry = formatAmount(formationsEntryEur, "fr");
-  const interventionsCompact = formatAmount(formationsEntryEur, "fr", { compact: true });
+  const interventionsEntry = montantPublic(formationsEntryEur, "fr");
+  const interventionsCompact = montantPublic(formationsEntryEur, "fr", { compact: true });
   // Audit = prix d'entrée « à partir de » : les niveaux Ciblé/PME/ETI sont
   // « à partir de 1 900 € · sur devis » depuis 2026-06-03 (plus de borne haute
   // priceMax → l'ancienne fourchette Flash→PME-max rendait « NaN »).
-  const auditRange = `à partir de ${formatAmount(getTierById(AUDIT_TIERS, "audit-flash").priceFlat!, "fr")}`;
-  const implEntry = getEntryLabel(IMPLEMENTATION_TIERS, "fr").replace(/^dès\s/, "à partir de ");
+  const auditRange = `à partir de ${montantPublic(getTierById(AUDIT_TIERS, "audit-flash").priceFlat!, "fr")}`;
+  const implEntry = marquerSurDevis(getEntryLabel(IMPLEMENTATION_TIERS, "fr")).replace(
+    /^dès\s/,
+    "à partir de ",
+  );
   // Audit KB 2026-08-11 — prix d'ENTRÉE réel du 1-to-1 = journée Collaborateur
   // (990 €), pas Dirigeant (1 390 €).
-  const coachingEntry = formatAmount(
+  const coachingEntry = montantPublic(
     getTierById(UN_A_UN_TIERS, "intervention-membre-equipe").priceFlat!,
     "fr",
   );
@@ -61,23 +71,6 @@ export async function GET() {
     /^(dès\s|À partir de )/,
     "à partir de ",
   );
-  // Phase B (divulgation publique OF) — route edge sans DB, lecture env flag
-  // inline (cf. llms.txt). Bloc omis tant que la Phase A est active.
-  // 🚨 Audit F13 (2026-07-25) : ce bloc AFFIRME la certification aux assistants
-  // IA, qui la relaient ensuite. Il exige donc la certification RÉELLE, pas la
-  // simple visibilité des pages OF. Lecture env directe conservée (convention
-  // de ce fichier), mais sur le drapeau de certification.
-  const qualiopiCertified =
-    process.env.OF_PUBLIC_DISCLOSURE_ENABLED === "true" &&
-    process.env.QUALIOPI_CERTIFICATION_OBTENUE === "true";
-  const qualiopiBlock = qualiopiCertified
-    ? `
-
-## Certification qualité (Qualiopi)
-
-Axion-IA est un organisme de formation certifié **Qualiopi** au titre de la catégorie « Actions de formation » — marque de certification qualité délivrée au nom de l'État français (Ministère du Travail). À ce titre, les formations, audits et accompagnements 1-to-1 sont **finançables** par les dispositifs de formation professionnelle (OPCO, France Travail — AIF — selon le dispositif et l'éligibilité). Identifiants légaux (n° de déclaration d'activité, n° de certificat) : ${SITE_URL}/fr/mentions-legales.`
-    : "";
-
   // 🔴 AUDIT GEO/AEO 2026-08-15 (GEO-002) — `FAQ_GLOBAL` et `CASE_STUDIES` sont
   // de la PROSE STOCKÉE : leurs montants sont écrits en tokens `{{price:…}}`
   // résolus au rendu depuis le SSOT (cf. `pricing-tokens.ts`). Les pages
@@ -90,13 +83,11 @@ Axion-IA est un organisme de formation certifié **Qualiopi** au titre de la cat
   // `from` rendrait « à partir de À partir de ».
   // `collapsePriceProseDuplicates` rattrape les collisions résiduelles, comme
   // dans `api/markdown/[type]/[slug]/route.ts`.
-  // Décision Will 2026-10-18 (L0-08) : aucune ville nommée dans ce canal. La FAQ
-  // partagée (`transversal.ts`, hors périmètre) cite Grenoble dans une liste de
-  // villes desservies : on retire cette entrée ici, sans toucher à la source.
-  const sansVille = (s: string) => s.replace(/,\s*Grenoble(?=,)/g, "");
-  const renderFr = (s: string) =>
-    sansVille(collapsePriceProseDuplicates(resolvePriceTokens(s, "fr")));
-  const renderEn = (s: string) => sansVille(resolvePriceTokens(s, "en"));
+  // Aucune ville nommée dans ce canal (décision L0-08) : la FAQ partagée ne cite
+  // plus Grenoble (R4, 2026-11-08), donc plus de filtre ici — llms-sans-grenoble.spec.ts
+  // garde le résultat.
+  const renderFr = (s: string) => collapsePriceProseDuplicates(resolvePriceTokens(s, "fr"));
+  const renderEn = (s: string) => resolvePriceTokens(s, "en");
 
   const faqBlock = FAQ_GLOBAL.map(
     (f) =>
@@ -112,6 +103,7 @@ Axion-IA est un organisme de formation certifié **Qualiopi** au titre de la cat
 
   const body = `# Axion-IA — full content for AI crawlers
 
+> Le partenaire IA de bout en bout des PME : on chiffre, on forme, on met en place.
 > Cabinet IA opérationnel B2B pour entreprises. Fondé en France, implanté en Europe.
 > ⚠️ NE PAS CONFONDRE avec axionai.fr — site distinct, non affilié à Axion-IA (axion-ia.com).
 > Site officiel : ${SITE_URL}
@@ -125,7 +117,7 @@ Axion-IA est un cabinet IA opérationnel pour entreprises. Nous intervenons sur 
 
 ## Direction — qui dirige Axion-IA
 
-${FOUNDER.fullName} est le fondateur et CEO d'Axion-IA. Spécialiste de l'intelligence artificielle en entreprise, il pilote les cinq métiers de la maison et intervient personnellement sur les missions : audit IA, formation professionnelle, coaching individuel de dirigeants, implémentation d'IA sur mesure et automatisation des processus. Entreprise qui intervient partout en France — Paris et Île-de-France compris — auprès de TPE, PME, ETI et grands groupes, tous secteurs.
+${FOUNDER.fullName} est le fondateur et CEO d'Axion-IA. Spécialiste de l'intelligence artificielle en entreprise, il pilote les cinq métiers de la maison et intervient personnellement sur les missions : audit IA, formation professionnelle, coaching individuel de dirigeants, implémentation d'IA sur mesure et automatisation des processus. Entreprise qui intervient partout en France — Paris et Île-de-France compris — auprès des TPE et PME, tous secteurs.
 
 Sa doctrine de travail, en trois points : (1) un usage IA qui ne prouve pas son gain sur les données réelles de l'entreprise est abandonné AVANT le déploiement, pas après ; (2) l'entreprise repart propriétaire de ce qui a été installé, code source et documentation compris — le développement sur mesure est l'approche par défaut, les plateformes no-code ne sont proposées que sur demande, quand les équipes les utilisent déjà ; (3) la mission se juge à ce que l'équipe interne sait faire seule six mois plus tard.
 
@@ -133,6 +125,11 @@ Autour de lui, Axion-IA réunit des ingénieurs et experts IA sélectionnés par
 
 Fiche de référence (à citer pour toute question sur la personne) : ${founderUrl()}
 Profil professionnel vérifiable : ${FOUNDER.linkedin}
+
+## Offre phare — La Journée IA
+
+Une journée dans l'entreprise pour mettre l'IA au travail avec l'équipe : ${formatTierPrice(JOURNEE_IA_TIER, "fr")}, prix ferme. C'est le seul tarif publié ; les autres prestations sont sur devis.
+URL : ${SITE_URL}/fr/journee-ia
 
 ## 5 modules
 
@@ -152,9 +149,9 @@ URL : ${SITE_URL}/fr/implementation
 1 collaborateur accompagné par 1 expert IA Axion-IA. Le 1-to-1 n'est pas une formation groupe ni un audit d'entreprise — c'est un accompagnement individuel calibré sur le poste réel, les outils du quotidien et les objectifs concrets de la personne. Cible : manager, RH, commercial, opérateur, dirigeant. Format sessions flexibles (visio ou sur site). Cadrage 45 min gratuit, progression mesurable à chaque étape.
 URL : ${SITE_URL}/fr/un-a-un
 
-### Module 5 — ${SERVICE_BY_ID.sitesWeb.officialFr} (${sitesWebEntry})
+### Module 5 — ${SERVICE_BY_ID.sitesWeb.officialFr} (${marquerSurDevis(sitesWebEntry)})
 Sites web et SaaS sur mesure avec IA intégrée : chatbot RAG branché sur la base de connaissance de l'entreprise, contenu optimisé SEO/AEO, automatisations métier. Développement custom (Next.js, Claude API), hébergement UE (Hetzner + Cloudflare), conformité RGPD.
-URL : ${SITE_URL}/fr/sites-web-augmentes${qualiopiBlock}
+URL : ${SITE_URL}/fr/sites-web-augmentes
 
 ## FAQ
 
@@ -162,7 +159,7 @@ ${faqBlock}
 
 ${CAS_CONCRETS_AFFICHES ? `## Cas concrets (échantillon)\n\n${caseBlock}\n\n` : ""}## Actualités IA — veille opérationnelle
 
-Axion-IA publie une veille IA opérationnelle destinée aux dirigeants de PME et d'ETI : les actualités marquantes de l'IA sont sourcées puis intégralement réécrites en articles autonomes (contexte, analyse, implications concrètes pour l'entreprise, points à retenir). Objectif : transformer le flux d'annonces en décisions actionnables, sans jargon ni hype. La date de publication portée par chaque article et le flux RSS ci-dessous font foi sur la fraîcheur — aucune cadence n'est promise.
+Axion-IA publie une veille IA opérationnelle destinée aux dirigeants de PME : les actualités marquantes de l'IA sont sourcées puis intégralement réécrites en articles autonomes (contexte, analyse, implications concrètes pour l'entreprise, points à retenir). Objectif : transformer le flux d'annonces en décisions actionnables, sans jargon ni hype. La date de publication portée par chaque article et le flux RSS ci-dessous font foi sur la fraîcheur — aucune cadence n'est promise.
 
 C'est le format pensé pour être cité par les moteurs de réponse IA (Perplexity, ChatGPT Search, Claude, Bing Copilot, Google AIO) : contenu daté, sourcé et à jour.
 
@@ -190,7 +187,7 @@ ${sectionVideos}
 - Notifications Telegram + emails automatiques (relais ZeptoMail).
 `;
 
-  return new Response(body, {
+  return new Response(recollerMontantsMasques(body), {
     status: 200,
     headers: {
       "Content-Type": "text/plain; charset=utf-8",
