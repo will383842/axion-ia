@@ -37,7 +37,7 @@ const tenant: ResolvedTenant = {
 const noopRetrieve = vi.fn(async () => [] as RetrievedChunk[]);
 
 describe("T-07 recherche d'offre (déterministe, sans LLM)", () => {
-  it("« formations entre 2000 et 3000 € » → cartes avec prix SSOT + urlFR, confirmation demandée", async () => {
+  it("« formations entre 2000 et 3000 € » → « sur devis » + RDV, cartes sans montant, confirmation demandée", async () => {
     const r = await handleTurn(
       "vous avez des formations entre 2000 et 3000 € ?",
       { tenant },
@@ -46,7 +46,10 @@ describe("T-07 recherche d'offre (déterministe, sans LLM)", () => {
     expect(r.intent).toBe("recherche_offre");
     expect(r.cards.length).toBeGreaterThan(0);
     expect(r.cards.every((c) => c.urlFR.startsWith("/fr"))).toBe(true);
-    expect(r.cards.every((c) => /€|Sur devis/.test(c.prix))).toBe(true);
+    // R7 (08/11/2026) : aucun montant au public hors Journée IA.
+    expect(r.cards.every((c) => c.prix === "Sur devis" || c.id === "journee-ia")).toBe(true);
+    expect(r.text).toMatch(/sur devis, parlons-en lors du rendez-vous gratuit de 45 minutes/);
+    expect(r.rdvUrl).toBeDefined();
     // D-CONFIRM : pas de raccourci → on annonce et on demande avant d'envoyer.
     expect(r.sendLinks).toBe(false);
     expect(r.linkFlow.linkState).toBe("proposed");
@@ -158,6 +161,31 @@ describe("T-07 explication (RAG + LLM mockés)", () => {
     expect(r.escalate).toBe(true);
     expect(r.text).not.toContain("9 999");
     expect(r.rdvUrl).toBe("/fr/appel?depuis=chatbot");
+  });
+
+  it("R7 : une réponse en cache qui cite « 1 190 € HT » n'est pas servie, on régénère", async () => {
+    const generateAnswer = vi.fn(async () => ({
+      text: "Un audit est sur devis, parlons-en lors du rendez-vous gratuit de 45 minutes.",
+      model: "x",
+      costUsd: 0,
+      tokensInput: 1,
+      tokensOutput: 1,
+    }));
+    const r = await handleTurn(
+      "c'est quoi un audit ?",
+      { tenant },
+      {
+        retrieve: vi.fn(async () => chunks),
+        cacheLookup: vi.fn(async () => ({
+          reponse: "L'audit sur place est à 1 190 € HT.",
+          sources: [],
+        })) as never,
+        generateAnswer,
+      },
+    );
+    expect(r.servedFromCache).not.toBe(true);
+    expect(r.text).not.toContain("1 190");
+    expect(generateAnswer).toHaveBeenCalled();
   });
 
   it("aucun chunk pertinent → escalade (jamais d'invention)", async () => {
