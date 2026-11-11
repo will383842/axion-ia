@@ -229,7 +229,7 @@ export default async function JourneeIaPage({ params }: Props) {
               <details key={f.question}>
                 <summary
                   data-faq-q
-                  className="text-fg flex min-h-12 cursor-pointer items-center text-lg font-semibold"
+                  className="text-fg min-h-12 cursor-pointer py-4 text-lg font-semibold"
                 >
                   {f.question}
                 </summary>

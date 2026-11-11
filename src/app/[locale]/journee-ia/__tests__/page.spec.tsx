@@ -62,7 +62,7 @@ describe("Journée IA — page", () => {
 
   it("lit le prix dans pricing.ts, jamais en dur", async () => {
     const html = await rendu();
-    const montant = formatAmount(JOURNEE_IA_TIER.priceFlat ?? 0, "fr", { compact: true });
+    const montant = formatAmount(prixJourneeIa(JOURNEE_IA_TIER.priceFlat), "fr", { compact: true });
     expect(html).toContain(montant);
     expect(html).not.toContain("{{PRIX}}");
   });
@@ -91,7 +91,21 @@ describe("Journée IA — FAQ", () => {
     expect(summaries.length).toBeGreaterThan(0);
     for (const s of summaries) {
       const classe = /class="([^"]*)"/.exec(s[1]!)?.[1] ?? "";
-      expect(classe.split(/\s+/)).toContain("min-h-12");
+      const classes = classe.split(/\s+/);
+      expect(classes).toContain("min-h-12");
+      expect(classes).toContain("py-4");
+    }
+  });
+
+  it("garde le triangle natif du <summary> (ni flex ni block)", async () => {
+    const html = await rendu();
+    const summaries = [...html.matchAll(/<summary([^>]*)>/g)];
+    expect(summaries.length).toBeGreaterThan(0);
+    for (const s of summaries) {
+      const classes = (/class="([^"]*)"/.exec(s[1]!)?.[1] ?? "").split(/\s+/);
+      for (const interdite of ["flex", "inline-flex", "block", "inline-block", "grid", "hidden"]) {
+        expect(classes).not.toContain(interdite);
+      }
     }
   });
 
