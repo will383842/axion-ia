@@ -1,5 +1,5 @@
 /* Styles des deux pages hors layout (global-error.tsx et not-found.tsx).
-   CSS pur, SANS `@import "tailwindcss"` : importer globals.css dans une frontière
+   CSS pur, SANS import de Tailwind : importer globals.css dans une frontière
    d'erreur recopie ~260 Ko de Tailwind dans le flux RSC de CHAQUE page du site
    (mesure du 11/11/2026). Valeurs reprises des jetons de globals.css. */
 .racine-corps {
