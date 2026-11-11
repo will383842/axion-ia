@@ -49,7 +49,7 @@ export const BALARUC_LES_BAINS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Balaruc-les-Bains ?",
-      a: "Oui, Axion-IA intervient à Balaruc-les-Bains et dans tout le bassin de Thau (Sète, Frontignan, Bouzigues, Mèze, Poussan). Nos consultants viennent depuis Montpellier en 30 min.",
+      a: "Oui, Axion-IA intervient à Balaruc-les-Bains et dans tout le bassin de Thau (Sète, Frontignan, Bouzigues, Mèze, Poussan). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Proposez-vous des audits IA pour le thermalisme ?",

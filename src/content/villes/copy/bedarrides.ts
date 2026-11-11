@@ -65,7 +65,7 @@ export const BEDARRIDES_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Bédarrides ?",
-      a: "Nos consultants interviennent depuis Avignon (20 min via A7) ou Orange (15 min). Déplacement sur site dans vos locaux professionnels, domaine viticole, hébergement ou commerce. Vallée de l'Ouvèze bien desservie via A7.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Déplacement sur site dans vos locaux professionnels, domaine viticole, hébergement ou commerce. Vallée de l'Ouvèze bien desservie via A7.",
     },
   ],
 };

@@ -242,7 +242,7 @@ export const BRETIGNY_SUR_ORGE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une intervention depuis Paris ?",
-      a: "Nos consultants viennent de Paris en RER C (30 min Gare d'Austerlitz) pour les missions sur site à Brétigny. Tarifs publics et transparents.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Tarifs publics et transparents.",
     },
   ],
 };

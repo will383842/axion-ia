@@ -49,7 +49,7 @@ export const BRIEC_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Briec et Centre Cornouaille ?",
-      a: "Oui, Axion-IA intervient à Briec et tout le Centre Cornouaille (Quimper, Châteaulin, Edern, Langolen, Coray). Nos consultants viennent de Quimper (20 min) ou Brest (1h RN165).",
+      a: "Oui, Axion-IA intervient à Briec et tout le Centre Cornouaille (Quimper, Châteaulin, Edern, Langolen, Coray). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les éleveurs et agriculteurs cornouaillais ?",
@@ -65,7 +65,7 @@ export const BRIEC_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Quimper ?",
-      a: "Nos consultants viennent de Quimper (20 min voiture). Pour les multi-jours, hébergement local possible (hôtels Quimper ou gîtes ruraux).",
+      a: "Nous intervenons partout en France, sur place ou à distance. Pour les multi-jours, hébergement local possible (hôtels Quimper ou gîtes ruraux).",
     },
   ],
 };

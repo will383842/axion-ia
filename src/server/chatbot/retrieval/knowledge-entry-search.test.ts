@@ -154,6 +154,18 @@ describe("interrupteur CHATBOT_KB_UNIFIED", () => {
     expect(await recherche("t", "q", {})).toBe(CHUNKS);
   });
 
+  it("allumé : un chunk `slug#3` écarte la fiche `slug` (sourceRef de chunk découpé)", async () => {
+    const chunkDecoupe: RetrievedChunk = { ...CHUNKS[0]!, sourceRef: "journee-ia#3" };
+    const fiche: RetrievedChunk = { ...FICHE, id: "ke:j", sourceRef: "journee-ia" };
+    const recherche = creerRechercheChatbot({
+      env: { CHATBOT_KB_UNIFIED: "true" },
+      hybrid: vi.fn().mockResolvedValue([chunkDecoupe]),
+      knowledgeEntry: vi.fn().mockResolvedValue([fiche]),
+    });
+    const r = await recherche("t", "q", {});
+    expect(r.map((c) => c.sourceRef)).toEqual(["journee-ia#3"]);
+  });
+
   it("allumé : la recherche actuelle en erreur reste une erreur", async () => {
     const recherche = creerRechercheChatbot({
       env: { CHATBOT_KB_UNIFIED: "true" },

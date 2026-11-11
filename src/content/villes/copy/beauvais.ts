@@ -230,7 +230,7 @@ export const BEAUVAIS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Beauvais et dans l'Oise ?",
-      a: "Oui, Axion-IA intervient à Beauvais et dans tout le sud de l'Oise (Compiègne à 50 min, Creil, Clermont). Nos consultants se déplacent depuis Paris (1h15 par l'A16) ou via l'aéroport Beauvais-Tillé.",
+      a: "Oui, Axion-IA intervient à Beauvais et dans tout le sud de l'Oise (Compiègne à 50 min, Creil, Clermont). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les TPE et artisans beauvaisiens ?",

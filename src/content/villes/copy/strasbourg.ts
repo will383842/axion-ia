@@ -47,7 +47,7 @@ export const STRASBOURG_COPY: VilleCopy = {
     },
     unAUn: {
       fr: "Coaching IA 1-to-1 à Strasbourg : accompagnement individuel pour dirigeants et managers des institutions européennes, du biotech PII et des ETI industrielles de l'Eurométropole. Sessions confidentielles en présentiel (Wacken, Presqu'île, Illkirch) ou à distance. Tarif d'entrée {{price:intervention-dirigeants|flat}}.",
-      en: "1-to-1 AI coaching in Strasbourg: individual coaching for executives and managers from European institutions, PII biotech firms and Eurométropole industrial mid-caps. Confidential sessions on-site (Wacken, Presqu'île, Illkirch) or remote. Entry rate from €990 excl. VAT.",
+      en: "1-to-1 AI coaching in Strasbourg: individual coaching for executives and managers from European institutions, PII biotech firms and Eurométropole industrial mid-caps. Confidential sessions on-site (Wacken, Presqu'île, Illkirch) or remote. Price on request.",
     },
     sitesWeb: {
       fr: "Plateformes web et SaaS IA sur mesure pour institutions européennes, biotech Alsace BioValley et ETI industrielles strasbourgeoises — site multilingue FR/DE/EN, portail métier biotech, dashboard connecté à votre CRM/ERP. Architectes seniors, design system Axion-IA, hébergement européen.",
@@ -738,7 +738,7 @@ export const STRASBOURG_COPY: VilleCopy = {
           "Entretien de positionnement inclus sans engagement. Séances facturées au forfait, pas à l'heure — vous savez exactement ce que vous payez. Coaching disponible en FR, DE ou EN selon votre profil. Confidentialité stricte dès le démarrage, aucune référence publiée sans accord écrit. Aucun lock-in : les compétences acquises sont utilisables en autonomie totale.",
       },
       en: {
-        hero: "Axion-IA's 1-to-1 AI coaching in Strasbourg is for executives, managers and experts from European institutions (Parliament, Council of Europe, ECHR), Illkirch Innovation Park biotech firms and Eurométropole industrial mid-caps. No group, no generic programme: each session is built around your real challenges, in your working language (FR, DE or EN). Entry rate from €990 excl. VAT.",
+        hero: "Axion-IA's 1-to-1 AI coaching in Strasbourg is for executives, managers and experts from European institutions (Parliament, Council of Europe, ECHR), Illkirch Innovation Park biotech firms and Eurométropole industrial mid-caps. No group, no generic programme: each session is built around your real challenges, in your working language (FR, DE or EN). Price on request.",
         whyHere: [
           "Strasbourg concentrates a unique density of 1-to-1 AI coaching profiles: European institution officials and managers, PII R&D directors, Franco-German industrial mid-cap managers — people who find no peers to discuss AI freely.",
           "The trilingual FR/DE/EN dimension of the Eurodistrict makes Strasbourg a special case: we conduct sessions in the executive's working language, including bilingual mode for Franco-German profiles in the Strasbourg-Ortenau Eurodistrict.",
@@ -777,7 +777,7 @@ export const STRASBOURG_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "Micro-business",
-            price: "from €990 excl. VAT",
+            price: "Price on request",
             detail:
               "For Strasbourg freelancers, micro-business managers and independent professionals. Short programme of 2-3 sessions on your priority use cases.",
           },
@@ -811,7 +811,7 @@ export const STRASBOURG_COPY: VilleCopy = {
           },
           {
             q: "What is the entry rate and how is coaching invoiced?",
-            a: "The entry rate is €990 excl. VAT for a short programme. The full programme is defined after the positioning interview, no blind commitment.",
+            a: "The entry rate for a short programme is quoted on request. The full programme is defined after the positioning interview, no blind commitment.",
           },
           {
             q: "Is confidentiality guaranteed for institutional or biotech profiles?",

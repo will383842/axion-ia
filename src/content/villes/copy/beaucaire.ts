@@ -49,7 +49,7 @@ export const BEAUCAIRE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Beaucaire et dans le Gard rhodanien ?",
-      a: "Oui, Axion-IA intervient à Beaucaire et dans tout le Gard rhodanien (Bellegarde, Saint-Gilles, Jonquières-Saint-Vincent). Nos consultants viennent de Nîmes (25 min) ou Avignon (20 min).",
+      a: "Oui, Axion-IA intervient à Beaucaire et dans tout le Gard rhodanien (Bellegarde, Saint-Gilles, Jonquières-Saint-Vincent). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Combien coûte un audit IA à Beaucaire  ?",
